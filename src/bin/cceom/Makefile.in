@@ -15,7 +15,8 @@ c_clean.c     precondition.c           hbar_norms.c   get_params.c     \
 sigmaSS.c     sigmaSD.c    FSD.c       WmnieSD.c    WamefSD.c  \
 sigmaDS.c     WmaijDS.c    WabejDS.c   WnmjeDS.c    WbmfeDS.c  \
 sigmaDD.c     FDD.c        WmnijDD.c   WabefDD.c    WmbejDD.c  WmnefDD.c \
-local.c restart.c sort_C.c amp_write.c read_guess.c local_guess.c  sort_amps.c 
+local.c restart.c sort_C.c amp_write.c read_guess.c local_guess.c  sort_amps.c  \
+write_Rs.c
 
 BINOBJ = $(CSRC:%.c=%.o)
 ALLOC = 

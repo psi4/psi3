@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
   if(params.local) local_init();
 
   diag();
-  /*  sort_amps(); */
+  /* sort_amps(); */
 
   dpd_close(0);
   if(params.local) local_done();
@@ -106,15 +106,22 @@ void init_io(int argc, char *argv[])
   free(progid);
   tstart(outfile);
   psio_init();
+
+  for(i=CC_MIN; i <= CC_MAX; i++) psio_open(i,1);
+  /*
   for(i=CC_MIN; i <= CC_MISC; i++) psio_open(i,1);
   for(i=CC_TMP; i <= EOM_D; i++) psio_open(i,0);
   for(i=EOM_Cme; i <= CC_MAX; i++) psio_open(i,0);
+  */
+
+  /* it will read it anyway if its there ?
   if(eom_params.guess != NULL) {
     if(!strcmp(eom_params.guess,"DISK"))
       psio_open(EOM_CME,1);
   }
   else
     psio_open(EOM_CME,0);
+    */
 
   if (eom_params.dot_with_L) {
     psio_read_entry(CC_INFO,"EOM L0",(char *) &eom_params.L0, sizeof(double));
@@ -125,8 +132,10 @@ void init_io(int argc, char *argv[])
 void exit_io(void)
 {
   int i;
-  for(i=CC_MIN; i <= CC_MISC; i++) psio_close(i,1);
+  /* for(i=CC_MIN; i <= CC_MISC; i++) psio_close(i,1);
   for(i=CC_TMP; i <= CC_MAX; i++) psio_close(i,1);
+  */
+  for(i=CC_MIN; i <= CC_MAX; i++) psio_close(i,1);
   psio_done();
   tstop(outfile);
   psi_stop();

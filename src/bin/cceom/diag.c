@@ -11,12 +11,13 @@
 #include <psifiles.h>
 
 extern void test_dpd();
-void rzero(int C_irr);
-void rzero_rhf(int C_irr);
+extern void rzero(int C_irr, int *converged);
+extern void rzero_rhf(int C_irr, int *converged);
 void init_S1(int index, int irrep);
 void init_S2(int index, int irrep);
 void init_C1(int i, int C_irr);
 void init_C2(int index, int irrep);
+extern void write_Rs(int C_irr, double *energies, int *converged);
 extern double norm_C(dpdfile2 *CME, dpdfile2 *Cme,
     dpdbuf4 *CMNEF, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf);
 extern double norm_C_rhf(dpdfile2 *CME, dpdbuf4 *CMnEf, dpdbuf4 *CMnfE);
@@ -57,7 +58,7 @@ void diag(void) {
   dpdbuf4 CMNEF, Cmnef, CMnEf, SIJAB, Sijab, SIjAb, RIJAB, Rijab, RIjAb, RIjbA;
   dpdbuf4 CMnEf1, CMnfE1, CMnfE, CMneF, C2;
   char lbl[32];
-  int num_converged, *converged, keep_going, already_sigma;
+  int num_converged, num_converged_index=0, *converged, keep_going, already_sigma;
   int irrep, numCs, iter, lwork, info;
   int get_right_ev = 1, get_left_ev = 0;
   int L,h,i,j,k,a,nirreps,errcod,C_irr;
@@ -85,6 +86,10 @@ void diag(void) {
     if (eom_params.cs_per_irrep[C_irr] == 0) continue;
     fprintf(outfile,"Symmetry of excited state: %s\n", moinfo.labels[moinfo.sym ^ C_irr]);
     fprintf(outfile,"Symmetry of right eigenvector: %s\n",moinfo.labels[C_irr]);
+
+    /* zero out EOM_TMP */
+    psio_close(EOM_TMP,0);
+    psio_open(EOM_TMP,0);
 
     /* Store approximate diagonal elements of Hbar */
     form_diagonal(C_irr);
@@ -619,6 +624,11 @@ void diag(void) {
       /* restart with new B vectors if there are too many */
       if (L >= eom_params.vectors_per_root * eom_params.cs_per_irrep[C_irr]) {
         restart(alpha, L, eom_params.cs_per_irrep[C_irr], C_irr, 1);
+
+/* not yet working -- would this help?
+        orthogonalize(eom_params.cs_per_irrep[C_irr], C_irr);
+        */
+
         L = eom_params.cs_per_irrep[C_irr];
         keep_going = 1;
         /* already_sigma = 0; */
@@ -633,7 +643,7 @@ void diag(void) {
       }
 
       ++iter;
-      /* If we're all done then collapse to one vector per root */
+      /* If we're all done then collapse to one vector per root - but don't orthogonalize */
       if ( (keep_going == 0) && (iter < eom_params.max_iter) ) {
         fprintf(outfile,"Collapsing to only %d vectors.\n", eom_params.cs_per_irrep[C_irr]);
         restart(alpha, L, eom_params.cs_per_irrep[C_irr], C_irr, 0);
@@ -641,55 +651,24 @@ void diag(void) {
       free_block(alpha);
     }
 
-    if (C_irr == eom_params.prop_sym^moinfo.sym) {
-      /* Copy desired root to CC_RAMPS file */
-      fprintf(outfile,"Copying C for root %d to CC_RAMPS\n",eom_params.prop_root);
-      sprintf(lbl, "%s %d", "CME", eom_params.prop_root-1);
-      dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
-      dpd_file2_copy(&CME, CC_RAMPS, "RIA");
-      dpd_file2_close(&CME);
-      sprintf(lbl, "%s %d", "CMnEf", eom_params.prop_root-1);
-      if (params.eom_ref <= 1)
-        dpd_buf4_init(&CMnEf, EOM_CMnEf, C_irr, 0, 5, 0, 5, 0, lbl);
-      else if (params.eom_ref == 2)
-        dpd_buf4_init(&CMnEf, EOM_CMnEf, C_irr, 22, 28, 22, 28, 0, lbl);
-      dpd_buf4_copy(&CMnEf, CC_RAMPS, "RIjAb");
-      dpd_buf4_close(&CMnEf);
-  
-      if(params.eom_ref > 0) {
-        sprintf(lbl, "%s %d", "Cme", eom_params.prop_root-1);
-        if (params.eom_ref == 1)
-          dpd_file2_init(&Cme, EOM_Cme, C_irr, 0, 1, lbl);
-        else if (params.eom_ref == 2)
-          dpd_file2_init(&Cme, EOM_Cme, C_irr, 2, 3, lbl);
-        dpd_file2_copy(&Cme, CC_RAMPS, "Ria");
-        dpd_file2_close(&Cme);
-        sprintf(lbl, "%s %d", "CMNEF", eom_params.prop_root-1);
-        dpd_buf4_init(&CMNEF, EOM_CMNEF, C_irr, 2, 7, 2, 7, 0, lbl);
-        dpd_buf4_copy(&CMNEF, CC_RAMPS, "RIJAB");
-        dpd_buf4_close(&CMNEF);
-        sprintf(lbl, "%s %d", "Cmnef", eom_params.prop_root-1);
-        if (params.eom_ref == 1)
-          dpd_buf4_init(&Cmnef, EOM_Cmnef, C_irr, 2, 7, 2, 7, 0, lbl);
-        else if (params.eom_ref ==2)
-          dpd_buf4_init(&Cmnef, EOM_Cmnef, C_irr, 12, 17, 12, 17, 0, lbl);
-        dpd_buf4_copy(&Cmnef, CC_RAMPS, "Rijab");
-        dpd_buf4_close(&Cmnef);
-      }
-    }
-
-    /* Print out results */
-    fprintf(outfile,"\nProcedure converged for %d roots.\n",num_converged);
-
+    fprintf(outfile,"\nProcedure converged for %d root(s).\n",num_converged);
     if (num_converged == eom_params.cs_per_irrep[C_irr]) { }
     else if (iter == eom_params.max_iter) {
-      fprintf(outfile,"\nMaximum number of iterations exceeded,");
-      fprintf(outfile,"so not all roots converged.\n");
+      fprintf(outfile,"\nMaximum number of iterations exceeded, ");
+      fprintf(outfile,"so not all roots converged!\n\n");
     }
     else {
-      fprintf(outfile,"\nAlgorithm failure: No vectors could be added,");
-      fprintf(outfile,"though not all roots converged.\n");
+      fprintf(outfile,"\nAlgorithm failure: No vectors could be added, ");
+      fprintf(outfile,"though not all roots converged!\n\n");
     }
+
+    /* write Cs and energies to RAMPS file */
+    write_Rs(C_irr, lambda_old, converged);
+    /* compute R0 and normalize - also do any orthogonality checks */
+    if (params.eom_ref == 0)
+      rzero_rhf(C_irr, converged);
+    else
+      rzero(C_irr, converged);
 
     if (num_converged > 0) {
       fprintf(outfile,"\nFinal Energetic Summary for Converged Roots of Irrep %s\n",
@@ -698,34 +677,34 @@ void diag(void) {
       fprintf(outfile,"                (eV)     (cm^-1)     (au)             (au)\n");
       for (i=0;i<eom_params.cs_per_irrep[C_irr];++i) {
         if (converged[i] == 1) {
-          fprintf(outfile,"EOM State %d %10.3lf %10.1lf %14.10lf  %15.10lf\n",i+1,
+          fprintf(outfile,"EOM State %d %10.3lf %10.1lf %14.10lf  %15.10lf\n",
+              ++num_converged_index,
 		  lambda_old[i]* _hartree2ev, lambda_old[i]* _hartree2wavenumbers,
 		  lambda_old[i], lambda_old[i]+moinfo.eref+moinfo.ecc);
 
-	  if(params.eom_ref == 0) {
-
-	    /* Print out largest few components of this root */
-	    fprintf(outfile, "\nLargest components of excited wave function #%d:\n", i);
-
-	    sprintf(lbl, "%s %d", "CME", i);
-	    dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
-	    amp_write_T1(&CME, 5, outfile);
-	    dpd_file2_close(&CME);
-
-	    sprintf(lbl, "%s %d", "CMnEf", i);
-	    dpd_buf4_init(&CMnEf, EOM_CMnEf, C_irr, 0, 5, 0, 5, 0, lbl);
-	    amp_write_T2(&CMnEf, 5, outfile);
-	    dpd_buf4_close(&CMnEf);
-	    fprintf(outfile, "\n");
-	  }
-
+          /* print out largest components of wavefunction */
+	      if(params.eom_ref == 0) {
+	        fprintf(outfile, "\nLargest components of excited wave function #%d:\n",
+                num_converged_index);
+	        sprintf(lbl, "%s %d", "CME", i);
+	        dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
+	        amp_write_T1(&CME, 5, outfile);
+	        dpd_file2_close(&CME);
+	        sprintf(lbl, "%s %d", "CMnEf", i);
+	        dpd_buf4_init(&CMnEf, EOM_CMnEf, C_irr, 0, 5, 0, 5, 0, lbl);
+	        amp_write_T2(&CMnEf, 5, outfile);
+	        dpd_buf4_close(&CMnEf);
+	        fprintf(outfile, "\n");
+	      }
         }
       }
+      /*
       psio_write_entry(CC_INFO, "CCEOM Energy",
 		       (char *) &(lambda_old[eom_params.prop_root-1]), sizeof(double));
 
       i = moinfo.sym ^ C_irr;
       psio_write_entry(CC_INFO, "CCEOM State Irrep", (char *) &i, sizeof(int));
+      */
 
       /*      fprintf(outfile,"\nCCEOM energy %.10lf and state irrep %d written to CC_INFO.\n",
 	      lambda_old[eom_params.prop_root-1], i); */
@@ -742,10 +721,18 @@ void diag(void) {
       for(i=CC_TMP; i<CC_RAMPS; i++) psio_open(i,0);
     }
       */
-  }
 
+  }
+/*
   if (params.eom_ref == 0) rzero_rhf(eom_params.prop_sym^moinfo.sym);
   else rzero(eom_params.prop_sym^moinfo.sym);
+  */
+  /*
+  if (params.eom_ref == 0)
+    rzero_rhf();
+  else
+    rzero;
+    */
 
   return;
 }
