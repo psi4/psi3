@@ -50,5 +50,7 @@ struct MOInfo {
     double eref;        /* Reference energy */
     double ecc;         /* CC energy from ccenergy */
     double **opdm;      /* Onepdm in the full (fzc+clsd+socc+uocc) space */
+    double **opdm_a;    /* Alpha Onepdm in the full (fzc+clsd+socc+uocc) space */
+    double **opdm_b;    /* Beta Onepdm in the full (fzc+clsd+socc+uocc) space */
     double **I;         /* Lagrangian matrix in the full space */
 };

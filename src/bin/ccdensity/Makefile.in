@@ -11,12 +11,12 @@ CSRC = \
 Gabcd.c  Iab.c       add_ref.c    deanti.c      get_moinfo.c   relax_D.c    \
 Gciab.c  Iai.c       build_A.c    get_params.c  relax_I.c \
 Gibja.c  Iia.c       build_X.c    dump.c        get_frozen.c \
-Gijab.c  Iij.c       build_Z.c    energy.c      sortI.c      \
+Gijab.c  Gijab_ROHF.c Gijab_UHF.c Iij.c       build_Z.c    energy.c      sortI.c      \
 Gijka.c  V.c         ccdensity.c  lag.c         sortone.c    \
 Gijkl.c  add_core.c  fold.c       onepdm.c      twopdm.c     \
 resort_gamma.c resort_tei.c distribute.c classify.c \
 file_build.c idx_permute.c idx_error.c kinetic.c \
-cache.c
+cache.c sortone_ROHF.c sortone_UHF.c
 
 BINOBJ = $(CSRC:%.c=%.o)
 ALLOC =
