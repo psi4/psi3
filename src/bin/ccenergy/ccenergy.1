@@ -13,9 +13,12 @@ ccenergy \- Coupled cluster singles and doubles energy program
 The program
 .B ccenergy
 solves the coupled cluster singles and doubles amplitude equations.
-The algorithm makes use of spatial symmetry (D2h and its subgroups)
-and matrix algebra techniques for efficiency.  In addition, the
-program can be used to simulate local correlation methods.
+This code will work for spin-restricted closed-shell Hartree-Fock
+(RHF), spin-restricted open-shell Hartree-Fock (ROHF), spin-unrestricted
+Hartree-Fock (UHF), and Brueckner references.  The algorithm makes use of
+spatial symmetry (D2h and its subgroups) and matrix algebra techniques
+for efficiency.  In addition, the program can be used to simulate local
+correlation methods.
 
 .SH REFERENCES
 .LP
@@ -37,8 +40,9 @@ Input for this program is read from the file input.dat.  The following
 keywords are valid:
 
 .IP "\fBWFN =\fP \fIstring\fP"
-Specifies the type of coupled cluster calculation desired.  Valid
-entries at present are \fICCSD\fP and \fICCSD(T)\fP.  There is no default.
+Specifies the type of coupled cluster calculation desired.  Valid entries
+at present are \fICCSD\fP, \fICCSD_T\fP, \fIBCCD\fP, and \fIBCCD_T\fP.
+There is no default.
 
 .IP "\fBREFERENCE =\fP \fIstring\fP" 
 Specifies the type of orbitals used for the single-determinant
@@ -53,9 +57,26 @@ the \fBCACHETYPE\fP and \fBCACHELEV\fP keywords below.
 Convergence desired on the CC amplitudes.  Convergence is achieved when the
 RMS of the error in the CC wave function is less than 10**(-n).  The default is 7.
 
+.IP "\fBBRUECKNER_CONV =\fP \fIinteger\fP"
+Convergence desired for the orbitals in Brueckner-CC calculations.
+Convergence is achieved when the largest absolute value of a single T1
+ampltiudes is is less than 10**(-n).  The default is 5.
+
 .IP "\fBMAXITER =\fP \fIinteger\fP"
 Maximum number of iterations to solve the coupled cluster equations.
 Defaults to 50.
+
+.IP "\fBFREEZE_CORE =\fP \fIstring\fP"
+Specifes whether core orbitals should be automatically frozen in the
+CC wave function.  If this option is set (preferably in the "default"
+section of input), then the
+.B cscf
+program will identify the core orbitals.  Subsequent codes starting with
+.B transqt
+will freeze these orbitals.  Note that this keyword usually makes the
+additional specification of FROZEN_DOCC unnecessary, but it may still be
+required in some special cases.  Allowed values are true, false, yes, no,
+1, 0, large and small.
 
 .IP "\fBFROZEN_DOCC =\fP \fIinteger_array\fP"
 The number of lowest energy doubly occupied orbitals in each irreducible
@@ -68,6 +89,7 @@ transformation program
 .B transqt
 and the integral sorting program
 .B ccsort.
+See also the FREEZE_CORE keyword.
 
 .IP "\fBFROZEN_UOCC =\fP \fIinteger_vector\fP"
 The number of highest energy unoccupied orbitals in each irreducible
@@ -86,6 +108,14 @@ specifies minimal printing and a value of 2 will give output updates
 as each term of the CC equations is complete.  No other values have
 yet been used.
 
+.IP "\fBNUM_AMPS =\fP \fIinteger\fP"
+Specifies the number of largest T1 and T2 amplitudes to print at the end of
+the CC procedure.  Default is 10.
+
+.IP "\fBPRINT_MP2_AMPS =\fP \fIboolean\fP"
+Indicates if the MP2 amplitudes (which are starting guesses for RHF and UHF
+reference functions) should be printed.  Default is false.
+
 .IP "\fBRESTART =\fP \fIboolean\fP"
 Allows the program to use old T1 and T2 vectors from previous
 calculations as the initial guesses for a new calculation.  This is
@@ -102,11 +132,15 @@ can be overriden, however with the \fBFORCE_RESTART\fP option.
 Forces possible restart of the CC equations from previous T1 and T2
 amplitudes.  This option should be used only by experts.
 
-.IP "\fBAO_BASIS=\fP \fIboolean\fP"
+.IP "\fBAO_BASIS=\fP \fIstring\fP"
 Compute contributions from four virtual-index integrals, <ab|cd>,
-directly from the atomic-orbital basis integrals.  This option slows
+from the atomic-orbital basis integrals.  This option slows
 the calculation somewhat, but greatly reduces disk-space
-requirements.
+requirements.  Allowed values are NONE (default), DISK (use the AO-basis
+integrals stored on disk), or DIRECT (use
+.B cints
+to compute the AO-integrals on the fly in each CC iteration).  The DIRECT
+option is still experimental and should be used only by experts.
 
 .IP "\fBCACHETYPE=\fP \fIstring\fP"
 Selects the priority type for maintaining the automatic memory cache
