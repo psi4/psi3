@@ -79,7 +79,7 @@ void mohess(double **Aaibj)
     }
   }
   
-  if (print_lvl > 4) {
+  if (print_lvl > 5) {
     fprintf(outfile, "MO Hessian A(ai,bj): \n");
     print_mat(Aaibj, num_ai, num_ai, outfile);
   }
