@@ -41,6 +41,10 @@
 #define MAX(a,b) (((a) > (b)) ? (a) : (b))
 #define MIN(a,b) (((a) < (b)) ? (a) : (b))
 
+/*--- dmalloc stuff to include into each source file ---*/
+#ifdef DMALLOC
+#include <dmalloc.h>
+#endif
 
 
 
