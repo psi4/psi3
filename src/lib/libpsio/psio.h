@@ -13,6 +13,7 @@ extern ULI *psio_writlen;
 #endif
 
 int psio_init(void);
+int psio_state(void);
 int psio_done(void);
 void psio_error(ULI unit, ULI errval);
 int psio_open(ULI unit, int status);

@@ -10,6 +10,8 @@
 #include <time.h>
 #endif
 
+extern int _psi3_libpsio_state_;
+
 /*!
 ** \ingroup (PSIO)
 **
@@ -50,4 +52,6 @@ int psio_done(void)
 #endif  
 
   free(psio_unit);
+
+  _psi3_libpsio_state_ = 0;
 }

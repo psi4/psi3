@@ -13,6 +13,9 @@
 psio_ud *psio_unit;
 psio_address PSIO_ZERO = {0,0};
 
+/* Library state variable */
+int _psi3_libpsio_state_ = 0;
+
 #ifdef PSIO_STATS
 ULI *psio_readlen;
 ULI *psio_writlen;
@@ -69,5 +72,22 @@ int psio_init(void)
     fclose(psirc);
   }
 
+  /* Set library's state variable to initialized value (1) */
+  _psi3_libpsio_state_ = 1;
+
   return(0);
 }
+
+/*!
+** PSIO_STATE(): Returns state of the library (1=initialized, 0=noninitialized).
+**
+** No arguments.
+**
+** \ingroup (PSIO)
+*/
+
+int psio_state()
+{
+  return _psi3_libpsio_state_;
+}
+
