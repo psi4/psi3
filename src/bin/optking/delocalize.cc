@@ -25,6 +25,7 @@ extern double **irrep(internals &simples, double **salc);
 
 void delocalize(int num_atoms,internals &simples) {
   int error,i,j,k,a,b,c,d,id,count,intco_type,sub_index,row[4],dim[4];
+  int rotor_type, degrees_of_freedom;
   double **stre_mat, **bend_mat, **tors_mat, **out_mat;
   double *evals, **evects, **B, **BBt, **u, **temp_mat;
 
@@ -139,19 +140,37 @@ void delocalize(int num_atoms,internals &simples) {
   for (i=0;i<simples.get_num();++i)
     if( evals[i] > optinfo.ev_tol ) ++num_nonzero;
 
-  if (num_nonzero != (3 * num_atoms - 6)) {
-    if (num_nonzero < (3 * num_atoms - 6)) {
+  rewind(fp_input);
+  ip_initialize(fp_input,outfile);
+  file30_init();
+  rotor_type = file30_rd_rottype();
+  file30_close();
+  ip_done();
+  switch (rotor_type) {
+  case 3:
+      degrees_of_freedom = 3 * num_atoms - 5;
+      break;
+  case 6:
+      degrees_of_freedom = 0;
+      break;
+  default:
+      degrees_of_freedom = 3 * num_atoms - 6;
+      break;
+  }
+  if (num_nonzero != degrees_of_freedom) {
+    if (num_nonzero < degrees_of_freedom) {
        fprintf(outfile,"\nerror -- too few non-redundant coordinates");
-       fprintf(outfile,"\n      -- should have %i (3n-6) but only have %i",3 * num_atoms - 6, num_nonzero);
+       fprintf(outfile,"\n      -- should have %i but only have %i",degrees_of_freedom, num_nonzero);
        fprintf(outfile,"\n      -- try reducing eigenvalue tolerance and check atom connectivity ( set print_simples = 1 )");
       }
-    if (num_nonzero > (3 * num_atoms - 6)) {
+    if (num_nonzero > degrees_of_freedom) {
        fprintf(outfile,"\nerror -- too many non-redundant coordinates");
-       fprintf(outfile,"\n      -- should have %i (3n-6) but have %i",3 * num_atoms - 6, num_nonzero);
+       fprintf(outfile,"\n      -- should have %i but have %i",degrees_of_freedom, num_nonzero);
        fprintf(outfile,"\n      -- try increasing eigenvalue tolerance");
       }
       fprintf(outfile,"\n       -- stopping execution\n");
       fflush(outfile);
+      fclose(outfile);
       exit(1);
   }
 
