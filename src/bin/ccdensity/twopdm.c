@@ -22,7 +22,7 @@ void Gijab(void);
 
 void twopdm(void)
 {
-  V_build();
+//  V_build();
   Gijkl();
   Gabcd();
   Gijka();

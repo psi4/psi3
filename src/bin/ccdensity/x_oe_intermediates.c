@@ -15,6 +15,8 @@
 /* L2R1_ov = Rme * Limae + RME + LiMaE */
 /* L1R2_OV = LME * RIMAE + Lme * RImAe */
 /* L1R2_ov = Lme * Rimae + LME * RiMaE */
+/* L1T2_OV = LME * TIMAE + Lme * TImAe */
+/* L1T2_ov = Lme * Timae + LME * TiMaE */
 /* LR2_OO  = 0.5 * LIMEF * RJMEF + LImEf * RJmEf */
 /* LR2_oo  = 0.5 * Limef * Rjmef + LiMeF * RjMeF */
 /* LR2_VV = 0.5 * LMNEA * RMNEB + LmNeA * RmNeB */
@@ -172,6 +174,34 @@ void x_oe_intermediates(void)
   dpd_buf4_close(&R2);
   dpd_file2_close(&I);
 
+  /* L1T2_OV = LME * TIMAE + Lme * TImAe */
+  dpd_file2_init(&I, EOM_TMP, L_irr, 0, 1, "L1T2_OV");
+  dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tIJAB");
+  dpd_file2_init(&L1, CC_GL, L_irr, 0, 1, "LIA");
+  dpd_dot24(&L1, &T2, &I, 0, 0, 1.0, 0.0);
+  dpd_file2_close(&L1);
+  dpd_buf4_close(&T2);
+  dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
+  dpd_file2_init(&L1, CC_GL, L_irr, 0, 1, "Lia");
+  dpd_dot24(&L1, &T2, &I, 0, 0, 1.0, 1.0);
+  dpd_file2_close(&L1);
+  dpd_buf4_close(&T2);
+  dpd_file2_close(&I);
+
+  /* L1T2_ov = Lme * Timae + LME * TiMaE */
+  dpd_file2_init(&I, EOM_TMP, L_irr, 0, 1, "L1T2_ov");
+  dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tijab");
+  dpd_file2_init(&L1, CC_GL, L_irr, 0, 1, "Lia");
+  dpd_dot24(&L1, &T2, &I, 0, 0, 1.0, 0.0);
+  dpd_file2_close(&L1);
+  dpd_buf4_close(&T2);
+  dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tiJaB");
+  dpd_file2_init(&L1, CC_GL, L_irr, 0, 1, "LIA");
+  dpd_dot24(&L1, &T2, &I, 0, 0, 1.0, 1.0);
+  dpd_file2_close(&L1);
+  dpd_buf4_close(&T2);
+  dpd_file2_close(&I);
+
   /* LR2_OO(I,J)  = 0.5 * LIMEF * RJMEF + LImEf * RJmEf */
   dpd_file2_init(&I, EOM_TMP, G_irr, 0, 0, "LR2_OO");
   dpd_buf4_init(&L2, CC_GL, L_irr, 0, 7, 2, 7, 0, "LIJAB");
@@ -322,17 +352,17 @@ void x_oe_intermediates(void)
 
 /* LT_OO = LT1_OO + LT2_OO */
 /* LT_oo = LT1_oo + LT2_oo */
-  dpd_file2_init(&I, EOM_TMP, G_irr, 0, 0, "LT_OO");
-  dpd_file2_init(&LT1, EOM_TMP, G_irr, 0, 0, "LT1_OO");
-  dpd_file2_init(&LT2, EOM_TMP, G_irr, 0, 0, "LT2_OO");
+  dpd_file2_init(&I, EOM_TMP, L_irr, 0, 0, "LT_OO");
+  dpd_file2_init(&LT1, EOM_TMP, L_irr, 0, 0, "LT1_OO");
+  dpd_file2_init(&LT2, EOM_TMP, L_irr, 0, 0, "LT2_OO");
   dpd_file2_axpbycz(&LT1, &LT2, &I, 1.0, 1.0, 0.0);
   dpd_file2_close(&LT2);
   dpd_file2_close(&LT1);
   dpd_file2_close(&I);
 
-  dpd_file2_init(&I, EOM_TMP, G_irr, 0, 0, "LT_oo");
-  dpd_file2_init(&LT1, EOM_TMP, G_irr, 0, 0, "LT1_oo");
-  dpd_file2_init(&LT2, EOM_TMP, G_irr, 0, 0, "LT2_oo");
+  dpd_file2_init(&I, EOM_TMP, L_irr, 0, 0, "LT_oo");
+  dpd_file2_init(&LT1, EOM_TMP, L_irr, 0, 0, "LT1_oo");
+  dpd_file2_init(&LT2, EOM_TMP, L_irr, 0, 0, "LT2_oo");
   dpd_file2_axpbycz(&LT1, &LT2, &I, 1.0, 1.0, 0.0);
   dpd_file2_close(&LT2);
   dpd_file2_close(&LT1);
@@ -340,24 +370,21 @@ void x_oe_intermediates(void)
 
 /* LT_VV = LT1_VV + LT2_VV */
 /* LT_vv = LT1_vv + LT2_vv */
-  dpd_file2_init(&I, EOM_TMP, G_irr, 1, 1, "LT_VV");
-  dpd_file2_init(&LT1, EOM_TMP, G_irr, 1, 1, "LT1_VV");
-  dpd_file2_init(&LT2, EOM_TMP, G_irr, 1, 1, "LT2_VV");
+  dpd_file2_init(&I, EOM_TMP, L_irr, 1, 1, "LT_VV");
+  dpd_file2_init(&LT1, EOM_TMP, L_irr, 1, 1, "LT1_VV");
+  dpd_file2_init(&LT2, EOM_TMP, L_irr, 1, 1, "LT2_VV");
   dpd_file2_axpbycz(&LT1, &LT2, &I, 1.0, 1.0, 0.0);
   dpd_file2_close(&LT2);
   dpd_file2_close(&LT1);
   dpd_file2_close(&I);
 
-  dpd_file2_init(&I, EOM_TMP, G_irr, 1, 1, "LT_vv");
-  dpd_file2_init(&LT1, EOM_TMP, G_irr, 1, 1, "LT1_vv");
-  dpd_file2_init(&LT2, EOM_TMP, G_irr, 1, 1, "LT2_vv");
+  dpd_file2_init(&I, EOM_TMP, L_irr, 1, 1, "LT_vv");
+  dpd_file2_init(&LT1, EOM_TMP, L_irr, 1, 1, "LT1_vv");
+  dpd_file2_init(&LT2, EOM_TMP, L_irr, 1, 1, "LT2_vv");
   dpd_file2_axpbycz(&LT1, &LT2, &I, 1.0, 1.0, 0.0);
   dpd_file2_close(&LT2);
   dpd_file2_close(&LT1);
   dpd_file2_close(&I);
-
-  return;
-
 
   return;
 }

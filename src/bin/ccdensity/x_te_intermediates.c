@@ -3,6 +3,8 @@
 #define EXTERN
 #include "globals.h"
 
+extern void c_clean_CIJAB(dpdbuf4 *CMNEF);
+
 void x_te_intermediates(void)
 {
   dpdfile2 R1, L1;
@@ -88,6 +90,12 @@ void x_te_intermediates(void)
     dpd_buf4_close(&L);
     dpd_buf4_close(&R);
     dpd_buf4_close(&V);
+
+    /* try cleaning this thing???*/
+    dpd_buf4_init(&V, EOM_TMP, G_irr, 10, 10, 10, 10, 0, "R2L2_OVOV");
+    c_clean_CIJAB(&V);
+    dpd_buf4_close(&V);
+    /* end try */
 
     dpd_buf4_init(&V, EOM_TMP, G_irr, 10, 10, 10, 10, 0, "R2L2_ovov");
     dpd_buf4_init(&R, CC_GR, R_irr, 10, 10, 10, 10, 0, "Riajb");
@@ -319,6 +327,10 @@ void x_te_intermediates(void)
     dpd_buf4_close(&R);
     dpd_buf4_sort(&V, EOM_TMP, pqsr, 5, 11, "R2L1_VvoV(pqsr)");
     dpd_buf4_close(&V);
+
+    dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
+    dpd_buf4_sort(&T2, CC_TAMPS, qprs, 0, 5, "taujIAb");
+    dpd_buf4_close(&T2);
 
   }
   else if(params.ref == 2) { /** UHF **/

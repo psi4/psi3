@@ -12,6 +12,7 @@ void x_Gabcd(void)
   dpdfile2 R1, T1;
   dpdbuf4 L2, I2, I3, R2, GABCD, Gabcd, GAbCd;
   int L_irr, R_irr, G_irr;
+  double value;
   L_irr = params.L_irr;
   R_irr = params.R_irr;
   G_irr = params.G_irr;
@@ -81,4 +82,17 @@ void x_Gabcd(void)
   dpd_file2_close(&T1);
   dpd_buf4_close(&I2);
   dpd_buf4_close(&GAbCd);
+
+  /* bra-ket symmetrize */
+  dpd_buf4_init(&GABCD, CC_GAMMA, G_irr, 7, 7, 7, 7, 0, "GABCD");
+  dpd_buf4_symm(&GABCD);
+  dpd_buf4_close(&GABCD);
+  dpd_buf4_init(&Gabcd, CC_GAMMA, G_irr, 7, 7, 7, 7, 0, "Gabcd");
+  dpd_buf4_symm(&Gabcd);
+  dpd_buf4_close(&Gabcd);
+  dpd_buf4_init(&GAbCd, CC_GAMMA, G_irr, 5, 5, 5, 5, 0, "GAbCd");
+  dpd_buf4_symm(&GAbCd);
+  dpd_buf4_close(&GAbCd);
+
+  return;
 }

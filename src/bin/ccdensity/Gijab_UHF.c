@@ -14,7 +14,7 @@ void Gijab_UHF(void)
   nirreps = moinfo.nirreps;
 
   /* ( g(I,M) + L(M,E) T(I,E) ) --> Z(I,M)(TMP0)  */
-  dpd_file2_init(&g, CC_OEI, 0, 0, 0, "GMI");
+  dpd_file2_init(&g, CC_GLG, 0, 0, 0, "GMI");
   dpd_file2_copy(&g, CC_TMP0, "Z(I,M)");
   dpd_file2_close(&g);
   dpd_file2_init(&ZZ, CC_TMP0, 0, 0, 0, "Z(I,M)");
@@ -26,7 +26,7 @@ void Gijab_UHF(void)
   dpd_file2_close(&ZZ);
 
   /* ( g(i,m) + L(m,e) T(i,e) ) --> Z(i,m)(TMP1)  */
-  dpd_file2_init(&g, CC_OEI, 0, 2, 2, "Gmi");
+  dpd_file2_init(&g, CC_GLG, 0, 2, 2, "Gmi");
   dpd_file2_copy(&g, CC_TMP1, "Z(i,m)");
   dpd_file2_close(&g);
   dpd_file2_init(&ZZ, CC_TMP1, 0, 2, 2, "Z(i,m)");

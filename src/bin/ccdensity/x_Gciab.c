@@ -9,7 +9,6 @@
 void x_Gciab_6(void);
 void x_Gciab_7(void);
 void x_Gciab_8(void);
-void x_Gciab_9(void);
 
 void x_Gciab(void) { 
   int h, nirreps, i, j, k, a, I, J, K, A, Isym, Jsym, Ksym, Asym, row, col;
@@ -135,7 +134,7 @@ void x_Gciab(void) {
   psio_open(EOM_TMP1, PSIO_OPEN_NEW);
 
   /* term 4, rho_CIAB -= 0.5 LMNCE TauMNAB RIE */
-  dpd_buf4_init(&Z, EOM_TMP1, L_irr, 11, 2, 11, 2, 0, "Z(CI,MN)");
+  dpd_buf4_init(&Z, EOM_TMP1, G_irr, 11, 2, 11, 2, 0, "Z(CI,MN)");
   dpd_buf4_init(&L, CC_GL, L_irr, 2, 5, 2, 7, 0, "LIJAB");
   dpd_file2_init(&R1, CC_GR, R_irr, 0, 1, "RIA");
   dpd_contract424(&L, &R1, &Z, 3, 1, 1, 1.0, 0.0);
@@ -148,7 +147,7 @@ void x_Gciab(void) {
   dpd_buf4_close(&G);
   dpd_buf4_close(&Z);
   /* term 4, rho_ciab -= 0.5 Lmnce Taumnab Rie */
-  dpd_buf4_init(&Z, EOM_TMP1, L_irr, 11, 2, 11, 2, 0, "Z(ci,mn)");
+  dpd_buf4_init(&Z, EOM_TMP1, G_irr, 11, 2, 11, 2, 0, "Z(ci,mn)");
   dpd_buf4_init(&L, CC_GL, L_irr, 2, 5, 2, 7, 0, "Lijab");
   dpd_file2_init(&R1, CC_GR, R_irr, 0, 1, "Ria");
   dpd_contract424(&L, &R1, &Z, 3, 1, 1, 1.0, 0.0);
@@ -161,7 +160,7 @@ void x_Gciab(void) {
   dpd_buf4_close(&G);
   dpd_buf4_close(&Z);
   /* term 4, rho_CiAb -= 0.5 LMnCe TauMnAb Rie */
-  dpd_buf4_init(&Z, EOM_TMP1, L_irr, 11, 0, 11, 0, 0, "Z(Ci,Mn)");
+  dpd_buf4_init(&Z, EOM_TMP1, G_irr, 11, 0, 11, 0, 0, "Z(Ci,Mn)");
   dpd_buf4_init(&L, CC_GL, L_irr, 0, 5, 0, 5, 0, "LIjAb");
   dpd_file2_init(&R1, CC_GR, R_irr, 0, 1, "Ria");
   dpd_contract424(&L, &R1, &Z, 3, 1, 1, 1.0, 0.0);
@@ -174,7 +173,7 @@ void x_Gciab(void) {
   dpd_buf4_close(&G);
   dpd_buf4_close(&Z);
   /* term 4, rho_cIaB -= 0.5 LmNcE TaumNaB RIE */
-  dpd_buf4_init(&Z, EOM_TMP1, L_irr, 11, 0, 11, 0, 0, "Z(cI,mN)");
+  dpd_buf4_init(&Z, EOM_TMP1, G_irr, 11, 0, 11, 0, 0, "Z(cI,mN)");
   dpd_buf4_init(&L, CC_GL, L_irr, 0, 5, 0, 5, 0, "LiJaB");
   dpd_file2_init(&R1, CC_GR, R_irr, 0, 1, "RIA");
   dpd_contract424(&L, &R1, &Z, 3, 1, 1, 1.0, 0.0);
@@ -219,14 +218,14 @@ void x_Gciab(void) {
 
   /* +P(ab) LR_VV(c,a) t(i,b) */
   x_Gciab_6();
+
   /* +P(ab) LR_TT(c,a) R(i,b) */
   x_Gciab_7();
-  /* -P(ab) Lmnce Rinae Tmb */
+
+  /* -P(ab) Lmnce Rinae Tmb, term 8 */
+  /* -P(ab) Lmnce Tinae Rmb, term 9 */
   x_Gciab_8();
-  psio_close(EOM_TMP1,0);
-  psio_open(EOM_TMP1, PSIO_OPEN_NEW);
-  /* - P(ab) Lmnce Tinae Rmb */
-  x_Gciab_9();
+
   psio_close(EOM_TMP1,0);
   psio_open(EOM_TMP1, PSIO_OPEN_NEW);
 
@@ -394,4 +393,21 @@ void x_Gciab(void) {
   /* clear out temporary files */
   psio_close(EOM_TMP0, 0);
   psio_open(EOM_TMP0, PSIO_OPEN_NEW);
+
+  /*
+  dpd_buf4_init(&V, CC_GAMMA, G_irr, 11, 7, 11, 7, 0, "GCIAB");
+  value = dpd_buf4_dot_self(&V);
+  dpd_buf4_close(&V);
+  dpd_buf4_init(&V, CC_GAMMA, G_irr, 11, 7, 11, 7, 0, "Gciab");
+  value += dpd_buf4_dot_self(&V);
+  dpd_buf4_close(&V);
+  dpd_buf4_init(&V, CC_GAMMA, G_irr, 11, 5, 11, 5, 0, "GCiAb");
+  value += dpd_buf4_dot_self(&V);
+  dpd_buf4_close(&V);
+  dpd_buf4_init(&V, CC_GAMMA, G_irr, 11, 5, 11, 5, 0, "GcIaB");
+  value += dpd_buf4_dot_self(&V);
+  dpd_buf4_close(&V);
+  fprintf(outfile,"<Gciab|Gciab> = %15.10lf\n",value);
+  */
+
 }

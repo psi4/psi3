@@ -42,15 +42,15 @@ void x_Gijka_7(void) {
       J = R1A.params->rowidx[j];  Jsym = R1A.params->psym[j];
       II = R1A.params->rowidx[i]; IIsym = R1A.params->psym[i];
       JJ = LTA.params->colidx[j]; JJsym = LTA.params->qsym[j];
-      for(col=0; col < G.params->coltot[h]; col++) {
-        k = G.params->colorb[h][col][0];
-        a = G.params->colorb[h][col][1];
+      for(col=0; col < G.params->coltot[h^G_irr]; col++) {
+        k = G.params->colorb[h^G_irr][col][0];
+        a = G.params->colorb[h^G_irr][col][1];
         K = LTA.params->rowidx[k]; Ksym = LTA.params->psym[k];
         A = R1A.params->colidx[a]; Asym = R1A.params->qsym[a];
-        if( ((Ksym^Isym)==G_irr) && (Jsym==Asym))
+        if( ((Ksym^Isym)==L_irr) && ((Jsym^Asym)==R_irr) )
           G.matrix[h][row][col] -=
             LTA.matrix[Ksym][K][I] * R1A.matrix[Jsym][J][A];
-        if( ((Ksym^JJsym)==G_irr) && (IIsym==Asym))
+        if( ((Ksym^JJsym)==L_irr) && ((IIsym^Asym)==R_irr) )
           G.matrix[h][row][col] +=
             LTA.matrix[Ksym][K][JJ] * R1A.matrix[IIsym][II][A];
       }
@@ -72,15 +72,15 @@ void x_Gijka_7(void) {
       J = R1B.params->rowidx[j];  Jsym = R1B.params->psym[j];
       II = R1B.params->rowidx[i]; IIsym = R1B.params->psym[i];
       JJ = LTB.params->colidx[j]; JJsym = LTB.params->qsym[j];
-      for(col=0; col < G.params->coltot[h]; col++) {
-        k = G.params->colorb[h][col][0];
-        a = G.params->colorb[h][col][1];
+      for(col=0; col < G.params->coltot[h^G_irr]; col++) {
+        k = G.params->colorb[h^G_irr][col][0];
+        a = G.params->colorb[h^G_irr][col][1];
         K = LTB.params->rowidx[k]; Ksym = LTB.params->psym[k];
         A = R1B.params->colidx[a]; Asym = R1B.params->qsym[a];
-        if( ((Ksym^Isym)==G_irr) && (Jsym==Asym))
+        if( ((Ksym^Isym)==L_irr) && ((Jsym^Asym)==R_irr) )
           G.matrix[h][row][col] -=
             LTB.matrix[Ksym][K][I] * R1B.matrix[Jsym][J][A];
-        if( ((Ksym^JJsym)==G_irr) && (IIsym==Asym))
+        if( ((Ksym^JJsym)==L_irr) && ((IIsym^Asym)==R_irr) )
           G.matrix[h][row][col] +=
             LTB.matrix[Ksym][K][JJ] * R1B.matrix[IIsym][II][A];
       }
@@ -100,12 +100,12 @@ void x_Gijka_7(void) {
       j = G.params->roworb[h][row][1];
       I = LTA.params->colidx[i];  Isym = LTA.params->qsym[i];
       J = R1B.params->rowidx[j];  Jsym = R1B.params->psym[j];
-      for(col=0; col < G.params->coltot[h]; col++) {
-        k = G.params->colorb[h][col][0];
-        a = G.params->colorb[h][col][1];
+      for(col=0; col < G.params->coltot[h^G_irr]; col++) {
+        k = G.params->colorb[h^G_irr][col][0];
+        a = G.params->colorb[h^G_irr][col][1];
         K = LTA.params->rowidx[k]; Ksym = LTA.params->psym[k];
         A = R1B.params->colidx[a]; Asym = R1B.params->qsym[a];
-        if( ((Ksym^Isym)==G_irr) && (Jsym==Asym))
+        if( ((Ksym^Isym)==L_irr) && ((Jsym^Asym)==R_irr) )
           G.matrix[h][row][col] -=
             LTA.matrix[Ksym][K][I] * R1B.matrix[Jsym][J][A];
       }
@@ -125,12 +125,12 @@ void x_Gijka_7(void) {
       j = G.params->roworb[h][row][1];
       I = LTB.params->colidx[i];  Isym = LTB.params->qsym[i];
       J = R1A.params->rowidx[j];  Jsym = R1A.params->psym[j];
-      for(col=0; col < G.params->coltot[h]; col++) {
-        k = G.params->colorb[h][col][0];
-        a = G.params->colorb[h][col][1];
+      for(col=0; col < G.params->coltot[h^G_irr]; col++) {
+        k = G.params->colorb[h^G_irr][col][0];
+        a = G.params->colorb[h^G_irr][col][1];
         K = LTB.params->rowidx[k]; Ksym = LTB.params->psym[k];
         A = R1A.params->colidx[a]; Asym = R1A.params->qsym[a];
-        if( ((Ksym^Isym)==G_irr) && (Jsym==Asym))
+        if( ((Ksym^Isym)==L_irr) && ((Jsym^Asym)==R_irr) )
           G.matrix[h][row][col] -=
             LTB.matrix[Ksym][K][I] * R1A.matrix[Jsym][J][A];
       }

@@ -201,12 +201,11 @@ void Gijab_ROHF(void)
   dpd_buf4_close(&L);
   dpd_buf4_init(&G, CC_GAMMA, 0, 2, 7, 2, 7, 0, "GIJAB");
   /* Tau(IJ,AB), for ex. states this term must be *R0 explicitly */
-  dpd_buf4_init(&T, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauIJAB");
-  if (params.ground)
+  if (params.ground) {
+    dpd_buf4_init(&T, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauIJAB");
     dpd_buf4_axpy(&T, &G, 1.0);
-  else
-    dpd_buf4_axpy(&T, &G, params.R0);
-  dpd_buf4_close(&T);
+    dpd_buf4_close(&T);
+  }
   /* V(IJ,MN) Tau(MN,AB) */
   dpd_buf4_init(&T, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauIJAB");
   dpd_buf4_init(&V, CC_MISC, 0, 2, 2, 2, 2, 0, "VMNIJ");
@@ -444,8 +443,8 @@ void Gijab_ROHF(void)
   dpd_buf4_init(&T, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauijab");
   if (params.ground) 
     dpd_buf4_axpy(&T, &G, 1.0);
-  else
-    dpd_buf4_axpy(&T, &G, params.R0);
+  //else
+    //dpd_buf4_axpy(&T, &G, params.R0);
   dpd_buf4_close(&T);
   /* V(ij,mn) Tau(mn,ab) */
   dpd_buf4_init(&T, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauijab");
@@ -684,8 +683,8 @@ void Gijab_ROHF(void)
   dpd_buf4_init(&T, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
   if (params.ground) 
     dpd_buf4_axpy(&T, &G, 1.0);
-  else 
-    dpd_buf4_axpy(&T, &G, params.R0);
+  //else 
+    //dpd_buf4_axpy(&T, &G, params.R0);
   dpd_buf4_close(&T);
   /* V(Ij,Mn) Tau(Mn,Ab) */
   dpd_buf4_init(&T, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");

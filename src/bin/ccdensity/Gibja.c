@@ -355,25 +355,26 @@ void Gibja(void)
     dpd_buf4_sort(&G, CC_GAMMA, psrq, 10, 10, "GiBjA");
     dpd_buf4_close(&G);
 
-    dpd_buf4_init(&G, CC_GAMMA, 0, 10, 10, 10, 10, 0, "GIBJA");
-    dpd_buf4_symm(&G);
-    dpd_buf4_close(&G);
-    dpd_buf4_init(&G, CC_GAMMA, 0, 10, 10, 10, 10, 0, "Gibja");
-    dpd_buf4_symm(&G);
-    dpd_buf4_close(&G);
-    dpd_buf4_init(&G, CC_GAMMA, 0, 10, 10, 10, 10, 0, "GIbJa");
-    dpd_buf4_symm(&G);
-    dpd_buf4_close(&G);
-    dpd_buf4_init(&G, CC_GAMMA, 0, 10, 10, 10, 10, 0, "GiBjA");
-    dpd_buf4_symm(&G);
-    dpd_buf4_close(&G);
-    dpd_buf4_init(&G1, CC_GAMMA, 0, 10, 10, 10, 10, 0, "GIbjA");
-    dpd_buf4_init(&G2, CC_GAMMA, 0, 10, 10, 10, 10, 0, "GiBJa");
-    dpd_buf4_symm2(&G1, &G2);
-    dpd_buf4_close(&G2);
-    dpd_buf4_sort(&G1, CC_GAMMA, rspq, 10, 10, "GiBJa");
-    dpd_buf4_close(&G1);
-
+    if (params.ground) { /* otherwise, sort in x_Gibja */
+      dpd_buf4_init(&G, CC_GAMMA, 0, 10, 10, 10, 10, 0, "GIBJA");
+      dpd_buf4_symm(&G);
+      dpd_buf4_close(&G);
+      dpd_buf4_init(&G, CC_GAMMA, 0, 10, 10, 10, 10, 0, "Gibja");
+      dpd_buf4_symm(&G);
+      dpd_buf4_close(&G);
+      dpd_buf4_init(&G, CC_GAMMA, 0, 10, 10, 10, 10, 0, "GIbJa");
+      dpd_buf4_symm(&G);
+      dpd_buf4_close(&G);
+      dpd_buf4_init(&G, CC_GAMMA, 0, 10, 10, 10, 10, 0, "GiBjA");
+      dpd_buf4_symm(&G);
+      dpd_buf4_close(&G);
+      dpd_buf4_init(&G1, CC_GAMMA, 0, 10, 10, 10, 10, 0, "GIbjA");
+      dpd_buf4_init(&G2, CC_GAMMA, 0, 10, 10, 10, 10, 0, "GiBJa");
+      dpd_buf4_symm2(&G1, &G2);
+      dpd_buf4_close(&G2);
+      dpd_buf4_sort(&G1, CC_GAMMA, rspq, 10, 10, "GiBJa");
+      dpd_buf4_close(&G1);
+    }
   }
   else if(params.ref == 2) { /** UHF **/
 

@@ -12,6 +12,8 @@
 #define EXTERN
 #endif
 
+//#define DEBUG_XI (1)
+
 EXTERN FILE *infile, *outfile;
 EXTERN char *psi_file_prefix;
 EXTERN struct MOInfo moinfo;

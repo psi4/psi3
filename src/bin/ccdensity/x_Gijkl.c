@@ -12,6 +12,7 @@ void x_Gijkl(void)
   dpdfile2 R1, T1;
   dpdbuf4 L2, I2, GIJKL, Gijkl, GIjKl;
   int L_irr, R_irr, G_irr;
+  double value;
   L_irr = params.L_irr;
   R_irr = params.R_irr;
   G_irr = params.G_irr;
@@ -77,4 +78,17 @@ void x_Gijkl(void)
   dpd_file2_close(&T1);
   dpd_buf4_close(&I2);
   dpd_buf4_close(&GIjKl);
+
+  /* Now bra-ket symmetrize Gijkl */
+  dpd_buf4_init(&GIJKL, CC_GAMMA, 0, 2, 2, 2, 2, 0, "GIJKL");
+  dpd_buf4_symm(&GIJKL);
+  dpd_buf4_close(&GIJKL);
+  dpd_buf4_init(&Gijkl, CC_GAMMA, 0, 2, 2, 2, 2, 0, "Gijkl");
+  dpd_buf4_symm(&Gijkl);
+  dpd_buf4_close(&Gijkl);
+  dpd_buf4_init(&GIjKl, CC_GAMMA, 0, 0, 0, 0, 0, 0, "GIjKl");
+  dpd_buf4_symm(&GIjKl);
+  dpd_buf4_close(&GIjKl);
+  return;
 }
+ 

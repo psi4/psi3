@@ -51,7 +51,7 @@ int **cacheprep_uhf(int level, int *cachefiles);
 void cachedone_rhf(int **cachelist);
 void cachedone_uhf(int **cachelist);
 void setup_LR(void);
-void G_build(int);
+void G_build(void);
 void x_oe_intermediates(void);
 void x_onepdm(void);
 void x_te_intermediates(void);
@@ -62,12 +62,20 @@ void x_Gijka(void);
 void x_Gijab_ROHF(void);
 void x_Gciab(void);
 void V_build_x(void);
+void x_xi1(void);
+void x_xi_zero(void);
+void x_xi2(void);
+void x_xi_oe_intermediates(void);
+void G_norm(void);
+void zero_onepdm(void);
+void zero_twopdm(void);
 
 int main(int argc, char *argv[])
 {
   int **cachelist, *cachefiles;
   struct iwlbuf OutBuf;
   struct iwlbuf OutBuf_AA, OutBuf_BB, OutBuf_AB;
+  dpdfile2 D;
   
   init_io(argc,argv);
   title();
@@ -97,21 +105,63 @@ int main(int argc, char *argv[])
 	     moinfo.avir_sym, moinfo.boccpi, moinfo.bocc_sym, moinfo.bvirtpi, moinfo.bvir_sym);
   }
 
+  /* CC_GLG will contain L, or R0*L + Zeta, if relaxed and zeta is available */
+  /* CC_GL will contain L */
   setup_LR();
 
-  onepdm(); /* compute ground state parts of onepdm */
+  /* compute ground state parts of onepdm or put zeroes there */
+  if ( (!params.calc_xi) && ( (params.L_irr == params.G_irr) || (params.use_zeta) ) )
+    onepdm();
+  else
+    zero_onepdm();
 
-  if (!params.ground) {
-    x_oe_intermediates();
-    x_onepdm();
+  if ( (!params.calc_xi) && ( (params.L_irr == params.G_irr) || (params.use_zeta) ) ) {
+    V_build(); /* uses CC_GLG, writes to CC_MISC */
+    G_build(); /* uses CC_GLG, writes to CC_GLG */
   }
 
-  G_build(params.L_irr); /* copied from cclambda and now recomputed with GL */
-  twopdm();
+  /* calculate intermediates not already on disk */
+  if (!params.restart) {
+    if (!params.ground) {
+      /* the following intermediates go in EOM_TMP */
+      V_build_x(); /* use CC_GL write to EOM_TMP */
+      x_oe_intermediates();
+      x_te_intermediates();
+      if (params.calc_xi) {
+        /* the following intermediates go in EOM_TMP_XI */
+        x_xi_intermediates();
+      }
+    }
+  }
 
+  /* If calculating xi, do it and then quit */
+  /* leave intermediates in CC_MISC and EOM_TMP on disk */
+  if ( params.calc_xi ) {
+    x_xi_zero(); /* make blank Xi to help debugging, in x_xi1.c */
+    x_xi1();
+    x_xi2();
+    dpd_close(0);
+    if(params.ref == 2) cachedone_uhf(cachelist);
+    else cachedone_rhf(cachelist);
+    free(cachefiles);
+    cleanup();
+    psio_close(EOM_TMP_XI,0);
+    psio_open(EOM_TMP_XI,PSIO_OPEN_NEW);
+    exit_io();
+    exit(PSI_RETURN_SUCCESS);
+  }
+
+  if ( (!params.calc_xi) && ( (params.L_irr == params.G_irr) || (params.use_zeta) ) )
+    twopdm();
+  else
+    zero_twopdm();
+
+  //fprintf(outfile,"After ground state parts\n");
+  //G_norm();
+
+  /* add in non-R0 parts of onepdm and twopdm */
   if (!params.ground) {
-    V_build_x();
-    x_te_intermediates();
+    x_onepdm();
     x_Gijkl();
     x_Gabcd();
     x_Gibja();
@@ -119,22 +169,13 @@ int main(int argc, char *argv[])
     x_Gciab();
     x_Gijab_ROHF();
   }
-
+  //fprintf(outfile,"After excited state parts\n");
+  //G_norm();
+  
   if(!params.aobasis) energy();
 
-  /* just for RAK excited state debugging */
-  /*
-  dpd_close(0);
-  if(params.ref == 2) cachedone_uhf(cachelist);
-  else cachedone_rhf(cachelist);
-  free(cachefiles);
-  cleanup();
-  exit_io();
-  exit(PSI_RETURN_SUCCESS);
-  */
-
   sortone();
-// dipole();
+  // dipole();
   kinetic();
 
   /*
@@ -145,7 +186,6 @@ int main(int argc, char *argv[])
   lag();
 
   /*
-
   dpd_init(1, moinfo.nirreps, params.memory, 2, frozen.occpi, frozen.occ_sym,
   frozen.virtpi, frozen.vir_sym);
   */
@@ -163,6 +203,11 @@ int main(int argc, char *argv[])
   if(params.relax_opdm) {
     relax_D();
   }
+  /*testing
+  fprintf(outfile,"After orbital response\n");
+  if(!params.aobasis) energy();
+  */
+
   sortone();
 
   sortI();
@@ -234,10 +279,23 @@ void init_io(int argc, char *argv[])
   sprintf(progid, ":%s",gprgid());
 
   params.ground = 1;
+  params.calc_xi = 0;
+  params.restart = 0;
+  params.use_zeta = 0;
   params.user_transition = 0;
   for (i=1, num_unparsed=0; i<argc; ++i) {
     if (!strcmp(argv[i],"--excited")) {
       params.ground = 0;
+    }
+    else if (!strcmp(argv[i],"--use_zeta")) {
+      params.use_zeta = 1;
+      params.ground = 0;
+      params.restart = 1;
+    }
+    else if (!strcmp(argv[i],"--calc_xi")) {
+      params.calc_xi = 1;
+      params.ground = 0;
+      params.restart = 0;
     }
     else if (!strcmp(argv[i],"--transition")) {
       params.user_transition = 1;
@@ -261,14 +319,14 @@ void init_io(int argc, char *argv[])
   /* Open all dpd data files here */
   /* erase files for easy debugging */
   for(i=CC_MIN; i <= CC_MAX; i++) psio_open(i,PSIO_OPEN_OLD);
+  /*
   psio_close(CC_GR,0);
   psio_close(CC_GL,0);
-  psio_close(EOM_TMP,0);
   psio_close(EOM_TMP0,0);
   psio_open(CC_GR,PSIO_OPEN_NEW);
   psio_open(CC_GL,PSIO_OPEN_NEW);
-  psio_open(EOM_TMP,PSIO_OPEN_NEW);
   psio_open(EOM_TMP0,PSIO_OPEN_NEW);
+  */
 }
 
 void title(void)
@@ -285,7 +343,19 @@ void title(void)
 void exit_io(void)
 {
   int i;
- 
+
+  /* delete temporary EOM files */
+  psio_close(EOM_TMP0,0);
+  psio_close(EOM_TMP1,0);
+//psio_close(CC_GLG,0);
+  psio_open(EOM_TMP0,PSIO_OPEN_NEW);
+  psio_open(EOM_TMP1,PSIO_OPEN_NEW);
+//psio_open(CC_GLG,PSIO_OPEN_NEW);
+  if (!params.calc_xi) {
+    psio_close(EOM_TMP,0);
+    psio_open(EOM_TMP,PSIO_OPEN_NEW);
+  }
+
   /* Close all dpd data files here */
   for(i=CC_MIN; i <= CC_MAX; i++) psio_close(i,1);
 

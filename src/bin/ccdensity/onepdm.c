@@ -114,7 +114,8 @@ void onepdm(void)
 
     dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DIA");
     if (!params.ground) {
-      dpd_file2_scm(&D, params.R0);
+      //dpd_file2_scm(&D, params.R0);
+      dpd_file2_scm(&D, 0.0);
     }
 
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tIJAB");
@@ -175,7 +176,8 @@ void onepdm(void)
 
     dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dia");
     if (!params.ground) {
-      dpd_file2_scm(&D, params.R0);
+      //dpd_file2_scm(&D, params.R0);
+      dpd_file2_scm(&D, 0.0);
     }
 
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tijab");

@@ -37,17 +37,17 @@ void x_Gciab_7(void) {
       i = G.params->roworb[h][row][1];
       C = LT1A.params->rowidx[c]; Csym = LT1A.params->psym[c];
       I = R1A.params->rowidx[i]; Isym = R1A.params->psym[i];
-      for(col=0; col < G.params->coltot[h]; col++) {
-        a = G.params->colorb[h][col][0];
-        b = G.params->colorb[h][col][1];
+      for(col=0; col < G.params->coltot[h^G_irr]; col++) {
+        a = G.params->colorb[h^G_irr][col][0];
+        b = G.params->colorb[h^G_irr][col][1];
         A = LT1A.params->colidx[a]; Asym = LT1A.params->qsym[a];
         B = R1A.params->colidx[b]; Bsym = R1A.params->qsym[b];
         AA = R1A.params->colidx[a]; AAsym = R1A.params->qsym[a];
         BB = LT1A.params->colidx[b]; BBsym = LT1A.params->qsym[b];
-        if( ((Csym^Asym)==G_irr) && (Isym==Bsym))
+        if( ((Csym^Asym)==L_irr) && ((Isym^Bsym)==R_irr) )
           G.matrix[h][row][col] +=
             LT1A.matrix[Csym][C][A] * R1A.matrix[Isym][I][B];
-        if( ((Csym^BBsym)==G_irr) && (Isym==AAsym))
+        if( ((Csym^BBsym)==L_irr) && ((Isym^AAsym)==R_irr) )
           G.matrix[h][row][col] -=
             LT1A.matrix[Csym][C][BB] * R1A.matrix[Isym][I][AA];
       }
@@ -66,17 +66,17 @@ void x_Gciab_7(void) {
       i = G.params->roworb[h][row][1];
       C = LT1B.params->rowidx[c]; Csym = LT1B.params->psym[c];
       I = R1B.params->rowidx[i]; Isym = R1B.params->psym[i];
-      for(col=0; col < G.params->coltot[h]; col++) {
-        a = G.params->colorb[h][col][0];
-        b = G.params->colorb[h][col][1];
+      for(col=0; col < G.params->coltot[h^G_irr]; col++) {
+        a = G.params->colorb[h^G_irr][col][0];
+        b = G.params->colorb[h^G_irr][col][1];
         A = LT1B.params->colidx[a]; Asym = LT1B.params->qsym[a];
         B = R1B.params->colidx[b]; Bsym = R1B.params->qsym[b];
         AA = R1B.params->colidx[a]; AAsym = R1B.params->qsym[a];
         BB = LT1B.params->colidx[b]; BBsym = LT1B.params->qsym[b];
-        if( ((Csym^Asym)==G_irr) && (Isym==Bsym))
+        if( ((Csym^Asym)==L_irr) && ((Isym^Bsym)==R_irr) )
           G.matrix[h][row][col] +=
             LT1B.matrix[Csym][C][A] * R1B.matrix[Isym][I][B];
-        if( ((Csym^BBsym)==G_irr) && (Isym==AAsym))
+        if( ((Csym^BBsym)==L_irr) && ((Isym^AAsym)==R_irr) )
           G.matrix[h][row][col] -=
             LT1B.matrix[Csym][C][BB] * R1B.matrix[Isym][I][AA];
       }
@@ -95,12 +95,12 @@ void x_Gciab_7(void) {
       i = G.params->roworb[h][row][1];
       C = LT1A.params->rowidx[c]; Csym = LT1A.params->psym[c];
       I = R1B.params->rowidx[i]; Isym = R1B.params->psym[i];
-      for(col=0; col < G.params->coltot[h]; col++) {
-        a = G.params->colorb[h][col][0];
-        b = G.params->colorb[h][col][1];
+      for(col=0; col < G.params->coltot[h^G_irr]; col++) {
+        a = G.params->colorb[h^G_irr][col][0];
+        b = G.params->colorb[h^G_irr][col][1];
         A = LT1A.params->colidx[a]; Asym = LT1A.params->qsym[a];
         B = R1B.params->colidx[b]; Bsym = R1B.params->qsym[b];
-        if( ((Csym^Asym)==G_irr) && (Isym==Bsym))
+        if( ((Csym^Asym)==L_irr) && ((Isym^Bsym)==R_irr) )
           G.matrix[h][row][col] +=
             LT1A.matrix[Csym][C][A] * R1B.matrix[Isym][I][B];
       }
@@ -119,12 +119,12 @@ void x_Gciab_7(void) {
       i = G.params->roworb[h][row][1];
       C = LT1B.params->rowidx[c]; Csym = LT1B.params->psym[c];
       I = R1A.params->rowidx[i]; Isym = R1A.params->psym[i];
-      for(col=0; col < G.params->coltot[h]; col++) {
-        a = G.params->colorb[h][col][0];
-        b = G.params->colorb[h][col][1];
+      for(col=0; col < G.params->coltot[h^G_irr]; col++) {
+        a = G.params->colorb[h^G_irr][col][0];
+        b = G.params->colorb[h^G_irr][col][1];
         A = LT1B.params->colidx[a]; Asym = LT1B.params->qsym[a];
         B = R1A.params->colidx[b]; Bsym = R1A.params->qsym[b];
-        if( ((Csym^Asym)==G_irr) && (Isym==Bsym))
+        if( ((Csym^Asym)==L_irr) && ((Isym^Bsym)==R_irr) )
           G.matrix[h][row][col] +=
             LT1B.matrix[Csym][C][A] * R1A.matrix[Isym][I][B];
       }

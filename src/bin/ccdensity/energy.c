@@ -49,7 +49,7 @@ void energy(void)
     dpd_file2_close(&F);
     dpd_file2_close(&D);
 
-    /*    fprintf(outfile, "\tDIJ = %20.15f\n", this_energy); */
+//  fprintf(outfile, "\tDIJ = %20.15f\n", this_energy);
     one_energy += this_energy;
 
     dpd_file2_init(&D, CC_OEI, 0, 0, 0, "Dij");
@@ -58,7 +58,7 @@ void energy(void)
     dpd_file2_close(&F);
     dpd_file2_close(&D);
 
-    /*    fprintf(outfile, "\tDij = %20.15f\n", this_energy); */
+ // fprintf(outfile, "\tDij = %20.15f\n", this_energy);
     one_energy += this_energy;
 
     dpd_file2_init(&D, CC_OEI, 0, 1, 1, "DAB");
@@ -67,7 +67,7 @@ void energy(void)
     dpd_file2_close(&F);
     dpd_file2_close(&D);
 
-    /*    fprintf(outfile, "\tDAB = %20.15f\n", this_energy); */
+  //fprintf(outfile, "\tDAB = %20.15f\n", this_energy);
     one_energy += this_energy;
 
     dpd_file2_init(&D, CC_OEI, 0, 1, 1, "Dab");
@@ -76,7 +76,7 @@ void energy(void)
     dpd_file2_close(&F);
     dpd_file2_close(&D);
 
-    /*    fprintf(outfile, "\tDab = %20.15f\n", this_energy); */
+  //fprintf(outfile, "\tDab = %20.15f\n", this_energy);
     one_energy += this_energy;
 
     dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DIA");
@@ -85,7 +85,7 @@ void energy(void)
     dpd_file2_close(&F);
     dpd_file2_close(&D);
 
-    /*    fprintf(outfile, "\tDIA = %20.15f\n", this_energy); */
+  //fprintf(outfile, "\tDIA = %20.15f\n", this_energy);
     one_energy += this_energy;
 
     dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dia");
@@ -94,7 +94,7 @@ void energy(void)
     dpd_file2_close(&F);
     dpd_file2_close(&D);
 
-    /*    fprintf(outfile, "\tDia = %20.15f\n", this_energy); */
+  //fprintf(outfile, "\tDia = %20.15f\n", this_energy);
     one_energy += this_energy;
 
     dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DAI");
@@ -103,7 +103,7 @@ void energy(void)
     dpd_file2_close(&F);
     dpd_file2_close(&D);
 
-    /*    fprintf(outfile, "\tDAI = %20.15f\n", this_energy);  */
+  //fprintf(outfile, "\tDAI = %20.15f\n", this_energy);
     one_energy += this_energy;
 
     dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dai");
@@ -111,7 +111,7 @@ void energy(void)
     this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
     dpd_file2_close(&D);
-    /*    fprintf(outfile, "\tDai = %20.15f\n", this_energy); */
+  //fprintf(outfile, "\tDai = %20.15f\n", this_energy);
     one_energy += this_energy;
   }
   else if(params.ref == 2) { /** UHF **/
@@ -531,8 +531,18 @@ void energy(void)
   total_two_energy += two_energy;
   fprintf(outfile, "\tABCD energy                = %20.15f\n", two_energy);
   fprintf(outfile, "\tTotal two-electron energy  = %20.15f\n", total_two_energy);
-  fprintf(outfile, "\tCCSD correlation energy    = %20.15f\n",
-	  one_energy + total_two_energy);
-  fprintf(outfile, "\tTotal CCSD energy          = %20.15f\n",
-	  one_energy + total_two_energy + moinfo.eref);
+  if (params.ground) {
+    fprintf(outfile, "\tCCSD correlation energy    = %20.15f\n",
+	    one_energy + total_two_energy);
+    fprintf(outfile, "\tTotal CCSD energy          = %20.15f\n",
+	    one_energy + total_two_energy + moinfo.eref);
+  }
+  else {
+    fprintf(outfile, "\tTotal EOM CCSD correlation energy        = %20.15f\n",
+	    one_energy + total_two_energy);
+    fprintf(outfile, "\tCCSD correlation + EOM excitation energy = %20.15f\n",
+	    moinfo.ecc + params.cceom_energy);
+    fprintf(outfile, "\tTotal EOM CCSD energy                    = %20.15f\n",
+	    one_energy + total_two_energy + moinfo.eref);
+  }
 }

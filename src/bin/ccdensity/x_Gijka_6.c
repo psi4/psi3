@@ -40,9 +40,9 @@ void x_Gijka_6(void) {
       J = T1A.params->rowidx[j]; Jsym = T1A.params->psym[j];
       II = T1A.params->rowidx[i]; IIsym = T1A.params->psym[i];
       JJ = LR1A.params->colidx[j]; JJsym = LR1A.params->qsym[j];
-      for(col=0; col < G.params->coltot[h]; col++) {
-        k = G.params->colorb[h][col][0];
-        a = G.params->colorb[h][col][1];
+      for(col=0; col < G.params->coltot[h^G_irr]; col++) {
+        k = G.params->colorb[h^G_irr][col][0];
+        a = G.params->colorb[h^G_irr][col][1];
         K = LR1A.params->rowidx[k]; Ksym = LR1A.params->psym[k];
         A = T1A.params->colidx[a]; Asym = T1A.params->qsym[a];
         if( ((Ksym^Isym)==G_irr) && (Jsym==Asym))
@@ -70,9 +70,9 @@ void x_Gijka_6(void) {
       J = T1B.params->rowidx[j]; Jsym = T1B.params->psym[j];
       II = T1B.params->rowidx[i]; IIsym = T1B.params->psym[i];
       JJ = LR1B.params->colidx[j]; JJsym = LR1B.params->qsym[j];
-      for(col=0; col < G.params->coltot[h]; col++) {
-        k = G.params->colorb[h][col][0];
-        a = G.params->colorb[h][col][1];
+      for(col=0; col < G.params->coltot[h^G_irr]; col++) {
+        k = G.params->colorb[h^G_irr][col][0];
+        a = G.params->colorb[h^G_irr][col][1];
         K = LR1B.params->rowidx[k]; Ksym = LR1B.params->psym[k];
         A = T1B.params->colidx[a]; Asym = T1B.params->qsym[a];
         if( ((Ksym^Isym)==G_irr) && (Jsym==Asym))
@@ -98,9 +98,9 @@ void x_Gijka_6(void) {
       j = G.params->roworb[h][row][1];
       I = LR1A.params->colidx[i]; Isym = LR1A.params->qsym[i];
       J = T1B.params->rowidx[j]; Jsym = T1B.params->psym[j];
-      for(col=0; col < G.params->coltot[h]; col++) {
-        k = G.params->colorb[h][col][0];
-        a = G.params->colorb[h][col][1];
+      for(col=0; col < G.params->coltot[h^G_irr]; col++) {
+        k = G.params->colorb[h^G_irr][col][0];
+        a = G.params->colorb[h^G_irr][col][1];
         K = LR1A.params->rowidx[k]; Ksym = LR1A.params->psym[k];
         A = T1B.params->colidx[a]; Asym = T1B.params->qsym[a];
         if( ((Ksym^Isym)==G_irr) && (Jsym==Asym))
@@ -123,9 +123,9 @@ void x_Gijka_6(void) {
       j = G.params->roworb[h][row][1];
       I = LR1B.params->colidx[i]; Isym = LR1B.params->qsym[i];
       J = T1A.params->rowidx[j]; Jsym = T1A.params->psym[j];
-      for(col=0; col < G.params->coltot[h]; col++) {
-        k = G.params->colorb[h][col][0];
-        a = G.params->colorb[h][col][1];
+      for(col=0; col < G.params->coltot[h^G_irr]; col++) {
+        k = G.params->colorb[h^G_irr][col][0];
+        a = G.params->colorb[h^G_irr][col][1];
         K = LR1B.params->rowidx[k]; Ksym = LR1B.params->psym[k];
         A = T1A.params->colidx[a]; Asym = T1A.params->qsym[a];
         if( ((Ksym^Isym)==G_irr) && (Jsym==Asym))

@@ -28,6 +28,7 @@ void x_onepdm(void)
   dpdfile2 LIA, Lia, RIA, Ria, I, XIJ, Xij;
   dpdbuf4 T2, L2, R2, I2;
   int L_irr, R_irr, G_irr;
+  double dot_IA, dot_ia, dot_AI, dot_ai;
   L_irr = params.L_irr;
   R_irr = params.R_irr;
   G_irr = params.G_irr;
@@ -107,14 +108,19 @@ void x_onepdm(void)
 
     /* (1-R0) * tIA */
     dpd_file2_init(&DIA, CC_OEI, G_irr, 0, 1, "DIA");
-    dpd_file2_init(&I, CC_OEI, 0, 0, 1, "tIA");
-    dpd_file2_axpy(&I, &DIA, 1.0-params.R0, 0);
-    dpd_file2_close(&I);
+
+    if (G_irr == 0) {
+      dpd_file2_init(&I, CC_OEI, 0, 0, 1, "tIA");
+      dpd_file2_axpy(&I, &DIA, 1.0, 0);
+      dpd_file2_close(&I);
+    }
 
     dpd_file2_init(&Dia, CC_OEI, G_irr, 0, 1, "Dia");
-    dpd_file2_init(&I, CC_OEI, G_irr, 0, 1, "tia");
-    dpd_file2_axpy(&I, &Dia, 1.0-params.R0, 0);
-    dpd_file2_close(&I);
+    if (G_irr == 0) {
+      dpd_file2_init(&I, CC_OEI, 0, 0, 1, "tia");
+      dpd_file2_axpy(&I, &Dia, 1.0, 0);
+      dpd_file2_close(&I);
+    }
 
     /* D[i][a] = L1R2_ov[i][a] */
     dpd_file2_init(&I, EOM_TMP, G_irr, 0, 1, "L1R2_OV");
@@ -220,5 +226,24 @@ void x_onepdm(void)
     dpd_file2_close(&Ria);
     dpd_file2_close(&LIA);
     dpd_file2_close(&Lia);
+
+    /* compute overlaps */
+    dpd_file2_init(&DIA, CC_OEI, G_irr, 0, 1, "DIA");
+    dot_IA = dpd_file2_dot_self(&DIA);
+    dpd_file2_close(&DIA);
+    dpd_file2_init(&Dia, CC_OEI, G_irr, 0, 1, "Dia");
+    dot_ia = dpd_file2_dot_self(&Dia);
+    dpd_file2_close(&Dia);
+    dpd_file2_init(&DAI, CC_OEI, G_irr, 0, 1, "DAI");
+    dot_AI = dpd_file2_dot_self(&DAI);
+    dpd_file2_close(&DAI);
+    dpd_file2_init(&Dai, CC_OEI, G_irr, 0, 1, "Dai");
+    dot_ai = dpd_file2_dot_self(&Dai);
+    dpd_file2_close(&Dai);
+    fprintf(outfile,"<DIA|DIA> = %15.10lf\n", dot_IA);
+    fprintf(outfile,"<Dia|Dia> = %15.10lf\n", dot_ia);
+    fprintf(outfile,"<DAI|DAI> = %15.10lf\n", dot_AI);
+    fprintf(outfile,"<Dai|Dai> = %15.10lf\n", dot_ai);
+    fprintf(outfile,"<Dpq|Dqp> = %15.10lf\n", dot_IA+dot_ia+dot_AI+dot_ai);
   }
 }

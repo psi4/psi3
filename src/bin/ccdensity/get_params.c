@@ -37,6 +37,10 @@ void get_params()
           params.relax_opdm ? "Yes" : "No");
   fprintf(outfile, "\tExcited State=     %s\n", 
           (!params.ground) ? "Yes" : "No");
+  fprintf(outfile, "\tCompute Xi   =     %s\n", 
+          (params.calc_xi) ? "Yes" : "No");
+  fprintf(outfile, "\tUse Zeta    =     %s\n", 
+          (params.use_zeta) ? "Yes" : "No");
   fprintf(outfile, "\n");
 }
 

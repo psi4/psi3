@@ -6,6 +6,9 @@ struct Params {
   int aobasis;
   int ref;
   int relax_opdm;
+  int use_zeta;
+  int calc_xi;
+  int restart;
   int ground;
   int user_transition; /* was L specified on command-line? */
   double cceom_energy;
@@ -17,5 +20,9 @@ struct Params {
   double L_root;
   double R_root;
   char *wfn;
+  double overlap1; /* <L1|R1> */
+  double overlap2; /* <L2|R2> */
+  double RD_overlap; /* Rmnef <mn||ef> */
+  double RZ_overlap; /* <R|zeta> */
 };
 

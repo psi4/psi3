@@ -9,7 +9,6 @@
 extern void x_Gijka_6(void);
 extern void x_Gijka_7(void);
 extern void x_Gijka_8(void);
-extern void x_Gijka_9(void);
 
 void x_Gijka(void) { 
   int h, nirreps, i, j, k, a, I, J, K, A, Isym, Jsym, Ksym, Asym, row, col;
@@ -156,53 +155,54 @@ void x_Gijka(void) {
 
   x_Gijka_6();
   x_Gijka_7();
+
   /* term 8, +P(ij) Lkmfe rimae tjf */
-  x_Gijka_8();
   /* term 9, +P(ij) Lkmfe Timae Rjf, uses Z3, Z4 */
-  x_Gijka_9();
+  x_Gijka_8();
+
   /* term 10, +P(IJ) LKMEF RJF TMA TIE */
-  dpd_buf4_init(&Z, EOM_TMP0, G_irr, 0, 2, 0, 2, 0, "Z5(JI,KM)");
+  dpd_buf4_init(&Z, EOM_TMP1, G_irr, 0, 2, 0, 2, 0, "Z5(JI,KM)");
   dpd_buf4_init(&V, EOM_TMP, G_irr, 2, 10, 2, 10, 0, "L2R1_OOVO(pqsr)");
   dpd_file2_init(&T1A, CC_OEI, 0, 0, 1, "tIA");
   dpd_contract424(&V, &T1A, &Z, 3, 1, 1, 1.0, 0.0);
   dpd_buf4_close(&V);
   dpd_buf4_close(&Z);
-  dpd_buf4_init(&Z, EOM_TMP0, G_irr, 0, 0, 0, 2, 0, "Z5(JI,KM)");
-  dpd_buf4_init(&Z2, EOM_TMP0, G_irr, 0, 10, 0, 10, 0, "Z5(JI,KA)");
+  dpd_buf4_init(&Z, EOM_TMP1, G_irr, 0, 0, 0, 2, 0, "Z5(JI,KM)");
+  dpd_buf4_init(&Z2, EOM_TMP1, G_irr, 0, 10, 0, 10, 0, "Z5(JI,KA)");
   dpd_contract424(&Z, &T1A, &Z2, 3, 0, 0, 1.0, 0.0);
   dpd_file2_close(&T1A);
   dpd_buf4_close(&Z);
   dpd_buf4_init(&G, EOM_TMP0, G_irr, 0, 10, 2, 10, 0, "GIJKA");
   dpd_buf4_axpy(&Z2, &G, -1.0);
-  dpd_buf4_sort(&Z2, EOM_TMP0, qprs, 0, 10, "Z5(IJ,KA)");
+  dpd_buf4_sort(&Z2, EOM_TMP1, qprs, 0, 10, "Z5(IJ,KA)");
   dpd_buf4_close(&Z2);
-  dpd_buf4_init(&Z2, EOM_TMP0, G_irr, 0, 10, 0, 10, 0, "Z5(IJ,KA)");
+  dpd_buf4_init(&Z2, EOM_TMP1, G_irr, 0, 10, 0, 10, 0, "Z5(IJ,KA)");
   dpd_buf4_axpy(&Z2, &G, 1.0);
   dpd_buf4_close(&Z2);
   dpd_buf4_close(&G);
   /* term 10, +P(ij) lkmef rjf tma tie */
-  dpd_buf4_init(&Z, EOM_TMP0, G_irr, 0, 2, 0, 2, 0, "Z5(ji,km)");
+  dpd_buf4_init(&Z, EOM_TMP1, G_irr, 0, 2, 0, 2, 0, "Z5(ji,km)");
   dpd_buf4_init(&V, EOM_TMP, G_irr, 2, 10, 2, 10, 0, "L2R1_oovo(pqsr)");
   dpd_file2_init(&T1B, CC_OEI, 0, 0, 1, "tia");
   dpd_contract424(&V, &T1B, &Z, 3, 1, 1, 1.0, 0.0);
   dpd_buf4_close(&V);
   dpd_buf4_close(&Z);
-  dpd_buf4_init(&Z, EOM_TMP0, G_irr, 0, 0, 0, 2, 0, "Z5(ji,km)");
-  dpd_buf4_init(&Z2, EOM_TMP0, G_irr, 0, 10, 0, 10, 0, "Z5(ji,ka)");
+  dpd_buf4_init(&Z, EOM_TMP1, G_irr, 0, 0, 0, 2, 0, "Z5(ji,km)");
+  dpd_buf4_init(&Z2, EOM_TMP1, G_irr, 0, 10, 0, 10, 0, "Z5(ji,ka)");
   dpd_contract424(&Z, &T1B, &Z2, 3, 0, 0, 1.0, 0.0);
   dpd_file2_close(&T1B);
   dpd_buf4_close(&Z);
   dpd_buf4_init(&G, EOM_TMP0, G_irr, 0, 10, 2, 10, 0, "Gijka");
   dpd_buf4_axpy(&Z2, &G, -1.0);
-  dpd_buf4_sort(&Z2, EOM_TMP0, qprs, 0, 10, "Z5(ij,ka)");
+  dpd_buf4_sort(&Z2, EOM_TMP1, qprs, 0, 10, "Z5(ij,ka)");
   dpd_buf4_close(&Z2);
-  dpd_buf4_init(&Z2, EOM_TMP0, G_irr, 0, 10, 0, 10, 0, "Z5(ij,ka)");
+  dpd_buf4_init(&Z2, EOM_TMP1, G_irr, 0, 10, 0, 10, 0, "Z5(ij,ka)");
   dpd_buf4_axpy(&Z2, &G, 1.0);
   dpd_buf4_close(&Z2);
   dpd_buf4_close(&G);
 
   /* term 10, GIjKa += LKmEf Rjf TIE tma */
-  dpd_buf4_init(&Z, EOM_TMP0, G_irr, 0, 0, 0, 0, 0, "Z5(Ij,Km)");
+  dpd_buf4_init(&Z, EOM_TMP1, G_irr, 0, 0, 0, 0, 0, "Z(Ij,Km)");
   dpd_buf4_init(&V, EOM_TMP, G_irr, 0, 11, 0, 11, 0, "L2R1_OoVo");
   dpd_file2_init(&T1A, CC_OEI, 0, 0, 1, "tIA");
   dpd_contract244(&T1A, &V, &Z, 1, 2, 0, 1.0, 0.0);
@@ -215,7 +215,7 @@ void x_Gijka(void) {
   dpd_buf4_close(&Z);
   dpd_buf4_close(&G);
 
-  dpd_buf4_init(&Z, EOM_TMP0, G_irr, 0, 0, 0, 0, 0, "Z5(Ij,Km)");
+  dpd_buf4_init(&Z, EOM_TMP1, G_irr, 0, 0, 0, 0, 0, "Z2(Ij,Km)");
   dpd_buf4_init(&V, EOM_TMP, G_irr, 0, 10, 0, 10, 0, "L2R1_OovO(pqsr)");
   dpd_file2_init(&T1B, CC_OEI, 0, 0, 1, "tia");
   dpd_contract424(&V, &T1B, &Z, 3, 1, 1, 1.0, 0.0);
@@ -229,7 +229,7 @@ void x_Gijka(void) {
   dpd_buf4_close(&G);
 
   /* term 10, GiJkA += P(ij) LkMeF RJF Tie tMA */
-  dpd_buf4_init(&Z, EOM_TMP0, G_irr, 0, 0, 0, 0, 0, "Z5(iJ,Km)");
+  dpd_buf4_init(&Z, EOM_TMP1, G_irr, 0, 0, 0, 0, 0, "Z(iJ,Km)");
   dpd_buf4_init(&V, EOM_TMP, G_irr, 0, 11, 0, 11, 0, "L2R1_OovO(qprs)");
   dpd_file2_init(&T1B, CC_OEI, 0, 0, 1, "tia");
   dpd_contract244(&T1B, &V, &Z, 1, 2, 0, 1.0, 0.0);
@@ -242,7 +242,7 @@ void x_Gijka(void) {
   dpd_buf4_close(&Z);
   dpd_buf4_close(&G);
 
-  dpd_buf4_init(&Z, EOM_TMP0, G_irr, 0, 0, 0, 0, 0, "Z6(iJ,kM)");
+  dpd_buf4_init(&Z, EOM_TMP1, G_irr, 0, 0, 0, 0, 0, "Z(iJ,kM)");
   dpd_buf4_init(&V, EOM_TMP, G_irr, 0, 10, 0, 10, 0, "L2R1_OoVo(qpsr)");
   dpd_file2_init(&T1A, CC_OEI, 0, 0, 1, "tIA");
   dpd_contract424(&V, &T1A, &Z, 3, 1, 1, 1.0, 0.0);
@@ -254,6 +254,9 @@ void x_Gijka(void) {
   dpd_file2_close(&T1A);
   dpd_buf4_close(&Z);
   dpd_buf4_close(&G);
+
+  psio_close(EOM_TMP1, 0);
+  psio_open(EOM_TMP1, PSIO_OPEN_NEW);
 
   /* add 1/2 to ground-state parts of density */
   dpd_buf4_init(&G, EOM_TMP0, G_irr, 2, 10, 2, 10, 0, "GIJKA");
@@ -280,4 +283,6 @@ void x_Gijka(void) {
   /* clear out temporary files */
   psio_close(EOM_TMP0, 0);
   psio_open(EOM_TMP0, PSIO_OPEN_NEW);
+
+  return;
 }

@@ -284,9 +284,19 @@ void deanti_ROHF(void)
 
   if(!params.aobasis) {
     fprintf(outfile, "\tTotal two-electron energy  = %20.15f\n", total_two_energy);
-    fprintf(outfile, "\tCCSD correlation energy    = %20.15f\n",
-	    one_energy + total_two_energy);
-    fprintf(outfile, "\tTotal CCSD energy          = %20.15f\n",
-	    one_energy + total_two_energy + moinfo.eref);
+    if (params.ground) {
+      fprintf(outfile, "\tCCSD correlation energy    = %20.15f\n",
+	      one_energy + total_two_energy);
+      fprintf(outfile, "\tTotal CCSD energy          = %20.15f\n",
+	      one_energy + total_two_energy + moinfo.eref);
+    }
+    else {
+      fprintf(outfile, "\tTotal EOM CCSD correlation energy        = %20.15f\n",
+          one_energy + total_two_energy);
+      fprintf(outfile, "\tCCSD correlation + EOM excitation energy = %20.15f\n",
+          moinfo.ecc + params.cceom_energy);
+      fprintf(outfile, "\tTotal EOM CCSD energy                    = %20.15f\n",
+          one_energy + total_two_energy + moinfo.eref);
+    }
   }
 }

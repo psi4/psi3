@@ -38,8 +38,8 @@ void x_Gciab_6(void) {
       C = LR1A.params->rowidx[c]; Csym = LR1A.params->psym[c];
       I = T1A.params->rowidx[i]; Isym = T1A.params->psym[i];
       for(col=0; col < G.params->coltot[h]; col++) {
-        a = G.params->colorb[h][col][0];
-        b = G.params->colorb[h][col][1];
+        a = G.params->colorb[h^G_irr][col][0];
+        b = G.params->colorb[h^G_irr][col][1];
         A = LR1A.params->colidx[a]; Asym = LR1A.params->qsym[a];
         B = T1A.params->colidx[b]; Bsym = T1A.params->qsym[b];
         AA = T1A.params->colidx[a]; AAsym = T1A.params->qsym[a];
@@ -66,9 +66,9 @@ void x_Gciab_6(void) {
       i = G.params->roworb[h][row][1];
       C = LR1B.params->rowidx[c]; Csym = LR1B.params->psym[c];
       I = T1B.params->rowidx[i]; Isym = T1B.params->psym[i];
-      for(col=0; col < G.params->coltot[h]; col++) {
-        a = G.params->colorb[h][col][0];
-        b = G.params->colorb[h][col][1];
+      for(col=0; col < G.params->coltot[h^G_irr]; col++) {
+        a = G.params->colorb[h^G_irr][col][0];
+        b = G.params->colorb[h^G_irr][col][1];
         A = LR1B.params->colidx[a]; Asym = LR1B.params->qsym[a];
         B = T1B.params->colidx[b]; Bsym = T1B.params->qsym[b];
         AA = T1B.params->colidx[a]; AAsym = T1B.params->qsym[a];
@@ -95,9 +95,9 @@ void x_Gciab_6(void) {
       i = G.params->roworb[h][row][1];
       C = LR1A.params->rowidx[c]; Csym = LR1A.params->psym[c];
       I = T1B.params->rowidx[i]; Isym = T1B.params->psym[i];
-      for(col=0; col < G.params->coltot[h]; col++) {
-        a = G.params->colorb[h][col][0];
-        b = G.params->colorb[h][col][1];
+      for(col=0; col < G.params->coltot[h^G_irr]; col++) {
+        a = G.params->colorb[h^G_irr][col][0];
+        b = G.params->colorb[h^G_irr][col][1];
         A = LR1A.params->colidx[a]; Asym = LR1A.params->qsym[a];
         B = T1B.params->colidx[b]; Bsym = T1B.params->qsym[b];
         if( ((Csym^Asym)==G_irr) && (Isym==Bsym))
@@ -119,9 +119,9 @@ void x_Gciab_6(void) {
       i = G.params->roworb[h][row][1];
       C = LR1B.params->rowidx[c]; Csym = LR1B.params->psym[c];
       I = T1A.params->rowidx[i]; Isym = T1A.params->psym[i];
-      for(col=0; col < G.params->coltot[h]; col++) {
-        a = G.params->colorb[h][col][0];
-        b = G.params->colorb[h][col][1];
+      for(col=0; col < G.params->coltot[h^G_irr]; col++) {
+        a = G.params->colorb[h^G_irr][col][0];
+        b = G.params->colorb[h^G_irr][col][1];
         A = LR1B.params->colidx[a]; Asym = LR1B.params->qsym[a];
         B = T1A.params->colidx[b]; Bsym = T1A.params->qsym[b];
         if( ((Csym^Asym)==G_irr) && (Isym==Bsym))
