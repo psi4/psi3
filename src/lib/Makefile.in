@@ -2,7 +2,7 @@
 .PHONY:	default all install depend clean targetclean
 
 subdirs = libipv1 libciomr libchkpt libqt libpsio libiwl libdpd \
-          libint libderiv libbasis
+          libint libderiv libr12 libbasis
 
 all: default
 
