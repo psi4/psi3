@@ -148,6 +148,15 @@ void rzero(int C_irr, int *converged) {
     norm += rzero * rzero;
     fprintf(outfile,"<R|R> = %20.16lf\n",norm);
 
+/* just for debugging cc3 put normalized vector back into C as well */
+dpd_file2_copy(&RIA, EOM_CME, "CME 0");
+dpd_file2_copy(&Ria, EOM_Cme, "Cme 0");
+dpd_buf4_copy(&fRIJAB, EOM_CMNEF, "CMNEF 0");
+dpd_buf4_copy(&fRijab, EOM_Cmnef, "Cmnef 0");
+dpd_buf4_copy(&fRIjAb, EOM_CMnEf, "CMnEf 0");
+/* end debugging stuff */ 
+
+
     dpd_file2_close(&RIA);
     dpd_file2_close(&Ria);
     dpd_buf4_close(&fRIJAB);
@@ -297,6 +306,11 @@ void rzero_rhf(int C_irr, int *converged) {
     dpd_file2_scm(&RIA, 1.0/norm);
     dpd_buf4_scm(&RIjAb, 1.0/norm);
     dpd_buf4_scm(&RIjbA, 1.0/norm);
+
+/* just for debugging cc3 put normalized vector back into C as well */
+dpd_file2_copy(&RIA, EOM_CME, "CME 0");
+dpd_buf4_copy(&RIjAb, EOM_CMnEf, "CMnEf 0");
+/* end debugging stuff */ 
 
     dpd_file2_close(&RIA);
     dpd_buf4_close(&RIjAb);
