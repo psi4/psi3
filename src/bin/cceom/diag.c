@@ -858,22 +858,22 @@ void diag(void) {
 	        dpd_file2_close(&CME);
             fprintf(outfile,"\tRia beta\n");
 	        sprintf(lbl, "%s %d", "Cme", i);
-	        dpd_file2_init(&Cme, EOM_Cme, C_irr, 0, 1, lbl);
+	        dpd_file2_init(&Cme, EOM_Cme, C_irr, 2, 3, lbl);
 	        amp_write_T1(&Cme, 5, outfile);
 	        dpd_file2_close(&Cme);
             fprintf(outfile,"\tRIJAB alpha\n");
 	        sprintf(lbl, "%s %d", "CMNEF", i);
-	        dpd_buf4_init(&CMNEF, EOM_CMNEF, C_irr, 0, 5, 2, 7, 0, lbl);
+	        dpd_buf4_init(&CMNEF, EOM_CMNEF, C_irr, 2, 7, 2, 7, 0, lbl);
 	        amp_write_T2(&CMNEF, 5, outfile);
 	        dpd_buf4_close(&CMNEF);
             fprintf(outfile,"\tRijab beta\n");
 	        sprintf(lbl, "%s %d", "Cmnef", i);
-	        dpd_buf4_init(&Cmnef, EOM_Cmnef, C_irr, 2, 7, 2, 7, 0, lbl);
+	        dpd_buf4_init(&Cmnef, EOM_Cmnef, C_irr, 12, 17, 12, 17, 0, lbl);
 	        amp_write_T2(&Cmnef, 5, outfile);
 	        dpd_buf4_close(&Cmnef);
             fprintf(outfile,"\tRIjAb alpha,beta\n");
 	        sprintf(lbl, "%s %d", "CMnEf", i);
-	        dpd_buf4_init(&CMnEf, EOM_CMnEf, C_irr, 0, 5, 0, 5, 0, lbl);
+	        dpd_buf4_init(&CMnEf, EOM_CMnEf, C_irr, 22, 28, 22, 28, 0, lbl);
 	        amp_write_T2(&CMnEf, 5, outfile);
 	        dpd_buf4_close(&CMnEf);
 	  }
