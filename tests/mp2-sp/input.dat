@@ -1,0 +1,16 @@
+psi: (
+  label = "BH cc-pVDZ MP2"
+  jobtype = sp
+  wfn = mp2
+  reference = rhf
+  dertype = none
+  docc = (3 0 0 0)
+  freeze_core = true
+  basis = "cc-pVDZ"
+  puream = true
+  geometry = (
+    b      0.0000        0.0000        0.0000
+    h      0.0000        0.0000        1.0000
+  )
+)
+
