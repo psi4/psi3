@@ -102,7 +102,7 @@ void Wabei_ROHF(void)
   dpd_buf4_close(&W);
   dpd_buf4_close(&Z);
 
-  /** - <fE|bA> t_i^f **/
+  /** <Ab|Ef> t_i^f **/
   dpd_buf4_init(&Z, CC_TMP0, 0, 5, 11, 5, 11, 0, "Z(Ab,Ei)");
   dpd_buf4_init(&B, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>");
   dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tia");
