@@ -80,7 +80,7 @@ void oe_deriv1()
   double ***AIX, ***AIY, ***AIZ;
   double **grad_oe, **grad_ov;
 
-#ifdef PRINT_DERIV1
+#if PRINT_DERIV1
   char lbl[20];
   FILE *out;
   double ***s, ***t, ***v;
@@ -194,7 +194,7 @@ void oe_deriv1()
 					  n2, jnorm, AB, PA, PB);
 		  grad_ov[atom1][0] += tmp*wdens_pf;
 
-#ifdef PRINT_DERIV1
+#if PRINT_DERIV1
 		  s[atom1*3][si_fao+ai][sj_fao+aj] += tmp;
 #endif
 
@@ -205,7 +205,7 @@ void oe_deriv1()
 					  n2, jnorm, AB, PA, PB);
 		  grad_ov[atom1][1] += tmp*wdens_pf;
 
-#ifdef PRINT_DERIV1
+#if PRINT_DERIV1
 		  s[atom1*3+1][si_fao+ai][sj_fao+aj] += tmp;
 #endif
 
@@ -216,7 +216,7 @@ void oe_deriv1()
 					  n2, jnorm, AB, PA, PB);
 		  grad_ov[atom1][2] += tmp*wdens_pf;
 
-#ifdef PRINT_DERIV1
+#if PRINT_DERIV1
 		  s[atom1*3+2][si_fao+ai][sj_fao+aj] += tmp;
 #endif
 
@@ -227,7 +227,7 @@ void oe_deriv1()
 					  n2, jnorm, AB, PA, PB);
 		  grad_ov[atom2][0] += tmp*wdens_pf;
 
-#ifdef PRINT_DERIV1
+#if PRINT_DERIV1
 		  s[atom2*3][si_fao+ai][sj_fao+aj] += tmp;
 #endif
 
@@ -238,7 +238,7 @@ void oe_deriv1()
 					  n2, jnorm, AB, PA, PB);
 		  grad_ov[atom2][1] += tmp*wdens_pf;
 
-#ifdef PRINT_DERIV1
+#if PRINT_DERIV1
 		  s[atom2*3+1][si_fao+ai][sj_fao+aj] += tmp;
 #endif
 
@@ -249,7 +249,7 @@ void oe_deriv1()
 					  n2-1, jnorm, AB, PA, PB);
 		  grad_ov[atom2][2] += tmp*wdens_pf;
 
-#ifdef PRINT_DERIV1
+#if PRINT_DERIV1
 		  s[atom2*3+2][si_fao+ai][sj_fao+aj] += tmp;
 #endif
 
@@ -260,7 +260,7 @@ void oe_deriv1()
 				     n2, jnorm, AB, PA, PB);
 		  grad_oe[atom1][0] += tmp*dens_pf;
 
-#ifdef PRINT_DERIV1
+#if PRINT_DERIV1
 		  t[atom1*3][si_fao+ai][sj_fao+aj] += tmp;
 #endif
 
@@ -271,7 +271,7 @@ void oe_deriv1()
 				     n2, jnorm, AB, PA, PB);
 		  grad_oe[atom1][1] += tmp*dens_pf;
 
-#ifdef PRINT_DERIV1
+#if PRINT_DERIV1
 		  t[atom1*3+1][si_fao+ai][sj_fao+aj] += tmp;
 #endif
 
@@ -282,7 +282,7 @@ void oe_deriv1()
 				     n2, jnorm, AB, PA, PB);
 		  grad_oe[atom1][2] += tmp*dens_pf;
 
-#ifdef PRINT_DERIV1
+#if PRINT_DERIV1
 		  t[atom1*3+2][si_fao+ai][sj_fao+aj] += tmp;
 #endif
 
@@ -294,7 +294,7 @@ void oe_deriv1()
 				     n2, jnorm, AB, PA, PB);
 		  grad_oe[atom2][0] += tmp*dens_pf;
 
-#ifdef PRINT_DERIV1
+#if PRINT_DERIV1
 		  t[atom2*3][si_fao+ai][sj_fao+aj] += tmp;
 #endif
 
@@ -305,7 +305,7 @@ void oe_deriv1()
 				     n2, jnorm, AB, PA, PB);
 		  grad_oe[atom2][1] += tmp*dens_pf;
 
-#ifdef PRINT_DERIV1
+#if PRINT_DERIV1
 		  t[atom2*3+1][si_fao+ai][sj_fao+aj] += tmp;
 #endif
 
@@ -316,7 +316,7 @@ void oe_deriv1()
 				     n2-1, jnorm, AB, PA, PB);
 		  grad_oe[atom2][2] += tmp*dens_pf;
 		    
-#ifdef PRINT_DERIV1
+#if PRINT_DERIV1
 		  t[atom2*3+2][si_fao+ai][sj_fao+aj] += tmp;
 #endif
 
@@ -363,7 +363,7 @@ void oe_deriv1()
 		      tmp -= l1*AI0[iind-ixm1][jind][0];
 		    grad_oe[atom1][0] -= tmp * Molecule.centers[atom].Z_nuc * (over_pf * dens_pf);
 
-#ifdef PRINT_DERIV1
+#if PRINT_DERIV1
 		    v[atom1*3][si_fao+ai][sj_fao+aj] -= tmp;
 
 #endif
@@ -373,14 +373,14 @@ void oe_deriv1()
 		      tmp -= l2*AI0[iind][jind-jxm1][0];
 		    grad_oe[atom2][0] -= tmp * Molecule.centers[atom].Z_nuc * (over_pf * dens_pf);
 
-#ifdef PRINT_DERIV1
+#if PRINT_DERIV1
 		    v[atom2*3][si_fao+ai][sj_fao+aj] -= tmp;
 #endif
 
 		    tmp = AIX[iind][jind][0] * Molecule.centers[atom].Z_nuc * (over_pf * dens_pf);
 		    grad_oe[atom][0] -= tmp;
 
-#ifdef PRINT_DERIV1
+#if PRINT_DERIV1
 		    v[atom*3][si_fao+ai][sj_fao+aj] -= tmp;
 #endif
 
@@ -389,7 +389,7 @@ void oe_deriv1()
 		      tmp -= m1*AI0[iind-iym1][jind][0];
 		    grad_oe[atom1][1] -= tmp * Molecule.centers[atom].Z_nuc * (over_pf * dens_pf);
 
-#ifdef PRINT_DERIV1
+#if PRINT_DERIV1
 		    v[atom1*3+1][si_fao+ai][sj_fao+aj] -= tmp;
 #endif
 
@@ -398,14 +398,14 @@ void oe_deriv1()
 		      tmp -= m2*AI0[iind][jind-jym1][0];
 		    grad_oe[atom2][1] -= tmp * Molecule.centers[atom].Z_nuc * (over_pf * dens_pf);
 
-#ifdef PRINT_DERIV1
+#if PRINT_DERIV1
 		    v[atom2*3+1][si_fao+ai][sj_fao+aj] -= tmp;
 #endif
 
 		    tmp = AIY[iind][jind][0] * Molecule.centers[atom].Z_nuc * (over_pf * dens_pf);
 		    grad_oe[atom][1] -= tmp;
 
-#ifdef PRINT_DERIV1
+#if PRINT_DERIV1
 		    v[atom*3+1][si_fao+ai][sj_fao+aj] -= tmp;
 #endif
 
@@ -414,7 +414,7 @@ void oe_deriv1()
 		      tmp -= n1*AI0[iind-izm1][jind][0];
 		    grad_oe[atom1][2] -= tmp * Molecule.centers[atom].Z_nuc * (over_pf * dens_pf);
 
-#ifdef PRINT_DERIV1
+#if PRINT_DERIV1
 		    v[atom1*3+2][si_fao+ai][sj_fao+aj] -= tmp;
 #endif
 
@@ -423,14 +423,14 @@ void oe_deriv1()
 		      tmp -= n2*AI0[iind][jind-jzm1][0];
 		    grad_oe[atom2][2] -= tmp * Molecule.centers[atom].Z_nuc * (over_pf * dens_pf);
 
-#ifdef PRINT_DERIV1
+#if PRINT_DERIV1
 		    v[atom2*3+2][si_fao+ai][sj_fao+aj] -= tmp;
 #endif
 
 		    tmp = AIZ[iind][jind][0] * Molecule.centers[atom].Z_nuc * (over_pf * dens_pf);
 		    grad_oe[atom][2] -= tmp;
 		      
-#ifdef PRINT_DERIV1
+#if PRINT_DERIV1
 		    v[atom*3+2][si_fao+ai][sj_fao+aj] -= tmp;
 #endif
 
@@ -468,7 +468,7 @@ void oe_deriv1()
   free_box(AIY,indmax,indmax);
   free_box(AIZ,indmax,indmax);
 
-#ifdef PRINT_DERIV1
+#if PRINT_DERIV1
   for(i=0; i < Molecule.num_atoms*3; i++) {
 
     sprintf(lbl, "s%d.dat", i);

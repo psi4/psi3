@@ -97,9 +97,12 @@ void *te_deriv1_scf_thread_symm(void *tnum_ptr)
   double ddax, dday, ddaz, ddbx, ddby, ddbz,
     ddcx, ddcy, ddcz, dddx, dddy, dddz;
 
-#ifdef PRINT_DERIV1
-  double norm, value;
+#if PRINT_DERIV1
+  int mmax;
+  double *PrintFourInd;
+  char lbl[20];
   FILE *out;
+  double *****derivs;
 #endif
 
 
@@ -116,6 +119,22 @@ void *te_deriv1_scf_thread_symm(void *tnum_ptr)
     (BasisSet.max_num_prims*BasisSet.max_num_prims);
   init_libderiv1(&Libderiv,BasisSet.max_am-1,max_num_prim_comb,max_class_size);
   FourInd = init_array(max_cart_class_size);
+#if PRINT_DERIV1
+  PrintFourInd = init_array(max_cart_class_size);
+  derivs = (double *****) malloc(Molecule.num_atoms*3*sizeof(double ****));
+  for(i=0; i < Molecule.num_atoms*3; i++) {
+    derivs[i] = (double ****) malloc(BasisSet.num_ao * sizeof(double ***));
+    for(j=0; j < BasisSet.num_ao; j++) {
+      derivs[i][j] = (double ***) malloc(BasisSet.num_ao * sizeof(double **));
+      for(k=0; k < BasisSet.num_ao; k++) {
+	derivs[i][j][k] = (double **) malloc(BasisSet.num_ao * sizeof(double *));
+	for(l=0; l < BasisSet.num_ao; l++) {
+	  derivs[i][j][k][l] = init_array(BasisSet.num_ao);
+	}
+      }
+    }
+  }
+#endif
   max_num_unique_quartets = Symmetry.max_stab_index*
     Symmetry.max_stab_index*
     Symmetry.max_stab_index;
@@ -357,6 +376,22 @@ void *te_deriv1_scf_thread_symm(void *tnum_ptr)
 			GTOs.bf_norm[orig_am[3]][ao_l-sl_fao];
 		      count++;
 		    }
+
+#if PRINT_DERIV1
+	      /* compute normalization prefactor for printing deriv ints */
+	      count = 0;
+	      for (ao_i = si_fao; ao_i < si_fao+ni; ao_i++)
+		for (ao_j = sj_fao; ao_j < sj_fao+nj; ao_j++)
+		  for (ao_k = sk_fao; ao_k < sk_fao+nk; ao_k++)
+		    for (ao_l = sl_fao; ao_l < sl_fao+nl; ao_l++) {
+                      PrintFourInd[count] = GTOs.bf_norm[orig_am[0]][ao_i-si_fao] *
+			GTOs.bf_norm[orig_am[1]][ao_j-sj_fao] *
+			GTOs.bf_norm[orig_am[2]][ao_k-sk_fao] *
+			GTOs.bf_norm[orig_am[3]][ao_l-sl_fao];
+		      count++;
+		    }
+
+#endif
 	    }
 	    else {                     /*--- ROHF or TCSCF ---*/
 	      if (am)
@@ -405,31 +440,6 @@ void *te_deriv1_scf_thread_symm(void *tnum_ptr)
 	    for(k=0;k<quartet_size;k++)
 	      ddax += Libderiv.ABCD[0][k]*FourInd[k];
 	    grad_te_local[center_i][0] += ddax;
-
-#ifdef PRINT_DERIV1
-	    count=0;
-	    for(ao_i=0; ao_i < ni; ao_i++) {
-	      ii = si_fao + ao_i;
-	      for(ao_j=0; ao_j < nj; ao_j++) {
-		jj = sj_fao + ao_j;
-		for(ao_k=0; ao_k < nk; ao_k++) {
-		  kk = sk_fao + ao_k;
-		  for(ao_l=0; ao_l < nl; ao_l++,count++) {
-		    ll = sl_fao + ao_l;
-
-		    norm = GTOs.bf_norm[orig_am[0]][ao_i] * GTOs.bf_norm[orig_am[1]][ao_j] * GTOs.bf_norm[orig_am[2]][ao_k] * GTOs.bf_norm[orig_am[3]][ao_l];
-
-		    value = norm * Libderiv.ABCD[0][count];
-
-		    if(fabs(value) > 1e-6) {
-		      fprintf(out, "%3d %3d %3d %3d %20.14f\n", ao_i, ao_j, ao_k, ao_l, value);
-		    }
-		  }
-		}
-	      }
-	    }
-		  
-#endif
 
 	    dday = 0.0;
 	    for(k=0;k<quartet_size;k++)
@@ -490,6 +500,51 @@ void *te_deriv1_scf_thread_symm(void *tnum_ptr)
 	    grad_te_local[center_j][1] -= dday + ddcy + dddy;
 	    grad_te_local[center_j][2] -= ddaz + ddcz + dddz;
 
+#if PRINT_DERIV1
+	    count = 0;
+	    for (ao_i = si_fao; ao_i < si_fao+ni; ao_i++)
+	      for (ao_j = sj_fao; ao_j < sj_fao+nj; ao_j++)
+		for (ao_k = sk_fao; ao_k < sk_fao+nk; ao_k++)
+		  for (ao_l = sl_fao; ao_l < sl_fao+nl; ao_l++) {
+		    derivs[center_i*3][ao_i][ao_j][ao_k][ao_l] += 
+		      Libderiv.ABCD[0][count] * PrintFourInd[count];
+
+		    derivs[center_i*3+1][ao_i][ao_j][ao_k][ao_l] += 
+		      Libderiv.ABCD[1][count] * PrintFourInd[count];
+
+		    derivs[center_i*3+2][ao_i][ao_j][ao_k][ao_l] += 
+		      Libderiv.ABCD[2][count] * PrintFourInd[count];
+
+		    derivs[center_j*3][ao_i][ao_j][ao_k][ao_l] -= 
+		      (Libderiv.ABCD[0][count] + Libderiv.ABCD[6][count] + Libderiv.ABCD[9][count]) * PrintFourInd[count];
+
+		    derivs[center_j*3+1][ao_i][ao_j][ao_k][ao_l] -= 
+		      (Libderiv.ABCD[1][count] + Libderiv.ABCD[7][count] + Libderiv.ABCD[10][count]) * PrintFourInd[count];
+
+		    derivs[center_j*3+2][ao_i][ao_j][ao_k][ao_l] -= 
+		      (Libderiv.ABCD[2][count] + Libderiv.ABCD[8][count] + Libderiv.ABCD[11][count]) * PrintFourInd[count];
+
+		    derivs[center_k*3][ao_i][ao_j][ao_k][ao_l] += 
+		      Libderiv.ABCD[6][count] * PrintFourInd[count];
+
+		    derivs[center_k*3+1][ao_i][ao_j][ao_k][ao_l] += 
+		      Libderiv.ABCD[7][count] * PrintFourInd[count];
+
+		    derivs[center_k*3+2][ao_i][ao_j][ao_k][ao_l] += 
+		      Libderiv.ABCD[8][count] * PrintFourInd[count];
+
+		    derivs[center_l*3][ao_i][ao_j][ao_k][ao_l] += 
+		      Libderiv.ABCD[9][count] * PrintFourInd[count];
+
+		    derivs[center_l*3+1][ao_i][ao_j][ao_k][ao_l] += 
+		      Libderiv.ABCD[10][count] * PrintFourInd[count];
+
+		    derivs[center_l*3+2][ao_i][ao_j][ao_k][ao_l] += 
+		      Libderiv.ABCD[11][count] * PrintFourInd[count];
+		    count++;
+		  }
+#endif
+
 	  } /* end of loop over symmetry unique quartets */
 	} /* end of unique shell loops */
 
@@ -508,6 +563,42 @@ void *te_deriv1_scf_thread_symm(void *tnum_ptr)
   free(sk_arr);
   free(sl_arr);
   free(FourInd);
+
+#if PRINT_DERIV1
+  for(i=0; i < Molecule.num_atoms*3; i++) {
+    sprintf(lbl,"eri%d.dat", i);
+    ffile(&out, lbl, 0);
+    for(j=0; j < BasisSet.num_ao; j++) {
+      for(k=0; k <= j; k++) {
+	for(l=0; l <= j; l++) {
+	  mmax = (l==j) ? k : l;
+	  for(m=0; m <= mmax; m++) {
+	    if(fabs(derivs[i][j][k][l][m]) > 1e-6) {
+	      fprintf(out, "%3d %3d %3d %3d %20.14f\n", j, k, l, m, 
+		      derivs[i][j][k][l][m]);
+	    }
+	  }
+	}
+      }
+    }
+    fclose(out);
+  }
+  free(PrintFourInd);
+  for(i=0; i < Molecule.num_atoms*3; i++) {
+    for(j=0; j < BasisSet.num_ao; j++) {
+      for(k=0; k < BasisSet.num_ao; k++) {
+	for(l=0; l < BasisSet.num_ao; l++) {
+	  free(derivs[i][j][k][l]);
+	}
+	free(derivs[i][j][k]);
+      }
+      free(derivs[i][j]);
+    }
+    free(derivs[i]);
+  }
+  free(derivs);
+#endif
+
   free_block(grad_te_local);
   free_libderiv(&Libderiv);
 #ifndef USE_TAYLOR_FM
