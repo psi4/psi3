@@ -41,8 +41,9 @@ void parsing()
       strcpy(opdm_format,"TRIANG");
     }
     */
-    if (strcmp(wfn, "CI")==0 || strcmp(wfn, "DETCI")==0 ||
-        strcmp(wfn, "CCSD")==0 || strcmp(wfn, "DETCAS")==0)  {
+    if (!strcmp(wfn, "CI") || !strcmp(wfn, "DETCI") ||
+        !strcmp(wfn, "CCSD") || !strcmp(wfn, "DETCAS") ||
+	!strcmp(wfn, "MP2"))  {
       read_opdm = 1;
       opdm_file = PSIF_MO_OPDM;
       corr = 0;
