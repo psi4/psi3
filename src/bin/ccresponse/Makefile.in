@@ -44,8 +44,6 @@ LHX2Y2.c \
 cc2_LHX1Y1.c \
 cc2_LHX1Y2.c \
 local.c \
-analyze_lr.c \
-analyze.c \
 local_response.c \
 transp.c \
 polar.c \
