@@ -29,16 +29,20 @@ void cc3_RHF(void)
   double value, F_val, t_val, E_val;
   double dijk, denom;
   double value_ia, value_ka, denom_ia, denom_ka;
-  dpdfile2 fIJ, fAB, t1, t1new, Fme;
+  dpdfile2 fIJ, fIJ2, fAB, fAB2, t1, t1new, Fme;
   dpdbuf4 T2, T2new, F, E, Dints, Wamef, Wmnie;
   double t2norm, t3norm;
-  double ***T3;
+  double ***T3, ***W3;
   int nv;
 
   nirreps = moinfo.nirreps;
   occpi = moinfo.occpi; virtpi = moinfo.virtpi;
   occ_off = moinfo.occ_off;
   vir_off = moinfo.vir_off;
+
+  /* these are sent to T3 function */
+  dpd_file2_init(&fIJ2, CC_OEI, 0, 0, 0, "fIJ");
+  dpd_file2_init(&fAB2, CC_OEI, 0, 1, 1, "fAB");
 
   dpd_file2_init(&fIJ, CC_OEI, 0, 0, 0, "fIJ");
   dpd_file2_init(&fAB, CC_OEI, 0, 1, 1, "fAB");
@@ -63,14 +67,6 @@ void cc3_RHF(void)
   dpd_buf4_init(&Wmnie, CC3_HET1, 0, 0, 10, 0, 10, 0, "CC3 WMnIe (Mn,Ie)");
   dpd_buf4_init(&Dints, CC_DINTS, 0, 0, 5, 0, 5, 0, "D 2<ij|ab> - <ij|ba>");
   for(h=0; h < nirreps; h++) {
-    dpd_buf4_mat_irrep_init(&T2, h);
-    dpd_buf4_mat_irrep_rd(&T2, h);
-
-    dpd_buf4_mat_irrep_init(&F, h);
-    dpd_buf4_mat_irrep_rd(&F, h);
-
-    dpd_buf4_mat_irrep_init(&E, h);
-    dpd_buf4_mat_irrep_rd(&E, h);
 
     dpd_buf4_mat_irrep_init(&Dints, h);
     dpd_buf4_mat_irrep_rd(&Dints, h);
@@ -85,25 +81,34 @@ void cc3_RHF(void)
   }
 
   for(h=0,nv=0; h < nirreps; h++) nv += virtpi[h];
+
+  W3 = (double ***) malloc(nirreps * sizeof(double **));
   T3 = init_3d_array(nv, nv, nv);
 
   t3norm = 0.0;
   for(Gi=0; Gi < nirreps; Gi++) {
     for(Gj=0; Gj < nirreps; Gj++) {
+      Gij = Gi ^ Gj;
       for(Gk=0; Gk < nirreps; Gk++) {
+        Gijk = Gi ^ Gj ^ Gk;
 
-	Gkj = Gjk = Gk ^ Gj;
-	Gji = Gij = Gi ^ Gj;
-	Gik = Gki = Gi ^ Gk;
+        /* allocate memory for all irrep blocks of (ab,c) */
+        for(Gab=0; Gab < nirreps; Gab++) {
+          Gc = Gab ^ Gijk;
+          W3[Gab] = dpd_block_matrix(F.params->coltot[Gab], virtpi[Gc]);
+        }
 
-	Gijk = Gi ^ Gj ^ Gk;
+        for(i=0; i < occpi[Gi]; i++) {
+          I = occ_off[Gi] + i;
+          for(j=0; j < occpi[Gj]; j++) {
+            J = occ_off[Gj] + j;
+            for(k=0; k < occpi[Gk]; k++) {
+              K = occ_off[Gk] + k;
 
-	for(i=0; i < occpi[Gi]; i++) {
-	  I = occ_off[Gi] + i;
-	  for(j=0; j < occpi[Gj]; j++) {
-	    J = occ_off[Gj] + j;
-	    for(k=0; k < occpi[Gk]; k++) {
-	      K = occ_off[Gk] + k;
+	      Gkj = Gjk = Gk ^ Gj;
+	      Gji = Gij = Gi ^ Gj;
+	      Gik = Gki = Gi ^ Gk;
+	      Gijk = Gi ^ Gj ^ Gk;
 
 	      ij = T2.params->rowidx[I][J];
 	      ji = T2.params->rowidx[J][I];
@@ -112,344 +117,94 @@ void cc3_RHF(void)
 	      jk = T2.params->rowidx[J][K];
 	      kj = T2.params->rowidx[K][J];
 
-	      dijk = 0.0;
-	      if(fIJ.params->rowtot[Gi])
-		dijk += fIJ.matrix[Gi][i][i];
-	      if(fIJ.params->rowtot[Gj])
-		dijk += fIJ.matrix[Gj][j][j];
-	      if(fIJ.params->rowtot[Gk])
-		dijk += fIJ.matrix[Gk][k][k];
-
-	      for(Ga=0; Ga < nirreps; Ga++) {
-		for(Gb=0; Gb < nirreps; Gb++) {
-
-		  Gc = Gi ^ Gj ^ Gk ^ Ga ^ Gb;
-		  Gab = Gba = Ga ^ Gb;
-		  Gac = Gca = Ga ^ Gc;
-		  Gbc = Gcb = Gb ^ Gc;
-
-		  for(a=0; a < virtpi[Ga]; a++) {
-		    A = vir_off[Ga] + a;
-		    for(b=0; b < virtpi[Gb]; b++) {
-		      B = vir_off[Gb] + b;
-		      for(c=0; c < virtpi[Gc]; c++) {
-			C = vir_off[Gc] + c;
-
-			denom = dijk;
-			if(fAB.params->rowtot[Ga])
-			  denom -= fAB.matrix[Ga][a][a];
-			if(fAB.params->rowtot[Gb])
-			  denom -= fAB.matrix[Gb][b][b];
-			if(fAB.params->rowtot[Gc])
-			  denom -= fAB.matrix[Gc][c][c];
-
-			ab = F.params->colidx[A][B];
-			ba = F.params->colidx[B][A];
-			ac = F.params->colidx[A][C];
-			ca = F.params->colidx[C][A];
-			bc = F.params->colidx[B][C];
-			cb = F.params->colidx[C][B];
-
-			value = 0.0;
-
-			/* +F_idab * t_kjcd */
-			Gd = Gi ^ Ga ^ Gb;
-			for(d=0; d < virtpi[Gd]; d++) {
-			  D = vir_off[Gd] + d;
-
-			  id = F.params->rowidx[I][D];
-			  cd = T2.params->colidx[C][D];
-
-			  F_val = t_val = 0.0;
-
-			  if(F.params->rowtot[Gab] && F.params->coltot[Gab])
-			    F_val = F.matrix[Gab][id][ab];
-
-			  if(T2.params->rowtot[Gkj] && T2.params->coltot[Gkj])
-			    t_val = T2.matrix[Gkj][kj][cd];
-
-			  value += F_val * t_val;
-
-			}
-
-			/* -E_jklc * t_ilab */
-			Gl = Gj ^ Gk ^ Gc;
-			for(l=0; l < occpi[Gl]; l++) {
-			  L = occ_off[Gl] + l;
-
-			  il = T2.params->rowidx[I][L];
-			  lc = E.params->colidx[L][C];
-
-			  E_val = t_val = 0.0;
-
-			  if(E.params->rowtot[Gjk] && E.params->coltot[Gjk])
-			    E_val = E.matrix[Gjk][jk][lc];
-
-			  if(T2.params->rowtot[Gab] && T2.params->coltot[Gab])
-			    t_val = T2.matrix[Gab][il][ab];
-
-			  value -= E_val * t_val;
-			}
-
-			/* +F_idac * t_jkbd */
-			Gd = Gi ^ Ga ^ Gc;
-			for(d=0; d < virtpi[Gd]; d++) {
-			  D = vir_off[Gd] + d;
-
-			  id = F.params->rowidx[I][D];
-			  bd = T2.params->colidx[B][D];
-
-			  F_val = t_val = 0.0;
-
-			  if(F.params->rowtot[Gac] && F.params->coltot[Gac])
-			    F_val = F.matrix[Gac][id][ac];
-
-			  if(T2.params->rowtot[Gjk] && T2.params->coltot[Gjk])
-			    t_val = T2.matrix[Gjk][jk][bd];
-
-			  value += F_val * t_val;
-			}
-
-			/* -E_kjlb * t_ilac */
-			Gl = Gk ^ Gj ^ Gb;
-			for(l=0; l < occpi[Gl]; l++) {
-			  L = occ_off[Gl] + l;
-
-			  il = T2.params->rowidx[I][L];
-			  lb = E.params->colidx[L][B];
-
-			  E_val = t_val = 0.0;
-
-			  if(E.params->rowtot[Gkj] && E.params->coltot[Gkj])
-			    E_val = E.matrix[Gkj][kj][lb];
-
-			  if(T2.params->rowtot[Gac] && T2.params->coltot[Gac])
-			    t_val = T2.matrix[Gac][il][ac];
-
-			  value -= E_val * t_val;
-			}
-
-			/* +F_kdca * t_jibd */
-			Gd = Gk ^ Gc ^ Ga;
-			for(d=0; d < virtpi[Gd]; d++) {
-			  D = vir_off[Gd] + d;
-
-			  kd = F.params->rowidx[K][D];
-			  bd = T2.params->colidx[B][D];
-
-			  F_val = t_val = 0.0;
-
-			  if(F.params->rowtot[Gca] && F.params->coltot[Gca])
-			    F_val = F.matrix[Gca][kd][ca];
-
-			  if(T2.params->rowtot[Gji] && T2.params->coltot[Gji])
-			    t_val = T2.matrix[Gji][ji][bd];
-
-			  value += F_val * t_val;
-			}
-
-			/* -E_ijlb * t_klca */
-			Gl = Gi ^ Gj ^ Gb;
-			for(l=0; l < occpi[Gl]; l++) {
-			  L = occ_off[Gl] + l;
-
-			  kl = T2.params->rowidx[K][L];
-			  lb = E.params->colidx[L][B];
-
-			  E_val = t_val = 0.0;
-
-			  if(E.params->rowtot[Gij] && E.params->coltot[Gij])
-			    E_val = E.matrix[Gij][ij][lb];
-
-			  if(T2.params->rowtot[Gca] && T2.params->coltot[Gca])
-			    t_val = T2.matrix[Gca][kl][ca];
-
-			  value -= E_val * t_val;
-			}
-
-			/* +F_kdcb * t_ijad */
-			Gd = Gk ^ Gc ^ Gb;
-			for(d=0; d < virtpi[Gd]; d++) {
-			  D = vir_off[Gd] + d;
-
-			  kd = F.params->rowidx[K][D];
-			  ad = T2.params->colidx[A][D];
-
-			  F_val = t_val = 0.0;
-
-			  if(F.params->rowtot[Gcb] && F.params->coltot[Gcb])
-			    F_val = F.matrix[Gcb][kd][cb];
-
-			  if(T2.params->rowtot[Gij] && T2.params->coltot[Gij])
-			    t_val = T2.matrix[Gij][ij][ad];
-
-			  value += F_val * t_val;
-			}
-
-			/* -E_jila * t_klcb */
-			Gl = Gj ^ Gi ^ Ga;
-			for(l=0; l < occpi[Gl]; l++) {
-			  L = occ_off[Gl] + l;
-
-			  kl = T2.params->rowidx[K][L];
-			  la = E.params->colidx[L][A];
-
-			  E_val = t_val = 0.0;
-
-			  if(E.params->rowtot[Gji] && E.params->coltot[Gji])
-			    E_val = E.matrix[Gji][ji][la];
-
-			  if(T2.params->rowtot[Gcb] && T2.params->coltot[Gcb])
-			    t_val = T2.matrix[Gcb][kl][cb];
-
-			  value -= E_val * t_val;
-			}
-
-			/* +F_jdbc * t_ikad */
-			Gd = Gj ^ Gb ^ Gc;
-			for(d=0; d < virtpi[Gd]; d++) {
-			  D = vir_off[Gd] + d;
-
-			  jd = F.params->rowidx[J][D];
-			  ad = T2.params->colidx[A][D];
-
-			  F_val = t_val = 0.0;
-
-			  if(F.params->rowtot[Gbc] && F.params->coltot[Gbc])
-			    F_val = F.matrix[Gbc][jd][bc];
-
-			  if(T2.params->rowtot[Gik] && T2.params->coltot[Gik])
-			    t_val = T2.matrix[Gik][ik][ad];
-
-			  value += F_val * t_val;
-			}
-
-			/* -E_kila * t_jlbc */
-			Gl = Gk ^ Gi ^ Ga;
-			for(l=0; l < occpi[Gl]; l++) {
-			  L = occ_off[Gl] + l;
-
-			  jl = T2.params->rowidx[J][L];
-			  la = E.params->colidx[L][A];
-
-			  E_val = t_val = 0.0;
-
-			  if(E.params->rowtot[Gki] && E.params->coltot[Gki])
-			    E_val = E.matrix[Gki][ki][la];
-
-			  if(T2.params->rowtot[Gbc] && T2.params->coltot[Gbc])
-			    t_val = T2.matrix[Gbc][jl][bc];
-
-			  value -= E_val * t_val;
-			}
-
-			/* +F_jdba * t_kicd */
-			Gd = Gj ^ Gb ^ Ga;
-			for(d=0; d < virtpi[Gd]; d++) {
-			  D = vir_off[Gd] + d;
-
-			  jd = F.params->rowidx[J][D];
-			  cd = T2.params->colidx[C][D];
-
-			  F_val = t_val = 0.0;
-
-			  if(F.params->rowtot[Gba] && F.params->coltot[Gba])
-			    F_val = F.matrix[Gba][jd][ba];
-
-			  if(T2.params->rowtot[Gki] && T2.params->coltot[Gki])
-			    t_val = T2.matrix[Gki][ki][cd];
-
-			  value += F_val * t_val;
-			}
-
-			/* -E_iklc * t_jlba */
-			Gl = Gi ^ Gk ^ Gc;
-			for(l=0; l < occpi[Gl]; l++) {
-			  L = occ_off[Gl] + l;
-
-			  jl = T2.params->rowidx[J][L];
-			  lc = E.params->colidx[L][C];
-
-			  E_val = t_val = 0.0;
-
-			  if(E.params->rowtot[Gik] && E.params->coltot[Gik])
-			    E_val = E.matrix[Gik][ik][lc];
-
-			  if(T2.params->rowtot[Gba] && T2.params->coltot[Gba])
-			    t_val = T2.matrix[Gba][jl][ba];
-
-			  value -= E_val * t_val;
-			}
-
-			value /= denom;
-			t3norm += value * value;
-
-			T3[A][B][C] = value;
-
-		      } /* c */
-		    } /* b */
-		  } /* a */
-
-		} /* Gb */
-	      } /* Ga */
-
-	      /*** T3 --> T1 Contributions ***/
-
-	      for(Ga=0; Ga < nirreps; Ga++) {
-		for(a=0; a < virtpi[Ga]; a++) {
-		  A = vir_off[Ga] + a;
-
-		  value_ia = 0.0;
-		  value_ka = 0.0;
-		  for(Gb=0; Gb < nirreps; Gb++) {
-		    for(b=0; b < virtpi[Gb]; b++) {
-		      B = vir_off[Gb] + b;
-
-		      Gc = Gijk ^ Ga ^ Gb;
-		      Gbc = Gb ^ Gc;
-
-		      for(c=0; c < virtpi[Gc]; c++) {
-			C = vir_off[Gc] + c;
-
-			bc = Dints.params->colidx[B][C];
-
-			if(Gi == Ga && Gjk == Gbc) {
-
-			  if(Dints.params->rowtot[Gjk] && Dints.params->coltot[Gjk])
-			    value_ia += T3[A][B][C] * Dints.matrix[Gjk][jk][bc];
-			}
-
-			if(Gk == Ga && Gji == Gbc) {
-
-			  if(Dints.params->rowtot[Gji] && Dints.params->coltot[Gji])
-			    value_ka -= T3[A][B][C] * Dints.matrix[Gji][ji][bc];
-			}
-
-		      } /* c */
-		    } /* b */
-		  } /* Gb */
-
-		  denom_ia = denom_ka = 0.0;
-		  if(fIJ.params->rowtot[Gi])
-		    denom_ia += fIJ.matrix[Gi][i][i];
-
-		  if(fIJ.params->rowtot[Gk])
-		    denom_ka += fIJ.matrix[Gk][k][k];
-
-		  if(fAB.params->rowtot[Ga]) {
-		    denom_ia -= fAB.matrix[Ga][a][a];
-		    denom_ka -= fAB.matrix[Ga][a][a];
-		  }
-		  value_ia /= denom_ia;
-		  value_ka /= denom_ka;
-
-		  if(t1new.params->rowtot[Gi] && t1new.params->coltot[Gi])
-		    t1new.matrix[Gi][i][a] += value_ia;
-		  if(t1new.params->rowtot[Gk] && t1new.params->coltot[Gk])
-		    t1new.matrix[Gk][k][a] += value_ka;
-
-		} /* a */
-	      } /* Ga */
+              T3_RHF(W3, nirreps, I, Gi, J, Gj, K, Gk, &T2, &F, &E,
+                     &fIJ2, &fAB2, occpi, occ_off, virtpi, vir_off);
+
+
+              /* sort (ab,c) into T3[A][B][C] */
+              for(Gab=0; Gab < nirreps; Gab++) {
+                Gc = Gab ^ Gijk;
+                for (ab=0; ab < F.params->coltot[Gab]; ++ab) {
+                  A = F.params->colorb[Gab][ab][0];
+                  B = F.params->colorb[Gab][ab][1];
+                  Ga = F.params->rsym[A];
+                  Gb = Ga ^ Gab;
+                  //a = A - vir_off[Ga];
+                  //b = B - vir_off[Gb];
+                  for (c=0; c<virtpi[Gc]; ++c) {
+                    C = c + vir_off[Gc];
+                    T3[A][B][C] = W3[Gab][ab][c];
+                  }
+                }
+              }
+
+              /* if (!I && !J && !K) {
+                fprintf(outfile,"T3[0][0][0][a][b][c] fast code\n");
+                for (a=0;a<nv;++a)
+                  for (b=0;b<nv;++b)
+                    for (c=0;c<nv;++c)
+                      if ( fabs(T3[a][b][c]) > 1.0E-10 )
+                      fprintf(outfile,"A: %d B: %d C: %d -> %15.10lf\n", a,b,c,T3[a][b][c]);
+              } */
+
+
+              /*** T3 --> T1 Contributions ***/
+
+              for(Ga=0; Ga < nirreps; Ga++) {
+                for(a=0; a < virtpi[Ga]; a++) {
+                  A = vir_off[Ga] + a;
+
+                  value_ia = 0.0;
+                  value_ka = 0.0;
+                  for(Gb=0; Gb < nirreps; Gb++) {
+                    for(b=0; b < virtpi[Gb]; b++) {
+                      B = vir_off[Gb] + b;
+
+                      Gc = Gijk ^ Ga ^ Gb;
+                      Gbc = Gb ^ Gc;
+
+                      for(c=0; c < virtpi[Gc]; c++) {
+                        C = vir_off[Gc] + c;
+
+                        bc = Dints.params->colidx[B][C];
+
+                        if(Gi == Ga && Gjk == Gbc) {
+
+                          if(Dints.params->rowtot[Gjk] && Dints.params->coltot[Gjk])
+                            value_ia += T3[A][B][C] * Dints.matrix[Gjk][jk][bc];
+                        }
+
+                        if(Gk == Ga && Gji == Gbc) {
+
+                          if(Dints.params->rowtot[Gji] && Dints.params->coltot[Gji])
+                            value_ka -= T3[A][B][C] * Dints.matrix[Gji][ji][bc];
+                        }
+
+                      } /* c */
+                    } /* b */
+                  } /* Gb */
+
+                  denom_ia = denom_ka = 0.0;
+                  if(fIJ.params->rowtot[Gi])
+                    denom_ia += fIJ.matrix[Gi][i][i];
+
+                  if(fIJ.params->rowtot[Gk])
+                    denom_ka += fIJ.matrix[Gk][k][k];
+
+                  if(fAB.params->rowtot[Ga]) {
+                    denom_ia -= fAB.matrix[Ga][a][a];
+                    denom_ka -= fAB.matrix[Ga][a][a];
+                  }
+                  value_ia /= denom_ia;
+                  value_ka /= denom_ka;
+
+                  if(t1new.params->rowtot[Gi] && t1new.params->coltot[Gi])
+                    t1new.matrix[Gi][i][a] += value_ia;
+                  if(t1new.params->rowtot[Gk] && t1new.params->coltot[Gk])
+                    t1new.matrix[Gk][k][a] += value_ka;
+
+                } /* a */
+              } /* Ga */
 
 	      /*** T3 --> T2 Contributions ***/
 
@@ -845,6 +600,11 @@ void cc3_RHF(void)
 	  } /* j */
 	} /* i */
 
+        for(Gab=0; Gab < nirreps; Gab++) {
+          /* This will need to change for non-totally-symmetric cases */
+          Gc = Gab ^ Gijk;
+          dpd_free_block(W3[Gab], F.params->coltot[Gab], virtpi[Gc]);
+        }
       } /* Gk */
     } /* Gj */
   } /* Gi */
@@ -855,9 +615,6 @@ void cc3_RHF(void)
   free_3d_array(T3, nv, nv);
 
   for(h=0; h < nirreps; h++) {
-    dpd_buf4_mat_irrep_close(&T2, h);
-    dpd_buf4_mat_irrep_close(&E, h);
-    dpd_buf4_mat_irrep_close(&F, h);
     dpd_buf4_mat_irrep_close(&Dints, h);
     dpd_buf4_mat_irrep_close(&Wamef, h);
     dpd_buf4_mat_irrep_close(&Wmnie, h);
@@ -873,8 +630,11 @@ void cc3_RHF(void)
   dpd_buf4_close(&Wamef);
   dpd_buf4_close(&Wmnie);
 
+  dpd_file2_mat_wrt(&t1new);
+  dpd_file2_mat_close(&t1new);
   /*
-  fprintf(outfile, "t2norm = %20.10f\n", sqrt(dpd_buf4_dot_self(&T2new)));
+  fprintf(outfile, "triples t1norm = %20.10f\n", sqrt(dpd_file2_dot_self(&t1new)));
+  fprintf(outfile, "triples t2norm = %20.10f\n", sqrt(dpd_buf4_dot_self(&T2new)));
   */
 
   /* Update the amplitudes */
@@ -883,8 +643,6 @@ void cc3_RHF(void)
   dpd_buf4_close(&T2);
   dpd_buf4_close(&T2new);
 
-  dpd_file2_mat_wrt(&t1new);
-  dpd_file2_mat_close(&t1new);
   dpd_file2_init(&t1, CC_OEI, 0, 0, 1, "New tIA");
   dpd_file2_axpy(&t1new, &t1, 1, 0);
   dpd_file2_close(&t1);
@@ -894,4 +652,7 @@ void cc3_RHF(void)
   dpd_file2_mat_close(&fAB);
   dpd_file2_close(&fIJ);
   dpd_file2_close(&fAB);
+
+  dpd_file2_close(&fIJ2);
+  dpd_file2_close(&fAB2);
 }
