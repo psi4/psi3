@@ -1,0 +1,29 @@
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+include ../MakeVars
+
+LD = $(CXX)
+LDLIBS += $(BLAS) $(FLIBS)
+
+PSILIBS = libqt.a libfile30.a libiwl.a -lpsio libciomr.a libipv1.a
+
+CSRC = clag.c lagcalc.c ci_energy.c \
+       onel_to_cas.c twoel_to_cas.c onepdm_to_cas.c twopdm_to_cas.c \
+       lag_to_cas.c
+
+CXXSRC = 
+
+BINOBJ = $(CSRC:%.c=%.o) $(CXXSRC:%.cc=%.o)
+ALLOC = 
+
+include ../MakeRules
+
+ifneq ($(DODEPEND),no)
+$(BINOBJ:%.o=%.d): $(DEPENDINCLUDE)
+include $(BINOBJ:%.o=%.d)
+endif
+
+install_man:: $(TARGET).1
+	$(MKDIRS) $(mandir)/man1
+	$(INSTALL_INCLUDE) $^ $(mandir)/man1
