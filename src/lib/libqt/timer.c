@@ -33,6 +33,8 @@
 ** T. Daniel Crawford, August 1999.  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #include <sys/param.h>
 #include <sys/times.h>
