@@ -15,6 +15,7 @@ extern "C" {
 #include <libbasis/overlap.h>
 #include <libbasis/rotation.h>
 
+extern void done(const char * message);
 extern MOInfo_t MOInfo;
 extern FILE *outfile;
 extern BasisSet *BasisDispM, *BasisDispP;
@@ -124,10 +125,10 @@ FLOAT **eval_S_alpha()
 
   FLOAT** tmpmat1 = create_matrix(num_mo,num_so);
   if (matrix_mult(rhf_evec_p_FLOAT_transp, num_mo, num_so, Spm_FLOAT, num_so, num_so, tmpmat1))
-    abort();
+    done("matrix_mult failed. Report the problem to the author.");
   FLOAT** S = create_matrix(num_mo, num_mo);
   if (matrix_mult(tmpmat1, num_mo, num_so, rhf_evec_m_FLOAT, num_so, num_mo, S))
-    abort();
+    done("matrix_mult failed. Report the problem to the author.");
 
   if (Params.print_lvl > PrintLevels::print_contrib) {
     fprintf(outfile, "  +/- overlap matrix (MO basis)\n");
@@ -248,10 +249,10 @@ FLOAT **eval_S_beta()
 
   FLOAT** tmpmat1 = create_matrix(num_mo,num_so);
   if (matrix_mult(rhf_evec_p_FLOAT_transp, num_mo, num_so, Spm_FLOAT, num_so, num_so, tmpmat1))
-    abort();
+    done("matrix_mult failed. Report the problem to the author.");
   FLOAT** S = create_matrix(num_mo, num_mo);
   if (matrix_mult(tmpmat1, num_mo, num_so, rhf_evec_m_FLOAT, num_so, num_mo, S))
-    abort();
+    done("matrix_mult failed. Report the problem to the author.");
 
   if (Params.print_lvl > PrintLevels::print_contrib) {
     fprintf(outfile, "  +/- overlap matrix (MO basis)\n");

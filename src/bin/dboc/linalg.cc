@@ -8,6 +8,8 @@
 #include <math.h>
 #include "linalg.h"
 
+extern void done(const char * message);
+
 FLOAT** create_matrix(int a, int b)
 {
   FLOAT** M;
@@ -15,13 +17,11 @@ FLOAT** create_matrix(int a, int b)
   if (a>=0 && b>=0) {
     M = new FLOAT*[a];
     if (M == NULL) {
-      cerr << "create_matrix: failed to allocate an array of " << a << " pointers to FLOAT" << endl;
-      abort();
+      done("create_matrix failed -- probably not enough memory.");
     }
     M[0] = new FLOAT[a*b];
     if (M[0] == NULL) {
-      cerr << "create_matrix: failed to allocate an array of " << a*b << " FLOATs" << endl;
-      abort();
+      done("create_matrix failed -- probably not enough memory.");
     }
     for(int i=1; i<a; i++)
       M[i] = M[i-1] + b;
