@@ -7,8 +7,8 @@ $RESULT = "cc12.test";
 $NUM_EVALS = 2;
 $NUM_SYMMS = 4;
 
-#system ("input");
-#system ("psi3");
+system ("input");
+system ("psi3");
 
 extract_data($REF_FILE,$Enuc_ref,$Ehf_ref,$Eccsd_ref);
 extract_data($TEST_FILE,$Enuc_test,$Ehf_test,$Eccsd_test);
