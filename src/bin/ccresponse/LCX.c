@@ -121,7 +121,7 @@ double LCX(char *cart, int irrep, double omega)
   dpd_buf4_close(&X2);
 
   dpd_buf4_init(&l2, CC_LAMPS, 0, 0, 5, 0, 5, 0, "2 LIjAb - LIjBa");
-  polar = dpd_buf4_dot(&l2, &z2);
+  polar += dpd_buf4_dot(&l2, &z2);
   dpd_buf4_close(&l2);
 
   dpd_buf4_close(&z2);

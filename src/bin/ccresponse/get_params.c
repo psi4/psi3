@@ -10,7 +10,7 @@
 
 void get_params()
 {
-  int errcod, ref, count, iconv;
+  int errcod, ref, count, iconv, *tmpi;
   char *junk, units[20];
 
   params.print = 1;
@@ -68,6 +68,19 @@ void get_params()
     }
   }
 
+  tmpi = init_int_array(3);
+  errcod = ip_int_array("MU_IRREPS", tmpi, 3);
+  if(errcod == IPE_OK) {
+    moinfo.irrep_x = tmpi[0];
+    moinfo.irrep_y = tmpi[1];
+    moinfo.irrep_z = tmpi[2];
+  }
+  else {
+    fprintf(outfile, "\nYou must supply the irrep of x, y, and z with the MU_IRREPS keyword.\n");
+    exit(PSI_RETURN_FAILURE);
+  }
+  free(tmpi);
+
   params.maxiter = 50;
   errcod = ip_data("MAXITER","%d",&(params.maxiter),0);
   params.convergence = 1e-7;
@@ -86,6 +99,9 @@ void get_params()
   fprintf(outfile, "\tMaxiter         =    %3d\n",  params.maxiter);
   fprintf(outfile, "\tConvergence     = %3.1e\n", params.convergence);
   fprintf(outfile, "\tDIIS            =     %s\n", params.diis ? "Yes" : "No");
+  fprintf(outfile, "\tIrrep X         =    %3s\n", moinfo.labels[moinfo.irrep_x]);
+  fprintf(outfile, "\tIrrep Y         =    %3s\n", moinfo.labels[moinfo.irrep_y]);
+  fprintf(outfile, "\tIrrep Z         =    %3s\n", moinfo.labels[moinfo.irrep_z]);
   if(params.omega == 0.0) 
     fprintf(outfile, "\tApplied field   = none\n");
   else 

@@ -35,22 +35,21 @@ void sort_lamps(void);
 void compute_X(char *cart, int irrep, double omega);
 double LCX(char *cart, int irrep, double omega);
 double HXY(char *cart, int irrep, double omega);
+double LHX1Y1(char *cart, int irrep, double omega);
+double LHX2Y2(char *cart, int irrep, double omega);
+double LHX1Y2(char *cart, int irrep, double omega);
+void mp2_density(void);
 
 int main(int argc, char *argv[])
 {
   int **cachelist, *cachefiles;
-  double polar;
+  double polar, polar_LCX, polar_HXY, polar_LHX1Y1, polar_LHX2Y2, polar_LHX1Y2;
 
   init_io(argc, argv);
   init_ioff();
   title();
   get_moinfo();
   get_params();
-
-  /* force dipole irreps for now */
-  moinfo.irrep_x = 2;
-  moinfo.irrep_y = 3;
-  moinfo.irrep_z = 0;
 
   cachefiles = init_int_array(PSIO_MAXUNIT);
 
@@ -74,16 +73,107 @@ int main(int argc, char *argv[])
   hbar_extra();
   sort_lamps();
 
+  polar = 0.0;
+
+  compute_X("X", moinfo.irrep_x, params.omega);
+  if(params.omega != 0.0) 
+    compute_X("X", moinfo.irrep_x, -params.omega);
+
+  polar_LCX = LCX("X", moinfo.irrep_x, params.omega);
+  polar_LCX += LCX("X", moinfo.irrep_x, -params.omega);
+  fprintf(outfile, "polar_LCX = %20.12f\n", polar_LCX);
+
+  polar += polar_LCX;
+
+  polar_HXY = HXY("X", moinfo.irrep_x, params.omega);
+  fprintf(outfile, "polar_HXY = %20.12f\n", polar_HXY);
+
+  polar += polar_HXY;
+
+  polar_LHX1Y1 = LHX1Y1("X", moinfo.irrep_x, params.omega);
+  fprintf(outfile, "polar_LHX1Y1 = %20.12f\n", polar_LHX1Y1);
+
+  polar += polar_LHX1Y1;
+
+  polar_LHX2Y2 = LHX2Y2("X", moinfo.irrep_x, params.omega);
+  fprintf(outfile, "polar_LHX2Y2 = %20.12f\n", polar_LHX2Y2);
+
+  polar += polar_LHX2Y2;
+
+  polar_LHX1Y2 = LHX1Y2("X", moinfo.irrep_x, params.omega);
+  polar_LHX1Y2 += LHX1Y2("X", moinfo.irrep_x, -params.omega);
+  fprintf(outfile, "polar_LHX1Y2 = %20.12f\n", polar_LHX1Y2);
+
+  polar += polar_LHX1Y2;
+  fprintf(outfile, "%1s%1s polar = %20.12f\n", "X", "X", polar);
+
+  polar = 0.0;
+
+  compute_X("Y", moinfo.irrep_y, params.omega);
+  if(params.omega != 0.0) 
+    compute_X("Y", moinfo.irrep_y, -params.omega);
+
+  polar_LCX = LCX("Y", moinfo.irrep_y, params.omega);
+  polar_LCX += LCX("Y", moinfo.irrep_y, -params.omega);
+  fprintf(outfile, "polar_LCX = %20.12f\n", polar_LCX);
+
+  polar += polar_LCX;
+
+  polar_HXY = HXY("Y", moinfo.irrep_y, params.omega);
+  fprintf(outfile, "polar_HXY = %20.12f\n", polar_HXY);
+
+  polar += polar_HXY;
+
+  polar_LHX1Y1 = LHX1Y1("Y", moinfo.irrep_y, params.omega);
+  fprintf(outfile, "polar_LHX1Y1 = %20.12f\n", polar_LHX1Y1);
+
+  polar += polar_LHX1Y1;
+
+  polar_LHX2Y2 = LHX2Y2("Y", moinfo.irrep_y, params.omega);
+  fprintf(outfile, "polar_LHX2Y2 = %20.12f\n", polar_LHX2Y2);
+
+  polar += polar_LHX2Y2;
+
+  polar_LHX1Y2 = LHX1Y2("Y", moinfo.irrep_y, params.omega);
+  polar_LHX1Y2 += LHX1Y2("Y", moinfo.irrep_y, -params.omega);
+  fprintf(outfile, "polar_LHX1Y2 = %20.12f\n", polar_LHX1Y2);
+
+  polar += polar_LHX1Y2;
+  fprintf(outfile, "%1s%1s polar = %20.12f\n", "Y", "Y", polar);
+
+  polar = 0.0;
+
   compute_X("Z", moinfo.irrep_z, params.omega);
   if(params.omega != 0.0) 
     compute_X("Z", moinfo.irrep_z, -params.omega);
 
-  polar = LCX("Z", moinfo.irrep_z, params.omega);
-  polar += LCX("Z", moinfo.irrep_z, -params.omega);
-  fprintf(outfile, "polar_LCX = %20.12f\n", polar);
+  polar_LCX = LCX("Z", moinfo.irrep_z, params.omega);
+  polar_LCX += LCX("Z", moinfo.irrep_z, -params.omega);
+  fprintf(outfile, "polar_LCX = %20.12f\n", polar_LCX);
 
-  polar = HXY("Z", moinfo.irrep_z, params.omega);
-  fprintf(outfile, "polar_HXY = %20.12f\n", polar);
+  polar += polar_LCX;
+
+  polar_HXY = HXY("Z", moinfo.irrep_z, params.omega);
+  fprintf(outfile, "polar_HXY = %20.12f\n", polar_HXY);
+
+  polar += polar_HXY;
+
+  polar_LHX1Y1 = LHX1Y1("Z", moinfo.irrep_z, params.omega);
+  fprintf(outfile, "polar_LHX1Y1 = %20.12f\n", polar_LHX1Y1);
+
+  polar += polar_LHX1Y1;
+
+  polar_LHX2Y2 = LHX2Y2("Z", moinfo.irrep_z, params.omega);
+  fprintf(outfile, "polar_LHX2Y2 = %20.12f\n", polar_LHX2Y2);
+
+  polar += polar_LHX2Y2;
+
+  polar_LHX1Y2 = LHX1Y2("Z", moinfo.irrep_z, params.omega);
+  polar_LHX1Y2 += LHX1Y2("Z", moinfo.irrep_z, -params.omega);
+  fprintf(outfile, "polar_LHX1Y2 = %20.12f\n", polar_LHX1Y2);
+
+  polar += polar_LHX1Y2;
+  fprintf(outfile, "%1s%1s polar = %20.12f\n", "Z", "Z", polar);
 
   dpd_close(0);
 

@@ -275,9 +275,6 @@ void cleanup(void)
     free(moinfo.qt_occ);
     free(moinfo.qt_vir);
     free_block(moinfo.scf);
-    free_block(moinfo.MUX);
-    free_block(moinfo.MUY);
-    free_block(moinfo.MUZ);
   }
 
   free_block(moinfo.usotao);

@@ -31,9 +31,11 @@ void compute_X(char *cart, int irrep, double omega)
   fprintf(outfile, "\t----   --------------------   -----------\n");
   fflush(outfile);
   init_X(cart, irrep, omega);
+
   sort_X(cart, irrep, omega);
   polar = -2.0*pseudopolar(cart, irrep, omega);
   fprintf(outfile, "\t%4d   %20.12f\n", iter, polar);
+  fflush(outfile);
 
   for(iter=1; iter <= params.maxiter; iter++) {
 
@@ -55,10 +57,9 @@ void compute_X(char *cart, int irrep, double omega)
     save_X(cart, irrep, omega);
     sort_X(cart, irrep, omega);
 
-    /* print_X(cart, irrep, omega); */
-
     polar = -2.0*pseudopolar(cart, irrep, omega);
     fprintf(outfile, "\t%4d   %20.12f    %4.3e\n", iter, polar, rms);
+    fflush(outfile);
 
   }
   if(!done) {
@@ -70,4 +71,5 @@ void compute_X(char *cart, int irrep, double omega)
     exit(PSI_RETURN_FAILURE);
   }
 
+  /*  print_X(cart, irrep, omega); */
 }

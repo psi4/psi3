@@ -40,7 +40,7 @@ void transmu(void)
   C_DGEMM('n','n',nso,nso,nao,1,&(moinfo.usotao[0][0]),nao,&(X[0][0]),nao,
 	  0,&(TMP[0][0]),nao);
 
-  C_DGEMM('n','n',nso,nmo,nso,1,&(TMP[0][0]),nso,&(moinfo.scf[0][0]),nmo,
+  C_DGEMM('n','n',nso,nmo,nso,1,&(TMP[0][0]),nao,&(moinfo.scf[0][0]),nmo,
 	  0,&(X[0][0]),nao);
   C_DGEMM('t','n',nmo,nmo,nso,1,&(moinfo.scf[0][0]),nmo,&(X[0][0]),nao,
 	  0,&(MUX[0][0]),nmo);
@@ -58,7 +58,7 @@ void transmu(void)
   C_DGEMM('n','n',nso,nso,nao,1,&(moinfo.usotao[0][0]),nao,&(X[0][0]),nao,
 	  0,&(TMP[0][0]),nao);
 
-  C_DGEMM('n','n',nso,nmo,nso,1,&(TMP[0][0]),nso,&(moinfo.scf[0][0]),nmo,
+  C_DGEMM('n','n',nso,nmo,nso,1,&(TMP[0][0]),nao,&(moinfo.scf[0][0]),nmo,
 	  0,&(X[0][0]),nao);
   C_DGEMM('t','n',nmo,nmo,nso,1,&(moinfo.scf[0][0]),nmo,&(X[0][0]),nao,
 	  0,&(MUY[0][0]),nmo);
@@ -76,7 +76,7 @@ void transmu(void)
   C_DGEMM('n','n',nso,nso,nao,1,&(moinfo.usotao[0][0]),nao,&(X[0][0]),nao,
 	  0,&(TMP[0][0]),nao);
 
-  C_DGEMM('n','n',nso,nmo,nso,1,&(TMP[0][0]),nso,&(moinfo.scf[0][0]),nmo,
+  C_DGEMM('n','n',nso,nmo,nso,1,&(TMP[0][0]),nao,&(moinfo.scf[0][0]),nmo,
 	  0,&(X[0][0]),nao);
   C_DGEMM('t','n',nmo,nmo,nso,1,&(moinfo.scf[0][0]),nmo,&(X[0][0]),nao,
 	  0,&(MUZ[0][0]),nmo);

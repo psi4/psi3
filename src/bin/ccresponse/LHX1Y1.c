@@ -9,8 +9,8 @@ void build_ZIjAb(char *, int, double);
 double LHX1Y1(char *cart, int irrep, double omega) {
 
   dpdfile2 F, X1, Y1, Zmi, Zae, Zfb, Znj, ZIA, L1, t1;
-  dpdbuf4 Z1, Z2, I, tau, W1, W2, ZIjAb, L2, T2;
-  double alpha;
+  dpdbuf4 Z1, Z2, I, tau, W1, W2, ZIjAb, L2, T2, W, Z;
+  double polar;
   char lbl[32];
 
   /* The Lambda 1 contractions */
@@ -71,12 +71,13 @@ double LHX1Y1(char *cart, int irrep, double omega) {
 
   /* Final contraction of ZIA intermediate with LIA */
   dpd_file2_init(&L1, CC_OEI, 0, 0, 1, "LIA");
-  alpha = 2.0 * dpd_file2_dot(&ZIA, &L1);
+  polar = 2.0 * dpd_file2_dot(&ZIA, &L1);
   dpd_file2_close(&L1);
   dpd_file2_close(&ZIA);
 
+  /*  fprintf(outfile, "L(1)HX1Y1 = %20.12f\n", polar); */
+
   /* The Lambda 2 contractions */
-  dpd_buf4_init(&ZIjAb, CC_TMP0, 0, 0, 5, 0, 5, 0, "Z(Ij,Ab)");
   sprintf(lbl, "X_%1s_IA (%5.3f)", cart, omega);
   dpd_file2_init(&X1, CC_OEI, irrep, 0, 1, lbl);
   sprintf(lbl, "X_%1s_IA (-%5.3f)", cart, omega);
@@ -84,14 +85,18 @@ double LHX1Y1(char *cart, int irrep, double omega) {
 
 
   /* Contraction of Wmnij with Zmnab */
+  dpd_buf4_init(&ZIjAb, CC_TMP0, 0, 0, 5, 0, 5, 0, "Z(Ij,Ab) Final");
+  dpd_buf4_scm(&ZIjAb, 0);
   build_ZIjAb(cart, irrep, omega);
   dpd_buf4_init(&Z1, CC_TMP0, 0, 0, 5, 0, 5, 0, "Z(Ij,Ab) anti");
   dpd_buf4_init(&W1, CC_HBAR, 0, 0, 0, 0, 0, 0, "WMnIj");
   dpd_contract444(&W1, &Z1, &ZIjAb, 1, 1, 1, 0);
   dpd_buf4_close(&W1);
   dpd_buf4_close(&Z1);
+  dpd_buf4_close(&ZIjAb);
 
   /* Contraction of Wabef with Zijef */
+  dpd_buf4_init(&ZIjAb, CC_TMP0, 0, 0, 5, 0, 5, 0, "Z(Ij,Ab) Final");
   dpd_buf4_init(&Z1, CC_TMP0, 0, 0, 5, 0, 5, 0, "Z(Ij,Ab) anti");
   dpd_buf4_init(&I, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>");
   dpd_contract444(&Z1, &I, &ZIjAb, 0, 0, 1, 1);
@@ -113,33 +118,43 @@ double LHX1Y1(char *cart, int irrep, double omega) {
   dpd_buf4_close(&tau);
   dpd_buf4_close(&Z2);
   dpd_buf4_close(&Z1);
+  dpd_buf4_close(&ZIjAb);
 
   /* Contraction of Wmbej with Xie, Yma and Xma, Yie */
   dpd_buf4_init(&Z1, CC_TMP0, 0, 0, 5, 0, 5, 0, "Z(Ij,Ab) anti");
-  dpd_buf4_sort(&Z1, CC_TMP0, prqs, 10, 10, "Z(IA,jb) anti");
+  dpd_buf4_sort(&Z1, CC_TMP0, psqr, 10, 10, "Z(Ib,jA) anti");
   dpd_buf4_close(&Z1);
 
-  dpd_buf4_close(&ZIjAb);
-  dpd_buf4_init(&Z2, CC_TMP0, 0, 10, 10, 10, 10, 0, "Z(IA,jb) temp");
-
-  dpd_buf4_init(&Z1, CC_TMP0, 0, 10, 10, 10, 10, 0, "Z(IA,jb) anti");
+  dpd_buf4_init(&Z2, CC_TMP0, 0, 10, 10, 10, 10, 0, "Z(IA,jb) I");
+  dpd_buf4_init(&Z1, CC_TMP0, 0, 10, 10, 10, 10, 0, "Z(Ib,jA) anti");
   dpd_buf4_init(&W1, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMbEj");
-  dpd_contract444(&Z1, &W1, &Z2, 0, 1, 1, 0);
+  dpd_contract444(&Z1, &W1, &Z2, 0, 1, -1, 0);
   dpd_buf4_close(&W1);
   dpd_buf4_close(&Z1);
-  dpd_buf4_sort_axpy(&Z2, CC_TMP0, prqs, 0, 5, "Z(Ij,Ab)", -1);
-  dpd_buf4_sort_axpy(&Z2, CC_TMP0, rpsq, 0, 5, "Z(Ij,Ab)", -1);
+  dpd_buf4_sort(&Z2, CC_TMP0, prqs, 0, 5, "Z(Ij,Ab) I");
+  dpd_buf4_close(&Z2);
 
-  dpd_buf4_init(&Z1, CC_TMP0, 0, 10, 10, 10, 10, 0, "Z(IA,jb) anti");
+  dpd_buf4_init(&Z2, CC_TMP0, 0, 10, 10, 10, 10, 0, "Z(jA,Ib) II");
+  dpd_buf4_init(&Z1, CC_TMP0, 0, 10, 10, 10, 10, 0, "Z(Ib,jA) anti");
   dpd_buf4_init(&W1, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMbeJ");
   dpd_contract444(&Z1, &W1, &Z2, 0, 1, 1, 0);
   dpd_buf4_close(&W1);
   dpd_buf4_close(&Z1);
-  dpd_buf4_sort_axpy(&Z2, CC_TMP0, rpqs, 0, 5, "Z(Ij,Ab)", 1);
-  dpd_buf4_sort_axpy(&Z2, CC_TMP0, prsq, 0, 5, "Z(Ij,Ab)", 1);
-
+  dpd_buf4_sort(&Z2, CC_TMP0, rpqs, 0, 5, "Z(Ij,Ab) II");
   dpd_buf4_close(&Z2);
-  dpd_buf4_init(&ZIjAb, CC_TMP0, 0, 0, 5, 0, 5, 0, "Z(Ij,Ab)");
+
+  dpd_buf4_init(&Z1, CC_TMP0, 0, 0, 5, 0, 5, 0, "Z(Ij,Ab) I");
+  dpd_buf4_init(&Z2, CC_TMP0, 0, 0, 5, 0, 5, 0, "Z(Ij,Ab) II");
+  dpd_buf4_axpy(&Z2, &Z1, 1);
+  dpd_buf4_close(&Z2);
+  dpd_buf4_sort_axpy(&Z1, CC_TMP0, qpsr, 0, 5, "Z(Ij,Ab) Final", 1);
+  dpd_buf4_init(&ZIjAb, CC_TMP0, 0, 0, 5, 0, 5, 0, "Z(Ij,Ab) Final");
+  dpd_buf4_axpy(&Z1, &ZIjAb, 1);
+  dpd_buf4_close(&Z1);
+  dpd_buf4_close(&ZIjAb);
+
+
+  dpd_buf4_init(&ZIjAb, CC_TMP0, 0, 0, 5, 0, 5, 0, "Z(Ij,Ab) Final");
 
   /* Contraction of Wmaneij with X and Y */
   dpd_file2_init(&Zfb, CC_TMP0, 0, 1, 1, "Z_fb");
@@ -187,11 +202,9 @@ double LHX1Y1(char *cart, int irrep, double omega) {
 
   /* Final contraction with LIJAB */
   dpd_buf4_init(&L2, CC_LAMPS, 0, 0, 5, 0, 5, 0, "2 LIjAb - LIjBa");
-  alpha += dpd_buf4_dot(&L2, &ZIjAb);
+  polar += dpd_buf4_dot(&L2, &ZIjAb);
   dpd_buf4_close(&L2);
   dpd_buf4_close(&ZIjAb);
 
-  fprintf(outfile, "\n\nLHX1Y1 %1s Check = %20.12lf\n\n", cart, alpha);
-
-  return alpha;
+  return polar;
 }
