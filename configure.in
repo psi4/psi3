@@ -752,6 +752,7 @@ AC_OUTPUT(include/psiconfig.h include/cfuncs.h include/ffuncs.h
           src/bin/detci/Makefile
           src/bin/detcas/Makefile
           src/bin/detcasman/Makefile
+          src/bin/extrema/Makefile
           src/bin/geom/Makefile
           src/bin/input/Makefile
           src/bin/mp2/Makefile
