@@ -31,12 +31,16 @@
       with your definitions
  ---*/
 #define PSIF_DSCF           31
-#define PSIF_AO_TEI         33
-#define PSIF_AO_S           35
-#define PSIF_AO_T           36
-#define PSIF_AO_V           37
-#define PSIF_AO_R12         38
-#define PSIF_AO_R12T1       39
+#define PSIF_SO_TEI         33
+#define PSIF_SO_S           35
+#define PSIF_SO_T           36
+#define PSIF_SO_V           37
+#define PSIF_SO_R12         38
+#define PSIF_SO_R12T1       39
+#define PSIF_AO_S           40
+#define PSIF_AO_MX          41
+#define PSIF_AO_MY          42
+#define PSIF_AO_MZ          43
 #define PSIF_MO_R12         79
 #define PSIF_MO_R12T1       80
 
