@@ -29,7 +29,7 @@ void quartet_data(prim_data *Data, double_array_t *fjt_table, double AB2, double
    ----------------*/
   struct coordinates PQ, W;
 #ifdef USE_TAYLOR_FM
-  static double F[2*CINTS_MAX_AM+1];
+  static double F[4*CINTS_MAX_AM];
 #endif
   int i;
   double small_T = UserOptions.cutoff;       /*--- Use only one term in Taylor expansion of Fj(T) if T < small_T ---*/
