@@ -26,7 +26,7 @@ sub extract_data
   while (<OUT>) {
     if (/Nuclear Repulsion Energy    =/) {
       @data1 = split(/ +/, $_);
-      $_[2] = $data1[4];
+      $_[1] = $data1[4];
     }
   }
 
@@ -34,7 +34,7 @@ sub extract_data
   while (<OUT>) {
     if (/total energy       =/) {
       @data2 = split(/ +/, $_);
-      $_[3] = $data2[4];
+      $_[2] = $data2[4];
     }
   }
 
@@ -42,7 +42,7 @@ sub extract_data
   while (<OUT>) {
     if (/Reference energy             =/) {
       @data3 = split(/ +/, $_);
-      $_[4] = $data3[3];
+      $_[3] = $data3[3];
     }
   }
   
@@ -77,6 +77,13 @@ sub compare_data
   open (RE, ">$RESULT") || die "cannot open $RESULT: $!";
 
   select (RE);
+
+  printf("Enuc(ref)  = %20.10f\n", $Enuc_ref);
+  printf("Enuc(test) = %20.10f\n", $Enuc_test);
+  printf("Escf(ref)  = %20.10f\n", $Ehf_ref);
+  printf("Escf(test) = %20.10f\n", $Ehf_test);
+  printf("Eref(ref)  = %20.10f\n", $Eref_ref);
+  printf("Eref(test) = %20.10f\n", $Eref_test);
 
   printf "\nSCF-POLAR:\n";
   $diff_nuc = abs ($Enuc_ref - $Enuc_test);
