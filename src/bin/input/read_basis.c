@@ -461,7 +461,8 @@ void normalize(bs, fp, lp, am)
     if(fabs(norm-1.0)>ZERO) printf("Needed normalization: norm=%lf\n", norm);
   }
   if (normalize_contractions) {
-    printf("Normalizing current contraction:\n");
+    if (shownorm)
+      printf("Normalizing current contraction:\n");
     for(i=fp; i<=lp; i++){
       bs[i][1] = bs[i][1]*norm;
       if(shownorm){

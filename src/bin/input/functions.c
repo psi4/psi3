@@ -333,7 +333,7 @@ void setup(maxdf)
   int i;
 
   if(maxdf<100) maxdf = 100;
-  df = (int *) malloc(sizeof(int)*maxdf);
+  df = (double *) malloc(sizeof(double)*maxdf);
   ioff = (int *) malloc(sizeof(int)*maxdf);
 
 /* df[i] = (i-1)!! */

@@ -28,7 +28,7 @@ struct coordinates{
 /*Super-global stuff - the same no matter what calculation is running */
 EXTERN FILE *infile, *outfile;
 EXTERN int *ioff;
-EXTERN int *df;                     /*df[i] = (i-1)!!*/
+EXTERN double *df;                  /*df[i] = (i-1)!!*/
 EXTERN char **elem_name;            /*Element names*/
 
 /*Calculation options*/
