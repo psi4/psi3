@@ -32,6 +32,7 @@ extern "C" {
    #include <libqt/qt.h>
    #include <libciomr/libciomr.h>
    #include <libfile30/file30.h>
+   #include <libchkpt/chkpt.h>
    #include <libpsio/psio.h>
    #include "structs.h"
    #include "globals.h"
@@ -820,6 +821,10 @@ void diag_h(struct stringwr **alplist, struct stringwr **betlist)
    file30_wt_eref(0.0);
    file30_wt_ecorr(evals[Parameters.root]+efzc+nucrep);
    file30_close();
+
+   chkpt_init();
+   chkpt_wt_etot(evals[Parameters.root]+efzc+nucrep);
+   chkpt_close();
 
 }
 

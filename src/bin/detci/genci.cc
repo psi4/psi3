@@ -28,6 +28,7 @@ extern "C" {
    #include <libqt/qt.h>
    #include <libciomr/libciomr.h>
    #include <libfile30/file30.h>
+   #include <libchkpt/chkpt.h>
    #include "structs.h"
    #include "globals.h"
    #include "genci.h"
@@ -119,6 +120,10 @@ void diag_h_genci(struct stringwr **alplist, struct stringwr **betlist)
   file30_wt_eref(0.0);
   file30_wt_ecorr(evals[Parameters.root]); /* this might need nucrep or efzc also */
   file30_close();
+
+  chkpt_init();
+  chkpt_wt_etot(evals[Parameters.root]); /* need nucrep or efzc also? */
+  chkpt_close();
 
 }
 
