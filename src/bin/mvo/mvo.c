@@ -508,6 +508,12 @@ void get_mvos(void)
     nocc = moinfo.clsdpi[h] + moinfo.openpi[h];
 
     if (nvir < 1) break;
+
+    if (params.print_lvl > 3) {
+      fprintf(outfile, "Working on irrep %d (%d vir, %d occ)\n", 
+              h, nvir, nocc);
+    }
+
     ntri = (nvir * (nvir+1))/2;
 
     FCvv = init_array(ntri);
@@ -519,10 +525,10 @@ void get_mvos(void)
 
     for (i=0,ij=0; i<nvir; i++) {
       /* convert this MO index into a Correlated MO index */
-      iabs = offset + nocc;
+      iabs = i + nocc + offset;
       icorr = moinfo.order[iabs];
       for (j=0; j<=i; j++,ij++) {
-        jabs = offset + nocc;
+        jabs = j + nocc + offset;
         jcorr = moinfo.order[jabs];  
         ijcorr = INDEX(icorr,jcorr);
         FCvv[ij] = FC[ijcorr];
@@ -531,25 +537,25 @@ void get_mvos(void)
       
     if (params.print_lvl > 4) {
       fprintf(outfile, "Old FCvv matrix for irrep %d\n", h);
-      print_mat(FCvv, nvir, nvir, outfile);
+      print_array(FCvv, nvir, outfile);
     }
 
     /* diagonalize the vv block of FC */
     rsp(nvir, nvir, ntri, FCvv, evals, 1, evecs, 1E-12);
 
     if (params.print_lvl > 4) {
-      fprintf(outfile, "Diagonalized FCvv matrix for irrep %d\n", h);
+      fprintf(outfile, "\nDiagonalization matrix for FCvv irrep %d\n", h);
       print_mat(evecs, nvir, nvir, outfile);
 
-      fprintf(outfile, "Eigenvalues of FCvv for irrep %d\n", h);
+      fprintf(outfile, "\nEigenvalues of FCvv for irrep %d\n", h);
       for (i=0; i<nvir; i++) {
-        fprintf(outfile, "%lf", evecs[i]);
+        fprintf(outfile, "%lf ", evals[i]);
       }
       fprintf(outfile, "\n");
     }
 
     /* load up the vv part of SCF matrix C */
-    for (i=moinfo.first_so[h]+nocc,row=0; i<= moinfo.last_so[h]; i++,row++) {
+    for (i=moinfo.first_so[h],row=0; i<= moinfo.last_so[h]; i++,row++) {
       for (j=moinfo.first_so[h]+nocc,col=0; j<=moinfo.last_so[h]; j++,col++) {
         Cvv[row][col] = moinfo.scf_vector[i][j];
       }
@@ -557,7 +563,7 @@ void get_mvos(void)
 
     if (params.print_lvl > 4) {
       fprintf(outfile, "Old Cvv matrix for irrep %d\n", h);
-      print_mat(Cvv, nvir, nvir, outfile);
+      print_mat(Cvv, moinfo.sopi[h], nvir, outfile);
     }
      
     /* multiply the FCvv eigenvectors by Cvv to get new Cvv */
@@ -565,22 +571,22 @@ void get_mvos(void)
  
     if (params.print_lvl > 4) {
       fprintf(outfile, "New Cvv matrix for irrep %d\n", h);
-      print_mat(Cvvp, nvir, nvir, outfile);
+      print_mat(Cvvp, moinfo.sopi[h], nvir, outfile);
     }
 
     /* Load up the new C matrix and write it out */
 
     /* load up the occupied orbitals */
-    for (i=moinfo.first_so[h],row=0; i< moinfo.first_so[h]+nocc; i++,row++) {
+    for (i=moinfo.first_so[h],row=0; i<= moinfo.last_so[h]; i++,row++) {
       for (j=moinfo.first_so[h],col=0; j< moinfo.first_so[h]+nocc; j++,col++) {
         Cnew[row][col] = moinfo.scf_vector[i][j];
       }
     }
 
     /* load up the new virtuals */
-    for (i=0; i<nvir; i++) {
+    for (i=0; i<moinfo.sopi[h]; i++) {
       for (j=0; j<nvir; j++) {
-        Cnew[i+nocc][j+nocc] = Cvvp[i][j];
+        Cnew[i][j+nocc] = Cvvp[i][j];
       }
     }
 
