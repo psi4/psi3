@@ -281,6 +281,14 @@ void F_build(void) {
   else if(params.ref == 2) { /** UHF **/
 
     /* FME and Fme */
+    dpd_file2_init(&fIA, CC_OEI, 0, 0, 1, "fIA");
+    dpd_file2_copy(&fIA, CC_OEI, "FME");
+    dpd_file2_close(&fIA);
+
+    dpd_file2_init(&fia, CC_OEI, 0, 2, 3, "fia");
+    dpd_file2_copy(&fia, CC_OEI, "Fme");
+    dpd_file2_close(&fia);
+  
     dpd_file2_init(&FME, CC_OEI, 0, 0, 1, "FME");
     dpd_file2_init(&Fme, CC_OEI, 0, 2, 3, "Fme");
   
@@ -288,7 +296,7 @@ void F_build(void) {
     dpd_file2_init(&tia, CC_OEI, 0, 2, 3, "tia");
 
     dpd_buf4_init(&D, CC_DINTS, 0, 20, 20, 20, 20, 0, "D <IJ||AB> (IA,JB)");
-    dpd_contract422(&D, &tIA, &FME, 0, 0, 1, 0);
+    dpd_contract422(&D, &tIA, &FME, 0, 0, 1, 1);
     dpd_buf4_close(&D);
 
     dpd_buf4_init(&D, CC_DINTS, 0, 20, 30, 20, 30, 0, "D <Ij|Ab> (IA,jb)");
@@ -296,7 +304,7 @@ void F_build(void) {
     dpd_buf4_close(&D);
 
     dpd_buf4_init(&D, CC_DINTS, 0, 30, 30, 30, 30, 0, "D <ij||ab> (ia,jb)");
-    dpd_contract422(&D, &tia, &Fme, 0, 0, 1, 0);
+    dpd_contract422(&D, &tia, &Fme, 0, 0, 1, 1);
     dpd_buf4_close(&D);
 
     dpd_buf4_init(&D, CC_DINTS, 0, 30, 20, 30, 20, 0, "D <Ij|Ab> (ia,JB)");
@@ -320,6 +328,18 @@ void F_build(void) {
 
     dpd_file2_init(&FAE, CC_OEI, 0, 1, 1, "FAE");
     dpd_file2_init(&Fae, CC_OEI, 0, 3, 3, "Fae");
+
+    dpd_file2_init(&fIA, CC_OEI, 0, 0, 1, "fIA");
+    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+    dpd_contract222(&tIA, &fIA, &FAE, 1, 1, -0.5, 1);
+    dpd_file2_close(&tIA);
+    dpd_file2_close(&fIA);
+
+    dpd_file2_init(&fia, CC_OEI, 0, 2, 3, "fia");
+    dpd_file2_init(&tia, CC_OEI, 0, 2, 3, "tia");
+    dpd_contract222(&tia, &fia, &Fae, 1, 1, -0.5, 1);
+    dpd_file2_close(&tia);
+    dpd_file2_close(&fia);
 
     dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
     dpd_file2_init(&tia, CC_OEI, 0, 2, 3, "tia");
@@ -397,6 +417,18 @@ void F_build(void) {
 
     dpd_file2_init(&FMI, CC_OEI, 0, 0, 0, "FMI");
     dpd_file2_init(&Fmi, CC_OEI, 0, 2, 2, "Fmi");
+
+    dpd_file2_init(&fIA, CC_OEI, 0, 0, 1, "fIA");
+    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+    dpd_contract222(&fIA, &tIA, &FMI, 0, 0, 0.5, 1);
+    dpd_file2_close(&tIA);
+    dpd_file2_close(&fIA);
+  
+    dpd_file2_init(&fia, CC_OEI, 0, 2, 3, "fia");
+    dpd_file2_init(&tia, CC_OEI, 0, 2, 3, "tia");
+    dpd_contract222(&fia, &tia, &Fmi, 0, 0, 0.5, 1);
+    dpd_file2_close(&tia);
+    dpd_file2_close(&fia);
 
     dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
     dpd_file2_init(&tia, CC_OEI, 0, 2, 3, "tia");
