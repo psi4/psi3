@@ -5,11 +5,10 @@ mp2 \- Moller-Plesset Perburbation Theory
 
 .SH DESCRIPTION
 .LP
-The program
-.B mp2
-determines the second-order Moller-Plesset energy and one-particle
-density matrix (OPDM) for closed-shell systems.  Frozen orbitals can 
-be used when computing the energy but not the OPDM.
+The module determines the second-order Moller-Plesset energy and 
+one-particle density matrix (OPDM) for RHF, UHF, and ROHF (using 
+semicanonical orbitals) references.  Frozen orbitals can be used 
+when computing the energy but not the OPDM.
 
 .SH REFERENCES
 .LP
@@ -17,6 +16,12 @@ Original Moller-Plesset paper:
 .IP "1."
 C. Moller and M. S. Plesset, "Note on an Approximation Treatment for 
 Many-Electron Systems," Phys. Rev. 46, 618 (1934).
+.LP
+Open-Shell Perturbation Theory
+.IP "1."
+T. D. Crawford, H. F. Schaefer, and T. J. Lee, "On the energy invariance
+of open-shell perturbation theory with respect to unitary transformations
+of molecular orbitals," J. Chem. Phys. 105, 1060 (1996).
 .LP
 MP(2) Gradient Theory:
 .IP "1."
@@ -37,7 +42,7 @@ at the present is \fIMP2\fP. There is no default.
 
 .IP "\fBREFERENCE =\fP \fIstring\fP"
 Specifies the type of orbitals used for the single-determinant
-reference function. The only valid entry at the present is \fIRHF\fP.  
+reference function. Valid entries include RHF, UHF, and ROHF.  
 There is no default.
 
 .IP "\fBPRINT =\fP \fIinteger\fP"
