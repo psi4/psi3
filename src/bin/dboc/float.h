@@ -16,6 +16,8 @@ typedef double FLOAT;
 #  else
 #    define FABS fabs
 #  endif
+#else
+#  define FABS fabs
 #endif
 
 #endif
