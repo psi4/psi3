@@ -22,38 +22,42 @@ void sort_amps(int L_irr)
     dpd_buf4_scmcopy(&L2, CC_LAMBDA, "2 LIAjb - LIbjA", 2);
     dpd_buf4_sort_axpy(&L2, CC_LAMBDA, psrq, 10, 10, "2 LIAjb - LIbjA", -1);
     dpd_buf4_close(&L2);
-  }
-  
-  if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
-    /* Build L2iJaB list */
+
     dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "LIjAb");
     dpd_buf4_sort(&L2, CC_LAMBDA, qpsr, 0, 5, "LiJaB");
     dpd_buf4_close(&L2);
 
-    /* Build L2IAJB List */
-    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 2, 7, 0, "LIJAB");
-    dpd_buf4_sort(&L2, CC_LAMBDA, prqs, 10, 10, "LIAJB");
-    dpd_buf4_close(&L2);
-
-    /* Build L2iajb List */
-    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 2, 7, 0, "Lijab");
-    dpd_buf4_sort(&L2, CC_LAMBDA, prqs, 10, 10, "Liajb");
-    dpd_buf4_close(&L2);
-
-    /* Build L2IAjb List */
-    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "LIjAb");
-    dpd_buf4_sort(&L2, CC_LAMBDA, prqs, 10, 10, "LIAjb");
-    dpd_buf4_close(&L2);
-
-    /* Build L2iaJB List */
     dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "LiJaB");
     dpd_buf4_sort(&L2, CC_LAMBDA, prqs, 10, 10, "LiaJB");
     dpd_buf4_close(&L2);
 
-    /* Build L2IbjA and L2 jAIb Lists */
     dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 10, 10, 10, 10, 0, "LIAjb");
-    dpd_buf4_sort(&L2, CC_LAMBDA, psrq, 10, 10, "LIbjA");
     dpd_buf4_sort(&L2, CC_LAMBDA, rqps, 10, 10, "LjAIb");
+    dpd_buf4_close(&L2);
+  }
+  
+  if(params.ref == 1) { /** ROHF **/
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "LIjAb");
+    dpd_buf4_sort(&L2, CC_LAMBDA, prqs, 10, 10, "LIAjb");
+    dpd_buf4_sort(&L2, CC_LAMBDA, psqr, 10, 10, "LIbjA");
+    dpd_buf4_sort(&L2, CC_LAMBDA, qpsr, 0, 5, "LiJaB");
+    dpd_buf4_close(&L2);
+
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "LiJaB");
+    dpd_buf4_sort(&L2, CC_LAMBDA, prqs, 10, 10, "LiaJB");
+    dpd_buf4_close(&L2);
+
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 10, 10, 10, 10, 0, "LIAjb");
+    dpd_buf4_sort(&L2, CC_LAMBDA, rqps, 10, 10, "LjAIb");
+    dpd_buf4_close(&L2);
+    
+    /* Build L2IAJB List */
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 2, 7, 0, "LIJAB");
+    dpd_buf4_sort(&L2, CC_LAMBDA, prqs, 10, 10, "LIAJB");
+    dpd_buf4_close(&L2);
+    /* Build L2iajb List */
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 2, 7, 0, "Lijab");
+    dpd_buf4_sort(&L2, CC_LAMBDA, prqs, 10, 10, "Liajb");
     dpd_buf4_close(&L2);
   }
   else if(params.ref == 2) { /** UHF **/
