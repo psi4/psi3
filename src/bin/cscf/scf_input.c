@@ -1,7 +1,12 @@
 /* $Log$
- * Revision 1.11  2001/03/16 15:41:04  evaleev
- * Fixed more old problems arising from not distinguishing between num_so and num_mo.
+ * Revision 1.12  2002/01/04 17:05:04  crawdad
+ * Added read of number of MO's per irrep for non-guess=core cases.  This
+ * allows proper correction of MO phases.
+ * -TDC
  *
+/* Revision 1.11  2001/03/16 15:41:04  evaleev
+/* Fixed more old problems arising from not distinguishing between num_so and num_mo.
+/*
 /* Revision 1.10  2001/01/04 14:13:35  sbrown
 /* Fixed the problem with iconv:  The new versions of linux had iconv already
 /* assigned to something else so I changed all references of it to scf_conv.
@@ -129,6 +134,7 @@ void scf_input(ipvalue)
    struct symm *s;
    reftype reftmp;
    int depth;
+   int *mopi;
 
    ip_cwk_clear();
    ip_cwk_add(":DEFAULT");
@@ -293,6 +299,11 @@ void scf_input(ipvalue)
        
        so_offset = 0;
        mo_offset = 0;
+
+       /* Add MO's per/irrep for scf_info */
+       mopi = file30_rd_orbspi();
+       for(k=0; k < num_ir; k++) scf_info[k].num_mo = mopi[k];
+       free(mopi);
 
 /* ----------------------------------------------------
 ** This is the UHF part of the restarting algorithm
