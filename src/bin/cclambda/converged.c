@@ -111,8 +111,8 @@ int converged(void)
     dpd_buf4_init(&L2old, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "LIjAb");
   }
   else if(params.ref == 2) { /** UHF **/
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
-    dpd_buf4_init(&L2old, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "LIjAb");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 22, 28, 22, 28, 0, "New LIjAb");
+    dpd_buf4_init(&L2old, CC_LAMPS, L_irr, 22, 28, 22, 28, 0,"LIjAb");
   }
 
   for(h=0; h < nirreps; h++) {
