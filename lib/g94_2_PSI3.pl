@@ -1,0 +1,96 @@
+#!/usr/bin/perl
+
+##############################################################################
+#
+#     BASIS SET FORMAT CONVERTER - GAUSSIAN_94 TO PSI_3
+#
+###############################################################################
+#
+#  Used to convert a basis set formatted according to Gaussian 94 rules to
+#  to the Psi 3 format. Reads g94 basis set from STDIN and prints out to STDOUT
+#
+#  Usage: perl g94_2_PSI3 < input_file_name > output_file_name
+#         perl g94_2_PSI3 STDIN STDOUT
+#
+##############################################################################
+
+# Psi 3 needs full element names rather than element symbols
+%elemname = (
+  G  => GHOST,
+  H  => HYDROGEN,
+  HE => HELIUM,
+  LI => LITHIUM,
+  BE => BERYLLIUM,
+  B  => BORON,
+  C  => CARBON,
+  N  => NITROGEN,
+  O  => OXYGEN,
+  F  => FLUORINE,
+  NE => NEON,
+  NA => SODIUM,
+  MG => MAGNESIUM,
+  AL => ALUMINUM,
+  SI => SILICON,
+  P  => PHOSPHORUS,
+  S  => SULFUR,
+  CL => CHLORINE,
+  AR => ARGON
+);
+
+# Find the first line containing BASIS keyword and parse basis name
+BASIS: while (<STDIN>) {
+    # Skip all lines until the first containing BASIS keyword
+    ( !/BASIS|Basis|basis/) && next BASIS;
+    ($scr, $basisname) = split "\"";
+    last BASIS;
+    }
+
+
+# Parse element name, contractions and primitives 
+MAIN: while (<STDIN>) {
+    # Grab the element symbol and transform it to the standard
+    # Psi 3 full element name
+    ($elemsymb, $junk) = split " ";
+    $elemsymb eq "" && last MAIN;
+    $elemsymb =~ tr/[a-z]/[A-Z]/;
+    print "$elemname{$elemsymb}:\"$basisname\" = (\n";
+
+  # Loop over each contraction
+  CONTR: while (<STDIN>) {
+        /\*\*\*\*/ && last CONTR;
+       ($am, $num_prim, $junk) = split " ";
+       # Split SP contractions to S and P contractions 
+       # Print in PSI 3 format
+	if ($am =~ /SP/)
+          { $num_prim2=$num_prim;
+          # Read in each primitive
+	  print "\n  (S  ";
+	  for($i=0; $i<$num_prim; $i++) {
+             ($exp[$i], $s_coeff[$i], $p_coeff[$i] ) = split " ", <STDIN>;
+             printf "  ( %20.10lf    %20.10lf)",$exp[$i],$s_coeff[$i];
+             $i != $num_prim - 1 && print "\n      ";
+             } 
+	  print ")";
+          print "\n  (P  ";
+	  for($i=0; $i<$num_prim2; $i++) {
+             printf "  ( %20.10lf    %20.10lf)",$exp[$i],$p_coeff[$i];
+             $i != $num_prim - 1 && print "\n      ";
+	     } 
+	  print "";
+         }
+        # Print the other contractions in PSI 3 format
+        else{
+         print "\n  ($am  ";
+         # Read in each primitive
+          for ($i=0; $i<$num_prim; $i++) {
+             ($exp, $coeff) = split " ", <STDIN>;
+             printf "  ( %20.10lf    %20.10lf)",$exp,$coeff;
+             $i != $num_prim - 1 && print "\n      ";
+             }    
+     }
+    print ")"; # close contraction
+  }
+  print ")\n\n"; # close basis set
+}
+
+
