@@ -317,10 +317,11 @@ void get_parameters(void)
 
   /* The defaults below depend on what run mode we are in */
   if (params.runmode == MODE_NORMAL) {
-    /*Changed for MP2 gradient*/
-    if (strcmp(params.wfn, "MP2") == 0 && strcmp(params.dertype, "NONE") == 0)
+    /*The restricted transform does not currently work for the new
+      MP2 module MLA June 27, 2003*/ 
+    /*if (strcmp(params.wfn, "MP2") == 0 && strcmp(params.dertype, "NONE") == 0)
       params.tei_trans_type = MAKE_OVOV;
-    else
+    else*/
     params.tei_trans_type = MAKE_GGGG;
     params.tei_type = ERI;
     params.src_tei_file = PSIF_SO_TEI;
