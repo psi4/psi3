@@ -304,7 +304,6 @@ void exit_io(void)
   for(i=CC_MIN; i <= CC_MAX; i++) psio_close(i,1);
   psio_done();
 
-  free_ptrs();
   ip_done();
   tstop(outfile);
   fclose(infile);
