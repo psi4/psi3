@@ -84,6 +84,7 @@ void hf_fock()
   for(i=0;i<UserOptions.num_threads-1;i++)
     pthread_join(thread_id[i], NULL);
   free(thread_id);
+  pthread_mutex_destroy(&fock_mutex);
   
   /*-------------------------------
     Gskel = Gskel + Gskel(transp.)

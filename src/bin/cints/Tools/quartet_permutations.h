@@ -1,2 +1,2 @@
 
-double *ijkl_to_klij(double *, int, int);
+void ijkl_to_klij(double *, double *, int, int);

@@ -20,7 +20,7 @@ void mp2()
       rmp2_energy();
       break;
   case uhf:
-      ump2_energy();
+/*      ump2_energy();*/
       break;
   default:
       punt("MP2 energy with specified REFERENCE not implemented");

@@ -213,7 +213,6 @@ void parsing_cmdline(int argc, char *argv[])
 	   UserOptions.make_deriv1 = 0;
 	   UserOptions.make_mp2 = 1;
 	   UserOptions.symm_ints = 0;
-	   UserOptions.num_threads = 1;
 	   if (!strcmp("MP2",UserOptions.wfn)) {
 	     errcod = ip_string("REFERENCE",&refstring,0);
 	     if (errcod != IPE_OK)
