@@ -45,7 +45,7 @@ void fock()
   /*-----------------------------------
     Read in the total HF/DFT densities
    -----------------------------------*/
-/*   read_scf_opdm(0);
+   read_scf_opdm(0);
 
   /*--------------------------------------------------
     Compute exch+corr contribution to the Fock matrix

@@ -74,7 +74,7 @@ void read_scf_opdm(int diff_flag)
       }
     }
   }
-  psio_close(IOUnits.itapDSCF, 0);
+  psio_close(IOUnits.itapDSCF, 1);
 
   
   /*--------------------------
