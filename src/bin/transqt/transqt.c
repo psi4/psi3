@@ -366,7 +366,8 @@ void get_parameters(void)
   params.semicanonical = 0;
   /* Semicanonical orbitals for perturbation theory */
   if(!strcmp(params.ref, "ROHF") && (!strcmp(params.wfn, "CCSD_T") || !strcmp(params.wfn, "MP2") || 
-				     !strcmp(params.wfn, "CC3") || !strcmp(params.wfn,"EOM_CC3"))) {
+				     !strcmp(params.wfn, "CC3") || !strcmp(params.wfn,"EOM_CC3") ||
+				     !strcmp(params.wfn, "CC2") || !strcmp(params.wfn,"EOM_CC2"))) {
     strcpy(params.ref, "UHF");
     params.semicanonical = 1;
   }  
