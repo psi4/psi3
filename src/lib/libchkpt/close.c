@@ -2,8 +2,6 @@
   \file close.c
 */
 
-#include <stdio.h>
-#include <stdlib.h>
 #include "chkpt.h"
 #include <psifiles.h>
 #include <libpsio/psio.h>

@@ -2,10 +2,8 @@
   \file init.c
 */
 
-#include <stdio.h>
 #include "chkpt.h"
 #include <psifiles.h>
-#include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
 
 /*!
