@@ -251,6 +251,7 @@ void init_io(int argc, char *argv[])
    ip_cwk_add(":TRANSQT");
 
    psio_init();
+   free(extra_args);
 }
 
 
