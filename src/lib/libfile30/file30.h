@@ -19,6 +19,10 @@ struct z_entry {
   char tors_label[20];
   };
 
+/*--- Types of reference determinants ---*/
+typedef enum {ref_rhf = 0, ref_uhf = 1, ref_rohf = 2, ref_tcscf = 3,
+      ref_rks = 4, ref_uks = 5} reftype;
+
 int file30_init(void);
 int file30_close(void);
 double **file30_rd_schwartz(void);
