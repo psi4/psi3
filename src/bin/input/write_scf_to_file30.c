@@ -6,6 +6,7 @@
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
 #include <file30_params.h>
+#include <psifiles.h>
 #include "input.h"
 #include "global.h"
 #include "defines.h"
