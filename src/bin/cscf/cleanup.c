@@ -1,8 +1,11 @@
 /* $Log$
- * Revision 1.11  2002/03/25 03:05:45  crawdad
- * More additions for new chkpoint file.
- * -TDC
+ * Revision 1.12  2002/03/25 03:16:51  sherrill
+ * Changed name of mxcoef keyword to Mxcoef
  *
+/* Revision 1.11  2002/03/25 03:05:45  crawdad
+/* More additions for new chkpoint file.
+/* -TDC
+/*
 /* Revision 1.10  2002/03/25 02:17:36  janssen
 /* Get rid of tmpl.  Use new naming scheme for libipv1 includes.
 /*
@@ -200,7 +203,7 @@ void cleanup()
 
    /* psio_write calls for above */
    psio_write_entry(PSIF_CHKPT, "::Num. HF irreps", (char *) &n_so_typs, sizeof(int));
-   psio_write_entry(PSIF_CHKPT, "::mxcoef", (char *) &mxcoef, sizeof(int));
+   psio_write_entry(PSIF_CHKPT, "::Mxcoef", (char *) &mxcoef, sizeof(int));
    psio_write_entry(PSIF_CHKPT, "::Num. MO's", (char *) &nmo, sizeof(int));
    tmp_iopen = ioff[n_open];
    if(twocon) tmp_iopen = -tmp_iopen;
