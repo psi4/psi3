@@ -83,7 +83,6 @@ int main(int argc, char *argv[])
 
   print_lvl = 0;
   errcod = ip_data("PRINT", "%d", &(print_lvl), 0);
-  fprintf(outfile, "\n\tPRINT = %d\n\n", print_lvl);
 
   setup();
 

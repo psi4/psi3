@@ -154,10 +154,8 @@ void build_hessian(double ***F, double ***S,
  
   free(eta);
 
-  if (print_lvl > 0) {
-    fprintf(outfile, "SCF Molecular Hessian:\n");
-    print_mat(hessian, natom*3, natom*3, outfile);
-  }
+  fprintf(outfile, "SCF Molecular Hessian:\n");
+  print_mat(hessian, natom*3, natom*3, outfile);
 
   /* write the hessian to file15 in the PSI2 standard format */
   ffile(&file15, "file15.dat", 0);

@@ -86,16 +86,14 @@ void polarize(double ***UF)
     }
   }
  
-  if (print_lvl > 4) {
-    fprintf(outfile, "\n\tHartree-Fock Electric Dipole Moments:\n");
-    fprintf(outfile, "\t------------------------------------\n");
-    for(f=0; f < 3; f++) {
-      fprintf(outfile, "\tmu[%d] = %10.6f (e a0) = %10.6f (debye)\n", 
-              f, mu[f], mu[f]*_dipmom_au2debye);
-    }
-    fprintf(outfile, "\n\tTotal dipole moment (debye) = %20.10f\n", 
-            sqrt(mu[0]*mu[0] + mu[1]*mu[1] + mu[2]*mu[2])*_dipmom_au2debye);
+  fprintf(outfile, "\n\tHartree-Fock Electric Dipole Moments:\n");
+  fprintf(outfile, "\t------------------------------------\n");
+  for(f=0; f < 3; f++) {
+    fprintf(outfile, "\tmu[%d] = %10.6f (e a0) = %10.6f (debye)\n", 
+            f, mu[f], mu[f]*_dipmom_au2debye);
   }
+  fprintf(outfile, "\n\tTotal dipole moment (debye) = %20.10f\n", 
+          sqrt(mu[0]*mu[0] + mu[1]*mu[1] + mu[2]*mu[2])*_dipmom_au2debye);
   
   free(mu);
 
@@ -119,11 +117,9 @@ void polarize(double ***UF)
     }
   }
   
-  if (print_lvl > 4) {
-    fprintf(outfile, "\n\tHartree-Fock Electric Polarizability Tensor [(e^2 a0^2)/E_h]:\n");
-    fprintf(outfile, "\t---------------------------------------------------------------\n");
-    print_mat(alpha,3,3,outfile);
-  }
+  fprintf(outfile, "\n\tHartree-Fock Electric Polarizability Tensor [(e^2 a0^2)/E_h]:\n");
+  fprintf(outfile, "\t---------------------------------------------------------------\n");
+  print_mat(alpha,3,3,outfile);
 
   for(i=0; i < 3; i++) free_block(MU[i]);
   free(MU);

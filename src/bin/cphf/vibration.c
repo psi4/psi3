@@ -93,11 +93,9 @@ void vibration(double **hessian, double **dipder)
   C_DGEMM('n','n', 3, natom*3, natom*3, 1, &(dipder[0][0]),natom*3,
 	  &(lx[0][0]), natom*3, 0, &(dipder_q[0][0]), natom*3);
 
-  if (print_lvl > 4) {
-    fprintf(outfile, "\n\tDipole Derivatives W.R.T Normal Coordinates
-                      (debye/A-amu+1/2):\n");
-    print_mat(dipder_q, 3, natom*3, outfile);
-  }
+  fprintf(outfile, "\n\tDipole Derivatives W.R.T Normal Coordinates
+                    (debye/A-amu+1/2):\n");
+  print_mat(dipder_q, 3, natom*3, outfile);
 
   /* Compute the IR intensities in D^2/(A^2 amu) */
   irint = init_array(natom*3);
@@ -116,22 +114,20 @@ void vibration(double **hessian, double **dipder)
 /*  fprintf(outfile, "\n\tIR conversion = %20.10f\n", dipder_conv * ir_prefactor); */
 
   /* compute the frequencies and spit them out in a nice table */
-  if (print_lvl > 4) {
-    fprintf(outfile, "\n\t        Harmonic Frequency   Infrared Intensity\n");
-    fprintf(outfile,   "\t              (cm-1)               (km/mol)    \n");
-    fprintf(outfile,   "\t-----------------------------------------------\n");
-    k_convert = _hartree2J/(_bohr2m * _bohr2m * _amu2kg);
-    cm_convert = 1.0/(2.0 * _pi * _c * 100.0);
-    for(i=natom*3-1; i >= 0; i--) {
-      if(km[i] < 0.0)
-        fprintf(outfile, "\t  %3d   %17.3fi       %10.4f\n", i, 
-	        cm_convert * sqrt(-k_convert * km[i]), irint[i]*ir_prefactor);
-      else
-        fprintf(outfile, "\t  %3d   %17.3f        %10.4f\n", i, 
-	        cm_convert * sqrt(k_convert * km[i]), irint[i]*ir_prefactor);
-    }
-    fprintf(outfile,   "\t-----------------------------------------------\n");
+  fprintf(outfile, "\n\t        Harmonic Frequency   Infrared Intensity\n");
+  fprintf(outfile,   "\t              (cm-1)               (km/mol)    \n");
+  fprintf(outfile,   "\t-----------------------------------------------\n");
+  k_convert = _hartree2J/(_bohr2m * _bohr2m * _amu2kg);
+  cm_convert = 1.0/(2.0 * _pi * _c * 100.0);
+  for(i=natom*3-1; i >= 0; i--) {
+    if(km[i] < 0.0)
+      fprintf(outfile, "\t  %3d   %17.3fi       %10.4f\n", i, 
+              cm_convert * sqrt(-k_convert * km[i]), irint[i]*ir_prefactor);
+    else
+      fprintf(outfile, "\t  %3d   %17.3f        %10.4f\n", i, 
+              cm_convert * sqrt(k_convert * km[i]), irint[i]*ir_prefactor);
   }
+  fprintf(outfile,   "\t-----------------------------------------------\n");
 
   free(work);
   free(irint);
