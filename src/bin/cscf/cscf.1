@@ -241,7 +241,9 @@ This gives the maximum number of iterations.
 The default is 40.
 
 .IP "\fBCONVERGENCE =\fP \fIinteger\fP"
-The convergence criterion is
+This specifies how tightly the wavefunction will be converged.  
+Convergence is determined by comparing the RMS change in the density
+matrix ("delta P") to the given value.  The convergence criterion is
 .if n 10**(\-\fIinteger\fP).
 .if t 10\s-2\u(\-\fIinteger\fP)\d\s0.
 The default is 7
