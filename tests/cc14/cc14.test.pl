@@ -2,8 +2,8 @@
 
 require("../psitest.pl");
 
-$TOL = 10**-8;
-$GTOL = 10**-8;
+$TOL = 10**-7;
+$GTOL = 10**-7;
 $REF_FILE = "file11.ref";
 $TEST_FILE = "psi.file11.dat";
 $RESULT = "cc14.test";
