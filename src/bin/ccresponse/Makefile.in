@@ -45,7 +45,6 @@ local.c \
 analyze.c \
 
 BINOBJ = $(CSRC:%.c=%.o)
-ALLOC = 
 
 include ../MakeRules
 

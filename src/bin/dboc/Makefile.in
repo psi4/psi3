@@ -13,7 +13,6 @@ CXXSRC = dboc.cc geom.cc print.cc moinfo.cc overlap.cc mo_overlap.cc linalg.cc\
 #	rccsd.cc
 
 BINOBJ = $(CXXSRC:%.cc=%.o)
-ALLOC = 
 
 include ../MakeRules
 

@@ -16,7 +16,6 @@ read_charges.c read_geomdat.c linalg.c overlap_float.c oe_osrr_float.c \
 freeze_orbs.c
 
 BINOBJ = $(CSRC:%.c=%.o)
-ALLOC = 
 
 include ../MakeRules
 

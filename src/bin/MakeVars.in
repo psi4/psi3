@@ -37,8 +37,6 @@ INSTALL_INCLUDE = @INSTALL_INCLUDE@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 
-PSIPP = @PSIPP@
-
 CPPFLAGS = @CPPFLAGS@
 
 CDEF = @CDEF@
@@ -80,7 +78,6 @@ BLAS = @BLAS@ $(FLIBS)
 LAPACK = @LAPACK@ $(BLAS)
 
 # where to find main for fortran programs
-ALLOC = allocate.o
 vpath allocate.o $(top_objdir)/lib:$(libdir)
 
 # we are mostly compiling C programs here

@@ -19,7 +19,6 @@ local.c restart.c sort_C.c amp_write.c read_guess.c local_guess.c  sort_amps.c  
 write_Rs.c
 
 BINOBJ = $(CSRC:%.c=%.o)
-ALLOC = 
 
 include ../MakeRules
 

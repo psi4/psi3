@@ -20,7 +20,6 @@ CXXSRC = detci.cc params.cc olsengraph.cc civect.cc odometer.cc slaterd.cc \
 mitrush_iter.cc sem.cc sigma.cc opdm.cc tpdm.cc genci.cc mpn.cc
 
 BINOBJ = $(CSRC:%.c=%.o) $(CXXSRC:%.cc=%.o)
-ALLOC = 
 
 # DEC/Compaq Alpha compilers apparently require this for threaded code
 ifneq (,$(findstring osf, $(target)))

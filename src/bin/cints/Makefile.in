@@ -101,7 +101,6 @@ CXXDEF += $(OPTIONS)
 
 LD = $(CXX)
 LDLIBS += $(BLAS) -lpthread
-ALLOC =
 PSILIBS = -lPSI_qt -lPSI_chkpt -lPSI_file30 $(INTLIBS) -lPSI_iwl \
           -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 ifeq ($(findstring CC,$(SUBDIRS)),CC)

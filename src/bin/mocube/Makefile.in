@@ -11,7 +11,6 @@ CSRC = \
 mocube.c delta.c phi.c
 
 BINOBJ = $(CSRC:%.c=%.o)
-ALLOC = 
 
 include ../MakeRules
 

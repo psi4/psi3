@@ -15,7 +15,6 @@ ET_UHF_AAA.c ET_UHF_BBB.c ET_UHF_AAB.c ET_UHF_ABB.c \
 W_sort.c count_ijk.c
 
 BINOBJ = $(CSRC:%.c=%.o)
-ALLOC = 
 
 include ../MakeRules
 

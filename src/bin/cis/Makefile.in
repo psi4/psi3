@@ -28,7 +28,6 @@ local.c \
 amp_write.c \
 
 BINOBJ = $(CSRC:%.c=%.o)
-ALLOC = 
 
 include ../MakeRules
 

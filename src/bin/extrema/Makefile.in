@@ -16,7 +16,6 @@ TRUESRC = $(notdir $(shell echo `ls $(CXXSRC:%=$(srcdir)/%)`))
 CXXINC += -I$(srcdir) $(DIRS:%=-I$(srcdir)/%) -I$(objincdir) -I$(incdir)
 
 BINOBJ = $(TRUESRC:%.cc=%.o)
-ALLOC = 
 
 include ../MakeRules
 

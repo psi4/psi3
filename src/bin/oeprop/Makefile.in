@@ -16,7 +16,6 @@ grid_dens_2d.c grid_dens_3d.c grid_mo.c print.c print_grid.c \
 connectivity.c misc.c
 
 BINOBJ = $(CSRC:%.c=%.o)
-ALLOC = 
 
 include ../MakeRules
 

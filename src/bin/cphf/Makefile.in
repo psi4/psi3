@@ -20,7 +20,6 @@ build_dipder.c \
 vibration.c \
 
 BINOBJ = $(CSRC:%.c=%.o)
-ALLOC = 
 
 include ../MakeRules
 

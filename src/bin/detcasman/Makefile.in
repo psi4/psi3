@@ -10,7 +10,6 @@ PSILIBS = libPSI_qt.a libPSI_ciomr.a libPSI_ipv1.a
 CSRC = detcasman.c setup_io.c
 
 BINOBJ = $(CSRC:%.c=%.o)
-ALLOC = 
 
 include ../MakeRules
 

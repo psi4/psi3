@@ -18,7 +18,6 @@ cache.c  BL2_AO.c   halftrans.c Lnorm.c Lmag.c check_sum.c \
 check_ortho.c overlap_LAMPS.c local.c
 
 BINOBJ = $(CSRC:%.c=%.o)
-ALLOC = 
 
 include ../MakeRules
 

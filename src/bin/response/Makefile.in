@@ -12,7 +12,6 @@ response.c  get_moinfo.c get_params.c cache.c \
 build_A_RHF.c build_B_RHF.c invert_RPA_RHF.c trans_mu.c
 
 BINOBJ = $(CSRC:%.c=%.o)
-ALLOC = 
 
 include ../MakeRules
 

@@ -16,7 +16,6 @@ sort_tei.c  f_sort.c      cache.c       b_sort.c                    \
 d_spinad.c  e_spinad.c    f_spinad.c
 
 BINOBJ = $(CSRC:%.c=%.o)
-ALLOC = 
 
 include ../MakeRules
 

@@ -13,7 +13,6 @@ build_A_RHF.c build_A_ROHF.c build_A_UHF.c \
 diag_A_RHF.c diag_A_ROHF.c diag_A_UHF.c \
 
 BINOBJ = $(CSRC:%.c=%.o)
-ALLOC = 
 
 include ../MakeRules
 

@@ -22,7 +22,6 @@ fold_ROHF.c fold_UHF.c deanti_ROHF.c deanti_UHF.c add_core_ROHF.c add_core_UHF.c
 add_ref_ROHF.c add_ref_UHF.c dump_ROHF.c dump_UHF.c dipole.c sort_Ls.c
 
 BINOBJ = $(CSRC:%.c=%.o)
-ALLOC =
 
 include ../MakeRules
 

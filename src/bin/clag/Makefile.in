@@ -15,7 +15,6 @@ CSRC = clag.c lagcalc.c ci_energy.c \
 CXXSRC = 
 
 BINOBJ = $(CSRC:%.c=%.o) $(CXXSRC:%.cc=%.o)
-ALLOC = 
 
 include ../MakeRules
 

@@ -12,7 +12,6 @@ CSRC = mvo.c gprgid.c transform.c get_mp2nos.c get_canonical.c form_fock_full.c
 CXXSRC = 
 
 BINOBJ = $(CSRC:%.c=%.o) $(CXXSRC:%.cc=%.o)
-ALLOC = 
 
 include ../MakeRules
 

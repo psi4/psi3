@@ -14,7 +14,6 @@ cache.c  sort_amps.c tau.c taut.c Wabei_ROHF.c  \
 Wabei_AAAA_UHF.c Wabei_BBBB_UHF.c Wabei_ABAB_UHF.c Wabei_BABA_UHF.c
 
 BINOBJ = $(CSRC:%.c=%.o)
-ALLOC = 
 
 include ../MakeRules
 

@@ -21,7 +21,6 @@ CXXSRC = opt.cc compute_B.cc compute_G.cc compute_H.cc compute_q.cc \
          print_zmat.cc
 
 BINOBJ = $(CSRC:%.c=%.o) $(CXXSRC:%.cc=%.o)
-ALLOC = 
 
 include ../MakeRules
 

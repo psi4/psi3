@@ -16,7 +16,6 @@ findit_uhf.c uhf_iter.c schmit_uhf.c diis2_uhf.c formg_direct.c \
 orb_mix.c
 
 BINOBJ = $(TRUESRC:%.c=%.o)
-ALLOC = 
 
 include ../MakeRules
 

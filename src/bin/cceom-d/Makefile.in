@@ -12,7 +12,6 @@ cache.c      energy.c   get_params.c  intermediates.c \
 cceom-d.c  get_moinfo.c  onepdm.c
 
 BINOBJ = $(CSRC:%.c=%.o)
-ALLOC =
 
 include ../MakeRules
 

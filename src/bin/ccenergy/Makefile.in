@@ -18,7 +18,6 @@ local.c lmp2.c new_d1diag.c amp_write.c rotate.c fock_build.c \
 diis_RHF.c diis_UHF.c diis_ROHF.c analyze.c \
 
 BINOBJ = $(CSRC:%.c=%.o)
-ALLOC = 
 
 include ../MakeRules
 

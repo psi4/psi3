@@ -15,7 +15,6 @@ thetas.c cleanup.c diis.c
 CXXSRC = detcas.cc indpairs.cc
 
 BINOBJ = $(CSRC:%.c=%.o) $(CXXSRC:%.cc=%.o)
-ALLOC = 
 
 include ../MakeRules
 

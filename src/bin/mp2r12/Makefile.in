@@ -10,7 +10,6 @@ PSILIBS = -lPSI_qt -lPSI_file30 -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lP
 CSRC = gprgid.c mp2r12.c mp2r12_energy.c
 
 BINOBJ = $(CSRC:%.c=%.o)
-ALLOC = 
 
 include ../MakeRules
 

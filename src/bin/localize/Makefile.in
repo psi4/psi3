@@ -11,7 +11,6 @@ CSRC = \
 local.c
 
 BINOBJ = $(CSRC:%.c=%.o)
-ALLOC = 
 
 include ../MakeRules
 

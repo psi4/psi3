@@ -11,7 +11,6 @@ CSRC = \
 cusp.c phi.c delta.c cache.c local.c
 
 BINOBJ = $(CSRC:%.c=%.o)
-ALLOC = 
 
 include ../MakeRules
 

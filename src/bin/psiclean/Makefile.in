@@ -8,7 +8,6 @@ PSILIBS = -lPSI_qt -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 CSRC = psiclean.c
 
 BINOBJ = $(CSRC:%.c=%.o)
-ALLOC = 
 
 include ../MakeRules
 
