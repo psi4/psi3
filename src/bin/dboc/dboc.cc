@@ -336,6 +336,32 @@ void init_basissets(Params_t::Coord_t* coord)
   }
 }
 
+//
+// This function destroys basis set objects for each displacement
+//
+void delete_basissets(Params_t::Coord_t* coord)
+{
+  BasisSets[MinusDelta]->~BasisSet();
+  BasisSets[PlusDelta]->~BasisSet();
+  if (Params.disp_per_coord == 4) {
+    BasisSets[Minus2Delta]->~BasisSet();
+    BasisSets[Plus2Delta]->~BasisSet();
+  }
+}
+
+//
+// This function destroys HFWavefunction objects for each displacement
+//
+void delete_hfwfns(Params_t::Coord_t* coord)
+{
+  HFVectors[MinusDelta]->~HFWavefunction();
+  HFVectors[PlusDelta]->~HFWavefunction();
+  if (Params.disp_per_coord == 4) {
+    HFVectors[Minus2Delta]->~HFWavefunction();
+    HFVectors[Plus2Delta]->~HFWavefunction();
+  }
+}
+
 double eval_dboc()
 {
 
