@@ -1,0 +1,78 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "dpd.h"
+#define EXTERN
+#include "dpd.gbl"
+
+int dpd_close(int dpd_num)
+{
+  int h,i,j,k,cnt;
+  int nirreps,num_subspaces,num_pairs;
+  dpd_data *this_dpd;
+
+/*  dpd_file2_cache_print(stdout); */
+  dpd_file2_cache_close();
+/*  dpd_file4_cache_print(stdout);*/
+  dpd_file4_cache_close();
+
+  this_dpd = &(dpd_list[dpd_num]);
+
+  num_subspaces = this_dpd->num_subspaces;
+  nirreps = this_dpd->nirreps;
+  num_pairs = this_dpd->num_pairs;
+
+  for(i=0; i < num_subspaces; i++)  free(this_dpd->orboff[i]);
+  free(this_dpd->orboff);
+
+  for(i=0; i < num_subspaces; i++) {
+      for(j=0; j < 5; j++) {
+	  free_int_matrix(this_dpd->pairidx[5*i+j], this_dpd->numorbs[i]);
+	  for(k=0; k < this_dpd->nirreps; k++) 
+	      if(this_dpd->pairtot[5*i+j][k])
+		free_int_matrix(this_dpd->pairorb[5*i+j][k],
+                                this_dpd->pairtot[5*i+j][k]);
+	}
+    }
+  for(i=0,cnt=5*num_subspaces; i < num_subspaces; i++)
+      for(j=i+1; j < num_subspaces; j++,cnt+=2) {
+	  free_int_matrix(this_dpd->pairidx[cnt],this_dpd->numorbs[i]);
+	  free_int_matrix(this_dpd->pairidx[cnt+1], this_dpd->numorbs[j]);
+	  for(k=0; k < nirreps; k++) {
+	      if(this_dpd->pairtot[cnt][k])
+		free_int_matrix(this_dpd->pairorb[cnt][k],
+                                this_dpd->pairtot[cnt][k]);
+	      if(this_dpd->pairtot[cnt+1][k])
+		free_int_matrix(this_dpd->pairorb[cnt+1][k],
+                                this_dpd->pairtot[cnt+1][k]);
+	    }
+	}
+  free(this_dpd->pairidx); free(this_dpd->pairorb);
+
+  for(i=0; i < num_subspaces; i++) {
+      free(this_dpd->orbidx2[i]);
+      for(j=0; j < nirreps; j++) {
+	  if(this_dpd->orbspi[i][j]) free(this_dpd->orbs2[i][j]);
+	}
+      free(this_dpd->orbs2[i]);
+    }
+  free(this_dpd->orbidx2); free(this_dpd->orbs2);
+
+  for(i=0; i < num_subspaces; i++) {
+      free(this_dpd->orbspi[i]);
+      free(this_dpd->orbsym[i]);
+    }
+  free(this_dpd->orbspi); free(this_dpd->orbsym);
+
+  free_int_matrix(this_dpd->pairtot, this_dpd->num_pairs);
+
+  free(this_dpd->numorbs);
+
+  for(i=0; i < num_pairs; i++)
+      free(this_dpd->params4[i]);
+  free(this_dpd->params4);
+  for(i=0; i < num_subspaces; i++)
+      free(this_dpd->params2[i]);
+  free(this_dpd->params2);
+
+  return 0;
+}

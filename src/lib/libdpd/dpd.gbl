@@ -1,0 +1,11 @@
+#include "dpd.h"
+
+#ifdef EXTERN
+#undef EXTERN
+#define EXTERN extern
+#else
+#define EXTERN
+#endif
+
+EXTERN dpd_data *dpd_default;
+EXTERN dpd_data dpd_list[2];  /* Just two active DPDs for now */
