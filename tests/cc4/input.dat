@@ -15,7 +15,6 @@ default: (
 input: (
   basis = "cc-pVQZ"
   puream = true
-  units = angstroms
   geometry = (
     ( b      0.0000        0.0000        0.0000)
     ( h      0.0000        0.0000        1.0000)

@@ -13,7 +13,6 @@ default: (
 )
 
 input: (
-  units = angstrom
   basis = "cc-pVDZ"
   puream = true
   zmat = ((h) (o 1 0.9) (h 2 0.9 1 104.))

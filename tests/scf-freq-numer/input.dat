@@ -17,7 +17,6 @@ default: (
 
 input: (
   basis = "6-31G**"
-  units = angstrom
   zmat = (
     (o)
     (h 1 roh)

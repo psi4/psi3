@@ -7,43 +7,20 @@ psi: (
 
 default: (
   label = "6-31G** CISD H2O"
-  memory = (20.0 MB)
 
-  symmetry = c2v
   wfn = detci
   reference = rhf
   dertype = none
-  docc = (3 0 1 1)
-
-  files: (
-    default: ( name = "h2o" )
-    )
 )
 
 input: (
-  basis = 631Gss
-  units = angstrom
+  basis = "6-31G**"
   zmat = (
     (o)
     (h 1 1.00)
     (h 1 1.00 2 103.1)
   )
   origin = (0.0 0.0 0.0)
-)
-
-basis: (
-  oxygen:631Gss = (
-    (get "631GST")
-)
-  hydrogen:631Gss = (
-    (get "631GST")
-    (get "STAR1")
-  )
-)
-
-scf: (
-  maxiter = 100
-  convergence = 12
 )
 
 detci: (
