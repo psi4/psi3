@@ -6,7 +6,7 @@
                             in cart->puream transformation and normalization (should always be
 			    set to 1 except for testing purposes)*/
 #define SPARSE_C2P 1     /* Use sparcity of cartesian to spherical harmonics transformation */
-#define USE_BLAS 1       /* Use routines from vendor-provided BLAS library for
+#define USE_BLAS 0       /* Use routines from vendor-provided BLAS library for
 			    4-index transformations such as cart->puream
 			    (only if SPARSE_C2P is set 0, otherwise sparse matrix
 			    multiplies will be used), AO->MO, etc.;

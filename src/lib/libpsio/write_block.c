@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "psio.h"
 
 int psio_write_block(ULI unit, char *key, char *buffer, ULI blksiz,

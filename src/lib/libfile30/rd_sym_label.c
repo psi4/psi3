@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
