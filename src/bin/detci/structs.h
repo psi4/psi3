@@ -250,8 +250,6 @@ struct calcinfo {
    char **labels;        /* labels for irreps */
    int *orbs_per_irr;    /* (molecular) orbitals per irrep */
    int *so_per_irr;      /* symmetry orbitals per irrep */
-   int *closed_per_irr;  /* closed per irrep */
-   int *open_per_irr;    /* open per irrep */
    int *orbsym;          /* irrep for each orbital */
    int *reorder;         /* map Pitzer-ordered orbitals to our ordering */
    int *order;           /* map our ordering back to Pitzer ordering */

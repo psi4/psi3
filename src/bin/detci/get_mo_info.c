@@ -30,8 +30,10 @@ void get_mo_info(void)
    int parsed_ras1=0, parsed_ras2=0, do_ras4;
 
    CalcInfo.maxKlist = 0.0; 
+
+   CalcInfo.docc = init_int_array(CalcInfo.nirreps);
+   CalcInfo.socc = init_int_array(CalcInfo.nirreps);
    
-#if USE_LIBCHKPT
    chkpt_init(PSIO_OPEN_OLD);
    CalcInfo.nirreps = chkpt_rd_nirreps();
    CalcInfo.nso = chkpt_rd_nmo();
@@ -40,30 +42,13 @@ void get_mo_info(void)
    CalcInfo.labels = chkpt_rd_irr_labs();
    CalcInfo.orbs_per_irr = chkpt_rd_orbspi();
    CalcInfo.so_per_irr = chkpt_rd_sopi();
-   CalcInfo.closed_per_irr = chkpt_rd_clsdpi();
-   CalcInfo.open_per_irr = chkpt_rd_openpi();
+   CalcInfo.docc = chkpt_rd_clsdpi();
+   CalcInfo.socc = chkpt_rd_openpi();
    CalcInfo.enuc = chkpt_rd_enuc();
    CalcInfo.escf = chkpt_rd_escf();
    CalcInfo.efzc = chkpt_rd_efzc();
    eig_unsrt = chkpt_rd_evals(); 
    chkpt_close(); 
-#else
-   file30_init();
-   CalcInfo.nirreps = file30_rd_nirreps();
-   CalcInfo.nso = file30_rd_nmo();
-   CalcInfo.nmo = file30_rd_nmo();
-   CalcInfo.iopen = file30_rd_iopen();
-   CalcInfo.labels = file30_rd_irr_labs();
-   CalcInfo.orbs_per_irr = file30_rd_orbspi();
-   CalcInfo.so_per_irr = file30_rd_sopi();
-   CalcInfo.closed_per_irr = file30_rd_clsdpi();
-   CalcInfo.open_per_irr = file30_rd_openpi();
-   CalcInfo.enuc = file30_rd_enuc();
-   CalcInfo.escf = file30_rd_escf();
-   CalcInfo.efzc = file30_rd_efzc();
-   eig_unsrt = file30_rd_evals();
-   file30_close();
-#endif
 
    if (CalcInfo.iopen && Parameters.opentype == PARM_OPENTYPE_NONE) {
       fprintf(outfile, "Warning: iopen=1,opentype=none. Making iopen=0\n");
@@ -79,13 +64,11 @@ void get_mo_info(void)
       Parameters.ref_sym = 0;
       }
 
-   CalcInfo.docc = init_int_array(CalcInfo.nirreps);
-   CalcInfo.socc = init_int_array(CalcInfo.nirreps);
    CalcInfo.frozen_docc = init_int_array(CalcInfo.nirreps);
    CalcInfo.frozen_uocc = init_int_array(CalcInfo.nirreps);
    CalcInfo.reorder = init_int_array(CalcInfo.nmo);
    CalcInfo.ras_opi = init_int_matrix(4,CalcInfo.nirreps);
-      
+
    if (!ras_set(CalcInfo.nirreps, CalcInfo.nmo, Parameters.fzc, 
                 CalcInfo.orbs_per_irr, CalcInfo.docc, CalcInfo.socc, 
                 CalcInfo.frozen_docc, CalcInfo.frozen_uocc, 
