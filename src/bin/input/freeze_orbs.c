@@ -47,7 +47,7 @@ void freeze_core()
     nfzc = atoi(frozen_core);
   }
   else
-    punt("Invalid value for FROZEN_CORE");
+    punt("Invalid value for FREEZE_CORE");
 
 }
 
@@ -63,6 +63,6 @@ void freeze_virt()
     nfzv = atoi(frozen_virt);
   }
   else
-    punt("Invalid value for FROZEN_VIRT");
+    punt("Invalid value for FREEZE_VIRT");
 
 }
