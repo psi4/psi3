@@ -104,6 +104,13 @@ void *cc_bt2_thread(void *tnum_ptr)
 
   double *scratch_buf;          /* scratch used in permuting bra and ket */
 
+  int nao, nocc;
+  int ji, ki, il, li, jk, kj, lj, lk;
+  int ii, jj, kk, ll, IJ, KL;
+
+  nao = BasisSet.num_ao;
+  nocc = CCInfo.nocc;
+
   /*---------------
     Initialization
    ---------------*/
@@ -338,16 +345,86 @@ void *cc_bt2_thread(void *tnum_ptr)
 #endif
 	      }
 
-
 	      ijkl = 0;
-	      for(i=0;i<ni;i++)
-		for(j=0;j<nj;j++)
-		  for(k=0;k<nk;k++)
+	      for(i=0;i<ni;i++) {
+                ii = i + si_fao; 
+		for(j=0;j<nj;j++) {
+                  jj = j + sj_fao; 
+                  IJ = INDEX(ii,jj);
+		  for(k=0;k<nk;k++) {
+                    kk = k + sk_fao; 
 		    for(l=0;l<nl;l++,ijkl++) {
+                      ll = l + sl_fao; 
+                      KL = INDEX(kk,ll);
+
+                      if(si == sj && ii < jj) continue;
+                      if(sk == sl && kk < ll) continue;
+                      if(INDEX(si,sj) == INDEX(sk,sl) && IJ < KL)
+                        continue;     
 
 		      value = data[ijkl];
 
+                      if(fabs(value) > 1e-8)
+                          fprintf(outfile, "%d %d %d %d %20.14f\n", ii, jj, kk, ll, value);
+
+                      ij = ii*nao + jj; ji = jj*nao + ii;
+                      ik = ii*nao + kk; ki = kk*nao + ii;
+                      il = ii*nao + ll; li = ll*nao + ii;
+                      jk = jj*nao + kk; kj = kk*nao + jj;
+                      jl = jj*nao + ll; lj = ll*nao + jj;
+                      kl = kk*nao + ll; lk = ll*nao + kk;
+
+                      /* (ij|kl) */
+                      C_DAXPY(nocc*nocc, value, CCInfo.T2_s[jl], 1, CCInfo.T2_t[ik],1);
+
+                      if(ii!=jj && kk!=ll && IJ!=KL) {
+                        /* (ij|lk) */
+                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[jk], 1, CCInfo.T2_t[il],1);
+                        /* (ji|kl) */
+                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[il], 1, CCInfo.T2_t[jk],1);
+                        /* (ji|lk) */
+                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[ik], 1, CCInfo.T2_t[jl],1);
+                        /* (kl|ij) */
+                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[lj], 1, CCInfo.T2_t[ki],1);
+                        /* (kl|ji) */
+                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[li], 1, CCInfo.T2_t[kj],1);
+                        /* (lk|ij) */
+                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[kj], 1, CCInfo.T2_t[li],1);
+                        /* (lk|ji) */
+                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[ki], 1, CCInfo.T2_t[lj],1);
+                      }
+                      else if(ii!=jj && kk!=ll && IJ==KL) {
+                        /* (ij|lk) */
+                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[jk], 1, CCInfo.T2_t[il],1);
+                        /* (ji|kl) */
+                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[il], 1, CCInfo.T2_t[jk],1);
+                        /* (ji|lk) */
+                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[ik], 1, CCInfo.T2_t[jl],1);
+                      }
+                      else if(ii!=jj && kk==ll) {
+                        /* (ji|kl) */
+                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[il], 1, CCInfo.T2_t[jk],1);
+                        /* (kl|ij) */
+                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[lj], 1, CCInfo.T2_t[ki],1);
+                        /* (kl|ji) */
+                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[li], 1, CCInfo.T2_t[kj],1);
+                      }
+                      else if(ii==jj && kk!=ll) {
+                        /* (ij|lk) */
+                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[jk], 1, CCInfo.T2_t[il],1);
+                        /* (kl|ij) */
+                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[lj], 1, CCInfo.T2_t[ki],1);
+                        /* (lk|ij) */
+                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[kj], 1, CCInfo.T2_t[li],1);
+                      }
+                      else if(ii==jj && kk==ll && IJ!=KL) {
+                        /* (kl|ij) */
+                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[lj], 1, CCInfo.T2_t[ki],1);
+                      }
 		    }
+                  }
+                }
+              }
 
 	  } /* end of RSPQ loop */
 	} /* end of "unique" RSQP loop */
