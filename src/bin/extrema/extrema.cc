@@ -15,14 +15,14 @@
 
 int get_coord_type();
 void print_intro();
-void start_io();
+void start_io(int argc, char *argv[]);
 void stop_io();
 
 
 
-int main() {
+int main(int argc, char *argv[]) {
 
-    start_io();
+    start_io(argc,argv);
     print_intro();
     coord_type = get_coord_type();
 
@@ -115,18 +115,11 @@ void print_intro() {
 
 
 
-void start_io() {
-    
-    ffile(&infile,"input.dat",2);
-    ffile(&outfile,"output.dat",1);
-        
-    ip_set_uppercase(1);
-    ip_initialize(infile,outfile);
-    ip_cwk_clear();
-  
-    ip_cwk_add(":EXTREMA");
-    ip_cwk_add(":DEFAULT");
+void start_io(int argc, char *argv[]) {
+   
+    psi_start(argc-1,argv+1,0); 
     ip_cwk_add(":INPUT");
+    ip_cwk_add(":EXTREMA");
 
     file30_init();
 
@@ -138,10 +131,8 @@ void start_io() {
 void stop_io() {
 
     file30_close();
-    ip_done();
     tstop(outfile);
-    fclose(infile);
-    fclose(outfile);    
-    
+    psi_stop();
+ 
     return;
 }

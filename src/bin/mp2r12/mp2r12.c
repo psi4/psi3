@@ -18,12 +18,13 @@
 
 /* First definitions of globals */
 FILE *infile, *outfile;
+char *psi_file_prefix;
 int *ioff;
 struct MOInfo moinfo;
 struct Params params;
 
 /* Function Prototypes */
-void init_io();
+void init_io(int argc, char *argv[]);
 void title();
 void init_ioff();
 void get_parameters();
@@ -31,9 +32,9 @@ void get_moinfo();
 void energy();
 void exit_io();
 
-int main()
+int main(int argc, char *argv[])
 {
-  init_io();
+  init_io(argc,argv);
   title();
   get_parameters();
   get_moinfo();
@@ -43,15 +44,10 @@ int main()
   exit(0);
 }
 
-void init_io(void)
+void init_io(int argc, char *argv[])
 {
-  ffile(&infile,"input.dat",2);
-  ffile(&outfile,"output.dat",1);
+  psi_start(argc-1,argv+1,0);
   tstart(outfile);
-  ip_set_uppercase(1);
-  ip_initialize(infile,outfile);
-  ip_cwk_clear();
-  ip_cwk_add(":DEFAULT");
   ip_cwk_add(":MP2R12");
   
   psio_init();
@@ -101,7 +97,7 @@ void exit_io(void)
 #endif
   psio_done();
   tstop(outfile);
-  ip_done();
+  psi_stop();
 }
 
 void get_parameters(void)

@@ -29,6 +29,7 @@ void punt(char*);
 double **symm_matrix_invert(double**, int, int, int);
 
 EXTERN FILE *infile, *outfile;
+EXTERN char *psi_file_prefix;
 
 EXTERN int coord_type;
 EXTERN int errcod, error;
