@@ -30,7 +30,7 @@ endif
 
 install_inc:: iwl.h
 	$(MKDIRS) $(incdir)/libiwl
-	$(INSTALL_INCLUDE) $^ $(incdir)/libbiwl
+	$(INSTALL_INCLUDE) $^ $(incdir)/libiwl
 
 install_man:: libiwl.txt
 	$(MKDIRS) $(txtdir)
