@@ -577,8 +577,10 @@ void diag(void) {
         restart(alpha, L, eom_params.rpi[irrep], C_irr, 0);
 
 	/* Print out the largest elements of the C1 vectors in the local basis */
+/*
 	if(params.local)
 	  local_print_T1_norm(eom_params.rpi[irrep]);
+*/
 
       }
       free_block(alpha);

@@ -3,6 +3,8 @@
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <libiwl/iwl.h>
+#include <libfile30/file30.h>
+#include <libchkpt/chkpt.h>
 
 #include "MOInfo.h"
 #include "Params.h"
@@ -115,6 +117,9 @@ void transform_two_uhf(void)
     file30_init();
     file30_wt_efzc(moinfo.efzc);
     file30_close();
+    chkpt_init();
+    chkpt_wt_efzc(moinfo.efzc);
+    chkpt_close();
 
     if (params.print_lvl) 
       fprintf(outfile, "\n\tFrozen core energy = %20.15lf\n", moinfo.efzc);

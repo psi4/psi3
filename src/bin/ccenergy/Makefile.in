@@ -6,7 +6,7 @@ include ../MakeVars
 LD = $(FC)
 LDLIBS += $(LAPACK) $(BLAS)
 
-PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_file30 -lPSI_iwl -lPSI_ciomr -lPSI_psio -lPSI_ipv1
+PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
 CSRC = \
 BT2.c  Fae.c     Wmbej.c                 d1diag.c      get_moinfo.c  t2.c     \

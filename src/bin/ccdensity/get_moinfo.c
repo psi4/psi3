@@ -2,13 +2,13 @@
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
-#include <libfile30/file30.h>
+#include <libchkpt/chkpt.h>
 #define EXTERN
 #include "globals.h"
 
 /*
 ** get_moinfo():  Routine to obtain basic orbital information from
-** FILE30 and CC_INFO.
+** CHKPT and CC_INFO.
 **
 ** T. Daniel Crawford, October 1996.
 ** Modified by TDC, March 1999.
@@ -19,17 +19,17 @@ void get_moinfo(void)
   int i, j, h, errcod;
   int nactive;
 
-  file30_init();
-  moinfo.nirreps = file30_rd_nirreps();
-  moinfo.nmo = file30_rd_nmo();
-  moinfo.iopen = file30_rd_iopen();
-  moinfo.labels = file30_rd_irr_labs();
-  moinfo.enuc = file30_rd_enuc();
-  moinfo.escf = file30_rd_escf();
-  moinfo.orbspi = file30_rd_orbspi();
-  moinfo.clsdpi = file30_rd_clsdpi();
-  moinfo.openpi = file30_rd_openpi();
-  file30_close();
+  chkpt_init();
+  moinfo.nirreps = chkpt_rd_nirreps();
+  moinfo.nmo = chkpt_rd_nmo();
+  moinfo.iopen = chkpt_rd_iopen();
+  moinfo.labels = chkpt_rd_irr_labs();
+  moinfo.enuc = chkpt_rd_enuc();
+  moinfo.escf = chkpt_rd_escf();
+  moinfo.orbspi = chkpt_rd_orbspi();
+  moinfo.clsdpi = chkpt_rd_clsdpi();
+  moinfo.openpi = chkpt_rd_openpi();
+  chkpt_close();
 
   /* Get frozen and active orbital lookups from CC_INFO */
   moinfo.frdocc = init_int_array(moinfo.nirreps);
@@ -102,8 +102,8 @@ void get_moinfo(void)
   psio_read_entry(CC_INFO, "CCSD Energy", (char *) &(moinfo.ecc),
 		  sizeof(double));
 
-  fprintf(outfile,"\n\tNuclear Rep. energy (file30)  = %20.15f\n",moinfo.enuc);
-  fprintf(outfile,  "\tSCF energy          (file30)  = %20.15f\n",moinfo.escf);
+  fprintf(outfile,"\n\tNuclear Rep. energy (chkpt)   = %20.15f\n",moinfo.enuc);
+  fprintf(outfile,  "\tSCF energy          (chkpt)   = %20.15f\n",moinfo.escf);
   fprintf(outfile,  "\tReference energy    (file100) = %20.15f\n",moinfo.eref);
   fprintf(outfile,  "\tCCSD energy         (file100) = %20.15f\n",moinfo.ecc);
   fprintf(outfile,  "\tTotal CCSD energy   (file100) = %20.15f\n", 

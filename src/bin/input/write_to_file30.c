@@ -361,7 +361,7 @@ void write_to_file30(double repulsion)
   pointers[50] = ptr/sizeof(int) +1;
   for(i=0;i<num_entries;++i)
     wwritw(CHECKPOINTFILE,(char *) full_geom[i], 3*sizeof(double),ptr,&ptr);
-  chkpt_wt_fgeom(full_geom);
+  if(full_geom != NULL) chkpt_wt_fgeom(full_geom); /* only available if zmat input */
 
   
   /*---------------------------

@@ -2,13 +2,13 @@
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
-#include <libfile30/file30.h>
+#include <libchkpt/chkpt.h>
 #define EXTERN
 #include "globals.h"
 
 /*
 ** get_moinfo():  Routine to obtain basic orbital information from
-** FILE30 and CC_INFO.
+** CHKPT and CC_INFO.
 **
 ** T. Daniel Crawford, October 1996.
 ** Modified by TDC, March 1999.
@@ -18,16 +18,16 @@ void get_moinfo(void)
 {
   int i, h, errcod, nactive, nirreps;
 
-  file30_init();
-  moinfo.nirreps = file30_rd_nirreps();
-  moinfo.nmo = file30_rd_nmo();
-  moinfo.iopen = file30_rd_iopen();
-  moinfo.labels = file30_rd_irr_labs();
-  moinfo.orbspi = file30_rd_orbspi();
-  moinfo.clsdpi = file30_rd_clsdpi();
-  moinfo.openpi = file30_rd_openpi();
-  moinfo.phase = file30_rd_phase_check();
-  file30_close();
+  chkpt_init();
+  moinfo.nirreps = chkpt_rd_nirreps();
+  moinfo.nmo = chkpt_rd_nmo();
+  moinfo.iopen = chkpt_rd_iopen();
+  moinfo.labels = chkpt_rd_irr_labs();
+  moinfo.orbspi = chkpt_rd_orbspi();
+  moinfo.clsdpi = chkpt_rd_clsdpi();
+  moinfo.openpi = chkpt_rd_openpi();
+  moinfo.phase = chkpt_rd_phase_check();
+  chkpt_close();
 
   nirreps = moinfo.nirreps;
 

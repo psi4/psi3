@@ -122,6 +122,7 @@
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
 #include <libfile30/file30.h>
+#include <libchkpt/chkpt.h>
 #include <libqt/qt.h>
 #include <psifiles.h>
 #include "MOInfo.h"
@@ -639,26 +640,29 @@ void get_moinfo(void)
   double **tmpmat, **so2ao;
 
   file30_init();
-  moinfo.nmo = file30_rd_nmo();
-  moinfo.nso = file30_rd_nso();
-  moinfo.nao = file30_rd_nao();
-  moinfo.nirreps = file30_rd_nirreps();
-  moinfo.iopen = file30_rd_iopen();
-  moinfo.labels = file30_rd_irr_labs();
-  moinfo.sopi   = file30_rd_sopi();
-  moinfo.orbspi = file30_rd_orbspi();
-  moinfo.clsdpi = file30_rd_clsdpi();
-  moinfo.openpi = file30_rd_openpi();
-  moinfo.enuc = file30_rd_enuc();
-  moinfo.escf = file30_rd_escf();
-  moinfo.evals = file30_rd_evals();
-  moinfo.scf_vector = file30_rd_scf();
-  moinfo.scf_vector_alpha = file30_rd_alpha_scf();
-  moinfo.scf_vector_beta = file30_rd_beta_scf();
-  moinfo.nshell = file30_rd_nshell();
-  moinfo.sloc = file30_rd_sloc();
-  moinfo.snuc = file30_rd_snuc();
-  moinfo.stype = file30_rd_stype();
+  chkpt_init();
+  moinfo.nmo = chkpt_rd_nmo();
+  moinfo.nso = chkpt_rd_nso();
+  moinfo.nao = chkpt_rd_nao();
+  moinfo.nirreps = chkpt_rd_nirreps();
+  moinfo.iopen = chkpt_rd_iopen();
+  moinfo.labels = chkpt_rd_irr_labs();
+  moinfo.sopi   = chkpt_rd_sopi();
+  moinfo.orbspi = chkpt_rd_orbspi();
+  moinfo.clsdpi = chkpt_rd_clsdpi();
+  moinfo.openpi = chkpt_rd_openpi();
+  moinfo.enuc = chkpt_rd_enuc();
+  moinfo.escf = chkpt_rd_escf();
+  moinfo.evals = chkpt_rd_evals();
+  moinfo.scf_vector = chkpt_rd_scf();
+  if(!strcmp(params.ref, "UHF")) {
+    moinfo.scf_vector_alpha = chkpt_rd_alpha_scf();
+    moinfo.scf_vector_beta = chkpt_rd_beta_scf();
+  }
+  moinfo.nshell = chkpt_rd_nshell();
+  moinfo.sloc = chkpt_rd_sloc();
+  moinfo.snuc = chkpt_rd_snuc();
+  moinfo.stype = chkpt_rd_stype();
 
   
   /* reorder the MOs if the user has requested it */
@@ -774,8 +778,11 @@ void get_moinfo(void)
   if(params.qrhf) {
     file30_wt_clsdpi(moinfo.clsdpi);
     file30_wt_openpi(moinfo.openpi);
+    chkpt_wt_clsdpi(moinfo.clsdpi);
+    chkpt_wt_openpi(moinfo.openpi);
     for(i=0,nopen=0; i < moinfo.nirreps; i++) nopen += moinfo.openpi[i];
     file30_wt_iopen(nopen);
+    chkpt_wt_iopen(nopen);
   }
 
   moinfo.virtpi = init_int_array(moinfo.nirreps);
@@ -924,7 +931,7 @@ void get_moinfo(void)
 					      moinfo.first, moinfo.last, params.print_mos);
       }
       else {
-	moinfo.evects = construct_evects("alpha", moinfo.nirreps, moinfo.orbspi,
+	moinfo.evects = construct_evects("RHF", moinfo.nirreps, moinfo.orbspi,
 					 moinfo.sopi, moinfo.orbspi,
 					 moinfo.first_so, moinfo.last_so,
 					 moinfo.first, moinfo.last, 
@@ -946,7 +953,7 @@ void get_moinfo(void)
 					      moinfo.fstact, moinfo.lstact, params.print_mos);
       }
       else {
-	moinfo.evects = construct_evects("alpha", moinfo.nirreps, moinfo.active,
+	moinfo.evects = construct_evects("RHF", moinfo.nirreps, moinfo.active,
 					 moinfo.sopi, moinfo.orbspi,
 					 moinfo.first_so, moinfo.last_so,
 					 moinfo.first, moinfo.last, 
@@ -966,7 +973,8 @@ void get_moinfo(void)
   else {
 
     if (params.print_mos) fprintf(outfile, "SO to AO matrix\n");
-    so2ao = file30_rd_usotao_new();
+    /*    so2ao = file30_rd_usotao_new(); */
+    so2ao = chkpt_rd_usotao();
     if (params.print_mos) print_mat(so2ao,moinfo.nso,moinfo.nao,outfile);
     tmpmat = init_matrix(moinfo.nso, moinfo.nmo - moinfo.nfzv);
 
@@ -1047,7 +1055,8 @@ void get_moinfo(void)
     free_block(so2ao);
 
   }
-  
+
+  chkpt_close();  
   file30_close();
 
   /* define some first/last arrays for backtransforms to migrate away  */
@@ -1318,6 +1327,7 @@ double *** construct_evects(char *spin, int nirreps, int *active, int *sopi,
 
   if(!strcmp(spin,"alpha")) scf = moinfo.scf_vector_alpha;
   else if(!strcmp(spin,"beta")) scf = moinfo.scf_vector_beta;
+  else if(!strcmp(spin,"RHF")) scf = moinfo.scf_vector;
   else { fprintf(stderr, "ERROR: Bad spin value!\n"); exit(1); }
 
   evects = (double ***) malloc(nirreps * sizeof(double **));

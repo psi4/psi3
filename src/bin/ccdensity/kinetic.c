@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <libciomr/libciomr.h>
 #include <libiwl/iwl.h>
-#include <libfile30/file30.h>
+#include <libchkpt/chkpt.h>
 #include <libdpd/dpd.h>
 #include <libqt/qt.h>
 #include <psifiles.h>
@@ -38,9 +38,9 @@ void kinetic(void)
              order, moinfo.orbspi, moinfo.nirreps);
 
   /*** Reorder the SCF eigenvectors to QT ordering */
-  file30_init();
-  scf_pitzer = file30_rd_scf();
-  file30_close();
+  chkpt_init();
+  scf_pitzer = chkpt_rd_scf();
+  chkpt_close();
 
   scf_qt = block_matrix(nmo, nmo);
   for(i=0; i < nmo; i++) {

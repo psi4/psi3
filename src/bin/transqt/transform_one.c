@@ -5,6 +5,7 @@
 #include <libqt/qt.h>
 #include <libiwl/iwl.h>
 #include <libfile30/file30.h>
+#include <libchkpt/chkpt.h>
 #include <psifiles.h>
 #include "MOInfo.h"
 #include "Params.h"
@@ -122,7 +123,7 @@ void trans_one_forwards(void)
 					    moinfo.first, moinfo.last, params.print_mos);
     }
     else {
-      moinfo.evects = construct_evects("alpha", moinfo.nirreps, moinfo.orbspi,
+      moinfo.evects = construct_evects("RHF", moinfo.nirreps, moinfo.orbspi,
 				       moinfo.sopi, moinfo.orbspi,
 				       moinfo.first_so, moinfo.last_so,
 				       moinfo.first, moinfo.last,
@@ -366,9 +367,14 @@ void trans_one_backwards(void)
   destruct_evects(moinfo.backtr_nirreps, moinfo.evects);
   moinfo.evects = (double ***) malloc (1 * sizeof(double **));
   moinfo.evects[0] = block_matrix(moinfo.nao, moinfo.nmo);
+  /*
   file30_init();
   so2ao = file30_rd_usotao_new();
   file30_close();
+  */
+  chkpt_init();
+  so2ao = chkpt_rd_usotao();
+  chkpt_close();
   if (params.print_mos) print_mat(so2ao,moinfo.nso,moinfo.nao,outfile);
   mmult(so2ao,1,moinfo.scf_vector,0,moinfo.evects[0],0,moinfo.nao,moinfo.nso,
 	moinfo.nmo,0);

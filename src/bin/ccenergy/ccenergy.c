@@ -7,7 +7,7 @@
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <libdpd/dpd.h>
-#include <libfile30/file30.h>
+#include <libchkpt/chkpt.h>
 #include <libqt/qt.h>
 #include "globals.h"
 
@@ -187,7 +187,7 @@ int main(int argc, char *argv[])
     exit(1);
   }
 
-  fprintf(outfile, "\tSCF energy       (file30)  = %20.15f\n", moinfo.escf);
+  fprintf(outfile, "\tSCF energy       (chkpt)   = %20.15f\n", moinfo.escf);
   fprintf(outfile, "\tReference energy (file100) = %20.15f\n", moinfo.eref);
   fprintf(outfile, "\tCCSD correlation energy    = %20.15f\n", moinfo.ecc);
   fprintf(outfile, "\tTotal CCSD energy          = %20.15f\n", 
@@ -196,11 +196,13 @@ int main(int argc, char *argv[])
 
   /* Write pertinent data to energy.dat for Dr. Yamaguchi */
   if(!strcmp(params.wfn,"CCSD")) {
-    file30_init();
-    natom = file30_rd_natom();
-    geom = file30_rd_geom();
-    zvals = file30_rd_zvals();
-    file30_close();
+
+    chkpt_init();
+    natom = chkpt_rd_natom();
+    geom = chkpt_rd_geom();
+    zvals = chkpt_rd_zvals();
+    chkpt_close();
+
     ffile(&efile, "energy.dat",1);
     fprintf(efile, "*\n");
     for(i=0; i < natom; i++) 

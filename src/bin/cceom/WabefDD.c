@@ -9,7 +9,7 @@ from Wabef to a Sigma vector stored at Sigma plus 'i' */
 void WabefDD(int i, int C_irr) {
   dpdfile2 tIA, tia;
   dpdbuf4 SIJAB, Sijab, SIjAb, B;
-  dpdbuf4 CMNEF, Cmnef, CMnEf, X, F, tau, D, WM, WP;
+  dpdbuf4 CMNEF, Cmnef, CMnEf, X, F, tau, D, WM, WP, Z;
   char CMNEF_lbl[32], Cmnef_lbl[32], CMnEf_lbl[32];
   char SIJAB_lbl[32], Sijab_lbl[32], SIjAb_lbl[32];
 
@@ -97,9 +97,19 @@ void WabefDD(int i, int C_irr) {
   dpd_buf4_init(&SIjAb, EOM_SIjAb, C_irr, 0, 5, 0, 5, 0, SIjAb_lbl);
   sprintf(CMnEf_lbl, "%s %d", "CMnEf", i);
   dpd_buf4_init(&CMnEf, EOM_CMnEf, C_irr, 0, 5, 0, 5, 0, CMnEf_lbl);
+
+  /* make use of a more efficient algorithm */
+  dpd_buf4_init(&Z, EOM_TMP, C_irr, 5, 0, 5, 0, 0, "Z(Ab,Ij)");
   dpd_buf4_init(&B, CC_BINTS, H_IRR, 5, 5, 5, 5, 0, "B <ab|cd>");
-  dpd_contract444(&CMnEf, &B, &SIjAb, 0, 0, 1.0, 1.0);
+  /*  dpd_contract444(&CMnEf, &B, &SIjAb, 0, 0, 1.0, 1.0); */
+  dpd_contract444(&B, &CMnEf, &Z, 0, 0, 1, 0);
   dpd_buf4_close(&B);
+  dpd_buf4_sort(&Z, EOM_TMP, rspq, 0, 5, "Z(Ij,Ab)");
+  dpd_buf4_close(&Z);
+  dpd_buf4_init(&Z, EOM_TMP, C_irr, 0, 5, 0, 5, 0, "Z(Ij,Ab)");
+  dpd_buf4_axpy(&Z, &SIjAb, 1);
+  dpd_buf4_close(&Z);
+
   dpd_buf4_close(&CMnEf);
   dpd_buf4_init(&X, EOM_TMP, C_irr, 0, 10, 0, 10, 0, "XIjMa");
   dpd_buf4_init(&CMnEf, EOM_TMP, C_irr, 0, 5, 0, 5, 0, "CMneF");

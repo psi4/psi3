@@ -6,7 +6,7 @@ include ../MakeVars
 LD = $(F77)
 LDLIBS += $(BLAS) $(FLIBS)
 
-PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_file30 -lPSI_iwl -lPSI_ciomr -lPSI_psio -lPSI_ipv1
+PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
 CSRC = \
 F.c      Wamef.c  Wmbij.c  cchbar.c      get_params.c \

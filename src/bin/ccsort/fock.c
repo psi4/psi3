@@ -3,7 +3,6 @@
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
 #include <libdpd/dpd.h>
-#include <libfile30/file30.h>
 #include "Params.h"
 #include "MOInfo.h"
 #define EXTERN
@@ -21,7 +20,7 @@
 **
 ** (1) This routine isn't absolutely necessary for RHF and UHF
 ** references, as one could simply read the Fock eigenvalues from
-** file30 and be happy with that. However, this code is useful as a
+** PSIF_CHKPT and be happy with that. However, this code is useful as a
 ** partial check of the integral transformation and sorting routines.
 **
 ** (2) An alternative but currently unused algorithm may be found in 

@@ -3,7 +3,7 @@
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
-#include <libfile30/file30.h>
+#include <libchkpt/chkpt.h>
 #include <libdpd/dpd.h>
 #include <libqt/qt.h>
 #include "globals.h"
@@ -132,11 +132,11 @@ int main(int argc, char *argv[])
 
   /* Write pertinent data to energy.dat */
   if(!strcmp(params.wfn,"CCSD_T")) {
-    file30_init();
-    natom = file30_rd_natom();
-    geom = file30_rd_geom();
-    zvals = file30_rd_zvals();
-    file30_close();
+    chkpt_init();
+    natom = chkpt_rd_natom();
+    geom = chkpt_rd_geom();
+    zvals = chkpt_rd_zvals();
+    chkpt_close();
     ffile(&efile, "energy.dat",1);
     fprintf(efile, "*\n");
     for(i=0; i < natom; i++) 

@@ -6,7 +6,7 @@
 #include <libpsio/psio.h>
 #include <libiwl/iwl.h>
 #include <libint/libint.h>
-#include <libfile30/file30.h>
+#include <libchkpt/chkpt.h>
 #include <libqt/qt.h>
 #include <libdpd/dpd.h>
 #include <psifiles.h>
@@ -56,14 +56,14 @@ void local_init(void)
   int print_test, num_entries, entry_len, orbital;
   int t1_length, t2_length;
 
-  file30_init();
-  C = file30_rd_scf();
-  eps_all = file30_rd_evals();
-  natom = file30_rd_natom();
-  nshell = file30_rd_nshell();
-  stype = file30_rd_stype();
-  snuc = file30_rd_snuc();
-  file30_close();
+  chkpt_init();
+  C = chkpt_rd_scf();
+  eps_all = chkpt_rd_evals();
+  natom = chkpt_rd_natom();
+  nshell = chkpt_rd_nshell();
+  stype = chkpt_rd_stype();
+  snuc = chkpt_rd_snuc();
+  chkpt_close();
 
   /* C1 symmetry only */
   nirreps = moinfo.nirreps;

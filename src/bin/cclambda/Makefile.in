@@ -1,3 +1,4 @@
+
 srcdir = @srcdir@
 VPATH = @srcdir@
 
@@ -6,7 +7,7 @@ include ../MakeVars
 LD = $(F77)
 LDLIBS += $(BLAS)
 
-PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_file30 -lPSI_iwl -lPSI_ciomr -lPSI_psio -lPSI_ipv1 -lPSI_malloc
+PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
 CSRC = \
 DL2.c    L1.c       WefabL2.c  cclambda.c   get_moinfo.c    sort_amps.c \
