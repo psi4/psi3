@@ -163,10 +163,10 @@ int main(int argc, char *argv[])
       for(j=0; j <= i; j++, ij++)
 	F[coord][i][j] = F[coord][j][i] = inbuf[ij];
 
-/*
+    /*
     fprintf(outfile, "F[%d] Deriv (MO):\n", coord);
     print_mat(F[coord], nmo, nmo, outfile);
-*/
+    */
   }
 
   for(coord=0; coord < natom*3; coord++) {
@@ -178,10 +178,10 @@ int main(int argc, char *argv[])
       for(j=0; j <= i; j++, ij++)
 	S[coord][i][j] = S[coord][j][i] = inbuf[ij];
 
-/*
+    /*
     fprintf(outfile, "S[%d] Deriv (MO):\n", coord);
     print_mat(S[coord], nmo, nmo, outfile);
-*/
+    */
   }
   free(inbuf);
   free(label);
@@ -348,10 +348,8 @@ int main(int argc, char *argv[])
       Acopy[AI][BJ] = A[AI][BJ];
 
 
-/*
   fprintf(outfile, "\nMO Hessian:\n");
   print_mat(A, num_ai, num_ai, outfile);
-*/
 
   /* Build the Mixed Hessian (dependent x independent) */
   AA = block_matrix(num_ij, num_ai);
@@ -465,6 +463,13 @@ int main(int argc, char *argv[])
     }
   }
 
+  /*
+  for(coord=0; coord < natom*3; coord++) {
+    fprintf(outfile, "\nU[%d] Matrix (MO):\n", coord);
+    print_mat(U[coord], nmo, nmo, outfile);
+  }
+  */
+
   /* Add the dependent pairs on the lower triangle */
   for(isym=0,IJ=0; isym < nirreps; isym++) {
     ifirst = ofirst[isym];
@@ -556,13 +561,10 @@ int main(int argc, char *argv[])
     }
   }
 
-  /* Print the Ua matrices */
-/*
   for(coord=0; coord < natom*3; coord++) {
     fprintf(outfile, "\nU[%d] Matrix (MO):\n", coord);
     print_mat(U[coord], nmo, nmo, outfile);
   }
-*/
 
   /*** Compute the SCF second derivative ***/
   hessian = block_matrix(natom*3, natom*3);
