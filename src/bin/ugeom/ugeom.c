@@ -14,11 +14,14 @@
 #include <libfile30/file30.h>
 #endif
 #include <libpsio/psio.h>
+#include <libqt/qt.h>
 
 /* Function prototypes */
-void init_io(void);
+void init_io(int argc, char *argv[]);
 void exit_io(void);
 
+int num;
+char *geom_string;
 FILE *infile, *outfile;
 
 #define MAX_GEOM_STRING 20
@@ -26,12 +29,13 @@ FILE *infile, *outfile;
 int main(int argc, char *argv[])
 {
   int i,j;
-  int natom, num, junk;
+  int natom, junk;
   double **geom, *zvals;
-  char *geom_string;
   FILE *geometry;
 
-  init_io();
+  geom_string = (char *) malloc(MAX_GEOM_STRING);
+  
+  init_io(argc,argv);
 
   /* Open checkpoint file and grab some info */
 #if USE_LIBCHKPT
@@ -57,20 +61,6 @@ int main(int argc, char *argv[])
           fprintf(outfile, "%20.10f  ", geom[i][j]);
     }
   fprintf(outfile, "\n\n");
-
-  geom_string = (char *) malloc(MAX_GEOM_STRING);
-
-  /* Check command line for desired geometry -- NB: C ordering */
-  if(argc > 1) {
-      if(strcmp(argv[1], "-n") == 0) {
-         num = atoi(argv[2]);  
-        }
-    }
-  if((argc > 1) && (strcmp(argv[1], "-t") == 0)) 
-      sprintf(geom_string, "%s", "GEOMETRY");
-  else 
-      sprintf(geom_string, "%s%d", "GEOMETRY", num);
-  
 
   /* Append geom.dat to the IP tree */
   ffile(&geometry, "geom.dat", 2);
@@ -126,17 +116,35 @@ int main(int argc, char *argv[])
   exit(0);
 }
 
-void init_io(void)
+void init_io(int argc, char *argv[])
 {
-  int i;
+  int i; 
+  int flag=0;
+  int parsed=1;
   char *gprgid();
   char *progid;
 
   progid = (char *) malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s",gprgid());
 
-  ffile(&infile,"input.dat",2);
-  ffile(&outfile,"output.dat",1);
+  for (i=1; i<argc; i++) {
+    if (strcmp(argv[i], "-n") == 0) {
+      num = atoi(argv[i+1]);
+      parsed += 2;  
+    }
+    else if (strcmp(argv[1], "-t") == 0) {
+      flag = 1;
+      parsed++;
+    }
+  }    
+  
+  if (flag)
+    sprintf(geom_string, "%s", "GEOMETRY");
+  else 
+    sprintf(geom_string, "%s%d", "GEOMETRY", num);
+  
+  init_in_out(argc-parsed,argv+parsed);
+  
   tstart(outfile);
   ip_set_uppercase(1);
   ip_initialize(infile,outfile);

@@ -27,6 +27,7 @@ command-line      internal specifier   what it does
 #include <libipv1/ip_lib.h>
 #include <physconst.h>
 #include <libpsio/psio.h>
+#include <libqt/qt.h>	  
 #include <psifiles.h>
   }
 
@@ -58,6 +59,7 @@ command-line      internal specifier   what it does
   int main(int argc, char **argv) {
 
     int i,j,a,b,dim,count,dim_carts,user_intcos;
+    int parsed=1;
     int num_disps, disp_length, *number_internals;
     double *fcoord, *f;
     char *disp_label, *buffer, *err;
@@ -66,30 +68,54 @@ command-line      internal specifier   what it does
     optinfo.disp_num = 0;
     optinfo.points = 3;
     for (i=1; i<argc; ++i) {
-      if (!strcmp(argv[i],"--disp_symm"))
+      if (!strcmp(argv[i],"--disp_symm")) {
         optinfo.mode = MODE_DISP_SYMM;
-      else if (!strcmp(argv[i],"--disp_all"))
+	parsed++;
+      }
+      else if (!strcmp(argv[i],"--disp_all")) {
         optinfo.mode = MODE_DISP_ALL;
-      else if (!strcmp(argv[i],"--disp_load"))
+	parsed++;
+      }
+      else if (!strcmp(argv[i],"--disp_load")) {
         optinfo.mode = MODE_DISP_LOAD;
-      else if (!strcmp(argv[i],"--opt_step"))
+	parsed++;
+      }
+      else if (!strcmp(argv[i],"--opt_step")) {
         optinfo.mode = MODE_OPT_STEP;
-      else if (!strcmp(argv[i],"--freq_energy"))
+	parsed++;
+      }
+      else if (!strcmp(argv[i],"--freq_energy")) {
         optinfo.mode = MODE_FREQ_ENERGY;
-      else if (!strcmp(argv[i],"--grad_energy"))
+	parsed++;
+      }
+      else if (!strcmp(argv[i],"--grad_energy")) {
         optinfo.mode = MODE_GRAD_ENERGY;
-      else if (!strcmp(argv[i],"--freq_grad"))
+	parsed++;
+      }
+      else if (!strcmp(argv[i],"--freq_grad")) {
         optinfo.mode = MODE_FREQ_GRAD;
-      else if (!strcmp(argv[i],"--freq_grad_symm"))
+	parsed++;
+      }
+      else if (!strcmp(argv[i],"--freq_grad_symm")) {
         optinfo.mode = MODE_FREQ_GRAD_SYMM;
-      else if (!strcmp(argv[i],"--grad_save"))
+	parsed++;
+      }
+      else if (!strcmp(argv[i],"--grad_save")) {
         optinfo.mode = MODE_GRAD_SAVE;
-      else if (!strcmp(argv[i],"--energy_save"))
+	parsed++;
+      }
+      else if (!strcmp(argv[i],"--energy_save")) {
         optinfo.mode = MODE_ENERGY_SAVE;
-      else if (!strcmp(argv[i],"--disp_num"))
+	parsed++;
+      }
+      else if (!strcmp(argv[i],"--disp_num")) {
         sscanf(argv[++i], "%d", &optinfo.disp_num);
-      else if (!strcmp(argv[i],"--points"))
+	parsed+=2;
+      }
+      else if (!strcmp(argv[i],"--points")) {
         sscanf(argv[++i], "%d", &optinfo.points);
+	parsed+=2;
+      }
       else {
         printf("command line argument not understood.\n");
         exit(1);
@@ -98,9 +124,8 @@ command-line      internal specifier   what it does
     // printf("optinfo.mode %d\n",optinfo.mode);
     // printf("optinfo.points %d\n",optinfo.points);
 
-    // These two files stay open throughout
-    ffile(&fp_input,"input.dat",2);
-    ffile(&outfile, "output.dat",1) ;
+    init_in_out(argc-parsed,argv+parsed);
+    
     intro();
 
     ip_set_uppercase(1);

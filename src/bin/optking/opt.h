@@ -37,7 +37,8 @@
 #define STEP_LIMIT (0.1)                                       /* max step size if di coord has small value */
 #define STEP_PERCENT (0.1)                                     /* if di coord large valued, max percentage allowed for step */
 
-EXTERN FILE *fp_input, *fp_intco, *outfile, *fp_fconst, *fp_opt_aux, *fp_11;
+EXTERN FILE *infile, *outfile;
+EXTERN FILE *fp_input, *fp_intco, *fp_fconst, *fp_opt_aux, *fp_11;
 EXTERN int *ops_in_class;
 EXTERN int nirreps, *irr;
 EXTERN int num_nonzero;      /* number of non-redundant di coordinates (eigenvectors of G with nonzero eigenvalues) */
