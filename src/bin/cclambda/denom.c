@@ -108,10 +108,11 @@ void denom_rhf(struct L_Params L_params)
 
 void denom_uhf(struct L_Params L_params)
 {
-  int nirreps, h, i, j, a, b, ij, ab, I, J, A, B, isym, jsym, asym, bsym;
+  int nirreps, h, i, j, a, b, ij, ab, I, J, A, B, isym, jsym, asym, bsym, m, e;
   int *aoccpi, *boccpi, *avirtpi, *bvirtpi; 
   int *aocc_off, *bocc_off, *avir_off, *bvir_off, L_irr;
   dpdfile2 LFMIt, LFmit, LFaet, LFAEt;
+  dpdfile2 FMI, Fmi, FAE, Fae;
   dpdfile2 dIA, dia;
   dpdfile4 dIJAB, dijab, dIjAb;
   double Fii, Fjj, Faa, Fbb;
@@ -127,21 +128,42 @@ void denom_uhf(struct L_Params L_params)
   avir_off = moinfo.avir_off;
   bvir_off = moinfo.bvir_off;
 
-  dpd_file2_init(&LFMIt, CC_OEI, 0, 0, 0, "FMI");
-  dpd_file2_mat_init(&LFMIt);
-  dpd_file2_mat_rd(&LFMIt);
+  if((!strcmp(params.wfn,"CC2")) || (!strcmp(params.wfn,"EOM_CC2"))) {
 
-  dpd_file2_init(&LFmit, CC_OEI, 0, 2, 2, "Fmi");
-  dpd_file2_mat_init(&LFmit);
-  dpd_file2_mat_rd(&LFmit);
+    dpd_file2_init(&LFMIt, CC_OEI, 0, 0, 0, "fIJ");
+    dpd_file2_mat_init(&LFMIt);
+    dpd_file2_mat_rd(&LFMIt);
 
-  dpd_file2_init(&LFaet, CC_OEI, 0, 3, 3, "Fae");
-  dpd_file2_mat_init(&LFaet);
-  dpd_file2_mat_rd(&LFaet);
+    dpd_file2_init(&LFmit, CC_OEI, 0, 2, 2, "fij");
+    dpd_file2_mat_init(&LFmit);
+    dpd_file2_mat_rd(&LFmit);
 
-  dpd_file2_init(&LFAEt, CC_OEI, 0, 1, 1, "FAE");
-  dpd_file2_mat_init(&LFAEt);
-  dpd_file2_mat_rd(&LFAEt);
+    dpd_file2_init(&LFaet, CC_OEI, 0, 3, 3, "fab");
+    dpd_file2_mat_init(&LFaet);
+    dpd_file2_mat_rd(&LFaet);
+
+    dpd_file2_init(&LFAEt, CC_OEI, 0, 1, 1, "fAB");
+    dpd_file2_mat_init(&LFAEt);
+    dpd_file2_mat_rd(&LFAEt);
+
+  }
+  else {
+    dpd_file2_init(&LFMIt, CC_OEI, 0, 0, 0, "FMI");
+    dpd_file2_mat_init(&LFMIt);
+    dpd_file2_mat_rd(&LFMIt);
+
+    dpd_file2_init(&LFmit, CC_OEI, 0, 2, 2, "Fmi");
+    dpd_file2_mat_init(&LFmit);
+    dpd_file2_mat_rd(&LFmit);
+
+    dpd_file2_init(&LFaet, CC_OEI, 0, 3, 3, "Fae");
+    dpd_file2_mat_init(&LFaet);
+    dpd_file2_mat_rd(&LFaet);
+
+    dpd_file2_init(&LFAEt, CC_OEI, 0, 1, 1, "FAE");
+    dpd_file2_mat_init(&LFAEt);
+    dpd_file2_mat_rd(&LFAEt);
+  }
 
   dpd_file2_init(&dIA, CC_DENOM, L_irr, 0, 1, "dIA");
   dpd_file2_mat_init(&dIA);
@@ -197,7 +219,7 @@ void denom_uhf(struct L_Params L_params)
 	Fbb = LFAEt.matrix[bsym][B][B];
 
 	dIJAB.matrix[h][ij][ab] = 1.0/(Fii + Fjj - Faa - Fbb
-            + L_params.cceom_energy);
+				       + L_params.cceom_energy);
       }
     }
     dpd_file4_mat_irrep_wrt(&dIJAB, h);
@@ -230,7 +252,7 @@ void denom_uhf(struct L_Params L_params)
 	Fbb = LFaet.matrix[bsym][B][B];
 
 	dijab.matrix[h][ij][ab] = 1.0/(Fii + Fjj - Faa - Fbb
-            + L_params.cceom_energy);
+				       + L_params.cceom_energy);
       }
     }
     dpd_file4_mat_irrep_wrt(&dijab, h);
@@ -263,7 +285,7 @@ void denom_uhf(struct L_Params L_params)
 	Fbb = LFaet.matrix[bsym][B][B];
 
 	dIjAb.matrix[h][ij][ab] = 1.0/(Fii + Fjj - Faa - Fbb
-            + L_params.cceom_energy);
+				       + L_params.cceom_energy);
       }
     }
     dpd_file4_mat_irrep_wrt(&dIjAb, h);
@@ -279,6 +301,54 @@ void denom_uhf(struct L_Params L_params)
   dpd_file2_close(&LFmit);
   dpd_file2_close(&LFAEt);
   dpd_file2_close(&LFaet);
+
+  /*     if((!strcmp(params.wfn,"CC2")) || (!strcmp(params.wfn,"EOM_CC2"))) { */
+  /*       dpd_file2_init(&FMI, CC_OEI, 0, 0, 0, "FMI"); */
+  /*       dpd_file2_init(&Fmi, CC_OEI, 0, 2, 2, "Fmi"); */
+
+  /*       dpd_file2_mat_init(&FMI); */
+  /*       dpd_file2_mat_rd(&FMI); */
+  /*       dpd_file2_mat_init(&Fmi); */
+  /*       dpd_file2_mat_rd(&Fmi); */
+
+  /*       for(h=0; h < moinfo.nirreps; h++) { */
+  /* 	for(m=0; m < FMI.params->rowtot[h]; m++)  */
+  /* 	  FMI.matrix[h][m][m] = 0; */
+  /* 	for(m=0; m < Fmi.params->rowtot[h]; m++)  */
+  /* 	  Fmi.matrix[h][m][m] = 0; */
+  /*       } */
+
+  /*       dpd_file2_mat_wrt(&FMI); */
+  /*       dpd_file2_mat_close(&FMI); */
+  /*       dpd_file2_mat_wrt(&Fmi); */
+  /*       dpd_file2_mat_close(&Fmi); */
+
+  /*       dpd_file2_close(&FMI); */
+  /*       dpd_file2_close(&Fmi); */
+
+  /*       dpd_file2_init(&FAE, CC_OEI, 0, 1, 1, "FAE"); */
+  /*       dpd_file2_init(&Fae, CC_OEI, 0, 3, 3, "Fae"); */
+
+  /*       dpd_file2_mat_init(&FAE); */
+  /*       dpd_file2_mat_rd(&FAE); */
+  /*       dpd_file2_mat_init(&Fae); */
+  /*       dpd_file2_mat_rd(&Fae); */
+  
+  /*       for(h=0; h < moinfo.nirreps; h++) { */
+  /* 	for(e=0; e < FAE.params->coltot[h]; e++)  */
+  /* 	  FAE.matrix[h][e][e] = 0; */
+  /* 	for(e=0; e < Fae.params->coltot[h]; e++) */
+  /* 	  Fae.matrix[h][e][e] = 0; */
+  /*       } */
+
+  /*       dpd_file2_mat_wrt(&FAE); */
+  /*       dpd_file2_mat_close(&FAE); */
+  /*       dpd_file2_mat_wrt(&Fae); */
+  /*       dpd_file2_mat_close(&Fae); */
+
+  /*       dpd_file2_close(&FAE); */
+  /*       dpd_file2_close(&Fae); */
+  /*     } */
 
   return;
 }
