@@ -14,7 +14,7 @@ FaeL2.c  L1FL2.c    WejabL2.c  converged.c  get_params.c    update.c    \
 FmiL2.c  L2.c       WijmbL2.c  denom.c      init_amps.c                 \
 G.c      Lsave.c    WijmnL2.c  diis.c       overlap.c                   \
 GL2.c    WabeiL1.c  WmbejL2.c  dijabL2.c    pseudoenergy.c              \
-cache.c  BL2_AO.c   halftrans.c
+cache.c  BL2_AO.c   halftrans.c Lnorm.c Lmag.c
 
 BINOBJ = $(CSRC:%.c=%.o)
 ALLOC = 

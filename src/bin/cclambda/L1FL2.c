@@ -26,10 +26,10 @@ void L1FL2(void)
 
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
-    dpd_file2_init(&LIA, CC_OEI, 0, 0, 1, "LIA");
+    dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "LIA");
     dpd_file2_mat_init(&LIA);
     dpd_file2_mat_rd(&LIA);
-    dpd_file2_init(&Lia, CC_OEI, 0, 0, 1, "Lia");
+    dpd_file2_init(&Lia, CC_OEI, L_irr, 0, 1, "Lia");
     dpd_file2_mat_init(&Lia);
     dpd_file2_mat_rd(&Lia);
     dpd_file2_init(&FJB, CC_OEI, 0, 0, 1, "FME");
@@ -41,10 +41,10 @@ void L1FL2(void)
   }
   else if(params.ref == 2) { /** UHF **/
 
-    dpd_file2_init(&LIA, CC_OEI, 0, 0, 1, "LIA");
+    dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "LIA");
     dpd_file2_mat_init(&LIA);
     dpd_file2_mat_rd(&LIA);
-    dpd_file2_init(&Lia, CC_OEI, 0, 2, 3, "Lia");
+    dpd_file2_init(&Lia, CC_OEI, L_irr, 2, 3, "Lia");
     dpd_file2_mat_init(&Lia);
     dpd_file2_mat_rd(&Lia);
     dpd_file2_init(&FJB, CC_OEI, 0, 0, 1, "FME");
@@ -57,9 +57,9 @@ void L1FL2(void)
   }
 
   if(params.ref == 0 || params.ref == 1) /** RHF/ROHF **/
-    dpd_buf4_init(&newL2, CC_LAMPS, 0, 2, 7, 2, 7, 0, "New LIJAB");
+    dpd_buf4_init(&newL2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "New LIJAB");
   else if(params.ref == 2) /** UHF **/
-    dpd_buf4_init(&newL2, CC_LAMPS, 0, 2, 7, 2, 7, 0, "New LIJAB");
+    dpd_buf4_init(&newL2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "New LIJAB");
 
   for(h=0; h < nirreps; h++) {
 
@@ -70,9 +70,9 @@ void L1FL2(void)
       i = newL2.params->roworb[h][row][0];
       j = newL2.params->roworb[h][row][1];
 	  
-      for(col=0; col < newL2.params->coltot[h]; col++) {
-	a = newL2.params->colorb[h][col][0];
-	b = newL2.params->colorb[h][col][1];
+      for(col=0; col < newL2.params->coltot[h^L_irr]; col++) {
+	a = newL2.params->colorb[h^L_irr][col][0];
+	b = newL2.params->colorb[h^L_irr][col][1];
 
 	I = LIA.params->rowidx[i]; Isym = LIA.params->psym[i];
 	J = FJB.params->rowidx[j]; Jsym = FJB.params->psym[j];
@@ -115,9 +115,9 @@ void L1FL2(void)
   dpd_buf4_close(&newL2);
 
   if(params.ref == 0 || params.ref == 1) /** RHF/ROHF **/
-    dpd_buf4_init(&newL2, CC_LAMPS, 0, 2, 7, 2, 7, 0, "New Lijab");
+    dpd_buf4_init(&newL2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "New Lijab");
   else if(params.ref == 2) /** UHF **/
-    dpd_buf4_init(&newL2, CC_LAMPS, 0, 12, 17, 12, 17, 0, "New Lijab");
+    dpd_buf4_init(&newL2, CC_LAMPS, L_irr, 12, 17, 12, 17, 0, "New Lijab");
 
   for(h=0; h < nirreps; h++) {
 
@@ -128,9 +128,9 @@ void L1FL2(void)
       i = newL2.params->roworb[h][row][0];
       j = newL2.params->roworb[h][row][1];
 	  
-      for(col=0; col < newL2.params->coltot[h]; col++) {
-	a = newL2.params->colorb[h][col][0];
-	b = newL2.params->colorb[h][col][1];
+      for(col=0; col < newL2.params->coltot[h^L_irr]; col++) {
+	a = newL2.params->colorb[h^L_irr][col][0];
+	b = newL2.params->colorb[h^L_irr][col][1];
 
 	I = Lia.params->rowidx[i]; Isym = Lia.params->psym[i];
 	J = Fjb.params->rowidx[j]; Jsym = Fjb.params->psym[j];
@@ -173,9 +173,9 @@ void L1FL2(void)
   dpd_buf4_close(&newL2);
 
   if(params.ref == 0 || params.ref == 1) /** RHF/ROHF **/
-    dpd_buf4_init(&newL2, CC_LAMPS, 0, 0, 5, 0, 5, 0, "New LIjAb");
+    dpd_buf4_init(&newL2, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
   else if(params.ref == 2) /** UHF **/
-    dpd_buf4_init(&newL2, CC_LAMPS, 0, 22, 28, 22, 28, 0, "New LIjAb");
+    dpd_buf4_init(&newL2, CC_LAMPS, L_irr, 22, 28, 22, 28, 0, "New LIjAb");
 
   for(h=0; h < nirreps; h++) {
 
@@ -186,9 +186,9 @@ void L1FL2(void)
       i = newL2.params->roworb[h][row][0];
       j = newL2.params->roworb[h][row][1];
 	  
-      for(col=0; col < newL2.params->coltot[h]; col++) {
-	a = newL2.params->colorb[h][col][0];
-	b = newL2.params->colorb[h][col][1];
+      for(col=0; col < newL2.params->coltot[h^L_irr]; col++) {
+	a = newL2.params->colorb[h^L_irr][col][0];
+	b = newL2.params->colorb[h^L_irr][col][1];
 
 	I = LIA.params->rowidx[i]; Isym = LIA.params->psym[i];
 	J = Fjb.params->rowidx[j]; Jsym = Fjb.params->psym[j];

@@ -56,11 +56,11 @@ void BL2_AO(void)
   /************************************* AA *****************************************/
 
   dpd_set_default(1);
-  dpd_buf4_init(&tau1_AO, CC_LAMPS, 0, 0, 5, 0, 5, 0, "LIJPQ (1)");
+  dpd_buf4_init(&tau1_AO, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "LIJPQ (1)");
   dpd_buf4_scm(&tau1_AO, 0.0);
 
   dpd_set_default(0);
-  dpd_buf4_init(&tau, CC_LAMPS, 0, 0, 5, 2, 7, 0, "LIJAB");
+  dpd_buf4_init(&tau, CC_LAMPS, L_irr, 0, 5, 2, 7, 0, "LIJAB");
 
   halftrans(&tau, 0, &tau1_AO, 1, C, nirreps, T2_cd_row_start, T2_pq_row_start, 
 	    virtpi, orbspi, 0, 1.0, 0.0);
@@ -69,8 +69,8 @@ void BL2_AO(void)
   dpd_buf4_close(&tau1_AO);
 
   dpd_set_default(1);
-  dpd_buf4_init(&tau1_AO, CC_LAMPS, 0, 0, 5, 0, 5, 0, "LIJPQ (1)");
-  dpd_buf4_init(&tau2_AO, CC_LAMPS, 0, 0, 5, 0, 5, 0, "LIJPQ (2)");
+  dpd_buf4_init(&tau1_AO, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "LIJPQ (1)");
+  dpd_buf4_init(&tau2_AO, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "LIJPQ (2)");
   dpd_buf4_scm(&tau2_AO, 0.0);
 
   for(h=0; h < nirreps; h++) {
@@ -128,10 +128,10 @@ void BL2_AO(void)
 
 
   dpd_set_default(1);
-  dpd_buf4_init(&tau2_AO, CC_LAMPS, 0, 0, 5, 0, 5, 0, "LIJPQ (2)");
+  dpd_buf4_init(&tau2_AO, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "LIJPQ (2)");
 
   dpd_set_default(0);
-  dpd_buf4_init(&t2, CC_LAMPS, 0, 0, 5, 2, 7, 0, "New LIJAB");
+  dpd_buf4_init(&t2, CC_LAMPS, L_irr, 0, 5, 2, 7, 0, "New LIJAB");
 
   halftrans(&t2, 0, &tau2_AO, 1, C, nirreps, T2_cd_row_start, T2_pq_row_start, 
 	    virtpi, orbspi, 1, 0.5, 1.0);
@@ -142,11 +142,11 @@ void BL2_AO(void)
   /************************************* BB *****************************************/
 
   dpd_set_default(1);
-  dpd_buf4_init(&tau1_AO, CC_LAMPS, 0, 0, 5, 0, 5, 0, "Lijpq (1)");
+  dpd_buf4_init(&tau1_AO, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "Lijpq (1)");
   dpd_buf4_scm(&tau1_AO, 0.0);
 
   dpd_set_default(0);
-  dpd_buf4_init(&tau, CC_LAMPS, 0, 0, 5, 2, 7, 0, "Lijab");
+  dpd_buf4_init(&tau, CC_LAMPS, L_irr, 0, 5, 2, 7, 0, "Lijab");
 
   halftrans(&tau, 0, &tau1_AO, 1, C, nirreps, T2_cd_row_start, T2_pq_row_start, 
 	    virtpi, orbspi, 0, 1.0, 0.0);
@@ -155,8 +155,8 @@ void BL2_AO(void)
   dpd_buf4_close(&tau1_AO);
 
   dpd_set_default(1);
-  dpd_buf4_init(&tau1_AO, CC_LAMPS, 0, 0, 5, 0, 5, 0, "Lijpq (1)");
-  dpd_buf4_init(&tau2_AO, CC_LAMPS, 0, 0, 5, 0, 5, 0, "Lijpq (2)");
+  dpd_buf4_init(&tau1_AO, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "Lijpq (1)");
+  dpd_buf4_init(&tau2_AO, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "Lijpq (2)");
   dpd_buf4_scm(&tau2_AO, 0.0);
 
   for(h=0; h < nirreps; h++) {
@@ -214,10 +214,10 @@ void BL2_AO(void)
 
 
   dpd_set_default(1);
-  dpd_buf4_init(&tau2_AO, CC_LAMPS, 0, 0, 5, 0, 5, 0, "Lijpq (2)");
+  dpd_buf4_init(&tau2_AO, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "Lijpq (2)");
 
   dpd_set_default(0);
-  dpd_buf4_init(&t2, CC_LAMPS, 0, 0, 5, 2, 7, 0, "New Lijab");
+  dpd_buf4_init(&t2, CC_LAMPS, L_irr, 0, 5, 2, 7, 0, "New Lijab");
 
   halftrans(&t2, 0, &tau2_AO, 1, C, nirreps, T2_cd_row_start, T2_pq_row_start, 
 	    virtpi, orbspi, 1, 0.5, 1.0);
@@ -228,11 +228,11 @@ void BL2_AO(void)
   /************************************* AB *****************************************/
 
   dpd_set_default(1);
-  dpd_buf4_init(&tau1_AO, CC_LAMPS, 0, 0, 5, 0, 5, 0, "LIjPq (1)");
+  dpd_buf4_init(&tau1_AO, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "LIjPq (1)");
   dpd_buf4_scm(&tau1_AO, 0.0);
 
   dpd_set_default(0);
-  dpd_buf4_init(&tau, CC_LAMPS, 0, 0, 5, 0, 5, 0, "LIjAb");
+  dpd_buf4_init(&tau, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "LIjAb");
 
   halftrans(&tau, 0, &tau1_AO, 1, C, nirreps, T2_cd_row_start, T2_pq_row_start, 
 	    virtpi, orbspi, 0, 1.0, 0.0);
@@ -241,8 +241,8 @@ void BL2_AO(void)
   dpd_buf4_close(&tau1_AO);
 
   dpd_set_default(1);
-  dpd_buf4_init(&tau1_AO, CC_LAMPS, 0, 0, 5, 0, 5, 0, "LIjPq (1)");
-  dpd_buf4_init(&tau2_AO, CC_LAMPS, 0, 0, 5, 0, 5, 0, "LIjPq (2)");
+  dpd_buf4_init(&tau1_AO, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "LIjPq (1)");
+  dpd_buf4_init(&tau2_AO, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "LIjPq (2)");
   dpd_buf4_scm(&tau2_AO, 0.0);
 
   for(h=0; h < nirreps; h++) {
@@ -300,10 +300,10 @@ void BL2_AO(void)
 
 
   dpd_set_default(1);
-  dpd_buf4_init(&tau2_AO, CC_LAMPS, 0, 0, 5, 0, 5, 0, "LIjPq (2)");
+  dpd_buf4_init(&tau2_AO, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "LIjPq (2)");
 
   dpd_set_default(0);
-  dpd_buf4_init(&t2, CC_LAMPS, 0, 0, 5, 0, 5, 0, "New LIjAb");
+  dpd_buf4_init(&t2, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
 
   halftrans(&t2, 0, &tau2_AO, 1, C, nirreps, T2_cd_row_start, T2_pq_row_start, 
 	    virtpi, orbspi, 1, 1.0, 1.0);

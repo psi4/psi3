@@ -24,6 +24,8 @@ void L1_build(void);
 void L2_build(void);
 void sort_amps(void);
 void Lsave(void);
+void Lnorm(void);
+void Lmag(void);
 void update(void);
 int converged(void);
 int **cacheprep_rhf(int level, int *cachefiles);
@@ -33,13 +35,12 @@ void cachedone_uhf(int **cachelist);
 
 int main(int argc, char *argv[])
 {
-  int done=0;
+  int done=0, i;
   int **cachelist, *cachefiles;
 
-  moinfo.iter=0;
-  
-  init_io(argc, argv);
+  init_io(argc, argv); /* parses command-line arguments */
   title();
+  moinfo.iter=0;
   get_moinfo();
   get_params();
 
@@ -90,6 +91,7 @@ int main(int argc, char *argv[])
     G_build();
     L1_build();
     L2_build();
+    if (!params.ground) Lmag();
     if(converged()) {
       done = 1;  /* Boolean for convergence */
       Lsave();
@@ -100,7 +102,10 @@ int main(int argc, char *argv[])
       fflush(outfile);
       break;
     }
-    diis(moinfo.iter); 
+/*
+    if (!params.ground) Lnorm();
+*/
+    diis(moinfo.iter);
     Lsave();
     moinfo.lcc = pseudoenergy();
     update();
@@ -115,8 +120,14 @@ int main(int argc, char *argv[])
     exit_io();
     exit(1);
   }
-  overlap();
+  if (params.ground) overlap();
+  if (!params.ground) Lnorm();
   dpd_close(0);
+
+  psio_write_entry(CC_INFO,"EOM L0",(char *) &params.L0, sizeof(double));
+  psio_write_entry(CC_INFO,"EOM L Irrep",(char *) &L_irr, sizeof(int));
+
+  fprintf(outfile,"Writing EOM L0 %15.10lf\n", params.L0);
 
   if(params.ref == 2) cachedone_uhf(cachelist);
   else cachedone_rhf(cachelist);
@@ -127,24 +138,48 @@ int main(int argc, char *argv[])
   exit(0);
 }
 
+/* parse command line arguments */
 void init_io(int argc, char *argv[])
 {
-  int i;
+  int i, num_unparsed;
   extern char *gprgid();
-  char *progid;
+  char *progid, *argv_unparsed[100];
 
   progid = (char *) malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s",gprgid());
 
-  psi_start(argc-1,argv+1,0);
+  params.ground = 1;
+  for (i=1, num_unparsed=0; i<argc; ++i) {
+    if (!strcmp(argv[i],"--excited")) {
+      params.ground = 0;
+    }
+    else {
+      argv_unparsed[num_unparsed++] = argv[i];
+    }
+  }
+
+  psi_start(num_unparsed, argv_unparsed, 0);
   ip_cwk_add(progid);
   free(progid);
   tstart(outfile);
-
   psio_init();
 
-  /* Open all dpd data files here */
   for(i=CC_MIN; i <= CC_MAX; i++) psio_open(i,1);
+
+  params.cceom_energy = 0.0;
+  if (params.ground) {
+    L_irr = 0;
+    params.L0 = 1.0;
+    params.cceom_energy = 0.0;
+  }
+  else {
+    /* assume symmetry of L is that of R */
+    psio_read_entry(CC_INFO,"EOM R Irrep", (char *) &L_irr, sizeof(int));
+    params.L0 = 0.0;
+    psio_read_entry(CC_INFO,"EOM R0", (char *) &(params.R0),sizeof(double));
+    psio_read_entry(CC_INFO,"CCEOM Energy",
+      (char *) &(params.cceom_energy),sizeof(double));
+  }
 }
 
 void title(void)

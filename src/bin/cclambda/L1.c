@@ -15,42 +15,46 @@ void L1_build(void) {
   dpdbuf4 WMNIE, Wmnie, WMnIe, WmNiE;
   dpdbuf4 WAMEF, Wamef, WAmEf, WaMeF, W;
 
-  /* L1 RHS = Fia */ 
-  if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
-
-    dpd_file2_init(&Fme,CC_OEI, 0, 0, 1, "Fme");
-    dpd_file2_init(&FME,CC_OEI, 0, 0, 1, "FME");
-    dpd_file2_copy(&Fme, CC_OEI, "New Lia");
-    dpd_file2_copy(&FME, CC_OEI, "New LIA");
-    dpd_file2_close(&Fme);
-    dpd_file2_close(&FME);
-
-  }
-  else if(params.ref == 2) { /** UHF **/
-
-    dpd_file2_init(&Fme,CC_OEI, 0, 2, 3, "Fme");
-    dpd_file2_init(&FME,CC_OEI, 0, 0, 1, "FME");
-    dpd_file2_copy(&Fme, CC_OEI, "New Lia");
-    dpd_file2_copy(&FME, CC_OEI, "New LIA");
-    dpd_file2_close(&Fme);
-    dpd_file2_close(&FME);
-
+  if (params.ground) {
+    /* L1 RHS = Fia */ 
+    if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
+      dpd_file2_init(&Fme,CC_OEI, 0, 0, 1, "Fme");
+      dpd_file2_init(&FME,CC_OEI, 0, 0, 1, "FME");
+      dpd_file2_copy(&Fme, CC_OEI, "New Lia");
+      dpd_file2_copy(&FME, CC_OEI, "New LIA");
+      dpd_file2_close(&Fme);
+      dpd_file2_close(&FME);
+    }
+    else if(params.ref == 2) { /** UHF **/
+      dpd_file2_init(&Fme,CC_OEI, 0, 2, 3, "Fme");
+      dpd_file2_init(&FME,CC_OEI, 0, 0, 1, "FME");
+      dpd_file2_copy(&Fme, CC_OEI, "New Lia");
+      dpd_file2_copy(&FME, CC_OEI, "New LIA");
+      dpd_file2_close(&Fme);
+      dpd_file2_close(&FME);
+    }
   }
 
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
-    dpd_file2_init(&newLIA, CC_OEI, 0, 0, 1, "New LIA");
-    dpd_file2_init(&newLia, CC_OEI, 0, 0, 1, "New Lia");
+    dpd_file2_init(&newLIA, CC_OEI, L_irr, 0, 1, "New LIA");
+    dpd_file2_init(&newLia, CC_OEI, L_irr, 0, 1, "New Lia");
   }
   else if(params.ref == 2) { /** UHF **/
-    dpd_file2_init(&newLIA, CC_OEI, 0, 0, 1, "New LIA");
-    dpd_file2_init(&newLia, CC_OEI, 0, 2, 3, "New Lia");
+    dpd_file2_init(&newLIA, CC_OEI, L_irr, 0, 1, "New LIA");
+    dpd_file2_init(&newLia, CC_OEI, L_irr, 2, 3, "New Lia");
+  }
+
+  /* include no connected terms for excited states */
+  if (!params.ground) {
+    dpd_file2_scm(&newLIA, 0.0);
+    dpd_file2_scm(&newLia, 0.0);
   }
 
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
     /* L1 RHS += Lie*Fea */
-    dpd_file2_init(&LIA, CC_OEI, 0, 0, 1, "LIA");
-    dpd_file2_init(&Lia, CC_OEI, 0, 0, 1, "Lia");
+    dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "LIA");
+    dpd_file2_init(&Lia, CC_OEI, L_irr, 0, 1, "Lia");
 
     dpd_file2_init(&LFAEt2, CC_OEI, 0, 1, 1, "FAEt");
     dpd_file2_init(&LFaet2, CC_OEI, 0, 1, 1, "Faet");
@@ -92,8 +96,8 @@ void L1_build(void) {
   else if(params.ref == 2) { /** UHF **/
 
     /* L1 RHS += Lie*Fea */
-    dpd_file2_init(&LIA, CC_OEI, 0, 0, 1, "LIA");
-    dpd_file2_init(&Lia, CC_OEI, 0, 2, 3, "Lia");
+    dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "LIA");
+    dpd_file2_init(&Lia, CC_OEI, L_irr, 2, 3, "Lia");
 
     dpd_file2_init(&LFAEt2, CC_OEI, 0, 1, 1, "FAEt");
     dpd_file2_init(&LFaet2, CC_OEI, 0, 3, 3, "Faet");
@@ -136,23 +140,23 @@ void L1_build(void) {
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
     dpd_buf4_init(&W, CC_HBAR, 0, 11, 7, 11, 7, 0, "WEIAB");
-    dpd_buf4_init(&L2, CC_LAMPS, 0, 0, 7, 2, 7, 0, "LIJAB");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 0, 7, 2, 7, 0, "LIJAB");
     dpd_contract442(&L2, &W, &newLIA, 0, 0, 1.0, 1.0);
     dpd_buf4_close(&W);
     dpd_buf4_close(&L2);
     dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WEiAb");
-    dpd_buf4_init(&L2, CC_LAMPS, 0, 0, 5, 0, 5, 0, "LIjAb");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "LIjAb");
     dpd_contract442(&L2, &W, &newLIA, 0, 0, 1.0, 1.0);
     dpd_buf4_close(&W);
     dpd_buf4_close(&L2);
 
     dpd_buf4_init(&W, CC_HBAR, 0, 11, 7, 11, 7, 0, "Weiab");
-    dpd_buf4_init(&L2, CC_LAMPS, 0, 0, 7, 2, 7, 0, "Lijab");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 0, 7, 2, 7, 0, "Lijab");
     dpd_contract442(&L2, &W, &newLia, 0, 0, 1.0, 1.0);
     dpd_buf4_close(&W);
     dpd_buf4_close(&L2);
     dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WeIaB");
-    dpd_buf4_init(&L2, CC_LAMPS, 0, 0, 5, 0, 5, 0, "LiJaB");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "LiJaB");
     dpd_contract442(&L2, &W, &newLia, 0, 0, 1.0, 1.0);
     dpd_buf4_close(&W);
     dpd_buf4_close(&L2);
@@ -160,23 +164,23 @@ void L1_build(void) {
   else if(params.ref == 2) { /** UHF **/
 
     dpd_buf4_init(&W, CC_HBAR, 0, 21, 7, 21, 7, 0, "WEIAB");
-    dpd_buf4_init(&L2, CC_LAMPS, 0, 0, 7, 2, 7, 0, "LIJAB");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 0, 7, 2, 7, 0, "LIJAB");
     dpd_contract442(&L2, &W, &newLIA, 0, 0, 1, 1);
     dpd_buf4_close(&W);
     dpd_buf4_close(&L2);
     dpd_buf4_init(&W, CC_HBAR, 0, 26, 28, 26, 28, 0, "WEiAb");
-    dpd_buf4_init(&L2, CC_LAMPS, 0, 22, 28, 22, 28, 0, "LIjAb");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 22, 28, 22, 28, 0, "LIjAb");
     dpd_contract442(&L2, &W, &newLIA, 0, 0, 1, 1);
     dpd_buf4_close(&W);
     dpd_buf4_close(&L2);
 
     dpd_buf4_init(&W, CC_HBAR, 0, 31, 17, 31, 17, 0, "Weiab");
-    dpd_buf4_init(&L2, CC_LAMPS, 0, 10, 17, 12, 17, 0, "Lijab");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 10, 17, 12, 17, 0, "Lijab");
     dpd_contract442(&L2, &W, &newLia, 0, 0, 1, 1);
     dpd_buf4_close(&W);
     dpd_buf4_close(&L2);
     dpd_buf4_init(&W, CC_HBAR, 0, 25, 29, 25, 29, 0, "WeIaB");
-    dpd_buf4_init(&L2, CC_LAMPS, 0, 23, 29, 23, 29, 0, "LiJaB");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 23, 29, 23, 29, 0, "LiJaB");
     dpd_contract442(&L2, &W, &newLia, 0, 0, 1, 1);
     dpd_buf4_close(&W);
     dpd_buf4_close(&L2);
@@ -187,25 +191,25 @@ void L1_build(void) {
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
     dpd_buf4_init(&WMBIJ, CC_HBAR, 0, 10, 2, 10, 2, 0, "WMBIJ");
-    dpd_buf4_init(&LIJAB, CC_LAMPS, 0, 2, 5, 2, 7, 0, "LIJAB");
+    dpd_buf4_init(&LIJAB, CC_LAMPS, L_irr, 2, 5, 2, 7, 0, "LIJAB");
     dpd_contract442(&WMBIJ, &LIJAB, &newLIA, 0, 2, -1.0, 1.0);
     dpd_buf4_close(&LIJAB);
     dpd_buf4_close(&WMBIJ);
 
     dpd_buf4_init(&WMbIj, CC_HBAR, 0, 10, 0, 10, 0, 0, "WMbIj");
-    dpd_buf4_init(&LIjAb, CC_LAMPS, 0, 0, 5, 0, 5, 0, "LIjAb");
+    dpd_buf4_init(&LIjAb, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "LIjAb");
     dpd_contract442(&WMbIj, &LIjAb, &newLIA, 0, 2, -1.0, 1.0);
     dpd_buf4_close(&LIjAb);
     dpd_buf4_close(&WMbIj);
 
     dpd_buf4_init(&Wmbij, CC_HBAR, 0, 10, 2, 10, 2, 0, "Wmbij");
-    dpd_buf4_init(&Lijab, CC_LAMPS, 0, 2, 5, 2, 7, 0, "Lijab");
+    dpd_buf4_init(&Lijab, CC_LAMPS, L_irr, 2, 5, 2, 7, 0, "Lijab");
     dpd_contract442(&Wmbij, &Lijab, &newLia, 0, 2, -1.0, 1.0);
     dpd_buf4_close(&Lijab);
     dpd_buf4_close(&Wmbij);
 
     dpd_buf4_init(&WmBiJ, CC_HBAR, 0, 10, 0, 10, 0, 0, "WmBiJ");
-    dpd_buf4_init(&LiJaB, CC_LAMPS, 0, 0, 5, 0, 5, 0, "LiJaB");
+    dpd_buf4_init(&LiJaB, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "LiJaB");
     dpd_contract442(&WmBiJ, &LiJaB, &newLia, 0, 2, -1.0, 1.0);
     dpd_buf4_close(&LiJaB);
     dpd_buf4_close(&WmBiJ);
@@ -213,25 +217,25 @@ void L1_build(void) {
   else if(params.ref == 2) { /** UHF **/
 
     dpd_buf4_init(&WMBIJ, CC_HBAR, 0, 20, 2, 20, 2, 0, "WMBIJ");
-    dpd_buf4_init(&LIJAB, CC_LAMPS, 0, 2, 5, 2, 7, 0, "LIJAB");
+    dpd_buf4_init(&LIJAB, CC_LAMPS, L_irr, 2, 5, 2, 7, 0, "LIJAB");
     dpd_contract442(&WMBIJ, &LIJAB, &newLIA, 0, 2, -1, 1);
     dpd_buf4_close(&LIJAB);
     dpd_buf4_close(&WMBIJ);
 
     dpd_buf4_init(&WMbIj, CC_HBAR, 0, 24, 22, 24, 22, 0, "WMbIj");
-    dpd_buf4_init(&LIjAb, CC_LAMPS, 0, 22, 28, 22, 28, 0, "LIjAb");
+    dpd_buf4_init(&LIjAb, CC_LAMPS, L_irr, 22, 28, 22, 28, 0, "LIjAb");
     dpd_contract442(&WMbIj, &LIjAb, &newLIA, 0, 2, -1, 1);
     dpd_buf4_close(&LIjAb);
     dpd_buf4_close(&WMbIj);
 
     dpd_buf4_init(&Wmbij, CC_HBAR, 0, 30, 12, 30, 12, 0, "Wmbij");
-    dpd_buf4_init(&Lijab, CC_LAMPS, 0, 12, 15, 12, 17, 0, "Lijab");
+    dpd_buf4_init(&Lijab, CC_LAMPS, L_irr, 12, 15, 12, 17, 0, "Lijab");
     dpd_contract442(&Wmbij, &Lijab, &newLia, 0, 2, -1, 1);
     dpd_buf4_close(&Lijab);
     dpd_buf4_close(&Wmbij);
 
     dpd_buf4_init(&WmBiJ, CC_HBAR, 0, 27, 23, 27, 23, 0, "WmBiJ");
-    dpd_buf4_init(&LiJaB, CC_LAMPS, 0, 23, 29, 23, 29, 0, "LiJaB");
+    dpd_buf4_init(&LiJaB, CC_LAMPS, L_irr, 23, 29, 23, 29, 0, "LiJaB");
     dpd_contract442(&WmBiJ, &LiJaB, &newLia, 0, 2, -1, 1);
     dpd_buf4_close(&LiJaB);
     dpd_buf4_close(&WmBiJ);
@@ -242,8 +246,8 @@ void L1_build(void) {
   /* L1 RHS += -Gef*Weifa */
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
-    dpd_file2_init(&GAE, CC_OEI, 0, 1, 1, "GAE");
-    dpd_file2_init(&Gae, CC_OEI, 0, 1, 1, "Gae");
+    dpd_file2_init(&GAE, CC_OEI, L_irr, 1, 1, "GAE");
+    dpd_file2_init(&Gae, CC_OEI, L_irr, 1, 1, "Gae");
 
     dpd_buf4_init(&WAMEF, CC_HBAR, 0, 10, 5, 10, 7, 0, "WAMEF");
     dpd_dot23(&GAE,&WAMEF,&newLIA, 0, 0, -1.0, 1.0);
@@ -266,8 +270,8 @@ void L1_build(void) {
   }
   else if(params.ref == 2) { /** UHF **/
 
-    dpd_file2_init(&GAE, CC_OEI, 0, 1, 1, "GAE");
-    dpd_file2_init(&Gae, CC_OEI, 0, 3, 3, "Gae");
+    dpd_file2_init(&GAE, CC_OEI, L_irr, 1, 1, "GAE");
+    dpd_file2_init(&Gae, CC_OEI, L_irr, 3, 3, "Gae");
 
     dpd_buf4_init(&W, CC_HBAR, 0, 21, 5, 21, 7, 0, "WAMEF");
     dpd_dot13(&GAE,&W,&newLIA, 0, 0, -1, 1);
@@ -293,8 +297,8 @@ void L1_build(void) {
   /* L1 RHS += -Gmn*Wmina */
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
-    dpd_file2_init(&GMI, CC_OEI, 0, 0, 0, "GMI");
-    dpd_file2_init(&Gmi, CC_OEI, 0, 0, 0, "Gmi");
+    dpd_file2_init(&GMI, CC_OEI, L_irr, 0, 0, "GMI");
+    dpd_file2_init(&Gmi, CC_OEI, L_irr, 0, 0, "Gmi");
 
     dpd_buf4_init(&WMNIE, CC_HBAR, 0, 0, 11, 2, 11, 0, "WMNIE");
     dpd_dot14(&GMI, &WMNIE, &newLIA, 0, 0, -1.0, 1.0); 
@@ -318,8 +322,8 @@ void L1_build(void) {
   }
   else if(params.ref == 2) { /** UHF **/
 
-    dpd_file2_init(&GMI, CC_OEI, 0, 0, 0, "GMI");
-    dpd_file2_init(&Gmi, CC_OEI, 0, 2, 2, "Gmi");
+    dpd_file2_init(&GMI, CC_OEI, L_irr, 0, 0, "GMI");
+    dpd_file2_init(&Gmi, CC_OEI, L_irr, 2, 2, "Gmi");
 
     dpd_buf4_init(&W, CC_HBAR, 0, 0, 21, 2, 21, 0, "WMNIE");
     dpd_dot14(&GMI, &W, &newLIA, 0, 0, -1, 1); 
@@ -345,21 +349,21 @@ void L1_build(void) {
   /* newLia * Dia */
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
-    dpd_file2_init(&dIA, CC_OEI, 0, 0, 1, "dIA");
+    dpd_file2_init(&dIA, CC_OEI, L_irr, 0, 1, "dIA");
     dpd_file2_dirprd(&dIA, &newLIA);
     dpd_file2_close(&dIA);
 
-    dpd_file2_init(&dia, CC_OEI, 0, 0, 1, "dia");
+    dpd_file2_init(&dia, CC_OEI, L_irr, 0, 1, "dia");
     dpd_file2_dirprd(&dia, &newLia);
     dpd_file2_close(&dia);
   }
   else if(params.ref == 2) { /** UHF **/
 
-    dpd_file2_init(&dIA, CC_OEI, 0, 0, 1, "dIA");
+    dpd_file2_init(&dIA, CC_OEI, L_irr, 0, 1, "dIA");
     dpd_file2_dirprd(&dIA, &newLIA);
     dpd_file2_close(&dIA);
 
-    dpd_file2_init(&dia, CC_OEI, 0, 2, 3, "dia");
+    dpd_file2_init(&dia, CC_OEI, L_irr, 2, 3, "dia");
     dpd_file2_dirprd(&dia, &newLia);
     dpd_file2_close(&dia);
   }

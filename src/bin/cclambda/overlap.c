@@ -15,36 +15,36 @@ void overlap(void)
 
   nirreps = moinfo.nirreps;
 
-  dpd_file2_init(&L1, CC_OEI, 0, 0, 1, "LIA");
+  dpd_file2_init(&L1, CC_OEI, L_irr, 0, 1, "LIA");
   dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
   ST1A = dpd_file2_dot(&T1, &L1);
   dpd_file2_close(&L1);
   dpd_file2_close(&T1);
 
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
-    dpd_file2_init(&L1, CC_OEI, 0, 0, 1, "Lia");
+    dpd_file2_init(&L1, CC_OEI, L_irr, 0, 1, "Lia");
     dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tia");
   }
   else if(params.ref == 2) { /** UHF **/
-    dpd_file2_init(&L1, CC_OEI, 0, 2, 3, "Lia");
+    dpd_file2_init(&L1, CC_OEI, L_irr, 2, 3, "Lia");
     dpd_file2_init(&T1, CC_OEI, 0, 2, 3, "tia");
   }
   ST1B = dpd_file2_dot(&T1, &L1);
   dpd_file2_close(&L1);
   dpd_file2_close(&T1);
 
-  dpd_buf4_init(&L2, CC_LAMPS, 0, 2, 7, 2, 7, 0, "LIJAB");
+  dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "LIJAB");
   dpd_buf4_init(&T2, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tIJAB");
   ST2AA = dpd_buf4_dot(&L2, &T2);
   dpd_buf4_close(&T2);
   dpd_buf4_close(&L2);
 
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
-    dpd_buf4_init(&L2, CC_LAMPS, 0, 2, 7, 2, 7, 0, "Lijab");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "Lijab");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tijab");
   }
   else if(params.ref == 2) { /** UHF **/
-    dpd_buf4_init(&L2, CC_LAMPS, 0, 12, 17, 12, 17, 0, "Lijab");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 12, 17, 12, 17, 0, "Lijab");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 12, 17, 12, 17, 0, "tijab");
   }
   ST2BB = dpd_buf4_dot(&L2, &T2);
@@ -52,11 +52,11 @@ void overlap(void)
   dpd_buf4_close(&L2);
 
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
-    dpd_buf4_init(&L2, CC_LAMPS, 0, 0, 5, 0, 5, 0, "LIjAb");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "LIjAb");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
   }
   else if(params.ref = 2) { /** UHF **/
-    dpd_buf4_init(&L2, CC_LAMPS, 0, 22, 28, 22, 28, 0, "LIjAb");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 22, 28, 22, 28, 0, "LIjAb");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tIjAb");
   }
   ST2AB = dpd_buf4_dot(&L2, &T2);
@@ -74,7 +74,7 @@ void overlap(void)
   dpd_file2_mat_rd(&T1B);
 
   ST12AA = 0.0;
-  dpd_buf4_init(&L2, CC_LAMPS, 0, 2, 7, 2, 7, 0, "LIJAB");
+  dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "LIJAB");
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_init(&L2, h); 0,
 				       dpd_buf4_mat_irrep_rd(&L2, h);
@@ -83,9 +83,9 @@ void overlap(void)
       j = L2.params->roworb[h][row][1];
       I = T1A.params->rowidx[i]; Isym = T1A.params->psym[i];
       J = T1A.params->rowidx[j]; Jsym = T1A.params->psym[j];
-      for(col=0; col < L2.params->coltot[h]; col++) {
-	a = L2.params->colorb[h][col][0];
-	b = L2.params->colorb[h][col][1];
+      for(col=0; col < L2.params->coltot[h^L_irr]; col++) {
+	a = L2.params->colorb[h^L_irr][col][0];
+	b = L2.params->colorb[h^L_irr][col][1];
 	A = T1A.params->colidx[a]; Asym = T1A.params->qsym[a];
 	B = T1A.params->colidx[b]; Bsym = T1A.params->qsym[b];
 	if((Isym == Asym) && (Jsym == Bsym))
@@ -103,9 +103,9 @@ void overlap(void)
   ST12BB = 0.0;
 
   if(params.ref == 0 || params.ref == 1)
-    dpd_buf4_init(&L2, CC_LAMPS, 0, 2, 7, 2, 7, 0, "Lijab");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "Lijab");
   else if(params.ref == 2)
-    dpd_buf4_init(&L2, CC_LAMPS, 0, 12, 17, 12, 17, 0, "Lijab");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 12, 17, 12, 17, 0, "Lijab");
 
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_init(&L2, h); 0,
@@ -115,9 +115,9 @@ void overlap(void)
       j = L2.params->roworb[h][row][1];
       I = T1B.params->rowidx[i]; Isym = T1B.params->psym[i];
       J = T1B.params->rowidx[j]; Jsym = T1B.params->psym[j];
-      for(col=0; col < L2.params->coltot[h]; col++) {
-	a = L2.params->colorb[h][col][0];
-	b = L2.params->colorb[h][col][1];
+      for(col=0; col < L2.params->coltot[h^L_irr]; col++) {
+	a = L2.params->colorb[h^L_irr][col][0];
+	b = L2.params->colorb[h^L_irr][col][1];
 	A = T1B.params->colidx[a]; Asym = T1B.params->qsym[a];
 	B = T1B.params->colidx[b]; Bsym = T1B.params->qsym[b];
 	if((Isym == Asym) && (Jsym == Bsym))
@@ -135,9 +135,9 @@ void overlap(void)
   ST12AB = 0.0;
 
   if(params.ref == 0 || params.ref == 1)
-    dpd_buf4_init(&L2, CC_LAMPS, 0, 0, 5, 0, 5, 0, "LIjAb");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "LIjAb");
   else if(params.ref == 2)
-    dpd_buf4_init(&L2, CC_LAMPS, 0, 22, 28, 22, 28, 0, "LIjAb");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 22, 28, 22, 28, 0, "LIjAb");
 
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_init(&L2, h); 0,
@@ -147,9 +147,9 @@ void overlap(void)
       j = L2.params->roworb[h][row][1];
       I = T1A.params->rowidx[i]; Isym = T1A.params->psym[i];
       J = T1B.params->rowidx[j]; Jsym = T1B.params->psym[j];
-      for(col=0; col < L2.params->coltot[h]; col++) {
-	a = L2.params->colorb[h][col][0];
-	b = L2.params->colorb[h][col][1];
+      for(col=0; col < L2.params->coltot[h^L_irr]; col++) {
+	a = L2.params->colorb[h^L_irr][col][0];
+	b = L2.params->colorb[h^L_irr][col][1];
 	A = T1A.params->colidx[a]; Asym = T1A.params->qsym[a];
 	B = T1B.params->colidx[b]; Bsym = T1B.params->qsym[b];
 	if((Isym == Asym) && (Jsym == Bsym))
@@ -180,5 +180,5 @@ void overlap(void)
 
   value = 1.0 - ST1A - ST1B - ST2AA - ST2BB - ST2AB + ST12AA + ST12BB + ST12AB;
 
-  fprintf(outfile, "\tOverlap = %20.15f\n", value);
+  fprintf(outfile, "\tOverlap <L|e^T> = %20.15f\n", value);
 }

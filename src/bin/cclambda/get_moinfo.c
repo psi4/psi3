@@ -178,11 +178,20 @@ void get_moinfo(void)
 		  sizeof(double));
 
   fprintf(outfile,"\n\tNuclear Rep. energy (chkpt)   = %20.15f\n",moinfo.enuc);
+  fprintf(outfile,  "\tReference           (chkpt)   = %d\n",params.ref);
   fprintf(outfile,  "\tSCF energy          (chkpt)   = %20.15f\n",moinfo.escf);
-  fprintf(outfile,  "\tReference energy    (file100) = %20.15f\n",moinfo.eref);
-  fprintf(outfile,  "\tCCSD energy         (file100) = %20.15f\n",moinfo.ecc);
-  fprintf(outfile,  "\tTotal CCSD energy   (file100) = %20.15f\n", 
+  fprintf(outfile,  "\tReference energy    (CC_INFO) = %20.15f\n",moinfo.eref);
+  fprintf(outfile,  "\tCCSD energy         (CC_INFO) = %20.15f\n",moinfo.ecc);
+  fprintf(outfile,  "\tTotal CCSD energy   (CC_INFO) = %20.15f\n", 
           moinfo.eref+moinfo.ecc);
+  fprintf(outfile,"\tExcited State L calculation?  = ");
+  if (params.ground) fprintf(outfile,"No\n"); else fprintf(outfile,"Yes\n"); 
+  fprintf(outfile,"\tIrrep of L          (CC_INFO) = %s\n", moinfo.labels[L_irr]);
+  if (!params.ground) {
+    fprintf(outfile,"\tEOM R0 value        (CC_INFO) = %20.15f\n",params.R0);
+    fprintf(outfile,"\tCCEOM Energy        (CC_INFO) = %20.15f\n",params.cceom_energy);
+  }
+
 }
 
 /* Frees memory allocated in get_moinfo() and dumps some info. */
