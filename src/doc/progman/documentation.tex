@@ -10,7 +10,17 @@ There is no convention yet what should be the preferred medium for
 such a description, but the following are common:
 \begin{itemize}
 \item A UNIX \file{man} page --- all old and some newer \PSIthree\ codes
-use \file{man} pages as the medium of choice.
+use \file{man} pages as the medium of choice.  To access the 
+\PSIthree\ \file{man} pages, you will need to add the \file{man} directory
+to your {\tt MANPATH}.  For example, if you run csh or tcsh, and
+assuming \PSIthree\ has been installed in \file{/usr/local/psi3-bin},
+the following can be added to your \file{.cshrc} or \file{.tcshrc} file:
+\begin{verbatim}
+setenv MANPATH /usr/local/psi3-bin/doc/man:/usr/share/man
+\end{verbatim}
+The usual man path should be added after the \PSIthree\ part and
+will be different for different systems.  Different directories are
+separated by colons.
 
 \item HTML-based documentation --- this is a much more flexible medium
 than \file{man} pages and is accessible by anyone anywhere in the
