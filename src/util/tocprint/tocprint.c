@@ -45,7 +45,9 @@ int main(int argc, char *argv[])
   if (!get_chkpt_prefix)
     psio_tocprint(unit,stdout);
   else {
+    chkpt_init(PSIO_OPEN_OLD);
     prefix = chkpt_rd_prefix();
+    chkpt_close();
     printf("Checkpoint file prefix: %s\n", prefix);
     free(prefix);
   }
