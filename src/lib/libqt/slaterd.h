@@ -14,7 +14,7 @@
 */
 typedef struct {
   int index;
-  short int *occ;     // Orbital indices in QT order
+  short int *occ;     /* Orbital indices in QT order */
 } String;
 
 /*!
