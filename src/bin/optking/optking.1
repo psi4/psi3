@@ -156,11 +156,6 @@ The test for convergence of the geometry optimization is that the
 maximum force on an internal coordinate (in aJ/Ang or aJ/Rad)
 must be less than 10^(-\fBCONV\fP).  The default is 5.
 
-.IP "\fBIRREP_TOL =\fP \fIinteger\fP"
-If primitive internals are being delocalized, the eigenvectors
-are checked to see if they transform as irreps of the point
-group to within a tolerance of 10^(-\fBIRREP_TOL\fP).  The default is 8. 
-
 .IP "\fBEV_TOL =\fP \fIinteger\fP"
 When primitive internals are being delocalized there must be 3n-6
 (linear 3n-5) nonzero eigenvalues of the G matrix corresponding to

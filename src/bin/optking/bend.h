@@ -40,12 +40,24 @@ class bend_class {
 
 
 class bend_set {
+
    int num;
-   bend_class bend_array[MAX_BENDS];
+   bend_class *bend_array;
+
   public:
-   bend_set() {}
-   ~bend_set() {}
-    void print(FILE *fp_out, int print_flag) {
+
+   bend_set(int size) {
+       if(0 <= size < 10000) {
+	   bend_array = new bend_class[size];
+	 }
+       else { fprintf(outfile,"\nWARNING: bad number of bends\n");}
+     }
+
+   ~bend_set() {
+     delete[] bend_array;
+     }
+
+   void print(FILE *fp_out, int print_flag) {
       int i;
       if (num > 0) {
         if (print_flag == 0) fprintf(fp_out,"  bend = (\n");
@@ -56,7 +68,8 @@ class bend_set {
       }
       return;
     }
-    void print_s() {
+
+   void print_s() {
       int i;
       for (i=0;i<num;++i) {
         fprintf(outfile,"S vector for bend %d %d %d: atom A\n",get_A(i),get_B(i),get_C(i) );
@@ -68,6 +81,7 @@ class bend_set {
       }
       return;
     }
+
     void set_num(int i) { num = i;}
     int  get_num(void) { return num;}
     void set_id(int index, int new_id) { bend_array[index].set_id(new_id);}

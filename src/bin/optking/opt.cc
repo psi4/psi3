@@ -3,7 +3,7 @@
      OPT.CC
         written by Rollin King, 1999
 
-     main and input functions as well as several math functions for optking
+     main well as several auxillary functions for optking
 
 
 *****************************************************************************/
@@ -26,6 +26,7 @@ extern "C" {
 #include "cartesians.h"
 #include "internals.h"
 #include "salc.h"
+#include "bond_lengths.h"
 
 void intro();
 void print_mat2(double **matrix, int rows, int cols, FILE *of);
@@ -42,13 +43,14 @@ double **compute_H(salc_set &symm,double *q, double *f_q, double **P);
 double power(double x, int y);
 void swap_tors(int *a, int *b, int *c, int *d);
 void swap(int *a, int *b);
+int *count_internals(cartesians &cart_geom, int intco_given);
 
 int main(void)
 {
   int i,j,a,b,count,dim_carts,intco_exists = 0,print_flag;
   double **B, **G, **G2, **G_inv, **H_inv, **temp_mat, **u;
   double *temp_arr2, *temp_arr, *masses;
-  double *f, *f_q, *dq, *q, tval, tval2;
+  double *f, *f_q, *dq, *q, tval, tval2, scale, temp;
   char *disp_label; disp_label = new char[MAX_LINELENGTH];
   char buffer[MAX_LINELENGTH], *err;
   FILE *fp_fconst;
@@ -62,13 +64,20 @@ int main(void)
   get_optinfo();
 
   cartesians carts;
+  
   dim_carts = carts.get_num_atoms()*3;
   fprintf(outfile,
     "\nGeometry and gradient from file11.dat in a.u. with masses\n");
   carts.print(2,outfile,0,disp_label);
 
-  /* Check to see if (simple) internals are given in intco.dat.  If so,
-  read them.  If not, then generate them using cartesian geometry */
+
+
+  
+  /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    Generate simple internals if not given in intco.dat
+    
+   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
+
   i = 0;
   fp_intco = fopen("intco.dat","r");
   if (fp_intco != NULL) {
@@ -76,10 +85,16 @@ int main(void)
      ip_initialize(fp_intco, outfile) ;
      if (ip_exist(":INTCO",0)) i = 1;
      ip_done();
-/*  }*/
      fclose(fp_intco);
   }
-  internals simples(carts,i);
+
+/* need to count internals coordinates in intco or compute number that will be automatically generated
+   so we know how much memory to allocate (easiest way to dynamically allocate memory without rewriting lots of code) */
+  number_internals = init_int_array(4);
+  number_internals = count_internals(carts,i); 
+    
+  
+  internals simples(carts,i,number_internals);
   simples.compute_internals(carts.get_num_atoms(),carts.get_coord());
   simples.compute_s(carts.get_num_atoms(),carts.get_coord() );
   fprintf(outfile,"\nSimple Internal Coordinates and Values\n");
@@ -89,8 +104,14 @@ int main(void)
   /* Some of SYMinfo is dependent on the internal coordinates */
   get_syminfo(simples);
 
-  /* Check to see if symm vector exists in intco.dat.  If not, then
-     generate delocalized internal coordinates and write them out. */
+
+
+  
+  /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    Generate delocalized internal coordinates if not present in intco.dat
+    
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
+  
   i = 1;
   fp_intco = fopen("intco.dat", "r");
   ip_set_uppercase(1) ;
@@ -114,7 +135,6 @@ int main(void)
         ++count;
       }
 
-     //fflush(fp_intco);
       rewind(fp_intco);
       for(j=0;j<(count-1);++j)
         err = fgets(buffer, MAX_LINELENGTH, fp_intco);
@@ -128,7 +148,14 @@ int main(void)
     }
   }
   fflush(outfile);
-/*  fflush(fp_intco);*/
+
+
+
+
+  /*^^^^^^^^^^^^^^^^^^^^^^^^^^
+    Compute new geometry
+    
+    ^^^^^^^^^^^^^^^^^^^^^^^^*/
 
   if (optinfo.optimize) {
     salc_set symm("SYMM");
@@ -142,31 +169,26 @@ int main(void)
     dq = init_array(symm.get_num());
     q = init_array(symm.get_num());
     q = compute_q(simples,symm);
-    //  fprintf(outfile,"The q matrix\n");
-    //  print_mat2(&q,1,symm.get_num(),outfile);
 
   // build G = BuB^t
+    B = init_matrix(symm.get_num(),3*carts.get_num_atoms()); 
     B = compute_B(carts.get_num_atoms(),simples,symm);
-    //  fprintf(outfile,"The B Matrix:\n");
-    //  print_mat2(B,symm.get_num(),carts.get_num_atoms()*3,outfile);
+    
+    G = init_matrix(symm.get_num(),symm.get_num());
     G = compute_G(B,symm.get_num(),carts);
-    //  fprintf(outfile,"The G Matrix: \n");
-    //  print_mat2(G,symm.get_num(),symm.get_num(),outfile);
 
   // compute G_inv
     fprintf(outfile,"\nBuB^t ");
+    G_inv = init_matrix(symm.get_num(),symm.get_num());
     G_inv = symm_matrix_invert(G,symm.get_num(),1,optinfo.redundant);
-    // fprintf(outfile,"The G_inv Matrix\n");
-    // print_mat2(G_inv,symm.get_num(),symm.get_num(),outfile);
   
   // setup the masses matrix, u
+    masses = init_array(3*carts.get_num_atoms());
     masses = carts.get_mass();
     u = init_matrix(dim_carts,dim_carts);
     for (i=0;i<3*carts.get_num_atoms();++i)
        u[i][i] = 1.0/masses[i];
     free(masses);
-    // fprintf(outfile,"The u Matrix\n");
-    // print_mat2(u, 3*carts.get_num_atoms(), 3*carts.get_num_atoms(), outfile);
 
   // get forces array in cartesian coordinates, f, (in aJ/Ang)
     f = carts.forces();
@@ -189,8 +211,6 @@ int main(void)
     double **P;
     P = init_matrix(symm.get_num(),symm.get_num());
     mmult(G,0,G_inv,0,P,0,symm.get_num(),symm.get_num(),symm.get_num(),0); 
-    // fprintf(outfile,"the P projector matrix\n");
-    // print_mat2(P,symm.get_num(),symm.get_num(),outfile);
 
   // Make Hessian if fconst.dat is absent
     fp_fconst = fopen("fconst.dat","r");
@@ -207,8 +227,6 @@ int main(void)
 
   // Read in Hessian and update it if necessary from opt.aux
     H_inv = compute_H(symm,q,f_q,P);
-    // fprintf(outfile,"the H_inv matrix\n");
-    // print_mat2(H_inv,symm.get_num(),symm.get_num(),outfile);
 
   // Write Values and Forces of internals to opt.aux for later
     if (optinfo.bfgs) {
@@ -221,13 +239,33 @@ int main(void)
 
   // Computing internal coordinate displacements H_inv f = dq, and new q
     mmult(H_inv,0,&f_q,1,&dq,1,symm.get_num(),symm.get_num(),1,0);
-    // fprintf(outfile,"Forces           Displacements\n");
-    // for (i=0;i<symm.get_num();++i)
-    //   fprintf(outfile,"%20.16lf %20.16lf\n",f_q[i],dq[i]);
 
+    /* determine scale factor needed to keep step less than 10% of q if q big
+       or less than 0.1 if q not so big, hopefully better solution coming soon */
+    scale = 1;
+    temp = 1;
+    double cut = STEP_LIMIT / STEP_PERCENT;
+    for (i=0;i<symm.get_num();++i) {
+	if (fabs(dq[i]) > STEP_LIMIT) {
+	    if (fabs(dq[i]) > STEP_PERCENT*fabs(q[i]) && fabs(q[i]) > cut) { 
+		temp = STEP_PERCENT*fabs(q[i])/fabs(dq[i]);
+	      }
+	    else if (fabs(q[i]) < fabs(dq[i]) || fabs(dq[i]) < cut) {
+		temp = STEP_LIMIT / fabs(dq[i]);
+	      }
+	  }
+	if (temp < scale){
+	    scale = temp;
+	  }
+      }
 
-    for (i=0;i<symm.get_num();++i)
-      q[i] += dq[i];
+    fprintf(outfile,"\nScaling displacements by %lf\n",scale); 
+    
+    for (i=0;i<symm.get_num();++i) {
+       dq[i] = dq[i] * scale;   
+       q[i] += dq[i];
+      }
+    
     free_matrix(H_inv,symm.get_num());
 
   // Print step summary to output.dat
@@ -250,8 +288,8 @@ int main(void)
     tval = sqrt(tval);
     fprintf(outfile,"   MAX force: %15.10lf   RMS force: %15.10lf\n",tval2,tval);
     if (tval2 < optinfo.conv) {
-       fprintf(outfile,"\nMAX force is < %5.1e.  Optimization is complete.\n",
-        optinfo.conv);
+       fprintf(outfile,"\nMAX force is < %5.1e.  Optimization is complete.\n",optinfo.conv);
+       fprintf(stderr,"\n  OPTKING:  optimization is complete\n");
        tstop(outfile);
        fclose(fp_input);
        fclose(outfile);
@@ -292,16 +330,13 @@ int main(void)
             if ((a>0) && (a<=all_salcs.get_num()))
               displacements[i][a-1] = disp; 
             else {
-              fprintf(outfile,
-              "\nError: internal %d to be displaced does not exist.\n",a);
-              exit(2);
+              punt("internal to be displaced does not exist");
             }
           }
         }
         else {
-          fprintf(outfile,
-            "\nError: displacement vector %d has %d element(s).",i+1,disp_length);
-          exit(2);
+           punt("displacement vector has wrong number of elements");
+          exit(1);
         }
       }
       ip_done();
@@ -488,10 +523,6 @@ double **symm_matrix_invert(double **A, int dim, int print_det, int redundant) {
   A_vals  = init_array(dim);
 
   sq_rsp(dim,dim,A,A_vals,1,A_vects,EVAL_TOL);
-//fprintf(outfile,"Eigenvalues\n");
-//for (i=0;i<dim;++i)
-  //fprintf(outfile,"%15.10lf\n",A_vals[i]);
-// eivout(A_vects,A_vals,dim,dim,outfile);
 
   if (redundant == 0) {
      for (i=0;i<dim;++i) {
@@ -512,8 +543,6 @@ double **symm_matrix_invert(double **A, int dim, int print_det, int redundant) {
         det *= A_vals[i];
         if (fabs(A_vals[i]) > REDUNDANT_EVAL_TOL)
            A_inv[i][i] = 1.0/A_vals[i];
-     //   else
-     //      A_inv[i][i] = 0.0;
      }
      if (print_det)
         fprintf(outfile,"Determinant: %10.6e\n",det);
@@ -541,7 +570,7 @@ double **symm_matrix_invert(double **A, int dim, int print_det, int redundant) {
                                                                               
 void get_optinfo() {
   int a;
-
+  
   rewind(fp_input);
   ip_set_uppercase(1);
   ip_initialize(fp_input, outfile);
@@ -574,16 +603,12 @@ void get_optinfo() {
   ip_data("CONV","%d",&a,0);
   optinfo.conv = power(10.0, -1*a);
 
-  a = 8;
-  ip_data("IRREP_TOL","%d",&a,0);
-  optinfo.irrep_tol = power(10.0, -1*a);
-
   a= 5;
   ip_data("EV_TOL","%d",&a,0);
   optinfo.ev_tol = power(10.0, -1*a);
 
   /* back-transformation parameters */
-  optinfo.bt_max_iter = 100;
+  optinfo.bt_max_iter = 500;
   ip_data("BT_MAX_ITER","%d",&(optinfo.bt_max_iter),0);
   a = 11;
   ip_data("BT_DQ_CONV","%d",&a,0);
@@ -599,7 +624,7 @@ void get_optinfo() {
     ip_data("COS_TORS_NEAR_NEG1_TOL","%lf",&(optinfo.cos_tors_near_neg1_tol),0);
   optinfo.sin_phi_denominator_tol = 0.0001;
     ip_data("SIN_PHI_DENOMINATOR_TOL","%lf",&(optinfo.sin_phi_denominator_tol),0);
-
+    
   ip_done();
   if (optinfo.print_params) {
     fprintf(outfile,"\n+++ Optinfo Parameters +++\n");
@@ -612,7 +637,6 @@ void get_optinfo() {
     fprintf(outfile,"bfgs:          %d\n",optinfo.bfgs);
     fprintf(outfile,"mix_types:     %d\n",optinfo.mix_types);
     fprintf(outfile,"conv:          %.1e\n",optinfo.conv);
-    fprintf(outfile,"irrep_tol:     %.1e\n",optinfo.irrep_tol);
     fprintf(outfile,"bt_max_iter:   %d\n",optinfo.bt_max_iter);
     fprintf(outfile,"bt_max_dq_conv:    %.1e\n",optinfo.bt_dq_conv);
     fprintf(outfile,"bt_max_dx_conv:    %.1e\n",optinfo.bt_dx_conv);
@@ -868,4 +892,253 @@ void swap(int *a, int *b) {
   }
   return;
 }
+
+
+
+
+/*------------------------------------------------------------------------------
+
+       COUNT_INTERNALS
+
+       purpose: if intco contains internal coordinates count them
+                else count number of internals which will be automatically
+		generated
+
+       parameters:
+            &cart_geom -- address of object of type cartesian
+	    intco_given -- 1 = internals given in intco
+	                   0 = no internals in intco
+
+       returns:
+            count_array -- array containing the numbers of each type of internal
+
+   *this is basically ripped off of the constructor for the internals class
+	                                                   J. Kenny 6/30/00
+------------------------------------------------------------------------------*/
+
+int *count_internals(cartesians &cart_geom, int intco_given) {
+
+  int i,j,k,l,a,b,
+      num, num_atoms, count,      /* counter variables */
+      Zmax,Zmin,
+      *ioff,                      /* ioff array for indexing */
+      *count_array,               /* array to hold number of each internal type */
+      **bonds;                    /* 1 if atoms bonded, 0 otherwise */
+
+  double *coord,                  /* holds coordinates from &cart_geom */
+         *distance;               /* holds computed distances */
+
+  count_array = init_int_array(4);
+      
+    /*#########################################
+      if intco_given=1 count internals in intco
+    #########################################*/
+  if (intco_given) {
+
+      /* initialize intco.dat */
+      ip_done();
+      fp_intco = fopen("intco.dat","r");
+      ip_set_uppercase(1);
+      ip_initialize(fp_intco, outfile);
+      ip_cwk_add(":INTCO");
+
+      /* count stretches */
+      num=0;
+      if (ip_exist("STRE",0)) {
+	  ip_count("STRE",&num,0);
+	}
+      count_array[0]=num;
+
+      /* count bends */
+      num=0;
+      if (ip_exist("BEND",0)) {
+	  ip_count("BEND",&num,0);
+	}
+      count_array[1]=num;
+
+      /* count torsions */
+      num=0;
+      if (ip_exist("TORS",0)) {
+	  ip_count("TORS",&num,0);
+	}
+      count_array[2]=num;
+
+      /* count out of plane bends */
+      num=0;
+      if (ip_exist("OUT",0)) {
+	  ip_count("OUT",&num,0);
+	}
+      count_array[3]=num;
+
+      fclose(fp_intco);
+      ip_done();
+    }
+
+  
+  /*####################################################################
+    if no internals in intco.dat count the number that will be generated
+   ###################################################################*/
+  else {
+
+      num_atoms = cart_geom.get_num_atoms();
+      coord = init_array(3 * num_atoms);
+      coord = cart_geom.get_coord();
+   
+
+      /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	figure out which atoms are bonded (I'm not exactly sure how this works)
+	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
+      ioff = (int *) malloc (32641 * sizeof(int));
+      ioff[0]=0;
+      for (i=1;i<32641;++i) {
+	  ioff[i] = ioff[i-1] + i;
+	}
+		  
+      /* compute distances */
+      distance = init_array( ((num_atoms+1)*num_atoms)/2 );
+      count = -1;
+      for(i=0;i<num_atoms;++i) {
+	  for(j=0;j<=i;++j) {
+	      distance[++count] = sqrt(SQR(coord[3*i+0]-coord[3*j+0]) +
+				       SQR(coord[3*i+1]-coord[3*j+1]) +
+				       SQR(coord[3*i+2]-coord[3*j+2]));
+	    }
+	}
+
+      /* determine bonds */
+      bonds = init_int_matrix(num_atoms,num_atoms);
+      for (i=0;i<num_atoms;++i) {
+	  for(j=0;j<=i;++j) {
+	      Zmax = MAX((int)cart_geom.get_atomic_num(i),(int)cart_geom.get_atomic_num(j));
+	      Zmin = MIN((int)cart_geom.get_atomic_num(i),(int)cart_geom.get_atomic_num(j));
+	      a = ioff[Zmax-1] + (Zmin-1);
+	      if (bondl[a] != 0.0) {
+		  if (distance[ioff[i]+j] < (1.2 * bondl[a])) {
+		      bonds[i][j] = 1;
+		      bonds[j][i] = 1;
+		    }
+		}
+	      else {
+		  fprintf(outfile,"WARNING! Optking does not know what bond lengths");
+		  fprintf(outfile,"to expect for all the atoms.\n");
+		  fprintf(outfile,"You may have to specify connectivity in input.");
+		}
+	    }
+	}
+
+
+      /* check input for user specified bonds or nobonds */
+      rewind(fp_input);
+      ip_set_uppercase(1);
+      ip_initialize(fp_input,outfile);
+      ip_cwk_add(":OPTKING");
+
+      if (ip_exist("BONDS",0)) {
+	  ip_count("BONDS",&num,0);
+	  for(i=0;i<num;++i) {
+	      ip_data("BONDS","%d",&a,2,i,0);
+	      ip_data("BONDS","%d",&b,2,i,0);
+	      a -= 1;  b -= 1;
+	      bonds[a][b] = 1;
+	      bonds[b][a] = 1;
+	    }
+	}
+
+       if (ip_exist("NOBONDS",0)) {
+	  ip_count("NOBONDS",&num,0);
+	  for(i=0;i<num;++i) {
+	      ip_data("NOBONDS","%d",&a,2,i,0);
+	      ip_data("NOBONDS","%d",&b,2,i,0);
+	      a -= 1;  b -= 1;
+	      bonds[a][b] = 0;
+	      bonds[b][a] = 0;
+	    }
+	 }
+
+       ip_done();
+
+	/* count number of bonds */
+	num=0;
+	for(i=0;i<num_atoms;++i) {
+	    for(j=i+1;j<num_atoms;++j) {
+		if(bonds[i][j] == 1) {
+		    ++num;
+		  }
+	      }
+	  }
+	count_array[0]=num;
+
+
+	/*^^^^^^^^^^^^^^^^^^^^^^^
+	  count number of bends
+	  ^^^^^^^^^^^^^^^^^^^^^*/
+        num=0;
+	for(i=0;i<num_atoms;++i) {
+	    for(j=0;j<num_atoms;++j) {
+		if(i!=j)
+		for(k=i+1;k<num_atoms;++k) {
+		    if(j!=k)
+		    if (bonds[i][j] && bonds[j][k]) {
+			++num;
+		      }
+		  }
+	      }
+	  }
+         count_array[1]=num;
+
+
+	 /*^^^^^^^^^^^^^^^^^^^^^^^^^
+	   count number of torsions
+	   ^^^^^^^^^^^^^^^^^^^^^^^*/
+         num=0;
+	 for(i=0;i<num_atoms;++i) {
+	     for(j=0;j<num_atoms;++j) {
+		 if(i!=j)
+		 for(k=0;k<num_atoms;++k) {
+		     if(i != k && j != k) {
+			 for(l=i+1;l<num_atoms;++l) {
+			     if( (l != j && l != k) && bonds[i][j] && bonds[j][k] && bonds[k][l]) {
+				 ++num;
+			       }
+			   }
+		       }
+		   }
+	       }
+	   }
+	 count_array[2]=num;
+	 count_array[3]=0;
+
+         free(ioff);
+         free(distance);
+         free(coord);
+         free_int_matrix(bonds,num_atoms);
+    }
+
+   return count_array;
+
+}	 
+		
+	       
+
+
+/*-------------------
+  PUNT()
+
+  prints errors
+  and exits
+  -----------------*/
+extern "C" {
+void punt( char *message ) {
+  fprintf(outfile,"\nerror: %s\n", message);
+  fprintf(outfile,"         *** stopping execution ***\n");
+  fprintf(stderr,"\n OPTKING error: %s\n", message);
+  fprintf(stderr,"                 *** stopping execution ***\n");
+  fclose(outfile);
+  exit(1);
+}
+}
+
+
+
+
 

@@ -25,6 +25,7 @@ double **compute_G(double **B, int num_intcos, cartesians &carts);
 void new_geom(cartesians &carts, internals &simples, salc_set &symm,
        double *dq, int print_to_geom_file, int restart_geom_file,
        char *disp_label) {
+  
   int bmat_iter_done,count,i,j,dim_carts,num_atoms;
   double **A, **G, **G_inv, **B, **u, **temp_mat;
   double dx_sum, dq_sum, *dx, *new_x, *x, *new_q, *q, *masses;
@@ -36,6 +37,7 @@ void new_geom(cartesians &carts, internals &simples, salc_set &symm,
   new_x = init_array(dim_carts);
   q = init_array(symm.get_num());
   new_q = init_array(symm.get_num());
+  masses = init_array(3*num_atoms);
   masses = carts.get_mass();
 
   A = init_matrix(dim_carts,symm.get_num());
@@ -92,7 +94,7 @@ void new_geom(cartesians &carts, internals &simples, salc_set &symm,
      dq_sum = dq_sum / ((double) symm.get_num());
      dx_sum = sqrt(dx_sum);
      dq_sum = sqrt(dq_sum);
-     fprintf (outfile,"%5d %15.10lf %15.10lf\n", count, dx_sum, dq_sum);
+     fprintf (outfile,"%5d %15.12lf %15.12lf\n", count, dx_sum, dq_sum);
    }
 
   // Compute new cart coordinates, then internals and B matrix
@@ -120,7 +122,7 @@ void new_geom(cartesians &carts, internals &simples, salc_set &symm,
    dq_sum = sqrt(dq_sum);
    if ((dx_sum < optinfo.bt_dx_conv) && (dq_sum < optinfo.bt_dq_conv))
       bmat_iter_done = 1;
-   fprintf (outfile,"%5d %15.10lf %15.10lf\n", count+1, dx_sum, dq_sum);
+   fprintf (outfile,"%5d %15.12lf %15.12lf\n", count+1, dx_sum, dq_sum);
 
     for (i=0;i<dim_carts;++i)
       x[i] = new_x[i] * _bohr2angstroms;

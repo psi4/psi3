@@ -7,61 +7,22 @@
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h>
-#include "opt.h"
+#define FIRST_C_FILE 1
+#define EXTERN
+#include "opt_c.h"
 
-int **get_char_table(char *ptgrp); /* returns the character table      */
-int get_num_irreps(char *ptgrp);      /* " " number of irreps */
-char **get_irrep_labels(char *ptgrp); /* " " number of symmetry operations */
-char **get_symm_ops(char *ptgrp);     /* " " symm operation labels */
-int *get_ops_coeffs(char *ptgrp);     /* " " coefficients of the symmetry operations */
-int get_num_ops(char *ptgrp);         /* " " number of operations */
-int get_num_classes(char *ptgrp);     /* " " number of classes of operations */
+
+int **get_char_table(char *ptgrp);    /* returns the character table */
+int get_num_irreps(char *ptgrp);      /* "     " number of irreps */
+char **get_irrep_labels(char *ptgrp); /* "     " number of symmetry operations */
+char **get_symm_ops(char *ptgrp);     /* "     " symm operation labels */
+int *get_ops_coeffs(char *ptgrp);     /* "     " coefficients of the symmetry operations */
+int get_num_ops(char *ptgrp);         /* "     " number of operations */
+int get_num_classes(char *ptgrp);     /* "     " number of classes of operations */
 int *get_ops_in_class(char *ptgrp);
 
-/*
-void main (void) {
-  int num_irreps,num_ops,i,j,k;
-  int **char_table;
-  char **irrep_labels;
-  char **symm_ops;
-  int *ops_coeffs;
-  int num_classes;
-  static char *ptgrp[] = {"C1 ","CS ","CI ","C2 ","D2 ","D3 ","D4 ","D6 ",
-                   "C2V","C3V","C4V","C6V","C2H","D2H","D3H","D4H",
-                   "D6H","D2D","D3D","TD ","O  ","OH "};
 
-  ffile(&outfile,"output.dat",0);
 
-  for(k=0;k<22;++k) {
-     num_irreps = get_num_irreps(ptgrp[k]);
-     char_table = get_char_table(ptgrp[k]);
-     irrep_labels = get_irrep_labels(ptgrp[k]);
-     symm_ops = get_symm_ops(ptgrp[k]);
-     ops_coeffs = get_ops_coeffs(ptgrp[k]);
-     num_ops = get_num_ops(ptgrp[k]);
-     num_classes = get_num_classes(ptgrp[k]);
-
-fprintf(outfile,"MAIN #2 BEING EXECUTED");
-
-     fprintf(outfile,"\nPoint Group: %s\n",ptgrp[k]);
-     fprintf(outfile,"Number of irreps: %d\n",num_irreps);
-     fprintf(outfile,"Number of classes: %d\n",num_classes);
-     fprintf(outfile,"Number of operations: %d\n",num_ops);
-     fprintf(outfile,"          ");
-     for(i=0;i<num_irreps;++i)
-        fprintf(outfile,"%1d%-5s",ops_coeffs[i],symm_ops[i]);
-     fprintf(outfile,"\n");
-     for(i=0;i<num_irreps;++i) { 
-        fprintf(outfile,"%6s",irrep_labels[i]);
-        for(j=0;j<num_irreps;++j) 
-           fprintf(outfile,"%6d",char_table[i][j]);
-        fprintf(outfile,"\n");
-     }
-  }
-  fclose(outfile);
-  return;
-}
-*/
 
 int **get_char_table(char *ptgrp) {
 
@@ -245,6 +206,9 @@ else
   return table;
 }
 
+
+
+
 int get_num_irreps(char *ptgrp) {
 
 if (strcmp(ptgrp,"C1 ") == 0)
@@ -361,6 +325,9 @@ else
    return C1;
 }
 
+
+
+
 char **get_irrep_labels(char *ptgrp) {
 
    int i,j,num_irreps;
@@ -438,6 +405,8 @@ else
 }
 
 
+
+
 int *get_ops_coeffs(char *ptgrp) {
 
    static int C1[]  = {1}; 
@@ -512,6 +481,8 @@ else
 }
 
 
+
+
 int get_num_ops(char *ptgrp) {
 
 if (strcmp(ptgrp,"C1 ") == 0)
@@ -562,6 +533,9 @@ else
    return 1;
 }
 
+
+
+
 int get_num_classes(char *ptgrp) {
 
 if (strcmp(ptgrp,"C1 ") == 0)
@@ -611,6 +585,7 @@ else if (strcmp(ptgrp,"D6H") == 0)
 else
    return 1;
 }
+
 
 
 
@@ -759,11 +734,7 @@ int *get_ops_in_class(char *ptgrp) {
 
 
   if(error_var != 0) {
-    fprintf(outfile,"\nerror -- problem assigning number of operations per class");
-    fprintf(outfile,"\n      ** stopping execution **\n");
-    printf("\nerror -- problem assigning number of operations per class");
-    printf("\n      ** stopping execution **\n");       
-    exit(1);
+    punt("problem assigning number of operations per class");
   } 
 
 return num_ops;

@@ -114,7 +114,8 @@ salc_set :: salc_set() {
   return;
 }
 
-salc_set :: salc_set(char *keyword) {
+salc_set :: salc_set(char *keyword)
+  {
   int i,j,a,b;
   int coeff_length, simple_length;
   int label_pos = 0;
@@ -193,5 +194,10 @@ salc_set :: salc_set(char *keyword) {
   fclose(fp_intco);
   return;
 }
+
+
+
+
+
 
 

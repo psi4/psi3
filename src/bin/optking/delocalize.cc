@@ -157,21 +157,13 @@ void delocalize(int num_atoms,internals &simples) {
       degrees_of_freedom = 3 * num_atoms - 6;
       break;
   }
-  if (num_nonzero != degrees_of_freedom) {
+  if (num_nonzero < degrees_of_freedom) {
     if (num_nonzero < degrees_of_freedom) {
-       fprintf(outfile,"\nerror -- too few non-redundant coordinates");
-       fprintf(outfile,"\n      -- should have %i but only have %i",degrees_of_freedom, num_nonzero);
-       fprintf(outfile,"\n      -- try reducing eigenvalue tolerance and check atom connectivity ( set print_simples = 1 )");
+       punt("too few non-redundant coordinates, try reducing eigenvalue tolerance\n\tand check atom connectivity");
       }
     if (num_nonzero > degrees_of_freedom) {
-       fprintf(outfile,"\nerror -- too many non-redundant coordinates");
-       fprintf(outfile,"\n      -- should have %i but have %i",degrees_of_freedom, num_nonzero);
-       fprintf(outfile,"\n      -- try increasing eigenvalue tolerance");
+       punt("too many non-redundant coordinates, try increasing eigenvalue tolerance");
       }
-      fprintf(outfile,"\n       -- stopping execution\n");
-      fflush(outfile);
-      fclose(outfile);
-      exit(1);
   }
 
 
@@ -215,6 +207,7 @@ void delocalize(int num_atoms,internals &simples) {
   /* send evectst to irrep.cc to be properly symmetrized */
     evectst = irrep(simples, evectst);
 
+double** pointy = evectst;
 
 
  // Print out coordinates to intco.dat
@@ -253,7 +246,7 @@ void delocalize(int num_atoms,internals &simples) {
   free_matrix(B,simples.get_num());
   free_matrix(BBt,simples.get_num());
   free(evals);
-  free_matrix(evectst,num_nonzero); 
+  free_matrix(pointy,num_nonzero); 
 
   fprintf(fp_intco,"  )\n)\n"); 
   fflush(fp_intco);

@@ -88,9 +88,9 @@ double norm, dot,                                      /* norm and dot product o
   for(coord_num=0;coord_num<num_nonzero;++coord_num) {
       num_spanned = 0;
       for(irrep=0;irrep<syminfo.num_irreps;++irrep) {
-	  if( irreps_spanned[coord_num][irrep] > 1.0E-14 )
+	  if( irreps_spanned[coord_num][irrep] > EVAL_TOL )
 	      ++num_spanned;     /* tells which vectors have even slight contamination */
-	  if( irreps_spanned[coord_num][irrep] > 0.05 )
+	  if( irreps_spanned[coord_num][irrep] > SPANNED_IRREP_TOL )
 	      ++num_spanned_big; /* how many vectors we want after projection (don't project irreps with small characters)*/
 	}
       spanned_arr[coord_num] = num_spanned;
@@ -123,13 +123,12 @@ double norm, dot,                                      /* norm and dot product o
       }
     for(coord_num=0;coord_num<num_nonzero;coord_num++) { 
 	for(irrep=0;irrep<syminfo.num_irreps;++irrep) 
-          if(irreps_spanned[coord_num][irrep] > 0.05)
+          if(irreps_spanned[coord_num][irrep] > SPANNED_IRREP_TOL)
 	      irr[coord_num] = irrep; 
         symm_coord[coord_num] =  di_coord[coord_num];
     }
     free_matrix(irreps_spanned,num_nonzero);
     free(spanned_arr);
-    free(symm_coord);
     /* and we're done, skip to the end */
     return symm_coord;
   }
@@ -139,16 +138,6 @@ double norm, dot,                                      /* norm and dot product o
       tmp_evect = init_array(simples.get_num());
       irr_tmp = init_int_array(num_spanned_big);
       coord_tmp = init_matrix(num_spanned_big,simples.get_num()); 
-
-      /* currently implementing only D2h and subgroups */
-      if ( strcmp(ptgrp,"C1 ")!=1 && strcmp(ptgrp,"CS ")!=1 && strcmp(ptgrp,"CI ")!=1 &&
-	  strcmp(ptgrp,"C2 ")!=1 && strcmp(ptgrp,"C2V")!=1 && strcmp(ptgrp,"D2 ")!=1 &&
-	  strcmp(ptgrp,"C2H")!=1 && strcmp(ptgrp,"D2H")!=1 ) {
-	  fprintf(outfile,"\nerror -- point group not D2H or subgroup and multiple irreps are spanned");
-	  fprintf(outfile,"\n         cannot currently handle this situation");
-	  fprintf(outfile,"\n      -- stopping execution");
-	  exit(1);
-       }
 
        index = 0;     /* this variable keeps track of where to put next projection */
        for(coord_num=0;coord_num<num_nonzero;coord_num++) {
@@ -169,7 +158,7 @@ double norm, dot,                                      /* norm and dot product o
 		   zero_arr(evect_proj,simples.get_num());
 
                    /* if irrep spanned, project */
-		   if(irreps_spanned[coord_num][irrep] > 0.05) {
+		   if(irreps_spanned[coord_num][irrep] > SPANNED_IRREP_TOL) {
 		       /* loop over ops */
                        for (ops = 0;ops<syminfo.num_irreps;++ops) {
                            zero_arr(tmp_evect, simples.get_num());
@@ -218,7 +207,7 @@ double norm, dot,                                      /* norm and dot product o
         num_spanned = 0;
         for (coord_num=0;coord_num<num_spanned_big;coord_num++) { 
 	    for (irrep=0;irrep<syminfo.num_irreps;++irrep) {
-	        if ( irreps_spanned[coord_num][irrep] > 0.05 ) {
+	        if ( irreps_spanned[coord_num][irrep] > SPANNED_IRREP_TOL ) {
 	            ++num_spanned;
 		    irr_tmp[coord_num] = irrep;
 	        }
@@ -233,10 +222,7 @@ double norm, dot,                                      /* norm and dot product o
 
        /* check that number of irreps spanned by projections is as expected */
        if (num_spanned != num_spanned_big) {
-	  fprintf(outfile,"\nerror -- projected coordinate(s) span incorrect number of irreps");
-	  fprintf(outfile,"\n      -- stopping execution\n");
- 	  fflush(outfile);
-          exit(1);
+	  punt("projected coordinate(s) span incorrect number of irreps");
 	 }
 
        
@@ -307,7 +293,7 @@ double norm, dot,                                      /* norm and dot product o
        num_spanned = 0;
        for (coord_num=0;coord_num<num_spanned_big;coord_num++) { 
            for (irrep=0;irrep<syminfo.num_irreps;++irrep) {      
-               if ( irreps_spanned[coord_num][irrep] > 0.05) {
+               if ( irreps_spanned[coord_num][irrep] > SPANNED_IRREP_TOL) {
                    irr[coord_num] = irrep;
 		   ++num_spanned;
                 }
@@ -323,10 +309,7 @@ double norm, dot,                                      /* norm and dot product o
 
 	}
         if (num_spanned != num_nonzero) {
-            fprintf(outfile,"\nerror -- orthogonalized coordinates span incorrect number of irreps");
-            fprintf(outfile,"\n      -- stopping execution\n");
-	    fflush(outfile);
-            exit(1);
+            punt("orthogonalized coordinates span incorrect number of irreps");
         }
     
       /* check symmetry blocks, make sure orthogonal */
@@ -349,10 +332,7 @@ double norm, dot,                                      /* norm and dot product o
     /* check that coord_tmp2 has 3n-6 nonzero rows (otherwise we don't have a proper basis for
        non-redundant subspace of primitives) */
     if (offset != num_nonzero) {
-        fprintf(outfile,"\nerror -- orthogonalization yields incorrect number of coordinates");
-        fprintf(outfile,"\n      -- stopping execution\n");
-	fflush(outfile);
-        exit(1);
+        punt("orthogonalization yields incorrect number of coordinates");
     }
   
     /* if everything is ok we can copy pointers and return */
@@ -369,9 +349,7 @@ double norm, dot,                                      /* norm and dot product o
     The only choice left is when num_spanned < num_nonzero
     it shouldn't happen, hence die
    -------------------------------------------------------*/
-  fprintf(outfile,"error -- num_spanned < num_nonzero, it should not happen\n");
-  fprintf(outfile,"      -- stopping execution\n");
-  exit(1);
+  punt("num_spanned < num_nonzero, it should not happen");
   return NULL;
 
 }

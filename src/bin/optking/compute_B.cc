@@ -76,3 +76,6 @@ double **compute_B(int num_atoms,internals &simples,salc_set &symm) {
   return B;
 }
 
+
+
+

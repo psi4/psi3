@@ -147,8 +147,10 @@ internals :: ~internals() {
 	class constructor for internals
 -----------------------------------------------------------------------------*/
 
-internals :: internals(cartesians& carts, int user_intcos)
+internals :: internals(cartesians& carts, int user_intcos, int *size_arr)
+  : stre(size_arr[0]), bend(size_arr[1]), tors(size_arr[2]), out(size_arr[3]) 
 {
+
  if (user_intcos) {
   /* Read in simple internal coordinates from intco.dat */
   int i,j,a,b,c,d,e;
@@ -161,10 +163,7 @@ internals :: internals(cartesians& carts, int user_intcos)
   if (ip_exist("STRE",0)) {
      ip_count("STRE",&i,0);
      stre.set_num(i);
-     if (stre.get_num() > MAX_STRETCHES) {
-        fprintf(outfile,"Maximum number of stretches is %d\n", MAX_STRETCHES);
-        exit(2);
-     }
+
      for(i=0;i<stre.get_num();++i) {
         ip_count("STRE",&j,1,i);
         if (j != 3) {
@@ -181,14 +180,13 @@ internals :: internals(cartesians& carts, int user_intcos)
         stre.set_val(i,0.0);
      }
   }
+  else if (!ip_exist("STRETCH",0)) {stre.set_num(0);}
+  
   i = 0;
   if (ip_exist("BEND",0)) {
      ip_count("BEND",&i,0);
      bend.set_num(i);
-     if (bend.get_num() > MAX_BENDS) {
-        fprintf(outfile,"Maximum number of bends is %d\n", MAX_BENDS) ;
-        exit(2);
-     }
+
      for(i=0;i<bend.get_num();++i) {
         ip_count("BEND",&j,1,i);
         if (j != 4) {
@@ -205,14 +203,13 @@ internals :: internals(cartesians& carts, int user_intcos)
         bend.set_val(i,0.0);
      }
   }
+  else if (!ip_exist("BEND",0)) { bend.set_num(0);}
+  
   i = 0;
   if (ip_exist("TORS",0)) {
      ip_count("TORS",&i,0);
      tors.set_num(i);
-     if (tors.get_num() > MAX_TORSIONS) {
-        fprintf(outfile,"Maximum number of tors is %d\n", MAX_TORSIONS) ;
-        exit(2);
-     }
+
      for(i=0;i<tors.get_num();++i) {
         ip_count("TORS",&j,1,i);
         if (j != 5) {
@@ -233,14 +230,13 @@ internals :: internals(cartesians& carts, int user_intcos)
         tors.set_val(i,0.0);
      }
   }
+  else if(!ip_exist("TORS",0)) { tors.set_num(0); }
+  
   i = 0;
   if (ip_exist("OUT",0)) {
      ip_count("OUT",&i,0);
      out.set_num(i);
-     if (out.get_num() > MAX_OUT_OF_PLANES) {
-        fprintf(outfile,"Maximum number of out is %d\n", MAX_OUT_OF_PLANES) ;
-        exit(2);
-     }
+
      for(i=0;i<out.get_num();++i) {
         ip_count("OUT",&j,1,i);
         if (j != 5) {
@@ -260,9 +256,12 @@ internals :: internals(cartesians& carts, int user_intcos)
         out.set_val(i,0.0);
       }
    }
+  else if(!ip_exist("OUT",0)) out.set_num(0);
+  
    ip_done();
  }
  else {
+
    /* Generate simple internal coordinates from a cartesian geometry */
   int i,j,k,a,b,c,d,e, *ioff, count, Zmax, Zmin, num_atoms;
   double *atom_dist, *coord;
@@ -275,7 +274,7 @@ internals :: internals(cartesians& carts, int user_intcos)
   ioff[0] = 0 ;
   for (i = 1; i < 32641 ; i++)
     ioff[i] = ioff[i-1] + i;
-
+ 
   /* Compute atomic distance matrix */
   atom_dist = init_array( ((num_atoms+1)*num_atoms)/2 );
   count = -1;
@@ -287,6 +286,7 @@ internals :: internals(cartesians& carts, int user_intcos)
 
   /* Determine which bonds are present */
   bonds = init_int_matrix(num_atoms, num_atoms);
+  int count_of_bonds = 0;
   for (i=0;i<num_atoms;++i)
     for (j=0;j<i;++j) {
       Zmax = MAX((int)carts.get_atomic_num(i),(int)carts.get_atomic_num(j));
@@ -306,7 +306,7 @@ internals :: internals(cartesians& carts, int user_intcos)
     }
 
   int num_bonds, num_nobonds;
-rewind(fp_input);
+  rewind(fp_input);
   ip_set_uppercase(1);
   ip_initialize(fp_input,outfile);
 // ip_cwk_clear();
@@ -343,6 +343,7 @@ rewind(fp_input);
   }
   ip_done();
 
+  fprintf(outfile,"\ngenerating internals\n"); fflush(outfile);
   id_count = 0;
   type_count = 0;
   for (i=0;i<num_atoms;++i)
@@ -399,7 +400,7 @@ rewind(fp_input);
    tors.set_num(type_count);
    out.set_num(0);
    fp_intco = fopen("intco.dat","w");
-   print(fp_intco,0);
+   print(fp_intco,0); 
  }
 
  fclose(fp_intco);
@@ -408,7 +409,9 @@ rewind(fp_input);
    fprintf(outfile,"Error: No simple internals were read.\n");
    exit(2);
  }
+
  return;
+
 }
 
 

@@ -31,13 +31,32 @@ class stretch_class {
     double get_s_B(int i) { return s_B[i]; }
 };
 
+
+
+
+/*--------------------------------------------------------------------------
+  STRETCH_SET class declaration
+
+  an object of this class is a set of stretch_class objects
+  -------------------------------------------------------------------------*/
+
 class stretch_set {
-   int num;
-   stretch_class stre_array[MAX_STRETCHES];
+
+  int num;
+   stretch_class* stre_array;
+
   public:
-    stretch_set(){}
-    ~stretch_set(){}
-    void print(FILE *fp_out, int print_flag) {
+
+   stretch_set(int size){
+	if (0 <= size <10000){
+	    stre_array = new stretch_class[size];
+	  }
+	else { fprintf(outfile,"\nWARNING: bad number of stretches\n"); }
+      }
+
+   ~stretch_set(){delete[] stre_array;}
+
+   void print(FILE *fp_out, int print_flag) {
       int i;
       if (num > 0) {
         if (print_flag == 0) fprintf(fp_out,"  stre = (\n");

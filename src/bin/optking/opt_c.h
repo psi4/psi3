@@ -28,23 +28,16 @@
 #define STEP_LIMIT (0.1)                                       /* max step size if di coord has small value */
 #define STEP_PERCENT (0.1)                                     /* if di coord large valued, max percentage allowed for step */
 
-EXTERN FILE *fp_input, *fp_intco, *outfile, *fp_fconst, *fp_opt_aux;
-EXTERN void cross_product(double *u,double *v,double *out);
-EXTERN void scalar_mult(double a, double *vect, int dim);
-EXTERN void scalar_div(double a, double *vect);
-EXTERN double **symm_matrix_invert(double **A, int rows, int cols, int redundant);
 EXTERN char *gprgid();
-EXTERN int div_int(int big, int little);
-EXTERN void print_mat2(double **matrix, int rows, int cols, FILE *of);
+EXTERN void punt(char *message);
+EXTERN void punt( char *message);  
+EXTERN FILE *fp_input, *fp_intco, *outfile, *fp_fconst, *fp_opt_aux;   
 EXTERN int *ops_in_class;
 EXTERN int num_irreps, *irr;
 EXTERN int num_nonzero;      /* number of non-redundant di coordinates (eigenvectors of G with nonzero eigenvalues) */
-EXTERN char ptgrp[4];        /*molecular point group*/
+EXTERN char ptgrp[4];        /* molecular point group */
 EXTERN int *number_internals;
 
-/* C functions we may want to use (or need to keep as C functions so they can be called from C code) */
-extern "C" void punt(char *message);
-extern "C" char *gprgid();
 
 struct OPTInfo {
   double *masses;

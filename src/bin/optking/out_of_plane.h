@@ -53,11 +53,24 @@ class out_class {
 };
 
 class out_set {
+
    int num;
-   out_class out_array[MAX_OUT_OF_PLANES];
+   out_class *out_array;
+
   public:
-   out_set() {}
-   ~out_set() {}
+ 
+   out_set(int size) {
+       if (0 <= size < 10000) {
+	   out_array = new out_class[size];
+	 }
+       else{ fprintf(outfile,"\nWARNING: bad number of out of plane angles\n");
+	 }
+     }
+
+   ~out_set() {
+     delete[] out_array;
+     }
+
     void set_num(int i) { num = i;}
     int  get_num(void) { return num;}
     void set_id(int index, int new_id) { out_array[index].set_id(new_id);}
