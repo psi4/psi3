@@ -1,9 +1,17 @@
 /* $Log$
- * Revision 1.17  2003/06/27 22:10:06  sherrill
- * Change keyword from direct_scf to direct.  This can be used also
- * for MP2 and can be picked up by the psi3 driver to know which programs
- * to run.
+ * Revision 1.18  2003/08/09 17:39:56  crawdad
+ * I added the ability to determine frozen core orbitals for UHF references to
+ * cleanup.c.  I also commented out ip_cwk_clear and ip_cwk_add calls in
+ * cleanup.c, guess.c, scf_input.c and scf_iter_2.c.  These calls were (1) poor
+ * design and (2) interfering with default ip_tree behavior needed to simplify
+ * the format of input.dat.
+ * -TDC
  *
+/* Revision 1.17  2003/06/27 22:10:06  sherrill
+/* Change keyword from direct_scf to direct.  This can be used also
+/* for MP2 and can be picked up by the psi3 driver to know which programs
+/* to run.
+/*
 /* Revision 1.16  2002/12/06 15:50:32  crawdad
 /* Changed all exit values to PSI_RETURN_SUCCESS or PSI_RETURN_FAILURE as
 /* necessary.  This is new for the PSI3 execution driver.
@@ -167,9 +175,11 @@ void scf_input(ipvalue)
    int depth;
    int *mopi;
 
+   /*
    ip_cwk_clear();
    ip_cwk_add(":DEFAULT");
    ip_cwk_add(":SCF");
+   */
   
    if(ipvalue) ip_print_value(stdout,ipvalue);
 

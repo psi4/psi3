@@ -1,8 +1,16 @@
 /* $Log$
- * Revision 1.26  2003/05/19 22:26:26  crawdad
- * Added phase corrections for UHF orbitals.
+ * Revision 1.27  2003/08/09 17:39:56  crawdad
+ * I added the ability to determine frozen core orbitals for UHF references to
+ * cleanup.c.  I also commented out ip_cwk_clear and ip_cwk_add calls in
+ * cleanup.c, guess.c, scf_input.c and scf_iter_2.c.  These calls were (1) poor
+ * design and (2) interfering with default ip_tree behavior needed to simplify
+ * the format of input.dat.
  * -TDC
  *
+/* Revision 1.26  2003/05/19 22:26:26  crawdad
+/* Added phase corrections for UHF orbitals.
+/* -TDC
+/*
 /* Revision 1.25  2003/05/06 20:47:22  evaleev
 /* CSCF can now find frzvpi from the eigenvalues.
 /*
@@ -214,9 +222,11 @@ void cleanup()
   int row, col;
   int nfzc, nfzv, *frzcpi, *frzvpi;
 
+  /*
   ip_cwk_clear();
   ip_cwk_add(":DEFAULT");
   ip_cwk_add(":SCF");
+  */
 
   ci_calc=irot=0;
   errcod = ip_string("WFN",&ci_type,0);
@@ -1339,9 +1349,10 @@ static int* compute_frzcpi(int nfzc)
   double *evals, eval;
   struct symm *s;
   int *frzcpi;
+  int *frzcpi_a, *frzcpi_b;
 
-  frzcpi = init_int_array(num_ir);
   if (!uhf) {
+    frzcpi = init_int_array(num_ir);
     for(docc=0; docc<nfzc; docc++) {
       lowest_eval = 1.0E100;
       for(irrep=0; irrep<num_ir; irrep++) {
@@ -1360,6 +1371,59 @@ static int* compute_frzcpi(int nfzc)
       frzcpi[lowest_eval_irrep]++;
     }
   }
+  else {
+    /* first check alpha evals to generate frzcpi_a */
+    frzcpi_a = init_int_array(num_ir);
+    last_lowest = -1.0E100;
+    for(docc=0; docc < nfzc; docc++) {
+      lowest_eval = 1.0E100;
+      for(irrep=0; irrep < num_ir; irrep++) {
+	s = &scf_info[irrep];
+	evals = spin_info[0].scf_spin[irrep].fock_evals;
+	nmo = s->num_mo;
+	for(mo=0; mo < nmo; mo++) {
+	  eval = evals[mo];
+	  if(eval < lowest_eval && eval > last_lowest) {
+	    lowest_eval = eval;
+	    lowest_eval_irrep = irrep;
+	  }
+	}
+      }
+      last_lowest = lowest_eval;
+      frzcpi_a[lowest_eval_irrep]++;
+    }
+
+    /* then check beta evals to generate frzcpi_b */
+    frzcpi_b = init_int_array(num_ir);
+    last_lowest = -1.0E100;
+    for(docc=0; docc < nfzc; docc++) {
+      lowest_eval = 1.0E100;
+      for(irrep=0; irrep < num_ir; irrep++) {
+	s = &scf_info[irrep];
+	evals = spin_info[1].scf_spin[irrep].fock_evals;
+	nmo = s->num_mo;
+	for(mo=0; mo < nmo; mo++) {
+	  eval = evals[mo];
+	  if(eval < lowest_eval && eval > last_lowest) {
+	    lowest_eval = eval;
+	    lowest_eval_irrep = irrep;
+	  }
+	}
+      }
+      last_lowest = lowest_eval;
+      frzcpi_b[lowest_eval_irrep]++;
+    }
+
+    /* finally compare the alpha and beta arrays for consistency */
+    for(irrep=0; irrep < num_ir; irrep++) {
+      if(frzcpi_a[irrep] != frzcpi_b[irrep]) {
+	fprintf(outfile,"Error generating frzcpi array: alpha and beta core do not match.\n");
+	exit(PSI_RETURN_FAILURE);
+      }
+    }
+    free(frzcpi_b);
+    frzcpi = frzcpi_a;
+  }
 
   return frzcpi;
 }
@@ -1376,6 +1440,7 @@ static int* compute_frzvpi(int nfzv)
   double *evals, eval;
   struct symm *s;
   int *frzvpi;
+  int *frzvpi_a, *frzvpi_b;
 
   frzvpi = init_int_array(num_ir);
   if (!uhf) {
@@ -1396,6 +1461,59 @@ static int* compute_frzvpi(int nfzv)
       last_highest = highest_eval;
       frzvpi[highest_eval_irrep]++;
     }
+  }
+  else {
+    /* first check alpha evals to generate frzvpi_a */
+    frzvpi_a = init_int_array(num_ir);
+    last_highest = 1.0E100;
+    for(uocc=0; uocc < nfzv; uocc++) {
+      highest_eval = 1.0E100;
+      for(irrep=0; irrep < num_ir; irrep++) {
+	s = &scf_info[irrep];
+	evals = spin_info[0].scf_spin[irrep].fock_evals;
+	nmo = s->num_mo;
+	for(mo=0; mo < nmo; mo++) {
+	  eval = evals[mo];
+	  if(eval > highest_eval && eval < last_highest) {
+	    highest_eval = eval;
+	    highest_eval_irrep = irrep;
+	  }
+	}
+      }
+      last_highest = highest_eval;
+      frzvpi_a[highest_eval_irrep]++;
+    }
+
+    /* then check beta evals to generate frzvpi_b */
+    frzvpi_b = init_int_array(num_ir);
+    last_highest = 1.0E100;
+    for(uocc=0; uocc < nfzv; uocc++) {
+      highest_eval = 1.0E100;
+      for(irrep=0; irrep < num_ir; irrep++) {
+	s = &scf_info[irrep];
+	evals = spin_info[1].scf_spin[irrep].fock_evals;
+	nmo = s->num_mo;
+	for(mo=0; mo < nmo; mo++) {
+	  eval = evals[mo];
+	  if(eval > highest_eval && eval < last_highest) {
+	    highest_eval = eval;
+	    highest_eval_irrep = irrep;
+	  }
+	}
+      }
+      last_highest = highest_eval;
+      frzvpi_b[highest_eval_irrep]++;
+    }
+
+    /* finally compare the alpha and beta arrays for consistency */
+    for(irrep=0; irrep < num_ir; irrep++) {
+      if(frzvpi_a[irrep] != frzvpi_b[irrep]) {
+	fprintf(outfile,"Error generating frzcpi array: alpha and beta core do not match.\n");
+	exit(PSI_RETURN_FAILURE);
+      }
+    }
+    free(frzvpi_b);
+    frzvpi = frzvpi_a;
   }
 
   return frzvpi;

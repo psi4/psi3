@@ -200,7 +200,7 @@ int main(argc,argv)
   fprintf(outfile,"\n%13c------------------------------------------\n",' ');
   fprintf(outfile,"\n%16c%s\n",' ',prog_name);
   fprintf(outfile,"\n%14cWritten by too many people to mention here\n",' ');
-  fprintf(outfile,"\n%13c------------------------------------------\n\n\n",' ');
+  fprintf(outfile,"\n%13c------------------------------------------\n",' ');
    
    
   itap30 = 30;

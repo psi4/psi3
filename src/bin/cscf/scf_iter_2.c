@@ -1,7 +1,15 @@
 /* $Log$
- * Revision 1.2  2002/03/25 02:17:36  janssen
- * Get rid of tmpl.  Use new naming scheme for libipv1 includes.
+ * Revision 1.3  2003/08/09 17:39:56  crawdad
+ * I added the ability to determine frozen core orbitals for UHF references to
+ * cleanup.c.  I also commented out ip_cwk_clear and ip_cwk_add calls in
+ * cleanup.c, guess.c, scf_input.c and scf_iter_2.c.  These calls were (1) poor
+ * design and (2) interfering with default ip_tree behavior needed to simplify
+ * the format of input.dat.
+ * -TDC
  *
+/* Revision 1.2  2002/03/25 02:17:36  janssen
+/* Get rid of tmpl.  Use new naming scheme for libipv1 includes.
+/*
 /* Revision 1.1.1.1  2000/02/04 22:52:32  evaleev
 /* Started PSI 3 repository
 /*
@@ -64,9 +72,11 @@ void scf_iter_2()
    c2 = (double *) init_array(num_ir);
    fock_o = (double **) init_matrix(nsfmax,nsfmax);
 
+   /*
    ip_cwk_clear();
    ip_cwk_add(":DEFAULT");
    ip_cwk_add(":SCF");
+   */
 
    incr=0.25;
    errcod = ip_data("INCR","%lf",&incr,0);

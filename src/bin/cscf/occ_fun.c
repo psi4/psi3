@@ -52,22 +52,22 @@ void occ_init(void){
 	    if(mguess == 1) multp = 2;
 	    else if(mguess == 0) multp = 1;
 	    else if(mguess == 2){
-		fprintf(outfile,"\nYou must specify MULTP");
-		fprintf(outfile,"\nI have no way of discerning between");
-		fprintf(outfile,"\na triplet and open shell singlet\n");
+		fprintf(outfile,"\n  You must specify the MULTP keyword.");
+		fprintf(outfile,"\n  I have no way of discerning between");
+		fprintf(outfile,"\n  a triplet and an open shell singlet.\n");
 		exit(PSI_RETURN_FAILURE);
 	    }
 	    else{
-		fprintf(outfile,"\nThe multiplicity will be highspin\n");
+		fprintf(outfile,"\n The multiplicity will be ``highspin''.\n");
 		multp = mguess + 1;
 	    }
 	}
-	fprintf(outfile,"\nAnd I think the multiplicity is %d\n\n",multp);
-	fprintf(outfile,"\nIf this is wrong, the specify MULTP keyword\n\n");
+	fprintf(outfile,"\n  I think the multiplicity is %d.\n",multp);
+	fprintf(outfile,"  If this is wrong, please specify the MULTP keyword\n\n");
     }
 	    
     
-    reference = "RHF";
+    reference = strdup("RHF");
     refnum = ref_rhf; /* RHF for file30 flag */
     ksdft = 0;  /* do Kohn-Sham DFT? Default - no */
     errcod = ip_string("REFERENCE",&reference,0);

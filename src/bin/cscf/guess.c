@@ -26,9 +26,11 @@ void guess()
   reftype reftmp;
   int mguess;
 
+  /*
    ip_cwk_clear();
    ip_cwk_add(":DEFAULT");
    ip_cwk_add(":SCF");
+  */
 
 /*--- Set occupations to zero----*/
   for(i=0; i < num_ir; i++){
