@@ -64,7 +64,7 @@ void x_xi1_connected(void)
     dpd_file2_close(&R1);
     dpd_buf4_close(&L2);
 
-    //tval =  moinfo.ecc + params.cceom_energy;
+    /* tval =  moinfo.ecc + params.cceom_energy; */
     tval =  params.cceom_energy;
     fprintf(outfile,"\nenergy: %15.10lf\n",tval);
     dpd_file2_scm(&HIA, tval);
@@ -212,7 +212,7 @@ void x_xi1_connected(void)
 
     /* add to Xi1 */
 
-//aug_xi_check(&HIA, &Hia);
+/* aug_xi_check(&HIA, &Hia); */
 
     dpd_file2_init(&XIA, EOM_XI, G_irr, 0, 1, "XIA");
     dpd_file2_init(&Xia, EOM_XI, G_irr, 0, 1, "Xia");
@@ -226,14 +226,20 @@ void x_xi1_connected(void)
   }
 }
 
-double aug_xi_check(dpdfile2 *HIA, dpdfile2 *Hia) {
+/*
+double aug_xi_check(dpdfile2 *HIA, dpdfile2 *Hia) 
+{
+
   double tvalA, tvalB;
 
   tvalA = dpd_file2_dot_self(HIA);
-  tvalB += dpd_file2_dot_self(Hia);
+  tvalB = dpd_file2_dot_self(Hia);
 
   fprintf(outfile, "<HIA|HIA> = %15.10lf\n", tvalA);
   fprintf(outfile, "<Hia|Hia> = %15.10lf\n", tvalB);
   fprintf(outfile, "<H1|H1> = %15.10lf\n", tvalA + tvalB);
+
   return;
 }
+
+*/
