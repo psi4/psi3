@@ -1,0 +1,71 @@
+/*! \mainpage EXTREMA: coordinate manipulations in PSI 3.0
+
+\author Joseph P. Kenny, Rollin King
+
+including code from <b>OPTKING</b>, Rollin King
+
+<b>Design Overview</b>
+
+<b>EXTREMA</b> is intended to eventually encompass all necessary coordinate
+manipulations for the <b>PSI 3.0</b> quantum chemistry package.  This includes 
+geometry optimizations and transition state searches as well as automation of
+energy point optimization and finite-difference frequency procedures.
+
+The code is implemented in C++ and has a class hierarchy which should make
+code development relatively painless.  The lowest level routines are members
+of the <b>math_tools</b> class.  These are basic mathematical algorithms and 
+for flexibility they are implemented with no dependence on higher level classes.  A series of classes derive from this class, each containing member data and
+functions common to specific coordinate types.  For instance, all coordinate
+manipulations will involve cartesian coordinates, thus cartesian coordinate
+manipulations reside in the <b>coord_base</b> class which all coordinate types 
+derive from.  Top-level classes encompass all necessary functions for 
+coordinate manipulations.  These classes provide the only public methods;
+coordinate object initializers and method drivers.  The <b>main</b> function
+simply determines the coordinate type and method desired by the user, 
+initializes an object of the desired top-level coordinate class, and calls
+the appropriate public driver function to accomplish the task.
+
+
+<b>Current State</b>
+
+z-matrix optimizations with the bfgs update currently appear fairly
+stable.  A long list of bells and whistles is planned to increase
+the efficiency and reliablility of the code.  
+
+Short term goals include:
+<ul>
+<li> starting from a calculated Hessian
+<li> a trust radius method
+<li> capability for transition state searches
+<li> addition of delocalized internal coordinates
+<li> automated energy point optimizations and finite-difference frequencies
+</ul> 
+
+
+<b>References:</b>
+<ul>
+<li>Practical Methods of Optimization, R. Fletcher
+<li>The Generation and Use of Delocalized Internal Coordinates in Geometry
+Optimization, J. Baker, A. Kessi, and B. Delley, J. Chem. Phys. <b>105</b>,
+192 (1996).
+</ul>
+
+
+<b>Important notes for developers:</b>
+
+<ul>
+<li>Matrix naming convention
+
+While Fletcher's book uses G for the Hessian matrix and H for its inverse, 
+G is also frequently used as B.u.B^t, the following convention will be used 
+throughout this code:
+<ul>
+<li>G = B.u.B^t
+<li>H = hessian matrix
+<li>Hi = inverse hessian matrix
+</ul>
+
+<li>Atomic units are used for all data.
+
+</ul>
+*/

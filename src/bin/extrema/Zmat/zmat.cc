@@ -1,0 +1,528 @@
+/*###########################################################################*/
+/*! \file zmat.cc
+  \brief Member functions for z-matrix derived class
+  
+  Contains the zmat constructor, method driver functions, interfaces
+  to lower level classes, and several small functions needed to
+  implement z-matrix coordinates */
+/*						Joseph P. Kenny 11/29/01
+  ###########################################################################*/
+
+#define EXTERN
+#include"extrema.h"
+
+
+
+/*---------------------------------------------------------------------------*/
+/*! \fn zmat::zmat() 
+  \brief zmat constructor
+
+  Constructor for the top-level z-matrix derived class.  Performs setup
+  of z-matrix coordinates which includes determining optimized coordinates
+  and positive/negative torsion pairs.  The internals dummy constructor is
+  called initially and the actual constructor named constructor_internals
+  is called after the number of optimized coordinates is determined. */
+/*---------------------------------------------------------------------------*/
+
+zmat :: zmat() : internals()
+   {
+
+  int i, j, z_natm, z_nent, z_ncor, z_nopt, pos, dummy;        
+  double **temp;
+
+  zmat::parse_input();
+
+  /*read z_mat and cartesians from file30*/
+  file30_init();
+  z_geom = file30_rd_zmat();
+  char **temp_felement;
+  temp_felement = file30_rd_felement();
+  z_natm = file30_rd_natom();
+  z_nent = file30_rd_nentry();
+
+  dummy=0;
+  for(i=0;i<z_nent;++i)
+      if(!strcmp(temp_felement[i],"X       "))
+	 dummy=1;
+  if(dummy) {
+      temp = file30_rd_fgeom();
+      fprintf(outfile,"\n  Beware: imput can't handle dummy atoms for");
+      fprintf(outfile," all symmetries at this time");
+  }
+  else if(!dummy)
+      temp = file30_rd_geom();
+
+  switch(z_nent) {
+    case 2: z_ncor = 1; break;
+    case 3: z_ncor = 3; break;
+    default: z_ncor =  (z_nent*3-6); break;
+  } 
+
+  /*write z_mat to the array of simple_internal*/
+  simples = (simple*) malloc(z_ncor*sizeof(simple));  
+  for(i=1;i<z_nent;++i) {
+      if( i==1 ) {
+	  simples[0].set_simple(0,z_geom[1].bond_val,
+				2,z_geom[1].bond_atom,-1,-1,
+				z_geom[1].bond_opt);
+      }
+      else if( i==2 ) {
+	  simples[1].set_simple(0,z_geom[2].bond_val,
+				3,z_geom[2].bond_atom,-1,-1,
+				z_geom[2].bond_opt);
+	  simples[2].set_simple(1,z_geom[2].angle_val *_pi/180.0,
+				3,z_geom[2].bond_atom,z_geom[2].angle_atom,-1,
+                                z_geom[2].angle_opt);
+	  j=3;
+	}
+      else if( i>2 ) {
+	  simples[j].set_simple(0,z_geom[i].bond_val,i+1,z_geom[i].bond_atom,
+				-1,-1,z_geom[i].bond_opt);
+	  simples[j+1].set_simple(1,z_geom[i].angle_val*_pi/180.0,
+				  i+1,z_geom[i].bond_atom,
+				  z_geom[i].angle_atom,-1,z_geom[i].angle_opt);
+	  simples[j+2].set_simple(2,z_geom[i].tors_val*_pi/180.0,
+				  i+1,z_geom[i].bond_atom,
+				  z_geom[i].angle_atom,z_geom[i].tors_atom,
+				  z_geom[i].tors_opt);
+	  j+=3;
+	}
+  }
+
+  char** labels;
+  labels = (char**) malloc( z_ncor*sizeof(char*));
+  for(i=0;i<z_ncor;++i) labels[i] = (char*) malloc(20*sizeof(char));
+  int p=0;
+  for(i=1;i<z_nent;++i) {
+      if(i==1) {
+	  strcpy( labels[p], z_geom[1].bond_label );
+	  simples[p].set_label(z_geom[1].bond_label);
+	  ++p;
+      }
+      else if( i==2) {
+	  strcpy(labels[p], z_geom[2].bond_label );
+          simples[p].set_label(z_geom[2].bond_label);
+	  strcpy(labels[p+1], z_geom[2].angle_label );
+          simples[p+1].set_label(z_geom[2].angle_label );
+	  p+=2;
+      }
+      else if (i>2) {
+	  strcpy(labels[p], z_geom[i].bond_label );
+          simples[p].set_label(z_geom[i].bond_label);
+	  strcpy(labels[p+1],z_geom[i].angle_label);
+          simples[p+1].set_label(z_geom[i].angle_label);
+	  strcpy(labels[p+2],z_geom[i].tors_label);
+          simples[p+2].set_label(z_geom[i].tors_label);
+	  p+=3;
+      }
+  }
+
+  /*find first instance of each unique coordinate*/
+  int there;
+  first_unique = (int *) malloc(z_ncor*sizeof(int));
+  for(i=0;i<z_ncor;++i) {
+      there=0;
+      for(j=0;j<i;++j) 
+	  if( !strcmp( simples[i].get_label(), simples[j].get_label() )) {
+	      first_unique[i]=0;
+	      ++there;
+	  }
+      if( (there==0) || !strcmp(simples[i].get_label(),"") )
+	  first_unique[i]=1;      
+  }
+
+  z_nopt = 0;
+  for(i=0;i<z_ncor;++i) {
+      if(simples[i].get_opt() && first_unique[i]) {
+	  ++z_nopt;
+      }
+  }
+      
+  /*call internals constructor now that we know how many coords to optimize*/
+  internals::construct_internals(z_natm, z_nent, z_ncor, z_nopt);
+
+  felement = temp_felement;
+
+  for(i=0;i<fnum_coords;++i)
+      fcoords[i] = fcoords_old[i] = simples[i].get_val();
+
+  for(i=0;i<(3*z_nent);++i) 
+      carts[i] = temp[0][i];
+  free(temp);
+
+  p=0;
+  for(i=0;i<fnum_coords;++i) 
+      if(simples[i].get_opt() && first_unique[i]) {  
+	  coords[p] = simples[i].get_val();
+	  ++p;
+      }
+	  
+  /*find positive/negative torsion pairs*/
+  int *is_torsion;
+  is_torsion = (int *) malloc(num_coords*sizeof(int));
+  p=0;
+  for(i=0;i<fnum_coords;++i) {
+      if(simples[i].get_opt() && first_unique[i]) {
+	  if(simples[i].get_type()==2) 
+	      is_torsion[p] = 1;
+	  else is_torsion[i] = 0;
+	  ++p;
+      }
+  }
+
+  pos_neg_pairs = (int *) malloc(num_coords*sizeof(int));
+  for(i=0;i<num_coords;++i)
+      pos_neg_pairs[i] = 0;
+  p=1;
+  for(i=0;i<num_coords;++i) {
+      if((pos_neg_pairs[i]==0) && is_torsion[i]) 
+	  for(j=(i+1);j<num_coords;++j) 
+	      if((pos_neg_pairs[j]==0) && is_torsion[j]) 
+		  if( fabs(coords[i]+coords[j]) < POS_NEG_TORS ) {
+		      pos_neg_pairs[i] = pos_neg_pairs[j] = p;
+		      ++p;
+		  }
+  }
+  
+  free(is_torsion);
+			 
+  return;
+}
+
+
+
+/*---------------------------------------------------------------------------*/
+/*! \fn zmat::optimize()
+  \brief z-matrix optimization driver */
+/*---------------------------------------------------------------------------*/
+
+void zmat :: optimize() {
+
+    read_file11();
+    read_opt();
+    print_carts(_bohr2angstroms);
+    print_c_grads();
+    grad_test();
+    print_internals();
+    compute_B();
+    if(print_lvl >= RIDICULOUS_PRINT)
+      print_B();
+    grad_trans();
+    switch(iteration) {
+        case 1: initial_Hi(); break;
+	default: update_Hi(); break; 
+    }
+    H_test();
+    newton_step();
+    back_transform();
+    print_carts(_bohr2angstroms);
+    print_internals();
+    write_opt();
+    write_file30();
+    return;
+}
+
+
+
+/*---------------------------------------------------------------------------*/
+/*! \fn zmat::parse_input()
+  \brief Performs input parsing for z-matrix coordinates. */
+/*---------------------------------------------------------------------------*/
+  
+void zmat::parse_input() {
+    
+    bond_lim = BOND_LIM/_bohr2angstroms;
+    errcod = ip_data("BOND_LIMIT","%lf",&bond_lim,0);
+    angle_lim = ANGLE_LIM*_pi/180.0;
+    if(ip_exist("ANGLE_LIMIT",0)) {
+	errcod = ip_data("ANGLE_LIMIT","%lf",&angle_lim,0);
+	angle_lim *= _pi/180.0;
+    }
+    fprintf(outfile,"\n  BOND_LIMIT:    %lf angstroms", 
+	    bond_lim*_bohr2angstroms);
+    fprintf(outfile,"\n  ANGLE_LIMIT:   %lf degrees", angle_lim*180.0/_pi);
+
+    return;
+}
+	
+
+/*---------------------------------------------------------------------------*/
+/*! \fn zmat::initial_Hi()
+  \brief Froms initial guess for inverse hessian. */
+/*---------------------------------------------------------------------------*/
+
+void zmat :: initial_Hi() {
+    
+    int i,j, pos=0;
+    
+    for(i=0;i<fnum_coords;++i) {
+	if(first_unique[i] && simples[i].get_opt()) {
+	    switch( simples[i].get_type() ) {
+	    case 0: Hi[pos][pos] = 1.0; break;
+	    case 1: Hi[pos][pos] = 4.0; break;
+	    case 2: Hi[pos][pos] = 10.0; break;
+	    }
+	    ++pos;
+	}
+    }
+
+    return;
+}
+
+
+
+/*---------------------------------------------------------------------------*/
+/*! \fn zmat::print_internals()
+  \brief Prints z-matrix. */
+/*---------------------------------------------------------------------------*/
+
+void zmat :: print_internals() {
+
+  int i;
+
+  /*print z-mat to output*/
+  fprintf(outfile,"\n  Z-matrix (angstroms and degrees):\n\n");
+  for(i=-1;i<(num_entries-1);++i) {
+    switch(i) {
+      case -1:
+	  fprintf(outfile,"%10s\n",felement[0]);
+	  break;
+      case 0: 
+	  fprintf(outfile,"%10s %4d %14.12lf\n",
+		  felement[i+1], simples[i].get_bond(), 
+		  simples[i].get_val()*_bohr2angstroms);
+	  break;
+      case 1: 
+	  fprintf(outfile,"%10s %4d %14.12lf %4d %14.12lf\n",
+		  felement[i+1], simples[i].get_bond(), 
+		  simples[i].get_val()*_bohr2angstroms,
+		  simples[i+1].get_angle(), simples[i+1].get_val()*180.0/_pi); 
+	  break;
+      default:
+	  fprintf(outfile,"%10s %4d %14.12lf %4d %14.12lf %4d %14.12lf\n",
+		  felement[i+1], simples[(i-1)*3].get_bond(), 
+		  simples[(i-1)*3].get_val()*_bohr2angstroms,
+		  simples[(i-1)*3+1].get_angle(), 
+		  simples[(i-1)*3+1].get_val()*180.0/_pi,
+		  simples[(i-1)*3+2].get_tors(), 
+		  simples[(i-1)*3+2].get_val()*180.0/_pi );
+	  break;
+      }
+  }
+}
+
+
+
+/*--------------------------------------------------------------------------*/
+/*! \fn zmat::write_file30()
+  \brief Writes geometries to file30. */
+/*--------------------------------------------------------------------------*/
+
+void zmat :: write_file30() {
+    
+  double **cart_matrix, **fcart_matrix;
+  int i,j;
+
+  cart_matrix = init_matrix(num_atoms,3);
+  fcart_matrix = init_matrix(num_entries,3);
+  
+  int pos = 0;
+  for(i=0;i<num_entries;++i) 
+      for(j=0;j<3;++j) {
+	  fcart_matrix[i][j] = carts[pos];
+	  ++pos;
+      }
+
+  file30_wt_fgeom(fcart_matrix);
+  
+  int row=0;
+  pos = 0;
+  for(i=0;i<num_entries;++i) { 
+      if(strcmp(felement[i],"X       ")) {
+	  for(j=0;j<3;++j) {
+	      cart_matrix[row][j] = carts[pos];
+	      ++pos;
+	  }
+	  ++row;
+      }
+      else
+	  pos += 3;
+  }
+
+  file30_wt_geom(cart_matrix);
+
+  pos = -1;
+  for(i=1;i<num_entries;++i) {
+      
+      if(i==1) 
+	  z_geom[i].bond_val = simples[++pos].get_val(); 
+      
+      if(i==2) {
+	  z_geom[i].bond_val = simples[++pos].get_val();
+	  z_geom[i].angle_val = simples[++pos].get_val() * 180.0 / _pi;
+      }
+      
+      if(i>2) {
+	  z_geom[i].bond_val = simples[++pos].get_val();
+	  z_geom[i].angle_val = simples[++pos].get_val() * 180.0 / _pi;
+	  z_geom[i].tors_val = simples[++pos].get_val() * 180.0 / _pi;
+      }
+  }
+  
+  file30_wt_zmat(z_geom,num_entries);
+
+  return;
+}
+
+
+
+/*--------------------------------------------------------------------------*/
+/*! \fn zmat::newton_step()
+  \brief Computes newton-raphson z-matrix optimization step.
+  
+  Interface for <b>math_tools::newton_step()</b>. */
+/*-------------------------------------------------------------------------*/
+
+void zmat :: newton_step() {
+    
+    int i, j, k, p;
+    double *s, num, con;
+
+    fprintf(outfile,"\n\n  --------------------------------------");
+    fprintf(outfile,"--------------------------------------\n");
+    fprintf(outfile,"  Computing newton-raphson optimization step\n");
+    fprintf(outfile,"  --------------------------------------");
+    fprintf(outfile,"--------------------------------------\n");
+    s = math_tools::newton_step(num_coords,Hi,grads);
+
+    /* ensure pos/neg torsion angle pairs match */
+    for(i=0;i<num_coords;++i) 
+	if(pos_neg_pairs[i]) 
+	    for(j=(i+1);j<num_coords;++j) 
+		if(pos_neg_pairs[i]==pos_neg_pairs[j]) {
+		    
+		    num = (fabs(s[i]) + fabs(s[j]))/2;
+		    if(s[i] < 0)
+			s[i] = -1.0*num;
+		    else s[i] = num;
+		    if(s[j] < 0)
+			s[j] = -1.0*num;
+		    else s[j] = num;
+		    
+		    if( (s[i]+s[j]) > POS_NEG_TORS ) {
+			fprintf(outfile,"\n  WARNING: positive/negative pair");
+		        fprintf(outfile," %d/%d:\n",i,j);
+			fprintf(outfile,"  displacements differ by more than");
+			fprintf(outfile,"%lf radians\n", POS_NEG_TORS);
+		    }
+		}
+    
+    /* print before limit enforcement */
+    if(print_lvl>1) {
+	p=0;
+	fprintf(outfile,"\n  Displacements before limit enforcement");
+	fprintf(outfile," (angstroms and degrees):\n");
+	for(i=0;i<fnum_coords;++i)
+	    if(simples[i].get_opt() && first_unique[i]) {
+		if(simples[i].get_type()==0)
+		    con = _bohr2angstroms; 
+		else con = 180.0/_pi;  
+		fprintf(outfile,"  %i %8s: %lf\n",
+			i+1,simples[i].get_label(),s[p]*con);
+		++p;
+	    }
+    }
+    
+    /* enforce bond and angle limits */
+    p=0;
+    for(i=0;i<fnum_coords;++i) {
+        if((simples[i].get_type()==0) && first_unique[i] && simples[i].get_opt() ) {
+            if(s[p] > bond_lim) 
+                s[p] = bond_lim; 
+            else if (s[p] < (-1.0*bond_lim) ) 
+                s[p] = (-1.0*bond_lim); 
+	    ++p;
+        }
+        else if(first_unique[i] && simples[i].get_opt() ) {
+            if(s[p] > angle_lim) 
+                s[p] = angle_lim; 
+            else if (s[p] < (-1.0*angle_lim) ) 
+                s[p] = (-1.0*angle_lim);
+	    ++p;
+        }
+    }
+
+    /*save old coordinates to write to opt.dat and for back transform*/
+    fcoord_old = init_array(fnum_coords);
+    for(i=0;i<num_coords;++i) 
+	coord_write[i] = coords[i];
+    for(i=0;i<fnum_coords;++i)
+	fcoord_old[i] = simples[i].get_val();
+
+
+    /* take the step */
+    for(i=0;i<num_coords;++i) 
+	coords[i] += s[i];
+
+    /*update simples*/
+    p=0;
+    for(i=0;i<fnum_coords;++i) {
+	if(first_unique[i] && simples[i].get_opt()) {
+	    simples[i].set_val(coords[p]);
+	    ++p;
+	    for(j=(i+1);j<fnum_coords;++j) 
+		if(!strcmp(simples[i].get_label(),simples[j].get_label()) &&
+		    strcmp(simples[i].get_label(),""))
+		    simples[j].set_val(simples[i].get_val());
+	}
+    }
+    
+    int entry;
+    fprintf(outfile,"\n  Optimization Step (angstroms and degrees):\n");
+    fprintf(outfile,"\n  label    initial value   gradient (a.u.)");      
+    fprintf(outfile," displacement    new value");
+    fprintf(outfile,"\n  -------- --------------- ---------------"); 
+    fprintf(outfile," --------------- ---------------");
+    entry=0;
+    p=0;
+    for(i=0;i<fnum_coords;++i) {
+	con = _bohr2angstroms;
+	if( i==2 )
+	    con = 180.0/_pi;
+	if( i>2 ) {
+	    if(entry==0)
+		++entry;
+	    else if(entry==1) {
+		con = 180.0/_pi;
+		++entry;
+	    }
+	    else if(entry==2) {
+		con = 180.0/_pi;
+		entry = 0;
+	    }
+	}
+	if(simples[i].get_opt() && first_unique[i]) {
+	    fprintf(outfile,"\n  %-8s %15.10lf %15.10lf %15.10lf %15.10lf",
+		    simples[i].get_label(),coord_write[p]*con, grads[p], 
+		    s[p]*con, coords[p]*con);
+	    ++p;
+	}
+    }
+
+    free(s);
+    return;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

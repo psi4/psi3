@@ -1,97 +1,114 @@
-/*###################################################################
-#
-#  extrema.cc
-#
-#  main function for extrema
-#                                                     J.Kenny 7-22-00
-####################################################################*/						      
+/*###########################################################################*/
+/*! \file extrema.cc
+  \brief Main function and related small functions for extrema.
+
+  Provides main function and just enough input parsing to know what
+  method drivers main should call. */
+
+  /*! \fn void main()
+    \brief Main function for extrmema.
+    Initializes top-level class objects and calls method driver functions. */
+/*						Joseph P. Kenny 11/29/01
+  ##########################################################################*/
+
 #include "extrema.h"
 
-void set_up(coord_base* base);
+int get_coord_type();
+
+
 
 void main() {
 
-  parsing();
+    coord_type = get_coord_type();
 
-
-/*------------
-  CARTESIANS
-  ----------*/
-  if(coord_type==1) {
-      
-      carts cart_geom;
-      set_up(&cart_geom);
-
-  }
+    /*------------
+      CARTESIANS
+      ----------*/
+    if(coord_type==1) {
+	//carts c_obj;
+    }
   
 
-/*---------
-  ZMATRIX
-  -------*/
-  else if(coord_type==2) {
-
-      zmat zmat_geom;
-      zmat_geom.read_carts();
-      zmat_geom.print_carts(1.0);
-      zmat_geom.read_file11();
-      zmat_geom.print_c_grads();
-      zmat_geom.read_opt();
-      zmat_geom.optimize_internals((internals*) &zmat_geom);
-
-  }
+    /*---------
+      ZMATRIX
+      -------*/
+    else if(coord_type==2) {
+	zmat z_obj;
+	z_obj.optimize();
+    }
 
 
-/*-------------
-  DELOCALIZED
-  -----------*/
-  else if(coord_type==3) {
-
-      // deloc deloc_geom;
-      // coord_base* b = &deloc_geom;
-      // set_up(b);
-
-      //internals* obj = &deloc_geom;
-      //optimize_internals(obj);
-  }
-
-  if(converged)
-      fprintf(outfile,"\n  Optimization completed\n");
-  file30_close();
-  ip_done();
-  tstop(outfile);
-  fclose(infile);
-  fclose(outfile);
-  if(converged)
-      exit(1);
-  if(!converged)
-      exit(0);
+    /*-------------
+      DELOCALIZED
+      -----------*/
+    else if(coord_type==3) {
+	// deloc d_obj;
+    }
+    
+    exit(0);
 }
 
 
 
+/*-----------------------------------------------------------------------------
+  get_coord_type
 
-void set_up(coord_base* base) {
-    (*base).read_carts();
-    (*base).print_carts(1.0);
-    (*base).read_file11();
-    (*base).print_c_grads();
-    (*base).read_opt();
-    return;
+  print intro and determine coordinate type
+  ---------------------------------------------------------------------------*/
+
+void print_intro();
+
+int get_coord_type() {
+
+  char *buffer;
+
+   /*set up i/o stuff*/
+  ffile(&infile,"input.dat",2);
+  ffile(&outfile,"output.dat",1);
+
+  print_intro();
+ 
+  ip_set_uppercase(1);
+  ip_initialize(infile,outfile);
+  ip_cwk_clear();
+  
+  ip_cwk_add(":EXTREMA");
+  ip_cwk_add(":DEFAULT");
+  
+  if(ip_exist("COORDINATES",0)) {
+      errcod = ip_string("COORDINATES", &buffer,0);
+      if( !strcmp(buffer,"CARTESIANS") ) {
+	  fprintf(outfile,"\n  Using cartesian coordinates\n");
+	  coord_type = 1; }
+      else if( !strcmp(buffer,"ZMATRIX") ) {
+	  fprintf(outfile,"\n  Using z-matrix coordinates\n");
+	  coord_type = 2; }
+      else if( !strcmp(buffer,"DELOCALIZED") ) 
+	  punt("Can't do delocalized internals yet");
+      else 
+	  punt("Problem determining coordinate type");
+      free(buffer);
+  }    
+  else {
+      fprintf(outfile,"\n  Defaulting to z-matrix coordinates\n");
+      coord_type = 2;
+  }
+
+  return coord_type;
 }
 
 
 
+void print_intro() {
 
+     tstart(outfile);
+     fprintf(outfile,"                  --------------------------------------------\n");
+     fprintf(outfile,"                                   EXTREMA \n");
+     fprintf(outfile,"                        Joseph P. Kenny and Rollin King \n");
+     fprintf(outfile,"                  --------------------------------------------\n\n");
 
-
-
-
-
-
-
-
-
-
+  return;
+}
 
 
 

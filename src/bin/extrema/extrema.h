@@ -1,3 +1,8 @@
+/*##########################################################################*/
+/*! \file extrema.h
+  \brief Included header files, function declarations, and variables. */
+/*##########################################################################*/
+
 #ifdef EXTERN
 # undef EXTERN
 # define EXTERN extern
@@ -7,6 +12,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <math.h>
 
 extern "C" {
@@ -18,38 +24,23 @@ extern "C" {
 
 #include "defines.h"
 
-void input(void);
 void punt(char*);
-void parsing(void);
-
-
+double **symm_matrix_invert(double**, int, int, int);
 
 EXTERN FILE *infile, *outfile;
 
 EXTERN int coord_type;
 EXTERN int errcod;
-EXTERN int num_entries, num_atoms, num_coords, iteration;
-EXTERN double bond_lim, angle_lim;
-EXTERN int converged;
-EXTERN int grad_max;
-EXTERN int print_lvl;
-EXTERN int dummy;
-EXTERN int bt_loop;
-EXTERN char *update;
 
 /*this needs to be in C*/
 extern "C" {
-    char *gprgid(); 
+    char *gprgid();
 }
 
-
-
+#include "math_tools.h"
 #include "coord_base.h"
-#include "carts.h"
 #include "simple.h"
 #include "internals.h"
 #include "zmat.h"
-
-
 
 
