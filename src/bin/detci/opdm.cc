@@ -473,7 +473,8 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
                "\n Averaged CI Natural Orbitals in terms of Molecular Orbitals\n\n");
               }
             else fprintf(outfile, 
-                 "\n CI Natural Oribals in terms of Molecular Orbitals: Root %d\n\n",k+1);
+           "\n CI Natural Orbitals in terms of Molecular Orbitals: Root %d\n\n",
+                  k+1);
           }
           fprintf(outfile,"\n %s Block \n", CalcInfo.labels[irrep]);        
           eivout(opdm_eigvec, opdm_eigval, CalcInfo.orbs_per_irr[irrep],
