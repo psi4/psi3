@@ -9,7 +9,7 @@
 
 int dpd_memfree(void)
 {
-  return dpd_default->memory - (dpd_default->memused - 
-				dpd_default->memcache + 
-				dpd_default->memlocked);
+  return dpd_main.memory - (dpd_main.memused - 
+			    dpd_main.memcache + 
+			    dpd_main.memlocked);
 }

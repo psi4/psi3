@@ -42,6 +42,7 @@ buf4_sort.c                  file2_print.c     set_default.c                \
 buf4_axpbycz.c                \
 buf4_symm.c                  buf4_scmcopy.c    file2_scm.c                  \
 buf4_sort_ooc.c              block_matrix.c    memfree.c                    \
+trace42_13.c \
 
 DEPENDINCLUDE = dpd.h dpd.gbl
 

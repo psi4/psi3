@@ -26,12 +26,14 @@ int dpd_file4_init(dpdfile4 *File, int filenum, int irrep, int pqnum,
   unsigned int priority;
   struct dpd_file4_cache_entry *this_entry;
   
+  File->dpdnum = dpd_default;
+  File->params = &(dpd_list[dpd_default].params4[pqnum][rsnum]);
+
   strcpy(File->label,label);
   File->filenum = filenum;
-  File->params = &(dpd_default->params4[pqnum][rsnum]);
   File->my_irrep = irrep;
 
-  this_entry = dpd_file4_cache_scan(filenum, irrep, pqnum, rsnum, label);
+  this_entry = dpd_file4_cache_scan(filenum, irrep, pqnum, rsnum, label, dpd_default);
   if(this_entry != NULL) {
       File->incore = 1;
       File->matrix = this_entry->matrix;
@@ -52,10 +54,10 @@ int dpd_file4_init(dpdfile4 *File, int filenum, int irrep, int pqnum,
 					sizeof(double)));
 
   /* Put this file4 into cache if requested */
-  if(dpd_default->cachefiles[filenum] && dpd_default->cachelist[pqnum][rsnum]) 
+  if(dpd_main.cachefiles[filenum] && dpd_main.cachelist[pqnum][rsnum]) 
       {
       /* Get the file4's cache priority */
-      if(dpd_default->cachetype == 1)
+      if(dpd_main.cachetype == 1)
           priority = dpd_file4_cache_get_priority(File);
       else priority = 0;
 

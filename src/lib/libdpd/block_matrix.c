@@ -9,7 +9,7 @@
 ** routines, for example.
 **
 ** Prior to allocation, this routine checks the current status of
-** dpd_default->memfree to make sure the malloc() request will not
+** dpd_main.memfree to make sure the malloc() request will not
 ** overrun the user-specified memory limits.  If there is insufficient
 ** memory available, entries are deleted from the dpd_file4_cache (in
 ** LRU order) until the memory limits are satisfied.  If, after
@@ -41,11 +41,11 @@ timer_on("block_mat");
 
   A = NULL;  B = NULL;
 
-  while((dpd_default->memory - dpd_default->memused - n*m) < 0) {
+  while((dpd_main.memory - dpd_main.memused - n*m) < 0) {
       /* Delete cache entries until there's enough memory or no more cache */
 
       /* Priority-based cache */
-      if(dpd_default->cachetype == 1) {
+      if(dpd_main.cachetype == 1) {
           if(dpd_file4_cache_del_low()) {
               dpd_file4_cache_print(stderr);
               fprintf(stderr, "dpd_block_matrix: n = %d  m = %d\n", n, m);
@@ -54,7 +54,7 @@ timer_on("block_mat");
 	}
 
       /* Least-recently-used cache */
-      else if(dpd_default->cachetype == 0) {
+      else if(dpd_main.cachetype == 0) {
           if(dpd_file4_cache_del_lru()) {
               dpd_file4_cache_print(stderr);
               fprintf(stderr, "dpd_block_matrix: n = %d  m = %d\n", n, m);
@@ -89,7 +89,7 @@ timer_on("block_mat");
   for (i = 0; i < n; i++) A[i] = &(B[i*m]);
 
   /* Increment the global memory counter */
-  dpd_default->memused += n*m;
+  dpd_main.memused += n*m;
 
 #ifdef DPD_TIMER
 timer_off("block_mat");
@@ -104,5 +104,5 @@ void dpd_free_block(double **array, int n, int m)
   free(array[0]);
   free(array);
   /* Decrement the global memory counter */
-  dpd_default->memused -= n*m;
+  dpd_main.memused -= n*m;
 }

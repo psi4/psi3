@@ -27,12 +27,14 @@ int dpd_file4_init_nocache(dpdfile4 *File, int filenum, int irrep, int pqnum,
   int i;
   struct dpd_file4_cache_entry *this_entry;
   
+  File->dpdnum = dpd_default;
+  File->params = &(dpd_list[dpd_default].params4[pqnum][rsnum]);
+
   strcpy(File->label,label);
   File->filenum = filenum;
-  File->params = &(dpd_default->params4[pqnum][rsnum]);
   File->my_irrep = irrep;
 
-  this_entry = dpd_file4_cache_scan(filenum, irrep, pqnum, rsnum, label);
+  this_entry = dpd_file4_cache_scan(filenum, irrep, pqnum, rsnum, label, dpd_default);
   if(this_entry != NULL) {
       File->incore = 1;
       File->matrix = this_entry->matrix;

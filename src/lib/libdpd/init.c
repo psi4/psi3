@@ -33,17 +33,17 @@ int dpd_init(int dpd_num, int nirreps, long int memory, int cachetype,
   this_dpd = &(dpd_list[dpd_num]);
 
   this_dpd->nirreps = nirreps;
-  this_dpd->memory = memory/sizeof(double);  /* Available memory in doubles */
-  this_dpd->memused = 0; /* At first... */
-  this_dpd->memcache = 0; /* At first... */
-  this_dpd->memlocked = 0; /* At first... */
-
-  this_dpd->cachetype = cachetype;
-  this_dpd->cachelist = cachelist;
-  this_dpd->cachefiles = cachefiles;
-  this_dpd->file4_cache_priority = priority;
-
   this_dpd->num_subspaces = num_subspaces;
+  
+  dpd_main.memory = memory/sizeof(double);  /* Available memory in doubles */
+  dpd_main.memused = 0; /* At first... */
+  dpd_main.memcache = 0; /* At first... */
+  dpd_main.memlocked = 0; /* At first... */
+
+  dpd_main.cachetype = cachetype;
+  dpd_main.cachelist = cachelist;
+  dpd_main.cachefiles = cachefiles;
+  dpd_main.file4_cache_priority = priority;
 
   /* Construct binary direct product array */
   dp = (int ***) malloc(nirreps * sizeof(int **));
@@ -558,7 +558,7 @@ int dpd_init(int dpd_num, int nirreps, long int memory, int cachetype,
   free(dp);
 
   /* Set the default DPD set to the current one */
-  dpd_default = this_dpd;
+  dpd_default = dpd_num;
 
   /* Init the Cache Linked Lists */
   dpd_file2_cache_init();

@@ -29,8 +29,10 @@ int dpd_buf4_init(dpdbuf4 *Buf, int inputfile, int irrep, int pqnum, int rsnum,
 {
   int nirreps;
 
+  Buf->dpdnum = dpd_default;
+  Buf->params = &(dpd_list[dpd_default].params4[pqnum][rsnum]);
+
   Buf->anti = anti;
-  Buf->params = &(dpd_default->params4[pqnum][rsnum]);
 
   dpd_file4_init(&(Buf->file), inputfile, irrep, file_pqnum, file_rsnum, label);
 

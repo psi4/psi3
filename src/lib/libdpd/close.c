@@ -80,7 +80,7 @@ int dpd_close(int dpd_num)
 
   /*
     printf("memory = %d; memfree = %d\n",
-    dpd_default->memory, dpd_default->memfree);
+    dpd_main.memory, dpd_main.memfree);
   */
 
   return 0;

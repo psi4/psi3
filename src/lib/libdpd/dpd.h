@@ -39,6 +39,7 @@ typedef struct {
 } dpdparams4;
 
 typedef struct {
+  int dpdnum;                         /* dpd structure reference */
   char label[PSIO_KEYLEN];
   int filenum;
   int my_irrep;     /* Total irrep of this quantity */
@@ -56,6 +57,7 @@ typedef struct {
 } dpdshift4;
 
 typedef struct {
+  int dpdnum;                         /* dpd structure reference */
   int anti;         /* Is this buffer antisymmetric? */
   dpdparams4 *params;
   dpdfile4 file;
@@ -88,6 +90,7 @@ typedef struct {
 } dpdparams2;
 
 typedef struct {
+  int dpdnum;                         /* dpd structure reference */
   char label[PSIO_KEYLEN];
   int filenum;
   int my_irrep;
@@ -99,6 +102,7 @@ typedef struct {
 
 /* DPD File4 Cache entries */
 struct dpd_file4_cache_entry {
+  int dpdnum;                         /* dpd structure reference */
   int filenum;                        /* libpsio unit number */
   int irrep;                          /* overall symmetry */
   int pqnum;                          /* dpd pq value */
@@ -117,6 +121,7 @@ struct dpd_file4_cache_entry {
 
 /* DPD File2 Cache entries */
 struct dpd_file2_cache_entry {
+  int dpdnum;                         /* dpd structure reference */
   int filenum;                        /* libpsio unit number */
   int irrep;                          /* overall symmetry */
   int pnum;                           /* dpd p value */
@@ -132,10 +137,6 @@ struct dpd_file2_cache_entry {
 /* DPD global parameter set */
 typedef struct {
   int nirreps;
-  int memory;        /* Total memory requested by the user */
-  int memused;       /* Total memory used (cache + other) */
-  int memcache;      /* Total memory in cache (locked and unlocked) */
-  int memlocked;     /* Total memory locked in the cache */
   int num_subspaces;
   int num_pairs;
   int *numorbs;
@@ -149,6 +150,14 @@ typedef struct {
   int ****pairorb;
   dpdparams2 **params2;
   dpdparams4 **params4;
+} dpd_data;
+
+typedef struct {
+  int memory;        /* Total memory requested by the user */
+  int memused;       /* Total memory used (cache + other) */
+  int memcache;      /* Total memory in cache (locked and unlocked) */
+  int memlocked;     /* Total memory locked in the cache */
+
   struct dpd_file2_cache_entry *file2_cache;
   struct dpd_file4_cache_entry *file4_cache;
   unsigned int file4_cache_most_recent;
@@ -159,7 +168,7 @@ typedef struct {
   int *cachefiles;
   int **cachelist;
   struct dpd_file4_cache_entry *file4_cache_priority;
-} dpd_data;
+} dpd_gbl;
 
 /* Useful for the generalized 4-index sorting function */
 enum indices {pqrs, pqsr, prqs, prsq, psqr, psrq,
@@ -201,6 +210,8 @@ int dpd_dot13(dpdfile2 *T, dpdbuf4 *I, dpdfile2 *Z,
 	      int transt, int transz, double alpha, double beta);
 int dpd_dot14(dpdfile2 *T, dpdbuf4 *I, dpdfile2 *Z,
 	      int transt, int transz, double alpha, double beta);
+
+int dpd_trace42_13(dpdbuf4 *A, dpdfile2 *B, int transb, double alpha, double beta);
 
 int dpd_file2_init(dpdfile2 *File, int filenum, int irrep, int pnum,
 		   int qnum, char *label);
@@ -298,7 +309,7 @@ void dpd_file2_cache_init(void);
 void dpd_file2_cache_close(void);
 void dpd_file2_cache_print(FILE *outfile);
 struct dpd_file2_cache_entry
- *dpd_file2_cache_scan(int filenum, int irrep, int pnum, int qnum, char *label);
+ *dpd_file2_cache_scan(int filenum, int irrep, int pnum, int qnum, char *label, int dpdnum);
 struct dpd_file2_cache_entry *dpd_file2_cache_last(void);
 int dpd_file2_cache_add(dpdfile2 *File);
 int dpd_file2_cache_del(dpdfile2 *File);
@@ -308,7 +319,7 @@ void dpd_file4_cache_close(void);
 void dpd_file4_cache_print(FILE *outfile);
 void dpd_file4_cache_print_screen(void);
 struct dpd_file4_cache_entry
- *dpd_file4_cache_scan(int filenum, int irrep, int pqnum, int rsnum, char *label);
+ *dpd_file4_cache_scan(int filenum, int irrep, int pqnum, int rsnum, char *label, int dpdnum);
 struct dpd_file4_cache_entry *dpd_file4_cache_last(void);
 int dpd_file4_cache_add(dpdfile4 *File, unsigned int priority);
 int dpd_file4_cache_del(dpdfile4 *File);

@@ -43,7 +43,7 @@ int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
 
   nirreps = X->params->nirreps;
 
-  memoryd = dpd_default->memory;
+  memoryd = dpd_main.memory;
   incore = 1; /* default */
 
   dpd_file2_mat_init(Y);
@@ -201,7 +201,7 @@ int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
       dpd_buf4_mat_irrep_close(Z, h);
 
     }  /* end if(incore) */
-    else { /* out-of-core for "normal" 221 contractions */
+    else { /* out-of-core for "normal" 424 contractions */
 	/* Prepare the input buffer for the X factor and the target*/
 #ifdef DPD_DEBUG	
 	fprintf(stderr, "\t424 out-of-core: %d\n", h);

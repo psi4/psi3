@@ -27,12 +27,14 @@ int dpd_file2_init(dpdfile2 *File, int filenum, int irrep, int pnum,
   int i;
   struct dpd_file2_cache_entry *this_entry;
 
+  File->dpdnum = dpd_default;
+  File->params = &(dpd_list[dpd_default].params2[pnum][qnum]);
+
   strcpy(File->label,label);
   File->filenum = filenum;
-  File->params = &(dpd_default->params2[pnum][qnum]);
   File->my_irrep = irrep;
 
-  this_entry = dpd_file2_cache_scan(filenum, irrep, pnum, qnum, label);
+  this_entry = dpd_file2_cache_scan(filenum, irrep, pnum, qnum, label, dpd_default);
   if(this_entry != NULL) {
       File->incore = 1;
       File->matrix = this_entry->matrix;
