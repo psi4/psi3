@@ -1,9 +1,12 @@
 /* $Log$
- * Revision 1.23  2003/04/14 17:25:47  sherrill
- * Change "total energy" to "SCF total energy" to make more explicit for
- * new users.  Yeah, this will probably break some test case perl scripts
- * temporarily :)
+ * Revision 1.24  2003/05/02 15:39:23  evaleev
+ * Added ability to figure out the number of frozen doubly occupied orbitals in each irrep.
  *
+/* Revision 1.23  2003/04/14 17:25:47  sherrill
+/* Change "total energy" to "SCF total energy" to make more explicit for
+/* new users.  Yeah, this will probably break some test case perl scripts
+/* temporarily :)
+/*
 /* Revision 1.22  2002/12/22 17:01:14  evaleev
 /* Updated cints, cscf, psi3 (probably not complete) and transqt to use psi_start/psi_stop.
 /*
@@ -171,6 +174,7 @@ static char *rcsid = "$Id$";
 /* TDC(6/20/96) - Prototype for phase() */
 int phase(void);
 double ssquare(void);
+static int* compute_frzcpi(int);
 
 void cleanup()
 
@@ -200,6 +204,7 @@ void cleanup()
   psio_address chkptr;
   int tmp_iopen;
   int row, col;
+  int nfzc, *frzcpi;
 
   ip_cwk_clear();
   ip_cwk_add(":DEFAULT");
@@ -404,6 +409,11 @@ void cleanup()
   chkpt_wt_clsdpi(nc);
   chkpt_wt_openpi(no);
   for(i=0; i < num_ir; i++) n_there[i] = nc[i] = no[i] = 0;
+
+  /* Figure out frozen core orbitals in each irrep and write them out*/
+  nfzc = chkpt_rd_nfzc();
+  frzcpi = compute_frzcpi(nfzc);
+  chkpt_wt_frzcpi(frzcpi);
 
   /* Write eigenvectors and eigenvalues to new PSIF_CHKPT */
   scr_arr = init_array(nmo);
@@ -1306,4 +1316,39 @@ void write_scf_matrices(void)
 }
 
 
+/*----------------------------------------------------------------------
+  Figure out number of frozen DOCC's in each irrep from the eigenvalues
+ ----------------------------------------------------------------------*/
+static int* compute_frzcpi(int nfzc)
+{
+  int mo, nmo, docc, irrep;
+  double last_lowest = -1.0E100;
+  double lowest_eval;
+  int lowest_eval_irrep;
+  double *evals, eval;
+  struct symm *s;
+  int *frzcpi;
 
+  frzcpi = init_int_array(num_ir);
+  if (!uhf) {
+    for(docc=0; docc<nfzc; docc++) {
+      lowest_eval = 1.0E100;
+      for(irrep=0; irrep<num_ir; irrep++) {
+	s = &scf_info[irrep];
+	evals = s->fock_evals;
+	nmo = s->num_mo;
+	for(mo=0; mo<nmo; mo++) {
+	  eval = evals[mo];
+	  if (eval < lowest_eval && eval > last_lowest) {
+	    lowest_eval = eval;
+	    lowest_eval_irrep = irrep;
+	  }
+	}
+      }
+      last_lowest = lowest_eval;
+      frzcpi[lowest_eval_irrep]++;
+    }
+  }
+
+  return frzcpi;
+}
