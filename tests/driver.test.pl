@@ -207,31 +207,29 @@ else {
 $pwd = cwd();
 
 foreach $name (@DIR_NAMES) {
+  print "$name\n";
   chdir ("$name");
-  system ("./$name.test.pl");
-  system ("psiclean");
-  open (T,"$name.test");
-  @data = <T>;
 
   if ($ARGV[0] eq "--clean" || $ARGV[1] eq "--clean") {
-    unlink <psi.*>;
-    unlink <*.test>;
-    unlink <timer.dat>;
-  }
-  elsif ($ARGV[0] eq "--cleanall" || $ARGV[1] eq "--cleanall") {
     unlink <output.dat>;
     unlink <file*.dat>;
     unlink <psi.*>;
     unlink <*.test>;
     unlink <timer.dat>;
+    chdir ("$pwd");
   }
-
-  chdir ("$pwd");
-  open (F,">>test-case-results");
-  select (F);
-  seek(Q,0,2);
-  print @data;
-  close (T);
-  close (F);
+  else {
+    system ("./$name.test.pl");
+    system ("psiclean");
+    open (T,"$name.test");
+    @data = <T>;
+    chdir ("$pwd");
+    open (F,">>test-case-results");
+    select (F);
+    seek(Q,0,2);
+    print @data;
+    close (T);
+    close (F);
+  }
 }
 

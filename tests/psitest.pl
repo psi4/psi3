@@ -559,7 +559,7 @@ sub compare_arrays
 
   $OK = 1;
   for($i=0; $i < $row*$col; $i++) {
-#    printf "%d %20.12f %20.12f\n", $i, @$A[$i], @$B[$i];
+    printf "%d %20.12f %20.12f\n", $i, @$A[$i], @$B[$i];
     if(abs(@$A[$i] - @$B[$i]) > $tol) {
       $OK = 0;
     }
