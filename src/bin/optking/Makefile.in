@@ -3,7 +3,7 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-LD = $(CC)
+LD = $(CXX)
 
 PSILIBS = -lfile30 -lciomr -lipv1
 

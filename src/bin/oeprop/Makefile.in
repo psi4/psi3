@@ -3,6 +3,10 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
+#Need do remove -DAIX because I have a variable named AIX
+CDEF_NOAIX = $(CDEF:-DAIX=)
+CFLAGS = $(CDBG) $(COPT) $(CDEF_NOAIX) $(COTH) $(CINC)
+
 LD = $(CC)
 
 PSILIBS = -lmalloc -lfile30 -lqt -lciomr -lipv1

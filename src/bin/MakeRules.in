@@ -50,8 +50,8 @@ install_inc::
 
 install_man::
 
-$(TARGET): $(ALLOC) $(BINOBJ) $(PSILIBS) $(LDLIBS)
-	$(LD) $(LDFLAGS) -o $@ $^
+$(TARGET): $(ALLOC) $(BINOBJ) $(PSILIBS)
+	$(LD) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
 install_target:: $(TARGET)
 	$(MKDIRS) $(bindir)

@@ -3,8 +3,8 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-LD = $(FC)
-LDLIBS += $(BLAS)
+LD = $(CXX)
+LDLIBS += $(FLIBS) $(BLAS)
 
 PSILIBS = libqt.a libfile30.a libiwl.a libpsio.a libciomr.a libipv1.a
 

@@ -132,6 +132,7 @@ if test -z "$CXX"; then
 fi
 
 
+AC_F77_LIBRARY_LDFLAGS
 # Get info on the utility programs.
 AC_PROG_CPP()
 AC_PROG_CXXCPP()
@@ -196,11 +197,8 @@ AC_MSG_RESULT(c++ libs: $CXXLIBS)
 AC_SUBST(CXXLIBS)
 
 # find the f77 libraries
-AC_HAVE_FC_LIBRARY(-lm,FLIBS="$FLIBS -lm")
-AC_HAVE_FC_LIBRARY(-lbsd,FLIBS="$FLIBS -lbsd")
+# first find the libraries needed to link C++ programs with Fortran libraries
 AC_MSG_RESULT(fortran libs: $FLIBS)
-
-AC_SUBST(FLIBS)
 
 # find the BLAS library  
 AC_HAVE_FC_LIBRARY(-lblas,BLAS="-lblas")

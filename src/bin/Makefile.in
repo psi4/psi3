@@ -4,7 +4,7 @@
 subdirs = \
 ccdensity ccenergy cchbar cclambda ccsort cints contour contour3d cphf \
 cscf detcas detcasman detci geom input intder95 intdif makepk mp2 \
-mp2r12 muder normco oeprop optking psi psiclean rgeom transqt ugeom vbccd
+mp2r12 muder normco oeprop optking psi psiclean rgeom transqt ugeom 
 
 all: default
 

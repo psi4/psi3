@@ -28,6 +28,10 @@ VPATH += $(DIRS:%=$(srcdir)/%)
 
 include ../MakeVars
 
+#Need do remove -DAIX because I have a variable named AIX
+CDEF_NOAIX = $(CDEF:-DAIX=)
+CFLAGS = $(CDBG) $(COPT) $(CDEF_NOAIX) $(COTH) $(CINC)
+
 CINC = -I$(srcdir) $(DIRS:%=-I$(srcdir)/%)  -I$(objincdir) -I$(incdir)
 CDEF += $(OPTIONS)
 

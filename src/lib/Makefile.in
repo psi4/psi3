@@ -66,3 +66,4 @@ $(top_objdir)/config.status: $(top_srcdir)/configure
 
 Makefile: $(srcdir)/Makefile.in $(top_objdir)/config.status
 	cd $(top_objdir) && CONFIG_FILES=src/lib/`basename $(srcdir)`/Makefile ./config.status
+
