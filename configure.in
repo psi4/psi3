@@ -698,5 +698,4 @@ AC_OUTPUT(include/psiconfig.h include/cfuncs.h include/ffuncs.h
           src/bin/optking/Makefile
           src/bin/psiclean/Makefile
           src/bin/transqt/Makefile
-          src/bin/vbccd/Makefile
           )
