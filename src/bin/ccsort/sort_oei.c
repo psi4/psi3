@@ -4,6 +4,7 @@
 #include <libciomr.h>
 #include <iwl.h>
 #include <dpd.h>
+#include <psifiles.h>
 #include "MOInfo.h"
 #include "Params.h"
 #define EXTERN
@@ -36,7 +37,7 @@ void sort_oei(void)
 
   /* Grab the frozen-core opertor */
   oei = init_array(moinfo.nactive*(moinfo.nactive+1)/2);
-  iwl_rdone(params.FZCFile, oei, &moinfo.efzc, ioff, moinfo.nmo,
+  iwl_rdone(PSIF_MO_FZC, oei, &moinfo.efzc, ioff, moinfo.nmo,
 	    moinfo.nfzc, moinfo.nfzv, 0, 0, outfile);
 
   if(params.print_lvl > 5) {

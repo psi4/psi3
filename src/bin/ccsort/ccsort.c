@@ -45,13 +45,17 @@ int main(int argc, char *argv[])
   init_ioff();
   title();
   timer_init();
-  get_moinfo();
+
   get_params();
+  get_moinfo();
+
   cachefiles = init_int_array(PSIO_MAXUNIT);
   cachelist = cacheprep(params.cachelev, cachefiles);
+
   dpd_init(0, moinfo.nirreps, params.memory, 0, cachefiles, cachelist, 
            NULL, 2, moinfo.occpi, moinfo.occ_sym, moinfo.virtpi, 
            moinfo.vir_sym);
+
   sort_oei();
   sort_tei();
   b_sort();
@@ -63,7 +67,9 @@ int main(int argc, char *argv[])
   scf_check();
   fock();
   denom();
+
   dpd_close(0);
+
   cleanup();
   timer_done();
   exit_io();
