@@ -31,8 +31,6 @@ void occ_init(void){
     multp=1;
     errcod = ip_data("MULTP","%d",&multp,0);
     if(errcod != IPE_OK){
-	fprintf(outfile,"\n%15c******* WARNING from occ_init *******\n",' ');
-	fprintf(outfile,"\nGuessing at the mutplicity information given");
 	/*open = (int *) init_array(num_ir);*/
         if(ip_exist("SOCC",0)){
 	    for(i=0;i<num_ir;i++){
@@ -59,46 +57,51 @@ void occ_init(void){
 	    
     
     reference = "RHF";
-    refnum = 0; /* RHF for file30 flag */
+    refnum = ref_rhf; /* RHF for file30 flag */
+    ksdft = 0;  /* do Kohn-Sham DFT? Default - no */
     errcod = ip_string("REFERENCE",&reference,0);
     if(!strcmp(reference,"ROHF")){
-	refnum = 2; /* ROHF for file30 flag */
+	refnum = ref_rohf; /* ROHF for file30 flag */
 	iopen = 1;
 	if(multp == 1)
 	    singlet = 1;
-	
 	else if(multp > 1)
 	    hsos = 1;
 	
     }
-    
     else if(!strcmp(reference,"TWOCON")){
-	refnum = 3; /*TCSCF for file30 flag */
-	iopen = 1;
+	refnum = ref_tcscf; /*TCSCF for file30 flag */
+	iopen = 2;
 	twocon = 1;
     }
-    
     else if(!strcmp(reference,"SPECIAL")){
 	/* NO FILE30 flag for Special */
 	iopen = 1;
 	special = 1;
     }
-    
     else if(!strcmp(reference,"UHF")){
-	refnum = 1; /* UHF for file30 flag */
+	refnum = ref_uhf; /* UHF for file30 flag */
 	uhf = 1;
+    }
+    else if(!strcmp(reference,"RKS")){
+	refnum = ref_rks; /* flag for spin-restricted Kohn-Sham DFT */
+	ksdft = 1;
+    }
+    else if(!strcmp(reference,"UKS")){
+	refnum = ref_uks; /* flag for spin-unrestricted Kohn-Sham DFT */
+	uhf = 1;
+	ksdft = 1;
     }
     else{
 	if(multp != 1){
 	    fprintf(outfile,
-		    "\n\tPlease specify and open shell reference\n");
-	    fprintf(outfile,"\twith an open shell multpicity\n");
-	    fprintf(outfile,"\n\n\tMultiplicity = %d\n",multp);
-	    fprintf(outfile,"\tReference    = %s\n",reference);
+		    "\n Please specify an open shell reference\n");
+	    fprintf(outfile," with multpicity > 1\n");
+	    fprintf(outfile," multiplicity = %d\n",multp);
+	    fprintf(outfile," meference    = %s\n",reference);
 	    exit(1);
 	}
     }
-	
 	
 /* Read Charge same as above */
     

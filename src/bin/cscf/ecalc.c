@@ -1,13 +1,18 @@
 /* $Log$
- * Revision 1.2  2000/06/02 13:32:16  kenny
- * Added dynamic integral accuracy cutoffs for direct scf.  Added a few global
- * variables.  Added keyword 'dyn_acc'; true--use dynamic cutoffs.  Use of
- * 'dconv' and 'delta' to keep track of density convergence somewhat awkward,
- * but avoids problems when accuracy is switched and we have to wipe out density
- * matrices.  Also added error message and exit if direct rohf singlet is
- * attempted since it doesn't work.
- * --Joe Kenny
+ * Revision 1.3  2000/06/22 22:15:00  evaleev
+ * Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
  *
+/* Revision 1.2  2000/06/02 13:32:16  kenny
+/*
+/*
+/* Added dynamic integral accuracy cutoffs for direct scf.  Added a few global
+/* variables.  Added keyword 'dyn_acc'; true--use dynamic cutoffs.  Use of
+/* 'dconv' and 'delta' to keep track of density convergence somewhat awkward,
+/* but avoids problems when accuracy is switched and we have to wipe out density
+/* matrices.  Also added error message and exit if direct rohf singlet is
+/* attempted since it doesn't work.
+/* --Joe Kenny
+/*
 /* Revision 1.1.1.1  2000/02/04 22:52:30  evaleev
 /* Started PSI 3 repository
 /*
@@ -51,7 +56,7 @@ static char *rcsid = "$Id$";
 #include "common.h"
 
 static double twocut=1.0;
-static double eelec;
+static double eelec;       /*--- elec. energy from the previous iteration ---*/
 double dconv;
 
 int ecalc(incr)
@@ -75,9 +80,9 @@ int ecalc(incr)
             for (j = 0 ; j <= i ; j++,ij++) {
                if(uhf) {
 		    ir_energy += 0.5*((s->pmat[ij]*s->hmat[ij])
-				      +(spin_info[0].scf_spin[k].pmato[ij]
+				      +(spin_info[0].scf_spin[k].pmat[ij]
 					*spin_info[0].scf_spin[k].fock_pac[ij])
-				      +(spin_info[1].scf_spin[k].pmato[ij]
+				      +(spin_info[1].scf_spin[k].pmat[ij]
 					*spin_info[1].scf_spin[k].fock_pac[ij]));
 	       }
 	       else if(!iopen) {
@@ -117,6 +122,7 @@ int ecalc(incr)
       acc_switch=0;
    }                            
 
+   if (ksdft) neelec += exc;
    etot = repnuc + neelec;
    edif =  eelec - neelec;
    ediff = edif;

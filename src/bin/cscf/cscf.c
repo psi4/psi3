@@ -252,7 +252,7 @@ int main(argc,argv)
    occ_init();
    
 /* initialize some constants and arrays */
-   if(uhf)
+   if (uhf)
        init_uhf();
    else
        init_scf();
@@ -342,21 +342,16 @@ int main(argc,argv)
    }
    else {
 /* form the Fock matrix directly */
-
-   /*check for rohf singlet...doesn't work direct*/
- 
+/*check for rohf singlet...doesn't work direct*/
       if(!uhf && singlet) {
-  
          fprintf(outfile,"\n  rohf open shell singlet doesn't work direct\n");
          fprintf(outfile,"  remove 'direct_scf = true' from input\n");
-         fprintf(stdout,"rohf open shell singlet doesn't work direct\n");
-         fprintf(stdout,"remove 'direct_scf = true' from input\n");
- 
+         fprintf(stderr,"rohf open shell singlet doesn't work direct\n");
+         fprintf(stderr,"remove 'direct_scf = true' from input\n");
          psio_done();
          file30_close();
          exit(1);
       }
-                                               
 
      formg_direct();
      if(dyn_acc)  fprintf(outfile,"\n  Using inexpensive integrals");   

@@ -1,13 +1,18 @@
 /* $Log$
- * Revision 1.2  2000/06/02 13:32:15  kenny
- * Added dynamic integral accuracy cutoffs for direct scf.  Added a few global
- * variables.  Added keyword 'dyn_acc'; true--use dynamic cutoffs.  Use of
- * 'dconv' and 'delta' to keep track of density convergence somewhat awkward,
- * but avoids problems when accuracy is switched and we have to wipe out density
- * matrices.  Also added error message and exit if direct rohf singlet is
- * attempted since it doesn't work.
- * --Joe Kenny
+ * Revision 1.3  2000/06/22 22:14:59  evaleev
+ * Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
  *
+/* Revision 1.2  2000/06/02 13:32:15  kenny
+/*
+/*
+/* Added dynamic integral accuracy cutoffs for direct scf.  Added a few global
+/* variables.  Added keyword 'dyn_acc'; true--use dynamic cutoffs.  Use of
+/* 'dconv' and 'delta' to keep track of density convergence somewhat awkward,
+/* but avoids problems when accuracy is switched and we have to wipe out density
+/* matrices.  Also added error message and exit if direct rohf singlet is
+/* attempted since it doesn't work.
+/* --Joe Kenny
+/*
 /* Revision 1.1.1.1  2000/02/04 22:52:29  evaleev
 /* Started PSI 3 repository
 /*
@@ -53,7 +58,7 @@ void dmat()
    int max, off, ntri, joff;
    int ndocc,nsocc,nhocc;
    double ptempc,ptempo,ctmp;
-   double *dmat, *dmato;
+   double *dmat;
    extern double delta;
    struct symm *s;
 
@@ -121,9 +126,12 @@ void dmat()
          }
       }
 
+   /*-----------------------
+     Handle direct SCF here
+    -----------------------*/
+   if(direct_scf) {
      /*decide what accuracy to request for direct_scf*/
-     if(direct_scf && dyn_acc) {
- 
+     if (dyn_acc) {
        if((iter<30)&&(tight_ints==0)&&(delta>1.0E-5)) {
           eri_cutoff=1.0E-6;
        }
@@ -132,70 +140,79 @@ void dmat()
           fprintf(outfile,"  Switching to full integral accuracy\n");
           acc_switch=1;
           tight_ints=1;
-          eri_cutoff=1.0E-14; }
-      }
-                                                   
-
-   /*---------------------------------------------------------
-     Get full dpmat and dpmato (or full pmat if acc_switch==1)
-    --------------------------------------------------------*/
-   ntri = nbasis*(nbasis+1)/2;
-   dmat = init_array(ntri);
-   if (iopen)
-     dmato = init_array(ntri);
- 
-   for(i=0;i<num_ir;i++) {
-     max = scf_info[i].num_so;
-     off = scf_info[i].ideg;
-     for(j=0;j<max;j++) {
-       jj = j + off;
-       for(k=0;k<=j;k++) {
-         kk = k + off;
-         if(acc_switch) {
-            dmat[ioff[jj]+kk] = scf_info[i].pmat[ioff[j]+k];
-            scf_info[i].dpmat[ioff[j]+k] = 0.0;
-          }
-         else
-            dmat[ioff[jj]+kk] = scf_info[i].dpmat[ioff[j]+k];
+          eri_cutoff=1.0E-14;
        }
      }
- 
-     if (iopen)
-       for(j=0;j<max;j++) {
-         jj = j + off;
-         for(k=0;k<=j;k++) {
-           kk = k + off;
-           if(acc_switch) {
-              dmato[ioff[jj]+kk] = scf_info[i].pmato[ioff[j]+k];
-              scf_info[i].dpmato[ioff[j]+k] = 0.0;
-           }
-           else
-              dmato[ioff[jj]+kk] = scf_info[i].dpmato[ioff[j]+k];
-         }
-       }
- 
-}
- 
 
-   if (direct_scf) {
      psio_open(itapDSCF, PSIO_OPEN_NEW);
-     ctmp = 1.0;
-     psio_write_entry(itapDSCF, "HF exchange contribution", (char *) &ctmp,
-sizeof(double));
      psio_write_entry(itapDSCF, "Integrals cutoff", (char *) &eri_cutoff,
-sizeof(double));
-     psio_write_entry(itapDSCF, "Total SO Density", (char *) dmat,
-sizeof(double)*ntri);
-     if (iopen) {
-       psio_write_entry(itapDSCF, "Open-shell SO Density", (char *) dmato,
-sizeof(double)*ntri);
+		      sizeof(double));
+
+     ntri = nbasis*(nbasis+1)/2;
+
+     /*--- Get full dpmat ---*/
+     dmat = init_array(ntri);
+     for(i=0;i<num_ir;i++) {
+       max = scf_info[i].num_so;
+       off = scf_info[i].ideg;
+       for(j=0;j<max;j++) {
+	 jj = j + off;
+	 for(k=0;k<=j;k++) {
+	   kk = k + off;
+	   if(acc_switch) {
+	     dmat[ioff[jj]+kk] = scf_info[i].pmat[ioff[j]+k];
+	     scf_info[i].dpmat[ioff[j]+k] = 0.0;
+	   }
+	   else
+	     dmat[ioff[jj]+kk] = scf_info[i].dpmat[ioff[j]+k];
+	 }
+       }
      }
+     psio_write_entry(itapDSCF, "Difference Density", (char *) dmat,
+		      sizeof(double)*ntri);
+
+     if (ksdft) {
+       /*--- Get full pmat for DFT numerical integrator ---*/
+       for(i=0;i<num_ir;i++) {
+	 max = scf_info[i].num_so;
+	 off = scf_info[i].ideg;
+	 for(j=0;j<max;j++) {
+	   jj = j + off;
+	   for(k=0;k<=j;k++) {
+	     kk = k + off;
+	     dmat[ioff[jj]+kk] = scf_info[i].pmat[ioff[j]+k];
+	   }
+	 }
+       }
+       psio_write_entry(itapDSCF, "Total Density", (char *) dmat,
+			sizeof(double)*ntri);
+     }
+
+     /*--- Get full dpmato ---*/
+     if (iopen) {
+       for(i=0;i<num_ir;i++) {
+	 max = scf_info[i].num_so;
+	 off = scf_info[i].ideg;
+	 for(j=0;j<max;j++) {
+	   jj = j + off;
+	   for(k=0;k<=j;k++) {
+	     kk = k + off;
+	     if(acc_switch) {
+	       dmat[ioff[jj]+kk] = scf_info[i].pmato[ioff[j]+k];
+	       scf_info[i].dpmato[ioff[j]+k] = 0.0;
+	     }
+	     else
+	       dmat[ioff[jj]+kk] = scf_info[i].dpmato[ioff[j]+k];
+	   }
+	 }
+       }
+       psio_write_entry(itapDSCF, "Difference Open-Shell Density", (char *) dmat,
+			sizeof(double)*ntri);
+     }
+     free(dmat);
      psio_close(itapDSCF, 1);
    }
- 
-   free(dmat);
-   if (iopen)
-     free(dmato);
- 
+
+   return;
 }                                            
                                                                                 

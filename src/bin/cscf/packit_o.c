@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.1  2000/02/04 22:52:31  evaleev
- * Initial revision
+ * Revision 1.2  2000/06/22 22:15:01  evaleev
+ * Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
  *
+/* Revision 1.1.1.1  2000/02/04 22:52:31  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.4  1999/11/02 23:55:59  localpsi
 /* Shawn Brown - (11/2/99) Modified to the code in a few major ways.
 /*
@@ -127,9 +130,9 @@ void packit_open(lbij,lbkl,endflg)
 			  ptmp[ioff[i+joff]+j+joff] =
 			      scf_info[k].pmat[ioff[i]+j];
 			  ptmpo[ioff[i+joff]+j+joff] =
-			      -spin_info[0].scf_spin[k].pmato[ioff[i]+j];
+			      -spin_info[0].scf_spin[k].pmat[ioff[i]+j];
 			  ptmpo2[ioff[i+joff]+j+joff] =
-			      -spin_info[1].scf_spin[k].pmato[ioff[i]+j];
+			      -spin_info[1].scf_spin[k].pmat[ioff[i]+j];
 		      }
 		   }
 	    joff += nn;

@@ -1,13 +1,18 @@
 /* $Log$
- * Revision 1.2  2000/06/02 13:32:16  kenny
- * Added dynamic integral accuracy cutoffs for direct scf.  Added a few global
- * variables.  Added keyword 'dyn_acc'; true--use dynamic cutoffs.  Use of
- * 'dconv' and 'delta' to keep track of density convergence somewhat awkward,
- * but avoids problems when accuracy is switched and we have to wipe out density
- * matrices.  Also added error message and exit if direct rohf singlet is
- * attempted since it doesn't work.
- * --Joe Kenny
+ * Revision 1.3  2000/06/22 22:15:02  evaleev
+ * Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
  *
+/* Revision 1.2  2000/06/02 13:32:16  kenny
+/*
+/*
+/* Added dynamic integral accuracy cutoffs for direct scf.  Added a few global
+/* variables.  Added keyword 'dyn_acc'; true--use dynamic cutoffs.  Use of
+/* 'dconv' and 'delta' to keep track of density convergence somewhat awkward,
+/* but avoids problems when accuracy is switched and we have to wipe out density
+/* matrices.  Also added error message and exit if direct rohf singlet is
+/* attempted since it doesn't work.
+/* --Joe Kenny
+/*
 /* Revision 1.1.1.1  2000/02/04 22:52:32  evaleev
 /* Started PSI 3 repository
 /*
@@ -104,6 +109,8 @@ void scf_input(ipvalue)
 
    direct_scf = 0;
    errcod = ip_boolean("DIRECT_SCF",&direct_scf,0);
+   /* Can do KS DFT direct only */
+   if (ksdft) direct_scf=1;
 
    mixing = 0;
    errcod = ip_boolean("ORB_MIX",&mixing,0);
@@ -180,9 +187,15 @@ void scf_input(ipvalue)
    if(!strcmp(dertype,"SECOND")) iconv = 12;
    errcod = ip_data("CONVERGENCE","%d",&iconv,0);
 
+   if (ksdft)
+     errcod = ip_string("FUNCTIONAL",&functional,0);
+
    if(ipvalue) ip_print_value(stdout,ipvalue);
    fprintf(outfile,"  wfn          = %s\n",wfn);
    fprintf(outfile,"  reference    = %s\n",reference);
+   if (ksdft) {
+   fprintf(outfile,"  functional   = %s\n",functional);
+   }
    fprintf(outfile,"  multiplicity = %d\n",multp);
    fprintf(outfile,"  charge       = %d\n",charge);
    fprintf(outfile,"  direct SCF   = %s\n",(direct_scf) ? "true" : "false");
@@ -245,7 +258,7 @@ void scf_input(ipvalue)
 	   
 	   /* if the reference is not UHF, then just read in the vector for the 
 	      restricted calculation into both */
-	   if(reftmp != 1){
+	   if(reftmp != ref_uhf || reftmp != ref_uks){
 	       
 	       for(k=0; k < num_ir ; k++) {
 		   s = &scf_info[k];

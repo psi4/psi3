@@ -1,14 +1,19 @@
 /* $Id$ */
 /* $Log$
- * Revision 1.3  2000/06/02 13:32:14  kenny
- * Added dynamic integral accuracy cutoffs for direct scf.  Added a few global
- * variables.  Added keyword 'dyn_acc'; true--use dynamic cutoffs.  Use of
- * 'dconv' and 'delta' to keep track of density convergence somewhat awkward,
- * but avoids problems when accuracy is switched and we have to wipe out density
- * matrices.  Also added error message and exit if direct rohf singlet is
- * attempted since it doesn't work.
- * --Joe Kenny
+ * Revision 1.4  2000/06/22 22:14:58  evaleev
+ * Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
  *
+/* Revision 1.3  2000/06/02 13:32:14  kenny
+/*
+/*
+/* Added dynamic integral accuracy cutoffs for direct scf.  Added a few global
+/* variables.  Added keyword 'dyn_acc'; true--use dynamic cutoffs.  Use of
+/* 'dconv' and 'delta' to keep track of density convergence somewhat awkward,
+/* but avoids problems when accuracy is switched and we have to wipe out density
+/* matrices.  Also added error message and exit if direct rohf singlet is
+/* attempted since it doesn't work.
+/* --Joe Kenny
+/*
 /* Revision 1.2  2000/03/28 15:45:31  evaleev
 /* Increased the MAX_BASIS and MAXIOFF to 4096
 /*
@@ -98,6 +103,7 @@ EXTERN FILE *infile, *outfile, *JK,*gmat,*diis_out;
 EXTERN double dampsv;           /* scale factor in diis */
 EXTERN double repnuc;           /* nuclear repulsion */
 EXTERN double etot;             /* electronic and total energies */
+EXTERN double exc;              /* KS DFT exchange-correlation energy */
 EXTERN double lshift;           /* levelshift */
 EXTERN double diiser;           /* max off-diag. element in MO fock mat. */
 EXTERN double save_ci1,save_ci2; /* ci coefficients for tcscf */
@@ -127,10 +133,13 @@ EXTERN int natom;		/* number of atoms in the molecule */
 EXTERN int nelec;		/* number of electrons in the molecule */
 EXTERN int nbfso;		/* total number of symmetry-adapted basis functions */
 EXTERN int nmo;                 /* total number of molecular orbitals */
-EXTERN int uhf;                 /* 1 if uhf 0 if RHF or ROHF */
-EXTERN int mixing;              /* 1 if mixing for UHF, default is 0 */
-EXTERN char *reference;         /* RHF,UHF,ROHF,TCSCF */
-EXTERN int refnum;              /* 0=RHF,1=UHF,2=ROHF,3=TCSCF*/
+EXTERN char *reference;         /* RHF,UHF,ROHF,TCSCF,RKS,UKS */
+EXTERN char *functional;        /* KS DFT functional name, just to print out */
+
+typedef enum {ref_rhf = 0, ref_uhf = 1, ref_rohf = 2, ref_tcscf = 3,
+      ref_rks = 4, ref_uks = 5} reftype;
+EXTERN reftype refnum;
+
 EXTERN int mo_out;              /* 1 if display orbitals in new format at end*/
 EXTERN int n_so_typs;           /* number of irreps w/ non-zero num of so's */
 EXTERN int nbasis;              /* # basis functions */
@@ -147,8 +156,11 @@ EXTERN int iter;                /* iteration */
 EXTERN int converged;           /* 1 if converged */
 EXTERN int hsos;                /* 1 if high spin open shell */
 EXTERN int singlet;             /* 1 if open shell singlet */
+EXTERN int uhf;                 /* 1 if uhf 0 if RHF or ROHF */
 EXTERN int special;             /* 1 if OPENTYPE=special */
 EXTERN int twocon;              /* 1 if tcscf */
+EXTERN int ksdft;               /* 1 if Kohn-Sham DFT */
+EXTERN int mixing;              /* 1 if mixing for UHF, default is 0 */
 EXTERN PSI_FPTR pos34;               /* pointer to location in file34 */
 EXTERN int cscf_nint;                /* number of pki ints in present batch */
 EXTERN int opshl1,opshl2;
@@ -185,7 +197,8 @@ EXTERN struct symm {
     double *fock_evals;
     double *gmat;
     double *gmato;
-    double *pmat;
+    double *xcmat;  /* Exchange-correlation Fock matrix for KS DFT */
+    double *pmat;   /* Closed-shell density matrixin RHF, alpha or beta in UHF) */
     double *pmato;
     double *pmat2;
     double *pmato2;

@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.1  2000/02/04 22:52:34  evaleev
- * Initial revision
+ * Revision 1.2  2000/06/22 22:15:02  evaleev
+ * Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
  *
+/* Revision 1.1.1.1  2000/02/04 22:52:34  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.3  1999/11/17 19:40:47  evaleev
 /* Made all the adjustments necessary to have direct UHF working. Still doesn't work though..
 /*
@@ -92,6 +95,11 @@ void uhf_iter()
 		 fprintf(outfile,
 			 "\n%s gmat for irrep %s",sp->spinlabel,scf_info[m].irrep_label);
 		 print_array(sp->scf_spin[m].gmat,nn,outfile);
+		 if (ksdft) {
+		   fprintf(outfile,
+			   "\n%s xcmat for irrep %s",sp->spinlabel,scf_info[m].irrep_label);
+		   print_array(sp->scf_spin[m].xcmat,nn,outfile);
+		 }
 	       }
 	     }
 	   }
@@ -106,16 +114,28 @@ void uhf_iter()
 			   sp->scf_spin[m].fock_pac,ioff[nn]);
 	       }
 	   }
-	   
-	   if(t==1) 
-	       ecalc(tol);
-	   
-	   
-	   
-	   /* create new fock matrix in fock_pac or fock_eff */
-	   if(t==1)
-	       if(!diisflg) diis_uhf(scr,fock_c,fock_ct);
        }
+
+       /*----------------------------------------------------
+	 In KS DFT case, Fock matrix doesn't include Fxc yet
+	 add them up only after the computation of energy
+	----------------------------------------------------*/
+       ecalc(tol);
+       if (ksdft) {
+	 /* now form f = h + g + fxc */
+	 /* it should be alright to use fock_pac as 2 arguments */
+	 for(t = 0; t<2 ;t++){
+	   sp = &spin_info[t];
+	   for (m=0; m < num_ir ; m++) {
+	     s = &(sp->scf_spin[m]);
+	     if (nn=scf_info[m].num_so)
+	       add_arr(s->fock_pac,s->xcmat,s->fock_pac,ioff[nn]);
+	   }
+	 }
+       }
+       
+       /* create new fock matrix in fock_pac or fock_eff */
+       if(!diisflg) diis_uhf(scr,fock_c,fock_ct);
        
        for(t=0;t<2;t++){
 	   sp = &spin_info[t];

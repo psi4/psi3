@@ -21,12 +21,12 @@ int size;
 int optri;
 char *guess_opt,*occ_fix_str;
 int  *cldpi,*openpi;
-int reftmp;
+reftype reftmp;
 int mguess;
 
 void guess()
 {
-ip_cwk_clear();
+   ip_cwk_clear();
    ip_cwk_add(":DEFAULT");
    ip_cwk_add(":SCF");
 

@@ -1,13 +1,18 @@
 /* $Log$
- * Revision 1.2  2000/06/02 13:32:15  kenny
- * Added dynamic integral accuracy cutoffs for direct scf.  Added a few global
- * variables.  Added keyword 'dyn_acc'; true--use dynamic cutoffs.  Use of
- * 'dconv' and 'delta' to keep track of density convergence somewhat awkward,
- * but avoids problems when accuracy is switched and we have to wipe out density
- * matrices.  Also added error message and exit if direct rohf singlet is
- * attempted since it doesn't work.
- * --Joe Kenny
+ * Revision 1.3  2000/06/22 22:15:00  evaleev
+ * Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
  *
+/* Revision 1.2  2000/06/02 13:32:15  kenny
+/*
+/*
+/* Added dynamic integral accuracy cutoffs for direct scf.  Added a few global
+/* variables.  Added keyword 'dyn_acc'; true--use dynamic cutoffs.  Use of
+/* 'dconv' and 'delta' to keep track of density convergence somewhat awkward,
+/* but avoids problems when accuracy is switched and we have to wipe out density
+/* matrices.  Also added error message and exit if direct rohf singlet is
+/* attempted since it doesn't work.
+/* --Joe Kenny
+/*
 /* Revision 1.1.1.1  2000/02/04 22:52:33  evaleev
 /* Started PSI 3 repository
 /*
@@ -57,7 +62,7 @@ void dmatuhf()
    double ptemp,ctmp;
    struct symm *s;
    struct spin *sp;
-   double *dmata, *dmatb;
+   double *dmat;
    
    for(m = 0; m < 2; m++){
        for (l=0; l < num_ir ; l++) {
@@ -76,8 +81,8 @@ void dmatuhf()
 		       for (k=0; k < ndocc ; k++)
 			   ptemp += 2.0*sp->scf_spin[l].cmat[i][k]
 			       *sp->scf_spin[l].cmat[j][k];
-		       sp->scf_spin[l].dpmat[ij] = ptemp - sp->scf_spin[l].pmato[ij];
-		       sp->scf_spin[l].pmato[ij] = ptemp; 
+		       sp->scf_spin[l].dpmat[ij] = ptemp - sp->scf_spin[l].pmat[ij];
+		       sp->scf_spin[l].pmat[ij] = ptemp; 
 		   }
 /*----------------------------------
  
@@ -89,14 +94,14 @@ void dmatuhf()
 		       ctmp=sp->scf_spin[l].cmat[i][k];
 		       ptemp += ctmp*ctmp;
 		   }
-		   sp->scf_spin[l].dpmat[ij] = ptemp - sp->scf_spin[l].pmato[ij];
-		   sp->scf_spin[l].pmato[ij] = ptemp;
+		   sp->scf_spin[l].dpmat[ij] = ptemp - sp->scf_spin[l].pmat[ij];
+		   sp->scf_spin[l].pmat[ij] = ptemp;
 		   ij++;
 	       } 
 	       if(print & 4) {
 	           fprintf(outfile,
 		   "\nSpin case %d density matrix for irrep %s",m,scf_info[l].irrep_label);
-		   print_array(spin_info[m].scf_spin[l].pmato,
+		   print_array(spin_info[m].scf_spin[l].pmat,
 			       scf_info[l].num_so,outfile);
 	       }
 	   }
@@ -106,70 +111,111 @@ void dmatuhf()
    for(l=0;l < num_ir; l++){
        if(nn=scf_info[l].num_so) {
 	   for(ij=0;ij<ioff[nn];ij++) {
-	       ptemp = spin_info[0].scf_spin[l].pmato[ij] +
-		       spin_info[1].scf_spin[l].pmato[ij];
+	       ptemp = spin_info[0].scf_spin[l].pmat[ij] +
+		       spin_info[1].scf_spin[l].pmat[ij];
 	       scf_info[l].dpmat[ij] = ptemp - scf_info[l].pmat[ij];
 	       scf_info[l].pmat[ij] = ptemp;
 	   }
        }
    }
 
-   /*decide what accuracy to request for direct_scf*/
-   if(direct_scf && dyn_acc) {
- 
-     if((iter<30)&&(tight_ints==0)&&(delta>1.0E-5)) {
-        eri_cutoff=1.0E-6;
-     }
- 
-     if((tight_ints==0)&&(delta<=1.0E-5)){
-        fprintf(outfile,"  Switching to full integral accuracy\n");
-        acc_switch=1;
-        tight_ints=1;
-        eri_cutoff=1.0E-14; }
-   }
-                                                      
-   
-   /*---------------------------
-     Get full dpmata and dpmatb
-    ---------------------------*/
-   ntri = nbasis*(nbasis+1)/2;
-   dmata = init_array(ntri);
-   dmatb = init_array(ntri);
-
-   for(i=0;i<num_ir;i++) {
-     max = scf_info[i].num_so;
-     off = scf_info[i].ideg;
-     for(j=0;j<max;j++) {
-       jj = j + off;
-       for(k=0;k<=j;k++) {
-         kk = k + off;
-         if(acc_switch) {
-            dmata[ioff[jj]+kk] = spin_info[0].scf_spin[i].pmato[ioff[j]+k];
-            spin_info[0].scf_spin[i].dpmat[ioff[j]+k] = 0.0;
-            dmatb[ioff[jj]+kk] = spin_info[1].scf_spin[i].pmato[ioff[j]+k];
-            spin_info[1].scf_spin[i].dpmat[ioff[j]+k] = 0.0;
-         }
-         else {
-            dmata[ioff[jj]+kk] = spin_info[0].scf_spin[i].dpmat[ioff[j]+k];
-            dmatb[ioff[jj]+kk] = spin_info[1].scf_spin[i].dpmat[ioff[j]+k];
-         }
+   /*-----------------------
+     Handle direct SCF here
+    -----------------------*/
+   if(direct_scf) {
+     /*decide what accuracy to request for direct_scf*/
+     if (dyn_acc) {
+       if((iter<30)&&(tight_ints==0)&&(delta>1.0E-5)) {
+	 eri_cutoff=1.0E-6;
+       }
+       if((tight_ints==0)&&(delta<=1.0E-5)){
+	 fprintf(outfile,"  Switching to full integral accuracy\n");
+	 acc_switch=1;
+	 tight_ints=1;
+	 eri_cutoff=1.0E-14;
        }
      }
-   }                       
 
-
-   if (direct_scf) {
      psio_open(itapDSCF, PSIO_OPEN_NEW);
-     ctmp = 1.0;
-     psio_write_entry(itapDSCF, "HF exchange contribution", (char *) &ctmp, sizeof(double));
      psio_write_entry(itapDSCF, "Integrals cutoff", (char *) &eri_cutoff, sizeof(double));
-     psio_write_entry(itapDSCF, "Alpha SO Density", (char *) dmata, sizeof(double)*ntri);
-     psio_write_entry(itapDSCF, "Beta SO Density", (char *) dmatb, sizeof(double)*ntri);
+
+     ntri = nbasis*(nbasis+1)/2;
+     dmat = init_array(ntri);
+
+     /*--- Get full dpmata ---*/
+     for(i=0;i<num_ir;i++) {
+       max = scf_info[i].num_so;
+       off = scf_info[i].ideg;
+       for(j=0;j<max;j++) {
+	 jj = j + off;
+	 for(k=0;k<=j;k++) {
+	   kk = k + off;
+	   if(acc_switch) {
+	     dmat[ioff[jj]+kk] = spin_info[0].scf_spin[i].pmat[ioff[j]+k];
+	     spin_info[0].scf_spin[i].dpmat[ioff[j]+k] = 0.0;
+	   }
+	   else {
+	     dmat[ioff[jj]+kk] = spin_info[0].scf_spin[i].dpmat[ioff[j]+k];
+	   }
+	 }
+       }
+     }
+     psio_write_entry(itapDSCF, "Difference Alpha Density", (char *) dmat, sizeof(double)*ntri);
+
+     /*--- Get full dpmatb ---*/
+     for(i=0;i<num_ir;i++) {
+       max = scf_info[i].num_so;
+       off = scf_info[i].ideg;
+       for(j=0;j<max;j++) {
+	 jj = j + off;
+	 for(k=0;k<=j;k++) {
+	   kk = k + off;
+	   if(acc_switch) {
+	     dmat[ioff[jj]+kk] = spin_info[1].scf_spin[i].pmat[ioff[j]+k];
+	     spin_info[1].scf_spin[i].dpmat[ioff[j]+k] = 0.0;
+	   }
+	   else {
+	     dmat[ioff[jj]+kk] = spin_info[1].scf_spin[i].dpmat[ioff[j]+k];
+	   }
+	 }
+       }
+     }
+     psio_write_entry(itapDSCF, "Difference Beta Density", (char *) dmat, sizeof(double)*ntri);
+     
+     if (ksdft) {
+       /*--- Get full dpmata ---*/
+       for(i=0;i<num_ir;i++) {
+	 max = scf_info[i].num_so;
+	 off = scf_info[i].ideg;
+	 for(j=0;j<max;j++) {
+	   jj = j + off;
+	   for(k=0;k<=j;k++) {
+	     kk = k + off;
+	     dmat[ioff[jj]+kk] = spin_info[0].scf_spin[i].pmat[ioff[j]+k];
+	   }
+	 }
+       }
+       psio_write_entry(itapDSCF, "Total Alpha Density", (char *) dmat, sizeof(double)*ntri);
+
+       /*--- Get full dpmatb ---*/
+       for(i=0;i<num_ir;i++) {
+	 max = scf_info[i].num_so;
+	 off = scf_info[i].ideg;
+	 for(j=0;j<max;j++) {
+	   jj = j + off;
+	   for(k=0;k<=j;k++) {
+	     kk = k + off;
+	     dmat[ioff[jj]+kk] = spin_info[1].scf_spin[i].pmat[ioff[j]+k];
+	   }
+	 }
+       }
+       psio_write_entry(itapDSCF, "Total Beta Density", (char *) dmat, sizeof(double)*ntri);
+     }
+     free(dmat);
      psio_close(itapDSCF, 1);
    }
 
-   free(dmata);
-   free(dmatb);
+   return;
 }
 
 

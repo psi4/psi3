@@ -131,9 +131,12 @@ void init_uhf()
 	   for(m=0;m<2;m++){
 	       sp = &spin_info[m];
 	       sp->scf_spin[i].dpmat = init_array(ioff[nn]);
-	       sp->scf_spin[i].pmato = init_array(ioff[nn]);
+	       sp->scf_spin[i].dpmato = NULL;
+	       sp->scf_spin[i].pmat = init_array(ioff[nn]);
+	       sp->scf_spin[i].pmato = NULL;
 	       sp->scf_spin[i].fock_pac = init_array(ioff[nn]);
 	       sp->scf_spin[i].gmat = init_array(ioff[nn]);
+	       sp->scf_spin[i].gmato = NULL;
 	       sp->scf_spin[i].occ_num = init_array(nn);
 	       sp->scf_spin[i].fock_evals = init_array(nn);
 	       sp->scf_spin[i].cmat = init_matrix(nn,nn);
@@ -142,6 +145,9 @@ void init_uhf()
 	       /* STB(4/1/98) - Added array to store the eigenvalues of the
 		  core hamiltonian for mo guessing*/
 	       sp->scf_spin[i].hevals = init_array(nn);
+	       /* Need separate XC Fock for KS DFT */
+	       if (ksdft)
+		 sp->scf_spin[i].xcmat = init_array(ioff[nn]);
 	   }
        }
    }

@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.1  2000/02/04 22:52:31  evaleev
- * Initial revision
+ * Revision 1.2  2000/06/22 22:15:01  evaleev
+ * Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
  *
+/* Revision 1.1.1.1  2000/02/04 22:52:31  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.6  1999/11/11 16:00:38  localpsi
 /* Fixed minor bug in occupations.  STB (11/11/99)
 /*
@@ -152,6 +155,9 @@ init_scf()
          /* STB(4/1/98) - Added array to store the eigenvalues of the
 	                  core hamiltonian for mo guessing*/
          scf_info[i].hevals = (double *) init_array(nn);
+	 /* Need separate XC Fock for KS DFT */
+	 if (ksdft)
+	   scf_info[i].xcmat = init_array(ioff[nn]);
          }
      }
    /* read in number of atoms and nuclear charges and total number of MO*/

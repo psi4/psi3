@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.1  2000/02/04 22:52:32  evaleev
- * Initial revision
+ * Revision 1.2  2000/06/22 22:15:02  evaleev
+ * Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
  *
+/* Revision 1.1.1.1  2000/02/04 22:52:32  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.6  1999/11/04 19:24:31  localpsi
 /* STB (11/4/99) - Added the orb_mix feature which is equivalent to guess = mix
 /* in G94 and also fixed restarting so that if you have different wavefuntions,
@@ -116,6 +119,11 @@ void scf_iter()
 		       "\ngmato for irrep %s",s->irrep_label);
 	       print_array(s->gmato,nn,outfile);
 	     }
+	     if (ksdft) {
+	       fprintf(outfile,
+		     "\nxcmat for irrep %s",s->irrep_label);
+	       print_array(s->xcmat,nn,outfile);
+	     }
 	   }
 	 }
        }
@@ -129,7 +137,6 @@ void scf_iter()
             add_arr(s->hmat,s->gmat,s->fock_pac,ioff[nn]);
 
      /* for open shell, form fock_open = h+g-q */
-
             if(iopen) {
                for (i=0; i < ioff[nn] ; i++)
                   s->fock_open[i]=s->fock_pac[i]-s->gmato[i];
@@ -137,8 +144,21 @@ void scf_iter()
             }
          }
 
+      /*----------------------------------------------------
+	In KS DFT case, Fock matrix doesn't include Fxc yet
+	add them up only after the computation of energy
+       ----------------------------------------------------*/
       ecalc(tol);
-
+      if (ksdft) {
+	/* now form f = h + g + fxc */
+	/* it should be alright to use fock_pac as 2 arguments */
+	for (m=0; m < num_ir ; m++) {
+	  s = &scf_info[m];
+	  if (nn=s->num_so)
+	    add_arr(s->fock_pac,s->xcmat,s->fock_pac,ioff[nn]);
+	}
+      }
+	
    /* create new fock matrix in fock_pac or fock_eff */
       if(!diisflg) diis(scr,fock_c,fock_ct,c1,c2,cimax,newci);
 
