@@ -1,0 +1,1119 @@
+******************************************************************************
+tstart called on zozma.giga.net
+Tue Jun  1 20:19:26 2004
+
+                                --------------
+                                  WELCOME TO
+                                    PSI  3
+                                --------------
+
+  LABEL       =	cc-pVDZ/CCSD H2O2
+  SHOWNORM    =	0
+  PUREAM      =	0
+  PRINT_LVL   =	1
+
+  Parsed basis sets from /home/users/crawdad/psi3/xeon/share/pbasis.dat
+
+  -Geometry before Center-of-Mass shift (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.000000000000
+          OXYGEN      0.000000000000     0.000000000000     2.626719124125
+        HYDROGEN      1.735567509194     0.000000000000    -0.378414913863
+        HYDROGEN      1.115601290685    -1.329521846076     3.005134037987
+
+
+  -Rotational constants (cm-1) :
+    A =   10.61423  B =    0.97044  C =    0.91566
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN     -1.312218696095    -0.093235962575    -0.054730547945
+          OXYGEN      1.312218696095    -0.093235962575     0.054730547945
+        HYDROGEN     -1.720870706402     1.479722385935     0.662345455229
+        HYDROGEN      1.720870706402     1.479722385935    -0.662345455229
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2  
+    Number of irr. rep.      = 2
+    Number of atoms          = 4
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S ( 11720.00000000     0.00071000)
+           (  1759.00000000     0.00547000)
+           (   400.80000000     0.02783700)
+           (   113.70000000     0.10480000)
+           (    37.03000000     0.28306200)
+           (    13.27000000     0.44871900)
+           (     5.02500000     0.27095200)
+           (     1.01300000     0.01545800)
+           (     0.30230000    -0.00258500) )
+        (S ( 11720.00000000    -0.00016000)
+           (  1759.00000000    -0.00126300)
+           (   400.80000000    -0.00626700)
+           (   113.70000000    -0.02571600)
+           (    37.03000000    -0.07092400)
+           (    13.27000000    -0.16541100)
+           (     5.02500000    -0.11695500)
+           (     1.01300000     0.55736800)
+           (     0.30230000     0.57275900) )
+        (S (     0.30230000     1.00000000) )
+        (P (    17.70000000     0.04301800)
+           (     3.85400000     0.22891300)
+           (     1.04600000     0.50872800)
+           (     0.27530000     0.46053100) )
+        (P (     0.27530000     1.00000000) )
+        (D (     1.18500000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    13.01000000     0.01968500)
+           (     1.96200000     0.13797700)
+           (     0.44460000     0.47814800)
+           (     0.12200000     0.50124000) )
+        (S (     0.12200000     1.00000000) )
+        (P (     0.72700000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 18
+    Number of primitives   = 31
+    Number of AO           = 40
+    Number of SO           = 38
+
+    Irrep    Number of SO
+    -----    ------------
+      1           19
+      2           19
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.054730547945     1.312218696095    -0.093235962575
+        HYDROGEN      0.662345455229    -1.720870706402     1.479722385935
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN     -0.054730547945    -1.312218696095    -0.093235962575
+          OXYGEN      0.054730547945     1.312218696095    -0.093235962575
+        HYDROGEN      0.662345455229    -1.720870706402     1.479722385935
+        HYDROGEN     -0.662345455229     1.720870706402     1.479722385935
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN     -0.028962160798    -0.694396279686    -0.049338350184
+          OXYGEN      0.028962160798     0.694396279686    -0.049338350184
+        HYDROGEN      0.350498145886    -0.910645626298     0.783035421473
+        HYDROGEN     -0.350498145886     0.910645626298     0.783035421473
+
+
+  -Geometry in the reference coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN     -0.054730547945    -1.312218696095    -0.093235962575
+          OXYGEN      0.054730547945     1.312218696095    -0.093235962575
+        HYDROGEN      0.662345455229    -1.720870706402     1.479722385935
+        HYDROGEN     -0.662345455229     1.720870706402     1.479722385935
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =      38.253971301900
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3           4
+
+    1   0.0000000
+    2   1.3900000   0.0000000
+    3   0.9400000   1.8364071   0.0000000
+    4   1.8364071   0.9400000   1.9515372   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+tstop called on zozma.giga.net
+Tue Jun  1 20:19:26 2004
+
+user time   =       0.11 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on zozma.giga.net
+Tue Jun  1 20:19:26 2004
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = cc-pVDZ/CCSD H2O2
+    Number of atoms             = 4
+    Number of atomic orbitals   = 40
+    Number of symmetry orbitals = 38
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2 
+    Number of irreps                 = 2
+
+    Wrote 117739 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on zozma.giga.net
+Tue Jun  1 20:19:30 2004
+
+user time   =       3.36 seconds =       0.06 minutes
+system time =       0.17 seconds =       0.00 minutes
+total time  =          4 seconds =       0.07 minutes
+******************************************************************************
+tstart called on zozma.giga.net
+Tue Jun  1 20:19:30 2004
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
+
+  label        = cc-pVDZ/CCSD H2O2
+  wfn          = CCSD
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = RESPONSE
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy       38.2539713019000
+  first run, so defaulting to core-hamiltonian guess
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 1158320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.251741e-02
+
+  Using core guess to determine occupations
+
+
+  Symmetry block:   A     B    
+  DOCC:              5     4   
+  SOCC:              0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 61814 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1      -139.2051688985    1.774591e+02    0.000000e+00    0.000000e+00
+    2      -142.5996156326    3.394447e+00    4.399646e-02    7.929146e-01
+    3      -150.6921109097    8.092495e+00    2.590980e-02    8.155470e-01
+    4      -150.7717316564    7.962075e-02    1.368937e-03    7.699394e-02
+    5      -150.7777446899    6.013034e-03    4.040680e-04    2.059072e-02
+    6      -150.7790241373    1.279447e-03    2.179307e-04    1.142215e-02
+    7      -150.7791728842    1.487469e-04    7.321865e-05    3.200743e-03
+    8      -150.7791823758    9.491598e-06    1.901133e-05    9.307000e-04
+    9      -150.7791838295    1.453721e-06    9.378366e-06    4.057770e-04
+   10      -150.7791838652    3.570409e-08    1.374167e-06    6.141098e-05
+   11      -150.7791838677    2.423292e-09    2.610181e-07    1.701163e-05
+   12      -150.7791838679    2.478941e-10    9.572206e-08    5.399273e-06
+   13      -150.7791838679    1.116973e-11    2.056946e-08    9.476617e-07
+   14      -150.7791838679    6.252776e-13    4.957450e-09    1.772195e-07
+   15      -150.7791838679    8.526513e-14    1.294806e-09    5.208637e-08
+   16      -150.7791838679    0.000000e+00    4.931389e-10    2.339295e-08
+   17      -150.7791838679    2.842171e-14    2.437940e-10    8.468442e-09
+   18      -150.7791838679   -5.684342e-14    7.969265e-11    3.022205e-09
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A     -20.619349     1B     -20.619013     2A      -1.507787  
+   2B      -1.207608     3A      -0.772079     3B      -0.669171  
+   4A      -0.610850     4B      -0.534579     5A      -0.457771  
+
+  Unoccupied orbitals
+   6A       0.170058     5B       0.207922     6B       0.357579  
+   7A       0.826680     7B       0.851681     8A       1.130818  
+   8B       1.137986     9B       1.173859     9A       1.187142  
+  10A       1.286565    10B       1.298497    11A       1.497098  
+  12A       1.540883    11B       1.559287    12B       1.733951  
+  13A       1.913157    13B       2.037507    14A       2.460010  
+  14B       2.503912    15B       2.672803    15A       2.821554  
+  16A       2.932536    17A       3.274207    16B       3.309357  
+  18A       3.503492    17B       3.609638    18B       3.917634  
+  19A       4.000575    19B       4.287100  
+
+
+        SCF total energy   =    -150.779183867922
+        kinetic energy     =     150.895990033255
+        nuc. attr. energy  =    -434.965887713606
+        elec. rep. energy  =     133.290713812429
+        potential energy   =    -301.675173901178
+        virial theorem     =       2.000774683629
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on zozma.giga.net
+Tue Jun  1 20:19:30 2004
+
+user time   =       0.15 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on zozma.giga.net
+Tue Jun  1 20:19:30 2004
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CCSD
+	Reference orbitals     =  RHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            =  Yes
+	Delete Restricted Docc =  No
+	Do All TEI             =  No
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Semicanonical orbitals =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 2
+	Number of SOs    = 38
+	Number of MOs    = 38
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A  	   19	   19	    1	    5	    0	    14	    0
+	 B  	   19	   19	    1	    4	    0	    15	    0
+
+	Nuclear Repulsion Energy    =        38.2539713019
+	Total SCF Energy            =      -150.7791838679
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy = -132.274849316734816
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on zozma.giga.net
+Tue Jun  1 20:19:34 2004
+
+user time   =       0.86 seconds =       0.01 minutes
+system time =       2.53 seconds =       0.04 minutes
+total time  =          4 seconds =       0.07 minutes
+******************************************************************************
+tstart called on zozma.giga.net
+Tue Jun  1 20:19:34 2004
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	CCSD
+	Reference wfn   =	RHF
+	Derivative      =	Response
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Local CC        =     No
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 2
+	Number of MOs        = 38
+	Number of active MOs = 36
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A  	   19	    1	    4	    0	    14	    0
+	 B  	   19	    1	    3	    0	    15	    0
+
+	Nuclear Rep. energy (chkpt) =     38.25397130189999
+	SCF energy          (chkpt) =   -150.77918386792228
+
+	Size of <ab|cd> integrals:     0.177 (MW) /     1.418 (MB)
+	Size of <ia|bc> integrals:     0.043 (MW) /     0.340 (MB)
+	Size of Tijab amplitudes:      0.011 (MW) /     0.084 (MB)
+
+	One-electron energy          =   -101.99692289249482
+	Two-electron (AA) energy     =     19.05943605547085
+	Two-electron (BB) energy     =     19.05943605547085
+	Two-electron (AB) energy     =     26.17918098393646
+	Two-electron energy          =     45.23861703940732
+	Frozen-core energy (transqt) =   -132.27484931673482
+	Reference energy             =   -150.77918386792234
+******************************************************************************
+tstop called on zozma.giga.net
+Tue Jun  1 20:19:35 2004
+
+user time   =       0.40 seconds =       0.01 minutes
+system time =       0.65 seconds =       0.01 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on zozma.giga.net
+Tue Jun  1 20:19:35 2004
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =   38.253971301899988
+	SCF energy          (chkpt)   = -150.779183867922285
+	Reference energy    (file100) = -150.779183867922342
+
+	Input parameters:
+	-----------------
+	Wave function   =      CCSD
+	Reference wfn   =      RHF
+	Memory (Mbytes) =  256.0
+	Maxiter         =     50
+	Convergence     = 1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	Local CC        =     No
+	AO Basis        =     NONE
+	Cache Level     =    2
+	Cache Type      =     LOW
+	Print Level     =    0
+	# Amps to Print =    10
+	Print MP2 Amps? =    No
+	Analyze T2 Amps =    No
+
+	                     Solving CCSD Equations
+	                     ----------------------
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.380256292625035    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.384252690369300    4.172e-02    0.006281    0.014957    0.014957
+     2        -0.393202753081361    1.580e-02    0.007156    0.016728    0.016728
+     3        -0.394603265571967    5.260e-03    0.008061    0.018516    0.018516
+     4        -0.394657637621621    1.398e-03    0.008198    0.018646    0.018646
+     5        -0.394690560240444    5.030e-04    0.008266    0.018685    0.018685
+     6        -0.394682665055171    1.898e-04    0.008293    0.018687    0.018687
+     7        -0.394679296559936    5.979e-05    0.008301    0.018685    0.018685
+     8        -0.394679256161890    2.095e-05    0.008303    0.018684    0.018684
+     9        -0.394678907136448    7.909e-06    0.008304    0.018684    0.018684
+    10        -0.394679193420261    3.344e-06    0.008304    0.018684    0.018684
+    11        -0.394679168068221    1.110e-06    0.008304    0.018684    0.018684
+    12        -0.394679205984184    3.658e-07    0.008304    0.018684    0.018684
+    13        -0.394679204285591    1.105e-07    0.008304    0.018684    0.018684
+    14        -0.394679204609446    3.761e-08    0.008304    0.018684    0.018684
+
+	Iterations converged.
+
+
+	Largest TIA Amplitudes:
+	          5  14         0.0102219453
+	          6  14         0.0088239690
+	          2   7         0.0082621824
+	          2   9        -0.0079565230
+	          2   4         0.0077446847
+	          1   8         0.0067312250
+	          1   0         0.0066839159
+	          5  17         0.0064483635
+	          1   3        -0.0061907933
+	          6  16        -0.0061070728
+
+	Largest TIjAb Amplitudes:
+	  2   2  15  15        -0.0682113797
+	  2   2  14  15        -0.0337460208
+	  2   2  15  14        -0.0337460208
+	  1   2  15  15        -0.0313513329
+	  2   1  15  15        -0.0313513329
+	  1   1  15  15        -0.0311200781
+	  3   3  17  17        -0.0224518614
+	  3   3  15  15        -0.0219509785
+	  1   1   1   1        -0.0213098132
+	  2   2  14  14        -0.0200419538
+
+	SCF energy       (chkpt)   = -150.779183867922285
+	Reference energy (file100) = -150.779183867922342
+	MP2 correlation energy     =   -0.380256292625035
+	Total MP2 energy           = -151.159440160547376
+	CCSD correlation energy    =   -0.394679204609446
+	Total CCSD energy          = -151.173863072531788
+
+******************************************************************************
+tstop called on zozma.giga.net
+Tue Jun  1 20:19:42 2004
+
+user time   =       3.19 seconds =       0.05 minutes
+system time =       2.98 seconds =       0.05 minutes
+total time  =          7 seconds =       0.12 minutes
+******************************************************************************
+tstart called on zozma.giga.net
+Tue Jun  1 20:19:42 2004
+
+
+			**************************
+			*                        *
+			*         CCHBAR         *
+			*                        *
+			**************************
+
+******************************************************************************
+tstop called on zozma.giga.net
+Tue Jun  1 20:19:43 2004
+
+user time   =       0.36 seconds =       0.01 minutes
+system time =       0.55 seconds =       0.01 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on zozma.giga.net
+Tue Jun  1 20:19:43 2004
+
+
+			**************************
+			*        CCLAMBDA        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =   38.253971301899988
+	Reference           (chkpt)   = 0
+	SCF energy          (chkpt)   = -150.779183867922285
+	Reference energy    (CC_INFO) = -150.779183867922342
+	CCSD energy         (CC_INFO) =   -0.394679204609446
+	Total CCSD energy   (CC_INFO) = -151.173863072531788
+
+	Input parameters:
+	-----------------
+	Maxiter       =      50
+	Convergence   = 1.0e-07
+	Restart       =     Yes
+	Cache Level   =     2
+	AO Basis      =     No
+	Excited State  =     No
+	Local CC        =     No
+	Paramaters for left-handed eigenvectors:
+	Irr   Root  Ground-State?    EOM energy        R0
+	  0    -1           Yes   0.0000000000   1.0000000000
+	Labels for state 0:
+	LIA 0 -1, Lia 0 -1, LIJAB 0 -1, Lijab 0 -1, LIjAb 0 -1, 2LIjAb - LIjbA 0 -1
+	Symmetry of left-hand state: A  
+	Symmetry of left-hand eigenvector: A  
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter     PseudoEnergy or Norm         RMS  
+	----     ---------------------     --------
+	   0        -0.394689315835731    0.000e+00
+	   1        -0.387349428733632    8.453e-03
+	   2        -0.386490843847342    2.123e-03
+	   3        -0.386312150834159    7.361e-04
+	   4        -0.386313406339395    2.605e-04
+	   5        -0.386314855694754    1.091e-04
+	   6        -0.386314205485153    3.723e-05
+	   7        -0.386314804277514    1.254e-05
+	   8        -0.386314840695313    4.681e-06
+	   9        -0.386314789556369    1.965e-06
+	  10        -0.386314785860635    6.926e-07
+	  11        -0.386314785595511    2.227e-07
+	  12        -0.386314788889696    7.185e-08
+
+	Iterations converged.
+
+	Overlap <L|e^T> =        0.89177806949
+Norm of Zeta:    0.000000000000000
+******************************************************************************
+tstop called on zozma.giga.net
+Tue Jun  1 20:19:46 2004
+
+user time   =       1.40 seconds =       0.02 minutes
+system time =       1.56 seconds =       0.03 minutes
+total time  =          3 seconds =       0.05 minutes
+******************************************************************************
+tstart called on zozma.giga.net
+Tue Jun  1 20:19:46 2004
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = cc-pVDZ/CCSD H2O2
+    Number of atoms             = 4
+    Number of atomic orbitals   = 40
+    Number of symmetry orbitals = 38
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2 
+    Number of irreps                 = 2
+    Reference point for elec. mom. ints. = (0.000, 0.000, 0.000)
+    Reference point for ang. mom. ints. = (0.000, 0.000, 0.000)
+******************************************************************************
+tstop called on zozma.giga.net
+Tue Jun  1 20:19:47 2004
+
+user time   =       0.96 seconds =       0.02 minutes
+system time =       0.11 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on zozma.giga.net
+Tue Jun  1 20:19:47 2004
+
+			**************************
+			*                        *
+			*       CCRESPONSE       *
+			*                        *
+			**************************
+
+	Input parameters:
+	-----------------
+	Property        =    ROTATION
+	Reference wfn   =      RHF
+	Memory (Mbytes) =  256.0
+	Cache Level     =    0
+	Print Level     =    1
+	Maxiter         =     50
+	Convergence     = 1.0e-07
+	DIIS            =     Yes
+	Irrep X         =    B  
+	Irrep Y         =    B  
+	Irrep Z         =    A  
+	Irrep RX        =    B  
+	Irrep RY        =    B  
+	Irrep RZ        =    A  
+	Gauge           =    VELOCITY
+	Applied field   =    0.077 E_h (589.00 nm, 2.105 eV, 16977.95 cm-1)
+	Local CC        =     No
+	Analyze X2 Amps  =    No
+
+
+	Computing Mu-X-Perturbed Wave Function (-0.077 E_h).
+	Iter   Pseudopolarizability       RMS 
+	----   --------------------   -----------
+	   0         7.866534075199
+	   1         8.865878299971    1.879e-01
+	   2         9.321768077186    8.332e-02
+	   3         9.332008913509    2.534e-02
+	   4         9.334500147000    8.772e-03
+	   5         9.334993260388    2.963e-03
+	   6         9.335227292260    1.133e-03
+	   7         9.335292239596    4.278e-04
+	   8         9.335256526294    1.576e-04
+	   9         9.335262709809    4.346e-05
+	  10         9.335265061815    1.530e-05
+	  11         9.335262982489    4.244e-06
+	  12         9.335261291059    1.140e-06
+	  13         9.335260961917    2.473e-07
+	-----------------------------------------
+	Converged Mu-X-Perturbed Wfn to 7.760e-08
+
+	Computing L-X-Perturbed Wave Function (0.077 E_h).
+	Iter   Pseudopolarizability       RMS 
+	----   --------------------   -----------
+	   0         4.734365822199
+	   1         6.039740707361    3.521e-01
+	   2         7.477018739627    2.246e-01
+	   3         7.582057644229    6.663e-02
+	   4         7.648203615581    3.104e-02
+	   5         7.653797858341    1.253e-02
+	   6         7.656631444845    6.753e-03
+	   7         7.658737818158    3.217e-03
+	   8         7.658510988559    1.563e-03
+	   9         7.658606415955    5.634e-04
+	  10         7.658638900932    2.133e-04
+	  11         7.658683019071    7.378e-05
+	  12         7.658676093261    3.191e-05
+	  13         7.658667811087    1.114e-05
+	  14         7.658666738314    4.283e-06
+	  15         7.658666260842    1.796e-06
+	  16         7.658665605750    8.471e-07
+	  17         7.658664853785    3.959e-07
+	  18         7.658664486332    1.954e-07
+	  19         7.658664370792    1.141e-07
+	-----------------------------------------
+	Converged L-X-Perturbed Wfn to 5.691e-08
+
+	Computing Mu-Y-Perturbed Wave Function (-0.077 E_h).
+	Iter   Pseudopolarizability       RMS 
+	----   --------------------   -----------
+	   0         7.914235242146
+	   1         9.250158479107    2.487e-01
+	   2        10.037451335926    1.145e-01
+	   3        10.059001073066    2.417e-02
+	   4        10.063414271460    1.012e-02
+	   5        10.064117637798    2.321e-03
+	   6        10.064098137693    7.047e-04
+	   7        10.064200698860    2.032e-04
+	   8        10.064191449128    6.571e-05
+	   9        10.064181672868    2.841e-05
+	  10        10.064184088626    1.277e-05
+	  11        10.064186494846    4.624e-06
+	  12        10.064187276250    1.130e-06
+	  13        10.064186807224    3.034e-07
+	  14        10.064186649563    1.156e-07
+	-----------------------------------------
+	Converged Mu-Y-Perturbed Wfn to 3.839e-08
+
+	Computing L-Y-Perturbed Wave Function (0.077 E_h).
+	Iter   Pseudopolarizability       RMS 
+	----   --------------------   -----------
+	   0         0.260904953845
+	   1         0.353171594888    9.756e-02
+	   2         0.464811304120    6.517e-02
+	   3         0.479121594923    2.190e-02
+	   4         0.483278605150    6.564e-03
+	   5         0.483108575720    2.517e-03
+	   6         0.483088109028    1.297e-03
+	   7         0.483271975511    7.649e-04
+	   8         0.483220489783    2.937e-04
+	   9         0.483236689120    7.748e-05
+	  10         0.483237940692    3.405e-05
+	  11         0.483234908825    9.968e-06
+	  12         0.483231993715    3.960e-06
+	  13         0.483231775252    1.261e-06
+	  14         0.483232196093    6.810e-07
+	  15         0.483232386463    2.279e-07
+	-----------------------------------------
+	Converged L-Y-Perturbed Wfn to 9.221e-08
+
+	Computing Mu-Z-Perturbed Wave Function (-0.077 E_h).
+	Iter   Pseudopolarizability       RMS 
+	----   --------------------   -----------
+	   0         8.340107589488
+	   1         9.473557953517    2.226e-01
+	   2        10.095264809365    9.682e-02
+	   3        10.099645537114    2.050e-02
+	   4        10.100378947478    8.210e-03
+	   5        10.100989327268    2.225e-03
+	   6        10.101039789533    7.462e-04
+	   7        10.101117482397    2.883e-04
+	   8        10.101110973083    9.801e-05
+	   9        10.101104248008    2.631e-05
+	  10        10.101105762356    7.810e-06
+	  11        10.101106564482    2.784e-06
+	  12        10.101106937635    8.783e-07
+	  13        10.101106740136    2.873e-07
+	-----------------------------------------
+	Converged Mu-Z-Perturbed Wfn to 9.947e-08
+
+	Computing L-Z-Perturbed Wave Function (0.077 E_h).
+	Iter   Pseudopolarizability       RMS 
+	----   --------------------   -----------
+	   0         4.182431174886
+	   1         5.219803700824    3.102e-01
+	   2         6.347230324274    2.169e-01
+	   3         6.576926014985    9.235e-02
+	   4         6.676221663617    3.600e-02
+	   5         6.676646102529    1.323e-02
+	   6         6.679514936668    5.742e-03
+	   7         6.680633848360    2.070e-03
+	   8         6.679982714238    8.770e-04
+	   9         6.680026478923    2.992e-04
+	  10         6.680023376621    1.468e-04
+	  11         6.680011453057    6.537e-05
+	  12         6.679968165149    2.891e-05
+	  13         6.679962088445    9.692e-06
+	  14         6.679966895615    3.295e-06
+	  15         6.679969099385    1.139e-06
+	  16         6.679969788003    4.283e-07
+	  17         6.679969821481    1.324e-07
+	-----------------------------------------
+	Converged L-Z-Perturbed Wfn to 4.713e-08
+
+	Computing Mu-X-Perturbed Wave Function (0.077 E_h).
+	Iter   Pseudopolarizability       RMS 
+	----   --------------------   -----------
+	   0         8.379428985574
+	   1         9.541497284943    2.343e-01
+	   2        10.187802297633    1.252e-01
+	   3        10.232315742929    5.207e-02
+	   4        10.251532747094    2.260e-02
+	   5        10.255714268111    1.016e-02
+	   6        10.257527173084    5.067e-03
+	   7        10.258149557939    2.429e-03
+	   8        10.257970777891    1.125e-03
+	   9        10.258090471097    4.404e-04
+	  10        10.258131045197    1.816e-04
+	  11        10.258096707389    4.692e-05
+	  12        10.258069809647    1.442e-05
+	  13        10.258064599988    4.576e-06
+	  14        10.258064576440    2.195e-06
+	  15        10.258064731308    9.864e-07
+	  16        10.258064581319    4.281e-07
+	  17        10.258064381879    1.939e-07
+	  18        10.258064284980    1.064e-07
+	-----------------------------------------
+	Converged Mu-X-Perturbed Wfn to 4.636e-08
+
+	Computing L-X-Perturbed Wave Function (-0.077 E_h).
+	Iter   Pseudopolarizability       RMS 
+	----   --------------------   -----------
+	   0         4.314800788538
+	   1         5.359209103522    2.672e-01
+	   2         6.226201672686    1.456e-01
+	   3         6.248615760841    3.195e-02
+	   4         6.264712103034    1.225e-02
+	   5         6.265330183682    3.713e-03
+	   6         6.265621542859    1.583e-03
+	   7         6.265899951680    5.961e-04
+	   8         6.265842814941    2.068e-04
+	   9         6.265839295475    5.665e-05
+	  10         6.265839605114    1.749e-05
+	  11         6.265843745571    4.983e-06
+	  12         6.265844401598    1.445e-06
+	  13         6.265844125822    4.391e-07
+	  14         6.265843996401    1.600e-07
+	-----------------------------------------
+	Converged L-X-Perturbed Wfn to 5.668e-08
+
+	Computing Mu-Y-Perturbed Wave Function (0.077 E_h).
+	Iter   Pseudopolarizability       RMS 
+	----   --------------------   -----------
+	   0         8.602329251121
+	   1        10.212748988082    3.131e-01
+	   2        11.374665326736    1.665e-01
+	   3        11.434206003444    4.368e-02
+	   4        11.455272238108    2.114e-02
+	   5        11.458499273183    6.298e-03
+	   6        11.458566348184    2.302e-03
+	   7        11.458964341567    8.033e-04
+	   8        11.458913318913    4.302e-04
+	   9        11.458857744287    2.457e-04
+	  10        11.458892749246    1.211e-04
+	  11        11.458913927483    4.729e-05
+	  12        11.458919042650    2.017e-05
+	  13        11.458909306382    7.585e-06
+	  14        11.458906524076    2.792e-06
+	  15        11.458905683104    1.060e-06
+	  16        11.458905569021    4.336e-07
+	  17        11.458905330162    1.878e-07
+	-----------------------------------------
+	Converged Mu-Y-Perturbed Wfn to 7.017e-08
+
+	Computing L-Y-Perturbed Wave Function (-0.077 E_h).
+	Iter   Pseudopolarizability       RMS 
+	----   --------------------   -----------
+	   0         0.237260156451
+	   1         0.311581266229    7.385e-02
+	   2         0.378113750399    4.166e-02
+	   3         0.380946354485    9.775e-03
+	   4         0.381823811224    2.281e-03
+	   5         0.381739742524    5.843e-04
+	   6         0.381731673282    1.865e-04
+	   7         0.381742853367    8.249e-05
+	   8         0.381738808802    3.574e-05
+	   9         0.381740142611    8.640e-06
+	  10         0.381740371447    2.637e-06
+	  11         0.381740227258    7.129e-07
+	  12         0.381740070448    2.318e-07
+	-----------------------------------------
+	Converged L-Y-Perturbed Wfn to 4.605e-08
+
+	Computing Mu-Z-Perturbed Wave Function (0.077 E_h).
+	Iter   Pseudopolarizability       RMS 
+	----   --------------------   -----------
+	   0         8.998024796894
+	   1        10.356708907984    2.799e-01
+	   2        11.267861326955    1.421e-01
+	   3        11.289448931789    3.965e-02
+	   4        11.300667917543    1.866e-02
+	   5        11.303697842744    6.518e-03
+	   6        11.304127122915    2.776e-03
+	   7        11.304515158555    1.328e-03
+	   8        11.304476387813    5.660e-04
+	   9        11.304454674029    1.843e-04
+	  10        11.304473198052    6.947e-05
+	  11        11.304479214619    3.220e-05
+	  12        11.304478897256    1.579e-05
+	  13        11.304473871346    7.070e-06
+	  14        11.304472424906    3.099e-06
+	  15        11.304472021208    1.358e-06
+	  16        11.304471947097    5.488e-07
+	  17        11.304471795026    2.110e-07
+	-----------------------------------------
+	Converged Mu-Z-Perturbed Wfn to 9.651e-08
+
+	Computing L-Z-Perturbed Wave Function (-0.077 E_h).
+	Iter   Pseudopolarizability       RMS 
+	----   --------------------   -----------
+	   0         3.860226562037
+	   1         4.705080929687    2.330e-01
+	   2         5.385167126985    1.365e-01
+	   3         5.432835490005    4.047e-02
+	   4         5.452278782784    1.183e-02
+	   5         5.451215119384    3.137e-03
+	   6         5.451448169920    1.047e-03
+	   7         5.451587618403    3.198e-04
+	   8         5.451533523162    1.148e-04
+	   9         5.451539407843    2.980e-05
+	  10         5.451540006939    9.450e-06
+	  11         5.451540577849    3.019e-06
+	  12         5.451539772835    1.187e-06
+	  13         5.451539685049    3.992e-07
+	  14         5.451539856978    1.499e-07
+	-----------------------------------------
+	Converged L-Z-Perturbed Wfn to 4.863e-08
+
+                      CCSD Optical Rotation Tensor:
+  -------------------------------------------------------------------------
+   Evaluated at omega = 0.077357 E_h (589.00 nm, 2.105 eV, 16977.95 cm-1)
+  -------------------------------------------------------------------------
+
+                0                  1                  2        
+
+    0  -0.375623997425425  0.374245901430425  0.000000000000000
+    1   0.139409436413729 -0.012686776563639  0.000000000000000
+    2   0.000000000000000  0.000000000000000  0.401725996849617
+
+	[alpha]_(0.077) =     850.246093283927 deg/[dm (gm/cm^3)]
+
+	Computing zero-frequency velocty-gauge linear response function...
+
+	Computing Mu-X-Perturbed Wave Function (0.000 E_h).
+	Iter   Pseudopolarizability       RMS 
+	----   --------------------   -----------
+	   0         8.113232511162
+	   1         9.188031505807    2.084e-01
+	   2         9.725533286523    1.009e-01
+	   3         9.746346097447    3.549e-02
+	   4         9.753259712276    1.352e-02
+	   5         9.754575199952    5.183e-03
+	   6         9.755136735285    2.237e-03
+	   7         9.755299613364    9.359e-04
+	   8         9.755217207731    3.810e-04
+	   9         9.755240233225    1.230e-04
+	  10         9.755248712355    4.739e-05
+	  11         9.755240943541    1.271e-05
+	  12         9.755234812847    3.529e-06
+	  13         9.755233645783    8.647e-07
+	  14         9.755233565509    3.251e-07
+	  15         9.755233550113    1.346e-07
+	-----------------------------------------
+	Converged Mu-X-Perturbed Wfn to 5.832e-08
+
+	Computing L-X-Perturbed Wave Function (0.000 E_h).
+	Iter   Pseudopolarizability       RMS 
+	----   --------------------   -----------
+	   0         4.511997840406
+	   1         5.673594222347    3.043e-01
+	   2         6.772310742687    1.786e-01
+	   3         6.818776868561    4.474e-02
+	   4         6.849741401735    1.874e-02
+	   5         6.851419867975    6.464e-03
+	   6         6.852208128808    3.085e-03
+	   7         6.852886585033    1.276e-03
+	   8         6.852760063592    5.099e-04
+	   9         6.852764040031    1.573e-04
+	  10         6.852767335418    5.372e-05
+	  11         6.852779263072    1.674e-05
+	  12         6.852780039023    6.073e-06
+	  13         6.852778759908    2.011e-06
+	  14         6.852778401088    7.213e-07
+	  15         6.852778245538    2.677e-07
+	  16         6.852778155033    1.039e-07
+	-----------------------------------------
+	Converged L-X-Perturbed Wfn to 4.366e-08
+
+	Computing Mu-Y-Perturbed Wave Function (0.000 E_h).
+	Iter   Pseudopolarizability       RMS 
+	----   --------------------   -----------
+	   0         8.239967807637
+	   1         9.701089016077    2.775e-01
+	   2        10.647889299038    1.368e-01
+	   3        10.682723900228    3.193e-02
+	   4        10.692343204456    1.430e-02
+	   5        10.693776379655    3.679e-03
+	   6        10.693763574217    1.218e-03
+	   7        10.693954394096    3.738e-04
+	   8        10.693934091689    1.544e-04
+	   9        10.693912259830    7.834e-05
+	  10        10.693920520102    3.645e-05
+	  11        10.693926589039    1.254e-05
+	  12        10.693928385017    3.773e-06
+	  13        10.693926647640    1.302e-06
+	  14        10.693926103039    5.266e-07
+	  15        10.693925927810    1.782e-07
+	-----------------------------------------
+	Converged Mu-Y-Perturbed Wfn to 6.191e-08
+
+	Computing L-Y-Perturbed Wave Function (0.000 E_h).
+	Iter   Pseudopolarizability       RMS 
+	----   --------------------   -----------
+	   0         0.248367126874
+	   1         0.330751820072    8.416e-02
+	   2         0.415463168728    5.142e-02
+	   3         0.421498129708    1.413e-02
+	   4         0.423281416069    3.672e-03
+	   5         0.423146592172    1.120e-03
+	   6         0.423130107213    4.528e-04
+	   7         0.423169287347    2.385e-04
+	   8         0.423155769713    9.755e-05
+	   9         0.423159854570    2.244e-05
+	  10         0.423160369688    8.149e-06
+	  11         0.423159788958    2.323e-06
+	  12         0.423159218583    8.158e-07
+	  13         0.423159174030    1.940e-07
+	-----------------------------------------
+	Converged L-Y-Perturbed Wfn to 8.872e-08
+
+	Computing Mu-Z-Perturbed Wave Function (0.000 E_h).
+	Iter   Pseudopolarizability       RMS 
+	----   --------------------   -----------
+	   0         8.653595554721
+	   1         9.890166452125    2.481e-01
+	   2        10.634892546728    1.161e-01
+	   3        10.644599327743    2.795e-02
+	   4        10.648257181196    1.206e-02
+	   5        10.649541403835    3.652e-03
+	   6        10.649676588995    1.366e-03
+	   7        10.649834146661    5.788e-04
+	   8        10.649816374889    2.168e-04
+	   9        10.649803463801    6.256e-05
+	  10        10.649807750148    1.996e-05
+	  11        10.649809583106    7.394e-06
+	  12        10.649810186950    2.582e-06
+	  13        10.649809470638    9.325e-07
+	  14        10.649809188239    3.546e-07
+	  15        10.649809083226    1.326e-07
+	-----------------------------------------
+	Converged Mu-Z-Perturbed Wfn to 5.221e-08
+
+	Computing L-Z-Perturbed Wave Function (0.000 E_h).
+	Iter   Pseudopolarizability       RMS 
+	----   --------------------   -----------
+	   0         4.012584213998
+	   1         4.944052200737    2.664e-01
+	   2         5.807369024635    1.696e-01
+	   3         5.905654821937    5.872e-02
+	   4         5.945871841977    1.934e-02
+	   5         5.944343555443    5.842e-03
+	   6         5.944950175211    2.206e-03
+	   7         5.945275644436    7.147e-04
+	   8         5.945105461538    2.702e-04
+	   9         5.945115114499    7.061e-05
+	  10         5.945113918439    2.405e-05
+	  11         5.945113766945    8.593e-06
+	  12         5.945109382867    3.743e-06
+	  13         5.945108183147    1.485e-06
+	  14         5.945108573328    6.070e-07
+	  15         5.945108889211    1.993e-07
+	-----------------------------------------
+	Converged L-Z-Perturbed Wfn to 6.737e-08
+
+        CCSD Modified Velocity-Gauge Optical Rotation Tensor:
+  -------------------------------------------------------------------------
+   Evaluated at omega = 0.077357 E_h (589.00 nm, 2.105 eV, 16977.95 cm-1)
+  -------------------------------------------------------------------------
+
+                0                  1                  2        
+
+    0  -0.011921267101954  0.011491063538733  0.000000000000000
+    1   0.023088462864839 -0.000608323752544  0.000000000000000
+    2   0.000000000000000  0.000000000000000  0.009703792584260
+
+	[alpha]_(0.077) =    -179.096833847117 deg/[dm (gm/cm^3)]
+******************************************************************************
+tstop called on zozma.giga.net
+Tue Jun  1 20:22:14 2004
+
+user time   =      56.09 seconds =       0.93 minutes
+system time =      85.07 seconds =       1.42 minutes
+total time  =        147 seconds =       2.45 minutes

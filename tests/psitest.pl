@@ -450,10 +450,10 @@ sub compare_ccsd_polar
   @polar_test = seek_ccsd_polar($TEST_FILE);
 
   if(!compare_arrays(\@polar_ref,\@polar_test,($#polar_ref+1),$PSITEST_POLARTOL)) {
-    fail_test("$wfn Polarizability"); $fail = 1;
+    fail_test("$wfn Polarizability/Optical Rotation"); $fail = 1;
   }
   else {
-    pass_test("$wfn Polarizability");
+    pass_test("$wfn Polarizability/Optical Rotation");
   }
   
   return $fail;
@@ -1594,7 +1594,7 @@ sub seek_ccsd_polar
   $linenum=0;
   $start = 0;
   foreach $line (@datafile) {
-    if ($line =~ m/CCSD Dipole Polarizability/) {
+    if (($line =~ m/CCSD Dipole Polarizability/) || ($line =~ m/CCSD Optical Rotation Tensor/)) {
       $start = $linenum;
     }
     $linenum++;
@@ -1611,7 +1611,7 @@ sub seek_ccsd_polar
     return @polar;
   }
   
-  printf "Error: Could not find SCF polarizability tensor in $_[0].\n";
+  printf "Error: Could not find CCSD polarizability/optrot tensor in $_[0].\n";
   exit 1;
 }
 

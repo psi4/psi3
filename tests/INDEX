@@ -64,3 +64,13 @@ cc25: UHF-EOM-CCSD/DZ analytic gradient lowest 2B2 state of H2O+ (A2 excitation)
 cc26: RHF-EOM-CCSD/DZ analytic gradient lowest 1A1 state of H2O (A1 excitation)
 
 cc27: RHF-EOM-CCSD/DZ analytic gradient lowest 1B2 state of H2O (B2 excitation)
+
+cc28: RHF-CCSD-LR/cc-pVDZ optical rotation of H2O2.  gauge = length, omega = (589 nm)
+
+cc29: RHF-CCSD-LR/cc-pVDZ optical rotation of H2O2.  gauge = velocity, omega = (589 nm)
+
+cc30: RHF-CCSD-LR/cc-pVDZ optical rotation of (S)-methyloxirane.  gauge = length,
+  omega = (355 nm)
+
+cc31: RHF-CCSD-LR/cc-pVDZ optical rotation of (S)-methyloxirane.  gauge = velocity,
+  omega = (355 nm)
