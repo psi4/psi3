@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:26  evaleev
- * Initial revision
+ * Revision 1.2  2002/01/04 18:50:26  evaleev
+ * Added ip_double_array to read in an array of floating point numbers.
  *
+/* Revision 1.1.1.1  2000/02/04 22:53:26  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.11  1995/11/27 15:32:53  sherrill
 /* Make error handling of ip_int_array completely standardized.
 /*
@@ -422,3 +425,47 @@ int len;
   return(IPE_OK);
 }
 
+
+/*
+** ip_double_array()
+**
+** Function reads in an array of doubles using the PSI input parser.
+** It checks for errors at all stages and makes sure that the array
+** has the proper length.
+**
+** Based on ip_int_array by C. David Sherrill
+**
+** Parameters:
+**    keyword = string containing the keyword for the input parser
+**    arr     = array to hold results
+**    len     = length of array
+**
+** Returns: IP Error code
+*/
+
+GLOBAL_FUNCTION int ip_double_array(keyword, arr, len)
+char *keyword;
+double *arr;
+int len;
+{
+  int i, errcod, cnt;
+
+  errcod = ip_count(keyword,&cnt,0);
+  if (errcod != IPE_OK) return(errcod);
+  if (cnt != len) {
+    fprintf(ip_out," (ip_array): Trouble parsing %s array.\n", keyword);
+    fprintf(ip_out," Length is %d should be %d\n",cnt,len);
+    return(IPE_OUT_OF_BOUNDS);
+    }
+  for (i=0; i<len; i++) {
+    errcod = ip_data(keyword,"%lf",arr+i,1,i);
+    if (errcod != IPE_OK) {
+      fprintf(ip_out," (ip_array): Trouble parsing %s array element %d\n",
+        keyword,i+1);
+      ip_warn(ip_error_message(errcod));
+      return(errcod);
+      }
+   }
+
+  return(IPE_OK);
+}
