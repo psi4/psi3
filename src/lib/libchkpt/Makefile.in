@@ -81,11 +81,15 @@ nfzv.c \
 frzcpi.c \
 frzvpi.c
 
-DEPENDINCLUDE = psio.h chkpt.h
+DEPENDINCLUDE = chkpt.h
 
 LIBOBJ = $(TRUESRC:%.c=%.o)
 
 include ../MakeRules
+
+install_inc:: $(DEPENDINCLUDE)
+	$(MKDIRS) $(incdir)/libchkpt
+	$(INSTALL_INCLUDE) $^ $(incdir)/libchkpt
 
 ifneq ($(DODEPEND),no)
 include $(LIBOBJ:%.o=%.d)
