@@ -24,7 +24,7 @@ double slater(struct den_info_s den_info){
     double Cx;
     double a=(2.0/3.0);
     
-    Cx = -(9.0/4.0)*a*pow(4.0/(3.0*_pi),(-1.0/3.0));
+    Cx = -(9.0/4.0)*a*2.0*pow(3.0/(4.0*_pi),(1.0/3.0));
     
     return Cx*pow(den_info.den,4.0/3.0);
 }

@@ -131,12 +131,11 @@ void xc_fock(void){
 		point
 		-----------------------------------*/
 	      
-	      vfunc_val = DFT_options.exchange_V_function(den_info);
+	      vfunc_val = DFT_options.exchange_V_function(den_info)
+		  +DFT_options.correlation_V_function(den_info);
 	      
-	      /*+DFT_options.correlation_V_function(den_info)*/
-	      
-	      efunc_val = DFT_options.exchange_function(den_info);
-	      /*+ DFT_options.correlation_function(den_info)*/
+	      efunc_val = DFT_options.exchange_function(den_info)
+		  + DFT_options.correlation_function(den_info);
 	      
 	      vval = drdq*ang_quad*Becke_weight*vfunc_val;
 	      eval += drdq*ang_quad*Becke_weight*efunc_val;
@@ -149,14 +148,12 @@ void xc_fock(void){
 		  bas1 = DFT_options.basis[m];
 		  for(n=0;n<num_ao;n++){
 		      bas2 = DFT_options.basis[n];
-		      G[m][n] += vval*bas1*bas2;
+		      G[m][n] += vval*bas1*bas2;x
 		  }
 	      }
 	  }
       }
   }
-  /*fprintf(outfile,"\nXC_matrix");
-    print_mat(G,num_ao,num_ao,outfile);*/
   
   /*----------------------
     Transform to SO basis
