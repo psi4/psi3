@@ -28,7 +28,7 @@ void psi3_abort(void);
 int execut(char **module_names, int num_modules, int depth);
 extern char **parse_var(int *nvars, int mxvars, char *name);
 extern void runcmd(int *errcod, char *cmd);
-void parse_cmdline(int argc, char *argv[]);
+int parse_cmdline(int argc, char *argv[]);
   
 
 int main(int argc, char *argv[])
@@ -47,9 +47,10 @@ int main(int argc, char *argv[])
     SYMM_FREQ         /* frequencies for symmetric modes */
   } JobType;
 
-  parse_cmdline(argc,argv);
+  if (!parse_cmdline(argc,argv))
+    exit(1);
 
-  fprintf(outfile, "\nThe PSI3 Execution Driver\n");
+  fprintf(outfile, "\n\n   PSI3   \n\n");
 
   psidat = fopen(SHARE, "r");
 
@@ -446,11 +447,12 @@ int parse_cmdline(int argc, char *argv[])
  
   /* set the environmental variables the modules will look for */ 
   if (ifname != NULL)
-    setenv("PSI_INPUT",ifname);
+    setenv("PSI_INPUT",ifname,1);
   if (ofname != NULL)
-    setenv("PSI_OUTPUT",ofname);
-  if (fpname != NULL)
-    setenv("PSI_PREFIX",fpname);
+    setenv("PSI_OUTPUT",ofname,1);
+  if (fprefix != NULL)
+    setenv("PSI_PREFIX",fprefix,1);
 
+  return(1);
 }
 
