@@ -46,40 +46,45 @@ void setup()
 
 }
 
-void start_io()
+void start_io(int argc, char *argv[])
 {
-  ffile(&infile, "input.dat", 2);
-  ffile(&outfile, "output.dat", 1);
-  ip_set_uppercase(1);
-  ip_initialize(infile, outfile);
-  ip_cwk_clear();
-  ip_cwk_add(":DEFAULT");
-  ip_cwk_add(":CINTS");
-  /*--- Initialize new IO system ---*/
-  psio_init();
-  /*--- Initialize libfile30 library ---*/
-#if !USE_LIBCHKPT
-  file30_init();
-#else
-  /*--- Initialize libchkpt library ---*/
-  chkpt_init(PSIO_OPEN_OLD);
-#endif
+  int i, errcod;
+  int num_extra_args = 0;
+  char **extra_args;
+  extra_args = (char **) malloc(argc*sizeof(char *));
 
+  /* Filter out known options */
+  for (i=1; i<argc; i++) {
+    if ( strcmp(argv[i], "--fock") &&
+	 strcmp(argv[i], "--oeints") &&
+	 strcmp(argv[i], "--teints") &&
+	 strcmp(argv[i], "--deriv1") &&
+	 strcmp(argv[i], "--deriv2") &&
+	 strcmp(argv[i], "--oeprop") &&
+	 strcmp(argv[i], "--mp2") &&
+	 strcmp(argv[i], "--r12ints") &&
+	 strcmp(argv[i], "--mp2r12") )
+      extra_args[num_extra_args++] = argv[i];
+  }
+  
+  errcod = psi_start(num_extra_args, extra_args, 0);
+  if (errcod != PSI_RETURN_SUCCESS)
+    exit(PSI_RETURN_FAILURE);
+  ip_cwk_add(":CINTS");
+  psio_init();
+  chkpt_init(PSIO_OPEN_OLD);
+
+  free(extra_args);
   return;
 }
 
 void stop_io()
 {
-#if USE_LIBCHKPT
   chkpt_close();
-#else
-  file30_close();
-#endif
   if(UserOptions.print_lvl)
     tstop(outfile);
   psio_done();
-  fclose(outfile);
-  fclose(infile);
+  psi_stop();
 }
 
 void punt(char *mess)

@@ -23,6 +23,7 @@
 #define MAX_EXEC_STR 80
 
 FILE *infile, *outfile;
+char **psi_file_prefix;
 
 void psi3_abort(void);
 int execut(char **module_names, int num_modules, int depth);
@@ -448,10 +449,10 @@ int parse_cmdline(int argc, char *argv[])
   /* set the environmental variables the modules will look for */ 
   if (ifname != NULL) {
     setenv("PSI_INPUT",ifname,1);
-    ffile(&infile,ifname,2);
+    infile = fopen(ifname,"r");
   }
   else {
-    ffile(&infile,"input.dat",2);
+    infile = fopen("input.dat","r");
   }
   if (ofname != NULL) {
     setenv("PSI_OUTPUT",ofname,1);

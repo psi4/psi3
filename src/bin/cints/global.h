@@ -24,9 +24,10 @@ EXTERN UserOptions_t UserOptions;
 /*--- I/O descriptors ---*/
 EXTERN IOUnits_t IOUnits;
 
-/*--- Input and Output files ---*/
+/*--- Mandatory: Input and Output files, PSI file prefix ---*/
 EXTERN FILE *infile;
 EXTERN FILE *outfile;
+EXTERN char **psi_file_prefix;
 
 /*--- Molecule Info ---*/
 EXTERN Molecule_t Molecule;

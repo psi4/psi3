@@ -125,6 +125,7 @@
 
 /* First definitions of globals */
 FILE *infile, *outfile;
+char **psi_file_prefix;
 int *ioff;
 struct MOInfo moinfo;
 struct Params params;
@@ -200,59 +201,56 @@ main(int argc, char *argv[])
 
 void init_io(int argc, char *argv[])
 {
-   int i;
-   int parsed=1;
+   int i, errcod;
+   int num_extra_args = 0;
+   char **extra_args;
+   extra_args = (char **) malloc(argc*sizeof(char *));
 
    params.runmode = MODE_NORMAL;
 
    for (i=1; i<argc; i++) {
        
        /*--- "Quiet" option ---*/
-       if (strcmp(argv[i], "-quiet") == 0) {
+       if (strcmp(argv[i], "--quiet") == 0) {
            params.print_lvl = 0;
-           parsed++;
-         }
-
+       }
        /*--- do backtransformation ---*/
-       if (strcmp(argv[i], "-backtr") == 0) {
+       else if (strcmp(argv[i], "--backtr") == 0) {
 	   params.backtr = 1;
-	   parsed++;
-         }
-
+       }
        /*--- transform integrals for MP2R12A ---*/
-       if (strcmp(argv[i], "-mp2r12a") == 0) {
+       else if (strcmp(argv[i], "--mp2r12a") == 0) {
 	   /*---
 	     the second argument is the type
 	     of integrals to transform
 	    ---*/
-	   i++;
-	   parsed += 2;
-	   switch (atoi(argv[i])) {
-	   case 0: /*--- transform ERIs ---*/
-               params.runmode = MODE_MP2R12AERI;
-	       break;
-
-	   case 1: /*--- transform ints of r12 ---*/
-               params.runmode = MODE_MP2R12AR12;
-	       break;
-
-	   case 2: /*--- transform ints of [r12,T1] ---*/
-               params.runmode = MODE_MP2R12AR12T1;
-	       break;
-	   }
+	 i++;
+	 switch (atoi(argv[i])) {
+	 case 0: /*--- transform ERIs ---*/
+	   params.runmode = MODE_MP2R12AERI;
+	   break;
+	   
+	 case 1: /*--- transform ints of r12 ---*/
+	   params.runmode = MODE_MP2R12AR12;
+	   break;
+	   
+	 case 2: /*--- transform ints of [r12,T1] ---*/
+	   params.runmode = MODE_MP2R12AR12T1;
+	   break;
+	 }
+       }
+       else {
+	 extra_args[num_extra_args++] = argv[i];
        }
    }
 
-  init_in_out(argc-parsed,argv+parsed);
+   errcod = psi_start(num_extra_args, extra_args, 0);
+   if (errcod != PSI_RETURN_SUCCESS)
+    exit(PSI_RETURN_FAILURE);
+   if (params.print_lvl) tstart(outfile);
+   ip_cwk_add(":TRANSQT");
 
-  if (params.print_lvl) tstart(outfile);
-  ip_set_uppercase(1);
-  ip_initialize(infile,outfile);
-  ip_cwk_clear();
-  ip_cwk_add(":DEFAULT");
-  ip_cwk_add(":TRANSQT");
-
-  psio_init();
+   psio_init();
 }
 
 
@@ -291,9 +289,7 @@ void exit_io(void)
 {
   psio_done();
   if (params.print_lvl) tstop(outfile);
-  ip_done();
-  fclose(infile);
-  fclose(outfile);
+  psi_stop();
 }
 
 

@@ -191,30 +191,10 @@ int main(argc,argv)
   int errcod, orthog_only, mo_print;
   char *wfn;
  
-  init_in_out(argc-1, argv+1);
-  ip_set_uppercase(1);
-  ip_initialize(infile,outfile);
-
-#if 0
-  ip_cwk_clear();
-#endif
-  ip_cwk_add(":DEFAULT");
+  errcod = psi_start(argc-1, argv+1, 0);
+  if (errcod != PSI_RETURN_SUCCESS)
+    exit(PSI_RETURN_FAILURE);
   ip_cwk_add(":SCF");
-
-  ip_string("OUTPUT",&output,0);
-  if(!strcmp(output,"TERMINAL")) {
-    outfile = stdout;
-  }
-  else if(!strcmp(output,"WRITE")) {
-    fclose(outfile);
-    ffile(&outfile,"output.dat",0);
-  }
-
-  if(argc > 1) {
-    ip_print_tree(stdout,NULL);
-    if(ipvalue != NULL) ip_print_value(stdout,ipvalue);
-  }
-
   tstart(outfile);
    
   fprintf(outfile,"\n%13c------------------------------------------\n",' ');
@@ -352,7 +332,7 @@ int main(argc,argv)
     write_scf_matrices();
     psio_done();
     tstop(outfile);
-    ip_done();
+    psi_stop();
     exit(PSI_RETURN_SUCCESS);
   }
 

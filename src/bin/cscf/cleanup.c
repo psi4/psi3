@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.21  2002/12/06 20:39:08  evaleev
- * Write total SCF energy as reference energy as well.
+ * Revision 1.22  2002/12/22 17:01:14  evaleev
+ * Updated cints, cscf, psi3 (probably not complete) and transqt to use psi_start/psi_stop.
  *
+/* Revision 1.21  2002/12/06 20:39:08  evaleev
+/* Write total SCF energy as reference energy as well.
+/*
 /* Revision 1.20  2002/12/06 15:50:32  crawdad
 /* Changed all exit values to PSI_RETURN_SUCCESS or PSI_RETURN_FAILURE as
 /* necessary.  This is new for the PSI3 execution driver.
@@ -812,7 +815,7 @@ void cleanup()
     fprintf(outfile,"\n%8cCalculation has not converged!\n",' ');
       
   tstop(outfile);
-  ip_done();
+  psi_stop();
       
   if(!converged) exit(PSI_RETURN_FAILURE);
   exit(PSI_RETURN_SUCCESS);

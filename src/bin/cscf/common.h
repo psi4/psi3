@@ -1,9 +1,12 @@
 /* $Id$ */
 /* $Log$
- * Revision 1.13  2002/11/24 22:52:17  crawdad
- * Merging the gbye-file30 branch into the main trunk.
- * -TDC
+ * Revision 1.14  2002/12/22 17:01:14  evaleev
+ * Updated cints, cscf, psi3 (probably not complete) and transqt to use psi_start/psi_stop.
  *
+/* Revision 1.13  2002/11/24 22:52:17  crawdad
+/* Merging the gbye-file30 branch into the main trunk.
+/* -TDC
+/*
 /* Revision 1.12.2.2  2002/11/23 21:54:45  crawdad
 /* Removal of mxcoef stuff for chkpt runs.
 /* -TDC
@@ -144,6 +147,7 @@
 #endif
 
 EXTERN FILE *infile, *outfile, *JK,*gmat,*diis_out;
+EXTERN char **psi_file_prefix;
 
 EXTERN double dampsv;           /* scale factor in diis */
 EXTERN double repnuc;           /* nuclear repulsion */

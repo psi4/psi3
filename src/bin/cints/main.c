@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
    int i,j,k,l,m,count;
 
    init_globals();
-   start_io();
+   start_io(argc, argv);
    parsing();
    /*--- Parse the command line ---*/
    parsing_cmdline(argc,argv);
