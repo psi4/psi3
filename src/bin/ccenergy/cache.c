@@ -701,3 +701,13 @@ void cache_ijkl_uhf(int **cachelist)
   cachelist[23][22] = 1;
   cachelist[23][23] = 1;
 }
+
+void cachedone_uhf(int **cachelist)
+{
+  free_int_matrix(cachelist, 32);
+}
+
+void cachedone_rhf(int **cachelist)
+{
+  free_int_matrix(cachelist, 12);
+}

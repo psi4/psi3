@@ -97,9 +97,16 @@ void sort_amps(void)
     dpd_buf4_sort(&t2, CC_TAMPS, prqs, 20, 30, "tIAjb");
     dpd_buf4_close(&t2);
 
-    /* TIjAb (jb,IA) */
     dpd_buf4_init(&t2, CC_TAMPS, 0, 20, 30, 20, 30, 0, "tIAjb");
+    /* TIjAb (jb,IA) */
     dpd_buf4_sort(&t2, CC_TAMPS, rspq, 30, 20, "tiaJB");
+    /* TIjAb (Ib,jA) (Wmbej.c) */
+    dpd_buf4_sort(&t2, CC_TAMPS, psrq, 24, 27, "tIbjA");
+    dpd_buf4_close(&t2);
+
+    /* TiJaB (iB,Ja) (Wmbej.c) */
+    dpd_buf4_init(&t2, CC_TAMPS, 0, 24, 27, 24, 27, 0, "tIbjA");
+    dpd_buf4_sort(&t2, CC_TAMPS, rspq, 27, 24, "tiBJa");
     dpd_buf4_close(&t2);
 
     /* T(iJ,aB) */

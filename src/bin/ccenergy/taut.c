@@ -310,6 +310,8 @@ void taut_build(void)
       dpd_buf4_mat_irrep_wrt(&tauIjAb, h);
       dpd_buf4_mat_irrep_close(&tauIjAb, h);
     }
+
+    dpd_buf4_sort(&tauIjAb, CC_TAMPS, qpsr, 23, 29, "tautiJaB");
     dpd_buf4_close(&tauIjAb);
 
     dpd_file2_mat_close(&tIA);

@@ -152,10 +152,10 @@ double d1diag(void)
   double norm = 0.0;
 
   if(params.ref == 0) { /** RHF **/
-    /*    norm = d1diag_t1_rhf(); */
+    norm = d1diag_t1_rhf();
   }
   else if (params.ref == 1) { /** ROHF **/
-    /*    norm = d1diag_t1_rohf(); */
+    norm = d1diag_t1_rohf();
   }
   return norm;
 }

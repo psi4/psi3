@@ -12,7 +12,7 @@ void Fae_build(void)
   dpdfile2 FAE, Fae;
   dpdfile2 FAEt, Faet;
   dpdbuf4 F_anti, F, D_anti, D;
-  dpdbuf4 tautIJAB, tautijab, tautIjAb;
+  dpdbuf4 tautIJAB, tautijab, tautIjAb, taut;
 
   if(params.ref == 0) { /** RHF **/
     dpd_file2_init(&fAB, CC_OEI, 0, 1, 1, "fAB");
@@ -191,5 +191,60 @@ void Fae_build(void)
 
     dpd_file2_close(&FAEt);
     dpd_file2_close(&Faet); 
+  }
+  else if(params.ref == 2) { /** UHF **/
+
+    dpd_file2_init(&FAE, CC_OEI, 0, 1, 1, "FAE");
+    dpd_file2_init(&Fae, CC_OEI, 0, 3, 3, "Fae");
+
+    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+    dpd_file2_init(&tia, CC_OEI, 0, 2, 3, "tia");
+
+    dpd_buf4_init(&F, CC_FINTS, 0, 20, 5, 20, 5, 1, "F <IA|BC>");
+    dpd_dot13(&tIA, &F, &FAE, 0, 0, 1, 1);
+    dpd_buf4_close(&F);
+
+    dpd_buf4_init(&F, CC_FINTS, 0, 27, 29, 27, 29, 0, "F <iA|bC>");
+    dpd_dot13(&tia, &F, &FAE, 0, 0, 1, 1);
+    dpd_buf4_close(&F);
+
+    dpd_buf4_init(&F, CC_FINTS, 0, 30, 15, 30, 15, 1, "F <ia|bc>");
+    dpd_dot13(&tia, &F, &Fae, 0, 0, 1, 1);
+    dpd_buf4_close(&F);
+
+    dpd_buf4_init(&F, CC_FINTS, 0, 24, 28, 24, 28, 0, "F <Ia|Bc>");
+    dpd_dot13(&tIA, &F, &Fae, 0, 0, 1, 1);
+    dpd_buf4_close(&F);
+
+    dpd_file2_close(&tIA);
+    dpd_file2_close(&tia);
+
+    dpd_buf4_init(&D, CC_DINTS, 0, 2, 5, 2, 5, 0, "D <IJ||AB> (I>J,AB)");
+    dpd_buf4_init(&taut, CC_TAMPS, 0, 2, 5, 2, 7, 0, "tautIJAB");
+    dpd_contract442(&taut, &D, &FAE, 2, 2, -1, 1);
+    dpd_buf4_close(&taut);
+    dpd_buf4_close(&D);
+
+    dpd_buf4_init(&D, CC_DINTS, 0, 22, 28, 22, 28, 0, "D <Ij|Ab>");
+    dpd_buf4_init(&taut, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tautIjAb");
+    dpd_contract442(&D, &taut, &FAE, 2, 2, -1, 1);
+    dpd_buf4_close(&taut);
+    dpd_buf4_close(&D);
+
+    dpd_buf4_init(&D, CC_DINTS, 0, 12, 15, 12, 15, 0, "D <ij||ab> (i>j,ab)");
+    dpd_buf4_init(&taut, CC_TAMPS, 0, 12, 15, 12, 17, 0, "tautijab");
+    dpd_contract442(&taut, &D, &Fae, 2, 2, -1, 1);
+    dpd_buf4_close(&taut);
+    dpd_buf4_close(&D);
+
+    dpd_buf4_init(&D, CC_DINTS, 0, 22, 28, 22, 28, 0, "D <Ij|Ab>");
+    dpd_buf4_init(&taut, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tautIjAb");
+    dpd_contract442(&D, &taut, &Fae, 3, 3, -1, 1);
+    dpd_buf4_close(&taut);
+    dpd_buf4_close(&D);
+
+    dpd_file2_close(&FAE);
+    dpd_file2_close(&Fae);
+
   }
 }

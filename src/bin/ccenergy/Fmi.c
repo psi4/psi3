@@ -185,4 +185,33 @@ void Fmi_build(void)
     dpd_file2_close(&FMIt);
     dpd_file2_close(&Fmit);
   }
+  else if(params.ref == 2) { /** UHF **/
+
+    dpd_file2_init(&FMI, CC_OEI, 0, 0, 0, "FMI");
+    dpd_file2_init(&Fmi, CC_OEI, 0, 2, 2, "Fmi");
+
+    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+    dpd_file2_init(&tia, CC_OEI, 0, 2, 3, "tia");
+
+    dpd_buf4_init(&E, CC_EINTS, 0, 11, 0, 11, 0, 1, "E <ai|jk>");
+
+    dpd_buf4_close(&E);
+
+    dpd_buf4_init(&E, CC_EINTS, 0, 11, 0, 11, 0, 0, "E <ai|jk>");
+    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+    dpd_file2_init(&tia, CC_OEI, 0, 0, 1, "tia");
+
+    dpd_dot13(&tIA, &E_anti, &FMI, 1, 1, 1.0, 1.0);
+    dpd_dot13(&tia, &E, &FMI, 1, 1, 1.0, 1.0);
+
+    dpd_dot13(&tia, &E_anti, &Fmi, 1, 1, 1.0, 1.0);
+    dpd_dot13(&tIA, &E, &Fmi, 1, 1, 1.0, 1.0);
+
+    dpd_file2_close(&tIA);
+    dpd_file2_close(&tia);
+
+    dpd_file2_close(&FMI);
+    dpd_file2_close(&Fmi);
+
+  }
 }

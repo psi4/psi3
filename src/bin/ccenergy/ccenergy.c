@@ -42,6 +42,8 @@ void diis(int iter);
 void ccdump(void);
 int **cacheprep_uhf(int level, int *cachefiles);
 int **cacheprep_rhf(int level, int *cachefiles);
+void cachedone_rhf(int **cachelist);
+void cachedone_uhf(int **cachelist);
 void memchk(void);
 struct dpd_file4_cache_entry *priority_list(void);
 void spinad_amps(void);
@@ -101,11 +103,8 @@ int main(int argc, char *argv[])
   fprintf(outfile, "\tIter             Energy               RMS       T1Diag      D1Diag\n");
   fprintf(outfile, "\t----     ---------------------     --------   ----------  ----------\n");
   moinfo.ecc = energy();
-  /*
   moinfo.t1diag = diagnostic();
   moinfo.d1diag = d1diag();
-  */
-  moinfo.t1diag = moinfo.d1diag = 0;
   update();
   if(params.ref == 2) params.maxiter = 0;
   for(moinfo.iter=1; moinfo.iter <= params.maxiter; moinfo.iter++) {
@@ -134,10 +133,6 @@ int main(int argc, char *argv[])
     t2_build();
     timer_off("T2 Build");
 
-    timer_on("Spinad Amps");
-    /*    spinad_amps(); */
-    timer_off("Spinad Amps");
-
     if(converged()) {
       done = 1;
       tsave();
@@ -151,12 +146,12 @@ int main(int argc, char *argv[])
       fflush(outfile);
       break;
     }
-    /*    diis(moinfo.iter); */
+    diis(moinfo.iter);
     tsave();
     tau_build(); taut_build();
     moinfo.ecc = energy();
     moinfo.t1diag = diagnostic();
-    /*	  moinfo.d1diag = d1diag(); */
+    moinfo.d1diag = d1diag();
     update();
   }
   fprintf(outfile, "\n");
@@ -197,10 +192,20 @@ int main(int argc, char *argv[])
   fprintf(efile, "CCSD      %22.12f\n", (moinfo.ecc+moinfo.eref));
   fclose(efile);
 
-  free(cachefiles);
-  
+  /* Generate the spin-adapted RHF amplitudes for later codes */
+  if(params.ref == 0) {
+    timer_on("Spinad Amps");
+    spinad_amps();
+    timer_off("Spinad Amps");
+  }
+
   if(params.aobasis) dpd_close(1);
   dpd_close(0);
+
+  if(params.ref == 2) cachedone_uhf(cachelist);
+  else cachedone_rhf(cachelist);
+  free(cachefiles);
+  
   cleanup();
 
   timer_off("CCEnergy");
@@ -248,6 +253,8 @@ void exit_io(void)
   int i;
   for(i=CC_MIN; i <= CC_MAX; i++) psio_close(i,1);
   psio_done();
+
+  free_ptrs();
   ip_done();
   tstop(outfile);
   fclose(infile);
