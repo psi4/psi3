@@ -26,7 +26,7 @@ void get_moinfo(void)
   int active_count, all_count;
   int active_a_count, active_b_count, all_a_count, all_b_count;
   int warning, *docc, *socc;
-  int fc_offset, cl_offset, op_offset, vr_offset, fv_offset;
+  int fc_offset, offset, cl_offset, op_offset, vr_offset, fv_offset;
   int nfzc, nuocc, nopen, nclsd;
   double enuc, escf;
   double ***evects, ***scf_vector;
@@ -65,7 +65,7 @@ void get_moinfo(void)
 
   /* Dump the reference wave function ID to CC_INFO */
   psio_write_entry(CC_INFO, "Reference Wavefunction",
-		   (char *) params.ref, sizeof(int));
+		   (char *) &(params.ref), sizeof(int));
 
   moinfo.frdocc = init_int_array(moinfo.nirreps);
   moinfo.fruocc = init_int_array(moinfo.nirreps);
@@ -131,21 +131,21 @@ void get_moinfo(void)
     }
     /* Dump occpi and virtpi arrays to CC_INFO */
     psio_write_entry(CC_INFO, "Active Alpha Occ Orbs Per Irrep",
-		     (char *) moinfo.occpi, sizeof(int)*moinfo.nirreps);
+		     (char *) moinfo.aoccpi, sizeof(int)*moinfo.nirreps);
     psio_write_entry(CC_INFO, "Active Beta Occ Orbs Per Irrep",
-		     (char *) moinfo.occpi, sizeof(int)*moinfo.nirreps);
+		     (char *) moinfo.boccpi, sizeof(int)*moinfo.nirreps);
     psio_write_entry(CC_INFO, "Active Alpha Virt Orbs Per Irrep",
-		     (char *) moinfo.virtpi, sizeof(int)*moinfo.nirreps);
+		     (char *) moinfo.avirtpi, sizeof(int)*moinfo.nirreps);
     psio_write_entry(CC_INFO, "Active Beta Virt Orbs Per Irrep",
-		     (char *) moinfo.virtpi, sizeof(int)*moinfo.nirreps);
+		     (char *) moinfo.bvirtpi, sizeof(int)*moinfo.nirreps);
     psio_write_entry(CC_INFO, "All Alpha Occ Orbs Per Irrep",
-		     (char *) moinfo.all_occpi, sizeof(int)*moinfo.nirreps);
+		     (char *) moinfo.all_aoccpi, sizeof(int)*moinfo.nirreps);
     psio_write_entry(CC_INFO, "All Beta Occ Orbs Per Irrep",
-		     (char *) moinfo.all_occpi, sizeof(int)*moinfo.nirreps);
+		     (char *) moinfo.all_boccpi, sizeof(int)*moinfo.nirreps);
     psio_write_entry(CC_INFO, "All Alpha Virt Orbs Per Irrep",
-		     (char *) moinfo.all_virtpi, sizeof(int)*moinfo.nirreps);
+		     (char *) moinfo.all_avirtpi, sizeof(int)*moinfo.nirreps);
     psio_write_entry(CC_INFO, "All Beta Virt Orbs Per Irrep",
-		     (char *) moinfo.all_virtpi, sizeof(int)*moinfo.nirreps);
+		     (char *) moinfo.all_bvirtpi, sizeof(int)*moinfo.nirreps);
 
   }
   else {
@@ -433,7 +433,7 @@ void get_moinfo(void)
       if(h) offset += moinfo.uoccpi[h-1];
       for(i=0; i < moinfo.uoccpi[h]; i++,count++) {
 	moinfo.cc_avir[offset+i] = count;
-	moinfo.qt_avir[count] = nfzv + offset + i;
+	moinfo.qt_avir[count] = nfzc + offset + i;
 	moinfo.avir_sym[count] = h;
       }
     }
@@ -444,7 +444,7 @@ void get_moinfo(void)
       if(h) offset += moinfo.uoccpi[h-1] + moinfo.openpi[h-1];
       for(i=0; i < moinfo.uoccpi[h] + moinfo.openpi[h]; i++,count++) {
 	moinfo.cc_bvir[offset+i] = count;
-	moinfo.qt_bvir[count] = nfzv + offset + i;
+	moinfo.qt_bvir[count] = nfzc + offset + i;
 	moinfo.bvir_sym[count] = h;
       }
     }

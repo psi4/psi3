@@ -54,8 +54,8 @@ int main(int argc, char *argv[])
 
   if(params.ref == 2) { /*** UHF references ***/
     dpd_init(0, moinfo.nirreps, params.memory, 0, cachefiles, cachelist, 
-	     NULL, 4, moinfo.aoccpi, moinfo.aocc_sym, moinfo.boccpi, moinfo.bocc_sym,
-	     moinfo.avirtpi, moinfo.avir_sym, moinfo.bvirtpi, moinfo.bvir_sym);
+	     NULL, 4, moinfo.aoccpi, moinfo.aocc_sym, moinfo.avirtpi, moinfo.avir_sym,
+	     moinfo.boccpi, moinfo.bocc_sym, moinfo.bvirtpi, moinfo.bvir_sym);
   } 
   else { /*** RHF/ROHF references ***/
     dpd_init(0, moinfo.nirreps, params.memory, 0, cachefiles, cachelist, 
@@ -64,6 +64,7 @@ int main(int argc, char *argv[])
   }
 
   sort_oei();
+
   sort_tei();
   b_sort();
   c_sort();
