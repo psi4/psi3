@@ -29,7 +29,7 @@ salc_set :: salc_set() {
   buffer = new char[MAX_LINELENGTH];
   salc_array = new salc_class[MAX_SALCS];
   name = new char[MAX_LINELENGTH];
-  strcpy(name,"\nSymmetry Adapted Internal Coordinates");
+  strcpy(name,"Symmetry Adapted Internal Coordinates");
 
   count = -1;
   int count_type;

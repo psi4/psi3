@@ -26,7 +26,6 @@ void get_optinfo() {
   optinfo.iteration = 0;
   optinfo.micro_iteration = 0;
   open_PSIF();
-  /* psio_tocprint(PSIF_OPTKING,outfile); */
   if (psio_tocscan(PSIF_OPTKING, "Iteration") != NULL)
     psio_read_entry(PSIF_OPTKING, "Iteration",
         (char *) &(optinfo.iteration),sizeof(int));
@@ -133,10 +132,12 @@ void get_optinfo() {
     fflush(outfile);
   }
 
+  /*
   fprintf(outfile,"\nIteration: %d     ",optinfo.iteration+1);
   if (optinfo.numerical_dertype > 0)
     fprintf(outfile,"Micro_iteration: %d",optinfo.micro_iteration+1);
   fprintf(outfile,"\n");
+  */
   if (optinfo.print_params) {
     fprintf(outfile,"\n+++ Optinfo Parameters +++\n");
     fprintf(outfile,"print_params:  %d\n",optinfo.print_params);

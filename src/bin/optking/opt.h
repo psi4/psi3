@@ -88,23 +88,26 @@ extern "C" void swap_tors(int *a, int *b, int *c, int *d);
    extern "C" { #include <dmalloc.h> } */
 #endif
 
-#define MODE_DISP_SYMM (10)
-#define MODE_DISP_ALL  (11)
-#define MODE_DISP_LOAD (12)
-#define MODE_DISP_USER (13)
-#define MODE_OPT_STEP  (14)
-#define MODE_FREQ_ENERGY (15)
-#define MODE_FREQ_GRAD   (16)
-#define MODE_GRAD_ENERGY (17)
-#define MODE_GRAD_SAVE   (18)
-#define MODE_ENERGY_SAVE   (19)
-#define MODE_FREQ_GRAD_SYMM (20)
+#define MODE_DISP_NOSYMM   (10)
+#define MODE_DISP_IRREP    (11)
+#define MODE_DISP_LOAD     (12)
+#define MODE_DISP_USER     (13)
+#define MODE_LOAD_REF      (14)
+#define MODE_OPT_STEP      (15)
+#define MODE_FREQ_ENERGY   (16)
+#define MODE_FREQ_GRAD_NOSYMM (17)
+#define MODE_FREQ_GRAD_IRREP  (18)
+#define MODE_GRAD_ENERGY      (19)
+#define MODE_GRAD_SAVE        (20)
+#define MODE_ENERGY_SAVE      (21)
+#define MODE_FREQ_GRAD_SYMM   (22)
 
 struct OPTInfo {
 
   int mode;
   int disp_num;
   int points;
+  int irrep;
   int simples_present;
   int salcs_present;
 

@@ -123,5 +123,8 @@ class salc_set {
     double get_prefactor(int index) {
       return salc_array[index].get_prefactor();
     }
+    char *get_label(int index) {
+      return salc_array[index].get_label();
+    }
 };
 

@@ -41,40 +41,35 @@ double *cartesians:: get_fforces() {
 
 /*** CARTESIANS this is the class constructor for cartesian ***/ 
 cartesians::cartesians() {
-  int i, j, a, read_grad = 1, count, isotopes_given = 0, masses_given = 0;
+  int i, j, a, count, isotopes_given = 0, masses_given = 0;
   char label[MAX_LINELENGTH], line1[MAX_LINELENGTH];
   FILE *fp_11;
   double an,x,y,z,tval,tval1,tval2,tval3,tval4;
   double **geom, **fgeom, *zvals;
-  // MODE                  
-  // opt_with_gradients     file11
-  // opt_with_energies      chkpt
-  // freq_with_gradients    file11
-  // freq_with_energies     chkpt
-  // displacements          chkpt
-  if (optinfo.mode == MODE_GRAD_ENERGY || optinfo.mode == MODE_DISP_SYMM ||
-      optinfo.mode == MODE_DISP_ALL || optinfo.mode == MODE_DISP_LOAD ||
-      optinfo.mode == MODE_DISP_USER || optinfo.mode == MODE_ENERGY_SAVE )
-    read_grad = 0;
 
   natom = optinfo.natom;
   nallatom = optinfo.nallatom;
 
-  /* Read data only from chkpt */
+  /* All data (but maybe masses) now read from chkpt */
   chkpt_init(PSIO_OPEN_OLD);
   geom = chkpt_rd_geom();
   fgeom = chkpt_rd_fgeom();
-  energy = chkpt_rd_etot();
-  zvals = chkpt_rd_zvals();
-  if (read_grad) grad = chkpt_rd_grad();
-  else grad = init_array(3*natom);
-  chkpt_close();
 
+  if ((optinfo.mode == MODE_OPT_STEP) || (optinfo.mode == MODE_GRAD_SAVE))
+    grad = chkpt_rd_grad();
+  else grad = init_array(3*natom);
+
+  if ((optinfo.mode == MODE_OPT_STEP) || (optinfo.mode == MODE_ENERGY_SAVE)
+    ||(optinfo.mode == MODE_DISP_NOSYMM) || (optinfo.mode == MODE_DISP_IRREP)
+    ||(optinfo.mode == MODE_DISP_LOAD) || (optinfo.mode == MODE_DISP_USER))
+      energy = chkpt_rd_etot();
+
+  zvals = chkpt_rd_zvals();
+  chkpt_close();
 
   coord = new double[3*natom];
   atomic_num = new double[natom];
   mass = new double[3*natom];
-
   fcoord = new double[3*nallatom];
   fgrad = new double[3*nallatom];
   fatomic_num = new double[nallatom];
@@ -101,130 +96,11 @@ cartesians::cartesians() {
   free(zvals);
   free_block(fgeom);
 
-  // now read gradient from chkpt
   zero_arr(fgrad, 3*nallatom);
   count = -1;
   for(i=0; i < natom; i++)
     for(j=0; j < 3; j++)
       fgrad[3*optinfo.to_dummy[i]+j]  = grad[3*i+j];
-
-  /* read in only the gradient from file11
-  fp_11 = fopen("file11.dat","r");
-  rewind(fp_11) ;
-
-  while (fgets(label, MAX_LINELENGTH, fp_11) != NULL) {
-    fgets(line1, MAX_LINELENGTH, fp_11) ;
-    if (sscanf(line1, "%d %lf", &i, &tval) != 2) {
-      fprintf(outfile,
-     "(cartesians()): Trouble reading natom and energy from file11.dat\n");
-       exit(0);
-    }
-    count = -1;
-    for (i=0; i<natom ; i++) {
-    if (fscanf(fp_11, "%lf %lf %lf %lf", &tval1, &tval2, &tval3, &tval4) != 4) {
-      fprintf(outfile,
-      "(cartesians()): Trouble reading coordinates from file11.dat\n");
-       exit(0);
-      }
-    }
-    count = -1;
-    for (i=0; i<natom ; i++) {
-      if (fscanf(fp_11, "%lf %lf %lf", &x, &y, &z) != 3) {
-        fprintf(outfile,
-        "(cartesians()): Trouble reading gradients from file11.dat\n");
-         exit(0);
-      }
-      grad[++count] = x; grad[++count] = y; grad[++count] = z;
-    }
-    fgets(line1, MAX_LINELENGTH, fp_11);
-  } 
-  fclose(fp_11) ;
-  */
-
-/*
-  fprintf(outfile,"geomtry without dummy atoms\n");
-  for (i=0; i<natom; ++i)
-    fprintf(outfile,"%15.10lf%15.10lf%15.10lf%15.10lf\n",
-        atomic_num[i], coord[3*i],coord[3*i+1],coord[3*i+2]);
-
-  fprintf(outfile,"\n");
-  for (i=0; i<natom; ++i)
-    fprintf(outfile,"%15.10lf%15.10lf%15.10lf%15.10lf\n",
-      atomic_num[i], grad[3*i],grad[3*i+1],grad[3*i+2]);
-
-  fprintf(outfile,"\ngeomtry with dummy atoms\n");
-  for (i=0; i<nallatom; ++i)
-    fprintf(outfile,"%15.10lf%15.10lf%15.10lf%15.10lf\n",
-        fatomic_num[i], fcoord[3*i+0],fcoord[3*i+1],fcoord[3*i+2]);
-
-  fprintf(outfile,"\n");
-  for (i=0; i<nallatom; ++i)
-    fprintf(outfile,"%15.10lf%15.10lf%15.10lf%15.10lf\n",
-      fatomic_num[i], fgrad[3*i+0],fgrad[3*i+1],fgrad[3*i+2]);
- */
-
-    /*
-  }
-  else {  // Get what you need from file11
-
-    chkpt_init(PSIO_OPEN_OLD);
-    nallatom = chkpt_rd_nallatom();
-    natom = chkpt_rd_natom();
-    chkpt_close();
-
-    if (fgets(label, MAX_LINELENGTH, fp_11) == NULL) {
-      fprintf(outfile, "Trouble reading first line of file11.dat\n");
-      exit(0);
-    }
-
-    // now read the number of atoms and the energy
-    fgets(line1, MAX_LINELENGTH, fp_11);
-    if (sscanf(line1, "%d %lf", &natom, &energy) != 2) {
-      fprintf(outfile,
-          "Trouble reading natom and energy from second line of file11.dat\n");
-      exit(0);
-    }
-
-    coord = new double[3*natom];
-    grad = new double[3*natom];
-    mass = new double[3*natom];
-    atomic_num = new double[natom];
-
-    // now rewind file11
-    rewind(fp_11) ;
-
-    // read in one chunk at a time
-    while (fgets(label, MAX_LINELENGTH, fp_11) != NULL) {
-      fgets(line1, MAX_LINELENGTH, fp_11) ;
-      if (sscanf(line1, "%d %lf", &natom, &energy) != 2) {
-        fprintf(outfile,
-            "(cartesians()): Trouble reading natom and energy from file11.dat\n");
-        exit(0);
-      }
-      count = -1;
-      for (i=0; i<natom ; i++) {
-        if (fscanf(fp_11, "%lf %lf %lf %lf", &an, &x, &y, &z) != 4) {
-          fprintf(outfile,
-              "(cartesians()): Trouble reading coordinates from file11.dat\n");
-          exit(0);
-        }
-        atomic_num[i]=an; coord[++count]=x; coord[++count]=y; coord[++count]=z;
-      }
-      count = -1;
-      for (i=0; i<natom ; i++) {
-        if (fscanf(fp_11, "%lf %lf %lf", &x, &y, &z) != 3) {
-          fprintf(outfile,
-              "(cartesians()): Trouble reading gradients from file11.dat\n");
-          exit(0);
-        }
-        grad[++count] = x; grad[++count] = y; grad[++count] = z;
-      }
-      fgets(line1, MAX_LINELENGTH, fp_11);
-    } 
-    fclose(fp_11) ;
-
-  }
-  */
 
   /* read masses from input.dat or use default masses */
   count = -1;

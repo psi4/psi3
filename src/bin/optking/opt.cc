@@ -2,34 +2,36 @@
 
 /*
 command-line      internal specifier   what it does
---opt_step        MODE_OPT_STEP        take an ordinary geometry optimization step
---disp_symm       MODE_DISP_SYMM       displaces along all symmetric internals
---disp_all        MODE_DISP_ALL        displaces along all internals
---disp_load       MODE_DISP_LOAD       load a previous displacement from PSIF to chkpt
---freq_energy     MODE_FREQ_ENERGY     not yet supported
---grad_energy     MODE_GRAD_ENERGY     use energies in chkpt to compute a gradient
---freq_grad       MODE_FREQ_GRAD       use gradients in chkpt to compute frequencies
---freq_grad_symm  MODE_FREQ_GRAD_SYMM  use gradients in chkpt to compute symm freqs
---grad_save       MODE_GRAD_SAVE       save the gradient in chkpt to PSIF list
---energy_save     MODE_ENERGY_SAVE     save the energy in chkpt to PSIF list
---disp_num                             displacement index (by default read from PSIF)
---points                               3 or 5 pt formula (5pt not yet supported)
+--opt_step         MODE_OPT_STEP        take an ordinary geometry optimization step
+--disp_nosymm      MODE_DISP_NOSYMM     displaces along all internals, assumes no sym
+--disp_irrep       MODE_DISP_IRREP      displaces along all internals labeled as IRREP
+--disp_load        MODE_DISP_LOAD       load a previous displacement from PSIF to chkpt
+--load_ref         MODE_LOAD_REF        load undisplaced reference geometry into chkpt
+--freq_energy      MODE_FREQ_ENERGY     not yet supported
+--grad_energy      MODE_GRAD_ENERGY     use energies in chkpt to compute a gradient
+--freq_grad_nosymm MODE_FREQ_GRAD_NOSYMM use grads in chkpt to compute freqs, assumes no sym
+--freq_grad_irrep  MODE_FREQ_GRAD_IRREP use grads in chkpt to compute IRREP freqs
+--grad_save        MODE_GRAD_SAVE       save the gradient in chkpt to PSIF list
+--energy_save      MODE_ENERGY_SAVE     save the energy in chkpt to PSIF list
+--disp_num         optinfo.disp_num     displacement index (by default read from PSIF)
+--points           optinfo.points      3 or 5 pt formula (5pt not yet supported)
+--irrep            optinfo.irrep       the irrep (1,2,...) being displaced or computed
 */
 
-  extern "C" {
-#include <stdio.h>
-#include <libchkpt/chkpt.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
-#include <ctype.h>
-#include <libciomr/libciomr.h>
-#include <libipv1/ip_lib.h>
-#include <physconst.h>
-#include <libpsio/psio.h>
-#include <libqt/qt.h>	  
-#include <psifiles.h>
-  }
+extern "C" {
+  #include <stdio.h>
+  #include <libchkpt/chkpt.h>
+  #include <stdlib.h>
+  #include <string.h>
+  #include <math.h>
+  #include <ctype.h>
+  #include <libciomr/libciomr.h>
+  #include <libipv1/ip_lib.h>
+  #include <physconst.h>
+  #include <libpsio/psio.h>
+  #include <libqt/qt.h>	  
+  #include <psifiles.h>
+}
 
 #include "opt.h"
 #include "cartesians.h"
@@ -37,26 +39,31 @@ command-line      internal specifier   what it does
 #include "salc.h"
 #include "bond_lengths.h"
 
-  void intro();
-  void free_info(int nsimples);
-  int *count_internals(cartesians &cart_geom, int intco_given);
-  extern "C" void zmat_to_intco(void);
-  extern "C" void get_optinfo();
-  extern void get_syminfo(internals &simples);
-  extern void delocalize(internals &simples, cartesians &carts);
-  extern void disp_user(cartesians &carts, internals &simples, 
+void intro(int argc, char **argv);
+void free_info(int nsimples);
+int *count_internals(cartesians &cart_geom, int intco_given);
+extern "C" void zmat_to_intco(void);
+extern "C" void get_optinfo();
+extern void get_syminfo(internals &simples);
+extern void delocalize(internals &simples, cartesians &carts);
+extern void disp_user(cartesians &carts, internals &simples, 
+                      salc_set &all_salcs);
+extern int make_disp_irrep(cartesians &carts, internals &simples, 
+                    salc_set &all_salcs, int points);
+extern int make_disp_nosymm(cartesians &carts, internals &simples, 
+                    salc_set &all_salcs, int points);
+extern void load_ref(cartesians &carts);
+extern void freq_grad_irrep(cartesians &carts, internals &simples, 
+    salc_set &all_salcs, int points);
+extern void freq_grad_nosymm(cartesians &carts, internals &simples, 
+    salc_set &all_salcs, int points);
+extern void grad_energy(cartesians &carts, internals &simples, 
                         salc_set &all_salcs);
-  extern int disp_all(cartesians &carts, internals &simples, 
-                      salc_set &all_salcs, int points);
-  extern void freq_grad(cartesians &carts, internals &simples, 
-                        salc_set &all_salcs);
-  extern void grad_energy(cartesians &carts, internals &simples, 
-                          salc_set &all_salcs);
-  extern void grad_save(cartesians &carts);
-  extern void energy_save(cartesians &carts);
-  extern int opt_step(cartesians &carts, internals &simples, salc_set &symm);
+extern void grad_save(cartesians &carts);
+extern void energy_save(cartesians &carts);
+extern int opt_step(cartesians &carts, internals &simples, salc_set &symm_salcs);
 
-  int main(int argc, char *argv[]) {
+int main(int argc, char **argv) {
 
     int i,j,a,b,dim,count,dim_carts,user_intcos;
     int parsed=1;
@@ -64,21 +71,26 @@ command-line      internal specifier   what it does
     double *fcoord, *f;
     char *disp_label, *buffer, *err;
 
+    // Set defaults & read command-line arguments
     optinfo.mode = MODE_OPT_STEP;
     optinfo.disp_num = 0;
     optinfo.points = 3;
     for (i=1; i<argc; ++i) {
-      if (!strcmp(argv[i],"--disp_symm")) {
-        optinfo.mode = MODE_DISP_SYMM;
+      if (!strcmp(argv[i],"--disp_nosymm")) {
+        optinfo.mode = MODE_DISP_NOSYMM;
 	parsed++;
       }
-      else if (!strcmp(argv[i],"--disp_all")) {
-        optinfo.mode = MODE_DISP_ALL;
+      else if (!strcmp(argv[i],"--disp_irrep")) {
+        optinfo.mode = MODE_DISP_IRREP;
 	parsed++;
       }
       else if (!strcmp(argv[i],"--disp_load")) {
         optinfo.mode = MODE_DISP_LOAD;
 	parsed++;
+      }
+      else if (!strcmp(argv[i],"--load_ref")) {
+        optinfo.mode = MODE_LOAD_REF;
+        parsed++;
       }
       else if (!strcmp(argv[i],"--opt_step")) {
         optinfo.mode = MODE_OPT_STEP;
@@ -92,12 +104,12 @@ command-line      internal specifier   what it does
         optinfo.mode = MODE_GRAD_ENERGY;
 	parsed++;
       }
-      else if (!strcmp(argv[i],"--freq_grad")) {
-        optinfo.mode = MODE_FREQ_GRAD;
+      else if (!strcmp(argv[i],"--freq_grad_nosymm")) {
+        optinfo.mode = MODE_FREQ_GRAD_NOSYMM;
 	parsed++;
       }
-      else if (!strcmp(argv[i],"--freq_grad_symm")) {
-        optinfo.mode = MODE_FREQ_GRAD_SYMM;
+      else if (!strcmp(argv[i],"--freq_grad_irrep")) {
+        optinfo.mode = MODE_FREQ_GRAD_IRREP;
 	parsed++;
       }
       else if (!strcmp(argv[i],"--grad_save")) {
@@ -116,6 +128,11 @@ command-line      internal specifier   what it does
         sscanf(argv[++i], "%d", &optinfo.points);
 	parsed+=2;
       }
+      else if (!strcmp(argv[i],"--irrep")) {
+        sscanf(argv[++i], "%d", &optinfo.irrep);
+        optinfo.irrep -= 1;
+	parsed+=2;
+      }
       else {
         printf("command line argument not understood.\n");
         exit(1);
@@ -128,14 +145,13 @@ command-line      internal specifier   what it does
     /* init_in_out() sets the value of "infile", so we need to save it */
     fp_input = infile;
     
-    intro();
+    intro(argc, argv);
 
     ip_cwk_add(":OPTKING");
 
     // determine if simples and salcs are present in intco.dat 
     optinfo.simples_present = 0;
     optinfo.salcs_present = 0;
-
     ffile_noexit(&fp_intco, "intco.dat", 2);
     if (fp_intco != NULL) {
       ip_append(fp_intco, outfile) ;
@@ -160,15 +176,17 @@ command-line      internal specifier   what it does
     /* loads up geometry, (possibly gradient and energy) from chkpt */
     cartesians carts;
     dim_carts = carts.get_nallatom()*3;
-    fprintf(outfile,
-      "\nCartesian geometry and gradient (if available) in a.u. with masses\n");
-    if (optinfo.mode == MODE_GRAD_ENERGY || optinfo.mode == MODE_DISP_SYMM ||
-        optinfo.mode == MODE_DISP_ALL || optinfo.mode == MODE_DISP_LOAD ||
-        optinfo.mode == MODE_DISP_USER || optinfo.mode == MODE_ENERGY_SAVE ) 
-      carts.print(2,outfile,0,disp_label,0);
-    else
+    if ((optinfo.mode == MODE_OPT_STEP) || (optinfo.mode == MODE_GRAD_SAVE)) {
+      fprintf(outfile,
+      "\nCartesian geometry and possibly gradient in a.u. with masses\n");
       carts.print(3,outfile,0,disp_label,0);
-
+    }
+    else if ((optinfo.mode != MODE_DISP_LOAD)
+        && (optinfo.mode != MODE_LOAD_REF)) {
+      fprintf(outfile,
+      "\nCartesian geometry and possibly gradient in a.u. with masses\n");
+      carts.print(2,outfile,0,disp_label,0);
+    }
     delete [] disp_label;
     fflush(outfile);
 
@@ -184,8 +202,10 @@ command-line      internal specifier   what it does
     //simples.compute_s(carts.get_natom(),carts.get_coord() );
     simples.compute_s(carts.get_nallatom(), fcoord);
     free(fcoord);
-    fprintf(outfile,"\nSimple Internal Coordinates and Values\n");
-    simples.print(outfile,1);
+    if ( (optinfo.mode != MODE_DISP_LOAD) && (optinfo.mode != MODE_LOAD_REF)) {
+      fprintf(outfile,"\nSimple Internal Coordinates and Values\n");
+      simples.print(outfile,1);
+    }
     fflush(outfile);
 
     /* obtain symmetry info, including simple transformation matrix */
@@ -194,9 +214,7 @@ command-line      internal specifier   what it does
     /*** If SYMM is not user given, produce SYMM containing delocalized \
      *** internal coordinates or else use redundant simples          ***/
     buffer = new char[MAX_LINELENGTH];
-    i = 1;
-    if (ip_exist("SYMM",0)) i = 0;
-    if (i) {
+    if (!(optinfo.salcs_present)) {
       if (optinfo.delocalize) {
         fprintf(outfile,"\nForming delocalized internal coordinates.\n");
         // delocalize(carts.get_natom(),simples);
@@ -240,9 +258,9 @@ command-line      internal specifier   what it does
     // do optimization step by gradients
     if (optinfo.mode == MODE_OPT_STEP) {
       fprintf(outfile," \n ** Taking normal optimization step. **\n");
-      salc_set symm("SYMM");
-      symm.print();
-      a = opt_step(carts, simples, symm);
+      salc_set symm_salcs("SYMM");
+      symm_salcs.print();
+      a = opt_step(carts, simples, symm_salcs);
       free_info(simples.get_num());
       exit_io();
       // fprintf(stderr,"Optking returning value %d\n", a);
@@ -260,6 +278,33 @@ command-line      internal specifier   what it does
       return 0;
     }
 
+    if ((optinfo.mode == MODE_DISP_NOSYMM) || (optinfo.mode == MODE_DISP_IRREP)) {
+      // generate unique displacements
+      salc_set all_salcs;
+      all_salcs.print();
+      if (optinfo.mode == MODE_DISP_IRREP) {
+        num_disps = make_disp_irrep(carts, simples, all_salcs, optinfo.points);
+      }
+      else {
+        num_disps = make_disp_nosymm(carts, simples, all_salcs,
+            optinfo.points);
+      }
+      free_info(simples.get_num());
+      exit_io();
+/* Must be allowed to return a positive number */
+      // return(num_disps);
+      return 0;
+    }
+
+    if (optinfo.mode == MODE_LOAD_REF) {
+      fprintf(outfile,"Loading undisplaced reference geometry to chkpt.\n");
+      load_ref(carts);
+      free_info(simples.get_num());
+      exit_io();
+      return 0;
+    }
+
+    /*
     if (optinfo.mode == MODE_DISP_SYMM) {
       fprintf(outfile,
               " \n ** Displacing symmetric modes for 3-point formula\n");
@@ -275,12 +320,14 @@ command-line      internal specifier   what it does
     if (optinfo.mode == MODE_DISP_ALL) {
       fprintf(outfile,"\n ** Displacing all modes for 3-point formula\n");
       salc_set all_salcs;
+      salc_set symm;
       all_salcs.print();
-      num_disps = disp_all(carts, simples, all_salcs, optinfo.points);
+      num_disps = disp_all(carts, simples, all_salcs, symm, optinfo.points);
       free_info(simples.get_num());
       exit_io();
       return(num_disps);
     }
+    */
 
     int total_num_disps;
 
@@ -324,7 +371,7 @@ command-line      internal specifier   what it does
       chkpt_wt_fgeom(geom2D);
       chkpt_close();
       fprintf(outfile,"\n ** Geometry for displacement %d sent to chkpt. **\n", 
-              optinfo.disp_num);
+              optinfo.disp_num+1);
       free_block(micro_geoms);
       free_block(geom2D);
 
@@ -335,9 +382,9 @@ command-line      internal specifier   what it does
 
     if (optinfo.mode == MODE_GRAD_ENERGY) {
       fprintf(outfile,"\n ** Calculating file11.dat from energies. **\n");
-      salc_set symm("SYMM");
-      symm.print();
-      grad_energy(carts, simples, symm);
+      salc_set symm_salcs("SYMM");
+      symm_salcs.print();
+      grad_energy(carts, simples, symm_salcs);
       free_info(simples.get_num());
       exit_io();
       return(0);
@@ -350,6 +397,20 @@ command-line      internal specifier   what it does
       return(0);
     }
 
+    if ((optinfo.mode==MODE_FREQ_GRAD_IRREP) || (optinfo.mode==MODE_FREQ_GRAD_NOSYMM)) {
+      fprintf(outfile,"\n ** Calculating frequencies from gradients. **\n");
+      salc_set all_salcs;
+      all_salcs.print();
+      if (optinfo.mode == MODE_FREQ_GRAD_IRREP)
+        freq_grad_irrep(carts, simples, all_salcs, optinfo.points);
+      else
+        freq_grad_nosymm(carts, simples, all_salcs, optinfo.points);
+      free_info(simples.get_num());
+      exit_io();
+      return(0);
+    }
+
+    /*
     if (optinfo.mode == MODE_FREQ_GRAD) {
       fprintf(outfile,"\n ** Calculating frequencies from gradients. **\n");
       salc_set all_salcs;
@@ -362,13 +423,14 @@ command-line      internal specifier   what it does
 
     if (optinfo.mode == MODE_FREQ_GRAD_SYMM) {
       fprintf(outfile,"\n ** Calculating frequencies from gradients. **\n");
-      salc_set symm("SYMM");
-      symm.print();
-      freq_grad(carts, simples, symm);
+      salc_set symm_salcs("SYMM");
+      symm_salcs.print();
+      freq_grad(carts, simples, symm_salcs);
       free_info(simples.get_num());
       exit_io();
       return 0;
     }
+    */
 
     free(number_internals);
     return(0);
@@ -377,20 +439,26 @@ command-line      internal specifier   what it does
     return(0);
   }
 
-  /***  INTRO   prints into ***/
-  void intro() {
+/***  INTRO   prints into ***/
+void intro(int argc, char **argv) {
+  int i;
+  if (optinfo.mode == MODE_OPT_STEP) {
     fprintf(outfile,
-            "\t________________________________________________________\n");
+            "\n\t------------------------------------------------------\n");
     fprintf(outfile,
-            "\t|                                                      |\n");
+            "\t OPTKING: For internal coordinate optimizations and   \n");
     fprintf(outfile,
-            "\t| OPTKING: For internal coordinate optimizations and   |\n");
+            "\t and vibrational frequencies, Rollin King, 1999, 2002 \n");
     fprintf(outfile,
-            "\t| and vibrational frequencies, Rollin King, 1999, 2002 |\n");
-    fprintf(outfile,
-            "\t|______________________________________________________|\n");
+            "\t------------------------------------------------------\n");
   }
-
+  else {
+    fprintf(outfile,"\n******* OPTKING: ");
+    for (i=1; i<argc; ++i)
+      fprintf(outfile,"%s ", argv[i]);
+    fprintf(outfile,"\n");
+  }
+}
 
   /*** COUNT_INTERNALS : counts the simple internals present in intco or
    * that will be generated - code reproduces lots of stuff done in the
@@ -537,35 +605,70 @@ command-line      internal specifier   what it does
   }
 
 
-  void free_info(int nsimples) {
-    int i,j,nallatom,natom;
-    nallatom = optinfo.nallatom;
-    natom = optinfo.natom;
+void free_info(int nsimples) {
+  int i,j,nallatom,natom;
+  nallatom = optinfo.nallatom;
+  natom = optinfo.natom;
 
-    // free syminfo
-    free(syminfo.symmetry);
-    for (i=0; i<syminfo.nirreps; ++i) {
-      free(syminfo.ct[i]);
-      free(syminfo.ict[i]);
-      free(syminfo.fict[i]);
-      free(syminfo.irrep_lbls[i]);
-      free(syminfo.clean_irrep_lbls[i]);
-    }
-    free(syminfo.ct);
-    free(syminfo.ict);
-    free(syminfo.fict);
-    free(syminfo.irrep_lbls);
-    free(syminfo.clean_irrep_lbls);
-
-    for (i=0; i<nsimples; ++i) {
-      free(syminfo.ict_ops[i]);
-      free(syminfo.ict_ops_sign[i]);
-    }
-    free(syminfo.ict_ops);
-    free(syminfo.ict_ops_sign);
-
-    // free optinfo
-    free(optinfo.to_dummy);
-    free(optinfo.to_nodummy);
-    return;
+  // free syminfo
+  free(syminfo.symmetry);
+  for (i=0; i<syminfo.nirreps; ++i) {
+    free(syminfo.ct[i]);
+    free(syminfo.ict[i]);
+    free(syminfo.fict[i]);
+    free(syminfo.irrep_lbls[i]);
+    free(syminfo.clean_irrep_lbls[i]);
   }
+  free(syminfo.ct);
+  free(syminfo.ict);
+  free(syminfo.fict);
+  free(syminfo.irrep_lbls);
+  free(syminfo.clean_irrep_lbls);
+
+  for (i=0; i<nsimples; ++i) {
+    free(syminfo.ict_ops[i]);
+    free(syminfo.ict_ops_sign[i]);
+  }
+  free(syminfo.ict_ops);
+  free(syminfo.ict_ops_sign);
+
+  // free optinfo
+  free(optinfo.to_dummy);
+  free(optinfo.to_nodummy);
+  return;
+}
+
+
+void load_ref(cartesians &carts) {
+  int i,j,cnt;
+  double *fgeom, **fgeom2D,*grad, energy;
+
+  fgeom = init_array(carts.get_nallatom() * 3);
+  open_PSIF();
+  psio_read_entry(PSIF_OPTKING, "OPT: Reference geometry",
+           (char *) &(fgeom[0]), (int) 3*carts.get_nallatom()*sizeof(double));
+  psio_read_entry(PSIF_OPTKING, "OPT: Reference energy",
+                (char *) &(energy), sizeof(double));
+  // reference gradient assumed 0
+  grad = init_array(3*carts.get_nallatom());
+  close_PSIF();
+
+  cnt = 0;
+  fgeom2D = block_matrix(carts.get_nallatom(), 3);
+  for (i=0;i<carts.get_nallatom();++i)
+    for (j=0;j<3;++j)
+      fgeom2D[i][j] = fgeom[cnt++];
+
+  /*
+  for (i=0;i<carts.get_nallatom();++i)
+    for (j=0;j<3;++j)
+      fprintf(outfile,"%15.10lf\n", fgeom2D[i][j]);
+      */
+
+  chkpt_init(PSIO_OPEN_OLD);
+  chkpt_wt_fgeom(fgeom2D);
+  chkpt_wt_grad(grad);
+  chkpt_wt_etot(energy);
+//  fprintf(outfile,"%15.10lf\n",energy);
+  chkpt_close();
+}

@@ -288,7 +288,7 @@ internals :: internals(cartesians& carts, int user_intcos, int *size_arr)
         bonds[b][a] = 0;
       }
 
-      fprintf(outfile,"\ngenerating internals\n"); fflush(outfile);
+      fprintf(outfile,"\nGenerating internals\n"); fflush(outfile);
       id_count = 0;
       type_count = 0;
       for (i=0; i<natom; ++i)

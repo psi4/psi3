@@ -39,7 +39,7 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
   double **B, **G, **G2, **G_inv, **H_inv, **temp_mat, **u, **P;
   double *temp_arr2, *temp_arr, *masses, *geom, *forces;
   double *f, *f_q, *dq, *q, tval, tval2, scale, temp, *djunk;
-  char *disp_label;
+  char *disp_label, *wfn;
 
   // dim_carts = carts.get_natom()*3;
   nallatom = optinfo.nallatom;
@@ -49,6 +49,11 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
 
   if (symm.get_num() == 0)
     punt("No symmetric internal coordinates to optimize.\n");
+
+  ip_string("WFN", &(wfn),0);
+  fprintf(outfile,"\nCurrent %s energy before step %20.10lf\n",
+      wfn, carts.get_energy());
+  fprintf(outfile,"\nTaking geometry step number %d\n",optinfo.iteration+1);
 
   //*** Build transformation matrices
   dq = init_array(symm.get_num());
@@ -151,7 +156,8 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
   fprintf(outfile,
       "         Value          Force          Displacement   New Value\n");
   for (i=0;i<symm.get_num();++i)
-    fprintf(outfile,"%2d%15.6lf%15.6lf%15.6lf%15.6lf\n",
+//    fprintf(outfile,"%2d%15.6lf%15.6lf%15.6lf%15.6lf\n",
+    fprintf(outfile,"%2d%15.10lf%15.10lf%15.10lf%15.10lf\n",
         i+1,  q[i]-dq[i],    f_q[i],           dq[i],         q[i]);
 
   // Compute Max and RMS force, and see if geometry is optimized
@@ -167,10 +173,12 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
   if (tval2 < optinfo.conv) {
     fprintf(outfile,"\nMAX force is < %5.1e.  Optimization is complete.\n",
             optinfo.conv);
+    fprintf(outfile,"Final %s energy is %15.10lf\n", wfn, carts.get_energy());
     fprintf(stderr,"\n  OPTKING:  optimization is complete\n");
     // fprintf(stderr,"\n  Returning code %d\n", PSI_RETURN_ENDLOOP);
     return(PSI_RETURN_ENDLOOP);
   }
+  free(wfn);
   free(f_q);
 
   strcpy(disp_label,"New Cartesian Geometry in a.u.");

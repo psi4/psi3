@@ -45,7 +45,7 @@ void print_mat2(double **matrix, int rows, int cols, FILE *of) {
       fprintf(of,"%20.12f",matrix[i][j]);
       ++col;
     }
-    fprintf(outfile,"\n\n");
+    fprintf(outfile,"\n");
   } 
   return;
 } 

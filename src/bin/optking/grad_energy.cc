@@ -59,15 +59,10 @@ void grad_energy(cartesians &carts, internals &simples, salc_set &symm) {
   }
   free(energies);
 
-  // Transform forces to cartesian coordinates
-  B = compute_B(simples, symm);
-  f = new double[dim_carts];
-  mmult(B,1,&f_q,1,&f,1,dim_carts,symm.get_num(),1,0);
-  free_block(B);
-
-  // change forces to gradient for writing a file11 entry
-  for(i=0;i<dim_carts;++i)
-    f[i] = -1.0 * f[i] / _hartree2J / 1.0E18 * _bohr2angstroms;
+  // Print internal coordinate forces
+  // fprintf(outfile,"\nInternal coordinate forces\n");
+  // for (i=0;i<symm.get_num();++i)
+  //   fprintf(outfile,"%13.10lf\n",f_q[i]);
 
   // write out approximate file11.dat
   geom = new double[dim_carts];
@@ -78,8 +73,20 @@ void grad_energy(cartesians &carts, internals &simples, salc_set &symm) {
       (char *) &(energy), sizeof(double));
   close_PSIF();
 
+  // Transform forces to cartesian coordinates
+  simples.compute_internals(dim_carts, geom);
+  simples.compute_s(dim_carts, geom);
+  B = compute_B(simples, symm);
+  f = new double[dim_carts];
+  mmult(B,1,&f_q,1,&f,1,dim_carts,symm.get_num(),1,0);
+  free_block(B);
+
+  // change forces to gradient for writing a file11 entry
+  for(i=0;i<dim_carts;++i)
+    f[i] = -1.0 * f[i] / _hartree2J / 1.0E18 * _bohr2angstroms;
+
   ffile(&fp_11, "file11.dat", 1);
-  sprintf(disp_label,"iteration: %d", optinfo.iteration);
+  sprintf(disp_label,"iteration: %d", optinfo.iteration+1);
   carts.set_energy(energy);
   carts.set_coord(geom);
   carts.set_grad(f);
@@ -102,9 +109,9 @@ void grad_energy(cartesians &carts, internals &simples, salc_set &symm) {
   free(f);
   free(geom);
 
-  // recompute values of internals and s vectors
-  simples.compute_internals(carts.get_natom(),carts.get_coord());
-  simples.compute_s(carts.get_natom(),carts.get_coord() );
+  // recompute values of internals and s vectors -- too late!
+//  simples.compute_internals(carts.get_natom(),carts.get_coord());
+//  simples.compute_s(carts.get_natom(),carts.get_coord() );
 
   // use optking --opt_step to take a step
   // opt_step(carts, simples, symm);

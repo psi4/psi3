@@ -176,8 +176,8 @@ void delocalize(internals &simples, cartesians &carts) {
       break;
   }
   if (num_nonzero == degrees_of_freedom) {
-    fprintf(outfile,"\n# of delocalized coordinates = # of degrees of ");
-    fprintf(outfile,"freedom.\n");
+    fprintf(outfile,"\nGood: # of delocalized coordinates = # of degrees");
+    fprintf(outfile," of freedom.\n");
   }
   else if (num_nonzero < degrees_of_freedom) {
     fprintf(outfile,"# of delocalized coordinates < # of degrees of ");
@@ -218,7 +218,10 @@ void delocalize(internals &simples, cartesians &carts) {
   evectst_symm = irrep(simples, evectst);
   free_block(evectst);
 
-print_mat(evectst_symm,num_nonzero,simples.get_num(),outfile);
+  if (optinfo.print_delocalize == 1) {
+    fprintf(outfile,"\nSymmetrized evects\n");
+    print_mat(evectst_symm,num_nonzero,simples.get_num(),outfile);
+  }
 
   // print out coordinates to intco.dat
   ffile(&fp_intco, "intco.dat", 2);
@@ -259,7 +262,8 @@ print_mat(evectst_symm,num_nonzero,simples.get_num(),outfile);
         fprintf(fp_intco,"   (");
         for (col=0, j=0;j<simples.get_num();++j) {
           if ( fabs(evectst_symm[i][j]) > 1.0E-10 ) {
-          fprintf(fp_intco,"%15.7lf",evectst_symm[i][j]);
+           fprintf(fp_intco,"%15.7lf",evectst_symm[i][j]);
+          //fprintf(fp_intco,"%15.10lf",evectst_symm[i][j]);
           if (col == 7) { fprintf(fp_intco,"\n    "); col = -1; }
           ++col;
          }
