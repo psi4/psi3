@@ -1,5 +1,6 @@
 $(TARGET):
 	@$(test_srcdir)/$(TARGET_DIR)/$(TARGET).pl -q -i $(test_srcdir)/$(TARGET_DIR) -x $(top_objdir)/bin
+	@cat $(TARGET_DIR).test >> ../../test-case-results
 
 clean:
 	/bin/rm -f $(TARGET) output.dat psi.* timer.dat file14.dat

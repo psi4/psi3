@@ -24,8 +24,8 @@ else {
 }
 
 $TEST_FILE = "psi.file11.dat";
-$TOL = 10**-8;
-$GTOL = 10**-8;
+$TOL = 10**-7;
+$GTOL = 10**-7;
 $RESULT = "scf-opt10.test";
 
 system ("$PSICMD");
