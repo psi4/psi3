@@ -13,17 +13,10 @@ default: (
   reference = rhf
   multp = 1
   dertype = first
-
-  % using the new files section; the default path is given
-  % in the user's ~/.psirc file
-
-  files: (
-    default: ( name = "h2o" )
-  )
 )
 
 input: (
-  basis = 631Gss
+  basis = "6-31G**"
   units = angstrom
   zmat = (
     (o)
@@ -34,21 +27,4 @@ input: (
     (roh    0.94305663)
     (ahoh 105.96876874)
   )
-  origin = (0.0 0.0 0.0)
 )
-
-basis: (
-  oxygen:631Gss = (
-    (get "631GST")
-)
-  hydrogen:631Gss = (
-    (get "631GST")
-    (get "STAR1")
-  )
-)
-
-scf: (
-  maxiter = 100
-  convergence = 12
-)
-

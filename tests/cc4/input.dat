@@ -8,17 +8,11 @@ default: (
   charge = 0
   multp = 1
   reference = rhf
-  symmetry = c2v
   wfn = ccsd_t
   dertype = none
   docc = (3 0 0 0)
   frozen_docc = (1 0 0 0)
   puream = true
-
-  % using the ~/.psirc file to get default files info
-  files: (
-    default: ( name = "bh" )
-  )
 )
 
 input: (
@@ -30,11 +24,4 @@ input: (
       )
   origin = (0.0 0.0 0.0)
 )
-
-
-scf: (
-  maxiter = 100
-  convergence = 11
-)
-
 
