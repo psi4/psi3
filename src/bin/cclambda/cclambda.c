@@ -94,6 +94,8 @@ int main(int argc, char *argv[])
 
   if(params.ref == 0) hbar_extra();
 
+  /* CC3: Z-build */
+
   for (i=0; i<params.nstates; ++i) {
     /* delete and reopen intermediate files */
     psio_close(CC_TMP,0); psio_close(CC_TMP1,0); psio_close(CC_TMP2,0); psio_close(CC_LAMBDA,0);
@@ -125,6 +127,9 @@ int main(int argc, char *argv[])
       L2_build(pL_params[i]);
 
       if (params.ref == 1) L_clean(pL_params[i]);
+
+      /* CC3: X-build */
+      /* CC3: L3-build */
   
       if(converged(pL_params[i].irrep)) {
         done = 1;  /* Boolean for convergence */
