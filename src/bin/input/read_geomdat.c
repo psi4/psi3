@@ -35,6 +35,7 @@ void read_geomdat()
    -----------------------*/
   full_geom = block_matrix(num_allatoms,3);
   geometry = (double **) malloc(num_atoms*sizeof(double *));
+  atom_dummy = (int *) malloc(sizeof(int)*num_allatoms);
   element = (char **) malloc(sizeof(char *)*num_atoms);
   full_element = (char **) malloc(sizeof(char *)*num_allatoms);
   elemsymb_charges = init_array(num_atoms);
@@ -54,6 +55,7 @@ void read_geomdat()
 	full_geom[i][j] = tmp;
     }
     geometry[i] = full_geom[i];
+    atom_dummy[i] = 0;
   }
 
   read_charges();

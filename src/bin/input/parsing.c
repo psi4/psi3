@@ -58,27 +58,29 @@ void parsing()
 	     if (strcmp(unique_axis,"X") && strcmp(unique_axis,"Y") && strcmp(unique_axis,"Z"))
 		 unique_axis = NULL;
 
-	 /*No default for these two unless running a findif procedure*/
-	 if (ip_exist("ZMAT",0) == 1)
+	 if (geomdat_geom == 0) {
+	   /*No default for these two unless running a findif procedure*/
+	   if (ip_exist("ZMAT",0) == 1)
 	     cartOn = 0;
-	 else if (ip_exist("GEOMETRY",0) == 1)
+	   else if (ip_exist("GEOMETRY",0) == 1)
 	     cartOn = 1;
-	 else
+	   else
 	     punt("Both ZMAT and GEOMETRY are missing!");
-
-	 /*Default = BOHR*/
-	 units = strdup("BOHR");
-	 errcod = ip_string("UNITS",&units,0);
-	 if (!strcmp(units,"BOHR") || !strcmp(units,"AU"))
+	   
+	   /*Default = BOHR*/
+	   units = strdup("BOHR");
+	   errcod = ip_string("UNITS",&units,0);
+	   if (!strcmp(units,"BOHR") || !strcmp(units,"AU"))
 	     conv_factor = 1.0;
-	 else if (!strcmp(units,"ANGSTROMS") || !strcmp(units,"ANGSTROM"))
+	   else if (!strcmp(units,"ANGSTROMS") || !strcmp(units,"ANGSTROM"))
 	     conv_factor = 1.0 / _bohr2angstroms;
-	 else
+	   else
 	     punt("Unrecognized UNITS");
-	 
-	 /*Set reference frame to be the frame of the input geometry*/
-	 keep_ref_frame = 0;
-	 errcod = ip_boolean("KEEP_REF_FRAME",&keep_ref_frame,0);
+	   
+	   /*Set reference frame to be the frame of the input geometry*/
+	   keep_ref_frame = 0;
+	   errcod = ip_boolean("KEEP_REF_FRAME",&keep_ref_frame,0);
+	 }
      }
 
      return;
