@@ -39,7 +39,7 @@ y.tab.c y.tab.h: parse.y
 scan.c: scan.l
 	$(LEX) -t $^ > scan.c
 
-install_inc:: ip_error.h ip_lib.h ip_types.h $(GENINC)
+install_inc:: tmpl.h ip_error.h ip_lib.h ip_types.h $(GENINC)
 	$(MKDIRS) $(incdir)/libipv1
 	$(INSTALL_INCLUDE) $^ $(incdir)/libipv1
 
