@@ -75,7 +75,9 @@ disp.c \
 cartrep.c \
 grad.c \
 atom_dummy.c \
-keyword.c 
+keyword.c \
+nfzc.c \
+frzcpi.c
 
 DEPENDINCLUDE = psio.h chkpt.h
 
