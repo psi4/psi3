@@ -6,7 +6,7 @@ include ../MakeVars
 LD = $(F77)
 LDLIBS += $(BLAS)
 
-PSILIBS = -ldpd -lqt -lfile30 -liwl -lciomr -lpsio -lipv1 -lmalloc
+PSILIBS = -ldpd -lqt -lfile30 -liwl -lciomr -lpsio -lipv1
 
 CSRC = \
 Gabcd.c  Iab.c       add_ref.c    deanti.c      get_moinfo.c   relax_D.c    \

@@ -2,9 +2,11 @@
 #include <dpd.h>
 #include <math.h>
 #include <libciomr.h>
+#include <psio.h>
 #include <iwl.h>
 #define EXTERN
 #include "globals.h"
+#include <psifiles.h>
 
 /*
 ** SORTONE(): Place all the components of the 1pdm into a large
@@ -24,7 +26,7 @@ void sortone(void)
   int *qt_occ, *qt_vir;
   double **O, chksum, value;
   dpdfile2 D;
-  PSI_FPTR next;
+  psio_address next;
 
   nmo = moinfo.nmo;
   nfzc = moinfo.nfzc;
@@ -179,4 +181,14 @@ void sortone(void)
     }
 
   moinfo.opdm = O;
+
+  /* Write the correlation-only opdm to disk */
+/*
+  psio_open(PSIF_OEI, PSIO_OPEN_OLD);
+  next = PSIO_ZERO;
+  for(p=0; p < (nmo - nfzv); p++)
+    psio_write(PSIF_OEI, "CC OPDM", (char *) &(O[p][0]), (nmo-nfzv)*sizeof(double), next, &next);
+  psio_close(PSIF_OEI, 1);
+*/
+
 }

@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
   twopdm();
   if(!params.aobasis) energy();
   sortone();
-  /*  kinetic(); */
+  kinetic();
 
   /*
 
