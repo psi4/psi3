@@ -12,11 +12,7 @@ void get_params()
   char *junk;
 
   params.print_lvl = 1;
-  errcod = ip_data("PRINT_LVL","%d",&(params.print_lvl),0);
-
-  params.tolerance = 1e-14;
-  errcod = ip_data("TOLERANCE", "%d", &(tol),0);
-  if(errcod == IPE_OK) params.tolerance = 1.0*pow(10.0,(double) -tol);
+  errcod = ip_data("PRINT","%d",&(params.print_lvl),0);
 
   fndcor(&(params.memory), infile, outfile);
 
@@ -42,10 +38,29 @@ void get_params()
 
   /* Make sure the value of ref matches that from CC_INFO */
   if(params.ref != ref) {
-    fprintf(outfile, "Value of REFERENCE from input.dat (%1d) and CC_INFO (%1d) do not match!\n", 
-	   ref, params.ref);
+    fprintf(outfile, "Value of REFERENCE from input.dat (%1d) and " 
+            "CC_INFO (%1d) do not match!\n", ref, params.ref);
     fprintf(outfile, "Is this what you want to do?\n");
     params.ref = ref;
   }
+
+  params.follow_instab = 0;
+  errcod = ip_boolean("FOLLOW",&(params.follow_instab),0);
+  if (params.follow_instab == 1 && params.ref != 2) {
+    fprintf(outfile, "\nCan't follow instabilities unless REFERENCE is UHF\n");
+    fprintf(outfile, "Instability following turned off.\n");
+    params.follow_instab = 0;
+  }
+
+  params.num_evecs_print = 0;
+  if (params.print_lvl > 2) params.num_evecs_print = 5;
+  errcod = ip_data("NUM_EVECS_PRINT","%d",&(params.num_evecs_print),0);
+
+  params.rotation_method = 0;
+  errcod = ip_data("ROTATION_METHOD","%d",&(params.rotation_method),0);
+
+  params.scale = 0.5;
+  errcod = ip_data("SCALE","%lf",&(params.scale),0);
+
 }
 

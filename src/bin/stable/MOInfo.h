@@ -33,7 +33,17 @@ struct MOInfo {
   int *qt_vir;        /* CC->QT active virtiual reordering array */
   int *qt_avir;       /* CC->QT alpha active virtiual reordering array */
   int *qt_bvir;       /* CC->QT beta active virtiual reordering array */
+
+  int *pitzer2qt;     /* Pitzer -> QT translation array */
+  int *qt2pitzer;     /* QT -> Pitzer translation array */
+                                                                                
+  int *pitzer2qt_a;   /* Pitzer -> QT translation array for alpha orbitals */
+  int *qt2pitzer_a;   /* QT -> Pitzer translation array for alpha orbitals */
+  int *pitzer2qt_b;   /* Pitzer -> QT translation array for beta orbitals */
+  int *qt2pitzer_b;   /* QT -> Pitzer translation array for beta orbitals */
+
   int *rank;          /* actual dimension of A in each irrep */
   double **A_evals;   /* lowest few eigenvalues of Hessian in each irrep */ 
-  double **A_triplet_evals;  /* lowest few triplet eigenvalues of RHF Hessian in each irrep */
+  double **A_triplet_evals;  /* lowest few triplet eigenvalues of RHF Hessian 
+                                in each irrep */
 };

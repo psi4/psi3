@@ -7,12 +7,15 @@
 #define EXTERN
 #include "globals.h"
 
+extern void follow_eigenvector_UHF(double *vf, int dim_A, int dim_B);
+extern void follow_eigenvector_UHF2(double *vf, int dim_A, int dim_B);
+
 void diag_A_UHF(void)
 {
   int h, i, dim, dim_A, dim_B;
   int nroot, root;
   int ai, bj, ck, c, k, C, K, Ksym;
-  double **A, *eps, **v;
+  double **A, *eps, **v, *evec_to_follow;
   char lbl[32];
   dpdbuf4 A_AA, A_BB, A_AB;
   dpdfile2 B;
@@ -57,6 +60,33 @@ void diag_A_UHF(void)
     for(i=0; i < MIN0(moinfo.rank[h],5); i++)
       moinfo.A_evals[h][i] = eps[i];
 
+    if (params.num_evecs_print > 0) {
+      fprintf(outfile, "First %d eigenvectors for %s block:\n",
+        MIN0(moinfo.rank[h], params.num_evecs_print), moinfo.labels[h]);
+      eivout(v,eps,dim,MIN0(moinfo.rank[h],params.num_evecs_print),outfile); 
+    }
+
+    /* try to follow eigenvector downhill */
+    if (h==0 && params.follow_instab) {
+      if (eps[0] >= 0.0) 
+        fprintf(outfile, "\nNo negative eigenvalues to follow.\n");
+      else {
+        evec_to_follow = init_array(dim);
+        for (i=0; i<dim; i++) evec_to_follow[i] = v[i][0];
+
+        fprintf(outfile, "\nAttempting to follow eigenvector using ");
+        if (params.rotation_method == 0) {
+          fprintf(outfile, "orbital rotation method.\n");
+          follow_evec_UHF(evec_to_follow, dim_A, dim_B);
+        }  
+        else {
+          fprintf(outfile, "antisymmetric matrix method.\n");
+          follow_evec_UHF2(evec_to_follow, dim_A, dim_B);
+        } 
+        free(evec_to_follow);
+      }
+    }
+
     free(eps);
     free_block(v);
     free_block(A);
@@ -67,3 +97,4 @@ void diag_A_UHF(void)
   dpd_buf4_close(&A_AB);
 
 }
+

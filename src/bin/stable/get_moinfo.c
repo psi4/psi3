@@ -15,7 +15,7 @@
 
 void get_moinfo(void)
 {
-  int i, h, p, q, errcod, nactive, nirreps, nfzc, nfzv;
+  int i, j, h, p, q, errcod, nactive, nirreps, nfzc, nfzv;
 
   chkpt_init(PSIO_OPEN_OLD);
   moinfo.nirreps = chkpt_rd_nirreps();
@@ -143,6 +143,34 @@ void get_moinfo(void)
     psio_read_entry(CC_INFO, "CC->QT Active Virt Order",
 		    (char *) moinfo.qt_vir, sizeof(int)*nactive);
   }
+
+  /* Compute spatial-orbital reordering arrays */
+  if(params.ref == 0 || params.ref == 1) {
+    moinfo.pitzer2qt = init_int_array(moinfo.nmo);
+    moinfo.qt2pitzer = init_int_array(moinfo.nmo);
+    reorder_qt(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc,
+               moinfo.pitzer2qt, moinfo.orbspi, moinfo.nirreps);
+    for(i=0; i < moinfo.nmo; i++) {
+      j = moinfo.pitzer2qt[i];
+      moinfo.qt2pitzer[j] = i;
+    }
+  }
+  else if(params.ref == 2) {
+    moinfo.pitzer2qt_a = init_int_array(moinfo.nmo);
+    moinfo.qt2pitzer_a = init_int_array(moinfo.nmo);
+    moinfo.pitzer2qt_b = init_int_array(moinfo.nmo);
+    moinfo.qt2pitzer_b = init_int_array(moinfo.nmo);
+    reorder_qt_uhf(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc,
+                   moinfo.pitzer2qt_a, moinfo.pitzer2qt_b, moinfo.orbspi,
+                   moinfo.nirreps);
+    for(i=0; i < moinfo.nmo; i++) {
+      j = moinfo.pitzer2qt_a[i];
+      moinfo.qt2pitzer_a[j] = i;
+      j = moinfo.pitzer2qt_b[i];
+      moinfo.qt2pitzer_b[j] = i;
+    }
+  }
+
 
   /* Adjust clsdpi array for frozen orbitals */
   for(i=0; i < nirreps; i++)
