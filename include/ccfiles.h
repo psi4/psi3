@@ -69,7 +69,9 @@
 #define CC_GR          154 /* right-hand eigenvector for cc-density */
 #define EOM_TMP1       155 /* intermediates just for single contractions */
 #define EOM_TMP0       156 /* temporary copies of density */
-#define EOM_TMP        157 /* intermediates used more than once */
+#define EOM_TMP_XI     157 /* intermediates for xi computation */
+#define EOM_XI         158 /* xi = dE/dt amplitudes */
+#define EOM_TMP        159 /* intermediates used more than once */
 
 /* Markers for the first and last file numbers */
 #define CC_MIN  CC_INFO
