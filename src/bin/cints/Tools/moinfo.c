@@ -44,10 +44,8 @@ void init_moinfo()
   else {
 #if USE_LIBCHKPT
     MOInfo.Eref = chkpt_rd_eref();
-    MOInfo.Ecorr = chkpt_rd_ecorr();
 #else
     MOInfo.Eref = file30_rd_eref();
-    MOInfo.Ecorr = file30_rd_ecorr();
 #endif
   }
 
