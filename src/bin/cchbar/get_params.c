@@ -17,5 +17,7 @@ void get_params()
   params.print = 0;
   errcod = ip_data("PRINT", "%d", &(params.print),0);
 
+  errcod = ip_string("WFN", &(params.wfn), 0);
+
 }
 

@@ -4,5 +4,6 @@ struct Params {
   int cachelev;
   int ref;
   int print;
+  char *wfn;
 };
 

@@ -34,6 +34,7 @@ void sort_amps(void);
 void tau_build(void);
 void taut_build(void);
 void status(char *, FILE *);
+void cc3_HET1(void);
 
 int main(int argc, char *argv[])
 {
@@ -79,6 +80,11 @@ int main(int argc, char *argv[])
   if(params.print & 2) status("Wamef elements", outfile);
   Wmbij_build();
   if(params.print & 2) status("Wmbij elements", outfile);
+
+  if(!strcmp(params.wfn,"CC3")) {
+    cc3_HET1(); /* compute remaining Wmbej [H,eT1] */
+    norm_HET1();
+  }
 
   if(params.ref == 1) purge(); /** ROHF only **/
   dpd_close(0);
