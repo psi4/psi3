@@ -29,6 +29,8 @@ void FT2(void)
   dpd_buf4_init(&t2b, CC_TMP0, 0, 0, 7, 0, 7, 0, "T (JI,A>B)");
   dpd_buf4_axpy(&t2b, &t2a, -1);
   dpd_buf4_axpy(&t2a, &newtIJAB, 1);
+  dpd_buf4_close(&t2b);
+  dpd_buf4_close(&t2a);
   dpd_buf4_close(&F_anti);
 
   /*** BB ***/
@@ -42,6 +44,8 @@ void FT2(void)
   dpd_buf4_init(&t2b, CC_TMP0, 0, 0, 7, 0, 7, 0, "T (JI,A>B)");
   dpd_buf4_axpy(&t2b, &t2a, -1);
   dpd_buf4_axpy(&t2a, &newtijab, 1);
+  dpd_buf4_close(&t2b);
+  dpd_buf4_close(&t2a);
   dpd_buf4_close(&F_anti);
 
   /*** AB ***/
@@ -53,7 +57,8 @@ void FT2(void)
   dpd_contract244(&tIA, &F, &newtIjAb, 1, 0, 0, 1, 1);
   dpd_buf4_close(&F);
 
-  dpd_file2_close(&tIA); dpd_file2_close(&tia);
+  dpd_file2_close(&tIA); 
+  dpd_file2_close(&tia);
 
   dpd_buf4_close(&newtIJAB);
   dpd_buf4_close(&newtijab);

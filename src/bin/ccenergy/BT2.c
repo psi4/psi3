@@ -48,7 +48,8 @@ void BT2(void)
   dpd_buf4_close(&Z2);
   dpd_buf4_close(&Z1);
 
-  dpd_buf4_close(&B_anti);  dpd_buf4_close(&B);
+  dpd_buf4_close(&B_anti);  
+  dpd_buf4_close(&B);
 
   dpd_buf4_close(&tauIJAB);
   dpd_buf4_close(&tauijab);

@@ -39,8 +39,17 @@ void ZT2(void)
   dpd_contract424(&ZIjAm, &tia, &newtIjAb, 3, 0, 0, -1, 1);
   dpd_contract244(&tIA, &ZIjMa, &newtIjAb, 0, 2, 1, -1, 1);
 
-  dpd_file2_close(&tIA); dpd_file2_close(&tia);
+  dpd_file2_close(&tIA); 
+  dpd_file2_close(&tia);
 
-  dpd_buf4_close(&ZIJMA); dpd_buf4_close(&ZIJAM); dpd_buf4_close(&Zijma);
-  dpd_buf4_close(&Zijam); dpd_buf4_close(&ZIjMa); dpd_buf4_close(&ZIjAm);
+  dpd_buf4_close(&newtIJAB); 
+  dpd_buf4_close(&newtijab); 
+  dpd_buf4_close(&newtIjAb); 
+
+  dpd_buf4_close(&ZIJMA); 
+  dpd_buf4_close(&ZIJAM); 
+  dpd_buf4_close(&Zijma);
+  dpd_buf4_close(&Zijam); 
+  dpd_buf4_close(&ZIjMa); 
+  dpd_buf4_close(&ZIjAm);
 }

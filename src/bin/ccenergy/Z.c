@@ -29,15 +29,22 @@ void Z_build(void)
   dpd_contract444(&tauIjAb, &F, &ZIjMa, 0, 0, 1, 0);
   dpd_contract444(&tauIjbA, &F, &ZIjmA, 0, 0, 1, 0);
 
-  dpd_buf4_close(&tauIJAB); dpd_buf4_close(&tauijab); dpd_buf4_close(&tauIjAb);
-  dpd_buf4_close(&F_anti); dpd_buf4_close(&F);
+  dpd_buf4_close(&tauIJAB); 
+  dpd_buf4_close(&tauijab); 
+  dpd_buf4_close(&tauIjAb);
+  dpd_buf4_close(&tauIjbA);
+
+  dpd_buf4_close(&F_anti); 
+  dpd_buf4_close(&F);
 
   dpd_buf4_sort(&ZIJMA, CC_MISC, pqsr, 2, 11, "ZIJAM");
   dpd_buf4_sort(&Zijma, CC_MISC, pqsr, 2, 11, "Zijam");
   dpd_buf4_sort(&ZIjmA, CC_MISC, pqsr, 0, 11, "ZIjAm");
 
-  dpd_buf4_close(&ZIJMA);  dpd_buf4_close(&Zijma);
-  dpd_buf4_close(&ZIjMa);  dpd_buf4_close(&ZIjmA);
+  dpd_buf4_close(&ZIJMA);  
+  dpd_buf4_close(&Zijma);
+  dpd_buf4_close(&ZIjMa);  
+  dpd_buf4_close(&ZIjmA);
 
   timer_off("Z");
 }

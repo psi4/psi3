@@ -212,7 +212,8 @@ void init_io(void)
   free(progid);
 
   psio_init();
-  for(i=CC_MIN; i <= CC_MAX; i++) psio_open(i,1);
+  for(i=CC_MIN; i <= CC_DENOM; i++) psio_open(i,1);
+  for(i=CC_TAMPS; i <= CC_MAX; i++) psio_open(i,0);
 }
 
 void title(void)
