@@ -45,7 +45,7 @@ double **chkpt_rd_scf(void)
 		    nso*nmo*sizeof(double));
   }
   else
-    scf = NULL;
+    scf = chkpt_rd_alpha_scf();
 
   return scf;
 }
