@@ -109,6 +109,9 @@ void chkpt_wt_sloc(int *);
 int **chkpt_rd_shell_transm(void);
 void chkpt_wt_shell_transm(int **);
 
+double **chkpt_rd_cartrep();
+void chkpt_wt_cartrep(double **);
+
 int chkpt_rd_nentry(void);
 void chkpt_wt_nentry(int);
 

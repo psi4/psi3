@@ -72,7 +72,8 @@ schwartz.c \
 ecorr.c \
 eref.c \
 efzc.c \
-disp.c
+disp.c \
+cartrep.c
 
 DEPENDINCLUDE = psio.h chkpt.h
 
