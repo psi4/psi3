@@ -1,6 +1,6 @@
 ******************************************************************************
-tstart called on boromir.chem
-Tue May 20 12:09:05 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:34:55 2003
 
                                 --------------
                                   WELCOME TO
@@ -138,15 +138,15 @@ Tue May 20 12:09:05 2003
 
 
 ******************************************************************************
-tstop called on boromir.chem
-Tue May 20 12:09:05 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:34:55 2003
 
-user time   =       0.06 seconds =       0.00 minutes
+user time   =       0.04 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Tue May 20 12:09:05 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:34:55 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -174,15 +174,15 @@ Tue May 20 12:09:05 2003
     Wrote 11412 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on boromir.chem
-Tue May 20 12:09:05 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:34:55 2003
 
-user time   =       0.13 seconds =       0.00 minutes
-system time =       0.03 seconds =       0.00 minutes
+user time   =       0.09 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Tue May 20 12:09:05 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:34:55 2003
 
 
              ------------------------------------------
@@ -193,22 +193,18 @@ Tue May 20 12:09:05 2003
 
              ------------------------------------------
 
-
-
-And I think the multiplicity is 1
-
-
-If this is wrong, the specify MULTP keyword
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
 
   label       = EOM-CCSD/cc-pVDZ H2O
   wfn          = EOM_CCSD
   reference    = RHF
   multiplicity = 1
   charge       = 0
-  direct SCF   = false
+  direct       = false
   dertype      = NONE
-  convergence  = 12
-  maxiter      = 100
+  convergence  = 10
+  maxiter      = 40
   guess        = AUTO
 
   nuclear repulsion energy        9.7806708533239
@@ -243,15 +239,13 @@ If this is wrong, the specify MULTP keyword
     7       -76.0217013577    2.319574e-04    5.807129e-04    1.111120e-02
     8       -76.0217094814    8.123719e-06    1.019837e-04    9.798575e-04
     9       -76.0217097023    2.208736e-07    1.491249e-05    1.903604e-04
-   10       -76.0217097153    1.304295e-08    3.178835e-06    4.991254e-05
-   11       -76.0217097165    1.240323e-09    1.285182e-06    1.239918e-05
+   10       -76.0217097153    1.304292e-08    3.178835e-06    4.991254e-05
+   11       -76.0217097165    1.240309e-09    1.285182e-06    1.239918e-05
    12       -76.0217097166    9.450218e-12    1.040552e-07    1.135786e-06
-   13       -76.0217097166    9.379164e-13    4.135417e-08    3.583544e-07
+   13       -76.0217097166    9.663381e-13    4.135417e-08    3.583544e-07
    14       -76.0217097166    0.000000e+00    2.557106e-09    2.574766e-08
-   15       -76.0217097166    0.000000e+00    5.168660e-10    6.294585e-09
-   16       -76.0217097166    1.421085e-14    3.761921e-11    4.480571e-10
-   17       -76.0217097166   -1.421085e-14    1.432170e-11    1.379274e-10
-   18       -76.0217097166    1.421085e-14    9.971698e-13    1.253829e-11
+   15       -76.0217097166    1.421085e-14    5.168659e-10    6.294585e-09
+   16       -76.0217097166   -1.421085e-14    3.761921e-11    4.480552e-10
 
 Orbital energies (a.u.):
 
@@ -271,22 +265,22 @@ Orbital energies (a.u.):
 
 
         SCF total energy   =     -76.021709716551
-        kinetic energy     =      76.236726451466
-        nuc. attr. energy  =    -200.410350682891
-        elec. rep. energy  =      48.151914514874
-        potential energy   =    -152.258436168017
-        virial theorem     =       2.002828359632
+        kinetic energy     =      76.236726450608
+        nuc. attr. energy  =    -200.410350681495
+        elec. rep. energy  =      48.151914514335
+        potential energy   =    -152.258436167160
+        virial theorem     =       2.002828359621
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on boromir.chem
-Tue May 20 12:09:05 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:34:55 2003
 
-user time   =       0.01 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Tue May 20 12:09:05 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:34:55 2003
 
 
 	**************************************************
@@ -372,15 +366,15 @@ Tue May 20 12:09:05 2003
 	One-electron integrals written to file 35.
 	Frozen-core operator written to file 35.
 ******************************************************************************
-tstop called on boromir.chem
-Tue May 20 12:09:05 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:34:56 2003
 
-user time   =       0.06 seconds =       0.00 minutes
-system time =       0.19 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.17 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Tue May 20 12:09:05 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:34:56 2003
 
 
 			**************************
@@ -392,12 +386,14 @@ Tue May 20 12:09:05 2003
 
 	Input parameters:
 	-----------------
-	Reference wfn   =      RHF
-	Derivative      =     None
-	Memory (Mbytes) =     32.0
-	AO Basis        =      NONE
-	Cache Level     =        2
-	Cache Type      =      LRU
+	Wave function   =	EOM_CCSD
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Memory (Mbytes) =	32.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
 
 
 	Chkpt Parameters:
@@ -420,23 +416,23 @@ Tue May 20 12:09:05 2003
 	Size of <ia|bc> integrals:     0.004 (MW) /     0.030 (MB)
 	Size of Tijab amplitudes:      0.001 (MW) /     0.010 (MB)
 
-	One-electron energy          =   -124.17362423142481
-	Two-electron (AA) energy     =     14.66489803943384
-	Two-electron (BB) energy     =     14.66489803943384
-	Two-electron (AB) energy     =     23.70634562211582
-	Two-electron energy          =     38.37124366154966
+	One-electron energy          =   -124.17362423088646
+	Two-electron (AA) energy     =     14.66489803919187
+	Two-electron (BB) energy     =     14.66489803919187
+	Two-electron (AB) energy     =     23.70634562181941
+	Two-electron energy          =     38.37124366101128
 	Frozen-core energy (transqt) =      0.00000000000000
-	Reference energy             =    -76.02170971655126
+	Reference energy             =    -76.02170971655130
 ******************************************************************************
-tstop called on boromir.chem
-Tue May 20 12:09:05 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:34:56 2003
 
-user time   =       0.04 seconds =       0.00 minutes
-system time =       0.04 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.05 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Tue May 20 12:09:05 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:34:56 2003
 
 			**************************
 			*                        *
@@ -446,15 +442,15 @@ Tue May 20 12:09:05 2003
 
 	Nuclear Rep. energy (chkpt)   =    9.780670853323887
 	SCF energy          (chkpt)   =  -76.021709716551285
-	Reference energy    (file100) =  -76.021709716551257
+	Reference energy    (file100) =  -76.021709716551300
 
 	Input parameters:
 	-----------------
 	Wave function   =    EOM_CCSD
 	Reference wfn   =      RHF
 	Memory (Mbytes) =   32.0
-	Maxiter         =    100
-	Convergence     = 1.0e-12
+	Maxiter         =     50
+	Convergence     = 1.0e-07
 	Restart         =     Yes
 	DIIS            =     Yes
 	Local CC        =     No
@@ -464,77 +460,68 @@ Tue May 20 12:09:05 2003
 	Print Level     =    0
 	# Amps to Print =    10
 	Print MP2 Amps? =    No
+	Analyze T2 Amps =    No
 
 	                     Solving CCSD Equations
 	                     ----------------------
-	Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
-	----     ---------------------    ---------   ----------  ----------  ----------
-	   0        -0.200137192065888    0.000e+00    0.000000    0.000000    0.000000
-	   1        -0.205628509986242    2.428e-02    0.003581    0.007890    0.007890
-	   2        -0.209096502874630    8.092e-03    0.004200    0.009013    0.009013
-	   3        -0.209408127408631    1.924e-03    0.004521    0.009669    0.009669
-	   4        -0.209416205724842    4.168e-04    0.004541    0.009691    0.009691
-	   5        -0.209424595785676    9.956e-05    0.004551    0.009697    0.009697
-	   6        -0.209423957441778    2.973e-05    0.004553    0.009695    0.009695
-	   7        -0.209423883726260    9.448e-06    0.004555    0.009694    0.009694
-	   8        -0.209423835629418    1.850e-06    0.004555    0.009694    0.009694
-	   9        -0.209423799188576    4.092e-07    0.004555    0.009694    0.009694
-	  10        -0.209423809460836    7.837e-08    0.004555    0.009694    0.009694
-	  11        -0.209423808920930    1.594e-08    0.004555    0.009694    0.009694
-	  12        -0.209423809195893    2.602e-09    0.004555    0.009694    0.009694
-	  13        -0.209423809135634    5.572e-10    0.004555    0.009694    0.009694
-	  14        -0.209423809128973    1.059e-10    0.004555    0.009694    0.009694
-	  15        -0.209423809126653    2.917e-11    0.004555    0.009694    0.009694
-	  16        -0.209423809126476    5.768e-12    0.004555    0.009694    0.009694
-	  17        -0.209423809126581    1.642e-12    0.004555    0.009694    0.009694
-	  18        -0.209423809126586    3.586e-13    0.004555    0.009694    0.009694
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.200137192055748    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.205628509985397    2.428e-02    0.003581    0.007890    0.007890
+     2        -0.209096502874456    8.092e-03    0.004200    0.009013    0.009013
+     3        -0.209408127409388    1.924e-03    0.004521    0.009669    0.009669
+     4        -0.209416205725395    4.168e-04    0.004541    0.009691    0.009691
+     5        -0.209424595786257    9.956e-05    0.004551    0.009697    0.009697
+     6        -0.209423957442229    2.973e-05    0.004553    0.009695    0.009695
+     7        -0.209423883726684    9.448e-06    0.004555    0.009694    0.009694
+     8        -0.209423835629837    1.850e-06    0.004555    0.009694    0.009694
+     9        -0.209423799188994    4.092e-07    0.004555    0.009694    0.009694
+    10        -0.209423807880688    7.837e-08    0.004555    0.009694    0.009694
 
 	Iterations converged.
 
 
 	Largest TIA Amplitudes:
-	-----------------------
-	          4  17        -0.0065183017
-	          4  13        -0.0061936454
-	          2   0        -0.0049958786
-	          1   0        -0.0045267330
-	          2   5         0.0042337204
-	          1   2         0.0036328162
-	          4  15         0.0032291136
-	          3  11        -0.0029349431
-	          2   3        -0.0027916425
-	          1   5         0.0024943479
+	          4  17         0.0065183016
+	          4  13        -0.0061936385
+	          2   0         0.0049958622
+	          1   0         0.0045267344
+	          2   5         0.0042337207
+	          1   2        -0.0036328140
+	          4  15         0.0032291138
+	          3  11         0.0029349478
+	          2   3         0.0027916440
+	          1   5         0.0024943475
 
 	Largest TIjAb Amplitudes:
-	-------------------------
-	  3   3  10  10        -0.0507376248
-	  4   4  14  14        -0.0344275463
-	  2   2   2   2        -0.0341934373
-	  2   3   2  10        -0.0279179854
-	  3   2  10   2        -0.0279179854
-	  4   4   1   1        -0.0265452428
-	  2   2  14  14        -0.0252781425
-	  4   4  13  13        -0.0241114870
-	  3   4  10  15        -0.0230396642
-	  4   3  15  10        -0.0230396642
+	  3   3  10  10        -0.0507376209
+	  4   4  14  14        -0.0344275517
+	  2   2   2   2        -0.0341934369
+	  2   3   2  10         0.0279179859
+	  3   2  10   2         0.0279179859
+	  4   4   1   1        -0.0265452346
+	  2   2  14  14        -0.0252781361
+	  4   4  13  13        -0.0241114903
+	  3   4  10  15        -0.0230396643
+	  4   3  15  10        -0.0230396643
 
 	SCF energy       (chkpt)   =  -76.021709716551285
-	Reference energy (file100) =  -76.021709716551257
-	MP2 correlation energy     =   -0.200137192065888
-	Total MP2 energy           =  -76.221846908617138
-	CCSD correlation energy    =   -0.209423809126586
-	Total CCSD energy          =  -76.231133525677848
+	Reference energy (file100) =  -76.021709716551300
+	MP2 correlation energy     =   -0.200137192055748
+	Total MP2 energy           =  -76.221846908607048
+	CCSD correlation energy    =   -0.209423807880688
+	Total CCSD energy          =  -76.231133524431982
 
 ******************************************************************************
-tstop called on boromir.chem
-Tue May 20 12:09:06 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:34:56 2003
 
-user time   =       0.60 seconds =       0.01 minutes
-system time =       0.46 seconds =       0.01 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.21 seconds =       0.00 minutes
+system time =       0.25 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Tue May 20 12:09:06 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:34:56 2003
 
 
 			**************************
@@ -544,15 +531,15 @@ Tue May 20 12:09:06 2003
 			**************************
 
 ******************************************************************************
-tstop called on boromir.chem
-Tue May 20 12:09:07 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:34:56 2003
 
-user time   =       0.13 seconds =       0.00 minutes
-system time =       0.23 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.14 seconds =       0.00 minutes
+system time =       0.17 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Tue May 20 12:09:07 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:34:56 2003
 
 
 	**********************************************************
@@ -561,7 +548,7 @@ Tue May 20 12:09:07 2003
 
 	Nuclear Rep. energy (chkpt)   =    9.780670853323887
 	SCF energy          (chkpt)   =  -76.021709716551285
-	Reference energy    (file100) =  -76.021709716551257
+	Reference energy    (file100) =  -76.021709716551300
 
 	Input parameters:
 	-----------------
@@ -581,12 +568,12 @@ Tue May 20 12:09:07 2003
 	Vectors stored per root     =     6
 	Print HbarSS iterations?    =     0
 	Excitation range for HBarSS =     2
-	Eigenvalue tolerance        = 1.0e-10
-	Residual vector tolerance   = 1.0e-08
+	Eigenvalue tolerance        = 1.0e-06
+	Residual vector tolerance   = 1.0e-04
 	Complex tolerance           = 1.0e-12
-	Root for properties         =     2
+	Root for properties         =     0
 	Save all R vectors          =     0
-	Sym of state for properties =    B2 
+	Sym of state for properties =    A1 
 	Guess vectors taken from    = SINGLES
 
 
@@ -596,99 +583,68 @@ Symmetry of right eigenvector: A1
 Obtaining initial guess from singles-singles block of Hbar...Done.
 
 Iter=1    L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.5255165606   5.26e-01    1.87e-01      N
-                     2   0.7812227791   7.81e-01    1.76e-01      N
+                     1   0.5255165594   5.26e-01    1.87e-01      N
+                     2   0.7812227781   7.81e-01    1.76e-01      N
 Iter=2    L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4188204910  -1.07e-01    2.78e-02      N
-                     2   0.6936846490  -8.75e-02    2.50e-02      N
+                     1   0.4188204895  -1.07e-01    2.78e-02      N
+                     2   0.6936846481  -8.75e-02    2.50e-02      N
 Iter=3    L=6     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4167527065  -2.07e-03    7.97e-03      N
-                     2   0.6921787270  -1.51e-03    8.40e-03      N
+                     1   0.4167527052  -2.07e-03    7.97e-03      N
+                     2   0.6921787261  -1.51e-03    8.40e-03      N
 Iter=4    L=8     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4165501946  -2.03e-04    1.96e-03      N
-                     2   0.6920793228  -9.94e-05    3.13e-03      N
+                     1   0.4165501933  -2.03e-04    1.96e-03      N
+                     2   0.6920793219  -9.94e-05    3.13e-03      N
 Iter=5    L=10    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4165287383  -2.15e-05    4.06e-04      N
-                     2   0.6920293066  -5.00e-05    1.00e-03      N
+                     1   0.4165287370  -2.15e-05    4.06e-04      N
+                     2   0.6920293057  -5.00e-05    1.00e-03      N
 Iter=6    L=12    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4165292497   5.11e-07    1.17e-04      N
-                     2   0.6920274335  -1.87e-06    3.57e-04      N
+                     1   0.4165292484   5.11e-07    1.17e-04      N
+                     2   0.6920274327  -1.87e-06    3.57e-04      N
 Iter=7    L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4165292497  -2.22e-16    1.17e-04      N
-                     2   0.6920274335  -4.44e-16    3.57e-04      N
+                     1   0.4165292484   1.67e-16    1.17e-04      N
+                     2   0.6920274327  -3.33e-16    3.57e-04      N
 Iter=8    L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4165294014   1.52e-07    3.70e-05      N
-                     2   0.6920291263   1.69e-06    1.51e-04      N
-Iter=9    L=6     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4165299361   5.35e-07    1.03e-05      N
-                     2   0.6920300735   9.47e-07    5.85e-05      N
-Iter=10   L=8     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4165297978  -1.38e-07    2.10e-06      N
-                     2   0.6920292785  -7.95e-07    3.01e-05      N
-Iter=11   L=10    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4165298320   3.42e-08    5.52e-07      N
-                     2   0.6920294599   1.81e-07    1.59e-05      N
-Iter=12   L=12    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4165298336   1.59e-09    1.29e-07      N
-                     2   0.6920295920   1.32e-07    3.25e-06      N
-Iter=13   L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4165298336   3.89e-16    1.29e-07      N
-                     2   0.6920295920  -4.44e-16    3.25e-06      N
-Iter=14   L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4165298338   1.60e-10    3.48e-08      N
-                     2   0.6920295555  -3.65e-08    1.70e-06      N
-Iter=15   L=6     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4165298334  -3.36e-10    8.58e-09      N
-                     2   0.6920295570   1.54e-09    7.69e-07      N
-Iter=16   L=8     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4165298336   1.59e-10    2.12e-09      N
-                     2   0.6920295627   5.70e-09    2.43e-07      N
-Iter=17   L=10    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4165298336  -1.99e-11    4.50e-10      Y
-                     2   0.6920295620  -7.75e-10    6.24e-08      N
-Iter=18   L=11    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4165298336   1.02e-13    4.44e-10      Y
-                     2   0.6920295615  -4.39e-10    2.27e-08      N
-Iter=19   L=12    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4165298336   1.53e-13    4.44e-10      Y
-                     2   0.6920295618   3.12e-10    4.69e-09      N
-Iter=20   L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4165298336  -5.55e-17    4.44e-10      Y
-                     2   0.6920295618   2.22e-16    4.69e-09      Y
+                     1   0.4165294001   1.52e-07    3.70e-05      Y
+                     2   0.6920291254   1.69e-06    1.51e-04      N
+Iter=9    L=5     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.4165294316   3.15e-08    3.39e-05      Y
+                     2   0.6920300709   9.45e-07    5.87e-05      Y
 Collapsing to only 2 vectors.
 
-Procedure converged for 2 roots.
+Procedure converged for 2 root(s).
+EOM CCSD R0 for root 1 =    0.0081068905
+EOM CCSD R0 for root 2 =   -0.0128834010
 
 Final Energetic Summary for Converged Roots of Irrep A1 
                      Excitation Energy           Total Energy
                 (eV)     (cm^-1)     (au)             (au)
-EOM State 1     11.334    91417.7   0.4165298336   -75.6051798830
-
-Largest components of excited wave function #0:
-	          2   0         0.6856889881
-	          2   1         0.0549058333
-	          4  13        -0.0313506663
-	          1   0        -0.0273090709
-	          2   4         0.0211156263
-	  2   2   0   0         0.0578488711
-	  2   2   0   2         0.0498540634
-	  2   2   2   0         0.0498540634
-	  2   4   0  13         0.0494870814
-	  4   2  13   0         0.0494870814
-
-EOM State 2     18.831   151882.9   0.6920295618   -75.3296801547
+EOM State 1     11.334    91417.6   0.4165294316   -75.6051802850
 
 Largest components of excited wave function #1:
-	          4  13        -0.6818568746
-	          3  10         0.0733446557
-	          2   2         0.0557414744
-	          2   1         0.0436887507
-	          4  14         0.0399771114
-	  4   4  13  13        -0.1002577594
-	  4   4   0   0        -0.0368594677
-	  3   4  10  13        -0.0317829075
-	  4   3  13  10        -0.0317829075
-	  3   3  13  13        -0.0271557122
+	          2   0        -0.6856910045
+	          2   1         0.0548709390
+	          4  13        -0.0313522565
+	          1   0         0.0273114720
+	          2   4        -0.0211173655
+	  2   2   0   0         0.0578555269
+	  2   2   0   2         0.0498587292
+	  2   2   2   0         0.0498587292
+	  2   4   0  13        -0.0494908606
+	  4   2  13   0        -0.0494908606
+
+EOM State 2     18.831   151883.0   0.6920300709   -75.3296796457
+
+Largest components of excited wave function #2:
+	          4  13        -0.6818577791
+	          3  10         0.0733481648
+	          2   2        -0.0557425675
+	          2   1         0.0437003868
+	          4  14         0.0399758548
+	  4   4  13  13        -0.1002615330
+	  4   4   0   0        -0.0368507913
+	  3   4  10  13        -0.0317783761
+	  4   3  13  10        -0.0317783761
+	  3   3  13  13        -0.0271266857
 
 
 Symmetry of excited state: A2 
@@ -696,105 +652,77 @@ Symmetry of right eigenvector: A2
 Obtaining initial guess from singles-singles block of Hbar...Done.
 
 Iter=1    L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.5011905538   5.01e-01    1.80e-01      N
-                     2   0.9493360666   9.49e-01    1.82e-01      N
+                     1   0.5011905516   5.01e-01    1.80e-01      N
+                     2   0.9493360650   9.49e-01    1.82e-01      N
 Iter=2    L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4007386247  -1.00e-01    2.12e-02      N
-                     2   0.8379056904  -1.11e-01    7.76e-02      N
+                     1   0.4007386234  -1.00e-01    2.12e-02      N
+                     2   0.8379056897  -1.11e-01    7.76e-02      N
 Iter=3    L=6     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3992910164  -1.45e-03    5.05e-03      N
-                     2   0.8350951464  -2.81e-03    1.09e-01      N
+                     1   0.3992910152  -1.45e-03    5.05e-03      N
+                     2   0.8350951457  -2.81e-03    1.09e-01      N
 Iter=4    L=8     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3991960463  -9.50e-05    8.61e-04      N
-                     2   0.8350064348  -8.87e-05    1.56e-01      N
+                     1   0.3991960450  -9.50e-05    8.61e-04      N
+                     2   0.8350064340  -8.87e-05    1.56e-01      N
 Iter=5    L=10    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3991893183  -6.73e-06    1.74e-04      N
-                     2   0.8349096240  -9.68e-05    6.12e-02      N
+                     1   0.3991893170  -6.73e-06    1.74e-04      N
+                     2   0.8349096233  -9.68e-05    6.12e-02      N
 Iter=6    L=12    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3991896125   2.94e-07    4.19e-05      N
-                     2   0.8348512091  -5.84e-05    6.23e-03      N
+                     1   0.3991896112   2.94e-07    4.19e-05      Y
+                     2   0.8348512084  -5.84e-05    6.23e-03      N
 Iter=7    L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3991896125   7.77e-16    4.19e-05      N
-                     2   0.8348512091   1.67e-15    6.23e-03      N
-Iter=8    L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3991895832  -2.93e-08    1.41e-05      N
-                     2   0.8348042253  -4.70e-05    9.73e-02      N
-Iter=9    L=6     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3991896277   4.45e-08    2.77e-06      N
-                     2   0.8348248242   2.06e-05    2.30e-03      N
-Iter=10   L=8     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3991896184  -9.29e-09    5.53e-07      N
-                     2   0.8348255309   7.07e-07    2.54e-04      N
-Iter=11   L=10    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3991896253   6.93e-09    1.04e-07      N
-                     2   0.8348271893   1.66e-06    7.02e-05      N
-Iter=12   L=12    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3991896271   1.81e-09    1.87e-08      N
-                     2   0.8348275967   4.07e-07    1.68e-05      N
-Iter=13   L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3991896271   6.66e-16    1.87e-08      N
-                     2   0.8348275967   3.33e-16    1.68e-05      N
-Iter=14   L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3991896272   1.06e-10    4.75e-09      N
-                     2   0.8348273210  -2.76e-07    1.07e-05      N
-Iter=15   L=6     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3991896272  -6.61e-11    9.56e-10      Y
-                     2   0.8348273233   2.29e-09    2.02e-04      N
-Iter=16   L=7     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3991896272   9.08e-12    9.25e-10      Y
-                     2   0.8348273911   6.78e-08    9.69e-06      N
-Iter=17   L=8     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3991896272   3.10e-13    9.19e-10      Y
-                     2   0.8348273794  -1.17e-08    6.74e-07      N
-Iter=18   L=9     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3991896272   3.08e-13    9.16e-10      Y
-                     2   0.8348273785  -9.09e-10    2.06e-07      N
-Iter=19   L=10    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3991896272   1.48e-13    8.94e-10      Y
-                     2   0.8348273781  -3.96e-10    6.89e-08      N
-Iter=20   L=11    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3991896272   1.45e-13    8.95e-10      Y
-                     2   0.8348273777  -3.64e-10    2.10e-08      N
-Iter=21   L=12    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3991896272   9.71e-13    8.80e-10      Y
-                     2   0.8348273780   2.83e-10    7.80e-09      N
-Iter=22   L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3991896272  -1.67e-16    8.80e-10      Y
-                     2   0.8348273780   1.11e-16    7.80e-09      Y
+                     1   0.3991896112   4.44e-16    4.19e-05      Y
+                     2   0.8348512084   2.22e-16    6.23e-03      N
+Iter=8    L=3     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3991892583  -3.53e-07    4.19e-05      Y
+                     2   0.8348034554  -4.78e-05    9.96e-02      N
+Iter=9    L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3991896423   3.84e-07    4.06e-05      Y
+                     2   0.8348270638   2.36e-05    2.71e-03      N
+Iter=10   L=5     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3991896159  -2.63e-08    3.97e-05      Y
+                     2   0.8348246885  -2.38e-06    3.44e-04      N
+Iter=11   L=6     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3991895012  -1.15e-07    3.75e-05      Y
+                     2   0.8348272687   2.58e-06    1.19e-04      N
+Iter=12   L=7     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3991895837   8.25e-08    3.36e-05      Y
+                     2   0.8348277337   4.65e-07    3.89e-05      Y
 Collapsing to only 2 vectors.
 
-Procedure converged for 2 roots.
+Procedure converged for 2 root(s).
+EOM CCSD R0 for root 3 =    0.0000000000
+EOM CCSD R0 for root 4 =    0.0000000000
 
 Final Energetic Summary for Converged Roots of Irrep A2 
                      Excitation Energy           Total Energy
                 (eV)     (cm^-1)     (au)             (au)
-EOM State 1     10.863    87612.0   0.3991896272   -75.6225200894
+EOM State 3     10.863    87612.0   0.3991895837   -75.6225201329
 
-Largest components of excited wave function #0:
-	          3  10        -0.6829187104
-	          3  11         0.0908684376
-	          3  12        -0.0605425594
-	          3  13         0.0096650546
-	          1   0        -0.0034571180
-	  3   4  13  13        -0.0585813885
-	  4   3  13  13        -0.0585813885
-	  3   3  10  13        -0.0535993507
-	  3   3  13  10        -0.0535993507
-	  2   3   2  13        -0.0332500013
+Largest components of excited wave function #3:
+	          3  10        -0.6829187799
+	          3  11         0.0908699532
+	          3  12        -0.0605413596
+	          3  13        -0.0096635865
+	          1   0        -0.0034609984
+	  3   4  13  13        -0.0585886812
+	  4   3  13  13        -0.0585886812
+	  3   3  10  13        -0.0536003825
+	  3   3  13  10        -0.0536003825
+	  2   3   2  13         0.0332491515
 
-EOM State 2     22.717   183223.4   0.8348273780   -75.1868823386
+EOM State 4     22.717   183223.5   0.8348277337   -75.1868819828
 
-Largest components of excited wave function #1:
-	          3  11         0.6819980824
-	          3  10         0.0864962487
-	          3  13         0.0299450293
-	          3  12        -0.0224214360
-	          4  13         0.0071949314
-	  3   4  14  14        -0.0552359069
-	  4   3  14  14        -0.0552359069
-	  3   3  10  14         0.0472466181
-	  3   3  14  10         0.0472466181
-	  3   4  14  13         0.0347189704
+Largest components of excited wave function #4:
+	          3  11        -0.6819965521
+	          3  10        -0.0864970623
+	          3  13         0.0299446651
+	          3  12         0.0224285063
+	          4  13        -0.0071952640
+	  3   4  14  14         0.0552392963
+	  4   3  14  14         0.0552392963
+	  3   3  10  14        -0.0472415702
+	  3   3  14  10        -0.0472415702
+	  3   4  14  13        -0.0347250455
 
 
 Symmetry of excited state: B1 
@@ -802,102 +730,74 @@ Symmetry of right eigenvector: B1
 Obtaining initial guess from singles-singles block of Hbar...Done.
 
 Iter=1    L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4277833084   4.28e-01    1.84e-01      N
-                     2   1.0375034578   1.04e+00    1.85e-01      N
+                     1   0.4277833070   4.28e-01    1.84e-01      N
+                     2   1.0375034566   1.04e+00    1.85e-01      N
 Iter=2    L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3226103613  -1.05e-01    1.91e-02      N
-                     2   0.9258312219  -1.12e-01    4.23e-02      N
+                     1   0.3226103610  -1.05e-01    1.91e-02      N
+                     2   0.9258312246  -1.12e-01    4.23e-02      N
 Iter=3    L=6     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3212761286  -1.33e-03    5.08e-03      N
-                     2   0.9210735212  -4.76e-03    1.77e-02      N
+                     1   0.3212761279  -1.33e-03    5.08e-03      N
+                     2   0.9210735207  -4.76e-03    1.77e-02      N
 Iter=4    L=8     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3212160463  -6.01e-05    9.59e-04      N
-                     2   0.9199760192  -1.10e-03    7.32e-03      N
+                     1   0.3212160455  -6.01e-05    9.59e-04      N
+                     2   0.9199760182  -1.10e-03    7.32e-03      N
 Iter=5    L=10    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3212174813   1.44e-06    1.97e-04      N
-                     2   0.9197144458  -2.62e-04    2.69e-03      N
+                     1   0.3212174805   1.44e-06    1.97e-04      N
+                     2   0.9197144447  -2.62e-04    2.69e-03      N
 Iter=6    L=12    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3212184113   9.30e-07    4.61e-05      N
-                     2   0.9196843723  -3.01e-05    7.58e-04      N
+                     1   0.3212184104   9.30e-07    4.61e-05      Y
+                     2   0.9196843713  -3.01e-05    7.58e-04      N
 Iter=7    L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3212184113   2.22e-16    4.61e-05      N
-                     2   0.9196843723  -5.55e-16    7.58e-04      N
-Iter=8    L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3212184150   3.69e-09    1.47e-05      N
-                     2   0.9196795216  -4.85e-06    3.94e-04      N
-Iter=9    L=6     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3212184513   3.64e-08    2.81e-06      N
-                     2   0.9196797400   2.18e-07    1.42e-04      N
-Iter=10   L=8     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3212184452  -6.12e-09    5.89e-07      N
-                     2   0.9196784122  -1.33e-06    6.11e-05      N
-Iter=11   L=10    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3212184513   6.12e-09    1.27e-07      N
-                     2   0.9196777804  -6.32e-07    2.25e-05      N
-Iter=12   L=12    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3212184525   1.14e-09    2.49e-08      N
-                     2   0.9196779122   1.32e-07    5.95e-06      N
-Iter=13   L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3212184525   0.00e+00    2.49e-08      N
-                     2   0.9196779122   3.33e-16    5.95e-06      N
-Iter=14   L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3212184519  -5.50e-10    5.61e-09      N
-                     2   0.9196777595  -1.53e-07    2.51e-06      N
-Iter=15   L=6     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3212184521   1.45e-10    1.28e-09      N
-                     2   0.9196778035   4.40e-08    8.81e-07      N
-Iter=16   L=8     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3212184521  -1.86e-11    2.70e-10      Y
-                     2   0.9196778030  -5.15e-10    3.55e-07      N
-Iter=17   L=9     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3212184521   6.39e-14    2.66e-10      Y
-                     2   0.9196777999  -3.11e-09    1.35e-07      N
-Iter=18   L=10    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3212184521   5.68e-13    2.58e-10      Y
-                     2   0.9196777996  -3.36e-10    4.75e-08      N
-Iter=19   L=11    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3212184521   1.21e-13    2.57e-10      Y
-                     2   0.9196777993  -3.03e-10    1.19e-08      N
-Iter=20   L=12    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3212184521  -1.15e-14    2.57e-10      Y
-                     2   0.9196777993  -4.07e-14    3.91e-09      Y
-Iter=21   L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3212184521   1.11e-16    2.57e-10      Y
-                     2   0.9196777993  -3.33e-16    3.91e-09      Y
+                     1   0.3212184104  -3.89e-16    4.61e-05      Y
+                     2   0.9196843713  -3.33e-16    7.58e-04      N
+Iter=8    L=3     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3212184684   5.80e-08    4.57e-05      Y
+                     2   0.9196795376  -4.83e-06    3.95e-04      N
+Iter=9    L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3212185042   3.58e-08    4.49e-05      Y
+                     2   0.9196796019   6.43e-08    1.45e-04      N
+Iter=10   L=5     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3212185372   3.30e-08    4.45e-05      Y
+                     2   0.9196783375  -1.26e-06    6.38e-05      N
+Iter=11   L=6     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3212187004   1.63e-07    4.32e-05      Y
+                     2   0.9196777648  -5.73e-07    2.35e-05      Y
 Collapsing to only 2 vectors.
 
-Procedure converged for 2 roots.
+Procedure converged for 2 root(s).
+EOM CCSD R0 for root 5 =    0.0000000000
+EOM CCSD R0 for root 6 =    0.0000000000
 
 Final Energetic Summary for Converged Roots of Irrep B1 
                      Excitation Energy           Total Energy
                 (eV)     (cm^-1)     (au)             (au)
-EOM State 1      8.741    70499.3   0.3212184521   -75.7004912645
+EOM State 5      8.741    70499.4   0.3212187004   -75.7004910162
 
-Largest components of excited wave function #0:
-	          3  10         0.6870151963
-	          3  11         0.0651280914
-	          3  12         0.0202531162
-	          3  13         0.0200157275
-	          3  33         0.0139613951
-	  3   3   0  10         0.0578461266
-	  3   3  10   0         0.0578461266
-	  3   4   0  13         0.0509886911
-	  4   3  13   0         0.0509886911
-	  1   3   0   0         0.0414754659
+Largest components of excited wave function #5:
+	          3  10         0.6870166104
+	          3  11        -0.0651285896
+	          3  12         0.0202443422
+	          3  13         0.0200138249
+	          3  33         0.0139589766
+	  3   3   0  10         0.0578497788
+	  3   3  10   0         0.0578497788
+	  3   4   0  13         0.0509928465
+	  4   3  13   0         0.0509928465
+	  1   3   0   0        -0.0414655294
 
-EOM State 2     25.026   201845.9   0.9196777993   -75.1020319173
+EOM State 6     25.026   201845.9   0.9196777648   -75.1020319518
 
-Largest components of excited wave function #1:
-	          3  11        -0.6800713650
-	          3  10         0.0596632020
-	          3  12        -0.0572407212
-	          4  13        -0.0224852234
-	          3  14        -0.0217659268
-	  3   4   1  14         0.0533454566
-	  4   3  14   1         0.0533454566
-	  3   4  14   1         0.0484354467
-	  4   3   1  14         0.0484354467
-	  3   4   1  13        -0.0425014920
+Largest components of excited wave function #6:
+	          3  11         0.6800697922
+	          3  10         0.0596646537
+	          3  12        -0.0572734255
+	          4  13         0.0224838500
+	          3  14         0.0217690134
+	  3   4   1  14        -0.0533420110
+	  4   3  14   1        -0.0533420110
+	  3   4  14   1        -0.0484320141
+	  4   3   1  14        -0.0484320141
+	  3   4   1  13         0.0424993524
 
 
 Symmetry of excited state: B2 
@@ -905,100 +805,71 @@ Symmetry of right eigenvector: B2
 Obtaining initial guess from singles-singles block of Hbar...Done.
 
 Iter=1    L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.5993214904   5.99e-01    1.82e-01      N
-                     2   0.6674359597   6.67e-01    1.66e-01      N
+                     1   0.5993214897   5.99e-01    1.82e-01      N
+                     2   0.6674359587   6.67e-01    1.66e-01      N
 Iter=2    L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4991347188  -1.00e-01    2.84e-02      N
-                     2   0.5826606146  -8.48e-02    2.13e-02      N
+                     1   0.4991347192  -1.00e-01    2.84e-02      N
+                     2   0.5826606140  -8.48e-02    2.13e-02      N
 Iter=3    L=6     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4971355072  -2.00e-03    7.62e-03      N
-                     2   0.5814106201  -1.25e-03    6.54e-03      N
+                     1   0.4971355066  -2.00e-03    7.62e-03      N
+                     2   0.5814106200  -1.25e-03    6.54e-03      N
 Iter=4    L=8     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4969096561  -2.26e-04    1.85e-03      N
+                     1   0.4969096552  -2.26e-04    1.85e-03      N
                      2   0.5813337655  -7.69e-05    1.86e-03      N
 Iter=5    L=10    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4968862631  -2.34e-05    3.56e-04      N
-                     2   0.5813016310  -3.21e-05    4.59e-04      N
+                     1   0.4968862621  -2.34e-05    3.56e-04      N
+                     2   0.5813016309  -3.21e-05    4.59e-04      N
 Iter=6    L=12    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4968839299  -2.33e-06    9.35e-05      N
-                     2   0.5812992052  -2.43e-06    1.25e-04      N
+                     1   0.4968839290  -2.33e-06    9.35e-05      N
+                     2   0.5812992050  -2.43e-06    1.25e-04      N
 Iter=7    L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4968839299  -3.33e-16    9.35e-05      N
-                     2   0.5812992052  -6.66e-16    1.25e-04      N
-Iter=8    L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4968843228   3.93e-07    3.16e-05      N
-                     2   0.5812995843   3.79e-07    5.50e-05      N
-Iter=9    L=6     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4968843857   6.29e-08    8.24e-06      N
-                     2   0.5812998173   2.33e-07    1.39e-05      N
-Iter=10   L=8     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4968842965  -8.92e-08    1.40e-06      N
-                     2   0.5812995643  -2.53e-07    3.50e-06      N
-Iter=11   L=10    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4968843116   1.51e-08    4.42e-07      N
-                     2   0.5812995821   1.79e-08    1.03e-06      N
-Iter=12   L=12    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4968843138   2.26e-09    1.02e-07      N
-                     2   0.5812995963   1.42e-08    2.34e-07      N
-Iter=13   L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4968843138   5.55e-17    1.02e-07      N
-                     2   0.5812995963   2.22e-16    2.34e-07      N
-Iter=14   L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4968843114  -2.44e-09    2.89e-08      N
-                     2   0.5812995897  -6.67e-09    7.03e-08      N
-Iter=15   L=6     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4968843118   3.87e-10    6.65e-09      N
-                     2   0.5812995907   1.08e-09    1.55e-08      N
-Iter=16   L=8     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4968843117  -6.10e-11    1.76e-09      Y
-                     2   0.5812995907  -3.24e-11    4.47e-09      Y
+                     1   0.4968839290   4.44e-16    9.35e-05      Y
+                     2   0.5812992050  -1.22e-15    1.25e-04      N
+Iter=8    L=3     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.4968837626  -1.66e-07    8.54e-05      Y
+                     2   0.5812995966   3.92e-07    5.51e-05      Y
 Collapsing to only 2 vectors.
-Copying C for root 2 to CC_RAMPS
 
-Procedure converged for 2 roots.
+Procedure converged for 2 root(s).
+EOM CCSD R0 for root 7 =    0.0000000000
+EOM CCSD R0 for root 8 =    0.0000000000
 
 Final Energetic Summary for Converged Roots of Irrep B2 
                      Excitation Energy           Total Energy
                 (eV)     (cm^-1)     (au)             (au)
-EOM State 1     13.521   109053.5   0.4968843117   -75.5248254048
+EOM State 7     13.521   109053.4   0.4968837626   -75.5248259540
 
-Largest components of excited wave function #0:
-	          2   0        -0.6850724059
-	          2   1         0.0612948215
-	          2   2        -0.0612347114
-	          4  14         0.0191755083
-	          4  13         0.0114158910
-	  2   4  13  13        -0.0573234625
-	  4   2  13  13        -0.0573234625
-	  2   2   0  13        -0.0440195684
-	  2   2  13   0        -0.0440195684
-	  2   2   2  13        -0.0429862504
+Largest components of excited wave function #7:
+	          2   0         0.6850803396
+	          2   1        -0.0612247894
+	          2   2         0.0612246005
+	          4  14        -0.0191679139
+	          4  13         0.0114190053
+	  2   4  13  13         0.0573233755
+	  4   2  13  13         0.0573233755
+	  2   2   0  13        -0.0440132924
+	  2   2  13   0        -0.0440132924
+	  2   2   2  13        -0.0429881013
 
-EOM State 2     15.818   127580.5   0.5812995907   -75.4404101258
+EOM State 8     15.818   127580.5   0.5812995966   -75.4404101200
 
-Largest components of excited wave function #1:
-	          4  13        -0.6899805613
-	          4  14        -0.0550931101
-	          4  15        -0.0234220958
-	          2   1        -0.0183536040
-	          1   0        -0.0179189307
-	  4   4   0  13        -0.0665525971
-	  4   4  13   0        -0.0665525971
-	  3   4  10   0        -0.0349310145
-	  4   3   0  10        -0.0349310145
-	  2   4   2   0        -0.0312518568
+Largest components of excited wave function #8:
+	          4  13         0.6899821473
+	          4  14        -0.0550717644
+	          4  15         0.0234171724
+	          2   1        -0.0182912889
+	          1   0        -0.0179378139
+	  4   4   0  13         0.0665610733
+	  4   4  13   0         0.0665610733
+	  3   4  10   0         0.0349316379
+	  4   3   0  10         0.0349316379
+	  2   4   2   0        -0.0312548206
 
 
-R0 of unnormalized R =    0.0000000000
-Writing to CC_INFO...
-Irrep of R vector    =    B2 
-EOM energy           =    0.5812995907
-R0 of normalized R   =    0.0000000000
-check of <R|R> norm  =    1.0000000000
 ******************************************************************************
-tstop called on boromir.chem
-Tue May 20 12:09:21 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:35:02 2003
 
-user time   =       7.29 seconds =       0.12 minutes
-system time =       6.71 seconds =       0.11 minutes
-total time  =         14 seconds =       0.23 minutes
+user time   =       2.04 seconds =       0.03 minutes
+system time =       3.11 seconds =       0.05 minutes
+total time  =          6 seconds =       0.10 minutes

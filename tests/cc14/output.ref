@@ -1,6 +1,6 @@
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:23 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:35:57 2003
 
                                 --------------
                                   WELCOME TO
@@ -138,15 +138,15 @@ Mon May 19 08:59:23 2003
 
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:23 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:35:57 2003
 
-user time   =       0.04 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.06 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:23 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:35:57 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -174,15 +174,15 @@ Mon May 19 08:59:23 2003
     Wrote 11412 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:23 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:35:57 2003
 
 user time   =       0.08 seconds =       0.00 minutes
 system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:23 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:35:57 2003
 
 
              ------------------------------------------
@@ -192,14 +192,12 @@ Mon May 19 08:59:23 2003
               Written by too many people to mention here
 
              ------------------------------------------
-
-
   label       = 3B1 CH2 cc-pVDZ/ROHF-CCSD Geometry Optimization
   wfn          = CCSD
   reference    = ROHF
   multiplicity = 3
   charge       = 0
-  direct SCF   = false
+  direct       = false
   dertype      = FIRST
   convergence  = 10
   maxiter      = 40
@@ -253,28 +251,28 @@ Mon May 19 08:59:23 2003
    14       -38.9134159462    1.814478e-06    4.436878e-05    8.452695e-04
    15       -38.9134164982    5.519762e-07    2.636203e-05    4.714649e-04
    16       -38.9134166494    1.511969e-07    1.449438e-05    2.554952e-04
-   17       -38.9134166917    4.235426e-08    7.800962e-06    1.369128e-04
-   18       -38.9134167056    1.384652e-08    4.276453e-06    7.415019e-05
-   19       -38.9134167103    4.707395e-09    2.417925e-06    4.108713e-05
-   20       -38.9134167117    1.454062e-09    1.339250e-06    2.296685e-05
+   17       -38.9134166917    4.235427e-08    7.800962e-06    1.369128e-04
+   18       -38.9134167056    1.384650e-08    4.276453e-06    7.415019e-05
+   19       -38.9134167103    4.707438e-09    2.417925e-06    4.108713e-05
+   20       -38.9134167117    1.454012e-09    1.339250e-06    2.296685e-05
    21       -38.9134167121    4.239524e-10    7.232293e-07    1.295235e-05
-   22       -38.9134167123    1.293827e-10    3.919147e-07    7.425753e-06
-   23       -38.9134167123    4.573764e-11    2.279869e-07    4.338529e-06
-   24       -38.9134167123    1.618616e-11    1.355400e-07    2.538375e-06
-   25       -38.9134167123    5.194067e-12    7.497781e-08    1.457024e-06
-   26       -38.9134167123    1.769251e-12    4.418613e-08    8.353092e-07
-   27       -38.9134167123    5.329071e-13    2.527770e-08    4.791099e-07
+   22       -38.9134167123    1.294040e-10    3.919148e-07    7.425753e-06
+   23       -38.9134167123    4.575895e-11    2.279869e-07    4.338529e-06
+   24       -38.9134167123    1.617906e-11    1.355400e-07    2.538375e-06
+   25       -38.9134167123    5.172751e-12    7.497781e-08    1.457024e-06
+   26       -38.9134167123    1.783462e-12    4.418613e-08    8.353092e-07
+   27       -38.9134167123    5.115908e-13    2.527770e-08    4.791099e-07
    28       -38.9134167123    1.776357e-13    1.396751e-08    2.789767e-07
-   29       -38.9134167123    8.526513e-14    8.313928e-09    1.646142e-07
-   30       -38.9134167123    2.131628e-14    5.117550e-09    9.696745e-08
+   29       -38.9134167123    9.237056e-14    8.313929e-09    1.646142e-07
+   30       -38.9134167123    4.263256e-14    5.117550e-09    9.696745e-08
    31       -38.9134167123    0.000000e+00    2.977344e-09    5.700673e-08
-   32       -38.9134167123    7.105427e-15    1.687829e-09    3.334582e-08
-   33       -38.9134167123    7.105427e-15    9.565722e-10    1.969572e-08
+   32       -38.9134167123   -7.105427e-15    1.687829e-09    3.334582e-08
+   33       -38.9134167123    2.131628e-14    9.565723e-10    1.969572e-08
    34       -38.9134167123   -7.105427e-15    5.952845e-10    1.176790e-08
-   35       -38.9134167123    7.105427e-15    3.588813e-10    6.909564e-09
-   36       -38.9134167123    7.105427e-15    2.101137e-10    3.917253e-09
-   37       -38.9134167123   -7.105427e-15    1.299814e-10    2.184313e-09
-   38       -38.9134167123   -7.105427e-15    6.952482e-11    1.211596e-09
+   35       -38.9134167123   -2.131628e-14    3.588814e-10    6.909565e-09
+   36       -38.9134167123    1.421085e-14    2.101137e-10    3.917253e-09
+   37       -38.9134167123   -7.105427e-15    1.299815e-10    2.184314e-09
+   38       -38.9134167123    7.105427e-15    6.952477e-11    1.211596e-09
 
  ci_typ is CCSD so mo vector will be rotated
 
@@ -300,19 +298,19 @@ Orbital energies (a.u.):
         kinetic energy     =      38.844464744229
         nuc. attr. energy  =    -102.555787425107
         elec. rep. energy  =      24.797905968535
-        potential energy   =     -77.757881456571
+        potential energy   =     -77.757881456572
         virial theorem     =       1.998228066977
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:23 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:35:57 2003
 
-user time   =       0.02 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:23 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:35:57 2003
 
 
 	**************************************************
@@ -398,15 +396,15 @@ Mon May 19 08:59:23 2003
 	One-electron integrals written to file 35.
 	Frozen-core operator written to file 35.
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:24 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:35:59 2003
 
-user time   =       0.12 seconds =       0.00 minutes
-system time =       1.15 seconds =       0.02 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.19 seconds =       0.00 minutes
+system time =       1.16 seconds =       0.02 minutes
+total time  =          2 seconds =       0.03 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:24 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:35:59 2003
 
 
 			**************************
@@ -418,12 +416,14 @@ Mon May 19 08:59:24 2003
 
 	Input parameters:
 	-----------------
-	Reference wfn   =     ROHF
-	Derivative      =    First
-	Memory (Mbytes) =    256.0
-	AO Basis        =      NONE
-	Cache Level     =        2
-	Cache Type      =      LRU
+	Wave function   =	CCSD
+	Reference wfn   =	ROHF
+	Derivative      =	First
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
 
 
 	Chkpt Parameters:
@@ -440,29 +440,29 @@ Mon May 19 08:59:24 2003
 	 B2 	   7	    0	    1	    0	    6	    0
 
 	Nuclear Rep. energy (chkpt) =      6.06829846896672
-	SCF energy          (chkpt) =    -38.91341671234242
+	SCF energy          (chkpt) =    -38.91341671234243
 
 	Size of <ab|cd> integrals:     0.019 (MW) /     0.150 (MB)
 	Size of <ia|bc> integrals:     0.005 (MW) /     0.041 (MB)
 	Size of Tijab amplitudes:      0.002 (MW) /     0.012 (MB)
 
-	One-electron energy          =    -63.71132268087773
-	Two-electron (AA) energy     =     10.60310923689427
+	One-electron energy          =    -63.71132268087780
+	Two-electron (AA) energy     =     10.60310923689431
 	Two-electron (BB) energy     =      3.36788479485930
-	Two-electron (AB) energy     =     11.74411048369178
-	Two-electron energy          =     18.72960749956857
+	Two-electron (AB) energy     =     11.74411048369181
+	Two-electron energy          =     18.72960749956862
 	Frozen-core energy (transqt) =      0.00000000000000
-	Reference energy             =    -38.91341671234244
+	Reference energy             =    -38.91341671234246
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:24 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:35:59 2003
 
-user time   =       0.02 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
 system time =       0.06 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:24 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:35:59 2003
 
 			**************************
 			*                        *
@@ -471,8 +471,8 @@ Mon May 19 08:59:24 2003
 			**************************
 
 	Nuclear Rep. energy (chkpt)   =    6.068298468966723
-	SCF energy          (chkpt)   =  -38.913416712342418
-	Reference energy    (file100) =  -38.913416712342439
+	SCF energy          (chkpt)   =  -38.913416712342432
+	Reference energy    (file100) =  -38.913416712342460
 
 	Input parameters:
 	-----------------
@@ -490,37 +490,38 @@ Mon May 19 08:59:24 2003
 	Print Level     =    0
 	# Amps to Print =    10
 	Print MP2 Amps? =    No
+	Analyze T2 Amps =    No
 
 	                     Solving CCSD Equations
 	                     ----------------------
-	Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
-	----     ---------------------    ---------   ----------  ----------  ----------
-	   0        -0.098257946139902    0.000e+00    0.000214    0.000590    0.000590
-	   1        -0.114024710171133    3.944e-02    0.003449    0.005288    0.005948
-	   2        -0.119008875982161    1.436e-02    0.005585    0.007649    0.010307
-	   3        -0.119291852964648    4.345e-03    0.006429    0.008895    0.012579
-	   4        -0.119304337841343    1.314e-03    0.006632    0.009334    0.013201
-	   5        -0.119303532166141    4.159e-04    0.006670    0.009408    0.013304
-	   6        -0.119307728754425    1.281e-04    0.006669    0.009396    0.013288
-	   7        -0.119308655320714    4.079e-05    0.006665    0.009384    0.013270
-	   8        -0.119308549719105    1.334e-05    0.006663    0.009377    0.013262
-	   9        -0.119308698149696    4.250e-06    0.006662    0.009375    0.013258
-	  10        -0.119308697902776    1.151e-06    0.006662    0.009374    0.013257
-	  11        -0.119308685180404    3.037e-07    0.006662    0.009374    0.013257
-	  12        -0.119308681286335    8.688e-08    0.006662    0.009374    0.013257
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.098257946139903    0.000e+00    0.000214    0.000590    0.000590
+     1        -0.114024710171134    3.944e-02    0.003449    0.005288    0.005948
+     2        -0.119008875982162    1.436e-02    0.005585    0.007649    0.010307
+     3        -0.119291852964648    4.345e-03    0.006429    0.008895    0.012579
+     4        -0.119304337841344    1.314e-03    0.006632    0.009334    0.013201
+     5        -0.119303532166141    4.159e-04    0.006670    0.009408    0.013304
+     6        -0.119307728754425    1.281e-04    0.006669    0.009396    0.013288
+     7        -0.119308655320715    4.079e-05    0.006665    0.009384    0.013270
+     8        -0.119308549719105    1.334e-05    0.006663    0.009377    0.013262
+     9        -0.119308698149697    4.250e-06    0.006662    0.009375    0.013258
+    10        -0.119308697902777    1.151e-06    0.006662    0.009374    0.013257
+    11        -0.119308685180404    3.037e-07    0.006662    0.009374    0.013257
+    12        -0.119308681286335    8.688e-08    0.006662    0.009374    0.013257
 
 	Iterations converged.
 
 
 	Largest TIA Amplitudes:
 	          4  15        -0.0215826249
-	          1   1        -0.0176848440
+	          1   1         0.0176848440
 	          4  17         0.0170452412
 	          1   0        -0.0144242144
 	          1   2         0.0128468359
 	          1   5        -0.0124387967
 	          4  19        -0.0090214247
-	          2   1        -0.0070930435
+	          2   1         0.0070930435
 	          2   0        -0.0067849472
 	          2   2         0.0059597268
 
@@ -528,7 +529,7 @@ Mon May 19 08:59:24 2003
 	          4  15         0.0197721940
 	          1   8        -0.0187474879
 	          1   0         0.0176376947
-	          1   1         0.0167801900
+	          1   1        -0.0167801900
 	          1   2        -0.0125077033
 	          4  17        -0.0076182672
 	          4  16         0.0072511942
@@ -537,14 +538,14 @@ Mon May 19 08:59:24 2003
 	          1   4        -0.0024958392
 
 	Largest TIJAB Amplitudes:
-	  3   2  11   1         0.0266418233
+	  3   2  11   1        -0.0266418233
 	  3   2  11   2         0.0225700857
 	  4   3   9   2         0.0211489806
 	  4   3  17  11         0.0210422670
 	  3   2  12   4         0.0204593507
 	  4   3  15  11        -0.0203552664
-	  4   2  17   1        -0.0197228699
-	  4   2  15   1         0.0194374059
+	  4   2  17   1         0.0197228699
+	  4   2  15   1        -0.0194374059
 	  3   1  11   0        -0.0160979354
 	  3   1  11   3         0.0151387978
 
@@ -572,21 +573,21 @@ Mon May 19 08:59:24 2003
 	  3   1   0  14         0.0264800400
 	  3   4  11  15        -0.0257934161
 
-	SCF energy       (chkpt)   =  -38.913416712342418
-	Reference energy (file100) =  -38.913416712342439
+	SCF energy       (chkpt)   =  -38.913416712342432
+	Reference energy (file100) =  -38.913416712342460
 	CCSD correlation energy    =   -0.119308681286335
-	Total CCSD energy          =  -39.032725393628773
+	Total CCSD energy          =  -39.032725393628795
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:26 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:00 2003
 
-user time   =       0.86 seconds =       0.01 minutes
-system time =       0.68 seconds =       0.01 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.98 seconds =       0.02 minutes
+system time =       0.58 seconds =       0.01 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:26 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:00 2003
 
 
 			**************************
@@ -596,44 +597,46 @@ Mon May 19 08:59:26 2003
 			**************************
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:26 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:01 2003
 
-user time   =       0.18 seconds =       0.00 minutes
+user time   =       0.17 seconds =       0.00 minutes
 system time =       0.19 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:26 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:01 2003
 
 
 			**************************
-			*                        *
 			*        CCLAMBDA        *
-			*                        *
 			**************************
 
 
 	Nuclear Rep. energy (chkpt)   =    6.068298468966723
 	Reference           (chkpt)   = 1
-	SCF energy          (chkpt)   =  -38.913416712342418
-	Reference energy    (CC_INFO) =  -38.913416712342439
+	SCF energy          (chkpt)   =  -38.913416712342432
+	Reference energy    (CC_INFO) =  -38.913416712342460
 	CCSD energy         (CC_INFO) =   -0.119308681286335
-	Total CCSD energy   (CC_INFO) =  -39.032725393628773
-	Excited State L calculation?  = No
-	Irrep of L          (CC_INFO) = A1 
+	Total CCSD energy   (CC_INFO) =  -39.032725393628795
 
 	Input parameters:
 	-----------------
 	Maxiter     =      50
-	Convergence = 1.0e-12
+	Convergence = 1.0e-07
 	Restart     =     Yes
 	Cache Level =     2
 	AO Basis        =     No
+	Excited State Computation =     No
+	States sought per irrep     = A1  0, A2  0, B1  1, B2  0,
+	Ls sought per irrep         = A1  1, A2  0, B1  0, B2  0,	Local CC        =     No
+
+	Symmetry of excited state: B1 
+	Symmetry of right eigenvector: A1 
 
 	          Solving Lambda Equations
 	          ------------------------
-	Iter         PseudoEnergy             RMS  
+	Iter     PseudoEnergy or Norm         RMS  
 	----     ---------------------     --------
 	   0        -0.116290929366549    0.000e+00
 	   1        -0.113876426094607    6.153e-03
@@ -644,34 +647,24 @@ Mon May 19 08:59:26 2003
 	   6        -0.113258002545421    1.836e-05
 	   7        -0.113257892616197    6.586e-06
 	   8        -0.113257839161488    2.186e-06
-	   9        -0.113257822297123    6.585e-07
+	   9        -0.113257822297124    6.585e-07
 	  10        -0.113257821580496    1.888e-07
-	  11        -0.113257822090670    6.133e-08
-	  12        -0.113257822038484    1.701e-08
-	  13        -0.113257822004519    4.866e-09
-	  14        -0.113257821983006    1.475e-09
-	  15        -0.113257821967613    5.242e-10
-	  16        -0.113257821961101    1.721e-10
-	  17        -0.113257821959678    6.178e-11
-	  18        -0.113257821959098    2.293e-11
-	  19        -0.113257821958830    7.077e-12
-	  20        -0.113257821958750    2.306e-12
-	  21        -0.113257821958758    6.913e-13
+	  11        -0.113257821489428    6.133e-08
 
 	Iterations converged.
 
-	Overlap <L|e^T> =    0.946999366116083
-Writing EOM L0    1.0000000000
+	Overlap <L|e^T> =        0.94699936876
+	Overlap <L|e^T> =        0.94699936876
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:28 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:02 2003
 
-user time   =       0.98 seconds =       0.02 minutes
-system time =       0.83 seconds =       0.01 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.52 seconds =       0.01 minutes
+system time =       0.46 seconds =       0.01 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:28 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:02 2003
 
 
 			**************************
@@ -682,10 +675,10 @@ Mon May 19 08:59:28 2003
 
 
 	Nuclear Rep. energy (chkpt)   =    6.068298468966723
-	SCF energy          (chkpt)   =  -38.913416712342418
-	Reference energy    (file100) =  -38.913416712342439
+	SCF energy          (chkpt)   =  -38.913416712342432
+	Reference energy    (file100) =  -38.913416712342460
 	CCSD energy         (file100) =   -0.119308681286335
-	Total CCSD energy   (file100) =  -39.032725393628773
+	Total CCSD energy   (file100) =  -39.032725393628795
 
 	Input parameters:
 	-----------------
@@ -698,61 +691,61 @@ Mon May 19 08:59:28 2003
 
 	Energies re-computed from CC density:
 	-------------------------------------
-	One-electron energy        =    0.138509285469200
-	IJKL energy                =    0.027930563290613
-	IJKA energy                =   -0.000112175848235
-	IJAB energy                =   -0.226586171380375
-	IBJA energy                =   -0.091417127912260
-	CIAB energy                =   -0.000164047983230
-	ABCD energy                =    0.032530995543650
-	Total two-electron energy  =   -0.257817964289838
-	CCSD correlation energy    =   -0.119308678820637
-	Total CCSD energy          =  -39.032725391163076
+	One-electron energy        =    0.138509283192400
+	IJKL energy                =    0.027930562949486
+	IJKA energy                =   -0.000112175455384
+	IJAB energy                =   -0.226586171106640
+	IBJA energy                =   -0.091417126272537
+	CIAB energy                =   -0.000164047449239
+	ABCD energy                =    0.032530995274419
+	Total two-electron energy  =   -0.257817962059894
+	CCSD correlation energy    =   -0.119308678867494
+	Total CCSD energy          =  -39.032725391209958
 
 	Virial Theorem Data:
 	--------------------
-	Kinetic energy (ref)   =   38.844464744229057
-	Kinetic energy (corr)  =    0.105983040182629
-	Kinetic energy (total) =   38.950447784411686
-	-V/T (ref)             =    2.001775078343012
-	-V/T (corr)            =    2.125733712495353
-	-V/T (total)           =    2.002112366195955
+	Kinetic energy (ref)   =   38.844464744229107
+	Kinetic energy (corr)  =    0.105983030262928
+	Kinetic energy (total) =   38.950447774492034
+	-V/T (ref)             =    2.001775078343011
+	-V/T (corr)            =    2.125733817860724
+	-V/T (total)           =    2.002112366451167
 
 	Energies re-computed from Fock-adjusted CC density:
 	---------------------------------------------------
-	One-electron energy        =    0.083771444436518
-	IJKL energy                =   -0.350145155650536
-	IJKA energy                =    0.012489291853951
-	IJAB energy                =   -0.226586171380375
-	IBJA energy                =    0.328794964358904
-	CIAB energy                =   -0.000164047983230
-	ABCD energy                =    0.032530995543650
-	Total two-electron energy  =   -0.203080123257637
-	CCSD correlation energy    =   -0.119308678821118
-	Total CCSD energy          =  -39.032725391163559
+	One-electron energy        =    0.083771442323518
+	IJKL energy                =   -0.350145144319145
+	IJKA energy                =    0.012489291999577
+	IJAB energy                =   -0.226586171106640
+	IBJA energy                =    0.328794954409534
+	CIAB energy                =   -0.000164047449239
+	ABCD energy                =    0.032530995274419
+	Total two-electron energy  =   -0.203080121191493
+	CCSD correlation energy    =   -0.119308678867975
+	Total CCSD energy          =  -39.032725391210434
 
 	Energies re-computed from Mulliken density:
 	-------------------------------------------
-	One-electron energy        =    0.083771444436518
-	IJKL energy                =   -0.350145155650536
-	IJKA energy                =    0.012489291853951
-	IJAB energy                =   -0.219748747370476
-	IBJA energy                =    0.321957540349005
-	CIAB energy                =   -0.000164047983230
-	ABCD energy                =    0.032530995543650
-	Total two-electron energy  =   -0.203080123257636
-	CCSD correlation energy    =   -0.119308678821118
-	Total CCSD energy          =  -39.032725391163559
+	One-electron energy        =    0.083771442323518
+	IJKL energy                =   -0.350145144319145
+	IJKA energy                =    0.012489291999577
+	IJAB energy                =   -0.219748746851725
+	IBJA energy                =    0.321957530154620
+	CIAB energy                =   -0.000164047449239
+	ABCD energy                =    0.032530995274419
+	Total two-electron energy  =   -0.203080121191493
+	CCSD correlation energy    =   -0.119308678867975
+	Total CCSD energy          =  -39.032725391210434
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:29 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:02 2003
 
-user time   =       0.27 seconds =       0.00 minutes
-system time =       0.29 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.31 seconds =       0.01 minutes
+system time =       0.26 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:29 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:02 2003
 
 
 	**************************************************
@@ -835,15 +828,15 @@ Mon May 19 08:59:29 2003
 	Transforming one-electron integrals...
 	One-pdm and lagrangian written to file76.
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:30 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:04 2003
 
-user time   =       0.17 seconds =       0.00 minutes
-system time =       1.20 seconds =       0.02 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.12 seconds =       0.00 minutes
+system time =       1.31 seconds =       0.02 minutes
+total time  =          2 seconds =       0.03 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:30 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:04 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -876,17 +869,17 @@ Mon May 19 08:59:30 2003
   -CCSD forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000    -0.035829586382
-       2        0.000000000000    -0.015388365431     0.017914793191
-       3        0.000000000000     0.015388365431     0.017914793191
+       1        0.000000000000     0.000000000000    -0.035829587393
+       2        0.000000000000    -0.015388364499     0.017914793697
+       3        0.000000000000     0.015388364499     0.017914793697
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:31 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:04 2003
 
-user time   =       0.48 seconds =       0.01 minutes
-system time =       0.00 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.45 seconds =       0.01 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
 	 OPTKING: For internal coordinate optimizations and   
@@ -897,9 +890,9 @@ Cartesian geometry and possibly gradient in a.u. with masses
   6.0    12.00000000   0.0000000000  -0.0000000000  -0.1735990917
   1.0     1.00782503   0.0000000000   1.6923007780   1.0335073221
   1.0     1.00782503   0.0000000000  -1.6923007780   1.0335073221
-                       0.0000000000   0.0000000000  -0.0358295864
-                       0.0000000000  -0.0153883654   0.0179147932
-                       0.0000000000   0.0153883654   0.0179147932
+                       0.0000000000   0.0000000000  -0.0358295874
+                       0.0000000000  -0.0153883645   0.0179147937
+                       0.0000000000   0.0153883645   0.0179147937
 
 Generating internals
 
@@ -941,30 +934,30 @@ Scaling displacements by 0.558162
 
 Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
          Value          Force          Displacement   New Value
- 1  -1.7857094791  -0.0517580331  -0.0243815512  -1.8100910303
- 2   1.6883132525   0.2082566541   0.1688313252   1.8571445777
-   MAX force:    0.2082566541   RMS force:    0.1517394608
+ 1  -1.7857094791  -0.0517580207  -0.0243815499  -1.8100910290
+ 2   1.6883132525   0.2082566545   0.1688313252   1.8571445777
+   MAX force:    0.2082566545   RMS force:    0.1517394590
 
 Back-transformation to cartesian coordinates...
  Iter   RMS Delta(dx)   RMS Delta(dq)
-    2  0.040412013209  0.004016554746
-    3  0.001801540808  0.000001786859
+    2  0.040412013104  0.004016554729
+    3  0.001801540807  0.000001786859
     4  0.000000594984  0.000000000001
     5  0.000000000000  0.000000000000
 Convergence to displaced geometry took 5 iterations.
 
 New Cartesian Geometry in a.u.
-  6.0   0.0000000000  -0.0000000000  -0.1524957280
-  1.0   0.0000000000   1.7919995190   0.9078702542
-  1.0   0.0000000000  -1.7919995190   0.9078702542
+  6.0   0.0000000000  -0.0000000000  -0.1524957279
+  1.0   0.0000000000   1.7919995174   0.9078702536
+  1.0   0.0000000000  -1.7919995174   0.9078702536
 
 Geometry written to chkpt
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:31 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:04 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -992,15 +985,15 @@ Mon May 19 08:59:31 2003
     Wrote 11412 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:31 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:04 2003
 
-user time   =       0.11 seconds =       0.00 minutes
+user time   =       0.10 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:31 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:04 2003
 
 
              ------------------------------------------
@@ -1010,20 +1003,18 @@ Mon May 19 08:59:31 2003
               Written by too many people to mention here
 
              ------------------------------------------
-
-
   label       = 3B1 CH2 cc-pVDZ/ROHF-CCSD Geometry Optimization
   wfn          = CCSD
   reference    = ROHF
   multiplicity = 3
   charge       = 0
-  direct SCF   = false
+  direct       = false
   dertype      = FIRST
   convergence  = 10
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy        6.0420989421508
+  nuclear repulsion energy        6.0420989471784
 
   using old vector from file30 as initial guess
   energy from old vector:   -38.91341671
@@ -1057,37 +1048,37 @@ Mon May 19 08:59:31 2003
   wrote 0 integrals to file92
 
   iter       total energy        delta E         delta P          diiser
-    1       -38.9187069963    4.496081e+01    0.000000e+00    0.000000e+00
+    1       -38.9187069964    4.496081e+01    0.000000e+00    0.000000e+00
     2       -38.9191949786    4.879823e-04    6.342957e-04    7.315435e-03
     3       -38.9193324360    1.374574e-04    3.566509e-04    4.169672e-03
-    4       -38.9193664780    3.404207e-05    1.786297e-04    2.327305e-03
+    4       -38.9193664781    3.404207e-05    1.786297e-04    2.327305e-03
     5       -38.9193743214    7.843341e-06    9.761963e-05    1.227432e-03
     6       -38.9193758936    1.572224e-06    4.656445e-05    6.070466e-04
     7       -38.9193764698    5.762106e-07    2.426470e-05    3.786142e-04
     8       -38.9193767385    2.686836e-07    1.389202e-05    2.309081e-04
     9       -38.9193768251    8.657992e-08    7.790513e-06    1.383614e-04
-   10       -38.9193768480    2.295455e-08    4.509439e-06    8.324913e-05
-   11       -38.9193768539    5.879279e-09    2.556696e-06    5.030309e-05
-   12       -38.9193768563    2.427456e-09    1.519406e-06    3.043075e-05
-   13       -38.9193768575    1.213749e-09    9.948884e-07    1.827054e-05
+   10       -38.9193768481    2.295458e-08    4.509439e-06    8.324913e-05
+   11       -38.9193768539    5.879265e-09    2.556696e-06    5.030310e-05
+   12       -38.9193768564    2.427441e-09    1.519406e-06    3.043075e-05
+   13       -38.9193768576    1.213756e-09    9.948884e-07    1.827054e-05
    14       -38.9193768580    4.214229e-10    6.153664e-07    1.072573e-05
-   15       -38.9193768581    1.117826e-10    3.412614e-07    6.153490e-06
-   16       -38.9193768581    2.849276e-11    1.882135e-07    3.512139e-06
-   17       -38.9193768581    9.038104e-12    1.075045e-07    2.030854e-06
-   18       -38.9193768581    3.673506e-12    6.478513e-08    1.176099e-06
-   19       -38.9193768581    1.406875e-12    3.818423e-08    6.654207e-07
-   20       -38.9193768581    4.760636e-13    2.253454e-08    3.713959e-07
-   21       -38.9193768581    1.207923e-13    1.243509e-08    2.083172e-07
-   22       -38.9193768581    2.842171e-14    6.468812e-09    1.196331e-07
-   23       -38.9193768581    2.131628e-14    3.657942e-09    7.083819e-08
-   24       -38.9193768581    0.000000e+00    2.292814e-09    4.266744e-08
-   25       -38.9193768581    1.421085e-14    1.388067e-09    2.567788e-08
-   26       -38.9193768581   -7.105427e-15    8.097066e-10    1.531549e-08
-   27       -38.9193768581    0.000000e+00    4.704677e-10    9.088451e-09
-   28       -38.9193768581    0.000000e+00    2.807671e-10    5.353739e-09
-   29       -38.9193768581    0.000000e+00    1.698969e-10    3.102362e-09
-   30       -38.9193768581    7.105427e-15    1.035196e-10    1.775177e-09
-   31       -38.9193768581    0.000000e+00    5.889595e-11    1.013393e-09
+   15       -38.9193768581    1.117968e-10    3.412614e-07    6.153490e-06
+   16       -38.9193768581    2.846434e-11    1.882135e-07    3.512139e-06
+   17       -38.9193768582    9.066525e-12    1.075045e-07    2.030854e-06
+   18       -38.9193768582    3.666401e-12    6.478513e-08    1.176099e-06
+   19       -38.9193768582    1.413980e-12    3.818423e-08    6.654207e-07
+   20       -38.9193768582    4.902745e-13    2.253454e-08    3.713959e-07
+   21       -38.9193768582    1.065814e-13    1.243509e-08    2.083172e-07
+   22       -38.9193768582    6.394885e-14    6.468812e-09    1.196331e-07
+   23       -38.9193768582   -3.552714e-14    3.657942e-09    7.083819e-08
+   24       -38.9193768582    7.105427e-15    2.292814e-09    4.266744e-08
+   25       -38.9193768582    7.105427e-15    1.388067e-09    2.567788e-08
+   26       -38.9193768582   -7.105427e-15    8.097063e-10    1.531549e-08
+   27       -38.9193768582    7.105427e-15    4.704677e-10    9.088450e-09
+   28       -38.9193768582   -7.105427e-15    2.807670e-10    5.353740e-09
+   29       -38.9193768582    1.421085e-14    1.698967e-10    3.102362e-09
+   30       -38.9193768582    0.000000e+00    1.035195e-10    1.775177e-09
+   31       -38.9193768582    0.000000e+00    5.889584e-11    1.013394e-09
 
  Correcting phases of orbitals.
 
@@ -1111,23 +1102,23 @@ Orbital energies (a.u.):
   11A1      2.746869  
 
 
-        SCF total energy   =     -38.919376858120
-        kinetic energy     =      38.834705132816
-        nuc. attr. energy  =    -102.511430941838
-        elec. rep. energy  =      24.757348950902
-        potential energy   =     -77.754081990936
-        virial theorem     =       1.997824432657
+        SCF total energy   =     -38.919376858158
+        kinetic energy     =      38.834705135301
+        nuc. attr. energy  =    -102.511430953614
+        elec. rep. energy  =      24.757348960155
+        potential energy   =     -77.754081993460
+        virial theorem     =       1.997824432720
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:31 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:04 2003
 
-user time   =       0.01 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:31 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:04 2003
 
 
 	**************************************************
@@ -1191,8 +1182,8 @@ Mon May 19 08:59:31 2003
 	 B1 	   4	   4	    0	    0	    1	    3	    0
 	 B2 	   7	   7	    0	    1	    0	    6	    0
 
-	Nuclear Repulsion Energy    =         6.0420989422
-	Total SCF Energy            =       -38.9193768581
+	Nuclear Repulsion Energy    =         6.0420989472
+	Total SCF Energy            =       -38.9193768582
 
 	Reading one-electron integrals...done.
 
@@ -1213,15 +1204,15 @@ Mon May 19 08:59:31 2003
 	One-electron integrals written to file 35.
 	Frozen-core operator written to file 35.
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:32 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:06 2003
 
-user time   =       0.09 seconds =       0.00 minutes
-system time =       1.23 seconds =       0.02 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.14 seconds =       0.00 minutes
+system time =       1.21 seconds =       0.02 minutes
+total time  =          2 seconds =       0.03 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:32 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:06 2003
 
 
 			**************************
@@ -1233,12 +1224,14 @@ Mon May 19 08:59:32 2003
 
 	Input parameters:
 	-----------------
-	Reference wfn   =     ROHF
-	Derivative      =    First
-	Memory (Mbytes) =    256.0
-	AO Basis        =      NONE
-	Cache Level     =        2
-	Cache Type      =      LRU
+	Wave function   =	CCSD
+	Reference wfn   =	ROHF
+	Derivative      =	First
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
 
 
 	Chkpt Parameters:
@@ -1254,30 +1247,30 @@ Mon May 19 08:59:32 2003
 	 B1 	   4	    0	    0	    1	    3	    0
 	 B2 	   7	    0	    1	    0	    6	    0
 
-	Nuclear Rep. energy (chkpt) =      6.04209894215076
-	SCF energy          (chkpt) =    -38.91937685812024
+	Nuclear Rep. energy (chkpt) =      6.04209894717837
+	SCF energy          (chkpt) =    -38.91937685815837
 
 	Size of <ab|cd> integrals:     0.019 (MW) /     0.150 (MB)
 	Size of <ia|bc> integrals:     0.005 (MW) /     0.041 (MB)
 	Size of Tijab amplitudes:      0.002 (MW) /     0.012 (MB)
 
-	One-electron energy          =    -63.67672580902230
-	Two-electron (AA) energy     =     10.59273126757597
-	Two-electron (BB) energy     =      3.36055465079990
-	Two-electron (AB) energy     =     11.73860704956334
-	Two-electron energy          =     18.71525000875128
+	One-electron energy          =    -63.67672581831293
+	Two-electron (AA) energy     =     10.59273126987993
+	Two-electron (BB) energy     =      3.36055465206684
+	Two-electron (AB) energy     =     11.73860705200279
+	Two-electron energy          =     18.71525001297618
 	Frozen-core energy (transqt) =      0.00000000000000
-	Reference energy             =    -38.91937685812026
+	Reference energy             =    -38.91937685815838
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:32 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:06 2003
 
-user time   =       0.05 seconds =       0.00 minutes
-system time =       0.04 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.05 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:32 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:06 2003
 
 			**************************
 			*                        *
@@ -1285,9 +1278,9 @@ Mon May 19 08:59:32 2003
 			*                        *
 			**************************
 
-	Nuclear Rep. energy (chkpt)   =    6.042098942150762
-	SCF energy          (chkpt)   =  -38.919376858120245
-	Reference energy    (file100) =  -38.919376858120259
+	Nuclear Rep. energy (chkpt)   =    6.042098947178371
+	SCF energy          (chkpt)   =  -38.919376858158373
+	Reference energy    (file100) =  -38.919376858158380
 
 	Input parameters:
 	-----------------
@@ -1305,63 +1298,64 @@ Mon May 19 08:59:32 2003
 	Print Level     =    0
 	# Amps to Print =    10
 	Print MP2 Amps? =    No
+	Analyze T2 Amps =    No
 
 	Using old T1 amplitudes.
 	Using old T2 amplitudes.
 	                     Solving CCSD Equations
 	                     ----------------------
-	Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
-	----     ---------------------    ---------   ----------  ----------  ----------
-	   0        -0.116999897904885    0.000e+00    0.006662    0.009374    0.013257
-	   1        -0.119284062548680    3.652e-02    0.006455    0.007893    0.011163
-	   2        -0.119610841370463    9.272e-03    0.006663    0.008790    0.012431
-	   3        -0.119638209867557    2.077e-03    0.006793    0.009090    0.012855
-	   4        -0.119634499544478    6.533e-04    0.006897    0.009310    0.013166
-	   5        -0.119637117332462    1.922e-04    0.006948    0.009406    0.013302
-	   6        -0.119638086742864    6.092e-05    0.006967    0.009440    0.013350
-	   7        -0.119638483484672    1.556e-05    0.006972    0.009449    0.013362
-	   8        -0.119638621686850    2.966e-06    0.006972    0.009449    0.013363
-	   9        -0.119638639171695    6.675e-07    0.006972    0.009449    0.013363
-	  10        -0.119638636666324    2.155e-07    0.006972    0.009449    0.013363
-	  11        -0.119638635435854    7.941e-08    0.006972    0.009449    0.013363
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.116999897941418    0.000e+00    0.006662    0.009374    0.013257
+     1        -0.119284062528576    3.652e-02    0.006455    0.007893    0.011163
+     2        -0.119610841338332    9.272e-03    0.006663    0.008790    0.012431
+     3        -0.119638209833107    2.077e-03    0.006793    0.009090    0.012855
+     4        -0.119634499509534    6.533e-04    0.006897    0.009310    0.013166
+     5        -0.119637117297392    1.922e-04    0.006948    0.009406    0.013302
+     6        -0.119638086707791    6.092e-05    0.006967    0.009440    0.013350
+     7        -0.119638483449599    1.556e-05    0.006972    0.009449    0.013362
+     8        -0.119638621651776    2.966e-06    0.006972    0.009449    0.013363
+     9        -0.119638639136622    6.675e-07    0.006972    0.009449    0.013363
+    10        -0.119638636631250    2.155e-07    0.006972    0.009449    0.013363
+    11        -0.119638635400780    7.941e-08    0.006972    0.009449    0.013363
 
 	Iterations converged.
 
 
 	Largest TIA Amplitudes:
-	          1   1        -0.0221268713
+	          1   1         0.0221268713
 	          4  15        -0.0189016290
 	          1   0        -0.0173968020
 	          4  17         0.0157778339
 	          1   5        -0.0126227980
-	          2   1        -0.0098492914
+	          2   1         0.0098492914
 	          2   0        -0.0097502127
 	          4  19        -0.0085597561
 	          1   2         0.0080684293
 	          1   3         0.0067084003
 
 	Largest Tia Amplitudes:
-	          1   1         0.0216883344
+	          1   1        -0.0216883343
 	          1   0         0.0204815286
 	          1   8        -0.0188980497
-	          4  15         0.0184440584
-	          4  17        -0.0081968140
-	          1   2        -0.0075116521
+	          4  15         0.0184440583
+	          4  17        -0.0081968141
+	          1   2        -0.0075116522
 	          4  16         0.0070521422
 	          4  18         0.0066897261
 	          1   5         0.0062349004
-	          1   3        -0.0024027188
+	          1   3        -0.0024027189
 
 	Largest TIJAB Amplitudes:
-	  3   2  11   2         0.0305687208
-	  3   2  12   4         0.0217869361
+	  3   2  11   2         0.0305687207
+	  3   2  12   4         0.0217869362
 	  4   3  17  11         0.0208779999
 	  4   3  15  11        -0.0204168528
-	  4   3   9   1        -0.0191534548
-	  4   2  15   1         0.0187271295
-	  3   2  11   1         0.0184787037
-	  4   2  17   1        -0.0184731560
-	  4   3   9   2         0.0161770159
+	  4   3   9   1         0.0191534548
+	  4   2  15   1        -0.0187271295
+	  3   2  11   1        -0.0184787038
+	  4   2  17   1         0.0184731560
+	  4   3   9   2         0.0161770160
 	  3   1  11   0        -0.0161015482
 
 	Largest Tijab Amplitudes:
@@ -1378,31 +1372,31 @@ Mon May 19 08:59:32 2003
 
 	Largest TIjAb Amplitudes:
 	  4   4  17  17        -0.0342012245
-	  4   4  15  15        -0.0300156751
-	  3   1   0  14         0.0285610344
-	  3   1   1  14         0.0278079379
+	  4   4  15  15        -0.0300156750
+	  3   1   0  14         0.0285610343
+	  3   1   1  14        -0.0278079378
 	  3   1  12   8         0.0273904559
 	  2   1   4   8        -0.0265637140
 	  4   4  17  15         0.0262269767
-	  4   4  15  17         0.0259544042
+	  4   4  15  17         0.0259544041
 	  4   4  16  16        -0.0259273970
 	  4   1   9  14         0.0258989203
 
-	SCF energy       (chkpt)   =  -38.919376858120245
-	Reference energy (file100) =  -38.919376858120259
-	CCSD correlation energy    =   -0.119638635435854
-	Total CCSD energy          =  -39.039015493556114
+	SCF energy       (chkpt)   =  -38.919376858158373
+	Reference energy (file100) =  -38.919376858158380
+	CCSD correlation energy    =   -0.119638635400780
+	Total CCSD energy          =  -39.039015493559162
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:34 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:07 2003
 
-user time   =       0.69 seconds =       0.01 minutes
-system time =       0.75 seconds =       0.01 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.70 seconds =       0.01 minutes
+system time =       0.72 seconds =       0.01 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:34 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:07 2003
 
 
 			**************************
@@ -1412,82 +1406,74 @@ Mon May 19 08:59:34 2003
 			**************************
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:34 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:08 2003
 
-user time   =       0.10 seconds =       0.00 minutes
-system time =       0.26 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.15 seconds =       0.00 minutes
+system time =       0.16 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:34 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:08 2003
 
 
 			**************************
-			*                        *
 			*        CCLAMBDA        *
-			*                        *
 			**************************
 
 
-	Nuclear Rep. energy (chkpt)   =    6.042098942150762
+	Nuclear Rep. energy (chkpt)   =    6.042098947178371
 	Reference           (chkpt)   = 1
-	SCF energy          (chkpt)   =  -38.919376858120245
-	Reference energy    (CC_INFO) =  -38.919376858120259
-	CCSD energy         (CC_INFO) =   -0.119638635435854
-	Total CCSD energy   (CC_INFO) =  -39.039015493556114
-	Excited State L calculation?  = No
-	Irrep of L          (CC_INFO) = A1 
+	SCF energy          (chkpt)   =  -38.919376858158373
+	Reference energy    (CC_INFO) =  -38.919376858158380
+	CCSD energy         (CC_INFO) =   -0.119638635400780
+	Total CCSD energy   (CC_INFO) =  -39.039015493559162
 
 	Input parameters:
 	-----------------
 	Maxiter     =      50
-	Convergence = 1.0e-12
+	Convergence = 1.0e-07
 	Restart     =     Yes
 	Cache Level =     2
 	AO Basis        =     No
+	Excited State Computation =     No
+	States sought per irrep     = A1  0, A2  0, B1  1, B2  0,
+	Ls sought per irrep         = A1  1, A2  0, B1  0, B2  0,	Local CC        =     No
+
+	Symmetry of excited state: B1 
+	Symmetry of right eigenvector: A1 
 
 	          Solving Lambda Equations
 	          ------------------------
-	Iter         PseudoEnergy             RMS  
+	Iter     PseudoEnergy or Norm         RMS  
 	----     ---------------------     --------
-	   0        -0.116360773561249    0.000e+00
-	   1        -0.113948075339107    5.994e-03
-	   2        -0.113401041279100    1.603e-03
-	   3        -0.113335522313353    5.536e-04
-	   4        -0.113338212376789    1.766e-04
-	   5        -0.113336797616723    6.020e-05
-	   6        -0.113335932372932    1.813e-05
-	   7        -0.113335764014649    6.380e-06
-	   8        -0.113335724338337    2.054e-06
-	   9        -0.113335715364497    6.146e-07
-	  10        -0.113335715685929    1.723e-07
-	  11        -0.113335716424400    5.238e-08
-	  12        -0.113335716367926    1.450e-08
-	  13        -0.113335716312656    4.225e-09
-	  14        -0.113335716298043    1.245e-09
-	  15        -0.113335716288345    4.086e-10
-	  16        -0.113335716281346    1.375e-10
-	  17        -0.113335716279485    4.613e-11
-	  18        -0.113335716279058    1.600e-11
-	  19        -0.113335716278960    4.056e-12
-	  20        -0.113335716278910    1.167e-12
-	  21        -0.113335716278908    2.818e-13
+	   0        -0.116360773526284    0.000e+00
+	   1        -0.113948075307511    5.994e-03
+	   2        -0.113401041248310    1.603e-03
+	   3        -0.113335522282828    5.536e-04
+	   4        -0.113338212346271    1.766e-04
+	   5        -0.113336797586205    6.020e-05
+	   6        -0.113335932342415    1.813e-05
+	   7        -0.113335763984132    6.380e-06
+	   8        -0.113335724307821    2.054e-06
+	   9        -0.113335715333981    6.146e-07
+	  10        -0.113335715655413    1.723e-07
+	  11        -0.113335715791125    5.238e-08
 
 	Iterations converged.
 
-	Overlap <L|e^T> =    0.946768542137205
-Writing EOM L0    1.0000000000
+	Overlap <L|e^T> =        0.94676854418
+	Overlap <L|e^T> =        0.94676854418
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:36 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:09 2003
 
-user time   =       0.97 seconds =       0.02 minutes
-system time =       0.84 seconds =       0.01 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.52 seconds =       0.01 minutes
+system time =       0.45 seconds =       0.01 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:36 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:09 2003
 
 
 			**************************
@@ -1497,11 +1483,11 @@ Mon May 19 08:59:36 2003
 			**************************
 
 
-	Nuclear Rep. energy (chkpt)   =    6.042098942150762
-	SCF energy          (chkpt)   =  -38.919376858120245
-	Reference energy    (file100) =  -38.919376858120259
-	CCSD energy         (file100) =   -0.119638635435854
-	Total CCSD energy   (file100) =  -39.039015493556114
+	Nuclear Rep. energy (chkpt)   =    6.042098947178371
+	SCF energy          (chkpt)   =  -38.919376858158373
+	Reference energy    (file100) =  -38.919376858158380
+	CCSD energy         (file100) =   -0.119638635400780
+	Total CCSD energy   (file100) =  -39.039015493559162
 
 	Input parameters:
 	-----------------
@@ -1510,65 +1496,65 @@ Mon May 19 08:59:36 2003
 	AO Basis        =     No
 
 
-	Trace of onepdm =   -0.000000000000000
+	Trace of onepdm =    0.000000000000000
 
 	Energies re-computed from CC density:
 	-------------------------------------
-	One-electron energy        =    0.138474665826163
-	IJKL energy                =    0.027888062625314
-	IJKA energy                =   -0.000079627984328
-	IJAB energy                =   -0.226739659010658
-	IBJA energy                =   -0.091613619834778
-	CIAB energy                =   -0.000055756515274
-	ABCD energy                =    0.032487301478138
-	Total two-electron energy  =   -0.258113299241585
-	CCSD correlation energy    =   -0.119638633415422
-	Total CCSD energy          =  -39.039015491535679
+	One-electron energy        =    0.138474663891843
+	IJKL energy                =    0.027888062285279
+	IJKA energy                =   -0.000079627675454
+	IJAB energy                =   -0.226739658662655
+	IBJA energy                =   -0.091613618287057
+	CIAB energy                =   -0.000055756155696
+	ABCD energy                =    0.032487301171204
+	Total two-electron energy  =   -0.258113297324380
+	CCSD correlation energy    =   -0.119638633432537
+	Total CCSD energy          =  -39.039015491590916
 
 	Virial Theorem Data:
 	--------------------
-	Kinetic energy (ref)   =   38.834705132815706
-	Kinetic energy (corr)  =    0.105482876938855
-	Kinetic energy (total) =   38.940188009754564
-	-V/T (ref)             =    2.002180310755933
-	-V/T (corr)            =    2.134199586774681
-	-V/T (total)           =    2.002537930319617
+	Kinetic energy (ref)   =   38.834705135301213
+	Kinetic energy (corr)  =    0.105482868748595
+	Kinetic energy (total) =   38.940188004049809
+	-V/T (ref)             =    2.002180310692772
+	-V/T (corr)            =    2.134199674507561
+	-V/T (total)           =    2.002537930466568
 
 	Energies re-computed from Fock-adjusted CC density:
 	---------------------------------------------------
-	One-electron energy        =    0.083611436228725
-	IJKL energy                =   -0.350453031230492
-	IJKA energy                =    0.012824931243632
-	IJAB energy                =   -0.226739659010658
-	IBJA energy                =    0.328686144390837
-	CIAB energy                =   -0.000055756515274
-	ABCD energy                =    0.032487301478138
-	Total two-electron energy  =   -0.203250069643818
-	CCSD correlation energy    =   -0.119638633415092
-	Total CCSD energy          =  -39.039015491535352
+	One-electron energy        =    0.083611434549834
+	IJKL energy                =   -0.350453021871067
+	IJKA energy                =    0.012824931475584
+	IJAB energy                =   -0.226739658662655
+	IBJA energy                =    0.328686136060590
+	CIAB energy                =   -0.000055756155696
+	ABCD energy                =    0.032487301171204
+	Total two-electron energy  =   -0.203250067982041
+	CCSD correlation energy    =   -0.119638633432207
+	Total CCSD energy          =  -39.039015491590590
 
 	Energies re-computed from Mulliken density:
 	-------------------------------------------
-	One-electron energy        =    0.083611436228725
-	IJKL energy                =   -0.350453031230492
-	IJKA energy                =    0.012824931243632
-	IJAB energy                =   -0.220052264725930
-	IBJA energy                =    0.321998750106108
-	CIAB energy                =   -0.000055756515274
-	ABCD energy                =    0.032487301478138
-	Total two-electron energy  =   -0.203250069643818
-	CCSD correlation energy    =   -0.119638633415093
-	Total CCSD energy          =  -39.039015491535352
+	One-electron energy        =    0.083611434549834
+	IJKL energy                =   -0.350453021871067
+	IJKA energy                =    0.012824931475584
+	IJAB energy                =   -0.220052264191587
+	IBJA energy                =    0.321998741589522
+	CIAB energy                =   -0.000055756155696
+	ABCD energy                =    0.032487301171204
+	Total two-electron energy  =   -0.203250067982041
+	CCSD correlation energy    =   -0.119638633432207
+	Total CCSD energy          =  -39.039015491590590
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:37 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:09 2003
 
-user time   =       0.25 seconds =       0.00 minutes
-system time =       0.34 seconds =       0.01 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.20 seconds =       0.00 minutes
+system time =       0.31 seconds =       0.01 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:37 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:09 2003
 
 
 	**************************************************
@@ -1632,8 +1618,8 @@ Mon May 19 08:59:37 2003
 	 B1 	   4	   4	    0	    0	    1	    3	    0
 	 B2 	   7	   7	    0	    1	    0	    6	    0
 
-	Nuclear Repulsion Energy    =         6.0420989422
-	Total SCF Energy            =       -38.9193768581
+	Nuclear Repulsion Energy    =         6.0420989472
+	Total SCF Energy            =       -38.9193768582
 
 	Pre-sorting two-electron ints...
 
@@ -1651,15 +1637,15 @@ Mon May 19 08:59:37 2003
 	Transforming one-electron integrals...
 	One-pdm and lagrangian written to file76.
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:38 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:11 2003
 
-user time   =       0.26 seconds =       0.00 minutes
-system time =       1.11 seconds =       0.02 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.15 seconds =       0.00 minutes
+system time =       1.29 seconds =       0.02 minutes
+total time  =          2 seconds =       0.03 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:38 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:11 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1692,17 +1678,17 @@ Mon May 19 08:59:38 2003
   -CCSD forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000    -0.023190719672
-       2        0.000000000000    -0.004397181690     0.011595359836
-       3        0.000000000000     0.004397181690     0.011595359836
+       1        0.000000000000     0.000000000000    -0.023190720208
+       2        0.000000000000    -0.004397181602     0.011595360104
+       3        0.000000000000     0.004397181602     0.011595360104
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:39 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:11 2003
 
-user time   =       0.48 seconds =       0.01 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.47 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
 	 OPTKING: For internal coordinate optimizations and   
@@ -1710,19 +1696,19 @@ total time  =          1 seconds =       0.02 minutes
 	------------------------------------------------------
 
 Cartesian geometry and possibly gradient in a.u. with masses
-  6.0    12.00000000   0.0000000000  -0.0000000000  -0.1524957280
-  1.0     1.00782503   0.0000000000   1.7919995190   0.9078702542
-  1.0     1.00782503   0.0000000000  -1.7919995190   0.9078702542
-                       0.0000000000   0.0000000000  -0.0231907197
-                       0.0000000000  -0.0043971817   0.0115953598
-                       0.0000000000   0.0043971817   0.0115953598
+  6.0    12.00000000   0.0000000000  -0.0000000000  -0.1524957279
+  1.0     1.00782503   0.0000000000   1.7919995174   0.9078702536
+  1.0     1.00782503   0.0000000000  -1.7919995174   0.9078702536
+                       0.0000000000   0.0000000000  -0.0231907202
+                       0.0000000000  -0.0043971816   0.0115953601
+                       0.0000000000   0.0043971816   0.0115953601
 
 Simple Internal Coordinates and Values
 Stretches
     (1 1 2) (1.10186322)
     (2 1 3) (1.10186322)
 Bends
-    (3 2 1 3) (118.77250573)
+    (3 2 1 3) (118.77250572)
  
  ** Taking normal optimization step. **
 
@@ -1749,30 +1735,30 @@ Scaling displacements by 0.976742
 
 Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
          Value          Force          Displacement   New Value
- 1  -1.8100910303   0.0103498367  -0.0121559189  -1.8222469492
- 2   1.8571445777   0.1131647416   0.1857144578   2.0428590355
-   MAX force:    0.1131647416   RMS force:    0.0803535247
+ 1  -1.8100910290   0.0103498390  -0.0121559191  -1.8222469481
+ 2   1.8571445777   0.1131647435   0.1857144578   2.0428590355
+   MAX force:    0.1131647435   RMS force:    0.0803535262
 
 Back-transformation to cartesian coordinates...
  Iter   RMS Delta(dx)   RMS Delta(dq)
-    2  0.043090766915  0.004815531384
-    3  0.002229867147  0.000002643646
+    2  0.043090766887  0.004815531379
+    3  0.002229867145  0.000002643646
     4  0.000000852026  0.000000000002
     5  0.000000000001  0.000000000000
 Convergence to displaced geometry took 5 iterations.
 
 New Cartesian Geometry in a.u.
-  6.0   0.0000000000  -0.0000000000  -0.1269818813
-  1.0   0.0000000000   1.8685457933   0.7559757530
-  1.0   0.0000000000  -1.8685457933   0.7559757530
+  6.0   0.0000000000  -0.0000000000  -0.1269818812
+  1.0   0.0000000000   1.8685457918   0.7559757526
+  1.0   0.0000000000  -1.8685457918   0.7559757526
 
 Geometry written to chkpt
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:39 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:11 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1800,15 +1786,15 @@ Mon May 19 08:59:39 2003
     Wrote 11412 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:39 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:11 2003
 
-user time   =       0.09 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.10 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:39 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:11 2003
 
 
              ------------------------------------------
@@ -1818,20 +1804,18 @@ Mon May 19 08:59:39 2003
               Written by too many people to mention here
 
              ------------------------------------------
-
-
   label       = 3B1 CH2 cc-pVDZ/ROHF-CCSD Geometry Optimization
   wfn          = CCSD
   reference    = ROHF
   multiplicity = 3
   charge       = 0
-  direct SCF   = false
+  direct       = false
   dertype      = FIRST
   convergence  = 10
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy        6.0740621842151
+  nuclear repulsion energy        6.0740621886648
 
   using old vector from file30 as initial guess
   energy from old vector:   -38.91937686
@@ -1866,36 +1850,36 @@ Mon May 19 08:59:39 2003
 
   iter       total energy        delta E         delta P          diiser
     1       -38.9207462097    4.499481e+01    0.000000e+00    0.000000e+00
-    2       -38.9213633885    6.171789e-04    7.244730e-04    7.411253e-03
-    3       -38.9215414304    1.780419e-04    3.898879e-04    4.443149e-03
+    2       -38.9213633886    6.171789e-04    7.244730e-04    7.411253e-03
+    3       -38.9215414305    1.780419e-04    3.898879e-04    4.443149e-03
     4       -38.9215885303    4.709984e-05    1.969248e-04    2.390731e-03
     5       -38.9216001324    1.160208e-05    1.113708e-04    1.239363e-03
     6       -38.9216024121    2.279709e-06    5.378340e-05    7.826502e-04
     7       -38.9216031572    7.451270e-07    2.841626e-05    4.821530e-04
     8       -38.9216035119    3.546829e-07    1.678645e-05    2.902028e-04
-    9       -38.9216036363    1.244505e-07    9.720606e-06    1.709195e-04
-   10       -38.9216036694    3.305308e-08    5.584103e-06    1.004566e-04
-   11       -38.9216036771    7.687312e-09    3.103822e-06    5.930766e-05
-   12       -38.9216036800    2.914518e-09    1.788664e-06    3.516505e-05
-   13       -38.9216036816    1.605358e-09    1.146139e-06    2.080473e-05
-   14       -38.9216036822    6.234941e-10    7.236266e-07    1.210100e-05
-   15       -38.9216036824    1.666862e-10    4.054541e-07    6.873753e-06
-   16       -38.9216036824    3.911538e-11    2.234526e-07    3.862326e-06
-   17       -38.9216036824    9.855228e-12    1.231868e-07    2.187620e-06
-   18       -38.9216036824    4.192202e-12    7.290437e-08    1.246893e-06
-   19       -38.9216036824    1.868727e-12    4.340267e-08    6.979807e-07
-   20       -38.9216036824    6.536993e-13    2.505124e-08    3.830156e-07
-   21       -38.9216036824    1.918465e-13    1.412155e-08    2.105397e-07
-   22       -38.9216036824    3.552714e-14    7.238416e-09    1.186248e-07
-   23       -38.9216036824    2.131628e-14    3.794145e-09    6.954160e-08
-   24       -38.9216036824    7.105427e-15    2.311815e-09    4.188457e-08
-   25       -38.9216036824   -7.105427e-15    1.427325e-09    2.526655e-08
-   26       -38.9216036824    7.105427e-15    8.387389e-10    1.506109e-08
-   27       -38.9216036824    0.000000e+00    4.957878e-10    8.894190e-09
-   28       -38.9216036824   -7.105427e-15    2.918887e-10    5.212913e-09
-   29       -38.9216036824    0.000000e+00    1.716670e-10    3.010285e-09
-   30       -38.9216036824    0.000000e+00    1.042093e-10    1.714551e-09
-   31       -38.9216036824    0.000000e+00    6.082536e-11    9.703552e-10
+    9       -38.9216036364    1.244505e-07    9.720606e-06    1.709195e-04
+   10       -38.9216036694    3.305310e-08    5.584103e-06    1.004566e-04
+   11       -38.9216036771    7.687305e-09    3.103822e-06    5.930766e-05
+   12       -38.9216036800    2.914511e-09    1.788664e-06    3.516505e-05
+   13       -38.9216036816    1.605393e-09    1.146139e-06    2.080473e-05
+   14       -38.9216036822    6.234657e-10    7.236266e-07    1.210100e-05
+   15       -38.9216036824    1.666791e-10    4.054541e-07    6.873753e-06
+   16       -38.9216036824    3.912959e-11    2.234526e-07    3.862326e-06
+   17       -38.9216036825    9.869439e-12    1.231868e-07    2.187620e-06
+   18       -38.9216036825    4.185097e-12    7.290437e-08    1.246893e-06
+   19       -38.9216036825    1.847411e-12    4.340267e-08    6.979807e-07
+   20       -38.9216036825    6.679102e-13    2.505124e-08    3.830156e-07
+   21       -38.9216036825    1.989520e-13    1.412155e-08    2.105397e-07
+   22       -38.9216036825    2.842171e-14    7.238416e-09    1.186248e-07
+   23       -38.9216036825    7.105427e-15    3.794145e-09    6.954160e-08
+   24       -38.9216036825    7.105427e-15    2.311815e-09    4.188457e-08
+   25       -38.9216036825   -7.105427e-15    1.427324e-09    2.526655e-08
+   26       -38.9216036825    7.105427e-15    8.387386e-10    1.506109e-08
+   27       -38.9216036825    3.552714e-14    4.957880e-10    8.894192e-09
+   28       -38.9216036825   -2.131628e-14    2.918885e-10    5.212913e-09
+   29       -38.9216036825   -4.263256e-14    1.716671e-10    3.010285e-09
+   30       -38.9216036825    1.421085e-14    1.042094e-10    1.714552e-09
+   31       -38.9216036825    3.552714e-14    6.082513e-11    9.703560e-10
 
  Correcting phases of orbitals.
 
@@ -1919,23 +1903,23 @@ Orbital energies (a.u.):
   11A1      2.857554  
 
 
-        SCF total energy   =     -38.921603682430
-        kinetic energy     =      38.849390734598
-        nuc. attr. energy  =    -102.595304589623
-        elec. rep. energy  =      24.824310172595
-        potential energy   =     -77.770994417028
-        virial theorem     =       1.998144656412
+        SCF total energy   =     -38.921603682457
+        kinetic energy     =      38.849390736827
+        nuc. attr. energy  =    -102.595304600028
+        elec. rep. energy  =      24.824310180744
+        potential energy   =     -77.770994419285
+        virial theorem     =       1.998144656468
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:39 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:11 2003
 
 user time   =       0.02 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:39 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:11 2003
 
 
 	**************************************************
@@ -1999,8 +1983,8 @@ Mon May 19 08:59:39 2003
 	 B1 	   4	   4	    0	    0	    1	    3	    0
 	 B2 	   7	   7	    0	    1	    0	    6	    0
 
-	Nuclear Repulsion Energy    =         6.0740621842
-	Total SCF Energy            =       -38.9216036824
+	Nuclear Repulsion Energy    =         6.0740621887
+	Total SCF Energy            =       -38.9216036825
 
 	Reading one-electron integrals...done.
 
@@ -2021,15 +2005,15 @@ Mon May 19 08:59:39 2003
 	One-electron integrals written to file 35.
 	Frozen-core operator written to file 35.
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:40 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:13 2003
 
-user time   =       0.17 seconds =       0.00 minutes
-system time =       1.12 seconds =       0.02 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.12 seconds =       0.00 minutes
+system time =       1.23 seconds =       0.02 minutes
+total time  =          2 seconds =       0.03 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:40 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:13 2003
 
 
 			**************************
@@ -2041,12 +2025,14 @@ Mon May 19 08:59:40 2003
 
 	Input parameters:
 	-----------------
-	Reference wfn   =     ROHF
-	Derivative      =    First
-	Memory (Mbytes) =    256.0
-	AO Basis        =      NONE
-	Cache Level     =        2
-	Cache Type      =      LRU
+	Wave function   =	CCSD
+	Reference wfn   =	ROHF
+	Derivative      =	First
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
 
 
 	Chkpt Parameters:
@@ -2062,30 +2048,30 @@ Mon May 19 08:59:40 2003
 	 B1 	   4	    0	    0	    1	    3	    0
 	 B2 	   7	    0	    1	    0	    6	    0
 
-	Nuclear Rep. energy (chkpt) =      6.07406218421513
-	SCF energy          (chkpt) =    -38.92160368242970
+	Nuclear Rep. energy (chkpt) =      6.07406218866485
+	SCF energy          (chkpt) =    -38.92160368245749
 
 	Size of <ab|cd> integrals:     0.019 (MW) /     0.150 (MB)
 	Size of <ia|bc> integrals:     0.005 (MW) /     0.041 (MB)
 	Size of Tijab amplitudes:      0.002 (MW) /     0.012 (MB)
 
-	One-electron energy          =    -63.74591385502505
-	Two-electron (AA) energy     =     10.61011527478368
-	Two-electron (BB) energy     =      3.36852260185012
-	Two-electron (AB) energy     =     11.76092905006333
-	Two-electron energy          =     18.75024798838022
+	One-electron energy          =    -63.74591386320117
+	Two-electron (AA) energy     =     10.61011527679049
+	Two-electron (BB) energy     =      3.36852260295768
+	Two-electron (AB) energy     =     11.76092905220479
+	Two-electron energy          =     18.75024799207888
 	Frozen-core energy (transqt) =      0.00000000000000
-	Reference energy             =    -38.92160368242970
+	Reference energy             =    -38.92160368245744
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:40 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:13 2003
 
-user time   =       0.04 seconds =       0.00 minutes
-system time =       0.03 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:40 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:13 2003
 
 			**************************
 			*                        *
@@ -2093,9 +2079,9 @@ Mon May 19 08:59:40 2003
 			*                        *
 			**************************
 
-	Nuclear Rep. energy (chkpt)   =    6.074062184215129
-	SCF energy          (chkpt)   =  -38.921603682429698
-	Reference energy    (file100) =  -38.921603682429698
+	Nuclear Rep. energy (chkpt)   =    6.074062188664849
+	SCF energy          (chkpt)   =  -38.921603682457487
+	Reference energy    (file100) =  -38.921603682457445
 
 	Input parameters:
 	-----------------
@@ -2113,44 +2099,45 @@ Mon May 19 08:59:40 2003
 	Print Level     =    0
 	# Amps to Print =    10
 	Print MP2 Amps? =    No
+	Analyze T2 Amps =    No
 
 	Using old T1 amplitudes.
 	Using old T2 amplitudes.
 	                     Solving CCSD Equations
 	                     ----------------------
-	Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
-	----     ---------------------    ---------   ----------  ----------  ----------
-	   0        -0.118534652494312    0.000e+00    0.006972    0.009449    0.013363
-	   1        -0.119947496441733    3.005e-02    0.006741    0.008603    0.012166
-	   2        -0.120128243833025    7.735e-03    0.007038    0.009000    0.012728
-	   3        -0.120149681410242    1.885e-03    0.007223    0.009366    0.013246
-	   4        -0.120152881186678    6.776e-04    0.007363    0.009632    0.013621
-	   5        -0.120158773996220    2.310e-04    0.007434    0.009778    0.013828
-	   6        -0.120160704216734    6.526e-05    0.007454    0.009822    0.013890
-	   7        -0.120161251211160    1.510e-05    0.007457    0.009830    0.013902
-	   8        -0.120161448627974    4.147e-06    0.007457    0.009831    0.013903
-	   9        -0.120161498215526    1.562e-06    0.007457    0.009831    0.013904
-	  10        -0.120161502519521    5.662e-07    0.007457    0.009831    0.013904
-	  11        -0.120161502792400    1.419e-07    0.007457    0.009831    0.013904
-	  12        -0.120161502919964    3.674e-08    0.007457    0.009831    0.013904
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.118534652448995    0.000e+00    0.006972    0.009449    0.013363
+     1        -0.119947496408243    3.005e-02    0.006741    0.008603    0.012166
+     2        -0.120128243801967    7.735e-03    0.007038    0.009000    0.012728
+     3        -0.120149681379449    1.885e-03    0.007223    0.009366    0.013246
+     4        -0.120152881155907    6.776e-04    0.007363    0.009632    0.013621
+     5        -0.120158773965439    2.310e-04    0.007434    0.009778    0.013828
+     6        -0.120160704185944    6.526e-05    0.007454    0.009822    0.013890
+     7        -0.120161251180367    1.510e-05    0.007457    0.009830    0.013902
+     8        -0.120161448597181    4.147e-06    0.007457    0.009831    0.013903
+     9        -0.120161498184732    1.562e-06    0.007457    0.009831    0.013904
+    10        -0.120161502488727    5.662e-07    0.007457    0.009831    0.013904
+    11        -0.120161502761606    1.419e-07    0.007457    0.009831    0.013904
+    12        -0.120161502889170    3.674e-08    0.007457    0.009831    0.013904
 
 	Iterations converged.
 
 
 	Largest TIA Amplitudes:
-	          1   1        -0.0254566362
+	          1   1         0.0254566362
 	          1   0        -0.0210001813
 	          4  15        -0.0162676375
-	          4  17         0.0146377525
+	          4  17         0.0146377524
 	          2   0        -0.0134864498
-	          2   1        -0.0124953812
+	          2   1         0.0124953812
 	          1   5        -0.0121472252
 	          1   3         0.0087350488
 	          4  19        -0.0075878678
 	          1   6        -0.0056626911
 
 	Largest Tia Amplitudes:
-	          1   1         0.0252302083
+	          1   1        -0.0252302083
 	          1   0         0.0243761628
 	          1   8        -0.0186887055
 	          4  15         0.0174648799
@@ -2159,16 +2146,16 @@ Mon May 19 08:59:40 2003
 	          4  16         0.0068677708
 	          1   5         0.0062741132
 	          1   3        -0.0040372418
-	          1   2        -0.0031954470
+	          1   2        -0.0031954471
 
 	Largest TIJAB Amplitudes:
-	  3   2  11   2         0.0348741647
-	  3   2  12   4         0.0231331850
-	  4   3   9   1        -0.0228622916
+	  3   2  11   2         0.0348741646
+	  3   2  12   4         0.0231331851
+	  4   3   9   1         0.0228622916
 	  4   3  17  11         0.0205740982
 	  4   3  15  11        -0.0202445307
-	  4   2  17   1        -0.0167671924
-	  4   2  15   1         0.0161724155
+	  4   2  17   1         0.0167671924
+	  4   2  15   1        -0.0161724155
 	  3   1  11   0        -0.0158791519
 	  3   1  11   3         0.0152646036
 	  4   2  16   2        -0.0146575336
@@ -2182,36 +2169,36 @@ Mon May 19 08:59:40 2003
 	  4   1  15   3         0.0061670792
 	  4   1  17   3        -0.0059753203
 	  4   1  15   8        -0.0052944255
-	  4   1  17   0         0.0041338069
+	  4   1  17   0         0.0041338068
 	  4   1  18   8         0.0040819925
 
 	Largest TIjAb Amplitudes:
 	  4   4  17  17        -0.0345836914
 	  4   4   1   1        -0.0337552267
-	  3   1   1  14         0.0317280523
+	  3   1   1  14        -0.0317280523
 	  3   1   0  14         0.0306191350
 	  3   1  12   8         0.0279202985
 	  2   1   4   8        -0.0275418020
 	  4   4  15  15        -0.0270399590
 	  2   1  12  14         0.0263547021
 	  4   1   9  14         0.0261041713
-	  3   1  11   0        -0.0260317388
+	  3   1  11   0        -0.0260317387
 
-	SCF energy       (chkpt)   =  -38.921603682429698
-	Reference energy (file100) =  -38.921603682429698
-	CCSD correlation energy    =   -0.120161502919964
-	Total CCSD energy          =  -39.041765185349661
+	SCF energy       (chkpt)   =  -38.921603682457487
+	Reference energy (file100) =  -38.921603682457445
+	CCSD correlation energy    =   -0.120161502889170
+	Total CCSD energy          =  -39.041765185346613
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:42 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:14 2003
 
-user time   =       0.87 seconds =       0.01 minutes
-system time =       0.70 seconds =       0.01 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.81 seconds =       0.01 minutes
+system time =       0.73 seconds =       0.01 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:42 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:14 2003
 
 
 			**************************
@@ -2221,81 +2208,74 @@ Mon May 19 08:59:42 2003
 			**************************
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:42 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:15 2003
 
-user time   =       0.15 seconds =       0.00 minutes
-system time =       0.21 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.20 seconds =       0.00 minutes
+system time =       0.12 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:42 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:15 2003
 
 
 			**************************
-			*                        *
 			*        CCLAMBDA        *
-			*                        *
 			**************************
 
 
-	Nuclear Rep. energy (chkpt)   =    6.074062184215129
+	Nuclear Rep. energy (chkpt)   =    6.074062188664849
 	Reference           (chkpt)   = 1
-	SCF energy          (chkpt)   =  -38.921603682429698
-	Reference energy    (CC_INFO) =  -38.921603682429698
-	CCSD energy         (CC_INFO) =   -0.120161502919964
-	Total CCSD energy   (CC_INFO) =  -39.041765185349661
-	Excited State L calculation?  = No
-	Irrep of L          (CC_INFO) = A1 
+	SCF energy          (chkpt)   =  -38.921603682457487
+	Reference energy    (CC_INFO) =  -38.921603682457445
+	CCSD energy         (CC_INFO) =   -0.120161502889170
+	Total CCSD energy   (CC_INFO) =  -39.041765185346613
 
 	Input parameters:
 	-----------------
 	Maxiter     =      50
-	Convergence = 1.0e-12
+	Convergence = 1.0e-07
 	Restart     =     Yes
 	Cache Level =     2
 	AO Basis        =     No
+	Excited State Computation =     No
+	States sought per irrep     = A1  0, A2  0, B1  1, B2  0,
+	Ls sought per irrep         = A1  1, A2  0, B1  0, B2  0,	Local CC        =     No
+
+	Symmetry of excited state: B1 
+	Symmetry of right eigenvector: A1 
 
 	          Solving Lambda Equations
 	          ------------------------
-	Iter         PseudoEnergy             RMS  
+	Iter     PseudoEnergy or Norm         RMS  
 	----     ---------------------     --------
-	   0        -0.116423618300374    0.000e+00
-	   1        -0.114018966733279    5.841e-03
-	   2        -0.113478780082111    1.639e-03
-	   3        -0.113416342216313    5.770e-04
-	   4        -0.113419788196449    1.713e-04
-	   5        -0.113418271392826    5.767e-05
-	   6        -0.113417187124425    1.824e-05
-	   7        -0.113416951915245    6.213e-06
-	   8        -0.113416925670765    1.944e-06
-	   9        -0.113416924356162    5.864e-07
-	  10        -0.113416926160821    1.632e-07
-	  11        -0.113416927073738    4.528e-08
-	  12        -0.113416926933834    1.214e-08
-	  13        -0.113416926827907    3.723e-09
-	  14        -0.113416926810660    1.091e-09
-	  15        -0.113416926804239    3.386e-10
-	  16        -0.113416926797782    1.125e-10
-	  17        -0.113416926795744    3.602e-11
-	  18        -0.113416926795361    1.125e-11
-	  19        -0.113416926795327    2.717e-12
-	  20        -0.113416926795311    7.231e-13
+	   0        -0.116423618269939    0.000e+00
+	   1        -0.114018966705770    5.841e-03
+	   2        -0.113478780055285    1.639e-03
+	   3        -0.113416342189712    5.770e-04
+	   4        -0.113419788169849    1.713e-04
+	   5        -0.113418271366223    5.767e-05
+	   6        -0.113417187097825    1.824e-05
+	   7        -0.113416951888646    6.213e-06
+	   8        -0.113416925644166    1.944e-06
+	   9        -0.113416924329563    5.864e-07
+	  10        -0.113416926134222    1.632e-07
+	  11        -0.113416926394326    4.528e-08
 
 	Iterations converged.
 
-	Overlap <L|e^T> =    0.946448401460181
-Writing EOM L0    1.0000000000
+	Overlap <L|e^T> =        0.94644840211
+	Overlap <L|e^T> =        0.94644840211
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:44 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:16 2003
 
-user time   =       0.93 seconds =       0.02 minutes
-system time =       0.80 seconds =       0.01 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.45 seconds =       0.01 minutes
+system time =       0.53 seconds =       0.01 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:44 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:16 2003
 
 
 			**************************
@@ -2305,11 +2285,11 @@ Mon May 19 08:59:44 2003
 			**************************
 
 
-	Nuclear Rep. energy (chkpt)   =    6.074062184215129
-	SCF energy          (chkpt)   =  -38.921603682429698
-	Reference energy    (file100) =  -38.921603682429698
-	CCSD energy         (file100) =   -0.120161502919964
-	Total CCSD energy   (file100) =  -39.041765185349661
+	Nuclear Rep. energy (chkpt)   =    6.074062188664849
+	SCF energy          (chkpt)   =  -38.921603682457487
+	Reference energy    (file100) =  -38.921603682457445
+	CCSD energy         (file100) =   -0.120161502889170
+	Total CCSD energy   (file100) =  -39.041765185346613
 
 	Input parameters:
 	-----------------
@@ -2322,61 +2302,61 @@ Mon May 19 08:59:44 2003
 
 	Energies re-computed from CC density:
 	-------------------------------------
-	One-electron energy        =    0.138243922045909
-	IJKL energy                =    0.027808665136284
-	IJKA energy                =   -0.000021850261231
-	IJAB energy                =   -0.226900502501251
-	IBJA energy                =   -0.091706361584665
-	CIAB energy                =    0.000118860296390
-	ABCD energy                =    0.032295763817355
-	Total two-electron energy  =   -0.258405425097118
-	CCSD correlation energy    =   -0.120161503051209
-	Total CCSD energy          =  -39.041765185480905
+	One-electron energy        =    0.138243921072167
+	IJKL energy                =    0.027808664816694
+	IJKA energy                =   -0.000021850126458
+	IJAB energy                =   -0.226900502174418
+	IBJA energy                =   -0.091706360516337
+	CIAB energy                =    0.000118860343328
+	ABCD energy                =    0.032295763509227
+	Total two-electron energy  =   -0.258405424147964
+	CCSD correlation energy    =   -0.120161503075798
+	Total CCSD energy          =  -39.041765185533244
 
 	Virial Theorem Data:
 	--------------------
-	Kinetic energy (ref)   =   38.849390734597812
-	Kinetic energy (corr)  =    0.103799363728278
-	Kinetic energy (total) =   38.953190098326090
-	-V/T (ref)             =    2.001858792286479
-	-V/T (corr)            =    2.157632365016398
-	-V/T (total)           =    2.002273885317223
+	Kinetic energy (ref)   =   38.849390736827274
+	Kinetic energy (corr)  =    0.103799357287290
+	Kinetic energy (total) =   38.953190094114568
+	-V/T (ref)             =    2.001858792229700
+	-V/T (corr)            =    2.157632436553467
+	-V/T (total)           =    2.002273885425508
 
 	Energies re-computed from Fock-adjusted CC density:
 	---------------------------------------------------
-	One-electron energy        =    0.084503359824426
-	IJKL energy                =   -0.351923925918481
-	IJKA energy                =    0.012743106304304
-	IJAB energy                =   -0.226900502501251
-	IBJA energy                =    0.329001835126055
-	CIAB energy                =    0.000118860296390
-	ABCD energy                =    0.032295763817355
-	Total two-electron energy  =   -0.204664862875627
-	CCSD correlation energy    =   -0.120161503051201
-	Total CCSD energy          =  -39.041765185480898
+	One-electron energy        =    0.084503358672263
+	IJKL energy                =   -0.351923921720854
+	IJKA energy                =    0.012743106982893
+	IJAB energy                =   -0.226900502174418
+	IBJA energy                =    0.329001831311770
+	CIAB energy                =    0.000118860343328
+	ABCD energy                =    0.032295763509227
+	Total two-electron energy  =   -0.204664861748053
+	CCSD correlation energy    =   -0.120161503075790
+	Total CCSD energy          =  -39.041765185533237
 
 	Energies re-computed from Mulliken density:
 	-------------------------------------------
-	One-electron energy        =    0.084503359824426
-	IJKL energy                =   -0.351923925918481
-	IJKA energy                =    0.012743106304304
-	IJAB energy                =   -0.220387871436503
-	IBJA energy                =    0.322489204061307
-	CIAB energy                =    0.000118860296390
-	ABCD energy                =    0.032295763817355
-	Total two-electron energy  =   -0.204664862875627
-	CCSD correlation energy    =   -0.120161503051201
-	Total CCSD energy          =  -39.041765185480898
+	One-electron energy        =    0.084503358672263
+	IJKL energy                =   -0.351923921720854
+	IJKA energy                =    0.012743106982893
+	IJAB energy                =   -0.220387871062464
+	IBJA energy                =    0.322489200199816
+	CIAB energy                =    0.000118860343328
+	ABCD energy                =    0.032295763509227
+	Total two-electron energy  =   -0.204664861748053
+	CCSD correlation energy    =   -0.120161503075790
+	Total CCSD energy          =  -39.041765185533237
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:44 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:16 2003
 
-user time   =       0.25 seconds =       0.00 minutes
-system time =       0.31 seconds =       0.01 minutes
+user time   =       0.24 seconds =       0.00 minutes
+system time =       0.28 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:44 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:16 2003
 
 
 	**************************************************
@@ -2440,8 +2420,8 @@ Mon May 19 08:59:44 2003
 	 B1 	   4	   4	    0	    0	    1	    3	    0
 	 B2 	   7	   7	    0	    1	    0	    6	    0
 
-	Nuclear Repulsion Energy    =         6.0740621842
-	Total SCF Energy            =       -38.9216036824
+	Nuclear Repulsion Energy    =         6.0740621887
+	Total SCF Energy            =       -38.9216036825
 
 	Pre-sorting two-electron ints...
 
@@ -2459,15 +2439,15 @@ Mon May 19 08:59:44 2003
 	Transforming one-electron integrals...
 	One-pdm and lagrangian written to file76.
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:46 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:18 2003
 
-user time   =       0.16 seconds =       0.00 minutes
-system time =       1.20 seconds =       0.02 minutes
+user time   =       0.13 seconds =       0.00 minutes
+system time =       1.31 seconds =       0.02 minutes
 total time  =          2 seconds =       0.03 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:46 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:18 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -2500,16 +2480,16 @@ Mon May 19 08:59:46 2003
   -CCSD forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000    -0.003441561886
-       2        0.000000000000    -0.001700871928     0.001720780943
-       3        0.000000000000     0.001700871928     0.001720780943
+       1        0.000000000000     0.000000000000    -0.003441562869
+       2        0.000000000000    -0.001700872134     0.001720781434
+       3        0.000000000000     0.001700872134     0.001720781434
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:46 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:18 2003
 
 user time   =       0.47 seconds =       0.01 minutes
-system time =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
@@ -2518,19 +2498,19 @@ total time  =          0 seconds =       0.00 minutes
 	------------------------------------------------------
 
 Cartesian geometry and possibly gradient in a.u. with masses
-  6.0    12.00000000   0.0000000000  -0.0000000000  -0.1269818813
-  1.0     1.00782503   0.0000000000   1.8685457933   0.7559757530
-  1.0     1.00782503   0.0000000000  -1.8685457933   0.7559757530
-                       0.0000000000   0.0000000000  -0.0034415619
-                       0.0000000000  -0.0017008719   0.0017207809
-                       0.0000000000   0.0017008719   0.0017207809
+  6.0    12.00000000   0.0000000000  -0.0000000000  -0.1269818812
+  1.0     1.00782503   0.0000000000   1.8685457918   0.7559757526
+  1.0     1.00782503   0.0000000000  -1.8685457918   0.7559757526
+                       0.0000000000   0.0000000000  -0.0034415629
+                       0.0000000000  -0.0017008721   0.0017207814
+                       0.0000000000   0.0017008721   0.0017207814
 
 Simple Internal Coordinates and Values
 Stretches
     (1 1 2) (1.09362869)
     (2 1 3) (1.09362869)
 Bends
-    (3 2 1 3) (129.41503458)
+    (3 2 1 3) (129.41503457)
  
  ** Taking normal optimization step. **
 
@@ -2548,8 +2528,8 @@ Taking geometry step number 3
 BuB^t Determinant: 1.922879e+00
 
 Force Constants read from PSIF_OPTKING
-   5.3483985900   0.4045125166
-   0.4045125166   0.6216533272
+   5.3483985452   0.4045125284
+   0.4045125284   0.6216533169
 
 Performing BFGS Hessian update.
 
@@ -2557,30 +2537,30 @@ Scaling displacements by 1.000000
 
 Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
          Value          Force          Displacement   New Value
- 1  -1.8222469492  -0.0119000123  -0.0058017007  -1.8280486499
- 2   2.0428590355   0.0192038870   0.0408700200   2.0837290555
-   MAX force:    0.0192038870   RMS force:    0.0159749737
+ 1  -1.8222469481  -0.0119000127  -0.0058017019  -1.8280486499
+ 2   2.0428590355   0.0192038918   0.0408700312   2.0837290667
+   MAX force:    0.0192038918   RMS force:    0.0159749767
 
 Back-transformation to cartesian coordinates...
  Iter   RMS Delta(dx)   RMS Delta(dq)
-    2  0.009479872252  0.000233238273
-    3  0.000106956598  0.000000003042
+    2  0.009479874819  0.000233238400
+    3  0.000106956657  0.000000003042
     4  0.000000000987  0.000000000000
     5  0.000000000000  0.000000000000
 Convergence to displaced geometry took 5 iterations.
 
 New Cartesian Geometry in a.u.
-  6.0   0.0000000000  -0.0000000000  -0.1214515329
-  1.0   0.0000000000   1.8870255918   0.7230512977
-  1.0   0.0000000000  -1.8870255918   0.7230512977
+  6.0   0.0000000000  -0.0000000000  -0.1214515313
+  1.0   0.0000000000   1.8870255948   0.7230512881
+  1.0   0.0000000000  -1.8870255948   0.7230512881
 
 Geometry written to chkpt
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:46 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:18 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -2608,15 +2588,15 @@ Mon May 19 08:59:46 2003
     Wrote 11412 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:46 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:18 2003
 
-user time   =       0.10 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:46 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:18 2003
 
 
              ------------------------------------------
@@ -2626,20 +2606,18 @@ Mon May 19 08:59:46 2003
               Written by too many people to mention here
 
              ------------------------------------------
-
-
   label       = 3B1 CH2 cc-pVDZ/ROHF-CCSD Geometry Optimization
   wfn          = CCSD
   reference    = ROHF
   multiplicity = 3
   charge       = 0
-  direct SCF   = false
+  direct       = false
   dertype      = FIRST
   convergence  = 10
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy        6.0694218182892
+  nuclear repulsion energy        6.0694218229606
 
   using old vector from file30 as initial guess
   energy from old vector:   -38.92160368
@@ -2674,32 +2652,32 @@ Mon May 19 08:59:46 2003
 
   iter       total energy        delta E         delta P          diiser
     1       -38.9213921719    4.499081e+01    0.000000e+00    0.000000e+00
-    2       -38.9214242614    3.208948e-05    1.601539e-04    1.587689e-03
-    3       -38.9214332881    9.026646e-06    8.422928e-05    7.735735e-04
-    4       -38.9214356038    2.315732e-06    4.201428e-05    3.679389e-04
-    5       -38.9214360990    4.951995e-07    2.214660e-05    1.901575e-04
-    6       -38.9214361720    7.306196e-08    1.018086e-05    1.223475e-04
-    7       -38.9214361916    1.952174e-08    5.136794e-06    7.649358e-05
-    8       -38.9214362019    1.032465e-08    2.838173e-06    4.645046e-05
-    9       -38.9214362059    4.026418e-09    1.642551e-06    2.772619e-05
-   10       -38.9214362071    1.132406e-09    9.656254e-07    1.658113e-05
-   11       -38.9214362073    2.442562e-10    5.371746e-07    9.938421e-06
-   12       -38.9214362074    8.312639e-11    3.047723e-07    5.985201e-06
-   13       -38.9214362074    4.784795e-11    1.945599e-07    3.602189e-06
-   14       -38.9214362074    2.022205e-11    1.263701e-07    2.128762e-06
-   15       -38.9214362075    5.833556e-12    7.290456e-08    1.227938e-06
-   16       -38.9214362075    1.492140e-12    4.167837e-08    6.998576e-07
-   17       -38.9214362075    3.552714e-13    2.383769e-08    4.005353e-07
-   18       -38.9214362075    1.350031e-13    1.372889e-08    2.290561e-07
-   19       -38.9214362075    6.394885e-14    8.141097e-09    1.287208e-07
-   20       -38.9214362075    2.842171e-14    4.810366e-09    7.148406e-08
-   21       -38.9214362075   -7.105427e-15    2.680795e-09    3.995750e-08
-   22       -38.9214362075    7.105427e-15    1.421136e-09    2.292572e-08
-   23       -38.9214362075   -7.105427e-15    7.599921e-10    1.358332e-08
-   24       -38.9214362075    1.421085e-14    4.475903e-10    8.201646e-09
-   25       -38.9214362075   -7.105427e-15    2.756522e-10    4.929965e-09
-   26       -38.9214362075    0.000000e+00    1.651702e-10    2.911465e-09
-   27       -38.9214362075   -7.105427e-15    9.979227e-11    1.696930e-09
+    2       -38.9214242614    3.208950e-05    1.601539e-04    1.587690e-03
+    3       -38.9214332880    9.026651e-06    8.422930e-05    7.735737e-04
+    4       -38.9214356038    2.315733e-06    4.201429e-05    3.679390e-04
+    5       -38.9214360990    4.951997e-07    2.214660e-05    1.901575e-04
+    6       -38.9214361720    7.306205e-08    1.018087e-05    1.223475e-04
+    7       -38.9214361915    1.952173e-08    5.136795e-06    7.649360e-05
+    8       -38.9214362019    1.032466e-08    2.838173e-06    4.645047e-05
+    9       -38.9214362059    4.026433e-09    1.642552e-06    2.772619e-05
+   10       -38.9214362070    1.132435e-09    9.656257e-07    1.658114e-05
+   11       -38.9214362073    2.442277e-10    5.371748e-07    9.938424e-06
+   12       -38.9214362073    8.309797e-11    3.047723e-07    5.985203e-06
+   13       -38.9214362074    4.787637e-11    1.945599e-07    3.602190e-06
+   14       -38.9214362074    2.022915e-11    1.263701e-07    2.128762e-06
+   15       -38.9214362074    5.840661e-12    7.290459e-08    1.227938e-06
+   16       -38.9214362074    1.477929e-12    4.167838e-08    6.998578e-07
+   17       -38.9214362074    3.552714e-13    2.383769e-08    4.005354e-07
+   18       -38.9214362074    1.136868e-13    1.372890e-08    2.290561e-07
+   19       -38.9214362074    8.526513e-14    8.141099e-09    1.287209e-07
+   20       -38.9214362074    2.131628e-14    4.810368e-09    7.148408e-08
+   21       -38.9214362074    7.105427e-15    2.680796e-09    3.995751e-08
+   22       -38.9214362074    0.000000e+00    1.421136e-09    2.292573e-08
+   23       -38.9214362074    7.105427e-15    7.599919e-10    1.358332e-08
+   24       -38.9214362074    0.000000e+00    4.475907e-10    8.201649e-09
+   25       -38.9214362074   -7.105427e-15    2.756522e-10    4.929966e-09
+   26       -38.9214362074    7.105427e-15    1.651703e-10    2.911466e-09
+   27       -38.9214362074   -2.131628e-14    9.979236e-11    1.696930e-09
 
  Correcting phases of orbitals.
 
@@ -2723,23 +2701,23 @@ Orbital energies (a.u.):
   11A1      2.881937  
 
 
-        SCF total energy   =     -38.921436207455
-        kinetic energy     =      38.846140362648
-        nuc. attr. energy  =    -102.585302431939
-        elec. rep. energy  =      24.817725861835
-        potential energy   =     -77.767576570104
-        virial theorem     =       1.998065440227
+        SCF total energy   =     -38.921436207424
+        kinetic energy     =      38.846140364702
+        nuc. attr. energy  =    -102.585302443043
+        elec. rep. energy  =      24.817725870917
+        potential energy   =     -77.767576572126
+        virial theorem     =       1.998065440280
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:46 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:18 2003
 
 user time   =       0.02 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:46 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:18 2003
 
 
 	**************************************************
@@ -2803,8 +2781,8 @@ Mon May 19 08:59:46 2003
 	 B1 	   4	   4	    0	    0	    1	    3	    0
 	 B2 	   7	   7	    0	    1	    0	    6	    0
 
-	Nuclear Repulsion Energy    =         6.0694218183
-	Total SCF Energy            =       -38.9214362075
+	Nuclear Repulsion Energy    =         6.0694218230
+	Total SCF Energy            =       -38.9214362074
 
 	Reading one-electron integrals...done.
 
@@ -2825,15 +2803,15 @@ Mon May 19 08:59:46 2003
 	One-electron integrals written to file 35.
 	Frozen-core operator written to file 35.
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:48 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:20 2003
 
-user time   =       0.13 seconds =       0.00 minutes
-system time =       1.16 seconds =       0.02 minutes
+user time   =       0.08 seconds =       0.00 minutes
+system time =       1.28 seconds =       0.02 minutes
 total time  =          2 seconds =       0.03 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:48 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:20 2003
 
 
 			**************************
@@ -2845,12 +2823,14 @@ Mon May 19 08:59:48 2003
 
 	Input parameters:
 	-----------------
-	Reference wfn   =     ROHF
-	Derivative      =    First
-	Memory (Mbytes) =    256.0
-	AO Basis        =      NONE
-	Cache Level     =        2
-	Cache Type      =      LRU
+	Wave function   =	CCSD
+	Reference wfn   =	ROHF
+	Derivative      =	First
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
 
 
 	Chkpt Parameters:
@@ -2866,30 +2846,30 @@ Mon May 19 08:59:48 2003
 	 B1 	   4	    0	    0	    1	    3	    0
 	 B2 	   7	    0	    1	    0	    6	    0
 
-	Nuclear Rep. energy (chkpt) =      6.06942181828916
-	SCF energy          (chkpt) =    -38.92143620745541
+	Nuclear Rep. energy (chkpt) =      6.06942182296058
+	SCF energy          (chkpt) =    -38.92143620742391
 
 	Size of <ab|cd> integrals:     0.019 (MW) /     0.150 (MB)
 	Size of <ia|bc> integrals:     0.005 (MW) /     0.041 (MB)
 	Size of Tijab amplitudes:      0.002 (MW) /     0.012 (MB)
 
-	One-electron energy          =    -63.73916206929010
-	Two-electron (AA) energy     =     10.60885164424409
-	Two-electron (BB) energy     =      3.36748484782785
-	Two-electron (AB) energy     =     11.76013579750957
-	Two-electron energy          =     18.74830404354554
+	One-electron energy          =    -63.73916207834085
+	Two-electron (AA) energy     =     10.60885164658529
+	Two-electron (BB) energy     =      3.36748484902771
+	Two-electron (AB) energy     =     11.76013580014987
+	Two-electron energy          =     18.74830404795637
 	Frozen-core energy (transqt) =      0.00000000000000
-	Reference energy             =    -38.92143620745541
+	Reference energy             =    -38.92143620742391
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:48 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:20 2003
 
 user time   =       0.05 seconds =       0.00 minutes
-system time =       0.04 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:48 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:20 2003
 
 			**************************
 			*                        *
@@ -2897,9 +2877,9 @@ Mon May 19 08:59:48 2003
 			*                        *
 			**************************
 
-	Nuclear Rep. energy (chkpt)   =    6.069421818289158
-	SCF energy          (chkpt)   =  -38.921436207455415
-	Reference energy    (file100) =  -38.921436207455407
+	Nuclear Rep. energy (chkpt)   =    6.069421822960580
+	SCF energy          (chkpt)   =  -38.921436207423909
+	Reference energy    (file100) =  -38.921436207423909
 
 	Input parameters:
 	-----------------
@@ -2917,62 +2897,63 @@ Mon May 19 08:59:48 2003
 	Print Level     =    0
 	# Amps to Print =    10
 	Print MP2 Amps? =    No
+	Analyze T2 Amps =    No
 
 	Using old T1 amplitudes.
 	Using old T2 amplitudes.
 	                     Solving CCSD Equations
 	                     ----------------------
-	Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
-	----     ---------------------    ---------   ----------  ----------  ----------
-	   0        -0.120252787473508    0.000e+00    0.007457    0.009831    0.013904
-	   1        -0.120406543331631    5.600e-03    0.007411    0.009936    0.014052
-	   2        -0.120426234433146    1.456e-03    0.007503    0.010100    0.014284
-	   3        -0.120434110672821    3.959e-04    0.007557    0.010215    0.014447
-	   4        -0.120437790480195    1.590e-04    0.007597    0.010299    0.014565
-	   5        -0.120439606046249    5.379e-05    0.007614    0.010339    0.014622
-	   6        -0.120439932781255    1.296e-05    0.007618    0.010348    0.014634
-	   7        -0.120440021007539    2.992e-06    0.007618    0.010349    0.014635
-	   8        -0.120440059014681    9.774e-07    0.007618    0.010349    0.014636
-	   9        -0.120440067574560    3.636e-07    0.007618    0.010349    0.014636
-	  10        -0.120440067450373    1.109e-07    0.007618    0.010349    0.014636
-	  11        -0.120440067368214    2.495e-08    0.007618    0.010349    0.014636
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.120252787458163    0.000e+00    0.007457    0.009831    0.013904
+     1        -0.120406543361435    5.600e-03    0.007411    0.009936    0.014052
+     2        -0.120426234468639    1.456e-03    0.007503    0.010100    0.014284
+     3        -0.120434110710447    3.959e-04    0.007557    0.010215    0.014447
+     4        -0.120437790518844    1.590e-04    0.007597    0.010299    0.014565
+     5        -0.120439606085415    5.379e-05    0.007614    0.010339    0.014622
+     6        -0.120439932820510    1.296e-05    0.007618    0.010348    0.014634
+     7        -0.120440021046818    2.992e-06    0.007618    0.010349    0.014635
+     8        -0.120440059053970    9.774e-07    0.007618    0.010349    0.014636
+     9        -0.120440067613851    3.636e-07    0.007618    0.010349    0.014636
+    10        -0.120440067489665    1.109e-07    0.007618    0.010349    0.014636
+    11        -0.120440067407506    2.495e-08    0.007618    0.010349    0.014636
 
 	Iterations converged.
 
 
 	Largest TIA Amplitudes:
-	          1   1        -0.0260640935
-	          1   0        -0.0219883127
-	          4  15        -0.0158655029
-	          2   0        -0.0145145325
-	          4  17         0.0144606952
-	          2   1        -0.0130213194
-	          1   5        -0.0120041900
-	          1   3         0.0091430128
-	          4  19        -0.0073929520
-	          1   6        -0.0061183062
+	          1   1         0.0260640936
+	          1   0        -0.0219883130
+	          4  15        -0.0158655027
+	          2   0        -0.0145145327
+	          4  17         0.0144606951
+	          2   1         0.0130213195
+	          1   5        -0.0120041899
+	          1   3         0.0091430130
+	          4  19        -0.0073929519
+	          1   6        -0.0061183064
 
 	Largest Tia Amplitudes:
-	          1   1         0.0259232830
-	          1   0         0.0254389843
+	          1   1        -0.0259232832
+	          1   0         0.0254389846
 	          1   8        -0.0186291778
-	          4  15         0.0173506438
+	          4  15         0.0173506437
 	          4  17        -0.0095832899
-	          4  18         0.0080641037
+	          4  18         0.0080641038
 	          4  16         0.0069041274
 	          1   5         0.0062628851
-	          1   3        -0.0043256880
-	          1   2        -0.0024173882
+	          1   3        -0.0043256881
+	          1   2        -0.0024173881
 
 	Largest TIJAB Amplitudes:
-	  3   2  11   2         0.0354565148
+	  3   2  11   2         0.0354565149
 	  3   2  12   4         0.0233899860
-	  4   3   9   1        -0.0233328528
+	  4   3   9   1         0.0233328529
 	  4   3  17  11         0.0205406910
 	  4   3  15  11        -0.0202298702
-	  4   2  17   1        -0.0163983248
+	  4   2  17   1         0.0163983248
 	  3   1  11   0        -0.0158406549
-	  4   2  15   1         0.0155731340
+	  4   2  15   1        -0.0155731338
 	  3   1  11   3         0.0152705049
 	  4   2  16   2        -0.0143286100
 
@@ -2982,39 +2963,39 @@ Mon May 19 08:59:48 2003
 	  4   1  15   0        -0.0075098010
 	  4   1  17   8         0.0062489511
 	  4   1  15   3         0.0061565269
-	  4   1  16   0         0.0060805374
+	  4   1  16   0         0.0060805373
 	  4   1  17   3        -0.0059688872
 	  4   1  15   8        -0.0051558519
-	  4   1  18   8         0.0042317179
+	  4   1  18   8         0.0042317180
 	  4   1  17   0         0.0041754507
 
 	Largest TIjAb Amplitudes:
-	  4   4   1   1        -0.0353970289
-	  4   4  17  17        -0.0346668945
-	  3   1   1  14         0.0322019064
-	  3   1   0  14         0.0312807165
+	  4   4   1   1        -0.0353970292
+	  4   4  17  17        -0.0346668946
+	  3   1   1  14        -0.0322019065
+	  3   1   0  14         0.0312807166
 	  3   1  12   8         0.0280436527
-	  2   1   4   8        -0.0277478842
-	  4   4  15  15        -0.0266078114
+	  2   1   4   8        -0.0277478843
+	  4   4  15  15        -0.0266078112
 	  2   1  12  14         0.0265945417
 	  4   1   9  14         0.0261277122
 	  3   1  11   0        -0.0261161089
 
-	SCF energy       (chkpt)   =  -38.921436207455415
-	Reference energy (file100) =  -38.921436207455407
-	CCSD correlation energy    =   -0.120440067368214
-	Total CCSD energy          =  -39.041876274823622
+	SCF energy       (chkpt)   =  -38.921436207423909
+	Reference energy (file100) =  -38.921436207423909
+	CCSD correlation energy    =   -0.120440067407506
+	Total CCSD energy          =  -39.041876274831417
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:49 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:21 2003
 
-user time   =       0.77 seconds =       0.01 minutes
-system time =       0.68 seconds =       0.01 minutes
+user time   =       0.69 seconds =       0.01 minutes
+system time =       0.73 seconds =       0.01 minutes
 total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:49 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:21 2003
 
 
 			**************************
@@ -3024,81 +3005,74 @@ Mon May 19 08:59:49 2003
 			**************************
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:50 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:22 2003
 
-user time   =       0.12 seconds =       0.00 minutes
-system time =       0.24 seconds =       0.00 minutes
+user time   =       0.19 seconds =       0.00 minutes
+system time =       0.12 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:50 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:22 2003
 
 
 			**************************
-			*                        *
 			*        CCLAMBDA        *
-			*                        *
 			**************************
 
 
-	Nuclear Rep. energy (chkpt)   =    6.069421818289158
+	Nuclear Rep. energy (chkpt)   =    6.069421822960580
 	Reference           (chkpt)   = 1
-	SCF energy          (chkpt)   =  -38.921436207455415
-	Reference energy    (CC_INFO) =  -38.921436207455407
-	CCSD energy         (CC_INFO) =   -0.120440067368214
-	Total CCSD energy   (CC_INFO) =  -39.041876274823622
-	Excited State L calculation?  = No
-	Irrep of L          (CC_INFO) = A1 
+	SCF energy          (chkpt)   =  -38.921436207423909
+	Reference energy    (CC_INFO) =  -38.921436207423909
+	CCSD energy         (CC_INFO) =   -0.120440067407506
+	Total CCSD energy   (CC_INFO) =  -39.041876274831417
 
 	Input parameters:
 	-----------------
 	Maxiter     =      50
-	Convergence = 1.0e-12
+	Convergence = 1.0e-07
 	Restart     =     Yes
 	Cache Level =     2
 	AO Basis        =     No
+	Excited State Computation =     No
+	States sought per irrep     = A1  0, A2  0, B1  1, B2  0,
+	Ls sought per irrep         = A1  1, A2  0, B1  0, B2  0,	Local CC        =     No
+
+	Symmetry of excited state: B1 
+	Symmetry of right eigenvector: A1 
 
 	          Solving Lambda Equations
 	          ------------------------
-	Iter         PseudoEnergy             RMS  
+	Iter     PseudoEnergy or Norm         RMS  
 	----     ---------------------     --------
-	   0        -0.116570618973683    0.000e+00
-	   1        -0.114155517815093    5.850e-03
-	   2        -0.113614007432843    1.662e-03
-	   3        -0.113551316359942    5.904e-04
-	   4        -0.113554945729033    1.728e-04
-	   5        -0.113553363163122    5.817e-05
-	   6        -0.113552213014029    1.857e-05
-	   7        -0.113551960567841    6.289e-06
-	   8        -0.113551935220011    1.968e-06
-	   9        -0.113551935030509    5.995e-07
-	  10        -0.113551937131305    1.685e-07
-	  11        -0.113551938093869    4.643e-08
-	  12        -0.113551937918676    1.261e-08
-	  13        -0.113551937793456    3.952e-09
-	  14        -0.113551937773179    1.164e-09
-	  15        -0.113551937766084    3.625e-10
-	  16        -0.113551937759043    1.204e-10
-	  17        -0.113551937756885    3.802e-11
-	  18        -0.113551937756498    1.159e-11
-	  19        -0.113551937756466    2.779e-12
-	  20        -0.113551937756450    7.347e-13
+	   0        -0.116570618975800    0.000e+00
+	   1        -0.114155517818063    5.850e-03
+	   2        -0.113614007436315    1.662e-03
+	   3        -0.113551316363633    5.904e-04
+	   4        -0.113554945732773    1.728e-04
+	   5        -0.113553363166839    5.817e-05
+	   6        -0.113552213017730    1.857e-05
+	   7        -0.113551960571539    6.289e-06
+	   8        -0.113551935223710    1.968e-06
+	   9        -0.113551935034208    5.995e-07
+	  10        -0.113551937135004    1.685e-07
+	  11        -0.113551937410738    4.643e-08
 
 	Iterations converged.
 
-	Overlap <L|e^T> =    0.946143391918889
-Writing EOM L0    1.0000000000
+	Overlap <L|e^T> =        0.94614339209
+	Overlap <L|e^T> =        0.94614339209
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:51 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:23 2003
 
-user time   =       0.78 seconds =       0.01 minutes
-system time =       0.96 seconds =       0.02 minutes
+user time   =       0.55 seconds =       0.01 minutes
+system time =       0.43 seconds =       0.01 minutes
 total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:51 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:23 2003
 
 
 			**************************
@@ -3108,11 +3082,11 @@ Mon May 19 08:59:51 2003
 			**************************
 
 
-	Nuclear Rep. energy (chkpt)   =    6.069421818289158
-	SCF energy          (chkpt)   =  -38.921436207455415
-	Reference energy    (file100) =  -38.921436207455407
-	CCSD energy         (file100) =   -0.120440067368214
-	Total CCSD energy   (file100) =  -39.041876274823622
+	Nuclear Rep. energy (chkpt)   =    6.069421822960580
+	SCF energy          (chkpt)   =  -38.921436207423909
+	Reference energy    (file100) =  -38.921436207423909
+	CCSD energy         (file100) =   -0.120440067407506
+	Total CCSD energy   (file100) =  -39.041876274831417
 
 	Input parameters:
 	-----------------
@@ -3125,61 +3099,61 @@ Mon May 19 08:59:51 2003
 
 	Energies re-computed from CC density:
 	-------------------------------------
-	One-electron energy        =    0.138381107796498
-	IJKL energy                =    0.027866530336234
-	IJKA energy                =   -0.000002603255213
-	IJAB energy                =   -0.227170824494734
-	IBJA energy                =   -0.092030525362837
-	CIAB energy                =    0.000153604337432
-	ABCD energy                =    0.032362643153609
-	Total two-electron energy  =   -0.258821175285508
-	CCSD correlation energy    =   -0.120440067489009
-	Total CCSD energy          =  -39.041876274944414
+	One-electron energy        =    0.138381107130700
+	IJKL energy                =    0.027866530028178
+	IJKA energy                =   -0.000002603161613
+	IJAB energy                =   -0.227170824233516
+	IBJA energy                =   -0.092030524518397
+	CIAB energy                =    0.000153604316160
+	ABCD energy                =    0.032362642853185
+	Total two-electron energy  =   -0.258821174716003
+	CCSD correlation energy    =   -0.120440067585304
+	Total CCSD energy          =  -39.041876275009216
 
 	Virial Theorem Data:
 	--------------------
-	Kinetic energy (ref)   =   38.846140362648448
-	Kinetic energy (corr)  =    0.104169626791522
-	Kinetic energy (total) =   38.950309989439972
-	-V/T (ref)             =    2.001938309549006
-	-V/T (corr)            =    2.156191791003105
-	-V/T (total)           =    2.002350848694361
+	Kinetic energy (ref)   =   38.846140364702258
+	Kinetic energy (corr)  =    0.104169620448829
+	Kinetic energy (total) =   38.950309985151087
+	-V/T (ref)             =    2.001938309495222
+	-V/T (corr)            =    2.156191861778637
+	-V/T (total)           =    2.002350848804932
 
 	Energies re-computed from Fock-adjusted CC density:
 	---------------------------------------------------
-	One-electron energy        =    0.084370100347126
-	IJKL energy                =   -0.353404019221718
-	IJKA energy                =    0.012986640387795
-	IJAB energy                =   -0.227170824494734
-	IBJA energy                =    0.330261788001361
-	CIAB energy                =    0.000153604337432
-	ABCD energy                =    0.032362643153609
-	Total two-electron energy  =   -0.204810167836255
-	CCSD correlation energy    =   -0.120440067489129
-	Total CCSD energy          =  -39.041876274944535
+	One-electron energy        =    0.084370099325560
+	IJKL energy                =   -0.353404016918658
+	IJKA energy                =    0.012986641260642
+	IJAB energy                =   -0.227170824233516
+	IBJA energy                =    0.330261785811204
+	CIAB energy                =    0.000153604316160
+	ABCD energy                =    0.032362642853185
+	Total two-electron energy  =   -0.204810166910984
+	CCSD correlation energy    =   -0.120440067585424
+	Total CCSD energy          =  -39.041876275009329
 
 	Energies re-computed from Mulliken density:
 	-------------------------------------------
-	One-electron energy        =    0.084370100347126
-	IJKL energy                =   -0.353404019221718
-	IJKA energy                =    0.012986640387795
-	IJAB energy                =   -0.220706449775263
-	IBJA energy                =    0.323797413281890
-	CIAB energy                =    0.000153604337432
-	ABCD energy                =    0.032362643153609
-	Total two-electron energy  =   -0.204810167836255
-	CCSD correlation energy    =   -0.120440067489129
-	Total CCSD energy          =  -39.041876274944535
+	One-electron energy        =    0.084370099325560
+	IJKL energy                =   -0.353404016918658
+	IJKA energy                =    0.012986641260642
+	IJAB energy                =   -0.220706449526135
+	IBJA energy                =    0.323797411103823
+	CIAB energy                =    0.000153604316160
+	ABCD energy                =    0.032362642853185
+	Total two-electron energy  =   -0.204810166910984
+	CCSD correlation energy    =   -0.120440067585424
+	Total CCSD energy          =  -39.041876275009329
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:52 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:23 2003
 
-user time   =       0.27 seconds =       0.00 minutes
-system time =       0.30 seconds =       0.01 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.21 seconds =       0.00 minutes
+system time =       0.31 seconds =       0.01 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:52 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:23 2003
 
 
 	**************************************************
@@ -3243,8 +3217,8 @@ Mon May 19 08:59:52 2003
 	 B1 	   4	   4	    0	    0	    1	    3	    0
 	 B2 	   7	   7	    0	    1	    0	    6	    0
 
-	Nuclear Repulsion Energy    =         6.0694218183
-	Total SCF Energy            =       -38.9214362075
+	Nuclear Repulsion Energy    =         6.0694218230
+	Total SCF Energy            =       -38.9214362074
 
 	Pre-sorting two-electron ints...
 
@@ -3262,15 +3236,15 @@ Mon May 19 08:59:52 2003
 	Transforming one-electron integrals...
 	One-pdm and lagrangian written to file76.
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:53 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:25 2003
 
 user time   =       0.17 seconds =       0.00 minutes
-system time =       1.20 seconds =       0.02 minutes
-total time  =          1 seconds =       0.02 minutes
+system time =       1.28 seconds =       0.02 minutes
+total time  =          2 seconds =       0.03 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:53 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:25 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -3303,17 +3277,17 @@ Mon May 19 08:59:53 2003
   -CCSD forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000    -0.000627805790
-       2        0.000000000000    -0.000110018568     0.000313902895
-       3        0.000000000000     0.000110018568     0.000313902895
+       1        0.000000000000     0.000000000000    -0.000627806059
+       2        0.000000000000    -0.000110018591     0.000313903030
+       3        0.000000000000     0.000110018591     0.000313903030
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:54 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:25 2003
 
 user time   =       0.48 seconds =       0.01 minutes
 system time =       0.00 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
 	 OPTKING: For internal coordinate optimizations and   
@@ -3321,19 +3295,19 @@ total time  =          1 seconds =       0.02 minutes
 	------------------------------------------------------
 
 Cartesian geometry and possibly gradient in a.u. with masses
-  6.0    12.00000000   0.0000000000  -0.0000000000  -0.1214515329
-  1.0     1.00782503   0.0000000000   1.8870255918   0.7230512977
-  1.0     1.00782503   0.0000000000  -1.8870255918   0.7230512977
-                       0.0000000000   0.0000000000  -0.0006278058
-                       0.0000000000  -0.0001100186   0.0003139029
-                       0.0000000000   0.0001100186   0.0003139029
+  6.0    12.00000000   0.0000000000  -0.0000000000  -0.1214515313
+  1.0     1.00782503   0.0000000000   1.8870255948   0.7230512881
+  1.0     1.00782503   0.0000000000  -1.8870255948   0.7230512881
+                       0.0000000000   0.0000000000  -0.0006278061
+                       0.0000000000  -0.0001100186   0.0003139030
+                       0.0000000000   0.0001100186   0.0003139030
 
 Simple Internal Coordinates and Values
 Stretches
     (1 1 2) (1.09400925)
     (2 1 3) (1.09400925)
 Bends
-    (3 2 1 3) (131.77998933)
+    (3 2 1 3) (131.77998997)
  
  ** Taking normal optimization step. **
 
@@ -3351,8 +3325,8 @@ Taking geometry step number 4
 BuB^t Determinant: 1.921541e+00
 
 Force Constants read from PSIF_OPTKING
-   5.3722069933   0.4714439713
-   0.4714439713   0.5368009067
+   5.3722069543   0.4714439875
+   0.4714439875   0.5368008927
 
 Performing BFGS Hessian update.
 
@@ -3360,29 +3334,29 @@ Scaling displacements by 1.000000
 
 Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
          Value          Force          Displacement   New Value
- 1  -1.8280486499  -0.0000599661  -0.0006408792  -1.8286895291
- 2   2.0837290555   0.0030044468   0.0071330654   2.0908621209
-   MAX force:    0.0030044468   RMS force:    0.0021248878
+ 1  -1.8280486499  -0.0000599659  -0.0006408795  -1.8286895294
+ 2   2.0837290667   0.0030044480   0.0071330688   2.0908621355
+   MAX force:    0.0030044480   RMS force:    0.0021248887
 
 Back-transformation to cartesian coordinates...
  Iter   RMS Delta(dx)   RMS Delta(dq)
-    2  0.001628833326  0.000007059750
-    3  0.000003275097  0.000000000006
+    2  0.001628834083  0.000007059756
+    3  0.000003275100  0.000000000006
     4  0.000000000002  0.000000000000
 Convergence to displaced geometry took 4 iterations.
 
 New Cartesian Geometry in a.u.
-  6.0   0.0000000000  -0.0000000000  -0.1204582912
-  1.0   0.0000000000   1.8896997532   0.7171381182
-  1.0   0.0000000000  -1.8896997532   0.7171381182
+  6.0   0.0000000000  -0.0000000000  -0.1204582891
+  1.0   0.0000000000   1.8896997574   0.7171381058
+  1.0   0.0000000000  -1.8896997574   0.7171381058
 
 Geometry written to chkpt
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:54 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:25 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -3410,15 +3384,15 @@ Mon May 19 08:59:54 2003
     Wrote 11412 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:54 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:25 2003
 
-user time   =       0.08 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.10 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:54 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:25 2003
 
 
              ------------------------------------------
@@ -3428,20 +3402,18 @@ Mon May 19 08:59:54 2003
               Written by too many people to mention here
 
              ------------------------------------------
-
-
   label       = 3B1 CH2 cc-pVDZ/ROHF-CCSD Geometry Optimization
   wfn          = CCSD
   reference    = ROHF
   multiplicity = 3
   charge       = 0
-  direct SCF   = false
+  direct       = false
   dertype      = FIRST
   convergence  = 10
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy        6.0700777100463
+  nuclear repulsion energy        6.0700777151377
 
   using old vector from file30 as initial guess
   energy from old vector:   -38.92143621
@@ -3476,29 +3448,29 @@ Mon May 19 08:59:54 2003
 
   iter       total energy        delta E         delta P          diiser
     1       -38.9213958155    4.499147e+01    0.000000e+00    0.000000e+00
-    2       -38.9213968203    1.004727e-06    2.849764e-05    2.851421e-04
-    3       -38.9213971092    2.888901e-07    1.502410e-05    1.382678e-04
-    4       -38.9213971849    7.572742e-08    7.473782e-06    7.159450e-05
-    5       -38.9213972023    1.737511e-08    4.081957e-06    3.901303e-05
-    6       -38.9213972051    2.844871e-09    1.932470e-06    2.496021e-05
-    7       -38.9213972059    7.693828e-10    9.947439e-07    1.553039e-05
-    8       -38.9213972063    3.917435e-10    5.632151e-07    9.401802e-06
-    9       -38.9213972064    1.540812e-10    3.295396e-07    5.578049e-06
-   10       -38.9213972065    4.258283e-11    1.912542e-07    3.302573e-06
-   11       -38.9213972065    9.123369e-12    1.054354e-07    1.961506e-06
-   12       -38.9213972065    3.076650e-12    5.968835e-08    1.172059e-06
-   13       -38.9213972065    1.797673e-12    3.794754e-08    7.004829e-07
-   14       -38.9213972065    7.673862e-13    2.463861e-08    4.118928e-07
-   15       -38.9213972065    2.202682e-13    1.416776e-08    2.364442e-07
-   16       -38.9213972065    5.684342e-14    7.984040e-09    1.339569e-07
-   17       -38.9213972065    7.105427e-15    4.464482e-09    7.617781e-08
-   18       -38.9213972065    0.000000e+00    2.591088e-09    4.343678e-08
-   19       -38.9213972065    7.105427e-15    1.540303e-09    2.434193e-08
-   20       -38.9213972065    7.105427e-15    9.039798e-10    1.339447e-08
-   21       -38.9213972065   -7.105427e-15    5.111217e-10    7.385277e-09
-   22       -38.9213972065   -7.105427e-15    2.667130e-10    4.177786e-09
-   23       -38.9213972065    0.000000e+00    1.389569e-10    2.455935e-09
-   24       -38.9213972065    7.105427e-15    8.185320e-11    1.482218e-09
+    2       -38.9213968202    1.004728e-06    2.849766e-05    2.851422e-04
+    3       -38.9213971091    2.888903e-07    1.502411e-05    1.382679e-04
+    4       -38.9213971848    7.572751e-08    7.473786e-06    7.159453e-05
+    5       -38.9213972022    1.737512e-08    4.081959e-06    3.901305e-05
+    6       -38.9213972050    2.844899e-09    1.932470e-06    2.496022e-05
+    7       -38.9213972058    7.693544e-10    9.947444e-07    1.553040e-05
+    8       -38.9213972062    3.917222e-10    5.632153e-07    9.401806e-06
+    9       -38.9213972064    1.540883e-10    3.295397e-07    5.578052e-06
+   10       -38.9213972064    4.260414e-11    1.912542e-07    3.302574e-06
+   11       -38.9213972064    9.102052e-12    1.054355e-07    1.961507e-06
+   12       -38.9213972064    3.105072e-12    5.968838e-08    1.172059e-06
+   13       -38.9213972064    1.769251e-12    3.794756e-08    7.004833e-07
+   14       -38.9213972064    7.673862e-13    2.463862e-08    4.118930e-07
+   15       -38.9213972064    2.415845e-13    1.416777e-08    2.364443e-07
+   16       -38.9213972064    4.263256e-14    7.984044e-09    1.339569e-07
+   17       -38.9213972064    7.105427e-15    4.464484e-09    7.617784e-08
+   18       -38.9213972064    2.131628e-14    2.591090e-09    4.343680e-08
+   19       -38.9213972064    0.000000e+00    1.540304e-09    2.434194e-08
+   20       -38.9213972064    2.842171e-14    9.039802e-10    1.339448e-08
+   21       -38.9213972064   -2.131628e-14    5.111216e-10    7.385280e-09
+   22       -38.9213972064   -2.131628e-14    2.667132e-10    4.177788e-09
+   23       -38.9213972064   -1.421085e-14    1.389568e-10    2.455935e-09
+   24       -38.9213972064    7.105427e-15    8.185311e-11    1.482218e-09
 
  Correcting phases of orbitals.
 
@@ -3522,23 +3494,23 @@ Orbital energies (a.u.):
   11A1      2.886977  
 
 
-        SCF total energy   =     -38.921397206477
-        kinetic energy     =      38.846282563490
-        nuc. attr. energy  =    -102.586946348232
-        elec. rep. energy  =      24.819266578266
-        potential energy   =     -77.767679769966
-        virial theorem     =       1.998070093872
+        SCF total energy   =     -38.921397206417
+        kinetic energy     =      38.846282565655
+        nuc. attr. energy  =    -102.586946360349
+        elec. rep. energy  =      24.819266588277
+        potential energy   =     -77.767679772072
+        virial theorem     =       1.998070093929
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:54 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:26 2003
 
-user time   =       0.01 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:54 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:26 2003
 
 
 	**************************************************
@@ -3602,8 +3574,8 @@ Mon May 19 08:59:54 2003
 	 B1 	   4	   4	    0	    0	    1	    3	    0
 	 B2 	   7	   7	    0	    1	    0	    6	    0
 
-	Nuclear Repulsion Energy    =         6.0700777100
-	Total SCF Energy            =       -38.9213972065
+	Nuclear Repulsion Energy    =         6.0700777151
+	Total SCF Energy            =       -38.9213972064
 
 	Reading one-electron integrals...done.
 
@@ -3624,15 +3596,15 @@ Mon May 19 08:59:54 2003
 	One-electron integrals written to file 35.
 	Frozen-core operator written to file 35.
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:55 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:27 2003
 
-user time   =       0.17 seconds =       0.00 minutes
-system time =       1.11 seconds =       0.02 minutes
+user time   =       0.20 seconds =       0.00 minutes
+system time =       1.15 seconds =       0.02 minutes
 total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:55 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:27 2003
 
 
 			**************************
@@ -3644,12 +3616,14 @@ Mon May 19 08:59:55 2003
 
 	Input parameters:
 	-----------------
-	Reference wfn   =     ROHF
-	Derivative      =    First
-	Memory (Mbytes) =    256.0
-	AO Basis        =      NONE
-	Cache Level     =        2
-	Cache Type      =      LRU
+	Wave function   =	CCSD
+	Reference wfn   =	ROHF
+	Derivative      =	First
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
 
 
 	Chkpt Parameters:
@@ -3665,30 +3639,30 @@ Mon May 19 08:59:55 2003
 	 B1 	   4	    0	    0	    1	    3	    0
 	 B2 	   7	    0	    1	    0	    6	    0
 
-	Nuclear Rep. energy (chkpt) =      6.07007771004627
-	SCF energy          (chkpt) =    -38.92139720647658
+	Nuclear Rep. energy (chkpt) =      6.07007771513769
+	SCF energy          (chkpt) =    -38.92139720641728
 
 	Size of <ab|cd> integrals:     0.019 (MW) /     0.150 (MB)
 	Size of <ia|bc> integrals:     0.005 (MW) /     0.041 (MB)
 	Size of Tijab amplitudes:      0.002 (MW) /     0.012 (MB)
 
-	One-electron energy          =    -63.74066378474215
-	Two-electron (AA) energy     =     10.60930058194629
-	Two-electron (BB) energy     =      3.36767362148671
-	Two-electron (AB) energy     =     11.76070176650279
-	Two-electron energy          =     18.74918886821929
+	One-electron energy          =    -63.74066379469443
+	Two-electron (AA) energy     =     10.60930058455162
+	Two-electron (BB) energy     =      3.36767362280525
+	Two-electron (AB) energy     =     11.76070176946102
+	Two-electron energy          =     18.74918887313945
 	Frozen-core energy (transqt) =      0.00000000000000
-	Reference energy             =    -38.92139720647659
+	Reference energy             =    -38.92139720641729
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:55 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:27 2003
 
-user time   =       0.00 seconds =       0.00 minutes
-system time =       0.08 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:55 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:27 2003
 
 			**************************
 			*                        *
@@ -3696,9 +3670,9 @@ Mon May 19 08:59:55 2003
 			*                        *
 			**************************
 
-	Nuclear Rep. energy (chkpt)   =    6.070077710046275
-	SCF energy          (chkpt)   =  -38.921397206476577
-	Reference energy    (file100) =  -38.921397206476591
+	Nuclear Rep. energy (chkpt)   =    6.070077715137687
+	SCF energy          (chkpt)   =  -38.921397206417275
+	Reference energy    (file100) =  -38.921397206417289
 
 	Input parameters:
 	-----------------
@@ -3716,102 +3690,103 @@ Mon May 19 08:59:55 2003
 	Print Level     =    0
 	# Amps to Print =    10
 	Print MP2 Amps? =    No
+	Analyze T2 Amps =    No
 
 	Using old T1 amplitudes.
 	Using old T2 amplitudes.
 	                     Solving CCSD Equations
 	                     ----------------------
-	Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
-	----     ---------------------    ---------   ----------  ----------  ----------
-	   0        -0.120467254380886    0.000e+00    0.007618    0.010349    0.014636
-	   1        -0.120479555794901    8.989e-04    0.007608    0.010358    0.014649
-	   2        -0.120479796030171    2.357e-04    0.007624    0.010390    0.014694
-	   3        -0.120480645240730    6.783e-05    0.007634    0.010412    0.014725
-	   4        -0.120481222838805    2.785e-05    0.007641    0.010428    0.014747
-	   5        -0.120481533896574    9.197e-06    0.007644    0.010435    0.014757
-	   6        -0.120481597269264    2.138e-06    0.007645    0.010436    0.014759
-	   7        -0.120481613839657    5.104e-07    0.007645    0.010436    0.014759
-	   8        -0.120481620764369    1.719e-07    0.007645    0.010436    0.014759
-	   9        -0.120481621163746    6.225e-08    0.007645    0.010436    0.014759
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.120467254433341    0.000e+00    0.007618    0.010349    0.014636
+     1        -0.120479555853309    8.989e-04    0.007608    0.010358    0.014649
+     2        -0.120479796088772    2.357e-04    0.007624    0.010390    0.014694
+     3        -0.120480645299789    6.783e-05    0.007634    0.010412    0.014725
+     4        -0.120481222898174    2.785e-05    0.007641    0.010428    0.014747
+     5        -0.120481533956096    9.197e-06    0.007644    0.010435    0.014757
+     6        -0.120481597328814    2.138e-06    0.007645    0.010436    0.014759
+     7        -0.120481613899214    5.104e-07    0.007645    0.010436    0.014759
+     8        -0.120481620823930    1.719e-07    0.007645    0.010436    0.014759
+     9        -0.120481621223306    6.225e-08    0.007645    0.010436    0.014759
 
 	Iterations converged.
 
 
 	Largest TIA Amplitudes:
-	          1   1        -0.0261708453
-	          1   0        -0.0221529441
-	          4  15        -0.0157882206
-	          2   0        -0.0146850468
-	          4  17         0.0144294394
-	          2   1        -0.0131094596
-	          1   5        -0.0119713539
-	          1   3         0.0092160095
-	          4  19        -0.0073553484
-	          1   6        -0.0061970825
+	          1   1         0.0261708455
+	          1   0        -0.0221529444
+	          4  15        -0.0157882204
+	          2   0        -0.0146850471
+	          4  17         0.0144294393
+	          2   1         0.0131094598
+	          1   5        -0.0119713538
+	          1   3         0.0092160097
+	          4  19        -0.0073553483
+	          1   6        -0.0061970827
 
 	Largest Tia Amplitudes:
-	          1   1         0.0260401233
-	          1   0         0.0256227957
+	          1   1        -0.0260401235
+	          1   0         0.0256227960
 	          1   8        -0.0186162121
 	          4  15         0.0173304284
-	          4  17        -0.0096348442
+	          4  17        -0.0096348443
 	          4  18         0.0081051312
 	          4  16         0.0069038129
 	          1   5         0.0062583175
-	          1   3        -0.0043834085
-	          1   2        -0.0023117489
+	          1   3        -0.0043834087
+	          1   2        -0.0023117488
 
 	Largest TIJAB Amplitudes:
-	  3   2  11   2         0.0355425840
-	  3   2  12   4         0.0234375671
-	  4   3   9   1        -0.0234038191
-	  4   3  17  11         0.0205296287
+	  3   2  11   2         0.0355425841
+	  3   2  12   4         0.0234375672
+	  4   3   9   1         0.0234038192
+	  4   3  17  11         0.0205296286
 	  4   3  15  11        -0.0202230534
-	  4   2  17   1        -0.0163510762
+	  4   2  17   1         0.0163510762
 	  3   1  11   0        -0.0158302840
-	  4   2  15   1         0.0154712838
+	  4   2  15   1        -0.0154712836
 	  3   1  11   3         0.0152705552
 	  4   2  16   2        -0.0142872119
 
 	Largest Tijab Amplitudes:
 	  4   1  14   9        -0.0109325356
-	  4   1  16   8        -0.0079006323
+	  4   1  16   8        -0.0079006322
 	  4   1  15   0        -0.0075177793
 	  4   1  17   8         0.0062491502
 	  4   1  15   3         0.0061540921
-	  4   1  16   0         0.0060559391
+	  4   1  16   0         0.0060559390
 	  4   1  17   3        -0.0059665910
-	  4   1  15   8        -0.0051267573
-	  4   1  18   8         0.0042577868
+	  4   1  15   8        -0.0051267572
+	  4   1  18   8         0.0042577869
 	  4   1  17   0         0.0041807202
 
 	Largest TIjAb Amplitudes:
-	  4   4   1   1        -0.0356383869
-	  4   4  17  17        -0.0346823301
-	  3   1   1  14         0.0322682919
-	  3   1   0  14         0.0313789531
+	  4   4   1   1        -0.0356383874
+	  4   4  17  17        -0.0346823302
+	  3   1   1  14        -0.0322682921
+	  3   1   0  14         0.0313789533
 	  3   1  12   8         0.0280652877
-	  2   1   4   8        -0.0277832186
-	  2   1  12  14         0.0266368036
-	  4   4  15  15        -0.0265195430
+	  2   1   4   8        -0.0277832187
+	  2   1  12  14         0.0266368037
+	  4   4  15  15        -0.0265195428
 	  4   1   9  14         0.0261333356
 	  3   1  11   0        -0.0261264122
 
-	SCF energy       (chkpt)   =  -38.921397206476577
-	Reference energy (file100) =  -38.921397206476591
-	CCSD correlation energy    =   -0.120481621163746
-	Total CCSD energy          =  -39.041878827640339
+	SCF energy       (chkpt)   =  -38.921397206417275
+	Reference energy (file100) =  -38.921397206417289
+	CCSD correlation energy    =   -0.120481621223306
+	Total CCSD energy          =  -39.041878827640595
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:57 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:28 2003
 
-user time   =       0.62 seconds =       0.01 minutes
-system time =       0.58 seconds =       0.01 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.54 seconds =       0.01 minutes
+system time =       0.62 seconds =       0.01 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:57 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:28 2003
 
 
 			**************************
@@ -3821,81 +3796,74 @@ Mon May 19 08:59:57 2003
 			**************************
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:57 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:28 2003
 
-user time   =       0.13 seconds =       0.00 minutes
-system time =       0.23 seconds =       0.00 minutes
+user time   =       0.22 seconds =       0.00 minutes
+system time =       0.09 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:57 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:28 2003
 
 
 			**************************
-			*                        *
 			*        CCLAMBDA        *
-			*                        *
 			**************************
 
 
-	Nuclear Rep. energy (chkpt)   =    6.070077710046275
+	Nuclear Rep. energy (chkpt)   =    6.070077715137687
 	Reference           (chkpt)   = 1
-	SCF energy          (chkpt)   =  -38.921397206476577
-	Reference energy    (CC_INFO) =  -38.921397206476591
-	CCSD energy         (CC_INFO) =   -0.120481621163746
-	Total CCSD energy   (CC_INFO) =  -39.041878827640339
-	Excited State L calculation?  = No
-	Irrep of L          (CC_INFO) = A1 
+	SCF energy          (chkpt)   =  -38.921397206417275
+	Reference energy    (CC_INFO) =  -38.921397206417289
+	CCSD energy         (CC_INFO) =   -0.120481621223306
+	Total CCSD energy   (CC_INFO) =  -39.041878827640595
 
 	Input parameters:
 	-----------------
 	Maxiter     =      50
-	Convergence = 1.0e-12
+	Convergence = 1.0e-07
 	Restart     =     Yes
 	Cache Level =     2
 	AO Basis        =     No
+	Excited State Computation =     No
+	States sought per irrep     = A1  0, A2  0, B1  1, B2  0,
+	Ls sought per irrep         = A1  1, A2  0, B1  0, B2  0,	Local CC        =     No
+
+	Symmetry of excited state: B1 
+	Symmetry of right eigenvector: A1 
 
 	          Solving Lambda Equations
 	          ------------------------
-	Iter         PseudoEnergy             RMS  
+	Iter     PseudoEnergy or Norm         RMS  
 	----     ---------------------     --------
-	   0        -0.116588111984864    0.000e+00
-	   1        -0.114171994341342    5.850e-03
-	   2        -0.113630441537132    1.666e-03
-	   3        -0.113567768741140    5.925e-04
-	   4        -0.113571430262465    1.729e-04
-	   5        -0.113569833554174    5.821e-05
-	   6        -0.113568672159451    1.861e-05
-	   7        -0.113568417149218    6.294e-06
-	   8        -0.113568392071761    1.970e-06
-	   9        -0.113568392081263    6.009e-07
-	  10        -0.113568394230703    1.692e-07
-	  11        -0.113568395196193    4.660e-08
-	  12        -0.113568395012609    1.269e-08
-	  13        -0.113568394883739    3.992e-09
-	  14        -0.113568394863033    1.175e-09
-	  15        -0.113568394855825    3.663e-10
-	  16        -0.113568394848681    1.217e-10
-	  17        -0.113568394846505    3.831e-11
-	  18        -0.113568394846119    1.164e-11
-	  19        -0.113568394846086    2.789e-12
-	  20        -0.113568394846070    7.380e-13
+	   0        -0.116588111995374    0.000e+00
+	   1        -0.114171994352222    5.850e-03
+	   2        -0.113630441548492    1.666e-03
+	   3        -0.113567768752725    5.925e-04
+	   4        -0.113571430274115    1.729e-04
+	   5        -0.113569833565792    5.821e-05
+	   6        -0.113568672171048    1.861e-05
+	   7        -0.113568417160812    6.294e-06
+	   8        -0.113568392083355    1.970e-06
+	   9        -0.113568392092857    6.009e-07
+	  10        -0.113568394242298    1.692e-07
+	  11        -0.113568394516502    4.660e-08
 
 	Iterations converged.
 
-	Overlap <L|e^T> =    0.946102711995485
-Writing EOM L0    1.0000000000
+	Overlap <L|e^T> =        0.94610271207
+	Overlap <L|e^T> =        0.94610271207
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:59 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:29 2003
 
-user time   =       0.96 seconds =       0.02 minutes
-system time =       0.77 seconds =       0.01 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.47 seconds =       0.01 minutes
+system time =       0.52 seconds =       0.01 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:59 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:29 2003
 
 
 			**************************
@@ -3905,11 +3873,11 @@ Mon May 19 08:59:59 2003
 			**************************
 
 
-	Nuclear Rep. energy (chkpt)   =    6.070077710046275
-	SCF energy          (chkpt)   =  -38.921397206476577
-	Reference energy    (file100) =  -38.921397206476591
-	CCSD energy         (file100) =   -0.120481621163746
-	Total CCSD energy   (file100) =  -39.041878827640339
+	Nuclear Rep. energy (chkpt)   =    6.070077715137687
+	SCF energy          (chkpt)   =  -38.921397206417275
+	Reference energy    (file100) =  -38.921397206417289
+	CCSD energy         (file100) =   -0.120481621223306
+	Total CCSD energy   (file100) =  -39.041878827640595
 
 	Input parameters:
 	-----------------
@@ -3918,65 +3886,65 @@ Mon May 19 08:59:59 2003
 	AO Basis        =     No
 
 
-	Trace of onepdm =   -0.000000000000000
+	Trace of onepdm =    0.000000000000000
 
 	Energies re-computed from CC density:
 	-------------------------------------
-	One-electron energy        =    0.138390815895539
-	IJKL energy                =    0.027871708715185
-	IJKA energy                =    0.000000790319795
-	IJAB energy                =   -0.227203771981756
-	IBJA energy                =   -0.092067890838065
-	CIAB energy                =    0.000160795898255
-	ABCD energy                =    0.032365929818346
-	Total two-electron energy  =   -0.258872438068240
-	CCSD correlation energy    =   -0.120481622172702
-	Total CCSD energy          =  -39.041878828649295
+	One-electron energy        =    0.138390815292638
+	IJKL energy                =    0.027871708412435
+	IJKA energy                =    0.000000790406827
+	IJAB energy                =   -0.227203771740170
+	IBJA energy                =   -0.092067890049483
+	CIAB energy                =    0.000160795866917
+	ABCD energy                =    0.032365929521807
+	Total two-electron energy  =   -0.258872437581667
+	CCSD correlation energy    =   -0.120481622289029
+	Total CCSD energy          =  -39.041878828706317
 
 	Virial Theorem Data:
 	--------------------
-	Kinetic energy (ref)   =   38.846282563489687
-	Kinetic energy (corr)  =    0.104180500016268
-	Kinetic energy (total) =   38.950463063505957
-	-V/T (ref)             =    2.001933637867771
-	-V/T (corr)            =    2.156469983777499
-	-V/T (total)           =    2.002346975027879
+	Kinetic energy (ref)   =   38.846282565654576
+	Kinetic energy (corr)  =    0.104180493703844
+	Kinetic energy (total) =   38.950463059358420
+	-V/T (ref)             =    2.001933637810407
+	-V/T (corr)            =    2.156470054421147
+	-V/T (total)           =    2.002346975134618
 
 	Energies re-computed from Fock-adjusted CC density:
 	---------------------------------------------------
-	One-electron energy        =    0.084382476169955
-	IJKL energy                =   -0.353610108141793
-	IJKA energy                =    0.013005024234165
-	IJAB energy                =   -0.227203771981756
-	IBJA energy                =    0.330418031830868
-	CIAB energy                =    0.000160795898255
-	ABCD energy                =    0.032365929818346
-	Total two-electron energy  =   -0.204864098341914
-	CCSD correlation energy    =   -0.120481622171959
-	Total CCSD energy          =  -39.041878828648549
+	One-electron energy        =    0.084382475183782
+	IJKL energy                =   -0.353610106244831
+	IJKA energy                =    0.013005025139655
+	IJAB energy                =   -0.227203771740170
+	IBJA energy                =    0.330418029984553
+	CIAB energy                =    0.000160795866917
+	ABCD energy                =    0.032365929521807
+	Total two-electron energy  =   -0.204864097472069
+	CCSD correlation energy    =   -0.120481622288286
+	Total CCSD energy          =  -39.041878828705578
 
 	Energies re-computed from Mulliken density:
 	-------------------------------------------
-	One-electron energy        =    0.084382476169955
-	IJKL energy                =   -0.353610108141793
-	IJKA energy                =    0.013005024234165
-	IJAB energy                =   -0.220747712857730
-	IBJA energy                =    0.323961972706842
-	CIAB energy                =    0.000160795898255
-	ABCD energy                =    0.032365929818346
-	Total two-electron energy  =   -0.204864098341914
-	CCSD correlation energy    =   -0.120481622171959
-	Total CCSD energy          =  -39.041878828648549
+	One-electron energy        =    0.084382475183782
+	IJKL energy                =   -0.353610106244831
+	IJKA energy                =    0.013005025139655
+	IJAB energy                =   -0.220747712641590
+	IBJA energy                =    0.323961970885974
+	CIAB energy                =    0.000160795866917
+	ABCD energy                =    0.032365929521807
+	Total two-electron energy  =   -0.204864097472069
+	CCSD correlation energy    =   -0.120481622288286
+	Total CCSD energy          =  -39.041878828705578
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 08:59:59 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:30 2003
 
-user time   =       0.25 seconds =       0.00 minutes
+user time   =       0.20 seconds =       0.00 minutes
 system time =       0.32 seconds =       0.01 minutes
-total time  =          0 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 08:59:59 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:30 2003
 
 
 	**************************************************
@@ -4040,8 +4008,8 @@ Mon May 19 08:59:59 2003
 	 B1 	   4	   4	    0	    0	    1	    3	    0
 	 B2 	   7	   7	    0	    1	    0	    6	    0
 
-	Nuclear Repulsion Energy    =         6.0700777100
-	Total SCF Energy            =       -38.9213972065
+	Nuclear Repulsion Energy    =         6.0700777151
+	Total SCF Energy            =       -38.9213972064
 
 	Pre-sorting two-electron ints...
 
@@ -4059,15 +4027,15 @@ Mon May 19 08:59:59 2003
 	Transforming one-electron integrals...
 	One-pdm and lagrangian written to file76.
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 09:00:01 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:31 2003
 
-user time   =       0.17 seconds =       0.00 minutes
-system time =       1.20 seconds =       0.02 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.11 seconds =       0.00 minutes
+system time =       1.33 seconds =       0.02 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 09:00:01 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:31 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -4100,17 +4068,17 @@ Mon May 19 09:00:01 2003
   -CCSD forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000    -0.000015309613
-       2        0.000000000000    -0.000016408758     0.000007654807
-       3        0.000000000000     0.000016408758     0.000007654807
+       1        0.000000000000     0.000000000000    -0.000015309623
+       2        0.000000000000    -0.000016408771     0.000007654811
+       3        0.000000000000     0.000016408771     0.000007654811
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 09:00:01 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:32 2003
 
 user time   =       0.47 seconds =       0.01 minutes
-system time =       0.04 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
 	 OPTKING: For internal coordinate optimizations and   
@@ -4118,9 +4086,9 @@ total time  =          0 seconds =       0.00 minutes
 	------------------------------------------------------
 
 Cartesian geometry and possibly gradient in a.u. with masses
-  6.0    12.00000000   0.0000000000  -0.0000000000  -0.1204582912
-  1.0     1.00782503   0.0000000000   1.8896997532   0.7171381182
-  1.0     1.00782503   0.0000000000  -1.8896997532   0.7171381182
+  6.0    12.00000000   0.0000000000  -0.0000000000  -0.1204582891
+  1.0     1.00782503   0.0000000000   1.8896997574   0.7171381058
+  1.0     1.00782503   0.0000000000  -1.8896997574   0.7171381058
                        0.0000000000   0.0000000000  -0.0000153096
                        0.0000000000  -0.0000164088   0.0000076548
                        0.0000000000   0.0000164088   0.0000076548
@@ -4130,7 +4098,7 @@ Stretches
     (1 1 2) (1.09381499)
     (2 1 3) (1.09381499)
 Bends
-    (3 2 1 3) (132.19002811)
+    (3 2 1 3) (132.19002894)
  
  ** Taking normal optimization step. **
 
@@ -4148,8 +4116,8 @@ Taking geometry step number 5
 BuB^t Determinant: 1.922224e+00
 
 Force Constants read from PSIF_OPTKING
-   5.3982040851   0.4766016265
-   0.4766016265   0.4640208193
+   5.3982040471   0.4766016370
+   0.4766016370   0.4640207945
 
 Performing BFGS Hessian update.
 
@@ -4157,29 +4125,29 @@ Scaling displacements by 1.000000
 
 Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
          Value          Force          Displacement   New Value
- 1  -1.8286895291  -0.0001532047  -0.0000553332  -1.8287448623
- 2   2.0908621209   0.0001042849   0.0002921270   2.0911542480
-   MAX force:    0.0001532047   RMS force:    0.0001310477
+ 1  -1.8286895294  -0.0001532049  -0.0000553332  -1.8287448626
+ 2   2.0908621355   0.0001042849   0.0002921272   2.0911542627
+   MAX force:    0.0001532049   RMS force:    0.0001310478
 
 Back-transformation to cartesian coordinates...
  Iter   RMS Delta(dx)   RMS Delta(dq)
-    2  0.000068685910  0.000000012279
+    2  0.000068685964  0.000000012279
     3  0.000000005526  0.000000000000
     4  0.000000000000  0.000000000000
 Convergence to displaced geometry took 4 iterations.
 
 New Cartesian Geometry in a.u.
-  6.0   0.0000000000  -0.0000000000  -0.1204193297
-  1.0   0.0000000000   1.8898455309   0.7169061645
-  1.0   0.0000000000  -1.8898455309   0.7169061645
+  6.0   0.0000000000  -0.0000000000  -0.1204193276
+  1.0   0.0000000000   1.8898455353   0.7169061519
+  1.0   0.0000000000  -1.8898455353   0.7169061519
 
 Geometry written to chkpt
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 09:00:01 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:32 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -4207,15 +4175,15 @@ Mon May 19 09:00:01 2003
     Wrote 11412 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 09:00:01 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:32 2003
 
-user time   =       0.10 seconds =       0.00 minutes
+user time   =       0.09 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 09:00:01 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:32 2003
 
 
              ------------------------------------------
@@ -4225,20 +4193,18 @@ Mon May 19 09:00:01 2003
               Written by too many people to mention here
 
              ------------------------------------------
-
-
   label       = 3B1 CH2 cc-pVDZ/ROHF-CCSD Geometry Optimization
   wfn          = CCSD
   reference    = ROHF
   multiplicity = 3
   charge       = 0
-  direct SCF   = false
+  direct       = false
   dertype      = FIRST
   convergence  = 10
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy        6.0699912559376
+  nuclear repulsion energy        6.0699912609514
 
   using old vector from file30 as initial guess
   energy from old vector:   -38.92139721
@@ -4273,23 +4239,23 @@ Mon May 19 09:00:01 2003
 
   iter       total energy        delta E         delta P          diiser
     1       -38.9213946988    4.499139e+01    0.000000e+00    0.000000e+00
-    2       -38.9213947006    1.722739e-09    1.163886e-06    1.164607e-05
-    3       -38.9213947010    4.785079e-10    6.092924e-07    6.219509e-06
-    4       -38.9213947012    1.197691e-10    3.005371e-07    3.235153e-06
-    5       -38.9213947012    2.427925e-11    1.530430e-07    1.549033e-06
-    6       -38.9213947012    3.119283e-12    6.832610e-08    6.902507e-07
-    7       -38.9213947012    6.963319e-13    3.320261e-08    4.359022e-07
-    8       -38.9213947012    3.907985e-13    1.747439e-08    2.662087e-07
-    9       -38.9213947012    1.563194e-13    9.928710e-09    1.599774e-07
-   10       -38.9213947012    4.973799e-14    5.894122e-09    9.658656e-08
-   11       -38.9213947012    7.105427e-15    3.268551e-09    5.841846e-08
-   12       -38.9213947012   -7.105427e-15    1.824684e-09    3.552919e-08
-   13       -38.9213947012    1.421085e-14    1.157484e-09    2.162519e-08
-   14       -38.9213947012    0.000000e+00    7.579336e-10    1.289886e-08
-   15       -38.9213947012   -7.105427e-15    4.431530e-10    7.498290e-09
-   16       -38.9213947012    7.105427e-15    2.581319e-10    4.300123e-09
-   17       -38.9213947012    0.000000e+00    1.500256e-10    2.469306e-09
-   18       -38.9213947012   -7.105427e-15    8.556839e-11    1.413120e-09
+    2       -38.9213947005    1.722768e-09    1.163887e-06    1.164608e-05
+    3       -38.9213947010    4.784866e-10    6.092929e-07    6.219514e-06
+    4       -38.9213947011    1.197833e-10    3.005374e-07    3.235155e-06
+    5       -38.9213947011    2.425793e-11    1.530431e-07    1.549034e-06
+    6       -38.9213947011    3.119283e-12    6.832616e-08    6.902512e-07
+    7       -38.9213947011    7.176482e-13    3.320263e-08    4.359025e-07
+    8       -38.9213947011    3.836931e-13    1.747441e-08    2.662089e-07
+    9       -38.9213947011    1.563194e-13    9.928718e-09    1.599775e-07
+   10       -38.9213947011    2.131628e-14    5.894126e-09    9.658663e-08
+   11       -38.9213947011    1.421085e-14    3.268554e-09    5.841850e-08
+   12       -38.9213947011    2.131628e-14    1.824685e-09    3.552922e-08
+   13       -38.9213947011   -7.105427e-15    1.157485e-09    2.162521e-08
+   14       -38.9213947011    7.105427e-15    7.579342e-10    1.289887e-08
+   15       -38.9213947011   -7.105427e-15    4.431531e-10    7.498295e-09
+   16       -38.9213947011   -7.105427e-15    2.581322e-10    4.300126e-09
+   17       -38.9213947011    3.552714e-14    1.500257e-10    2.469307e-09
+   18       -38.9213947011   -1.421085e-14    8.556881e-11    1.413122e-09
 
  Correcting phases of orbitals.
 
@@ -4313,23 +4279,23 @@ Orbital energies (a.u.):
   11A1      2.887135  
 
 
-        SCF total energy   =     -38.921394701195
-        kinetic energy     =      38.846231416042
-        nuc. attr. energy  =    -102.586748513553
-        elec. rep. energy  =      24.819122396316
-        potential energy   =     -77.767626117237
-        virial theorem     =       1.998068843994
+        SCF total energy   =     -38.921394701134
+        kinetic energy     =      38.846231418161
+        nuc. attr. energy  =    -102.586748525492
+        elec. rep. energy  =      24.819122406197
+        potential energy   =     -77.767626119295
+        virial theorem     =       1.998068844050
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 09:00:01 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:32 2003
 
-user time   =       0.01 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 09:00:01 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:32 2003
 
 
 	**************************************************
@@ -4393,8 +4359,8 @@ Mon May 19 09:00:01 2003
 	 B1 	   4	   4	    0	    0	    1	    3	    0
 	 B2 	   7	   7	    0	    1	    0	    6	    0
 
-	Nuclear Repulsion Energy    =         6.0699912559
-	Total SCF Energy            =       -38.9213947012
+	Nuclear Repulsion Energy    =         6.0699912610
+	Total SCF Energy            =       -38.9213947011
 
 	Reading one-electron integrals...done.
 
@@ -4415,15 +4381,15 @@ Mon May 19 09:00:01 2003
 	One-electron integrals written to file 35.
 	Frozen-core operator written to file 35.
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 09:00:03 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:33 2003
 
-user time   =       0.10 seconds =       0.00 minutes
-system time =       1.19 seconds =       0.02 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.16 seconds =       0.00 minutes
+system time =       1.20 seconds =       0.02 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 09:00:03 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:33 2003
 
 
 			**************************
@@ -4435,12 +4401,14 @@ Mon May 19 09:00:03 2003
 
 	Input parameters:
 	-----------------
-	Reference wfn   =     ROHF
-	Derivative      =    First
-	Memory (Mbytes) =    256.0
-	AO Basis        =      NONE
-	Cache Level     =        2
-	Cache Type      =      LRU
+	Wave function   =	CCSD
+	Reference wfn   =	ROHF
+	Derivative      =	First
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
 
 
 	Chkpt Parameters:
@@ -4456,30 +4424,30 @@ Mon May 19 09:00:03 2003
 	 B1 	   4	    0	    0	    1	    3	    0
 	 B2 	   7	    0	    1	    0	    6	    0
 
-	Nuclear Rep. energy (chkpt) =      6.06999125593756
-	SCF energy          (chkpt) =    -38.92139470119524
+	Nuclear Rep. energy (chkpt) =      6.06999126095141
+	SCF energy          (chkpt) =    -38.92139470113358
 
 	Size of <ab|cd> integrals:     0.019 (MW) /     0.150 (MB)
 	Size of <ia|bc> integrals:     0.005 (MW) /     0.041 (MB)
 	Size of Tijab amplitudes:      0.002 (MW) /     0.012 (MB)
 
-	One-electron energy          =    -63.74051709751127
-	Two-electron (AA) energy     =     10.60926808687848
-	Two-electron (BB) energy     =      3.36765324979472
-	Two-electron (AB) energy     =     11.76067047204188
-	Two-electron energy          =     18.74913114037848
+	One-electron energy          =    -63.74051710733030
+	Two-electron (AA) energy     =     10.60926808945411
+	Two-electron (BB) energy     =      3.36765325109499
+	Two-electron (AB) energy     =     11.76067047497076
+	Two-electron energy          =     18.74913114524531
 	Frozen-core energy (transqt) =      0.00000000000000
-	Reference energy             =    -38.92139470119523
+	Reference energy             =    -38.92139470113357
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 09:00:03 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:33 2003
 
-user time   =       0.04 seconds =       0.00 minutes
-system time =       0.05 seconds =       0.00 minutes
+user time   =       0.06 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 09:00:03 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:34 2003
 
 			**************************
 			*                        *
@@ -4487,9 +4455,9 @@ Mon May 19 09:00:03 2003
 			*                        *
 			**************************
 
-	Nuclear Rep. energy (chkpt)   =    6.069991255937556
-	SCF energy          (chkpt)   =  -38.921394701195240
-	Reference energy    (file100) =  -38.921394701195233
+	Nuclear Rep. energy (chkpt)   =    6.069991260951411
+	SCF energy          (chkpt)   =  -38.921394701133579
+	Reference energy    (file100) =  -38.921394701133572
 
 	Input parameters:
 	-----------------
@@ -4507,99 +4475,100 @@ Mon May 19 09:00:03 2003
 	Print Level     =    0
 	# Amps to Print =    10
 	Print MP2 Amps? =    No
+	Analyze T2 Amps =    No
 
 	Using old T1 amplitudes.
 	Using old T2 amplitudes.
 	                     Solving CCSD Equations
 	                     ----------------------
-	Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
-	----     ---------------------    ---------   ----------  ----------  ----------
-	   0        -0.120482700136976    0.000e+00    0.007645    0.010436    0.014759
-	   1        -0.120483829222779    3.971e-05    0.007645    0.010437    0.014760
-	   2        -0.120484003435124    1.035e-05    0.007645    0.010438    0.014762
-	   3        -0.120484080023475    2.885e-06    0.007646    0.010439    0.014763
-	   4        -0.120484115545912    1.179e-06    0.007646    0.010440    0.014764
-	   5        -0.120484129306476    3.941e-07    0.007646    0.010440    0.014765
-	   6        -0.120484129754573    9.212e-08    0.007646    0.010440    0.014765
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.120482700197405    0.000e+00    0.007645    0.010436    0.014759
+     1        -0.120483829284164    3.971e-05    0.007645    0.010437    0.014760
+     2        -0.120484003496667    1.035e-05    0.007645    0.010438    0.014762
+     3        -0.120484080085085    2.885e-06    0.007646    0.010439    0.014763
+     4        -0.120484115607553    1.179e-06    0.007646    0.010440    0.014764
+     5        -0.120484129368129    3.941e-07    0.007646    0.010440    0.014765
+     6        -0.120484129816226    9.212e-08    0.007646    0.010440    0.014765
 
 	Iterations converged.
 
 
 	Largest TIA Amplitudes:
-	          1   1        -0.0261749664
-	          1   0        -0.0221606610
-	          4  15        -0.0157858667
-	          2   0        -0.0146930241
+	          1   1         0.0261749666
+	          1   0        -0.0221606613
+	          4  15        -0.0157858665
+	          2   0        -0.0146930244
 	          4  17         0.0144283681
-	          2   1        -0.0131131011
-	          1   5        -0.0119703494
-	          1   3         0.0092188153
-	          4  19        -0.0073540604
-	          1   6        -0.0062004142
+	          2   1         0.0131131013
+	          1   5        -0.0119703493
+	          1   3         0.0092188154
+	          4  19        -0.0073540603
+	          1   6        -0.0062004144
 
 	Largest Tia Amplitudes:
-	          1   1         0.0260450529
-	          1   0         0.0256310164
+	          1   1        -0.0260450532
+	          1   0         0.0256310167
 	          1   8        -0.0186157315
-	          4  15         0.0173298653
-	          4  17        -0.0096368463
+	          4  15         0.0173298652
+	          4  17        -0.0096368464
 	          4  18         0.0081069204
 	          4  16         0.0069043736
 	          1   5         0.0062582204
-	          1   3        -0.0043851901
-	          1   2        -0.0023061230
+	          1   3        -0.0043851902
+	          1   2        -0.0023061228
 
 	Largest TIJAB Amplitudes:
-	  3   2  11   2         0.0355464212
-	  3   2  12   4         0.0234392829
-	  4   3   9   1        -0.0234067377
+	  3   2  11   2         0.0355464214
+	  3   2  12   4         0.0234392830
+	  4   3   9   1         0.0234067379
 	  4   3  17  11         0.0205295490
 	  4   3  15  11        -0.0202230824
-	  4   2  17   1        -0.0163481987
-	  3   1  11   0        -0.0158300950
-	  4   2  15   1         0.0154669861
+	  4   2  17   1         0.0163481986
+	  3   1  11   0        -0.0158300949
+	  4   2  15   1        -0.0154669859
 	  3   1  11   3         0.0152706331
-	  4   2  16   2        -0.0142845530
+	  4   2  16   2        -0.0142845529
 
 	Largest Tijab Amplitudes:
 	  4   1  14   9        -0.0109323702
 	  4   1  16   8        -0.0078999182
 	  4   1  15   0        -0.0075183339
 	  4   1  17   8         0.0062490097
-	  4   1  15   3         0.0061540270
-	  4   1  16   0         0.0060550376
+	  4   1  15   3         0.0061540269
+	  4   1  16   0         0.0060550375
 	  4   1  17   3        -0.0059665888
 	  4   1  15   8        -0.0051259261
-	  4   1  18   8         0.0042588815
+	  4   1  18   8         0.0042588816
 	  4   1  17   0         0.0041811271
 
 	Largest TIjAb Amplitudes:
-	  4   4   1   1        -0.0356495637
+	  4   4   1   1        -0.0356495642
 	  4   4  17  17        -0.0346829330
-	  3   1   1  14         0.0322713034
-	  3   1   0  14         0.0313845109
-	  3   1  12   8         0.0280661796
-	  2   1   4   8        -0.0277846679
-	  2   1  12  14         0.0266385055
-	  4   4  15  15        -0.0265171412
+	  3   1   1  14        -0.0322713036
+	  3   1   0  14         0.0313845110
+	  3   1  12   8         0.0280661797
+	  2   1   4   8        -0.0277846680
+	  2   1  12  14         0.0266385056
+	  4   4  15  15        -0.0265171410
 	  4   1   9  14         0.0261334255
 	  3   1  11   0        -0.0261271756
 
-	SCF energy       (chkpt)   =  -38.921394701195240
-	Reference energy (file100) =  -38.921394701195233
-	CCSD correlation energy    =   -0.120484129754573
-	Total CCSD energy          =  -39.041878830949805
+	SCF energy       (chkpt)   =  -38.921394701133579
+	Reference energy (file100) =  -38.921394701133572
+	CCSD correlation energy    =   -0.120484129816226
+	Total CCSD energy          =  -39.041878830949798
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 09:00:04 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:34 2003
 
-user time   =       0.45 seconds =       0.01 minutes
-system time =       0.36 seconds =       0.01 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.43 seconds =       0.01 minutes
+system time =       0.35 seconds =       0.01 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 09:00:04 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:34 2003
 
 
 			**************************
@@ -4609,81 +4578,74 @@ Mon May 19 09:00:04 2003
 			**************************
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 09:00:04 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:35 2003
 
-user time   =       0.20 seconds =       0.00 minutes
-system time =       0.15 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.18 seconds =       0.00 minutes
+system time =       0.13 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 09:00:04 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:35 2003
 
 
 			**************************
-			*                        *
 			*        CCLAMBDA        *
-			*                        *
 			**************************
 
 
-	Nuclear Rep. energy (chkpt)   =    6.069991255937556
+	Nuclear Rep. energy (chkpt)   =    6.069991260951411
 	Reference           (chkpt)   = 1
-	SCF energy          (chkpt)   =  -38.921394701195240
-	Reference energy    (CC_INFO) =  -38.921394701195233
-	CCSD energy         (CC_INFO) =   -0.120484129754573
-	Total CCSD energy   (CC_INFO) =  -39.041878830949805
-	Excited State L calculation?  = No
-	Irrep of L          (CC_INFO) = A1 
+	SCF energy          (chkpt)   =  -38.921394701133579
+	Reference energy    (CC_INFO) =  -38.921394701133572
+	CCSD energy         (CC_INFO) =   -0.120484129816226
+	Total CCSD energy   (CC_INFO) =  -39.041878830949798
 
 	Input parameters:
 	-----------------
 	Maxiter     =      50
-	Convergence = 1.0e-12
+	Convergence = 1.0e-07
 	Restart     =     Yes
 	Cache Level =     2
 	AO Basis        =     No
+	Excited State Computation =     No
+	States sought per irrep     = A1  0, A2  0, B1  1, B2  0,
+	Ls sought per irrep         = A1  1, A2  0, B1  0, B2  0,	Local CC        =     No
+
+	Symmetry of excited state: B1 
+	Symmetry of right eigenvector: A1 
 
 	          Solving Lambda Equations
 	          ------------------------
-	Iter         PseudoEnergy             RMS  
+	Iter     PseudoEnergy or Norm         RMS  
 	----     ---------------------     --------
-	   0        -0.116589617038792    0.000e+00
-	   1        -0.114173381598276    5.850e-03
-	   2        -0.113631809410997    1.666e-03
-	   3        -0.113569131307909    5.926e-04
-	   4        -0.113572794216346    1.730e-04
-	   5        -0.113571197000376    5.822e-05
-	   6        -0.113570035092752    1.862e-05
-	   7        -0.113569779944787    6.294e-06
-	   8        -0.113569754865373    1.970e-06
-	   9        -0.113569754880647    6.010e-07
-	  10        -0.113569757031989    1.693e-07
-	  11        -0.113569757997882    4.661e-08
-	  12        -0.113569757813968    1.270e-08
-	  13        -0.113569757684923    3.995e-09
-	  14        -0.113569757664190    1.176e-09
-	  15        -0.113569757656974    3.665e-10
-	  16        -0.113569757649824    1.217e-10
-	  17        -0.113569757647647    3.834e-11
-	  18        -0.113569757647260    1.165e-11
-	  19        -0.113569757647228    2.790e-12
-	  20        -0.113569757647212    7.384e-13
+	   0        -0.116589617050584    0.000e+00
+	   1        -0.114173381610336    5.850e-03
+	   2        -0.113631809423519    1.666e-03
+	   3        -0.113569131320652    5.926e-04
+	   4        -0.113572794229155    1.730e-04
+	   5        -0.113571197013152    5.822e-05
+	   6        -0.113570035105508    1.862e-05
+	   7        -0.113569779957539    6.294e-06
+	   8        -0.113569754878125    1.970e-06
+	   9        -0.113569754893399    6.010e-07
+	  10        -0.113569757044742    1.693e-07
+	  11        -0.113569757319044    4.661e-08
 
 	Iterations converged.
 
-	Overlap <L|e^T> =    0.946099743604376
-Writing EOM L0    1.0000000000
+	Overlap <L|e^T> =        0.94609974367
+	Overlap <L|e^T> =        0.94609974367
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 09:00:06 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:36 2003
 
-user time   =       0.88 seconds =       0.01 minutes
-system time =       0.85 seconds =       0.01 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.47 seconds =       0.01 minutes
+system time =       0.51 seconds =       0.01 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 09:00:06 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:36 2003
 
 
 			**************************
@@ -4693,11 +4655,11 @@ Mon May 19 09:00:06 2003
 			**************************
 
 
-	Nuclear Rep. energy (chkpt)   =    6.069991255937556
-	SCF energy          (chkpt)   =  -38.921394701195240
-	Reference energy    (file100) =  -38.921394701195233
-	CCSD energy         (file100) =   -0.120484129754573
-	Total CCSD energy   (file100) =  -39.041878830949805
+	Nuclear Rep. energy (chkpt)   =    6.069991260951411
+	SCF energy          (chkpt)   =  -38.921394701133579
+	Reference energy    (file100) =  -38.921394701133572
+	CCSD energy         (file100) =   -0.120484129816226
+	Total CCSD energy   (file100) =  -39.041878830949798
 
 	Input parameters:
 	-----------------
@@ -4706,65 +4668,65 @@ Mon May 19 09:00:06 2003
 	AO Basis        =     No
 
 
-	Trace of onepdm =    0.000000000000000
+	Trace of onepdm =   -0.000000000000000
 
 	Energies re-computed from CC density:
 	-------------------------------------
-	One-electron energy        =    0.138392478644444
-	IJKL energy                =    0.027872386023941
-	IJKA energy                =    0.000000945240139
-	IJAB energy                =   -0.227206501424493
-	IBJA energy                =   -0.092071271143437
-	CIAB energy                =    0.000161021714735
-	ABCD energy                =    0.032366809030238
-	Total two-electron energy  =   -0.258876610558877
-	CCSD correlation energy    =   -0.120484131914433
-	Total CCSD energy          =  -39.041878833109664
+	One-electron energy        =    0.138392478045420
+	IJKL energy                =    0.027872385721809
+	IJKA energy                =    0.000000945326935
+	IJAB energy                =   -0.227206501185300
+	IBJA energy                =   -0.092071270359168
+	CIAB energy                =    0.000161021682949
+	ABCD energy                =    0.032366808734487
+	Total two-electron energy  =   -0.258876610078288
+	CCSD correlation energy    =   -0.120484132032868
+	Total CCSD energy          =  -39.041878833166443
 
 	Virial Theorem Data:
 	--------------------
-	Kinetic energy (ref)   =   38.846231416042002
-	Kinetic energy (corr)  =    0.104185874504537
-	Kinetic energy (total) =   38.950417290546540
-	-V/T (ref)             =    2.001934892585801
-	-V/T (corr)            =    2.156434404640200
-	-V/T (total)           =    2.002348153030583
+	Kinetic energy (ref)   =   38.846231418161196
+	Kinetic energy (corr)  =    0.104185868196376
+	Kinetic energy (total) =   38.950417286357570
+	-V/T (ref)             =    2.001934892529555
+	-V/T (corr)            =    2.156434475250800
+	-V/T (total)           =    2.002348153138381
 
 	Energies re-computed from Fock-adjusted CC density:
 	---------------------------------------------------
-	One-electron energy        =    0.084380199186493
-	IJKL energy                =   -0.353624392581902
-	IJKA energy                =    0.013007752706649
-	IJAB energy                =   -0.227206501424493
-	IBJA energy                =    0.330430979453182
-	CIAB energy                =    0.000161021714735
-	ABCD energy                =    0.032366809030238
-	Total two-electron energy  =   -0.204864331101591
-	CCSD correlation energy    =   -0.120484131915098
-	Total CCSD energy          =  -39.041878833110331
+	One-electron energy        =    0.084380198199271
+	IJKL energy                =   -0.353624390710022
+	IJKA energy                =    0.013007753615821
+	IJAB energy                =   -0.227206501185300
+	IBJA energy                =    0.330430977629261
+	CIAB energy                =    0.000161021682949
+	ABCD energy                =    0.032366808734487
+	Total two-electron energy  =   -0.204864330232804
+	CCSD correlation energy    =   -0.120484132033533
+	Total CCSD energy          =  -39.041878833167104
 
 	Energies re-computed from Mulliken density:
 	-------------------------------------------
-	One-electron energy        =    0.084380199186493
-	IJKL energy                =   -0.353624392581902
-	IJKA energy                =    0.013007752706649
-	IJAB energy                =   -0.220750820896609
-	IBJA energy                =    0.323975298925298
-	CIAB energy                =    0.000161021714735
-	ABCD energy                =    0.032366809030238
-	Total two-electron energy  =   -0.204864331101591
-	CCSD correlation energy    =   -0.120484131915098
-	Total CCSD energy          =  -39.041878833110331
+	One-electron energy        =    0.084380198199271
+	IJKL energy                =   -0.353624390710022
+	IJKA energy                =    0.013007753615821
+	IJAB energy                =   -0.220750820683568
+	IBJA energy                =    0.323975297127528
+	CIAB energy                =    0.000161021682949
+	ABCD energy                =    0.032366808734487
+	Total two-electron energy  =   -0.204864330232804
+	CCSD correlation energy    =   -0.120484132033533
+	Total CCSD energy          =  -39.041878833167104
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 09:00:06 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:36 2003
 
-user time   =       0.29 seconds =       0.00 minutes
-system time =       0.27 seconds =       0.00 minutes
+user time   =       0.22 seconds =       0.00 minutes
+system time =       0.29 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 09:00:06 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:36 2003
 
 
 	**************************************************
@@ -4828,8 +4790,8 @@ Mon May 19 09:00:06 2003
 	 B1 	   4	   4	    0	    0	    1	    3	    0
 	 B2 	   7	   7	    0	    1	    0	    6	    0
 
-	Nuclear Repulsion Energy    =         6.0699912559
-	Total SCF Energy            =       -38.9213947012
+	Nuclear Repulsion Energy    =         6.0699912610
+	Total SCF Energy            =       -38.9213947011
 
 	Pre-sorting two-electron ints...
 
@@ -4847,15 +4809,15 @@ Mon May 19 09:00:06 2003
 	Transforming one-electron integrals...
 	One-pdm and lagrangian written to file76.
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 09:00:08 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:38 2003
 
-user time   =       0.17 seconds =       0.00 minutes
-system time =       1.19 seconds =       0.02 minutes
+user time   =       0.20 seconds =       0.00 minutes
+system time =       1.24 seconds =       0.02 minutes
 total time  =          2 seconds =       0.03 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 09:00:08 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:36:38 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -4888,16 +4850,16 @@ Mon May 19 09:00:08 2003
   -CCSD forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000    -0.000000750069
-       2        0.000000000000     0.000000725736     0.000000375034
-       3        0.000000000000    -0.000000725736     0.000000375034
+       1        0.000000000000     0.000000000000    -0.000000750070
+       2        0.000000000000     0.000000725737     0.000000375035
+       3        0.000000000000    -0.000000725737     0.000000375035
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 09:00:08 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:36:38 2003
 
-user time   =       0.48 seconds =       0.01 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.47 seconds =       0.01 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
@@ -4906,9 +4868,9 @@ total time  =          0 seconds =       0.00 minutes
 	------------------------------------------------------
 
 Cartesian geometry and possibly gradient in a.u. with masses
-  6.0    12.00000000   0.0000000000  -0.0000000000  -0.1204193297
-  1.0     1.00782503   0.0000000000   1.8898455309   0.7169061645
-  1.0     1.00782503   0.0000000000  -1.8898455309   0.7169061645
+  6.0    12.00000000   0.0000000000  -0.0000000000  -0.1204193276
+  1.0     1.00782503   0.0000000000   1.8898455353   0.7169061519
+  1.0     1.00782503   0.0000000000  -1.8898455353   0.7169061519
                        0.0000000000   0.0000000000  -0.0000007501
                        0.0000000000   0.0000007257   0.0000003750
                        0.0000000000  -0.0000007257   0.0000003750
@@ -4918,7 +4880,7 @@ Stretches
     (1 1 2) (1.09382744)
     (2 1 3) (1.09382744)
 Bends
-    (3 2 1 3) (132.20703350)
+    (3 2 1 3) (132.20703435)
  
  ** Taking normal optimization step. **
 
@@ -4936,8 +4898,8 @@ Taking geometry step number 6
 BuB^t Determinant: 1.922180e+00
 
 Force Constants read from PSIF_OPTKING
-   5.3984580466   0.4981025497
-   0.4981025497   0.4513326743
+   5.3984580127   0.4981025682
+   0.4981025682   0.4513326470
 
 Performing BFGS Hessian update.
 
@@ -4945,16 +4907,26 @@ Scaling displacements by 1.000000
 
 Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
          Value          Force          Displacement   New Value
- 1  -1.8287448623   0.0000093671   0.0000015298  -1.8287433325
- 2   2.0911542480   0.0000016496   0.0000020684   2.0911563164
+ 1  -1.8287448626   0.0000093671   0.0000015298  -1.8287433329
+ 2   2.0911542627   0.0000016497   0.0000020684   2.0911563312
    MAX force:    0.0000093671   RMS force:    0.0000067255
 
 MAX force is < 1.0e-05.  Optimization is complete.
 Final CCSD energy is  -39.0418788309
 The Optimized geometry in a.u.
-  (  C   0.0000000000  -0.0000000000  -0.1204193297 )
-  (  H   0.0000000000   1.8898455309   0.7169061645 )
-  (  H   0.0000000000  -1.8898455309   0.7169061645 )
+  zmat = ( 
+    ( C )
+    ( H  1 R)
+    ( H  1 R 2 A)
+  )
+  zvars = ( 
+    ( R    1.09383 )
+    ( A  132.20703 )
+  )
+
+  (  C   0.0000000000  -0.0000000000  -0.1204193276 )
+  (  H   0.0000000000   1.8898455353   0.7169061519 )
+  (  H   0.0000000000  -1.8898455353   0.7169061519 )
 
 ******** OPTKING execution completed ********
 

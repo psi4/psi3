@@ -1,6 +1,6 @@
 ******************************************************************************
-tstart called on orion.chem.vt.edu
-Sat Jun 14 16:31:55 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:37:28 2003
 
                                 --------------
                                   WELCOME TO
@@ -165,15 +165,15 @@ Sat Jun 14 16:31:55 2003
 
 
 ******************************************************************************
-tstop called on orion.chem.vt.edu
-Sat Jun 14 16:31:56 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:37:28 2003
 
-user time   =       0.08 seconds =       0.00 minutes
+user time   =       0.04 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on orion.chem.vt.edu
-Sat Jun 14 16:31:56 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:37:28 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -201,15 +201,15 @@ Sat Jun 14 16:31:56 2003
     Wrote 78700 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on orion.chem.vt.edu
-Sat Jun 14 16:31:58 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:37:29 2003
 
-user time   =       1.78 seconds =       0.03 minutes
-system time =       0.04 seconds =       0.00 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.82 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on orion.chem.vt.edu
-Sat Jun 14 16:31:58 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:37:29 2003
 
 
              ------------------------------------------
@@ -220,19 +220,15 @@ Sat Jun 14 16:31:58 2003
 
              ------------------------------------------
 
-
-
-And I think the multiplicity is 1
-
-
-If this is wrong, the specify MULTP keyword
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
 
   label       = cc-pVDZ/CCSD HOF static polarizability
   wfn          = CCSD
   reference    = RHF
   multiplicity = 1
   charge       = 0
-  direct SCF   = false
+  direct       = false
   dertype      = RESPONSE
   convergence  = 10
   maxiter      = 40
@@ -270,15 +266,15 @@ If this is wrong, the specify MULTP keyword
     7      -174.4181550554    1.303290e-03    3.860888e-04    1.156571e-02
     8      -174.4184105372    2.554818e-04    2.250720e-04    4.531961e-03
     9      -174.4184318855    2.134827e-05    7.690149e-05    1.487806e-03
-   10      -174.4184329756    1.090073e-06    1.895131e-05    3.436621e-04
-   11      -174.4184330007    2.508983e-08    2.435147e-06    4.572805e-05
-   12      -174.4184330016    9.320615e-10    5.581959e-07    7.663224e-06
-   13      -174.4184330016    1.230660e-11    8.305443e-08    9.394521e-07
-   14      -174.4184330016    2.671641e-12    3.298699e-08    4.615114e-07
-   15      -174.4184330016    2.842171e-14    4.836431e-09    9.234642e-08
-   16      -174.4184330016    2.842171e-14    1.033593e-09    2.241918e-08
-   17      -174.4184330016    2.842171e-14    2.531983e-10    5.222997e-09
-   18      -174.4184330016    0.000000e+00    4.678312e-11    9.564278e-10
+   10      -174.4184329756    1.090074e-06    1.895131e-05    3.436621e-04
+   11      -174.4184330007    2.508963e-08    2.435147e-06    4.572805e-05
+   12      -174.4184330016    9.320900e-10    5.581959e-07    7.663224e-06
+   13      -174.4184330016    1.210765e-11    8.305443e-08    9.394521e-07
+   14      -174.4184330016    2.842171e-12    3.298699e-08    4.615114e-07
+   15      -174.4184330016   -5.684342e-14    4.836431e-09    9.234642e-08
+   16      -174.4184330016    2.273737e-13    1.033593e-09    2.241918e-08
+   17      -174.4184330016    0.000000e+00    2.531982e-10    5.222994e-09
+   18      -174.4184330016   -2.842171e-14    4.678310e-11    9.564302e-10
 
 Orbital energies (a.u.):
 
@@ -298,23 +294,23 @@ Orbital energies (a.u.):
    9App     4.827587    23Ap      4.882340    24Ap      5.266361  
 
 
-        SCF total energy   =    -174.418433001619
+        SCF total energy   =    -174.418433001620
         kinetic energy     =     177.057876149293
-        nuc. attr. energy  =    -511.815568468184
+        nuc. attr. energy  =    -511.815568468185
         elec. rep. energy  =     160.339259317272
         potential energy   =    -351.476309150913
         virial theorem     =       2.015132822273
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on orion.chem.vt.edu
-Sat Jun 14 16:31:58 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:37:29 2003
 
-user time   =       0.14 seconds =       0.00 minutes
+user time   =       0.10 seconds =       0.00 minutes
 system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on orion.chem.vt.edu
-Sat Jun 14 16:31:58 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:37:29 2003
 
 
 	**************************************************
@@ -398,15 +394,15 @@ Sat Jun 14 16:31:58 2003
 	One-electron integrals written to file 35.
 	Frozen-core operator written to file 35.
 ******************************************************************************
-tstop called on orion.chem.vt.edu
-Sat Jun 14 16:32:01 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:37:31 2003
 
-user time   =       0.57 seconds =       0.01 minutes
-system time =       1.98 seconds =       0.03 minutes
-total time  =          3 seconds =       0.05 minutes
+user time   =       0.23 seconds =       0.00 minutes
+system time =       1.32 seconds =       0.02 minutes
+total time  =          2 seconds =       0.03 minutes
 ******************************************************************************
-tstart called on orion.chem.vt.edu
-Sat Jun 14 16:32:01 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:37:31 2003
 
 
 			**************************
@@ -420,7 +416,7 @@ Sat Jun 14 16:32:01 2003
 	-----------------
 	Wave function   =	CCSD
 	Reference wfn   =	RHF
-	Derivative      =	 Response
+	Derivative      =	Response
 	Memory (Mbytes) =	256.0
 	AO Basis        =	NONE
 	Make (ab|cd)    =	True
@@ -440,29 +436,29 @@ Sat Jun 14 16:32:01 2003
 	 App	   9	    0	    2	    0	    7	    0
 
 	Nuclear Rep. energy (chkpt) =     46.78036205834605
-	SCF energy          (chkpt) =   -174.41843300161949
+	SCF energy          (chkpt) =   -174.41843300161955
 
 	Size of <ab|cd> integrals:     0.114 (MW) /     0.914 (MB)
 	Size of <ia|bc> integrals:     0.045 (MW) /     0.360 (MB)
 	Size of Tijab amplitudes:      0.018 (MW) /     0.143 (MB)
 
-	One-electron energy          =   -334.75769231889126
-	Two-electron (AA) energy     =     47.26858977466272
-	Two-electron (BB) energy     =     47.26858977466272
-	Two-electron (AB) energy     =     66.29030748426304
-	Two-electron energy          =    113.55889725892575
+	One-electron energy          =   -334.75769231889120
+	Two-electron (AA) energy     =     47.26858977466275
+	Two-electron (BB) energy     =     47.26858977466275
+	Two-electron (AB) energy     =     66.29030748426302
+	Two-electron energy          =    113.55889725892578
 	Frozen-core energy (transqt) =      0.00000000000000
-	Reference energy             =   -174.41843300161946
+	Reference energy             =   -174.41843300161938
 ******************************************************************************
-tstop called on orion.chem.vt.edu
-Sat Jun 14 16:32:01 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:37:31 2003
 
-user time   =       0.18 seconds =       0.00 minutes
-system time =       0.39 seconds =       0.01 minutes
+user time   =       0.16 seconds =       0.00 minutes
+system time =       0.18 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on orion.chem.vt.edu
-Sat Jun 14 16:32:01 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:37:31 2003
 
 			**************************
 			*                        *
@@ -471,8 +467,8 @@ Sat Jun 14 16:32:01 2003
 			**************************
 
 	Nuclear Rep. energy (chkpt)   =   46.780362058346050
-	SCF energy          (chkpt)   = -174.418433001619491
-	Reference energy    (file100) = -174.418433001619462
+	SCF energy          (chkpt)   = -174.418433001619547
+	Reference energy    (file100) = -174.418433001619377
 
 	Input parameters:
 	-----------------
@@ -490,24 +486,25 @@ Sat Jun 14 16:32:01 2003
 	Print Level     =    0
 	# Amps to Print =    10
 	Print MP2 Amps? =    No
+	Analyze T2 Amps =    No
 
 	                     Solving CCSD Equations
 	                     ----------------------
-	Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
-	----     ---------------------    ---------   ----------  ----------  ----------
-	   0        -0.356636240719611    0.000e+00    0.000000    0.000000    0.000000
-	   1        -0.362752063084701    3.144e-02    0.004275    0.011894    0.011894
-	   2        -0.368196197127682    1.020e-02    0.004675    0.013297    0.013297
-	   3        -0.368909989044813    3.691e-03    0.005274    0.015965    0.015965
-	   4        -0.368843223251121    1.064e-03    0.005417    0.016790    0.016790
-	   5        -0.368847102127308    5.172e-04    0.005511    0.017384    0.017384
-	   6        -0.368845295154320    1.896e-04    0.005559    0.017671    0.017671
-	   7        -0.368842607500185    4.221e-05    0.005566    0.017712    0.017712
-	   8        -0.368842991732946    9.726e-06    0.005568    0.017722    0.017722
-	   9        -0.368843083957784    1.805e-06    0.005568    0.017722    0.017722
-	  10        -0.368843084635158    4.602e-07    0.005568    0.017723    0.017723
-	  11        -0.368843099037289    1.246e-07    0.005568    0.017723    0.017723
-	  12        -0.368843101562555    3.400e-08    0.005568    0.017723    0.017723
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.356636240719609    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.362752063084700    3.144e-02    0.004275    0.011894    0.011894
+     2        -0.368196197127681    1.020e-02    0.004675    0.013297    0.013297
+     3        -0.368909989044813    3.691e-03    0.005274    0.015965    0.015965
+     4        -0.368843223251121    1.064e-03    0.005417    0.016790    0.016790
+     5        -0.368847102127307    5.172e-04    0.005511    0.017384    0.017384
+     6        -0.368845295154320    1.896e-04    0.005559    0.017671    0.017671
+     7        -0.368842607500184    4.221e-05    0.005566    0.017712    0.017712
+     8        -0.368842991732945    9.726e-06    0.005568    0.017722    0.017722
+     9        -0.368843083957783    1.805e-06    0.005568    0.017722    0.017722
+    10        -0.368843084635158    4.602e-07    0.005568    0.017723    0.017723
+    11        -0.368843099037289    1.246e-07    0.005568    0.017723    0.017723
+    12        -0.368843101562554    3.400e-08    0.005568    0.017723    0.017723
 
 	Iterations converged.
 
@@ -536,23 +533,23 @@ Sat Jun 14 16:32:01 2003
 	  8   7  17  17        -0.0203462180
 	  7   8  18  18         0.0189838367
 
-	SCF energy       (chkpt)   = -174.418433001619491
-	Reference energy (file100) = -174.418433001619462
-	MP2 correlation energy     =   -0.356636240719611
-	Total MP2 energy           = -174.775069242339072
-	CCSD correlation energy    =   -0.368843101562555
-	Total CCSD energy          = -174.787276103182023
+	SCF energy       (chkpt)   = -174.418433001619547
+	Reference energy (file100) = -174.418433001619377
+	MP2 correlation energy     =   -0.356636240719609
+	Total MP2 energy           = -174.775069242338986
+	CCSD correlation energy    =   -0.368843101562554
+	Total CCSD energy          = -174.787276103181938
 
 ******************************************************************************
-tstop called on orion.chem.vt.edu
-Sat Jun 14 16:32:09 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:37:34 2003
 
-user time   =       4.25 seconds =       0.07 minutes
-system time =       3.20 seconds =       0.05 minutes
-total time  =          8 seconds =       0.13 minutes
+user time   =       1.74 seconds =       0.03 minutes
+system time =       1.13 seconds =       0.02 minutes
+total time  =          3 seconds =       0.05 minutes
 ******************************************************************************
-tstart called on orion.chem.vt.edu
-Sat Jun 14 16:32:09 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:37:34 2003
 
 
 			**************************
@@ -562,81 +559,74 @@ Sat Jun 14 16:32:09 2003
 			**************************
 
 ******************************************************************************
-tstop called on orion.chem.vt.edu
-Sat Jun 14 16:32:14 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:37:36 2003
 
-user time   =       2.07 seconds =       0.03 minutes
-system time =       2.71 seconds =       0.05 minutes
-total time  =          5 seconds =       0.08 minutes
+user time   =       0.76 seconds =       0.01 minutes
+system time =       1.27 seconds =       0.02 minutes
+total time  =          2 seconds =       0.03 minutes
 ******************************************************************************
-tstart called on orion.chem.vt.edu
-Sat Jun 14 16:32:14 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:37:36 2003
 
 
 			**************************
-			*                        *
 			*        CCLAMBDA        *
-			*                        *
 			**************************
 
 
 	Nuclear Rep. energy (chkpt)   =   46.780362058346050
 	Reference           (chkpt)   = 0
-	SCF energy          (chkpt)   = -174.418433001619491
-	Reference energy    (CC_INFO) = -174.418433001619462
-	CCSD energy         (CC_INFO) =   -0.368843101562555
-	Total CCSD energy   (CC_INFO) = -174.787276103182023
-	Excited State L calculation?  = No
-	Irrep of L          (CC_INFO) = Ap 
+	SCF energy          (chkpt)   = -174.418433001619547
+	Reference energy    (CC_INFO) = -174.418433001619377
+	CCSD energy         (CC_INFO) =   -0.368843101562554
+	Total CCSD energy   (CC_INFO) = -174.787276103181938
 
 	Input parameters:
 	-----------------
 	Maxiter     =      50
-	Convergence = 1.0e-12
+	Convergence = 1.0e-07
 	Restart     =     Yes
 	Cache Level =     2
 	AO Basis        =     No
+	Excited State Computation =     No
+	States sought per irrep     = Ap  1, App 0,
+	Ls sought per irrep         = Ap  1, App 0,	Local CC        =     No
+
+	Symmetry of excited state: Ap 
+	Symmetry of right eigenvector: Ap 
 
 	          Solving Lambda Equations
 	          ------------------------
-	Iter         PseudoEnergy             RMS  
+	Iter     PseudoEnergy or Norm         RMS  
 	----     ---------------------     --------
-	   0        -0.368917657465699    0.000e+00
-	   1        -0.364932522701022    1.141e-02
-	   2        -0.364255665837077    1.739e-03
-	   3        -0.364135867447774    9.817e-04
-	   4        -0.364111552232674    4.337e-04
-	   5        -0.364122022083860    1.777e-04
-	   6        -0.364124905781607    4.265e-05
-	   7        -0.364124461350706    9.476e-06
-	   8        -0.364124452954229    2.083e-06
-	   9        -0.364124473959026    5.284e-07
-	  10        -0.364124471226899    1.354e-07
-	  11        -0.364124469848651    3.743e-08
-	  12        -0.364124469308463    9.629e-09
-	  13        -0.364124469532960    2.387e-09
-	  14        -0.364124469551971    6.233e-10
-	  15        -0.364124469551834    2.046e-10
-	  16        -0.364124469546047    6.055e-11
-	  17        -0.364124469544547    1.955e-11
-	  18        -0.364124469544408    5.871e-12
-	  19        -0.364124469544462    1.484e-12
-	  20        -0.364124469544473    4.308e-13
+	   0        -0.368917657465697    0.000e+00
+	   1        -0.364932522701021    1.141e-02
+	   2        -0.364255665837076    1.739e-03
+	   3        -0.364135867447773    9.817e-04
+	   4        -0.364111552232672    4.337e-04
+	   5        -0.364122022083859    1.777e-04
+	   6        -0.364124905781606    4.265e-05
+	   7        -0.364124461350704    9.476e-06
+	   8        -0.364124452954228    2.083e-06
+	   9        -0.364124473959024    5.284e-07
+	  10        -0.364124471226898    1.354e-07
+	  11        -0.364124470189023    3.743e-08
 
 	Iterations converged.
 
-	Overlap <L|e^T> =    0.923273103377828
-Writing EOM L0    1.0000000000
+	Overlap <L|e^T> =        0.92327310296
+	Overlap <L|e^T> =        0.92327310296
 ******************************************************************************
-tstop called on orion.chem.vt.edu
-Sat Jun 14 16:32:34 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:37:42 2003
 
-user time   =      11.69 seconds =       0.19 minutes
-system time =       7.63 seconds =       0.13 minutes
-total time  =         20 seconds =       0.33 minutes
+user time   =       2.17 seconds =       0.04 minutes
+system time =       2.02 seconds =       0.03 minutes
+total time  =          6 seconds =       0.10 minutes
 ******************************************************************************
-tstart called on orion.chem.vt.edu
-Sat Jun 14 16:32:34 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:37:42 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -661,16 +651,17 @@ Sat Jun 14 16:32:34 2003
   -SYMMETRY INFORMATION;
     Computational point group        =  Cs 
     Number of irreps                 = 2
+    Reference point for ang. mom. ints. = (0.000, 0.000, 0.000)
 ******************************************************************************
-tstop called on orion.chem.vt.edu
-Sat Jun 14 16:32:34 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:37:43 2003
 
-user time   =       0.36 seconds =       0.01 minutes
-system time =       0.02 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.26 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on orion.chem.vt.edu
-Sat Jun 14 16:32:34 2003
+tstart called on diadem.giga.net
+Wed Aug 13 03:37:43 2003
 
 			**************************
 			*                        *
@@ -680,6 +671,7 @@ Sat Jun 14 16:32:34 2003
 
 	Input parameters:
 	-----------------
+	Property        =    POLARIZABILITY
 	Reference wfn   =      RHF
 	Memory (Mbytes) =  256.0
 	Cache Level     =    0
@@ -690,9 +682,15 @@ Sat Jun 14 16:32:34 2003
 	Irrep X         =    Ap 
 	Irrep Y         =    Ap 
 	Irrep Z         =    App
+	Irrep RX        =    App
+	Irrep RY        =    App
+	Irrep RZ        =    Ap 
 	Applied field   = none
+	Local CC        =     No
+	Analyze X2 Amps  =    No
 
-	Computing Perturbed X Wave Function at Frequency 0.000 E_h.
+
+	Computing Mu-X-Perturbed Wave Function (0.000 E_h).
 	Iter   Pseudopolarizability       RMS 
 	----   --------------------   -----------
 	   0         3.976751861171
@@ -709,9 +707,9 @@ Sat Jun 14 16:32:34 2003
 	  11         5.895356076055    1.026e-06
 	  12         5.895356842117    2.202e-07
 	-----------------------------------------
-	Converged Perturbed X Wave Function X(0.000) to 5.099e-08
+	Converged Mu-X-Perturbed Wfn to 5.099e-08
 
-	Computing Perturbed Y Wave Function at Frequency 0.000 E_h.
+	Computing Mu-Y-Perturbed Wave Function (0.000 E_h).
 	Iter   Pseudopolarizability       RMS 
 	----   --------------------   -----------
 	   0         4.189912882340
@@ -728,9 +726,9 @@ Sat Jun 14 16:32:34 2003
 	  11         6.710598653714    1.037e-06
 	  12         6.710599545935    2.329e-07
 	-----------------------------------------
-	Converged Perturbed Y Wave Function X(0.000) to 4.263e-08
+	Converged Mu-Y-Perturbed Wfn to 4.263e-08
 
-	Computing Perturbed Z Wave Function at Frequency 0.000 E_h.
+	Computing Mu-Z-Perturbed Wave Function (0.000 E_h).
 	Iter   Pseudopolarizability       RMS 
 	----   --------------------   -----------
 	   0         2.373344876458
@@ -741,28 +739,28 @@ Sat Jun 14 16:32:34 2003
 	   5         3.217647248957    5.012e-03
 	   6         3.218678116921    1.279e-03
 	   7         3.218717437596    2.750e-04
-	   8         3.218701643545    6.891e-05
+	   8         3.218701643544    6.891e-05
 	   9         3.218708523951    1.640e-05
 	  10         3.218709880144    5.543e-06
 	  11         3.218709458403    1.454e-06
-	  12         3.218708965280    4.171e-07
+	  12         3.218708965279    4.171e-07
 	-----------------------------------------
-	Converged Perturbed Z Wave Function X(0.000) to 9.472e-08
+	Converged Mu-Z-Perturbed Wfn to 9.472e-08
 
                  CCSD Dipole Polarizability [(e^2 a0^2)/E_h]:
   -------------------------------------------------------------------------
-     Evaluated at omega = 0.000 E_h (   inf nm, 0.000 eV,     0.00 cm-1)
+   Evaluated at omega = 0.000000 E_h (   inf nm, 0.000 eV,     0.00 cm-1)
   -------------------------------------------------------------------------
 
                 0                  1                  2        
 
-    0   5.725437051133600  1.786158514334409  0.000000000000000
-    1   1.786158514334409  6.486317334514704  0.000000000000000
-    2   0.000000000000000  0.000000000000000  3.162419709103633
+    0   5.725436989844567  1.786158485906810  0.000000000000000
+    1   1.786158485906810  6.486317375533106  0.000000000000000
+    2   0.000000000000000  0.000000000000000  3.162419719301449
 ******************************************************************************
-tstop called on orion.chem.vt.edu
-Sat Jun 14 16:33:08 2003
+tstop called on diadem.giga.net
+Wed Aug 13 03:37:55 2003
 
-user time   =      14.27 seconds =       0.24 minutes
-system time =      19.39 seconds =       0.32 minutes
-total time  =         34 seconds =       0.57 minutes
+user time   =       5.02 seconds =       0.08 minutes
+system time =       7.27 seconds =       0.12 minutes
+total time  =         12 seconds =       0.20 minutes
