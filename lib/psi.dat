@@ -8,7 +8,7 @@ psi: (
 
   % The basic programs
   input      = "input"
-  uinput     = "input --getgeom"
+  uinput     = "input --chkptgeom"
   init       = $input
   done       = ("psiclean")
   scfdone    = ()
