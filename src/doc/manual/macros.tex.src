@@ -10,6 +10,13 @@
 \newcommand{\PSIinput}{\module{input}}
 \newcommand{\PSIcints}{\module{cints}}
 \newcommand{\PSIcderiv}{\module{cints --deriv1}}
+\newcommand{\PSIdetci}{\module{detci}}
+\newcommand{\PSIdetcas}{\module{detcas}}
+\newcommand{\PSIdetcasman}{\module{detcasman}}
+\newcommand{\PSIclag}{\module{clag}}
+\newcommand{\PSIccenergy}{\module{ccenergy}}
+\newcommand{\PSIccsort}{\module{ccsort}}
+\newcommand{\PSIpsi}{\module{psi}}
 \newcommand{\PSIcscf}{\module{cscf}}
 \newcommand{\PSIoptking}{\module{optking}}
 \newcommand{\PSItransqt}{\module{transqt}}

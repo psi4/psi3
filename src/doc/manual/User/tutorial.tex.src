@@ -184,10 +184,10 @@ after reading the man pages described above I come up with the following:
       default: (
         name = "h2osto"
         nvolume = 4
-        volume1 = "/tmp1/psiuser"
-        volume2 = "/tmp2/psiuser"
-        volume3 = "/tmp2/psiuser"
-        volume4 = "/tmp2/psiuser"
+        volume1 = "/tmp1/psiuser/"
+        volume2 = "/tmp2/psiuser/"
+        volume3 = "/tmp2/psiuser/"
+        volume4 = "/tmp2/psiuser/"
         )
       file30: (
         nvolume = 1
@@ -217,23 +217,71 @@ You may wonder about the memory flag I've tucked in the default. As far
 as I know, it's undocumented, but can be set for some PSI modules.
 Acceptable units are REAL, INTEGER, BYTES,
 KBYTES, or MBYTES. Generally it is a good practice to keep
-\keyword{default:memory} small, and increase \keyword{program\_id:memory} as necessary. 
+\keyword{default:memory} small, and 
+increase \keyword{program\_id:memory} as necessary. 
 
-Also, the files section popped up out of nowhere. That just tells
-the Psi modules how to handle all the scratch files. It is properly documented by: 
+The \keyword{default:files} section tells \PSIthree\ where to
+store temporary (scratch) files.  Here, a user is telling \PSIthree\ to 
+write the scratch files to four different directories (where in this
+case ``psiuser'' is used as the user's username).
+The file-handling capability of \PSIthree\
+is very flexible --- it is possible, for example, to tell each module to
+place files in different locations (although this would rarely ever be
+useful).  By placing a \keyword{files} section in the \keyword{default}
+area, \PSIthree\ will use this information by default for all of its
+modules unless overridden by a \keyword{files} section inside a particular
+module (like \PSIcscf, for example).  Specifying four volumes, such as in
+this example, tells \PSIthree\ to stripe (split the files) over four 
+different directories.  This can be useful if there are four hard disks, all
+used for scratch data.  However, modern operating systems allow different
+physical hard drives to be striped automatically by the operating system
+into a single directory, so having \keyword{nvolume} more than 1 is pretty
+unusual nowadays.  
+
+One downside to listing these specific scratch directories is that, if you
+send your \PSIthree\ input file to a co-worker, he or she will have to
+modify the file to use their scratch directories instead of yours (assuming
+you don't all write to the same directory, like \file{/tmp}).  This problem
+is solved by the \file{.psirc} file.  If this file exists
+in the user's home directory, then it will override the \keyword{file}
+information in \file{input.dat}.  For example, with a \file{.psirc} file 
+containing the following information,
+
 \begin{verbatim}
-  c4-20:> man files
+default: (
+    files: (
+      default: (
+        nvolume = 4
+        volume1 = "/tmp1/psiuser/"
+        volume2 = "/tmp2/psiuser/"
+        volume3 = "/tmp2/psiuser/"
+        volume4 = "/tmp2/psiuser/"
+      )
+      file30: (
+        nvolume = 1
+        volume1 = "./"
+      )
+    )
+)
 \end{verbatim}
-You will want to make sure that you have the directories specified by the \keyword{volume\#}
-parameter on the machine on which you are running. Oh, and use your own username
-not "\keyword{psiuser}" in the last field. 
+then the relevant section in \file{input.dat} can be vastly simplified
+to just
+\begin{verbatim}
+  files: (
+    default: ( name = "h2o" )
+    )
+\end{verbatim}
+
+Once you have a \file{input.dat} file prepared, the first thing to do is
+to create the checkpoint file, the previously mentioned \FILE30.  You
+can do this by running the program
 \begin{verbatim}
   c4-20:> input
 \end{verbatim}
 You should now have two new files \outputdat\ and \keyword{h2osto.30}.
-Look at the first one, and it should make sense. The second
-is the previously mentioned \FILE30, but do not bother to look
-at it; it is binary. 
+The latter file is a binary file, it cannot be directly examined.  The first
+file should contain text giving the program output.  Take a look at this
+file and see what kind of information it gives.
 
 Going on, 
 \begin{verbatim}

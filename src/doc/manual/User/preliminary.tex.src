@@ -6,10 +6,11 @@ virtually arbitrary orbital quantum number.
 point group describing the full symmetry of the molecule.
 Table \ref{table:methods} displays the range of theoretical
 methods available in \PSIthree .
-\begin{table}
+\begin{table}[h]
 \caption{Summary of theoretical methods available in \PSIthree.} 
 \label{table:methods}
 \parsep 10pt
+\begin{center}
 \begin{tabular}{lccc} \hline\hline
 Method      & Energy & Gradient & Hessian \\ \hline
 RHF SCF     & Y & Y & N \\
@@ -23,6 +24,7 @@ RHF MP2-R12 & Y & N & N \\
 ROHF CCSD   & Y & Y & N \\
 VOO-CCD     & Y & Y & N \\ \hline\hline
 \end{tabular}
+\end{center}
 \end{table}
 Geometry optimization (currently restricted to true minima on the potential
 energy surface) and vibrational frequency computations can be performed
@@ -111,25 +113,29 @@ free at \htmladdnormallink{{\tt http://sourceware.cygnus.com/bzip2/}}
 This will produce a directory tree \file{psi3} which contains all
 of the human-generated source code for \PSIthree. At this point
 you may choose to rename it to something else, like \file{psi3\_dist}.
-There are two good reasons for this: 1) it is better to keep object and binary files
+It is better to keep object and binary files
 separate from the source files so that you can wipe out the binaries
-clean and start over at any moment;
-2) if you want to install \PSIthree\ binaries on several different machines
-with different architectures, it is easy to do with just one copy of
-the \PSIthree\ source code.
+clean and start over at any moment.
 
 Now enter \PSIthree\ source directory and edit the installation script
 \file{PSI3Install}. Specify a target location for \PSIthree\ installation tree
-(variable \shellvar{prefix}). Make a note of how the \file{host.sh} script
-is used to provide canonical architecture names. It is useful to employ
-this script in shell initialization scripts to specify the location of
-the \PSIthree\ installation.
+(variable \shellvar{prefix}). The binaries, documentation, test suite, and
+some other items will be installed into this installation directory.  A
+\file{bin} directory will hold utilities like \file{host.sh}, which
+determines the architecture type.  A subdirectory (with name created by
+\file{host.sh}) will hold architecture-specific binaries of the program
+modules.  Note that, in contrast to previous versions of PSI, 
+\shellvar{prefix} specifies a totally separate directory and {\em should 
+not be the same as the compilation directory}.  By default, the 
+compilation directory will be an architecture-dependent subdirectory 
+of the \PSIthree\ source directory.  
 
-To install \PSIthree\ type \file{PSI3Install >\& install.out}. After the installation
-process completes check the target directory, it should have
-\file{bin}, \file{include}, \file{doc}, \file{share} and an
+To install \PSIthree\ type \file{PSI3Install >\& install.out}. After 
+the installation process completes, check the installation directory; 
+it should have \file{bin}, \file{include}, \file{doc}, \file{share},
+\file{tests}, and an
 architecture-specific (e.g. \file{i586-pc-linux-gnu})
-directories. In the architecture-specific directory
+directory. In the architecture-specific directory
 check the \file{bin} directory, it should have several
 binary files in it. If you do not have binaries in that location,
 then something went wrong and 

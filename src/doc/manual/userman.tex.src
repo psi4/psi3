@@ -33,13 +33,23 @@
 %%%%%%%%%%%%%%%%%%%%%%%
 \title{\vspace{2.0in} {\bf The \PSIthree\ User's Manual}}
 
-\author{Jeffrey C. Stephens, George Vacek, \\
-C. David Sherrill, Justin T. Fermann, \\
-Timothy J. Van Huis, and T. Daniel Crawford \\
-Revised for \PSIthree\ by Edward F. Valeev \\
+\author{Jeffrey C.~Stephens, George Vacek, \\
+C.~David Sherrill, Justin T.~Fermann, \\
+Timothy J.~Van Huis, and T.~Daniel Crawford \\
+Revised for \PSIthree\ by Edward F.~Valeev  and C.~David Sherrill \\
+\\
 {\em Center for Computational Quantum Chemistry} \\
 {\em University of Georgia} \\ 
-{\em Athens, Georgia 30602}}
+\\
+{\em Athens, Georgia 30602} \\
+{\em Center for Computational Molecular Science and Technology} \\
+{\em Georgia Institute of Technology} \\
+\\
+{\em Atlanta, GA 30332-0400} \\
+{\em Department of Chemistry} \\
+{\em Virginia Tech} \\
+{\em Blacksburg, VA 24061-0212}
+}
 
 \date{Version of:  \today}
 \maketitle

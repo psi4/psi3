@@ -208,54 +208,59 @@ basis: (
 \end{verbatim}
 
 \subsection{Electronic Structure Specification}
-The reference electronic configuration of a molecule is specified
-via a combination of keywords \keyword{reference} and \keyword{multiplicity}
-and occupation vectors \keyword{docc} and \keyword{socc}. However, the latter
-may not be necessary as \PSIcscf\ may guess occupations (\keyword{docc}
-and \keyword{socc} arrays) for you
-had \keyword{charge}, \keyword{multiplicity}, and \keyword{reference}
-have been specified. It is the easiest way to specify electronic configuration
-for your system, but remember that guessing algorithms \PSIcscf\ uses are
-far from perfect. Hence you should check guessed occupations every time you
-let \PSIcscf\ guess them for you.
+The reference electronic configuration of a molecule is specified via
+a combination of keywords \keyword{reference} and
+\keyword{multiplicity} and occupation vectors \keyword{docc} and
+\keyword{socc}. However, the latter may not be necessary as \PSIcscf\
+may guess occupations (\keyword{docc} and \keyword{socc} arrays) for
+you had \keyword{charge}, \keyword{multiplicity}, and
+\keyword{reference} have been specified. It is the easiest way to
+specify electronic configuration for your system, but remember that
+guessing algorithms \PSIcscf\ uses are far from perfect. Hence you
+should check guessed occupations every time you let \PSIcscf\ guess
+them for you.
 
 To determine the electronic occupations in \PSIthree\ manually, first
-construct symmetry
-orbitals using group theory and fill them according to regular
-valence bond arguments. To define your occupations in \PSIthree,
-use the \keyword{docc} and \keyword{socc} arrays. But only \keyword{docc}
-and \keyword{socc} may not be enough to specify precisely
-the spin couplings in your system. That's where \keyword{reference} and
-\keyword{multiplicity} keywords come in. \keyword{multiplicity} is equal
-2S+1, where S is the spin quantum number of the system. \keyword{reference} can equal 
+construct symmetry orbitals using group theory and fill them according
+to regular valence bond arguments. To define your occupations in
+\PSIthree, use the \keyword{docc} and \keyword{socc} arrays. But only
+\keyword{docc} and \keyword{socc} may not be enough to specify
+precisely the spin couplings in your system. That's where
+\keyword{reference} and \keyword{multiplicity} keywords come
+in. \keyword{multiplicity} is equal 2S+1, where S is the spin quantum
+number of the system. \keyword{reference} can equal
 \begin{itemize}
 \item rhf (default) - spin-restricted reference for closed shell molecules.
-\keyword{multiplicity} may only equal to 1 in this case.
+      \keyword{multiplicity} may only equal to 1 in this case.
 \item rohf - spin-restricted reference for open shell molecules.
-If multiplicity=1 and socc has two singly occupied orbitals in
-different symmetry blocks - it's equivalent to the old opentype=singlet statement.
-Otherwise it's assumed to be a high-spin open-shell case
-(equivalent to the old opentype=highspin statement).
-\item uhf - spin-unrestricted reference for closed shell or high-spin (parallel spins) open shell system.
+      If multiplicity=1 and socc has two singly occupied orbitals in
+      different symmetry blocks - it's equivalent to the old 
+      opentype=singlet statement.  Otherwise it's assumed to be a 
+      high-spin open-shell case (equivalent to the old
+      opentype=highspin statement).
+\item uhf - spin-unrestricted reference for closed shell or 
+      high-spin (parallel spins) open shell system.
 \item twocon for two determinantal wavefunctions. The largest
-component should be specified by the docc and socc arrays.
-Multiplicity has to be set to 1.
+      component should be specified by the docc and socc arrays.  
+      Multiplicity has to be set to 1.
 \end{itemize}
-For $^1{\rm A}_1$ methylene, the occupation is (1a1)2(2a1)2(1b2)1(3a1)2 so the docc is: 
+For $^1{\rm A}_1$ methylene, the occupation is
+(1a1)2(2a1)2(1b2)1(3a1)2 so the docc is:
 \begin{verbatim}
 reference = rhf or uhf
 multiplicity = 1
 docc = (3 0 0 1)
 \end{verbatim}
-For the $^3{\rm B}_1$ state of methylene,
-the electronic configuration is (1a1)2(2a1)2(1b2)2(3a1)1(1b1)1 so the docc and socc arrays are: 
+For the $^3{\rm B}_1$ state of methylene, the electronic configuration
+is (1a1)2(2a1)2(1b2)2(3a1)1(1b1)1 so the docc and socc arrays are:
 \begin{verbatim}
 reference = rohf or uhf
 multiplicity = 3
 docc = (2 0 0 1)
 socc = (1 0 1 0)
 \end{verbatim}
-For the $^1{\rm B}_1$ state of methylene however, the docc and socc arrays are also: 
+For the $^1{\rm B}_1$ state of methylene however, the docc and socc
+arrays are also:
 \begin{verbatim}
 reference = rohf
 multiplicity = 1
@@ -283,41 +288,58 @@ The electronic wavefunction is specified via the \keyword{wfn} keyword.
 The range of allowed wavefunctions is listed in Table \ref{table:wfn}
 
 \subsection{Geometry Optimization}
-\PSIoptking\ is the program responsible for orchestrating the
-process of geometry optimization. It can do a number of tasks
-automatically, such as generating internal coordinates, produce
-empirical force constant matrix, if necessary, update it, and
-check if geometry optimization is over. Some or all of the following
-files are necessary to perform a geometry optimization with \PSIoptking:
-\begin{itemize} 
-\item \FILE{11.dat} - contains the cartesian geometry and the nuclear forces, produced by \PSIcderiv ;
-\item \fconstdat - contains force constants; if absent - empirical force constants will
-be generated by \PSIoptking ;
-\item \intcodat - contains internal coordinates in a format readable by a human;
-if absent - internal coordinates are generated automatically by \PSIoptking .
+
+\PSIoptking\ is the program responsible for orchestrating the process
+of geometry optimization. It can do a number of tasks automatically,
+such as generating internal coordinates, produce empirical force
+constant matrix, if necessary, update it, and check if geometry
+optimization is over. Some or all of the following files are necessary
+to perform a geometry optimization with \PSIoptking: 
+\begin{itemize}
+\item \FILE{11.dat} - contains the cartesian geometry and the nuclear
+      forces, produced by \PSIcderiv ; 
+\item \fconstdat - contains force
+      constants; if absent - empirical force constants will be generated by
+      \PSIoptking ; 
+\item \intcodat - contains internal coordinates in a
+      format readable by a human; if absent - internal coordinates are
+      generated automatically by \PSIoptking .  
 \end{itemize}
 
 The procedure for setting up such a calculation is as follows: 
 \begin{itemize}
-\item define internal coordinates if desired (if unsure - do not)
-\item obtain a set of force constants in an fconst.dat file (if unsure - do not) 
-\item run a first derivative with the \keyword{opt} flag set to true and \keyword{ nopt} around 5
+\item define internal coordinates if desired (or, do nothing, and
+      \PSIoptking\ will do it for you automatically!)
+\item obtain a set of force constants in an fconst.dat file (or,
+      again, \PSIoptking\ can do this automatically for you)
+\item If analytic gradients are available for your chosen method, set
+      \keyword{dertype=first}.  If not, set \keyword{dertype=none} and
+      also set \keyword{numerical\_dertype=first} in the
+      \keyword{default} section.
+\item Run the optimization by setting the \keyword{opt} flag set to true 
+      and \keyword{ nopt} to the number of geometry optimization
+      steps (say, around 5 to 10).  If analytic gradients are not
+      available, then \keyword{nopt} instead gives the number of energy
+      points to compute.  This should be the desired number of 
+      geometry optimization steps, multiplied by (2*num\_symm\_coord + 1),
+      where num\_symm\_coord is the number of totally-symmetric internal
+      coordinates.
 \end{itemize}
-Precision with which geometry is optimized depends on the residual
+The precision with which geometry is optimized depends on the residual
 forces on the nuclei. By default \PSIoptking\ will terminate the job
 if the residual cartesian gradients in \FILE{11.dat} are less than
 $10^{-5}$ in atomic units. It is probably enough for most
 tasks. Going below this will most likely waste CPU
 time unless you are doing benchmarks.
 
-An important aspect of a geometry optimization is the accuracy
-of the first derivatives of energy that \PSIthree\ computes.
-Depending on how poorly your wavefunction has been convereged, the
-gradients themselves may not be sufficiently accurate for
-the requested convergence criterion. After computing first
-derivatives of the energy, \PSIcints\ runs a simple check
-of the quality of the energy derivative. It's a good idea to
-look at \PSIcints ' output to make sure that the gradients are OK. 
+An important aspect of a geometry optimization is the accuracy of the
+first derivatives of energy that \PSIthree\ computes.  Depending on
+how poorly your wavefunction has been convereged, the gradients
+themselves may not be sufficiently accurate for the requested
+convergence criterion. After computing first derivatives of the
+energy, \PSIcints\ runs a simple check of the quality of the energy
+derivative. It's a good idea to look at \PSIcints ' output to make
+sure that the gradients are OK.
 
 Let us take a look at each step involved in optimizing molecular geometry.
 
@@ -327,16 +349,14 @@ program which can generate internal coordinates automatically. At present
 \PSIoptking\ cannot handle molecules larger than a few
 atoms but it should change in the immediate future. Hence 
 you may still specify internal coordinates manually
-as described here, but this ability will become obsolete someday.
+as described here, but this ability may become obsolete someday.
 
-\PSIthree\ currently carries out all optimizations in
-internal coordinates. The internals are specified in either
-\inputdat\ or \intcodat. First, the primitive internals
-are defined. These are individual
-stretches, bends, torsion, out-of-plane deformations,
-and two different linear bends denoted lin1 and lin2.
-All of these are defined in Wilson, Decius, and Cross. An example for methane is
-below:
+\PSIthree\ currently carries out all optimizations in internal
+coordinates. The internals are specified in either \inputdat\ or
+\intcodat. First, the primitive internals are defined. These are
+individual stretches, bends, torsion, out-of-plane deformations, and
+two different linear bends denoted lin1 and lin2.  All of these are
+defined in Wilson, Decius, and Cross. An example for methane is below:
 \begin{verbatim}
 intco: (
    stre = (
@@ -394,11 +414,11 @@ For more information in defining symmetric internals, refer to Cotton's text.
 The quality of the force constants, or Hessian, is critical for
 optimizing weakly bound structures. In order to start an optimization,
 one needs the \fconstdat\ file. For those of you that can speak
-Fortran 77, this file is written in 8F10.7 format. It is the
-lower triangle of the force constant matrix in internal coordinates. The order
-of the forces is identical to the order of the SYMM and ASYMM vectors.
-For the methane-water dimer, an excerpt from a real \fconstdat\ is shown below: 
-\begin{verbatim}
+Fortran 77, this file is written in 8F10.7 format. It is the lower
+triangle of the force constant matrix in internal coordinates. The
+order of the forces is identical to the order of the SYMM and ASYMM
+vectors.  For the methane-water dimer, an excerpt from a real
+\fconstdat\ is shown below: \begin{verbatim}
   5.654908
    .217027  5.616085
   -.006096  -.001145  6.078154
@@ -407,8 +427,9 @@ For the methane-water dimer, an excerpt from a real \fconstdat\ is shown below:
   -.146900  -.285108   .001153  -.023346   .196008   .605239
    .001037  -.001959   .002945  -.024597   .014432   .005302   .388622
 \end{verbatim}
-Ideally, your diagonal elements should be the much larger than
-the non-diagonal elements. If you need an \fconstdat\ file, you have four options: 
+Ideally, your diagonal elements should be the much larger than the
+non-diagonal elements. If you need an \fconstdat\ file, you have four
+options:
 \begin{enumerate}
 \item Create a diagonal matrix of 1's 
 \item Create a diagonal matrix with 5 for stretching coordinates,
@@ -422,37 +443,42 @@ approximate and gets more accurate.
 
 \subsection{Frequency Analysis}
 Currently, analytic second derivatives are not avaliable for any
-method in \PSIthree. Hence, for methods with analytic gradients,
-one must carry out finite difference calculations. If one has the misfortune of needing frequencies
-for methods where only energies exist(e.g. FCI or MP2-R12), finite
-differences with gradients approximated by energy
-points must be used. There are two types of frequency analysis
-programs available within \PSIthree, \PSInormco\ and \PSIintder.
-For more details regarding these programs, see the manual pages for each
-program respectively.
+method in \PSIthree. Hence, for methods with analytic gradients, one
+must carry out finite difference calculations. If one has the
+misfortune of needing frequencies for methods where only energies
+exist(e.g. FCI or MP2-R12), finite differences with gradients
+approximated by energy points must be used. At present, obtaining the
+Hessian numerically from energies or gradients is not automated by the
+program.  There are two types of frequency analysis programs available
+within \PSIthree, \PSInormco\ and \PSIintder.  For more details
+regarding these programs, see the manual pages for each program
+respectively.
 
 \subsection{Evaluation of one-electron properties}
 For now, take a look at the available documentation for \PSIoeprop .
 
 \subsection{Plotting one-electron properties}
-Program \PSIoeprop\ can evaluate certain one-electron properties on a grid of points
-and then print them out in format suitable for image rendering with external programs.
-Currently, electron and spin density, electron and spin density gradient,
-Laplacian of electron and spin density, and electrostatic potential
-can be evaluated on an arbitrary rectangular two-dimensional grid and output
-in a format suitable for feeding to a interactive visualization program {\tt PlotMTV} (version 1.3 and higher).
-{\tt PlotMTV} is a freeware code developed by Kenny Toh. It can be downloaded off
-many web sites in source or binary form.
+Program \PSIoeprop\ can evaluate certain one-electron properties on a
+grid of points and then print them out in format suitable for image
+rendering with external programs.  Currently, electron and spin
+density, electron and spin density gradient, Laplacian of electron and
+spin density, and electrostatic potential can be evaluated on an
+arbitrary rectangular two-dimensional grid and output in a format
+suitable for feeding to a interactive visualization program {\tt
+PlotMTV} (version 1.3 and higher).  {\tt PlotMTV} is a freeware code
+developed by Kenny Toh. It can be downloaded off many web sites in
+source or binary form.
 
-In addition, values of molecular orbitals can be evaluated on an arbitrary
-rectangular three-dimensional grid and output for furher rendering
-of high-quality images with a program {\tt MegaPov} (version 0.5).
-{\tt MegaPov} is an unofficial patch for
-a ray-tracing code {\tt POV-Ray}. Information on {\tt MegaPov} can be found
-at \htmladdnormallink{{http://nathan.kopp.com/patched.htm}}.
+In addition, values of molecular orbitals can be evaluated on an
+arbitrary rectangular three-dimensional grid and output for furher
+rendering of high-quality images with a program {\tt MegaPov} (version
+0.5).  {\tt MegaPov} is an unofficial patch for a ray-tracing code
+{\tt POV-Ray}. Information on {\tt MegaPov} can be found at
+\htmladdnormallink{{http://nathan.kopp.com/patched.htm}}.
 
-Let's look at how to set up input for spin density evaluation on a two-dimensional grid.
-An input secion of \PSIoeprop\ might look like this:
+Let's look at how to set up input for spin density evaluation on a
+two-dimensional grid.  An input secion of \PSIoeprop\ might look like
+this:
 \begin{verbatim}
 oeprop:(
   grid = 2
@@ -466,48 +492,55 @@ oeprop:(
   niy = 20
 )
 \end{verbatim}
-\keyword{grid} specifies the type of a property and the type of a grid \PSIoeprop\ needs to compute.
-Allowed values are 0 (default, no property evaluation on a grid), 1 (electrostatic potential
-on a 2D grid), 2 (electron/spin density on a 2D grid), 3 (gradient of electron/spin density
-on a 2D grid), 4 (Laplacian of electron/spin density on a 2D grid), 5 (molecular orbital values
-on a 3D grid). Since \keyword{spin\_prop}\ is set, the spin density will be evaluated on
-a grid.
+\keyword{grid} specifies the type of a property and the type of a grid
+\PSIoeprop\ needs to compute.  Allowed values are 0 (default, no
+property evaluation on a grid), 1 (electrostatic potential on a 2D
+grid), 2 (electron/spin density on a 2D grid), 3 (gradient of
+electron/spin density on a 2D grid), 4 (Laplacian of electron/spin
+density on a 2D grid), 5 (molecular orbital values on a 3D
+grid). Since \keyword{spin\_prop}\ is set, the spin density will be
+evaluated on a grid.
 
-Grid specification is a little bit tricky but very flexible. \keyword{grid\_origin}\ specifies
-the origin of the rectangular coordinate system associated with the grid
-in the refernence frame. \keyword{grid\_unit\_x}\ specifies a reference frame
-vector which designates the direction of the x-axis of the grid coordinate system.
-\keyword{grid\_unit\_y}\ is analogously a reference frame vector which,
-along with the \keyword{grid\_unit\_x}, completely specifies the grid coordinate
-system.
-\keyword{grid\_unit\_x}\ and \keyword{grid\_unit\_y}\ do not have to be normalized, neither they
-need to be orthogonal to either other - orthogonalization is done automatically
-to ensure that unit vectors of the grid coordinate system are normalized in the reference
-frame too.
+Grid specification is a little bit tricky but very
+flexible. \keyword{grid\_origin}\ specifies the origin of the
+rectangular coordinate system associated with the grid in the
+refernence frame. \keyword{grid\_unit\_x}\ specifies a reference frame
+vector which designates the direction of the x-axis of the grid
+coordinate system.  \keyword{grid\_unit\_y}\ is analogously a
+reference frame vector which, along with the \keyword{grid\_unit\_x},
+completely specifies the grid coordinate system.
+\keyword{grid\_unit\_x}\ and \keyword{grid\_unit\_y}\ do not have to
+be normalized, neither they need to be orthogonal to either other -
+orthogonalization is done automatically to ensure that unit vectors of
+the grid coordinate system are normalized in the reference frame too.
 \keyword{grid\_xy0}\ is a vector in the grid coordinate system that
 specifies a vertex of the grid rectangle with the most negative
-coordinates. Similarly, \keyword{grid\_xy1}\ specifies a
-vertex of the the grid rectangle diagonally opposite to \keyword{grid\_xy0}.
-Finally, \keyword{nix}\ and \keyword{niy}\ specify the number of intervals into which
-the $x$ and $y$ sides of the grid rectangle are subdivided.
-To summarize, the above input specifies a rectangular (in fact, square) 21 by 21 grid
-of dimensions 10.0 by 10.0 lying in the $yz$ plane and centered at origin.
+coordinates. Similarly, \keyword{grid\_xy1}\ specifies a vertex of the
+the grid rectangle diagonally opposite to \keyword{grid\_xy0}.
+Finally, \keyword{nix}\ and \keyword{niy}\ specify the number of
+intervals into which the $x$ and $y$ sides of the grid rectangle are
+subdivided.  To summarize, the above input specifies a rectangular (in
+fact, square) 21 by 21 grid of dimensions 10.0 by 10.0 lying in the
+$yz$ plane and centered at origin.
 
-Running \PSIoeprop\ on such input will create a file called \file{sdens.dat} (for file names
-refer to man page on \PSIoeprop),
+Running \PSIoeprop\ on such input will create a file called
+\file{sdens.dat} (for file names refer to man page on \PSIoeprop),
 which can be fed directly to {\tt PlotMTV} to plot the data.
 
-Specification of a three-dimensional grid for plotting MO isosurfaces ({\tt grid = 5}) is just slightly more
-complicated. The index of the MO which needs to be plotted is specified by keyword \keyword{mo\_to\_plot}.
-The index is specified in Pitzer order and not according to the orbital energies.
-The reference frame is specified by keywords \keyword{grid\_origin},
-\keyword{grid\_unit\_x}\ and \keyword{grid\_origin\_y}\ (the third axis of the grid coordinate system
-is specified by by the vector product of \keyword{grid\_unit\_x}\ and \keyword{grid\_unit\_y}).
-Since in this case we are dealing with the three-dimensional grid coordinate system,
-one needs to specify two diagonally opposite vertices of the grid box via
-\keyword{grid\_xyz0}\ and \keyword{grid\_xyz1}.
-The number of intervals along $z$ is specified via \keyword{niz}.
-The final input may look like this:
+Specification of a three-dimensional grid for plotting MO isosurfaces
+({\tt grid = 5}) is just slightly more complicated. The index of the
+MO which needs to be plotted is specified by keyword
+\keyword{mo\_to\_plot}.  The index is specified in Pitzer order and
+not according to the orbital energies.  The reference frame is
+specified by keywords \keyword{grid\_origin}, \keyword{grid\_unit\_x}\
+and \keyword{grid\_origin\_y}\ (the third axis of the grid coordinate
+system is specified by by the vector product of
+\keyword{grid\_unit\_x}\ and \keyword{grid\_unit\_y}).  Since in this
+case we are dealing with the three-dimensional grid coordinate system,
+one needs to specify two diagonally opposite vertices of the grid box
+via \keyword{grid\_xyz0}\ and \keyword{grid\_xyz1}.  The number of
+intervals along $z$ is specified via \keyword{niz}.  The final input
+may look like this:
 \begin{verbatim}
 oeprop:(
   grid = 5
@@ -524,18 +557,20 @@ oeprop:(
 \end{verbatim}
 
 Running \PSIoeprop\ on input like this will produce two files
-\begin{itemize}
-\item \file{mo.dat} - MO values tabulated in a column in order where $x$ runs fast;
-\item \file{mo.pov} - the {\tt MegaPov} command file which sets a number
-of parameters. You might have to adjust a number of parameters manually to obtain the best looking output.
-\end{itemize}
-Rendering of an image can be done via {\tt megapovplus +Imo.pov}.
-Consult {\tt MegaPov} documentation for more information on how to use it.
+\begin{itemize} \item \file{mo.dat} - MO values tabulated in a column
+in order where $x$ runs fast; \item \file{mo.pov} - the {\tt MegaPov}
+command file which sets a number of parameters. You might have to
+adjust a number of parameters manually to obtain the best looking
+output.  \end{itemize} Rendering of an image can be done via {\tt
+megapovplus +Imo.pov}.  Consult {\tt MegaPov} documentation for more
+information on how to use it.
 
 \subsection{Utilities}
 \subsubsection{\PSIgeom}
-The program \PSIgeom\ reads a set of Cartesian coordinates
-and determines from them the bond distances (Bohr and
-angstrom), bond angles, torsional angles, out-of-plane
-angles (optional), moments of inertia, and rotational constants.
-It requires either a \FILE{11.dat} or \geomdat\ and writes \geomout. 
+The program \PSIgeom\ reads a set of Cartesian coordinates and
+determines from them the bond distances (Bohr and angstrom), bond
+angles, torsional angles, out-of-plane angles (optional), moments of
+inertia, and rotational constants.  It requires either a \FILE{11.dat}
+or \geomdat\ and writes \geomout.
+
+
