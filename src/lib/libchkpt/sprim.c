@@ -3,7 +3,7 @@
 */
 
 #include <stdio.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include "chkpt.h"
 #include <psifiles.h>
 #include <libpsio/psio.h>

@@ -66,6 +66,8 @@ escf.c \
 etot.c \
 evals.c \
 scf.c \
+lagr.c \
+ccvecs.c \
 
 DEPENDINCLUDE = psio.h chkpt.h
 

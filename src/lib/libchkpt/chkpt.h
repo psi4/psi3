@@ -173,3 +173,13 @@ void chkpt_wt_beta_scf(double **);
 double **chkpt_rd_scf_irrep(int);
 double **chkpt_rd_alpha_scf_irrep(int);
 double **chkpt_rd_beta_scf_irrep(int);
+
+double **chkpt_rd_lagr(void);
+double **chkpt_rd_alpha_lagr(void);
+double **chkpt_rd_beta_lagr(void);
+void chkpt_wt_lagr(double **);
+void chkpt_wt_alpha_lagr(double **);
+void chkpt_wt_beta_lagr(double **);
+
+double **chkpt_rd_ccvecs(void);
+void chkpt_wt_ccvecs(double **);
