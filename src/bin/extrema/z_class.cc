@@ -1,27 +1,3 @@
-/*##################################################################################
-#
-#  z_class.cc
-#
-#  definitions for the z-matrix derived class
-#
-##################################################################################*/
-
-extern "C" {
-#include <stdio.h>
-#include <stdlib.h>
-#include <libciomr.h>
-#include <file30.h>
-#include <ip_libv1.h>
-}
-
-#define EXTERN
-#include "simple_internal.h"
-#include "coord_base.h" 
-#include "z_class.h"
-#include "opt.h"
-
-
-
 /***********************************************************************************
 *
 *  z_class :: z_class
@@ -33,14 +9,23 @@ extern "C" {
 *  returns: nothing
 ***********************************************************************************/
 
-z_class :: z_class(int num_coord)
-  : coord_base<simple_internal>(num_coord)
+#include <stdio.h>
+#include <stdlib.h>
+
+extern "C" {
+  #include <libciomr.h>
+  #include <ip_libv1.h>
+  #include <physconst.h>
+}
+
+#define EXTERN
+#include "opt.h"
+
+z_class :: z_class()
+    : coord_base()
    {
 
-  int i, j, pos;            /*counter variables, pos is position of next row of B matrix*/
-  double *B_row0, *B_row1,  /*arrays to rows of the B matrix*/ 
-         *B_row2,
-         *cgrad_vec;
+  int i, j, pos;        
 
   /*read z_mat from file30*/
   file30_init();
@@ -76,34 +61,109 @@ z_class :: z_class(int num_coord)
   /*write z_mat to the array of simple_internal objects in coord_base class*/
   for(i=1;i<num_atoms;++i) {
       if( i==1 ) {
-	  coord_arr[0].set(0,z_geom[1].bond_val);
+	  simple_arr[0].set_simple(0,z_geom[1].bond_val,2,z_geom[1].bond_atom,-1,-1);
 	}
       else if( i==2 ) {
-	  coord_arr[1].set(0,z_geom[2].bond_val);
-	  coord_arr[2].set(1,z_geom[2].angle_val);
+	  simple_arr[1].set_simple(0,z_geom[2].bond_val,3,z_geom[2].bond_atom,-1,-1);
+	  simple_arr[2].set_simple(1,z_geom[2].angle_val *_pi/180.0,3,z_geom[2].bond_atom,z_geom[2].angle_atom,-1);
 	  j=3;
 	}
       else if( i>2 ) {
-	  coord_arr[j].set(0,z_geom[i].bond_val);
-	  coord_arr[j+1].set(1,z_geom[i].angle_val);
-	  coord_arr[j+2].set(2,z_geom[i].tors_val);
+	  simple_arr[j].set_simple(0,z_geom[i].bond_val,i+1,z_geom[i].bond_atom,-1,-1);
+	  simple_arr[j+1].set_simple(1,z_geom[i].angle_val*_pi/180.0,i+1,z_geom[i].bond_atom,z_geom[i].angle_atom,-1);
+	  simple_arr[j+2].set_simple(2,z_geom[i].tors_val*_pi/180.0,i+1,z_geom[i].bond_atom,z_geom[i].angle_atom,z_geom[i].tors_atom);
 	  j+=3;
 	}
     }
 
   /*PRINT LEVEL?  check internals array*/
   fprintf(outfile,"\ninternal coordinate info:\n");
-  for(i=0;i<num_coord;++i) {
-      fprintf(outfile,"coord %i  type: %i  val: %lf\n",i,coord_arr[i].get_type(),coord_arr[i].get_val());
+  for(i=0;i<num_simples;++i) {
+      fprintf(outfile,"coord %i  type: %i  val: %lf\n",i,simple_arr[i].get_type(),simple_arr[i].get_val());
     }
+  
+  for(i=0;i<num_coords;++i) 
+      coord_arr[i] = simple_arr[i].get_val();
 
   return;
- }
-
-
-z_class::~z_class() {
-  free(z_geom);
 }
+
+
+/***********************************************************************************
+*
+*  z_class :: form_B
+*
+*  forms B matrix for simple internal coordinates
+***********************************************************************************/
+  double *B_row_bond(double* c_arr, int atom1, int atom2 );
+  double *B_row_angle(double* c_arr, int atom1, int atom3, int atom2 );
+  double *B_row_tors(double* c_arr, int atom1, int atom2, int atom3, int atom4 );
+
+void z_class::compute_B() {  
+
+    int i, j, pos=0;
+    double *B_row0, *B_row1, *B_row2;
+    B_row0 = init_array(3*num_atoms);
+    B_row1 = init_array(3*num_atoms);
+    B_row2 = init_array(3*num_atoms);
+
+  for(i=1;i<num_atoms;++i) {
+      if(i==1) {
+	  B_row0 = B_row_bond(carts, i, simple_arr[pos].get_bond()-1);
+	  B[pos] = B_row0;
+          ++pos;
+          fprintf(outfile,"\n1"); fflush(outfile);
+	}
+      if(i==2) {
+	  B_row0 = B_row_bond(carts, i, simple_arr[pos].get_bond()-1);
+	  B_row1 = B_row_angle(carts, i, simple_arr[pos+1].get_bond()-1, simple_arr[pos+1].get_angle()-1);
+	  B[pos] = B_row0;
+	  B[pos+1] = B_row1;
+	  pos += 2;
+          fprintf(outfile,"\n2"); fflush(outfile);
+	}
+      if(i>2) {
+	  B_row0 = B_row_bond(carts, i, simple_arr[pos].get_bond()-1);
+	  B_row1 = B_row_angle(carts, i, simple_arr[pos+1].get_bond()-1, simple_arr[pos+1].get_angle()-1);
+	  B_row2 = B_row_tors(carts, i, simple_arr[pos+2].get_bond()-1, simple_arr[pos+2].get_angle()-1, simple_arr[pos+2].get_tors()-1);
+	  B[pos] = B_row0;
+	  B[pos+1] = B_row1;
+	  B[pos+2] = B_row2;
+	  pos += 3;
+          fprintf(outfile,"\n%d",i); fflush(outfile);
+	}
+    }
+
+  /*form u*/
+  for(j=0;j<num_atoms;++j) {
+      fprintf(outfile,"\nMASS: %lf",masses[j]);
+      u[3*j][3*j] = 1.0 / masses[j]; 
+      u[3*j+1][3*j+1] = 1.0 /masses[j];
+      u[3*j+2][3*j+2] = 1.0 / masses[j];
+  }
+
+  return;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

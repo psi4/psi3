@@ -4,14 +4,16 @@
 extern int MAX_LINELENGTH;
 #else 
 # define EXTERN
- int MAX_LINELENGTH = 133;
+int MAX_LINELENGTH = 133;
 #endif
 
+EXTERN int num_atoms;
+EXTERN int num_simples;
+EXTERN int num_coords;
 
 EXTERN FILE *infile, *outfile;
 
-EXTERN int num_atoms;
-EXTERN int num_coords;
+EXTERN int coord_type;;
 EXTERN int iteration;
 EXTERN double **cart_geom;                         /*cartesian geometry matrix*/
 EXTERN double **cart_grad;                         /*cartesian gradients in matrix from*/
@@ -36,8 +38,14 @@ EXTERN double dot_pdt(double *vec1, double *vec2, int num);
 EXTERN void opt_step();
 
 /*this needs to be in C*/
-extern "C" char *gprgid(); 
+extern "C" {
+    char *gprgid(); 
+    #include <file30.h>
+}
 
+#include "simple.h"
+#include "coord_base.h"
+#include "z_class.h"
 
 
 
