@@ -20,29 +20,20 @@
 void init_io(int argc, char *argv[])
 {
   int i;
-  int parsed=1;
+  int num_extra_args=0;
+  char **extra_args;
+
+  extra_args = (char **) malloc(argc*sizeof(char *));
   
-  for (i=0; i<ncasiter && !converged; i++) {
-    ci_conv = calc_ci_conv(scale_conv);
-    if (ci_conv > 1.0E-7) {
-      sprintf(detci_string, "detci --quiet -c %12.9lf\n", ci_conv);
-      parsed+=2;
-    }
-    else {
-      sprintf(detci_string, "detci --quiet\n");
-      parsed++;
-    }
+  for (i=1; i<argc; i++) {
+    extra_args[num_extra_args++] = argv[i];
   }
   
-  init_in_out(argc-parsed, argv+parsed);
-
-  ip_set_uppercase(1);
-  ip_initialize(infile, outfile);
-  ip_cwk_clear();
-  ip_cwk_add(":DEFAULT");
+  psi_start(num_extra_args, extra_args, 0);
   ip_cwk_add(":DETCASMAN");
   ip_cwk_add(":DETCAS"); 
   tstart(outfile);
+  free(extra_args);
 }
 
 
@@ -52,9 +43,8 @@ void init_io(int argc, char *argv[])
 */
 void close_io(void)
 {
-   fclose(infile);
-   tstop(outfile);
-   fclose(outfile);
+  tstop(outfile);
+  psi_stop();
 }
 
 

@@ -11,6 +11,7 @@
 */
 
 extern FILE *infile, *outfile;
+extern char *psi_file_prefix;
 extern int converged; 
 extern int ncasiter;          /* max cas iterations */
 extern char detci_string[80]; /* string containing system call for DETCI  */
