@@ -24,9 +24,10 @@ extern char *psi_file_prefix;
 ** \ingroup (CIOMR)
 */
 
-int psi_stop()
+int psi_stop(void)
 {
   ip_done();
+  free(psi_file_prefix);
   fclose(outfile);
   fclose(infile);
 

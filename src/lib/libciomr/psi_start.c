@@ -34,10 +34,10 @@ int psi_start(int argc, char *argv[], int overwrite_output)
 {
   int i, errcod;
                                 /* state flags */
-  int found_if_np = 0;          /* found input file name without -i */
+  int found_if_np = 0;          /* found input file name without -f */
   int found_of_np = 0;          /* found output file name without -o */
   int found_fp_np = 0;          /* found file prefix name without -p */
-  int found_if_p = 0;           /* found input file name with -i */
+  int found_if_p = 0;           /* found input file name with -f */
   int found_of_p = 0;           /* found output file name with -o */
   int found_fp_p = 0;           /* found file prefix name with -p */
   char *ifname = NULL;
@@ -155,20 +155,20 @@ int psi_start(int argc, char *argv[], int overwrite_output)
     fclose(psirc);
   }  
 
+  /* lastly, everybody needs DEFAULT section */
+  ip_cwk_add(":DEFAULT");
+
   /* if prefix still NULL - check input file */
   if (fprefix == NULL)
-    errcod = ip_data(":DEFAULT:FILES:DEFAULT:NAME","%s",fprefix,0);
+    errcod = ip_string(":DEFAULT:FILES:DEFAULT:NAME",&fprefix,0);
   if (fprefix == NULL)
-    errcod = ip_data(":DEFAULT:NAME","%s",fprefix,0);
+    errcod = ip_string(":DEFAULT:NAME",&fprefix,0);
 
   /* copy over file prefix, etc. into their appropriate variables */
   if (fprefix == NULL)
     psi_file_prefix = strdup(PSI_DEFAULT_FILE_PREFIX);
   else
     psi_file_prefix = strdup(fprefix);
-
-  /* lastly, everybody needs DEFAULT section */
-  ip_cwk_add(":DEFAULT");
 
   return(PSI_RETURN_SUCCESS);
 }
