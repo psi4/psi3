@@ -21,7 +21,7 @@
 void local_init(void)
 {
   int i, j, k, ij, stat, a, r, l, I;
-  int nmo, nao, nocc, nvir, noei, nirreps;
+  int nmo, nao, nocc, nocc_all, nvir, noei, nirreps, nfzc;
   double **C;  /* AO -> localized MO transformation matrix */
   double **Ci; /* localized MO -> AO transformation matrix */
   double **D;  /* 1/2 SCF closed-shell density matrix (AO) */
@@ -38,10 +38,12 @@ void local_init(void)
   double *eps; /* orbital energies for local denominators */
   double **X, **Y, **Z;
   double *evals, **evecs;
+  double *eps_all; /* All MO energies */
   dpdfile2 fock;
 
   file30_init();
   C = file30_rd_scf();
+  eps_all = file30_rd_evals();
   file30_close();
 
   /* C1 symmetry only */
@@ -57,8 +59,10 @@ void local_init(void)
     fprintf(outfile, "\nError: NMO != NAO!  %d != %d\n", nmo, nao);
     exit(2);
   }
-  nocc = moinfo.clsdpi[0];
-  nvir = moinfo.virtpi[0];
+  nocc = moinfo.occpi[0]; /* active doubly occupied orbitals */
+  nfzc = moinfo.frdocc[0];  /* frozen doubly occupied orbitals */
+  nocc_all = nocc + nfzc; /* all doubly occupied orbitals */
+  nvir = moinfo.virtpi[0]; /* active virtual orbitals */
 
   /* A couple of scratch arrays */
   X = block_matrix(nao, nao);
@@ -91,7 +95,7 @@ void local_init(void)
   D = block_matrix(nao,nao);
   for(i=0; i < nao; i++) 
     for(j=0; j < nao; j++)
-      for(k=0; k < nocc; k++)
+      for(k=0; k < nocc_all; k++)
 	D[i][j] += C[i][k] * C[j][k];
 
   fprintf(outfile, "\n\tAO-basis SCF Density (D):\n");
@@ -129,7 +133,7 @@ void local_init(void)
   print_mat(evecs,nao,nao,outfile);
 
   /* Build the projected, non-redundant transform (X-tilde) */
-  Xt = block_matrix(nao,nao-nocc);
+  Xt = block_matrix(nao,nao-nocc_all);
   for(i=0,I=0; i < nao; i++) {
     if(evals[i] > 1e-6) {
       for(j=0; j < nao; j++)
@@ -139,7 +143,7 @@ void local_init(void)
   }
 
   fprintf(outfile, "\n\tTransform to non-redundant, projected virtuals (X-tilde):\n");
-  print_mat(Xt, nao, nao-nocc, outfile);
+  print_mat(Xt, nao, nao-nocc_all, outfile);
 
   free_block(evecs);
   free(evals);
@@ -149,19 +153,18 @@ void local_init(void)
     for(r=0; r < nao; r++) 
       for(i=0; i < nao; i++)
 	for(j=0; j < nao; j++)
-	  V[a][r] += C[i][a+nocc] * S[i][j] * Rt[j][r];
-
-  /*  local.V = V; */
+	  V[a][r] += C[i][a+nocc_all] * S[i][j] * Rt[j][r];
 
   /* Grab the MO-basis Fock matrix */
   Fmo = block_matrix(nao, nao);
+  for(i=0; i < nfzc; i++) Fmo[i][i] = eps_all[i];
   dpd_file2_init(&fock, CC_OEI, 0, 0, 0, "fIJ");
   dpd_file2_print(&fock, outfile);
   dpd_file2_mat_init(&fock);
   dpd_file2_mat_rd(&fock);
   for(i=0; i < nocc; i++) 
     for(j=0; j < nocc; j++)
-      Fmo[i][j] = fock.matrix[0][i][j];
+      Fmo[i+nfzc][j+nfzc] = fock.matrix[0][i][j];
   dpd_file2_mat_close(&fock);
   dpd_file2_close(&fock);
 
@@ -171,7 +174,7 @@ void local_init(void)
   dpd_file2_mat_rd(&fock);
   for(i=0; i < nvir; i++) 
     for(j=0; j < nvir; j++)
-      Fmo[i+nocc][j+nocc] = fock.matrix[0][i][j];
+      Fmo[i+nfzc+nocc][j+nfzc+nocc] = fock.matrix[0][i][j];
   dpd_file2_mat_close(&fock);
   dpd_file2_close(&fock);
 
@@ -196,40 +199,40 @@ void local_init(void)
 	  0.0,&(Ft[0][0]),nao);
 
   /* Project the Fock matrix into the non-redundant virtual space */
-  Fbar = block_matrix(nao-nocc,nao-nocc);
-  C_DGEMM('t','n',nao-nocc,nao,nao,1.0,&(Xt[0][0]),nao-nocc,&(Ft[0][0]),nao,
+  Fbar = block_matrix(nao-nocc_all,nao-nocc_all);
+  C_DGEMM('t','n',nao-nocc_all,nao,nao,1.0,&(Xt[0][0]),nao-nocc_all,&(Ft[0][0]),nao,
 	  0.0,&(X[0][0]),nao);
-  C_DGEMM('n','n',nao-nocc,nao-nocc,nao,1.0,&(X[0][0]),nao,&(Xt[0][0]),nao-nocc,
-	  0.0,&(Fbar[0][0]),nao-nocc);
+  C_DGEMM('n','n',nao-nocc_all,nao-nocc_all,nao,1.0,&(X[0][0]),nao,&(Xt[0][0]),nao-nocc_all,
+	  0.0,&(Fbar[0][0]),nao-nocc_all);
 
   fprintf(outfile, "\n\tFbar matrix:\n");
-  print_mat(Fbar,nao-nocc,nao-nocc,outfile);
+  print_mat(Fbar,nao-nocc_all,nao-nocc_all,outfile);
 
   /* Diagonalize Fbar */
-  evals = init_array(nao-nocc);
-  evecs = block_matrix(nao-nocc,nao-nocc);
-  sq_rsp(nao-nocc,nao-nocc,Fbar,evals,1,evecs,1e-12);
+  evals = init_array(nao-nocc_all);
+  evecs = block_matrix(nao-nocc_all,nao-nocc_all);
+  sq_rsp(nao-nocc_all,nao-nocc_all,Fbar,evals,1,evecs,1e-12);
 
   fprintf(outfile, "\n\tFbar eigenvectors:\n");
-  print_mat(evecs,nao-nocc,nao-nocc,outfile);
+  print_mat(evecs,nao-nocc_all,nao-nocc_all,outfile);
 
   /* Finally, build the W matrix */
-  W = block_matrix(nao,nao-nocc);
-  C_DGEMM('n','n',nao,nao-nocc,nao-nocc,1.0,&(Xt[0][0]),nao-nocc,
-	  &(evecs[0][0]),nao-nocc,0.0,&(W[0][0]),nao-nocc);
+  W = block_matrix(nao,nao-nocc_all);
+  C_DGEMM('n','n',nao,nao-nocc_all,nao-nocc_all,1.0,&(Xt[0][0]),nao-nocc_all,
+	  &(evecs[0][0]),nao-nocc_all,0.0,&(W[0][0]),nao-nocc_all);
 
   fprintf(outfile, "\n\tW Transformation Matrix:\n");
-  print_mat(W,nao,nao-nocc,outfile);
+  print_mat(W,nao,nao-nocc_all,outfile);
 
   /* build the orbital energy list */
-  eps = init_array(nao);
+  eps = init_array(nao-nfzc);
   for(i=0; i < nocc; i++)
-    eps[i] = Fmo[i][i];  /* occupied orbital energies */
-  for(i=0; i < nao-nocc; i++)
+    eps[i] = Fmo[i+nfzc][i+nfzc];  /* occupied orbital energies */
+  for(i=0; i < nao-nocc_all; i++)
     eps[i+nocc] = evals[i]; /* virtual orbital energies */
 
   fprintf(outfile, "\n\tOrbital Energies:\n");
-  for(i=0; i < nao; i++)
+  for(i=0; i < nao-nfzc; i++)
     fprintf(outfile, "%d %20.12f\n", i, eps[i]);
 
   free(evals);
