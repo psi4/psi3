@@ -51,7 +51,7 @@ int **cacheprep_uhf(int level, int *cachefiles);
 void cachedone_rhf(int **cachelist);
 void cachedone_uhf(int **cachelist);
 void setup_LR(void);
-void G_build(void);
+void G_build(int);
 void x_oe_intermediates(void);
 void x_onepdm(void);
 void x_te_intermediates(void);
@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
     x_onepdm();
   }
 
-  G_build(); /* copied from cclambda and now recomputed with GL */
+  G_build(params.L_irr); /* copied from cclambda and now recomputed with GL */
   twopdm();
 
   if (!params.ground) {
