@@ -25,7 +25,7 @@ extern "C" {
    #include <libipv1/ip_lib.h>
    #include <libqt/qt.h>
    #include <libciomr/libciomr.h>
-   #include <libfile30/file30.h>
+   #include <libchkpt/chkpt.h>
    #include "globals.h"
    #include "setup_io.h"
 
@@ -513,10 +513,14 @@ void rotate_orbs(void)
 
 
       /* write the new block of MO coefficients to file30 */
+      /*** old way
       file30_init();
       file30_wt_blk_scf(CalcInfo.mo_coeffs[h], h);
       file30_close();
-
+      ***/
+      chkpt_init();
+      chkpt_wt_scf_irrep(CalcInfo.mo_coeffs[h], h);
+      chkpt_close();
       delete [] ir_theta;
     }
   }
@@ -564,9 +568,15 @@ int check_conv(void)
   }
   fclose(sumfile);
 
+  /*
   file30_init();
   energy = file30_rd_ecorr();
   file30_close();
+  */
+
+  chkpt_init();
+  energy = chkpt_rd_etot();
+  chkpt_close();
 
   /* check for convergence */
   conv_rms_grad = pow(10.0, -(Params.rms_grad_convergence));

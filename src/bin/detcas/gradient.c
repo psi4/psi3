@@ -3,7 +3,6 @@
 #include <math.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
-#include <libfile30/file30.h>
 #include <libqt/qt.h>
 #include "globaldefs.h"
 #include "globals.h"

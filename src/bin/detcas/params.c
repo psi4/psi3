@@ -24,13 +24,6 @@ void get_parameters(void)
   int i, errcod;
   char line1[133];
    
-  ip_set_uppercase(1);
-  ip_initialize(infile, outfile);
-  ip_cwk_clear();
-  ip_cwk_add(":DEFAULT");
-  ip_cwk_add(":DETCAS");
-
-
   errcod = ip_string("DERTYPE", &(Params.dertype),0);
   if(errcod == IPE_KEY_NOT_FOUND) {
     Params.dertype = (char *) malloc(sizeof(char)*5);

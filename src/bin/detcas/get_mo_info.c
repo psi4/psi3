@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
-#include <libfile30/file30.h>
+#include <libchkpt/chkpt.h>
 #include <libqt/qt.h>
 #include "globaldefs.h"
 #include "globals.h"
@@ -32,6 +32,7 @@ void get_mo_info(void)
    int size;
    double *eig_unsrt;
 
+   /*** old style
    file30_init();
    CalcInfo.nirreps = file30_rd_nirreps();
    CalcInfo.nbfso = file30_rd_nmo();
@@ -40,6 +41,16 @@ void get_mo_info(void)
    CalcInfo.enuc = file30_rd_enuc();
    CalcInfo.efzc = file30_rd_efzc();
    file30_close();
+   ***/
+
+   chkpt_init();
+   CalcInfo.nirreps = chkpt_rd_nirreps();
+   CalcInfo.nbfso = chkpt_rd_nmo();
+   CalcInfo.labels = chkpt_rd_irr_labs();
+   CalcInfo.orbs_per_irr = chkpt_rd_orbspi();
+   CalcInfo.enuc = chkpt_rd_enuc();
+   CalcInfo.efzc = chkpt_rd_efzc();
+   chkpt_close();
  
    CalcInfo.docc = init_int_array(CalcInfo.nirreps);
    CalcInfo.socc = init_int_array(CalcInfo.nirreps);
@@ -305,17 +316,20 @@ void read_cur_orbs(void)
 
   nirreps = CalcInfo.nirreps;
 
-  file30_init();
+  /* file30_init(); */
+  chkpt_init();
   for (h=0; h<nirreps; h++) {
     dim = CalcInfo.orbs_per_irr[h];
     if (dim==0) continue;
-    tmat = file30_rd_blk_scf(h);
+    /* tmat = file30_rd_blk_scf(h); */
+    tmat = chkpt_rd_scf_irrep(h); 
     for (i=0; i<dim; i++) 
       for (j=0; j<dim; j++) 
         CalcInfo.mo_coeffs[h][i][j] = tmat[i][j];
     free_block(tmat);
   }
-  file30_close();
+  chkpt_close();
+  /* file30_close(); */
 
 }
 

@@ -9,7 +9,7 @@
 #include <libqt/qt.h>
 #include <libiwl/iwl.h>
 #include <libipv1/ip_lib.h>
-#include <libfile30/file30.h>
+#include <libchkpt/chkpt.h>
 #include <psifiles.h>
 #include <libpsio/psio.h>
 #include <math.h>
@@ -82,11 +82,7 @@ main(int argc, char **argv)
   ** initialize the io parser
   */
   init_io(); 
-  ip_set_uppercase(1);
-  ip_initialize(infile, outfile);
-  ip_cwk_clear();
-  ip_cwk_add(":DEFAULT");  
-  ip_cwk_add(":CLAG");  
+
   errcod = ip_data("PRINT","%d", &print_lvl,0);  
   errcod = ip_boolean("WRITE_CAS_FILES",&write_cas_files,0);
 
@@ -100,6 +96,8 @@ main(int argc, char **argv)
   /*
   ** calculate some needed numbers 
   */
+
+  /*** old way
   file30_init();
   nmo = file30_rd_nmo();
   enuc = file30_rd_enuc();
@@ -107,6 +105,15 @@ main(int argc, char **argv)
   nirreps = file30_rd_nirreps();
   orbspi = file30_rd_orbspi();
   file30_close();
+  ***/
+
+  chkpt_init();
+  nmo = chkpt_rd_nmo();
+  enuc = chkpt_rd_enuc();
+  eci_30 = chkpt_rd_etot(); 
+  nirreps = chkpt_rd_nirreps();
+  orbspi = chkpt_rd_orbspi();
+  chkpt_close();
 
   docc = init_int_array(nirreps);
   socc = init_int_array(nirreps);
@@ -219,7 +226,12 @@ void init_io(void)
 {
    ffile(&infile,"input.dat",2) ;
    ffile(&outfile,"output.dat",1);
-   if (print_lvl > 0) tstart(outfile) ;
+   if (print_lvl > 0) tstart(outfile);
+   ip_set_uppercase(1);
+   ip_initialize(infile, outfile);
+   ip_cwk_clear();
+   ip_cwk_add(":DEFAULT");  
+   ip_cwk_add(":CLAG");  
    psio_init();
 }
 
@@ -232,6 +244,7 @@ void close_io(void)
    psio_done();
    fclose(infile);
    if (print_lvl > 0) tstop(outfile);
+   ip_done();
    fclose(outfile);
 }
 

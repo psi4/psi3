@@ -6,7 +6,7 @@ include ../MakeVars
 LD = $(CXX)
 LDLIBS += $(BLAS)
 
-PSILIBS = libPSI_qt.a libPSI_file30.a libPSI_iwl.a -lPSI_psio libPSI_ciomr.a libPSI_ipv1.a
+PSILIBS = libPSI_qt.a libPSI_chkpt.a libPSI_iwl.a -lPSI_psio libPSI_ciomr.a libPSI_ipv1.a
 
 CSRC = get_mo_info.c ints.c setup_io.c params.c read_dens.c \
 read_lag.c ref_orbs.c f_act.c gradient.c hessian.c step.c \

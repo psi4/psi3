@@ -11,6 +11,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <libciomr/libciomr.h>
+#include <libipv1/ip_lib.h>
+#include <libpsio/psio.h>
 #include "globals.h"
 
 /*
@@ -21,7 +23,11 @@ void init_io(void)
    ffile(&infile,"input.dat",2) ;
    ffile(&outfile,Params.ofname,1);
    if (Params.print_lvl) tstart(outfile);
-
+   ip_set_uppercase(1);
+   ip_initialize(infile, outfile);
+   ip_cwk_clear();
+   ip_cwk_add(":DEFAULT");
+   ip_cwk_add(":DETCAS");
    psio_init();
 }
 

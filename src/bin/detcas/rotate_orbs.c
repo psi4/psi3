@@ -3,7 +3,7 @@
 #include <math.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
-#include <libfile30/file30.h>
+#include <libchkpt/chkpt.h>
 #include <libqt/qt.h>
 #include "globaldefs.h"
 #include "globals.h"
@@ -69,12 +69,16 @@ void rotate_orbs_irrep(int irrep, int dim, double **mo_coeffs,
 
 
   /* write the new block of MO coefficients to file30 */
+  /*
   file30_init();
   file30_wt_blk_scf(tmpmat, irrep);
   file30_close();
+  */
+  chkpt_init();
+  chkpt_wt_scf_irrep(tmpmat, irrep);
+  chkpt_close();
 
   free_block(tmpmat);
-
 }
 
 
