@@ -200,8 +200,8 @@ void C_DGEMM(char transa, char transb, int m, int n, int k, double alpha,
 **
 ** char transa:       Indicates whether the matrix A should be
 **                    transposed ('t') or left alone ('n').
-** int m:             The row dimension of A and the length of Y
-** int n:             The column dimension of A and the length of X
+** int m:             The row dimension of A (regardless of transa).
+** int n:             The column dimension of A (regardless of transa).
 ** double alpha:      The scalar alpha.
 ** double *A:         A pointer to the beginning of the data in A.
 ** int nca:           The number of columns *actually* in A.  This is
@@ -213,7 +213,7 @@ void C_DGEMM(char transa, char transb, int m, int n, int k, double alpha,
 **                    sections of data to treat only one column of a
 **                    complete matrix.  Usually 1, though.
 ** double beta:       The scalar beta.
-** double *Y:         A poitner to the beginning of the data in Y.
+** double *Y:         A pointer to the beginning of the data in Y.
 ** int inc_y:         The desired stride for Y.
 **
 ** Interface written by TD Crawford and EF Valeev.
@@ -227,14 +227,10 @@ void C_DGEMV(char transa, int m, int n, double alpha, double *A,
 {
   if (m == 0 || n == 0) return;
 
-  if(transa == 'n') { 
-    transa = 't';
-    F_DGEMV(&transa,&n,&m,&alpha,A,&nca,X,&inc_x,&beta,Y,&inc_y);
-  }
-  else { 
-    transa = 'n';
-    F_DGEMV(&transa,&m,&n,&alpha,A,&nca,X,&inc_x,&beta,Y,&inc_y);
-  }
+  if(transa == 'n') transa = 't';
+  else transa = 'n';
+
+  F_DGEMV(&transa,&n,&m,&alpha,A,&nca,X,&inc_x,&beta,Y,&inc_y);
 
 }
 /*
