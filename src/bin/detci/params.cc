@@ -37,13 +37,6 @@ void get_parameters(void)
    int iopen=0, tval;
    char line1[133];
    
-   ip_set_uppercase(1);
-   ip_initialize(infile, outfile);
-   ip_cwk_clear();
-   ip_cwk_add(":DEFAULT");
-   ip_cwk_add(":DETCI");
-
-
    /* default value of Ms0 depends on iopen but is modified below 
     * depending on value of opentype
     */

@@ -268,6 +268,12 @@ void init_io(void)
    ffile(&outfile,Parameters.ofname,1);
    if (Parameters.print_lvl) tstart(outfile);
 
+   ip_set_uppercase(1);
+   ip_initialize(infile, outfile);
+   ip_cwk_clear();
+   ip_cwk_add(":DEFAULT");
+   ip_cwk_add(":DETCI");
+
    psio_init();
 }
 
