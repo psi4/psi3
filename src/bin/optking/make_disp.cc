@@ -98,7 +98,7 @@ int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs,
   fprintf(outfile,"using %d-point formula for modes of irrep %d.\n", points, irrep+1);
 
   fprintf(outfile,"\nDisplacement Matrix\n");
-  print_mat2(displacements, ndisps, all_salcs.get_num(), outfile);
+  print_mat5(displacements, ndisps, all_salcs.get_num(), outfile);
 
   /*** generate and store Micro_iteration cartesian geometries ***/
   micro_geoms = block_matrix(ndisps, dim_carts);

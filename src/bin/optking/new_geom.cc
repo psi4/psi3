@@ -19,15 +19,15 @@ extern "C" {
 #include "internals.h"
 #include "salc.h"
 
-double *compute_q(internals &simples, salc_set &symm);
-double **compute_B(internals &simples, salc_set &symm);
+double *compute_q(internals &simples, salc_set &all_salcs);
+double **compute_B(internals &simples, salc_set &all_salcs);
 double **compute_G(double **B, int num_intcos, cartesians &carts);
 
-void new_geom(cartesians &carts, internals &simples, salc_set &symm,
+void new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
     double *dq, int print_flag, int restart_geom_file,
     char *disp_label, int disp_num, int last_disp, double *return_geom) {
 
-  int bmat_iter_done,count,i,j,dim_carts,nallatom,natom;
+  int bmat_iter_done,count,i,j,dim_carts,nallatom,natom,nsalcs;
   double **A, **G, **G_inv, **B, **u, **temp_mat, *no_fx;
   double dx_sum, dq_sum, *dx, *new_x, *x, *new_q, *q, *masses, *fcoord;
 
@@ -35,18 +35,19 @@ void new_geom(cartesians &carts, internals &simples, salc_set &symm,
   natom = optinfo.natom;
   dim_carts = 3*optinfo.nallatom;
 
+  nsalcs = all_salcs.get_num();
   dx = init_array(dim_carts);
   new_x = init_array(dim_carts);
-  new_q = init_array(symm.get_num());
+  new_q = init_array(nsalcs);
 
   masses = carts.get_fmass();
   u = mass_mat(masses);
   free(masses);
 
-  A = block_matrix(dim_carts,symm.get_num());
-  G = block_matrix(symm.get_num(),symm.get_num());
-  G_inv = block_matrix(symm.get_num(),symm.get_num());
-  temp_mat = block_matrix(dim_carts,symm.get_num());
+  A = block_matrix(dim_carts, nsalcs);
+  G = block_matrix(nsalcs, nsalcs);
+  G_inv = block_matrix(nsalcs, nsalcs);
+  temp_mat = block_matrix(dim_carts, nsalcs);
 
   x = carts.get_fcoord();
   scalar_mult(_bohr2angstroms,x,dim_carts); // x now holds geom in Ang
@@ -57,9 +58,9 @@ void new_geom(cartesians &carts, internals &simples, salc_set &symm,
   simples.compute_s(nallatom,fcoord);
   free(fcoord);
 
-  B = compute_B(simples,symm);
-  q = compute_q(simples,symm);
-  for (i=0;i<symm.get_num();++i)
+  B = compute_B(simples, all_salcs);
+  q = compute_q(simples, all_salcs);
+  for (i=0;i<nsalcs;++i)
     q[i] += dq[i];
 
   fprintf(outfile,"\nBack-transformation to cartesian coordinates...\n");
@@ -71,21 +72,21 @@ void new_geom(cartesians &carts, internals &simples, salc_set &symm,
   do {
     free_block(G);
     free_block(G_inv);
-    G = compute_G(B,symm.get_num(),carts);
-    G_inv = symm_matrix_invert(G,symm.get_num(),0,optinfo.redundant);
+    G = compute_G(B, nsalcs, carts);
+    G_inv = symm_matrix_invert(G, nsalcs, 0,optinfo.redundant);
 
     // BMAT computes G_inv only once like the following.
     // OPTKING recomputes G_inv at each iteration, which
     // is slower but gives better convergence.
     //   if (count == 0) {
-    //     G_inv = symm_matrix_invert(G,symm.get_num(),0,optinfo.redundant);
+    //     G_inv = symm_matrix_invert(G,nsalcs,0,optinfo.redundant);
     //   }
 
     // u B^t G_inv = A
-    mmult(B,1,G_inv,0,temp_mat,0,dim_carts,symm.get_num(),symm.get_num(),0);
-    mmult(u,0,temp_mat,0,A,0,dim_carts,dim_carts,symm.get_num(),0);
+    mmult(B,1,G_inv,0,temp_mat,0,dim_carts, nsalcs, nsalcs,0);
+    mmult(u,0,temp_mat,0,A,0,dim_carts,dim_carts, nsalcs, 0);
     // A dq = dx
-    mmult(A,0,&dq,1,&dx,1,dim_carts,symm.get_num(),1,0);
+    mmult(A,0,&dq,1,&dx,1,dim_carts, nsalcs,1,0);
 
     if (count == 1) {
       // dx_sum = RMS change in cartesian coordinates 
@@ -95,9 +96,9 @@ void new_geom(cartesians &carts, internals &simples, salc_set &symm,
       dx_sum = sqrt(dx_sum / dim_carts);
 
       // dq_sum = RMS change in internal coordinates
-      for (i=0;i<symm.get_num();++i)
+      for (i=0;i< nsalcs;++i)
         dq_sum += dq[i]*dq[i];
-      dq_sum = sqrt(dq_sum / ((double) symm.get_num()));
+      dq_sum = sqrt(dq_sum / ((double) nsalcs));
       fprintf (outfile,"%5d %15.12lf %15.12lf\n", count, dx_sum, dq_sum);
     }
 
@@ -107,13 +108,13 @@ void new_geom(cartesians &carts, internals &simples, salc_set &symm,
     simples.compute_internals(nallatom,new_x);
     simples.compute_s(nallatom,new_x);
     free_block(B);
-    B = compute_B(simples,symm);
+    B = compute_B(simples, all_salcs);
 
     // compute new internal coordinate values
     free(new_q);
-    new_q = compute_q(simples,symm);
+    new_q = compute_q(simples, all_salcs);
 
-    for (i=0;i<symm.get_num();++i)
+    for (i=0;i< nsalcs;++i)
       dq[i] = q[i] - new_q[i];
 
     // Test for convergence of iterations
@@ -122,9 +123,9 @@ void new_geom(cartesians &carts, internals &simples, salc_set &symm,
       dx_sum += dx[i]*dx[i];
     dx_sum = sqrt(dx_sum / ((double) dim_carts));
 
-    for (i=0;i<symm.get_num();++i)
+    for (i=0;i<nsalcs;++i)
       dq_sum += dq[i]*dq[i];
-    dq_sum = sqrt(dq_sum / ((double) symm.get_num()));
+    dq_sum = sqrt(dq_sum / ((double) nsalcs));
 
     if ((dx_sum < optinfo.bt_dx_conv) && (dq_sum < optinfo.bt_dq_conv))
       bmat_iter_done = 1;

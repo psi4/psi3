@@ -53,6 +53,7 @@ C_EXTERN void open_PSIF(void);
 C_EXTERN void close_PSIF(void);
 C_EXTERN void exit_io(void);
 C_EXTERN void print_mat2(double **matrix, int rows, int cols, FILE *of);
+C_EXTERN void print_mat5(double **matrix, int rows, int cols, FILE *of);
 C_EXTERN void cross_product(double *u,double *v,double *out);
 C_EXTERN void scalar_mult(double a, double *vect, int dim);
 C_EXTERN void scalar_div(double a, double *vect);
@@ -73,6 +74,7 @@ extern "C" void open_PSIF(void);
 extern "C" void close_PSIF(void);
 extern "C" void exit_io(void);
 extern "C" void print_mat2(double **matrix, int rows, int cols, FILE *of);
+extern "C" void print_mat5(double **matrix, int rows, int cols, FILE *of);
 extern "C" void cross_product(double *u,double *v,double *out);
 extern "C" void scalar_mult(double a, double *vect, int dim);
 extern "C" void scalar_div(double a, double *vect);
@@ -95,12 +97,11 @@ extern "C" void swap_tors(int *a, int *b, int *c, int *d);
 #define MODE_LOAD_REF      (14)
 #define MODE_OPT_STEP      (15)
 #define MODE_FREQ_ENERGY   (16)
-#define MODE_FREQ_GRAD_NOSYMM (17)
-#define MODE_FREQ_GRAD_IRREP  (18)
-#define MODE_GRAD_ENERGY      (19)
+#define MODE_GRAD_ENERGY   (17)
+#define MODE_FREQ_GRAD_NOSYMM (18)
+#define MODE_FREQ_GRAD_IRREP  (19)
 #define MODE_GRAD_SAVE        (20)
 #define MODE_ENERGY_SAVE      (21)
-#define MODE_FREQ_GRAD_SYMM   (22)
 
 struct OPTInfo {
 

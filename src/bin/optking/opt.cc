@@ -6,6 +6,7 @@ command-line      internal specifier   what it does
 --disp_nosymm      MODE_DISP_NOSYMM     displaces along all internals, assumes no sym
 --disp_irrep       MODE_DISP_IRREP      displaces along all internals labeled as IRREP
 --disp_load        MODE_DISP_LOAD       load a previous displacement from PSIF to chkpt
+--disp_user        MODE_DISP_USER       perform displacements given in input
 --load_ref         MODE_LOAD_REF        load undisplaced reference geometry into chkpt
 --freq_energy      MODE_FREQ_ENERGY     not yet supported
 --grad_energy      MODE_GRAD_ENERGY     use energies in chkpt to compute a gradient
@@ -78,15 +79,19 @@ int main(int argc, char **argv) {
     for (i=1; i<argc; ++i) {
       if (!strcmp(argv[i],"--disp_nosymm")) {
         optinfo.mode = MODE_DISP_NOSYMM;
-	parsed++;
+        parsed++;
       }
       else if (!strcmp(argv[i],"--disp_irrep")) {
         optinfo.mode = MODE_DISP_IRREP;
-	parsed++;
+        parsed++;
       }
       else if (!strcmp(argv[i],"--disp_load")) {
         optinfo.mode = MODE_DISP_LOAD;
-	parsed++;
+        parsed++;
+      }
+      else if (!strcmp(argv[i],"--disp_user")) {
+        optinfo.mode = MODE_DISP_USER;
+        parsed++;
       }
       else if (!strcmp(argv[i],"--load_ref")) {
         optinfo.mode = MODE_LOAD_REF;
@@ -94,44 +99,44 @@ int main(int argc, char **argv) {
       }
       else if (!strcmp(argv[i],"--opt_step")) {
         optinfo.mode = MODE_OPT_STEP;
-	parsed++;
+        parsed++;
       }
       else if (!strcmp(argv[i],"--freq_energy")) {
         optinfo.mode = MODE_FREQ_ENERGY;
-	parsed++;
+        parsed++;
       }
       else if (!strcmp(argv[i],"--grad_energy")) {
         optinfo.mode = MODE_GRAD_ENERGY;
-	parsed++;
+        parsed++;
       }
       else if (!strcmp(argv[i],"--freq_grad_nosymm")) {
         optinfo.mode = MODE_FREQ_GRAD_NOSYMM;
-	parsed++;
+        parsed++;
       }
       else if (!strcmp(argv[i],"--freq_grad_irrep")) {
         optinfo.mode = MODE_FREQ_GRAD_IRREP;
-	parsed++;
+        parsed++;
       }
       else if (!strcmp(argv[i],"--grad_save")) {
         optinfo.mode = MODE_GRAD_SAVE;
-	parsed++;
+        parsed++;
       }
       else if (!strcmp(argv[i],"--energy_save")) {
         optinfo.mode = MODE_ENERGY_SAVE;
-	parsed++;
+        parsed++;
       }
       else if (!strcmp(argv[i],"--disp_num")) {
         sscanf(argv[++i], "%d", &optinfo.disp_num);
-	parsed+=2;
+        parsed+=2;
       }
       else if (!strcmp(argv[i],"--points")) {
         sscanf(argv[++i], "%d", &optinfo.points);
-	parsed+=2;
+        parsed+=2;
       }
       else if (!strcmp(argv[i],"--irrep")) {
         sscanf(argv[++i], "%d", &optinfo.irrep);
         optinfo.irrep -= 1;
-	parsed+=2;
+        parsed+=2;
       }
       else {
         printf("command line argument not understood.\n");

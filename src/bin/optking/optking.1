@@ -46,17 +46,20 @@ enter a run-time mode dependent on command line arguments.
 .LP
 .nf
 --opt_step       \-  take an ordinary geometry optimization step
---disp_symm      \-  displaces along all symmetric internals
---disp_all       \-  displaces along all internals
+--disp_nosymm    \-  displaces along all internals, assumes no sym
+--disp_irrep     \-  displaces along all internals labeled as IRREP
 --disp_load      \-  load a previous displacement from PSIF to chkpt
+--load_ref       \-  load undisplaced reference geometry into chkpt
 --freq_energy    \-  compute frequencies from energies (not yet supported)
 --grad_energy    \-  use energies to compute a gradient
---freq_grad      \-  use gradients to compute frequencies
---freq_grad_symm \-  use gradients to compute symmetric frequencies
+--freq_grad_nosymm \- use grads in chkpt to compute freqs, assumes no sym
+--freq_grad_irrep  \- use grads in chkpt to compute IRREP freqs
 --grad_save      \-  save the gradient in chkpt to PSIF list
 --energy_save    \-  save the energy in chkpt to PSIF list
 --disp_num       \-  displacement index (by default read from PSIF)
 --points         \-  3 or 5 pt formula (5 pt not yet supported)
+--irrep          \-  the irrep (1,2,...) being displaced or computed
+
 .fi
 
 .LP

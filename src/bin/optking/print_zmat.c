@@ -1,4 +1,4 @@
-/*** ZMAT_TO_INTCO() determine simples and salcs (someday?) from z-matrix ***/ 
+/*** PRINT_ZMAT() printout z-matrix ***/ 
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,29 +17,42 @@
 
 /*** ZMAT_TO_INTCO if simples are not already there and zmat_simples
  * is not turned off, then generate simple internals from zmatrix ***/
-void zmat_to_intco() {
+void print_zmat(FILE *outfile) {
   int i, a, b, c, d, cnt = 0;
   int nallatom, natom;
   char **felement;
   char buf[2];
+  double *zvals;
   struct z_entry *zmat;
 
   nallatom = optinfo.nallatom;
   natom = optinfo.natom;
 
-  if ( !(optinfo.simples_present) && (optinfo.zmat_simples) ) {
-    chkpt_init(PSIO_OPEN_OLD);
-    zmat = chkpt_rd_zmat();
-    chkpt_close();
+  chkpt_init(PSIO_OPEN_OLD);
+  zmat = chkpt_rd_zmat();
+  felement = chkpt_rd_felement();
+  chkpt_close();
 
-    ffile(&fp_intco,"intco.dat",0);
-    fprintf(fp_intco,"intco: (\n");
+  for (i=0; i<nallatom; ++i) {
+    if (i == 0) {
+      fprintf(outfile,"    ( %s )\n", felements[i]);
+    }
+    else if (i == 1) {
+      fprintf(outfile,"    ( %s", felements[i]);
+      fprintf(outfile,")\n");
+    }
+    else if (i == 2) {
+      fprintf(outfile,"    ( %s", felements[i]);
+      fprintf(outfile,")\n");
+    }
+    else if (i >=3) {
+      fprintf(outfile,"    ( %s", felements[i]);
+      fprintf(outfile,")\n");
+    }
+  }
 
-    fprintf(fp_intco,"  stre = (\n");
-    for (i=1; i<nallatom; ++i) {
       a = i+1;
       b = zmat[i].bond_atom;
-      swap(&a, &b);
       if (zmat[i].bond_opt)
         fprintf(fp_intco, "    (%d %d %d)\n",++cnt, a, b);
     }
@@ -71,6 +84,7 @@ void zmat_to_intco() {
     fprintf(fp_intco,")");
     fclose(fp_intco);
   }
+
 
   return;
 }

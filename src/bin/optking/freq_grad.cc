@@ -39,7 +39,7 @@ void freq_grad_irrep(cartesians &carts, internals &simples, salc_set &all_salcs,
   double **all_f_q; // internal coordinate forces for all unique displacements
   double **full_all_f_q; // internal coordinate forces for all displacements
   double **evects, *evals, **FG;
-  double *micro_e, *micro_geom, *micro_grad, *grad;
+  double *micro_e, *micro_geom, *micro_grad, *grad, tmp;
   char *salc_lbl;
 
   dim_carts = 3*carts.get_nallatom();
@@ -201,9 +201,17 @@ fprintf(outfile,"Found %d salcs of this irrep\n",nirr_salcs);
   }
 
   fprintf(outfile,"\nHarmonic Vibrational Frequencies\n");
-  for (i=nsalcs-1;i>=0;--i)
-    fprintf(outfile,"\t %d       %15.1lf\n",nsalcs-i,evals[i]);
-
+  for (i=0; i<nsalcs; ++i) {
+    tmp = -9999;
+    for (j=0; j<nsalcs; ++j) {
+      if (evals[j] > tmp) {
+        tmp = evals[j];
+        ii = j;
+      }
+    }
+    fprintf(outfile,"%5d       %15.1lf\n",nsalcs-i,evals[ii]);
+    evals[ii] = -9999;
+  }
   free(evals);
 
   open_PSIF();
@@ -222,12 +230,12 @@ fprintf(outfile,"Found %d salcs of this irrep\n",nirr_salcs);
 void freq_grad_nosymm(cartesians &carts, internals &simples,
     salc_set &all_salcs, int points) {
 
-  int i,j,k,a,b, cnt, dim, dim_carts, ndisps;
+  int i,j,k,a,b, ii, cnt, dim, dim_carts, ndisps;
   int nsalcs;
   double **B, **G, **G_inv, *masses, **u, *geom, *forces, **force_constants;
   double energy, *energies, **displacements, cm_convert;
   double *f, **all_f_q, *f_q, *temp_arr, *temp_arr2, **all_q, tval, **geom2D;
-  double **evects, *evals, **FG;
+  double **evects, *evals, **FG, tmp;
   double *micro_e, *micro_geom, *micro_grad, *grad;
 
   dim_carts = 3*carts.get_nallatom();
@@ -352,9 +360,17 @@ void freq_grad_nosymm(cartesians &carts, internals &simples,
   }
 
   fprintf(outfile,"\nHarmonic Vibrational Frequencies\n");
-  for (i=nsalcs-1;i>=0;--i)
-    fprintf(outfile,"\t %d       %15.1lf\n",nsalcs-i,evals[i]);
-
+  for (i=0; i<nsalcs; ++i) {
+    tmp = -9999;
+    for (j=0; j<nsalcs; ++j) {
+      if (evals[j] > tmp) {
+        tmp = evals[j];
+        ii = j;
+      }
+    }
+    fprintf(outfile,"%5d       %15.1lf\n",nsalcs-i,evals[ii]);
+    evals[ii] = -9999;
+  }
   free(evals);
 
   open_PSIF();

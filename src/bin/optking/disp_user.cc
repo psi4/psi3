@@ -1,4 +1,4 @@
-/*** ONLY_DISPLACEMENTS only performs input-specified displacements ***/ 
+/*** DISP_USER only performs input-specified displacements ***/ 
 
 extern "C" {
 #include <stdio.h>
@@ -22,7 +22,7 @@ extern "C" {
 #include "salc.h"
 #include "bond_lengths.h"
 
-void new_geom(cartesians &carts, internals &simples, salc_set &symm, double *dq,
+void new_geom(cartesians &carts, internals &simples, salc_set &all_salcs, double *dq,
     int print_to_geom_file, int restart_geom_file, 
     char *disp_label, int disp_num, int last_disp, double *return_geom);
 
@@ -66,6 +66,9 @@ void disp_user(cartesians &carts, internals &simples, salc_set &all_salcs) {
       exit(1);
     }
   }
+
+  fprintf(outfile,"Displacement Matrix\n");
+  print_mat5(displacements, num_disps, all_salcs.get_num(), outfile);
 
   fprintf(outfile,"\nDisplaced geometries in a.u.\n");
   for (i=0;i<num_disps;++i)  {

@@ -50,6 +50,24 @@ void print_mat2(double **matrix, int rows, int cols, FILE *of) {
   return;
 } 
 
+/*** PRINT_MAT5   prints a matrix to output file ***/
+void print_mat5(double **matrix, int rows, int cols, FILE *of) {
+  int i,j,col;
+  for (i=0;i<rows;++i) {
+    col = 0;
+    for (j=0;j<cols;++j) {
+      if (col == 9) {
+        fprintf(outfile,"\n");
+        col = 0;
+      }
+      fprintf(of,"%9.5lf",matrix[i][j]);
+      ++col;
+    }
+    fprintf(outfile,"\n");
+  } 
+  return;
+} 
+
 /*** CROSS_PRODUCT   computes cross product of two vectors ***/
 void cross_product(double *u,double *v,double *out)
 {
