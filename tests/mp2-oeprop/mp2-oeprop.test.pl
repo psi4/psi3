@@ -106,6 +106,16 @@ else {
   pass_test("Electronic angular momentum");
 }
 
+@epef_ref = seek_epef($REF_FILE);
+@epef_test = seek_epef($TEST_FILE);
+
+if (!compare_arrays(\@epef_ref,\@epef_test,8,8,$MTOL)) {
+  fail_test("Electrostatic potential and electric field"); $FAIL = 1;
+}
+else { 
+  pass_test("Electrostatic potential and electric field");
+}
+
 close (RE);
 
 system("cat $RESULT");

@@ -771,7 +771,6 @@ sub seek_dipole
   for($i=0; $i<4; $i++) {
     @line = split(/ +/, $datafile[$start+2+$i]);
     $dipole[$i] = $line[3];
-    print "$dipole[$i]\n";
   }
   
   if($start != 0) {
@@ -807,6 +806,47 @@ sub seek_angmom
   }
   
   printf "Error: Could not find Gross atomic populations in $_[0].\n";
+  exit 1;
+}
+
+sub seek_epef
+{   
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  seek(OUT,0,0);
+  while(<OUT>) {
+    if (/# of atoms/) {
+      @data = split(/ +/, $_);
+      $noa = $data[5];
+    }
+  }
+  close (OUT);
+
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  @datafile = <OUT>;
+  close (OUT);
+
+  $linenum=0;
+  $start = 0;
+  foreach $line (@datafile) {
+    if ($line =~ m/-Electrostatic potential/) {
+      $start = $linenum;
+    }
+    $linenum++;
+  }
+
+  for($i=0; $i<$noa; $i++) {
+    @line = split(/ +/, $datafile[$start+4+$i]);
+    for($j=0; $j<4; $j++) {
+      $epef[$noa*$i+$j] = $line[$j+2];
+    }
+  }
+  
+  if($start != 0) {
+    return @epef;
+  }
+  
+  printf "Error: Could not find Electrostatic potential\n";
+  printf "       and electric field in $_[0].\n";
   exit 1;
 }
 
