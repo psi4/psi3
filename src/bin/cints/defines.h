@@ -35,6 +35,7 @@
 /*----------------------------------
   Thresholds for printing out stuff
  ----------------------------------*/
+#define PRINT_DEBUG 5    /* Print everything */
 #define PRINT_INTRO 1    /* Print level to print intro overhead */
 #define PRINT_OPTIONS 1  /* Print level to print options out */
 #define PRINT_BASIS 3    /* Print level to print basis set information */

@@ -90,7 +90,9 @@ void init_rad_extent(double thresh)
     } while (fabs(func/thresh) >= SOFT_ZERO);
 
     BasisSet.shells[shell].rad_extent = r_new;
-    fprintf(outfile,"Shell# = %d    Radial extent = %lf\n",shell,r_new);
+    if (UserOptions.print_lvl > PRINT_DEBUG)
+      fprintf(outfile,"Shell# = %d    Radial extent = %lf\n",shell,r_new);
+      
   }
 
   return;
