@@ -87,8 +87,10 @@ int file_build(dpdfile4 *File, int inputfile, double tolerance,
 	}
     }
 
+  /*
   fprintf(outfile, "\tSorting File: %s nbuckets = %d\n",
 	  File->label, nbuckets);
+  */
 
   /* Set up IWL buffers for sorting */
   SortBuf = (struct iwlbuf *) malloc(nbuckets * sizeof(struct iwlbuf));
@@ -175,8 +177,8 @@ int file_build(dpdfile4 *File, int inputfile, double tolerance,
 
               if(row >= File->params->rowtot[h] ||
                  col >= File->params->coltot[h]) {
-                    printf("Whoa!\n");
-                    exit(1);
+                    fprintf(outfile, "CCSORT ERROR: DPD File Build Problem!\n");
+                    exit(2);
                 }
                     
 	      File->matrix[h][row-offset][col] = value;

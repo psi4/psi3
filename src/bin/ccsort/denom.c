@@ -5,7 +5,181 @@
 #define EXTERN
 #include "globals.h"
 
+void denom_rhf(void);
+void denom_uhf(void);
+
 void denom(void)
+{
+  if(params.ref == 2) denom_uhf();
+  else denom_rhf();
+}
+
+void denom_uhf(void)
+{
+  int h, nirreps;
+  int i, j, a, b, ij, ab, I, J, A, B, isym, jsym, asym, bsym;
+  int *aoccpi, *avirtpi, *boccpi, *bvirtpi;
+  int *aocc_off, *bocc_off, *avir_off, *bvir_off;
+  double fii, fjj, faa, fbb;
+  dpdfile2 dIA, fIJ, fij, fAB, fab;
+  dpdfile4 dIJAB;
+
+  nirreps = moinfo.nirreps;
+  aoccpi = moinfo.aoccpi;
+  avirtpi = moinfo.avirtpi;
+  boccpi = moinfo.boccpi;
+  bvirtpi = moinfo.bvirtpi;
+  aocc_off = moinfo.aocc_off;
+  bocc_off = moinfo.bocc_off;
+  avir_off = moinfo.avir_off;
+  bvir_off = moinfo.bvir_off;
+
+  dpd_file2_init(&fIJ, CC_OEI, 0, 0, 0, "fIJ");
+  dpd_file2_mat_init(&fIJ);
+  dpd_file2_mat_rd(&fIJ);
+  
+  dpd_file2_init(&fij, CC_OEI, 0, 2, 2, "fij");
+  dpd_file2_mat_init(&fij);
+  dpd_file2_mat_rd(&fij);
+  
+  dpd_file2_init(&fAB, CC_OEI, 0, 1, 1, "fAB");
+  dpd_file2_mat_init(&fAB);
+  dpd_file2_mat_rd(&fAB);
+  
+  dpd_file2_init(&fab, CC_OEI, 0, 3, 3, "fab");
+  dpd_file2_mat_init(&fab);
+  dpd_file2_mat_rd(&fab);
+
+  dpd_file2_init(&dIA, CC_OEI, 0, 0, 1, "dIA");
+  dpd_file2_mat_init(&dIA);
+  for(h=0; h < nirreps; h++) {
+      for(i=0; i < aoccpi[h]; i++) {
+	  fii = fIJ.matrix[h][i][i];
+	  for(a=0; a < avirtpi[h]; a++) {
+	      faa = fAB.matrix[h][a][a];
+	      dIA.matrix[h][i][a] = 1.0/(fii - faa);
+	    }
+	}
+    }
+  dpd_file2_mat_wrt(&dIA);
+  dpd_file2_mat_close(&dIA);
+  dpd_file2_close(&dIA);
+
+  dpd_file2_init(&dIA, CC_OEI, 0, 2, 3, "dia");
+  dpd_file2_mat_init(&dIA);
+  for(h=0; h < nirreps; h++) {
+      for(i=0; i < boccpi[h]; i++) {
+	  fii = fij.matrix[h][i][i];
+	  for(a=0; a < bvirtpi[h]; a++) {
+	      faa = fab.matrix[h][a][a];
+	      dIA.matrix[h][i][a] = 1.0/(fii - faa);
+	    }
+	}
+    }
+  dpd_file2_mat_wrt(&dIA);
+  dpd_file2_mat_close(&dIA);
+  dpd_file2_close(&dIA);
+
+  dpd_file4_init(&dIJAB, CC_DENOM, 0, 1, 6, "dIJAB");
+  for(h=0; h < nirreps; h++) {
+      dpd_file4_mat_irrep_init(&dIJAB, h);
+      for(ij=0; ij < dIJAB.params->rowtot[h]; ij++) {
+	  i = dIJAB.params->roworb[h][ij][0];
+	  j = dIJAB.params->roworb[h][ij][1];
+	  isym = dIJAB.params->psym[i];
+	  jsym = dIJAB.params->qsym[j];
+	  I = i - aocc_off[isym];
+	  J = j - aocc_off[jsym];
+	  fii = fIJ.matrix[isym][I][I];
+	  fjj = fIJ.matrix[jsym][J][J];
+
+	  for(ab=0; ab < dIJAB.params->coltot[h]; ab++) {
+	      a = dIJAB.params->colorb[h][ab][0];
+	      b = dIJAB.params->colorb[h][ab][1];
+	      asym = dIJAB.params->rsym[a];
+	      bsym = dIJAB.params->ssym[b];
+	      A = a - avir_off[asym];
+	      B = b - avir_off[bsym];
+	      faa = fAB.matrix[asym][A][A];
+	      fbb = fAB.matrix[bsym][B][B];
+
+	      dIJAB.matrix[h][ij][ab] = 1.0/(fii + fjj - faa - fbb);
+	    }
+	}
+      dpd_file4_mat_irrep_wrt(&dIJAB, h);
+      dpd_file4_mat_irrep_close(&dIJAB, h);
+    }
+  dpd_file4_close(&dIJAB);
+
+  dpd_file4_init(&dIJAB, CC_DENOM, 0, 11, 16, "dijab");
+  for(h=0; h < nirreps; h++) {
+      dpd_file4_mat_irrep_init(&dIJAB, h);
+      for(ij=0; ij < dIJAB.params->rowtot[h]; ij++) {
+	  i = dIJAB.params->roworb[h][ij][0];
+	  j = dIJAB.params->roworb[h][ij][1];
+	  isym = dIJAB.params->psym[i];
+	  jsym = dIJAB.params->qsym[j];
+	  I = i - bocc_off[isym];
+	  J = j - bocc_off[jsym];
+	  fii = fij.matrix[isym][I][I];
+	  fjj = fij.matrix[jsym][J][J];
+
+	  for(ab=0; ab < dIJAB.params->coltot[h]; ab++) {
+	      a = dIJAB.params->colorb[h][ab][0];
+	      b = dIJAB.params->colorb[h][ab][1];
+	      asym = dIJAB.params->rsym[a];
+	      bsym = dIJAB.params->ssym[b];
+	      A = a - bvir_off[asym];
+	      B = b - bvir_off[bsym];
+	      faa = fab.matrix[asym][A][A];
+	      fbb = fab.matrix[bsym][B][B];
+
+	      dIJAB.matrix[h][ij][ab] = 1.0/(fii + fjj - faa - fbb);
+	    }
+	}
+      dpd_file4_mat_irrep_wrt(&dIJAB, h);
+      dpd_file4_mat_irrep_close(&dIJAB, h);
+    }
+  dpd_file4_close(&dIJAB);
+
+  dpd_file4_init(&dIJAB, CC_DENOM, 0, 22, 28, "dIjAb");
+  for(h=0; h < nirreps; h++) {
+      dpd_file4_mat_irrep_init(&dIJAB, h);
+      for(ij=0; ij < dIJAB.params->rowtot[h]; ij++) {
+	  i = dIJAB.params->roworb[h][ij][0];
+	  j = dIJAB.params->roworb[h][ij][1];
+	  isym = dIJAB.params->psym[i];
+	  jsym = dIJAB.params->qsym[j];
+	  I = i - aocc_off[isym];
+	  J = j - bocc_off[jsym];
+	  fii = fIJ.matrix[isym][I][I];
+	  fjj = fij.matrix[jsym][J][J];
+
+	  for(ab=0; ab < dIJAB.params->coltot[h]; ab++) {
+	      a = dIJAB.params->colorb[h][ab][0];
+	      b = dIJAB.params->colorb[h][ab][1];
+	      asym = dIJAB.params->rsym[a];
+	      bsym = dIJAB.params->ssym[b];
+	      A = a - avir_off[asym];
+	      B = b - bvir_off[bsym];
+	      faa = fAB.matrix[asym][A][A];
+	      fbb = fab.matrix[bsym][B][B];
+
+	      dIJAB.matrix[h][ij][ab] = 1.0/(fii + fjj - faa - fbb);
+	    }
+	}
+      dpd_file4_mat_irrep_wrt(&dIJAB, h);
+      dpd_file4_mat_irrep_close(&dIJAB, h);
+    }
+  dpd_file4_close(&dIJAB);
+
+  dpd_file2_close(&fIJ);
+  dpd_file2_close(&fij);
+  dpd_file2_close(&fAB);
+  dpd_file2_close(&fab);
+}
+
+void denom_rhf(void)
 {
   int nirreps;
   int h, i, j, a, b, ij, ab;

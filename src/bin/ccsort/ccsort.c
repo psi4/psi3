@@ -35,7 +35,8 @@ void fock(void);
 void denom(void);
 void exit_io(void);
 void cleanup(void);
-int **cacheprep(int level, int *cachefiles);
+int **cacheprep_uhf(int level, int *cachefiles);
+int **cacheprep_rhf(int level, int *cachefiles);
 
 int main(int argc, char *argv[])
 {
@@ -44,27 +45,28 @@ int main(int argc, char *argv[])
   init_io();
   init_ioff();
   title();
-  timer_init();
 
   get_params();
   get_moinfo();
 
   cachefiles = init_int_array(PSIO_MAXUNIT);
-  cachelist = cacheprep(params.cachelev, cachefiles);
 
   if(params.ref == 2) { /*** UHF references ***/
+    cachelist = cacheprep_uhf(params.cachelev, cachefiles);
+
     dpd_init(0, moinfo.nirreps, params.memory, 0, cachefiles, cachelist, 
 	     NULL, 4, moinfo.aoccpi, moinfo.aocc_sym, moinfo.avirtpi, moinfo.avir_sym,
 	     moinfo.boccpi, moinfo.bocc_sym, moinfo.bvirtpi, moinfo.bvir_sym);
   } 
   else { /*** RHF/ROHF references ***/
+    cachelist = cacheprep_rhf(params.cachelev, cachefiles);
+
     dpd_init(0, moinfo.nirreps, params.memory, 0, cachefiles, cachelist, 
 	     NULL, 2, moinfo.occpi, moinfo.occ_sym, moinfo.virtpi, 
 	     moinfo.vir_sym);
   }
 
   sort_oei();
-
   sort_tei();
   b_sort();
   c_sort();
@@ -79,7 +81,6 @@ int main(int argc, char *argv[])
   dpd_close(0);
 
   cleanup();
-  timer_done();
   exit_io();
   exit(0);
 }

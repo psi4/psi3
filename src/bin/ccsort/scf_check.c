@@ -1,12 +1,125 @@
 #include <stdio.h>
 #include <libciomr.h>
 #include <dpd.h>
-#include "Params.h"
 #include "MOInfo.h"
+#include "Params.h"
 #define EXTERN
 #include "globals.h"
 
+void scf_check_uhf(void);
+void scf_check_rhf(void);
+
 void scf_check(void)
+{
+  if(params.ref == 2) scf_check_uhf();
+  else scf_check_rhf();
+}
+
+void scf_check_uhf(void)
+{
+  int h, nirreps, i, j, I, J, IJ, Gi, Gj;
+  int *aoccpi, *boccpi, *aocc_off, *bocc_off;
+  double E1A, E1B, E2AA, E2BB, E2AB;
+  dpdfile2 hIJ, hij;
+  dpdbuf4 A;
+
+  nirreps = moinfo.nirreps;
+  aoccpi = moinfo.aoccpi;
+  boccpi = moinfo.boccpi;
+  aocc_off = moinfo.aocc_off;
+  bocc_off = moinfo.bocc_off;
+
+  dpd_file2_init(&hIJ, CC_OEI, 0, 0, 0, "h(I,J)");
+  dpd_file2_init(&hij, CC_OEI, 0, 2, 2, "h(i,j)");
+  dpd_file2_mat_init(&hIJ);
+  dpd_file2_mat_init(&hij);
+  dpd_file2_mat_rd(&hIJ);
+  dpd_file2_mat_rd(&hij);
+
+  E1A = E1B = 0.0;
+  for(h=0; h < nirreps; h++) {
+    for(i=0; i < aoccpi[h]; i++)
+      E1A += hIJ.matrix[h][i][i];
+
+    for(i=0; i < boccpi[h]; i++)
+      E1B += hij.matrix[h][i][i];
+  }
+
+  dpd_file2_mat_close(&hIJ);
+  dpd_file2_mat_close(&hij);
+
+  dpd_buf4_init(&A, CC_AINTS, 0, 0, 0, 0, 0, 1, "A <IJ|KL>");
+  E2AA = 0.0;
+  for(h=0; h < nirreps; h++) {
+    dpd_buf4_mat_irrep_init(&A, h);
+    dpd_buf4_mat_irrep_rd(&A, h);
+    for(Gi=0; Gi < nirreps; Gi++) {
+      Gj = Gi ^ h;
+      for(i=0; i < aoccpi[Gi]; i++) {
+	I = aocc_off[Gi] + i;
+	for(j=0; j < aoccpi[Gj]; j++) {
+	  J = aocc_off[Gj] + j;
+	  IJ = A.params->rowidx[I][J];
+	  E2AA += 0.5 * A.matrix[h][IJ][IJ];
+	}
+      }
+    }
+    dpd_buf4_mat_irrep_close(&A, h);
+  }
+  dpd_buf4_close(&A);
+
+  dpd_buf4_init(&A, CC_AINTS, 0, 10, 10, 10, 10, 1, "A <ij|kl>");
+  E2BB = 0.0;
+  for(h=0; h < nirreps; h++) {
+    dpd_buf4_mat_irrep_init(&A, h);
+    dpd_buf4_mat_irrep_rd(&A, h);
+    for(Gi=0; Gi < nirreps; Gi++) {
+      Gj = Gi ^ h;
+      for(i=0; i < boccpi[Gi]; i++) {
+	I = bocc_off[Gi] + i;
+	for(j=0; j < boccpi[Gj]; j++) {
+	  J = bocc_off[Gj] + j;
+	  IJ = A.params->rowidx[I][J];
+	  E2BB += 0.5 * A.matrix[h][IJ][IJ];
+	}
+      }
+    }
+    dpd_buf4_mat_irrep_close(&A, h);
+  }
+  dpd_buf4_close(&A);
+
+  dpd_buf4_init(&A, CC_AINTS, 0, 22, 22, 22, 22, 0, "A <Ij|Kl>");
+  E2AB = 0.0;
+  for(h=0; h < nirreps; h++) {
+    dpd_buf4_mat_irrep_init(&A, h);
+    dpd_buf4_mat_irrep_rd(&A, h);
+    for(Gi=0; Gi < nirreps; Gi++) {
+      Gj = Gi ^ h;
+      for(i=0; i < aoccpi[Gi]; i++) {
+	I = aocc_off[Gi] + i;
+	for(j=0; j < boccpi[Gj]; j++) {
+	  J = bocc_off[Gj] + j;
+	  IJ = A.params->rowidx[I][J];
+	  E2AB += A.matrix[h][IJ][IJ];
+	}
+      }
+    }
+    dpd_buf4_mat_irrep_close(&A, h);
+  }
+  dpd_buf4_close(&A);
+
+  moinfo.eref = E1A+ E1B+ E2AA+ E2BB+ E2AB + moinfo.enuc + moinfo.efzc;
+
+  fprintf(outfile, "\tOne-electron energy          = %20.15f\n", E1A + E1B);
+  fprintf(outfile, "\tTwo-electron (AA) energy     = %20.15f\n", E2AA);
+  fprintf(outfile, "\tTwo-electron (BB) energy     = %20.15f\n", E2BB);
+  fprintf(outfile, "\tTwo-electron (AB) energy     = %20.15f\n", E2AB);
+  fprintf(outfile, "\tTwo-electron energy          = %20.15f\n", E2AA + E2BB + E2AB);
+  fprintf(outfile, "\tFrozen-core energy (transqt) = %20.15f\n", moinfo.efzc);
+  fprintf(outfile, "\tReference energy             = %20.15f\n", moinfo.eref);
+}
+
+void scf_check_rhf(void)
 {
   int h, Gi, Gj;
   int i, j, I, J, IJ;

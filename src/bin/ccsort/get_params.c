@@ -21,6 +21,16 @@ void get_params()
     printf("Invalid value of input keyword REFERENCE: %s\n", junk);
     exit(2); 
   }
+  free(junk);
+
+  errcod = ip_string("DERTYPE", &(junk),0);
+  if(!strcmp(junk,"NONE")) params.dertype = 0;
+  else if(!strcmp(junk,"FIRST")) params.dertype = 1;
+  else {
+    printf("Invalid value of input keyword DERTYPE: %s\n", junk);
+    exit(2); 
+  }
+  free(junk);
 
   params.print_lvl = 1;
   errcod = ip_data("PRINT_LVL","%d",&(params.print_lvl),0);

@@ -70,9 +70,9 @@ void sort_oei_uhf(void)
   a_oei = init_array(nactive * (nactive+1)/2);
   b_oei = init_array(nactive * (nactive+1)/2);
   iwl_rdone(PSIF_MO_A_FZC, a_oei, &moinfo.efzc, ioff, moinfo.nmo,
-	    moinfo.nfzc, moinfo.nfzv, 0, 1, outfile);
+	    moinfo.nfzc, moinfo.nfzv, 0, 0, outfile);
   iwl_rdone(PSIF_MO_B_FZC, b_oei, &moinfo.efzc, ioff, moinfo.nmo,
-	    moinfo.nfzc, moinfo.nfzv, 0, 1, outfile);
+	    moinfo.nfzc, moinfo.nfzv, 0, 0, outfile);
 
   dpd_file2_init(&hIJ, CC_OEI, 0, 0, 0, "h(I,J)");
   dpd_file2_init(&hij, CC_OEI, 0, 2, 2, "h(i,j)");

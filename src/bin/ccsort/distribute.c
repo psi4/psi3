@@ -11,9 +11,8 @@ void classify(int p, int q, int r, int s, double value,
 	      struct iwlbuf *CBuf, struct iwlbuf *DBuf,
 	      struct iwlbuf *EBuf, struct iwlbuf *FBuf);
 
-void distribute(void)
+void distribute_rhf(int filenum, int first_tmp, double tolerance, int keep_input)
 {
-  double tolerance;
   struct iwlbuf InBuf;
   struct iwlbuf ABuf, BBuf, CBuf, DBuf, EBuf, FBuf;
   int lastbuf;
@@ -22,15 +21,13 @@ void distribute(void)
   int idx, p, q, r, s;
   double value;
 
-  tolerance = params.tolerance;
-
-  iwl_buf_init(&InBuf, PSIF_MO_TEI, tolerance, 1, 1);
-  iwl_buf_init(&ABuf, 90, tolerance, 0, 0);
-  iwl_buf_init(&BBuf, 91, tolerance, 0, 0);
-  iwl_buf_init(&CBuf, 92, tolerance, 0, 0);
-  iwl_buf_init(&DBuf, 93, tolerance, 0, 0);
-  iwl_buf_init(&EBuf, 94, tolerance, 0, 0);
-  iwl_buf_init(&FBuf, 95, tolerance, 0, 0);
+  iwl_buf_init(&InBuf, filenum, tolerance, 1, 1);
+  iwl_buf_init(&ABuf, first_tmp, tolerance, 0, 0);
+  iwl_buf_init(&BBuf, first_tmp+1, tolerance, 0, 0);
+  iwl_buf_init(&CBuf, first_tmp+2, tolerance, 0, 0);
+  iwl_buf_init(&DBuf, first_tmp+3, tolerance, 0, 0);
+  iwl_buf_init(&EBuf, first_tmp+4, tolerance, 0, 0);
+  iwl_buf_init(&FBuf, first_tmp+5, tolerance, 0, 0);
 
   /* Run through the buffer that's already available */
   lblptr = InBuf.labels;
@@ -48,9 +45,9 @@ void distribute(void)
     /* Check integral into each class */
     classify(p,q,r,s,value,&ABuf,&BBuf,&CBuf,&DBuf,&EBuf,&FBuf);
 
-/*    fprintf(outfile, "(%d %d|%d %d) = %20.10lf\n", p, q, r, s, value);  */
+    /*    fprintf(outfile, "(%d %d|%d %d) = %20.10lf\n", p, q, r, s, value);  */
 
-    } /* end loop through current buffer */
+  } /* end loop through current buffer */
 
   /* Now run through the rest of the buffers in the file */
   while (!lastbuf) {
@@ -68,13 +65,13 @@ void distribute(void)
       /* Check integral into each class */
       classify(p,q,r,s,value,&ABuf,&BBuf,&CBuf,&DBuf,&EBuf,&FBuf);
 
-/*      fprintf(outfile, "(%d %d|%d %d) = %20.10lf\n", p, q, r, s, value); */
+      /*      fprintf(outfile, "(%d %d|%d %d) = %20.10lf\n", p, q, r, s, value); */
 
-      } /* end loop through current buffer */
-    } /* end loop over reading buffers */
+    } /* end loop through current buffer */
+  } /* end loop over reading buffers */
 
 
-  iwl_buf_close(&InBuf, params.keep_TEIFile);
+  iwl_buf_close(&InBuf, keep_input);
   iwl_buf_flush(&ABuf, 1);
   iwl_buf_flush(&BBuf, 1);
   iwl_buf_flush(&CBuf, 1);
@@ -91,3 +88,98 @@ void distribute(void)
   fflush(outfile);
 }
 
+void classify_uhf(int p, int q, int r, int s, double value, char *spin,
+		  struct iwlbuf *ABuf1, struct iwlbuf *BBuf1,
+		  struct iwlbuf *CBuf1, struct iwlbuf *CBuf2, 
+		  struct iwlbuf *DBuf1, struct iwlbuf *EBuf1, 
+		  struct iwlbuf *EBuf2, struct iwlbuf *FBuf1, 
+		  struct iwlbuf *FBuf2);
+
+void distribute_uhf(char *spin, int filenum, int first_tmp, double tolerance, int keep_input)
+{
+  struct iwlbuf InBuf;
+  struct iwlbuf ABuf1, BBuf1, CBuf1, CBuf2, DBuf1;
+  struct iwlbuf EBuf1, EBuf2, FBuf1, FBuf2;
+  int lastbuf;
+  Value *valptr;
+  Label *lblptr;
+  int idx, p, q, r, s;
+  double value;
+
+  iwl_buf_init(&InBuf, filenum, tolerance, 1, 1);
+  iwl_buf_init(&ABuf1, first_tmp, tolerance, 0, 0);
+  iwl_buf_init(&BBuf1, first_tmp+1, tolerance, 0, 0);
+  iwl_buf_init(&CBuf1, first_tmp+2, tolerance, 0, 0);
+  iwl_buf_init(&DBuf1, first_tmp+3, tolerance, 0, 0);
+  iwl_buf_init(&EBuf1, first_tmp+4, tolerance, 0, 0);
+  iwl_buf_init(&FBuf1, first_tmp+5, tolerance, 0, 0);
+  iwl_buf_init(&CBuf2, first_tmp+6, tolerance, 0, 0);
+  iwl_buf_init(&EBuf2, first_tmp+7, tolerance, 0, 0);
+  iwl_buf_init(&FBuf2, first_tmp+8, tolerance, 0, 0);
+
+  /* Run through the buffer that's already available */
+  lblptr = InBuf.labels;
+  valptr = InBuf.values;
+  lastbuf = InBuf.lastbuf;
+
+  for (idx=4*InBuf.idx; InBuf.idx < InBuf.inbuf; InBuf.idx++) {
+    p = (int) lblptr[idx++];
+    q = (int) lblptr[idx++];
+    r = (int) lblptr[idx++];
+    s = (int) lblptr[idx++];
+
+    value = (double) valptr[InBuf.idx];
+
+    /* Check integral into each class */
+    classify_uhf(p,q,r,s,value,spin,&ABuf1,&BBuf1,&CBuf1,&CBuf2,
+		 &DBuf1,&EBuf1,&EBuf2,&FBuf1,&FBuf2);
+
+    /*    fprintf(outfile, "(%d %d|%d %d) = %20.10lf\n", p, q, r, s, value);  */
+
+  } /* end loop through current buffer */
+
+  /* Now run through the rest of the buffers in the file */
+  while (!lastbuf) {
+    iwl_buf_fetch(&InBuf);
+    lastbuf = InBuf.lastbuf;
+
+    for (idx=4*InBuf.idx; InBuf.idx < InBuf.inbuf; InBuf.idx++) {
+      p = (int) lblptr[idx++];
+      q = (int) lblptr[idx++];
+      r = (int) lblptr[idx++];
+      s = (int) lblptr[idx++];
+
+      value = (double) valptr[InBuf.idx];
+
+      /* Check integral into each class */
+      classify_uhf(p,q,r,s,value,spin,&ABuf1,&BBuf1,&CBuf1,&CBuf2,
+		   &DBuf1,&EBuf1,&EBuf2,&FBuf1,&FBuf2);
+
+      /*      fprintf(outfile, "(%d %d|%d %d) = %20.10lf\n", p, q, r, s, value); */
+
+    } /* end loop through current buffer */
+  } /* end loop over reading buffers */
+
+
+  iwl_buf_close(&InBuf, keep_input);
+  iwl_buf_flush(&ABuf1, 1);
+  iwl_buf_flush(&BBuf1, 1);
+  iwl_buf_flush(&CBuf1, 1);
+  iwl_buf_flush(&CBuf2, 1);
+  iwl_buf_flush(&DBuf1, 1);
+  iwl_buf_flush(&EBuf1, 1);
+  iwl_buf_flush(&EBuf2, 1);
+  iwl_buf_flush(&FBuf1, 1);
+  iwl_buf_flush(&FBuf2, 1);
+  iwl_buf_close(&ABuf1, 1);
+  iwl_buf_close(&BBuf1, 1);
+  iwl_buf_close(&CBuf1, 1);
+  iwl_buf_close(&CBuf2, 1);
+  iwl_buf_close(&DBuf1, 1);
+  iwl_buf_close(&EBuf1, 1);
+  iwl_buf_close(&EBuf2, 1);
+  iwl_buf_close(&FBuf1, 1);
+  iwl_buf_close(&FBuf2, 1);
+
+  fflush(outfile);
+}
