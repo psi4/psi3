@@ -209,6 +209,7 @@ void hf_fock()
 	Gtri[i] = Gtri[i] - Gtri_o[i];
 	Gtri_o[i] = temp;
       }
+      
       psio_write_entry(IOUnits.itapDSCF, "Alpha JX G-matrix", (char *) Gtri, sizeof(double)*nstri);
       psio_write_entry(IOUnits.itapDSCF, "Beta JX G-matrix", (char *) Gtri_o, sizeof(double)*nstri);
       free(Gtri);

@@ -272,6 +272,8 @@ typedef struct {
     int nactuocc;             /* number of "active" vacant MOs */
     int num_moshells;         /* number of shells of MOs */
     int num_openmoshells;     /* number of shells of singly-occupied MOs */
+    int alpha_occ;            /* number of alpha occupied orbitals */
+    int beta_occ;             /* number of beta  occupied orbitals */
 } MOInfo_t;
 
 
@@ -339,6 +341,8 @@ struct close_shell_info_s{
     int *aos_close_to_chunk;
     int *close_shells_per_am;
     double **close_COCC;
+    double **close_COCC_a;
+    double **close_COCC_b;
 };
 
 struct leb_chunk_s{
@@ -393,10 +397,18 @@ typedef struct{
     double (*exchange_function)(struct den_info_s);
     double (*exchange_V_function)(struct den_info_s);
                                 /* pointer to the exchange function */
+    /* For UHF */
+    double (*exchange_V_function_a)(struct den_info_s);
+    double (*exchange_V_function_b)(struct den_info_s);
+    
     double (*correlation_function)(struct den_info_s);
     double (*correlation_V_function)(struct den_info_s);
                                /* pointer to the correlation function */
-    struct den_info_s (*den_calc)(struct coordinates geom);
+    /* For UHF */
+    double (*correlation_V_function_a)(struct den_info_s);
+    double (*correlation_V_function_b)(struct den_info_s);
+    
+    struct den_info_s (*den_calc)(struct coordinates geom,int atom_num);
                    /* pointer to the correct density calculation function */
     struct close_shell_info_s close_shell_info;
     grid_t grid;

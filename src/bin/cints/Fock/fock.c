@@ -53,7 +53,12 @@ void fock()
     /*--- Read in the SCF eigenvector density ---*/
       read_scf_occ_evec();
     /*-- Compute exch+corr contribution to the Fock matrix ---*/
-    xc_fock();
+    if(UserOptions.reftype == rhf)
+	xc_fock();
+    else if(UserOptions.reftype == uhf)
+	xc_fock_u();
+    else
+	punt("\nUnrecognized Kohn-Sham DFT reference");
   }
 
   return;

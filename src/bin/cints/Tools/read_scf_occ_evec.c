@@ -15,7 +15,9 @@ void read_scf_occ_evec(void)
 { 
     int i, j, k, l, jj, ij;
     int nstri;
+    int nstria,nstrib;
     int num_so,num_ao,num_mo,ndocc;
+    int aocc,bocc;
     int bas_off;
     int shell_start,shell_end,shell_type;
     PSI_FPTR next;
@@ -28,9 +30,16 @@ void read_scf_occ_evec(void)
     
     psio_read_entry(IOUnits.itapDSCF, "Number of MOs", 
 		    (char *) &(MOInfo.num_mo), sizeof(int));
-    psio_read_entry(IOUnits.itapDSCF, "Number of DOCC", 
-		    (char *) &(MOInfo.ndocc),sizeof(int));
-    
+    if(UserOptions.reftype == uhf){
+	psio_read_entry(IOUnits.itapDSCF, "Number of Alpha DOCC", 
+		    (char *) &(MOInfo.alpha_occ),sizeof(int));
+	psio_read_entry(IOUnits.itapDSCF, "Number of Beta DOCC", 
+		    (char *) &(MOInfo.beta_occ),sizeof(int));
+    }
+    else{
+	psio_read_entry(IOUnits.itapDSCF, "Number of DOCC", 
+			(char *) &(MOInfo.ndocc),sizeof(int));
+    }
     
 /*-------------------
   Variables needed
@@ -41,18 +50,23 @@ void read_scf_occ_evec(void)
     num_mo = MOInfo.num_mo;
     ndocc = MOInfo.ndocc;
     nstri = num_mo*ndocc;
+    aocc = MOInfo.alpha_occ;
+    bocc = MOInfo.beta_occ;
+    nstria = num_mo*aocc;
+    nstrib = num_mo*bocc;
     
-    SO_cmat = block_matrix(num_so,ndocc);
-      if (UserOptions.reftype == rohf || UserOptions.reftype == uhf)
-	  SO_cmato = block_matrix(num_so,ndocc);
-      
-      if (UserOptions.reftype == uhf) {
-	  psio_read_entry(IOUnits.itapDSCF, "Alpha SCF Eigenvector", 
-		      (char *) &(SO_cmat[0][0]), sizeof(double)*nstri);
-	  psio_read_entry(IOUnits.itapDSCF, "Beta SCF Eigenvector", 
-			  (char *) &(SO_cmato[0][0]), sizeof(double)*nstri);
+    
+    if (UserOptions.reftype == uhf){
+	  SO_cmat = block_matrix(num_so,aocc);
+	  SO_cmato = block_matrix(num_so,bocc);
+   
+	  psio_read_entry(IOUnits.itapDSCF, "Alpha Occupied SCF Eigenvector", 
+		      (char *) &(SO_cmat[0][0]), sizeof(double)*nstria);
+	  psio_read_entry(IOUnits.itapDSCF, "Beta Occupied SCF Eigenvector", 
+			  (char *) &(SO_cmato[0][0]), sizeof(double)*nstrib);
       }
       else {
+	  SO_cmat = block_matrix(num_so,ndocc);
 	  psio_read_entry(IOUnits.itapDSCF, "Occupied SCF Eigenvector", 
 			  (char *) &(SO_cmat[0][0]), sizeof(double)*nstri);
       }
@@ -67,39 +81,28 @@ void read_scf_occ_evec(void)
 	fprintf(outfile,"\nSO Cmat");
 	print_mat(SO_cmat,num_so,num_mo,outfile);
       */
-      
-      Cocc = block_matrix(num_ao,ndocc);
-      mmult(Symmetry.usotao,1,SO_cmat,0,Cocc,0,num_ao,num_so,ndocc,0);
-      free_block(SO_cmat);
-      
-      /* ---------------------
-	 Order according to 
-	 angular momentum   
-	 --------------------*/
-      /*Cocc_un = block_matrix(num_ao,ndocc);
-      mmult(Symmetry.usotao,1,SO_cmat,0,Cocc_un,0,num_ao,num_so,ndocc,0);
-      free_block(SO_cmat);
-      
-      Cocc = (double **)malloc(sizeof(double *)*num_ao);
-      
-      k=0;
-      for(i=0;i<BasisSet.num_shells;i++){
-	  bas_off = BasisSet.am2shell[i];
-	  shell_type = BasisSet.shells[bas_off].am;
-	  shell_start = BasisSet.shells[bas_off].fao-1;
-	  shell_end = shell_start+ioff[shell_type]; 
-	  for(j=shell_start;j<shell_end;j++){
-	      Cocc[k]=Cocc_un[j];
-	      k++;
-	  }
+      if(UserOptions.reftype == uhf){
+	  Cocca = block_matrix(num_ao,aocc);
+	  mmult(Symmetry.usotao,1,SO_cmat,0,Cocca,0,num_ao,num_so,aocc,0);
+	  free_block(SO_cmat);
+	  Coccb = block_matrix(num_ao,bocc);
+	  mmult(Symmetry.usotao,1,SO_cmato,0,Coccb,0,num_ao,num_so,bocc,0);
+	  free_block(SO_cmato);
       }
-      */
+      else{
+	  Cocc = block_matrix(num_ao,ndocc);
+	  mmult(Symmetry.usotao,1,SO_cmat,0,Cocc,0,num_ao,num_so,ndocc,0);
+	  free_block(SO_cmat);
+      }
+      
       /*--------------------------
 	Remove after done testing
 	--------------------------*/   
       
-      /*fprintf(outfile,"\nCocc");
-      print_mat(Cocc,num_ao,MOInfo.ndocc,outfile);*/
+      /*  fprintf(outfile,"\nCocca");
+      print_mat(Cocca,num_ao,aocc,outfile);
+      fprintf(outfile,"\nCoccb");
+      print_mat(Coccb,num_ao,bocc,outfile);*/
       
       return;
 }

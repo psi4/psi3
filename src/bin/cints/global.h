@@ -60,6 +60,9 @@ EXTERN double **Lagr;    /* Energy-weighted density of lagrangian in AO basis */
 EXTERN double ***ShDens; /* MO shell density */
 EXTERN double **G;       /* G-matrix (t.e. part of the Fock matrix) in AO basis */
 EXTERN double **Go;      /* open-shell G-matrix in AO basis */
+EXTERN double **Ga;      /* Alpha spin G-matrix in AO basis */
+EXTERN double **Gb;      /* Beta spin G-matrix in AO basis */
+
 EXTERN double **Grad;    /* Nuclear forces */
 
 
