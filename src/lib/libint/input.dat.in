@@ -1,5 +1,6 @@
 libint: (
-  new_am = 8 
+  new_am = 8
   opt_am = 4
   max_class_size = 785 
+  long_double = false
 )

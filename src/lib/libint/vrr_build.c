@@ -6,8 +6,8 @@
 extern void punt(char *);
 static int hash(int a[2][3], int b[2]);
 
-double *vrr_build_xxxx(int am_in[2], prim_data *Data, double *vp, const double *i0, const double *i1, const double *i2,
-    const double *i3, const double *i4)
+REALTYPE *vrr_build_xxxx(int am_in[2], prim_data *Data, REALTYPE *vp, const REALTYPE *i0, const REALTYPE *i1, const REALTYPE *i2,
+    const REALTYPE *i3, const REALTYPE *i4)
 {
   int i, j, k, l;
   int a;
@@ -16,7 +16,7 @@ double *vrr_build_xxxx(int am_in[2], prim_data *Data, double *vp, const double *
   int t1, t2, t3, t4, t2max;
   int xyz;
   int la, lc;
-  double PA[3], WP[3], loo2zn, loo2z, lpoz, eri;
+  REALTYPE PA[3], WP[3], loo2zn, loo2z, lpoz, eri;
   static int io[] = {0,1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153};
 
   la = am_in[0];

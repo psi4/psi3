@@ -50,7 +50,7 @@ int emit_hrr_build(int new_am, int max_class_size)
       
       class_size = ((am_in[0]+1)*(am_in[0]+2)*(am_in[1]+1)*(am_in[1]+2))/4;
 
-      fprintf(hrr_header,"void hrr3_build_%c%c(const double *, double *, double *, double *, int);\n",
+      fprintf(hrr_header,"void hrr3_build_%c%c(const REALTYPE *, REALTYPE *, REALTYPE *, REALTYPE *, int);\n",
 	      am_letter[am_in[0]],am_letter[am_in[1]]);
       /* Decide if the routine has to be split into several routines producing "subbatches" */
       if (class_size > max_class_size) {
@@ -77,23 +77,24 @@ int emit_hrr_build(int new_am, int max_class_size)
 
       fprintf(code,"  /* These machine-generated functions compute a quartet of |%c%c) integrals */\n\n",
 	      am_letter[am_in[0]],am_letter[am_in[1]]);
+      fprintf(code,"#include \"libint.h\"\n\n");
       if (split) {
 	for(i=0;i<num_subfunctions;i++) {
-	  fprintf(code,"double *%s(const double *, double *, double *, double *);\n",
+	  fprintf(code,"REALTYPE *%s(const REALTYPE *, REALTYPE *, REALTYPE *, REALTYPE *);\n",
 		  subfunction_name[i]);
 	}
 	fprintf(code,"\n");
       }
-      fprintf(code,"void %s(const double *CD, double *vp, double *I0, double *I1, int ab_num)\n{\n",
+      fprintf(code,"void %s(const REALTYPE *CD, REALTYPE *vp, REALTYPE *I0, REALTYPE *I1, int ab_num)\n{\n",
 	      function_name);
       if (split == 1) {
 	curr_subfunction = 0;
 	curr_count = 0;
       }
       else {
-	fprintf(code,"  const double CD0 = CD[0];\n");
-	fprintf(code,"  const double CD1 = CD[1];\n");
-	fprintf(code,"  const double CD2 = CD[2];\n");
+	fprintf(code,"  const REALTYPE CD0 = CD[0];\n");
+	fprintf(code,"  const REALTYPE CD1 = CD[1];\n");
+	fprintf(code,"  const REALTYPE CD2 = CD[2];\n");
       }
       fprintf(code,"  int ab;\n\n");
 
@@ -108,11 +109,11 @@ int emit_hrr_build(int new_am, int max_class_size)
 	fprintf(code,"    I0 += %d;\n    I1 += %d;\n",i0_step,i1_step);
 	fprintf(code,"  }\n}\n\n");
 
-	fprintf(code,"double *%s(const double *CD, double *vp, double *I0, double *I1)\n{\n",
+	fprintf(code,"REALTYPE *%s(const REALTYPE *CD, REALTYPE *vp, REALTYPE *I0, REALTYPE *I1)\n{\n",
 	      subfunction_name[0]);
-	fprintf(code,"  const double CD0 = CD[0];\n");
-	fprintf(code,"  const double CD1 = CD[1];\n");
-	fprintf(code,"  const double CD2 = CD[2];\n\n");
+	fprintf(code,"  const REALTYPE CD0 = CD[0];\n");
+	fprintf(code,"  const REALTYPE CD1 = CD[1];\n");
+	fprintf(code,"  const REALTYPE CD2 = CD[2];\n\n");
       }
 
       for(p = 0; p <= am_in[0]; p++){
@@ -152,11 +153,11 @@ int emit_hrr_build(int new_am, int max_class_size)
 		curr_count = 0;
 		curr_subfunction++;
 		fprintf(code,"  return vp;\n}\n\n");
-		fprintf(code,"double *%s(const double *CD, double *vp, double *I0, double *I1)\n{\n",
+		fprintf(code,"REALTYPE *%s(const REALTYPE *CD, REALTYPE *vp, REALTYPE *I0, REALTYPE *I1)\n{\n",
 			subfunction_name[curr_subfunction]);
-		fprintf(code,"  const double CD0 = CD[0];\n");
-		fprintf(code,"  const double CD1 = CD[1];\n");
-		fprintf(code,"  const double CD2 = CD[2];\n\n");
+		fprintf(code,"  const REALTYPE CD0 = CD[0];\n");
+		fprintf(code,"  const REALTYPE CD1 = CD[1];\n");
+		fprintf(code,"  const REALTYPE CD2 = CD[2];\n\n");
 	      }
 	    }
 	  }
@@ -184,7 +185,7 @@ int emit_hrr_build(int new_am, int max_class_size)
 
       class_size = ((am_in[0]+1)*(am_in[0]+2)*(am_in[1]+1)*(am_in[1]+2))/4;
 
-      fprintf(hrr_header,"void hrr1_build_%c%c(const double *, double *, double *, double *, int);\n",
+      fprintf(hrr_header,"void hrr1_build_%c%c(const REALTYPE *, REALTYPE *, REALTYPE *, REALTYPE *, int);\n",
 	      am_letter[am_in[0]],am_letter[am_in[1]]);
       /* Decide if the routine has to be split into several routines producing "subbatches" */
       if (class_size > max_class_size) {
@@ -208,26 +209,27 @@ int emit_hrr_build(int new_am, int max_class_size)
       
       sprintf(code_name,"%s.c",function_name);
       code = fopen(code_name,"w");
+      fprintf(code,"  /* This machine-generated function computes a quartet of (%c%c| integrals */\n\n",
+	      am_letter[am_in[0]],am_letter[am_in[1]]);
+      fprintf(code,"#include \"libint.h\"\n\n");
       if (split) {
 	for(i=0;i<num_subfunctions;i++) {
-	  fprintf(code,"double *%s(const double *, double *, double *, double *, int);\n",
+	  fprintf(code,"REALTYPE *%s(const REALTYPE *, REALTYPE *, REALTYPE *, REALTYPE *, int);\n",
 		  subfunction_name[i]);
 	}
 	fprintf(code,"\n");
       }
-      fprintf(code,"  /* This machine-generated function computes a quartet of (%c%c| integrals */\n\n",
-	      am_letter[am_in[0]],am_letter[am_in[1]]);
-      fprintf(code,"void %s(const double *AB, double *vp, double *I0, double *I1, int cd_num)\n{\n",
+      fprintf(code,"void %s(const REALTYPE *AB, REALTYPE *vp, REALTYPE *I0, REALTYPE *I1, int cd_num)\n{\n",
 	      function_name);
       if (split == 1) {
 	curr_subfunction = 0;
 	curr_count = 0;
       }
       else {
-	fprintf(code,"  const double AB0 = AB[0];\n");
-	fprintf(code,"  const double AB1 = AB[1];\n");
-	fprintf(code,"  const double AB2 = AB[2];\n");
-	fprintf(code,"  double *i0, *i1;\n");
+	fprintf(code,"  const REALTYPE AB0 = AB[0];\n");
+	fprintf(code,"  const REALTYPE AB1 = AB[1];\n");
+	fprintf(code,"  const REALTYPE AB2 = AB[2];\n");
+	fprintf(code,"  REALTYPE *i0, *i1;\n");
 	fprintf(code,"  int cd;\n\n");
       }
       fprintf(code,"\n");
@@ -238,12 +240,12 @@ int emit_hrr_build(int new_am, int max_class_size)
 		subfunction_name[f]);
 	fprintf(code,"}\n\n");
 
-	fprintf(code,"double *%s(const double *AB, double *vp, double *I0, double *I1, int cd_num)\n{\n",
+	fprintf(code,"REALTYPE *%s(const REALTYPE *AB, REALTYPE *vp, REALTYPE *I0, REALTYPE *I1, int cd_num)\n{\n",
 	      subfunction_name[0]);
-	fprintf(code,"  const double AB0 = AB[0];\n");
-	fprintf(code,"  const double AB1 = AB[1];\n");
-	fprintf(code,"  const double AB2 = AB[2];\n");
-	fprintf(code,"  double *i0, *i1;\n");
+	fprintf(code,"  const REALTYPE AB0 = AB[0];\n");
+	fprintf(code,"  const REALTYPE AB1 = AB[1];\n");
+	fprintf(code,"  const REALTYPE AB2 = AB[2];\n");
+	fprintf(code,"  REALTYPE *i0, *i1;\n");
 	fprintf(code,"  int cd;\n\n");
       }
       
@@ -296,12 +298,12 @@ int emit_hrr_build(int new_am, int max_class_size)
 		curr_count = 0;
 		curr_subfunction++;
 		fprintf(code,"  return vp;\n}\n\n");
-		fprintf(code,"double *%s(const double *AB, double *vp, double *I0, double *I1, int cd_num)\n{\n",
+		fprintf(code,"REALTYPE *%s(const REALTYPE *AB, REALTYPE *vp, REALTYPE *I0, REALTYPE *I1, int cd_num)\n{\n",
 			subfunction_name[curr_subfunction]);
-		fprintf(code,"  const double AB0 = AB[0];\n");
-		fprintf(code,"  const double AB1 = AB[1];\n");
-		fprintf(code,"  const double AB2 = AB[2];\n");
-		fprintf(code,"  double *i0, *i1;\n");
+		fprintf(code,"  const REALTYPE AB0 = AB[0];\n");
+		fprintf(code,"  const REALTYPE AB1 = AB[1];\n");
+		fprintf(code,"  const REALTYPE AB2 = AB[2];\n");
+		fprintf(code,"  REALTYPE *i0, *i1;\n");
 		fprintf(code,"  int cd;\n\n");
 	      }
 	    }

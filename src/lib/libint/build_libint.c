@@ -26,11 +26,15 @@
 
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <ip_libv1.h>
 #include <libciomr.h>
 #include "build_libint.h"
 
 FILE *infile, *outfile, *vrr_header, *hrr_header, *libint_header, *init_code;
+
+char *real_type;   /*--- C type for real numbers ---*/
 
 void punt();
 int emit_vrr_build(int,int,int);
@@ -45,6 +49,7 @@ int main()
   int old_am = 0;
   int new_am, opt_am;
   int max_class_size = DEFAULT_MAX_CLASS_SIZE;
+  int long_double = 0;     /*--- Whether to use long doubles ---*/
   int stack_size;
   const int io[] = {0,1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153};
   const char am_letter[] = "0pdfghiklmnoqrtuvwxyz";
@@ -85,6 +90,12 @@ int main()
   if (max_class_size < 10)
     punt("  MAX_CLASS_SIZE cannot be smaller than 10.");
 
+  errcod = ip_boolean("LONG_DOUBLE",&long_double,0);
+  if (long_double)
+    real_type = strdup("long double");
+  else
+    real_type = strdup("double");
+
   /* Setting up init_libint.c, header.h */
   fprintf(init_code,"#include <stdio.h>\n");
   fprintf(init_code,"#include <stdlib.h>\n");
@@ -93,12 +104,12 @@ int main()
   fprintf(init_code,"/* This function initializes a matrix of pointers to routines */\n");
   fprintf(init_code,"/* for computing ERI classes up to (%cs|%cs) - the base of the library */\n\n",
 	  am_letter[new_am],am_letter[new_am]);
-  fprintf(init_code,"double *(*build_eri[%d][%d][%d][%d])(Libint_t *, int);\n",new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
+  fprintf(init_code,"REALTYPE *(*build_eri[%d][%d][%d][%d])(Libint_t *, int);\n",new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
   fprintf(init_code,"void init_libint_base()\n{\n");
 
   /* Declare generic build routines */
-  fprintf(vrr_header,"double *vrr_build_xxxx(int am[2], prim_data *, double *, const double *,");
-  fprintf(vrr_header,"const double *, const double *, const double *, const double *);\n");
+  fprintf(vrr_header,"REALTYPE *vrr_build_xxxx(int am[2], prim_data *, REALTYPE *, const REALTYPE *,");
+  fprintf(vrr_header,"const REALTYPE *, const REALTYPE *, const REALTYPE *, const REALTYPE *);\n");
 
   stack_size = emit_order(old_am,new_am,opt_am);
   emit_vrr_build(old_am, opt_am, max_class_size);
@@ -109,10 +120,10 @@ int main()
   fprintf(init_code,"/* Library objects operate independently of each other */\n");
   fprintf(init_code,"int init_libint(Libint_t *libint, int num_prim_quartets)\n{\n");
   fprintf(init_code,"  int memory = 0;\n\n");
-  fprintf(init_code,"  libint->int_stack = (double *) malloc(STACK_SIZE*sizeof(double));\n");
+  fprintf(init_code,"  libint->int_stack = (REALTYPE *) malloc(STACK_SIZE*sizeof(REALTYPE));\n");
   fprintf(init_code,"  memory += STACK_SIZE;\n");
   fprintf(init_code,"  libint->PrimQuartet = (prim_data *) malloc(num_prim_quartets*sizeof(prim_data));\n");
-  fprintf(init_code,"  memory += num_prim_quartets*sizeof(prim_data)/sizeof(double);\n");
+  fprintf(init_code,"  memory += num_prim_quartets*sizeof(prim_data)/sizeof(REALTYPE);\n");
   fprintf(init_code,"  return memory;\n}\n\n");
   fprintf(init_code,"void free_libint(Libint_t *libint)\n{\n");
   fprintf(init_code,"  if (libint->int_stack != NULL) {\n");
@@ -130,33 +141,36 @@ int main()
   
     /* Setting up libint.h */
   fprintf(libint_header,"/* Maximum angular momentum of functions in a basis set plus 1 */\n");
+  fprintf(libint_header,"#define REALTYPE %s\n",real_type);
+  if (long_double)
+    fprintf(libint_header,"#define NONDOUBLE_INTS\n");
   fprintf(libint_header,"#define LIBINT_MAX_AM %d\n",1+new_am/2);
   fprintf(libint_header,"#define LIBINT_OPT_AM %d\n",1+opt_am/2);
   fprintf(libint_header,"#define STACK_SIZE %d\n\n",stack_size);
   fprintf(libint_header,"typedef struct pdata{\n");
-  fprintf(libint_header,"  double F[%d];\n",2*new_am+1);
-  fprintf(libint_header,"  double U[6][3];\n");
-  fprintf(libint_header,"  double twozeta_a;\n"); 
-  fprintf(libint_header,"  double twozeta_b;\n"); 
-  fprintf(libint_header,"  double twozeta_c;\n");
-  fprintf(libint_header,"  double twozeta_d;\n");
-  fprintf(libint_header,"  double oo2z;\n");
-  fprintf(libint_header,"  double oo2n;\n");
-  fprintf(libint_header,"  double oo2zn;\n");
-  fprintf(libint_header,"  double poz;\n");
-  fprintf(libint_header,"  double pon;\n");
-  fprintf(libint_header,"  double oo2p;\n");
-  fprintf(libint_header,"  double ss_r12_ss;\n");
+  fprintf(libint_header,"  REALTYPE F[%d];\n",2*new_am+1);
+  fprintf(libint_header,"  REALTYPE U[6][3];\n");
+  fprintf(libint_header,"  REALTYPE twozeta_a;\n"); 
+  fprintf(libint_header,"  REALTYPE twozeta_b;\n"); 
+  fprintf(libint_header,"  REALTYPE twozeta_c;\n");
+  fprintf(libint_header,"  REALTYPE twozeta_d;\n");
+  fprintf(libint_header,"  REALTYPE oo2z;\n");
+  fprintf(libint_header,"  REALTYPE oo2n;\n");
+  fprintf(libint_header,"  REALTYPE oo2zn;\n");
+  fprintf(libint_header,"  REALTYPE poz;\n");
+  fprintf(libint_header,"  REALTYPE pon;\n");
+  fprintf(libint_header,"  REALTYPE oo2p;\n");
+  fprintf(libint_header,"  REALTYPE ss_r12_ss;\n");
   fprintf(libint_header,"  } prim_data;\n\n");
   fprintf(libint_header,"typedef struct {\n");
-  fprintf(libint_header,"  double *int_stack;\n"); 
+  fprintf(libint_header,"  REALTYPE *int_stack;\n"); 
   fprintf(libint_header,"  prim_data *PrimQuartet;\n"); 
-  fprintf(libint_header,"  double AB[3];\n");
-  fprintf(libint_header,"  double CD[3];\n");
-  fprintf(libint_header,"  double *vrr_classes[%d][%d];\n",1+new_am,1+new_am);
-  fprintf(libint_header,"  double *vrr_stack;\n");
+  fprintf(libint_header,"  REALTYPE AB[3];\n");
+  fprintf(libint_header,"  REALTYPE CD[3];\n");
+  fprintf(libint_header,"  REALTYPE *vrr_classes[%d][%d];\n",1+new_am,1+new_am);
+  fprintf(libint_header,"  REALTYPE *vrr_stack;\n");
   fprintf(libint_header,"  } Libint_t;\n\n");
-  fprintf(libint_header,"extern double *(*build_eri[%d][%d][%d][%d])(Libint_t *, int);\n",
+  fprintf(libint_header,"extern REALTYPE *(*build_eri[%d][%d][%d][%d])(Libint_t *, int);\n",
 	  new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
   fprintf(libint_header,"void init_libint_base();\n");
   fprintf(libint_header,"int  init_libint(Libint_t *, int);\n");

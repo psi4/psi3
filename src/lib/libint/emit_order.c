@@ -117,15 +117,15 @@ int emit_order(int old_am, int new_am, int opt_am)
       fprintf(hrr_code,"extern void vrr_order_%c%c%c%c();\n\n",am_letter[la-lb],am_letter[lb],am_letter[lc-ld],am_letter[ld]);
       fprintf(hrr_code,"  /* Computes quartets of (%c%c|%c%c) integrals */\n\n",
 	      am_letter[la-lb],am_letter[lb],am_letter[lc-ld],am_letter[ld]);
-      fprintf(hrr_code,"double *%s(Libint_t *Libint, int num_prim_comb)\n{\n",hrr_function_name);
+      fprintf(hrr_code,"REALTYPE *%s(Libint_t *Libint, int num_prim_comb)\n{\n",hrr_function_name);
       fprintf(hrr_code," prim_data *Data = Libint->PrimQuartet;\n");
-      fprintf(hrr_code," double *int_stack = Libint->int_stack;\n");
+      fprintf(hrr_code," REALTYPE *int_stack = Libint->int_stack;\n");
       fprintf(hrr_code," int i;\n\n");
       
       /*-------------------------------------------------------------
 	Include the function into the hrr_header.h and init_libint.c
        -------------------------------------------------------------*/
-      fprintf(hrr_header,"double *%s(Libint_t *, int);\n",hrr_function_name);
+      fprintf(hrr_header,"REALTYPE *%s(Libint_t *, int);\n",hrr_function_name);
       fprintf(init_code,"  build_eri[%d][%d][%d][%d] = %s;\n",la-lb,lb,lc-ld,ld,hrr_function_name);
 
       /*-----------------------------------
@@ -184,7 +184,7 @@ int emit_order(int old_am, int new_am, int opt_am)
 	}
       }
       base_mem = get_total_memory();
-      fprintf(hrr_code," memset(int_stack,0,%d);\n\n",base_mem*sizeof(double));
+      fprintf(hrr_code," memset(int_stack,0,%d*sizeof(REALTYPE));\n\n",base_mem);
       fprintf(hrr_code," Libint->vrr_stack = int_stack + %d;\n",base_mem);
       
       /*----------------------------
@@ -280,8 +280,8 @@ int emit_order(int old_am, int new_am, int opt_am)
       vrr_mem = base_mem + get_total_memory();
       if (max_stack_size < vrr_mem)
 	max_stack_size = vrr_mem;
-      fprintf(vrr_code," double *vrr_stack = Libint->vrr_stack;\n");
-      fprintf(vrr_code," double *tmp, *target_ptr;\n int i, am[2];\n");
+      fprintf(vrr_code," REALTYPE *vrr_stack = Libint->vrr_stack;\n");
+      fprintf(vrr_code," REALTYPE *tmp, *target_ptr;\n int i, am[2];\n");
       
       j = first_vrr_to_compute;
       do {
