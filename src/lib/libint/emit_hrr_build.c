@@ -79,7 +79,7 @@ int emit_hrr_build(int new_am, int max_class_size)
 	      am_letter[am_in[0]],am_letter[am_in[1]]);
       if (split) {
 	for(i=0;i<num_subfunctions;i++) {
-	  fprintf(code,"double *%s(const double *, double *, double *, double *, int);\n",
+	  fprintf(code,"double *%s(const double *, double *, double *, double *);\n",
 		  subfunction_name[i]);
 	}
 	fprintf(code,"\n");
@@ -103,17 +103,16 @@ int emit_hrr_build(int new_am, int max_class_size)
       fprintf(code,"  for(ab=0;ab<ab_num;ab++) {\n");
       if (split == 1) {
 	for(f=0;f<num_subfunctions;f++)
-	  fprintf(code,"    vp = %s(CD, vp, I0, I1, ab_num);\n",
+	  fprintf(code,"    vp = %s(CD, vp, I0, I1);\n",
 		subfunction_name[f]);
 	fprintf(code,"    I0 += %d;\n    I1 += %d;\n",i0_step,i1_step);
 	fprintf(code,"  }\n}\n\n");
 
-	fprintf(code,"double *%s(const double *CD, double *vp, double *I0, double *I1, int ab_num)\n{\n",
+	fprintf(code,"double *%s(const double *CD, double *vp, double *I0, double *I1)\n{\n",
 	      subfunction_name[0]);
 	fprintf(code,"  const double CD0 = CD[0];\n");
 	fprintf(code,"  const double CD1 = CD[1];\n");
-	fprintf(code,"  const double CD2 = CD[2];\n");
-	fprintf(code,"  int ab;\n\n");
+	fprintf(code,"  const double CD2 = CD[2];\n\n");
       }
 
       for(p = 0; p <= am_in[0]; p++){
@@ -153,12 +152,11 @@ int emit_hrr_build(int new_am, int max_class_size)
 		curr_count = 0;
 		curr_subfunction++;
 		fprintf(code,"  return vp;\n}\n\n");
-		fprintf(code,"double *%s(const double *CD, double *vp, double *I0, double *I1, int ab_num)\n{\n",
+		fprintf(code,"double *%s(const double *CD, double *vp, double *I0, double *I1)\n{\n",
 			subfunction_name[curr_subfunction]);
 		fprintf(code,"  const double CD0 = CD[0];\n");
 		fprintf(code,"  const double CD1 = CD[1];\n");
-		fprintf(code,"  const double CD2 = CD[2];\n");
-		fprintf(code,"  int ab;\n\n");
+		fprintf(code,"  const double CD2 = CD[2];\n\n");
 	      }
 	    }
 	  }
