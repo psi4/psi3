@@ -1061,10 +1061,11 @@ void get_moinfo(void)
 		   moinfo.orbspi[h]*moinfo.virtpi[h]*sizeof(double),
 		   next, &next);
 
-	free_block(evects[h]);
 	free_block(scf_vector[h]);
 
       }
+
+      free_block(evects[h]);
 
       /*
 	fprintf(outfile, "\n\tOriginal SCF Eigenvectors:\n");

@@ -28,6 +28,14 @@ void d_sort(void)
     dpd_buf4_copy(&D, CC_DINTS, "D <IJ||AB>");
     dpd_buf4_close(&D);
 
+    dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <IJ||AB>");
+    dpd_buf4_sort(&D, CC_DINTS, prqs, 20, 20, "D <IJ||AB> (IA,JB)");
+    dpd_buf4_close(&D);
+
+    dpd_buf4_init(&D, CC_DINTS, 0, 20, 20, 20, 20, 0, "D <IJ||AB> (IA,JB)");
+    dpd_buf4_sort(&D, CC_DINTS, 20, 21, "D <IJ||AB> (IA,BJ)");
+    dpd_buf4_close(&D);
+
     /*** BB ***/
     dpd_buf4_init(&D, CC_DINTS, 0, 12, 17, 10, 15, 1, "D <ij|ab>");
     dpd_buf4_copy(&D, CC_DINTS, "D <ij||ab> (i>j,a>b)");
@@ -43,6 +51,42 @@ void d_sort(void)
 
     dpd_buf4_init(&D, CC_DINTS, 0, 10, 15, 10, 15, 1, "D <ij|ab>");
     dpd_buf4_copy(&D, CC_DINTS, "D <ij||ab>");
+    dpd_buf4_close(&D);
+
+    dpd_buf4_init(&D, CC_DINTS, 0, 10, 15, 10, 15, 0, "D <ij||ab>");
+    dpd_buf4_sort(&D, CC_DINTS, prqs, 30, 30, "D <ij||ab> (ia,jb)");
+    dpd_buf4_close(&D);
+
+    dpd_buf4_init(&D, CC_DINTS, 0, 30, 30, 30, 30, 0, "D <ij||ab> (ia,jb)");
+    dpd_buf4_sort(&D, CC_DINTS, 30, 31, "D <ij||ab> (ia,bj)");
+    dpd_buf4_close(&D);
+
+    /*** AB ***/
+    dpd_buf4_init(&D, CC_DINTS, 0, 22, 28, 22, 28, 0, "D <Ij|Ab>");
+    dpd_buf4_sort(&D, CC_DINTS, qpsr, 23, 29, "D <iJ|aB>");
+    dpd_buf4_sort(&D, CC_DINTS, psrq, 24, 26, "D <Ij|Ab> (Ib,Aj)");
+    dpd_buf4_sort(&D, CC_DINTS, prqs, 20, 30, "D <Ij|Ab> (IA,jb)");
+    dpd_buf4_close(&D);
+
+    dpd_buf4_init(&D, CC_DINTS, 0, 20, 30, 20, 30, 0, "D <Ij|Ab> (IA,jb)");
+    dpd_buf4_sort(&D, CC_DINTS, 0, 30, 20, 30, 20, 0, "D <Ij|Ab> (ia,JB)");
+    dpd_buf4_sort(&D, CC_DINTS, pqsr, 30, 31, "D <Ij|Ab> (IA,bj)");
+    dpd_buf4_close(&D);
+
+    dpd_buf4_init(&D, CC_DINTS, 0, 30, 20, 30, 20, 0, "D <Ij|Ab> (ia,JB)");
+    dpd_buf4_sort(&D, CC_DINTS, pqsr, 30, 21, "D <Ij|Ab> (ia,BJ)");
+    dpd_buf4_close(&D);
+
+    dpd_buf4_init(&D, CC_DINTS, 0, 23, 29, 23, 29, 0, "D <iJ|aB>");
+    dpd_buf4_sort(&D, CC_DINTS, 27, 25, "D <iJ|aB> (iB,aJ)");
+    dpd_buf4_close(&D);
+
+    dpd_buf4_init(&D, CC_DINTS, 0, 24, 26, 24, 26, 0, "D <Ij|Ab> (Ib,Aj)");
+    dpd_buf4_sort(&D, CC_DINTS, pqsr, 24, 27, "D <Ij|Ab> (Ib,jA)");
+    dpd_buf4_close(&D);
+
+    dpd_buf4_init(&D, CC_DINTS, 0, 27, 25, 27, 25, 0, "D <iJ|aB> (iB,aJ)");
+    dpd_buf4_sort(&D, CC_DINTS, pqsr, 27, 24, "D <iJ|aB> (iB,Ja)");
     dpd_buf4_close(&D);
   }
   else {  /*** RHF/ROHF ***/

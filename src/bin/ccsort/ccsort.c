@@ -39,6 +39,8 @@ void exit_io(void);
 void cleanup(void);
 int **cacheprep_uhf(int level, int *cachefiles);
 int **cacheprep_rhf(int level, int *cachefiles);
+void cachedone_uhf(int **cachelist);
+void cachedone_rhf(int **cachelist);
 
 int main(int argc, char *argv[])
 {
@@ -47,6 +49,8 @@ int main(int argc, char *argv[])
   init_io();
   init_ioff();
   title();
+
+  timer_init();
 
   get_params();
   get_moinfo();
@@ -85,6 +89,12 @@ int main(int argc, char *argv[])
   denom();
 
   dpd_close(0);
+
+  if(params.ref == 2) cachedone_uhf(cachelist);
+  else cachedone_rhf(cachelist);
+  free(cachefiles);
+
+  timer_done();
 
   cleanup();
   exit_io();
@@ -131,6 +141,7 @@ void exit_io(void)
   int i;
   for(i=CC_MIN; i <= CC_MAX; i++)  psio_close(i,1);
   psio_done();
+  free_ptrs();
   ip_done();
   tstop(outfile);
   fclose(infile);

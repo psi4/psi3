@@ -199,9 +199,11 @@ int file_build(dpdfile4 *File, int inputfile, double tolerance,
   for(n=0; n < nbuckets; n++) {
       free(bucket_offset[n]);
       free(bucket_rowdim[n]);
+      free(bucket_size[n]);
     }
   free(bucket_offset);
   free(bucket_rowdim);
+  free(bucket_size);
 
   free(SortBuf);
   

@@ -49,7 +49,17 @@ void c_sort(void)
     dpd_buf4_sort(&C, CC_CINTS, pqsr, 30, 31, "C <ia||jb> (ia,bj)");
     dpd_buf4_close(&C);
 
+    /*** AB ***/
+
     /* <Ai|Bj> (iA,Bj) (Wmbej.c) */
+    dpd_buf4_init(&C, CC_CINTS, 0, 26, 26, 26, 26, 0, "C <Ai|Bj>");
+    dpd_buf4_sort(&C, CC_CINTS, qprs, 27, 26, "C <Ai|Bj> (iA,Bj)");
+    dpd_buf4_close(&C);
+
+    /* <Ia|Jb> (Ia,bJ) (Wmbej.c) */
+    dpd_buf4_init(&C, CC_CINTS, 0, 24, 24, 24, 24, 0, "C <Ia|Jb>");
+    dpd_buf4_sort(&C, CC_CINTS, pqsr, 24, 25, "C <Ia|Jb> (Ia,bJ)");
+    dpd_buf4_close(&C);
 
   }
   else { /** RHF/ROHF **/

@@ -12,3 +12,4 @@ EXTERN FILE *infile, *outfile;
 EXTERN int *ioff;
 EXTERN struct MOInfo moinfo;
 EXTERN struct Params params;
+

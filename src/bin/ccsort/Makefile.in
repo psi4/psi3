@@ -11,7 +11,8 @@ endif
 
 LDLIBS += $(BLAS)
 
-PSILIBS = -ldpd -lqt -lfile30 -liwl -lciomr -lpsio -lipv1 -lmalloc
+PSILIBS = -ldpd -lqt -lfile30 -liwl -lciomr -lpsio -lipv1 /usr/lib/libdmalloc.a
+
 
 CSRC = \
 c_sort.c    d_sort.c      e_sort.c      get_moinfo.c  idx_permute.c \
