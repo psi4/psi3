@@ -56,7 +56,8 @@ int main(int argc, char *argv[])
   fndcor(&(memory),infile,outfile);
 
   errcod = ip_string("WFN", &(params.wfn), 0);
-  if(strcmp(params.wfn, "CCSD") && strcmp(params.wfn, "CCSD_T")) {
+  if(strcmp(params.wfn, "CCSD") && strcmp(params.wfn, "CCSD_T") &&
+     strcmp(params.wfn,"BCCD") && strcmp(params.wfn,"BCCD_T")) {
     fprintf(outfile, "Invalid value of input keyword WFN: %s\n", params.wfn);
     exit(2);
   }
@@ -137,7 +138,7 @@ int main(int argc, char *argv[])
   chkpt_close();
 
   /* Write pertinent data to energy.dat */
-  if(!strcmp(params.wfn,"CCSD_T")) {
+  if(!strcmp(params.wfn,"CCSD_T") || !strcmp(params.wfn,"BCCD_T")) {
     chkpt_init(PSIO_OPEN_OLD);
     natom = chkpt_rd_natom();
     geom = chkpt_rd_geom();
@@ -151,8 +152,14 @@ int main(int argc, char *argv[])
     free_block(geom);  free(zvals);
     fprintf(efile, "SCF(30)   %22.12f\n", moinfo.escf);
     fprintf(efile, "REF(100)  %22.12f\n", moinfo.eref);
-    fprintf(efile, "CCSD      %22.12f\n", (moinfo.ecc+moinfo.eref));
-    fprintf(efile, "CCSD(T)   %22.12f\n", (ET+ moinfo.ecc+moinfo.eref));
+    if(!strcmp(params.wfn,"CCSD_T")) {
+      fprintf(efile, "CCSD      %22.12f\n", (moinfo.ecc+moinfo.eref));
+      fprintf(efile, "CCSD(T)   %22.12f\n", (ET+ moinfo.ecc+moinfo.eref));
+    }
+    else if(!strcmp(params.wfn,"BCCD_T")) {
+      fprintf(efile, "BCCD      %22.12f\n", (moinfo.ecc+moinfo.eref));
+      fprintf(efile, "BCCD(T)   %22.12f\n", (ET+ moinfo.ecc+moinfo.eref));
+    }
     fclose(efile);
   }
 
