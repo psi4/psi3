@@ -25,7 +25,7 @@ void rzero(int C_irr, int *converged) {
   int AA_OCC, AA_VIR, BB_OCC, BB_VIR, AB_OCC, AB_VIR;
   char lbl[32], E_lbl[32], R1A_lbl[32], R1B_lbl[32];
   char R2AA_lbl[32], R2BB_lbl[32], R2AB_lbl[32];
-  static int R_index = 0;
+  int R_index = -1;
 
   A_OCC = 0; A_VIR = 1;
   AA_OCC = 2; AA_VIR = 7;
@@ -45,18 +45,18 @@ void rzero(int C_irr, int *converged) {
     if (!converged[i]) continue; /* this root did not converged */
     ++R_index;
 
-    sprintf(E_lbl, "EOM CCSD Energy for root %d", R_index);
+    sprintf(E_lbl, "EOM CCSD Energy for root %d %d", C_irr, R_index);
     if ( psio_tocscan(CC_INFO, E_lbl) == NULL) {
       fprintf(outfile,"No EOM CCSD Energy found in CC_INFO.  Not normalizing R.\n");
       return;
     };
     psio_read_entry(CC_INFO, E_lbl, (char *) &(energy), sizeof(double));
 
-    sprintf(R1A_lbl, "RIA %d", R_index);
-    sprintf(R1B_lbl, "Ria %d", R_index);
-    sprintf(R2AA_lbl, "RIJAB %d", R_index);
-    sprintf(R2BB_lbl, "Rijab %d", R_index);
-    sprintf(R2AB_lbl, "RIjAb %d", R_index);
+    sprintf(R1A_lbl, "RIA %d %d", C_irr, R_index);
+    sprintf(R1B_lbl, "Ria %d %d", C_irr, R_index);
+    sprintf(R2AA_lbl, "RIJAB %d %d", C_irr, R_index);
+    sprintf(R2BB_lbl, "Rijab %d %d", C_irr, R_index);
+    sprintf(R2AB_lbl, "RIjAb %d %d", C_irr, R_index);
 
     /* Calculate <0| Hbar R |0> */
     if (C_irr == H_IRR) {
@@ -141,7 +141,7 @@ dpd_buf4_print(&fRIjAb, outfile, 1);
     dpd_buf4_close(&fRIjAb);
 
     fprintf(outfile,"EOM CCSD R0 for root %d = %15.10lf\n", R_index, rzero);
-    sprintf(lbl, "EOM CCSD R0 for root %d", R_index);
+    sprintf(lbl, "EOM CCSD R0 for root %d %d", C_irr, R_index);
     psio_write_entry(CC_INFO, lbl, (char *) &rzero, sizeof(double));
 
     if (eom_params.dot_with_L) {
@@ -205,7 +205,7 @@ void rzero_rhf(int C_irr, int *converged) {
   int L_irr,i;
   char lbl[32], E_lbl[32], R1A_lbl[32], R1B_lbl[32], *blank;
   char R2AA_lbl[32], R2BB_lbl[32], R2AB_lbl[32];
-  static int R_index=0;
+  int R_index=-1;
 
   L_irr = eom_params.L_irr;
 
@@ -213,27 +213,27 @@ void rzero_rhf(int C_irr, int *converged) {
     if (!converged[i]) continue; /* this root did not converge */
     ++R_index;
 
-    sprintf(E_lbl, "EOM CCSD Energy for root %d", R_index);
+    sprintf(E_lbl, "EOM CCSD Energy for root %d %d", C_irr, R_index);
     if ( psio_tocscan(CC_INFO, E_lbl) == NULL) { 
       fprintf(outfile,"No EOM CCSD Energy found in CC_INFO.  Not normalizing R.\n");
       return;
     };
     psio_read_entry(CC_INFO, E_lbl, (char *) &(energy), sizeof(double));
 
-    sprintf(R1A_lbl, "RIA %d", R_index);
-    sprintf(R1B_lbl, "Ria %d", R_index);
-    sprintf(R2AB_lbl, "RIjAb %d", R_index);
-    sprintf(R2AA_lbl, "RIJAB %d", R_index);
-    sprintf(R2BB_lbl, "Rijab %d", R_index);
+    sprintf(R1A_lbl, "RIA %d %d", C_irr, R_index);
+    sprintf(R1B_lbl, "Ria %d %d", C_irr, R_index);
+    sprintf(R2AB_lbl, "RIjAb %d %d", C_irr, R_index);
+    sprintf(R2AA_lbl, "RIJAB %d %d", C_irr, R_index);
+    sprintf(R2BB_lbl, "Rijab %d %d", C_irr, R_index);
 
     /* produce RIjbA and 2RIjAb-RIjbA copies - not yet normalized */
     dpd_buf4_init(&RIjAb, CC_RAMPS, C_irr, 0, 5, 0, 5, 0, R2AB_lbl);
     dpd_buf4_sort(&RIjAb, CC_TMP, pqsr, 0, 5, "RIjbA");
-    sprintf(lbl, "%s %d", "2RIjAb - RIjbA", R_index);
+    sprintf(lbl, "%s %d %d", "2RIjAb - RIjbA", C_irr, R_index);
     dpd_buf4_copy(&RIjAb, CC_RAMPS, lbl);
     dpd_buf4_close(&RIjAb);
 
-    sprintf(lbl, "%s %d", "2RIjAb - RIjbA", R_index);
+    sprintf(lbl, "%s %d %d", "2RIjAb - RIjbA", C_irr, R_index);
     dpd_buf4_init(&RIjAb, CC_RAMPS, C_irr, 0, 5, 0, 5, 0, lbl);
     dpd_buf4_scm(&RIjAb, 2.0);
     dpd_buf4_init(&RIjbA, CC_TMP, C_irr, 0, 5, 0, 5, 0, "RIjbA");
@@ -249,7 +249,7 @@ void rzero_rhf(int C_irr, int *converged) {
       dpd_file2_close(&RIA);
       dpd_file2_close(&FIA);
   
-      sprintf(lbl, "%s %d", "2RIjAb - RIjbA", R_index);
+      sprintf(lbl, "%s %d %d", "2RIjAb - RIjbA", C_irr, R_index);
       dpd_buf4_init(&RIjAb, CC_RAMPS, C_irr, 0, 5, 0, 5, 0, lbl);
       dpd_buf4_init(&D, CC_DINTS, H_IRR, 0, 5, 0, 5, 0, "D <ij|ab>");
       r2 = dpd_buf4_dot(&D, &RIjAb);
@@ -280,7 +280,7 @@ void rzero_rhf(int C_irr, int *converged) {
     dpd_buf4_close(&RIjbA);
 
     fprintf(outfile,"EOM CCSD R0 for root %d = %15.10lf\n", R_index, rzero);
-    sprintf(lbl, "EOM CCSD R0 for root %d", R_index);
+    sprintf(lbl, "EOM CCSD R0 for root %d %d", C_irr, R_index);
     psio_write_entry(CC_INFO, lbl, (char *) &rzero, sizeof(double));
 
     /* produce ROHF like quantities and 2RIjAb-RIjbA */
@@ -289,7 +289,7 @@ void rzero_rhf(int C_irr, int *converged) {
     dpd_file2_close(&RIA);
 
     dpd_buf4_init(&RIjAb, CC_RAMPS, C_irr, 0, 5, 0, 5, 0, R2AB_lbl);
-    sprintf(lbl, "%s %d", "2RIjAb - RIjbA", R_index);
+    sprintf(lbl, "%s %d %d", "2RIjAb - RIjbA", C_irr, R_index);
     dpd_buf4_copy(&RIjAb, CC_RAMPS, lbl);
     dpd_buf4_close(&RIjAb);
 
@@ -299,7 +299,7 @@ void rzero_rhf(int C_irr, int *converged) {
     dpd_buf4_close(&RIjAb);
       
     dpd_buf4_init(&RIjbA, CC_TMP, C_irr, 0, 5, 0, 5, 0, "RIjbA");
-    sprintf(lbl, "%s %d", "2RIjAb - RIjbA", R_index);
+    sprintf(lbl, "%s %d %d", "2RIjAb - RIjbA", C_irr, R_index);
     dpd_buf4_init(&RIjAb, CC_RAMPS, C_irr, 0, 5, 0, 5, 0, lbl);
     dpd_buf4_scm(&RIjAb, 2.0);
     dpd_buf4_axpy(&RIjbA, &RIjAb, -1.0);
@@ -342,7 +342,7 @@ void rzero_rhf(int C_irr, int *converged) {
         dpd_file2_close(&LIA);
   
         dpd_buf4_init(&LIjAb, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "LIjAb");
-        sprintf(lbl, "%s %d", "2RIjAb - RIjbA", R_index);
+        sprintf(lbl, "%s %d %d", "2RIjAb - RIjbA", C_irr, R_index);
         dpd_buf4_init(&RIjAb, CC_RAMPS, C_irr, 0, 5, 0, 5, 0, lbl);
         r2 = dpd_buf4_dot(&LIjAb, &RIjAb);
         dpd_buf4_close(&RIjAb);

@@ -87,9 +87,11 @@ void diag(void) {
     fprintf(outfile,"Symmetry of excited state: %s\n", moinfo.labels[moinfo.sym ^ C_irr]);
     fprintf(outfile,"Symmetry of right eigenvector: %s\n",moinfo.labels[C_irr]);
 
-    /* zero out EOM_TMP */
-    psio_close(EOM_TMP,0);
-    psio_open(EOM_TMP,0);
+    /* zero out files between irreps */
+    for (i=EOM_D; i<=EOM_R; ++i) {
+      psio_close(i,0);
+      psio_open(i,0);
+    }
 
     /* Store approximate diagonal elements of Hbar */
     form_diagonal(C_irr);
