@@ -13,7 +13,7 @@ extern "C" {
 #include <libciomr/libciomr.h>
 #include <libchkpt/chkpt.h>
 #include <libpsio/psio.h>
-#include <libqt/slaterd.h>
+#include <libqt/slaterdset.h>
 #include <psifiles.h>
 }
 #include <libbasis/basisset.h>
@@ -102,7 +102,7 @@ void parsing()
     done("This HF reference is not supported at the moment");
   delete[] reftype;
 
-  Params.delta = 0.0001;
+  Params.delta = 0.0005;
   errcod = ip_data(":DBOC:DISPLACEMENT","%lf",&Params.delta,0);
 
   Params.print_lvl = 1;
@@ -229,7 +229,7 @@ double eval_dboc()
     if (errcod) {
       done("input failed");
     }
-    errcod = system("psi3");
+    errcod = system("psi3 --dboc --noinput --messy");
     if (errcod) {
       done("psi3 failed");
     }
@@ -260,7 +260,7 @@ double eval_dboc()
     if (errcod) {
       done("input failed");
     }
-    errcod = system("psi3");
+    errcod = system("psi3 --dboc --noinput --messy");
     if (errcod) {
       done("psi3 failed");
     }
@@ -287,6 +287,11 @@ double eval_dboc()
     if (!strcmp(Params.wfn,"DETCI") || !strcmp(Params.wfn,"DETCAS")) {
       psio_open(PSIF_CIVECT,PSIO_OPEN_NEW);
       psio_close(PSIF_CIVECT,0);
+    }
+    // it's safe to do psiclean now
+    errcod = system("psiclean");
+    if (errcod) {
+      done("psiclean");
     }
 
   }
@@ -338,10 +343,12 @@ void exit_io()
 
 void done(const char *message)
 {
-  fprintf(outfile,"%s\n",message);
-  fprintf(stderr,"DBOC: %s\n",message);
+  char* errmsg;
+  errmsg = (char *) new char[strlen(message)+7];
+  sprintf(errmsg,"DBOC: %s",message);
   exit_io();
-  abort();
+  throw std::runtime_error(errmsg);
+  delete[] errmsg;
 }
 
 
