@@ -59,8 +59,6 @@ int main(int argc, char *argv[])
   opdm();
   }
   
-  /* lag() */
-
   dpd_close(0);
   
   cleanup();
@@ -99,18 +97,6 @@ void title(void)
   fprintf(outfile, "\t\t\t*                       *\n");
   fprintf(outfile, "\t\t\t*************************\n");
 }
-
-/* Variable Representation
- * n  -> number of 
- * pi -> per irrep
- * fz -> frozen
- * act -> active
- * docc -> doubly occupied
- * virt -> virtual
- * mo -> molecular orbitals
- * when all docc or all virt are used the
- * meaning is intrinsic
-*/
 
 void init_ioff(void)
 {
