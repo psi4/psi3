@@ -396,13 +396,6 @@ void te_deriv1_corr()
 #endif
   iwl_buf_close(&TPDM,1);
 
-#ifdef PRINT_DERIV1
-  for(i=0; i < Molecule.num_atoms*3; i++) {
-    fclose(eri[i]);
-  }
-  free(eri);
-#endif
-
   return;
 }
 
