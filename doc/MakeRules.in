@@ -18,6 +18,7 @@ all: default install
 
 # Note that LaTeX should be run three times to resolve references
 $(TARGET_DVI): $(TEX) $(SUBTEX)
+	echo $(srcdir)
 	TEXINPUTS=$(TEXINPUTS);  export TEXINPUTS; \
         $(LATEX) $<; $(LATEX) $<; $(LATEX) $<
 
@@ -59,6 +60,7 @@ endif
 
 realclean:: dviclean psclean htmlclean
 	-rm -f *.aux *.log *.toc *.bbl
+	-rm -rf html
 
 clean:: dviclean psclean htmlclean
 
@@ -76,7 +78,7 @@ htmlclean:
 #
 
 top_srcdir = @top_srcdir@
-srcdir = @srcdir@
+mysrcdir = @srcdir@
 # this is checked from the documentation subdirs, so we need two-levels up
 top_objdir = ../..
 
@@ -86,8 +88,8 @@ $(top_srcdir)/configure: $(top_srcdir)/configure.in $(top_srcdir)/aclocal.m4
 $(top_objdir)/config.status: $(top_srcdir)/configure
 	cd $(top_objdir) && ./config.status --recheck
 
-Makefile: $(srcdir)/Makefile.in $(top_objdir)/config.status
-	cd $(top_objdir) && CONFIG_FILES=doc/`basename $(srcdir)`/Makefile ./config.status
+Makefile: $(mysrcdir)/Makefile.in $(top_objdir)/config.status
+	cd $(top_objdir) && CONFIG_FILES=doc/`basename $(mysrcdir)`/Makefile ./config.status
 
 ../MakeVars: $(top_srcdir)/doc/MakeVars.in $(top_objdir)/config.status
 	cd $(top_objdir) && CONFIG_FILES=doc/MakeVars ./config.status
