@@ -117,23 +117,28 @@ void trans_one_forwards(void)
     else destruct_evects(nirreps, moinfo.evects);
 
     if(!strcmp(params.ref,"UHF")) {
-      moinfo.evects_alpha = construct_evects("alpha", moinfo.nirreps, moinfo.orbspi,
+      moinfo.evects_alpha = construct_evects("alpha", moinfo.nirreps, 
+                                             moinfo.orbspi,
 					     moinfo.sopi, moinfo.orbspi,
 					     moinfo.first_so, moinfo.last_so,
 					     moinfo.first, moinfo.last,
-					     moinfo.first, moinfo.last, params.print_mos);
-      moinfo.evects_beta = construct_evects("beta", moinfo.nirreps, moinfo.orbspi,
+					     moinfo.first, moinfo.last, 
+                                             params.print_mos);
+      moinfo.evects_beta = construct_evects("beta", moinfo.nirreps, 
+                                            moinfo.orbspi,
 					    moinfo.sopi, moinfo.orbspi,
 					    moinfo.first_so, moinfo.last_so,
 					    moinfo.first, moinfo.last,
-					    moinfo.first, moinfo.last, params.print_mos);
+					    moinfo.first, moinfo.last, 
+                                            params.print_mos);
     }
     else {
       moinfo.evects = construct_evects("RHF", moinfo.nirreps, moinfo.orbspi,
 				       moinfo.sopi, moinfo.orbspi,
 				       moinfo.first_so, moinfo.last_so,
 				       moinfo.first, moinfo.last,
-				       moinfo.first, moinfo.last, params.print_mos);
+				       moinfo.first, moinfo.last, 
+                                       params.print_mos);
     }
   }
 
@@ -145,15 +150,17 @@ void trans_one_forwards(void)
     
       itap = params.h_bare_a_file;
 
-      tran_one(nirreps, moinfo.evects_alpha, src_orbs, src_first, src_last, src_orbspi, dst_orbs, 
-	       dst_first, dst_last, dst_orbspi, oe_ints, new_oe_ints, moinfo.order_alpha,
+      tran_one(nirreps, moinfo.evects_alpha, src_orbs, src_first, src_last, 
+               src_orbspi, dst_orbs, dst_first, dst_last, dst_orbspi, oe_ints, 
+               new_oe_ints, moinfo.order_alpha,
 	       "\n\n\tOne-Electron Alpha Integrals (MO Basis):\n", 
 	       params.backtr, nfzc, print_integrals, outfile);
 
       iwl_wrtone(itap, PSIF_MO_A_OEI, dst_ntri, new_oe_ints);
 
       if (params.print_lvl) {
-	fprintf(outfile, "\tOne-electron A integrals written to file %d.\n", itap);
+	fprintf(outfile, "\tOne-electron A integrals written to file %d.\n", 
+                itap);
 	fflush(outfile);
       }
 
@@ -162,14 +169,16 @@ void trans_one_forwards(void)
       /* Clear the new_oe_ints */
       zero_arr(new_oe_ints,dst_ntri);
 
-      tran_one(nirreps, moinfo.evects_beta, src_orbs, src_first, src_last, src_orbspi, dst_orbs, 
-	       dst_first, dst_last, dst_orbspi, oe_ints, new_oe_ints, moinfo.order_beta,
-	       "\n\n\tOne-Electron Beta Integrals (MO Basis):\n", 
+      tran_one(nirreps, moinfo.evects_beta, src_orbs, src_first, src_last, 
+               src_orbspi, dst_orbs, dst_first, dst_last, dst_orbspi, oe_ints, 
+               new_oe_ints, moinfo.order_beta, 
+               "\n\n\tOne-Electron Beta Integrals (MO Basis):\n", 
 	       params.backtr, nfzc, print_integrals, outfile);
 
       iwl_wrtone(itap, PSIF_MO_B_OEI, dst_ntri, new_oe_ints);
       if (params.print_lvl) {
-	fprintf(outfile, "\tOne-electron B integrals written to file %d.\n", itap);
+	fprintf(outfile, "\tOne-electron B integrals written to file %d.\n", 
+                itap);
 	fflush(outfile);
       }
     }
@@ -177,15 +186,16 @@ void trans_one_forwards(void)
 
       itap = params.h_bare_file;
 
-      tran_one(nirreps, moinfo.evects, src_orbs, src_first, src_last, src_orbspi, dst_orbs, 
-	       dst_first, dst_last, dst_orbspi, oe_ints, new_oe_ints, moinfo.order,
+      tran_one(nirreps, moinfo.evects, src_orbs, src_first, src_last, 
+               src_orbspi, dst_orbs, dst_first, dst_last, dst_orbspi, oe_ints, 
+               new_oe_ints, moinfo.order,
 	       "\n\n\tOne-Electron Integrals (MO Basis):\n", 
 	       params.backtr, nfzc, print_integrals, outfile);
 
 
       iwl_wrtone(itap, PSIF_MO_OEI, dst_ntri, new_oe_ints);
       if (params.print_lvl) {
-	fprintf(outfile, "\tOne-electron integrals written to file %d.\n", itap);
+	fprintf(outfile, "\tOne-electron integrals written to file %d.\n",itap);
 	fflush(outfile);
       }
     }
@@ -201,15 +211,17 @@ void trans_one_forwards(void)
       itap = params.h_fzc_a_file;
       oe_ints = moinfo.fzc_operator_alpha;
 
-      tran_one(nirreps, moinfo.evects_alpha, src_orbs, src_first, src_last, src_orbspi, dst_orbs, 
-	       dst_first, dst_last, dst_orbspi, oe_ints, new_oe_ints, moinfo.order_alpha,
+      tran_one(nirreps, moinfo.evects_alpha, src_orbs, src_first, src_last, 
+               src_orbspi, dst_orbs, dst_first, dst_last, dst_orbspi, oe_ints, 
+               new_oe_ints, moinfo.order_alpha,
 	       "\n\n\tAlpha Frozen-Core Operator (MO Basis):\n", 
 	       params.backtr, nfzc, print_integrals, outfile);
 
       iwl_wrtone(itap, PSIF_MO_A_FZC, dst_ntri, new_oe_ints);
 
       if (params.print_lvl) {
-	fprintf(outfile, "\tAlpha frozen-core operator written to file %d.\n", itap);
+	fprintf(outfile, "\tAlpha frozen-core operator written to file %d.\n", 
+                itap);
 	fflush(outfile);
       }
 
@@ -219,15 +231,17 @@ void trans_one_forwards(void)
       itap = params.h_fzc_b_file;
       oe_ints = moinfo.fzc_operator_beta;
 
-      tran_one(nirreps, moinfo.evects_beta, src_orbs, src_first, src_last, src_orbspi, dst_orbs, 
-	       dst_first, dst_last, dst_orbspi, oe_ints, new_oe_ints, moinfo.order_beta,
+      tran_one(nirreps, moinfo.evects_beta, src_orbs, src_first, src_last, 
+               src_orbspi, dst_orbs, dst_first, dst_last, dst_orbspi, oe_ints, 
+               new_oe_ints, moinfo.order_beta,
 	       "\n\n\tBeta Frozen-Core Operator (MO Basis):\n", 
 	       params.backtr, nfzc, print_integrals, outfile);
 
       iwl_wrtone(itap, PSIF_MO_B_FZC, dst_ntri, new_oe_ints);
 
       if (params.print_lvl) {
-	fprintf(outfile, "\tBeta frozen-core operator written to file %d.\n", itap);
+	fprintf(outfile, "\tBeta frozen-core operator written to file %d.\n", 
+                itap);
 	fflush(outfile);
       }
     }
@@ -236,8 +250,9 @@ void trans_one_forwards(void)
       itap = params.h_fzc_file;
       oe_ints = moinfo.fzc_operator;
 
-      tran_one(nirreps, moinfo.evects, src_orbs, src_first, src_last, src_orbspi, dst_orbs, 
-	       dst_first, dst_last, dst_orbspi, oe_ints, new_oe_ints, moinfo.order,
+      tran_one(nirreps, moinfo.evects, src_orbs, src_first, src_last, 
+               src_orbspi, dst_orbs, dst_first, dst_last, dst_orbspi, oe_ints, 
+               new_oe_ints, moinfo.order,
 	       "\n\n\tFrozen-Core Operator (MO Basis):\n", 
 	       params.backtr, nfzc, print_integrals, outfile);
 
