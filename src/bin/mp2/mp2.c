@@ -45,8 +45,9 @@ int main(int argc, char *argv[])
 
   if(params.ref == 2) { /** UHF **/
     cachelist = cacheprep_uhf(params.cachelev,cachefiles);
-    dpd_init(0,mo.nirreps,params.memory,params.cachetype,cachefiles,cachelist,NULL,4,mo.aoccpi,mo.aocc_sym,mo.avirpi,
-             mo.avir_sym,mo.boccpi,mo.bocc_sym,mo.bvirpi,mo.bvir_sym);
+    dpd_init(0,mo.nirreps,params.memory,params.cachetype,cachefiles,cachelist,NULL,
+	     4,mo.aoccpi,mo.aocc_sym,mo.avirpi,mo.avir_sym,mo.boccpi,mo.bocc_sym,
+	     mo.bvirpi,mo.bvir_sym);
   }
   else { /** RHF or ROHF **/
     cachelist = cacheprep_rhf(params.cachelev,cachefiles);
@@ -68,9 +69,7 @@ int main(int argc, char *argv[])
   chkpt_wt_etot(mo.Escf+mo.Emp2);
   chkpt_close();
   
-  if (params.opdm) {
-  opdm();
-  }
+  if(params.opdm) opdm();
   
   dpd_close(0);
   

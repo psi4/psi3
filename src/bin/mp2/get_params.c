@@ -22,8 +22,12 @@ void get_params()
 
   /* Assume RHF if no reference is given */
   params.ref = 0;
-
+  params.semicanonical = 0;
   if(!strcmp(junk,"RHF")) params.ref = 0;
+  else if(!strcmp(junk,"ROHF") && !strcmp(params.wfn,"MP2")) {
+    params.ref = 2;
+    params.semicanonical = 1;
+  }
   else if(!strcmp(junk,"ROHF")) params.ref = 1;
   else if(!strcmp(junk,"UHF")) params.ref = 2;
   else {
@@ -71,7 +75,12 @@ void get_params()
   fprintf(outfile, "\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
   fprintf(outfile, "\tWave function \t=\t%s\n", params.wfn);
+  if(params.semicanonical) {
+  fprintf(outfile, "\tReference WFN \t=\tROHF changed to UHF for Semicanonical Orbitals\n");
+  }
+  else {
   fprintf(outfile, "\tReference WFN \t=\t%s\n", (params.ref==0)?"RHF":((params.ref==1)?"ROHF":"UHF"));
+  } 
   fprintf(outfile, "\tCache Level   \t=\t%d\n", params.cachelev);
   fprintf(outfile, "\tCache Type    \t=\t%s\n", params.cachetype ? "LOW":"LRU");
   fprintf(outfile, "\tMemory (MB)   \t=\t%.1f\n",params.memory/1e6);

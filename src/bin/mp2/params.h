@@ -8,4 +8,5 @@ struct params {
   int cachelev;
   int cachetype;
   long int memory;
+  int semicanonical;
 };

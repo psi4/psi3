@@ -3,13 +3,11 @@
 #include "globals.h"
 
 double rhf_energy(void);
-double rohf_energy(void);
 double uhf_energy(void);
 
 double energy(void)
 {
   if(params.ref == 0) return(rhf_energy());
-  else if(params.ref == 1) return(rohf_energy());
   else if(params.ref == 2) return(uhf_energy());
 }
 
@@ -28,19 +26,26 @@ double rhf_energy(void)
   return(E);
 }
 
-double rohf_energy(void)
-{
-}
-
 double uhf_energy(void)
 {
-  double E2AA = 0;
-  double E2BB = 0;
-  double E2AB = 0;
-  dpdbuf4 tIJAB;
-  dpdbuf4 tijab;
-  dpdbuf4 tIjAb;
-  dpdbuf4 D;
+  double E1A = 0; double E1B = 0;	
+  double E2AA = 0; double E2BB = 0; double E2AB = 0;
+  dpdfile2 T1, F;
+  dpdbuf4 tIJAB, tijab, tIjAb,  D;
+  
+  if(params.semicanonical) {
+    dpd_file2_init(&F, CC_OEI, 0, 0, 1, "fIA");
+    dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
+    E1A = dpd_file2_dot(&F, &T1);
+    dpd_file2_close(&F);
+    dpd_file2_close(&T1);
+
+    dpd_file2_init(&F, CC_OEI, 0, 2, 3, "fia");
+    dpd_file2_init(&T1, CC_OEI, 0, 2, 3, "tia");
+    E1B = dpd_file2_dot(&F, &T1);
+    dpd_file2_close(&F);
+    dpd_file2_close(&T1);
+  }
   
   dpd_buf4_init(&tIJAB, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tIJAB");
   dpd_buf4_init(&D, CC_DINTS, 0, 2, 7, 2, 7, 0, "D <IJ||AB> (I>J,A>B)");
@@ -59,7 +64,10 @@ double uhf_energy(void)
   E2AB = dpd_buf4_dot(&D, &tIjAb);
   dpd_buf4_close(&D);
   dpd_buf4_close(&tIjAb);
-
-  return(E2AA+E2BB+E2AB);
+  
+  if(params.semicanonical)
+    return(E1A+E1B+E2AA+E2BB+E2AB);
+  else
+    return(E2AA+E2BB+E2AB);
 }
 

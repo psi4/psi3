@@ -4,13 +4,8 @@
 
 double amps(void) 
 {
-  dpdbuf4 tIJAB;
-  dpdbuf4 tijab;
-  dpdbuf4 tIjAb;
-  dpdbuf4 D;
-  dpdbuf4 dIJAB;
-  dpdbuf4 dijab;
-  dpdbuf4 dIjAb;
+  dpdfile2 tIA, tia, fIA, fia, dIA, dia;
+  dpdbuf4 tIJAB, tijab, tIjAb, D, dIJAB, dijab, dIjAb;
 
   if(params.ref == 0) { /** RHF **/
   
@@ -24,10 +19,28 @@ double amps(void)
     dpd_buf4_close(&dIjAb);
     dpd_buf4_close(&tIjAb);
   }
-  else if(params.ref == 1) { /** ROHF **/
-    
-  }
   else if(params.ref == 2) { /** UHF **/
+    if(params.semicanonical) {
+      dpd_file2_init(&fIA, CC_OEI, 0, 0, 1, "fIA");
+      dpd_file2_copy(&fIA, CC_OEI, "tIA");
+      dpd_file2_close(&fIA);
+
+      dpd_file2_init(&fia, CC_OEI, 0, 2, 3, "fia");
+      dpd_file2_copy(&fia, CC_OEI, "tia");
+      dpd_file2_close(&fia);
+
+      dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+      dpd_file2_init(&dIA, CC_OEI, 0, 0, 1, "dIA");
+      dpd_file2_dirprd(&dIA, &tIA);
+      dpd_file2_close(&tIA);
+      dpd_file2_close(&dIA);
+
+      dpd_file2_init(&tia, CC_OEI, 0, 2, 3, "tia");
+      dpd_file2_init(&dia, CC_OEI, 0, 2, 3, "dia");
+      dpd_file2_dirprd(&dia, &tia);
+      dpd_file2_close(&tia);
+      dpd_file2_close(&dia);
+    }
       
     dpd_buf4_init(&D, CC_DINTS, 0, 2, 7, 2, 7, 0, "D <IJ||AB> (I>J,A>B)");
     dpd_buf4_copy(&D, CC_TAMPS, "tIJAB");
