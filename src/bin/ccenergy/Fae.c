@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <libdpd/dpd.h>
+#include <libqt/qt.h>
 #define EXTERN
 #include "globals.h"
 
@@ -50,10 +51,10 @@ void Fae_build(void)
     dpd_file2_mat_rd(&FAE);
 
     /*
-    for(h=0; h < moinfo.nirreps; h++) {
+      for(h=0; h < moinfo.nirreps; h++) {
       for(a=0; a < FAE.params->rowtot[h]; a++) 
-	FAE.matrix[h][a][a] = 0;
-    }
+      FAE.matrix[h][a][a] = 0;
+      }
     */
 
     dpd_file2_mat_wrt(&FAE);
@@ -129,16 +130,16 @@ void Fae_build(void)
     dpd_file2_close(&FAE);
 
     /*
-    dpd_file2_init(&FAE, CC_OEI, 0, 1, 1, "FAE");
-    dpd_buf4_init(&F_anti, CC_FINTS, 0, 10, 5, 10, 5, 1, "F <ia|bc>");
-    dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0,"F <ia|bc>");
-    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
-    dpd_dot13(&tIA, &F_anti, &FAE, 0, 0, 1.0, 1.0);
-    dpd_dot13(&tIA, &F, &FAE, 0, 0, 1.0, 1.0);
-    dpd_file2_close(&tIA);
-    dpd_buf4_close(&F_anti);
-    dpd_buf4_close(&F);
-    dpd_file2_close(&FAE);
+      dpd_file2_init(&FAE, CC_OEI, 0, 1, 1, "FAE");
+      dpd_buf4_init(&F_anti, CC_FINTS, 0, 10, 5, 10, 5, 1, "F <ia|bc>");
+      dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0,"F <ia|bc>");
+      dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+      dpd_dot13(&tIA, &F_anti, &FAE, 0, 0, 1.0, 1.0);
+      dpd_dot13(&tIA, &F, &FAE, 0, 0, 1.0, 1.0);
+      dpd_file2_close(&tIA);
+      dpd_buf4_close(&F_anti);
+      dpd_buf4_close(&F);
+      dpd_file2_close(&FAE);
     */
 
     /* Out-of-core algorithm for F->FAE added 3/20/05 - TDC */
@@ -176,8 +177,10 @@ void Fae_build(void)
 	
 	nrows = moinfo.virtpi[Gf];
 	ncols = moinfo.virtpi[Ge];
-	C_DGEMV('t',nrows,ncols,1.0,&X[F.col_offset[Gma][Gf]],ncols,
-	    tIA.matrix[Gm][M],1,1.0,FAE.matrix[Ga][A],1);
+	if(nrows && ncols)
+	  C_DGEMV('t',nrows,ncols,1.0,&X[F.col_offset[Gma][Gf]],ncols,
+		  tIA.matrix[Gm][M],1,1.0,
+		  FAE.matrix[Ga][A],1);
       }
 
       free(X);
