@@ -172,7 +172,6 @@ double eval_roci_derwfn_overlap()
   delete_matrix(S_a);
   delete_matrix(S_b);
   double S_tot_double = (double) S_tot;
-  fprintf(outfile,"  -Overlap for disp %d is %25.15Lf\n\n",1, S_tot_double);
   return fabs(S_tot_double);
 }
 
