@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
   Wmbij_build();
   Wabei_build();
 
-  purge();
+  if(params.ref == 1) purge(); /** ROHF only **/
   dpd_close(0);
 
   if(params.ref == 2) cachedone_uhf(cachelist);

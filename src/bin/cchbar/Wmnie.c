@@ -85,7 +85,7 @@ void Wmnie_build(void) {
 
     /* E(mN,iE) --> W(mN,iE) */
     dpd_buf4_init(&E, CC_EINTS, 0, 23, 27, 23, 27, 0, "E <iJ|kA>");
-    dpd_buf4_copy(&E, CC_TMP1, "WmNiE (mN,iE)");
+    dpd_buf4_copy(&E, CC_TMP0, "WmNiE (mN,iE)");
     dpd_buf4_close(&E);
 
 
@@ -122,7 +122,7 @@ void Wmnie_build(void) {
     dpd_buf4_close(&WMnIe);
 
     /* D(mN,fE) * T(i,f) --> W(mN.iE) */
-    dpd_buf4_init(&WmNiE, CC_TMP1, 0, 23, 27, 23, 27, 0, "WmNiE (mN,iE)");
+    dpd_buf4_init(&WmNiE, CC_TMP0, 0, 23, 27, 23, 27, 0, "WmNiE (mN,iE)");
     dpd_buf4_init(&D, CC_DINTS, 0, 23, 29, 23, 29, 0, "D <iJ|aB>");
     dpd_file2_init(&t1, CC_OEI, 0, 2, 3, "tia");
     dpd_contract244(&t1,&D,&WmNiE, 1, 2, 1, 1, 1);

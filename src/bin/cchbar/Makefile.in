@@ -11,7 +11,8 @@ PSILIBS = -ldpd -lqt -lfile30 -liwl -lciomr -lpsio -lipv1
 CSRC = \
 F.c      Wamef.c  Wmbij.c  cchbar.c      get_params.c \
 Wabei.c  Wmbej.c  Wmnie.c  get_moinfo.c  purge.c      \
-cache.c  sort_amps.c tau.c
+cache.c  sort_amps.c tau.c Wabei_ROHF.c  \
+WABEI_UHF.c Wabei_UHF.c
 
 BINOBJ = $(CSRC:%.c=%.o)
 ALLOC = 

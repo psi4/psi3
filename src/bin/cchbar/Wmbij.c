@@ -498,7 +498,7 @@ void Wmbij_build(void)
   } /** RHF or ROHF **/
   else if(params.ref == 2) { /** UHF **/
 
-    dpd_buf4_init(&Z, CC_TMP2, 0, 0, 20, 0, 20, 0, "Z(MI,JB)");
+    dpd_buf4_init(&Z, CC_TMP0, 0, 0, 20, 0, 20, 0, "Z(MI,JB)");
 
     /** <MN||IE> t_JN^BE **/
     dpd_buf4_init(&I, CC_TMP0, 0, 0, 20, 0, 20, 0, "<MN||IE> (MI,NE)");
@@ -532,7 +532,7 @@ void Wmbij_build(void)
     dpd_buf4_close(&Z1);
 
 
-    dpd_buf4_init(&Z, CC_TMP2, 0, 10, 30, 10, 30, 0, "Z(mi,jb)");
+    dpd_buf4_init(&Z, CC_TMP0, 0, 10, 30, 10, 30, 0, "Z(mi,jb)");
 
     /** <mn||ie> t_jn^be **/
     dpd_buf4_init(&I, CC_TMP0, 0, 10, 30, 10, 30, 0, "<mn||ie> (mi,ne)");
@@ -542,7 +542,7 @@ void Wmbij_build(void)
     dpd_buf4_close(&I);
 
     /** <mN||iE> t_jN^bE **/
-    dpd_buf4_init(&I, CC_TMP1, 0, 10, 20, 10, 20, 0, "<mN|iE> (mi,NE)");
+    dpd_buf4_init(&I, CC_TMP0, 0, 10, 20, 10, 20, 0, "<mN|iE> (mi,NE)");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 30, 20, 30, 20, 0, "tiaJB");
     dpd_contract444(&I, &T2, &Z, 0, 0, 1.0, 1.0);
     dpd_buf4_close(&T2);
@@ -577,7 +577,7 @@ void Wmbij_build(void)
     /** <Mn|Ie> t_jn^be **/
     dpd_buf4_init(&I, CC_TMP0, 0, 0, 30, 0, 30, 0, "<Mn|Ie> (MI,ne)");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 30, 30, 30, 30, 0, "tiajb");
-    dpd_contract444(&I, &T2, &Z, 0, 0, 1.0, 0.0);
+    dpd_contract444(&I, &T2, &Z, 0, 0, 1.0, 1.0);
     dpd_buf4_close(&T2);
     dpd_buf4_close(&I);
 
@@ -585,12 +585,26 @@ void Wmbij_build(void)
     dpd_buf4_sort(&Z, CC_TMP0, psqr, 24, 22, "Z(Mb,Ij)");
     dpd_buf4_close(&Z);
 
+
+    /** -<Mn|Ej> t_In^Eb **/
+    dpd_buf4_init(&Z, CC_TMP0, 0, 22, 24, 22, 24, 0, "Z(Mj,Ib)");
+    dpd_buf4_init(&I, CC_EINTS, 0, 22, 26, 22, 26, 0, "E <Ij|Ak>");
+    dpd_buf4_init(&T2, CC_TAMPS, 0, 24, 26, 24, 26, 0, "tIbAj");
+    dpd_contract444(&I, &T2, &Z, 0, 0, -1.0, 0.0);
+    dpd_buf4_close(&T2);
+    dpd_buf4_close(&I);
+
+    dpd_buf4_sort(&Z, CC_TMP0, psrq, 24, 22, "Z1(Mb,Ij)");
+    dpd_buf4_close(&Z);
+
     /** Z(Mb,Ij) --> W(Mb,Ij) **/
     dpd_buf4_init(&Z, CC_TMP0, 0, 24, 22, 24, 22, 0, "Z(Mb,Ij)");
+    dpd_buf4_init(&Z1, CC_TMP0, 0, 24, 22, 24, 22, 0, "Z1(Mb,Ij)");
+    dpd_buf4_axpy(&Z1, &Z, 1.0);
+    dpd_buf4_close(&Z1);
     dpd_buf4_init(&W, CC_HBAR, 0, 24, 22, 24, 22, 0, "WMbIj");
     dpd_buf4_axpy(&Z, &W, 1.0);
     dpd_buf4_close(&W);
-
     dpd_buf4_close(&Z);
 
 
@@ -606,7 +620,7 @@ void Wmbij_build(void)
     /** <mN|iE> t_JN^BE **/
     dpd_buf4_init(&I, CC_TMP0, 0, 10, 20, 10, 20, 0, "<mN|iE> (mi,NE)");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 20, 20, 20, 20, 0, "tIAJB");
-    dpd_contract444(&I, &T2, &Z, 0, 0, 1.0, 0.0);
+    dpd_contract444(&I, &T2, &Z, 0, 0, 1.0, 1.0);
     dpd_buf4_close(&T2);
     dpd_buf4_close(&I);
 
@@ -621,6 +635,24 @@ void Wmbij_build(void)
     dpd_buf4_close(&W);
 
     dpd_buf4_close(&Z);
+
+    /** -<mN|eJ> t_iN^eB **/
+    dpd_buf4_init(&Z, CC_TMP0, 0, 23, 27, 23, 27, 0, "Z(mJ,iB)");
+    dpd_buf4_init(&I, CC_EINTS, 0, 23, 25, 23, 25, 0, "E <iJ|aK>");
+    dpd_buf4_init(&T2, CC_TAMPS, 0, 27, 25, 27, 25, 0, "tiBaJ");
+    dpd_contract444(&I, &T2, &Z, 0, 0, -1.0, 0.0);
+    dpd_buf4_close(&T2);
+    dpd_buf4_close(&I);
+
+    dpd_buf4_sort(&Z, CC_TMP0, psrq, 27, 23, "Z(mB,iJ)");
+    dpd_buf4_close(&Z);
+
+    dpd_buf4_init(&Z, CC_TMP0, 0, 27, 23, 27, 23, 0, "Z(mB,iJ)");
+    dpd_buf4_init(&W, CC_HBAR, 0, 27, 23, 27, 23, 0, "WmBiJ");
+    dpd_buf4_axpy(&Z, &W, 1.0);
+    dpd_buf4_close(&W);
+    dpd_buf4_close(&Z);
+
   } /** UHF **/
 
 
@@ -673,44 +705,6 @@ void Wmbij_build(void)
     dpd_buf4_close(&Z);
     dpd_buf4_close(&W);
   }
-  else if(params.ref == 2) { /** UHF **/
-
-    /** -<Mn|Ej> t_In^EB **/
-    dpd_buf4_init(&Z, CC_TMP0, 0, 22, 24, 22, 24, 0, "Z(Mj,Ib)");
-    dpd_buf4_init(&I, CC_EINTS, 0, 22, 26, 22, 26, 0, "E <Ij|Ak>");
-    dpd_buf4_init(&T2, CC_TAMPS, 0, 24, 26, 24, 26, 0, "tIbAj");
-    dpd_contract444(&I, &T2, &Z, 0, 0, -1.0, 0.0);
-    dpd_buf4_close(&T2);
-    dpd_buf4_close(&I);
-
-    dpd_buf4_sort(&Z, CC_TMP0, psrq, 24, 22, "Z(Mb,Ij)");
-    dpd_buf4_close(&Z);
-
-    dpd_buf4_init(&Z, CC_TMP0, 0, 24, 22, 24, 22, 0, "Z(Mb,Ij)");
-    dpd_buf4_init(&W, CC_HBAR, 0, 24, 22, 24, 22, 0, "WMbIj");
-    dpd_buf4_axpy(&Z, &W, 1.0);
-    dpd_buf4_close(&W);
-    dpd_buf4_close(&Z);
-  
-
-    /** -<mN|eJ> t_iN^eB **/
-    dpd_buf4_init(&Z, CC_TMP0, 0, 23, 27, 23, 27, 0, "Z(mJ,iB)");
-    dpd_buf4_init(&I, CC_EINTS, 0, 23, 25, 23, 25, 0, "E <iJ|aK>");
-    dpd_buf4_init(&T2, CC_TAMPS, 0, 27, 25, 27, 25, 0, "tiBaJ");
-    dpd_contract444(&I, &T2, &Z, 0, 0, -1.0, 0.0);
-    dpd_buf4_close(&T2);
-    dpd_buf4_close(&I);
-
-    dpd_buf4_sort(&Z, CC_TMP0, psrq, 27, 23, "Z(mB,iJ)");
-    dpd_buf4_close(&Z);
-
-    dpd_buf4_init(&Z, CC_TMP0, 0, 27, 23, 27, 23, 0, "Z(mB,iJ)");
-    dpd_buf4_init(&W, CC_HBAR, 0, 27, 23, 27, 23, 0, "WmBiJ");
-    dpd_buf4_axpy(&Z, &W, 1.0);
-    dpd_buf4_close(&W);
-    dpd_buf4_close(&Z);
-  }
-
 
   /** Prepare intermediates for final term of Wmbij **/
 
@@ -970,7 +964,7 @@ void Wmbij_build(void)
     dpd_contract444(&D, &T2, &Z, 0, 0, 1.0, 0.0);
     dpd_buf4_close(&T2);
     dpd_buf4_close(&D);
-    dpd_buf4_init(&D, CC_DINTS, 0, 30, 20, 30, 20, 0, "D <iJ|aB> (ia,JB)");
+    dpd_buf4_init(&D, CC_DINTS, 0, 30, 20, 30, 20, 0, "D <Ij|Ab> (ia,JB)");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 30, 20, 30, 20, 0, "tiaJB");
     dpd_contract444(&D, &T2, &Z, 0, 0, 1.0, 1.0);
     dpd_buf4_close(&T2);
@@ -1026,7 +1020,7 @@ void Wmbij_build(void)
     dpd_contract444(&D, &T2, &Z, 0, 0, 1.0, 0.0);
     dpd_buf4_close(&D);
     dpd_buf4_close(&T2);
-    dpd_buf4_sort(&Z2, CC_TMP0, psrq, 24, 24, "Z(Mb,Ie)");
+    dpd_buf4_sort(&Z, CC_TMP0, psrq, 24, 24, "Z(Mb,Ie)");
     dpd_buf4_close(&Z);
 
 
@@ -1048,7 +1042,6 @@ void Wmbij_build(void)
     dpd_buf4_init(&C, CC_CINTS, 0, 24, 24, 24, 24, 0, "C <Ia|Jb>");
     dpd_buf4_axpy(&C, &Z1, -1.0);
     dpd_buf4_close(&C);
-    dpd_buf4_scm(&Z1, -1.0);
     dpd_file2_init(&T1, CC_OEI, 0, 2, 3, "tia");
     dpd_buf4_init(&Z, CC_TMP0, 0, 24, 22, 24, 22, 0, "Z2(Mb,Ij)");
     dpd_contract424(&Z1, &T1, &Z, 3, 1, 0, 1.0, 0.0);
@@ -1057,9 +1050,9 @@ void Wmbij_build(void)
     dpd_buf4_close(&Z);
 
     /** Z(Mb,Ij) (TMP1) + Z(Mb,Ij) (TMP2) --> W_MbIj **/
-    dpd_buf4_init(&Z1, CC_TMP0, 0, 24, 22, 24, 22, 0, "Z2(Mb,Ij)");
+    dpd_buf4_init(&Z1, CC_TMP0, 0, 24, 22, 24, 22, 0, "Z1(Mb,Ij)");
     dpd_buf4_init(&Z2, CC_TMP0, 0, 24, 22, 24, 22, 0, "Z2(Mb,Ij)");
-    dpd_buf4_axpy(&Z2, &Z1, 1.0);
+    dpd_buf4_axpy(&Z2, &Z1, -1.0);
     dpd_buf4_close(&Z2);
     dpd_buf4_init(&W, CC_HBAR, 0, 24, 22, 24, 22, 0, "WMbIj");
     dpd_buf4_axpy(&Z1, &W, 1.0);
@@ -1070,7 +1063,7 @@ void Wmbij_build(void)
 
     /** t_JN^BF <mN|eF> + t_Jn^Bf <mn||ef> --> Z(mB,Je) **/
     dpd_buf4_init(&Z, CC_TMP0, 0, 30, 20, 30, 20, 0, "Z(me,JB)");
-    dpd_buf4_init(&D, CC_DINTS, 0, 30, 20, 30, 20, 0, "D <iJ|aB> (ia,JB)");
+    dpd_buf4_init(&D, CC_DINTS, 0, 30, 20, 30, 20, 0, "D <Ij|Ab> (ia,JB)");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 20, 20, 20, 20, 0, "tIAJB");
     dpd_contract444(&D, &T2, &Z, 0 , 0, 1.0, 0.0);
     dpd_buf4_close(&T2);
@@ -1083,11 +1076,11 @@ void Wmbij_build(void)
     dpd_buf4_sort(&Z, CC_TMP0, psrq, 27, 24, "Z(mB,Je)");
     dpd_buf4_close(&Z);
 
-    /** -t_Ni^Bf <mN|fE> --> Z(mB,iE) **/
+    /** t_Ni^Bf <mN|fE> --> Z(mB,iE) **/
     dpd_buf4_init(&Z, CC_TMP0, 0, 27, 27, 27, 27, 0, "Z(mE,iB)");
     dpd_buf4_init(&D, CC_DINTS, 0, 27, 24, 27, 24, 0, "D <iJ|aB> (iB,Ja)");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 27, 24, 27, 24, 0, "tjAIb");
-    dpd_contract444(&D, &T2, &Z, 0, 0, -1.0, 0.0);
+    dpd_contract444(&D, &T2, &Z, 0, 0, 1.0, 0.0);
     dpd_buf4_close(&T2);
     dpd_buf4_close(&D);
     dpd_buf4_sort(&Z, CC_TMP0, psrq, 27, 27, "Z(mB,iE)");
@@ -1106,25 +1099,25 @@ void Wmbij_build(void)
     dpd_buf4_sort(&Z1, CC_TMP0, pqsr, 27, 23, "Z1(mB,iJ)");
     dpd_buf4_close(&Z1);
 
-    /** t_J^E ( <mB|iE> + Z(mB,iE) ) + Z1(mB,Ij) --> Z2(mB,iJ) **/
+    /** -t_J^E ( -<mB|iE> + Z(mB,iE) ) + Z1(mB,Ij) --> Z1(mB,iJ) **/
     dpd_buf4_init(&Z, CC_TMP0, 0, 27, 27, 27, 27, 0, "Z(mB,iE)");
     dpd_buf4_init(&C, CC_CINTS, 0, 27, 27, 27, 27, 0, "C <iA|jB>");
-    dpd_buf4_axpy(&C, &Z, 1.0);
+    dpd_buf4_axpy(&C, &Z, -1.0);
     dpd_buf4_close(&C);
-    dpd_buf4_init(&Z2, CC_TMP2, 0, 27, 23, 27, 23, 0, "Z2(mB,iJ)");
+    dpd_buf4_init(&Z2, CC_TMP0, 0, 27, 23, 27, 23, 0, "Z2(mB,iJ)");
     dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
     dpd_contract424(&Z, &T1, &Z2, 3, 1, 0, 1.0, 0.0);
     dpd_file2_close(&T1);
     dpd_buf4_close(&Z);
-    dpd_buf4_init(&Z1, CC_TMP1, 0, 27, 23, 27, 23, 0, "Z1(mB,iJ)");
-    dpd_buf4_axpy(&Z1, &Z2, 1.0);
-    dpd_buf4_close(&Z1);
+    dpd_buf4_init(&Z1, CC_TMP0, 0, 27, 23, 27, 23, 0, "Z1(mB,iJ)");
+    dpd_buf4_axpy(&Z2, &Z1, -1.0);
+    dpd_buf4_close(&Z2);
 
     /** Z2(mB,iJ) --> W_mBiJ **/
     dpd_buf4_init(&W, CC_HBAR, 0, 27, 23, 27, 23, 0, "WmBiJ");
-    dpd_buf4_axpy(&Z2, &W, 1.0);
+    dpd_buf4_axpy(&Z1, &W, 1.0);
     dpd_buf4_close(&W);
-    dpd_buf4_close(&Z2);
+    dpd_buf4_close(&Z1);
 
   }
 }
