@@ -31,6 +31,7 @@ void get_moinfo(void)
   int *orbsym;
   double enuc, escf;
   double ***evects, ***scf_vector;
+  int *order, J, qt_j, pitz_j, pitz_J, *pitz_offset;
   psio_address next;
   
   file30_init();
@@ -920,11 +921,23 @@ void get_moinfo(void)
   /* Lastly, build the active virtual orbital SCF eigenvector array for
      the AO-basis code (see CCENERGY) */
 
-  /*** Still working on this part---currently unused, TDC, 3/13/00 ***/
+  /*** Still working on this part --- currently unused, TDC, 3/13/00 ***/
 
-  /*
-    reorder_qt(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc,
-    moinfo.fruocc, moinfo.order,  moinfo.orbspi, moinfo.nirreps);
+  if(params.ref == 2) { /*** UHF references ***/
+    fprintf(outfile, "No AO-Basis UHF algorithm yet!\n");
+    exit(1);
+  }
+  else { /*** RHF/ROHF references ***/
+
+    order = init_int_array(moinfo.nmo);
+    reorder_qt_inverse(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc,
+		       moinfo.fruocc, order,  moinfo.orbspi, moinfo.nirreps);
+
+    pitz_offset = init_int_array(moinfo.nirreps);
+    pitz_offset[0] = 0;
+    for(h=1; h < moinfo.nirreps; h++) {
+      pitz_offset[h] = pitz_offset[h-1] + moinfo.orbspi[h-1];
+    }
   
     file30_init();
     evects = (double ***) malloc(moinfo.nirreps * sizeof(double **));
@@ -932,35 +945,43 @@ void get_moinfo(void)
 
     next = PSIO_ZERO;
     for(h=0; h < moinfo.nirreps; h++) {
-    evects[h] = file30_rd_blk_scf(h);
-  */
+      evects[h] = file30_rd_blk_scf(h); /* Pitzer-order MO's */
 
-  /* Are there active virtuals in this irrep? */
-  /*
-    if(moinfo.virtpi[h]) {
-    scf_vector[h] = block_matrix(moinfo.orbspi[h],moinfo.virtpi[h]);
+      /* Are there active virtuals in this irrep? */
+      if(moinfo.virtpi[h]) {
+	scf_vector[h] = block_matrix(moinfo.orbspi[h],moinfo.virtpi[h]);
 
-    for(i=0; i < moinfo.orbspi[h]; i++) {
-    for(j=0; j < moinfo.virtpi[h]; j++) {
-    col = j + moinfo.occpi[h] - moinfo.openpi[h];
-    scf_vector[h][i][j] = evects[h][i][col];
-    }
-    }
-    psio_write(CC_INFO, "SCF Active Virtual Orbitals",
-    (char *) scf_vector[h],
-    moinfo.orbspi[h]*moinfo.virtpi[h]*sizeof(double),
-    next, &next);
-    }
+	for(i=0; i < moinfo.orbspi[h]; i++) {
+	  for(j=0; j < moinfo.virtpi[h]; j++) { /* CC-ordered relative index */
+	    J = moinfo.vir_off[h] + j; /* CC-ordered absolute index */
+	    qt_j = moinfo.qt_vir[J]; /* QT-ordered absolute index */
+	    pitz_J = order[qt_j]; /* Pitzer-ordered absolute index */
+	    pitz_j = pitz_J - pitz_offset[h]; /* Pitzer-order relative index */
+	    scf_vector[h][i][j] = evects[h][i][pitz_j];
+	  }
+	}
 
-    print_mat(evects[h], moinfo.orbspi[h], moinfo.orbspi[h], outfile);
-    print_mat(scf_vector[h], moinfo.orbspi[h], moinfo.virtpi[h], outfile);
+	psio_write(CC_INFO, "RHF/ROHF Active Virtual Orbitals",
+		   (char *) scf_vector[h][0],
+		   moinfo.orbspi[h]*moinfo.virtpi[h]*sizeof(double),
+		   next, &next);
+      }
 
-    free_matrix(evects[h],moinfo.orbspi[h]);
-    free_block(scf_vector[h]);
+      /*
+      fprintf(outfile, "\n\tOriginal SCF Eigenvectors:\n");
+      print_mat(evects[h], moinfo.orbspi[h], moinfo.orbspi[h], outfile);
+
+      fprintf(outfile, "\n\tRe-ordered Virtual SCF Eigenvectors:\n");
+      print_mat(scf_vector[h], moinfo.orbspi[h], moinfo.virtpi[h], outfile);
+      */
+
+      free_block(evects[h]);
+      free_block(scf_vector[h]);
     }
 
     free(evects);  free(scf_vector);
 
+    free(order);
     file30_close();
-  */
+  }
 }

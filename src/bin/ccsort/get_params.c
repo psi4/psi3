@@ -32,6 +32,9 @@ void get_params()
   }
   free(junk);
 
+  params.aobasis = 0;
+  errcod = ip_boolean("AO_BASIS", &(params.aobasis),0);
+
   params.print_lvl = 1;
   errcod = ip_data("PRINT_LVL","%d",&(params.print_lvl),0);
 
