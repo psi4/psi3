@@ -1,9 +1,19 @@
 /* $Log$
- * Revision 1.4  2002/12/06 15:50:32  crawdad
- * Changed all exit values to PSI_RETURN_SUCCESS or PSI_RETURN_FAILURE as
- * necessary.  This is new for the PSI3 execution driver.
+ * Revision 1.5  2004/01/02 06:37:12  crawdad
+ * Merging psi-3-2 branch (from release tag psi-3-2-rc-2 to head at psi-3-2-0)
+ * into main trunk.  This code compiles and runs correctly on sirius.
  * -TDC
  *
+/* Revision 1.4.4.1  2003/12/31 01:59:54  crawdad
+/* Removed use_iwl option, which was deprecated anyway.  cscf now depends only
+/* on libpsio for its I/O functions.
+/* -TDC
+/*
+/* Revision 1.4  2002/12/06 15:50:32  crawdad
+/* Changed all exit values to PSI_RETURN_SUCCESS or PSI_RETURN_FAILURE as
+/* necessary.  This is new for the PSI3 execution driver.
+/* -TDC
+/*
 /* Revision 1.3  2002/04/03 02:06:01  janssen
 /* Finish changes to use new include paths for libraries.
 /*
@@ -97,14 +107,8 @@ void rdtwo()
 
    if(nbasis > 150) intmx *= 4;
 
-   if (use_iwl) {
-       iwl_buf_init(&ERIIN,itap33,0.0,1,1);
-       fprintf(outfile,"  reading integrals in the IWL format from files 33,35,36,37\n");
-   }
-   else {
-       inbuf.pki = (double *) init_array((int) ibufsz/d2i);
-       fprintf(outfile,"  reading integrals in the old format from file34\n");
-   }
+   iwl_buf_init(&ERIIN,itap33,0.0,1,1);
+   fprintf(outfile,"  reading integrals in the IWL format from files 33,35,36,37\n");
    pa = (double *) init_array(intmx);
    pb = (double *) init_array(intmx);
 
@@ -114,66 +118,34 @@ void rdtwo()
    lbkl = (unsigned int *) init_int_array(intmx);
 
    do {
-      if (use_iwl) {
 	ilsti = ERIIN.lastbuf;
 	nbuf = ERIIN.inbuf;
-      }
-      else {
-	sread(itap34,(char *) inbuf.lbli,sizeof(int)*ibufsz);
-	ilsti=inbuf.lbli[0];
-	nbuf=inbuf.lbli[1];
-	tmp = &inbuf.lbli[2];
-      }
 
       if (print & 8) fprintf(outfile,"%5d\n",nbuf);
 
       fi = 0;
       for (i=0 ; i < nbuf ; i++,tmp += 2) {
-	if (use_iwl) {
-	  ii = ERIIN.labels[fi];
-	  jj = ERIIN.labels[fi+1];
-	  kk = ERIIN.labels[fi+2];
-	  ll = ERIIN.labels[fi+3];
-	  pki_int = ERIIN.values[i];
-	  pk_flush = 0;
-	  /* If the first index is negative - it's the last integral necessary for a pk-block
-	     Set the flushing flag.. Hey, and we need the positive index back */
-	  if (ii < 0) {
-	    pk_flush = 1;
-	    ii = abs(ii);
-	  }
-	  ism = so2symblk[ii];
-	  jsm = so2symblk[jj];
-	  ksm = so2symblk[kk];
-	  lsm = so2symblk[ll];
-	  ior = ii - scf_info[ism].ideg;
-	  jor = jj - scf_info[jsm].ideg;
-	  kor = kk - scf_info[ksm].ideg;
-	  lor = ll - scf_info[lsm].ideg;
-	  fi += 4;
-	  
+	ii = ERIIN.labels[fi];
+	jj = ERIIN.labels[fi+1];
+	kk = ERIIN.labels[fi+2];
+	ll = ERIIN.labels[fi+3];
+	pki_int = ERIIN.values[i];
+	pk_flush = 0;
+	/* If the first index is negative - it's the last integral necessary for a pk-block
+	   Set the flushing flag.. Hey, and we need the positive index back */
+	if (ii < 0) {
+	  pk_flush = 1;
+	  ii = abs(ii);
 	}
-	else {
-         lor = *(tmp+1) >> 2;
-         lsm = lor >> 8;
-         kor = lsm >> 3;
-         ksm = kor >> 8;
-         kor = (kor & 255) - 1;
-         lsm = lsm & 7;
-         lor = (lor & 255) - 1;
-         pk_flush = *(tmp+1) & 3;
-         jsm = *tmp >> 8;
-         ior = jsm >> 3;
-         ism = ior >> 8;
-         ior = (ior & 255) - 1;
-         jsm = jsm & 7;
-         jor = (*tmp & 255) - 1;
-         ii = ior+scf_info[ism].ideg;
-         jj = jor+scf_info[jsm].ideg;
-         kk = kor+scf_info[ksm].ideg;
-         ll = lor+scf_info[lsm].ideg;
-         pki_int = inbuf.pki[i+ibufqt];
-	}
+	ism = so2symblk[ii];
+	jsm = so2symblk[jj];
+	ksm = so2symblk[kk];
+	lsm = so2symblk[ll];
+	ior = ii - scf_info[ism].ideg;
+	jor = jj - scf_info[jsm].ideg;
+	kor = kk - scf_info[ksm].ideg;
+	lor = ll - scf_info[lsm].ideg;
+	fi += 4;
 
 	if (print & 128)
 	  fprintf(outfile," i = %d j = %d k = %d l = %d  %lf\n",ii,jj,kk,ll,pki_int);
@@ -299,7 +271,7 @@ void rdtwo()
             else packit_closed(lbij,lbkl,0);
 	}
       }
-      if (!ilsti && use_iwl)
+      if (!ilsti)
 	  iwl_buf_fetch(&ERIIN);
    } while(!ilsti);
    
@@ -307,21 +279,13 @@ void rdtwo()
    else packit_closed(lbij,lbkl,1);
    
    if(!iopen || !uhf) fprintf(outfile,"  wrote %d integrals to file92\n",num_ints);
-   if (!use_iwl)
-       free(inbuf.lbli);
    free(pa);
    free(pb);
    free(lbij);
    free(lbkl);
    free(inext);
    
-   if (use_iwl)
-       iwl_buf_close(&ERIIN,!delete_2e);
-
-   /*if(uhf){
-       fprintf(outfile,"\nUHF not fully implemented\n");
-       exit(PSI_RETURN_FAILURE);
-       }*/
+   iwl_buf_close(&ERIIN,!delete_2e);
 }
 
 

@@ -402,9 +402,9 @@ void print_misc()
   fprintf(outfile," --------------------------------------------------------------\n\n");
 
   fprintf(outfile," -Relativistic MVD one-electron corrections to the energy (a.u.):\n\n");
-  fprintf(outfile,"    Mass-velocity (p^4) term     :   %12.8lf\n",massveloc);
-  fprintf(outfile,"    One-electron Darwin term     :   %12.8lf\n",darw);
-  fprintf(outfile,"    Total one-electron MVD terms :   %12.8lf\n",massveloc+darw);
+  fprintf(outfile,"    Mass-velocity (p^4) term     :   %12.15lf\n",massveloc);
+  fprintf(outfile,"    One-electron Darwin term     :   %13.15lf\n",darw);
+  fprintf(outfile,"    Total one-electron MVD terms :   %12.15lf\n",massveloc+darw);
   fprintf(outfile,"\n\n");
 
   if (mpmax > 1) {
@@ -425,9 +425,9 @@ void print_misc()
     fprintf(outfile,"   ------  ----  -----------  -----------  -----------  -----------\n");
     k = 0;
     for(i=0;i<nirreps;i++)
-      for(j=0;j<orbspi[i];j++,k++)
+      for(j=0;j<orbspi[i];j++)
         fprintf(outfile,"   %4d     %3s   %9.4lf    %9.4lf    %9.4lf    %9.4lf\n",
-                k+1,irr_labs[i],MOXX[k],MOYY[k],MOZZ[k],MOXX[k]+MOYY[k]+MOZZ[k]);
+                k+1,irr_labs[i],MOXX[k],MOYY[k],MOZZ[k],MOXX[k]+MOYY[k]+MOZZ[k++]);
     fprintf(outfile,"\n");
   }
 }

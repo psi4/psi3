@@ -62,8 +62,7 @@ void atom_num(char *A,  double *C);
    Function to calculate the unit vectors between each pair of atoms and
    store them in E. 
 */
-void unit_vectors(int num_atoms, double *X, double *Y, double *Z, 
-                  double **Distance, double ***E);
+double ***unit_vectors(double **, double **);
 
 /*
    Function to compute the unit vector between a pair of atoms
@@ -73,9 +72,19 @@ void unit_vec(double *, double *, double *);
 /*
    Function to calculate all non-redundant bond angles
 */
-void calc_bond_angles(double ***E, 
-                      double ***Bond_Angle, 
-                      double **Distance, FILE *outfile);
+double ***calc_bond_angles(double ***, double **);
+
+/* 
+   Function to calculation out-of-plane angles
+*/
+
+void calc_oop_angles(double ***, double ***, double **);
+
+/* 
+   Function to calculation torsion angles
+*/
+
+void calc_tors_angles(double ***, double ***, double **);
 
 /*
    Takes a dot product

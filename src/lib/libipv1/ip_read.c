@@ -1,41 +1,13 @@
-
-/* $Log$
- * Revision 1.1  2000/02/04 22:53:27  evaleev
- * Initial revision
- *
-/* Revision 1.7  1998/08/06 18:49:27  evaleev
-/* Fixed ip_assign() so that the additional input will be placed at the top of
-/* the keyword tree, not at the top of the first subtree.
-/*
- * Revision 1.6  1998/08/05  18:41:58  evaleev
- * Fixed ip_initialize() - assign sub_tree AFTER ip_tree is set up, so that
- * ip_append() doesn't freak out.
- *
- * Revision 1.5  1995/01/16  23:09:18  cljanss
- * Minor changes so the SGI compiler won't complain.
- *
- * Revision 1.4  1994/06/02  02:22:29  seidl
- * using new tmpl now...change .global to .gbl and .local to .lcl
- *
- * Revision 1.1.1.1  1994/05/02  17:05:52  cljanss
- * The May 1, 1994 version of psi as on the CCQC machines.
- *
- * Revision 1.3  1991/07/30  03:28:45  seidl
- * add rcs log and id
- * */
-
 /* This file provides the routines to do the initial parse of the input
  * file. */
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <tmpl.h>
+#include "tmpl.h"
 #include "ip_types.h"
 #define _IP_ALLOCATE_GLOBAL_
 #include "ip_global.h"
 #include "y.tab.h"
-
-static char rcs_id[] = "$Id$";
 
 /* The input for yacc. */
 extern FILE *yyin;

@@ -12,6 +12,7 @@ TEMP_DIR = ${SCRATCH}/libint
 
 default:: $(TARGET) $(TARGET_HEADERS)
 
+PWD=$(shell pwd)
 top_objdir_path=$(PWD)/$(top_objdir)
 
 $(TARGET): $(BUILD_SRC) $(LIB_SRC) $(srcdir)/Makefile.libint

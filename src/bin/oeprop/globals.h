@@ -202,3 +202,4 @@ EXTERN double **nmo_ao;		/* Natural orbitals in the AO basis */
 
 EXTERN int **connectivity;    /* A matrix of flags whether a bong exists between two atoms */
 EXTERN char *wfn;             /* wavefunction type */
+EXTERN char *ref;             /* reference type */

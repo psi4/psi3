@@ -119,7 +119,9 @@ elsif ($ARGV[0] eq "--small") {
                  "dboc-rhf1",
                  "dboc-rohf1",
                  "dboc-uhf1",
-                 "mp2r12-sp1"
+                 "mp2r12-sp1",
+                 "mp2-opt-numer",
+                 "psi_start"
                );
 }
 elsif ($ARGV[0] eq "--medium") {
@@ -185,7 +187,9 @@ elsif ($ARGV[0] eq "--all") {
                  "dboc-uhf1",
                  "dboc-rcisd1",
                  "dboc-rocisd1",
-                 "mp2r12-sp1"
+                 "mp2r12-sp1",
+                 "mp2-opt-numer",
+                 "psi_start"
                );
 }
 elsif ($ARGV[0] eq "--sp") {
@@ -227,6 +231,7 @@ elsif ($ARGV[0] eq "--geom") {
                  "scf-opt9",
                  "scf-opt11",
                  "scf-opt-numer",
+                 "mp2-opt-numer",
                  "cisd-opt-numer",
                  "cc1",
                  "cc2",
@@ -268,6 +273,7 @@ else {
 		 "mp2-sp",
 		 "mp2-oeprop",
 		 "mp2-direct-sp",
+                 "mp2-opt-numer",
                  "extrema-zmat",
                  "extrema-deloc",
                  "cis-sp",
@@ -295,7 +301,8 @@ else {
                  "dboc-uhf1",
                  "dboc-rcisd1",
                  "dboc-rocisd1",
-                 "mp2r12-sp1"
+                 "mp2r12-sp1",
+                 "psi_start"
 #                 "Basis_Tests"
                 );
 }
@@ -318,6 +325,7 @@ foreach $name (@DIR_NAMES) {
     unlink <*.test>;
     unlink <timer.dat>;
     unlink <dboc.findif.out>;
+    unlink <test[0-9]*>;
     chdir ("$pwd");
   }
   else {

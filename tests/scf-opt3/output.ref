@@ -1,6 +1,6 @@
 ******************************************************************************
-tstart called on canopus.local.net
-Sun Aug 31 19:42:10 2003
+tstart called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:14 2003
 
                                 --------------
                                   WELCOME TO
@@ -28,10 +28,10 @@ Sun Aug 31 19:42:10 2003
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-           BORON      0.000000000000    -0.000000000000    -0.000000000000
-        HYDROGEN     -0.000000000000     1.889725988579     0.000000000000
-        HYDROGEN      1.636550712301    -0.944862994289     0.000000000000
-        HYDROGEN     -1.636550712301    -0.944862994289    -0.000000000000
+           BORON      0.000000000000     0.000000000000     0.000000000000
+        HYDROGEN      0.000000000000    -1.889725988579    -0.000000000000
+        HYDROGEN      1.636550712301     0.944862994289     0.000000000000
+        HYDROGEN     -1.636550712301     0.944862994289    -0.000000000000
 
 
   -SYMMETRY INFORMATION:
@@ -95,36 +95,36 @@ Sun Aug 31 19:42:10 2003
   -Unique atoms in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-           BORON     -0.000000000000     0.000000000000    -0.000000000000
-        HYDROGEN      0.000000000000    -0.000000000000     1.889725988579
-        HYDROGEN      0.000000000000     1.636550712301    -0.944862994289
+           BORON      0.000000000000     0.000000000000     0.000000000000
+        HYDROGEN     -0.000000000000     0.000000000000    -1.889725988579
+        HYDROGEN      0.000000000000     1.636550712301     0.944862994289
 
 
   -Geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-           BORON     -0.000000000000     0.000000000000    -0.000000000000
-        HYDROGEN      0.000000000000    -0.000000000000     1.889725988579
-        HYDROGEN      0.000000000000     1.636550712301    -0.944862994289
-        HYDROGEN     -0.000000000000    -1.636550712301    -0.944862994289
+           BORON      0.000000000000     0.000000000000     0.000000000000
+        HYDROGEN     -0.000000000000     0.000000000000    -1.889725988579
+        HYDROGEN      0.000000000000     1.636550712301     0.944862994289
+        HYDROGEN     -0.000000000000    -1.636550712301     0.944862994289
 
 
   -Geometry in the canonical coordinate system (Angstrom):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-           BORON     -0.000000000000     0.000000000000    -0.000000000000
-        HYDROGEN      0.000000000000    -0.000000000000     1.000000000000
-        HYDROGEN      0.000000000000     0.866025403784    -0.500000000000
-        HYDROGEN     -0.000000000000    -0.866025403784    -0.500000000000
+           BORON      0.000000000000     0.000000000000     0.000000000000
+        HYDROGEN     -0.000000000000     0.000000000000    -1.000000000000
+        HYDROGEN      0.000000000000     0.866025403784     0.500000000000
+        HYDROGEN     -0.000000000000    -0.866025403784     0.500000000000
 
 
   -Geometry in the reference coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-           BORON     -0.000000000000     0.000000000000    -0.000000000000
-        HYDROGEN      0.000000000000    -0.000000000000     1.889725988579
-        HYDROGEN      0.000000000000     1.636550712301    -0.944862994289
-        HYDROGEN     -0.000000000000    -1.636550712301    -0.944862994289
+           BORON      0.000000000000     0.000000000000     0.000000000000
+        HYDROGEN     -0.000000000000     0.000000000000    -1.889725988579
+        HYDROGEN      0.000000000000     1.636550712301     0.944862994289
+        HYDROGEN     -0.000000000000    -1.636550712301     0.944862994289
 
 
   --------------------------------------------------------------------------
@@ -142,15 +142,15 @@ Sun Aug 31 19:42:10 2003
 
 
 ******************************************************************************
-tstop called on canopus.local.net
-Sun Aug 31 19:42:11 2003
+tstop called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:14 2003
 
-user time   =       0.07 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.32 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on canopus.local.net
-Sun Aug 31 19:42:11 2003
+tstart called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:14 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -178,15 +178,15 @@ Sun Aug 31 19:42:11 2003
     Wrote 33594 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on canopus.local.net
-Sun Aug 31 19:42:11 2003
+tstop called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:14 2003
 
-user time   =       0.05 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.18 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on canopus.local.net
-Sun Aug 31 19:42:11 2003
+tstart called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:14 2003
 
 
              ------------------------------------------
@@ -240,9 +240,9 @@ Sun Aug 31 19:42:11 2003
     4       -26.3190614644    1.256715e-03    6.430057e-04    1.054370e-02
     5       -26.3191585890    9.712467e-05    1.864998e-04    2.868708e-03
     6       -26.3191630377    4.448626e-06    4.775735e-05    5.577415e-04
-    7       -26.3191630436    5.942098e-09    1.183217e-06    3.081037e-05
-    8       -26.3191630437    5.806555e-11    1.391177e-07    4.714789e-06
-    9       -26.3191630437    6.679102e-13    1.301963e-08    2.415252e-07
+    7       -26.3191630436    5.942056e-09    1.183217e-06    3.081037e-05
+    8       -26.3191630437    5.805845e-11    1.391177e-07    4.714789e-06
+    9       -26.3191630437    6.892265e-13    1.301963e-08    2.415252e-07
 
 Orbital energies (a.u.):
 
@@ -252,10 +252,10 @@ Orbital energies (a.u.):
 
 
   Unoccupied orbitals
-   1B1      0.066476     2B2      0.199668     4A1      0.199668  
+   1B1      0.066476     4A1      0.199668     2B2      0.199668  
    5A1      0.322951     2B1      0.378261     6A1      0.538555  
-   7A1      0.559695     3B2      0.559695     4B2      1.189638  
-   8A1      1.189638     9A1      1.336133     1A2      1.382866  
+   7A1      0.559695     3B2      0.559695     8A1      1.189638  
+   4B2      1.189638     9A1      1.336133     1A2      1.382866  
    3B1      1.382866     5B2      1.736048    10A1      1.879777  
    6B2      1.879777     4B1      2.028791    11A1      2.072642  
    5B1      2.438586     2A2      2.438586    12A1      2.766053  
@@ -271,15 +271,15 @@ Orbital energies (a.u.):
         virial theorem     =       2.029536377050
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on canopus.local.net
-Sun Aug 31 19:42:11 2003
+tstop called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:14 2003
 
-user time   =       0.01 seconds =       0.00 minutes
+user time   =       0.08 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on canopus.local.net
-Sun Aug 31 19:42:11 2003
+tstart called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:14 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -313,31 +313,31 @@ Sun Aug 31 19:42:11 2003
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
        1        0.000000000000     0.000000000000     0.000000000000
-       2        0.000000000000     0.000000000000    -0.156253133424
-       3        0.000000000000    -0.135319182966     0.078126566712
-       4        0.000000000000     0.135319182966     0.078126566712
+       2        0.000000000000     0.000000000000     0.156253133424
+       3       -0.000000000000    -0.135319182966    -0.078126566712
+       4        0.000000000000     0.135319182966    -0.078126566712
 
 ******************************************************************************
-tstop called on canopus.local.net
-Sun Aug 31 19:42:11 2003
+tstop called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:15 2003
 
-user time   =       0.25 seconds =       0.00 minutes
+user time   =       0.70 seconds =       0.01 minutes
 system time =       0.00 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
 	------------------------------------------------------
 
 Cartesian geometry and possibly gradient in a.u. with masses
-  5.0    11.00930550  -0.0000000000   0.0000000000  -0.0000000000
-  1.0     1.00782503   0.0000000000  -0.0000000000   1.8897259886
-  1.0     1.00782503   0.0000000000   1.6365507123  -0.9448629943
-  1.0     1.00782503  -0.0000000000  -1.6365507123  -0.9448629943
+  5.0    11.00930550   0.0000000000   0.0000000000   0.0000000000
+  1.0     1.00782503  -0.0000000000   0.0000000000  -1.8897259886
+  1.0     1.00782503   0.0000000000   1.6365507123   0.9448629943
+  1.0     1.00782503  -0.0000000000  -1.6365507123   0.9448629943
                        0.0000000000   0.0000000000   0.0000000000
-                       0.0000000000   0.0000000000  -0.1562531334
-                       0.0000000000  -0.1353191830   0.0781265667
-                       0.0000000000   0.1353191830   0.0781265667
+                       0.0000000000   0.0000000000   0.1562531334
+                      -0.0000000000  -0.1353191830  -0.0781265667
+                       0.0000000000   0.1353191830  -0.0781265667
 
 Generating simple internals
 
@@ -353,9 +353,9 @@ Bends
     (5 2 1 4) (120.00000000)
     (6 3 1 4) (120.00000000)
 Torsions
-    (7 1 2 3 4) (-0.00000000)
-    (8 1 3 4 2) (-0.00000000)
-    (9 1 4 2 3) (-0.00000000)
+    (7 1 2 3 4) (0.00000000)
+    (8 1 3 4 2) (0.00000000)
+    (9 1 4 2 3) (0.00000000)
 
 Using simple, possibly redundant, internal coordinates.
  
@@ -365,7 +365,7 @@ Current SCF energy before step       -26.3191630437
 
 Taking geometry step number 1
 
-BuB^t Determinant: 1.033121e-45
+BuB^t Determinant: 1.201647e-44
 
 Generating empirical Hessian.
 
@@ -382,9 +382,9 @@ Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
  3   1.0000000000   1.2873260000   0.1733874539   1.1733874539
  4   2.0943951024  -0.0000000000   0.0000000000   2.0943951024
  5   2.0943951024  -0.0000000000  -0.0000000000   2.0943951024
- 6   2.0943951024   0.0000000000  -0.0000000000   2.0943951024
- 7   0.0000000000  -0.0000000000  -0.0000000000  -0.0000000000
- 8   0.0000000000   0.0000000000  -0.0000000000  -0.0000000000
+ 6   2.0943951024   0.0000000000   0.0000000000   2.0943951024
+ 7   0.0000000000   0.0000000000  -0.0000000000  -0.0000000000
+ 8   0.0000000000  -0.0000000000  -0.0000000000  -0.0000000000
  9   0.0000000000   0.0000000000  -0.0000000000  -0.0000000000
    MAX force:    1.2873260000   RMS force:    0.7432380126
 
@@ -395,18 +395,18 @@ Back-transformation to cartesian coordinates...
 Convergence to displaced geometry took 3 iterations.
 
 New Cartesian Geometry in a.u.
-  5.0  -0.0000000000   0.0000000000  -0.0000000000
-  1.0   0.0000000000  -0.0000000000   2.2173807662
-  1.0   0.0000000000   1.9203080734  -1.1086903831
-  1.0   0.0000000000  -1.9203080734  -1.1086903831
+  5.0   0.0000000000   0.0000000000   0.0000000000
+  1.0  -0.0000000000  -0.0000000000  -2.2173807662
+  1.0  -0.0000000000   1.9203080734   1.1086903831
+  1.0  -0.0000000000  -1.9203080734   1.1086903831
 
 Geometry written to chkpt
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on canopus.local.net
-Sun Aug 31 19:42:11 2003
+tstart called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:15 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -431,18 +431,18 @@ Sun Aug 31 19:42:11 2003
   -SYMMETRY INFORMATION;
     Computational point group        =  C2v
     Number of irreps                 = 4
-    Wrote 33659 two-electron integrals to IWL file 33
+    Wrote 33605 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on canopus.local.net
-Sun Aug 31 19:42:11 2003
+tstop called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:15 2003
 
-user time   =       0.04 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.18 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on canopus.local.net
-Sun Aug 31 19:42:12 2003
+tstart called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:15 2003
 
 
              ------------------------------------------
@@ -467,7 +467,7 @@ Sun Aug 31 19:42:12 2003
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy        7.5458626963346
+  nuclear repulsion energy        7.5458626963348
 
   using old vector from file30 as initial guess
   energy from old vector:   -26.31916304
@@ -497,9 +497,9 @@ Sun Aug 31 19:42:12 2003
     3       -26.3915850698    4.075333e-04    2.211156e-04    9.991547e-03
     4       -26.3916171016    3.203174e-05    7.841277e-05    1.995580e-03
     5       -26.3916177556    6.539888e-07    1.159181e-05    4.053453e-04
-    6       -26.3916177664    1.082354e-08    1.438478e-06    4.168004e-05
-    7       -26.3916177665    1.531006e-10    2.522255e-07    3.625621e-06
-    8       -26.3916177665    3.907985e-12    4.447973e-08    6.620568e-07
+    6       -26.3916177664    1.082352e-08    1.438478e-06    4.168004e-05
+    7       -26.3916177665    1.531291e-10    2.522255e-07    3.625621e-06
+    8       -26.3916177665    3.872458e-12    4.447973e-08    6.620568e-07
 
  Correcting phases of orbitals.
 
@@ -513,8 +513,8 @@ Orbital energies (a.u.):
   Unoccupied orbitals
    1B1      0.059494     2B2      0.206315     4A1      0.206315  
    5A1      0.348861     2B1      0.371123     6A1      0.454926  
-   3B2      0.470338     7A1      0.470338     4B2      1.222273  
-   8A1      1.222273     9A1      1.271601     3B1      1.350712  
+   3B2      0.470338     7A1      0.470338     8A1      1.222273  
+   4B2      1.222273     9A1      1.271601     3B1      1.350712  
    1A2      1.350712     5B2      1.620991    10A1      1.698965  
    6B2      1.698965     4B1      1.854084    11A1      1.944558  
    2A2      2.276521     5B1      2.276521     7B2      2.417127  
@@ -524,21 +524,21 @@ Orbital energies (a.u.):
 
         SCF total energy   =     -26.391617766536
         kinetic energy     =      26.400603576251
-        nuc. attr. energy  =     -75.629570354843
+        nuc. attr. energy  =     -75.629570354844
         elec. rep. energy  =      22.837349012056
         potential energy   =     -52.792221342787
         virial theorem     =       2.000340479685
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on canopus.local.net
-Sun Aug 31 19:42:12 2003
+tstop called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:15 2003
 
-user time   =       0.01 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on canopus.local.net
-Sun Aug 31 19:42:12 2003
+tstart called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:15 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -571,17 +571,17 @@ Sun Aug 31 19:42:12 2003
   -SCF forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000    -0.000000000000
-       2        0.000000000000     0.000000000000    -0.010265956144
-       3        0.000000000000    -0.008890578815     0.005132978072
-       4       -0.000000000000     0.008890578815     0.005132978072
+       1        0.000000000000     0.000000000000     0.000000000000
+       2        0.000000000000     0.000000000000     0.010265956144
+       3        0.000000000000    -0.008890578815    -0.005132978072
+       4       -0.000000000000     0.008890578815    -0.005132978072
 
 ******************************************************************************
-tstop called on canopus.local.net
-Sun Aug 31 19:42:12 2003
+tstop called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:15 2003
 
-user time   =       0.24 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.68 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
@@ -589,14 +589,14 @@ total time  =          0 seconds =       0.00 minutes
 	------------------------------------------------------
 
 Cartesian geometry and possibly gradient in a.u. with masses
-  5.0    11.00930550  -0.0000000000   0.0000000000  -0.0000000000
-  1.0     1.00782503   0.0000000000  -0.0000000000   2.2173807662
-  1.0     1.00782503   0.0000000000   1.9203080734  -1.1086903831
-  1.0     1.00782503   0.0000000000  -1.9203080734  -1.1086903831
-                       0.0000000000   0.0000000000  -0.0000000000
-                       0.0000000000   0.0000000000  -0.0102659561
-                       0.0000000000  -0.0088905788   0.0051329781
-                      -0.0000000000   0.0088905788   0.0051329781
+  5.0    11.00930550   0.0000000000   0.0000000000   0.0000000000
+  1.0     1.00782503  -0.0000000000  -0.0000000000  -2.2173807662
+  1.0     1.00782503  -0.0000000000   1.9203080734   1.1086903831
+  1.0     1.00782503  -0.0000000000  -1.9203080734   1.1086903831
+                       0.0000000000   0.0000000000   0.0000000000
+                       0.0000000000   0.0000000000   0.0102659561
+                       0.0000000000  -0.0088905788  -0.0051329781
+                      -0.0000000000   0.0088905788  -0.0051329781
 
 Simple Internal Coordinates and Values
 Stretches
@@ -608,9 +608,9 @@ Bends
     (5 2 1 4) (120.00000000)
     (6 3 1 4) (120.00000000)
 Torsions
-    (7 1 2 3 4) (-0.00000000)
-    (8 1 3 4 2) (-0.00000000)
-    (9 1 4 2 3) (-0.00000000)
+    (7 1 2 3 4) (0.00000000)
+    (8 1 3 4 2) (0.00000000)
+    (9 1 4 2 3) (0.00000000)
  
  ** Taking normal optimization step. **
 
@@ -618,7 +618,7 @@ Current SCF energy before step       -26.3916177665
 
 Taking geometry step number 2
 
-BuB^t Determinant: -2.054695e-46
+BuB^t Determinant: -2.293176e-45
 
 Force Constants read from PSIF_OPTKING
 
@@ -646,18 +646,18 @@ Back-transformation to cartesian coordinates...
 Convergence to displaced geometry took 3 iterations.
 
 New Cartesian Geometry in a.u.
-  5.0   0.0000000000   0.0000000000   0.0000000000
-  1.0  -0.0000000000  -0.0000000000   2.2404217596
-  1.0  -0.0000000000   1.9402621590  -1.1202108798
-  1.0  -0.0000000000  -1.9402621590  -1.1202108798
+  5.0  -0.0000000000   0.0000000000  -0.0000000000
+  1.0   0.0000000000  -0.0000000000  -2.2404217596
+  1.0   0.0000000000   1.9402621590   1.1202108798
+  1.0   0.0000000000  -1.9402621590   1.1202108798
 
 Geometry written to chkpt
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on canopus.local.net
-Sun Aug 31 19:42:12 2003
+tstart called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:15 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -682,18 +682,18 @@ Sun Aug 31 19:42:12 2003
   -SYMMETRY INFORMATION;
     Computational point group        =  C2v
     Number of irreps                 = 4
-    Wrote 33659 two-electron integrals to IWL file 33
+    Wrote 33603 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on canopus.local.net
-Sun Aug 31 19:42:12 2003
+tstop called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:16 2003
 
-user time   =       0.04 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.18 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on canopus.local.net
-Sun Aug 31 19:42:12 2003
+tstart called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:16 2003
 
 
              ------------------------------------------
@@ -718,7 +718,7 @@ Sun Aug 31 19:42:12 2003
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy        7.4682593739678
+  nuclear repulsion energy        7.4682593739679
 
   using old vector from file30 as initial guess
   energy from old vector:   -26.39161777
@@ -746,9 +746,9 @@ Sun Aug 31 19:42:12 2003
     1       -26.3920476254    3.386031e+01    0.000000e+00    0.000000e+00
     2       -26.3920979014    5.027595e-05    8.739353e-05    2.592909e-03
     3       -26.3920992733    1.371911e-06    1.212779e-05    5.863100e-04
-    4       -26.3920993715    9.815366e-08    4.218479e-06    1.152846e-04
-    5       -26.3920993736    2.181615e-09    6.629258e-07    2.262669e-05
-    6       -26.3920993737    3.750245e-11    8.432460e-08    2.797121e-06
+    4       -26.3920993715    9.815363e-08    4.218479e-06    1.152846e-04
+    5       -26.3920993736    2.181629e-09    6.629258e-07    2.262669e-05
+    6       -26.3920993737    3.747402e-11    8.432460e-08    2.797121e-06
 
  Correcting phases of orbitals.
 
@@ -779,15 +779,15 @@ Orbital energies (a.u.):
         virial theorem     =       1.998801637187
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on canopus.local.net
-Sun Aug 31 19:42:12 2003
+tstop called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:16 2003
 
-user time   =       0.00 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on canopus.local.net
-Sun Aug 31 19:42:12 2003
+tstart called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:16 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -820,32 +820,32 @@ Sun Aug 31 19:42:12 2003
   -SCF forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000    -0.000000000000
-       2        0.000000000000     0.000000000000    -0.003730336530
-       3        0.000000000000    -0.003230566200     0.001865168265
-       4        0.000000000000     0.003230566200     0.001865168265
+       1        0.000000000000     0.000000000000     0.000000000000
+       2        0.000000000000     0.000000000000     0.003730336530
+       3        0.000000000000    -0.003230566200    -0.001865168265
+       4        0.000000000000     0.003230566200    -0.001865168265
 
 ******************************************************************************
-tstop called on canopus.local.net
-Sun Aug 31 19:42:13 2003
+tstop called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:16 2003
 
-user time   =       0.24 seconds =       0.00 minutes
-system time =       0.03 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.70 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
 	------------------------------------------------------
 
 Cartesian geometry and possibly gradient in a.u. with masses
-  5.0    11.00930550   0.0000000000   0.0000000000   0.0000000000
-  1.0     1.00782503  -0.0000000000  -0.0000000000   2.2404217596
-  1.0     1.00782503  -0.0000000000   1.9402621590  -1.1202108798
-  1.0     1.00782503  -0.0000000000  -1.9402621590  -1.1202108798
-                       0.0000000000   0.0000000000  -0.0000000000
-                       0.0000000000   0.0000000000  -0.0037303365
-                       0.0000000000  -0.0032305662   0.0018651683
-                       0.0000000000   0.0032305662   0.0018651683
+  5.0    11.00930550  -0.0000000000   0.0000000000  -0.0000000000
+  1.0     1.00782503   0.0000000000  -0.0000000000  -2.2404217596
+  1.0     1.00782503   0.0000000000   1.9402621590   1.1202108798
+  1.0     1.00782503   0.0000000000  -1.9402621590   1.1202108798
+                       0.0000000000   0.0000000000   0.0000000000
+                       0.0000000000   0.0000000000   0.0037303365
+                       0.0000000000  -0.0032305662  -0.0018651683
+                       0.0000000000   0.0032305662  -0.0018651683
 
 Simple Internal Coordinates and Values
 Stretches
@@ -867,7 +867,7 @@ Current SCF energy before step       -26.3920993737
 
 Taking geometry step number 3
 
-BuB^t Determinant: -1.109979e-46
+BuB^t Determinant: 1.258520e-45
 
 Force Constants read from PSIF_OPTKING
 
@@ -880,9 +880,9 @@ Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
  1   1.1855802233   0.0307332026   0.0069592687   1.1925394921
  2   1.1855802233   0.0307332026   0.0069592687   1.1925394921
  3   1.1855802233   0.0307332026   0.0069592687   1.1925394921
- 4   2.0943951024   0.0000000000   0.0000000000   2.0943951024
- 5   2.0943951024   0.0000000000   0.0000000000   2.0943951024
- 6   2.0943951024  -0.0000000000  -0.0000000000   2.0943951024
+ 4   2.0943951024  -0.0000000000  -0.0000000000   2.0943951024
+ 5   2.0943951024  -0.0000000000  -0.0000000000   2.0943951024
+ 6   2.0943951024   0.0000000000   0.0000000000   2.0943951024
  7   0.0000000000  -0.0000000000  -0.0000000000  -0.0000000000
  8   0.0000000000  -0.0000000000  -0.0000000000  -0.0000000000
  9   0.0000000000  -0.0000000000  -0.0000000000  -0.0000000000
@@ -895,18 +895,18 @@ Back-transformation to cartesian coordinates...
 Convergence to displaced geometry took 3 iterations.
 
 New Cartesian Geometry in a.u.
-  5.0  -0.0000000000   0.0000000000   0.0000000000
-  1.0   0.0000000000  -0.0000000000   2.2535728706
-  1.0   0.0000000000   1.9516513552  -1.1267864353
-  1.0   0.0000000000  -1.9516513552  -1.1267864353
+  5.0   0.0000000000   0.0000000000  -0.0000000000
+  1.0  -0.0000000000  -0.0000000000  -2.2535728706
+  1.0  -0.0000000000   1.9516513552   1.1267864353
+  1.0  -0.0000000000  -1.9516513552   1.1267864353
 
 Geometry written to chkpt
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on canopus.local.net
-Sun Aug 31 19:42:13 2003
+tstart called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:16 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -931,18 +931,18 @@ Sun Aug 31 19:42:13 2003
   -SYMMETRY INFORMATION;
     Computational point group        =  C2v
     Number of irreps                 = 4
-    Wrote 33659 two-electron integrals to IWL file 33
+    Wrote 33603 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on canopus.local.net
-Sun Aug 31 19:42:13 2003
+tstop called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:16 2003
 
-user time   =       0.06 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.18 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on canopus.local.net
-Sun Aug 31 19:42:13 2003
+tstart called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:16 2003
 
 
              ------------------------------------------
@@ -967,7 +967,7 @@ Sun Aug 31 19:42:13 2003
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy        7.4246770654453
+  nuclear repulsion energy        7.4246770654452
 
   using old vector from file30 as initial guess
   energy from old vector:   -26.39209937
@@ -994,8 +994,8 @@ Sun Aug 31 19:42:13 2003
   iter       total energy        delta E         delta P          diiser
     1       -26.3921593121    3.381684e+01    0.000000e+00    0.000000e+00
     2       -26.3921753096    1.599751e-05    4.904848e-05    1.467015e-03
-    3       -26.3921757499    4.403182e-07    6.817408e-06    3.305873e-04
-    4       -26.3921757814    3.144347e-08    2.373514e-06    6.476386e-05
+    3       -26.3921757499    4.403183e-07    6.817408e-06    3.305873e-04
+    4       -26.3921757814    3.144348e-08    2.373514e-06    6.476386e-05
     5       -26.3921757821    7.123333e-10    3.776426e-07    1.266224e-05
     6       -26.3921757821    1.228528e-11    4.831681e-08    1.599232e-06
 
@@ -1022,21 +1022,21 @@ Orbital energies (a.u.):
 
         SCF total energy   =     -26.392175782101
         kinetic energy     =      26.338019271784
-        nuc. attr. energy  =     -75.335154897963
+        nuc. attr. energy  =     -75.335154897962
         elec. rep. energy  =      22.604959844077
         potential energy   =     -52.730195053885
         virial theorem     =       1.997948008881
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on canopus.local.net
-Sun Aug 31 19:42:13 2003
+tstop called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:16 2003
 
-user time   =       0.02 seconds =       0.00 minutes
+user time   =       0.08 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on canopus.local.net
-Sun Aug 31 19:42:13 2003
+tstart called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:16 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1069,32 +1069,32 @@ Sun Aug 31 19:42:13 2003
   -SCF forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000    -0.000000000000
-       2        0.000000000000     0.000000000000    -0.000162233384
-       3       -0.000000000000    -0.000140498232     0.000081116692
-       4        0.000000000000     0.000140498232     0.000081116692
+       1        0.000000000000     0.000000000000     0.000000000000
+       2        0.000000000000     0.000000000000     0.000162233384
+       3        0.000000000000    -0.000140498232    -0.000081116692
+       4       -0.000000000000     0.000140498232    -0.000081116692
 
 ******************************************************************************
-tstop called on canopus.local.net
-Sun Aug 31 19:42:13 2003
+tstop called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:17 2003
 
-user time   =       0.24 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.67 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
 	------------------------------------------------------
 
 Cartesian geometry and possibly gradient in a.u. with masses
-  5.0    11.00930550  -0.0000000000   0.0000000000   0.0000000000
-  1.0     1.00782503   0.0000000000  -0.0000000000   2.2535728706
-  1.0     1.00782503   0.0000000000   1.9516513552  -1.1267864353
-  1.0     1.00782503   0.0000000000  -1.9516513552  -1.1267864353
-                       0.0000000000   0.0000000000  -0.0000000000
-                       0.0000000000   0.0000000000  -0.0001622334
-                      -0.0000000000  -0.0001404982   0.0000811167
-                       0.0000000000   0.0001404982   0.0000811167
+  5.0    11.00930550   0.0000000000   0.0000000000  -0.0000000000
+  1.0     1.00782503  -0.0000000000  -0.0000000000  -2.2535728706
+  1.0     1.00782503  -0.0000000000   1.9516513552   1.1267864353
+  1.0     1.00782503  -0.0000000000  -1.9516513552   1.1267864353
+                       0.0000000000   0.0000000000   0.0000000000
+                       0.0000000000   0.0000000000   0.0001622334
+                       0.0000000000  -0.0001404982  -0.0000811167
+                      -0.0000000000   0.0001404982  -0.0000811167
 
 Simple Internal Coordinates and Values
 Stretches
@@ -1106,9 +1106,9 @@ Bends
     (5 2 1 4) (120.00000000)
     (6 3 1 4) (120.00000000)
 Torsions
-    (7 1 2 3 4) (-0.00000000)
-    (8 1 3 4 2) (-0.00000000)
-    (9 1 4 2 3) (-0.00000000)
+    (7 1 2 3 4) (0.00000000)
+    (8 1 3 4 2) (0.00000000)
+    (9 1 4 2 3) (0.00000000)
  
  ** Taking normal optimization step. **
 
@@ -1116,7 +1116,7 @@ Current SCF energy before step       -26.3921757821
 
 Taking geometry step number 4
 
-BuB^t Determinant: 4.757107e-47
+BuB^t Determinant: -2.233870e-46
 
 Force Constants read from PSIF_OPTKING
 
@@ -1144,18 +1144,18 @@ Back-transformation to cartesian coordinates...
 Convergence to displaced geometry took 3 iterations.
 
 New Cartesian Geometry in a.u.
-  5.0  -0.0000000000   0.0000000000   0.0000000000
-  1.0   0.0000000000  -0.0000000000   2.2541708211
-  1.0   0.0000000000   1.9521691956  -1.1270854106
-  1.0   0.0000000000  -1.9521691956  -1.1270854106
+  5.0   0.0000000000   0.0000000000  -0.0000000000
+  1.0  -0.0000000000  -0.0000000000  -2.2541708211
+  1.0  -0.0000000000   1.9521691956   1.1270854106
+  1.0  -0.0000000000  -1.9521691956   1.1270854106
 
 Geometry written to chkpt
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on canopus.local.net
-Sun Aug 31 19:42:14 2003
+tstart called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:17 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1180,18 +1180,18 @@ Sun Aug 31 19:42:14 2003
   -SYMMETRY INFORMATION;
     Computational point group        =  C2v
     Number of irreps                 = 4
-    Wrote 33659 two-electron integrals to IWL file 33
+    Wrote 33602 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on canopus.local.net
-Sun Aug 31 19:42:14 2003
+tstop called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:17 2003
 
-user time   =       0.04 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.18 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on canopus.local.net
-Sun Aug 31 19:42:14 2003
+tstart called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:17 2003
 
 
              ------------------------------------------
@@ -1216,7 +1216,7 @@ Sun Aug 31 19:42:14 2003
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy        7.4227075653075
+  nuclear repulsion energy        7.4227075653076
 
   using old vector from file30 as initial guess
   energy from old vector:   -26.39217578
@@ -1242,9 +1242,9 @@ Sun Aug 31 19:42:14 2003
 
   iter       total energy        delta E         delta P          diiser
     1       -26.3921758963    3.381488e+01    0.000000e+00    0.000000e+00
-    2       -26.3921759290    3.272483e-08    2.214672e-06    6.653268e-05
-    3       -26.3921759299    9.004211e-10    3.078244e-07    1.494859e-05
-    4       -26.3921759300    6.423306e-11    1.071757e-07    2.928744e-06
+    2       -26.3921759290    3.272487e-08    2.214672e-06    6.653268e-05
+    3       -26.3921759299    9.003926e-10    3.078244e-07    1.494859e-05
+    4       -26.3921759300    6.427570e-11    1.071757e-07    2.928744e-06
     5       -26.3921759300    1.456613e-12    1.707484e-08    5.719980e-07
 
  Correcting phases of orbitals.
@@ -1276,15 +1276,15 @@ Orbital energies (a.u.):
         virial theorem     =       1.997909628799
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on canopus.local.net
-Sun Aug 31 19:42:14 2003
+tstop called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:17 2003
 
-user time   =       0.01 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on canopus.local.net
-Sun Aug 31 19:42:14 2003
+tstart called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:17 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1318,16 +1318,16 @@ Sun Aug 31 19:42:14 2003
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
        1        0.000000000000     0.000000000000    -0.000000000000
-       2        0.000000000000     0.000000000000    -0.000002721928
-       3        0.000000000000    -0.000002357258     0.000001360964
-       4        0.000000000000     0.000002357258     0.000001360964
+       2        0.000000000000     0.000000000000     0.000002721928
+       3       -0.000000000000    -0.000002357258    -0.000001360964
+       4        0.000000000000     0.000002357258    -0.000001360964
 
 ******************************************************************************
-tstop called on canopus.local.net
-Sun Aug 31 19:42:14 2003
+tstop called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:17 2003
 
-user time   =       0.24 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.67 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
@@ -1335,14 +1335,14 @@ total time  =          0 seconds =       0.00 minutes
 	------------------------------------------------------
 
 Cartesian geometry and possibly gradient in a.u. with masses
-  5.0    11.00930550  -0.0000000000   0.0000000000   0.0000000000
-  1.0     1.00782503   0.0000000000  -0.0000000000   2.2541708211
-  1.0     1.00782503   0.0000000000   1.9521691956  -1.1270854106
-  1.0     1.00782503   0.0000000000  -1.9521691956  -1.1270854106
+  5.0    11.00930550   0.0000000000   0.0000000000  -0.0000000000
+  1.0     1.00782503  -0.0000000000  -0.0000000000  -2.2541708211
+  1.0     1.00782503  -0.0000000000   1.9521691956   1.1270854106
+  1.0     1.00782503  -0.0000000000  -1.9521691956   1.1270854106
                        0.0000000000   0.0000000000  -0.0000000000
-                       0.0000000000   0.0000000000  -0.0000027219
-                       0.0000000000  -0.0000023573   0.0000013610
-                       0.0000000000   0.0000023573   0.0000013610
+                       0.0000000000   0.0000000000   0.0000027219
+                      -0.0000000000  -0.0000023573  -0.0000013610
+                       0.0000000000   0.0000023573  -0.0000013610
 
 Simple Internal Coordinates and Values
 Stretches
@@ -1354,9 +1354,9 @@ Bends
     (5 2 1 4) (120.00000000)
     (6 3 1 4) (120.00000000)
 Torsions
-    (7 1 2 3 4) (-0.00000000)
-    (8 1 3 4 2) (-0.00000000)
-    (9 1 4 2 3) (-0.00000000)
+    (7 1 2 3 4) (0.00000000)
+    (8 1 3 4 2) (0.00000000)
+    (9 1 4 2 3) (0.00000000)
  
  ** Taking normal optimization step. **
 
@@ -1364,7 +1364,7 @@ Current SCF energy before step       -26.3921759300
 
 Taking geometry step number 5
 
-BuB^t Determinant: -2.824262e-47
+BuB^t Determinant: 4.546788e-45
 
 Force Constants read from PSIF_OPTKING
 
@@ -1392,18 +1392,18 @@ Back-transformation to cartesian coordinates...
 Convergence to displaced geometry took 3 iterations.
 
 New Cartesian Geometry in a.u.
-  5.0  -0.0000000000   0.0000000000   0.0000000000
-  1.0   0.0000000000  -0.0000000000   2.2541810247
-  1.0   0.0000000000   1.9521780321  -1.1270905123
-  1.0   0.0000000000  -1.9521780321  -1.1270905123
+  5.0   0.0000000000   0.0000000000  -0.0000000000
+  1.0  -0.0000000000  -0.0000000000  -2.2541810247
+  1.0  -0.0000000000   1.9521780321   1.1270905123
+  1.0  -0.0000000000  -1.9521780321   1.1270905123
 
 Geometry written to chkpt
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on canopus.local.net
-Sun Aug 31 19:42:14 2003
+tstart called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:17 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1428,18 +1428,18 @@ Sun Aug 31 19:42:14 2003
   -SYMMETRY INFORMATION;
     Computational point group        =  C2v
     Number of irreps                 = 4
-    Wrote 33659 two-electron integrals to IWL file 33
+    Wrote 33603 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on canopus.local.net
-Sun Aug 31 19:42:15 2003
+tstop called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:18 2003
 
-user time   =       0.05 seconds =       0.00 minutes
+user time   =       0.20 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on canopus.local.net
-Sun Aug 31 19:42:15 2003
+tstart called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:18 2003
 
 
              ------------------------------------------
@@ -1513,7 +1513,7 @@ Orbital energies (a.u.):
    8B2      3.038856    15A1      4.855795    16A1     20.573131  
 
 
-        SCF total energy   =     -26.392175930057
+        SCF total energy   =     -26.392175930056
         kinetic energy     =      26.336989117069
         nuc. attr. energy  =     -75.330274665900
         elec. rep. energy  =      22.601109618774
@@ -1521,15 +1521,15 @@ Orbital energies (a.u.):
         virial theorem     =       1.997908970707
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on canopus.local.net
-Sun Aug 31 19:42:15 2003
+tstop called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:18 2003
 
-user time   =       0.01 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on canopus.local.net
-Sun Aug 31 19:42:15 2003
+tstart called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:18 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1562,16 +1562,16 @@ Sun Aug 31 19:42:15 2003
   -SCF forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000     0.000000000000
-       2        0.000000000000     0.000000000000     0.000000251943
-       3        0.000000000000     0.000000218189    -0.000000125971
-       4       -0.000000000000    -0.000000218189    -0.000000125971
+       1        0.000000000000     0.000000000000    -0.000000000000
+       2        0.000000000000     0.000000000000    -0.000000251943
+       3       -0.000000000000     0.000000218189     0.000000125971
+       4        0.000000000000    -0.000000218189     0.000000125971
 
 ******************************************************************************
-tstop called on canopus.local.net
-Sun Aug 31 19:42:15 2003
+tstop called on Edward-Valeevs-Computer.local.
+Fri Nov 21 11:45:18 2003
 
-user time   =       0.24 seconds =       0.00 minutes
+user time   =       0.70 seconds =       0.01 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
@@ -1580,14 +1580,14 @@ total time  =          0 seconds =       0.00 minutes
 	------------------------------------------------------
 
 Cartesian geometry and possibly gradient in a.u. with masses
-  5.0    11.00930550  -0.0000000000   0.0000000000   0.0000000000
-  1.0     1.00782503   0.0000000000  -0.0000000000   2.2541810247
-  1.0     1.00782503   0.0000000000   1.9521780321  -1.1270905123
-  1.0     1.00782503   0.0000000000  -1.9521780321  -1.1270905123
-                       0.0000000000   0.0000000000   0.0000000000
-                       0.0000000000   0.0000000000   0.0000002519
-                       0.0000000000   0.0000002182  -0.0000001260
-                      -0.0000000000  -0.0000002182  -0.0000001260
+  5.0    11.00930550   0.0000000000   0.0000000000  -0.0000000000
+  1.0     1.00782503  -0.0000000000  -0.0000000000  -2.2541810247
+  1.0     1.00782503  -0.0000000000   1.9521780321   1.1270905123
+  1.0     1.00782503  -0.0000000000  -1.9521780321   1.1270905123
+                       0.0000000000   0.0000000000  -0.0000000000
+                       0.0000000000   0.0000000000  -0.0000002519
+                      -0.0000000000   0.0000002182   0.0000001260
+                       0.0000000000  -0.0000002182   0.0000001260
 
 Simple Internal Coordinates and Values
 Stretches
@@ -1599,9 +1599,9 @@ Bends
     (5 2 1 4) (120.00000000)
     (6 3 1 4) (120.00000000)
 Torsions
-    (7 1 2 3 4) (-0.00000000)
-    (8 1 3 4 2) (-0.00000000)
-    (9 1 4 2 3) (-0.00000000)
+    (7 1 2 3 4) (0.00000000)
+    (8 1 3 4 2) (0.00000000)
+    (9 1 4 2 3) (0.00000000)
  
  ** Taking normal optimization step. **
 
@@ -1609,7 +1609,7 @@ Current SCF energy before step       -26.3921759301
 
 Taking geometry step number 6
 
-BuB^t Determinant: -9.234189e-48
+BuB^t Determinant: -3.683000e-45
 
 Force Constants read from PSIF_OPTKING
 
@@ -1633,10 +1633,10 @@ Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
 MAX force is < 1.0e-05.  Optimization is complete.
 Final SCF energy is  -26.3921759301
 The Optimized geometry in a.u.
-  (  B  -0.0000000000   0.0000000000   0.0000000000 )
-  (  H   0.0000000000  -0.0000000000   2.2541810247 )
-  (  H   0.0000000000   1.9521780321  -1.1270905123 )
-  (  H   0.0000000000  -1.9521780321  -1.1270905123 )
+  (  B   0.0000000000   0.0000000000  -0.0000000000 )
+  (  H  -0.0000000000  -0.0000000000  -2.2541810247 )
+  (  H  -0.0000000000   1.9521780321   1.1270905123 )
+  (  H  -0.0000000000  -1.9521780321   1.1270905123 )
 
 ******** OPTKING execution completed ********
 

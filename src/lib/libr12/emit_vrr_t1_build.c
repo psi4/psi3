@@ -46,7 +46,7 @@ int emit_vrr_t1_build()
   char **subfunction_name;
 
 
-  k1 = (char **) malloc((new_am)*sizeof(char *));
+  k1 = (char **) malloc(new_am*sizeof(char *));
   for(i=1;i<=new_am;i++) {
     j = strlen(number[i]);
     k1[i-1] = (char*) malloc((5+j)*sizeof(char));

@@ -10,6 +10,10 @@
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 
+#if defined HAVE_DECL_SETENV && !HAVE_DECL_SETENV
+  extern int setenv(const char *, const char *, int);
+#endif
+
 extern FILE *infile, *outfile;
 extern char *psi_file_prefix;
 
@@ -48,6 +52,7 @@ int psi_start(int argc, char *argv[], int overwrite_output)
   char *userhome;
   FILE *psirc;
   char *arg;
+  char *tmpstr1;
 
   /* process command-line arguments in sequence */
   for(i=0; i<argc; i++) {
@@ -184,6 +189,42 @@ int psi_start(int argc, char *argv[], int overwrite_output)
     fprefix = strdup(PSI_DEFAULT_FILE_PREFIX);
   }
   psi_file_prefix = strdup(fprefix);
+
+  /* other Psi modules called by this module should read from the same input file
+     set the value of PSI_INPUT for the duration of this run */
+#if HAVE_PUTENV
+  tmpstr1 = (char *) malloc(11+strlen(ifname));
+  sprintf(tmpstr1, "PSI_INPUT=%s", ifname);
+  putenv(tmpstr1);
+#elif HAVE_SETENV
+  setenv("PSI_OUTPUT",ifname,1);
+#else
+#error "Have neither putenv nor setenv. Something must be very broken on this system."
+#endif
+
+  /* By default, other Psi modules called by this module should write to the same output file
+     set the value of PSI_OUTPUT for the duration of this run */
+#if HAVE_PUTENV
+  tmpstr1 = (char *) malloc(12+strlen(ofname));
+  sprintf(tmpstr1, "PSI_OUTPUT=%s", ofname);
+  putenv(tmpstr1);
+#elif HAVE_SETENV
+  setenv("PSI_OUTPUT",ofname,1);
+#else
+#error "Have neither putenv nor setenv. Something must be very broken on this system."
+#endif
+
+  /* By default, other Psi modules called by this module should use the same prefix too
+     set the value of PSI_PREFIX for the duration of this run */
+#if HAVE_PUTENV
+  tmpstr1 = (char *) malloc(12+strlen(fprefix));
+  sprintf(tmpstr1, "PSI_PREFIX=%s", fprefix);
+  putenv(tmpstr1);
+#elif HAVE_SETENV
+  setenv("PSI_PREFIX",fprefix,1);
+#else
+#error "Have neither putenv nor setenv. Something must be very broken on this system."
+#endif
 
   return(PSI_RETURN_SUCCESS);
 }

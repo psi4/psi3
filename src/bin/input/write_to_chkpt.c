@@ -46,7 +46,9 @@ void write_to_chkpt(double repulsion)
     ----------------------------------*/
   calc_label = init_char_array(80);
   strncpy(calc_label,label,MIN(80,strlen(label)));
-
+  if(strlen(label) < 80) calc_label[strlen(label)] = '\0';
+  else calc_label[79] = '\0';
+  
   /*----------------------------------
     Write out basic info to chkpt
    ----------------------------------*/

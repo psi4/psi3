@@ -95,6 +95,7 @@ void get_parameters(void)
    Parameters.repl_otf = 0;
    Parameters.calc_ssq = 0;
    Parameters.mpn = 0;
+   Parameters.save_mpn2 = 0;
    Parameters.mpn_schmidt = 0;
    Parameters.wigner = 0;
    Parameters.perturbation_parameter = 1.0;
@@ -282,6 +283,7 @@ void get_parameters(void)
      Parameters.hd_otf = TRUE;
      Parameters.nodfile = TRUE;
      }
+   errcod = ip_data("SAVE_MPN2","%d",&(Parameters.save_mpn2),0);
    errcod = ip_data("PERTURBATION_PARAMETER","%lf",
             &(Parameters.perturbation_parameter),0);
    

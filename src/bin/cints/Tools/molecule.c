@@ -3,7 +3,6 @@
 #include<stdlib.h>
 #include<libciomr/libciomr.h>
 #include<libchkpt/chkpt.h>
-
 #include<libint/libint.h>
 #include"defines.h"
 #define EXTERN
@@ -20,7 +19,7 @@ void init_molecule()
   Molecule.label = chkpt_rd_label();
   Molecule.num_atoms = chkpt_rd_natom();
   Molecule.Rref = chkpt_rd_rref();
-/* Molecule.centers = */ get_geometry();
+  get_geometry();
 
   return;
 }

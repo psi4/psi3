@@ -28,7 +28,7 @@ extern "C" {
       int nirreps, int strtypes, int nel, FILE *outfile);
 } ;
 
-#include <iostream.h>
+#include <iostream>
 #define ODOMETER_DECL_ONLY
 #include "odometer.h"
 

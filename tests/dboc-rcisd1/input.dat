@@ -1,6 +1,6 @@
 psi: (
   label = "cc-pVDZ CISD(FC) DBOC for H2O"
-  jobtype = dboc
+  jobtype = bodc
   wfn = detci
   reference = rhf
   freeze_core = yes

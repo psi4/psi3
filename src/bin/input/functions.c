@@ -38,25 +38,35 @@ void punt(const char *mess)
    UNIT_VECTORS(): Function calculates unit vectors between each
    pair of atoms and stores them in E. 
 */
-void unit_vectors(int num_atoms, double *X, double *Y, double *Z, 
-                  double **Distance, double ***E )
-{
-   int i, j ;
+double ***unit_vectors(double **Geom, double **Distances)
+{	
+  int i, j;
+  double ***E;
+  
+  E = (double ***)malloc(num_atoms*sizeof(double **));
+  for(i=0; i<num_atoms; i++) {
+    E[i] = (double **)malloc(num_atoms*sizeof(double *));
+    for(j=0; j<num_atoms; j++) {
+      E[i][j] = (double *)malloc(3*sizeof(double));
+    }
+  }
 
-   for(i=0; i<num_atoms; i++) {
-      for (j=0; j<num_atoms; j++) {
-         if (i != j) {
-            E[i][j][0] = -(X[i] - X[j]) / (Distance[i][j]);
-            E[i][j][1] = -(Y[i] - Y[j]) / (Distance[i][j]);
-            E[i][j][2] = -(Z[i] - Z[j]) / (Distance[i][j]);
-            }
-         else {
-            E[i][j][0] = 0.0 ;
-            E[i][j][1] = 0.0 ;
-            E[i][j][2] = 0.0 ;
-           }
-        }
-     }
+  for(i=0; i<num_atoms; i++) {
+    for(j=0; j<num_atoms; j++) {
+      if(i != j) {
+        E[i][j][0] = -(Geom[i][0] - Geom[j][0]) / (Distances[i][j]);
+        E[i][j][1] = -(Geom[i][1] - Geom[j][1]) / (Distances[i][j]);
+        E[i][j][2] = -(Geom[i][2] - Geom[j][2]) / (Distances[i][j]);
+      }
+      else {
+        E[i][j][0] = 0.0;
+        E[i][j][1] = 0.0;
+        E[i][j][2] = 0.0;
+      }
+    }
+  }
+
+  return(E);
 }
 
 
@@ -77,39 +87,124 @@ void unit_vec(double *B, double *A, double *AB)
    return;
 }        
 
-
 /*
 ** CALC_BOND_ANGLES(): Function calculates all non-redundant bond angles
 **   between all combinations of three atoms, and writes to file fpo.
 **   Note: the first index of BondAngles is always smaller; i.e.
 **   angle 5-3-1 is stored only as 1-3-5
 */
-void calc_bond_angles(double ***E, 
-                      double ***Bond_Angle, 
-                      double **Distance, FILE *outfile)
+double ***calc_bond_angles(double ***E, double **Distances)
 {
-int i, j, k ;
-double dotprod ;
-double angle ;
+  int i, j, k;
+  double dotprod=0;
+  double angle=0;
+   
+  double ***BA;
 
-   fprintf(outfile, "\nBond Angles:\n") ;
-   for (i=0; i<num_atoms; i++) {
-      for (j=0; j<num_atoms; j++) {
-         for (k=i; k<num_atoms; k++) {
-            if ( (i != j) && (i != k) && (j != k) ) {
-               dotprod = dot_prod(E[j][i], E[j][k]) ;
-               if (dotprod > 1.00000) angle = 0.0000 ;
-               else if (dotprod < -1.00000) angle = _pi ;
-               else angle = acos(dotprod) ;
-               Bond_Angle[i][j][k] = angle ;
-               if (((Distance[i][j] < 4.000) && (Distance[j][k] < 4.000))){ 
-                  fprintf(outfile, "%2d-%2d-%2d    %14.8lf\n", i+1, j+1, k+1,
-                     (angle*180.00/_pi));
-                  }
-               }
-            }
-         }
+  BA = (double ***)malloc(num_atoms*sizeof(double **));
+  for(i=0; i<num_atoms; i++) {
+    BA[i] = (double **)malloc(num_atoms*sizeof(double *));
+    for(j=0; j<num_atoms; j++) {
+      BA[i][j] = (double *)malloc(num_atoms*sizeof(double));
+    }
+  }
+
+  fprintf(outfile, "\n  -Bond Angles:\n\n") ;
+  for(i=0; i<num_atoms; i++) {
+    for(j=0; j<num_atoms; j++) {
+      for(k=i; k<num_atoms; k++) {
+        if((i != j) && (i != k) && (j != k)) {
+          dotprod = dot_prod(E[j][i], E[j][k]);
+          if(dotprod > 1.00000) angle = 0.0000;
+          else if (dotprod < -1.00000) angle = _pi;
+          else angle = acos(dotprod);
+          BA[i][j][k] = angle;
+          if(((Distances[i][j] < 3.000) && (Distances[j][k] < 3.000))){ 
+            fprintf(outfile, "   %2d -%2d -%2d    %14.8lf\n", i+1, j+1, k+1,
+                   (angle*180.00/_pi));
+          }
+        }
       }
+    }
+  }
+
+  return(BA);
+}
+
+void calc_oop_angles(double ***E, double ***BondAngles, double **R)
+{
+  int i, j, k, l;
+  double tval1=0;
+  double tval2=0;
+  double angle=0;
+  double crossprod[3];
+  
+  fprintf(outfile, "\n  -Out of Plane Angles:\n") ;
+  fprintf(outfile, "   (Angle between vector 14 and plane 234)\n\n");
+  
+  for (i=0; i<num_atoms; i++) {
+    for (j=0; j<num_atoms; j++) {
+      for (k=j; k<num_atoms; k++) {
+	for (l=0; l<num_atoms; l++) {
+	  if ( (i!=j) && (i!=k) & (i!=l) && (j!=k) && (j!=l) && (k!=l)) {
+	    cross_prod(E[l][j], E[l][k], crossprod) ;
+	    tval1 = dot_prod(crossprod, E[l][i]) ;
+	    /* make sure j<k when BondAngles is accessed */
+	    if (j < k)  tval2 = BondAngles[j][l][k] ; 
+	    else tval2 = BondAngles[k][l][j] ; 
+	    if (sin(tval2) > 0.0001) tval1 = tval1 / sin(tval2) ;
+	    else tval1 = 0.0 ;
+	    if (tval1 > 1.000000) angle = (_pi / 2.00000) ;
+	    else if (tval1 < -1.000000) angle = -(_pi / 2.0000) ;
+	    else angle = asin(tval1) ;
+	    if(((R[i][j] < 3.0) && (R[j][k] < 3.0) && (R[k][l] < 3.0) )) {
+	      fprintf(outfile, "   %2d -%2d -%2d -%2d    %13.8lf\n", 
+		      i+1, j+1, k+1, l+1, angle * 180.0/(double)_pi) ;
+	    }
+	  }
+	}
+      }
+    }
+  }
+}
+
+void calc_tors_angles(double ***E, double ***BondAngles, double **R)
+{
+  int i, j, k, l ;
+  double cross1[3], cross2[3] ;
+  double tval, angle, phi2, phi3 ;
+  
+  fprintf(outfile, "\n  -Torsional Angles:\n\n");
+  for (i=0; i<num_atoms; i++) {
+    for (j=0; j<num_atoms; j++) {
+      for (k=0; k<num_atoms; k++) {
+	for (l=i; l<num_atoms; l++) {
+	  if ( (i!=j) && (i!=k) & (i!=l) && (j!=k) && (j!=l) && (k!=l)) {
+	    cross_prod(E[i][j], E[j][k], cross1) ;
+	    cross_prod(E[j][k], E[k][l], cross2) ;
+	    if (i < k) phi2 = BondAngles[i][j][k] ;
+	    else phi2 = BondAngles[k][j][i] ;
+	    if (j < l) phi3 = BondAngles[j][k][l] ;
+	    else phi3 = BondAngles[l][k][j] ;
+	    tval = dot_prod(cross1, cross2) ;
+	    if ((sin(phi2) > 0.00001) && (sin(phi3) > 0.00001)) {
+	      tval /= sin(phi2) ; 
+	      tval /= sin(phi3) ;
+	    }
+	    else tval = 2.0 ;
+	    if (tval > 0.99999) angle = 0.0000 ;
+	    else if (tval < -0.99999) angle = _pi ;
+	    else angle = acos(tval) ;
+	    if ( ((R[i][j] < 3.0) && (R[j][k] < 3.0) &&
+		  (R[k][l] < 3.0))) {
+	      fprintf(outfile, "   %2d -%2d -%2d -%2d    %13.8lf\n",
+		      i+1, j+1, k+1, l+1, angle * 180.0/_pi) ;
+	    }
+	  }
+	}
+      }
+    }
+  }
 }
 
 /*

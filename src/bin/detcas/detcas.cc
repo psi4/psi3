@@ -70,7 +70,7 @@ extern "C" {
 
 /* C++ INCLUDE FILES */
 
-#include <iostream.h>
+#include <iostream>
 #include "indpairs.h"
 
 

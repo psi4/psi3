@@ -37,7 +37,8 @@ T.\ Daniel Crawford,$^a$ C.\ David Sherrill,$^b$ and Edward F.\ Valeev$^b$ \\
 Institute of Technology,} Atlanta, Georgia 30332-0400} 
 \ \\
 \vspace{0.3in}
-Version of: \today
+\PSIthree\ Version: \PSIversion \\
+Created on: \today
 \end{center}
 
 \thispagestyle{empty}
@@ -56,7 +57,8 @@ The following external software packages are needed to complile \PSIthree:
   netlib.org.  \PSIthree\ makes use of LAPACK's eigenvalue/eigenvector
   and matrix inversion routines.  \htmladdnormallink{{\tt
   www.netlib.org/netlib}}{http://www.netlib.org/netlib}
-\item A POSIX threads (Pthreads) library.
+\item POSIX threads (Pthreads) library
+\item Perl interpreter (version 5.005 or higher)
 \item Various GNU utilies: \htmladdnormallink{{\tt
 www.gnu.org}}{http://www.gnu.org}
 \begin{itemize}
@@ -76,7 +78,7 @@ psi3/misc)
 
 \section{Basic Configuration and Installation}
 
-A good directory for the PSI3 source code is /usr/local/src/psi3.
+A good directory for the \PSIthree\ source code is /usr/local/src/psi3.
 The directory should {\em not} be named {\tt /usr/local/psi}, as that is
 the default installation directory unless changed by the {\tt --prefix}
 directive (see below).  It should also not have any periods in the path,
@@ -125,13 +127,17 @@ the {\tt configure} script:
   {\tt g77}, {\tt f77}, {\tt fc}, {\tt f2c}.  (NB: On AIX systems, the
   search order is {\tt xlf\_r}, {\tt g77}, {\tt f77}, {\tt
   fc}, {\tt f2c}.)
+\item {\tt -}{\tt -with-ld=linker} --- Use this option to specify
+  a linker program. The default is {\tt ld}.
 \item {\tt -}{\tt -with-ranlib=ranlib} --- Use this option to specify
-a ranlib program. The default behavior is to detect an appropriate
-choice automatically.
+  a ranlib program. The default behavior is to detect an appropriate
+  choice automatically.
 \item {\tt -}{\tt -with-ar=archiver} --- Use this option to specify an
-  archiver.  The default is {\tt ar}.
+  archiver.  The default is to look for {\tt ar} automatically.
 \item {\tt -}{\tt -with-ar-flags=options} --- Use this option to specify
   archiver command-line flags. The default is {\tt r}.
+\item {\tt -}{\tt -with-perl=perl} --- Use this option to specify a
+  Perl interpreter.  The default is to look for {\tt perl} automatically.
 \item {\tt -}{\tt -with-incdirs=directories} --- Use this option to specify extra
   directories where to look for header files. Directories should be specified
   prepended by {\tt -I}, i.e. {\tt -Idir1 -Idir2}, etc. If several directories are specified,
@@ -175,10 +181,6 @@ choice automatically.
   options.  If the argument is omitted, ``{\tt -g}'' will be used by default.
 \item {\tt -}{\tt -with-opt=options} --- This option may be used to select
   special optimization flags, overriding defaults.
-\item {\tt -}{\tt -with-parallel=sgi} --- This option turns on automatic
-  parallelization available with some SGI systems.  Since none of the
-  primary developers of \PSIthree\ actually {\em uses} SGI systems at
-  present, it seems likely that this option will not work.
 \end{itemize}
 
 \section{Detailed Installation Instructions}
@@ -226,38 +228,14 @@ To automatically execute the ever-growing number of test cases after
 compilation, simply execute "make tests" in the {\tt \$objdir} directory.
 This will run each (relatively small) test case and report the results.
 Failure of any of the test cases should be reported to the developers at
-psi3@psicode.org.  Note that you must run a "make clean" in 
-{\tt \$objdir/tests} to run the test suite again.
+psi3@psicode.org. By default, any such failure will stop the testing process.
+If you desire to run the entire testing suit without interruption, execute
+"make tests TESTFLAGS='-u -q'". Note that you must do a "make testsclean" in 
+{\tt \$objdir} to run the test suite again.
 
-After installation (vide infra) you may also run the test suite from the {\tt
-\$PSI3/tests} directory using the {\tt driver.test.pl} script.  The results
-will be printed to {\tt stdout} as well as the file {\tt test-case-results}.
-Note: You {\bf MUST} have the final installation directory, {\tt \$prefix/bin},
-in your path in order to run the test cases after installation.  A few
-examples for test-case execution are:
-\noindent 
-\begin{verbatim}
-./driver.test.pl             Runs all small and medium tests
-./driver.test.pl --ci        Runs all detci tests
-./driver.test.pl --cc        Runs all coupled-cluster tests
-./driver.test.pl --scf       Runs all hartree-fock tests
-./driver.test.pl --sp        Runs all single-point tests
-./driver.test.pl --geom      Runs all geometry optimization tests
-./driver.test.pl --freq      Runs all harmonic vibrational frequency tests
-./driver.test.pl --excite    Runs all excited state tests
-./driver.test.pl --small     Runs all low memory, short run time tests
-./driver.test.pl --medium    Runs all low memory, med run time tests
-./driver.test.pl --large     Runs all high memory, long run time tests
-                             (requires considerable disk space, memory, 
-                             and time)
-./driver.test.pl --all       Runs all tests
-./driver.test.pl --clean     Removes all test-case output files.
-\end{verbatim} 
-
-You may also run individual test cases using the perl scripts in
-the test-case subdirectories.  The \PSIthree\ User's Manual provides
-detailed instructions for running calculations. Report bugs to {\tt
-psi3@psicode.org}.
+Testing \PSIthree\ from the source directory, which was possible in
+prerelease version of \PSIthree\ ({\tt rc1} and {\tt rc2}), is no longer
+recommended.
 
 \subsection{Step 4: Installation}
 
@@ -279,7 +257,7 @@ disk space by running {\tt make clean} in {\tt \$objdir}.
 
 \subsection{Step 7: User Configuration}
 
-After the PSI3 package has been successfullly installed, the user will
+After the \PSIthree\ package has been successfullly installed, the user will
 need to add the installation directory into their path.  If the package
 has been installed in the default location {\tt /usr/local/psi3}, then
 in C shell, the user should add something like the following to 
@@ -289,14 +267,15 @@ setenv PSI /usr/local/psi3
 set path = ($path $PSI/bin)
 setenv MANPATH $PSI/doc/man:$MANPATH
 \end{verbatim}
-The final line will enable the use of the PSI3 man pages.
+The final line will enable the use of the \PSIthree\ man pages.
 \begin{verbatim}
 \end{verbatim}
 
 
 \section{Miscellaneous architecture-specific notes}
 \begin{itemize}
-\item AIX 4.3/5.x in 64-bit environment:
+
+\item AIX 4.3/5.$x$ in 64-bit environment:
 if IBM VisualAge C++ and IBM XL Fortran are used,
 one has to manually specify
 the {\tt -q64} compiler flag
@@ -309,9 +288,57 @@ are used. Also, we haven't had much luck
 using {\tt xlc\_r} because of its
 handling of functions with variable argument lists,
 use {\tt cc\_r} instead.
+
 \item Compaq Alpha/OSF 5.1: default shell ({\tt /bin/sh})
 is not POSIX-compliant which causes some \PSIthree\ makefiles
 to fail. Set environmental variable {\tt BIN\_SH} to {\tt xpg4}.
+
+\item Mac OS 10.$x$:
+
+  \begin{itemize}
+   \item The compilation requires a developer's toolkit from {\tt apple.com}.
+
+   \item You need the {\tt libcompat} library. It can be obtained from Apple's 
+   website at {\tt http://www.opensource.apple.com/}. Then add {\tt -lcompat} to the
+   {\tt configure} flag {\tt --with-libs}.
+
+   \item If you are using compilers from the developer's kit then for
+   BLAS and LAPACK, use the configure options:
+   \begin{verbatim}
+   --with-blas='-altivec -framework vecLib'
+   \end{verbatim}
+   If you compiled compilers yourself from GNU source code then
+   Apple-specific extensions will not work and you will have to specify
+   the location of {\tt vecLib} manually:
+   \begin{verbatim}
+   --with-blas='/System/Library/Frameworks/vecLib.framework/vecLib'
+   \end{verbatim}
+
+   \item The Fortran compiler in GCC version 3.3 and higher requires the latest
+   assembler, as. It can be obtained as a part of {\tt cctools} from 
+   {\tt http://www.opensource.apple.com/}.  Mac OS X 10.3 (Panther) should come 
+   with cctools recent enough to compile \PSIthree.
+
+   \item Certain \PSIthree\ codes require significant stackspace for compilation.
+   Increase your shell's stacksize limit before running '{\tt make}'.  For csh,
+   for example, this is done using '{\tt unlimit stacksize}'.
+  \end{itemize}
+
+\item SGI IRIX 6.$x$:
+  \begin{itemize}
+   \item MIPSpro C++ compilers prior to version 7.4 require a command-line flag
+   '{\tt -LANG:std}' in order to compile \PSIthree\ properly.
+
+   \item Use command-line flag '{\tt -64}' in order to produce 64-bit \PSIthree\ executables with
+   MIPSpro compilers. The following is an example of appropriate configure options:
+   \begin{verbatim}
+  --with-cc='cc -64' --with-cxx='CC -64 -LANG:std' --with-fc='f77 -64'
+   \end{verbatim}
+
+   \item Under IRIX configure will attempt to detect automatically and use
+   the optimized SGI Scientific Computing Software Library (SCSL).
+  \end{itemize}
+
 \end{itemize}
 
 

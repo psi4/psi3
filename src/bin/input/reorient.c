@@ -9,6 +9,8 @@
 #include <physconst.h>
 #include <masses.h>
 
+static void if_to_invert_axis(double* v1, int* must_invert, int* should_invert, double* maxproj);
+
 void reorient()
 {
   int i,j;
@@ -17,7 +19,7 @@ void reorient()
   int nspher_set;
   int prox_i, prox_j;
   int axis, axis1, axis2, xyz;
-  int nshould, nmust, nzero, must_invert[3], should_invert[3];
+  int nshould, nmust, must_invert[3], should_invert[3];
   double Xcm = 0.0;
   double Ycm = 0.0;
   double Zcm = 0.0;
@@ -144,41 +146,13 @@ void reorient()
       nshould = 0;
       for(axis=0; axis<3; axis++) {
 
-	must_invert[axis] = 0;
-	should_invert[axis] = 0;
-	nzero = 0;
-	maxproj[axis] = 0.0;
+        v1[0] = ITAxes[0][axis];
+        v1[1] = ITAxes[1][axis];
+        v1[2] = ITAxes[2][axis];
 
-	for(xyz=0; xyz<3; xyz++) {
-
-	  v1[xyz] = ITAxes[xyz][axis];
-	  vabs = fabs(v1[xyz]);
-
-	  if (vabs < ZERO)
-	    nzero++;
-
-	  if (vabs > fabs(maxproj[axis])) {
-	    maxproj[axis] = v1[xyz];
-	  }
-
-	}
-
-	if (nzero == 2) {
-	  if (maxproj[axis] < 0.0) {
-	    must_invert[axis] = 1;
-	    nmust++;
-	  }
-	  else
-	    must_invert[axis] = 0;
-	}
-	else if (nzero < 2) {
-	  if (maxproj[axis] < 0.0) {
-	    should_invert[axis] = 1;
-	    nshould++;
-	  }
-	  else
-	    should_invert[axis] = 0;
-	}
+        if_to_invert_axis(v1,&(must_invert[axis]),&(should_invert[axis]),&(maxproj[axis]));
+        nmust += must_invert[axis];
+        nshould += should_invert[axis];
 	
       }
 
@@ -278,17 +252,32 @@ void reorient()
 	Added 4/26/2003 by EFV.
        ------------------------------------------------------------*/
       if (degen == 1 && !no_reorient) {
-	if (deg_IM1 + deg_IM2 == 3) {
-	  v1[0] = ITAxes[0][0];
-	  v1[1] = ITAxes[1][0];
-	  v1[2] = ITAxes[2][0];
-	}
-	else {
-	  v1[0] = ITAxes[0][2];
-	  v1[1] = ITAxes[1][2];
-	  v1[2] = ITAxes[2][2];
-	}
 
+        int must_invert, should_invert, unique_axis;
+        double maxproj, invert_pfac;
+        
+	if (deg_IM1 + deg_IM2 == 3)
+          unique_axis = 0;
+        else
+          unique_axis = 2;
+          
+        v1[0] = ITAxes[0][unique_axis];
+        v1[1] = ITAxes[1][unique_axis];
+        v1[2] = ITAxes[2][unique_axis];
+        
+        /* Figure out if the unique axis needs to be inverted
+           If yes - just invert that axis directly, since other axes
+           are not even used */
+        if_to_invert_axis(v1, &must_invert, &should_invert, &maxproj);
+        if (must_invert || should_invert)
+          invert_pfac = -1.0;
+        else
+          invert_pfac = 1.0;
+
+        v1[0] *= invert_pfac;
+        v1[1] *= invert_pfac;
+        v1[2] *= invert_pfac;
+        
 	cos_theta = v1[2];
 	if ( (1.0 - fabs(cos_theta)) > ZERO_MOMENT_INERTIA) {
 	  theta = acos(cos_theta);
@@ -498,3 +487,41 @@ void reorient()
     free_block(ITAxes);
 }
 
+
+void if_to_invert_axis(double* v1, int* must_invert, int* should_invert, double* maxproj)
+{
+  int xyz, nzero;
+  double vabs;
+
+  *maxproj = 0.0;
+  *must_invert = 0;
+  *should_invert = 0;
+  
+  nzero = 0;
+  
+  for(xyz=0; xyz<3; xyz++) {
+
+    vabs = fabs(v1[xyz]);
+
+    if (vabs < ZERO)
+      nzero++;
+
+    if (vabs > fabs(*maxproj)) {
+      *maxproj = v1[xyz];
+    }
+
+  }
+
+  if (nzero == 2) {
+    if (*maxproj < 0.0)
+      *must_invert = 1;
+    else
+      *must_invert = 0;
+  }
+  else if (nzero < 2) {
+    if (*maxproj < 0.0)
+      *should_invert = 1;
+    else
+      *should_invert = 0;
+  }
+}

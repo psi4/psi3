@@ -27,4 +27,10 @@ void energy(void)
   fprintf(outfile,"\n");
   fprintf(outfile,"\tMP2 correlation energy  = %20.15f\n",energy);
   fprintf(outfile,"\tMP2 total energy        = %20.15f\n",mo.Escf+energy);
+
+  /* Write Total Energy to the checkpoint file
+     for geometry optimization by finite differences */
+  chkpt_init(PSIO_OPEN_OLD);
+  chkpt_wt_etot(mo.Escf+energy);
+  chkpt_close();
 }

@@ -214,10 +214,6 @@ int main(argc,argv)
   itap92 = PSIF_SO_PKSUPER1;
   itap93 = PSIF_SO_PKSUPER2;
 
-  /* EFV 10/24/98 Get the integral format: IWL = true */
-  use_iwl = 1;
-  ip_boolean("USE_IWL",&use_iwl,0);
-
   /* JPK 6/1/00 integral accuracy: dynamic(default)=1, static=0 */
   dyn_acc = 1;
   eri_cutoff = 1.0E-14;
@@ -234,10 +230,7 @@ int main(argc,argv)
 
   /* open integrals file(s) */
 
-  if (use_iwl)
-    psio_init();
-  else
-    rfile(itap34);
+  psio_init();
    
   /* STB (6/30/99) - Function added because in order to initialize things
      one must know whether you are doing UHF or restricted */   

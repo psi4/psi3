@@ -1,0 +1,139 @@
+#
+# This test is very low-level, hence very much unlike other tests we need lots of code here
+#
+
+# get Perl utility functions for testing Psi3
+require("@top_srcdir@/tests/psitest.pl");
+
+test_started();
+
+# Test for psi3 -f input -o output -p prefix  (test1)
+# and      psi3 -f input output prefix        (test2)
+
+$OUT_FILE1= "test1.out";
+$OUT_FILE2= "test2.out";
+
+$CHK_FILE1= "test1.32";
+$CHK_FILE2= "test2.32";
+
+# This is essentially a copy of run_psi_cmd from psitest.pl
+
+$test_name = get_test_name();
+my $target = "$test_name.$PSITEST_TARGET_SUFFIX";
+
+my $clean_only = 0;
+my $interrupted = 1;
+my $quiet = 0;
+my $ARGV;
+while ($ARGV = shift) {
+  if   ("$ARGV" eq "-q") { $quiet = 1; }
+  elsif("$ARGV" eq "-c") { $clean_only = 1; }
+  elsif("$ARGV" eq "-u") { $interrupted = 0; }
+  elsif("$ARGV" eq "-h") { usage_notice($PSITEST_TEST_SCRIPT); exit(1); }
+}
+
+my $exec = "";
+if($clean_only == 1) {
+  $exec = "psiclean";
+}
+else {
+  $exec = "psi3";
+}
+
+my $extra_args = " -o $OUT_FILE1 -p test1";
+if ($quiet == 1) {
+  $extra_args = "$extra_args 1>/dev/null 2>/dev/null";
+}
+
+my $psicmd = "";
+if ($PSITEST_EXEC_PATH ne "") {
+  $psicmd = "PATH=$PSITEST_EXEC_PATH:\$PATH;export PATH;$exec";
+}
+else {
+  $psicmd = "$exec";
+}
+if ($SRC_PATH ne "") {
+  $psicmd .= " -f $SRC_PATH/input.dat";
+}
+$psicmd .= "$extra_args";  
+
+my $psi_fail = system ("$psicmd");
+if ($clean_only == 1) {
+  exit(0);
+}
+
+if ($psi_fail != 0) {
+  open(RE, ">>$target") || die "cannot open $target $!"; 
+  printf RE "Psi3 failed!\n";
+  close (RE);
+  printf STDOUT "Psi3 failed!\n";
+  my $psicmd = build_psi_cmd("psiclean", 1, $SRC_PATH, $PSITEST_EXEC_PATH, "");
+  system("$psicmd");
+  exit($interrupted);
+}
+
+my $extra_args = " $OUT_FILE2 test2";
+if ($quiet == 1) {
+  $extra_args = "$extra_args 1>/dev/null 2>/dev/null";
+}
+$psicmd = "";
+if ($PSITEST_EXEC_PATH ne "") {
+  $psicmd = "PATH=$PSITEST_EXEC_PATH:\$PATH;export PATH;$exec";
+}
+else {
+  $psicmd = "$exec";
+}
+if ($SRC_PATH ne "") {
+  $psicmd .= " $SRC_PATH/input.dat";
+}
+$psicmd .= "$extra_args";
+
+my $psi_fail = system ("$psicmd");
+if ($clean_only == 1) {
+  exit(0);
+}
+
+if ($psi_fail != 0) {
+  open(RE, ">>$target") || die "cannot open $target $!"; 
+  printf RE "Psi3 failed!\n";
+  close (RE);
+  printf STDOUT "Psi3 failed!\n";
+  my $psicmd = build_psi_cmd("psiclean", 1, $SRC_PATH, $PSITEST_EXEC_PATH, "");
+  system("$psicmd");
+  exit($interrupted);
+}
+
+my $testout1 = 0;
+my $testout2 = 0;
+my $testchk1 = 0;
+my $testchk2 = 0;
+my $fail = 0;
+
+use Cwd;
+$dir = cwd();
+opendir(DIR, $dir) || die "cannot open $dir: $!";
+@files = readdir(DIR);
+for $files (@files) {
+  if($files eq "$OUT_FILE1") { $testout1 = 1; }
+  if($files eq "$OUT_FILE2") { $testout2 = 1; }
+  if($files eq "$CHK_FILE1") { $testchk1 = 1; }
+  if($files eq "$CHK_FILE2") { $testchk2 = 1; }
+} 
+close (DIR);
+
+if($testout1 == 1 && $testchk1 == 1) {
+  pass_test("CHECKING psi3 -f input -o output -p prefix");
+}
+else { 
+  fail_test("CHECKING psi3 -f input -o output -p prefix"); $fail = 1;
+}
+
+if($testout2 == 1 && $testchk2 == 1) {
+  pass_test("CHECKING psi3 input output prefix");
+}
+else { 
+  fail_test("CHECKING psi3 input output prefix"); $fail = 1;
+}
+
+test_finished($fail,$interrupted);
+

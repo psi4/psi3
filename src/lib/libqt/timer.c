@@ -229,8 +229,8 @@ void timer_off(char *key)
 
   times(&offtime);
 
-  this_timer->utime += ((double) (offtime.tms_utime-ontime.tms_utime))/CLK_TCK;
-  this_timer->stime += ((double) (offtime.tms_stime-ontime.tms_stime))/CLK_TCK;
+  this_timer->utime += ((double) (offtime.tms_utime-ontime.tms_utime))/CLOCKS_PER_SEC;
+  this_timer->stime += ((double) (offtime.tms_stime-ontime.tms_stime))/CLOCKS_PER_SEC;
 
   wall_stop = time(NULL);
   this_timer->wtime += ((double) (wall_stop - this_timer->wall_start));

@@ -1,0 +1,12 @@
+# get Perl utility functions for testing Psi3
+require("@top_srcdir@/tests/psitest.pl");
+
+test_started();
+($interrupted) = run_psi_command(@ARGV);
+
+my $wfn = "SCF";
+my $fail = compare_energy_file11($wfn);
+$fail |= compare_geom_file11($wfn);
+$fail |= compare_grad_file11($wfn);
+
+test_finished($fail,$interrupted);

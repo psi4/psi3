@@ -1,8 +1,18 @@
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:26  evaleev
- * Initial revision
+ * Revision 1.2  2004/01/02 06:37:12  crawdad
+ * Merging psi-3-2 branch (from release tag psi-3-2-rc-2 to head at psi-3-2-0)
+ * into main trunk.  This code compiles and runs correctly on sirius.
+ * -TDC
  *
+/* Revision 1.1.1.1.12.1  2003/11/23 19:17:39  crawdad
+/* Minor fixes: (1) Corrected dependencies in doc/Make*.in; (2) Elimintated
+/* warnings from gcc -Wall in several libipv1 routines and psi2molden.
+/* -TDC
+/*
+/* Revision 1.1.1.1  2000/02/04 22:53:26  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.7  1995/01/16 23:03:26  cljanss
 /* Minor changes so the SGI compiler won't complain.
 /*
@@ -41,8 +51,7 @@
 #include "ip_types.h"
 #include "ip_global.h"
 #include "ip_error.h"
-
-static char rcs_id[] = "$Id$";
+#include "ip_error.gbl"
 
 /* The way the AIX xlc compiler handles vararg decs isn't compatible with
  * the way the tmpl file is formed, so ip_data.global cannot be used.

@@ -15,32 +15,6 @@ void parsing()
   errcod = ip_string("WFN", &wfn, 0);
 
   if (errcod == IPE_OK) {
-          /* wfn = one of CC types */
-    /* this seems to not work, at least for NO's ---CDS 10/30/02 */
-    /*
-    if ( (strcmp(wfn, "CCSD")==0) ) {
-      read_opdm = 1;
-      opdm_file = PSIF_AO_OPDM;
-      corr = 0;
-      opdm_basis = (char *) malloc(3*sizeof(char));
-      strcpy(opdm_basis,"AO");
-      opdm_format = (char *) malloc(7*sizeof(char));
-      strcpy(opdm_format,"TRIANG");
-    }
-    */
-          /* wfn = ooccd, detci, detcas */
-    /*
-    if (strcmp(wfn, "CI")==0 || strcmp(wfn, "OOCCD")==0 ||
-	strcmp(wfn, "DETCI")==0 || strcmp(wfn, "DETCAS")==0) {
-      read_opdm = 1;
-      opdm_file = PSIF_AO_OPDM;
-      corr = 0;
-      opdm_basis = (char *) malloc(3*sizeof(char));
-      strcpy(opdm_basis,"SO");
-      opdm_format = (char *) malloc(7*sizeof(char));
-      strcpy(opdm_format,"TRIANG");
-    }
-    */
     if (!strcmp(wfn, "CI") || !strcmp(wfn, "DETCI") ||
         !strcmp(wfn, "CCSD") || !strcmp(wfn, "DETCAS") ||
 	!strcmp(wfn, "MP2"))  {
@@ -52,11 +26,20 @@ void parsing()
       opdm_format = (char *) malloc(7*sizeof(char));
       strcpy(opdm_format,"SQUARE");
     }
-
+  }
+  else {
+    fprintf(outfile,"Incorrect wave function type!\n");
+    abort();
   }
 
-  
-	/* Parsing section */
+  errcod = ip_string("REFERENCE", &ref, 0);
+
+  if (errcod != IPE_OK) {
+    fprintf(outfile,"Incorrect reference!\n");
+    abort();
+  }
+    
+  /* Parsing section */
 
   errcod = ip_boolean("READ_OPDM",&read_opdm,0);
   if (read_opdm) {
@@ -143,9 +126,5 @@ void parsing()
   errcod = ip_boolean("NUC_ESP",&nuc_esp,0);
   if (spin_prop)
     nuc_esp = 1;
-
-  /* parse the grid information */
-  if (ip_exist("GRID",0))
-    grid_parse();
 
 }

@@ -1,14 +1,27 @@
 /* $Log$
- * Revision 1.20  2003/09/14 13:55:19  psiadm
- * Two changes:
- *
- * (1) Corrected a *lot* of missing <stdlib.h> includes for sources using
- * malloc(). This caused problems on 64-bit opteron systems.
- *
- * (2) Modified ULI macro in libpsio to "unsigned long int" from "unsigned int"
- *
+ * Revision 1.21  2004/01/02 06:37:12  crawdad
+ * Merging psi-3-2 branch (from release tag psi-3-2-rc-2 to head at psi-3-2-0)
+ * into main trunk.  This code compiles and runs correctly on sirius.
  * -TDC
  *
+/* Revision 1.20.2.2  2003/12/31 01:59:54  crawdad
+/* Removed use_iwl option, which was deprecated anyway.  cscf now depends only
+/* on libpsio for its I/O functions.
+/* -TDC
+/*
+/* Revision 1.20.2.1  2003/12/15 21:39:43  mabrams
+/* Corrected label printing.
+/*
+/* Revision 1.20  2003/09/14 13:55:19  psiadm
+/* Two changes:
+/*
+/* (1) Corrected a *lot* of missing <stdlib.h> includes for sources using
+/* malloc(). This caused problems on 64-bit opteron systems.
+/*
+/* (2) Modified ULI macro in libpsio to "unsigned long int" from "unsigned int"
+/*
+/* -TDC
+/*
 /* Revision 1.19  2003/08/17 22:57:37  crawdad
 /* Removing libfile30 from the repository.  I believe that all code reference
 /* to the library have also been properly removed.  The current version
@@ -200,7 +213,7 @@ void scf_input(ipvalue)
    if(ipvalue) ip_print_value(stdout,ipvalue);
 
    errcod = ip_string("LABEL",&alabel,0);
-   if(errcod == IPE_OK) fprintf(outfile,"  label       = %s\n",alabel);
+   if(errcod == IPE_OK) fprintf(outfile,"  label        = %s\n",alabel);
 
    direct_scf = 0;
    errcod = ip_boolean("DIRECT",&direct_scf,0);
@@ -556,13 +569,10 @@ void scf_input(ipvalue)
      delete_ints = 1;
    errcod = ip_boolean("DELETE_INTS",&delete_ints,0);
      /* These keywords will work only with IWL format */
-   if (use_iwl) {
-     delete_1e = delete_ints;
-     errcod = ip_boolean("DELETE_1E",&delete_1e,0);
-     delete_2e = delete_ints;
-     errcod = ip_boolean("DELETE_2E",&delete_2e,0);
-   }
-   
+   delete_1e = delete_ints;
+   errcod = ip_boolean("DELETE_1E",&delete_1e,0);
+   delete_2e = delete_ints;
+   errcod = ip_boolean("DELETE_2E",&delete_2e,0);
    
    fflush(outfile);
 }

@@ -30,7 +30,7 @@ extern "C" {
       struct olsen_graph *Graph);
 } ;
 
-#include <iostream.h>
+#include <iostream>
 #define ODOMETER_DECL_ONLY
 #include "odometer.h"
 

@@ -5,6 +5,7 @@ psi: (
   jobtype = opt
   dertype = first
   basis = "DZ"
+  convergence = 10
   geometry = (
     H -0.6   0.6  0.0
     H -0.6  -0.6  0.0
@@ -13,3 +14,9 @@ psi: (
     O  2.4   0.0  0.0
   )
 )
+
+optking:(
+  conv = 7
+  delocalize = true
+)
+

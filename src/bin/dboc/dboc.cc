@@ -338,7 +338,7 @@ void init_io(int argc, char *argv[])
   sprintf(tmpstr1, "PSI_INPUT=%s", ifname);
   putenv(tmpstr1);
 #elif HAVE_SETENV
-  setenv("PSI_OUTPUT",ifname,1);
+  setenv("PSI_INPUT",ifname,1);
 #else
 #error "Have neither putenv nor setenv. Something must be very broken on this system."
 #endif

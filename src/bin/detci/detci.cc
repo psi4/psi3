@@ -89,7 +89,7 @@ extern "C" {
 
 /* C++ INCLUDE FILES */
 
-#include <iostream.h>
+#include <iostream>
 #include "odometer.h"
 #include "slaterd.h"
 #include "civect.h"
@@ -137,6 +137,8 @@ main(int argc, char *argv[])
 {
    Parameters.print_lvl = 1;
    Parameters.have_special_conv = 0;
+   int fci_norb_check = 0;
+   int i = 0;
 
    init_io(argc, argv);         /* parse cmd line and open input and output */
    get_parameters();            /* get running params (convergence, etc)    */

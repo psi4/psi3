@@ -377,6 +377,7 @@ struct params {
                               1 = Davidson
                               2 = Olsen */
    int mpn;                /* 1(0) if computing mpn series is TRUE(FALSE) */
+   int save_mpn2;          /* 1 = save MP(2n-1) energy, 0 = save MPn energy */
    int mpn_schmidt;        /* 1(0) if a orthonormal vector space is employed
                               rather than storing the kth order wfn */ 
    int wigner;             /* 1(0) if wigner formulas used in Empn series */

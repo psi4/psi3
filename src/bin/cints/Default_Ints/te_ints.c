@@ -155,6 +155,9 @@ void te_ints()
   generate all unique shell quartets with ordering
   suitable for building the PK-matrix
  -------------------------------------------------*/
+  if(UserOptions.print_lvl >= PRINT_DEBUG) {
+    fprintf(outfile,"  -Electron repulsion integrals:\n\n");
+  }
   for (usii=0; usii<Symmetry.num_unique_shells; usii++)
     for (usjj=0; usjj<=usii; usjj++)
       for (uskk=0; uskk<=usjj; uskk++)
@@ -964,7 +967,17 @@ void te_ints()
 	      iwl_buf_wrt_struct_nocut(&ERIOUT, tot_data, num);
 	    }
 
-	    
+	    if(UserOptions.print_lvl >= PRINT_DEBUG) {
+	      /* fprintf(outfile,"  -Electron repulsion integrals:\n\n"); */
+	      for(n=0; n<num; n++){
+	        fprintf(outfile, "%5d%5d%5d%5d%20.10lf\n",
+		        abs(tot_data[n].i), 
+		        tot_data[n].j, 
+		        tot_data[n].k, 
+		        tot_data[n].l, 
+		        tot_data[n].val);
+	      } 
+	    }  
 	    
 #if PRINT
 	    for(n=0; n<num; n++){
@@ -989,7 +1002,7 @@ void te_ints()
 #endif
 
 
-  fprintf(outfile,"    Wrote %d two-electron integrals to IWL file %2d\n\n",total_te_count,IOUnits.itap33);
+  fprintf(outfile,"\n    Wrote %d two-electron integrals to IWL file %2d\n\n",total_te_count,IOUnits.itap33);
 
   /*---------
     Clean-up

@@ -111,7 +111,18 @@ for (i=0;i<symm.get_num();++i)
     f[i] = -1.0 * f[i] / _hartree2J / 1.0E18 * _bohr2angstroms;
 
   ffile(&fp_11, "file11.dat", 1);
-  sprintf(disp_label,"iteration: %d", optinfo.iteration+1);
+  char *wfn,*dertype;
+  int errcod = ip_string("WFN", &wfn, 0);
+  if (errcod != IPE_OK)
+    punt("Keyword WFN not found in input file");
+  errcod = ip_string("DERTYPE", &dertype, 0);
+  if (errcod != IPE_OK)
+    dertype = strdup("NONE");
+  chkpt_init(PSIO_OPEN_OLD);
+  char* label = chkpt_rd_label();
+  chkpt_close();
+  sprintf(disp_label,"%-59.59s %-10.10s%-8.8s",label,wfn,dertype);
+  free(label); free(wfn); free(dertype);
   carts.set_energy(energy);
   carts.set_coord(geom);
   carts.set_grad(f);

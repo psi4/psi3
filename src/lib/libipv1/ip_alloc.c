@@ -1,21 +1,3 @@
-
-/* $Log$
- * Revision 1.1  2000/02/04 22:53:26  evaleev
- * Initial revision
- *
-/* Revision 1.5  1995/01/16 22:58:56  cljanss
-/* Minor changes so the SGI compiler won't complain.
-/*
- * Revision 1.4  1994/06/02  02:22:21  seidl
- * using new tmpl now...change .global to .gbl and .local to .lcl
- *
- * Revision 1.1.1.1  1994/05/02  17:05:52  cljanss
- * The May 1, 1994 version of psi as on the CCQC machines.
- *
- * Revision 1.3  1991/07/30  03:28:45  seidl
- * add rcs log and id
- * */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <tmpl.h>
@@ -26,8 +8,6 @@
 #include "ip_alloc.lcl"
 
 #include "ip_error.gbl"
-
-static char rcs_id[] = "$Id$";
 
 GLOBAL_FUNCTION ip_keyword_tree_t *
 ip_alloc_keyword_tree()

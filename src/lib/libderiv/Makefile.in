@@ -12,6 +12,7 @@ TEMP_DIR = ${SCRATCH}/libderiv
 
 default: $(TARGET)
 
+PWD=$(shell pwd)
 top_objdir_path=$(PWD)/$(top_objdir)
 
 $(TARGET): $(BUILD_SRC) $(srcdir)/Makefile.libderiv

@@ -4,6 +4,7 @@
 #include<memory.h>
 #include<stdlib.h>
 #include<libciomr/libciomr.h>
+#include<libchkpt/chkpt.h>
 #include<libqt/qt.h>
 #include<libint/libint.h>
 #include<pthread.h>
@@ -250,6 +251,8 @@ void rmp2_energy()
   fprintf(outfile,"  MBPT[2] Correlation Energy (total)   = %20.10lf\n",RMP2_Status.Emp2_0+RMP2_Status.Emp2_1);
   fprintf(outfile,"  Total MBPT[2] Energy                 = %20.10lf\n\n",
 	  RMP2_Status.Emp2_0+RMP2_Status.Emp2_1+MOInfo.Escf);
+
+  chkpt_wt_etot(RMP2_Status.Emp2_0+RMP2_Status.Emp2_1+MOInfo.Escf);
   
   /*---------
     Clean-up

@@ -539,6 +539,11 @@ void parse_zmat_simple(int i, int position, double *value, struct definition *ar
     else if(position == 6) z_geom[i].tors_opt = 1;
     *dollar = '\0';
   }
+  else {
+    if(position == 2) z_geom[i].bond_opt = 0;
+    else if(position == 4) z_geom[i].angle_opt = 0;
+    else if(position == 6) z_geom[i].tors_opt = 0;
+   }
 
   if(isdigit(temp_string[0]) || temp_string[0] == '-' ||
      temp_string[0] == '+' || temp_string[0] == '.') {

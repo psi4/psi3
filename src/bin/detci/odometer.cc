@@ -14,7 +14,7 @@ extern "C" {
 
 // #define STANDALONE
 #ifdef STANDALONE
-#include <iostream.h>
+#include <iostream>
 #endif
 
 Odometer::Odometer()

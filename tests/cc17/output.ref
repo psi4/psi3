@@ -1,6 +1,6 @@
 ******************************************************************************
-tstart called on diadem.giga.net
-Wed Aug 13 03:37:06 2003
+tstart called on sirius.chem.vt.edu
+Thu Dec  4 16:35:57 2003
 
                                 --------------
                                   WELCOME TO
@@ -9,7 +9,7 @@ Wed Aug 13 03:37:06 2003
 
   LABEL       =	3B1 CH2 cc-pVDZ/UHF-EOM-CCSD Energies
   SHOWNORM    =	0
-  PUREAM      =	1
+  PUREAM      =	0
   PRINT_LVL   =	1
 
   -Geometry before Center-of-Mass shift (a.u.):
@@ -136,17 +136,20 @@ Wed Aug 13 03:37:06 2003
     2   1.1000000   0.0000000
     3   1.1000000   1.7910541   0.0000000
 
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
 
 ******************************************************************************
-tstop called on diadem.giga.net
-Wed Aug 13 03:37:06 2003
+tstop called on sirius.chem.vt.edu
+Thu Dec  4 16:35:57 2003
 
-user time   =       0.03 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.05 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Wed Aug 13 03:37:06 2003
+tstart called on sirius.chem.vt.edu
+Thu Dec  4 16:35:57 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -174,15 +177,15 @@ Wed Aug 13 03:37:06 2003
     Wrote 11412 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on diadem.giga.net
-Wed Aug 13 03:37:06 2003
+tstop called on sirius.chem.vt.edu
+Thu Dec  4 16:35:58 2003
 
-user time   =       0.09 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.20 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Wed Aug 13 03:37:06 2003
+tstart called on sirius.chem.vt.edu
+Thu Dec  4 16:35:58 2003
 
 
              ------------------------------------------
@@ -239,15 +242,15 @@ Wed Aug 13 03:37:06 2003
     8       -38.9173782568    2.077910e-06    3.932051e-05    4.356881e-04
     9       -38.9173785788    3.219976e-07    1.200434e-05    1.684021e-04
    10       -38.9173786792    1.004136e-07    8.113687e-06    8.387795e-05
-   11       -38.9173786938    1.455737e-08    3.354319e-06    3.256132e-05
-   12       -38.9173786948    9.885781e-10    9.259599e-07    8.014524e-06
-   13       -38.9173786948    3.925038e-11    1.502052e-07    2.681893e-06
-   14       -38.9173786948    2.359002e-12    4.227567e-08    5.652213e-07
-   15       -38.9173786948    7.105427e-14    9.600591e-09    7.353714e-08
-   16       -38.9173786948   -1.421085e-14    1.307545e-09    1.288721e-08
-   17       -38.9173786948   -1.421085e-14    3.944328e-10    4.849753e-09
-   18       -38.9173786948    7.105427e-15    4.097946e-10    2.982468e-09
-   19       -38.9173786948   -2.131628e-14    3.479453e-11    2.335954e-10
+   11       -38.9173786938    1.455734e-08    3.354319e-06    3.256132e-05
+   12       -38.9173786948    9.886136e-10    9.259599e-07    8.014524e-06
+   13       -38.9173786948    3.922196e-11    1.502052e-07    2.681893e-06
+   14       -38.9173786948    2.351896e-12    4.227567e-08    5.652212e-07
+   15       -38.9173786948    6.394885e-14    9.600591e-09    7.353714e-08
+   16       -38.9173786948   -7.105427e-15    1.307544e-09    1.288721e-08
+   17       -38.9173786948    7.105427e-15    3.944326e-10    4.849753e-09
+   18       -38.9173786948   -7.105427e-15    4.097899e-10    2.982467e-09
+   19       -38.9173786948    0.000000e+00    3.479879e-11    2.336174e-10
 
 Orbital energies (a.u.):
 
@@ -286,15 +289,15 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
         <S^2>              =       2.012101993990
 ******************************************************************************
-tstop called on diadem.giga.net
-Wed Aug 13 03:37:06 2003
+tstop called on sirius.chem.vt.edu
+Thu Dec  4 16:35:58 2003
 
-user time   =       0.02 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Wed Aug 13 03:37:06 2003
+tstart called on sirius.chem.vt.edu
+Thu Dec  4 16:35:58 2003
 
 
 	**************************************************
@@ -391,15 +394,15 @@ Wed Aug 13 03:37:06 2003
 	Alpha frozen-core operator written to file 35.
 	Beta frozen-core operator written to file 35.
 ******************************************************************************
-tstop called on diadem.giga.net
-Wed Aug 13 03:37:08 2003
+tstop called on sirius.chem.vt.edu
+Thu Dec  4 16:36:01 2003
 
-user time   =       0.16 seconds =       0.00 minutes
-system time =       1.86 seconds =       0.03 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.46 seconds =       0.01 minutes
+system time =       2.53 seconds =       0.04 minutes
+total time  =          3 seconds =       0.05 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Wed Aug 13 03:37:08 2003
+tstart called on sirius.chem.vt.edu
+Thu Dec  4 16:36:01 2003
 
 
 			**************************
@@ -435,29 +438,29 @@ Wed Aug 13 03:37:08 2003
 	 B2 	   7	    0	    1	    0	    6	    0
 
 	Nuclear Rep. energy (chkpt) =      6.06829846896672
-	SCF energy          (chkpt) =    -38.91737869479653
+	SCF energy          (chkpt) =    -38.91737869479655
 
 	Size of <Ab|Cd> integrals:     0.015 (MW) /     0.123 (MB)
 	Size of <Ia|Bc> integrals:     0.005 (MW) /     0.037 (MB)
 	Size of TIjAb amplitudes:      0.001 (MW) /     0.007 (MB)
 
-	One-electron energy          =    -63.71473680927069
-	Two-electron (AA) energy     =      5.37013803287631
-	Two-electron (BB) energy     =      1.64169193108317
-	Two-electron (AB) energy     =     11.71722968154793
+	One-electron energy          =    -63.71473680927070
+	Two-electron (AA) energy     =      5.37013803287629
+	Two-electron (BB) energy     =      1.64169193108318
+	Two-electron (AB) energy     =     11.71722968154794
 	Two-electron energy          =     18.72905964550742
 	Frozen-core energy (transqt) =      0.00000000000000
-	Reference energy             =    -38.91737869479655
+	Reference energy             =    -38.91737869479656
 ******************************************************************************
-tstop called on diadem.giga.net
-Wed Aug 13 03:37:08 2003
+tstop called on sirius.chem.vt.edu
+Thu Dec  4 16:36:01 2003
 
-user time   =       0.09 seconds =       0.00 minutes
-system time =       0.11 seconds =       0.00 minutes
+user time   =       0.13 seconds =       0.00 minutes
+system time =       0.21 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Wed Aug 13 03:37:08 2003
+tstart called on sirius.chem.vt.edu
+Thu Dec  4 16:36:01 2003
 
 			**************************
 			*                        *
@@ -466,8 +469,8 @@ Wed Aug 13 03:37:08 2003
 			**************************
 
 	Nuclear Rep. energy (chkpt)   =    6.068298468966723
-	SCF energy          (chkpt)   =  -38.917378694796533
-	Reference energy    (file100) =  -38.917378694796554
+	SCF energy          (chkpt)   =  -38.917378694796554
+	Reference energy    (file100) =  -38.917378694796561
 
 	Input parameters:
 	-----------------
@@ -491,16 +494,16 @@ Wed Aug 13 03:37:08 2003
 	                     ----------------------
   Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
   ----     ---------------------    ---------   ----------  ----------  ----------
-     0        -0.095353980722130    0.000e+00    0.000000    0.000000    0.000000
+     0        -0.095353980722131    0.000e+00    0.000000    0.000000    0.000000
      1        -0.110266541529759    3.737e-02    0.005013    0.000000    0.000000
-     2        -0.114891350438951    1.453e-02    0.008836    0.000000    0.000000
+     2        -0.114891350438950    1.453e-02    0.008836    0.000000    0.000000
      3        -0.115324837511702    5.355e-03    0.010951    0.000000    0.000000
      4        -0.115365470769079    1.590e-03    0.011467    0.000000    0.000000
      5        -0.115363318637380    4.133e-04    0.011469    0.000000    0.000000
      6        -0.115368448424116    1.485e-04    0.011447    0.000000    0.000000
-     7        -0.115368911479848    5.418e-05    0.011431    0.000000    0.000000
+     7        -0.115368911479847    5.418e-05    0.011431    0.000000    0.000000
      8        -0.115368686568257    1.449e-05    0.011427    0.000000    0.000000
-     9        -0.115368890969128    3.829e-06    0.011426    0.000000    0.000000
+     9        -0.115368890969127    3.829e-06    0.011426    0.000000    0.000000
     10        -0.115368892885299    1.230e-06    0.011426    0.000000    0.000000
     11        -0.115368874806815    2.944e-07    0.011426    0.000000    0.000000
     12        -0.115368877467301    7.396e-08    0.011426    0.000000    0.000000
@@ -568,23 +571,23 @@ Wed Aug 13 03:37:08 2003
 	  4   2  15  15         0.0257199792
 	  3   2  10  15        -0.0255216150
 
-	SCF energy       (chkpt)   =  -38.917378694796533
-	Reference energy (file100) =  -38.917378694796554
-	MP2 correlation energy     =   -0.095353980722130
-	Total MP2 energy           =  -39.012732675518684
+	SCF energy       (chkpt)   =  -38.917378694796554
+	Reference energy (file100) =  -38.917378694796561
+	MP2 correlation energy     =   -0.095353980722131
+	Total MP2 energy           =  -39.012732675518691
 	CCSD correlation energy    =   -0.115368877467301
-	Total CCSD energy          =  -39.032747572263858
+	Total CCSD energy          =  -39.032747572263865
 
 ******************************************************************************
-tstop called on diadem.giga.net
-Wed Aug 13 03:37:10 2003
+tstop called on sirius.chem.vt.edu
+Thu Dec  4 16:36:03 2003
 
-user time   =       0.63 seconds =       0.01 minutes
-system time =       0.76 seconds =       0.01 minutes
+user time   =       1.15 seconds =       0.02 minutes
+system time =       0.80 seconds =       0.01 minutes
 total time  =          2 seconds =       0.03 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Wed Aug 13 03:37:10 2003
+tstart called on sirius.chem.vt.edu
+Thu Dec  4 16:36:03 2003
 
 
 			**************************
@@ -594,15 +597,15 @@ Wed Aug 13 03:37:10 2003
 			**************************
 
 ******************************************************************************
-tstop called on diadem.giga.net
-Wed Aug 13 03:37:10 2003
+tstop called on sirius.chem.vt.edu
+Thu Dec  4 16:36:03 2003
 
-user time   =       0.11 seconds =       0.00 minutes
-system time =       0.13 seconds =       0.00 minutes
+user time   =       0.18 seconds =       0.00 minutes
+system time =       0.21 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Wed Aug 13 03:37:10 2003
+tstart called on sirius.chem.vt.edu
+Thu Dec  4 16:36:03 2003
 
 
 	**********************************************************
@@ -610,8 +613,9 @@ Wed Aug 13 03:37:10 2003
 	**********************************************************
 
 	Nuclear Rep. energy (chkpt)   =    6.068298468966723
-	SCF energy          (chkpt)   =  -38.917378694796533
-	Reference energy    (file100) =  -38.917378694796554
+	SCF energy          (chkpt)   =  -38.917378694796554
+	Reference energy    (file100) =  -38.917378694796561
+	CCSD energy         (file100) =   -0.115368877467301
 
 	Input parameters:
 	-----------------
@@ -664,8 +668,8 @@ Iter=6    L=12    Root    EOM Energy     Delta E   Res. Norm    Conv?
                      1   0.3664110915  -1.96e-04    4.64e-03      N
                      2   0.4304721655  -8.68e-04    1.06e-02      N
 Iter=7    L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3664110915   0.00e+00    4.64e-03      N
-                     2   0.4304721655  -5.55e-17    1.06e-02      N
+                     1   0.3664110915   4.44e-16    4.64e-03      N
+                     2   0.4304721655  -5.00e-16    1.06e-02      N
 Iter=8    L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
                      1   0.3663382949  -7.28e-05    2.65e-03      N
                      2   0.4301539002  -3.18e-04    6.31e-03      N
@@ -683,7 +687,7 @@ Iter=12   L=12    Root    EOM Energy     Delta E   Res. Norm    Conv?
                      2   0.4295423742  -1.50e-04    3.85e-03      N
 Iter=13   L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
                      1   0.3662931433  -3.89e-16    4.00e-04      N
-                     2   0.4295423742   5.55e-17    3.85e-03      N
+                     2   0.4295423742  -5.55e-17    3.85e-03      N
 Iter=14   L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
                      1   0.3662871072  -6.04e-06    1.58e-04      N
                      2   0.4294919899  -5.04e-05    1.63e-03      N
@@ -709,22 +713,22 @@ Iter=21   L=12    Root    EOM Energy     Delta E   Res. Norm    Conv?
                      1   0.3662868609   6.12e-08    3.66e-05      Y
                      2   0.4294572480   1.25e-06    1.63e-04      N
 Iter=22   L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3662868609   5.55e-17    3.66e-05      Y
-                     2   0.4294572480   5.55e-17    1.63e-04      N
+                     1   0.3662868609   0.00e+00    3.66e-05      Y
+                     2   0.4294572480   3.33e-16    1.63e-04      N
 Iter=23   L=3     Root    EOM Energy     Delta E   Res. Norm    Conv?
                      1   0.3662867920  -6.89e-08    3.19e-05      Y
                      2   0.4294569289  -3.19e-07    9.32e-05      Y
 Collapsing to only 2 vectors.
 
 Procedure converged for 2 root(s).
-EOM CCSD R0 for root 1 =   -0.0026767349
-EOM CCSD R0 for root 2 =   -0.0315991208
+EOM CCSD R0 for root 0 =    0.0026767349
+EOM CCSD R0 for root 1 =    0.0315991208
 
 Final Energetic Summary for Converged Roots of Irrep B1 
                      Excitation Energy           Total Energy
                 (eV)     (cm^-1)     (au)             (au)
-EOM State 1      9.967    80390.7   0.3662867920   -38.5510919027
-EOM State 2     11.686    94254.9   0.4294569289   -38.4879217659
+EOM State 1      9.967    80390.7   0.3662867920   -38.6664607802
+EOM State 2     11.686    94254.9   0.4294569289   -38.6032906434
 
 Symmetry of excited state: B2 
 Symmetry of right eigenvector: A2 
@@ -749,8 +753,8 @@ Iter=6    L=12    Root    EOM Energy     Delta E   Res. Norm    Conv?
                      1   0.2624770582  -1.66e-06    2.87e-04      N
                      2   0.3338488732  -1.52e-05    1.15e-03      N
 Iter=7    L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.2624770582   0.00e+00    2.87e-04      N
-                     2   0.3338488732  -3.33e-16    1.15e-03      N
+                     1   0.2624770582   3.33e-16    2.87e-04      N
+                     2   0.3338488732  -3.89e-16    1.15e-03      N
 Iter=8    L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
                      1   0.2624766552  -4.03e-07    1.14e-04      N
                      2   0.3338442776  -4.60e-06    4.79e-04      N
@@ -766,14 +770,14 @@ Iter=11   L=8     Root    EOM Energy     Delta E   Res. Norm    Conv?
 Collapsing to only 2 vectors.
 
 Procedure converged for 2 root(s).
-EOM CCSD R0 for root 3 =    0.0000000000
-EOM CCSD R0 for root 4 =    0.0000000000
+EOM CCSD R0 for root 0 =    0.0000000000
+EOM CCSD R0 for root 1 =    0.0000000000
 
 Final Energetic Summary for Converged Roots of Irrep B2 
                      Excitation Energy           Total Energy
                 (eV)     (cm^-1)     (au)             (au)
-EOM State 3      7.142    57606.9   0.2624764475   -38.6549022473
-EOM State 4      9.084    73270.9   0.3338467963   -38.5835318985
+EOM State 3      7.142    57606.9   0.2624764475   -38.7702711248
+EOM State 4      9.084    73270.9   0.3338467963   -38.6989007759
 
 Symmetry of excited state: A1 
 Symmetry of right eigenvector: B1 
@@ -798,8 +802,8 @@ Iter=6    L=12    Root    EOM Energy     Delta E   Res. Norm    Conv?
                      1   0.2868891168  -9.59e-07    7.67e-04      N
                      2   0.4903324071  -1.49e-04    3.43e-03      N
 Iter=7    L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.2868891168  -3.89e-16    7.67e-04      N
-                     2   0.4903324071   3.33e-16    3.43e-03      N
+                     1   0.2868891168   5.00e-16    7.67e-04      N
+                     2   0.4903324071  -2.22e-16    3.43e-03      N
 Iter=8    L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
                      1   0.2868867685  -2.35e-06    3.46e-04      N
                      2   0.4902962546  -3.62e-05    1.99e-03      N
@@ -822,19 +826,19 @@ Iter=14   L=12    Root    EOM Energy     Delta E   Res. Norm    Conv?
                      1   0.2868884973   1.03e-09    1.35e-05      Y
                      2   0.4902534067   6.19e-07    4.76e-05      Y
 Iter=15   L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.2868884973  -5.55e-17    1.35e-05      Y
-                     2   0.4902534067   2.78e-16    4.76e-05      Y
+                     1   0.2868884973  -6.11e-16    1.35e-05      Y
+                     2   0.4902534067   2.22e-16    4.76e-05      Y
 Collapsing to only 2 vectors.
 
 Procedure converged for 2 root(s).
-EOM CCSD R0 for root 5 =    0.0000000000
-EOM CCSD R0 for root 6 =    0.0000000000
+EOM CCSD R0 for root 0 =    0.0000000000
+EOM CCSD R0 for root 1 =    0.0000000000
 
 Final Energetic Summary for Converged Roots of Irrep A1 
                      Excitation Energy           Total Energy
                 (eV)     (cm^-1)     (au)             (au)
-EOM State 5      7.807    62964.7   0.2868884973   -38.6304901975
-EOM State 6     13.340   107598.2   0.4902534067   -38.4271252881
+EOM State 5      7.807    62964.7   0.2868884973   -38.7458590750
+EOM State 6     13.340   107598.2   0.4902534067   -38.5424941656
 
 Symmetry of excited state: A2 
 Symmetry of right eigenvector: B2 
@@ -859,8 +863,8 @@ Iter=6    L=12    Root    EOM Energy     Delta E   Res. Norm    Conv?
                      1   0.2103122850  -1.99e-05    1.05e-03      N
                      2   0.4096214767  -1.77e-04    3.75e-03      N
 Iter=7    L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.2103122850   4.16e-16    1.05e-03      N
-                     2   0.4096214767  -1.67e-16    3.75e-03      N
+                     1   0.2103122850  -2.22e-16    1.05e-03      N
+                     2   0.4096214767  -6.66e-16    3.75e-03      N
 Iter=8    L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
                      1   0.2103101387  -2.15e-06    5.00e-04      N
                      2   0.4095890538  -3.24e-05    3.00e-03      N
@@ -883,8 +887,8 @@ Iter=14   L=12    Root    EOM Energy     Delta E   Res. Norm    Conv?
                      1   0.2103103789  -2.16e-07    1.02e-04      N
                      2   0.4095419629  -3.09e-06    2.77e-04      N
 Iter=15   L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.2103103789   2.50e-16    1.02e-04      N
-                     2   0.4095419629   1.67e-16    2.77e-04      N
+                     1   0.2103103789   5.55e-17    1.02e-04      N
+                     2   0.4095419629  -5.55e-17    2.77e-04      N
 Iter=16   L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
                      1   0.2103101320  -2.47e-07    4.38e-05      Y
                      2   0.4095444690   2.51e-06    1.19e-04      N
@@ -894,19 +898,19 @@ Iter=17   L=5     Root    EOM Energy     Delta E   Res. Norm    Conv?
 Collapsing to only 2 vectors.
 
 Procedure converged for 2 root(s).
-EOM CCSD R0 for root 7 =    0.0000000000
-EOM CCSD R0 for root 8 =    0.0000000000
+EOM CCSD R0 for root 0 =    0.0000000000
+EOM CCSD R0 for root 1 =    0.0000000000
 
 Final Energetic Summary for Converged Roots of Irrep A2 
                      Excitation Energy           Total Energy
                 (eV)     (cm^-1)     (au)             (au)
-EOM State 7      5.723    46157.7   0.2103101091   -38.7070685857
-EOM State 8     11.144    89884.7   0.4095446942   -38.5078340006
+EOM State 7      5.723    46157.7   0.2103101091   -38.8224374631
+EOM State 8     11.144    89884.7   0.4095446942   -38.6232028781
 
 ******************************************************************************
-tstop called on diadem.giga.net
-Wed Aug 13 03:37:28 2003
+tstop called on sirius.chem.vt.edu
+Thu Dec  4 16:36:26 2003
 
-user time   =       8.72 seconds =       0.15 minutes
-system time =       9.34 seconds =       0.16 minutes
-total time  =         18 seconds =       0.30 minutes
+user time   =      11.89 seconds =       0.20 minutes
+system time =      10.59 seconds =       0.18 minutes
+total time  =         23 seconds =       0.38 minutes

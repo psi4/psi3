@@ -1,6 +1,8 @@
 $(TARGET):
-	@$(test_srcdir)/$(TARGET_DIR)/$(TARGET).pl -q -i $(test_srcdir)/$(TARGET_DIR) -x $(top_objdir)/bin
+	@SRCDIR=$(SRCDIR) PSIDATADIR=$(SRC_PSIDATADIR) $(PERL) $(TEST_SCRIPT) $(TESTFLAGS)
 	@cat $(TARGET_DIR).test >> ../../test-case-results
 
 clean:
-	/bin/rm -f $(TARGET) output.dat psi.* timer.dat file14.dat dboc.findif.out
+	@SRCDIR=$(SRCDIR) PSIDATADIR=$(SRC_PSIDATADIR) $(PERL) $(TEST_SCRIPT) -c $(TESTFLAGS) && echo "Running psiclean"
+	/bin/rm -f $(TARGET) $(GARBAGE)
+

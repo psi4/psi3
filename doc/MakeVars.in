@@ -22,7 +22,7 @@ MKDIRS = @MKDIRS@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 
-TEXINPUTS = :$(srcdir):$(srcdir)/..:
+TEXINPUTS = :$(srcdir):$(srcdir)/..:..:
 
 TARGET_DVI  = $(MAN).dvi
 TARGET_PS = $(MAN).ps

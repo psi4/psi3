@@ -36,7 +36,6 @@ int main(int argc, char* argv[]) {
  start_io(argc,argv);
  print_intro();
 
-
 /*************************** Main Code *******************************/
 
 	/* Reading in basic information from checkpoint file */
@@ -61,18 +60,23 @@ int main(int argc, char* argv[]) {
  irr_labs = chkpt_rd_irr_labs();
  geom = chkpt_rd_geom();
  zvals = chkpt_rd_zvals();
- scf_evec_so = chkpt_rd_scf();
- scf_evals = chkpt_rd_evals();
  usotao = chkpt_rd_usotao();
- scf_evec_ao = init_matrix(nbfao,nmo);
- mmult(usotao,1,scf_evec_so,0,scf_evec_ao,0,nbfao,nbfso,nmo,0);
     
-	/* Parsing */
-
+ /* Parsing */
  parsing();
 
-
-	/* Computing total charge of the system */
+ if (strcmp(ref,"UHF") != 0) {
+   scf_evec_so = chkpt_rd_scf();
+   scf_evals = chkpt_rd_evals();
+   scf_evec_ao = block_matrix(nbfao,nmo);
+   mmult(usotao,1,scf_evec_so,0,scf_evec_ao,0,nbfao,nbfso,nmo,0);
+ }
+ 
+ /* parse the grid information */
+ if (ip_exist("GRID",0))
+   grid_parse();
+ 
+ /* Computing total charge of the system */
 
  charge = 0;
  for(i=0;i<nirreps;i++)
@@ -80,9 +84,7 @@ int main(int argc, char* argv[]) {
  for(i=0;i<natom;i++)
    charge += zvals[i];
 
-
-
-	/* Setting up an offset array */
+ /* Setting up an offset array */
 
  ioff = init_int_array(nbfao);
  ioff[0] = 0;
@@ -98,73 +100,60 @@ int main(int argc, char* argv[]) {
    df[i] = (i-1)*df[i-2];
  }
                  
-                      
-
-	/* Printing tasks and parameters */
+ /* Printing tasks and parameters */
 
  if (print_lvl >= PRINTTASKPARAMLEVEL) {
    print_tasks();
    print_params();
  }
 
-	/* Reading in basis set inforamtion */
+ /* Reading in basis set inforamtion */
 
  read_basset_info();
  init_xyz(); 
 
-
-	/* Obtain a density matrix */
-
+ /* Obtain a density matrix */
+ 
  if (read_opdm)
    read_density();
  else
    compute_density();
 
-	/* Computing overlap matrix */
-
- compute_overlap();
-
-	/* Obtain natural orbitals */
- if (read_opdm && wrtnos) 
-   get_nmo(); 
-
- chkpt_close();
-
-	/* Reading in Z-vector if neccessary */
-
- if (corr)
-   read_zvec();
-
-
-	/* Mulliken population analysis */
-
- print_pop_header();
- populate();
+/*if (strcmp(ref,"UHF") != 0) { */
+  compute_overlap();
+   
+  /* Obtain natural orbitals */
+  if (read_opdm && wrtnos) 
+    get_nmo(); 
+   
+  chkpt_close();
+   
+  /* Mulliken population analysis */
+  print_pop_header();
+  populate();
  
-	/* Compute coordinates of the MP reference point if needed */
+  /* Compute coordinates of the MP reference point if needed */
+  if (mp_ref != -1)
+    compute_mp_ref_xyz();
 
- if (mp_ref != -1)
-   compute_mp_ref_xyz();
+  /* Moving molecule to the reference center!
+   Attention, ever since coordinates of atoms and of the grid box 
+   are stored in this new coordinate system. All coordinates are 
+   transformed back at the moment of printing out. */
 
-
-	/* Moving molecule to the reference center!
-	   Attention, ever since coordinates of atoms and of the grid box 
-	   are stored in this new coordinate system. All coordinates are 
-	   transformed back at the moment of printing out. */
-
- for(i=0;i<natom;i++) {
-   geom[i][0] -= mp_ref_xyz[0];
-   geom[i][1] -= mp_ref_xyz[1];
-   geom[i][2] -= mp_ref_xyz[2];
-   Lm_ref_xyz[0] -= mp_ref_xyz[0];
-   Lm_ref_xyz[1] -= mp_ref_xyz[1];
-   Lm_ref_xyz[2] -= mp_ref_xyz[2];
- }
- if (grid) {
-   grid_origin[0] -= mp_ref_xyz[0];
-   grid_origin[1] -= mp_ref_xyz[1];
-   grid_origin[2] -= mp_ref_xyz[2];
- }
+  for(i=0;i<natom;i++) {
+    geom[i][0] -= mp_ref_xyz[0];
+    geom[i][1] -= mp_ref_xyz[1];
+    geom[i][2] -= mp_ref_xyz[2];
+    Lm_ref_xyz[0] -= mp_ref_xyz[0];
+    Lm_ref_xyz[1] -= mp_ref_xyz[1];
+    Lm_ref_xyz[2] -= mp_ref_xyz[2];
+  }
+  if (grid) {
+    grid_origin[0] -= mp_ref_xyz[0];
+    grid_origin[1] -= mp_ref_xyz[1];
+    grid_origin[2] -= mp_ref_xyz[2];
+  }
  
 	/* Computing one-electron integrals in 
 	   terms of Cartesian Gaussians, 
@@ -192,11 +181,11 @@ int main(int argc, char* argv[]) {
 
 	/* Cleaning up */
 
- free_block(scf_evec_so);
  free_block(usotao);
-/* free_matrix(scf_evec_so,nbfso);
- free_matrix(usotao,nbfso); */
- free_matrix(scf_evec_ao,nbfao);
+ if (strcmp(ref,"UHF") != 0) {
+   free_block(scf_evec_so);
+   free_block(scf_evec_ao);
+ }
  free(ioff);
  free(Ptot);
  free(phi);
@@ -213,6 +202,7 @@ int main(int argc, char* argv[]) {
    free(ahfsyz);
  }
  free(S);
+/*}  end non-UHF routines */
  stop_io();
  exit(PSI_RETURN_SUCCESS);
  

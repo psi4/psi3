@@ -12,6 +12,7 @@ TEMP_DIR = ${SCRATCH}/libr12
 
 default: $(TARGET)
 
+PWD=$(shell pwd)
 top_objdir_path=$(PWD)/$(top_objdir)
 
 $(TARGET): $(BUILD_SRC) $(LIB_SRC) $(srcdir)/Makefile.libr12

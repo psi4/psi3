@@ -18,12 +18,12 @@ void exit_io(void);
 int main(int argc, char *argv[])
 {
   int i, j, h, I;
-  int this_atom, this_mo;
+  int this_atom;
   FILE *molfile;
   int natom, nprim, nshell;
   int nmo, nso, nao, nirreps, ndocc;
   int *snumg, *stype, *snuc, *sprim;
-  int *orbspi, *clsdpi, *openpi, *orbsym;
+  int *orbspi, *clsdpi, *orbsym;
   double **scf_so, **scf;
   double *evals;
   double **usotao;
@@ -157,7 +157,6 @@ int main(int argc, char *argv[])
 
 void init_io(int argc, char *argv[])
 {
-  int i;
   extern char *gprgid();
   char *progid;
 

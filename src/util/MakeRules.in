@@ -101,10 +101,10 @@ $(top_objdir)/config.status: $(top_srcdir)/configure
 	cd $(top_objdir) && ./config.status --recheck
 
 Makefile: $(srcdir)/Makefile.in $(top_objdir)/config.status
-	cd $(top_objdir) && CONFIG_FILES=src/bin/`basename $(srcdir)`/Makefile ./config.status
+	cd $(top_objdir) && CONFIG_FILES=src/util/Makefile ./config.status
 
-../MakeVars: $(top_srcdir)/src/bin/MakeVars.in $(top_objdir)/config.status
-	cd $(top_objdir) && CONFIG_FILES=src/bin/MakeVars ./config.status
+../MakeVars: $(top_srcdir)/src/util/MakeVars.in $(top_objdir)/config.status
+	cd $(top_objdir) && CONFIG_FILES=src/util/MakeVars ./config.status
 
-../MakeRules: $(top_srcdir)/src/bin/MakeRules.in $(top_objdir)/config.status
-	cd $(top_objdir) && CONFIG_FILES=src/bin/MakeRules ./config.status
+../MakeRules: $(top_srcdir)/src/util/MakeRules.in $(top_objdir)/config.status
+	cd $(top_objdir) && CONFIG_FILES=src/util/MakeRules ./config.status

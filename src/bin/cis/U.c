@@ -1,3 +1,4 @@
+#include <math.h>
 #include <libdpd/dpd.h>
 #define EXTERN
 #include "globals.h"

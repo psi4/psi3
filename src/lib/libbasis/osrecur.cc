@@ -33,7 +33,7 @@ void OI_OSRecursor::compute(PSI_FLOAT PA[3], PSI_FLOAT PB[3], PSI_FLOAT gamma, i
   if (am2 < 0 || am2 > maxam2_)
     throw std::runtime_error("ERROR: OI_OSRecursor::compute -- am2 out of bounds");
 
-  int i,j,k;
+  int i,j;
   PSI_FLOAT pp = 1/(2*gamma);
   int lmaxi = am1;
   int lmaxj = am2;

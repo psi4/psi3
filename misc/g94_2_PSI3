@@ -13,8 +13,17 @@
 #         g94_2_PSI3 STDIN STDOUT
 #
 ##############################################################################
-
+# 
+# NJD (11/22/03) added all atom names up until Radium, then common elements
+# after that. If you need to add more, check element names with canonical index
+# in /src/bin/input/init_elem_names.c 
+# Fixed for Linux perl
+#
+# BT(11/22/03) Modified for version of perl in Redhat 9.0 (%lf identifier
+# changed to %f for formatted printing)
+#
 # Psi 3 needs full element names rather than element symbols
+
 %elemname = (
   G  => GHOST,
   H  => HYDROGEN,
@@ -34,8 +43,81 @@
   P  => PHOSPHORUS,
   S  => SULFUR,
   CL => CHLORINE,
-  AR => ARGON
-);
+  AR => ARGON,
+  K  => POTASSIUM,
+  CA => CALCIUM,
+  SC => SCANDIUM,
+  TI => TITANIUM,
+  V  => VANADIUM,
+  CR => CHROMIUM,
+  MN => MANGANESE,
+  FE => IRON,
+  CO => COBALT,
+  NI => NICKEL,
+  CU => COPPER,
+  ZN => ZINC,
+  GA => GALLIUM,
+  GE => GERMANIUM,
+  AS => ARSENIC,
+  SE => SELENIUM,
+  BR => BROMINE,
+  KR => KRYPTON,
+  RB => RUBIDIUM,
+  SR => STRONTIUM,
+  Y  => YTTRIUM,
+  ZR => ZIRCONIUM,
+  NB => NIOBIUM,
+  MO => MOLYBDENUM,
+  TE => TECHNETIUM,
+  RU => RUTHENIUM,
+  RH => RHODIUM,
+  PD => PALLADIUM,
+  AG => SILVER,
+  CD => CADMIUM,
+  IN => INDIUM,
+  SN => TIN,
+  SB => ANTIMONY,
+  TE => TELLURIUM,
+  I  => IODINE,
+  XE => XENON,
+  CS => CESIUM,
+  BA => BARIUM,
+  LA => LANTHANUM,
+  CE => CERIUM,
+  PR => PRASEODYMIUM,
+  ND => NEODYMIUM,
+  PM => PROMETHIUM,
+  SM => SAMARIUM,
+  EU => EUROPIUM,
+  GD => GADOLINIUM,
+  TB => TERBIUM,
+  DY => DYSPROSIUM,
+  HO => HOLMIUM,
+  ER => ERBIUM,
+  TM => THULIUM,
+  YB => YTTERBIUM,
+  LU => LUTETIUM,
+  HF => HAFNIUM,
+  TA => TANATLUM,
+  W  => TUNGSTEN,
+  RE => RHENIUM,
+  OS => OSMIUM,
+  IR => IRIDIUM,
+  PT => PLATINUM,
+  AU => GOLD,
+  HG => MERCURY,
+  TL => THALLIUM,
+  PB => LEAD,
+  BI => BISMUTH,
+  PO => POLONIUM,
+  AT => ASTATINE,
+  RN => RADON,
+  FR => FRANCIUM,
+  RA => RADIUM,
+  U  => URANIUM,
+  NP => NEPTUNIUM,
+  PU => PLUTONIUM,
+); 
 
 # Find the first line containing BASIS keyword and parse basis name
 BASIS: while (<STDIN>) {
@@ -67,13 +149,13 @@ MAIN: while (<STDIN>) {
 	  print "\n  (S  ";
 	  for($i=0; $i<$num_prim; $i++) {
              ($exp[$i], $s_coeff[$i], $p_coeff[$i] ) = split " ", <STDIN>;
-             printf "  ( %20.10lf    %20.10lf)",$exp[$i],$s_coeff[$i];
+             printf "  ( %20.10f   %20.10f)", $exp[$i],$s_coeff[$i];
              $i != $num_prim - 1 && print "\n      ";
              } 
 	  print ")";
           print "\n  (P  ";
 	  for($i=0; $i<$num_prim2; $i++) {
-             printf "  ( %20.10lf    %20.10lf)",$exp[$i],$p_coeff[$i];
+             printf "  ( %20.10f   %20.10f)", $exp[$i],$p_coeff[$i];
              $i != $num_prim - 1 && print "\n      ";
 	     } 
 	  print "";
@@ -84,7 +166,7 @@ MAIN: while (<STDIN>) {
          # Read in each primitive
           for ($i=0; $i<$num_prim; $i++) {
              ($exp, $coeff) = split " ", <STDIN>;
-             printf "  ( %20.10lf    %20.10lf)",$exp,$coeff;
+             printf "  ( %20.10f   %20.10f)", $exp,$coeff;
              $i != $num_prim - 1 && print "\n      ";
              }    
      }

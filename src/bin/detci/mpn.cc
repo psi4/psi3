@@ -15,6 +15,7 @@ extern "C" {
    #include <stdio.h>
    #include <libciomr/libciomr.h>
    #include <libqt/qt.h>
+   #include <libchkpt/chkpt.h>
    #include "structs.h"
    #include "ci_tol.h"
    #define EXTERN
@@ -33,6 +34,7 @@ void mpn_generator(CIvect &Hd, struct stringwr **alplist,
 {
   double *mpk_energy, *mp2k_energy, *oei, *tei, *buffer1, *buffer2;
   double tval, Empn = 0.0, **wfn_overlap, Empn2 = 0.0, **cvec_coeff;
+  double Empn2a = 0.0;
   double *cvec_norm, norm, *tmp_coeff, tmp_norm, max_overlap = 1.0;
   int i, j, k, order, did_vec=0;
   int kvec_offset; /* offset if c_0 is not stored on disk */
@@ -219,6 +221,11 @@ void mpn_generator(CIvect &Hd, struct stringwr **alplist,
           buffer2, k, mp2k_energy, wfn_overlap, cvec_coeff, cvec_norm, kvec_offset);
        Empn2 += mp2k_energy[2*k];
        fprintf(outfile,"\t %2d %25.15f %25.15f\n",2*k,mp2k_energy[2*k],Empn2);
+
+       /* 25 November 2003 - JMT
+        * Moified to save MP(2n-2) energy */
+       Empn2a = Empn2;
+
        Empn2 += mp2k_energy[2*k+1];
        fprintf(outfile,"\t\t\t\t\t\t\t\t"
                " %2d %25.15f %25.15f\n", 2*k+1, mp2k_energy[2*k+1], Empn2);
@@ -292,6 +299,24 @@ void mpn_generator(CIvect &Hd, struct stringwr **alplist,
      k++;
      Cvec.copy_zero_blocks(Sigma); 
      }
+
+   /* 22 Nov 2003 - JMT 
+    * Save the MPn or MP(2n-1) energy
+    */
+   chkpt_init(PSIO_OPEN_OLD);
+   if (Parameters.save_mpn2 == 1 && Parameters.wigner) {
+     chkpt_wt_etot(Empn2);
+     fprintf(outfile, "\nMP%d energy saved\n", (Parameters.maxnvect * 2) - 1);
+   }
+   else if (Parameters.save_mpn2 == 2 && Parameters.wigner) {
+     chkpt_wt_etot(Empn2a);
+     fprintf(outfile, "\nMP%d energy saved\n", (Parameters.maxnvect * 2) - 2);
+   }
+   else {
+     chkpt_wt_etot(Empn);
+     fprintf(outfile, "\nMP%d energy saved\n", Parameters.maxnvect);
+   }
+   chkpt_close();
 
    fprintf(outfile,"\n");
 }

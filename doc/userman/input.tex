@@ -119,15 +119,13 @@ This tells the program whether to run a single-point energy calculation
 (SP), a geometry optimization (OPT), a series of calculations at 
 different displaced geometries (DISP), a frequency calculation (FREQ),
 frequencies only for symmetric vibrational modes (SYMM\_FREQ), 
-or a Diagonal Born-Oppenheimer Correction (DBOC) energy computation.
+a Diagonal Born-Oppenheimer Correction (DBOC) energy computation,
+or certain response properties (RESPONSE).
 The default is SP.
 \item[WFN = string]\mbox{}\\
-This specifies the wavefunction type.  Possible values are SCF
-(self-consistent-field), CCSD (coupled-cluster with single and double
-substitutions), CCSD\_T (coupled-cluster with single, double, and 
-perturbative triple substitutions, i.e., CCSD(T)), 
-DETCI (determinant-based configuration interaction), and
-DETCAS (determinant-based complete-active-space self-consistent-field). 
+This specifies the wavefunction type.  Possible values are:\\ 
+SCF, MP2, MP2R12, CIS, DETCI, DETCAS, CCSD, CCSD\_T, BCCD, BCCD\_T,\\
+EOM\_CCSD. 
 \item[REFERENCE = string]\mbox{}\\
 This specifies the type of SCF calculation one wants to do.  It
 can be one of RHF (for a closed  shell  singlet), ROHF (for
@@ -150,6 +148,18 @@ representation.  There is no default.  If this is not given,
 This gives the number of singly occupied orbitals in each irreducible 
 representation. There is no default.  If this is not given,
 \PSIcscf\ will attempt to guess at the occupations.
+\item[FREEZE\_CORE = string]\mbox{} \\
+\PSIthree\ can automatically freeze core orbitals. Core orbitals are
+defined as follows:  
+\begin{verbatim}
+ H-Be  no core 
+ B-Ne  1s 
+Na-Ar  small: 1s2s
+       large: 1s2s2p
+\end{verbatim}
+YES or TRUE will freeze the core orbitals, SMALL or LARGE are for elements 
+Na-Ar. The default is NO or FALSE. Always check to make sure that the 
+occupations are correct!
 \end{description}
 
 \subsection{Geometry Specification} \label{geom-spec}
@@ -280,6 +290,28 @@ the computational point group:
     unique_axis = x
   )
 \end{verbatim}
+
+\begin{table}[h]
+%\caption{Standard Cotton Ordering in \PSIthree}
+\begin{center}
+\begin{tabular}{ll}
+\hline
+\hline
+Point Group & Cotton Ordering of Irreps \\
+\hline
+C$_1$       & A                                    \\
+C$_i$       & A$_g$ A$_u$                          \\
+C$_2$       & A B                                  \\
+C$_s$       & A' A''                               \\
+C$_{2h}$    & A$_g$ B$_g$ A$_u$ B$_u$              \\
+C$_{2v}$    & A$_1$ A$_2$ B$_1$ B$_2$              \\
+D$_2$       & A B$_1$ B$_2$ B$_3$                  \\
+D$_{2h}$    & A$_g$ B$_{1g}$ B$_{2g}$ B$_{3g}$ A$_u$ B$_{1u}$ B$_{2u}$ B$_{3u}$ \\
+\hline
+\hline
+\end{tabular}
+\end{center}
+\end{table}
 
 \subsection{Specifying Scratch Disk Usage in \PSIthree} \label{scratchfiles}
 

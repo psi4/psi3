@@ -46,8 +46,8 @@ GaussianShell::GaussianShell(int nprims, int ncontr, int *am, bool puream, PSI_F
 }
 
 GaussianShell::GaussianShell(const GaussianShell& S) :
-  puream_(S.puream_), num_contr_(S.num_contr_), num_prims_(S.num_prims_),
-  num_ao_(S.num_ao_), num_bf_(S.num_bf_), max_am_(S.max_am_), min_am_(S.min_am_)
+  max_am_(S.max_am_), min_am_(S.min_am_), num_bf_(S.num_bf_), num_ao_(S.num_ao_),
+  num_prims_(S.num_prims_), num_contr_(S.num_contr_), puream_(S.puream_)
 {
   am_ = new int[num_contr_];
   for(int c=0; c<num_contr_; c++)
@@ -135,7 +135,6 @@ void GaussianShell::set_origin(PSI_FLOAT O[3])
 void GaussianShell::print(int id, FILE* outfile) const {
   char indent1[] = "    ";
   char indent2[] = "      ";
-  char indent3[] = "        ";
 
   fprintf(outfile, "%sGaussian Shell %d\n",indent1,id);
   fprintf(outfile, "%sNumber of contractions        = %d\n",indent2,num_contr_);

@@ -6,7 +6,7 @@
 
 psi: (
   label = "6-31G** SCF H2O"
-  jobtype = sp
+  jobtype = oeprop
   wfn = scf
   reference = rhf
   basis = "6-31G**"

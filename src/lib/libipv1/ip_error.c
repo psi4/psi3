@@ -1,11 +1,21 @@
 /* $Log$
- * Revision 1.2  2003/05/22 06:20:07  crawdad
- * Corrected most of the libraries and modules to use proper PSI_RETURN_XX
- * values from psifiles.h.  Modified ccdensity, ccenergy, cchbar, cclambda,
- * ccsort, cctriples, cis, cphf, cusp, localize, stable, libchkpt, libciomr,
- * libdpd, libipv1, libpsio, libqt, and tocprint.
+ * Revision 1.3  2004/01/02 06:37:12  crawdad
+ * Merging psi-3-2 branch (from release tag psi-3-2-rc-2 to head at psi-3-2-0)
+ * into main trunk.  This code compiles and runs correctly on sirius.
  * -TDC
  *
+/* Revision 1.2.4.1  2003/11/23 19:17:39  crawdad
+/* Minor fixes: (1) Corrected dependencies in doc/Make*.in; (2) Elimintated
+/* warnings from gcc -Wall in several libipv1 routines and psi2molden.
+/* -TDC
+/*
+/* Revision 1.2  2003/05/22 06:20:07  crawdad
+/* Corrected most of the libraries and modules to use proper PSI_RETURN_XX
+/* values from psifiles.h.  Modified ccdensity, ccenergy, cchbar, cclambda,
+/* ccsort, cctriples, cis, cphf, cusp, localize, stable, libchkpt, libciomr,
+/* libdpd, libipv1, libpsio, libqt, and tocprint.
+/* -TDC
+/*
 /* Revision 1.1.1.1  2000/02/04 22:53:26  evaleev
 /* Started PSI 3 repository
 /*
@@ -25,13 +35,12 @@
  * */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdarg.h>
 #include <tmpl.h>
 #include "ip_types.h"
 #include "ip_global.h"
 #include <psifiles.h>
-
-static char rcs_id[] = "$Id$";
 
 /* Cannot include ip_error.global due to xlc's handling of varargs. */
 #include "ip_error.gbl"

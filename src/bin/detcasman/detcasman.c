@@ -62,8 +62,22 @@ main(int argc, char *argv[])
   errcod = ip_data("NCASITER","%d",&ncasiter,0);
   scale_conv = 0.01;
   errcod = ip_data("SCALE_CONV","%lf",&scale_conv,0);
+  
+  /* First iteration prints DETCI information */
+  ci_conv = calc_ci_conv(scale_conv, &energy_last);
 
-  for (i=0; i<ncasiter && !converged; i++) {
+  if (ci_conv > 1.0E-7) {
+    sprintf(detci_string, "detci -c %12.9lf\n", ci_conv);
+  }
+  else 
+    sprintf(detci_string, "detci \n");
+
+  check(!system("transqt --quiet"), "TRANSQT failed");
+  check(!system(detci_string), "DETCI failed");
+  check(!system("clag --quiet"), "CLAG failed");
+  converged = system("detcas --quiet");
+
+  for (i=1; i<ncasiter && !converged; i++) {
     ci_conv = calc_ci_conv(scale_conv, &energy_last);
 
     if (ci_conv > 1.0E-7) {

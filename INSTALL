@@ -8,7 +8,8 @@ I. Compilation Prerequisites:
    * F77 Compiler
    * Optimized BLAS library (try http://math-atlas.sourceforge.net)
    * Optimized LAPACK library (try http://www.netlib.org/netlib)
-   * A POSIX threads (Pthreads) library
+   * POSIX threads (Pthreads) library
+   * Perl interpreter (version 5.005 or higher)
    * GNU utilities: (see http://www.gnu.org)
       ** make
       ** flex
@@ -63,8 +64,39 @@ the configure script:
    The default search order for compilers is: g77, f77, fc, f2c.  (NB:
    On AIX systems, the search order is xlf_r, g77, f77, fc, f2c.)
 
+   * --with-ld=linker --- Use this option to specify a linker.  The
+   default is 'ld'.
+
+   * --with-ranlib=ranlib --- Use this option to specify the ranlib program.  
+   The default is to look for 'ranlib' automatically.
+
    * --with-ar=archiver --- Use this option to specify an archiver.  The
-   default is ar.
+   default is to look for 'ar' automatically.
+
+   * --with-ar-flags=flags --- Use this option to specify additional archiver 
+   flags. The default is 'r'.
+
+   * --with-perl=perl --- Use this option to specify a Perl interpreter.  The
+   default is to look for 'perl' automatically.
+
+   * --with-incdirs=directories --- Use this option to specify extra
+   directories where to look for header files. Directories should be specified
+   prepended by '-I', i.e. '-Idir1 -Idir2', etc. If several directories are 
+   specified, enclose the list with single right-quotes, e.g.,
+   --with-incdirs='-I/usr/local/include -I/home/psi3/include'.
+
+   * --with-libs=libraries --- Use this option to specify extra
+   libraries which should be used during linking. Libraries should be 
+   specified by their full names or in the usual '-l' notation, e.g. 
+   '-lm /usr/lib/libm.a', etc.  If several libraries are specified, enclose 
+   the list with single right-quotes, e.g.,
+   --with-libs='-lcompat /usr/local/lib/libm.a'.
+
+   * --with-libdirs=directories --- Use this option to specify extra
+   directories where to look for libraries. Directories should be specified
+   prepended by '-L', i.e. '-Ldir1 -Ldir2', etc. If several directories are 
+   specified, enclose the list with single right-quotes, e.g.,
+   --with-libdirs='-L/usr/local/lib -I/home/psi3/lib'.
 
    * --with-blas=library --- Use this option to specify a BLAS library.
    If your BLAS library has multiple components, enclose the file list
@@ -96,11 +128,6 @@ the configure script:
 
    * --with-opt=options --- This option may be used to select special
    optimization flags, overriding defaults.
-
-   * --with-parallel=sgi --- This option turns on automatic parallelization
-   available with some SGI systems.  Since none of the primary developers
-   of PSI3 actually uses SGI systems at present, it seems likely that this
-   option will not work.
 
 III. Detailed Installation Instructions
 
@@ -144,35 +171,13 @@ To automatically execute the ever-growing number of test cases after
 compilation, simply execute "make tests" in the $objdir directory.  This will
 run each (relatively small) test case and report the results.  Failure of any
 of the test cases should be reported to the developers at psi3@psicode.org.
-Note that you must run a "make clean" in $objdir/tests to run the test
-suite again.
+By default, any such failure will stop the testing process.  If you desire
+to run the entire testing suit without interruption, execute "make tests
+TESTFLAGS='-u -q'". Note that you must do a "make testsclean" in $objdir
+to run the test suite again.
 
-After installation (vide infra) you may also run the test suite from
-the $PSI3/tests directory using the driver.test.pl script.  The results
-will be printed to stdout as well as the file test-case-results.  Note:
-You MUST have the final installation directory, $prefix/bin, in your path
-in order to run the test cases after installation.  A few examples for
-test-case execution are:
-
-./driver.test.pl             Runs all small and medium tests
-./driver.test.pl --ci        Runs all detci tests
-./driver.test.pl --cc        Runs all coupled-cluster tests
-./driver.test.pl --scf       Runs all hartree-fock tests
-./driver.test.pl --sp        Runs all single-point tests
-./driver.test.pl --geom      Runs all geometry optimization tests
-./driver.test.pl --freq      Runs all harmonic vibrational frequency tests
-./driver.test.pl --excite    Runs all excited state tests
-./driver.test.pl --small     Runs all low memory, short run time tests
-./driver.test.pl --medium    Runs all low memory, med run time tests
-./driver.test.pl --large     Runs all high memory, long run time tests
-                      (requires considerable disk space, memory, and time)
-./driver.test.pl --all       Runs all tests
-./driver.test.pl --clean     Removes all test-case output files.
-
-You may also run individual test cases using the perl scripts in the
-test-case subdirectories.  The PSI3 User's Manual provides detailed
-instructions on setting up and running calculations.  Report bugs to
-psi3@psicode.org.
+Testing PSI3 from the source directory, which was possible in prerelease
+version of PSI3.2 (rc1 and rc2), is no longer recommended.
 
 III.D. Step 4: Installation
 
@@ -210,7 +215,7 @@ IV. Miscellaneous architecture-specific notes
  * AIX 4.3/5.x in 64-bit environment:
 
     If IBM VisualAge C++ and IBM XL Fortran are used, one has to manually
-    specify the {\tt -q64} compiler flag that enables production of 64-bit
+    specify the -q64 compiler flag that enables production of 64-bit
     executables.  The following configure options should be used:
 
      --with-cc='cc_r -q64' --with-cxx='xlC_r -q64' --with-fc='xlf_r -q64'
@@ -221,9 +226,8 @@ IV. Miscellaneous architecture-specific notes
 
  * Compaq Alpha/OSF 5.1:
 
-   Default shell ({\tt /bin/sh} is not POSIX-compliant which causes some 
-   \PSIthree\ makefiles to fail. Set environmental variable {\tt BIN\_SH}
-   to {\tt xpg4}.
+   Default shell under Tru64 (/bin/sh is not POSIX-compliant which causes some 
+   PSI3 makefiles to fail. Set environmental variable BIN_SH to xpg4.
 
  * Mac OS 10.2.X:
 
@@ -236,21 +240,36 @@ IV. Miscellaneous architecture-specific notes
    website at http://www.opensource.apple.com/. Then add -lcompat to the
    configure flag --with-libs.
 
-   (3) For BLAS and LAPACK, use the configure options:
+   (3) If you are using compilers from the developer's kit then for
+   BLAS and LAPACK, use the configure options:
 
-      --with-blas='-altivec -framework vecLib' --with-lapack=' '
+      --with-blas='-altivec -framework vecLib'
+
+   If you compiled compilers yourself from GNU source code then
+   Apple-specific extensions will not work and you will have to specify
+   the location of vecLib manually:
+
+      --with-blas='/System/Library/Frameworks/vecLib.framework/vecLib'
 
    (4) The Fortran compiler in gcc version 3.3 and higher requires the latest
    assembler, as. It can be obtained as a part of cctools from 
    http://www.opensource.apple.com/.  Mac OS X 10.3 (Panther) should come 
-   with cctools recent enough to compile Psi 3.
+   with cctools recent enough to compile PSI3.
 
    (5) Certain PSI3 codes require significant stackspace for compilation.
    Increase your shell's stacksize limit before running "make".  For csh,
    for example, this is done using "unlimit stacksize".
 
-   (6) After running configure, hand-edit $objdir/src/bin/MakeVars and
-   $objdir/src/util/MakeVars and remove $(FLIBS) from the definition of BLAS.
-   The vecLib framework on OS X doesn't require Fortran I/O routines to be
-   linked, so $(FLIBS) will interfere with the PSI3 build.  This will be
-   automated in some future release.
+ * SGI IRIX 6.x:
+
+   (1) MIPSpro C++ compilers prior to version 7.4 require a command-line flag
+   '-LANG:std' in order to compile PSI3 properly.
+
+   (2) Use command-line flag '-64' in order to produce 64-bit executables with
+   MIPSpro compilers. The following is an example of appropriate configure 
+   options:
+
+    --with-cc='cc -64' --with-cxx='CC -64 -LANG:std' --with-fc='f77 -64'
+
+   (3) Under IRIX, configure will attempt to detect automatically and use
+   the optimized SGI Scientific Computing Software Library (SCSL).

@@ -561,6 +561,15 @@ psi: (
   MP2UHFEnergy = ERROR
   MP2TwoConEnergy = ERROR
 
+  % Procedures for optimization via energy points
+  MP2EnergyOpt = (repeat $nopt $MP2Energy $findif_disp_symm 
+    repeat NUM_DISP $findif_next $MP2Energy $findif_energy end
+    $findif_grad_energy $geomupdate end $done)
+  MP2RHFEnergyOpt = $MP2EnergyOpt
+  MP2ROHFEnergyOpt = ERROR
+  MP2UHFEnergyOpt = ERROR
+  MP2TwoConEnergyOpt = ERROR
+  
   % Procedures for a conventional MP2 one-electron
   % properties calculation
   MP2EnergyOEPROP = ($ints $scf $transqt $ccsort $mp2prop $oeprop)

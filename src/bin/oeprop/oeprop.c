@@ -777,31 +777,12 @@ void compute_oeprops()
     darw += zvals[i]*edens[i];
   darw *= M_PI_2/(_c_au*_c_au); 
 
-
-  /*--- Compute the rest of L^2 ---*/
-#if 0
-  for(i=0;i<nbfao;i++)
-    for(j=0;j<nbfao;j++) {
-      ij = (i > j) ? ioff[i] + j : ioff[j] + i;
-      pfac_ij = (i == j) ? 1.0 : 2.0;
-      for(k=0;k<nbfao;k++)
-	for(l=0;l<nbfao;l++) {
-	  kl = (k > l) ? ioff[k] + l : ioff[l] + k;
-	  pfac_kl = (k == l) ? 1.0 : 2.0;
-	  il = (i > l) ? ioff[i]+l : ioff[l]+i;
-	  kj = (k > j) ? ioff[k]+j : ioff[j]+k;
-	  Lx2 -= Lx_ao[ij]*Lx_ao[kl]*(Ptot[ij]*Ptot[kl]-Ptot[il]*Ptot[kj]);
-	  Ly2 -= Ly_ao[ij]*Ly_ao[kl]*(Ptot[ij]*Ptot[kl]-Ptot[il]*Ptot[kj]);
-	  Lz2 -= Lz_ao[ij]*Lz_ao[kl]*(Ptot[ij]*Ptot[kl]-Ptot[il]*Ptot[kj]);
-	}
-    }
-#endif
   free(Lx_ao);
   free(Ly_ao);
   free(Lz_ao);
 
 
-	/* Cleaning up */
+  /* Cleaning up */
   
   free_box(MIX,lmax+1,lmax+1);
   free_box(MIY,lmax+1,lmax+1);

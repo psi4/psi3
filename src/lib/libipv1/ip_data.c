@@ -1,7 +1,17 @@
 /* $Log$
- * Revision 1.2  2002/01/04 18:50:26  evaleev
- * Added ip_double_array to read in an array of floating point numbers.
+ * Revision 1.3  2004/01/02 06:37:12  crawdad
+ * Merging psi-3-2 branch (from release tag psi-3-2-rc-2 to head at psi-3-2-0)
+ * into main trunk.  This code compiles and runs correctly on sirius.
+ * -TDC
  *
+/* Revision 1.2.10.1  2003/11/23 19:17:39  crawdad
+/* Minor fixes: (1) Corrected dependencies in doc/Make*.in; (2) Elimintated
+/* warnings from gcc -Wall in several libipv1 routines and psi2molden.
+/* -TDC
+/*
+/* Revision 1.2  2002/01/04 18:50:26  evaleev
+/* Added ip_double_array to read in an array of floating point numbers.
+/*
 /* Revision 1.1.1.1  2000/02/04 22:53:26  evaleev
 /* Started PSI 3 repository
 /*
@@ -54,9 +64,7 @@
 #include "ip_types.h"
 #include "ip_global.h"
 #include "ip_error.h"
-
-
-static char rcs_id[] = "$Id$";
+#include "ip_error.gbl"
 
 /* The way the AIX xlc compiler handles vararg decs isn't compatible with
  * the way the tmpl file is formed, so ip_data.global cannot be used.
@@ -111,7 +119,7 @@ int *v;
   ip_value_t *val;
   int errcod;
 
-  if (errcod = ip_value_v(keyword,&val,n,v)) return errcod;
+  if ((errcod = ip_value_v(keyword,&val,n,v))) return errcod;
 
   if (val->type != IP_ARRAY) return IPE_NOT_AN_ARRAY;
 
@@ -158,7 +166,7 @@ int *v;
   int errcod;
   char copy[10],*s;
 
-  if (errcod = ip_value_v(keyword,&val,n,v)) return errcod;
+  if ((errcod = ip_value_v(keyword,&val,n,v))) return errcod;
 
   if (val->type != IP_SCALAR) return IPE_NOT_A_SCALAR;
 
@@ -264,7 +272,7 @@ int *v;
   ip_value_t *val;
   int errcod;
 
-  if (errcod = ip_value_v(keyword,&val,n,v)) return errcod;
+  if ((errcod = ip_value_v(keyword,&val,n,v))) return errcod;
 
   if (val->type != IP_SCALAR) return IPE_NOT_A_SCALAR;
 
@@ -311,7 +319,7 @@ int *v;
   ip_value_t *val;
   int errcod;
 
-  if (errcod = ip_value_v(keyword,&val,n,v)) return errcod;
+  if ((errcod = ip_value_v(keyword,&val,n,v))) return errcod;
 
   if (val->type != IP_SCALAR) return IPE_NOT_A_SCALAR;
 

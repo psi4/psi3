@@ -3,6 +3,7 @@
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <libpsio/psio.h>
+#include <libchkpt/chkpt.h>
 #include <math.h>
 #include <psifiles.h>
 #include "MOInfo.h"
@@ -439,6 +440,7 @@ void mp2r12_energy(void)
   fprintf(outfile,   "\tMBPT(2)-R12/A Energy  = %20.10lf\n", mp2r12_energy);
   fprintf(outfile,   "\tTotal Energy          = %20.10lf\n", escf+mp2r12_energy);
   fflush(outfile);
+  chkpt_wt_etot(escf+mp2r12_energy);
 
   if (ndocc_act != ndocc) {
     free_block(V[0]);

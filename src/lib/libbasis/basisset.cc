@@ -22,16 +22,13 @@ BasisSet::BasisSet(int chkptfile)
 
   shells_ = new GaussianShell*[num_shells_];
 
-  int* am2shell = chkpt_rd_am2canon_shell_order();
-  int* shells_per_am = chkpt_rd_shells_per_am();
-
 /* shells_ = */ init_shells();
   /* shell_pairs = init_shell_pairs(); */
 }
 
 BasisSet::BasisSet(const BasisSet& S) :
-  num_shells_(S.num_shells_), num_prims_(S.num_prims_), num_ao_(S.num_ao_),
-  num_bf_(S.num_bf_), puream_(S.puream_), max_am_(S.max_am_)
+  num_prims_(S.num_prims_), num_shells_(S.num_shells_), num_ao_(S.num_ao_),
+  num_bf_(S.num_bf_), max_am_(S.max_am_), puream_(S.puream_)
 {
   shells_ = new GaussianShell*[num_shells_];
   for(int s=0; s<num_shells_; s++)
@@ -161,7 +158,6 @@ void BasisSet::set_center(int ci, double O[3])
 void BasisSet::print(char *id, FILE* outfile) const {
   char indent1[] = "  ";
   char indent2[] = "    ";
-  char indent3[] = "      ";
 
   fprintf(outfile, "%s-Basis Set %s\n",indent1,id);
   fprintf(outfile, "%sNumber of shells              = %d\n",indent2,num_shells_);

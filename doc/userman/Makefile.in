@@ -9,11 +9,11 @@ TEX = userman.tex
 
 SUBTEX = \
 appendix.tex      modules.tex      running.tex   bibliography.bib \
-introduction.tex  preliminary.tex  tutorial.tex  input.tex \
+introduction.tex  tutorial.tex  input.tex \
 cc.tex \
 
 DVI = $(TEX:%.tex=%.dvi)
-PS = $(DVI:%.dvi=%.ps)
+PS = $(TEX:%.tex=%.ps)
 HTML = $(TEX:%.tex=%.html)
 
 include ../MakeRules

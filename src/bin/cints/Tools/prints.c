@@ -48,7 +48,7 @@ void print_scalars()
      fprintf(outfile,"    Number of symmetry orbitals = %d\n", Symmetry.num_so);
      fprintf(outfile,"    Maximum AM in the basis     = %d\n", BasisSet.max_am - 1);
      fprintf(outfile,"\n  -SYMMETRY INFORMATION;\n");
-     fprintf(outfile,"    Computational point group        = %4s\n", Symmetry.symlabel);
+     fprintf(outfile,"    Computational point group        = %s\n", Symmetry.symlabel);
      fprintf(outfile,"    Number of irreps                 = %d\n", Symmetry.nirreps);
      if (UserOptions.print_lvl >= PRINT_BASIS) {
        fprintf(outfile,"    Number of symmetry unique shells = %d\n", Symmetry.num_unique_shells);

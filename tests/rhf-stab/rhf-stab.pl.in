@@ -1,0 +1,11 @@
+# get Perl utility functions for testing Psi3
+require("@top_srcdir@/tests/psitest.pl");
+
+test_started();
+($interrupted) = run_psi_command(@ARGV);
+
+my $fail = compare_nuc();
+$fail |= compare_scf_energy();
+$fail |= compare_rhf_stability();
+
+test_finished($fail,$interrupted);

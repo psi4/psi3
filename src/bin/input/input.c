@@ -36,14 +36,33 @@ int main(int argc, char *argv[])
    FILE *pbasis = NULL;
    FILE *user_basis = NULL;
    FILE *local_basis = NULL;
+   char *pbasis_dirname, *pbasis_filename;
    char *user_basis_filename, *user_basis_file;
-
-
+   double **Rmat;
+   double ***unitvecs;
+   double ***bondangles;
+   
      /*-------------------------------------
        Initialize files and parsing library
       -------------------------------------*/
      start_io(argc, argv);
-     pbasis = fopen(SHARE, "r");
+
+     init_globals();
+     parsing();
+     print_intro();
+     print_options();
+     
+     /* To find default basis set file first check the environment, then its location after installation */
+     pbasis_dirname = getenv("PSIDATADIR");
+     if (pbasis_dirname != NULL) {
+       char* tmpstr = (char *) malloc(sizeof(char)*(strlen(pbasis_dirname)+12));
+       sprintf(tmpstr,"%s/pbasis.dat",pbasis_dirname);
+       pbasis_filename = tmpstr;
+     }
+     else
+       pbasis_filename = strdup(INSTALLEDPSIDATADIR "/pbasis.dat");
+     pbasis = fopen( pbasis_filename, "r");
+
      errcod = ip_string("BASIS_FILE",&user_basis_file,0);
      if (errcod == IPE_OK && strlen(user_basis_file) != 0) {
        /* Checking if only path to the file has been specified */
@@ -55,28 +74,30 @@ int main(int argc, char *argv[])
        else
 	 user_basis_filename = user_basis_file;
        user_basis = fopen(user_basis_filename, "r");
+       if (user_basis != NULL) {
+	 ip_append(user_basis, outfile);
+	 fclose(user_basis);
+	 if (print_lvl > 0) fprintf(outfile,"\n  Parsed basis sets from %s\n",user_basis_filename);
+       }
        free(user_basis_filename);
      }
+
+     if (pbasis != NULL) {
+       ip_append(pbasis, outfile);
+       fclose(pbasis);
+       if (print_lvl > 0) fprintf(outfile,"\n  Parsed basis sets from %s\n",pbasis_filename);
+     }
+     free(pbasis_filename);
+
      local_basis = fopen("./basis.dat", "r");
      if (local_basis != NULL) {
        ip_append(local_basis, outfile);
        fclose(local_basis);
+       if (print_lvl > 0) fprintf(outfile,"\n  Parsed basis sets from basis.dat\n");
      }
-     if (user_basis != NULL) {
-       ip_append(user_basis, outfile);
-       fclose(user_basis);
-     }
-     if (pbasis != NULL) {
-       ip_append(pbasis, outfile);
-       fclose(pbasis);
-     }
+
      ip_cwk_add(":BASIS");
 
-     init_globals();
-     parsing();
-     print_intro();
-     print_options();
-     
      /*-----------------
        Read in geometry
       -----------------*/
@@ -212,10 +233,47 @@ int main(int argc, char *argv[])
          Distance[i] *= _bohr2angstroms;
        fprintf(outfile,"  -The Interatomic Distances in angstroms:\n");
        print_array(Distance,num_atoms,outfile);
+       if(print_lvl < 3) {
+         fprintf(outfile,"\n    Note: To print *all* bond angles, out-of-plane\n");
+         fprintf(outfile,"          angles, and torsion angles set print = 3\n");
+       }
+       if(num_atoms > 2 && print_lvl >= 3) { 
+         Rmat = init_matrix(num_atoms,num_atoms);
+         tri_to_sq(Distance,Rmat,num_atoms);
+	 /*print_mat(Rmat,num_atoms,num_atoms,outfile);*/
+         unitvecs = unit_vectors(full_geom, Rmat);
+         bondangles = calc_bond_angles(unitvecs, Rmat);
+	 if(num_atoms > 3 && print_lvl >= 3) {
+	   calc_oop_angles(unitvecs, bondangles, Rmat);
+	   calc_tors_angles(unitvecs, bondangles, Rmat);
+	 }
+	 
+         free_matrix(Rmat, num_atoms);
+         /* Free Memory for 3D unitvecs */
+         for(i=0; i<num_atoms; i++) {
+           for(j=0; j<num_atoms; j++) {
+             free(unitvecs[i][j]);
+           }
+         }
+         for(i=0; i<num_atoms; i++) {
+           free(unitvecs[i]);
+         }
+         free(unitvecs);
+         /* Free Memory for 3D bondangles */
+         for(i=0; i<num_atoms; i++) {
+           for(j=0; j<num_atoms; j++) {
+             free(bondangles[i][j]);
+           }
+         }
+         for(i=0; i<num_atoms; i++) {
+           free(bondangles[i]);
+         }
+         free(bondangles);
+       }
+       
        free(Distance);
        fprintf(outfile,"\n\n");
      }
-
 
      cleanup();
      stop_io();

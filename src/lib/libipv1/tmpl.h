@@ -40,11 +40,11 @@ char *strcpy(char *, CONST char *);
 char *strcat(char *, CONST char *);
 
 /* These are needed for getc and putc (to avoid sun3 gcc warnings). */
-int _filbuf(), _flsbuf();
+int _filbuf(void), _flsbuf(void);
 
-int yylex();
+int yylex(void);
 
-int yyparse();
+int yyparse(void);
 
 /* This is for gcc. */
 void abort( void );

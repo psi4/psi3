@@ -1,3 +1,4 @@
+#include <math.h>
 #include <libdpd/dpd.h>
 #include <psifiles.h>
 #define EXTERN

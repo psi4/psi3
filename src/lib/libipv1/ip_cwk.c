@@ -1,30 +1,3 @@
-
-/* $Log$
- * Revision 1.3  2003/08/26 19:16:06  evaleev
- * Set sub_tree to NULL before doing ip_push_keyword. so that keywords are added
- * at the top.
- *
-/* Revision 1.2  2003/08/21 19:03:36  evaleev
-/* Fixed ip_cwk_add to add the keyword to the current keyword tree list even if
-/* no parsed input contains entries under the keyword. Subsequent ip_append is
-/* thus guaranteed to set the current keyword list properly.
-/*
-/* Revision 1.1.1.1  2000/02/04 22:53:26  evaleev
-/* Started PSI 3 repository
-/*
-/* Revision 1.5  1995/01/16 23:01:38  cljanss
-/* Minor changes so the SGI compiler won't complain.
-/*
- * Revision 1.4  1994/06/02  02:22:22  seidl
- * using new tmpl now...change .global to .gbl and .local to .lcl
- *
- * Revision 1.1.1.1  1994/05/02  17:05:52  cljanss
- * The May 1, 1994 version of psi as on the CCQC machines.
- *
- * Revision 1.3  1991/07/30  03:28:45  seidl
- * add rcs log and id
- * */
-
 /* These routines manipulate the current working keyword.  This
  * is an ordered list of keyword_tree's.  When a relative
  * keyword is searched for we start looking under the first keyword
@@ -39,6 +12,8 @@
 #include "ip_global.h"
 
 #include "ip_read.gbl"
+#include "ip_print.gbl"
+#include "ip_error.gbl"
 #include "ip_cwk.gbl"
 #include "ip_cwk.lcl"
 
@@ -49,8 +24,6 @@ struct ip_cwk_stack_struct {
 typedef struct ip_cwk_stack_struct ip_cwk_stack_t;
 
 static ip_cwk_stack_t *cwkstack = NULL;
-
-static char rcs_id[] = "$Id$";
 
 /* This sets up the current working keyword path to the declaration
  * list. */
@@ -203,7 +176,7 @@ char *keyword;
   else if (keyword[0] != ':') {
     /* See if we can descend to this keyword in any of the cwk's */
     for (I=ip_cwk; I!=NULL; I=I->p) {
-      if (kt = ip_descend_tree(I->kt,keyword)) break;
+      if ((kt = ip_descend_tree(I->kt,keyword))) break;
       }
     }
   else {

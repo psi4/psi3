@@ -28,8 +28,6 @@
 #endif
 
 FILE *infile, *outfile;
-FILE _infile_pristine,_infile_copy;
-
 char **psi_file_prefix;
 /* 
   the following must stay in scope throughout the run, else the 
@@ -56,7 +54,8 @@ int call_done;
 int main(int argc, char *argv[])
 {
   FILE *psidat;
-  char *wfn, *dertyp, *reftyp, *calctyp, **exec, proced[132];
+  char *psidat_dirname, *psidat_filename;
+  char *wfn, *dertyp, *reftyp, *calctyp, *jobtype, **exec, proced[132];
   char tmpstr[133];
   int check=0;
   int i,j,nexec=0,rdepth=0;
@@ -78,11 +77,23 @@ int main(int argc, char *argv[])
 
   if (!parse_cmdline(argc,argv))
     psi3_abort();
-  _infile_pristine=*infile;
 
   fprintf(outfile, "\n\n The PSI3 Execution Driver \n");
 
-  psidat = fopen(SHARE, "r");
+  /* To find psi.dat first check the environment, then its location after installation */
+  psidat_dirname = getenv("PSIDATADIR");
+  if (psidat_dirname != NULL) {
+    char* tmpstr = (char *) malloc(sizeof(char)*(strlen(psidat_dirname)+9));
+    sprintf(tmpstr,"%s/psi.dat",psidat_dirname);
+    psidat_filename = tmpstr;
+  }
+  else
+    psidat_filename = strdup(INSTALLEDPSIDATADIR "/psi.dat");
+  psidat = fopen( psidat_filename, "r");
+  if (psidat == NULL) {
+    fprintf(outfile, "Warning: didn't find psi.dat at %s\n", psidat_filename);
+  }
+  free(psidat_filename);
 
   ip_set_uppercase(1);
   ip_initialize(infile, outfile);
@@ -101,12 +112,6 @@ int main(int argc, char *argv[])
   }
 
   errcod = ip_boolean("DIRECT",&direct,0);
-  if ((errcod == IPE_OK) && (direct==1)) {
-    sprintf(tmpstr,"DIRECT%s",wfn);
-    free(wfn);
-    wfn = (char *) malloc (sizeof(tmpstr)+1);
-    strcpy(wfn,tmpstr);
-  }
     
   errcod = ip_string("REFERENCE",&reftyp,0);
   if (errcod == IPE_KEY_NOT_FOUND) {
@@ -181,7 +186,7 @@ int main(int argc, char *argv[])
 	   (strcmp(calctyp,"FORCE")==0)) JobType = SP;
   else if ((strcmp(calctyp,"OEPROP")==0))
     JobType = OEPROP;
-  else if ((strcmp(calctyp,"DBOC")==0)) {
+  else if ((strcmp(calctyp,"DBOC")==0) || strcmp(calctyp,"BODC")==0) {
     if (called_from_dboc)
       JobType = SP;
     else
@@ -290,25 +295,48 @@ int main(int argc, char *argv[])
   else { /* Default sequence of modules from psi.dat */
     /* construct the name of the procedure from dertyp, reftyp, and wfn */
     strcpy(proced,"");
+    if (direct == 1)
+      strcat(proced,"DIRECT");
     strcat(proced,wfn);
     strcat(proced,reftyp);
     /*
       For some cases do not need to append DERTYPE since it's irrelevant
       and determined by JobType
     */
-    if (JobType == DBOC)
-      strcat(proced,"DBOC");
-    else {
+    if (JobType != DBOC) {
       if (strcmp(dertyp,"NONE")==0) strcat(proced,"ENERGY");
       else strcat(proced,dertyp);
-      if (JobType==OPT) strcat(proced,"OPT");
-      else if (JobType==FREQ) strcat(proced,"FREQ");
-      else if (JobType==SYMM_FREQ) strcat(proced,"SYMM_FREQ");
-      else if (JobType==DISP) strcat(proced,"DISP");
-      else if (JobType==OEPROP) strcat(proced,"OEPROP");
+    }
+    
+    switch (JobType) {
+      case SP:
+        jobtype = strdup("SP"); break;
+      case OPT:
+        jobtype = strdup("OPT"); break;
+      case FREQ:
+        jobtype = strdup("FREQ"); break;
+      case SYMM_FREQ:
+        jobtype = strdup("SYMM_FREQ"); break;
+      case DISP:
+        jobtype = strdup("DISP"); break;
+      case OEPROP:
+        jobtype = strdup("OEPROP"); break;
+      case DBOC:
+        jobtype = strdup("DBOC"); break;
     }
 
-    /* fprintf(outfile, "Calculation type string = %s\n", proced); */
+    /* Unless jobtype = SP, append it to the calculation type */    
+    if (strcmp(jobtype,"SP"))
+      strcat(proced,jobtype);
+
+    if (check || auto_check) {
+      fprintf(outfile, "Calculation type string = %s\n", proced);
+      fprintf(outfile, "Wavefunction            = %s\n", wfn);
+      fprintf(outfile, "Reference               = %s\n", reftyp);
+      fprintf(outfile, "Jobtype                 = %s\n", jobtype);
+      fprintf(outfile, "Dertype                 = %s\n", dertyp);
+      fprintf(outfile, "Direct                  = %s\n", (direct ? "true" : "false"));
+    }
 
     if (!ip_exist(proced,0)) {
       fprintf(outfile,"Error: Did not find a valid calculation type,\n");
@@ -354,11 +382,12 @@ int main(int argc, char *argv[])
 
 
   /* clean up and free memory */
-  ip_done();
   free(wfn);
   free(dertyp);
   free(reftyp);
+  if (!ip_exist("EXEC",0)) free(jobtype);
   for (i=0; i<nexec; i++) free(exec[i]);
+  ip_done();
 
   /* Normal completion */
   exit(0);
@@ -385,10 +414,7 @@ int execut(char **exec, int nexec, int depth)
     if (strcmp(exec[i],"END")==0) return(i);
     if (strcmp(exec[i],"REPEAT")!=0) {
       fprintf(outfile,"%s%s\n", spaces, exec[i]);
-      _infile_copy=*infile;
-      *infile=_infile_pristine;
       runcmd(&errcod,exec[i]);
-      *infile=_infile_copy;
 
       /* fprintf(stderr,"%serrcod before filter is %d\n",spaces,errcod); */
 
@@ -569,10 +595,7 @@ int parse_cmdline(int argc, char *argv[])
 #else
 #error "Have neither putenv nor setenv. Something must be very broken on this system."
 #endif
-    if(ifname[0]=='-' && ifname[1]=='\x0')
-      infile = stdin;
-    else
-      infile = fopen(ifname,"r");
+    infile = fopen(ifname,"r");
   }
   else {
     infile = fopen("input.dat","r");

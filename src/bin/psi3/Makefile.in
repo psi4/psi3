@@ -5,7 +5,7 @@ include ../MakeVars
 
 PSILIBS = libPSI_ciomr.a libPSI_ipv1.a 
 
-CINC += -DSHARE=\"$(prefix)/share/psi.dat\"
+CINC += -DINSTALLEDPSIDATADIR=\"$(datadir)\"
 
 TRUESRC = gprgid.c psi3.c parse_var.c runcmd.c
 

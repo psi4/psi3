@@ -5,7 +5,7 @@ include ../MakeVars
 
 PSILIBS = -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
-CINC += -DSHARE=\"$(prefix)/share/pbasis.dat\"
+CINC += -DINSTALLEDPSIDATADIR=\"$(datadir)\"
 
 CSRC = input.c parsing.c read_cart.c read_zmat.c reorient.c io.c \
 find_symmetry.c count_uniques.c functions.c sym_operations.c atom_num.c \
