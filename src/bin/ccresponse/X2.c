@@ -72,8 +72,8 @@ void X2_build(char *pert, char *cart, int irrep, double omega)
 
   sprintf(lbl, "z(A,E) %s %1s", pert, cart);
   dpd_file2_init(&z, CC_TMP0, irrep, 1, 1, lbl);
-  dpd_buf4_init(&W, CC_HBAR, 0, 10, 5, 10, 5, 0, "WAmEf 2(mA,Ef) - (mA,fE)");
-  dpd_dot14(&X1, &W, &z, 0, 0, 1, 0);
+  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf 2(Am,Ef) - (Am,fE)");
+  dpd_dot24(&X1, &W, &z, 0, 0, 1, 0);
   dpd_buf4_close(&W);
   sprintf(lbl, "Z(Ij,Ab) %s %1s", pert, cart);
   dpd_buf4_init(&Z, CC_TMP0, irrep, 0, 5, 0, 5, 0, lbl);

@@ -29,7 +29,7 @@ void sigmaSS(int i, int C_irr) {
     dpd_file2_close(&FMI);
 
     /* SIA += WMAEI*CME */
-    dpd_buf4_init(&W, CC_HBAR, H_IRR, 10, 10, 10, 10, 0, "(2WmBeJ + WmBEj) (jb,me)");
+    dpd_buf4_init(&W, CC_HBAR, H_IRR, 10, 10, 10, 10, 0, "2 W(jb,ME) + W(Jb,Me)");
     dpd_contract422(&W, &CME, &SIA, 0, 0, 1.0, 1.0);
     dpd_buf4_close(&W);
 

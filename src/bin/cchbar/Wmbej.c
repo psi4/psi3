@@ -30,10 +30,129 @@
 void Wmbej_build(void) {
   dpdbuf4 WMBEJ, Wmbej, WMbEj, WmBeJ, WmBEj, WMbeJ;
   dpdbuf4 tIAJB, tjAIb, tiajb, tIAjb, tiaJB, tIbjA;
-  dpdbuf4 D, C, F, E, X, Y, t2, W;
+  dpdbuf4 D, C, F, E, X, Y, t2, W, Z;
   dpdfile2 tIA, tia;
 
-  if(params.ref == 0 || params.ref == 1) { /** RHF or ROHF **/
+  if(params.ref == 0) { /** RHF **/
+
+    /* <mb||ej> -> Wmbej */
+
+    dpd_buf4_init(&C, CC_CINTS, 0, 10, 10, 10, 10, 0, "C <ia|jb>");
+    dpd_buf4_scmcopy(&C, CC_TMP0, "WMbeJ", -1);
+    dpd_buf4_close(&C);
+
+    dpd_buf4_init(&D, CC_DINTS, 0, 10, 11, 10, 11, 0, "D <ij|ab> (ib,aj)");
+    dpd_buf4_copy(&D, CC_TMP0, "WMbEj");
+    dpd_buf4_close(&D);
+
+    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+
+    /* F -> Wmbej */
+
+    dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
+
+    dpd_buf4_init(&WMbEj, CC_TMP0, 0, 10, 11, 10, 11, 0, "WMbEj");
+    dpd_contract424(&F, &tIA, &WMbEj, 3, 1, 0, 1, 1);
+    dpd_buf4_close(&WMbEj);
+
+    dpd_buf4_close(&F);
+
+    dpd_buf4_init(&F, CC_FINTS, 0, 11, 5, 11, 5, 0, "F <ai|bc>");
+
+    dpd_buf4_init(&Z, CC_TMP0, 0, 11, 11, 11, 11, 0, "Z(bM,eJ)");
+    dpd_contract424(&F, &tIA, &Z, 3, 1, 0, -1, 0);
+    dpd_buf4_sort(&Z, CC_TMP0, qpsr, 10, 10, "Z(Mb,Je)");
+    dpd_buf4_close(&Z);
+    dpd_buf4_init(&Z, CC_TMP0, 0, 10, 10, 10, 10, 0, "Z(Mb,Je)");
+    dpd_buf4_init(&WMbeJ, CC_TMP0, 0, 10, 10, 10, 10, 0, "WMbeJ");
+    dpd_buf4_axpy(&Z, &WMbeJ, 1.0);
+    dpd_buf4_close(&WMbeJ);
+    dpd_buf4_close(&Z);
+
+    dpd_buf4_close(&F);
+
+    dpd_file2_close(&tIA);
+
+    /* E -> Wmbej */
+    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+
+    dpd_buf4_init(&E, CC_EINTS, 0, 11, 0, 11, 0, 0, "E <ai|jk>");
+    dpd_buf4_init(&WMbEj, CC_TMP0, 0, 10, 11, 10, 11, 0, "WMbEj");
+    dpd_contract424(&E, &tIA, &WMbEj, 3, 0, 1, -1, 1);
+    dpd_buf4_close(&WMbEj);
+    dpd_buf4_close(&E);
+
+    dpd_buf4_init(&E, CC_EINTS, 0, 0, 10, 0, 10, 0, "E <ij|ka>");
+    dpd_buf4_init(&WMbeJ, CC_TMP0, 0, 10, 10, 10, 10, 0, "WMbeJ");
+    dpd_contract424(&E, &tIA, &WMbeJ, 1, 0, 1, 1, 1);
+    dpd_buf4_close(&WMbeJ);
+    dpd_buf4_close(&E);
+
+    dpd_file2_close(&tIA);  
+
+
+    /* Sort to (ME,JB) */
+
+    dpd_buf4_init(&WMbEj, CC_TMP0, 0, 10, 11, 10, 11, 0, "WMbEj");
+    dpd_buf4_sort(&WMbEj, CC_HBAR, prsq, 10, 10, "WMbEj");
+    dpd_buf4_close(&WMbEj);
+
+    dpd_buf4_init(&WMbeJ, CC_TMP0, 0, 10, 10, 10, 10, 0, "WMbeJ");
+    dpd_buf4_sort(&WMbeJ, CC_HBAR, psrq, 10, 10, "WMbeJ");
+    dpd_buf4_close(&WMbeJ);
+
+
+    /* T1^2 -> Wmbej */
+
+    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+
+    /*** ABAB ***/
+
+    dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMbEj");
+    dpd_buf4_init(&t2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIAjb");
+    dpd_buf4_init(&D, CC_DINTS, 0, 10, 10, 10, 10, 0, "D 2<ij|ab> - <ij|ba> (ia,jb)");
+    dpd_contract444(&D, &t2, &W, 0, 0, 1, 1);
+    dpd_buf4_close(&D);
+    dpd_buf4_close(&t2);
+    dpd_buf4_init(&t2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tjAIb");
+    dpd_buf4_init(&D, CC_DINTS, 0, 10, 10, 10, 10, 0, "D <ij|ab> (ia,jb)");
+    dpd_contract444(&D, &t2, &W, 0, 0, -1, 1);
+    dpd_buf4_close(&D);
+    dpd_buf4_close(&t2);
+    dpd_buf4_close(&W);
+
+    dpd_buf4_init(&Y, CC_TMP0, 0, 10, 0, 10, 0, 0, "Y (ME,JN)");
+    dpd_buf4_init(&D, CC_DINTS, 0, 10, 11, 10, 11, 0, "D <ij|ab> (ia,bj)");
+    dpd_contract244(&tIA, &D, &Y, 1, 2, 1, 1, 0);
+    dpd_buf4_close(&D);
+    dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMbEj");
+    dpd_contract424(&Y, &tIA, &W, 3, 0, 0, -1, 1);
+    dpd_buf4_close(&W);
+    dpd_buf4_close(&Y);
+
+    /*** ABBA ***/
+  
+    dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMbeJ");
+    dpd_buf4_init(&t2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIbjA");
+    dpd_buf4_init(&D, CC_DINTS, 0, 10, 10, 10, 10, 0, "D <ij|ab> (ib,ja)");
+    dpd_contract444(&D, &t2, &W, 0, 0, 1, 1);
+    dpd_buf4_close(&D);
+    dpd_buf4_close(&t2);
+    dpd_buf4_close(&W);
+
+    dpd_buf4_init(&Y, CC_TMP0, 0, 10, 0, 10, 0, 0, "Y (ME,JN)");
+    dpd_buf4_init(&D, CC_DINTS, 0, 10, 11, 10, 11, 0, "D <ij|ab> (ib,aj)");
+    dpd_contract244(&tIA, &D, &Y, 1, 2, 1, 1, 0);
+    dpd_buf4_close(&D);
+    dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMbeJ");
+    dpd_contract424(&Y, &tIA, &W, 3, 0, 0, 1, 1);
+    dpd_buf4_close(&W);
+    dpd_buf4_close(&Y);
+
+    dpd_file2_close(&tIA);
+
+  }
+  else if(params.ref == 1) { /** ROHF **/
 
     /* W(mb,je) <-- <mb||ej> */
 

@@ -3,12 +3,107 @@
 #define EXTERN
 #include "globals.h"
 
+void denom_rhf(struct L_Params);
 void denom_rohf(struct L_Params);
 void denom_uhf(struct L_Params);
 
 void denom(struct L_Params L_params) {
-  if(params.ref == 0 || params.ref == 1) denom_rohf(L_params);
+  if(params.ref == 0) denom_rhf(L_params);
+  else if(params.ref == 1) denom_rohf(L_params);
   else if(params.ref == 2) denom_uhf(L_params);
+}
+
+void denom_rhf(struct L_Params L_params)
+{
+  dpdfile2 FAE, FMI;
+  dpdfile2 dIA;
+  dpdfile4 dIjAb;
+  dpdbuf4 d, bdIJAB, bdijab, bdIjAb;
+  double tval;
+  int nirreps,L_irr;
+  int h, i, j, a, b, ij, ab;
+  int I, J, A, B;
+  int isym, jsym, asym, bsym;
+  int *occpi, *virtpi;
+  int *occ_off, *vir_off;
+  int *openpi;
+  double Fii, Fjj, Faa, Fbb;
+
+  L_irr = L_params.irrep;
+  nirreps = moinfo.nirreps;
+  occpi = moinfo.occpi; virtpi = moinfo.virtpi;
+  occ_off = moinfo.occ_off; vir_off = moinfo.vir_off;
+
+  dpd_file2_init(&FMI, CC_OEI, 0, 0, 0, "FMI");
+  dpd_file2_mat_init(&FMI);
+  dpd_file2_mat_rd(&FMI);
+
+  dpd_file2_init(&FAE, CC_OEI, 0, 1, 1, "FAE");
+  dpd_file2_mat_init(&FAE);
+  dpd_file2_mat_rd(&FAE);
+
+  /* Alpha one-electron denominator */
+  dpd_file2_init(&dIA, CC_DENOM, L_irr, 0, 1, "dIA");
+  dpd_file2_mat_init(&dIA);
+  for(h=0; h < nirreps; h++) { /* irreps of dIA and Fii */
+    for(i=0; i < occpi[h]; i++) {
+      Fii = FMI.matrix[h][i][i];
+      for(a=0; a < virtpi[h^L_irr]; a++) {
+        Faa = FAE.matrix[h^L_irr][a][a];
+        dIA.matrix[h][i][a] = 1.0/(Fii - Faa + L_params.cceom_energy);
+      }
+    }
+  }
+  dpd_file2_mat_wrt(&dIA);
+  dpd_file2_mat_close(&dIA);
+  dpd_file2_close(&dIA);
+
+  /* Alpha-beta two-electron denominator */
+  dpd_file4_init(&dIjAb, CC_DENOM, L_irr, 0, 5, "dIjAb");
+
+  for(h=0; h < nirreps; h++) {
+    dpd_file4_mat_irrep_init(&dIjAb, h);
+    /* Loop over the rows */
+    for(ij=0; ij < dIjAb.params->rowtot[h]; ij++) {
+          i = dIjAb.params->roworb[h][ij][0];
+          j = dIjAb.params->roworb[h][ij][1];
+          isym = dIjAb.params->psym[i];
+          jsym = dIjAb.params->qsym[j];
+
+          /* Convert to relative orbital index */
+          I = i - occ_off[isym];
+          J = j - occ_off[jsym];
+          Fii = FMI.matrix[isym][I][I];
+          Fjj = FMI.matrix[jsym][J][J];
+
+          /* Loop over the columns */
+          for(ab=0; ab < dIjAb.params->coltot[h^L_irr]; ab++) {
+              a = dIjAb.params->colorb[h^L_irr][ab][0];
+              b = dIjAb.params->colorb[h^L_irr][ab][1];
+              asym = dIjAb.params->rsym[a];
+              bsym = dIjAb.params->ssym[b];
+
+              /* Convert to relative orbital index */
+              A = a - vir_off[asym];
+              B = b - vir_off[bsym];
+
+              Faa = FAE.matrix[asym][A][A];
+              Fbb = FAE.matrix[bsym][B][B];
+
+              dIjAb.matrix[h][ij][ab] = 1.0/(Fii + Fjj - Faa - Fbb + L_params.cceom_energy);
+            }
+        }
+    dpd_file4_mat_irrep_wrt(&dIjAb, h);
+    dpd_file4_mat_irrep_close(&dIjAb, h);
+  }
+  dpd_file4_close(&dIjAb);
+
+  dpd_file2_mat_close(&FMI);
+  dpd_file2_mat_close(&FAE);
+  dpd_file2_close(&FMI);
+  dpd_file2_close(&FAE);
+
+  return;
 }
 
 void denom_uhf(struct L_Params L_params)

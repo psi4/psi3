@@ -35,7 +35,7 @@ void X1_build(char *pert, char *cart, int irrep, double omega)
   dpd_contract222(&F, &X1, &X1new, 1, 1, -1, 1);
   dpd_file2_close(&F);
 
-  dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "(2WmBeJ + WmBEj) (jb,me)");
+  dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "2 W(jb,ME) + W(Jb,Me)");
   dpd_contract422(&W, &X1, &X1new, 0, 0, 1, 1);
   dpd_buf4_close(&W);
 

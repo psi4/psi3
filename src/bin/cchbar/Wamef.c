@@ -22,14 +22,34 @@
 ** -----------------------------------
 **
 ** TDC, June 2002
+**
+** RHF Cases:  Note that only the WAmEf spin case is required, and
+** we store it AS WRITTEN, (Am,Ef).
+**
+** TDC, March 2004
 */
 
 void Wamef_build(void) {
-  dpdbuf4 Wamef, WAMEF, WAmEf, WaMeF;
+  dpdbuf4 Wamef, WAMEF, WAmEf, WaMeF, W;
   dpdbuf4 F, D_a, D;
   dpdfile2 tia, tIA;
 
-  if(params.ref == 0 || params.ref == 1) { /** RHF or ROHF **/
+  if(params.ref == 0) { 
+
+    dpd_buf4_init(&F, CC_FINTS, 0, 11, 5, 11, 5, 0, "F <ai|bc>");
+    dpd_buf4_copy(&F, CC_HBAR, "WAmEf");
+    dpd_buf4_close(&F);
+
+    dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");
+    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+    dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
+    dpd_contract244(&tIA, &D, &W, 0, 0, 0, -1, 1);
+    dpd_buf4_close(&D);
+    dpd_file2_close(&tIA);
+    dpd_buf4_close(&W);
+
+  }
+  else if(params.ref == 1) { /** ROHF **/
   
     dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
     dpd_file2_init(&tia, CC_OEI, 0, 0, 1, "tia");
@@ -79,7 +99,7 @@ void Wamef_build(void) {
     dpd_file2_close(&tIA);
     dpd_file2_close(&tia);
 
-  } /** RHF or ROHF **/
+  } /** ROHF **/
   else if(params.ref == 2) { /** UHF **/
 
     dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");

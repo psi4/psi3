@@ -30,7 +30,25 @@ void Wmnie_build(void) {
   dpdbuf4 D, D_a;
   dpdfile2 t1, tIA, tia;
 
-  if(params.ref == 0 || params.ref == 1) { /** RHF or ROHF **/
+  if(params.ref == 0) { /** RHF **/
+
+    dpd_buf4_init(&E, CC_EINTS, 0, 0, 10, 0, 10, 0, "E <ij|ka>");
+    dpd_buf4_copy(&E, CC_TMP0, "WMnIe (Mn,Ie)");
+    dpd_buf4_close(&E);
+
+    /* D(Mn,Fe) * T(I,F) --> W(Mn,Ie) */
+    dpd_buf4_init(&WMnIe, CC_TMP0, 0, 0, 10, 0, 10, 0, "WMnIe (Mn,Ie)");
+    dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
+    dpd_file2_init(&t1, CC_OEI, 0, 0, 1, "tIA");
+    dpd_contract244(&t1, &D, &WMnIe, 1, 2, 1, 1, 1);
+    dpd_file2_close(&t1);
+    dpd_buf4_close(&D);
+    /* W(Mn,Ie) --> W(Mn,eI) */
+    dpd_buf4_sort(&WMnIe, CC_HBAR, pqsr, 0, 11, "WMnIe");
+    dpd_buf4_close(&WMnIe);
+
+  }
+  else if(params.ref == 1) { /** ROHF **/
 
     /* E(M>N,EI) --> W(M>N,EI) */
     dpd_buf4_init(&E, CC_EINTS, 0, 2, 10, 2, 10, 0, "E <ij||ka> (i>j,ka)");

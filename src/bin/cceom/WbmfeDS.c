@@ -21,8 +21,8 @@ void WbmfeDS(int i, int C_irr) {
     dpd_file2_init(&XBF, EOM_TMP, C_irr, 1, 1, "XBF");
     dpd_file2_scm(&XBF, 0.0);
     dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, CME_lbl);
-    dpd_buf4_init(&W, CC_HBAR, H_IRR, 10, 5, 10, 5, 0, "WAmEf 2(mA,Ef) - (mA,fE)");
-    dpd_dot14(&CME, &W, &XBF, 0, 0, 1.0, 1.0);
+    dpd_buf4_init(&W, CC_HBAR, H_IRR, 11, 5, 11, 5, 0, "WAmEf 2(Am,Ef) - (Am,fE)");
+    dpd_dot24(&CME, &W, &XBF, 0, 0, 1.0, 1.0);
     dpd_buf4_close(&W);
     dpd_file2_close(&CME);
 
