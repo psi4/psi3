@@ -53,3 +53,7 @@
 #else
 # define MALLOC malloc
 #endif
+
+#ifdef USE_DMALLOC
+#include <dmalloc.h>
+#endif

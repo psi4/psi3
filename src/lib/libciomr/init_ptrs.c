@@ -1,8 +1,12 @@
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:19  evaleev
- * Initial revision
+ * Revision 1.2  2001/08/28 18:42:44  crawdad
+ * Minor changes associated with memory-leak tracking.
+ * -TDC
  *
+/* Revision 1.1.1.1  2000/02/04 22:53:19  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 2.7  1997/09/23 12:53:33  crawdad
 /* Correcting nasty, hideous, stupied little bug that annoyed me for a week.
 /*
@@ -43,7 +47,7 @@ static char *rcsid = "$Id$";
 
 /* allocates memory for array of file pointers */
 
-void init_ptrs()
+void init_ptrs(void)
      {
      int num_ptrs = MAX_UNIT;
 
@@ -55,7 +59,7 @@ void init_ptrs()
         }
      }
 
-void free_ptrs()
+void free_ptrs(void)
      {
      free(ptr.wptr);
      }

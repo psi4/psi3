@@ -16,6 +16,10 @@
 #include<stdlib.h>
 #include<string.h>
 
+#ifdef USE_DMALLOC
+#include <dmalloc.h>
+#endif
+
 void bzero();
 
 /* allocates memory for an n x m matrix */
