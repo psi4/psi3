@@ -125,7 +125,91 @@ int C_DGETRI(int n, double *a, int lda, int *ipiv, double *work, int lwork)
   return info;
 }
 
-int C_DGESVD(char jobu, char jobvt, int m, int n, double *A, int lda, double *s, int lds, 
+/*!
+** C_DGESVD()
+** This function computes the singular value decomposition (SVD) of a real mxn matrix A,
+** optionally computing the left and/or right singular vectors.  The SVD is written
+**
+**  A = U * S * transpose(V)
+**
+** where S is an mxn matrix which is zero except for its min(m,n)
+** diagonal elements, U is an M-by-M orthogonal matrix, and V is an
+** N-by-N orthogonal matrix.  The diagonal elements of SIGMA are the
+** singular values of A; they are real and non-negative, and are returned
+** in descending order.  The first min(m,n) columns of U and V are the
+** left and right singular vectors of A.
+**
+** Note that the routine returns V^t, not V;
+**
+** These arguments mimic their Fortran counterparts.  See the LAPACK
+** manual for additional information.
+**
+** \param char jobu:    'A' = all m columns of U are returned
+**                      'S' = the first min(m,n) columns of U are returned
+**                      'O' = the first min(m,n) columns of U are
+**                            returned in the input matrix A
+**                      'N' = no columns of U are returned
+**
+** \param char jobvt:   'A' = all n rows of VT are returned
+**                      'S' = the first min(m,n) rows of VT are
+**                            returned
+**                      'O' = the first min(m,n) rows of VT are
+**                            returned in the input matrix A
+**                      'N' = no rows of VT are returned
+**
+** Obviously jobu and jobvt cannot both be 'O'.
+**
+** \param int m         The row dimension of the matrix A.
+**
+** \param int n         The column dimension of the matrix A.
+**
+** \param double *A     On entry, the mxn matrix A with dimensions m
+**                      by lda.  On exit, if jobu='O' the first
+**                      min(m,n) columns of A are overwritten with the
+**                      left singular vectors; if jobvt='O' the first
+**                      min(m,n) rows of A are overwritten with the
+**                      right singular vectors; otherwise, the
+**                      contents of A are destroyed.
+**
+** \param int lda       The number of columns allocated for A.
+**
+** \param double *s     The singular values of A.
+**
+** \param double *u     The right singular vectors of A, returned as
+**                      column of the matrix u if jobu='A'.  If
+**                      jobu='N' or 'O', u is not referenced.
+**
+** \param int ldu       The number of columns allocated for u.
+**
+** \param double *vt    The left singular vectors of A, returned as
+**                      rows of the matrix VT is jobvt='A'.  If
+**                      jobvt='N' or 'O', vt is not referenced.
+**
+** \param int ldvt      The number of columns allocated for vt.
+**
+** \param double *work  Workspace array of length lwork.
+**
+** \param int lwork     The length of the workspace array work, which
+**                      should be at least as large as
+**                      max(3*min(m,n)+max(m,n),5*min(m,n)).  For good
+**                      performance, lwork should generally be
+**                      larger.  If lwork=-1, a workspace query is
+**                      assumed, and the value of work[0] upon return
+**                      is the optimal size of the work array.
+**
+** Return value:
+**
+** \param int info      = 0.  Successful exit.
+**                      < 0.  If info = -i, the i-th argument had an
+**                      illegal value.
+**                      > 0.  Related to failure in the convergence of
+**                      the upper bidiagonal matrix B.  See the LAPACK
+**                      manual for additiona information.
+**
+** Interface written by TDC, July 2001, updated April 2004
+*/
+
+int C_DGESVD(char jobu, char jobvt, int m, int n, double *A, int lda, double *s, 
 	     double *u, int ldu, double *vt, int ldvt, double *work, int lwork)
 {
   int info;

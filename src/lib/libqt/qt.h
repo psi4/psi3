@@ -91,7 +91,7 @@ int C_DGEEV(int n, double **a, int lda, double *wr, double *wi, double **vl,
 int C_DGESV(int n, int nrhs, double *a, int lda, int *ipiv, double *b, int ldb);
 int C_DGETRI(int n, double *a, int lda, int *ipiv, double *work, int lwork);
 int C_DGESVD(char jobu, char jobvt, int m, int n, double *A, int lda, 
-     double *s, int lds, double *u, int ldu, double *vt, int ldvt, 
+     double *s, double *u, int ldu, double *vt, int ldvt, 
      double *work, int lwork);
 int C_DSYEV(char jobz, char uplo, int n, double *A, int lda, double *w, 
      double *work, int lwork);
