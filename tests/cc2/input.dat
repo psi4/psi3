@@ -1,17 +1,11 @@
 % 6-31G** H2O Test CCSD optimization
 
-psi: (
-  check = false
-  jobtype = opt
-)
-
 default: (
   label = "6-31G** CCSD H2O"
-  memory = (20.0 MB)
 
-  wfn = CCSD
+  jobtype = opt
+  wfn = ccsd
   reference = rhf
-  multp = 1
   dertype = none
 )
 

@@ -1,17 +1,11 @@
 % 6-31G** H2O Test computation of frequencies
 
-psi: (
-  check = false
-  jobtype = freq
-)
-
 default: (
   label = "6-31G** SCF H2O"
-  memory = (20.0 MB)
 
+  jobtype = freq
   wfn = ccsd
   reference = rhf
-  multp = 1
   dertype = first
 )
 

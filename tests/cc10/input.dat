@@ -11,14 +11,10 @@ default: (
   socc = (1 0 0 0)
   frozen_docc = (2 0 0 0)
   maxiter = 100
-
-  memory = (32.0 MB)
-
-  files: ( default: ( name = "cn" ) )
 )
 
 input: (
-  basis = ccpvdz
+  basis = "cc-pVDZ"
   puream = true
   units = angstrom
   zmat = (

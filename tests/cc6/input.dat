@@ -10,12 +10,10 @@ default: (
   docc = (10 1 4 3)
   frozen_docc = (4 0 1 0)
   ao_basis = true
-
-  files: ( default: ( name = "prc"  nvolume = 1) )
 )
 
 input: (
-  basis = augccpvtz
+  basis = "aug-cc-pVTZ"
   units = bohr
   puream = true
   geometry = (

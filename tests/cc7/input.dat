@@ -1,11 +1,10 @@
 default: (
-
   label = "PRC Calcs: PVTZ/CCSD(T) Pyramidal"
   memory = (1600.0 MB)
+  jobtype = sp
   wfn = ccsd_t
   reference = rhf
   dertype = none
-  jobtype = sp
   charge = -1
 
   docc = (13 5)
@@ -14,8 +13,6 @@ default: (
   print = 2
   ao_basis = true
   cachelev = 0
-
-  files: ( default: ( name = "prc" nvolume = 1 ) )
 )
 
 
