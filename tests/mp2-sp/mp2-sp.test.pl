@@ -24,7 +24,7 @@ else {
   $REF_FILE = "output.ref";
 }
 $TEST_FILE = "output.dat";
-$RESULT = "mp2.test";
+$RESULT = "mp2-sp.test";
 
 system ("$PSICMD");
 
