@@ -5,9 +5,9 @@
 #	atomic calculations on the H-Ar specifiying the proper 
 #	multiplicity, occupation, reference ... etc for H-Ar.
 #
-#	Options - 0 - will perform test on ~4o basis sets given below
+#	Options - 0 - will perform test on ~40 basis sets given below
 #		    ( the starting input.dat should be identical to the
-#		    file named standart.input )
+#		    file named standard.input )
 #		- 1 - will perform test on basis set given in input.dat
 #		    ( input file must start with hydrogen )
 #
@@ -16,8 +16,8 @@
 #	It writes the atomic energies into a file named 
 #	<reference>.<basis set>.Energies 
 #
-#
-#
+#       Berhane Temelso
+#       Georgia Tech
 #	Dec. 2002
 ########################################################################
 
