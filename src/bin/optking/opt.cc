@@ -14,8 +14,8 @@ command-line      internal specifier   what it does
 --freq_grad_irrep  MODE_FREQ_GRAD_IRREP use grads in chkpt to compute IRREP freqs
 --grad_save        MODE_GRAD_SAVE       save the gradient in chkpt to PSIF list
 --energy_save      MODE_ENERGY_SAVE     save the energy in chkpt to PSIF list
+--points           optinfo.points       save the energy in chkpt to PSIF list
 --disp_num         optinfo.disp_num     displacement index (by default read from PSIF)
---points           optinfo.points      3 or 5 pt formula (5pt not yet supported)
 --irrep            optinfo.irrep       the irrep (1,2,...) being displaced or computed
 */
 
@@ -55,14 +55,14 @@ extern void delocalize(internals &simples, cartesians &carts);
 extern void disp_user(cartesians &carts, internals &simples, 
                       salc_set &all_salcs);
 extern int make_disp_irrep(cartesians &carts, internals &simples, 
-                    salc_set &all_salcs, int points);
+                    salc_set &all_salcs);
 extern int make_disp_nosymm(cartesians &carts, internals &simples, 
-                    salc_set &all_salcs, int points);
+                    salc_set &all_salcs);
 extern void load_ref(cartesians &carts);
 extern void freq_grad_irrep(cartesians &carts, internals &simples, 
-    salc_set &all_salcs, int points);
+    salc_set &all_salcs);
 extern void freq_grad_nosymm(cartesians &carts, internals &simples, 
-    salc_set &all_salcs, int points);
+    salc_set &all_salcs);
 extern void grad_energy(cartesians &carts, internals &simples, 
                         salc_set &all_salcs);
 extern void grad_save(cartesians &carts);
@@ -80,6 +80,7 @@ int main(int argc, char **argv) {
     optinfo.mode = MODE_OPT_STEP;
     optinfo.disp_num = 0;
     optinfo.points = 3;
+    optinfo.points_freq = 3; // always 3 for now
     for (i=1; i<argc; ++i) {
       if (!strcmp(argv[i],"--disp_nosymm")) {
         optinfo.mode = MODE_DISP_NOSYMM;
@@ -129,12 +130,12 @@ int main(int argc, char **argv) {
         optinfo.mode = MODE_ENERGY_SAVE;
         parsed++;
       }
-      else if (!strcmp(argv[i],"--disp_num")) {
-        sscanf(argv[++i], "%d", &optinfo.disp_num);
-        parsed+=2;
-      }
       else if (!strcmp(argv[i],"--points")) {
         sscanf(argv[++i], "%d", &optinfo.points);
+        parsed+=2;
+      }
+      else if (!strcmp(argv[i],"--disp_num")) {
+        sscanf(argv[++i], "%d", &optinfo.disp_num);
         parsed+=2;
       }
       else if (!strcmp(argv[i],"--irrep")) {
@@ -301,11 +302,10 @@ int main(int argc, char **argv) {
       salc_set all_salcs;
       all_salcs.print();
       if (optinfo.mode == MODE_DISP_IRREP) {
-        num_disps = make_disp_irrep(carts, simples, all_salcs, optinfo.points);
+        num_disps = make_disp_irrep(carts, simples, all_salcs);
       }
       else {
-        num_disps = make_disp_nosymm(carts, simples, all_salcs,
-            optinfo.points);
+        num_disps = make_disp_nosymm(carts, simples, all_salcs);
       }
       free_info(simples.get_num());
       exit_io();
@@ -393,9 +393,9 @@ int main(int argc, char **argv) {
       salc_set all_salcs;
       all_salcs.print();
       if (optinfo.mode == MODE_FREQ_GRAD_IRREP)
-        freq_grad_irrep(carts, simples, all_salcs, optinfo.points);
+        freq_grad_irrep(carts, simples, all_salcs);
       else
-        freq_grad_nosymm(carts, simples, all_salcs, optinfo.points);
+        freq_grad_nosymm(carts, simples, all_salcs);
       free_info(simples.get_num());
       exit_io();
       return(0);

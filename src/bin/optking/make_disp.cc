@@ -36,8 +36,7 @@ extern int new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
 /* MAKE_DISP_IRREP - make displacements for modes labelled with 
 * symmetry IRREP (+ and - if symmetric; otherwise, just +) */
 
-int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs, 
-    int points) 
+int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs) 
 {
   int i,j,a,b, cnt,dim, dim_carts, ndisps, nsalcs, *irrep_salcs, irrep;
   double *fgeom, energy, **micro_geoms, **displacements;
@@ -80,25 +79,50 @@ int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs,
 
   /*** make list of internal displacements for micro_iterations ***/
   if (irrep == 0) {
-    ndisps = 2*nsalcs;
-    displacements = block_matrix(ndisps,all_salcs.get_num());
-    cnt = 0;
-    for (i=0; i<nsalcs; ++i) {
-      displacements[cnt++][irrep_salcs[i]] = -1.0 * optinfo.disp_size;
-      displacements[cnt++][irrep_salcs[i]] =  1.0 * optinfo.disp_size;
+    if (optinfo.points == 3) {
+      ndisps = 2*nsalcs;
+      displacements = block_matrix(ndisps,all_salcs.get_num());
+      cnt = 0;
+      for (i=0; i<nsalcs; ++i) {
+        displacements[cnt++][irrep_salcs[i]] = -1.0 * optinfo.disp_size;
+        displacements[cnt++][irrep_salcs[i]] =  1.0 * optinfo.disp_size;
+      }
+    }
+    else if (optinfo.points == 5) {
+      ndisps = 4*nsalcs;
+      displacements = block_matrix(ndisps,all_salcs.get_num());
+      cnt = 0;
+      for (i=0; i<nsalcs; ++i) {
+        displacements[cnt++][irrep_salcs[i]] = -2.0 * optinfo.disp_size;
+        displacements[cnt++][irrep_salcs[i]] = -1.0 * optinfo.disp_size;
+        displacements[cnt++][irrep_salcs[i]] =  1.0 * optinfo.disp_size;
+        displacements[cnt++][irrep_salcs[i]] =  2.0 * optinfo.disp_size;
+      }
     }
   }
   else { // non-symmetric irrep
-    ndisps = nsalcs;
-    displacements = block_matrix(ndisps,all_salcs.get_num());
-    cnt = 0;
-    for (i=0; i<nsalcs; ++i)
-      displacements[cnt++][irrep_salcs[i]] = -1.0 * optinfo.disp_size;
+    if (optinfo.points == 3) {
+      ndisps = nsalcs;
+      displacements = block_matrix(ndisps,all_salcs.get_num());
+      cnt = 0;
+      for (i=0; i<nsalcs; ++i)
+        displacements[cnt++][irrep_salcs[i]] = -1.0 * optinfo.disp_size;
+    }
+    else if (optinfo.points == 5) {
+      ndisps = 2*nsalcs;
+      displacements = block_matrix(ndisps,all_salcs.get_num());
+      cnt = 0;
+      for (i=0; i<nsalcs; ++i) {
+        displacements[cnt++][irrep_salcs[i]] = -2.0 * optinfo.disp_size;
+        displacements[cnt++][irrep_salcs[i]] = -1.0 * optinfo.disp_size;
+      }
+    }
   }
 
   // count number of unique displacements; 2 disps for symm modes
   fprintf(outfile,"Generating a total of %d displacements ", ndisps);
-  fprintf(outfile,"using %d-point formula for modes of irrep %d.\n", points, irrep+1);
+  fprintf(outfile,"using %d-point formula for modes of irrep %d.\n",
+      optinfo.points, irrep+1);
 
   fprintf(outfile,"\nDisplacement Matrix\n");
   print_mat5(displacements, ndisps, all_salcs.get_num(), outfile);
@@ -162,8 +186,7 @@ int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs,
 /* MAKE_DISP_NOSYMM generate displacements - do positive and
 * negative displacements along all coordinates ignorning symmetry */
 
-int make_disp_nosymm(cartesians &carts, internals &simples,
-    salc_set &all_salcs, int points) 
+int make_disp_nosymm(cartesians &carts, internals &simples, salc_set &all_salcs) 
 {
   int i,j,a,b, dim, dim_carts, ndisps, nsalcs;
   double *fgeom, energy, **micro_geoms, **displacements;
@@ -174,8 +197,6 @@ int make_disp_nosymm(cartesians &carts, internals &simples,
   dim_carts = 3*carts.get_natom();
 
   nsalcs = all_salcs.get_num();
-  /* only 3-pt formula for now */
-  ndisps = 2*nsalcs;
 
   if (nsalcs == 0)
     punt("There are no appropriate SALCs present to displace along.\n");
@@ -190,20 +211,31 @@ int make_disp_nosymm(cartesians &carts, internals &simples,
       (char *) &(energy), sizeof(double));
   close_PSIF();
 
-  fprintf(outfile,"Generating a total of %d displacements ", ndisps);
-  fprintf(outfile,"using %d-point formula for all modes.\n", points);
-
   /*** make list of internal displacements for micro_iterations ***/
-  displacements = block_matrix(ndisps, nsalcs);
-  for (i=0;i<all_salcs.get_num();++i) {
-    displacements[2*i][i] = -1.0 * optinfo.disp_size;
-    displacements[2*i+1][i] = 1.0 * optinfo.disp_size;
+  if (optinfo.points == 3) {
+    ndisps = 2*nsalcs;
+    displacements = block_matrix(ndisps, nsalcs);
+    for (i=0;i<all_salcs.get_num();++i) {
+      displacements[2*i][i] = -1.0 * optinfo.disp_size;
+      displacements[2*i+1][i] = 1.0 * optinfo.disp_size;
+    }
+  }
+  else if (optinfo.points == 5) {
+    ndisps = 4*nsalcs;
+    displacements = block_matrix(ndisps, nsalcs);
+    for (i=0;i<all_salcs.get_num();++i) {
+      displacements[4*i+0][i] = -2.0 * optinfo.disp_size;
+      displacements[4*i+1][i] = -1.0 * optinfo.disp_size;
+      displacements[4*i+2][i] =  1.0 * optinfo.disp_size;
+      displacements[4*i+3][i] =  2.0 * optinfo.disp_size;
+    }
   }
 
-  /*
+  fprintf(outfile,"Generating a total of %d displacements ", ndisps);
+  fprintf(outfile,"using %d-point formula for all modes.\n", optinfo.points);
+
   fprintf(outfile,"\nDisplacement Matrix\n");
-  print_mat2(displacements, ndisps, nsalcs, outfile);
-  */
+  print_mat5(displacements, ndisps, nsalcs, outfile);
 
   /*** generate and store Micro_iteration cartesian geometries ***/
   micro_geoms = block_matrix(ndisps, dim_carts);

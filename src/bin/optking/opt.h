@@ -116,6 +116,7 @@ struct OPTInfo {
   int mode;
   int disp_num;
   int points;
+  int points_freq;
   int irrep;
   int simples_present;
   int salcs_present;

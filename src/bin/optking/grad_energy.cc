@@ -40,12 +40,16 @@ void grad_energy(cartesians &carts, internals &simples, salc_set &symm) {
   disp_label = new char[MAX_LINELENGTH];
   natom = carts.get_natom();
   dim_carts = 3*carts.get_natom();
+  natom = carts.get_natom();
 
   if (symm.get_num() == 0) {
     punt("No symmetric internal coordinates to optimize.\n");
   }
 
-  num_disps = 2 * symm.get_num();
+  if (optinfo.points == 3)
+    num_disps = 2 * symm.get_num();
+  else if (optinfo.points == 5)
+    num_disps = 4 * symm.get_num();
 
   // report energies
   open_PSIF();
@@ -53,22 +57,37 @@ void grad_energy(cartesians &carts, internals &simples, salc_set &symm) {
   psio_read_entry(PSIF_OPTKING, "OPT: Displaced energies",
       (char *) &(energies[0]), num_disps*sizeof(double));
   close_PSIF();
-  fprintf(outfile,"Displacement energies, Check for precision!\n");
-  for(i=0;i<num_disps;++i) fprintf(outfile,"%15.10lf\n",energies[i]);
+  fprintf(outfile,"Energies of displaced geometries. Check for precision!\n");
+  cnt = -1;
+  for (i=0;i<symm.get_num();++i) {
+    fprintf(outfile,"Coordinate %d: ",i);
+    for (j=0;j<optinfo.points-1;++j)
+      fprintf(outfile,"%15.10lf",energies[++cnt]);
+    fprintf(outfile,"\n");
+  }
   fflush(outfile);
 
   // Calculate forces in internal coordinates
   f_q = new double[symm.get_num()];
-  for (i=0;i<symm.get_num();++i) {
-    f_q[i] = (energies[2*i+1]-energies[2*i]) / (2.0 * optinfo.disp_size);
-    f_q[i] = -1.0 * f_q[i] * _hartree2J * 1.0E18 ;
+  if (optinfo.points == 3) {
+    for (i=0;i<symm.get_num();++i) {
+      f_q[i] = (energies[2*i+1]-energies[2*i]) / (2.0 * optinfo.disp_size);
+      f_q[i] = -1.0 * f_q[i] * _hartree2J * 1.0E18 ;
+    }
+  }
+  else if (optinfo.points == 5) {
+    for (i=0;i<symm.get_num();++i) {
+      f_q[i] = ( energies[4*i]-8.0*energies[4*i+1]+8.0*energies[4*i+2]-energies[4*i+3])
+                  / (12.0 * optinfo.disp_size);
+      f_q[i] = -1.0 * f_q[i] * _hartree2J * 1.0E18 ;
+    }
   }
   free(energies);
 
   // Print internal coordinate forces
-  // fprintf(outfile,"\nInternal coordinate forces\n");
-  // for (i=0;i<symm.get_num();++i)
-  //   fprintf(outfile,"%13.10lf\n",f_q[i]);
+fprintf(outfile,"\nInternal coordinate forces\n");
+for (i=0;i<symm.get_num();++i)
+   fprintf(outfile,"%13.10lf\n",f_q[i]);
 
   // write out approximate file11.dat
   geom = new double[dim_carts];

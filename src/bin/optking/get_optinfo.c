@@ -156,6 +156,7 @@ void get_optinfo() {
     fprintf(outfile,"print_symmetry %d\n",optinfo.print_symmetry);
     fprintf(outfile,"optimize:      %d\n",optinfo.optimize);
     fprintf(outfile,"zmat:          %d\n",optinfo.zmat);
+    fprintf(outfile,"points:        %d\n",optinfo.points);
     fprintf(outfile,"zmat_simples:  %d\n",optinfo.zmat_simples);
     fprintf(outfile,"redundant:     %d\n",optinfo.redundant);
     fprintf(outfile,"bfgs:          %d\n",optinfo.bfgs);

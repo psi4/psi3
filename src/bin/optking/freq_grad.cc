@@ -33,8 +33,7 @@ extern double **compute_G(double **B, int num_intcos, cartesians &carts);
 
 /* FREQ_GRAD_IRREP compute frequencies from gradients for irrep block IRREP */
 
-void freq_grad_irrep(cartesians &carts, internals &simples, salc_set &all_salcs,
-    int points) {
+void freq_grad_irrep(cartesians &carts, internals &simples, salc_set &all_salcs) {
 
   int i,j,ii,jj,k,a,b, cnt, dim, dim_carts, ndisps,irrep;
   int nirr_salcs, nsalcs, *irrep_salcs;
@@ -160,7 +159,7 @@ fprintf(outfile,"Found %d salcs of this irrep\n",nirr_salcs);
   }
 
   // apply three point formula - to generate force constants in this irrep block
-  fprintf(outfile,"Applying %d-point formula\n",points);
+  fprintf(outfile,"Applying %d-point formula\n",optinfo.points_freq);
   force_constants = block_matrix(nsalcs,nsalcs);
   for (i=0;i<nirr_salcs;++i)
     for (j=0;j<nirr_salcs;++j) {
@@ -234,7 +233,7 @@ fprintf(outfile,"Found %d salcs of this irrep\n",nirr_salcs);
 * coordinates ignoring symmetry */
 
 void freq_grad_nosymm(cartesians &carts, internals &simples,
-    salc_set &all_salcs, int points) {
+    salc_set &all_salcs) {
 
   int i,j,k,a,b, ii, cnt, dim, dim_carts, ndisps;
   int nsalcs;
@@ -324,7 +323,7 @@ void freq_grad_nosymm(cartesians &carts, internals &simples,
   */
 
   // apply three point formula
-  fprintf(outfile,"Applying %d-point formula\n",points);
+  fprintf(outfile,"Applying %d-point formula\n",optinfo.points_freq);
   force_constants = block_matrix(nsalcs,nsalcs);
   for (i=0;i<nsalcs;++i)
     for (j=0;j<nsalcs;++j)
