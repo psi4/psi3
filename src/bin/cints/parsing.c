@@ -192,7 +192,7 @@ void parsing_cmdline(int argc, char *argv[])
 	   UserOptions.make_mp2 = 0;
 	   UserOptions.make_r12ints = 1;
 	   UserOptions.symm_ints = 1;
-	   UserOptions.num_therads = 1;
+	   UserOptions.num_threads = 1;
 #else
 	   punt("--r12ints option is not supported by your CINTS executable.\nRecompile the code including files in R12_Ints subdirectory.");
 #endif
