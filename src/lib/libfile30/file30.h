@@ -96,6 +96,7 @@ int *file30_rd_snuc(void);
 int *file30_rd_snumg(void);
 int *file30_rd_sprim();
 int *file30_rd_stype();
+int file30_rd_disp();
 void pack_4int(int **, int *, int, int);
 void unpack_4int(int *, int **, int, int);
 void file30_wt_eref(double eref);
@@ -121,5 +122,6 @@ void file30_wt_alpha_blk_scf(double **,int);
 void file30_wt_beta_blk_scf(double **,int);
 void file30_wt_blk_scf(double **,int);
 void file30_wt_zmat(struct z_entry *z_geom, int num_atoms);
+void file30_wt_disp(int disp);
 
 #endif
