@@ -9,7 +9,7 @@ void start_io(int argc, char *argv[])
 
   errcod = psi_start(argc-1,argv+1,0);
   if (errcod != PSI_RETURN_SUCCESS)
-    exit(PSI_RETURN_FAILURE);
+    abort();
   ip_cwk_add(":OEPROP");
   tstart(outfile);
   psio_init();
@@ -32,5 +32,5 @@ void punt(char *errmsg)
 {
   fprintf(stderr, "Error: %s\n", errmsg);
   stop_io();
-  exit(PSI_RETURN_FAILURE);
+  abort();
 }

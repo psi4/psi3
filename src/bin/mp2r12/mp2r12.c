@@ -79,13 +79,13 @@ void init_ioff(void)
   int i;
   ioff = (int *) malloc(IOFF * sizeof(int));
   if(ioff == NULL) {
-      fprintf(stderr, "(mp2r12): error malloc'ing ioff array\n");
-      exit(0);
-          }
+    fprintf(stderr, "(mp2r12): error malloc'ing ioff array\n");
+    abort();
+  }
   ioff[0] = 0;
   for(i=1; i < IOFF; i++) {
-      ioff[i] = ioff[i-1] + i;
-    }
+    ioff[i] = ioff[i-1] + i;
+  }
 }
 
 void exit_io(void)

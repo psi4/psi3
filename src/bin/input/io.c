@@ -73,7 +73,7 @@ void start_io(int argc, char *argv[])
   
   errcod = psi_start(num_extra_args, extra_args, overwrite_output);
   if (errcod != PSI_RETURN_SUCCESS)
-    exit(PSI_RETURN_FAILURE);
+    abort();
   ip_cwk_add(":INPUT");
   tstart(outfile);
   psio_init();

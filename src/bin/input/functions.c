@@ -30,7 +30,7 @@ void punt(const char *mess)
   fprintf(outfile, "  error: %s\n", mess);
   fprintf(stderr, "  INPUT error: %s\n", mess);
   stop_io();
-  exit(PSI_RETURN_FAILURE);
+  abort();
 }
 
 
