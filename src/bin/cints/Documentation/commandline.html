@@ -16,10 +16,13 @@
 	compiled in (it is by default).</P>
 	<LI><P><B>--teints</B> will cause CINTS to compute ERIs only.
 	Subdirectory Default_Ints had to be compiled in (it is by default).</P>
-	<LI><P><B>--fock</B> is used by CSCF3.0 to cause CINTS to form the
+	<LI><P><B>--oeprop</B> will cause CINTS to compute one-electron
+	property integrals (overlap and dipole moment) <EM>in AO basis</EM>.
+	Subdirectory OEProp_Ints had to be compiled in (it if by default).</P>
+	<LI><P><B>--fock</B> is used by CSCF to cause CINTS to form the
 	Fock matrices directly. Subdirectory HF_Fock had to be compiled in
 	(it is by default). Do not use this option to run CINTS standalone,
-	as it will try to read an intermediate file produced by CSCF3.0 .</P>
+	as it will try to read an intermediate file produced by CSCF.</P>
 	<LI><P><B>--mp2</B> will cause CINTS to compute MP2 energy directly.
 	Subdirectory MP2 had to be compiled in (it is by default).</P>
 	<LI><P><B>--deriv1</B> will cause CINTS to compute first-order
