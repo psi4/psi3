@@ -4,6 +4,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <libipv1/ip_lib.h>
 #include "psio.h"
 
@@ -42,6 +43,12 @@ int psio_get_filename(ULI unit, char *name)
   errcod = ip_data(ip_token,"%s",name,0);
   if(errcod == IPE_OK) return(0);
 
+  /* check the environment */
+  if(getenv("PSI_SCRATCH") != NULL) {
+    strcpy(name, getenv("PSI_SCRATCH"));
+    return(0);
+  }
+
   /* use a default filename */
   strcpy(name, "psi");
 
@@ -60,6 +67,12 @@ int psio_get_filename_default(char *name)
   sprintf(ip_token,":DEFAULT:FILES:DEFAULT:NAME");
   errcod = ip_data(ip_token,"%s",name,0);
   if(errcod == IPE_OK) return(0);
+
+  /* check the environment */
+  if(getenv("PSI_SCRATCH") != NULL) {
+    strcpy(name, getenv("PSI_SCRATCH"));
+    return(0);
+  }
 
   /* use a default filename */
   strcpy(name, "psi");
