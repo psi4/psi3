@@ -1,0 +1,44 @@
+ 
+.PHONY:	default all install clean realclean
+
+subdirs = \
+manual
+
+all: default
+
+default:
+	for dir in $(subdirs); \
+          do \
+            (cd $${dir}; echo ... Making in $${dir} ...; $(MAKE) default); \
+          done
+
+install:
+	for dir in $(subdirs); \
+          do \
+            (cd $${dir}; echo ... Making install in $${dir} ...; $(MAKE) install); \
+          done
+
+clean:
+	for dir in $(subdirs); \
+          do \
+            (cd $${dir}; echo ... Making clean in $${dir} ...; $(MAKE) clean); \
+          done
+
+realclean:
+	for dir in $(subdirs); \
+          do \
+            (cd $${dir}; echo ... Making clean in $${dir} ...; $(MAKE) realclean); \
+          done
+
+top_srcdir = @top_srcdir@
+srcdir = @srcdir@
+top_objdir = @top_objdir@
+
+$(top_srcdir)/configure: $(top_srcdir)/configure.in $(top_srcdir)/aclocal.m4
+	cd $(top_srcdir) && autoconf
+
+$(top_objdir)/config.status: $(top_srcdir)/configure
+	cd $(top_objdir) && ./config.status --recheck
+
+Makefile: $(srcdir)/Makefile.in $(top_objdir)/config.status
+	cd $(top_objdir) && CONFIG_FILES=src/bin/Makefile ./config.status

@@ -1,0 +1,90 @@
+
+#
+# Targets which don't generate files should be listed as dependencies
+# of the special target .PHONY
+#
+
+.PHONY:	install install_dvi install_ps install_html
+.PHONY:	clean
+
+#
+# This should be the first rule.  It will create a document without
+# installing it.
+#
+
+default:: $(TARGET)
+
+all: default
+
+#
+# These are very primitive rules, you might need to redefine them in your Makefiles
+#
+
+%.dvi : %.tex
+	setenv TEXINPUTS $srcdir:; $(LATEX) $<
+
+%.ps : %.dvi
+	$(DVIPS) -o $@ $<
+
+%.html : %.tex
+	TEXINPUTS=$(srcdir):; export TEXINPUTS; \
+	$(LATEX2HTML) -dir $(currdir)/$(<F:%.tex=%) $<
+
+#
+# do installations
+#
+
+install:: install_dvi install_ps install_html
+
+DVITARGET = $(filter %.dvi,$(TARGET))
+install_dvi:: $(DVITARGET)
+	$(MKDIRS) $(dvidir)
+	$(INSTALL_DATA) $(DVITARGET) $(dvidir)
+
+PSTARGET = $(filter %.ps,$(TARGET))
+install_ps:: $(PSTARGET)
+	$(MKDIRS) $(psdir)
+	$(INSTALL_DATA) $(PSTARGET) $(psdir)
+
+# Install output from LaTeX2HTML
+HTMLTARGET = $(filter %.html,$(TARGET))
+install_html:: $(HTMLTARGET)
+	$(?F:%.html=$(MKDIRS) $(htmldir)/%;)
+	$(?F:%.html= CDIR=%; $(INSTALL_DATA) $$CDIR/* $(htmldir)/$$CDIR;)
+
+#
+# clean up
+#
+
+realclean:: dviclean psclean htmlclean
+	-rm -f *.aux *.log *.toc *.bbl
+
+clean:: dviclean psclean htmlclean
+
+dviclean:
+	-rm -f *.dvi
+
+psclean:
+	-rm -f *.ps
+
+htmlclean:
+	-rm -rf $(HTMLTARGET:%.html=%)
+
+#
+# keep the configuration information and makefiles up-to-date
+#
+
+$(top_srcdir)/configure: $(top_srcdir)/configure.in $(top_srcdir)/aclocal.m4
+	cd $(top_srcdir) && autoconf
+
+$(top_objdir)/config.status: $(top_srcdir)/configure
+	cd $(top_objdir) && ./config.status --recheck
+
+Makefile: $(srcdir)/Makefile.in $(top_objdir)/config.status
+	cd $(top_objdir) && CONFIG_FILES=src/doc/`basename $(srcdir)`/Makefile ./config.status
+
+../MakeVars: $(top_srcdir)/src/doc/MakeVars.in $(top_objdir)/config.status
+	cd $(top_objdir) && CONFIG_FILES=src/doc/MakeVars ./config.status
+
+../MakeRules: $(top_srcdir)/src/doc/MakeRules.in $(top_objdir)/config.status
+	cd $(top_objdir) && CONFIG_FILES=src/doc/MakeRules ./config.status

@@ -1,0 +1,27 @@
+
+SHELL = /bin/sh
+
+#
+# Initialize variables that have been figured out by configure.
+#
+target = @target@
+prefix = @prefix@
+docdir = @docdir@
+dvidir = $(docdir)/dvi
+psdir = $(docdir)/ps
+htmldir = $(docdir)/html
+top_srcdir = @top_srcdir@
+top_objdir = @top_objdir@
+currdir = $(shell echo `pwd`)
+
+LATEX = @LATEX@
+DVIPS = @DVIPS@
+LATEX2HTML = @LATEX2HTML@
+MKDIRS = @MKDIRS@
+INSTALL = @INSTALL@
+INSTALL_DATA = @INSTALL_DATA@
+
+#
+# have target default to the name of the directory we're in
+#
+TARGET = $(shell basename `pwd`)
