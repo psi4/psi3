@@ -9,11 +9,26 @@ void WejabL2(void)
   dpdbuf4 newLijab, newLIJAB, newLIjAb;
   dpdbuf4 Ltmp;
   dpdfile2 LIA, Lia;
+  dpdbuf4 X1, X2;
   
   /* RHS += P(ij) Lie * Wejab */
   dpd_file2_init(&LIA, CC_OEI, 0, 0, 1, "LIA");
   dpd_file2_init(&Lia, CC_OEI, 0, 0, 1, "Lia");
 
+  dpd_buf4_init(&WAMEF, CC_HBAR, 0, 10, 7, 10, 7, 0, "WAMEF");
+  dpd_buf4_init(&X1, CC_TMP1, 0, 0, 7, 0, 7, 0, "X(0,7) 1");
+  dpd_contract424(&WAMEF, &LIA, &X1, 1, 1, 1, -1.0, 0.0);
+  dpd_buf4_close(&WAMEF);
+  dpd_buf4_sort(&X1, CC_TMP1, qprs, 0, 7, "X(0,7) 2");
+  dpd_buf4_init(&X2, CC_TMP1, 0, 0, 7, 0, 7, 0, "X(0,7) 2");
+  dpd_buf4_axpy(&X2, &X1, -1.0);
+  dpd_buf4_close(&X2);
+  dpd_buf4_init(&newLIJAB, CC_LAMPS, 0, 0, 7, 2, 7, 0, "New LIJAB");
+  dpd_buf4_axpy(&X1, &newLIJAB, 1.0);
+  dpd_buf4_close(&X1);
+  dpd_buf4_close(&newLIJAB);
+
+  /*
   dpd_buf4_init(&WAMEF, CC_HBAR, 0, 10, 7, 10, 7, 0, "WAMEF");
   dpd_buf4_init(&newLIJAB, CC_LAMPS, 0, 0, 7, 2, 7, 0, "New LIJAB");
   dpd_contract424(&WAMEF, &LIA, &newLIJAB, 1, 1, 1, -1.0, 1.0);
@@ -27,7 +42,22 @@ void WejabL2(void)
   dpd_buf4_close(&Ltmp);
   dpd_buf4_close(&newLIJAB);
   dpd_buf4_close(&WAMEF);
+  */
 
+  dpd_buf4_init(&Wamef, CC_HBAR, 0, 10, 7, 10, 7, 0, "Wamef");
+  dpd_buf4_init(&X1, CC_TMP1, 0, 0, 7, 0, 7, 0, "X(0,7) 1");
+  dpd_contract424(&Wamef, &Lia, &X1, 1, 1, 1, -1.0, 0.0);
+  dpd_buf4_close(&Wamef);
+  dpd_buf4_sort(&X1, CC_TMP1, qprs, 0, 7, "X(0,7) 2");
+  dpd_buf4_init(&X2, CC_TMP1, 0, 0, 7, 0, 7, 0, "X(0,7) 2");
+  dpd_buf4_axpy(&X2, &X1, -1.0);
+  dpd_buf4_close(&X2);
+  dpd_buf4_init(&newLijab, CC_LAMPS, 0, 0, 7, 2, 7, 0, "New Lijab");
+  dpd_buf4_axpy(&X1, &newLijab, 1.0);
+  dpd_buf4_close(&X1);
+  dpd_buf4_close(&newLijab);
+
+  /*
   dpd_buf4_init(&Wamef, CC_HBAR, 0, 10, 7, 10, 7, 0, "Wamef");
   dpd_buf4_init(&newLijab, CC_LAMPS, 0, 0, 7, 2, 7, 0, "New Lijab");
   dpd_contract424(&Wamef, &Lia, &newLijab, 1, 1, 1, -1.0, 1.0);
@@ -41,6 +71,7 @@ void WejabL2(void)
   dpd_buf4_close(&Ltmp);
   dpd_buf4_close(&newLijab);
   dpd_buf4_close(&Wamef);
+  */
 
   dpd_buf4_init(&newLIjAb, CC_LAMPS, 0, 0, 5, 0, 5, 0, "New LIjAb");
 
