@@ -1,0 +1,21 @@
+psi: (
+  label = "cc-pVDZ UHF DBOC for F2+"
+  jobtype = dboc
+  wfn = scf
+  reference = uhf
+  charge = 1
+  multp = 2
+  basis = "cc-pVDZ"
+  puream = true
+  zmat = (
+    f
+    f 1 1.30000
+  )
+  docc = (3 0 1 1 0 2 0 1)
+  socc = (0 0 0 0 0 0 1 0)
+)
+
+scf: (
+  convergence = 14
+)
+

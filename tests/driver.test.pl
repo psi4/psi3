@@ -84,12 +84,15 @@ elsif ($ARGV[0] eq "--small") {
                  "cc17",
                  "cc18",
                  "cc19",
-                 "dboc-rhf1"
+                 "dboc-rhf1",
+                 "dboc-rohf1",
+                 "dboc-uhf1"
                );
 }
 elsif ($ARGV[0] eq "--medium") {
   @DIR_NAMES = ( "cc4",
-                 "dboc-rcisd" 
+                 "dboc-rcisd1",
+                 "dboc-rocisd1" 
                );
 }
 elsif ($ARGV[0] eq "--large") {
@@ -132,7 +135,10 @@ elsif ($ARGV[0] eq "--all") {
                  "cc18",
                  "cc19",
                  "dboc-rhf1",
-                 "dboc-rcisd1"
+                 "dboc-rohf1",
+                 "dboc-uhf1",
+                 "dboc-rcisd1",
+                 "dboc-rocisd1"
                );
 }
 elsif ($ARGV[0] eq "--sp") {
@@ -153,7 +159,10 @@ elsif ($ARGV[0] eq "--sp") {
                  "cc18",
                  "cc19",
                  "dboc-rhf1",
-                 "dboc-rcisd1"
+                 "dboc-rohf1",
+                 "dboc-uhf1",
+                 "dboc-rcisd1",
+                 "dboc-rocisd1"
                );
 }
 elsif ($ARGV[0] eq "--geom") {
@@ -207,7 +216,10 @@ else {
                  "cc18",
                  "cc19",
                  "dboc-rhf1",
-                 "dboc-rcisd1"
+                 "dboc-rohf1",
+                 "dboc-uhf1",
+                 "dboc-rcisd1",
+                 "dboc-rocisd1"
 #                 "Basis_Tests"
                 );
 }
