@@ -25,6 +25,8 @@ extern FILE *outfile;
  **   double beta: A prefactor for the target beta * Z.
  */
 
+#define DPD_BIGNUM 2147483647 /* the four-byte signed int limit */
+
 int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
     int sum_Y, int Ztrans, double alpha, double beta)
 {
@@ -33,7 +35,7 @@ int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
   int Xtrans,Ytrans;
   int *numlinks, *numrows, *numcols;
   int incore;
-  long int core, memoryd;
+  long int core, memoryd, core_total, rowtot, coltot, maxrows;
   int xcount, zcount, scount, Ysym;
   int rowx, rowz, colx, colz;
   int pq, rs, r, s, Gr, Gs;
@@ -71,6 +73,8 @@ int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
 
   for(hxbuf=0; hxbuf < nirreps; hxbuf++) {
 
+    incore = 1; /* default */
+
     if (sum_X < 2) {
       if (!Ztrans) hzbuf = hxbuf^GX; else hzbuf = hxbuf^GX^GZ;
     }
@@ -79,11 +83,48 @@ int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
     }
 
     /* Compute the core requirements for the straight contraction */
-    core = ((long) Z->params->rowtot[hzbuf]) * ((long) Z->params->coltot[hzbuf^GZ]) +
-      ((long) X->params->rowtot[hxbuf]) * ((long) X->params->coltot[hxbuf^GX]);
+    core_total = 0;
+    /** X terms **/
+    coltot = X->params->coltot[hxbuf^GX];
+    if(coltot) {
+      maxrows = DPD_BIGNUM/coltot;
+      if(maxrows < 1) {
+	fprintf(stderr, "\nLIBDPD Error: cannot compute even the number of rows in contract424.\n");
+	dpd_error("contract424", stderr);
+      }
+    }
+    else maxrows = DPD_BIGNUM;
+    rowtot = X->params->rowtot[hxbuf];
+    for(; rowtot > maxrows; rowtot -= maxrows) {
+      if(core_total > (core_total + maxrows*coltot)) incore = 0;
+      else core_total += maxrows * coltot;
+    }
+    if(core_total > (core_total + rowtot*coltot)) incore = 0;
+    core_total += rowtot * coltot;
+
+    if(sum_X == 1 || sum_X == 2) core_total *= 2;  /* we need room to transpose the X buffer */
+
+    /** Z terms **/
+    coltot = Z->params->coltot[hzbuf^GZ];
+    if(coltot) {
+      maxrows = DPD_BIGNUM/coltot;
+      if(maxrows < 1) {
+	fprintf(stderr, "\nLIBDPD Error: cannot compute even the number of rows in contract424.\n");
+	dpd_error("contract424", stderr);
+      }
+    }
+    else maxrows = DPD_BIGNUM;
+    rowtot = Z->params->rowtot[hzbuf];
+    for(; rowtot > maxrows; rowtot -= maxrows) {
+      if(core_total > (core_total + maxrows*coltot)) incore = 0;
+      else core_total += maxrows * coltot;
+    }
+    if(core_total > (core_total + rowtot*coltot)) incore = 0;
+    core_total += rowtot * coltot;
+
+    if(core_total > memoryd) incore = 0;
 
     /* Force incore for all but a "normal" 221 contraction for now */
-    if(core > memoryd) incore = 0;
     if(Ztrans || sum_X == 0 || sum_X == 1 || sum_X == 2) incore = 1;
 
     if(incore) { 
@@ -177,7 +218,7 @@ int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
           else if ( Xtrans &&  Ytrans) {Hx=Hz^GX;    Hy = Hz^GX^GY; }
 #ifdef DPD_DEBUG
           if((xrow[Hz] != zrow[Hz]) || (ycol[Hz] != zcol[Hz]) ||
-              (xcol[Hz] != yrow[Hz])) {
+	     (xcol[Hz] != yrow[Hz])) {
             fprintf(stderr, "** Alignment error in contract424 **\n");
             fprintf(stderr, "** Irrep: %d; Subirrep: %d **\n",hxbuf,Hz);
             dpd_error("dpd_contract424", stderr);
@@ -186,8 +227,8 @@ int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
 	  /* fprintf(outfile,"Hx %d Hy %d Hz %d\n",Hx,Hy,Hz);
 	     fprintf(outfile,"numrows %d numlinks %d numcols %d\n",numrows[Hz],numlinks[Hy],numcols[Hz]); */
           newmm_rking(Xmat[Hx], Xtrans, Y->matrix[Hy], Ytrans,
-              Zmat[Hz], numrows[Hz], numlinks[Hy^symlink],
-              numcols[Hz], alpha, 1.0);
+		      Zmat[Hz], numrows[Hz], numlinks[Hy^symlink],
+		      numcols[Hz], alpha, 1.0);
         }
       else 
         for(Hz=0; Hz < nirreps; Hz++) {
@@ -197,43 +238,38 @@ int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
           else if ( Xtrans &&  Ytrans) {Hx=Hz^GX;    Hy = Hz^GX^GY; }
 #ifdef DPD_DEBUG
           if((xrow[Hz] != zrow[Hz]) || (ycol[Hz] != zcol[Hz]) ||
-              (xcol[Hz] != yrow[Hz])) {
+	     (xcol[Hz] != yrow[Hz])) {
             fprintf(stderr, "** Alignment error in contract424 **\n");
             fprintf(stderr, "** Irrep: %d; Subirrep: %d **\n",hxbuf,Hz);
             dpd_error("dpd_contract424", stderr);
           }
 #endif	    	      
 	  if(numrows[Hz] && numcols[Hz] && numlinks[Hy^symlink]) {
-	  if(!Xtrans && !Ytrans) {
-	    C_DGEMM('n','n',numrows[Hz], numcols[Hz], numlinks[Hy^symlink],
-		alpha, &(Xmat[Hz][0][0]), numlinks[Hy^symlink],
-		&(Y->matrix[Hy][0][0]), numcols[Hz], 1.0,
-		&(Zmat[Hz][0][0]), numcols[Hz]);
+	    if(!Xtrans && !Ytrans) {
+	      C_DGEMM('n','n',numrows[Hz], numcols[Hz], numlinks[Hy^symlink],
+		      alpha, &(Xmat[Hz][0][0]), numlinks[Hy^symlink],
+		      &(Y->matrix[Hy][0][0]), numcols[Hz], 1.0,
+		      &(Zmat[Hz][0][0]), numcols[Hz]);
+	    }
+	    else if(Xtrans && !Ytrans) {
+	      C_DGEMM('t','n',numrows[Hz], numcols[Hz], numlinks[Hy^symlink],
+		      alpha, &(Xmat[Hz][0][0]), numrows[Hz],
+		      &(Y->matrix[Hy][0][0]), numcols[Hz], 1.0,
+		      &(Zmat[Hz][0][0]), numcols[Hz]);
+	    }
+	    else if(!Xtrans && Ytrans) {
+	      C_DGEMM('n','t',numrows[Hz], numcols[Hz], numlinks[Hy^symlink],
+		      alpha, &(Xmat[Hz][0][0]), numlinks[Hy^symlink],
+		      &(Y->matrix[Hy][0][0]), numlinks[Hy^symlink], 1.0,
+		      &(Zmat[Hz][0][0]), numcols[Hz]);
+	    }
+	    else {
+	      C_DGEMM('t','t',numrows[Hz], numcols[Hz], numlinks[Hy^symlink],
+		      alpha, &(Xmat[Hz][0][0]), numrows[Hz],
+		      &(Y->matrix[Hy][0][0]), numlinks[Hy^symlink], 1.0,
+		      &(Zmat[Hz][0][0]), numcols[Hz]);
+	    }
 	  }
-	  else if(Xtrans && !Ytrans) {
-	    C_DGEMM('t','n',numrows[Hz], numcols[Hz], numlinks[Hy^symlink],
-		alpha, &(Xmat[Hz][0][0]), numrows[Hz],
-		&(Y->matrix[Hy][0][0]), numcols[Hz], 1.0,
-		&(Zmat[Hz][0][0]), numcols[Hz]);
-	  }
-	  else if(!Xtrans && Ytrans) {
-	    C_DGEMM('n','t',numrows[Hz], numcols[Hz], numlinks[Hy^symlink],
-		alpha, &(Xmat[Hz][0][0]), numlinks[Hy^symlink],
-		&(Y->matrix[Hy][0][0]), numlinks[Hy^symlink], 1.0,
-		&(Zmat[Hz][0][0]), numcols[Hz]);
-	  }
-	  else {
-	    C_DGEMM('t','t',numrows[Hz], numcols[Hz], numlinks[Hy^symlink],
-		alpha, &(Xmat[Hz][0][0]), numrows[Hz],
-		&(Y->matrix[Hy][0][0]), numlinks[Hy^symlink], 1.0,
-		&(Zmat[Hz][0][0]), numcols[Hz]);
-	  }
-	  }
-	  /*
-          newmm(Xmat[Hx], Xtrans, Y->matrix[Hy], Ytrans,
-              Zmat[Hz], numrows[Hz], numlinks[Hy^symlink],
-              numcols[Hz], alpha, 1.0);
-	      */
         }
 
       if(sum_X == 0) dpd_buf4_mat_irrep_close(X, hxbuf);
@@ -270,18 +306,6 @@ int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
         if(fabs(beta) > 0.0)
           dpd_buf4_mat_irrep_row_rd(Z, hzbuf, pq);
 
-        /*
-           for(rs=0; rs < X->params->coltot[hxbuf]; rs++)
-           fprintf(stderr, "\t%d X[%d] = %20.15f\n", pq, rs,
-           X->matrix[hxbuf][0][rs]);
-
-
-           for(rs=0; rs < Z->params->coltot[hzbuf]; rs++)
-           fprintf(stderr, "\t%d Z[%d] = %20.15f\n", pq, rs,
-           Z->matrix[hzbuf][0][rs]);
-           fflush(stderr);
-         */
-
         xcount = zcount = 0;
 
         for(Gr=0; Gr < nirreps; Gr++) {
@@ -294,16 +318,10 @@ int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
 
           if(rowx && colx && colz) {
 	    C_DGEMM('n',Ytrans?'t':'n',rowx,colz,colx,alpha,
-		&(X->matrix[hxbuf][0][xcount]),colx,
-		&(Y->matrix[Gs][0][0]),Ytrans?colx:colz,1.0,
-		&(Z->matrix[hzbuf][0][zcount]),colz);
+		    &(X->matrix[hxbuf][0][xcount]),colx,
+		    &(Y->matrix[Gs][0][0]),Ytrans?colx:colz,1.0,
+		    &(Z->matrix[hzbuf][0][zcount]),colz);
 	  }
-	  /*
-            newmm2(&(X->matrix[hxbuf][0][xcount]),0,
-                &(Y->matrix[Gs][0][0]),Ytrans,
-                &(Z->matrix[hzbuf][0][zcount]),
-                rowx,colx,colz,alpha,1.0);
-		*/
 
           xcount += rowx * colx;
           zcount += rowz * colz;
@@ -311,12 +329,6 @@ int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
         }
 
         dpd_buf4_mat_irrep_row_wrt(Z, hzbuf, pq);
-
-        /*
-           for(rs=0; rs < Z->params->coltot[hzbuf^GZ]; rs++)
-           fprintf(stderr, "\t%d Zout[%d] = %20.15f\n", pq, rs,
-           Z->matrix[hzbuf][0][rs]);
-         */
 
       }
 

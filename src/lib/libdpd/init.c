@@ -29,6 +29,7 @@ int dpd_init(int dpd_num, int nirreps, long int memory, int cachetype,
   dpdpair *pairs;
   va_list ap;
   dpd_data *this_dpd;
+  int nump, nrows, Gp, offset;
 
   this_dpd = &(dpd_list[dpd_num]);
 
@@ -483,8 +484,33 @@ int dpd_init(int dpd_num, int nirreps, long int memory, int cachetype,
       this_dpd->params4[i][j].perm_rs = pairs[j].permlr;
       this_dpd->params4[i][j].peq = pairs[i].ler;
       this_dpd->params4[i][j].res = pairs[j].ler;
+
     }
   }
+
+  /* generate the start13 lookup array */
+  for(i=0; i < num_pairs; i++) {
+    for(j=0; j < num_pairs; j++) {
+
+      for(h=0,nump=0; h < nirreps; h++) nump += this_dpd->params4[i][j].ppi[h];
+
+      this_dpd->params4[i][j].start13 = init_int_matrix(nirreps, nump);
+
+      for(h=0; h < nirreps; h++) { /* h = Gamma_pq */
+	for(p=0; p < nump; p++) this_dpd->params4[i][j].start13[h][p] = -1; /* error checking */
+	nrows = 0;
+	for(Gp=0; Gp < nirreps; Gp++) { /* Gamma_p */
+	  for(p=0; p < this_dpd->params4[i][j].ppi[Gp]; p++) {
+	    offset = this_dpd->params4[i][j].poff[Gp] + p;
+	    if(this_dpd->params4[i][j].qpi[Gp^h])
+	      this_dpd->params4[i][j].start13[h][offset + p] = nrows;
+	    nrows += this_dpd->params4[i][j].qpi[Gp^h];
+	  } /* p */
+	} /* Gp */
+      } /* h */
+
+    } /* j */
+  } /* i */
 
   /* Now generate the global list of one-electron DPD parameters */
   orbidx2 = (int **) malloc(num_subspaces*sizeof(int *));

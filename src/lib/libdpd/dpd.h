@@ -37,6 +37,7 @@ typedef struct {
   int perm_rs;      /* Can r and s be permuted? */
   int peq;          /* Can p and q be equal? */
   int res;          /* Can r and s be equal? */
+  int **start13;    /* returns the starting row of irrep matrix h for orbital index p */
 } dpdparams4;
 
 typedef struct {

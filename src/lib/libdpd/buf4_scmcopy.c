@@ -23,7 +23,6 @@ int dpd_buf4_scmcopy(dpdbuf4 *InBuf, int outfilenum, char *label, double alpha)
   int nbuckets, incore, n, size;
   long int memoryd, rows_per_bucket, rows_left;
   dpdbuf4 OutBuf;
-  double *X;
 
   all_buf_irrep = InBuf->file.my_irrep;
 
@@ -45,7 +44,7 @@ int dpd_buf4_scmcopy(dpdbuf4 *InBuf, int outfilenum, char *label, double alpha)
 
       if(!rows_per_bucket) dpd_error("buf4_scmcopy: Not enough memory for one row!", stderr);
 
-      nbuckets = ceil(((double) InBuf->params->rowtot[h])/((double) rows_per_bucket));
+      nbuckets = (int) ceil(((double) InBuf->params->rowtot[h])/((double) rows_per_bucket));
 
       rows_left = InBuf->params->rowtot[h] % rows_per_bucket;
 

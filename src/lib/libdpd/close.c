@@ -21,6 +21,10 @@ int dpd_close(int dpd_num)
   nirreps = this_dpd->nirreps;
   num_pairs = this_dpd->num_pairs;
 
+  for(i=0; i < num_pairs; i++)
+    for(j=0; j < num_pairs; j++)
+      free_int_matrix(this_dpd->params4[i][j].start13, nirreps);
+
   for(i=0; i < num_subspaces; i++)  free(this_dpd->orboff[i]);
   free(this_dpd->orboff);
 
