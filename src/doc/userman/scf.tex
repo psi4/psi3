@@ -1,4 +1,4 @@
-\section{Hartree-Fock Self-Consistent-Field} \label{scf}
+\subsection{Hartree-Fock Self-Consistent-Field} \label{scf}
                                                                                 
 Hartree-Fock molecular orbital theory forms the cornerstone of
 ab initio quantum chemistry.  Until the advances in the accuracy
@@ -13,16 +13,9 @@ quantitatively poor in many instances.
 functions using an iterative, self-consistent-field (SCF) procedure.  The
 final molecular orbitals are those which minimize the energy, 
 subject to the electron configuration specified by the user (or
-guessed by the program).  It is important to point out that the
-SCF approach does not rigorously guarantee that the final orbitals
-actually correspond to a minimum in orbital space; at convergence,
-the only guarantee is that the gradient of the energy with respect 
-to orbital rotations is zero: this could be a global minimum, a local
-minimum, or a saddle point in orbital rotation space.  While this
-is not usually an issue, it can be a problem sometimes for radicals,
-diradicals, bond breaking, or unusual bonding situations.  The
-\PSIstable\ module can be used to test for the stability of Hartree-Fock
-wave functions.
+guessed by the program).  The process is continued until the largest
+change in an element of the density matrix drops below 10$^{-n}$, where
+$n$ is an integer specified by the \keyword{convergence} keyword.
 
 Of course the efficiency of the iterative procedure depends on the choice of
 initial guess.  The \PSIcscf\ module will attempt to use previously obtained
@@ -30,13 +23,48 @@ orbitals as a guess if they are available.  This can be particularly
 advantageous when diffuse functions are present; in that case, it may
 be easiest to run the computation with a smaller basis and project
 those orbitals onto the larger basis by specifying the \keyword{--chkptmos}
-option when running the \PSIinput\ program for the larger basis.  If
+command-line argument or the \keyword{chkpt\_mos=true} keyword in input
+when running the \PSIinput\ program for the larger basis.  If
 old MO's are not available, \PSIcscf\ uses a core Hamiltonian guess
-by default.
+by default.  The convergence of the SCF procedure is accelerated by Pulay's 
+direct inversion of the iterative subspace (DIIS) approach, and it is possible
+to modify the behavior of the DIIS through various keywords, 
+although this is seldom necessary.  
 
-Convergence, DIIS.
+It is important to point out that the
+SCF approach does not rigorously guarantee that the final orbitals
+actually correspond to a minimum in orbital space; at convergence,
+the only guarantee is that the gradient of the energy with respect 
+to orbital rotations is zero: this could be a global minimum, a local
+minimum, or a saddle point in orbital rotation space.  While this
+is not usually an issue (typically the lowest minimum consistent with 
+the electron configuration is found), it can be a problem sometimes for 
+radicals, diradicals, bond breaking, or unusual bonding situations.  The
+\PSIstable\ module can be used to test for the stability of Hartree-Fock
+wave functions.
 
-Keywords.
+The most commonly used keywords are found below.  More specialized keywords
+are available in the man pages.
+
+\begin{description}
+\item[MAXITER = integer]\mbox{}\\
+This gives the maximum number of iterations.  The default is 40.
+\item[CONVERGENCE = integer]\mbox{}\\
+This specifies how tightly the wavefunction will be converged.
+Convergence is determined by comparing the RMS change in the
+density matrix ("delta P") to the given value.  The convergence
+criterion is 10**(-integer).  The default is 7 if both DERTYPE
+= NONE and WFN = SCF are given and 10 otherwise.
+\item[LEVELSHIFT = real]\mbox{}\\
+This specifies the level shift.  The default is 1.
+\item[DIRECT = boolean]\mbox{}\\
+Specifies whether to do the SCF calculation with an integral direct
+technique.  The default is false.
+\item[PRINT\_MOS = boolean]\mbox{}\\
+Specifies whether to print the molecular orbitals or not.  The default
+is false.
+\end{description}
+
 
 
 

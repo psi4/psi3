@@ -1,5 +1,6 @@
 \section{\PSIthree\ Input Files} \label{input}
 
+\subsection{Syntax} \label{syntax}
 \PSIthree\ input files are case-insensitive and free-format, with
 a grammar designed for maximum flexibility and relative simplicity.
 Input values are assigned using the structure:
@@ -30,7 +31,7 @@ zmat = (
 )
 \end{verbatim}
 For z-matrices, z-matrix variables, and Cartesian coordinates, 
-it is also possible to dispense with the inner parentheses.
+it is also possible to discard the inner parentheses.
 The following is equivalent in this case:
 \begin{verbatim}
 zmat = (
@@ -92,7 +93,66 @@ Some additional aspects of the \PSIthree\ grammar to keep in mind:
 \item Multiple spaces are treated as a single space.
 \end{itemize}
 
-\subsection{Geometry Specification}
+\subsection{Specifying the Type of Computation}
+The most important keywords in a \PSIthree\ input file are those which
+tell the program what type of computation are to be performed.  
+They \keyword{jobtype} keyword tells the \PSIdriver\ program whether
+this is a single-point computation, a geometry optimization, a 
+vibrational frequency calculation, etc.  The \keyword{reference} 
+keyword specifies whether an RHF, ROHF, UHF, etc., reference is
+to be used for the SCF wavefunction.  The \keyword{wfn} specifies 
+what theoretical method is to be used, either SCF, determinant-based
+CI, coupled-cluster, etc.  Also of critical importance are the charge
+and multiplicity of the molecule, the molecular geometry, and the
+basis set to be used.  The latter two topics are discussed below
+in sections \ref{geom-spec} and \ref{basis-spec}.
+General keywords determining the general type of computation to be performed 
+are described below.
+
+\begin{description}
+\item[LABEL = string]\mbox{}\\
+This is a character string to be included in the output to help keep track
+of what computation has been run.  It is not otherwise used by the program.
+There is no default.
+\item[CALCTYPE = string]\mbox{}\\
+This tells the program whether to run a single-point energy calculation
+(SP), a geometry optimization (OPT), a series of calculations at 
+different displaced geometries (DISP), a frequency calculation (FREQ),
+frequencies only for symmetric vibrational modes (SYMM\_FREQ), 
+or a Diagonal Born-Oppenheimer Correction (DBOC) energy computation.
+The default is SP.
+\item[WFN = string]\mbox{}\\
+This specifies the wavefunction type.  Possible values are SCF
+(self-consistent-field), CCSD (coupled-cluster with single and double
+substitutions), CCSD\_T (coupled-cluster with single, double, and 
+perturbative triple substitutions, i.e., CCSD(T)), 
+DETCI (determinant-based configuration interaction), and
+DETCAS (determinant-based complete-active-space self-consistent-field). 
+\item[REFERENCE = string]\mbox{}\\
+This specifies the type of SCF calculation one wants to do.  It
+can be one of RHF (for a closed  shell  singlet), ROHF (for
+a restricted open shell calculation), UHF (for an unrestricted
+open shell calculation), or TWOCON (for a two configuration
+singlet).  The default is RHF.
+\item[MULTP = integer]\mbox{}\\
+Specifies the multiplicity of the molecule, i.e., 2S+1.  Default
+is 1 (singlet).
+\item[CHARGE = integer]\mbox{}\\
+Specifies the charge of the molecule.  Default is 0.
+\item[DERTYPE = string]\mbox{}\\
+This specifies the order of the derivative that is to be obtained.
+The default is NONE (energy only).
+\item[DOCC = integer vector]\mbox{}\\
+This gives the number of doubly occupied orbitals in each irreducible
+representation.  There is no default.  If this is not given, 
+\PSIcscf\  will attempt to guess at the occupations.
+\item[SOCC = integer vector]\mbox{} \\
+This gives the number of singly occupied orbitals in each irreducible 
+representation. There is no default.  If this is not given,
+\PSIcscf\ will attempt to guess at the occupations.
+\end{description}
+
+\subsection{Geometry Specification} \label{geom-spec}
 The molecular geometry may be specified using either Cartesian a
 Z-matrix coordinates.  Cartesian coordinates are specified via the
 keyword \keyword{geometry}:
@@ -185,7 +245,7 @@ the definition:
 Alternatively, one could use, for example, only a single dummy atom above the
 nitrogen and specify ``bond lengths'' relative to the latter.
 
-\subsection{Molecular Symmetry}
+\subsection{Molecular Symmetry} \label{symm-spec}
 \PSIthree\ can determine automatically the largest Abelian point group
 for a valid framework of centers (including ghost atoms, but dummy
 atoms are ignored).  It will then use the symmetry porperties of the
@@ -340,7 +400,7 @@ psi: (
 )
 \end{verbatim}
 
-\subsection{Specifying Basis Sets}
+\subsection{Specifying Basis Sets} \label{basis-spec}
 
 \PSIthree\ uses basis sets comprised of Cartesian (\keyword{puream =
 false}, default) or spherical harmonic (\keyword{puream = true})
