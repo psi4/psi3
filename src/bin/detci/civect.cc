@@ -2424,13 +2424,11 @@ void CIvect::construct_kth_order_wf(CIvect &Hd, CIvect &S, CIvect &C,
    int i, j, r, order, buf, block;
    double tval, norm;
 
-   /*
-     fprintf(outfile,"\nCVEC_COEFF and CVEC_NORMS in CONSTRUCT\n");
-     print_mat(cvec_coeff, k-2, k-2, outfile);
-     for (i=0; i<k-2; i++) 
-        fprintf(outfile,"cvec_norm[%d] = %lf\n",i, cvec_norm[i]);
-     fflush(outfile);
-   */
+   fprintf(outfile,"\nCVEC_COEFF and CVEC_NORMS in CONSTRUCT\n");
+   print_mat(cvec_coeff, k-2, k-2, outfile);
+   for (i=0; i<k-2; i++) 
+      fprintf(outfile,"cvec_norm[%d] = %lf\n",i, cvec_norm[i]);
+   fflush(outfile);
 
      for (buf=0; buf<buf_per_vect; buf++) {
         Hd.buf_lock(buf2);

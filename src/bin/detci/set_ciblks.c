@@ -21,6 +21,7 @@ void set_ciblks(struct olsen_graph *AlphaG, struct olsen_graph *BetaG)
    int nas, nbs;
    int nblocks=0;
    double orbsum = 0.0;
+   int set = 0;
 
    CalcInfo.num_alp_str = AlphaG->num_str;
    CalcInfo.num_bet_str = BetaG->num_str;
@@ -217,6 +218,29 @@ void set_ciblks(struct olsen_graph *AlphaG, struct olsen_graph *BetaG)
                            nbs = BetaG->sg[betirrep][betcode].num_strings;
                            if (!nbs) continue;
 
+                           /* add nonstandard excitation types, such as
+			      CID, CIST, CIDTQ, etc.
+			      Parameters.ex_type[0] = Single excitations
+			      Parameters.ex_type[1] = Double excitations
+			      etc.
+			      MLA 12/16/03
+			   */
+			   set = 0;
+			   for (i=0; i<Parameters.ex_lvl; i++) {
+			     if (Parameters.ex_type[i] == 0) {
+			       if (nalp3+nbet3 == i+1) set = 1;
+			     }
+			   }
+                           if (set == 1) continue;
+			   
+			   /* Remove all Singles: Testing 
+			   if (nalp3+nbet3==1)  
+			     continue;*/
+
+			   /* Remove all Doubles: Testing
+			   if (nalp3+nbet3==2)
+			     continue;*/ 
+			   
                            CIblks.Ia_code[nblocks] = AlphaG->subgr_per_irrep * 
                               irrep + alpcode;
                            CIblks.Ia_size[nblocks] = nas;

@@ -545,6 +545,24 @@ void get_parameters(void)
    } 
    
    errcod = ip_boolean("SF_RESTRICT",&(Parameters.sf_restrict),0);
+   
+   Parameters.ex_type = (int *)malloc(Parameters.ex_lvl*sizeof(int));
+   if (ip_exist("EX_TYPE",0)) {
+     ip_count("EX_TYPE", &i, 0);
+     if (i != Parameters.ex_lvl) {
+       fprintf(outfile,"Dim. of excitation type must be %d\n", 
+               Parameters.ex_lvl);
+       exit(0);
+     }
+     for (i=0;i<Parameters.ex_lvl;i++) {
+       errcod = ip_data("EX_TYPE","%d",&(Parameters.ex_type[i]),1,i);
+     }
+   }
+   else {
+     for (i=0;i<Parameters.ex_lvl;i++) {
+       Parameters.ex_type[i] = 1;
+     }
+   }
 
    /* The filter_guess options are used to filter out some trial
       vectors which may not have the appropriate phase convention
@@ -782,11 +800,15 @@ void print_parameters(void)
    fprintf(outfile, "   FILTER_GUESS  =   %6s      SF_RESTRICT  =   %6s\n",
            Parameters.filter_guess ?  "yes":"no",
 	   Parameters.sf_restrict ? "yes":"no");
-   fprintf(outfile, "\n   FILES         =     %3d %3d %3d %3d\n",
+   fprintf(outfile, "\n   FILES         = %3d %2d %2d %2d\n",
       Parameters.first_hd_tmp_unit, Parameters.first_c_tmp_unit,
       Parameters.first_s_tmp_unit, Parameters.first_d_tmp_unit);
-
-   fprintf(outfile, "\n") ;
+   
+   fprintf(outfile, "\n   EX_TYPE       = ");
+   for (int i=0;i<Parameters.ex_lvl;i++) {
+     fprintf(outfile, "%2d ", Parameters.ex_type[i]) ;
+   }
+   fprintf(outfile, "\n\n") ;
    fflush(outfile) ;
 }
 

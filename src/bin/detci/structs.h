@@ -455,6 +455,8 @@ struct params {
    int filter_guess_Jbc;   /* string list number for beta of det 2 */
    int filter_guess_H0_det1; /* H0block determinant number for det 1 */
    int filter_guess_H0_det2; /* H0block determinant number for det 2 */
+   int *ex_type;             /* Determine nonstandard excitation types, such
+                                as CID, CIST, CIDTQ, etc. */
 };
 
 
