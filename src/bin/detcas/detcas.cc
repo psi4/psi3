@@ -469,7 +469,7 @@ void rotate_orbs(void)
         fflush(outfile);
       }
 
-      /* print new coefficients */
+      /* print old coefficients */
       if (Params.print_mos) {
         fprintf(outfile, "\n\tOld molecular orbitals for irrep %s\n", 
           CalcInfo.labels[h]);
