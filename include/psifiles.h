@@ -87,7 +87,8 @@
 #define PSIF_AO_NablaY      "AO-basis Nabla-Y Ints"
 #define PSIF_AO_NablaZ      "AO-basis Nabla-Z Ints"
 
-/* These integrals are pure imaginary Hermitian. We write the full matrix out */
+/* These integrals are pure imaginary Hermitian. We write the full matrix of the imaginary part of these
+integrals out (i.e. multiply by i=sqrt(-1) to get the integrals) */
 #define PSIF_AO_LX          "AO-basis LX Ints"      /* integrals of angular momentum operator */
 #define PSIF_AO_LY          "AO-basis LY Ints"
 #define PSIF_AO_LZ          "AO-basis LZ Ints"
