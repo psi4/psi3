@@ -43,7 +43,7 @@ int iwl_buf_rd_all(struct iwlbuf *Buf, double *ints,
   lastbuf = Buf->lastbuf;
   
   for (idx=4*Buf->idx; Buf->idx<Buf->inbuf; Buf->idx++) {
-    p = (int) lblptr[idx++];
+    p = fabs((int) lblptr[idx++]);
     q = (int) lblptr[idx++];
     r = (int) lblptr[idx++];
     s = (int) lblptr[idx++];
@@ -73,7 +73,7 @@ int iwl_buf_rd_all(struct iwlbuf *Buf, double *ints,
     lastbuf = Buf->lastbuf;
     
     for (idx=4*Buf->idx; Buf->idx<Buf->inbuf; Buf->idx++) {
-      p = (int) lblptr[idx++];
+      p = fabs((int) lblptr[idx++]);
       q = (int) lblptr[idx++];
       r = (int) lblptr[idx++];
       s = (int) lblptr[idx++];
