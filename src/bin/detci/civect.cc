@@ -1816,7 +1816,8 @@ void CIvect::close_io_files(int keep)
 */
 int CIvect::read(int ivect, int ibuf)
 {
-   int unit, buf, size, k, i;
+   int unit, buf, k, i;
+   unsigned long int size;
    int blk, zero_block_unit; /* added by MLL 2-2-99 */
    PSI_FPTR offset, nxtword, offset2;
 
@@ -1838,7 +1839,7 @@ int CIvect::read(int ivect, int ibuf)
    unit = file_number[buf];
    zero_block_unit = zero_block_file_number[ivect];
    offset = (PSI_FPTR) (file_offset[buf] * sizeof(double));
-   size = buf_size[ibuf] * sizeof(double);   
+   size = buf_size[ibuf] * (unsigned long int) sizeof(double);   
   /*
     fprintf(outfile,"CIvect::read ivect = %d\n", ivect);
      fprintf(outfile,"CIvect::read num_blocks = %d\n", num_blocks);
@@ -1853,9 +1854,9 @@ int CIvect::read(int ivect, int ibuf)
   */
 
    if (Parameters.zero_blocks && Parameters.mpn) {
-     offset2 = (PSI_FPTR) (zero_block_offset[ivect] * sizeof(double));
-     wreadw(zero_block_unit, (char *) zero_blocks, (int) (num_blocks*sizeof(int)), 
-            offset2, &nxtword);
+     offset2 = (PSI_FPTR) zero_block_offset[ivect] * (PSI_FPTR) sizeof(double);
+     wreadw(zero_block_unit, (char *) zero_blocks, 
+            (int) (num_blocks*sizeof(int)), offset2, &nxtword);
      blk = buf2blk[ibuf];
      if (zero_blocks[blk]==0)
        wreadw(unit, (char *) buffer, (int) size, offset, &nxtword);
@@ -1890,7 +1891,8 @@ int CIvect::read(int ivect, int ibuf)
 */
 int CIvect::write(int ivect, int ibuf)
 {
-   int unit, buf, size, i;
+   int unit, buf, i;
+   unsigned long int size;
    PSI_FPTR offset, nxtword, offset2;
    int blk, zero_block_unit; /* MLL added 2-2-99 */
 
@@ -1913,8 +1915,8 @@ int CIvect::write(int ivect, int ibuf)
    buf = ivect * buf_per_vect + ibuf;
    unit = file_number[buf];
    zero_block_unit = zero_block_file_number[ivect];
-   offset = (PSI_FPTR) (file_offset[buf] * sizeof(double));
-   size = buf_size[ibuf] * sizeof(double);   
+   offset = (PSI_FPTR) file_offset[buf] * (PSI_FPTR) sizeof(double);
+   size = buf_size[ibuf] * (unsigned long int) sizeof(double);   
   
   /*
    if (ibuf==(buf_per_vect-1)) {
