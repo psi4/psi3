@@ -117,6 +117,11 @@ int main(int argc, char *argv[])
   }
   overlap();
   dpd_close(0);
+
+  if(params.ref == 2) cachedone_uhf(cachelist);
+  else cachedone_rhf(cachelist);
+  free(cachefiles);
+
   cleanup(); 
   exit_io();
   exit(0);
