@@ -11,121 +11,122 @@
 #endif
 
 typedef struct {
-    int nirreps;      /* No. of irreps */
-    int pqnum;        /* Pair number for the row indices */
-    int rsnum;        /* Pair number for the column indices */
-    int *rowtot;      /* Row dimension for each irrep */
-    int *coltot;      /* Column dimension for each irrep */
-    int **rowidx;     /* Row index lookup array */
-    int **colidx;     /* Column index lookup array */
-    int ***roworb;    /* Row index -> orbital index lookup array */
-    int ***colorb;    /* Column index -> orbital index lookup array */
-    int *ppi;         /* Number of p indices per irrep */
-    int *qpi;         /* Number of q indices per irrep */
-    int *rpi;         /* Number of r indices per irrep */
-    int *spi;         /* Number of s indices per irrep */
-    int *poff;        /* Orbital offset for p */
-    int *qoff;        /* Orbital offset for q */
-    int *roff;        /* Orbital offset for r */
-    int *soff;        /* Orbital offset for s */
-    int *psym;        /* Orbital symmetry for index p */
-    int *qsym;        /* Orbital symmetry for index q */
-    int *rsym;        /* Orbital symmetry for index r */
-    int *ssym;        /* Orbital symmetry for index s */
-    int perm_pq;      /* Can p and q be permuted? */
-    int perm_rs;      /* Can r and s be permuted? */
-    int peq;          /* Can p and q be equal? */
-    int res;          /* Can r and s be equal? */
+  int nirreps;      /* No. of irreps */
+  int pqnum;        /* Pair number for the row indices */
+  int rsnum;        /* Pair number for the column indices */
+  int *rowtot;      /* Row dimension for each irrep */
+  int *coltot;      /* Column dimension for each irrep */
+  int **rowidx;     /* Row index lookup array */
+  int **colidx;     /* Column index lookup array */
+  int ***roworb;    /* Row index -> orbital index lookup array */
+  int ***colorb;    /* Column index -> orbital index lookup array */
+  int *ppi;         /* Number of p indices per irrep */
+  int *qpi;         /* Number of q indices per irrep */
+  int *rpi;         /* Number of r indices per irrep */
+  int *spi;         /* Number of s indices per irrep */
+  int *poff;        /* Orbital offset for p */
+  int *qoff;        /* Orbital offset for q */
+  int *roff;        /* Orbital offset for r */
+  int *soff;        /* Orbital offset for s */
+  int *psym;        /* Orbital symmetry for index p */
+  int *qsym;        /* Orbital symmetry for index q */
+  int *rsym;        /* Orbital symmetry for index r */
+  int *ssym;        /* Orbital symmetry for index s */
+  int perm_pq;      /* Can p and q be permuted? */
+  int perm_rs;      /* Can r and s be permuted? */
+  int peq;          /* Can p and q be equal? */
+  int res;          /* Can r and s be equal? */
 } dpdparams4;
 
 typedef struct {
-    char label[PSIO_KEYLEN];
-    int filenum;
-    int my_irrep;     /* Total irrep of this quantity */
-    psio_address *lfiles;   /* File address for each submatrix by ROW irrep */
-    dpdparams4 *params;
-    int incore;
-    double ***matrix;
+  char label[PSIO_KEYLEN];
+  int filenum;
+  int my_irrep;     /* Total irrep of this quantity */
+  psio_address *lfiles;   /* File address for each submatrix by ROW irrep */
+  dpdparams4 *params;
+  int incore;
+  double ***matrix;
 } dpdfile4;
 
 typedef struct {
-    int shift_type;
-    int **rowtot;
-    int **coltot;
-    double ****matrix;
+  int shift_type;
+  int **rowtot;
+  int **coltot;
+  double ****matrix;
 } dpdshift4;
 
 typedef struct {
-    int anti;         /* Is this buffer antisymmetric? */
-    dpdparams4 *params;
-    dpdfile4 file;
-    dpdshift4 shift;
-    double ***matrix;
+  int anti;         /* Is this buffer antisymmetric? */
+  dpdparams4 *params;
+  dpdfile4 file;
+  dpdshift4 shift;
+  double ***matrix;
 } dpdbuf4;
 
 typedef struct {
-    double ***matrix;
-    dpdshift4 shift;
-    dpdbuf4 buf;
+  double ***matrix;
+  dpdshift4 shift;
+  dpdbuf4 buf;
 } dpdtrans4;
 
 typedef struct {
-    int nirreps;      /* No. of irreps */
-    int pnum;
-    int qnum;
-    int *rowtot;      /* Row dimension for each submatrix */
-    int *coltot;      /* Column dimension for each submatrix */
-    int *rowidx;      /* Row index lookup array */
-    int *colidx;      /* Column index lookup array */
-    int **roworb;     /* Row index -> orbital index lookup array */
-    int **colorb;     /* Column index -> orbital index lookup array */
-    int *ppi;         /* Number of p indices per irrep */
-    int *qpi;         /* Number of q indices per irrep */
-    int *poff;        /* Orbital offset for p */
-    int *qoff;        /* Orbital offset for q */
-    int *psym;        /* Orbital symmetry for index p */
-    int *qsym;        /* Orbital symmetry for index q */
+  int nirreps;      /* No. of irreps */
+  int pnum;
+  int qnum;
+  int *rowtot;      /* Row dimension for each submatrix */
+  int *coltot;      /* Column dimension for each submatrix */
+  int *rowidx;      /* Row index lookup array */
+  int *colidx;      /* Column index lookup array */
+  int **roworb;     /* Row index -> orbital index lookup array */
+  int **colorb;     /* Column index -> orbital index lookup array */
+  int *ppi;         /* Number of p indices per irrep */
+  int *qpi;         /* Number of q indices per irrep */
+  int *poff;        /* Orbital offset for p */
+  int *qoff;        /* Orbital offset for q */
+  int *psym;        /* Orbital symmetry for index p */
+  int *qsym;        /* Orbital symmetry for index q */
 } dpdparams2;
 
 typedef struct {
-    char label[PSIO_KEYLEN];
-    int filenum;
-    int my_irrep;
-    psio_address *lfiles;
-    dpdparams2 *params;
-    int incore;
-    double ***matrix;
+  char label[PSIO_KEYLEN];
+  int filenum;
+  int my_irrep;
+  psio_address *lfiles;
+  dpdparams2 *params;
+  int incore;
+  double ***matrix;
 } dpdfile2;
 
 /* DPD File4 Cache entries */
 struct dpd_file4_cache_entry {
-    int filenum;                        /* libpsio unit number */
-    int irrep;                          /* overall symmetry */
-    int pqnum;                          /* dpd pq value */
-    int rsnum;                          /* dpd rs value */
-    char label[PSIO_KEYLEN];            /* libpsio TOC keyword */
-    double ***matrix;                   /* pointer to irrep blocks */
-    int size;                           /* size of entry in double words */
-    unsigned int access;                /* access time */
-    unsigned int usage;                 /* number of accesses */
-    unsigned int priority;              /* priority level */
-    int lock;                           /* auto-deletion allowed? */
-    int clean;                          /* has this file4 changed? */
-    struct dpd_file4_cache_entry *next; /* pointer to next cache entry */
-    struct dpd_file4_cache_entry *last; /* pointer to previous cache entry */
+  int filenum;                        /* libpsio unit number */
+  int irrep;                          /* overall symmetry */
+  int pqnum;                          /* dpd pq value */
+  int rsnum;                          /* dpd rs value */
+  char label[PSIO_KEYLEN];            /* libpsio TOC keyword */
+  double ***matrix;                   /* pointer to irrep blocks */
+  int size;                           /* size of entry in double words */
+  unsigned int access;                /* access time */
+  unsigned int usage;                 /* number of accesses */
+  unsigned int priority;              /* priority level */
+  int lock;                           /* auto-deletion allowed? */
+  int clean;                          /* has this file4 changed? */
+  struct dpd_file4_cache_entry *next; /* pointer to next cache entry */
+  struct dpd_file4_cache_entry *last; /* pointer to previous cache entry */
 };
 
 /* DPD File2 Cache entries */
 struct dpd_file2_cache_entry {
-    int filenum;                        /* libpsio unit number */
-    int irrep;                          /* overall symmetry */
-    int pnum;                           /* dpd p value */
-    int qnum;                           /* dpd q value */
-    char label[PSIO_KEYLEN];            /* libpsio TOC keyword */
-    double ***matrix;                   /* pointer to irrep blocks */
-    int size;                           /* size of entry in double words */
-    struct dpd_file2_cache_entry *next; /* pointer to next cache entry */
-    struct dpd_file2_cache_entry *last; /* pointer to previous cache entry */
+  int filenum;                        /* libpsio unit number */
+  int irrep;                          /* overall symmetry */
+  int pnum;                           /* dpd p value */
+  int qnum;                           /* dpd q value */
+  char label[PSIO_KEYLEN];            /* libpsio TOC keyword */
+  double ***matrix;                   /* pointer to irrep blocks */
+  int size;                           /* size of entry in double words */
+  int clean;                          /* has this file2 changed? */
+  struct dpd_file2_cache_entry *next; /* pointer to next cache entry */
+  struct dpd_file2_cache_entry *last; /* pointer to previous cache entry */
 };
 
 /* DPD global parameter set */

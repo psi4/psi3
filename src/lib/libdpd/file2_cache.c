@@ -99,6 +99,8 @@ int dpd_file2_cache_add(dpdfile2 *File)
       dpd_file2_mat_init(File);
       dpd_file2_mat_rd(File);
 
+      this_entry->clean = 1;
+
       this_entry->matrix = File->matrix;
 
       File->incore = 1;
@@ -129,7 +131,7 @@ int dpd_file2_cache_del(dpdfile2 *File)
       File->incore = 0;
       
       /* Write all the data to disk and free the memory */
-      dpd_file2_mat_wrt(File);
+      if(!(this_entry->clean)) dpd_file2_mat_wrt(File);
       dpd_file2_mat_close(File);
 
       next_entry = this_entry->next;
@@ -173,4 +175,21 @@ void dpd_file2_cache_print(FILE *outfile)
   fprintf(outfile,
     "---------------------------------------------------------\n");
   fprintf(outfile, "Total cached: %8.1f kB\n", total_size*sizeof(double)/1e3);
+}
+
+void dpd_file2_cache_dirty(dpdfile2 *File)
+{
+  struct dpd_file2_cache_entry *this_entry;
+
+  this_entry = dpd_file2_cache_scan(File->filenum, File->my_irrep,
+                                    File->params->pnum, File->params->qnum,
+                                    File->label);
+
+  if((this_entry == NULL && File->incore) ||
+     (this_entry != NULL && !File->incore) ||
+     (this_entry == NULL && !File->incore))
+     dpd_error("Error setting file4_cache dirty flag!", stderr);
+  else {
+     this_entry->clean = 0;
+    }
 }

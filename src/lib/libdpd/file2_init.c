@@ -53,7 +53,7 @@ int dpd_file2_init(dpdfile2 *File, int filenum, int irrep, int pnum,
 					sizeof(double)));
 
   /* Force all two-index files into cache */
-  dpd_file2_cache_add(File); 
+  dpd_file2_cache_add(File);
 
   return 0;
 }

@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <libciomr.h>
 #include "dpd.h"
 
 int dpd_file4_mat_irrep_wrt(dpdfile4 *File, int irrep)
@@ -8,9 +6,9 @@ int dpd_file4_mat_irrep_wrt(dpdfile4 *File, int irrep)
   psio_address irrep_ptr, next_address;
 
   if(File->incore) {
-      dpd_file4_cache_dirty(File);  /* Flag this cache entry for writing */
-      return 0;  /* We're keeping this data in core */
-    }
+    dpd_file4_cache_dirty(File);  /* Flag this cache entry for writing */
+    return 0;  /* We're keeping this data in core */
+  }
 
   my_irrep = File->my_irrep;
   irrep_ptr = File->lfiles[irrep];
@@ -18,8 +16,8 @@ int dpd_file4_mat_irrep_wrt(dpdfile4 *File, int irrep)
   coltot = File->params->coltot[irrep^my_irrep];
 
   if(rowtot && coltot)
-     psio_write(File->filenum, File->label, (char *) File->matrix[irrep][0],
-		rowtot*coltot*sizeof(double), irrep_ptr, &next_address);
+    psio_write(File->filenum, File->label, (char *) File->matrix[irrep][0],
+	       rowtot*coltot*sizeof(double), irrep_ptr, &next_address);
 
   return 0;
 
