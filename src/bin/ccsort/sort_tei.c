@@ -7,7 +7,7 @@
 #define EXTERN
 #include "globals.h"
 
-#define FIRST_TMP 90
+#define FIRST_TMP 200
 
 void distribute_rhf(int filenum, int first_tmp, double tolerance, int keep_input);
 void distribute_uhf(char *spin, int filenum, int first_tmp, double tolerance, int keep_input);
@@ -45,15 +45,19 @@ void sort_tei(void)
     dpd_file4_close(&C);
 
     dpd_file4_init_nocache(&D, CC_DINTS, 0, 0, 5, "D <IJ|AB>");
-    file_build(&D, FIRST_TMP+3, tolerance, 0, 0, 1, 0);
+    file_build(&D, FIRST_TMP+4, tolerance, 0, 0, 1, 0);
     dpd_file4_close(&D);
 
     dpd_file4_init_nocache(&E, CC_EINTS, 0, 21, 0, "E <AI|JK>");
-    file_build(&E, FIRST_TMP+4, tolerance, 0, 1, 0, 0);
+    file_build(&E, FIRST_TMP+5, tolerance, 0, 1, 0, 0);
     dpd_file4_close(&E);
 
     dpd_file4_init_nocache(&F, CC_FINTS, 0, 20, 5, "F <IA|BC>");
-    file_build(&F, FIRST_TMP+5, tolerance, 0, 1, 0, 0);
+    file_build(&F, FIRST_TMP+7, tolerance, 0, 1, 0, 0);
+    dpd_file4_close(&F);
+
+    dpd_file4_init_nocache(&F, CC_FINTS, 0, 21, 5, "F <AI|BC>");
+    file_build(&F, FIRST_TMP+8, tolerance, 1, 0, 0, 0);
     dpd_file4_close(&F);
 
     distribute_uhf("BB", PSIF_MO_BB_TEI, FIRST_TMP, tolerance, keep);
@@ -73,15 +77,19 @@ void sort_tei(void)
     dpd_file4_close(&C);
 
     dpd_file4_init_nocache(&D, CC_DINTS, 0, 10, 15, "D <ij|ab>");
-    file_build(&D, FIRST_TMP+3, tolerance, 0, 0, 1, 0);
+    file_build(&D, FIRST_TMP+4, tolerance, 0, 0, 1, 0);
     dpd_file4_close(&D);
 
     dpd_file4_init_nocache(&E, CC_EINTS, 0, 31, 10, "E <ai|jk>");
-    file_build(&E, FIRST_TMP+4, tolerance, 0, 1, 0, 0);
+    file_build(&E, FIRST_TMP+5, tolerance, 0, 1, 0, 0);
     dpd_file4_close(&E);
 
     dpd_file4_init_nocache(&F, CC_FINTS, 0, 30, 15, "F <ia|bc>");
-    file_build(&F, FIRST_TMP+5, tolerance, 0, 1, 0, 0);
+    file_build(&F, FIRST_TMP+7, tolerance, 0, 1, 0, 0);
+    dpd_file4_close(&F);
+
+    dpd_file4_init_nocache(&F, CC_FINTS, 0, 31, 15, "F <ai|bc>");
+    file_build(&F, FIRST_TMP+8, tolerance, 1, 0, 0, 0);
     dpd_file4_close(&F);
 
     distribute_uhf("AB", PSIF_MO_AB_TEI, FIRST_TMP, tolerance, keep);
@@ -100,32 +108,36 @@ void sort_tei(void)
     file_build(&C, FIRST_TMP+2, tolerance, 1, 1, 0, 0);
     dpd_file4_close(&C);
 
+    dpd_file4_init_nocache(&C, CC_CINTS, 0, 26, 26, "C <Ai|Bj>");
+    file_build(&C, FIRST_TMP+3, tolerance, 1, 1, 0, 0);
+    dpd_file4_close(&C);
+
     dpd_file4_init_nocache(&D, CC_DINTS, 0, 22, 28, "D <Ij|Ab>");
-    file_build(&D, FIRST_TMP+3, tolerance, 0, 0, 0, 0);
+    file_build(&D, FIRST_TMP+4, tolerance, 0, 0, 0, 0);
     dpd_file4_close(&D);
 
     dpd_file4_init_nocache(&E, CC_EINTS, 0, 26, 22, "E <Ai|Jk>");
-    file_build(&E, FIRST_TMP+4, tolerance, 0, 1, 0, 0);
+    file_build(&E, FIRST_TMP+5, tolerance, 0, 1, 0, 0);
+    dpd_file4_close(&E);
+
+    dpd_file4_init_nocache(&E, CC_EINTS, 0, 22, 24, "E <Ij|Ka>");
+    file_build(&E, FIRST_TMP+6, tolerance, 1, 0, 0, 0);
     dpd_file4_close(&E);
 
     dpd_file4_init_nocache(&F, CC_FINTS, 0, 24, 28, "F <Ia|Bc>");
-    file_build(&F, FIRST_TMP+5, tolerance, 0, 1, 0, 0);
+    file_build(&F, FIRST_TMP+7, tolerance, 0, 1, 0, 0);
     dpd_file4_close(&F);
 
-    dpd_file4_init_nocache(&C, CC_CINTS, 0, 26, 26, "C <Ai|Bj>");
-    file_build(&C, FIRST_TMP+6, tolerance, 1, 1, 0, 0);
-    dpd_file4_close(&C);
-
-    dpd_file4_init_nocache(&E, CC_EINTS, 0, 22, 24, "E <Ij|Ka>");
-    file_build(&E, FIRST_TMP+7, tolerance, 1, 0, 0, 0);
-    dpd_file4_close(&E);
-
-    dpd_file4_init_nocache(&F, CC_FINTS, 0, 28, 26, "F <Ab|Ci>");
+    dpd_file4_init_nocache(&F, CC_FINTS, 0, 25, 29, "F <aI|bC>");
     file_build(&F, FIRST_TMP+8, tolerance, 1, 0, 0, 0);
     dpd_file4_close(&F);
 
-    dpd_file4_init_nocache(&F, CC_FINTS, 0, 26, 28, "F <Ai|Bc>");
+    dpd_file4_init_nocache(&F, CC_FINTS, 0, 28, 26, "F <Ab|Ci>");
     file_build(&F, FIRST_TMP+9, tolerance, 1, 0, 0, 0);
+    dpd_file4_close(&F);
+
+    dpd_file4_init_nocache(&F, CC_FINTS, 0, 26, 28, "F <Ai|Bc>");
+    file_build(&F, FIRST_TMP+10, tolerance, 1, 0, 0, 0);
     dpd_file4_close(&F);
 
   }
@@ -156,6 +168,10 @@ void sort_tei(void)
 
     dpd_file4_init_nocache(&F, CC_FINTS, 0, 10, 5, "F <ia|bc>");
     file_build(&F, FIRST_TMP+5, tolerance, 0, 1, 0, 0);
+    dpd_file4_close(&F);
+
+    dpd_file4_init_nocache(&F, CC_FINTS, 0, 11, 5, "F <ai|bc>");
+    file_build(&F, FIRST_TMP+6, tolerance, 1, 0, 0, 0);
     dpd_file4_close(&F);
   }
 

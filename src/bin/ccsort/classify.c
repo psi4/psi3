@@ -16,7 +16,8 @@
 void classify(int p, int q, int r, int s, double value,
 	      struct iwlbuf *ABuf, struct iwlbuf *BBuf,
 	      struct iwlbuf *CBuf, struct iwlbuf *DBuf,
-	      struct iwlbuf *EBuf, struct iwlbuf *FBuf)
+	      struct iwlbuf *EBuf, struct iwlbuf *F1Buf,
+	      struct iwlbuf *F2Buf)
 {
   int *occ, *vir, *socc;
   int *cc_occ, *cc_vir;
@@ -129,31 +130,55 @@ void classify(int p, int q, int r, int s, double value,
 
   /* F (ov|vv) integrals */
   if(soccs > 1) {
-    if((occ[p] && vir[q] && vir[r] && vir[s]))
-      iwl_buf_wrt_val(FBuf, cc_occ[p], cc_vir[q], cc_vir[r], cc_vir[s],
+    if((occ[p] && vir[q] && vir[r] && vir[s])) {
+      iwl_buf_wrt_val(F1Buf, cc_occ[p], cc_vir[q], cc_vir[r], cc_vir[s],
 		      value, 0, outfile, dirac);
-    if((occ[q] && vir[p] && vir[r] && vir[s]))
-      iwl_buf_wrt_val(FBuf, cc_occ[q], cc_vir[p], cc_vir[r], cc_vir[s],
+      iwl_buf_wrt_val(F2Buf, cc_vir[q], cc_occ[p], cc_vir[r], cc_vir[s],
 		      value, 0, outfile, dirac);
-    if((occ[r] && vir[s] && vir[p] && vir[q]))
-      iwl_buf_wrt_val(FBuf, cc_occ[r], cc_vir[s], cc_vir[p], cc_vir[q],
+    }
+    if((occ[q] && vir[p] && vir[r] && vir[s])) {
+      iwl_buf_wrt_val(F1Buf, cc_occ[q], cc_vir[p], cc_vir[r], cc_vir[s],
 		      value, 0, outfile, dirac);
-    if((occ[s] && vir[r] && vir[p] && vir[q]))
-      iwl_buf_wrt_val(FBuf, cc_occ[s], cc_vir[r], cc_vir[p], cc_vir[q],
+      iwl_buf_wrt_val(F2Buf, cc_vir[p], cc_occ[q], cc_vir[r], cc_vir[s],
 		      value, 0, outfile, dirac);
+    }
+    if((occ[r] && vir[s] && vir[p] && vir[q])) {
+      iwl_buf_wrt_val(F1Buf, cc_occ[r], cc_vir[s], cc_vir[p], cc_vir[q],
+		      value, 0, outfile, dirac);
+      iwl_buf_wrt_val(F2Buf, cc_vir[s], cc_occ[r], cc_vir[p], cc_vir[q],
+		      value, 0, outfile, dirac);
+    }
+    if((occ[s] && vir[r] && vir[p] && vir[q])) {
+      iwl_buf_wrt_val(F1Buf, cc_occ[s], cc_vir[r], cc_vir[p], cc_vir[q],
+		      value, 0, outfile, dirac);
+      iwl_buf_wrt_val(F2Buf, cc_vir[r], cc_occ[s], cc_vir[p], cc_vir[q],
+		      value, 0, outfile, dirac);
+    }
   }
-  else if((occ[p] && vir[q] && vir[r] && vir[s]))
-    iwl_buf_wrt_val(FBuf, cc_occ[p], cc_vir[q], cc_vir[r], cc_vir[s],
+  else if((occ[p] && vir[q] && vir[r] && vir[s])) {
+    iwl_buf_wrt_val(F1Buf, cc_occ[p], cc_vir[q], cc_vir[r], cc_vir[s],
 		    value, 0, outfile, dirac);
-  else if((occ[q] && vir[p] && vir[r] && vir[s]))
-    iwl_buf_wrt_val(FBuf, cc_occ[q], cc_vir[p], cc_vir[r], cc_vir[s],
+    iwl_buf_wrt_val(F2Buf, cc_vir[q], cc_occ[p], cc_vir[r], cc_vir[s],
 		    value, 0, outfile, dirac);
-  else if((occ[r] && vir[s] && vir[p] && vir[q]))
-    iwl_buf_wrt_val(FBuf, cc_occ[r], cc_vir[s], cc_vir[p], cc_vir[q],
+  }
+  else if((occ[q] && vir[p] && vir[r] && vir[s])) {
+    iwl_buf_wrt_val(F1Buf, cc_occ[q], cc_vir[p], cc_vir[r], cc_vir[s],
 		    value, 0, outfile, dirac);
-  else if((occ[s] && vir[r] && vir[p] && vir[q]))
-    iwl_buf_wrt_val(FBuf, cc_occ[s], cc_vir[r], cc_vir[p], cc_vir[q],
+    iwl_buf_wrt_val(F2Buf, cc_vir[p], cc_occ[q], cc_vir[r], cc_vir[s],
 		    value, 0, outfile, dirac);
+  }
+  else if((occ[r] && vir[s] && vir[p] && vir[q])) {
+    iwl_buf_wrt_val(F1Buf, cc_occ[r], cc_vir[s], cc_vir[p], cc_vir[q],
+		    value, 0, outfile, dirac);
+    iwl_buf_wrt_val(F2Buf, cc_vir[s], cc_occ[r], cc_vir[p], cc_vir[q],
+		    value, 0, outfile, dirac);
+  }
+  else if((occ[s] && vir[r] && vir[p] && vir[q])) {
+    iwl_buf_wrt_val(F1Buf, cc_occ[s], cc_vir[r], cc_vir[p], cc_vir[q],
+		    value, 0, outfile, dirac);
+    iwl_buf_wrt_val(F2Buf, cc_vir[r], cc_occ[s], cc_vir[p], cc_vir[q],
+		    value, 0, outfile, dirac);
+  }
 }
 
 
@@ -162,7 +187,8 @@ void classify_uhf(int p, int q, int r, int s, double value, char *spin,
 		  struct iwlbuf *CBuf1, struct iwlbuf *CBuf2, 
 		  struct iwlbuf *DBuf1, struct iwlbuf *EBuf1,
 		  struct iwlbuf *EBuf2, struct iwlbuf *FBuf1, 
-		  struct iwlbuf *FBuf2, struct iwlbuf *FBuf3)
+		  struct iwlbuf *FBuf2, struct iwlbuf *FBuf3,
+		  struct iwlbuf *FBuf4)
 {
   int *occ1, *occ2, *vir1, *vir2;
   int *cc_occ1, *cc_occ2, *cc_vir1, *cc_vir2;
@@ -218,33 +244,45 @@ void classify_uhf(int p, int q, int r, int s, double value, char *spin,
 		      value, 0, outfile, dirac);
   }
 
-  /* F (ov|vv) integrals */
-  if(occ1[p] && vir1[q] && vir2[r] && vir2[s])
+  /* F (ov|vv) and (vv|ov) integrals */
+  if(occ1[p] && vir1[q] && vir2[r] && vir2[s]) {
     iwl_buf_wrt_val(FBuf1, cc_occ1[p], cc_vir1[q], cc_vir2[r], cc_vir2[s],
 		    value, 0, outfile, dirac);
-  else if(occ1[q] && vir1[p] && vir2[r] && vir2[s])
+    iwl_buf_wrt_val(FBuf2, cc_vir2[r], cc_vir2[s], cc_occ1[p], cc_vir1[q],
+		    value, 0, outfile, dirac);
+  }
+  else if(occ1[q] && vir1[p] && vir2[r] && vir2[s]) {
     iwl_buf_wrt_val(FBuf1, cc_occ1[q], cc_vir1[p], cc_vir2[r], cc_vir2[s],
 		    value, 0, outfile, dirac);
-  else if(occ1[r] && vir1[s] && vir2[p] && vir2[q] && strcmp(spin,"AB"))
+    iwl_buf_wrt_val(FBuf2, cc_vir2[r], cc_vir2[s], cc_occ1[q], cc_vir1[p],
+		    value, 0, outfile, dirac);
+  }
+  else if(occ1[r] && vir1[s] && vir2[p] && vir2[q] && strcmp(spin,"AB")) {
     iwl_buf_wrt_val(FBuf1, cc_occ1[r], cc_vir1[s], cc_vir2[p], cc_vir2[q],
 		    value, 0, outfile, dirac);
-  else if(occ1[s] && vir1[r] && vir2[p] && vir2[q] && strcmp(spin,"AB"))
+    iwl_buf_wrt_val(FBuf2, cc_vir2[p], cc_vir2[q], cc_occ1[r], cc_vir1[s],
+		    value, 0, outfile, dirac);
+  }
+  else if(occ1[s] && vir1[r] && vir2[p] && vir2[q] && strcmp(spin,"AB")) {
     iwl_buf_wrt_val(FBuf1, cc_occ1[s], cc_vir1[r], cc_vir2[p], cc_vir2[q],
 		    value, 0, outfile, dirac);
+    iwl_buf_wrt_val(FBuf2, cc_vir2[p], cc_vir2[q], cc_occ1[s], cc_vir1[r],
+		    value, 0, outfile, dirac);
+  }
 
 
   if(!strcmp(spin,"AB")) {
     /* F (vv|vo) and (vv|ov) integrals */
     if(vir1[p] && vir1[q] && vir2[r] && occ2[s]) {
-      iwl_buf_wrt_val(FBuf2, cc_vir1[p], cc_vir1[q], cc_vir2[r], cc_occ2[s],
+      iwl_buf_wrt_val(FBuf3, cc_vir1[p], cc_vir1[q], cc_vir2[r], cc_occ2[s],
 		      value, 0, outfile, dirac);
-      iwl_buf_wrt_val(FBuf3, cc_vir1[p], cc_vir1[q], cc_occ2[s], cc_vir2[r],
+      iwl_buf_wrt_val(FBuf4, cc_vir1[p], cc_vir1[q], cc_occ2[s], cc_vir2[r],
 		      value, 0, outfile, dirac);
     }
     else if(vir1[p] && vir1[q] && vir2[s] && occ2[r]) {
-      iwl_buf_wrt_val(FBuf2, cc_vir1[p], cc_vir1[q], cc_vir2[s], cc_occ2[r],
+      iwl_buf_wrt_val(FBuf3, cc_vir1[p], cc_vir1[q], cc_vir2[s], cc_occ2[r],
 		      value, 0, outfile, dirac); 
-      iwl_buf_wrt_val(FBuf3, cc_vir1[p], cc_vir1[q], cc_occ2[r], cc_vir2[s],
+      iwl_buf_wrt_val(FBuf4, cc_vir1[p], cc_vir1[q], cc_occ2[r], cc_vir2[s],
 		      value, 0, outfile, dirac); 
    }
   }
