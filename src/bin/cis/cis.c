@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
       for(i=0; i < params.rpi[h]; i++) {
         value = moinfo.singlet_evals[h][i];
 
-        fprintf(outfile,   "\t%4d   %3s %18.14f  %9.5f  %10.2f\n", i, moinfo.labels[h],
+        fprintf(outfile,   "CIS State %4d   %3s %18.14f  %9.5f  %10.2f\n", i, moinfo.labels[h],
             value, value*_hartree2ev, value*_hartree2wavenumbers);
 
         fprintf(outfile, "\nLargest components of singlet excited wave function #%d/#%d:\n",
@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
       for(i=0; i < params.rpi[h]; i++) {
         value = moinfo.triplet_evals[h][i];
 
-        fprintf(outfile,   "\t%4d   %3s %18.14f  %9.5f  %10.2f\n", i, moinfo.labels[h],
+        fprintf(outfile,   "CIS State %4d   %3s %18.14f  %9.5f  %10.2f\n", i, moinfo.labels[h],
             value, value*_hartree2ev, value*_hartree2wavenumbers);
 
         fprintf(outfile, "\nLargest components of triplet excited wave function #%d/#%d:\n", h, i);
@@ -139,7 +139,7 @@ int main(int argc, char *argv[])
       for(i=0; i < params.rpi[h]; i++) {
         value = moinfo.singlet_d[h][i];
 
-        fprintf(outfile,   "\t%4d   %3s %18.14f  %9.5f  %10.2f\n", i, moinfo.labels[h],
+        fprintf(outfile,   "CIS State %4d   %3s %18.14f  %9.5f  %10.2f\n", i, moinfo.labels[h],
             value, value*_hartree2ev, value*_hartree2wavenumbers);
       }
     }
@@ -154,7 +154,7 @@ int main(int argc, char *argv[])
         value = moinfo.singlet_evals[h][i];
         value += moinfo.singlet_d[h][i];
 
-        fprintf(outfile,   "\t%4d   %3s %18.14f  %9.5f  %10.2f\n", i, moinfo.labels[h],
+        fprintf(outfile,   "CIS State %4d   %3s %18.14f  %9.5f  %10.2f\n", i, moinfo.labels[h],
             value, value*_hartree2ev, value*_hartree2wavenumbers);
       }
     }
@@ -169,7 +169,7 @@ int main(int argc, char *argv[])
         for(i=0; i < params.rpi[h]; i++) {
           value = moinfo.singlet_weakp[h][i];
 
-          fprintf(outfile,   "\t%4d   %3s %18.14f  %9.5f  %10.2f\n", i, moinfo.labels[h],
+          fprintf(outfile,   "CIS State %4d   %3s %18.14f  %9.5f  %10.2f\n", i, moinfo.labels[h],
               value, value*_hartree2ev, value*_hartree2wavenumbers);
         }
       }
@@ -187,7 +187,7 @@ int main(int argc, char *argv[])
       for(i=0; i < params.rpi[h]; i++) {
         value = moinfo.uhf_evals[h][i];
 
-        fprintf(outfile,   "\t%4d   %3s %18.14f  %9.5f  %10.2f\n", i, moinfo.labels[h],
+        fprintf(outfile,   "CIS State %4d   %3s %18.14f  %9.5f  %10.2f\n", i, moinfo.labels[h],
             value, value*_hartree2ev, value*_hartree2wavenumbers);
       }
     }
@@ -202,7 +202,7 @@ int main(int argc, char *argv[])
       for(i=0; i < params.rpi[h]; i++) {
         value = moinfo.uhf_d[h][i];
 
-        fprintf(outfile,   "\t%4d   %3s %18.14f  %9.5f  %10.2f\n", i, moinfo.labels[h],
+        fprintf(outfile,   "CIS State %4d   %3s %18.14f  %9.5f  %10.2f\n", i, moinfo.labels[h],
             value, value*_hartree2ev, value*_hartree2wavenumbers);
       }
     }
@@ -218,7 +218,7 @@ int main(int argc, char *argv[])
         value = moinfo.uhf_evals[h][i];
         value += moinfo.uhf_d[h][i];
 
-        fprintf(outfile,   "\t%4d   %3s %18.14f  %9.5f  %10.2f\n", i, moinfo.labels[h],
+        fprintf(outfile,   "CIS State %4d   %3s %18.14f  %9.5f  %10.2f\n", i, moinfo.labels[h],
             value, value*_hartree2ev, value*_hartree2wavenumbers);
       }
     }
