@@ -573,7 +573,4 @@ int parse_cmdline(int argc, char *argv[])
   }
   return(1);
 }
-/* turn off guard */
-#ifdef __sgi
-#undef AIX
-#endif
+
