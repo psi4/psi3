@@ -10,13 +10,6 @@
 #include <dpd.h>
 #include "globals.h"
 
-/* Set this flag to 1 if you want re-run the code without re-running 
-   ccenergy for testing purposes.  This will prevent CCLAMBDA from
-   over-writing the incomplete WMBEJ HBAR matrix elements computed and
-   used by CCENERGY.  CCLAMBDA will give incorrect results
-   unless this flag is set to 0. */
-#define REDO 0
-
 /* Function prototypes */
 void init_io(void);
 void title(void);
@@ -36,6 +29,8 @@ int **cacheprep_uhf(int level, int *cachefiles);
 void cachedone_uhf(int **cachelist);
 void cachedone_rhf(int **cachelist);
 void sort_amps(void);
+void tau_build(void);
+void taut_build(void);
 
 int main(int argc, char *argv[])
 {
@@ -66,9 +61,10 @@ int main(int argc, char *argv[])
 
   sort_amps();
   tau_build();
+  taut_build();
 
-  if(!REDO) F_build();
-  if(!REDO) Wmbej_build();
+  F_build();
+  Wmbej_build();
   Wamef_build();
   Wmnie_build();
   Wmbij_build();
