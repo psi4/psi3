@@ -32,6 +32,8 @@ void count_ijk(void);
 void setup(void);
 int **cacheprep_rhf(int level, int *cachefiles);
 int **cacheprep_uhf(int level, int *cachefiles);
+void cachedone_uhf(int **cachelist);
+void cachedone_rhf(int **cachelist);
 
 int main(int argc, char *argv[])
 {
@@ -67,7 +69,7 @@ int main(int argc, char *argv[])
 	     2, moinfo.occpi, moinfo.occ_sym, moinfo.virtpi, moinfo.vir_sym);
   }
   else if(params.ref == 2) { /*** UHF ***/
-    cachelist = cacheprep_uhf(0, cachefiles);
+    cachelist = cacheprep_uhf(2, cachefiles);
 
     dpd_init(0, moinfo.nirreps, memory, 0, cachefiles, 
 	     cachelist, NULL, 4, moinfo.aoccpi, moinfo.aocc_sym, moinfo.avirtpi,
