@@ -1,0 +1,592 @@
+#include <stdio.h>
+#include <qt.h>
+#include "dpd.h"
+
+/* dpd_buf4_mat_irrep_rd(): Reads an entire irrep from disk into a dpd
+** four-index buffer using the "rules" specified when the buffer was
+** initialized by dpd_buf4_init().
+**
+** Arguments:
+**   dpdbuf4 *Buf: A pointer to the dpdbuf4 where the data will
+**                 be stored.
+**   int irrep: The irrep number to be read.
+**
+** Tested methods: 11,12,22,31,44. (12/3/96)
+**
+** There are definitely some problems with the read routines here.
+** Mainly in the case of unpacking bra indices, there is a danger that
+** the input row buffer won't be filled with new values or zeros.  See,
+** e.g., method 21.
+**
+** T. Daniel Crawford
+** December 1996
+**
+** Minor modifications for newest dpd version.
+** TDC
+** October 1997
+**
+** Converted to latest version.
+** TDC
+** September 1999
+*/
+
+int dpd_buf4_mat_irrep_rd(dpdbuf4 *Buf, int irrep)
+{
+  int method, my_irrep, filerow;
+  int pq, rs;  /* dpdbuf row and column indices */
+  int p, q, r, s;  /* orbital indices */
+  int filepq, filers, filesr;  /* Input dpdfile row and column indices */
+  int rowtot, coltot;  /* dpdbuf row and column dimensions */
+  int b_perm_pq, b_perm_rs, b_peq, b_res;
+  int f_perm_pq, f_perm_rs, f_peq, f_res;
+  int pq_permute, permute;
+  double value;
+
+  timer_on("buf_rd");
+
+  my_irrep = Buf->file.my_irrep;
+
+  rowtot = Buf->params->rowtot[irrep];
+  coltot = Buf->params->coltot[irrep^my_irrep];
+
+  b_perm_pq = Buf->params->perm_pq; b_perm_rs = Buf->params->perm_rs;
+  f_perm_pq = Buf->file.params->perm_pq; f_perm_rs = Buf->file.params->perm_rs;
+  b_peq = Buf->params->peq; b_res = Buf->params->res;
+  f_peq = Buf->file.params->peq; f_res = Buf->file.params->res;
+
+  if((b_perm_pq == f_perm_pq) && (b_perm_rs == f_perm_rs) &&
+     (b_peq == f_peq) && (b_res == f_res)) {
+      if(Buf->anti) method = 11;
+      else method = 12;
+      }
+  else if((b_perm_pq != f_perm_pq) && (b_perm_rs == f_perm_rs) &&
+	  (b_res == f_res)) {
+      if(f_perm_pq && !b_perm_pq) {
+	  if(Buf->anti) {
+	      printf("\n\tUnpack pq and antisymmetrize?\n");
+	      exit(2);
+	    }
+	  method = 21;
+	}
+      else if(!f_perm_pq && b_perm_pq) {
+	  if(Buf->anti) method = 22;
+	  else method = 23;
+	}
+      else {
+	  printf("\n\tInvalid second-level method!\n");
+	  exit(2);
+	}
+    }
+  else if((b_perm_pq == f_perm_pq) && (b_perm_rs != f_perm_rs) &&
+	  (b_peq == f_peq)) {
+      if(f_perm_rs && !b_perm_rs) {
+	  if(Buf->anti) {
+	      printf("\n\tUnpack rs and antisymmetrize?\n");
+	      exit(3);
+	    }
+	  method = 31;
+	}
+      else if(!f_perm_rs && b_perm_rs) {
+	  if(Buf->anti) method = 32;
+	  else method = 33;
+	}
+      else {
+	  printf("\n\tInvalid third-level method!\n");
+	  exit(3);
+	}
+    }
+  else if((b_perm_pq != f_perm_pq) && (b_perm_rs != f_perm_rs)) {
+      if(f_perm_pq && !b_perm_pq) {
+	  if(f_perm_rs && !b_perm_rs) {
+	      if(Buf->anti) {
+		  printf("\n\tUnpack pq and rs and antisymmetrize?\n");
+		  exit(4);
+		}
+	      else method = 41;
+	    }
+	  else if(!f_perm_rs && b_perm_rs) {
+	      if(Buf->anti) {
+		  printf("\n\tUnpack pq and antisymmetrize?\n");
+		  exit(4);
+		}
+	      else method = 42;
+	    }
+	}
+      else if(!f_perm_pq && b_perm_pq) {
+	  if(f_perm_rs && !b_perm_rs) {
+	      if(Buf->anti) {
+		  printf("\n\tUnpack rs and antisymmetrize?\n");
+		  exit(4);
+		}
+	      else method = 43;
+	    }
+	  else if(!f_perm_rs && b_perm_rs) {
+	      if(Buf->anti) method = 44;
+	      else method = 45;
+	    }
+	}
+      else {
+	  printf("\n\tInvalid fourth-level method!\n");
+	  exit(4);
+	}
+    }
+  else {
+      printf("\n\tInvalid method in dpd_buf_mat_irrep_rd!\n");
+      exit(5);
+    }
+
+
+  switch(method) {
+  case 11: /* No change in pq or rs; antisymmetrize */
+
+      timer_on("buf_rd_11");
+
+      /* Prepare the input buffer from the input file */
+      dpd_file4_mat_irrep_row_init(&(Buf->file), irrep);
+
+      /* Loop over rows in the dpdbuf/dpdfile */
+      for(pq=0; pq < rowtot; pq++) {
+
+	  /* Fill the buffer */
+	  dpd_file4_mat_irrep_row_rd(&(Buf->file), irrep, pq);
+
+	  filerow = Buf->file.incore ? pq : 0;
+	  
+	  /* Loop over the columns in the dpdbuf */
+	  for(rs=0; rs < coltot; rs++) {
+	      r = Buf->params->colorb[irrep^my_irrep][rs][0];
+	      s = Buf->params->colorb[irrep^my_irrep][rs][1];
+
+	      /* Column indices in the dpdfile */
+	      filers = rs;
+	      filesr = Buf->file.params->colidx[s][r];
+
+	      value = Buf->file.matrix[irrep][filerow][filers];
+
+	      value -= Buf->file.matrix[irrep][filerow][filesr];
+
+	      /* Assign the value */
+	      Buf->matrix[irrep][pq][rs] = value;
+	    }
+	}
+
+      /* Close the input buffer */
+      dpd_file4_mat_irrep_row_close(&(Buf->file), irrep);
+
+      timer_off("buf_rd_11");
+
+      break;
+  
+  case 12: /* No change in pq or rs */
+
+      timer_on("buf_rd_12");
+
+      if(Buf->file.incore && rowtot*coltot) {
+          
+          /* We shouldn't actually have to do anything here since the
+             pointer to the data should already have been copied in
+             buf4_mat_irrep_init(). */
+          1;
+/*
+          C_DCOPY(rowtot*coltot, &(Buf->file.matrix[irrep][0][0]), 1,
+                  &(Buf->matrix[irrep][0][0]), 1);
+*/
+/*
+	  memcpy((void *) &(Buf->matrix[irrep][0][0]),
+		 (const void *) &(Buf->file.matrix[irrep][0][0]),
+		 sizeof(double)*rowtot*coltot);
+*/
+        }
+      else {
+	  Buf->file.matrix[irrep] = Buf->matrix[irrep];
+	  dpd_file4_mat_irrep_rd(&(Buf->file), irrep);
+	}
+
+      timer_off("buf_rd_12");
+      
+      break;
+  case 21: /* Unpack pq; no change in rs */
+
+      timer_on("buf_rd_21");
+      
+      /* Prepare the input buffer from the input file */
+      dpd_file4_mat_irrep_row_init(&(Buf->file), irrep);
+
+      /* Loop over rows in the dpdbuf */
+      for(pq=0; pq < rowtot; pq++) {
+	  p = Buf->params->roworb[irrep][pq][0];
+	  q = Buf->params->roworb[irrep][pq][1];
+	  filepq = Buf->file.params->rowidx[p][q];
+
+	  filerow = Buf->file.incore ? filepq : 0;
+
+	  /* Set the permutation operator's value */
+	  permute = ((p < q) && (f_perm_pq < 0) ? -1 : 1);
+
+	  /* Fill the buffer */
+	  if(filepq >= 0)
+	      dpd_file4_mat_irrep_row_rd(&(Buf->file), irrep, filepq);
+	  else
+	      dpd_file4_mat_irrep_row_zero(&(Buf->file), irrep, filepq);
+
+	  /* Loop over the columns in the dpdbuf */
+	  for(rs=0; rs < coltot; rs++) {
+	      filers = rs;
+
+	      if(filepq >= 0)
+		  value = Buf->file.matrix[irrep][filerow][filers];
+	      else
+		  value = 0;
+
+	      /* Assign the value, keeping track of the sign */
+	      Buf->matrix[irrep][pq][rs] = permute*value;
+	    }
+	}
+
+      /* Close the input buffer */
+      dpd_file4_mat_irrep_row_close(&(Buf->file), irrep);
+
+      timer_off("buf_rd_21");
+
+      break;
+  case 22: /* Pack pq; no change in rs; antisymmetrize */
+
+      timer_on("buf_rd_22");
+      
+      /* Prepare the input buffer from the input file */
+      dpd_file4_mat_irrep_row_init(&(Buf->file), irrep);
+
+      /* Loop over rows in the dpdbuf */
+      for(pq=0; pq < rowtot; pq++) {
+	  p = Buf->params->roworb[irrep][pq][0];
+	  q = Buf->params->roworb[irrep][pq][1];
+	  filepq = Buf->file.params->rowidx[p][q];
+
+	  filerow = Buf->file.incore ? filepq : 0;
+
+	  /* Fill the buffer */
+	  dpd_file4_mat_irrep_row_rd(&(Buf->file), irrep, filepq);
+
+	  /* Loop over the columns in the dpdbuf */
+	  for(rs=0; rs < coltot; rs++) {
+	      r = Buf->params->colorb[irrep^my_irrep][rs][0];
+	      s = Buf->params->colorb[irrep^my_irrep][rs][1];
+
+	      /* Column indices in the dpdfile */
+	      filers = rs;
+	      filesr = Buf->file.params->colidx[s][r];
+
+	      value = Buf->file.matrix[irrep][filerow][filers];
+
+	      value -= Buf->file.matrix[irrep][filerow][filesr];
+
+	      /* Assign the value */
+	      Buf->matrix[irrep][pq][rs] = value;
+	    }
+	}
+
+      /* Close the input buffer */
+      dpd_file4_mat_irrep_row_close(&(Buf->file), irrep);
+
+      timer_off("buf_rd_22");
+
+      break;
+  case 23: /* Pack pq; no change in rs */
+
+      timer_on("buf_rd_23");
+      
+      /* Prepare the input buffer from the input file */
+      dpd_file4_mat_irrep_row_init(&(Buf->file), irrep);
+
+      /* Loop over rows in the dpdbuf */
+      for(pq=0; pq < rowtot; pq++) {
+	  p = Buf->params->roworb[irrep][pq][0];
+	  q = Buf->params->roworb[irrep][pq][1];
+	  filepq = Buf->file.params->rowidx[p][q];
+
+	  filerow = Buf->file.incore ? filepq : 0;
+
+	  dpd_file4_mat_irrep_row_rd(&(Buf->file), irrep, filepq);
+
+	  /* Loop over the columns in the dpdbuf */
+	  for(rs=0; rs < coltot; rs++) {
+	      filers = rs;
+
+	      value = Buf->file.matrix[irrep][filerow][filers];
+
+	      /* Assign the value */
+	      Buf->matrix[irrep][pq][rs] = value;
+	    }
+	}
+
+      /* Close the input buffer */
+      dpd_file4_mat_irrep_row_close(&(Buf->file), irrep);
+
+      timer_off("buf_rd_23");
+
+      break;
+  case 31: /* No change in pq; unpack rs */
+
+      timer_on("buf_rd_31");
+      
+      /* Prepare the input buffer from the input file */
+      dpd_file4_mat_irrep_row_init(&(Buf->file), irrep);
+
+      /* Loop over rows in the dpdbuf/dpdfile */
+      for(pq=0; pq < rowtot; pq++) {
+	  filepq = pq;
+
+	  filerow = Buf->file.incore ? filepq : 0;
+
+	  /* Fill the buffer */
+	  dpd_file4_mat_irrep_row_rd(&(Buf->file), irrep, filepq);
+
+	  /* Loop over the columns in the dpdbuf */
+	  for(rs=0; rs < coltot; rs++) {
+	      r = Buf->params->colorb[irrep^my_irrep][rs][0];
+	      s = Buf->params->colorb[irrep^my_irrep][rs][1];
+	      filers = Buf->file.params->colidx[r][s];
+
+	      /* rs permutation operator */
+	      permute = ((r < s) && (f_perm_rs < 0) ? -1 : 1);
+
+	      /* Is this fast enough? */
+	      value = ((filers < 0) ? 0 :
+		       Buf->file.matrix[irrep][filerow][filers]);
+
+	      /* Assign the value */
+	      Buf->matrix[irrep][pq][rs] = permute*value;
+	    }
+	}
+
+      /* Close the input buffer */
+      dpd_file4_mat_irrep_row_close(&(Buf->file), irrep);
+
+      timer_off("buf_rd_31");
+
+      break;
+  case 32: /* No change in pq; pack rs; antisymmetrize */
+
+      timer_on("buf_rd_32");
+      
+      /* Prepare the input buffer from the input file */
+      dpd_file4_mat_irrep_row_init(&(Buf->file), irrep);
+
+      /* Loop over rows in the dpdbuf/dpdfile */
+      for(pq=0; pq < rowtot; pq++) {
+	  filepq = pq;
+
+	  filerow = Buf->file.incore ? filepq : 0;
+
+	  /* Fill the buffer */
+	  dpd_file4_mat_irrep_row_rd(&(Buf->file), irrep, filepq);
+
+	  /* Loop over the columns in the dpdbuf */
+	  for(rs=0; rs < coltot; rs++) {
+	      r = Buf->params->colorb[irrep^my_irrep][rs][0];
+	      s = Buf->params->colorb[irrep^my_irrep][rs][1];
+
+	      /* Column indices in the dpdfile */
+	      filers = Buf->file.params->colidx[r][s];
+	      filesr = Buf->file.params->colidx[s][r];
+
+	      value = Buf->file.matrix[irrep][filerow][filers];
+	      value -= Buf->file.matrix[irrep][filerow][filesr];
+
+	      /* Assign the value */
+	      Buf->matrix[irrep][pq][rs] = value;
+	    }
+	}
+
+      /* Close the input buffer */
+      dpd_file4_mat_irrep_row_close(&(Buf->file), irrep);
+
+      timer_off("buf_rd_32");
+
+      break;
+  case 33: /* No change in pq; pack rs */
+
+      timer_on("buf_rd_33");
+      
+      /* Prepare the input buffer from the input file */
+      dpd_file4_mat_irrep_row_init(&(Buf->file), irrep);
+
+      /* Loop over rows in the dpdbuf/dpdfile */
+      for(pq=0; pq < rowtot; pq++) {
+	  filepq = pq;
+
+	  filerow = Buf->file.incore ? filepq : 0;
+
+	  /* Fill the buffer */
+	  dpd_file4_mat_irrep_row_rd(&(Buf->file), irrep, filepq);
+
+	  /* Loop over the columns in the dpdbuf */
+	  for(rs=0; rs < coltot; rs++) {
+	      r = Buf->params->colorb[irrep^my_irrep][rs][0];
+	      s = Buf->params->colorb[irrep^my_irrep][rs][1];
+	      filers = Buf->file.params->colidx[r][s];
+
+	      value = Buf->file.matrix[irrep][filerow][filers];
+
+	      /* Assign the value */
+	      Buf->matrix[irrep][pq][rs] = value;
+	    }
+	}
+
+      /* Close the input buffer */
+      dpd_file4_mat_irrep_row_close(&(Buf->file), irrep);
+
+      timer_off("buf_rd_33");
+
+      break;
+  case 41: /* Unpack pq and rs */
+
+      timer_on("buf_rd_41");
+      
+      /* Prepare the input buffer from the input file */
+      dpd_file4_mat_irrep_row_init(&(Buf->file), irrep);
+
+      /* Loop over rows in the dpdbuf */
+      for(pq=0; pq < rowtot; pq++) {
+	  p = Buf->params->roworb[irrep][pq][0];
+	  q = Buf->params->roworb[irrep][pq][1];
+	  filepq = Buf->file.params->rowidx[p][q];
+
+	  filerow = Buf->file.incore ? filepq : 0;
+
+	  /* Set the value of the pq permutation operator */
+	  pq_permute = ((p < q) && (f_perm_pq) ? -1 : 1);
+
+	  /* Fill the buffer */
+	  if(filepq >= 0)
+	      dpd_file4_mat_irrep_row_rd(&(Buf->file), irrep, filepq);
+	  else
+	      dpd_file4_mat_irrep_row_zero(&(Buf->file), irrep, filepq);
+
+	  /* Loop over the columns in the dpdbuf */
+	  for(rs=0; rs < coltot; rs++) {
+	      r = Buf->params->colorb[irrep^my_irrep][rs][0];
+	      s = Buf->params->colorb[irrep^my_irrep][rs][1];
+	      filers = Buf->file.params->colidx[r][s];
+
+	      /* Set the value of the pqrs permutation operator */
+	      permute = ((r < s) && (f_perm_rs) ? -1 : 1)*pq_permute;
+
+              value = 0;
+
+	      if(filers >= 0 && filepq >= 0)
+		  value = Buf->file.matrix[irrep][filerow][filers];
+
+	      /* Assign the value */
+	      Buf->matrix[irrep][pq][rs] = permute*value;
+	    }
+	}
+
+      /* Close the input buffer */
+      dpd_file4_mat_irrep_row_close(&(Buf->file), irrep);
+
+      timer_off("buf_rd_41");
+      break;
+  case 42: /* Pack pq; unpack rs */
+      printf("\n\tHaven't programmed method 42 yet!\n");
+      exit(42);
+
+      break;
+  case 43: /* Unpack pq; pack rs */
+      printf("\n\tHaven't programmed method 43 yet!\n");
+      exit(43);
+
+      break;
+  case 44: /* Pack pq; pack rs; antisymmetrize */
+
+      timer_on("buf_rd_44");
+      
+      /* Prepare the input buffer from the input file */
+      dpd_file4_mat_irrep_row_init(&(Buf->file), irrep);
+
+      /* Loop over rows in the dpdbuf */
+      for(pq=0; pq < rowtot; pq++) {
+	  p = Buf->params->roworb[irrep][pq][0];
+	  q = Buf->params->roworb[irrep][pq][1];
+	  filepq = Buf->file.params->rowidx[p][q];
+
+	  filerow = Buf->file.incore ? filepq : 0;
+
+	  /* Fill the buffer */
+	  dpd_file4_mat_irrep_row_rd(&(Buf->file), irrep, filepq);
+
+	  /* Loop over the columns in the dpdbuf */
+	  for(rs=0; rs < coltot; rs++) {
+	      r = Buf->params->colorb[irrep^my_irrep][rs][0];
+	      s = Buf->params->colorb[irrep^my_irrep][rs][1];
+
+	      /* Column indices in the dpdfile */
+	      filers = Buf->file.params->colidx[r][s];
+	      filesr = Buf->file.params->colidx[s][r];
+
+	      value = Buf->file.matrix[irrep][filerow][filers];
+	      value -= Buf->file.matrix[irrep][filerow][filesr];
+
+	      /* Assign the value */
+	      Buf->matrix[irrep][pq][rs] = value;
+	    }
+	}
+
+      /* Close the input buffer */
+      dpd_file4_mat_irrep_row_close(&(Buf->file), irrep);
+
+      timer_off("buf_rd_44");
+
+      break;
+  case 45: /* Pack pq and rs */
+
+      timer_on("buf_rd_45");
+      
+      /* Prepare the input buffer from the input file */
+      dpd_file4_mat_irrep_row_init(&(Buf->file), irrep);
+
+      /* Loop over rows in the dpdbuf */
+      for(pq=0; pq < rowtot; pq++) {
+	  p = Buf->params->roworb[irrep][pq][0];
+	  q = Buf->params->roworb[irrep][pq][1];
+	  filepq = Buf->file.params->rowidx[p][q];
+
+	  filerow = Buf->file.incore ? filepq : 0;
+
+	  dpd_file4_mat_irrep_row_rd(&(Buf->file), irrep, filepq);
+
+	  /* Loop over the columns in the dpdbuf */
+	  for(rs=0; rs < coltot; rs++) {
+	      r = Buf->params->colorb[irrep^my_irrep][rs][0];
+	      s = Buf->params->colorb[irrep^my_irrep][rs][1];
+	      filers = Buf->file.params->colidx[r][s];
+
+	      if(filers < 0) {
+		  printf("\n\tNegative colidx in method 44?\n");
+		  exit(44);
+		}
+
+	      value = Buf->file.matrix[irrep][filerow][filers];
+
+	      /* Assign the value */
+	      Buf->matrix[irrep][pq][rs] = value;
+	    }
+	}
+
+      /* Close the input buffer */
+      dpd_file4_mat_irrep_row_close(&(Buf->file), irrep);
+
+      timer_off("buf_rd_45");
+
+      break;
+  default:  /* Error trapping */
+      printf("\n\tInvalid switch case in dpd_buf_mat_irrep_rd!\n");
+      exit(6);
+      break;
+    }
+
+  timer_off("buf_rd");
+  
+  return 0;
+
+}
