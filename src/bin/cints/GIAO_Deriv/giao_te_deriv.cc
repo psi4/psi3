@@ -203,7 +203,7 @@ extern "C" void giao_te_deriv(void)
 
           // if CD=0 then this contribution is 0
           if (center[2] != center[3]) {
-            inc[3] = 1;
+            inc[2] = 1;
             num_ints = compute_eri(abcp1d_buf, &Libint, si, sj, sk, sl, inc[0], inc[1], inc[2], inc[3], false);
             int gam_cp1[4];
             for(int i=0; i<4; i++)
@@ -214,7 +214,7 @@ extern "C" void giao_te_deriv(void)
             nao_cp1[2] = ioff[gam_cp1[2]+1];
             nao_cp1[3] = ioff[gam_cp1[3]+1];
             int quartet_size_abcp1d = nao_cp1[0]*nao_cp1[1]*nao_cp1[2]*nao_cp1[3];
-            inc[3] = 0;
+            inc[2] = 0;
             
             // (ab|c+1x d) contributes to dg/dBy and dg/dBz with these coefficients
             double cp1xpfac_y =  dgdB_pfac * CD.z;
