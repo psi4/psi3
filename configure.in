@@ -80,11 +80,16 @@ AC_ARG_WITH(max-am-eri,--with-max-am-eri       Maximum ERI AM,[
 AC_SUBST(LIBINT_NEW_AM,$LIBINT_NEW_AM)
 AC_SUBST(LIBINT_OPT_AM,$LIBINT_OPT_AM)
 
-LIBDERIV_NEW_AM=6
-AC_ARG_WITH(max-am-deriv,--with-max-am-deriv   Maximum deriv ERI AM,[
-    LIBDERIV_NEW_AM=$((2*($withval-1)))
+LIBDERIV_NEW_AM1=6
+AC_ARG_WITH(max-am-deriv1,--with-max-am-deriv1   Maximum deriv1 ERI AM,[
+    LIBDERIV_NEW_AM1=$((2*($withval-1)))
 ])
-AC_SUBST(LIBDERIV_NEW_AM)
+AC_SUBST(LIBDERIV_NEW_AM1)
+LIBDERIV_NEW_AM2=4
+AC_ARG_WITH(max-am-deriv2,--with-max-am-deriv2   Maximum deriv2 ERI AM,[
+    LIBDERIV_NEW_AM2=$((2*($withval-1)))
+])
+AC_SUBST(LIBDERIV_NEW_AM2)
 
 LIBR12_NEW_AM=6
 LIBR12_OPT_AM=6

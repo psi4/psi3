@@ -15,7 +15,7 @@ static int last_hrr_node = 0;      /* Global pointer to the last node on the HRR
 static int last_vrr_node = 0;      /* Global pointer to the last node on the VRR stack */
 
 extern FILE *outfile, *d1hrr_header, *init_code;
-extern int libderiv_stack_size[MAX_AM/2+1];
+extern int libderiv1_stack_size[MAX_AM/2+1];
 extern LibderivParams_t Params;
 
 typedef struct node{
@@ -47,7 +47,7 @@ static int vrr_hash_table[2*LMAX_AM][2*LMAX_AM][4*LMAX_AM];
 
 void emit_deriv1_managers()
 {
-  int new_am = Params.new_am;
+  int new_am = Params.new_am1;
   int old_am = Params.old_am;
   int opt_am = Params.opt_am;
   int am_to_inline_into_hrr = Params.max_am_to_inline_vrr_manager;
@@ -613,8 +613,8 @@ void emit_deriv1_managers()
       }
       
       /* compare this max_stack_size to the libint_stack_size for this angular momentum */
-      if (libderiv_stack_size[current_highest_am] < max_stack_size)
-	libderiv_stack_size[current_highest_am] = max_stack_size;
+      if (libderiv1_stack_size[current_highest_am] < max_stack_size)
+	libderiv1_stack_size[current_highest_am] = max_stack_size;
 
       max_stack_size = 0;
       }

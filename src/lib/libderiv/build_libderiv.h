@@ -1,14 +1,27 @@
 #define MAX_AM 16
 #define DERIV_LVL 2
-#define DEFAULT_NEW_AM 6  /*--- derivatives of up to f-functions ---*/
+#define DEFAULT_NEW_AM1 6  /*--- first derivatives of up to f-functions ---*/
+#define DEFAULT_NEW_AM2 4  /*--- first derivatives of up to d-functions ---*/
+#define DEFAULT_NEW_AM12 4  /*--- second derivatives of up to d-functions ---*/
 #define EMIT_DERIV2_MANAGERS 0  /*--- whether to produce manager functions that compute
 				   second derivatives only ---*/
 
 
 typedef struct {
 
-  /* Twice the maximum AM for which manager routines need to be generated */
+  /* Twice the maximum AM for which deriv1/deriv2/deriv12 manager routines need to be generated */
   int new_am;
+
+  /* Twice the maximum AM for which deriv1 manager routines need to be generated */
+  int new_am1;
+
+#if EMIT_DERIV2_MANAGERS
+  /* Twice the maximum AM for which deriv2 manager routines need to be generated */
+  int new_am2;
+#endif
+
+  /* Twice the maximum AM for which deriv12 manager routines need to be generated */
+  int new_am12;
 
   /* The maximum AM + 1 for which machine-generated VRR workers are present in libint.a */
   int opt_am;
