@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
   if(params.ref == 0) hbar_extra();
 
   /* CC3: Z-build */
-  /*  if(!strcmp(params.wfn,"CC3")) cc3_t3z(); */
+  if(!strcmp(params.wfn,"CC3")) cc3_t3z();
 
   for (i=0; i<params.nstates; ++i) {
     /* delete and reopen intermediate files */
@@ -129,7 +129,7 @@ int main(int argc, char *argv[])
       /* must zero New L before adding RHS */
       L_zero(pL_params[i].irrep);
 
-      /*      if(!strcmp(params.wfn,"CC3")) cc3_t3x(); */
+      if(!strcmp(params.wfn,"CC3")) cc3_t3x();
 
       L1_build(pL_params[i]);
       if(params.print & 2) status("L1 amplitudes", outfile);

@@ -120,6 +120,24 @@ void cc3_l3l1(void)
   dpd_buf4_close(&Z);
   dpd_buf4_close(&W);
 
+  dpd_buf4_init(&W, CC3_HET1, 0, 10, 11, 10, 11, 0, "CC3 WMBEJ (MB,EJ)");
+  dpd_buf4_init(&Z, CC3_MISC, 0, 0, 10, 0, 10, 0, "CC3 ZIMLE");
+  dpd_contract442(&Z, &W, &L1, 0, 2, 1, 1);
+  dpd_buf4_close(&Z);
+  dpd_buf4_close(&W);
+
+  dpd_buf4_init(&W, CC3_HET1, 0, 10, 11, 10, 11, 0, "CC3 WMbEj (Mb,Ej)");
+  dpd_buf4_init(&Z, CC3_MISC, 0, 0, 10, 0, 10, 0, "CC3 ZImLe");
+  dpd_contract442(&Z, &W, &L1, 0, 2, 1, 1);
+  dpd_buf4_close(&Z);
+  dpd_buf4_close(&W);
+
+  dpd_buf4_init(&W, CC3_HET1, 0, 10, 11, 10, 11, 0, "CC3 WmBEj (mB,Ej)");
+  dpd_buf4_init(&Z, CC3_MISC, 0, 0, 10, 0, 10, 0, "CC3 ZImlE");
+  dpd_contract442(&Z, &W, &L1, 0, 2, 1, 1);
+  dpd_buf4_close(&Z);
+  dpd_buf4_close(&W);
+
   /* Wmnij -> L1 */
 
   dpd_buf4_init(&W, CC3_HET1, 0, 0, 0, 2, 2, 0, "CC3 WMNIJ (M>N,I>J)");

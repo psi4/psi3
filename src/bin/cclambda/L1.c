@@ -455,7 +455,7 @@ void L1_build(struct L_Params L_params) {
     dpd_file2_close(&Gmi);
     dpd_file2_close(&GMI);
   }
-#if 0
+
   /* CC3 T3->L1 */
   if(!strcmp(params.wfn, "CC3")) {
     if(params.ref == 0) { 
@@ -491,7 +491,7 @@ void L1_build(struct L_Params L_params) {
       dpd_buf4_close(&L2);
     }
   }
-#endif
+
   dpd_file2_close(&newLIA);
   dpd_file2_close(&newLia);
 

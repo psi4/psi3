@@ -50,6 +50,7 @@ void cc3_l3l2_RHF_AAA(void)
   dpdbuf4 ZIGDE, T2;
   dpdbuf4 ZDMAE;
   dpdbuf4 ZLMAO;
+  dpdbuf4 ZIMLE;
   dpdbuf4 L2new, L2, D2;
   int Gjk, jk, Gid, id, Gik, ik;
   int Gd, d, DD;
@@ -58,6 +59,7 @@ void cc3_l3l2_RHF_AAA(void)
   int Gmi, mi, im, mc;
   int Gjd, jd;
   int Gij, ij, Gmk, mk, am, Gbc, bc;
+  int ac, mb;
   int nrows, ncols, nlinks;
   double **Z;
 
@@ -85,6 +87,9 @@ void cc3_l3l2_RHF_AAA(void)
 
   dpd_buf4_init(&ZLMAO, CC3_MISC, 0, 0, 11, 0, 11, 0, "CC3 ZLMAO");
   for(h=0; h < nirreps; h++) dpd_buf4_mat_irrep_init(&ZLMAO, h);
+
+  dpd_buf4_init(&ZIMLE, CC3_MISC, 0, 0, 10, 0, 10, 0, "CC3 ZIMLE");
+  for(h=0; h < nirreps; h++) dpd_buf4_mat_irrep_init(&ZIMLE, h);
 
   dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tIJAB");
   for(h=0; h < nirreps; h++) {
@@ -288,6 +293,45 @@ void cc3_l3l2_RHF_AAA(void)
 		}
 	      }
 
+	      /* Z_IJMB <-- -1/2 L_IJKABC t_MKAC */
+	      /* sort W(AB,C) to W(B,AC) */
+	      for(Gab=0; Gab < nirreps; Gab++) {
+		Gc = Gab ^ Gijk;
+		for(ab=0; ab < F.params->coltot[Gab]; ab++) {
+		  A = F.params->colorb[Gab][ab][0];
+		  B = F.params->colorb[Gab][ab][1];
+		  Gb = F.params->ssym[B];
+		  b = B - vir_off[Gb];
+		  for(c=0; c < virtpi[Gc]; c++) {
+		    C = vir_off[Gc] + c;
+		    ac = F.params->colidx[A][C];
+		    W2[Gb][b][ac] = W1[Gab][ab][c];
+		  }
+		}
+	      }
+
+	      ij = ZIMLE.params->rowidx[I][J];
+
+	      for(Gm=0; Gm < nirreps; Gm++) {
+		Gb = Gm ^ Gij; /* totally symmetric */
+		Gmk = Gm ^ Gk;
+
+		nrows = virtpi[Gb];
+		ncols = T2.params->coltot[Gmk];
+
+		for(m=0; m < occpi[Gm]; m++) {
+		  M = occ_off[Gm] + m;
+		  mk = T2.params->rowidx[M][K];
+		  mb = ZIMLE.col_offset[Gij][Gm] + m * virtpi[Gb];
+
+		  if(nrows && ncols)
+		    C_DGEMV('n', nrows, ncols, -0.5, W2[Gb][0], ncols, T2.matrix[Gmk][mk], 1,
+			    1.0, &(ZIMLE.matrix[Gij][ij][mb]), 1);
+		}
+
+	      }
+
+
 	    } /* k */
 	  } /* j */
 	} /* i */
@@ -333,6 +377,12 @@ void cc3_l3l2_RHF_AAA(void)
   }
   dpd_buf4_close(&ZLMAO);
 
+  for(h=0; h < nirreps; h++) {
+    dpd_buf4_mat_irrep_wrt(&ZIMLE, h);
+    dpd_buf4_mat_irrep_close(&ZIMLE, h);
+  }
+  dpd_buf4_close(&ZIMLE);
+
   for(h=0; h < nirreps; h++) dpd_buf4_mat_irrep_close(&T2, h);
   dpd_buf4_close(&T2);
 
@@ -370,16 +420,18 @@ void cc3_l3l2_RHF_AAB(void)
   dpdbuf4 ZIGDE, T2AB, T2AA, ZIgDe;
   dpdbuf4 ZDMAE, ZDmAe, ZdMAe;
   dpdbuf4 ZLMAO, ZLmAo;
+  dpdbuf4 ZIMLE, ZImLe, ZImlE;
   int nrows, ncols, nlinks;
   int Gcb, cb;
-  int Gij, ij, ji, Gjk, jk, kj, Gkj;
+  int Gij, ij, Gji, ji, Gjk, jk, kj, Gkj;
   int Gd, d, DD, ad, da, Gkd, kd;
   int Gm, m, M, Gmi, mi, im, mc;
   int Gid, id, dc, cd;
   int Gac, ac, Gca, ca, bd, db;
   int Gbc, bc, Gmk, mk, km, Gim, ma, am;
   int Gik, ik, Gki, ki, Gjd, jd;
-  int Gmj, mj, cm;
+  int Gmj, mj, cm, Gjm, jm;
+  int mb;
   double **Z;
 
   nirreps = moinfo.nirreps;
@@ -421,6 +473,17 @@ void cc3_l3l2_RHF_AAB(void)
     dpd_buf4_mat_irrep_rd(&ZLMAO, h);
 
     dpd_buf4_mat_irrep_init(&ZLmAo, h);
+  }
+
+  dpd_buf4_init(&ZIMLE, CC3_MISC, 0, 0, 10, 0, 10, 0, "CC3 ZIMLE");
+  dpd_buf4_init(&ZImLe, CC3_MISC, 0, 0, 10, 0, 10, 0, "CC3 ZImLe");
+  dpd_buf4_init(&ZImlE, CC3_MISC, 0, 0, 10, 0, 10, 0, "CC3 ZImlE");
+  for(h=0; h < nirreps; h++) {
+    dpd_buf4_mat_irrep_init(&ZIMLE, h);
+    dpd_buf4_mat_irrep_rd(&ZIMLE, h);
+
+    dpd_buf4_mat_irrep_init(&ZImLe, h);
+    dpd_buf4_mat_irrep_init(&ZImlE, h);
   }
 
   dpd_buf4_init(&WmAfE, CC3_HET1, 0, 10, 5, 10, 5, 0, "CC3 WAbEi (iE,bA)");
@@ -468,7 +531,7 @@ void cc3_l3l2_RHF_AAB(void)
 
   for(Gi=0; Gi < nirreps; Gi++) {
     for(Gj=0; Gj < nirreps; Gj++) {
-      Gij = Gi ^ Gj;
+      Gij = Gji = Gi ^ Gj;
       for(Gk=0; Gk < nirreps; Gk++) {
 	Gijk = Gi ^ Gj ^ Gk;
 
@@ -1169,6 +1232,156 @@ void cc3_l3l2_RHF_AAB(void)
 		}
 	      }
 
+	      /* Z_IJMB <-- - L_IJkABc t_MkAc */
+	      /* sort W(AB,C) to W(B,AC) */
+	      for(Gab=0; Gab < nirreps; Gab++) {
+		Gc = Gab ^ Gijk;
+		for(ab=0; ab < FAA.params->coltot[Gab]; ab++) {
+		  A = FAA.params->colorb[Gab][ab][0];
+		  B = FAA.params->colorb[Gab][ab][1];
+		  Gb = FAA.params->ssym[B];
+		  b = B - vir_off[Gb];
+		  for(c=0; c < virtpi[Gc]; c++) {
+		    C = vir_off[Gc] + c;
+		    ac = FAA.params->colidx[A][C];
+		    W2[Gb][b][ac] = W1[Gab][ab][c];
+		  }
+		}
+	      }
+
+	      ij = ZIMLE.params->rowidx[I][J];
+
+	      for(Gm=0; Gm < nirreps; Gm++) {
+		Gb = Gm ^ Gij; /* totally symmetric */
+		Gmk = Gm ^ Gk;
+
+		nrows = virtpi[Gb];
+		ncols = T2AB.params->coltot[Gmk];
+
+		for(m=0; m < occpi[Gm]; m++) {
+		  M = occ_off[Gm] + m;
+		  mk = T2AB.params->rowidx[M][K];
+		  mb = ZIMLE.col_offset[Gij][Gm] + m * virtpi[Gb];
+
+		  if(nrows && ncols)
+		    C_DGEMV('n', nrows, ncols, -1.0, W2[Gb][0], ncols, T2AB.matrix[Gmk][mk], 1,
+			    1.0, &(ZIMLE.matrix[Gij][ij][mb]), 1);
+		}
+
+	      }
+
+	      /* Z_IkMc <-- -1/2 L_IJkABc t_MJAB */ 
+	      ik = ZImLe.params->rowidx[I][K];
+	      for(Gm=0; Gm < nirreps; Gm++) {
+		Gc = Gm ^ Gik ; /* totally symmetric */
+		Gab = Gmj = Gm ^ Gj; /* totally symmetric */
+
+		nrows = T2AA.params->coltot[Gmj];
+		ncols = virtpi[Gc];
+
+		for(m=0; m < occpi[Gm]; m++) {
+		  M = occ_off[Gm] + m;
+		  mj = T2AA.params->rowidx[M][J];
+		  mc = ZImLe.col_offset[Gik][Gm] + m * virtpi[Gc];
+
+		  if(nrows && ncols)
+		    C_DGEMV('t', nrows, ncols, -0.5, W1[Gab][0], ncols, T2AA.matrix[Gmj][mj], 1,
+			    1.0, &(ZImLe.matrix[Gik][ik][mc]), 1);
+		}
+	      }
+
+	      /* Z_KiMa <-- - L_ijKabC t_MjCb */
+	      /* sort W(AB,C) to W(A,CB) */
+	      for(Gab=0; Gab < nirreps; Gab++) {
+		Gc = Gab ^ Gijk;
+		for(ab=0; ab < FAA.params->coltot[Gab]; ab++) {
+		  A = FAA.params->colorb[Gab][ab][0];
+		  B = FAA.params->colorb[Gab][ab][1];
+		  Ga = FAA.params->rsym[A];
+		  a = A - vir_off[Ga];
+		  for(c=0; c < virtpi[Gc]; c++) {
+		    C = vir_off[Gc] + c;
+		    cb = FAA.params->colidx[C][B];
+		    W2[Ga][a][cb] = W1[Gab][ab][c];
+		  }
+		}
+	      }
+
+	      ki = ZImLe.params->rowidx[K][I];
+	      for(Gm=0; Gm < nirreps; Gm++) {
+		Ga = Gm ^ Gki; /* totally symmetric */
+		Gmj = Gm ^ Gj;
+
+		nrows = virtpi[Ga];
+		ncols = T2AB.params->coltot[Gmj];
+
+		for(m=0; m < occpi[Gm]; m++) {
+		  M = occ_off[Gm] + m;
+		  mj = T2AB.params->rowidx[M][J];
+		  ma = ZImLe.col_offset[Gki][Gm] + m * virtpi[Ga];
+
+		  if(nrows && ncols)
+		    C_DGEMV('n', nrows, ncols, -1.0, W2[Ga][0], ncols, T2AB.matrix[Gmj][mj], 1,
+			    1.0, &(ZImLe.matrix[Gki][ki][ma]), 1);
+		}
+	      }
+
+	      /* Z_KimC <-- 1/2 L_ijKabC t_mjab */
+	      ki = ZImlE.params->rowidx[K][I];
+	      for(Gm=0; Gm < nirreps; Gm++) {
+		Gc = Gm ^ Gki; /* totally symmetric */
+		Gab = Gmj = Gm ^ Gj;
+
+		nrows = T2AA.params->coltot[Gmj];
+		ncols = virtpi[Gc];
+
+		for(m=0; m < occpi[Gm]; m++) {
+		  M = occ_off[Gm] + m;
+		  mj = T2AA.params->rowidx[M][J];
+		  mc = ZImlE.col_offset[Gki][Gm] + m * virtpi[Gc];
+
+		  if(nrows && ncols)
+		    C_DGEMV('t', nrows, ncols, 0.5, W1[Gab][0], ncols, T2AA.matrix[Gmj][mj], 1,
+			    1.0, &(ZImlE.matrix[Gki][ki][mc]), 1);
+		}
+	      }
+
+	      /* Z_IkmB <-- - l_IJkABc t_JmAc */
+	      ik = ZImlE.params->rowidx[I][K];
+	      /* sort W(AB,C) to W(B,AC) */
+	      for(Gab=0; Gab < nirreps; Gab++) {
+		Gc = Gab ^ Gijk;
+		for(ab=0; ab < FAA.params->coltot[Gab]; ab++) {
+		  A = FAA.params->colorb[Gab][ab][0];
+		  B = FAA.params->colorb[Gab][ab][1];
+		  Gb = FAA.params->ssym[B];
+		  b = B - vir_off[Gb];
+		  for(c=0; c < virtpi[Gc]; c++) {
+		    C = vir_off[Gc] + c;
+		    ac = FAA.params->colidx[A][C];
+		    W2[Gb][b][ac] = W1[Gab][ab][c];
+		  }
+		}
+	      }
+
+	      for(Gm=0; Gm < nirreps; Gm++) {
+		Gb = Gm ^ Gik; /* totally symmetric */
+		Gjm = Gm ^ Gj;
+
+		nrows = virtpi[Gb];
+		ncols = T2AB.params->coltot[Gjm];
+
+		for(m=0; m < occpi[Gm]; m++) {
+		  M = occ_off[Gm] + m;
+		  jm = T2AB.params->rowidx[J][M];
+		  mb = ZImlE.col_offset[Gki][Gm] + m * virtpi[Gb];
+
+		  if(nrows && ncols)
+		    C_DGEMV('n', nrows, ncols, -1.0, W2[Gb][0], ncols, T2AB.matrix[Gjm][jm], 1,
+			    1.0, &(ZImlE.matrix[Gik][ik][mb]), 1);
+		}
+	      }
+
 	    } /* k */
 	  } /* j */
 	} /* i */
@@ -1235,12 +1448,29 @@ void cc3_l3l2_RHF_AAB(void)
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_wrt(&ZLMAO, h);
     dpd_buf4_mat_irrep_close(&ZLMAO, h);
-
+  }
+  dpd_buf4_close(&ZLMAO);
+  for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_wrt(&ZLmAo, h);
     dpd_buf4_mat_irrep_close(&ZLmAo, h);
   }
-  dpd_buf4_close(&ZLMAO);
   dpd_buf4_close(&ZLmAo);
+
+  for(h=0; h < nirreps; h++) {
+    dpd_buf4_mat_irrep_wrt(&ZIMLE, h);
+    dpd_buf4_mat_irrep_close(&ZIMLE, h);
+  }
+  dpd_buf4_close(&ZIMLE);
+  for(h=0; h < nirreps; h++) {
+    dpd_buf4_mat_irrep_wrt(&ZImLe, h);
+    dpd_buf4_mat_irrep_close(&ZImLe, h);
+  }
+  dpd_buf4_close(&ZImLe);
+  for(h=0; h < nirreps; h++) {
+    dpd_buf4_mat_irrep_wrt(&ZImlE, h);
+    dpd_buf4_mat_irrep_close(&ZImlE, h);
+  }
+  dpd_buf4_close(&ZImlE);
 
   for(h=0; h < nirreps; h++) dpd_buf4_mat_irrep_close(&T2AB, h);
   for(h=0; h < nirreps; h++) dpd_buf4_mat_irrep_close(&T2AA, h);

@@ -100,7 +100,7 @@ double pseudoenergy(struct L_Params L_params)
       fprintf(outfile, "Two BB Energy = %20.14f\n", Lijab_energy);
       fprintf(outfile, "Two AB Energy = %20.14f\n", LIjAb_energy);
     */
-    return (2.0 * LIA_energy + LIJAB_energy + Lijab_energy + LIjAb_energy);
+    return (LIJAB_energy + Lijab_energy + LIjAb_energy);
   }
   else { /* since pseudoenergy is 0 lets compute norm instead */
     if (params.ref <= 1) { /* RHF or ROHF */
