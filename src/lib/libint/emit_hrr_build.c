@@ -1,10 +1,8 @@
 #include <math.h>
 #include <stdio.h>
-#include <libciomr/libciomr.h>
-
 #include "build_libint.h"
 
-extern FILE *infile, *outfile, *hrr_header;
+extern FILE *outfile, *hrr_header;
 extern LibintParams_t Params;
 
 extern void punt(char *);

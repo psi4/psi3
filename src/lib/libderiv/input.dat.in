@@ -1,4 +1,0 @@
-libderiv: (
-  new_am1 = @LIBDERIV_NEW_AM1@
-  new_am12 = @LIBDERIV_NEW_AM2@
-)

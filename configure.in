@@ -802,25 +802,19 @@ AC_OUTPUT(include/psiconfig.h
 
           src/lib/libderiv/Makefile
           src/lib/libderiv/MakeVars
-          src/lib/libderiv/Makefile.compiler
-          src/lib/libderiv/Makefile.libderiv
-          src/lib/libderiv/input.dat
+          src/lib/libderiv/libderiv_config.h
           src/lib/libdpd/Makefile
           src/lib/libfile30/Makefile
           src/lib/libchkpt/Makefile
           src/lib/libint/Makefile
           src/lib/libint/MakeVars
-          src/lib/libint/Makefile.compiler
-          src/lib/libint/Makefile.libint
-          src/lib/libint/input.dat
+	  src/lib/libint/libint_config.h
           src/lib/libiwl/Makefile
           src/lib/libpsio/Makefile
           src/lib/libqt/Makefile
           src/lib/libr12/Makefile
           src/lib/libr12/MakeVars
-          src/lib/libr12/Makefile.compiler
-          src/lib/libr12/Makefile.libr12
-          src/lib/libr12/input.dat
+          src/lib/libr12/libr12_config.h
           src/bin/Makefile src/bin/MakeRules src/bin/MakeVars
 
           src/bin/cphf/Makefile

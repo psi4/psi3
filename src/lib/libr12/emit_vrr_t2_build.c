@@ -1,10 +1,9 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <libciomr/libciomr.h>
 #include "build_libr12.h"
 
-extern FILE *infile, *outfile, *vrr_header;
+extern FILE *outfile, *vrr_header;
 extern Libr12Params_t Params;
 
 extern void punt(char *);

@@ -19,12 +19,12 @@
 
 #include <math.h>
 #include <stdio.h>
-#include <libipv1/ip_lib.h>
-#include <libciomr/libciomr.h>
 #include <libint/libint.h>
 #include "build_libr12.h"
 
-FILE *infile, *outfile, *vrr_header, *hrr_header, *libr12_header, *init_code;
+#include "libr12_config.h"
+
+FILE *outfile, *vrr_header, *hrr_header, *libr12_header, *init_code;
 int libr12_stack_size[MAX_AM/2+1];
 Libr12Params_t Params;
 
@@ -51,36 +51,28 @@ int main()
   /*-------------------------------
     Initialize files and libraries
    -------------------------------*/
-  infile = fopen("./input.dat", "r");
   outfile = fopen("./output.dat", "w");
   hrr_header = fopen("./r12_hrr_header.h","w");
   vrr_header = fopen("./r12_vrr_header.h","w");
   libr12_header = fopen("./libr12.h","w");
   init_code = fopen("./init_libr12.cc","w");
 
-  ip_set_uppercase(1);
-  ip_initialize(infile,outfile);
-  ip_cwk_add(":DEFAULT");
-  ip_cwk_add(":LIBR12");
-
   /*----------------------------------------
     Getting the new_am from user and making
     sure it is consistent with libint.h
    ----------------------------------------*/
-  errcod = ip_data("NEW_AM","%d",&new_am,0);
-  if (errcod != IPE_OK)
-    new_am = DEFAULT_NEW_AM;
+  new_am = LIBR12_NEW_AM;
   if (new_am <= 0)
-    punt("  NEW_AM must be positive.");
+    punt("  MAX_AM must be positive.");
   if (new_am > (LIBINT_MAX_AM - 1 - DERIV_LVL)*2)
-    punt("  Maximum NEW_AM is greater installed libint.a allows.\n  Recompile libint.a with greater NEW_AM.");
+    punt("  MAX_AM is greater installed libint.a allows.\n  Recompile libint.a with greater MAX_AM.");
 
-  errcod = ip_data("OPT_AM","%d",&opt_am,0);
-  if (errcod != IPE_OK || opt_am < 2)
+  opt_am = LIBR12_OPT_AM;
+  if (opt_am < 2)
     opt_am = DEFAULT_OPT_AM;
   if (opt_am > new_am) opt_am = new_am;
 
-  errcod = ip_data("MAX_CLASS_SIZE","%d",&max_class_size,0);
+  max_class_size = LIBR12_MAX_CLASS_SIZE;
   if (max_class_size < 10)
     punt("  MAX_CLASS_SIZE cannot be smaller than 10.");
 

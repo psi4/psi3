@@ -3,12 +3,11 @@ include $(top_objdir)/src/lib/libr12/MakeVars
 
 LD = $(CC)
 LDFLAGS += -lm
-PSILIBS = -lPSI_ipv1
-vpath %.a $(top_objdir)/lib:$(libdir)
+vpath %.a $(libdir)
 
 BINOBJ = $(BUILD_SRC:%.c=%.o)
 
-$(BUILD_BINARY): $(BINOBJ) $(PSILIBS) $(LDLIBS)
+$(BUILD_BINARY): $(BINOBJ) $(LDLIBS)
 	$(LD) $(LDFLAGS) -o $@ $^
 
 %.$(OBJSUF): %.c

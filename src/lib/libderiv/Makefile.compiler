@@ -2,12 +2,11 @@ include $(top_objdir)/src/lib/MakeVars
 include $(top_objdir)/src/lib/libderiv/MakeVars
 
 LD = $(CC)
-PSILIBS = libPSI_ipv1.a
-vpath %.a $(top_objdir)/lib:$(libdir)
+vpath %.a $(libdir)
 
 BINOBJ = $(BUILD_SRC:%.c=%.o)
 
-$(BUILD_BINARY): $(BINOBJ) $(PSILIBS) $(LDLIBS)
+$(BUILD_BINARY): $(BINOBJ) $(LDLIBS)
 	$(LD) $^ $(LDFLAGS) -o $@
 
 %.$(OBJSUF): %.c

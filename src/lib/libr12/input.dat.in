@@ -1,4 +1,0 @@
-libr12: (
-  new_am = @LIBR12_NEW_AM@
-  opt_am = @LIBR12_NEW_AM@
-)

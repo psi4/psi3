@@ -1,7 +1,5 @@
 #include <math.h>
 #include <stdio.h>
-#include <libciomr/libciomr.h>
-
 #include "build_libderiv.h"
 
 extern FILE *outfile, *libint_src, *d1hrr_header;

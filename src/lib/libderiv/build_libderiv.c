@@ -1,11 +1,11 @@
 #include <math.h>
 #include <stdio.h>
-#include <libipv1/ip_lib.h>
-#include <libciomr/libciomr.h>
 #include <libint/libint.h>
 #include "build_libderiv.h"
 
-FILE *infile, *outfile, *d1hrr_header,
+#include "libderiv_config.h"
+
+FILE *outfile, *d1hrr_header,
      *deriv_header, *libderiv_header, *init_code;
 int libderiv1_stack_size[MAX_AM/2+1];
 #if EMIT_DERIV2_MANAGERS
@@ -41,48 +41,36 @@ int main()
   /*-------------------------------
     Initialize files and libraries
    -------------------------------*/
-  infile = fopen("./input.dat", "r");
   outfile = fopen("./output.dat", "w");
   d1hrr_header = fopen("./d1hrr_header.h","w");
   deriv_header = fopen("./deriv_header.h","w");
   libderiv_header = fopen("./libderiv.h","w");
   init_code = fopen("./init_libderiv.cc","w");
 
-  ip_set_uppercase(1);
-  ip_initialize(infile,outfile);
-  ip_cwk_add(":DEFAULT");
-  ip_cwk_add(":LIBDERIV");
-  
   /*---------------------------------------------
     Getting the new_am1, new_am12, and deriv_lvl
     from user and making sure it is consistent
     with libint.h
    ---------------------------------------------*/
-  errcod = ip_data("NEW_AM1","%d",&new_am1,0);
-  if (errcod != IPE_OK)
-    new_am1 = DEFAULT_NEW_AM1;
+  new_am1 = LIBDERIV_NEW_AM1;
   if (new_am1 <= 0)
-    punt("  NEW_AM1 must be positive.");
+    punt("  MAX_AM1 must be positive.");
   if (new_am1 > (LIBINT_MAX_AM - 1)*2-1)
-    punt("  Maximum NEW_AM1 is greater than the installed libint.a allows.\n  Recompile libint.a with greater NEW_AM1.");
+    punt("  MAX_AM1 is greater than the installed libint.a allows.\n  Recompile libint.a with greater MAX_AM.");
 
 #if EMIT_DERIV2_MANAGERS
-  errcod = ip_data("NEW_AM2","%d",&new_am2,0);
-  if (errcod != IPE_OK)
-    new_am2 = DEFAULT_NEW_AM2;
+  new_am2 = LIBDERIV_NEW_AM2;
   if (new_am2 <= 0)
-    punt("  NEW_AM2 must be positive.");
+    punt("  MAX_AM2 must be positive.");
   if (new_am1 > (LIBINT_MAX_AM - 1)*2-2)
-    punt("  Maximum NEW_AM2 is greater than the installed libint.a allows.\n  Recompile libint.a with greater NEW_AM2.");
+    punt("  MAX_AM2 is greater than the installed libint.a allows.\n  Recompile libint.a with greater MAX_AM.");
 #endif
 
-  errcod = ip_data("NEW_AM12","%d",&new_am12,0);
-  if (errcod != IPE_OK)
-    new_am12 = DEFAULT_NEW_AM12;
+  new_am12 = LIBDERIV_NEW_AM12;
   if (new_am12 <= 0)
-    punt("  NEW_AM12 must be positive.");
+    punt("  MAX_AM12 must be positive.");
   if (new_am12 > (LIBINT_MAX_AM - 1)*2-2)
-    punt("  Maximum NEW_AM12 is greater than the installed libint.a allows.\n  Recompile libint.a with greater NEW_AM12.");
+    punt("  Maximum MAX_AM12 is greater than the installed libint.a allows.\n  Recompile libint.a with greater MAX_AM.");
 
   new_am = (new_am1 > new_am12) ? new_am1 : new_am12;
 #if EMIT_DERIV2_MANAGERS
@@ -298,8 +286,6 @@ int main()
   fprintf(libderiv_header,"#endif\n\n");
   fprintf(libderiv_header,"#endif\n");
   fclose(libderiv_header);
-  ip_done();
-  fclose(infile);
   fclose(outfile);
   exit(0);
 }

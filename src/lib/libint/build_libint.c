@@ -4,13 +4,13 @@
   This program generates files necessary for compiling the LIBINT library. LIBINT is a library of
   streamlined highly efficient routines for recursive computation of ERI integrals of the form (a0|b0).
   The library is used by the integral code CINTS. The following files must be present in the directory
-  where the current program is intended to run: input.dat and Makefile.libint (all included with the source).
-  input.dat contains set of input data necessary for building the library.
-  LIBINT section of input.dat must contain the following keywords:
-  NEW_AM - twice the desired maximum angular momentum (default is 8);
-  OPT_AM - twice the angular momentum up to which VRR Level 0 routines are machine generated.
+  where the current program is intended to run: libint_config.h and Makefile.libint (all included with the source).
+  libint_config.h contains set of defines necessary for building the library.
+  libint_config.h must define the following macro variables:
+  LIBINT_NEW_AM - twice the desired maximum angular momentum (default is 8);
+  LIBINT_OPT_AM - twice the angular momentum up to which VRR Level 0 routines are machine generated.
   A generic VRR Level 0 function is used past this value. OPT_AM=8 should be enough for almost anyone.
-  MAX_CLASS_SIZE - maximum length of _build_a0b0 (if (a0|b0) class is longer than MAX_CLASS_SIZE, the routine is
+  LIBINT_MAX_CLASS_SIZE - maximum length of _build_a0b0 (if (a0|b0) class is longer than MAX_CLASS_SIZE, the routine is
   going to be split into several smaller ones. This is done to prevent compiler from exhausting system resources.
   Defaults to 785).
 
@@ -28,13 +28,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <libipv1/ip_lib.h>
-#include <libciomr/libciomr.h>
 #include "build_libint.h"
 
+#include "libint_config.h"
 
 /* Global data */
-FILE *infile, *outfile, *vrr_header, *hrr_header, *libint_header, *init_code;
+FILE *outfile, *vrr_header, *hrr_header, *libint_header, *init_code;
 char *real_type;   /*--- C type for real numbers ---*/
 int libint_stack_size[MAX_AM/2+1];
 LibintParams_t Params;
@@ -62,39 +61,28 @@ int main()
   /*-------------------------------
     Initialize files and libraries
    -------------------------------*/
-  infile = fopen("./input.dat", "r");
   outfile = fopen("./output.dat", "w");
   vrr_header = fopen("./vrr_header.h","w");
   hrr_header = fopen("./hrr_header.h","w");
   libint_header = fopen("./libint.h","w");
   init_code = fopen("./init_libint.cc","w");
 
-  ip_set_uppercase(1);
-  ip_initialize(infile,outfile);
-  ip_cwk_add(":DEFAULT");
-  ip_cwk_add(":LIBINT");
-
-  /*------------------
-    Parsing the input
-   ------------------*/
-  errcod = ip_data("NEW_AM","%d",&new_am,0);
-  if (errcod != IPE_OK)
-    new_am = DEFAULT_NEW_AM;
+  new_am = LIBINT_NEW_AM;
   if (new_am <= 0)
-    punt("  NEW_AM must be positive.");
+    punt("  MAX_AM must be positive.");
   if (new_am > MAX_AM)
-    punt("  Maximum NEW_AM exceeded. Contact the program author.");
+    punt("  Maximum MAX_AM exceeded. Contact the program author.");
 
-  errcod = ip_data("OPT_AM","%d",&opt_am,0);
-  if (errcod != IPE_OK || opt_am < 2)
+  opt_am = LIBINT_OPT_AM;
+  if (opt_am < 2)
     opt_am = DEFAULT_OPT_AM;
   if (opt_am > new_am) opt_am = new_am;
 
-  errcod = ip_data("MAX_CLASS_SIZE","%d",&max_class_size,0);
+  max_class_size = LIBINT_MAX_CLASS_SIZE;
   if (max_class_size < 10)
     punt("  MAX_CLASS_SIZE cannot be smaller than 10.");
 
-  errcod = ip_boolean("LONG_DOUBLE",&long_double,0);
+  long_double = LIBINT_LONG_DOUBLE;
   if (long_double)
     real_type = strdup("long double");
   else
@@ -220,9 +208,7 @@ int main()
   fprintf(libint_header,"#endif\n\n");
   fprintf(libint_header,"#endif\n");
   fclose(libint_header);
-  ip_done();
   fclose(outfile);
-  fclose(infile);
   exit(0);
 }
 

@@ -14,7 +14,7 @@ default:: $(TARGET) $(TARGET_HEADERS)
 
 top_objdir_path=$(PWD)/$(top_objdir)
 
-$(TARGET): $(BUILD_SRC) $(LIB_SRC) input.dat Makefile.libint
+$(TARGET): $(BUILD_SRC) $(LIB_SRC) $(srcdir)/Makefile.libint
 	if \
 ! [ -e $(SCRATCH) ]; \
  then \
@@ -35,9 +35,9 @@ else \
   exit 1; \
  fi; \
 fi; \
-cp Makefile.compiler $(TEMP_DIR); \
-cp input.dat $(TEMP_DIR); \
-cp Makefile.libint $(TEMP_DIR); \
+cp $(srcdir)/Makefile.compiler $(TEMP_DIR); \
+cp libint_config.h $(TEMP_DIR); \
+cp $(srcdir)/Makefile.libint $(TEMP_DIR); \
 cd $(TEMP_DIR); \
 cp Makefile.compiler Makefile; \
 $(MAKE) top_objdir=$(top_objdir_path); \
