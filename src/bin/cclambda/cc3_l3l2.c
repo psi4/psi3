@@ -457,10 +457,12 @@ void cc3_l3l2_RHF_AAB(void)
   }
 
   dpd_buf4_init(&ZIGDE, CC3_MISC, 0, 10, 5, 10, 5, 0, "CC3 ZIGDE");
+  dpd_buf4_scm(&ZIGDE, 0.0); /* this must be cleared in each iteration */
   dpd_buf4_init(&ZIgDe, CC3_MISC, 0, 10, 5, 10, 5, 0, "CC3 ZIgDe");
   dpd_buf4_scm(&ZIgDe, 0.0); /* this must be cleared in each iteration */
 
   dpd_buf4_init(&ZDMAE, CC3_MISC, 0, 10, 5, 10, 5, 0, "CC3 ZDMAE (MD,AE)");
+  dpd_buf4_scm(&ZDMAE, 0.0); /* must be cleared in each iteration */
   dpd_buf4_init(&ZDmAe, CC3_MISC, 0, 10, 5, 10, 5, 0, "CC3 ZDmAe (mD,Ae)");
   dpd_buf4_scm(&ZDmAe, 0.0); /* must be cleared in each iteration */
   dpd_buf4_init(&ZdMAe, CC3_MISC, 0, 10, 5, 10, 5, 0, "CC3 ZdMAe (Md,Ae)");
@@ -864,13 +866,16 @@ void cc3_l3l2_RHF_AAB(void)
 		dc = T2AB.col_offset[Gjk][Gd];
 		id = ZIGDE.row_offset[Gid][I];
 		ZIGDE.matrix[Gid] = dpd_block_matrix(nrows, ncols);
-		dpd_buf4_mat_irrep_rd_block(&ZIGDE, Gid, id, nrows);
 
-		if(nrows && ncols && nlinks)
+		if(nrows && ncols && nlinks) {
+		  dpd_buf4_mat_irrep_rd_block(&ZIGDE, Gid, id, nrows);
+
 		  C_DGEMM('n', 't', nrows, ncols, nlinks, 1.0, &(T2AB.matrix[Gjk][jk][dc]), nlinks,
 			  W1[Gab][0], nlinks, 1.0, ZIGDE.matrix[Gid][0], ncols);
 
-		dpd_buf4_mat_irrep_wrt_block(&ZIGDE, Gid, id, nrows);
+		  dpd_buf4_mat_irrep_wrt_block(&ZIGDE, Gid, id, nrows);
+		}
+
 		dpd_free_block(ZIGDE.matrix[Gid], nrows, ncols);
 	      }
 
@@ -1500,5 +1505,12 @@ void cc3_l3l2_RHF_AAB(void)
   dpd_buf4_axpy(&L2ABnew, &L2, 1);
   dpd_buf4_close(&L2);
   dpd_buf4_close(&L2ABnew);
+
+  /* Spin adaptation will remove this.  And yes, this means that all the above
+     calculations for LIJAB were pointless... -TDC */
+  dpd_buf4_init(&L2, CC_LAMBDA, 0, 2, 7, 0, 5, 1, "New LIjAb");
+  dpd_buf4_copy(&L2, CC_LAMBDA, "New LIJAB");
+  dpd_buf4_copy(&L2, CC_LAMBDA, "New Lijab");
+  dpd_buf4_close(&L2);
 
 }

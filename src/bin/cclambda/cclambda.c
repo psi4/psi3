@@ -147,7 +147,6 @@ int main(int argc, char *argv[])
 	cc2_L2_build(pL_params[i]);
 
       }
-
       else {
 	G_build(pL_params[i].irrep);
 	L1_build(pL_params[i]);
