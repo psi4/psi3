@@ -71,10 +71,11 @@ void ci_energy(double **OPDM, double *TPDM, double *h, double *TwoElec,
                 } /* end l loop */ 
          } /* end j loop */
 
-  e_ci = OEsum + TEsum;
+  e_ci = OEsum + TEsum + enuc;
   diff = e_ci - eci_30; 
   if (fabs(diff) > CI_DIFF) {
-    fprintf(outfile,"Calculated CI Energy differs from the CI Energy in file 30\n");
+    fprintf(outfile,
+            "Calculated CI Energy differs from the CI Energy in file 30\n");
     fprintf(outfile,"ECI Calc. = %lf\n", e_ci); 
     fprintf(outfile,"ECI 30    = %lf\n", eci_30); 
     }
@@ -86,8 +87,7 @@ void ci_energy(double **OPDM, double *TPDM, double *h, double *TwoElec,
     fprintf(outfile,"Total electronic energy   = %20.10lf\n", e_ci);
     fprintf(outfile,"Trace of lagrangian       = %20.10lf\n", lagtr);
     fprintf(outfile,"Nuclear repulsion energy  = %20.10f\n", enuc); 
-    e_ci += enuc; 
     fprintf(outfile,"Total CI Energy           = %20.10lf\n", e_ci); 
-    fprintf(outfile,"CI Energy from file 30    = %20.10lf\n", eci_30+enuc);
+    fprintf(outfile,"CI Energy from file 30    = %20.10lf\n", eci_30);
     }          
 }
