@@ -1,7 +1,11 @@
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:22  evaleev
- * Initial revision
+ * Revision 1.2  2001/03/04 03:18:33  crawdad
+ * Added changes from Justin Fermann to reduce memory requirements in rsp.
+ * -TDC
+ *
+ * Revision 1.1.1.1  2000/02/04  22:53:22  evaleev
+ * Started PSI 3 repository
  *
 /* Revision 2.3  1999/11/01 20:10:59  evaleev
 /* Added explicit extern declarations of functions within the library.
@@ -37,9 +41,10 @@ void rsp(nm,n,nv,array,e_vals,matz,e_vecs,toler)
       int i, j, ii, ij, ierr;
       int ascend_order;
       double *fv1=NULL;
-      double **temp=NULL;
+      /*double **temp=NULL;*/
       double zero = 0.0;
       double one = 1.0;
+      double sw;
 
 /* Modified by Ed - matz can have values 0 through 3 */
 
@@ -56,7 +61,7 @@ void rsp(nm,n,nv,array,e_vals,matz,e_vecs,toler)
           }
 
       fv1 = (double *) init_array(n);
-      temp = (double **) init_matrix(n,n);
+      /*temp = (double **) init_matrix(n,n);*/
 
       if (n > nm) {
          ierr = 10*n;
@@ -81,14 +86,23 @@ void rsp(nm,n,nv,array,e_vals,matz,e_vecs,toler)
       tred2(n,e_vecs,e_vals,fv1,matz);
 
       for (i=0; i < n; i++)
-         for (j=0; j < n; j++)
-            temp[i][j]=e_vecs[j][i];
+         for (j=0; j < i; j++){
+            sw = e_vecs[i][j];
+            e_vecs[i][j] = e_vecs[j][i];
+            e_vecs[j][i] = sw;
+            /*temp[i][j]=e_vecs[j][i];*/
+            }
             
-      tqli(n,e_vals,temp,fv1,matz,toler);
+      tqli(n,e_vals,e_vecs,fv1,matz,toler);
+      /*tqli(n,e_vals,temp,fv1,matz,toler);*/
 
       for (i=0; i < n; i++)
-         for (j=0; j < n; j++)
-            e_vecs[i][j]=temp[j][i];
+         for (j=0; j < i; j++){
+            sw = e_vecs[i][j];
+            e_vecs[i][j] = e_vecs[j][i];
+            e_vecs[j][i] = sw;
+            /*e_vecs[i][j]=temp[j][i];*/
+            }
 
       if (ascend_order)
         eigsort(e_vals,e_vecs,n);
@@ -96,6 +110,6 @@ void rsp(nm,n,nv,array,e_vals,matz,e_vecs,toler)
         eigsort(e_vals,e_vecs,-n);
 
       free(fv1);
-      free_matrix(temp,n);
+      /*free_matrix(temp,n);*/
       }
             
