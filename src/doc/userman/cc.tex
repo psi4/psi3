@@ -1,0 +1,25 @@
+\PSIthree\ is capable of computing energies, analytic gradients, and
+linear response properties using a number of coupled cluster models.
+The following table summarizes these capabilities:
+\begin{table}
+\begin{center}
+\begin{tabular}{ccccc}
+\hline
+\hline
+Reference & Method & Energy    & Gradient  &   Linear Response \\
+\hline
+RHF       & CCSD    & Y & Y & Y   \\
+RHF       & CCSD(T) & Y & N & --  \\
+ROHF      & CCSD    & Y & Y & N   \\
+ROHF      & CCSD(T) & N & N & --  \\
+UHF       & CCSD    & Y & Y & N   \\
+UHF       & CCSD(T) & Y & N & --  \\
+Brueckner & CCD     & Y & N & N   \\
+Brueckner & CCD(T)  & Y & N & --  \\
+\hline
+\hline
+\end{tabular}
+\end{center}
+\caption{Current ground-state coupled cluster capabilities of \PSIthree.}
+\end{table}
+
