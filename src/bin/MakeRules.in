@@ -48,6 +48,7 @@ install_inc::
 install_man::
 
 $(TARGET): $(BINOBJ) $(PSILIBS)
+	$(MKDIRS) `dirname $(TARGET)`
 	$(LD) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
 install_target:: $(TARGET)
