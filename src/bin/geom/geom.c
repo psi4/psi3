@@ -156,25 +156,33 @@ main(argc, argv)
   for (i=1, num_unparsed=0; i<argc; i++) {
     if (strcmp("-g", argv[i]) == 0) {
       InputType = PSI_GEOM;
-      if ( (i+1 < argc) && (strchr(argv[i+1], '-') == NULL) ) 
+      if ( (i+1 < argc) && (strchr(argv[i+1], '-') == NULL) ) {
 	strcpy(geom_file, argv[i+1]) ;
+        i++;
+      }
     }
     else if (strcmp("-aces", argv[i]) == 0) {
       InputType = ACES2;
-      if ( (i+1 < argc) && (strchr(argv[i+1], '-') == NULL) ) 
+      if ( (i+1 < argc) && (strchr(argv[i+1], '-') == NULL) ) {
 	strcpy(geom_file, argv[i+1]) ;
+        i++;
+      }
     }
     else if (strcmp("-qchem", argv[i]) == 0) {
       InputType = QCHEM;
       ang_in = 1;  /* QCHEM format is in Angstrom */
-      if ( (i+1 < argc) && (strchr(argv[i+1], '-') == NULL) ) 
+      if ( (i+1 < argc) && (strchr(argv[i+1], '-') == NULL) ) {
 	strcpy(geom_file, argv[i+1]) ;
+        i++;
+      }
     }
     else if (strcmp("-xyz", argv[i]) == 0) {
       InputType = XYZ;
       ang_in = 1;  /* XYZ format is in Angstrom */
-      if ( (i+1 < argc) && (strchr(argv[i+1], '-') == NULL) ) 
-	strcpy(geom_file, argv[i+1]) ;
+      if ( (i+1 < argc) && (strchr(argv[i+1], '-') == NULL) ) {
+	strcpy(geom_file, argv[i+1]);
+        i++;
+      }
     }
     else if (strcmp("-oop", argv[i]) == 0) do_oop = 1;
     else if (strcmp("-a", argv[i]) == 0) print_all_dist = 1;
