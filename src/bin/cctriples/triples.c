@@ -48,33 +48,23 @@ int main(int argc, char *argv[])
   errcod = ip_string("REFERENCE", &(junk), 0);
   if(!strcmp(junk, "RHF")) refwfn = 0;
   else if(!strcmp(junk, "ROHF")) refwfn = 1;
+  else if(!strcmp(junk, "UHF")) refwfn = 2;
   else {
     printf("Invalid value of input keyword REFERENCE: %s\n", junk);
     exit(2);
   }
 
-  if(refwfn == 0) {
-    /*
-      ET = ET_RHF_noddy();
-      fprintf(outfile, "\t(T) energy                    = %20.15f\n", ET);
-      fprintf(outfile, "\tTotal CCSD(T) energy          = %20.15f\n", 
-      ET + moinfo.ecc + moinfo.eref);
-    */
+  if(refwfn == 0) { /** RHF **/
 
-    /* New matrix-based code */
     ET = ET_RHF();
     fprintf(outfile, "\t(T) energy                    = %20.15f\n", ET);
     fprintf(outfile, "\tTotal CCSD(T) energy          = %20.15f\n", 
 	    ET + moinfo.ecc + moinfo.eref);
-    /*
-    ET = ET_RHF_allijk();
-    fprintf(outfile, "\t(T) energy                    = %20.15f\n", ET);
-    fprintf(outfile, "\tTotal CCSD(T) energy          = %20.15f\n", 
-	    ET + moinfo.ecc + moinfo.eref);
-    */
   }
-  else if(refwfn == 1) {
-    /*    setup(); */
+  else if(refwfn == 1) { /** ROHF --- don't use this right now! **/
+
+    fprintf(outfile, "\nROHF-CCSD(T) is not yet available...\n");
+    exit(2); 
 
     ETAAA = ET_AAA();
     fprintf(outfile, "\tAAA (T) energy                = %20.15f\n", ETAAA);
@@ -88,6 +78,12 @@ int main(int argc, char *argv[])
     fprintf(outfile, "\t(T) energy                    = %20.15f\n", ET);
     fprintf(outfile, "\tTotal CCSD(T) energy          = %20.15f\n", 
 	    ET + moinfo.ecc + moinfo.eref);
+  }
+  else if(refwfn == 2) { /** UHF **/
+
+    fprintf(outfile, "\nUHF-CCSD(T) is not yet available...\n");
+    exit(2); 
+
   }
 
   dpd_close(0);
