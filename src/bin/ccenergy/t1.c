@@ -12,8 +12,9 @@ void t1_build(void)
   dpdfile2 newtIA, newtia, tIA, tia, fIA, fia;
   dpdfile2 FAE, Fae, FMI, Fmi, FME, Fme;
   dpdfile2 dIA, dia;
-  dpdbuf4 tIJAB, tijab, tIjAb, tiJaB;
+  dpdbuf4 tIJAB, tijab, tIjAb, tiJaB, T2;
   dpdbuf4 C, C_anti, D, F_anti, F, E_anti, E, Z;
+  int Gma, Gmi, Gm, Gi, Ga, ma, m, a, A, nrows, ncols;
 
   if(params.ref == 0) { /** RHF **/
     dpd_file2_init(&fIA, CC_OEI, 0, 0, 1, "fIA");
@@ -55,14 +56,57 @@ void t1_build(void)
     dpd_buf4_close(&C_anti);  
     dpd_buf4_close(&D);
 
-    dpd_buf4_init(&Z, CC_TMP0, 0, 10, 0, 10, 0, 0, "Z(ma,mi)");
-    dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0, "F 2<ia|bc> - <ia|cb>");
-    dpd_buf4_init(&tIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
-    dpd_contract444(&F, &tIjAb, &Z, 0, 0, 1.0, 0.0);
-    dpd_buf4_close(&tIjAb);
+    /*
+      dpd_buf4_init(&Z, CC_TMP0, 0, 10, 0, 10, 0, 0, "Z(ma,mi)");
+      dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0, "F 2<ia|bc> - <ia|cb>");
+      dpd_buf4_init(&tIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
+      dpd_contract444(&F, &tIjAb, &Z, 0, 0, 1.0, 0.0);
+      dpd_buf4_close(&tIjAb);
+      dpd_buf4_close(&F);
+      dpd_trace42_13(&Z, &newtIA, 1, 1.0, 1.0);
+      dpd_buf4_close(&Z);
+    */
+
+    /* t(i,a) <-- (2 t(mi,ef) - t(mi,fe)) <ma|ef> */
+    /* out-of-core version replacing the *stupid* code above 3/22/05, TDC */
+    dpd_file2_mat_init(&newtIA);
+    dpd_file2_mat_rd(&newtIA);
+    dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "2 tIjAb - tIjBa");
+    dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
+    for(Gma=0; Gma < moinfo.nirreps; Gma++) {
+      Gmi = Gma; /* T1 is totally symmetric */
+
+      dpd_buf4_mat_irrep_row_init(&F, Gma);
+      dpd_buf4_mat_irrep_init(&T2, Gmi);
+      dpd_buf4_mat_irrep_rd(&T2, Gmi);
+
+      for(ma=0; ma < F.params->rowtot[Gma]; ma++) {
+
+	dpd_buf4_mat_irrep_row_rd(&F, Gma, ma);
+
+	m = F.params->roworb[Gma][ma][0];
+	a = F.params->roworb[Gma][ma][1];
+	Gm = F.params->psym[m];
+	Ga = F.params->qsym[a];
+	Gi = Ga; /* T1 is totally symmetric */
+	A = a - F.params->qoff[Ga];
+
+	nrows = moinfo.occpi[Gi];
+	ncols = F.params->coltot[Gma];
+
+	if(nrows && ncols && moinfo.virtpi[Ga])
+	  C_DGEMV('n',nrows,ncols,1.0,T2.matrix[Gmi][T2.row_offset[Gmi][m]],ncols,
+		  F.matrix[Gma][0],1,1.0,&newtIA.matrix[Gi][0][A],moinfo.virtpi[Ga]);
+
+      }
+
+      dpd_buf4_mat_irrep_close(&T2, Gmi);
+      dpd_buf4_mat_irrep_row_close(&F, Gma);
+    }
     dpd_buf4_close(&F);
-    dpd_trace42_13(&Z, &newtIA, 1, 1.0, 1.0);
-    dpd_buf4_close(&Z);
+    dpd_buf4_close(&T2);
+    dpd_file2_mat_wrt(&newtIA);
+    dpd_file2_mat_close(&newtIA);
 
     dpd_buf4_init(&E, CC_EINTS, 0, 11, 0, 11, 0, 0, "E 2<ai|jk> - <ai|kj>");
     dpd_buf4_init(&tIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");

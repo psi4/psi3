@@ -35,6 +35,12 @@ void sort_amps(void)
     dpd_buf4_sort(&t2, CC_TAMPS, rspq, 10, 10, "tjAIb");
     dpd_buf4_close(&t2);
 
+    /* 2 tIjAb - tIjBa */
+    dpd_buf4_init(&t2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
+    dpd_buf4_scmcopy(&t2, CC_TAMPS, "2 tIjAb - tIjBa", 2);
+    dpd_buf4_sort_axpy(&t2, CC_TAMPS, pqsr, 0, 5, "2 tIjAb - tIjBa", -1);
+    dpd_buf4_close(&t2);
+
     /* 2 T(IA,jb) - t(IB,ja) */
     dpd_buf4_init(&t2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIAjb");
     dpd_buf4_scmcopy(&t2, CC_TAMPS, "2 tIAjb - tIBja", 2);
