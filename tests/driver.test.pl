@@ -4,7 +4,7 @@
 # Added to CVS 1.10.03
 # Added different categories for test cases
 # --ci --cc --scf --small --medium --large
-# --standard --sp --geom --freq --excite
+# --all --sp --geom --freq --excite
 # The default is no argument and all the
 # test cases will run except the "--large" ones.
 # The arguments --clean and --cleanall
