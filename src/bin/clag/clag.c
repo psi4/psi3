@@ -106,8 +106,6 @@ main(int argc, char **argv)
   file30_close();
   ***/
 
-  docc = init_int_array(nirreps);
-  socc = init_int_array(nirreps);
 
   chkpt_init(PSIO_OPEN_OLD);
   nmo = chkpt_rd_nmo();
