@@ -2,6 +2,8 @@
 #include <libciomr.h>
 #include <qt.h>
 #include "dpd.h"
+#define EXTERN
+#include "dpd.gbl"
 
 /* dpd_buf4_mat_irrep_init(): Allocates and initializes memory for a
 ** matrix for a single irrep of a dpd four-index buffer.
@@ -32,8 +34,9 @@ int dpd_buf4_mat_irrep_init(dpdbuf4 *Buf, int irrep)
           (Buf->params->pqnum == Buf->file.params->pqnum) &&
           (Buf->params->rsnum == Buf->file.params->rsnum))
           Buf->matrix[irrep] = Buf->file.matrix[irrep];
-      else 
-          Buf->matrix[irrep] = block_matrix(rowtot,coltot);
+      else {
+          Buf->matrix[irrep] = dpd_block_matrix(rowtot,coltot);
+	}
 
     }
 

@@ -99,34 +99,36 @@ typedef struct {
 
 /* DPD File4 Cache entries */
 struct dpd_file4_cache_entry {
-    int filenum;
-    int irrep;
-    int pqnum;
-    int rsnum;
-    char label[PSIO_KEYLEN];
-    double ***matrix;
-    int size;
-    struct dpd_file4_cache_entry *next;
-    struct dpd_file4_cache_entry *last;
+    int filenum;                        /* libpsio unit number */
+    int irrep;                          /* overall symmetry */
+    int pqnum;                          /* dpd pq value */
+    int rsnum;                          /* dpd rs value */
+    char label[PSIO_KEYLEN];            /* libpsio TOC keyword */
+    double ***matrix;                   /* pointer to irrep blocks */
+    int size;                           /* size of entry in double words */
+    unsigned int access;                /* access time */
+    struct dpd_file4_cache_entry *next; /* pointer to next cache entry */
+    struct dpd_file4_cache_entry *last; /* pointer to previous cache entry */
 };
 
 /* DPD File2 Cache entries */
 struct dpd_file2_cache_entry {
-    int filenum;
-    int irrep;
-    int pnum;
-    int qnum;
-    char label[PSIO_KEYLEN];
-    double ***matrix;
-    int size;
-    struct dpd_file2_cache_entry *next;
-    struct dpd_file2_cache_entry *last;
+    int filenum;                        /* libpsio unit number */
+    int irrep;                          /* overall symmetry */
+    int pnum;                           /* dpd p value */
+    int qnum;                           /* dpd q value */
+    char label[PSIO_KEYLEN];            /* libpsio TOC keyword */
+    double ***matrix;                   /* pointer to irrep blocks */
+    int size;                           /* size of entry in double words */
+    struct dpd_file2_cache_entry *next; /* pointer to next cache entry */
+    struct dpd_file2_cache_entry *last; /* pointer to previous cache entry */
 };
 
 /* DPD global parameter set */
 typedef struct {
     int nirreps;
     int memory;
+    int memfree;
     int num_subspaces;
     int num_pairs;
     int *numorbs;
@@ -142,6 +144,8 @@ typedef struct {
     dpdparams4 **params4;
     struct dpd_file2_cache_entry *file2_cache;
     struct dpd_file4_cache_entry *file4_cache;
+    unsigned int file4_cache_most_recent;
+    unsigned int file4_cache_least_recent;
     int *cachefiles;
     int **cachelist;
 } dpd_data;
@@ -158,6 +162,9 @@ int dpd_close(int dpd_num);
 int dpd_set_default(int dpd_num);
 
 void dpd_error(char *caller, FILE *outfile);
+
+double **dpd_block_matrix(int n, int m);
+void dpd_free_block(double **array, int n, int m);
 
 int dpd_contract222(dpdfile2 *X, dpdfile2 *Y, dpdfile2 *Z, int target_X,
 		    int target_Y, double alpha, double beta);
@@ -286,6 +293,8 @@ struct dpd_file4_cache_entry
 struct dpd_file4_cache_entry *dpd_file4_cache_last(void);
 int dpd_file4_cache_add(dpdfile4 *File);
 int dpd_file4_cache_del(dpdfile4 *File);
+struct dpd_file4_cache_entry *dpd_file4_cache_find_lru(void);
+int dpd_file4_cache_del_lru(void);
 
 #endif /* DPD_H */
 

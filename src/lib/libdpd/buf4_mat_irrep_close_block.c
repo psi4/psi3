@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <libciomr.h>
 #include "dpd.h"
+#define EXTERN
+#include "dpd.gbl"
 
 /* dpd_buf4_mat_irrep_close_block(): Releases memory for a subblock of
 ** a matrix for a single irrep of a dpd four-index buffer.
@@ -29,7 +31,8 @@ int dpd_buf4_mat_irrep_close_block(dpdbuf4 *Buf, int irrep, int num_pq)
       Buf->shift.shift_type = 0;
     }
 
-  if(num_pq && Buf->params->coltot[irrep]) free_block(Buf->matrix[irrep]);
+  if(num_pq && Buf->params->coltot[irrep])
+    dpd_free_block(Buf->matrix[irrep], num_pq, Buf->params->coltot[irrep]);
 
   return 0;
 }

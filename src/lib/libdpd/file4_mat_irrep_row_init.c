@@ -15,7 +15,7 @@ int dpd_file4_mat_irrep_row_init(dpdfile4 *File, int irrep)
 
   my_irrep = File->my_irrep;
   
-  File->matrix[irrep] = block_matrix(1, File->params->coltot[irrep^my_irrep]);
+  File->matrix[irrep] = dpd_block_matrix(1, File->params->coltot[irrep^my_irrep]);
 
 #ifdef DPD_TIMER
   timer_off("f4_rowinit");

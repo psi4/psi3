@@ -51,12 +51,11 @@ int dpd_file4_init(dpdfile4 *File, int filenum, int irrep, int pqnum,
 					sizeof(double)));
 
   /* Put this file4 into cache if requested */
-/*
-  if(dpd_default->cachefiles[filenum] && 
-     dpd_default->cachelist[pqnum][rsnum]) 
+  if(dpd_default->cachefiles[filenum] && dpd_default->cachelist[pqnum][rsnum]) 
       dpd_file4_cache_add(File); 
-*/
+/*
   dpd_file4_cache_add(File); 
+*/
 
   return 0;
 }

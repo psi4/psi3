@@ -56,7 +56,7 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
 
 #endif
   
-  memoryd = (dpd_default->memory)/sizeof(double);
+  memoryd = dpd_default->memory;
 
   for(h=0; h < nirreps; h++) {
 
@@ -89,8 +89,10 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
 	}
 #endif
 
-      if(!incore && Xtrans)
-	  dpd_error("out-of-core contract444 Xtrans=1 not coded", stderr);
+      if(!incore && Xtrans) {
+	dpd_file4_cache_print(stderr);
+	dpd_error("out-of-core contract444 Xtrans=1 not coded", stderr);
+	}
 
       dpd_buf4_mat_irrep_init(Y, h);
       dpd_buf4_mat_irrep_rd(Y, h);
@@ -103,7 +105,7 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
 	  
 	  dpd_buf4_mat_irrep_init(X, h);
 	  dpd_buf4_mat_irrep_rd(X, h);
-	  
+
 	  newmm(X->matrix[h], Xtrans, Y->matrix[h], Ytrans,
 		Z->matrix[h], Z->params->rowtot[h], numlinks[h],
 		Z->params->coltot[h], alpha, beta);

@@ -8,6 +8,8 @@
 void dpd_file4_cache_init(void)
 {
   dpd_default->file4_cache = NULL;
+  dpd_default->file4_cache_most_recent = 0;
+  dpd_default->file4_cache_least_recent = 1;
 }
 
 void dpd_file4_cache_close(void)
@@ -52,6 +54,10 @@ struct dpd_file4_cache_entry
 #ifdef DPD_TIMER
               timer_off("file4_cache");
 #endif
+	      /* increment the access timers */
+	      dpd_default->file4_cache_most_recent++;
+	      this_entry->access = dpd_default->file4_cache_most_recent;
+	      
               return(this_entry);
            }
        
@@ -83,17 +89,19 @@ int dpd_file4_cache_add(dpdfile4 *File)
   int h;
   struct dpd_file4_cache_entry *this_entry;
 
-  if(File->incore) return 0; /* Already have this one in cache */
-
   this_entry = dpd_file4_cache_scan(File->filenum, File->my_irrep,
 				   File->params->pqnum, File->params->rsnum,
                                    File->label);
 
-#ifdef DPD_TIMER
-  timer_on("file4_cache");
-#endif
-
-  if(this_entry == NULL) { /* New cache entry */
+  if((this_entry != NULL && !(File->incore)) ||
+     (this_entry == NULL && (File->incore))) {
+      /* Either the file4 appears in the cache but incore is not set,
+	 or incore is set and the file4 isn't in the cache */
+      dpd_error("File4 cache add error!", stderr);
+    }
+  else if(this_entry != NULL && File->incore) 
+      return 0; /* We already have this one in cache */
+  else if(this_entry == NULL && !(File->incore)) { /* New cache entry */
       this_entry = (struct dpd_file4_cache_entry *) 
                        malloc(sizeof(struct dpd_file4_cache_entry));
       this_entry->filenum = File->filenum;
@@ -107,13 +115,15 @@ int dpd_file4_cache_add(dpdfile4 *File)
       if(this_entry->last != NULL) this_entry->last->next = this_entry;
       else dpd_default->file4_cache = this_entry;
 
+      /* increment the access timers */
+      dpd_default->file4_cache_most_recent++;
+      this_entry->access = dpd_default->file4_cache_most_recent;
+	      
       /* Read all data into core */
       this_entry->size = 0;
       for(h=0; h < File->params->nirreps; h++) {
 	  this_entry->size += 
-	      File->params->rowtot[h] * 
-	      File->params->coltot[h] *
-	      sizeof(double);
+	      File->params->rowtot[h] * File->params->coltot[h];
 	  dpd_file4_mat_irrep_init(File, h);
 	  dpd_file4_mat_irrep_rd(File, h);
 	}
@@ -122,20 +132,9 @@ int dpd_file4_cache_add(dpdfile4 *File)
 
       File->incore = 1;
 
-#ifdef DPD_TIMER
-  timer_off("file4_cache");
-#endif
-
       return 0;
   }
 
-  /* The Buffer appears in the cache, but incore is not set */
-  dpd_error("File4 cache add error!", stderr);
-
-#ifdef DPD_TIMER
-  timer_off("file4_cache");
-#endif
-  
   return 0;
 }
 
@@ -144,17 +143,18 @@ int dpd_file4_cache_del(dpdfile4 *File)
   int h;
   struct dpd_file4_cache_entry *this_entry, *next_entry, *last_entry;
 
-  /* The input buffer isn't in the cache! */
-  if(!File->incore) dpd_error("File4 cache delete error!", stderr);
-
   this_entry = dpd_file4_cache_scan(File->filenum, File->my_irrep,
-				   File->params->pqnum, File->params->rsnum,
-                                   File->label);
+				    File->params->pqnum, File->params->rsnum,
+				    File->label);
 
-  if(this_entry == NULL) dpd_error("File4 cache delete error!", stderr);
+  if((this_entry == NULL && File->incore) ||
+     (this_entry != NULL && !(File->incore)) ||
+      (this_entry == NULL && !(File->incore))) {
+      dpd_error("File4 cache delete error!", stderr);
+    }
   else {
       File->incore = 0;
-      
+
       /* Write all the data to disk and free the memory */
       for(h=0; h < File->params->nirreps; h++) {
 	  dpd_file4_mat_irrep_wrt(File, h);
@@ -166,7 +166,7 @@ int dpd_file4_cache_del(dpdfile4 *File)
 
       /* Are we deleting the top of the tree? */
       if(this_entry == dpd_default->file4_cache) 
-         dpd_default->file4_cache = next_entry;
+	  dpd_default->file4_cache = next_entry;
 
       free(this_entry);
 
@@ -188,18 +188,66 @@ void dpd_file4_cache_print(FILE *outfile)
 
   fprintf(outfile, "\n\tDPD File4 Cache Listing:\n\n");
   fprintf(outfile,
-    "Cache Label                     File symm  pq  rs  size(kB)\n");
+    "Cache Label                     File symm  pq  rs  access  size(kB)\n");
   fprintf(outfile,
-    "-----------------------------------------------------------\n");
+    "-------------------------------------------------------------------\n");
   while(this_entry != NULL) {
       fprintf(outfile,
-      "%-32s %3d    %1d  %2d  %2d  %8.1f\n",
+      "%-32s %3d    %1d  %2d  %2d  %6d  %8.1f\n",
 	      this_entry->label, this_entry->filenum, this_entry->irrep,
-	      this_entry->pqnum, this_entry->rsnum, (this_entry->size)/1e3);
+	      this_entry->pqnum, this_entry->rsnum, this_entry->access,
+	      (this_entry->size)*sizeof(double)/1e3);
       total_size += this_entry->size;
       this_entry = this_entry->next;
     }
   fprintf(outfile,
     "-----------------------------------------------------------\n");
-  fprintf(outfile, "Total cached: %8.1f kB\n", total_size/1e3);
+  fprintf(outfile, "Total cached: %8.1f kB; MRU = %6d; LRU = %6d\n",
+	  (total_size*sizeof(double))/1e3, dpd_default->file4_cache_most_recent,
+	  dpd_default->file4_cache_least_recent);
+}
+
+struct dpd_file4_cache_entry *dpd_file4_cache_find_lru(void)
+{
+  struct dpd_file4_cache_entry *this_entry;
+
+  this_entry = dpd_default->file4_cache;
+
+  if(this_entry == NULL) return(NULL);
+
+  while(dpd_default->file4_cache_least_recent <=
+	dpd_default->file4_cache_most_recent) {
+      while(this_entry !=NULL) {
+	  if(this_entry->access == dpd_default->file4_cache_least_recent)
+	      return(this_entry);
+	  this_entry = this_entry->next;
+	}
+      dpd_default->file4_cache_least_recent++;
+      this_entry = dpd_default->file4_cache;
+    }
+
+  dpd_error("Error locating file4_cache LRU!", stderr);
+}
+
+int dpd_file4_cache_del_lru(void)
+{
+  dpdfile4 File;
+  struct dpd_file4_cache_entry *this_entry;
+
+  this_entry = dpd_file4_cache_find_lru();
+
+  if(this_entry == NULL) return 1; /* there is no cache */
+  else { /* we found the LRU so delete it */
+      printf("Deleteing LRU: %-32s %3d %2d %2d %6d\n", this_entry->label,
+	     this_entry->filenum, this_entry->pqnum, this_entry->rsnum,
+	     this_entry->access);
+      
+      dpd_file4_init(&File, this_entry->filenum, this_entry->irrep,
+		     this_entry->pqnum, this_entry->rsnum, this_entry->label);
+
+      dpd_file4_cache_del(&File);
+      dpd_file4_close(&File);
+
+      return 0;
+    }
 }

@@ -43,7 +43,7 @@ int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
 
   nirreps = X->params->nirreps;
 
-  memoryd = (dpd_default->memory)/sizeof(double);
+  memoryd = dpd_default->memory;
   incore = 1; /* default */
 
   dpd_file2_mat_init(Y);

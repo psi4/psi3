@@ -38,7 +38,7 @@ buf4_print.c                 file2_mat_wrt.c   trans4_mat_irrep_shift31.c   \
 buf4_scm.c                   file2_norm.c      trans4_mat_irrep_wrt.c       \
 buf4_sort.c                  file2_print.c     set_default.c                \
 buf4_symm.c                  buf4_scmcopy.c    file2_scm.c                  \
-buf4_sort_ooc.c
+buf4_sort_ooc.c              block_matrix.c
 
 DEPENDINCLUDE = dpd.h dpd.gbl
 

@@ -31,7 +31,8 @@ int dpd_init(int dpd_num, int nirreps, int memory, int *cachefiles,
   this_dpd = &(dpd_list[dpd_num]);
 
   this_dpd->nirreps = nirreps;
-  this_dpd->memory = memory;
+  this_dpd->memory = memory/sizeof(double);  /* Available memory in doubles */
+  this_dpd->memfree = this_dpd->memory;  /* At first... */
   this_dpd->cachelist = cachelist;
   this_dpd->cachefiles = cachefiles;
   this_dpd->num_subspaces = num_subspaces;

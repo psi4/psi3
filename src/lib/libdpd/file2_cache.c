@@ -93,9 +93,7 @@ int dpd_file2_cache_add(dpdfile2 *File)
       this_entry->size = 0;
       for(h=0; h < File->params->nirreps; h++)
 	  this_entry->size += 
-	      File->params->rowtot[h] * 
-	      File->params->coltot[h] *
-	      sizeof(double);
+	      File->params->rowtot[h] * File->params->coltot[h];
 
       /* Read all data into core */
       dpd_file2_mat_init(File);
@@ -167,11 +165,12 @@ void dpd_file2_cache_print(FILE *outfile)
       fprintf(outfile,
       "%-32s %3d    %1d  %1d  %1d  %8.1f\n",
 	      this_entry->label, this_entry->filenum, this_entry->irrep,
-	      this_entry->pnum, this_entry->qnum,(this_entry->size)/1e3);
+	      this_entry->pnum, this_entry->qnum,
+	      (this_entry->size)*sizeof(double)/1e3);
       total_size += this_entry->size;
       this_entry = this_entry->next;
     }
   fprintf(outfile,
     "---------------------------------------------------------\n");
-  fprintf(outfile, "Total cached: %8.1f kB\n", total_size/1e3);
+  fprintf(outfile, "Total cached: %8.1f kB\n", total_size*sizeof(double)/1e3);
 }
