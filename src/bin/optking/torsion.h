@@ -360,6 +360,11 @@ class torsion_set {
            && (b == get_C(i)) && (d == get_D(i)))
              return get_id(i);
        }
+       if (i == num) {
+         fprintf(outfile,"Could not find simple torsion for atoms  \
+             %d %d %d %d in list.\n", a+1, b+1, c+1, d+1);
+         exit(2);
+       }
        return -1;
 //   fprintf(outfile,"Returning id: %d\n",get_id(i));
      }

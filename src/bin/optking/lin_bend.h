@@ -174,7 +174,9 @@ class lin_bend_set {
   void compute(int natom, double *geom) {
     int i,j,A,B,C,linval,rottype;
     double rBA,rBC,rBD,eBA[3],eBC[3],eBD[3],tmp[3],dotprod;
-    double dummy[3], angle_ABD, angle_CBD;
+    double dummy[3], angle_ABD, angle_CBD, disp_size;
+
+    disp_size = 1.0E9;
     
     for (i=0;i<num;++i) {
       A = get_A(i);
@@ -186,24 +188,37 @@ class lin_bend_set {
       rottype = chkpt_rd_rottype();
       chkpt_close();
 
-      // if we zoom dummy atom way out, then our s vectors can just
-      // be steps toward or away from the dummy atom
-      // the following implicit dummy atom specification is
-      // certainly not a general solution
+      /* set dummies along x and y axes or according to input.
+         If we zoom dummy atoms way out, then our s vectors are just
+         steps toward the dummy atom
+      */
      
-      if (rottype == 0) { // assymmetric top - use z-axis
-        set_dummy(i, 0.0, 0.0, 1.0E6 );
+      if (linval == 1) {
+        if (optinfo.dummy_axis_1 == 0)
+          set_dummy(i, disp_size, 0.0, 0.0);
+        else if (optinfo.dummy_axis_1 == 1)
+          set_dummy(i, 0.0, disp_size, 0.0);
+        else if (optinfo.dummy_axis_1 == 2)
+          set_dummy(i, 0.0, 0.0, disp_size);
       }
-      else { // otherwise use x-axis; not a general solution
-        set_dummy(i, 1.0E6, 0.0, 0.0 );
+      else if (linval == 2) {
+        if (optinfo.dummy_axis_2 == 0)
+          set_dummy(i, disp_size, 0.0, 0.0);
+        else if (optinfo.dummy_axis_2 == 1)
+          set_dummy(i, 0.0, disp_size, 0.0);
+        else if (optinfo.dummy_axis_2 == 2)
+          set_dummy(i, 0.0, 0.0, disp_size);
       }
 
       dummy[0] = get_dummy(i,0);
       dummy[1] = get_dummy(i,1);
       dummy[2] = get_dummy(i,2);
 
-      // the following will compute the placement of the other
-      // implicit dummy atom in general - may use later
+  //fprintf(outfile,"dummy atom %10.5lf %10.5lf %10.5lf\n",
+  //dummy[0],dummy[1],dummy[2]);
+
+   /* calculate location of second dummy - this hasn't worked well so far */
+  /*
       if (linval == 2) {
         //positive displacement is toward eBD X eBA
         for (j=0;j<3;++j) {
@@ -216,14 +231,12 @@ class lin_bend_set {
         scalar_div(rBA,eBA);
         cross_product(eBD,eBA,tmp);
 
-        set_dummy(i,1.0E6*tmp[0],1.0E6*tmp[1],1.0E6*tmp[2]);
+        set_dummy(i,disp_size*tmp[0],disp_size*tmp[1],disp_size*tmp[2]);
         dummy[0] = get_dummy(i,0);
         dummy[1] = get_dummy(i,1);
         dummy[2] = get_dummy(i,2);
       }
-
-      //fprintf(outfile,"dummy atom at %10.5lf %10.5lf %10.5lf\n",
-          //dummy[0],dummy[1],dummy[2]);
+  */
 
       // angle = <ABD + <CBD
       // compute value of A-B-D
@@ -250,8 +263,8 @@ class lin_bend_set {
       scalar_div(rBA,eBA);
       scalar_div(rBC,eBC);
       dot_arr(eBA,eBC,3,&dotprod);
-      if (dotprod > 1.0) angle_CBD = 0.0;
-      else if (dotprod < -1.0) angle_CBD = _pi;
+      if (dotprod > (1.0-MIN_LIN_COS)) angle_CBD = 0.0;
+      else if (dotprod < (-1.0+MIN_LIN_COS)) angle_CBD = _pi;
       else angle_CBD = acos(dotprod)*180.0/_pi;
 
       set_val(i,angle_ABD+angle_CBD);
@@ -271,10 +284,20 @@ class lin_bend_set {
       dummy[1] = get_dummy(i,1);
       dummy[2] = get_dummy(i,2);
 
+    /* try just using dummy atom directions for s vectors */
+      rBD = sqrt( SQR(dummy[0])+SQR(dummy[1])+SQR(dummy[2]) );
+      scalar_div(rBD,dummy);
+
+      // A and C go away from D
+      set_s_A(i, -dummy[0], -dummy[1], -dummy[2]);
+      set_s_C(i, -dummy[0], -dummy[1], -dummy[2]);
+      // B goes toward D
+      set_s_B(i, dummy[0], dummy[1], dummy[2]);
+
+      /*
       A = get_A(i);
       B = get_B(i);
       C = get_C(i);
-
       // zoom D way out along BD 
       for (j=0;j<3;++j)
         eBD[j] = dummy[j] - geom[3*B+j];
@@ -295,13 +318,12 @@ class lin_bend_set {
       scalar_div(rAD,eAD);
       scalar_div(rBD,eBD);
       scalar_div(rCD,eCD);
-  
       // A and C go away from D
       set_s_A(i, -eAD[0], -eAD[1], -eAD[2]);
       set_s_C(i, -eCD[0], -eCD[1], -eCD[2]);
-  
       // B goes toward D
       set_s_B(i, eBD[0], eBD[1], eBD[2]);
+      */
     }
     return;
   }
@@ -312,6 +334,11 @@ class lin_bend_set {
      for (i=0;i<num;++i) {
        if ( (a == get_A(i)) && (b == get_B(i)) && (c == get_C(i))
          && (linval == get_linval(i)) ) break;
+     }
+     if (i == num) {
+       fprintf(outfile,"Could not find simple lin_bend for atoms  \
+           %d %d %d in list.\n", a+1, b+1, c+1);
+       exit(2);
      }
      /* fprintf(outfile,"Returning id: %d\n",get_id(i)); */
      return get_id(i);

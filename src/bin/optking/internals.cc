@@ -318,7 +318,9 @@ internals :: internals(cartesians& carts, int user_intcos)
 
       natom = carts.get_natom();
       coord_2d = carts.get_coord_2d();
-      fprintf(outfile,"\nGenerating simple internals\n"); fflush(outfile);
+      if (cnt) {
+        fprintf(outfile,"\nGenerating simple internals\n"); fflush(outfile);
+      }
 
       /* Compute atomic distance matrix */
       atom_dist = block_matrix(natom,natom);
@@ -331,8 +333,9 @@ internals :: internals(cartesians& carts, int user_intcos)
       /* Determine bond connectivity matrix using distance criteria */
       bonds = init_int_matrix(natom, natom);
       for (i=0; i<natom; ++i) {
-        Z1 = (int) carts.get_fatomic_num(i);
-        if (Z1 == 0) Z1 = 10; // let dummy atom be like C
+        Z1 = (int) carts.get_atomic_num(i);
+        //if (Z1 == 0) Z1 = 10; // let dummy atom be like C
+        if (Z1 == 0) continue;
         if ( radii[Z1] == 0) {
           fprintf(outfile,"WARNING! Optking does not know what bond lengths");
           fprintf(outfile,"to expect for atom %d.\n",i+1);
@@ -340,8 +343,9 @@ internals :: internals(cartesians& carts, int user_intcos)
           continue;
         }
         for (j=0; j<i; ++j) {
-          Z2 = (int) carts.get_fatomic_num(j);
-          if (Z2 == 0) Z2 = 10; // let dummy atom be like C
+          Z2 = (int) carts.get_atomic_num(j);
+          //if (Z2 == 0) Z2 = 10; // let dummy atom be like C
+          if (Z2 == 0) continue;
           if (radii[Z2] != 0.0) {
             tval = (radii[Z1] + radii[Z2])/(100.0*_bohr2angstroms);// to au
             if (atom_dist[i][j] < (optinfo.scale_connectivity * tval))
@@ -514,7 +518,9 @@ internals :: internals(cartesians& carts, int user_intcos)
             if (bb!=ia && bb!=ic && bonds[bb][ib]) skip = 1;
           if (skip) continue; // continue to next ic
 
-              fprintf(outfile," %d %d %d is colinear\n",a,b,c);
+              if (cnt) {
+                fprintf(outfile," %d %d %d is colinear\n",a,b,c);
+              }
  
               // find aa bonded to a such that aa-a-b is not linear too
               found_aa = 0;
@@ -529,7 +535,7 @@ internals :: internals(cartesians& carts, int user_intcos)
                 if ( fabs(tval) > NONLINEAR_DIST ) { 
                 // aa-a-b is not linear
                   found_aa = 1;
-                  fprintf(outfile,"found aa to a,b,c to %d, %d %d %d\n", aa,a,ba,c);
+                  // fprintf(outfile,"found aa to a,b,c to %d, %d %d %d\n", aa,a,ba,c);
 
 
                   // find cc bonded to c such that b-c-cc is not linear or b-c-d-cc,etc.
@@ -629,6 +635,7 @@ internals :: internals(cartesians& carts, int user_intcos)
 
         // write out internals newly generated internals
       if (!cnt) {
+        //printf("writing simples internals\n");
         ffile(&fp_intco, "intco.dat",0);
         print(fp_intco,0); 
         fclose(fp_intco);

@@ -152,6 +152,11 @@ class stretch_set {
        for (i=0;i<num;++i) {
          if ( (a == get_A(i)) && (b == get_B(i)) ) break;
        }
+       if (i == num) {
+         fprintf(outfile,"Could not find simple internal for atoms  \
+             %d %d in list.\n", a+1, b+1);
+         exit(2);
+       }
    //    fprintf(outfile,"returning id: %d\n", get_id(i));
        return get_id(i);
     }

@@ -72,6 +72,14 @@ void get_optinfo() {
   if ((optinfo.mode == MODE_DISP_IRREP) || (optinfo.mode == MODE_DISP_NOSYMM) ) 
     {  optinfo.redundant = 0; optinfo.delocalize =1; }
 
+  /* takes values of 1,2,3 for x,y,z for location of first dummy of linear bend*/
+  optinfo.dummy_axis_1 = 1;
+  ip_data("DUMMY_AXIS_1","%d",&(optinfo.dummy_axis_1),0);
+  optinfo.dummy_axis_1 -= 1;
+  optinfo.dummy_axis_2 = 2;
+  ip_data("DUMMY_AXIS_2","%d",&(optinfo.dummy_axis_2),0);
+  optinfo.dummy_axis_2 -= 1;
+
   optinfo.zmat = 0;
   if (ip_exist("ZMAT",0)) optinfo.zmat = 1;
 
@@ -133,12 +141,12 @@ void get_optinfo() {
   }
 
   if (optinfo.print_params) {
-    for (i=0;i<natom;++i)
+    for (i=0;i<nallatom;++i)
       fprintf(outfile,"atom_dummy[%d]: %d\n",i,optinfo.atom_dummy[i]);
-    for (i=0;i<natom;++i)
-      fprintf(outfile,"to_dummy[%d]: %d\n",i,optinfo.to_dummy[i]);
     for (i=0;i<nallatom;++i)
       fprintf(outfile,"to_nodummy[%d]: %d\n",i,optinfo.to_nodummy[i]);
+    for (i=0;i<natom;++i)
+      fprintf(outfile,"to_dummy[%d]: %d\n",i,optinfo.to_dummy[i]);
     fflush(outfile);
   }
 
@@ -156,6 +164,8 @@ void get_optinfo() {
     fprintf(outfile,"print_symmetry %d\n",optinfo.print_symmetry);
     fprintf(outfile,"optimize:      %d\n",optinfo.optimize);
     fprintf(outfile,"zmat:          %d\n",optinfo.zmat);
+    fprintf(outfile,"dummy_axis_1:    %d\n",optinfo.dummy_axis_1);
+    fprintf(outfile,"dummy_axis_2:    %d\n",optinfo.dummy_axis_2);
     fprintf(outfile,"points:        %d\n",optinfo.points);
     fprintf(outfile,"zmat_simples:  %d\n",optinfo.zmat_simples);
     fprintf(outfile,"redundant:     %d\n",optinfo.redundant);

@@ -23,10 +23,10 @@ double **compute_G(double **B, int num_intcos, cartesians &carts) {
   int i, dim_carts;
 
   dim_carts = 3*carts.get_natom();
-  masses = carts.get_fmass();
+  masses = carts.get_mass();
   u = mass_mat(masses);
   free(masses);
-//  u = unit_mat(dim_carts);
+  //u = unit_mat(dim_carts);
 
   G = block_matrix(num_intcos,num_intcos);
   temp_mat = block_matrix(dim_carts,num_intcos);

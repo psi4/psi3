@@ -302,7 +302,8 @@ void cartesians :: print(int print_flag, FILE *fp_out, int new_geom_file,
 
     double **geom;
     geom = block_matrix(nallatom,3);
-    for (i=0; i<nallatom; ++i)
+  //  for (i=0; i<nallatom; ++i)
+    for (i=0; i<natom; ++i)
       for (j=0; j<3; ++j)
         geom[optinfo.to_dummy[i]][j] = coord[3*i+j];
     chkpt_init(PSIO_OPEN_OLD);

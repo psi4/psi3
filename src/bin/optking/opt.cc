@@ -68,10 +68,11 @@ extern void grad_energy(cartesians &carts, internals &simples,
 extern void grad_save(cartesians &carts);
 extern void energy_save(cartesians &carts);
 extern int opt_step(cartesians &carts, internals &simples, salc_set &symm_salcs);
+extern int *read_constraints(internals &simples);
 
 int main(int argc, char **argv) {
 
-    int i,j,a,b,dim,count,dim_carts,user_intcos;
+    int i,j,a,b,dim,count,dim_carts,user_intcos, *constraints;
     int parsed=1, num_disps, disp_length;
     double *f, *coord; 
     char aline[MAX_LINELENGTH], *disp_label, **buffer, *err;
@@ -171,8 +172,8 @@ int main(int argc, char **argv) {
         optinfo.salcs_present = 1;
       fclose(fp_intco);
     }
-    // printf("simples_present already? %d\n",optinfo.simples_present);
-    // printf("salcs_present already? %d\n",optinfo.salcs_present);
+    //printf("simples_present already? %d\n",optinfo.simples_present);
+    //printf("salcs_present already? %d\n",optinfo.salcs_present);
 
     psio_init();
     get_optinfo();
@@ -205,6 +206,7 @@ int main(int argc, char **argv) {
     fflush(outfile);
 
     internals simples(carts, optinfo.simples_present);
+    optinfo.constraints = read_constraints(simples);
     coord = carts.get_coord();
     simples.compute_internals(carts.get_natom(), coord);
     simples.compute_s(carts.get_natom(), coord);
@@ -218,6 +220,7 @@ int main(int argc, char **argv) {
 
     /* obtain symmetry info, including simple transformation matrix */
     get_syminfo(simples);
+    fflush(outfile);
 
     /*** If SYMM is not user given, produce SYMM containing delocalized \
      *** internal coordinates or else use redundant simples          ***/

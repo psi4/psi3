@@ -39,6 +39,9 @@
 #define STEP_LIMIT (0.1)     /* max step size if coord has small value */
 #define STEP_PERCENT (0.3)   /* if coord large valued, max percentage allowed for step */
 #define NONLINEAR_DIST (4.0E-3)
+#define MIN_DQ_STEP (1.0E-12)
+#define MIN_CART_OUT (1.0E-12)
+#define MIN_LIN_COS (1.0E-10)
 
 EXTERN FILE *infile, *outfile;
 EXTERN char *psi_file_prefix;
@@ -120,6 +123,9 @@ struct OPTInfo {
   int irrep;
   int simples_present;
   int salcs_present;
+  int constraints_present;
+  int nconstraints;
+  int *constraints;
 
 /* print options */
   int print_simples;
@@ -151,6 +157,8 @@ struct OPTInfo {
   int *atom_dummy;
   int *to_dummy;
   int *to_nodummy;
+  int dummy_axis_1;
+  int dummy_axis_2;
 
 /* Back-transformation parameters */
   int bt_max_iter;

@@ -310,6 +310,11 @@ fprintf(outfile,"ordering change of out of plane %d\n",i);
            break;
          }
        }
+       if (i == num) {
+         fprintf(outfile,"Could not find simple out of plane for atoms  \
+             %d %d %d %d in list.\n", a+1, b+1, c+1, d+1);
+         exit(2);
+       }
        return get_id(i);
     }
 };

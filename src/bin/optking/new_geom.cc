@@ -16,6 +16,7 @@ extern "C" {
 #include <string.h>
 #include <libciomr/libciomr.h>
 #include <physconst.h>
+#include <psifiles.h>
 }
 
 #define EXTERN
@@ -33,12 +34,11 @@ int new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
     double *dq, int print_flag, int restart_geom_file,
     char *disp_label, int disp_num, int last_disp, double *return_geom) {
 
-  int bmat_iter_done,count,i,j,dim_carts,natom,nallatom,nsalcs;
+  int bmat_iter_done,count,i,j,dim_carts,natom,nsalcs;
   double **A, **G, **G_inv, **B, **u, **temp_mat, *no_fx;
   double dx_sum, dq_sum, *dx, *new_x, *x, *new_q, *q, *masses, *coord;
 
   natom = optinfo.natom;
-  nallatom = optinfo.nallatom;
   dim_carts = 3*natom;
 
   nsalcs = all_salcs.get_num();
@@ -46,10 +46,10 @@ int new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
   new_x = init_array(dim_carts);
   new_q = init_array(nsalcs);
 
-  masses = carts.get_fmass();
+  masses = carts.get_mass();
   u = mass_mat(masses);
   free(masses);
-//  u = unit_mat(dim_carts);
+//u = unit_mat(dim_carts);
 
   A = block_matrix(dim_carts, nsalcs);
   G = block_matrix(nsalcs, nsalcs);
@@ -188,10 +188,23 @@ int new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
   // take x back to bohr
   scalar_mult(1.0/_bohr2angstroms, x, dim_carts);
 
-  //  carts.set_coord(x); can't change calling geometry - may be reused
-  no_fx = new double [3*nallatom];
+  // avoid sending slightly non-symmetric geometries into chkpt file
+  /*
+  j=0;
+  for (i=0;i<dim_carts;++i) {
+    if ( fabs(x[i]) < MIN_CART_OUT) {
+      x[i] = 0.0;
+      ++j;
+    }
+  }
+  if (j>0)
+    fprintf(outfile,"Setting cartesian coodinates less than %e to zero.", MIN_CART_OUT);
+    */
 
-  for (i=0;i<3*nallatom;++i) no_fx[i] = 0.0;
+  //  carts.set_coord(x); can't change calling geometry - may be reused
+  no_fx = new double [3*optinfo.nallatom];
+
+  for (i=0;i<3*optinfo.nallatom;++i) no_fx[i] = 0.0;
   for (i=0;i<natom;++i) {
   // make fcoord for writing to chkpt - not sure why I have to do this
   // but wt_geom doesn't seem to work if dummy atoms are present
@@ -226,11 +239,10 @@ int new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
     fclose(fp_geom);
     fflush(outfile);
   }
-  else if (print_flag == 32) {
-    cart_temp.print(32,outfile,0,disp_label,disp_num);
+  else if (print_flag == PSIF_CHKPT) {
+    cart_temp.print(PSIF_CHKPT,outfile,0,disp_label,disp_num);
   }
 
-  // delete [] no_fx;
   free(q); free(new_q);
   free(x); free(dx); free(new_x);
   free_block(A);

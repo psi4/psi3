@@ -43,6 +43,7 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
 
   int i,j,a,b, dim, dim_carts, success,nbfgs;
   double **B, **G, **G2, **G_inv, **H_inv, **temp_mat, **u, **P;
+  double **C, **T, **T2, **T3;
   double *temp_arr2, *temp_arr, *masses, *geom, *forces;
   double *f, *f_q, *dq, *dq_to_new_geom, *q, tval, tval2, scale, temp, *djunk;
   char *disp_label, *wfn, value_string[30], force_string[30];
@@ -65,8 +66,8 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
 
   // build G = BuB^t
   B = compute_B(simples,symm);
-  // fprintf(outfile,"B Matrix\n");
-  // print_mat(B, symm.get_num(), dim_carts, outfile );
+  //fprintf(outfile,"B Matrix\n");
+  //print_mat(B, symm.get_num(), dim_carts, outfile );
   G = compute_G(B,symm.get_num(),carts);
 
   // compute G_inv
@@ -74,16 +75,17 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
   G_inv = symm_matrix_invert(G,symm.get_num(),1,optinfo.redundant);
 
   // setup the masses matrix, u
-  masses = carts.get_fmass();
+  masses = carts.get_mass();
   u = mass_mat(masses);
   free(masses);
-//  u = unit_mat(dim_carts);
+  //u = unit_mat(dim_carts);
+  //fprintf(outfile,"Mass Matrix\n");
+  //print_mat(u, dim_carts,dim_carts,outfile);
 
   // get forces array in cartesian coordinates, f, (in aJ/Ang)
-  f = carts.get_fforces();
-
-  // fprintf(outfile,"cartesian forces in aJ/Ang\n");
-  // print_mat2(&f, 1, 3*carts.get_natom(), outfile);
+  f = carts.get_forces();
+  //fprintf(outfile,"cartesian forces in aJ/Ang\n");
+  //print_mat2(&f, 1, dim_carts, outfile);
 
   // compute forces in internal coordinates, f_q = G_inv B u f
   f_q = init_array(symm.get_num());
@@ -116,13 +118,42 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
   mmult(G,0,G_inv,0,P,0,symm.get_num(),symm.get_num(),symm.get_num(),0); 
   free_block(G);
   free_block(G_inv);
+  
+  // Now apply constraints
+  if (optinfo.constraints_present) {
+    dim = symm.get_num();
+    // C has 1's on diagonal for constraints and 0's elsewhere
+    C = block_matrix(dim,dim);
+    for (i=0;i<optinfo.nconstraints;++i)
+      C[optinfo.constraints[i]][optinfo.constraints[i]] = 1.0;
+    //print_mat2(C, dim, dim, outfile);
 
-  // test - see if projector changes the forces
-  // temp_arr = init_array(symm.get_num());
-  // mmult(P,0,&f_q,1,&temp_arr,1,symm.get_num(), symm.get_num(),1,0);
-  // fprintf(outfile,"P*f_q\n");
-  // print_mat2(&temp_arr, 1, symm.get_num(), outfile);
-  // free(temp_arr);
+  // P = P' - P' C (CPC)^-1 C P'
+    T = block_matrix(dim,dim);
+    T2 = block_matrix(dim,dim);
+    mmult(P,0,C,0,T,0,dim,dim,dim,0); 
+    mmult(C,0,T,0,T2,0,dim,dim,dim,0); 
+    T3 = symm_matrix_invert(T2, dim, 0, 1);
+
+    mmult(C,0,P,0,T,0,dim,dim,dim,0); 
+    mmult(T3,0,T,0,T2,0,dim,dim,dim,0); 
+    mmult(C,0,T2,0,T3,0,dim,dim,dim,0); 
+    mmult(P,0,T3,0,T2,0,dim,dim,dim,0); 
+    for (i=0;i<dim;++i)
+      for (j=0;j<dim;++j)
+        P[i][j] -= T2[i][j];
+    free_block(T);
+    free_block(T2);
+    free_block(T3);
+    free_block(C);
+  }
+
+   // Project forces f_q = P f_q'
+   temp_arr = init_array(symm.get_num());
+   mmult(P,0,&f_q,1,&temp_arr,1,symm.get_num(), symm.get_num(),1,0);
+   for(i=0; i<symm.get_num(); ++i)
+     f_q[i] = temp_arr[i];
+   free(temp_arr);
 
   // Write Values and Forces of internals to opt.aux for later
   if (optinfo.bfgs) {
@@ -192,14 +223,20 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
     q[i] += dq[i];
   }
 
+  // avoid piddly symmetry breaking
+  for (i=0;i<symm.get_num();++i) {
+    if (fabs(dq[i]) < MIN_DQ_STEP)
+      dq[i] = 0.0;
+  }
+
   // Print step summary to output.dat
   fprintf(outfile,
       "\nInternal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad\n");
   fprintf(outfile,
-      "         Value          Force        Displacement   New Value\n");
+      "       Value        Force      Displacement  New Value\n");
   for (i=0;i<symm.get_num();++i)
-//    fprintf(outfile,"%2d%15.6lf%15.6lf%15.6lf%15.6lf\n",
-    fprintf(outfile,"%2d%15.10lf%15.10lf%15.10lf%15.10lf\n",
+    //fprintf(outfile,"%2d %20.15lf %20.15lf %20.15lf %20.15lf\n",
+    fprintf(outfile,"%2d %13.8lf %13.8lf %13.8lf %13.8lf\n",
         i+1,  q[i]-dq[i],    f_q[i],           dq[i],         q[i]);
 
   // Compute Max and RMS force, and see if geometry is optimized

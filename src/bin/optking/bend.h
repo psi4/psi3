@@ -209,6 +209,11 @@ class bend_set {
        for (i=0;i<num;++i) {
          if ( (a == get_A(i)) && (b == get_B(i)) && (c == get_C(i)) ) break;
        }
+       if (i == num) {
+         fprintf(outfile,"Could not find simple bend for atoms  \
+             %d %d %d in list.\n", a+1, b+1, c+1);
+         exit(2);
+       }
        /* fprintf(outfile,"Returning id: %d\n",get_id(i)); */
        return get_id(i);
     }

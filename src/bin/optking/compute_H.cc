@@ -75,7 +75,7 @@ double **compute_H(internals &simples, salc_set &symm, double **P, cartesians &c
     temp_mat = unit_mat(dim);
     for (i=0;i<dim;++i)
       for (j=0;j<dim;++j) {
-        H[i][j] += 1000 * (temp_mat[i][j] - P[i][j]);
+          H[i][j] += 1000 * (temp_mat[i][j] - P[i][j]);
       }
     free(temp_mat);
   }
