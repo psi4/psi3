@@ -8,7 +8,7 @@ srcdir=`(cd $srcdir; pwd)`
 AC_PREFIX_DEFAULT(/usr/local/psi)
 
 # exec_prefix is annoyingly preset to NONE by autoconf 2.x
-test "$exec_prefix" = "NONE" && exec_prefix='$(prefix)/$(target)'
+test "$exec_prefix" = "NONE" && exec_prefix='$(prefix)'
 
 test -z "$bindir" && bindir='$(exec_prefix)/bin'
 test -z "$libdir" && libdir='$(exec_prefix)/lib'
