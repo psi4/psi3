@@ -262,16 +262,16 @@ void print_full_geometry(double conv_factor)
 {
   int i,j;
 
-  fprintf(outfile,"       Center              X                  Y                   Z\n");
-  fprintf(outfile,"    ------------   -----------------  -----------------  -----------------\n");
+  fprintf(outfile,"     Center      Z           X                  Y                   Z\n");
+  fprintf(outfile,"  ------------  ---  -----------------  -----------------  -----------------\n");
 
   for(i=0;i<num_entries;i++){
-    fprintf(outfile,"    %12s ",full_element[i]); fflush(outfile);
+    fprintf(outfile,"  %12s %3d",full_element[i], (int) nuclear_charges[i]); fflush(outfile);
     for(j=0;j<3;j++)
       fprintf(outfile,"  %17.12lf",full_geom[i][j]*conv_factor);
     fprintf(outfile,"\n");
   }
-  fprintf(outfile,"\n");
+  fprintf(outfile,"  --------------------------------------------------------------------------\n");
   fflush(outfile);
 
   return;
