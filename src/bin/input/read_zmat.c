@@ -287,6 +287,12 @@ void read_zmat()
      ++fatomcount;
   }
 
+  for(i=0;i<num_entries;++i) {
+	full_geom[i][0] *=conv_factor;
+	full_geom[i][1] *=conv_factor;
+	full_geom[i][2] *=conv_factor;
+  }
+
   return;
 }
 
@@ -370,7 +376,7 @@ void parse_zmat(int i, int position, double *value, struct definition
        if(position == 6)
           z_geom[i].tors_label[0] = '\0';
      }
-    
+ 
     free(temp_string);	
 
 	

@@ -564,7 +564,9 @@ void permute_axes(double **geom, int axis1, int axis2)
   R[axis2][axis3] = 1.0;
   R[axis3][axis1] = 1.0;
   rotate_geometry(geometry,R);
+  if(!cartOn)
+    rotate_full_geom(full_geom,R);
   free_block(R);
-  
+
   return;
 }
