@@ -204,7 +204,6 @@ void write_to_file30(double repulsion)
   free(atom_label);
   
   /* Labels of atoms including dummy atoms */
- 
   if(cartOn)
     j = num_atoms;
   else j = num_entries;
@@ -212,9 +211,9 @@ void write_to_file30(double repulsion)
   atom_label = init_char_array(8);
   for(atom=0;atom<j;atom++) {
     strncpy(atom_label,full_element[atom],strlen(full_element[atom]));
+    atom_label[strlen(full_element[atom])] = '\0';
     wwritw(CHECKPOINTFILE,(char *) atom_label, 8*(sizeof(char)),ptr,&ptr);
   }
- 
   free(atom_label);
 
   /* Orbitals per irrep */
