@@ -14,7 +14,7 @@
 ** Created by C. David Sherrill on 29 April 1998
 */
 
-#define PSIF_CHKPT          30
+#define PSIF_CHKPT          32 /* new libpsio checkpoint file number */
 
 #define PSIF_DSCF           31
 #define PSIF_SO_TEI         33
