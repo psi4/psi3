@@ -57,10 +57,10 @@ void cc3(void)
 
   dpd_buf4_init(&T2new, CC_MISC, 0, 0, 5, 0, 5, 0, "CC3 tIjAb");
   dpd_buf4_scm(&T2new, 0);
-  dpd_buf4_init(&F, CC_MISC, 0, 10, 5, 10, 5, 0, "CC3 WAbEi (Ie,Ab)");
-  dpd_buf4_init(&E, CC_MISC, 0, 0, 10, 0, 10, 0, "CC3 WMbIj (Ij,Mb)");
-  dpd_buf4_init(&Wamef, CC_MISC, 0, 11, 5, 11, 5, 0, "CC3 WAmEf (Am,Ef)");
-  dpd_buf4_init(&Wmnie, CC_MISC, 0, 0, 10, 0, 10, 0, "CC3 WMnIe (Mn,Ie)");
+  dpd_buf4_init(&F, CC3_HET1, 0, 10, 5, 10, 5, 0, "CC3 WAbEi (iE,aB)");
+  dpd_buf4_init(&E, CC3_HET1, 0, 0, 10, 0, 10, 0, "CC3 WMbIj (Ij,Mb)");
+  dpd_buf4_init(&Wamef, CC3_HET1, 0, 11, 5, 11, 5, 0, "CC3 WAmEf (Am,Ef)");
+  dpd_buf4_init(&Wmnie, CC3_HET1, 0, 0, 10, 0, 10, 0, "CC3 WMnIe (Mn,Ie)");
   dpd_buf4_init(&Dints, CC_DINTS, 0, 0, 5, 0, 5, 0, "D 2<ij|ab> - <ij|ba>");
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_init(&T2, h);

@@ -12,7 +12,7 @@
 ** The basic strategy for this code is to generate two intermediate
 ** quantities, Z1(Ab,EI) and Z2(Ei,Ab), which are summed in the final
 ** step to give the complete W(Ei,Ab) intermediate.  This is sorted
-** to W(iE,Ab) storage for use in the triples equations.
+** to W(iE,aB) storage for use in the triples equations.
 **
 ** TDC, Feb 2004
 */
@@ -93,7 +93,7 @@ void cc3_Wabei(void)
     dpd_buf4_sort_axpy(&Z1, CC_TMP0, rspq, 11, 5, "CC3 Z(Ei,Ab)", 1);
     dpd_buf4_close(&Z1);
     dpd_buf4_init(&Z2, CC_TMP0, 0, 11, 5, 11, 5, 0, "CC3 Z(Ei,Ab)");
-    dpd_buf4_sort(&Z2, CC3_HET1, qpsr, 10, 5, "CC3 WAbEi (Ie,Ab)");
+    dpd_buf4_sort(&Z2, CC3_HET1, qpsr, 10, 5, "CC3 WAbEi (iE,aB)");
     dpd_buf4_close(&Z2);
 
     dpd_file2_close(&t1);
