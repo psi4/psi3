@@ -242,7 +242,7 @@ void parsing_cmdline(int argc, char *argv[])
 
        /*--- compute MP2-R12 energy option ---*/
        if (strcmp(argv[i], "--mp2r12") == 0) {
-#ifdef INCLUDE_MP2
+#ifdef INCLUDE_MP2R12
            UserOptions.make_oei = 0;
 	   UserOptions.make_eri = 0;
 	   UserOptions.make_fock = 0;
