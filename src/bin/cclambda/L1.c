@@ -97,10 +97,15 @@ void L1_build(void) {
 
     dpd_file2_init(&LFAEt2, CC_OEI, 0, 1, 1, "FAEt");
     dpd_file2_init(&LFaet2, CC_OEI, 0, 3, 3, "Faet");
+    dpd_file2_print(&LFAEt2, outfile);
+    dpd_file2_print(&LFaet2, outfile);
     dpd_contract222(&Lia,&LFaet2,&newLia, 0, 1, 1, 1);
     dpd_contract222(&LIA,&LFAEt2,&newLIA, 0, 1, 1, 1);
     dpd_file2_close(&LFaet2);
     dpd_file2_close(&LFAEt2);
+
+    dpd_file2_print(&newLIA, outfile);
+    dpd_file2_print(&newLia, outfile);
 
 
     /* L1 RHS += -Lma*Fim */

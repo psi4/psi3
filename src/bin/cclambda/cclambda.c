@@ -85,6 +85,7 @@ int main(int argc, char *argv[])
 
   denom();
 
+  params.maxiter = 1;
   for(moinfo.iter=1 ; moinfo.iter <= params.maxiter; moinfo.iter++) {
     sort_amps();
     G_build();
