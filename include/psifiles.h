@@ -16,6 +16,7 @@
 
 #define PSIF_CHKPT          32 /* new libpsio checkpoint file number */
 
+#define PSIF_OPTKING        1
 #define PSIF_DSCF           31
 #define PSIF_SO_TEI         33
 #define PSIF_OEI            35
