@@ -19,13 +19,13 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 all:
 	for dir in $(subdirs); \
           do \
-            (cd $${dir}; echo ... Making in $${dir} ...; $(MAKE) all); \
+            (cd $${dir}; echo Making in $${dir}; $(MAKE) all) || exit 1; \
           done
 
 install: install_host
 	for dir in $(subdirs); \
           do \
-            (cd $${dir}; echo ... Making install in $${dir} ...; $(MAKE) install); \
+            (cd $${dir}; echo Making install in $${dir}; $(MAKE) install) || exit 1; \
           done
 
 install_host: host.sh config.guess config.local
@@ -35,31 +35,31 @@ install_host: host.sh config.guess config.local
 install_inc:
 	for dir in $(subdirs); \
           do \
-            (cd $${dir}; echo ... Making install in $${dir} ...; $(MAKE) install_inc); \
+            (cd $${dir}; echo Making install in $${dir}; $(MAKE) install_inc) || exit 1; \
           done
 
 install_man:
 	for dir in $(subdirs); \
           do \
-            (cd $${dir}; echo ... Making install in $${dir} ...; $(MAKE) install_man); \
+            (cd $${dir}; echo Making install in $${dir}; $(MAKE) install_man) || exit 1; \
           done
 
 depend:
 	for dir in $(subdirs); \
           do \
-            (cd $${dir}; echo ... Making depend in $${dir} ...; $(MAKE) depend); \
+            (cd $${dir}; echo Making depend in $${dir}; $(MAKE) depend) || exit 1; \
           done
 
 clean:
 	for dir in $(subdirs); \
           do \
-            (cd $${dir}; echo ... Making clean in $${dir} ...; $(MAKE) clean); \
+            (cd $${dir}; echo Making clean in $${dir}; $(MAKE) clean) || exit 1; \
           done
 
 targetclean:
 	for dir in $(subdirs); \
           do \
-            (cd $${dir}; echo ... Making clean in $${dir} ...; $(MAKE) targetclean); \
+            (cd $${dir}; echo Making clean in $${dir}; $(MAKE) targetclean) || exit 1; \
           done
 
 $(top_srcdir)/configure: $(top_srcdir)/configure.in $(top_srcdir)/aclocal.m4
