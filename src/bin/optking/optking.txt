@@ -1,0 +1,51 @@
+The actions of optking are controlled directly by command-line arguments passed
+to it by psi3 or the user.  These are described in the man pages and at the top
+of opt.cc.
+
+The header files are organized as follows
+internals.h
+    This class contains pointers to sets of different kinds of internal
+coordinates along with functions to set and get the number of each kind.
+Its constructor function will read in all the simples present in the intco
+section or construct them from distance criteria.
+important member functions include:
+  compute_internals(number of atoms, geometry) to compute values of simples
+  compute_s(number of atoms, geometry) to compute values of all s-vectors
+
+stretch.h
+bend.h
+torsion.h
+out_of_plane.h
+lin_bend.h
+    These headers define the internal coordinate types and each contain
+2 classes.  The simplest are in stretch.h:
+    The first class is "stretch_class", which is a single stretch
+containing the id number of the stretch, the atoms involved, the value
+of the stretch, and the s-vectors for the stretch.  The second class is
+"stretch_set", which contains a pointer to an array of stretches plus
+the number of stretches present.
+
+salc_set.h
+    This header defines a salc_class, which includes a prefactor, a set of
+coefficients and simple internal coordinate id numbers.  A salc_set
+is an array of salc_class.  It has a constructor for all SALCS, symmetric
+and asymmetric, and also a constructor for just those salcs in the "SYMM"
+section of the INTCO section.
+
+The basic startup algorithm goes as follows
+
+1. See if user has specified zmat_simples as true and not provided an INTCO
+section.  If so, copy simple internal coordinates directly from the z-mat in
+the input to simple coordinates in intco.dat.
+
+2. use "internals" constructor. This reads in all of the simples present
+in intco section, OR generates simples based on distance criteria.
+
+3. If "symm" vector is not already present, then
+    if (delocalize == true), form delocalized coordinates from simple ones
+    else use simple, redundant internal coordinates (copy simples into SYMM
+       in intco.dat)
+
+4. call salc_set constructor function.  With the argument "SYMM", this reads in
+   all of the SALCS present in only the SYMM section of intco.dat
+
