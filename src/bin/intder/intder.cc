@@ -8,7 +8,7 @@
 #include "intco.h"
 #include "globals.h"
 #include "bmat.h"
-//#include "transform.h"
+#include "transform.h"
 
 extern "C" {
 #include <libchkpt/chkpt.h>
@@ -26,7 +26,7 @@ Displacements gDisplacements;
 Params gParams;
 InternalCoordinates gIntCo;
 BMat gBMat;
-//Transform gTransform;
+Transform gTransform;
 
 void intro(void);
 void readIntCoDerivatives(void);
@@ -114,12 +114,11 @@ int main(int argc, char** argv)
   
   //Intder now makes blocks of memory to determine dimensions of 2/3/4-D matrices. We shouldn't have to do this 
 	
-  //This doesn't work yet
     if(gParams.transformType == 2)
       readIntCoDerivatives();
-  } // Closing brace goes to *
+  
+     /* Numerical testing stuff that we aren't going to implement yet
 
-     /* 
 	if(gParams.derlvl + gParams.atEquilibrium >= 3) {
 	SecondDerivative secondDer;
 	if(gParams.numtest > 1)
@@ -155,12 +154,14 @@ int main(int argc, char** argv)
     
     if(gParams.propertyDimension > 0) 
     //  XKinput();
-    //if(gParams.transformType < 0) 
-    //linear_transform();
+    } */
+    if(gParams.transformType <= 0) 
+      gTransform.der_transform(gParams.nintco, gParams.ncartesians, gBMat.AMatrix);
+    else
+      gTransform.der_transform(gParams.ncartesians, gParams.nintco, gBMat.BMatSave);
     
-    }
-      */
-    
+  } // Closing brace goes to *
+  
   chkpt_close();
   tstop(outfile);
   psio_done();
