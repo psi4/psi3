@@ -123,10 +123,10 @@ void coord_base :: grad_test() {
 	fprintf(outfile," 10^-%d",grad_max);
 	fprintf(outfile,"\n  Optimization completed\n");
 	fprintf(stdout,"\n Optimization completed");  
-	 tstop(outfile);
-	 fclose(infile);
-	 fclose(outfile);
-	 exit(1);
+	tstop(outfile);
+	fclose(infile);
+	fclose(outfile);
+	abort();
     }
     
     return;

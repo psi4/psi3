@@ -39,7 +39,7 @@ void punt(char *mess)
   fprintf(outfile, "  error: %s\n", mess);
   fprintf(stderr, "  EXTREMA error: %s\n", mess);
   stop_io();
-  exit(1);
+  abort();
 }
 
 
@@ -76,7 +76,7 @@ double **symm_matrix_invert(double **_A, int dim, int print_det, int redundant) 
         fprintf(outfile,"Determinant: %10.6e\n",det);
         fprintf(outfile,"Determinant is too small...aborting.\n");
         fclose(outfile);
-        exit(2);
+        abort();
      }
   }
   else {

@@ -52,7 +52,6 @@ int main(int argc, char *argv[]) {
     }
     
     stop_io();
-    exit(0);
     return 0;
 }
 
