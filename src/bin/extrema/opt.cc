@@ -12,16 +12,17 @@
 extern "C" {
 #include <libciomr.h>
 #include <ip_libv1.h>
+#include <file30.h>
 }
 
 #include "opt.h"
 #include "simple_internal.h"
 #include "coord_base.h"
-#include "z_class.h"  
+#include "z_class.h"
 
 void main() {
 
-  int i;
+  int i, j;
   FILE *temp;
 
   /*set up i/o stuff*/
@@ -59,9 +60,9 @@ void main() {
  
            for(i=0;i<num_coords;++i) {
                if( z_coord.coord_arr[i].get_type() == 0 )
-                   H[i][i] = 1.00;
+                   H[i][i] = 1.0;
                if( z_coord.coord_arr[i].get_type() == 1 || z_coord.coord_arr[i].get_type() == 2 )
-                   H[i][i] = 0.25;
+                   H[i][i] = 4.0;
                coord_vec[i] = z_coord.coord_arr[i].get_val();
 	     }
  
@@ -75,7 +76,46 @@ void main() {
            }
           update_H();
 	}
-      
+
+      /*compute optimization step*/
+      opt_step();
+
+      fprintf(outfile,"\nnew coordinate values:\n");
+      for(i=0;i<num_coords;++i) {
+	  fprintf(outfile,"%lf\n",coord_vec[i]);
+	}
+
+      /*update z_geom with new coordinates*/
+      j=0;
+      for(i=1;i<num_atoms;++i) {
+	  if(i==1) {
+	      z_coord.z_geom[i].bond_val = coord_vec[j];
+	      ++j; fprintf(outfile,"\nj: %d",j);
+	    }
+	  if(i==2) {
+	      z_coord.z_geom[i].bond_val = coord_vec[j];
+	      ++j; fprintf(outfile,"\nj: %d",j);
+	      z_coord.z_geom[i].angle_val = coord_vec[j];
+	      ++j; fprintf(outfile,"\nj: %d",j);
+	    }
+	  else if(i>2) {
+	      z_coord.z_geom[i].bond_val = coord_vec[j];
+	      ++j;
+	      z_coord.z_geom[i].angle_val = coord_vec[j];
+	      ++j;
+	      z_coord.z_geom[i].tors_val - coord_vec[j];
+	      ++j;
+	    }
+	}
+
+      /*test z_to_cart*/
+      double **cart_geom;
+      cart_geom = file30_z_to_cart(z_coord.z_geom,num_atoms);
+      print_mat(cart_geom,num_atoms,3,outfile);
+      fflush(outfile);
+
+      file30_wt_geom(cart_geom);
+       
       write_opt();
       
     }

@@ -45,11 +45,9 @@ z_class :: z_class(int num_coord)
   double *B_row0, *B_row1,  /*arrays to rows of the B matrix*/ 
          *B_row2,
          *cgrad_vec;
-  z_entry *z_geom;          /*array to hold z-matrix*/
 
   /*read z_mat from file30*/
   file30_init();
-  z_geom = (z_entry *) malloc(num_atoms*sizeof(z_entry));
   z_geom = file30_rd_zmat();
 
   /*print z-mat to output*/
@@ -68,8 +66,6 @@ z_class :: z_class(int num_coord)
               z_geom[i].tors_atom,z_geom[i].tors_val);  
     }
 
-  fprintf(outfile,"torsion string: %s\n",z_geom[3].tors_label);
-  
   /*print opt flags*/
   fprintf(outfile,"\nopt flags:\n");
   for(i=1;i<num_atoms;++i) {
@@ -105,8 +101,8 @@ z_class :: z_class(int num_coord)
       fprintf(outfile,"coord %i  type: %i  val: %lf\n",i,coord_arr[i].get_type(),coord_arr[i].get_val());
     }
 
-fflush(outfile);
-  
+
+
   /*--------------
     form B matrix
     -------------*/
@@ -172,9 +168,19 @@ fflush(outfile);
     }
 
   free(cgrad_vec);
-  free(z_geom);
   return;
  }
+
+
+z_class::~z_class() {
+  free(z_geom);
+}
+
+
+
+
+
+
 
 
 

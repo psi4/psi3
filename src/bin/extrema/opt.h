@@ -31,6 +31,7 @@ EXTERN void update_H();
 EXTERN void global_allocate();
 EXTERN void global_free();
 EXTERN double dot_pdt(double *vec1, double *vec2, int num);
+EXTERN void opt_step();
 
 /*this needs to be in C*/
 extern "C" char *gprgid(); 
