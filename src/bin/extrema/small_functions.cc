@@ -38,6 +38,7 @@ void punt(char *mess)
 void global_allocate() {
  
   coord_vec = init_array(num_coords);
+  old_coord_vec = init_array(num_coords);
   grad_vec = init_array(num_coords);
   H = init_matrix(num_coords,num_coords);  
   coord_old = init_array(num_coords);

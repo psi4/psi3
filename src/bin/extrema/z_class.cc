@@ -15,14 +15,10 @@ extern "C" {
 }
 
 #define EXTERN
-#include "opt.h"
 #include "simple_internal.h"
 #include "coord_base.h" 
 #include "z_class.h"
-
-extern double *B_row_bond( int atom1, int atom2 );
-extern double *B_row_angle( int atom1, int atom2, int atom3 );
-extern double *B_row_tors( int atom1, int atom2, int atom3, int atom4 );
+#include "opt.h"
 
 
 
@@ -101,73 +97,6 @@ z_class :: z_class(int num_coord)
       fprintf(outfile,"coord %i  type: %i  val: %lf\n",i,coord_arr[i].get_type(),coord_arr[i].get_val());
     }
 
-
-
-  /*--------------
-    form B matrix
-    -------------*/
-
-  B_mat = (double **) malloc(num_coord*sizeof(double *));
-  B_row0 = init_array(3*num_atoms);
-  B_row1 = init_array(3*num_atoms);
-  B_row2 = init_array(3*num_atoms);
-  pos = 0;
-
-  for(i=1;i<num_atoms;++i) {
-      if(i==1) {
-	  B_row0 = B_row_bond(i, z_geom[i].bond_atom-1);
-	  B_mat[pos] = B_row0;
-	  ++pos;
-	}
-      if(i==2) {
-	  B_row0 = B_row_bond(i, z_geom[i].bond_atom-1);
-	  B_row1 = B_row_angle(i, z_geom[i].bond_atom-1, z_geom[i].angle_atom-1);
-	  B_mat[pos] = B_row0;
-	  B_mat[pos+1] = B_row1;
-	  pos += 2;
-	}
-      if(i>2) {
-	  B_row0 = B_row_bond(i, z_geom[i].bond_atom-1);
-	  B_row1 = B_row_angle(i, z_geom[i].bond_atom-1, z_geom[i].angle_atom-1);
-	  B_row2 = B_row_tors(i, z_geom[i].bond_atom-1, z_geom[i].angle_atom-1, z_geom[i].tors_atom-1);
-	  B_mat[pos] = B_row0;
-	  B_mat[pos+1] = B_row1;
-	  B_mat[pos+2] = B_row2;
-	  pos += 3;
-	}
-    }
-
-  /*print B_mat*/
-  print_mat(B_mat, num_coord, num_atoms*3, outfile);
- 
-  /*transform gradients to internal coordinates*/
-  cgrad_vec = init_array(3*num_atoms);
- 
-  pos=0;
-  for (i=0;i<num_atoms;++i) {
-      for(j=0;j<3;++j) {
-          cgrad_vec[pos] = cart_grad[i][j];
-          ++pos;
-        }
-    }
- 
-  for (i=0;i<num_coords;++i) {
-      for (j=0;j<(3*num_atoms);++j) {
-          grad_vec[i] += B_mat[i][j]*cgrad_vec[j];
-        }
-    }
- 
-  fprintf(outfile,"\ngradient vector in cartesian coordinates:\n");
-  for (i=0;i<3*num_atoms;++i) {
-      fprintf(outfile,"%lf\n",cgrad_vec[i]);
-    }
- 
-  fprintf(outfile,"\ngradient vector in internal coordinates:\n");
-  for (i=0;i<num_coords;++i) {
-      fprintf(outfile,"%lf\n",grad_vec[i]);
-    }
-
-  free(cgrad_vec);
   return;
  }
 

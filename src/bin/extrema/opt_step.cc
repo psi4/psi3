@@ -12,6 +12,7 @@ extern "C" {
 #include <stdio.h>
 #include <stdlib.h>
 #include <libciomr.h>
+#include <physconst.h>
 }
 
 #define EXTERN
@@ -32,7 +33,16 @@ void opt_step() {
     }
 
   for(i=0;i<num_coords;++i) {
+      if( (fabs(s[i]) > 0.1) && (s[i] > 0.0) )
+	  s[i]=0.1;
+      if( (fabs(s[i]) > 0.1) && (s[i] < 0.0) )
+	  s[i]=-0.1;
+  }
+
+  fprintf(outfile,"\nNew coordinate vector:\n");
+  for(i=0;i<num_coords;++i) {
       coord_vec[i] += s[i];
+      fprintf(outfile,"%lf\n",coord_vec[i]);
     }
 
   free(s);

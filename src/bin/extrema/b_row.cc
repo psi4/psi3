@@ -1,9 +1,8 @@
 /*##################################################################
 #
-#  B_row.cc
+#  B_mat.cc
 #
-#  functions which compute rows of the B matrix corresponding to
-#  bond lengths, dihedral angles and torsional angles
+#  necessary functoins to compute the B matrix 
 #
 #  formulas can be found in Ch4, of Molecular Vibrations by
 #  Wilson, Decious and Cross
@@ -24,6 +23,53 @@ double *unit_vector( int atom1, int atom2 );
 double dot_pdt( double* vec1, double* vec2 );
 double *cross_pdt( double* vec1, double* vec2);
 double vec_norm( int atom1, int atom2 ); 
+
+
+
+/********************************************************************
+*
+*  form_B
+*
+*  calls b_row functions to form B matrix
+*
+*  parameters: none
+*
+*  returns: nothing
+*********************************************************************/
+
+void form_B() {
+
+  int i, pos=0;
+  double *B_row0, *B_row1, *B_row2;
+  B_row0 = init_array(3*num_atoms);
+  B_row1 = init_array(3*num_atoms);
+  B_row2 = init_array(3*num_atoms);
+
+  for(i=1;i<num_atoms;++i) {
+      if(i==1) {
+	  B_row0 = B_row_bond(i, z_geom[i].bond_atom-1);
+	  B_mat[pos] = B_row0;
+	  ++pos;
+	}
+      if(i==2) {
+	  B_row0 = B_row_bond(i, z_geom[i].bond_atom-1);
+	  B_row1 = B_row_angle(i, z_geom[i].bond_atom-1, z_geom[i].angle_atom-1);
+	  B_mat[pos] = B_row0;
+	  B_mat[pos+1] = B_row1;
+	  pos += 2;
+	}
+      if(i>2) {
+	  B_row0 = B_row_bond(i, z_geom[i].bond_atom-1);
+	  B_row1 = B_row_angle(i, z_geom[i].bond_atom-1, z_geom[i].angle_atom-1);
+	  B_row2 = B_row_tors(i, z_geom[i].bond_atom-1, z_geom[i].angle_atom-1, z_geom[i].tors_atom-1);
+	  B_mat[pos] = B_row0;
+	  B_mat[pos+1] = B_row1;
+	  B_mat[pos+2] = B_row2;
+	  pos += 3;
+	}
+    }
+}
+
 
 
 /********************************************************************
