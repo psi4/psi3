@@ -712,6 +712,7 @@ AC_OUTPUT(include/psiconfig.h include/cfuncs.h include/ffuncs.h
           src/lib/libderiv/MakeVars
           src/lib/libderiv/Makefile.compiler
           src/lib/libderiv/Makefile.libderiv
+          src/lib/libderiv/input.dat
           src/lib/libdpd/Makefile
           src/lib/libfile30/Makefile
           src/lib/libint/Makefile
@@ -726,6 +727,7 @@ AC_OUTPUT(include/psiconfig.h include/cfuncs.h include/ffuncs.h
           src/lib/libr12/MakeVars
           src/lib/libr12/Makefile.compiler
           src/lib/libr12/Makefile.libr12
+          src/lib/libr12/input.dat
           src/bin/Makefile src/bin/MakeRules src/bin/MakeVars
 
           src/bin/contour/Makefile
