@@ -92,6 +92,8 @@ void diag(void) {
       psio_close(i,0);
       psio_open(i,0);
     }
+    psio_close(EOM_TMP,0);
+    psio_open(EOM_TMP,0);
 
     /* Store approximate diagonal elements of Hbar */
     form_diagonal(C_irr);
