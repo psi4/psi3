@@ -64,6 +64,23 @@ sub seek_mp2
   exit 1;
 }
 
+sub seek_mp2_direct
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  seek(OUT,0,0);
+  while(<OUT>) {
+    if (/Total MBPT/) {
+      @data = split(/ +/, $_);
+      $mp2 = $data[5];
+      return $mp2;
+    }
+  }
+  close(OUT);
+
+  printf "Error: Could not find MP2 energy in $_[0].\n";
+  exit 1;
+}
+
 sub seek_ccsd
 {
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";

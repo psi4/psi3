@@ -3,9 +3,9 @@
 
 subdirs = \
 scf-opt scf-opt-numer scf-freq scf-freq-numer scf-freq-symm-numer \
-scf-polar rhf-stab uhf-stab rohf-stab mp2-sp cis-sp cisd-sp cisd-opt-numer \
-cc1 cc2 cc3 cc4 cc8 cc9 cc10 cc11 cc12 cc13 cc14 cc15 cc16 cc17 cc18 cc19 \
-dboc-rhf1 dboc-rohf1 dboc-uhf1 dboc-rcisd1 dboc-rocisdl \
+scf-polar rhf-stab uhf-stab rohf-stab mp2-sp mp2-direct-sp cis-sp cisd-sp \
+cisd-opt-numer cc1 cc2 cc3 cc4 cc8 cc9 cc10 cc11 cc12 cc13 cc14 cc15 cc16 \
+cc17 cc18 cc19 dboc-rhf1 dboc-rohf1 dboc-uhf1 dboc-rcisd1 dboc-rocisdl \
 extrema-deloc extrema-zmat
 
 tests:

@@ -68,6 +68,7 @@ elsif ($ARGV[0] eq "--small") {
                  "uhf-stab",
                  "rohf-stab",
 		 "mp2-sp",
+		 "mp2-direct-sp",
                  "extrema-zmat",
                  "extrema-deloc",
                  "cis-sp",
@@ -117,6 +118,7 @@ elsif ($ARGV[0] eq "--all") {
                  "uhf-stab",
                  "rohf-stab",
 		 "mp2-sp",
+		 "mp2-direct-sp",
                  "extrema-zmat",
                  "extrema-deloc",
                  "cis-sp",
@@ -151,6 +153,7 @@ elsif ($ARGV[0] eq "--all") {
 }
 elsif ($ARGV[0] eq "--sp") {
   @DIR_NAMES = ( "mp2-sp",
+                 "mp2-direct-sp",
                  "cisd-sp",
                  "casscf-sp",
                  "cis-sp",
@@ -207,6 +210,7 @@ else {
                  "uhf-stab",
                  "rohf-stab",
 		 "mp2-sp",
+		 "mp2-direct-sp",
                  "extrema-zmat",
                  "extrema-deloc",
                  "cis-sp",
