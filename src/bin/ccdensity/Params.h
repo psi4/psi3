@@ -8,6 +8,7 @@ struct Params {
   int relax_opdm;
   int use_zeta;
   int calc_xi;
+  int connect_xi;
   int restart;
   int ground;
   int user_transition; /* was L specified on command-line? */

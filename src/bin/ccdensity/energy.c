@@ -38,6 +38,10 @@ void energy(void)
   double one_energy=0.0, two_energy=0.0, total_two_energy = 0.0;
   double this_energy;
 
+dpd_file2_init(&D, CC_OEI, 0, 0, 0, "DIJ");
+dpd_file2_print(&D, outfile);
+dpd_file2_close(&D);
+
   fprintf(outfile, "\n\tEnergies re-computed from CC density:\n");
   fprintf(outfile,   "\t-------------------------------------\n");
 

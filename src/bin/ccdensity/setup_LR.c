@@ -151,6 +151,7 @@ void setup_LR(void)
   /* for ground-state density contributions L <- R0 L + Zeta */
   /* symmetry of L must be same as density */
   if ( (!params.ground) && (!params.calc_xi) ) {
+    if (params.connect_xi) params.R0 = 0.0;
     if ( (params.ref==0) || (params.ref==1) ) {
       if (L_irr == G_irr) {
         dpd_file2_init(&L1, CC_GLG, L_irr, 0, 1, "LIA");

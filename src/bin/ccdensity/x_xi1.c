@@ -4,6 +4,7 @@
 #include "globals.h"
 
 extern void x_xi_check(char *term_lbl);
+extern void x_xi1_connected(void);
 
 /* compute xi_1 amplitudes for zeta equations */
 
@@ -22,7 +23,7 @@ void x_xi1(void)
 x_xi_check("begin xi1");
 #endif
     /* term 1, XIA += 0.25 LIA Rmnef <mn||ef> */
-    if (R_irr == 0) {
+    if ((R_irr == 0)  && (!params.connect_xi)) {
       dpd_file2_init(&I1, EOM_TMP_XI, R_irr, 0, 0, "RD_OO");
       params.RD_overlap = 0.5 * dpd_file2_trace(&I1);
       dpd_file2_close(&I1);
@@ -142,6 +143,7 @@ x_xi_check("term 4");
     dpd_file2_close(&L1);
     params.overlap2 = 1.0e0 - params.overlap1 - (params.R0 * params.L0);
 
+  //if (!params.connect_xi) {
     dpd_file2_init(&XIA, EOM_XI, G_irr, 0, 1, "XIA");
     dpd_file2_init(&Xia, EOM_XI, G_irr, 0, 1, "Xia");
 
@@ -157,6 +159,7 @@ x_xi_check("term 4");
 #ifdef DEBUG_XI
 x_xi_check("term 5");
 #endif
+  //}
 
     /* term 6, -0.5 (Linef Rmnef) Fma */
     dpd_file2_init(&XIA, EOM_XI, G_irr, 0, 1, "XIA");
@@ -199,6 +202,7 @@ x_xi_check("term 6");
 x_xi_check("term 7");
 #endif
 
+    if (!params.connect_xi) {
     /* term 8, (Fme Rmnef) Linaf) */
     dpd_file2_init(&I1, EOM_TMP1, R_irr, 0, 1, "Z(N,F)");
     dpd_file2_init(&F1, CC_OEI, 0, 0, 1, "FME");
@@ -252,6 +256,7 @@ x_xi_check("term 7");
 #ifdef DEBUG_XI
 x_xi_check("term 8");
 #endif
+    }
 
     dpd_file2_init(&Xia, EOM_XI, G_irr, 0, 1, "Xia");
     dpd_file2_init(&XIA, EOM_XI, G_irr, 0, 1, "XIA");
@@ -386,7 +391,8 @@ x_xi_check("term 11");
 x_xi_check("term 14");
 #endif
 
-/*  term 16 XIA += 0.5 Lioaf (Rmnef Wmnoe) */
+    if (!params.connect_xi) {
+    /*  term 16 XIA += 0.5 Lioaf (Rmnef Wmnoe) */
     dpd_file2_init(&Z1A, EOM_TMP1, R_irr, 0, 1, "Z(O,F)");
     dpd_file2_init(&Z1B, EOM_TMP1, R_irr, 0, 1, "Z(o,f)");
 
@@ -437,6 +443,7 @@ x_xi_check("term 14");
 #ifdef DEBUG_XI
 x_xi_check("term 16");
 #endif
+    }
 
 /*  term 10 XIA += 0.5 (Lmnef Rmneg) Wfiga */
     dpd_file2_init(&Xia, EOM_XI, G_irr, 0, 1, "Xia");
@@ -569,7 +576,8 @@ x_xi_check("term 12");
 x_xi_check("term 13");
 #endif
 
-/* term 15 Linag (Rnmef Wgmef) */
+    if (!params.connect_xi) {
+    /* term 15 Linag (Rnmef Wgmef) */
     dpd_file2_init(&Xia, EOM_XI, G_irr, 0, 1, "Xia");
     dpd_file2_init(&XIA, EOM_XI, G_irr, 0, 1, "XIA");
 
@@ -600,7 +608,11 @@ x_xi_check("term 13");
 #ifdef DEBUG_XI
 x_xi_check("term 15");
 #endif
+    }
   }
+
+  if (params.connect_xi) x_xi1_connected();
+  
   return;
 }
 void x_xi_zero(void) {

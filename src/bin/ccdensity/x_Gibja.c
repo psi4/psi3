@@ -23,7 +23,7 @@ void x_Gibja(void)
   /* Gajib = lia rjb + limae (rjmbe - rmb tje - rje tmb + rme tjb) */
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
-    /* all spin cases G(ia,jb) <-- L(im,ae) R(jm,be) */
+    /* term 3  Gibja += L(im,ae) R(jm,be) */
     dpd_buf4_init(&V2, EOM_TMP, G_irr, 10, 10, 10, 10, 0, "R2L2_OVOV");
     dpd_buf4_sort(&V2, EOM_TMP0, rspq, 10, 10, "GIAJB");
     dpd_buf4_close(&V2);
@@ -43,7 +43,7 @@ void x_Gibja(void)
     dpd_buf4_sort(&V2, EOM_TMP0, rspq, 10, 10, "GiaJB");
     dpd_buf4_close(&V2);
 
-    /* G(IA,JB) <-- - L(IM,AE) T(J,E) R(M,B) */
+    /* term 4, G(IA,JB) <-- - L(IM,AE) T(J,E) R(M,B) */
     dpd_buf4_init(&Z, EOM_TMP1, L_irr, 0, 11, 0, 11, 0, "Z(IM,AJ)");
     dpd_buf4_init(&L2, CC_GL, L_irr, 0, 5, 2, 7, 0, "LIJAB");
     dpd_file2_init(&T1A, CC_OEI, 0, 0, 1, "tIA");
@@ -66,7 +66,7 @@ void x_Gibja(void)
     dpd_buf4_close(&Z1);
     dpd_buf4_close(&G);
 
-    /* G(ia,jb) <-- - L(im,ae) T(j,e) R(m,b) */
+    /* term 4, G(ia,jb) <-- - L(im,ae) T(j,e) R(m,b) */
     dpd_buf4_init(&Z, EOM_TMP1, L_irr, 0, 11, 0, 11, 0, "Z(im,aj)");
     dpd_buf4_init(&L2, CC_GL, L_irr, 0, 5, 2, 7, 0, "Lijab");
     dpd_file2_init(&T1B, CC_OEI, 0, 0, 1, "tia");
@@ -89,7 +89,7 @@ void x_Gibja(void)
     dpd_buf4_close(&Z1);
     dpd_buf4_close(&G);
 
-    /* G(Ia,Jb) <-- - L(Im,aE) T(J,E) R(m,b) */
+    /* term 4, G(Ia,Jb) <-- - L(Im,aE) T(J,E) R(m,b) */
     dpd_buf4_init(&Z, EOM_TMP1, L_irr, 0, 11, 0, 11, 0, "Z(Im,aJ)");
     dpd_buf4_init(&L2, CC_GL, L_irr, 0, 5, 0, 5, 0, "LIjaB");
     dpd_file2_init(&T1A, CC_OEI, 0, 0, 1, "tIA");
@@ -112,7 +112,7 @@ void x_Gibja(void)
     dpd_buf4_close(&Z1);
     dpd_buf4_close(&G);
 
-    /* G(iA,jB) <-- - L(iM,Ae) T(j,e) R(M,B) */
+    /* term 4, G(iA,jB) <-- - L(iM,Ae) T(j,e) R(M,B) */
     dpd_buf4_init(&Z, EOM_TMP1, L_irr, 0, 11, 0, 11, 0, "Z(iM,Aj)");
     dpd_buf4_init(&L2, CC_GL, L_irr, 0, 5, 0, 5, 0, "LiJAb");
     dpd_file2_init(&T1A, CC_OEI, 0, 0, 1, "tia");
@@ -135,7 +135,7 @@ void x_Gibja(void)
     dpd_buf4_close(&Z1);
     dpd_buf4_close(&G);
 
-    /* G(IA,jb) <-- - L2(Im,Ae) T(j,e) R(m,b) */
+    /* term 4, G(IA,jb) <-- - L2(Im,Ae) T(j,e) R(m,b) */
     dpd_buf4_init(&Z, EOM_TMP1, L_irr, 0, 11, 0, 11, 0, "Z(Im,Aj)");
     dpd_buf4_init(&L2, CC_GL, L_irr, 0, 5, 0, 5, 0, "LIjAb");
     dpd_file2_init(&T1B, CC_OEI, 0, 0, 1, "tia");
@@ -158,7 +158,7 @@ void x_Gibja(void)
     dpd_buf4_close(&Z1);
     dpd_buf4_close(&G);
 
-    /* G(ia,JB) <-- - L(iM,aE) T(J,E) R(M,B) */
+    /* term 4, G(ia,JB) <-- - L(iM,aE) T(J,E) R(M,B) */
     dpd_buf4_init(&Z, EOM_TMP1, L_irr, 0, 11, 0, 11, 0, "Z(iM,aJ)");
     dpd_buf4_init(&L2, CC_GL, L_irr, 0, 5, 0, 5, 0, "LiJaB");
     dpd_file2_init(&T1A, CC_OEI, 0, 0, 1, "tIA");
@@ -184,7 +184,7 @@ void x_Gibja(void)
     psio_close(EOM_TMP1, 0);
     psio_open(EOM_TMP1,PSIO_OPEN_NEW);
 
-    /* G(IA,JB) <-- - (L(IM,AE)*R(J,E)) * T(M,B) */
+    /* term 5, G(IA,JB) <-- - (L(IM,AE)*R(J,E)) * T(M,B) */
     dpd_buf4_init(&Z, EOM_TMP, G_irr, 0, 11, 2, 11, 0, "L2R1_OOVO");
     dpd_buf4_init(&Z1, EOM_TMP1, G_irr, 10, 11, 10, 11, 0, "Z(IB,AJ)");
     dpd_file2_init(&T1A, CC_OEI, 0, 0, 1, "tIA");
@@ -202,7 +202,7 @@ void x_Gibja(void)
     dpd_buf4_close(&Z1);
     dpd_buf4_close(&G);
 
-    /* G(ia,jb) <-- - (L(im,ae)*R(j,e)) * T(m,b) */
+    /* term 5, G(ia,jb) <-- - (L(im,ae)*R(j,e)) * T(m,b) */
     dpd_buf4_init(&Z, EOM_TMP, G_irr, 0, 11, 2, 11, 0, "L2R1_oovo");
     dpd_buf4_init(&Z1, EOM_TMP1, G_irr, 10, 11, 10, 11, 0, "Z(ib,aj)");
     dpd_file2_init(&T1B, CC_OEI, 0, 0, 1, "tia");
@@ -220,7 +220,7 @@ void x_Gibja(void)
     dpd_buf4_close(&Z1);
     dpd_buf4_close(&G);
 
-    /* G(Ia,Jb) <-- - (L2(Im,Ea)*R(J,E)) * T(m,b) */
+    /* term 5, G(Ia,Jb) <-- - (L2(Im,Ea)*R(J,E)) * T(m,b) */
     dpd_buf4_init(&Z, EOM_TMP, G_irr, 0, 11, 0, 11, 0, "L2R1_OovO");
     dpd_buf4_init(&Z1, EOM_TMP1, G_irr, 10, 11, 10, 11, 0, "Z(Ib,aJ)");
     dpd_file2_init(&T1B, CC_OEI, 0, 0, 1, "tia");
@@ -238,7 +238,7 @@ void x_Gibja(void)
     dpd_buf4_close(&Z1);
     dpd_buf4_close(&G);
 
-    /* G(iA,jB) <-- - (L2(iM,eA)*R(j,e)) * T(M,B) */
+    /* term 5, G(iA,jB) <-- - (L2(iM,eA)*R(j,e)) * T(M,B) */
     dpd_buf4_init(&Z, EOM_TMP1, G_irr, 0, 11, 0, 11, 0, "Z(iM,Aj)");
     dpd_buf4_init(&L2, CC_GL, L_irr, 0, 5, 0, 5, 0, "LiJAb");
     dpd_file2_init(&R1A, CC_GR, R_irr, 0, 1, "Ria");
@@ -261,7 +261,7 @@ void x_Gibja(void)
     dpd_buf4_close(&G);
     dpd_buf4_close(&Z1);
 
-    /* G(IA,jb) <-- - L2(Im,Ae) R(j,e) T(m,b) */
+    /* term 5, G(IA,jb) <-- - L2(Im,Ae) R(j,e) T(m,b) */
     dpd_buf4_init(&Z, EOM_TMP1, G_irr, 0, 11, 0, 11, 0, "Z(Im,Aj)");
     dpd_buf4_init(&L2, CC_GL, L_irr, 0, 5, 0, 5, 0, "LIjAb");
     dpd_file2_init(&R1B, CC_GR, R_irr, 0, 1, "Ria");
@@ -284,7 +284,7 @@ void x_Gibja(void)
     dpd_buf4_close(&Z1);
     dpd_buf4_close(&G);
 
-    /* G(ia,JB) <-- - L(iM,aE) T(J,E) R(M,B) */
+    /* term 5, G(ia,JB) <-- - L(iM,aE) R(J,E) T(M,B) */
     dpd_buf4_init(&Z, EOM_TMP1, G_irr, 0, 11, 0, 11, 0, "Z(iM,aJ)");
     dpd_buf4_init(&L2, CC_GL, L_irr, 0, 5, 0, 5, 0, "LiJaB");
     dpd_file2_init(&R1A, CC_GR, R_irr, 0, 1, "RIA");
@@ -322,12 +322,14 @@ void x_Gibja(void)
     dpd_file2_init(&L1B, CC_GL, L_irr, 0, 1, "Lia");
     dpd_file2_mat_init(&L1B);
     dpd_file2_mat_rd(&L1B);
+    if (!params.connect_xi) {
     dpd_file2_init(&I1A, EOM_TMP, G_irr, 0, 1, "L2R1_OV");
     dpd_file2_mat_init(&I1A);
     dpd_file2_mat_rd(&I1A);
     dpd_file2_init(&I1B, EOM_TMP, G_irr, 0, 1, "L2R1_ov");
     dpd_file2_mat_init(&I1B);
     dpd_file2_mat_rd(&I1B);
+    }
     dpd_file2_init(&T1A, CC_OEI, 0, 0, 1, "tIA");
     dpd_file2_mat_init(&T1A);
     dpd_file2_mat_rd(&T1A);
@@ -335,7 +337,7 @@ void x_Gibja(void)
     dpd_file2_mat_init(&T1B);
     dpd_file2_mat_rd(&T1B);
 
-    /* G(IA,JB) <-- +  L(I,A) R(J,B) */
+    /* term 1, G(IA,JB) <-- +  L(I,A) R(J,B) */
     dpd_buf4_init(&G, EOM_TMP0, G_irr, 10, 10, 10, 10, 0, "GIAJB");
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_init(&G, h); 
@@ -357,7 +359,8 @@ void x_Gibja(void)
       dpd_buf4_mat_irrep_wrt(&G, h);
       dpd_buf4_mat_irrep_close(&G, h);
     }
-    /* G(IA,JB) <-- + (L(IM,AE) R(M,E))  T(J,B) = L2R1_OV(I,A) * T(J,B) */
+    /* term 2, G(IA,JB) <-- + (L(IM,AE) R(M,E))  T(J,B) = L2R1_OV(I,A) * T(J,B) */
+    if (!params.connect_xi) {
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_init(&G, h); 
       dpd_buf4_mat_irrep_rd(&G, h);
@@ -378,10 +381,11 @@ void x_Gibja(void)
       dpd_buf4_mat_irrep_wrt(&G, h);
       dpd_buf4_mat_irrep_close(&G, h);
     }
+    }
     dpd_buf4_scm(&G, -1.0);
     dpd_buf4_close(&G);
 
-    /* G(ia,jb) <-- +  L(i,a) R(j,b) */
+    /* term 1, G(ia,jb) <-- +  L(i,a) R(j,b) */
     dpd_buf4_init(&G, EOM_TMP0, G_irr, 10, 10, 10, 10, 0, "Giajb");
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_init(&G, h); 
@@ -403,7 +407,8 @@ void x_Gibja(void)
       dpd_buf4_mat_irrep_wrt(&G, h);
       dpd_buf4_mat_irrep_close(&G, h);
     }
-    /* G(ia,jb) <-- + (L(im,ae) R(m,e))*T(j,b) = L2R1_ov(i,a) * T(j,b) */
+    /* term 2, G(ia,jb) <-- + (L(im,ae) R(m,e))*T(j,b) = L2R1_ov(i,a) * T(j,b) */
+    if (!params.connect_xi) {
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_init(&G, h); 
       dpd_buf4_mat_irrep_rd(&G, h);
@@ -424,10 +429,11 @@ void x_Gibja(void)
       dpd_buf4_mat_irrep_wrt(&G, h);
       dpd_buf4_mat_irrep_close(&G, h);
     }
+    }
     dpd_buf4_scm(&G, -1.0);
     dpd_buf4_close(&G);
 
-    /* G(IA,jb) <-- L(I,A) R(j,b) */
+    /* term 1, G(IA,jb) <-- L(I,A) R(j,b) */
     dpd_buf4_init(&G, EOM_TMP0, G_irr, 10, 10, 10, 10, 0, "GIAjb");
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_init(&G, h);
@@ -449,7 +455,8 @@ void x_Gibja(void)
       dpd_buf4_mat_irrep_wrt(&G, h);
       dpd_buf4_mat_irrep_close(&G, h);
     }
-    /* G(IA,jb) <-- L2R1_OV(I,A) *  T(j,b) */
+    /* term 2, G(IA,jb) <-- L2R1_OV(I,A) *  T(j,b) */
+    if (!params.connect_xi) {
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_init(&G, h);
       dpd_buf4_mat_irrep_rd(&G, h);
@@ -470,10 +477,11 @@ void x_Gibja(void)
       dpd_buf4_mat_irrep_wrt(&G, h);
       dpd_buf4_mat_irrep_close(&G, h);
     }
+    }
     dpd_buf4_scm(&G, -1.0);
     dpd_buf4_close(&G);
 
-    /* G(ia,JB) <-- L(i,a) R(J,B) */
+    /* term 1, G(ia,JB) <-- L(i,a) R(J,B) */
     dpd_buf4_init(&G, EOM_TMP0, G_irr, 10, 10, 10, 10, 0, "GiaJB");
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_init(&G, h);
@@ -495,7 +503,8 @@ void x_Gibja(void)
       dpd_buf4_mat_irrep_wrt(&G, h);
       dpd_buf4_mat_irrep_close(&G, h);
     }
-    /* G(ia,JB) <-- L2R1_ov(i,a) T(J,B) */
+    /* term 2, G(ia,JB) <-- L2R1_ov(i,a) T(J,B) */
+    if (!params.connect_xi) {
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_init(&G, h);
       dpd_buf4_mat_irrep_rd(&G, h);
@@ -516,6 +525,7 @@ void x_Gibja(void)
       dpd_buf4_mat_irrep_wrt(&G, h);
       dpd_buf4_mat_irrep_close(&G, h);
     }
+    }
     dpd_buf4_scm(&G, -1.0);
     dpd_buf4_close(&G);
 
@@ -527,10 +537,12 @@ void x_Gibja(void)
     dpd_file2_close(&L1A);
     dpd_file2_mat_close(&L1B);
     dpd_file2_close(&L1B);
+    if (!params.connect_xi) {
     dpd_file2_mat_close(&I1A);
     dpd_file2_close(&I1A);
     dpd_file2_mat_close(&I1B);
     dpd_file2_close(&I1B);
+    }
     dpd_file2_mat_close(&T1A);
     dpd_file2_close(&T1A);
     dpd_file2_mat_close(&T1B);

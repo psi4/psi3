@@ -26,6 +26,9 @@ void get_params()
   
   params.relax_opdm = 1;
   errcod = ip_boolean("RELAX_OPDM", &(params.relax_opdm),0);
+
+  params.connect_xi = 0;
+  errcod = ip_boolean("CONNECT_XI",&(params.connect_xi),0);
   
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
@@ -41,6 +44,7 @@ void get_params()
           (params.calc_xi) ? "Yes" : "No");
   fprintf(outfile, "\tUse Zeta    =     %s\n", 
           (params.use_zeta) ? "Yes" : "No");
+  fprintf(outfile, "\tXi connected=     %d\n", params.connect_xi);
   fprintf(outfile, "\n");
 }
 
