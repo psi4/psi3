@@ -115,7 +115,7 @@ void cc3_t3z_RHF_AAA(void)
 	      K = occ_off[Gk] + k;
 
 	      T3_AAA(W1, nirreps, I, Gi, J, Gj, K, Gk, &T2, &F, &E, &fIJ, &fAB, 
-		     occpi, occ_off, virtpi, vir_off);
+		     occpi, occ_off, virtpi, vir_off, 0.0);
 
 	      /* Z_MCIK <-- 1/2 t_IJKABC <MJ||AB> */
 
@@ -322,7 +322,7 @@ void cc3_t3z_RHF_AAB(void)
 
 	      T3_AAB(W1, nirreps, I, Gi, J, Gj, K, Gk, &T2AA, &T2AB, &T2BA, 
 		     &FAA, &FAB, &FBA, &EAA, &EAB, &EBA, &fIJ, &fij, &fAB, &fab,
-		     occpi, occ_off, occpi, occ_off, virtpi, vir_off, virtpi, vir_off);
+		     occpi, occ_off, occpi, occ_off, virtpi, vir_off, virtpi, vir_off, 0.0);
 
 	      /* Z_MAJI <-- t_ABcIJk <Mk|Bc> */
 	      ji = ZIFLN.params->colidx[J][I];

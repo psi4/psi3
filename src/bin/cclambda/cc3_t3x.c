@@ -94,7 +94,7 @@ void cc3_t3x(void)
 		K = occ_off[Gk] + k;
 
 		T3_AAA(W1, nirreps, I, Gi, J, Gj, K, Gk, &T2, &F, &E, &fIJ, &fAB, 
-		       occpi, occ_off, virtpi, vir_off);
+		       occpi, occ_off, virtpi, vir_off, 0.0);
 
 		/* X_KC <-- 1/4 t_IJKABC <IJ||AB> */
 
@@ -112,7 +112,7 @@ void cc3_t3x(void)
 
 		T3_AAB(W1, nirreps, I, Gi, J, Gj, K, Gk, &T2AA, &T2AB, &T2BA, 
 		       &FAA, &FAB, &FBA, &EAA, &EAB, &EBA, &fIJ, &fij, &fAB, &fab,
-		       occpi, occ_off, occpi, occ_off, virtpi, vir_off, virtpi, vir_off);
+		       occpi, occ_off, occpi, occ_off, virtpi, vir_off, virtpi, vir_off, 0.0);
 
 		/* t_IA <-- t_IJkABc <Jk|Bc> */
 
