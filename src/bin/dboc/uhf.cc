@@ -17,13 +17,13 @@ extern FILE *outfile;
 
 extern void done(const char *);
 
-double eval_uhf_derwfn_overlap()
+double eval_uhf_derwfn_overlap(DisplacementIndex LDisp, DisplacementIndex RDisp)
 {
   int nalpha = MOInfo.nalpha;
   int nbeta = MOInfo.nbeta;
   int ndocc = nbeta;
-  FLOAT **CSC_a = eval_S_alpha();
-  FLOAT **CSC_b = eval_S_beta();
+  FLOAT **CSC_a = eval_S_alpha(LDisp,RDisp);
+  FLOAT **CSC_b = eval_S_beta(LDisp,RDisp);
 
   chkpt_init(PSIO_OPEN_OLD);
   int* clsdpi = chkpt_rd_clsdpi();

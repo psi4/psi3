@@ -5,6 +5,7 @@
 
 #define PRINT_INTRO 1
 #define PRINT_PARAMS 1
+#define PRINT_DISP 2
 
 extern FILE *outfile;
 extern Params_t Params;

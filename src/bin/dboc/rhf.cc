@@ -7,6 +7,7 @@ extern "C" {
 #include <libqt/qt.h>
 #include <psifiles.h>
 }
+#include "defines.h"
 #include "params.h"
 #include "moinfo.h"
 #include "mo_overlap.h"
@@ -19,10 +20,10 @@ extern Params_t Params;
 
 extern void done(const char *);
 
-double eval_rhf_derwfn_overlap()
+double eval_rhf_derwfn_overlap(DisplacementIndex LDisp, DisplacementIndex RDisp)
 {
   int ndocc = MOInfo.ndocc;
-  FLOAT **CSC = eval_S_alpha();
+  FLOAT **CSC = eval_S_alpha(LDisp,RDisp);
 
   chkpt_init(PSIO_OPEN_OLD);
   int* clsdpi = chkpt_rd_clsdpi();

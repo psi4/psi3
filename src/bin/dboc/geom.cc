@@ -50,6 +50,12 @@ void setup_geoms()
       append_geom(geometry,geom_copy,disp);
       geom_copy[atom][xyz] -= d*delta;
     }
+    if (Params.disp_per_coord == 4)
+      for(d=-2; d<=2; d+=4,disp++) {
+        geom_copy[atom][xyz] += d*delta;
+        append_geom(geometry,geom_copy,disp);
+        geom_copy[atom][xyz] -= d*delta;
+      }
   }
   
   free_block(geom_copy);

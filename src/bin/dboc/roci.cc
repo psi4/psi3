@@ -24,16 +24,16 @@ using namespace std;
 
 extern MOInfo_t MOInfo;
 extern FILE *outfile;
-extern char *CI_Vector_Labels[];
+extern char *CI_Vector_Labels[MAX_NUM_DISP];
 extern void done(const char *);
 extern void mo_maps(short int**, short int**);
 
-double eval_roci_derwfn_overlap()
+double eval_roci_derwfn_overlap(DisplacementIndex LDisp, DisplacementIndex RDisp)
 {
   // Read in CI vectors
   SlaterDetVector *vecm, *vecp;
-  slaterdetvector_read(PSIF_CIVECT,CI_Vector_Labels[0],&vecm);
-  slaterdetvector_read(PSIF_CIVECT,CI_Vector_Labels[1],&vecp);
+  slaterdetvector_read(PSIF_CIVECT,CI_Vector_Labels[RDisp],&vecm);
+  slaterdetvector_read(PSIF_CIVECT,CI_Vector_Labels[LDisp],&vecp);
 
   int nfzc = vecm->sdset->alphastrings->nfzc;
   int nalpha = MOInfo.nalpha;
@@ -41,7 +41,7 @@ double eval_roci_derwfn_overlap()
   int nbeta = MOInfo.nbeta;
   int nact_b = nbeta - nfzc;
 
-  FLOAT **CSC_full = eval_S_alpha();
+  FLOAT **CSC_full = eval_S_alpha(LDisp,RDisp);
   FLOAT **CSC_a = create_matrix(nalpha,nalpha);
   FLOAT **CSC_b = create_matrix(nbeta,nbeta);
   int *tmpintvec = new int[nalpha];

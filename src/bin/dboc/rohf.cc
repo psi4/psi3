@@ -21,12 +21,12 @@ extern void done(const char *);
 // High-spin ROHF case only
 //
 
-double eval_rohf_derwfn_overlap()
+double eval_rohf_derwfn_overlap(DisplacementIndex LDisp, DisplacementIndex RDisp)
 {
   int nalpha = MOInfo.nalpha;
   int nbeta = MOInfo.nbeta;
   int ndocc = nbeta;
-  FLOAT **CSC = eval_S_alpha();
+  FLOAT **CSC = eval_S_alpha(LDisp,RDisp);
 
   chkpt_init(PSIO_OPEN_OLD);
   int* clsdpi = chkpt_rd_clsdpi();

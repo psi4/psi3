@@ -15,7 +15,5 @@ typedef struct {
   short int* QTS_to_pitzer;
 } MOInfo_t;
 
-#define USE_INPUT_S 0
-
 #endif
 

@@ -20,9 +20,11 @@ extern "C" {
 #include <libbasis/overlap.h>
 #include <masses.h>
 #include <physconst.h>
+#include "defines.h"
 #include "molecule.h"
 #include "moinfo.h"
 #include "params.h"
+#include "hfwfn.h"
 
 #if defined HAVE_DECL_SETENV && !HAVE_DECL_SETENV
   extern int setenv(const char *, const char *, int);
@@ -48,19 +50,17 @@ char *psi_file_prefix;
 Molecule_t Molecule;
 MOInfo_t MOInfo;
 Params_t Params;
-// basis set objects with current coordinate displaced by +delta, -delta, +2delta, and -2delta, respectively
-BasisSet* BasisDispP1;
-BasisSet* BasisDispM1;
-BasisSet* BasisDispP2;
-BasisSet* BasisDispM2;
 
-#define MAX_GEOM_STRING 20
-char* CI_Vector_Labels[] = {
+BasisSet* BasisSets[MAX_NUM_DISP];  // Array of pointers to basis set objects with current coordinate displaced by +delta, -delta, +2delta, and -2delta, respectively
+HFWavefunction* HFVectors[MAX_NUM_DISP];  // Array of pointers to HF wavefunctions for displacements by +delta, -delta, +2delta, and -2delta, respectively
+char* CI_Vector_Labels[MAX_NUM_DISP] = {
   "R0-delta CI Vector",
   "R0+delta CI Vector",
   "R0-2delta CI Vector",
   "R0+2delta CI Vector"
   };
+
+const int MAX_GEOM_STRING=20;
 
 int main(int argc, char *argv[])
 {
@@ -235,11 +235,7 @@ double* get_atomic_masses()
 void run_psi_firstdisp(int disp)
 {
   char *inputcmd = new char[80];
-#if USE_INPUT_S
-  sprintf(inputcmd,"input --geomdat %d --noreorient --nocomshift",disp);
-#else
   sprintf(inputcmd,"input --geomdat %d",disp);
-#endif
   int errcod = system(inputcmd);
   if (errcod) {
     done("input failed");
@@ -254,7 +250,7 @@ void run_psi_firstdisp(int disp)
   // Read in the "-delta" displaced basis
   //
   chkpt_init(PSIO_OPEN_OLD);
-  BasisDispM1 = new BasisSet(PSIF_CHKPT);
+  BasisSets[MinusDelta] = new BasisSet(PSIF_CHKPT);
   // rotate the geometry back to the original frame and change shell centers
   double **rref_m = chkpt_rd_rref();
   double **geom_m = chkpt_rd_geom();
@@ -264,7 +260,10 @@ void run_psi_firstdisp(int disp)
   free_block(geom_m);
   free_block(rref_m);
   for(int a=0; a<Molecule.natom; a++)
-    BasisDispM1->set_center(a,geom_m_ref[a]);
+    BasisSets[MinusDelta]->set_center(a,geom_m_ref[a]);
+    
+  // Read in the "-delta" displaced HF wavefunction
+  HFVectors[MinusDelta] = new HFWavefunction();
 
   // For CI method rename the saved wave function
   if (!strcmp(Params.wfn,"DETCI") || !strcmp(Params.wfn,"DETCAS")) {
@@ -278,11 +277,7 @@ void run_psi_firstdisp(int disp)
 void run_psi_otherdisp(int disp)
 {
   char *inputcmd = new char[80];
-#if USE_INPUT_S
-  sprintf(inputcmd,"input --savemos --geomdat %d --noreorient --nocomshift",disp);
-#else
   sprintf(inputcmd,"input --savemos --geomdat %d",disp);
-#endif
   int errcod = system(inputcmd);
   if (errcod) {
     done("input failed");
@@ -293,18 +288,22 @@ void run_psi_otherdisp(int disp)
   }
   delete[] inputcmd;
 
+  int disp_coord = (disp-1)%Params.disp_per_coord;
+
+  // Read in the displaced HF wavefunction
+  HFVectors[disp_coord] = new HFWavefunction();
+
   // For CI method rename the saved wave function
   if (!strcmp(Params.wfn,"DETCI") || !strcmp(Params.wfn,"DETCAS")) {
     SlaterDetVector *vec;
     slaterdetvector_read(PSIF_CIVECT,"CI vector",&vec);
-    int disp_coord = (disp-1)%Params.disp_per_coord;
     slaterdetvector_write(PSIF_CIVECT,CI_Vector_Labels[disp_coord],vec);
     slaterdetvector_delete_full(vec);
   }
 }
 
 //
-// This function clreates basis set objects for each displacement
+// This function creates basis set objects for each displacement
 //
 void init_basissets(Params_t::Coord_t* coord)
 {
@@ -313,10 +312,10 @@ void init_basissets(Params_t::Coord_t* coord)
   int xyz = coord->index%3;
   double AplusD[3];
   for(int i=0; i<3; i++)
-    AplusD[i] = BasisDispM1->get_center(atom, i);
+    AplusD[i] = BasisSets[MinusDelta]->get_center(atom, i);
   AplusD[xyz] += 2.0*Params.delta;
-  BasisDispP1 = new BasisSet(*BasisDispM1);
-  BasisDispP1->set_center(atom,AplusD);
+  BasisSets[PlusDelta] = new BasisSet(*BasisSets[MinusDelta]);
+  BasisSets[PlusDelta]->set_center(atom,AplusD);
   
   if (Params.disp_per_coord == 4) {
     // BasisSetP2
@@ -324,16 +323,16 @@ void init_basissets(Params_t::Coord_t* coord)
     for(int i=0; i<3; i++)
       Aplus2D[i] = AplusD[i];
     Aplus2D[xyz] += Params.delta;
-    BasisDispP2 = new BasisSet(*BasisDispM1);
-    BasisDispP2->set_center(atom,Aplus2D);
+    BasisSets[Plus2Delta] = new BasisSet(*BasisSets[MinusDelta]);
+    BasisSets[Plus2Delta]->set_center(atom,Aplus2D);
 
     // BasisSetM2
     double Aminus2D[3];
     for(int i=0; i<3; i++)
       Aminus2D[i] = Aplus2D[i];
     Aminus2D[xyz] -= 4.0*Params.delta;
-    BasisDispM2 = new BasisSet(*BasisDispM1);
-    BasisDispM2->set_center(atom,Aminus2D);
+    BasisSets[Minus2Delta] = new BasisSet(*BasisSets[MinusDelta]);
+    BasisSets[Minus2Delta]->set_center(atom,Aminus2D);
   }
 }
 
@@ -344,7 +343,7 @@ double eval_dboc()
   const int ndisp = Params.disp_per_coord * Params.ncoord;
   double E_dboc = 0.0;
 
-  for(int disp=1; disp<=ndisp; disp++) {
+  for(int disp=1; disp<=ndisp;) {
     int current_coord = (disp-1)/Params.disp_per_coord;
     Params_t::Coord_t* coord = &(Params.coords[current_coord]);
     int atom = coord->index/3;
@@ -354,20 +353,20 @@ double eval_dboc()
     disp++;
     for(int i=1;i<Params.disp_per_coord; i++) {
       run_psi_otherdisp(disp);
+      disp++;
     }
     
     init_basissets(coord);
 
-    double S = eval_derwfn_overlap();
-    double del2 = (S-1.0)/(2.0*Params.delta*Params.delta);
+    // The - sign comes from the integration by parts
+    double del2 = (-1.0)*eval_derwfn_overlap();
     int Z = (int)Molecule.zvals[atom];
     // mass of nucleus = atomic mass - mass of electrons
     double nuclear_mass = atomic_mass[atom]  - Z;
     double E_i = -del2/(2.0*nuclear_mass);
     // multiply by the degeneracy factor
     E_i *= coord->coeff;
-    if (Params.print_lvl > PrintLevels::print_intro) {
-      fprintf(outfile,"  +- wave function overlap = %25.15lf\n",S);
+    if (Params.print_lvl >= PrintLevels::print_params) {
       fprintf(outfile,"  <d2/dx2>                 = %25.15lf\n",del2);
       fprintf(outfile,"  DBOC contribution from cartesian degree of freedom %d = %20.10lf a.u.\n\n",
 	      coord->index+1,E_i);
@@ -385,6 +384,9 @@ double eval_dboc()
     if (errcod) {
       done("psiclean");
     }
+
+    delete_basissets(coord);
+    delete_hfwfns(coord);
 
   }
 

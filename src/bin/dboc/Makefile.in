@@ -9,8 +9,7 @@ LDLIBS += $(LAPACK) $(BLAS)
 PSILIBS = -lPSI_basis -lPSI_qt -lPSI_chkpt -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
 CXXSRC = dboc.cc geom.cc print.cc moinfo.cc overlap.cc mo_overlap.cc linalg.cc\
-	rhf.cc rohf.cc uhf.cc rci.cc roci.cc
-#	rccsd.cc
+hfwfn.cc rhf.cc rohf.cc uhf.cc rci.cc roci.cc
 
 BINOBJ = $(CXXSRC:%.cc=%.o)
 

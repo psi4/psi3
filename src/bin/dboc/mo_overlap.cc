@@ -6,11 +6,13 @@ extern "C" {
 #include <libpsio/psio.h>
 #include <psifiles.h>
 }
+#include "defines.h"
 #include "float.h"
 #include "params.h"
 #include "linalg.h"
 #include "moinfo.h"
 #include "mo_overlap.h"
+#include "hfwfn.h"
 #include <libbasis/basisset.h>
 #include <libbasis/overlap.h>
 #include <libbasis/rotation.h>
@@ -18,254 +20,205 @@ extern "C" {
 extern void done(const char * message);
 extern MOInfo_t MOInfo;
 extern FILE *outfile;
-extern BasisSet *BasisDispM1, *BasisDispP1;
+extern BasisSet* BasisSets[MAX_NUM_DISP];
+extern HFWavefunction* HFVectors[MAX_NUM_DISP];
 extern Params_t Params;
 
-FLOAT **eval_S_alpha()
+FLOAT **eval_S_alpha(DisplacementIndex LDisp, DisplacementIndex RDisp)
 {
   int num_mo = MOInfo.num_mo;
   int num_so = MOInfo.num_so;
 
-  chkpt_init(PSIO_OPEN_OLD);
-  double **rhf_evec_p = chkpt_rd_scf();
-  double **aotoso_p = chkpt_rd_usotao();
-  double **rref_p = chkpt_rd_rref();
-  int num_ao = chkpt_rd_nao();
-  chkpt_close();
-    
-  psio_open(PSIF_OLD_CHKPT, PSIO_OPEN_OLD);
-
-  double **rhf_evec_m = block_matrix(num_so,num_mo);
-  psio_read_entry(PSIF_OLD_CHKPT, ":PrevCalc:MOs alpha", (char *)&(rhf_evec_m[0][0]),
-		  num_so*num_mo*sizeof(double));
-
-  double **aotoso_m = block_matrix(num_so, num_ao);
-  psio_read_entry(PSIF_OLD_CHKPT, ":PrevCalc:AO->SO", (char *)aotoso_m[0],
-		  num_so*num_ao*sizeof(double));
-
-  double **rref_m = block_matrix(3,3);
-  psio_read_entry(PSIF_OLD_CHKPT, ":PrevCalc:Transmat to reference frame", (char *)rref_m[0],
-		  9*sizeof(double));
-
-#if USE_INPUT_S
-  FLOAT **Spm_FLOAT = create_matrix(num_so,num_so);
-  psio_read_entry(PSIF_OLD_CHKPT, ":PrevCalc:New-Old basis overlap", (char *)&(Spm_FLOAT[0][0]),
-		  num_so*num_so*sizeof(FLOAT));
-#endif
-
-  psio_close(PSIF_OLD_CHKPT, 1);
-
+  HFWavefunction* HFWfn_R = HFVectors[RDisp];
+  HFWavefunction* HFWfn_L = HFVectors[LDisp];
+  int num_ao = HFWfn_R->num_ao();
+  double** hf_evec_l = HFWfn_L->alpha_evec();
+  double** aotoso_l = HFWfn_L->aotoso();
+  double** rref_l = HFWfn_L->rref();
+  double** hf_evec_r = HFWfn_R->alpha_evec();
+  double** aotoso_r = HFWfn_R->aotoso();
+  double** rref_r = HFWfn_R->rref();
 
   //
   // Convert matrices of doubles into matrices of FLOAT's
   //
-  FLOAT** rhf_evec_m_FLOAT = convert_matrix(rhf_evec_m, num_so, num_mo, 0);
-  FLOAT** rhf_evec_p_FLOAT_transp = convert_matrix(rhf_evec_p, num_so, num_mo, 1);
+  FLOAT** hf_evec_r_FLOAT = convert_matrix(hf_evec_r, num_so, num_mo, 0);
+  FLOAT** hf_evec_l_FLOAT_transp = convert_matrix(hf_evec_l, num_so, num_mo, 1);
 
   // Compute plus/minus overlap
-#if !USE_INPUT_S
-  OverlapEngine overlap(BasisDispP1,BasisDispM1);
-  double** Spm_AO_AO = overlap.compute_full_matrix();
+  OverlapEngine overlap(BasisSets[LDisp],BasisSets[RDisp]);
+  double** Slr_AO_AO = overlap.compute_full_matrix();
 
   // Rotate bases to the original coordinate systems (prior to reorientation into principal axis system)
-  RotationOp Rop_m(BasisDispM1);
-  RotationOp Rop_p(BasisDispP1);
-  double** basisRref_m = Rop_m.full_rotation_mat(rref_m);
-  double** basisRref_p = Rop_p.full_rotation_mat(rref_p);
+  RotationOp Rop_r(BasisSets[RDisp]);
+  RotationOp Rop_l(BasisSets[LDisp]);
+  double** basisRref_r = Rop_r.full_rotation_mat(rref_r);
+  double** basisRref_l = Rop_l.full_rotation_mat(rref_l);
 
   if (Params.print_lvl > PrintLevels::print_contrib) {
-    fprintf(outfile, "  -Rotation matrix for - AO basis\n");
-    print_mat(basisRref_m, num_ao, num_ao, outfile);
+    fprintf(outfile, "  -Rotation matrix for AO basis (disp = %d)\n", RDisp);
+    print_mat(basisRref_r, num_ao, num_ao, outfile);
     
-    fprintf(outfile, "  -Rotation matrix for + AO basis\n");
-    print_mat(basisRref_p, num_ao, num_ao, outfile);
+    fprintf(outfile, "  -Rotation matrix for AO basis (disp = %d)\n", LDisp);
+    print_mat(basisRref_l, num_ao, num_ao, outfile);
 
-    double** tmp_p1 = block_matrix(num_ao, num_mo);
-    double** tmp_p2 = block_matrix(num_ao, num_mo);
-    double** tmp_m1 = block_matrix(num_ao, num_mo);
-    double** tmp_m2 = block_matrix(num_ao, num_mo);
-    mmult(aotoso_m,1,rhf_evec_m,0,tmp_m1,0,num_ao,num_so,num_mo,0);
-    mmult(basisRref_m,0,tmp_m1,0,tmp_m2,0,num_ao,num_ao,num_mo,0);
-    mmult(aotoso_p,1,rhf_evec_p,0,tmp_p1,0,num_ao,num_so,num_mo,0);
-    mmult(basisRref_p,0,tmp_p1,0,tmp_p2,0,num_ao,num_ao,num_mo,0);
+    double** tmp_l1 = block_matrix(num_ao, num_mo);
+    double** tmp_l2 = block_matrix(num_ao, num_mo);
+    double** tmp_r1 = block_matrix(num_ao, num_mo);
+    double** tmp_r2 = block_matrix(num_ao, num_mo);
+    mmult(aotoso_r,1,hf_evec_r,0,tmp_r1,0,num_ao,num_so,num_mo,0);
+    mmult(basisRref_r,0,tmp_r1,0,tmp_r2,0,num_ao,num_ao,num_mo,0);
+    mmult(aotoso_l,1,hf_evec_l,0,tmp_l1,0,num_ao,num_so,num_mo,0);
+    mmult(basisRref_l,0,tmp_l1,0,tmp_l2,0,num_ao,num_ao,num_mo,0);
     
-    fprintf(outfile, "  -Original - eigenvector\n");
-    print_mat(tmp_m1, num_ao, num_mo, outfile);
-    fprintf(outfile, "  -Rotated - eigenvector\n");
-    print_mat(tmp_m2, num_ao, num_mo, outfile);
+    fprintf(outfile, "  -Original alpha eigenvector (disp = %d)\n", RDisp);
+    print_mat(tmp_r1, num_ao, num_mo, outfile);
+    fprintf(outfile, "  -Rotated alpha eigenvector (disp = %d)\n", RDisp);
+    print_mat(tmp_r2, num_ao, num_mo, outfile);
     
-    fprintf(outfile, "  -Original + eigenvector\n");
-    print_mat(tmp_p1, num_ao, num_mo, outfile);
-    fprintf(outfile, "  -Rotated + eigenvector\n");
-    print_mat(tmp_p2, num_ao, num_mo, outfile);
+    fprintf(outfile, "  -Original alpha eigenvector (disp = %d)\n", LDisp);
+    print_mat(tmp_l1, num_ao, num_mo, outfile);
+    fprintf(outfile, "  -Rotated alpha eigenvector (disp = %d)\n", LDisp);
+    print_mat(tmp_l2, num_ao, num_mo, outfile);
   }
 
   double** tmpmat = block_matrix(num_ao,num_ao);
-  mmult(Spm_AO_AO,0,basisRref_m,0,tmpmat,0,num_ao,num_ao,num_ao,0);
-  mmult(basisRref_p,1,tmpmat,0,Spm_AO_AO,0,num_ao,num_ao,num_ao,0);
+  mmult(Slr_AO_AO,0,basisRref_r,0,tmpmat,0,num_ao,num_ao,num_ao,0);
+  mmult(basisRref_l,1,tmpmat,0,Slr_AO_AO,0,num_ao,num_ao,num_ao,0);
   free_block(tmpmat);
-  free_block(basisRref_p);
-  free_block(basisRref_m);
+  free_block(basisRref_l);
+  free_block(basisRref_r);
 
-  double** Spm_AO_SO = block_matrix(num_ao,num_so);
-  mmult(Spm_AO_AO, 0, aotoso_m, 1, Spm_AO_SO, 0, num_ao, num_ao, num_so, 0);
-  free_block(Spm_AO_AO);
-  double** Spm_SO_SO = block_matrix(num_so,num_so);
-  mmult(aotoso_p, 0, Spm_AO_SO, 0, Spm_SO_SO, 0, num_so, num_ao, num_so, 0);
-  free_block(Spm_AO_SO);
-  FLOAT** Spm_FLOAT = convert_matrix(Spm_SO_SO, num_so, num_so, 0);
-  free_block(Spm_SO_SO);
-
-#endif
+  double** Slr_AO_SO = block_matrix(num_ao,num_so);
+  mmult(Slr_AO_AO, 0, aotoso_r, 1, Slr_AO_SO, 0, num_ao, num_ao, num_so, 0);
+  free_block(Slr_AO_AO);
+  double** Slr_SO_SO = block_matrix(num_so,num_so);
+  mmult(aotoso_l, 0, Slr_AO_SO, 0, Slr_SO_SO, 0, num_so, num_ao, num_so, 0);
+  free_block(Slr_AO_SO);
+  FLOAT** Slr_FLOAT = convert_matrix(Slr_SO_SO, num_so, num_so, 0);
+  free_block(Slr_SO_SO);
 
   if (Params.print_lvl > PrintLevels::print_contrib) {
-    fprintf(outfile, "  +/- overlap matrix (SO basis)\n");
-    print_mat(Spm_FLOAT, num_so, num_so, outfile);
+    fprintf(outfile, " (%d/%d) overlap matrix (SO basis)\n", LDisp, RDisp);
+    print_mat(Slr_FLOAT, num_so, num_so, outfile);
   }
 
   FLOAT** tmpmat1 = create_matrix(num_mo,num_so);
-  if (matrix_mult(rhf_evec_p_FLOAT_transp, num_mo, num_so, Spm_FLOAT, num_so, num_so, tmpmat1))
+  if (matrix_mult(hf_evec_l_FLOAT_transp, num_mo, num_so, Slr_FLOAT, num_so, num_so, tmpmat1))
     done("matrix_mult failed. Report the problem to the author.");
   FLOAT** S = create_matrix(num_mo, num_mo);
-  if (matrix_mult(tmpmat1, num_mo, num_so, rhf_evec_m_FLOAT, num_so, num_mo, S))
+  if (matrix_mult(tmpmat1, num_mo, num_so, hf_evec_r_FLOAT, num_so, num_mo, S))
     done("matrix_mult failed. Report the problem to the author.");
 
   if (Params.print_lvl > PrintLevels::print_contrib) {
-    fprintf(outfile, "  +/- overlap matrix (MO basis)\n");
+    fprintf(outfile, "  (%d/%d) alpha overlap matrix (MO basis)\n", LDisp, RDisp);
     print_mat(S, num_mo, num_mo, outfile);
   }
 
   delete_matrix(tmpmat1);
-  delete_matrix(Spm_FLOAT);
-  delete_matrix(rhf_evec_p_FLOAT_transp);
-  delete_matrix(rhf_evec_m_FLOAT);
-  
-  free_block(rhf_evec_p);
-  free_block(rhf_evec_m);
+  delete_matrix(Slr_FLOAT);
+  delete_matrix(hf_evec_l_FLOAT_transp);
+  delete_matrix(hf_evec_r_FLOAT);
 
   return S;
 }
 
-FLOAT **eval_S_beta()
+
+FLOAT **eval_S_beta(DisplacementIndex LDisp, DisplacementIndex RDisp)
 {
   int num_mo = MOInfo.num_mo;
   int num_so = MOInfo.num_so;
-  
-  chkpt_init(PSIO_OPEN_OLD);
-  double **rhf_evec_p = chkpt_rd_beta_scf();
-  double **aotoso_p = chkpt_rd_usotao();
-  double **rref_p = chkpt_rd_rref();
-  int num_ao = chkpt_rd_nao();
-  chkpt_close();
-    
-  psio_open(PSIF_OLD_CHKPT, PSIO_OPEN_OLD);
 
-  double **rhf_evec_m = block_matrix(num_so,num_mo);
-  psio_read_entry(PSIF_OLD_CHKPT, ":PrevCalc:MOs beta", (char *)&(rhf_evec_m[0][0]),
-		  num_so*num_mo*sizeof(double));
+  HFWavefunction* HFWfn_R = HFVectors[RDisp];
+  HFWavefunction* HFWfn_L = HFVectors[LDisp];
+  int num_ao = HFWfn_R->num_ao();
+  double** hf_evec_l = HFWfn_L->beta_evec();
+  double** aotoso_l = HFWfn_L->aotoso();
+  double** rref_l = HFWfn_L->rref();
+  double** hf_evec_r = HFWfn_R->beta_evec();
+  double** aotoso_r = HFWfn_R->aotoso();
+  double** rref_r = HFWfn_R->rref();
 
-  double **aotoso_m = block_matrix(num_so, num_ao);
-  psio_read_entry(PSIF_OLD_CHKPT, ":PrevCalc:AO->SO", (char *)aotoso_m[0],
-		  num_so*num_ao*sizeof(double));
-
-  double **rref_m = block_matrix(3,3);
-  psio_read_entry(PSIF_OLD_CHKPT, ":PrevCalc:Transmat to reference frame", (char *)rref_m[0],
-		  9*sizeof(double));
-
-#if USE_INPUT_S
-  FLOAT **Spm_FLOAT = create_matrix(num_so,num_so);
-  psio_read_entry(PSIF_OLD_CHKPT, ":PrevCalc:New-Old basis overlap", (char *)&(Spm_FLOAT[0][0]),
-		  num_so*num_so*sizeof(FLOAT));
-#endif
-
-  psio_close(PSIF_OLD_CHKPT, 1);
-  
   //
   // Convert matrices of doubles into matrices of FLOAT's
   //
-  FLOAT** rhf_evec_m_FLOAT = convert_matrix(rhf_evec_m, num_so, num_mo, 0);
-  FLOAT** rhf_evec_p_FLOAT_transp = convert_matrix(rhf_evec_p, num_so, num_mo, 1);
+  FLOAT** hf_evec_r_FLOAT = convert_matrix(hf_evec_r, num_so, num_mo, 0);
+  FLOAT** hf_evec_l_FLOAT_transp = convert_matrix(hf_evec_l, num_so, num_mo, 1);
 
   // Compute plus/minus overlap
-#if !USE_INPUT_S
-  OverlapEngine overlap(BasisDispP1,BasisDispM1);
-  double** Spm_AO_AO = overlap.compute_full_matrix();
+  OverlapEngine overlap(BasisSets[LDisp],BasisSets[RDisp]);
+  double** Slr_AO_AO = overlap.compute_full_matrix();
 
   // Rotate bases to the original coordinate systems (prior to reorientation into principal axis system)
-  RotationOp Rop_m(BasisDispM1);
-  RotationOp Rop_p(BasisDispP1);
-  double** basisRref_m = Rop_m.full_rotation_mat(rref_m);
-  double** basisRref_p = Rop_p.full_rotation_mat(rref_p);
+  RotationOp Rop_r(BasisSets[RDisp]);
+  RotationOp Rop_l(BasisSets[LDisp]);
+  double** basisRref_r = Rop_r.full_rotation_mat(rref_r);
+  double** basisRref_l = Rop_l.full_rotation_mat(rref_l);
 
   if (Params.print_lvl > PrintLevels::print_contrib) {
-    fprintf(outfile, "  -Rotation matrix for - AO basis\n");
-    print_mat(basisRref_m, num_ao, num_ao, outfile);
+    fprintf(outfile, "  -Rotation matrix for AO basis (disp = %d)\n", RDisp);
+    print_mat(basisRref_r, num_ao, num_ao, outfile);
     
-    fprintf(outfile, "  -Rotation matrix for + AO basis\n");
-    print_mat(basisRref_p, num_ao, num_ao, outfile);
+    fprintf(outfile, "  -Rotation matrix for AO basis (disp = %d)\n", LDisp);
+    print_mat(basisRref_l, num_ao, num_ao, outfile);
 
-    double** tmp_p1 = block_matrix(num_ao, num_mo);
-    double** tmp_p2 = block_matrix(num_ao, num_mo);
-    double** tmp_m1 = block_matrix(num_ao, num_mo);
-    double** tmp_m2 = block_matrix(num_ao, num_mo);
-    mmult(aotoso_m,1,rhf_evec_m,0,tmp_m1,0,num_ao,num_so,num_mo,0);
-    mmult(basisRref_m,0,tmp_m1,0,tmp_m2,0,num_ao,num_ao,num_mo,0);
-    mmult(aotoso_p,1,rhf_evec_p,0,tmp_p1,0,num_ao,num_so,num_mo,0);
-    mmult(basisRref_p,0,tmp_p1,0,tmp_p2,0,num_ao,num_ao,num_mo,0);
+    double** tmp_l1 = block_matrix(num_ao, num_mo);
+    double** tmp_l2 = block_matrix(num_ao, num_mo);
+    double** tmp_r1 = block_matrix(num_ao, num_mo);
+    double** tmp_r2 = block_matrix(num_ao, num_mo);
+    mmult(aotoso_r,1,hf_evec_r,0,tmp_r1,0,num_ao,num_so,num_mo,0);
+    mmult(basisRref_r,0,tmp_r1,0,tmp_r2,0,num_ao,num_ao,num_mo,0);
+    mmult(aotoso_l,1,hf_evec_l,0,tmp_l1,0,num_ao,num_so,num_mo,0);
+    mmult(basisRref_l,0,tmp_l1,0,tmp_l2,0,num_ao,num_ao,num_mo,0);
     
-    fprintf(outfile, "  -Original - eigenvector\n");
-    print_mat(tmp_m1, num_ao, num_mo, outfile);
-    fprintf(outfile, "  -Rotated - eigenvector\n");
-    print_mat(tmp_m2, num_ao, num_mo, outfile);
+    fprintf(outfile, "  -Original beta eigenvector (disp = %d)\n", RDisp);
+    print_mat(tmp_r1, num_ao, num_mo, outfile);
+    fprintf(outfile, "  -Rotated beta eigenvector (disp = %d)\n", RDisp);
+    print_mat(tmp_r2, num_ao, num_mo, outfile);
     
-    fprintf(outfile, "  -Original + eigenvector\n");
-    print_mat(tmp_p1, num_ao, num_mo, outfile);
-    fprintf(outfile, "  -Rotated + eigenvector\n");
-    print_mat(tmp_p2, num_ao, num_mo, outfile);
+    fprintf(outfile, "  -Original beta eigenvector (disp = %d)\n", LDisp);
+    print_mat(tmp_l1, num_ao, num_mo, outfile);
+    fprintf(outfile, "  -Rotated beta eigenvector (disp = %d)\n", LDisp);
+    print_mat(tmp_l2, num_ao, num_mo, outfile);
   }
 
   double** tmpmat = block_matrix(num_ao,num_ao);
-  mmult(Spm_AO_AO,0,basisRref_m,0,tmpmat,0,num_ao,num_ao,num_ao,0);
-  mmult(basisRref_p,1,tmpmat,0,Spm_AO_AO,0,num_ao,num_ao,num_ao,0);
+  mmult(Slr_AO_AO,0,basisRref_r,0,tmpmat,0,num_ao,num_ao,num_ao,0);
+  mmult(basisRref_l,1,tmpmat,0,Slr_AO_AO,0,num_ao,num_ao,num_ao,0);
   free_block(tmpmat);
-  free_block(basisRref_p);
-  free_block(basisRref_m);
+  free_block(basisRref_l);
+  free_block(basisRref_r);
 
-  double** Spm_AO_SO = block_matrix(num_ao,num_so);
-  mmult(Spm_AO_AO, 0, aotoso_m, 1, Spm_AO_SO, 0, num_ao, num_ao, num_so, 0);
-  free_block(Spm_AO_AO);
-  double** Spm_SO_SO = block_matrix(num_so,num_so);
-  mmult(aotoso_p, 0, Spm_AO_SO, 0, Spm_SO_SO, 0, num_so, num_ao, num_so, 0);
-  free_block(Spm_AO_SO);
-  FLOAT** Spm_FLOAT = convert_matrix(Spm_SO_SO, num_so, num_so, 0);
-  free_block(Spm_SO_SO);
-
-#endif
+  double** Slr_AO_SO = block_matrix(num_ao,num_so);
+  mmult(Slr_AO_AO, 0, aotoso_r, 1, Slr_AO_SO, 0, num_ao, num_ao, num_so, 0);
+  free_block(Slr_AO_AO);
+  double** Slr_SO_SO = block_matrix(num_so,num_so);
+  mmult(aotoso_l, 0, Slr_AO_SO, 0, Slr_SO_SO, 0, num_so, num_ao, num_so, 0);
+  free_block(Slr_AO_SO);
+  FLOAT** Slr_FLOAT = convert_matrix(Slr_SO_SO, num_so, num_so, 0);
+  free_block(Slr_SO_SO);
 
   if (Params.print_lvl > PrintLevels::print_contrib) {
-    fprintf(outfile, "  +/- overlap matrix (SO basis)\n");
-    print_mat(Spm_FLOAT, num_so, num_so, outfile);
+    fprintf(outfile, " (%d/%d) overlap matrix (SO basis)\n", LDisp, RDisp);
+    print_mat(Slr_FLOAT, num_so, num_so, outfile);
   }
 
   FLOAT** tmpmat1 = create_matrix(num_mo,num_so);
-  if (matrix_mult(rhf_evec_p_FLOAT_transp, num_mo, num_so, Spm_FLOAT, num_so, num_so, tmpmat1))
+  if (matrix_mult(hf_evec_l_FLOAT_transp, num_mo, num_so, Slr_FLOAT, num_so, num_so, tmpmat1))
     done("matrix_mult failed. Report the problem to the author.");
   FLOAT** S = create_matrix(num_mo, num_mo);
-  if (matrix_mult(tmpmat1, num_mo, num_so, rhf_evec_m_FLOAT, num_so, num_mo, S))
+  if (matrix_mult(tmpmat1, num_mo, num_so, hf_evec_r_FLOAT, num_so, num_mo, S))
     done("matrix_mult failed. Report the problem to the author.");
 
   if (Params.print_lvl > PrintLevels::print_contrib) {
-    fprintf(outfile, "  +/- overlap matrix (MO basis)\n");
+    fprintf(outfile, "  (%d/%d) beta overlap matrix (MO basis)\n", LDisp, RDisp);
     print_mat(S, num_mo, num_mo, outfile);
   }
 
   delete_matrix(tmpmat1);
-  delete_matrix(Spm_FLOAT);
-  delete_matrix(rhf_evec_p_FLOAT_transp);
-  delete_matrix(rhf_evec_m_FLOAT);
-
-  free_block(rhf_evec_p);
-  free_block(rhf_evec_m);
+  delete_matrix(Slr_FLOAT);
+  delete_matrix(hf_evec_l_FLOAT_transp);
+  delete_matrix(hf_evec_r_FLOAT);
 
   return S;
 }

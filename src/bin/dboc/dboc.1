@@ -44,6 +44,13 @@ specifies minimal printing.
 .IP "\fB:DBOC:DISPLACEMENT =\fP \fIreal\fP"
 Determines the finite difference step (in a.u.). The default is 0.0005 a.u.
 
+.IP "\fB:DBOC:DISP_PER_COORD =\fP \fIinteger\fP"
+Determines the number of displacements for each coordinate. Set it to 2 to compute
+DBOC with standard accuracy (enough significant digits for up to second derivatives;
+DBOC accurate to square of displacement size),
+and 4 to compute DBOC with improved accuracy (DBOC accurate to the fourth power of displacement size).
+The default is 2.
+
 .IP "\fB:DBOC:ISOTOPES =\fP \fIstring_vector\fP"
 Specifies which isotope to use for each atom. Each string should specify
 an isotope label as defined in \fBinclude/masses.h\fP. By default,
