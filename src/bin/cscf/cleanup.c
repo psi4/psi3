@@ -1,7 +1,11 @@
 /* $Log$
- * Revision 1.25  2003/05/06 20:47:22  evaleev
- * CSCF can now find frzvpi from the eigenvalues.
+ * Revision 1.26  2003/05/19 22:26:26  crawdad
+ * Added phase corrections for UHF orbitals.
+ * -TDC
  *
+/* Revision 1.25  2003/05/06 20:47:22  evaleev
+/* CSCF can now find frzvpi from the eigenvalues.
+/*
 /* Revision 1.24  2003/05/02 15:39:23  evaleev
 /* Added ability to figure out the number of frozen doubly occupied orbitals in each irrep.
 /*
@@ -229,7 +233,7 @@ void cleanup()
   /* TDC(6/19/96) - If we're not rotating, check the phases on the MOs,
      and correct them, if possible. */
 
-  if(!irot && !uhf) {
+  if(!irot) {
     if(phase_check) phase_check = phase();
   }
    
