@@ -522,6 +522,14 @@ void get_parameters(void)
   errcod = ip_boolean("FREEZE_CORE", &(params.fzc),0);
   if (params.backtr) params.fzc = 0; /* can't freeze core for backtr */
 
+  /* Mark Hoffmann's code can't handle deleted core orbitals because
+     his code wants them to be in the middle of the orbital ordering
+     stack.  That's not going to work easily with TRANSQT unless we
+     simply transform all of them.
+  */
+  if (strcmp(params.wfn,"GVVPT2")==0 || (strcmp(params.wfn,"MCSCF")==0))
+    params.fzc=0;
+
   params.del_restr_docc = 0;
   errcod = ip_boolean("DELETE_RESTR_DOCC",&(params.del_restr_docc),0);
   if (params.backtr) params.del_restr_docc = 0;
@@ -1096,22 +1104,27 @@ void get_reorder_array(void)
 
   /* for backtransforms, no reorder array...map Pitzer to Pitzer */
   if (strcmp(params.wfn, "CI") == 0 || strcmp(params.wfn, "DETCI") == 0
-      || strcmp(params.wfn, "QDPT") == 0 
+      || strcmp(params.wfn, "GVVPT2") == 0 
+      || strcmp(params.wfn, "MCSCF") == 0 
       || strcmp(params.wfn, "OOCCD") == 0 
       || strcmp(params.wfn, "DETCAS") == 0) {
     
-    ras_opi = init_int_matrix(4,moinfo.nirreps); 
+    ras_opi = init_int_matrix(MAX_RAS_SPACES,moinfo.nirreps); 
     
+    if (strcmp(params.wfn, "GVVPT2")==0 || strcmp(params.wfn, "MCSCF")==0)
+      i=1;
+    else i=0;
+
     if (!ras_set2(moinfo.nirreps, moinfo.nmo, params.fzc, 
                  params.del_restr_docc, moinfo.orbspi,
                  moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc, 
 		 moinfo.rstrdocc, moinfo.rstruocc, ras_opi, moinfo.order,
-                 params.ras_type)) {
+                 params.ras_type, i)) {
       fprintf(outfile, "Error in ras_set().  Aborting.\n");
       abort();
     }
     
-    free_int_matrix(ras_opi, 4);
+    free_int_matrix(ras_opi, MAX_RAS_SPACES);
     
   } 
   
