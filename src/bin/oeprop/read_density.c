@@ -7,7 +7,6 @@ void read_density()
 { 
   int i,j,k,l,dim_i,count,ibf;
   int *locs;
-  PSI_FPTR ptr_start, junk;
   double **psq_so, *tmp_arr, **tmp_mat, **psq_ao;
 
   /* CDS 2/02 */
