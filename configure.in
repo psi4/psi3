@@ -392,6 +392,10 @@ if test $psi_ac_strstr = "no"; then
   CDEF="$CDEF -DNO_STRSTR"
 fi
 
+AC_CHECK_FUNC(unsetenv,[extradef="-DHAVE_UNSETENV"])
+CDEF="$CDEF $extradef"
+CXXDEF="$CXXDEF $extradef"
+
 # check for integer bitwise intrinsics.  at one time it was
 # hip to use ior, ishft, etc.  these days it seems that or and rshift, etc
 # are in vogue
@@ -511,33 +515,6 @@ if test "$ac_sizeof_real" != "$ac_sizeof_dprec" ; then
   echo "         same size as real*8"
   echo "         try setting FOTH environment variable"
 fi
-
-# I'm not keeping this for now due to problems with unsigned long long on
-# artaxerxes1.  -Daniel, 8/24/97
-# check for long long int type; if we have it, use it
-#AC_CC_PROCESS_CHECK(C integer size test,[
-#unsigned long long i;
-#],-o conftest,LONG_TYPE="unsigned long long";
-#AC_MSG_RESULT(using unsigned long long int),
-#LONG_TYPE="unsigned long";
-#AC_MSG_RESULT(using unsigned long int))
-#AC_SUBST(LONG_TYPE)
-
-# See if the fortran compiler takes '-Olimit 3000'.  If so then
-# use it.
-AC_FC_COMPILE_CHECK(-Olimit 3000,,-Olimit 3000,
-                    FOPT="$FOPT -Olimit 3000")
-
-# The sgi f77 compiler needs to have the number of labels allowed
-# in a computed goto increased.  See if the compiler takes
-# the -Nl option.
-AC_FC_COMPILE_CHECK(-Nl1000,,-Nl1000,
-                    FOPT="$FOPT -Nl1000")
-
-# The sgi f77 compiler needs to have the number of names allowed
-# increased.  See if the compiler takes the -Nn option.
-AC_FC_COMPILE_CHECK(-Nn10000,,-Nn10000,
-                    FOPT="$FOPT -Nn10000")
 
 AC_CHECKING(machine specfic optimization flags)
 # set up cpu specific flags
