@@ -119,6 +119,7 @@ extern "C" void zval_to_symbol(double zval, char *sym);
 #define MODE_ENERGY_SAVE      (25)
 #define MODE_RESET_PREFIX      (26)
 #define MODE_DISP_NUM_PLUS      (27)
+#define MODE_DELETE_BINARIES    (28)
 
 struct OPTInfo {
 

@@ -16,6 +16,7 @@ command-line      internal specifier   what it does
 --energy_save      MODE_ENERGY_SAVE     save the energy in chkpt to PSIF list
 --reset_prefix     MODE_RESET_PREFIX    only reset the prefix of PSIF
 --disp_num_plus    MODE_DISP_NUM_PLUS   only increment the current displacement number PSIF
+--delete_binaries  MODE_DELETE_BINARIES just delete binary files
 --points           optinfo.points       save the energy in chkpt to PSIF list
 --disp_num         optinfo.disp_num     displacement index (by default read from PSIF)
 --irrep            optinfo.irrep       the irrep (1,2,...) being displaced or computed
@@ -174,6 +175,10 @@ int main(int argc, char **argv) {
         optinfo.mode = MODE_DISP_NUM_PLUS;
         parsed++;
       }
+      else if (!strcmp(argv[i],"--delete_binaries")) {
+        optinfo.mode = MODE_DELETE_BINARIES;
+        parsed++;
+      }
       else if (!strcmp(argv[i],"--points")) {
         sscanf(argv[++i], "%d", &optinfo.points);
         parsed+=2;
@@ -247,8 +252,9 @@ int main(int argc, char **argv) {
       "\nCartesian geometry and possibly gradient in a.u. with masses\n");
       carts.print(3,outfile,0,disp_label,0);
     }
-    else if ((optinfo.mode != MODE_DISP_LOAD) && (optinfo.mode != MODE_LOAD_REF)
-            && (optinfo.mode != MODE_RESET_PREFIX) && (optinfo.mode != MODE_DISP_NUM_PLUS) ) {
+    else if ( (optinfo.mode != MODE_DISP_LOAD) && (optinfo.mode != MODE_LOAD_REF)
+           && (optinfo.mode != MODE_RESET_PREFIX) && (optinfo.mode != MODE_DISP_NUM_PLUS)
+           && (optinfo.mode != MODE_DELETE_BINARIES) ) {
       fprintf(outfile,
       "\nCartesian geometry and possibly gradient in a.u. with masses\n");
       carts.print(2,outfile,0,disp_label,0);
@@ -264,7 +270,8 @@ int main(int argc, char **argv) {
     // simples.print_s();
     free(coord);
     if ( (optinfo.mode != MODE_DISP_LOAD) && (optinfo.mode != MODE_LOAD_REF)
-      && (optinfo.mode != MODE_RESET_PREFIX) && (optinfo.mode != MODE_DISP_NUM_PLUS) ) {
+      && (optinfo.mode != MODE_RESET_PREFIX) && (optinfo.mode != MODE_DISP_NUM_PLUS)
+      && (optinfo.mode != MODE_DELETE_BINARIES) ) {
       fprintf(outfile,"\nSimple Internal Coordinates and Values\n");
       simples.print(outfile,1);
     }
@@ -535,6 +542,32 @@ int main(int argc, char **argv) {
       chkpt_reset_prefix();
       chkpt_commit_prefix();
       chkpt_close();
+    }
+
+    if (optinfo.mode == MODE_DELETE_BINARIES) {
+      if((strcmp(optinfo.wfn, "MP2")==0)       || (strcmp(optinfo.wfn, "CCSD")==0)  ||
+         (strcmp(optinfo.wfn, "CCSD_T")==0)    || (strcmp(optinfo.wfn, "EOM_CCSD")==0)  ||
+         (strcmp(optinfo.wfn, "LEOM_CCSD")==0) || (strcmp(optinfo.wfn, "BCCD")==0)  ||
+         (strcmp(optinfo.wfn,"BCCD_T")==0)     || (strcmp(optinfo.wfn, "SCF")==0)  ||
+         (strcmp(optinfo.wfn,"CIS")==0)        || (strcmp(optinfo.wfn,"RPA")==0)  ||
+         (strcmp(optinfo.wfn,"CC2")==0)        || (strcmp(optinfo.wfn,"CC3")==0)  ||
+         (strcmp(optinfo.wfn,"EOM_CC3")==0) ) {
+          fprintf(outfile, "Deleting binary files\n");
+          for(i=CC_MIN; i <= CC_MAX; i++) {
+            psio_open(i,1); psio_close(i,0);
+          }
+          psio_open(35,1); psio_close(35,0);
+          psio_open(72,1); psio_close(72,0);
+      }
+      else if ( (strcmp(optinfo.wfn, "DETCI")==0) ) {
+        fprintf(outfile, "Deleting CI binary files\n");
+        psio_open(35,1); psio_close(35,0);
+        psio_open(72,1); psio_close(72,0);
+        psio_open(50,1); psio_close(50,0);
+        psio_open(51,1); psio_close(51,0);
+        psio_open(52,1); psio_close(52,0);
+        psio_open(53,1); psio_close(53,0);
+      }
     }
 
     /* increment current displacement number */
