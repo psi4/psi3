@@ -15,6 +15,8 @@ extern "C" {
 #include <libqt/slaterd.h>
 #include <psifiles.h>
 }
+#include <libbasis/basisset.h>
+#include <libbasis/overlap.h>
 #include <masses.h>
 #include <physconst.h>
 #include "molecule.h"
@@ -40,6 +42,9 @@ char *psi_file_prefix;
 Molecule_t Molecule;
 MOInfo_t MOInfo;
 Params_t Params;
+BasisSet* RefBasis;
+BasisSet* BasisDispP;
+BasisSet* BasisDispM;
 
 #define MAX_GEOM_STRING 20
 
@@ -144,20 +149,25 @@ void parsing()
 void read_chkpt()
 {
   chkpt_init(PSIO_OPEN_OLD);
+  RefBasis = new BasisSet(PSIF_CHKPT);
   Molecule.natom = chkpt_rd_natom();
   Molecule.geom = chkpt_rd_geom();
   Molecule.zvals = chkpt_rd_zvals();
   int nirreps = chkpt_rd_nirreps();
-  if (nirreps != 1)
-    done("DBOC computations currently possible only in C1 symmetry");
+  //  if (nirreps != 1)
+  //    done("DBOC computations currently possible only in C1 symmetry");
 
   MOInfo.num_so = chkpt_rd_nso();
   MOInfo.num_mo = chkpt_rd_nmo();
-  int *clsdpi = chkpt_rd_clsdpi();
-  MOInfo.ndocc = clsdpi[0];
+  int* clsdpi = chkpt_rd_clsdpi();
+  MOInfo.ndocc = 0;
+  for(int irrep=0; irrep<nirreps; irrep++)
+    MOInfo.ndocc += clsdpi[irrep];
   delete[] clsdpi;
-  int *openpi = chkpt_rd_openpi();
-  MOInfo.nsocc = openpi[0];
+  int* openpi = chkpt_rd_openpi();
+  MOInfo.nsocc = 0;
+  for(int irrep=0; irrep<nirreps; irrep++)
+    MOInfo.nsocc += openpi[irrep];
   delete[] openpi;
   MOInfo.nalpha = MOInfo.ndocc + MOInfo.nsocc;
   MOInfo.nbeta = MOInfo.ndocc;
@@ -213,10 +223,24 @@ double eval_dboc()
   double E_dboc = 0.0;
 
   for(int disp=1; disp<=ndisp; disp++) {
-    char *inputcmd = new char[80];
     Params_t::Coord_t* coord = &(Params.coords[(disp-1)/2]);
     int atom = coord->index/3;
+    int xyz = coord->index%3;
+
+    double AplusD[3];
+    AplusD[0] = Molecule.geom[atom][0];
+    AplusD[1] = Molecule.geom[atom][1];
+    AplusD[2] = Molecule.geom[atom][2];
+    AplusD[xyz] += Params.delta;
+    BasisDispP = new BasisSet(*RefBasis);
+    BasisDispP->set_center(atom,AplusD);
+
+    char *inputcmd = new char[80];
+#if USE_INPUT_S
     sprintf(inputcmd,"input --geomdat %d --noreorient --nocomshift",disp);
+#else
+    sprintf(inputcmd,"input --geomdat %d",disp);
+#endif
     int errcod = system(inputcmd);
     if (errcod) {
       done("input failed");
@@ -235,7 +259,19 @@ double eval_dboc()
       slaterdetvector_delete_full(vec);
     }
 
+    double AminusD[3];
+    AminusD[0] = Molecule.geom[atom][0];
+    AminusD[1] = Molecule.geom[atom][1];
+    AminusD[2] = Molecule.geom[atom][2];
+    AminusD[xyz] -= Params.delta;
+    BasisDispM = new BasisSet(*RefBasis);
+    BasisDispM->set_center(atom,AminusD);
+
+#if USE_INPUT_S
     sprintf(inputcmd,"input --savemos --geomdat %d --noreorient --nocomshift",disp);
+#else
+    sprintf(inputcmd,"input --savemos --geomdat %d",disp);
+#endif
     errcod = system(inputcmd);
     if (errcod) {
       done("input failed");

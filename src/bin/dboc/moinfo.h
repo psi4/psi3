@@ -11,5 +11,7 @@ typedef struct {
   int nbeta;
 } MOInfo_t;
 
+#define USE_INPUT_S 0
+
 #endif
 

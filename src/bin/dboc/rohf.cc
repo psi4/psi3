@@ -21,8 +21,8 @@ double eval_rohf_derwfn_overlap()
   int nalpha = MOInfo.nalpha;
   int nbeta = MOInfo.nbeta;
   FLOAT **CSC = eval_S_alpha();
-  //    fprintf(outfile,"  -Cp*Spm*Cm :\n");
-  //    print_mat(CSC,num_mo,num_mo,outfile);
+  fprintf(outfile,"  -Cp*Spm*Cm :\n");
+  print_mat(CSC,MOInfo.num_mo,MOInfo.num_mo,outfile);
 
   // Extract the alpha block
   FLOAT **CSC_alpha = create_matrix(nalpha,nalpha);
