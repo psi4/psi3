@@ -4,7 +4,6 @@
 #define MCONST 200
 #define MPOINT 200
 #define MCALCS 100
-#define MAXANGMOM 7    /* Up to i-functions (L=6) currently supported */
-#define MRCRU 1        /* Maximum number of contractions per shell*/
+#define MAXANGMOM 8    /* Up to k-functions (L=7) currently supported */
 
 #endif
