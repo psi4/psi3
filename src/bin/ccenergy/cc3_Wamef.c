@@ -56,6 +56,10 @@ void cc3_Wamef(void)
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 7, 0, 7, 0, "D <ij||ab> (ij,a>b)");
     dpd_contract244(&tIA, &D, &W, 0, 0, 0, -1, 1.0);
     dpd_buf4_close(&D);
+    dpd_buf4_sort(&W, CC3_HET1, qprs, 10, 7, "CC3 WAMEF (MA,F>E)");
+    dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC3_HET1, 0, 10, 7, 10, 7, 0, "CC3 WAMEF (MA,F>E)");
+    dpd_buf4_scm(&W, -1.0);
     dpd_buf4_close(&W);
 
     /* t(n,a) <nm||ef> --> W(am,e>f) */
@@ -63,6 +67,10 @@ void cc3_Wamef(void)
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 7, 0, 7, 0, "D <ij||ab> (ij,a>b)");
     dpd_contract244(&tia, &D, &W, 0, 0, 0, -1, 1.0);
     dpd_buf4_close(&D);
+    dpd_buf4_sort(&W, CC3_HET1, qprs, 10, 7, "CC3 Wamef (ma,f>e)");
+    dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC3_HET1, 0, 10, 7, 10, 7, 0, "CC3 Wamef (ma,f>e)");
+    dpd_buf4_scm(&W, -1.0);
     dpd_buf4_close(&W);
 
     /* t(N,A) <Nm|Ef> --> W(Am,Ef) */
@@ -70,6 +78,7 @@ void cc3_Wamef(void)
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
     dpd_contract244(&tIA, &D, &W, 0, 0, 0, -1, 1.0);
     dpd_buf4_close(&D);
+    dpd_buf4_sort(&W, CC3_HET1, qpsr, 10, 5, "CC3 WAmEf (mA,fE)");
     dpd_buf4_close(&W);
 
     /* t(n,a) <nM|eF> --> W(aM,eF) */
@@ -77,6 +86,7 @@ void cc3_Wamef(void)
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
     dpd_contract244(&tia, &D, &W, 0, 0, 0, -1, 1.0);
     dpd_buf4_close(&D);
+    dpd_buf4_sort(&W, CC3_HET1, qpsr, 10, 5, "CC3 WaMeF (Ma,Fe)");
     dpd_buf4_close(&W);
 
     dpd_file2_close(&tia);
