@@ -24,13 +24,24 @@ void init_moinfo()
   double **scf_evec_so;
 
   MOInfo.Escf = file30_rd_escf();
-  if (strcmp(UserOptions.wfn,"SCF")) {
-    MOInfo.Ecorr = file30_rd_ecorr();
-    /* Check if non-SCF reference, otherwise just use Escf as Eref */
-    MOInfo.Eref = file30_rd_eref();
-    if (fabs(MOInfo.Eref)<ZERO)
-      MOInfo.Eref = MOInfo.Escf;
+  MOInfo.Eref = 0.0;
+  MOInfo.Ecorr = 0.0;
+
+  /* CDS: I revised this stuff about correlation and SCF energies */
+
+  /* If SCF, can say Eref = Escf (I guess...) */
+  if (strcmp(UserOptions.wfn,"SCF")==0) {
+    MOInfo.Eref = MOInfo.Escf;
   }
+  else {
+    MOInfo.Eref = file30_rd_eref();
+    MOInfo.Ecorr = file30_rd_ecorr();
+  }
+
+  /* Note: this init_moinfo() routine is not always called!  We'll need
+     to re-grab some of the above energies in other subroutines to be
+     positive we have them on-hand */
+
   MOInfo.num_mo = file30_rd_nmo();
   MOInfo.orbspi = file30_rd_orbspi();
   MOInfo.clsdpi = file30_rd_clsdpi();

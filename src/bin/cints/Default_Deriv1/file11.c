@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <libciomr.h>
+#include <file30.h>
 #include <libint.h>
 
 #include "defines.h"
@@ -14,6 +15,16 @@ void file11()
   char wfnstring[80];
   double **Geom, **GradRef, **GeomRef;
   FILE *fp11;
+
+  /*--- Ok, have to be sure we get these energies, reload if necessary ---*/
+  /*--- should have Escf around at least ---*/
+  if (strcmp(UserOptions.wfn,"SCF")==0) {
+    MOInfo.Eref = MOInfo.Escf;
+  }
+  else {
+    MOInfo.Eref = file30_rd_eref();
+    MOInfo.Ecorr = file30_rd_ecorr();
+  }
 
   /*--- Geometry in the canonical frame ---*/
   Geom = block_matrix(Molecule.num_atoms,3);
