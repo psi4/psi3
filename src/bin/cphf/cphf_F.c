@@ -36,7 +36,7 @@
 ** TDC, October 2002
 */
 
-void cphf_F(double **A, double ***U)
+void cphf_F(double **Aaibj, double ***U)
 {
   int noei, stat, coord;
   double ***B, *scratch, **B0, **Acopy;
@@ -178,13 +178,14 @@ void cphf_F(double **A, double ***U)
 
   /* Solve the CPHF equations */
   Acopy = block_matrix(num_ai, num_ai); /* keep a copy of A */
-  memcpy(Acopy[0], A[0], num_ai*num_ai*sizeof(double));
+  memcpy(Acopy[0], Aaibj[0], num_ai*num_ai*sizeof(double));
 
   for(coord=0; coord < 3; coord++) {
-    error = C_DGESV(num_ai, 1, &(A[0][0]), num_ai, &(ipiv[0]), &(B0[coord][0]), num_ai);
+    error = C_DGESV(num_ai, 1, &(Aaibj[0][0]), num_ai, &(ipiv[0]), 
+                    &(B0[coord][0]), num_ai);
 
     /* Recopy A because DGESV corrupts it */
-    memcpy(A[0], Acopy[0], num_ai*num_ai*sizeof(double));
+    memcpy(Aaibj[0], Acopy[0], num_ai*num_ai*sizeof(double));
   }
 
   /* Sort the U matrices to matrix form */
@@ -210,6 +211,13 @@ void cphf_F(double **A, double ***U)
     }
   }
 
+  if (print_lvl > 5) {
+    for(coord=0; coord < 3; coord++) {
+      fprintf(outfile, "\nUF[%d] Matrix (MO):\n", coord);
+      print_mat(U[coord], nmo, nmo, outfile);
+    }
+  }
+  
   /* Dump the U matrices out to disk */
   label = (char *) malloc(PSIO_KEYLEN * sizeof(char));
   psio_open(PSIF_CPHF, 1);
@@ -217,11 +225,6 @@ void cphf_F(double **A, double ***U)
     sprintf(label, "UF(%d)", coord);
     psio_write_entry(PSIF_CPHF, label, (char *) &(U[coord][0][0]), nmo*nmo*sizeof(double));
     for(i=0; i < PSIO_KEYLEN; i++) label[i] = '\0';
-
-    /*
-      fprintf(outfile, "\nUF[%d] Matrix (MO):\n", coord);
-      print_mat(U[coord], nmo, nmo, outfile);
-    */
   }
   psio_close(PSIF_CPHF, 1);
 

@@ -33,13 +33,13 @@
 ** TDC, December 2001 (revised October 2002)
 */
 
-void mohess(double **A)
+void mohess(double **Aaibj)
 {
   int asym, isym, bsym, jsym;
   int a, i, b, j;
-  int ai, bj, ab, ij, ib, aj, aibj, abij, ajib;
+  int afirst, alast, ifirst, ilast;
+  int bfirst, blast, jfirst, jlast;
   int AI, BJ;
-  int afirst, alast, ifirst, ilast, bfirst, blast, jfirst, jlast;
 
   for(asym=0,AI=0; asym < nirreps; asym++) {
 
@@ -49,56 +49,46 @@ void mohess(double **A)
     for(a=afirst; a <= alast; a++) {
 
       for(isym=0; isym < nirreps; isym++) {
-	ifirst = ofirst[isym];
+	   
+        ifirst = ofirst[isym];
 	ilast = olast[isym];
 
 	for(i=ifirst; i <= ilast; i++,AI++) {
-	  ai = INDEX(a,i);
-
+           
 	  for(bsym=0,BJ=0; bsym < nirreps; bsym++) {
 
 	    bfirst = vfirst[bsym];
 	    blast = vlast[bsym];
 
 	    for(b=bfirst; b <= blast; b++) {
-	      ab = INDEX(a,b);
-	      ib = INDEX(i,b);
-
+               
 	      for(jsym=0; jsym < nirreps; jsym++) {
 
-		jfirst = ofirst[jsym];
-		jlast = olast[jsym];
+	        jfirst = ofirst[jsym];
+	        jlast = olast[jsym];
 
-		for(j=jfirst; j <= jlast; j++,BJ++) {
-		  bj = INDEX(b,j);
-		  ij = INDEX(i,j);
-		  aj = INDEX(a,j);
-
-		  aibj = INDEX(ai,bj);
-		  abij = INDEX(ab,ij);
-		  ajib = INDEX(aj,ib);
-
-		  A[AI][BJ] = (a==b) * (i==j) * (evals[i] - evals[a]);
-		  A[AI][BJ] -= 4.0 * ints[aibj] - ints[abij] - ints[ajib];
-
-		}
-	      }
-	    }
-	  }
-	}
+	        for(j=jfirst; j <= jlast; j++,BJ++) {
+                   
+	          Aaibj[AI][BJ] += (a==b) * (i==j) * (evals[i] - evals[a]);
+                }
+              }
+            }
+          }
+        }
       }
     }
+  }
+  
+  if (print_lvl > 4) {
+    fprintf(outfile, "MO Hessian A(ai,bj): \n");
+    print_mat(Aaibj, num_ai, num_ai, outfile);
   }
 
   /* dump the hessian to disk */
   psio_open(PSIF_CPHF, 1);
-  psio_write_entry(PSIF_CPHF, "RHF MO Hessian", (char *) A[0], num_ai*num_ai*sizeof(double));
+  psio_write_entry(PSIF_CPHF, "RHF MO Hessian", (char *) Aaibj[0], 
+                   num_ai*num_ai*sizeof(double));
   psio_close(PSIF_CPHF, 1);
-
-  if(print_lvl & 16) {
-    fprintf(outfile, "\nMO Hessian:\n");
-    print_mat(A, num_ai, num_ai, outfile);
-  }
 
   return;
 }

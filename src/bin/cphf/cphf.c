@@ -47,80 +47,119 @@ void init_ioff(void);
 void setup(void);
 void cleanup(void);
 
+void out_of_core(double ***, double ***, double ***, double **, double **);
+void sort_B(double ***, double **);
+void sort_A(double **, double **);
 void mohess(double **);
-void cphf_X(double **, double ***);
+void cphf_X(double ***, double **, double **, double ***);
 void cphf_F(double **, double ***);
 void polarize(double ***);
-void vibration(double **, double **);
-void build_hessian(double ***, double **);
+void build_hessian(double ***, double ***, double **, double ***, double **);
 void build_dipder(double ***, double **);
+void vibration(double **, double **);
 
 int main(int argc, char *argv[])
 {
-  int coord, errcod;
-  double **A, ***UX, ***UF, **hessian, **dipder;
-
-  init_io(argc, argv);
+  int errcod = 0;
+  int coord = 0;
+  double ***F;
+  double ***S;
+  double ***B;
+  double **A;
+  double **AH;
+  double **Baijk;
+  double **Aaibj;
+  double ***UX;
+  double ***UF;
+  double **hessian;
+  double **dipder;
+  
+  init_io(argc,argv);
   title();
   init_ioff();
 
   timer_init();
   timer_on("CPHF Main");
 
-  /* user-specified printing value */
   print_lvl = 0;
   errcod = ip_data("PRINT", "%d", &(print_lvl), 0);
+  fprintf(outfile, "\n\tPRINT = %d\n\n", print_lvl);
 
-  setup(); /* get useful data from chkpt and compute various lookup arrays */
+  setup();
 
-  /* Grab the two-electron integrals */
-  ints = init_array(ntei);
-  iwl_rdtwo(PSIF_MO_TEI, ints, ioff, nmo, 0, 0, 0, outfile);
+  F = (double ***) malloc(natom*3 * sizeof(double **));
+  S = (double ***) malloc(natom*3 * sizeof(double **));
+  B = (double ***) malloc(natom*3 * sizeof(double **));
+  for(coord=0; coord < natom*3; coord++) {
+    F[coord] = block_matrix(nmo, nmo);
+    S[coord] = block_matrix(nmo, nmo);
+    B[coord] = block_matrix(nmo, nmo);
+  }
 
-  /* Build the MO Hessian */
-  A = block_matrix(num_ai,num_ai);
-  mohess(A);
+  A = block_matrix(num_pq,num_pq);
+  AH = block_matrix(num_pq,num_pq);
 
-  /* init memory for UX matrices */
+  out_of_core(F, S, B, A, AH);
+
+  Baijk = block_matrix(natom*3, num_ai);
+  
+  sort_B(B, Baijk);
+
+  for(coord=0; coord < natom*3; coord++) {
+    free_block(B[coord]);
+  }
+  free(B);
+
+  Aaibj = block_matrix(num_ai,num_ai);
+  
+  sort_A(A, Aaibj);
+  
+  free_block(A);
+  
+  mohess(Aaibj);
+  
   UX = (double ***) malloc(natom*3 * sizeof(double **));
-  for(coord=0; coord < natom*3; coord++) UX[coord] = block_matrix(nmo,nmo);
+  for(coord=0; coord < natom*3; coord++) {
+    UX[coord] = block_matrix(nmo,nmo);
+  }
+  
+  cphf_X(S, Baijk, Aaibj, UX);
 
-  /* solve CPHF for nuclear perturbations */
-  cphf_X(A, UX);
-
-  /* init memory for UF matrices */
   UF = (double ***) malloc(3 * sizeof(double **));
-  for(coord=0; coord < 3; coord++) UF[coord] = block_matrix(nmo,nmo);
+  for(coord=0; coord < 3; coord++)  {
+    UF[coord] = block_matrix(nmo,nmo);
+  }
 
-  /* solve CPHF for electric field perturbations */
-  cphf_F(A, UF);
-
-  /* compute the polarizability tensor */
+  cphf_F(Aaibj, UF);
+  
   polarize(UF);
-
-  /* Build the cartesian hessian */
+  
   hessian = block_matrix(natom*3, natom*3);
-  build_hessian(UX, hessian);
-
-  /* Build the dipole moment derivatives */
+  build_hessian(F, S, AH, UX, hessian);
+  
   dipder = block_matrix(3, natom*3);
   build_dipder(UX, dipder);
-
-  /* compute vibrational frequencies and ir intensities */
+  
   vibration(hessian, dipder);
+  
+  cleanup(); 
 
-  /* Free memory */
-  for(coord=0; coord < natom*3; coord++) free_block(UX[coord]);
-  free(UX);
-  for(coord=0; coord < 3; coord++) free_block(UF[coord]);
-  free(UF);
-  free_block(A); 
-  free(ints);
+  free_block(AH);
+  free_block(Baijk);
+  free_block(Aaibj);
+
+  for(coord=0; coord < natom*3; coord++) { 
+    free_block(UX[coord]);
+    free_block(F[coord]);
+    free_block(S[coord]);
+  }
+  for(coord=0; coord < 3; coord++) { 
+    free_block(UF[coord]);
+  }
+  free(UX); free(UF); free(F); free(S);
   free_block(hessian);
   free_block(dipder);
-
-  cleanup();  /* free memory allocated in setup(); */
-
+  
   timer_off("CPHF Main");
   timer_done();
 
@@ -136,7 +175,7 @@ void init_io(int argc, char *argv[])
   progid = (char *) malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s",gprgid());
 
-  psi_start(argc-1, argv+1,0);
+  psi_start(argc-1,argv+1,0);
   ip_cwk_add(progid);
   free(progid);
   tstart(outfile);
@@ -175,5 +214,6 @@ void init_ioff(void)
   ioff[0] = 0;
   for(i=1; i < IOFF_MAX; i++) {
       ioff[i] = ioff[i-1] + i;
-    }
+  }
 }
+

@@ -15,8 +15,9 @@ EXTERN int *ioff;
 
 /* setup.c */
 EXTERN int natom, nmo, nso, nao, nirreps, ndocc, nuocc;
-EXTERN int ntri, num_ai, num_ij, ntei, noei, noei_ao;
-EXTERN int *orbspi, *clsdpi, *uoccpi;
+EXTERN int ntri, num_ai, num_pi, num_pq, ntei, noei, noei_ao;
+EXTERN int *orbspi, *clsdpi, *openpi, *uoccpi;
+EXTERN int *frdoccpi, *fruoccpi, *qtsorder;
 EXTERN double *evals, *zvals, *ints, **scf, **usotao, **geom;
 EXTERN int *first, *last, *ofirst, *olast, *vfirst, *vlast;
 

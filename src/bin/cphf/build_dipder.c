@@ -234,7 +234,7 @@ void build_dipder(double ***UX, double **dipder)
     for(j=0; j < natom*3; j++)
       dipder[i][j] *= _dipmom_au2debye;
 
-  if(print_lvl & 1) {
+  if(print_lvl > 4) {
     fprintf(outfile, "\n\tDipole Derivatives W.R.T. Cartesian Coordinates (debye/a0):\n");
     print_mat(dipder, 3, natom*3, outfile);
   }
@@ -243,8 +243,10 @@ void build_dipder(double ***UX, double **dipder)
   for(i=0; i < 3; i++)
     for(j=0; j < natom*3; j++)
       dipder[i][j] /= _bohr2angstroms;
-  fprintf(outfile, "\n\tDipole Derivatives W.R.T. Cartesian Coordinates (debye/A):\n");
-  print_mat(dipder, 3, natom*3, outfile);
+  if(print_lvl > 4) {
+    fprintf(outfile, "\n\tDipole Derivatives W.R.T. Cartesian Coordinates (debye/A):\n");
+    print_mat(dipder, 3, natom*3, outfile);
+  }
 
   /* write the dipole derivatives to file17 in the PSI2 standard format */
   ffile(&file17, "file17.dat", 0);

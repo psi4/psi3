@@ -33,10 +33,21 @@ void setup(void)
 
   ndocc = 0; nuocc = 0;
   for(h=0; h < nirreps; h++) { ndocc += clsdpi[h]; nuocc += uoccpi[h]; }
-
-  num_ai = ndocc * nuocc; 
-  num_ij = ndocc * (ndocc + 1)/2;
-
+  
+  /* For Pitzer to QTS reordering array */
+  openpi = init_int_array(nirreps);
+  frdoccpi = init_int_array(nirreps);
+  fruoccpi = init_int_array(nirreps);
+  for(h=0; h < nirreps; h++) {
+    openpi[h] = 0; 
+    frdoccpi[h] = 0;
+    fruoccpi[h] = 0;
+  }
+  
+  num_ai = nuocc * ndocc;
+  num_pq = nmo * (nmo +1)/2;
+  num_pi = nmo * ndocc;
+  
   /* Build the first and last lookup arrays */
   first = init_int_array(nirreps);
   last = init_int_array(nirreps);

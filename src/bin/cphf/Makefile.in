@@ -10,12 +10,13 @@ PSILIBS = -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 CSRC = \
 cphf.c \
 setup.c \
+out_of_core.c \
 mohess.c \
 cphf_X.c \
 cphf_F.c \
+polarize.c \
 build_hessian.c \
 build_dipder.c \
-polarize.c \
 vibration.c \
 
 BINOBJ = $(CSRC:%.c=%.o)

@@ -43,10 +43,9 @@
 ** TDC, December 2001 (revised October 2002)
 */
 
-void cphf_X(double **A, double ***U)
+void cphf_X(double ***S, double **Baijk, double **Aaibj, double ***U)
 {
   int coord, coord_a, coord_b, AI, *ipiv, error;
-  double ***F, ***S, ***B, **B0;
   double **Acopy;
   double *inbuf, value;
   char *label;
@@ -56,154 +55,18 @@ void cphf_X(double **A, double ***U)
   int afirst, alast, ifirst, ilast, jfirst, jlast;
   int psym, qsym, ksym, lsym, asym, isym, jsym;
 
-  /* Allocate space for the F, S, and B vectors */
-  F = (double ***) malloc(natom*3 * sizeof(double **));
-  S = (double ***) malloc(natom*3 * sizeof(double **));
-  B = (double ***) malloc(natom*3 * sizeof(double **));
-  for(coord=0; coord < natom*3; coord++) {
-    F[coord] = block_matrix(nmo, nmo);
-    S[coord] = block_matrix(nmo, nmo);
-    B[coord] = block_matrix(nmo, nmo);
-  }
-
-  /* Grab the MO-basis overlap and Fock derivative integrals from disk */
-  label = (char *) malloc(PSIO_KEYLEN * sizeof(char));
-  inbuf = init_array(ntri);
-  for(coord=0; coord < natom*3; coord++) {
-
-    sprintf(label, "MO-basis Fock Derivs (%d)", coord);
-    iwl_rdone(PSIF_OEI, label, inbuf, ntri, 0, 0, NULL);
-    for(i=0; i < PSIO_KEYLEN; i++) label[i] = '\0';
-
-    for(i=0, ij=0; i < nmo; i++)
-      for(j=0; j <= i; j++, ij++)
-	F[coord][i][j] = F[coord][j][i] = inbuf[ij];
-
-    if(print_lvl & 8) {
-      fprintf(outfile, "F[%d] Deriv (MO):\n", coord);
-      print_mat(F[coord], nmo, nmo, outfile);
-    }
-  }
-
-  for(coord=0; coord < natom*3; coord++) {
-    sprintf(label, "MO-basis Overlap Derivs (%d)", coord);
-    iwl_rdone(PSIF_OEI, label, inbuf, ntri, 0, 0, NULL);
-    for(i=0; i < PSIO_KEYLEN; i++) label[i] = '\0';
-
-    for(i=0, ij=0; i < nmo; i++)
-      for(j=0; j <= i; j++, ij++)
-	S[coord][i][j] = S[coord][j][i] = inbuf[ij];
-
-    if(print_lvl & 8) {
-      fprintf(outfile, "S[%d] Deriv (MO):\n", coord);
-      print_mat(S[coord], nmo, nmo, outfile);
-    }
-  }
-  free(inbuf);
-  free(label);
-
-  /***** Build the B vectors *****/
-
-  /* Fock and overlap derivative components */
-  for(coord=0; coord < natom*3; coord++) {
-
-    for(i=0; i < nmo; i++) {
-      for(j=0; j < nmo; j++) {
-	B[coord][i][j] = F[coord][i][j] - S[coord][i][j] * evals[j];
-      }
-    }
-  }
-
-  /* Two-electron integral components of B vectors */
-  for(psym=0; psym < nirreps; psym++) {
-    pfirst = first[psym];
-    plast = last[psym];
-
-    for(p=pfirst; p <= plast; p++) {
-
-      for(qsym=0; qsym < nirreps; qsym++) {
-	qfirst = first[qsym];
-	qlast = last[qsym];
-
-	for(q=qfirst; q <= qlast; q++) {
-	  pq = INDEX(p,q);
-
-	  for(ksym=0; ksym < nirreps; ksym++) {
-	    kfirst = ofirst[ksym];
-	    klast = olast[ksym];
-
-	    for(k=kfirst; k <= klast; k++) {
-	      pk = INDEX(p,k);
-	      qk = INDEX(q,k);
-
-	      lsym = psym^qsym^ksym;
-
-	      lfirst = ofirst[lsym];
-	      llast = olast[lsym];
-
-	      for(l=lfirst; l <= llast; l++) {
-		kl = INDEX(k,l);
-		ql = INDEX(q,l);
-		pl = INDEX(p,l);
-
-		pqkl = INDEX(pq,kl);
-		pkql = INDEX(pk,ql);
-		plqk = INDEX(pl,qk);
-
-		value = 2.0 * ints[pqkl] - ints[pkql];
-
-		for(coord=0; coord < natom*3; coord++) {
-		  B[coord][p][q] -= S[coord][k][l] * value;
-		}
-	      }
-	    }
-	  }
-	}
-      }
-    }
-  }
-
-  if(print_lvl & 8) {
-    for(coord=0; coord < natom*3; coord++) {
-      fprintf(outfile, "\nB0[%d] Matrix (MO):\n", coord);
-      print_mat(B[coord], nmo, nmo, outfile);
-    }
-  }
-
-  /* Sort the B's into vector storage */
-  B0 = block_matrix(natom*3, num_ai);
-  for(coord=0; coord < natom*3; coord++) {
-    for(asym=0,AI=0; asym < nirreps; asym++) {
-
-      afirst = vfirst[asym];
-      alast = vlast[asym];
-
-      for(a=afirst; a <= alast; a++) {
-
-	for(isym = 0; isym < nirreps; isym++) {
-	  ifirst = ofirst[isym];
-	  ilast = olast[isym];
-
-	  for(i=ifirst; i <= ilast; i++,AI++) {
-
-	    B0[coord][AI] = B[coord][a][i];
-	  }
-	}
-      }
-    }
-  }
-
   ipiv = init_int_array(num_ai);
 
   /* Solve the CPHF equations */
   Acopy = block_matrix(num_ai, num_ai); /* keep a copy of A */
-  memcpy(Acopy[0], A[0], num_ai*num_ai*sizeof(double));
+  memcpy(Acopy[0], Aaibj[0], num_ai*num_ai*sizeof(double));
 
   for(coord=0; coord < natom*3; coord++) {
-    error = C_DGESV(num_ai, 1, &(A[0][0]), num_ai, &(ipiv[0]), &(B0[coord][0]), num_ai);
+    error = C_DGESV(num_ai, 1, &(Aaibj[0][0]), num_ai, &(ipiv[0]), 
+            &(Baijk[coord][0]), num_ai);
 
     /* Recopy A because DGESV corrupts it */
-    memcpy(A[0], Acopy[0], num_ai*num_ai*sizeof(double));
+    memcpy(Aaibj[0], Acopy[0], num_ai*num_ai*sizeof(double));
   }
 
   /* Sort the U matrices to matrix form */
@@ -215,27 +78,27 @@ void cphf_X(double **A, double ***U)
 
       for(a=afirst; a <= alast; a++) {
 
-	for(isym=0; isym < nirreps; isym++) {
+        for(isym=0; isym < nirreps; isym++) {
 
 	  ifirst = ofirst[isym];
 	  ilast = olast[isym];
 
 	  for(i=ifirst; i <= ilast; i++,AI++) {
 
-	    U[coord][a][i] = B0[coord][AI];
-	  }
-	}
+	    U[coord][a][i] = Baijk[coord][AI];
+          }
+        }
       }
     }
-  }
+  } 
 
-  /*
+  if (print_lvl > 5) {
     for(coord=0; coord < natom*3; coord++) {
-    fprintf(outfile, "\nU[%d] Matrix (MO):\n", coord);
-    print_mat(U[coord], nmo, nmo, outfile);
+      fprintf(outfile, "\nU[%d] Matrix (Baikj):\n", coord);
+      print_mat(U[coord], nmo, nmo, outfile);
     }
-  */
-
+  }
+  
   /* Add the dependent pairs on the lower triangle */
   for(isym=0; isym < nirreps; isym++) {
     ifirst = ofirst[isym];
@@ -253,8 +116,10 @@ void cphf_X(double **A, double ***U)
 	  if(i==j) continue; /* apply only to non-diagonal terms */
 
 	  /* this is the Handy -1/2 S trick for dependent pairs */
-	  for(coord=0; coord < natom*3; coord++) U[coord][i][j] = -0.5 * S[coord][i][j];
-	}
+	  for(coord=0; coord < natom*3; coord++) {
+            U[coord][i][j] = -0.5 * S[coord][i][j];
+	  }
+        }
       }
     }
   }
@@ -293,10 +158,10 @@ void cphf_X(double **A, double ***U)
 	  ifirst = ofirst[isym];
 	  ilast = olast[isym];
 
-	  for(i=ifirst; i <= ilast; i++)
+	  for(i=ifirst; i <= ilast; i++) {
 	    U[coord][i][a] = -U[coord][a][i] - S[coord][a][i];
+	  }
 	}
-
       }
     }
   }
@@ -310,21 +175,13 @@ void cphf_X(double **A, double ***U)
     psio_write_entry(PSIF_CPHF, label, (char *) &(U[coord][0][0]), nmo*nmo*sizeof(double));
     for(i=0; i < PSIO_KEYLEN; i++) label[i] = '\0';
 
-    if(print_lvl & 8) {
+    if(print_lvl > 5) {
       fprintf(outfile, "\nU[%d] Matrix (MO):\n", coord);
       print_mat(U[coord], nmo, nmo, outfile);
     }
   }
   psio_close(PSIF_CPHF, 1);
 
-  for(coord=0; coord < natom*3; coord++) {
-    free_block(F[coord]);
-    free_block(S[coord]);
-    free_block(B[coord]);
-  }
-  free(F); free(S); free(B);
-
-  free_block(B0); 
-
   free_block(Acopy);
 }
+
