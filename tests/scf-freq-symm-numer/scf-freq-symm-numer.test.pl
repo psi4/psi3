@@ -46,8 +46,8 @@ else {
   pass_test("SCF Gradient");
 }
 
-@freq_ref = seek_freq($REF_OUT,"Harmonic Frequency",$NDOF);
-@freq_test = seek_freq($TEST_OUT,"Harmonic Frequency",$NDOF);
+@freq_ref = seek_findif_freq($REF_OUT,"Harmonic Vibrational Frequencies",$NDOF);
+@freq_test = seek_findif_freq($TEST_OUT,"Harmonic Vibrational Frequencies",$NDOF);
 
 if(!compare_arrays(\@freq_ref, \@freq_test, $NDOF, 1, $HTOL)) {
   fail_test("SCF Frequencies");
