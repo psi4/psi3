@@ -7,8 +7,8 @@ $REF_OUT = "output.ref";
 $TEST_OUT = "output.dat";
 $RESULT = "casscf-sp.test";
 
-#system ("input");
-#system ("psi3");
+system ("input");
+system ("psi3");
 
 extract_data($REF_OUT,$REF_FILE,$Enuc_ref,$Ehf_ref,$Ecas_ref);
 extract_data($TEST_OUT,$TEST_FILE,$Enuc_test,$Ehf_test,$Ecas_test);
