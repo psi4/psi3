@@ -67,6 +67,7 @@ extern void C_DGEMV(char transa, int m, int n, double alpha, double *A,
 		    int nca, double *X, int inc_x, double beta, double *Y,
 		    int inc_y);
 extern double C_DDOT(int n, double *X, int inc_x, double *Y, int inc_y);
+extern int C_DGETRF(int nrow, int ncol, double *a, int lda, int *ipiv);
 void timer_init(void);
 void timer_done(void);
 void timer_on(char *key);
