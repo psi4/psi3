@@ -138,7 +138,10 @@ void get_params()
     errcod = ip_data("LOCAL_GHOST", "%d", &(local.ghost), 0);
 
   local.do_singles = 1;
-  errcod = ip_boolean("LOCAL_SINGLES", &(local.do_singles), 0);
+  errcod = ip_boolean("LOCAL_DO_SINGLES", &(local.do_singles), 0);
+
+  local.filter_singles = 1;
+  ip_boolean("LOCAL_FILTER_SINGLES", &(local.filter_singles), 0);
 
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
@@ -160,6 +163,7 @@ void get_params()
     fprintf(outfile, "\tGhost atom      =    %d\n", local.ghost);
     fprintf(outfile, "\tLocal guess     =    %s\n", 
 	    local.do_singles ? "HBAR_SS" : "UNIT VECTORS" );
+    fprintf(outfile, "\tFilter singles  =    %s\n", local.filter_singles ? "Yes" : "No");
   }
   fprintf(outfile, "\n");
 

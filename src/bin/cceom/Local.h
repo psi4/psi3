@@ -20,7 +20,6 @@ struct Local {
   char *method;
   char *weakp;
   char *precon;
+  int filter_singles;
   double weak_pair_energy;
-  double **U;
-  double **WW;
 };

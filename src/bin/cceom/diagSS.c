@@ -501,7 +501,7 @@ void precondition_SS_RHF(dpdfile2 *RIA, double eval)
   nirreps = RIA->params->nirreps;
   C_irr = RIA->my_irrep;
 
-  if(params.local && !strcmp(local.method,"WERNER")) {
+  if(params.local && local.filter_singles) {
 
     nso = local.nso;
     nocc = local.nocc;
