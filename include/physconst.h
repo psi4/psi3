@@ -41,3 +41,8 @@
 #define _e0 8.854187816E-12  /* vacuum permittivity */
 #define _na 6.022136736E23 /* Avagadro's number */
 #define _me 9.10938188E-31 /* electron rest mass */
+
+/* For Cray X1 compilers */
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
