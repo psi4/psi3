@@ -17,4 +17,7 @@ psi: (
     H  4.5  1.0  0.0
     H  4.5 -1.0  0.0
   )
+  dummy_axis_1 = 1
+  dummy_axis_2 = 2
 )
+
