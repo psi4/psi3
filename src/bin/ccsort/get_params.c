@@ -40,7 +40,8 @@ void get_params()
   else {
     if(!strcmp(junk, "RHF")) params.ref = 0;
     else if(!strcmp(junk,"ROHF") && (!strcmp(params.wfn,"MP2") || !strcmp(params.wfn,"CCSD_T") || 
-				     !strcmp(params.wfn,"CC3") || !strcmp(params.wfn, "EOM_CC3"))) {
+				     !strcmp(params.wfn,"CC3") || !strcmp(params.wfn, "EOM_CC3") ||
+				     !strcmp(params.wfn,"CC2") || !strcmp(params.wfn, "EOM_CC2"))) {
       params.ref = 2;
       params.semicanonical = 1;
     }
