@@ -47,13 +47,15 @@ repository will not require you to re-login.)
 \label{section:branches}
 
 The \PSIthree\ repository is comprised of a main trunk and several
-release branches.  Which you should use depends on the development
+release branches.  The branch you should use depends on the sort of 
 work you plan for the codes:
 \begin{enumerate}
-\item The main trunk is reserved for development of new functionality.
 \item Bug fixes, defined as anything that doesn't add functionality
 (including documentation updates) should be made {\em only} on the most
 recent stable release branch.
+\item The main trunk is reserved for development of new functionality.
+This allows us to keep new, possibly unstable code away from public
+access until the developer is ready.
 \end{enumerate}
 
 \noindent Fig.~\ref{Fig:cvs} provides a schematic of the CVS revision-control
