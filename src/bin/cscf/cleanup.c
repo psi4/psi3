@@ -1,7 +1,12 @@
 /* $Log$
- * Revision 1.22  2002/12/22 17:01:14  evaleev
- * Updated cints, cscf, psi3 (probably not complete) and transqt to use psi_start/psi_stop.
+ * Revision 1.23  2003/04/14 17:25:47  sherrill
+ * Change "total energy" to "SCF total energy" to make more explicit for
+ * new users.  Yeah, this will probably break some test case perl scripts
+ * temporarily :)
  *
+/* Revision 1.22  2002/12/22 17:01:14  evaleev
+/* Updated cints, cscf, psi3 (probably not complete) and transqt to use psi_start/psi_stop.
+/*
 /* Revision 1.21  2002/12/06 20:39:08  evaleev
 /* Write total SCF energy as reference energy as well.
 /*
@@ -775,7 +780,7 @@ void cleanup()
     }*/
       
       
-  fprintf(outfile,"\n%8ctotal energy       = %20.12f\n",' ',etot);
+  fprintf(outfile,"\n%8cSCF total energy   = %20.12f\n",' ',etot);
       
   if(ksdft){
     fprintf(outfile,"%8ccoulomb energy     = %20.12f\n"

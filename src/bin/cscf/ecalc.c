@@ -1,8 +1,13 @@
 /* $Log$
- * Revision 1.8  2001/01/04 14:13:35  sbrown
- * Fixed the problem with iconv:  The new versions of linux had iconv already
- * assigned to something else so I changed all references of it to scf_conv.
+ * Revision 1.9  2003/04/14 17:25:47  sherrill
+ * Change "total energy" to "SCF total energy" to make more explicit for
+ * new users.  Yeah, this will probably break some test case perl scripts
+ * temporarily :)
  *
+/* Revision 1.8  2001/01/04 14:13:35  sbrown
+/* Fixed the problem with iconv:  The new versions of linux had iconv already
+/* assigned to something else so I changed all references of it to scf_conv.
+/*
 /* Revision 1.7  2000/12/05 19:40:03  sbrown
 /* Added Unrestricted Kohn-Sham DFT.
 /*
@@ -156,7 +161,7 @@ int ecalc(incr)
      fprintf(outfile, "one-electron energy = %25.15f\n", oe_energy);
      fprintf(outfile, "two-electron energy = %25.15f\n", te_energy);
      fprintf(outfile, "coulomb energy      = %25.15f\n",coulomb_energy);
-     fprintf(outfile, "total energy        = %25.15f\n", etot);
+     fprintf(outfile, "SCF total energy    = %25.15f\n", etot);
    }
    fflush(outfile);
    diiser=0.0;
