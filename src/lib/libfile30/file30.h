@@ -116,5 +116,6 @@ void file30_wt_zvals(double *);
 void file30_wt_alpha_blk_scf(double **,int);
 void file30_wt_beta_blk_scf(double **,int);
 void file30_wt_blk_scf(double **,int);
+void file30_wt_zmat(struct z_entry *z_geom, int num_atoms);
 
 #endif

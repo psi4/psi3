@@ -97,6 +97,7 @@ wt_alpha_blk_scf.c \
 wt_beta_blk_scf.c \
 wt_blk_scf.c \
 wt_zvals.c \
+wt_zmat.c \
 z_to_cart.c
 
 DEPENDINCLUDE = file30.h file30.gbl
