@@ -10,6 +10,7 @@ int dpd_file4_mat_irrep_rd_block(dpdfile4 *File, int irrep, int start_pq,
   int rowtot, coltot, my_irrep;
   int seek_block;
   psio_address irrep_ptr, next_address;
+  long int size;
 
   my_irrep = File->my_irrep;
   if(File->incore) return 0;  /* We already have this data in core */
@@ -17,6 +18,8 @@ int dpd_file4_mat_irrep_rd_block(dpdfile4 *File, int irrep, int start_pq,
   irrep_ptr = File->lfiles[irrep];
   rowtot = num_pq;
   coltot = File->params->coltot[irrep^my_irrep];
+
+  size = ((long) rowtot) * ((long) coltot);
 
   /* Advance file pointer to current row --- careful about overflows! */
   if(coltot) {
@@ -32,7 +35,7 @@ int dpd_file4_mat_irrep_rd_block(dpdfile4 *File, int irrep, int start_pq,
 
   if(rowtot && coltot)
      psio_read(File->filenum, File->label, (char *) File->matrix[irrep][0],
-	       rowtot*coltot*sizeof(double), irrep_ptr, &next_address);
+	       size * ((long) sizeof(double)), irrep_ptr, &next_address);
 
   return 0;
 

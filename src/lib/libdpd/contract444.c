@@ -27,8 +27,9 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
 		    double beta)
 {
   int n, Hx, Hy, Hz, GX, GY, GZ, nirreps, Xtrans, Ytrans, *numlinks, symlink;
-  int size_Y, size_Z;
-  int incore, memoryd, core, rows_per_bucket, nbuckets, rows_left, memtotal;
+  long int size_Y, size_Z;
+  int incore, nbuckets;
+  long int memoryd, core, rows_per_bucket, rows_left, memtotal;
 #ifdef DPD_DEBUG
   int *xrow, *xcol, *yrow, *ycol, *zrow, *zcol;
   double byte_conv;
@@ -69,8 +70,8 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
     else if (( Xtrans)&&(!Ytrans))  {Hy = Hx;       Hz = Hx^GX; }
     else /* (( Xtrans)&&( Ytrans))*/{Hy = Hx^GY;    Hz = Hx^GX; }
 
-    size_Y = Y->params->rowtot[Hy] * Y->params->coltot[Hy^GY];
-    size_Z = Z->params->rowtot[Hz] * Z->params->coltot[Hz^GZ];
+    size_Y = ((long) Y->params->rowtot[Hy]) * ((long) Y->params->coltot[Hy^GY]);
+    size_Z = ((long) Z->params->rowtot[Hz]) * ((long) Z->params->coltot[Hz^GZ]);
 	
     memoryd = dpd_memfree() - (size_Y + size_Z);
 

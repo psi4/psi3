@@ -34,12 +34,14 @@ int dpd_buf4_mat_irrep_wrt(dpdbuf4 *Buf, int irrep)
   int f_perm_pq, f_perm_rs, f_peq, f_res;
   int permute;
   double value;
+  long int size;
 
   all_buf_irrep = Buf->file.my_irrep;
 
   /* Row and column dimensions in the DPD file */
   rowtot = Buf->file.params->rowtot[irrep];
   coltot = Buf->file.params->coltot[irrep^all_buf_irrep];
+  size = ((long) rowtot) * ((long) coltot);
 
   /* Index packing information */
   b_perm_pq = Buf->params->perm_pq; b_perm_rs = Buf->params->perm_rs;
@@ -101,7 +103,7 @@ int dpd_buf4_mat_irrep_wrt(dpdbuf4 *Buf, int irrep)
       timer_on("buf_wrt_12");
 #endif
 
-      if(Buf->file.incore && rowtot*coltot) {
+      if(Buf->file.incore && size) {
           dpd_file4_cache_dirty(&(Buf->file));
         }
 /*

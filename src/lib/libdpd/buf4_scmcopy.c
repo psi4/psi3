@@ -20,7 +20,8 @@
 int dpd_buf4_scmcopy(dpdbuf4 *InBuf, int outfilenum, char *label, double alpha)
 {
   int h, row, col, rowtot, coltot, all_buf_irrep;
-  int memoryd, rows_per_bucket, nbuckets, rows_left, incore, n;
+  int nbuckets, incore, n;
+  long int memoryd, rows_per_bucket, rows_left, size;
   dpdbuf4 OutBuf;
   double *X;
 
@@ -72,12 +73,13 @@ int dpd_buf4_scmcopy(dpdbuf4 *InBuf, int outfilenum, char *label, double alpha)
 
       rowtot = InBuf->params->rowtot[h];
       coltot = InBuf->params->coltot[h^all_buf_irrep];
+      size = ((long) rowtot) * ((long) coltot);
 
       if(rowtot && coltot) {
 	memcpy((void *) &(OutBuf.matrix[h][0][0]),
 	       (const void *) &(InBuf->matrix[h][0][0]),
-	       sizeof(double)*rowtot*coltot);
-	C_DSCAL(rowtot*coltot, alpha, &(OutBuf.matrix[h][0][0]), 1);
+	       ((long) sizeof(double))*size);
+	C_DSCAL(size, alpha, &(OutBuf.matrix[h][0][0]), 1);
       }
 
       dpd_buf4_mat_irrep_wrt(&OutBuf, h);
@@ -91,24 +93,27 @@ int dpd_buf4_scmcopy(dpdbuf4 *InBuf, int outfilenum, char *label, double alpha)
       dpd_buf4_mat_irrep_init_block(&OutBuf, h, rows_per_bucket);
 
       coltot = InBuf->params->coltot[h^all_buf_irrep];
+      size = ((long) rows_per_bucket)*((long) coltot);
 
       for(n=0; n < (rows_left ? nbuckets-1 : nbuckets); n++) {
 
 	dpd_buf4_mat_irrep_rd_block(InBuf, h, n*rows_per_bucket, rows_per_bucket);
 
 	memcpy((void *) &(OutBuf.matrix[h][0][0]), (const void *) &(InBuf->matrix[h][0][0]), 
-	       sizeof(double)*rows_per_bucket*coltot);
-	C_DSCAL(rows_per_bucket*coltot, alpha, &(OutBuf.matrix[h][0][0]), 1);
+	       ((long) sizeof(double))*size);
+	C_DSCAL(size, alpha, &(OutBuf.matrix[h][0][0]), 1);
 
 	dpd_buf4_mat_irrep_wrt_block(&OutBuf, h, n*rows_per_bucket, rows_per_bucket);
       }
       if(rows_left) {
 
+	size = ((long) rows_left) * ((long) coltot);
+
 	dpd_buf4_mat_irrep_rd_block(InBuf, h, n*rows_per_bucket, rows_left);
 
 	memcpy((void *) &(OutBuf.matrix[h][0][0]), (const void *) &(InBuf->matrix[h][0][0]), 
-	       sizeof(double)*rows_left*coltot);
-	C_DSCAL(rows_left*coltot, alpha, &(OutBuf.matrix[h][0][0]), 1);
+	       ((long) sizeof(double))*size);
+	C_DSCAL(size, alpha, &(OutBuf.matrix[h][0][0]), 1);
 
 	dpd_buf4_mat_irrep_wrt_block(&OutBuf, h, n*rows_per_bucket, rows_left);
       }

@@ -25,8 +25,7 @@ int dpd_buf4_symm(dpdbuf4 *Buf)
 
       for(row=0; row < Buf->params->rowtot[h]; row++)
           for(col=0; col < Buf->params->coltot[h^all_buf_irrep]; col++) {
-              value =
-0.5*(Buf->matrix[h][row][col]+Buf->matrix[h][col][row]);
+              value = 0.5*(Buf->matrix[h][row][col]+Buf->matrix[h][col][row]);
               Buf->matrix[h][row][col] = Buf->matrix[h][col][row] = value;
             }
 

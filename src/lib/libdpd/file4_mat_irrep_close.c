@@ -15,15 +15,17 @@
 int dpd_file4_mat_irrep_close(dpdfile4 *File, int irrep)
 {
   int my_irrep, rowtot, coltot;
+  long int size;
 
   my_irrep = File->my_irrep;
 
   rowtot = File->params->rowtot[irrep];
   coltot = File->params->coltot[irrep^my_irrep];
+  size = ((long) rowtot) * ((long) coltot);
 
   if(File->incore) return 0;  /* We need to keep the memory */
 
-  if(rowtot*coltot) dpd_free_block(File->matrix[irrep], rowtot, coltot);
+  if(size) dpd_free_block(File->matrix[irrep], rowtot, coltot);
 
   return 0;
 }

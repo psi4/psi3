@@ -16,8 +16,9 @@
 int dpd_buf4_axpy(dpdbuf4 *BufX, dpdbuf4 *BufY, double alpha)
 {
   int h, nirreps, my_irrep;
-  int row, col, length;
-  int memoryd, rows_per_bucket, nbuckets, rows_left, incore, n;
+  int row, col, incore, n, nbuckets;
+  long int length;
+  long int memoryd, rows_per_bucket, rows_left;
   double *X, *Y;
 
   nirreps = BufX->params->nirreps;
@@ -66,7 +67,7 @@ int dpd_buf4_axpy(dpdbuf4 *BufX, dpdbuf4 *BufY, double alpha)
       dpd_buf4_mat_irrep_init(BufY, h);
       dpd_buf4_mat_irrep_rd(BufY, h);
 
-      length = BufX->params->rowtot[h] * BufX->params->coltot[h^my_irrep];
+      length = ((long) BufX->params->rowtot[h]) * ((long) BufX->params->coltot[h^my_irrep]);
       if(length) {
 	X = &(BufX->matrix[h][0][0]);
 	Y = &(BufY->matrix[h][0][0]);
@@ -83,7 +84,7 @@ int dpd_buf4_axpy(dpdbuf4 *BufX, dpdbuf4 *BufY, double alpha)
       dpd_buf4_mat_irrep_init_block(BufX, h, rows_per_bucket);
       dpd_buf4_mat_irrep_init_block(BufY, h, rows_per_bucket);
 
-      length = rows_per_bucket * BufX->params->coltot[h^my_irrep];
+      length = ((long) rows_per_bucket) * ((long) BufX->params->coltot[h^my_irrep]);
       X = &(BufX->matrix[h][0][0]);
       Y = &(BufY->matrix[h][0][0]);
 
@@ -99,7 +100,7 @@ int dpd_buf4_axpy(dpdbuf4 *BufX, dpdbuf4 *BufY, double alpha)
 
       if(rows_left) {
 
-	length = rows_left * BufX->params->coltot[h^my_irrep];
+	length = ((long) rows_left) * ((long) BufX->params->coltot[h^my_irrep]);
 
 	dpd_buf4_mat_irrep_rd_block(BufX, h, n*rows_per_bucket, rows_left);
 	dpd_buf4_mat_irrep_rd_block(BufY, h, n*rows_per_bucket, rows_left);

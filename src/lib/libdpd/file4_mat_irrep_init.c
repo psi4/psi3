@@ -15,14 +15,16 @@
 int dpd_file4_mat_irrep_init(dpdfile4 *File, int irrep)
 {
   int my_irrep, rowtot, coltot;
+  long int size;
 
   my_irrep = File->my_irrep;
   rowtot = File->params->rowtot[irrep];
   coltot = File->params->coltot[irrep^my_irrep];
+  size = ((long) rowtot) * ((long) coltot);
 
   if(File->incore) return 0;  /* We've already got the memory */
 
-  if(rowtot * coltot) File->matrix[irrep] = dpd_block_matrix(rowtot,coltot);
+  if(size) File->matrix[irrep] = dpd_block_matrix(rowtot,coltot);
 
   return 0;
 }

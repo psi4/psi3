@@ -27,8 +27,9 @@
 int dpd_buf4_scm(dpdbuf4 *InBuf, double alpha)
 {
   int h, nirreps, new_buf4, all_buf_irrep;
-  int row, col, length;
+  int row, col;
   double *X;
+  long int length;
 
   nirreps = InBuf->params->nirreps;
   all_buf_irrep = InBuf->file.my_irrep;
@@ -48,7 +49,7 @@ int dpd_buf4_scm(dpdbuf4 *InBuf, double alpha)
 
       if(!new_buf4) dpd_buf4_mat_irrep_rd(InBuf, h);
 
-      length = InBuf->params->rowtot[h] * InBuf->params->coltot[h^all_buf_irrep];
+      length = ((long) InBuf->params->rowtot[h]) * ((long) InBuf->params->coltot[h^all_buf_irrep]);
       if(length) {
           X = &(InBuf->matrix[h][0][0]);
           C_DSCAL(length, alpha, X, 1);

@@ -16,16 +16,19 @@
 int dpd_buf4_mat_irrep_init(dpdbuf4 *Buf, int irrep)
 {
   int rowtot, coltot, all_buf_irrep;
+  long int size;
 
   all_buf_irrep = Buf->file.my_irrep;
   rowtot = Buf->params->rowtot[irrep];
   coltot = Buf->params->coltot[irrep^all_buf_irrep];
 
+  size = ((long) rowtot) * ((long) coltot);
+
 #ifdef DPD_TIMER
   timer_on("buf4_init");
 #endif
 
-  if(rowtot*coltot) {
+  if(size) {
 
     /* If the file member is already in cache and its ordering is the 
        same as the parent buffer, don't malloc() memory, just assign 

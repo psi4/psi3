@@ -41,6 +41,7 @@ int dpd_buf4_mat_irrep_rd(dpdbuf4 *Buf, int irrep)
   int f_perm_pq, f_perm_rs, f_peq, f_res;
   int pq_permute, permute;
   double value;
+  long int size;
 
 #ifdef DPD_TIMER
   timer_on("buf_rd");
@@ -50,6 +51,7 @@ int dpd_buf4_mat_irrep_rd(dpdbuf4 *Buf, int irrep)
 
   rowtot = Buf->params->rowtot[irrep];
   coltot = Buf->params->coltot[irrep^all_buf_irrep];
+  size = ((long) rowtot) * ((long) coltot);
 
   b_perm_pq = Buf->params->perm_pq; b_perm_rs = Buf->params->perm_rs;
   f_perm_pq = Buf->file.params->perm_pq; f_perm_rs = Buf->file.params->perm_rs;
@@ -189,7 +191,7 @@ int dpd_buf4_mat_irrep_rd(dpdbuf4 *Buf, int irrep)
       timer_on("buf_rd_12");
 #endif
 
-      if(Buf->file.incore && rowtot*coltot) {
+      if(Buf->file.incore && size) {
           
           /* We shouldn't actually have to do anything here since the
              pointer to the data should already have been copied in

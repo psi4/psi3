@@ -7,7 +7,8 @@
 int dpd_buf4_mat_irrep_shift13(dpdbuf4 *Buf, int buf_block)
 {
   int h, i, nirreps, all_buf_irrep;
-  int *count, *dataoff;
+  int *count;
+  long int *dataoff;
   int rowtot, coltot;
   double *data;
 
@@ -46,11 +47,12 @@ int dpd_buf4_mat_irrep_shift13(dpdbuf4 *Buf, int buf_block)
 	    (double **) malloc(Buf->shift.rowtot[buf_block][h] * sizeof(double *)));
 
   /* Calculate the data offset */
-  dataoff = init_int_array(nirreps);
+  dataoff = init_long_int_array(nirreps);
   dataoff[0] = 0;
   for(h=1; h < nirreps; h++)
       dataoff[h] = dataoff[h-1] +
-		   Buf->shift.rowtot[buf_block][h-1] * Buf->shift.coltot[buf_block][h-1];
+		   ((long) Buf->shift.rowtot[buf_block][h-1]) * 
+	           ((long) Buf->shift.coltot[buf_block][h-1]);
 		     
 
   /* The row counter for each sub-block */
@@ -61,7 +63,7 @@ int dpd_buf4_mat_irrep_shift13(dpdbuf4 *Buf, int buf_block)
       for(i=0; (i < Buf->shift.rowtot[buf_block][h]) && Buf->shift.coltot[buf_block][h];
 	  i++,count[h]++) {
           Buf->shift.matrix[buf_block][h][count[h]] =
-		    &(data[dataoff[h]+(Buf->shift.coltot[buf_block][h])*i]);
+		    &(data[dataoff[h]+((long) (Buf->shift.coltot[buf_block][h]))*((long) i)]);
         }
     }
 

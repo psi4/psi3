@@ -11,7 +11,6 @@ int dpd_contract222(dpdfile2 *X, dpdfile2 *Y, dpdfile2 *Z, int target_X,
   int Hx, Hy, Hz;
   int symlink;
 
-
 #ifdef DPD_DEBUG
   int *xrow, *xcol, *yrow, *ycol, *zrow, *zcol;
 #endif

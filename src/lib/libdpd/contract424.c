@@ -32,7 +32,8 @@ int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
   int rking=0, symlink;
   int Xtrans,Ytrans;
   int *numlinks, *numrows, *numcols;
-  int incore, core, memoryd;
+  int incore;
+  long int core, memoryd;
   int xcount, zcount, scount, Ysym;
   int rowx, rowz, colx, colz;
   int pq, rs, r, s, Gr, Gs;
@@ -78,8 +79,8 @@ int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
     }
 
     /* Compute the core requirements for the straight contraction */
-    core = Z->params->rowtot[hzbuf] * Z->params->coltot[hzbuf^GZ] +
-      X->params->rowtot[hxbuf] * X->params->coltot[hxbuf^GX];
+    core = ((long) Z->params->rowtot[hzbuf]) * ((long) Z->params->coltot[hzbuf^GZ]) +
+      ((long) X->params->rowtot[hxbuf]) * ((long) X->params->coltot[hxbuf^GX]);
 
     /* Force incore for all but a "normal" 221 contraction for now */
     if(core > memoryd) incore = 0;

@@ -18,10 +18,13 @@
 int dpd_buf4_mat_irrep_close(dpdbuf4 *Buf, int irrep)
 {
   int h, nirreps, rowtot, coltot, my_irrep;
+  long int size;
 
   my_irrep = Buf->file.my_irrep;
   rowtot = Buf->params->rowtot[irrep];
   coltot = Buf->params->coltot[irrep^my_irrep];
+
+  size = ((long) rowtot) * ((long) coltot);
 
   nirreps = Buf->params->nirreps;
 
@@ -34,7 +37,7 @@ int dpd_buf4_mat_irrep_close(dpdbuf4 *Buf, int irrep)
       Buf->shift.shift_type = 0;
     }
 
-  if(rowtot*coltot) {
+  if(size) {
       /* If the file member is already in cache and its ordering is the 
          same as the buffer, then we just copied the pointer in
          buf4_mat_irrep_init(); don't free! */

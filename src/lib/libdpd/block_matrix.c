@@ -34,6 +34,7 @@ double **dpd_block_matrix(int n, int m)
 {
   int i;
   double **A, *B;
+  long int size;  /* rows * cols */
 
 #ifdef DPD_TIMER
   timer_on("block_mat");
@@ -41,7 +42,9 @@ double **dpd_block_matrix(int n, int m)
 
   A = NULL;  B = NULL;
 
-  while((dpd_main.memory - dpd_main.memused - n*m) < 0) {
+  size = ((long) m) * ((long) n);
+
+  while((dpd_main.memory - dpd_main.memused - size) < 0) {
     /* Delete cache entries until there's enough memory or no more cache */
 
     /* Priority-based cache */
@@ -81,7 +84,7 @@ double **dpd_block_matrix(int n, int m)
   /* Allocate the main block here */
   /* NB: If we delete the entire cache and STILL get NULL from malloc(), */
   /* we're either out of real memory or the heap is seriously fragmented */
-  while((B = (double *) malloc(m*n * sizeof(double))) == NULL) {
+  while((B = (double *) malloc(size * sizeof(double))) == NULL) {
     /* Priority-based cache */
     if(dpd_main.cachetype == 1) {
       if(dpd_file4_cache_del_low()) {
@@ -118,9 +121,11 @@ double **dpd_block_matrix(int n, int m)
 
 void dpd_free_block(double **array, int n, int m)
 {
+  long size;
+  size = ((long) m) * ((long) n);
   if(array == NULL) return;
   free(array[0]);
   free(array);
   /* Decrement the global memory counter */
-  dpd_main.memused -= n*m;
+  dpd_main.memused -= size;
 }

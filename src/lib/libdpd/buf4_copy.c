@@ -18,7 +18,8 @@
 
 int dpd_buf4_copy(dpdbuf4 *InBuf, int outfilenum, char *label)
 {
-  int h, row, col, rowtot, coltot, my_irrep;
+  int h, row, col, my_irrep;
+  long int rowtot, coltot;
   dpdbuf4 OutBuf;
 
   my_irrep = InBuf->file.my_irrep;

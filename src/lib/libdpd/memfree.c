@@ -7,7 +7,7 @@
 #define EXTERN
 #include "dpd.gbl"
 
-int dpd_memfree(void)
+long int dpd_memfree(void)
 {
   return dpd_main.memory - (dpd_main.memused - 
 			    dpd_main.memcache + 

@@ -154,10 +154,10 @@ typedef struct {
 } dpd_data;
 
 typedef struct {
-  unsigned int memory;        /* Total memory requested by the user */
-  unsigned int memused;       /* Total memory used (cache + other) */
-  unsigned int memcache;      /* Total memory in cache (locked and unlocked) */
-  unsigned int memlocked;     /* Total memory locked in the cache */
+  long int memory;        /* Total memory requested by the user */
+  long int memused;       /* Total memory used (cache + other) */
+  long int memcache;      /* Total memory in cache (locked and unlocked) */
+  long int memlocked;     /* Total memory locked in the cache */
 
   struct dpd_file2_cache_entry *file2_cache;
   struct dpd_file4_cache_entry *file4_cache;
@@ -187,7 +187,7 @@ void dpd_error(char *caller, FILE *outfile);
 
 double **dpd_block_matrix(int n, int m);
 void dpd_free_block(double **array, int n, int m);
-int dpd_memfree(void);
+long int dpd_memfree(void);
 
 int dpd_contract222(dpdfile2 *X, dpdfile2 *Y, dpdfile2 *Z, int target_X,
 		    int target_Y, double alpha, double beta);

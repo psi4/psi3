@@ -11,6 +11,7 @@ int dpd_buf4_mat_irrep_shift31(dpdbuf4 *Buf, int buf_block)
   int *count;
   int *blocklen, *rowoff;
   double *data;
+  long int pqcol;
 
 #ifdef DPD_TIMER
   timer_on("shift");
@@ -64,6 +65,7 @@ int dpd_buf4_mat_irrep_shift31(dpdbuf4 *Buf, int buf_block)
 
   /* Loop over rows of original DPD matrix */
   for(pq=0; pq < Buf->params->rowtot[buf_block]; pq++) {
+    pqcol = ((long) pq) * ((long) coltot);
 
     /* Loop over irreps of pqr */
     for(h_pqr=0; h_pqr < nirreps; h_pqr++) {
@@ -75,7 +77,7 @@ int dpd_buf4_mat_irrep_shift31(dpdbuf4 *Buf, int buf_block)
 
         /* Re-assign the row pointer */
         Buf->shift.matrix[buf_block][h_pqr][count[h_pqr]] =
-          &(data[pq*coltot + rowoff[h_pqr] + (r * Buf->params->spi[Gs])]);
+          &(data[pqcol + rowoff[h_pqr] + (r * Buf->params->spi[Gs])]);
 
         count[h_pqr]++;
 

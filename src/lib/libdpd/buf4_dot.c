@@ -7,7 +7,8 @@ double dpd_buf4_dot(dpdbuf4 *BufA, dpdbuf4 *BufB)
 {
   int h, nirreps, n, my_irrep;
   double dot;
-  int memoryd, incore, core, rows_per_bucket, nbuckets, rows_left;
+  int incore, nbuckets;
+  long int memoryd, rows_per_bucket, rows_left;
 
   nirreps = BufA->params->nirreps;
   my_irrep = BufA->file.my_irrep;
