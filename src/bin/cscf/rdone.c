@@ -1,14 +1,18 @@
 /* $Log$
- * Revision 1.3  2001/06/21 21:00:37  crawdad
- * I have simplified the libiwl functions iwl_rdone() and iwl_wrtone() to only
- * read and write one-electron quantities and to more explicitly use the libpsio
- * structure to allow multiple quantities in a single one-electron IWL file.
- * The frozen-core energy is no longer dealt with in these functions, but is
- * now handled in libfile30.  The argument lists for these functions have
- * therefore changed quite a lot, and I've tried to correct all the PSI3
- * codes that are affected.
- * -TDC
+ * Revision 1.4  2002/03/06 22:44:41  sherrill
+ * Add new keyword orthog_only = true to just orthogonalize orbitals and do
+ * nothing else.
  *
+/* Revision 1.3  2001/06/21 21:00:37  crawdad
+/* I have simplified the libiwl functions iwl_rdone() and iwl_wrtone() to only
+/* read and write one-electron quantities and to more explicitly use the libpsio
+/* structure to allow multiple quantities in a single one-electron IWL file.
+/* The frozen-core energy is no longer dealt with in these functions, but is
+/* now handled in libfile30.  The argument lists for these functions have
+/* therefore changed quite a lot, and I've tried to correct all the PSI3
+/* codes that are affected.
+/* -TDC
+/*
 /* Revision 1.2  2000/10/13 19:51:21  evaleev
 /* Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
 /*
@@ -67,7 +71,7 @@ void rdone_iwl()
   ints = init_array(ntri);
 
   /* S integrals */
-  stat = iwl_rdone(itapS,PSIF_SO_S,ints,ntri,0, 0, outfile);
+  stat = iwl_rdone(itapS,PSIF_SO_S,ints,ntri,0, 0, outfile); 
   for(i=0;i<num_ir;i++) {
     max = scf_info[i].num_so;
     off = scf_info[i].ideg;

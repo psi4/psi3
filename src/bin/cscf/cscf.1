@@ -371,4 +371,12 @@ Initial iterations are performed with integrals accurate to six digits.
 After density is converged to 10^-5 or 30 iterations are completed,
 full integral accuracy is used.  If scf convergence problems are experienced
 disabling dynamic cutoffs by setting this variable to false might help.
-                                                                        
+
+.IP "\fBORTHOG_ONLY = \fP \fIboolean\fP"
+Sometimes in CASSCF or other non-HF/KS schemes for orbital optimization,
+it is useful to reorthogonalize MO's from other geometries for the current
+geometry so they can be used as an initial guess for the new MO's.  This
+can be performed by running CSCF with \fBORTHOG_ONLY = true\fP.  After
+the orbitals are orthogonalized, the program will quit without performing
+an SCF computation.
+

@@ -181,7 +181,8 @@ int main(argc,argv)
    char *output="APPEND  ";
    struct symm *s;
    ip_value_t *ipvalue=NULL;
-
+   int orthog_only;
+ 
    ffile(&infile,"input.dat",2);
    ffile(&outfile,"output.dat",1);
    /*ffile(&JK,"jandk.dat",0);
@@ -246,6 +247,10 @@ int main(argc,argv)
    tight_ints=0;
    delta = 1.0;
                                                       
+/* CDS 3/6/02 add flag to do only orthogonalization */
+   orthog_only = 0;
+   ip_boolean("ORTHOG_ONLY",&orthog_only,0);
+
 /* open integrals file(s) */
 
    if (use_iwl)
@@ -320,6 +325,19 @@ int main(argc,argv)
 	   schmit(1);
    }
    
+/* Print out the first vector */
+   if (print & 2)
+       print_initial_vec();
+
+/* if we are only orthogonalizing, then quit here */
+   if (orthog_only) {
+       fprintf(outfile, "Only orbital orthogonalization has been performed\n");
+       psio_done();
+       tstop(outfile);
+       ip_done();
+       exit(0);
+   }
+
    if (!twocon){
        if(!uhf)
 	   dmat();
@@ -333,10 +351,6 @@ int main(argc,argv)
        }
    }
 
-/* Print out the first vector */
-   if (print & 2)
-       print_initial_vec();
-   
 /* Decide how to form the Fock matrix */
 
    if (!direct_scf) {
