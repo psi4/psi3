@@ -453,6 +453,13 @@ int parse_cmdline(int argc, char *argv[])
     return(0);
   }
 
+  /* if some arguments were not specified on command-line - check the environment */
+  if (ifname == NULL)
+    ifname = getenv("PSI_INPUT");
+  if (ofname == NULL)
+    ofname = getenv("PSI_OUTPUT");
+  if (fprefix == NULL)
+    fprefix = getenv("PSI_PREFIX");
  
   /* set the environmental variables the modules will look for */ 
   if (ifname != NULL) {
