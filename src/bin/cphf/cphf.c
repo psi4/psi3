@@ -11,7 +11,7 @@
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
 #include <libiwl/iwl.h>
-#include <libfile30/file30.h>
+#include <libchkpt/chkpt.h>
 #include <libqt/qt.h>
 #include <psifiles.h>
 #include <masses.h>
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
   timer_init();
   timer_on("CPHF Main");
 
-  file30_init();
+  /*file30_init();
   natom = file30_rd_natom();
   nmo = file30_rd_nmo();
   nso = file30_rd_nso();
@@ -71,8 +71,19 @@ int main(int argc, char *argv[])
   orbspi = file30_rd_orbspi();
   clsdpi = file30_rd_clsdpi();
   zvals = file30_rd_zvals();
-  file30_close();
+  file30_close();*/
 
+  chkpt_init();
+  natom = chkpt_rd_natom();
+  nmo = chkpt_rd_nmo();
+  nso = chkpt_rd_nso();
+  evals = chkpt_rd_evals();
+  nirreps = chkpt_rd_nirreps();
+  orbspi = chkpt_rd_orbspi();
+  clsdpi = chkpt_rd_clsdpi();
+  zvals = chkpt_rd_zvals();
+  chkpt_close();
+  
   /*
   fprintf(outfile, "Orbital Eigenvalues:\n");
   for(i=0; i < nmo; i++) fprintf(outfile, "%d %20.12f\n", i, evals[i]);
