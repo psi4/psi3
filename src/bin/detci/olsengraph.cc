@@ -35,7 +35,7 @@ extern "C" {
 #include "odometer.h"
 
 
-#define DEBUG  
+//#define DEBUG  
 
 /* FUNCTION PROTOTYPES for this module */
 void olsengraph(struct olsen_graph *Graph, int ci_orbs, int num_el, 

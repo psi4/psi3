@@ -96,7 +96,7 @@ void mpn_generator(CIvect &Hd, struct stringwr **alplist,
   fprintf(outfile,"   CalcInfo.escf = %25.15f\n", CalcInfo.escf);
   fprintf(outfile,"   CalcInfo.e0   = %25.15f\n", CalcInfo.e0);
   fprintf(outfile,"   CalcInfo.enuc = %25.15f\n", CalcInfo.enuc);
-  fprintf(outfile,"   CalcInfo.e1   = %25.15f\n", CalcInfo.e1);
+  fprintf(outfile,"   CalcInfo.e1   = %25.15f\n\n", CalcInfo.e1);
   fprintf(outfile,"   n         Corr. Energy \t\t E(MPn) \t\t"
       "   n         Corr. Energy \t\t E(MPn)\n\n");
   fprintf(outfile,"   0  %25.15f %25.15f\n", 0.0000000000,
@@ -230,8 +230,8 @@ void mpn_generator(CIvect &Hd, struct stringwr **alplist,
        Empn2a = Empn2;
 
        Empn2 += mp2k_energy[2*k+1];
-       //fprintf(outfile,"\t\t\t\t\t\t\t\t"
-       //        " %2d %25.15f %25.15f\n", 2*k+1, mp2k_energy[2*k+1], Empn2);
+       fprintf(outfile,"\t\t\t\t\t\t\t\t"
+               " %2d %25.15f %25.15f\n", 2*k+1, mp2k_energy[2*k+1], Empn2);
        }
      fflush(outfile);
 
