@@ -39,8 +39,7 @@ rm -f Makefile; \
 cp Makefile.libint Makefile; \
 ${MAKE} install; \
 cd ..; \
-rm -fR $(TEMP_DIR) \
-rm -fR $(SCRATCH)
+rm -fR $(TEMP_DIR)
 
 all: install
 
