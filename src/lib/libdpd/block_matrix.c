@@ -25,6 +25,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include <qt.h>
 #include "dpd.h"
 #define EXTERN
 #include "dpd.gbl"
@@ -33,6 +34,10 @@ double **dpd_block_matrix(int n, int m)
 {
   int i;
   double **A, *B;
+
+#ifdef DPD_TIMER
+timer_on("block_mat");
+#endif DPD_TIMER
 
   A = NULL;  B = NULL;
 
@@ -61,6 +66,10 @@ double **dpd_block_matrix(int n, int m)
 
   /* Decrement the global memory counter */
   dpd_default->memfree -= n*m;
+
+#ifdef DPD_TIMER
+timer_off("block_mat");
+#endif DPD_TIMER
 
   return(A);
 }

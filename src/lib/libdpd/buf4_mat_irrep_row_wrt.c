@@ -74,9 +74,11 @@ int dpd_buf4_mat_irrep_row_wrt(dpdbuf4 *Buf, int irrep, int pq)
   switch(method) {
   case 12: /* No change in pq or rs */
 
-      if(Buf->file.incore)
+      if(Buf->file.incore) {
 	  for(rs=0; rs < rowtot; rs++)
 	      Buf->file.matrix[irrep][pq][rs] = Buf->matrix[irrep][0][rs];
+          dpd_file4_cache_dirty(&(Buf->file));
+        }
       else {
 	  Buf->file.matrix[irrep] = Buf->matrix[irrep];
 	  dpd_file4_mat_irrep_row_wrt(&(Buf->file), irrep, pq);

@@ -107,6 +107,8 @@ struct dpd_file4_cache_entry {
     double ***matrix;                   /* pointer to irrep blocks */
     int size;                           /* size of entry in double words */
     unsigned int access;                /* access time */
+    unsigned int usage;                 /* number of accesses */
+    int clean;                          /* has this file4 changed? */
     struct dpd_file4_cache_entry *next; /* pointer to next cache entry */
     struct dpd_file4_cache_entry *last; /* pointer to previous cache entry */
 };
@@ -295,6 +297,7 @@ int dpd_file4_cache_add(dpdfile4 *File);
 int dpd_file4_cache_del(dpdfile4 *File);
 struct dpd_file4_cache_entry *dpd_file4_cache_find_lru(void);
 int dpd_file4_cache_del_lru(void);
+void dpd_file4_cache_dirty(dpdfile4 *File);
 
 #endif /* DPD_H */
 

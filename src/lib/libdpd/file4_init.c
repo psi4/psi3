@@ -36,8 +36,8 @@ int dpd_file4_init(dpdfile4 *File, int filenum, int irrep, int pqnum,
       File->matrix = this_entry->matrix;
     }
   else {
-      File->incore = 0;
-      File->matrix = (double ***) malloc(File->params->nirreps*sizeof(double **));
+   File->incore = 0;
+   File->matrix = (double ***) malloc(File->params->nirreps*sizeof(double **));
     }
 
   /* Construct logical subfile pointers */
@@ -53,9 +53,6 @@ int dpd_file4_init(dpdfile4 *File, int filenum, int irrep, int pqnum,
   /* Put this file4 into cache if requested */
   if(dpd_default->cachefiles[filenum] && dpd_default->cachelist[pqnum][rsnum]) 
       dpd_file4_cache_add(File); 
-/*
-  dpd_file4_cache_add(File); 
-*/
 
   return 0;
 }

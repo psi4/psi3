@@ -102,7 +102,7 @@ int dpd_buf4_mat_irrep_wrt(dpdbuf4 *Buf, int irrep)
 #endif
 
       if(Buf->file.incore && rowtot*coltot) {
-          1;
+          dpd_file4_cache_dirty(&(Buf->file));
         }
 /*
 	  memcpy((void *) &(Buf->file.matrix[irrep][0][0]),

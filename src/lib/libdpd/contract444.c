@@ -96,6 +96,7 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
 
       dpd_buf4_mat_irrep_init(Y, h);
       dpd_buf4_mat_irrep_rd(Y, h);
+
 	
       if(incore) {
 

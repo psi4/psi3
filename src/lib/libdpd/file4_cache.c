@@ -57,6 +57,9 @@ struct dpd_file4_cache_entry
 	      /* increment the access timers */
 	      dpd_default->file4_cache_most_recent++;
 	      this_entry->access = dpd_default->file4_cache_most_recent;
+         
+              /* increment the usage counter */
+              this_entry->usage++;
 	      
               return(this_entry);
            }
@@ -118,6 +121,12 @@ int dpd_file4_cache_add(dpdfile4 *File)
       /* increment the access timers */
       dpd_default->file4_cache_most_recent++;
       this_entry->access = dpd_default->file4_cache_most_recent;
+
+      /* initialize the usage counter */
+      this_entry->usage = 1;
+
+      /* Set the clean flag */
+      this_entry->clean = 1;
 	      
       /* Read all data into core */
       this_entry->size = 0;
@@ -157,7 +166,7 @@ int dpd_file4_cache_del(dpdfile4 *File)
 
       /* Write all the data to disk and free the memory */
       for(h=0; h < File->params->nirreps; h++) {
-	  dpd_file4_mat_irrep_wrt(File, h);
+          if(!(this_entry->clean)) dpd_file4_mat_irrep_wrt(File, h);
 	  dpd_file4_mat_irrep_close(File, h);
 	}
 
@@ -188,20 +197,21 @@ void dpd_file4_cache_print(FILE *outfile)
 
   fprintf(outfile, "\n\tDPD File4 Cache Listing:\n\n");
   fprintf(outfile,
-    "Cache Label                     File symm  pq  rs  access  size(kB)\n");
+"Cache Label              File symm  pq  rs  access  usage  clean  size(kB)\n");
   fprintf(outfile,
-    "-------------------------------------------------------------------\n");
+"--------------------------------------------------------------------------\n");
   while(this_entry != NULL) {
       fprintf(outfile,
-      "%-32s %3d    %1d  %2d  %2d  %6d  %8.1f\n",
+      "%-25s %3d    %1d  %2d  %2d  %6d  %5d      %1d  %8.1f\n",
 	      this_entry->label, this_entry->filenum, this_entry->irrep,
 	      this_entry->pqnum, this_entry->rsnum, this_entry->access,
-	      (this_entry->size)*sizeof(double)/1e3);
+	      this_entry->usage,this_entry->clean, 
+              (this_entry->size)*sizeof(double)/1e3);
       total_size += this_entry->size;
       this_entry = this_entry->next;
     }
   fprintf(outfile,
-    "-----------------------------------------------------------\n");
+"--------------------------------------------------------------------------\n");
   fprintf(outfile, "Total cached: %8.1f kB; MRU = %6d; LRU = %6d\n",
 	  (total_size*sizeof(double))/1e3, dpd_default->file4_cache_most_recent,
 	  dpd_default->file4_cache_least_recent);
@@ -234,13 +244,24 @@ int dpd_file4_cache_del_lru(void)
   dpdfile4 File;
   struct dpd_file4_cache_entry *this_entry;
 
+#ifdef DPD_TIMER
+  timer_on("cache_lru");
+#endif
+
   this_entry = dpd_file4_cache_find_lru();
 
-  if(this_entry == NULL) return 1; /* there is no cache */
+  if(this_entry == NULL) {
+#ifdef DPD_TIMER
+      timer_off("cache_lru");
+#endif
+      return 1; /* there is no cache */
+    }
   else { /* we found the LRU so delete it */
-      printf("Deleteing LRU: %-32s %3d %2d %2d %6d\n", this_entry->label,
+      printf("Deleteing LRU: %-24s %3d %2d %2d %6d %6d %1d %8.1f\n", 
+             this_entry->label,
 	     this_entry->filenum, this_entry->pqnum, this_entry->rsnum,
-	     this_entry->access);
+	     this_entry->access,this_entry->usage,this_entry->clean,
+             this_entry->size);
       
       dpd_file4_init(&File, this_entry->filenum, this_entry->irrep,
 		     this_entry->pqnum, this_entry->rsnum, this_entry->label);
@@ -248,6 +269,27 @@ int dpd_file4_cache_del_lru(void)
       dpd_file4_cache_del(&File);
       dpd_file4_close(&File);
 
+#ifdef DPD_TIMER
+  timer_off("cache_lru");
+#endif
+
       return 0;
+    }
+}
+
+void dpd_file4_cache_dirty(dpdfile4 *File)
+{
+  struct dpd_file4_cache_entry *this_entry;
+
+  this_entry = dpd_file4_cache_scan(File->filenum, File->my_irrep,
+                                    File->params->pqnum, File->params->rsnum,
+                                    File->label);
+
+  if((this_entry == NULL && File->incore) ||
+     (this_entry != NULL && !File->incore) ||
+     (this_entry == NULL && !File->incore))
+     dpd_error("Error setting file4_cache dirty flag!", stderr);
+  else {
+     this_entry->clean = 0;
     }
 }

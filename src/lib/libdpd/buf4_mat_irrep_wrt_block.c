@@ -73,11 +73,13 @@ int dpd_buf4_mat_irrep_wrt_block(dpdbuf4 *Buf, int irrep, int start_pq,
   switch(method) {
   case 12: /* No change in pq or rs */
 
-      if(Buf->file.incore)
+      if(Buf->file.incore) {
 	  for(pq=0; pq < num_pq; pq++)
 	      for(rs=0; rs < coltot; rs++)
 		  Buf->file.matrix[irrep][pq+start_pq][rs] =
 					      Buf->matrix[irrep][pq][rs];
+          dpd_file4_cache_dirty(&(Buf->file));
+        }
       else {
 	  Buf->file.matrix[irrep] = Buf->matrix[irrep];
 	  dpd_file4_mat_irrep_wrt_block(&(Buf->file), irrep, start_pq, num_pq);
