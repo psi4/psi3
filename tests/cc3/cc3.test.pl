@@ -12,7 +12,6 @@ $TEST_OUT = "output.dat";
 $RESULT = "cc3.test";
 $NDOF = 3;
 
-system ("input");
 system ("psi3");
 
 $natom = seek_natom_file11($REF_FILE,"CCSD");

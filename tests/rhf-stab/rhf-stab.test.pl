@@ -10,7 +10,6 @@ $RESULT = "rhf-stab.test";
 $NUM_EVALS = 5;
 $NUM_SYMMS = 4;
 
-system ("input");
 system ("psi3");
 
 open(RE, ">$RESULT") || die "cannot open $RESULT: $!";

@@ -9,7 +9,6 @@ $TEST_FILE = "output.dat";
 $NDOF = 3;
 $RESULT = "cc19.test";
 
-system ("input");
 system ("psi3");
 
 open (RE, ">$RESULT") || die "cannot open $RESULT: $!";

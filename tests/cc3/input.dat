@@ -1,15 +1,11 @@
 % 6-31G** H2O Test computation of frequencies
 
-default: (
+psi: (
   label = "6-31G** SCF H2O"
-
   jobtype = freq
   wfn = ccsd
   reference = rhf
   dertype = first
-)
-
-input: (
   basis = "6-31G**"
   zmat = (
     (o)

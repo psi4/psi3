@@ -1,22 +1,13 @@
 % cc-pVDZ H2O Test SCF stability analysis
 
 psi: (
-  check = false
+  label = "cc-pVDZ SCF H2O"
   jobtype = sp
   exec = ($input $ints $scf $transqt $ccsort $stable $done)
-)
-
-default: (
-  label = "cc-pVDZ SCF H2O"
-  memory = (20.0 MB)
-
   wfn = ccsd
   reference = rhf
   multp = 1
   dertype = none
-)
-
-input: (
   basis = "cc-pVDZ"
   puream = true
   zmat = (

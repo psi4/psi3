@@ -1,15 +1,11 @@
-default: (
+psi: (
   label = "3B1 CH2 cc-pVDZ/UHF-B-CCD(T)"
-
   jobtype = sp
   wfn = bccd_t
   reference = uhf
   dertype = none
   multp = 3
-  frozen_docc = (1 0 0 0)
-)
-
-input: (
+  freeze_core = true
   basis = "cc-pVDZ"
   puream = true
   zmat = (

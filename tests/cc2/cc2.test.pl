@@ -8,7 +8,6 @@ $REF_FILE = "file11.ref";
 $TEST_FILE = "psi.file11.dat";
 $RESULT = "cc2.test";
 
-system ("input");
 system ("psi3");
 
 $natom = seek_natom_file11($REF_FILE,"iteration");

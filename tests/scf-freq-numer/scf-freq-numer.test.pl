@@ -12,7 +12,6 @@ $TEST_OUT = "output.dat";
 $RESULT = "scf-freq-numer.test";
 $NDOF = 3;
 
-system ("input");
 system ("psi3");
 
 $natom = seek_natom_file11($REF_FILE,"SCF");

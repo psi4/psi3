@@ -1,8 +1,7 @@
 % cc-pVDZ/CCSD-LR static dipole polarizabilities
 
-default: (
+psi: (
   label = "cc-pVDZ/CCSD HOF static polarizability"
-
   jobtype = sp
   wfn = ccsd
   reference = rhf
@@ -10,9 +9,7 @@ default: (
 
   omega = 0.0
   mu_irreps = (0 0 1)
-)
 
-input: (
   basis = "cc-pVDZ"
   puream = true
   zmat = (

@@ -1,14 +1,10 @@
-default: (
+psi: (
   label = "3B1 CH2 cc-pVDZ/ROHF-CCSD Geometry Optimization"
-
   jobtype = opt
   wfn = ccsd
   reference = rohf
   dertype = first
   multp = 3
-)
-
-input: (
   basis = "cc-pVDZ"
   puream = true
   zmat = (

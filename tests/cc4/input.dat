@@ -1,18 +1,11 @@
-%BH calculation
-%
-
-default: (
+psi: (
   label = "BH cc-pVQZ CCSD(T)"
   jobtype = sp
   wfn = ccsd_t
   reference = rhf
   dertype = none
-
   docc = (3 0 0 0)
-  frozen_docc = (1 0 0 0)
-)
-
-input: (
+  freeze_core = true
   basis = "cc-pVQZ"
   puream = true
   geometry = (

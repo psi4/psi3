@@ -1,31 +1,19 @@
 % 6-31G** H2O Test CASSCF Energy Point
 
 psi: (
-  jobtype = sp
-  check = false
-)
-
-default: (
   label = "6-31G** CASSCF H2O"
-
+  jobtype = sp
   wfn = detcas
   reference = rhf
-  opentype = none 
-  dertype = none
   frozen_docc = (1 0 0 0)
   frozen_uocc = (8 2 3 5)
-)
-
-input: (
   basis = "6-31G**"
   zmat = (
     (o)
     (h 1 1.00)
     (h 1 1.00 2 103.1)
   )
-  origin = (0.0 0.0 0.0)
 )
-
 detci: (
   fci = true
   guess_vector = dfile
@@ -35,5 +23,4 @@ detci: (
 detcas: (
   convergence = 5
 )
-
 

@@ -7,7 +7,6 @@ $REF_FILE = "output.ref";
 $TEST_FILE = "output.dat";
 $RESULT = "cc15.test";
 
-system ("input");
 system ("psi3");
 
 open(RE, ">$RESULT") || die "cannot open $RESULT $!"; 

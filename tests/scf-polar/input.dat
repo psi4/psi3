@@ -11,19 +11,13 @@
 % TDC, April 2003
 %
 
-default: (
+psi: (
   label = "DZ/SCF H2O"
-  memory = (20.0 MB)
-
   jobtype = sp
   wfn = scf
   reference = rhf
   dertype = response
-
   omega = 0.1
-)
-
-input: (
   basis = "DZ"
   units = bohr
   zmat = (

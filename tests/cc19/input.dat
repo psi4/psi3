@@ -1,6 +1,6 @@
 % cc-pVDZ/CCSD-LR dynamic dipole polarizabilities
 
-default: (
+psi: (
   label = "cc-pVDZ/CCSD HOF dynamic polarizabilities"
 
   jobtype = sp
@@ -10,9 +10,7 @@ default: (
 
   omega = 0.1
   mu_irreps = (0 0 1)
-)
 
-input: (
   basis = "cc-pVDZ"
   puream = true
   zmat = (

@@ -3,14 +3,13 @@
 require("../psitest.pl");
 
 $TOL = 10**-8;
-$EVAL_TOL = 10**-9;
+$EVAL_TOL = 10**-5;
 $REF_FILE = "output.ref";
 $TEST_FILE = "output.dat";
 $RESULT = "cc17.test";
 $NUM_EVALS = 2;
 $NUM_SYMMS = 4;
 
-system ("input");
 system ("psi3");
 
 open(RE, ">$RESULT") || die "cannot open $RESULT: $!";

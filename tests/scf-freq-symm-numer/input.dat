@@ -1,21 +1,10 @@
-% 6-31G** H2O Test computation of symmetric frequencies
-
 psi: (
-  check = false
-  jobtype = symm_freq
-)
-
-default: (
   label = "6-31G** SCF H2O"
-  memory = (20.0 MB)
-
+  jobtype = symm_freq
   wfn = scf
   reference = rhf
   multp = 1
   dertype = first
-)
-
-input: (
   basis = "6-31G**"
   zmat = (
     (o)

@@ -9,7 +9,6 @@ $REF_OUT = "output.ref";
 $TEST_OUT = "output.dat";
 $RESULT = "casscf-sp.test";
 
-system ("input");
 system ("psi3");
 
 open(RE, ">$RESULT") || die "cannot open $RESULT $!";

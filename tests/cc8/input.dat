@@ -1,18 +1,13 @@
-default: (
+psi: (
   label = "UHF-CCSD(T)/cc-pVDZ 2Sigma+ CN"
-
   jobtype = sp
   wfn = ccsd_t
   reference = uhf
   multi = 2
   dertype = none
-
   docc = (4 0 1 1)
   socc = (1 0 0 0)
-  frozen_docc = (2 0 0 0)
-)
-
-input: (
+  freeze_core = true
   basis = "cc-pVDZ"
   puream = true
   zmat = (

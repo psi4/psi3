@@ -1,21 +1,9 @@
-% 6-31G** H2O Test SCF optimization
-
 psi: (
-  check = false
   jobtype = opt
-)
-
-default: (
   label = "6-31G** SCF H2O"
-  memory = (20.0 MB)
-
   wfn = scf
   reference = rhf
-  multp = 1
   dertype = none
-)
-
-input: (
   basis = "6-31G**"
   zmat = (
     (o)
@@ -23,4 +11,3 @@ input: (
     (h 1 1.00 2 103.1)
   )
 )
-

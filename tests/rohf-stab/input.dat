@@ -1,25 +1,16 @@
 % cc-pVDZ CN ROHF stability analysis
 
 psi: (
-  check = false
+  label = "cc-pVDZ ROHF CN"
   jobtype = sp
   exec = ($input $ints $scf $transqt $ccsort $stable $done)
-)
-
-default: (
-  label = "cc-pVDZ ROHF CN"
-
   wfn = ccsd
   reference = rohf
   multi = 2
   dertype = none
-  maxiter = 100
-
+  maxiter = 50
   docc = (4 0 1 1)
   socc = (1 0 0 0)
-)
-
-input: (
   basis = "cc-pVDZ"
   puream = true
   zmat = (

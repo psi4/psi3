@@ -1,6 +1,5 @@
-default: (
+psi: (
   label = "ROHF-CCSD(T)/cc-pVDZ 2Sigma+ CN"
-
   jobtype = sp
   wfn = ccsd
   reference = rohf
@@ -9,11 +8,10 @@ default: (
 
   docc = (4 0 1 1)
   socc = (1 0 0 0)
-  frozen_docc = (2 0 0 0)
-  maxiter = 100
-)
+  freeze_core = true
 
-input: (
+  maxiter = 100
+
   basis = "cc-pVDZ"
   puream = true
   zmat = (
