@@ -1,10 +1,13 @@
 
 #if FCLINK==1
 #define F_DGEEV dgeev_
+#define F_DGESV dgesv_
 #elif FCLINK==2
 #define F_DGEEV dgeev
+#define F_DGESV dgesv
 #else
 #define F_DGEEV DGEEV
+#define F_DGESV DGESV
 #endif
 
 
@@ -21,3 +24,11 @@ int C_DGEEV(int n, double **a, int lda,
   return info;
 }
 
+int C_DGESV(int n, int nrhs, double *a, int lda, int *ipiv, double *b, int ldb)
+{
+  int info;
+
+  F_DGESV(&n, &nrhs, &(a[0]), &lda, &(ipiv[0]), &(b[0]), &ldb, &info);
+
+  return info;
+}
