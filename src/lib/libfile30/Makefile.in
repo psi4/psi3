@@ -30,14 +30,8 @@ rd_atom_pos.c \
 rd_sym_label.c \
 rd_sopi.c \
 rd_ncalcs.c \
-rd_npersh.c \
 rd_contr_full.c \
-rd_angso_coeff.c \
-rd_angso_labels.c \
-rd_mx_angso_coeff.c \
 rd_shell_transm.c \
-rd_isc.c \
-rd_ipc.c \
 rd_ccvecs.c \
 rd_snumg.c \
 rd_stype.c \
@@ -58,7 +52,6 @@ rd_nao.c \
 rd_mxcoef.c \
 rd_iopen.c \
 rd_label.c \
-rd_title.c \
 rd_phase_check.c \
 rd_natom.c \
 rd_alpha_evals.c \
