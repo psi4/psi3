@@ -653,11 +653,14 @@ void get_moinfo(void)
   moinfo.openpi = chkpt_rd_openpi();
   moinfo.enuc = chkpt_rd_enuc();
   moinfo.escf = chkpt_rd_escf();
-  moinfo.evals = chkpt_rd_evals();
-  moinfo.scf_vector = chkpt_rd_scf();
   if(!strcmp(params.ref, "UHF")) {
+    moinfo.evals = chkpt_rd_alpha_evals();
     moinfo.scf_vector_alpha = chkpt_rd_alpha_scf();
     moinfo.scf_vector_beta = chkpt_rd_beta_scf();
+  }
+  else {
+    moinfo.evals = chkpt_rd_evals();
+    moinfo.scf_vector = chkpt_rd_scf();
   }
   moinfo.nshell = chkpt_rd_nshell();
   moinfo.sloc = chkpt_rd_sloc();
