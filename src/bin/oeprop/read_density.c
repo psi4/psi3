@@ -16,10 +16,11 @@ void read_density()
   int *docc, *socc, *frozen_docc, *frozen_uocc, *reorder, **ras_opi; 
   double **scfvec, **opdm_blk, **onepdm;
   char *ref;
+  char opdm_key[80];
 
   Ptot = init_array(natri);
 
-  rfile(opdm_file);
+  /* rfile(opdm_file); */
 
   /* Read in density in MO basis --- CDS 2/02 */
   if (!strcmp(opdm_basis,"MO")) {     
@@ -79,16 +80,37 @@ void read_density()
       populated_orbs -= frozen_uocc[irrep];
 
     onepdm = block_matrix(populated_orbs, populated_orbs);
-    root = 1;
+
+    /* old way with obsolete wreadw call
     errcod = ip_data("ROOT","%d",&root,0);
     junk = 0;
     for (i=0; i<root; i++) {
       wreadw(opdm_file, (char *) onepdm[0], populated_orbs *
 	     populated_orbs * sizeof(double), junk, &junk);
     }
+    */
+
+    root = 1;
+    if (ip_exist("ROOT",0)) {
+      errcod = ip_data("ROOT","%d",&root,0);
+      if (errcod != IPE_OK) {
+	fprintf(outfile,"(oeprop): error parsing ROOT keyword\n");
+	abort();
+      }
+      sprintf(opdm_key,"MO-basis OPDM Root %d",root);
+    }
+    else
+      strcpy(opdm_key,"MO-basis OPDM");   
+
+    psio_open(opdm_file, PSIO_OPEN_OLD);
+    psio_read_entry(opdm_file, "MO-basis OPDM", (char *) onepdm[0],
+	populated_orbs * populated_orbs * sizeof(double));
+    psio_close(opdm_file, 1);
 
     if (print_lvl > 2) {
-      fprintf(outfile, "  Density matrix read in:\n");
+      fprintf(outfile, "  Density matrix read");
+      if (root != 1) fprintf(outfile, " for root %d:\n", root);
+      else fprintf(outfile, ":\n");
       print_mat(onepdm,populated_orbs,populated_orbs,outfile);
       fprintf(outfile, "\n");
     }
@@ -111,11 +133,8 @@ void read_density()
                   orbspi[irrep]-frozen_uocc[irrep],outfile);
       }
 
-#if USE_LIBCHKPT
       scfvec = chkpt_rd_scf_irrep(irrep);
-#else
-      scfvec = file30_rd_blk_scf(irrep);
-#endif
+
       mmult(opdm_blk,0,scfvec,1,tmp_mat,0,orbspi[irrep]-frozen_uocc[irrep],
             orbspi[irrep]-frozen_uocc[irrep],sopi[irrep],0);
       mmult(scfvec,0,tmp_mat,0,opdm_blk,0,sopi[irrep],
@@ -167,12 +186,24 @@ void read_density()
   if (!strcmp(opdm_basis,"SO")) {	/* Read in density in SO basis */
     if (!strcmp(opdm_format,"SQUARE")) {
       psq_so = block_matrix(nbfso,nbfso);
+      /*
       wreadw(opdm_file,(char *) psq_so[0],sizeof(double)*nbfso*nbfso,0,&junk);
+      */
+      psio_open(opdm_file, PSIO_OPEN_OLD);
+      psio_read_entry(opdm_file, "SO-basis OPDM", (char *) psq_so[0],
+	  nbfso*nbfso*sizeof(double));
+      psio_close(opdm_file, 1);
     }
     else {
       tmp_arr = init_array(nstri);
       psq_so = init_matrix(nbfso,nbfso);
+      /*
       wreadw(opdm_file,(char *) tmp_arr, sizeof(double)*nstri, 0, &junk);
+      */
+      psio_open(opdm_file, PSIO_OPEN_OLD);
+      psio_read_entry(opdm_file, "SO-basis OPDM", (char *) tmp_arr,
+	  nstri*sizeof(double));
+      psio_close(opdm_file, 1);
       tri_to_sq(tmp_arr,psq_so,nbfso);
       free(tmp_arr);
     }
@@ -203,7 +234,13 @@ void read_density()
   else if (!strcmp(opdm_basis,"AO")) {	/* Read in density in AO basis */
     if (!strcmp(opdm_format,"SQUARE")) {
       psq_ao = block_matrix(nbfao,nbfao);
+      /*
       wreadw(opdm_file,(char *) psq_ao[0],sizeof(double)*nbfao*nbfao,0,&junk);
+      */
+      psio_open(opdm_file, PSIO_OPEN_OLD);
+      psio_read_entry(opdm_file, "AO-basis OPDM", (char *) psq_ao[0],
+	  nbfao*nbfao*sizeof(double));
+      psio_close(opdm_file, 1);
       if (asymm_opdm) {
         for(i=0;i<nbfao;i++)
           for(j=0;j<=i;j++)
@@ -217,7 +254,7 @@ void read_density()
       wreadw(opdm_file,(char *) Ptot, sizeof(double)*natri, 0, &junk);
   }
 
-  rclose(opdm_file,3);
+  /* rclose(opdm_file,3); */
   
   if (print_lvl >= PRINTOPDMLEVEL) {
     fprintf(outfile,"  Total density matrix in AO basis :\n");
