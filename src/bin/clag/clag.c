@@ -259,41 +259,43 @@ void close_io(void)
 /****************************************************************************/
 /* rdopdm: reads the one particle density matrix from opdm_file             */
 /*         and returns opdm as an in core matrix                            */
+/* Upgraded to libpsio 6/03 by CDS                                          */
 /****************************************************************************/
 double **rdopdm(int nbf, int print_lvl, int opdm_file)
 {
  
- int i, root, errcod;
- double **opdm; 
- PSI_FPTR index = 0; 
+  int i, root, errcod;
+  double **opdm; 
+  char opdm_key[80];
 
- rfile(opdm_file); 
- if (flen(opdm_file)==0) {
-   fprintf(outfile,"\tCan't find the one-particle density matrix file %d\n",
-     opdm_file);
-   rclose(opdm_file, 4);
-   exit(1);
+  psio_open(opdm_file, PSIO_OPEN_OLD);
+
+  opdm = block_matrix(nbf, nbf); 
+
+  /* if the user hasn't specified a root, just get "the" onepdm */
+  if (!ip_exist("ROOT",0)) {
+    psio_read_entry(opdm_file, "MO-basis OPDM", (char *) opdm[0], 
+                    nbf*nbf*sizeof(double));
+  }
+  else {
+    root = 1;
+    errcod = ip_data("ROOT","%d",&root,0);
+    sprintf(opdm_key, "MO-basis OPDM Root %d", root);
+    psio_read_entry(opdm_file, opdm_key, (char *) opdm[0], 
+                    nbf*nbf*sizeof(double));
   }
 
- opdm = block_matrix(nbf, nbf); 
- root = 1;
- errcod = ip_data("ROOT","%d",&root,0);
-/* fprintf(outfile,"GOH Root = %d\n",root); */
-/* index = 0; */
- for (i =0; i<root; i++) {
-   wreadw(opdm_file, (char *) opdm[0], 
-             (sizeof(double)*nbf*nbf), index, &index);
- }
+  if (print_lvl > 2) {
+    fprintf(outfile,"One-Particle Density Matrix\n");
+    print_mat(opdm, nbf, nbf, outfile); 
+    fprintf(outfile,"\n\n"); 
+  }
 
- if (print_lvl > 2) {
-   fprintf(outfile,"One-Particle Density Matrix\n");
-   print_mat(opdm, nbf, nbf, outfile); 
-   fprintf(outfile,"\n\n"); 
-   }
+  psio_close(opdm_file,1);
+  return (opdm);
 
- rclose (opdm_file,3);
- return (opdm);
 }
+
 
 /****************************************************************************/
 /* rdtpdm: reads the two particle density matrix from tpdm_file             */
