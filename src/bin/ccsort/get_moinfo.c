@@ -75,10 +75,8 @@ void get_moinfo(void)
   psio_write_entry(CC_INFO, "Reference Wavefunction",
 		   (char *) &(params.ref), sizeof(int));
 
-  moinfo.frdocc = init_int_array(moinfo.nirreps);
-  moinfo.fruocc = init_int_array(moinfo.nirreps);
-  errcod = ip_int_array("FROZEN_DOCC", moinfo.frdocc, moinfo.nirreps);
-  errcod = ip_int_array("FROZEN_UOCC", moinfo.fruocc, moinfo.nirreps);
+  moinfo.frdocc = get_frzcpi();
+  moinfo.fruocc = get_frzvpi();
 
   moinfo.nfzc = moinfo.nfzv = 0;
   for(i=0; i < moinfo.nirreps; i++) {
