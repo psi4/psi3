@@ -46,5 +46,6 @@ int *chkpt_rd_clsdpi(void);
 int *chkpt_rd_openpi(void);
 int *chkpt_rd_sopi(void);
 
+char *chkpt_rd_label(void);
 char **chkpt_rd_irr_labs(void);
 char **chkpt_rd_hfsym_labs(void);

@@ -35,7 +35,8 @@ rd_sopi.c \
 rd_clsdpi.c \
 rd_openpi.c \
 rd_irr_labs.c \
-rd_hfsym_labs.c
+rd_hfsym_labs.c \
+rd_label.c \
 
 DEPENDINCLUDE = psio.h chkpt.h
 
