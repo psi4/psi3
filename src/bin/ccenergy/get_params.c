@@ -36,7 +36,7 @@ void get_params()
   
   params.maxiter = 50;
   errcod = ip_data("MAXITER","%d",&(params.maxiter),0);
-  params.convergence = 1e-8;
+  params.convergence = 1e-7;
   errcod = ip_data("CONVERGENCE","%d",&(iconv),0);
   if(errcod == IPE_OK) params.convergence = 1.0*pow(10.0,(double) -iconv);
   params.restart = 1;
@@ -70,6 +70,9 @@ void get_params()
   params.diis = 1;
   errcod = ip_boolean("DIIS", &(params.diis),0);
 
+  params.local = 0;
+  errcod = ip_boolean("LOCAL", &(params.local),0);
+
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
   fprintf(outfile, "\tWave function   =    %6s\n", params.wfn);
@@ -80,6 +83,7 @@ void get_params()
   fprintf(outfile, "\tRestart         =     %s\n", 
           params.restart ? "Yes" : "No");
   fprintf(outfile, "\tDIIS            =     %s\n", params.diis ? "Yes" : "No");
+  fprintf(outfile, "\tLocal CC        =     %s\n", params.local ? "Yes" : "No");
   fprintf(outfile, "\tAO Basis        =     %s\n", 
           params.aobasis ? "Yes" : "No");
   fprintf(outfile, "\tCache Level     =    %1d\n", 

@@ -48,6 +48,10 @@ void memchk(void);
 struct dpd_file4_cache_entry *priority_list(void);
 void spinad_amps(void);
 
+/* local correlation functions */
+void local_init(void);
+void local_done(void);
+
 int main(int argc, char *argv[])
 {
   int done=0;
@@ -68,7 +72,7 @@ int main(int argc, char *argv[])
   
   get_moinfo();
   get_params();
- 
+
   cachefiles = init_int_array(PSIO_MAXUNIT);
 
   if(params.ref == 2) { /** UHF **/
@@ -103,6 +107,8 @@ int main(int argc, char *argv[])
 
   }
 
+  if(params.local) local_init();
+ 
   init_amps();
   tau_build();
   taut_build();
@@ -213,6 +219,8 @@ int main(int argc, char *argv[])
   if(params.ref == 2) cachedone_uhf(cachelist);
   else cachedone_rhf(cachelist);
   free(cachefiles);
+
+  if(params.local) local_done();
   
   cleanup();
 

@@ -25,12 +25,15 @@ void init_amps(void)
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
     dpd_buf4_copy(&D, CC_TAMPS, "tIjAb");
     dpd_buf4_close(&D);
-  
-    dpd_buf4_init(&dIjAb, CC_DENOM, 0, 0, 5, 0, 5, 0, "dIjAb");
+
     dpd_buf4_init(&tIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
-    dpd_buf4_dirprd(&dIjAb, &tIjAb);
+    if(params.local) local_filter_T2(&tIjAb);
+    else {
+      dpd_buf4_init(&dIjAb, CC_DENOM, 0, 0, 5, 0, 5, 0, "dIjAb");
+      dpd_buf4_dirprd(&dIjAb, &tIjAb);
+      dpd_buf4_close(&dIjAb);
+    }
     dpd_buf4_close(&tIjAb);
-    dpd_buf4_close(&dIjAb);
 
   }
   else if(params.ref == 1) { /*** ROHF ***/

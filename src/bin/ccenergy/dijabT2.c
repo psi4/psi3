@@ -10,10 +10,13 @@ void dijabT2(void)
 
   if(params.ref == 0) { /*** RHF ***/
     dpd_buf4_init(&newtIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb");
-    dpd_buf4_init(&dIjAb, CC_DENOM, 0, 0, 5, 0, 5, 0, "dIjAb");
-    dpd_buf4_dirprd(&dIjAb, &newtIjAb);
+    if(params.local) local_filter_T2(&newtIjAb);
+    else {
+      dpd_buf4_init(&dIjAb, CC_DENOM, 0, 0, 5, 0, 5, 0, "dIjAb");
+      dpd_buf4_dirprd(&dIjAb, &newtIjAb);
+      dpd_buf4_close(&dIjAb);
+    }
     dpd_buf4_close(&newtIjAb);
-    dpd_buf4_close(&dIjAb);
   }
   else if(params.ref == 1) { /*** ROHF ***/
     dpd_buf4_init(&newtIJAB, CC_TAMPS, 0, 2, 7, 2, 7, 0, "New tIJAB");
