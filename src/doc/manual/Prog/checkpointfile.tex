@@ -174,6 +174,10 @@ irreps containing singly occupied orbitals.}
 {takes no arguments.}
 {the +/- dimensionality of ALPHA and BETA vectors of 
 coupling coefficients for open shells.} \\
+\funcdesc{int file30\_rd\_max\_am()}
+{Reads in the maximum orbital quantum number of AOs in the basis.}
+{takes no arguments.}
+{the maximum orbital quantum number of AOs in the basis.} \\
 \funcdesc{int file30\_rd\_mxcoef()}
 {Reads the value of the constant \celem{mxcoef}.}
 {takes no arguments.}
@@ -189,7 +193,7 @@ non-zero symmetry blocks of the SCF eigenvector.  For STO-3G water
 {Reads in the total number of atoms.}
 {takes no arguments.}
 {total number of atoms.} \\
-\funcdesc{file30\_rd\_ncalcs()}
+\funcdesc{int file30\_rd\_ncalcs()}
 {Reads in the total number of calculations (always 1).}
 {takes no arguments.}
 {total number of calculations in \FILE{30}.} \\
@@ -255,6 +259,12 @@ with a non-zero number of basis functions.} \\
 \begin{center}
 Functions that return \celem{int*}
 \end{center}
+\funcdesc{int *file30\_rd\_am2canon\_shell\_order()}
+{Reads in the the mapping array from the angmom-ordered
+to the canonical (in the order of appearance) list of shells.}
+{takes no arguments.}
+{an array \celem{nshell} long that maps shells from the angmom-ordered
+to the canonical (in the order of appearance) order.}
 \funcdesc{file30\_rd\_atom\_position()}
 {Reads in symmetry positions of atoms.
 Allowed values are as follows:
@@ -289,6 +299,10 @@ contains the number of singly occupied MOs for that irrep.}
 {Reads in the number of MOs in each irrep.}
 {takes no arguments.}
 {the number of MOs in each irrep.} \\
+\funcdesc{int *file30\_rd\_shells\_per\_am()}
+{Reads in the number of shells in each angmom block.}
+{takes no arguments.}
+{the number of shells in each angmom block.} \\
 \funcdesc{file30\_rd\_sloc()}
 {Read in an array of pointers to the first AO
 from each shell.}
@@ -330,12 +344,22 @@ the shells.}
 {takes no arguments.}
 {Returns an array \celem{nshell} long of
 the angular momentum numbers of the shells.} \\
-\funcdesc{file30\_rd\_symoper()}
+\funcdesc{int *file30\_rd\_symoper()}
 {Read in the mapping array between "canonical" ordering
 of the symmetry operations of the point group and the
 one defined in \file{symmetry.h}.}
 {takes no arguments.}
-{a\ mapping array \celem{nirrep} long}
+{a mapping array \celem{nirrep} long}
+\funcdesc{int *file30\_rd\_ua2a()}
+{Read in the mapping array from the symmetry-unique atom 
+list to the full atom list.}
+{takes no arguments.}
+{a mapping array \celem{num\_unique\_atom} long}
+\funcdesc{int *file30\_rd\_us2s()}
+{Read in the mapping array from the symmetry-unique shell list
+to the full shell list.}
+{takes no arguments.}
+{a mapping array \celem{num\_unique\_shell} long}
 
 \begin{center}
 Functions that return \celem{int**}
