@@ -37,20 +37,6 @@ or natural (if \fBREAD_OPDM = \fPtrue) orbitals (\fBMPMAX\fP must be set to
 a value greater than 1 for computing these entities). Spatial extents should
 be used cautiously, since they depend on the reference point.
 
-.SH COMPATIBILITY
-.LP
-The program 
-.B oeprop
-is fully backward compatible with the earlier PSI property 
-programs (\fBproper\fP, \fBciprop\fP, 
-and \fBccprop\fP). By default \fBoeprop\fP will produce the same
-information as the \fBproper\fP code.
-To emulate the \fBciprop\fP and \fBccprop\fP programs,
-the \fBWFN\fP keyword should be set to CI and CC respectively.
-The only difference is that 
-unlike the \fBciprop\fP program, \fBoeprop\fP must be run after \fBcphfci\fP 
-to obtain correlation corrections to the multipole moments.
-
 .SH REFERENCES
 .LP
 Mulliken population analysis
@@ -75,7 +61,6 @@ CRC Handbook of chemistry and physics. Edited by D. R. Lide. 73rd edition
 .nf
     input.dat        \- Input file
     PSIF_CHKPT       \- Checkpoint file
-    file86.dat       \- Z-vector file (only if \fBCORREL_CORR = \fPtrue)
 .fi
 
 .SH FILES UPDATED
@@ -98,15 +83,8 @@ CRC Handbook of chemistry and physics. Edited by D. R. Lide. 73rd edition
 
 .SH INPUT FORMAT
 .LP
-The following command-line arguments will be available in the future:
-.IP "\fI-quiet\fP"
-This gives the same result as \fBPRINT=0\fP.
 
-.IP "\fI-o fname\fP"
-Gives the filename for the output file.  Defaults to output.dat.
-
-Additional input for this program is read from the file
-.pN INPUT . Most of the keywords are not neccessary for routine
+Most of the keywords are not neccessary for routine
 tasks. The following keywords are valid:
 
 .IP "\fBWFN =\fP \fIboolean\fP"
@@ -115,10 +93,10 @@ set most of the necessary keywords. The following values are recognized :
 
 \fBWFN = \fPSCF - equivalent to \fBREAD_OPDM = \fPfalse;
 
-\fBWFN = \fPCI  - equivalent to \fBREAD_OPDM = \fPtrue, \fBOPDM_FILE = \fP40, 
+\fBWFN = \fPDETCI  - equivalent to \fBREAD_OPDM = \fPtrue, \fBOPDM_FILE = \fP40, 
 \fBOPDM_BASIS = \fPAO, \fBOPDM_FORMAT = \fPTRIANG;
 
-\fBWFN = \fPCCD,CCSD,CCSD_T,CCSDT1,CCSDT - equivalent to \fBEAD_OPDM = \fPtrue,
+\fBWFN = \fPCCSD - equivalent to \fBEAD_OPDM = \fPtrue,
 \fBOPDM_FILE = \fP79, \fBOPDM_BASIS = \fPAO, \fBOPDM_FORMAT = \fPTRIANG;
 
 \fBWFN = \fPQVCCD - equivalent to \fBREAD_OPDM = \fPtrue, \fBOPDM_FILE = \fP76,
@@ -158,21 +136,6 @@ Must be set to true if generic non-symmetric onepdm to be read
 code development only. Existing PSI CC codes now in use produce 
 symmetric onepdm, therefore there is no need to use this keyword. 
 Default is false.
-
-.IP "\fBCORREL_CORR =\fP \fIboolean\fP"
-Flag for computing correlation corrections for electric multipole moments
-using Z-vector in external file (default - file86) produced by 
-.B cphfci
-. This option is obsolete now.
-
-.IP "\fBZVEC_FILE = \fP \fIinteger\fP"
-Specifies Z-vector file number. This keyword is mostly intended for future use,
-since currently \fBcphfci\fP code is hardwired to write Z-vector to file86.
-Default is 86.
-
-.IP "\fBDELETE_ZVEC =\fP \fIboolean\fP"
-This flag specifies whether file containing Z-vector to be deleted after the
-calculation or not. Default is true.
 
 .IP "\fBROOT =\fP \fIinteger\fP"
 This specifies which root to do the excited state analysis for.  The
@@ -268,11 +231,11 @@ there is no default for 2-d grids.
 
 .IP "\fBGRID_UNIT_X =\fP \fIreal_vector\fP"
 This vector specifies the direction of the first (x) side of the grid.
-It doesn't have have to be orthonormal.
+It doesn't have have to be of unit length.
 There is no default for 2-d grids.
 
 .IP "\fBGRID_UNIT_Y =\fP \fIreal_vector\fP"
-The same for the second (y) side. It doesn't have to be orthonormal
+The same for the second (y) side. It doesn't have to be of unit length
 or even orthogonal to \fBGRID_UNIT_X\fP.
 There is no default for 2-d grids.
 
@@ -324,14 +287,6 @@ Recommended value (default) is 5.
 Flag for computing spin properties (Mulliken population analysis of alpha
 and beta densities, spin densities and anisotropic contributions to the
 hyperfine coupling constants at atomic centers). Default is false.
-
-.IP "\fBWRT_DIPINTS =\fP \fIboolean\fP"
-This flag is for writing the dipole moment integrals in SO basis to binary
-file. The matrices are written in a lower triangular form in XYZ order.
-Default is false.
-
-.IP "\fBDIP_FILE =\fP \fIinteger\fP"
-File number for dipole moment integrals. Default is 59.
 
 .IP "\fBPRINT =\fP \fIinteger\fP"
 This is the most important keyword - it determines amount of information
