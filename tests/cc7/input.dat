@@ -20,7 +20,7 @@ default: (
 
 
 input: (
-  basis = augccpvtz
+  basis = "aug-cc-pVTZ"
   units = bohr
   puream = true
   geometry = (
