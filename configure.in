@@ -687,17 +687,9 @@ esac
 AC_SUBST(FPARDEF)
 AC_SUBST(FPAROPT)
 
-# On 64-bit-capable POWER platforms we need to set certain 
-# archiver and linker flags
-if echo $os | grep aix >/dev/null 2>&1 && test "$bitwidth64" = yes; then
-    ARFLAGS="-X32_64 rv"
-    LDFLAGS="-q64 -bmaxdata:4000000000"
-elif echo $os | grep aix >/dev/null 2>&1; then
-    ARFLAGS="rv"
-    LDFLAGS="-bmaxdata:2000000000"
-else
-    ARFLAGS="rv"
-fi
+AC_ARG_WITH(ar,--with-ar		which library archiver to use,[AR=$withval])
+AC_SUBST(AR)
+ARFLAGS="rv"
 AC_SUBST(ARFLAGS)
 AC_SUBST(LDFLAGS)
 

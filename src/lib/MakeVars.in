@@ -75,7 +75,7 @@ LIBSUF = @LIBSUF@
 # Initialize other variables.
 #
 
-AR = ar
+AR = @AR@
 ARFLAGS = @ARFLAGS@
 
 LDFLAGS = @LDFLAGS@
