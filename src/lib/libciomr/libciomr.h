@@ -137,6 +137,14 @@ void free_int_matrix(int **array, int size);
 void zero_int_matrix(int **array, int rows, int cols);
 void print_int_mat(int **a, int m, int n, FILE *out);
 
+/* Functions in long_int_array.c */
+long int * init_long_int_array(int size) ;
+void zero_long_int_array(long int *a, int size);
+long int **init_long_int_matrix(int rows, int cols);
+void free_long_int_matrix(long int **array, int size);
+void zero_long_int_matrix(long int **array, int rows, int cols);
+void print_long_int_mat(long int **a, int m, int n, FILE *out);
+
 /* Functions in block_matrix.c */
 double ** block_matrix(unsigned long int n, unsigned long int m);
 void free_block(double **array);
