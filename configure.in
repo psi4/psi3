@@ -875,4 +875,4 @@ AC_OUTPUT(include/psiconfig.h
 #         src/lib/libmathtools/solvers/templates/Makefile
 #         src/lib/libmathtools/general/Makefile
 #         src/lib/libmathtools/tensor/Makefile
-#         src/bin/ooccman/Makefile
+#         src/bin/ccman/Makefile
