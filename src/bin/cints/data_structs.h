@@ -32,6 +32,9 @@ struct shell_def{
    int fprim;		/* pointer to the first primitive in shell */
    int fbf;             /* pointer to the first basis function from shell */
    int fao;             /* pointer to the first AO from shell */
+   double rad_extent;   /* radial extent of the shell (the distance at
+			   which the radial part of the first basis function
+			   drops below BasisSet.thresh */
    int *trans_vec;      /* shell symmetry transformation vector */
 };
 
@@ -118,7 +121,7 @@ typedef struct {
     int make_oeprop;                   /* Flag tp compute one-electron property integrals */
     int make_mp2;                      /* Flag to compute MP2 energy directly */
     int make_r12ints;                  /* Compute integrals for linear R12 methods */
-    int make_mp2r12;                   /* Flag to compute MP2-R12 ebergy directly */
+    int make_mp2r12;                   /* Flag to compute MP2-R12 energy directly */
     int symm_ints;                     /* This flag should be set whe individual integrals over SO need to be computed */
     int scf_only;                      /* Means that ERIs will be used only in SCF calculations
 					  (may save some space) */
@@ -135,6 +138,7 @@ typedef struct {
     int max_am;                        /* maximum angular momentum in the basis + 1 */
     int *am2shell;                     /* Mapping array for am ordering to shell ordering */
     int *shells_per_am;                /* Number of shells per am type */
+    double thresh;                     /* Threshold used to evaluate radial extents of shells ---*/
     double **schwartz_eri;             /* the matrix num_shells by num_shells:
 					  [si][sj] = max(ij|ij) i in si, j in sj  */
     struct shell_def *shells;          /* shell info */
