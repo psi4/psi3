@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 extern "C" {
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "params.h"
 
 #define PRINT_INTRO 1
