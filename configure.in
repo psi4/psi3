@@ -744,7 +744,6 @@ AC_OUTPUT(include/sizeof.h include/Makefile
           src/bin/localize/Makefile
           src/bin/stable/Makefile
           src/bin/response/Makefile
-          src/bin/mp2-dpd/Makefile
           tests/Makefile
           tests/MakeVars
           tests/MakeRules
@@ -825,6 +824,7 @@ AC_OUTPUT(include/sizeof.h include/Makefile
           tests/cc40/Makefile
           tests/cc41/Makefile
           tests/cc42/Makefile
+          tests/cc43/Makefile
 	  tests/dboc-rhf1/Makefile
           tests/dboc-rohf1/Makefile
           tests/dboc-uhf1/Makefile
