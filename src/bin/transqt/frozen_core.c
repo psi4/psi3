@@ -120,14 +120,14 @@ double fzc_energy_uhf(int nbfso, int *orbsym, double *Pa, double *Pb,
  
       /* Off-diagonal elements of P */
       for (j=first_so[isym],ij=ioff[i]+first_so[isym]; j<i; j++,ij++) {
-         fzc += 2.0 * Pa[ij] * Hca[ij];
-	 fzc += 2.0 * Pb[ij] * Hcb[ij];
+         fzc += Pa[ij] * (Hca[ij] + H[ij]);
+	 fzc += Pb[ij] * (Hcb[ij] + H[ij]);
          }
 
       /* Diagonal elements of P */
       ij = ioff[i] + i;
-      fzc += Pa[ij] * Hca[ij];
-      fzc += Pb[ij] * Hcb[ij];
+      fzc += 0.5 * Pa[ij] * (Hca[ij] + H[ij]);
+      fzc += 0.5 * Pb[ij] * (Hcb[ij] + H[ij]);
       }
 
    return(fzc);

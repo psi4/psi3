@@ -102,25 +102,31 @@ void trans_one_forwards(void)
    * a generalized mmult routine
    */ 
   if (!params.do_all_tei) {
-    destruct_evects(nirreps, moinfo.evects);
-    destruct_evects(nirreps, moinfo.evects_alpha);
-    destruct_evects(nirreps, moinfo.evects_beta);
+    if(!strcmp(params.ref,"UHF")) {
+      destruct_evects(nirreps, moinfo.evects_alpha);
+      destruct_evects(nirreps, moinfo.evects_beta);
+    }
+    else destruct_evects(nirreps, moinfo.evects);
 
-    moinfo.evects = construct_evects("alpha", moinfo.nirreps, moinfo.orbspi,
-				     moinfo.sopi, moinfo.orbspi,
-				     moinfo.first_so, moinfo.last_so,
-				     moinfo.first, moinfo.last,
-				     moinfo.first, moinfo.last, params.print_mos);
-    moinfo.evects_alpha = construct_evects("alpha", moinfo.nirreps, moinfo.orbspi,
-					   moinfo.sopi, moinfo.orbspi,
-					   moinfo.first_so, moinfo.last_so,
-					   moinfo.first, moinfo.last,
-					   moinfo.first, moinfo.last, params.print_mos);
-    moinfo.evects_beta = construct_evects("beta", moinfo.nirreps, moinfo.orbspi,
-					  moinfo.sopi, moinfo.orbspi,
-					  moinfo.first_so, moinfo.last_so,
-					  moinfo.first, moinfo.last,
-					  moinfo.first, moinfo.last, params.print_mos);
+    if(!strcmp(params.ref,"UHF")) {
+      moinfo.evects_alpha = construct_evects("alpha", moinfo.nirreps, moinfo.orbspi,
+					     moinfo.sopi, moinfo.orbspi,
+					     moinfo.first_so, moinfo.last_so,
+					     moinfo.first, moinfo.last,
+					     moinfo.first, moinfo.last, params.print_mos);
+      moinfo.evects_beta = construct_evects("beta", moinfo.nirreps, moinfo.orbspi,
+					    moinfo.sopi, moinfo.orbspi,
+					    moinfo.first_so, moinfo.last_so,
+					    moinfo.first, moinfo.last,
+					    moinfo.first, moinfo.last, params.print_mos);
+    }
+    else {
+      moinfo.evects = construct_evects("alpha", moinfo.nirreps, moinfo.orbspi,
+				       moinfo.sopi, moinfo.orbspi,
+				       moinfo.first_so, moinfo.last_so,
+				       moinfo.first, moinfo.last,
+				       moinfo.first, moinfo.last, params.print_mos);
+    }
   }
 
   if (params.do_h_bare) {
@@ -142,6 +148,7 @@ void trans_one_forwards(void)
 	fprintf(outfile, "\tOne-electron A integrals written to file %d.\n", itap);
 	fflush(outfile);
       }
+
       itap = params.h_bare_b_file;
 
       /* Clear the new_oe_ints */
