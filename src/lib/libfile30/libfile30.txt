@@ -769,6 +769,19 @@ double *file30_rd_zvals();
     nuclear charges (as double).
 
 ==========================================================================
+FILE30_RD_ZMAT
+
+struct z_entry *file30_rd_zmat();
+
+    Reads in z-matrix info.
+
+  takes no arguments.
+
+  returns: struct *z_entry   An array of z_entry structs, natom long.
+
+NOTE: see file30.h for definition of z_entry struct. 
+
+==========================================================================
   routines to write information to file30
 ==========================================================================
 FILE30_WT_CORR_LAB
