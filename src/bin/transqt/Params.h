@@ -63,6 +63,8 @@ struct Params {
   int ivo;                      /* boolean for test IVO's                 */
 
   int aobasis;                  /* boolean for AO-Basis CC algorithms     */
+
+  int pitzer;                   /* boolean to override all MO reordering  */
 };
 
 /* Note that the current version does a reordering of orbital indices.

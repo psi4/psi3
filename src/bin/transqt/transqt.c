@@ -538,6 +538,13 @@ void get_parameters(void)
   fndcor(&(params.maxcor),infile,outfile);
   params.maxcord = params.maxcor/sizeof(double);
 
+  params.pitzer = 0;
+  errcod = ip_boolean("PITZER",&(params.pitzer),0);
+
+  /* pitzer = true for SCF second derivative calculation */
+  if(!strcmp(params.wfn,"SCF") && !strcmp(params.dertype,"SECOND"))
+    params.pitzer = 1;
+
   params.reorder = 0;
   errcod = ip_boolean("REORDER",&(params.reorder),0);
 
@@ -618,6 +625,8 @@ void print_parameters(void)
                                   (params.qrhf ? "Yes" : "No"));
       fprintf(outfile,"\tIVO orbitals           =  %s\n", 
                                   (params.ivo ? "Yes" : "No"));
+      fprintf(outfile,"\tPitzer                 =  %s\n", 
+                                  (params.pitzer ? "Yes" : "No"));
     }
   
   return;
@@ -1085,9 +1094,9 @@ void get_reorder_array(void)
 
   /* for backtransforms, no reorder array...map Pitzer to Pitzer */
   if (strcmp(params.wfn, "CI") == 0 || strcmp(params.wfn, "DETCI") == 0
-       || strcmp(params.wfn, "QDPT") == 0 
-       || strcmp(params.wfn, "OOCCD") == 0 
-       || strcmp(params.wfn, "DETCAS") == 0) {
+      || strcmp(params.wfn, "QDPT") == 0 
+      || strcmp(params.wfn, "OOCCD") == 0 
+      || strcmp(params.wfn, "DETCAS") == 0) {
     
     tdocc = init_int_array(moinfo.nirreps);
     tsocc = init_int_array(moinfo.nirreps);
@@ -1112,9 +1121,16 @@ void get_reorder_array(void)
     reorder_qt(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc,
 	       moinfo.order, moinfo.orbspi, moinfo.nirreps);
     reorder_qt_uhf(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc,
-	       moinfo.order_alpha, moinfo.order_beta, moinfo.orbspi, moinfo.nirreps);
+		   moinfo.order_alpha, moinfo.order_beta, moinfo.orbspi, moinfo.nirreps);
   }
   
+  /* Until I clean up all this, allow a PITZER flag */
+  if(params.pitzer) {
+    for(i=0; i < moinfo.nmo; i++)
+      moinfo.order[i] = i;
+  }
+    
+
   if (params.print_reorder) {
     fprintf(outfile, "\nReordering array:\n");
     for (i=0; i<moinfo.nmo; i++) {
@@ -1123,13 +1139,13 @@ void get_reorder_array(void)
     fprintf(outfile, "\n");
   }
 
-   /* construct an array to map the other direction, i.e., from correlated */
-   /* to Pitzer order */
-   moinfo.corr2pitz = init_int_array(moinfo.nmo);
-   for (i=0; i<moinfo.nmo; i++) {
-     j = moinfo.order[i];
-     moinfo.corr2pitz[j] = i;
-   }
+  /* construct an array to map the other direction, i.e., from correlated */
+  /* to Pitzer order */
+  moinfo.corr2pitz = init_int_array(moinfo.nmo);
+  for (i=0; i<moinfo.nmo; i++) {
+    j = moinfo.order[i];
+    moinfo.corr2pitz[j] = i;
+  }
 
   if (params.backtr) {
     /* construct an array to map from correlated order to Pitzer order
@@ -1155,7 +1171,6 @@ void get_reorder_array(void)
       }
       fprintf(outfile, "\n");
     }
-    
 
     /* Now we do some dirty tricks...the transform must run in C1 symmetry
      *   at this point (unfortunately), so make various arrays reflect this.
@@ -1165,17 +1180,17 @@ void get_reorder_array(void)
      *   values...I think they do not.  These are only used in the 
      *   transform_one() and transform_two() routines, where the appropriate
      *   values really are those given below.
-    moinfo.first[0] = 0;
-    moinfo.fstact[0] = 0;
-    moinfo.last[0] = moinfo.nao - 1;
-    moinfo.lstact[0] = moinfo.nmo - moinfo.nfzv - 1;
-    moinfo.orbspi[0] = moinfo.nao;
-    moinfo.active[0] = moinfo.nmo - moinfo.nfzv;
-    moinfo.nirreps = 1;
-    for (i=0; i<moinfo.nmo; i++) {
-      moinfo.order[i] = i;
-      moinfo.orbsym[i] = 0;
-    }
+     moinfo.first[0] = 0;
+     moinfo.fstact[0] = 0;
+     moinfo.last[0] = moinfo.nao - 1;
+     moinfo.lstact[0] = moinfo.nmo - moinfo.nfzv - 1;
+     moinfo.orbspi[0] = moinfo.nao;
+     moinfo.active[0] = moinfo.nmo - moinfo.nfzv;
+     moinfo.nirreps = 1;
+     for (i=0; i<moinfo.nmo; i++) {
+     moinfo.order[i] = i;
+     moinfo.orbsym[i] = 0;
+     }
     */
   }
 }
