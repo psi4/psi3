@@ -1,4 +1,4 @@
-.TH input 1 " September 3, 1998" "Psi Release 2.0" "\*(]D"
+.TH input 1 "Psi Release 3" "\*(]D"
 .SH NAME
 input \- initializes files prior to a run of Psi
 
@@ -9,7 +9,7 @@ The program
 is a preliminary program which reads the input data for the
 molecule (geometry, basis set, etc. ) and generates a working file
 called
-.pN FILE30
+.pN FILE32
 which is the real starting point of each calculation.
 The
 .B input
@@ -131,9 +131,17 @@ and references therein.
 
 .SH INPUT FORMAT
 .LP
-The following command-line arguments are available:
+In addition to the standard command-line options supported by all Psi 3 modules,
+the following command-line arguments are available:
+.IP "\fI--keep_chkpt\fP"
+This option will cause input to keep the checkpoint file
+and possibly overwrite the information. By default, input
+will delete the checkpoint file and create a new one.
+.IP "\fI--chkptgeom\fP"
+This option will cause input to read the geometry from checkpoint file
+rather than from the input file.
 .IP "\fI--chkptmos\fP"
-This will cause \fBINPUT\fP to try to recover molecular
+This option will cause \fBINPUT\fP to try to recover molecular
 orbitals from a previous calculation archived in the
 checkpoint file. If found, occupied MOs will be projected onto
 the new basis. The virtual space is filled up by the virtual MOs
@@ -141,10 +149,16 @@ obtained by diagonalizing the core Hamiltonian (even if the new
 and old basis sets are identical). This will not affect the subsequent
 SCF procedure in any way, but should be kept in mind.
 .IP "\fI--noproject\fP"
-This will prevent projection of MOs onto the new basis. Useful in combination with
+This option will prevent projection of MOs onto the new basis. Useful in combination with
 the previous option.
+.IP "\fI--noreorient\fP"
+This option will prevent the reorientation of the molecule to the reference
+inertia frame prior to the determination of the point group.
+.IP "\fI--nocomshift\fP"
+This option will prevent shift of the center of mass of the molecule
+to the origin prior to the determination of the point group.
 .IP "\fI--savemos\fP"
-This will cause \fBINPUT\fP to try to recover molecular
+This option will cause \fBINPUT\fP to try to recover molecular
 orbitals from a previous calculation archived in the
 checkpoint file. If found, the SCF eigenvector and other information
 will be stored to file 42.
