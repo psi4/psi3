@@ -1,8 +1,12 @@
 /* $Log$
- * Revision 1.4  2002/03/24 17:28:14  crawdad
- * Minor modifications in preparation for conversion to libpsio-based file30.
+ * Revision 1.5  2002/03/24 18:30:08  crawdad
+ * Beginning mods for libpsio-based file30.  Current version works.
  * -TDC
  *
+/* Revision 1.4  2002/03/24 17:28:14  crawdad
+/* Minor modifications in preparation for conversion to libpsio-based file30.
+/* -TDC
+/*
 /* Revision 1.3  2000/10/13 19:51:21  evaleev
 /* Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
 /*
@@ -56,6 +60,9 @@ init_scf()
    int degen[20],*num_so;
    char char_dum[80];
    char **irr_labs;
+
+   i10 = (int *) init_int_array(200);
+   wreadw(itap30,(char *) i10,sizeof(int)*200,(PSI_FPTR) sizeof(int)*100,&next);
 
    ioff[0] = 0;
    for (i = 1; i < MAXIOFF ; i++) {
