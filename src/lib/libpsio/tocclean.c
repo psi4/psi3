@@ -22,7 +22,10 @@ int psio_tocclean(ULI unit, char *key)
   this_entry = psio_tocscan(unit, key);
   if(this_entry == NULL) {
       if(!strcmp(key,"")) this_entry = psio_unit[unit].toc;
-      else psio_error(unit,PSIO_ERROR_NOTOCENT);
+      else {
+          fprintf(stderr, "PSIO_ERROR: Can't find TOC Entry %s\n", key);
+          psio_error(unit,PSIO_ERROR_NOTOCENT);
+      }
     }
   else this_entry = this_entry->next;
 

@@ -32,7 +32,10 @@ int psio_read_block(ULI unit, char *key, char *buffer, ULI blksiz,
   /* Find the entry in the TOC */
   this_entry = psio_tocscan(unit, key);
 
-  if(this_entry == NULL) psio_error(unit,PSIO_ERROR_NOTOCENT);
+  if(this_entry == NULL) {
+      fprintf(stderr, "PSIO_ERROR: Can't find TOC Entry %s\n", key);
+      psio_error(unit,PSIO_ERROR_NOTOCENT);
+  }
   else {
       size = (end_blk - start_blk + 1) * blksiz; /* The total buffer size */
       shift = start_blk * blksiz; /* Number of bytes to shift from start */

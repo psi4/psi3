@@ -34,7 +34,10 @@ int psio_read(ULI unit, char *key, char *buffer, ULI size,
   /* Find the entry in the TOC */
   this_entry = psio_tocscan(unit, key);
 
-  if(this_entry == NULL) psio_error(unit,PSIO_ERROR_NOTOCENT);
+  if(this_entry == NULL) {
+      fprintf(stderr, "PSIO_ERROR: Can't find TOC Entry %s\n", key);
+      psio_error(unit,PSIO_ERROR_NOTOCENT);
+  }
   else {
 
       /* Compute the starting page and offset for the block */

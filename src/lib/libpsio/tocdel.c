@@ -23,7 +23,10 @@ int psio_tocdel(ULI unit, char *key)
   if((strlen(key)+1) > PSIO_KEYLEN) psio_error(unit,PSIO_ERROR_KEYLEN);
 
   this_entry = psio_tocscan(unit, key);
-  if(this_entry == NULL) psio_error(unit,PSIO_ERROR_NOTOCENT);
+  if(this_entry == NULL) {
+      fprintf(stderr, "PSIO_ERROR: Can't find TOC Entry %s\n", key);
+      psio_error(unit,PSIO_ERROR_NOTOCENT);
+  }
 
   last_entry = this_entry->last;
   if(last_entry != NULL) last_entry->next = this_entry->next;
