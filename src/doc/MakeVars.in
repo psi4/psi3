@@ -22,7 +22,26 @@ MKDIRS = @MKDIRS@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 
-#
-# have target default to the name of the directory we're in
-#
-TARGET = $(shell basename `pwd`)
+TEXINPUTS = :$(srcdir):$(srcdir)/..:
+
+TARGET_DVI  = $(MAN).dvi
+TARGET_PS = $(MAN).ps
+TARGET_HTML = $(MAN).html
+
+ifndef LATEX2HTML
+  TARGET_HTML =
+endif
+
+ifndef DVIPS
+  TARGET_PS =
+endif
+
+ifndef LATEX
+  TARGET_DVI =
+  TARGET_PS =
+  TARGET_HTML =
+endif
+
+vpath %.html $(currdir)/html:
+vpath %.tex $(srcdir):$(srcdir)/..
+vpath %.bib $(srcdir):

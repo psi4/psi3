@@ -2,7 +2,7 @@
 .PHONY:	default all install clean realclean
 
 subdirs = \
-manual
+install progman userman
 
 all: default
 
