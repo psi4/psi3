@@ -1,5 +1,6 @@
 /*!
   \file buf_wrt_mp2r12a.c
+  \ingroup (IWL)
 */
 #include <stdio.h>
 #include <math.h>
@@ -22,7 +23,7 @@
 ** This routine is a modified form of iwl_buf_wrt_mp2() specific to mp2r12a-type
 ** restricted transforms.
 ** Edward, 8/04/99
-**
+** \ingroup (IWL)
 */
 void iwl_buf_wrt_mp2r12a(struct iwlbuf *Buf, int p, int q, int pq, int pqsym,
    double **arr, int rsym, int *firstr, int *lastr, int *firsts, int *lasts,

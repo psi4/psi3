@@ -1,5 +1,6 @@
 /*!
   \file buf_wrt_arr_SI.c
+  \ingroup (IWL)
 */
 #include <stdio.h>
 #include <math.h>
@@ -13,7 +14,7 @@
 ** integrals using the Integrals With Labels file format
 ** with indices stored in arrays of short int's
 ** Ed Valeev, February 1999
-**
+** \ingroup (IWL)
 */
 void iwl_buf_wrt_arr_SI(struct iwlbuf *Buf, double *arr, short int *p, 
 		     short int *q, short int *r, short int *s, int size)

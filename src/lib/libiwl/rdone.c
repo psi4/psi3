@@ -1,5 +1,6 @@
 /*!
   \file rdone.c
+  \ingroup (IWL)
 */
 #include <stdio.h>
 #include <math.h>
@@ -25,9 +26,10 @@
 **   \param ints       = buffer (already allocated) to store the integrals
 **   \param ntri       = number of packed integrals
 **   \param erase      = erase itap (1=yes, 0=no)
-**   \param printflg   = printing flag.  Set to 1 to print ints; otherwise, set to 0
+**   \param printflg   = printing flag.  Set to 1 to print ints; 
+**                       otherwise, set to 0
 **   \param outfile    = file pointer for output of ints or error messages
-**
+** \ingroup (IWL)
 */
 int iwl_rdone(int itap, char *label, double *ints, int ntri, int erase, 
               int printflg, FILE *outfile)

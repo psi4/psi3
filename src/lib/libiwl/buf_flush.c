@@ -1,5 +1,6 @@
 /*!
   \file buf_flush.c
+  \ingroup (IWL)
 */
 #include <stdio.h>
 #include <libciomr/libciomr.h>
@@ -14,6 +15,7 @@
 ** Flush an Integrals With Labels Buffer
 ** All flushing should be done through this routine!
 ** David Sherrill, March 1995
+** \ingroup (IWL)
 */
 void iwl_buf_flush(struct iwlbuf *Buf, int lastbuf)
 {

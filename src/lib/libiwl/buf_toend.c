@@ -1,5 +1,6 @@
 /*!
   \file buf_toend.c
+  \ingroup (IWL)
 */
 #include <stdio.h>
 #include <libpsio/psio.h>
@@ -15,7 +16,7 @@ extern FILE *outfile;
 ** an already existing file
 **
 ** Edward Valeev, January 2001
-**
+** \ingroup (IWL)
 */
 void iwl_buf_toend(struct iwlbuf *Buf)
 {
@@ -24,7 +25,8 @@ void iwl_buf_toend(struct iwlbuf *Buf)
 
   this_entry = psio_tocscan(Buf->itap, IWL_KEY_BUF);
   if (this_entry == NULL) {
-    fprintf(outfile,"iwl_buf_toend: Can't find IWL buffer entry in file %d\n", Buf->itap);
+    fprintf(outfile,
+        "iwl_buf_toend: Can't find IWL buffer entry in file %d\n", Buf->itap);
     iwl_buf_close(Buf,1);
     return;
   } 

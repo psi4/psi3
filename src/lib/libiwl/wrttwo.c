@@ -1,5 +1,6 @@
 /*!
   \file wrttwo.c
+  \ingroup (IWL)
 */
 #include <stdio.h>
 #include <math.h>
@@ -22,9 +23,10 @@
 **    \param outfile  =  output file
 **
 ** Revised 6/27/96 by CDS
+** \ingroup (IWL)
 */
 void iwl_wrttwo(int itap, int nbfso, double *ints, int *ioff, double toler, 
-      int printflg, FILE *outfile)
+                int printflg, FILE *outfile)
 {
   struct iwlbuf Buf;
 

@@ -7,6 +7,8 @@ Updates:
 T. Daniel Crawford, December 1995
 C. David Sherrill, April 1998
 
+This documentation is now superceded by the automatically generated
+doxygen documentation.  
 =====================================================================
 
 The library LIBIWL contains functions for reading and writing to files

@@ -1,5 +1,6 @@
 /*!
   \file wrtone.c
+  \ingroup (IWL)
 */
 #include <stdio.h>
 #include <libpsio/psio.h>
@@ -17,6 +18,7 @@
 **
 ** David Sherrill, March 1995
 ** Revised by TDC, June 2001
+** \ingroup (IWL)
 */
 void iwl_wrtone(int itap, char *label, int ntri, double *onel_ints)
 {

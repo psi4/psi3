@@ -1,5 +1,6 @@
 /*!
   \file buf_put.c
+  \ingroup (IWL)
 */
 #include <stdio.h>
 #include <libpsio/psio.h>
@@ -10,7 +11,7 @@
 **
 ** Put an IWL buffer to disk
 ** David Sherrill, 26 June 1996
-**
+** \ingroup (IWL)
 */
 void iwl_buf_put(struct iwlbuf *Buf)
 {

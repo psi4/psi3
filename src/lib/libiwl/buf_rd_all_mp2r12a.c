@@ -1,5 +1,6 @@
 /*!
   \file buf_rd_all_mp2r12a.c
+  \ingroup (IWL)
 */
 #include <stdio.h>
 #include <math.h>
@@ -27,17 +28,17 @@
 **
 **    WARNING - if bra_ket_symm = 0 - ints must be zeroed out!
 **
-**    \param ioff          =  the ioff array to figure the total index pqrs from
-**                     the pair indices pq and rs
+**    \param ioff          =  the ioff array to figure the total index pqrs 
+**                            from the pair indices pq and rs
 **    \param printflg      =  if 1, print integrals as they are read
 **    \param outfile       =  pointer to output file for printing
 **
 ** Returns: 0 if end of file, otherwise 1
-**
+** \ingroup (IWL)
 */
 int iwl_buf_rd_all_mp2r12a(struct iwlbuf *Buf, double *ints,
-			   int *ioff_lt, int *ioff_rt, int bra_ket_symm, int *ioff,
-			   int printflg, FILE *outfile)
+			   int *ioff_lt, int *ioff_rt, int bra_ket_symm, 
+                           int *ioff, int printflg, FILE *outfile)
 {
   int lastbuf;
   Label *lblptr;
@@ -63,7 +64,7 @@ int iwl_buf_rd_all_mp2r12a(struct iwlbuf *Buf, double *ints,
 
     if (bra_ket_symm) /*! ERIs or R12-integrals */
       ints[pqrs] = (double) valptr[Buf->idx];
-    else {            /*! (ip|[T1+T2,r12]|jq) = - [ (ip|[r12,T1]|jq) + (jq|[r12,T2]|ip) ] */
+    else { /*! (ip|[T1+T2,r12]|jq) = -[(ip|[r12,T1]|jq) + (jq|[r12,T2]|ip)] */
       if (pq != rs)
 	ints[pqrs] -= (double) valptr[Buf->idx];
       else
@@ -94,7 +95,7 @@ int iwl_buf_rd_all_mp2r12a(struct iwlbuf *Buf, double *ints,
 
       if (bra_ket_symm) /*! ERIs or R12-integrals */
 	ints[pqrs] = (double) valptr[Buf->idx];
-      else {            /*! (ip|[T1+T2,r12]|jq) = - [ (ip|[r12,T2]|jq) + (jq|[r12,T2]|ip) ] */
+      else { /*! (ip|[T1+T2,r12]|jq) = -[(ip|[r12,T2]|jq)+(jq|[r12,T2]|ip)] */
 	if (pq != rs)
 	  ints[pqrs] -= (double) valptr[Buf->idx];
 	else

@@ -1,5 +1,6 @@
 /*!
   \file buf_init.c
+  \ingroup (IWL)
 */
 #include <stdio.h>
 #include <libpsio/psio.h>
@@ -24,7 +25,7 @@ extern FILE *outfile;
 **
 ** David Sherrill, March 1995
 ** Revised 6/26/96 by CDS for new format
-**
+** \ingroup (IWL)
 */
 void iwl_buf_init(struct iwlbuf *Buf, int itape, double cutoff,
       int oldfile, int readflag)

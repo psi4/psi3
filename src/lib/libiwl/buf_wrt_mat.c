@@ -1,5 +1,6 @@
 /*!
   \file buf_wrt_mat.c
+  \ingroup (IWL)
 */
 #include <stdio.h>
 #include <math.h>
@@ -37,7 +38,7 @@
 ** David Sherrill, October 1995
 **
 ** Revised 6/27/96 by CDS for new format
-**
+** \ingroup (IWL)
 */
 void iwl_buf_wrt_mat(struct iwlbuf *Buf, int ptr, int qtr, 
      double **mat, int rfirst, int rlast, int sfirst, int slast,
@@ -100,6 +101,7 @@ void iwl_buf_wrt_mat(struct iwlbuf *Buf, int ptr, int qtr,
 ** integrals.
 **
 ** TDC, 6/01
+** \ingroup (IWL)
 */
 void iwl_buf_wrt_mat2(struct iwlbuf *Buf, int ptr, int qtr, 
      double **mat, int rfirst, int rlast, int sfirst, int slast,

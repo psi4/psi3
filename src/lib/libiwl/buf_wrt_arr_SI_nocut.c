@@ -1,5 +1,6 @@
 /*!
   \file buf_wrt_arr_SI_nocut.c
+  \ingroup (IWL)
 */
 #include <stdio.h>
 #include <math.h>
@@ -14,7 +15,7 @@
 ** with indices stored in arrays of short int's. It DOES NOT
 ** use Buf->Cutoff when writing.
 ** Ed Valeev, February 1999
-**
+** \ingroup (IWL)
 */
 void iwl_buf_wrt_arr_SI_nocut(struct iwlbuf *Buf, double *arr, short int *p, 
 		     short int *q, short int *r, short int *s, int size)
