@@ -44,10 +44,10 @@ struct dpd_file4_cache_entry
   this_entry = dpd_default->file4_cache;
 
   while(this_entry != NULL) {
-      if(this_entry->filenum == filenum       &&
+      if(this_entry->filenum == filenum      &&
 	 this_entry->irrep == irrep          &&
-         this_entry->pqnum == pqnum           &&
-         this_entry->rsnum == rsnum           &&
+         this_entry->pqnum == pqnum          &&
+         this_entry->rsnum == rsnum          &&
          !strcmp(this_entry->label,label)) {
 #ifdef DPD_TIMER
               timer_off("file4_cache");
@@ -108,7 +108,12 @@ int dpd_file4_cache_add(dpdfile4 *File)
       else dpd_default->file4_cache = this_entry;
 
       /* Read all data into core */
+      this_entry->size = 0;
       for(h=0; h < File->params->nirreps; h++) {
+	  this_entry->size += 
+	      File->params->rowtot[h] * 
+	      File->params->coltot[h] *
+	      sizeof(double);
 	  dpd_file4_mat_irrep_init(File, h);
 	  dpd_file4_mat_irrep_rd(File, h);
 	}
@@ -176,20 +181,25 @@ int dpd_file4_cache_del(dpdfile4 *File)
 
 void dpd_file4_cache_print(FILE *outfile)
 {
+  int total_size=0;
   struct dpd_file4_cache_entry *this_entry;
 
   this_entry = dpd_default->file4_cache;
 
   fprintf(outfile, "\n\tDPD File4 Cache Listing:\n\n");
   fprintf(outfile,
-    "Cache Label                     File symm  pq   rs\n");
+    "Cache Label                     File symm  pq  rs  size(kB)\n");
   fprintf(outfile,
-    "----------------------------------------------------\n");
+    "-----------------------------------------------------------\n");
   while(this_entry != NULL) {
       fprintf(outfile,
-      "%-32s %3d   %1d    %1d    %1d\n",
+      "%-32s %3d    %1d  %2d  %2d  %8.1f\n",
 	      this_entry->label, this_entry->filenum, this_entry->irrep,
-	      this_entry->pqnum, this_entry->rsnum);
+	      this_entry->pqnum, this_entry->rsnum, (this_entry->size)/1e3);
+      total_size += this_entry->size;
       this_entry = this_entry->next;
     }
+  fprintf(outfile,
+    "-----------------------------------------------------------\n");
+  fprintf(outfile, "Total cached: %8.1f kB\n", total_size/1e3);
 }

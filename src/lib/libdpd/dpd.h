@@ -101,6 +101,7 @@ struct dpd_file4_cache_entry {
     int rsnum;
     char label[PSIO_KEYLEN];
     double ***matrix;
+    int size;
     struct dpd_file4_cache_entry *next;
     struct dpd_file4_cache_entry *last;
 };
@@ -113,6 +114,7 @@ struct dpd_file2_cache_entry {
     int qnum;
     char label[PSIO_KEYLEN];
     double ***matrix;
+    int size;
     struct dpd_file2_cache_entry *next;
     struct dpd_file2_cache_entry *last;
 };

@@ -67,6 +67,7 @@ struct dpd_file2_cache_entry *dpd_file2_cache_last(void)
 
 int dpd_file2_cache_add(dpdfile2 *File)
 {
+  int h;
   struct dpd_file2_cache_entry *this_entry;
 
   if(File->incore) return 0; /* Already have this one in cache */
@@ -88,6 +89,13 @@ int dpd_file2_cache_add(dpdfile2 *File)
       
       if(this_entry->last != NULL) this_entry->last->next = this_entry;
       else dpd_default->file2_cache = this_entry;
+
+      this_entry->size = 0;
+      for(h=0; h < File->params->nirreps; h++)
+	  this_entry->size += 
+	      File->params->rowtot[h] * 
+	      File->params->coltot[h] *
+	      sizeof(double);
 
       /* Read all data into core */
       dpd_file2_mat_init(File);
@@ -145,20 +153,25 @@ int dpd_file2_cache_del(dpdfile2 *File)
 
 void dpd_file2_cache_print(FILE *outfile)
 {
+  int total_size=0;
   struct dpd_file2_cache_entry *this_entry;
 
   this_entry = dpd_default->file2_cache;
 
   fprintf(outfile, "\n\tDPD File2 Cache Listing:\n\n");
   fprintf(outfile,
-    "Cache Label                     File symm  p   q\n");
+    "Cache Label                     File symm  p  q  size(kB)\n");
   fprintf(outfile,
-    "------------------------------------------------------------------\n");
+    "---------------------------------------------------------\n");
   while(this_entry != NULL) {
       fprintf(outfile,
-      "%-32s %3d   %1d    %1d    %1d\n",
+      "%-32s %3d    %1d  %1d  %1d  %8.1f\n",
 	      this_entry->label, this_entry->filenum, this_entry->irrep,
-	      this_entry->pnum, this_entry->qnum);
+	      this_entry->pnum, this_entry->qnum,(this_entry->size)/1e3);
+      total_size += this_entry->size;
       this_entry = this_entry->next;
     }
+  fprintf(outfile,
+    "---------------------------------------------------------\n");
+  fprintf(outfile, "Total cached: %8.1f kB\n", total_size/1e3);
 }
