@@ -228,7 +228,7 @@ int main(int argc, char *argv[])
       
   } /* iter-loop */
 
-  print_mat(V, nocc, nocc, outfile); 
+  /*  print_mat(V, nocc, nocc, outfile);  */
 
   /* Transform occupied orbital eigenvalues */
   F = block_matrix(nocc, nocc);
@@ -270,6 +270,7 @@ int main(int argc, char *argv[])
   */
 
   /* Now reorder the localized MO's according to F */
+  /* no re-ordering for now
   Ctmp = block_matrix(nao,nocc);
   for(i=0; i < nocc; i++)
     for(j=0; j < nao; j++) Ctmp[j][i] = C[j][i];
@@ -281,7 +282,6 @@ int main(int argc, char *argv[])
   }
   free_block(Ctmp);
 
-  /*
   fprintf(outfile, "\n\tPipek-Mezey Localized MO's (after sort):\n");
   print_mat(C, nao, nmo, outfile);
   */
