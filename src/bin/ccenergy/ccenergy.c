@@ -194,6 +194,11 @@ int main(int argc, char *argv[])
           moinfo.eref + moinfo.ecc);
   fprintf(outfile, "\n");
 
+  /* Write total energy to the checkpoint file */
+  chkpt_init();
+  chkpt_wt_etot(moinfo.ecc+moinfo.eref); 
+  chkpt_close();
+
   /* Write pertinent data to energy.dat for Dr. Yamaguchi */
   if(!strcmp(params.wfn,"CCSD")) {
 

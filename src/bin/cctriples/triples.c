@@ -130,6 +130,11 @@ int main(int argc, char *argv[])
 
   fprintf(outfile, "\n");
 
+  /* Write total energy to the checkpoint file */
+  chkpt_init();
+  chkpt_wt_etot(ET+moinfo.ecc+moinfo.eref);
+  chkpt_close();
+
   /* Write pertinent data to energy.dat */
   if(!strcmp(params.wfn,"CCSD_T")) {
     chkpt_init();
