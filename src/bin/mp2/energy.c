@@ -1,36 +1,65 @@
 #include <libdpd/dpd.h>
-#include <ccfiles.h>
-#include "moinfo.h"
-#include "params.h"
 #define EXTERN
 #include "globals.h"
 
-void energy(void)
-{
-  double energy;
-  dpdbuf4 I, D, T2A;
-  
-  dpd_buf4_init(&I, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
-  dpd_buf4_copy(&I, CC_TMP0, "tIjAb");
-  dpd_buf4_close(&I);
+double rhf_energy(void);
+double rohf_energy(void);
+double uhf_energy(void);
 
-  dpd_buf4_init(&T2A, CC_TMP0, 0, 0, 5, 0, 5, 0, "tIjAb");
-  dpd_buf4_init(&D, CC_DENOM, 0, 0, 5, 0, 5, 0, "dIjAb");
-  dpd_buf4_dirprd(&D, &T2A);
+double energy(void)
+{
+  if(params.ref == 0) return(rhf_energy());
+  else if(params.ref == 1) return(rohf_energy());
+  else if(params.ref == 2) return(uhf_energy());
+}
+
+double rhf_energy(void) 
+{
+  double E = 0;
+  dpdbuf4 tIjAb;
+  dpdbuf4 D;
+  
+  dpd_buf4_init(&tIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
+  dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D 2<ij|ab> - <ij|ba>");
+  E = dpd_buf4_dot(&D, &tIjAb);
+  dpd_buf4_close(&tIjAb);
   dpd_buf4_close(&D);
 
-  dpd_buf4_init(&I, CC_DINTS, 0, 0, 5, 0, 5, 0, "D 2<ij|ab> - <ij|ba>");
-  energy = dpd_buf4_dot(&I, &T2A);
-  dpd_buf4_close(&T2A);
-  dpd_buf4_close(&I);
-
-  fprintf(outfile,"\n");
-  fprintf(outfile,"\tMP2 correlation energy  = %20.15f\n",energy);
-  fprintf(outfile,"\tMP2 total energy        = %20.15f\n",mo.Escf+energy);
-
-  /* Write Total Energy to the checkpoint file
-     for geometry optimization by finite differences */
-  chkpt_init(PSIO_OPEN_OLD);
-  chkpt_wt_etot(mo.Escf+energy);
-  chkpt_close();
+  return(E);
 }
+
+double rohf_energy(void)
+{
+}
+
+double uhf_energy(void)
+{
+  double E2AA = 0;
+  double E2BB = 0;
+  double E2AB = 0;
+  dpdbuf4 tIJAB;
+  dpdbuf4 tijab;
+  dpdbuf4 tIjAb;
+  dpdbuf4 D;
+  
+  dpd_buf4_init(&tIJAB, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tIJAB");
+  dpd_buf4_init(&D, CC_DINTS, 0, 2, 7, 2, 7, 0, "D <IJ||AB> (I>J,A>B)");
+  E2AA = dpd_buf4_dot(&D, &tIJAB);
+  dpd_buf4_close(&D);
+  dpd_buf4_close(&tIJAB);
+
+  dpd_buf4_init(&tijab, CC_TAMPS, 0, 12, 17, 12, 17, 0, "tijab");
+  dpd_buf4_init(&D, CC_DINTS, 0, 12, 17, 12, 17, 0, "D <ij||ab> (i>j,a>b)");
+  E2BB = dpd_buf4_dot(&D, &tijab);
+  dpd_buf4_close(&D);
+  dpd_buf4_close(&tijab);
+  
+  dpd_buf4_init(&tIjAb, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tIjAb");
+  dpd_buf4_init(&D, CC_DINTS, 0, 22, 28, 22, 28, 0, "D <Ij|Ab>");
+  E2AB = dpd_buf4_dot(&D, &tIjAb);
+  dpd_buf4_close(&D);
+  dpd_buf4_close(&tIjAb);
+
+  return(E2AA+E2BB+E2AB);
+}
+

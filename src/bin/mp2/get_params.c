@@ -6,9 +6,7 @@
 #include <libchkpt/chkpt.h>
 #include <libpsio/psio.h>
 #include <libqt/qt.h>
-#include <ccfiles.h>
-#include "moinfo.h"
-#include "params.h"
+#include <psifiles.h>
 #define EXTERN
 #include "globals.h"
 
@@ -16,14 +14,23 @@ void get_params()
 {
   int errcod;
   char *cachetype = NULL;
+  char *junk;
   
   errcod = ip_string("WFN", &(params.wfn), 0);
 
-  errcod = ip_string("REFERENCE", &(params.ref),0);
-  if (strcmp(params.ref,"RHF")) {
-    fprintf(outfile, "\nIncorrect Reference: RHF only\n");
-    abort();
+  errcod = ip_string("REFERENCE", &(junk),0);
+
+  /* Assume RHF if no reference is given */
+  params.ref = 0;
+
+  if(!strcmp(junk,"RHF")) params.ref = 0;
+  else if(!strcmp(junk,"ROHF")) params.ref = 1;
+  else if(!strcmp(junk,"UHF")) params.ref = 2;
+  else {
+    fprintf(outfile,"\nInvalid Reference: %s\n",junk);
+    exit(PSI_RETURN_FAILURE);
   }
+  free(junk);
   
   params.print = 0;
   errcod = ip_data("PRINT", "%d", &(params.print),0);
@@ -64,7 +71,7 @@ void get_params()
   fprintf(outfile, "\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
   fprintf(outfile, "\tWave function \t=\t%s\n", params.wfn);
-  fprintf(outfile, "\tReference WFN \t=\t%s\n", params.ref);
+  fprintf(outfile, "\tReference WFN \t=\t%s\n", (params.ref==0)?"RHF":((params.ref==1)?"ROHF":"UHF"));
   fprintf(outfile, "\tCache Level   \t=\t%d\n", params.cachelev);
   fprintf(outfile, "\tCache Type    \t=\t%s\n", params.cachetype ? "LOW":"LRU");
   fprintf(outfile, "\tMemory (MB)   \t=\t%.1f\n",params.memory/1e6);

@@ -1,3 +1,7 @@
+#include <ccfiles.h>
+#include "moinfo.h"
+#include "params.h"
+
 #ifdef EXTERN
 #undef EXTERN
 #define EXTERN extern

@@ -4,7 +4,7 @@ struct params {
   int opdm_write;
   int opdm_print;
   char *wfn;
-  char *ref;
+  char ref;
   int cachelev;
   int cachetype;
   long int memory;

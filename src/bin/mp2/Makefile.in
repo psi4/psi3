@@ -7,7 +7,7 @@ LDLIBS += $(LAPACK) $(BLAS)
 
 PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
-CSRC = cache.c priority.c get_moinfo.c get_params.c energy.c opdm.c mp2.c
+CSRC = cache.c priority.c get_moinfo.c get_params.c amps.c energy.c opdm.c mp2.c
 
 BINOBJ = $(CSRC:%.c=%.o)
 
