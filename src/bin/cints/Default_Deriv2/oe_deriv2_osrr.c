@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 #include <libciomr/libciomr.h>
 #include <libint/libint.h>
@@ -244,7 +245,7 @@ void AI_Deriv2_OSrecurs(double ***AI0, double ***AIX, double ***AIY, double ***A
         }
       }
       else /*--- Should never happen ---*/
-	exit(PSI_RETURN_FAILURE);
+	abort();
     }
  
 
@@ -520,7 +521,7 @@ void AI_Deriv2_OSrecurs(double ***AI0, double ***AIX, double ***AIY, double ***A
           }
         }
         else  /*--- Should never happen ---*/
-	  exit(PSI_RETURN_FAILURE);
+	  abort();
       }
     }
 

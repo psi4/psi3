@@ -70,7 +70,7 @@ void start_io(int argc, char *argv[])
   
   errcod = psi_start(num_extra_args, extra_args, 0);
   if (errcod != PSI_RETURN_SUCCESS)
-    exit(PSI_RETURN_FAILURE);
+    abort();
   ip_cwk_add(":CINTS");
   psio_init();
   chkpt_init(PSIO_OPEN_OLD);
@@ -93,7 +93,7 @@ void punt(char *mess)
   fprintf(outfile, "  error: %s\n", mess);
   fprintf(stderr, "  CINTS error: %s\n", mess);
   stop_io();
-  exit(PSI_RETURN_FAILURE);
+  abort();
 }
 
 double distance_calc(struct coordinates g1, struct coordinates g2)

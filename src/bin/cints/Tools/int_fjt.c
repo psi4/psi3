@@ -178,7 +178,7 @@ void int_fjt(double_array_t *table, int J, double wval)
   if (J>maxj) {
     fprintf(stderr,"the int_fjt routine has been incorrectly used\n");
     fprintf(stderr,"J = %d but maxj = %d\n",J,maxj);
-    exit(PSI_RETURN_FAILURE);
+    abort();
     }
 
   /* Compute an index into the table. */

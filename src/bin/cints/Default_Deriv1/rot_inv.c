@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <libipv1/ip_lib.h>
 #include <math.h>
 #include <masses.h>
@@ -27,7 +28,7 @@ void check_rot_inv()
     printf("  Rotational invariance of the energy derivative is violated!\n\n");
     fprintf(outfile,"  Rotational invariance of the energy derivative is violated!\n");
     fprintf(outfile,"  |X cross Grad| = %15.12lf\n\n",mod_cross);
-    exit(PSI_RETURN_FAILURE);
+    abort();
   }
   else {
     fprintf(outfile,"  Rotational invariance condition satisfied.\n");
