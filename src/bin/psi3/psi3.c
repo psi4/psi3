@@ -237,7 +237,7 @@ int main(int argc, char *argv[])
     else if (JobType==SYMM_FREQ) strcat(proced,"SYMM_FREQ");
     else if (JobType==DISP) strcat(proced,"DISP");
 
-    fprintf(outfile, "Calculation type string = %s\n", proced);
+    /* fprintf(outfile, "Calculation type string = %s\n", proced); */
 
     if (!ip_exist(proced,0)) {
       fprintf(outfile,"Error: Did not find a valid calculation type,\n");
@@ -252,10 +252,10 @@ int main(int argc, char *argv[])
 
   if (check) {
     fprintf(outfile,"\n'CHECK' is YES, so nothing will be executed.\n");
-    fprintf(outfile,"The following programs would otherwise be executed:\n");
+    fprintf(outfile,"\nThe following programs would otherwise be executed:\n");
   }
   else
-    fprintf(outfile,"The following programs will be executed:\n");
+    fprintf(outfile,"\nThe following programs will be executed:\n");
 
   rdepth = 0;
   for (i=0; i<nexec; i++) {
