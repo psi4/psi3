@@ -17,7 +17,8 @@ use Cwd;
 if ($ARGV[0] eq "--ci") {
   @DIR_NAMES = ( "cisd-sp",
                  "cisd-opt-numer",
-                 "casscf-sp"
+                 "casscf-sp",
+                 "cis-sp"
                );
 }
 elsif ($ARGV[0] eq "--cc") {
@@ -64,6 +65,7 @@ elsif ($ARGV[0] eq "--small") {
                  "rhf-stab",
                  "uhf-stab",
                  "rohf-stab",
+                 "cis-sp",
                  "cisd-sp",
                  "cisd-opt-numer",
                  "casscf-sp",
@@ -104,6 +106,7 @@ elsif ($ARGV[0] eq "--standard") {
                  "rhf-stab",
                  "uhf-stab",
                  "rohf-stab",
+                 "cis-sp",
                  "cisd-sp",
                  "cisd-opt-numer",
                  "casscf-sp",
@@ -128,6 +131,7 @@ elsif ($ARGV[0] eq "--standard") {
 elsif ($ARGV[0] eq "--sp") {
   @DIR_NAMES = ( "cisd-sp",
                  "casscf-sp",
+                 "cis-sp",
                  "cc4",
                  "cc5",
                  "cc6",
@@ -173,6 +177,7 @@ else {
                  "rhf-stab",
                  "uhf-stab",
                  "rohf-stab",
+                 "cis-sp",
                  "cisd-sp",
                  "cisd-opt-numer",
                  "casscf-sp",

@@ -430,6 +430,32 @@ sub seek_eomcc
   exit 1;
 }
 
+sub seek_cis
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  @datafile = <OUT>;
+  close(OUT);
+  
+  $linenum=0;
+  $eval = 0;
+  foreach $line (@datafile) {
+    $linenum++;
+    if ($line =~ m/CIS State/) {
+      @test = split (/ +/,$datafile[$linenum-1]);
+      $evals[$eval] = $test[4];
+      $eval++;
+    }
+  }
+    
+  if($eval != 0) {
+    return @evals;
+  }
+    
+  printf "Error: Could not find EOM-CCSD energies in $_[0].\n";
+  exit 1;
+}
+
+
 sub seek_stab
 {
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";
@@ -533,7 +559,7 @@ sub compare_arrays
 
   $OK = 1;
   for($i=0; $i < $row*$col; $i++) {
-#    printf "%d %20.12f %20.12f\n", $i, @$A[$i], @$B[$i];
+    printf "%d %20.12f %20.12f\n", $i, @$A[$i], @$B[$i];
     if(abs(@$A[$i] - @$B[$i]) > $tol) {
       $OK = 0;
     }
