@@ -243,7 +243,7 @@ void rzero_rhf(int C_irr) {
 
   fprintf(outfile,"Writing to CC_INFO...\n");
   psio_write_entry(CC_INFO, "EOM R Irrep", (char *) &C_irr, sizeof(int));
-  fprintf(outfile,"Irrep of R vector    = %s\n", moinfo.labels[C_irr]);
+  fprintf(outfile,"Irrep of R vector    =    %s\n", moinfo.labels[C_irr]);
   psio_write_entry(CC_INFO, "EOM R0", (char *) &rzero, sizeof(double));
   fprintf(outfile,"EOM energy           = %15.10lf\n", energy);
   fprintf(outfile,"R0 of normalized R   = %15.10lf\n", rzero);
@@ -284,7 +284,7 @@ void rzero_rhf(int C_irr) {
   dpd_buf4_close(&RIjAb);
   norm += rzero * rzero;
   /* if (fabs(norm - 1.0) > 1E-6) */
-  fprintf(outfile,"checked normalization <R|R> = %15.10lf\n", norm);
+  fprintf(outfile,"check of <R|R> norm  = %15.10lf\n", norm);
 
   if (eom_params.dot_with_L) {
     /* check orthogonality with ground state (1+lambda) */
