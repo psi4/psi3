@@ -11,7 +11,7 @@ geometry, and basis information into the checkpoint file.  The
 molecule may be reoriented to a standard reference frame, and the
 molecular point-group symmetry is identified.  It is possible to tell
 \PSIinput\ to re-use orbitals from a previous calculation ({\tt input
---getmos}), although presently this only works if the point group has
+--chkptmos}), although presently this only works if the point group has
 not changed.
 
 \subsubsection{cints}

@@ -345,8 +345,12 @@ Each time \PSIcscf\ completes, (converged or not) it writes
 the final wavefunction to \FILE30. Each time \PSIinput\ is run, it overwrites
 \FILE30\ and any wavefunction that might have been in there is
 lost. Nothing tricky about any of this, but just something to
-keep in mind. Currently there is no wavefunction expander
-to make a guess wavefunction from that for a smaller basis set. 
+keep in mind.  If you want to re-use MO's from a previous calculation as a
+guess, you can run \PSIinput\ with the {\tt --chkptmos} option.  This will
+work even if the previous calculation used a different basis set, but the
+geometry and point group symmetry should be the same.  Another useful
+flag is {\tt --noreorient}, which prevents the molecule from reorienting
+after shifting the origin to the center-of-mass.
 
 Well, energy points are well and good, but without optimizations,
 we are not going to get very far. So, we need \keyword{psi:dertype=first},

@@ -59,7 +59,7 @@ to check out copies of the \PSIthree\ code using CVS.
 The following steps will check out all of the essential Psi code needed for 
 basic, independent compilation and testing:
 \begin{enumerate}
-\item Make sure the environmental variable \shellvar{CVSROOT} is set to
+\item Make sure the environmental variable \shellvar{CVSROOT} is set to \\
 {\tt :pserver:login@sirius.chem.vt.edu:/home/users/psi3/master}, where
 {\tt login} is the user's login name on sirius. For example, for csh
 \begin{verbatim}

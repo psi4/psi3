@@ -150,7 +150,8 @@ when running \file{configure}.
 
 To verify that 64-bit compilation flags are set, one can check
 {\tt \$(top\_objdir)/src/lib/MakeVars and \$(top\_objdir)/src/bin/MakeVars}.
-Check the {\tt COPT, CXXOPT, FOPT, LDFLAGS}, and {\tt AR} variables.
+Check the {\tt COPT, CXXOPT, FOPT, LDFLAGS}, and {\tt AR} variables.  This
+should be automatically configured for 64-bit IBM RS/6000 architectures.
 
 \subsection{Post-installation Procedures}
 To verify correct installation of the program, it is useful to
