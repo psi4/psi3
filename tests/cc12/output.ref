@@ -1,6 +1,6 @@
 ******************************************************************************
-tstart called on diadem.giga.net
-Thu Dec 19 16:51:25 2002
+tstart called on boromir.chem
+Tue Apr 29 15:51:11 2003
 
                                 --------------
                                   WELCOME TO
@@ -138,15 +138,15 @@ Thu Dec 19 16:51:25 2002
 
 
 ******************************************************************************
-tstop called on diadem.giga.net
-Thu Dec 19 16:51:25 2002
+tstop called on boromir.chem
+Tue Apr 29 15:51:11 2003
 
-user time   =       0.04 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Thu Dec 19 16:51:28 2002
+tstart called on boromir.chem
+Tue Apr 29 15:51:11 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -174,15 +174,15 @@ Thu Dec 19 16:51:28 2002
     Wrote 11412 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on diadem.giga.net
-Thu Dec 19 16:51:28 2002
+tstop called on boromir.chem
+Tue Apr 29 15:51:12 2003
 
-user time   =       0.08 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.13 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Thu Dec 19 16:51:28 2002
+tstart called on boromir.chem
+Tue Apr 29 15:51:12 2003
 
 
              ------------------------------------------
@@ -243,15 +243,15 @@ If this is wrong, the specify MULTP keyword
     7       -76.0217013577    2.319574e-04    5.807129e-04    1.111120e-02
     8       -76.0217094814    8.123719e-06    1.019837e-04    9.798575e-04
     9       -76.0217097023    2.208736e-07    1.491249e-05    1.903604e-04
-   10       -76.0217097153    1.304298e-08    3.178835e-06    4.991254e-05
-   11       -76.0217097165    1.240309e-09    1.285182e-06    1.239918e-05
+   10       -76.0217097153    1.304295e-08    3.178835e-06    4.991254e-05
+   11       -76.0217097165    1.240323e-09    1.285182e-06    1.239918e-05
    12       -76.0217097166    9.450218e-12    1.040552e-07    1.135786e-06
    13       -76.0217097166    9.379164e-13    4.135417e-08    3.583544e-07
-   14       -76.0217097166    1.421085e-14    2.557106e-09    2.574766e-08
-   15       -76.0217097166    0.000000e+00    5.168662e-10    6.294587e-09
-   16       -76.0217097166   -1.421085e-14    3.761928e-11    4.480542e-10
-   17       -76.0217097166    1.421085e-14    1.432207e-11    1.379288e-10
-   18       -76.0217097166    0.000000e+00    9.969491e-13    1.253986e-11
+   14       -76.0217097166    0.000000e+00    2.557106e-09    2.574766e-08
+   15       -76.0217097166    0.000000e+00    5.168660e-10    6.294585e-09
+   16       -76.0217097166    1.421085e-14    3.761921e-11    4.480571e-10
+   17       -76.0217097166   -1.421085e-14    1.432170e-11    1.379274e-10
+   18       -76.0217097166    1.421085e-14    9.971698e-13    1.253829e-11
 
 Orbital energies (a.u.):
 
@@ -270,7 +270,7 @@ Orbital energies (a.u.):
    7B2      4.217613  
 
 
-        total energy       =     -76.021709716551
+        SCF total energy   =     -76.021709716551
         kinetic energy     =      76.236726451466
         nuc. attr. energy  =    -200.410350682891
         elec. rep. energy  =      48.151914514874
@@ -278,15 +278,15 @@ Orbital energies (a.u.):
         virial theorem     =       2.002828359632
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on diadem.giga.net
-Thu Dec 19 16:51:28 2002
+tstop called on boromir.chem
+Tue Apr 29 15:51:12 2003
 
 user time   =       0.01 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Thu Dec 19 16:51:28 2002
+tstart called on boromir.chem
+Tue Apr 29 15:51:12 2003
 
 
 	**************************************************
@@ -372,15 +372,15 @@ Thu Dec 19 16:51:28 2002
 	One-electron integrals written to file 35.
 	Frozen-core operator written to file 35.
 ******************************************************************************
-tstop called on diadem.giga.net
-Thu Dec 19 16:51:28 2002
+tstop called on boromir.chem
+Tue Apr 29 15:51:12 2003
 
-user time   =       0.04 seconds =       0.00 minutes
-system time =       0.17 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.20 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Thu Dec 19 16:51:28 2002
+tstart called on boromir.chem
+Tue Apr 29 15:51:12 2003
 
 
 			**************************
@@ -395,7 +395,7 @@ Thu Dec 19 16:51:28 2002
 	Reference wfn   =      RHF
 	Derivative      =     None
 	Memory (Mbytes) =     32.0
-	AO Basis        =       No
+	AO Basis        =      NONE
 	Cache Level     =        2
 	Cache Type      =      LRU
 
@@ -414,24 +414,29 @@ Thu Dec 19 16:51:28 2002
 	 B2 	   7	    0	    1	    0	    6	    0
 
 	Nuclear Rep. energy (chkpt) =      9.78067085332389
-	SCF energy          (chkpt) =    -76.02170971655130
-	One-electron energy          =   -124.17362423142484
-	Two-electron (AA) energy     =     14.66489803943383
-	Two-electron (BB) energy     =     14.66489803943383
-	Two-electron (AB) energy     =     23.70634562211581
-	Two-electron energy          =     38.37124366154964
-	Frozen-core energy (transqt) =      0.00000000000000
-	Reference energy             =    -76.02170971655131
-******************************************************************************
-tstop called on diadem.giga.net
-Thu Dec 19 16:51:28 2002
+	SCF energy          (chkpt) =    -76.02170971655129
 
-user time   =       0.03 seconds =       0.00 minutes
-system time =       0.04 seconds =       0.00 minutes
+	Size of <ab|cd> integrals:     0.013 (MW) /     0.102 (MB)
+	Size of <ia|bc> integrals:     0.004 (MW) /     0.030 (MB)
+	Size of Tijab amplitudes:      0.001 (MW) /     0.010 (MB)
+
+	One-electron energy          =   -124.17362423142481
+	Two-electron (AA) energy     =     14.66489803943384
+	Two-electron (BB) energy     =     14.66489803943384
+	Two-electron (AB) energy     =     23.70634562211582
+	Two-electron energy          =     38.37124366154966
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.02170971655126
+******************************************************************************
+tstop called on boromir.chem
+Tue Apr 29 15:51:12 2003
+
+user time   =       0.04 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Thu Dec 19 16:51:28 2002
+tstart called on boromir.chem
+Tue Apr 29 15:51:12 2003
 
 			**************************
 			*                        *
@@ -440,8 +445,8 @@ Thu Dec 19 16:51:28 2002
 			**************************
 
 	Nuclear Rep. energy (chkpt)   =    9.780670853323887
-	SCF energy          (chkpt)   =  -76.021709716551300
-	Reference energy    (file100) =  -76.021709716551314
+	SCF energy          (chkpt)   =  -76.021709716551285
+	Reference energy    (file100) =  -76.021709716551257
 
 	Input parameters:
 	-----------------
@@ -453,25 +458,27 @@ Thu Dec 19 16:51:28 2002
 	Restart         =     Yes
 	DIIS            =     Yes
 	Local CC        =     No
-	AO Basis        =     No
+	AO Basis        =     NONE
 	Cache Level     =    2
 	Cache Type      =     LOW
 	Print Level     =    0
+	# Amps to Print =    10
+	Print MP2 Amps? =    No
 
 	                     Solving CCSD Equations
 	                     ----------------------
 	Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
 	----     ---------------------    ---------   ----------  ----------  ----------
-	   0        -0.200137192065887    0.000e+00    0.000000    0.000000    0.000000
+	   0        -0.200137192065888    0.000e+00    0.000000    0.000000    0.000000
 	   1        -0.205628509986242    2.428e-02    0.003581    0.007890    0.007890
-	   2        -0.209096502874629    8.092e-03    0.004200    0.009013    0.009013
+	   2        -0.209096502874630    8.092e-03    0.004200    0.009013    0.009013
 	   3        -0.209408127408631    1.924e-03    0.004521    0.009669    0.009669
-	   4        -0.209416205724841    4.168e-04    0.004541    0.009691    0.009691
+	   4        -0.209416205724842    4.168e-04    0.004541    0.009691    0.009691
 	   5        -0.209424595785676    9.956e-05    0.004551    0.009697    0.009697
-	   6        -0.209423957441777    2.973e-05    0.004553    0.009695    0.009695
+	   6        -0.209423957441778    2.973e-05    0.004553    0.009695    0.009695
 	   7        -0.209423883726260    9.448e-06    0.004555    0.009694    0.009694
 	   8        -0.209423835629418    1.850e-06    0.004555    0.009694    0.009694
-	   9        -0.209423799188575    4.092e-07    0.004555    0.009694    0.009694
+	   9        -0.209423799188576    4.092e-07    0.004555    0.009694    0.009694
 	  10        -0.209423809460836    7.837e-08    0.004555    0.009694    0.009694
 	  11        -0.209423808920930    1.594e-08    0.004555    0.009694    0.009694
 	  12        -0.209423809195893    2.602e-09    0.004555    0.009694    0.009694
@@ -484,21 +491,50 @@ Thu Dec 19 16:51:28 2002
 
 	Iterations converged.
 
-	SCF energy       (chkpt)   =  -76.021709716551300
-	Reference energy (file100) =  -76.021709716551314
+
+	Largest TIA Amplitudes:
+	-----------------------
+	          4  17        -0.0065183017
+	          4  13        -0.0061936454
+	          2   0        -0.0049958786
+	          1   0        -0.0045267330
+	          2   5         0.0042337204
+	          1   2         0.0036328162
+	          4  15         0.0032291136
+	          3  11        -0.0029349431
+	          2   3        -0.0027916425
+	          1   5         0.0024943479
+
+	Largest TIjAb Amplitudes:
+	-------------------------
+	  3   3  10  10        -0.0507376248
+	  4   4  14  14        -0.0344275463
+	  2   2   2   2        -0.0341934373
+	  2   3   2  10        -0.0279179854
+	  3   2  10   2        -0.0279179854
+	  4   4   1   1        -0.0265452428
+	  2   2  14  14        -0.0252781425
+	  4   4  13  13        -0.0241114870
+	  3   4  10  15        -0.0230396642
+	  4   3  15  10        -0.0230396642
+
+	SCF energy       (chkpt)   =  -76.021709716551285
+	Reference energy (file100) =  -76.021709716551257
+	MP2 correlation energy     =   -0.200137192065888
+	Total MP2 energy           =  -76.221846908617138
 	CCSD correlation energy    =   -0.209423809126586
-	Total CCSD energy          =  -76.231133525677905
+	Total CCSD energy          =  -76.231133525677848
 
 ******************************************************************************
-tstop called on diadem.giga.net
-Thu Dec 19 16:51:29 2002
+tstop called on boromir.chem
+Tue Apr 29 15:51:13 2003
 
-user time   =       0.50 seconds =       0.01 minutes
-system time =       0.36 seconds =       0.01 minutes
+user time   =       0.66 seconds =       0.01 minutes
+system time =       0.45 seconds =       0.01 minutes
 total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Thu Dec 19 16:51:29 2002
+tstart called on boromir.chem
+Tue Apr 29 15:51:13 2003
 
 
 			**************************
@@ -508,15 +544,15 @@ Thu Dec 19 16:51:29 2002
 			**************************
 
 ******************************************************************************
-tstop called on diadem.giga.net
-Thu Dec 19 16:51:29 2002
+tstop called on boromir.chem
+Tue Apr 29 15:51:14 2003
 
-user time   =       0.20 seconds =       0.00 minutes
-system time =       0.14 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.19 seconds =       0.00 minutes
+system time =       0.19 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Thu Dec 19 16:51:29 2002
+tstart called on boromir.chem
+Tue Apr 29 15:51:14 2003
 
 
 	**********************************************************
@@ -524,8 +560,8 @@ Thu Dec 19 16:51:29 2002
 	**********************************************************
 
 	Nuclear Rep. energy (chkpt)   =    9.780670853323887
-	SCF energy          (chkpt)   =  -76.021709716551300
-	Reference energy    (file100) =  -76.021709716551314
+	SCF energy          (chkpt)   =  -76.021709716551285
+	Reference energy    (file100) =  -76.021709716551257
 
 	Input parameters:
 	-----------------
@@ -581,8 +617,8 @@ Iter=7    L=14    Root    EOM Energy     Delta E   Res. Norm    Conv?
                      1   0.4165296865   4.37e-07    2.50e-05      Y
                      2   0.6920297395   2.31e-06    9.86e-05      N
 Iter=8    L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4165296865   5.55e-17    2.50e-05      Y
-                     2   0.6920297395   1.11e-16    9.86e-05      Y
+                     1   0.4165296865  -5.55e-17    2.50e-05      Y
+                     2   0.6920297395  -9.99e-16    9.86e-05      Y
 Collapsing to only 2 vectors.
 
 Procedure converged for 2 roots.
@@ -593,30 +629,30 @@ Final Energetic Summary for Converged Roots of Irrep A1
    1     11.334    91417.7   0.4165296865   -75.6051800301
 
 Largest components of excited wave function #0:
-	          2   0        -0.6856904890
+	          2   0         0.6856904890
 	          2   1         0.0548902246
-	          4  13         0.0313512064
-	          1   0         0.0273095404
+	          4  13        -0.0313512064
+	          1   0        -0.0273095404
 	          2   4         0.0211132037
-	  2   2   0   0        -0.0578503051
+	  2   2   0   0         0.0578503051
 	  2   2   0   2         0.0498549436
 	  2   2   2   0         0.0498549436
-	  2   4   0  13        -0.0494857951
-	  4   2  13   0        -0.0494857951
+	  2   4   0  13         0.0494857951
+	  4   2  13   0         0.0494857951
 
    2     18.831   151883.0   0.6920297395   -75.3296799771
 
 Largest components of excited wave function #1:
-	          4  13        -0.6818553665
-	          3  10         0.0733381631
+	          4  13         0.6818553665
+	          3  10        -0.0733381631
 	          2   2        -0.0557460973
 	          2   1        -0.0437174206
-	          4  14         0.0399973615
-	  4   4  13  13        -0.1002477658
-	  4   4   0   0        -0.0368889190
-	  3   4  10  13        -0.0317916075
-	  4   3  13  10        -0.0317916075
-	  3   3  13  13        -0.0271125635
+	          4  14        -0.0399973615
+	  4   4  13  13         0.1002477658
+	  4   4   0   0         0.0368889190
+	  3   4  10  13         0.0317916075
+	  4   3  13  10         0.0317916075
+	  3   3  13  13         0.0271125635
 
 
 Symmetry of excited state: A2 
@@ -645,8 +681,8 @@ Iter=7    L=13    Root    EOM Energy     Delta E   Res. Norm    Conv?
                      1   0.3991896542   4.17e-08    4.06e-05      Y
                      2   0.8348308705  -2.03e-05    7.34e-04      N
 Iter=8    L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3991896542  -2.78e-16    4.06e-05      Y
-                     2   0.8348308705  -4.44e-16    7.34e-04      N
+                     1   0.3991896542  -3.33e-16    4.06e-05      Y
+                     2   0.8348308705   2.22e-16    7.34e-04      N
 Iter=9    L=3     Root    EOM Energy     Delta E   Res. Norm    Conv?
                      1   0.3991895400  -1.14e-07    3.79e-05      Y
                      2   0.8348283140  -2.56e-06    1.77e-03      N
@@ -669,15 +705,15 @@ Final Energetic Summary for Converged Roots of Irrep A2
    1     10.863    87612.0   0.3991895498   -75.6225201668
 
 Largest components of excited wave function #0:
-	          3  10         0.6829189036
-	          3  11        -0.0908687581
-	          3  12         0.0605419285
-	          3  13        -0.0096624721
+	          3  10        -0.6829189036
+	          3  11         0.0908687581
+	          3  12        -0.0605419285
+	          3  13         0.0096624721
 	          1   0        -0.0034610473
-	  3   4  13  13         0.0585870481
-	  4   3  13  13         0.0585870481
-	  3   3  10  13         0.0536009508
-	  3   3  13  10         0.0536009508
+	  3   4  13  13        -0.0585870481
+	  4   3  13  13        -0.0585870481
+	  3   3  10  13        -0.0536009508
+	  3   3  13  10        -0.0536009508
 	  2   3   2  13        -0.0332487403
 
    2     22.717   183223.3   0.8348267174   -75.1868829992
@@ -721,8 +757,8 @@ Iter=7    L=13    Root    EOM Energy     Delta E   Res. Norm    Conv?
                      1   0.3212184680   5.67e-08    4.56e-05      Y
                      2   0.9196776488  -6.72e-06    2.64e-04      N
 Iter=8    L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3212184680  -2.22e-16    4.56e-05      Y
-                     2   0.9196776488  -4.44e-16    2.64e-04      N
+                     1   0.3212184680   2.22e-16    4.56e-05      Y
+                     2   0.9196776488   7.77e-16    2.64e-04      N
 Iter=9    L=3     Root    EOM Energy     Delta E   Res. Norm    Conv?
                      1   0.3212184839   1.59e-08    4.43e-05      Y
                      2   0.9196783982   7.49e-07    1.07e-04      N
@@ -739,22 +775,22 @@ Final Energetic Summary for Converged Roots of Irrep B1
    1      8.741    70499.3   0.3212185010   -75.7004912156
 
 Largest components of excited wave function #0:
-	          3  10        -0.6870159282
+	          3  10         0.6870159282
 	          3  11         0.0651270815
 	          3  12         0.0202580150
 	          3  13         0.0200134194
 	          3  33         0.0139557607
-	  3   3   0  10        -0.0578523196
-	  3   3  10   0        -0.0578523196
-	  3   4   0  13        -0.0509913630
-	  4   3  13   0        -0.0509913630
-	  1   3   0   0        -0.0414662862
+	  3   3   0  10         0.0578523196
+	  3   3  10   0         0.0578523196
+	  3   4   0  13         0.0509913630
+	  4   3  13   0         0.0509913630
+	  1   3   0   0         0.0414662862
 
    2     25.026   201846.0   0.9196780540   -75.1020316626
 
 Largest components of excited wave function #1:
 	          3  11        -0.6800660484
-	          3  10        -0.0596672788
+	          3  10         0.0596672788
 	          3  12        -0.0572778238
 	          4  13        -0.0224817309
 	          3  14        -0.0217695233
@@ -791,8 +827,8 @@ Iter=7    L=14    Root    EOM Energy     Delta E   Res. Norm    Conv?
                      1   0.4968843057   3.76e-07    2.02e-05      Y
                      2   0.5812995944   3.89e-07    3.71e-05      Y
 Iter=8    L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4968843057   6.11e-16    2.02e-05      Y
-                     2   0.5812995944   0.00e+00    3.71e-05      Y
+                     1   0.4968843057   1.67e-16    2.02e-05      Y
+                     2   0.5812995944  -4.44e-16    3.71e-05      Y
 Collapsing to only 2 vectors.
 Copying C for root 2 to CC_RAMPS
 
@@ -804,37 +840,42 @@ Final Energetic Summary for Converged Roots of Irrep B2
    1     13.521   109053.5   0.4968843057   -75.5248254108
 
 Largest components of excited wave function #0:
-	          2   0         0.6850736454
-	          2   1        -0.0612805645
-	          2   2         0.0612342128
+	          2   0        -0.6850736454
+	          2   1         0.0612805645
+	          2   2        -0.0612342128
 	          4  14         0.0191767098
-	          4  13        -0.0114166854
-	  2   4  13  13         0.0573218770
-	  4   2  13  13         0.0573218770
-	  2   2   0  13         0.0440229227
-	  2   2  13   0         0.0440229227
+	          4  13         0.0114166854
+	  2   4  13  13        -0.0573218770
+	  4   2  13  13        -0.0573218770
+	  2   2   0  13        -0.0440229227
+	  2   2  13   0        -0.0440229227
 	  2   2   2  13        -0.0429875461
 
    2     15.818   127580.5   0.5812995944   -75.4404101221
 
 Largest components of excited wave function #1:
 	          4  13        -0.6899818627
-	          4  14         0.0550873255
-	          4  15         0.0234183934
+	          4  14        -0.0550873255
+	          4  15        -0.0234183934
 	          2   1        -0.0183130308
 	          1   0        -0.0179261441
 	  4   4   0  13        -0.0665544350
 	  4   4  13   0        -0.0665544350
 	  3   4  10   0        -0.0349315494
 	  4   3   0  10        -0.0349315494
-	  2   4   2   0         0.0312515770
+	  2   4   2   0        -0.0312515770
 
 
-R0 of normalized R   =             nan
+R0 of unnormalized R =    0.0000000000
+Writing to CC_INFO...
+Irrep of R vector    = B2 
+EOM energy           =    0.5812995944
+R0 of normalized R   =    0.0000000000
+checked normalization <R|R> =    1.0000000000
 ******************************************************************************
-tstop called on diadem.giga.net
-Thu Dec 19 16:51:35 2002
+tstop called on boromir.chem
+Tue Apr 29 15:51:21 2003
 
-user time   =       2.26 seconds =       0.04 minutes
-system time =       3.18 seconds =       0.05 minutes
-total time  =          6 seconds =       0.10 minutes
+user time   =       3.97 seconds =       0.07 minutes
+system time =       3.38 seconds =       0.06 minutes
+total time  =          7 seconds =       0.12 minutes
