@@ -4,6 +4,7 @@
 **
 */
 
+#include <stdexcept>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -306,7 +307,6 @@ void init_io(int argc, char *argv[])
   int errcod = psi_start(argc-1,argv+1,0);
   if (errcod != PSI_RETURN_SUCCESS)
     throw std::runtime_error("init_io -- psi_start failed");
-  ip_cwk_add(":DEFAULT");
   ip_cwk_add(progid);
   tstart(outfile);
   psio_init();
