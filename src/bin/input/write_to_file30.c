@@ -45,7 +45,7 @@ void write_to_file30(double repulsion)
   pointers = init_int_array(MPOINT);
   calcs = init_int_array(MPOINT);
 
-  /* Check the max_angmom. If it's > 4 - die */
+  /* Check the max_angmom. If it's >= MAXANGMOM from file30_params.h - die */
   if (max_angmom >= MAXANGMOM)
     punt("Angular momentum is too high to be handled by file30");
 
