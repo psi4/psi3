@@ -440,12 +440,19 @@ psi: (
   DETCASTwoConFirstFreq  = $DETCASFirstFreq
 
 
-  % Procedures for the direct MP2 energy
-  MP2Energy = ($ints $scf $mp2_direct)
+  % Procedures for the conventional MP2 energy
+  MP2Energy = ($ints $scf $transqt $ccsort $mp2)
   MP2RHFEnergy = ($MP2Energy $done)
   MP2ROHFEnergy = ERROR
   MP2UHFEnergy = ERROR
   MP2TwoConEnergy = ERROR
+
+  % Procedures for the direct MP2 energy
+  DirectMP2Energy = ($ints $scf $mp2_direct)
+  DirectMP2RHFEnergy = ($DirectMP2Energy $done)
+  DirectMP2ROHFEnergy = ERROR
+  DirectMP2UHFEnergy = ERROR
+  DirectMP2TwoConEnergy = ERROR
 
   % Procedures for optimization via MP2 energy points
   MP2EnergyOpt = (repeat $nopt $MP2Energy $findif_disp_symm 
@@ -455,5 +462,15 @@ psi: (
   MP2ROHFEnergyOpt = ERROR
   MP2UHFEnergyOpt = ERROR
   MP2TwoConEnergyOpt = ERROR
+
+  % Procedures for optimization via DirectMP2 energy points
+  DirectMP2EnergyOpt = (repeat $nopt $DirectMP2Energy $findif_disp_symm 
+    repeat $ndisp $findif_next $DirectMP2Energy $findif_energy end
+    $findif_grad_energy $geomupdate end $done)
+  DirectMP2RHFEnergyOpt = $DirectMP2EnergyOpt
+  DirectMP2ROHFEnergyOpt = ERROR
+  DirectMP2UHFEnergyOpt = ERROR
+  DirectMP2TwoConEnergyOpt = ERROR
+
 ) 
 
