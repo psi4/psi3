@@ -11,6 +11,13 @@ and uses an approximate orbital Hessian and a Newton-Raphson update,
 accelerated by Pulay's DIIS procedure.  Future versions of the
 program will allow RASSCF type wavefunctions.
 
+At present, CASSCF's work most efficiently if the inactive orbitals
+are treated as ``frozen'' in the {\tt FROZEN\_DOCC} and {\tt FROZEN\_UOCC} 
+arrays.  These orbitals are still optimized by the CASSCF.  This
+procedure is being simplified for the next release of \PSIthree.
+See the {\tt casscf-sp} example in the \file{tests} directory for an
+example of the current input.
+
 \subsubsection{Basic Keywords}
 \begin{description}
 \item[WFN = string]\mbox{}\\
