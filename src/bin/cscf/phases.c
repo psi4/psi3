@@ -96,8 +96,8 @@ int phase(void)
 	    for(j=0; j < nn; j++)
 	      for(i=0; i < num_mo; i++)
 		spin_info[m].scf_spin[k].cmat[j][i] = cnew[k][j][i];
+	    free_block(cnew[k]);
 	  }
-	  free_block(cnew[k]);
 	}
       }
       else fprintf(outfile, "\n No phase correction for spin type %1d possible.\n", m);

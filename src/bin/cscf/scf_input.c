@@ -357,6 +357,7 @@ void scf_input(ipvalue)
    phase_chk = 1;
    errcod = ip_boolean("PHASE",&phase_chk,0);
    if(phase_check && phase_chk) phase_check = 1;
+   else phase_check = 0;
 
 /* read in damping factor and level shift */
 
