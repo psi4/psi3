@@ -1,8 +1,11 @@
 /* $Log$
- * Revision 1.5  2000/07/10 18:03:31  sbrown
- * Enabling cscf to send over just the occupied SCF eigenvector for DFT
- * calculations.  Only done for the RHF case.
+ * Revision 1.6  2000/10/13 19:51:20  evaleev
+ * Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
  *
+/* Revision 1.5  2000/07/10 18:03:31  sbrown
+/* Enabling cscf to send over just the occupied SCF eigenvector for DFT
+/* calculations.  Only done for the RHF case.
+/*
 /* Revision 1.4  2000/07/06 21:06:05  sbrown
 /* Fixed a seg fault inf form_vec.c
 /*
@@ -74,7 +77,6 @@ void form_vec()
        }
    }
    
-   inflg = 0;
    free_matrix(ctrans,nsfmax);
    free_matrix(temp,nsfmax);
    free_matrix(sqhmat,nsfmax);

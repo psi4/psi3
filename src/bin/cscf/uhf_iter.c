@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.2  2000/06/22 22:15:02  evaleev
- * Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
+ * Revision 1.3  2000/10/13 19:51:22  evaleev
+ * Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
  *
+/* Revision 1.2  2000/06/22 22:15:02  evaleev
+/* Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
+/*
 /* Revision 1.1.1.1  2000/02/04 22:52:34  evaleev
 /* Started PSI 3 repository
 /*
@@ -67,7 +70,7 @@ void uhf_iter()
 
 {
    int i,j,l,m,t,ij;
-   int nn,newci;
+   int nn,num_mo,newci;
    double cimax;
    double **scr;
    double **fock_c;
@@ -142,12 +145,16 @@ void uhf_iter()
 	   for (m=0; m < num_ir ; m++) {
 	       s = &scf_info[m];
 	       if (nn=s->num_so) {
+		   num_mo = s->num_mo;
+		   
 		   /* transform fock_pac to mo basis */
 		   tri_to_sq(sp->scf_spin[m].fock_pac,fock_ct,nn);
-		   mxmb(sp->scf_spin[m].cmat,nn,1
+/*		   mxmb(sp->scf_spin[m].cmat,nn,1
 			,fock_ct,1,nn,scr,1,nn,nn,nn,nn);
 		   mxmb(scr,1,nn,sp->scf_spin[m].cmat,1
-			,nn,fock_c,1,nn,nn,nn,nn);
+			,nn,fock_c,1,nn,nn,nn,nn);*/
+		   mmult(sp->scf_spin[m].cmat,1,fock_ct,0,scr,0,num_mo,nn,nn,0);
+		   mmult(scr,0,sp->scf_spin[m].cmat,0,fock_c,0,num_mo,nn,num_mo,0);
 		   
 		   /*  diagonalize fock_c to get ctrans */
 		   sq_rsp(nn,nn,fock_c,sp->scf_spin[m].fock_evals
@@ -156,20 +163,21 @@ void uhf_iter()
 		   if(print & 4) {
 		       fprintf(outfile,"\n %s eigenvector for irrep %s\n"
 			       ,sp->spinlabel,s->irrep_label);
-		       eivout(ctrans,sp->scf_spin[m].fock_evals,nn,nn,outfile);
+		       eivout(ctrans,sp->scf_spin[m].fock_evals,num_mo,num_mo,outfile);
 		   }
 		   
-		   mxmb(sp->scf_spin[m].cmat,1,nn,
-			ctrans,1,nn,scr,1,nn,nn,nn,nn);
+/*		   mxmb(sp->scf_spin[m].cmat,1,nn,
+			ctrans,1,nn,scr,1,nn,nn,nn,nn);*/
+		   mmult(sp->scf_spin[m].cmat,0,ctrans,0,scr,0,nn,num_mo,num_mo,0);
 				   
 		   if(print & 4) {
 		       fprintf(outfile,"\n %s eigenvector after irrep %s\n",
 			       sp->spinlabel,s->irrep_label);
-		       print_mat(scr,nn,nn,outfile);
+		       print_mat(scr,nn,num_mo,outfile);
 		   }
 		   
 		   for (i=0; i < nn; i++)
-		       for (j=0; j < nn; j++)
+		       for (j=0; j < num_mo; j++)
 			   sp->scf_spin[m].cmat[i][j] = scr[i][j];
                }
 	   }
@@ -190,9 +198,10 @@ void uhf_iter()
 	       for(i=0; i < num_ir ; i++) {
 		   s = &scf_info[i];
 		   if (nn=s->num_so) {
+		       num_mo = s->num_mo;
 		       fprintf(outfile,"\northogonalized mos irrep %s\n",
 			       s->irrep_label);
-		       print_mat(spin_info[j].scf_spin[i].cmat,nn,nn,outfile);
+		       print_mat(spin_info[j].scf_spin[i].cmat,nn,num_mo,outfile);
 		   }
 	       }
 	   }

@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.1  2000/02/04 22:52:32  evaleev
- * Initial revision
+ * Revision 1.2  2000/10/13 19:51:22  evaleev
+ * Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
  *
+/* Revision 1.1.1.1  2000/02/04 22:52:32  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.2  1999/08/17 19:04:18  evaleev
 /* Changed the default symmetric orthogonalization to the canonical
 /* orthogonalization. Now, if near-linear dependencies in the basis are found,
@@ -47,8 +50,8 @@ void schmit(all)
 
          ncol = s->nclosed + s->nopen;
          if(s->nhalf) ncol++;
-         if(!ncol) ncol++;
-         if(all) ncol = num_mo;
+	 if(all) ncol = num_mo;
+         if(!ncol) continue;
          for(m=0; m < ncol ; m++) {
             v[0]=ctmp[m][0]*s->smat[0];
             for(i=1; i < nn ; i++) {
@@ -60,7 +63,9 @@ void schmit(all)
                v[i] = vtmp+ctmp[m][i]*s->smat[ioff[i]+j];
                }
             for(i=0,vtmp=0.0; i < nn ; i++) vtmp += v[i]*ctmp[m][i];
-            if(!vtmp) exit(23);
+            if(!vtmp) {
+		exit(23);
+	    }
             if(vtmp < 10.0e-20) vtmp = 10.0e-20;
             vtmp = 1.0/sqrt(vtmp);
 

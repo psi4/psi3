@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.1  2000/02/04 22:52:33  evaleev
- * Initial revision
+ * Revision 1.2  2000/10/13 19:51:22  evaleev
+ * Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
  *
+/* Revision 1.1.1.1  2000/02/04 22:52:33  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.3  1999/08/17 19:04:18  evaleev
 /* Changed the default symmetric orthogonalization to the canonical
 /* orthogonalization. Now, if near-linear dependencies in the basis are found,
@@ -41,6 +44,7 @@ void shalf()
      eig_vecs = (double **) init_matrix(nsfmax,nsfmax);
 
      mxcoef = 0;
+     mxcoef2 = 0;
      nmo = 0;
      
 /*  diagonalize smat to get eigenvalues and eigenvectors  */
@@ -65,16 +69,17 @@ void shalf()
 	     the dangerously small ones ---*/
 	   num_mo = 0;
 	   for(ii=0; ii < nn ; ii++)
-	     if (eig_vals[ii] >= SEVAL_CUTOFF) {
+	     if (eig_vals[ii] >= LINDEP_CUTOFF) {
 	       eig_vals[ii] = 1.0/sqrt(eig_vals[ii]);
 	       num_mo++;
 	     }
 	   s->num_mo = num_mo;
 	   mxcoef += num_mo * nn;
+	   mxcoef2 += ioff[nn];
 	   nmo += num_mo;
 	   if (num_mo < nn)
 	     fprintf(outfile,"\n  In symblk %d %d eigenvectors of S with eigenvalues < %lf are thrown away",
-		     i,nn-num_mo,SEVAL_CUTOFF);
+		     i,nn-num_mo,LINDEP_CUTOFF);
 
 /* form 'sahalf' matrix sahalf = U*(s-1/2)  */
 

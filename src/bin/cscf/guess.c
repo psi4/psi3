@@ -12,20 +12,20 @@
 #include "includes.h"
 #include "common.h"
 #include <ip_libv1.h>
-struct symm *s;
-int i,j,bool,k,m,l,o;
-int errcod;
-int nc,no,nh,nn;
-int netmp=0;
-int size;
-int optri;
-char *guess_opt,*occ_fix_str;
-int  *cldpi,*openpi;
-reftype reftmp;
-int mguess;
 
 void guess()
 {
+  struct symm *s;
+  int i,j,bool,k,m,l,o;
+  int errcod;
+  int nc,no,nh,nn;
+  int netmp=0;
+  int size;
+  int optri;
+  char *guess_opt,*occ_fix_str;
+  reftype reftmp;
+  int mguess;
+
    ip_cwk_clear();
    ip_cwk_add(":DEFAULT");
    ip_cwk_add(":SCF");
@@ -37,7 +37,7 @@ void guess()
     }
 
 /* ---- Get reference type for comparison for restarting ----*/
-  if(inflg) reftmp = file30_rd_ref();
+  if(inflg == 1) reftmp = file30_rd_ref();
   
 /*---If first calculation either read occupations from DOCC or form an initial guess---*/
       
@@ -99,11 +99,10 @@ void guess()
 	      }
 	  }
 	  else if(inflg == 1 && (reftmp == refnum) )
-	      occ_read(cldpi,openpi);
+	      occ_read();
 	      
 	  else{
-	      fprintf(outfile, "\n  Using core guess to");
-	      fprintf(outfile, " determine occupations\n\n"); 
+	      fprintf(outfile, "  Using core guess to determine occupations\n\n"); 
 	      
 /* sort orbitals into two arrays, one with the symmetry label and 
    one with the eigenvalues */

@@ -1,9 +1,12 @@
 /* $Log$
- * Revision 1.8  2000/08/23 17:15:16  sbrown
- * Added portions to separate out the correlation and exchange energy at the
- * end the calculation as well as do the consistency check on the integrated
- * density.
+ * Revision 1.9  2000/10/13 19:51:22  evaleev
+ * Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
  *
+/* Revision 1.8  2000/08/23 17:15:16  sbrown
+/* Added portions to separate out the correlation and exchange energy at the
+/* end the calculation as well as do the consistency check on the integrated
+/* density.
+/*
 /* Revision 1.7  2000/08/21 00:28:58  sbrown
 /* Included dft_inputs.c and now cscf has information about both the dft
 /* functionals and grids.
@@ -103,7 +106,7 @@ void scf_input(ipvalue)
    int i,j,k,ijk,m;
    double elast;     
    double **scr_mat;
-   char *alabel,*bool="YES",*optyp,*wfn,*dertype;
+   char *alabel,*bool="YES",*optyp,*wfn,*dertype,*guess;
    char *grid_str;
    char cjunk[80];
    int norder,*iorder,reordr;
@@ -117,7 +120,7 @@ void scf_input(ipvalue)
    int phase_chk;
    int mo_offset, so_offset;
    struct symm *s;
-   int reftmp;
+   reftype reftmp;
    int depth;
 
    ip_cwk_clear();
@@ -136,13 +139,21 @@ void scf_input(ipvalue)
 
    mixing = 0;
    errcod = ip_boolean("ORB_MIX",&mixing,0);
-   
-   inflg = 0;
-   errcod = ip_string("RESTART",&bool,0);
-   if(errcod == IPE_OK) {
-      if(!strcmp(bool,"NO") || !strcmp(bool,"FALSE") || !strcmp(bool,"0"))
-        inflg=2;
-      }
+
+   /*-----------------------------------------------------
+     Which type of guess to use. Sets inflg to:
+     0 (AUTO,default) - check if there's an old vector
+                        in file30, set inflg to 1 on yes,
+		        to 2 otherwise.
+     1                - use old vector in file30
+     2 (GUESS=CORE)   - use core guess
+    -----------------------------------------------------*/
+   guess = strdup("AUTO");
+   errcod = ip_string("GUESS",&guess,0);
+   if (!strcmp(guess,"AUTO"))
+       inflg=0;
+   else if (!strcmp(guess,"CORE"))
+       inflg=2;
 
    reordr = 0;
    norder = 0;
@@ -179,7 +190,7 @@ void scf_input(ipvalue)
 
    it_diis = 0;
    errcod = ip_data("DIISSTART","%d",&it_diis,0);
-
+   
    print = 0;
    errcod = ip_data("IPRINT","%d",&print,0);
 
@@ -233,7 +244,7 @@ void scf_input(ipvalue)
    fprintf(outfile,"  dertype      = %s\n",dertype);
    fprintf(outfile,"  convergence  = %d\n",iconv);
    fprintf(outfile,"  maxiter      = %d\n",itmax);
-   fprintf(outfile,"  restart      = %s\n",bool);
+   fprintf(outfile,"  guess        = %s\n",guess);
    if(print) fprintf(outfile,"  iprint       = %d\n",print);
    if (second_root)
      fprintf(outfile,"  second_root = TRUE\n");
@@ -260,9 +271,9 @@ void scf_input(ipvalue)
 /* from file30.  if inflg is 2, just use core hamiltonian guess */
 /* if inflg is 1, get old vector no matter what ncalcs is */
 
-   if ((!inflg && ncalcs) || inflg == 1) {
+   if ((inflg==0 && ncalcs) || inflg == 1) {
        
-       if (!inflg) inflg = 1;
+       inflg = 1;
        mxcoef = file30_rd_mxcoef();
        optri = abs(file30_rd_iopen());
        reftmp = file30_rd_ref();
@@ -272,7 +283,7 @@ void scf_input(ipvalue)
 /* get old energy from file30 */
        
        elast = file30_rd_escf();
-       fprintf(outfile,"\n  energy from old vector: %14.8f\n",elast);
+       fprintf(outfile,"  energy from old vector: %14.8f\n",elast);
        
        so_offset = 0;
        mo_offset = 0;
@@ -287,7 +298,7 @@ void scf_input(ipvalue)
 	   
 	   /* if the reference is not UHF, then just read in the vector for the 
 	      restricted calculation into both */
-	   if(reftmp != ref_uhf || reftmp != ref_uks){
+	   if(reftmp != ref_uhf && reftmp != ref_uks){
 	       
 	       for(k=0; k < num_ir ; k++) {
 		   s = &scf_info[k];
@@ -416,7 +427,7 @@ void scf_input(ipvalue)
        }
    }
    else {
-       inflg = -1;
+       inflg = 2;
        fprintf(outfile,"  first run, so defaulting to core-hamiltonian guess\n");
        /* TDC(6/19/96) - If not starting from old vector, don't allow
 	  phase checking */

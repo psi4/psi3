@@ -273,7 +273,7 @@ then set DELETE34 = false.  The default is true.
 
 .IP "\fBREORDER =\fP \fIboolean\fP"
 The molecular orbitals will be reordered if this is true, in which
-case, the MOORDER parameter must be present.
+case, the \fBMOORDER\fP parameter must be present.
 The default is false.
 
 .IP "\fBMOORDER =\fP \fIinteger_vector\fP"
@@ -307,21 +307,13 @@ irreducible representations containing singly
 occupied molecular orbitals.
 There is no default.
 
-.IP "\fBRESTART =\fP \fIboolean\fP"
-The calculation will restart from the old wavefunction
-if \fIboolean\fP is true.  If the old wavefunction does not
-exist, then the
-.B scf
-program will generate its own initial guess automatically.
-Possible values for this parameter are
-.BR TRUE ,
-.BR YES ,
-.BR 1 ,
-.BR FALSE ,
-.BR NO ,
-and
-.BR 0 .
-The default is true.
+.IP "\fBGUESS =\fP \fIstring\fP"
+This option determines the type of initial guess at the eigenvector
+CSCF will use. The only valid option at the moment are : (1) \fBGUESS = CORE\fP,
+which causes it to use core Hamiltonian eigenvector to start the calculation;
+(2) \fBGUESS = AUTO\fP which results in an attempt to use the MO vector
+in the checkpoint file, or resorts to core guess if there is no eigenvector
+in that file. The default if \fBAUTO\fP.
 
 .IP "\fBIPRINT =\fP \fIinteger\fP"
 This is a print option.

@@ -1,10 +1,13 @@
 /* $Id$ */
 /* $Log$
- * Revision 1.6  2000/08/23 17:15:16  sbrown
- * Added portions to separate out the correlation and exchange energy at the
- * end the calculation as well as do the consistency check on the integrated
- * density.
+ * Revision 1.7  2000/10/13 19:51:19  evaleev
+ * Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
  *
+/* Revision 1.6  2000/08/23 17:15:16  sbrown
+/* Added portions to separate out the correlation and exchange energy at the
+/* end the calculation as well as do the consistency check on the integrated
+/* density.
+/*
 /* Revision 1.5  2000/07/10 18:03:30  sbrown
 /* Enabling cscf to send over just the occupied SCF eigenvector for DFT
 /* calculations.  Only done for the RHF case.
@@ -91,10 +94,10 @@
  * */
 
 #include <libciomr.h>
+#include <file30.h>
 
 #define MAX_BASIS 4096
 #define MAXIOFF 4096
-#define SEVAL_CUTOFF 1.0E-6
 
 #define SMAT 0
 #define TMAT 1
@@ -149,8 +152,6 @@ EXTERN int nmo;                 /* total number of molecular orbitals */
 EXTERN char *reference;         /* RHF,UHF,ROHF,TCSCF,RKS,UKS */
 EXTERN char *functional;        /* KS DFT functional name, just to print out */
 
-typedef enum {ref_rhf = 0, ref_uhf = 1, ref_rohf = 2, ref_tcscf = 3,
-      ref_rks = 4, ref_uks = 5} reftype;
 EXTERN reftype refnum;
 
 EXTERN int exitflag;            /* remove the after debugging */

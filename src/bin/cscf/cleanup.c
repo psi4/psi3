@@ -1,9 +1,12 @@
 /* $Log$
- * Revision 1.2  2000/08/23 17:15:15  sbrown
- * Added portions to separate out the correlation and exchange energy at the
- * end the calculation as well as do the consistency check on the integrated
- * density.
+ * Revision 1.3  2000/10/13 19:51:19  evaleev
+ * Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
  *
+/* Revision 1.2  2000/08/23 17:15:15  sbrown
+/* Added portions to separate out the correlation and exchange energy at the
+/* end the calculation as well as do the consistency check on the integrated
+/* density.
+/*
 /* Revision 1.1.1.1  2000/02/04 22:52:28  evaleev
 /* Started PSI 3 repository
 /*
@@ -174,7 +177,7 @@ void cleanup()
    | (Beta SCF eigenvec)| (Alpha SCF eigenval)| (Beta SCF eigenval)|
    -----------------------------------------------------------------
 
-   | num_ir*4               | n_so_typs                  |
+   | n_so_typs*4            | n_so_typs                  |
    | (Non-zero irrep labels)| (number of orbitals/irrep) |
    -------------------------------------------------------
    

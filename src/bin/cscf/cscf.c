@@ -170,6 +170,8 @@ static char *rcsid = "$Id$";
 #include <ip_libv1.h>
 #include <psio.h>
 
+void print_initial_vec();
+
 int main(argc,argv)
    int argc;
    char *argv[];
@@ -299,31 +301,37 @@ int main(argc,argv)
 
 /* if no initial vector, form one from core hamiltonian */
 
-   if (inflg < 0) form_vec();
+   if (inflg == 2) form_vec();
    fflush(outfile);
 
 /* guess or designate orbital occupations*/
    guess();
 
-/* form first density matrix */
-   if(uhf && inflg)
-       schmit_uhf(0);
-   else
-       schmit(0);
+/* orthogonalize old vector and form first density matrix */
+   if (inflg == 1) {
+       if(uhf)
+	   schmit_uhf(1);
+       else
+	   schmit(1);
+   }
    
    if (!twocon){
        if(!uhf)
 	   dmat();
        else{
-	   if(!inflg)
+	   /*--- Prepare alpha and beta eigenvectors from
+	     the core Hamiltonian guess ---*/
+	   if(inflg == 2)
 	       cmatsplit();
 	   dmatuhf();
 	   
        }
    }
-   
-/* if there are no two-electron integrals, exit */
 
+/* Print out the first vector */
+   if (print & 2)
+       print_initial_vec();
+   
 /* Decide how to form the Fock matrix */
 
    if (!direct_scf) {
@@ -336,9 +344,6 @@ int main(argc,argv)
      rfile(itap93);
      rdtwo();
      
-     if (!use_iwl)
-       if(delete_ints) rclose(itap34,4);
-       else rclose(itap34,3);
    }
    else {
 /* form the Fock matrix directly */
@@ -370,3 +375,28 @@ int main(argc,argv)
 
    cleanup();
    }
+
+
+void print_initial_vec()
+{
+  int irrep, nso, nmo;
+  struct symm *s;
+  
+  for(irrep=0;irrep<num_ir;irrep++) {
+      s = &scf_info[irrep];
+      if (nso=s->num_so)
+	  nmo = s->num_mo;
+	  if (uhf) {
+	      fprintf(outfile,"\n  Initial alpha vector for irrep %s\n",s->irrep_label);
+	      print_mat(spin_info[0].scf_spin[irrep].cmat,nso,nmo,outfile);
+	      fprintf(outfile,"\n  Initial beta vector for irrep %s\n",s->irrep_label);
+	      print_mat(spin_info[1].scf_spin[irrep].cmat,nso,nmo,outfile);
+	  }
+	  else {
+	      fprintf(outfile,"\nInitial vector for irrep %s\n",s->irrep_label);
+	      print_mat(s->cmat,nso,nmo,outfile);
+	  }
+  }
+
+  return;
+}    

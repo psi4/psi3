@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.1  2000/02/04 22:52:31  evaleev
- * Initial revision
+ * Revision 1.2  2000/10/13 19:51:21  evaleev
+ * Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
  *
+/* Revision 1.1.1.1  2000/02/04 22:52:31  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.3  1999/11/02 18:10:14  evaleev
 /* Direct SCF improved
 /*
@@ -25,57 +28,6 @@ static char *rcsid = "$Id$";
 #include "includes.h"
 #include "common.h"
 #include <iwl.h>
-
-void rdone(oei)
-   int oei;
-
-{
-   int ilsti, nbuf;
-   int ibufsz = 8942;
-   int ibufs3 = 1491;
-   int i, iijj;
-   int ior, ism, jor, jsm;
-
-   union bufs {
-      int *lbli;
-      double *stvi;
-      } buffer;
-
-   buffer.stvi = (double *) init_array(ibufsz);
-
-   do {
-      sread(itap34,(char *) (buffer.lbli),sizeof(int)*ibufsz);
-      pos34 += sizeof(int)*ibufsz;
-      pos34 = ((pos34-1+4096)/4096)*4096;
-      ilsti=buffer.lbli[0];
-      nbuf=buffer.lbli[1];
-
-      for (i=0 ; i < nbuf ; i++) {
-         jsm = buffer.lbli[i+2] >> 8;
-         ior = jsm >> 3;
-         ism = ior >> 8;
-         ior = (ior & 255)-1;
-         jsm = jsm & 7;
-         jor = (buffer.lbli[i+2] & 255)-1;
-         iijj = ioff[ior]+jor;
-         switch(oei) {
-         case SMAT:
-            scf_info[ism].smat[iijj]=buffer.stvi[i+ibufs3];
-            break;
-         case TMAT:
-            scf_info[ism].tmat[iijj]=buffer.stvi[i+ibufs3];
-            break;
-         case VMAT:
-            scf_info[ism].hmat[iijj]=
-                               buffer.stvi[i+ibufs3]+scf_info[ism].tmat[iijj];
-            break;
-            }
-         }
-       } while(!ilsti);
-
-   free(buffer.stvi);
-   }
-
 
 void rdone_iwl()
 {

@@ -34,36 +34,6 @@ void init_uhf()
       ioff[i] = ioff[i-1] + i;
       }
 
-/* read header information from integral tape */
-/* EFV 10/24/95 I left this junk here for now */
-
-   if (!use_iwl) {
-     num_so = init_int_array(20);
-     wreadw(itap34,(char *) (&nkind),sizeof(int)*1,(PSI_FPTR) 0,&next);
-     wreadw(itap34,(char *) (&junk),sizeof(int)*1,next,&next);
-     wreadw(itap34,(char *) (char_dum),sizeof(char)*80,next,&next);
-     wreadw(itap34,(char *) (&repnuc),sizeof(double)*1,next,&next);
-     wreadw(itap34,(char *) (&num_ir),sizeof(int)*1,next,&next);
-     wreadw(itap34,(char *) (degen),sizeof(int)*num_ir,next,&next);
-     wreadw(itap34,(char *) (char_dum),sizeof(int)*num_ir,next,&next);
-     wreadw(itap34,(char *) (num_so),sizeof(int)*num_ir,next,&next);
-     wreadw(itap34,(char *) (&junk),sizeof(int)*1,next,&next);
-     wreadw(itap34,(char *) (real_dum),sizeof(int)*2*junk,next,&next);
-     wreadw(itap34,(char *) (&junk),sizeof(int)*1,next,&next);
-     wreadw(itap34,(char *) (real_dum),sizeof(int)*junk,next,&next);
-     wreadw(itap34,(char *) (real_dum),sizeof(int)*junk,next,&next);
-     /* set integral file pointer to sector boundary */
-     isadr = i2sec(next) + 1;
-     rsetsa(itap34,isadr);
-     pos34 = sec2i(--isadr);
-     free(num_so);
-
-     if (nkind != 1 && nkind != 2) {
-        fprintf(outfile,"integral file screwed up, fix ints somebody!!!\n");
-        exit(1);
-     }
-   }
-
 /* EFV 10/24/98 All requests for file30 should be handled with libfile30
    but for now I'll use wreadw */
    num_ir = file30_rd_nirreps();
@@ -75,8 +45,6 @@ void init_uhf()
 /* now initialize scf_info */
    
    n_so_typs=0;
-   mxcoef=0;
-   mxcoef2=0;
    nsfmax=0;
    nbasis=0;
    
@@ -111,8 +79,6 @@ void init_uhf()
        if (nn) {
 	   n_so_typs++;
 	   if (nn > nsfmax) nsfmax = nn;
-	   mxcoef += nn*nn;
-	   mxcoef2 += ioff[nn];
 	   
 	   scf_info[i].smat = init_array(ioff[nn]);
 	   scf_info[i].tmat = init_array(ioff[nn]);
