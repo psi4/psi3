@@ -390,6 +390,10 @@ if test $psi_ac_strstr = "no"; then
   CDEF="$CDEF -DNO_STRSTR"
 fi
 
+AC_CHECK_FUNC(setenv,[extradef="-DHAVE_SETENV"])
+CDEF="$CDEF $extradef"
+CXXDEF="$CXXDEF $extradef"
+
 AC_CHECK_FUNC(unsetenv,[extradef="-DHAVE_UNSETENV"])
 CDEF="$CDEF $extradef"
 CXXDEF="$CXXDEF $extradef"
