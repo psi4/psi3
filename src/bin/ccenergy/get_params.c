@@ -21,7 +21,7 @@ void get_params()
   }
 
   errcod = ip_string("REFERENCE", &(junk),0);
-  // if no reference is given, assume rhf
+  /* if no reference is given, assume rhf */
   if (errcod != IPE_OK) {
     ref = 0;
   }
