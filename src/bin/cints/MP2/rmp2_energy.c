@@ -50,7 +50,7 @@
 	    (rs|ia) += Cas * (rs|is)
 	  End q, a, i
         End r, s loop
-	***Lock (js| and (jr|
+	***Lock (js| and (jr| (either individual or shell blocks depending on LOCK_RS_SHELL in rmp2_energy.h)
 	Loop over r in R, s in S
 	  Loop over i in I, a < nuocc, j <= i
 	    (js|ia) += Cjr * (rs|ia)
@@ -190,7 +190,6 @@ void rmp2_energy()
   jbia_buf = init_array(MOInfo.nactdocc*MOInfo.nactuocc*
 			num_i_per_ibatch*MOInfo.nactuocc);
   fprintf(outfile,"  Using %d %s\n\n",num_ibatch, (num_ibatch == 1) ? "pass" : "passes");
-  fprintf(outfile,"  Using %d %s\n\n",UserOptions.num_threads, (UserOptions.num_threads == 1) ? "thread" : "threads");
 
   /*--------------------------
     Start compute threads now
@@ -201,8 +200,13 @@ void rmp2_energy()
 			PTHREAD_SCOPE_SYSTEM);
   pthread_mutex_init(&rmp2_energy_mutex,NULL);
   pthread_cond_init(&rmp2_energy_cond,NULL);
+#if LOCK_RS_SHELL
   rmp2_sindex_mutex = (pthread_mutex_t *) malloc(ioff[Symmetry.num_unique_shells]*sizeof(pthread_mutex_t));
-  for(i=0;i<1000/*ioff[Symmetry.num_unique_shells]*/;i++)
+  for(i=0;i<ioff[Symmetry.num_unique_shells];i++)
+#else
+  rmp2_sindex_mutex = (pthread_mutex_t *) malloc(BasisSet.num_ao*sizeof(pthread_mutex_t));
+  for(i=0;i<BasisSet.num_ao;i++)
+#endif
       pthread_mutex_init(&(rmp2_sindex_mutex[i]),NULL);
   for(i=0;i<UserOptions.num_threads-1;i++)
     pthread_create(&(thread_id[i]),&thread_attr,
@@ -212,7 +216,11 @@ void rmp2_energy()
     pthread_join(thread_id[i], NULL);
   free(thread_id);
   pthread_mutex_destroy(&rmp2_energy_mutex);
-  for(i=0;i<1000/*ioff[Symmetry.num_unique_shells]*/;i++)
+#if LOCK_RS_SHELL
+  for(i=0;i<ioff[Symmetry.num_unique_shells];i++)
+#else
+  for(i=0;i<BasisSet.num_ao;i++)
+#endif
       pthread_mutex_destroy(&(rmp2_sindex_mutex[i]));
   
   fprintf(outfile,"  MBPT[2] Energy = %20.10lf\n",RMP2_Status.Emp2);

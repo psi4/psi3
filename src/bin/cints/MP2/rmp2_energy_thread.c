@@ -623,8 +623,10 @@ void rmp2_energy_thread(void *tnum_ptr)
 
 	  /*--- step 3 of the transformation ---*/
 	  rsi_row = rsia_buf;
-	  /*--- To update (JS|IA) need to lock mutex corresponding to the S index ---*/
-/*	  pthread_mutex_lock(&rmp2_sindex_mutex[INDEX(si,sj)]);*/
+	  /*--- To update (JS|IA) need to lock mutex corresponding to the S and R indices ---*/
+#if LOCK_RS_SHELL	  
+	  pthread_mutex_lock(&rmp2_sindex_mutex[INDEX(si,sj)]);
+#endif
 	  for(r=0;r<nr;r++) {
 	      for(s=0;s<ns;s++) {
 /*		  timer_on("Step 3");*/
@@ -632,28 +634,38 @@ void rmp2_energy_thread(void *tnum_ptr)
 		  s_abs = s + ss_fao;
 		  for(mo_i=0;mo_i<ibatch_length;mo_i++,rsi_row+=MOInfo.nactuocc) {
 		      for(mo_j=0;mo_j<=mo_i+imin-jmin;mo_j++) {
+#if !LOCK_RS_SHELL
 			  pthread_mutex_lock(&rmp2_sindex_mutex[s_abs]);
+#endif
 			  jsi_row = jsia_buf + ((mo_j * BasisSet.num_ao + s_abs) * ibatch_length + mo_i) * MOInfo.nactuocc;
 			  temp = MOInfo.scf_evec_occ[0][mo_j+jmin][r_abs];
 			  for(mo_a=0;mo_a<MOInfo.nactuocc;mo_a++) {
 			      jsi_row[mo_a] += temp * rsi_row[mo_a];
 			  }
+#if !LOCK_RS_SHELL
 			  pthread_mutex_unlock(&rmp2_sindex_mutex[s_abs]);
+#endif
 			  if (usi != usj) {
+#if !LOCK_RS_SHELL
 			    pthread_mutex_lock(&rmp2_sindex_mutex[r_abs]);
+#endif
 			    jsi_row = jsia_buf + ((mo_j * BasisSet.num_ao + r_abs) * ibatch_length + mo_i) * MOInfo.nactuocc;
 			    temp = MOInfo.scf_evec_occ[0][mo_j+jmin][s_abs];
 			    for(mo_a=0;mo_a<MOInfo.nactuocc;mo_a++) {
 			      jsi_row[mo_a] += temp * rsi_row[mo_a];
 			    }
+#if !LOCK_RS_SHELL
 			    pthread_mutex_unlock(&rmp2_sindex_mutex[r_abs]);
+#endif
 			  }
 		      }
 		  }
 /*		  timer_off("Step 3");*/
 	      }
 	  }
-/*	  pthread_mutex_unlock(&rmp2_sindex_mutex[INDEX(si,sj)]);*/
+#if LOCK_RS_SHELL
+	  pthread_mutex_unlock(&rmp2_sindex_mutex[INDEX(si,sj)]);
+#endif
 	  memset(rsiq_buf,0,nr*ns*ibatch_length*BasisSet.num_ao*sizeof(double));
 	  memset(rsia_buf,0,nr*ns*ibatch_length*MOInfo.nactuocc*sizeof(double));
 
