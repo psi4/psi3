@@ -3,8 +3,23 @@
 #define EXTERN
 #include "globals.h"
 
-/* FME, Fme, FMI, Fmi, FAE, Fae become real matrix elements */
-/* FMEt,Fmet,FMIt,Fmit,FAEt,Faet have zeros on diagonal */
+/* F_build(): Constructs the one-electron HBAR matrix elements
+** Fme, Fae, and Fmi.  These are defined in spin-orbitals as
+**
+** Fme = f_me + t_n^f <mn||ef>
+**
+** Fae = f_ae - 1/2 f_me t_m^a + f_m^f <am||ef> - 1/2 taut_mn^af <mn||ef>
+**
+** Fmi = f_mi + 1/2 f_me t_i^e + t_n^e <mn||ie> + 1/2 taut_in^ef <mn||ef>
+**
+** where taut_ij^ab = t_ij^ab + 1/2 ( t_i^a t_j^b - t_i^b t_j^a )
+**
+** The standard named FAE, Fae, FMI, and Fmi are used for the complete
+** matrix elements, while the names FAEt, Faet, FMIt, and Fmit are used for
+** matrices with the diagonal elements removed.
+**
+** TDC, revised June 2002
+*/
 
 void F_build(void) {
   int h,i,e,a;
@@ -352,10 +367,6 @@ void F_build(void) {
     dpd_buf4_close(&taut);
     dpd_buf4_close(&D);
 
-    /* Fae and FAE tilde intermediates */
-    dpd_file2_copy(&FAE, CC_OEI, "FAEt");
-    dpd_file2_copy(&Fae, CC_OEI, "Faet");
-
     dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
     dpd_file2_init(&FME, CC_OEI, 0, 0, 1, "FME");
     dpd_contract222(&tIA, &FME, &FAE, 1, 1, -0.5, 1);
@@ -367,6 +378,10 @@ void F_build(void) {
     dpd_contract222(&tia, &Fme, &Fae, 1, 1, -0.5, 1);
     dpd_file2_close(&tia);
     dpd_file2_close(&Fme);
+
+    /* Fae and FAE tilde intermediates */
+    dpd_file2_copy(&FAE, CC_OEI, "FAEt");
+    dpd_file2_copy(&Fae, CC_OEI, "Faet");
 
     dpd_file2_close(&FAE);
     dpd_file2_close(&Fae); 
@@ -431,10 +446,6 @@ void F_build(void) {
     dpd_buf4_close(&tautIjAb);
     dpd_buf4_close(&D);
 
-    /* FMI and Fmi tilde intermediate */
-    dpd_file2_copy(&FMI, CC_OEI, "FMIt");
-    dpd_file2_copy(&Fmi, CC_OEI, "Fmit");
-
     dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
     dpd_file2_init(&FME, CC_OEI, 0, 0, 1, "FME");
     dpd_contract222(&FME, &tIA, &FMI, 0, 0, 0.5, 1);
@@ -447,6 +458,9 @@ void F_build(void) {
     dpd_file2_close(&Fme);
     dpd_file2_close(&tia);
 
+    /* FMI and Fmi tilde intermediate */
+    dpd_file2_copy(&FMI, CC_OEI, "FMIt");
+    dpd_file2_copy(&Fmi, CC_OEI, "Fmit");
 
     dpd_file2_close(&FMI);
     dpd_file2_close(&Fmi);
