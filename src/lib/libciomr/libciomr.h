@@ -11,6 +11,9 @@
 
 #include <libciomr/iomrparam.h>
 
+int psi_start(int argc, char *argv[], int overwrite_output);
+int psi_stop();
+
 void add_arr(double *a, double *b, double *c, int n);
 void add_mat(double **a,double **b,double **c,int n,int m);
 void balance(double **a, int n);

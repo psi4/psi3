@@ -42,6 +42,8 @@ mxmbol.c \
 old_inp.c \
 print_array.c \
 print_mat.c \
+psi_start.c \
+psi_stop.c \
 r_async.c \
 ram.c \
 rclose.c \
