@@ -125,6 +125,8 @@ command-line      internal specifier   what it does
     // printf("optinfo.points %d\n",optinfo.points);
 
     init_in_out(argc-parsed,argv+parsed);
+    /* init_in_out() sets the value of "infile", so we need to save it */
+    fp_input = infile;
     
     intro();
 
