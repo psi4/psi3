@@ -13,6 +13,7 @@
 
 int psi_start(int argc, char *argv[], int overwrite_output);
 int psi_stop(void);
+FILE *ffile (int unit, int code);
 
 void add_arr(double *a, double *b, double *c, int n);
 void add_mat(double **a,double **b,double **c,int n,int m);
@@ -39,7 +40,6 @@ void fopen_check(char *caller,char *path,char *data);
 void fread_error(char *caller);
 void fwrite_error(char *caller);
 
-void ffile (FILE **unit, char *name, int code) ;
 void flin(double **a,double *b,int in,int im,double *det);
 void free_matrix(double **array, unsigned long int size) ;
 #ifdef DEC
