@@ -13,7 +13,7 @@ dnl arg5: fail action
 dnl
 define(AC_FC_COMPILE_CHECK,
 [AC_PROVIDE([$0])dnl
-ifelse([$1], , , [AC_CHECKING([for $1])]
+ifelse([$1], , , [AC_MSG_CHECKING([for $1])]
 )dnl
 cat > conftest.$F77SUF <<EOF
       PROGRAM MAIN
@@ -31,10 +31,12 @@ if eval $FC [$3] -o conftest conftest.${F77SUF} ${FLIBS} > /dev/null  2>&1; then
   ifelse([$4], , :, [rm -rf conftest*
   $4
 ])
-ifelse([$5], , , [else
-  rm -rf conftest*
+AC_MSG_RESULT(yes)
+else
+ifelse([$5], , , [rm -f conftest*
   $5
 ])dnl
+AC_MSG_RESULT(no)
 fi
 rm -f conftest*]
 )dnl
@@ -50,7 +52,7 @@ dnl arg5: fail action
 dnl
 define(AC_CC_PROCESS_CHECK,
 [AC_PROVIDE([$0])dnl
-ifelse([$1], , , [AC_CHECKING([for $1])]
+ifelse([$1], , , [AC_MSG_CHECKING([for $1])]
 )dnl
 cat > conftest.c <<EOF
 [$2]
@@ -66,7 +68,8 @@ ifelse([$5], , , [else
   $5
 ])dnl
 fi
-rm -f conftest*]
+rm -f conftest*
+AC_MSG_RESULT(OK)]
 )dnl
 dnl
 dnl  This checks for the existence of fortran libraries.  It is much
@@ -104,7 +107,7 @@ dnl arg2: additional compiler arguments
 dnl
 define(AC_FC_LINKAGE_CHECK,
 [AC_PROVIDE([$0])dnl
-ifelse([$1], , , [AC_CHECKING([for $1])]
+ifelse([$1], , , [AC_MSG_CHECKING([for $1])]
 )dnl
 cat > conftest.$F77SUF <<EOF
       PROGRAM FOO
@@ -136,6 +139,7 @@ elif eval nm -p conftest.o | egrep $ac_egrep_silent main_; then
 elif eval nm -p conftest.o | egrep $ac_egrep_silent main; then
   MAIN_FUNC=main
 fi
+AC_MSG_RESULT($1 is $MAIN_FUNC)
 CDEF="$CDEF -DMAIN_FUNC=$MAIN_FUNC"
 dnl
 if eval nm -p conftest.o | egrep $ac_egrep_silent foo2_; then
@@ -204,4 +208,32 @@ else
   ac_sizeof_integer=$ac_sizeof_int
 fi
 rm -f conftest*]
+)dnl
+dnl
+dnl Check for 64-bit capable IBM RS/6000
+dnl arg1 : echo text
+dnl
+define(AC_RS64_CHECK,
+[AC_PROVIDE([$0])dnl
+ifelse([$1], , , [AC_MSG_CHECKING([for $1])]
+)dnl
+cat > conftest.c <<EOF
+#include <stdio.h>
+#include "/usr/include/sys/systemcfg.h"
+
+int main()
+{
+  printf("#!/bin/sh\n");
+  if (__power_64())
+    printf("bitwidth64=yes\n");
+  else
+    printf("bitwidth64=no\n");
+  exit(0);
+}
+EOF
+$CC conftest.c -o conftest
+./conftest > conftest.sh
+. conftest.sh
+rm -f conftest*
+AC_MSG_RESULT("$bitwidth64")]
 )dnl

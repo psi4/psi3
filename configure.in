@@ -37,32 +37,30 @@ AC_SUBST(datadir)
 AC_SUBST(incdir)
 AC_SUBST(top_objdir)
 
-changequote(,)
-
 # If target wasn't given, then examine the current host and try
 # to make it the target.
-if [ -z "$target" ] || [ "$target" = NONE ]; then
-  if [ -x $srcdir/config.guess ]; then
+if test -z "$target" || test "$target"=NONE; then
+  if test -x $srcdir/config.guess; then
     target=`$srcdir/config.guess`
   fi
-  if [ -x $srcdir/config.local ]; then
+  if test -x $srcdir/config.local; then
     test -z "$target" && target=`$srcdir/config.local $target`
   fi
 fi
 
 # Convert target into a cpu, vendor, and os.
 # Leave out everything else
+changequote(,)
 cpu=`echo $target | sed 's/\([^-]*\)-\([^-]*\)-\([^-]*\)-*.*/\1/'`
 vendor=`echo $target | sed 's/\([^-]*\)-\([^-]*\)-\([^-]*\)-*.*/\2/'`
 os=`echo $target | sed 's/\([^-]*\)-\([^-]*\)-\([^-]*\)-*.*/\3/'`
-if [ "$cpu" = NONE ]; then cpu=''; fi
+if test "$cpu" = NONE; then cpu=''; fi
+changequote([,])
 
 # If cpu, vendor, or os is missing, then fill it in with unknown.
-if [ -z "$cpu" ]; then cpu=unknown; fi
-if [ -z "$vendor" ]; then vendor=unknown; fi
-if [ -z "$os" ]; then os=unknown; fi
-
-changequote([,])
+if test -z "$cpu"; then cpu=unknown; fi
+if test -z "$vendor"; then vendor=unknown; fi
+if test -z "$os"; then os=unknown; fi
 
 echo using machine type $target
 AC_SUBST(target)
@@ -136,6 +134,12 @@ if test -z "$CXX"; then
   AC_PROGRAMS_CHECK(CXX,$CXX_LIST,c++)
 fi
 
+# Initialize some variables depending on the machine
+case $os in
+     aix4*)
+        AC_RS64_CHECK(64-bit RS/6000)
+     ;;
+esac
 
 AC_F77_LIBRARY_LDFLAGS
 # Get info on the utility programs.
@@ -147,18 +151,17 @@ AC_PROG_INSTALL()
 INSTALL_INCLUDE='$(top_srcdir)/installinc.sh' AC_SUBST(INSTALL_INCLUDE)
 MKDIRS='$(top_srcdir)/mkdirs.sh' AC_SUBST(MKDIRS)
 
-# On 64-bit PowerPC platforms you need lex rather than flex
-case $cpu in
-  powerpc*)
+# On 64-bit POWER platforms you need lex rather than flex
+if echo $os | grep aix >/dev/null 2>&1 && test "$bitwidth64" = yes; then
     test -z "$LEX" && AC_PATH_PROG(LEX,lex) AC_SUBST(LEX)
     test -z "$LEXLIB" && LEXLIB=`echo $LEX|sed "s bin/lex.* lib/libl.a "`
     if test -n "$LEXLIB" && test -f "$LEXLIB"; then
       test -n "$verbose" && echo "setting LEXLIB to $LEXLIB"
     fi
-  ;;
-  *)
+else
     AC_PROG_LEX()
-esac
+fi
+
 # If we got flex but didn't get LEXLIB try to find LEXLIB
 case "$LEX" in
   flex*)
@@ -174,26 +177,6 @@ case "$LEX" in
   *)
   ;;
 esac
-
-# Set archiver and linker flags to some special values on 64-bit platforms
-case $cpu in
-  powerpc*)
-    ARFLAGS="-X32_64 rv"
-    ;;
-  *)
-    ARFLAGS="rv"
-    ;;
-esac
-AC_SUBST(ARFLAGS)
-case $cpu in
-  powerpc*)
-    LDFLAGS="-q64"
-    ;;
-  *)
-    LDFLAGS=""
-    ;;
-esac     
-AC_SUBST(LDFLAGS)
 
 AC_SET_MAKE
 
@@ -481,28 +464,46 @@ case $cpu in
   rs6000)
     if [ "$FC" = xlf ]; then
       FOPT="-O2 -qarch=com -qxflag=xalias -qdpc -qfloat=fold -qfloat=maf"
+      if test "$bitwidth64" = yes; then
+        FOPT="$FOPT -q64"
+      fi
       AC_MSG_RESULT(fortran flags: $FOPT)
     fi
     if [ "$CC" = xlc ] || [ "$CC" = cc ]; then
       COPT="-O2 -qarch=com -qfloat=maf -qfloat=fold"
+      if test "$bitwidth64" = yes; then
+        COPT="$COPT -q64"
+      fi
       AC_MSG_RESULT(c flags: $COPT)
     fi
     if [ "$CXX" = xlC ] || [ "$CXX" = c++ ]; then
       CXXOPT="-O2 -qarch=com -qfloat=maf -qfloat=fold"
+      if test "$bitwidth64" = yes; then
+        CXXOPT="$CXXOPT -q64"
+      fi
       AC_MSG_RESULT(c++ flags: $CXXOPT)
     fi
     ;;
   powerpc)
     if [ "$FC" = xlf ]; then
-      FOPT="-O2 -q64 -qarch=ppc -qxflag=xalias -qdpc -qfloat=fold -qfloat=maf"
+      FOPT="-O2 -qarch=ppc -qxflag=xalias -qdpc -qfloat=fold -qfloat=maf"
+      if test "$bitwidth64" = yes; then
+        FOPT="$FOPT -q64"
+      fi
       AC_MSG_RESULT(fortran flags: $FOPT)
     fi
     if [ "$CC" = xlc ] || [ "$CC" = cc ]; then
-      COPT="-O2 -q64 -qarch=ppc -qfloat=maf -qfloat=fold"
+      COPT="-O2 -qarch=ppc -qfloat=maf -qfloat=fold"
+      if test "$bitwidth64" = yes; then
+        COPT="$COPT -q64"
+      fi
       AC_MSG_RESULT(c flags: $COPT)
     fi
     if [ "$CXX" = xlC ] || [ "$CXX" = c++ ]; then
-      CXXOPT="-O2 -q64 -qarch=ppc -qfloat=maf -qfloat=fold"
+      CXXOPT="-O2 -qarch=ppc -qfloat=maf -qfloat=fold"
+      if test "$bitwidth64" = yes; then
+        CXXOPT="$CXXOPT -q64"
+      fi
       AC_MSG_RESULT(c++ flags: $CXXOPT)
     fi
     ;;
@@ -513,7 +514,8 @@ case $cpu in
     fi
     if [ "$CC" = gcc ] || [ "$CC" = cc ]; then
       COPT="-O2 -m386"
-      AC_MSG_RESULT(c flags: $COPT)
+      AC_MSG_RESULT(c flags: $COP
+T)
     fi
     if [ "$CXX" = g++ ] || [ "$CXX" = c++ ] || [ "$CXX" = gcc ]; then
       CXXOPT="-O2 -m386"
@@ -626,6 +628,18 @@ esac
 ])
 AC_SUBST(FPARDEF)
 AC_SUBST(FPAROPT)
+
+# On 64-bit-capable POWER platforms we need to set certain 
+# archiver and linker flags
+if echo $os | grep aix >/dev/null 2>&1 && test "$bitwidth64" = yes; then
+    ARFLAGS="-X32_64 rv"
+    LDFLAGS="-q64"
+else
+    ARFLAGS="rv"
+    LDFLAGS=""
+fi
+AC_SUBST(ARFLAGS)
+AC_SUBST(LDFLAGS)
 
 # These nasty machine dependent tests should go away soon.
 AC_CHECKING(os specific flags)

@@ -389,22 +389,22 @@ EOF
 	fi
 	exit 0 ;;
     *:AIX:*:4)
-        sed 's/^		//' << EOF >$dummy.c
+	sed 's/^	//' << EOF >$dummy.c
 	#include <sys/systemcfg.h>
 
 	main()
 	{
-	  if (__power_pc())
-	    puts("powerpc");
-	  else if (__power_rs())
-            puts("rs6000");
-	  exit(0);
+	if (__power_pc())
+	  puts("powerpc");
+	else if (__power_rs())
+	  puts("rs6000");
+	exit(0);
 	}
 EOF
 	$CC_FOR_BUILD $dummy.c -o $dummy && IBM_ARCH=`./$dummy`
 	rm -f $dummy.c $dummy
         if test x"$IBM_ARCH" = x; then
-           IBM_ARCH=rs6000
+		IBM_ARCH=rs6000
         fi
 	if [ -x /usr/bin/oslevel ] ; then
 		IBM_REV=`/usr/bin/oslevel`
