@@ -38,8 +38,8 @@ $PSITEST_TEST_SCRIPT = "runtest.pl";
 
 # These are definitions that default tester knows about -- should match Psi driver!
 @PSITEST_JOBTYPES = ("SP", "OPT", "DISP", "FREQ", "SYMM_FC", "FC", "OEPROP", "DBOC");
-@PSITEST_WFNS = ("SCF", "MP2", "MP2R12", "DETCI", "DETCAS", "BCCD", "BCCD_T", "CCSD", "CCSD_T", "CC3",
-"EOM_CCSD", "LEOM_CCSD", "OOCCD", "CIS");
+@PSITEST_WFNS = ("SCF", "MP2", "MP2R12", "DETCI", "DETCAS", "BCCD", "BCCD_T", "CC2", "CCSD", "CCSD_T",
+"CC3", "EOM_CCSD", "LEOM_CCSD", "OOCCD", "CIS");
 @PSITEST_REFTYPES = ("RHF", "ROHF", "UHF", "TWOCON");
 @PSITEST_DERTYPES = ("NONE", "FIRST", "SECOND", "RESPONSE");
 
@@ -140,7 +140,8 @@ sub do_tests
       SWITCH2: {
         
           if ($wfn eq "CCSD")     { $fail |= compare_ccsd_energy(); last SWITCH2; }
-          if ($wfn eq "CCSD_T")   { $fail |= compare_ccsd_t_energy(); last SWITCH2; }
+          if ($wfn eq "CC2")      { $fail |= compare_cc2_energy(); last SWITCH2; }
+	  if ($wfn eq "CCSD_T")   { $fail |= compare_ccsd_t_energy(); last SWITCH2; }
           if ($wfn eq "CC3")      { $fail |= compare_cc3_energy(); last SWITCH2; }
           if ($wfn eq "EOM_CCSD") { $fail |= compare_eomccsd_energy(); last SWITCH2; }
           if ($wfn eq "BCCD")     { $fail |= compare_bccd_energy(); last SWITCH2; }
@@ -328,6 +329,22 @@ sub compare_scf_energy
   return $fail;
 }
 
+sub compare_cc2_energy
+{
+  my $fail = 0;
+  my $REF_FILE = "$SRC_PATH/output.ref";
+  my $TEST_FILE = "output.dat";
+                                                                                                              
+  if(abs(seek_cc2($REF_FILE) - seek_cc2($TEST_FILE)) > $PSITEST_ETOL) {
+    fail_test("CC2 energy"); $fail = 1;
+  }
+  else {
+    pass_test("CC2 energy");
+  }
+                                                                                                              
+  return $fail;
+}
+                                                                                                              
 sub compare_ccsd_energy
 {
   my $fail = 0;
@@ -1157,6 +1174,23 @@ sub seek_mp2r12_mp2
   exit 1;
 }
 
+sub seek_cc2
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  seek(OUT,0,0);
+  while(<OUT>) {
+    if (/Total CC2 energy/) {
+      @data = split(/ +/, $_);
+      $cc2 = $data[4];
+      return $cc2;
+    }
+  }
+  close(OUT);
+                                                                                                              
+  printf "Error: Could not find CC2 energy in $_[0].\n";
+  exit 1;
+}
+                                                                                                              
 sub seek_ccsd
 {
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";
