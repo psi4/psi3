@@ -198,7 +198,7 @@ double LHX1Y2(char *pert_x, char *cart_x, int irrep_x, double omega_x,
 
   sprintf(lbl, "Z_%s_%1s_WMbEj (bM,Ej)", pert_x, cart_x);
   dpd_buf4_init(&Z1, CC_TMP0, irrep_x, 11, 11, 11, 11, 0, lbl);
-  dpd_buf4_init(&W, CC_HBAR, 0, 0, 11, 0, 11, 0, "WMnIe");
+  dpd_buf4_init(&W, CC_HBAR, 0, 0, 11, 0, 11, 0, "WMnIe (Mn,eI)");
   dpd_contract244(&X1, &W, &Z1, 0, 0, 0, -1, 0);
   dpd_buf4_close(&W);
   sprintf(lbl, "Z_%s_%1s_MbEj (ME,jb)", pert_x, cart_x);
@@ -207,7 +207,7 @@ double LHX1Y2(char *pert_x, char *cart_x, int irrep_x, double omega_x,
 
   sprintf(lbl, "Z_%s_%1s_MbeJ (Mb,eJ)", pert_x, cart_x);
   dpd_buf4_init(&Z1, CC_TMP0, irrep_x, 10, 11, 10, 11, 0, lbl);
-  dpd_buf4_init(&W, CC_HBAR, 0, 0, 11, 0, 11, 0, "WMnIe");
+  dpd_buf4_init(&W, CC_HBAR, 0, 0, 11, 0, 11, 0, "WMnIe (Mn,eI)");
   dpd_contract424(&W, &X1, &Z1, 1, 0, 1, 1, 0);
   dpd_buf4_close(&W);
   sprintf(lbl, "Z_%s_%1s_MbeJ (Me,Jb)", pert_x, cart_x);
@@ -293,7 +293,7 @@ double LHX1Y2(char *pert_x, char *cart_x, int irrep_x, double omega_x,
 
   sprintf(lbl, "Z_%s_%1s_mj" , pert_x, cart_x);
   dpd_file2_init(&z, CC_TMP0, irrep_x, 0, 0, lbl);
-  dpd_buf4_init(&W, CC_HBAR, 0, 0, 11, 0, 11, 0, "2WMnIe - WnMIe");
+  dpd_buf4_init(&W, CC_HBAR, 0, 0, 11, 0, 11, 0, "2WMnIe - WnMIe (Mn,eI)");
   dpd_dot23(&X1, &W, &z, 0, 0, 1, 0);
   dpd_buf4_close(&W);
   dpd_buf4_init(&Z1, CC_TMP0, 0, 0, 5, 0, 5, 0, "Z(Ij,Ab)");
@@ -330,7 +330,7 @@ double LHX1Y2(char *pert_x, char *cart_x, int irrep_x, double omega_x,
   dpd_file2_init(&X1, CC_OEI, irrep_x, 0, 1, lbl);
   sprintf(lbl, "Z_%s_%1s_MnjI", pert_x, cart_x);
   dpd_buf4_init(&Z1, CC_TMP0, irrep_x, 0, 0, 0, 0, 0, lbl);
-  dpd_buf4_init(&W, CC_HBAR, 0, 0, 11, 0, 11, 0, "WMnIe");
+  dpd_buf4_init(&W, CC_HBAR, 0, 0, 11, 0, 11, 0, "WMnIe (Mn,eI)");
   dpd_contract244(&X1, &W, &Z1, 1, 2, 1, 1, 0);
   dpd_buf4_close(&W);
   sprintf(lbl, "Z_%s_%1s_MnIj", pert_x, cart_x);

@@ -56,13 +56,13 @@ double LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
   /* Contraction of WAMEF, XMA, YNE */
   sprintf(lbl, "Z_%s_%1s_MI" , pert_y, cart_y);
   dpd_file2_init(&Zmi, CC_TMP0, irrep_y, 0, 0, lbl);
-  dpd_buf4_init(&W1, CC_HBAR, 0, 0, 11, 0, 11, 0, "WMnIe - 2WnMIe");
+  dpd_buf4_init(&W1, CC_HBAR, 0, 0, 11, 0, 11, 0, "WMnIe - 2WnMIe (Mn,eI)");
   dpd_dot13(&Y1, &W1, &Zmi, 0, 0, 1, 0);
   dpd_buf4_close(&W1);
   dpd_contract222(&Zmi, &X1, &ZIA, 1, 1, 1, 1);
 
   /* Contraction of WAMEF, XMA, YNE */
-  dpd_buf4_init(&W1, CC_HBAR, 0, 0, 11, 0, 11, 0, "WMnIe - 2WnMIe");
+  dpd_buf4_init(&W1, CC_HBAR, 0, 0, 11, 0, 11, 0, "WMnIe - 2WnMIe (Mn,eI)");
   dpd_dot13(&X1, &W1, &Zmi, 0, 0, 1, 0);
   dpd_buf4_close(&W1);
   dpd_contract222(&Zmi, &Y1, &ZIA, 1, 1, 1, 1);

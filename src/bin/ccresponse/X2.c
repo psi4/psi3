@@ -53,7 +53,7 @@ void X2_build(char *pert, char *cart, int irrep, double omega)
 
   sprintf(lbl, "z(N,I) %s %1s", pert, cart);
   dpd_file2_init(&z, CC_TMP0, irrep, 0, 0, lbl);
-  dpd_buf4_init(&W, CC_HBAR, 0, 0, 11, 0, 11, 0, "2WMnIe - WnMIe");
+  dpd_buf4_init(&W, CC_HBAR, 0, 0, 11, 0, 11, 0, "2WMnIe - WnMIe (Mn,eI)");
   dpd_dot23(&X1, &W, &z, 0, 0, 1, 0);
   dpd_buf4_close(&W);
   sprintf(lbl, "Z(Ij,Ab) %s %1s", pert, cart);

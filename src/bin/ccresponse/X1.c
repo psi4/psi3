@@ -58,7 +58,7 @@ void X1_build(char *pert, char *cart, int irrep, double omega)
   dpd_contract442(&X2, &W, &X1new, 0, 0, 1, 1);
   dpd_buf4_close(&W);
 
-  dpd_buf4_init(&W, CC_HBAR, 0, 0, 11, 0, 11, 0, "WMnIe - 2WnMIe");
+  dpd_buf4_init(&W, CC_HBAR, 0, 0, 11, 0, 11, 0, "WMnIe - 2WnMIe (Mn,eI)");
   dpd_contract442(&W, &X2, &X1new, 3, 3, 1, 1);
   dpd_buf4_close(&W);
 
