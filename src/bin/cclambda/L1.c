@@ -3,7 +3,7 @@
 #define EXTERN
 #include "globals.h"
 
-void L1_build(int L_irr, int root_L_irr) {
+void L1_build(struct L_Params L_params) {
   dpdfile2 newLIA, newLia, LIA, Lia;
   dpdfile2 dIA, dia, Fme, FME;
   dpdfile2 LFaet2, LFAEt2, LFmit2, LFMIt2;
@@ -14,9 +14,11 @@ void L1_build(int L_irr, int root_L_irr) {
   dpdbuf4 LIJAB, Lijab, LIjAb, LiJaB, L2;
   dpdbuf4 WMNIE, Wmnie, WMnIe, WmNiE;
   dpdbuf4 WAMEF, Wamef, WAmEf, WaMeF, W;
+  int L_irr;
+  L_irr = L_params.irrep;
 
   /* ground state homogeneous term is Fme */
-  if (params.ground) {
+  if (L_params.ground) {
     if(params.ref == 0 || params.ref == 1) {
       dpd_file2_init(&Fme,CC_OEI, 0, 0, 1, "Fme");
       dpd_file2_init(&FME,CC_OEI, 0, 0, 1, "FME");
@@ -46,8 +48,8 @@ void L1_build(int L_irr, int root_L_irr) {
       dpd_file2_init(&Lia, CC_OEI, L_irr, 2, 3, "Lia");
       dpd_file2_init(&newLia, CC_OEI, L_irr, 2, 3, "New Lia");
     }
-    dpd_file2_axpy(&LIA, &newLIA, -1.0 * params.cceom_energy[L_irr][root_L_irr],0.0);
-    dpd_file2_axpy(&Lia, &newLia, -1.0 * params.cceom_energy[L_irr][root_L_irr],0.0);
+    dpd_file2_axpy(&LIA, &newLIA, -1.0 * L_params.cceom_energy,0.0);
+    dpd_file2_axpy(&Lia, &newLia, -1.0 * L_params.cceom_energy,0.0);
     dpd_file2_close(&LIA);
     dpd_file2_close(&newLIA);
     dpd_file2_close(&Lia);

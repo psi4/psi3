@@ -3,12 +3,14 @@
 #define EXTERN
 #include "globals.h"
 
-void init_amps(int L_irr, int R_index)
+void init_amps(struct L_Params L_params)
 {
   double norm;
   dpdfile2 T1, R1, LIA, Lia;
   dpdbuf4 T2, R2, LIJAB, Lijab, LIjAb;
   char R1A_lbl[32], R1B_lbl[32], R2AA_lbl[32], R2BB_lbl[32], R2AB_lbl[32];
+  int L_irr;
+  L_irr = L_params.irrep;
 
 
   /* Restart from previous amplitudes if we can/should */
@@ -19,7 +21,7 @@ void init_amps(int L_irr, int R_index)
 
   /* ground state guess L <= T */
   /* excited state guess L <= R0 * T + R */
-  if (params.ground || L_irr == 0) {
+  if (L_params.ground || L_params.irrep == 0) {
     if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
       dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
       dpd_file2_copy(&T1, CC_OEI, "LIA");
@@ -64,12 +66,12 @@ void init_amps(int L_irr, int R_index)
     }
   }
 
-  if (!params.ground) {
-    sprintf(R1A_lbl, "RIA %d %d", L_irr, R_index);
-    sprintf(R1B_lbl, "Ria %d %d", L_irr, R_index);
-    sprintf(R2AA_lbl, "RIJAB %d %d", L_irr, R_index);
-    sprintf(R2BB_lbl, "Rijab %d %d", L_irr, R_index);
-    sprintf(R2AB_lbl, "RIjAb %d %d", L_irr, R_index);
+  if (!L_params.ground) {
+    sprintf(R1A_lbl, "RIA %d %d", L_params.irrep, L_params.root);
+    sprintf(R1B_lbl, "Ria %d %d", L_params.irrep, L_params.root);
+    sprintf(R2AA_lbl, "RIJAB %d %d", L_params.irrep, L_params.root);
+    sprintf(R2BB_lbl, "Rijab %d %d", L_params.irrep, L_params.root);
+    sprintf(R2AB_lbl, "RIjAb %d %d", L_params.irrep, L_params.root);
 
     /* multiply by R0 and create nonsymmetric L files */
     dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "LIA");
@@ -85,11 +87,11 @@ void init_amps(int L_irr, int R_index)
       dpd_buf4_init(&LIjAb, CC_LAMBDA, L_irr, 22, 28, 22, 28, 0, "LIjAb");
     }
 
-    dpd_file2_scm(&LIA, params.R0[L_irr][R_index]);
-    dpd_file2_scm(&Lia, params.R0[L_irr][R_index]);
-    dpd_buf4_scm(&LIJAB, params.R0[L_irr][R_index]);
-    dpd_buf4_scm(&Lijab, params.R0[L_irr][R_index]);
-    dpd_buf4_scm(&LIjAb, params.R0[L_irr][R_index]);
+    dpd_file2_scm(&LIA, L_params.R0);
+    dpd_file2_scm(&Lia, L_params.R0);
+    dpd_buf4_scm(&LIJAB, L_params.R0);
+    dpd_buf4_scm(&Lijab, L_params.R0);
+    dpd_buf4_scm(&LIjAb, L_params.R0);
   
       /* add R1 and R2 */
     dpd_file2_init(&R1, CC_RAMPS, L_irr, 0, 1, R1A_lbl);

@@ -3,23 +3,24 @@
 #define EXTERN
 #include "globals.h"
 
-void denom_rohf(int L_irr, int e_index);
-void denom_uhf(int L_irr, int e_index);
+void denom_rohf(struct L_Params);
+void denom_uhf(struct L_Params);
 
-void denom(int L_irr, int e_index) {
-  if(params.ref == 0 || params.ref == 1) denom_rohf(L_irr, e_index);
-  else if(params.ref == 2) denom_uhf(L_irr, e_index);
+void denom(struct L_Params L_params) {
+  if(params.ref == 0 || params.ref == 1) denom_rohf(L_params);
+  else if(params.ref == 2) denom_uhf(L_params);
 }
 
-void denom_uhf(int L_irr, int e_index)
+void denom_uhf(struct L_Params L_params)
 {
   int nirreps, h, i, j, a, b, ij, ab, I, J, A, B, isym, jsym, asym, bsym;
   int *aoccpi, *boccpi, *avirtpi, *bvirtpi; 
-  int *aocc_off, *bocc_off, *avir_off, *bvir_off;
+  int *aocc_off, *bocc_off, *avir_off, *bvir_off, L_irr;
   dpdfile2 LFMIt, LFmit, LFaet, LFAEt;
   dpdfile2 dIA, dia;
   dpdfile4 dIJAB, dijab, dIjAb;
   double Fii, Fjj, Faa, Fbb;
+  L_irr = L_params.irrep;
 
   nirreps = moinfo.nirreps;
   aoccpi = moinfo.aoccpi; 
@@ -54,7 +55,7 @@ void denom_uhf(int L_irr, int e_index)
       Fii = LFMIt.matrix[h][i][i];
       for(a=0; a < avirtpi[h^L_irr]; a++) {
         Faa = LFAEt.matrix[h^L_irr][a][a];
-        dIA.matrix[h][i][a] = 1.0/(Fii - Faa + params.cceom_energy[L_irr][e_index]);
+        dIA.matrix[h][i][a] = 1.0/(Fii - Faa + L_params.cceom_energy);
       }
     }
   }
@@ -69,7 +70,7 @@ void denom_uhf(int L_irr, int e_index)
       Fii = LFmit.matrix[h][i][i];
       for(a=0; a < bvirtpi[h^L_irr]; a++) {
         Faa = LFaet.matrix[h^L_irr][a][a];
-        dia.matrix[h][i][a] = 1.0/(Fii - Faa + params.cceom_energy[L_irr][e_index]);
+        dia.matrix[h][i][a] = 1.0/(Fii - Faa + L_params.cceom_energy);
       }
     }
   }
@@ -101,7 +102,7 @@ void denom_uhf(int L_irr, int e_index)
 	Fbb = LFAEt.matrix[bsym][B][B];
 
 	dIJAB.matrix[h][ij][ab] = 1.0/(Fii + Fjj - Faa - Fbb
-            + params.cceom_energy[L_irr][e_index]);
+            + L_params.cceom_energy);
       }
     }
     dpd_file4_mat_irrep_wrt(&dIJAB, h);
@@ -134,7 +135,7 @@ void denom_uhf(int L_irr, int e_index)
 	Fbb = LFaet.matrix[bsym][B][B];
 
 	dijab.matrix[h][ij][ab] = 1.0/(Fii + Fjj - Faa - Fbb
-            + params.cceom_energy[L_irr][e_index]);
+            + L_params.cceom_energy);
       }
     }
     dpd_file4_mat_irrep_wrt(&dijab, h);
@@ -167,7 +168,7 @@ void denom_uhf(int L_irr, int e_index)
 	Fbb = LFaet.matrix[bsym][B][B];
 
 	dIjAb.matrix[h][ij][ab] = 1.0/(Fii + Fjj - Faa - Fbb
-            + params.cceom_energy[L_irr][e_index]);
+            + L_params.cceom_energy);
       }
     }
     dpd_file4_mat_irrep_wrt(&dIjAb, h);
@@ -187,15 +188,14 @@ void denom_uhf(int L_irr, int e_index)
   return;
 }
 
-void denom_rohf(int L_irr, int e_index)
+void denom_rohf(struct L_Params L_params)
 {
   dpdfile2 LFAEt, LFaet, LFMIt, LFmit;
   dpdfile2 dIA, dia;
   dpdfile4 dIJAB, dijab, dIjAb;
   dpdbuf4 d, bdIJAB, bdijab, bdIjAb;
   double tval;
-
-  int nirreps;
+  int nirreps,L_irr;
   int h, i, j, a, b, ij, ab;
   int I, J, A, B;
   int isym, jsym, asym, bsym;
@@ -204,6 +204,7 @@ void denom_rohf(int L_irr, int e_index)
   int *openpi;
   double Fii, Fjj, Faa, Fbb;
 
+  L_irr = L_params.irrep;
   nirreps = moinfo.nirreps;
   occpi = moinfo.occpi; virtpi = moinfo.virtpi;
   openpi = moinfo.openpi;
@@ -233,7 +234,7 @@ void denom_rohf(int L_irr, int e_index)
       Fii = LFMIt.matrix[h][i][i];
       for(a=0; a < (virtpi[h^L_irr] - openpi[h^L_irr]); a++) {
         Faa = LFAEt.matrix[h^L_irr][a][a];
-        dIA.matrix[h][i][a] = 1.0/(Fii - Faa + params.cceom_energy[L_irr][e_index]);
+        dIA.matrix[h][i][a] = 1.0/(Fii - Faa + L_params.cceom_energy);
       }
     }
   }
@@ -249,7 +250,7 @@ void denom_rohf(int L_irr, int e_index)
       Fii = LFmit.matrix[h][i][i];
       for(a=0; a < virtpi[h^L_irr]; a++) {
         Faa = LFaet.matrix[h^L_irr][a][a];
-        dia.matrix[h][i][a] = 1.0/(Fii - Faa + params.cceom_energy[L_irr][e_index]);
+        dia.matrix[h][i][a] = 1.0/(Fii - Faa + L_params.cceom_energy);
       }
     }
   }
@@ -294,7 +295,7 @@ void denom_rohf(int L_irr, int e_index)
                 ((A >= (virtpi[asym] - openpi[asym])) ||
                  (B >= (virtpi[bsym] - openpi[bsym])) ?
                  0.0 : 1.0/(Fii + Fjj - Faa - Fbb
-                   + params.cceom_energy[L_irr][e_index]));
+                   + L_params.cceom_energy));
           }
       }
     dpd_file4_mat_irrep_wrt(&dIJAB, h);
@@ -339,7 +340,7 @@ void denom_rohf(int L_irr, int e_index)
                 ((I >= (occpi[isym] - openpi[isym])) ||
                  (J >= (occpi[jsym] - openpi[jsym])) ?
                  0.0 : 1.0/(Fii + Fjj - Faa - Fbb
-                   + params.cceom_energy[L_irr][e_index]));
+                   + L_params.cceom_energy));
       }
     }
     dpd_file4_mat_irrep_wrt(&dijab, h);
@@ -384,7 +385,7 @@ void denom_rohf(int L_irr, int e_index)
                 ((A >= (virtpi[asym] - openpi[asym])) ||
                  (J >= (occpi[jsym] - openpi[jsym])) ?
                  0.0 : 1.0/(Fii + Fjj - Faa - Fbb
-                   + params.cceom_energy[L_irr][e_index]));
+                   + L_params.cceom_energy));
             }
         }
     dpd_file4_mat_irrep_wrt(&dIjAb, h);

@@ -7,12 +7,23 @@ struct Params {
   int cachelev;
   int aobasis;
   int ref;
-  int ground; /* boolean, =1 implies only ground state calculation */
-  double L0; /* 1 for ground states, 0 for excited states */
-  double **R0; /* read from CC_INFO if necessary */
-  double **cceom_energy; /* read from CC_INFO if necessary */
-  int *states_per_irrep; /* determined from input file */
-  int *Ls_per_irrep;
   int local;  /* boolean for using simulated local-CC framework */
+  int nstates; /* total number of L vectors to compute */
+  int all; /* find Ls for all excited states plus ground state */
+  int ground; /* find L for only ground state */
+};
+
+struct L_Params {
+  int irrep; /* same as corresponding R */
+  double R0;    /* same as corresponding R */
+  double cceom_energy; /* same as corresponding R */
+  int root; /* index of root within irrep */
+  int ground; /* boolean, is this a ground state L ? */
+  char L1A_lbl[32];
+  char L1B_lbl[32];
+  char L2AA_lbl[32];
+  char L2BB_lbl[32];
+  char L2AB_lbl[32];
+  char L2RHF_lbl[32];
 };
 

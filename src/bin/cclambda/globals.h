@@ -19,5 +19,6 @@ EXTERN FILE *infile, *outfile;
 EXTERN char *psi_file_prefix;
 EXTERN struct MOInfo moinfo;
 EXTERN struct Params params;
+EXTERN struct L_Params *pL_params;
 EXTERN struct Local local;
 void check_sum(char *lbl, int L_irr);

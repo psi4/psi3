@@ -6,63 +6,62 @@
 double LR_overlap_ROHF(int IRR, int L_index, int R_index);
 double LR_overlap_RHF(int IRR, int L_index, int R_index);
 
-void check_ortho(void) {
-  int L_state_index, root_L_irr, L_irr, nstates=0;
+void check_ortho(struct L_Params *pL_params) {
+  int L_state_index, root_L_irr, L_irr;
   int R_state_index, root_R_irr, R_irr;
   double **O, tval;
+  int L,R;
 
-  for (L_irr=0; L_irr<moinfo.nirreps; ++L_irr)
-    nstates += params.Ls_per_irrep[L_irr];
 
   if (params.ref <= 1) {
-    L_state_index = 0;
-    O = block_matrix(nstates,nstates);
-    for (L_irr=0; L_irr<moinfo.nirreps; ++L_irr)
-      for (root_L_irr=0; root_L_irr< params.Ls_per_irrep[L_irr]; ++root_L_irr) {
-        ++L_state_index;
+    O = block_matrix(params.nstates,params.nstates);
+    for (L=0;L<params.nstates;++L) {
+      L_irr = pL_params[L].irrep;
+      root_L_irr = pL_params[L].root;
   
-        R_state_index = 0;
-        for (R_irr=0; R_irr<moinfo.nirreps; ++R_irr)
-          for (root_R_irr=0; root_R_irr< params.Ls_per_irrep[R_irr]; ++root_R_irr) {
-            ++R_state_index;
+      for (R=0;R<params.nstates;++R) {
+        R_irr = pL_params[R].irrep;
+        root_R_irr = pL_params[R].root;
   
-            if (L_irr == R_irr)
-              tval = LR_overlap_ROHF(L_irr, root_L_irr, root_R_irr);
-            else
-              tval = -99.0;
+        if (L_irr == R_irr) {
+          tval = LR_overlap_ROHF(L_irr, root_L_irr, root_R_irr);
+          if (pL_params[L].ground) 
+            tval += 1.0 * pL_params[R].R0;
+        }
+        else
+          tval = -99.0;
   
-            O[L_state_index-1][R_state_index-1] = tval;
-          }
+        O[L][R] = tval;
       }
-  
-    fprintf(outfile,"\t<L|R> overlap matrix with ROHF quantities (-99 => 0 by symmetry\n");
-    print_mat(O, nstates, nstates, outfile);
+    }
+    fprintf(outfile,"\t<L|R> overlap matrix with ROHF quantities (-99 => 0 by symmetry)\n");
+    print_mat(O, params.nstates, params.nstates, outfile);
     free_block(O);
   }
 
   if (params.ref == 0) { /* test RHF quantities */
-    O = block_matrix(nstates, nstates);
-    L_state_index = 0;
-    for (L_irr=0; L_irr<moinfo.nirreps; ++L_irr)
-      for (root_L_irr=0; root_L_irr< params.Ls_per_irrep[L_irr]; ++root_L_irr) {
-        ++L_state_index;
+    O = block_matrix(params.nstates, params.nstates);
+    for (L=0; L<params.nstates;++L) {
+      L_irr = pL_params[L].irrep;
+      root_L_irr = pL_params[L].root;
+
+      for (R=0;R<params.nstates;++R) {
+        R_irr = pL_params[R].irrep;
+        root_R_irr = pL_params[R].root;
  
-        R_state_index = 0;
-        for (R_irr=0; R_irr<moinfo.nirreps; ++R_irr)
-          for (root_R_irr=0; root_R_irr< params.Ls_per_irrep[R_irr]; ++root_R_irr) {
-            ++R_state_index;
+        if (L_irr == R_irr) {
+          tval = LR_overlap_RHF(L_irr, root_L_irr, root_R_irr);
+          if (pL_params[L].ground) 
+            tval += 1.0 * pL_params[R].R0;
+        }
+        else
+          tval = -99.0;
  
-            if (L_irr == R_irr)
-              tval = LR_overlap_RHF(L_irr, root_L_irr, root_R_irr);
-            else
-              tval = -99.0;
- 
-            O[L_state_index-1][R_state_index-1] = tval;
-          }
+        O[L][R] = tval;
       }
- 
+    }
     fprintf(outfile,"\t<L|R> overlap matrix with RHF quantities (-99 => 0 by symmetry)\n"); 
-    print_mat(O, nstates, nstates, outfile);
+    print_mat(O, params.nstates, params.nstates, outfile);
     free_block(O);
   }
   return;

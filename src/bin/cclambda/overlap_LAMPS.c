@@ -3,48 +3,56 @@
 #define EXTERN
 #include "globals.h"
 
-void overlap_LAMPS(int L_irr)
+void overlap_LAMPS(struct L_Params L_params)
 {
-  int h, nirreps;
+  int h, nirreps, L_irr;
   int row, col;
   int i,j,a,b,I,J,A,B,Isym,Jsym,Asym,Bsym;
   dpdfile2 T1, L1, T1A, T1B;
   dpdbuf4 T2, L2;
   double value = 1.0;
   double ST1A, ST1B, ST2AA, ST2BB, ST2AB, ST12AA, ST12BB, ST12AB;
-
+  char *L1A_lbl, *L1B_lbl, *L2AA_lbl, *L2BB_lbl, *L2AB_lbl, *L2RHF_lbl;
+  char lbl[32];
+  L1A_lbl = L_params.L1A_lbl;
+  L1B_lbl = L_params.L1B_lbl;
+  L2AA_lbl = L_params.L2AA_lbl;
+  L2BB_lbl = L_params.L2BB_lbl;
+  L2AB_lbl = L_params.L2AB_lbl;
+  L2RHF_lbl = L_params.L2RHF_lbl;
   nirreps = moinfo.nirreps;
+  L_irr = L_params.irrep;
 
-  dpd_file2_init(&L1, CC_OEI, L_irr, 0, 1, "LIA");
+  dpd_file2_init(&L1, CC_LAMPS, L_irr, 0, 1, L1A_lbl);
   dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
   ST1A = dpd_file2_dot(&T1, &L1);
   dpd_file2_close(&L1);
   dpd_file2_close(&T1);
 
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
-    dpd_file2_init(&L1, CC_OEI, L_irr, 0, 1, "Lia");
+    dpd_file2_init(&L1, CC_LAMPS, L_irr, 0, 1, L1B_lbl);
     dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tia");
   }
   else if(params.ref == 2) { /** UHF **/
-    dpd_file2_init(&L1, CC_OEI, L_irr, 2, 3, "Lia");
+    dpd_file2_init(&L1, CC_LAMPS, L_irr, 2, 3, L1B_lbl);
     dpd_file2_init(&T1, CC_OEI, 0, 2, 3, "tia");
   }
   ST1B = dpd_file2_dot(&T1, &L1);
   dpd_file2_close(&L1);
   dpd_file2_close(&T1);
 
-  dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "LIJAB");
+  dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, L2AA_lbl);
   dpd_buf4_init(&T2, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tIJAB");
   ST2AA = dpd_buf4_dot(&L2, &T2);
   dpd_buf4_close(&T2);
   dpd_buf4_close(&L2);
 
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "Lijab");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, L2BB_lbl);
     dpd_buf4_init(&T2, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tijab");
   }
   else if(params.ref == 2) { /** UHF **/
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 12, 17, 12, 17, 0, "Lijab");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 12, 17, 12, 17, 0, L2BB_lbl);
     dpd_buf4_init(&T2, CC_TAMPS, 0, 12, 17, 12, 17, 0, "tijab");
   }
   ST2BB = dpd_buf4_dot(&L2, &T2);
@@ -52,11 +60,11 @@ void overlap_LAMPS(int L_irr)
   dpd_buf4_close(&L2);
 
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "LIjAb");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, L2AB_lbl);
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
   }
   else if(params.ref = 2) { /** UHF **/
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 22, 28, 22, 28, 0, "LIjAb");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 22, 28, 22, 28, 0, L2AB_lbl);
     dpd_buf4_init(&T2, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tIjAb");
   }
   ST2AB = dpd_buf4_dot(&L2, &T2);
@@ -74,7 +82,7 @@ void overlap_LAMPS(int L_irr)
   dpd_file2_mat_rd(&T1B);
 
   ST12AA = 0.0;
-  dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "LIJAB");
+  dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, L2AA_lbl);
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_init(&L2, h); 0,
 				       dpd_buf4_mat_irrep_rd(&L2, h);
@@ -103,9 +111,9 @@ void overlap_LAMPS(int L_irr)
   ST12BB = 0.0;
 
   if(params.ref == 0 || params.ref == 1)
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "Lijab");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, L2BB_lbl);
   else if(params.ref == 2)
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 12, 17, 12, 17, 0, "Lijab");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 12, 17, 12, 17, 0, L2BB_lbl);
 
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_init(&L2, h); 0,
@@ -135,9 +143,9 @@ void overlap_LAMPS(int L_irr)
   ST12AB = 0.0;
 
   if(params.ref == 0 || params.ref == 1)
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "LIjAb");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, L2AB_lbl);
   else if(params.ref == 2)
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 22, 28, 22, 28, 0, "LIjAb");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 22, 28, 22, 28, 0, L2AB_lbl);
 
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_init(&L2, h); 0,

@@ -5,22 +5,29 @@
 
 extern double pseudoenergy(int L_irr);
 
-void Lnorm(int L_irr, int R_index)
+void Lnorm(struct L_Params L_params)
 {
   dpdfile2 R1, L1, LIA, Lia, RIA, Ria;
   dpdbuf4 R2, L2, LIJAB, Lijab, LIjAb, RIJAB, Rijab, RIjAb;
-  double tval, overlap, overlap0, overlap1, overlap2;
+  double tval, overlap, overlap0, overlap1, overlap2, L0;
   char R1A_lbl[32], R1B_lbl[32], R2AA_lbl[32], R2BB_lbl[32], R2AB_lbl[32];
+  int L_irr;
+  L_irr = L_params.irrep;
 
-  sprintf(R1A_lbl, "RIA %d %d", L_irr, R_index);
-  sprintf(R1B_lbl, "Ria %d %d", L_irr, R_index);
-  sprintf(R2AA_lbl, "RIJAB %d %d", L_irr, R_index);
-  sprintf(R2BB_lbl, "Rijab %d %d", L_irr, R_index);
-  sprintf(R2AB_lbl, "RIjAb %d %d", L_irr, R_index);
+  if (L_params.ground)
+    L0 = 1.0;
+  else
+    L0 = 0.0;
+
+  sprintf(R1A_lbl, "RIA %d %d", L_irr, L_params.root);
+  sprintf(R1B_lbl, "Ria %d %d", L_irr, L_params.root);
+  sprintf(R2AA_lbl, "RIJAB %d %d", L_irr, L_params.root);
+  sprintf(R2BB_lbl, "Rijab %d %d", L_irr, L_params.root);
+  sprintf(R2AB_lbl, "RIjAb %d %d", L_irr, L_params.root);
 
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
-    overlap0 = params.L0 * params.R0[L_irr][R_index];
+    overlap0 = L0 * L_params.R0;
     dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "LIA");
     dpd_file2_init(&Lia, CC_OEI, L_irr, 0, 1, "Lia");
     dpd_buf4_init(&LIJAB, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "LIJAB");
