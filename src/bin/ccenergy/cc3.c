@@ -57,7 +57,7 @@ void cc3(void)
 
   dpd_buf4_init(&T2new, CC_MISC, 0, 0, 5, 0, 5, 0, "CC3 tIjAb");
   dpd_buf4_scm(&T2new, 0);
-  dpd_buf4_init(&F, CC3_HET1, 0, 10, 5, 10, 5, 0, "CC3 WAbEi (iE,aB)");
+  dpd_buf4_init(&F, CC3_HET1, 0, 10, 5, 10, 5, 0, "CC3 WAbEi (iE,bA)");
   dpd_buf4_init(&E, CC3_HET1, 0, 0, 10, 0, 10, 0, "CC3 WMbIj (Ij,Mb)");
   dpd_buf4_init(&Wamef, CC3_HET1, 0, 11, 5, 11, 5, 0, "CC3 WAmEf (Am,Ef)");
   dpd_buf4_init(&Wmnie, CC3_HET1, 0, 0, 10, 0, 10, 0, "CC3 WMnIe (Mn,Ie)");

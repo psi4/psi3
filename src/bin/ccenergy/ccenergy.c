@@ -256,9 +256,9 @@ int main(int argc, char *argv[])
     fprintf(outfile, "\tCCSD correlation energy    = %20.15f\n", moinfo.ecc);
     fprintf(outfile, "\tTotal CCSD energy          = %20.15f\n", 
             moinfo.eref + moinfo.ecc);
-  if(params.local && !strcmp(local.weakp,"MP2")) 
-    fprintf(outfile, "\tTotal LCCSD energy (+LMP2) = %20.15f\n", 
-	    moinfo.eref + moinfo.ecc + local.weak_pair_energy);
+    if(params.local && !strcmp(local.weakp,"MP2")) 
+      fprintf(outfile, "\tTotal LCCSD energy (+LMP2) = %20.15f\n", 
+	      moinfo.eref + moinfo.ecc + local.weak_pair_energy);
   }
   fprintf(outfile, "\n");
 
@@ -296,6 +296,17 @@ int main(int argc, char *argv[])
     timer_on("spinad Amps");
     spinad_amps();
     timer_off("spinad Amps");
+  }
+
+  if(!strcmp(params.wfn,"CC3") && params.dertype == 3 && params.ref == 0) {
+    params.ref = 1;
+    /* generate the ROHF versions of the He^T1 intermediates */
+    cc3_Wmnij(); 
+    cc3_Wmbij(); 
+    cc3_Wmnie(); 
+    cc3_Wamef(); 
+    cc3_Wabei(); 
+    params.ref == 0;
   }
 
   if(params.local) {

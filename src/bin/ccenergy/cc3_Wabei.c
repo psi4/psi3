@@ -12,7 +12,7 @@
 ** The basic strategy for this code is to generate two intermediate
 ** quantities, Z1(Ab,EI) and Z2(Ei,Ab), which are summed in the final
 ** step to give the complete W(Ei,Ab) intermediate.  This is sorted
-** to W(iE,aB) storage for use in the triples equations.
+** to W(iE,bA) storage for use in the triples equations.
 **
 ** TDC, Feb 2004
 */
