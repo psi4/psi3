@@ -10,16 +10,16 @@
 The concurrent versions system (CVS) (\htmladdnormallink{{\tt
 www.cvshome.org}}{http://www.cvshome.org}) provides a convenient means by
 which programmers may obtain the latest (or any previous) version of the
-\PSIthree\ source from the main repository, add new code to the source
-tree or modify existing \PSIthree\ modules, and then make changes and
-additions available to other programmers by checking the modifications
-back into the main repository.  CVS also provides a ``safety net'' in that
-any erroneous modifications to the code may be easily removed once they
-have been identified.  This section describes how to use CVS to access and
-modify the \PSIthree\ source code.  (Note that compilation and installation
-instructions are given in a separate document.)
+\PSIthree\ source from the main repository or a branch version, add new
+code to the source tree or modify existing \PSIthree\ modules, and then
+make changes and additions available to other programmers by checking the
+modifications back into the main repository.  CVS also provides a ``safety
+net'' in that any erroneous modifications to the code may be easily removed
+once they have been identified.  This section describes how to use CVS to
+access and modify the \PSIthree\ source code.  (Note that compilation and
+installation instructions are given in a separate document.)
 
-\subsection{Introduction to the \PSIthree\ Repository} The main repository
+\subsection{Secure Access to the \PSIthree\ Repository} The main repository
 for the \PSIthree\ Source code is currently maintained by the Crawford group
 at Virginia Tech.  To check out the code, one must first obtain a CVS account
 by emailing \htmladdnormallink{{\tt crawdad@vt.edu}}{mailto:crawdad@vt.edu}.
@@ -42,6 +42,17 @@ export CVSROOT
 \noindent where {\tt login} is your login name.  Next, provide a password
 to the CVS server by typing {\tt cvs login}.  (Subsequent requests to the
 repository will not require you to re-login.)
+
+\subsection{\PSIthree\ Branch Policies: Which Branch Should I Use?}
+
+The \PSIthree\ repository is comprised of a main trunk and several
+release branches.  Which you should use depends on the development
+work you plan for the codes.  The following diagram gives an overview
+of the CVS revision-control structure:
+\begin{center}
+\epsfig{file=cvs.ps}
+\end{center}
+
 
 \noindent Check out a complete \PSIthree\ source copy by running
 \begin{verbatim}
