@@ -4,18 +4,68 @@
 # Edward Valeev, Fake-New-Millenium-Eve
 #
 # Edit this list of subdirectories whose content
-# to be included in CINTS to suit your needs
+# to be included in CINTS to suit your needs. Valid subdirs are:
+# 1. Default_Ints
+# 2. OEProp_Ints
+# 3. Fock
+# 4. MP2
+# 5. Default_Deriv1
+# 6. MP2R12
+# 7. R12_Ints
 #
-# Don't forget to adjust the list of the libraries (CLIBS) too!!!
+SUBDIRS = Default_Ints OEProp_Ints Fock MP2 Default_Deriv1
+
 #
-# P.S. You must add MP2R12 to the list in order to add R12_Ints
+# Some subdirectories are not completely independent - need to perform
+# additional "dependency" checks:
+# 1. if R12_Ints included - make sure MP2R12 is included also.
+# 2. if Fock (DFT) is included - include DFT (Fock) as well.
 #
-SUBDIRS = Default_Ints OEProp_Ints Fock Default_Deriv1 MP2 DFT
+ifeq ($(findstring R12_Ints,$(SUBDIRS)),R12_Ints)
+  ifeq ($(findstring MP2R12,$(SUBDIRS)),)
+    SUBDIRS += MP2R12
+  endif
+endif
+ifeq ($(findstring Fock,$(SUBDIRS)),Fock)
+  ifeq ($(findstring DFT,$(SUBDIRS)),)
+     SUBDIRS += DFT
+  endif
+else
+  ifeq ($(findstring DFT,$(SUBDIRS)),DFT)
+     SUBDIRS += Fock
+  endif
+endif
+
+#
+# Most subdirectories include code that requires some "integrals"
+# library, like the notorious libint, which is always included.
+# Here we test SUBDIRS for presence of such
+# and form the list of the libraries. Remember that libderiv and libr12
+# depend on libint, and hence need to come first for GNU ld to work.
+#
+INTLIBS := -lint
+ifeq ($(findstring MP2R12,$(SUBDIRS)),MP2R12)
+  ifneq ($(findstring -lr12,$(INTLIBS)),-lr12)
+    INTLIBS := -lr12 $(INTLIBS)
+  endif
+endif
+ifeq ($(findstring R12_Ints,$(SUBDIRS)),R12_Ints)
+  ifneq ($(findstring -lr12,$(INTLIBS)),-lr12)
+    INTLIBS := -lr12 $(INTLIBS)
+  endif
+endif
+ifeq ($(findstring Default_Deriv1,$(SUBDIRS)),Default_Deriv1)
+  ifneq ($(findstring -lderiv,$(INTLIBS)),-lderiv)
+    INTLIBS := -lderiv $(INTLIBS)
+  endif
+endif
+
 #
 # These preprocessor defines will tell main.c and parsing.c what 
 #  sections of code to include
 #
 OPTIONS = $(SUBDIRS:%=-DINCLUDE_%)
+
 #
 # Tools will always be included
 #
@@ -37,10 +87,10 @@ CDEF += $(OPTIONS)
 LD = $(FC)
 LDLIBS += $(BLAS)
 ALLOC = 
-PSILIBS = -lfile30 -lderiv -lint -lqt -liwl \
+PSILIBS = -lfile30 $(INTLIBS) -lqt -liwl \
           -lpsio -lciomr -lipv1 -lpthread
 
-CSRC = main.c parsing.c gprgid.c init_globals.c $(DIRS:%=%/*.c)
+CSRC = main.c parsing.c gprgid.c init_globals.c check_max_am.c $(DIRS:%=%/*.c)
 TRUESRC = $(notdir $(shell echo `ls $(CSRC:%=$(srcdir)/%)`))
 
 BINOBJ = $(TRUESRC:%.c=%.o)

@@ -43,17 +43,16 @@ void fock()
   hf_fock();
   
   /*-----------------------------------
-    Read in the total HF/DFT densities
+    Do numerical interation for KS DFT
    -----------------------------------*/
-  
   if(UserOptions.make_dft){
-      read_scf_opdm(0);
-      
-  /*--------------------------------------------------
-    Compute exch+corr contribution to the Fock matrix
-   --------------------------------------------------*/
-      xc_fock();
+    /*--- Read in the total DFT density ---*/
+    read_scf_opdm(0);
+
+    /*-- Compute exch+corr contribution to the Fock matrix ---*/
+    xc_fock();
   }
+
   return;
 }
 

@@ -145,9 +145,9 @@ double *transform_ijkl(double *data, double *puream_data, double **cc2pp_ij, dou
   char false_c = 'n';
 #else
   double *tmp_ptr;
-  static double *cij_ckl[MAX_AM*MAX_AM*(MAX_AM+1)*(MAX_AM+1)/4];
-  static double *cij_pkl[MAX_AM*(MAX_AM+1)*(2*MAX_AM-1)*(2*MAX_AM-1)/2];
-  static double *pij_pkl[(2*MAX_AM-1)*(2*MAX_AM-1)*(2*MAX_AM-1)*(2*MAX_AM-1)];
+  static double *cij_ckl[CINTS_MAX_AM*CINTS_MAX_AM*(CINTS_MAX_AM+1)*(CINTS_MAX_AM+1)/4];
+  static double *cij_pkl[CINTS_MAX_AM*(CINTS_MAX_AM+1)*(2*CINTS_MAX_AM-1)*(2*CINTS_MAX_AM-1)/2];
+  static double *pij_pkl[(2*CINTS_MAX_AM-1)*(2*CINTS_MAX_AM-1)*(2*CINTS_MAX_AM-1)*(2*CINTS_MAX_AM-1)];
 #endif
 
   n_ij = ioff[am_i+1]*ioff[am_j+1];
@@ -204,9 +204,9 @@ double *transform_ijkl_sparse(double *data, double *puream_data,
   double tmp;
 
   double *tmp_ptr;
-/*  static double *cij_ckl[MAX_AM*MAX_AM*(MAX_AM+1)*(MAX_AM+1)/4];
-  static double *cij_pkl[MAX_AM*(MAX_AM+1)*(2*MAX_AM-1)*(2*MAX_AM-1)/2];
-  static double *pij_pkl[(2*MAX_AM-1)*(2*MAX_AM-1)*(2*MAX_AM-1)*(2*MAX_AM-1)];*/
+/*  static double *cij_ckl[CINTS_MAX_AM*CINTS_MAX_AM*(CINTS_MAX_AM+1)*(CINTS_MAX_AM+1)/4];
+  static double *cij_pkl[CINTS_MAX_AM*(CINTS_MAX_AM+1)*(2*CINTS_MAX_AM-1)*(2*CINTS_MAX_AM-1)/2];
+  static double *pij_pkl[(2*CINTS_MAX_AM-1)*(2*CINTS_MAX_AM-1)*(2*CINTS_MAX_AM-1)*(2*CINTS_MAX_AM-1)];*/
   double *cijckl_row, *cijpkl_row, *pijpkl_row;
 
   n_ij = ioff[am_i+1]*ioff[am_j+1];

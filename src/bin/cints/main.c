@@ -48,6 +48,7 @@
  -------------------------------*/
 char *gprgid();
 void init_globals();
+void check_max_am();
 
 int main(int argc, char *argv[])
 {
@@ -66,6 +67,7 @@ int main(int argc, char *argv[])
    init_molecule();
    init_symmetry();
    init_basisset();
+   check_max_am();
    init_dcr();
    init_gto();
 

@@ -15,7 +15,6 @@ void print_intro()
      fprintf(outfile,"                    CINTS: An integrals program written in C\n");
      fprintf(outfile,"                     Justin T. Fermann and Edward F. Valeev\n");
      fprintf(outfile,"                  --------------------------------------------\n\n");
-     fprintf(outfile,"  Version of LIBINT library with MAX_AM = %d used\n\n",MAX_AM);
   }
 
   return;

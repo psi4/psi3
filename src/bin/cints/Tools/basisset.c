@@ -94,10 +94,10 @@ void get_shell_info()
    BasisSet.max_num_prims = 0;
    for (i=0; i<BasisSet.num_shells; i++){
       BasisSet.shells[i].center = shell_center[i];
-      if ( (l = shell_type[i]) <= MAX_AM)
-	BasisSet.shells[i].am = shell_type[i];
+      if ((l = shell_type[i]) <= CINTS_MAX_AM)
+	BasisSet.shells[i].am = l;
       else
-	punt("Angular momentum limit exceeded");
+	punt("Angular momentum limit of CINTS exceeded, reconfigure and recompile");
       if (l > BasisSet.max_am)
         BasisSet.max_am = l;
       BasisSet.shells[i].n_prims = shell_num_prims[i];
@@ -146,7 +146,7 @@ void get_primitives(void)
    /*--- fill prims structure ---*/
    for (i=0; i<BasisSet.num_prims; i++){
      BasisSet.cgtos[i].exp = exponents[i];
-     for(j=0;j<MAX_AM;j++) 
+     for(j=0;j<CINTS_MAX_AM;j++) 
        BasisSet.cgtos[i].ccoeff[j] = ccoeffs[i][j];
    }
 

@@ -22,7 +22,7 @@ struct tebuf {
 
 struct gaussian_function{
    double exp;		/* orbital exponent */
-   double ccoeff[MAX_AM];	/* comb. of contraction coeff and normalization */
+   double ccoeff[CINTS_MAX_AM];	/* comb. of contraction coeff and normalization */
 };
 
 struct shell_def{

@@ -4,7 +4,6 @@
 #include<math.h>
 #include<libciomr.h>
 #include<malloc.h>
-#include<libint.h>
 
 #include"defines.h"
 #define EXTERN
@@ -22,11 +21,11 @@ void setup()
 /* Factorials */
    fac[0] = 1;
    fac[1] = 1;
-   for(i=2;i<MAX_AM*2;i++)
+   for(i=2;i<CINTS_MAX_AM*2;i++)
      fac[i] = fac[i-1]*i;
 
 /* Binomial coefficients */
-   for(i=0;i<=MAX_AM;i++)
+   for(i=0;i<=CINTS_MAX_AM;i++)
      for(j=0;j<=i;j++)
        bc[i][j] = (int)(fac[i]/(fac[i-j]*fac[j]));
  
@@ -41,7 +40,7 @@ void setup()
 
   /* (2i-1)!! a useful thing, num_ser in the integral expansion */
    num_ser[0] = 1;
-   for (i=1; i<MAX_AM+1; i++)
+   for (i=1; i<CINTS_MAX_AM+1; i++)
       num_ser[i] = (2*i-1)*num_ser[i-1];
 
 }
@@ -81,3 +80,9 @@ void punt(char *mess)
   exit(1);
 }
 
+double distance_calc(struct coordinates g1, struct coordinates g2)
+{
+  return sqrt((g1.x-g2.x)*(g1.x-g2.x) +
+	      (g1.y-g2.y)*(g1.y-g2.y) +
+	      (g1.z-g2.z)*(g1.z-g2.z));
+}

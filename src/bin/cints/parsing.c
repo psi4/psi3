@@ -6,7 +6,9 @@
 #include"defines.h"
 #define EXTERN
 #include"global.h"
-#include"scf_parsing.h"
+#ifdef INCLUDE_Fock
+ #include"scf_parsing.h"
+#endif
 
 void parsing()
 {

@@ -84,7 +84,6 @@ void *hf_fock_thread(void *tnum_ptr)
   int key, key1, key2, key3, new_quartet, htable_ptr;
   int nstri;
 
-  double hf_exch = 1.0;                               /* Amount of HF-exchange to be included in G matrix */
   double so_int;
   double lambda_T = 0.5/Symmetry.nirreps;
   double AB2, CD2;

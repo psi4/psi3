@@ -24,7 +24,7 @@ void AI_Deriv1_OSrecurs(double ***AI0, double ***AIX, double ***AIY, double ***A
   int mmax = iang+jang;
   double tmp = sqrt(gamma)*M_2_SQRTPI;
   double u = gamma*(PC.x*PC.x + PC.y*PC.y + PC.z*PC.z);
-  static double F[2*(MAX_AM+DERIV_LVL)+1];
+  static double F[2*(LIBDERIV_MAX_AM+DERIV_LVL)+1];
 
   calc_f(F,mmax,u);
 

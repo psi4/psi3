@@ -242,10 +242,12 @@ void compute_scf_opdm()
       BasisSet.num_moshells = 1 + i;
     }*/
 
-    for(i=0;i<MOInfo.num_moshells;i++) {
-      fprintf(outfile,"  -Density matrix for shell %d in AO basis :\n",i);
-      print_mat(ShDens[i],BasisSet.num_ao,BasisSet.num_ao,outfile);
-      fprintf(outfile,"\n\n");
+    if (UserOptions.print_lvl >= PRINT_OPDM) {
+      for(i=0;i<MOInfo.num_moshells;i++) {
+	fprintf(outfile,"  -Density matrix for shell %d in AO basis :\n",i);
+	print_mat(ShDens[i],BasisSet.num_ao,BasisSet.num_ao,outfile);
+	fprintf(outfile,"\n\n");
+      }
     }
   }
 

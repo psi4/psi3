@@ -23,7 +23,7 @@
 #include"defines.h"
 #define EXTERN
 #include"global.h"
-#include"distances.h"
+#include"small_fns.h"
 
 /* Declare functions in this code */
 
