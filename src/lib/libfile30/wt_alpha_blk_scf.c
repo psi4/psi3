@@ -69,6 +69,9 @@ void file30_wt_alpha_blk_scf(double **scf_vector, int irrep)
 
   free(mopi);
   free(sopi);
+  free(scf_ptrs);
+
+  return;
 } 
   
   

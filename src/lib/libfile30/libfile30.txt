@@ -283,6 +283,15 @@ double file30_rd_enuc();
   returns: double enuc  the nuclear repulsion energy.
 
 ==========================================================================
+FILE30_RD_EREF
+
+file30_rd_eref(): Reads in the reference energy (if different from SCF).
+
+  takes no arguments.
+
+  returns: double eref  the reference energy.
+
+==========================================================================
 FILE30_RD_ESCF
 
 double file30_rd_escf(); 
@@ -793,6 +802,15 @@ void file30_wt_ecorr(double ecorr);
   N.B. The placement of the correlated energy in file30 is currently
        under discussion, and this function may disappear with little or
        no notice.
+
+==========================================================================
+FILE30_WT_EREF
+
+file30_wt_eref(): Writes the reference energy to file30.
+
+  arguments: double eref  the reference energy.
+
+  returns nothing.
 
 ==========================================================================
 FILE30_WT_ESCF

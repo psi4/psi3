@@ -98,6 +98,7 @@ double **file30_rd_beta_scf(void)
       
 
   free(sopi);  free(mopi); free(tmp_vector);
+  free(scf_ptrs);
 
   return scf_vector;
 }

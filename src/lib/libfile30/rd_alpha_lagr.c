@@ -47,7 +47,7 @@ double **file30_rd_alpha_lagr(void)
 
 /* STB(10/29/99) - Added to utilize the pointer array now in the SCF section
      of file30 */
-  lagr_ptr = (scf_ptrs[10]-1)*sizeof(int);
+  lagr_ptr = (PSI_FPTR) (scf_ptrs[10]-1)*sizeof(int);
   
   wreadw(info30_.filenum, (char *) lagr_tri, nmo*(nmo+1)*sizeof(double)/2,
                lagr_ptr, &lagr_ptr);
@@ -55,6 +55,8 @@ double **file30_rd_alpha_lagr(void)
   lagr_sq = block_matrix(nmo,nmo);
   tri_to_sq(lagr_tri,lagr_sq,nmo);
   free(lagr_tri);
+
+  free(scf_ptrs);
 
   return lagr_sq;
   

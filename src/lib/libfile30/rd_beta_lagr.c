@@ -56,6 +56,8 @@ double **file30_rd_beta_lagr(void)
   tri_to_sq(lagr_tri,lagr_sq,nmo);
   free(lagr_tri);
 
+  free(scf_ptrs);
+
   return lagr_sq;
   
 }

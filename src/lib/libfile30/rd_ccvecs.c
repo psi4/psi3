@@ -48,9 +48,12 @@ double **file30_rd_ccvecs(void)
 /* STB(10/29/99) - Added to utilize the pointer array now in the SCF section
      of file30 */
   scf_ptrs = file30_rd_scf_ptrs();
+  alpha_ptr = (PSI_FPTR) (scf_ptrs[8] -1)*sizeof(int);
+  beta_ptr = (PSI_FPTR) (scf_ptrs[9] -1)*sizeof(int);
+  free(scf_ptrs);
   
   if (ccvec_length > 0) {
-  ccvecs = init_matrix(2,ccvec_length);
+    ccvecs = init_matrix(2,ccvec_length);
 
   /*scf_ptr = (PSI_FPTR) (info30_.mcalcs[0]+60-1)*sizeof(int);
   wreadw(info30_.filenum, (char *) &tmp, sizeof(int), scf_ptr,
@@ -61,15 +64,12 @@ double **file30_rd_ccvecs(void)
  /* STB(10/29/99) - Added to utilize the pointer array now in the SCF section
      of file30 */
 
-  alpha_ptr = (PSI_FPTR) (scf_ptrs[8] -1)*sizeof(int);
-  beta_ptr = (PSI_FPTR) (scf_ptrs[9] -1)*sizeof(int);
+    wreadw(info30_.filenum, (char *) ccvecs[0], ccvec_length*sizeof(double),
+	   alpha_ptr, &alpha_ptr);
+    wreadw(info30_.filenum, (char *) ccvecs[1], ccvec_length*sizeof(double),
+	   beta_ptr, &beta_ptr);
 
-  wreadw(info30_.filenum, (char *) ccvecs[0], ccvec_length*sizeof(double),
-               alpha_ptr, &alpha_ptr);
-  wreadw(info30_.filenum, (char *) ccvecs[1], ccvec_length*sizeof(double),
-               beta_ptr, &beta_ptr);
-
-  return ccvecs;
+    return ccvecs;
   }
   else return NULL;
 }

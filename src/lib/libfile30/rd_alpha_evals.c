@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
@@ -32,8 +33,8 @@ double *file30_rd_alpha_evals(void)
      of file30 */
   
   scf_ptrs = file30_rd_scf_ptrs();
-  
   evalsptr = (PSI_FPTR) (scf_ptrs[2]-1)*sizeof(int);
+  free(scf_ptrs);
   
   energies = init_array(file30_rd_nmo());
   wreadw(info30_.filenum, (char *) energies, file30_rd_nmo()*sizeof(double),

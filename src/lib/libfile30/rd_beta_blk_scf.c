@@ -67,6 +67,7 @@ double **file30_rd_beta_blk_scf(int irrep)
 
   free(mopi);
   free(sopi);
+  free(scf_ptrs);
 
   return scf_vector;
 }

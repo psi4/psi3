@@ -70,7 +70,10 @@ void file30_wt_beta_scf(double **scf_vector)
   wwritw(info30_.filenum, (char *) wt_vector, mxcoef*sizeof(double),
          mo_coeff_ptr, &junk);
 
-  free(wt_vector); free(mopi); free(sopi); 
+  free(wt_vector); free(mopi); free(sopi);
+  free(scf_ptrs);
+
+  return;
 } 
   
   

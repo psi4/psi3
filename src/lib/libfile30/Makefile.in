@@ -11,6 +11,7 @@ TARGET = $(top_objdir)/lib/libfile30.a
 TRUESRC = \
 init.c \
 close.c \
+rd_eref.c \
 rd_schwartz.c \
 rd_symoper.c \
 rd_nso.c \
@@ -81,6 +82,7 @@ rd_clsdpi.c \
 rd_openpi.c \
 rd_zvals.c \
 rd_ict.c \
+wt_eref.c \
 wt_enuc.c \
 wt_shell_transm.c \
 wt_isc.c \

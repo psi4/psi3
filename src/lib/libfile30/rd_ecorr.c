@@ -26,7 +26,7 @@ double file30_rd_ecorr(void)
 
   natom = file30_rd_natom();
   ecorr_ptr = (PSI_FPTR) 
-        ((info30_.mcalcs[0]+60+20+natom*6-1)*sizeof(int)+6*sizeof(double));
+        ((info30_.mcalcs[0]+60+20+natom*6-1)*sizeof(int)+3*sizeof(double));
 
   wreadw(info30_.filenum, (char *) &ecorr, (int) sizeof(double),
 	 ecorr_ptr, &junk);

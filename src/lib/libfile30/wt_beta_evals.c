@@ -40,4 +40,7 @@ void file30_wt_beta_evals(double *evals)
   wwritw(info30_.filenum, (char *) evals, file30_rd_nmo()*sizeof(double),
 	 evalsptr, &junk);
 
+  free(scf_ptrs);
+
+  return;
 }

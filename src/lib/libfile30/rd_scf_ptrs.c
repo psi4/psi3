@@ -13,14 +13,15 @@
    variable names correspond to those given in CSCF3.0)
 
 
-   | 20 (header) | 40 (don't know)  |  20 (pointers written    |
+   | 20 (label)  | 40 (don't know)  |  20 (pointers written    |
    |             |                  |      this function)      |           
    _____________________________________________________________
 
 
-   |  6*natoms      | 10 ( 5 double      |  mxcoef*2           |
-   |  (geometry)    |      contants [a]) | (Alpha SCF eigenvec)|  
-   -------------------------------------------------------------
+   |  6*natoms      | 8 ( 4 double       | 2 (7 char string   |  mxcoef*2           |
+   |  (geometry)    | constants Enuc,    | + '\0' to identify |                     |
+   |                | Escf, Eref, Ecorr) | corr. energy Ecorr | (Alpha SCF eigenvec)|  
+   ----------------------------------------------------------------------------------
 
    | mxcoef*2           | nmo*2               | nmo*2              |
    | (Beta SCF eigenvec)| (Alpha SCF eigenval)| (Beta SCF eigenval)|

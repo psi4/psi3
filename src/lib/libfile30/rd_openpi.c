@@ -71,6 +71,7 @@ int *file30_rd_openpi(void)
   free(irr_labs);
   for(i=0; i < nsymhf; i++) free(hfsym_labs[i]);
   free(hfsym_labs);
+  free(scf_ptrs);
 
   return openpi;
 }

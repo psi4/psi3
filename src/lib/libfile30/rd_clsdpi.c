@@ -69,6 +69,7 @@ int *file30_rd_clsdpi(void)
   free(irr_labs);
   for(i=0; i < nsymhf; i++) free(hfsym_labs[i]);
   free(hfsym_labs);
+  free(scf_ptrs);
 
   return clsdpi;
 }
