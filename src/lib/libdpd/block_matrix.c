@@ -43,15 +43,20 @@ timer_on("block_mat");
 
   while((dpd_default->memfree - n*m) < 0) {
       /* Delete cache entries until there's enough memory or no more cache */
-      if(dpd_default->cachetype == 1)
-          if(dpd_file4_cache_del_low()) return(NULL); 
-      else if(dpd_default->cachetype == 0)
-          if(dpd_file4_cache_del_lru()) return(NULL);
-      else {
-          printf("LIBDPD Error: invalid cachetype, %d\n", 
-                 dpd_default->cachetype);
-          exit(1);
-        }
+
+      /* Priority-based cache */
+      if(dpd_default->cachetype == 1) {
+          if(dpd_file4_cache_del_low())
+	      dpd_error("dpd_block_matrix: No memory left.", stderr);
+	}
+
+      /* Least-recently-used cache */
+      else if(dpd_default->cachetype == 0) {
+          if(dpd_file4_cache_del_lru())
+	      dpd_error("dpd_block_matrix: No memory left.", stderr);
+	}
+
+      else dpd_error("LIBDPD Error: invalid cachetype.");
     }
 
   if(!m || !n) return(NULL);
