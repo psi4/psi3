@@ -3,7 +3,7 @@
 
 default: all
 
-all:
+all: install
 
 install_inc:
 depend:
