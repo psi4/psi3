@@ -422,6 +422,8 @@ void deloc::init_simples() {
 	    if(bonds[i][j] == 1) 
 		++num;
     count_array[0]=num;
+    if( (num_atoms>1) && (num<1) )
+	punt("Can't find any bonds");
     
     /* count number of bends*/
     num=0;
