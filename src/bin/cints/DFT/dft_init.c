@@ -12,7 +12,6 @@
 #include"functional.h"
 #include"calc_den.h"
 #include"lebedev_init.h"
-#include"lebedev_init_new.h"
 
 void dft_init(void){
     
