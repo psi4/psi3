@@ -141,17 +141,17 @@ struct Params params;
 /* Function prototypes */
 void check_quiet_mode(int argc, char *argv[]);
 void parse_cmdline(int argc, char *argv[]);
-void init_io();
-void title();
-void init_ioff();
-void get_parameters();
-void print_parameters();
-void get_moinfo();
-void get_one_electron_integrals();
-void transform_one();
-void transform_two();
-void cleanup();
-void exit_io();
+void init_io(void);
+void title(void);
+void init_ioff(void);
+void get_parameters(void);
+void print_parameters(void);
+void get_moinfo(void);
+void get_one_electron_integrals(void);
+void transform_one(void);
+void transform_two(void);
+void cleanup(void);
+void exit_io(void);
 void get_reorder_array(void);
 void fzc_density(int nirreps, int *frdocc, double *Pc, double **C,
                  int *first, int *first_so, int *last_so, int *ioff);

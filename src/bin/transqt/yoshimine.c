@@ -60,7 +60,7 @@ extern struct MOInfo moinfo;
 */
 void yosh_init(struct yoshimine *YBuff, unsigned bra_indices,
                unsigned ket_indices, unsigned long maxcor,
-               unsigned long maxcord, int max_buckets,
+               unsigned long maxcord, const int max_buckets,
                unsigned int first_tmp_file, 
                double cutoff, FILE *outfile)
 {
