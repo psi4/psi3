@@ -75,9 +75,9 @@ void stringset_write(ULI unit, char *prefix, StringSet *sset)
 PSIO_INIT
 PSIO_OPEN(unit)
 
-  size_key = (char *) malloc( strlen(prefix) + strlen(STRINGSET_KEY_SIZE) + 2);
+  size_key = (char *) malloc( strlen(prefix) + strlen(STRINGSET_KEY_SIZE) + 3);
   sprintf(size_key,":%s:%s",prefix,STRINGSET_KEY_SIZE);
-  strings_key = (char *) malloc( strlen(prefix) + strlen(STRINGSET_KEY_STRINGS) + 2);
+  strings_key = (char *) malloc( strlen(prefix) + strlen(STRINGSET_KEY_STRINGS) + 3);
   sprintf(strings_key,":%s:%s",prefix,STRINGSET_KEY_STRINGS);
 
   psio_write_entry( unit, size_key, (char *)&sset->size, sizeof(int));
@@ -109,9 +109,9 @@ void stringset_read(ULI unit, char *prefix, StringSet **stringset)
 PSIO_INIT
 PSIO_OPEN(unit)
 
-  size_key = (char *) malloc( strlen(prefix) + strlen(STRINGSET_KEY_SIZE) + 2);
+  size_key = (char *) malloc( strlen(prefix) + strlen(STRINGSET_KEY_SIZE) + 3);
   sprintf(size_key,":%s:%s",prefix,STRINGSET_KEY_SIZE);
-  strings_key = (char *) malloc( strlen(prefix) + strlen(STRINGSET_KEY_STRINGS) + 2);
+  strings_key = (char *) malloc( strlen(prefix) + strlen(STRINGSET_KEY_STRINGS) + 3);
   sprintf(strings_key,":%s:%s",prefix,STRINGSET_KEY_STRINGS);
 
   psio_read_entry( unit, size_key, (char *)&size, sizeof(int));
@@ -210,9 +210,9 @@ void slaterdetset_write(ULI unit, char *prefix, SlaterDetSet *sdset)
 PSIO_INIT
 PSIO_OPEN(unit)
 
-  alphaprefix = (char *) malloc( strlen(prefix) + strlen(SDSET_KEY_ALPHASTRINGS) + 1);
+  alphaprefix = (char *) malloc( strlen(prefix) + strlen(SDSET_KEY_ALPHASTRINGS) + 2);
   sprintf(alphaprefix,"%s:%s",prefix,SDSET_KEY_ALPHASTRINGS);
-  betaprefix = (char *) malloc( strlen(prefix) + strlen(SDSET_KEY_BETASTRINGS) + 1);
+  betaprefix = (char *) malloc( strlen(prefix) + strlen(SDSET_KEY_BETASTRINGS) + 2);
   sprintf(betaprefix,"%s:%s",prefix,SDSET_KEY_BETASTRINGS);
 
   stringset_write( unit, alphaprefix, sdset->alphastrings);
@@ -221,9 +221,9 @@ PSIO_OPEN(unit)
   free(alphaprefix);
   free(betaprefix);
 
-  size_key = (char *) malloc( strlen(prefix) + strlen(SDSET_KEY_SIZE) + 2);
+  size_key = (char *) malloc( strlen(prefix) + strlen(SDSET_KEY_SIZE) + 3);
   sprintf(size_key,":%s:%s",prefix,SDSET_KEY_SIZE);
-  set_key = (char *) malloc( strlen(prefix) + strlen(SDSET_KEY_DETERMINANTS) + 2);
+  set_key = (char *) malloc( strlen(prefix) + strlen(SDSET_KEY_DETERMINANTS) + 3);
   sprintf(set_key,":%s:%s",prefix,SDSET_KEY_DETERMINANTS);
 
   psio_write_entry( unit, size_key, (char *)&sdset->size, sizeof(int));
@@ -250,9 +250,9 @@ void slaterdetset_read(ULI unit, char *prefix, SlaterDetSet **slaterdetset)
 PSIO_INIT
 PSIO_OPEN(unit)
 
-  alphaprefix = (char *) malloc( strlen(prefix) + strlen(SDSET_KEY_ALPHASTRINGS) + 1);
+  alphaprefix = (char *) malloc( strlen(prefix) + strlen(SDSET_KEY_ALPHASTRINGS) + 2);
   sprintf(alphaprefix,"%s:%s",prefix,SDSET_KEY_ALPHASTRINGS);
-  betaprefix = (char *) malloc( strlen(prefix) + strlen(SDSET_KEY_BETASTRINGS) + 1);
+  betaprefix = (char *) malloc( strlen(prefix) + strlen(SDSET_KEY_BETASTRINGS) + 2);
   sprintf(betaprefix,"%s:%s",prefix,SDSET_KEY_BETASTRINGS);
 
   stringset_read( unit, alphaprefix, &alphastrings);
@@ -261,9 +261,9 @@ PSIO_OPEN(unit)
   free(alphaprefix);
   free(betaprefix);
 
-  size_key = (char *) malloc( strlen(prefix) + strlen(SDSET_KEY_SIZE) + 2);
+  size_key = (char *) malloc( strlen(prefix) + strlen(SDSET_KEY_SIZE) + 3);
   sprintf(size_key,":%s:%s",prefix,SDSET_KEY_SIZE);
-  set_key = (char *) malloc( strlen(prefix) + strlen(SDSET_KEY_DETERMINANTS) + 2);
+  set_key = (char *) malloc( strlen(prefix) + strlen(SDSET_KEY_DETERMINANTS) + 3);
   sprintf(set_key,":%s:%s",prefix,SDSET_KEY_DETERMINANTS);
 
   psio_read_entry( unit, size_key, (char *)&size, sizeof(int));
@@ -352,7 +352,7 @@ PSIO_OPEN(unit)
 
   slaterdetset_write( unit, prefix, vector->sdset);
 
-  vector_key = (char *) malloc( strlen(prefix) + strlen(SDVECTOR_KEY_VECTOR) + 2);
+  vector_key = (char *) malloc( strlen(prefix) + strlen(SDVECTOR_KEY_VECTOR) + 3);
   sprintf(vector_key,":%s:%s",prefix,SDVECTOR_KEY_VECTOR);
 
   psio_write_entry( unit, vector_key, (char *)vector->coeffs, vector->size*sizeof(double));
@@ -380,7 +380,7 @@ PSIO_OPEN(unit)
   slaterdetset_read( unit, prefix, &sdset);
   slaterdetvector_init(vector,sdset);
 
-  vector_key = (char *) malloc( strlen(prefix) + strlen(SDVECTOR_KEY_VECTOR) + 2);
+  vector_key = (char *) malloc( strlen(prefix) + strlen(SDVECTOR_KEY_VECTOR) + 3);
   sprintf(vector_key,":%s:%s",prefix,SDVECTOR_KEY_VECTOR);
 
   psio_read_entry( unit, vector_key, (char *)vector->coeffs, vector->size*sizeof(double));
