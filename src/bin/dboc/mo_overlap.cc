@@ -18,7 +18,7 @@ extern "C" {
 extern void done(const char * message);
 extern MOInfo_t MOInfo;
 extern FILE *outfile;
-extern BasisSet *BasisDispM, *BasisDispP;
+extern BasisSet *BasisDispM1, *BasisDispP1;
 extern Params_t Params;
 
 FLOAT **eval_S_alpha()
@@ -64,12 +64,12 @@ FLOAT **eval_S_alpha()
 
   // Compute plus/minus overlap
 #if !USE_INPUT_S
-  OverlapEngine overlap(BasisDispP,BasisDispM);
+  OverlapEngine overlap(BasisDispP1,BasisDispM1);
   double** Spm_AO_AO = overlap.compute_full_matrix();
 
   // Rotate bases to the original coordinate systems (prior to reorientation into principal axis system)
-  RotationOp Rop_m(BasisDispM);
-  RotationOp Rop_p(BasisDispP);
+  RotationOp Rop_m(BasisDispM1);
+  RotationOp Rop_p(BasisDispP1);
   double** basisRref_m = Rop_m.full_rotation_mat(rref_m);
   double** basisRref_p = Rop_p.full_rotation_mat(rref_p);
 
@@ -188,12 +188,12 @@ FLOAT **eval_S_beta()
 
   // Compute plus/minus overlap
 #if !USE_INPUT_S
-  OverlapEngine overlap(BasisDispP,BasisDispM);
+  OverlapEngine overlap(BasisDispP1,BasisDispM1);
   double** Spm_AO_AO = overlap.compute_full_matrix();
 
   // Rotate bases to the original coordinate systems (prior to reorientation into principal axis system)
-  RotationOp Rop_m(BasisDispM);
-  RotationOp Rop_p(BasisDispP);
+  RotationOp Rop_m(BasisDispM1);
+  RotationOp Rop_p(BasisDispP1);
   double** basisRref_m = Rop_m.full_rotation_mat(rref_m);
   double** basisRref_p = Rop_p.full_rotation_mat(rref_p);
 

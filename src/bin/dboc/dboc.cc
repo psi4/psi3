@@ -48,10 +48,19 @@ char *psi_file_prefix;
 Molecule_t Molecule;
 MOInfo_t MOInfo;
 Params_t Params;
-BasisSet* BasisDispP;
-BasisSet* BasisDispM;
+// basis set objects with current coordinate displaced by +delta, -delta, +2delta, and -2delta, respectively
+BasisSet* BasisDispP1;
+BasisSet* BasisDispM1;
+BasisSet* BasisDispP2;
+BasisSet* BasisDispM2;
 
 #define MAX_GEOM_STRING 20
+char* CI_Vector_Labels[] = {
+  "R0-delta CI Vector",
+  "R0+delta CI Vector",
+  "R0-2delta CI Vector",
+  "R0+2delta CI Vector"
+  };
 
 int main(int argc, char *argv[])
 {
@@ -62,9 +71,9 @@ int main(int argc, char *argv[])
   FILE *geometry;
 
   init_io(argc,argv);
+  parsing();
   print_intro();
   read_molecule();
-  parsing();
   print_params();
   read_moinfo();
   setup_geoms();
@@ -151,6 +160,9 @@ void parsing()
   }
 
   Params.disp_per_coord = 2;
+  errcod = ip_data(":DBOC:DISP_PER_COORD","%d",&Params.disp_per_coord,0);
+  if (Params.disp_per_coord != 2 && Params.disp_per_coord != 4)
+    throw std::runtime_error("dboc.cc:parsing() -- disp_per_coord must either be 2 or 4");
 }
 
 /*--- Open chkpt file and grab molecule info ---*/
@@ -171,17 +183,20 @@ void read_molecule()
   fprintf(outfile, "\n\n");
 }
 
-double eval_dboc()
+
+// Returns an array of atomic masses, in a.u. (not in a.m.u.)
+double* get_atomic_masses()
 {
   double* atomic_mass;
 
   //
   // Convert isotope labels into atomic masses (in a.m.u.)
   //
+
   // Check number of atoms vs. number of isotope labels given in input
   if (Params.isotopes) {
     if (Molecule.natom != Params.nisotope)
-      done("Number of atoms in molecule does not match the number of isotope labels in input.dat");
+      done("Number of atoms in molecule does not match the number of isotope labels in input file");
     else {
       atomic_mass = new double[Molecule.natom];
       for(int atom=0; atom<Molecule.natom; atom++) {
@@ -207,78 +222,141 @@ double eval_dboc()
   for(int atom=0; atom<Molecule.natom; atom++)
     atomic_mass[atom] /= _au2amu;
 
+  return atomic_mass;
+}
+
+
+//
+// This function will run psi for the first displaced point along the coordinate,
+// save the basis set information, and save CI vector, if necessary
+//
+// NOTE: It's assumed that the first displacement is always by -delta
+//
+void run_psi_firstdisp(int disp)
+{
+  char *inputcmd = new char[80];
+#if USE_INPUT_S
+  sprintf(inputcmd,"input --geomdat %d --noreorient --nocomshift",disp);
+#else
+  sprintf(inputcmd,"input --geomdat %d",disp);
+#endif
+  int errcod = system(inputcmd);
+  if (errcod) {
+    done("input failed");
+  }
+  errcod = system("psi3 --dboc --noinput --messy");
+  if (errcod) {
+    done("psi3 failed");
+  }
+  delete[] inputcmd;
+
+  //
+  // Read in the "-delta" displaced basis
+  //
+  chkpt_init(PSIO_OPEN_OLD);
+  BasisDispM1 = new BasisSet(PSIF_CHKPT);
+  // rotate the geometry back to the original frame and change shell centers
+  double **rref_m = chkpt_rd_rref();
+  double **geom_m = chkpt_rd_geom();
+  chkpt_close();
+  double **geom_m_ref = block_matrix(Molecule.natom,3);
+  mmult(geom_m,0,rref_m,0,geom_m_ref,0,Molecule.natom,3,3,0);
+  free_block(geom_m);
+  free_block(rref_m);
+  for(int a=0; a<Molecule.natom; a++)
+    BasisDispM1->set_center(a,geom_m_ref[a]);
+
+  // For CI method rename the saved wave function
+  if (!strcmp(Params.wfn,"DETCI") || !strcmp(Params.wfn,"DETCAS")) {
+    SlaterDetVector *vec;
+    slaterdetvector_read(PSIF_CIVECT,"CI vector",&vec);
+    slaterdetvector_write(PSIF_CIVECT,CI_Vector_Labels[0],vec);
+    slaterdetvector_delete_full(vec);
+  }
+}
+
+void run_psi_otherdisp(int disp)
+{
+  char *inputcmd = new char[80];
+#if USE_INPUT_S
+  sprintf(inputcmd,"input --savemos --geomdat %d --noreorient --nocomshift",disp);
+#else
+  sprintf(inputcmd,"input --savemos --geomdat %d",disp);
+#endif
+  int errcod = system(inputcmd);
+  if (errcod) {
+    done("input failed");
+  }
+  errcod = system("psi3 --dboc --noinput --messy");
+  if (errcod) {
+    done("psi3 failed");
+  }
+  delete[] inputcmd;
+
+  // For CI method rename the saved wave function
+  if (!strcmp(Params.wfn,"DETCI") || !strcmp(Params.wfn,"DETCAS")) {
+    SlaterDetVector *vec;
+    slaterdetvector_read(PSIF_CIVECT,"CI vector",&vec);
+    int disp_coord = (disp-1)%Params.disp_per_coord;
+    slaterdetvector_write(PSIF_CIVECT,CI_Vector_Labels[disp_coord],vec);
+    slaterdetvector_delete_full(vec);
+  }
+}
+
+//
+// This function clreates basis set objects for each displacement
+//
+void init_basissets(Params_t::Coord_t* coord)
+{
+  // BasisSetP1
+  int atom = coord->index/3;
+  int xyz = coord->index%3;
+  double AplusD[3];
+  for(int i=0; i<3; i++)
+    AplusD[i] = BasisDispM1->get_center(atom, i);
+  AplusD[xyz] += 2.0*Params.delta;
+  BasisDispP1 = new BasisSet(*BasisDispM1);
+  BasisDispP1->set_center(atom,AplusD);
+  
+  if (Params.disp_per_coord == 4) {
+    // BasisSetP2
+    double Aplus2D[3];
+    for(int i=0; i<3; i++)
+      Aplus2D[i] = AplusD[i];
+    Aplus2D[xyz] += Params.delta;
+    BasisDispP2 = new BasisSet(*BasisDispM1);
+    BasisDispP2->set_center(atom,Aplus2D);
+
+    // BasisSetM2
+    double Aminus2D[3];
+    for(int i=0; i<3; i++)
+      Aminus2D[i] = Aplus2D[i];
+    Aminus2D[xyz] -= 4.0*Params.delta;
+    BasisDispM2 = new BasisSet(*BasisDispM1);
+    BasisDispM2->set_center(atom,Aminus2D);
+  }
+}
+
+double eval_dboc()
+{
+
+  double* atomic_mass = get_atomic_masses();  
   const int ndisp = Params.disp_per_coord * Params.ncoord;
   double E_dboc = 0.0;
 
   for(int disp=1; disp<=ndisp; disp++) {
-    Params_t::Coord_t* coord = &(Params.coords[(disp-1)/2]);
+    int current_coord = (disp-1)/Params.disp_per_coord;
+    Params_t::Coord_t* coord = &(Params.coords[current_coord]);
     int atom = coord->index/3;
     int xyz = coord->index%3;
 
-    char *inputcmd = new char[80];
-#if USE_INPUT_S
-    sprintf(inputcmd,"input --geomdat %d --noreorient --nocomshift",disp);
-#else
-    sprintf(inputcmd,"input --geomdat %d",disp);
-#endif
-    int errcod = system(inputcmd);
-    if (errcod) {
-      done("input failed");
-    }
-    errcod = system("psi3 --dboc --noinput --messy");
-    if (errcod) {
-      done("psi3 failed");
-    }
+    run_psi_firstdisp(disp);
     disp++;
-
-    //
-    // Read in the "-" displaced basis
-    //
-    chkpt_init(PSIO_OPEN_OLD);
-    BasisDispM = new BasisSet(PSIF_CHKPT);
-    // rotate the geometry back to the original frame and change shell centers
-    double **rref_m = chkpt_rd_rref();
-    double **geom_m = chkpt_rd_geom();
-    chkpt_close();
-    double **geom_m_ref = block_matrix(Molecule.natom,3);
-    mmult(geom_m,0,rref_m,0,geom_m_ref,0,Molecule.natom,3,3,0);
-    free_block(geom_m);
-    free_block(rref_m);
-    for(int a=0; a<Molecule.natom; a++)
-      BasisDispM->set_center(a,geom_m_ref[a]);
-
-    // For CI method rename the saved wave function
-    if (!strcmp(Params.wfn,"DETCI") || !strcmp(Params.wfn,"DETCAS")) {
-      SlaterDetVector *vec;
-      slaterdetvector_read(PSIF_CIVECT,"CI vector",&vec);
-      slaterdetvector_write(PSIF_CIVECT,"Old CI vector",vec);
-      slaterdetvector_delete_full(vec);
+    for(int i=1;i<Params.disp_per_coord; i++) {
+      run_psi_otherdisp(disp);
     }
-
-    // obtain "+"-displaced basis by shiting the "active" center in the
-    // "-"-displaced center by twice the displacement size
-    double AplusD[3];
-    AplusD[0] = geom_m_ref[atom][0];
-    AplusD[1] = geom_m_ref[atom][1];
-    AplusD[2] = geom_m_ref[atom][2];
-    AplusD[xyz] += 2*Params.delta;
-    BasisDispP = new BasisSet(*BasisDispM);
-    BasisDispP->set_center(atom,AplusD);
-
-#if USE_INPUT_S
-    sprintf(inputcmd,"input --savemos --geomdat %d --noreorient --nocomshift",disp);
-#else
-    sprintf(inputcmd,"input --savemos --geomdat %d",disp);
-#endif
-    errcod = system(inputcmd);
-    if (errcod) {
-      done("input failed");
-    }
-    errcod = system("psi3 --dboc --noinput --messy");
-    if (errcod) {
-      done("psi3 failed");
-    }
-    delete[] inputcmd;
+    
+    init_basissets(coord);
 
     double S = eval_derwfn_overlap();
     double del2 = (S-1.0)/(2.0*Params.delta*Params.delta);
@@ -303,7 +381,7 @@ double eval_dboc()
       psio_close(PSIF_CIVECT,0);
     }
     // it's safe to do psiclean now
-    errcod = system("psiclean");
+    int errcod = system("psiclean");
     if (errcod) {
       done("psiclean");
     }
