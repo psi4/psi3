@@ -1,5 +1,13 @@
+/*!
+** \file write_block.c
+*/
+ 
 #include <stdlib.h>
 #include "psio.h"
+
+/*!
+** PSIO_WRITE_BLOCK(): 
+*/
 
 int psio_write_block(ULI unit, char *key, char *buffer, ULI blksiz,
   		     ULI start_blk, ULI  end_blk)

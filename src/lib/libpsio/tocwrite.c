@@ -1,6 +1,13 @@
+/*!
+** \file tocwrite.c
+*/
+
 #include <unistd.h>
 #include "psio.h"
 
+/*!
+** PSIO_TOCWRITE(): Write the table of contents for file number 'unit'.
+*/
 int psio_tocwrite(ULI unit)
 {
   int i, errcod, volume, entry_size, stream;

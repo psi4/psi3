@@ -1,7 +1,14 @@
+/*!
+** \file rw.c
+*/
+
 #include <stdio.h>
 #include <unistd.h>
 #include "psio.h"
 
+/*!
+** PSIO_RW()
+*/
 int psio_rw(ULI unit, char *buffer, psio_address address, ULI size, int wrt)
 {
   int errcod, i;

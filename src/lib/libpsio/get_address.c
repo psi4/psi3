@@ -1,6 +1,10 @@
+/*!
+** \file get_address.c
+*/
+ 
 #include "psio.h"
 
-/*
+/*!
 ** PSIO_GET_ADDRESS(): Given a starting page/offset and a shift length
 ** (in bytes), return the page/offset of the next position in the file.
 */

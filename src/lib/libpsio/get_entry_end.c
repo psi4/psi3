@@ -1,6 +1,10 @@
+/*!
+** \file get_entry_end.c
+*/
+
 #include "psio.h"
 
-/*
+/*!
 ** PSIO_GET_ENTRY(): Returns the ending relative address of the tocentry
 ** for the given keyword.
 */

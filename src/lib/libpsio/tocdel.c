@@ -1,8 +1,15 @@
+/*!
+** \file tocdel.c
+*/
+
 #include <stdlib.h>
 #include "psio.h"
 
-/*
+/*!
 ** PSIO_TOCDEL(): Delete an entry with identifier key from TOC.
+** 
+** \param unit = file number
+** \param key = entry to delete from TOC
 */
 
 int psio_tocdel(ULI unit, char *key)

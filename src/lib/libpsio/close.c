@@ -1,15 +1,18 @@
+/*!
+** \file close.c
+*/
+
 #include <unistd.h>
 #include <string.h>
 #include "psio.h"
 
-/*
+/*!
 ** PSIO_CLOSE(): Closes a multivolume PSI direct access file.
 **
-** Arguments:
-**  unit = The PSI unit number used to identify the file to all read
-**         and write functions.
-**  keep = Boolean to indicate if the file should be deleted (0) or
-**         retained (1).
+**  \param unit = The PSI unit number used to identify the file to all read
+**                and write functions.
+**  \param keep = Boolean to indicate if the file should be deleted (0) or
+**                retained (1).
 */
 
 int psio_close(ULI unit, int keep)

@@ -1,6 +1,10 @@
+/*!
+** \file toclen.c
+*/
+
 #include "psio.h"
 
-/*
+/*!
 ** PSIO_TOCLEN(): Compute the length of the TOC for a given unit.
 */
 

@@ -1,19 +1,22 @@
+/*!
+** \file read.c
+*/
+ 
 #include <unistd.h>
 #include <string.h>
 #include "psio.h"
 
-/*
+/*!
 ** PSIO_READ(): Reads data from within a TOC entry from a PSI file.
 **
-** Arguments:
-**  unit   = The PSI unit number used to identify the file to all read
-**           and write functions.
-**  key    = The TOC keyword identifying the desired entry.
-**  buffer = The buffer to store the data as it is read.
-**  size   = The number of bytes to read.
-**  sadd   = The entry-relative starting page/offset of the desired data.
-**  eadd   = A pointer to the entry-relative page/offset for the next
-**           byte after the end of the read request.
+**  \param unit   = The PSI unit number used to identify the file to all
+**                  read and write functions.
+**  \param key    = The TOC keyword identifying the desired entry.
+**  \param buffer = The buffer to store the data as it is read.
+**  \param size   = The number of bytes to read.
+**  \param sadd   = The entry-relative starting page/offset of the desired data.
+**  \param eadd   = A pointer to the entry-relative page/offset for the next
+**                  byte after the end of the read request.
 */
 
 int psio_read(ULI unit, char *key, char *buffer, ULI size,

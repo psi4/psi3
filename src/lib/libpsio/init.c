@@ -1,3 +1,7 @@
+/*!
+** \file init.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "psio.h"
@@ -11,7 +15,7 @@ ULI *psio_readlen;
 ULI *psio_writlen;
 #endif
 
-/*
+/*!
 ** PSIO_INIT(): Allocates global memory needed by the I/O routines.
 **
 ** No arguments.

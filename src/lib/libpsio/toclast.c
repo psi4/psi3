@@ -1,6 +1,10 @@
+/*!
+** \file toclast.c
+*/
+
 #include "psio.h"
 
-/*
+/*!
 ** PSIO_TOCLAST(): Returns the last TOC entry.
 */
 

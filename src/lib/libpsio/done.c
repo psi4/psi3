@@ -1,3 +1,7 @@
+/*!
+** \file done.c
+*/
+
 #include <stdlib.h>
 #include "psio.h"
 
@@ -5,7 +9,7 @@
 #include <time.h>
 #endif
 
-/*
+/*!
 ** PSIO_DONE(): Frees global data used by the I/O routines.
 **
 ** No arguments.

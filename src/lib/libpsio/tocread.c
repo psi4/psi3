@@ -1,7 +1,14 @@
+/*!
+** \file tocread.c
+*/
+
 #include <unistd.h>
 #include <stdlib.h>
 #include "psio.h"
 
+/*!
+** PSIO_TOCREAD(): Read the table of contents for file number 'unit'.
+*/
 int psio_tocread(ULI unit)
 {
   int i, errcod, stream, volume, entry_size;

@@ -1,5 +1,13 @@
+/*!
+** \file tocprint.c
+*/
+
 #include <stdio.h>
 #include "psio.h"
+
+/*!
+** PSIO_TOCPRINT(): Print the table of contents for the given unit
+*/
 
 void psio_tocprint(ULI unit, FILE *output)
 {

@@ -1,6 +1,10 @@
+/*!
+** \file tocclean.c
+*/
+
 #include "psio.h"
 
-/*
+/*!
 ** PSIO_TOCCLEAN(): Delete all TOC entries after the given key.
 ** If a blank key is given, the entire TOC will be wiped.
 */

@@ -1,10 +1,14 @@
+/*!
+** \file open_check.c
+*/
+
 #include "psio.h"
 
-/*
+/*!
 ** PSIO_OPEN_CHECK(): Check to see if a given PSI direct access file
 ** is already open.
 **
-** Argument: unit = the PSI unit number.
+** \param unit = the PSI unit number.
 */
 
 int psio_open_check(ULI unit)

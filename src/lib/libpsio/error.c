@@ -1,7 +1,18 @@
+/*!
+** \file error.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "psio.h"
 
+/*!
+** PSIO_ERROR(): Print out an error message for libpsio.
+**
+** \param unit   = file number
+** \param errval = error code (defined symbolically, PSIO_ERROR_XXX)
+**
+*/
 void psio_error(ULI unit, ULI errval)
 {
   int i;

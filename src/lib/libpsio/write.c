@@ -1,18 +1,21 @@
+/*!
+** \file write.c
+*/
+
 #include <stdlib.h>
 #include "psio.h"
 
-/*
+/*!
 ** PSIO_WRITE(): Writes data to a TOC entry in a PSI file.
 **
-** Arguments:
-**  unit   = The PSI unit number used to identify the file to all read
-**           and write functions.
-**  key    = The TOC keyword identifying the desired entry.
-**  buffer = The buffer from which the data is written.
-**  size   = The number of bytes to write.
-**  sadd   = The entry-relative starting page/offset to write the data.
-**  eadd   = A pointer to the entry-relative page/offset for the next
-**           byte after the end of the write request.
+**  \param unit   = The PSI unit number used to identify the file to all read
+**                  and write functions.
+**  \param key    = The TOC keyword identifying the desired entry.
+**  \param buffer = The buffer from which the data is written.
+**  \param size   = The number of bytes to write.
+**  \param sadd   = The entry-relative starting page/offset to write the data.
+**  \param eadd   = A pointer to the entry-relative page/offset for the next
+**                  byte after the end of the write request.
 */
 
 int psio_write(ULI unit, char *key, char *buffer, ULI size,

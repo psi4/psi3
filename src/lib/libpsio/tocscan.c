@@ -1,7 +1,11 @@
+/*!
+** \file tocscan.c
+*/
+
 #include <string.h>
 #include "psio.h"
 
-/*
+/*!
 ** PSIO_TOCSCAN(): Scans the TOC for a particular keyword and returns either
 ** a pointer to the entry or NULL to the caller.
 */

@@ -1,7 +1,15 @@
+/*!
+** \file get_volpath.c
+*/
+
 #include <stdio.h>
 #include <libipv1/ip_lib.h>
 #include "psio.h"
 
+/*
+** PSIO_GET_VOLPATH(): Get the path to a given volume for file number
+** 'unit'.
+*/
 int psio_get_volpath(ULI unit, ULI volume, char *path)
 {
   int errcod;
@@ -28,6 +36,10 @@ int psio_get_volpath(ULI unit, ULI volume, char *path)
 }
 
 
+/*
+** PSIO_GET_VOLPATH_DEFAULT(): Get the default path for the nth volume
+** of any file.
+*/
 int psio_get_volpath_default(ULI volume, char *path)
 {
   int errcod;

@@ -1,7 +1,14 @@
+/*!
+** \file get_filename.c
+*/
+
 #include <stdio.h>
 #include <libipv1/ip_lib.h>
 #include "psio.h"
 
+/*!
+** PSIO_GET_FILENAME(): Get the filename for filenumber 'unit'
+*/
 int psio_get_filename(ULI unit, char *name)
 {
   int errcod;
@@ -28,6 +35,9 @@ int psio_get_filename(ULI unit, char *name)
 }
 
 
+/*!
+** PSIO_GET_FILENAME_DEFAULT(): Get the default filename
+*/
 int psio_get_filename_default(char *name)
 {
   int errcod;

@@ -1,3 +1,7 @@
+/*!
+** \file open.c
+*/
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -5,15 +9,14 @@
 #include <stdlib.h>
 #include "psio.h"
 
-/*
+/*!
 ** PSIO_OPEN(): Opens a multivolume PSI direct access file for
 ** reading/writing data.
 **
-** Arguments:
-**  unit   = The PSI unit number used to identify the file to all read
-**           and write functions.
-**  status = Indicates if the file is old (PSIO_OPEN_OLD) or new
-**           (PSIO_OPEN_NEW). 
+**  \param unit   = The PSI unit number used to identify the file to all
+**                  read and write functions.
+**  \param status = Indicates if the file is old (PSIO_OPEN_OLD) or new
+**                  (PSIO_OPEN_NEW). 
 */
 
 int psio_open(ULI unit, int status)

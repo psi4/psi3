@@ -1,3 +1,7 @@
+/*!
+** \file get_numvols.c
+*/
+ 
 #include <stdio.h>
 #include <string.h>
 #include <libipv1/ip_lib.h>
@@ -5,6 +9,10 @@
 
 int psio_get_tempinfo(ULI *num_temp_vols);
 
+/*!
+** PSIO_GET_NUMVOLS(): Get the number of volumes that file number 'unit'
+** is split across.
+*/
 ULI psio_get_numvols(ULI unit)
 {
   ULI num;
@@ -34,6 +42,10 @@ ULI psio_get_numvols(ULI unit)
 }
 
 
+/*!
+** PSIO_GET_NUMVOLS_DEFAULT(): Get the number of volumes that file 
+** number 'unit' is split across.
+*/
 ULI psio_get_numvols_default(void)
 {
   ULI num;
@@ -51,17 +63,15 @@ ULI psio_get_numvols_default(void)
 
 
 
-/*
-** CDS 9/93
-** GET_TEMPINFO : David Sherrill, April 1993
+/*!
+** PSIO_GET_TEMPINFO : David Sherrill, April 1993
 **
 ** This function will allow PSI to figure out how many temp drives
 ** to use for sequential io.  The data will be contained in a
 ** host table file listing each host, the number of temp drives
 ** it has, and the number labels for each of these drives
 **
-** Arguments: 
-**    num_temp_vols = ptr to number of temp vols to use
+** \param num_temp_vols = ptr to number of temp vols to use
 **  
 ** Returns: 1 for success, 0 otherwise
 */

@@ -1,7 +1,21 @@
+/*!
+** \file read_block.c
+*/
+
 #include <unistd.h>
 #include <string.h>
 #include "psio.h"
 
+/*!
+** PSIO_READ_BLOCK(): Read a block of data.
+**
+** \param unit      = file number to read from
+** \param key       = key to search for
+** \param buffer    = where to put data
+** \param blksiz    = ??
+** \param start_blk = ??
+** \param end_blk   = ??
+*/
 int psio_read_block(ULI unit, char *key, char *buffer, ULI blksiz,
 	            ULI start_blk, ULI end_blk)
 {

@@ -1,9 +1,16 @@
+/*!
+** \file volseek.c
+*/
+
 #include <unistd.h>
 #include "psio.h"
 
 /* This is strictly used to avoid overflow errors on lseek() calls */
 #define PSIO_BIGNUM 10000
 
+/*!
+** PSIO_VOLSEEK()
+*/
 int psio_volseek(psio_vol *vol, ULI page, ULI offset, ULI numvols)
 {
   int stream, errcod;
