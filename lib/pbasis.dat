@@ -32428,7 +32428,7 @@ BASIS: (
 %Basis Set Library Information on: aug-pV7Z                   
 % Augmented Polarized Valence Septuple Zeta (pV7Z-like) Basis                   
 % -----------------------------------------------------------                   
-%H:     (15s,7p,6d,5f,4g,3h,2i)  -> [8s,7p,6d,5f,4g,3h,2i]                      
+%H:     (15s,7p,6d,5f,4g,3h,2i)  -> [8s,7p,6d,5f,4g,3h,2i]  D. Feller, private communication
 %C - F: (19s,13p,7d,6f,5g,4h,3i) -> [9s,8p,7d,6f,5g,4h,3i]  D. Feller and K.A.  
 %                                                           Peterson, JCP 110,  
 %                                                           8384 (1999)    
@@ -32441,6 +32441,16 @@ BASIS: (
 %functions by plotting the energy contribution of each l shell for d,f,g etc.   
 %and then perform an exponential extrapolation.                                 
 %
+  HYDROGEN:augpv7z = (
+    (GET pv7z)
+    (S    (         0.0270000000            1.0000000000))
+    (P    (         0.0921080000            1.0000000000))
+    (D    (         0.2012730000            1.0000000000))
+    (F    (         0.3467040000            1.0000000000))
+    (G    (         0.4789260000            1.0000000000))
+    (H    (         0.6883120000            1.0000000000))
+    (I    (         1.7070000000            1.0000000000))
+  )
   NITROGEN:augpv7z = (
     (GET pv7z)
     (S    (         0.0190122000            1.0000000000))
@@ -32487,6 +32497,9 @@ BASIS: (
 % Diffuse k exponents optimized at the CCSD(FC) level
 % To be published
 %  -EV 04/05/2001
+  HYDROGEN:augccpv7z = (
+    (GET augpv7z)
+  )
   NITROGEN:augccpv7z = (
     (GET augpv7z)
     (K    (         2.3790000000            1.0000000000))
