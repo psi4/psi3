@@ -48,8 +48,8 @@ struct dpd_file4_cache_entry *priority_list(void);
 int main(int argc, char *argv[])
 {
   int done=0;
-  int i, natom;
-  double **geom, *zvals;
+  int h, i, j, a, b, row, col, natom;
+  double **geom, *zvals, value;
   FILE *efile;
   int **cachelist, *cachefiles;
   struct dpd_file4_cache_entry *priority;

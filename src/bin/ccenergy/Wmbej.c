@@ -25,20 +25,46 @@ void Wmbej_build(void)
 
   timer_on("C->Wmbej");
 
-  dpd_buf4_init(&C, CC_CINTS, 0, 10, 11, 10, 11, 0, "C <ia||jb> (ia,bj)");
-  dpd_buf4_scmcopy(&C, CC_TMP0, "WMBEJ", -1);
-  dpd_buf4_scmcopy(&C, CC_TMP0, "Wmbej", -1);
-  dpd_buf4_close(&C);
+  /* W(mb,je) <-- <mb||ej> */
 
-  dpd_buf4_init(&C, CC_CINTS, 0, 10, 10, 10, 10, 0, "C <ia|jb>");
-  dpd_buf4_scmcopy(&C, CC_TMP0, "WmBEj", -1);
-  dpd_buf4_scmcopy(&C, CC_TMP0, "WMbeJ", -1);
-  dpd_buf4_close(&C);
+  if(params.ref == 2) { /*** UHF ***/
 
-  dpd_buf4_init(&D, CC_DINTS, 0, 10, 11, 10, 11, 0, "D <ij|ab> (ib,aj)");
-  dpd_buf4_copy(&D, CC_TMP0, "WMbEj");
-  dpd_buf4_copy(&D, CC_TMP0, "WmBeJ");
-  dpd_buf4_close(&D);
+    dpd_buf4_init(&C, CC_CINTS, 0, 20, 21, 20, 21, 0, "C <IA||JB> (IA,BJ)");
+    dpd_buf4_scmcopy(&C, CC_TMP0, "WMBEJ", -1);
+    dpd_buf4_close(&C);
+
+    dpd_buf4_init(&C, CC_CINTS, 0, 30, 31, 30, 31, 0, "C <ia||jb> (ia,bj)");
+    dpd_buf4_scmcopy(&C, CC_TMP0, "Wmbej", -1);
+    dpd_buf4_close(&C);
+
+    dpd_buf4_init(&C, CC_CINTS, 0, 26, 26, 26, 26, 0, "C <Ai|Bj>");
+    dpd_buf4_scmcopy(&C, CC_TMP0, "WmBEj", -1);
+    dpd_buf4_close(&C);
+
+    dpd_buf4_init(&C, CC_CINTS, 0, 10, 10, 10, 10, 0, "C <Ia|Jb>");
+    dpd_buf4_scmcopy(&C, CC_TMP0, "WMbeJ", -1);
+    dpd_buf4_close(&C);
+
+  }
+  else { /*** RHF/ROHF ***/
+
+
+    dpd_buf4_init(&C, CC_CINTS, 0, 10, 11, 10, 11, 0, "C <ia||jb> (ia,bj)");
+    dpd_buf4_scmcopy(&C, CC_TMP0, "WMBEJ", -1);
+    dpd_buf4_scmcopy(&C, CC_TMP0, "Wmbej", -1);
+    dpd_buf4_close(&C);
+
+    dpd_buf4_init(&C, CC_CINTS, 0, 10, 10, 10, 10, 0, "C <ia|jb>");
+    dpd_buf4_scmcopy(&C, CC_TMP0, "WmBEj", -1);
+    dpd_buf4_scmcopy(&C, CC_TMP0, "WMbeJ", -1);
+    dpd_buf4_close(&C);
+
+    dpd_buf4_init(&D, CC_DINTS, 0, 10, 11, 10, 11, 0, "D <ij|ab> (ib,aj)");
+    dpd_buf4_copy(&D, CC_TMP0, "WMbEj");
+    dpd_buf4_copy(&D, CC_TMP0, "WmBeJ");
+    dpd_buf4_close(&D);
+
+  }
 
   timer_off("C->Wmbej");
 

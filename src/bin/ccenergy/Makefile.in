@@ -6,7 +6,7 @@ include ../MakeVars
 LD = $(FC)
 LDLIBS += $(BLAS) /usr/lib/libpthread.a
 
-PSILIBS = -ldpd -lqt -lfile30 -liwl -lciomr -lpsio -lipv1 -lmalloc
+PSILIBS = -ldpd -lqt -lfile30 -liwl -lciomr -lpsio -lipv1
 
 CSRC = \
 BT2.c  Fae.c     Wmbej.c                 d1diag.c      get_moinfo.c  t2.c     \
