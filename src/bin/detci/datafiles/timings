@@ -310,4 +310,16 @@ aurelius, didn't seem to take for dido (maybe wasn't compiled right?).
 
 ======================================================================
 
+Ne custom DZP basis FCI 0fzc
+file ne.dz-fci.input
 
+16919232 determinants
+h0_blocksize = 400 convergence = 6
+10 (11) iterations
+
+E = -128.7629007841444 C0=-0.984931 C1=0.037659
+
+aurelius  : 2396u, 433s, 3147t
+dido      : 3171u, 651s, 4560t
+
+======================================================================
