@@ -30,8 +30,8 @@ psi: (
   rgeom       = ()
   findif_disp        = "optking --disp_nosymm"
   findif_disp_symm   = "optking --disp_irrep --irrep 1"
-  findif_freq_grad   = "optking --freq_grad"
-  findif_freq_grad_symm   = "optking --freq_grad_symm"
+  findif_freq_grad   = "optking --freq_grad_nosymm"
+  findif_freq_grad_symm   = "optking --freq_grad_irrep --irrep 1"
   findif_next        = "optking --disp_load"
   findif_energy      = "optking --energy_save"
   findif_grad        = "optking --grad_save"
