@@ -1,8 +1,14 @@
-
+/*!
+  \file eivout.c
+*/
+ 
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:18  evaleev
- * Initial revision
+ * Revision 1.2  2002/04/19 21:48:06  sherrill
+ * Remove some unused functions and do doxygen markup of libciomr.
  *
+/* Revision 1.1.1.1  2000/02/04 22:53:18  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 2.2  1995/01/16 22:48:46  cljanss
 /* Minor changes to make the SGI compiler happy.
 /*
@@ -14,11 +20,16 @@ static char *rcsid = "$Id$";
 
 #include "includes.h"
 
-void eivout(a,b,m,n,out)
-   double **a, *b;
-   int m,n;
-   FILE *out;
-
+/*!
+** eivout: Print out eigenvectors and eigenvalues to the output file
+**
+** \param a = eigenvectors
+** \param b = eigenvalues
+** \param m = rows of a
+** \param n = columns of a
+** \param out = output file pointer
+*/
+void eivout(double **a, double *b, int m, int n, FILE *out)
    {
       int ii,jj,kk,nn;
       int i,j;

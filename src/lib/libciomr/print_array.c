@@ -1,8 +1,14 @@
+/*!
+** \file print_array.c
+*/
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:21  evaleev
- * Initial revision
+ * Revision 1.2  2002/04/19 21:48:06  sherrill
+ * Remove some unused functions and do doxygen markup of libciomr.
  *
+/* Revision 1.1.1.1  2000/02/04 22:53:21  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 2.1  1991/06/15 18:29:42  seidl
 /* *** empty log message ***
 /* */
@@ -11,11 +17,10 @@ static char *rcsid = "$Id$";
 
 #include "includes.h"
 
-void print_array(a,m,out)
-   double *a;
-   int m;
-   FILE *out;
-
+/*!
+** print_array: Prints a linear array a of length m to file pointer out.
+*/
+void print_array(double *a, int m, FILE *out)
    {
       int ii,jj,kk,mm,nn,ll;
       int i,j,k,i1,i2;

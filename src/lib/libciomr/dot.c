@@ -1,8 +1,14 @@
+/*!
+ \file dot.c
+*/
 
 /* $Log$
- * Revision 1.2  2002/03/25 02:43:45  sherrill
- * Update documentation
+ * Revision 1.3  2002/04/19 21:48:06  sherrill
+ * Remove some unused functions and do doxygen markup of libciomr.
  *
+/* Revision 1.2  2002/03/25 02:43:45  sherrill
+/* Update documentation
+/*
 /* Revision 1.1.1.1  2000/02/04 22:53:18  evaleev
 /* Started PSI 3 repository
 /*

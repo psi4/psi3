@@ -1,10 +1,17 @@
+/*!
+** \file tstart.c
+** \brief Controls starting and stopping of timers
+*/
 
 /* $Log$
- * Revision 1.2  2000/03/26 22:03:26  sherrill
- * Added more characters to allow longer machine names in tstart.c.
- * Added support for C++ libraries in src/lib/MakeRules and MakeVars.
- * CDS 3/26/00
+ * Revision 1.3  2002/04/19 21:48:06  sherrill
+ * Remove some unused functions and do doxygen markup of libciomr.
  *
+/* Revision 1.2  2000/03/26 22:03:26  sherrill
+/* Added more characters to allow longer machine names in tstart.c.
+/* Added support for C++ libraries in src/lib/MakeRules and MakeVars.
+/* CDS 3/26/00
+/*
  * Revision 1.1.1.1  2000/02/04  22:53:24  evaleev
  * Started PSI 3 repository
  *
@@ -59,9 +66,12 @@ static char *rcsid = "$Id$";
 #define HZ 60
 #endif
 
-void tstart(outfile)
-   FILE *outfile;
-
+/*
+** tstart: Starts a timer.
+**
+** \param outfile = output file pointer
+*/
+void tstart(FILE *outfile)
    {
        int i,error;
        char *name;
@@ -83,9 +93,12 @@ void tstart(outfile)
 
        }
 
-void tstop(outfile)
-   FILE *outfile;
-
+/*!
+** tstop: Stop timer.
+**
+** \param outfile = output file pointer.
+*/ 
+void tstop(FILE *outfile)
 {
    int i;
    int error;

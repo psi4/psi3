@@ -1,8 +1,11 @@
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:23  evaleev
- * Initial revision
+ * Revision 1.2  2002/04/19 21:48:06  sherrill
+ * Remove some unused functions and do doxygen markup of libciomr.
  *
+/* Revision 1.1.1.1  2000/02/04 22:53:23  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 2.11  1997/09/14 03:28:55  sherrill
 /* Added iosize_() to types.h so the function prototype could be passed to
 /* flen.c, which was getting the wrong return type.  Also reformatted some
@@ -77,11 +80,6 @@ char* getenv(const char*);
 
 /* CDS 9/93 */
 #define TMP_VOL_MAX 10          /* max number of tmp drives */
-
-#if defined(DEC)
-char *strstr() ;                /* this function not in old DEC compiler! */
-#endif
-/* CDS 9/93 */
 
 #define DEBUG 0
 
@@ -645,29 +643,4 @@ get_tempinfo(num_temp_vols, temp_vol)
       return(1) ;
       }
 }
-
-
-#if defined(DEC)
-char *strstr (s1, s2)    /* for the DEC compiler which lacks strstr() */
-      char *s1, *s2 ;
-{
-
-   if (*s2 == '\0')
-      return ((char *)s1) ;
-   for (; (s1 = strchr(s1, *s2)) != NULL; ++s1)
-      {
-      char *sc1, *sc2 ;
-
-      for (sc1 = s1, sc2 = s2; ; )
-         if (*++sc2 == '\0')
-            return ((char *)s1) ;
-         else if (*++sc1 != *sc2)
-            break ;
-      }
-
-   return(NULL) ;
-}
-#endif
-
-/* CDS 9/93 : End modifications */
 

@@ -1,9 +1,15 @@
+/*!
+** \file rsp.c
+*/
 
 /* $Log$
- * Revision 1.3  2002/04/04 22:24:38  evaleev
- * Converted allocation functions (init_array, etc.) to take unsigned long ints
- * to be able to allocate properly 2GB+ chunks). Some declarations cleaned up.
+ * Revision 1.4  2002/04/19 21:48:06  sherrill
+ * Remove some unused functions and do doxygen markup of libciomr.
  *
+/* Revision 1.3  2002/04/04 22:24:38  evaleev
+/* Converted allocation functions (init_array, etc.) to take unsigned long ints
+/* to be able to allocate properly 2GB+ chunks). Some declarations cleaned up.
+/*
 /* Revision 1.2  2001/03/04 03:18:33  crawdad
 /* Added changes from Justin Fermann to reduce memory requirements in rsp.
 /* -TDC
@@ -33,11 +39,24 @@ extern void eigsort(double *, double **, int);
 /* translation into c of a translation into FORTRAN77 of the EISPACK */
 /* matrix diagonalization routines */
 
-void rsp(nm,n,nv,array,e_vals,matz,e_vecs,toler)
-   int nm, n, nv, matz;
-   double *array, *e_vals, **e_vecs;
-   double toler;
-
+/*!
+** rsp: diagonalize a matrix in packed (lower triangular) form in 'array'.
+** For square matrices, see sq_rsp().
+**
+**   \param nm     = rows of matrix
+**   \param n      = columns of matrix
+**   \param nv     = number of elements in lower triangle (n*(n+1)/2)
+**   \param array  = matrix to diagonalize (packed as linear array)
+**   \param e_vals = array to hold eigenvalues 
+**   \param matz   = 0 (no eigenvectors, eigenvals in ascending order)
+**                 = 1 (eigenvectors and eigenvalues in ascending order)
+**                 = 2 (no eigenvectors, eigenvalues in descending order)
+**                 = 3 (eigenvectors and eigenvalues in descending order)
+**   \param e_vecs = matrix of eigenvectors (one column for each eigvector)
+**   \param toler  = tolerance for eigenvalues?  Often 1.0E-14.
+*/
+void rsp(int nm, int n,int nv,double *array, double *e_vals, int matz,
+         double ** e_vecs, double toler)
    {
       int i, j, ii, ij, ierr;
       int ascend_order;
@@ -47,7 +66,7 @@ void rsp(nm,n,nv,array,e_vals,matz,e_vecs,toler)
       double one = 1.0;
       double sw;
 
-/* Modified by Ed - matz can have values 0 through 3 */
+      /* Modified by Ed - matz can have values 0 through 3 */
 
       if ((matz > 3) || (matz < 0)) {
         matz = 0;

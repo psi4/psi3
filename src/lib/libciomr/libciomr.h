@@ -52,9 +52,10 @@ double ** init_matrix(unsigned long int rows, unsigned long int cols) ;
 void init_ptrs();
 
 /* Functions under int_pac.c */
-void int_pac(int *i,int *ib,int *j,int *jb,unsigned int *ipak,unsigned int *jpak);
-void int_unpac(int *i,int *ib,int *j,int *jb,unsigned int *ipak,unsigned int
-*jpak);
+void int_pac(int *i,int *ib,int *j,int *jb,unsigned int *ipak,
+             unsigned int *jpak);
+void int_unpac(int *i,int *ib,int *j,int *jb,unsigned int *ipak,
+               unsigned int *jpak);
 
 int io_getline(FILE *input,char *line);
 int io_locate(FILE *input, char *loc_token);
@@ -77,7 +78,8 @@ void arr_to_mat(double **a,double *b,int m,int n);
 
 void mmult(double **AF, int ta, double **BF, int tb, double **CF, int tc,
            int nr, int nl, int nc, int add) ;
-void mxmb(double **a,int ia,int ja,double **b,int ib,int jb,double **c,int ic,int jc, int nrow, int nlnk, int ncol);
+void mxmb(double **a,int ia,int ja,double **b,int ib,int jb,double **c,
+          int ic,int jc, int nrow, int nlnk, int ncol);
 int oldstyleinput();
 void print_array(double *a, int m, FILE *out) ;
 void print_mat(double **a, int rows, int cols, FILE *out) ;
@@ -107,8 +109,10 @@ void tri_to_sq(double *amat,double **bmat,int size);
 void tstart(FILE *outfile) ;
 void tstop(FILE *outfile) ;
 
-void wreadw(int tape, char *buffer, int size, PSI_FPTR fword, PSI_FPTR *nxtwrd);
-void wwritw(int unit, char *buffer, int nwords, PSI_FPTR fword, PSI_FPTR *nxtwrd);
+void wreadw(int tape, char *buffer, int size, PSI_FPTR fword, 
+            PSI_FPTR *nxtwrd);
+void wwritw(int unit, char *buffer, int nwords, PSI_FPTR fword, 
+            PSI_FPTR *nxtwrd);
 
 /* Functions in zero.c */
 void zero_arr(double *a, int size) ;

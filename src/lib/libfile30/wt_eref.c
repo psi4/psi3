@@ -11,8 +11,7 @@
 /*!
 ** file30_wt_eref(): Writes the reference energy to file30.
 **
-**   arguments:
-** \param double eref  the reference energy.
+** \param eref  the reference energy.
 **
 **   returns nothing.
 */

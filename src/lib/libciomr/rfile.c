@@ -1,8 +1,14 @@
+/*!
+** \file rfile.c
+*/
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:22  evaleev
- * Initial revision
+ * Revision 1.2  2002/04/19 21:48:06  sherrill
+ * Remove some unused functions and do doxygen markup of libciomr.
  *
+/* Revision 1.1.1.1  2000/02/04 22:53:22  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 2.2  1999/11/01 20:10:58  evaleev
 /* Added explicit extern declarations of functions within the library.
 /*
@@ -18,8 +24,11 @@ static char *rcsid = "$Id$";
 extern void ioopen_(int *);
 extern void init_ptrs(void);
 
-/* opens binary file unit */
-
+/*!
+** rfile: open a binary file
+**
+** \param unit = file number
+*/
 void rfile(int unit)
 {
        if (ptr.wptr == NULL) init_ptrs();

@@ -1,8 +1,14 @@
+/*!
+** \file print_mat.c
+*/
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:21  evaleev
- * Initial revision
+ * Revision 1.2  2002/04/19 21:48:06  sherrill
+ * Remove some unused functions and do doxygen markup of libciomr.
  *
+/* Revision 1.1.1.1  2000/02/04 22:53:21  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 2.1  1991/06/15 18:29:43  seidl
 /* *** empty log message ***
 /* */
@@ -11,11 +17,10 @@ static char *rcsid = "$Id$";
 
 #include "includes.h"
 
-void print_mat(a,m,n,out)
-   double **a;
-   int m,n;
-   FILE *out;
-
+/*
+** print_mat: Print a matrix a of dimensions mxn to file pointer out.
+*/
+void print_mat(double **a, int m, int n, FILE *out)
    {
       int ii,jj,kk,nn,ll;
       int i,j,k;

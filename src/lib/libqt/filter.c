@@ -15,7 +15,8 @@
 ** iwl_rd_one_all_act() function in LIBIWL.
 */
 
-void filter(double *input, double *output, int *ioff, int norbs, int nfzc, int nfzv)
+void filter(double *input, double *output, int *ioff, int norbs, 
+            int nfzc, int nfzv)
 {
   int i, j, ij, IJ;
   int nact;

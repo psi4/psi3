@@ -92,10 +92,11 @@ void C_DSCAL(int n, double alpha, double *vec, int inc)
 **  This function calculates plane Givens rotation for vectors
 **  x,y and angle theta.  x = x*cos + y*sin, y = -x*sin + y*cos.
 **
-**  \param double *x: vector x
-**  \param double *y: vector Y
-**  \param int ntot: length of x,y
-**  \param int incx,incy: increments for x,y
+**  \param x: vector x
+**  \param y: vector Y
+**  \param tot: length of x,y
+**  \param incx: increment for x
+**  \param incy: increment for y
 */
 void C_DROT(int ntot, double *x, int incx, double *y, int incy,
             double costheta, double sintheta)
@@ -240,13 +241,13 @@ void C_DGEMV(char transa, int m, int n, double alpha, double *A,
 ** C_DDOT()
 ** This function returns the dot product of two vectors, X and Y.
 **
-** \param int n:      Number of elements in X and Y.
-** \param double* X:  A pointer to the beginning of the data in X.
-**                    Must be of at least length (1+(N-1)*abs(inc_x).
-** \param int inc_x:  The desired stride of X. Useful for skipping
+** \param n:      Number of elements in X and Y.
+** \param X:      A pointer to the beginning of the data in X.
+**                Must be of at least length (1+(N-1)*abs(inc_x).
+** \param inc_x:  The desired stride of X. Useful for skipping
 **                    around to certain data stored in X.
-** \param double* Y:  A pointer to the beginning of the data in Y.
-** \param int inc_y:  The desired stride for Y.
+** \param Y:      A pointer to the beginning of the data in Y.
+** \param inc_y:  The desired stride for Y.
 **
 ** Interface written by ST Brown.
 ** July 2000

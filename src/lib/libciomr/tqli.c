@@ -1,8 +1,14 @@
+/*!
+** \file tqli.c
+*/ 
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:24  evaleev
- * Initial revision
+ * Revision 1.2  2002/04/19 21:48:06  sherrill
+ * Remove some unused functions and do doxygen markup of libciomr.
  *
+/* Revision 1.1.1.1  2000/02/04 22:53:24  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 2.2  1991/07/30 04:13:57  seidl
 /* do not exit if 30 iterations exceeded
 /*
@@ -14,15 +20,11 @@ static char *rcsid = "$Id$";
 
 # include "includes.h"
 
-/* diagonalizes tridiagonal matrix output by tred2 */
-/* gives only eigenvalues if matz = 0, both eigenvalues and eigenvectors */
-/* if matz = 1 */
-
-int tqli(n,d,z,e,matz,toler)
-   int n, matz;
-   double *d, **z, *e;
-   double toler;
-
+/*!
+** tqli: diagonalizes tridiagonal matrix output by tred2.  Gives only
+** eigenvalues if matz=0, both eigenvalues and eigenvectors if matz=1
+*/
+int tqli(int n, double *d, double **z, double *e, int matz, double toler)
    {
       register int k;
       int i,j,l,m,iter;

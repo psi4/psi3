@@ -36,7 +36,6 @@ io_locate.c \
 ioopen.c \
 lubksb.c \
 ludcmp.c \
-mat_to_arr.c \
 mmult.c \
 mxmb.c \
 mxmbol.c \
@@ -63,7 +62,6 @@ srew.c \
 swrit.c \
 tqli.c \
 tred2.c \
-tri_to_block.c \
 tri_to_sq.c \
 tstart.c \
 wreadw.c \

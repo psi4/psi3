@@ -1,5 +1,5 @@
 /*!
-  \file close.c
+  \file libchkpt/close.c
 */
 
 #include <stdio.h>

@@ -6,6 +6,8 @@ David Sherrill, July 1993
 Last modified by Edward Valeev, February 1998
 Updated descriptions of EIGSORT, SQ_RSP, RSP.
 
+This file is now obsolete and is replaced by the automatically
+generated documentation from doxygen --- David Sherrill, April 2002
 =====================================================================
 BLOCK_MATRIX
 

@@ -1,9 +1,15 @@
+/*!
+**\file sq_rsp.c
+*/
 
 /* $Log$
- * Revision 1.2  2002/04/04 22:24:38  evaleev
- * Converted allocation functions (init_array, etc.) to take unsigned long ints
- * to be able to allocate properly 2GB+ chunks). Some declarations cleaned up.
+ * Revision 1.3  2002/04/19 21:48:06  sherrill
+ * Remove some unused functions and do doxygen markup of libciomr.
  *
+/* Revision 1.2  2002/04/04 22:24:38  evaleev
+/* Converted allocation functions (init_array, etc.) to take unsigned long ints
+/* to be able to allocate properly 2GB+ chunks). Some declarations cleaned up.
+/*
 /* Revision 1.1.1.1  2000/02/04 22:53:23  evaleev
 /* Started PSI 3 repository
 /*
@@ -29,11 +35,23 @@ extern void eigsort(double *, double **, int);
 /* translation into c of a translation into FORTRAN77 of the EISPACK */
 /* matrix diagonalization routines */
 
-void sq_rsp(nm,n,array,e_vals,matz,e_vecs,toler)
-   int nm, n,matz;
-   double **array, *e_vals, **e_vecs;
-   double toler;
-
+/*!
+** sq_rsp: diagomalize a square matrix ('array').
+**
+**   \param nm     = rows of matrix
+**   \param n      = columns of matrix
+**   \param nv     = number of elements in lower triangle (n*(n+1)/2)
+**   \param array  = matrix to diagonalize
+**   \param e_vals = array to hold eigenvalues
+**   \param matz   = 0 (no eigenvectors, eigenvals in ascending order)
+**                 = 1 (eigenvectors and eigenvalues in ascending order)
+**                 = 2 (no eigenvectors, eigenvalues in descending order)
+**                 = 3 (eigenvectors and eigenvalues in descending order)
+**   \param e_vecs = matrix of eigenvectors (one column for each eigvector)
+**   \param toler  = tolerance for eigenvalues?  Often 1.0E-14.
+*/
+void sq_rsp(int nm, int n, double **array, double *e_vals, int matz,
+            double **e_vecs, double toler)
    {
       int i, j, ii, ij, ierr;
       int ascend_order;
@@ -91,4 +109,4 @@ void sq_rsp(nm,n,array,e_vals,matz,e_vecs,toler)
       free_matrix(temp,n);
 
       }
-            
+

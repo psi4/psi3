@@ -1,8 +1,11 @@
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:19  evaleev
- * Initial revision
+ * Revision 1.2  2002/04/19 21:48:06  sherrill
+ * Remove some unused functions and do doxygen markup of libciomr.
  *
+/* Revision 1.1.1.1  2000/02/04 22:53:19  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 2.4  1997/09/12 13:52:49  crawdad
 /* Changing marco name from ULL to PSI_FPTR.
 /*
@@ -25,8 +28,7 @@ static char *rcsid = "$Id$";
 
 #include "iomrparam.h"
 
-int i2sec(n)
-    PSI_FPTR n;
+int i2sec(PSI_FPTR n)
     {
       int num;
 

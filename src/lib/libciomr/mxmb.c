@@ -1,8 +1,14 @@
-
+/*!
+** \file mxmb.c
+*/
+ 
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:21  evaleev
- * Initial revision
+ * Revision 1.2  2002/04/19 21:48:06  sherrill
+ * Remove some unused functions and do doxygen markup of libciomr.
  *
+/* Revision 1.1.1.1  2000/02/04 22:53:21  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 2.2  1999/11/01 20:10:57  evaleev
 /* Added explicit extern declarations of functions within the library.
 /*
@@ -18,14 +24,13 @@ extern void mmult(double **AF, int ta, double **BF, int tb, double **CF, int tc,
 	   int nr, int nl, int nc, int add);
 extern void mxmbol();
 
-/* multiplies two square matrices together */
-/* if in (n=a,b,c) = 1, then normal multiply */
-/* if jn (n=a,b,c) = 1, then multiply by transpose of n */
-
-void mxmb(a,ia,ja, b,ib,jb, c,ic,jc, nrow, nlnk, ncol)
-   double **a, **b, **c;
-   int ia, ja, ib, jb, ic, jc, nrow, nlnk, ncol;
-
+/*!
+** mxmb: multiplies two rectangular matrices together.  If in=1 (n=a,b,c),
+** then normal multiply.  If jn=1 (n=a,b,c) then multiply the transpose
+** of matrix n.
+*/
+void mxmb(double **a, int ia, int ja, double **b, int ib, int jb, 
+          double **c, int ic, int jc, int nrow, int nlnk, int ncol)
    {
       if (ic == 1) {
          if (ia == 1) {

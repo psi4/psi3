@@ -2,9 +2,7 @@
 
 #define SWAP(g,h) {y=(g);(g)=(h);(h)=y;}
 
-hess_elim(a,n)
-   double **a;
-   int n;
+hess_elim(double **a, int n)
 {
    int m,j,i;
    double y,x;

@@ -3,10 +3,13 @@
 */ 
 
 /* $Log$
- * Revision 1.3  2002/04/04 22:24:38  evaleev
- * Converted allocation functions (init_array, etc.) to take unsigned long ints
- * to be able to allocate properly 2GB+ chunks). Some declarations cleaned up.
+ * Revision 1.4  2002/04/19 21:48:06  sherrill
+ * Remove some unused functions and do doxygen markup of libciomr.
  *
+/* Revision 1.3  2002/04/04 22:24:38  evaleev
+/* Converted allocation functions (init_array, etc.) to take unsigned long ints
+/* to be able to allocate properly 2GB+ chunks). Some declarations cleaned up.
+/*
 /* Revision 1.2  2002/03/25 02:43:45  sherrill
 /* Update documentation
 /*
@@ -43,7 +46,8 @@ double ** init_matrix(unsigned long int n, unsigned long int m)
     double **array=NULL;
     unsigned long int i;
 
-    if ((array = (double **) malloc(n*(unsigned long int)sizeof(double *)))==NULL) {
+    if ((array = (double **) malloc(n*(unsigned long int)sizeof(double *)))
+        ==NULL) {
          fprintf(stderr,"init_matrix: trouble allocating memory \n");
          fprintf(stderr,"n = %ld\n",n);
          resource_command();
@@ -51,7 +55,8 @@ double ** init_matrix(unsigned long int n, unsigned long int m)
          }
 
     for (i = 0; i < n; i++) {
-        if ((array[i] = (double *) malloc(m*(unsigned long int)sizeof(double)))==NULL) {
+        if ((array[i] = (double *) malloc(m*(unsigned long int)sizeof(double)))
+            ==NULL) {
            fprintf(stderr,"init_matrix: trouble allocating memory \n");
            fprintf(stderr,"i = %ld m = %ld\n",i,m);
            resource_command();
