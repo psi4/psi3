@@ -47,6 +47,7 @@ void deriv1()
   }
 
   file11();
+  chkpt_wt_grad(Grad[0]);
   free_block(Grad);
 
   return;
