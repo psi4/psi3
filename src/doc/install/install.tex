@@ -200,11 +200,42 @@ in {\tt \$prefix/doc}.
 
 An ever-growing number of test cases is available in {\tt \$PSI3/tests}.
 A simple automated system is now available to execute all the current test
-cases and compare to the available reference data. Simply run the   
-executable perl script, {\tt driver.test.pl}, and the result of each test case
-will be printed in the text file, {\tt test-case-results}. The \PSIthree\ 
-User's Manual provides detailed instructions for running calculations.
-Report bugs to {\tt psimaster@sirius.chem.vt.edu}.
+cases and compare to the available reference data. Here are a few 
+examples for running the automated test cases.
+
+\noindent
+If you want to run all the test cases then type:
+\begin{verbatim}
+./driver.test.pl
+\end{verbatim}
+\noindent
+There are several categories for test cases that allow you to customize
+which test cases you want to run.  For example:
+\begin{verbatim}
+./driver.test.pl --ci        Runs all detci calcs
+./driver.test.pl --cc        Runs all coupled-cluster calcs
+./driver.test.pl --scf       Runs all hartree-fock calcs
+./driver.test.pl --sp        Runs all single-point calcs
+./driver.test.pl --geom      Runs all geometry optimization calcs
+./driver.test.pl --freq      Runs all harmonic vibrational frequency calcs
+./driver.test.pl --small     Runs all low memory, short run time calcs
+./driver.test.pl --medium    Runs all low memory, med run time calcs
+./driver.test.pl --large     Runs all high memory, long run time calcs
+./driver.test.pl --standard  Runs all small and medium calcs
+\end{verbatim} 
+\noindent
+There are also two different arguments that are used to clean-up 
+each directory just in case the test cases need to be run more than once.
+For example:
+\begin{verbatim}
+./driver.test.pl [category] --clean     Removes all extra PSI files
+                                        except file*.dat and output.dat
+
+./driver.test.pl [category] --cleanall  Removes all extra PSI files
+\end{verbatim}
+\noindent
+The \PSIthree\ User's Manual provides detailed instructions for running 
+calculations. Report bugs to {\tt psimaster@sirius.chem.vt.edu}.
 
 \subsection{Step 5: Cleaning}
 
