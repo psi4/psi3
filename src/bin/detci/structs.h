@@ -423,7 +423,7 @@ struct params {
    int tpdm_print;         /* print the tpdm? */
    int tpdm_file;          /* file number for tpdm */
    int root;               /* which root to optimize (write opdm/tpdm for) */
-   int zero_blocks;        /* 1(0) if use/ignore zero_blocks array if icore=0,2 */
+   int zero_blocks;        /* 1(0) if use/ignore zero_blocks array icore=0,2 */
    double perturbation_parameter; /* z in H = H0 + z * H1 */
    int z_scale_H;          /* 1(0) if pert. scaling used */
    int have_special_conv;  /* have a special convergence value from the
@@ -431,6 +431,8 @@ struct params {
    double special_conv;    /* special convergence value */
    int nthreads;           /* number of threads to use in sigma routines */
    int pthreads;           /* 1(0) if use/not multithreading */
+   int export_ci_vector;   /* 1 if export the CI vector with string info,
+                              useful for BODC */
 };
 
 

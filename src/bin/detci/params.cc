@@ -191,7 +191,7 @@ void get_parameters(void)
 
    Parameters.nthreads = 1;
    Parameters.pthreads = 0;
-   
+
    errcod = ip_data("EX_LVL","%d",&(Parameters.ex_lvl),0);
    errcod = ip_data("VAL_EX_LVL","%d",&(Parameters.val_ex_lvl),0);
    errcod = ip_data("MAX_DET","%d",&(Parameters.max_dets),0);
@@ -539,6 +539,9 @@ void get_parameters(void)
    if (Parameters.nthreads < 1) Parameters.nthreads = 1;
    errcod = ip_boolean("PTHREADS",&(Parameters.pthreads),0);
    if (!Parameters.pthreads) Parameters.nthreads = 1;
+
+   Parameters.export_ci_vector = 0;
+   errcod = ip_boolean("EXPORT_CI_VECTOR", &(Parameters.export_ci_vector), 0);
 }
 
 
@@ -721,6 +724,8 @@ void print_parameters(void)
            Parameters.perturbation_parameter, Parameters.root);
    fprintf(outfile, "   PTHREADS      =   %6s      NTHREADS     =   %6d\n",
            Parameters.pthreads ? "yes":"no", Parameters.nthreads);
+   fprintf(outfile, "   EXPORT_CI_VECTOR =   %6s\n",
+           Parameters.export_ci_vector ? "yes":"no");
    fprintf(outfile, "\n   FILES         =     %3d %3d %3d %3d\n",
       Parameters.first_hd_tmp_unit, Parameters.first_c_tmp_unit,
       Parameters.first_s_tmp_unit, Parameters.first_d_tmp_unit);

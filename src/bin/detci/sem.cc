@@ -1078,64 +1078,68 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
         iter2++;
       } /* end iteration */
 
+
    /* Dump the vector to a PSIO file
       Added by Edward valeev (August 2002) */
-   StringSet alphastrings, betastrings;
-   SlaterDetSet dets;
-   SlaterDetVector vec;
+   if (Parameters.export_ci_vector) {
+     StringSet alphastrings, betastrings;
+     SlaterDetSet dets;
+     SlaterDetVector vec;
 
-   stringset_init(&alphastrings,AlphaG->num_str,AlphaG->num_el,CalcInfo.num_fzc_orbs);
-   int list_gr = 0;
-   int irrep;
-   for(irrep=0; irrep<AlphaG->nirreps; irrep++) {
-     for(int gr=0; gr<AlphaG->subgr_per_irrep; gr++,list_gr++) {
-       int nlists_per_gr = AlphaG->sg[irrep][gr].num_strings;
-       int offset = AlphaG->sg[irrep][gr].offset;
-       for(int l=0; l<nlists_per_gr; l++)
-	 stringset_add(&alphastrings,l+offset,alplist[list_gr][l].occs);
+     stringset_init(&alphastrings,AlphaG->num_str,AlphaG->num_el,
+                    CalcInfo.num_fzc_orbs);
+     int list_gr = 0;
+     int irrep;
+     for(irrep=0; irrep<AlphaG->nirreps; irrep++) {
+       for(int gr=0; gr<AlphaG->subgr_per_irrep; gr++,list_gr++) {
+         int nlists_per_gr = AlphaG->sg[irrep][gr].num_strings;
+         int offset = AlphaG->sg[irrep][gr].offset;
+         for(int l=0; l<nlists_per_gr; l++)
+	   stringset_add(&alphastrings,l+offset,alplist[list_gr][l].occs);
+       }
      }
-   }
    
-   stringset_init(&betastrings,BetaG->num_str,BetaG->num_el,CalcInfo.num_fzc_orbs);
-   list_gr = 0;
-   for(irrep=0; irrep<BetaG->nirreps; irrep++) {
-     for(int gr=0; gr<BetaG->subgr_per_irrep; gr++,list_gr++) {
-       int nlists_per_gr = BetaG->sg[irrep][gr].num_strings;
-       int offset = BetaG->sg[irrep][gr].offset;
-       for(int l=0; l<nlists_per_gr; l++)
+     stringset_init(&betastrings,BetaG->num_str,BetaG->num_el,
+                    CalcInfo.num_fzc_orbs);
+     list_gr = 0;
+     for(irrep=0; irrep<BetaG->nirreps; irrep++) {
+       for(int gr=0; gr<BetaG->subgr_per_irrep; gr++,list_gr++) {
+         int nlists_per_gr = BetaG->sg[irrep][gr].num_strings;
+         int offset = BetaG->sg[irrep][gr].offset;
+         for(int l=0; l<nlists_per_gr; l++)
 	 stringset_add(&betastrings,l+offset,betlist[list_gr][l].occs);
+       }
      }
-   }
    
-   int ii;
-   int size = CIblks.vectlen;
-   int Iarel, Ialist, Ibrel, Iblist;
-   slaterdetset_init(&dets,size,&alphastrings,&betastrings);
-   for (ii=0; ii<size; ii++) {
-     Dvec.det2strings(ii, &Ialist, &Iarel, &Iblist, &Ibrel);
-     irrep = Ialist/AlphaG->subgr_per_irrep;
-     int gr = Ialist%AlphaG->subgr_per_irrep;
-     int Ia = Iarel + AlphaG->sg[irrep][gr].offset;
-     irrep = Iblist/BetaG->subgr_per_irrep;
-     gr = Iblist%BetaG->subgr_per_irrep;
-     int Ib = Ibrel + BetaG->sg[irrep][gr].offset;
-     slaterdetset_add(&dets, ii, Ia, Ib);
-   }
+     int ii;
+     int size = CIblks.vectlen;
+     int Iarel, Ialist, Ibrel, Iblist;
+     slaterdetset_init(&dets,size,&alphastrings,&betastrings);
+     for (ii=0; ii<size; ii++) {
+       Dvec.det2strings(ii, &Ialist, &Iarel, &Iblist, &Ibrel);
+       irrep = Ialist/AlphaG->subgr_per_irrep;
+       int gr = Ialist%AlphaG->subgr_per_irrep;
+       int Ia = Iarel + AlphaG->sg[irrep][gr].offset;
+       irrep = Iblist/BetaG->subgr_per_irrep;
+       gr = Iblist%BetaG->subgr_per_irrep;
+       int Ib = Ibrel + BetaG->sg[irrep][gr].offset;
+       slaterdetset_add(&dets, ii, Ia, Ib);
+     }
 
-   Dvec.buf_lock(buffer1);
-   for(ii=0; ii<size; ii++)
-     buffer1[ii] = 0.0;
-   Dvec.read(0,0);
-   slaterdetvector_init(&vec, &dets);
-   slaterdetvector_set(&vec, buffer1);
-   slaterdetvector_write(PSIF_CIVECT,"CI vector",&vec);
-   Dvec.buf_unlock();
+     Dvec.buf_lock(buffer1);
+     for(ii=0; ii<size; ii++)
+       buffer1[ii] = 0.0;
+     Dvec.read(0,0);
+     slaterdetvector_init(&vec, &dets);
+     slaterdetvector_set(&vec, buffer1);
+     slaterdetvector_write(PSIF_CIVECT,"CI vector",&vec);
+     Dvec.buf_unlock();
    
-   slaterdetvector_delete(&vec);
-   slaterdetset_delete(&dets);
-   stringset_delete(&alphastrings);
-   stringset_delete(&betastrings);
-
+     slaterdetvector_delete(&vec);
+     slaterdetset_delete(&dets);
+     stringset_delete(&alphastrings);
+     stringset_delete(&betastrings);
+   }
 
    /* Compute S^2 */
    if (Parameters.calc_ssq && Parameters.icore==1) {
