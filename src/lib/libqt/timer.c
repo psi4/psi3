@@ -175,7 +175,7 @@ void timer_off(char *key)
   this_timer = timer_scan(key);
 
   if(this_timer == NULL) {
-      fprintf(stderr, "Bad timer key.\n");
+      fprintf(stderr, "Bad timer key: %s\n", key);
       exit(1);
     }
 
