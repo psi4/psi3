@@ -19,3 +19,9 @@ cc6: RHF-CCSD(T)/aug-cc-pVTZ planar (C2v) C4NH4 single-point energy
 
 cc7: RHF-CCSD(T)/aug-cc-pVTZ pyramidal (Cs) C4NH4 single-point energy
   (fzc, AO-basis <ab|cd>)  Note: two files exceed 10 GB in this case.
+
+cc8: UHF-CCSD(T)/cc-pVDZ 2Sigma+ CN single-point energy (fzc, MO-basis
+    <ab|cd>)
+
+cc9: UHF-CCSD(T)/cc-pVDZ 2Sigma+ CN single-point energy (fzc, AO-basis
+    <ab|cd>)

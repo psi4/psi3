@@ -1,0 +1,33 @@
+default: (
+  label = "UHF-CCSD(T)/cc-pVDZ 2Sigma+ CN"
+
+  jobtype = sp
+  wfn = ccsd_t
+  reference = uhf
+  multi = 2
+  dertype = none
+
+  docc = (4 0 1 1)
+  socc = (1 0 0 0)
+  frozen_docc = (2 0 0 0)
+
+  memory = (32.0 MB)
+
+  ao_basis = true
+  print = 2
+
+  files: ( default: ( name = "cn" ) )
+)
+
+input: (
+  basis = ccpvdz
+  puream = true
+  units = angstrom
+  zmat = (
+   (C)
+   (N 1 R)
+  )
+  zvars = (
+   (R 1.175)
+  )
+)
