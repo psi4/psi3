@@ -50,7 +50,7 @@ int dpd_buf4_copy(dpdbuf4 *InBuf, int outfilenum, char *label)
       incore = 1;
       if(nbuckets > 1) {
 	incore = 0;
-#if 1
+#if DPD_DEBUG
         fprintf(stderr, "buf4_copy: memory information.\n");
         fprintf(stderr, "buf4_copy: rowtot[%d] = %d.\n", h, InBuf->params->rowtot[h]);
 	fprintf(stderr, "buf4_copy: nbuckets = %d\n", nbuckets);

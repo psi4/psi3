@@ -30,7 +30,7 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
   long int size_Y, size_Z, size_file_X_row;
   int incore, nbuckets;
   long int memoryd, core, rows_per_bucket, rows_left, memtotal;
-#if 1
+#if DPD_DEBUG
   int *xrow, *xcol, *yrow, *ycol, *zrow, *zcol;
   double byte_conv;
 #endif
@@ -98,7 +98,7 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
     }
     else incore = 1;
 
-#if 1
+#if DPD_DEBUG
     if(!incore) {
       fprintf(stderr, "Contract444: memory information.\n");
       fprintf(stderr, "Contract444: h = %d, row = %d, col = %d, tot = %d\n", 

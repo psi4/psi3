@@ -46,7 +46,7 @@ int dpd_dot14(dpdfile2 *T, dpdbuf4 *I, dpdfile2 *Z,
 
       /* Allocate space for the X buffer */
       if(T->params->ppi[Gp] && T->params->qpi[Gs])
-        X = block_matrix(T->params->ppi[Gp],T->params->qpi[Gs]);
+        X = dpd_block_matrix(T->params->ppi[Gp],T->params->qpi[Gs]);
 
       /* Loop over orbitals of the target */
       for(q=0; q < Z->params->ppi[Gq]; q++) {

@@ -71,7 +71,7 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 	incore = 1;
 	if(nbuckets > 1) {
 	  incore = 0;
-#if 1
+#if DPD_DEBUG
 	  fprintf(stderr, "buf4_sort_pqsr: memory information.\n");
 	  fprintf(stderr, "buf4_sort_pqsr: rowtot[%d] = %d\n", h, InBuf->params->rowtot[h]);
 	  fprintf(stderr, "buf4_sort_pqsr: nbuckets = %d\n", nbuckets);

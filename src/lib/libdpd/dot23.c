@@ -72,7 +72,7 @@ int dpd_dot23(dpdfile2 *T, dpdbuf4 *I, dpdfile2 *Z,
 
       /* Allocate space for the X buffer */
       if(T->params->ppi[Gq] && T->params->qpi[Gr])
-        X = block_matrix(T->params->ppi[Gq],T->params->qpi[Gr]);
+        X = dpd_block_matrix(T->params->ppi[Gq],T->params->qpi[Gr]);
 
       /* Loop over orbitals of the target */
       for(p=0; p < Z->params->ppi[Gp]; p++) {

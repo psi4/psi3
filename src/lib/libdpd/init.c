@@ -501,7 +501,7 @@ int dpd_init(int dpd_num, int nirreps, long int memory, int cachetype,
 	nrows = 0;
 	for(Gp=0; Gp < nirreps; Gp++) { /* Gamma_p */
 	  for(p=0; p < this_dpd->params4[i][j].ppi[Gp]; p++) {
-	    offset = this_dpd->params4[i][j].poff[Gp] + p;
+	    offset = this_dpd->params4[i][j].poff[Gp];
 	    if(this_dpd->params4[i][j].qpi[Gp^h])
 	      this_dpd->params4[i][j].start13[h][offset + p] = nrows;
 	    nrows += this_dpd->params4[i][j].qpi[Gp^h];

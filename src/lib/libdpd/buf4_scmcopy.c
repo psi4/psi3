@@ -51,7 +51,7 @@ int dpd_buf4_scmcopy(dpdbuf4 *InBuf, int outfilenum, char *label, double alpha)
       incore = 1;
       if(nbuckets > 1) {
 	incore = 0;
-#if 1
+#if DPD_DEBUG
         fprintf(stderr, "buf4_scmcopy: memory information.\n");
         fprintf(stderr, "buf4_scmcopy: rowtot[%d] = %d.\n", h, InBuf->params->rowtot[h]);
 	fprintf(stderr, "buf4_scmcopy: nbuckets = %d\n", nbuckets);

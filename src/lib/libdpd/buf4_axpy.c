@@ -48,7 +48,7 @@ int dpd_buf4_axpy(dpdbuf4 *BufX, dpdbuf4 *BufY, double alpha)
       incore = 1;
       if(nbuckets > 1) {
 	incore = 0;
-#if 1
+#if DPD_DEBUG
         fprintf(stderr, "buf4_axpy: memory information.\n");
 	fprintf(stderr, "buf4_axpy: rowtot[%d] = %d\n", h, BufX->params->rowtot[h]);
 	fprintf(stderr, "buf4_axpy: nbuckets = %d\n", nbuckets);
