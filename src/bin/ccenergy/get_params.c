@@ -47,6 +47,7 @@ void get_params()
   /* If the MO orbital phases are screwed up, don't restart */
   if(!moinfo.phase) params.restart = 0;
   /* BUT, the user can force an override of the phase problem */
+  forceit = 0;
   errcod = ip_boolean("FORCE_RESTART", &forceit,0);
   if(forceit) params.restart = 1;
 
@@ -78,6 +79,9 @@ void get_params()
 
   params.local = 0;
   errcod = ip_boolean("LOCAL", &(params.local),0);
+  local.cutoff = 1e-2;
+  errcod = ip_data("LOCAL_CUTOFF", "%d", &(iconv), 0);
+  if(errcod == IPE_OK) local.cutoff = 1.0 * pow(10.0, (double) -iconv);
 
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
@@ -90,6 +94,7 @@ void get_params()
           params.restart ? "Yes" : "No");
   fprintf(outfile, "\tDIIS            =     %s\n", params.diis ? "Yes" : "No");
   fprintf(outfile, "\tLocal CC        =     %s\n", params.local ? "Yes" : "No");
+  fprintf(outfile, "\tLocal Cutoff    = %3.1e\n", local.cutoff);
   fprintf(outfile, "\tAO Basis        =     %s\n", 
           params.aobasis ? "Yes" : "No");
   fprintf(outfile, "\tCache Level     =    %1d\n", params.cachelev);

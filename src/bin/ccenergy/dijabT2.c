@@ -3,6 +3,8 @@
 #define EXTERN
 #include "globals.h"
 
+void local_filter_T2(dpdbuf4 *T2);
+
 void dijabT2(void)
 {
   dpdbuf4 newtIJAB, newtijab, newtIjAb;

@@ -4,6 +4,8 @@
 #define EXTERN
 #include "globals.h"
 
+void local_filter_T1(dpdfile2 *T1);
+
 void t1_build(void)
 {
   dpdfile2 newtIA, newtia, tIA, tia, fIA, fia;
@@ -61,17 +63,18 @@ void t1_build(void)
     dpd_trace42_13(&Z, &newtIA, 1, 1.0, 1.0);
     dpd_buf4_close(&Z);
 
-    /*    dpd_contract442(&tIjAb, &F, &newtIA, 1, 1, 1, 1); */
-
     dpd_buf4_init(&E, CC_EINTS, 0, 11, 0, 11, 0, 0, "E 2<ai|jk> - <ai|kj>");
     dpd_buf4_init(&tIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
     dpd_contract442(&E, &tIjAb, &newtIA, 1, 3, -1, 1);
     dpd_buf4_close(&E);  
     dpd_buf4_close(&tIjAb);
 
-    dpd_file2_init(&dIA, CC_OEI, 0, 0, 1, "dIA");
-    dpd_file2_dirprd(&dIA, &newtIA);
-    dpd_file2_close(&dIA);
+    if(params.local) local_filter_T1(&newtIA);
+    else {
+      dpd_file2_init(&dIA, CC_OEI, 0, 0, 1, "dIA");
+      dpd_file2_dirprd(&dIA, &newtIA);
+      dpd_file2_close(&dIA);
+    }
 
     dpd_file2_close(&newtIA);
   }

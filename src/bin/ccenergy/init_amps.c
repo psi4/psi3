@@ -10,13 +10,6 @@ void init_amps(void)
     dpdfile2 tIA, tia, fIA, fia, dIA, dia;
     dpdbuf4 tIJAB, tijab, tIjAb, D, dIJAB, dijab, dIjAb;
 
-    /* Restart from previous amplitudes if we can/should */
-    /*  Still need to shift this to new I/O
-	if(params.restart && psio_flen(CC_tIA) && psio_flen(CC_tia)
-	&& psio_flen(CC_tIJAB) && psio_flen(CC_tijab) && psio_flen(CC_tIjAb))
-	return;
-    */
-
     if(params.ref == 0) { /** RHF **/
 
 	dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
