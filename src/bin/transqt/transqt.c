@@ -562,6 +562,7 @@ void print_parameters(void)
       fprintf(outfile,"\tInput Parameters:\n");
       fprintf(outfile,"\t-----------------\n");
       fprintf(outfile,"\tWavefunction           =  %s\n", params.wfn);
+      fprintf(outfile,"\tReference orbitals     =  %s\n", params.ref);
       fprintf(outfile,"\tBacktrans              =  %s\n", 
 	                           params.backtr ? "Yes" : "No");
       fprintf(outfile,"\tPrint MOs              =  %s\n", 
