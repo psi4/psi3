@@ -3,6 +3,7 @@
 #include<stdlib.h>
 #include<libciomr/libciomr.h>
 #include<libfile30/file30.h>
+#include<libchkpt/chkpt.h>
 
 #include<libint/libint.h>
 #include"defines.h"
@@ -41,8 +42,11 @@ void get_geometry()
    double **g; /* cartesian geometry */
    
    Molecule.centers = (struct coordinates *)malloc(sizeof(struct coordinates)*Molecule.num_atoms);
-   g = file30_rd_geom();
-   Z = file30_rd_zvals();
+
+   chkpt_init();
+   g = chkpt_rd_geom();
+   Z = chkpt_rd_zvals();
+   chkpt_close();
 
    /*--- move it into the appropriate struct form ---*/
    for (i=0; i<Molecule.num_atoms; i++){
