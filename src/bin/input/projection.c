@@ -266,7 +266,6 @@ double **projector(double **S12, double **X1)
   tmpmat = block_matrix(num_mo,Oldcalc.num_so);
   mmult(X1,1,S12,0,tmpmat,0,
 	num_mo,num_so,Oldcalc.num_so,0);
-  free_block(S12);
   P12 = block_matrix(num_so,Oldcalc.num_so);
   mmult(X1,0,tmpmat,0,P12,0,
 	num_so,num_mo,Oldcalc.num_so,0);
@@ -291,7 +290,7 @@ double **project(double **P12, double **v2, double **core_evect)
   evect = block_matrix(num_so,Oldcalc.num_mo);
   mmult(P12,0,v2,0,evect,0,
 	num_so,Oldcalc.num_so,Oldcalc.num_mo,0);
-  
+ 
   v1 = block_matrix(num_so,num_mo);
   soffset = moffset1 = moffset2 = 0;
   for(irrep=0;irrep<nirreps;irrep++) {
