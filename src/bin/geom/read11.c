@@ -7,6 +7,7 @@
 
 /* include's */
 #include <stdio.h>
+#include <stdlib.h>
 
 /* define's */
 #define MAX_LINE 132

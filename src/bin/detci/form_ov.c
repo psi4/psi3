@@ -10,6 +10,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <libciomr/libciomr.h>
 #include "structs.h"
 #define EXTERN

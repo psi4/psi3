@@ -21,6 +21,8 @@ ULI psio_get_numvols(ULI unit)
   char ip_token[PSIO_MAXSTR];
   char *gprgid();
 
+  num = 0;
+
   sprintf(ip_token,":%s:FILES:FILE%u:NVOLUME",gprgid(),unit);
   errcod = ip_data(ip_token,"%u",&num,0);
   if(errcod == IPE_OK) return(num);
@@ -61,6 +63,8 @@ ULI psio_get_numvols_default(void)
   ULI num;
   int errcod;
   char ip_token[PSIO_MAXSTR];
+
+  num = 0;
 
   sprintf(ip_token,":PSI:FILES:DEFAULT:NVOLUME");
   errcod = ip_data(ip_token,"%u",&num,0);

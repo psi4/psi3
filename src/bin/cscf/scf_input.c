@@ -1,10 +1,20 @@
 /* $Log$
- * Revision 1.19  2003/08/17 22:57:37  crawdad
- * Removing libfile30 from the repository.  I believe that all code reference
- * to the library have also been properly removed.  The current version
- * passes all test cases on my systems.
+ * Revision 1.20  2003/09/14 13:55:19  psiadm
+ * Two changes:
+ *
+ * (1) Corrected a *lot* of missing <stdlib.h> includes for sources using
+ * malloc(). This caused problems on 64-bit opteron systems.
+ *
+ * (2) Modified ULI macro in libpsio to "unsigned long int" from "unsigned int"
+ *
  * -TDC
  *
+/* Revision 1.19  2003/08/17 22:57:37  crawdad
+/* Removing libfile30 from the repository.  I believe that all code reference
+/* to the library have also been properly removed.  The current version
+/* passes all test cases on my systems.
+/* -TDC
+/*
 /* Revision 1.18  2003/08/09 17:39:56  crawdad
 /* I added the ability to determine frozen core orbitals for UHF references to
 /* cleanup.c.  I also commented out ip_cwk_clear and ip_cwk_add calls in
@@ -152,6 +162,10 @@ static char *rcsid = "$Id$";
 #include "common.h"
 #include <libipv1/ip_lib.h>
 #include <libchkpt/chkpt.h>
+
+char *determine_functional(void);
+char *determine_grid(void);
+
 
 void scf_input(ipvalue)
    ip_value_t *ipvalue;
