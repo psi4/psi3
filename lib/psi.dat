@@ -449,6 +449,14 @@ psi: (
   EOM_CCSDUHFFirstFreq  = ($EOM_CCSDFirstFreq $done)
   EOM_CCSDTwoConFirstFreq  = ERROR
 
+  % -------------------------------- EOM CCSD Procedures
+  % Procedure for the EOM_CCSD energy
+  EOM_CC3Energy = ($ints $scf $transqt $ccsort $ccenergy $cchbar $cceom)
+  EOM_CC3RHFEnergy = ERROR
+  EOM_CC3ROHFEnergy = ERROR
+  EOM_CC3UHFEnergy = ($EOM_CC3Energy $done) 
+  EOM_CC3TwoConEnergy = ERROR
+
   % -------------------------------- OOCCD Procedures
   % Procedures for the OOCCD energy
   OOCCDRHFEnergy = ($ints $scf $transqt $ooccman $done)
