@@ -211,6 +211,23 @@ int main(int argc, char* argv[])
   print_1e("dFt/dBx (GIAO MO basis)", dFtdBx, nmo);
   print_1e("dFt/dBy (GIAO MO basis)", dFtdBy, nmo);
   print_1e("dFt/dBz (GIAO MO basis)", dFtdBz, nmo);
+  iwl_wrtone(PSIF_OEI, PSIF_AO_DFDB_X, nmo*nmo, dFtdBx[0]);
+  iwl_wrtone(PSIF_OEI, PSIF_AO_DFDB_Y, nmo*nmo, dFtdBy[0]);
+  iwl_wrtone(PSIF_OEI, PSIF_AO_DFDB_Z, nmo*nmo, dFtdBz[0]);
+
+  free_block(dFtdBx);
+  free_block(dFtdBy);
+  free_block(dFtdBz);
+  free_block(dHtdBx);
+  free_block(dHtdBy);
+  free_block(dHtdBz);
+  free_block(dSdBx);
+  free_block(dSdBy);
+  free_block(dSdBz);
+  delete[] g;
+  delete[] dgdBx;
+  delete[] dgdBy;
+  delete[] dgdBz;
 
   free_block(Cso);
   free_block(Cao);
