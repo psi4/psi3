@@ -13,8 +13,10 @@
 # 6. Default_Deriv2
 # 7. MP2R12
 # 8. R12_Ints
+# 9. CC
 #
-SUBDIRS = Default_Ints OEProp_Ints Fock MP2 Default_Deriv1 Default_Deriv2 CC
+SUBDIRS = Default_Ints OEProp_Ints Fock MP2 Default_Deriv1 Default_Deriv2 CC \
+MP2R12
 
 #
 # Some subdirectories are not completely independent - need to perform
