@@ -78,6 +78,16 @@ psi3/misc)
 The following series of steps will configure and build the \PSIthree\
 package and install the executables in.
 
+Renaming your \PSIthree\ source directory: the \PSIthree\ source
+will usually go into a place like {\tt /usr/local/psi3}.  It should not 
+be named {\tt /usr/local/psi}, because that is the default installation
+directory unless changed by the {\tt --prefix} directive (see below).
+It should also not have any periods in the path, e.g., 
+{\tt /usr/local/psi3.2}, because there is a bug in dvips which will 
+cause the compilation of documentation to fail if any periods appear
+in the source path.
+
+
 \begin{enumerate}
 \item {\tt cd \$PSI3} (your top-level \PSIthree\ source directory)
 \item {\tt autoconf}
