@@ -66,10 +66,10 @@ void init_uniform_con_grid(void){
 	    chnk->size = prim_chnk->size;
 	    chnk->spheres = prim_chnk->spheres;
 	    
-	    chnk->bf_close_to_chunk = 
+	    chnk->shells_close_to_chunk = 
 		(int *)malloc(sizeof(int)*BasisSet.num_ao);
 	    chnk->close_shells_per_am = 
-		(int *)malloc(sizeof(int)*BasisSet.num_ao);
+		(int *)malloc(sizeof(int)*BasisSet.max_am);
 	}
     }
     return;

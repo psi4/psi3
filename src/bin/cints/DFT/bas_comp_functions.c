@@ -21,12 +21,14 @@ double calc_exp_basis(int shell_num, double rr){
     shell_type = BasisSet.shells[shell_num].am;
     shell_start = BasisSet.shells[shell_num].fprim-1;
     shell_end = shell_start+BasisSet.shells[shell_num].n_prims;
+    
+    bastmp = 0.0;
     for(i=shell_start;i<shell_end;i++){
 	expon = -BasisSet.cgtos[i].exp;
 	coeff = BasisSet.cgtos[i].ccoeff[shell_type-1];
 	bastmp += coeff*exp(expon*rr);
     }
-    fprintf(outfile,"\nbastmp = %10.10lf",bastmp);
+    
     return bastmp;
 }
 

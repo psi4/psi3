@@ -110,10 +110,10 @@ prim_atomic_grid_t init_uniform_prim_atomic_grid(int n_rpoints,int n_angpoints,i
 
 	    sph->r = r;
 	    
-	    fprintf(outfile,"\nchunk_start = %10.10lf",r*r);
+	    /*fprintf(outfile,"\nchunk_start = %10.10lf",r*r);
 	    if(j == chunk_size-1)
 		fprintf(outfile,"\nchunk end = %10.10lf",r*r);
-	    
+	    */
 	    sph->drdq = drdq;
 	    sph->n_ang_points = unit_sphere.n_ang_points;
 	}

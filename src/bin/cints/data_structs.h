@@ -332,7 +332,7 @@ struct leb_chunk_s{
     int radial_start;
     int radial_end;
     leb_sphere_t *spheres;
-    int *bf_close_to_chunk;
+    int *shells_close_to_chunk;
     int *close_shells_per_am;
 };
 

@@ -20,6 +20,7 @@
 #include"defines.h"
 #define EXTERN
 #include"global.h"
+#include"bas_comp_functions.h"
 
 struct den_info_s calc_density_fast(struct coordinates geom){
     
@@ -110,6 +111,7 @@ struct den_info_s calc_density_fast(struct coordinates geom){
 		
 		timer_on("exponent");
 		bastmp = 0.0;
+		
 		for(k=shell_start;k<shell_end;k++){
 		    expon = -BasisSet.cgtos[k].exp;
 		    coeff = BasisSet.cgtos[k].ccoeff[shell_type];
@@ -305,7 +307,6 @@ struct den_info_s calc_density_fast(struct coordinates geom){
 	}
 	
     }
-   
     timer_off("basis"); 
 /* Now contract the basis functions with the AO density matrix elements */
     timer_on("density"); 

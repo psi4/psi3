@@ -15,6 +15,7 @@ void calc_close_basis(int atom_num, int chunk_num){
     int i,j,k,l;
     int chunk_center;
     int shell_center;
+    int shell_type;
     int am2shell;
     int max_am;
     int num_ao;
@@ -47,12 +48,13 @@ void calc_close_basis(int atom_num, int chunk_num){
     chunk_rad_out = chunk->spheres[chunk->size-1].r*bragg;
 
     
-    
+    j = 0;
     for(i=0;i<num_shells;i++){
 	
 	am2shell = BasisSet.am2shell[i];
 	shell_center = BasisSet.shells[am2shell].center - 1;
 	shell_geom = Molecule.centers[shell_center];
+	shell_type = BasisSet.shells[am2shell].am;
 	
 	if(shell_center == chunk_center){
 	    rr=chunk_rad_in*chunk_rad_in;
@@ -83,8 +85,16 @@ void calc_close_basis(int atom_num, int chunk_num){
 	
 	bastmp = calc_radial_bas(am2shell,rr,r);
 	
-	fprintf(outfile,"\nchunk_num = %d shell_num = %d rr = %10.10lf bastmp = %10.10lf",
-		chunk_num,i,rr,bastmp);
+	/* ---------------------------------
+	   Determine whether the basis
+	   the function is close or not
+	   --------------------------------*/
+	
+	if(bastmp > TOL){
+	    chunk->shells_close_to_chunk[j] = am2shell;
+	    j++;
+	    chunk->close_shells_per_am[shell_type-1]++;
+	}
     }
 }
 	
