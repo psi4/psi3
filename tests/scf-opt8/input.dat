@@ -1,0 +1,20 @@
+psi: (
+  label = "hnco"
+  wfn = scf
+  reference = rhf
+  jobtype = opt
+  dertype = first
+  basis = dzp
+  units = angstrom
+  zmat = (
+    ( H )
+    ( N 1 NH$ )
+    ( C 2 CN$ 1 120.0 )
+    ( O 3 CO$ 2 178.0 1 170.0 )
+  )
+  zvars = (
+    (NH 1.0)
+    (CN 1.2)
+    (CO 1.15)
+  )
+)

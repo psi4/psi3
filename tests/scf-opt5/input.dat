@@ -1,0 +1,23 @@
+psi: (
+  label = "DZP SCF optimization of CH4"
+  memory = (50.0 MB)
+  wfn = scf
+  reference = rhf
+  jobtype = opt
+  dertype = first
+  basis = dzp
+  units = angstrom
+  zmat = (
+    ( C )
+    ( H 1 CH$ )
+    ( H 1 CH$ 2 HCH$ )
+    ( H 1 CH$ 2 HCH$ 3 TORS$ )
+    ( H 1 CH$ 2 HCH$ 3 TORS2$ )
+  )
+  zvars = (
+    (CH 0.9)
+    (HCH 109.45)
+    (TORS 120.0)
+    (TORS2 -120.0)
+  )
+)

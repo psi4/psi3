@@ -1,0 +1,19 @@
+psi: (
+  label = "bh3"
+  memory = (20.0 MB)
+  wfn = scf
+  reference = rhf
+  jobtype = opt
+  dertype = first
+  basis = dzp
+  units = angstrom
+  zmat = (
+    ( B )
+    ( H 1 BH$ )
+    ( H 1 BH$ 2 120.0 )
+    ( H 1 BH$ 2 120.0 3 180.0 )
+  )
+  zvars = (
+    (BH 1.0)
+  )
+)

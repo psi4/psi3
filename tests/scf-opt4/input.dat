@@ -1,0 +1,26 @@
+psi: (
+  label = "c2h6"
+  memory = (50.0 MB)
+  wfn = scf
+  reference = rhf
+  jobtype = opt
+  dertype = first
+  docc = (4 1 1 3)
+  basis = dzp
+  units = angstrom
+  zmat = (
+    ( H )
+    ( C 1 CH$ )
+    ( C 2 CC$ 1 HCC$ )
+    ( H 3 CH$ 2 HCC$ 1 60.0 )
+    ( H 3 CH$ 2 HCC$ 1 -60.0 )
+    ( H 3 CH$ 2 HCC$ 1 180.0 )
+    ( H 2 CH$ 3 HCC$ 6 60.0 )
+    ( H 2 CH$ 3 HCC$ 6 -60.0 )
+  )
+  zvars = (
+    (CH 0.9)
+    (CC 1.5)
+    (HCC 109.45)
+  )
+)

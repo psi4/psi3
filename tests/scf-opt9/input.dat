@@ -1,0 +1,22 @@
+psi: (
+  label = "DZP SCF optimization of HOOH"
+  wfn = scf
+  reference = rhf
+  jobtype = opt
+  dertype = first
+  docc = (5 4)
+  basis = dzp
+  units = angstrom
+  zmat = (
+    ( H )
+    ( O 1 OH$ )
+    ( O 2 OO$ 1 HOO$ )
+    ( H 3 OH$ 2 HOO$ 1 HOOH$ )
+  )
+  zvars = (
+    (OH 0.9)
+    (OO 1.5)
+    (HOO 120.0)
+    (HOOH 110.0)
+  )
+)

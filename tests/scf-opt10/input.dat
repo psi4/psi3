@@ -1,0 +1,16 @@
+psi: (
+  label = "DZ SCF Optimization of Ketene"
+  memory = (20.0 MB)
+  wfn = scf
+  reference = rhf
+  jobtype = opt
+  dertype = first
+  basis = dz
+  geometry = (
+    ( H -0.6   0.6  0.0 )
+    ( H -0.6  -0.6  0.0 )
+    ( C  0.0   0.0  0.0 )
+    ( C  1.2   0.0  0.0 )
+    ( O  2.4  0.0  0.0  )
+    )
+)
