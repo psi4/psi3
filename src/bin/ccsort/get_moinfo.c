@@ -31,7 +31,7 @@ void get_moinfo(void)
   int *orbsym;
   double enuc, escf;
   double ***evects, ***scf_vector;
-  int *order, J, qt_j, pitz_j, pitz_J, *pitz_offset;
+  int *pitz2qt, *qt2pitz, J, qt_j, pitz_j, pitz_J, *pitz_offset;
   psio_address next;
   
   file30_init();
@@ -86,6 +86,13 @@ void get_moinfo(void)
 		   (char *) moinfo.frdocc, sizeof(int)*moinfo.nirreps);
   psio_write_entry(CC_INFO, "Frozen Virt Orbs Per Irrep",
 		   (char *) moinfo.fruocc, sizeof(int)*moinfo.nirreps);
+
+  /* Get the Pitzer->QT reordering array and compute its inverse */
+  pitz2qt = init_int_array(moinfo.nmo);
+  qt2pitz = init_int_array(moinfo.nmo);
+  reorder_qt(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc,
+		     moinfo.fruocc, pitz2qt,  moinfo.orbspi, moinfo.nirreps);
+  for(i=0; i < moinfo.nmo; i++) qt2pitz[pitz2qt[i]] = i;  
 
   /* Adjust clsdpi array for frozen orbitals */
   for(i=0; i < moinfo.nirreps; i++)
@@ -927,10 +934,6 @@ void get_moinfo(void)
   }
   else { /*** RHF/ROHF references ***/
 
-    order = init_int_array(moinfo.nmo);
-    reorder_qt_inverse(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc,
-		       moinfo.fruocc, order,  moinfo.orbspi, moinfo.nirreps);
-
     pitz_offset = init_int_array(moinfo.nirreps);
     pitz_offset[0] = 0;
     for(h=1; h < moinfo.nirreps; h++) {
@@ -953,7 +956,7 @@ void get_moinfo(void)
 	  for(j=0; j < moinfo.virtpi[h]; j++) { /* CC-ordered relative index */
 	    J = moinfo.vir_off[h] + j; /* CC-ordered absolute index */
 	    qt_j = moinfo.qt_vir[J]; /* QT-ordered absolute index */
-	    pitz_J = order[qt_j]; /* Pitzer-ordered absolute index */
+	    pitz_J = qt2pitz[qt_j]; /* Pitzer-ordered absolute index */
 	    pitz_j = pitz_J - pitz_offset[h]; /* Pitzer-order relative index */
 	    scf_vector[h][i][j] = evects[h][i][pitz_j];
 	  }
@@ -979,7 +982,7 @@ void get_moinfo(void)
 
     free(evects);  free(scf_vector);
 
-    free(order);
+    free(pitz2qt);  free(qt2pitz);
     file30_close();
   }
 }
