@@ -1,10 +1,11 @@
 /* Input parameters for ccenergy */
 struct Params {
-    long int memory;
-    int aobasis;
-    int cachelev;
-    int cachetype;
-    int ref;
+  long int memory;
+  int aobasis;
+  int cachelev;
+  int cachetype;
+  int ref;
+  int local;
 };
 
 struct Eom_params {

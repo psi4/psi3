@@ -17,6 +17,7 @@ c_clean.c     precondition.c  \
 sigmaSS.c     sigmaSD.c    FSD.c       WmnieSD.c    WamefSD.c  \
 sigmaDS.c     WmaijDS.c    WabejDS.c   WnmjeDS.c    WbmfeDS.c  \
 sigmaDD.c     FDD.c        WmnijDD.c   WabefDD.c    WmbejDD.c  WmnefDD.c \
+local.c
 
 BINOBJ = $(CSRC:%.c=%.o)
 ALLOC = 

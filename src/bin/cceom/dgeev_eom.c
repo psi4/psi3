@@ -5,6 +5,8 @@
 #define EXTERN
 #include "globals.h"
 
+void cleanup(void);
+
 /* This routine transposes matrices and calls lapack dgeev() in libqt *
  * to diagonalize a square nonsymmetric matrix.  The eigenvalues      *
  * are returned in random order.                                      */

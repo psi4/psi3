@@ -9,8 +9,8 @@ void get_eom_params()
 {
   int errcod, i, j, sym, iconv,exist;
 
-  ip_cwk_clear();
-  ip_cwk_add(progid);
+  /*  ip_cwk_clear();
+      ip_cwk_add(progid); */
 
   eom_params.max_iter = 80;
   errcod = ip_data("MAX_ITER","%d",&(eom_params.max_iter),0);

@@ -34,8 +34,10 @@ void get_moinfo(void)
 
   nirreps = moinfo.nirreps;
 
+  /*
   psio_read_entry(CC_INFO, "Reference Wavefunction", (char *) &(params.ref), 
 		  sizeof(int));
+  */
 
   /* Get frozen and active orbital lookups from CC_INFO */
   moinfo.frdocc = init_int_array(nirreps);

@@ -14,10 +14,11 @@ void sigmaSS(int i, int C_irr) {
 
   sprintf(lbl, "%s %d", "SIA", i);
   dpd_file2_init(&SIA, EOM_SIA, C_irr, 0, 1, lbl);
-  sprintf(lbl, "%s %d", "Sia", i);
-  dpd_file2_init(&Sia, EOM_Sia, C_irr, 0, 1, lbl);
   sprintf(lbl, "%s %d", "CME", i);
   dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
+
+  sprintf(lbl, "%s %d", "Sia", i);
+  dpd_file2_init(&Sia, EOM_Sia, C_irr, 0, 1, lbl);
   sprintf(lbl, "%s %d", "Cme", i);
   dpd_file2_init(&Cme, EOM_Cme, C_irr, 0, 1, lbl);
 
@@ -41,7 +42,6 @@ void sigmaSS(int i, int C_irr) {
   dpd_contract422(&W, &Cme, &SIA, 0, 0, 1.0, 1.0);
   dpd_buf4_close(&W);
 
-
   /* Sia = Fae*Cie */
   dpd_file2_init(&Fae, CC_OEI, H_IRR, 1, 1, "Fae");
   dpd_contract222(&Cme, &Fae, &Sia, 0, 0, 1.0, 0.0);
@@ -63,8 +63,8 @@ void sigmaSS(int i, int C_irr) {
   dpd_buf4_close(&W);
 
   dpd_file2_close(&Cme);
-  dpd_file2_close(&CME);
   dpd_file2_close(&Sia);
+  dpd_file2_close(&CME);
   dpd_file2_close(&SIA);
 
 #ifdef EOM_DEBUG

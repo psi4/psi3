@@ -20,6 +20,10 @@ void form_dpd_dp(void);
 int **cacheprep_uhf(int level, int *cachefiles);
 int **cacheprep_rhf(int level, int *cachefiles);
 
+/* local correlation functions */
+void local_init(void);
+void local_done(void);
+
 int main(int argc, char *argv[])
 {
   int i, h, done=0, *cachefiles, **cachelist;
@@ -44,8 +48,10 @@ int main(int argc, char *argv[])
            cachelist, NULL, 2, moinfo.occpi, moinfo.occ_sym,
            moinfo.virtpi, moinfo.vir_sym);
 
+  if(params.local) local_init();
   diag();
   dpd_close(0);
+  if(params.local) local_done();
   cleanup(); 
   exit_io();
   exit(0);
@@ -62,6 +68,7 @@ void init_io(void)
   tstart(outfile);
   ip_set_uppercase(1);
   ip_initialize(infile,outfile);
+  ip_cwk_clear();
   ip_cwk_add(":DEFAULT");
   ip_cwk_add(progid);
   psio_init();

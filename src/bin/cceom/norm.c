@@ -47,4 +47,3 @@ void scm_C1(dpdfile2 *CME, dpdfile2 *Cme, double a)
   return;
 }
 
-

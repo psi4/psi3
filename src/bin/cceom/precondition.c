@@ -104,3 +104,48 @@ void precondition(dpdfile2 *RIA, dpdfile2 *Ria,
   return;
 }
 
+void precondition_RHF(dpdfile2 *RIA, dpdbuf4 *RIjAb, double eval)
+{
+  dpdfile2 DIA;
+  dpdbuf4 DIjAb;
+  int h, nirreps, i, j, a, b, ij, ab;
+  double tval;
+  int irrep = 0; /* to be set by RIA irrep */
+
+  nirreps = RIA->params->nirreps;
+
+  dpd_file2_mat_init(RIA);
+  dpd_file2_mat_rd(RIA);
+  dpd_file2_init(&DIA, EOM_D, irrep, 0, 1, "DIA");
+  dpd_file2_mat_init(&DIA);
+  dpd_file2_mat_rd(&DIA);
+  for(h=0; h < nirreps; h++)
+    for(i=0; i < RIA->params->rowtot[h]; i++)
+      for(a=0; a < RIA->params->coltot[h]; a++) {
+	tval = eval - DIA.matrix[h][i][a];
+	if (fabs(tval) > 0.0001) RIA->matrix[h][i][a] /= tval;
+      }
+  dpd_file2_mat_wrt(RIA);
+  dpd_file2_mat_close(RIA);
+  dpd_file2_mat_close(&DIA);
+  dpd_file2_close(&DIA);
+
+  dpd_buf4_init(&DIjAb, EOM_D, irrep, 0, 5, 0, 5, 0, "DIjAb");
+  for(h=0; h < RIjAb->params->nirreps; h++) {
+    dpd_buf4_mat_irrep_init(RIjAb, h);
+    dpd_buf4_mat_irrep_init(&DIjAb, h);
+    dpd_buf4_mat_irrep_rd(RIjAb, h);
+    dpd_buf4_mat_irrep_rd(&DIjAb, h);
+    for(ij=0; ij < RIjAb->params->rowtot[h]; ij++)
+      for(ab=0; ab < RIjAb->params->coltot[h]; ab++) {
+	tval = eval - DIjAb.matrix[h][ij][ab];
+	if (fabs(tval) > 0.0001) RIjAb->matrix[h][ij][ab] /= tval;
+      }
+    dpd_buf4_mat_irrep_wrt(RIjAb, h);
+    dpd_buf4_mat_irrep_close(RIjAb, h);
+    dpd_buf4_mat_irrep_close(&DIjAb, h);
+  }
+  dpd_buf4_close(&DIjAb);
+
+  return;
+}
