@@ -6,8 +6,8 @@
 
 void init_amps(void)
 {
-  struct oe_dpdfile tIA, tia, fIA, fia, dIA, dia;
-  struct dpdbuf tIJAB, tijab, tIjAb, D, dIJAB, dijab, dIjAb;
+  dpdfile2 tIA, tia, fIA, fia, dIA, dia;
+  dpdbuf4 tIJAB, tijab, tIjAb, D, dIJAB, dijab, dIjAb;
 
   /* Restart from previous amplitudes if we can/should */
   /*  Still need to shift this to new I/O
@@ -16,57 +16,56 @@ void init_amps(void)
       return;
       */
 
-  dpd_oe_file_init(&fIA, CC_OEI, 0, 1, "fIA", 0, outfile);
-  dpd_oe_copy(&fIA, CC_OEI, "tIA", 0, outfile);
-  dpd_oe_file_close(&fIA);
-  dpd_oe_file_init(&tIA, CC_OEI, 0, 1, "tIA", 0, outfile);
-/*  dpd_oe_scm(&tIA, 0, 0, outfile);  */
-  dpd_oe_file_close(&tIA);
+  dpd_file2_init(&fIA, CC_OEI, 0, 0, 1, "fIA");
+  dpd_file2_copy(&fIA, CC_OEI, "tIA");
+  dpd_file2_close(&fIA);
+  dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+/*  dpd_oe_scm(&tIA, 0);  */
+  dpd_file2_close(&tIA);
   
-  dpd_oe_file_init(&fia, CC_OEI, 0, 1, "fia", 0, outfile);
-  dpd_oe_copy(&fia, CC_OEI, "tia", 0, outfile);
-  dpd_oe_file_close(&fia);
-  dpd_oe_file_init(&tia, CC_OEI, 0, 1, "tia", 0, outfile);
-/*  dpd_oe_scm(&tia, 0, 0, outfile); */
-  dpd_oe_file_close(&tia);
+  dpd_file2_init(&fia, CC_OEI, 0, 0, 1, "fia");
+  dpd_file2_copy(&fia, CC_OEI, "tia");
+  dpd_file2_close(&fia);
+  dpd_file2_init(&tia, CC_OEI, 0, 0, 1, "tia");
+/*  dpd_oe_scm(&tia, 0); */
+  dpd_file2_close(&tia);
 
-  dpd_oe_file_init(&tIA, CC_OEI, 0, 1, "tIA", 0, outfile);
-  dpd_oe_file_init(&dIA, CC_OEI, 0, 1, "dIA", 0, outfile);
-  dpd_oe_dirprd(&dIA, &tIA, 0, outfile);
-  dpd_oe_file_close(&tIA);
-  dpd_oe_file_close(&dIA);
+  dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+  dpd_file2_init(&dIA, CC_OEI, 0, 0, 1, "dIA");
+  dpd_file2_dirprd(&dIA, &tIA);
+  dpd_file2_close(&tIA);
+  dpd_file2_close(&dIA);
 
-  dpd_oe_file_init(&tia, CC_OEI, 0, 1, "tia", 0, outfile);
-  dpd_oe_file_init(&dia, CC_OEI, 0, 1, "dia", 0, outfile);
-  dpd_oe_dirprd(&dia, &tia, 0, outfile);
-  dpd_oe_file_close(&tia);
-  dpd_oe_file_close(&dia);
+  dpd_file2_init(&tia, CC_OEI, 0, 0, 1, "tia");
+  dpd_file2_init(&dia, CC_OEI, 0, 0, 1, "dia");
+  dpd_file2_dirprd(&dia, &tia);
+  dpd_file2_close(&tia);
+  dpd_file2_close(&dia);
 
-  dpd_buf_init(&D, CC_DINTS, 2, 7, 2, 7, 0, "D <ij||ab> (i>j,a>b)",
-	       0, outfile);
-  dpd_copy(&D, CC_TAMPS, "tIJAB", 0, outfile);
-  dpd_copy(&D, CC_TAMPS, "tijab", 0, outfile);
-  dpd_buf_close(&D);
+  dpd_buf4_init(&D, CC_DINTS, 0, 2, 7, 2, 7, 0, "D <ij||ab> (i>j,a>b)");
+  dpd_buf4_copy(&D, CC_TAMPS, "tIJAB");
+  dpd_buf4_copy(&D, CC_TAMPS, "tijab");
+  dpd_buf4_close(&D);
 
-  dpd_buf_init(&dIJAB, CC_DENOM, 1, 6, 1, 6, 0, "dIJAB", 0, outfile);
-  dpd_buf_init(&tIJAB, CC_TAMPS, 2, 7, 2, 7, 0, "tIJAB", 0, outfile);
-  dpd_dirprd(&dIJAB, &tIJAB, 0, outfile);
-  dpd_buf_close(&tIJAB);
-  dpd_buf_close(&dIJAB);
+  dpd_buf4_init(&dIJAB, CC_DENOM, 0, 1, 6, 1, 6, 0, "dIJAB");
+  dpd_buf4_init(&tIJAB, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tIJAB");
+  dpd_buf4_dirprd(&dIJAB, &tIJAB);
+  dpd_buf4_close(&tIJAB);
+  dpd_buf4_close(&dIJAB);
 
-  dpd_buf_init(&dijab, CC_DENOM, 1, 6, 1, 6, 0, "dijab", 0, outfile);
-  dpd_buf_init(&tijab, CC_TAMPS, 2, 7, 2, 7, 0, "tijab", 0, outfile);
-  dpd_dirprd(&dijab, &tijab, 0, outfile);
-  dpd_buf_close(&tijab);
-  dpd_buf_close(&dijab);
+  dpd_buf4_init(&dijab, CC_DENOM, 0, 1, 6, 1, 6, 0, "dijab");
+  dpd_buf4_init(&tijab, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tijab");
+  dpd_buf4_dirprd(&dijab, &tijab);
+  dpd_buf4_close(&tijab);
+  dpd_buf4_close(&dijab);
 
-  dpd_buf_init(&D, CC_DINTS, 0, 5, 0, 5, 0, "D <ij|ab>", 0, outfile);
-  dpd_copy(&D, CC_TAMPS, "tIjAb", 0, outfile);
-  dpd_buf_close(&D);
+  dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
+  dpd_buf4_copy(&D, CC_TAMPS, "tIjAb");
+  dpd_buf4_close(&D);
   
-  dpd_buf_init(&dIjAb, CC_DENOM, 0, 5, 0, 5, 0, "dIjAb", 0, outfile);
-  dpd_buf_init(&tIjAb, CC_TAMPS, 0, 5, 0, 5, 0, "tIjAb", 0, outfile);
-  dpd_dirprd(&dIjAb, &tIjAb, 0, outfile);
-  dpd_buf_close(&tIjAb);
-  dpd_buf_close(&dIjAb);
+  dpd_buf4_init(&dIjAb, CC_DENOM, 0, 0, 5, 0, 5, 0, "dIjAb");
+  dpd_buf4_init(&tIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
+  dpd_buf4_dirprd(&dIjAb, &tIjAb);
+  dpd_buf4_close(&tIjAb);
+  dpd_buf4_close(&dIjAb);
 }

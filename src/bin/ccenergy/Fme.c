@@ -5,37 +5,36 @@
 
 void Fme_build(void)
 {
-  struct oe_dpdfile FME, Fme, fIA, fia, tIA, tia;
-  struct dpdbuf D_anti, D;
+  dpdfile2 FME, Fme, fIA, fia, tIA, tia;
+  dpdbuf4 D_anti, D;
 
-  dpd_oe_file_init(&fIA, CC_OEI, 0, 1, "fIA", 0, outfile);
-  dpd_oe_copy(&fIA, CC_OEI, "FME", 0, outfile);
-  dpd_oe_file_close(&fIA);
+  dpd_file2_init(&fIA, CC_OEI, 0, 0, 1, "fIA");
+  dpd_file2_copy(&fIA, CC_OEI, "FME");
+  dpd_file2_close(&fIA);
 
-  dpd_oe_file_init(&fia, CC_OEI, 0, 1, "fia", 0, outfile);
-  dpd_oe_copy(&fia, CC_OEI, "Fme", 0, outfile);
-  dpd_oe_file_close(&fia);
+  dpd_file2_init(&fia, CC_OEI, 0, 0, 1, "fia");
+  dpd_file2_copy(&fia, CC_OEI, "Fme");
+  dpd_file2_close(&fia);
   
-  dpd_oe_file_init(&FME, CC_OEI, 0, 1, "FME", 0, outfile);
-  dpd_oe_file_init(&Fme, CC_OEI, 0, 1, "Fme", 0, outfile);
+  dpd_file2_init(&FME, CC_OEI, 0, 0, 1, "FME");
+  dpd_file2_init(&Fme, CC_OEI, 0, 0, 1, "Fme");
   
-  dpd_buf_init(&D_anti, CC_DINTS, 0, 5, 0, 5, 0, "D <ij||ab>",
-	       0, outfile);
-  dpd_buf_init(&D, CC_DINTS, 0, 5, 0, 5, 0, "D <ij|ab>", 0, outfile);
-  dpd_oe_file_init(&tIA, CC_OEI, 0, 1, "tIA", 0, outfile);
-  dpd_oe_file_init(&tia, CC_OEI, 0, 1, "tia", 0, outfile);
+  dpd_buf4_init(&D_anti, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij||ab>");
+  dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
+  dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+  dpd_file2_init(&tia, CC_OEI, 0, 0, 1, "tia");
 
-  dpd_dot13(&tIA, &D_anti, &FME, 0, 0, 1.0, 1.0, 0, outfile);
-  dpd_dot13(&tia, &D, &FME, 0, 0, 1.0, 1.0, 0, outfile);
+  dpd_dot13(&tIA, &D_anti, &FME, 0, 0, 1.0, 1.0);
+  dpd_dot13(&tia, &D, &FME, 0, 0, 1.0, 1.0);
 
-  dpd_dot13(&tia, &D_anti, &Fme, 0, 0, 1.0, 1.0, 0, outfile);
-  dpd_dot13(&tIA, &D, &Fme, 0, 0, 1.0, 1.0, 0, outfile);
+  dpd_dot13(&tia, &D_anti, &Fme, 0, 0, 1.0, 1.0);
+  dpd_dot13(&tIA, &D, &Fme, 0, 0, 1.0, 1.0);
 
-  dpd_oe_file_close(&tIA);
-  dpd_oe_file_close(&tia);
-  dpd_buf_close(&D_anti);
-  dpd_buf_close(&D);
+  dpd_file2_close(&tIA);
+  dpd_file2_close(&tia);
+  dpd_buf4_close(&D_anti);
+  dpd_buf4_close(&D);
 
-  dpd_oe_file_close(&FME);
-  dpd_oe_file_close(&Fme);
+  dpd_file2_close(&FME);
+  dpd_file2_close(&Fme);
 }

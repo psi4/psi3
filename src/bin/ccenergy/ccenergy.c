@@ -8,6 +8,7 @@
 #include <libciomr.h>
 #include <dpd.h>
 #include <file30.h>
+#include <qt.h>
 #include "globals.h"
 
 /* Function prototypes */
@@ -39,6 +40,8 @@ void cleanup(void);
 void update(void);
 void diis(int iter);
 void ccdump(void);
+int **cacheprep(int level, int *cachefiles);
+void memchk(void);
 
 int main(int argc, char *argv[])
 {
@@ -46,47 +49,86 @@ int main(int argc, char *argv[])
   int i, natom;
   double **geom, *zvals;
   FILE *efile;
+  int **cachelist, *cachefiles;
 
   moinfo.iter=0;
   
   init_io();
   title();
+
+  timer_init();
+  timer_on("CCEnergy");
+  
   get_moinfo();
   get_params();
-  dpd_init(moinfo.nirreps, params.memory, 2, moinfo.occpi, moinfo.occ_sym,
-	   moinfo.virtpi, moinfo.vir_sym);
+ 
+  cachefiles = init_int_array(PSIO_MAXUNIT);
+  cachelist = cacheprep(params.cachelev, cachefiles);
+  dpd_init(0, moinfo.nirreps, params.memory, cachefiles, cachelist, 
+           2, moinfo.occpi, moinfo.occ_sym, moinfo.virtpi, moinfo.vir_sym);
   init_amps();
   tau_build();
   taut_build();
-  fprintf(outfile, "\t                     Solving CCSD Equations\n");
-  fprintf(outfile, "\t                     ----------------------\n");
-  fprintf(outfile, "\tIter             Energy               RMS       T1Diag      D1Diag\n");
-  fprintf(outfile, "\t----     ---------------------     --------   ----------  ----------\n");
+  if(!moinfo.iopen) {
+      fprintf(outfile, "\t                     Solving CCSD Equations\n");
+      fprintf(outfile, "\t                     ----------------------\n");
+      fprintf(outfile, "\tIter             Energy               RMS       T1Diag      D1Diag\n");
+      fprintf(outfile, "\t----     ---------------------     --------   ----------  ----------\n");
+    }
+  else {
+      fprintf(outfile, "\t                Solving CCSD Equations\n");
+      fprintf(outfile, "\t                ----------------------\n");
+      fprintf(outfile, "\tIter             Energy               RMS       T1Diag\n");
+      fprintf(outfile, "\t----     ---------------------     --------   ----------\n");
+    }
   moinfo.ecc = energy();
   moinfo.t1diag = diagnostic();
-  moinfo.d1diag = d1diag();
+  if(!moinfo.iopen) moinfo.d1diag = d1diag();
   update();
   for(moinfo.iter=1; moinfo.iter <= params.maxiter; moinfo.iter++) {
+      memchk();
+      timer_on("sort_amps");
       sort_amps();
+      timer_off("sort_amps");
+/*
+      timer_on("Y");
       Y_build();
+      timer_off("Y");
+      timer_on("X");
       X_build();
-      Wmbej_build(); 
+      timer_off("X");
+*/
+
+      timer_on("Wmbej build");
+      Wmbej_build();
+      timer_off("Wmbej build");
+
+      timer_on("F build");
       Fme_build(); Fae_build(); Fmi_build();
+      timer_off("F build");
+
+      timer_on("T1 Build");
       t1_build();
-      Wmnij_build(); Z_build();
+      timer_off("T1 Build");
+
+      
+      Wmnij_build();
+      Z_build();
+
+      timer_on("T2 Build");
       t2_build();
+      timer_off("T2 Build");
+
       if(converged()) {
-	  done = 1;  /* Boolean for convergence */
+	  done = 1;
 	  tsave();
 	  tau_build(); taut_build();
 	  moinfo.ecc = energy();
 	  moinfo.t1diag = diagnostic();
-	  moinfo.d1diag = d1diag();
-	  sort_amps();  /* For upcoming calculations */
+	  if(!moinfo.iopen) moinfo.d1diag = d1diag();
+	  sort_amps();
 	  update();
 	  fprintf(outfile, "\n\tIterations converged.\n");
-          fprintf(outfile, "\n");
-          d1diag_print();
 	  fflush(outfile);
 	  break;
 	}
@@ -95,7 +137,7 @@ int main(int argc, char *argv[])
       tau_build(); taut_build();
       moinfo.ecc = energy();
       moinfo.t1diag = diagnostic();
-      moinfo.d1diag = d1diag();
+      if(!moinfo.iopen) moinfo.d1diag = d1diag();
       update();
     }
   fprintf(outfile, "\n");
@@ -103,8 +145,10 @@ int main(int argc, char *argv[])
      fprintf(outfile, "\t ** Wave function not converged to %2.1e ** \n",
 	     params.convergence);
      fflush(outfile);
-     dpd_close();
+     dpd_close(0);
      cleanup();
+     timer_off("CCEnergy");
+     timer_done();
      exit_io();
      exit(1);
     }
@@ -115,26 +159,6 @@ int main(int argc, char *argv[])
   fprintf(outfile, "\tTotal CCSD energy          = %20.15f\n", 
           moinfo.eref + moinfo.ecc);
   fprintf(outfile, "\n");
-
-/*  Curt had these print statements in the code.  They are not
-**  necessary now, but I just comment them out for the time being. - MLL
-**  12-3-99
-    {
-    struct dpdbuf tIJAB, tijab, tIjAb;
-    dpd_buf_init(&tIJAB, CC_TAMPS, 2, 7, 2, 7, 0, "tIJAB", 0, outfile);
-    dpd_buf_print(&tIJAB, outfile);
-    dpd_buf_close(&tIJAB);
-    dpd_buf_init(&tijab, CC_TAMPS, 2, 7, 2, 7, 0, "tijab", 0, outfile);
-    dpd_buf_print(&tijab, outfile);
-    dpd_buf_close(&tijab);
-    dpd_buf_init(&tIjAb, CC_TAMPS, 2, 7, 2, 7, 0, "tIjAb", 0, outfile);
-    dpd_buf_print(&tIjAb, outfile);
-    dpd_buf_close(&tIjAb);
-  }
-*/
-/* Stop here */
-
-
 
   /* Write pertinent data to energy.dat for Dr. Yamaguchi */
   file30_init();
@@ -153,8 +177,12 @@ int main(int argc, char *argv[])
   fprintf(efile, "CCSD      %22.12f\n", (moinfo.ecc+moinfo.eref));
   fclose(efile);
   
-  dpd_close();
-  cleanup(); 
+  dpd_close(0);
+  cleanup();
+
+  timer_off("CCEnergy");
+  timer_done();
+  
   exit_io();
   exit(0);
 }
@@ -207,4 +235,19 @@ char *gprgid()
    char *prgid = "CCENERGY";
 
    return(prgid);
+}
+
+void memchk(void)
+{
+  pid_t mypid;
+  FILE *memdat;
+  char comm[80];
+
+  mypid = getpid();
+
+  memdat = freopen("output.dat","a",stdout);
+ 
+  sprintf(comm, "grep \"VmSize\" /proc/%d/status", (int) mypid);
+
+  system(comm);
 }

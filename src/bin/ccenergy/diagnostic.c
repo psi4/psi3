@@ -15,7 +15,7 @@ double diagnostic(void)
   int *clsdpi, *uoccpi;
   int *openpi;
   double t1diag;
-  struct oe_dpdfile T1A, T1B;
+  dpdfile2 T1A, T1B;
 
   nirreps = moinfo.nirreps;
   clsdpi = moinfo.clsdpi; uoccpi = moinfo.uoccpi;
@@ -32,12 +32,12 @@ double diagnostic(void)
   for(h=0,num_elec=0; h < nirreps; h++)
       num_elec += (2 * clsdpi[h] + openpi[h]);
 
-  dpd_oe_file_init(&T1A, CC_OEI, 0, 1, "tIA", 0, outfile);
-  dpd_oe_file_mat_init(&T1A);
-  dpd_oe_file_mat_rd(&T1A, 0, outfile);
-  dpd_oe_file_init(&T1B, CC_OEI, 0, 1, "tia", 0, outfile);
-  dpd_oe_file_mat_init(&T1B);
-  dpd_oe_file_mat_rd(&T1B, 0, outfile);
+  dpd_file2_init(&T1A, CC_OEI, 0, 0, 1, "tIA");
+  dpd_file2_mat_init(&T1A);
+  dpd_file2_mat_rd(&T1A);
+  dpd_file2_init(&T1B, CC_OEI, 0, 0, 1, "tia");
+  dpd_file2_mat_init(&T1B);
+  dpd_file2_mat_rd(&T1B);
 
   /* Closed-shell diagnostic --- T1A should be equal to T1B */
   t1diag = 0.0;
@@ -90,10 +90,10 @@ double diagnostic(void)
       t1diag *= 0.5;
     }
 	      
-  dpd_oe_file_mat_close(&T1A);
-  dpd_oe_file_close(&T1A);
-  dpd_oe_file_mat_close(&T1B);
-  dpd_oe_file_close(&T1B);
+  dpd_file2_mat_close(&T1A);
+  dpd_file2_close(&T1A);
+  dpd_file2_mat_close(&T1B);
+  dpd_file2_close(&T1B);
 
   return t1diag;
 }

@@ -6,39 +6,39 @@
 
 void Z_build(void)
 {
-  struct dpdbuf ZIJMA, Zijma, ZIjMa, ZIjmA;
-  struct dpdbuf tauIJAB, tauijab, tauIjAb, tauIjbA, F_anti, F;
+  dpdbuf4 ZIJMA, Zijma, ZIjMa, ZIjmA;
+  dpdbuf4 tauIJAB, tauijab, tauIjAb, tauIjbA, F_anti, F;
 
-/*  timer_on("Z_build", outfile); */
+  timer_on("Z");
 
-  dpd_buf_init(&ZIJMA, CC_MISC, 2, 10, 2, 10, 0, "ZIJMA", 0, outfile);
-  dpd_buf_init(&Zijma, CC_MISC, 2, 10, 2, 10, 0, "Zijma", 0, outfile);
-  dpd_buf_init(&ZIjMa, CC_MISC, 0, 10, 0, 10, 0, "ZIjMa", 0, outfile);
-  dpd_buf_init(&ZIjmA, CC_MISC, 0, 10, 0, 10, 0, "ZIjmA", 0, outfile);
+  dpd_buf4_init(&ZIJMA, CC_MISC, 0, 2, 10, 2, 10, 0, "ZIJMA");
+  dpd_buf4_init(&Zijma, CC_MISC, 0, 2, 10, 2, 10, 0, "Zijma");
+  dpd_buf4_init(&ZIjMa, CC_MISC, 0, 0, 10, 0, 10, 0, "ZIjMa");
+  dpd_buf4_init(&ZIjmA, CC_MISC, 0, 0, 10, 0, 10, 0, "ZIjmA");
 
-  dpd_buf_init(&tauIJAB, CC_TAMPS, 2, 7, 2, 7, 0, "tauIJAB", 0, outfile);
-  dpd_buf_init(&tauijab, CC_TAMPS, 2, 7, 2, 7, 0, "tauijab", 0, outfile);
-  dpd_buf_init(&tauIjAb, CC_TAMPS, 0, 5, 0, 5, 0, "tauIjAb", 0, outfile);
-  dpd_buf_init(&tauIjbA, CC_TAMPS, 0, 5, 0, 5, 0, "tauIjbA", 0, outfile);
+  dpd_buf4_init(&tauIJAB, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauIJAB");
+  dpd_buf4_init(&tauijab, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauijab");
+  dpd_buf4_init(&tauIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
+  dpd_buf4_init(&tauIjbA, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjbA");
 
-  dpd_buf_init(&F_anti, CC_FINTS, 10, 7, 10, 5, 1, "F <ia|bc>", 0, outfile);
-  dpd_buf_init(&F, CC_FINTS, 10, 5, 10, 5, 0, "F <ia|bc>", 0, outfile);
+  dpd_buf4_init(&F_anti, CC_FINTS, 0, 10, 7, 10, 7, 0, "F <ia||bc> (ia,b>c)");
+  dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
 
-  dpd_contract222(&tauIJAB, &F_anti, &ZIJMA, 0, 0, 1, 0, 0, outfile);
-  dpd_contract222(&tauijab, &F_anti, &Zijma, 0, 0, 1, 0, 0, outfile);
-  dpd_contract222(&tauIjAb, &F, &ZIjMa, 0, 0, 1, 0, 0, outfile);
-  dpd_contract222(&tauIjbA, &F, &ZIjmA, 0, 0, 1, 0, 0, outfile);
+  dpd_contract444(&tauIJAB, &F_anti, &ZIJMA, 0, 0, 1, 0);
+  dpd_contract444(&tauijab, &F_anti, &Zijma, 0, 0, 1, 0);
+  dpd_contract444(&tauIjAb, &F, &ZIjMa, 0, 0, 1, 0);
+  dpd_contract444(&tauIjbA, &F, &ZIjmA, 0, 0, 1, 0);
 
-  dpd_buf_close(&tauIJAB);  dpd_buf_close(&tauijab);  dpd_buf_close(&tauIjAb);
-  dpd_buf_close(&F_anti);  dpd_buf_close(&F);
+  dpd_buf4_close(&tauIJAB); dpd_buf4_close(&tauijab); dpd_buf4_close(&tauIjAb);
+  dpd_buf4_close(&F_anti); dpd_buf4_close(&F);
 
-  dpd_swap34(&ZIJMA, CC_MISC, 2, 11, "ZIJAM", 0, outfile);
-  dpd_swap34(&Zijma, CC_MISC, 2, 11, "Zijam", 0, outfile);
-  dpd_swap34(&ZIjmA, CC_MISC, 0, 11, "ZIjAm", 0, outfile);
+  dpd_buf4_sort(&ZIJMA, CC_MISC, pqsr, 2, 11, "ZIJAM");
+  dpd_buf4_sort(&Zijma, CC_MISC, pqsr, 2, 11, "Zijam");
+  dpd_buf4_sort(&ZIjmA, CC_MISC, pqsr, 0, 11, "ZIjAm");
 
-  dpd_buf_close(&ZIJMA);  dpd_buf_close(&Zijma);
-  dpd_buf_close(&ZIjMa);  dpd_buf_close(&ZIjmA);
+  dpd_buf4_close(&ZIJMA);  dpd_buf4_close(&Zijma);
+  dpd_buf4_close(&ZIjMa);  dpd_buf4_close(&ZIjmA);
 
-/*  timer_off("Z_build", outfile); */
+  timer_off("Z");
 }
 

@@ -9,41 +9,12 @@ LDLIBS += $(BLAS)
 PSILIBS = -ldpd -lqt -lfile30 -liwl -lciomr -lpsio -lipv1 -lmalloc
 
 CSRC = \
-ccenergy.c \
-get_moinfo.c \
-get_params.c \
-init_amps.c \
-tau.c \
-taut.c \
-sort_amps.c \
-Fme.c \
-Fae.c \
-Fmi.c \
-t1.c \
-energy.c \
-Wmnij.c \
-X.c \
-Y.c \
-Z.c \
-Wmbej.c \
-t2.c \
-FaetT2.c \
-FmitT2.c \
-WmnijT2.c \
-WmbejT2.c \
-BT2.c \
-CT2.c \
-DT2.c \
-ET2.c \
-FT2.c \
-ZT2.c \
-dijabT2.c \
-tsave.c \
-converged.c \
-update.c \
-diagnostic.c \
-d1diag.c \
-diis.c
+BT2.c  Fae.c     Wmbej.c                 d1diag.c      get_moinfo.c  t2.c     \
+CT2.c  FaetT2.c  WmbejT2.c  Z.c          diagnostic.c  get_params.c  tau.c    \
+DT2.c  Fme.c     Wmnij.c    ZT2.c        diis.c        init_amps.c   taut.c   \
+ET2.c  Fmi.c     WmnijT2.c  ccenergy.c   dijabT2.c     sort_amps.c   tsave.c  \
+FT2.c  FmitT2.c             converged.c  energy.c      t1.c          update.c \
+cache.c \
 
 BINOBJ = $(CSRC:%.c=%.o)
 ALLOC = 

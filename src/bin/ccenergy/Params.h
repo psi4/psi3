@@ -5,5 +5,6 @@ struct Params {
     int restart;
     int memory;
     int aobasis;
+    int cachelev;
 };
 

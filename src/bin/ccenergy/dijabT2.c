@@ -5,24 +5,24 @@
 
 void dijabT2(void)
 {
-  struct dpdbuf newtIJAB, newtijab, newtIjAb;
-  struct dpdbuf dIJAB, dijab, dIjAb;
+  dpdbuf4 newtIJAB, newtijab, newtIjAb;
+  dpdbuf4 dIJAB, dijab, dIjAb;
 
-  dpd_buf_init(&newtIJAB, CC_TAMPS, 2, 7, 2, 7, 0, "New tIJAB", 0, outfile);
-  dpd_buf_init(&dIJAB, CC_DENOM, 1, 6, 1, 6, 0, "dIJAB", 0, outfile);
-  dpd_dirprd(&dIJAB, &newtIJAB, 0, outfile);
-  dpd_buf_close(&newtIJAB);
-  dpd_buf_close(&dIJAB);
+  dpd_buf4_init(&newtIJAB, CC_TAMPS, 0, 2, 7, 2, 7, 0, "New tIJAB");
+  dpd_buf4_init(&dIJAB, CC_DENOM, 0, 1, 6, 1, 6, 0, "dIJAB");
+  dpd_buf4_dirprd(&dIJAB, &newtIJAB);
+  dpd_buf4_close(&newtIJAB);
+  dpd_buf4_close(&dIJAB);
 
-  dpd_buf_init(&newtijab, CC_TAMPS, 2, 7, 2, 7, 0, "New tijab", 0, outfile);
-  dpd_buf_init(&dijab, CC_DENOM, 1, 6, 1, 6, 0, "dijab", 0, outfile);
-  dpd_dirprd(&dijab, &newtijab, 0, outfile);
-  dpd_buf_close(&newtijab);
-  dpd_buf_close(&dijab);
+  dpd_buf4_init(&newtijab, CC_TAMPS, 0, 2, 7, 2, 7, 0, "New tijab");
+  dpd_buf4_init(&dijab, CC_DENOM, 0, 1, 6, 1, 6, 0, "dijab");
+  dpd_buf4_dirprd(&dijab, &newtijab);
+  dpd_buf4_close(&newtijab);
+  dpd_buf4_close(&dijab);
 
-  dpd_buf_init(&newtIjAb, CC_TAMPS, 0, 5, 0, 5, 0, "New tIjAb", 0, outfile);
-  dpd_buf_init(&dIjAb, CC_DENOM, 0, 5, 0, 5, 0, "dIjAb", 0, outfile);
-  dpd_dirprd(&dIjAb, &newtIjAb, 0, outfile);
-  dpd_buf_close(&newtIjAb);
-  dpd_buf_close(&dIjAb);
+  dpd_buf4_init(&newtIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb");
+  dpd_buf4_init(&dIjAb, CC_DENOM, 0, 0, 5, 0, 5, 0, "dIjAb");
+  dpd_buf4_dirprd(&dIjAb, &newtIjAb);
+  dpd_buf4_close(&newtIjAb);
+  dpd_buf4_close(&dIjAb);
 }

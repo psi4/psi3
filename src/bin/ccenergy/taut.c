@@ -8,37 +8,37 @@ void taut_build(void)
   int h, ij, ab, i, j, a, b, I, J, A, B;
   int Isym, Jsym, Asym, Bsym;
   int nirreps;
-  struct dpdbuf tautIJAB, tautijab, tautIjAb;
-  struct dpdbuf tIJAB, tijab, tIjAb;
-  struct oe_dpdfile tIA, tia;
+  dpdbuf4 tautIJAB, tautijab, tautIjAb;
+  dpdbuf4 tIJAB, tijab, tIjAb;
+  dpdfile2 tIA, tia;
 
   nirreps = moinfo.nirreps;
 
-  dpd_buf_init(&tIJAB, CC_TAMPS, 2, 7, 2, 7, 0, "tIJAB", 0, outfile);
-  dpd_copy(&tIJAB, CC_TAMPS, "tautIJAB", 0, outfile);
-  dpd_buf_close(&tIJAB);
+  dpd_buf4_init(&tIJAB, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tIJAB");
+  dpd_buf4_copy(&tIJAB, CC_TAMPS, "tautIJAB");
+  dpd_buf4_close(&tIJAB);
 
-  dpd_buf_init(&tijab, CC_TAMPS, 2, 7, 2, 7, 0, "tijab", 0, outfile);
-  dpd_copy(&tijab, CC_TAMPS, "tautijab", 0, outfile);
-  dpd_buf_close(&tijab);
+  dpd_buf4_init(&tijab, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tijab");
+  dpd_buf4_copy(&tijab, CC_TAMPS, "tautijab");
+  dpd_buf4_close(&tijab);
 
-  dpd_buf_init(&tIjAb, CC_TAMPS, 0, 5, 0, 5, 0, "tIjAb", 0, outfile);
-  dpd_copy(&tIjAb, CC_TAMPS, "tautIjAb", 0, outfile);
-  dpd_buf_close(&tIjAb);
+  dpd_buf4_init(&tIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
+  dpd_buf4_copy(&tIjAb, CC_TAMPS, "tautIjAb");
+  dpd_buf4_close(&tIjAb);
 
-  dpd_oe_file_init(&tIA, CC_OEI, 0, 1, "tIA", 0, outfile);
-  dpd_oe_file_mat_init(&tIA);
-  dpd_oe_file_mat_rd(&tIA, 0, outfile);
-  dpd_oe_file_init(&tia, CC_OEI, 0, 1, "tia", 0, outfile);
-  dpd_oe_file_mat_init(&tia);
-  dpd_oe_file_mat_rd(&tia, 0, outfile);
+  dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+  dpd_file2_mat_init(&tIA);
+  dpd_file2_mat_rd(&tIA);
+  dpd_file2_init(&tia, CC_OEI, 0, 0, 1, "tia");
+  dpd_file2_mat_init(&tia);
+  dpd_file2_mat_rd(&tia);
 
-  dpd_buf_init(&tautIJAB, CC_TAMPS, 2, 7, 2, 7, 0, "tautIJAB", 0, outfile);
+  dpd_buf4_init(&tautIJAB, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tautIJAB");
 
   for(h=0; h < nirreps; h++) {
 
-      dpd_buf_mat_irrep_init(&tautIJAB, h);
-      dpd_buf_mat_irrep_rd(&tautIJAB, h, 0, outfile);
+      dpd_buf4_mat_irrep_init(&tautIJAB, h);
+      dpd_buf4_mat_irrep_rd(&tautIJAB, h);
 
       for(ij=0; ij < tautIJAB.params->rowtot[h]; ij++) {
 	  i = tautIJAB.params->roworb[h][ij][0];
@@ -65,18 +65,18 @@ void taut_build(void)
 	    }
 	}
 
-      dpd_buf_mat_irrep_wrt(&tautIJAB, h, 0, outfile);
-      dpd_buf_mat_irrep_close(&tautIJAB, h);
+      dpd_buf4_mat_irrep_wrt(&tautIJAB, h);
+      dpd_buf4_mat_irrep_close(&tautIJAB, h);
     }
 
-  dpd_buf_close(&tautIJAB);
+  dpd_buf4_close(&tautIJAB);
 
-  dpd_buf_init(&tautijab, CC_TAMPS, 2, 7, 2, 7, 0, "tautijab", 0, outfile);
+  dpd_buf4_init(&tautijab, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tautijab");
 
   for(h=0; h < nirreps; h++) {
 
-      dpd_buf_mat_irrep_init(&tautijab, h);
-      dpd_buf_mat_irrep_rd(&tautijab, h, 0, outfile);
+      dpd_buf4_mat_irrep_init(&tautijab, h);
+      dpd_buf4_mat_irrep_rd(&tautijab, h);
 
       for(ij=0; ij < tautijab.params->rowtot[h]; ij++) {
 	  i = tautijab.params->roworb[h][ij][0];
@@ -103,18 +103,18 @@ void taut_build(void)
 	    }
 	}
 
-      dpd_buf_mat_irrep_wrt(&tautijab, h, 0, outfile);
-      dpd_buf_mat_irrep_close(&tautijab, h);
+      dpd_buf4_mat_irrep_wrt(&tautijab, h);
+      dpd_buf4_mat_irrep_close(&tautijab, h);
     }
 
-  dpd_buf_close(&tautijab);
+  dpd_buf4_close(&tautijab);
 
-  dpd_buf_init(&tautIjAb, CC_TAMPS, 0, 5, 0, 5, 0, "tautIjAb", 0, outfile);
+  dpd_buf4_init(&tautIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tautIjAb");
 
   for(h=0; h < nirreps; h++) {
 
-      dpd_buf_mat_irrep_init(&tautIjAb, h);
-      dpd_buf_mat_irrep_rd(&tautIjAb, h, 0, outfile);
+      dpd_buf4_mat_irrep_init(&tautIjAb, h);
+      dpd_buf4_mat_irrep_rd(&tautIjAb, h);
 
       for(ij=0; ij < tautIjAb.params->rowtot[h]; ij++) {
 	  i = tautIjAb.params->roworb[h][ij][0];
@@ -138,14 +138,14 @@ void taut_build(void)
 	    }
 	}
 
-      dpd_buf_mat_irrep_wrt(&tautIjAb, h, 0, outfile);
-      dpd_buf_mat_irrep_close(&tautIjAb, h);
+      dpd_buf4_mat_irrep_wrt(&tautIjAb, h);
+      dpd_buf4_mat_irrep_close(&tautIjAb, h);
     }
 
-  dpd_buf_close(&tautIjAb);
+  dpd_buf4_close(&tautIjAb);
 
-  dpd_oe_file_mat_close(&tIA);
-  dpd_oe_file_close(&tIA);
-  dpd_oe_file_mat_close(&tia);
-  dpd_oe_file_close(&tia);
+  dpd_file2_mat_close(&tIA);
+  dpd_file2_close(&tIA);
+  dpd_file2_mat_close(&tia);
+  dpd_file2_close(&tia);
 }

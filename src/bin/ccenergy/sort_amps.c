@@ -6,43 +6,41 @@
 
 void sort_amps(void)
 {
-  struct dpdbuf t2;
+  dpdbuf4 t2;
 
-/*  timer_on("sort amps", outfile); */
 
-  /* Build t2iJaB list */
-  dpd_buf_init(&t2, CC_TAMPS, 0, 5, 0, 5, 0, "tIjAb", 0, outfile);
-  dpd_swap12(&t2, CC_TMP0, 0, 5, "tjIAb", 0, outfile);
-  dpd_buf_close(&t2);
-  dpd_buf_init(&t2, CC_TMP0, 0, 5, 0, 5, 0, "tjIAb", 0, outfile);
-  dpd_swap34(&t2, CC_TAMPS, 0, 5, "tiJaB", 0, outfile);
-  dpd_buf_close(&t2);
+  /* T(iJ,aB) */
+  dpd_buf4_init(&t2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
+  dpd_buf4_sort(&t2, CC_TAMPS, qpsr, 0, 5, "tiJaB");
+  dpd_buf4_close(&t2);
 
-  /* Build t2IAJB List */
-  dpd_buf_init(&t2, CC_TAMPS, 0, 5, 2, 7, 0, "tIJAB", 0, outfile);
-  dpd_swap23(&t2, CC_TAMPS, 10, 10, "tIAJB", 0, outfile);
-  dpd_buf_close(&t2);
+  /* TIJAB (IA,JB) */
+  dpd_buf4_init(&t2, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tIJAB");
+  dpd_buf4_sort(&t2, CC_TAMPS, prqs, 10, 10, "tIAJB");
+  dpd_buf4_close(&t2);
 
-  /* Build t2iajb List */
-  dpd_buf_init(&t2, CC_TAMPS, 0, 5, 2, 7, 0, "tijab", 0, outfile);
-  dpd_swap23(&t2, CC_TAMPS, 10, 10, "tiajb", 0, outfile);
-  dpd_buf_close(&t2);
+  /* Tijab (ia,jb) */
+  dpd_buf4_init(&t2, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tijab");
+  dpd_buf4_sort(&t2, CC_TAMPS, prqs, 10, 10, "tiajb");
+  dpd_buf4_close(&t2);
 
-  /* Build t2IAjb List */
-  dpd_buf_init(&t2, CC_TAMPS, 0, 5, 0, 5, 0, "tIjAb", 0, outfile);
-  dpd_swap23(&t2, CC_TAMPS, 10, 10, "tIAjb", 0, outfile);
-  dpd_buf_close(&t2);
+  /* TIjAb (IA,jb) */
+  dpd_buf4_init(&t2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
+  dpd_buf4_sort(&t2, CC_TAMPS, prqs, 10, 10, "tIAjb");
+  dpd_buf4_close(&t2);
 
   /* Build t2iaJB List */
-  dpd_buf_init(&t2, CC_TAMPS, 0, 5, 0, 5, 0, "tiJaB", 0, outfile);
-  dpd_swap23(&t2, CC_TAMPS, 10, 10, "tiaJB", 0, outfile);
-  dpd_buf_close(&t2);
+  dpd_buf4_init(&t2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIAjb");
+  dpd_buf4_sort(&t2, CC_TAMPS, rspq, 10, 10, "tiaJB");
+  dpd_buf4_close(&t2);
 
-  /* Build t2IbjA and t2 jAIb Lists */
-  dpd_buf_init(&t2, CC_TAMPS, 10, 10, 10, 10, 0, "tIAjb", 0, outfile);
-  dpd_swap24(&t2, CC_TAMPS, 10, 10, "tIbjA", 0, outfile);
-  dpd_swap13(&t2, CC_TAMPS, 10, 10, "tjAIb", 0, outfile);
-  dpd_buf_close(&t2);
+  /* TIjAb (Ib,jA) */
+  dpd_buf4_init(&t2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIAjb");
+  dpd_buf4_sort(&t2, CC_TAMPS, psrq, 10, 10, "tIbjA");
+  dpd_buf4_close(&t2);
+  /* TIjAb (jA,Ib) */
+  dpd_buf4_init(&t2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIbjA");
+  dpd_buf4_sort(&t2, CC_TAMPS, rspq, 10, 10, "tjAIb");
+  dpd_buf4_close(&t2);
 
-/*  timer_off("sort amps", outfile); */
 }

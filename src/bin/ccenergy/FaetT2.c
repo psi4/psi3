@@ -5,33 +5,43 @@
 
 void FaetT2(void)
 {
-  struct oe_dpdfile FAEt, Faet;
-  struct dpdbuf newtIJAB, newtijab, newtIjAb;
-  struct dpdbuf tIJAB, tijab, tIjAb;
+  dpdfile2 FAEt, Faet;
+  dpdbuf4 newtIJAB, newtijab, newtIjAb;
+  dpdbuf4 tIJAB, tijab, tIjAb;
+  dpdbuf4 t2;
 
-  dpd_buf_init(&newtIJAB, CC_TAMPS, 2, 5, 2, 7, 0, "New tIJAB", 0, outfile);
-  dpd_buf_init(&newtijab, CC_TAMPS, 2, 5, 2, 7, 0, "New tijab", 0, outfile);
-  dpd_buf_init(&newtIjAb, CC_TAMPS, 0, 5, 0, 5, 0, "New tIjAb", 0, outfile);
+  dpd_buf4_init(&newtIJAB, CC_TAMPS, 0, 2, 5, 2, 7, 0, "New tIJAB");
+  dpd_buf4_init(&newtijab, CC_TAMPS, 0, 2, 5, 2, 7, 0, "New tijab");
+  dpd_buf4_init(&newtIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb");
 
-  dpd_buf_init(&tIJAB, CC_TAMPS, 2, 5, 2, 7, 0, "tIJAB", 0, outfile);
-  dpd_buf_init(&tijab, CC_TAMPS, 2, 5, 2, 7, 0, "tijab", 0, outfile);
-  dpd_buf_init(&tIjAb, CC_TAMPS, 0, 5, 0, 5, 0, "tIjAb", 0, outfile);
+  dpd_buf4_init(&tIJAB, CC_TAMPS, 0, 2, 5, 2, 7, 0, "tIJAB");
+  dpd_buf4_init(&tijab, CC_TAMPS, 0, 2, 5, 2, 7, 0, "tijab");
+  dpd_buf4_init(&tIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
 
-  dpd_oe_file_init(&FAEt, CC_OEI, 1, 1, "FAEt", 0, outfile);
-  dpd_oe_file_init(&Faet, CC_OEI, 1, 1, "Faet", 0, outfile);
+  dpd_file2_init(&FAEt, CC_OEI, 0, 1, 1, "FAEt");
+  dpd_file2_init(&Faet, CC_OEI, 0, 1, 1, "Faet");
 
-  dpd_contract221(&tIJAB, &FAEt, &newtIJAB, 3, 1, 0, 1, 1, 0, outfile);
-  dpd_contract212(&FAEt, &tIJAB, &newtIJAB, 1, 2, 1, 1, 1, 0, outfile);
+  dpd_buf4_init(&t2, CC_TMP0, 0, 2, 5, 2, 5, 0, "T (I>J,AB)");
+  dpd_contract424(&tIJAB, &FAEt, &t2, 3, 1, 0, 1, 0);
+  dpd_contract244(&FAEt, &tIJAB, &t2, 1, 2, 1, 1, 1);
+  dpd_buf4_axpy(&t2, &newtIJAB, 1);
+  dpd_buf4_close(&t2);
 
-  dpd_contract221(&tijab, &Faet, &newtijab, 3, 1, 0, 1, 1, 0, outfile);
-  dpd_contract212(&Faet, &tijab, &newtijab, 1, 2, 1, 1, 1, 0, outfile);
+  dpd_buf4_init(&t2, CC_TMP0, 0, 2, 5, 2, 5, 0, "T (I>J,AB)");
+  dpd_contract424(&tijab, &Faet, &t2, 3, 1, 0, 1, 0);
+  dpd_contract244(&Faet, &tijab, &t2, 1, 2, 1, 1, 1);
+  dpd_buf4_axpy(&t2, &newtijab, 1);
+  dpd_buf4_close(&t2);
 
-  dpd_contract221(&tIjAb, &Faet, &newtIjAb, 3, 1, 0, 1, 1, 0, outfile);
-  dpd_contract212(&FAEt, &tIjAb, &newtIjAb, 1, 2, 1, 1, 1, 0, outfile);
+  dpd_contract424(&tIjAb, &Faet, &newtIjAb, 3, 1, 0, 1, 1);
+  dpd_contract244(&FAEt, &tIjAb, &newtIjAb, 1, 2, 1, 1, 1);
 
-  dpd_oe_file_close(&FAEt);  dpd_oe_file_close(&Faet);
+  dpd_file2_close(&FAEt);  dpd_file2_close(&Faet);
 
-  dpd_buf_close(&tIJAB);  dpd_buf_close(&tijab);  dpd_buf_close(&tIjAb);
-  dpd_buf_close(&newtIJAB); dpd_buf_close(&newtijab);  dpd_buf_close(&newtIjAb);
-
+  dpd_buf4_close(&tIJAB);
+  dpd_buf4_close(&tijab);
+  dpd_buf4_close(&tIjAb);
+  dpd_buf4_close(&newtIJAB);
+  dpd_buf4_close(&newtijab);
+  dpd_buf4_close(&newtIjAb);
 }

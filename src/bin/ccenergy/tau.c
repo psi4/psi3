@@ -8,37 +8,37 @@ void tau_build(void)
   int h, ij, ab, i, j, a, b, I, J, A, B;
   int Isym, Jsym, Asym, Bsym;
   int nirreps;
-  struct dpdbuf tauIJAB, tauijab, tauIjAb, tauiJaB, tauIjbA;
-  struct dpdbuf tIJAB, tijab, tIjAb;
-  struct oe_dpdfile tIA, tia;
+  dpdbuf4 tauIJAB, tauijab, tauIjAb, tauiJaB, tauIjbA;
+  dpdbuf4 tIJAB, tijab, tIjAb;
+  dpdfile2 tIA, tia;
 
   nirreps = moinfo.nirreps;
 
-  dpd_buf_init(&tIJAB, CC_TAMPS, 2, 7, 2, 7, 0, "tIJAB", 0, outfile);
-  dpd_copy(&tIJAB, CC_TAMPS, "tauIJAB", 0, outfile);
-  dpd_buf_close(&tIJAB);
+  dpd_buf4_init(&tIJAB, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tIJAB");
+  dpd_buf4_copy(&tIJAB, CC_TAMPS, "tauIJAB");
+  dpd_buf4_close(&tIJAB);
 
-  dpd_buf_init(&tijab, CC_TAMPS, 2, 7, 2, 7, 0, "tijab", 0, outfile);
-  dpd_copy(&tijab, CC_TAMPS, "tauijab", 0, outfile);
-  dpd_buf_close(&tijab);
+  dpd_buf4_init(&tijab, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tijab");
+  dpd_buf4_copy(&tijab, CC_TAMPS, "tauijab");
+  dpd_buf4_close(&tijab);
 
-  dpd_buf_init(&tIjAb, CC_TAMPS, 0, 5, 0, 5, 0, "tIjAb", 0, outfile);
-  dpd_copy(&tIjAb, CC_TAMPS, "tauIjAb", 0, outfile);
-  dpd_buf_close(&tIjAb);
+  dpd_buf4_init(&tIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
+  dpd_buf4_copy(&tIjAb, CC_TAMPS, "tauIjAb");
+  dpd_buf4_close(&tIjAb);
 
-  dpd_oe_file_init(&tIA, CC_OEI, 0, 1, "tIA", 0, outfile);
-  dpd_oe_file_mat_init(&tIA);
-  dpd_oe_file_mat_rd(&tIA, 0, outfile);
-  dpd_oe_file_init(&tia, CC_OEI, 0, 1, "tia", 0, outfile);
-  dpd_oe_file_mat_init(&tia);
-  dpd_oe_file_mat_rd(&tia, 0, outfile);
+  dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+  dpd_file2_mat_init(&tIA);
+  dpd_file2_mat_rd(&tIA);
+  dpd_file2_init(&tia, CC_OEI, 0, 0, 1, "tia");
+  dpd_file2_mat_init(&tia);
+  dpd_file2_mat_rd(&tia);
 
-  dpd_buf_init(&tauIJAB, CC_TAMPS, 2, 7, 2, 7, 0, "tauIJAB", 0, outfile);
+  dpd_buf4_init(&tauIJAB, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauIJAB");
 
   for(h=0; h < nirreps; h++) {
 
-      dpd_buf_mat_irrep_init(&tauIJAB, h);
-      dpd_buf_mat_irrep_rd(&tauIJAB, h, 0, outfile);
+      dpd_buf4_mat_irrep_init(&tauIJAB, h);
+      dpd_buf4_mat_irrep_rd(&tauIJAB, h);
 
       for(ij=0; ij < tauIJAB.params->rowtot[h]; ij++) {
 	  i = tauIJAB.params->roworb[h][ij][0];
@@ -65,18 +65,18 @@ void tau_build(void)
 	    }
 	}
 
-      dpd_buf_mat_irrep_wrt(&tauIJAB, h, 0, outfile);
-      dpd_buf_mat_irrep_close(&tauIJAB, h);
+      dpd_buf4_mat_irrep_wrt(&tauIJAB, h);
+      dpd_buf4_mat_irrep_close(&tauIJAB, h);
     }
 
-  dpd_buf_close(&tauIJAB);
+  dpd_buf4_close(&tauIJAB);
 
-  dpd_buf_init(&tauijab, CC_TAMPS, 2, 7, 2, 7, 0, "tauijab", 0, outfile);
+  dpd_buf4_init(&tauijab, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauijab");
 
   for(h=0; h < nirreps; h++) {
 
-      dpd_buf_mat_irrep_init(&tauijab, h);
-      dpd_buf_mat_irrep_rd(&tauijab, h, 0, outfile);
+      dpd_buf4_mat_irrep_init(&tauijab, h);
+      dpd_buf4_mat_irrep_rd(&tauijab, h);
 
       for(ij=0; ij < tauijab.params->rowtot[h]; ij++) {
 	  i = tauijab.params->roworb[h][ij][0];
@@ -103,18 +103,18 @@ void tau_build(void)
 	    }
 	}
 
-      dpd_buf_mat_irrep_wrt(&tauijab, h, 0, outfile);
-      dpd_buf_mat_irrep_close(&tauijab, h);
+      dpd_buf4_mat_irrep_wrt(&tauijab, h);
+      dpd_buf4_mat_irrep_close(&tauijab, h);
     }
 
-  dpd_buf_close(&tauijab);
+  dpd_buf4_close(&tauijab);
 
-  dpd_buf_init(&tauIjAb, CC_TAMPS, 0, 5, 0, 5, 0, "tauIjAb", 0, outfile);
+  dpd_buf4_init(&tauIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
 
   for(h=0; h < nirreps; h++) {
 
-      dpd_buf_mat_irrep_init(&tauIjAb, h);
-      dpd_buf_mat_irrep_rd(&tauIjAb, h, 0, outfile);
+      dpd_buf4_mat_irrep_init(&tauIjAb, h);
+      dpd_buf4_mat_irrep_rd(&tauIjAb, h);
 
       for(ij=0; ij < tauIjAb.params->rowtot[h]; ij++) {
 	  i = tauIjAb.params->roworb[h][ij][0];
@@ -138,19 +138,19 @@ void tau_build(void)
 	    }
 	}
 
-      dpd_buf_mat_irrep_wrt(&tauIjAb, h, 0, outfile);
-      dpd_buf_mat_irrep_close(&tauIjAb, h);
+      dpd_buf4_mat_irrep_wrt(&tauIjAb, h);
+      dpd_buf4_mat_irrep_close(&tauIjAb, h);
     }
 
   /* This will generate the tauBA and tauIjbA files from tauIjAb */
-  dpd_swap34(&tauIjAb, CC_TAMPS, 0, 5, "tauIjbA", 0, outfile);
-  dpd_buf_close(&tauIjAb);
-  dpd_buf_init(&tauIjbA, CC_TAMPS, 0, 5, 0, 5, 0, "tauIjbA", 0, outfile);
-  dpd_swap12(&tauIjbA, CC_TAMPS, 0, 5, "tauiJaB", 0, outfile);
-  dpd_buf_close(&tauIjbA);
+  dpd_buf4_sort(&tauIjAb, CC_TAMPS, pqsr, 0, 5, "tauIjbA");
+  dpd_buf4_close(&tauIjAb);
+  dpd_buf4_init(&tauIjbA, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjbA");
+  dpd_buf4_sort(&tauIjbA, CC_TAMPS, qprs,  0, 5, "tauiJaB");
+  dpd_buf4_close(&tauIjbA);
 
-  dpd_oe_file_mat_close(&tIA);
-  dpd_oe_file_close(&tIA);
-  dpd_oe_file_mat_close(&tia);
-  dpd_oe_file_close(&tia);
+  dpd_file2_mat_close(&tIA);
+  dpd_file2_close(&tIA);
+  dpd_file2_mat_close(&tia);
+  dpd_file2_close(&tia);
 }
