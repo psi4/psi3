@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
   if (!parse_cmdline(argc,argv))
     exit(1);
 
-  fprintf(outfile, "\n\n   PSI3   \n\n");
+  fprintf(outfile, "\n\n The PSI3 Execution Driver \n");
 
   psidat = fopen(SHARE, "r");
 
@@ -377,10 +377,10 @@ int parse_cmdline(int argc, char *argv[])
   int found_if_p = 0;           /* found input file name with -i */
   int found_of_p = 0;           /* found output file name with -o */
   int found_fp_p = 0;           /* found file prefix name with -p */
-  char *ifname, *ofname, *fprefix, *arg;
+  char *ifname=NULL, *ofname=NULL, *fprefix=NULL, *arg;
 
   /* process command-line arguments in sequence */
-  for(i=0; i<argc; i++) {
+  for(i=1; i<argc; i++) {
     arg = argv[i];
     if (!strcmp(arg,"-f") && !found_if_p) {
       ifname = argv[++i];
@@ -446,10 +446,17 @@ int parse_cmdline(int argc, char *argv[])
 
  
   /* set the environmental variables the modules will look for */ 
-  if (ifname != NULL)
+  if (ifname != NULL) {
     setenv("PSI_INPUT",ifname,1);
-  if (ofname != NULL)
+    ffile(&infile,ifname,2);
+  }
+  else {
+    ffile(&infile,"input.dat",2);
+  }
+  if (ofname != NULL) {
     setenv("PSI_OUTPUT",ofname,1);
+  }
+  outfile = stdout;
   if (fprefix != NULL)
     setenv("PSI_PREFIX",fprefix,1);
 
