@@ -111,8 +111,6 @@ void uhf_opdm(void)
   int I, J, A, B;
   double traceA=0.0;
   double traceB=0.0;
-  double EAA=0.0;
-  double EBB=0.0;
   dpdfile2 D, F;
   dpdfile2 T1A, T1B;
   dpdbuf4 T2A, T2B;
@@ -149,12 +147,6 @@ void uhf_opdm(void)
   dpd_buf4_close(&T2B);
   dpd_file2_close(&D);
     
-  dpd_file2_init(&D, CC_OEI, 0, 0, 0, "DIJ");
-  dpd_file2_init(&F, CC_OEI, 0, 0, 0, "fIJ");
-  EAA += dpd_file2_dot(&F,&D);
-  dpd_file2_close(&F);
-  dpd_file2_close(&D);
-  
   if(params.semicanonical) {
     dpd_file2_init(&D, CC_OEI, 0, 2, 2, "Dij");
     dpd_file2_init(&T1A, CC_OEI, 0, 2, 3, "tia");
@@ -186,12 +178,6 @@ void uhf_opdm(void)
   dpd_buf4_close(&T2B);
   dpd_file2_close(&D);
   
-  dpd_file2_init(&D, CC_OEI, 0, 2, 2, "Dij");
-  dpd_file2_init(&F, CC_OEI, 0, 2, 2, "fij");
-  EBB += dpd_file2_dot(&F,&D);
-  dpd_file2_close(&F);
-  dpd_file2_close(&D);
-
   if(params.semicanonical) {
     dpd_file2_init(&D, CC_OEI, 0, 1, 1, "DAB");
     dpd_file2_init(&T1A, CC_OEI, 0, 0, 1, "tIA");
@@ -223,12 +209,6 @@ void uhf_opdm(void)
   dpd_buf4_close(&T2B);
   dpd_file2_close(&D);
     
-  dpd_file2_init(&D, CC_OEI, 0, 1, 1, "DAB");
-  dpd_file2_init(&F, CC_OEI, 0, 1, 1, "fAB");
-  EAA += dpd_file2_dot(&F,&D);
-  dpd_file2_close(&F);
-  dpd_file2_close(&D);
-  
   if(params.semicanonical) {
     dpd_file2_init(&D, CC_OEI, 0, 3, 3, "Dab");
     dpd_file2_init(&T1A, CC_OEI, 0, 2, 3, "tia");
@@ -260,17 +240,9 @@ void uhf_opdm(void)
   dpd_buf4_close(&T2B);
   dpd_file2_close(&D);
    
-  dpd_file2_init(&D, CC_OEI, 0, 3, 3, "Dab");
-  dpd_file2_init(&F, CC_OEI, 0, 3, 3, "fab");
-  EBB += dpd_file2_dot(&F,&D);
-  dpd_file2_close(&F);
-  dpd_file2_close(&D);
-  
   fprintf(outfile,"\n");
   fprintf(outfile,"\tTrace of Alpha OPDM(2)  = %20.15f\n", fabs(traceA));
   fprintf(outfile,"\tTrace of Beta OPDM(2)   = %20.15f\n", fabs(traceB));
-  fprintf(outfile,"\tOne Electron Alpha      = %20.15f\n", EAA);
-  fprintf(outfile,"\tOne Electron Beta       = %20.15f\n", EBB);
     
   AOPDM = block_matrix(mo.nmo,mo.nmo);  
 
