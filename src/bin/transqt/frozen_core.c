@@ -92,3 +92,44 @@ double fzc_energy(int nbfso, int *orbsym, double *P, double *Hc, double *H,
    return(fzc);
 }
 
+/*
+** FZC_ENERGY_UHF(): This function calculates the UHF frozen core energy.
+**
+** Arguments:
+**    nbfso   = number of symmetry orbitals
+**    orbsym  = array containing symmetry of each orbital
+**    Pa      = alpha frozen core density matrix
+**    Pb      = beta frozen core density matrix
+**    Hca     = alpha frozen core operator in SO basis
+**    Hcb     = beta frozen core operator in SO basis
+**    H       = one-electron operator in SO basis
+**    first_so = first SO index for each irrep
+**    ioff    = the usual offset array
+**
+** Returns: the frozen core energy
+*/
+double fzc_energy_uhf(int nbfso, int *orbsym, double *Pa, double *Pb,
+		      double *Hca, double *Hcb, double *H, 
+		      int *first_so, int *ioff)
+{
+   int i,j,ij,isym;
+   double fzc = 0.0;
+
+   for (i=0; i<nbfso; i++) {
+      isym = orbsym[i];
+ 
+      /* Off-diagonal elements of P */
+      for (j=first_so[isym],ij=ioff[i]+first_so[isym]; j<i; j++,ij++) {
+         fzc += 2.0 * Pa[ij] * Hca[ij];
+	 fzc += 2.0 * Pb[ij] * Hcb[ij];
+         }
+
+      /* Diagonal elements of P */
+      ij = ioff[i] + i;
+      fzc += Pa[ij] * Hca[ij];
+      fzc += Pb[ij] * Hcb[ij];
+      }
+
+   return(fzc);
+}
+

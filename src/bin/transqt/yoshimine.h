@@ -60,6 +60,9 @@ YEXTERN void yosh_close_buckets(struct yoshimine *YBuff, int erase);
 YEXTERN void yosh_rdtwo(struct yoshimine *YBuff, int itapERI, int del_tei_file, int *num_so,
       int nirreps, int *ioff, int elbert, int fzcflag, double *P,
       double *Hc, int matrix, int printflag, FILE *outfile);
+YEXTERN void yosh_rdtwo_uhf(struct yoshimine *YBuff, int itapERI, int del_tei_file, int *num_so,
+      int nirreps, int *ioff, int elbert, int fzcflag, double *Pa, double *Pb,
+      double *Hca, double *Hcb, int matrix, int printflag, FILE *outfile);
 YEXTERN void yosh_rdtwo_backtr(struct yoshimine *YBuff, int tei_file, 
       int *ioff, int symmetrize, int add_ref_pt, int del_tei_file, int prtflg, 
       FILE *outfile);

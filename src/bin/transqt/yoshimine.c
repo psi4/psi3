@@ -471,7 +471,324 @@ void yosh_rdtwo(struct yoshimine *YBuff, int itapERI, int del_tei_file, int *num
    iwl_buf_close(&ERIIN, !del_tei_file);
 }
 
+/*
+** YOSH_RDTWO_UHF() : Read two-electron integrals from
+**    file33 (in IWL format) and prepare them for Yoshimine sorting.
+**
+** Arguments:
+**   YBuff        = Yoshimine object pointer
+**   itapERI      = unit number for two el. file (33)
+**   num_so       = array of number of symm orbs in each irrep (for reindex)
+**   nirreps      = number of irreps
+**   ioff         = standard lexical index array
+**   elbert       = 1 for Elbert ordering, 0 for canonical ordering
+**   Pa           = alpha frozen core density matrix (lower triangle)
+**   Pb           = beta frozen core density matrix (lower triangle)
+**   Hca          = alpha frozen core operator (lower triangle)
+**   Hcb          = beta frozen core operator (lower triangle)
+**   matrix       = 1 for all rs for given pq, 0 otherwise
+**                  (for matrix multiplication algorithm)
+**   del_tei_file = 1 to delete the tei file (33), 0 otherwise
+**   printflag    = 1 for printing (for debugging only!) else 0
+**   outfile      = file to print integrals to (if printflag is set)
+*/
+void yosh_rdtwo_uhf(struct yoshimine *YBuff, int itapERI, int del_tei_file, int *num_so,
+		    int nirreps, int *ioff, int elbert, int fzcflag, double *Pa, double *Pb, 
+		    double *Hca, double *Hcb, int matrix, int printflag, FILE *outfile)
+{ 
+  int ilsti, nbuf;
+  int i, ij, kl, ijkl;
+  int ior, ism, jor, jsm;
+  int kor, ksm, lor, lsm;
+  int iabs, jabs, kabs, labs ;
+  int d2i ;
+  double value;
+  int *tmp;
+  struct bucket *bptr ;
+  int tmpi, whichbucket, lastflag = 0, firstfile;
+  int *nsoff;
+  int a,b,c,d,ab,cd,ad,bc,dum,found=0;
+  int al[8], bl[8], cl[8], dl[8];
+  int fi;
+  struct iwlbuf ERIIN;
 
+  if (printflag) {
+    fprintf(outfile, "Yoshimine rdtwo routine entered\n");
+    fprintf(outfile, "Two-electron integrals from file%d:\n",itapERI);
+  }
+
+  firstfile = YBuff->first_tmp_file;
+
+  iwl_buf_init(&ERIIN,itapERI,0.0,1,1);
+
+  nsoff = init_int_array(nirreps);
+  nsoff[0] = 0;
+  for (i=1; i<nirreps; i++) {
+    nsoff[i] = nsoff[i-1] + num_so[i-1];
+  }
+
+  do {
+    /* read a buffer full */
+    ilsti = ERIIN.lastbuf;
+    nbuf = ERIIN.inbuf;
+
+    fi = 0;
+    for (i=0; i < nbuf ; i++,tmp += 2) { /* do funky stuff to unpack ints */
+      iabs = abs(ERIIN.labels[fi]);
+      jabs = ERIIN.labels[fi+1];
+      kabs = ERIIN.labels[fi+2];
+      labs = ERIIN.labels[fi+3];
+      value = ERIIN.values[i];
+      fi += 4;
+	 
+      /* calculate ijkl lexical index */
+      ij = ioff[iabs] + jabs;
+      kl = ioff[kabs] + labs;
+      ijkl = ioff[ij] + kl;
+
+      /* construct the UHF frozen core operator */
+      if (fzcflag) {
+	a = al[0] = iabs;
+	b = bl[0] = jabs;
+	c = cl[0] = kabs;
+	d = dl[0] = labs;
+	ab = ioff[MAX0(a,b)] + MIN0(a,b);
+	cd = ioff[MAX0(c,d)] + MIN0(c,d);
+	bc = ioff[MAX0(b,c)] + MIN0(b,c);
+	ad = ioff[MAX0(a,d)] + MIN0(a,d);
+	Hca[cd] += (Pa[ab] + Pb[ab]) * value;
+	Hcb[cd] += (Pa[ab] + Pb[ab]) * value;
+	if (b >= c) {
+	  Hca[bc] -= Pa[ad] * value;
+	  Hcb[bc] -= Pb[ad] * value;
+	}
+
+	a = al[1] = jabs;
+	b = bl[1] = iabs;
+	c = cl[1] = kabs;
+	d = dl[1] = labs;
+	if (!(a == al[0] && b == bl[0] && c == cl[0] && d == dl[0])) {
+	  ab = ioff[MAX0(a,b)] + MIN0(a,b);
+	  cd = ioff[MAX0(c,d)] + MIN0(c,d);
+	  bc = ioff[MAX0(b,c)] + MIN0(b,c);
+	  ad = ioff[MAX0(a,d)] + MIN0(a,d);
+	  if (c >= d) {
+	    Hca[cd] += (Pa[ab] + Pb[ab]) * value;
+	    Hcb[cd] += (Pa[ab] + Pb[ab]) * value;
+	  }
+	  if (b >= c) {
+	    Hca[bc] -= Pa[ad] * value;
+	    Hcb[bc] -= Pb[ad] * value;
+	  } 
+	}
+
+	a = al[2] = iabs;
+	b = bl[2] = jabs;
+	c = cl[2] = labs;
+	d = dl[2] = kabs;
+	for (dum=0, found=0; dum < 2 && !found; dum++) {
+	  if (a==al[dum] && b==bl[dum] && c==cl[dum] && d==dl[dum]) found=1;
+	}
+	if (!found) {
+	  ab = ioff[MAX0(a,b)] + MIN0(a,b);
+	  cd = ioff[MAX0(c,d)] + MIN0(c,d);
+	  bc = ioff[MAX0(b,c)] + MIN0(b,c);
+	  ad = ioff[MAX0(a,d)] + MIN0(a,d);
+	  if (c >= d) {
+	    Hca[cd] += (Pa[ab] + Pb[ab]) * value;
+	    Hcb[cd] += (Pa[ab] + Pb[ab]) * value;
+	  }
+	  if (b >= c) {
+	    Hca[bc] -= Pa[ad] * value;
+	    Hcb[bc] -= Pb[ad] * value;
+	  } 
+	}
+
+	a = al[3] = jabs;
+	b = bl[3] = iabs;
+	c = cl[3] = labs;
+	d = dl[3] = kabs;
+	for (dum=0, found=0; dum < 3 && !found; dum++) {
+	  if(a==al[dum] && b==bl[dum] && c==cl[dum] && d==dl[dum]) found=1;
+	}
+	if (!found) {
+	  ab = ioff[MAX0(a,b)] + MIN0(a,b);
+	  cd = ioff[MAX0(c,d)] + MIN0(c,d);
+	  bc = ioff[MAX0(b,c)] + MIN0(b,c);
+	  ad = ioff[MAX0(a,d)] + MIN0(a,d);
+	  if (c >= d) {
+	    Hca[cd] += (Pa[ab] + Pb[ab]) * value;
+	    Hcb[cd] += (Pa[ab] + Pb[ab]) * value;
+	  }
+	  if (b >= c) {
+	    Hca[bc] -= Pa[ad] * value;
+	    Hcb[bc] -= Pb[ad] * value;
+	  } 
+	}
+
+	a = al[4] = kabs;
+	b = bl[4] = labs;
+	c = cl[4] = iabs;
+	d = dl[4] = jabs;
+	for (dum=0, found=0; dum < 4 && !found; dum++) {
+	  if(a==al[dum] && b==bl[dum] && c==cl[dum] && d==dl[dum]) found=1;
+	}
+	if (!found) {
+	  ab = ioff[MAX0(a,b)] + MIN0(a,b);
+	  cd = ioff[MAX0(c,d)] + MIN0(c,d);
+	  bc = ioff[MAX0(b,c)] + MIN0(b,c);
+	  ad = ioff[MAX0(a,d)] + MIN0(a,d);
+	  if (c >= d) {
+	    Hca[cd] += (Pa[ab] + Pb[ab]) * value;
+	    Hcb[cd] += (Pa[ab] + Pb[ab]) * value;
+	  }
+	  if (b >= c) {
+	    Hca[bc] -= Pa[ad] * value;
+	    Hcb[bc] -= Pb[ad] * value;
+	  } 
+	}
+
+	a = al[5] = kabs;
+	b = bl[5] = labs;
+	c = cl[5] = jabs;
+	d = dl[5] = iabs;
+	for (dum=0, found=0; dum < 5 && !found; dum++) {
+	  if (a==al[dum] && b==bl[dum] && c==cl[dum] && d==dl[dum]) found=1;
+	}
+	if (!found) {
+	  ab = ioff[MAX0(a,b)] + MIN0(a,b);
+	  cd = ioff[MAX0(c,d)] + MIN0(c,d);
+	  bc = ioff[MAX0(b,c)] + MIN0(b,c);
+	  ad = ioff[MAX0(a,d)] + MIN0(a,d);
+	  if (c >= d) {
+	    Hca[cd] += (Pa[ab] + Pb[ab]) * value;
+	    Hcb[cd] += (Pa[ab] + Pb[ab]) * value;
+	  }
+	  if (b >= c) {
+	    Hca[bc] -= Pa[ad] * value;
+	    Hcb[bc] -= Pb[ad] * value;
+	  } 
+	}
+
+	a = al[6] = labs;
+	b = bl[6] = kabs;
+	c = cl[6] = iabs;
+	d = dl[6] = jabs;
+	for (dum=0, found=0; dum < 6 && !found; dum++) {
+	  if (a==al[dum] && b==bl[dum] && c==cl[dum] && d==dl[dum]) found=1;
+	}
+	if (!found) {
+	  ab = ioff[MAX0(a,b)] + MIN0(a,b);
+	  cd = ioff[MAX0(c,d)] + MIN0(c,d);
+	  bc = ioff[MAX0(b,c)] + MIN0(b,c);
+	  ad = ioff[MAX0(a,d)] + MIN0(a,d);
+	  if (c >= d) {
+	    Hca[cd] += (Pa[ab] + Pb[ab]) * value;
+	    Hcb[cd] += (Pa[ab] + Pb[ab]) * value;
+	  }
+	  if (b >= c) {
+	    Hca[bc] -= Pa[ad] * value;
+	    Hcb[bc] -= Pb[ad] * value;
+	  } 
+	}
+
+	a = al[7] = labs;
+	b = bl[7] = kabs;
+	c = cl[7] = jabs;
+	d = dl[7] = iabs;
+	for (dum=0, found=0; dum < 7 && !found; dum++) {
+	  if(a==al[dum] && b==bl[dum] && c==cl[dum] && d==dl[dum]) found=1;
+	}
+	if (!found) {
+	  ab = ioff[MAX0(a,b)] + MIN0(a,b);
+	  cd = ioff[MAX0(c,d)] + MIN0(c,d);
+	  bc = ioff[MAX0(b,c)] + MIN0(b,c);
+	  ad = ioff[MAX0(a,d)] + MIN0(a,d);
+	  if (c >= d) {
+	    Hca[cd] += (Pa[ab] + Pb[ab]) * value;
+	    Hcb[cd] += (Pa[ab] + Pb[ab]) * value;
+	  }
+	  if (b >= c) {
+	    Hca[bc] -= Pa[ad] * value;
+	    Hcb[bc] -= Pb[ad] * value;
+	  } 
+	}
+      } /* end construction of frozen core operator */
+
+      /* figure out what bucket to put it in, and do so 
+       *
+       * Elbert wants us to sort by the lower index (kl) 
+       * i.e. for us, ij > kl (guaranteed in 33), but for them kl > ij 
+       *
+       */
+
+      if (elbert) whichbucket = YBuff->bucket_for_pq[kl] ; 
+      else whichbucket = YBuff->bucket_for_pq[ij] ;
+
+      bptr = YBuff->buckets+whichbucket ;
+      tmpi = (bptr->in_bucket)++ ;
+
+      /* switch things around here for Elbert (k->p, l->q, i->r, j->s) */
+      if (elbert) {
+	bptr->p[tmpi] = kabs;
+	bptr->q[tmpi] = labs;
+	bptr->r[tmpi] = iabs;
+	bptr->s[tmpi] = jabs;
+      }
+      else {
+	bptr->p[tmpi] = iabs;
+	bptr->q[tmpi] = jabs;
+	bptr->r[tmpi] = kabs;
+	bptr->s[tmpi] = labs;
+      }
+
+      bptr->val[tmpi] = value;
+
+      if (printflag)
+	fprintf(outfile, "%4d %4d %4d %4d  %4d   %10.6lf\n", 
+		iabs, jabs, kabs, labs, ijkl, value) ;
+      if ((tmpi+1) == YBuff->bucketsize) { /* need to flush bucket to disk */
+	flush_bucket(bptr, 0);
+	bptr->in_bucket = 0;
+      }
+
+      if(matrix && ij != kl) {
+	whichbucket = YBuff->bucket_for_pq[kl] ;
+	bptr = YBuff->buckets+whichbucket ;
+	tmpi = (bptr->in_bucket)++; 
+	bptr->p[tmpi] = kabs;
+	bptr->q[tmpi] = labs;
+	bptr->r[tmpi] = iabs;
+	bptr->s[tmpi] = jabs;
+	bptr->val[tmpi] = value;
+	if ((tmpi+1) == YBuff->bucketsize) {
+	  flush_bucket(bptr, 0);
+	  bptr->in_bucket = 0;
+	}
+      }
+         
+    }
+    if (!ilsti)
+      iwl_buf_fetch(&ERIIN);
+  } while(!ilsti);
+
+  /* flush partially filled buckets */
+  /* Ok, after "matrix" was added above, we ran into the possibility of
+   * flushing TWO buffers with the lastflag set.  This would be bad,
+   * because the second buffer would never be read.  Therefore, I have
+   * always passed a lastflag of 0 to flush_bucket() in the code above,
+   * and now I flush all buckets here with lastflag set to 1.  There
+   * is a small possibility that I will write a buffer of all zeroes.
+   * This should not actually cause a problem, the way the iwl buf reads
+   * currently work.  Make sure to be careful if rewriting iwl routines!
+   */
+  for (i=0; i<YBuff->nbuckets; i++) { 
+    flush_bucket((YBuff->buckets)+i, 1);
+  }      
+
+  free(nsoff);
+  iwl_buf_close(&ERIIN, !del_tei_file);
+}
 
 /*
 ** YOSH_RDTWO_BACKTR() : Read two-electron integrals from an IWL file and 

@@ -34,21 +34,31 @@ void cleanup(void)
   free(moinfo.fstact);
   free(moinfo.lstact);
   for(i=0; i < moinfo.nirreps; i++)
-      free(moinfo.labels[i]);
+    free(moinfo.labels[i]);
   free(moinfo.labels);
-  destruct_evects(params.backtr ? moinfo.backtr_nirreps : moinfo.nirreps, 
-                  moinfo.evects);
-  destruct_evects(params.backtr ? moinfo.backtr_nirreps : moinfo.nirreps, 
-                  moinfo.evects_alpha);
-  destruct_evects(params.backtr ? moinfo.backtr_nirreps : moinfo.nirreps, 
-                  moinfo.evects_beta);
+  if(!strcmp(params.ref,"UHF")) {
+    destruct_evects(params.backtr ? moinfo.backtr_nirreps : moinfo.nirreps, 
+		    moinfo.evects_alpha);
+    destruct_evects(params.backtr ? moinfo.backtr_nirreps : moinfo.nirreps, 
+		    moinfo.evects_beta);
+  }
+  else {
+    destruct_evects(params.backtr ? moinfo.backtr_nirreps : moinfo.nirreps, 
+		    moinfo.evects);
+  }
   free(moinfo.active);
-  free_block(moinfo.scf_vector);
-  free_block(moinfo.scf_vector_alpha);
-  free_block(moinfo.scf_vector_beta);
+  if(!strcmp(params.ref,"UHF")) {
+    free_block(moinfo.scf_vector_alpha);
+    free_block(moinfo.scf_vector_beta);
+  }
+  else free_block(moinfo.scf_vector);
   free(moinfo.evals);
   free(moinfo.oe_ints);
-  free(moinfo.fzc_operator);
+  if(!strcmp(params.ref,"UHF")) {
+    free(moinfo.fzc_operator_alpha);
+    free(moinfo.fzc_operator_beta);
+  }
+  else free(moinfo.fzc_operator);
   free(moinfo.S);
   if (params.reorder) free(params.moorder);
   free(moinfo.backtr_mo_first);

@@ -12,6 +12,10 @@
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
 #define MAX0(a,b) (((a)>(b)) ? (a) : (b))
 
+double fzc_energy_uhf(int nbfso, int *sosym, double *Pa, double *Pb, 
+		      double *Hca, double *Hcb,double *H, 
+		      int *first_so, int *ioff);
+
 void transform_two_uhf(void)
 {
   int nirreps;
@@ -84,10 +88,11 @@ void transform_two_uhf(void)
 
   yosh_init_buckets(&YBuffP);
 
-  yosh_rdtwo(&YBuffP, params.src_tei_file,
-	     params.delete_src_tei, src_orbspi, nirreps, ioff, 0, 
-	     params.fzc && moinfo.nfzc, moinfo.fzc_density, 
-	     moinfo.fzc_operator, 1, (print_lvl > 5), outfile);
+  yosh_rdtwo_uhf(&YBuffP, params.src_tei_file,
+		 params.delete_src_tei, src_orbspi, nirreps, ioff, 0, 
+		 params.fzc && moinfo.nfzc, moinfo.fzc_density_alpha, 
+		 moinfo.fzc_density_beta, moinfo.fzc_operator_alpha, 
+		 moinfo.fzc_operator_beta, 1, (print_lvl > 5), outfile);
     
   yosh_close_buckets(&YBuffP, 0);
 
@@ -97,6 +102,19 @@ void transform_two_uhf(void)
   yosh_done(&YBuffP);  
 
   /** Pre-sort complete **/
+
+  /** Compute the frozen core energy **/
+  moinfo.efzc = 0.0;
+  if (params.fzc && moinfo.nfzc) {
+    moinfo.efzc = fzc_energy_uhf(moinfo.nso, moinfo.sosym, moinfo.fzc_density_alpha, 
+				 moinfo.fzc_density_beta, moinfo.fzc_operator_alpha,
+				 moinfo.fzc_operator_beta, moinfo.oe_ints,
+				 moinfo.first_so, ioff);
+    if (params.print_lvl) 
+      fprintf(outfile, "\n\tFrozen core energy = %20.15lf\n", moinfo.efzc);
+    free(moinfo.fzc_density_alpha);
+    free(moinfo.fzc_density_beta);
+  }
 
   P_block = init_array(src_ntri);
   J_block = init_array(MAX0(src_ntri,dst_ntri));
@@ -350,9 +368,9 @@ void transform_two_uhf(void)
                         A[0], A_cols);
 
 	      iwl_buf_wrt_mat2(&MBuff, ktr, ltr, A,
-			      ifirst, ilast, jfirst, jlast,
+			       ifirst, ilast, jfirst, jlast,
 			       reorder_beta, fzc_offset, params.print_te_ints,
-			      ioff, outfile);
+			       ioff, outfile);
 	    }
 	  }
 	}

@@ -26,6 +26,8 @@ struct Params {
   int h_bare_a_file;            /* filenum for alpha bare onelec MO ints  */
   int h_bare_b_file;            /* filenum for beta bare onelec MO ints   */
   int h_fzc_file;               /* file for dressed (fzc) onelec MO ints  */
+  int h_fzc_a_file;             /* file for dressed (fzc) onelec MO ints  */
+  int h_fzc_b_file;             /* file for dressed (fzc) onelec MO ints  */
   int sorted_tei_file;          /* filenumber for sorted two el ints      */
   /*    int src_ints_iwl;               use input ints in iwl format? Always! */
   int src_S_file;               /* filenumber for input overlap ints      */

@@ -72,7 +72,11 @@ struct MOInfo {
     double *oe_ints;       /* one-electron AO integrals (lwr triangle)       */
     double *S;             /* AO overlap matrix (lwr triangle)               */
     double *fzc_density;   /* AO frozen core density matrix (lwr triangle)   */
+    double *fzc_density_alpha; /* AO frozen core density matrix (lwr triangle)   */
+    double *fzc_density_beta;   /* AO frozen core density matrix (lwr triangle)   */
     double *fzc_operator;  /* AO frozen core operator (lwr triangle)         */
+    double *fzc_operator_alpha;  /* AO frozen core operator (lwr triangle)         */
+    double *fzc_operator_beta;  /* AO frozen core operator (lwr triangle)         */
     /* double *te_ints; */
 };
     
