@@ -16,7 +16,7 @@ void transmu(void)
 
   nao = moinfo.nao;
   nso = moinfo.nso;
-  nmo = moinfo.nactive;
+  nmo = moinfo.nmo;
   noei_ao = moinfo.noei_ao;
 
   /**** Transform the dipole integrals to the MO basis ****/

@@ -158,16 +158,6 @@ void get_moinfo(void)
 		    (char *) moinfo.cc_vir, sizeof(int)*nactive);
   }
 
-  /* Adjust clsdpi array for frozen orbitals */
-  for(i=0; i < nirreps; i++)
-    moinfo.clsdpi[i] -= moinfo.frdocc[i];
-
-  moinfo.uoccpi = init_int_array(moinfo.nirreps);
-  for(i=0; i < nirreps; i++)
-    moinfo.uoccpi[i] = moinfo.orbspi[i] - moinfo.clsdpi[i] -
-      moinfo.openpi[i] - moinfo.fruocc[i] -
-      moinfo.frdocc[i];
-
   /* Compute spatial-orbital reordering arrays */
   moinfo.pitzer2qt = init_int_array(moinfo.nmo);
   moinfo.qt2pitzer = init_int_array(moinfo.nmo);
@@ -177,6 +167,16 @@ void get_moinfo(void)
     j = moinfo.pitzer2qt[i];
     moinfo.qt2pitzer[j] = i;
   }
+
+  /* Adjust clsdpi array for frozen orbitals */
+  for(i=0; i < nirreps; i++)
+    moinfo.clsdpi[i] -= moinfo.frdocc[i];
+
+  moinfo.uoccpi = init_int_array(moinfo.nirreps);
+  for(i=0; i < nirreps; i++)
+    moinfo.uoccpi[i] = moinfo.orbspi[i] - moinfo.clsdpi[i] -
+      moinfo.openpi[i] - moinfo.fruocc[i] -
+      moinfo.frdocc[i];
 
   /*** arrange active SCF MO's ***/
   actpi = init_int_array(nirreps);
@@ -188,7 +188,8 @@ void get_moinfo(void)
 
   if(params.ref == 0 || params.ref == 1) {  /* RHF/ROHF */
 
-    scf = chkpt_rd_scf();
+    moinfo.scf = chkpt_rd_scf();
+    /*
     moinfo.scf = block_matrix(moinfo.nso, moinfo.nactive);
     offset = 0;
     act_offset = 0;
@@ -201,10 +202,12 @@ void get_moinfo(void)
       act_offset += moinfo.actpi[h];
     }
     free_block(scf);
+    */
   }
   else if(params.ref == 2) {  /* UHF */
 
-    scf = chkpt_rd_alpha_scf();
+    moinfo.scf_alpha = chkpt_rd_alpha_scf();
+    /*
     moinfo.scf_alpha = block_matrix(moinfo.nso, moinfo.nactive);
     offset = 0;
     act_offset = 0;
@@ -217,9 +220,11 @@ void get_moinfo(void)
       act_offset += moinfo.actpi[h];
     }
     free_block(scf);
+    */
 
+    moinfo.scf_beta = chkpt_rd_beta_scf();
+    /*
     moinfo.scf_beta = block_matrix(moinfo.nso, moinfo.nactive);
-    scf = chkpt_rd_beta_scf();
     offset = 0;
     act_offset = 0;
     for(h=0; h < nirreps; h++) {
@@ -231,6 +236,7 @@ void get_moinfo(void)
       act_offset += moinfo.actpi[h];
     }
     free_block(scf);
+    */
   }
 
   /* Get the active virtual orbitals */

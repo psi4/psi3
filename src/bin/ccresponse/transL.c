@@ -16,7 +16,7 @@ void transL(double sign)
 
   nao = moinfo.nao;
   nso = moinfo.nso;
-  nmo = moinfo.nactive;
+  nmo = moinfo.nmo;
   noei_ao = moinfo.noei_ao;
 
   /**** Transform the magnetic dipole integrals to the MO basis ****/
