@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.1  2000/02/04 22:52:30  evaleev
- * Initial revision
+ * Revision 1.2  2001/06/29 20:39:29  evaleev
+ * Modified cscf to use libpsio to store supermatrix files.
  *
+/* Revision 1.1.1.1  2000/02/04 22:52:30  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.3  1999/10/22 19:47:18  evaleev
 /* A direct SCF-enabled version (set DIRECT_SCF=TRUE in input.dat).
 /*
@@ -86,11 +89,12 @@ void formg_closed()
       if (readflg && j < num_bufs-1) {
          if(where==num_bufs) {
             where=0;
-            srew(itap92);
+	    Pmat.bufpos = PSIO_ZERO;
             }
          where++;
          num=int_nums[where];
-         sread(itap92,(char *) c_outbuf,sizeof(struct c_pkints)*num);
+	 psio_read(Pmat.unit, Pmat.key, (char *) c_outbuf, sizeof(struct c_pkints)*num,
+		   Pmat.bufpos, &(Pmat.bufpos));
          }
       }
    for(k=joff=0; k < num_ir ; k++) {

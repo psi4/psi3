@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.1  2000/02/04 22:52:30  evaleev
- * Initial revision
+ * Revision 1.2  2001/06/29 20:39:28  evaleev
+ * Modified cscf to use libpsio to store supermatrix files.
  *
+/* Revision 1.1.1.1  2000/02/04 22:52:30  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.2  1999/08/17 19:04:15  evaleev
 /* Changed the default symmetric orthogonalization to the canonical
 /* orthogonalization. Now, if near-linear dependencies in the basis are found,
@@ -127,12 +130,13 @@ void formg_two(iju,optest)
    
       if (readflgo && j < num_bufs_o-1) {
          if(whereo==num_bufs_o) {
-            srew(itap92);
+	    PKmat.bufpos = PSIO_ZERO;
             whereo=0;
             }
          whereo++;
          num=int_nums_o[whereo];
-         sread(itap92,(char *) o_outbuf,sizeof(struct o_pkints)*num);
+	 psio_read(PKmat.unit, PKmat.key, (char *) o_outbuf, sizeof(struct o_pkints)*num,
+		   PKmat.bufpos, &(PKmat.bufpos));
          }
       }
 
@@ -165,12 +169,13 @@ void formg_two(iju,optest)
 
       if (readflgc && j < num_bufs_c-1) {
          if(wherec==num_bufs_c) {
-            srew(itap93);
+	    Pmat.bufpos = PSIO_ZERO;
             wherec=0;
             }
          wherec++;
          num=int_nums_c[wherec];
-         sread(itap93,(char *) c_outbuf,sizeof(struct c_pkints)*num);
+	 psio_read(Pmat.unit, Pmat.key, (char *) c_outbuf, sizeof(struct c_pkints)*num,
+		   Pmat.bufpos, &(Pmat.bufpos));
          }
       }
 

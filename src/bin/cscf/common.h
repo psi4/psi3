@@ -1,9 +1,12 @@
 /* $Id$ */
 /* $Log$
- * Revision 1.9  2001/01/04 14:13:34  sbrown
- * Fixed the problem with iconv:  The new versions of linux had iconv already
- * assigned to something else so I changed all references of it to scf_conv.
+ * Revision 1.10  2001/06/29 20:39:27  evaleev
+ * Modified cscf to use libpsio to store supermatrix files.
  *
+/* Revision 1.9  2001/01/04 14:13:34  sbrown
+/* Fixed the problem with iconv:  The new versions of linux had iconv already
+/* assigned to something else so I changed all references of it to scf_conv.
+/*
 /* Revision 1.8  2000/12/05 19:40:02  sbrown
 /* Added Unrestricted Kohn-Sham DFT.
 /*
@@ -102,6 +105,7 @@
 
 #include <libciomr.h>
 #include <file30.h>
+#include <psio.h>
 
 #define MAX_BASIS 4096
 #define MAXIOFF 4096
@@ -211,6 +215,12 @@ EXTERN union psi_buffer {
           double *pki;
           double **pki_p;
           } oubuf;
+
+EXTERN struct pkbuf {
+    int unit;
+    char *key;
+    psio_address bufpos;
+} Pmat, PKmat;
 
 EXTERN struct symm {
     double *smat;

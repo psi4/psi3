@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.1  2000/02/04 22:52:31  evaleev
- * Initial revision
+ * Revision 1.2  2001/06/29 20:39:29  evaleev
+ * Modified cscf to use libpsio to store supermatrix files.
  *
+/* Revision 1.1.1.1  2000/02/04 22:52:31  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.5  1999/11/04 19:24:30  localpsi
 /* STB (11/4/99) - Added the orb_mix feature which is equivalent to guess = mix
 /* in G94 and also fixed restarting so that if you have different wavefuntions,
@@ -118,7 +121,8 @@ void packit_closed(lbij,lbkl,endflg)
 
             if (ibl >= maxbuf) {
                if(readflg)
-                  swrit(itap92,(char *) c_outbuf,sizeof(struct c_pkints)*maxbuf);
+		 psio_write(Pmat.unit, Pmat.key, (char *) c_outbuf, sizeof(struct c_pkints)*maxbuf,
+			    Pmat.bufpos, &(Pmat.bufpos));
                num_ints += ibl;
                if(print & 16)
                   fprintf(outfile,"buf %3d: ibl = %10d\n",num_bufs,ibl);
@@ -151,7 +155,8 @@ void packit_closed(lbij,lbkl,endflg)
        fflush(outfile);
        num_bufs++;
        last = ibl;
-       if(readflg) swrit(itap92,(char *) c_outbuf,sizeof(struct c_pkints)*ibl);
+       if(readflg) psio_write(Pmat.unit, Pmat.key, (char *) c_outbuf, sizeof(struct c_pkints)*maxbuf,
+			    Pmat.bufpos, &(Pmat.bufpos));
        
       for(k=joff=0; k < num_ir ; k++) {
          if(nn=scf_info[k].num_so) {

@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.2  2000/06/22 22:15:01  evaleev
- * Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
+ * Revision 1.3  2001/06/29 20:39:29  evaleev
+ * Modified cscf to use libpsio to store supermatrix files.
  *
+/* Revision 1.2  2000/06/22 22:15:01  evaleev
+/* Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
+/*
 /* Revision 1.1.1.1  2000/02/04 22:52:31  evaleev
 /* Started PSI 3 repository
 /*
@@ -167,8 +170,8 @@ void packit_open(lbij,lbkl,endflg)
 		       
 		       if (iblo >= maxbuf) {
 			   readflgo=1;
-			   swrit(itap92,(char *) o_outbuf,
-				 sizeof(struct o_pkints)*maxbuf);
+			   psio_write(PKmat.unit, PKmat.key, (char *) o_outbuf, sizeof(struct o_pkints)*maxbuf,
+				      PKmat.bufpos, &(PKmat.bufpos));
 			   num_ints_o += iblo;
 			   num_bufs_o++;
 			   iblo=0;
@@ -188,8 +191,8 @@ void packit_open(lbij,lbkl,endflg)
 		       
 		       if (iblc >= maxbuf) {
 			   readflgc=1;
-			   swrit(itap93,(char *) c_outbuf,
-				 sizeof(struct c_pkints)*maxbuf);
+			   psio_write(Pmat.unit, Pmat.key, (char *) c_outbuf, sizeof(struct c_pkints)*maxbuf,
+				      Pmat.bufpos, &(Pmat.bufpos));
 			   num_ints_c += iblc;
 			   num_bufs_c++;
 			   iblc=0;
@@ -218,9 +221,8 @@ void packit_open(lbij,lbkl,endflg)
 		   
 		   if (iblo >= maxbuf) {
 		       readflgo=1;
-		       swrit(itap92,
-			     (char *) o_outbuf,
-			     sizeof(struct o_pkints)*maxbuf);
+		       psio_write(PKmat.unit, PKmat.key, (char *) o_outbuf, sizeof(struct o_pkints)*maxbuf,
+				  PKmat.bufpos, &(PKmat.bufpos));
 		       num_ints_o += iblo;
 		       num_bufs_o++;
 		       iblo=0;
@@ -242,9 +244,11 @@ void packit_open(lbij,lbkl,endflg)
       lasto = iblo;
       lastc = iblc;
       if(readflgo)
-         swrit(itap92,(char *) o_outbuf,sizeof(struct o_pkints)*iblo);
+	psio_write(PKmat.unit, PKmat.key, (char *) o_outbuf, sizeof(struct o_pkints)*iblo,
+		   PKmat.bufpos, &(PKmat.bufpos));
       if(readflgc)
-         swrit(itap93,(char *) c_outbuf,sizeof(struct c_pkints)*iblc);
+	psio_write(Pmat.unit, Pmat.key, (char *) c_outbuf, sizeof(struct c_pkints)*iblc,
+		   Pmat.bufpos, &(Pmat.bufpos));
       
 
       /* testing stuff */

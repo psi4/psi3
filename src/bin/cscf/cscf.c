@@ -219,9 +219,9 @@ int main(argc,argv)
    fprintf(outfile,"\n%13c------------------------------------------\n\n\n",' ');
    
    
-   itap30 = 30;
+   itap30 = PSIF_CHKPT;
    itap33 = PSIF_SO_TEI;
-   itap34 = PSIF_SO_INTS;
+   itap34 = 34;
    itapS  = PSIF_OEI;
    itapT  = PSIF_OEI;
    itapV  = PSIF_OEI;
@@ -231,8 +231,8 @@ int main(argc,argv)
    itapV  = PSIF_SO_V;
    */
    itapDSCF = PSIF_DSCF;
-   itap92 = 92;
-   itap93 = 93;
+   itap92 = PSIF_SO_PKSUPER1;
+   itap93 = PSIF_SO_PKSUPER2;
    file30_init();
 
    /* EFV 10/24/98 Get the integral format: IWL = true */
@@ -345,8 +345,14 @@ int main(argc,argv)
 
      num_ints = 0;
      num_bufs = 0;
-     rfile(itap92);
-     rfile(itap93);
+     Pmat.unit = itap92;
+     Pmat.key = strdup("P-supermatrix");
+     Pmat.bufpos = PSIO_ZERO;
+     PKmat.unit = itap93;
+     PKmat.key = strdup("PK-supermatrix");
+     PKmat.bufpos = PSIO_ZERO;
+     psio_open(Pmat.unit,PSIO_OPEN_NEW);
+     psio_open(PKmat.unit,PSIO_OPEN_NEW);
      rdtwo();
      
    }

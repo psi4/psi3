@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.5  2001/05/31 01:12:25  sherrill
- * fix up printing orbital eigenvalues, now does TCSCF too!
+ * Revision 1.6  2001/06/29 20:39:27  evaleev
+ * Modified cscf to use libpsio to store supermatrix files.
  *
+/* Revision 1.5  2001/05/31 01:12:25  sherrill
+/* fix up printing orbital eigenvalues, now does TCSCF too!
+/*
 /* Revision 1.4  2001/04/11 19:31:46  sherrill
 /* I removed printing all MO's by default, since this gets pretty big
 /* and useless for many of the molecules of interest today.  I added
@@ -575,8 +578,8 @@ void cleanup()
       
       file30_close();
       if(!direct_scf){
-	  rclose(itap92,4);
-	  rclose(itap93,4);
+	psio_close(Pmat.unit, 0);
+	psio_close(PKmat.unit, 0);
       }
       
       if(!converged)
