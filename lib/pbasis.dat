@@ -31959,6 +31959,142 @@ BASIS: (
 (H (           1.32600000           1.00000000))
      )
 
+
+%Basis Set Library Information on: d-aug-cc-pVDZ              
+%                      Doubly Augmented cc-pVDZ Basis                           
+%                      ------------------------------                           
+%Elements      Contraction                       References                     
+%H - He:  (6s,3p)     -> [4s,3p]      T.H. Dunning, Jr. J. Chem. Phys. 90,      
+%                                     1007 (1989).                              
+%                                     D.E. Woon and T.H. Dunning, Jr.,          
+%                                     J. Chem. Phys. 100, 2975 (1994).          
+%B  - Ne: (11s,6p,3d) -> [5s,4p,3d]   T.H. Dunning, Jr. J. Chem. Phys. 90,      
+%                                     1007 (1989).                              
+%**                                                                             
+%The first shell of diffuse functions are from R.A. Kendall, T.H. Dunning, Jr.  
+%and R.J. Harrison, J. Chem Phys. 96, 6769 (1992).                              
+%The second set are from D.E. Woon and T.H. Dunning, Jr., J. Chem. Phys. 100,   
+%2975 (1994).                                                                   
+%The diffuse functions for Li, Be, Na and Mg are from D.E. Woon and T.H.        
+%Dunning, Jr. (to be published).                                                
+
+HYDROGEN:DAUGCCPVDZ = (
+(GET AUGCCPVDZ)
+(S (           0.00725000           1.00000000))
+(P (           0.02730000           1.00000000))
+)
+
+
+%Basis Set Library Information on: d-aug-cc-pVTZ              
+%                      Doubly Augmented cc-pVTZ Basis                           
+%                      ------------------------------                           
+%Elements      Contraction                       References                     
+%H - He:  (7s,4p,3d)      -> [5s,4p,3d]     T.H. Dunning, Jr. J. Chem. Phys. 90,
+%                                                                               
+%                                           1007 (1989).                        
+%                                           D.E. Woon and T.H. Dunning, Jr.,    
+%                                           J. Chem. Phys. 100, 2975 (1994).    
+%B  - Ne: (12s,7p,4d,3f)  -> [6s,5p,4d,3f]  T.H. Dunning, Jr. J. Chem. Phys. 90,
+%                                                                               
+%                                           1007 (1989).                        
+%**                                                                             
+%The first shell of diffuse functions are from R.A. Kendall, T.H. Dunning, Jr.  
+%and R.J. Harrison, J. Chem Phys. 96, 6769 (1992).                              
+%The second shell is from D.E. Woon and T.H. Dunning, Jr., J. Chem. Phys. 100,  
+%2975 (1994).                                                                   
+
+HYDROGEN:DAUGCCPVTZ = (
+(GET AUGCCPVTZ)
+(S (           0.00621000           1.00000000))
+(P (           0.02680000           1.00000000))
+(D (           0.05770000           1.00000000))
+)
+
+
+%Basis Set Library Information on: d-aug-cc-pVQZ              
+%                      Doubly Augmented cc-pVQZ Basis                           
+%                      ------------------------------                           
+%Elements      Contraction                       References                     
+%H - He:  (8s,5p,4d,3f)      -> [6s,5p,4d,3f]    T.H. Dunning, Jr., J. Chem.    
+%                                                Phys. 90, 1007 (1989).         
+%                                                D.E. Woon and T.H. Dunning, Jr.
+%                                                                               
+%                                                J. Chem. Phys. 100, 2975 (1994)
+%                                                                               
+%B  - Ne: (14s,8p,5d,4f,3g)  -> [7s,6p,5d,4f,3g] T.H. Dunning, Jr., J. Chem.    
+%                                                Phys. 90, 1007 (1989).         
+%**                                                                             
+%The first shell of diffuse functions are from R.A. Kendall, T.H. Dunning, Jr.  
+%and R.J. Harrison, J. Chem Phys. 96, 6769 (1992).                              
+%The second shell is from D.E. Woon and T.H. Dunning, Jr., J. Chem. Phys. 100,  
+%2975 (1994).                                                                   
+
+HYDROGEN:DAUGCCPVQZ = (
+(GET AUGCCPVQZ)
+(S (           0.00621000           1.00000000))
+(P (           0.02460000           1.00000000))
+(D (           0.05450000           1.00000000))
+(F (           0.09280000           1.00000000))
+)
+
+
+
+%Basis Set Library Information on: d-aug-cc-pV5Z              
+%                      Doubly Augmented cc-pV5Z Basis                           
+%                      ------------------------------                           
+%Elements      Contraction                       References                     
+%H - He:  (10s,6p,5d,4f,3g)      -> [7s,6p,5d,4f,3g]   T.H. Dunning, Jr., J Chem
+%                                                                               
+%                                                      Phys. 90, 1007 (1989).   
+%                                                      D.E. Woon and T.H.       
+%                                                      Dunning, Jr., J. Chem.   
+%                                                      Phys. 100, 2975 (1994)   
+%B  - Ne: (16s,9p,6d,5f,4g,3h)  -> [8s,7p,6d,5f,4g,3h] T.H. Dunning, Jr., J.    
+%                                                      Chem.  Phys. 90, 1007    
+%                                                      (1989).                  
+%**                                                                             
+%The first shell of diffuse functions are from R.A. Kendall, T.H. Dunning, Jr.  
+%and R.J. Harrison, J. Chem Phys. 96, 6769 (1992).                              
+%The second shell is from D.E. Woon and T.H. Dunning, Jr., J. Chem. Phys. 100,  
+%2975 (1994).                                                                   
+
+HYDROGEN:DAUGCCPV5Z = (
+(GET AUGCCPV5Z)
+(S (           0.00589000           1.00000000))
+(P (           0.02250000           1.00000000))
+(D (           0.04940000           1.00000000))
+(F (           0.08580000           1.00000000))
+(G (           0.12500000           1.00000000))
+)
+
+
+%Basis Set Library Information on: d-aug-cc-pV6Z              
+%                      Doubly Augmented cc-pV6Z Basis                           
+%                      ------------------------------                           
+%Elements      Contraction                       References                     
+%H     : (12s,7p,6d,5f,4g,3h)     -> [8s,7p,6d,5f,4g,3h]    K.A. Peterson and   
+%                                                           D.E. Woon,          
+%                                                           (unpublished)       
+%B - F : (18s,12p,7d,6f,5g,4h,2i) -> [9s,8p,7d,6f,5g,4h,2i] A.K. Wilson, T. v.  
+%                                                           Mourik and T.H.     
+%                                                           Dunning, Jr.,       
+%                                                           J. Mol. Struct.     
+%                                                           (THEOCHEM) 388,     
+%                                                           339 (1997).         
+%The second shell of diffuse functions is from D.E. Woon and T.H. Dunning, Jr., 
+%J. Chem. Phys. 100, 2975 (1994).                                               
+
+HYDROGEN:DAUGCCPV6Z = (
+(GET AUGCCPV6Z)
+(S (           0.00575000           1.00000000))
+(P (           0.02100000           1.00000000))
+(D (           0.04200000           1.00000000))
+(F (           0.07770000           1.00000000))
+(G (           0.12500000           1.00000000))
+(H (           0.17500000           1.00000000))
+)
+
+
 %Basis Set Library Information on: pV7Z                       
 % Polarized Valence Septuple Zeta (pV7Z-like) Basis                             
 % -------------------------------------------------                             
