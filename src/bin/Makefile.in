@@ -3,10 +3,8 @@
 
 subdirs = \
 ccdensity ccenergy cchbar cclambda cceom ccsort cctriples cints \
-clag contour contour3d \
-cphf cscf detcas detcasman detci extrema geom input intder95 intdif makepk \
-mp2 mp2r12 muder normco oeprop optking psi psi3 psiclean rgeom transqt ugeom \
-intder mocube \
+clag cphf cscf detcas detcasman detci extrema geom input \
+mp2 mp2r12 oeprop optking psi3 psiclean transqt mocube localize \
 
 all: default
 
