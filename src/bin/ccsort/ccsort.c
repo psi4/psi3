@@ -248,6 +248,7 @@ void cleanup(void)
     free(moinfo.vir_off);
     free(moinfo.all_occ_off);
     free(moinfo.all_vir_off);
+
   }
 
   free(moinfo.frozen);

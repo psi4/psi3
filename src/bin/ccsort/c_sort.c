@@ -8,7 +8,7 @@ void c_sort(void)
 {
   dpdbuf4 C, D;
 
-  if(params.ref == 2) {
+  if(params.ref == 2) { /** UHF **/
 
     /* <ia||jb> = <ia|jb> - <ia|bj> = <ia|jb> - <ij|ba> */
 
@@ -52,7 +52,7 @@ void c_sort(void)
     /* <Ai|Bj> (iA,Bj) (Wmbej.c) */
 
   }
-  else {
+  else { /** RHF/ROHF **/
     /* <ia||jb> = <ia|jb> - <ia|bj> = <ia|jb> - <ij|ba> */
     dpd_buf4_init(&C, CC_CINTS, 0, 10, 10, 10, 10, 0, "C <ia|jb>");
     dpd_buf4_copy(&C, CC_CINTS, "C <ia||jb>");

@@ -10,7 +10,7 @@ void e_sort(void)
 {
   dpdbuf4 E;
 
-  if(params.ref == 2) {
+  if(params.ref == 2) {  /** UHF **/
     /*** AA ***/
     /* <ij|ka> */
     dpd_buf4_init(&E, CC_EINTS, 0, 21, 0, 21, 0, 0, "E <AI|JK>");
@@ -34,7 +34,7 @@ void e_sort(void)
     dpd_buf4_close(&E);
 
   }
-  else {
+  else {  /** RHF/ROHF **/
     /* <ij|ka> */
     dpd_buf4_init(&E, CC_EINTS, 0, 11, 0, 11, 0, 0, "E <ai|jk>");
     dpd_buf4_sort(&E, CC_EINTS, srqp, 0, 10, "E <ij|ka>");

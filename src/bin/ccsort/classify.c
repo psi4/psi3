@@ -212,9 +212,11 @@ void classify_uhf(int p, int q, int r, int s, double value, char *spin,
   }
 
   /* B (vv|vv) integrals */
-  if(vir1[p] && vir1[q] && vir2[r] && vir2[s])
-    iwl_buf_wrt_val(BBuf1, cc_vir1[p], cc_vir1[q], cc_vir2[r], cc_vir2[s],
-		    value, 0, outfile, dirac);
+  if(!params.aobasis) {
+    if(vir1[p] && vir1[q] && vir2[r] && vir2[s])
+      iwl_buf_wrt_val(BBuf1, cc_vir1[p], cc_vir1[q], cc_vir2[r], cc_vir2[s],
+		      value, 0, outfile, dirac);
+  }
 
   /* F (ov|vv) integrals */
   if(occ1[p] && vir1[q] && vir2[r] && vir2[s])
