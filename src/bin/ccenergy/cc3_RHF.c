@@ -129,8 +129,8 @@ void cc3_RHF(void)
                   B = F.params->colorb[Gab][ab][1];
                   Ga = F.params->rsym[A];
                   Gb = Ga ^ Gab;
-                  //a = A - vir_off[Ga];
-                  //b = B - vir_off[Gb];
+                  /* a = A - vir_off[Ga];
+                  b = B - vir_off[Gb]; */
                   for (c=0; c<virtpi[Gc]; ++c) {
                     C = c + vir_off[Gc];
                     T3[A][B][C] = W3[Gab][ab][c];

@@ -123,7 +123,7 @@ void get_optinfo() {
 
   a = 5;
   ip_data("CONV","%d",&a,0);
-//  ip_data("CONVERGENCE","%d",&a,0);
+/*  ip_data("CONVERGENCE","%d",&a,0); */
   optinfo.conv = power(10.0, -1*a);
 
   a= 5;

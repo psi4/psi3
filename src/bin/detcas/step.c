@@ -151,8 +151,8 @@ void calc_orb_step_full(int npairs, double *grad, double **hess, double *theta)
     /* debug check */
     mmult(hess_inv,0,hess,0,hess_copy,0,npairs,npairs,npairs,0);
     /*  fprintf(outfile, "Hessian * Hessian inverse = \n");
-	/*   print_mat(hess_copy,npairs,npairs,outfile); 
-	/*    fprintf(outfile, "\n");
+	print_mat(hess_copy,npairs,npairs,outfile); 
+	fprintf(outfile, "\n"); */
   
     /* step = - B^{-1} * g */
     zero_arr(theta,npairs);
@@ -172,13 +172,13 @@ void calc_orb_step_full(int npairs, double *grad, double **hess, double *theta)
     free_block(hess_inv);
   } /* end direct inversion of Hessian */
 
-  //Do we want to check the eigenvalues of the hessian matrix
+  /* Do we want to check the eigenvalues of the hessian matrix */
   if(Params.check_hess)
     {
 
       hess_eigs = init_array(npairs);
       work = init_array(npairs * 3);
-      //reCopy the hessian into hessian_copy
+      /* reCopy the hessian into hessian_copy */
       for (i=0;i<npairs;i++) {
 	for (j=0;j<npairs;j++) {
 	  hess_copy[i][j]=hess[i][j];

@@ -31,7 +31,7 @@
 
 int get_ndisp(void);
 FILE *infile, *outfile;
-//char **psi_file_prefix;
+/* char **psi_file_prefix; */
 char *psi_file_prefix;
 /* 
   the following must stay in scope throughout the run, else the 
@@ -659,10 +659,10 @@ int get_ndisp(void) {
 
   outfile_psi3 = outfile;
 
-  //psi_file_prefix = getenv("PSI_PREFIX");
-  //printf("%s\n", psi_file_prefix);
+  /* psi_file_prefix = getenv("PSI_PREFIX");
+  printf("%s\n", psi_file_prefix);
+  psi_start(0,NULL,0); */
 
-//  psi_start(0,NULL,0);
   /* need to remove psi_start */
   psio_init();
   psio_open(PSIF_OPTKING, PSIO_OPEN_OLD);
