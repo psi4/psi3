@@ -24,7 +24,7 @@
 
 #define SWAP1 1
 
-void rmp2_energy_thread(void *tnum_ptr)
+void *rmp2_energy_thread(void *tnum_ptr)
 {
   int thread_num = (int) tnum_ptr;
   const double toler = UserOptions.cutoff;
@@ -86,7 +86,7 @@ void rmp2_energy_thread(void *tnum_ptr)
   int ia;
   int rs_offset, rsi_offset, rsp_offset;
 
-  double Emp2 = 0.0;
+  double Emp2;
   double AB2, CD2;
 
   double *raw_data;             /* pointer to the unnormalized taregt quartet of integrals */
@@ -142,7 +142,7 @@ void rmp2_energy_thread(void *tnum_ptr)
                       (BasisSet.max_num_prims*
                        BasisSet.max_num_prims);
   pthread_mutex_lock(&rmp2_energy_mutex);
-  UserOptions.memory -= init_libint(&Libint,max_num_prim_comb);
+  init_libint(&Libint,max_num_prim_comb);
   pthread_mutex_unlock(&rmp2_energy_mutex);
 
 #ifdef NONDOUBLE_INTS
@@ -155,7 +155,7 @@ void rmp2_energy_thread(void *tnum_ptr)
 			max_bf_per_shell*max_bf_per_shell);
   rsia_buf = init_array(num_i_per_ibatch*MOInfo.nactuocc*
 			  max_bf_per_shell*max_bf_per_shell);
-  scratch_buf = init_array(MAX(max_bf_per_shell*max_bf_per_shell*max_bf_per_shell*max_bf_per_shell,
+  scratch_buf = init_array(MAX(max_cart_class_size,
 			       num_i_per_ibatch*BasisSet.num_ao*
 			       max_bf_per_shell*max_bf_per_shell));
   
@@ -587,9 +587,8 @@ void rmp2_energy_thread(void *tnum_ptr)
 #if SWAP1
 /*	  timer_on("Post1Swap");*/
 	  ijkl_to_klij(rsiq_buf,scratch_buf,ibatch_length*BasisSet.num_ao,nr*ns);
-	  iq_row = scratch_buf;
+	  rsi_row = scratch_buf;
 /*	  timer_off("Post1Swap");*/
-	  rsi_row = iq_row;
 #else
 	  rsi_row = rsiq_buf;
 #endif
@@ -732,6 +731,7 @@ void rmp2_energy_thread(void *tnum_ptr)
 
     /*--- Compute a contribution to the MP2 energy from the current batch ---*/
 /*    timer_on("Energy");*/
+      Emp2 = 0.0;
       for(mo_i=0;mo_i<ibatch_length;mo_i++) {
 	for(mo_j=0;mo_j<=mo_i+imin-jmin;mo_j++) {
 	  for(mo_b=0;mo_b<MOInfo.nactuocc;mo_b++) {
@@ -748,10 +748,10 @@ void rmp2_energy_thread(void *tnum_ptr)
 	  }
 	}
       }
-      RMP2_Status.Emp2 = Emp2;
+      RMP2_Status.Emp2 += Emp2;
 /*    timer_off("Energy");*/
       if (ibatch < num_ibatch-1) {
-	fprintf(outfile,"  Energy after Pass #%d = %20.10lf\n",ibatch,Emp2);
+	fprintf(outfile,"  Energy after Pass #%d = %20.10lf\n",ibatch,RMP2_Status.Emp2);
 	fflush(outfile);
 	memset(jsia_buf,0,MOInfo.nactdocc*BasisSet.num_ao*ibatch_length*MOInfo.nactuocc*sizeof(double));
 	memset(jbia_buf,0,MOInfo.nactdocc*MOInfo.nactuocc*ibatch_length*MOInfo.nactuocc*sizeof(double));
