@@ -62,7 +62,7 @@ double eval_rci_derwfn_overlap()
       for(int i=0;i<ndocc;i++)
 	deter1 *= CSC[i][i];
 
-      S_a[jp][im] = deter1;
+      S_a[jp][im] = sign*deter1;
     }
   }
 
@@ -85,11 +85,11 @@ double eval_rci_derwfn_overlap()
 
       FLOAT contrib = cI * S * cJ;
       S_tot += cI * S * cJ;
-      /*      fprintf(outfile,"  %3d %3d %+15.10Le", I, J, cI);
+      /* fprintf(outfile,"  %3d %3d %+15.10Le", I, J, cI);
       fprintf(outfile," %+15.10Le", cJ);
       fprintf(outfile," %+25.15Le", S);
       fprintf(outfile," %+25.15Le", contrib);
-      fprintf(outfile," %+25.15Le\n", S_tot);*/
+      fprintf(outfile," %+25.15Le\n", S_tot); */
 
     }
   }
