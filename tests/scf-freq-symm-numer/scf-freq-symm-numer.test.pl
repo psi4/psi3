@@ -10,6 +10,7 @@ $TEST_FILE = "psi.file11.dat";
 $REF_OUT = "output.ref";
 $TEST_OUT = "output.dat";
 $RESULT = "scf-freq-symm-numer.test";
+$NDOF=2;
 
 system ("input");
 system ("psi3");
