@@ -1,5 +1,3 @@
-#include <psifiles.h>
-
 /*structure to hold z-matrix info*/
 struct z_entry {
   int bond_atom;            /*first reference atom (bond)*/
@@ -37,3 +35,5 @@ int chkpt_rd_num_unique_shell();
 int chkpt_rd_phase_check();
 int chkpt_rd_ref();
 int chkpt_rd_rottype();
+int *chkpt_rd_am2canon_shell_order();
+int *chkpt_rd_atom_position();

@@ -26,6 +26,8 @@ rd_num_unique_shell.c \
 rd_phase_check.c \
 rd_ref.c \
 rd_rottype.c \
+rd_am2canon_shell_order.c \
+rd_atom_pos.c \
 
 DEPENDINCLUDE = psio.h chkpt.h
 
@@ -36,4 +38,3 @@ include ../MakeRules
 ifneq ($(DODEPEND),no)
 include $(LIBOBJ:%.o=%.d)
 endif
-

@@ -3,6 +3,7 @@
 */
 
 #include "chkpt.h"
+#include <psifiles.h>
 #include <libpsio/psio.h>
 
 /*!
