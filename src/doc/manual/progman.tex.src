@@ -55,7 +55,7 @@ Revised for \PSIthree\ by Edward F. Valeev \\
 \input{Prog/introduction}
 
 \section{Compilation and Installation of \PSIthree}\label{installation}
-\input{Prog/install}
+%\input{Prog/install}
 
 \section{Fundamental \PSIthree\ Functions}\label{Fundamental_PSI}
 \input{Prog/fundamental_psi}
