@@ -207,6 +207,23 @@ basis: (
   )
 \end{verbatim}
 
+To scale a basis set, a scale factor may be added as the last item
+in the specification of each contracted Gaussian function.  For
+example, to scale the S functions in a 6-31G** basis for hydrogen,
+one would use the following
+\begin{verbatim}
+  hydrogen:631Gss =
+      ( (S (    18.73113696     0.03349460)
+           (     2.82539437     0.23472695)
+           (     0.64012169     0.81375733) 1.2 )
+        (S (     0.16127776     1.00000000) 1.2 )
+        (P (     1.10000000     1.00000000))
+       )
+\end{verbatim}
+In this example, both contracted S functions have their exponents
+scaled by a factor of (1.2)$^2$ = 1.44.  The output file should show
+the exponents after scaling.
+
 \subsection{Electronic Structure Specification}
 The reference electronic configuration of a molecule is specified via
 a combination of keywords \keyword{reference} and
