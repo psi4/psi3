@@ -5,6 +5,7 @@ psi: (
   ndisp = 1
   nopt = 10
   ncasiter = 20
+  nbrueckner = 20
 
   % The basic programs
   input      = "input"
@@ -293,6 +294,22 @@ psi: (
   OOCCDUHFFirstDisp  = ERROR
   OOCCDROHFFirstDisp  = ERROR
   OOCCDTwoConFirstDisp  = ERROR
+
+  % -------------------------------- BCCD Procedures
+  % Procedures for the BCCD energy
+  BCCDEnergy = ($ints $scf repeat $nbrueckner $transqt $ccsort $ccenergy end)
+  BCCDRHFEnergy = ($BCCDEnergy $done)
+  BCCDROHFEnergy = ERROR
+  BCCDUHFEnergy = ($BCCDEnergy $done)
+  BCCDTwoConEnergy = ERROR
+
+  % -------------------------------- BCCD(T) Procedures
+  % Procedures for the BCCD(T) energy
+  BCCD_TEnergy = ($ints $scf repeat $nbrueckner $transqt $ccsort $ccenergy end $cctriples)
+  BCCD_TRHFEnergy = ($BCCD_TEnergy $done)
+  BCCD_TROHFEnergy = ERROR
+  BCCD_TUHFEnergy = ($BCCD_TEnergy $done)
+  BCCD_TTwoConEnergy = ERROR
 
   % -------------------------------- DETCI Procedures
   % Procedures for the DETCI energy
