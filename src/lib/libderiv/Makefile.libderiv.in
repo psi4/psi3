@@ -28,13 +28,13 @@ install_inc::
 
 $(TARGET): $(LIBOBJ)
 	$(MKDIRS) `dirname $(TARGET)`
-	rm -f `basename $(TARGET)`
-	$(AR) $(ARFLAGS) `basename $(TARGET)` $^
-	$(RANLIB) `basename $(TARGET)`
+	rm -f $(TARGET)
+	$(AR) $(ARFLAGS) $(TARGET) $^
+	$(RANLIB) $(TARGET)
 
 install_target:: $(TARGET)
 	$(MKDIRS) $(libdir)
-	$(INSTALL_DATA) `basename $<` $(libdir)
+	$(INSTALL_DATA) $< $(libdir)
 	$(RANLIB) $(libdir)/`basename $(TARGET)`
 
 install_man::

@@ -18,16 +18,22 @@ $(TARGET) $(top_objdir)/libderiv.h: $(BUILD_SRC) Makefile.libderiv input.dat
 	if \
 ! [ -e $(SCRATCH) ]; \
  then \
- mkdir $(SCRATCH); \
+  if ! mkdir $(SCRATCH); then \
+   echo Could not mkdir $(SCRATCH); \
+   exit 1; \
+  fi; \
 fi; \
 if \
  [ -e $(TEMP_DIR) ]; \
 then \
- echo "Scratch directory already exists!";\
+ echo "Scratch directory $(TEMP_DIR) already exists!";\
  echo "Specify some other location"; \
- exit; \
+ exit 1; \
 else \
- mkdir $(TEMP_DIR); \
+ if ! mkdir $(TEMP_DIR); then \
+  echo Could not mkdir $(TEMP_DIR); \
+  exit 1; \
+ fi; \
 fi; \
 cp Makefile.compiler $(TEMP_DIR); \
 cp input.dat $(TEMP_DIR); \
@@ -57,6 +63,11 @@ oclean:
 dclean:
 
 targetclean:
+
+install: $(TARGET)
+	$(MKDIRS) $(libdir)
+	$(INSTALL_DATA) $< $(libdir)
+	$(RANLIB) $(libdir)/`basename $(TARGET)`
 
 #
 # keep the configuration information and makefiles up-to-date

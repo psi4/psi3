@@ -45,18 +45,18 @@ install:: install_inc install_target install_man
 
 $(TARGET): $(LIBOBJ)
 	$(MKDIRS) `dirname $(TARGET)`
-	rm -f `basename $(TARGET)`
-	$(AR) $(ARFLAGS) `basename $(TARGET)` $(LIBOBJ1)
-	$(AR) $(ARFLAGS) `basename $(TARGET)` $(LIBOBJ2)
-	$(AR) $(ARFLAGS) `basename $(TARGET)` $(LIBOBJ3)
-	$(AR) $(ARFLAGS) `basename $(TARGET)` $(LIBOBJ4)
-	$(AR) $(ARFLAGS) `basename $(TARGET)` $(LIBOBJ5)
-	$(AR) $(ARFLAGS) `basename $(TARGET)` $(LIBOBJ6)
-	$(RANLIB) `basename $(TARGET)`
+	rm -f $(TARGET)
+	$(AR) $(ARFLAGS) $(TARGET) $(LIBOBJ1)
+	$(AR) $(ARFLAGS) $(TARGET) $(LIBOBJ2)
+	$(AR) $(ARFLAGS) $(TARGET) $(LIBOBJ3)
+	$(AR) $(ARFLAGS) $(TARGET) $(LIBOBJ4)
+	$(AR) $(ARFLAGS) $(TARGET) $(LIBOBJ5)
+	$(AR) $(ARFLAGS) $(TARGET) $(LIBOBJ6)
+	$(RANLIB) $(TARGET)
 
 install_target:: $(TARGET)
 	$(MKDIRS) $(libdir)
-	$(INSTALL_DATA) `basename $<` $(libdir)
+	$(INSTALL_DATA) $< $(libdir)
 	$(RANLIB) $(libdir)/`basename $(TARGET)`
 
 install_man::

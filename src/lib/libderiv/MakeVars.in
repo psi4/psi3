@@ -1,4 +1,4 @@
-TARGET = $(exec_prefix)/lib/libPSI_deriv.a
+TARGET = $(top_objdir)/lib/libPSI_deriv.a
 srcdir = @srcdir@
 VPATH = @srcdir@
 BUILD_BINARY = build_libderiv

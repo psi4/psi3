@@ -10,24 +10,30 @@ TEMP_DIR = ${SCRATCH}/libint
 .PHONY: default install all
 .PHONY: clean oclean iclean dclean target_clean
 
-default: $(TARGET)
+default:: $(TARGET)
 
 top_objdir_path=$(PWD)/$(top_objdir)
 
-$(TARGET) $(top_objdir)/libint.h: $(BUILD_SRC) $(LIB_SRC) input.dat Makefile.libint
+$(TARGET): $(BUILD_SRC) $(LIB_SRC) input.dat Makefile.libint
 	if \
 ! [ -e $(SCRATCH) ]; \
  then \
- mkdir $(SCRATCH); \
+  if ! mkdir $(SCRATCH); then \
+   echo Could not mkdir $(SCRATCH); \
+   exit 1; \
+  fi; \
 fi; \
 if \
  [ -e $(TEMP_DIR) ]; \
 then \
- echo "Scratch directory already exists!";\
+ echo "Scratch directory $(TEMP_DIR) already exists!";\
  echo "Specify some other location"; \
- exit; \
+ exit 1; \
 else \
- mkdir $(TEMP_DIR); \
+ if ! mkdir $(TEMP_DIR); then \
+  echo Could not mkdir $(TEMP_DIR); \
+  exit 1; \
+ fi; \
 fi; \
 cp Makefile.compiler $(TEMP_DIR); \
 cp input.dat $(TEMP_DIR); \
@@ -46,8 +52,6 @@ rm -fR $(TEMP_DIR)
 
 all: install
 
-default:
-
 clean::
 
 iclean:
@@ -57,6 +61,11 @@ oclean:
 dclean:
 
 targetclean:
+
+install: $(TARGET)
+	$(MKDIRS) $(libdir)
+	$(INSTALL_DATA) $< $(libdir)
+	$(RANLIB) $(libdir)/`basename $(TARGET)`
 
 #
 # keep the configuration information and makefiles up-to-date

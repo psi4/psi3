@@ -26,7 +26,7 @@ LIBOBJ7 = $(TRUESRC7:%.cc=%.o)
 LIBOBJ8 = $(TRUESRC8:%.c=%.o)
 LIBOBJ = $(LIBOBJ1) $(LIBOBJ2) $(LIBOBJ3) $(LIBOBJ4) $(LIBOBJ5) $(LIBOBJ6) $(LIBOBJ7) $(LIBOBJ8)
 
-default:: install
+default:: $(TARGET)
 
 %.$(OBJSUF): %.c
 	$(CC) $(CFLAGS) -c $< $(OUTPUT_OPTION)
@@ -44,21 +44,18 @@ install_inc::
 
 $(TARGET): $(LIBOBJ)
 	$(MKDIRS) `dirname $(TARGET)`
-	rm -f `basename $(TARGET)`
-	$(AR) $(ARFLAGS) `basename $(TARGET)` $(LIBOBJ1)
-	$(AR) $(ARFLAGS) `basename $(TARGET)` $(LIBOBJ2)
-	$(AR) $(ARFLAGS) `basename $(TARGET)` $(LIBOBJ3)
-	$(AR) $(ARFLAGS) `basename $(TARGET)` $(LIBOBJ4)
-	$(AR) $(ARFLAGS) `basename $(TARGET)` $(LIBOBJ5)
-	$(AR) $(ARFLAGS) `basename $(TARGET)` $(LIBOBJ6)
-	$(AR) $(ARFLAGS) `basename $(TARGET)` $(LIBOBJ7)
-	$(AR) $(ARFLAGS) `basename $(TARGET)` $(LIBOBJ8)
-	$(RANLIB) `basename $(TARGET)`
+	rm -f $(TARGET)
+	$(AR) $(ARFLAGS) $(TARGET) $(LIBOBJ1)
+	$(AR) $(ARFLAGS) $(TARGET) $(LIBOBJ2)
+	$(AR) $(ARFLAGS) $(TARGET) $(LIBOBJ3)
+	$(AR) $(ARFLAGS) $(TARGET) $(LIBOBJ4)
+	$(AR) $(ARFLAGS) $(TARGET) $(LIBOBJ5)
+	$(AR) $(ARFLAGS) $(TARGET) $(LIBOBJ6)
+	$(AR) $(ARFLAGS) $(TARGET) $(LIBOBJ7)
+	$(AR) $(ARFLAGS) $(TARGET) $(LIBOBJ8)
+	$(RANLIB) $(TARGET)
 
 install_target:: $(TARGET)
-	$(MKDIRS) $(libdir)
-	$(INSTALL_DATA) `basename $<` $(libdir)
-	$(RANLIB) $(libdir)/`basename $(TARGET)`
 
 install_man::
 
