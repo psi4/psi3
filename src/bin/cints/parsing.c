@@ -190,6 +190,16 @@ void parsing_cmdline(int argc, char *argv[])
 	   return;
        }
 
+       /*--- compute 2nd derivatives ---*/
+       if(!strcmp(argv[i], "--deriv2")) {
+	 UserOptions.make_oei = 0;
+	 UserOptions.make_eri = 0;
+	 UserOptions.make_fock = 0;
+	 UserOptions.symm_ints = 0;
+	 UserOptions.make_deriv2 = 1;
+	 return;
+       }
+
        /*--- compute one-electron property integrals option ---*/
        if (strcmp(argv[i], "--oeprop") == 0) {
 #ifdef INCLUDE_OEProp_Ints

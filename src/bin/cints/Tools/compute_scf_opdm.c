@@ -16,12 +16,14 @@
 void compute_scf_opdm()
 {
   int i,j,k,l,mo,open_1st,openshell_count,closedmos;
+  int sh_i, sh_j, ioffset, joffset, nao_i, nao_j;
   int *symblk_offset;                           /* The pointer to the first MO in the symmetry block */
   int *mo2moshell;                              /* array maping MO number to the mo shell */
   double *occ;                                  /* occupation vector - num_so long */
   double *shell_occ;                            /* occupation numbers for MO shells */
   double **mo_lagr;                                /* MO lagrangian */
-  double tmp;
+  double tmp, max_elem;
+  struct shell_pair* sp;
   
   /*--- Compute offsets of symmetry blocks ---*/
   symblk_offset = init_int_array(Symmetry.nirreps);
@@ -93,7 +95,7 @@ void compute_scf_opdm()
 
 
   /*-----------------------------------
-    Allocate and compute total denisty
+    Allocate and compute total density
    -----------------------------------*/
   Dens = block_matrix(BasisSet.num_ao,BasisSet.num_ao);
   if (UserOptions.reftype != uhf) {
@@ -136,6 +138,29 @@ void compute_scf_opdm()
       }
   }
 
+  /*---------------------------------
+    Find maximal elements of Dens in
+    each shell block
+   ---------------------------------*/
+  if (BasisSet.shell_pairs)
+    for(sh_i=0;sh_i<BasisSet.num_shells;sh_i++) {
+      ioffset = BasisSet.shells[sh_i].fao-1;
+      nao_i = ioff[BasisSet.shells[sh_i].am];
+      for(sh_j=0;sh_j<BasisSet.num_shells;sh_j++) {
+	sp = &(BasisSet.shell_pairs[sh_i][sh_j]);
+	joffset = BasisSet.shells[sh_j].fao-1;
+	nao_j = ioff[BasisSet.shells[sh_j].am];
+	max_elem = -1.0;
+	for(i=0;i<nao_i;i++)
+	  for(j=0;j<nao_j;j++) {
+	    tmp = Dens[ioffset+i][joffset+j];
+	    tmp = fabs(tmp);
+	    if (max_elem < tmp)
+	      max_elem = tmp;
+	  }
+	sp->Dmax = max_elem;
+      }
+    }
   
   /*--------------------------------
     Compute energy-weighted density

@@ -131,7 +131,7 @@ void *hf_fock_thread(void *tnum_ptr)
 		      (BasisSet.max_num_prims*BasisSet.max_num_prims);
   /*--- init a LIBINT object ---*/
   pthread_mutex_lock(&fock_mutex);
-  UserOptions.memory -= init_libint(&Libint,max_num_prim_comb);
+  UserOptions.memory -= init_libint(&Libint,BasisSet.max_am-1,max_num_prim_comb);
   pthread_mutex_unlock(&fock_mutex);
 
   /*--- Allocate this thread's shell-blocked skeleton G's ---*/

@@ -165,6 +165,32 @@ void print_atomvec(char *quantity, double **vecs)
   return;
 }
 
+/*---------------------------------------------------------
+  May be used to print out Hessian and other square matrix
+  quantities associated with atoms
+
+  N.B. for now uses print_mat()
+ ---------------------------------------------------------*/
+void print_atommat(char *quantity, double **mat)
+{
+  int i;
+  
+  fprintf(outfile,"\n  -%s:\n",quantity);
+
+  /*  fprintf(outfile,"     Atom            X                  Y                   Z\n");
+  fprintf(outfile,"    ------   -----------------  -----------------  -----------------\n");
+  
+  for(i=0;i<Molecule.num_atoms;i++){
+    fprintf(outfile,"    %4d   ",i+1);
+    fprintf(outfile,"  %17.12lf  %17.12lf  %17.12lf",vecs[i][0], vecs[i][1], vecs[i][2]);
+    fprintf(outfile,"\n");
+    }*/
+
+  print_mat(mat,Molecule.num_atoms*3,Molecule.num_atoms*3,outfile);
+  fprintf(outfile,"\n");
+  
+  return;
+}
 
 void print_moinfo_corr()
 {

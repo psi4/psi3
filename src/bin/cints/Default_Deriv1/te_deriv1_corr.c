@@ -99,7 +99,7 @@ void te_deriv1_corr()
   max_class_size = max_cart_class_size;
   max_num_prim_comb = (BasisSet.max_num_prims*BasisSet.max_num_prims)*
 		      (BasisSet.max_num_prims*BasisSet.max_num_prims);
-  init_libderiv(&Libderiv,max_num_prim_comb,max_cart_class_size);
+  init_libderiv(&Libderiv,BasisSet.max_am-1,max_num_prim_comb,max_cart_class_size);
   FourInd = init_array(max_cart_class_size);
 
   grad_te_local = block_matrix(Molecule.num_atoms,3);
@@ -118,8 +118,7 @@ void te_deriv1_corr()
 	    /*--- Skip this quartet if all four centers are the same ---*/
 	    if (BasisSet.shells[si].center == BasisSet.shells[sj].center &&
 		BasisSet.shells[si].center == BasisSet.shells[sk].center &&
-		BasisSet.shells[si].center == BasisSet.shells[sl].center &&
-		DERIV_LVL == 1) {
+		BasisSet.shells[si].center == BasisSet.shells[sl].center) {
               /*--- If reading in density - need to skip the appropriate block of that too ---*/
 /*	      if (read_dens) {
 		last_buf = TPDM.lastbuf;

@@ -1,0 +1,19 @@
+#include<stdio.h>
+#include<math.h>
+
+#include"defines.h"
+#define EXTERN
+#include"global.h"
+
+void symmetrize_hessian(double **hess)
+{
+  int i, j;
+
+  for(i=0; i < Molecule.num_atoms*3; i++) {
+    for(j=0; j < i; j++) {
+      hess[i][j] = hess[j][i] = (hess[i][j] + hess[j][i]);
+    }
+  }
+  
+  return;
+}

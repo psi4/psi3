@@ -142,7 +142,7 @@ void *rmp2_energy_thread(void *tnum_ptr)
                       (BasisSet.max_num_prims*
                        BasisSet.max_num_prims);
   pthread_mutex_lock(&rmp2_energy_mutex);
-  init_libint(&Libint,max_num_prim_comb);
+  init_libint(&Libint, BasisSet.max_am-1, max_num_prim_comb);
   pthread_mutex_unlock(&rmp2_energy_mutex);
 
 #ifdef NONDOUBLE_INTS

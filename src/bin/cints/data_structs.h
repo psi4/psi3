@@ -118,6 +118,7 @@ typedef struct {
     int make_fock;                     /* Flag to compute Fock matrix */
     int make_eri;                      /* Flag to compute two-electron integrals */
     int make_deriv1;                   /* Flag to compute first derivatives of one- and two-electron integrals */
+    int make_deriv2;                   /* Flag to compute second derivatives of one- and two-electron integrals */
     int make_oeprop;                   /* Flag tp compute one-electron property integrals */
     int make_mp2;                      /* Flag to compute MP2 energy directly */
     int make_r12ints;                  /* Compute integrals for linear R12 methods */

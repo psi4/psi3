@@ -137,8 +137,7 @@ void rmp2r12_energy()
                        BasisSet.max_num_prims)*
                       (BasisSet.max_num_prims*
                        BasisSet.max_num_prims);
-  libr12_memory = init_libr12(&Libr12,max_num_prim_comb);
-  free_libr12(&Libr12);
+  libr12_memory = libr12_storage_required(BasisSet.max_am-1,max_num_prim_comb);
   UserOptions.memory -= libr12_memory*UserOptions.num_threads;
 
   /*---

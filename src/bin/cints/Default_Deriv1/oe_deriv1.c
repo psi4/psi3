@@ -42,6 +42,11 @@ static void free_box(double ***box, int a, int b);
  -------------------------------------------------------------*/
 void oe_deriv1()
 {
+   /* Only computing first-order derivatives here */
+   const int deriv_lvl = 1;
+   const int deriv0_lvl = 0;
+   const int deriv1_lvl = 1;
+
    struct coordinates PA, PB, AB, PC;
    struct shell_pair *sp;
    int i, j, k, l, ii, jj, kk, ll;
@@ -76,15 +81,15 @@ void oe_deriv1()
    double **grad_oe, **grad_ov;
 
 #ifdef USE_TAYLOR_FM
-  /*--- +2*DERIV_LVL because of the way we invoke AI_Deriv1_OSrecurs ---*/
-  init_Taylor_Fm_Eval(BasisSet.max_am*4-4+2*DERIV_LVL,UserOptions.cutoff);
+  /*--- +2*deriv_lvl because of the way we invoke AI_Deriv1_OSrecurs ---*/
+  init_Taylor_Fm_Eval(BasisSet.max_am*4-4+2*deriv_lvl,UserOptions.cutoff);
 #endif  
 
-  indmax = (BasisSet.max_am+DERIV_LVL-1)*(BasisSet.max_am+DERIV_LVL)*(BasisSet.max_am+DERIV_LVL)+1;
-  AI0 = init_box(indmax,indmax,2*(BasisSet.max_am+DERIV_LVL)+1);
-  AIX = init_box(indmax,indmax,2*(BasisSet.max_am+DERIV_LVL)+1);
-  AIY = init_box(indmax,indmax,2*(BasisSet.max_am+DERIV_LVL)+1);
-  AIZ = init_box(indmax,indmax,2*(BasisSet.max_am+DERIV_LVL)+1);
+  indmax = (BasisSet.max_am+deriv_lvl-1)*(BasisSet.max_am+deriv_lvl)*(BasisSet.max_am+deriv_lvl)+1;
+  AI0 = init_box(indmax,indmax,2*(BasisSet.max_am+deriv1_lvl)+1);
+  AIX = init_box(indmax,indmax,2*(BasisSet.max_am+deriv0_lvl)+1);
+  AIY = init_box(indmax,indmax,2*(BasisSet.max_am+deriv0_lvl)+1);
+  AIZ = init_box(indmax,indmax,2*(BasisSet.max_am+deriv0_lvl)+1);
   grad_oe = block_matrix(Molecule.num_atoms,3);
   grad_ov = block_matrix(Molecule.num_atoms,3);
   
@@ -95,7 +100,7 @@ void oe_deriv1()
     iym = am_i+1;
     ixm = iym*iym;
     izm1 = 1;
-    iym1 = am_i+DERIV_LVL+1;
+    iym1 = am_i+deriv1_lvl+1;
     ixm1 = iym1*iym1;
     atom1 = BasisSet.shells[si].center-1;
     si_fao = BasisSet.shells[si].fao-1;
@@ -107,7 +112,7 @@ void oe_deriv1()
       jym = am_j+1;
       jxm = jym*jym;
       jzm1 = 1;
-      jym1 = am_j+DERIV_LVL+1;
+      jym1 = am_j+deriv1_lvl+1;
       jxm1 = jym1*jym1;
       atom2 = BasisSet.shells[sj].center-1;
       sj_fao = BasisSet.shells[sj].fao - 1;
@@ -266,7 +271,7 @@ void oe_deriv1()
 	      PC.x = sp->P[i][j][0] - Molecule.centers[atom].x;
 	      PC.y = sp->P[i][j][1] - Molecule.centers[atom].y;
 	      PC.z = sp->P[i][j][2] - Molecule.centers[atom].z;
-	      AI_Deriv1_OSrecurs(AI0,AIX,AIY,AIZ,PA,PB,PC,gam,am_i+DERIV_LVL,am_j+DERIV_LVL);
+	      AI_Deriv1_OSrecurs(AI0,AIX,AIY,AIZ,PA,PB,PC,gam,am_i+deriv1_lvl,am_j+deriv1_lvl);
 	      ai = 0;
 	      for(ii = 0; ii <= am_i; ii++){
 		l1 = am_i - ii;
@@ -328,7 +333,6 @@ void oe_deriv1()
 
 		      grad_oe[atom][2] -= AIZ[iind][jind][0] * Molecule.centers[atom].Z_nuc * (over_pf * dens_pf);
 		      
-
 		      aj++;
 		    }
 		  }  

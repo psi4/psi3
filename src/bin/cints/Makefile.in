@@ -1,7 +1,7 @@
 #
 # CINTS Makefile
 #
-# Edward Valeev, Fake-New-Millenium-Eve
+# Edward Valeev, Eve-of-the-Fake-New-Millenium
 #
 # Edit this list of subdirectories whose content
 # to be included in CINTS to suit your needs. Valid subdirs are:
@@ -10,10 +10,11 @@
 # 3. Fock
 # 4. MP2
 # 5. Default_Deriv1
-# 6. MP2R12
-# 7. R12_Ints
+# 6. Default_Deriv2
+# 7. MP2R12
+# 8. R12_Ints
 #
-SUBDIRS = Default_Ints OEProp_Ints Fock MP2 Default_Deriv1
+SUBDIRS = Default_Ints OEProp_Ints Fock MP2 Default_Deriv1 Default_Deriv2
 
 #
 # Some subdirectories are not completely independent - need to perform
@@ -33,6 +34,11 @@ ifeq ($(findstring Fock,$(SUBDIRS)),Fock)
 else
   ifeq ($(findstring DFT,$(SUBDIRS)),DFT)
      SUBDIRS += Fock
+  endif
+endif
+ifeq ($(findstring Default_Deriv2,$(SUBDIRS)),Default_Deriv2)
+  ifeq ($(findstring Default_Deriv1,$(SUBDIRS)),)
+    SUBDIRS += Default_Deriv1
   endif
 endif
 
@@ -55,6 +61,11 @@ ifeq ($(findstring R12_Ints,$(SUBDIRS)),R12_Ints)
   endif
 endif
 ifeq ($(findstring Default_Deriv1,$(SUBDIRS)),Default_Deriv1)
+  ifneq ($(findstring -lderiv,$(INTLIBS)),-lderiv)
+    INTLIBS := -lderiv $(INTLIBS)
+  endif
+endif
+ifeq ($(findstring Default_Deriv2,$(SUBDIRS)),Default_Deriv2)
   ifneq ($(findstring -lderiv,$(INTLIBS)),-lderiv)
     INTLIBS := -lderiv $(INTLIBS)
   endif

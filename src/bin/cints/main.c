@@ -30,6 +30,9 @@
 #ifdef INCLUDE_Default_Deriv1
  #include"deriv1.h"
 #endif
+#ifdef INCLUDE_Default_Deriv2
+void deriv1_fock(void);
+#endif
 #ifdef INCLUDE_OEProp_Ints
  #include"oeprop_ints.h"
 #endif
@@ -94,6 +97,13 @@ int main(int argc, char *argv[])
    if (UserOptions.make_deriv1)
      deriv1();
 #endif
+
+   /*--- Compute second derivative integrals ---*/
+#ifdef INCLUDE_Default_Deriv2
+   if (UserOptions.make_deriv2)
+     deriv2();
+#endif
+
 #ifdef INCLUDE_OEProp_Ints
    if (UserOptions.make_oeprop)
      oeprop_ints();

@@ -108,7 +108,7 @@ void schwartz_eri()
 #endif
   max_num_prim_comb = (BasisSet.max_num_prims*BasisSet.max_num_prims)*
 		      (BasisSet.max_num_prims*BasisSet.max_num_prims);
-  UserOptions.memory -= init_libint(&Libint,max_num_prim_comb);
+  UserOptions.memory -= init_libint(&Libint,BasisSet.max_am-1,max_num_prim_comb);
 
 /*-------------------------------------------------
   generate all shell quartets 

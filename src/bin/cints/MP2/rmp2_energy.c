@@ -164,8 +164,7 @@ void rmp2_energy()
                        BasisSet.max_num_prims)*
                       (BasisSet.max_num_prims*
                        BasisSet.max_num_prims);
-  libint_memory = init_libint(&Libint,max_num_prim_comb);
-  free_libint(&Libint);
+  libint_memory = libint_storage_required(BasisSet.max_am-1,max_num_prim_comb);
   UserOptions.memory -= libint_memory*UserOptions.num_threads;
 
   /*---

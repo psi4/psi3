@@ -159,7 +159,7 @@ void r12_te_ints()
                        BasisSet.max_num_prims)*
                       (BasisSet.max_num_prims*
                        BasisSet.max_num_prims);
-  UserOptions.memory -= init_libr12(&Libr12,max_num_prim_comb);
+  UserOptions.memory -= init_libr12(&Libr12,BasisSet.max_am-1,max_num_prim_comb);
   init_fjt_table(&fjt_table);
 
 /*-------------------------------------------------

@@ -97,7 +97,7 @@ void *te_deriv1_scf_thread(void *tnum_ptr)
   max_class_size = max_cart_class_size;
   max_num_prim_comb = (BasisSet.max_num_prims*BasisSet.max_num_prims)*
 		      (BasisSet.max_num_prims*BasisSet.max_num_prims);
-  init_libderiv(&Libderiv,max_num_prim_comb,max_class_size);
+  init_libderiv(&Libderiv,BasisSet.max_am-1,max_num_prim_comb,max_class_size);
   FourInd = init_array(max_cart_class_size);
 
   grad_te_local = block_matrix(Molecule.num_atoms,3);
@@ -303,7 +303,7 @@ void *te_deriv1_scf_thread(void *tnum_ptr)
 	      ddaz += Libderiv.ABCD[2][k]*FourInd[k];
 	    grad_te_local[center_i][2] += ddaz;
 
-	    ddbx = 0.0;
+	    /*	    ddbx = 0.0;
 	    for(k=0;k<quartet_size;k++)
 	      ddbx += Libderiv.ABCD[3][k]*FourInd[k];
 	    grad_te_local[center_j][0] += ddbx;
@@ -316,7 +316,22 @@ void *te_deriv1_scf_thread(void *tnum_ptr)
 	    ddbz = 0.0;
 	    for(k=0;k<quartet_size;k++)
 	      ddbz += Libderiv.ABCD[5][k]*FourInd[k];
-	    grad_te_local[center_j][2] += ddbz;
+	      grad_te_local[center_j][2] += ddbz;*/
+
+	    ddcx = 0.0;
+	    for(k=0;k<quartet_size;k++)
+	      ddcx += Libderiv.ABCD[6][k]*FourInd[k];
+	    grad_te_local[center_k][0] += ddcx;
+
+	    ddcy = 0.0;
+	    for(k=0;k<quartet_size;k++)
+	      ddcy += Libderiv.ABCD[7][k]*FourInd[k];
+	    grad_te_local[center_k][1] += ddcy;
+
+	    ddcz = 0.0;
+	    for(k=0;k<quartet_size;k++)
+	      ddcz += Libderiv.ABCD[8][k]*FourInd[k];
+	    grad_te_local[center_k][2] += ddcz;
 
 	    dddx = 0.0;
 	    for(k=0;k<quartet_size;k++)
@@ -331,11 +346,11 @@ void *te_deriv1_scf_thread(void *tnum_ptr)
 	    dddz = 0.0;
 	    for(k=0;k<quartet_size;k++)
 	      dddz += Libderiv.ABCD[11][k]*FourInd[k];
-	    grad_te_local[center_l][2] += dddz;
-
-	    grad_te_local[center_k][0] -= ddax + ddbx + dddx;
-	    grad_te_local[center_k][1] -= dday + ddby + dddy;
-	    grad_te_local[center_k][2] -= ddaz + ddbz + dddz;
+	      grad_te_local[center_l][2] += dddz;
+	      
+	    grad_te_local[center_j][0] -= ddax + ddcx + dddx;
+	    grad_te_local[center_j][1] -= dday + ddcy + dddy;
+	    grad_te_local[center_j][2] -= ddaz + ddcz + dddz;
 	}
 
   pthread_mutex_lock(&deriv1_mutex);

@@ -20,7 +20,7 @@
 			    (only if SPARSE_C2P is set 0, otherwise sparse matrix
 			    multiplies will be used), AO->MO, etc.;
 			    Use only if you have libblas.a or its other analog available */
-#define SCF_ONLY 1       /* If you want to be able to compute integrals needed in
+#define SCF_ONLY 0       /* If you want to be able to compute integrals needed in
 			    SCF only if WFN=SCF - set this to 1 */
 
 /*------------------------------------------------------------
@@ -30,7 +30,7 @@
 #define ZERO 1E-15                 /* Definition of a hard floating-point "zero" */
 #define EPS 1.0e-17                /* Another definition of floating-point "zero"
 				      used in computing auxiliary function */
-#define USE_TAYLOR_FM              /* Use Taylor interpolation formula to compute Fm(T) */
+#undef USE_TAYLOR_FM              /* Use Taylor interpolation formula to compute Fm(T) */
 #define TAYLOR_ORDER 6             /* Order of Taylor interpolation used to compute Fm(T) */
 
 /*----------------------------------

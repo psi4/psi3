@@ -202,7 +202,7 @@ void *rmp2r12_energy_thread(void *tnum_ptr)
                        BasisSet.max_num_prims)*
                       (BasisSet.max_num_prims*
                        BasisSet.max_num_prims);
-  init_libr12(&Libr12,max_num_prim_comb);
+  init_libr12(&Libr12,BasisSet.max_am-1,max_num_prim_comb);
   init_fjt_table(&fjt_table);
 
   num_i_per_ibatch = RMP2R12_Status.num_i_per_ibatch;

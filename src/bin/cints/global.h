@@ -62,8 +62,11 @@ EXTERN double **G;       /* G-matrix (t.e. part of the Fock matrix) in AO basis 
 EXTERN double **Go;      /* open-shell G-matrix in AO basis */
 EXTERN double **Ga;      /* Alpha spin G-matrix in AO basis */
 EXTERN double **Gb;      /* Beta spin G-matrix in AO basis */
+EXTERN double ***F;      /* Derivative Fock matrices in AO basis */
+EXTERN double ***S;      /* Derivative overlap matrices in AO basis */
 
 EXTERN double **Grad;    /* Nuclear forces */
+EXTERN double **Hess;    /* Nuclear force constants */
 
 
 
