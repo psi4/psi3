@@ -75,6 +75,11 @@ htmlclean:
 # keep the configuration information and makefiles up-to-date
 #
 
+top_srcdir = @top_srcdir@
+srcdir = @srcdir@
+# this is checked from the documentation subdirs, so we need two-levels up
+top_objdir = ../..
+
 $(top_srcdir)/configure: $(top_srcdir)/configure.in $(top_srcdir)/aclocal.m4
 	cd $(top_srcdir) && autoconf
 
@@ -82,10 +87,10 @@ $(top_objdir)/config.status: $(top_srcdir)/configure
 	cd $(top_objdir) && ./config.status --recheck
 
 Makefile: $(srcdir)/Makefile.in $(top_objdir)/config.status
-	cd $(top_objdir) && CONFIG_FILES=src/doc/`basename $(srcdir)`/Makefile ./config.status
+	cd $(top_objdir) && CONFIG_FILES=doc/`basename $(srcdir)`/Makefile ./config.status
 
-../MakeVars: $(top_srcdir)/src/doc/MakeVars.in $(top_objdir)/config.status
-	cd $(top_objdir) && CONFIG_FILES=src/doc/MakeVars ./config.status
+../MakeVars: $(top_srcdir)/doc/MakeVars.in $(top_objdir)/config.status
+	cd $(top_objdir) && CONFIG_FILES=doc/MakeVars ./config.status
 
-../MakeRules: $(top_srcdir)/src/doc/MakeRules.in $(top_objdir)/config.status
-	cd $(top_objdir) && CONFIG_FILES=src/doc/MakeRules ./config.status
+../MakeRules: $(top_srcdir)/doc/MakeRules.in $(top_objdir)/config.status
+	cd $(top_objdir) && CONFIG_FILES=doc/MakeRules ./config.status

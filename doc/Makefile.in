@@ -1,5 +1,5 @@
  
-.PHONY:	default all install clean realclean
+.PHONY:	default all install clean realclean progman userman
 
 subdirs = \
 install progman userman
