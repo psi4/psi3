@@ -431,8 +431,106 @@ programs available within \PSIthree, \PSInormco\ and \PSIintder.
 For more details regarding these programs, see the manual pages for each
 program respectively.
 
-\subsection{Property evaluation}
+\subsection{Evaluation of one-electron properties}
 For now, take a look at the available documentation for \PSIoeprop .
+
+\subsection{Plotting one-electron properties}
+Program \PSIoeprop\ can evaluate certain one-electron properties on a grid of points
+and then print them out in format suitable for image rendering with external programs.
+Currently, electron and spin density, electron and spin density gradient,
+Laplacian of electron and spin density, and electrostatic potential
+can be evaluated on an arbitrary rectangular two-dimensional grid and output
+in a format suitable for feeding to a interactive visualization program {\tt PlotMTV} (version 1.3 and higher).
+{\tt PlotMTV} is a freeware code developed by Kenny Toh. It can be downloaded off
+many web sites in source or binary form.
+
+In addition, values of molecular orbitals can be evaluated on an arbitrary
+rectangular three-dimensional grid and output for furher rendering
+of high-quality images with a program {\tt MegaPov} (version 0.5).
+{\tt MegaPov} is an unofficial patch for
+a ray-tracing code {\tt POV-Ray}. Information on {\tt MegaPov} can be found
+at \htmladdnormallink{{http://nathan.kopp.com/patched.htm}}.
+
+Let's look at how to set up input for spin density evaluation on a two-dimensional grid.
+An input secion of \PSIoeprop\ might look like this:
+\begin{verbatim}
+oeprop:(
+  grid = 2
+  spin_prop = true
+  grid_origin = (0.0 -5.0 -5.0)
+  grid_unit_x = (0.0 1.0 0.0)
+  grid_unit_y = (0.0 0.0 1.0)
+  grid_xy0 = (0.0 0.0)
+  grid_xy1 = (10.0 10.0)
+  nix = 20
+  niy = 20
+)
+\end{verbatim}
+\keyword{grid} specifies the type of a property and the type of a grid \PSIoeprop\ needs to compute.
+Allowed values are 0 (default, no property evaluation on a grid), 1 (electrostatic potential
+on a 2D grid), 2 (electron/spin density on a 2D grid), 3 (gradient of electron/spin density
+on a 2D grid), 4 (Laplacian of electron/spin density on a 2D grid), 5 (molecular orbital values
+on a 3D grid). Since \keyword{spin\_prop}\ is set, the spin density will be evaluated on
+a grid.
+
+Grid specification is a little bit tricky but very flexible. \keyword{grid\_origin}\ specifies
+the origin of the rectangular coordinate system associated with the grid
+in the refernence frame. \keyword{grid\_unit\_x}\ specifies a reference frame
+vector which designates the direction of the x-axis of the grid coordinate system.
+\keyword{grid\_unit\_y}\ is analogously a reference frame vector which,
+along with the \keyword{grid\_unit\_x}, completely specifies the grid coordinate
+system.
+\keyword{grid\_unit\_x}\ and \keyword{grid\_unit\_y}\ do not have to be normalized, neither they
+need to be orthogonal to either other - orthogonalization is done automatically
+to ensure that unit vectors of the grid coordinate system are normalized in the reference
+frame too.
+\keyword{grid\_xy0}\ is a vector in the grid coordinate system that
+specifies a vertex of the grid rectangle with the most negative
+coordinates. Similarly, \keyword{grid\_xy1}\ specifies a
+vertex of the the grid rectangle diagonally opposite to \keyword{grid\_xy0}.
+Finally, \keyword{nix}\ and \keyword{niy}\ specify the number of intervals into which
+the $x$ and $y$ sides of the grid rectangle are subdivided.
+To summarize, the above input specifies a rectangular (in fact, square) 21 by 21 grid
+of dimensions 10.0 by 10.0 lying in the $yz$ plane and centered at origin.
+
+Running \PSIoeprop\ on such input will create a file called \file{sdens.dat} (for file names
+refer to man page on \PSIoeprop),
+which can be fed directly to {\tt PlotMTV} to plot the data.
+
+Specification of a three-dimensional grid for plotting MO isosurfaces ({\tt grid = 5}) is just slightly more
+complicated. The index of the MO which needs to be plotted is specified by keyword \keyword{mo\_to\_plot}.
+The index is specified in Pitzer order and not according to the orbital energies.
+The reference frame is specified by keywords \keyword{grid\_origin},
+\keyword{grid\_unit\_x}\ and \keyword{grid\_origin\_y}\ (the third axis of the grid coordinate system
+is specified by by the vector product of \keyword{grid\_unit\_x}\ and \keyword{grid\_unit\_y}).
+Since in this case we are dealing with the three-dimensional grid coordinate system,
+one needs to specify two diagonally opposite vertices of the grid box via
+\keyword{grid\_xyz0}\ and \keyword{grid\_xyz1}.
+The number of intervals along $z$ is specified via \keyword{niz}.
+The final input may look like this:
+\begin{verbatim}
+oeprop:(
+  grid = 5
+  mo_to_plot = 10
+  grid_origin = (-5.0 -5.0 -5.0)
+  grid_unit_x = (1.0 0.0 0.0)
+  grid_unit_y = (0.0 1.0 0.0)
+  grid_xyz0 = (0.0 0.0 0.0)
+  grid_xyz1 = (10.0 10.0 10.0)
+  nix = 20
+  niy = 20
+  niz = 20
+)
+\end{verbatim}
+
+Running \PSIoeprop\ on input like this will produce two files
+\begin{itemize}
+\item \file{mo.dat} - MO values tabulated in a column in order where $x$ runs fast;
+\item \file{mo.pov} - the {\tt MegaPov} command file which sets a number
+of parameters. You might have to adjust a number of parameters manually to obtain the best looking output.
+\end{itemize}
+Rendering of an image can be done via {\tt megapovplus +Imo.pov}.
+Consult {\tt MegaPov} documentation for more information on how to use it.
 
 \subsection{Utilities}
 \subsubsection{\PSIgeom}
