@@ -1,5 +1,5 @@
 #include <stdio.h>
 
 void main() {
-printf("\nEXTREMA!!\n);
+printf("\nEXTREMA!!\n");
 }
