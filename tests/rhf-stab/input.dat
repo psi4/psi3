@@ -11,8 +11,8 @@ psi: (
   basis = "cc-pVDZ"
   puream = true
   zmat = (
-    (o)
-    (h 1 1.00)
-    (h 1 1.00 2 103.1)
+    o
+    h 1 1.00
+    h 1 1.00 2 103.1
   )
 )

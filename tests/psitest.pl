@@ -351,7 +351,7 @@ sub seek_anal_freq
   $OK = 1;
   for($i=0; $i < $ndof; $i++) {
 #    printf "%d %6.1f\n", $i, $freq[$i];
-    if($freq[$i] == 0.0 || $freq[$i] > 6000) {
+    if($freq[$i] < 0.0 || $freq[$i] > 6000) {
       $OK = 0; 
     }
   }

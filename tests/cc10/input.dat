@@ -15,8 +15,8 @@ psi: (
   basis = "cc-pVDZ"
   puream = true
   zmat = (
-   (C)
-   (N 1 R)
+   C
+   N 1 R
   )
   zvars = (
    (R 1.175)

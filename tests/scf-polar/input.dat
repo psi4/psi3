@@ -21,8 +21,8 @@ psi: (
   basis = "DZ"
   units = bohr
   zmat = (
-    (li)
-    (h 1 4.0)
+    li
+    h 1 4.0
   )
 )
 

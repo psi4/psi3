@@ -8,6 +8,10 @@ psi: (
   states_per_irrep = (2 2 2 2)
   basis = "cc-pVDZ"
   puream = true
-  zmat = ((h) (o 1 0.9) (h 2 0.9 1 104.))
+  zmat = (
+    h
+    o 1 0.9
+    h 2 0.9 1 104.
+  )
 )
 

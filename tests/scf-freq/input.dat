@@ -7,9 +7,9 @@ psi: (
   dertype = second
   basis = "6-31G**"
   zmat = (
-    (o)
-    (h 1 roh)
-    (h 1 roh 2 ahoh)
+    o
+    h 1 roh
+    h 1 roh 2 ahoh
   )
   zvars = (
     (roh    0.94305663)

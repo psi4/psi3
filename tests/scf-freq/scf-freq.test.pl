@@ -10,7 +10,7 @@ $REF_FILE = "output.ref";
 $TEST_FILE = "output.dat";
 $RESULT = "scf-freq.test";
 
-system ("psi3");
+#system ("psi3");
 
 open(RE, ">$RESULT") || die "cannot open $RESULT: $!";
 select (RE);

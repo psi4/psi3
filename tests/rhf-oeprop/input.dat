@@ -5,25 +5,15 @@
 %
 
 psi: (
-  check = false
-  jobtype = sp
-)
-
-default: (
   label = "6-31G** SCF H2O"
-  memory = (20.0 MB)
-
+  jobtype = sp
   wfn = scf
   reference = rhf
-  multp = 1
-)
-
-input: (
   basis = "6-31G**"
   zmat = (
-    (o)
-    (h 1 1.00)
-    (h 1 1.00 2 103.1)
+    o
+    h 1 1.00
+    h 1 1.00 2 103.1
   )
 )
 
