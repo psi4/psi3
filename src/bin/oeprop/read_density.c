@@ -20,8 +20,6 @@ void read_density()
 
   Ptot = init_array(natri);
 
-  /* rfile(opdm_file); */
-
   /* Read in density in MO basis --- CDS 2/02 */
   if (!strcmp(opdm_basis,"MO")) {     
 
