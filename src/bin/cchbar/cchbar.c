@@ -24,6 +24,10 @@ void Wmnie_build(void);
 void Wmbij_build(void);
 void Wamef_build(void);
 void Wabei_build(void);
+void cc2_Zmbej_build(void);
+void cc2_Wmbej_build(void);
+void cc2_Wmbij_build(void);
+void cc2_Wabei_build(void);
 void purge(void);
 void cleanup(void);
 int **cacheprep_rhf(int level, int *cachefiles);
@@ -49,10 +53,10 @@ int main(int argc, char *argv[])
 
   if(params.ref == 0 || params.ref == 1) { /** RHF or ROHF **/
 
-  cachelist = cacheprep_rhf(params.cachelev, cachefiles);
+    cachelist = cacheprep_rhf(params.cachelev, cachefiles);
 
-  dpd_init(0, moinfo.nirreps, params.memory, 0, cachefiles, cachelist, NULL,
-           2, moinfo.occpi, moinfo.occ_sym, moinfo.virtpi, moinfo.vir_sym);
+    dpd_init(0, moinfo.nirreps, params.memory, 0, cachefiles, cachelist, NULL,
+	     2, moinfo.occpi, moinfo.occ_sym, moinfo.virtpi, moinfo.vir_sym);
   }
   else if(params.ref == 2) { /** UHF **/
 
@@ -70,28 +74,45 @@ int main(int argc, char *argv[])
   F_build();
   if(params.print & 2) status("F elements", outfile);
 
-  Wabei_build();
-  if(params.print & 2) status("Wabei elements", outfile);
-  Wmbej_build();
-  if(params.print & 2) status("Wmbej elements", outfile);
   Wmnie_build();
   if(params.print & 2) status("Wmnie elements", outfile);
   Wamef_build();
   if(params.print & 2) status("Wamef elements", outfile);
-  Wmbij_build();
-  if(params.print & 2) status("Wmbij elements", outfile);
 
-  if( (!strcmp(params.wfn,"CC3")) || (!strcmp(params.wfn,"EOM_CC3")) ) {
-    /* switch to ROHF to generate all spin cases of He^T1 elements */
-    if(params.dertype == 3 && params.ref == 0) {
-      params.ref = 1;
-      cc3_HET1(); /* compute remaining Wmbej [H,eT1] */
-      norm_HET1();
-      params.ref = 0; 
-    }
-    else {
-      cc3_HET1(); /* compute remaining Wmbej [H,eT1] */
-      norm_HET1();
+  if( (!strcmp(params.wfn,"CC2")) || (!strcmp(params.wfn,"EOM_CC2")) ) {
+
+    cc2_Wmbej_build();
+    if(params.print & 2) status("Wmbej elements", outfile);
+    cc2_Zmbej_build();
+    if(params.print & 2) status("Zmbej elements", outfile);
+    cc2_Wmbij_build();
+    if(params.print & 2) status("Wmbij elements", outfile);
+    cc2_Wabei_build();
+    if(params.print & 2) status("Wabei elements", outfile);
+
+  }
+
+  else {
+
+    Wabei_build();
+    if(params.print & 2) status("Wabei elements", outfile);
+    Wmbej_build();
+    if(params.print & 2) status("Wmbej elements", outfile);
+    Wmbij_build();
+    if(params.print & 2) status("Wmbij elements", outfile);
+
+    if( (!strcmp(params.wfn,"CC3")) || (!strcmp(params.wfn,"EOM_CC3")) ) {
+      /* switch to ROHF to generate all spin cases of He^T1 elements */
+      if(params.dertype == 3 && params.ref == 0) {
+	params.ref = 1;
+	cc3_HET1(); /* compute remaining Wmbej [H,eT1] */
+	norm_HET1();
+	params.ref = 0; 
+      }
+      else {
+	cc3_HET1(); /* compute remaining Wmbej [H,eT1] */
+	norm_HET1();
+      }
     }
   }
 
