@@ -25,6 +25,7 @@ IOPT13, NVEC = propertyDimension
 IOPT14, NSTOP = stop
 IOPT15, NDISP = generateDisp
 IOPT16, NMODE = nmodes
+ITST, matrixTest
 
 *****************************************
 * DONE = coded and debugged             *

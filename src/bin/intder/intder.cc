@@ -29,6 +29,8 @@ BMat gBMat;
 //Transform gTransform;
 
 void intro(void);
+void readIntCoDerivatives(void);
+
 
 int main(int argc, char** argv)
 {
@@ -61,62 +63,63 @@ int main(int argc, char** argv)
     gParams.checkMasses();
     gParams.checkIsotopes(); // isotopes will overwrite masses, but isotopes returns if !ISOTOPES
   }
-  
-  gParams.writeMasses();
 
+  gParams.writeMasses();
+  
   fprintf(outfile, "\nNuclear Cartesian coordinates in angstroms:\n");
   gDisplacements.printGeometries();
 
   //Need to save center of mass transformation variables? Need to be able to save non-center of mass
   //transformed coordinates
 
-  if((gParams.transformType > 3 || gParams.numtest == 3) && gParams.ndisp == 0) {
+  if((gParams.transformType == 3 || gParams.numtest == 3) && gParams.ndisp == 0) {
     gDisplacements.moveToCenterOfMass();
     fprintf(outfile, "\nCoordinates shifted to center of mass\n"); 
   }
   
-  fflush(outfile);
- 
-  
-    fprintf(outfile, "\nB Matrix for Internal Coordinates:\n");
-    gBMat.disp = 0;
-    gBMat.init();
-    gBMat.make_BMat();
-    
-    //Once symmcoords are implemented, this logic will need to be changed
-    if(!gParams.symmCoords) {
+  fprintf(outfile, "\nB Matrix for Internal Coordinates:\n");
+  gBMat.disp = 0;
+  gBMat.init();
+  gBMat.make_BMat();
+
+  gParams.UGF = init_matrix(gParams.ncartesians, gParams.ncartesians);
+  //Once symmcoords are implemented, this logic will need to be changed
+  if(!gParams.symmCoords) {
+    for(i = 0; i < gParams.nintco; i++) {
+      gParams.UGF[i][0] = gBMat.SVectArray[i];
       for(j = 0; j < gParams.ncartesians; j++)
 	gBMat.BMatSave[i][j] = gBMat.BMatrix[i][j];
     }
+  }
+  
+  fprintf(outfile,"\n\tReprinting saved simple internal coordinates with bmat s-values (angstroms or degrees)\n");
+  for(i = 0; i < gParams.nintco; i++) 
+    gIntCo.printSingleIntCo(i);
     
-    fprintf(outfile,"\n\tReprinting saved simple internal coordinates with bmat s-values (angstroms or degrees)\n");
-    for(i = 0; i < gParams.nintco; i++) 
-      gIntCo.printSingleIntCo(i);
+  if(gParams.print_array[0] > 2)
+    gBMat.print_BMat();
+  
+  if(gParams.analysisType >= 0) {  //else goes to line 600, aka frequency analysis *
+    gBMat.invert_BMat();
     
-    if(gParams.print_array[0] > 2)
-      gBMat.print_BMat();
-    
-    /*
-      if(gParams.analysisType >= 0) {  //else goes to line 600, aka frequency analysis
-      gBMat.invert_BMat();
-      
-      } //This needs to be removed when more code is added
-      
-      if(gParams.derlvl == 0) {
+    if(gParams.derlvl == 0) {
       fprintf(outfile, "\nderlvl = 0, no transformation requested");
       exit(0);
-      }
-	if(gParams.derlvl == 1 && gParams.atEquilibrium == 0) {
-	fprintf(outfile, "\nAt equilibrium, all gradients = 0)");
-	exit(0);
-	} 
+    }
+    if(gParams.derlvl == 1 && gParams.atEquilibrium == 0) {
+      fprintf(outfile, "\nAt equilibrium, all gradients = 0)");
+      exit(0);
+    } 
+  
+  
+  //Intder now makes blocks of memory to determine dimensions of 2/3/4-D matrices. We shouldn't have to do this 
 	
-	//Intder now makes blocks of memory to determine dimensions of 2/3/4-D matrices. We shouldn't have to do this 
-	
-	//This doesn't work yet
-	//if(gParams.transformType == 2)
-	//readIntCoDerivatives();
-    
+  //This doesn't work yet
+    if(gParams.transformType == 2)
+      readIntCoDerivatives();
+  } // Closing brace goes to *
+
+     /* 
 	if(gParams.derlvl + gParams.atEquilibrium >= 3) {
 	SecondDerivative secondDer;
 	if(gParams.numtest > 1)
@@ -158,11 +161,11 @@ int main(int argc, char** argv)
     }
       */
     
-    chkpt_close();
-    tstop(outfile);
-    psio_done();
-    psi_stop();
-    return 0;
+  chkpt_close();
+  tstop(outfile);
+  psio_done();
+  psi_stop();
+  return 0;
 }
 
 char *gprgid(void)
@@ -176,7 +179,7 @@ void intro(void)
     fprintf(outfile,
             "\n\t------------------------------------------------------\n");
     fprintf(outfile,
-              "\t                    INTDER2C5                         \n");
+              "\t                    INTDER2K5                         \n");
     fprintf(outfile,
               "\t   Developed by Wesley D. Allen and Co-workers.       \n");
     fprintf(outfile,
