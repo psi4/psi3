@@ -60,6 +60,7 @@ int print_all_dist = 0; /* flag for printing all parameters, however far
 double print_dist = PRINT_DIST;
 FILE *outfile;                 /* output file pointer */
 FILE *infile; 
+char *psi_file_prefix;
 
 /* declare functions in this file */
 void malloc_ck(void *array, char *mesg);

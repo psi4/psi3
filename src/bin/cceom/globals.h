@@ -19,7 +19,7 @@
 #define MIN(I,J) ((I<J) ? I : J)
 
 EXTERN FILE *infile, *outfile;
-EXTERN char *psi_file_pregfix;
+EXTERN char *psi_file_prefix;
 EXTERN struct MOInfo moinfo;
 EXTERN struct Params params;
 EXTERN struct Eom_params eom_params;
