@@ -37,7 +37,9 @@ void cleanup(void)
   destruct_evects(params.backtr ? moinfo.backtr_nirreps : moinfo.nirreps, 
                   moinfo.evects);
   free(moinfo.active);
-  free_matrix(moinfo.scf_vector, moinfo.nso);
+/* TDC --- converted libfile30 to use block_matrix() */
+  free_block(moinfo.scf_vector);
+/*  free_matrix(moinfo.scf_vector, moinfo.nso); */
   free(moinfo.evals);
   free(moinfo.oe_ints);
   free(moinfo.fzc_operator);

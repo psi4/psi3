@@ -281,7 +281,8 @@ void trans_one_backwards(void)
     fprintf(outfile, "C matrix (including AO to SO)\n");
     print_mat(moinfo.evects[0], moinfo.nao, moinfo.nmo, outfile);
   }
-  free_matrix(so2ao, moinfo.nso);
+/* TDC --- converted libfile30 to use block_matrix() */
+  free_block(so2ao);
   tmat = block_matrix(src_orbs, src_orbs);
 
 

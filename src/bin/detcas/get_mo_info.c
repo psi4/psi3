@@ -311,7 +311,7 @@ void read_cur_orbs(void)
     for (i=0; i<dim; i++) 
       for (j=0; j<dim; j++) 
         CalcInfo.mo_coeffs[h][i][j] = tmat[i][j];
-    free_matrix(tmat, dim);
+    free_block(tmat);
   }
   file30_close();
 

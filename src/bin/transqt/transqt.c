@@ -890,7 +890,7 @@ void get_moinfo(void)
     }
 
     free_matrix(tmpmat, moinfo.nso);
-    free_matrix(so2ao, moinfo.nso);
+    free_block(so2ao);
 
   }
   

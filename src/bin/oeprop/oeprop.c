@@ -211,8 +211,11 @@ int main(int argc, char* argv) {
 
 	/* Cleaning up */
 
- free_matrix(scf_evec_so,nbfso);
- free_matrix(usotao,nbfso);
+/* TDC --- converted libfile30 to use block_matrix() */
+ free_block(scf_evec_so);
+ free_block(usotao);
+/* free_matrix(scf_evec_so,nbfso);
+ free_matrix(usotao,nbfso); */
  free_matrix(scf_evec_ao,nbfao);
  free(ioff);
  free(Ptot);
