@@ -14,30 +14,38 @@ void get_params()
   char *junk;
 
   errcod = ip_string("WFN", &(params.wfn), 0);
-  if(strcmp(params.wfn, "CCSD") && strcmp(params.wfn, "CCSD_T")) {
+  if(strcmp(params.wfn, "CCSD") && strcmp(params.wfn, "CCSD_T") &&
+      strcmp(params.wfn, "EOM_CCSD")) {
     fprintf(outfile, "Invalid value of input keyword WFN: %s\n", params.wfn);
     exit(2);
   }
 
   errcod = ip_string("REFERENCE", &(junk),0);
-  if(!strcmp(junk, "RHF")) ref = 0;
-  else if(!strcmp(junk, "ROHF")) ref = 1;
-  else if(!strcmp(junk, "UHF")) ref = 2;
-  else { 
-    printf("Invalid value of input keyword REFERENCE: %s\n", junk);
-    exit(2); 
+  // if no reference is given, assume rhf
+  if (errcod != IPE_OK) {
+    ref = 0;
+  }
+  else {
+    if(!strcmp(junk, "RHF")) ref = 0;
+    else if(!strcmp(junk, "ROHF")) ref = 1;
+    else if(!strcmp(junk, "UHF")) ref = 2;
+    else { 
+      printf("Invalid value of input keyword REFERENCE: %s\n", junk);
+      exit(2); 
+    }
+    free(junk);
   }
 
   /* Make sure the value of ref matches that from CC_INFO */
   if(params.ref != ref) {
     printf("Value of REFERENCE from input.dat (%1d) and CC_INFO (%1d) do not match!\n", 
-	   ref, params.ref);
+        ref, params.ref);
     exit(2);
   }
 
   params.print = 0;
   errcod = ip_data("PRINT", "%d", &(params.print),0);
-  
+
   params.maxiter = 50;
   errcod = ip_data("MAXITER","%d",&(params.maxiter),0);
   params.convergence = 1e-7;
@@ -67,7 +75,7 @@ void get_params()
     else if(!strcmp(cachetype,"LRU")) params.cachetype = 0;
     else {
       fprintf(outfile, "Error in input: invalid CACHETYPE = %s\n",
-	      cachetype);
+          cachetype);
       exit(1);
     }
     free(cachetype);
@@ -110,12 +118,13 @@ void get_params()
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
   fprintf(outfile, "\tWave function   =    %6s\n", params.wfn);
-  fprintf(outfile, "\tReference wfn   =    %4s\n", junk);
+  fprintf(outfile, "\tReference wfn   =    %5s\n",
+           (params.ref == 0) ? "RHF" : ((params.ref == 1) ? "ROHF" : "UHF"));
   fprintf(outfile, "\tMemory (Mbytes) =  %5.1f\n",params.memory/1e6);
   fprintf(outfile, "\tMaxiter         =   %4d\n", params.maxiter);
   fprintf(outfile, "\tConvergence     = %3.1e\n", params.convergence);
   fprintf(outfile, "\tRestart         =     %s\n", 
-          params.restart ? "Yes" : "No");
+      params.restart ? "Yes" : "No");
   fprintf(outfile, "\tDIIS            =     %s\n", params.diis ? "Yes" : "No");
   fprintf(outfile, "\tLocal CC        =     %s\n", params.local ? "Yes" : "No");
   if(params.local) {
@@ -124,13 +133,12 @@ void get_params()
     fprintf(outfile, "\tWeak pairs      =    %s\n", local.weakp);
   }
   fprintf(outfile, "\tAO Basis        =     %s\n", 
-          params.aobasis ? "Yes" : "No");
+      params.aobasis ? "Yes" : "No");
   fprintf(outfile, "\tCache Level     =    %1d\n", params.cachelev);
   fprintf(outfile, "\tCache Type      =    %4s\n", 
-          params.cachetype ? "LOW" : "LRU");
+      params.cachetype ? "LOW" : "LRU");
   fprintf(outfile, "\tPrint Level     =    %1d\n",  params.print);
   fprintf(outfile, "\n");
 
-  free(junk);
 }
 
