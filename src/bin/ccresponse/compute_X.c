@@ -21,7 +21,6 @@ void diis(int iter, char *pert, char *cart, int irrep, double omega);
 double pseudopolar(char *pert, char *cart, int irrep, double omega);
 void cleanup(void);
 void exit_io(void);
-void analyze(char *pert, char *cart, int irrep, double omega);
 
 void compute_X(char *pert, char *cart, int irrep, double omega)
 {
@@ -88,8 +87,6 @@ void compute_X(char *pert, char *cart, int irrep, double omega)
     exit_io();
     exit(PSI_RETURN_FAILURE);
   }
-
-  if(params.analyze) analyze(pert, cart, irrep, omega);
 
   /*  print_X(pert, cart, irrep, omega); */
 }
