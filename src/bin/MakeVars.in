@@ -95,3 +95,7 @@ TARGET = $(shell basename `pwd`)
 #
 # Initialize other variables.
 #
+
+# Force -lx to only look for libx.a.
+.LIBPATTERNS = lib%.a
+
