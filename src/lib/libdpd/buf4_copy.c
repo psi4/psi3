@@ -34,18 +34,22 @@ int dpd_buf4_copy(dpdbuf4 *InBuf, int outfilenum, char *label)
   for(h=0; h < InBuf->params->nirreps; h++) {
 
     memoryd = dpd_memfree()/2; /* use half the memory for each buf4 */
-    if(InBuf->params->rowtot[h] && InBuf->params->coltot[h^my_irrep]) {
 
-      rows_per_bucket = memoryd/InBuf->params->coltot[h^my_irrep];
+    rowtot = InBuf->params->rowtot[h];
+    coltot = InBuf->params->coltot[h^my_irrep];
+
+    if(rowtot && coltot) {
+
+      rows_per_bucket = memoryd/coltot;
       /* enough memory for the whole matrix? */
-      if(rows_per_bucket > InBuf->params->rowtot[h]) 
-	rows_per_bucket = InBuf->params->rowtot[h]; 
+      if(rows_per_bucket > rowtot)
+	rows_per_bucket = rowtot;
 
       if(!rows_per_bucket) dpd_error("buf4_scmcopy: Not enough memory for one row!", stderr);
 
-      nbuckets = (int) ceil(((double) InBuf->params->rowtot[h])/((double) rows_per_bucket));
+      nbuckets = (int) ceil(((double) rowtot)/((double) rows_per_bucket));
 
-      rows_left = InBuf->params->rowtot[h] % rows_per_bucket;
+      rows_left = rowtot % rows_per_bucket;
 
       incore = 1;
       if(nbuckets > 1) {
@@ -60,62 +64,59 @@ int dpd_buf4_copy(dpdbuf4 *InBuf, int outfilenum, char *label)
 #endif
       }
 
-    }
-
-    if(incore) {
+      if(incore) {
 
 
-      dpd_buf4_mat_irrep_init(InBuf, h);
-      dpd_buf4_mat_irrep_rd(InBuf, h);
+	dpd_buf4_mat_irrep_init(InBuf, h);
+	dpd_buf4_mat_irrep_rd(InBuf, h);
 
-      dpd_buf4_mat_irrep_init(&OutBuf, h);
+	dpd_buf4_mat_irrep_init(&OutBuf, h);
 
-      rowtot = InBuf->params->rowtot[h];
-      coltot = InBuf->params->coltot[h^my_irrep];
+	if(rowtot && coltot) 
+	  memcpy((void *) &(OutBuf.matrix[h][0][0]),
+		 (const void *) &(InBuf->matrix[h][0][0]),
+		 sizeof(double)*rowtot*coltot);
 
-      if(rowtot && coltot) 
-	memcpy((void *) &(OutBuf.matrix[h][0][0]),
-	       (const void *) &(InBuf->matrix[h][0][0]),
-	       sizeof(double)*rowtot*coltot);
+	dpd_buf4_mat_irrep_wrt(&OutBuf, h);
 
-      dpd_buf4_mat_irrep_wrt(&OutBuf, h);
-
-      dpd_buf4_mat_irrep_close(&OutBuf, h);
-      dpd_buf4_mat_irrep_close(InBuf, h);
-    }
-    else {
-
-      dpd_buf4_mat_irrep_init_block(InBuf, h, rows_per_bucket);
-      dpd_buf4_mat_irrep_init_block(&OutBuf, h, rows_per_bucket);
-
-      coltot = InBuf->params->coltot[h^my_irrep];
-      size = ((long) rows_per_bucket)*((long) coltot);
-
-      for(n=0; n < (rows_left ? nbuckets-1 : nbuckets); n++) {
-
-	dpd_buf4_mat_irrep_rd_block(InBuf, h, n*rows_per_bucket, rows_per_bucket);
-
-	memcpy((void *) &(OutBuf.matrix[h][0][0]), (const void *) &(InBuf->matrix[h][0][0]), 
-	       ((long) sizeof(double))*size);
-
-	dpd_buf4_mat_irrep_wrt_block(&OutBuf, h, n*rows_per_bucket, rows_per_bucket);
+	dpd_buf4_mat_irrep_close(&OutBuf, h);
+	dpd_buf4_mat_irrep_close(InBuf, h);
       }
-      if(rows_left) {
+      else {
 
-	size = ((long) rows_left) * ((long) coltot);
+	dpd_buf4_mat_irrep_init_block(InBuf, h, rows_per_bucket);
+	dpd_buf4_mat_irrep_init_block(&OutBuf, h, rows_per_bucket);
 
-	dpd_buf4_mat_irrep_rd_block(InBuf, h, n*rows_per_bucket, rows_left);
+	coltot = InBuf->params->coltot[h^my_irrep];
+	size = ((long) rows_per_bucket)*((long) coltot);
 
-	memcpy((void *) &(OutBuf.matrix[h][0][0]), (const void *) &(InBuf->matrix[h][0][0]), 
-	       ((long) sizeof(double))*size);
+	for(n=0; n < (rows_left ? nbuckets-1 : nbuckets); n++) {
 
-	dpd_buf4_mat_irrep_wrt_block(&OutBuf, h, n*rows_per_bucket, rows_left);
+	  dpd_buf4_mat_irrep_rd_block(InBuf, h, n*rows_per_bucket, rows_per_bucket);
+
+	  memcpy((void *) &(OutBuf.matrix[h][0][0]), (const void *) &(InBuf->matrix[h][0][0]), 
+		 ((long) sizeof(double))*size);
+
+	  dpd_buf4_mat_irrep_wrt_block(&OutBuf, h, n*rows_per_bucket, rows_per_bucket);
+	}
+	if(rows_left) {
+
+	  size = ((long) rows_left) * ((long) coltot);
+
+	  dpd_buf4_mat_irrep_rd_block(InBuf, h, n*rows_per_bucket, rows_left);
+
+	  memcpy((void *) &(OutBuf.matrix[h][0][0]), (const void *) &(InBuf->matrix[h][0][0]), 
+		 ((long) sizeof(double))*size);
+
+	  dpd_buf4_mat_irrep_wrt_block(&OutBuf, h, n*rows_per_bucket, rows_left);
+	}
+
+	dpd_buf4_mat_irrep_close_block(InBuf, h, rows_per_bucket);
+	dpd_buf4_mat_irrep_close_block(&OutBuf, h, rows_per_bucket);
+
       }
-
-      dpd_buf4_mat_irrep_close_block(InBuf, h, rows_per_bucket);
-      dpd_buf4_mat_irrep_close_block(&OutBuf, h, rows_per_bucket);
-
     }
+
   }
 
   dpd_buf4_close(&OutBuf);
