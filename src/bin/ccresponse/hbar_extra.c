@@ -5,6 +5,12 @@
 
 void hbar_extra(void) {
   dpdbuf4 W1, W2, W;
+  dpdbuf4 t2;
+
+  /* TIjAb (Ab,Ij) */
+  dpd_buf4_init(&t2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
+  dpd_buf4_sort(&t2, CC_TAMPS, rspq, 5, 0, "tAbIj");
+  dpd_buf4_close(&t2);
 
   /* 2 W(ME,jb) + W(Me,Jb) */
   dpd_buf4_init(&W1, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMbeJ");
