@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <libipv1/ip_lib.h>
+#include <psifiles.h>
 #include "psio.h"
 
 /*
@@ -43,8 +44,9 @@ int psio_get_volpath(ULI unit, ULI volume, char *path)
   errcod = ip_data(ip_token,"%s",path,0);
   if(errcod == IPE_OK) return(0);
 
-  /* default to /tmp/ */
-  sprintf(path, "/tmp/");
+  /* default to /tmp/ for everything but chkpt */
+  if(unit == PSIF_CHKPT) sprintf(path,  "./");
+  else sprintf(path, "/tmp/");
   return(1);
 }
 
