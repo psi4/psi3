@@ -31,9 +31,9 @@ void coord_base :: parse_input() {
     errcod = ip_string("UPDATE",&update,0);
     fprintf(outfile,"\n  UPDATE:        %s", update);
 
-    linear_abort = 1;
-    errcod = ip_boolean("LINEAR_ABORT",&linear_abort,0);
-    fprintf(outfile,"\n  LINEAR_ABORT:  %d", linear_abort);
+    angle_abort = 1;
+    errcod = ip_boolean("ANGLE_ABORT",&angle_abort,0);
+    fprintf(outfile,"\n  ANGLE_ABORT:   %d", angle_abort);
 
     // if( ip_exist("SYMMETRY",0) ) {
     //	errcod = ip_string("SYMMETRY",&symmetry,0);

@@ -80,7 +80,7 @@ class coord_base : protected coord_base_carts,  protected math_tools {
 	print_lvl, /*!< print level */
     	do_deriv, /*!< are we doing derivatives */
 	do_opt,   /*!< are we doing optimization */
-	linear_abort; /*!< die if valence angle near 180? */
+	angle_abort; /*!< die if bad angle */
 
     double *coords, /*!< generic coordinate array */ 
 	*grads, /*!< generic gradient array */

@@ -189,8 +189,8 @@ zmat :: zmat() : internals()
   
   free(is_torsion);
 	
-  /* test for near 180.0 angles, abort if present */
-  if(linear_abort)
+  /* test angles for extreme values, abort if hopeless */
+  if(angle_abort)
       for(i=0;i<fnum_coords;++i) {
 	  if( simples[i].get_type() == ANGLE_TYPE ) {
 	      if( fabs(simples[i].get_val()) > NEAR_180*_pi/180.0 ) 
@@ -491,6 +491,19 @@ void zmat :: newton_step() {
 		    simples[j].set_val(simples[i].get_val());
 	}
     }
+
+    /* test for extreme angle cases */
+    if(angle_abort)
+        for(i=0;i<fnum_coords;++i) {
+            if( simples[i].get_type() == ANGLE_TYPE ) {
+                if( fabs(simples[i].get_val()) > NEAR_180*_pi/180.0 )
+                    punt("Simple valence angle near 180 degrees");
+            }
+            else if (simples[i].get_type() == TORS_TYPE)
+                if( (fabs(simples[i].get_val()) > NEAR_180*_pi/180.0 ) &&
+                    (fabs(simples[i].get_val()) < NOT_180*_pi/180.0) )
+                    punt("Simple torsion near 180 degrees");
+        }
     
     int entry;
     fprintf(outfile,"\n  Optimization Step (angstroms and degrees):\n");

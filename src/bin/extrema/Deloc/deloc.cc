@@ -498,7 +498,7 @@ void deloc::init_simples() {
 			    }
 
     /* test for near 180.0 angles, abort if present */
-    if(linear_abort)
+    if(angle_abort)
 	for(i=0;i<num_simples;++i) {
 	    if( simples[i].get_type() == ANGLE_TYPE ) {
 		if( fabs(simples[i].get_val()) > NEAR_180*_pi/180.0 ) 
@@ -632,10 +632,10 @@ void deloc :: newton_step() {
 	    s[i] = -0.1;
     }
 
-    /* ugly fix for linear fragments */
+    /* ugly fix for linear fragments 
     for(i=0;i<num_coords;++i)
 	if(fabs(grads[i])<1.0e-6)
-	    s[i] = 0.0;
+	    s[i] = 0.0; */
 
     /* take the step */
     for(i=0;i<num_coords;++i) 
