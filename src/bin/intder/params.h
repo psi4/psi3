@@ -47,6 +47,9 @@ public:
   int numtest;        // 1 = test B(ij,p) and C(qr,p), 2 = test B(ijk,p) and C(qrs,p), 3 = check orthogonal,
                       // 4 = test Cart. force field for invariance with respect to rotation/translation
                       // 5 = test BuB^T
+
+  int matrixTest;     // ITST variable, to test error of matrix inversions (I think)
+  
   int *intcoInclude; // an array of which intco's to include in numerical test
   int analysisType;   // 1 = intern. (gfmat subroutine), 2 = cart (normco subroutine), 3 = both, 4 = SQMFC, 
                       // 5 = rxn path intern, 6 = rxn path cart, 7 = rxn path both, 10+r = reduced dimension space
@@ -69,6 +72,7 @@ public:
   C3DMatrix *intco4thDerBlock;
   C4DMatrix *intco4thDer;
  
+  double **UGF;
   double *FConst1;
   double **FConst2;
   C3DMatrix *FConst3;

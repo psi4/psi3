@@ -124,7 +124,8 @@ void Params::parseInputFile()
     if(errcod != IPE_OK) transformType = 0;  // Default is Cartesians to internals
     else if(!strcmp(junk, "C_TO_I")) transformType = 0;
     else if(!strcmp(junk, "I_TO_C")) transformType = 1;
-    else if(!strcmp(junk, "PROJECTCART")) transformType = 2;
+    else if(!strcmp(junk, "I_TO_C_R")) transformType = 2;
+    else if(!strcmp(junk, "PROJECTCART")) transformType = 3;
     free(junk);
   }
   
@@ -195,7 +196,8 @@ void Params::parseInputFile()
       fprintf(outfile, "Switched to C_to_I-type transformation in order to check orthogonality conditions!\n");
     }
     else if(!strcmp(junk, "INVARIANCE")) numtest = 4;
-  
+    else if(!strcmp(junk, "BUBT")) numtest = 5;
+
     if(ip_exist("INT_INCLUDE",0))
       ip_count("INT_INCLUDE",&a,0);
     if(a > nintco) {
@@ -225,8 +227,19 @@ void Params::parseInputFile()
   
   nmodes = 0;
   ip_boolean("PED", &nmodes,0);
-}  
-       
+
+  if(numtest == 5) {
+    matrixTest = 2;
+    numtest = 0;
+  } 
+  else if(abs(numtest) == 3) {
+    stop = 1;
+    (numtest > 0) ? transformType = 1 : transformType = -1;
+    //Umm... will it matter that we don't have a default value for matrixTest here?
+  }
+  else
+    matrixTest = 1;  
+}      
 
 void Params::checkIsotopes()
 {
@@ -381,6 +394,7 @@ void Params::printParams()
   fprintf(outfile, "\tIR intensities?: %i\n", IRintensities);
   fprintf(outfile, "\tTransformation property dimension: %i\n", propertyDimension);
   fprintf(outfile, "\tEckart transformation?: %i\n", Eckart);
-  fprintf(outfile, "\tPED?: %i", nmodes);
+  fprintf(outfile, "\tPED?: %i\n", nmodes);
+  fprintf(outfile, "\tmatrixTest for Linear dependence: %i", matrixTest);
   fprintf(outfile, "\n\t************************************\n");
 }
