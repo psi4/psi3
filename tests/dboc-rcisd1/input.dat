@@ -1,0 +1,26 @@
+psi: (
+  label = "cc-pVDZ CISD(FC) DBOC for H2O"
+  jobtype = dboc
+  wfn = detci
+  reference = rhf
+  freeze_core = yes
+  basis = "cc-pVDZ"
+  puream = true
+  zmat = (
+    o
+    h 1 0.95885
+    h 1 0.95885 2 104.343
+  )
+)
+
+scf: (
+  convergence = 14
+)
+
+detci: (
+  ex_lvl = 2
+  export_ci_vector = true
+  convergence = 8
+  maxiter = 40
+)
+

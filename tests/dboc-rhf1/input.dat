@@ -1,0 +1,18 @@
+psi: (
+  label = "cc-pVDZ RHF DBOC for H2O"
+  jobtype = dboc
+  wfn = scf
+  reference = rhf
+  basis = "cc-pVDZ"
+  puream = true
+  zmat = (
+    o
+    h 1 0.95885
+    h 1 0.95885 2 104.343
+  )
+)
+
+scf: (
+  convergence = 14
+)
+

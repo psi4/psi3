@@ -549,6 +549,23 @@ sub seek_ccsd_polar
   exit 1;
 }
 
+sub seek_dboc
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  seek(OUT,0,0);
+  while(<OUT>) {
+    if (/E\(DBOC\)/) {
+      @data = split(/ +/, $_);
+      $Edboc = $data[3];
+      return $Edboc;
+    }
+  } 
+  close(OUT);
+  
+  printf "Error: Could not find DBOC in $_[0].\n";
+  exit 1;
+}   
+
 sub compare_arrays
 {
   $A = $_[0];

@@ -83,11 +83,13 @@ elsif ($ARGV[0] eq "--small") {
                  "cc16",
                  "cc17",
                  "cc18",
-                 "cc19"
+                 "cc19",
+                 "dboc-rhf1"
                );
 }
 elsif ($ARGV[0] eq "--medium") {
-  @DIR_NAMES = ( "cc4" 
+  @DIR_NAMES = ( "cc4",
+                 "dboc-rcisd" 
                );
 }
 elsif ($ARGV[0] eq "--large") {
@@ -128,7 +130,9 @@ elsif ($ARGV[0] eq "--all") {
                  "cc16",
                  "cc17",
                  "cc18",
-                 "cc19"
+                 "cc19",
+                 "dboc-rhf1",
+                 "dboc-rcisd1"
                );
 }
 elsif ($ARGV[0] eq "--sp") {
@@ -147,7 +151,9 @@ elsif ($ARGV[0] eq "--sp") {
                  "cc16",
                  "cc17",
                  "cc18",
-                 "cc19"
+                 "cc19",
+                 "dboc-rhf1",
+                 "dboc-rcisd1"
                );
 }
 elsif ($ARGV[0] eq "--geom") {
@@ -199,7 +205,9 @@ else {
                  "cc16",
                  "cc17",
                  "cc18",
-                 "cc19"
+                 "cc19",
+                 "dboc-rhf1",
+                 "dboc-rcisd1"
 #                 "Basis_Tests"
                 );
 }
@@ -218,6 +226,7 @@ foreach $name (@DIR_NAMES) {
     unlink <psi.*>;
     unlink <*.test>;
     unlink <timer.dat>;
+    unlink <dboc.findif.out>
     chdir ("$pwd");
   }
   else {
