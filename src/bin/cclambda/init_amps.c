@@ -69,6 +69,50 @@ void init_amps(struct L_Params L_params)
       dpd_buf4_close(&LIjAb);
     }
     else if(params.ref == 2) { /** UHF **/
+      dpd_file2_init(&XIA, EOM_XI, L_irr, 0, 1, "XIA");
+      dpd_file2_copy(&XIA, CC_LAMBDA, "LIA");
+      dpd_file2_close(&XIA);
+      dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
+      dpd_file2_init(&dIA, CC_DENOM, L_irr, 0, 1, "dIA");
+      dpd_file2_dirprd(&dIA, &LIA);
+      dpd_file2_close(&dIA);
+      dpd_file2_close(&LIA);
+
+      dpd_file2_init(&Xia, EOM_XI, L_irr, 2, 3, "Xia");
+      dpd_file2_copy(&Xia, CC_LAMBDA, "Lia");
+      dpd_file2_close(&Xia);
+      dpd_file2_init(&Lia, CC_LAMBDA, L_irr, 2, 3, "Lia");
+      dpd_file2_init(&dia, CC_DENOM, L_irr, 2, 3, "dia");
+      dpd_file2_dirprd(&dia, &Lia);
+      dpd_file2_close(&dia);
+      dpd_file2_close(&Lia);
+
+      dpd_buf4_init(&XIJAB, EOM_XI, L_irr, 2, 7, 2, 7, 0, "XIJAB");
+      dpd_buf4_copy(&XIJAB, CC_LAMBDA, "LIJAB");
+      dpd_buf4_close(&XIJAB);
+      dpd_buf4_init(&LIJAB, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "LIJAB");
+      dpd_buf4_init(&dIJAB, CC_DENOM, L_irr, 2, 7, 2, 7, 0, "dIJAB");
+      dpd_buf4_dirprd(&dIJAB, &LIJAB);
+      dpd_buf4_close(&dIJAB);
+      dpd_buf4_close(&LIJAB);
+
+      dpd_buf4_init(&Xijab, EOM_XI, L_irr, 12, 17, 12, 17, 0, "Xijab");
+      dpd_buf4_copy(&Xijab, CC_LAMBDA, "Lijab");
+      dpd_buf4_close(&Xijab);
+      dpd_buf4_init(&Lijab, CC_LAMBDA, L_irr, 12, 17, 12, 17, 0, "Lijab");
+      dpd_buf4_init(&dijab, CC_DENOM, L_irr, 12, 17, 12, 17, 0, "dijab");
+      dpd_buf4_dirprd(&dijab, &Lijab);
+      dpd_buf4_close(&dijab);
+      dpd_buf4_close(&Lijab);
+
+      dpd_buf4_init(&XIjAb, EOM_XI, L_irr, 22, 28, 22, 28, 0, "XIjAb");
+      dpd_buf4_copy(&XIjAb, CC_LAMBDA, "LIjAb");
+      dpd_buf4_close(&XIjAb);
+      dpd_buf4_init(&LIjAb, CC_LAMBDA, L_irr, 22, 28, 22, 28, 0, "LIjAb");
+      dpd_buf4_init(&dIjAb, CC_DENOM, L_irr, 22, 28, 22, 28, 0, "dIjAb");
+      dpd_buf4_dirprd(&dIjAb, &LIjAb);
+      dpd_buf4_close(&dIjAb);
+      dpd_buf4_close(&LIjAb);
     }
     return;
   }

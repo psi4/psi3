@@ -43,22 +43,21 @@ void L1_build(struct L_Params L_params) {
   }
   /* excited state - no inhomogenous term, first term is -energy*L*/
   else if (!params.zeta) {
-    dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
-    dpd_file2_init(&newLIA, CC_LAMBDA, L_irr, 0, 1, "New LIA");
     if (params.ref == 0 || params.ref == 1) {
+      dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
+      dpd_file2_init(&newLIA, CC_LAMBDA, L_irr, 0, 1, "New LIA");
       dpd_file2_init(&Lia, CC_LAMBDA, L_irr, 0, 1, "Lia");
       dpd_file2_init(&newLia, CC_LAMBDA, L_irr, 0, 1, "New Lia");
+      dpd_file2_axpy(&LIA, &newLIA, -1.0 * L_params.cceom_energy,0.0);
+      dpd_file2_axpy(&Lia, &newLia, -1.0 * L_params.cceom_energy,0.0);
+      dpd_file2_close(&LIA);
+      dpd_file2_close(&newLIA);
+      dpd_file2_close(&Lia);
+      dpd_file2_close(&newLia);
     }
     else if (params.ref == 2) {
-      dpd_file2_init(&Lia, CC_LAMBDA, L_irr, 2, 3, "Lia");
-      dpd_file2_init(&newLia, CC_LAMBDA, L_irr, 2, 3, "New Lia");
+      /* do nothing - TDC did not change to increments for the UHF case */
     }
-    dpd_file2_axpy(&LIA, &newLIA, -1.0 * L_params.cceom_energy,0.0);
-    dpd_file2_axpy(&Lia, &newLia, -1.0 * L_params.cceom_energy,0.0);
-    dpd_file2_close(&LIA);
-    dpd_file2_close(&newLIA);
-    dpd_file2_close(&Lia);
-    dpd_file2_close(&newLia);
   }
   /* solving zeta equations; inhomogeneous term is Xi */
   else {

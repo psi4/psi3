@@ -413,21 +413,40 @@ void zeta_norm(struct L_Params L_params) {
   double tval;
   Z_irr = L_params.irrep;
 
-  dpd_file2_init(&ZIA, CC_LAMPS, Z_irr, 0, 1, "ZIA");
-  tval = dpd_file2_dot_self(&ZIA);
-  dpd_file2_close(&ZIA);
-  dpd_file2_init(&Zia, CC_LAMPS, Z_irr, 0, 1, "Zia");
-  tval += dpd_file2_dot_self(&Zia);
-  dpd_file2_close(&Zia);
-  dpd_buf4_init(&ZIJAB, CC_LAMPS, Z_irr, 2, 7, 2, 7, 0, "ZIJAB");
-  tval += dpd_buf4_dot_self(&ZIJAB);
-  dpd_buf4_close(&ZIJAB);
-  dpd_buf4_init(&Zijab, CC_LAMPS, Z_irr, 2, 7, 2, 7, 0, "Zijab");
-  tval += dpd_buf4_dot_self(&Zijab);
-  dpd_buf4_close(&Zijab);
-  dpd_buf4_init(&ZIjAb, CC_LAMPS, Z_irr, 0, 5, 0, 5, 0, "ZIjAb");
-  tval += dpd_buf4_dot_self(&ZIjAb);
-  dpd_buf4_close(&ZIjAb);
+  if (params.ref == 0 || params.ref == 1) {
+    dpd_file2_init(&ZIA, CC_LAMPS, Z_irr, 0, 1, "ZIA");
+    tval = dpd_file2_dot_self(&ZIA);
+    dpd_file2_close(&ZIA);
+    dpd_file2_init(&Zia, CC_LAMPS, Z_irr, 0, 1, "Zia");
+    tval += dpd_file2_dot_self(&Zia);
+    dpd_file2_close(&Zia);
+    dpd_buf4_init(&ZIJAB, CC_LAMPS, Z_irr, 2, 7, 2, 7, 0, "ZIJAB");
+    tval += dpd_buf4_dot_self(&ZIJAB);
+    dpd_buf4_close(&ZIJAB);
+    dpd_buf4_init(&Zijab, CC_LAMPS, Z_irr, 2, 7, 2, 7, 0, "Zijab");
+    tval += dpd_buf4_dot_self(&Zijab);
+    dpd_buf4_close(&Zijab);
+    dpd_buf4_init(&ZIjAb, CC_LAMPS, Z_irr, 0, 5, 0, 5, 0, "ZIjAb");
+    tval += dpd_buf4_dot_self(&ZIjAb);
+    dpd_buf4_close(&ZIjAb);
+  }
+  else { /* UHF */
+    dpd_file2_init(&ZIA, CC_LAMPS, Z_irr, 0, 1, "ZIA");
+    tval = dpd_file2_dot_self(&ZIA);
+    dpd_file2_close(&ZIA);
+    dpd_file2_init(&Zia, CC_LAMPS, Z_irr, 2, 3, "Zia");
+    tval += dpd_file2_dot_self(&Zia);
+    dpd_file2_close(&Zia);
+    dpd_buf4_init(&ZIJAB, CC_LAMPS, Z_irr, 2, 7, 2, 7, 0, "ZIJAB");
+    tval += dpd_buf4_dot_self(&ZIJAB);
+    dpd_buf4_close(&ZIJAB);
+    dpd_buf4_init(&Zijab, CC_LAMPS, Z_irr, 12, 17, 12, 17, 0, "Zijab");
+    tval += dpd_buf4_dot_self(&Zijab);
+    dpd_buf4_close(&Zijab);
+    dpd_buf4_init(&ZIjAb, CC_LAMPS, Z_irr, 22, 28, 22, 28, 0, "ZIjAb");
+    tval += dpd_buf4_dot_self(&ZIjAb);
+    dpd_buf4_close(&ZIjAb);
+  }
   fprintf(outfile,"Norm of Zeta: %20.15lf\n", sqrt(tval) );
   return;
 }
