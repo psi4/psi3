@@ -224,7 +224,7 @@ void get_parameters(void)
          Parameters.opentype = PARM_OPENTYPE_NONE;
          Parameters.Ms0 = 1;
          }
-       if (strcmp(line1, "ROHF")==0) {
+       else if (strcmp(line1, "ROHF")==0) {
          if (ip_data("MULTP","%d",&tval,0) == IPE_OK) {
            if (tval == 1) {
              Parameters.opentype = PARM_OPENTYPE_SINGLET;
