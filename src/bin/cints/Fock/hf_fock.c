@@ -173,9 +173,9 @@ void hf_fock()
     }
     free_block(tmpmat1);
   }
+  /*
   fprintf(outfile,"  Closed-shell Fock matrix in SO basis:\n");
   print_mat(G,Symmetry.num_so,Symmetry.num_so,outfile);
-  /*
   if (UserOptions.reftype == rohf || UserOptions.reftype == uhf) {
       fprintf(outfile,"  Open-shell Fock matrix in SO basis:\n");
       print_mat(Go,Symmetry.num_so,Symmetry.num_so,outfile);
