@@ -16,7 +16,7 @@
 #include"read_scf_opdm.h"
 #include"shell_block_matrix.h"
 #include"hf_fock.h"
-#include"fock_update.h"
+#include"xc_fock.h"
 
 pthread_mutex_t fock_mutex;            /* Lock on the global AO matrix */
 
@@ -40,7 +40,6 @@ void fock()
   /*-------------------------------------------
     Compute HF contribution to the Fock matrix
    -------------------------------------------*/
-  UserOptions.hf_exch = 1.0;
   hf_fock();
   
   /*-----------------------------------

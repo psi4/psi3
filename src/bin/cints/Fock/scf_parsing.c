@@ -19,6 +19,7 @@ void scf_parsing(void)
     UserOptions.print_lvl = 0;
     UserOptions.symm_ints = 0;
     UserOptions.make_dft = 0;
+    UserOptions.hf_exch = 1.0;
     errcod = ip_string("REFERENCE",&refstring,0);
     if (errcod != IPE_OK)
 	punt("REFERENCE keyword is missing");
