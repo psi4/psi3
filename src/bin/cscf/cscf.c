@@ -273,6 +273,9 @@ int main(argc,argv)
 
    scf_input(ipvalue);
 
+/* we can't just orthogonalize the orbitals if there aren't any */
+   if (inflg != 1) orthog_only = 0;
+
 /* set up other useful arrays */
 
    init_scf2();
