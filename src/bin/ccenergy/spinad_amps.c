@@ -51,45 +51,47 @@ void spinad_amps(void)
     dpd_buf4_copy(&T2AB1, CC_TAMPS, "tijab");
     dpd_buf4_close(&T2AB1);
 
-    /*** Wmbej intermediates ***/
+    if(!(!strcmp(params.wfn,"CC2")) || (!strcmp(params.wfn,"EOM_CC2"))) {
 
-    dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMbeJ");
-    dpd_buf4_copy(&W, CC_HBAR, "WmBEj");
-    dpd_buf4_copy(&W, CC_HBAR, "WMBEJ");
-    dpd_buf4_close(&W);
+      /*** Wmbej intermediates ***/
+      dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMbeJ");
+      dpd_buf4_copy(&W, CC_HBAR, "WmBEj");
+      dpd_buf4_copy(&W, CC_HBAR, "WMBEJ");
+      dpd_buf4_close(&W);
 
-    dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMbEj");
-    dpd_buf4_copy(&W, CC_HBAR, "WmBeJ");
-    dpd_buf4_close(&W);
+      dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMbEj");
+      dpd_buf4_copy(&W, CC_HBAR, "WmBeJ");
+      dpd_buf4_close(&W);
 
-    /* WMBEJ = WMbeJ + WMbEj */
-    dpd_buf4_init(&W1, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMBEJ");
-    dpd_buf4_init(&W2, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMbEj");
-    dpd_buf4_axpy(&W2, &W1, 1);
-    dpd_buf4_close(&W2);
-    dpd_buf4_close(&W1);
+      /* WMBEJ = WMbeJ + WMbEj */
+      dpd_buf4_init(&W1, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMBEJ");
+      dpd_buf4_init(&W2, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMbEj");
+      dpd_buf4_axpy(&W2, &W1, 1);
+      dpd_buf4_close(&W2);
+      dpd_buf4_close(&W1);
 
-    dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMBEJ");
-    dpd_buf4_copy(&W, CC_HBAR, "Wmbej");
-    dpd_buf4_close(&W);
+      dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMBEJ");
+      dpd_buf4_copy(&W, CC_HBAR, "Wmbej");
+      dpd_buf4_close(&W);
 
-    /*** Wmnij intermediates ***/
+      /*** Wmnij intermediates ***/
 
-    dpd_buf4_init(&W, CC_HBAR, 0, 0, 0, 0, 0, 0, "WMnIj");
-    dpd_buf4_copy(&W, CC_TMP0, "WMnIj");
-    dpd_buf4_sort(&W, CC_TMP0, pqsr, 0, 0, "WMnJi");
-    dpd_buf4_close(&W);
+      dpd_buf4_init(&W, CC_HBAR, 0, 0, 0, 0, 0, 0, "WMnIj");
+      dpd_buf4_copy(&W, CC_TMP0, "WMnIj");
+      dpd_buf4_sort(&W, CC_TMP0, pqsr, 0, 0, "WMnJi");
+      dpd_buf4_close(&W);
 
-    dpd_buf4_init(&W1, CC_TMP0, 0, 0, 0, 0, 0, 0, "WMnIj");
-    dpd_buf4_init(&W2, CC_TMP0, 0, 0, 0, 0, 0, 0, "WMnJi");
-    dpd_buf4_axpy(&W2, &W1, -1);
-    dpd_buf4_close(&W2);
-    dpd_buf4_close(&W1);
+      dpd_buf4_init(&W1, CC_TMP0, 0, 0, 0, 0, 0, 0, "WMnIj");
+      dpd_buf4_init(&W2, CC_TMP0, 0, 0, 0, 0, 0, 0, "WMnJi");
+      dpd_buf4_axpy(&W2, &W1, -1);
+      dpd_buf4_close(&W2);
+      dpd_buf4_close(&W1);
 
-    dpd_buf4_init(&W, CC_TMP0, 0, 2, 2, 0, 0, 0, "WMnIj");
-    dpd_buf4_copy(&W, CC_HBAR, "WMNIJ");
-    dpd_buf4_copy(&W, CC_HBAR, "Wmnij");
-    dpd_buf4_close(&W);
+      dpd_buf4_init(&W, CC_TMP0, 0, 2, 2, 0, 0, 0, "WMnIj");
+      dpd_buf4_copy(&W, CC_HBAR, "WMNIJ");
+      dpd_buf4_copy(&W, CC_HBAR, "Wmnij");
+      dpd_buf4_close(&W);
+    }
 
     /*** FMI and FAE intermediates ***/
 
