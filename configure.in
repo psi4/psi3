@@ -790,7 +790,6 @@ AC_OUTPUT(include/psiconfig.h include/cfuncs.h include/ffuncs.h
           src/lib/Makefile src/lib/MakeRules src/lib/MakeVars
           src/util/Makefile
           src/util/psipp/Makefile
-          src/util/tmpl/Makefile
           src/util/tocprint/Makefile
 
           src/lib/alloc/Makefile
