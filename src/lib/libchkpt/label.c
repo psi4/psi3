@@ -1,5 +1,6 @@
 /*!
   \file label.c
+  \ingroup (CHKPT)
 */
 
 #include <stdlib.h>
@@ -12,7 +13,8 @@
 **
 **   takes no arguments.
 **
-**   returns: char *
+**   returns: pointer to the checkpoint label
+** \ingroup (CHKPT)
 */
 
 char *chkpt_rd_label(void)
@@ -29,9 +31,10 @@ char *chkpt_rd_label(void)
 ** chkpt_wt_label():  Writes the main chkpt label.
 **
 **  arguments:
-**  \param char *label  The calculation label.
+**  \param label = The calculation label.
 **
-**   returns: nothing
+**   returns: none
+** \ingroup (CHKPT)
 */
 
 void chkpt_wt_label(char *label)

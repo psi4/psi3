@@ -1,5 +1,6 @@
 /*!
   \file stype.c
+  \ingroup (CHKPT)
 */
 
 #include <stdio.h>
@@ -14,10 +15,10 @@
 **
 **  takes no arguments.
 **
-**  returns: int *stype	an array of the angular momentum numbers of the
-**			shells.
+**  returns: stype = an array of the angular momentum numbers of the shells
+**
+** \ingroup (CHKPT)
 */
-
 
 int *chkpt_rd_stype(void)
 {
@@ -28,21 +29,23 @@ int *chkpt_rd_stype(void)
 
   stype = init_int_array(nshell);
 
-  psio_read_entry(PSIF_CHKPT, "::Shell ang. mom.", (char *) stype, nshell*sizeof(int));
+  psio_read_entry(PSIF_CHKPT, "::Shell ang. mom.", (char *) stype, 
+                  nshell*sizeof(int));
 
   return stype;
 }
+
 
 /*!
 ** chkpt_wt_stype(): 	Writes out an array of the angular momentum numbers of 
 **			the shells.
 **
-**  arguments: 
-**  \param int *stype:	an array of the angular momentum numbers of the
-**			shells.
+**  \param stype = an array of the angular momentum numbers of the shells
+**
 **  returns: none
+**
+** \ingroup (CHKPT)
 */
-
 
 void chkpt_wt_stype(int *stype)
 {
@@ -50,5 +53,6 @@ void chkpt_wt_stype(int *stype)
 
   nshell = chkpt_rd_nshell();
 
-  psio_write_entry(PSIF_CHKPT, "::Shell ang. mom.", (char *) stype, nshell*sizeof(int));
+  psio_write_entry(PSIF_CHKPT, "::Shell ang. mom.", (char *) stype, 
+                   nshell*sizeof(int));
 }

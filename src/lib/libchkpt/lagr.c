@@ -1,5 +1,6 @@
 /*!
   \file lagr.c
+  \ingroup (CHKPT)
 */
 
 #include <stdio.h>
@@ -16,6 +17,8 @@
 **
 **   returns: 
 **	double **lagr	a matrix nmo by nmo.
+**
+** \ingroup(CHKPT)
 */
 double **chkpt_rd_lagr(void)
 {
@@ -31,13 +34,15 @@ double **chkpt_rd_lagr(void)
   return lagr;
 }
 
+
 /*!
 ** chkpt_wt_lagr():  Writes the MO lagrangian matrix for RHF/ROHF.
 **
-**  argument: 
-**    \param double **lagr	a matrix nmo by nmo.
+**  Arguments: 
+**    \param lagr = Lagrangian matrix with dimensions nmo by nmo.
 **
 ** returns: none
+** \ingroup(CHKPT)
 */
 void chkpt_wt_lagr(double **lagr)
 {
@@ -57,6 +62,7 @@ void chkpt_wt_lagr(double **lagr)
 **
 **   returns: 
 **	double **lagr	a matrix nmo by nmo.
+** \ingroup(CHKPT)
 */
 double **chkpt_rd_alpha_lagr(void)
 {
@@ -72,13 +78,15 @@ double **chkpt_rd_alpha_lagr(void)
   return lagr;
 }
 
+
 /*!
 ** chkpt_wt_alpha_lagr():  Writes the alpha MO lagrangian matrix for UHF.
 **
-**  argument: 
-**    \param double **lagr	a matrix nmo by nmo.
+**  Arguments: 
+**    \param lagr = Lagrangian matrix of size nmo by nmo.
 **
 ** returns: none
+** \ingroup(CHKPT)
 */
 void chkpt_wt_alpha_lagr(double **lagr)
 {
@@ -90,6 +98,7 @@ void chkpt_wt_alpha_lagr(double **lagr)
 		   nmo*nmo*sizeof(double));
 }
 
+
 /*!
 ** chkpt_rd_beta_lagr():  Reads in the beta MO lagrangian matrix for UHF.
 **
@@ -97,6 +106,7 @@ void chkpt_wt_alpha_lagr(double **lagr)
 **
 **   returns: 
 **	double **lagr	a matrix nmo by nmo.
+** \ingroup (CHKPT)
 */
 double **chkpt_rd_beta_lagr(void)
 {
@@ -112,13 +122,15 @@ double **chkpt_rd_beta_lagr(void)
   return lagr;
 }
 
+
 /*!
 ** chkpt_wt_beta_lagr():  Writes the beta MO lagrangian matrix for UHF.
 **
 **  argument: 
-**    \param double **lagr	a matrix nmo by nmo.
+**    \param lagr = Lagrangian matrix of size nmo by nmo.
 **
 ** returns: none
+** \ingroup (CHKPT)
 */
 void chkpt_wt_beta_lagr(double **lagr)
 {

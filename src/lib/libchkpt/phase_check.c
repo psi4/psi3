@@ -1,5 +1,6 @@
 /*!
   \file phase_check.c
+  \ingroup (CHKPT)
 */
 
 #include "chkpt.h"
@@ -15,7 +16,9 @@
 **
 ** arguments: none
 **
-** returns: int pcheck;
+** returns: pcheck = Phase check flag (1 if phase has been checked, else 0)
+**
+** \ingroup (CHKPT)
 */
 int chkpt_rd_phase_check(void)
 {
@@ -25,6 +28,7 @@ int chkpt_rd_phase_check(void)
   return pcheck;
 }
 
+
 /*!
 ** void chkpt_wt_phase_check(int)
 **
@@ -32,10 +36,11 @@ int chkpt_rd_phase_check(void)
 ** the phases of the molecular orbitals relative to the guess orbitals.  This
 ** is important for restarting correlated wfn calculations from earlier vectors.
 **
-** arguments: 
-**  \param int pcheck
+** \param pcheck = Phase check flag (1 if phase has been checked, else 0)
 **
 ** returns: none
+** 
+** \ingroup (CHKPT)
 */
 
 void chkpt_wt_phase_check(int pcheck)

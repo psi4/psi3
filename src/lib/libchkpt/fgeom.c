@@ -1,5 +1,6 @@
 /*!
   \file fgeom.c
+  \ingroup (CHKPT)
 */
 
 #include <stdio.h>
@@ -11,9 +12,9 @@
 /*!
 ** chkpt_rd_fgeom():  Reads in full cartesian geometry including dummy atoms
 **
-**   takes no arguments.
-**   returns: double **full_geom;
-**     
+** takes no arguments.
+** returns: double **full_geom;
+** \ingroup (CHKPT)    
 */
 
 double **chkpt_rd_fgeom(void)
@@ -34,11 +35,11 @@ double **chkpt_rd_fgeom(void)
 /*!
 ** chkpt_wt_fgeom():  Writes out full cartesian geometry including dummy atoms
 **
-**  arguments: 
-**   \param double **full_geom;
+** arguments: 
+**   \param full_geom = Matrix for cartesian coordinates
 **
 ** returns: none
-**     
+** \ingroup (CHKPT) 
 */
 
 void chkpt_wt_fgeom(double **fgeom)

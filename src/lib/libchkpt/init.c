@@ -1,5 +1,6 @@
 /*!
   \file init.c
+  \ingroup (CHKPT)
 */
 
 #include "chkpt.h"
@@ -14,6 +15,7 @@
 **    so that it can open the file.  
 **
 **  returns: zero.  Perhaps this will change some day.
+** \ingroup (CHKPT)
 */
 
 int chkpt_init(void)
@@ -22,11 +24,4 @@ int chkpt_init(void)
 
   return 0;
 }
-
-
-
-
-
-
-
 

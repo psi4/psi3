@@ -1,5 +1,6 @@
 /*!
   \file snuc.c
+  \ingroup (CHKPT)
 */
 
 #include <stdio.h>
@@ -13,10 +14,11 @@
 **
 **  takes no arguments.
 **
-**  returns: int *snuc  an array of the nuclei numbers to which shells 
-**                         belong to.
+**  returns: snuc = an array of the nuclei numbers to which shells 
+**                  belong to.
+**
+** \ingroup (CHKPT)
 */
-
 
 int *chkpt_rd_snuc(void)
 {
@@ -27,20 +29,22 @@ int *chkpt_rd_snuc(void)
 
   snuc = init_int_array(nshell);
 
-  psio_read_entry(PSIF_CHKPT, "::Shell nucleus", (char *) snuc, nshell*sizeof(int));
+  psio_read_entry(PSIF_CHKPT, "::Shell nucleus", (char *) snuc, 
+                  nshell*sizeof(int));
 
   return snuc;
 }
 
+
 /*!
 ** chkpt_wt_snuc(): Writes out array of the nuclei numbers shells belong to.
 **
-**  arguments:
-**  \param int *snuc:  an array of the nuclei numbers to which shells 
-**                      belong to.
+**  \param snuc = an array of the nuclei numbers to which shells belong to
+**
 **  returns: none
+**
+** \ingroup (CHKPT)
 */
-
 
 void chkpt_wt_snuc(int *snuc)
 {
@@ -48,5 +52,6 @@ void chkpt_wt_snuc(int *snuc)
 
   nshell = chkpt_rd_nshell();
 
-  psio_write_entry(PSIF_CHKPT, "::Shell nucleus", (char *) snuc, nshell*sizeof(int));
+  psio_write_entry(PSIF_CHKPT, "::Shell nucleus", (char *) snuc, 
+                   nshell*sizeof(int));
 }

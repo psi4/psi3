@@ -1,5 +1,6 @@
 /*!
   \file ref.c
+  \ingroup (CHKPT)
 */
 
 #include "chkpt.h"
@@ -11,7 +12,8 @@
 ** Reads the reference type from the flag in checkpoint
 ** 0 = RHF | 1 = UHF | 2 = ROHF | 3 = TCSCF 
 **
-** returns: int refnum   number indicating the reference.
+** returns: refnum = number indicating the reference.
+** \ingroup (CHKPT)
 */
 
 int chkpt_rd_ref(void)
@@ -23,13 +25,14 @@ int chkpt_rd_ref(void)
   return refnum;
 }
 
+
 /*!
 ** void chkpt_wt_ref(int)  
 ** Writes out the reference type from the flag in checkpoint
 ** 0 = RHF | 1 = UHF | 2 = ROHF | 3 = TCSCF 
 **
-** arguments: 
-**  \param int refnum   number indicating the reference.
+** \param refnum = number indicating the reference.
+** \ingroup (CHKPT)
 */
 
 void chkpt_wt_ref(int refnum)

@@ -1,5 +1,6 @@
 /*!
   \file atom_pos.c
+  \ingroup (CHKPT)
 */
 
 #include "chkpt.h"
@@ -22,8 +23,8 @@
 **	This data is sufficient to define stabilizers of the nuclei.
 **
 **  returns: int *atom_position  an array of symmetry positions of atoms 
+**  \ingroup (CHKPT)
 */
-
 
 int *chkpt_rd_atom_position(void)
 {
@@ -32,11 +33,12 @@ int *chkpt_rd_atom_position(void)
   natom = chkpt_rd_natom();
   atom_position = init_int_array(natom);
 
-  psio_read_entry(PSIF_CHKPT, "::Atomic symm positions", (char *) atom_position, 
-		  natom*sizeof(int));
+  psio_read_entry(PSIF_CHKPT, "::Atomic symm positions", 
+                  (char *) atom_position, natom*sizeof(int));
 
   return atom_position;
 }
+
 
 /*!
 ** chkpt_wt_atom_position() 
@@ -52,12 +54,12 @@ int *chkpt_rd_atom_position(void)
 **	64  - atom in the sigma_xz plane
 **	128 - atom in the sigma_yz plane
 **	This data is sufficient to define stabilizers of the nuclei.
-** Arguments:
-**  \param int *atom_position  an array of symmetry positions of atoms
+**
+**  \param atom_position = an array of symmetry positions of atoms
 **
 **  returns: none
+**  \ingroup (CHKPT)
 */
-
 
 void chkpt_wt_atom_position(int *atom_position)
 {
@@ -65,6 +67,6 @@ void chkpt_wt_atom_position(int *atom_position)
 
   natom = chkpt_rd_natom();
 
-  psio_write_entry(PSIF_CHKPT, "::Atomic symm positions", (char *) atom_position, 
-		   natom*sizeof(int));
+  psio_write_entry(PSIF_CHKPT, "::Atomic symm positions", 
+                   (char *) atom_position, natom*sizeof(int));
 }

@@ -1,5 +1,6 @@
 /*!
   \file nshell.c
+  \ingroup (CHKPT)
 */
 
 #include "chkpt.h"
@@ -13,9 +14,9 @@
 ** 15 primitives, and 7 shells. 
 ** Shells of all atoms are counted (compare nprim).
 **
-**   returns: int nshell   total number of shells.
+** returns: nshell = total number of shells.
+** \ingroup (CHKPT)
 */
-
 
 int chkpt_rd_nshell(void)
 {
@@ -25,6 +26,7 @@ int chkpt_rd_nshell(void)
   return nshell;
 }
 
+
 /*!
 ** void chkpt_wt_nshell(int) 
 ** Writes out the total number of shells. For example,
@@ -32,10 +34,11 @@ int chkpt_rd_nshell(void)
 ** 15 primitives, and 7 shells. 
 ** Shells of all atoms are counted (compare nprim).
 **
-** arugments: 
-**  \param int nshell   total number of shells.
+** \param nshell = total number of shells.
 **
 ** returns:none 
+**
+** \ingroup (CHKPT)
 */
 
 void chkpt_wt_nshell(int nshell)

@@ -1,5 +1,6 @@
 /*!
   \file nmo.c
+  \ingroup (CHKPT)
 */
 
 #include "chkpt.h"
@@ -10,9 +11,9 @@
 ** int chkpt_rd_nmo()  
 ** Reads in the total number of molecular orbitals.
 **
-** returns: int nmo   total number of molecular orbitals.
+** returns: nmo = total number of molecular orbitals.
+** \ingroup (CHKPT)
 */
-
 
 int chkpt_rd_nmo(void)
 {
@@ -23,12 +24,14 @@ int chkpt_rd_nmo(void)
   return nmo;
 }
 
+
 /*!
 ** void chkpt_wt_nmo(int)  
 ** Writes out the total number of molecular orbitals.
 **
-** arguments: 
-**  \param int nmo   total number of molecular orbitals.
+** \param nmo = total number of molecular orbitals.
+**
+** \ingroup (CHKPT)
 */
 
 void chkpt_wt_nmo(int nmo)

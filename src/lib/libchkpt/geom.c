@@ -1,5 +1,6 @@
 /*!
   \file geom.c
+  \ingroup (CHKPT)
 */
 
 #include <stdio.h>
@@ -16,6 +17,7 @@
 **     of doubles.  The row index is the atomic index, and the column is the
 **     cartesian direction index (x=0, y=1, z=2).  Therefore, geom[2][0] 
 **     would be the x-coordinate of the third atom.
+** \ingroup (CHKPT)
 */
 
 
@@ -28,20 +30,22 @@ double **chkpt_rd_geom(void)
 
   geom = block_matrix(natom, 3);
 
-  psio_read_entry(PSIF_CHKPT, "::Geometry", (char *) geom[0], (int) 3*natom*sizeof(double));
+  psio_read_entry(PSIF_CHKPT, "::Geometry", (char *) geom[0], 
+                  (int) 3*natom*sizeof(double));
 
   return geom;
 }
 
+
 /* chkpt_wt_geom(): Writes out the cartesian geometry to chkpt
 **
 ** arguments: 
-**  \param double **geom   The cartesian geometry is supplied as a matrix
+**  \param geom =  The cartesian geometry is supplied as a matrix
 **     of doubles.  The row index is the atomic index, and the column is the
 **     cartesian direction index (x=0, y=1, z=2).  Therefore, geom[2][0] 
 **     would be the x-coordinate of the third atom.
+** \ingroup (CHKPT)
 */
-
 
 void chkpt_wt_geom(double **geom)
 {
@@ -49,5 +53,6 @@ void chkpt_wt_geom(double **geom)
 
   natom = chkpt_rd_natom();
 
-  psio_write_entry(PSIF_CHKPT, "::Geometry", (char *) geom[0], (int) 3*natom*sizeof(double));
+  psio_write_entry(PSIF_CHKPT, "::Geometry", (char *) geom[0], 
+                   (int) 3*natom*sizeof(double));
 }

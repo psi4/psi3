@@ -1,5 +1,6 @@
 /*!
   \file efzc.c
+  \ingroup (CHKPT)
 */
 
 #include <stdio.h>
@@ -14,23 +15,26 @@
 **   takes no arguments.
 **
 **   returns: double efzc  the frozen-core energy.
+** \ingroup (CHKPT)
 */
 double chkpt_rd_efzc(void)
 {
   double efzc;
 
-  psio_read_entry(PSIF_CHKPT, "::Frozen core energy", (char *) &efzc, sizeof(double));
+  psio_read_entry(PSIF_CHKPT, "::Frozen core energy", (char *) &efzc, 
+                  sizeof(double));
 
   return efzc;
 }
 
+
 /*!
 ** chkpt_wt_efzc(): Writes out the frozen-core energy.
 **
-** arguments: 
-**  \param double efzc  the frozen-core energy.
+** \param efzc = the frozen-core energy.
 **
 ** returns: none
+** \ingroup (CHKPT)
 */
 void chkpt_wt_efzc(double efzc)
 {

@@ -1,5 +1,6 @@
 /*!
   \file etot.c
+  \ingroup (CHKPT)
 */
 
 #include <psifiles.h>
@@ -8,9 +9,10 @@
 /*!
 ** chkpt_rd_etot(): Reads in the total energy.
 **
-**   takes no arguments.
+**  takes no arguments.
 **
-**   returns: double etot  the total energy.
+**  returns: double etot  the total energy.
+**  \ingroup (CHKPT)
 */
 
 double chkpt_rd_etot(void)
@@ -26,10 +28,12 @@ double chkpt_rd_etot(void)
 **  arguments: 
 **   \param double etot  the total energy.
 **
-** returns: none
+**  returns: none
+**  \ingroup (CHKPT)
 */
 
 void chkpt_wt_etot(double etot)
 {
-  psio_write_entry(PSIF_CHKPT, "::Total energy", (char *) &etot, sizeof(double));
+  psio_write_entry(PSIF_CHKPT, "::Total energy", (char *) &etot, 
+		   sizeof(double));
 }

@@ -1,5 +1,6 @@
 /*!
   \file shell_transm.c
+  \ingroup (CHKPT)
 */
 
 #include <stdio.h>
@@ -14,9 +15,11 @@
 **
 **  takes no arguments.
 **
-**  returns: int **shell_transm	
+**  returns: 
+**    shell_transm = matrix of nshell*nirrpes ints w/ symmetry info
+**
+** \ingroup (CHKPT)
 */
-
 
 int **chkpt_rd_shell_transm(void)
 {
@@ -36,14 +39,16 @@ int **chkpt_rd_shell_transm(void)
   return shell_transm;
 }
 
+
 /*!
 ** chkpt_wt_shell_transm():	Write out a matrix of nshell*nirreps integers 
 **			        that contains symmetry information.
 **
-**  arguments: 
-**   \param int **shell_transm
+** \param shell_transm = matrix of nshell*nirreps ints w/ symmetry info
 **
 ** returns: none
+**
+** \ingroup (CHKPT)
 */
 
 void chkpt_wt_shell_transm(int **shell_transm)

@@ -1,5 +1,6 @@
 /*!
   \file contr.c
+  \ingroup (CHKPT)
 */
 
 #include <stdio.h>
@@ -19,8 +20,8 @@
 **  nprim, but each primitive Gaussian contributes to only one shell
 **  (and one basis function, of course), so most of these values are
 **  zero and not returned.
+** \ingroup (CHKPT)
 */
-
 
 double *chkpt_rd_contr(void)
 {
@@ -49,16 +50,16 @@ double *chkpt_rd_contr(void)
   return contr;
 }
 
+
 /*!
 ** chkpt_wt_contr(): Write out the normalized contraction coefficients.
 **
-**  arguments:
-**  \param double *contr: The array of contraction coefficients.  The
-**  ordering is that given in cints.
+**  \param contr = The array of contraction coefficients.  The
+**                 ordering is that given in cints.
 **
 **  returns: none
+**  \ingroup (CHKPT)
 */
-
 
 void chkpt_wt_contr(double *contr)
 {

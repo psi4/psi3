@@ -1,5 +1,6 @@
 /*!
   \file sloc.c
+  \ingroup (CHKPT)
 */
 
 #include <stdio.h>
@@ -14,10 +15,11 @@
 **
 **  takes no arguments.
 **
-**  returns: int *sloc	An array nshell long of the numbers of 
-**			the first AOs from the shells.
+**  returns: sloc = An array nshell long of the numbers of 
+**                  the first AOs from the shells.
+**
+** \ingroup (CHKPT)
 */
-
 
 int *chkpt_rd_sloc(void)
 {
@@ -28,21 +30,23 @@ int *chkpt_rd_sloc(void)
 
   sloc = init_int_array(nshell);
 
-  psio_read_entry(PSIF_CHKPT, "::First AO per shell", (char *) sloc, nshell*sizeof(int));
+  psio_read_entry(PSIF_CHKPT, "::First AO per shell", (char *) sloc, 
+                  nshell*sizeof(int));
 
   return sloc;
 }
 
-/*!
-** chkpt_wt_sloc():	Writes out an array of the numbers of the first AO 
-**			from the shells.
-**
-**  arguments: 
-**  \param int *sloc:	An array nshell long of the numbers of 
-**			the first AOs from the shells.
-**  returns: none
-*/
 
+/*!
+** chkpt_wt_sloc():	
+**  Writes out an array of the numbers of the first AO from the shells.
+**
+**  \param sloc = An array nshell long of the numbers of the first AOs 
+**                from the shells.
+**  returns: none
+**
+** \ingroup (CHKPT)
+*/
 
 void chkpt_wt_sloc(int *sloc)
 {
@@ -50,5 +54,6 @@ void chkpt_wt_sloc(int *sloc)
 
   nshell = chkpt_rd_nshell();
 
-  psio_write_entry(PSIF_CHKPT, "::First AO per shell", (char *) sloc, nshell*sizeof(int));
+  psio_write_entry(PSIF_CHKPT, "::First AO per shell", (char *) sloc, 
+                   nshell*sizeof(int));
 }

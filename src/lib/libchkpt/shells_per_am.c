@@ -1,5 +1,6 @@
 /*!
   \file shells_per_am.c
+  \ingroup (CHKPT)
 */
 
 #include "chkpt.h"
@@ -11,9 +12,10 @@
 ** int *chkpt_rd_shells_per_am() 
 ** Reads in the numbers of shells of each angular momentum.
 **
-**  returns: int *shells_per_am
+** returns: shells_per_am = array of shells per angular momentum
+**
+** \ingroup (CHKPT)
 */
-
 
 int *chkpt_rd_shells_per_am(void)
 {
@@ -29,16 +31,17 @@ int *chkpt_rd_shells_per_am(void)
   return shells_per_am; 
 }
 
+
 /*!
 ** void chkpt_wt_shells_per_am(int *) 
 ** Writes out the numbers of shells of each angular momentum.
 **
-** arguments: 
-**   \param int *shells_per_am
+** \param shells_per_am = array of shells per angular momentum
 **
 ** returns: none
+**
+** \ingroup (CHKPT)
 */
-
 
 void chkpt_wt_shells_per_am(int *shells_per_am)
 {

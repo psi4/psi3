@@ -1,5 +1,6 @@
 /*!
   \file nso.c
+  \ingroup (CHKPT)
 */
 
 #include "chkpt.h"
@@ -10,9 +11,9 @@
 ** int chkpt_rd_nso()  
 ** Reads in the total number of SOs.
 **
-** returns: int nso   total number of symmetry-adapted basis functions.
+** returns: nso = total number of symmetry-adapted basis functions.
+** \ingroup (CHKPT)
 */
-
 
 int chkpt_rd_nso(void)
 {
@@ -22,14 +23,16 @@ int chkpt_rd_nso(void)
   return nso;
 }
 
+
 /*!
 ** void chkpt_wt_nso(int)  
 ** Writes out the total number of SOs.
 **
-** arguments: 
-**   \param int nso  total number of symmetry-adapted basis functions.
+** \param nso = total number of symmetry-adapted basis functions.
 **
 ** returns: none
+**
+** \ingroup (CHKPT)
 */
 
 void chkpt_wt_nso(int nso)

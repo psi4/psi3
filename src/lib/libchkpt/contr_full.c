@@ -1,5 +1,6 @@
 /*!
   \file contr_full.c
+  \ingroup CHKPT
 */
 
 #include <stdio.h>
@@ -15,8 +16,8 @@
 **
 **  returns: double **contr Normalized contraction coefficients are
 **  returned as a matrix of doubles.
+** \ingroup (CHKPT)
 */
-
 
 double **chkpt_rd_contr_full(void)
 {

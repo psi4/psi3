@@ -1,5 +1,6 @@
 /*!
   \file sloc_new.c
+  \ingroup (CHKPT)
 */
 
 #include "chkpt.h"
@@ -12,10 +13,10 @@
 ** Read in an array of the numbers of the first basis 
 ** functions (not AOs as rd_sloc does)  from the shells.
 **
-** returns: int *sloc	Read in an array nshell long of the numbers of 
-**			the first basis functions from the shells.
+** returns: 
+**   sloc = Read in an array nshell long of the numbers of 
+**          the first basis functions from the shells.
 */
-
 
 int *chkpt_rd_sloc_new(void)
 {
@@ -25,19 +26,20 @@ int *chkpt_rd_sloc_new(void)
   nshell = chkpt_rd_nshell();
   sloc_new = init_int_array(nshell);
 
-  psio_read_entry(PSIF_CHKPT, "::First BF per shell", (char *) sloc_new, nshell*sizeof(int));
+  psio_read_entry(PSIF_CHKPT, "::First BF per shell", (char *) sloc_new, 
+                  nshell*sizeof(int));
 
   return sloc_new;
 }
+
 
 /*!
 ** void chkpt_wt_sloc_new(int *)	
 ** Writes out an array of the numbers of the first basis 
 ** functions (not AOs as rd_sloc does)  from the shells.
 **
-** arguments:
-** \param int *sloc	An array nshell long of the numbers of 
-**			the first basis functions from the shells.
+** \param sloc = An array nshell long of the numbers of 
+**               the first basis functions from the shells.
 **
 ** returns: none
 */

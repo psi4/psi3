@@ -1,5 +1,6 @@
 /*!
   \file usotao.c
+  \ingroup (CHKPT)
 */
 
 #include <stdio.h>
@@ -11,11 +12,12 @@
 /*!
 ** chkpt_rd_usotao(): Read in the SO to AO transformation matrix 
 **
-**  takes no arguments.
+** takes no arguments.
 **
-**  returns: double **usotao A num_so by num_ao matrix of doubles
+** returns: usotao = A num_so by num_ao matrix of doubles
+** 
+** \ingroup (CHKPT)
 */
-
 
 double **chkpt_rd_usotao(void)
 {
@@ -36,13 +38,15 @@ double **chkpt_rd_usotao(void)
   return usotao;
 }
 
+
 /*!
 ** chkpt_wt_usotao(): Writes out the SO to AO transformation matrix 
 **
-** arguments:
-** \param double **usotao  A num_so by num_ao matrix of doubles
+** \param usotao = A num_so by num_ao matrix of doubles
 **
 ** returns: none
+**
+** \ingroup (CHKPT)
 */
 
 void chkpt_wt_usotao(double **usotao)

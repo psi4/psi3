@@ -29,16 +29,17 @@ int *chkpt_rd_orbspi(void)
   nirreps = chkpt_rd_nirreps();
   orbspi = init_int_array(nirreps);
 
-  psio_read_entry(PSIF_CHKPT, "::MO's per irrep", (char *) orbspi, nirreps*sizeof(int));
+  psio_read_entry(PSIF_CHKPT, "::MO's per irrep", (char *) orbspi, 
+                  nirreps*sizeof(int));
 
   return orbspi;
 }
 
+
 /*!
 ** chkpt_wt_orbspi():  Writes the number of molecular orbitals in each irrep.
 **
-**  arguments:
-**   \param int *orbspi  an array which has an element for each irrep of the
+** \param orbspi = an array which has an element for each irrep of the
 **                 point group of the molecule (n.b. not just the ones
 **                 with a non-zero number of basis functions). each 
 **                 element contains the number of molecular orbitals for
@@ -53,5 +54,6 @@ void chkpt_wt_orbspi(int *orbspi)
 
   nirreps = chkpt_rd_nirreps();
 
-  psio_write_entry(PSIF_CHKPT, "::MO's per irrep", (char *) orbspi, nirreps*sizeof(int));
+  psio_write_entry(PSIF_CHKPT, "::MO's per irrep", (char *) orbspi, 
+                   nirreps*sizeof(int));
 }

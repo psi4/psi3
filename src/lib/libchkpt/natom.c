@@ -1,5 +1,6 @@
 /*!
   \file natom.c
+  \ingroup (CHKPT)
 */
 
 #include "chkpt.h"
@@ -10,7 +11,8 @@
 **  int chkpt_rd_natom() 
 **  Reads in the total number of atoms.
 **
-**  returns: int natom   total number of atoms.
+**  returns: natom = total number of atoms.
+** \ingroup (CHKPT)
 */
 
 int chkpt_rd_natom(void)
@@ -21,17 +23,19 @@ int chkpt_rd_natom(void)
   return natom;
 }
 
+
 /*!
 **  void chkpt_wt_natom(int) 
 **  Writes out the total number of atoms.
 **
-**  arguments: 
-**   \param int natom   total number of atoms.
+**  \param natom = total number of atoms.
 **
 ** returns: none
+** \ingroup (CHKPT)
 */
 
 void chkpt_wt_natom(int natom)
 {  
   psio_write_entry(PSIF_CHKPT, "::Num. atoms", (char *) &natom, sizeof(int));
 }
+

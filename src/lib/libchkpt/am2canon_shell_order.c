@@ -1,5 +1,8 @@
+/*! \defgroup CHKPT libchkpt: The Checkpoint Interface library */
+
 /*!
   \file am2canon_shell_order.c
+  \ingroup (CHKPT)
 */
 
 #include "chkpt.h"
@@ -14,6 +17,7 @@
 ** list of shells.
 **
 ** returns: int *am2can_shell_order
+** \ingroup(CHKPT)
 */
 
 
@@ -24,11 +28,12 @@ int *chkpt_rd_am2canon_shell_order(void)
   nshell = chkpt_rd_nshell();
   am2can_sh_ord = init_int_array(nshell);
 
-  psio_read_entry(PSIF_CHKPT, "::AM -> canonical shell map", (char *) am2can_sh_ord, 
-		  nshell*sizeof(int));
+  psio_read_entry(PSIF_CHKPT, "::AM -> canonical shell map", 
+                  (char *) am2can_sh_ord, nshell*sizeof(int));
 
   return am2can_sh_ord;
 }
+
 
 /*!
 ** void chkpt_wt_am2canon_shell_order(int *) 
@@ -36,12 +41,11 @@ int *chkpt_rd_am2canon_shell_order(void)
 ** to the canonical (in the order of appearance)
 ** list of shells.
 **
-** arguments: 
-**  \param int *am2can_shell_order
+**  \param am2can_shell_order = array to store the mapping array
 **
 ** returns: none
+** \ingroup(CHKPT)
 */
-
 
 void chkpt_wt_am2canon_shell_order(int *am2can_sh_ord)
 {
@@ -49,6 +53,6 @@ void chkpt_wt_am2canon_shell_order(int *am2can_sh_ord)
 
   nshell = chkpt_rd_nshell();
 
-  psio_write_entry(PSIF_CHKPT, "::AM -> canonical shell map", (char *) am2can_sh_ord, 
-		   nshell*sizeof(int));
+  psio_write_entry(PSIF_CHKPT, "::AM -> canonical shell map", 
+                   (char *) am2can_sh_ord, nshell*sizeof(int));
 }

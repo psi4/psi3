@@ -1,5 +1,6 @@
 /*!
   \file iopen.c
+  \ingroup (CHKPT)
 */
 
 #include "chkpt.h"
@@ -14,8 +15,10 @@
 ** Note : IOPEN = MM * (MM + 1), where MM is the total number 
 ** of irreps containing singly occupied orbitals.
 **
-**  returns: int iopen	dimensionality of ALPHA and BETA vectors of coupling
-**			coefficients for open shells. 
+** returns: 
+**   iopen = dimensionality of ALPHA and BETA vectors of coupling
+**           coefficients for open shells. 
+** \ingroup (CHKPT)
 */
 
 int chkpt_rd_iopen(void)
@@ -26,6 +29,7 @@ int chkpt_rd_iopen(void)
   return iopen;
 }
 
+
 /*!
 ** void chkpt_wt_iopen(int)
 ** Writes out the dimensionality of ALPHA and BETA vectors of two-electron 
@@ -35,8 +39,9 @@ int chkpt_rd_iopen(void)
 ** of irreps containing singly occupied orbitals.
 **
 **  arguments: 
-**   \param int iopen	dimensionality of ALPHA and BETA vectors of coupling
-**			coefficients for open shells. 
+**   \param iopen = dimensionality of ALPHA and BETA vectors of coupling
+**                  coefficients for open shells. 
+** \ingroup (CHKPT)
 */
 
 void chkpt_wt_iopen(int iopen)

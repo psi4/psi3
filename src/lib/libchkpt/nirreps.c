@@ -1,5 +1,6 @@
 /*!
   \file nirreps.c
+  \ingroup (CHKPT)
 */
 
 #include "chkpt.h"
@@ -11,7 +12,8 @@
 ** Reads in the total number of irreducible representations
 ** in the point group in which the molecule is being considered.
 **
-** returns: int nirreps   total number of irreducible representations.
+** returns: nirreps = total number of irreducible representations.
+** \ingroup (CHKPT)
 */
 
 int chkpt_rd_nirreps(void)
@@ -22,15 +24,16 @@ int chkpt_rd_nirreps(void)
   return nirreps;
 }
 
+
 /*!
 ** void chkpt_wt_nirreps(int)  
 ** Writes out the total number of irreducible representations
 ** in the point group in which the molecule is being considered.
 **
-** arguments: 
-**  \param int nirreps   total number of irreducible representations.
+** \param nirreps = total number of irreducible representations.
 **
 ** returns: none
+** \ingroup (CHKPT)
 */
 
 void chkpt_wt_nirreps(int nirreps)

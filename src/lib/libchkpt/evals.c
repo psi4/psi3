@@ -1,5 +1,6 @@
 /*!
   \file evals.c
+  \ingroup (CHKPT)
 */
 
 #include <stdio.h>
@@ -18,6 +19,7 @@
 **      (i.e. for sto water, the four a1 eigenvalues all come first, and 
 **      those four are ordered from lowest energy to highest energy,
 **      followed by the single b1 eigenvalue, etc.)
+** \ingroup (CHKPT)
 */
 
 double *chkpt_rd_evals(void)
@@ -42,6 +44,7 @@ double *chkpt_rd_evals(void)
 **      (i.e. for sto water, the four a1 eigenvalues all come first, and 
 **      those four are ordered from lowest energy to highest energy,
 **      followed by the single b1 eigenvalue, etc.)
+** \ingroup (CHKPT)
 */
 
 double *chkpt_rd_alpha_evals(void)
@@ -65,6 +68,7 @@ double *chkpt_rd_alpha_evals(void)
 **      (i.e. for sto water, the four a1 eigenvalues all come first, and 
 **      those four are ordered from lowest energy to highest energy,
 **      followed by the single b1 eigenvalue, etc.)
+** \ingroup (CHKPT)
 */
 
 double *chkpt_rd_beta_evals(void)
@@ -78,17 +82,19 @@ double *chkpt_rd_beta_evals(void)
   return energies;
 }
 
+
 /*!
 ** chkpt_wt_evals():  Writes the SCF orbital energies for UHF.
 **
 ** arguments: 
-**  \param double *evals  an array of _all_ of the SCF eigenvalues,
+**  \param evals = an array of _all_ of the SCF eigenvalues,
 **      ordered by irrep, and by increasing energy within each irrep.  
 **      (i.e. for sto water, the four a1 eigenvalues all come first, and 
 **      those four are ordered from lowest energy to highest energy,
 **      followed by the single b1 eigenvalue, etc.)
 **
 ** returns: none
+** \ingroup (CHKPT)
 */
 
 void chkpt_wt_evals(double *energies)
@@ -97,17 +103,19 @@ void chkpt_wt_evals(double *energies)
 		   chkpt_rd_nmo()*sizeof(double));
 }
 
+
 /*!
 ** chkpt_wt_alpha_evals():  Writes the SCF alpha orbital energies for UHF.
 **
 ** arguments: 
-**  \param double *evals  an array of _all_ of the alpha SCF eigenvalues,
+**  \param evals = an array of _all_ of the alpha SCF eigenvalues,
 **      ordered by irrep, and by increasing energy within each irrep.  
 **      (i.e. for sto water, the four a1 eigenvalues all come first, and 
 **      those four are ordered from lowest energy to highest energy,
 **      followed by the single b1 eigenvalue, etc.)
 **
 ** returns: none
+** \ingroup (CHKPT)
 */
 
 void chkpt_wt_alpha_evals(double *energies)
@@ -116,17 +124,19 @@ void chkpt_wt_alpha_evals(double *energies)
 		   chkpt_rd_nmo()*sizeof(double));
 }
 
+
 /*!
 ** chkpt_wt_beta_evals():  Writes the SCF beta orbital energies for UHF.
 **
 ** arguments: 
-**  \param double *evals  an array of _all_ of the beta SCF eigenvalues,
+**  \param evals =  an array of _all_ of the beta SCF eigenvalues,
 **      ordered by irrep, and by increasing energy within each irrep.  
 **      (i.e. for sto water, the four a1 eigenvalues all come first, and 
 **      those four are ordered from lowest energy to highest energy,
 **      followed by the single b1 eigenvalue, etc.)
 **
 ** returns: none
+** \ingroup (CHKPT)
 */
 
 void chkpt_wt_beta_evals(double *energies)

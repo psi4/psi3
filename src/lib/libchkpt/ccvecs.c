@@ -1,5 +1,6 @@
 /*!
   \file ccvecs.c
+  \ingroup (CHKPT)
 */
 
 #include <stdio.h>
@@ -31,7 +32,8 @@
 **
 **   returns: 
 **	double **ccvecs	a matrix 2 by abs(IOPEN) rows of which are coupling 
-**			coefficient matrices for open-shells in packed form.
+**        coefficient matrices for open-shells in packed form.
+** \ingroup (CHKPT)
 */
 double **chkpt_rd_ccvecs(void)
 {
@@ -52,15 +54,16 @@ double **chkpt_rd_ccvecs(void)
   else return NULL;
 }
 
+
 /*!
-** chkpt_wt_ccvecs():	Writes a matrix of coupling coefficients.  See the comments
-**                      chkpt_rd_ccvecs() above.
-**  argument: 
-**    \param double **ccvecs
-**                      a matrix 2 by abs(IOPEN) rows of which are coupling 
+** chkpt_wt_ccvecs():	Writes a matrix of coupling coefficients.  See the 
+**                      comments chkpt_rd_ccvecs() above.
+**
+**    \param ccvecs =   a matrix 2 by abs(IOPEN) rows of which are coupling 
 **			coefficient matrices for open-shells in packed form.
 **
 ** returns: none
+** \ingroup (CHKPT)
 */
 void chkpt_wt_ccvecs(double **ccvecs)
 {

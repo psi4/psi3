@@ -1,5 +1,6 @@
 /*!
   \file mxcoef.c
+  \ingroup (CHKPT)
 */
 
 #include "chkpt.h"
@@ -14,6 +15,7 @@
 **    orbitals for each irrep.  This gives the number of elements in the
 **    non-zero symmetry blocks of the SCF eigenvector.  For STO water 
 **    mxcoef = (4*4) + (0*0) + (1*1) + (2*2) = 21.  
+** \ingroup (CHKPT)
 */
 
 int chkpt_rd_mxcoef(void)
@@ -24,15 +26,16 @@ int chkpt_rd_mxcoef(void)
   return mxcoef;
 }
 
+
 /*!
 ** void chkpt_wt_mxcoef(int)  
 ** Writes out the value of the constant mxcoef.
 **  
-**  arguments: 
-**   \param int mxcoef   the sum of the squares of the number of symmetry
+**   \param mxcoef = the sum of the squares of the number of symmetry
 **    orbitals for each irrep.  This gives the number of elements in the
 **    non-zero symmetry blocks of the SCF eigenvector.  For STO water 
 **    mxcoef = (4*4) + (0*0) + (1*1) + (2*2) = 21.  
+** \ingroup (CHKPT)
 */
 
 void chkpt_wt_mxcoef(int mxcoef)

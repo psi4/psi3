@@ -1,5 +1,6 @@
 /*!
   \file calcs.c
+  \ingroup (CHKPT)
 */
 
 #include "chkpt.h"
@@ -10,7 +11,8 @@
 ** int chkpt_rd_ncalcs()  
 ** Reads in the total number of calculations.
 **
-** returns: int ncalcs   total number of calculations in checkpoint
+** returns: ncalcs = total number of calculations in checkpoint
+** \ingroup (CHKPT)
 */
 
 int chkpt_rd_ncalcs(void)

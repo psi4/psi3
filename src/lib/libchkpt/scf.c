@@ -1,5 +1,6 @@
 /*!
   \file scf.c
+  \ingroup (CHKPT)
 */
 
 #include <stdio.h>
@@ -13,7 +14,7 @@
 **  
 **   takes no arguments.
 **  
-**   returns: double **scf    This rectangular matrix has dimensions nso
+**   returns: double **scf = This rectangular matrix has dimensions nso
 **     by nmo (see: rd_nmo()). For STO water, scf_vector would 
 **     come out looking something like the following:
 **        
@@ -27,6 +28,8 @@
 **
 **    where the *** represent the non-zero values, and the 0.0 entries 
 **    represent (double)0.
+**
+** \ingroup (CHKPT)
 */
 double **chkpt_rd_scf(void)
 {
@@ -43,12 +46,13 @@ double **chkpt_rd_scf(void)
   return scf;
 }
 
+
 /*!
 ** chkpt_rd_alpha_scf(): Reads in the full alpha SCF eigenvector matrix for UHF
 **  
 **   takes no arguments.
 **  
-**   returns: double **scf    This rectangular matrix has dimensions nso
+**   returns: double **scf =  This rectangular matrix has dimensions nso
 **     by nmo (see: rd_nmo()). For STO water, scf_vector would 
 **     come out looking something like the following:
 **        
@@ -62,6 +66,8 @@ double **chkpt_rd_scf(void)
 **
 **    where the *** represent the non-zero values, and the 0.0 entries 
 **    represent (double)0.
+**
+** \ingroup (CHKPT)
 */
 double **chkpt_rd_alpha_scf(void)
 {
@@ -78,12 +84,13 @@ double **chkpt_rd_alpha_scf(void)
   return scf;
 }
 
+
 /*!
 ** chkpt_rd_beta_scf():  Reads in the full beta SCF eigenvector matrix for UHF.
 **  
 **   takes no arguments.
 **  
-**   returns: double **scf    This rectangular matrix has dimensions nso
+**   returns: double **scf = This rectangular matrix has dimensions nso
 **     by nmo (see: rd_nmo()). For STO water, scf_vector would 
 **     come out looking something like the following:
 **        
@@ -97,6 +104,8 @@ double **chkpt_rd_alpha_scf(void)
 **
 **    where the *** represent the non-zero values, and the 0.0 entries 
 **    represent (double)0.
+**
+** \ingroup (CHKPT)
 */
 double **chkpt_rd_beta_scf(void)
 {
@@ -113,11 +122,11 @@ double **chkpt_rd_beta_scf(void)
   return scf;
 }
 
+
 /*!
 ** chkpt_wt_scf():  Writes the full SCF eigenvector matrix for RHF/ROHF.
 **  
-** arguments: 
-**  \param double **scf    This rectangular matrix has dimensions nso
+** \param scf = This rectangular matrix has dimensions nso
 **     by nmo (see: rd_nmo()). For STO water, scf_vector would 
 **     come out looking something like the following:
 **        
@@ -137,6 +146,8 @@ double **chkpt_rd_beta_scf(void)
 ** NOTE: The input scf matrix must occupy a contiguous block of nmo x
 ** nso memory.  Use block_matrix() from libciomr to allocate space for
 ** the matrix.
+**
+** \ingroup (CHKPT)
 */
 void chkpt_wt_scf(double **scf)
 {
@@ -149,11 +160,11 @@ void chkpt_wt_scf(double **scf)
                    nso*nmo*sizeof(double));
 }
 
+
 /*!
 ** chkpt_wt_alpha_scf():  Writes the full alpha SCF eigenvector matrix for UHF.
 **  
-** arguments: 
-**  \param double **scf    This rectangular matrix has dimensions nso
+** \param scf = This rectangular matrix has dimensions nso
 **     by nmo (see: rd_nmo()). For STO water, scf_vector would 
 **     come out looking something like the following:
 **        
@@ -173,6 +184,8 @@ void chkpt_wt_scf(double **scf)
 ** NOTE: The input scf matrix must occupy a contiguous block of nmo x
 ** nso memory.  Use block_matrix() from libciomr to allocate space for
 ** the matrix.
+**
+** \ingroup (CHKPT)
 */
 void chkpt_wt_alpha_scf(double **scf)
 {
@@ -185,11 +198,11 @@ void chkpt_wt_alpha_scf(double **scf)
                    nso*nmo*sizeof(double));
 }
 
+
 /*!
 ** chkpt_wt_beta_scf():  Writes the full beta SCF eigenvector matrix for UHF.
 **  
-** arguments: 
-**  \param double **scf    This rectangular matrix has dimensions nso
+** \param scf = This rectangular matrix has dimensions nso
 **     by nmo (see: rd_nmo()). For STO water, scf_vector would 
 **     come out looking something like the following:
 **        
@@ -209,6 +222,8 @@ void chkpt_wt_alpha_scf(double **scf)
 ** NOTE: The input scf matrix must occupy a contiguous block of nmo x
 ** nso memory.  Use block_matrix() from libciomr to allocate space for
 ** the matrix.
+**
+** \ingroup (CHKPT)
 */
 void chkpt_wt_beta_scf(double **scf)
 {
@@ -226,10 +241,11 @@ void chkpt_wt_beta_scf(double **scf)
 ** chkpt_rd_scf_irrep(): Reads a single irrep of the SCF eigenvectors for 
 ** RHF/ROHF.
 **
-** arguments:
-**  \param int irrep  The desired irreducible representation.
+** \param irrep = The desired irreducible representation.
 **
 ** returns: double **scf   A rectangualr sopi[irrep] by orbspi[irrep] matrix.
+**
+** \ingroup (CHKPT)
 */
 
 double **chkpt_rd_scf_irrep(int irrep)
@@ -265,14 +281,15 @@ double **chkpt_rd_scf_irrep(int irrep)
   return scf;
 }
 
+
 /*!
 ** chkpt_rd_scf_alpha_irrep(): Reads a single irrep of the alpha SCF 
 ** eigenvectors for UHF.
 **
-** arguments:
-**  \param int irrep  The desired irreducible representation.
+** \param irrep = The desired irreducible representation.
 **
-** returns: double **scf   A rectangualr sopi[irrep] by orbspi[irrep] matrix.
+** returns: double **scf = A rectangualr sopi[irrep] by orbspi[irrep] matrix.
+** \ingroup (CHKPT)
 */
 
 double **chkpt_rd_alpha_scf_irrep(int irrep)
@@ -308,14 +325,16 @@ double **chkpt_rd_alpha_scf_irrep(int irrep)
   return scf;
 }
 
+
 /*!
 ** chkpt_rd_scf_beta_irrep(): Reads a single irrep of the beta SCF 
 ** eigenvectors for UHF.
 **
-** arguments:
-**  \param int irrep  The desired irreducible representation.
+** \param irrep = The desired irreducible representation.
 **
-** returns: double **scf   A rectangualr sopi[irrep] by orbspi[irrep] matrix.
+** returns: double **scf = A rectangualr sopi[irrep] by orbspi[irrep] matrix.
+** 
+** \ingroup (CHKPT)
 */
 
 double **chkpt_rd_beta_scf_irrep(int irrep)
@@ -351,14 +370,16 @@ double **chkpt_rd_beta_scf_irrep(int irrep)
   return scf;
 }
 
+
 /*!
 ** chkpt_wt_scf_irrep(): Writes a single irrep of the SCF eigenvectors for 
 ** RHF/ROHF.
 **
-** arguments:
-**  \param int irrep  The desired irreducible representation.
+** \param irrep = The desired irreducible representation.
 **
-** returns: double **scf   A rectangualr sopi[irrep] by orbspi[irrep] matrix.
+** returns: double **scf = A rectangualr sopi[irrep] by orbspi[irrep] matrix.
+**
+** \ingroup (CHKPT)
 */
 
 void chkpt_wt_scf_irrep(double **scf, int irrep)
@@ -392,14 +413,16 @@ void chkpt_wt_scf_irrep(double **scf, int irrep)
   free(mopi);
 }
 
+
 /*!
 ** chkpt_wt_alpha_scf_irrep(): Writes a single irrep of the alpha SCF 
 **                             eigenvectors for RHF/ROHF.
 **
-** arguments:
-**  \param int irrep  The desired irreducible representation.
+** \param irrep = The desired irreducible representation.
 **
-** returns: double **scf   A rectangualr sopi[irrep] by orbspi[irrep] matrix.
+** returns: double **scf = A rectangualr sopi[irrep] by orbspi[irrep] matrix.
+**
+** \ingroup (CHKPT)
 */
 void chkpt_wt_alpha_scf_irrep(double **scf, int irrep)
 {
@@ -432,14 +455,16 @@ void chkpt_wt_alpha_scf_irrep(double **scf, int irrep)
   free(mopi);
 }
 
+
 /*!
 ** chkpt_wt_beta_scf_irrep(): Writes a single irrep of the beta SCF 
 **                             eigenvectors for RHF/ROHF.
 **
-** arguments:
-**  \param int irrep  The desired irreducible representation.
+** \param irrep = The desired irreducible representation.
 **
-** returns: double **scf   A rectangualr sopi[irrep] by orbspi[irrep] matrix.
+** returns: double **scf = A rectangualr sopi[irrep] by orbspi[irrep] matrix.
+** 
+** \ingroup (CHKPT)
 */
 void chkpt_wt_beta_scf_irrep(double **scf, int irrep)
 {

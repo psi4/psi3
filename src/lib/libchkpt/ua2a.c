@@ -1,5 +1,6 @@
 /*!
   \file ua2a.c
+  \ingroup (CHKPT)
 */
 
 #include "chkpt.h"
@@ -12,9 +13,10 @@
 ** Reads in a mapping array from the symmetry-unique atom
 ** list to the full atom list
 **
-**  returns: int *ua2a    Read in an array num_unique_atom long
+** returns: ua2a = Read in an array num_unique_atom long
+** 
+** \ingroup (CHKPT)
 */
-
 
 int *chkpt_rd_ua2a(void)
 {
@@ -30,17 +32,16 @@ int *chkpt_rd_ua2a(void)
   return ua2a;
 }
 
+
 /*!
 ** void chkpt_wt_ua2a(int *)
 ** Writes out a mapping array from the symmetry-unique atom
 ** list to the full atom list
 **
-** arguments: 
-**   \param int *ua2a    An array num_unique_atom long
+** \param ua2a = An array num_unique_atom long
 **
 ** returns: none
 */
-
 
 void chkpt_wt_ua2a(int *ua2a)
 {

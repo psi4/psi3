@@ -1,5 +1,6 @@
 /*!
   \file symoper.c
+  \ingroup (CHKPT)
 */
 
 #include "chkpt.h"
@@ -12,9 +13,10 @@
 ** Reads in the mapping array between "canonical" ordering of symmetry
 ** operations in the point group and the one defined in symmetry.h
 **
-**  returns: int *symoper    Array nirrep long
+** returns: symoper = Array nirrep long
+**
+** \ingroup (CHKPT)
 */
-
 
 int *chkpt_rd_symoper(void)
 {
@@ -24,22 +26,24 @@ int *chkpt_rd_symoper(void)
   nirreps = chkpt_rd_nirreps();
   symoper = init_int_array(nirreps);
 
-  psio_read_entry(PSIF_CHKPT, "::Cotton -> local map", (char *) symoper, nirreps*sizeof(int));
+  psio_read_entry(PSIF_CHKPT, "::Cotton -> local map", (char *) symoper, 
+                  nirreps*sizeof(int));
 
   return symoper;
 }
+
 
 /*!
 ** void chkpt_wt_symoper(int *)
 ** Writes out the mapping array between "canonical" ordering of symmetry
 ** operations in the point group and the one defined in symmetry.h
 **
-**  arguments: 
-**   \param int *symoper    Array nirrep long
+** \param symoper = Array nirrep long
 **
-**  returns: none
+** returns: none
+**
+** \ingroup (CHKPT)
 */
-
 
 void chkpt_wt_symoper(int *symoper)
 {
@@ -47,5 +51,6 @@ void chkpt_wt_symoper(int *symoper)
 
   nirreps = chkpt_rd_nirreps();
 
-  psio_write_entry(PSIF_CHKPT, "::Cotton -> local map", (char *) symoper, nirreps*sizeof(int));
+  psio_write_entry(PSIF_CHKPT, "::Cotton -> local map", (char *) symoper, 
+                   nirreps*sizeof(int));
 }

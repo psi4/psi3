@@ -1,5 +1,6 @@
 /*!
   \file usotbf.c
+  \ingroup (CHKPT)
 */
 
 #include <stdio.h>
@@ -11,11 +12,12 @@
 /*!
 ** chkpt_rd_usotbf(): Reads in the SO to basis functions transformation matrix 
 **
-**  takes no arguments.
+** takes no arguments.
 **
-**  returns: double **usotbf Read in a num_so by num_so matrix of doubles
+** returns: usotbf = Read in a num_so by num_so matrix of doubles
+**
+** \ingroup (CHKPT)
 */
-
 
 double **chkpt_rd_usotbf(void)
 {
@@ -35,13 +37,16 @@ double **chkpt_rd_usotbf(void)
   return usotbf;
 }
 
+
 /*!
-** chkpt_wt_usotbf(): Writes out the  SO to basis functions transformation matrix 
+** chkpt_wt_usotbf(): Writes out the SO to basis functions transformation 
+**                    matrix 
 **
-**  arguments: 
-**   \param double **usotbf  A num_so by num_so matrix of doubles
+** \param usotbf = A num_so by num_so matrix of doubles
 **
 ** returns: none
+**
+** \ingroup (CHKPT)
 */
 
 void chkpt_wt_usotbf(double **usotbf)

@@ -27,7 +27,8 @@ double *chkpt_rd_zvals(void)
 
   zvals = init_array(natom);
 
-  psio_read_entry(PSIF_CHKPT, "::Nuclear charges", (char *) zvals, natom*sizeof(double));
+  psio_read_entry(PSIF_CHKPT, "::Nuclear charges", (char *) zvals, 
+                  natom*sizeof(double));
 
   return zvals;
 }
@@ -36,7 +37,6 @@ double *chkpt_rd_zvals(void)
 ** chkpt_wt_zvals()
 ** Writes the nuclear charges to the checkpoint file.
 **
-** arguments:
 ** \param double *zvals: An array of the charges
 **
 ** returns: nothing
@@ -48,5 +48,6 @@ void chkpt_wt_zvals(double *zvals)
 
   natom = chkpt_rd_natom();
 
-  psio_write_entry(PSIF_CHKPT, "::Nuclear charges", (char *) zvals, natom*sizeof(double));
+  psio_write_entry(PSIF_CHKPT, "::Nuclear charges", (char *) zvals, 
+                   natom*sizeof(double));
 }

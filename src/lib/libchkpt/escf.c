@@ -1,5 +1,6 @@
 /*!
   \file escf.c
+  \ingroup (CHKPT)
 */
 
 #include <psifiles.h>
@@ -8,9 +9,10 @@
 /*!
 ** chkpt_rd_escf(): Reads in the scf energy.
 **
-**   takes no arguments.
+**  takes no arguments.
 **
-**   returns: double escf  the scf energy.
+**  returns: double escf  the scf energy.
+** \ingroup (CHKPT)
 */
 
 double chkpt_rd_escf(void)
@@ -27,6 +29,7 @@ double chkpt_rd_escf(void)
 **   \param double escf  the scf energy.
 **
 ** returns: none
+** \ingroup (CHKPT)
 */
 
 void chkpt_wt_escf(double escf)

@@ -1,5 +1,6 @@
 /*!
   \file ecorr.c
+  \ingroup (CHKPT)
 */
 
 #include <stdio.h>
@@ -11,11 +12,12 @@
 /*!
 ** chkpt_rd_ecorr():  Reads in the correlated energy.
 **
-**    takes no arguments.
+** takes no arguments.
 **
-**    returns: double e_corr   the correlated energy.  To get some
+** returns: e_corr = the correlated energy.  To get some
 **        information (a label) on the type of correlated wavefunction
 **        used to get this energy, see rd_corr_lab().
+** \ingroup (CHKPT)
 */
 double chkpt_rd_ecorr(void)
 {
@@ -27,15 +29,16 @@ double chkpt_rd_ecorr(void)
   return ecorr;
 }
 
+
 /*!
 ** chkpt_wt_ecorr():  Writes out the correlated energy.
 **
-**  arguments: 
-**   \param double e_corr   the correlated energy.  To get some
+** \param e_corr = the correlated energy.  To get some
 **        information (a label) on the type of correlated wavefunction
 **        used to get this energy, see rd_corr_lab().
 **
 ** returns: none
+** \ingroup (CHKPT)
 */
 void chkpt_wt_ecorr(double ecorr)
 {

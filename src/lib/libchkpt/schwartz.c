@@ -1,5 +1,6 @@
 /*!
   \file schwartz.c
+  \ingroup (CHKPT)
 */
 
 #include <stdio.h>
@@ -18,6 +19,8 @@
 **           num_shells) otherwise
 **
 **               ** MAY THE SCHWARTZ BE WITH YOU!!! **
+**
+** \ingroup (CHKPT)
 */
 double **chkpt_rd_schwartz(void)
 {
@@ -38,14 +41,16 @@ double **chkpt_rd_schwartz(void)
   
 }
 
+
 /*!
 ** chkpt_wt_schwartz(): Write out the table of maxima of Schwartz integrals 
 **                      (ij|ij) for each shell doublet;
 **
-**  arguments: 
-**    \param double** (num_shells by num_shells)
+** \param schwartz = matrix (num_shells by num_shells)
 **
 **               ** MAY THE SCHWARTZ BE WITH YOU!!! **
+**
+** \ingroup (CHKPT)
 */
 void chkpt_wt_schwartz(double **schwartz)
 {
@@ -56,3 +61,4 @@ void chkpt_wt_schwartz(double **schwartz)
   psio_write_entry(PSIF_CHKPT, "::Schwartz table", (char *) schwartz[0],
 		  num_shells*num_shells*sizeof(double));
 }
+

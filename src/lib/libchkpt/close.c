@@ -1,5 +1,6 @@
 /*!
   \file close.c
+  \ingroup (CHKPT)
 */
 
 #include "chkpt.h"
@@ -13,8 +14,8 @@
 **    this to work.  
 **
 **  returns: zero.  Perhaps this, too, will change one day.
+**  \ingroup (CHKPT)
 */
-
 
 int chkpt_close(void)
 {

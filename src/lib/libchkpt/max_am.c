@@ -1,5 +1,6 @@
 /*!
   \file max_am.c
+  \ingroup (CHKPT)
 */
 
 #include "chkpt.h"
@@ -11,10 +12,10 @@
 ** Reads in the maximum orbital quantum number 
 ** of AOs in the basis.
 **
-** returns: int max_am (0 corresponds to s-functions, 
-**                      1 - to up to p-functions, etc.)
+** returns: max_am = (0 corresponds to s-functions, 
+**                    1 - to up to p-functions, etc.)
+** \ingroup (CHKPT)
 */
-
 
 int chkpt_rd_max_am(void)
 {
@@ -24,18 +25,19 @@ int chkpt_rd_max_am(void)
   return max_am;
 }
 
+
 /*!
 ** void chkpt_wt_max_am()
 ** Writes out the maximum orbital quantum number 
 ** of AOs in the basis.
 **
 ** arguments: 
-**  \param int max_am (0 corresponds to s-functions, 
-**                     1 - to up to p-functions, etc.)
+**  \param max_am = (0 corresponds to s-functions, 
+**                   1 - to up to p-functions, etc.)
 **
 ** returns: none
+** \ingroup (CHKPT)
 */
-
 
 void chkpt_wt_max_am(int max_am)
 {

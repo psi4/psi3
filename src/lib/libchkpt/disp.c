@@ -1,5 +1,6 @@
 /*!
   \file disp.c
+  \ingroup (CHKPT)
 */
 
 #include "chkpt.h"
@@ -12,6 +13,7 @@
 **   takes no arguments.
 **
 **   returns: int disp   the current geometry displacement number
+** \ingroup (CHKPT)
 */
 int chkpt_rd_disp(void)
 {
@@ -22,6 +24,7 @@ int chkpt_rd_disp(void)
   return disp;
 }
 
+
 /*!
 ** chkpt_wt_disp():  Writes out the current geometry displacement number.
 **
@@ -29,6 +32,7 @@ int chkpt_rd_disp(void)
 **   \param int disp   the current geometry displacement number
 **
 ** returns: none
+** \ingroup (CHKPT)
 */
 void chkpt_wt_disp(int disp)
 {

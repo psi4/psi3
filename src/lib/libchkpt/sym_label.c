@@ -1,5 +1,6 @@
 /*!
   \file sym_label.c
+  \ingroup (CHKPT)
 */
 
 #include <stdlib.h>
@@ -11,9 +12,10 @@
 **
 **   takes no arguments.
 **
-**   returns: char *symmetry   symmetry label.
+**   returns: symmetry = symmetry label.
+**
+** \ingroup (CHKPT)
 */
-
 
 char *chkpt_rd_sym_label(void)
 {
@@ -21,22 +23,26 @@ char *chkpt_rd_sym_label(void)
 
   sym_label = (char *) malloc(4*sizeof(char));
 
-  psio_read_entry(PSIF_CHKPT, "::Symmetry label", (char *) sym_label, 4*sizeof(char));
+  psio_read_entry(PSIF_CHKPT, "::Symmetry label", (char *) sym_label, 
+                  4*sizeof(char));
 
   return sym_label;  
 }
 
+
 /*!
 ** chkpt_wt_sym_label():  Writes out the symmetry label.
 **
-**  arguments: 
-**    char *symmetry   symmetry label.
+** \param symmetry = symmetry label.
 **
 ** returns none
+**
+** \ingroup (CHKPT)
 */
-
 
 void chkpt_wt_sym_label(char *sym_label)
 {
-  psio_write_entry(PSIF_CHKPT, "::Symmetry label", (char *) sym_label, 4*sizeof(char));
+  psio_write_entry(PSIF_CHKPT, "::Symmetry label", (char *) sym_label, 
+                   4*sizeof(char));
 }
+
