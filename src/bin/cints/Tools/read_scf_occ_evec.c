@@ -67,15 +67,16 @@ void read_scf_occ_evec(void)
 	fprintf(outfile,"\nSO Cmat");
 	print_mat(SO_cmat,num_so,num_mo,outfile);
       */
-      /*Cocc = block_matrix(num_ao,ndocc);
+      
+      Cocc = block_matrix(num_ao,ndocc);
       mmult(Symmetry.usotao,1,SO_cmat,0,Cocc,0,num_ao,num_so,ndocc,0);
       free_block(SO_cmat);
-      */
+      
       /* ---------------------
 	 Order according to 
 	 angular momentum   
 	 --------------------*/
-      Cocc_un = block_matrix(num_ao,ndocc);
+      /*Cocc_un = block_matrix(num_ao,ndocc);
       mmult(Symmetry.usotao,1,SO_cmat,0,Cocc_un,0,num_ao,num_so,ndocc,0);
       free_block(SO_cmat);
       
@@ -92,13 +93,13 @@ void read_scf_occ_evec(void)
 	      k++;
 	  }
       }
-      
+      */
       /*--------------------------
 	Remove after done testing
 	--------------------------*/   
       
       /*fprintf(outfile,"\nCocc");
-	print_mat(Cocc,num_ao,MOInfo.ndocc,outfile);*/
+      print_mat(Cocc,num_ao,MOInfo.ndocc,outfile);*/
       
       return;
 }

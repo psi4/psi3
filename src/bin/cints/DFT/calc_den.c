@@ -20,6 +20,7 @@
 #include"defines.h"
 #define EXTERN
 #include"global.h"
+#include"bas_comp_functions.h"
 
 struct den_info_s calc_density(struct coordinates geom){
     
@@ -35,6 +36,7 @@ struct den_info_s calc_density(struct coordinates geom){
     double rr;
     double rrtmp;
     double bastmp;
+    double bastmp1;
     double den_sum;
     double coeff;
     double expon;
@@ -82,12 +84,16 @@ timer_on("basis");
 	
 	norm_ptr = GTOs.bf_norm[shell_type-1];
 	timer_on("exponent");
-	bastmp = 0.0;
+	/*bastmp1 = calc_exp_basis(i,rr);*/
+	
+	bastmp = 0;
 	for(j=shell_start;j<shell_end;j++){
 	    expon = -BasisSet.cgtos[j].exp;
 	    coeff = BasisSet.cgtos[j].ccoeff[shell_type-1];
 	    bastmp += coeff*exp(expon*rr);
 	}
+	/*if(bastmp != bastmp1)
+	    fprintf(outfile,"\nbastmp1 = %10.15lf bastmp2 = %10.15lf for shell %d at rr = %e",bastmp1,bastmp,i,rr);*/
 timer_off("exponent");	
 	/*----------------------------------
 	  Compute values of basis functions
@@ -214,32 +220,30 @@ timer_off("exponent");
 	    punt("");
 	}
     }
-    /*for(i=0;i<num_ao;i++){
-	fprintf(outfile,"\nBasis[%d] = %10.10lf",i,DFT_options.basis[i]);
-    }
-    fprintf(outfile,"\n");*/
-	timer_off("basis"); 
+ 
+    timer_off("basis");
     /* Now contract the basis functions with the AO density matrix elements */
-   timer_on("density"); 
+    timer_on("density"); 
     
    if(UserOptions.reftype == rhf){
        den_sum = 0.0;
 #if USE_BLAS
        C_DGEMV('t',num_ao,ndocc,1.0,Cocc[0],ndocc,
 	       DFT_options.basis,1,0.0,temp_arr,1);
+       for(i=0;i<ndocc;i++)
        den_sum = C_DDOT(ndocc,temp_arr,1,temp_arr,1);
 #else
        for(i=0;i<ndocc;i++){
 	   for(j=0;j<num_ao;j++){
 	       temp_arr[i] += Cocc[j][i]*DFT_options.basis[j];
 	   }
+	   
        }
        dot_arr(temp_arr,temp_arr,MOInfo.ndocc,&den_sum);
 #endif
        den_info.den = den_sum;
         
     }
-   fprintf(outfile,"\ndensity = %10.10lf",den_info.den);
    free(temp_arr);
    timer_off("density");
    free(dist_coord);

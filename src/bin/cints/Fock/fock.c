@@ -8,6 +8,7 @@
 #include<psio.h>
 #include<libint.h>
 #include<pthread.h>
+#include<qt.h>
 
 #include"defines.h"
 #define EXTERN
@@ -36,13 +37,15 @@ void fock()
   /*----------------------------------------
     Read in the difference HF/DFT densities
    ----------------------------------------*/
+  timer_on("HF_FOCK");
   read_scf_opdm();
-
+  
   /*-------------------------------------------
     Compute HF contribution to the Fock matrix
    -------------------------------------------*/
-  hf_fock();
   
+  hf_fock();
+  timer_off("HF_FOCK");
   /*-----------------------------------
     Do numerical interation for KS DFT
    -----------------------------------*/
@@ -55,4 +58,6 @@ void fock()
 
   return;
 }
+
+
 

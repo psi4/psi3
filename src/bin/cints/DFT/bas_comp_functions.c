@@ -39,12 +39,14 @@ double calc_radial_bas(int shell_num, double rr, double r){
     int end;
     double bastmp;
    
-    shell_type = BasisSet.shells[BasisSet.am2shell[shell_num]].am;
-    end = ioff[shell_type-1];
+    shell_type = BasisSet.shells[BasisSet.am2shell[shell_num]].am-1;
     bastmp = calc_exp_basis(shell_num,rr);
-    
-    for(i=0;i<end;i++)
+    for(i=0;i<shell_type;i++)
 	bastmp *= r;
     
     return bastmp;
 }
+
+
+
+

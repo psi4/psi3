@@ -331,6 +331,15 @@ typedef struct{
    Concrete classes
    ----------------------*/
 
+struct close_shell_info_s{
+    int num_close_aos;
+    int num_close_shells;
+    int *shells_close_to_chunk;
+    int *aos_close_to_chunk;
+    int *close_shells_per_am;
+    double **close_COCC;
+};
+
 struct leb_chunk_s{
     int size;
     int radial_start;
@@ -338,6 +347,7 @@ struct leb_chunk_s{
     leb_sphere_t *spheres;
     int *shells_close_to_chunk;
     int *close_shells_per_am;
+    double **close_COCC;
 };
 
 struct atomic_grid_s{
@@ -386,7 +396,7 @@ typedef struct{
                                /* pointer to the correlation function */
     struct den_info_s (*den_calc)(struct coordinates geom);
                    /* pointer to the correct density calculation function */
-
+    struct close_shell_info_s close_shell_info;
     grid_t grid;
 } DFT_options_t;
 

@@ -16,16 +16,18 @@
 #include"dft_init.h"
 #include"weighting.h"
 #include"calc_den_fast.h"
-#include"calc_den_new.h"
 #include"calc_den.h"
 #include"functional.h"
 #include"physconst.h"
 #include"grid_init.h"
+#include"free_grid_structs.h"
 #include"dcr.h"
+#include"init_close_shell_info.h"
 #include"calc_close_basis.h"
-    
+
+ 
 void xc_fock(void){
-  int i,j,k,l,m,n;
+  int i,j,k,l,m,n,q,s,t,u;
   int ua, atom, ua_deg;
   int rpoints;
   int ang_points;
@@ -33,6 +35,14 @@ void xc_fock(void){
   int point_count=0;
   int dum;
   int num;
+  int moff,noff,mtmp,ntmp;
+  int am2shell1,am2shell2;
+  int shell_type1,shell_type2;
+  int ioff1,ioff2;
+  int chek = 1;
+  int close_shells;
+  int close_aos;
+  int tmp;
   
   int nstri;
   double temp;
@@ -53,19 +63,20 @@ void xc_fock(void){
   double Becke_weight;
   double ang_quad;
   double four_pi_div_by_rps;
-  double exch_vfunc_val;
-  double exch_efunc_val;
-  double corr_vfunc_val;
-  double corr_efunc_val;
-  double den_val;
-  double exch_vval;
-  double corr_vval;
-  double exch_eval;
-  double corr_eval;
+  double exch_vfunc_val=0.0;
+  double exch_efunc_val=0.0;
+  double corr_vfunc_val=0.0;
+  double corr_efunc_val=0.0;
+  double den_val=0.0;
+  double exch_vval=0.0;
+  double corr_vval=0.0;
+  double exch_eval=0.0;
+  double corr_eval=0.0;
   double vval = 0.0;
   double eval = 0.0;
-  double bas1,bas2;
-  double vvalbas;
+  double bas1 = 0.0;
+  double bas2 = 0.0;
+  double vvalbas = 0.0;
   
   struct coordinates geom;
   struct den_info_s den_info;
@@ -74,19 +85,26 @@ void xc_fock(void){
   struct leb_chunk_s *chnk;
   leb_sphere_t *sphr;
   leb_point_t *pnt;
-
+  
+  
+  
   num_ao = BasisSet.num_ao;
   DFT_options.basis = (double *)malloc(sizeof(double)*num_ao);
   
-  G = block_matrix(num_ao,num_ao);
+  G = init_matrix(num_ao,num_ao);
   if(UserOptions.reftype == uhf)
       Go = block_matrix(num_ao,num_ao);
+  
+  /* ----Initialize Close shell data structure ---- */
+  
+  DFT_options.close_shell_info = init_close_shell_info();
+
   timer_init();
   timer_on("DFT");
-  timer_on("grid_init");
+  
   grid_init();
-  timer_off("grid_init");
-  /*-------------------------------------------------------
+  
+/*-------------------------------------------------------
     Loop over symmetry-unique atoms only since integration
     domains around symm.-unique atoms are equivalent
     We are NOT employing the symmetry of angular grids
@@ -111,22 +129,25 @@ void xc_fock(void){
       
       for(j=0;j<atm_grd->chunk_num;j++){
 	  chnk = &(atm_grd->leb_chunk[j]);
+	  timer_on("close basis");
 	  calc_close_basis(ua,j);
+	  close_shells = DFT_options.close_shell_info.num_close_shells;
+	  close_aos = DFT_options.close_shell_info.num_close_aos;
+	  timer_off("close basis");
 	  for(k=0;k<chnk->size;k++){
 	      
 	      sphr = &(chnk->spheres[k]);
-	  
+	      
 	      r = sphr->r*bragg;
 	      drdq = sphr->drdq*bragg*bragg*bragg;
-
+	      
 	      for(l=0;l<sphr->n_ang_points;l++){
 		  pnt = &(sphr->points[l]);
 		  /* ----------------------------------
 		     Calculate the cartesian points of the point
 		     relative to the center of mass
 		     -------------------------------------*/
-      
-		  geom.x = bragg*pnt->p_cart.x+xa;
+      		  geom.x = bragg*pnt->p_cart.x+xa;
 		  geom.y = bragg*pnt->p_cart.y+ya;
 		  geom.z = bragg*pnt->p_cart.z+za;
 	      
@@ -139,8 +160,12 @@ void xc_fock(void){
 			Get the density information for this 
 			point
 			----------------------------------*/
-		      /*den_info = calc_density_new(geom);*/
-		      den_info = calc_density_fast(geom);
+		      timer_on("DEN1");
+		      den_info = calc_density_fast(geom,ua,j);
+		      timer_off("DEN1");
+		      /*timer_on("DEN2");
+		      den_info = calc_density(geom);
+		      timer_off("DEN2");*/
 		      if(den_info.den > DEN_CUTOFF){
 			  /*-------------------------------------
 			    Weight from Lebedev
@@ -153,7 +178,7 @@ void xc_fock(void){
 			    and energy functional at this
 			    point
 			    -----------------------------------*/
-		      
+			  /*fprintf(outfile,"\nua_deg = %10.10lf",ua_deg_d);*/
 			  den_val += 2.0*ua_deg_d*drdq*ang_quad
 			      *Becke_weight*den_info.den;
 			  
@@ -188,21 +213,38 @@ void xc_fock(void){
 			    Update the G matrix
 			    -----------------------------------*/
 			  timer_on("FOCK");
-			  for(m=0;m<num_ao;m++){
+			  t=0;
+			  
+			  for(m=0;m<close_aos;m++){
 			      bas1 = vval*DFT_options.basis[m];
-			      for(n=0;n<num_ao;n++){
-				  bas2 = DFT_options.basis[n];
-				  G[m][n] += bas1*bas2;
+			      moff = DFT_options.close_shell_info.
+				  aos_close_to_chunk[m];
+			      for(n=m;n<close_aos;n++){
+				  bas2 = bas1*DFT_options.basis[n];
+				  noff = DFT_options.close_shell_info.
+				      aos_close_to_chunk[n];
+				  if(noff > moff)
+				      G[moff][noff] += bas2;
+				  else
+				      G[noff][moff] += bas2;
 			      }
 			  }
 			  timer_off("FOCK");
 		      }
+
 		  }
 	      }
 	  }
       }
   }
-  print_mat(G,num_ao,num_ao,outfile); 
+
+  
+  free_close_shell_info(DFT_options.close_shell_info);
+  /*print_mat(G,num_ao,num_ao,outfile);*/
+   for(m=0;m<num_ao;m++)
+      for(n=m;n<num_ao;n++)
+	  G[n][m]=G[m][n];
+  
   timer_off("DFT");
   timer_done();
   
@@ -235,8 +277,8 @@ void xc_fock(void){
   Gtri = init_array(nstri);
   sq_to_tri(G,Gtri,Symmetry.num_so);
   free_block(G);
-/*  fprintf(outfile,"\nDFT_energy = %10.10lf",eval);
-  fprintf(outfile,"\ntrace of density = %10.10lf",den_val);*/
+  fprintf(outfile,"\nDFT_energy = %10.10lf",eval);
+  fprintf(outfile,"\ntrace of density = %10.10lf",den_val);
   psio_open(IOUnits.itapDSCF, PSIO_OPEN_OLD);
   psio_write_entry(IOUnits.itapDSCF,"DFT X-energy",
 		   (char *) &(exch_eval), sizeof(double));
@@ -281,7 +323,7 @@ void xc_fock(void){
       break;
   }
   /*-- Cleanup the DFT stuff and close files --*/
-  /*cleanup_dft_options(DFT_options);*/
+  cleanup_grid_type(DFT_options.grid);
   psio_close(IOUnits.itapDSCF, 1);
   return;
 }
