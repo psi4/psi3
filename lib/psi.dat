@@ -46,7 +46,6 @@ psi: (
   findif_freq_grad_symm   = "optking --freq_grad_irrep --irrep 1"
   findif_freq_grad_nosymm   = "optking --freq_grad_nosymm"
   findif_grad_energy = "optking --grad_energy"
-  findif_delete_binaries = "optking --delete_binaries"
   geomupdate  = ("optking --opt_step")
   dboc        = "dboc"
 
@@ -450,7 +449,7 @@ psi: (
   CCTwoConEnergy = ERROR
 
   % Procedures for optimization via energy points
-  CC3EnergyOpt = (repeat $nopt $CC3Energy $findif_delete_binaries $findif_disp_symm
+  CC3EnergyOpt = (repeat $nopt $CC3Energy $findif_disp_symm
     repeat NUM_DISP $findif_next $findif_input $CC3Energy $findif_energy_save end
     $findif_grad_energy $geomupdate end $done)
   CC3RHFEnergyOpt = $CC3EnergyOpt
@@ -460,7 +459,7 @@ psi: (
 
   % CC3 Freqs via differences of energies
   CC3EnergyFreq  =
-    ($CC3Energy $findif_delete_binaries $findif_disp_freq_energy_cart repeat NUM_DISP
+    ($CC3Energy $findif_disp_freq_energy_cart repeat NUM_DISP
      $findif_next $findif_input $CC3Energy $findif_energy_save end
      $findif_freq_energy_cart $done)
   CC3RHFEnergyFreq  = $CC3EnergyFreq 
@@ -559,7 +558,7 @@ psi: (
   EOM_CC3UHFEnergy = ($EOM_CC3Energy $done) 
   EOM_CC3TwoConEnergy = ERROR
 
-  EOM_CC3EnergyOpt = (repeat $nopt $EOM_CC3Energy $findif_delete_binaries $findif_disp_symm
+  EOM_CC3EnergyOpt = (repeat $nopt $EOM_CC3Energy $findif_disp_symm
     repeat NUM_DISP $findif_next $findif_input $EOM_CC3Energy $findif_energy_save end
     $findif_grad_energy $geomupdate end $done)
   EOM_CC3RHFEnergyOpt = ERROR
@@ -569,7 +568,7 @@ psi: (
 
   % EOM_CC3 Freqs via differences of energies
   EOM_CC3EnergyFreq  =
-    ($EOM_CC3Energy $findif_delete_binaries $findif_disp_freq_energy_cart repeat NUM_DISP
+    ($EOM_CC3Energy $findif_disp_freq_energy_cart repeat NUM_DISP
      $findif_next $findif_input $EOM_CC3Energy $findif_energy_save end
      $findif_freq_energy_cart $done)
   EOM_CC3RHFEnergyFreq  = ERROR
