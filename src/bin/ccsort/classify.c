@@ -29,7 +29,7 @@ void classify(int p, int q, int r, int s, double value,
   nfzc = moinfo.nfzc;
   frozen = moinfo.frozen;
 
-  if(params.dertype) { /* Skip the frozen orbitals in the list */
+  if(params.dertype==1) { /* Skip the frozen orbitals in the list */
     if(frozen[p] || frozen[q] || frozen[r] || frozen[s]) return;
     else { /* Adjust the indices to account for the frozen core */
       p -= nfzc; q -= nfzc;
@@ -199,7 +199,7 @@ void classify_uhf(int p, int q, int r, int s, double value, char *spin,
   nfzc = moinfo.nfzc;
   frozen = moinfo.frozen;
 
-  if(params.dertype) { /* Skip the frozen orbitals in the list */
+  if(params.dertype==1) { /* Skip the frozen orbitals in the list */
     if(frozen[p] || frozen[q] || frozen[r] || frozen[s]) return;
     else { /* Adjust the indices to account for the frozen core */
       p -= nfzc; q -= nfzc;

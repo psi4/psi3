@@ -93,9 +93,9 @@ void get_params()
   fprintf(outfile, "\tWave function   =\t%s\n", params.wfn);
   fprintf(outfile, "\tReference wfn   =\t%s\n", 
 	  (params.ref == 0) ? "RHF" : ((params.ref == 1) ? "ROHF" : "UHF"));
-  if(params.dertype == 0) fprintf(outfile, "\tDerivative      =\t None\n");
-  else if(params.dertype == 1) fprintf(outfile, "\tDerivative      =\t First\n");
-  else if(params.dertype == 3) fprintf(outfile, "\tDerivative      =\t Response\n");
+  if(params.dertype == 0) fprintf(outfile, "\tDerivative      =\tNone\n");
+  else if(params.dertype == 1) fprintf(outfile, "\tDerivative      =\tFirst\n");
+  else if(params.dertype == 3) fprintf(outfile, "\tDerivative      =\tResponse\n");
   fprintf(outfile, "\tMemory (Mbytes) =\t%.1f\n", params.memory/1e6);
   fprintf(outfile, "\tAO Basis        =\t%s\n", params.aobasis);
   fprintf(outfile, "\tMake (ab|cd)    =\t%s\n", 
