@@ -44,6 +44,7 @@ psi: (
 
   % CC specific programs
   ccsort     = "ccsort"
+  ccreset    = "ccsort --reset"
   ccenergy   = "ccenergy"
   cctriples  = "cctriples"
   cchbar     = "cchbar"
@@ -157,12 +158,19 @@ psi: (
   CCSDTwoConEnergy = ERROR
 
   % Procedures for the CCSD gradient
-  CCSeq = ($ccsort $ccenergy $cchbar $cclambda $ccdensity)
-  CCSDFirst = ($SCFEnergy $transqt $CCSeq $backtransqt $deriv)
+  CCSDeq = ($ccsort $ccenergy $cchbar $cclambda $ccdensity)
+  CCSDFirst = ($SCFEnergy $transqt $CCSDeq $backtransqt $deriv)
   CCSDRHFFirst = $CCSDFirst
   CCSDROHFFirst = $CCSDFirst
   CCSDUHFFirst = $CCSDFirst
   CCSDTwoConFirst = ERROR
+
+  %Procedures for the CCSD gradient with no restart
+  CCSDFirstReset = ($SCFEnergy $transqt $ccreset $ccenergy $cchbar
+      $cclambda $ccdensity $backtransqt $deriv)
+  CCSDRHFFirstReset = $CCSDFirstReset
+  CCSDROHFFirstReset = $CCSDFirstReset
+  CCSDUHFFirstReset = $CCSDFirstReset
 
   % Testing procedure for optimizing geometries with CCSD finite displacements
   CCSDROHFEnergyDisp = 
@@ -206,7 +214,7 @@ psi: (
   % Procedures for freqs via differences of analytic gradients
   CCSDFirstFreq  = 
     ($input $CCSDEnergy $findif_disp repeat NUM_DISP 
-     $findif_next $uinput $CCSDFirst $findif_grad end 
+     $findif_next $uinput $CCSDFirstReset $findif_grad end 
      $findif_freq_grad $done)
   CCSDRHFFirstFreq  = $CCSDFirstFreq
   CCSDROHFFirstFreq  = $CCSDFirstFreq
