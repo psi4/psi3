@@ -609,6 +609,9 @@ void get_optinfo() {
   ip_data("EV_TOL","%d",&a,0);
   optinfo.ev_tol = power(10.0, -1*a);
 
+  optinfo.scale_connectivity = 1.2;
+  ip_data("SCALE_CONNECTIVITY","%lf",&(optinfo.scale_connectivity),0);
+
   /* back-transformation parameters */
   optinfo.bt_max_iter = 500;
   ip_data("BT_MAX_ITER","%d",&(optinfo.bt_max_iter),0);
@@ -639,6 +642,7 @@ void get_optinfo() {
     fprintf(outfile,"bfgs:          %d\n",optinfo.bfgs);
     fprintf(outfile,"mix_types:     %d\n",optinfo.mix_types);
     fprintf(outfile,"conv:          %.1e\n",optinfo.conv);
+    fprintf(outfile,"scale_connectivity: %.3lf\n",optinfo.scale_connectivity);
     fprintf(outfile,"bt_max_iter:   %d\n",optinfo.bt_max_iter);
     fprintf(outfile,"bt_max_dq_conv:    %.1e\n",optinfo.bt_dq_conv);
     fprintf(outfile,"bt_max_dx_conv:    %.1e\n",optinfo.bt_dx_conv);
@@ -1010,12 +1014,12 @@ int *count_internals(cartesians &cart_geom, int intco_given) {
       /* determine bonds */
       bonds = init_int_matrix(num_atoms,num_atoms);
       for (i=0;i<num_atoms;++i) {
-	  for(j=0;j<=i;++j) {
+	  for(j=0;j<i;++j) {
 	      Zmax = MAX((int)cart_geom.get_atomic_num(i),(int)cart_geom.get_atomic_num(j));
 	      Zmin = MIN((int)cart_geom.get_atomic_num(i),(int)cart_geom.get_atomic_num(j));
 	      a = ioff[Zmax-1] + (Zmin-1);
 	      if (bondl[a] != 0.0) {
-		  if (distance[ioff[i]+j] < (1.2 * bondl[a])) {
+		  if (distance[ioff[i]+j] < (optinfo.scale_connectivity * bondl[a])) {
 		      bonds[i][j] = 1;
 		      bonds[j][i] = 1;
 		    }
@@ -1027,7 +1031,6 @@ int *count_internals(cartesians &cart_geom, int intco_given) {
 		}
 	    }
 	}
-
 
       /* check input for user specified bonds or nobonds */
       rewind(fp_input);

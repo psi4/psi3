@@ -61,6 +61,7 @@ struct OPTInfo {
   int bfgs;
   double conv; /* MAX force */
   double ev_tol;
+  double scale_connectivity;
   int mix_types;
 
 /* Back-transformation parameters */

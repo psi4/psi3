@@ -294,7 +294,7 @@ internals :: internals(cartesians& carts, int user_intcos, int *size_arr)
       Zmin = MIN((int)carts.get_atomic_num(i),(int)carts.get_atomic_num(j));
       a = ioff[Zmax-1] + (Zmin-1);
       if (bondl[a] != 0.0) {
-        if (atom_dist[ioff[i]+j] < (1.2 * bondl[a])) {
+        if (atom_dist[ioff[i]+j] < (optinfo.scale_connectivity * bondl[a])) {
            bonds[i][j] = 1;
            bonds[j][i] = 1;
         }
@@ -407,7 +407,8 @@ internals :: internals(cartesians& carts, int user_intcos, int *size_arr)
  fclose(fp_intco);
  num = stre.get_num() + bend.get_num() + tors.get_num() + out.get_num();
  if (num == 0) {
-   fprintf(outfile,"Error: No simple internals were read.\n");
+   fprintf(outfile,"Error: No simple internals were generated and read.  You may ");
+   fprintf(outfile,"have to increase the value of the scale_connectivity keyword.");
    exit(2);
  }
 
