@@ -56,7 +56,7 @@ void free_htable(htable_t *htable)
  ------------------------------------------*/
 long int compute_key(int si, int sj, int sk, int sl)
 {
-  int ij, kl, ijkl;
+  long int ij, kl, ijkl;
   long int key;
 
   ij = INDEX(si,sj);
