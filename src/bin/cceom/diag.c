@@ -644,11 +644,11 @@ void diag(void) {
     if (num_converged > 0) {
       fprintf(outfile,"\nFinal Energetic Summary for Converged Roots of Irrep %s\n",
 	      moinfo.labels[moinfo.sym^C_irr]);
-      fprintf(outfile,"                  Excitation Energy           Total Energy\n");
-      fprintf(outfile,"             (eV)     (cm^-1)     (au)             (au)\n");
+      fprintf(outfile,"                Excitation Energy           Total Energy\n");
+      fprintf(outfile,"           (eV)     (cm^-1)     (au)             (au)\n");
       for (i=0;i<eom_params.cs_per_irrep[C_irr];++i) {
         if (converged[i] == 1) {
-          fprintf(outfile,"State %d %10.3lf %10.1lf %14.10lf  %15.10lf\n",i+1,
+          fprintf(outfile,"EXC %d %10.3lf %10.1lf %14.10lf  %15.10lf\n",i+1,
 		  lambda_old[i]* _hartree2ev, lambda_old[i]* _hartree2wavenumbers,
 		  lambda_old[i], lambda_old[i]+moinfo.eref+moinfo.ecc);
 
