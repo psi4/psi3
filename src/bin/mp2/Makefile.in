@@ -2,10 +2,12 @@ srcdir = @srcdir@
 VPATH = @srcdir@
 
 include ../MakeVars
+                                                                                
+LDLIBS += $(LAPACK) $(BLAS)
 
-PSILIBS = -lPSI_qt -lPSI_file30 -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
+PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
-CSRC = gprgid.c mp2.c energy.c
+CSRC = cache.c priority.c energy.c opdm.c mp2.c
 
 BINOBJ = $(CSRC:%.c=%.o)
 ALLOC = 
