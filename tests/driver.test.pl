@@ -36,7 +36,8 @@ elsif ($ARGV[0] eq "--cc") {
                  "cc13",
                  "cc14",
                  "cc15",
-                 "cc16"
+                 "cc16",
+                 "cc17"
                );
 }
 elsif ($ARGV[0] eq "--scf") {
@@ -75,7 +76,8 @@ elsif ($ARGV[0] eq "--small") {
                  "cc13",
                  "cc14",
                  "cc15",
-                 "cc16"
+                 "cc16",
+                 "cc17"
                );
 }
 elsif ($ARGV[0] eq "--medium") {
@@ -113,7 +115,8 @@ elsif ($ARGV[0] eq "--standard") {
                  "cc13",
                  "cc14",
                  "cc15",
-                 "cc16"
+                 "cc16",
+                 "cc17"
                );
 }
 elsif ($ARGV[0] eq "--sp") {
@@ -128,7 +131,8 @@ elsif ($ARGV[0] eq "--sp") {
                  "cc10",
                  "cc11",
                  "cc15",
-                 "cc16"
+                 "cc16",
+                 "cc17"
                );
 }
 elsif ($ARGV[0] eq "--geom") {
@@ -149,8 +153,7 @@ elsif ($ARGV[0] eq "--freq") {
                );
 }
 elsif ($ARGV[0] eq "--excite") {
-  @DIR_NAMES = ( "cc12"
-               );
+  @DIR_NAMES = ( "cc12", "cc17" );
 }
 else {
   @DIR_NAMES = ( "scf-opt",
@@ -180,7 +183,8 @@ else {
                  "cc13",
                  "cc14",
                  "cc15",
-                 "cc16"
+                 "cc16",
+                 "cc17"
 #                 "Basis_Tests"
                 );
 }
