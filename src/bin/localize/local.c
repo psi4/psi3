@@ -306,8 +306,10 @@ int main(int argc, char *argv[])
 	    0, &(MO_S[0][0]), nmo);
     free_block(X);
 
+    /*
     fprintf(outfile, "Approximate Overlap Matrix\n");
     print_mat(MO_S, nmo, nmo, outfile);
+    */
 
     for(p=0; p < nmo; p++) {
       max = 0.0;
