@@ -17,11 +17,11 @@ The program
 performs a complete-active-space self-consistent-field
 (CASSCF) optimization of molecular orbitals via a two-step
 procedure in conjunction with the determinant configuration
-interaction program DETCI.  The program is in its initial
-stages and currently uses a Newton-Raphson approach
+interaction program DETCI.  The program is fairly simple
+and currently uses a Newton-Raphson approach
 to update the orbitals, employing a simple approximate
-orbital Hessian.  The next version of the code will accelerate
-convergence using Pulay's direct inversion of the iterative
+orbital Hessian.  Convergence is accelerated using
+Pulay's direct inversion of the iterative
 subspace (DIIS) procedure.  The code has been written to allow
 more general wavefunctions that do not necessarily feature a
 full CI treatment of the active space.  In particular, any
