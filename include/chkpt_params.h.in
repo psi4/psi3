@@ -2,3 +2,5 @@
 #define LINDEP_CUTOFF 1E-6    /* Threshold below which basis functions are considered
                                  linearly dependent (see canonical orthogonalization in Szabo in Ostlund) */
 
+/* Uncomment after removal of old file30 */
+/* #define MAX_ELEMNAME  13  */    /* max length of an element name */
