@@ -1,10 +1,15 @@
 /* $Log$
- * Revision 1.29  2004/05/03 04:32:40  crawdad
- * Major mods based on merge with stable psi-3-2-1 release.  Note that this
- * version has not been fully tested and some scf-optn test cases do not run
- * correctly beccause of changes in mid-March 2004 to optking.
- * -TDC
+ * Revision 1.30  2004/08/12 19:13:32  crawdad
+ * Corrected computation of <S^2> for UHF references.  The equations were
+ * coded correctly, but variable types screwed up results for doublets,
+ * quartets, etc.  -TDC
  *
+/* Revision 1.29  2004/05/03 04:32:40  crawdad
+/* Major mods based on merge with stable psi-3-2-1 release.  Note that this
+/* version has not been fully tested and some scf-optn test cases do not run
+/* correctly beccause of changes in mid-March 2004 to optking.
+/* -TDC
+/*
 /* Revision 1.28.4.1  2004/04/01 22:04:49  evaleev
 /* A critical bug: lagrangian was not written out to chkpt file correctly
 /* thanks to missing symblk offsets in computing MO indices. ROHF HF gradients
@@ -669,58 +674,56 @@ print_mos_new() {
 
 double ssquare(void){
     
-    int i,j,k,nn,n;
-    int na=0;
-    int nb=0;
-    int nh=0;
-    int num_mo;
-    double ss=0.0;
-    int nm=0;
-    double **scr1,**scr2,**S;
-    struct symm *s;
+  int i,j,k,nn,n;
+  int num_mo;
+  double ss=0.0;
+  double na=0;
+  double nb=0;
+  double nm=0;
+  double nh=0.0;
+  double **scr1,**scr2,**S;
+  struct symm *s;
     
-    scr1 = (double **)init_matrix(nsfmax,nsfmax);
-    scr2 = (double **)init_matrix(nsfmax,nsfmax);
+  scr1 = (double **)init_matrix(nsfmax,nsfmax);
+  scr2 = (double **)init_matrix(nsfmax,nsfmax);
     
-    /* Calculate the overlap matrix elements */
+  /* Calculate the overlap matrix elements */
     
-    for(i = 0;i < num_ir;i++){
+  for(i = 0;i < num_ir;i++){
 	
-	na += spin_info[0].scf_spin[i].noccup;
-	nb += spin_info[1].scf_spin[i].noccup;
+    na += spin_info[0].scf_spin[i].noccup;
+    nb += spin_info[1].scf_spin[i].noccup;
 	
-	s = &scf_info[i];
-	if(nn = s->num_so){
-	    num_mo = s->num_mo;
-	    tri_to_sq(s->smat,scr1,nn);
+    s = &scf_info[i];
+    if(nn = s->num_so){
+      num_mo = s->num_mo;
+      tri_to_sq(s->smat,scr1,nn);
 	    
-	    /* Transform the Overlap matrix to the MO basis */
+      /* Transform the Overlap matrix to the MO basis */
 	    
-	    mmult(spin_info[0].scf_spin[i].cmat,1
-		  ,scr1,0,scr2,0,num_mo,nn,nn,0);
-	    mmult(scr2,0,spin_info[1].scf_spin[i].cmat,0
-		  ,scr1,0,num_mo,nn,num_mo,0);
+      mmult(spin_info[0].scf_spin[i].cmat,1,scr1,0,scr2,0,num_mo,nn,nn,0);
+      mmult(scr2,0,spin_info[1].scf_spin[i].cmat,0,scr1,0,num_mo,nn,num_mo,0);
 	    
-	    for(j = 0; j < spin_info[0].scf_spin[i].noccup; j++){
-		for(k = 0;k < spin_info[1].scf_spin[i].noccup; k++){
-		    ss -= scr1[j][k]*scr1[j][k];
-		}
-	    }
+      for(j = 0; j < spin_info[0].scf_spin[i].noccup; j++){
+	for(k = 0;k < spin_info[1].scf_spin[i].noccup; k++){
+	  ss -= scr1[j][k]*scr1[j][k];
 	}
+      }
     }
+  }
     
     
-      /* Calculate the occupation part of the equation */
+  /* Calculate the occupation part of the equation */
     
-    nm = (na-nb)/2.0;
-    nh = (nm*(nm+1))+nb;
+  nm = (na-nb)/2.0;
+  nh = (nm*(nm+1))+nb;
         
-    ss += (nm*(nm+1))+nb;
+  ss += (nm*(nm+1))+nb;
     
-    free_matrix(scr1,nsfmax);
-    free_matrix(scr2,nsfmax);
+  free_matrix(scr1,nsfmax);
+  free_matrix(scr2,nsfmax);
     
-    return fabs(ss);
+  return fabs(ss);
 }
 
 
