@@ -7,8 +7,8 @@ $TEST_FILE = "output.dat";
 $NDOF = 3;
 $RESULT = "scf-polar.test";
 
-system ("input");
-system ("psi3");
+#system ("input");
+#system ("psi3");
 
 extract_data($REF_FILE,$Enuc_ref,$Ehf_ref,$Eref_ref);
 extract_data($TEST_FILE,$Enuc_test,$Ehf_test,$Eref_test);
@@ -32,9 +32,9 @@ sub extract_data
 
   seek(OUT,0,0);
   while (<OUT>) {
-    if (/total energy       =/) {
+    if (/SCF total energy   =/) {
       @data2 = split(/ +/, $_);
-      $_[2] = $data2[4];
+      $_[2] = $data2[5];
     }
   }
 
@@ -77,13 +77,6 @@ sub compare_data
   open (RE, ">$RESULT") || die "cannot open $RESULT: $!";
 
   select (RE);
-
-  printf("Enuc(ref)  = %20.10f\n", $Enuc_ref);
-  printf("Enuc(test) = %20.10f\n", $Enuc_test);
-  printf("Escf(ref)  = %20.10f\n", $Ehf_ref);
-  printf("Escf(test) = %20.10f\n", $Ehf_test);
-  printf("Eref(ref)  = %20.10f\n", $Eref_ref);
-  printf("Eref(test) = %20.10f\n", $Eref_test);
 
   printf "\nSCF-POLAR:\n";
   $diff_nuc = abs ($Enuc_ref - $Enuc_test);
