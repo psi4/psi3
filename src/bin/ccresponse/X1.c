@@ -64,7 +64,7 @@ void X1_build(char *pert, char *cart, int irrep, double omega)
 
   dpd_buf4_close(&X2);
 
-  if(params.local) local_filter_T1(&X1new, omega);
+  if(params.local && local.filter_singles) local_filter_T1(&X1new, omega);
   else denom1(&X1new, omega);
   dpd_file2_close(&X1new);
 }

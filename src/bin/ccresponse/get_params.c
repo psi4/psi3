@@ -11,7 +11,7 @@
 
 void get_params()
 {
-  int errcod, ref, count, iconv, *tmpi;
+  int i, errcod, ref, count, iconv, *tmpi;
   char *junk, units[20];
 
   params.print = 1;
@@ -81,17 +81,14 @@ void get_params()
     exit(PSI_RETURN_FAILURE);
   }
 
+  /* compute the irreps of the angular momentum operator while we're here */
   moinfo.l_irreps = init_int_array(3);
-  errcod = ip_int_array("L_IRREPS", moinfo.l_irreps, 3);
-  if(errcod == IPE_OK) {
-    moinfo.irrep_Rx = moinfo.l_irreps[0];
-    moinfo.irrep_Ry = moinfo.l_irreps[1];
-    moinfo.irrep_Rz = moinfo.l_irreps[2];
-  }
-  else {
-    fprintf(outfile, "\nYou must supply the irreps of rotation about x, y, and z with the L_IRREPS keyword.\n");
-    exit(PSI_RETURN_FAILURE);
-  }
+  for(i=0; i < 3; i++)
+    moinfo.l_irreps[i] = moinfo.mu_irreps[(int) (i+1)%3] ^ moinfo.mu_irreps[(int) (i+2)%3];
+
+  moinfo.irrep_Rx = moinfo.l_irreps[0];
+  moinfo.irrep_Ry = moinfo.l_irreps[1];
+  moinfo.irrep_Rz = moinfo.l_irreps[2];
 
   params.maxiter = 50;
   errcod = ip_data("MAXITER","%d",&(params.maxiter),0);
@@ -140,6 +137,9 @@ void get_params()
     sprintf(local.weakp, "%s", "NONE");
   }
 
+  local.filter_singles = 1;
+  ip_boolean("LOCAL_FILTER_SINGLES", &(local.filter_singles), 0);
+
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
   if(!strcmp(params.prop,"ALL"))
@@ -171,6 +171,7 @@ void get_params()
     fprintf(outfile, "\tLocal Cutoff    = %3.1e\n", local.cutoff);
     fprintf(outfile, "\tLocal Method    =    %s\n", local.method);
     fprintf(outfile, "\tWeak pairs      =    %s\n", local.weakp);
+    fprintf(outfile, "\tFilter singles  =    %s\n", local.filter_singles ? "Yes" : "No");
   }
   fprintf(outfile, "\n");
 }

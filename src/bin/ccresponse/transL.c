@@ -7,7 +7,7 @@
 #include <psifiles.h>
 #include "globals.h"
 
-void transL(void)
+void transL(double sign)
 {
   int stat, nao, noei_ao, nso, nmo;
   int i, j, ij, I, J;
@@ -34,8 +34,8 @@ void transL(void)
   stat = iwl_rdone(PSIF_OEI, PSIF_AO_LX, scratch, noei_ao, 0, 0, outfile); /* read lower triangle */
   for(i=0,ij=0; i < nao; i++)
     for(j=0; j <= i; j++, ij++) {
-      TMP[i][j] =  0.5 * scratch[ij];
-      TMP[j][i] = -0.5 * scratch[ij];
+      TMP[i][j] =  0.5 * scratch[ij] * sign;
+      TMP[j][i] = -0.5 * scratch[ij] * sign;
     }
 
   C_DGEMM('n','t',nao,nso,nao,1,&(TMP[0][0]),nao,&(moinfo.usotao[0][0]),nao,
@@ -53,8 +53,8 @@ void transL(void)
   stat = iwl_rdone(PSIF_OEI, PSIF_AO_LY, scratch, noei_ao, 0, 0, outfile);
   for(i=0,ij=0; i < nao; i++)
     for(j=0; j <= i; j++, ij++) {
-      TMP[i][j] =  0.5 * scratch[ij];
-      TMP[j][i] = -0.5 *scratch[ij];
+      TMP[i][j] =  0.5 * scratch[ij] * sign;
+      TMP[j][i] = -0.5 * scratch[ij] * sign;
     }
 
   C_DGEMM('n','t',nao,nso,nao,1,&(TMP[0][0]),nao,&(moinfo.usotao[0][0]),nao,
@@ -72,8 +72,8 @@ void transL(void)
   stat = iwl_rdone(PSIF_OEI, PSIF_AO_LZ, scratch, noei_ao, 0, 0, outfile);
   for(i=0,ij=0; i < nao; i++)
     for(j=0; j <= i; j++, ij++) {
-      TMP[i][j] =  0.5 * scratch[ij];
-      TMP[j][i] = -0.5 * scratch[ij];
+      TMP[i][j] =  0.5 * scratch[ij] * sign;
+      TMP[j][i] = -0.5 * scratch[ij] * sign;
     }
 
   C_DGEMM('n','t',nao,nso,nao,1,&(TMP[0][0]),nao,&(moinfo.usotao[0][0]),nao,

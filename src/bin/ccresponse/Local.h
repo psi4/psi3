@@ -15,6 +15,7 @@ struct Local {
   double *eps_occ;
   double **eps_vir;
   double cutoff;
+  int filter_singles;
   char *method;
   char *weakp;
 };
