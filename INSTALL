@@ -25,6 +25,7 @@ The following series of steps will configure and build the PSI3
 package and install the executables in /usr/local/psi/bin:
 
    * cd $PSI3 (the top-level PSI3 source directory -- probably THIS directory)
+   * autoconf
    * mkdir objdir
    * cd objdir
    * ../configure
@@ -91,11 +92,15 @@ compiling and installing the PSI3 package.
 
 III.A. Step 1: Configuration
 
-It is best to keep the source code separate from the compilation area,
-so you must first choose a subdirectory for compilation of the codes.
-A simple option is $PSI3/objdir, which should work for most environments.
-However, if you need executables for several architectures, choose 
-more meaningful subdirectory names.  
+First, we recommend that you choose for the top-level $PSI3 source
+directory something other than /usr/local/psi; your $HOME directory or
+/usr/local/src are convenient choices.  Next, in the top-level $PSI3 source
+directory you've chosen, first run autoconf to generate the configure
+script from configure.in.  It is best to keep the source code separate
+from the compilation area, so you must first choose a subdirectory for
+compilation of the codes.  A simple option is $PSI3/objdir, which should
+work for most environments.  However, if you need executables for several
+architectures, choose more meaningful subdirectory names.
 
    * The compilation directory will be referred to as $objdir for the
    remainder of these instructions.
