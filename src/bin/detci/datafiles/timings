@@ -291,3 +291,23 @@ indicates a slight advantage to blas...should run something bigger
 
 ======================================================================
 
+H2O FCI 0fzc 1002708 dets
+H0_blocksize = 40 (as in older tests above)
+HD_AVE = EVANGELISTI (new default) for aurelius, KD_AVE for dido
+
+E = -76.1564081972099 C0=-0.976353 C1=0.056881
+
+aurelius (2GB RAM, RedHat Linux 7.3, Dual Athlon MP 2000+, 2 RAID0 OS
+          striped 36GB U160 SCSI HDD)
+
+10 (11) iters as usual (iters start from 0 so really 11).
+
+aurelius                 : 109u, 19s, 130t
+dido (375MHz PowerIII-2) :  89u, 29s, 132t 
+
+Threaded code as of 6/24/02; 2 threads, was less efficient for 
+aurelius, didn't seem to take for dido (maybe wasn't compiled right?).
+
+======================================================================
+
+
