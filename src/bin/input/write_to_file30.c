@@ -9,8 +9,6 @@
 #include "defines.h"
 
 
-void pack_4int(int **, int *, int, int);
-
 /*-----------------------------------------------------------------------------------------------------------------
   This function writes information out to file30
  -----------------------------------------------------------------------------------------------------------------*/
@@ -29,13 +27,11 @@ void write_to_file30(double repulsion)
   int *ict;
   double *cspd;     /*Array of contraction coefficients in file30 format*/
   char *atom_label;
-  int **isc, **ipc, **iso;
-  int **loc, **loc2;
+  int **shell_transm;
   int **ioff_irr;
   int max_num_prims;
   int max_atom_degen;
   int max_angmom_unique;
-  int mru,kaords;
   
   
   constants = init_int_array(MCONST);
@@ -44,7 +40,7 @@ void write_to_file30(double repulsion)
 
   /* Check the max_angmom. If it's > 4 - die */
   if (max_angmom >= MAXANGMOM)
-    punt("  You went too high on the angular momentum stair!\n\n");
+    punt("Angular momentum is too high to be handled by file30");
 
   
   /*----------------------------------
@@ -105,8 +101,11 @@ void write_to_file30(double repulsion)
   cspd = init_array(MRCRU*num_prims*MAXANGMOM);
   for(j=0;j<num_shells;j++)
     for(k=0;k<nprim_in_shell[j];k++)
-	/*-------Pitzer normalization is used - cc's for d-functions are multiplied by sqrt(3), f - by sqrt(15), g - sqrt(105), etc */
-      cspd[shell_ang_mom[j]*num_prims+first_prim_shell[j]+k] = contr_coeff[first_prim_shell[j]+k]/**sqrt(df[2*shell_ang_mom[j]])*/;
+	/*---
+	  Pitzer normalization of Psi 2 is NOT used - cc's for d-functions used to be
+	  multiplied by sqrt(3), f - by sqrt(15), g - sqrt(105), etc
+	  ---*/
+      cspd[shell_ang_mom[j]*num_prims+first_prim_shell[j]+k] = contr_coeff[first_prim_shell[j]+k];
   wwritw(CHECKPOINTFILE,(char *) cspd, MRCRU*num_prims*MAXANGMOM*(sizeof(double)),ptr,&ptr);
   free(cspd);
 
@@ -138,97 +137,12 @@ void write_to_file30(double repulsion)
   for(i=0;i<num_shells;i++)
     arr_int[i] = first_ao_shell[i]+1;
   wwritw(CHECKPOINTFILE,(char *) arr_int, num_shells*(sizeof(int)),ptr,&ptr);
-
-  /* First ao type in shell (S,X,Y,Z,XX,..) */
-  pointers[11] = ptr/sizeof(int) + 1;
-  for(i=0;i<num_shells;i++)
-    arr_int[i] = first_ao_type_shell[i]+1;
-  wwritw(CHECKPOINTFILE,(char *) arr_int, num_shells*(sizeof(int)),ptr,&ptr);
-
-  /* Last ao type in shell (S,X,Y,Z,XX,..) */
-  pointers[12] = ptr/sizeof(int) + 1;
-  for(i=0;i<num_shells;i++)
-    arr_int[i] = last_ao_type_shell[i]+1;
-  wwritw(CHECKPOINTFILE,(char *) arr_int, num_shells*(sizeof(int)),ptr,&ptr);
-  free(arr_int);
-
-  /* Packed SO transformation matrices - for abelian point group it's just an array of 1's*/
-  pointers[13] = ptr/sizeof(int) + 1;
-  isc = init_int_matrix(num_shells,nirreps);
-  for(i=0;i<num_shells;i++)
-    for(j=0;j<nirreps;j++)
-      isc[i][j] = 1;
-  arr_int = (int *) malloc(num_shells*((int)(nirreps+3)/4)*sizeof(int));
-  pack_4int(isc,arr_int,num_shells,nirreps);
-  wwritw(CHECKPOINTFILE,(char *) arr_int, num_shells*((int)(nirreps+3)/4)*(sizeof(int)),ptr,&ptr);
-
-  /* Packed SO transformation information */
-  pointers[14] = ptr/sizeof(int) + 1;
-  ipc = isc;
-  ioff_irr = init_int_matrix(max_angmom+1,nirreps);
-  for(class=0;class<num_classes;class++) {
-    for(l=0;l<=max_angmom;l++)
-      for(irr=0;irr<nirreps;irr++)
-	ioff_irr[l][irr] = 1;
-    for(atom=0;atom<num_atoms;atom++)
-      if (atom_class[atom] == class) {
-	shell_first = first_shell_on_atom[atom];
-	shell_last = first_shell_on_atom[atom] + nshells_per_atom[atom];
-	for(shell=shell_first;shell<shell_last;shell++) {
-	  l = shell_ang_mom[shell];
-	  for(irr=0;irr<nirreps;irr++) {
-	    ipc[shell][irr] = ioff_irr[l][irr];
-	    ioff_irr[l][irr] += num_cart_so_in_class[class][l][irr];
-	  }
-	}
-      }
-  }
-  free_int_matrix(ioff_irr,max_angmom+1);
-  pack_4int(ipc,arr_int,num_shells,nirreps);
-  wwritw(CHECKPOINTFILE,(char *) arr_int, num_shells*((int)(nirreps+3)/4)*(sizeof(int)),ptr,&ptr);
   free(arr_int);
 
   /* Labels of irreps */
   pointers[15] = ptr/sizeof(int) + 1;
   for(i=0;i<nirreps;i++)
     wwritw(CHECKPOINTFILE,(char *) irr_labels[i], 4,ptr,&ptr);
-
-  /* Coefficients of SO's */
-  pointers[16] = ptr/sizeof(int) + 1;
-  wwritw(CHECKPOINTFILE,(char *) angso_coeff, num_angso_coeff*sizeof(double),ptr,&ptr);
-
-  /* Labels of SO matrices */
-  pointers[17] = ptr/sizeof(int) + 1;
-  arr_int = (int *) malloc(num_angso_coeff*sizeof(int));
-  pack_4int(angso_labels,arr_int,num_angso_coeff,4);
-  wwritw(CHECKPOINTFILE,(char *) arr_int, num_angso_coeff*sizeof(int),ptr,&ptr);
-  free(arr_int);
-
-  /* Pointers to beginning of SO matrix */
-  pointers[18] = ptr/sizeof(int) + 1;
-  loc = init_int_matrix(MAXANGMOM,num_atoms);
-  loc2 = init_int_matrix(MAXANGMOM,num_atoms);
-  for(l=0;l<MAXANGMOM;l++)
-    for(atom=0;atom<num_atoms;atom++)
-      loc[l][atom] = -1;
-  for(class=0;class<num_classes;class++)
-    for(atom=0;atom<num_atoms;atom++)
-      if (atom_class[atom] == class) {
-	for(l=0;l<=max_angmom_class[class];l++) {
-	  loc[l][atom] = first_angso_coeff_class[class][l];
-	  loc2[l][atom] = last_angso_coeff_class[class][l];
-	}
-	break;
-      }
-  for(l=0;l<MAXANGMOM;l++)
-    wwritw(CHECKPOINTFILE,(char *) loc[l], num_atoms*sizeof(int),ptr,&ptr);
-  free_int_matrix(loc,MAXANGMOM);
-
-  /* Pointers to end of SO matrix */
-  pointers[19] = ptr/sizeof(int) + 1;
-  for(l=0;l<MAXANGMOM;l++)
-    wwritw(CHECKPOINTFILE,(char *) loc2[l], num_atoms*sizeof(int),ptr,&ptr);
-  free_int_matrix(loc2,MAXANGMOM);
 
   /* Class an atom belongs to*/
   pointers[20] = ptr/sizeof(int) + 1;
@@ -239,25 +153,20 @@ void write_to_file30(double repulsion)
   wwritw(CHECKPOINTFILE,(char *) arr_int, num_atoms*sizeof(int),ptr,&ptr);
   free(arr_int);
 
-  /* Degeneracy of nth irrep*/
-  pointers[21] = ptr/sizeof(int) + 1;
-  arr_int = init_int_array(nirreps);
-  for(irr=0;irr<nirreps;irr++)
-    arr_int[irr] = 1;
-  wwritw(CHECKPOINTFILE,(char *) arr_int, nirreps*sizeof(int),ptr,&ptr);
-
   /* Pointer to start of nth symmetry block*/
   pointers[22] = ptr/sizeof(int) + 1;
+  arr_int = init_int_array(nirreps);
   arr_int[0] = 0;
   for(irr=1;irr<nirreps;irr++)
     arr_int[irr] = arr_int[irr-1] + ioff[num_cart_so_per_irrep[irr-1]];
   wwritw(CHECKPOINTFILE,(char *) arr_int, nirreps*sizeof(int),ptr,&ptr);
+  free(arr_int);
 
   /* Number of cartesian SO's of nth symmetry */
   pointers[23] = ptr/sizeof(int) + 1;
   wwritw(CHECKPOINTFILE,(char *) num_cart_so_per_irrep, nirreps*sizeof(int),ptr,&ptr);
 
-  /* Transformation matrices for coordinates */
+  /* Transformation matrices for coordinates (or p-functions) */
   pointers[24] = ptr/sizeof(int) + 1;
   arr_double = init_array(3);
   for(symop=0;symop<nirreps;symop++)
@@ -268,27 +177,18 @@ void write_to_file30(double repulsion)
     }
   free(arr_double);
 
-  /* Inverse of symmetry operation */
-  pointers[25] = ptr/sizeof(int) + 1;
-  for(symop=0;symop<nirreps;symop++)
-    arr_int[symop] = symop + 1;
-  wwritw(CHECKPOINTFILE,(char *) arr_int, nirreps*sizeof(int),ptr,&ptr);
-  free(arr_int);
-
-  /* Packed transformation matrix for shells */
+  /* Transformation matrix for shells */
   pointers[26] = ptr/sizeof(int) + 1;
-  iso = isc;
+  shell_transm = init_int_matrix(num_shells,nirreps);;
   for(atom=0;atom<num_atoms;atom++)
     for(symop=0;symop<nirreps;symop++) {
       eq_atom = atom_orbit[atom][symop];
       for(i=0;i<nshells_per_atom[atom];i++)
-	iso[first_shell_on_atom[atom]+i][symop] = first_shell_on_atom[eq_atom] + i + 1;
+	shell_transm[first_shell_on_atom[atom]+i][symop] = first_shell_on_atom[eq_atom] + i + 1;
     }
-  arr_int = (int *) malloc(num_shells*((int)(nirreps+3)/4)*sizeof(int));
-  pack_4int(iso,arr_int,num_shells,nirreps);
-  wwritw(CHECKPOINTFILE,(char *) arr_int, num_shells*((int)(nirreps+3)/4)*(sizeof(int)),ptr,&ptr);
-  free(arr_int);
-  free_int_matrix(isc,num_shells);
+  for(i=0;i<num_shells;i++)
+    wwritw(CHECKPOINTFILE,(char *) shell_transm[i], nirreps*(sizeof(int)),ptr,&ptr);
+  free_int_matrix(shell_transm,num_shells);
 
   /* Labels of atoms */
   pointers[27] = ptr/sizeof(int) + 1;
@@ -300,67 +200,6 @@ void write_to_file30(double repulsion)
   
   free(atom_label);
 
-  /* Transformation matrices for p-functions */
-  pointers[30] = ptr/sizeof(int) + 1;
-  arr_double = init_array(ioff[MAXANGMOM+1]);
-  for(symop=0;symop<nirreps;symop++)
-    for(i=0;i<3;i++) {
-      arr_double[i] = ao_type_transmat[1][symop][i];
-      wwritw(CHECKPOINTFILE,(char *) arr_double, 3*sizeof(double),ptr,&ptr);
-      arr_double[i] = 0.0;
-    }
-
-  /* Transformation matrices for d-functions */
-  pointers[31] = ptr/sizeof(int) + 1;
-  for(symop=0;symop<nirreps;symop++)
-    for(i=0;i<6;i++) {
-      arr_double[i] = ao_type_transmat[2][symop][i];
-      wwritw(CHECKPOINTFILE,(char *) arr_double, 6*sizeof(double),ptr,&ptr);
-      arr_double[i] = 0.0;
-    }
-
-  /* Transformation matrices for f-functions */
-  pointers[32] = ptr/sizeof(int) + 1;
-  for(symop=0;symop<nirreps;symop++)
-    for(i=0;i<10;i++) {
-      arr_double[i] = ao_type_transmat[3][symop][i];
-      wwritw(CHECKPOINTFILE,(char *) arr_double, 10*sizeof(double),ptr,&ptr);
-      arr_double[i] = 0.0;
-    }
-
-  /* Transformation matrices for g-functions */
-  pointers[33] = ptr/sizeof(int) + 1;
-  for(symop=0;symop<nirreps;symop++)
-    for(i=0;i<15;i++) {
-      arr_double[i] = ao_type_transmat[4][symop][i];
-      wwritw(CHECKPOINTFILE,(char *) arr_double, 15*sizeof(double),ptr,&ptr);
-      arr_double[i] = 0.0;
-    }
-  free(arr_double);
-
-  /* Number of contractions in each shell - 1 if only segmented basis sets are used */
-  pointers[34] = ptr/sizeof(int) + 1;
-  arr_int = init_int_array(num_shells);
-  for(i=0;i<num_shells;i++)
-    arr_int[i] = 1;
-  wwritw(CHECKPOINTFILE,(char *) arr_int, num_shells*sizeof(int),ptr,&ptr);
-  free(arr_int);
-
-  /* Shell type - 1 if pure angular momentum, 0 if cartesian */
-  pointers[35] = ptr/sizeof(int) + 1;
-  arr_int = init_int_array(MAXANGMOM);
-  arr_int[0] = 0;
-  if (max_angmom >= 1)
-    arr_int[1] = 0;
-  if (puream)
-    for(l=2;l<=max_angmom;l++)
-      arr_int[l] = 1;
-  wwritw(CHECKPOINTFILE,(char *) arr_int, MAXANGMOM*sizeof(int),ptr,&ptr);
-  free(arr_int);
-
-  /*----------------------------------------------
-    Experimental additions - needed to feed CINTS
-   ----------------------------------------------*/
   /* Orbitals per irrep */
   pointers[36] = ptr/sizeof(int) + 1;
   wwritw(CHECKPOINTFILE,(char *) num_so_per_irrep, nirreps*sizeof(int),ptr,&ptr);  
@@ -455,63 +294,22 @@ void write_to_file30(double repulsion)
   constants[3] = MCALCS;
   constants[4] = 1;
   constants[5] = num_uniques;
-  /* Compute some weird constants */
-  max_num_prims = 0;
-  max_atom_degen = 1;
-  mru = 0;
-  kaords = 0;
-  for(ua=0;ua<num_uniques;ua++) {
-    max_atom_degen = MAX(max_atom_degen,unique_degen[ua]);
-    atom = u2a[ua];
-    shell_first = first_shell_on_atom[atom];
-    shell_last = first_shell_on_atom[atom] + nshells_per_atom[atom];
-    max_angmom_unique = 0; 
-    for(shell=shell_first;shell<shell_last;shell++) {
-      max_angmom_unique = MAX(max_angmom_unique,shell_ang_mom[shell]);
-      max_num_prims = MAX(max_num_prims,nprim_in_shell[shell]);
-    }
-    kaords += max_angmom_unique + 1;
-    mru = MAX(mru,unique_degen[ua]*ioff[max_angmom_unique+1]);
-  }
-      
-  constants[6] = kaords;
+  constants[6] = (int) rotor;
   constants[7] = num_unique_shells;
-  constants[8] = kaords;
-  constants[9] = nirreps;
-  constants[10] = mru;
-  constants[11] = mru;
-  constants[12] = mru;
-  constants[13] = max_num_prims;
-  constants[14] = max_atom_degen;
-  constants[15] = num_unique_shells;
-  constants[16] = nirreps;
   constants[17] = num_so;
   constants[18] = num_atoms;
-  constants[19] = 0;
-  constants[20] = 0;
   constants[21] = num_ao;
-  constants[22] = 0;
-  constants[23] = num_so*(num_so+1)/2;
-  constants[24] = 0;
-  constants[25] = 0;
   constants[26] = num_shells;
   constants[27] = nirreps;
-  constants[28] = nirreps;
-  constants[29] = 40;
-  constants[30] = 48;
   constants[31] = num_prims;
-  constants[32] = 100;
-  constants[33] = 14;
-  constants[34] = num_angso_coeff;
-  constants[35] = 9*nirreps;
-  constants[36] = 12;
-  constants[37] = 4;
-  constants[38] = (nirreps+3)/4;
-  constants[39] = (nirreps+3)/4;
+  /*--- These are SCF constants to be filled by CSCF ---*/
   constants[40] = 0;
   constants[41] = 0;
   constants[42] = 0;
-  constants[43] = MRCRU;
+  constants[44] = 0;
+  constants[45] = 0;
+  constants[46] = 0;
+  constants[50] = 0;
   wwritw(CHECKPOINTFILE,(char *) constants, MCONST*sizeof(int),100*sizeof(int),&junk);
 
   rclose(CHECKPOINTFILE,3);
@@ -519,50 +317,4 @@ void write_to_file30(double repulsion)
   free(pointers);
   free(calcs);
   return;
-}
-
-
-
-/* pack_4int()   Packs a matrix of small integers (normally, symmetry information)
-**               into a sequential array of integers.
-**
-**  FORMAT: source is converted into a packed form. Each element of a row is
-**  represented by a byte, therefore if nirreps <= 4 - each row is packed   
-**  into an integer word, else if nirreps == 8 - into two integer words.
-**   Here's how it works :
-**   | source[3] | source[2] | source[1] | source[0] |                 
-**   leftmost byte                       rightmost byte
-**			
-**
-**  arguments: int **source - integer matrix num_rows by nirreps
-**             int  *dest   - the destination array of
-**                            num_rows*((nirreps == 8) ? 2 : 1) integers
-**             int num_rows - number of rows in source
-**             int nirreps  - number of columns in source
-**
-**  returns: nothing	
-*/
-
-void pack_4int(int **source, int *dest, int num_rows, int num_cols)
-{
-  int i;
-
-  switch (num_cols) {
-    case 8: bzero((char *) (dest+num_rows),sizeof(int)*num_rows);
-    case 4:
-    case 2:
-    case 1: bzero((char *) dest,sizeof(int)*num_rows);
-  }
-  for(i=0;i<num_rows;i++)
-    switch (num_cols) {
-      case 8: dest[i+num_rows] += source[i][4];
-              dest[i+num_rows] += (source[i][5] << 8);
-              dest[i+num_rows] += (source[i][6] << 16);
-              dest[i+num_rows] += (source[i][7] << 24);
-      case 4: dest[i] += (source[i][2] << 16);
-              dest[i] += (source[i][3] << 24);
-      case 2: dest[i] += (source[i][1] << 8);
-      case 1: dest[i] += source[i][0];
-    }
-
 }

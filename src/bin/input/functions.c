@@ -26,9 +26,11 @@ char *gprgid()
 /*
    quit routine
 */
-void punt(const char *msg)
+void punt(const char *mess)
 {
-  printf(msg);
+  fprintf(outfile, "  error: %s\n", mess);
+  fprintf(stderr, "  INPUT error: %s\n", mess);
+  stop_io();
   exit(1);
 }
 
@@ -131,8 +133,8 @@ void calc_distance(double **geom, double *A, int num)
          temp3  = (geom[i][2]-geom[j][2])*(geom[i][2]-geom[j][2]); 
          dist = sqrt(temp1 + temp2 + temp3);
 	 if (dist < ZERO_BOND_DISTANCE) {
-	   printf("\nERROR: Atoms %d and %d are separated by only %lf!\n\n",i+1,j+1,dist);
-	   exit(1);
+	   printf("  Atoms %d and %d are separated by only %lf!\n",i+1,j+1,dist);
+	   punt("Invalid geometry");
 	 }
 	 else
 	   A[ioff[i]+j] = dist;

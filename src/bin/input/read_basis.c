@@ -77,7 +77,7 @@ void read_basis()
      if (depth == 0) { /* the same basis for all atoms */
        errcod = ip_string("BASIS",&basis_type,0);
        if (errcod != IPE_OK)
-	 punt("ERROR: There is a problem with the BASIS keyword!\n\n");
+	 punt("There is a problem with the BASIS keyword!");
        for(i=0;i<num_atoms;i++)
 	 atom_basis[i] = basis_type;
      }
@@ -92,11 +92,11 @@ void read_basis()
 	   for(i=0;i<num_atoms;i++) {
 	     errcod = ip_string("BASIS",&basis_type,1,i);
 	     if (errcod != IPE_OK)
-	       punt("ERROR: There is a problem with the BASIS array!\n\n");
+	       punt("There is a problem with the BASIS array!");
 	     atom_basis[i] = basis_type;
 	   }
 	 else
-	   punt("ERROR: Number of entries in the BASIS array not the same as num_atoms!\n\n");
+	   punt("Number of entries in the BASIS array not the same as num_atoms!");
        else {
 	   /*----------
 	     Basis sets for each element type is specified, e.g.
@@ -108,8 +108,8 @@ void read_basis()
 	 for(i=0;i<depth;i++) {
 	   errcod = ip_count("BASIS",&j,1,i);
 	   if (errcod != IPE_OK || j != 2) {
-	     printf("ERROR: There is a problem with line %d of the BASIS array!\n\n",i+1);
-	     exit(1);
+	     fprintf(outfile,"  There is a problem with line %d of the BASIS array!\n",i+1);
+	     punt("Invalid basis set file");;
 	   }
 	   errcod = ip_string("BASIS",&elem_label,2,i,0);
 	   atom_num(elem_label,&Z);
@@ -121,8 +121,8 @@ void read_basis()
 	 }
 	 for(i=0;i<num_atoms;i++)
 	   if (atom_basis[i] == NULL) {
-	     printf("ERROR: Need basis set for %s\n\n",element[i]);
-	     exit(1);
+	     fprintf(outfile,"  Missing basis set for %s\n",element[i]);
+	     punt("Missing basis set");;
 	   }
        }
      }
@@ -155,7 +155,7 @@ void read_basis()
       /*Count number of levels,*/
       errcod = ip_exist(ip_token2[i], 0);
       if(errcod == 0){
-        punt("I can't find your basis set anywhere, check BASIS array and/or basis set.\n");
+        punt("I can't find your basis set anywhere, check BASIS array and/or basis set.");
        }
 
       first_prim_unique_atom = last_prim_unique_atom+1;
@@ -194,8 +194,8 @@ void read_basis()
      puream = 0;
    
    if (max_angmom+1 > MAXANGMOM) {
-     printf("  Angular momentum limit of %d exceeded\n\n",MAXANGMOM-1);
-     exit(1);
+     fprintf(outfile,"  Angular momentum limit of %d exceeded\n",MAXANGMOM-1);
+     punt("Angular momentum too high");
    }
 
    num_prims = last_prim_unique_atom;
@@ -279,8 +279,8 @@ int parse_am(s)
   else if(!strcmp(s,"M")) return 9;
   else if(!strcmp(s,"N")) return 10;
   else {
-    printf("ERROR: Angular momentum %s cannot be handled yet.\n\n",s);
-    exit(1);
+    fprintf(outfile,"  Angular momentum %s cannot be handled yet.\n",s);
+    punt("Angular momentum too high");
   }
 }
 
@@ -333,7 +333,7 @@ int *ang_mom)
 
       errcod = ip_count(ip_token2[atom_number],&num_exponents,1,i); 
       if(errcod != IPE_OK){
-        punt("I still can't find the basis set, something is wrong. Check BASIS array.\n");
+        punt("I still can't find the basis set, something is wrong. Check BASIS array.");
        }
       ang_mom[*unique_shell_cnt] = parse_am(grep);
       first_prim[*unique_shell_cnt] = *unique_prim_cnt;
@@ -365,7 +365,7 @@ int *ang_mom)
             fprintf(outfile,"%15.8lf",basis_set[*unique_prim_cnt][k]);
          
             if(basis_set[*unique_prim_cnt][k] == 0.0){
-              punt("ERROR: zeros in the basis set!\n\n");
+              punt("Zeros in the basis set!");
              } 
            }
          if(j != (num_exponents-1) - 1){

@@ -238,7 +238,7 @@ void count_uniques()
       }
   }
   else
-    punt("ERROR: Unrecognized symmetry in count_uniques().\n\n");
+    punt("Unrecognized symmetry in count_uniques().");
 
 
   /*Computing atom classes atom_class and reduced unique atom's orbits red_unique_orbit:

@@ -13,6 +13,7 @@
 void reorient()
 {
   int i,j;
+  int degen;
   int deg_IM1, deg_IM2;
   int nspher_set;
   int prox_i, prox_j;
@@ -53,7 +54,7 @@ void reorient()
     }
 
     /*Computing inertia tensor, moments of inertia, and principal axes*/
-    if (num_atoms > 0) {
+    if (num_atoms > 1) {
       for(i=0;i<num_atoms;i++) {
         tmp = an2masses[(int)nuclear_charges[i]]/_au2amu;
         IT[0][0] += tmp*(geometry[i][1]*geometry[i][1] + geometry[i][2]*geometry[i][2]);
@@ -69,14 +70,15 @@ void reorient()
       sq_rsp(3,3,IT,IM,1,ITAxes,1.0E-14);
       IM[0] = fabs(IM[0]); /*Fixing numerical errors in the linear case*/
       fprintf(outfile,"\n  -Rotational constants (cm-1) :\n");
-      if (IM[0] < ZERO_MOMENT_INERTIA)  /* Linear molecule or atom */
+      if (IM[0] < ZERO_MOMENT_INERTIA) /* Linear molecule */
 	fprintf(outfile,"    A = **********  ");
       else   /* Regular molecule */
 	fprintf(outfile,"    A = %10.5lf  ",im2rotconst/IM[0]);
       if (IM[1] < ZERO_MOMENT_INERTIA)  /* Atom */
 	fprintf(outfile,"B = **********  C = **********\n");
-      else   /* Linear molecule */
+      else /* molecule */
 	fprintf(outfile,"B = %10.5lf  C = %10.5lf\n",im2rotconst/IM[1],im2rotconst/IM[2]);
+
     
       /*Ensuring the righthandedness of the reference coordinate system*/
       v1[0] = ITAxes[0][1];
@@ -114,9 +116,11 @@ void reorient()
 
       /*If degen=0 (asymmetric top) - do nothing
 	   degen=1 (linear molecule or symmetric top) - set unique axis along Z
-           denen=2 (spherical top) - do a lot of stuff - see below*/
-      if (degen == 0)
+           denen=2 (atom or spherical top) - do a lot of stuff - see below*/
+      if (degen == 0) {
 	fprintf(outfile,"    It is an asymmetric top.\n");
+	rotor = asymmtop;
+      }
       else if (degen == 1)
 	switch (deg_IM1 + deg_IM2) {
 	  case 3: /*B and C are degenerate - linear or prolate symm. top.
@@ -126,18 +130,24 @@ void reorient()
 		    geometry[i][0] = -geometry[i][2];
 		    geometry[i][2] = tmp;
 		  }
-		  if (IM[0] < ZERO_MOMENT_INERTIA)
+		  if (IM[0] < ZERO_MOMENT_INERTIA) {
 		    fprintf(outfile,"    It is a linear molecule.\n");
-		  else
+		    rotor = linear;
+		  }
+		  else {
 		    fprintf(outfile,"    It is a prolate symmetric top.\n");
+		    rotor = symmtop;
+		  }
 		  break;
 	  case 1: /*A and B are degenerate - oblate top.
 		    C is the unique axis. Do nothing.*/
 	          fprintf(outfile,"    It is an oblate symmetric top.\n");
+		  rotor = symmtop;
 	          break;
 	}
       else if (degen == 2) { /*Man, this piece of code is nasty!!!*/
 	fprintf(outfile,"    It is a spherical top.\n");
+	rotor = sphtop;
 	Zmax = 0;
 	for(i=0;i<num_atoms;i++) /*Finding the heaviest type of atoms positioned NOT in the origin*/
 	  if (Zmax < (int)nuclear_charges[i] && sqrt(dot_prod(geometry[i],geometry[i])) > ZERO)
@@ -248,8 +258,13 @@ void reorient()
 	free_matrix(sset_geom,num_atoms);
       }
     }
-    else /*Atomic case*/
-      fprintf(outfile,"    It is an atom.\n");
+    else if (num_atoms == 1) { /* Atom */
+      fprintf(outfile,"    It is a spherical top.\n");
+      rotor = atom;
+    }
+    else if (num_atoms <= 0) { /* ??? */
+      punt("Fewer than 1 atom");
+    }
 
     free(v1);
     free(v2);

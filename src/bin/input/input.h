@@ -139,3 +139,6 @@ int *ang_mom);
 
 char *init_char_array(int B);
 char **init_char_matrix(int A, int B);
+
+void start_io();
+void stop_io();

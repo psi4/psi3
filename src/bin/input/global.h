@@ -49,10 +49,15 @@ EXTERN int *sym_oper;               /*Array that maps symmetry operation number 
 EXTERN double conv_factor;          /*Conversion factor for geometry:
 				      if UNITS=BOHR or AU - 1.0,
 				      if UNITS=ANGSTROM or ANGSTROMS - 1/_bohr2angstroms.*/
-EXTERN int degen;                   /*Degeneracy of the inertia tensor:
-				      0 - asymmetric top
-				      1 - linear or symmetric top
-				      2 - spherical top*/
+typedef enum {                      /*Type of the rigid rotor (3 + number of zero moments - number of */
+                                    /*non-zero unique moments) */
+    asymmtop = 0,                   /*0 - asymmetric top (3 + 0 - 3) */
+    symmtop = 1,                    /*1 - symmetric top (3 + 0 - 2) */
+    sphtop = 2,                     /*2 - spherical top (3 + 0 - 1) */
+    linear = 3,                     /*3 - linear molecule (3 + 1 - 1)*/
+    atom = 6                        /*6 - atom (3 + 3 - 0) */
+} rotortype;
+EXTERN rotortype rotor;             /*Type fo the rotor we are dealing with*/
 EXTERN int nirreps;                 /*Number of irreducible representations in the computational (largest Abelian)
 				      point group*/
 EXTERN int num_atoms;               /*Total number of atoms*/

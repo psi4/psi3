@@ -239,19 +239,19 @@ void find_symmetry()
 		      sig_xz_flag = 0; sig_yz_flag = 0;
 		    }
 		    else
-		      punt("  UNIQUE_AXIS defined incorrectly.\n\n");
+		      punt("  UNIQUE_AXIS defined incorrectly.");
 		  else if (!strcmp(unique_axis,"Y"))
 		    if (sig_xz_flag) {
 		      sig_xy_flag = 0; sig_yz_flag = 0;
 		    }
 		    else
-		      punt("  UNIQUE_AXIS defined incorrectly.\n\n");
+		      punt("  UNIQUE_AXIS defined incorrectly.");
 		  else if (!strcmp(unique_axis,"X"))
 		    if (sig_yz_flag) {
 		      sig_xy_flag = 0; sig_xz_flag = 0;
 		    }
 		    else
-		      punt("  UNIQUE_AXIS defined incorrectly.\n\n");
+		      punt("  UNIQUE_AXIS defined incorrectly.");
 		  nplanes = 1;
 		}
 		nirreps = 2; naxes = 0; inv_flag = 0;
@@ -360,7 +360,7 @@ void find_symmetry()
 		}
 	    }
 	    else
-	      punt("ERROR: unidentified symmetry.\n\n");
+	      punt("Unidentified symmetry.");
 	    break;
 	    
     case 4: /* It could be C2v, C2h, or D2 */
@@ -453,7 +453,7 @@ void find_symmetry()
 	      }
 	    }
 	    else
-	      punt("ERROR: unidentified symmetry.\n\n");
+	      punt("Unidentified symmetry.");
 	    break;
 	    
     case 8: /* D2h symmetry */
@@ -485,11 +485,11 @@ void find_symmetry()
 	      }
 	    }
 	    else
-	      punt("ERROR: unidentified symmetry.\n\n");
+	      punt("Unidentified symmetry.");
 	    break;
 	    
     default: /* Error */
-	    punt("ERROR: unidentified symmetry.\n\n");
+	    punt("Unidentified symmetry.");
   } /* end of switch(nirreps) */
 
   free_int_matrix(redun_atom_orbit,num_atoms);
@@ -558,7 +558,7 @@ void alloc_irr_char()
       irr_char_str[7] = 105;
       break;
     default:
-      punt("ERROR: Number of irreps in find_symmetry is invalid.\n\n");
+      punt("Number of irreps in find_symmetry is invalid.");
   }
 
   return;

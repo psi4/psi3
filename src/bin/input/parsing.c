@@ -24,7 +24,7 @@ void parsing()
 
      errcod = ip_string("LABEL", &label,0);
      if(errcod != IPE_OK)
-       punt("\nERROR: Where is the label?\n");
+       punt("Where is the label?");
 
 
      /*------------------------------------------
@@ -60,7 +60,7 @@ void parsing()
      else if (ip_exist("GEOMETRY",0) == 1)
        cartOn = 1;
      else
-       punt("\nERROR: Both ZMAT and GEOMETRY are missing!\n\n");
+       punt("Both ZMAT and GEOMETRY are missing!");
 
      /*Default = BOHR*/
      errcod = ip_string("UNITS",&units,0);
@@ -69,7 +69,7 @@ void parsing()
      else if (!strcmp(units,"ANGSTROMS") || !strcmp(units,"ANGSTROM"))
        conv_factor = 1.0 / _bohr2angstroms;
      else
-       punt("\nERROR: unrecognized UNITS\n\n");
+       punt("Unrecognized UNITS");
 
      /*No reorientation?*/
      errcod = ip_boolean("NO_REORIENT",&no_reorient,0);

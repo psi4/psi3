@@ -25,20 +25,20 @@ void read_zmat()
   num_atoms = num_entries = 0;
   ip_count("ZMAT",&num_entries,0);
   if (num_entries == 0)
-    punt("\nERROR: Z-matrix is empty!\n\n");
+    punt("Z-matrix is empty!");
   for(i=0;i<num_entries;i++){
     errcod = ip_string("ZMAT",&buffer,2,i,0);
     if (errcod != IPE_OK)
-      punt("\nProblem with the Z-matrix.\n\n");
+      punt("Problem with the Z-matrix.");
     if (strcmp(buffer,"X")) {
       free(buffer);
       num_atoms++;
       if (num_atoms > MAXATOM)
-	punt("\nERROR: There are more atoms than allowed!\n\n");
+	punt("There are more atoms than allowed!");
     }
   }
   if (num_atoms == 0)
-    punt("\nERROR: Z-matrix contains no atoms!\n\n");
+    punt("Z-matrix contains no atoms!");
 
   /*-----------------------
     Allocate global arrays
@@ -57,8 +57,8 @@ void read_zmat()
           ((i == 1) && (entry_length != 3)) ||
           ((i == 2) && (entry_length != 5)) ||
           ((i  > 2) && (entry_length != 7)) ) {
-       printf("\nLine %d of ZMAT has wrong number of entries.\n\n",i+1);
-       exit(1);
+       fprintf(outfile,"  Line %d of ZMAT has a wrong number of entries.\n",i+1);
+       punt("Invalid ZMAT");
      }
 	
 
@@ -71,10 +71,10 @@ void read_zmat()
      else if (i == 1) {					/*	2nd atom */
         ip_data("ZMAT","%d",&a,2,i,1);
         if (a != 1)
-          punt("\nProblem in line 2 in zmat.\n\n");
+          punt("Problem in line 2 in zmat.");
         ip_data("ZMAT","%lf",&rAB,2,i,2);
         if (rAB < ZERO_BOND_DISTANCE)
-           punt("Invalid bond length in line 2.\n");
+           punt("Invalid bond length in line 2.");
         full_geom[i][0] = 0.0;
         full_geom[i][1] = 0.0;
         full_geom[i][2] = rAB;
@@ -87,14 +87,14 @@ void read_zmat()
              ((a == 1) && (b == 2)) ) {
            ip_data("ZMAT","%lf",&rBC,2,i,2);
            if (rBC <= ZERO_BOND_DISTANCE) {
-              fprintf(outfile,"Invalid bond length in line 3.\n");
-              exit(2);
+              fprintf(outfile,"  Invalid bond length in line 3.\n");
+              punt("Invalid ZMAT");
            }
            
            ip_data("ZMAT","%lf",&thetaABC,2,i,4);
            if (thetaABC <= ZERO_BOND_ANGLE) {
-              fprintf(outfile,"Invalid bond angle in line 3.\n");
-              exit(2);
+              fprintf(outfile,"  Invalid bond angle in line 3.\n");
+              punt("Invalid ZMAT");
            }
            thetaABC = thetaABC*M_PI/180.0;
            
@@ -110,8 +110,8 @@ void read_zmat()
            }
         }
         else {
-           fprintf(outfile,"Problem in line 3 in zmat.\n");
-           exit(2);
+           fprintf(outfile,"  Problem in line 3 in zmat.\n");
+           punt("Invalid ZMAT");;
         }
      }
 
@@ -123,20 +123,20 @@ void read_zmat()
 
         if ( (a == b) || (b == c) || (a == c) ||
              (a >= i) || (b >= i) || (c >= i) ) {
-           fprintf(outfile,"Problem in line %d of zmat.\n",i);
-           exit(2);
+           fprintf(outfile,"  Problem in line %d of zmat.\n",i);
+           punt("Invalid ZMAT");
         }
 
 	ip_data("ZMAT","%lf",&rCD,2,i,2);
 	if (rCD <= ZERO_BOND_DISTANCE) {
-	   fprintf(outfile,"Invalid bond length in line %d.\n",i+1);
-	   exit(2);
+	   fprintf(outfile,"  Invalid bond length in line %d.\n",i+1);
+	   punt("Invalid ZMAT");
 	}
 	
 	ip_data("ZMAT","%lf",&thetaBCD,2,i,4);
 	if (thetaBCD <= ZERO_BOND_ANGLE) {
-	   fprintf(outfile,"Invalid bond angle in line %d.\n",i+1);
-	   exit(2);
+	   fprintf(outfile,"  Invalid bond angle in line %d.\n",i+1);
+	   punt("Invalid ZMAT");
 	}
 	thetaBCD = thetaBCD * M_PI/180.0;
 	
@@ -177,8 +177,8 @@ void read_zmat()
 	   sinABC = sqrt(1 - (cosABC * cosABC) );
 	   
 	   if ( (sinABC - LINEAR_CUTOFF) < 0.0 ) {
-	     fprintf(outfile,"Dihedral angle in line %d is defined with respect to a linear fragment.\n",i+1);
-	     exit(2);
+	     fprintf(outfile,"  Dihedral angle in line %d is defined with respect to a linear fragment.\n",i+1);
+	     punt("Invalid ZMAT");
 	   }
 	   
 	   cross_prod(eAB,ez,ey);		/* ey is U3 in the old zmat */

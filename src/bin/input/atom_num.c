@@ -335,7 +335,7 @@ else if(!strcmp(A,"UNS")){
   *C = 107.00;
  }
 else
-  punt("\nUnrecognized atom symbol/name!\n\n");
+  punt("Unrecognized atom symbol/name!");
 
 
 }

@@ -41,12 +41,7 @@ int main()
        Initialize files and parsing library
       -------------------------------------*/
 
-     infile = fopen("./input.dat", "r");
-     outfile = fopen("./output.dat", "w");
-     ip_set_uppercase(1);
-     ip_initialize(infile,outfile);
-     ip_cwk_add(":INPUT");
-     ip_cwk_add(":DEFAULT");
+     start_io();
      pbasis = fopen(SHARE, "r");
      errcod = ip_string("BASIS_FILE",&user_basis_file,0);
      if (errcod == IPE_OK && strlen(user_basis_file) != 0) {
@@ -62,11 +57,20 @@ int main()
        free(user_basis_filename);
      }
      local_basis = fopen("./basis.dat", "r");
-     if (local_basis != NULL) ip_append(local_basis, outfile);
-     if (user_basis != NULL) ip_append(user_basis, outfile);
-     if (pbasis != NULL) ip_append(pbasis, outfile);
+     if (local_basis != NULL) {
+       ip_append(local_basis, outfile);
+       fclose(local_basis);
+     }
+     if (user_basis != NULL) {
+       ip_append(user_basis, outfile);
+       fclose(user_basis);
+     }
+     if (pbasis != NULL) {
+       ip_append(pbasis, outfile);
+       fclose(pbasis);
+     }
      ip_cwk_add(":BASIS");
-     tstart(outfile);
+
      print_intro();
 
      /*Make ioff and stuff*/
@@ -168,11 +172,7 @@ int main()
 
 
      cleanup();
-     
-     tstop(outfile);
-     ip_done();
-     fclose(outfile);
-     fclose(infile);
+     stop_io();
      exit(0);
 
 }

@@ -17,9 +17,9 @@ void read_cart()
   num_atoms = 0;
   ip_count("GEOMETRY",&num_atoms,0);
   if (num_atoms == 0)
-    punt("\nERROR: GEOMETRY is empty!\n\n");
+    punt("GEOMETRY is empty!");
   else if (num_atoms > MAXATOM)
-    punt("\nERROR: There are more atoms than allowed!\n\n");
+    punt("There are more atoms than allowed!");
 
   /*-----------------------
     Allocate global arrays
@@ -31,7 +31,7 @@ void read_cart()
   for(i=0;i<num_atoms;i++){
     errcod = ip_string("GEOMETRY",&atom_label,2,i,0);
     if (errcod != IPE_OK)
-      punt("\nERROR: Problem with the GEOMETRY array.\n\n");
+      punt("Problem with the GEOMETRY array.");
     atom_num(atom_label, &Z);
     free(atom_label);
     nuclear_charges[i] = Z;
@@ -39,7 +39,7 @@ void read_cart()
     for(j=0; j<3;j++){
       errcod = ip_data("GEOMETRY","%lf", &tmp,2,i,j+1);
       if (errcod != IPE_OK)
-	punt("\nERROR: Problem with the GEOMETRY array.\n\n");
+	punt("Problem with the GEOMETRY array.");
       else
 	geometry[i][j] = tmp*conv_factor;
     }
