@@ -324,7 +324,7 @@ void te_deriv1_corr()
 	      ddaz += Libderiv.ABCD[2][k]*FourInd[k];
 	    grad_te_local[center_i][2] += ddaz;
 
-	    ddbx = 0.0;
+	    /*ddbx = 0.0;
 	    for(k=0;k<quartet_size;k++)
 	      ddbx += Libderiv.ABCD[3][k]*FourInd[k];
 	    grad_te_local[center_j][0] += ddbx;
@@ -337,7 +337,22 @@ void te_deriv1_corr()
 	    ddbz = 0.0;
 	    for(k=0;k<quartet_size;k++)
 	      ddbz += Libderiv.ABCD[5][k]*FourInd[k];
-	    grad_te_local[center_j][2] += ddbz;
+	      grad_te_local[center_j][2] += ddbz;*/
+
+	    ddcx = 0.0;
+	    for(k=0;k<quartet_size;k++)
+	      ddcx += Libderiv.ABCD[6][k]*FourInd[k];
+	    grad_te_local[center_k][0] += ddcx;
+
+	    ddcy = 0.0;
+	    for(k=0;k<quartet_size;k++)
+	      ddcy += Libderiv.ABCD[7][k]*FourInd[k];
+	    grad_te_local[center_k][1] += ddcy;
+
+	    ddcz = 0.0;
+	    for(k=0;k<quartet_size;k++)
+	      ddcz += Libderiv.ABCD[8][k]*FourInd[k];
+	    grad_te_local[center_k][2] += ddcz;
 
 	    dddx = 0.0;
 	    for(k=0;k<quartet_size;k++)
@@ -354,9 +369,9 @@ void te_deriv1_corr()
 	      dddz += Libderiv.ABCD[11][k]*FourInd[k];
 	    grad_te_local[center_l][2] += dddz;
 
-	    grad_te_local[center_k][0] -= ddax + ddbx + dddx;
-	    grad_te_local[center_k][1] -= dday + ddby + dddy;
-	    grad_te_local[center_k][2] -= ddaz + ddbz + dddz;
+	    grad_te_local[center_k][0] -= ddax + ddcx + dddx;
+	    grad_te_local[center_k][1] -= dday + ddcy + dddy;
+	    grad_te_local[center_k][2] -= ddaz + ddcz + dddz;
 	}
 
   if (UserOptions.print_lvl >= PRINT_TEDERIV)
