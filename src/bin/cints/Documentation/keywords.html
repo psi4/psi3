@@ -29,6 +29,10 @@
 	modes. In other modes CINTS will use the minimal amount of memory
 	possible. Default is 2500000 (20 MB) and can be changed by editing
 	defines.h.</P>
+	<LI><P ALIGN=LEFT STYLE="font-weight: medium"><B>NUM_THREADS</B> - number
+	of threads to use. Values higher than 1 are valid only while computing
+	the Fock matrix and HF gradients. In other modes CINTS will use just 1 thread
+	Default is 1</P>
 </UL>
 <P><SPAN STYLE="font-weight: medium">Other keywords, such as <B>WFN</B>,
 <B>REFERENCE</B>, and <B>DERTYPE</B> are also checked in certain
