@@ -873,8 +873,8 @@ AC_OUTPUT(include/psiconfig.h
           src/bin/mocube/Makefile
 
           src/doc/MakeVars src/doc/MakeRules src/doc/Makefile
-          src/doc/manual/Makefile
-          src/doc/manual/Prog/Makefile src/doc/manual/User/Makefile
+          src/doc/install/Makefile
+          src/doc/progman/Makefile src/doc/userman/Makefile
           )
 # The following should be added to config_files/ac_output for 
 # libmathtools/ccman.  You have to move those lines up above this

@@ -1,0 +1,138 @@
+Installation Instructions for PSI3
+----------------------------------
+
+I. Compilation Prerequisites:
+
+   * ANSI C compiler
+   * C++ Compiler
+   * F77 Compiler
+   * Optimized BLAS library (try http://math-atlas.sourceforge.net)
+   * Optimized LAPACK library (try http://www.netlib.org/netlib)
+   * GNU utilities: (see http://www.gnu.org)
+      ** make
+      ** flex
+      ** bison
+      ** autoconf
+      ** install (from fileutils package)
+   * For documentation:
+      ** latex
+      ** latex2html (v0.99_1 or 1.62, including the patch supplied with PSI3)
+
+II. Basic Code Configuration, Compilation, and Installation
+
+The following series of steps will configure and build the PSI3
+package and install the executables in /usr/local/psi/bin:
+
+   * cd $PSI3 (the top-level PSI3 source directory -- probably THIS directory)
+   * mkdir objdir
+   * cd objdir
+   * ../configure
+   * make
+   * make install
+
+You may need to make use of one or more of the following options to
+the configure script:
+
+   * --prefix=directory --- Use this option if you wish to install the
+   PSI3 package somewhere other than the default directory, /usr/local/psi.
+
+   * --with-cc=compiler --- Use this option to specify a C compiler.
+   The default search order for compilers is: gcc, cc, ccc.  (NB: On AIX
+   systems, the search order is cc_r,  cc,  gcc,  xlc.)
+
+   * --with-cxx=compiler --- Use this option to specify a C++ compiler.
+   The default search order for compilers is: g++, c++, cxx.  (NB: On AIX
+   systems, the search order is xlC_r,  xlC,  c++,  g++.)
+
+   * --with-fc=compiler --- Use this option to specify a Fortran-77 compiler.
+   The default search order for compilers is: g77, f77, fc, f2c.  (NB:
+   On AIX systems, the search order is xlf_r, xlf, g77, f77, fc, f2c.)
+
+   * --with-blas=library --- Use this option to specify a BLAS library.
+   If your BLAS library has multiple components, enclose the file list
+   with single right-quotes, e.g., --with-blas='-lf77blas -latlas'.
+
+   * --with-lapack=library --- Use this option to specify a LAPACK library.
+   If your LAPACK library has multiple components, enclose the file list
+   with single right-quotes, e.g., --with-lapack='-llapack -lcblas -latlas'.
+
+   * --with-max-am-eri=integer --- Specifies the maximum angular momentum
+   level for the primitive Gaussian basis functions when computing electron
+   repulsion integrals.  This is set to g-type functions (AM=5) by default.
+
+   * --with-max-am-deriv1=integer --- Specifies the maximum angular momentum
+   level for first derivatives of the primitive Gaussian basis functions.
+   This is set to f-type functions (AM=4) by default.
+
+   * --with-max-am-deriv2=integer --- Specifies the maximum angular momentum
+   level for second derivatives of the primitive Gaussian basis functions.
+   This is set to d-type functions (AM=3) by default.
+
+   * --with-max-am-r12=integer --- Specifies the maximum angular momentum
+   level for primitive Gaussian basis functions used in r_12 explicitly
+   correlated methods.  This is set to f-type functions (AM=4) by default.
+
+   * --with-debug=option --- This option turns on debugging options.
+   If the argument is omitted, `` -g'' will be used by default.
+
+   * --with-opt=options --- This option may be used to select special
+   optimization flags, overriding defaults.
+
+   * --with-parallel=sgi --- This option turns on automatic parallelization
+   available with some SGI systems.  Since none of the primary developers
+   of PSI3 actually uses SGI systems at present, it seems likely that this
+   option will not work.
+
+III. Detailed Installation Instructions
+
+This section provides a more detailed explanation of the procedure for
+compiling and installing the PSI3 package.
+
+III.A. Step 1: Configuration
+
+It is best to keep the source code separate from the compilation area,
+so you must first choose a subdirectory for compilation of the codes.
+A simple option is $PSI3/objdir, which should work for most environments.
+However, if you need executables for several architectures, choose 
+more meaningful subdirectory names.  
+
+   * The compilation directory will be referred to as $objdir for the
+   remainder of these instructions.
+
+In $objdir, run the configure script found in the $PSI3 top-level source
+directory.  This script will scan your system to locate certain libraries,
+header files, etc. needed for complete compilation.  The script accepts a
+number of options, all of which are listed above.  The most important of
+these is the --prefix option, which selects the installation directory for
+the executables, the libraries, header files, basis set data, and other
+administrative files.  The default --prefix is /usr/local/psi.
+
+   * The configure script's --prefix directory will be referred to as
+   $prefix for the remainder of these instructions.
+
+III.B. Step 2: Compilation
+
+Running "make" (which must be GNU's 'make' utility) in $objdir will compile
+the PSI3 libraries, followed by the executable modules, and finally
+documentation (if LaTeX is available).
+
+III.C. Step 3: Testing
+
+An ever-growing number of test cases is available in $PSI3/tests.
+Eventually, an automated system will be included in the package to
+execute each test and compre the results to reference data.  For now ,
+however, the user must run each case manually.  The PSI3 User's Manual
+provides detailed instructions for running calculations.  Report bugs to
+psimaster@sirius.chem.vt.edu.
+
+III.D. Step 4: Installation
+
+Once testing is complete, installation into $prefix is accomplished by
+running "make install" in $objdir.   Executable modules are installed in
+$prefix/bin, libraries in $prefix/lib, basis set data and other control
+strctures $prefix/share, and documentation in $prefix/doc.
+
+III.E. Step 5: Cleaning
+
+All object files and libraries can be removed to save disk space by running
+"make clean" in $objdir.

@@ -1,12 +1,31 @@
-To install PSI 3 edit and run script 'PSI3Install' located in this
-directory.
+              PSI3: A Quantum Chemical Program Package
+              ----------------------------------------
 
+PSI3 is a suite of ab initio quantum chemistry programs designed to compute
+various molecular properties.  A few highlights of the package include:
 
-*** SPECIAL NOTE for LaTeX2HTML users *** EFV 6/15/00
-At least the latest version of LaTeX2HTML translator (v0.99_1) has a bug in
-it which prevents The Psi 3 User's and Programmer's manuals from being
-converted into HTML form. Included is a patch file which should be applied
-directly to the latex2html script (type 'which latex2html' to find its precise
-location on your system). To apply the patch just type
-'patch latex2html latex2html.v0.99_1.patch'. You might need
-superuser priviledges to do that.
+   * Coupled cluster (CC) methods, including CCSD and CCSD(T).  
+   * Determinant-based configuration interaction (CI) methods, including
+   full CI and various flavors of multireference CI.
+   * Integrals and derivative integrals over Gaussian functions of 
+   arbitrary angular momentum (up to k-type functions have been tested).
+   * Linear R12 methods, including MP2-R12.
+   * Excited-state methods, including CIS, RPA, and EOM-CCSD.
+
+------------------------------------------------------------------------------
+T. Daniel Crawford, C. David Sherrill, Edward F. Valeev, Justin T. Fermann,
+Matthew L. Leininger, Rollin A. King, Shawn T. Brown, Curtis L. Janssen,
+Edward T. Seidl, Yukio Yamaguchi, Wesley D. Allen, C. Brian Kellogg, and
+Henry F. Schaefer III, PSI 3.2, 2002.
+------------------------------------------------------------------------------
+** The file "INSTALL" provides detailed installation instructions for PSI3.
+------------------------------------------------------------------------------
+
+*** SPECIAL NOTE for LaTeX2HTML users *** EFV 6/15/00 At least the
+latest version of LaTeX2HTML translator (v0.99_1) has a bug in it which
+prevents The Psi 3 User's and Programmer's manuals from being converted
+into HTML form. Included is a patch file which should be applied directly
+to the latex2html script (type 'which latex2html' to find its precise
+location on your system). To apply the patch just type 'patch latex2html
+latex2html.v0.99_1.patch'. You might need superuser privileges to do that.
+
