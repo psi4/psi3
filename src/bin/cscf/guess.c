@@ -115,8 +115,19 @@ void guess()
 	  }
 /* STB - 7/10/00 for DFT to ship the eigenvector */
 /* calculate the number of total closed and open shells */
-	  for(i=0; i < num_ir; i++){
-	      n_closed += scf_info[i].nclosed;
+	  if(uhf){
+	      for(i=0;i<num_ir;i++){
+		  b_elec += scf_info[i].nclosed;
+		  spin_info[1].scf_spin[i].nclosed = scf_info[i].nclosed;
+		  a_elec += scf_info[i].nclosed+scf_info[i].nopen;
+		  spin_info[0].scf_spin[i].nclosed = scf_info[i].nclosed
+		      + scf_info[i].nopen;
+	      }
+	  }
+	  else{
+	      for(i=0; i < num_ir; i++){
+		  n_closed += scf_info[i].nclosed;
+	      }
 	  }
 /* output occupations to outfile */
 	  occ_out();

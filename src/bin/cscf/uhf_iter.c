@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.3  2000/10/13 19:51:22  evaleev
- * Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
+ * Revision 1.4  2000/12/05 19:40:04  sbrown
+ * Added Unrestricted Kohn-Sham DFT.
  *
+/* Revision 1.3  2000/10/13 19:51:22  evaleev
+/* Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
+/*
 /* Revision 1.2  2000/06/22 22:15:02  evaleev
 /* Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
 /*
@@ -133,6 +136,11 @@ void uhf_iter()
 	     s = &(sp->scf_spin[m]);
 	     if (nn=scf_info[m].num_so)
 	       add_arr(s->fock_pac,s->xcmat,s->fock_pac,ioff[nn]);
+	     if(print & 4) {
+	     fprintf(outfile,"\n%s fock for irrep %s"
+		    ,sp->spinlabel,scf_info[m].irrep_label);
+		 print_array(sp->scf_spin[m].fock_pac,nn,outfile);
+	     }
 	   }
 	 }
        }

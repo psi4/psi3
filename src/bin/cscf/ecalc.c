@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.6  2000/09/02 20:48:51  evaleev
- * Print out one- and two-electron energies every iteration if iprint&2 .
+ * Revision 1.7  2000/12/05 19:40:03  sbrown
+ * Added Unrestricted Kohn-Sham DFT.
  *
+/* Revision 1.6  2000/09/02 20:48:51  evaleev
+/* Print out one- and two-electron energies every iteration if iprint&2 .
+/*
 /* Revision 1.5  2000/08/23 17:15:16  sbrown
 /* Added portions to separate out the correlation and exchange energy at the
 /* end the calculation as well as do the consistency check on the integrated
@@ -132,9 +135,8 @@ int ecalc(incr)
       delta=1.0;
       acc_switch=0;
    }                            
-
-   if (ksdft){
-       coulomb_energy = neelec;
+   coulomb_energy = neelec;
+   if (ksdft){      
        neelec += exc;
    /*printf("XC_energy = %10.10lf",exc);*/
    }
@@ -149,6 +151,7 @@ int ecalc(incr)
    if (print & 2) {
      fprintf(outfile, "one-electron energy = %25.15f\n", oe_energy);
      fprintf(outfile, "two-electron energy = %25.15f\n", te_energy);
+     fprintf(outfile, "coulomb energy      = %25.15f\n",coulomb_energy);
      fprintf(outfile, "total energy        = %25.15f\n", etot);
    }
    fflush(outfile);

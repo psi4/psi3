@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.3  2000/06/22 22:15:00  evaleev
- * Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
+ * Revision 1.4  2000/12/05 19:40:03  sbrown
+ * Added Unrestricted Kohn-Sham DFT.
  *
+/* Revision 1.3  2000/06/22 22:15:00  evaleev
+/* Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
+/*
 /* Revision 1.2  2000/06/02 13:32:15  kenny
 /*
 /*
@@ -19,7 +22,7 @@
 /* Revision 1.2  1999/11/17 19:40:46  evaleev
 /* Made all the adjustments necessary to have direct UHF working. Still doesn't work though..
 /*
-/* Revision 1.1  1999/11/02 23:55:56  localpsi
+/* Revision 1.1  1999/11/02 23:55:56  sbrown
 /* Shawn Brown - (11/2/99) Modified to the code in a few major ways.
 /*
 /* 1.  Added the capability to do UHF.  All of the features available with the
@@ -63,6 +66,7 @@ void dmatuhf()
    struct symm *s;
    struct spin *sp;
    double *dmat;
+   double **cmat;
    
    for(m = 0; m < 2; m++){
        for (l=0; l < num_ir ; l++) {
@@ -183,6 +187,59 @@ void dmatuhf()
      psio_write_entry(itapDSCF, "Difference Beta Density", (char *) dmat, sizeof(double)*ntri);
      
      if (ksdft) {
+	 /* ---- Get Occupied Eigenvector matrix for DFT ----*/
+	 
+	 /*------ Get the Alpha Occupied Eigenvector --------*/
+	 ntri = nbfso*a_elec;
+	 cmat = block_matrix(nbfso,a_elec);
+	 for(i=l=0;i<num_ir;i++){
+	     max = spin_info[0].scf_spin[i].nclosed;
+	     off = scf_info[i].ideg;
+	     for(j=0;j<max;j++){
+		 for(k=0;k<scf_info[i].num_mo;k++) {
+		     kk = k + off;
+		     cmat[kk][l] = spin_info[0].scf_spin[i].cmat[k][j];
+		 }
+		 l++;
+	     }
+	 }
+	 /*fprintf(outfile,"\na_elec = %d",a_elec);
+	 fprintf(outfile,"\nAlpha Occupied Eigenvector from CSCF");
+	   print_mat(cmat,nbfso,a_elec,outfile);*/
+	 
+	 psio_write_entry(itapDSCF, "Number of MOs", 
+			  (char *) &(nmo),sizeof(int)); 
+	
+	 psio_write_entry(itapDSCF, "Number of Alpha DOCC",
+			  (char *) &(a_elec),sizeof(int));
+       
+	 psio_write_entry(itapDSCF, "Alpha Occupied SCF Eigenvector", 
+			  (char *) &(cmat[0][0]),sizeof(double)*ntri);
+	 /*fprintf(outfile,"\na_elec = %d",a_elec);*/
+	 free_block(cmat);
+	 /*------ Get the Alpha Occupied Eigenvector --------*/
+	 ntri = nbfso*b_elec;
+	 cmat = block_matrix(nbfso,b_elec);
+	 for(i=l=0;i<num_ir;i++){
+	     max = spin_info[1].scf_spin[i].nclosed;
+	     off = scf_info[i].ideg;
+	     for(j=0;j<max;j++){
+		 for(k=0;k<scf_info[i].num_mo;k++) {
+		     kk = k + off;
+		     cmat[kk][l] = spin_info[1].scf_spin[i].cmat[k][j];
+		 }
+		 l++;
+	     }
+	 }
+	 /*fprintf(outfile,"\nBeta Occupied Eigenvector from CSCF");
+	   print_mat(cmat,nbfso,b_elec,outfile);*/
+
+	 psio_write_entry(itapDSCF, "Number of Beta DOCC",
+			  (char *) &(b_elec),sizeof(int));
+	 psio_write_entry(itapDSCF, "Beta Occupied SCF Eigenvector", 
+			  (char *) &(cmat[0][0]),sizeof(double)*ntri);
+	 free_block(cmat);
+	 
        /*--- Get full dpmata ---*/
        for(i=0;i<num_ir;i++) {
 	 max = scf_info[i].num_so;
@@ -217,6 +274,8 @@ void dmatuhf()
 
    return;
 }
+
+
 
 
 

@@ -1,8 +1,11 @@
 /* $Id$ */
 /* $Log$
- * Revision 1.7  2000/10/13 19:51:19  evaleev
- * Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
+ * Revision 1.8  2000/12/05 19:40:02  sbrown
+ * Added Unrestricted Kohn-Sham DFT.
  *
+/* Revision 1.7  2000/10/13 19:51:19  evaleev
+/* Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
+/*
 /* Revision 1.6  2000/08/23 17:15:16  sbrown
 /* Added portions to separate out the correlation and exchange energy at the
 /* end the calculation as well as do the consistency check on the integrated
@@ -161,6 +164,8 @@ EXTERN int nbasis;              /* # basis functions */
 EXTERN int nsfmax;              /* max # of so's per irrep */
 EXTERN int n_closed;            /* total number of closed shells */
 EXTERN int n_open;              /* # open shells */
+EXTERN int a_elec;              /* # of alpha electrons */
+EXTERN int b_elec;              /* # of beta electrons */
 EXTERN int num_ir;              /* # of symmetry types */
 EXTERN int mxcoef;              /* sum of (# so's per irrep)**2 */
 EXTERN int mxcoef2;             /* sum of ioff[# so's per irrep] */

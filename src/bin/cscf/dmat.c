@@ -1,8 +1,11 @@
 /* $Log$
- * Revision 1.6  2000/07/10 18:03:30  sbrown
- * Enabling cscf to send over just the occupied SCF eigenvector for DFT
- * calculations.  Only done for the RHF case.
+ * Revision 1.7  2000/12/05 19:40:03  sbrown
+ * Added Unrestricted Kohn-Sham DFT.
  *
+/* Revision 1.6  2000/07/10 18:03:30  sbrown
+/* Enabling cscf to send over just the occupied SCF eigenvector for DFT
+/* calculations.  Only done for the RHF case.
+/*
 /* Revision 1.5  2000/07/06 20:04:01  sbrown
 /* Added capabilities to send the eigenvector to cints for DFT
 /* calculations.
@@ -198,6 +201,7 @@ void dmat()
 		 l++;
 	     }
 	 }
+	 
 	 /*fprintf(outfile,"\nOccupied Eigenvector from CSCF");
 	   print_mat(cmat,nbfso,n_closed,outfile);*/
 	 
@@ -208,7 +212,23 @@ void dmat()
 	 psio_write_entry(itapDSCF, "Occupied SCF Eigenvector", 
 			  (char *) &(cmat[0][0]),sizeof(double)*ntri);
 	 free_block(cmat);
+	 
+	 /*--- Get full dpmat ---*/
+	 for(i=0;i<num_ir;i++) {
+	     max = scf_info[i].num_so;
+	     off = scf_info[i].ideg;
+	     for(j=0;j<max;j++) {
+		 jj = j + off;
+		 for(k=0;k<=j;k++) {
+		     kk = k + off;
+		     dmat[ioff[jj]+kk] = scf_info[i].pmat[ioff[j]+k];
+		 }
+	     }
+	 }
+	 psio_write_entry(itapDSCF, "Total Density", 
+			  (char *) dmat, sizeof(double)*ntri);
      }
+   
 
      /*--- Get full dpmato ---*/
      if (iopen) {
@@ -228,12 +248,13 @@ void dmat()
 	   }
 	 }
        }
-       psio_write_entry(itapDSCF, "Difference Open-Shell Density", (char *) dmat,sizeof(double)*ntri);
+       psio_write_entry(itapDSCF, "Difference Open-Shell Density", 
+			(char *) dmat,sizeof(double)*ntri);
      }
      free(dmat);
      psio_close(itapDSCF, 1);
    }
-
+   
    return;
 }                                            
                                                                                 
