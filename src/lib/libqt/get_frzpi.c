@@ -36,9 +36,9 @@ CHKPT_INIT(PSIO_OPEN_OLD);
   
   frzcpi = init_int_array(nirreps);
   
-  if_exists = ip_exist(":DEFAULT:FROZEN_DOCC",0);
+  if_exists = ip_exist("FROZEN_DOCC",0);
   if (if_exists) {
-    errcod = ip_int_array(":DEFAULT:FROZEN_DOCC",frzcpi,nirreps);
+    errcod = ip_int_array("FROZEN_DOCC",frzcpi,nirreps);
   }
   else {
     free(frzcpi);
@@ -67,9 +67,9 @@ CHKPT_INIT(PSIO_OPEN_OLD);
   
   frzvpi = init_int_array(nirreps);
   
-  if_exists = ip_exist(":DEFAULT:FROZEN_UOCC",0);
+  if_exists = ip_exist("FROZEN_UOCC",0);
   if (if_exists) {
-    errcod = ip_int_array(":DEFAULT:FROZEN_UOCC",frzvpi,nirreps);
+    errcod = ip_int_array("FROZEN_UOCC",frzvpi,nirreps);
   }
   else {
     free(frzvpi);
