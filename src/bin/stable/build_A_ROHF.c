@@ -215,6 +215,7 @@ void build_A_ROHF(void)
 
   /* Now sum all three A-matrix components and divide by 2 */
   dpd_buf4_init(&Amat, PSIF_MO_HESS, 0, 11, 11, 11, 11, 0, "A(EM,AI)");
+  dpd_buf4_copy(&Amat, CC_TMP0, "A(EM,AI)");
   dpd_buf4_init(&Amat2, CC_TMP0, 0, 11, 11, 11, 11, 0, "A(em,ai)");
   dpd_buf4_axpy(&Amat2, &Amat, 1.0);
   dpd_buf4_close(&Amat2);
