@@ -123,6 +123,8 @@ void kinetic(void)
   fprintf(outfile,"\t-V/T (corr)            = %20.15f\n", -vcorr/tcorr);
   fprintf(outfile,"\t-V/T (total)           = %20.15f\n", -vtot/ttot);
 
+  fflush(outfile);
+
   /*** Release memory ***/
   free_block(X);
   free_block(T);
