@@ -42,7 +42,7 @@ void parsing()
     }
     */
     if (strcmp(wfn, "CI")==0 || strcmp(wfn, "DETCI")==0 ||
-        strcmp(wfn, "CCSD")==0)  {
+        strcmp(wfn, "CCSD")==0 || strcmp(wfn, "DETCAS")==0)  {
       read_opdm = 1;
       opdm_file = PSIF_MO_OPDM;
       corr = 0;
