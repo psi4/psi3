@@ -12,7 +12,7 @@ CSRC = \
 c_sort.c    d_sort.c      e_sort.c      get_moinfo.c  idx_permute.c \
 ccsort.c    denom.c       file_build.c  get_params.c  scf_check.c   \
 classify.c  distribute.c  fock.c        idx_error.c   sort_oei.c    \
-sort_tei.c  f_sort.c      cache.c                                   \
+sort_tei.c  f_sort.c      cache.c       b_sort.c                    \
 
 BINOBJ = $(CSRC:%.c=%.o)
 ALLOC = 
