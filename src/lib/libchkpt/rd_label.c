@@ -20,7 +20,7 @@ char *chkpt_rd_label(void)
 {
   char *label;
 
-  label = init_char_array(80);
+  label = (char *) malloc(80 * sizeof(char));
   psio_read_entry(PSIF_CHKPT, "::Label", (char *) label, 80*sizeof(char));
 
   return label;
