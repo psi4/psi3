@@ -718,10 +718,8 @@ void get_moinfo(void)
     }
   }
 
-  moinfo.frdocc = init_int_array(moinfo.nirreps);
-  moinfo.fruocc = init_int_array(moinfo.nirreps);
-  errcod = ip_int_array("FROZEN_DOCC", moinfo.frdocc, moinfo.nirreps);
-  errcod = ip_int_array("FROZEN_UOCC", moinfo.fruocc, moinfo.nirreps);
+  moinfo.frdocc = get_frzcpi();
+  moinfo.fruocc = get_frzvpi();
 
   if (!params.fzc) {
     for (i=0; i<moinfo.nirreps; i++) {
