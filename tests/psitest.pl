@@ -1277,8 +1277,6 @@ sub seek_energy_file11
   @datafile = <OUT>;
   close(OUT);
 
-#  printf "Entering seek_energy_file11.\n";
-
   $match = "$_[1]";
   $linenum = 0;
   $lasiter = 0;
@@ -1292,7 +1290,6 @@ sub seek_energy_file11
 
   @line = split(/ +/, $datafile[$lastiter+1]);
   $energy = $line[2];
-#  printf $energy;
 
   if($energy != 0.0) {
     return $energy;
@@ -1336,8 +1333,6 @@ sub seek_geom_file11
   @datafile = <OUT>;
   close(OUT);
 
-#  printf "Entering seek_geom_file11.\n";
-
   $match = "$_[1]";
   $linenum = 0;
   $lasiter = 0;
@@ -1347,7 +1342,6 @@ sub seek_geom_file11
     if($line =~ m/$match/) {
       $foundit = 1;
       $lastiter = $linenum;
-#      printf $line;
     }
     $linenum++;
   }
