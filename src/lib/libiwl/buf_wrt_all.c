@@ -19,6 +19,14 @@
 **
 ** David Sherrill, 6/27/96
 **
+** NB: This routine will only write "standard" (pq|rs) indices to disk.
+** The cints integral program marks certain integrals with negative index
+** values to indicate the end of PK-matrix blocks.  This marking is used
+** by the cscf code (only?).  Therefore, is this routine is used to write
+** integrals to disk, the SCF code will most likely give incorrect data
+** if it uses the resulting integrals.
+** TDC 12/24/01
+**
 */
 void iwl_buf_wrt_all(struct iwlbuf *Buf, int nbfso, double *ints, int *ioff,
       int printflg, FILE *outfile)
@@ -26,6 +34,9 @@ void iwl_buf_wrt_all(struct iwlbuf *Buf, int nbfso, double *ints, int *ioff,
   int idx, i, p, q, r, s, smax, pq, rs, pqrs;
   Label *lblptr;
   Value *valptr;
+
+  lblptr = Buf->labels;
+  valptr = Buf->values;
   
   /* go through the lexical order and print to the output file */
   for (p=0; p<nbfso; p++) {
