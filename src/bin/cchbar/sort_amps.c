@@ -45,11 +45,6 @@ void sort_amps(void)
     dpd_buf4_sort(&t2, CC_TAMPS, pqsr, 10, 11, "tIbAj");
     dpd_buf4_close(&t2);
 
-    /* TIjAb (Ab,Ij) */
-    dpd_buf4_init(&t2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
-    dpd_buf4_sort(&t2, CC_TAMPS, rspq, 5, 0, "tAbIj");
-    dpd_buf4_close(&t2);
-
   }
   else if(params.ref == 2) { /** UHF **/
 
