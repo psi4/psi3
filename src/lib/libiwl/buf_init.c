@@ -42,7 +42,6 @@ void iwl_buf_init(struct iwlbuf *Buf, int itape, double cutoff,
   Buf->inbuf = 0;
   Buf->idx = 0;
 
-
   /*! make room in the buffer */
   Buf->labels = (Label *) malloc (4 * Buf->ints_per_buf * sizeof(Label));
   Buf->values = (Value *) malloc (Buf->ints_per_buf * sizeof(Value));

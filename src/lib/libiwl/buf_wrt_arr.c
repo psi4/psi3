@@ -18,20 +18,20 @@
 ** \ingroup (IWL)
 */
 void iwl_buf_wrt_arr(struct iwlbuf *Buf, double *arr, int *p, int *q, 
-		     int *r, int *s, int size)
+		     int *r, int *s, long int size)
 {
 
-  int i,j,idx;
+  long int i;
+  int idx;
   double value;
   Label *lblptr;
   Value *valptr;
 
   if (size < 0) {
-    printf("(iwl_buf_wrt_arr): Called with size = %d\n",
-	   size);
+    printf("(iwl_buf_wrt_arr): Called with size = %d\n", size);
     return;
   }
-  
+
   if (Buf == NULL || arr == NULL || p == NULL || q == NULL || r == NULL 
       || s == NULL) {
     printf("(iwl_buf_wrt_arr): Called with null pointer argument\n");
@@ -43,6 +43,7 @@ void iwl_buf_wrt_arr(struct iwlbuf *Buf, double *arr, int *p, int *q,
 
   for (i=0; i<size; i++) {
     value = *arr++;
+
     if (fabs(value) > Buf->cutoff) {
       idx = 4 * Buf->idx;
       lblptr[idx++] = (Label) p[i];

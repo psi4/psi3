@@ -17,17 +17,17 @@ typedef short int Label;
 typedef double Value;
 
 struct iwlbuf {
-   int itap;                   /* tape number for input file */
-   psio_address bufpos;        /* current page/offset */
-   int ints_per_buf;           /* integrals per buffer */
-   int bufszc;                 /* buffer size in characters (bytes) */
-   double cutoff;              /* cutoff value for writing */
-   int lastbuf;                /* is this the last IWL buffer? 1=yes,0=no */
-   int inbuf;                  /* how many ints in current buffer? */
-   int idx;                    /* index of integral in current buffer */
-   Label *labels;              /* pointer to where integral values begin */
-   Value *values;              /* integral values */
-   };
+  int itap;                   /* tape number for input file */
+  psio_address bufpos;        /* current page/offset */
+  int ints_per_buf;           /* integrals per buffer */
+  int bufszc;                 /* buffer size in characters (bytes) */
+  double cutoff;              /* cutoff value for writing */
+  int lastbuf;                /* is this the last IWL buffer? 1=yes,0=no */
+  int inbuf;                  /* how many ints in current buffer? */
+  int idx;                    /* index of integral in current buffer */
+  Label *labels;              /* pointer to where integral values begin */
+  Value *values;              /* integral values */
+};
 
 #define IWL_KEY_BUF "IWL Buffers"
 #define IWL_KEY_ONEL "IWL One-electron matrix elements"
@@ -83,7 +83,7 @@ extern void iwl_buf_flush(struct iwlbuf *Buf, int lastbuf);
 extern void iwl_buf_close(struct iwlbuf *Buf, int keep);
 extern void iwl_buf_toend(struct iwlbuf *Buf);
 extern void iwl_buf_wrt_arr(struct iwlbuf *Buf, double *arr, int *p, int *q,
-      int *r, int *s, int size);
+      int *r, int *s, long int size);
 extern void iwl_buf_wrt_arr_SI(struct iwlbuf *Buf, double *arr, 
       short int *p, short int *q, short int *r, short int *s, int size);
 extern void iwl_buf_wrt_arr_SI_nocut(struct iwlbuf *Buf, double *arr,
