@@ -533,114 +533,111 @@ AC_FC_COMPILE_CHECK(-Nn10000,,-Nn10000,
                     FOPT="$FOPT -Nn10000")
 
 AC_CHECKING(machine specfic optimization flags)
-changequote(,)
 # set up cpu specific flags
 case $cpu in
   rs6000)
-    if [ "$FC" = xlf ] || [ "$FC" = xlf_r ]; then
+    if test "$FC" = xlf -o "$FC" = xlf_r ; then
       FOPT="-O2 -qarch=com -qxflag=xalias -qdpc -qfloat=fold -qfloat=maf -qmaxmem=-1"
       if test "$bitwidth64" = yes; then
         FOPT="$FOPT -q64"
       fi
-      AC_MSG_RESULT(fortran flags: $FOPT)
+      AC_MSG_RESULT([fortran flags: $FOPT])
     fi
-    if [ "$CC" = xlc ] || [ "$CC" = cc ] || [ "$CC" = xlc_r ] || [ "$CC" = cc_r ]; then
+    if test "$CC" = xlc -o "$CC" = cc -o "$CC" = xlc_r -o "$CC" = cc_r ; then
       COPT="-O2 -qarch=com -qfloat=maf -qfloat=fold -qmaxmem=-1 -D_LARGE_FILES"
       if test "$bitwidth64" = yes; then
         COPT="$COPT -q64"
       fi
-      AC_MSG_RESULT(c flags: $COPT)
+      AC_MSG_RESULT([c flags: $COPT])
     fi
-    if [ "$CXX" = xlC ] || [ "$CXX" = c++ ] || [ "$CXX" = xlC_r ]; then
+    if test "$CXX" = xlC -o "$CXX" = c++ -o "$CXX" = xlC_r ; then
       CXXOPT="-O2 -qarch=com -qfloat=maf -qfloat=fold -qmaxmem=-1 -D_LARGE_FILES"
       if test "$bitwidth64" = yes; then
         CXXOPT="$CXXOPT -q64"
       fi
-      AC_MSG_RESULT(c++ flags: $CXXOPT)
+     AC_MSG_RESULT([c++ flags: $CXXOPT])
     fi
     ;;
   powerpc)
-    if [ "$FC" = xlf ] || [ "$FC" = xlf_r ]; then
+    if test "$FC" = xlf -o "$FC" = xlf_r ; then
       FOPT="-O2 -qarch=ppc -qxflag=xalias -qdpc -qfloat=fold -qmaxmem=-1 -qfloat=maf"
       if test "$bitwidth64" = yes; then
         FOPT="$FOPT -q64"
       fi
-      AC_MSG_RESULT(fortran flags: $FOPT)
+     AC_MSG_RESULT([fortran flags: $FOPT])
     fi
-    if [ "$CC" = xlc ] || [ "$CC" = cc ] || [ "$CC" = xlc_r ] || [ "$CC" = cc_r ]; then
+    if test "$CC" = xlc -o "$CC" = cc -o "$CC" = xlc_r -o "$CC" = cc_r ; then
       COPT="-O2 -qarch=ppc -qfloat=maf -qfloat=fold -qmaxmem=-1 -D_LARGE_FILES"
       if test "$bitwidth64" = yes; then
         COPT="$COPT -q64"
       fi
-      AC_MSG_RESULT(c flags: $COPT)
+     AC_MSG_RESULT([c flags: $COPT])
     fi
-    if [ "$CXX" = xlC ] || [ "$CXX" = c++ ] || [ "$CXX" = xlC_r ]; then
+    if test "$CXX" = xlC -o "$CXX" = c++ -o "$CXX" = xlC_r ; then
       CXXOPT="-O2 -qarch=ppc -qfloat=maf -qfloat=fold -qmaxmem=-1 -D_LARGE_FILES"
       if test "$bitwidth64" = yes; then
         CXXOPT="$CXXOPT -q64"
       fi
-      AC_MSG_RESULT(c++ flags: $CXXOPT)
+     AC_MSG_RESULT([c++ flags: $CXXOPT])
     fi
     ;;
   i386)
-    if [ "$FC" = g77 ]; then
+    if test "$FC" = g77 ; then
       FOPT="-O2 -m386"
-      AC_MSG_RESULT(fortran flags: $FOPT)
+      AC_MSG_RESULT([fortran flags: $FOPT])
     fi
-    if [ "$CC" = gcc ] || [ "$CC" = cc ]; then
+    if test "$CC" = gcc -o "$CC" = cc ; then
       COPT="-O2 -m386"
-      AC_MSG_RESULT(c flags: $COP
-T)
+      AC_MSG_RESULT([c flags: $COPT])
     fi
-    if [ "$CXX" = g++ ] || [ "$CXX" = c++ ] || [ "$CXX" = gcc ]; then
+    if test "$CXX" = g++ -o "$CXX" = c++ -o "$CXX" = gcc ; then
       CXXOPT="-O2 -m386"
-      AC_MSG_RESULT(c++ flags: $CXXOPT)
+      AC_MSG_RESULT([c++ flags: $CXXOPT])
     fi
     ;;
   i486)
-    if [ "$FC" = g77 ]; then
+    if test "$FC" = g77 ; then
       FOPT="-O2 -m486"                            
-      AC_MSG_RESULT(fortran flags: $FOPT)
+      AC_MSG_RESULT([fortran flags: $FOPT])
     fi
-    if [ "$CC" = gcc ] || [ "$CC" = cc ]; then
+    if test "$CC" = gcc -o "$CC" = cc ; then
       COPT="-O2 -m486"           
-      AC_MSG_RESULT(c flags: $COPT)
+      AC_MSG_RESULT([c flags: $COPT])
     fi
-    if [ "$CXX" = g++ ] || [ "$CXX" = c++ ] || [ "$CXX" = gcc ]; then
+    if test "$CXX" = g++ -o "$CXX" = c++ -o "$CXX" = gcc ; then
       CXXOPT="-O2 -m486"           
-      AC_MSG_RESULT(c++ flags: $CXXOPT)
+      AC_MSG_RESULT([c++ flags: $CXXOPT])
     fi
     ;;
   i586)
-    if [ "$FC" = g77 ]; then
+    if test "$FC" = g77 ; then
       FOPT="-O2 -march=pentium"                            
-      AC_MSG_RESULT(fortran flags: $FOPT)
+      AC_MSG_RESULT([fortran flags: $FOPT])
     fi
-    if [ "$CC" = gcc ] || [ "$CC" = cc ]; then
+    if test "$CC" = gcc -o "$CC" = cc ; then
       COPT="-O2 -march=pentium"           
-      AC_MSG_RESULT(c flags: $COPT)
+      AC_MSG_RESULT([c flags: $COPT])
     fi
-    if [ "$CXX" = g++ ] || [ "$CXX" = c++ ] || [ "$CXX" = gcc ]; then
+    if test "$CXX" = g++ -o "$CXX" = c++ -o "$CXX" = gcc ; then
       CXXOPT="-O2 -march=pentium"
-      AC_MSG_RESULT(c++ flags: $CXXOPT)
+      AC_MSG_RESULT([c++ flags: $CXXOPT])
     fi
     ;;
   i686)
-    if [ "$FC" = g77 ]; then
+    if test "$FC" = g77 ; then
       FOPT="-O2 -march=pentiumpro -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"   
-      AC_MSG_RESULT(fortran flags: $FOPT)
+      AC_MSG_RESULT([fortran flags: $FOPT])
     fi
-    if [ "$CC" = gcc ] || [ "$CC" = cc ]; then
+    if test "$CC" = gcc -o "$CC" = cc ; then
       COPT="-O2 -march=pentiumpro -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"   
-      AC_MSG_RESULT(c flags: $COPT)
+      AC_MSG_RESULT([c flags: $COPT])
     fi
-    if [ "$CXX" = g++ ] || [ "$CXX" = c++ ] || [ "$CXX" = gcc ]; then
+    if test "$CXX" = g++ -o "$CXX" = c++ -o "$CXX" = gcc ; then
       CXXOPT="-O2 -march=pentiumpro -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"           
-      AC_MSG_RESULT(c++ flags: $CXXOPT)
+      AC_MSG_RESULT([c++ flags: $CXXOPT])
     fi
     ;;
 esac
-changequote([,])
 
 # Set up CFLAGS and FFLAGS.
 
