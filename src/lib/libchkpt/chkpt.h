@@ -115,7 +115,7 @@ void chkpt_wt_cartrep(double **);
 int chkpt_rd_nentry(void);
 void chkpt_wt_nentry(int);
 
-char **chkpt_rd_fement(void);
+char **chkpt_rd_felement(void);
 void chkpt_wt_felement(char **);
 
 double **chkpt_rd_usotao(void);
