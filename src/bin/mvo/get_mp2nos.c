@@ -295,12 +295,12 @@ void get_ampl(double *ampl, double *ints,
 
   for (i=0; i<occ; i++) {
     if (mixed) jmax = occ;
-    else jmax = i+1;
+    else jmax = i;
     for (j=0; j<jmax; j++) {
       for (a=0; a<vir; a++) {
         ia = ioff[a+occ]+i; 
         if (mixed) bmax = vir;
-        else bmax = a+1;
+        else bmax = a;
         for (b=0; b<bmax; b++) {
           denom = evals1[i] + evals2[j] - evals1[a+occ] - evals2[b+occ];
           jb = ioff[b+occ]+j;
@@ -363,49 +363,48 @@ void get_dens_alpha(double **Paa, double *taaaa, double *taabb)
   int ikab_aa, jkab_aa, ikab_ab, jkab_ab;
   int ijac_aa, ijbc_aa, ijac_ab, ijbc_ab;
   double del;
-  double value, value2;
+  double value, value1, value2;
+  double ki_sign, kj_sign, ac_sign, bc_sign, tot_sign; /* sign on aa terms */
 
   occ = moinfo.ndocc;
   vir = moinfo.nmo - occ;
 
-
-  for (i=0; i<occ; i++) { /* begin loop over i */
+  /* first we get the ij elements of the density matrix */
+  for (i=0; i<occ; i++) {  /* begin loop over i */
     for (j=0; j<occ; j++){ /* begin loop over j */
       del = 0.0;
       if (i==j) {
         del = 1.0;
       }
       value = 0.0;
-      /* We simultaneously sum over pure-spin (aa) and over mixed-spin (ab).
-         Note that for the aa amplitudes ij (occ,occ) and ab (vir,vir)
+      /* We simultaneously sum over pure-spin (bb) and over mixed-spin (ba).
+         Note that for the bb amplitudes ij (occ,occ) and ab (vir,vir)
          are both lower triangles, whereas for the ab amplitudes ij and ab
-         are both squares.*/
+         are both squares.*/ 
       for (k=0; k<occ; k++) { /* begin loop over dummy variable k */
+        if (k > i) ki_sign = -1.0;
+        else ki_sign = 1.0;
+        if (k > j) kj_sign = -1.0;
+        else kj_sign = 1.0;
         ik_aa = INDEX(i,k);
         ik_ab = i*occ+k;
         jk_aa = INDEX(j,k);
         jk_ab = j*occ+k;
-        for (a=0; a<vir; a++) { /* begin loop over a */
-          for (b=0; b<vir; b++) { /* begin loop over b */
+        tot_sign = ki_sign * kj_sign;
+        for (a=0; a<vir; a++) { 
+          for (b=0; b<vir; b++) {
             ab_aa = INDEX(a,b);
             ab_ab = a*vir+b;
+            /* sign on ab doesn't matter since that factor is squared */
             ikab_aa = ik_aa*((vir*(vir+1))/2)+ab_aa;
             ikab_ab = ik_ab*(vir*vir)+ab_ab;
             jkab_aa = jk_aa*((vir*(vir+1))/2)+ab_aa;
             jkab_ab = jk_ab*(vir*vir)+ab_ab;
-            value += 0.5 * (taaaa[ikab_aa]*taaaa[jkab_aa]) + 
-                     (taabb[ikab_ab]*taabb[jkab_ab]);
-            if (fabs(value) > 100.0) {
-              fprintf(outfile, "Exception for %d %d %d %d\n", i, j, k, a, b);
-              fprintf(outfile, "ikab_ab = %d, jkab_ab = %d\n", 
-                      ikab_ab, jkab_ab);
-              fprintf(outfile, "taabb[%d] = %lf, taabb[%d] = %lf\n",
-                      ikab_ab, taabb[ikab_ab], jkab_ab, taabb[jkab_ab]);
-            }
-
-          } /* end loop over b */
-        } /* end loop over a */
-      } /* end loop over k */
+            value += 0.5 * (tot_sign * taaaa[ikab_aa] * taaaa[jkab_aa]) + 
+	             (taabb[ikab_ab] * taabb[jkab_ab]);
+          } 
+        } 
+      } 
       Paa[i][j] = del - value;
     }
   }
@@ -423,6 +422,11 @@ void get_dens_alpha(double **Paa, double *taaaa, double *taabb)
         ac_ab = a*vir+c;
         bc_aa = INDEX(b,c);
         bc_ab = b*vir+c;
+        if (c > a) ac_sign = -1.0;
+        else ac_sign = 1.0;
+        if (c > b) bc_sign = -1.0;
+        else bc_sign = 1.0;
+        tot_sign = ac_sign * bc_sign;
         for (i=0; i<occ; i++){ /* begin loop over i */
           for (j=0; j<occ; j++){ /* begin loop over j */
             ij_aa = INDEX(i,j);
@@ -431,8 +435,8 @@ void get_dens_alpha(double **Paa, double *taaaa, double *taabb)
             ijac_ab = ij_ab*(vir*vir)+ac_ab;
             ijbc_aa = ij_aa*((vir*(vir+1))/2)+bc_aa;
             ijbc_ab = ij_ab*(vir*vir)+bc_ab;
-            value += 0.5 * (taaaa[ijac_aa]*taaaa[ijbc_aa]) + 
-                     (taabb[ijac_ab]*taabb[ijbc_ab]);
+            value += 0.5 * (tot_sign * taaaa[ijac_aa] * taaaa[ijbc_aa]) + 
+                     (taabb[ijac_ab] * taabb[ijbc_ab]);
           } /* end loop over j */
         } /* end loop over i */
       } /* end loop over c */
@@ -455,6 +459,7 @@ void get_dens_beta(double **Pbb, double *tbbbb, double *taabb)
   int ijac_bb, ijbc_bb, jica_ab, jicb_ab;
   double del;
   double value;
+  double ki_sign, kj_sign, ac_sign, bc_sign, tot_sign; /* sign on bb terms */
 
   occ = moinfo.ndocc;
   vir = moinfo.nmo - occ;
@@ -472,19 +477,25 @@ void get_dens_beta(double **Pbb, double *tbbbb, double *taabb)
          are both lower triangles, whereas for the ab amplitudes ij and ab
          are both squares.*/
       for (k=0; k<occ; k++){ /* begin loop over dummy variable k */
+        if (k > i) ki_sign = -1.0;
+        else ki_sign = 1.0;
+        if (k > j) kj_sign = -1.0;
+        else kj_sign = 1.0;
         ik_bb = INDEX(i,k);
         ki_ab = k*occ+i;
         jk_bb = INDEX(j,k);
         kj_ab = k*occ+j;
+        tot_sign = ki_sign * kj_sign;
         for (a=0; a<vir; a++){ /* begin loop over a */
           for (b=0; b<vir; b++){ /* begin loop over b */
             ab_bb = INDEX(a,b);
             ba_ab = b*vir+a;
+            /* sign on ab doesn't matter since that factor is squared */
             ikab_bb = ik_bb*((vir*(vir+1))/2)+ab_bb;
             kiba_ab = ki_ab*(vir*vir)+ba_ab;
             jkab_bb = jk_bb*((vir*(vir+1))/2)+ab_bb;
             kjba_ab = kj_ab*(vir*vir)+ba_ab;
-            value += 0.5 * (tbbbb[ikab_bb]*tbbbb[jkab_bb]) + 
+            value += 0.5 * (tot_sign * tbbbb[ikab_bb]*tbbbb[jkab_bb]) + 
                      (taabb[kiba_ab]*taabb[kjba_ab]);
           } /* end loop over b */
         } /* end loop over a */
@@ -502,6 +513,11 @@ void get_dens_beta(double **Pbb, double *tbbbb, double *taabb)
          are both lower triangles, whereas for the ab amplitudes ij and ab
          are both squares.*/
       for (c=0; c<vir; c++){ /* begin loop over dummy variable c */
+        if (c > a) ac_sign = -1.0;
+        else ac_sign = 1.0;
+        if (c > b) bc_sign = -1.0;
+        else bc_sign = 1.0;
+        tot_sign = ac_sign * bc_sign;
         ac_bb = INDEX(a,c);
         ca_ab = c*vir+a;
         bc_bb = INDEX(b,c);
@@ -515,7 +531,7 @@ void get_dens_beta(double **Pbb, double *tbbbb, double *taabb)
             jica_ab = ji_ab*(vir*vir)+ca_ab;
 		    ijbc_bb = ij_bb*((vir*(vir+1))/2)+bc_bb;
 		    jicb_ab = ji_ab*(vir*vir)+cb_ab;
-		    value += 0.5 * (tbbbb[ijac_bb]*tbbbb[ijbc_bb]) + 
+		    value += 0.5 * (tot_sign * tbbbb[ijac_bb]*tbbbb[ijbc_bb]) + 
 			     (taabb[jica_ab]*taabb[jicb_ab]);
 		  } /* end loop over j */
 		} /* end loop over i */
