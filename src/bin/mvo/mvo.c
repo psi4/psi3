@@ -56,7 +56,7 @@ void exit_io();
 void get_reorder_array(void);
 void get_fzc_operator(void);
 void get_mvos(void);
-
+void get_mp2nos(void);
 
 main(int argc, char *argv[])
 {
@@ -70,9 +70,13 @@ main(int argc, char *argv[])
   print_parameters();
   get_reorder_array();
   init_ioff();
-  get_fzc_operator();
-  get_mvos();
-
+  if (params.mp2nos) {
+    get_mp2nos();
+  }
+  else {
+    get_fzc_operator();
+    get_mvos();
+  }
   cleanup();
   exit_io();
   exit(0);
@@ -193,6 +197,9 @@ void get_parameters(void)
   params.fzc = 1;
   errcod = ip_boolean("FZC",&(params.fzc),0);
 
+  params.mp2nos = 0;
+  errcod = ip_boolean("MP2NOS",&(params.mp2nos),0);
+
   if (strcmp(params.wfn, "CI")==0 || strcmp(params.wfn, "DETCAS")==0 ||
       strcmp(params.wfn, "DETCI")==0) {
     params.ras_type = 1;
@@ -237,6 +244,7 @@ void print_parameters(void)
       fprintf(outfile,"\tfock_coeff             =  %lf\n", 
                                   params.fock_coeff);
       fprintf(outfile,"\tPrint Level            =  %d\n", params.print_lvl);
+      fflush(outfile);
     }
   
   return;
@@ -327,6 +335,11 @@ void get_moinfo(void)
           moinfo.ndocc += tmpi[i];
         }
     }
+  else {
+    for (i=0; i<moinfo.nirreps; i++) {
+      moinfo.ndocc += moinfo.clsdpi[i];
+    }
+  }
 
   moinfo.nsocc = 0;
   errcod = ip_int_array("SOCC", tmpi, moinfo.nirreps);
@@ -363,6 +376,7 @@ void get_moinfo(void)
              moinfo.clsdpi[i],moinfo.openpi[i],moinfo.virtpi[i],
              moinfo.fruocc[i]);
         }
+      fflush(outfile);
     }
 
 
@@ -538,6 +552,8 @@ void get_mvos(void)
 
   int h, nirreps, nvir, ntri, offset, row, col;
   int i, j, ij, iabs, jabs, icorr, jcorr, ijcorr, nocc;
+  int ndv, ndoccv, *ndvph, k, colv;
+  int errcod;
   double *FCvv, *FC, **evecs, *evals, **Cvv, **Cvvp, **Cnew;
   double *eig_unsrt;
 
@@ -547,20 +563,56 @@ void get_mvos(void)
   eig_unsrt = file30_rd_evals();
   file30_close();
 
+  /* read in which of the doccs are to be treated as virtuals */
+  ndv = 0;
+
+  if (ip_exist("DOCC_VIRT",0)) {
+     errcod = ip_count("DOCC_VIRT",&ndv,0);
+     params.docc_virt = init_int_array(ndv);
+     for(k=0; k < ndv; k++) {
+       params.docc_virt[k] = 0;
+       errcod = ip_data("DOCC_VIRT","%d",(&(params.docc_virt[k])),1,k);
+     }
+  }
+
+  /* finished reading in which doccs are to be treated as virtuals */
+
   /* form the vv block of FC for each irrep h */
   for (h=0,offset=0; h < nirreps; h++) {
-    nvir = moinfo.virtpi[h];
-    nocc = moinfo.clsdpi[h] + moinfo.openpi[h];
+
+  /* find out which doccs are to be treated as virtuals */
+    ndoccv = 0;
+    ndvph = init_int_array(moinfo.clsdpi[h]);
+    for (k=0;k<moinfo.clsdpi[h];k++) {
+      ndvph[k] = 0;
+      }
+    if (ip_exist("DOCC_VIRT",0)) {
+      for (k=0;k<(ndv-1);k=(k+2)) {
+        if ( (params.docc_virt[k]) == (h+1)) {
+          ndoccv++;
+          ndvph[(params.docc_virt[k+1])-1] = ndoccv;
+        }
+      }
+    }
+  /* ndoccv is the number of doccs to be treated as virts for irrep h */
+  /* ndvph is a 1-d array of length "number of doccs for irrep h".    */
+  /* it is a string of integers, 0 meaning "leave this docc alone",   */
+  /* 1 at position j means that docc number j is the first docc-virt, */
+  /* 2 at position j means that docc number j is the second docc-virt */
+  /* etc.                                                             */
+
+    nvir = moinfo.virtpi[h] + ndoccv;
+    nocc = moinfo.clsdpi[h] + moinfo.openpi[h] - ndoccv;
 
     if (nvir < 1) break;
 
-    if (params.print_lvl > 3) {
+  /*    if (params.print_lvl > 3) {  */
+    if (params.print_lvl) {
       fprintf(outfile, "Working on irrep %d (%d vir, %d occ)\n", 
               h, nvir, nocc);
     }
 
     ntri = (nvir * (nvir+1))/2;
-
     FCvv = init_array(ntri);
     evals = init_array(ntri);
     evecs = block_matrix(nvir,nvir);
@@ -570,18 +622,34 @@ void get_mvos(void)
 
     for (i=0,ij=0; i<nvir; i++) {
       /* convert this MO index into a Correlated MO index */
-      iabs = i + nocc + offset;
+      if (i>=ndoccv) {
+        iabs = i + nocc + offset;
+      }
+      else {
+        for (k=0; k<(nocc + ndoccv); k++) {
+          if ( (i+1) == ndvph[k] )
+             iabs = k + offset;
+        }
+      }
       icorr = moinfo.order[iabs];
       for (j=0; j<=i; j++,ij++) {
-        jabs = j + nocc + offset;
+        if (j>=ndoccv) {
+          jabs = j + nocc + offset;
+        }
+        else {
+          for (k=0; k<(nocc + ndoccv); k++) {
+            if ( (j+1) == ndvph[k] )
+               jabs = k + offset; 
+          }
+        }
         jcorr = moinfo.order[jabs];  
         ijcorr = INDEX(icorr,jcorr);
         FCvv[ij] = params.fzc_fock_coeff * FC[ijcorr] ;
         if (i==j) FCvv[ij] += params.fock_coeff * eig_unsrt[iabs];
       }
     }
-      
-    if (params.print_lvl > 4) {
+
+    if (params.print_lvl) {
       fprintf(outfile, "Old FCvv matrix for irrep %d\n", h);
       print_array(FCvv, nvir, outfile);
     }
@@ -589,7 +657,7 @@ void get_mvos(void)
     /* diagonalize the vv block of FC */
     rsp(nvir, nvir, ntri, FCvv, evals, 1, evecs, 1E-12);
 
-    if (params.print_lvl > 4) {
+    if (params.print_lvl) {
       fprintf(outfile, "\nDiagonalization matrix for FCvv irrep %d\n", h);
       print_mat(evecs, nvir, nvir, outfile);
 
@@ -602,12 +670,19 @@ void get_mvos(void)
 
     /* load up the vv part of SCF matrix C */
     for (i=moinfo.first_so[h],row=0; i<= moinfo.last_so[h]; i++,row++) {
-      for (j=moinfo.first_so[h]+nocc,col=0; j<=moinfo.last_so[h]; j++,col++) {
+      colv = 0;
+      for (j=moinfo.first_so[h],k=0; j < (moinfo.first_so[h]+nocc+ndoccv); j++,k++) {
+        if (ndvph[k] != 0) {
+           Cvv[row][colv] = moinfo.scf_vector[i][j];
+           colv += 1;
+        }
+      }
+      for (j=moinfo.first_so[h]+nocc+ndoccv,col=ndoccv; j<=moinfo.last_so[h]; j++,col++) {
         Cvv[row][col] = moinfo.scf_vector[i][j];
       }
     } 
 
-    if (params.print_lvl > 4) {
+    if (params.print_lvl) {
       fprintf(outfile, "Old Cvv matrix for irrep %d\n", h);
       print_mat(Cvv, moinfo.sopi[h], nvir, outfile);
     }
@@ -615,7 +690,7 @@ void get_mvos(void)
     /* multiply the FCvv eigenvectors by Cvv to get new Cvv */
     mmult(Cvv, 0, evecs, 0, Cvvp, 0, moinfo.sopi[h], nvir, nvir, 0);
  
-    if (params.print_lvl > 4) {
+    if (params.print_lvl) {
       fprintf(outfile, "New Cvv matrix for irrep %d\n", h);
       print_mat(Cvvp, moinfo.sopi[h], nvir, outfile);
     }
@@ -624,19 +699,24 @@ void get_mvos(void)
 
     /* load up the occupied orbitals */
     for (i=moinfo.first_so[h],row=0; i<= moinfo.last_so[h]; i++,row++) {
-      for (j=moinfo.first_so[h],col=0; j< moinfo.first_so[h]+nocc; j++,col++) {
-        Cnew[row][col] = moinfo.scf_vector[i][j];
+      for (j=moinfo.first_so[h],col=0; j< moinfo.first_so[h]+nocc+ndoccv; j++,col++) {
+        if (ndvph[col] != 0) {
+          Cnew[row][col] = Cvvp[row][(ndvph[col]-1)];
+        }
+        else {
+          Cnew[row][col] = moinfo.scf_vector[i][j];
+        }
       }
     }
 
     /* load up the new virtuals */
     for (i=0; i<moinfo.sopi[h]; i++) {
-      for (j=0; j<nvir; j++) {
+      for (j=ndoccv; j<nvir; j++) {
         Cnew[i][j+nocc] = Cvvp[i][j];
       }
     }
 
-    if (params.print_lvl > 4) {
+    if (params.print_lvl) {
       fprintf(outfile, "New C matrix for irrep %d\n", h);
       print_mat(Cnew, moinfo.sopi[h], moinfo.orbspi[h], outfile);
     }
