@@ -32,16 +32,19 @@ void hf_fock()
   pthread_attr_t thread_attr;
   pthread_t *thread_id;
   
+  int nstri;
   int count ;
   int dum;
   int g, i, j, k, l, m, ii, jj, kk, ll;
   int si, sj, ni, nj, li, lj, si_g, sj_g;
 
   double temp;
-  double ****Gfull, ****Gfull_o;       /* Shell-blocked G matrices in AO basis*/
-  double ****Gsym, ****Gsym_o;         /* Shell-blocked symmetrized (Gskel + Gskel(transp.)) G matrices */
+  double **tmpmat1;
+  double ****Gfull, ****Gfull_o;  /* Shell-blocked G matrices in AO basis*/
+  double ****Gsym, ****Gsym_o;    /* Shell-blocked symmetrized (Gskel + Gskel(transp.)) G matrices */
   double ***ao_type_transmat;
-
+  double *Gtri, *Gtri_o;          /* Total G matrices in lower*/
+                                  /* triagonal form*/
   /*---------------
     Initialization
    ---------------*/
@@ -147,6 +150,63 @@ void hf_fock()
     Go =  block_matrix(BasisSet.num_ao,BasisSet.num_ao);
     shell_block_to_block(Gfull_o,Go);
   }
+   /*----------------------
+    Transform to SO basis
+   ----------------------*/
+  if (Symmetry.nirreps > 1 || BasisSet.puream) {
+    tmpmat1 = block_matrix(Symmetry.num_so,BasisSet.num_ao);
+    mmult(Symmetry.usotao,0,G,0,tmpmat1,0,Symmetry.num_so,BasisSet.num_ao,BasisSet.num_ao,0);
+    mmult(tmpmat1,0,Symmetry.usotao,1,G,0,Symmetry.num_so,BasisSet.num_ao,Symmetry.num_so,0);
+    if (UserOptions.reftype == rohf || UserOptions.reftype == uhf) {
+      mmult(Symmetry.usotao,0,Go,0,tmpmat1,0,Symmetry.num_so,BasisSet.num_ao,BasisSet.num_ao,0);
+      mmult(tmpmat1,0,Symmetry.usotao,1,Go,0,Symmetry.num_so,BasisSet.num_ao,Symmetry.num_so,0);
+    }
+    free_block(tmpmat1);
+  }
+  fprintf(outfile,"  Closed-shell Fock matrix in SO basis:\n");
+  print_mat(G,Symmetry.num_so,Symmetry.num_so,outfile);
+  if (UserOptions.reftype == rohf || UserOptions.reftype == uhf) {
+      fprintf(outfile,"  Open-shell Fock matrix in SO basis:\n");
+      print_mat(Go,Symmetry.num_so,Symmetry.num_so,outfile);
+  }
+  
+  /*-------------------------
+    Write G-matrices to disk
+   -------------------------*/
+  nstri = ioff[Symmetry.num_so];
+  Gtri = init_array(nstri);
+  sq_to_tri(G,Gtri,Symmetry.num_so);
+  free_block(G);
+  psio_open(IOUnits.itapDSCF, PSIO_OPEN_OLD);
+  switch (UserOptions.reftype) {
+  case rohf:
+      Gtri_o = init_array(nstri);
+      sq_to_tri(Go,Gtri_o,Symmetry.num_so);
+      free_block(Go);
+      psio_write_entry(IOUnits.itapDSCF, "Open-shell JX G-matrix", (char *) Gtri_o, sizeof(double)*nstri);
+      free(Gtri_o);
+  case rhf:
+      psio_write_entry(IOUnits.itapDSCF, "Total JX G-matrix", (char *) Gtri, sizeof(double)*nstri);
+      free(Gtri);
+      break;
+
+  case uhf:
+      Gtri_o = init_array(nstri);
+      sq_to_tri(Go,Gtri_o,Symmetry.num_so);
+      free_block(Go);
+      /*--- Form alpha and beta Fock matrices first and then write them out ---*/
+      for(i=0;i<nstri;i++) {
+	temp = Gtri[i] + Gtri_o[i];
+	Gtri[i] = Gtri[i] - Gtri_o[i];
+	Gtri_o[i] = temp;
+      }
+      psio_write_entry(IOUnits.itapDSCF, "Alpha JX G-matrix", (char *) Gtri, sizeof(double)*nstri);
+      psio_write_entry(IOUnits.itapDSCF, "Beta JX G-matrix", (char *) Gtri_o, sizeof(double)*nstri);
+      free(Gtri);
+      free(Gtri_o);
+      break;
+  }
+  psio_close(IOUnits.itapDSCF, 1);
 
   /*---------
     Clean-up

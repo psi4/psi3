@@ -1,3 +1,5 @@
+#ifndef DATA_STRUCTS_H
+#define DATA_STRUCTS_H
 /*-----------------------
   structure declarations
  -----------------------*/
@@ -105,6 +107,7 @@ typedef struct {
     char *dertype;                     /* Derivative type */
     double cutoff;                     /* Cutoff on ERIs/Fock matrix elements */
     double hf_exch;                    /* Portion of exact HF exchange in the Fock matrix */
+    int  make_dft;                     /* Use DFT? */
     int print_lvl;                     /* Print level */
     int max_memory;                    /* Maximum amount of memory to use, in double words */
     int memory;                        /* Amount left available */
@@ -187,7 +190,7 @@ typedef struct {
     int itapR12_MO;           /* MO R12 integrals */
     int itapR12T2_MO;         /* MO [r12,T2] integrals */
 } IOUnits_t;
-
+ 
 typedef struct {
     double **bf_norm;                  /* normalization constants for cartesian GTOs of each
 					 angular momentum level */
@@ -242,4 +245,61 @@ typedef struct {
     int num_moshells;         /* number of shells of MOs */
     int num_openmoshells;     /* number of shells of singly-occupied MOs */
 } MOInfo_t;
+
+struct leb_point_s{
+    struct coordinates p_cart; /* cartesian coordinate of one point */
+    double ang_quad_weight;    /* Contribution from lebedev scheme  */
+};
+
+struct grid_info_s{
+    int angpoints;             /* # of angular points in lebedev sphere */
+    char *grid_label;           /* name of grid */
+    int rcut;                  /* radial cutoff grid */
+    struct leb_point_s *leb_point; /* info for one radial shell of the grid
+*/
+};
+
+struct den_info_s{
+    double den;                /* value of density at a point */
+    double den_o;
+    double den_a;
+    double den_b;
+    double dpdx;               /* value of gradient at a point */
+    double dpdx_o;
+    double dtdx;                /* gradient of the kinetic energy */
+    double *basis;
+};
+
+struct basis_point_s{
+    double *basis_arr;          /* array to hold the basis functions
+				   at a grid points */
+};
+typedef struct{
+    int prtflag;                /* dft printing flag */
+    int grid_dim;               /* How many leb grids are there? */
+    int rpoints;                /* Number of radial points */ 
+
+    double *bragg;              /* Bragg-Slater radii */
+    double *basis;              /* This is an array to hold the value of
+				   basis functions at a given point */
+
+    double XC_energy;           /* Exchange Correlation Energy */
+    double X_energy;            /* Exchange Energy */
+    double C_energy;            /* Correlation Energy */
+    
+    /* All function pointers */
+
+    double (*exchange_function)(struct den_info_s);
+    double (*exchange_V_function)(struct den_info_s);
+                                /* pointer to the exchange function */
+    double (*correlation_function)(struct den_info_s);
+    double (*correlation_V_function)(struct den_info_s);
+                               /* pointer to the correlation function */
+    struct den_info_s (*den_calc)(struct coordinates geom);
+                   /* pointer to the correct density calculation function */
+
+    struct grid_info_s *grid_info;
+} DFT_options_t;
+#endif
+
 

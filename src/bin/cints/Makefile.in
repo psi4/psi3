@@ -10,8 +10,7 @@
 #
 # P.S. You must add MP2R12 to the list in order to add R12_Ints
 #
-SUBDIRS = Default_Ints OEProp_Ints Fock Default_Deriv1 MP2
-
+SUBDIRS = Default_Ints OEProp_Ints Fock Default_Deriv1 MP2 DFT
 #
 # These preprocessor defines will tell main.c and parsing.c what 
 #  sections of code to include

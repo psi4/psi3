@@ -43,6 +43,9 @@ EXTERN GTOs_t GTOs;
 /*--- Information about MOs ---*/
 EXTERN MOInfo_t MOInfo;
 
+/*--- DFT information ---*/
+EXTERN DFT_options_t DFT_options;
+
 /*--- Calculation-specific 2-index quantities ---*/
 EXTERN double **Dens;    /* Total density in AO basis */
 EXTERN double **Denso;   /* Open-shell density in AO basis */

@@ -107,6 +107,7 @@ void *fock_thread(void *tnum_ptr)
     init hashing table to store and retrieve quartet data
     init table for Fj(T)
     ---*/
+
   if (Symmetry.nirreps > 1)
     init_htable( &htable, Symmetry.max_stab_index );
   init_fjt_table(&fjt_table);
@@ -136,7 +137,6 @@ void *fock_thread(void *tnum_ptr)
     sl_arr = (int *)malloc(sizeof(int)*3*max_num_unique_quartets);
   }
   key_arr = (int *)malloc(sizeof(int)*3*max_num_unique_quartets);
-
   c1 = 1.0 - 0.5*UserOptions.hf_exch;
   c2 = 1.0 - 0.25*UserOptions.hf_exch;
   c3 = -0.5*UserOptions.hf_exch;

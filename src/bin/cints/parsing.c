@@ -6,6 +6,7 @@
 #include"defines.h"
 #define EXTERN
 #include"global.h"
+#include"scf_parsing.h"
 
 void parsing()
 {
@@ -73,28 +74,38 @@ void parsing_cmdline(int argc, char *argv[])
         exit(0);
      }
    }
- 
+
    for (i=1; i<argc; i++) {
        
        /*--- build Fock option ---*/
        if (strcmp(argv[i], "--fock") == 0) {
 #ifdef INCLUDE_Fock
-           UserOptions.make_oei = 0;
+	   scf_parsing();
+           /*UserOptions.make_oei = 0;
 	   UserOptions.make_eri = 0;
 	   UserOptions.make_fock = 1;
 	   UserOptions.print_lvl = 0;
 	   UserOptions.symm_ints = 0;
+	   UserOptions.make_dft = 0;
 	   errcod = ip_string("REFERENCE",&refstring,0);
 	   if (errcod != IPE_OK)
 	     punt("REFERENCE keyword is missing");
-	   else if (!strcmp(refstring,"RHF") || !strcmp(refstring,"RKS") || !strcmp(refstring,""))
+	   else if (!strcmp(refstring,"RHF") || !strcmp(refstring,""))
 	     UserOptions.reftype = rhf;
 	   else if (!strcmp(refstring,"ROHF"))
 	     UserOptions.reftype = rohf;
-	   else if (!strcmp(refstring,"UHF") || !strcmp(refstring,"UKS"))
+	   else if (!strcmp(refstring,"UHF"))
 	     UserOptions.reftype = uhf;
+	   else if (!strcmp(refstring,"RKS")){
+	       UserOptions.reftype = rhf;
+	       UserOptions.make_dft = 1;
+	   }
+	   else if (!strcmp(refstring,"UKS")){
+	       UserOptions.reftype = uhf;
+	       UserOptions.make_dft = 1;
+	   }
 	   else
-	     punt("The specified REFERENCE not implemented");
+	   punt("The specified REFERENCE not implemented");*/
 #else
 	   punt("--fock option is not supported by your CINTS executable.\nRecompile the code including files in Fock subdirectory.");
 #endif
@@ -258,3 +269,5 @@ void parsing_cmdline(int argc, char *argv[])
 
    return;
 }
+
+

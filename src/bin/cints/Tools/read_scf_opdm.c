@@ -134,14 +134,14 @@ void read_scf_opdm(int diff_flag)
   /*--------------------------
     Remove after done testing
    --------------------------*/
-/*  fprintf(outfile,"  Total density matrix in AO basis :\n");
+  /*fprintf(outfile,"  Total density matrix in AO basis :\n");
   print_mat(sq_dens,BasisSet.num_ao,BasisSet.num_ao,outfile);
   fprintf(outfile,"\n\n");
   if (UserOptions.reftype == rohf || UserOptions.reftype == uhf) {
     fprintf(outfile,"  Total open-shell density matrix in AO basis :\n");
     print_mat(sq_denso,BasisSet.num_ao,BasisSet.num_ao,outfile);
     fprintf(outfile,"\n\n");
-  }*/
+    }*/
   
   /*--------------------------------
     transform to shell-blocked form
