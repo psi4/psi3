@@ -1,8 +1,13 @@
 /* $Log$
- * Revision 1.7  2000/08/21 00:28:58  sbrown
- * Included dft_inputs.c and now cscf has information about both the dft
- * functionals and grids.
+ * Revision 1.8  2000/08/23 17:15:16  sbrown
+ * Added portions to separate out the correlation and exchange energy at the
+ * end the calculation as well as do the consistency check on the integrated
+ * density.
  *
+/* Revision 1.7  2000/08/21 00:28:58  sbrown
+/* Included dft_inputs.c and now cscf has information about both the dft
+/* functionals and grids.
+/*
 /* Revision 1.6  2000/07/10 18:03:33  sbrown
 /* Enabling cscf to send over just the occupied SCF eigenvector for DFT
 /* calculations.  Only done for the RHF case.
@@ -118,6 +123,7 @@ void scf_input(ipvalue)
    ip_cwk_clear();
    ip_cwk_add(":DEFAULT");
    ip_cwk_add(":SCF");
+  
    if(ipvalue) ip_print_value(stdout,ipvalue);
 
    errcod = ip_string("LABEL",&alabel,0);

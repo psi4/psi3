@@ -1,9 +1,14 @@
 /* $Id$ */
 /* $Log$
- * Revision 1.5  2000/07/10 18:03:30  sbrown
- * Enabling cscf to send over just the occupied SCF eigenvector for DFT
- * calculations.  Only done for the RHF case.
+ * Revision 1.6  2000/08/23 17:15:16  sbrown
+ * Added portions to separate out the correlation and exchange energy at the
+ * end the calculation as well as do the consistency check on the integrated
+ * density.
  *
+/* Revision 1.5  2000/07/10 18:03:30  sbrown
+/* Enabling cscf to send over just the occupied SCF eigenvector for DFT
+/* calculations.  Only done for the RHF case.
+/*
 /* Revision 1.4  2000/06/22 22:14:58  evaleev
 /* Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
 /*
@@ -108,6 +113,10 @@ EXTERN double dampsv;           /* scale factor in diis */
 EXTERN double repnuc;           /* nuclear repulsion */
 EXTERN double etot;             /* electronic and total energies */
 EXTERN double exc;              /* KS DFT exchange-correlation energy */
+EXTERN double exch_energy;      /* KS DFT exchange energy */
+EXTERN double corr_energy;      /* KS DFT correlation energy */
+EXTERN double coulomb_energy;   /* Coulomb energy */
+EXTERN double den_trace;        /* KS DFT trace of the density */
 EXTERN double lshift;           /* levelshift */
 EXTERN double diiser;           /* max off-diag. element in MO fock mat. */
 EXTERN double save_ci1,save_ci2; /* ci coefficients for tcscf */

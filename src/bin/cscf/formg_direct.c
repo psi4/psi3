@@ -11,6 +11,7 @@ void formg_direct()
    int stat;
    int i,j,k,jj,kk,l,off,joff,nn,max;      
    int ntri = ioff[nbasis];
+   double den_percent;
 
    /*-----------------------------------
      Call CINTS to do all the dirty job
@@ -78,8 +79,28 @@ void formg_direct()
    
    psio_open(itapDSCF, PSIO_OPEN_OLD);
    if (ksdft) {
-     psio_read_entry(itapDSCF, "DFT XC-energy", (char *) &(exc), sizeof(double));
+     psio_read_entry(itapDSCF, "DFT XC-energy", 
+		     (char *) &(exc), sizeof(double));
+    psio_read_entry(itapDSCF, "DFT X-energy", 
+		    (char *) &(exch_energy), sizeof(double));
+    psio_read_entry(itapDSCF, "DFT C-energy", 
+		    (char *) &(corr_energy), sizeof(double));
+    psio_read_entry(itapDSCF, "DFT Den", 
+		    (char *) &(den_trace), sizeof(double));
+    
+    /* Check for consistency of the numrical integration */
+    
+    den_percent = 100*fabs((double) nelec-den_trace)/(double) nelec;
+    
+    if(den_percent > 1E-3){
+	fprintf(outfile,"\nWarning, Numerically Integrated Density Inaccurate");
+	fprintf(outfile,"\nNum of Electrons = %d",nelec);
+	fprintf(outfile,"\nNum from Trace   = %5.5lf",den_trace);
+	fprintf(outfile,"\nAbsolute Error   = %%%5.5lf\n\n",den_percent);
+    }
    }
+   
+   
    if (uhf) {
      psio_read_entry(itapDSCF, "Alpha JX G-matrix", (char *) gtmp, sizeof(double)*ntri);
      for(k=joff=0; k < num_ir ; k++) {

@@ -1,7 +1,12 @@
 /* $Log$
- * Revision 1.1  2000/02/04 22:52:28  evaleev
- * Initial revision
+ * Revision 1.2  2000/08/23 17:15:15  sbrown
+ * Added portions to separate out the correlation and exchange energy at the
+ * end the calculation as well as do the consistency check on the integrated
+ * density.
  *
+/* Revision 1.1.1.1  2000/02/04 22:52:28  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.7  1999/11/11 21:04:36  evaleev
 /* A very minor fix.
 /*
@@ -521,6 +526,16 @@ void cleanup()
       
       
       fprintf(outfile,"\n%8ctotal energy       = %20.12f\n",' ',etot);
+      
+      if(ksdft){
+	  fprintf(outfile,"%8ccoulomb energy     = %20.12f\n"
+		  ,' ',coulomb_energy);  
+	  fprintf(outfile,"%8cexchange energy    = %20.12f\n"
+		  ,' ' ,exch_energy);
+	  fprintf(outfile,"%8ccorrelation energy = %20.12f\n"
+		  ,' ',corr_energy);
+      }
+      
       fprintf(outfile,"%8ckinetic energy     = %20.12f\n",' ',ekin);
       fprintf(outfile,"%8cnuc. attr. energy  = %20.12f\n",' ',enpot);
       fprintf(outfile,"%8celec. rep. energy  = %20.12f\n",' ',epot-enpot);

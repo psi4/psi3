@@ -1,7 +1,12 @@
 /* $Log$
- * Revision 1.4  2000/06/26 19:04:09  sbrown
- * Added DFT capapbilities to interface with cints using direct scf
+ * Revision 1.5  2000/08/23 17:15:16  sbrown
+ * Added portions to separate out the correlation and exchange energy at the
+ * end the calculation as well as do the consistency check on the integrated
+ * density.
  *
+/* Revision 1.4  2000/06/26 19:04:09  sbrown
+/* Added DFT capapbilities to interface with cints using direct scf
+/*
 /* Revision 1.3  2000/06/22 22:15:00  evaleev
 /* Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
 /*
@@ -125,8 +130,12 @@ int ecalc(incr)
       acc_switch=0;
    }                            
 
-   if (ksdft) neelec += exc;
+   if (ksdft){
+       coulomb_energy = neelec;
+       neelec += exc;
    /*printf("XC_energy = %10.10lf",exc);*/
+   }
+   
    etot = repnuc + neelec;
    edif =  eelec - neelec;
    ediff = edif;
