@@ -12,8 +12,7 @@
 void halftrans(dpdbuf4 *Buf1, int dpdnum1, dpdbuf4 *Buf2, int dpdnum2, double ***C, int nirreps, 
 	       int **mo_row, int **so_row, int *mospi, int *sospi, int type, double alpha, double beta);
 
-void AO_contribute(int p, int q, int r, int s, double value, 
-		   dpdbuf4 *tau1_AO, dpdbuf4 *tau2_AO, int anti);
+void AO_contribute(struct iwlbuf *InBuf, dpdbuf4 *tau1_AO, dpdbuf4 *tau2_AO);
 
 void BT2_AO(void)
 {
@@ -24,11 +23,10 @@ void BT2_AO(void)
   dpdbuf4 tau, t2, tau1_AO, tau2_AO;
   psio_address next;
   struct iwlbuf InBuf;
-  int idx, p, q, r, s, filenum;
   int lastbuf;
-  double value, tolerance=1e-14;
-  Value *valptr;
-  Label *lblptr;
+  double tolerance=1e-14;
+  double **integrals;
+  int **tau1_cols, **tau2_cols, *num_ints;
 
   nirreps = moinfo.nirreps;
   orbspi = moinfo.orbspi;
@@ -68,9 +66,14 @@ void BT2_AO(void)
   dpd_buf4_close(&tau);
   dpd_buf4_close(&tau1_AO);
 
+  /* Transpose tau1_AO for better memory access patterns */
   dpd_set_default(1);
-  dpd_buf4_init(&tau1_AO, CC_TAMPS, 0, 2, 5, 2, 5, 0, "tauIJPQ (1)");
-  dpd_buf4_init(&tau2_AO, CC_TAMPS, 0, 2, 5, 2, 5, 0, "tauIJPQ (2)");
+  dpd_buf4_init(&tau1_AO, CC_TAMPS, 0, 2, 5, 2, 5, 1, "tauIJPQ (1)");
+  dpd_buf4_sort(&tau1_AO, CC_TMP0, rspq, 5, 2, "tauPQIJ (1)");
+  dpd_buf4_close(&tau1_AO);
+
+  dpd_buf4_init(&tau1_AO, CC_TMP0, 0, 5, 2, 5, 2, 0, "tauPQIJ (1)");
+  dpd_buf4_init(&tau2_AO, CC_TMP0, 0, 5, 2, 5, 2, 0, "tauPQIJ (2)");
   dpd_buf4_scm(&tau2_AO, 0.0);
 
   for(h=0; h < nirreps; h++) {
@@ -81,39 +84,15 @@ void BT2_AO(void)
 
   iwl_buf_init(&InBuf, PSIF_SO_TEI, tolerance, 1, 1);
 
-  lblptr = InBuf.labels;
-  valptr = InBuf.values;
   lastbuf = InBuf.lastbuf;
 
-  for(idx=4*InBuf.idx; InBuf.idx < InBuf.inbuf; InBuf.idx++) {
-    p = abs((int) lblptr[idx++]);
-    q = (int) lblptr[idx++];
-    r = (int) lblptr[idx++];
-    s = (int) lblptr[idx++];
+  AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
 
-    value = (double) valptr[InBuf.idx];
-
-    /*    fprintf(outfile, "<%d %d %d %d = %20.10lf\n", p, q, r, s, value); */
-
-    AO_contribute(p, q, r, s, value, &tau1_AO, &tau2_AO, 1);
-
-  }
   while(!lastbuf) {
     iwl_buf_fetch(&InBuf);
     lastbuf = InBuf.lastbuf;
-    for(idx=4*InBuf.idx; InBuf.idx < InBuf.inbuf; InBuf.idx++) {
-      p = abs((int) lblptr[idx++]);
-      q = (int) lblptr[idx++];
-      r = (int) lblptr[idx++];
-      s = (int) lblptr[idx++];
 
-      value = (double) valptr[InBuf.idx];
-
-      /*      fprintf(outfile, "<%d %d %d %d = %20.10lf\n", p, q, r, s, value); */
-
-      AO_contribute(p, q, r, s, value, &tau1_AO, &tau2_AO, 1);
-
-    }
+    AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
   }
 
   iwl_buf_close(&InBuf, 1);
@@ -127,7 +106,12 @@ void BT2_AO(void)
   dpd_buf4_close(&tau2_AO);
 
 
+  /* Transpose tau2_AO for the half-backtransformation */
   dpd_set_default(1);
+  dpd_buf4_init(&tau2_AO, CC_TMP0, 0, 5, 2, 5, 2, 0, "tauPQIJ (2)");
+  dpd_buf4_sort(&tau2_AO, CC_TAMPS, rspq, 2, 5, "tauIJPQ (2)");
+  dpd_buf4_close(&tau2_AO);
+
   dpd_buf4_init(&tau2_AO, CC_TAMPS, 0, 2, 5, 2, 5, 0, "tauIJPQ (2)");
 
   dpd_set_default(0);
@@ -154,9 +138,14 @@ void BT2_AO(void)
   dpd_buf4_close(&tau);
   dpd_buf4_close(&tau1_AO);
 
+  /* Transpose tau1_AO for better memory access patterns */
   dpd_set_default(1);
-  dpd_buf4_init(&tau1_AO, CC_TAMPS, 0, 2, 5, 2, 5, 0, "tauijpq (1)");
-  dpd_buf4_init(&tau2_AO, CC_TAMPS, 0, 2, 5, 2, 5, 0, "tauijpq (2)");
+  dpd_buf4_init(&tau1_AO, CC_TAMPS, 0, 2, 5, 2, 5, 1, "tauijpq (1)");
+  dpd_buf4_sort(&tau1_AO, CC_TMP0, rspq, 5, 2, "taupqij (1)");
+  dpd_buf4_close(&tau1_AO);
+
+  dpd_buf4_init(&tau1_AO, CC_TMP0, 0, 5, 2, 5, 2, 0, "taupqij (1)");
+  dpd_buf4_init(&tau2_AO, CC_TMP0, 0, 5, 2, 5, 2, 0, "taupqij (2)");
   dpd_buf4_scm(&tau2_AO, 0.0);
 
   for(h=0; h < nirreps; h++) {
@@ -167,39 +156,15 @@ void BT2_AO(void)
 
   iwl_buf_init(&InBuf, PSIF_SO_TEI, tolerance, 1, 1);
 
-  lblptr = InBuf.labels;
-  valptr = InBuf.values;
   lastbuf = InBuf.lastbuf;
 
-  for(idx=4*InBuf.idx; InBuf.idx < InBuf.inbuf; InBuf.idx++) {
-    p = abs((int) lblptr[idx++]);
-    q = (int) lblptr[idx++];
-    r = (int) lblptr[idx++];
-    s = (int) lblptr[idx++];
+  AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
 
-    value = (double) valptr[InBuf.idx];
-
-    /*    fprintf(outfile, "<%d %d %d %d = %20.10lf\n", p, q, r, s, value); */
-
-    AO_contribute(p, q, r, s, value, &tau1_AO, &tau2_AO, 1);
-
-  }
   while(!lastbuf) {
     iwl_buf_fetch(&InBuf);
     lastbuf = InBuf.lastbuf;
-    for(idx=4*InBuf.idx; InBuf.idx < InBuf.inbuf; InBuf.idx++) {
-      p = abs((int) lblptr[idx++]);
-      q = (int) lblptr[idx++];
-      r = (int) lblptr[idx++];
-      s = (int) lblptr[idx++];
 
-      value = (double) valptr[InBuf.idx];
-
-      /*      fprintf(outfile, "<%d %d %d %d = %20.10lf\n", p, q, r, s, value); */
-
-      AO_contribute(p, q, r, s, value, &tau1_AO, &tau2_AO, 1);
-
-    }
+    AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
   }
 
   iwl_buf_close(&InBuf, 1);
@@ -213,7 +178,12 @@ void BT2_AO(void)
   dpd_buf4_close(&tau2_AO);
 
 
+  /* Transpose tau2_AO for the half-backtransformation */
   dpd_set_default(1);
+  dpd_buf4_init(&tau2_AO, CC_TMP0, 0, 5, 2, 5, 2, 0, "taupqij (2)");
+  dpd_buf4_sort(&tau2_AO, CC_TAMPS, rspq, 2, 5, "tauijpq (2)");
+  dpd_buf4_close(&tau2_AO);
+
   dpd_buf4_init(&tau2_AO, CC_TAMPS, 0, 2, 5, 2, 5, 0, "tauijpq (2)");
 
   dpd_set_default(0);
@@ -240,9 +210,15 @@ void BT2_AO(void)
   dpd_buf4_close(&tau);
   dpd_buf4_close(&tau1_AO);
 
+
+  /* Transpose tau1_AO for better memory access patterns */
   dpd_set_default(1);
   dpd_buf4_init(&tau1_AO, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjPq (1)");
-  dpd_buf4_init(&tau2_AO, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjPq (2)");
+  dpd_buf4_sort(&tau1_AO, CC_TMP0, rspq, 5, 0, "tauPqIj (1)");
+  dpd_buf4_close(&tau1_AO);
+
+  dpd_buf4_init(&tau1_AO, CC_TMP0, 0, 5, 0, 5, 0, 0, "tauPqIj (1)");
+  dpd_buf4_init(&tau2_AO, CC_TMP0, 0, 5, 0, 5, 0, 0, "tauPqIj (2)");
   dpd_buf4_scm(&tau2_AO, 0.0);
 
   for(h=0; h < nirreps; h++) {
@@ -253,39 +229,15 @@ void BT2_AO(void)
 
   iwl_buf_init(&InBuf, PSIF_SO_TEI, tolerance, 1, 1);
 
-  lblptr = InBuf.labels;
-  valptr = InBuf.values;
   lastbuf = InBuf.lastbuf;
 
-  for(idx=4*InBuf.idx; InBuf.idx < InBuf.inbuf; InBuf.idx++) {
-    p = abs((int) lblptr[idx++]);
-    q = (int) lblptr[idx++];
-    r = (int) lblptr[idx++];
-    s = (int) lblptr[idx++];
+  AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
 
-    value = (double) valptr[InBuf.idx];
-
-    /*    fprintf(outfile, "<%d %d %d %d = %20.10lf\n", p, q, r, s, value); */
-
-    AO_contribute(p, q, r, s, value, &tau1_AO, &tau2_AO, 0);
-
-  }
   while(!lastbuf) {
     iwl_buf_fetch(&InBuf);
     lastbuf = InBuf.lastbuf;
-    for(idx=4*InBuf.idx; InBuf.idx < InBuf.inbuf; InBuf.idx++) {
-      p = abs((int) lblptr[idx++]);
-      q = (int) lblptr[idx++];
-      r = (int) lblptr[idx++];
-      s = (int) lblptr[idx++];
 
-      value = (double) valptr[InBuf.idx];
-
-      /*      fprintf(outfile, "<%d %d %d %d = %20.10lf\n", p, q, r, s, value); */
-
-      AO_contribute(p, q, r, s, value, &tau1_AO, &tau2_AO, 0);
-
-    }
+    AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
   }
 
   iwl_buf_close(&InBuf, 1);
@@ -298,8 +250,12 @@ void BT2_AO(void)
   dpd_buf4_close(&tau1_AO);
   dpd_buf4_close(&tau2_AO);
 
-
+  /* Transpose tau2_AO for the half-backtransformation */
   dpd_set_default(1);
+  dpd_buf4_init(&tau2_AO, CC_TMP0, 0, 5, 0, 5, 0, 0, "tauPqIj (2)");
+  dpd_buf4_sort(&tau2_AO, CC_TAMPS, rspq, 0, 5, "tauIjPq (2)");
+  dpd_buf4_close(&tau2_AO);
+
   dpd_buf4_init(&tau2_AO, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjPq (2)");
 
   dpd_set_default(0);
@@ -317,247 +273,3 @@ void BT2_AO(void)
   /* Reset the default dpd back to 0 --- this stuff gets really ugly */
   dpd_set_default(0);
 }
-
-void AO_contribute(int p, int q, int r, int s, double value, dpdbuf4 
-		   *tau1_AO, dpdbuf4 *tau2_AO, int anti)
-{
-  int Gp, Gq, Gr, Gs, Gpr, Gps, Gqr, Gqs, Grp, Gsp, Grq, Gsq;
-  int pr, ps, qr, qs, rp, rq, sp, sq, pq, rs;
-  int row;
-
-  Gp = tau1_AO->params->rsym[p]; 
-  Gq = tau1_AO->params->rsym[q]; 
-  Gr = tau1_AO->params->rsym[r]; 
-  Gs = tau1_AO->params->rsym[s];
-
-  pq = tau1_AO->params->colidx[p][q];  rs = tau1_AO->params->colidx[r][s];
-
-  if(p!=q && r!=s) {
-
-    /* (pq|rs) */
-    Gpr = Gp ^ Gr;
-    pr = tau1_AO->params->colidx[p][r];
-    qs = tau1_AO->params->colidx[q][s];
-    sq = tau1_AO->params->colidx[s][q];
-
-    for(row=0; row < tau1_AO->params->rowtot[Gpr]; row++) {
-      tau2_AO->matrix[Gpr][row][pr] += value * tau1_AO->matrix[Gpr][row][qs];
-      if(anti) tau2_AO->matrix[Gpr][row][pr] -= value * tau1_AO->matrix[Gpr][row][sq];
-    }
-
-    /* (pq|sr) */
-    Gps = Gp ^ Gs;
-    ps = tau1_AO->params->colidx[p][s];
-    qr = tau1_AO->params->colidx[q][r];
-    rq = tau1_AO->params->colidx[r][q];
-
-    for(row=0; row < tau1_AO->params->rowtot[Gps]; row++) {
-      tau2_AO->matrix[Gps][row][ps] += value * tau1_AO->matrix[Gps][row][qr];
-      if(anti) tau2_AO->matrix[Gps][row][ps] -= value * tau1_AO->matrix[Gps][row][rq];
-    }
-
-    /* (qp|rs) */
-    Gqr = Gq ^ Gr;
-    qr = tau1_AO->params->colidx[q][r];
-    ps = tau1_AO->params->colidx[p][s];
-    sp = tau1_AO->params->colidx[s][p];
-
-    for(row=0; row < tau1_AO->params->rowtot[Gqr]; row++) {
-      tau2_AO->matrix[Gqr][row][qr] += value * tau1_AO->matrix[Gqr][row][ps];
-      if(anti) tau2_AO->matrix[Gqr][row][qr] -= value * tau1_AO->matrix[Gqr][row][sp];
-    }
-
-    /* (qp|sr) */
-    Gqs = Gq ^ Gs;
-    qs = tau1_AO->params->colidx[q][s];
-    pr = tau1_AO->params->colidx[p][r];
-    rp = tau1_AO->params->colidx[r][p];
-
-    for(row=0; row < tau1_AO->params->rowtot[Gqs]; row++) {
-      tau2_AO->matrix[Gqs][row][qs] += value * tau1_AO->matrix[Gqs][row][pr];
-      if(anti) tau2_AO->matrix[Gqs][row][qs] -= value * tau1_AO->matrix[Gqs][row][rp];
-    }
-
-    if(pq != rs) {
-      /* (rs|pq) */
-      Grp = Gp ^ Gr;
-      rp = tau1_AO->params->colidx[r][p];
-      sq = tau1_AO->params->colidx[s][q];
-      qs = tau1_AO->params->colidx[q][s];
-
-      for(row=0; row < tau1_AO->params->rowtot[Grp]; row++) {
-	tau2_AO->matrix[Grp][row][rp] += value * tau1_AO->matrix[Grp][row][sq];
-	if(anti) tau2_AO->matrix[Grp][row][rp] -= value * tau1_AO->matrix[Grp][row][qs];
-      }
-
-      /* (sr|pq) */
-      Gsp = Gp ^ Gs;
-      sp = tau1_AO->params->colidx[s][p];
-      qr = tau1_AO->params->colidx[q][r];
-      rq = tau1_AO->params->colidx[r][q];
-
-      for(row=0; row < tau1_AO->params->rowtot[Gsp]; row++) {
-	tau2_AO->matrix[Gsp][row][sp] += value * tau1_AO->matrix[Gsp][row][rq];
-	if(anti) tau2_AO->matrix[Gsp][row][sp] -= value * tau1_AO->matrix[Gsp][row][qr];
-      }
-
-      /* (rs|qp) */
-      Grq = Gq ^ Gr;
-      rq = tau1_AO->params->colidx[r][q];
-      ps = tau1_AO->params->colidx[p][s];
-      sp = tau1_AO->params->colidx[s][p];
-
-      for(row=0; row < tau1_AO->params->rowtot[Grq]; row++) {
-	tau2_AO->matrix[Grq][row][rq] += value * tau1_AO->matrix[Grq][row][sp];
-	if(anti) tau2_AO->matrix[Grq][row][rq] -= value * tau1_AO->matrix[Grq][row][ps];
-      }
-
-      /* (sr|qp) */
-      Gsq = Gq ^ Gs;
-      sq = tau1_AO->params->colidx[s][q];
-      pr = tau1_AO->params->colidx[p][r];
-      rp = tau1_AO->params->colidx[r][p];
-
-      for(row=0; row < tau1_AO->params->rowtot[Gsq]; row++) {
-	tau2_AO->matrix[Gsq][row][sq] += value * tau1_AO->matrix[Gsq][row][rp];
-	if(anti) tau2_AO->matrix[Gsq][row][sq] -= value * tau1_AO->matrix[Gsq][row][pr];
-      }
-    }
-
-  }
-  else if(p!=q && r==s) {
-
-    /* (pq|rs) */
-    Gpr = Gp ^ Gr;
-    pr = tau1_AO->params->colidx[p][r];
-    qs = tau1_AO->params->colidx[q][s];
-    sq = tau1_AO->params->colidx[s][q];
-
-    for(row=0; row < tau1_AO->params->rowtot[Gpr]; row++) {
-      tau2_AO->matrix[Gpr][row][pr] += value * tau1_AO->matrix[Gpr][row][qs];
-      if(anti) tau2_AO->matrix[Gpr][row][pr] -= value * tau1_AO->matrix[Gpr][row][sq];
-    }
-
-    /* (qp|rs) */
-    Gqr = Gq ^ Gr;
-    qr = tau1_AO->params->colidx[q][r];
-    ps = tau1_AO->params->colidx[p][s];
-    sp = tau1_AO->params->colidx[s][p];
-
-    for(row=0; row < tau1_AO->params->rowtot[Gqr]; row++) {
-      tau2_AO->matrix[Gqr][row][qr] += value * tau1_AO->matrix[Gqr][row][ps];
-      if(anti) tau2_AO->matrix[Gqr][row][qr] -= value * tau1_AO->matrix[Gqr][row][sp];
-    }
-
-    if(pq != rs) {
-
-      /* (rs|pq) */
-      Grp = Gp ^ Gr;
-      rp = tau1_AO->params->colidx[r][p];
-      sq = tau1_AO->params->colidx[s][q];
-      qs = tau1_AO->params->colidx[q][s];
-
-      for(row=0; row < tau1_AO->params->rowtot[Grp]; row++) {
-	tau2_AO->matrix[Grp][row][rp] += value * tau1_AO->matrix[Grp][row][sq];
-	if(anti) tau2_AO->matrix[Grp][row][rp] -= value * tau1_AO->matrix[Grp][row][qs];
-      }
-
-      /* (rs|qp) */
-      Grq = Gq ^ Gr;
-      rq = tau1_AO->params->colidx[r][q];
-      ps = tau1_AO->params->colidx[p][s];
-      sp = tau1_AO->params->colidx[s][p];
-
-      for(row=0; row < tau1_AO->params->rowtot[Grq]; row++) {
-	tau2_AO->matrix[Grq][row][rq] += value * tau1_AO->matrix[Grq][row][sp];
-	if(anti) tau2_AO->matrix[Grq][row][rq] -= value * tau1_AO->matrix[Grq][row][ps];
-      }
-    }
-
-  }
-
-  else if(p==q && r!=s) {
-
-    /* (pq|rs) */
-    Gpr = Gp ^ Gr;
-    pr = tau1_AO->params->colidx[p][r];
-    qs = tau1_AO->params->colidx[q][s];
-    sq = tau1_AO->params->colidx[s][q];
-
-    for(row=0; row < tau1_AO->params->rowtot[Gpr]; row++) {
-      tau2_AO->matrix[Gpr][row][pr] += value * tau1_AO->matrix[Gpr][row][qs];
-      if(anti) tau2_AO->matrix[Gpr][row][pr] -= value * tau1_AO->matrix[Gpr][row][sq];
-    }
-
-    /* (pq|sr) */
-    Gps = Gp ^ Gs;
-    ps = tau1_AO->params->colidx[p][s];
-    qr = tau1_AO->params->colidx[q][r];
-    rq = tau1_AO->params->colidx[r][q];
-
-    for(row=0; row < tau1_AO->params->rowtot[Gps]; row++) {
-      tau2_AO->matrix[Gps][row][ps] += value * tau1_AO->matrix[Gps][row][qr];
-      if(anti) tau2_AO->matrix[Gps][row][ps] -= value * tau1_AO->matrix[Gps][row][rq];
-    }
-
-    if(pq != rs) {
-
-      /* (rs|pq) */
-      Grp = Gp ^ Gr;
-      rp = tau1_AO->params->colidx[r][p];
-      sq = tau1_AO->params->colidx[s][q];
-      qs = tau1_AO->params->colidx[q][s];
-
-      for(row=0; row < tau1_AO->params->rowtot[Grp]; row++) {
-	tau2_AO->matrix[Grp][row][rp] += value * tau1_AO->matrix[Grp][row][sq];
-	if(anti) tau2_AO->matrix[Grp][row][rp] -= value * tau1_AO->matrix[Grp][row][qs];
-      }
-
-      /* (sr|pq) */
-      Gsp = Gp ^ Gs;
-      sp = tau1_AO->params->colidx[s][p];
-      qr = tau1_AO->params->colidx[q][r];
-      rq = tau1_AO->params->colidx[r][q];
-
-      for(row=0; row < tau1_AO->params->rowtot[Gsp]; row++) {
-	tau2_AO->matrix[Gsp][row][sp] += value * tau1_AO->matrix[Gsp][row][rq];
-	if(anti) tau2_AO->matrix[Gsp][row][sp] -= value * tau1_AO->matrix[Gsp][row][qr];
-      }
-    }
-
-  }
-
-  else if(p==q && r==s) {
-
-    /* (pq|rs) */
-    Gpr = Gp ^ Gr;
-    pr = tau1_AO->params->colidx[p][r];
-    qs = tau1_AO->params->colidx[q][s];
-    sq = tau1_AO->params->colidx[s][q];
-
-    for(row=0; row < tau1_AO->params->rowtot[Gpr]; row++) {
-      tau2_AO->matrix[Gpr][row][pr] += value * tau1_AO->matrix[Gpr][row][qs];
-      if(anti) tau2_AO->matrix[Gpr][row][pr] -= value * tau1_AO->matrix[Gpr][row][sq];
-    }
-
-    if(pq != rs) {
-
-      /* (rs|pq) */
-      Grp = Gp ^ Gr;
-      rp = tau1_AO->params->colidx[r][p];
-      sq = tau1_AO->params->colidx[s][q];
-      qs = tau1_AO->params->colidx[q][s];
-
-      for(row=0; row < tau1_AO->params->rowtot[Grp]; row++) {
-	tau2_AO->matrix[Grp][row][rp] += value * tau1_AO->matrix[Grp][row][sq];
-	if(anti) tau2_AO->matrix[Grp][row][rp] -= value * tau1_AO->matrix[Grp][row][qs];
-      }
-
-    }
-
-  }
-  return;
-}
-
-
-
