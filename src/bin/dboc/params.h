@@ -5,7 +5,7 @@
 namespace PrintLevels {
   static const int print_intro = 1;
   static const int print_params = 1;
-    static const int print_contrib = 2;
+  static const int print_contrib = 2;
 };
 
 typedef struct {
@@ -17,6 +17,8 @@ typedef struct {
   RefType reftype;
   double delta;
   int disp_per_coord;
+  int nisotope;
+  char** isotopes;
 
   int print_lvl;
 

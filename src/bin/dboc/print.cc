@@ -39,6 +39,14 @@ void print_params()
     else if (Params.reftype == Params_t::uhf)
       fprintf(outfile,"    Wave function               = UHF SCF\n");
     fprintf(outfile,"\n");
+    if (Params.isotopes) {
+      fprintf(outfile,"    Isotope labels:\n");
+      for(int atom=0; atom<Params.nisotope; atom++)
+	fprintf(outfile,"      %s\n",Params.isotopes[atom]);
+      fprintf(outfile,"\n");
+    }
+    else
+      fprintf(outfile,"    Using most abundant isotopes\n\n");
   }
 
   fflush(outfile);

@@ -99,6 +99,22 @@ void parsing()
   Params.print_lvl = 1;
   errcod = ip_data("PRINT","%d",&Params.print_lvl,0);
 
+  int isotopes_given = ip_exist(":DBOC:ISOTOPES",0);
+  if (isotopes_given) {
+    Params.nisotope = 0;
+    ip_count(":DBOC:ISOTOPES",&Params.nisotope,0);
+    if (Params.nisotope == 0)
+      done("Keyword ISOTOPES should be a vector of num_atoms elements");
+    Params.isotopes = new char*[Params.nisotope];
+    for(int atom=0; atom<Params.nisotope; atom++) {
+      ip_string(":DBOC:ISOTOPES",&(Params.isotopes[atom]),1,atom);
+    }
+  }
+  else {
+    Params.nisotope = 0;
+    Params.isotopes = NULL;
+  }
+
   Params.disp_per_coord = 2;
 }
 
@@ -158,6 +174,40 @@ void read_chkpt()
 
 double eval_dboc()
 {
+  double* atomic_mass;
+
+  //
+  // Convert isotope labels into atomic masses (in a.m.u.)
+  //
+  // Check number of atoms vs. number of isotope labels given in input
+  if (Params.isotopes) {
+    if (Molecule.natom != Params.nisotope)
+      done("Number of atoms in molecule does not match the number of isotope labels in input.dat");
+    else {
+      atomic_mass = new double[Molecule.natom];
+      for(int atom=0; atom<Molecule.natom; atom++) {
+	char* isotope_label = Params.isotopes[atom];
+	int label;
+	for(label=0; label<=LAST_MASS_INDEX; label++) {
+	  if (!strcmp(mass_labels[label],isotope_label))
+	    break;
+	}
+	atomic_mass[atom] = atomic_masses[label];
+      }
+    }
+  }
+  else {
+    atomic_mass = new double[Molecule.natom];
+    for(int atom=0; atom<Molecule.natom; atom++)
+      atomic_mass[atom] = an2masses[(int)Molecule.zvals[atom]];
+  }
+  
+  //
+  // Convert atomic masses to a.u.
+  //
+  for(int atom=0; atom<Molecule.natom; atom++)
+    atomic_mass[atom] /= _au2amu;
+
   const int ndisp = Params.disp_per_coord * Molecule.natom * 3;
   double E_dboc = 0.0;
 
@@ -195,10 +245,14 @@ double eval_dboc()
     delete[] inputcmd;
 
     double S = eval_derwfn_overlap();
-    double del2 = (1.0-S)/(2.0*Params.delta*Params.delta);
-    double E_i = del2*_au2amu/(2.0*an2masses[(int)Molecule.zvals[atom]]);
+    double del2 = (S-1.0)/(2.0*Params.delta*Params.delta);
+    int Z = (int)Molecule.zvals[atom];
+    // mass of nucleus = atomic mass - mass of electrons
+    double nuclear_mass = atomic_mass[atom]  - Z;
+    double E_i = -del2/(2.0*nuclear_mass);
     if (Params.print_lvl > PrintLevels::print_intro) {
       fprintf(outfile,"  +- wave function overlap = %25.15lf\n",S);
+      fprintf(outfile,"  <d2/dx2>                 = %25.15lf\n",del2);
       fprintf(outfile,"  DBOC contribution from cartesian degree of freedom %d = %20.10lf a.u.\n\n",
 	      (disp-1)/2+1,E_i);
       fflush(outfile);
