@@ -85,6 +85,20 @@ void Wmnie_build(void) {
     /* W(mN,iE) --> W(mN,Ei) */
     dpd_buf4_sort(&WmNiE, CC_HBAR, pqsr, 0, 11, "WmNiE");
     dpd_buf4_close(&WmNiE);
+
+    /* also put "normal" sorted versions in CC_HBAR */
+    dpd_buf4_init(&WMNIE, CC_HBAR, 0, 2, 11, 2, 11, 0, "WMNIE");
+    dpd_buf4_sort(&WMNIE, CC_HBAR, pqsr, 2, 10, "WMNIE (M>N,IE)");
+    dpd_buf4_close(&WMNIE);
+    dpd_buf4_init(&Wmnie, CC_HBAR, 0, 2, 11, 2, 11, 0, "Wmnie");
+    dpd_buf4_sort(&Wmnie, CC_HBAR, pqsr, 2, 10, "Wmnie (m>n,ie)");
+    dpd_buf4_close(&Wmnie);
+    dpd_buf4_init(&WMnIe, CC_HBAR, 0, 0, 11, 0, 11, 0, "WMnIe");
+    dpd_buf4_sort(&WMnIe, CC_HBAR, pqsr, 0, 10, "WMnIe (Mn,Ie)");
+    dpd_buf4_close(&WMnIe);
+    dpd_buf4_init(&WmNiE, CC_HBAR, 0, 0, 11, 0, 11, 0, "WmNiE");
+    dpd_buf4_sort(&WmNiE, CC_HBAR, pqsr, 0, 10, "WmNiE (mN,iE)");
+    dpd_buf4_close(&WmNiE);
   }
   else if(params.ref == 2) { /** UHF **/
 
