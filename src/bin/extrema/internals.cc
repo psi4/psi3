@@ -5,6 +5,8 @@
     that which is common to both zmatrix and delocalized coodinate systems
   ###########################################################################*/
 
+#include <string.h>
+
 #define EXTERN
 #include "extrema.h"
 
@@ -343,13 +345,20 @@ void internals :: optimize_internals(internals *icrd) {
     (*icrd).grad_test();
     (*icrd).print_internals();
     (*icrd).compute_B();
-    if(print_lvl > 1)
+    if(print_lvl > RIDICULOUS_PRINT)
       (*icrd).print_B();
     (*icrd).grad_trans();
     switch(iteration) {
         case 1: (*icrd).initial_H(); break;
-	default: (*icrd).update_bfgs(); break; 
+	default: 
+	    if(!strcmp(update,"BFGS"))
+		(*icrd).update_bfgs();
+	    else if(!strcmp(update,"MS"))
+		(*icrd).update_ms();
+	    break; 
 }
+    (*icrd).diagonalize_H();
+    (*icrd).print_H();
     (*icrd).opt_step();
     (*icrd).back_transform();
     (*icrd).print_carts(1.0);

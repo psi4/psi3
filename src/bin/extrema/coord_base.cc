@@ -39,6 +39,8 @@ coord_base :: coord_base() {
     grads = init_array(num_coords);
     c_grads = init_array(3*num_entries);
     H = init_matrix(num_coords,num_coords);
+    H_evec = init_matrix(num_coords,num_coords);
+    H_eval = init_array(num_coords);
     H_old = init_matrix(num_coords,num_coords);
     u = init_matrix(3*num_entries,3*num_entries);
     coords_old = init_array(num_coords);
@@ -136,6 +138,12 @@ void coord_base :: print_grads() {
 	break;
 	}
 	return;
+}
+
+void coord_base :: print_H() {
+    fprintf(outfile,"\nH matrix:\n");
+    print_mat(H,num_coords,num_coords,outfile);
+    return;
 }
  
 void coord_base :: print_u() {
@@ -318,7 +326,23 @@ double* coord_base :: compute_s() {
     }
     return s;
 }
-	
+
+
+void coord_base :: diagonalize_H() {
+ 
+    int i;
+    double **temp;
+    temp = symm_matrix_invert(H,num_coords,0,0);
+
+    sq_rsp(num_coords,num_coords,temp,H_eval,1,H_evec,1.0e-14);
+    if(print_lvl > DEFAULT_PRINT) {
+	fprintf(outfile,"\n  Hessian Eigenvalues:\n");
+	for(i=0;i<num_coords;++i)
+	    fprintf(outfile,"\n   Coordinate %i: %lf",i+1,H_eval[i]);
+    }
+
+    return;
+}
 
 void coord_base :: update_bfgs() {
 
@@ -400,6 +424,57 @@ void coord_base :: update_bfgs() {
        free_matrix(MAT1, num_coords);
        free_matrix(MAT2, num_coords);
        free_matrix(MAT3, num_coords);
+       
+       return;
+    }
+
+void coord_base :: update_ms() {
+
+       int i, j;
+       double div, *d_coord, *d_grad, *temp_arr, **temp_mat;
+
+       /*allocate memory*/
+       d_coord = init_array(num_coords);
+       d_grad = init_array(num_coords);
+       temp_arr = init_array(num_coords);
+       temp_mat = init_matrix(num_coords,num_coords);
+       
+       for(i=0;i<num_coords;++i) {
+	   d_coord[i] = coords[i] - coords_old[i];
+	   d_grad[i] = grads[i] - grads_old[i];
+       }
+       
+       for(i=0;i<num_coords;++i) {
+	   for(j=0;j<num_coords;++j) {
+	       temp_arr[i] += H_old[i][j] * d_grad[j];
+	   }
+       }
+
+       for(i=0;i<num_coords;++i) {
+	   temp_arr[i] = 0.0;
+	   for(j=0;j<num_coords;++j)
+	       temp_arr[i] += H_old[i][j] * d_grad[j]; 
+       }
+	   for(i=0;i<num_coords;++i)
+	   temp_arr[i] = d_coord[i] - temp_arr[i];
+
+       for(i=0;i<num_coords;++i)
+	   for(j=0;j<num_coords;++j)
+	       temp_mat[i][j] = temp_arr[i]*temp_arr[j];
+
+       div = 0.0;
+       for(i=0;i<num_coords;++i)
+	   div += temp_arr[i] * d_grad[i];
+       
+       for(i=0;i<num_coords;++i)
+	   for(j=0;j<num_coords;++j)
+	       H[i][j] = H_old[i][j] + temp_mat[i][j]/div;
+	   
+       /*free up memory*/
+       free(d_coord);
+       free(d_grad);
+       free(temp_arr);
+       free_matrix(temp_mat,num_coords);
        
        return;
     }

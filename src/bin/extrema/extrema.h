@@ -35,6 +35,7 @@ EXTERN int grad_max;
 EXTERN int print_lvl;
 EXTERN int dummy;
 EXTERN int bt_loop;
+EXTERN char *update;
 
 /*this needs to be in C*/
 extern "C" {

@@ -52,6 +52,8 @@ void parsing() {
   errcod = ip_data("PRINT","%d",&print_lvl,0);
   grad_max = 6;
   errcod = ip_data("GRAD_MAX","%d",&grad_max,0);
+  update = "BFGS";
+  errcod = ip_string("UPDATE",&update,0);
   
   if(coord_type==2) {
       bond_lim = 0.1;

@@ -1,0 +1,3 @@
+#define RIDICULOUS_PRINT 3
+#define DEFAULT_PRINT 1
+#define BT_CONV 1.0e-10
