@@ -77,7 +77,7 @@ char *determine_grid(void){
 	grid_str = (char *)malloc(sizeof(char)*(i+1));
 	sprintf(grid_str,"%s %s %s",Euler,r,ang);
 	
-	free(Euler),free(r),free(ang);
+	free(r);free(ang);
     }
     else{
 	fprintf(outfile,"\nProblem with Grid specification: Wrong number of elements for keyword Grid");
