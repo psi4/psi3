@@ -4,9 +4,12 @@
 */
 
 /* $Log$
- * Revision 1.4  2002/06/01 18:23:54  sherrill
- * Upgrade doxygen documentation
+ * Revision 1.5  2002/07/09 15:48:15  sherrill
+ * Make it clear rsp is for symmetric matrices
  *
+/* Revision 1.4  2002/06/01 18:23:54  sherrill
+/* Upgrade doxygen documentation
+/*
 /* Revision 1.3  2002/04/19 21:48:06  sherrill
 /* Remove some unused functions and do doxygen markup of libciomr.
 /*
@@ -40,7 +43,7 @@ extern void eigsort(double *, double **, int);
 /* matrix diagonalization routines */
 
 /*!
-** sq_rsp: diagomalize a square matrix ('array').
+** sq_rsp: diagomalize a symmetric square matrix ('array').
 **
 **   \param nm     = rows of matrix
 **   \param n      = columns of matrix

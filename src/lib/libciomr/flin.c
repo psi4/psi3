@@ -18,6 +18,7 @@ extern void lubksb(double **, int, int *, double *);
 ** \param in  = dimension of a(in*in)
 ** \param im  = number of b vectors
 ** \param det = pointer to hold determinant of matrix a
+**
 ** \ingroup (CIOMR)
 */
 
