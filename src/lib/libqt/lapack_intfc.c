@@ -1,3 +1,11 @@
+/*
+** Interface to LAPACK routines
+**
+** Rollin A. King and T. Daniel Crawford
+** August 2001 - January 2002
+**
+** Written to work just like the BLAS C interface in blas_intfc.c
+*/
 
 #if FCLINK==1
 #define F_DGEEV dgeev_
