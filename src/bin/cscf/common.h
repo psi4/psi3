@@ -1,7 +1,10 @@
 /* $Id$ */
 /* $Log$
- * Revision 1.1  2000/02/04 22:52:29  evaleev
- * Initial revision
+ * Revision 1.2  2000/03/28 15:45:31  evaleev
+ * Increased the MAX_BASIS and MAXIOFF to 4096
+ *
+ * Revision 1.1.1.1  2000/02/04  22:52:29  evaleev
+ * Started PSI 3 repository
  *
 /* Revision 1.10  1999/11/11 21:15:13  localpsi
 /* Altered cscf to do some guess at the multiplicity from SOCC. -STB (11/11/99)
@@ -66,8 +69,8 @@
 
 #include <libciomr.h>
 
-#define MAX_BASIS 1024
-#define MAXIOFF 1024
+#define MAX_BASIS 4096
+#define MAXIOFF 4096
 #define SEVAL_CUTOFF 1.0E-6
 
 #define SMAT 0
