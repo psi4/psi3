@@ -105,6 +105,9 @@ void chkpt_wt_ua2a(int *);
 int *chkpt_rd_symoper(void);
 void chkpt_wt_symoper(int *);
 
+char *chkpt_rd_sym_label(void);
+void chkpt_wt_sym_label(char *sym_label);
+
 struct z_entry *chkpt_rd_zmat(void);
 void chkpt_wt_zmat(struct z_entry *);
 
