@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <libdpd/dpd.h>
 #include <libqt/qt.h>
 #define EXTERN
