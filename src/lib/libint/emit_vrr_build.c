@@ -97,15 +97,13 @@ int emit_vrr_build(int old_am, int new_am, int max_class_size)
 	  fprintf(vrr_header," tmp = _build_%c0%c0_%d(Data,tmp,i0,i1,i2,i3,i4); \\\n",am_letter[la],am_letter[lc],f);
 	fprintf(vrr_header,"}\n");
 	for(f=0;f<num_subfunctions;f++)
-	  fprintf(vrr_header, "double *_build_%c0%c0_%d(prim_data *Data,
-double *, const double *, const double *, const double *, const double *, const double *);\n",
+	  fprintf(vrr_header, "double *_build_%c0%c0_%d(prim_data *Data, double *, const double *, const double *, const double *, const double *, const double *);\n",
 		  am_letter[la],am_letter[lc],f);
       }
       else {
 	split = 0;
 	fprintf(vrr_header," _build_%c0%c0(Data,vp,i0,i1,i2,i3,i4);}\n",am_letter[la],am_letter[lc]);
-	fprintf(vrr_header,"void _build_%c0%c0(prim_data *, double *, const double *,
-const double *, const double *, const double *, const double *);\n",am_letter[la],am_letter[lc]);
+	fprintf(vrr_header,"void _build_%c0%c0(prim_data *, double *, const double *, const double *, const double *, const double *, const double *);\n",am_letter[la],am_letter[lc]);
       }
 
       if(a==0) foo = 4;
@@ -136,13 +134,11 @@ const double *, const double *, const double *, const double *);\n",am_letter[la
       if (split == 1) {
 	curr_subfunction = 0;
 	curr_count = 0;
-	fprintf(code,"double *%s(prim_data *Data, double *vp, const double *I0,
-const double *I1, const double *I2, const double *I3, const double *I4)\n{\n",
+	fprintf(code,"double *%s(prim_data *Data, double *vp, const double *I0, const double *I1, const double *I2, const double *I3, const double *I4)\n{\n",
 		subfunction_name[0]);
       }
       else
-	fprintf(code,"void _%s(prim_data *Data, double *vp, const double *I0,
-const double *I1, const double *I2, const double *I3, const double *I4)\n{\n",function_name);
+	fprintf(code,"void _%s(prim_data *Data, double *vp, const double *I0, const double *I1, const double *I2, const double *I3, const double *I4)\n{\n",function_name);
       declare_localv(a,k1max,k2max,k3max,code);
       define_localv(a,foo,k1max,k2max,k3max,code);
       fprintf(code,"\n");
@@ -199,8 +195,7 @@ const double *I1, const double *I2, const double *I3, const double *I4)\n{\n",fu
 		curr_count = 0;
 		curr_subfunction++;
 		fprintf(code,"return vp;\n}\n\n");
-		fprintf(code,"double *%s(prim_data *Data, double *vp, const double *I0,
-const double *I1, const double *I2, const double *I3, const double *I4)\n{\n",
+		fprintf(code,"double *%s(prim_data *Data, double *vp, const double *I0, const double *I1, const double *I2, const double *I3, const double *I4)\n{\n",
 			subfunction_name[curr_subfunction]);
 		declare_localv(a,k1max,k2max,k3max,code);
 		define_localv(a,foo,k1max,k2max,k3max,code);
