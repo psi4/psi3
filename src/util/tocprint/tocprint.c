@@ -5,16 +5,17 @@
 #include <libciomr/libciomr.h>
 
 /* Function prototypes */
-void init_io(void);
+void init_io(int argc, char *argv[]);
 void exit_io(void);
 int cc2unit(char *);
 
 FILE *infile, *outfile;
+char *psi_file_prefix;
 
 int main(int argc, char *argv[])
 {
   int unit=0, i=0;
-  init_io();
+  init_io(argc, argv);
 
   while(--argc > 0) {
        i++;
@@ -38,21 +39,16 @@ int main(int argc, char *argv[])
   exit(0);
 }
 
-void init_io(void)
+void init_io(int argc, char *argv[])
 {
-  char *gprgid();
+  extern char *gprgid();
   char *progid;
 
   progid = (char *) malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s",gprgid());
 
-  ffile(&infile,"input.dat",2);
-  ffile(&outfile,"output.dat",1);
-  ip_set_uppercase(1);
-  ip_initialize(infile,outfile);
-  ip_cwk_add(":DEFAULT");
+  psi_start(argc-1, argv+1, 0);
   ip_cwk_add(progid);
-
   free(progid);
 
   psio_init();
