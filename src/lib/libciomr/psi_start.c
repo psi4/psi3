@@ -129,9 +129,9 @@ int psi_start(int argc, char *argv[], int overwrite_output)
     return(PSI_RETURN_FAILURE);
   }
   if (overwrite_output)
-    outfile = fopen(ofname, "w+");
+    outfile = fopen(ofname, "w");
   else
-    outfile = fopen(ofname, "a+");
+    outfile = fopen(ofname, "a");
   if (outfile == NULL) {
     fprintf(stderr, "Error: could not open output file %s\n",ofname);
     return(PSI_RETURN_FAILURE);
