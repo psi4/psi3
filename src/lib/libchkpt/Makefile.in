@@ -73,7 +73,8 @@ ecorr.c \
 eref.c \
 efzc.c \
 disp.c \
-cartrep.c
+cartrep.c \
+grad.c
 
 DEPENDINCLUDE = psio.h chkpt.h
 

@@ -36,6 +36,9 @@ void chkpt_wt_escf(double);
 double chkpt_rd_etot(void);
 void chkpt_wt_etot(double);
 
+double* chkpt_rd_grad(void);
+void chkpt_wt_grad(double*);
+
 int chkpt_rd_phase_check(void);
 void chkpt_wt_phase_check(int);
 
