@@ -1,8 +1,12 @@
 /* $Log$
- * Revision 1.6  2000/07/10 18:03:33  sbrown
- * Enabling cscf to send over just the occupied SCF eigenvector for DFT
- * calculations.  Only done for the RHF case.
+ * Revision 1.7  2000/08/21 00:28:58  sbrown
+ * Included dft_inputs.c and now cscf has information about both the dft
+ * functionals and grids.
  *
+/* Revision 1.6  2000/07/10 18:03:33  sbrown
+/* Enabling cscf to send over just the occupied SCF eigenvector for DFT
+/* calculations.  Only done for the RHF case.
+/*
 /* Revision 1.5  2000/06/27 21:08:10  evaleev
 /* Fixed a minor string manipulation problem in scf_input.c
 /*
@@ -95,7 +99,7 @@ void scf_input(ipvalue)
    double elast;     
    double **scr_mat;
    char *alabel,*bool="YES",*optyp,*wfn,*dertype;
-   char *exch_str,*corr_str;
+   char *grid_str;
    char cjunk[80];
    int norder,*iorder,reordr;
    int nc,no,nh,nn,num_mo;
@@ -204,44 +208,8 @@ void scf_input(ipvalue)
    errcod = ip_data("CONVERGENCE","%d",&iconv,0);
 
    if (ksdft){
-       depth = 0;
-       errcod = ip_count("FUNCTIONAL",&depth,0);
-       if(depth == 0){
-	   errcod = ip_string("FUNCTIONAL",&functional,0);
-	   if(errcod != IPE_OK){
-	       fprintf(outfile," Must specify a functional when using ks-dft\n");
-	       exit(1);
-	   }
-       }
-       else if(depth == 2){
-	   errcod = ip_string("FUNCTIONAL",&exch_str,1,0);
-	   if(errcod != IPE_OK){
-	       fprintf(outfile," Exchange functional specification is invalid or missing.\n");
-	       exit(1);
-	   }
-	   errcod = ip_string("FUNCTIONAL",&corr_str,1,1);
-	   if(errcod != IPE_OK){
-	       fprintf(outfile," Correlation functional specification is invalid or missing.\n");
-	       exit(1);
-	   }
-	   if (!strcmp(exch_str,"NONE"))
-	     exch_str[0] = '\0';
-	   if (!strcmp(corr_str,"NONE"))
-	     corr_str[0] = '\0';
-
-	   i = strlen(exch_str) + strlen(corr_str);
-	   if (i == 0)
-	     functional = strdup("NONE");
-	   else {
-	     functional = (char *) malloc(sizeof(char)* (i + 1));
-	     sprintf(functional,"%s%s",exch_str,corr_str);
-	   }
-	   free(exch_str); free(corr_str);
-       }
-       else{
-	   fprintf(outfile,"\nwrong number of records in FUNCTIONAL keyword");
-	   exit(1);
-       }
+       functional = (char *)determine_functional();
+       grid_str = (char *)determine_grid();
    }
    
    if(ipvalue) ip_print_value(stdout,ipvalue);
@@ -249,6 +217,7 @@ void scf_input(ipvalue)
    fprintf(outfile,"  reference    = %s\n",reference);
    if (ksdft) {
    fprintf(outfile,"  functional   = %s\n",functional);
+   fprintf(outfile,"  DFT grid     = %s\n",grid_str);
    }
    fprintf(outfile,"  multiplicity = %d\n",multp);
    fprintf(outfile,"  charge       = %d\n",charge);
