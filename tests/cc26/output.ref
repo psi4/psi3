@@ -1,0 +1,1086 @@
+******************************************************************************
+tstart called on boromir.chem
+Mon Apr 26 12:18:20 2004
+
+                                --------------
+                                  WELCOME TO
+                                    PSI  3
+                                --------------
+
+  LABEL       =	EOM CCSD gradient
+  SHOWNORM    =	0
+  PUREAM      =	0
+  PRINT_LVL   =	1
+
+  Parsed basis sets from /usr/local/psi/share/pbasis.dat
+
+  -Geometry before Center-of-Mass shift (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+        HYDROGEN     -0.107055195862     0.000000000000    -1.832806614600
+          OXYGEN     -0.107055195862     0.000000000000     0.094714436481
+        HYDROGEN      1.806098405596     0.000000000000     0.329620161376
+
+
+  -Rotational constants (cm-1) :
+    A =   20.61565  B =   14.33074  C =    8.45402
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+        HYDROGEN     -1.443627918148     1.134274838595     0.000000000000
+          OXYGEN     -0.000000000000    -0.142939253210     0.000000000000
+        HYDROGEN      1.443627918148     1.134274838595     0.000000000000
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S (  7816.54000000     0.00203100)
+           (  1175.82000000     0.01543600)
+           (   273.18800000     0.07377100)
+           (    81.16960000     0.24760600)
+           (    27.18360000     0.61183200)
+           (     3.41360000     0.24120500) )
+        (S (     9.53220000     1.00000000) )
+        (S (     0.93980000     1.00000000) )
+        (S (     0.28460000     1.00000000) )
+        (P (    35.18320000     0.01958000)
+           (     7.90400000     0.12418900)
+           (     2.30510000     0.39472700)
+           (     0.71710000     0.62737500) )
+        (P (     0.21370000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    19.24060000     0.03282800)
+           (     2.89920000     0.23120800)
+           (     0.65340000     0.81723800) )
+        (S (     0.17760000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 10
+    Number of primitives   = 18
+    Number of AO           = 14
+    Number of SO           = 14
+
+    Irrep    Number of SO
+    -----    ------------
+      1            8
+      2            0
+      3            2
+      4            4
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000    -0.000000000000    -0.142939253210
+        HYDROGEN      0.000000000000     1.443627918148     1.134274838595
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+        HYDROGEN      0.000000000000    -1.443627918148     1.134274838595
+          OXYGEN      0.000000000000    -0.000000000000    -0.142939253210
+        HYDROGEN      0.000000000000     1.443627918148     1.134274838595
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+        HYDROGEN      0.000000000000    -0.763935050305     0.600232438697
+          OXYGEN      0.000000000000    -0.000000000000    -0.075640200788
+        HYDROGEN      0.000000000000     0.763935050305     0.600232438697
+
+
+  -Geometry in the reference coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+        HYDROGEN      0.000000000000    -1.443627918148     1.134274838595
+          OXYGEN      0.000000000000    -0.000000000000    -0.142939253210
+        HYDROGEN      0.000000000000     1.443627918148     1.134274838595
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       8.647166888152
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   1.0200003   0.0000000
+    3   1.5278701   1.0200003   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+tstop called on boromir.chem
+Mon Apr 26 12:18:20 2004
+
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on boromir.chem
+Mon Apr 26 12:18:20 2004
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = EOM CCSD gradient
+    Number of atoms             = 3
+    Number of atomic orbitals   = 14
+    Number of symmetry orbitals = 14
+    Maximum AM in the basis     = 1
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 1709 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on boromir.chem
+Mon Apr 26 12:18:20 2004
+
+user time   =       0.26 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on boromir.chem
+Mon Apr 26 12:18:20 2004
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
+
+  label        = EOM CCSD gradient
+  wfn          = EOM_CCSD
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        8.6471668881519
+  first run, so defaulting to core-hamiltonian guess
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 19680 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 6.530461e-02
+
+
+  Using DOCC and SOCC to 
+  determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 1073 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -70.4651094230    7.911228e+01    0.000000e+00    0.000000e+00
+    2       -72.1792770760    1.714168e+00    2.100355e-01    1.682491e+00
+    3       -75.6144403415    3.435163e+00    1.693444e-01    8.880737e-01
+    4       -75.9619933976    3.475531e-01    2.452346e-02    3.068531e-01
+    5       -75.9976781388    3.568474e-02    7.173479e-03    1.232044e-01
+    6       -75.9981934445    5.153057e-04    1.264223e-03    1.448745e-02
+    7       -75.9982365401    4.309567e-05    3.637666e-04    2.433483e-03
+    8       -75.9982373353    7.952247e-07    4.328053e-05    3.755739e-04
+    9       -75.9982373744    3.909767e-08    8.892915e-06    7.066559e-05
+   10       -75.9982373762    1.731891e-09    2.148672e-06    1.358130e-05
+   11       -75.9982373763    1.179501e-10    6.131398e-07    3.768748e-06
+   12       -75.9982373763    2.273737e-12    9.892471e-08    6.277274e-07
+   13       -75.9982373763    1.705303e-13    2.306867e-08    1.455313e-07
+   14       -75.9982373763   -2.842171e-14    2.364339e-09    1.283125e-08
+   15       -75.9982373763    0.000000e+00    2.252978e-10    1.001977e-09
+   16       -75.9982373763    0.000000e+00    4.533715e-12    5.288908e-11
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.575249     2A1     -1.337913     1B2     -0.670935  
+   3A1     -0.571230     1B1     -0.506342  
+
+
+  Unoccupied orbitals
+   4A1      0.198874     2B2      0.286140     2B1      0.863657  
+   5A1      0.905736     3B2      0.920725     4B2      1.159000  
+   6A1      1.179815     7A1      1.683365     8A1     43.310472  
+
+
+        SCF total energy   =     -75.998237376296
+        kinetic energy     =      75.854506586561
+        nuc. attr. energy  =    -197.821976658478
+        elec. rep. energy  =      45.969232695620
+        potential energy   =    -151.852743962857
+        virial theorem     =       1.998108761536
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on boromir.chem
+Mon Apr 26 12:18:20 2004
+
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on boromir.chem
+Mon Apr 26 12:18:20 2004
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  EOM_CCSD
+	Reference orbitals     =  RHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            =  Yes
+	Delete Restricted Docc =  No
+	Do All TEI             =  Yes
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Semicanonical orbitals =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 14
+	Number of MOs    = 14
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   8	   8	    0	    3	    0	    5	    0
+	 A2 	   0	   0	    0	    0	    0	    0	    0
+	 B1 	   2	   2	    0	    1	    0	    1	    0
+	 B2 	   4	   4	    0	    1	    0	    3	    0
+
+	Nuclear Repulsion Energy    =         8.6471668882
+	Total SCF Energy            =       -75.9982373763
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on boromir.chem
+Mon Apr 26 12:18:22 2004
+
+user time   =       0.18 seconds =       0.00 minutes
+system time =       1.38 seconds =       0.02 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on boromir.chem
+Mon Apr 26 12:18:22 2004
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	EOM_CCSD
+	Reference wfn   =	RHF
+	Derivative      =	First
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 14
+	Number of active MOs = 14
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   8	    0	    3	    0	    5	    0
+	 A2 	   0	    0	    0	    0	    0	    0
+	 B1 	   2	    0	    1	    0	    1	    0
+	 B2 	   4	    0	    1	    0	    3	    0
+
+	Nuclear Rep. energy (chkpt) =      8.64716688815186
+	SCF energy          (chkpt) =    -75.99823737629599
+
+	Size of <ab|cd> integrals:     0.001 (MW) /     0.010 (MB)
+	Size of <ia|bc> integrals:     0.001 (MW) /     0.005 (MB)
+	Size of Tijab amplitudes:      0.000 (MW) /     0.003 (MB)
+
+	One-electron energy          =   -121.96747007191645
+	Two-electron (AA) energy     =     14.22169875608475
+	Two-electron (BB) energy     =     14.22169875608475
+	Two-electron (AB) energy     =     23.10036705138386
+	Two-electron energy          =     37.32206580746860
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -75.99823737629599
+******************************************************************************
+tstop called on boromir.chem
+Mon Apr 26 12:18:22 2004
+
+user time   =       0.04 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on boromir.chem
+Mon Apr 26 12:18:22 2004
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    8.647166888151860
+	SCF energy          (chkpt)   =  -75.998237376295990
+	Reference energy    (file100) =  -75.998237376295990
+
+	Input parameters:
+	-----------------
+	Wave function   =    EOM_CCSD
+	Reference wfn   =      RHF
+	Memory (Mbytes) =  256.0
+	Maxiter         =     50
+	Convergence     = 1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	Local CC        =     No
+	AO Basis        =     NONE
+	Cache Level     =    2
+	Cache Type      =     LOW
+	Print Level     =    0
+	# Amps to Print =    10
+	Print MP2 Amps? =    No
+	Analyze T2 Amps =    No
+
+	Using old T1 amplitudes.
+	Using old T2 amplitudes.
+
+	                     Solving CCSD Equations
+	                     ----------------------
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.015912755177994    0.000e+00    0.007006    0.016234    0.016234
+     1        -0.146469341278822    2.546e-01    0.005425    0.016278    0.016278
+     2        -0.146370231967724    6.343e-02    0.005521    0.012635    0.012635
+     3        -0.149768983158651    2.307e-02    0.006949    0.014731    0.014731
+     4        -0.151503325953030    8.341e-03    0.007404    0.014697    0.014697
+     5        -0.151909485077555    2.735e-03    0.007627    0.014545    0.014545
+     6        -0.151936644032077    1.147e-03    0.007755    0.014473    0.014473
+     7        -0.151923797845956    3.115e-04    0.007773    0.014430    0.014430
+     8        -0.151922627795858    1.457e-04    0.007789    0.014420    0.014420
+     9        -0.151919320049567    3.728e-05    0.007793    0.014422    0.014422
+    10        -0.151917964433951    1.341e-05    0.007794    0.014422    0.014422
+    11        -0.151917947865417    4.177e-06    0.007794    0.014422    0.014422
+    12        -0.151917851056127    1.369e-06    0.007794    0.014422    0.014422
+    13        -0.151917824655473    3.887e-07    0.007794    0.014422    0.014422
+    14        -0.151917817867847    1.353e-07    0.007794    0.014422    0.014422
+    15        -0.151917812992726    4.528e-08    0.007794    0.014422    0.014422
+
+	Iterations converged.
+
+
+	Largest TIA Amplitudes:
+	          3   5        -0.0144215127
+	          2   0         0.0120585145
+	          4   6        -0.0091639273
+	          4   7        -0.0080250425
+	          1   1         0.0061025948
+	          2   3         0.0056314250
+	          4   8        -0.0046792337
+	          1   0         0.0027618282
+	          2   1        -0.0019499643
+	          1   3         0.0017284741
+
+	Largest TIjAb Amplitudes:
+	  3   3   5   5        -0.0570727334
+	  4   4   6   6        -0.0553178174
+	  2   2   1   1        -0.0464759352
+	  4   4   8   6         0.0356413414
+	  4   4   6   8         0.0356413414
+	  2   3   1   5        -0.0351713166
+	  3   2   5   1        -0.0351713159
+	  4   4   8   8        -0.0339938951
+	  2   4   0   6         0.0300239189
+	  4   2   6   0         0.0300239088
+
+	SCF energy       (chkpt)   =  -75.998237376295990
+	Reference energy (file100) =  -75.998237376295990
+	MP2 correlation energy     =   -0.015912755177994
+	Total MP2 energy           =  -76.014150131473983
+	CCSD correlation energy    =   -0.151917812992726
+	Total CCSD energy          =  -76.150155189288711
+
+******************************************************************************
+tstop called on boromir.chem
+Mon Apr 26 12:18:23 2004
+
+user time   =       0.43 seconds =       0.01 minutes
+system time =       0.33 seconds =       0.01 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on boromir.chem
+Mon Apr 26 12:18:23 2004
+
+
+			**************************
+			*                        *
+			*         CCHBAR         *
+			*                        *
+			**************************
+
+******************************************************************************
+tstop called on boromir.chem
+Mon Apr 26 12:18:23 2004
+
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on boromir.chem
+Mon Apr 26 12:18:23 2004
+
+
+	**********************************************************
+	*  CCEOM: An Equation of Motion Coupled Cluster Program  *
+	**********************************************************
+
+	Nuclear Rep. energy (chkpt)   =    8.647166888151860
+	SCF energy          (chkpt)   =  -75.998237376295990
+	Reference energy    (file100) =  -75.998237376295990
+	CCSD energy         (file100) =   -0.151917812992726
+
+	Input parameters:
+	-----------------
+	Reference wfn   =     RHF
+	Reference EOM wfn=     RHF
+	Memory (Mbytes) =  256.0
+	AO Basis        =     No
+	Cache Level     =    2
+	Cache Type      =     LRU
+	Local CC        =     No
+
+
+	CCEOM parameters:
+	-----------------
+	States sought per irrep     = A1  1, A2  0, B1  0, B2  0,
+	Max. number of iterations   =    80
+	Vectors stored per root     =     6
+	Print HbarSS iterations?    =     0
+	Excitation range for HBarSS =     2
+	Eigenvalue tolerance        = 1.0e-06
+	Residual vector tolerance   = 1.0e-07
+	Complex tolerance           = 1.0e-12
+	Root for properties         =     0
+	Save all R vectors          =     0
+	Sym of state for properties =    A1 
+	Guess vectors taken from    = SINGLES
+
+
+Symmetry of ground state: A1 
+Symmetry of excited state: A1 
+Symmetry of right eigenvector: A1 
+Obtaining initial guess from singles-singles block of Hbar...Done.
+
+Iter=1    L=1     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.4930998128   4.93e-01    1.86e-01      N
+Iter=2    L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.4080910274  -8.50e-02    4.33e-02      N
+Iter=3    L=3     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.4043436109  -3.75e-03    1.17e-02      N
+Iter=4    L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.4040780371  -2.66e-04    3.56e-03      N
+Iter=5    L=5     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.4040363671  -4.17e-05    1.07e-03      N
+Iter=6    L=6     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.4040452459   8.88e-06    4.78e-04      N
+Iter=7    L=1     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.4040452459  -5.55e-17    4.78e-04      N
+Iter=8    L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.4040429183  -2.33e-06    1.82e-04      N
+Iter=9    L=3     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.4040425502  -3.68e-07    6.92e-05      N
+Iter=10   L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.4040427138   1.64e-07    1.86e-05      N
+Iter=11   L=5     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.4040426890  -2.48e-08    6.10e-06      N
+Iter=12   L=6     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.4040428727   1.84e-07    1.78e-06      N
+Iter=13   L=1     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.4040428727   5.55e-17    1.78e-06      N
+Iter=14   L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.4040428033  -6.94e-08    5.59e-07      N
+Iter=15   L=3     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.4040428204   1.71e-08    1.65e-07      N
+Iter=16   L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.4040428189  -1.44e-09    6.45e-08      Y
+Collapsing to only 1 vectors.
+
+Procedure converged for 1 root(s).
+Energy written to chkpt  -75.7461123704
+EOM CCSD R0 for root 0 =    0.0170470534
+
+Final Energetic Summary for Converged Roots of Irrep A1 
+                     Excitation Energy           Total Energy
+                (eV)     (cm^-1)     (au)             (au)
+EOM State 1     10.995    88677.1   0.4040428189   -75.7461123704
+
+Largest components of excited wave function #1:
+	          2   0        -0.6768971899
+	          4   6        -0.0913479412
+	          3   5        -0.0399939680
+	          1   0         0.0377071883
+	          2   2         0.0349794396
+	  2   2   0   0         0.1085546003
+	  2   4   0   6        -0.0665893125
+	  4   2   6   0        -0.0665893125
+	  2   2   6   6         0.0567034657
+	  2   2   0   1        -0.0549969820
+
+
+******************************************************************************
+tstop called on boromir.chem
+Mon Apr 26 12:18:24 2004
+
+user time   =       0.56 seconds =       0.01 minutes
+system time =       0.45 seconds =       0.01 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on boromir.chem
+Mon Apr 26 12:18:24 2004
+
+
+			**************************
+			*        CCLAMBDA        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    8.647166888151860
+	Reference           (chkpt)   = 0
+	SCF energy          (chkpt)   =  -75.998237376295990
+	Reference energy    (CC_INFO) =  -75.998237376295990
+	CCSD energy         (CC_INFO) =   -0.151917812992726
+	Total CCSD energy   (CC_INFO) =  -76.150155189288711
+
+	Input parameters:
+	-----------------
+	Maxiter       =      50
+	Convergence   = 1.0e-07
+	Restart       =     Yes
+	Cache Level   =     2
+	AO Basis      =     No
+	Excited State  =     Yes
+	Local CC        =     No
+	Paramaters for left-handed eigenvectors:
+	Irr   Root  Ground-State?    EOM energy        R0
+	  0     0            No   0.4040428189   0.0170470534
+	Labels for state 0:
+	LIA 0 0, Lia 0 0, LIJAB 0 0, Lijab 0 0, LIjAb 0 0, 2LIjAb - LIjbA 0 0
+	Symmetry of left-hand state: A1 
+	Symmetry of left-hand eigenvector: A1 
+	Initial overlap of initial guess <R|L> =    0.9993310822
+	Checking overlap of initial guess <R|L> =    1.0000000000
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter     PseudoEnergy or Norm         RMS  
+	----     ---------------------     --------
+	   0         0.005560997634640    0.000e+00
+	   1         0.007897677597067    3.424e-02
+	   2         0.007727042974890    7.759e-03
+	   3         0.007870517223810    2.603e-03
+	   4         0.007863160371771    7.955e-04
+	   5         0.007859632555719    2.183e-04
+	   6         0.007851984821999    7.715e-05
+	   7         0.007850703470297    2.314e-05
+	   8         0.007850205889319    7.411e-06
+	   9         0.007850151712347    1.888e-06
+	  10         0.007850123798232    5.587e-07
+	  11         0.007850114650366    2.331e-07
+	  12         0.007850113685046    6.287e-08
+
+	Initial  <L|R>  =        0.9858192398
+	Normalizing L...
+	L0 * R0 =        0.0000000000
+	L1 * R1 =        0.9391357419
+	L2 * R2 =        0.0608642581
+	 <L|R>  =        1.0000000000
+	Pseudoenergy/Norm w/normed L =    0.007963035583478
+
+	Iterations converged.
+
+	<L|R> overlap matrix with ROHF quantities (-99 => 0 by symmetry)
+
+           1
+
+    1   1.0000000
+	<L|R> overlap matrix with RHF quantities (-99 => 0 by symmetry)
+
+           1
+
+    1   1.0000000
+******************************************************************************
+tstop called on boromir.chem
+Mon Apr 26 12:18:25 2004
+
+user time   =       0.24 seconds =       0.00 minutes
+system time =       0.13 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on boromir.chem
+Mon Apr 26 12:18:25 2004
+
+
+			**************************
+			*                        *
+			*        CCDENSITY       *
+			*                        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    8.647166888151860
+	SCF energy          (chkpt)   =  -75.998237376295990
+	Reference energy    (file100) =  -75.998237376295990
+	CCSD energy         (file100) =   -0.151917812992726
+	Total CCSD energy   (file100) =  -76.150155189288711
+
+	Input parameters:
+	-----------------
+	Tolerance    = 1.0e-14
+	Cache Level  =    2
+	AO Basis     =     No
+	Relax OPDM   =     Yes
+	Excited State=     Yes
+	Compute Xi   =     Yes
+	Use Zeta    =     No
+	Xi connected=     1
+
+	Left-hand eigenvector: symmetry A1  and excited root 1
+	Right-hand eigenvector: symmetry A1  and excited root 1, R0 =    0.0170470534
+begin xi1, D(norm sigma)=   0.0000000000
+ term 1, D(norm sigma)=   0.0000000000
+ term 2, D(norm sigma)=   0.0003330264
+ term 3, D(norm sigma)=   0.0013654755
+ term 4, D(norm sigma)=   0.0062549070
+ term 5, D(norm sigma)=  -0.0001172328
+ term 6, D(norm sigma)=   0.0000201783
+ term 7, D(norm sigma)=   0.0000148937
+ term 9, D(norm sigma)=  -0.0054480108
+term 10, D(norm sigma)=   0.0018911378
+term 11, D(norm sigma)=  -0.0005282718
+term 12, D(norm sigma)=   0.0009487071
+term 13, D(norm sigma)=   0.0000300520
+term 14, D(norm sigma)=   0.0005793333
+  reset, D(norm sigma)=   0.0436972864
+terms 1 and 5, D(norm sigma)=   1.8539230233
+terms 2 and 9, D(norm sigma)=  -0.0916786923
+terms 3 and 10, D(norm sigma)=  -0.1506725918
+terms 4 and 6, D(norm sigma)=   0.0197185925
+ term 7, D(norm sigma)=   0.0004110403
+ term 8, D(norm sigma)=   0.0006634937
+terms 11, 17 and 20, D(norm sigma)=  -0.0039640871
+term 12, 16 and 21, D(norm sigma)=   0.0009732541
+term 25 (Wmnie), D(norm sigma)=  -0.0001723555
+term 24 (Wamef), D(norm sigma)=  -0.0066572492
+terms 18, 19 (Wmnie, Wamef), D(norm sigma)=  -0.0475254552
+XI_IA amplitudes: Norm=   0.2214531151, Dot=   0.0490414822
+XI amplitudes   : Norm=   1.2743863052, Dot=   1.6240604549
+******************************************************************************
+tstop called on boromir.chem
+Mon Apr 26 12:18:25 2004
+
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.05 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on boromir.chem
+Mon Apr 26 12:18:25 2004
+
+
+			**************************
+			*        CCLAMBDA        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    8.647166888151860
+	Reference           (chkpt)   = 0
+	SCF energy          (chkpt)   =  -75.998237376295990
+	Reference energy    (CC_INFO) =  -75.998237376295990
+	CCSD energy         (CC_INFO) =   -0.151917812992726
+	Total CCSD energy   (CC_INFO) =  -76.150155189288711
+	Irrep of Zeta       (CC_INFO) = 0
+
+	Input parameters:
+	-----------------
+	Maxiter       =      50
+	Convergence   = 1.0e-07
+	Restart       =     Yes
+	Cache Level   =     2
+	AO Basis      =     No
+	Excited State  =     Yes
+	Local CC        =     No
+	Paramaters for left-handed eigenvectors:
+	Irr   Root  Ground-State?    EOM energy        R0
+	  0     0            No   0.0000000000   0.0000000000
+	Labels for state 0:
+	ZIA, Zia, ZIJAB, Zijab, ZIjAb, 2ZIjAb - ZIjbA
+	Symmetry of left-hand state: A1 
+	Symmetry of left-hand eigenvector: A1 
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter     PseudoEnergy or Norm         RMS  
+	----     ---------------------     --------
+	   0        -0.081751578880123    0.000e+00
+	   1        -0.082106390950522    3.277e-02
+	   2        -0.084146426498353    1.736e-02
+	   3        -0.084393192083794    6.372e-03
+	   4        -0.084322640823900    1.770e-03
+	   5        -0.084297143910115    3.336e-04
+	   6        -0.084288095844186    7.482e-05
+	   7        -0.084286913884346    1.565e-05
+	   8        -0.084286809845171    2.896e-06
+	   9        -0.084286782095584    5.008e-07
+	  10        -0.084286772311499    1.527e-07
+	  11        -0.084286772888007    2.517e-08
+
+	Iterations converged.
+
+Norm of Zeta:    0.232645131163607
+******************************************************************************
+tstop called on boromir.chem
+Mon Apr 26 12:18:25 2004
+
+user time   =       0.16 seconds =       0.00 minutes
+system time =       0.17 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on boromir.chem
+Mon Apr 26 12:18:25 2004
+
+
+			**************************
+			*                        *
+			*        CCDENSITY       *
+			*                        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    8.647166888151860
+	SCF energy          (chkpt)   =  -75.998237376295990
+	Reference energy    (file100) =  -75.998237376295990
+	CCSD energy         (file100) =   -0.151917812992726
+	Total CCSD energy   (file100) =  -76.150155189288711
+
+	Input parameters:
+	-----------------
+	Tolerance    = 1.0e-14
+	Cache Level  =    2
+	AO Basis     =     No
+	Relax OPDM   =     Yes
+	Excited State=     Yes
+	Compute Xi   =     No
+	Use Zeta    =     Yes
+	Xi connected=     1
+
+	Left-hand eigenvector: symmetry A1  and excited root 1
+	Right-hand eigenvector: symmetry A1  and excited root 1, R0 =    0.0170470534
+
+	Trace of onepdm =    0.000000000000000
+
+	Energies re-computed from CC density:
+	-------------------------------------
+	One-electron energy        =    0.953764880921069
+	IJKL energy                =    0.055629061203993
+	IJKA energy                =   -0.137915053248494
+	IJAB energy                =   -0.185298332681495
+	IBJA energy                =   -0.452958707551452
+	CIAB energy                =   -0.023039075669176
+	ABCD energy                =    0.041942233494679
+	Total two-electron energy  =   -0.701639874451945
+	Total EOM CCSD correlation energy        =    0.252125006469124
+	CCSD correlation + EOM excitation energy =    0.252125005919897
+	Total EOM CCSD energy                    =  -75.746112369826861
+
+	Virial Theorem Data:
+	--------------------
+	Kinetic energy (ref)   =   75.854506586561115
+	Kinetic energy (corr)  =    0.286949424368383
+	Kinetic energy (total) =   76.141456010929502
+	-V/T (ref)             =    2.001894822024461
+	-V/T (corr)            =    1.529423654802998
+	-V/T (total)           =    2.000114250223400
+
+	Energies re-computed from Fock-adjusted CC density:
+	---------------------------------------------------
+	One-electron energy        =    1.575292092314340
+	IJKL energy                =   -6.796913472755007
+	IJKA energy                =    1.271804391968730
+	IJAB energy                =   -0.185298332681495
+	IBJA energy                =    4.368337169797282
+	CIAB energy                =   -0.023039075669176
+	ABCD energy                =    0.041942233494679
+	Total two-electron energy  =   -1.323167085844987
+	Total EOM CCSD correlation energy        =    0.252125006469354
+	CCSD correlation + EOM excitation energy =    0.252125005919897
+	Total EOM CCSD energy                    =  -75.746112369826633
+
+	Energies re-computed from Mulliken density:
+	-------------------------------------------
+	One-electron energy        =    1.575292092314340
+	IJKL energy                =   -6.796913472755007
+	IJKA energy                =    1.271804391968730
+	IJAB energy                =   -0.282000928212281
+	IBJA energy                =    4.465039765328069
+	CIAB energy                =   -0.023039075669176
+	ABCD energy                =    0.041942233494679
+	Total two-electron energy  =   -1.323167085844986
+	Total EOM CCSD correlation energy        =    0.252125006469355
+	CCSD correlation + EOM excitation energy =    0.252125005919897
+	Total EOM CCSD energy                    =  -75.746112369826633
+******************************************************************************
+tstop called on boromir.chem
+Mon Apr 26 12:18:26 2004
+
+user time   =       0.41 seconds =       0.01 minutes
+system time =       0.31 seconds =       0.01 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on boromir.chem
+Mon Apr 26 12:18:26 2004
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  EOM_CCSD
+	Reference orbitals     =  RHF
+	Backtrans              =  Yes
+	Print MOs              =  No
+	Freeze Core            =  No
+	Delete Restricted Docc =  No
+	Do All TEI             =  No
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  74
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  77
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  No
+	Do FZC  OEI tranform   =  No
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Semicanonical orbitals =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 14
+	Number of MOs    = 14
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   8	   8	    0	    3	    0	    5	    0
+	 A2 	   0	   0	    0	    0	    0	    0	    0
+	 B1 	   2	   2	    0	    1	    0	    1	    0
+	 B2 	   4	   4	    0	    1	    0	    3	    0
+
+	Nuclear Repulsion Energy    =         8.6471668882
+	Total SCF Energy            =       -75.9982373763
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file77.
+
+	Transforming one-electron integrals...
+	One-pdm and lagrangian written to file76.
+******************************************************************************
+tstop called on boromir.chem
+Mon Apr 26 12:18:28 2004
+
+user time   =       0.12 seconds =       0.00 minutes
+system time =       1.46 seconds =       0.02 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on boromir.chem
+Mon Apr 26 12:18:28 2004
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = EOM CCSD gradient
+    Number of atoms             = 3
+    Number of atomic orbitals   = 14
+    Number of symmetry orbitals = 14
+    Maximum AM in the basis     = 1
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -EOM_CCSD forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.095705299231     0.008187706608
+       2        0.000000000000     0.000000000000    -0.016375413216
+       3        0.000000000000    -0.095705299231     0.008187706608
+
+******************************************************************************
+tstop called on boromir.chem
+Mon Apr 26 12:18:28 2004
+
+user time   =       0.45 seconds =       0.01 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
