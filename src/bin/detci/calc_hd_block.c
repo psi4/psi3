@@ -135,7 +135,7 @@ void calc_hd_block_ave(struct stringwr *alplist_local, struct stringwr *betlist_
    int i,j, ii, iii, jj, ij, iijj, ijij;
    double value, tval, tval2, Kave;
    struct stringwr *betlist0;
-   int k_total; /* total number of K ints in energy expression */
+   double k_total; /* total number of K ints in energy expression */
    int k_combo; /* total combination of unique K ints over spin-coupling set */
    int *unique_occs; /* the uniquely occupied orbitals for a given determinant */
    int num_el;  /* total number of electrons explicitly treated */
@@ -144,6 +144,7 @@ void calc_hd_block_ave(struct stringwr *alplist_local, struct stringwr *betlist_
    
 
    k_total = combinations(na,2) + combinations(nb,2); 
+
    num_el = na + nb;
    unique_occs = init_int_array(num_el);
 
@@ -243,8 +244,9 @@ void calc_hd_block_ave(struct stringwr *alplist_local, struct stringwr *betlist_
          fprintf(outfile,"ioff[num_unique-1] = %d\n",ioff[num_unique]);
          fprintf(outfile,"k_total = %d\n",k_total);
          */
-         Kave /= ioff[num_unique-1];
-         value -= 0.5 * Kave * (double) k_total; 
+
+         if (num_unique > 1) Kave /= ioff[num_unique-1];
+         value -= 0.5 * Kave * k_total; 
          /* fprintf(outfile,"Kave = %lf\n",Kave); */
 
          if (Parameters.print_lvl > 5) {
@@ -259,9 +261,7 @@ void calc_hd_block_ave(struct stringwr *alplist_local, struct stringwr *betlist_
            } 
 
          H0[acnt][bcnt] = value;
-       /* 
-         fprintf(outfile,"H0[%d][%d] = %lf\n",acnt,bcnt,value); 
-       */ 
+         /* fprintf(outfile,"H0[%d][%d] = %lf\n",acnt,bcnt,value); */
          betlist_local++;
          } /* end loop over bcnt */
 
@@ -564,7 +564,7 @@ int nb, int nbf)
    int i,j, ii, iii, jj, ij, iijj, ijij;
    double value, tval, tval2, Kave;
    struct stringwr *betlist0;
-   int k_total; /* total number of K ints in energy expression */
+   double k_total; /* total number of K ints in energy expression */
    int k_combo; /* total combination of unique K ints over spin-coupling set */
    int *unique_occs; /* the uniquely occupied orbitals for a given determinant */
    int num_el;  /* total number of electrons explicitly treated */
@@ -670,8 +670,8 @@ int nb, int nbf)
          fprintf(outfile,"ioff[num_unique-1] = %d\n",ioff[num_unique]);
          fprintf(outfile,"k_total = %d\n",k_total);
          */
-         Kave /= ioff[num_unique-1];
-         value += 0.5 * Kave * (double) k_total * pert_param;
+         if (num_unique > 1) Kave /= ioff[num_unique-1];
+         value += 0.5 * Kave * k_total * pert_param;
          /* fprintf(outfile,"Kave = %lf\n",Kave); */
 
          if (Parameters.print_lvl > 5) {
