@@ -4,9 +4,7 @@
 #define EXTERN
 #include "globals.h"
 
-void local_filter_T2(dpdbuf4 *T2, int denom);
-void local_filter_T2_nodenom(dpdbuf4 *T2);
-void local_filter_V2_nodenom(dpdbuf4 *T2);
+void local_filter_T2(dpdbuf4 *T2);
 
 void dijabT2(void)
 {
@@ -20,7 +18,7 @@ void dijabT2(void)
 
     dpd_buf4_init(&newtIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb Increment");
     if(params.local) {
-      local_filter_T2(&newtIjAb, 1);
+      local_filter_T2(&newtIjAb);
     }
     else {
       dpd_buf4_init(&dIjAb, CC_DENOM, 0, 0, 5, 0, 5, 0, "dIjAb");

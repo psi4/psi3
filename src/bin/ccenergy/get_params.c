@@ -129,6 +129,9 @@ void get_params()
     sprintf(local.weakp, "%s", "MP2");
   }
 
+  local.filter_singles = 1;
+  ip_boolean("LOCAL_FILTER_SINGLES", &(local.filter_singles), 0);
+
   params.num_amps = 10;
   if(ip_exist("NUM_AMPS",0)) {
     errcod = ip_data("NUM_AMPS", "%d", &(params.num_amps), 0);
@@ -159,6 +162,7 @@ void get_params()
     fprintf(outfile, "\tLocal Cutoff    = %3.1e\n", local.cutoff);
     fprintf(outfile, "\tLocal Method    =    %s\n", local.method);
     fprintf(outfile, "\tWeak pairs      =    %s\n", local.weakp);
+    fprintf(outfile, "\tFilter singles  =    %s\n", local.filter_singles ? "Yes" : "No");
   }
   fprintf(outfile, "\tAO Basis        =     %s\n", params.aobasis);
   fprintf(outfile, "\tCache Level     =    %1d\n", params.cachelev);

@@ -17,7 +17,6 @@ struct Local {
   double cutoff;
   char *method;
   char *weakp;
+  int filter_singles;
   double weak_pair_energy;
-  double **U;
-  double **WW;
 };

@@ -5,9 +5,7 @@
 #define EXTERN
 #include "globals.h"
 
-void local_filter_T1(dpdfile2 *T1, int denom);
-void local_filter_T1_nodenom(dpdfile2 *T1);
-void local_filter_V1_nodenom(dpdfile2 *T1);
+void local_filter_T1(dpdfile2 *T1);
 
 void t1_build(void)
 {
@@ -76,8 +74,8 @@ void t1_build(void)
     dpd_file2_close(&newtIA);
 
     dpd_file2_init(&newtIA, CC_OEI, 0, 0, 1, "New tIA Increment");
-    if(params.local) {
-      local_filter_T1(&newtIA, 1);
+    if(params.local && local.filter_singles) {
+      local_filter_T1(&newtIA);
     }
     else {
       dpd_file2_init(&dIA, CC_OEI, 0, 0, 1, "dIA");
