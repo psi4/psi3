@@ -20,7 +20,7 @@ int chkpt_rd_nsymhf(void)
 {
   int nsymhf;
 
-  psio_read_entry(PSIF_CHKPT, "::Num symhf", (char *) &nsymhf, 
+  psio_read_entry(PSIF_CHKPT, "::Num. HF irreps", (char *) &nsymhf, 
                   sizeof(int) );
   return nsymhf;
 }

@@ -17,7 +17,7 @@ int chkpt_rd_nmo(void)
 {
   int nmo;
 
-  psio_read_entry(PSIF_CHKPT, "::Num mo", (char *) &nmo, 
+  psio_read_entry(PSIF_CHKPT, "::Num. MO's", (char *) &nmo, 
                   sizeof(int) );
   return nmo;
 }
