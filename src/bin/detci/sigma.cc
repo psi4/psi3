@@ -14,11 +14,12 @@
 
 #define EXTERN
 
+#include <math.h>
+
 extern "C" {
    #include <stdio.h>
    #include <stdlib.h>
    /* may no longer need #include <libc.h> */
-   #include <math.h>
    #include <libciomr.h>
    #include <qt.h>
    #include "structs.h"

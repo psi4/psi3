@@ -149,11 +149,10 @@ class CIvect {
       void transp_block(int iblock, double **tmparr);
       unsigned long get_max_blk_size(void);
       double checknorm(void);
-      void CIvect::copy(CIvect &Src, int targetvec, int srcvec);
+      void copy(CIvect &Src, int targetvec, int srcvec);
       void restart_gather(int ivec, int nvec, int nroot, double **alpha,
          double *buffer1, double *buffer2);
-      void CIvect::gather(int ivec, int nvec, int nroot, double **alpha,
-         CIvect &C);
+      void gather(int ivec, int nvec, int nroot, double **alpha, CIvect &C);
       void restart_reord_fp(int L);
       void print_fptrs(void);
       void calc_ssq(double *buffer1, double *buffer2, struct stringwr **alplist,

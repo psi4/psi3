@@ -18,10 +18,11 @@
 #define EXTERN 
 /* #define DEBUG */
 
+#include <math.h>
+
 extern "C" {
    #include <stdlib.h>
    #include <stdio.h>
-   #include <math.h>
    #include <libciomr.h>
    #include <qt.h>
    #include "structs.h"

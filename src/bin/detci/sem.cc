@@ -11,10 +11,11 @@
 
 #define MALPHA_TOLERANCE 1E-15
 
+#include <math.h>
+
 extern "C" {
    #include <stdlib.h>
    #include <stdio.h>
-   #include <math.h>
    #include <libciomr.h>
    #include <qt.h>
    #include <physconst.h>

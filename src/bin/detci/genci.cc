@@ -15,6 +15,8 @@
 #define MIN_F_DENOM 1.0E-3
 #define INDEX(i,j) ( (i>j) ? (ioff[(i)] + (j)): (ioff[(j)] + (i)) )
 
+#include <math.h>
+
 /*** INCLUDES ***/
 extern "C" {
 
@@ -23,7 +25,6 @@ extern "C" {
    #include <stdlib.h>
    #include <stdio.h>
    #include <ip_libv1.h>
-   #include <math.h>
    #include <qt.h>
    #include <libciomr.h>
    #include <file30.h>

@@ -18,6 +18,8 @@
 #define MIN0(a,b) (((a)<(b)) ? (a) : (b))
 #define MAX0(a,b) (((a)>(b)) ? (a) : (b))
 
+#include <math.h>
+
 extern "C" {
 
    /* C INCLUDE FILES */
@@ -25,7 +27,6 @@ extern "C" {
    #include <stdlib.h>
    #include <stdio.h>
    #include <ip_libv1.h>
-   #include <math.h>
    /* seem to need string.h in RedHat 7.1 */
    #include <string.h>
    #include <qt.h>
