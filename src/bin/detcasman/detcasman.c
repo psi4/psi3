@@ -83,7 +83,7 @@ main(int argc, char *argv[])
 
   if (converged) {
     fprintf(outfile,"                  ORBITALS CONVERGED\n");
-    fprintf(outfile,"\n  Final CASSCF Energy = %15.9lf\n", energy_last);
+    fprintf(outfile,"\n  Final CASSCF Energy = %17.12lf\n", energy_last);
   }
   else
     fprintf(outfile,"               ORBITALS DID NOT CONVERGE\n");
