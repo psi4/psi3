@@ -1,0 +1,46 @@
+\section{Geometry Optimization and Vibrational Frequency Analysis} \label{opt}
+
+\PSIthree\ is capable of carrying out geometry optimizations for a variety of
+molecular structures using either analytic and numerical energy gradients.
+When analytic gradients are available (see Table \ref{table:methods}),
+\PSIthree\ will automatically generate and use so-called redundant
+internal coordinates for carrying out the optimization.  For methods
+for which only energies are available, \PSIthree\ will use delocalized
+internal coordinates to generate geometrical displacements for computing
+finite-difference gradients.  For both methods, a guess force-constant
+matrix is generated and updated using the BFGS method.
+
+In addition, \PSIthree\ is capable of computing harmonic vibrational
+frequencies for a number of different methods using either analytic energy
+first or second derivatives.  (At present, only RHF-SCF analytic second
+derivatives are available.)  For those methods for which analytic gradients
+have been coded (see Table \ref{table:methods}), \PSIthree\ will generate
+displaced geometries along symmetrized, delocalized internal coordinates,
+compute the appropriate first derivatives, and use finite-difference
+methods to compute the Hessian.
+
+For finite-difference procedures for vibrational frequency calculations,
+the user should keep in mind that, for geometric displacements along
+non-totally-symmetric coordinates, by definition, the molecular point
+group symmetry will decrease.  As a result, any \PSIthree\ keywords in
+the input file which depend on the number of irreducible representations
+will be incorrect.  For example, if the user must specify the {\tt DOCC}
+keyword in order to obtain the correct MO occupations for their system,
+computation of non-symmetric vibrational modes via finite-differences
+will necessarily fail.  The developers are working to further automate
+the computation of vibrational frequencies such that the correlation
+of irreducible representations between point groups can be handled
+correctly.  This feature will be available in a future release of the
+package.
+
+The following keywords are pertinent for geometry optimizations and
+vibrational frequency analyses:
+\begin{description}
+\item[JOBTYPE = string]\mbox{}\\
+This keyword (described earlier in this manual) must be set to
+{\tt OPT} for geometry optimizations and {\tt FREQ} for frequency analyses.
+\item[DERTYPE = string]\mbox{}\\
+This keyword (also described earlier) must be set to {\tt NONE} is only
+energies are available for the chosen method and {\tt FIRST} if analytic
+gradients are available.
+\end{description}
