@@ -30,7 +30,7 @@ extern FILE *outfile;
 int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
     int sum_Y, int Ztrans, double alpha, double beta)
 {
-  int h, nirreps, GX, GY, GZ, hxbuf, hzbuf, h0, Hx, Hy, Hz;
+  int h, nirreps, GX, GY, GZ, hxbuf, hzbuf, h0, Hx, Hy, Hz, GsX, GsZ;
   int rking=0, symlink;
   int Xtrans,Ytrans;
   int *numlinks, *numrows, *numcols;
@@ -55,6 +55,7 @@ int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
 
   dpd_file2_mat_init(Y);
   dpd_file2_mat_rd(Y);
+
   if(sum_Y == 0) { Ytrans = 0; numlinks = Y->params->rowtot; symlink=0; }
   else if(sum_Y == 1) { Ytrans = 1; numlinks = Y->params->coltot; symlink=GY; }
   else { fprintf(stderr, "Junk Y index %d\n", sum_Y); exit(PSI_RETURN_FAILURE); }
@@ -129,6 +130,7 @@ int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
 
     if(incore) { 
 
+/*       dpd_buf4_scm(Z, beta); */
       dpd_buf4_mat_irrep_init(Z, hzbuf);
       if(fabs(beta) > 0.0) dpd_buf4_mat_irrep_rd(Z, hzbuf);
       if(Ztrans) {
@@ -309,17 +311,18 @@ int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
         xcount = zcount = 0;
 
         for(Gr=0; Gr < nirreps; Gr++) {
-          Gs = Gr^hxbuf;
+          GsX = Gr^hxbuf^GX;
+          GsZ = Gr^hzbuf^GZ;
 
           rowx = X->params->rpi[Gr];
-          colx = X->params->spi[Gs];
+          colx = X->params->spi[GsX];
           rowz = Z->params->rpi[Gr];
-          colz = Z->params->spi[Gs];
+          colz = Z->params->spi[GsZ];
 
           if(rowx && colx && colz) {
 	    C_DGEMM('n',Ytrans?'t':'n',rowx,colz,colx,alpha,
 		    &(X->matrix[hxbuf][0][xcount]),colx,
-		    &(Y->matrix[Gs][0][0]),Ytrans?colx:colz,1.0,
+		    &(Y->matrix[Ytrans?GsZ:GsX][0][0]),Ytrans?colx:colz,1.0,
 		    &(Z->matrix[hzbuf][0][zcount]),colz);
 	  }
 
