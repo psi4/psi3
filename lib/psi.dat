@@ -466,7 +466,7 @@ psi: (
 
   % Procedures for optimization via energy points
   EOM_CCSDEnergyOpt = (repeat $nopt $EOM_CCSDEnergy $findif_disp_symm
-    repeat NUM_DISP $findif_next $EOM_CCSDEnergy $findif_energy_save end
+    repeat NUM_DISP $findif_next $findif_input $EOM_CCSDEnergy $findif_energy_save end
     $findif_grad_energy $geomupdate end $done)
   EOM_CCSDRHFEnergyOpt = ($EOM_CCSDEnergyOpt $done)
   EOM_CCSDROHFEnergyOpt = ($EOM_CCSDEnergyOpt $done)
@@ -495,6 +495,16 @@ psi: (
   EOM_CCSDROHFEnergyOpt = ($EOM_CCSDEnergyOpt $done)
   EOM_CCSDUHFEnergyOpt = ($EOM_CCSDEnergyOpt $done)
   EOM_CCSDTwoConEnergyOpt = ERROR
+
+  % CCSD Freqs via differences of energies
+  EOM_CCSDEnergyFreq  =
+    ($EOM_CCSDEnergy $findif_disp_freq_energy_cart repeat NUM_DISP
+     $findif_next $findif_input $EOM_CCSDEnergy $findif_energy_save end
+     $findif_freq_energy_cart $done)
+  EOM_CCSDRHFEnergyFreq  = $EOM_CCSDEnergyFreq
+  EOM_CCSDROHFEnergyFreq  = $EOM_CCSDEnergyFreq
+  EOM_CCSDUHFEnergyFreq  = $EOM_CCSDEnergyFreq
+  EOM_CCSDTwoConEnergyFreq  = $EOM_CCSDEnergyFreq
 
   % Procedures for freqs via differences of analytic gradients
   EOM_CCSDFirstFreq  = 
@@ -528,6 +538,24 @@ psi: (
   EOM_CC3ROHFEnergy = ($EOM_CC3Energy $done)
   EOM_CC3UHFEnergy = ($EOM_CC3Energy $done) 
   EOM_CC3TwoConEnergy = ERROR
+
+  EOM_CC3EnergyOpt = (repeat $nopt $EOM_CC3Energy $findif_disp_symm
+    repeat NUM_DISP $findif_next $findif_input $EOM_CC3Energy $findif_energy_save end
+    $findif_grad_energy $geomupdate end $done)
+  EOM_CC3RHFEnergyOpt = ($EOM_CC3EnergyOpt $done)
+  EOM_CC3ROHFEnergyOpt = ($EOM_CC3EnergyOpt $done)
+  EOM_CC3UHFEnergyOpt = ($EOM_CC3EnergyOpt $done)
+  EOM_CC3TwoConEnergyOpt = ERROR
+
+  % CCSD Freqs via differences of energies
+  EOM_CC3EnergyFreq  =
+    ($EOM_CC3Energy $findif_disp_freq_energy_cart repeat NUM_DISP
+     $findif_next $findif_input $EOM_CC3Energy $findif_energy_save end
+     $findif_freq_energy_cart $done)
+  EOM_CC3RHFEnergyFreq  = $EOM_CC3EnergyFreq
+  EOM_CC3ROHFEnergyFreq  = $EOM_CC3EnergyFreq
+  EOM_CC3UHFEnergyFreq  = $EOM_CC3EnergyFreq
+  EOM_CC3TwoConEnergyFreq  = $EOM_CC3EnergyFreq
 
   % -------------------------------- OOCCD Procedures
   % Procedures for the OOCCD energy
