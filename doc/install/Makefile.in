@@ -1,0 +1,16 @@
+
+srcdir = @srcdir@
+
+MAN = install
+
+include ../MakeVars
+
+TEX = install.tex
+
+SUBTEX = \
+
+DVI = $(TEX:%.tex=%.dvi)
+PS = $(DVI:%.dvi=%.ps)
+HTML = $(TEX:%.tex=%.html)
+
+include ../MakeRules

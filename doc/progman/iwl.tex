@@ -1,0 +1,31 @@
+The library \library{libiwl.a} contains functions for reading and
+writing to files with the "Integrals With Labels" (IWL) format created
+by David Sherrill in 1994, modeled after the format of the old
+integrals file from \PSItwo.  Most functions deal with four-index
+quantitites, but there are also a few which deal with two-index
+quantities such as one-electron integrals.  The IWL format specifies
+that the 4-index quantities are stored on disk in several buffers;
+each buffer has a header segment which gives some useful info.
+Currently, the header is arranged as follows: one integer word is used
+as a flag, telling whether the current buffer is the last buffer in
+the file.  The next integer gives the number of integrals (and their
+associated labels) in the current buffer.  After this header
+information, each buffer contains two data segments: one for labels,
+and one for the values of the associated integrals.  The datasize for
+the labels is defined using typedefs, so it is easy to change
+(currently, it is a short int); likewise for the integral values
+(currently of type double).  The length of these data segments is NBUF
+* 4 * sizeof(Label) and NBUF * sizeof(Value), respectively.  The
+current use of short ints for Label is really somewhat excessive,
+making the files somewhat larger than strictly necessary.  However,
+this avoids confusing bit-packing schemes, and instantly allows us to
+have up to something like 65,536 basis functions addressable.
+
+The functions previously documented in this manual have been removed
+because that documentation is now out of date.  Documentation of the
+library is now created directly from the source code using the 
+{\tt doxygen} program and is available at
+\htmladdnormallink{
+{\tt http://www.psicode.org/libs/doxygen/html}}
+{http://www.psicode.org/libs/doxygen/html}.
+

@@ -1,0 +1,87 @@
+\subsection{Capabilities}
+\PSIthree\ can perform {\em ab initio} computations employing
+basis sets of up to 32768 contracted Gaussian-type functions of
+virtually arbitrary orbital quantum number.
+\PSIthree\ can recognize and exploit the largest Abelian subgroup of the
+point group describing the full symmetry of the molecule.
+Table \ref{table:methods} displays the range of theoretical
+methods available in \PSIthree .
+\begin{table}[h]
+\caption{Summary of theoretical methods available in \PSIthree.} 
+\label{table:methods}
+\parsep 10pt
+\begin{center}
+\begin{tabular}{lccc} \hline\hline
+Method      & Energy & Gradient & Hessian \\ \hline
+RHF SCF     & Y & Y & Y \\
+ROHF SCF    & Y & Y & N \\
+UHF SCF     & Y & N & N \\
+CIS/RPA/TDHF& Y & N & N \\
+TCSCF       & Y & Y & N \\
+CASSCF      & Y & Y & N \\
+RAS-CI      & Y & N & N \\
+RHF-MP2     & Y & N & N \\
+RHF-MP2-R12 & Y & N & N \\
+RHF-CCSD    & Y & Y & N \\
+ROHF-CCSD   & Y & Y & N \\
+VOO-CCD     & Y & Y & N \\ 
+RHF-CCSD(T) & Y & N & N \\ 
+UHF-CCSD(T) & Y & N & N \\ 
+RHF-EOM-CCSD& Y & N & N \\ 
+ROHF-EOM-CCSD& Y & N & N \\ 
+\hline\hline
+\end{tabular}
+\end{center}
+\end{table}
+Geometry optimization (currently restricted to true minima on the potential
+energy surface) and vibrational frequency computations can be performed
+with the methods for which analytic gradients and Hessian, respectively, are
+available.  Methods for which analytic gradients are not yet implemented
+may still be used for geometry optimization if the gradients are computed
+numerically from energies; this is automated by the optking program.
+Numerical computation of Hessians is being developed.
+\PSIthree\ can also compute an extensive list of one-electron properties.
+Finally, it should be mentioned that whenever \PSIthree\ is used,
+it should be cited fully (see appendix).
+
+\subsection{Before You Obtain \PSIthree: Prerequisites}
+The majority of \PSIthree\ was developed on IBM RS/6000//AIX
+and Intel i386/Linux workstations. The complete list of
+tested processor/OS combinations to which \PSIthree\ has
+been ported is shown in Table \ref{table:ports}.
+\begin{table}
+\caption{Platforms on which \PSIthree\ has been installed successfully.} \label{table:ports}
+\begin{tabular}{lll} \hline\hline
+Hardware & Operating System(s) & Special Notes \\ \hline
+Compaq Alpha & Compaq TrueUNIX64 & 64-bit mode \\
+IBM RS/6000 & AIX 3.2.5, AIX 4.1-4.3.0 &
+IBM C, C++, and Fortran compilers\\
+IBM PowerPC & AIX 4.3.2 & 
+IBM C, C++, and Fortran compilers;
+64-bit mode\\
+Intel ix86 & Linux 2.2 & \\
+SGI Origin 2000 & IRIX64 6.5 & 64-bit \\ \hline\hline
+\end{tabular}
+\end{table}
+If you don't find your system in the Table, there's a good chance
+that you will be able to install \PSIthree\ on your system
+if you have all of the following:
+
+\subsection{Before You Run \PSIthree}
+Every user needs to configure her or his
+shell environment prior to running \PSIthree:
+\begin{enumerate}
+\item add the location of the binaries to {\tt \$PATH}
+\item add the location of the manpages to {\tt \$MANPATH}
+\end{enumerate}
+In C-shell it may be achieved like this:
+\begin{verbatim}
+set psipath = /put/psi/installation/directory/here
+setenv PATH $psipath`$psipath/bin/host.sh`/bin:$PATH
+setenv MANPATH $psipath/doc/man:$MANPATH
+\end{verbatim}
+Note that in previous versions of PSI, the installation directory
+was frequently in a subdirectory of the source distribution directory.
+This is no longer the case.  Now, \file{psipath} is commonly something
+like \file{/usr/local/psi3} while the source directory will be elsewhere.
+

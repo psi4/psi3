@@ -1,0 +1,36 @@
+%
+% PSI Programmer's Manual
+%
+% Fundamental PSI Functions Intro.
+%
+% Daniel Crawford, 26 January, 1996
+%
+
+Each \PSIthree\ module (e.g. \PSIcscf) must perform two specific
+tasks, regardless of the individual module's specific purpose(s): (1)
+obtaining user input options and (2) writing to and reading from
+binary files (e.g. the checkpoint file).  \PSIthree\ programs written
+in the C programming language make use of two libraries which
+provide all the tools necessary to carry out these functions:
+\begin{itemize}
+\item \library{libipv1.a} --- the input parser
+\item \library{libpsio.a} --- the I/O interface
+\end{itemize}
+In addition, the libraries \library{libciomr.a} and \library{libqt.a}
+provide important functions for memory allocation, mathematics, and
+code timing.  In the next section, we will discuss the basic
+components of a \PSIthree\ C-language program, followed by detailed
+descriptions of the input parsing and I/O libraries.
+
+\subsection{The Structure of a \PSIthree\ C Program}\label{C_Program}
+\input{c_program}
+
+\subsection{The Input Parser}\label{C_IP}
+\input{ip}
+
+\subsection{The Binary Input/Output System}\label{C_IO_New}
+\input{io_new}
+
+%\subsection{The Old Binary Input and Output System}\label{C_IO}
+%\input{io}
+

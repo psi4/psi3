@@ -1,0 +1,70 @@
+\section{Geometry Optimization and Vibrational Frequency Analysis} \label{opt}
+
+\PSIthree\ is capable of carrying out geometry optimizations (minimization
+only, at present) for a variety of molecular structures using either analytic
+and numerical energy gradients.  
+
+When analytic gradients are available (see Table \ref{table:methods}),
+\PSIthree\ will automatically generate and use so-called redundant internal
+coordinates for carrying out the optimization.  These simple stretch, bend,
+torsion, and linear bend coordinates may be read from the intco.dat file
+or determined completely by distance criteria using the input geometry, and
+written by to the intco.dat file.  By default, optimization is performed in
+redundant internal coordinates regardless of whether cartesian or z-matrix
+coordinates were given in the input.  However, optimizations cannot be
+perfomed if any dummy atoms are used in the specification of the input
+geometry.  
+
+For methods for which only energies are available, \PSIthree\ will use
+symmetry-adapted delocalized internal coordinates to generate geometrical
+displacements for computing finite-difference gradients. The simple
+coordinates can be linearly combined by hand or automatically.  The goal
+is to form 3N-6(5) symmetry-adapted internal coordinates.  The automated
+delocalized coordinates may work for low-symmetry molecules without
+linear angles, but has not been extensively tested.  For both analytic-
+and finite-difference-gradient optimizaiton methods, Hessian updates are
+performed using the BFGS method.
+
+In addition, simple internal coordinates may be generated from the z-matrix
+given in the input.  The user may denote (using a dollar sign) which
+coordinates should not be optimized.  However, this release of \PSIthree\
+does not have a general mechanism to rigorously enforce geometrical
+constraints, so the results should be examined carefully.
+
+\PSIthree\ is also capable of computing harmonic vibrational frequencies
+for a number of different methods using either analytic energy first or
+second derivatives.  (At present, only RHF-SCF analytic second derivatives
+are available.)  For those methods for which analytic gradients have been
+coded (see Table \ref{table:methods}), \PSIthree\ will generate displaced
+geometries along symmetrized, delocalized internal coordinates, compute
+the appropriate first derivatives, and use finite-difference methods to
+compute the Hessian.
+
+For finite-difference procedures for vibrational frequency calculations,
+the user should keep in mind that, for geometric displacements along
+non-totally-symmetric coordinates, by definition, the molecular point
+group symmetry will decrease.  As a result, any \PSIthree\ keywords in
+the input file which depend on the number of irreducible representations
+will be incorrect.  For example, if the user must specify the {\tt DOCC}
+keyword in order to obtain the correct MO occupations for their system,
+computation of non-symmetric vibrational modes via finite-differences
+will necessarily fail.  The developers are working to further automate
+the computation of vibrational frequencies such that the correlation
+of irreducible representations between point groups can be handled
+correctly.  This feature will be available in a future release of the
+package.
+
+The following keywords are pertinent for geometry optimizations and
+vibrational frequency analyses:
+\begin{description}
+\item[JOBTYPE = string]\mbox{}\\
+This keyword (described earlier in this manual) must be set to
+{\tt OPT} for geometry optimizations and {\tt FREQ} for frequency analyses.
+\item[DERTYPE = string]\mbox{}\\
+This keyword (also described earlier) must be set to {\tt NONE} is only
+energies are available for the chosen method and {\tt FIRST} if analytic
+gradients are available.
+\item[BFGS\_USE\_LAST = integer]\mbox{}\\ This keyword is used to specify
+the number of gradient step for the BFGS update of the Hessian.  The default
+is six.  
+\end{description}

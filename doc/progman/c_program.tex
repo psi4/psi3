@@ -1,0 +1,120 @@
+%
+% PSI Programmer's Manual
+%
+% Essentials of a C Program
+%
+% David Sherrill, 31 January 1996
+% Updates by TDC, 2002.
+%
+
+To function as part of the PSI package, a program must incorporate
+certain required elements.  This section will discuss the header
+files, global variables, and functions required to integrate a C
+program into \PSIthree.  Figure \ref{fig:Essential_C_Program} presents
+a minimal \PSIthree\ program, whose elements are described below.
+
+\begin{figure}
+\begin{verbatim}
+                #include <stdio.h>
+                #include <libipv1/ip_lib.h>
+                #include <libpsio/psio.h>
+                #include <libciomr/libciomr.h>
+
+                FILE *infile, *outfile;
+                char *psi_file_prefix;
+
+                int main(int argc, char *argv[])
+                {
+                  extern char *gprgid(void);
+
+                  psi_start(argc-1, argv+1, 0);
+                  ip_cwk_add(gprgid());
+                  psio_init();
+
+                  /* to start timing, tstart(outfile); */
+                
+                  /* Insert code here */
+
+                  /* to end timing, tstop(outfile); */
+
+                  psio_done();
+                  psi_stop();
+                }
+
+                char *gprgid(void)
+                {
+                   char *prgid = ":CODE_NAME";
+                   return(prgid);
+                }               
+\end{verbatim}
+\caption{The essential elements of a \PSIthree\ C-language program.}
+\label{fig:Essential_C_Program}
+\end{figure}
+
+The required include files are \file{libipv1/ip\_lib.h},
+\file{libciomr/libciomr.h}, \file{libpsio/psio.h}, and of course
+\file{stdio.h}.  The first of these is for the Input Parser Library,
+Version 1 (\file{libipv1.a}), which is described in section
+\ref{C_IP}.  The second file contains function prototypes for the C
+Math Routines and old-style I/O library, \file{libciomr.a}.  The third
+file analogously provides clean interface to functions of the new C
+I/O system described in section \ref{C_IO_New}.  The PSI libraries
+require that \celem{infile}, \celem{outfile}, and
+\celem{psi\_file\_prefix} be global variables.  
+
+The integer function \celem{main()} must be able to handle
+command-line arguments required by the \PSIthree\ libraries.  In
+particular, all \PSIthree\ modules must be able to pass to the
+function \celem{psi\_start()} arguments for the user's input and
+output filenames, as well as a global file prefix to be used for
+naming standard binary and text data files.  (NB: the default names
+for user input and output are \inputdat\ and \outputdat, respectively,
+though any name may be used.) The current standard for command-line
+arguments is for all module-specific arguments ({\em e.g.},
+\celem{--quiet}, used in \module{detci}) {\em before} the input,
+output, and prefix values.  The \celem{psi\_start()} function expect
+to find {\em only} these last three arguments at most, so the
+programmer should pass as \celem{argv[]} the pointer to the first
+non-module-specific argument.  The above example is appropriate for a
+\PSIthree\ module that requires no command-line arguments apart from
+the input/output/prefix globals.  See the \PSIthree\ modules
+\module{input} and \module{detci} for more sophisticated examples.
+The final argument to \celem{psi\_start()} is an integer whose value
+indicates whether the output file should be overwitten (1) or appended
+(0).  Most \PSIthree\ modules should choose to append.
+
+The \celem{psi\_start()} function initializes the user's input and
+output files and sets the global variables \celem{infile},
+\celem{outfile}, and \celem{psi\_file\_prefix}, based on (in order of
+priority) the above command-line arguments or the environmental
+variables \celem{PSI\_INPUT}, \celem{PSI\_OUTPUT}, and
+\celem{PSI\_PREFIX}.  The value of the global file prefix can also be
+specified in the user's input file.  The \celem{psi\_start()} function
+will also initialize the input parser and sets up a default keyword
+tree (described in detail in section \ref{C_IP}).  This step is
+required even if the program will not do any input parsing, because
+some of the functionality of the input parser is assumed by
+\library{libciomr.a} and \library{libpsio.a}.  For instance, opening a
+binary file via \celem{psio\_open()} (see section \ref{C_IO_New})
+requires parsing the \keyword{files} section of the user's input so
+that a unit number (e.g.~52) can be translated into a filename.
+
+The \celem{psi\_stop()} function shuts down the input parser and closes
+the user's input and output files.
+
+Timing information (when the program starts and stops, and how much
+user, system, and wall-clock time it requires) can be printed to the
+output file by adding calls to \celem{tstart()} and \celem{tstop()}
+(from \library{libciomr.a}).
+
+The sole purpose of the simple function \celem{gprgid()} is to provide
+the input parser a means to determine the name of the current program.
+This allows the input parser to add the name of the program to the
+input parsing keyword tree.  This function is used by
+\library{libpsio.a}, though the functionality it provides is rarely
+used.
+
+NB: The library \library{libciomr.a} contains older I/O functions that
+have been superceded by functions in \library{libpsio.a}.  However,
+you are encouraged to use the many non-I/O functions in
+\library{libciomr.a}.

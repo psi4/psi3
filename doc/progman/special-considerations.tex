@@ -1,0 +1,22 @@
+% 
+% PSI Programmer's Manual
+%
+% Section on special considerations
+%
+% Created by 
+% David Sherrill, 8 January 2003
+%
+% This section is for special gotchas
+%
+
+The following is a list of special items that should be kept in mind
+while developing PSI code.
+
+\begin{description}
+\item [{\em Malloc() calls on IBM}:] The current IBM compilers (Visual Age
+  C/C++ 5) do not properly prototype {\tt malloc()} unless one includes
+  {\tt stdlib.h}.  Please make sure that you {\tt \#include <stdlib.h>}
+  anytime you call {\tt malloc()} in a file.  If you forget, it will
+  still work in gcc but not on an IBM.
+\end{description}
+
