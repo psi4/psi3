@@ -27,7 +27,7 @@ sub extract_data
   while (<OUT>) {
     if (/Nuclear Repulsion Energy    =/) {
       @data1 = split(/ +/, $_);
-      $_[2] = $data1[4];
+      $_[1] = $data1[4];
     }
   }
 
@@ -35,7 +35,7 @@ sub extract_data
   while (<OUT>) {
     if (/total energy       =/) {
       @data2 = split(/ +/, $_);
-      $_[3] = $data2[4];
+      $_[2] = $data2[4];
     }
   }
   
