@@ -72,6 +72,7 @@ int main(int argc, char *argv[])
                4, moinfo.aoccpi, moinfo.aocc_sym, moinfo.orbspi, moinfo.orbsym, 
 	       moinfo.boccpi, moinfo.bocc_sym, moinfo.orbspi, moinfo.orbsym);
       dpd_set_default(0);
+    }
   }
 
   init_amps();

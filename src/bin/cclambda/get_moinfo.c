@@ -18,7 +18,7 @@
 void get_moinfo(void)
 {
   int i, h, p, q, errcod, nactive, nirreps;
-  double ***C;
+  double ***C, ***Ca, ***Cb;
   psio_address next;
 
   chkpt_init();

@@ -11,7 +11,7 @@ void WefabL2(void)
 {
   dpdbuf4 Lijab, LIJAB, LIjAb;
   dpdbuf4 newLijab, newLIJAB, newLIjAb;
-  dpdbuf4 T2, Z, L2, B, D, F, Ltmp;
+  dpdbuf4 Tau, T2, Z, Z1, Z2, L, L2, B, D, F, Ltmp;
   dpdfile2 tIA, tia;
 
   /* RHS += Wefab*Lijef  */
@@ -249,9 +249,9 @@ void WefabL2(void)
     /** Z(Ij,Am) = L(Ij,Fe) F(Fe,Am) **/
     dpd_buf4_init(&Z, CC_TMP1, 0, 22, 26, 22, 26, 0, "Z(Ij,Am)");
     dpd_buf4_init(&F, CC_FINTS, 0, 28, 26, 28, 26, 0, "F <Ab|Ci>");
-    dpd_buf4_init(&L, CC_LAMPS, 0, 22, 28, 22, 28, 0, "LIjAb");
-    dpd_contract444(&L, &F, &Z, 0, 1, -1, 0);
-    dpd_buf4_close(&L);
+    dpd_buf4_init(&L2, CC_LAMPS, 0, 22, 28, 22, 28, 0, "LIjAb");
+    dpd_contract444(&L2, &F, &Z, 0, 1, -1, 0);
+    dpd_buf4_close(&L2);
     dpd_buf4_close(&F);
     /** New L(Ij,Ab) <-- Z(Ij,Am) t(m,b) **/
     dpd_contract424(&Z, &tia, &newLIjAb, 3, 0, 0, 1, 1);
@@ -260,8 +260,8 @@ void WefabL2(void)
     /** Z(Ij,Mb) = - L(Ij,Ef) F(Mb,Ef) **/
     dpd_buf4_init(&Z, CC_TMP1, 0, 22, 24, 22, 24, 0, "Z(Ij,Mb)");
     dpd_buf4_init(&F, CC_FINTS, 0, 24, 28, 24, 28, 0, "F <Ia|Bc>");
-    dpd_buf4_init(&L, CC_LAMPS, 0, 22, 28, 22, 28, 0, "LIjAb");
-    dpd_contract444(&L, &F, &Z, 0, 0, -1, 0);
+    dpd_buf4_init(&L2, CC_LAMPS, 0, 22, 28, 22, 28, 0, "LIjAb");
+    dpd_contract444(&L2, &F, &Z, 0, 0, -1, 0);
     dpd_buf4_close(&L);
     dpd_buf4_close(&F);
     /** New L(Ij,Ab) <-- t(M,A) Z(Ij,Mb) **/

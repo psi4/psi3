@@ -10,10 +10,10 @@ void FmiL2(void)
   dpdbuf4 Lijab, LIJAB, LIjAb;
   dpdbuf4 newLijab, newLIJAB, newLIjAb;
   dpdfile2 LFmit2, LFMIt2;
-  dpdbuf4 X1, X2;
+  dpdbuf4 X, X1, X2;
 
   /* RHS -= P(ij)*Limab*Fjm */
-  if(params.ref == 0 || params.ref = 1) { /** RHF/ROHF **/
+  if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
     dpd_file2_init(&LFMIt2, CC_OEI, 0, 0, 0, "FMIt");
     dpd_file2_init(&LFmit2, CC_OEI, 0, 0, 0, "Fmit");

@@ -13,11 +13,12 @@ void denom(void) {
 
 void denom_uhf(void)
 {
-  int nirreps, h, i, j, a, b, ij, ab, I, J, A, B;
-  int *aoccpi, *boccpi, *avirtpi, *bvirtpi;
+  int nirreps, h, i, j, a, b, ij, ab, I, J, A, B, isym, jsym, asym, bsym;
+  int *aoccpi, *boccpi, *avirtpi, *bvirtpi; 
+  int *aocc_off, *bocc_off, *avir_off, *bvir_off;
   dpdfile2 LFMIt, LFmit, LFaet, LFAEt;
   dpdfile2 dIA, dia;
-  dpdbuf4 dIJAB, dijab, dIjAb;
+  dpdfile4 dIJAB, dijab, dIjAb;
   double Fii, Fjj, Faa, Fbb;
 
   dpd_file2_init(&LFMIt, CC_OEI, 0, 0, 0, "FMI");
