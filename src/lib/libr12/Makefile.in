@@ -10,7 +10,7 @@ TEMP_DIR = ${SCRATCH}/libr12
 .PHONY: default install all
 .PHONY: clean oclean iclean dclean target_clean
 
-install: $(TARGET)
+default: $(TARGET)
 
 top_objdir_path=$(PWD)/$(top_objdir)
 
@@ -23,7 +23,7 @@ fi; \
 if \
  [ -e $(TEMP_DIR) ]; \
 then \
- echo "Scratch directory already exists!";\
+ echo "Scratch directory $(TEMP_DIR) already exists!";\
  echo "Specify some other location"; \
  exit; \
 else \
@@ -36,7 +36,9 @@ cd $(TEMP_DIR); \
 cp Makefile.compiler Makefile; \
 $(MAKE) top_objdir=$(top_objdir_path); \
 rm -f Makefile; \
-./$(BUILD_BINARY); \
+if ! ./$(BUILD_BINARY); then \
+ cd ..; rm -fR $(TEMP_DIR); exit 1; \
+fi; \
 cp Makefile.libr12 Makefile; \
 ${MAKE} top_objdir=$(top_objdir_path) install; \
 cd ..; \

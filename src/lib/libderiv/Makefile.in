@@ -10,7 +10,7 @@ TEMP_DIR = ${SCRATCH}/libderiv
 .PHONY: default install all
 .PHONY: clean oclean iclean dclean target_clean
 
-install: $(TARGET)
+default: $(TARGET)
 
 top_objdir_path=$(PWD)/$(top_objdir)
 
