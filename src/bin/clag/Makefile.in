@@ -8,9 +8,7 @@ LDLIBS += $(BLAS)
 
 PSILIBS = libPSI_qt.a libPSI_chkpt.a libPSI_iwl.a -lPSI_psio libPSI_ciomr.a libPSI_ipv1.a
 
-CSRC = clag.c lagcalc.c ci_energy.c \
-       onel_to_cas.c twoel_to_cas.c onepdm_to_cas.c twopdm_to_cas.c \
-       lag_to_cas.c
+CSRC = clag.c lagcalc.c ci_energy.c
 
 CXXSRC = 
 

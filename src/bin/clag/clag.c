@@ -89,8 +89,8 @@ main(int argc, char **argv)
   ** print out header information
   */
   fprintf(outfile,"CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY\n");
-  fprintf(outfile,"WRITTEN BY BRIAN HOFFMAN, MATT LEININGER");
-  fprintf(outfile," AND DAVID SHERRILL\n\n"); 
+  fprintf(outfile,"WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, ");
+  fprintf(outfile,"AND MATT LEININGER\n"); 
 
   /*
   ** calculate some needed numbers 
@@ -178,7 +178,9 @@ main(int argc, char **argv)
 
   /*
   ** write out the two-pdm in a form that the CAS program will like
-  */
+  ** this is obsolete stuff for the very old CAS program of YY's, we
+  ** aren't using that anymore.  --- CDS 8/26/03
+  **
   if (write_cas_files) {
     onel_to_cas(onel_ints, corr_to_pitz, nmo, print_lvl, cas_onel_file);
     twoel_to_cas(twoel_ints, corr_to_pitz, nmo, print_lvl, cas_twoel_file);
@@ -186,6 +188,7 @@ main(int argc, char **argv)
     twopdm_to_cas(tpdm, corr_to_pitz, nmo, npop, print_lvl, cas_tpdm_file);
     lag_to_cas(lag, corr_to_pitz, nmo, print_lvl, cas_lag_file);
   }
+  */
 
   /*
   ** free memory
