@@ -46,7 +46,7 @@ void mp2r12_energy(void)
   double mp2r12_energy = 0.0;
   double escf;
   double tolerance;
-  double *eri, *r12, *r12t;
+  double *moints;
   double **K, **R, **U, **V_full[2], **V[2], **T_full[2], **B[2];
   double **Binv[2];
   double *pair_energy[2];               /* MP2 pair energies for each spin case */
@@ -83,14 +83,9 @@ void mp2r12_energy(void)
   ntri = nmo*(nmo+1)/2;
   ndg = ndocc*nmo;
   nte = ndg*(ndg+1)/2;
-  eri = init_array(nte);
-  r12 = init_array(nte);
-  r12t = init_array(nte);
+  moints = init_array(nte);
   pair_energy[0] = init_array(ntri_docc);
   pair_energy[1] = init_array(ntri_docc);
-  K   = block_matrix(ntri_docc,ntri);
-  R   = block_matrix(ntri_docc,ntri);
-  U   = block_matrix(ntri_docc,ntri);
   V_full[0]   = block_matrix(ntri_docc,ntri_docc);
   V_full[1]   = block_matrix(ntri_docc,ntri_docc);
   if (ndocc != ndocc_act) {
@@ -112,32 +107,25 @@ void mp2r12_energy(void)
   make_arrays(moinfo.evals,&evals_docc,&evals_virt,ndocc, ndocc_act, nmo, &ioff3,
               &focact, &locact, &fvract, &lvract, &vir_Q2P, &act2full);
   
-  iwl_buf_init(&ERIBuff, PSIF_MO_TEI, tolerance, 1, 1);
-  iwl_buf_rd_all_mp2r12a(&ERIBuff, eri, ioff3, ioff3, 1, ioff, (print_lvl > 3), outfile);
-  iwl_buf_close(&ERIBuff, keep_integrals);
-
-  iwl_buf_init(&R12Buff, PSIF_MO_R12, tolerance, 1, 1);
-  iwl_buf_rd_all_mp2r12a(&R12Buff, r12, ioff3, ioff3, 1, ioff, (print_lvl > 3), outfile);
-  iwl_buf_close(&R12Buff, keep_integrals);
-
-  iwl_buf_init(&R12TBuff, PSIF_MO_R12T1, tolerance, 1, 1);
-  iwl_buf_rd_all_mp2r12a(&R12TBuff, r12t, ioff3, ioff3, 0, ioff, (print_lvl > 3), outfile);
-  iwl_buf_close(&R12TBuff, keep_integrals);
-
   /*------------------------------------------
     For each spin case form K, R, T matrices,
     and compute pair energies
    ------------------------------------------*/
   for(spin=0; spin <= 1; spin++) {
-    spin_pfac = 1.0 - 2.0*spin;
 
     /*-----------------------------
-      Compute K and R matrices
+      Compute K, R, and U matrices
      -----------------------------*/
     /* NOTE: for each spin case I use only one scratch
-       array for K and R since ijpq loops run over the
-       same range
+       array for K, R, and U since ijpq loops run over
+       the same range every time
        */
+    memset(moints, 0, nte*sizeof(double));
+    iwl_buf_init(&ERIBuff, PSIF_MO_TEI, tolerance, 1, 1);
+    iwl_buf_rd_all_mp2r12a(&ERIBuff, moints, ioff3, ioff3, 1, ioff, (print_lvl > 3), outfile);
+    iwl_buf_close(&ERIBuff, keep_integrals);
+    K   = block_matrix(ntri_docc,ntri);
+    spin_pfac = 1.0 - 2.0*spin;
     for(isym=0; isym < nirreps; isym++) {
       ifirst = focact[isym];
       ilast = locact[isym];
@@ -170,9 +158,7 @@ void mp2r12_energy(void)
 		  iqjp = INDEX(iq,jp);
 		  perm_pfac = (p == q) ? oosqrt2 : 1.0;
 		  perm_pfac *= (i == j) ? oosqrt2 : 1.0;
-		  K[ij][pq] = perm_pfac*(eri[ipjq] + spin_pfac*eri[iqjp]);
-		  R[ij][pq] = perm_pfac*(r12[ipjq] + spin_pfac*r12[iqjp]);
-		  U[ij][pq] = perm_pfac*(r12t[ipjq] + spin_pfac*r12t[iqjp]);
+		  K[ij][pq] = perm_pfac*(moints[ipjq] + spin_pfac*moints[iqjp]);
 		}
 	      }
 	    }
@@ -181,57 +167,6 @@ void mp2r12_energy(void)
       }
     }
 
-    /*-------------------------
-      Compute V and T matrices
-     -------------------------*/
-    for(ij=0;ij<ntri_docc;ij++) {
-      V_full[spin][ij][ij] = 1.0;
-      T_full[spin][ij][ij] = 1.0;
-    }
-    C_DGEMM('n','t',ntri_docc,ntri_docc,ntri,-1.0,
-	    R[0],ntri,K[0],ntri,1.0,V_full[spin][0],ntri_docc);
-    C_DGEMM('n','t',ntri_docc,ntri_docc,ntri,+1.0,          /* <- "+"-sign here because apparently I am missing it somewhere */
-	    R[0],ntri,U[0],ntri,1.0,T_full[spin][0],ntri_docc);
-
-    if (ndocc != ndocc_act) {
-      for(ij=0;ij<ntri_docc_act;ij++)
-	for(kl=0;kl<ntri_docc_act;kl++)
-	  V[spin][ij][kl] = V_full[spin][act2full[ij]][act2full[kl]];
-    }
-    else
-      V[spin] = V_full[spin];
-    
-    /*-----------------
-      Compute B matrix
-     -----------------*/
-    for(ij=0;ij<ntri_docc_act;ij++)
-      for(kl=0;kl<=ij;kl++)
-	B[spin][kl][ij] = B[spin][ij][kl] = 0.5*(T_full[spin][act2full[ij]][act2full[kl]]
-						 + T_full[spin][act2full[kl]][act2full[ij]]);
-
-    free_block(T_full[spin]);
-    
-    /*-------------------------------
-      Compute basis set completeness
-     -------------------------------*/
-    traceV = traceB = 0.0;
-    for(i=0;i<ndocc_act;i++)
-      for(j=0;j<=i-spin;j++) {
-	ij = ioff[i]+j;
-	traceV += V[spin][ij][ij];
-	traceB += B[spin][ij][ij];
-      }
-    VoBtrace[spin] = traceV/traceB;
-
-    /*----------------------
-      Compute B^(-1) matrix
-     ----------------------*/
-    sq_rsp(ntri_docc_act,ntri_docc_act,B[spin],tmp_ptr,1,evecs,1e-14);
-    for(i=0;i<ntri_docc_act;i++)
-      tmp1[i][i] = 1.0/tmp_ptr[i];
-    mmult(tmp1,0,evecs,1,tmp2,0,ntri_docc_act,ntri_docc_act,ntri_docc_act,0);  
-    mmult(evecs,0,tmp2,0,Binv[spin],0,ntri_docc_act,ntri_docc_act,ntri_docc_act,0);
-    
     /*---------------------------------------
       Compute conventional MP2 pair energies
      ---------------------------------------*/
@@ -270,6 +205,137 @@ void mp2r12_energy(void)
       }
     }
 
+    for(ij=0;ij<ntri_docc_act;ij++)
+      mp2_energy += pair_energy[spin][act2full[ij]];
+
+    
+    memset(moints, 0, nte*sizeof(double));
+    iwl_buf_init(&R12Buff, PSIF_MO_R12, tolerance, 1, 1);
+    iwl_buf_rd_all_mp2r12a(&R12Buff, moints, ioff3, ioff3, 1, ioff, (print_lvl > 3), outfile);
+    iwl_buf_close(&R12Buff, keep_integrals);
+    R   = block_matrix(ntri_docc,ntri);
+    spin_pfac = 1.0 - 2.0*spin;
+    for(isym=0; isym < nirreps; isym++) {
+      ifirst = focact[isym];
+      ilast = locact[isym];
+      for(i=ifirst; i <= ilast; i++) {
+	for(jsym=0; jsym <= isym; jsym++) {
+	  ijsym = isym^jsym;
+	  jfirst = focact[jsym];
+	  /*--- i >= j ---*/
+	  jlast = MIN(locact[jsym],i);
+	  for(j=jfirst; j <= jlast; j++) {
+	    ij = ioff[i]+j;
+	    for(psym=0; psym < nirreps; psym++) {
+	      pfirst = first[psym];
+	      plast = last[psym];
+	      for(p=pfirst; p <= plast; p++) {
+		ip = ioff3[i] + p;
+		jp = ioff3[j] + p;
+		/*--- We need p >= q -> if qsym > psym - continue ---*/
+		qsym = ijsym^psym;
+		if (qsym > psym)
+		  continue;
+		qfirst = first[qsym];
+		/*--- p >= q ---*/
+		qlast = MIN(last[qsym],p);
+		for(q=qfirst; q <= qlast; q++) {
+		  iq = ioff3[i] + q;
+		  jq = ioff3[j] + q;
+		  pq = ioff[p]+q;
+		  ipjq = INDEX(ip,jq);
+		  iqjp = INDEX(iq,jp);
+		  perm_pfac = (p == q) ? oosqrt2 : 1.0;
+		  perm_pfac *= (i == j) ? oosqrt2 : 1.0;
+		  R[ij][pq] = perm_pfac*(moints[ipjq] + spin_pfac*moints[iqjp]);
+		}
+	      }
+	    }
+	  }
+	}
+      }
+    }
+
+    for(ij=0;ij<ntri_docc;ij++) {
+      V_full[spin][ij][ij] = 1.0;
+    }
+    C_DGEMM('n','t',ntri_docc,ntri_docc,ntri,-1.0,
+	    R[0],ntri,K[0],ntri,1.0,V_full[spin][0],ntri_docc);
+    free_block(K);
+    
+    memset(moints, 0, nte*sizeof(double));
+    iwl_buf_init(&R12TBuff, PSIF_MO_R12T1, tolerance, 1, 1);
+    iwl_buf_rd_all_mp2r12a(&R12TBuff, moints, ioff3, ioff3, 0, ioff, (print_lvl > 3), outfile);
+    iwl_buf_close(&R12TBuff, keep_integrals);
+    U   = block_matrix(ntri_docc,ntri);
+    spin_pfac = 1.0 - 2.0*spin;
+    for(isym=0; isym < nirreps; isym++) {
+      ifirst = focact[isym];
+      ilast = locact[isym];
+      for(i=ifirst; i <= ilast; i++) {
+	for(jsym=0; jsym <= isym; jsym++) {
+	  ijsym = isym^jsym;
+	  jfirst = focact[jsym];
+	  /*--- i >= j ---*/
+	  jlast = MIN(locact[jsym],i);
+	  for(j=jfirst; j <= jlast; j++) {
+	    ij = ioff[i]+j;
+	    for(psym=0; psym < nirreps; psym++) {
+	      pfirst = first[psym];
+	      plast = last[psym];
+	      for(p=pfirst; p <= plast; p++) {
+		ip = ioff3[i] + p;
+		jp = ioff3[j] + p;
+		/*--- We need p >= q -> if qsym > psym - continue ---*/
+		qsym = ijsym^psym;
+		if (qsym > psym)
+		  continue;
+		qfirst = first[qsym];
+		/*--- p >= q ---*/
+		qlast = MIN(last[qsym],p);
+		for(q=qfirst; q <= qlast; q++) {
+		  iq = ioff3[i] + q;
+		  jq = ioff3[j] + q;
+		  pq = ioff[p]+q;
+		  ipjq = INDEX(ip,jq);
+		  iqjp = INDEX(iq,jp);
+		  perm_pfac = (p == q) ? oosqrt2 : 1.0;
+		  perm_pfac *= (i == j) ? oosqrt2 : 1.0;
+		  U[ij][pq] = perm_pfac*(moints[ipjq] + spin_pfac*moints[iqjp]);
+		}
+	      }
+	    }
+	  }
+	}
+      }
+    }
+    
+    /*-------------------------
+      Compute V and T matrices
+     -------------------------*/
+    for(ij=0;ij<ntri_docc;ij++) {
+      T_full[spin][ij][ij] = 1.0;
+    }
+    C_DGEMM('n','t',ntri_docc,ntri_docc,ntri,+1.0,          /* <- "+"-sign here because apparently I am missing it somewhere */
+	    R[0],ntri,U[0],ntri,1.0,T_full[spin][0],ntri_docc);
+    free_block(R);
+    free_block(U);
+
+    if (ndocc != ndocc_act) {
+      for(ij=0;ij<ntri_docc_act;ij++)
+	for(kl=0;kl<ntri_docc_act;kl++)
+	  V[spin][ij][kl] = V_full[spin][act2full[ij]][act2full[kl]];
+    }
+    else
+      V[spin] = V_full[spin];
+    
+    /*-----------------
+      Compute B matrix
+     -----------------*/
+    for(ij=0;ij<ntri_docc_act;ij++)
+      for(kl=0;kl<=ij;kl++)
+	B[spin][kl][ij] = B[spin][ij][kl] = 0.5*(T_full[spin][act2full[ij]][act2full[kl]]
+						 + T_full[spin][act2full[kl]][act2full[ij]]);
     if (print_lvl > 1) {
       fprintf(outfile," %s V-matrix (the difference between the unit matrix and its\n r12/r12 representation in this basis):\n",
 	      (spin == 0) ? "Singlet" : "Triplet");
@@ -282,10 +348,29 @@ void mp2r12_energy(void)
       fprintf(outfile,"\n");
     }
 
-    for(ij=0;ij<ntri_docc_act;ij++)
-      mp2_energy += pair_energy[spin][act2full[ij]];
+    free_block(T_full[spin]);
+    
+    /*-------------------------------
+      Compute basis set completeness
+     -------------------------------*/
+    traceV = traceB = 0.0;
+    for(i=0;i<ndocc_act;i++)
+      for(j=0;j<=i-spin;j++) {
+	ij = ioff[i]+j;
+	traceV += V[spin][ij][ij];
+	traceB += B[spin][ij][ij];
+      }
+    VoBtrace[spin] = traceV/traceB;
 
-
+    /*----------------------
+      Compute B^(-1) matrix
+     ----------------------*/
+    sq_rsp(ntri_docc_act,ntri_docc_act,B[spin],tmp_ptr,1,evecs,1e-14);
+    for(i=0;i<ntri_docc_act;i++)
+      tmp1[i][i] = 1.0/tmp_ptr[i];
+    mmult(tmp1,0,evecs,1,tmp2,0,ntri_docc_act,ntri_docc_act,ntri_docc_act,0);  
+    mmult(evecs,0,tmp2,0,Binv[spin],0,ntri_docc_act,ntri_docc_act,ntri_docc_act,0);
+    
     /*-------------------------------------------------
       Compute MP2-R12/A contributions to pair energies
      -------------------------------------------------*/
@@ -330,10 +415,7 @@ void mp2r12_energy(void)
   fprintf(outfile,   "\tTotal Energy          = %20.10lf\n", escf+mp2r12_energy);
   fflush(outfile);
 
-  free(eri);
-  free(r12);
-  free_block(K);
-  free_block(R);
+  free(moints);
   if (ndocc_act != ndocc) {
     free_block(V[0]);
     free_block(V[1]);
