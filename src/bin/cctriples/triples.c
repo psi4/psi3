@@ -22,9 +22,12 @@ double ET_BBB(void);
 double ET_UHF_AAA(void);
 double ET_UHF_BBB(void);
 double ET_UHF_AAB(void);
-double ET_UHF_AAB_noddy(void);
 double ET_UHF_ABB(void);
+double ET_UHF_AAA_noddy(void);
+double ET_UHF_BBB_noddy(void);
+double ET_UHF_AAB_noddy(void);
 double ET_UHF_ABB_noddy(void);
+void count_ijk(void);
 void setup(void);
 int **cacheprep_rhf(int level, int *cachefiles);
 int **cacheprep_uhf(int level, int *cachefiles);
@@ -61,6 +64,9 @@ int main(int argc, char *argv[])
 	     moinfo.avir_sym, moinfo.boccpi, moinfo.bocc_sym, moinfo.bvirtpi, moinfo.bvir_sym);
   }
 
+  count_ijk();
+  fflush(outfile);
+
   if(params.ref == 0) { /** RHF **/
 
     ET = ET_RHF();
@@ -90,21 +96,27 @@ int main(int argc, char *argv[])
 
     ETAAA = ET_UHF_AAA();
     fprintf(outfile, "\tAAA (T) energy                = %20.15f\n", ETAAA);
+    fflush(outfile);
+
     ETBBB = ET_UHF_BBB();
     fprintf(outfile, "\tBBB (T) energy                = %20.15f\n", ETBBB);
+    fflush(outfile);
+
     ETAAB = ET_UHF_AAB();
     fprintf(outfile, "\tAAB (T) energy                = %20.15f\n", ETAAB);
-    ETAAB = ET_UHF_AAB_noddy();
-    fprintf(outfile, "\tAAB (T) energy                = %20.15f\n", ETAAB);
+    fflush(outfile);
+
     ETABB = ET_UHF_ABB();
     fprintf(outfile, "\tABB (T) energy                = %20.15f\n", ETABB);
-    ETABB = ET_UHF_ABB_noddy();
-    fprintf(outfile, "\tABB (T) energy                = %20.15f\n", ETABB);
+    fflush(outfile);
+
     ET = ETAAA + ETAAB + ETABB + ETBBB;
     fprintf(outfile, "\t(T) energy                    = %20.15f\n", ET);
     fprintf(outfile, "\tTotal CCSD(T) energy          = %20.15f\n", 
 	    ET + moinfo.ecc + moinfo.eref);
   }
+
+  fprintf(outfile, "\n");
 
   dpd_close(0);
 

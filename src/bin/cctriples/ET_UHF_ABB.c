@@ -1,8 +1,15 @@
 #include <stdio.h>
 #include <math.h>
 #include <dpd.h>
+#include <qt.h>
 #define EXTERN
 #include "globals.h"
+
+enum pattern {abc, acb, cab, cba, bca, bac};
+
+void W_sort(double ***Win, double ***Wout, int nirreps, int h, int *coltot, int **colidx, 
+	    int ***colorb, int *asym, int *bsym, int *aoff, int *boff,
+	    int *cpi, int *coff, int **colidx_out, enum pattern index, int sum);
 
 double ET_UHF_ABB(void)
 {
@@ -10,10 +17,17 @@ double ET_UHF_ABB(void)
   int h, nirreps;
   int Gi, Gj, Gk, Ga, Gb, Gc, Gd, Gl;
   int Gji, Gij, Gjk, Gkj, Gik, Gki, Gijk;
+  int Gab, Gbc, Gac, Gca, Gba;
+  int Gid, Gjd, Gkd;
+  int Gil, Gjl, Gkl;
   int I, J, K, A, B, C;
   int i, j, k, a, b, c;
   int ij, ji, ik, ki, jk, kj;
   int ab, ba, ac, ca, bc, cb;
+  int cd, bd, ad, db, dc;
+  int lc, lb, la;
+  int id, jd, kd;
+  int il, jl, kl;
   int *aoccpi, *avirtpi, *aocc_off, *avir_off;
   int *boccpi, *bvirtpi, *bocc_off, *bvir_off;
   double value_c, value_d, dijk, denom, ET_ABB;
@@ -25,12 +39,14 @@ double ET_UHF_ABB(void)
   dpdbuf4 FBBints, FABints, FBAints;
   dpdbuf4 EBBints, EABints, EBAints;
   dpdbuf4 DBBints, DABints;
-  int **T2AB_row_start, **T2_BA_row_start, **T2_BB_row_start;
-  int **T2_AB_col_start, **T2_BB_col_start;
+  int **T2AB_row_start, **T2BA_row_start, **T2BB_row_start;
+  int **T2AB_col_start, **T2BB_col_start;
   int **FAB_row_start, **FBA_row_start, **FBB_row_start;
   int **EAB_col_start, **EBA_col_start, **EBB_col_start;
   dpdfile2 T1A, T1B, fIJ, fij, fAB, fab;
-  double ***WAbc, ***VAbc, ***WAcb, ***WbAc, ***WcAb, ***bcA;
+  double ***WAbc, ***VAbc, ***WAcb, ***WbAc, ***WcAb, ***WbcA;
+  int nijk, mijk;
+  FILE *ijkfile;
 
   nirreps = moinfo.nirreps;
   aoccpi = moinfo.aoccpi; 
@@ -211,6 +227,7 @@ double ET_UHF_ABB(void)
 
   dpd_buf4_init(&T2BB, CC_TAMPS, 0, 10, 15, 12, 17, 0, "tijab");
   dpd_buf4_init(&T2AB, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tIjAb");
+  dpd_buf4_init(&T2BA, CC_TAMPS, 0, 23, 29, 23, 29, 0, "tiJaB");
 
   dpd_buf4_init(&FBBints, CC_FINTS, 0, 30, 15, 30, 15, 1, "F <ia|bc>");
   dpd_buf4_init(&FABints, CC_FINTS, 0, 24, 28, 24, 28, 0, "F <Ia|Bc>");
@@ -230,6 +247,9 @@ double ET_UHF_ABB(void)
     dpd_buf4_mat_irrep_init(&T2AB, h);
     dpd_buf4_mat_irrep_rd(&T2AB, h);
 
+    dpd_buf4_mat_irrep_init(&T2BA, h);
+    dpd_buf4_mat_irrep_rd(&T2BA, h);
+
     dpd_buf4_mat_irrep_init(&EBBints, h);
     dpd_buf4_mat_irrep_rd(&EBBints, h);
 
@@ -246,11 +266,37 @@ double ET_UHF_ABB(void)
     dpd_buf4_mat_irrep_rd(&DABints, h);
   }
 
-  cnt = 0;
+  /* Compute the number of IJK combinations in this spin case */
+  nijk = 0;
+  for(Gi=0; Gi < nirreps; Gi++)
+    for(Gj=0; Gj < nirreps; Gj++)
+      for(Gk=0; Gk < nirreps; Gk++)
+	for(i=0; i < aoccpi[Gi]; i++) {
+	  I = aocc_off[Gi] + i;
+	  for(j=0; j < boccpi[Gj]; j++) {
+	    J = bocc_off[Gj] + j;
+	    for(k=0; k < boccpi[Gk]; k++) {
+	      K = bocc_off[Gk] + k;
+
+	      if(J > K) nijk++;
+	    }
+	  }
+	}
+
+  ffile(&ijkfile, "ijk.dat", 0);
+  fprintf(ijkfile, "Spin Case: ABB\n");
+  fprintf(ijkfile, "Number of IJK combintions: %d\n", nijk);
+  fprintf(ijkfile, "\nCurrent IJK Combination:\n");
+
+  mijk = 0;
   ET_ABB = 0.0;
 
   WAbc = (double ***) malloc(nirreps * sizeof(double **));
   VAbc = (double ***) malloc(nirreps * sizeof(double **));
+  WAcb = (double ***) malloc(nirreps * sizeof(double **));
+  WbcA = (double ***) malloc(nirreps * sizeof(double **));
+  WcAb = (double ***) malloc(nirreps * sizeof(double **));
+  WbAc = (double ***) malloc(nirreps * sizeof(double **));
 
   for(Gi=0; Gi < nirreps; Gi++) {
     for(Gj=0; Gj < nirreps; Gj++) {
@@ -269,7 +315,11 @@ double ET_UHF_ABB(void)
 	    for(k=0; k < boccpi[Gk]; k++) {
 	      K = bocc_off[Gk] + k;
 
-	      if(J >= K) {
+	      if(J > K) {
+
+		mijk++;
+		fprintf(ijkfile, "%d\n", mijk);
+		fflush(ijkfile);
 
 		ij = EABints.params->rowidx[I][J];
 		ji = EBAints.params->rowidx[J][I];
@@ -314,6 +364,9 @@ double ET_UHF_ABB(void)
 			    &(FABints.matrix[Gid][0][0]), nrows,
 			    &(T2BB.matrix[Gjk][jk][cd]), nlinks, 1.0,
 			    &(WAbc[Gab][0][0]), ncols);
+
+		  dpd_free_block(FABints.matrix[Gid], bvirtpi[Gd], FABints.params->coltot[Gid]);
+
 		}
 
 		for(Gl=0; Gl < nirreps; Gl++) {
@@ -322,7 +375,7 @@ double ET_UHF_ABB(void)
 		  Gc = Gjk ^ Gl;
 
 		  lc = EBB_col_start[Gjk][Gl];
-		  il = T2AB_rows_start[Gil][I];
+		  il = T2AB_row_start[Gil][I];
 
 		  nrows = T2AB.params->coltot[Gil];
 		  ncols = bvirtpi[Gc];
@@ -335,8 +388,349 @@ double ET_UHF_ABB(void)
 			    &(WAbc[Gab][0][0]), ncols);
 		}
 
-		for(Gd=0; Gd < nirreps; Gd++) {
+		for(Gab=0; Gab < nirreps; Gab++) {
+		  Gc = Gab ^ Gijk;
 
+		  WAcb[Gab] = dpd_block_matrix(FABints.params->coltot[Gab], bvirtpi[Gc]);
+		}
+
+		for(Gd=0; Gd < nirreps; Gd++) {
+		  /* +t_jkbd * F_IdAc */
+		  Gac = Gid = Gi ^ Gd;
+		  Gb = Gjk ^ Gd;
+
+		  bd = T2BB_col_start[Gjk][Gb];
+		  id = FAB_row_start[Gid][I];
+
+		  FABints.matrix[Gid] = dpd_block_matrix(bvirtpi[Gd], FABints.params->coltot[Gid]);
+		  dpd_buf4_mat_irrep_rd_block(&FABints, Gid, id, bvirtpi[Gd]);
+
+		  nrows = FABints.params->coltot[Gid];
+		  ncols = bvirtpi[Gb];
+		  nlinks = bvirtpi[Gd];
+
+		  if(nrows && ncols && nlinks) 
+		    C_DGEMM('t', 't', nrows, ncols, nlinks, 1.0,
+			    &(FABints.matrix[Gid][0][0]), nrows,
+			    &(T2BB.matrix[Gjk][jk][bd]), nlinks, 1.0,
+			    &(WAcb[Gac][0][0]), ncols);
+
+		  dpd_free_block(FABints.matrix[Gid], bvirtpi[Gd], FABints.params->coltot[Gid]);
+
+		}
+
+		for(Gl=0; Gl < nirreps; Gl++) {
+		  /* +t_IlAc E_jklb */
+		  Gac = Gil = Gi ^ Gl;
+		  Gb = Gjk ^ Gl;
+
+		  lb = EBB_col_start[Gjk][Gl];
+		  il = T2AB_row_start[Gil][I];
+
+		  nrows = T2AB.params->coltot[Gil];
+		  ncols = bvirtpi[Gb];
+		  nlinks = boccpi[Gl];
+
+		  if(nrows && ncols && nlinks)
+		    C_DGEMM('t', 'n', nrows, ncols, nlinks, 1.0,
+			    &(T2AB.matrix[Gil][il][0]), nrows,
+			    &(EBBints.matrix[Gjk][jk][lb]), ncols, 1.0,
+			    &(WAcb[Gac][0][0]), ncols);
+		}
+
+		W_sort(WAcb, WAbc, nirreps, Gijk, FABints.params->coltot, FABints.params->colidx,
+		       FABints.params->colorb, FABints.params->rsym, FABints.params->ssym,
+		       avir_off, bvir_off, bvirtpi, bvir_off, FABints.params->colidx, acb, 1);
+
+		for(Gab=0; Gab < nirreps; Gab++) {
+		  Gc = Gab ^ Gijk;
+
+		  dpd_free_block(WAcb[Gab], FABints.params->coltot[Gab], bvirtpi[Gc]);
+
+		  WbcA[Gab] = dpd_block_matrix(FBBints.params->coltot[Gab], avirtpi[Gc]);
+		}
+
+		for(Gd=0; Gd < nirreps; Gd++) {
+		  /* +t_IkAd * F_jdbc */
+		  Gbc = Gjd = Gj ^ Gd;
+		  Ga = Gik ^ Gd;
+
+		  ad = T2AB_col_start[Gik][Ga];
+		  jd = FBB_row_start[Gjd][J];
+
+		  FBBints.matrix[Gjd] = dpd_block_matrix(bvirtpi[Gd], FBBints.params->coltot[Gjd]);
+		  dpd_buf4_mat_irrep_rd_block(&FBBints, Gjd, jd, bvirtpi[Gd]);
+
+		  nrows = FBBints.params->coltot[Gjd];
+		  ncols = avirtpi[Ga];
+		  nlinks = bvirtpi[Gd];
+
+		  if(nrows && ncols && nlinks) 
+		    C_DGEMM('t', 't', nrows, ncols, nlinks, 1.0,
+			    &(FBBints.matrix[Gjd][0][0]), nrows,
+			    &(T2AB.matrix[Gik][ik][ad]), nlinks, 1.0,
+			    &(WbcA[Gbc][0][0]), ncols);
+
+		  dpd_free_block(FBBints.matrix[Gjd], bvirtpi[Gd], FBBints.params->coltot[Gjd]);
+
+		  /* -t_IjAd * F_kdbc */
+		  Gbc = Gkd = Gk ^ Gd;
+		  Ga = Gij ^ Gd;
+
+		  ad = T2AB_col_start[Gij][Ga];
+		  kd = FBB_row_start[Gkd][K];
+
+		  FBBints.matrix[Gkd] = dpd_block_matrix(bvirtpi[Gd], FBBints.params->coltot[Gkd]);
+		  dpd_buf4_mat_irrep_rd_block(&FBBints, Gkd, kd, bvirtpi[Gd]);
+
+		  nrows = FBBints.params->coltot[Gkd];
+		  ncols = avirtpi[Ga];
+		  nlinks = bvirtpi[Gd];
+
+		  if(nrows && ncols && nlinks) 
+		    C_DGEMM('t', 't', nrows, ncols, nlinks, -1.0,
+			    &(FBBints.matrix[Gkd][0][0]), nrows,
+			    &(T2AB.matrix[Gij][ij][ad]), nlinks, 1.0,
+			    &(WbcA[Gbc][0][0]), ncols);
+
+		  dpd_free_block(FBBints.matrix[Gkd], bvirtpi[Gd], FBBints.params->coltot[Gkd]);
+
+		}
+
+		for(Gl=0; Gl < nirreps; Gl++) {
+		  /* -t_jlbc E_kIlA */
+		  Gbc = Gjl = Gj ^ Gl;
+		  Ga = Gki ^ Gl;
+
+		  la = EBA_col_start[Gki][Gl];
+		  jl = T2BB_row_start[Gjl][J];
+
+		  nrows = T2BB.params->coltot[Gjl];
+		  ncols = avirtpi[Ga];
+		  nlinks = boccpi[Gl];
+
+		  if(nrows && ncols && nlinks)
+		    C_DGEMM('t', 'n', nrows, ncols, nlinks, -1.0,
+			    &(T2BB.matrix[Gjl][jl][0]), nrows,
+			    &(EBAints.matrix[Gki][ki][la]), ncols, 1.0,
+			    &(WbcA[Gbc][0][0]), ncols);
+
+		  /* +t_klbc E_jIlA */
+		  Gbc = Gkl = Gk ^ Gl;
+		  Ga = Gji ^ Gl;
+
+		  la = EBA_col_start[Gji][Gl];
+		  kl = T2BB_row_start[Gkl][K];
+
+		  nrows = T2BB.params->coltot[Gkl];
+		  ncols = avirtpi[Ga];
+		  nlinks = boccpi[Gl];
+
+		  if(nrows && ncols && nlinks)
+		    C_DGEMM('t', 'n', nrows, ncols, nlinks, 1.0,
+			    &(T2BB.matrix[Gkl][kl][0]), nrows,
+			    &(EBAints.matrix[Gji][ji][la]), ncols, 1.0,
+			    &(WbcA[Gbc][0][0]), ncols);
+		}
+
+		W_sort(WbcA, WAbc, nirreps, Gijk, FBBints.params->coltot, FBBints.params->colidx,
+		       FBBints.params->colorb, FBBints.params->rsym, FBBints.params->ssym,
+		       bvir_off, bvir_off, avirtpi, avir_off, FABints.params->colidx, cab, 1);
+
+		for(Gab=0; Gab < nirreps; Gab++) {
+		  Gc = Gab ^ Gijk;
+
+		  dpd_free_block(WbcA[Gab], FBBints.params->coltot[Gab], avirtpi[Gc]);
+
+		  WcAb[Gab] = dpd_block_matrix(FBAints.params->coltot[Gab], bvirtpi[Gc]);
+		}
+
+		for(Gd=0; Gd < nirreps; Gd++) {
+		  /* -t_IkDb * F_jDcA */
+		  Gca = Gjd = Gj ^ Gd;
+		  Gb = Gik ^ Gd;
+
+		  db = T2AB_col_start[Gik][Gd];
+		  jd = FBA_row_start[Gjd][J];
+
+		  FBAints.matrix[Gjd] = dpd_block_matrix(avirtpi[Gd], FBAints.params->coltot[Gjd]);
+		  dpd_buf4_mat_irrep_rd_block(&FBAints, Gjd, jd, avirtpi[Gd]);
+
+		  nrows = FBAints.params->coltot[Gjd];
+		  ncols = bvirtpi[Gb];
+		  nlinks = avirtpi[Gd];
+
+		  if(nrows && ncols && nlinks) 
+		    C_DGEMM('t', 'n', nrows, ncols, nlinks, -1.0,
+			    &(FBAints.matrix[Gjd][0][0]), nrows,
+			    &(T2AB.matrix[Gik][ik][db]), ncols, 1.0,
+			    &(WcAb[Gca][0][0]), ncols);
+
+		  dpd_free_block(FBAints.matrix[Gjd], avirtpi[Gd], FBAints.params->coltot[Gjd]);
+
+		  /* +t_IjDb * F_kDcA */
+		  Gca = Gkd = Gk ^ Gd;
+		  Gb = Gij ^ Gd;
+
+		  db = T2AB_col_start[Gij][Gd];
+		  kd = FBA_row_start[Gkd][K];
+
+		  FBAints.matrix[Gkd] = dpd_block_matrix(avirtpi[Gd], FBAints.params->coltot[Gkd]);
+		  dpd_buf4_mat_irrep_rd_block(&FBAints, Gkd, kd, avirtpi[Gd]);
+
+		  nrows = FBAints.params->coltot[Gkd];
+		  ncols = bvirtpi[Gb];
+		  nlinks = avirtpi[Gd];
+
+		  if(nrows && ncols && nlinks) 
+		    C_DGEMM('t', 'n', nrows, ncols, nlinks, 1.0,
+			    &(FBAints.matrix[Gkd][0][0]), nrows,
+			    &(T2AB.matrix[Gij][ij][db]), ncols, 1.0,
+			    &(WcAb[Gca][0][0]), ncols);
+
+		  dpd_free_block(FBAints.matrix[Gkd], avirtpi[Gd], FBAints.params->coltot[Gkd]);
+
+		}
+
+		for(Gl=0; Gl < nirreps; Gl++) {
+		  /* +t_jLcA E_IkLb */
+		  Gca = Gjl = Gj ^ Gl;
+		  Gb = Gik ^ Gl;
+
+		  lb = EAB_col_start[Gik][Gl];
+		  jl = T2BA_row_start[Gjl][J];
+
+		  nrows = T2BA.params->coltot[Gjl];
+		  ncols = bvirtpi[Gb];
+		  nlinks = aoccpi[Gl];
+
+		  if(nrows && ncols && nlinks)
+		    C_DGEMM('t', 'n', nrows, ncols, nlinks, 1.0,
+			    &(T2BA.matrix[Gjl][jl][0]), nrows,
+			    &(EABints.matrix[Gik][ik][lb]), ncols, 1.0,
+			    &(WcAb[Gca][0][0]), ncols);
+
+		  /* -t_kLcA E_IjLb */
+		  Gca = Gkl = Gk ^ Gl;
+		  Gb = Gij ^ Gl;
+
+		  lb = EAB_col_start[Gij][Gl];
+		  kl = T2BA_row_start[Gkl][K];
+
+		  nrows = T2BA.params->coltot[Gkl];
+		  ncols = bvirtpi[Gb];
+		  nlinks = aoccpi[Gl];
+
+		  if(nrows && ncols && nlinks)
+		    C_DGEMM('t', 'n', nrows, ncols, nlinks, -1.0,
+			    &(T2BA.matrix[Gkl][kl][0]), nrows,
+			    &(EABints.matrix[Gij][ij][lb]), ncols, 1.0,
+			    &(WcAb[Gca][0][0]), ncols);
+		}
+
+		W_sort(WcAb, WAbc, nirreps, Gijk, FBAints.params->coltot, FBAints.params->colidx,
+		       FBAints.params->colorb, FBAints.params->rsym, FBAints.params->ssym,
+		       bvir_off, avir_off, bvirtpi, bvir_off, FABints.params->colidx, bca, 1);
+
+		for(Gab=0; Gab < nirreps; Gab++) {
+		  Gc = Gab ^ Gijk;
+
+		  dpd_free_block(WcAb[Gab], FBAints.params->coltot[Gab], bvirtpi[Gc]);
+
+		  WbAc[Gab] = dpd_block_matrix(FBAints.params->coltot[Gab], bvirtpi[Gc]);
+		}
+
+		for(Gd=0; Gd < nirreps; Gd++) {
+		  /* +t_IkDc * F_jDbA */
+		  Gba = Gjd = Gj ^ Gd;
+		  Gc = Gik ^ Gd;
+
+		  dc = T2AB_col_start[Gik][Gd];
+		  jd = FBA_row_start[Gjd][J];
+
+		  FBAints.matrix[Gjd] = dpd_block_matrix(avirtpi[Gd], FBAints.params->coltot[Gjd]);
+		  dpd_buf4_mat_irrep_rd_block(&FBAints, Gjd, jd, avirtpi[Gd]);
+
+		  nrows = FBAints.params->coltot[Gjd];
+		  ncols = bvirtpi[Gc];
+		  nlinks = avirtpi[Gd];
+
+		  if(nrows && ncols && nlinks) 
+		    C_DGEMM('t', 'n', nrows, ncols, nlinks, 1.0,
+			    &(FBAints.matrix[Gjd][0][0]), nrows,
+			    &(T2AB.matrix[Gik][ik][dc]), ncols, 1.0,
+			    &(WbAc[Gba][0][0]), ncols);
+
+		  dpd_free_block(FBAints.matrix[Gjd], avirtpi[Gd], FBAints.params->coltot[Gjd]);
+
+		  /* -t_IjDc * F_kDbA */
+		  Gba = Gkd = Gk ^ Gd;
+		  Gc = Gij ^ Gd;
+
+		  dc = T2AB_col_start[Gij][Gd];
+		  kd = FBA_row_start[Gkd][K];
+
+		  FBAints.matrix[Gkd] = dpd_block_matrix(avirtpi[Gd], FBAints.params->coltot[Gkd]);
+		  dpd_buf4_mat_irrep_rd_block(&FBAints, Gkd, kd, avirtpi[Gd]);
+
+		  nrows = FBAints.params->coltot[Gkd];
+		  ncols = bvirtpi[Gc];
+		  nlinks = avirtpi[Gd];
+
+		  if(nrows && ncols && nlinks) 
+		    C_DGEMM('t', 'n', nrows, ncols, nlinks, -1.0,
+			    &(FBAints.matrix[Gkd][0][0]), nrows,
+			    &(T2AB.matrix[Gij][ij][dc]), ncols, 1.0,
+			    &(WbAc[Gba][0][0]), ncols);
+
+		  dpd_free_block(FBAints.matrix[Gkd], avirtpi[Gd], FBAints.params->coltot[Gkd]);
+
+		}
+
+		for(Gl=0; Gl < nirreps; Gl++) {
+		  /* -t_jLbA * E_IkLc */
+		  Gba = Gjl = Gj ^ Gl;
+		  Gc = Gik ^ Gl;
+
+		  lc = EAB_col_start[Gik][Gl];
+		  jl = T2BA_row_start[Gjl][J];
+
+		  nrows = T2BA.params->coltot[Gjl];
+		  ncols = bvirtpi[Gc];
+		  nlinks = aoccpi[Gl];
+
+		  if(nrows && ncols && nlinks)
+		    C_DGEMM('t', 'n', nrows, ncols, nlinks, -1.0,
+			    &(T2BA.matrix[Gjl][jl][0]), nrows,
+			    &(EABints.matrix[Gik][ik][lc]), ncols, 1.0,
+			    &(WbAc[Gba][0][0]), ncols);
+
+		  /* +t_kLbA * E_IjLc */
+		  Gba = Gkl = Gk ^ Gl;
+		  Gc = Gij ^ Gl;
+
+		  lc = EAB_col_start[Gij][Gl];
+		  kl = T2BA_row_start[Gkl][K];
+
+		  nrows = T2BA.params->coltot[Gkl];
+		  ncols = bvirtpi[Gc];
+		  nlinks = aoccpi[Gl];
+
+		  if(nrows && ncols && nlinks)
+		    C_DGEMM('t', 'n', nrows, ncols, nlinks, 1.0,
+			    &(T2BA.matrix[Gkl][kl][0]), nrows,
+			    &(EABints.matrix[Gij][ij][lc]), ncols, 1.0,
+			    &(WbAc[Gba][0][0]), ncols);
+		}
+
+		W_sort(WbAc, WAbc, nirreps, Gijk, FBAints.params->coltot, FBAints.params->colidx,
+		       FBAints.params->colorb, FBAints.params->rsym, FBAints.params->ssym,
+		       bvir_off, avir_off, bvirtpi, bvir_off, FABints.params->colidx, bac, 1);
+
+		for(Gab=0; Gab < nirreps; Gab++) {
+		  Gc = Gab ^ Gijk;
+
+		  dpd_free_block(WbAc[Gab], FBAints.params->coltot[Gab], bvirtpi[Gc]);
 		}
 
 		/* Add disconnected triples and finish W and V */
@@ -389,7 +783,7 @@ double ET_UHF_ABB(void)
 		      }
 
 		      /* -t_jc * D_IkAb */
-		      if(Gj == Gc && Gik == Gba) {
+		      if(Gj == Gc && Gik == Gab) {
 			t_jc = D_ikab = 0.0;
 
 			if(T1B.params->rowtot[Gj] && T1B.params->coltot[Gj])
@@ -398,7 +792,7 @@ double ET_UHF_ABB(void)
 			if(DABints.params->rowtot[Gik] && DABints.params->coltot[Gik])
 			  D_ikab = DABints.matrix[Gik][ik][ab];
 
-			GAbc[Gab][ab][c] -= t_jc * D_ikab;
+			VAbc[Gab][ab][c] -= t_jc * D_ikab;
 		      }
 
 		      /* -t_kb * D_IjAc */
@@ -415,7 +809,7 @@ double ET_UHF_ABB(void)
 		      }
 
 		      /* +t_kc * D_IjAb */
-		      if(Gk == Gc && Gji == Gba) {
+		      if(Gk == Gc && Gji == Gab) {
 			t_kc = D_ijab = 0.0;
 
 			if(T1B.params->rowtot[Gk] && T1B.params->coltot[Gk])
@@ -465,10 +859,17 @@ double ET_UHF_ABB(void)
 
   free(WAbc);
   free(VAbc);
+  free(WAcb);
+  free(WbcA);
+  free(WcAb);
+  free(WbAc);
+
+  fclose(ijkfile);
 
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_close(&T2BB, h);
     dpd_buf4_mat_irrep_close(&T2AB, h);
+    dpd_buf4_mat_irrep_close(&T2BA, h);
     dpd_buf4_mat_irrep_close(&EBBints, h);
     dpd_buf4_mat_irrep_close(&EABints, h);
     dpd_buf4_mat_irrep_close(&EBAints, h);
@@ -478,6 +879,7 @@ double ET_UHF_ABB(void)
 
   dpd_buf4_close(&T2BB);
   dpd_buf4_close(&T2AB);
+  dpd_buf4_close(&T2BA);
   dpd_buf4_close(&FBBints);
   dpd_buf4_close(&FABints);
   dpd_buf4_close(&FBAints);
@@ -510,7 +912,7 @@ double ET_UHF_ABB(void)
 
   free_int_matrix(T2BB_col_start, nirreps);
   free_int_matrix(T2AB_col_start, nirreps);
-  free_int_matrix(EAA_col_start, nirreps);
+  free_int_matrix(EBB_col_start, nirreps);
   free_int_matrix(EAB_col_start, nirreps);
   free_int_matrix(EBA_col_start, nirreps);
 

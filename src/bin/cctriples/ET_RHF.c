@@ -179,7 +179,7 @@ double ET_RHF(void)
 	      if(I >= J && J >= K) {
 
 		mijk++;
-		fprintf(ijkfile, " %d \n", mijk, nijk);
+		fprintf(ijkfile, "%d\n", mijk);
 		fflush(ijkfile);
 
 		ij = T2.params->rowidx[I][J];

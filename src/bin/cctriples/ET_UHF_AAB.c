@@ -46,6 +46,8 @@ double ET_UHF_AAB(void)
   int **EAB_col_start, **EBA_col_start, **EAA_col_start;
   dpdfile2 T1A, T1B, fIJ, fij, fAB, fab;
   double ***WABc, ***WBcA, ***WAcB, ***WcAB, ***WcBA, ***VABc;
+  int nijk, mijk;
+  FILE *ijkfile;
 
   nirreps = moinfo.nirreps;
   aoccpi = moinfo.aoccpi; 
@@ -265,7 +267,29 @@ double ET_UHF_AAB(void)
     dpd_buf4_mat_irrep_rd(&DABints, h);
   }
 
-  cnt = 0;
+  /* Compute the number of IJK combinations in this spin case */
+  nijk = 0;
+  for(Gi=0; Gi < nirreps; Gi++)
+    for(Gj=0; Gj < nirreps; Gj++)
+      for(Gk=0; Gk < nirreps; Gk++)
+	for(i=0; i < aoccpi[Gi]; i++) {
+	  I = aocc_off[Gi] + i;
+	  for(j=0; j < aoccpi[Gj]; j++) {
+	    J = aocc_off[Gj] + j;
+	    for(k=0; k < boccpi[Gk]; k++) {
+	      K = bocc_off[Gk] + k;
+
+	      if(I > J) nijk++;
+	    }
+	  }
+	}
+
+  ffile(&ijkfile, "ijk.dat", 0);
+  fprintf(ijkfile, "Spin Case: AAB\n");
+  fprintf(ijkfile, "Number of IJK combintions: %d\n", nijk);
+  fprintf(ijkfile, "\nCurrent IJK Combination:\n");
+
+  mijk = 0;
   ET_AAB = 0.0;
 
   WABc = (double ***) malloc(nirreps * sizeof(double **));
@@ -292,7 +316,11 @@ double ET_UHF_AAB(void)
 	    for(k=0; k < boccpi[Gk]; k++) {
 	      K = bocc_off[Gk] + k;
 
-	      if(I >= J) {
+	      if(I > J) {
+
+		mijk++;
+		fprintf(ijkfile, "%d\n", mijk);
+		fflush(ijkfile);
 
 		ij = EAAints.params->rowidx[I][J];
 		ji = EAAints.params->rowidx[J][I];
@@ -337,7 +365,6 @@ double ET_UHF_AAB(void)
 			    &(WABc[Gab][0][0]), ncols);
 
 		  dpd_free_block(FAAints.matrix[Gid], avirtpi[Gd], FAAints.params->coltot[Gid]);
-
 
 		  /* -t_IkDc * F_JDAB */
 		  Gab = Gjd = Gj ^ Gd;
@@ -854,6 +881,8 @@ double ET_UHF_AAB(void)
   free(WcAB);
   free(WcBA);
   free(VABc);
+
+  fclose(ijkfile);
 
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_close(&T2AA, h);
