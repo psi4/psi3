@@ -28772,6 +28772,7 @@ HYDROGEN:pV7Z = (
 
 % Information on *unofficial* cc-pV7Z
 % Obtained by augmenting pV7Z basis sets of Feller and Co. with k-functions
+% Optimized at the CISD(FC) level
 % To be published
 %  -EV 01/29/2001
 
@@ -28797,6 +28798,75 @@ HYDROGEN:pV7Z = (
   SULFUR:ccpv7z = (
     (get pv7z)
     (K    (         1.2090000000            1.0000000000))
+  )
+
+%
+%Basis Set Library Information on: aug-pV7Z                   
+% Augmented Polarized Valence Septuple Zeta (pV7Z-like) Basis                   
+% -----------------------------------------------------------                   
+%H:     (15s,7p,6d,5f,4g,3h,2i)  -> [8s,7p,6d,5f,4g,3h,2i]                      
+%C - F: (19s,13p,7d,6f,5g,4h,3i) -> [9s,8p,7d,6f,5g,4h,3i]  D. Feller and K.A.  
+%                                                           Peterson, JCP 110,  
+%                                                           8384 (1999)    
+%S:     (28s,19p,7d,6f,5g,4h,3i) ->[10s,9p,7d,6f,5g,4h,3i]  D. Feller and J.A.  
+%                                                           Sordo (to be        
+%                                                           published)          
+%In order to be consistent with the rest of the correlation consistent basis    
+%%sets, the 7Z sets should contain 1k function.  The present sets do not, but    
+%it has been shown possible to estimate the contribution of the missing         
+%functions by plotting the energy contribution of each l shell for d,f,g etc.   
+%and then perform an exponential extrapolation.                                 
+%
+  NITROGEN:augpv7z = (
+    (GET pv7z)
+    (S    (         0.0190122000            1.0000000000))
+    (P    (         0.0269704000            1.0000000000))
+    (D    (         0.0753692000            1.0000000000))
+    (F    (         0.1202192000            1.0000000000))
+    (G    (         0.2456348000            1.0000000000))
+    (H    (         0.5163650000            1.0000000000))
+    (I    (         0.7900000000            1.0000000000))
+  )
+  OXYGEN:augpv7z = (
+    (GET pv7z)
+    (S    (         0.0554700000            1.0000000000))
+    (P    (         0.0286137000            1.0000000000))
+    (D    (         0.1039000000            1.0000000000))
+    (F    (         0.1726270000            1.0000000000))
+    (G    (         0.3457820000            1.0000000000))
+    (H    (         0.5816400000            1.0000000000))
+    (I    (         1.0390000000            1.0000000000))
+  )
+  FLUORINE:augpv7z = (
+    (GET pv7z)
+    (S    (         0.0700090000            1.0000000000))
+    (P    (         0.0345890000            1.0000000000))
+    (D    (         0.1339420000            1.0000000000))
+    (F    (         0.2542830000            1.0000000000))
+    (G    (         0.3958677000            1.0000000000))
+    (H    (         0.7805000000            1.0000000000))
+    (I    (         1.0800000000            1.0000000000))
+  )
+  SULFUR:augpv7z = (
+    (GET pv7z)
+    (S    (         0.0371790000            1.0000000000))
+    (P    (         0.0218120000            1.0000000000))
+    (D    (         0.0343800000            1.0000000000))
+    (F    (         0.0219300000            1.0000000000))
+    (G    (         0.1843800000            1.0000000000))
+    (H    (         0.3035400000            1.0000000000))
+    (I    (         0.4450000000            1.0000000000))
+  )
+
+% Information on *unofficial* aug-cc-pV7Z
+% Obtained by augmenting aug-pV7Z basis sets of Feller and Co. with k-functions
+% Diffuse k exponents optimized at the CCSD(FC) level
+% To be published
+%  -EV 04/05/2001
+  OXYGEN:augccpv7z = (
+    (GET augpv7z)
+    (K    (         3.1270000000            1.0000000000))
+    (K    (         1.2320000000            1.0000000000))
   )
 )
 %
