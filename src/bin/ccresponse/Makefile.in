@@ -19,6 +19,7 @@ transmu.c \
 sortmu.c \
 mubar.c \
 hbar_extra.c \
+sort_lamps.c \
 init_X.c \
 denom.c \
 sort_X.c \
@@ -32,6 +33,7 @@ converged.c \
 pseudopolar.c \
 LCX.c \
 print_X.c \
+HXY.c \
 
 BINOBJ = $(CSRC:%.c=%.o)
 ALLOC = 

@@ -31,8 +31,10 @@ void cachedone_rhf(int **cachelist);
 void transmu(void);
 void sortmu(void);
 void hbar_extra(void);
+void sort_lamps(void);
 void compute_X(char *cart, int irrep, double omega);
 double LCX(char *cart, int irrep, double omega);
+double HXY(char *cart, int irrep, double omega);
 
 int main(int argc, char *argv[])
 {
@@ -70,13 +72,18 @@ int main(int argc, char *argv[])
   sortmu();
   mubar();
   hbar_extra();
+  sort_lamps();
 
-  compute_X("X", moinfo.irrep_x, params.omega);
+  compute_X("Z", moinfo.irrep_z, params.omega);
   if(params.omega != 0.0) 
-    compute_X("X", moinfo.irrep_x, -params.omega);
+    compute_X("Z", moinfo.irrep_z, -params.omega);
 
-  polar = LCX("X", moinfo.irrep_x, params.omega);
-  fprintf(outfile, "polar = %20.12f\n", polar);
+  polar = LCX("Z", moinfo.irrep_z, params.omega);
+  polar += LCX("Z", moinfo.irrep_z, -params.omega);
+  fprintf(outfile, "polar_LCX = %20.12f\n", polar);
+
+  polar = HXY("Z", moinfo.irrep_z, params.omega);
+  fprintf(outfile, "polar_HXY = %20.12f\n", polar);
 
   dpd_close(0);
 
