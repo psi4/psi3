@@ -123,6 +123,7 @@ void rmp2r12_energy()
   int mo_i, mo_j, mo_x, mo_y;
   int rs_offset, rsi_offset, rsp_offset;
   int num_prim_comb;
+  int rs, qrs;
 
   double Emp2 = 0.0;
   double Emp2r12 = 0.0;
