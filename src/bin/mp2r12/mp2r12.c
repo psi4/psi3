@@ -67,6 +67,7 @@ void title(void)
   fprintf(outfile,"\t        based on Daniel Crawford's MP2 code        \n");
   fprintf(outfile,"\t---------------------------------------------------\n");
   fprintf(outfile, "\n\n");
+  fflush(outfile);
 }
 
 void init_ioff(void)
@@ -119,6 +120,7 @@ void get_parameters(void)
   fprintf(outfile,"\tKeep Integrals         =  %s\n", (params.keep_integrals ? "Yes": "No"));
   if (params.c_limit)
     fprintf(outfile,"\t*WARNING* : using the asymptotic limit for the C-coefficients!\n\n");
+  fflush(outfile);
 
   return;
 }
@@ -172,6 +174,7 @@ void get_moinfo(void)
     }
   fprintf(outfile,"\n\tNuclear Repulsion Energy    = %20.10f\n",moinfo.enuc);
   fprintf(outfile,  "\tTotal SCF Energy            = %20.10f\n",moinfo.escf);
+  fflush(outfile);
 
   /* Set up some other useful parameters */
   moinfo.noeints = moinfo.nmo*(moinfo.nmo+1)/2;

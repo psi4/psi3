@@ -120,8 +120,7 @@ void mp2r12_energy(void)
        the same range every time
        */
     psio_open(PSIF_MO_TEI, PSIO_OPEN_OLD);
-    psio_tocprint(PSIF_MO_TEI, stdout);
-   psio_open(PSIF_MO_R12, PSIO_OPEN_OLD);
+    psio_open(PSIF_MO_R12, PSIO_OPEN_OLD);
     psio_open(PSIF_MO_R12T1, PSIO_OPEN_OLD);
     for(isym=0; isym < nirreps; isym++) {
       ifirst = focact[isym];
@@ -196,6 +195,7 @@ void mp2r12_energy(void)
 	      }
 	  }
       fprintf(outfile,"\n");
+      fflush(outfile);
     }
 
 
@@ -351,6 +351,7 @@ void mp2r12_energy(void)
 	      (spin == 0) ? "Singlet" : "Triplet");
       print_mat(B[spin],ntri_docc_act,ntri_docc_act,outfile);
       fprintf(outfile,"\n");
+      fflush(outfile);
     }
 
     /*-------------------------------
