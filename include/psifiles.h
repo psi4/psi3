@@ -45,9 +45,19 @@
 #define PSIF_MO_R12T1       80
 
 /*
+** Additions for UHF-based transformations.
+** -TDC, 6/01
+*/
+#define PSIF_MO_AA_TEI      81
+#define PSIF_MO_BB_TEI      82
+#define PSIF_MO_AB_TEI      83
+#define PSIF_MO_A_OEI       84
+#define PSIF_MO_B_OEI       85
+
+/*
 ** MO Hessian File (also contains specialized integral and Fock lists.
 ** See program STABLE for more info.
 ** -TDC, 7/00
 */
-#define PSIF_MO_HESS        81
+#define PSIF_MO_HESS        86
 
