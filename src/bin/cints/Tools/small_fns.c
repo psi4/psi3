@@ -71,8 +71,6 @@ void stop_io()
   psio_done();
   fclose(outfile);
   fclose(infile);
-
-  return;
 }
 
 void punt(char *mess)
