@@ -14,7 +14,8 @@ void L1_build(struct L_Params L_params) {
   dpdbuf4 LIJAB, Lijab, LIjAb, LiJaB, L2;
   dpdbuf4 WMNIE, Wmnie, WMnIe, WmNiE;
   dpdbuf4 WAMEF, Wamef, WAmEf, WaMeF, W;
-  dpdbuf4 Z;
+  dpdbuf4 Z, D;
+  dpdfile2 XLD;
   int L_irr;
   L_irr = L_params.irrep;
 
@@ -352,18 +353,18 @@ void L1_build(struct L_Params L_params) {
     dpd_buf4_close(&WAmEf);
 
     /*
-    dpd_buf4_init(&WAMEF, CC_HBAR, 0, 10, 5, 10, 7, 0, "WAMEF");
-    dpd_dot23(&GAE,&WAMEF,&newLIA, 0, 0, -1.0, 1.0);
-    dpd_buf4_close(&WAMEF);
-    dpd_buf4_init(&WaMeF, CC_HBAR, 0, 10, 5, 10, 5, 0, "WaMeF");
-    dpd_dot23(&Gae,&WaMeF,&newLIA, 0, 0, -1.0, 1.0);
-    dpd_buf4_close(&WaMeF);
-    dpd_buf4_init(&Wamef, CC_HBAR, 0, 10, 5, 10, 7, 0, "Wamef");
-    dpd_dot23(&Gae,&Wamef,&newLia, 0, 0, -1.0, 1.0);
-    dpd_buf4_close(&Wamef);
-    dpd_buf4_init(&WAmEf, CC_HBAR, 0, 10, 5, 10, 5, 0, "WAmEf");
-    dpd_dot23(&GAE,&WAmEf,&newLia, 0, 0, -1.0, 1.0);
-    dpd_buf4_close(&WAmEf);
+      dpd_buf4_init(&WAMEF, CC_HBAR, 0, 10, 5, 10, 7, 0, "WAMEF");
+      dpd_dot23(&GAE,&WAMEF,&newLIA, 0, 0, -1.0, 1.0);
+      dpd_buf4_close(&WAMEF);
+      dpd_buf4_init(&WaMeF, CC_HBAR, 0, 10, 5, 10, 5, 0, "WaMeF");
+      dpd_dot23(&Gae,&WaMeF,&newLIA, 0, 0, -1.0, 1.0);
+      dpd_buf4_close(&WaMeF);
+      dpd_buf4_init(&Wamef, CC_HBAR, 0, 10, 5, 10, 7, 0, "Wamef");
+      dpd_dot23(&Gae,&Wamef,&newLia, 0, 0, -1.0, 1.0);
+      dpd_buf4_close(&Wamef);
+      dpd_buf4_init(&WAmEf, CC_HBAR, 0, 10, 5, 10, 5, 0, "WAmEf");
+      dpd_dot23(&GAE,&WAmEf,&newLia, 0, 0, -1.0, 1.0);
+      dpd_buf4_close(&WAmEf);
     */
 
     dpd_file2_close(&Gae);
@@ -454,10 +455,17 @@ void L1_build(struct L_Params L_params) {
     dpd_file2_close(&Gmi);
     dpd_file2_close(&GMI);
   }
-
+#if 0
   /* CC3 T3->L1 */
   if(!strcmp(params.wfn, "CC3")) {
     if(params.ref == 0) { 
+
+      dpd_file2_init(&XLD, CC3_MISC, 0, 0, 1, "CC3 XLD");
+      dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D 2<ij|ab> - <ij|ba>");
+      dpd_dot24(&XLD, &D, &newLIA, 0, 0, 1, 1);
+      dpd_buf4_close(&D);
+      dpd_file2_close(&XLD);
+
       dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 2, 7, 0, "LIJAB");
       dpd_buf4_init(&Z, CC3_MISC, 0, 10, 0, 10, 0, 0, "CC3 ZIFLN");
       dpd_contract442(&Z, &L2, &newLIA, 0, 2, -0.5, 1);
@@ -483,7 +491,7 @@ void L1_build(struct L_Params L_params) {
       dpd_buf4_close(&L2);
     }
   }
-
+#endif
   dpd_file2_close(&newLIA);
   dpd_file2_close(&newLia);
 
