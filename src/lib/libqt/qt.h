@@ -45,7 +45,7 @@ void newmm_rking(double **A, int transa, double **B, int transb, double **C,
            double alpha, double beta);
 double dot_block(double **A, double **B, int rows, int cols, double alpha);
 void dirprd_block(double **A, double **B, int rows, int cols);
-void pople(double **A, double *x, int dimen, int num_vecs, double tolerance,
+int pople(double **A, double *x, int dimen, int num_vecs, double tolerance,
            FILE *outfile, int print_lvl);
 void mat_print(double **A, int rows, int cols, FILE *outfile);
 double eri(unsigned int l1, unsigned int m1, unsigned int n1, double alpha1, double A[3],
