@@ -117,7 +117,6 @@ void Wmnie_build(void) {
     dpd_buf4_close(&W);
 
 
-
     /* <Mn|Ie> --> W(Mn,eI) */
     dpd_buf4_init(&E, CC_EINTS, 0, 22, 24, 22, 24, 0, "E <Ij|Ka>");
     dpd_buf4_sort(&E, CC_HBAR, pqsr, 22, 25, "WMnIe");
@@ -133,7 +132,6 @@ void Wmnie_build(void) {
     dpd_buf4_close(&Z);
 
 
-
     /* <mN|iE> --> W(mN,Ei) */
     dpd_buf4_init(&E, CC_EINTS, 0, 23, 27, 23, 27, 0, "E <iJ|kA>");
     dpd_buf4_sort(&E, CC_HBAR, pqsr, 23, 26, "WmNiE");
@@ -147,9 +145,6 @@ void Wmnie_build(void) {
     /* Z(Nm,Ei) --> W(mN,Ei) */
     dpd_buf4_sort_axpy(&Z, CC_HBAR, qprs, 23, 26, "WmNiE", 1);
     dpd_buf4_close(&Z);
-    dpd_buf4_init(&W, CC_HBAR, 0, 23, 26, 23, 26, 0, "WmNiE");
-    dpd_buf4_print(&W, outfile, 1);
-    dpd_buf4_close(&W);
 
     dpd_file2_close(&tIA);
     dpd_file2_close(&tia);
