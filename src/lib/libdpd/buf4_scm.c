@@ -33,7 +33,9 @@ int dpd_buf4_scm(dpdbuf4 *InBuf, double alpha)
   nirreps = InBuf->params->nirreps;
   my_irrep = InBuf->file.my_irrep;
 
+#ifdef DPD_TIMER
   timer_on("buf4_scm");
+#endif
 
   /* Look first for the TOC entry on disk */
   if(psio_tocscan(InBuf->file.filenum, InBuf->file.label) == NULL)
@@ -56,7 +58,9 @@ int dpd_buf4_scm(dpdbuf4 *InBuf, double alpha)
       dpd_buf4_mat_irrep_close(InBuf, h);
     }
 
+#ifdef DPD_TIMER
   timer_off("buf4_scm");
+#endif
 
   return 0;
 }

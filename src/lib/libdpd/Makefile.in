@@ -5,7 +5,7 @@ VPATH = @srcdir@
 include ../MakeVars
 
 CDEF += -DBUFF=0 -DSITEDIR=\"$(datadir)\"
-CFLAGS += -DDPD_DEBUG
+#CFLAGS += -DDPD_DEBUG -DDPD_TIMER
 
 TARGET = $(top_objdir)/lib/libdpd.a
 

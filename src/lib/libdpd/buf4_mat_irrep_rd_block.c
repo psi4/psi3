@@ -15,7 +15,9 @@ int dpd_buf4_mat_irrep_rd_block(dpdbuf4 *Buf, int irrep, int start_pq,
   int pq_permute, permute;
   double value; 
 
+#ifdef DPD_TIMER
   timer_on("buf4_rd_bk");
+#endif
 
   rowtot = Buf->params->rowtot[irrep];
   coltot = Buf->params->coltot[irrep];
@@ -490,7 +492,9 @@ int dpd_buf4_mat_irrep_rd_block(dpdbuf4 *Buf, int irrep, int start_pq,
       break;
     }
   
+#ifdef DPD_TIMER
   timer_off("buf4_rd_bk");
+#endif
   return 0;
 
 }

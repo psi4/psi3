@@ -11,7 +11,9 @@ int dpd_buf4_mat_irrep_shift13(dpdbuf4 *Buf, int irrep)
   int rowtot, coltot;
   double *data;
 
+#ifdef DPD_TIMER
   timer_on("shift");
+#endif
 
   if(Buf->shift.shift_type) {
       fprintf(stderr, "\n\tShift is already on! %d\n",
@@ -61,7 +63,9 @@ int dpd_buf4_mat_irrep_shift13(dpdbuf4 *Buf, int irrep)
 
   free(count); free(dataoff);
 
+#ifdef DPD_TIMER
   timer_off("shift");
+#endif
 
   return 0;
 }

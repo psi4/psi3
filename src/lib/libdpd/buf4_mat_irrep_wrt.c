@@ -97,7 +97,9 @@ int dpd_buf4_mat_irrep_wrt(dpdbuf4 *Buf, int irrep)
   switch(method) {
   case 12: /* No change in pq or rs */
 
+#ifdef DPD_TIMER
       timer_on("buf_wrt_12");
+#endif
 
       if(Buf->file.incore && rowtot*coltot) {
           1;
@@ -112,7 +114,9 @@ int dpd_buf4_mat_irrep_wrt(dpdbuf4 *Buf, int irrep)
 	  dpd_file4_mat_irrep_wrt(&(Buf->file), irrep);
 	}
 
+#ifdef DPD_TIMER
       timer_off("buf_wrt_12");
+#endif
       
       break;
   case 21: /* Pack pq; no change in rs */

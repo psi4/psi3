@@ -9,13 +9,17 @@ int dpd_file4_mat_irrep_row_init(dpdfile4 *File, int irrep)
 
   if(File->incore) return 0;  /* We already have the whole matrix in core */
 
+#ifdef DPD_TIMER
   timer_on("f4_rowinit");
+#endif
 
   my_irrep = File->my_irrep;
   
   File->matrix[irrep] = block_matrix(1, File->params->coltot[irrep^my_irrep]);
 
+#ifdef DPD_TIMER
   timer_off("f4_rowinit");
+#endif
 
   return 0;
 }

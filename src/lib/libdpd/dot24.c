@@ -22,7 +22,9 @@ int dpd_dot24(dpdfile2 *T, dpdbuf4 *I, dpdfile2 *Z,
   dpd_file2_mat_init(Z);
   dpd_file2_mat_rd(Z);
 
+#ifdef DPD_TIMER
   timer_on("dot24");
+#endif
 
   for(h=0; h < nirreps; h++) {
 
@@ -85,7 +87,9 @@ int dpd_dot24(dpdfile2 *T, dpdbuf4 *I, dpdfile2 *Z,
       dpd_buf4_mat_irrep_close(I, h);
     }
 
+#ifdef DPD_TIMER
   timer_off("dot24");
+#endif
 
   /* Close the two-index quantities */
   dpd_file2_mat_close(T);

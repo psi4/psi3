@@ -9,7 +9,9 @@ int dpd_trans4_mat_irrep_wrt(dpdtrans4 *Trans, int irrep)
 
   Buf = &(Trans->buf);
 
+#ifdef DPD_TIMER
   timer_on("trans4_rw");
+#endif
 
   /* Loop over rows of transpose */
   for(pq=0; pq < Trans->buf.params->coltot[irrep]; pq++) {
@@ -18,7 +20,9 @@ int dpd_trans4_mat_irrep_wrt(dpdtrans4 *Trans, int irrep)
 	}
     }
 
+#ifdef DPD_TIMER
   timer_off("trans4_rw");
+#endif
 
   return 0;
 }

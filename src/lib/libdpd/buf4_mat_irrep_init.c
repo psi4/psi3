@@ -19,7 +19,9 @@ int dpd_buf4_mat_irrep_init(dpdbuf4 *Buf, int irrep)
   rowtot = Buf->params->rowtot[irrep];
   coltot = Buf->params->coltot[irrep^my_irrep];
 
+#ifdef DPD_TIMER
   timer_on("buf4_init");
+#endif
 
   if(rowtot*coltot) {
 
@@ -35,7 +37,9 @@ int dpd_buf4_mat_irrep_init(dpdbuf4 *Buf, int irrep)
 
     }
 
+#ifdef DPD_TIMER
   timer_off("buf4_init");
+#endif
 
   return 0;
 

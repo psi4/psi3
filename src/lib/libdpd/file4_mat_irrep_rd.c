@@ -13,7 +13,9 @@ int dpd_file4_mat_irrep_rd(dpdfile4 *File, int irrep)
   /* If the data doesn't actually exist on disk, we just leave */
   if(psio_tocscan(File->filenum, File->label) == NULL) return 1;
 
+#ifdef DPD_TIMER
   timer_on("file4_rd");
+#endif
 
   my_irrep = File->my_irrep;
   irrep_ptr = File->lfiles[irrep];
@@ -24,7 +26,9 @@ int dpd_file4_mat_irrep_rd(dpdfile4 *File, int irrep)
      psio_read(File->filenum, File->label, (char *) File->matrix[irrep][0],
 	       rowtot*coltot*sizeof(double), irrep_ptr, &next_address);
 
+#ifdef DPD_TIMER
   timer_off("file4_rd");
+#endif
 
   return 0;
 

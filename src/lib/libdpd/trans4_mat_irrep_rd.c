@@ -11,7 +11,9 @@ int dpd_trans4_mat_irrep_rd(dpdtrans4 *Trans, int irrep)
 
   Buf = &(Trans->buf);
 
+#ifdef DPD_TIMER
   timer_on("trans4_rw");
+#endif
 
   /* Loop over rows of transpose */
 /*
@@ -30,7 +32,9 @@ int dpd_trans4_mat_irrep_rd(dpdtrans4 *Trans, int irrep)
       C_DCOPY(rows, A, cols, B, 1);
     }
 
+#ifdef DPD_TIMER
   timer_off("trans4_rw");
+#endif
 
   return 0;
 }

@@ -37,7 +37,9 @@ struct dpd_file4_cache_entry
 {
   struct dpd_file4_cache_entry *this_entry;
 
+#ifdef DPD_TIMER
   timer_on("file4_cache");
+#endif
 
   this_entry = dpd_default->file4_cache;
 
@@ -47,14 +49,18 @@ struct dpd_file4_cache_entry
          this_entry->pqnum == pqnum           &&
          this_entry->rsnum == rsnum           &&
          !strcmp(this_entry->label,label)) {
+#ifdef DPD_TIMER
               timer_off("file4_cache");
+#endif
               return(this_entry);
            }
        
       this_entry = this_entry->next;
     }
 
+#ifdef DPD_TIMER
   timer_off("file4_cache");
+#endif
   return(this_entry);
 }
 
@@ -83,7 +89,9 @@ int dpd_file4_cache_add(dpdfile4 *File)
 				   File->params->pqnum, File->params->rsnum,
                                    File->label);
 
+#ifdef DPD_TIMER
   timer_on("file4_cache");
+#endif
 
   if(this_entry == NULL) { /* New cache entry */
       this_entry = (struct dpd_file4_cache_entry *) 
@@ -109,7 +117,9 @@ int dpd_file4_cache_add(dpdfile4 *File)
 
       File->incore = 1;
 
+#ifdef DPD_TIMER
   timer_off("file4_cache");
+#endif
 
       return 0;
   }
@@ -117,7 +127,9 @@ int dpd_file4_cache_add(dpdfile4 *File)
   /* The Buffer appears in the cache, but incore is not set */
   dpd_error("File4 cache add error!", stderr);
 
+#ifdef DPD_TIMER
   timer_off("file4_cache");
+#endif
   
   return 0;
 }
