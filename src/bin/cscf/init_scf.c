@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.7  2002/04/03 02:06:01  janssen
- * Finish changes to use new include paths for libraries.
+ * Revision 1.8  2002/05/15 02:29:14  sherrill
+ * Read from checkpoint
  *
+/* Revision 1.7  2002/04/03 02:06:01  janssen
+/* Finish changes to use new include paths for libraries.
+/*
 /* Revision 1.6  2002/03/24 18:31:19  crawdad
 /* NOW it works.
 /* -TDC
@@ -79,11 +82,16 @@ init_scf()
 
 /* EFV 10/24/98 All requests for file30 should be handled with libfile30
    but for now I'll use wreadw */
+   /*
    num_ir = file30_rd_nirreps();
    num_so = file30_rd_sopi();
    repnuc = file30_rd_enuc();
    irr_labs = file30_rd_irr_labs();
-
+   */
+   num_ir = chkpt_rd_nirreps();
+   num_so = chkpt_rd_sopi();
+   repnuc = chkpt_rd_enuc();
+   irr_labs = chkpt_rd_irr_labs();
 
 /* now initialize scf_info */
    
