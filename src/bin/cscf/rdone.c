@@ -1,9 +1,12 @@
 /* $Log$
- * Revision 1.6  2002/12/06 15:50:32  crawdad
- * Changed all exit values to PSI_RETURN_SUCCESS or PSI_RETURN_FAILURE as
- * necessary.  This is new for the PSI3 execution driver.
- * -TDC
+ * Revision 1.7  2004/10/08 17:33:41  nruss
+ * Modified iwl_rdone() to acept boolean for deleteing one-electron ints. -NJR
  *
+/* Revision 1.6  2002/12/06 15:50:32  crawdad
+/* Changed all exit values to PSI_RETURN_SUCCESS or PSI_RETURN_FAILURE as
+/* necessary.  This is new for the PSI3 execution driver.
+/* -TDC
+/*
 /* Revision 1.5  2002/04/03 02:06:01  janssen
 /* Finish changes to use new include paths for libraries.
 /*
@@ -107,7 +110,7 @@ void rdone_iwl()
   }
 
   /* V integrals */
-  stat = iwl_rdone(itapV,PSIF_SO_V,ints,ntri,delete_1e, 0, outfile);
+  stat = iwl_rdone(itapV,PSIF_SO_V,ints,ntri,0, 0, outfile);
   for(i=0;i<num_ir;i++) {
     max = scf_info[i].num_so;
     off = scf_info[i].ideg;
