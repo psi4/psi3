@@ -343,22 +343,38 @@ void norm_HET1(void) {
     dpd_buf4_init(&W, CC3_HET1, 0, 20, 0, 20, 2, 0, "CC3 WMBIJ (MB,I>J)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
-    fprintf(outfile,"\t<WMBIJ|WMBIJ> = %15.10lf\n", dot);
+    fprintf(outfile,"\t<WMBIJ (MB,I>J)|WMBIJ> = %15.10lf\n", dot);
+    dpd_buf4_init(&W, CC3_HET1, 0, 0, 20, 2, 20, 0, "CC3 WMBIJ (I>J,MB)");
+    dot = dpd_buf4_dot_self(&W);
+    dpd_buf4_close(&W);
+    fprintf(outfile,"\t<WMBIJ (I>J,MB)|WMBIJ> = %15.10lf\n", dot);
 
     dpd_buf4_init(&W, CC3_HET1, 0, 30, 10, 30, 12, 0, "CC3 Wmbij (mb,i>j)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
-    fprintf(outfile,"\t<Wmbij|Wmbij> = %15.10lf\n", dot);
+    fprintf(outfile,"\t<Wmbij (mb,i>j)|Wmbij> = %15.10lf\n", dot);
+    dpd_buf4_init(&W, CC3_HET1, 0, 10, 30, 12, 30, 0, "CC3 Wmbij (i>j,mb)");
+    dot = dpd_buf4_dot_self(&W);
+    dpd_buf4_close(&W);
+    fprintf(outfile,"\t<Wmbij (i>j,mb)|Wmbij> = %15.10lf\n", dot);
 
     dpd_buf4_init(&W, CC3_HET1, 0, 24, 22, 24, 22, 0, "CC3 WMbIj (Mb,Ij)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
-    fprintf(outfile,"\t<WMbIj|WMbIj> = %15.10lf\n", dot);
+    fprintf(outfile,"\t<WMbIj (Mb,Ij)|WMbIj> = %15.10lf\n", dot);
+    dpd_buf4_init(&W, CC3_HET1, 0, 22, 24, 22, 24, 0, "CC3 WMbIj (Ij,Mb)");
+    dot = dpd_buf4_dot_self(&W);
+    dpd_buf4_close(&W);
+    fprintf(outfile,"\t<WMbIj (Ij,Mb)|WMbIj> = %15.10lf\n", dot);
 
     dpd_buf4_init(&W, CC3_HET1, 0, 27, 23, 27, 23, 0, "CC3 WmBiJ (mB,iJ)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
-    fprintf(outfile,"\t<WmBiJ|WmBiJ> = %15.10lf\n", dot);
+    fprintf(outfile,"\t<WmBiJ (mB,iJ)|WmBiJ> = %15.10lf\n", dot);
+    dpd_buf4_init(&W, CC3_HET1, 0, 23, 27, 23, 27, 0, "CC3 WmBiJ (iJ,mB)");
+    dot = dpd_buf4_dot_self(&W);
+    dpd_buf4_close(&W);
+    fprintf(outfile,"\t<WmBiJ (iJ,mB)|WmBiJ> = %15.10lf\n", dot);
 
     /** WMBEJ **/
     fprintf(outfile,"Doing Wmbej terms.\n");

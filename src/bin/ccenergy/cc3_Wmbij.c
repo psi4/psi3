@@ -429,5 +429,18 @@ void cc3_Wmbij(void)
 
     dpd_file2_close(&tIA);
     dpd_file2_close(&tia);
+
+    dpd_buf4_init(&W, CC3_HET1, 0, 20, 2, 20, 2, 0, "CC3 WMBIJ (MB,I>J)");
+    dpd_buf4_sort(&W, CC3_HET1, rspq, 2, 20, "CC3 WMBIJ (I>J,MB)");
+    dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC3_HET1, 0, 30, 12, 30, 12, 0, "CC3 Wmbij (mb,i>j)");
+    dpd_buf4_sort(&W, CC3_HET1, rspq, 12, 30, "CC3 Wmbij (i>j,mb)");
+    dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC3_HET1, 0, 24, 22, 24, 22, 0, "CC3 WMbIj (Mb,Ij)");
+    dpd_buf4_sort(&W, CC3_HET1, rspq, 22, 24, "CC3 WMbIj (Ij,Mb)");
+    dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC3_HET1, 0, 27, 23, 27, 23, 0, "CC3 WmBiJ (mB,iJ)");
+    dpd_buf4_sort(&W, CC3_HET1, rspq, 23, 27, "CC3 WmBiJ (iJ,mB)");
+    dpd_buf4_close(&W);
   }
 }
