@@ -4,7 +4,6 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-CDEF += -DBUFF=0 -DSITEDIR=\"$(datadir)\"
 CFLAGS += -DDPD_TIMER
 CFLAGS += -DDPD_DEBUG
 

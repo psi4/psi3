@@ -212,7 +212,7 @@ void dpd_file4_cache_print(FILE *outfile)
 "-------------------------------------------------------------------------\n");
   while(this_entry != NULL) {
       fprintf(outfile,
-      "%-22s %3d    %1d  %2d  %2d  %6d  %5d      %1d    %6d  %8.1f\n",
+      "%-22s %3d    %1d  %2d  %2d %6d      %1d    %6d  %8.1f\n",
 	      this_entry->label, this_entry->filenum, this_entry->irrep,
 	      this_entry->pqnum, this_entry->rsnum, this_entry->usage,
               this_entry->clean, this_entry->priority,

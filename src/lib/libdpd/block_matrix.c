@@ -44,9 +44,9 @@ timer_on("block_mat");
   while((dpd_default->memfree - n*m) < 0) {
       /* Delete cache entries until there's enough memory or no more cache */
       if(dpd_default->cachetype == 1)
-          if(dpd_file4_cache_del_lru()) return(NULL); 
+          if(dpd_file4_cache_del_low()) return(NULL); 
       else if(dpd_default->cachetype == 0)
-          if(dpd_file4_cache_del_low()) return(NULL);
+          if(dpd_file4_cache_del_lru()) return(NULL);
       else {
           printf("LIBDPD Error: invalid cachetype, %d\n", 
                  dpd_default->cachetype);
