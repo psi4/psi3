@@ -3,6 +3,22 @@
 
 #include <file30_params.h>
 
+/*structure to hold z-matrix info*/
+struct z_entry {
+  int bond_atom;            /*first reference atom (bond)*/
+  int angle_atom;           /*second reference atom (angle)*/
+  int tors_atom;            /*third reference atom (torsion)*/
+  int bond_opt;             /*flags indicating to optimize values*/
+  int angle_opt;
+  int tors_opt;
+  double bond_val;          /*coordinate values*/
+  double angle_val;
+  double tors_val;
+  char bond_label[20];      /*variable labels, if any*/
+  char angle_label[20];
+  char tors_label[20];
+  };
+
 int file30_init(void);
 int file30_close(void);
 double **file30_rd_schwartz(void);
@@ -16,6 +32,7 @@ double **file30_rd_alpha_blk_scf(int);
 double **file30_rd_beta_blk_scf(int);
 double **file30_rd_blk_scf(int);
 double **file30_rd_ccvecs(void);
+double **file30_z_to_cart(struct z_entry *z_geom, int num_atoms);
 double *file30_rd_contr(void);
 double file30_rd_eref(void);
 double file30_rd_ecorr(void);
@@ -99,21 +116,5 @@ void file30_wt_zvals(double *);
 void file30_wt_alpha_blk_scf(double **,int);
 void file30_wt_beta_blk_scf(double **,int);
 void file30_wt_blk_scf(double **,int);
-
-/*structure to hold z-matrix info*/
-struct z_entry {
-  int bond_atom;            /*first reference atom (bond)*/
-  int angle_atom;           /*second reference atom (angle)*/
-  int tors_atom;            /*third reference atom (torsion)*/
-  int bond_opt;             /*flags indicating to optimize values*/
-  int angle_opt;
-  int tors_opt;
-  double bond_val;          /*coordinate values*/
-  double angle_val;
-  double tors_val;
-  char bond_label[20];      /*variable labels, if any*/
-  char angle_label[20];
-  char tors_label[20];
-  };                
 
 #endif
