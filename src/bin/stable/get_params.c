@@ -42,9 +42,10 @@ void get_params()
 
   /* Make sure the value of ref matches that from CC_INFO */
   if(params.ref != ref) {
-    printf("Value of REFERENCE from input.dat (%1d) and CC_INFO (%1d) do not match!\n", 
+    fprintf(outfile, "Value of REFERENCE from input.dat (%1d) and CC_INFO (%1d) do not match!\n", 
 	   ref, params.ref);
-    exit(PSI_RETURN_FAILURE);
+    fprintf(outfile, "Is this what you want to do?\n");
+    params.ref = ref;
   }
 }
 

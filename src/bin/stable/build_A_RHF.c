@@ -30,12 +30,15 @@ void build_A_RHF(void)
 
   nirreps = moinfo.nirreps;
 
-  dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D 2 <ij|ab> - <ij|ba>");
+  dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
   dpd_buf4_sort(&D, PSIF_MO_HESS, rpsq, 11, 11, "A(AI,BJ)");
   dpd_buf4_close(&D);
+  dpd_buf4_init(&Amat, PSIF_MO_HESS, 0, 11, 11, 11, 11, 0, "A(AI,BJ)");
+  dpd_buf4_scm(&Amat, 4);
+  dpd_buf4_close(&Amat);
 
   dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
-  dpd_buf4_sort_axpy(&D, PSIF_MO_HESS, rpsq, 11, 11, "A(AI,BJ)", 2);
+  dpd_buf4_sort_axpy(&D, PSIF_MO_HESS, sprq, 11, 11, "A(AI,BJ)", -1);
   dpd_buf4_sort(&D, PSIF_MO_HESS, sprq, 11, 11, "A(AI,BJ) triplet");
   dpd_buf4_close(&D);
 

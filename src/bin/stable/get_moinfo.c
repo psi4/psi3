@@ -3,6 +3,7 @@
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
 #include <libchkpt/chkpt.h>
+#include <psifiles.h>
 #define EXTERN
 #include "globals.h"
 
@@ -14,8 +15,7 @@
 
 void get_moinfo(void)
 {
-  int i, h, p, q, errcod, nactive, nirreps;
-  psio_address next;
+  int i, h, p, q, errcod, nactive, nirreps, nfzc, nfzv;
 
   chkpt_init(PSIO_OPEN_OLD);
   moinfo.nirreps = chkpt_rd_nirreps();
@@ -39,6 +39,16 @@ void get_moinfo(void)
 		  (char *) moinfo.frdocc, sizeof(int)*nirreps);
   psio_read_entry(CC_INFO, "Frozen Virt Orbs Per Irrep",
 		  (char *) moinfo.fruocc, sizeof(int)*nirreps);
+
+  nfzc = nfzv = 0;
+  for(h=0; h < nirreps; h++) {
+    nfzc += moinfo.frdocc[h];
+    nfzv += moinfo.fruocc[h];
+  }
+  if(nfzc || nfzv) {
+    fprintf(outfile, "\n\tStability analysis incorrect for frozen orbital calculations.\n");
+    exit(PSI_RETURN_FAILURE);
+  }
   
   psio_read_entry(CC_INFO, "No. of Active Orbitals", (char *) &(nactive),
 		  sizeof(int)); 
