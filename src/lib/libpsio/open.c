@@ -49,19 +49,13 @@ int psio_open(ULI unit, int status)
   /* Build the name for each volume and open the file */
   for(i=0; i < this_unit->numvols; i++) {
     errcod = psio_get_volpath(unit, i, path);
-    if(!errcod) {
-      sprintf(fullpath, "%s%s.%u", path, name, unit);
-      this_unit->vol[i].path = (char *) malloc(strlen(fullpath)+1);
-      strcpy(this_unit->vol[i].path,fullpath);
-    }
-    else if(this_unit->numvols > 1) {
+
+    if(errcod && this_unit->numvols > 1)
       psio_error(unit,PSIO_ERROR_NOVOLPATH);
-    }
-    else {
-      sprintf(fullpath, "./%s.%u", name, unit);
-      this_unit->vol[i].path = (char *) malloc(strlen(fullpath)+1);
-      strcpy(this_unit->vol[i].path,fullpath);
-    }
+
+    sprintf(fullpath, "%s%s.%u", path, name, unit);
+    this_unit->vol[i].path = (char *) malloc(strlen(fullpath)+1);
+    strcpy(this_unit->vol[i].path,fullpath);
 
     /* Check if any previously opened volumes have the same path */
     for(j=0; j < i; j++)

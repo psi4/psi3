@@ -27,6 +27,14 @@ int psio_get_volpath(ULI unit, ULI volume, char *path)
   errcod = ip_data(ip_token,"%s",path,0);
   if(errcod == IPE_OK) return(0);
 
+  sprintf(ip_token,":PSI:FILES:FILE%u:VOLUME%u",unit,volume+1);
+  errcod = ip_data(ip_token,"%s",path,0);
+  if(errcod == IPE_OK) return(0);
+
+  sprintf(ip_token,":PSI:FILES:DEFAULT:VOLUME%u",volume+1);
+  errcod = ip_data(ip_token,"%s",path,0);
+  if(errcod == IPE_OK) return(0);
+
   sprintf(ip_token,":DEFAULT:FILES:FILE%u:VOLUME%u",unit,volume+1);
   errcod = ip_data(ip_token,"%s",path,0);
   if(errcod == IPE_OK) return(0);
@@ -35,6 +43,8 @@ int psio_get_volpath(ULI unit, ULI volume, char *path)
   errcod = ip_data(ip_token,"%s",path,0);
   if(errcod == IPE_OK) return(0);
 
+  /* default to /tmp/ */
+  sprintf(path, "/tmp/");
   return(1);
 }
 
@@ -50,9 +60,16 @@ int psio_get_volpath_default(ULI volume, char *path)
   int errcod;
   char ip_token[PSIO_MAXSTR];
 
+  sprintf(ip_token,":PSI:FILES:DEFAULT:VOLUME%u",volume+1);
+  errcod = ip_data(ip_token,"%s",path,0);
+  if(errcod == IPE_OK) return(0);
+
   sprintf(ip_token,":DEFAULT:FILES:DEFAULT:VOLUME%u",volume+1);
   errcod = ip_data(ip_token,"%s",path,0);
   if(errcod == IPE_OK) return(0);
+
+  /* default to /tmp/ */
+  sprintf(path, "/tmp/");
 
   return(1);
 }
