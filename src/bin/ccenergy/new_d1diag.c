@@ -108,8 +108,9 @@ static double new_d1diag_t1_rohf(void)
   max_hx = sqrt(max_hx);
   max_xp = sqrt(max_xp);
 
-/*  fprintf(outfile, "ND1: %8.6f %8.6f %8.6f\n", max_hp, max_hx, max_xp);
- *  */
+  /*
+  fprintf(outfile, "ND1: hp=%8.6f hx=%8.6f xp=%8.6f\n", max_hp, max_hx, max_xp);
+  */
 
   max = max_hp;
   if (max_hx > max) max = max_hx;

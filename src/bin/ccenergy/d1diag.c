@@ -153,8 +153,9 @@ d1diag_t1_rohf()
   max_hx = sqrt(max_hx);
   max_xp = sqrt(max_xp);
 
-/*  fprintf(outfile, "D1:  %8.6f %8.6f %8.6f\n", max_ph, max_hx, max_xp);
- *  */
+  /*
+  fprintf(outfile, "D1:  hp=%8.6f hx=%8.6f xp=%8.6f\n", max_ph, max_hx, max_xp);
+  */
 
   max = max_ph;
   if (max_hx > max) max = max_hx;
