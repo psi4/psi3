@@ -11,6 +11,7 @@ TARGET = $(top_objdir)/lib/libfile30.a
 TRUESRC = \
 init.c \
 close.c \
+rd_ua2a.c \
 rd_rottype.c \
 rd_eref.c \
 rd_schwartz.c \
@@ -20,7 +21,6 @@ rd_ref.c \
 rd_alpha_lagr.c \
 rd_beta_lagr.c \
 rd_lagr.c \
-rd_irrstr.c \
 rd_usotbf.c \
 rd_sloc_new.c \
 rd_usotao_new.c \
