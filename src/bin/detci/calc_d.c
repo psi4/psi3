@@ -90,14 +90,11 @@ double calc_mpn_vec(double *target, double energy, double *Hd, int size, double
 
    for (i=0; i<size; i++) {
       tval = sign1*energy + sign2*Hd[i];
-      fprintf(outfile," target[%d] = %20.10f %20.10f %20.10f %20.10f\n",i
-              ,target[i],energy,Hd[i],tval); 
       if (precon==1) 
         tval2 = (target[i] /= tval);
       else if (precon==0) 
         tval2 = (target[i] *= tval);
       norm += tval2 * tval2;
-      fprintf(outfile," target[%d] = %20.10f\n", i, target[i]); 
       }
    return(norm);
 
