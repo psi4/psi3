@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <psifiles.h>
 #include <libciomr.h>
 #include <iwl.h>
