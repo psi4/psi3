@@ -9,6 +9,7 @@
 #include <libdpd/dpd.h>
 #include <libpsio/psio.h>
 #include <libqt/qt.h>
+#include <psifiles.h>
 #include "MOInfo.h"
 #include "Params.h"
 #include "globals.h"
@@ -136,7 +137,7 @@ int main(int argc, char *argv[])
 
   cleanup();
   exit_io();
-  exit(0);
+  exit(PSI_RETURN_SUCCESS);
 }
 
 void init_io(int argc, char *argv[])
