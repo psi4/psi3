@@ -30,13 +30,23 @@ rd_ref.c \
 rd_rottype.c \
 rd_am2canon_shell_order.c \
 rd_atom_pos.c \
+rd_shells_per_am.c \
+rd_sloc.c \
+rd_sloc_new.c \
+rd_snuc.c \
+rd_snumg.c \
+rd_sprim.c \
+rd_stype.c \
+rd_symoper.c \
+rd_ua2a.c \
+rd_us2s.c \
 rd_orbspi.c \
 rd_sopi.c \
 rd_clsdpi.c \
 rd_openpi.c \
 rd_irr_labs.c \
 rd_hfsym_labs.c \
-rd_label.c \
+rd_label.c 
 
 DEPENDINCLUDE = psio.h chkpt.h
 

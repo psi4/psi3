@@ -40,7 +40,17 @@ int chkpt_rd_ref(void);
 int chkpt_rd_rottype(void);
 int *chkpt_rd_am2canon_shell_order(void);
 int *chkpt_rd_atom_position(void);
-
+int *chkpt_rd_shells_per_am();
+int *chkpt_rd_sloc();
+int *chkpt_rd_sloc_new();
+int *chkpt_rd_snuc();
+int *chkpt_rd_snumg();
+int *chkpt_rd_sprim();
+int *chkpt_rd_sopi();
+int *chkpt_rd_stype();
+int *chkpt_rd_symoper();
+int *chkpt_rd_ua2a();
+int *chkpt_rd_us2s();
 int *chkpt_rd_orbspi(void);
 int *chkpt_rd_clsdpi(void);
 int *chkpt_rd_openpi(void);

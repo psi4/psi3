@@ -4,8 +4,9 @@
 
 #include <string.h>
 #include "chkpt.h"
+#include <psifiles.h>
+#include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
 
 /*!
 ** chkpt_rd_label():  Reads the main chkpt label.

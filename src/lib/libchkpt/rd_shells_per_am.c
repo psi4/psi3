@@ -17,10 +17,10 @@
 
 int *chkpt_rd_shells_per_am(void)
 {
-  psio_address next;
-  next = PSIO_ZERO;
   int *shells_per_am;
   int max_am;
+  psio_address next;
+  next = PSIO_ZERO;
 
   max_am = chkpt_rd_max_am();
   shells_per_am = init_int_array(max_am+1);
