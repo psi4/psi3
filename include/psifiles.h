@@ -37,9 +37,16 @@
 #define PSIF_MO_OPDM        73
 #define PSIF_MO_TPDM        74
 #define PSIF_MO_LAG         75
-/* PSIF_AO_OPDM also contains AO Lagrangian */
-#define PSIF_AO_OPDM        76      
+#define PSIF_AO_OPDM        76   /* PSIF_AO_OPDM also contains AO Lagrangian */
 #define PSIF_AO_TPDM        77
+
+/*
+** MO Hessian File (also contains specialized integral and Fock lists.
+** See programs STABLE and CPHF for more info.
+** -TDC, 7/00
+*/
+#define PSIF_MO_HESS        78
+#define PSIF_CPHF           78
 
 /*
 ** Additions for UHF-based transformations.
@@ -51,14 +58,9 @@
 #define PSIF_MO_AA_TPDM     84
 #define PSIF_MO_BB_TPDM     85
 #define PSIF_MO_AB_TPDM     86
-
-/*
-** MO Hessian File (also contains specialized integral and Fock lists.
-** See program STABLE for more info.
-** -TDC, 7/00
-*/
-#define PSIF_MO_HESS        88
-#define PSIF_CPHF           88
+#define PSIF_AA_PRESORT     87   /* AA UHF twopdm presort file */
+#define PSIF_BB_PRESORT     88   /* BB UHF twopdm presort file */
+#define PSIF_AB_PRESORT     89   /* AB UHF twopdm presort file */
 
 /* All of these one-electron quantities have been moved into PSIF_OEI */
 /* These macros give libpsio TOC strings for easy identification.     */
@@ -88,22 +90,6 @@
 #define PSIF_AO_OPDM_SQUARE "AO-basis OPDM square"
 #define PSIF_SO_OPDM        "SO-basis OPDM"
 #define PSIF_SO_OPDM_TRIANG "SO-basis triang"
-
-/*
-#define PSIF_SO_S           35
-#define PSIF_SO_T           36
-#define PSIF_SO_V           37
-#define PSIF_AO_S           40
-#define PSIF_AO_MX          41
-#define PSIF_AO_MY          42
-#define PSIF_AO_MZ          43
-#define PSIF_MO_OEI         71
-#define PSIF_MO_FZC         78
-#define PSIF_MO_A_OEI       84
-#define PSIF_MO_B_OEI       85
-#define PSIF_MO_A_FZC       86
-#define PSIF_MO_B_FZC       87
-*/
 
 /* PSI return codes --- for new PSI driver           */
 #define PSI_RETURN_SUCCESS      0
