@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
+#include <libciomr/libciomr.h>
 #include <libdpd/dpd.h>
+#include <libqt/qt.h>
 #define EXTERN
 #include "globals.h"
 
@@ -11,6 +13,12 @@ double LHX1Y2(char *pert_x, char *cart_x, int irrep_x, double omega_x,
   dpdbuf4 Z, Z1, Z2, I, Y2, L2, W;
   char lbl[32];
   double polar;
+  int nirreps, Gbm, Gef, Gjf, Ge, Gf, Gj, bm, ef, jf;
+  int *occpi, *virtpi, **W_col_offset, **Z_col_offset, offset;
+
+  nirreps = moinfo.nirreps;
+  occpi = moinfo.occpi;
+  virtpi = moinfo.virtpi;
 
   sprintf(lbl, "Z_%s_%1s_MI", pert_y, cart_y);
   dpd_file2_init(&z1, CC_TMP0, irrep_y, 0, 0, lbl);
@@ -133,8 +141,57 @@ double LHX1Y2(char *pert_x, char *cart_x, int irrep_x, double omega_x,
   sprintf(lbl, "Z_%s_%1s_MbEj (bM,jE)", pert_x, cart_x);
   dpd_buf4_init(&Z1, CC_TMP0, irrep_x, 11, 10, 11, 10, 0, lbl);
   dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");
-  dpd_contract244(&X1, &W, &Z1, 1, 2, 1, 1, 0);
+  /*  dpd_contract244(&X1, &W, &Z1, 1, 2, 1, 1, 0); */
+  /* add out-of-core algorithm here */
+  /* Z(bm,jf) <-- X1(j,e) * W(bm,ef) */
+  dpd_file2_mat_init(&X1);
+  dpd_file2_mat_rd(&X1);
+  W_col_offset = init_int_matrix(nirreps, nirreps);
+  Z_col_offset = init_int_matrix(nirreps, nirreps);
+  for(Gbm=0; Gbm < nirreps; Gbm++) {
+
+    /* compute a column-index lookup */
+    for(Ge=0, offset=0; Ge < nirreps; Ge++) {
+      Gf = Gbm^Ge;
+      W_col_offset[Gbm][Ge] = offset;
+      if(virtpi[Ge] && virtpi[Gf]) offset += virtpi[Ge] * virtpi[Gf];
+    }
+
+    for(Gj=0, offset=0; Gj < nirreps; Gj++) {
+      Gf = Gbm^Gj^irrep_x;
+      Z_col_offset[Gbm][Gj] = offset;
+      if(occpi[Gj] && virtpi[Gf]) offset += occpi[Gj] * virtpi[Gf];
+    }
+
+    Gef = Gbm;  Gjf = Gbm^irrep_x;
+
+    dpd_buf4_mat_irrep_init(&Z1, Gbm);
+    dpd_buf4_mat_irrep_row_init(&W, Gbm);
+    for(bm=0; bm < W.params->rowtot[Gbm]; bm++) {
+      dpd_buf4_mat_irrep_row_rd(&W, Gbm, bm);
+
+      for(Gj=0; Gj < nirreps; Gj++) {
+	Gf = Gjf^Gj;  Ge = Gef^Gf;
+
+	ef = W_col_offset[Gbm][Ge];
+	jf = Z_col_offset[Gbm][Gj];
+
+	if(occpi[Gj] && virtpi[Gf] && virtpi[Ge])
+	  C_DGEMM('n','n', occpi[Gj], virtpi[Gf], virtpi[Ge], 1.0, &(X1.matrix[Gj][0][0]), virtpi[Ge],
+		  &(W.matrix[Gbm][0][ef]), virtpi[Gf], 0.0, &(Z1.matrix[Gbm][bm][jf]), virtpi[Gf]);
+      }
+    }
+    dpd_buf4_mat_irrep_row_close(&W, Gbm);
+    dpd_buf4_mat_irrep_wrt(&Z1, Gbm);
+    dpd_buf4_mat_irrep_close(&Z1, Gbm);
+
+  }
+  free_int_matrix(W_col_offset, nirreps);
+  free_int_matrix(Z_col_offset, nirreps);
+  dpd_file2_mat_close(&X1);
+  /* out-of-core algorithm done */
   dpd_buf4_close(&W);
+
   sprintf(lbl, "Z_%s_%1s_MbEj (ME,jb)", pert_x, cart_x);
   dpd_buf4_sort(&Z1, CC_TMP0, qsrp, 10, 10, lbl);
   dpd_buf4_close(&Z1);
