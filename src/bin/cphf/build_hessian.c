@@ -39,7 +39,7 @@
 */
 
 void build_hessian(double ***F, double ***S, 
-		   double **AH, double ***U, 
+		   double **A, double ***U, 
 		   double **hessian)
 {
   int coord, coord_a, coord_b;
@@ -138,9 +138,9 @@ void build_hessian(double ***F, double ***S,
 		     
                       ql = INDEX(q,l);
 			    
-		      hessian[coord_a][coord_b] += 4.0 * U[coord_a][p][j] * 
+		      hessian[coord_a][coord_b] -= 4.0 * U[coord_a][p][j] * 
                                                          U[coord_b][q][l] *
-                                                         AH[pj][ql];
+                                                         A[pj][ql];
 		    }
 		  }
 		}
