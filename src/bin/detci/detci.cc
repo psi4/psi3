@@ -29,17 +29,18 @@ extern "C" {
    #include <libipv1/ip_lib.h>
    /* seem to need string.h in RedHat 7.1 */
    #include <string.h>
+   #include <psifiles.h>
    #include <libqt/qt.h>
    #include <libciomr/libciomr.h>
    #include <libfile30/file30.h>
    #include <libchkpt/chkpt.h>
    #include <libpsio/psio.h>
+   #include <libqt/slaterd.h>
    #include "structs.h"
    #include "globals.h"
    #include "ci_tol.h"
    #include <pthread.h>
    #include "tpool.h"
-
 
 
    /* C "GLOBAL" VARIABLES FOR THIS MODULE */
@@ -366,7 +367,7 @@ void diag_h(struct stringwr **alplist, struct stringwr **betlist)
          CIblks.first_iablk, CIblks.last_iablk, CIblks.decode);
 
       double **H, **rsp_evecs;
-      int Ia, Ib, Iarel, Ialist, Ibrel, Iblist;
+      int Iarel, Ialist, Ibrel, Iblist;
       unsigned long int ii, jj;
       SlaterDeterminant I, J;
       int *mi_iac, *mi_ibc, *mi_iaidx, *mi_ibidx; 
@@ -443,6 +444,56 @@ void diag_h(struct stringwr **alplist, struct stringwr **betlist)
          }
 
       if (Parameters.write_energy) write_energy(nroots, evals, nucrep);
+
+
+      /* Dump the vector to a PSIO file
+	 Added by Edward valeev (June 2002) */
+      StringSet alphastrings, betastrings;
+      SlaterDetSet dets;
+      SlaterDetVector vec;
+
+      stringset_init(&alphastrings,AlphaG->num_str);
+      int list_gr = 0;
+      for(int irrep=0; irrep<AlphaG->nirreps; irrep++) {
+	for(int gr=0; gr<AlphaG->subgr_per_irrep; gr++,list_gr++) {
+	  int nlists_per_gr = AlphaG->sg[irrep][gr].num_strings;
+	  int offset = AlphaG->sg[irrep][gr].offset;
+	  for(int l=0; l<nlists_per_gr; l++)
+	    stringset_add(&alphastrings,l+offset,AlphaG->num_el,alplist[list_gr][l].occs);
+	}
+      }
+	
+      stringset_init(&betastrings,CalcInfo.num_bet_str);
+      list_gr = 0;
+      for(int irrep=0; irrep<BetaG->nirreps; irrep++) {
+	for(int gr=0; gr<BetaG->subgr_per_irrep; gr++,list_gr++) {
+	  int nlists_per_gr = BetaG->sg[irrep][gr].num_strings;
+	  int offset = BetaG->sg[irrep][gr].offset;
+	  for(int l=0; l<nlists_per_gr; l++)
+	    stringset_add(&betastrings,l+offset,BetaG->num_el,betlist[list_gr][l].occs);
+	}
+      }
+
+      slaterdetset_init(&dets,size,&alphastrings,&betastrings);
+      for (ii=0; ii<size; ii++) {
+	Cvec.det2strings(ii, &Ialist, &Iarel, &Iblist, &Ibrel);
+	int irrep = Ialist/AlphaG->subgr_per_irrep;
+	int gr = Ialist%AlphaG->subgr_per_irrep;
+	int Ia = Iarel + AlphaG->sg[irrep][gr].offset;
+	irrep = Iblist/BetaG->subgr_per_irrep;
+	gr = Iblist%BetaG->subgr_per_irrep;
+	int Ib = Ibrel + BetaG->sg[irrep][gr].offset;
+	slaterdetset_add(&dets, ii, Ia, Ib);
+      }
+
+      slaterdetvector_init(&vec, &dets);
+      slaterdetvector_set(&vec, evecs[0]);
+      slaterdetvector_write(PSIF_CIVECT,"CI vector",&vec);
+
+      slaterdetvector_delete(&vec);
+      slaterdetset_delete(&dets);
+      stringset_delete(&alphastrings);
+      stringset_delete(&betastrings);
 
       } /* end RSP section */
 
