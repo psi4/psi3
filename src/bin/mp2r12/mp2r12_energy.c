@@ -8,10 +8,7 @@
 #include "MOInfo.h"
 #include "Params.h"
 #include "globals.h"
-
-#define MAXIOFF3 255
-#define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
-#define MIN(i,j) (((i) >= (j)) ? (j) : (i))
+#include "defines.h"
 
 static void make_arrays(double *evals, double **evals_docc, double **evals_virt,
                   int ndocc, int ndocc_act, int nvirt, int **ioff3, int **focact,
@@ -298,7 +295,10 @@ void mp2r12_energy(void)
 	ij = ioff[i]+j;
 	for(kl=0;kl<ntri_docc_act;kl++)
 	  for(mn=0;mn<ntri_docc_act;mn++)
-	    pair_energy[spin][act2full[ij]] -= spin_pfac*V[spin][kl][ij]*V[spin][mn][ij]*Binv[spin][kl][mn];
+	    if (!params.c_limit)
+	      pair_energy[spin][act2full[ij]] -= spin_pfac*V[spin][kl][ij]*V[spin][mn][ij]*Binv[spin][kl][mn];
+	    else
+	      pair_energy[spin][act2full[ij]] -= spin_pfac*V[spin][ij][ij]*(spin == 0 ? -0.5 : -0.25);
       }
     for(ij=0;ij<ntri_docc_act;ij++)
       mp2r12_energy += pair_energy[spin][act2full[ij]];

@@ -10,17 +10,13 @@
 #include "MOInfo.h"
 #include "Params.h"
 #include "globals.h"
+#include "defines.h"
 
 /* First definitions of globals */
 FILE *infile, *outfile;
 int *ioff;
 struct MOInfo moinfo;
 struct Params params;
-
-/* Max length of ioff array */
-#define IOFF 32641
-
-#define MAX_NUM_IRREPS 8
 
 /* Function Prototypes */
 void init_io();
@@ -102,8 +98,7 @@ void get_parameters(void)
   params.print_lvl = 0;
   errcod = ip_data("PRINT_LVL", "%d", &(params.print_lvl),0);
 
-  params.wfn = (char *) malloc(sizeof(char)*10);
-  strcpy(params.wfn, "MP2-R12A");
+  params.wfn = strdup("MP2-R12/A");
 
   params.tolerance = 1e-10;
   errcod = ip_data("TOLERANCE","%d",&(tol),0);
@@ -113,12 +108,19 @@ void get_parameters(void)
   params.keep_integrals=1;
   errcod = ip_boolean("KEEP_INTEGRALS", &(params.keep_integrals),0);
 
+  params.c_limit = 0;
+  errcod = ip_boolean("C_LIMIT", &(params.c_limit), 0);
+
   fprintf(outfile,"\tInput Parameters:\n");
   fprintf(outfile,"\t-----------------\n");
   fprintf(outfile,"\tWavefunction           =  %s\n", params.wfn);
   fprintf(outfile,"\tPrint Level            =  %d\n", params.print_lvl);
   fprintf(outfile,"\tTolerance              =  %3.1e\n", params.tolerance);
   fprintf(outfile,"\tKeep Integrals         =  %s\n", (params.keep_integrals ? "Yes": "No"));
+  if (params.c_limit)
+    fprintf(outfile,"\t*WARNING* : using the asymptotic limit for the C-coefficients!\n\n");
+
+  return;
 }
 
 void get_moinfo(void)
