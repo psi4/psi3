@@ -1,2 +1,2 @@
 
-void read_scf_opdm(int);
+void read_scf_opdm();

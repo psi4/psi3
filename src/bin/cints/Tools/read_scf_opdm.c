@@ -12,15 +12,7 @@
 
 #define OFFDIAG_DENS_FACTOR 0.5
 
-/*-----------------------------------------------------
-  This function reads in difference (diff_flag = 1) or
-  total (diff_flag = 0) density matrices
-
-  Only the HF Fock part needs the difference density
-  matrix, hence when diff_flag = 0 and reftype = uhf
-  I form alpha and beta densities right away.
- -----------------------------------------------------*/
-void read_scf_opdm(int diff_flag)
+void read_scf_opdm()
 { 
   int i, j, ij, nao_i, nao_j, sh_i, sh_j;
   int ioffset, joffset;
@@ -39,40 +31,23 @@ void read_scf_opdm(int diff_flag)
   if (UserOptions.reftype == rohf || UserOptions.reftype == uhf)
     denso = init_array(nstri);
 
-  if (diff_flag == 1) {
-    if (UserOptions.reftype == uhf) {
+  if (UserOptions.reftype == uhf) {
       denso = init_array(nstri);
       psio_read_entry(IOUnits.itapDSCF, "Difference Alpha Density", (char *) dens, sizeof(double)*nstri);
       psio_read_entry(IOUnits.itapDSCF, "Difference Beta Density", (char *) denso, sizeof(double)*nstri);
       /*--- Form total and open-shell (spin) density matrices first ---*/
       for(i=0;i<nstri;i++) {
-	temp = dens[i] + denso[i];
+	  temp = dens[i] + denso[i];
 	denso[i] = dens[i] - denso[i];
 	dens[i] = temp;
       }
-    }
-    else {
-      psio_read_entry(IOUnits.itapDSCF, "Difference Density", (char *) dens, sizeof(double)*nstri);
-      if (UserOptions.reftype == rohf) {
-	denso = init_array(nstri);
-	psio_read_entry(IOUnits.itapDSCF, "Difference Open-shell Density", (char *) denso, sizeof(double)*nstri);
-      }
-    }
   }
   else {
-    if (UserOptions.reftype == uhf) {
-      denso = init_array(nstri);
-      psio_read_entry(IOUnits.itapDSCF, "Total Alpha Density", (char *) dens, sizeof(double)*nstri);
-      psio_read_entry(IOUnits.itapDSCF, "Total Beta Density", (char *) denso, sizeof(double)*nstri);
-      /*--- Do NOT form total and open-shell (spin) density matrices ---*/
-    }
-    else {
-      psio_read_entry(IOUnits.itapDSCF, "Total Density", (char *) dens, sizeof(double)*nstri);
+      psio_read_entry(IOUnits.itapDSCF, "Difference Density", (char *) dens, sizeof(double)*nstri);
       if (UserOptions.reftype == rohf) {
-	denso = init_array(nstri);
-	psio_read_entry(IOUnits.itapDSCF, "Total Open-shell Density", (char *) denso, sizeof(double)*nstri);
+	  denso = init_array(nstri);
+	  psio_read_entry(IOUnits.itapDSCF, "Difference Open-shell Density", (char *) denso, sizeof(double)*nstri);
       }
-    }
   }
   psio_close(IOUnits.itapDSCF, 1);
 
@@ -202,99 +177,56 @@ void read_scf_opdm(int diff_flag)
 	  sp = &(BasisSet.shell_pairs[sh_i][sh_j]);
 	  joffset = BasisSet.shells[sh_j].fao-1;
 	  nao_j = ioff[BasisSet.shells[sh_j].am];
-	  if (diff_flag) {
-	    /*--- Check if can reuse space from dmata ---*/
-	    if (sp->dmato == NULL)
+	  /*--- Check if can reuse space from dmata ---*/
+	  if (sp->dmato == NULL)
 	      if (sp->dmata == NULL)
-		sp->dmato = block_matrix(nao_i,nao_j);
+		  sp->dmato = block_matrix(nao_i,nao_j);
 	      else {
-		sp->dmato = sp->dmata;
-		sp->dmata = NULL;
+		  sp->dmato = sp->dmata;
+		  sp->dmata = NULL;
 	      }
-
-	    max_elem = sp->Dmax;
-	    for(i=0;i<nao_i;i++)
+	  
+	  max_elem = sp->Dmax;
+	  for(i=0;i<nao_i;i++)
 	      for(j=0;j<nao_j;j++) {
-		temp = sp->dmato[i][j] = sq_denso[ioffset+i][joffset+j];
-		temp = fabs(temp);
-		if (max_elem < temp)
-		  max_elem = temp;
+		  temp = sp->dmato[i][j] = sq_denso[ioffset+i][joffset+j];
+		  temp = fabs(temp);
+		  if (max_elem < temp)
+		      max_elem = temp;
 	      }
-	    sp->Dmax = max_elem;
-	  }
-	  else {
-	    /*--- Check if can reuse space from dmato ---*/
-	    if (sp->dmata == NULL)
-	      if (sp->dmato == NULL)
-		sp->dmata = block_matrix(nao_i,nao_j);
-	      else {
-		sp->dmata = sp->dmato;
-		sp->dmato = NULL;
-	      }
-
-	    max_elem = sp->Dmax;
-	    for(i=0;i<nao_i;i++)
-	      for(j=0;j<nao_j;j++) {
-		temp = sp->dmata[i][j] = sq_denso[ioffset+i][joffset+j];
-		temp = fabs(temp);
-		if (max_elem < temp)
-		  max_elem = temp;
-	      }
-	    sp->Dmax = max_elem;
-	  }
+	  sp->Dmax = max_elem;
 	}
       }
       free_matrix(sq_denso,BasisSet.num_ao);
       
       for(sh_i=0;sh_i<BasisSet.num_shells;sh_i++) {
-	ioffset = BasisSet.shells[sh_i].fao-1;
-	nao_i = ioff[BasisSet.shells[sh_i].am];
-	for(sh_j=0;sh_j<BasisSet.num_shells;sh_j++) {
-	  sp = &(BasisSet.shell_pairs[sh_i][sh_j]);
-	  joffset = BasisSet.shells[sh_j].fao-1;
-	  nao_j = ioff[BasisSet.shells[sh_j].am];
-	  if (diff_flag) {
-	    /*--- Check if can reuse space from dmatb ---*/
-	    if (sp->dmat == NULL)
-	      if (sp->dmatb == NULL)
-		sp->dmat = block_matrix(nao_i,nao_j);
-	      else {
-		sp->dmat = sp->dmatb;
-		sp->dmatb = NULL;
-	      }
-
-	    max_elem = sp->Dmax;
-	    for(i=0;i<nao_i;i++)
-	      for(j=0;j<nao_j;j++) {
-		temp = sp->dmat[i][j] = sq_dens[ioffset+i][joffset+j];
-		temp = fabs(temp);
-		if (max_elem < temp)
-		  max_elem = temp;
-	      }
-	    sp->Dmax = MAX(sp->Dmax,max_elem);
-	  }
-	  else {
-	    /*--- Check if can reuse space from dmat ---*/
-	    if (sp->dmatb == NULL)
+	  ioffset = BasisSet.shells[sh_i].fao-1;
+	  nao_i = ioff[BasisSet.shells[sh_i].am];
+	  for(sh_j=0;sh_j<BasisSet.num_shells;sh_j++) {
+	      sp = &(BasisSet.shell_pairs[sh_i][sh_j]);
+	      joffset = BasisSet.shells[sh_j].fao-1;
+	      nao_j = ioff[BasisSet.shells[sh_j].am];
+	      /*--- Check if can reuse space from dmatb ---*/
 	      if (sp->dmat == NULL)
-		sp->dmatb = block_matrix(nao_i,nao_j);
-	      else {
-		sp->dmatb = sp->dmat;
-		sp->dmat = NULL;
-	      }
-
-	    max_elem = sp->Dmax;
-	    for(i=0;i<nao_i;i++)
-	      for(j=0;j<nao_j;j++) {
-		temp = sp->dmatb[i][j] = sq_denso[ioffset+i][joffset+j];
-		temp = fabs(temp);
-		if (max_elem < temp)
-		  max_elem = temp;
-	      }
-	    sp->Dmax = MAX(sp->Dmax,max_elem);
+		  if (sp->dmatb == NULL)
+		      sp->dmat = block_matrix(nao_i,nao_j);
+		  else {
+		      sp->dmat = sp->dmatb;
+		      sp->dmatb = NULL;
+		  }
+	      
+	      max_elem = sp->Dmax;
+	      for(i=0;i<nao_i;i++)
+		  for(j=0;j<nao_j;j++) {
+		      temp = sp->dmat[i][j] = sq_dens[ioffset+i][joffset+j];
+		      temp = fabs(temp);
+		      if (max_elem < temp)
+			  max_elem = temp;
+		  }
+	      sp->Dmax = MAX(sp->Dmax,max_elem);      
 	  }
-	}
       }
+  
       free_matrix(sq_dens,BasisSet.num_ao);
       break;
 

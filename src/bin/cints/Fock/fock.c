@@ -14,7 +14,7 @@
 #include"global.h"
 
 #include"read_scf_opdm.h"
-#include"read_total_opdm.h"
+#include"read_scf_evec.h"
 #include"shell_block_matrix.h"
 #include"hf_fock.h"
 #include"xc_fock.h"
@@ -30,13 +30,13 @@ void fock()
   int nstri;
   double temp;
   double **tmpmat1;
-  double *Gtri, *Gtri_o;               /* Total and open-shell G matrices and lower triagonal form
-					  in SO basis */
+  double *Gtri, *Gtri_o;  /* Total and open-shell G matrices 
+			     and lower triagonal form in SO basis */
 
   /*----------------------------------------
     Read in the difference HF/DFT densities
    ----------------------------------------*/
-  read_scf_opdm(1);
+  read_scf_opdm();
 
   /*-------------------------------------------
     Compute HF contribution to the Fock matrix
@@ -47,9 +47,8 @@ void fock()
     Do numerical interation for KS DFT
    -----------------------------------*/
   if(UserOptions.make_dft){
-    /*--- Read in the total DFT density ---*/
-    read_scf_evec();
-
+    /*--- Read in the SCF eigenvector density ---*/
+      read_scf_evec();
     /*-- Compute exch+corr contribution to the Fock matrix ---*/
     xc_fock();
   }

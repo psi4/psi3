@@ -12,14 +12,7 @@
 
 #define OFFDIAG_DENS_FACTOR 0.5
 
-/*-----------------------------------------------------
-  This function reads in difference (diff_flag = 1) or
-  total (diff_flag = 0) density matrices
 
-  Only the HF Fock part needs the difference density
-  matrix, hence when diff_flag = 0 and reftype = uhf
-  I form alpha and beta densities right away.
- -----------------------------------------------------*/
 void read_total_opdm(void)
 { 
   int i, j, ij;
@@ -113,6 +106,7 @@ void read_total_opdm(void)
       
   case rhf:
       
+      /*Dens = init_matrix(BasisSet.num_ao,BasisSet.num_ao);*/
       Dens = block_matrix(BasisSet.num_ao,BasisSet.num_ao);
       
       for(i=0;i<BasisSet.num_ao;i++)
