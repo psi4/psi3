@@ -9,7 +9,6 @@
 
 extern "C" {
     #include<masses.h>
-    #include<file30.h>
 }
 
 double **symm_matrix_invert(double**,int,int,int);
@@ -19,6 +18,7 @@ coord_base :: coord_base() {
     file30_init();
     num_atoms = file30_rd_natom();
     num_entries = file30_rd_nentry();
+
     if(coord_type==1) {
 	num_entries = num_atoms;
         num_coords = 3*num_atoms;
@@ -77,7 +77,13 @@ void coord_base :: read_carts() {
 	  free(temp);
 	  break;
       case 2: 
-	temp = file30_rd_fgeom();
+	if(dummy) {
+	    temp = file30_rd_fgeom();
+	    fprintf(outfile,"\n  Beware: imput can't handle dummy atoms for");
+	    fprintf(outfile," all symmetries at this time");
+	}
+	else
+	    temp = file30_rd_geom();
 	for(i=0;i<(3*num_entries);++i) {
 	    carts[i] = temp[0][i];
 	}
@@ -111,7 +117,7 @@ void coord_base :: print_c_grads() {
 	for(i=0;i<num_entries;++i) 
 	    for(j=0;j<3;++j) 
 		temp[i][j] = c_grads[3*i+j];
-	fprintf(outfile,"\nCartesian Gradients (hartree/bohr):\n");
+	fprintf(outfile,"\n  Cartesian Gradients (hartree/bohr):\n");
 	print_mat(temp,num_entries,3,outfile);
         free_matrix(temp,num_entries);
     }
@@ -121,9 +127,9 @@ void coord_base :: print_grads() {
 	switch(coord_type) {
 	case 1: print_c_grads(); break;
 	default: 
-	    fprintf(outfile,"  \nGradient vector in internal coordinates:\n");
+	    fprintf(outfile,"\n  Gradient vector in internal coordinates:\n");
 	for(i=0;i<num_coords;++i) 
-	    fprintf(outfile,"Internal%4d: % 14.12lf\n",i,grads[i]);
+	    fprintf(outfile,"  Internal%4d: % 14.12lf\n",i,grads[i]);
 	break;
 	}
 	return;
@@ -143,6 +149,8 @@ void coord_base :: read_opt() {
 
         for(i=0;i<num_coords;++i)
 	    coord_temp[i] = coords[i];
+
+	ip_done();
 
 	opt_ptr = fopen("opt.dat","r");
 	if( opt_ptr != NULL ) {      
@@ -299,12 +307,11 @@ double* coord_base :: compute_s() {
     for(i=0;i<num_coords;++i) 
 	for(j=0;j<num_coords;++j) 
 	    s[i] += -H[i][j] * grads[j];
-    
-    for(i=0;i<num_coords;++i) {
-	if( (fabs(s[i]) > 0.1) && (s[i] > 0.0) )
-	    s[i]=0.1;
-	if( (fabs(s[i]) > 0.1) && (s[i] < 0.0) )
-	    s[i]=-0.1;
+
+    if(print_lvl>1) {
+	fprintf(outfile,"\n  Unscaled displacement vector:\n");
+	for(i=0;i<num_coords;++i) 
+	    fprintf(outfile,"\n  Coordinate %4d: %15.12lf",i,s[i]);
     }
     return s;
 }
@@ -332,16 +339,6 @@ void coord_base :: update_bfgs() {
        for(i=0;i<num_coords;++i) {
 	   d_coord[i] = coords[i] - coords_old[i];
 	   d_grad[i] = grads[i] - grads_old[i];
-       }
-       
-       fprintf(outfile,"\ncoordinate difference:\n");
-       for(i=0;i<num_coords;++i) {
-	   fprintf(outfile,"%lf\n",d_coord[i]);
-       }
-       
-       fprintf(outfile,"\ngradient difference:\n");
-       for(i=0;i<num_coords;++i) {
-	   fprintf(outfile,"%lf\n",d_grad[i]);
        }
        
        for(i=0;i<num_coords;++i) {
@@ -442,9 +439,7 @@ void coord_base :: read_file11() {
 		punt("Trouble reading cartesian coordinates from file11.dat");
 	    }
 	    masses[i]=u[3*i][3*i]=u[3*i+1][3*i+1]=u[3*i+2][3*i+2]=an2masses[(int) an];
-	    carts[3*i] = x;
-	    carts[3*i+1] = y;
-	    carts[3*i+2] = z;
+
 	}
 	
 	for (i=0; i<num_atoms ; i++) {
@@ -469,7 +464,7 @@ void coord_base :: write_file30() {
     double** cart_matrix;
     int i,j;
     
-    cart_matrix = init_matrix(num_entries,3);
+    cart_matrix = init_matrix(num_atoms,3);
     
     int pos = -1;
     for(i=0;i<num_entries;++i) 
@@ -480,9 +475,33 @@ void coord_base :: write_file30() {
 
     return;
 }
+
+
+void coord_base :: grad_test() {
     
+    int i, conv=1;
+    double sum=0.0;
 
+    for(i=0;i<3*num_entries;++i) 
+	sum += fabs(c_grads[i]);
+    
+    sum /= (3*num_atoms);
 
+    fprintf(outfile,"\n  RMS gradient = %lf\n", sum);
+
+    for(i=0;i<(3*num_entries);++i) 
+	if(fabs(c_grads[i]) > (1.0/pow(10.0,(double)grad_max)))
+	    conv = 0;
+    if(conv) {
+	fprintf(outfile,"\n  All gradients below convergence criteria of");
+	fprintf(outfile," 10^-%d",grad_max);
+	fprintf(outfile,"\n  Optimization completed\n");
+	fprintf(stdout,"\n Optimization completed");  
+	converged = 1;
+    }
+    
+    return;
+}
 
 
 

@@ -10,17 +10,10 @@
 
 void internals :: back_transform() {
 
-   fprintf(outfile,"\nNew coords:");
-    
-
   int i, j, pos;
   double conv=1.0, *dq, *dx;
 
-  for(i=0;i<num_coords;++i) {
-      fprintf(outfile,"\ncoord: %lf",coords[i]);
-  }
-
-  print_u(); 
+  //print_u(); 
 
   dq = init_array(num_coords);
   dx = init_array(3*num_entries);         
@@ -29,23 +22,22 @@ void internals :: back_transform() {
   int converged=0;
   double criteria = 1.0e-14;
   double dx_sum; 
+
+  fprintf(outfile,"\n\n  Performing iterative transformation to find");
+  fprintf(outfile," new cartesian coordinates");
+  fprintf(outfile,"\n\n  Iter    dq (internals)          dx (cartesians)");
+  fprintf(outfile,  "\n  ---- ----------------------  ----------------------");  
+
   while((!converged) && (loop<500) ) {
   
-      fprintf(outfile,"\nbt iteration %d\n", loop+1);
-      
       /*compute A*/
       //print_B();
       compute_G(); //print_G();
       compute_A(); //print_A();
 
       for(i=0;i<num_coords;++i) {
-	  fprintf(outfile,"%lf-%lf\n",coords[i],coord_temp[i]);
 	  dq[i] = coords[i] - coord_temp[i];
       }
-      //fprintf(outfile,"\nchanges in internals\n");
-      //for(i=0;i<num_coords;++i){
-//	  fprintf(outfile,"%lf\n",dq[i]);
-//      }
 
       /*compute dx = A dq */
       for(i=0;i<3*num_entries;++i) 
@@ -55,10 +47,6 @@ void internals :: back_transform() {
 	      dx[i] += A[i][j] * dq[j];
 	  }
       }
-      fprintf(outfile,"\nchanges in cartesians\n");
-      for(i=0;i<3*num_entries;++i){
-           fprintf(outfile,"%.20lf\n",dx[i]);
-           }  
 
       pos=0;
       dx_sum = 0.0;
@@ -66,27 +54,18 @@ void internals :: back_transform() {
 	  carts[i] += dx[i];
           dx_sum += sqrt(dx[i]*dx[i]);
       }
-      dx_sum /= (3*num_atoms);
+      dx_sum /= (3*num_entries);
       
-      fprintf(outfile,"\nintermediate cartesian coodinates\n"); print_carts(1.0);
-
       cart_to_internal(coord_temp);
 
-      for(i=0;i<num_coords;++i) {
-	  fprintf(outfile,"\ncoord_temp: %lf",coord_temp[i]); 
-	      coords[i] = coord_temp[i];
-      }
-
       compute_B();
-      //fprintf(outfile,"\nintermediate B matrix:\n"); print_B();
     
       conv=0;
       for(i=0;i<num_coords;++i) {
 	  conv += sqrt((coords[i] - coord_temp[i])*(coords[i] -coord_temp[i]));
       }
-      fprintf(outfile,"\nConvergence = %.20lf\n",conv);
-      fprintf(outfile,"\ndx_conv = %.20lf\n",dx_sum);
-      if((conv<criteria)&&(dx_sum<criteria))
+      fprintf(outfile,"\n  %3d  %.20lf  %.20lf",loop+1,conv,dx_sum);
+       if((conv<criteria)&&(dx_sum<criteria))
 	  converged = 1;
       ++loop;
   }
@@ -94,7 +73,7 @@ void internals :: back_transform() {
   if(!converged) 
       punt("Back transformation to cartesians has failed");
   else
-      fprintf(outfile,"\nBack transformation to cartesians completed\n");
+      fprintf(outfile,"\n  Back transformation to cartesians completed\n");
   return;
 
 
@@ -112,7 +91,7 @@ double* internals :: B_row_bond(double* c_arr, int atom1, int atom2 ) {
   int i;
   double *row, *unit12;
 
-  row = init_array(num_atoms*3);
+  row = init_array(num_entries*3);
 
   unit12 = unit_vector(c_arr, atom1, atom2);
 
@@ -137,8 +116,8 @@ double* internals :: B_row_angle(double* c_arr, int atom1, int atom3, int atom2 
 
   int i;
   double *row, *unit31, *unit32, r31, r32, cosine, sine;
-  
-  row = init_array(num_atoms*3);
+ 
+  row = init_array(num_entries*3);
 
   unit31 = unit_vector(c_arr,atom3, atom1);
   unit32 = unit_vector(c_arr,atom3, atom2);
@@ -150,7 +129,8 @@ double* internals :: B_row_angle(double* c_arr, int atom1, int atom3, int atom2 
   for(i=0;i<3;++i) {
       row[3*atom1+i] = ( cosine * unit31[i] - unit32[i] ) / ( r31 * sine );
       row[3*atom2+i] = ( cosine * unit32[i] - unit31[i] ) / ( r32 * sine );
-      row[3*atom3+i] = ((r31 - r32 * cosine) * unit31[i] + (r32 - r31 * cosine) * unit32[i]) / (r31 * r32 * sine); 
+      row[3*atom3+i] = ((r31 - r32 * cosine) * unit31[i] + (r32 - r31 * cosine)
+			* unit32[i]) / (r31 * r32 * sine); 
     }
 
   return row;
@@ -172,7 +152,7 @@ double* internals :: B_row_tors(double* c_arr,int atom1, int atom2, int atom3, i
   double *row, *unit12, *unit23, *unit43, *unit32, *cross_12_23, *cross_43_32,
          cosine_an2, sine_an2, sine2_an2, cosine_an3, sine_an3, sine2_an3, r12, r23;
 
-  row = init_array(num_atoms*3);
+  row = init_array(num_entries*3);
 
   unit12 = unit_vector(c_arr,atom1, atom2);
   unit23 = unit_vector(c_arr,atom2, atom3);
@@ -241,7 +221,8 @@ inline double *unit_vector(double* cart_arr, int atom1, int atom2 ) {
   unit_vec = init_array(3);
 
   for(i=0;i<3;++i) {
-      unit_vec[i] = (cart_arr[3*atom2+i]-cart_arr[3*atom1+i]) / vec_norm(cart_arr,atom1,atom2);
+      unit_vec[i] = (cart_arr[3*atom2+i]-cart_arr[3*atom1+i]) 
+	  / vec_norm(cart_arr,atom1,atom2);
     }
 
   return unit_vec;
@@ -298,7 +279,7 @@ inline double *cross_pdt( double* vec1, double* vec2 ) {
 
 
 void internals :: print_B() {
-        fprintf(outfile,"\nB matrix:\n");
+        fprintf(outfile,"\n  B matrix:\n");
         print_mat(B,num_coords,3*num_entries,outfile);
         return;
     }
@@ -313,7 +294,7 @@ void internals :: compute_G() {
     }
 
 void internals :: print_G() {
-        fprintf(outfile,"\nG matrix:\n");
+        fprintf(outfile,"\n  G matrix:\n");
         print_mat(G,num_coords,num_coords,outfile);
         return;
     }
@@ -332,7 +313,7 @@ void internals :: compute_A() {
     }
 
 void internals :: print_A() {
-        fprintf(outfile,"\nA matrix:\n");
+        fprintf(outfile,"\n  A matrix:\n");
         print_mat(A,3*num_entries,num_coords,outfile);
         return;
     }
@@ -346,5 +327,25 @@ void internals :: grad_trans() {
 	    }}}
 
 
+void internals :: optimize_internals(internals *icrd) {
+    (*icrd).grad_test();
+    (*icrd).print_internals();
+    (*icrd).compute_B();
+    //(*icrd).print_B();
+    (*icrd).grad_trans();
+    switch(iteration) {
+    case 1: (*icrd).initial_H(); break;
+    default: (*icrd).update_bfgs(); break; }
+    (*icrd).opt_step();
+    (*icrd).back_transform();
+    (*icrd).print_carts(1.0);
+    (*icrd).print_internals();
+    (*icrd).write_opt();
+    (*icrd).write_file30();
+    return;
+}
+	    
 
+    
+    
 

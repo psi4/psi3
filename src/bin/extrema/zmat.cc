@@ -11,10 +11,6 @@
 
 #include <string.h>
 
-extern "C" {
-    #include<file30.h>
-}
-
 #define EXTERN
 #include "extrema.h"
 
@@ -31,20 +27,33 @@ zmat :: zmat()
   z_geom = file30_rd_zmat(); 
   felement = file30_rd_felement();
 
+  int dummy=0;
+  for(i=0;i<num_entries;++i)
+      if(!strcmp(felement[i],"X       "))
+	 dummy=1;
+
   /*write z_mat to the array of simple_internal*/
   for(i=1;i<num_entries;++i) {
       if( i==1 ) {
-	  simples[0].set_simple(0,z_geom[1].bond_val,2,z_geom[1].bond_atom,-1,-1);
+	  simples[0].set_simple(0,z_geom[1].bond_val,
+				2,z_geom[1].bond_atom,-1,-1);
 	}
       else if( i==2 ) {
-	  simples[1].set_simple(0,z_geom[2].bond_val,3,z_geom[2].bond_atom,-1,-1);
-	  simples[2].set_simple(1,z_geom[2].angle_val *_pi/180.0,3,z_geom[2].bond_atom,z_geom[2].angle_atom,-1);
+	  simples[1].set_simple(0,z_geom[2].bond_val,
+				3,z_geom[2].bond_atom,-1,-1);
+	  simples[2].set_simple(1,z_geom[2].angle_val *_pi/180.0,
+				3,z_geom[2].bond_atom,z_geom[2].angle_atom,-1);
 	  j=3;
 	}
       else if( i>2 ) {
-	  simples[j].set_simple(0,z_geom[i].bond_val,i+1,z_geom[i].bond_atom,-1,-1);
-	  simples[j+1].set_simple(1,z_geom[i].angle_val*_pi/180.0,i+1,z_geom[i].bond_atom,z_geom[i].angle_atom,-1);
-	  simples[j+2].set_simple(2,z_geom[i].tors_val*_pi/180.0,i+1,z_geom[i].bond_atom,z_geom[i].angle_atom,z_geom[i].tors_atom);
+	  simples[j].set_simple(0,z_geom[i].bond_val,i+1,z_geom[i].bond_atom,
+				-1,-1);
+	  simples[j+1].set_simple(1,z_geom[i].angle_val*_pi/180.0,
+				  i+1,z_geom[i].bond_atom,
+				  z_geom[i].angle_atom,-1);
+	  simples[j+2].set_simple(2,z_geom[i].tors_val*_pi/180.0,
+				  i+1,z_geom[i].bond_atom,
+				  z_geom[i].angle_atom,z_geom[i].tors_atom);
 	  j+=3;
 	}
     }
@@ -103,23 +112,20 @@ zmat :: zmat()
 }
 
 
-/***********************************************************************************
+/******************************************************************************
 *
 *  zmat :: compute_B
 *
 *  forms B matrix for simple internal coordinates
-***********************************************************************************/
-  double *B_row_bond(double* c_arr, int atom1, int atom2 );
-  double *B_row_angle(double* c_arr, int atom1, int atom3, int atom2 );
-  double *B_row_tors(double* c_arr, int atom1, int atom2, int atom3, int atom4 );
+******************************************************************************/
+double *B_row_bond(double* c_arr, int atom1, int atom2);
+double *B_row_angle(double* c_arr, int atom1, int atom3, int atom2);
+double *B_row_tors(double* c_arr, int atom1, int atom2, int atom3, int atom4);
 
 void zmat::compute_B() {  
 
     int i, j, pos=0;
     double *B_row0, *B_row1, *B_row2;
-    B_row0 = init_array(3*num_entries);
-    B_row1 = init_array(3*num_entries);
-    B_row2 = init_array(3*num_entries);
 
   for(i=1;i<num_entries;++i) {
       if(i==1) {
@@ -129,15 +135,19 @@ void zmat::compute_B() {
 	}
       if(i==2) {
 	  B_row0 = B_row_bond(carts, i, simples[pos].get_bond()-1);
-	  B_row1 = B_row_angle(carts, i, simples[pos+1].get_bond()-1, simples[pos+1].get_angle()-1);
+	  B_row1 = B_row_angle(carts, i, simples[pos+1].get_bond()-1, 
+			       simples[pos+1].get_angle()-1);
 	  B[pos] = B_row0;
 	  B[pos+1] = B_row1;
 	  pos += 2;
 	}
       if(i>2) {
 	  B_row0 = B_row_bond(carts, i, simples[pos].get_bond()-1);
-	  B_row1 = B_row_angle(carts, i, simples[pos+1].get_bond()-1, simples[pos+1].get_angle()-1);
-	  B_row2 = B_row_tors(carts, i, simples[pos+2].get_bond()-1, simples[pos+2].get_angle()-1, simples[pos+2].get_tors()-1);
+	  B_row1 = B_row_angle(carts, i, simples[pos+1].get_bond()-1, 
+			       simples[pos+1].get_angle()-1);
+	  B_row2 = B_row_tors(carts, i, simples[pos+2].get_bond()-1, 
+			      simples[pos+2].get_angle()-1, 
+			      simples[pos+2].get_tors()-1);
 	  B[pos] = B_row0;
 	  B[pos+1] = B_row1;
 	  B[pos+2] = B_row2;
@@ -146,18 +156,19 @@ void zmat::compute_B() {
     }
 
   /*form u*/
+  int k=0;
   for(j=0;j<num_entries;++j) {
-      if(strcmp(felement[j],"X")) {
-	 u[3*j][3*j] = 1.0 / masses[j]; 
-	 u[3*j+1][3*j+1] = 1.0 /masses[j];
-	 u[3*j+2][3*j+2] = 1.0 / masses[j];
+      if(strcmp(felement[j],"X       ")) {
+	 u[3*j][3*j] = 1.0 / masses[k]; 
+	 u[3*j+1][3*j+1] = 1.0 /masses[k];
+	 u[3*j+2][3*j+2] = 1.0 / masses[k];
+	 ++k;
        }
-       else if (!strcmp(felement[j],"X")) {
-	  fprintf(outfile,"\nMASS of X: 1.0");
+       else if (!strcmp(felement[j],"X       ")) {
 	  u[3*j][3*j] = u[3*j+1][3*j+1] = u[3*j+2][3*j+2]= 1.0;
 	  }
   }
-
+  
   return;
 }
 
@@ -237,11 +248,6 @@ void zmat :: cart_to_internal(double* z_array) {
 		
     }
 
-   
-    fprintf(outfile,"\nnew z-mat\n");
-    for(i=0;i<num_coords;++i) {
-	fprintf(outfile,"%lf\n",z_array[i]);
-    }
     return;
 }								     
 
@@ -328,13 +334,16 @@ void zmat :: print_internals() {
       case 1: 
 	  fprintf(outfile,"%10s %4d %14.12lf %4d %14.12lf\n",
 		  felement[i+1], simples[i].get_bond(), simples[i].get_val(),
-		  simples[i+1].get_angle(), simples[i+1].get_val()); 
+		  simples[i+1].get_angle(), simples[i+1].get_val()*180.0/_pi); 
 	  break;
       default:
 	  fprintf(outfile,"%10s %4d %14.12lf %4d %14.12lf %4d %14.12lf\n",
-		  felement[i+1], simples[(i-1)*3].get_bond(), simples[(i-1)*3].get_val(),
-		  simples[(i-1)*3+1].get_angle(), simples[(i-1)*3+1].get_val(),
-		  simples[(i-1)*3+2].get_tors(), simples[(i-1)*3+2].get_val() );
+		  felement[i+1], simples[(i-1)*3].get_bond(), 
+		  simples[(i-1)*3].get_val(),
+		  simples[(i-1)*3+1].get_angle(), 
+		  simples[(i-1)*3+1].get_val()*180.0/_pi,
+		  simples[(i-1)*3+2].get_tors(), 
+		  simples[(i-1)*3+2].get_val()*180.0/_pi );
 	  break;
       }
   }
@@ -357,11 +366,39 @@ void zmat :: initial_H() {
 	    
 
 void zmat :: write_file30() {
-
-  coord_base::write_file30();
+    
+  double **cart_matrix, **fcart_matrix;
+  int i,j;
+    
+  cart_matrix = init_matrix(num_atoms,3);
+  fcart_matrix = init_matrix(num_entries,3);
   
-  int i;
-  int pos = -1;
+  int pos = 0;
+  for(i=0;i<num_entries;++i) 
+      for(j=0;j<3;++j) {
+	  fcart_matrix[i][j] = carts[pos];
+	  ++pos;
+      }
+
+  file30_wt_fgeom(fcart_matrix);
+  
+  int row=0;
+  pos = 0;
+  for(i=0;i<num_entries;++i) { 
+      if(strcmp(felement[i],"X       ")) {
+	  for(j=0;j<3;++j) {
+	      cart_matrix[row][j] = carts[pos];
+	      ++pos;
+	  }
+	  ++row;
+      }
+      else
+	  pos += 3;
+  }
+
+  file30_wt_geom(cart_matrix);
+
+  pos = -1;
   for(i=1;i<num_entries;++i) {
       
       if(i==1) 
@@ -379,7 +416,7 @@ void zmat :: write_file30() {
       }
   }
   
-  file30_wt_zmat(z_geom,num_atoms);
+  file30_wt_zmat(z_geom,num_entries);
   return;
 }
 
@@ -389,75 +426,116 @@ void zmat :: opt_step() {
     int i, j;
     double *s;
 
-    s = compute_s();
+    s = zmat::compute_s();
 
-            for(i=0;i<num_coords;++i) {
-            fprintf(outfile,"\nequiv grp %d: %d",i, simples[i].get_equiv_grp(
-));
-            for(j=0;j<i;++j) {
-                if((simples[i].get_equiv_grp() == simples[j].get_equiv_grp
-())) {
-                    fprintf(outfile,"\n setting s[%d](%.20lf)=s[%d](%.20lf)",i,s
-[i],j,s[j]);
-                    s[i] = s[j];
-                }
-            }
-        }
-
-        fprintf(outfile,"\ns vector:\n");
-        for(i=0;i<num_coords;++i)
-            fprintf(outfile,"\n%.20lf",s[i]);
-
-/*      fprintf(outfile,"\nNew coordinate vector:\n"); */
-/*      for(i=0;i<num_coords;++i) { */
-/*          coord_write[i] = coords[i]; */
-/*          coords[i] += s[i]; */
-/*          fprintf(outfile,"%lf\n",coords[i]); */
-/*      } */
-
-        fprintf(outfile,"\nNew coordinate vector:\n");
-        for(i=0;i<num_coords;++i)
-            coord_write[i] = coords[i];
-        for(i=1;i<num_atoms;++i) {
-            if( (i==1) && z_geom[0].bond_opt)
-                coords[0] += s[0];
-            else if(i==2) {
-                if(z_geom[1].bond_opt)
-                    coords[1] += s[1];
-                //if(z_geom[1].angle_opt)
-                    //coords[2] += s[2];
+    for(i=0;i<num_coords;++i) {
+	for(j=0;j<i;++j) {
+	    if((simples[i].get_equiv_grp() == simples[j].get_equiv_grp())) {
+		s[i] = s[j];
 	    }
-            else if(i>2) {
-                if(z_geom[i].bond_opt) {
-                    coords[(i-2)*3] += s[(i-2)*3];
-                    fprintf(outfile,"\ncoord %d opt",(i-2)*3);
-                }
-                else
-                    fprintf(outfile,"\ncoord %d no opt",(i-2)*3);
-                if(z_geom[i].angle_opt) {
-                    coords[(i-2)*3+1] += s[(i-2)*3+1];
-                    fprintf(outfile,"\ncoord %d opt",(i-2)*3+1);
-                }
-                else
-                    fprintf(outfile,"\ncoord %d no opt",(i-2)*3+1);
-                if(z_geom[i].tors_opt){
-                    coords[(i-2)*3+2] += s[(i-2)*3+2];
-                    fprintf(outfile,"\ncoord %d opt",(i-2)*3+2);
-                }
-                else
-                    fprintf(outfile,"\ncoord %d no opt",(i-2)*3+2);
-            }
-        }
-
-        for(i=0;i<num_coords;++i)
-            fprintf(outfile,"%.20lf\n",coords[i]);
-
-        free(s);
-        return;
+	}
     }
 
+    for(i=0;i<num_coords;++i)
+	coord_write[i] = coords[i];
+    for(i=1;i<num_entries;++i) {
+	if( (i==1) && z_geom[1].bond_opt)
+	    coords[0] += s[0];
+	else if(i==2) {
+	    if(z_geom[2].bond_opt)
+		coords[1] += s[1];
+	    if(z_geom[2].angle_opt)
+		coords[2] += s[2];
+	}
+	else if(i>2) {
+	    if(z_geom[i].bond_opt) 
+		coords[(i-2)*3] += s[(i-2)*3];
+	    if(z_geom[i].angle_opt) 
+		coords[(i-2)*3+1] += s[(i-2)*3+1];
+	    if(z_geom[i].tors_opt)
+		coords[(i-2)*3+2] += s[(i-2)*3+2];
+	    }
+    }
+
+    fprintf(outfile,"\n  Coord   initial value        gradient");      
+    fprintf(outfile,"    displacement       new value");
+    fprintf(outfile,"\n  ----- --------------- ---------------"); 
+    fprintf(outfile," --------------- ---------------");
+    for(i=0;i<num_coords;++i)
+	fprintf(outfile,"\n  %5d %15.10lf %15.10lf %15.10lf %15.10lf",
+		i+1,coord_write[i], grads[i], s[i], coords[i]);
+
+    for(i=0;i<num_coords;++i) 
+	simples[i].set_val(coords[i]);
+
+    free(s);
+    return;
+}
+
+/* ----------------------------------------------------------------------------
+   read_file11()
+
+   dummy atoms should have zero gradients, but we need those zeroes to exist
+   file11 will have only gradients for actual atoms, this little function
+   accounts for that
+   --------------------------------------------------------------------------*/
+
+void zmat :: read_file11() {
+    
+    coord_base :: read_file11();
+
+    double* temp_grads;
+    int i, top=0;
+    
+    temp_grads = (double *) malloc(3*num_entries*sizeof(double));
+
+    for(i=0;i<num_entries;++i) {
+	if(!strcmp(felement[i],"X       ")) {
+	    temp_grads[3*i] = temp_grads[3*i+1] = temp_grads[3*i+2] = 0.0;
+	}
+	if(strcmp(felement[i],"X       ")) {
+	    temp_grads[3*i] = c_grads[3*top];
+	    temp_grads[3*i+1] = c_grads[3*top+1];
+	    temp_grads[3*i+2] = c_grads[3*top+2];
+	    ++top;
+	}
+    }  
+	
+    free(c_grads);
+    c_grads = temp_grads;
+    return;
+}
 
 
+double* zmat :: compute_s() {
+    
+    double *s;
+    int i;
+
+    s = coord_base::compute_s();
+
+    fprintf(outfile,"\n  Bond limit:  %lf",bond_lim);
+    fprintf(outfile,"\n  Angle limit: %lf\n",angle_lim);
+
+    for(i=0;i<num_coords;++i) {
+	if(simples[i].get_type()==0) {
+	    if(s[i] > bond_lim) {
+		s[i] = bond_lim; }
+	    else if (s[i] < (-1.0*bond_lim) ) {
+		s[i] = (-1.0*bond_lim); }
+	}
+	else {
+	    if(s[i] > angle_lim) {
+		s[i] = angle_lim; }
+	    else if (s[i] < (-1.0*angle_lim) ) {
+		s[i] = (-1.0*angle_lim); }
+	}
+    }
+
+    return s;
+}
+		
+	    
 
 
 

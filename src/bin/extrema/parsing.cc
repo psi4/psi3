@@ -7,11 +7,6 @@
 ####################################################################*/						      
 #include <string.h>
 
-extern "C" {
-#include <file30.h>
-#include <psio.h>
-}
-
 #define EXTERN
 #include "extrema.h"
 
@@ -51,6 +46,21 @@ void parsing() {
       fprintf(outfile,"\n  Defaulting to z-matrix coordinates\n");
       coord_type = 2;
   }
+
+  print_lvl = 1;
+  errcod = ip_data("PRINT","%d",&print_lvl,0);
+  grad_max = 6;
+  errcod = ip_data("GRAD_MAX","%d",&grad_max,0);
+  
+  if(coord_type==2) {
+      bond_lim = 0.1;
+      errcod = ip_data("BOND_LIMIT","%lf",&bond_lim,0);
+      angle_lim = 0.1;
+      if(ip_exist("ANGLE_LIMIT",0)) {
+	  errcod = ip_data("ANGLE_LIMIT","%lf",&angle_lim,0);
+	  angle_lim = angle_lim * _pi/180.0;
+      }
+  }      
 
   return;
 }

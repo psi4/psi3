@@ -38,6 +38,7 @@ class internals : public coord_base {
     void compute_A();
     void print_A();
     void grad_trans();
+    void optimize_internals(internals* icrd);
     virtual void initial_H() = 0;
 };
 

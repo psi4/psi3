@@ -26,7 +26,9 @@ class zmat : public internals {
     void print_internals(void);
     void initial_H(void);
     void write_file30();
-    void opt_step();    
+    void read_file11();
+    void opt_step();   
+    double* compute_s(); 
 };
 
 

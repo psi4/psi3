@@ -24,10 +24,11 @@ class coord_base {
     void read_opt();
     void write_opt();
     virtual void opt_step();
-    double* compute_s();
+    virtual double* compute_s();
     void update_bfgs();
-    void read_file11();
+    virtual void read_file11();
     virtual void write_file30();
+    void grad_test();
 };
 
 

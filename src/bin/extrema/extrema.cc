@@ -8,7 +8,6 @@
 #include "extrema.h"
 
 void set_up(coord_base* base);
-void optimize_internals(internals* iobj);
 
 void main() {
 
@@ -32,8 +31,12 @@ void main() {
   else if(coord_type==2) {
 
       zmat zmat_geom;
-      set_up(&zmat_geom);
-      optimize_internals(&zmat_geom);
+      zmat_geom.read_carts();
+      zmat_geom.print_carts(1.0);
+      zmat_geom.read_file11();
+      zmat_geom.print_c_grads();
+      zmat_geom.read_opt();
+      zmat_geom.optimize_internals((internals*) &zmat_geom);
 
   }
 
@@ -51,7 +54,17 @@ void main() {
       //optimize_internals(obj);
   }
 
-  exit(0);
+  if(converged)
+      fprintf(outfile,"\n  Optimization completed\n");
+  file30_close();
+  ip_done();
+  tstop(outfile);
+  fclose(infile);
+  fclose(outfile);
+  if(converged)
+      exit(1);
+  if(!converged)
+      exit(0);
 }
 
 
@@ -69,21 +82,7 @@ void set_up(coord_base* base) {
 
 
 
-void optimize_internals(internals* iobj) {
-    (*iobj).print_internals();
-    (*iobj).compute_B();
-    (*iobj).print_B();
-    (*iobj).grad_trans();
-    (*iobj).print_grads();
-    switch(iteration) {
-    case 1: (*iobj).initial_H(); break;
-    default: (*iobj).update_bfgs(); break; }
-    (*iobj).opt_step();
-    (*iobj).back_transform();
-    (*iobj).write_opt();
-    (*iobj).write_file30();
-    return;
-}
+
 
 
 
