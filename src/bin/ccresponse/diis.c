@@ -25,7 +25,7 @@
 ** Modified for CCRESPONSE, TDC, 5/03
 */
 
-void diis(int iter, char *cart, int irrep, double omega)
+void diis(int iter, char *pert, char *cart, int irrep, double omega)
 {
   int nvector=8;  /* Number of error vectors to keep */
   int h, nirreps;
@@ -61,11 +61,11 @@ void diis(int iter, char *cart, int irrep, double omega)
     error = dpd_block_matrix(1,vector_length);
 
     word=0;
-    sprintf(lbl, "New X_%1s_IA (%5.3f)", cart, omega);
+    sprintf(lbl, "New X_%s_%1s_IA (%5.3f)", pert, cart, omega);
     dpd_file2_init(&T1a, CC_OEI, irrep, 0, 1, lbl);
     dpd_file2_mat_init(&T1a);
     dpd_file2_mat_rd(&T1a);
-    sprintf(lbl, "X_%1s_IA (%5.3f)", cart, omega);
+    sprintf(lbl, "X_%s_%1s_IA (%5.3f)", pert, cart, omega);
     dpd_file2_init(&T1b, CC_OEI, irrep, 0, 1, lbl);
     dpd_file2_mat_init(&T1b);
     dpd_file2_mat_rd(&T1b);
@@ -78,9 +78,9 @@ void diis(int iter, char *cart, int irrep, double omega)
     dpd_file2_mat_close(&T1b);
     dpd_file2_close(&T1b);
 
-    sprintf(lbl, "New X_%1s_IjAb (%5.3f)", cart, omega);
+    sprintf(lbl, "New X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
     dpd_buf4_init(&T2a, CC_LR, irrep, 0, 5, 0, 5, 0, lbl);
-    sprintf(lbl, "X_%1s_IjAb (%5.3f)", cart, omega);
+    sprintf(lbl, "X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
     dpd_buf4_init(&T2b, CC_LR, irrep, 0, 5, 0, 5, 0, lbl);
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_init(&T2a, h);
@@ -97,14 +97,14 @@ void diis(int iter, char *cart, int irrep, double omega)
     dpd_buf4_close(&T2b);
 
     start = psio_get_address(PSIO_ZERO, diis_cycle*vector_length*sizeof(double));
-    sprintf(lbl, "DIIS %1s Error Vectors", cart);
+    sprintf(lbl, "DIIS %s %1s Error Vectors", pert, cart);
     psio_write(CC_DIIS_ERR, lbl , (char *) error[0], 
 	       vector_length*sizeof(double), start, &end);
 
     /* Store the current amplitude vector on disk */
     word=0;
 
-    sprintf(lbl, "New X_%1s_IA (%5.3f)", cart, omega);
+    sprintf(lbl, "New X_%s_%1s_IA (%5.3f)", pert, cart, omega);
     dpd_file2_init(&T1a, CC_OEI, irrep, 0, 1, lbl);
     dpd_file2_mat_init(&T1a);
     dpd_file2_mat_rd(&T1a);
@@ -115,7 +115,7 @@ void diis(int iter, char *cart, int irrep, double omega)
     dpd_file2_mat_close(&T1a);
     dpd_file2_close(&T1a);
 
-    sprintf(lbl, "New X_%1s_IjAb (%5.3f)", cart, omega);
+    sprintf(lbl, "New X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
     dpd_buf4_init(&T2a, CC_LR, irrep, 0, 5, 0, 5, 0, lbl);
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_init(&T2a, h);
@@ -128,7 +128,7 @@ void diis(int iter, char *cart, int irrep, double omega)
     dpd_buf4_close(&T2a);
 
     start = psio_get_address(PSIO_ZERO, diis_cycle*vector_length*sizeof(double));
-    sprintf(lbl, "DIIS %1s Amplitude Vectors", cart);
+    sprintf(lbl, "DIIS %s %1s Amplitude Vectors", pert, cart);
     psio_write(CC_DIIS_AMP, lbl , (char *) error[0], 
 	       vector_length*sizeof(double), start, &end);
 
@@ -149,7 +149,7 @@ void diis(int iter, char *cart, int irrep, double omega)
 
       start = psio_get_address(PSIO_ZERO, p*vector_length*sizeof(double));
 
-      sprintf(lbl, "DIIS %1s Error Vectors", cart);
+      sprintf(lbl, "DIIS %s %1s Error Vectors", pert, cart);
       psio_read(CC_DIIS_ERR, lbl, (char *) vector[0],
 		vector_length*sizeof(double), start, &end);
 
@@ -161,7 +161,7 @@ void diis(int iter, char *cart, int irrep, double omega)
 
 	start = psio_get_address(PSIO_ZERO, q*vector_length*sizeof(double));
 
-	sprintf(lbl, "DIIS %1s Error Vectors", cart);
+	sprintf(lbl, "DIIS %s %1s Error Vectors", pert, cart);
         psio_read(CC_DIIS_ERR, lbl, (char *) vector[1],
 		  vector_length*sizeof(double), start, &end);
 
@@ -209,7 +209,7 @@ void diis(int iter, char *cart, int irrep, double omega)
 
       start = psio_get_address(PSIO_ZERO, p*vector_length*sizeof(double));
 
-      sprintf(lbl, "DIIS %1s Amplitude Vectors", cart);
+      sprintf(lbl, "DIIS %s %1s Amplitude Vectors", pert, cart);
       psio_read(CC_DIIS_AMP, lbl, (char *) vector[0], 
 		vector_length*sizeof(double), start, &end);
 
@@ -221,7 +221,7 @@ void diis(int iter, char *cart, int irrep, double omega)
 
     /* Now place these elements into the DPD amplitude arrays */
     word=0;
-    sprintf(lbl, "New X_%1s_IA (%5.3f)", cart, omega);
+    sprintf(lbl, "New X_%s_%1s_IA (%5.3f)", pert, cart, omega);
     dpd_file2_init(&T1a, CC_OEI, irrep, 0, 1, lbl);
     dpd_file2_mat_init(&T1a);
     for(h=0; h < nirreps; h++)
@@ -232,7 +232,7 @@ void diis(int iter, char *cart, int irrep, double omega)
     dpd_file2_mat_close(&T1a);
     dpd_file2_close(&T1a);
 
-    sprintf(lbl, "New X_%1s_IjAb (%5.3f)", cart, omega);
+    sprintf(lbl, "New X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
     dpd_buf4_init(&T2a, CC_LR, irrep, 0, 5, 0, 5, 0, lbl);
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_init(&T2a, h);

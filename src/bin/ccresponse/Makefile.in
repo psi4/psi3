@@ -16,8 +16,11 @@ get_moinfo.c \
 get_params.c \
 cache.c \
 transmu.c \
+transL.c \
 sortmu.c \
+sortL.c \
 mubar.c \
+Lbar.c \
 hbar_extra.c \
 sort_lamps.c \
 init_X.c \
@@ -38,6 +41,7 @@ Zijab.c \
 LHX1Y1.c \
 LHX2Y2.c \
 LHX1Y2.c \
+local.c \
 
 BINOBJ = $(CSRC:%.c=%.o)
 ALLOC = 

@@ -5,7 +5,8 @@
 #define EXTERN
 #include "globals.h"
 
-void build_ZIjAb(char *cart_x, int irrep_x, double omega_x, char *cart_y, int irrep_y, double omega_y)
+void build_ZIjAb(char *pert_x, char *cart_x, int irrep_x, double omega_x, 
+		 char *pert_y, char *cart_y, int irrep_y, double omega_y)
 {
   int h, ij, ef, i, j, e, f, I, J, E, F;
   int Isym, Jsym, Esym, Fsym;
@@ -16,12 +17,12 @@ void build_ZIjAb(char *cart_x, int irrep_x, double omega_x, char *cart_y, int ir
 
   nirreps = moinfo.nirreps;
 
-  sprintf(lbl, "X_%1s_IA (%5.3f)", cart_y, omega_y);
+  sprintf(lbl, "X_%s_%1s_IA (%5.3f)", pert_y, cart_y, omega_y);
   dpd_file2_init(&Y1, CC_OEI, irrep_y, 0, 1, lbl);
   dpd_file2_mat_init(&Y1);
   dpd_file2_mat_rd(&Y1);
 
-  sprintf(lbl, "X_%1s_IA (%5.3f)", cart_x, omega_x);
+  sprintf(lbl, "X_%s_%1s_IA (%5.3f)", pert_x, cart_x, omega_x);
   dpd_file2_init(&X1, CC_OEI, irrep_x, 0, 1, lbl);
   dpd_file2_mat_init(&X1);
   dpd_file2_mat_rd(&X1);

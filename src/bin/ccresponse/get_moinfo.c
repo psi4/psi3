@@ -34,6 +34,8 @@ void get_moinfo(void)
   moinfo.clsdpi = chkpt_rd_clsdpi();
   moinfo.openpi = chkpt_rd_openpi();
   moinfo.usotao = chkpt_rd_usotao();
+  moinfo.natom = chkpt_rd_natom();
+  moinfo.zvals = chkpt_rd_zvals();
   chkpt_close();
 
   nirreps = moinfo.nirreps;
@@ -53,6 +55,9 @@ void get_moinfo(void)
   psio_read_entry(CC_INFO, "No. of Active Orbitals", (char *) &(nactive),
 		  sizeof(int)); 
   moinfo.nactive = nactive;
+
+  moinfo.nfzc = 0;
+  for(h=0; h < nirreps; h++) moinfo.nfzc += moinfo.frdocc[h];
 
   if(params.ref == 2) { /** UHF **/
 
@@ -282,8 +287,13 @@ void cleanup(void)
   free_block(moinfo.MUX);
   free_block(moinfo.MUY);
   free_block(moinfo.MUZ);
+  free_block(moinfo.LX);
+  free_block(moinfo.LY);
+  free_block(moinfo.LZ);
   free(moinfo.pitzer2qt);
   free(moinfo.qt2pitzer);
 
+  free(moinfo.zvals);
   free(moinfo.mu_irreps);
+  free(moinfo.l_irreps);
 }

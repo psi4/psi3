@@ -7,4 +7,6 @@ struct Params {
   int maxiter;           /* maximum number of iterations allowed to converge perturbed amp eqns. */
   double convergence;    /* convergence criterion for perturbed wfns */
   int diis;              /* boolean for using DIIS extrapolation */
+  char *prop;            /* user-selected property */
+  int local;             /* boolean for simluation of local correlation */
 };

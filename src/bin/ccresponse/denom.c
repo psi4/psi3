@@ -3,9 +3,9 @@
 #define EXTERN
 #include "globals.h"
 
-void denom1(char *cart, int irrep, double omega, dpdfile2 *X1)
+void denom1(dpdfile2 *X1, double omega)
 {
-  int nirreps, h;
+  int nirreps, h, irrep;
   int i, a;
   int *occpi, *virtpi;
   dpdfile2 FAE, FMI;
@@ -13,6 +13,8 @@ void denom1(char *cart, int irrep, double omega, dpdfile2 *X1)
   nirreps = moinfo.nirreps;
   occpi = moinfo.occpi;
   virtpi = moinfo.virtpi;
+
+  irrep = X1->my_irrep;
 
   dpd_file2_init(&FAE, CC_OEI, 0, 1, 1, "FAE");
   dpd_file2_init(&FMI, CC_OEI, 0, 0, 0, "FMI");
@@ -37,13 +39,14 @@ void denom1(char *cart, int irrep, double omega, dpdfile2 *X1)
   dpd_file2_close(&FMI);
 }
 
-void denom2(char *cart, int irrep, double omega, dpdbuf4 *X2)
+void denom2(dpdbuf4 *X2, double omega)
 {
-  int nirreps, h, row, col;
+  int nirreps, h, row, col, irrep;
   int i, j, I, J, a, b, A, B, isym, jsym, asym, bsym;
   dpdfile2 FAE, FMI;
 
   nirreps = moinfo.nirreps;
+  irrep = X2->file.my_irrep;
 
   dpd_file2_init(&FAE, CC_OEI, 0, 1, 1, "FAE");
   dpd_file2_init(&FMI, CC_OEI, 0, 0, 0, "FMI");

@@ -7,6 +7,7 @@ struct MOInfo {
   int ntri;           /* no. of elements in MOxMO lower triangle */
   int noei_ao;        /* no. of elements in AOxAO lower triangle */
   int nactive;        /* no. of active MO's */
+  int nfzc;           /* no. of frozen core orbitals */
   int *orbspi;        /* no. of MOs per irrep */
   int *clsdpi;        /* no. of closed-shells per irrep  */
   int *openpi;        /* no. of open-shells per irrep */
@@ -58,4 +59,13 @@ struct MOInfo {
   int irrep_y;        /* irrep of y-dipole */
   int irrep_z;        /* irrep of z-dipole */
   int *mu_irreps;     /* irreps of x,y,z dipole components */
+  double **LX;        /* MO-basis x-angular momentum ints (Pitzer order) */
+  double **LY;        /* MO-basis y-angular momentum ints (Pitzer order) */
+  double **LZ;        /* MO-basis z-angular momentum ints (Pitzer order) */
+  int irrep_Rx;       /* irrep of x-angular momentum */
+  int irrep_Ry;       /* irrep of y-angular momentum */
+  int irrep_Rz;       /* irrep of z-angular momentum */
+  int *l_irreps;      /* irreps of x,y,z angular momentum components */
+  int natom;          /* number of atoms */
+  double *zvals;      /* atomic zvals */
 };
