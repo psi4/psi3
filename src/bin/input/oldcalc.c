@@ -193,6 +193,19 @@ void init_oldcalc()
   /*--- Done with the checkpoint file ---*/
   chkpt_close();
 #endif
+
+  if (print_lvl >= DEBUGPRINT) {
+    if (Oldcalc.spinrestr_ref) {
+      fprintf(outfile,"  -Old eigenvector (in SO basis):\n");
+      print_mat(Oldcalc.scf_evect_so,Oldcalc.num_so,Oldcalc.num_mo,outfile);
+    }
+    else {
+      fprintf(outfile,"  -Old alpha eigenvector (in SO basis):\n");
+      print_mat(Oldcalc.scf_evect_so_alpha,Oldcalc.num_so,Oldcalc.num_mo,outfile);
+      fprintf(outfile,"  -Old beta eigenvector (in SO basis):\n");
+      print_mat(Oldcalc.scf_evect_so_beta,Oldcalc.num_so,Oldcalc.num_mo,outfile);
+    }
+  }
   
   return;
 }
