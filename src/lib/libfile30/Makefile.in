@@ -18,6 +18,7 @@ rd_am2canon_shell_order.c \
 rd_ua2a.c \
 rd_rottype.c \
 rd_eref.c \
+rd_efzc.c \
 rd_schwartz.c \
 rd_symoper.c \
 rd_nso.c \
@@ -80,6 +81,7 @@ rd_zmat.c \
 rd_zvals.c \
 rd_ict.c \
 wt_eref.c \
+wt_efzc.c \
 wt_enuc.c \
 wt_escf.c \
 wt_ecorr.c \

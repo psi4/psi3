@@ -292,6 +292,15 @@ file30_rd_eref(): Reads in the reference energy (if different from SCF).
   returns: double eref  the reference energy.
 
 ==========================================================================
+FILE30_RD_EFZC
+
+file30_rd_efzc(): Reads in the frozen-core energy.
+
+  takes no arguments.
+
+  returns: double efzc  the frozen-core energy.
+
+==========================================================================
 FILE30_RD_ESCF
 
 double file30_rd_escf(); 
