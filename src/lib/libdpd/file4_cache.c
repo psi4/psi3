@@ -257,11 +257,13 @@ int dpd_file4_cache_del_lru(void)
       return 1; /* there is no cache */
     }
   else { /* we found the LRU so delete it */
+/*
       printf("Deleteing LRU: %-24s %3d %2d %2d %6d %6d %1d %8.1f\n", 
              this_entry->label,
 	     this_entry->filenum, this_entry->pqnum, this_entry->rsnum,
 	     this_entry->access,this_entry->usage,this_entry->clean,
-             this_entry->size);
+             (this_entry->size*sizeof(double))/1e3);
+*/
       
       dpd_file4_init(&File, this_entry->filenum, this_entry->irrep,
 		     this_entry->pqnum, this_entry->rsnum, this_entry->label);
