@@ -19,15 +19,15 @@
 
 double **chkpt_rd_fgeom(void)
 {
-  int nentry;
+  int nallatom;
   double **fgeom;
 
-  nentry = chkpt_rd_nentry();
+  nallatom = chkpt_rd_nallatom();
 
-  fgeom = block_matrix(nentry,3);
+  fgeom = block_matrix(nallatom,3);
 
   psio_read_entry(PSIF_CHKPT, "::Full cartesian geometry", (char *) fgeom[0], 
-		  (int) 3*nentry*sizeof(double));
+		  (int) 3*nallatom*sizeof(double));
 
   return  fgeom;
 }
@@ -44,10 +44,10 @@ double **chkpt_rd_fgeom(void)
 
 void chkpt_wt_fgeom(double **fgeom)
 {
-  int nentry;
+  int nallatom;
 
-  nentry = chkpt_rd_nentry();
+  nallatom = chkpt_rd_nallatom();
 
   psio_write_entry(PSIF_CHKPT, "::Full cartesian geometry", (char *) fgeom[0], 
-		  (int) 3*nentry*sizeof(double));
+		  (int) 3*nallatom*sizeof(double));
 }

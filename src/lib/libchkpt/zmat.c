@@ -22,15 +22,15 @@
 
 struct z_entry *chkpt_rd_zmat(void)
 {
-  int nentry;
+  int nallatom;
   struct z_entry *z_geom;
 
-  nentry = chkpt_rd_nentry();
+  nallatom = chkpt_rd_nallatom();
 
-  z_geom = (struct z_entry *) malloc(nentry*(sizeof(struct z_entry)));
+  z_geom = (struct z_entry *) malloc(nallatom*(sizeof(struct z_entry)));
 
   psio_read_entry(PSIF_CHKPT, "::Z-matrix", (char *) z_geom, 
-                  sizeof(struct z_entry)*nentry);
+                  sizeof(struct z_entry)*nallatom);
 
   return z_geom;
 }
@@ -49,10 +49,10 @@ struct z_entry *chkpt_rd_zmat(void)
 
 void chkpt_wt_zmat(struct z_entry *z_geom)
 {
-  int nentry;
+  int nallatom;
 
-  nentry = chkpt_rd_nentry();
+  nallatom = chkpt_rd_nallatom();
 
   psio_write_entry(PSIF_CHKPT, "::Z-matrix", (char *) z_geom, 
-                   sizeof(struct z_entry)*nentry);
+                   sizeof(struct z_entry)*nallatom);
 }

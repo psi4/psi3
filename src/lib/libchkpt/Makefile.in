@@ -37,7 +37,7 @@ stype.c \
 snumg.c \
 sloc.c \
 shell_transm.c \
-nentry.c \
+nallatom.c \
 felement.c \
 sym_label.c \
 usotao.c \
@@ -74,7 +74,8 @@ eref.c \
 efzc.c \
 disp.c \
 cartrep.c \
-grad.c
+grad.c \
+atom_dummy.c
 
 DEPENDINCLUDE = psio.h chkpt.h
 

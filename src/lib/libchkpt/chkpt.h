@@ -115,8 +115,8 @@ void chkpt_wt_shell_transm(int **);
 double **chkpt_rd_cartrep();
 void chkpt_wt_cartrep(double **);
 
-int chkpt_rd_nentry(void);
-void chkpt_wt_nentry(int);
+int chkpt_rd_nallatom(void);
+void chkpt_wt_nallatom(int);
 
 char **chkpt_rd_felement(void);
 void chkpt_wt_felement(char **);
@@ -237,3 +237,6 @@ void chkpt_wt_efzc(double);
 
 int chkpt_rd_disp(void);
 void chkpt_wt_disp(int);
+
+int* chkpt_rd_atom_dummy(void);
+void chkpt_wt_atom_dummy(int *);

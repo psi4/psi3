@@ -20,17 +20,17 @@
 char **chkpt_rd_felement(void)
 {
   char **label;
-  int nentry, i;
+  int nallatom, i;
   psio_address ptr;
 
-  nentry = chkpt_rd_nentry();
+  nallatom = chkpt_rd_nallatom();
 
-  label = (char **)malloc(nentry*sizeof(char*));
-  for(i=0; i < nentry; i++) 
+  label = (char **)malloc(nallatom*sizeof(char*));
+  for(i=0; i < nallatom; i++) 
     label[i] = (char *) malloc(MAX_ELEMNAME*sizeof(char));
 
   ptr = PSIO_ZERO;
-  for(i=0; i < nentry; i++)
+  for(i=0; i < nallatom; i++)
     psio_read(PSIF_CHKPT, "::Full atom labels", (char *) label[i], 
               MAX_ELEMNAME*sizeof(char), ptr, &ptr);
 
@@ -50,13 +50,13 @@ char **chkpt_rd_felement(void)
 
 void chkpt_wt_felement(char **label)
 {
-  int nentry, i;
+  int nallatom, i;
   psio_address ptr;
 
-  nentry = chkpt_rd_nentry();
+  nallatom = chkpt_rd_nallatom();
 
   ptr = PSIO_ZERO;
-  for(i=0; i < nentry; i++)
+  for(i=0; i < nallatom; i++)
     psio_write(PSIF_CHKPT, "::Full atom labels", (char *) label[i], 
                MAX_ELEMNAME*sizeof(char), ptr, &ptr);
 }
