@@ -470,14 +470,14 @@ case $cpu in
       AC_MSG_RESULT(fortran flags: $FOPT)
     fi
     if [ "$CC" = xlc ] || [ "$CC" = cc ]; then
-      COPT="-O2 -qarch=com -qfloat=maf -qfloat=fold"
+      COPT="-O2 -qarch=com -qfloat=maf -qfloat=fold -D_LARGE_FILES"
       if test "$bitwidth64" = yes; then
         COPT="$COPT -q64"
       fi
       AC_MSG_RESULT(c flags: $COPT)
     fi
     if [ "$CXX" = xlC ] || [ "$CXX" = c++ ]; then
-      CXXOPT="-O2 -qarch=com -qfloat=maf -qfloat=fold"
+      CXXOPT="-O2 -qarch=com -qfloat=maf -qfloat=fold -D_LARGE_FILES"
       if test "$bitwidth64" = yes; then
         CXXOPT="$CXXOPT -q64"
       fi
@@ -493,14 +493,14 @@ case $cpu in
       AC_MSG_RESULT(fortran flags: $FOPT)
     fi
     if [ "$CC" = xlc ] || [ "$CC" = cc ]; then
-      COPT="-O2 -qarch=ppc -qfloat=maf -qfloat=fold"
+      COPT="-O2 -qarch=ppc -qfloat=maf -qfloat=fold -D_LARGE_FILES"
       if test "$bitwidth64" = yes; then
         COPT="$COPT -q64"
       fi
       AC_MSG_RESULT(c flags: $COPT)
     fi
     if [ "$CXX" = xlC ] || [ "$CXX" = c++ ]; then
-      CXXOPT="-O2 -qarch=ppc -qfloat=maf -qfloat=fold"
+      CXXOPT="-O2 -qarch=ppc -qfloat=maf -qfloat=fold -D_LARGE_FILES"
       if test "$bitwidth64" = yes; then
         CXXOPT="$CXXOPT -q64"
       fi
@@ -692,7 +692,7 @@ AC_OUTPUT(include/psiconfig.h include/cfuncs.h include/ffuncs.h
           src/lib/libderiv/MakeVars
           src/lib/libderiv/Makefile.compiler
           src/lib/libderiv/Makefile.libderiv
-          src/lib/libdpd/Makefile
+          src/lib/libdpd.v2/Makefile
           src/lib/libfile30/Makefile
           src/lib/libint/Makefile
           src/lib/libint/MakeVars
@@ -720,11 +720,11 @@ AC_OUTPUT(include/psiconfig.h include/cfuncs.h include/ffuncs.h
           src/bin/ugeom/Makefile
           src/bin/rgeom/Makefile
 
-          src/bin/ccdensity/Makefile
-          src/bin/ccenergy/Makefile
-          src/bin/cchbar/Makefile
-          src/bin/cclambda/Makefile
-          src/bin/ccsort/Makefile
+          src/bin/ccdensity.v2/Makefile
+          src/bin/ccenergy.v2/Makefile
+          src/bin/cchbar.v2/Makefile
+          src/bin/cclambda.v2/Makefile
+          src/bin/ccsort.v2/Makefile
           src/bin/cints/Makefile
           src/bin/cscf/Makefile
           src/bin/detci/Makefile
@@ -738,6 +738,7 @@ AC_OUTPUT(include/psiconfig.h include/cfuncs.h include/ffuncs.h
           src/bin/optking/Makefile
           src/bin/psiclean/Makefile
           src/bin/transqt/Makefile
+          src/bin/stable/Makefile
           )
 # The following should be added to config_files/ac_output for 
 # libmathtools/ooccman
