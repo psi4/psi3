@@ -112,8 +112,8 @@ typedef struct {
     double hf_exch;                    /* Portion of exact HF exchange in the Fock matrix */
     int  make_dft;                     /* Use DFT? */
     int print_lvl;                     /* Print level */
-    int max_memory;                    /* Maximum amount of memory to use, in double words */
-    int memory;                        /* Amount left available */
+    long int max_memory;               /* Maximum amount of memory to use, in double words */
+    long int memory;                   /* Amount left available */
     int make_oei;                      /* Flag to compute one-electron integrals */
     int make_fock;                     /* Flag to compute Fock matrix */
     int make_eri;                      /* Flag to compute two-electron integrals */

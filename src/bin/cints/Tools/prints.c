@@ -32,6 +32,7 @@ void print_scalars()
      fprintf(outfile,"\n  -OPTIONS:\n");
      fprintf(outfile,"    Print level                 = %d\n",UserOptions.print_lvl);
      fprintf(outfile,"    Integral tolerance          = %1.0e\n",UserOptions.cutoff);
+     fprintf(outfile,"    Max. memory to use          = %ld\n",UserOptions.max_memory);
      fprintf(outfile,"    Number of threads           = %d\n",UserOptions.num_threads);
      fprintf(outfile,"    LIBINT's real type length   = %d bit\n",sizeof(REALTYPE)*8);
      fprintf(outfile,"\n  -CALCULATION CONSTANTS:\n");

@@ -14,7 +14,7 @@ void parsing()
 {
   int errcod;
   int cutoff_exp;
-  int max_bytes;
+  long int max_bytes;
   
   UserOptions.print_lvl = 1;
   errcod = ip_data("PRINT","%d",&(UserOptions.print_lvl),0);
