@@ -21,6 +21,10 @@ I. Compilation Prerequisites:
 
 II. Basic Code Configuration, Compilation, and Installation
 
+(Note: Due to a bug in dvips, the documentation will not compile
+if the PSI3 source directory has any periods in the path, e.g.,
+/usr/local/psi3.2 will cause the documentation compilation to fail.)
+ 
 The following series of steps will configure and build the PSI3
 package and install the executables in /usr/local/psi/bin:
 
