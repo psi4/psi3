@@ -29,6 +29,7 @@
 
 /* First definitions of globals */
 FILE *infile, *outfile;
+char *psi_file_prefix;
 int *ioff;
 struct MOInfo moinfo;
 struct Params params;
@@ -81,25 +82,26 @@ main(int argc, char *argv[])
 void init_io(int argc, char *argv[])
 {
   int i;
-  int parsed=1;
+  int num_extra_args = 0;
+  char **extra_args;
+
+  extra_args = (char **) malloc(argc*sizeof(char *));
 
    for (i=1; i<argc; i++) {
-     if (strcmp(argv[i], "-quiet") == 0) {
+     if (strcmp(argv[i], "--quiet") == 0) {
        params.print_lvl = 0;
-       parsed++;
+     }
+     else {
+       extra_args[num_extra_args++] = argv[i];
      }
    }
-	
-  init_in_out(argc-parsed, argv+parsed);
-  
+ 
+  psi_start(num_extra_args,extra_args,0); 
   if (params.print_lvl) tstart(outfile);
-  ip_set_uppercase(1);
-  ip_initialize(infile,outfile);
-  ip_cwk_clear();
-  ip_cwk_add(":DEFAULT");
   ip_cwk_add(":MVO");
 
   psio_init();
+  free(extra_args);
 }
 
 
@@ -135,9 +137,7 @@ void exit_io(void)
 {
   psio_done();
   if (params.print_lvl) tstop(outfile);
-  ip_done();
-  fclose(infile);
-  fclose(outfile);
+  psi_stop();
 }
 
 
