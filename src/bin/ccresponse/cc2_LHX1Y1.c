@@ -12,7 +12,9 @@ double cc2_LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
 		  char *pert_y, char *cart_y, int irrep_y, double omega_y)
 {
 	
-  int hxbuf, hzbuf, Gi, Gj, Ge, GZ, GX;
+  int a, A, m, num_m, nrows, ncols;
+  int GW1, GZae, Ga, Gm, Gf, Gam, Gef, GX, GY;
+  int hxbuf, hzbuf, Gi, Gj, Ge, GZ;
   int ab, mb, colx, colz, rowz, rowx;
   dpdfile2 F, X1, Y1, Zmi, Zae, ZIA, L1, t1;
   dpdbuf4 Z1, I, W1, ZIjAb, L2, Z, X;
@@ -43,18 +45,129 @@ double cc2_LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
   dpd_file2_close(&Zmi);
 	
   /* Contraction of WAMEF, XIE, YMF */
-  sprintf(lbl, "Z_%s_%1s_AE" , pert_y, cart_y);
+  /** Begin out-of-core dot24 contraction **/
+  sprintf(lbl, "Z_%s_%1s_AE" , pert_x, cart_x);
   dpd_file2_init(&Zae, CC_TMP0, irrep_y, 1, 1, lbl);
-  dpd_buf4_init(&W1, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf 2(Am,Ef) - (Am,fE)");
-  dpd_dot24(&Y1, &W1, &Zae, 0, 0, 1, 0);
+  dpd_file2_scm(&Zae, 0);
+  dpd_buf4_init(&W1, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");
+  /*   dpd_dot24(&X1, &W1, &Zae, 0, 0, 1, 0); */
+
+  GW1 = W1.file.my_irrep; 
+  GZae = Zae.my_irrep;
+  GX = X1.my_irrep;
+
+  dpd_file2_mat_init(&Zae);
+  dpd_file2_mat_init(&X1);
+  dpd_file2_mat_rd(&X1);
+
+  for(Gam=0; Gam < moinfo.nirreps; Gam++) {
+    Gef = Gam^GW1;
+
+    for(Ga=0; Ga < moinfo.nirreps; Ga++) {
+      Gm = Ga^Gef;
+      Ge = Ga^GZae;
+      Gf = Gm^GX;
+
+      num_m = X1.params->rowtot[Gm];
+      dpd_buf4_mat_irrep_init_block(&W1, Gam, num_m);
+
+      /* Loop over rows of the X factor and the target */
+      for(a=0; a < Zae.params->rowtot[Ga]; a++) {
+
+	A = W1.params->poff[Ga] + a;
+	dpd_buf4_mat_irrep_rd_block(&W1, Gam, W1.row_offset[Gam][A], num_m);
+
+	for(m=0; m < num_m; m++) {
+
+	  nrows = W1.params->rpi[Ge];
+	  ncols = W1.params->spi[Gf];
+
+	  if(nrows && ncols) {
+	    C_DGEMV('n',nrows,ncols,2.0,
+		    &(W1.matrix[Gam][m][W1.col_offset[Gam][Ge]]),ncols,
+		    &(X1.matrix[Gm][m][0]),1,1.0,
+		    &(Zae.matrix[Ga][a][0]),1);
+	    C_DGEMV('t',ncols,nrows,-1.0,
+		    &(W1.matrix[Gam][m][W1.col_offset[Gam][Gf]]),nrows,
+		    &(X1.matrix[Gm][m][0]),1,1.0,
+		    &(Zae.matrix[Ga][a][0]),1);
+	  }
+	}
+      }
+
+      dpd_buf4_mat_irrep_close_block(&W1, Gam, num_m);
+    }
+  }
   dpd_buf4_close(&W1);
-  dpd_contract222(&X1, &Zae, &ZIA, 0, 0, 1, 1);
+  dpd_file2_mat_close(&X1);
+  dpd_file2_mat_wrt(&Zae);
+  dpd_file2_mat_close(&Zae);
+  /** End out-of-core dot24 contraction **/
+
+  dpd_contract222(&Y1, &Zae, &ZIA, 0, 0, 1, 1);
+  dpd_file2_close(&Zae);
 	
   /* Contraction of WAMEF, XMF, YIE */
-  dpd_buf4_init(&W1, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf 2(Am,Ef) - (Am,fE)");
-  dpd_dot24(&X1, &W1, &Zae, 0, 0, 1, 0);
+  /** Begin out-of-core dot24 contraction **/
+  sprintf(lbl, "Z_%s_%1s_AE" , pert_y, cart_y);
+  dpd_file2_init(&Zae, CC_TMP0, irrep_y, 1, 1, lbl);
+  dpd_file2_scm(&Zae, 0);
+  dpd_buf4_init(&W1, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");
+  /*   dpd_dot24(&Y1, &W1, &Zae, 0, 0, 1, 0); */
+
+  GW1 = W1.file.my_irrep; 
+  GZae = Zae.my_irrep;
+  GY = Y1.my_irrep;
+
+  dpd_file2_mat_init(&Zae);
+  dpd_file2_mat_init(&Y1);
+  dpd_file2_mat_rd(&Y1);
+
+  for(Gam=0; Gam < moinfo.nirreps; Gam++) {
+    Gef = Gam^GW1;
+
+    for(Ga=0; Ga < moinfo.nirreps; Ga++) {
+      Gm = Ga^Gef;
+      Ge = Ga^GZae;
+      Gf = Gm^GY;
+
+      num_m = Y1.params->rowtot[Gm];
+      dpd_buf4_mat_irrep_init_block(&W1, Gam, num_m);
+
+      /* Loop over rows of the X factor and the target */
+      for(a=0; a < Zae.params->rowtot[Ga]; a++) {
+
+	A = W1.params->poff[Ga] + a;
+	dpd_buf4_mat_irrep_rd_block(&W1, Gam, W1.row_offset[Gam][A], num_m);
+
+	for(m=0; m < num_m; m++) {
+
+	  nrows = W1.params->rpi[Ge];
+	  ncols = W1.params->spi[Gf];
+
+	  if(nrows && ncols) {
+	    C_DGEMV('n',nrows,ncols,2.0,
+		    &(W1.matrix[Gam][m][W1.col_offset[Gam][Ge]]),ncols,
+		    &(Y1.matrix[Gm][m][0]),1,1.0,
+		    &(Zae.matrix[Ga][a][0]),1);
+	    C_DGEMV('t',ncols,nrows,-1.0,
+		    &(W1.matrix[Gam][m][W1.col_offset[Gam][Gf]]),nrows,
+		    &(Y1.matrix[Gm][m][0]),1,1.0,
+		    &(Zae.matrix[Ga][a][0]),1);
+	  }
+	}
+      }
+
+      dpd_buf4_mat_irrep_close_block(&W1, Gam, num_m);
+    }
+  }
   dpd_buf4_close(&W1);
-  dpd_contract222(&Y1, &Zae, &ZIA, 0, 0, 1, 1);
+  dpd_file2_mat_close(&Y1);
+  dpd_file2_mat_wrt(&Zae);
+  dpd_file2_mat_close(&Zae);
+  /** End out-of-core dot24 contraction **/
+
+  dpd_contract222(&X1, &Zae, &ZIA, 0, 0, 1, 1);
   dpd_file2_close(&Zae);
 	
   /* Contraction of WAMEF, XMA, YNE */
@@ -64,8 +177,11 @@ double cc2_LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
   dpd_dot13(&Y1, &W1, &Zmi, 0, 0, 1, 0);
   dpd_buf4_close(&W1);
   dpd_contract222(&Zmi, &X1, &ZIA, 1, 1, 1, 1);
+  dpd_file2_close(&Zmi);
 	
   /* Contraction of WAMEF, XMA, YNE */
+  sprintf(lbl, "Z_%s_%1s_MI" , pert_x, cart_x);
+  dpd_file2_init(&Zmi, CC_TMP0, irrep_x, 0, 0, lbl);
   dpd_buf4_init(&W1, CC_HBAR, 0, 0, 11, 0, 11, 0, "WMnIe - 2WnMIe (Mn,eI)");
   dpd_dot13(&X1, &W1, &Zmi, 0, 0, 1, 0);
   dpd_buf4_close(&W1);
@@ -93,7 +209,7 @@ double cc2_LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
   /* Contraction with Wmnij */
   sprintf(lbl, "Z_%s_%1s_MbIj", pert_y, cart_y);
   dpd_buf4_init(&Z1, CC_TMP0, irrep_y, 10, 0, 10, 0, 0, lbl);
-  dpd_buf4_init(&W1, CC_HBAR, 0, 0, 0, 0, 0, 0, "CC2 WMnIj (Mn,Ij)");
+  dpd_buf4_init(&W1, CC2_HET1, 0, 0, 0, 0, 0, 0, "CC2 WMnIj");
   dpd_contract424(&W1, &Y1, &Z1, 1, 0, 1, 1, 0);
   dpd_buf4_close(&W1);
 	
@@ -259,14 +375,14 @@ double cc2_LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
   dpd_buf4_close(&Z);
   /** End out-of-core contract244 **/
 
-/*   sprintf(lbl, "Z_%s_%1s_MbEj (jE,Mb)", pert_x, cart_x); */
-/*   dpd_buf4_init(&Z, CC_TMP0, irrep_x, 10, 10, 10, 10, 0, lbl); */
-/*   dpd_buf4_init(&I, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>"); */
-/*   dpd_contract244(&X1, &I, &Z, 1, 2, 0, 1, 0); */
-/*   dpd_buf4_close(&I); */
-/*   sprintf(lbl, "Z_%s_%1s_MbEj (Mb,jE)", pert_x, cart_x); */
-/*   dpd_buf4_sort(&Z, CC_TMP0, rspq, 10, 10, lbl); */
-/*   dpd_buf4_close(&Z); */
+  /*   sprintf(lbl, "Z_%s_%1s_MbEj (jE,Mb)", pert_x, cart_x); */
+  /*   dpd_buf4_init(&Z, CC_TMP0, irrep_x, 10, 10, 10, 10, 0, lbl); */
+  /*   dpd_buf4_init(&I, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>"); */
+  /*   dpd_contract244(&X1, &I, &Z, 1, 2, 0, 1, 0); */
+  /*   dpd_buf4_close(&I); */
+  /*   sprintf(lbl, "Z_%s_%1s_MbEj (Mb,jE)", pert_x, cart_x); */
+  /*   dpd_buf4_sort(&Z, CC_TMP0, rspq, 10, 10, lbl); */
+  /*   dpd_buf4_close(&Z); */
 
   sprintf(lbl, "Z_%s_%1s_MbeJ (Mb,eJ)", pert_x, cart_x);
   dpd_buf4_init(&Z, CC_TMP0, irrep_x, 10, 11, 10, 11, 0, lbl);
@@ -301,7 +417,7 @@ double cc2_LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
   /* Contraction with Wmbej */	
   sprintf(lbl, "X_%s_%1s_jbMI", pert_x, cart_x);
   dpd_buf4_init(&Z, CC_TMP0, irrep_x, 10, 0, 10, 0, 0, lbl);
-  dpd_buf4_init(&W1, CC_HBAR, 0, 10, 10, 10, 10, 0, "CC2 WMbEj");
+  dpd_buf4_init(&W1, CC2_HET1, 0, 10, 10, 10, 10, 0, "CC2 WMbEj (ME,jb)");
   dpd_contract424(&W1, &X1, &Z, 1, 1, 0, -1, 0);
   dpd_buf4_close(&W1);
   sprintf(lbl, "X_%s_%1s_IjMb", pert_x, cart_x);
@@ -310,7 +426,7 @@ double cc2_LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
 	
   sprintf(lbl, "X_%s_%1s_IbMj", pert_x, cart_x);
   dpd_buf4_init(&Z, CC_TMP0, irrep_x, 10, 0, 10, 0, 0, lbl);
-  dpd_buf4_init(&W1, CC_HBAR, 0, 10, 10, 10, 10, 0, "CC2 WMbeJ");
+  dpd_buf4_init(&W1, CC2_HET1, 0, 10, 10, 10, 10, 0, "CC2 WMbeJ (Me,Jb)");
   dpd_contract424(&W1, &X1, &Z, 1, 1, 0, 1, 0);
   dpd_buf4_close(&W1);
   sprintf(lbl, "X_%s_%1s_IjMb", pert_x, cart_x);
@@ -331,7 +447,7 @@ double cc2_LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
 	
   sprintf(lbl, "Y_%s_%1s_jbMI", pert_y, cart_y);
   dpd_buf4_init(&Z, CC_TMP0, irrep_y, 10, 0, 10, 0, 0, lbl);
-  dpd_buf4_init(&W1, CC_HBAR, 0, 10, 10, 10, 10, 0, "CC2 WMbEj");
+  dpd_buf4_init(&W1, CC2_HET1, 0, 10, 10, 10, 10, 0, "CC2 WMbEj (ME,jb)");
   dpd_contract424(&W1, &Y1, &Z, 1, 1, 0, -1, 0);
   dpd_buf4_close(&W1);
   sprintf(lbl, "Y_%s_%1s_IjMb", pert_y, cart_y);
@@ -340,7 +456,7 @@ double cc2_LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
 	
   sprintf(lbl, "Y_%s_%1s_IbMj", pert_y, cart_y);
   dpd_buf4_init(&Z, CC_TMP0, irrep_y, 10, 0, 10, 0, 0, lbl);
-  dpd_buf4_init(&W1, CC_HBAR, 0, 10, 10, 10, 10, 0, "CC2 WMbeJ");
+  dpd_buf4_init(&W1, CC2_HET1, 0, 10, 10, 10, 10, 0, "CC2 WMbeJ (Me,Jb)");
   dpd_contract424(&W1, &Y1, &Z, 1, 1, 0, 1, 0);
   dpd_buf4_close(&W1);
   sprintf(lbl, "Y_%s_%1s_IjMb", pert_y, cart_y);

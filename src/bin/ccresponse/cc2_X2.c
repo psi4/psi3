@@ -27,7 +27,7 @@ void cc2_X2_build(char *pert, char *cart, int irrep, double omega)
 
   sprintf(lbl, "Z(Ij,Ab) %s %1s", pert, cart);
   dpd_buf4_init(&Z, CC_TMP0, irrep, 0, 5, 0, 5, 0, lbl);
-  dpd_buf4_init(&W, CC_HBAR, 0, 10, 0, 10, 0, 0, "CC2 WMbIj (Mb,Ij)");
+  dpd_buf4_init(&W, CC2_HET1, 0, 10, 0, 10, 0, 0, "CC2 WMbIj");
   dpd_contract244(&X1, &W, &Z, 0, 0, 1, 1, 0);
   dpd_buf4_close(&W);
   dpd_buf4_axpy(&Z, &X2new, -1);
@@ -39,12 +39,11 @@ void cc2_X2_build(char *pert, char *cart, int irrep, double omega)
 
   sprintf(lbl, "Z(Ab,Ij) %s %1s", pert, cart);
   dpd_buf4_init(&Z, CC_TMP0, irrep, 5, 0, 5, 0, 0, lbl);
-  dpd_buf4_init(&W, CC_HBAR, 0, 5, 11, 5, 11, 0, "CC2 WAbEi");
+  dpd_buf4_init(&W, CC2_HET1, 0, 5, 11, 5, 11, 0, "CC2 WAbEi");
   dpd_contract244(&X1, &W, &Z, 1, 2, 1, 1, 0);
   dpd_buf4_close(&W);
   sprintf(lbl, "New X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
   dpd_buf4_sort_axpy(&Z, CC_LR, rspq, 0, 5, lbl, 1);
-  /*   dpd_buf4_sort_axpy(&Z, CC_LR, srqp, 0, 5, lbl, 1); */
   sprintf(lbl, "Z(Ij,Ab) %s %1s", pert, cart);
   dpd_buf4_sort(&Z, CC_TMP0, srqp, 0, 5, lbl);
   dpd_buf4_close(&Z);

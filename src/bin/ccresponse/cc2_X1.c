@@ -12,7 +12,7 @@ void cc2_X1_build(char *pert, char *cart, int irrep, double omega)
 {
   int GX2, GX1, GW, Gam, Gim, Gef, Ga, Gi, Gm;
   int a, A, i, I, num_m, nlinks, length;
-  dpdfile2 F, X1, X1new, Xme;
+  dpdfile2 F, X1, X1new, Xme, Zia;
   dpdbuf4 W, X2, D, T2;
   char lbl[32];
 
@@ -38,7 +38,7 @@ void cc2_X1_build(char *pert, char *cart, int irrep, double omega)
   dpd_contract222(&F, &X1, &X1new, 1, 1, -1, 1);
   dpd_file2_close(&F);
 
-  dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "CC2 2 W(jb,ME) + W(Jb,Me)");
+  dpd_buf4_init(&W, CC_TMP0, 0, 10, 10, 10, 10, 0, "CC2 2 W(jb,ME) + W(Jb,Me)");
   dpd_contract422(&W, &X1, &X1new, 0, 0, 1, 1);
   dpd_buf4_close(&W);
 
@@ -62,15 +62,10 @@ void cc2_X1_build(char *pert, char *cart, int irrep, double omega)
   sprintf(lbl, "X_%s_%1s_(2IjAb-IjbA) (%5.3f)", pert, cart, omega);
   dpd_buf4_init(&X2, CC_LR, irrep, 0, 5, 0, 5, 0, lbl);
   dpd_dot24(&F, &X2, &X1new, 0, 0, 1, 1);
-  dpd_buf4_close(&X2);
   dpd_file2_close(&F);
 
-  sprintf(lbl, "X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
-  dpd_buf4_init(&X2, CC_LR, irrep, 0, 5, 0, 5, 0, lbl);
-
   /** begin out of core contract442 **/
-  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf 2(Am,Ef) - (Am,fE)");
-  /*   dpd_contract442(&X2, &W, &X1new, 0, 0, 1, 1); */
+  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");
   GW = W.file.my_irrep;
   GX2 = X2.file.my_irrep;
   GX1 = X1new.my_irrep;
@@ -118,11 +113,13 @@ void cc2_X1_build(char *pert, char *cart, int irrep, double omega)
   dpd_file2_mat_close(&X1new);
 
   dpd_buf4_close(&W);
+  dpd_buf4_close(&X2);
 
+  sprintf(lbl, "X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
+  dpd_buf4_init(&X2, CC_LR, irrep, 0, 5, 0, 5, 0, lbl);
   dpd_buf4_init(&W, CC_HBAR, 0, 0, 11, 0, 11, 0, "WMnIe - 2WnMIe (Mn,eI)");
   dpd_contract442(&W, &X2, &X1new, 3, 3, 1, 1);
   dpd_buf4_close(&W);
-
   dpd_buf4_close(&X2);
 
   if(params.local && local.filter_singles) local_filter_T1(&X1new, omega);
