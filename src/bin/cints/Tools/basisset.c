@@ -151,7 +151,7 @@ void get_primitives(void)
    }
 
    free(exponents);
-   free_matrix(ccoeffs,BasisSet.num_prims);
+   free_block(ccoeffs);
 
    return;
 }

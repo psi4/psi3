@@ -42,13 +42,13 @@ void init_moinfo()
   scf_evec_so = file30_rd_scf();
   MOInfo.scf_evec[0] = block_matrix(MOInfo.num_mo,BasisSet.num_ao);
   mmult(Symmetry.usotao,1,scf_evec_so,0,MOInfo.scf_evec[0],1,BasisSet.num_ao,Symmetry.num_so,MOInfo.num_mo,0);
-  free_matrix(scf_evec_so,Symmetry.num_so);
+  free_block(scf_evec_so);
   if (UserOptions.reftype == uhf) {
     MOInfo.scf_evals[1] = file30_rd_beta_evals();
     scf_evec_so = file30_rd_beta_scf();
     MOInfo.scf_evec[1] = block_matrix(MOInfo.num_mo,BasisSet.num_ao);
     mmult(Symmetry.usotao,1,scf_evec_so,0,MOInfo.scf_evec[1],1,BasisSet.num_ao,Symmetry.num_so,MOInfo.num_mo,0);
-    free_matrix(scf_evec_so,Symmetry.num_so);
+    free_block(scf_evec_so);
   }
 
   /*--- Check the validity of the checkpoint file ---*/
