@@ -7,6 +7,8 @@
 #include <psifiles.h>
 #include <qt.h>
 
+#include <dmalloc.h>
+
 FILE *infile, *outfile;
 
 void init_io(void);
@@ -17,10 +19,10 @@ int main(int argc, char *argv[])
 {
   int iter, s, t, A, k, l, m, inew, iold, max;
   int i, j, ij, am, atom, shell_length, offset, stat;
-  int nirreps, nao, nmo, nso, natom, nshell, noei, nocc;
+  int nirreps, nao, nmo, nso, natom, nshell, noei, nocc, errcod, nfzc;
   int *stype, *snuc, *aostart, *aostop, *ao2atom, *l_length;
-  int *clsdpi, *openpi, *orbspi, *dummy, *order;
-  double *ss, **S, **scf, **u, **Ctmp, **C, *evals_tmp, *evals;
+  int *clsdpi, *openpi, *orbspi, *dummy, *order, *frdocc;
+  double *ss, **S, **scf, **u, **Ctmp, **C, *evals;
 
   int *orb_order, *orb_boolean;
   double P, PiiA, Pst, Pss, Ptt, Ast, Bst, AB;
@@ -44,7 +46,7 @@ int main(int argc, char *argv[])
   openpi = file30_rd_openpi();
   orbspi = file30_rd_orbspi();
   scf = file30_rd_scf();
-  evals_tmp = file30_rd_evals();
+  evals = file30_rd_evals();
   file30_close();
 
   /* A couple of error traps */
@@ -56,6 +58,16 @@ int main(int argc, char *argv[])
     fprintf(outfile, "\n\tError: localization is only valid with cartesian polarization!\n");
     exit(2);
   }
+  if(openpi[0]) {
+    fprintf(outfile, "\n\tError: localization available for closed-shells only!\n");
+    exit(2);
+  }
+
+  /* Frozen orbital info */
+  frdocc = init_int_array(1);
+  errcod = ip_int_array("FROZEN_DOCC", frdocc, 1);
+  nfzc = frdocc[0];
+  free(frdocc);
 
   /* Compute the length of each AM block */
   l_length = init_int_array(LIBINT_MAX_AM);
@@ -84,10 +96,10 @@ int main(int argc, char *argv[])
   for(i=0; i < natom; i++)
     for(j=aostart[i]; j <= aostop[i]; j++) ao2atom[j] = i;
 
-  /* Get the overlap integrals */
+  /* Get the overlap integrals -- these should be identical to AO S */
   noei = nmo*(nmo+1)/2;
   ss = init_array(noei);
-  stat = iwl_rdone(PSIF_OEI,PSIF_AO_S,ss,noei,0,0,outfile);
+  stat = iwl_rdone(PSIF_OEI,PSIF_SO_S,ss,noei,0,0,outfile);
   S = block_matrix(nao,nao);
   for(i=0,ij=0; i < nmo; i++)
     for(j=0; j <= i; j++,ij++) {
@@ -96,40 +108,20 @@ int main(int argc, char *argv[])
   free(ss);
 
   /* transform the MO coefficients to the AO basis */
-  Ctmp = block_matrix(nao,nmo);
-  C_DGEMM('t','n',nao,nmo,nso,1,&(u[0][0]),nao,&(scf[0][0]),nmo,
-	  0,&(Ctmp[0][0]),nmo);
-
-  /* Sort the MOs to an occupation ordering */
-  /* shouldn't be necessary in C1 symmetry */
-  /*
-  dummy = init_int_array(nmo);
-  order = init_int_array(nmo);
   C = block_matrix(nao,nmo);
-  evals = init_array(nmo);
-  reorder_qt(clsdpi, openpi, dummy, dummy, order, orbspi, nirreps);
-  for(i=0; i < nmo; i++) {
-    inew = order[i];
-    for(j=0; j < nao; j++) C[j][inew] = Ctmp[j][i];
-    evals[inew] = evals_tmp[i];
-  }
-  free(dummy);
-  free(order);
-  free_block(Ctmp);
-  free(evals_tmp);
-  */
+  C_DGEMM('t','n',nao,nmo,nso,1,&(u[0][0]),nao,&(scf[0][0]),nmo,
+	  0,&(C[0][0]),nmo);
 
+  /*
   fprintf(outfile, "\tCanonical MO's:\n");
   print_mat(C,nao,nmo,outfile);
+  */
 
 
   /* Compute nocc --- closed-shells only */
-  for(i=0,nocc=0; i < nirreps; i++) {
-    if(openpi[i]) exit(1);
-    nocc += clsdpi[i];
-  }
+  for(i=0,nocc=0; i < nirreps; i++) nocc += clsdpi[i];
 
-  fprintf(outfile, "Number of doubly occupied orbitals: %d\n", nocc);
+  fprintf(outfile, "\tNumber of doubly occupied orbitals: %d\n\n", nocc);
 
   fprintf(outfile, "\tIter     Pop. Localization   Max. Rotation Angle       Conv\n");
   fprintf(outfile, "\t------------------------------------------------------------\n");
@@ -142,7 +134,7 @@ int main(int argc, char *argv[])
   for(iter=0; iter < 100; iter++) {
 
     P = 0.0;
-    for(i=0; i < nocc; i++) {
+    for(i=nfzc; i < nocc; i++) {
       for(A=0; A < natom; A++) {
 	PiiA = 0.0;
 
@@ -156,8 +148,8 @@ int main(int argc, char *argv[])
 
     /* Compute 2x2 rotations for Pipek-Mezey localization */
     alphamax = 0.0;
-    for(s=0; s < nocc; s++) {
-      for(t=0; t < s; t++) {
+    for(s=nfzc; s < nocc; s++) {
+      for(t=nfzc; t < s; t++) {
 
 	Ast = Bst = 0.0;
 
@@ -247,8 +239,10 @@ int main(int argc, char *argv[])
       for(k=0; k < nocc; k++) 
 	F[i][j] += V[k][i] * evals[k] * V[k][j];
 
+  /*
   fprintf(outfile, "\nTransformed Orbital Energies:\n");
   print_mat(F, nocc, nocc, outfile);
+  */
 
   /* Compute a reordering array based on the diagonal elements of F */
   orb_order = init_int_array(nocc);
@@ -268,10 +262,14 @@ int main(int argc, char *argv[])
     orb_order[i] = max; orb_boolean[max] = 1;
   }
 
+  /*
   for(i=0; i < nocc; i++) fprintf(outfile, "%d %d\n", i, orb_order[i]);
+  */
 
+  /*
   fprintf(outfile, "\n\tPipek-Mezey Localized MO's (before sort):\n");
   print_mat(C, nao, nmo, outfile);
+  */
 
   /* Now reorder the localized MO's according to F */
   Ctmp = block_matrix(nao,nocc);
@@ -285,10 +283,13 @@ int main(int argc, char *argv[])
   }
   free_block(Ctmp);
 
+  /*
   fprintf(outfile, "\n\tPipek-Mezey Localized MO's (after sort):\n");
   print_mat(C, nao, nmo, outfile);
+  */
 
   /* Check MO normalization */
+  /*
   for(i=0; i < nmo; i++) {
     norm = 0.0;
     for(j=0; j < nao; j++) 
@@ -298,6 +299,7 @@ int main(int argc, char *argv[])
 
     fprintf(outfile, "norm[%d] = %20.10f\n", i, norm);
   }
+  */
 
   /* Write the new MO's to file30 */
   file30_init();
@@ -305,6 +307,9 @@ int main(int argc, char *argv[])
   file30_close();
 
   free_block(C);
+  free(evals);
+
+  fprintf(outfile, "\n\tLocalization of occupied orbitals complete.\n");
 
   exit_io();
   exit(0);
