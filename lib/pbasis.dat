@@ -2347,6 +2347,7 @@ BASIS: (
   COPPER:"631G" = (
     (GET "631GS")
     (GET "631GP")
+    (GET "631GD")
   )
 % ***************************************************************
 % * THE S-FUNCTIONS FOR THE GAUSSIAN 82 631G BASIS
