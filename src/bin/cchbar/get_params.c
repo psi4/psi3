@@ -8,6 +8,7 @@
 void get_params()
 {
   int errcod;
+  char *junk;
 
   fndcor(&(params.memory),infile,outfile);
 
@@ -18,6 +19,20 @@ void get_params()
   errcod = ip_data("PRINT", "%d", &(params.print),0);
 
   errcod = ip_string("WFN", &(params.wfn), 0);
+
+  params.dertype = 0;
+  if(ip_exist("DERTYPE",0)) {
+    errcod = ip_string("DERTYPE", &(junk),0);
+    if(errcod != IPE_OK) params.dertype = 0;
+    else if(!strcmp(junk,"NONE")) params.dertype = 0;
+    else if(!strcmp(junk,"FIRST")) params.dertype = 1;
+    else if(!strcmp(junk,"RESPONSE")) params.dertype = 3; /* linear response */
+    else {
+      printf("Invalid value of input keyword DERTYPE: %s\n", junk);
+      exit(PSI_RETURN_FAILURE); 
+    }
+    free(junk);
+  }
 
 }
 

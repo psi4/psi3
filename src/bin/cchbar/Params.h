@@ -5,5 +5,6 @@ struct Params {
   int ref;
   int print;
   char *wfn;
+  int dertype;
 };
 

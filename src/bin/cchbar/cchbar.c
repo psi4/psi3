@@ -82,8 +82,17 @@ int main(int argc, char *argv[])
   if(params.print & 2) status("Wmbij elements", outfile);
 
   if(!strcmp(params.wfn,"CC3")) {
-    cc3_HET1(); /* compute remaining Wmbej [H,eT1] */
-    norm_HET1();
+    /* switch to ROHF to generate all spin cases of He^T1 elements */
+    if(params.dertype == 3 && params.ref == 0) {
+      params.ref = 1;
+      cc3_HET1(); /* compute remaining Wmbej [H,eT1] */
+      norm_HET1();
+      params.ref = 0; 
+    }
+    else {
+      cc3_HET1(); /* compute remaining Wmbej [H,eT1] */
+      norm_HET1();
+    }
   }
 
   if(params.ref == 1) purge(); /** ROHF only **/
