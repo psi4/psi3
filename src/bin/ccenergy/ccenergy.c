@@ -65,6 +65,11 @@ void amp_write(void);
 void amp_write(void);
 int rotate(void);
 double **fock_build(double **D);
+void cc3_Wmnie(void);
+void cc3_Wamef(void);
+void cc3_Wmnij(void);
+void cc3_Wmbij(void);
+void cc3_Wabei(void);
 
 /* local correlation functions */
 void local_init(void);
@@ -177,6 +182,20 @@ int main(int argc, char *argv[])
     t2_build();
     if(params.print & 2) status("T2 amplitudes", outfile);
     timer_off("T2 Build");
+
+    if(!strcmp(params.wfn,"CC3")) {
+
+      /* step1: build cc3 intermediates, Wabei, Wmnie, Wmbij, Wamef */
+      /*
+      cc3_Wmnij();
+      cc3_Wmnie();
+      cc3_Wamef();
+      cc3_Wmbij();
+      cc3_Wabei();
+      */
+
+      /* step2: loop over T3's and add contributions to T1 and T2 as you go */
+    }
 
     if(converged()) {
       done = 1;
