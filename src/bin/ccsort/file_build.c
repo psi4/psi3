@@ -18,7 +18,7 @@ int file_build(dpdfile4 *File, int inputfile, double tolerance,
 {
   struct iwlbuf InBuf;
   int lastbuf;
-  int memoryb, memoryd;
+  long int memoryb, memoryd;
   int h, nirreps, n, row, col, nump, numq, row_length, core_left, nbuckets;
   int **bucket_map, **bucket_offset, **bucket_rowdim, **bucket_size, offset;
   Value *valptr;
@@ -173,6 +173,12 @@ int file_build(dpdfile4 *File, int inputfile, double tolerance,
 
 	      offset = bucket_offset[n][h];
 
+              if(row >= File->params->rowtot[h] ||
+                 col >= File->params->coltot[h]) {
+                    write("Whoa!\n");
+                    exit(1);
+                }
+                    
 	      File->matrix[h][row-offset][col] = value;
 	    }
 	}

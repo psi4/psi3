@@ -3,7 +3,7 @@ struct Params {
     int relax;
     double tolerance;
     int tpdmfile;
-    int memory;
+    long int memory;
     int cachelev;
 };
 

@@ -6,6 +6,6 @@ struct Params {
     int keep_OEIFile;      /* Should we keep the input one-elec. integrals? */
     int FZCFile;           /* Unit no. for input frozen core operator */
     double tolerance;      /* Cutoff value for integrals in IWL Buffers */
-    int memory;            /* Memory available (in bytes) */
+    long int memory;            /* Memory available (in bytes) */
     int cachelev;
 };

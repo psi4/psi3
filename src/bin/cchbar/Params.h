@@ -1,6 +1,6 @@
 /* Input parameters for cchbar */
 struct Params {
-    int memory;
+    long int memory;
     int cachelev;
 };
 
