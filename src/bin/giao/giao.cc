@@ -28,6 +28,7 @@ double* transform_2e_4(double* SSSS, int ns, double** U, int nu, double* scr);
 void tildeize_1e(double** H0, double** H1, double** S1, int nbf, double** Ht1);
 void tildeize_2e(double* g0, double* g1, double** S1, int nbf, double* gt1);
 void form_hamiltonian_deriv(double** Ht1, double* dgt, int nmo, int ndocc, double** dFt);
+void write_2e_iwl(double* ints, int nbf, int filenum);
 void print_1e(const char* label, double** ints, int nbf);
 void print_2e(const char* label, double* ints, int nbf, double cutoff);
 void print_2e_canon(const char* label, double* ints, int nbf, double cutoff);
@@ -187,11 +188,15 @@ int main(int argc, char* argv[])
   print_1e("dHt/dBy (GIAO MO basis)", dHtdBy, nmo);
   print_1e("dHt/dBz (GIAO MO basis)", dHtdBz, nmo);
   
+  // Write out dH~/dBi in MO basis to PSIF_OEI
+  iwl_wrtone(PSIF_OEI, "dh~/dBx (MO Basis)", nmo*nmo, dHtdBx[0]);
+  iwl_wrtone(PSIF_OEI, "dh~/dBy (MO Basis)", nmo*nmo, dHtdBy[0]);
+  iwl_wrtone(PSIF_OEI, "dh~/dBz (MO Basis)", nmo*nmo, dHtdBz[0]);
+  
   // intermediate cleanup
   free_block(dHdBx);
   free_block(dHdBy);
   free_block(dHdBz);
-//  free_block(H);
 
   // Also form dg~/dBi in MO basis from g, dS/dBi and dg/dBi
   nijkl = nmo*nmo*nmo*nmo;
@@ -204,10 +209,14 @@ int main(int argc, char* argv[])
   //print_2e("dgt/dBx (GIAO MO basis)", dgtdBx, nmo, CUTOFF);
   //print_2e("dgt/dBy (GIAO MO basis)", dgtdBy, nmo, CUTOFF);
   //print_2e("dgt/dBz (GIAO MO basis)", dgtdBz, nmo, CUTOFF);  
-//  delete[] g;
   delete[] dgdBx;
   delete[] dgdBy;
   delete[] dgdBz;
+  
+  // Write out dg~/dBi in MO basis to IWL files
+  write_2e_iwl(dgtdBx, nmo, 48);
+  write_2e_iwl(dgtdBy, nmo, 49);
+  write_2e_iwl(dgtdBz, nmo, 50);
 
   // Finally form F (just a check) and dF~/dBi in MO basis from dH~/dBi and dg~/dBi
   double** F = block_matrix(nmo,nmo);
@@ -227,6 +236,7 @@ int main(int argc, char* argv[])
   iwl_wrtone(PSIF_OEI, PSIF_MO_DFDB_Z, nmo*nmo, dFtdBz[0]);
 
   free_block(F);
+  free_block(H);
   free_block(dFtdBx);
   free_block(dFtdBy);
   free_block(dFtdBz);
@@ -239,6 +249,7 @@ int main(int argc, char* argv[])
   delete[] dgtdBx;
   delete[] dgtdBy;
   delete[] dgtdBz;
+  delete[] g;
 
   free_block(Cso);
   free_block(Cao);
@@ -486,6 +497,29 @@ void form_hamiltonian_deriv(double** Ht1, double* gt1, int nmo, int ndocc, doubl
 
     }
   }
+
+  return;
+}
+
+void write_2e_iwl(double* ints, int nbf, int filenum)
+{
+  struct iwlbuf IWLBuf;
+  iwl_buf_init(&IWLBuf, filenum, 0.0, 0, 0);
+  
+  long int ijkl = 0;
+  for(long int i=0; i<nbf; i++) {
+    for(long int j=0; j<nbf; j++) {
+      for(long int k=0; k<nbf; k++) {
+         for(long int l=0; l<nbf; l++, ijkl++) {
+           double value = ints[ijkl];
+           iwl_buf_wrt_val(&IWLBuf, i, j, k, l, value, 0, NULL, 0);
+        }
+      }
+    }
+  }
+  
+  iwl_buf_flush(&IWLBuf, 1);
+  iwl_buf_close(&IWLBuf, 1);
 
   return;
 }
