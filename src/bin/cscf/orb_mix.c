@@ -26,9 +26,9 @@
   #define PI 3.14159265359
 #endif
 
-void orb_mix(void)
+void orb_mix_old(void)
 {
-    int i, num_mo, spin, irr, found_guess, homo_orb, lumo_orb, errcod;
+    int i, num_mo, num_so, spin, irr, found_guess, homo_orb, lumo_orb, errcod;
     int lumo_irrep[2], homo_irrep[2];
     double lumo_energy[2], homo_energy[2];
     double c1, c2, tval, tval1, tval2, mixing_fraction;
@@ -47,6 +47,7 @@ void orb_mix(void)
     }
     */
 
+    /*
     for (irr=0,found_guess=0; irr<num_ir; irr++) {
       if (spin_info[spin].scf_spin[irr].noccup > 0) {
         tval = spin_info[spin].scf_spin[irr].fock_evals[spin_info[spin].scf_spin[irr].noccup-1]; 
@@ -62,20 +63,21 @@ void orb_mix(void)
           }
         }
       } 
-    } /* end loop over irreps */
+    } 
 
+    
     if (!found_guess) {
       fprintf(outfile, 
               "cscf: (orb_mix): Can't find a valid guess for HOMO irrep!\n");
       exit(PSI_RETURN_FAILURE);
     } 
+    */
 
 
     /* now try to figure out where the LUMO is */
-
+    /*
     for (irr=0,found_guess=0; irr<num_ir; irr++) {
 
-      /* if there are any virtuals in this irrep... */
       if (scf_info[irr].num_mo > spin_info[spin].scf_spin[irr].noccup) {
 
         tval = spin_info[spin].scf_spin[irr].fock_evals[spin_info[spin].scf_spin[irr].noccup]; 
@@ -91,7 +93,8 @@ void orb_mix(void)
           }
         }
       }
-    } /* end loop over irreps */
+    } 
+
 
     if (!found_guess) {
       fprintf(outfile, 
@@ -106,9 +109,10 @@ void orb_mix(void)
       fprintf(outfile, "Identified alpha LUMO as irrep %s, energy %12.6lf\n",
               scf_info[lumo_irrep[0]].irrep_label, lumo_energy[0]);
     }
-
+    */
 
     /* now see if HOMO and LUMO have the same irrep! */
+    /*
     if (homo_irrep[spin] != lumo_irrep[spin]) {
       fprintf(outfile, "Identified HOMO as irrep %s, energy %12.6lf\n",
             scf_info[homo_irrep[spin]].irrep_label, homo_energy[spin]);
@@ -120,8 +124,10 @@ void orb_mix(void)
         scf_info[homo_irrep[spin]].irrep_label);
         lumo_irrep[spin] = homo_irrep[spin];
     }
+    */
 
     /* now do the same for beta as for alpha */
+    /*
     homo_irrep[1] = homo_irrep[0];
     lumo_irrep[1] = lumo_irrep[0];
 
@@ -134,6 +140,7 @@ void orb_mix(void)
                   num_mo,num_mo,outfile);
       }
     }
+    */
 
     /* figure out mixing coefficients */
     mixing_fraction = 0.5;
@@ -145,30 +152,105 @@ void orb_mix(void)
     fprintf(outfile, "        Mixing coefficients are %lf and %lf\n", c1, c2);
     
     /* Now mix HOMO and LUMO for each spin */
-    for (spin=0; spin<2; spin++) {
-      irr = homo_irrep[spin];
-      num_mo = scf_info[irr].num_mo;
-      homo_orb = spin_info[spin].scf_spin[irr].noccup-1;
-      lumo_orb = homo_orb+1;
-      for (i=0; i<num_mo; i++) {
-        tval1 =  c1*spin_info[spin].scf_spin[irr].cmat[i][homo_orb]
-              +  c2*spin_info[spin].scf_spin[irr].cmat[i][lumo_orb];
-        tval2 = -c2*spin_info[spin].scf_spin[irr].cmat[i][homo_orb]
-              +  c1*spin_info[spin].scf_spin[irr].cmat[i][lumo_orb];
-        spin_info[spin].scf_spin[irr].cmat[i][homo_orb] = 
-          spin == 0 ? tval1 : tval2;
-        spin_info[spin].scf_spin[irr].cmat[i][lumo_orb] = 
-          spin == 0 ? tval2 : tval1;
-      }
+    for (irr=0; irr<num_ir; irr++) {
+      if (scf_info[irr].num_mo < 1) continue;
+      for (spin=0; spin<1; spin++) { /* try only mixing alpha now */
 
-      if (print > 4) {
-        fprintf(outfile, "C matrix after mixing (%s spin)\n", 
-                spin==0 ? "alpha" : "beta");
-	print_mat(spin_info[spin].scf_spin[irr].cmat,num_mo,num_mo,outfile);
-      }
+        if (spin==0) {
+          c2 = sin(mixing_fraction*PI/2.0);
+	}
+	else {
+          c2 = -sin(mixing_fraction*PI/2.0);
+	}
 
-    } /* end loop over spins */
-    
+        num_mo = scf_info[irr].num_mo;
+        num_so = scf_info[irr].num_so;
+
+        /* if (print > 4) { */
+          fprintf(outfile, "%5s C matrix before mixing (%s spin)\n", 
+                  scf_info[irr].irrep_label, (spin==0) ? "alpha" : "beta");
+	  print_mat(spin_info[spin].scf_spin[irr].cmat,num_so,num_mo,outfile);
+        /* } */
+
+        homo_orb = spin_info[spin].scf_spin[irr].noccup-1;
+        lumo_orb = homo_orb+1;
+	if (homo_orb < 0 || lumo_orb < 0 || 
+            homo_orb >= scf_info[irr].num_mo ||
+	    lumo_orb >= scf_info[irr].num_mo) continue;
+
+        for (i=0; i<num_so; i++) {
+          tval1 =  c1*spin_info[spin].scf_spin[irr].cmat[i][homo_orb]
+                +  c2*spin_info[spin].scf_spin[irr].cmat[i][lumo_orb];
+          tval2 = -c2*spin_info[spin].scf_spin[irr].cmat[i][homo_orb]
+                +  c1*spin_info[spin].scf_spin[irr].cmat[i][lumo_orb];
+          spin_info[spin].scf_spin[irr].cmat[i][homo_orb] = tval1;
+          spin_info[spin].scf_spin[irr].cmat[i][lumo_orb] = tval2;
+        }
+
+        /* if (print > 4) { */
+          fprintf(outfile, "%5s C matrix after mixing (%s spin)\n", 
+                  scf_info[irr].irrep_label, (spin==0) ? "alpha" : "beta");
+	  print_mat(spin_info[spin].scf_spin[irr].cmat,num_so,num_mo,outfile);
+        /* } */
+      } /* end loop over spins */
+    } /* end loop over irreps */ 
+
 }
    
+void orb_mix(void)
+{
+    int i, num_mo, num_so, spin, irr, homo_orb, lumo_orb, errcod;
+    double c1, c2, M, norm, **C;
+ 
+    fprintf(outfile, "\n  ***** Orbital Mixing being used to find unique UHF solution *****\n");
+
+    /* which spin to mix... just do alpha */
+    spin = 0;
+
+    /* figure out mixing coefficients */
+    M = 0.5;
+    errcod = ip_data("MIXING_FRACTION","%lf",&M,0);
+    norm = 1.0 / sqrt(1.0+M*M);
+
+    fprintf(outfile, "        Mixing HOMO and LUMO by %d percent\n", 
+            (int) (M * 100.0));
+    
+    /* Now mix HOMO and LUMO for each spin */
+    for (irr=0; irr<num_ir; irr++) {
+      if (scf_info[irr].num_mo < 1) continue;
+
+      num_mo = scf_info[irr].num_mo;
+      num_so = scf_info[irr].num_so;
+
+      /* if (print > 4) { */
+        fprintf(outfile, "%5s C matrix before mixing (%s spin)\n", 
+                scf_info[irr].irrep_label, (spin==0) ? "alpha" : "beta");
+        print_mat(spin_info[spin].scf_spin[irr].cmat,num_so,num_mo,outfile);
+      /* } */
+
+      homo_orb = spin_info[spin].scf_spin[irr].noccup-1;
+      lumo_orb = homo_orb+1;
+      if (homo_orb < 0 || lumo_orb < 0 || 
+          homo_orb >= scf_info[irr].num_mo ||
+          lumo_orb >= scf_info[irr].num_mo) continue;
+
+      C = spin_info[spin].scf_spin[irr].cmat;
+
+      for (i=0; i<num_so; i++) {
+        c1 = C[i][homo_orb];
+	c2 = C[i][lumo_orb];
+        C[i][homo_orb] = (c1 + M*c2)*norm;
+	C[i][lumo_orb] = (c2 - M*c1)*norm;
+      }
+
+      /* if (print > 4) { */
+        fprintf(outfile, "%5s C matrix after mixing (%s spin)\n", 
+                scf_info[irr].irrep_label, (spin==0) ? "alpha" : "beta");
+        print_mat(spin_info[spin].scf_spin[irr].cmat,num_so,num_mo,outfile);
+      /* } */
+    } /* end loop over irreps */ 
+
+}
+   
+
 
