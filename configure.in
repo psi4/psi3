@@ -634,7 +634,7 @@ AC_SUBST(FPAROPT)
 if echo $os | grep aix >/dev/null 2>&1 && test "$bitwidth64" = yes; then
     ARFLAGS="-X32_64 rv"
     LDFLAGS="-q64 -bmaxdata:4000000000"
-else if echo $os | grep aix >/dev/null 2>&1; then
+elif echo $os | grep aix >/dev/null 2>&1; then
     ARFLAGS="rv"
     LDFLAGS="-bmaxdata:2000000000"
 else
