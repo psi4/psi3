@@ -1,0 +1,186 @@
+\subsection{Capabilities}
+\PSIthree\ can perform {\em ab initio} computations employing
+basis sets of up to 32768 contracted Gaussian-type functions of
+virtually arbitrary orbital quantum number.
+\PSIthree\ can recognize and exploit the largest Abelian subgroup of the
+point group describing the full symmetry of the molecule.
+Table \ref{table:methods} displays the range of theoretical
+methods available in \PSIthree .
+\begin{table}[h]
+\caption{Summary of theoretical methods available in \PSIthree.} 
+\label{table:methods}
+\parsep 10pt
+\begin{center}
+\begin{tabular}{lccc} \hline\hline
+Method      & Energy & Gradient & Hessian \\ \hline
+RHF SCF     & Y & Y & Y \\
+ROHF SCF    & Y & Y & N \\
+UHF SCF     & Y & N & N \\
+TCSCF       & Y & Y & N \\
+CASSCF      & Y & Y & N \\
+RAS-CI      & Y & N & N \\
+RHF MP2     & Y & N & N \\
+RHF MP2-R12 & Y & N & N \\
+ROHF CCSD   & Y & Y & N \\
+VOO-CCD     & Y & Y & N \\ \hline\hline
+\end{tabular}
+\end{center}
+\end{table}
+Geometry optimization (currently restricted to true minima on the potential
+energy surface) and vibrational frequency computations can be performed
+with the methods for which analytic gradients and Hessian, respectively, are
+available.  Methods for which analytic gradients are not yet implemented
+may still be used for geometry optimization if the gradients are computed
+numerically from energies; this is automated by the optking program.
+Numerical computation of Hessians is being developed.
+\PSIthree\ can also compute an extensive list of one-electron properties.
+Finally, it should be mentioned that whenever \PSIthree\ is used,
+it should be cited fully (see appendix).
+
+\subsection{Before You Obtain \PSIthree: Prerequisites}
+The majority of \PSIthree\ was developed on IBM RS/6000//AIX
+and Intel i386/Linux workstations. The complete list of
+tested processor/OS combinations to which \PSIthree\ has
+been ported is shown in Table \ref{table:ports}.
+\begin{table}
+\caption{Platforms on which \PSIthree\ has been installed successfully.} \label{table:ports}
+\begin{tabular}{lll} \hline\hline
+Hardware & Operating System(s) & Special Notes \\ \hline
+Compaq Alpha & Compaq TrueUNIX64 & 64-bit mode \\
+IBM RS/6000 & AIX 3.2.5, AIX 4.1-4.3.0 &
+IBM C, C++, and Fortran compilers\\
+IBM PowerPC & AIX 4.3.2 & 
+IBM C, C++, and Fortran compilers;
+64-bit mode\\
+Intel ix86 & Linux 2.2 & \\
+SGI Origin 2000 & IRIX64 6.5 & 64-bit \\ \hline\hline
+\end{tabular}
+\end{table}
+If you don't find your system in the Table, there's a good chance
+that you will be able to install \PSIthree\ on your system
+if you have all of the following:
+\begin{enumerate}
+\item GNU Make program \file{gmake} version 3.74. Earlier versions may work too.
+The latest version may be obtained from Free Software Foundation
+(FSF) at \htmladdnormallink{{\tt http://www.gnu.org/}}
+{http://www.gnu.org/}
+\item GNU {\tt autoconf} version 2.13 or later (2.12 will NOT work). The latest version
+may be obtained from FSF.
+\item Some implementation of {\tt lex} and {\tt yacc}. On a Linux system, GNU {\tt flex}
+and GNU {\tt bison} will do fine. However, GNU {\tt flex} version 2.5.4 runs into trouble on
+64-bit IBM POWER3 PowerPC platforms and the AIX {\tt lex} has to be used.
+\item C, C++, and Fortran77 compilers, preferably conforming ANSI standards.
+As of June 2000, GNU compiler {\tt gcc} version 2.95.2 works for sure.
+You may obtain {\tt gcc} compiler from FSF.
+\item Basic Linear Algebra Subroutines (BLAS) library. Most UNIX systems
+come with some variation of the library installed as {\tt libblas.a} .
+Check \file{/lib}, \file{/usr/lib}, or \file{/usr/local/lib} on your system.
+Source code for various implementations of the library may be obtained
+from \htmladdnormallink{{\tt http://www.gnu.org/}}
+{http://www.gnu.org/}.
+\item LaTeX2$\epsilon$ to create the \PSIthree\ User's and Programmer's Manuals
+in device-independent (DVI) and PostScript form.
+\item LaTeX2HTML v0.98 or higher to create the \PSIthree\ User's and
+Programmer's Manuals in HTML-format.
+\end{enumerate}
+You also need to have at least 30 MB of disk space available for the compiled code
+and at least 20 MB of scratch space for compilation of machine-generated code (more if you
+want to use basis functions of high angular momentum, say, past g).
+
+\subsection{How to Obtain \PSIthree}
+\PSIthree\ may be obtained by sending a request to \htmladdnormallink{{\tt
+mailto:psimaster@sirius.chem.vt.edu}}{mailto:psimaster@sirius.chem.vt.edu}.\footnote{\PSIthree\ 
+developers should refer to the \PSIthree\ Programmer's Manual for information 
+on how to obtain \PSIthree\ source code.} As of June 2000, the \PSIthree\ 
+source code may be obtained for free; however, the software is distributed 
+without a warranty of correctness of results obtained with \PSIthree\ or
+an obligation to provide technical support.
+
+\subsection{How to Install \PSIthree}
+\PSIthree\ comes in a form of a tarball - file with a {\tt .tar.gz} or
+a {\tt .tar.bz2} suffix. To extract the content of the tarball
+issue the following two commands:
+\begin{enumerate}
+\item {\tt gunzip psi3.tar.gz} or
+{\tt bunzip2 psi3.tar.bz2}\footnote{You may learn more about 
+free compression/decompression utilities \file{bzip2} and
+\file{bunzip2} and download their source code for 
+free at \htmladdnormallink{{\tt http://sourceware.cygnus.com/bzip2/}}
+{http://sourceware.cygnus.com/bzip2/} .}
+\item {\tt tar xvf psi3.tar}
+\end{enumerate}
+This will produce a directory tree \file{psi3} which contains all
+of the human-generated source code for \PSIthree. At this point
+you may choose to rename it to something else, like \file{psi3\_dist}.
+It is better to keep object and binary files
+separate from the source files so that you can wipe out the binaries
+clean and start over at any moment.  
+
+Now enter \PSIthree\ source directory and edit the installation script
+\file{PSI3Install}. Specify a target location for \PSIthree\ installation tree
+(variable \shellvar{prefix}). The binaries, documentation, test suite, and
+some other items will be installed into this installation directory.  A
+\file{bin} directory will hold utilities like \file{host.sh}, which
+determines the architecture type.  A subdirectory (with name created by
+\file{host.sh}) will hold architecture-specific binaries of the program
+modules.  Note that, in contrast to previous versions of PSI, 
+\shellvar{prefix} specifies a totally separate directory and {\em should 
+not be the same as the compilation directory}.  By default, the 
+compilation directory will be an architecture-dependent subdirectory 
+of the \PSIthree\ source directory.  
+
+To install \PSIthree\ type \file{PSI3Install >\& install.out}. After 
+the installation process completes, check the installation directory; 
+it should have \file{bin}, \file{include}, \file{doc}, \file{share},
+\file{tests}, and an
+architecture-specific (e.g. \file{i586-pc-linux-gnu})
+directory. In the architecture-specific directory
+check the \file{bin} directory, it should have several
+binary files in it. If you do not have binaries in that location,
+then something went wrong and 
+you should check \file{install.out} for errors.
+
+There are occasionally problems on 64-bit architectures in linking the
+correct 32/64-bit librarires.  For example, on AIX, there may be both 32-bit
+and 64-bit lapack libraries.  If \PSIthree\ is compiled in 64-bit mode and
+the linker picks up a 32-bit liblapack.a, the compilation will fail due to
+unresolved symbols.  To get around this particular problem, one can
+add a flag such as {\tt --with-lapack="/usr/local/lib/liblapack\_64.a"} 
+when running \file{configure}.
+
+To verify that 64-bit compilation flags are set, one can check
+{\tt \$(top\_objdir)/src/lib/MakeVars and \$(top\_objdir)/src/bin/MakeVars}.
+Check the {\tt COPT, CXXOPT, FOPT, LDFLAGS}, and {\tt AR} variables.  This
+should be automatically configured for 64-bit IBM RS/6000 architectures.
+
+\subsection{Post-installation Procedures}
+To verify correct installation of the program, it is useful to
+run the series of test calculations provided in the \file{tests}
+directory.  Reference outputs are contained in the files \file{output.ref}.
+At present, only a small set of test calculations have been added;
+we hope to increase the number and types of tests soon.
+
+The last thing one might want to do is to print out The \PSIthree\
+User's and Programmer's manuals in PostScript form, and/or
+to bookmark the location of the online version of the manuals
+in \file{psi3/doc/html/userman/userman.html} and
+\file{psi3/doc/html/progman/progman.html}.
+
+\subsection{Before You Run \PSIthree}
+Every user needs to configure her or his
+shell environment prior to running \PSIthree:
+\begin{enumerate}
+\item add the location of the binaries to {\tt \$PATH}
+\item add the location of the manpages to {\tt \$MANPATH}
+\end{enumerate}
+In C-shell it may be achieved like this:
+\begin{verbatim}
+set psipath = /put/psi/installation/directory/here
+setenv PATH $psipath`$psipath/bin/host.sh`/bin:$PATH
+setenv MANPATH $psipath/doc/man:$MANPATH
+\end{verbatim}
+Note that in previous versions of PSI, the installation directory
+was frequently in a subdirectory of the source distribution directory.
+This is no longer the case.  Now, \file{psipath} is commonly something
+like \file{/usr/local/psi3} while the source directory will be elsewhere.
+

@@ -1,0 +1,38 @@
+%
+% PSI Programmer's Manual
+%
+% Other PSI C Libraries
+%
+% David Sherrill, 1 February 1996
+%
+There are several other PSI C libraries besides the previously-mentioned
+\library{libipv1.a}, \library{libpsio.a}, and \library{libciomr.a}:
+\begin{description}
+\item\library{libchkpt.a} This library provides many routines for reading 
+from and writing to the ``checkpoint'' file, \FILE{30}.  There is
+generally a different function associated with each quantity in \FILE{30}
+(such as the SCF energy, nuclear repulsion energy, geometry,
+basis set information, etc).  This library uses the \library{libpsio.a}
+library to do its input and output.  It replaces an older library 
+\library{libfile30.a} which served the same purpose but which used the
+old I/O from \library{libciomr.a}.
+\item\library{libiwl.a} The new format for storing two-electron integrals is
+IWL, or ``integrals with labels.''  The library \library{libiwl.a} provides functions for
+reading and writing files in the IWL format.  The code was written with 
+the goal that it could be easily modified to allow for more than 256
+basis functions. Its current limit is 32768 basis functions.
+\item\library{libqt.a} This is the ``Quantum Trio'' library, which contains a number
+of very experimental functions or functions which don't otherwise
+fit anywhere else.
+\end{description}
+
+In this section we will consider these libraries in greater detail.
+
+\subsection{The Checkpoint File Library}\label{C_CHECKPOINT}
+\input{checkpointfile}
+
+\subsection{The Integrals-With-Labels Library}\label{C_IWL}
+\input{iwl}
+
+\subsection{The ``Quantum Trio'' Library}\label{C_QT}
+\input{qt}

@@ -1,0 +1,108 @@
+%
+% PSI Programmer's Manual
+%
+% PSI Makefiles Section
+%
+% Daniel Crawford, 31 January, 1996
+% Updated by TDC, December 2002.
+%
+The \file{make} utility is designed to help maintain the many
+components of a large program, such as PSI.  This section will
+describe the construction and usefulness of Makefiles in PSI, both in
+developmental code and in production-level modules.  We will be
+concerned only with the GNU Project's \file{make} facility, and not
+older, less flexible versions.  (For a complete explanation of GNU's
+\file{make}, see \file{info make} or go to \htmladdnormallink{{\tt
+www.gnu.org}}{http://www.gnu.org}).
+
+\subsection{\file{Makefile} Structure}
+The primary purpose of the \file{make} program is to assist
+compilation and recompilation of a multi-file program, such that only
+those portions of the program are recompiled that require it.  For
+example, if a header file is changed, then each source file which
+\celem{\#include}s that file must be recompiled.  \file{make} provides
+an easy mechanism by which such {\em dependencies} (also called {\em
+prerequisites}) may be tracked.
+
+\file{Makefiles} consist of {\em rules} which describe how to carry out commands.
+For example, a rule might explain how to compile a single source file, or
+how to link all the object files into the executable, or perhaps how to
+clean up all the object files.  A rule has the following form
+\begin{verbatim}
+target: dependencies
+        command
+        command
+        ...
+\end{verbatim}
+The {\em target} is the name of the rule, e.g.~the name of the program
+or file to be compiled. The first rule given in the \file{Makefile} is
+the default.  The {\em dependencies} are the names of files (often
+names of other targets, as well) on which the construction of the
+target depends.  A particular target does not necessarily have to have
+dependencies.  The {\em commands} are the actual commands to be
+executed once all the dependencies are complete.  Note that a
+\file{<TAB>} \ must be used to indent commands under the target
+name; if you use spaces or don't indent you'll get a (not entirely
+clear) error message.  \file{\file{Makefile}s} may also contain
+variable definitions to make the file perhaps simpler.
+
+\subsection{PSI \file{Makefile}s}
+The \file{Makefile}s contained in the PSI package are complicated, in
+part due to the size of the package and the need for code portability.
+\PSIthree\ \file{Makefile}s are generated automatically from simple
+input, called {\tt \file{Makefile}.in}, by the \file{configure} script
+in the top-level \$PSI directory.  This script is designed to examine
+system-specific characterisctics, such as library locations, special
+compiler options, the existence of certain header files or functions,
+or Fortran-C cross-linkage conventions, among others.  With the
+information it obtains, it constructs the large number of
+\file{Makefile}s needed for compilation of PSI's libraries, utilities,
+and modules.
+
+As an example, consider the {\tt \file{Makefile}.in} file associated with {\tt
+cscf}:
+\begin{verbatim}
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+include ../MakeVars
+
+PSILIBS = -lPSI_file30 -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
+
+TRUESRC = \
+cscf.c cleanup.c dft_inputs.c diis.c dmat.c \
+dmat_2.c ecalc.c errchk.c findit.c \
+formg2.c formgc.c formgo.c form_vec.c gprgid.c init_scf.c \
+packit_c.c packit_o.c rdone.c rdtwo.c rotate_vector.c scf_input.c \
+scf_iter.c scf_iter_2.c schmit.c sdot.c shalf.c check_rot.c phases.c\
+guess.c sortev.c occ_fun.c init_uhf.c cmatsplit.c dmatuhf.c \
+findit_uhf.c uhf_iter.c schmit_uhf.c diis2_uhf.c formg_direct.c \
+orb_mix.c
+
+BINOBJ = $(TRUESRC:%.c=%.o)
+ALLOC =
+
+include ../MakeRules
+
+ifneq ($(DODEPEND),no)
+$(BINOBJ:%.o=%.d): $(DEPENDINCLUDE)
+include $(BINOBJ:%.o=%.d)
+endif
+
+install_man:: cscf.1
+        $(MKDIRS) $(mandir)/man1
+      	$(INSTALL_INCLUDE) $^ $(mandir)/man1
+\end{verbatim}
+
+The
+\file{@string@} directives tell the \file{configure} script where to insert certain
+variables is has determined from the system.  This \file{Makefile}
+input also includes two external \file{Makefile}s, {\tt MakeVars} and
+{\tt MakeRules}, both of which are in the parent directory.  These
+files contain (not surprisingly) numerous necessary variables
+(e.g.~the local C compiler name) and rules (e.g.~how to generate the
+module itself) for compilation and installation of {\tt cscf}.
+Similar files exist for the PSI libraries as well.  We recommend that
+programmer's spend some time studying the PSI \file{Makefile}
+structure.
+

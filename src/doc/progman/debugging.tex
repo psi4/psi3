@@ -1,0 +1,55 @@
+%
+% PSI Programmer's Manual
+%
+% PSI Debugging Section
+%
+% TDC, 8 February, 1996
+% Revised by TDC December 2002.
+%
+Debugging \PSIthree\ code using an interactive debugger, such as
+\file{gdb} or \file{dbx} can be difficult at times because of the
+complicated organization of this large program package.  This section
+discusses some strategies and technical details of using such
+debuggers with the \PSIthree\ code.  (Advice for debugging \PSIthree\
+Fortran code may be found in section \ref{PSI_Fortran}.)
+
+\subsection{Code Re-compilation}
+Any section of \PSIthree\ code that needs to be debugged must first be
+re-compiled with the ``-g'' flag turned on.  This flag is set in the
+\file{MakeVars} file in the directory above each module or library's
+source code directory.  For example, to turn on debugging in the
+\PSIcscf\ program, one would first clean the existing object code out
+of the \file{\$prefix/src/bin/cscf} directory using \file{make clean}.
+Then edit \file{\$prefix/src/bin/MakeVars}, one directory above the
+\PSIcscf\ source code: set \file{CDBG = -g} and, optionally \file{COPT
+= } to turn off optimization flags.  (For modules using C++, the
+analogous variables are \file{CXXDBG} and \file{CXXOPT}.  Then
+re-compile the module.  If debugging information is needed for a
+library routine as well, then follow this same procedure for the
+library in question.  Technically, only the routines of interest need
+to be re-compiled, though it is frequently more convenient to simply
+re-compile the entire library or module.
+
+\subsection{Multiple Source Code Directories}
+The most difficult problem of debugging \PSIthree\ code is that object
+code and source code generally reside in separate directories to allow
+storage of objects for several achitectures simultaneously.  In
+addition, library codes are kept separate from binary (module) codes.
+If the code is compliled with \file{gcc/g++}, then this separation of
+source and object code is of no consequence because the compiler
+builds the full path to the source file directly into the object code.
+However, for non-\file{gcc} compilations, one must know how to tell
+the debugger where to find the sources.
+
+Most interactive debuggers allow the programmer to specify multiple
+source code search directories using simple command-line options.  For
+example, if one were debugging the \PSIcscf\ program and needed
+access to the \library{libciomr.a} library source code in addition to
+that of \PSIcscf, one could use \file{gdb}'s ``dir'' command to search
+several source code directories:
+\begin{verbatim}
+dir \$PSI/src/lib/libciomr
+\end{verbatim}
+Additionally, such commands can be placed in the user's
+\file{\$HOME/.gdbinit} file.  In \file{dbx}, the ``use'' command
+specifies multiple source directories.

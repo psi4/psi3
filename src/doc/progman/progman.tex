@@ -1,0 +1,134 @@
+
+%
+% The PSI Programmer's Manual
+%
+
+\documentclass[12pt]{article}
+% Use this if you need to include PostScript figures or such.
+%\usepackage{epsfig}
+\usepackage{html}
+\setlength{\textheight}{9in}
+\setlength{\textwidth}{6.5in}
+\setlength{\hoffset}{0in}
+\setlength{\voffset}{0in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\topmargin}{0in}
+\setlength{\oddsidemargin}{-0.05in}
+\setlength{\evensidemargin}{-0.05in}
+\setlength{\marginparsep}{0in}
+\setlength{\marginparwidth}{0in}
+\setlength{\parsep}{0.8ex}
+\setlength{\parskip}{1ex plus \fill}
+\baselineskip 18pt
+\renewcommand{\topfraction}{.8}
+\renewcommand{\bottomfraction}{.2}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+% Definitions
+%%%%%%%%%%%%%%%%%%%%%%%
+\include{macros}
+
+\initfuncdesc
+
+\begin{center}
+\ \\
+\vspace{2.0in}
+{\bf {\Large The \PSIthree\ Programmer's Manual}} \\
+\vspace{0.5in} 
+T. Daniel Crawford,$^a$ C. David Sherrill,$^b$ Edward F.\ Valeev,$^b$, \\
+Justin T. Fermann,$^c$ and C. Brian Kellogg$^c$ \\ 
+\ \\ 
+{\em $^a$Department of Chemistry, Virginia Tech, Blacksburg, Virginia 24061} \\
+\vspace{0.1in}
+{\em $^b$Center for Computational Molecular Science and Technology, \mbox{Georgia 
+Institute of Technology,} Atlanta, Georgia 30332-0400} \\
+\vspace{0.1in}
+{\em $^c$Center for Computational Quantum Chemistry, \\ 
+\mbox{University of Georgia,} Athens, Georgia 30602-2525} \\
+\ \\
+\vspace{0.3in}
+\date{Version of: \today}
+\end{center}
+
+\thispagestyle{empty}
+
+\newpage
+\tableofcontents
+
+\newpage
+\section{Introduction}
+\input{history}
+\input{introduction}
+
+\section{The \PSIthree Source Code}\label{cvs}
+\input{cvs}
+
+\section{Fundamental \PSIthree\ Functions}\label{Fundamental_PSI}
+\input{fundamental_psi}
+
+\section{Other \PSIthree\ C Libraries}\label{Other_Libs}
+\input{other_libs}
+
+\section{Programming Style}\label{Style}
+\input{style}
+
+\section{Makefiles in \PSIthree}\label{Makefiles}
+\input{makefiles}
+
+\subsection{Preparing to Developing New \PSIthree\ Code}\label{New_Code}
+\input{adding_new_code}
+
+\section{Code Debugging}\label{Debugging}
+\input{debugging}
+
+\section{Documentation}\label{Documentation}
+\input{documentation}
+
+\newpage
+\appendix
+
+\section{\PSIthree\ Fortran Code}\label{PSI_Fortran}
+\input{fortran}
+
+\section{\PSIthree\ Reference}\label{PSI_Reference}
+\input{reference}
+
+\section{Text Files in \PSIthree}\label{Text_files}
+\input{files}
+
+%\newpage
+%\section{Function Declarations for {\tt libipv1.a}}\label{Libipv1}
+%\input{libipv1.txt}
+%See \htmladdnormallink{{\tt http://zopyros.ccqc.uga.edu/Docs/Psiman/Devel/Libs/libipv1.txt}}{http://zopyros.ccqc.uga.edu/Docs/Psiman/Devel/Libs/libipv1.txt}.
+
+
+%\newpage
+%\section{Function Declarations for {\tt libciomr.a}} \label{Libciomr}
+%\input{libciomr.txt}
+%See \htmladdnormallink{{\tt http://zopyros.ccqc.uga.edu/Docs/Psiman/Devel/Libs/libciomr.txt}}{http://zopyros.ccqc.uga.edu/Docs/Psiman/Devel/Libs/libciomr.txt}.
+
+
+%\newpage
+%\section{Function Declarations for {\tt libfile30.a}} \label{Libfile30}
+%\input{libfile30.txt}
+%See \htmladdnormallink{{\tt http://zopyros.ccqc.uga.edu/Docs/Psiman/Devel/Libs/libfile30.txt}}{http://zopyros.ccqc.uga.edu/Docs/Psiman/Devel/Libs/libfile30.txt}.
+
+%\newpage
+%\section{Function Declarations for {\tt libread34.a}} \label{Libread34}
+%\input{libread34.txt}
+%See \htmladdnormallink{{\tt http://zopyros.ccqc.uga.edu/Docs/Psiman/Devel/Libs/libread34.txt}}{http://zopyros.ccqc.uga.edu/Docs/Psiman/Devel/Libs/libread34.txt}.
+
+%\newpage
+%\section{Function Declarations for {\tt libqt.a}} \label{Libqt}
+%\input{libqt.txt}
+%See \htmladdnormallink{{\tt http://zopyros.ccqc.uga.edu/Docs/Psiman/Devel/Libs/libqt.txt}}{http://zopyros.ccqc.uga.edu/Docs/Psiman/Devel/Libs/libqt.txt}.
+
+%\newpage
+%\section{Function Declarations for {\tt libiwl.a}} \label{Libiwl}
+%\input{libiwl.txt}
+%See \htmladdnormallink{{\tt http://zopyros.ccqc.uga.edu/Docs/Psiman/Devel/Libs/libiwl.txt}}{http://zopyros.ccqc.uga.edu/Docs/Psiman/Devel/Libs/libiwl.txt}.
+
+\end{document}

@@ -1,0 +1,324 @@
+% 
+%  Psi Programmer's Manual
+%
+%  files in psi
+%
+%  Brian Kellogg, 02/02/96 (groundhog day!) 
+
+Psi uses several text files to store certain types of information.  Storing
+information in text files makes it much easier for users to inspect 
+and manipulate that
+information, provided that the user understands the format of that file.
+In the following file format descriptions, I will use the notation 
+${ x_i, y_i,}$ and ${z_i}$ to denote the x, y and z coordinates of nucleus i,
+respectively,
+${\eta_{ i}}$ will denote the ${i^{\rm th}}$ internal coordinate, and
+E will denote the sum of the electronic energy and nuclear repulsion energy. 
+
+\begin{verbatim}
+	geom.dat
+\end{verbatim}
+
+A vectorized format which is appropriate for the routines in libipv1 or
+iomr is employed in \geomdat\ 
+Generally, the first line of \geomdat\ is 
+\begin{verbatim}
+%%
+\end{verbatim}
+Though this does not affect the parsing routines in libipv1, or 
+any of the common programs which read \geomdat\ 
+(i.e. \module{rgeom} or \module{ugeom}), some  \PSItwo\ modules (\module{bmat}, etc.)
+expected this line and
+would muddle up \geomdat\ if it is not present.  \geomdat\ will 
+frequently have several entries, with the topmost being the most recent
+addition by bmat.
+
+format: {\em n} = number of atoms.
+\begin{eqnarray}
+\begin{array}{lcccr} 
+{\tt geometry = (}\\
+{\tt (} &x_1 \hspace{0.8in} &y_1 \hspace{0.8in} &z_1 \hspace{0.8in} &{\tt )} \\
+{\tt (} &x_2 \hspace{0.8in} &y_2 \hspace{0.8in} &z_2 \hspace{0.8in} &{\tt )} \\
+ &\vdots\hspace{0.8in}&\vdots\hspace{0.8in}&\vdots\hspace{0.8in}&\\
+{\tt (} &x_n \hspace{0.8in} &y_n \hspace{0.8in} &z_n \hspace{0.8in} &{\tt )} \\
+\ \ {\tt )}
+\end{array}
+\end{eqnarray}
+Other geometries of the same format may follow.  
+
+\begin{verbatim}
+	fconst.dat
+\end{verbatim}
+
+This file contains the force constant matrix produced by \module{optking} or
+\module{intder95}.  Because the force constant matrix is symmetric, only the lower diagonal is stored
+here.  The force constant matrix may be represented in either cartesian or
+internal coordinates, depending upon what flags were used when \module{intder95} was
+run to produce \fconstdat .  \module{optking} is the program which uses
+\file{fconst.dat} most frequently, and it assumes that the force constant
+matrix will be in terms of the internal coordinates as defined in
+\inputdat\ or \intcodat.  For this reason, it is best to have
+\module{intder95} produce a \fconstdat\ in internal coordinates.  The order of
+internal coordinates is determined by the order set up in \inputdat\ or
+\intcodat .  The totally symmetric coordinates always come first,
+followed by all asymmetric coordinates.  
+
+In the following format, ${f_{\eta_i}}$ is the force constant for internal
+coordinate ${\eta_i}$ and ${f_{\eta_i,\eta_j}}$ is the force constant for
+the mixed displacement of internal coordinates i and j.
+
+format: {n = total number of internal coordinates in \intcodat\ 
+or \inputdat .
+\begin{eqnarray}
+\begin{array}{lllll}
+f_{\eta_1} \\
+f_{\eta_2,\eta_1} & f_{\eta_2} \\
+f_{\eta_3,\eta_1} & f_{\eta_3,\eta_2} & f_{\eta_3} \\
+\vdots & \vdots & \vdots \\
+f_{\eta_{n},{\eta}_1} & f_{\eta_{n},\eta_2} & f_{\eta_{n},\eta_3} & \cdots 
+& f_{\eta_{n}} \\
+\end{array}
+\end{eqnarray}
+If the force constant matrix is stored in cartesian coordinates, however,
+the format, using a similar notation, with {\em n} now equal to the total
+number of atoms, is as follows:
+\begin{eqnarray}
+\begin{array}{llllll}
+f_{x_1} \\
+f_{y_1,x_1} & f_{y_1} \\
+f_{z_1,x_1} & f_{z_1,y_1} &f_{z_1} \\
+f_{x_2,x_1} & f_{x_2,y_1} & f_{x_2,z_1} &f_{x_2} \\
+\vdots & \vdots & \vdots & \vdots \\
+f_{z_n,x_1} & f_{z_n,y_1} & f_{z_n,z_1} & f_{z_n,x_2} & \cdots & f_{z_n} \\
+\end{array}
+\end{eqnarray}
+\begin{verbatim}
+	file11.dat
+\end{verbatim}
+
+The number of atoms ({\em n}), total energy 
+as predicted by the final wavefunction, 
+cartesian geometry, cartesian gradients, atomic charges ({\em Z$_i$})
+and a label are all contained in \FILE{11}.  The exact nature of the label
+depends upon the type of wavefunction for which the gradient was calculated.
+The first part of the label is determined by the label keyword in input.dat.
+If an SCF gradient is run, then the calculation type ({\em calctype}), and 
+derivative type ({\em dertype}) will also appear.  
+If a correlated  gradient has been run, {\em calctype}
+[CI, CCSD, or CCSD(T)] and derivative type (FIRST) appear.
+\FILE{11} will
+frequently have several entries, with the last entry being the latest
+addition by \module{cints --deriv1}.  
+
+format:
+\begin{eqnarray}
+\begin{array}{l}
+label\hspace{0.5in} calctype \hspace{0.5in} dertype \hspace{0.7in} \\
+n  \hspace{0.5in}   E \\
+\begin{array}{cccc}
+\hspace{0.3in}Z_1 \hspace{0.3in}& \hspace{0.4in}x_1\hspace{0.4in} &
+\hspace{0.4in} y_1 \hspace{0.4in} & \hspace{0.4in} z_1 \hspace{0.4in} \\
+Z_2 & x_2 & y_2 & z_2 \\
+\vdots & \vdots & \vdots & \vdots \\
+Z_n & x_n & y_n & z_n \\
+\vspace{0.02in} 
+& \frac{\delta E}{\delta x_1} & \frac{\delta E}{\delta y_1} 
+& \frac{\delta E}{\delta z_1} \\
+& \frac{\delta E}{\delta x_2} & \frac{\delta E}{\delta y_2} 
+& \frac{\delta E}{\delta z_2} \\
+& \vdots & \vdots & \vdots \\
+& \frac{\delta E}{\delta x_n} & \frac{\delta E}{\delta y_n} 
+& \frac{\delta E}{\delta z_n} \\
+\end{array}
+\end{array}
+\end{eqnarray}
+
+
+\begin{verbatim}
+	file12.dat
+\end{verbatim}
+
+Internal coordinate values and gradients, the number of atoms ({\em n}), and
+the total energy ({\em E}) may be found in \FILE{12}. \FILE{12} is produced
+by \module{intder95}, which can convert cartesian
+gradients into internal gradients.  
+Generally,
+\FILE{12} will have several entries, with each entry corresponding to an
+entry in the \FILE{11} of interest.  
+
+format:
+\begin{equation}
+\begin{array}{l}
+   n\hspace{1.5in} E \\
+\begin{array}{cc}
+\vspace{0.02in}
+\hspace{0.5in} \eta_1 \hspace{0.5in}
+& \hspace{1.2in} \frac{\delta E}{\delta \eta_1}  \hspace{1.2in}\\
+\hspace{0.5in} \eta_2 \hspace{0.5in}
+& \hspace{1.2in} \frac{\delta E}{\delta \eta_2} \hspace{1.2in} \\
+\vdots & \vdots \\
+\hspace{0.5in} \eta_n \hspace{0.5in}
+& \hspace{1.2in} \frac{\delta E}{\delta \eta_n} 
+\hspace{1.2in}\\
+\end{array}
+\end{array}
+\end{equation}
+
+\begin{verbatim}
+	file12a.dat
+\end{verbatim}
+In order to calculate second derivatives from gradients taken at geometries
+finitely displaced from a particular geometry, \module{intdif} requires a
+\FILE{12a}.  This file contains essentially the same information as
+\FILE{12}, but each entry also has information concerning which
+internal coordinate ({\em numintco}) was displaced in the gradient
+calculation and by how much ({\em disp}) it was displaced.  
+
+format: 
+\begin{equation}
+\begin{array}{l}
+numintco\hspace{0.5in}disp\hspace{1.5in}E \\
+\begin{array}{cc}
+\vspace{0.02in}
+\hspace{0.5in} \eta_1 \hspace{0.5in}
+& \hspace{0.8in} \frac{\delta E}{\delta \eta_1}  \hspace{0.8in}\\
+\hspace{0.5in} \eta_2 \hspace{0.5in}
+& \hspace{0.8in} \frac{\delta E}{\delta \eta_2} \hspace{0.8in} \\
+\vdots & \vdots \\
+\hspace{0.5in} \eta_n \hspace{0.5in}
+& \hspace{0.8in} \frac{\delta E}{\delta \eta_n} \hspace{0.8in}\\
+\end{array}
+\end{array}
+\end{equation}
+
+\begin{verbatim}
+	file15.dat
+\end{verbatim}
+
+The cartesian Hessian matrix is found in \FILE{15}.  The first line of 
+this file gives the number of atoms ({\em n})
+and, in case you are curious, six times the number of atoms 
+({\em sixtimesn}).
+
+format:
+\begin{equation}
+\begin{array}{l}
+n\hspace{0.4in}sixtimesn \\
+\begin{array}{ccc}
+\vspace{0.02in}
+\hspace{0.3in}\frac{\delta^2 E}{\delta^2 x_1} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta^2 E}{\delta x_1\delta y_1} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta^2 E}{\delta x_1\delta z_1} \hspace{0.3in}\\
+\hspace{0.3in}\frac{\delta^2 E}{\delta x_1\delta x_2} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta^2 E}{\delta x_1\delta y_2} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta^2 E}{\delta x_1\delta z_2} \hspace{0.3in}\\
+\vdots & \vdots & \vdots \\
+\vspace{0.02in}
+\hspace{0.3in}\frac{\delta^2 E}{\delta z_1\delta x_n} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta^2 E}{\delta z_1\delta y_n} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta^2 E}{\delta z_1\delta z_n} \hspace{0.3in}\\
+\hspace{0.3in}\frac{\delta^2 E}{\delta x_2\delta x_1} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta^2 E}{\delta x_2\delta y_1} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta^2 E}{\delta x_2\delta z_1} \hspace{0.3in}\\
+\vdots & \vdots & \vdots \\
+\hspace{0.3in}\frac{\delta^2 E}{\delta z_n\delta x_n} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta^2 E}{\delta z_n\delta y_n} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta^2 E}{\delta^2 z_n} \hspace{0.3in}\\
+
+\end{array}
+\end{array}
+\end{equation}
+
+\begin{verbatim}
+	file16.dat
+\end{verbatim}
+The second derivatives of the total energy with respect to the internal
+coordinates are found in \FILE{16}.  
+As in \FILE{15}, the number of
+atoms ({\em n}) and six times that number ({\em sixtimesn}) are given.
+
+format:
+\begin{equation}
+\begin{array}{l}
+n\hspace{0.4in}sixtimesn \\
+\begin{array}{ccc}
+\vspace{0.02in}
+\hspace{0.3in}\frac{\delta^2 E}{\delta^2 \eta_1} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta^2 E}{\delta \eta_1\delta \eta_2} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta^2 E}{\delta \eta_1\delta \eta_3} \hspace{0.3in}\\
+\vdots & \vdots & \vdots \\
+\hspace{0.3in}\frac{\delta^2 E}{\delta \eta_1\delta \eta_{n-2}} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta^2 E}{\delta \eta_1\delta \eta_{n-1}} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta^2 E}{\delta \eta_1\delta \eta_n} \hspace{0.3in}\\
+\vdots & \vdots & \vdots \\
+\vspace{0.02in}
+\hspace{0.3in}\frac{\delta^2 E}{\delta \eta_n\delta \eta_{n-2}} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta^2 E}{\delta \eta_n\delta \eta_{n-1}} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta^2 E}{\delta^2 \eta_n} \hspace{0.3in}\\
+
+\end{array}
+\end{array}
+\end{equation}
+\begin{verbatim}
+	file17.dat
+\end{verbatim}
+First derivatives of the cartesian dipole moments (${\mu_x,\mu_y,\mu_z}$)
+with respect to the
+cartesian nuclear coordinates may be found in \FILE{17}.  The first
+line and subsequent format are similar to that of \FILE{15}.
+
+format:
+\begin{equation}
+\begin{array}{l}
+n\hspace{0.4in}threetimesn \\
+\begin{array}{ccc}
+\vspace{0.02in}
+\hspace{0.3in}\frac{\delta \mu_x}{\delta x_1} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta \mu_x}{\delta y_1} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta \mu_x}{\delta z_1} \hspace{0.3in}\\
+\hspace{0.3in}\frac{\delta \mu_x}{\delta x_2} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta \mu_x}{\delta y_2} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta \mu_x}{\delta z_2} \hspace{0.3in}\\
+\vdots & \vdots & \vdots \\
+\vspace{0.02in}
+\hspace{0.3in}\frac{\delta \mu_x}{\delta x_n} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta \mu_x}{\delta y_n} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta \mu_x}{\delta z_n} \hspace{0.3in}\\
+\hspace{0.3in}\frac{\delta \mu_y}{\delta x_1} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta \mu_y}{\delta y_1} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta \mu_y}{\delta z_1} \hspace{0.3in}\\
+\vdots & \vdots & \vdots \\
+\hspace{0.3in}\frac{\delta \mu_z}{\delta x_n} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta \mu_z}{\delta y_n} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta \mu_z}{\delta z_n} \hspace{0.3in}\\
+\end{array}
+\end{array}
+\end{equation}
+
+\begin{verbatim}
+	file18.dat
+\end{verbatim}
+First derivatives of the cartesian dipole moments (${\mu_x,\mu_y,\mu_z}$)
+with respect to the
+internal nuclear coordinates may be found in \FILE{18}. 
+
+format:
+\begin{equation}
+\begin{array}{l}
+n\hspace{0.4in}threetimesn \\
+\begin{array}{ccc}
+\vspace{0.02in}
+\hspace{0.3in}\frac{\delta \mu_x}{\delta \eta_1} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta \mu_x}{\delta \eta_2} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta \mu_x}{\delta \eta_3} \hspace{0.3in}\\
+\hspace{0.3in}\frac{\delta \mu_x}{\delta \eta_4} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta \mu_x}{\delta \eta_5} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta \mu_x}{\delta \eta_6} \hspace{0.3in}\\
+\vdots & \vdots & \vdots \\
+\hspace{0.3in}\frac{\delta \mu_z}{\delta \eta_{n-2}} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta \mu_z}{\delta \eta_{n-1}} \hspace{0.3in}&
+\hspace{0.3in}\frac{\delta \mu_z}{\delta \eta_{n}} \hspace{0.3in}\\
+\end{array}
+\end{array}
+\end{equation}
+

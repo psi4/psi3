@@ -1,0 +1,346 @@
+% 
+% PSI Programmer's Manual
+%
+% Section on coding style
+%
+% Created by 
+% David Sherrill, 1 February 1996
+%
+% Revised 27 June 1996 to discuss print levels
+%
+% Revised 12 June 2000 to reflect Edward Valeev's
+%                         ideas on style
+%
+
+In the context of programming, {\em style} can refer to many
+things. Foremost, it refers to the format of the source code: how to
+use indentation, when to add comments, how to name variables, etc.  It
+can also refer to many other issues, such code organization,
+modularity, and efficiency.  Of course, stylistic concerns are often
+matters of individual taste, but often validity and portability of the
+code will ultimately depend on stylistic decisions made in the process
+of code development.  Hence some stylistic choices are viewed as
+universally bad (e.g.\ not prototyping every function just because
+``the code compiles and runs fine as is'', etc.).  Admittedly, it is
+easy to not have any style, but it takes years to learn what makes a
+good one. A good programming style can reduce debugging and
+maintenance times dramatically.  For a large package such as
+\PSIthree, it is very important to adopt a style which makes the code
+easy to understand and modify by others.  This section will give a few
+brief pointers on what we consider to be a good style in programming.
+
+\subsection{On the Process of Writing Software}
+At first, we feel appropriate to touch upon the issue of programming
+style as referred to the approach to writing software. Often,
+``programming'' is used to mean ``the process of writing
+software''. In general one has to distinguish ``writing software''
+from ``programming'' meaning ``implementation'', because the latter is
+only a part of the former and does not include documentation, etc.  In
+general, ``writing software'' should consist of five parts:
+\begin{enumerate}
+\item Get a clear and detailed understanding of what the code has to do (idea);
+\item Identify key concepts and layout code and data organization (design);
+\item Write source code (implementation);
+\item Test the program and eliminate errors and/or design flaws (testing);
+\item Write documentation (documentation).
+\end{enumerate}
+Thus, writing software is significantly more complex than just
+coding. Each stage of writing software is as important as others and
+should not be considered a waste of time.  The code written without a
+detailed understanding of what it has to do may not work
+properly. Poorly designed code may not be flexible enough to
+accomodate some new feature and will be rewritten.  Poorly implemented
+code may be too slow to be useful.  A paper full of incorrect values
+produced by your code may get you fired and will destroy your
+reputation. A documentation-free code will most likely be useless for
+others.
+
+Of course, for very simple programs design and implementation may be
+combined and documentation may consist of one line.  However, for more
+complex programs it is recommended that the five stages are
+followed. This means that you should spend only about 20-40\% of your
+time writing source code!  Our experience shows that following this
+scheme results in the most efficient approach to programming in the
+long run.
+
+To learn more on each stage of the software writing process, you may
+want to refer to Stroustrup's ``C++ Programming Language'' book (3rd
+Ed.) as the most common reference source not dedicated solely to one
+narrow subject. Besides being an excellent description of C++, it is
+also an introduction to writing software as well. Particular attention
+is paid to the issue of {\em program design}.
+
+\subsection{Design Issues}
+Although C lacks the most powerful features of C++ as far as concepts
+and data organization is concerned, Stroustrup says: ``Remember that
+much programming can be simply and clearly done using only primitive,
+data structures, plain functions, and a few library classes.''  This
+means that one can write many useful and {\em well-written} programs
+in C.  Here are a few pointers that will assist you in structuring
+your C program:
+\begin{itemize}
+\item Identify groups of variables having common function (e.g. basis
+set, etc.)  and organize them into structures. Use several levels of
+hierarchy if necessary (e.g.  a basis set is a collection of basis
+functions each of which may be described by a structure). This is
+called ``hierarchical ordering''.
+\item Think as generally as possible. What you may not need today will
+be asked for tomorrow. Design data structures that are flexible and
+modular, i.e. one can be easily modified without affecting the others
+(e.g. you do not want the structure describing basis sets to know
+anything about the type of basis functions it contains so that plane
+waves can be used as easily as Gaussians).
+\item Write ``constructors'' for the structures, i.e. functions which
+will initialize data in the structures (e.g. read basis set
+information). Make as many ``constructors'' as necessary (e.g. basis
+set info can be read from the checkpoint file or from \pbasisdat). If
+it is difficult or impossible to write a ``constructor'' for some data
+structure is a sign that your data hierachy is poorly designed and
+there are mutual dependencies. Spend more time designing the
+system. If it doesn't help, then use source code comments heavily to
+describe the relationships not reflected in the code itself.
+\item Use global variables sparringly. Placing a variable into global
+scope leaves it unprotected against ``unauthorized'' use or
+modification (we are not talking about security here; it is a good
+idea to protect data from the programmer, because if you do not want
+some data \celem{A} to be modified by function \celem{B}, do not make
+\celem{A} available to \celem{B}) and may also have impact on
+program's performance. Sometimes it is a good idea to use global data
+to reduce the cost of passing that data to a function. However, the
+same effect may be achieved by organizing that data into a local
+structure and passing the structure instead.
+\item Learn how to use \celem{static} variables local to a source
+file, it is a very powerful tool to protect data in a C program.
+\item Organize the source code such as to emphasize further the
+structure of the program (see section \ref{sourcecode}).
+\end{itemize}
+More material on data organization may be found in the Stroustrup's
+book.
+
+\subsection{Organization of Source Code} \label{sourcecode}
+It is almost universally agreed that breaking the program up into
+several files is good style.  An 11,592 line Fortran program, for
+example, is very inconvenient to work with, for several reasons:
+first, it can be difficult to locate a particular
+function\footnote{Following the convention of C, the words function
+and subroutine will be used interchangeably.}  or statement; second,
+every recompilation during debugging involves compiling the {\em
+entire} file.  Having several small files generally makes it easier to
+find a particular piece of code, and only source files which have been
+modified need to be recompiled, greatly enhancing the efficiency of
+the programmer during the debugging process.  For smaller programs, it
+is recommended that the programmer have one file for each subroutine,
+giving each file the name of the subroutine (abbreviated filenames may
+be specified if the function names are too long).  For larger
+programs, it may be helpful to group similar functions together into a
+single file.  Interestingly, there is a UNIX program called
+\file{fsplit} which splits gigantic Fortran files into smaller files,
+one file for each subroutine.\footnote{Often the aforementioned giant
+Fortran files also have line numbering information out past the 72nd
+column.  This can cause problems when compiling the programs as a part
+of \PSIthree.  Characteristically, Ed Seidl has written a program,
+called \module{fortran\_sux}, which deletes any characters after the
+72nd column and any trailing spaces.}
+
+In C programs, we also consider it a good idea to place all the
+\celem{\#include} statements in a file such as \file{includes.h},
+which is subsequently included in each relevant C source file.  This
+is helpful because if a new header file needs to be added, it can
+simply be added to \file{includes.h}.  Furthermore, if a source file
+suddenly needs to have access to a global variable or function
+prototype which is already present in one of the header files, then no
+changes need to be made; the header file is {\em already} included.  A
+downside to this approach is that each header file is included in
+every source file which includes \file{includes.h}, regardless of
+whether a particular header file is actually needed by that source
+file; this could potentially lead to longer compile times, but it
+isn't likely to make a discernable difference, at least in
+C.\footnote{C++, which includes much of the actual code in header
+files, is a different matter.}
+
+Along similar lines, it is helpful to {\em define} all global
+variables in one location (in the main program file, or else within
+\file{globals.c}), and they should be {\em declared} within another
+standard location (perhaps \file{globals.h}, or
+\file{common.h}).\footnote{See page 33 of Kernighan and Ritchie, 2nd
+Ed., for an explanation of {\em definition vs.~declaration}.}
+Similarly, if functions are used in several different source code
+files, the programmer may wish to place all function prototype
+declarations in a single header file, with the same name as the
+program or library, or perhaps called \file{protos.h}.
+
+\subsection{Formatting the Code}
+By formatting, we mean how many spaces to indent, when to indent, how
+to match up braces, when to use capital vs.~lower case letters, and so
+forth.  This is perhaps a more subjective matter than those previously
+discussed.  However, it is certainly true that some formatting styles
+are easier to read than others.  For already existing code, we
+recommend that you conform to the formatting convention already
+present in the code.  The author of the code is likely to get upset
+when he sees that you're incorporated code fragments with a formatting
+style which differs from his!  On the other hand, in certain rare
+cases, it might be more beneficial to incorporate a different style:
+in the conversion of \module{intder95} from old-style to new-style
+input, we used lower-case lettering instead of the all-caps style of
+the original program.  This was very useful in helping us locate which
+changes we had made.
+
+It is very common that statements within loops are indented.  Loops
+within loops are indented yet again, and so on.  This practice is
+near-universal and very helpful.  Computational chemistry programs
+often require many nested loops.  The consequence of this is that
+lines can be quite long, due to all those spaces before each line in
+the innermost loops.  If the lines become longer than 80 characters,
+they are hard to read within a single window; please try to keep your
+lines to 80 characters or less!\footnote{Of course in Fortran, at
+least older Fortran, you need to keep lines less than 72 characters
+long.}  This means that you should use about 2-4 spaces per
+indentation level.  Anything more than this will cause problems!
+
+The matching of braces, and so forth, is more variable, and we
+recommend you follow the convention of {\em The C Programming
+Language}, by Kernighan and Ritchie, or perhaps the style found in
+\module{cscf}.
+
+\subsection{Naming of Variables}
+All non-trivial data must be given descriptive names, although
+extremely long names are discouraged. For example, compound variable
+names like \celem{num\_atoms} or \celem{atom\_orbit\_degen} should be
+preferred to \celem{nat} or \celem{atord}, so that non-specialists
+could understand the code.  It is also a good idea to put a
+descriptive comment where a non-trivial variable is declared. However,
+simple loop indices should generally be named \celem{i,j,k} or
+\celem{p,q,r}.
+
+\PSIthree\ programs have certain conventions in place for names of
+most common variables, as shown in the Table \ref{tbl:VarNaming}.
+
+\begin{table}
+\caption{Some Variable Naming Conventions in \PSIthree}
+\label{tbl:VarNaming}
+\begin{center}
+\begin{tabular}{ll}
+\hline \hline
+\multicolumn{1}{c}{Quantity} &
+\multicolumn{1}{c}{Variable(s)} \\ \hline
+Number of atoms              & na, natom, num\_atoms \\
+Number of atoms * 3          & natom3, num\_atoms3 \\
+Nuclear repulsion energy     & enuc, repnuc \\
+SCF energy                   & escf \\
+Number of atomic orbitals    & nbfao, num\_ao \\
+Number of symmetry orbitals  & nbfso, num\_so \\
+Size of lower triangle \\
+\hspace{0.5cm} of AO's, SO's & nbatri, nbstri; ntri \\
+Input file pointer           & infile \\
+Output file pointer          & outfile \\
+Offset array                 & ioff \\
+Number of irreps             & num\_ir, nirreps \\
+Open-shell flag              & iopen \\
+Number of orbitals per irrep & orbs\_per\_irrep, orbspi, mopi \\
+Number of closed-shells \\
+\hspace{0.5cm} per irrep     & docc, clsd\_per\_irrep, clsdpi \\
+Number of open-shells \\
+\hspace{0.5cm} per irrep     & socc, open\_per\_irrep, openpi \\
+Orbital symmetry array       & orbsym \\
+\hline \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\subsection{Printing Conventions}
+At the moment, there isn't really a standard method for a PSI program
+to determine how much information to print to \file{output.dat}.  Some
+older \PSIthree\ modules read a flag usually called \keyword{IPRINT}
+which is a decimal representation of a binary number.  Each bit is a
+printing option (yes or no) for the different intermediates particular
+to the program.
+
+A practice which is probably preferable is to have a different print
+flag (boolean) for each of the major intermediates used by a program,
+and to have an overall print option (decimal) whose value determines
+the printing verbosity for the quantities without a specific printing
+option.  The overall print option should be specified by a keyword
+\keyword{PRINT\_LVL}, and its action should be as in Table
+\ref{tbl:iprint}.
+
+\begin{table}
+\caption{Proposed Conventions for Printing Level}
+\label{tbl:iprint}
+\begin{center}
+\begin{tabular}{ll}
+\hline \hline
+0 & Almost no printing; to be used by driver programs \\
+  & with -quiet option \\
+1 & Usual printing (default) \\
+2 & Verbose printing \\
+3 & Some debugging information \\
+4 & Substantial debugging information \\
+5 & Print almost all intermediates unless arrays too large \\
+6 & Print everything \\
+\hline \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\subsection{Commenting Source Code}
+It is absolutely mandatory that each source file contains a reasonable
+number of comments. When a significant variable, data type, or
+function is declared, it must be accompanied with some descriptive
+information written in English.  Every function prototype or body of
+it has to be preceeded by a short description of its purpose,
+algorithm (desirable; if it is too complex, provide a reference), what
+arguments it takes and what it returns.
+
+Having said this, we will argue against excessive commenting: don't
+add a comment every time you do \celem{i++}!  It will actually make
+your code harder to read.  Be sensible.
+
+As of spring 2002, we have adopted the {\tt doxygen} program to
+automatically generate source code documentation.  This program scans
+the source code and looks for special codes which tell it to add the
+given comment block to the documentation list.  The program is very
+fancy and can generate documentation in man, html, latex, and rtf
+formats.  The file \file{psi3.dox} is the {\tt doxygen} configuration
+file.  The source code should be commented in the following way to
+work with {\tt doxygen}.
+
+The first file of each library defines a ``module'' via a special
+comment line:
+\begin{verbatim}
+/*! \defgroup PSIO libpsio: The PSI I/O Library */
+\end{verbatim}
+Note the exclamation mark above --- it is required by {\tt doxygen}.
+The line above defines the {\tt PSIO} key and associates it with the
+title ``The PSI I/O Library.'' Each file belonging to this group will
+have a special comment of the following form:
+\begin{verbatim}
+/*!
+** \file close.c
+** \ingroup (PSIO)
+*/
+\end{verbatim}
+This tells {\tt doxygen} that file \file{close.c} should be
+documented, it should be added to the list of documented files, and it
+belongs to the {\tt PSIO} group.
+
+All functions should be commented as in the following:
+\begin{verbatim}
+/*!
+** PSIO_CLOSE(): Closes a multivolume PSI direct access file.
+**
+**  \param unit = The PSI unit number used to identify the file to all read
+**                and write functions.
+**  \param keep = Boolean to indicate if the file should be deleted (0) or
+**                retained (1).
+**
+** Returns: always returns 0
+**
+** \ingroup (PSIO)
+*/
+
+int psio_close(ULI unit, int keep)
+...
+\end{verbatim}
+This will add the function {\tt psio\_close} to the list, associate it with
+the {\tt PSIO} module, and define the various arguments.
+

@@ -1,0 +1,40 @@
+Documentation is often the only link between code's author and code's
+users. The usefulness of the code will depend heavily on the quality
+of its documentation.  One great failing of most of the PSI code is
+that it contains little to no documentation.  We strongly advocate
+documentation of three types:
+\begin{enumerate}
+\item A short description of the code's function and keywords {\em must} be written
+for each new module and library added to the \PSIthree\ package.
+There is no convention yet what should be the preferred medium for
+such a description, but the following are common:
+\begin{itemize}
+\item A UNIX \file{man} page --- all old and some newer \PSIthree\ codes
+use \file{man} pages as the medium of choice.
+
+\item HTML-based documentation --- this is a much more flexible medium
+than \file{man} pages and is accessible by anyone anywhere in the
+world.  Although HTML has its own drawbacks (e.g.\ the separation of the
+form and the function is not always enforced, and it does not allow
+tags to be customized), it is pretty safe to assume that HTML will
+remain the dominant means of distributing information.  Hence we
+encourage \PSIthree\ contributors to write documentation in HTML
+format. Documentation for \PSIcints\ and \library{libpsio.a} can be
+used for examples.
+
+\item Direct inclusion in the \PSIthree\ manuals --- binaries
+(modules) should be included in the user's manual and libraries in the
+programmer's manual.
+\end{itemize}
+
+\item Second, as mentioned before, the source code should be directly
+documented by comment lines in the code.
+
+\item A {\em complete manual} should be written for all finished programs,
+describing all input options, explaining how the program works (theory and 
+technical details), and providing solutions to common problems encountered
+with the program.  Sometimes, the latter documentation is included in the
+man page: for a good example, see the man page for \module{intder95}.  
+Alternatively, a separate document can be created; for another example,
+see the documentation of \module{fcmgen}.
+\end{enumerate}

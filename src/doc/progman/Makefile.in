@@ -1,0 +1,21 @@
+
+srcdir = @srcdir@
+
+MAN = progman
+
+include ../MakeVars
+
+TEX = progman.tex
+
+SUBTEX = \
+checkpointfile.tex  files.tex            io.tex          \
+c_program.tex       fortran.tex          ip.tex          qt.tex \
+cvs.tex             fundamental_psi.tex  iwl.tex         style.tex \
+debugging.tex       introduction.tex     makefiles.tex \
+documentation.tex   io_new.tex           other_libs.tex
+
+DVI = $(TEX:%.tex=%.dvi)
+PS = $(DVI:%.dvi=%.ps)
+HTML = $(TEX:%.tex=%.html)
+
+include ../MakeRules

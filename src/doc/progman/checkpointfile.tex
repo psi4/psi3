@@ -1,0 +1,529 @@
+\subsubsection{Library Philosophy}
+
+The \library{libchkpt.a} library is a collection of functions used to
+access the \PSIthree\ checkpoint file (\FILE{32}) -- the file which
+contains all most frequently used information about the computation
+such as molecular geometry, basis set, HF determinant, etc.
+Previously, the checkpoint file was a fixed-format file which is
+accessed using the old \PSIthree\ I/O system.  However, this changed
+in the spring of 2002 to use the new \library{libpsio.a} I/O system to
+access the checkpoint file, and it is now free format.  That is, any
+programmer can add content to the file at will.  The old checkpoint
+file interface has been updated to access the new underlying I/O
+system.  It is {\em mandatory} that the checkpoint file is accessed
+via the \library{libchkpt.a} functions {\em only}.
+
+\subsubsection{Basic Use Instructions}
+Following the philosophy that a programmer who wants to read, say, the
+number of atoms and the irrep labels from the checkpoint file should
+not have to use fifty lines of code to do so, \library{libchkpt.a} was
+written.  Following a call to a single command, \celem{chkpt\_init()},
+the programmer can extract many useful bits of info from the checkpoint file
+relatively painlessly.  \library{libchkpt.a} is dependent upon
+\library{libipv1.a} and \library{libpsio.a} and thus requires that the
+input parser and I/O system each be initialized so that the proper
+file name labels may be referenced.  An example of a minimal program
+that sets up the input parser, initilizes a special structure within
+the \library{libchkpt.a} library, and reads the SCF HF energy,
+eigenvector and eigenvalues is given below.  In order to illustrate
+the writing capability of the library routines, a dummy correlated
+energy is written to the checkpoint file and then read back again
+within the code.
+
+\begin{verbatim}
+#include <stdio.h>
+#include <libipv1/ip_lib.h>
+#include <libciomr/libciomr.h>
+#include <libpsio/psio.h>
+#include <libchkpt/chkpt.h>
+
+FILE *infile, *outfile;
+
+void main(void)
+{
+ 
+  int nmo;
+  double escf, etot;
+  double *evals;
+  double **scf;
+
+  /*-------------------------------------
+    initialize the input parser, read in
+    the files information from the
+    default section
+   -------------------------------------*/
+  ffile(&infile,"input.dat",2);
+  ffile(&outfile,"output.dat",1);
+  tstart(outfile);
+  ip_set_uppercase(1);
+  ip_initialize(infile,outfile);
+  ip_cwk_clear();
+  ip_cwk_add(":DEFAULT");
+  psio_init();
+
+  /*------------------------------------
+    now initialize the checkpoint structure
+    and begin reading info
+   ------------------------------------*/
+  chkpt_init();
+
+  escf = chkpt_rd_escf();
+  evals = chkpt_rd_evals();
+  scf = chkpt_rd_scf();
+  nmo = chkpt_rd_nmo();
+ 
+  chkpt_wt_etot(-1000.0);
+  
+  etot = chkpt_rd_etot();
+
+  chkpt_close();
+
+  /*--------------------------------------------
+    print out info to see what has been read in
+   --------------------------------------------*/
+  fprintf(outfile,"\n\n\tEscf  = %20.10lf\n",escf);
+  fprintf(outfile,"\tEtot = %20.10lf\n",etot);
+  fprintf(outfile,"SCF EIGENVECTOR\n");
+
+  eivout(scf,evals,nmo,nmo,outfile); 
+  
+  psio_done();
+  tstop(outfile);
+  ip_done();
+ }
+
+  /*-------------------------------------------------
+    dont forget to add the obligatory gprgid section 
+   -------------------------------------------------*/
+char *gprgid()
+{
+   char *prgid = ":TEST";
+
+   return(prgid);
+}
+\end{verbatim}
+
+\subsubsection{Initialization}
+\funcdesc{int chkpt\_init()}
+{Initializes the \celem{checkpoint} struct to allow other \celem{chkpt\_*}
+functions to perform their duties.}{none, but it requires that
+the input parser be initialized so that it can open the checkpoint file.}
+{zero.  Perhaps this will change some day.} \\
+\funcdesc{int chkpt\_close()} 
+{Closes the checkpoint file, frees memory, etc.}
+{none, but \celem{chkpt\_init} must already have been called for
+this to work.}
+{zero.  Perhaps this, too, will change one day.}
+
+\subsubsection{Functions for reading information from the checkpoint file}
+This section gives an overview of many of the most widely used
+functions from \library{libchkpt.a}.  For more details and
+descriptions of newer functions that are not yet described here, see
+the source code itself.
+
+\begin{center}
+Functions that return \celem{char*}
+\end{center}
+\funcdesc{char *chkpt\_rd\_corr\_lab()}
+{Reads in a label from the checkpoint file which describes the
+wavefunction used to get the correlated energy which is stored in
+the checkpoint file (see \celem{chkpt\_rd\_ecorr()}).}
+{takes no arguments.}
+{a string, like "CISD", or "MCSCF" or
+some other wavefunction designation.}\\
+\funcdesc{char *chkpt\_rd\_label()}
+{Reads the main the checkpoint file label.}
+{takes no arguments.}
+{calculation label.} \\
+\funcdesc{char *chkpt\_rd\_sym\_label()}
+{Reads the label for the point group.}
+{takes no arguments.}
+{point group label.}
+
+\begin{center}
+Functions that return \celem{char**}
+\end{center}
+\funcdesc{char **chkpt\_rd\_irr\_labs()} 
+{Read in the symmetry labels for all irreps in the
+point group in which the molecule is considered.}
+{takes no arguments.}
+{an array of labels (strings) which denote
+the irreps for the point group  in which the molecule is considered,
+\_regardless\_ of whether there exist any symmetry orbitals which
+transform as that irrep.} \\
+\funcdesc{char **chkpt\_rd\_hfsym\_labs()}
+{Read in the symmetry labels \_only\_ for those irreps
+which have basis functions.}
+{takes no arguments.}
+{an array of labels (strings) which denote
+the irreps which have basis functions (in Cotton ordering).  For DZ or
+STO-3G water, for example, in $C_{\rm 2v}$ symmetry, this would be an array of
+three labels: "A1", "B1", and "B2".}
+
+\begin{center}
+Functions that return \celem{int}
+\end{center}
+\funcdesc{int chkpt\_rd\_iopen()}
+{Reads in the dimensionality (up to a sign) of ALPHA and BETA vectors of 
+two-electron coupling coefficients for open shells (see 
+\celem{chkpt\_rd\_ccvecs()}).
+Note : \celem{iopen} = MM * (MM + 1), where MM is the total number of
+irreps containing singly occupied orbitals.}
+{takes no arguments.}
+{the +/- dimensionality of ALPHA and BETA vectors of 
+coupling coefficients for open shells.} \\
+\funcdesc{int chkpt\_rd\_max\_am()}
+{Reads in the maximum orbital quantum number of AOs in the basis.}
+{takes no arguments.}
+{the maximum orbital quantum number of AOs in the basis.} \\
+\funcdesc{int chkpt\_rd\_mxcoef()}
+{Reads the value of the constant \celem{mxcoef}.}
+{takes no arguments.}
+{the sum of the squares of the number of symmetry
+orbitals for each irrep.  This gives the number of elements in the
+non-zero symmetry blocks of the SCF eigenvector.  For STO-3G water
+\celem{mxcoef}$ = (4*4) + (0*0) + (1*1) + (2*2) = 21$.} \\
+\funcdesc{int chkpt\_rd\_nao()}
+{Reads in the total number of atomic orbitals (read: Cartesian Gaussian 
+functions).}
+{takes no arguments.}
+{total number of atomic orbitals.} \\
+\funcdesc{int chkpt\_rd\_natom()}
+{Reads in the total number of atoms.}
+{takes no arguments.}
+{total number of atoms.} \\
+\funcdesc{int chkpt\_rd\_ncalcs()}
+{Reads in the total number of calculations in the checkpoint file
+(was always 1 in old \library{libfile30.a}, probably still is for now).}
+{takes no arguments.}
+{total number of calculations in the checkpoint file.} \\
+\funcdesc{int chkpt\_rd\_nirreps()}
+{Reads in the total number of irreducible representations
+in the point group in which the molecule is being considered.}
+{takes no arguments.}
+{total number of irreducible representations.} \\
+\funcdesc{int chkpt\_rd\_nmo()}
+{Reads in the total number of molecular orbitals (may be different
+from the number of basis functions).}
+{takes no arguments.}
+{total number of molecular orbitals.} \\
+\funcdesc{int chkpt\_rd\_nprim()}
+{Reads in the total number of primitive Gaussian functions 
+(only primitives of \_symmetry independent\_ atoms are counted!).}
+{takes no arguments.}
+{total number of primitive Gaussian functions.} \\
+\funcdesc{int chkpt\_rd\_nshell()}
+{Reads in the total number of shells. For example, DZP basis set for 
+carbon atom (contraction scheme $[9s5p1d/4s2p1d]$) has a total of 15 basis 
+functions, 15 primitives, and 7 shells. Shells of \_all\_ atoms are counted
+(not only of the symmetry independent; compare \celem{chkpt\_rd\_nprim}).}
+{takes no arguments.}
+{total number of shells.} \\
+\funcdesc{int chkpt\_rd\_nso()}
+{Reads in the total number of symmetry-adapted basis functions (read:
+Cartesian or Spherical Harmonic Gaussians).}
+{takes no arguments.}
+{total number of SOs.} \\
+\funcdesc{int chkpt\_rd\_nsymhf()}
+{Reads in the total number of irreps
+in the point group in which the molecule is being considered which
+have non-zero number of basis functions. For STO-3G or DZ water, for
+example, this is three, even though \celem{nirreps} is 4 (compare
+\celem{int chkpt\_rd\_nirreps()}).}
+{takes no arguments.}
+{total number of irreducible representations
+with a non-zero number of basis functions.} \\
+\funcdesc{int chkpt\_rd\_num\_unique\_atom()}
+{Reads in the number of symmetry unique atoms.}
+{takes no arguments.}
+{number of symmetry unique atoms.} \\
+\funcdesc{int chkpt\_rd\_num\_unique\_shell()}
+{Reads in the number of symmetry unique shells.}
+{takes no arguments.}
+{number of symmetry unique shells.} \\
+\funcdesc{int chkpt\_rd\_phase\_check()}
+{Reads the phase flag, which is 1 if the orbital phases have been checked
+and is 0 otherwise (phase checking just helps ensure the arbitrary phases
+of the orbitals are consistent from one geometry to the next, which helps
+various guessing or extrapolation schemes).}
+{takes no arguments.}
+{flag.}
+\funcdesc{int chkpt\_rd\_ref()}
+{Reads the reference type from the flag in the checkpoint file.
+0 = RHF, 1 = UHF, 2 = ROHF, 3 = TCSCF.}
+{takes no arguments.}
+{flag indicating the reference.}
+\funcdesc{int chkpt\_rd\_rottype()}
+{Reads the rigid rotor type the molecule represents.
+0 = asymmetric, 1 = symmetric, 2 = spherical, 3 = linear, 6 = atom.}
+{takes no arguments.}
+{rigid rotor type.}
+
+\begin{center}
+Functions that return \celem{int*}
+\end{center}
+\funcdesc{int *chkpt\_rd\_am2canon\_shell\_order()}
+{Reads in the the mapping array from the angmom-ordered
+to the canonical (in the order of appearance) list of shells.}
+{takes no arguments.}
+{an array \celem{nshell} long that maps shells from the angmom-ordered
+to the canonical (in the order of appearance) order.}
+\funcdesc{chkpt\_rd\_atom\_position()}
+{Reads in symmetry positions of atoms.
+Allowed values are as follows:
+\begin{itemize}
+\item 1   - atom in a general position
+\item 2   - atom on the c2z axis
+\item 4   - atom on the c2y axis
+\item 8   - atom on the c2x axis
+\item 16  - atom in the inversion center
+\item 32  - atom in the sigma\_xy plane
+\item 64  - atom in the sigma\_xz plane
+\item 128 - atom in the sigma\_yz plane
+\end{itemize}
+This data is sufficient to define stabilizers of the nuclei.}
+{takes no arguments.}
+{an array of symmetry positions of atoms.} \\
+\funcdesc{int *chkpt\_rd\_clsdpi()}
+{Reads in an array which has an element for each irrep of the
+point group of the molecule (n.b. not just the ones
+with a non-zero number of basis functions). Each element
+contains the number of doubly occupied MOs for that irrep.}
+{takes no arguments.}
+{the number of doubly occupied MOs per irrep.} \\
+\funcdesc{int *chkpt\_rd\_openpi()}
+{Reads in an array which has an element for each irrep of the
+point group of the molecule (n.b. not just the ones
+with a non-zero number of basis functions).  Each element
+contains the number of singly occupied MOs for that irrep.}
+{takes no arguments.}
+{the number of singly occupied MOs per irrep.} \\
+\funcdesc{int *chkpt\_rd\_orbspi()}
+{Reads in the number of MOs in each irrep.}
+{takes no arguments.}
+{the number of MOs in each irrep.} \\
+\funcdesc{int *chkpt\_rd\_shells\_per\_am()}
+{Reads in the number of shells in each angmom block.}
+{takes no arguments.}
+{the number of shells in each angmom block.} \\
+\funcdesc{chkpt\_rd\_sloc()}
+{Read in an array of pointers to the first AO
+from each shell.}
+{takes no arguments.}
+{Read in an array \celem{nshell} long of pointers to
+the first AO from each shell.} \\
+\funcdesc{chkpt\_rd\_sloc\_new()}
+{Read in an array of pointers to the first basis
+function (not AO as \celem{chkpt\_rd\_sloc} does)
+from each shell.}
+{takes no arguments.}
+{an array \celem{nshell} long of pointers to
+the first basis function from each shell.} \\
+\funcdesc{int *chkpt\_rd\_snuc()}
+{Reads in an array of pointers to the nuclei on which shells are centered.}
+{takes no arguments.}
+{an array \celem{nshell} long of pointers to the nuclei on which shells
+are centered.}
+\funcdesc{int *chkpt\_rd\_snumg()}
+{Reads in array of the numbers of the primitive
+Gaussians in the shells.}
+{takes no arguments.}
+{an array \celem{nshell} long of the numbers of 
+the primitive Gaussians in shells.} \\
+\funcdesc{int *chkpt\_rd\_sprim()}
+{Reads in pointers to the first primitive
+from each shell.}
+{takes no arguments.}
+{an array \celem{nshell} long of pointers to the first 
+primitive from each shells.} \\
+\funcdesc{chkpt\_rd\_sopi()}
+{Read in the number of symmetry-adapted basis functions in each symmetry block.}
+{takes no arguments.}
+{an array nirreps long of the numbers of
+symmetry orbitals in symmetry blocks.} \\
+\funcdesc{int *chkpt\_rd\_stype()}
+{Reads in angular momentum numbers of
+the shells.}
+{takes no arguments.}
+{Returns an array \celem{nshell} long of
+the angular momentum numbers of the shells.} \\
+\funcdesc{int *chkpt\_rd\_symoper()}
+{Read in the mapping array between "canonical" ordering
+of the symmetry operations of the point group and the
+one defined in \file{symmetry.h}.}
+{takes no arguments.}
+{a mapping array \celem{nirrep} long}
+\funcdesc{int *chkpt\_rd\_ua2a()}
+{Read in the mapping array from the symmetry-unique atom 
+list to the full atom list.}
+{takes no arguments.}
+{a mapping array \celem{num\_unique\_atom} long}
+\funcdesc{int *chkpt\_rd\_us2s()}
+{Read in the mapping array from the symmetry-unique shell list
+to the full shell list.}
+{takes no arguments.}
+{a mapping array \celem{num\_unique\_shell} long}
+
+\begin{center}
+Functions that return \celem{int**}
+\end{center}
+\funcdesc{int **chkpt\_rd\_ict()}  
+{Reads the transformation properties of the nuclei
+under the operations allowed for the particular symmetry point group
+in which the molecule is considered.}
+{takes no arguments.}
+{a matrix of integers. Each row corresponds
+to a particular symmetry operation, while each column corresponds to
+a particular atom.  The value of \celem{ict[2][1]}, then, should be interpreted
+in the following manner: application of the third symmetry operation of 
+the relavant point group, the second atom is placed in the location
+originally occupied by the atom number \celem{ict[2][1]}.} \\
+\funcdesc{int **chkpt\_rd\_shell\_transm()}
+{Reads in the transformation matrix for the shells. Each row of the 
+matrix is the orbit of the shell under symmetry operations of the point 
+group.}
+{takes no arguments.}
+{a matrix of \celem{nshell}*\celem{nirreps} integers.}
+
+\begin{center}
+Functions that return \celem{double}
+\end{center}
+\funcdesc{double chkpt\_rd\_ecorr()}
+{Reads in the correlation energy stored in the checkpoint file. To get some
+information (a label) on the type of correlated wavefunction
+used to get this energy, see \celem{chkpt\_rd\_corr\_lab()}.}
+{takes no arguments.}
+{the correlation energy.} \\
+\funcdesc{double chkpt\_rd\_enuc()}
+{Reads in the nuclear repulsion energy}
+{takes no arguments.}
+{the nuclear repulsion energy.} \\
+\funcdesc{double chkpt\_rd\_eref()}
+{Reads in the reference energy (may be different from HF energy).}
+{takes no arguments.}
+{the reference energy.} \\
+\funcdesc{double chkpt\_rd\_escf()}
+{Reads in the SCF HF energy.}
+{takes no arguments.}
+{the SCF HF energy.}
+\funcdesc{double chkpt\_rd\_etot()}
+{The total energy, be it HF, CISD, CCSD, or whatever!  This is
+the preferred function to use for geometry optimization via energies,
+printing energies in analysis, etc., since this value is valid whatever
+the calculation type.}
+{takes no arguments.}
+{The total energy.}
+
+\begin{center}
+Functions that return \celem{double*}
+\end{center}
+\funcdesc{double *chkpt\_rd\_evals()\\
+double *chkpt\_rd\_alpha\_evals()\\
+double *chkpt\_rd\_beta\_evals()}
+{Reads in the (spin-restricted HF, $\alpha$ UHF, and $\beta$ UHF) eigenvalues:
+the orbital energies.}
+{take no arguments.}
+{an array of \_all\_ of the SCF eigenvalues,
+ordered by irrep, and by increasing energy within each irrep.
+(i.e. for STO-3G water, the four $a_1$ eigenvalues all come first, and
+those four are ordered from lowest energy to highest energy,
+followed by the single $b_1$ eigenvalue, etc. --- Pitzer ordering)} \\
+\funcdesc{double *chkpt\_rd\_exps()}
+{Reads in the exponents of the primitive Gaussian functions.}
+{takes no arguments.}
+{an array of doubles.} \\
+\funcdesc{double *chkpt\_rd\_zvals()}
+{Reads in nuclear charges.}
+{takes no arguments.}
+{an array natom long of nuclear charges (as doubles).}
+
+\begin{center}
+Functions that return \celem{double**}
+\end{center}
+\funcdesc{double **chkpt\_rd\_blk\_scf(int irrep)\\
+double **chkpt\_rd\_alpha\_blk\_scf(int irrep)\\
+double **chkpt\_rd\_beta\_blk\_scf(int irrep)}
+{Reads in a symmetry block of 
+the (RHF, $\alpha$ UHF, $\beta$ UHF) eigenvector.}
+{\celem{int irrep}, designates the desired symmetry block}
+{a square matrix has \celem{orbspi[irrep]}
+rows.  The eigenvectors are stored with the column 
+index denoting MOs and the row index denoting SOs: this means that 
+\celem{scf\_vector[i][j]} is the contribution of the $i$th SO to the $j$th MO.} \\
+\funcdesc{double **chkpt\_rd\_ccvecs()}
+{Reads in a matrix rows of which are 
+ALPHA (ccvecs[0]) and BETA (ccvecs[1]) matrices of coupling
+coefficients for open shells stored in lower triangular form.
+Coupling coefficients are defined NOT as in 
+C.C.J.Roothaan Rev. Mod. Phys. {\bf 32}, 179 (1960) as it is stated in the
+manual pages for CSCF, but according to Pitzer (no reference yet)
+and are **different** from those in Yamaguchi, Osamura, Goddard, and
+Schaefer's book "Analytic Derivative Methods in Ab Initio Molecular
+Electronic Structure Theory".\\
+The relationship between the Pitzer's and Yamaguchi's conventions is 
+as follows : ALPHA = 1-2*a , BETA = 1+4*b , where a and b are 
+alpha's and beta's for open shells 
+defined on pp. 69-70 of Dr. Yamaguchi's book.
+}
+{takes no arguments.}
+{double **ccvecs, a matrix 2 by \celem{abs(iopen)} rows of which are coupling
+coefficient matrices for open-shells in packed form.
+For definition of \celem{iopen} see chkpt\_rd\_iopen().} \\
+\funcdesc{chkpt\_rd\_contr\_full()}
+{Reads in the normalized contraction coefficients.}
+{takes no arguments.}
+{a matrix \celem{MAXANGMOM} (a constant defined in ???)
+by the total number of primitives \celem{nprim};
+each primitive Gaussian contributes to only one shell (and one
+basis function, of course), so most of these values are zero.} \\
+\funcdesc{double **chkpt\_rd\_geom()}
+{Reads in the cartesian geometry.}
+{takes no arguments.}
+{The cartesian geometry is returned as a matrix
+of doubles.  The row index is the atomic index, and the column is the
+cartesian direction index (x=0, y=1, z=2).  Therefore, \celem{geom[2][0]}
+would be the x-coordinate of the third atom.} \\
+\funcdesc{chkpt\_rd\_lagr()\\
+chkpt\_rd\_alpha\_lagr()\\
+chkpt\_rd\_beta\_lagr()}
+{Reads in an (RHF, $\alpha$ UHF, $\beta$ UHF) Lagrangian matrix in MO basis.}
+{takes no arguments.}
+{a matrix \celem{nmo} by \celem{nmo}.} \\
+\funcdesc{double **chkpt\_rd\_scf()\\
+double **chkpt\_rd\_alpha\_scf()\\
+double **chkpt\_rd\_beta\_scf()}
+{Reads in the (RHF, $\alpha$ UHF, $\beta$ UHF) eigenvector.}
+{takes no arguments.}
+{a square matrix of dimensions \celem{nmo}
+by \celem{nmo} (see: \celem{chkpt\_rd\_nmo()}).
+The symmetry blocks of the SCF vector appear
+on the diagonal of this matrix.} \\
+\funcdesc{chkpt\_rd\_schwartz()}
+{Reads in the table of maxima of Schwartz integrals (ij|ij)
+for each shell doublet.}
+{takes no arguments.}
+{\celem{NULL} if no table is present in the checkpoint file,
+a matrix \celem{nshell} by \celem{nshell} otherwise.} \\
+\funcdesc{chkpt\_rd\_usotao\_new()}
+{Reads in an AO to SO transformation matrix.}
+{takes no arguments.}
+{a \celem{nso} by \celem{nao} matrix of doubles.} \\
+\funcdesc{chkpt\_rd\_usotbf()}
+{Reads in a basis function to SO transformation matrix.}
+{takes no arguments.}
+{a \celem{nso} by \celem{nso} matrix of doubles.}
+
+\begin{center}
+Functions that return \celem{struct} \celem{*z\_entry}
+\end{center}
+{The z-matrix is read from the checkpoint file as an array of \celem{z\_entry} structs
+which are declared in \file{chkpt.h}.  This structure contains the reference atom,
+an optimization flag, the coordinate value, and any label used for each internal 
+coordinate.  When not applicable (such as the first few lines of a z-matrix) 
+\celem{atom} variables are given values of -1,
+\celem{opt} variables are given values of -1, \celem{val} variables are
+given values of -999.9, and \celem{label} strings are left empty.} \\
+\funcdesc{chkpt\_rd\_zmat()}
+{Reads in the z-matrix}
+{takes no arguments.}
+{\celem{struct} \celem{*z\_entry} natom long.} 
