@@ -52,6 +52,9 @@ int main(int argc, char *argv[])
   }
   else if(params.ref == 2) { /** UHF **/
 
+    fprintf(outfile, "\n\tUHF References not yet available.\n");
+    exit(2);
+
     cachelist = cacheprep_uhf(params.cachelev, cachefiles);
 
     dpd_init(0, moinfo.nirreps, params.memory, 0, cachefiles, 
