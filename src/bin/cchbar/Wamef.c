@@ -124,7 +124,6 @@ void Wamef_build(void) {
     dpd_buf4_init(&D, CC_DINTS, 0, 22, 28, 22, 28, 0, "D <Ij|Ab>");
     dpd_contract244(&tIA, &D, &WAmEf, 0, 0, 0, -1, 1);
     dpd_buf4_close(&D);
-    dpd_buf4_print(&WAmEf, outfile, 1);
     dpd_buf4_close(&WAmEf);
 
     /* T(n,a) <nM|eF> --> W(aM,eF) */
