@@ -7,6 +7,18 @@
 #define EXTERN
 #include "globals.h"
 
+/* Computes the D1 diagnostic as defined in:
+ *
+ * C.L. Janssen and I.M.B. Nielsen, Chem. Phys. Lett. 290, 423 (1998). [RHF
+ * version]
+ *
+ * I.M.B. Nielsen and C.L. Janssen, Chem. Phys. Lett. 310, 568 (1999).
+ *
+ * M.L. Leininger, I.M.B. Nielsen, T.D. Crawford, and C.L. Janssen, 
+ *   Chem. Phys. Lett. 328, 431-436 (2000).  [ROHF version]
+ *
+ * */
+
 double d1diag_t1_rhf(void)
 {
   int h, nirreps, i;
@@ -140,6 +152,9 @@ d1diag_t1_rohf()
   max_ph = sqrt(max_ph);
   max_hx = sqrt(max_hx);
   max_xp = sqrt(max_xp);
+
+/*  fprintf(outfile, "D1:  %8.6f %8.6f %8.6f\n", max_ph, max_hx, max_xp);
+ *  */
 
   max = max_ph;
   if (max_hx > max) max = max_hx;

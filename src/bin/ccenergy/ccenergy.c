@@ -35,6 +35,7 @@ void tsave(void);
 int converged(void);
 double diagnostic(void);
 double d1diag(void);
+double new_d1diag(void);
 void exit_io(void);
 void cleanup(void);
 void update(void);
@@ -122,11 +123,12 @@ int main(int argc, char *argv[])
   taut_build();
   fprintf(outfile, "\t                     Solving CCSD Equations\n");
   fprintf(outfile, "\t                     ----------------------\n");
-  fprintf(outfile, "\tIter             Energy               RMS       T1Diag      D1Diag\n");
-  fprintf(outfile, "\t----     ---------------------     --------   ----------  ----------\n");
+  fprintf(outfile, "\tIter             Energy              RMS        T1Diag      D1Diag    New D1Diag\n");
+  fprintf(outfile, "\t----     ---------------------    ---------   ----------  ----------  ----------\n");
   moinfo.ecc = energy();
   moinfo.t1diag = diagnostic();
   moinfo.d1diag = d1diag();
+  moinfo.new_d1diag = new_d1diag();
   update();
   for(moinfo.iter=1; moinfo.iter <= params.maxiter; moinfo.iter++) {
 
@@ -167,6 +169,7 @@ int main(int argc, char *argv[])
       moinfo.ecc = energy();
       moinfo.t1diag = diagnostic();
       moinfo.d1diag = d1diag();
+      moinfo.new_d1diag = new_d1diag();
       sort_amps();
       update();
       fprintf(outfile, "\n\tIterations converged.\n");
@@ -180,6 +183,7 @@ int main(int argc, char *argv[])
     moinfo.ecc = energy();
     moinfo.t1diag = diagnostic();
     moinfo.d1diag = d1diag();
+    moinfo.new_d1diag = new_d1diag();
     update();
   }
   fprintf(outfile, "\n");
