@@ -27,7 +27,7 @@ void init_io(int argc, char *argv[])
 
   extra_args = (char **) malloc(argc*sizeof(char *)); 
   for (i=1,num_extra_args=0; i<argc; i++) {
-    if (strcmp(argv[i], "-quiet") == 0) {
+    if (strcmp(argv[i], "--quiet") == 0) {
       Params.print_lvl = 0;
     }
     else {

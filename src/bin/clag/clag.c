@@ -5,6 +5,7 @@
 /****************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <libiwl/iwl.h>
@@ -225,7 +226,7 @@ void init_io(int argc, char **argv)
    int parsed = 1;
 
    for (i=1; i<argc; i++) {
-     if (strcmp("-quiet", argv[i]) == 0) {
+     if (strcmp("--quiet", argv[i]) == 0) {
        print_lvl = 0;
        parsed++;
      }

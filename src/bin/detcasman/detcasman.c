@@ -60,10 +60,10 @@ main(int argc, char *argv[])
   scale_conv = 0.01;
   errcod = ip_data("SCALE_CONV","%lf",&scale_conv,0);
 
-  check(!system("transqt -quiet"), "TRANSQT failed");
+  check(!system("transqt --quiet"), "TRANSQT failed");
   check(!system(detci_string), "DETCI failed");
-  check(!system("clag -quiet"), "CLAG failed");
-  converged = system("detcas -quiet"); 
+  check(!system("clag --quiet"), "CLAG failed");
+  converged = system("detcas --quiet"); 
 
   fprintf(outfile,"\n");
   fprintf(outfile,"*******************************************************\n");
