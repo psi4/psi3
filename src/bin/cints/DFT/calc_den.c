@@ -24,32 +24,24 @@
 struct den_info_s calc_density(struct coordinates geom){
     
     int i,j,k;
-    int si,sj;
-    int starti,startj;
     int shell_type;
-    int si_n_ao,sj_n_ao;
+    int  shell_start;
+    int  shell_end;
+    int n_shells;
+    int shell_center;
     double x,y,z;
     double xa,ya,za;
     double rr;
     double rrtmp;
     double bastmp;
-    double den_sum=0.0;
-    double den_sum_o = 0.0;
-    double dena,denb;
-    double bas1,bas2;
-    int  shell_start;
-    int  shell_end;
-    double shell_den;
+    double den_sum;
     double coeff;
     double expon;
-    int n_shells;
-    int shell_center;
-    double *temp_arr;
-    double **dens;
     double *norm_ptr;
     double *dist_atom;
-    struct coordinates *dist_coord;
+    double *temp_arr;
     
+    struct coordinates *dist_coord;
     struct den_info_s den_info;
     struct shell_pair *sp;
     
@@ -221,19 +213,17 @@ timer_off("exponent");
 	timer_off("basis"); 
     /* Now contract the basis functions with the AO density matrix elements */
    timer_on("density"); 
-    if(UserOptions.reftype == rhf){
+    
+   if(UserOptions.reftype == rhf){
 	den_sum = 0.0;
 	temp_arr = init_array(BasisSet.num_ao);
-	C_DGEMV('n',BasisSet.num_ao,BasisSet.num_ao,1.0,Cmat[0],BasisSet.num_ao,DFT_options.basis,1,1.0,temp_arr,1);
-	dot_arr(temp_arr,DFT_options.basis,BasisSet.num_ao,&den_sum);
-	/*for(i=0;i<BasisSet.num_ao;i++){
-	    bas1 = DFT_options.basis[i];
-	    for(j=0;j<BasisSet.num_ao;j++){
-		bas2 = DFT_options.basis[j];
-		den_sum += Dens[i][j]*bas1*bas2;
-	    }
-	    }*/
-	den_info.den = 0.5*den_sum;
+	C_DGEMV('n',BasisSet.num_ao,MOInfo.ndocc,1.0,Cmat[0],BasisSet.num_ao,DFT_options.basis,1,1.0,temp_arr,1);
+	dot_arr(temp_arr,temp_arr,BasisSet.num_ao,&den_sum);
+	den_info.den = den_sum;
+	/*temp_arr = init_array(BasisSet.num_ao);
+	  C_DGEMV('n',BasisSet.num_ao,BasisSet.num_ao,1.0,Dens[0],BasisSet.num_ao,DFT_options.basis,1,1.0,temp_arr,1);
+	  dot_arr(temp_arr,DFT_options.basis,BasisSet.num_ao,&den_sum);
+	  den_info.den = 0.5*den_sum;*/
     }
    timer_off("density"); 
    free(dist_coord);

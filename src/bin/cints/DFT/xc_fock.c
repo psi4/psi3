@@ -222,10 +222,7 @@ void xc_fock(void){
   }
   free(DFT_options.basis);
   psio_close(IOUnits.itapDSCF, 1);
-  printf("\npoint_count = %d",point_count);
+  /*printf("\npoint_count = %d",point_count);*/
   return;
 }
-
-
-
 
