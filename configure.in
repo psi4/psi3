@@ -24,7 +24,15 @@ test -z "$incdir" && incdir='$(prefix)/include'
 # and include files are installed, the include files
 # will be put into an objincdir and the utilities will be accessed
 # from src/util in the object directory.
-top_objdir=`pwd`
+
+# Allow environmental variable to override default behaviour for top_objdir
+# Useful for NFS volumes and symlinks.
+# 11/14/01
+if test -z "$TOP_OBJDIR"; then
+  top_objdir=`pwd`
+else
+  top_objdir=$TOP_OBJDIR
+fi
 objincdir=$top_objdir/include
 AC_SUBST(objincdir)
 
