@@ -274,7 +274,8 @@ void angmom_ints(void)
   print_mat(Lz, BasisSet.num_ao, BasisSet.num_ao, outfile);
   */
 
-  scratch = init_array(BasisSet.num_ao * (BasisSet.num_ao+1)/2);
+  ntri = BasisSet.num_ao * (BasisSet.num_ao+1)/2;
+  scratch = init_array(ntri);
 
   for(i=0,ij=0; i < BasisSet.num_ao; i++)
     for(j=0; j <= i; j++,ij++)
