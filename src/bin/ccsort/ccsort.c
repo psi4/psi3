@@ -44,7 +44,9 @@ void cachedone_rhf(int **cachelist);
 
 int main(int argc, char *argv[])
 {
+  int i;
   int **cachelist, *cachefiles;
+  int ia_size, ab_size, ij_size, f_size, t2_size;
 
   init_io(argc,argv);
   init_ioff();
@@ -71,6 +73,37 @@ int main(int argc, char *argv[])
 	     NULL, 2, moinfo.occpi, moinfo.occ_sym, moinfo.virtpi, 
 	     moinfo.vir_sym);
   }
+
+  /* run a small computation of memory and disk requirements */
+  ia_size = ab_size = ij_size = 0;
+  for(i=0; i < moinfo.nirreps; i++) {
+    if(params.ref == 0 || params.ref == 1) {
+      ia_size += moinfo.occpi[i] * moinfo.virtpi[i];
+      ab_size += moinfo.virtpi[i] * moinfo.virtpi[i];
+      ij_size += moinfo.occpi[i] * moinfo.occpi[i];
+    }
+    else if(params.ref == 2) {
+      ia_size += moinfo.aoccpi[i] * moinfo.bvirtpi[i];
+      ab_size += moinfo.avirtpi[i] * moinfo.bvirtpi[i];
+      ij_size += moinfo.aoccpi[i] * moinfo.boccpi[i];
+    }
+  }
+  f_size = ia_size * ab_size;
+  t2_size = ij_size * ab_size;
+
+  if(params.ref == 0 || params.ref == 1) {
+    fprintf(outfile, "\n\tSize of <ia|bc> integrals: %9.3f (MW) / %9.3f (MB)\n",
+      f_size/1e6, f_size*sizeof(double)/1e6);
+    fprintf(outfile, "\tSize of Tijab amplitudes:  %9.3f (MW) / %9.3f (MB)\n",
+      t2_size/1e6, t2_size*sizeof(double)/1e6);
+  }
+  else if(params.ref == 2) {
+    fprintf(outfile, "\n\tSize of <Ia|Bc> integrals: %9.3f (MW) / %9.3f (MB)\n",
+      f_size/1e6, f_size*sizeof(double)/1e6);
+    fprintf(outfile, "\tSize of TIjAb amplitudes:  %9.3f (MW) / %9.3f (MB)\n",
+      t2_size/1e6, t2_size*sizeof(double)/1e6);
+  }
+  fprintf(outfile, "\n");
 
   sort_oei();
   sort_tei();
