@@ -36,6 +36,22 @@ void get_params()
   }
   free(junk);
   
+  params.dertype = 0;
+  if(ip_exist("DERTYPE",0)) {
+    errcod = ip_string("DERTYPE", &(junk),0);
+    if(errcod != IPE_OK) params.dertype = 0;
+    else if(!strcmp(junk,"NONE")) params.dertype = 0;
+    else if(!strcmp(junk,"FIRST")) {
+      params.dertype = 1;
+      params.opdm = 1;
+    }
+    else {
+      printf("Invalid value of input keyword DERTYPE: %s\n", junk);
+      exit(PSI_RETURN_FAILURE);
+    }
+    free(junk);
+  }
+
   params.print = 0;
   errcod = ip_data("PRINT", "%d", &(params.print),0);
   
@@ -81,6 +97,8 @@ void get_params()
   else {
   fprintf(outfile, "\tReference WFN \t=\t%s\n", (params.ref==0)?"RHF":((params.ref==1)?"ROHF":"UHF"));
   } 
+  if(params.dertype == 0) fprintf(outfile, "\tDerivative    \t=\tNone\n");
+  else if(params.dertype == 1) fprintf(outfile, "\tDerivative    \t=\tFIRST\n");
   fprintf(outfile, "\tCache Level   \t=\t%d\n", params.cachelev);
   fprintf(outfile, "\tCache Type    \t=\t%s\n", params.cachetype ? "LOW":"LRU");
   fprintf(outfile, "\tMemory (MB)   \t=\t%.1f\n",params.memory/1e6);

@@ -9,4 +9,5 @@ struct params {
   int cachetype;
   long int memory;
   int semicanonical;
+  int dertype;
 };

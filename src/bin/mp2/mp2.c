@@ -71,6 +71,8 @@ int main(int argc, char *argv[])
   
   if(params.opdm) opdm();
   
+  if(params.dertype) lag();
+
   dpd_close(0);
   
   cleanup();
