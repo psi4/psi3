@@ -88,7 +88,7 @@ void oe_deriv2()
    double ab2;
    double tmp;
    double inorm, jnorm, over_pf;
-   double norm_pf, normover_pf, dens_pf, wdens_pf, zdens_pf, znormover_pf;
+   double norm_pf, normover_pf, dens_pf, wdens_pf, zdens_pf, znormover_pf, hds_norm_pf;
    double twozeta_a, twozeta_b, upuppfac, updownpfac, s_int, t_int, v_int;
    double *ptr1, *ptr2, norm1, norm12;
    double ***AI0;
@@ -201,6 +201,7 @@ void oe_deriv2()
 		    dens_pf *= norm_pf;
 		    wdens_pf = (-1.0)*Lagr[I][J];
 		    wdens_pf *= norm_pf;
+		    hds_norm_pf = norm_pf;
 		    if (I != J) {
 		      dens_pf *= 2.0;
 		      wdens_pf *= 2.0;
@@ -219,7 +220,7 @@ void oe_deriv2()
 		    if (l1)
 		      tmp -= l1*overlap_int(a1, l1-1, m1, n1, inorm, a2, l2, m2, 
 					    n2, jnorm, AB, PA, PB);
-		    HDS[coord_ax][I][J] += tmp*norm_pf;
+		    HDS[coord_ax][I][J] += tmp*hds_norm_pf;
 
 		    /*--- d/dAy ---*/
 		    tmp = 2.0*a1*overlap_int(a1, l1, m1+1, n1, inorm, a2, l2, m2, 
@@ -227,7 +228,7 @@ void oe_deriv2()
 		    if (m1)
 		      tmp -= m1*overlap_int(a1, l1, m1-1, n1, inorm, a2, l2, m2, 
 					    n2, jnorm, AB, PA, PB);
-		    HDS[coord_ay][I][J] += tmp*norm_pf;
+		    HDS[coord_ay][I][J] += tmp*hds_norm_pf;
 
 		    /*--- d/dAz ---*/
 		    tmp = 2.0*a1*overlap_int(a1, l1, m1, n1+1, inorm, a2, l2, m2, 
@@ -235,7 +236,7 @@ void oe_deriv2()
 		    if (n1)
 		      tmp -= n1*overlap_int(a1, l1, m1, n1-1, inorm, a2, l2, m2, 
 					    n2, jnorm, AB, PA, PB);
-		    HDS[coord_az][I][J] += tmp*norm_pf;
+		    HDS[coord_az][I][J] += tmp*hds_norm_pf;
 
 		    if(I != J) {
                       /*--- d/dAx ---*/
@@ -244,7 +245,7 @@ void oe_deriv2()
                       if (l2)
                         tmp -= l2*overlap_int(a2, l2-1, m2, n2, jnorm, a1, l1, m1,
                                               n1, inorm, AB, PB, PA);
-                      HDS[coord_bx][J][I] += tmp*norm_pf;
+                      HDS[coord_bx][J][I] += tmp*hds_norm_pf;
   
                       /*--- d/dAy ---*/
                       tmp = 2.0*a2*overlap_int(a2, l2, m2+1, n2, jnorm, a1, l1, m1,
@@ -252,7 +253,7 @@ void oe_deriv2()
                       if (m2)
                         tmp -= m2*overlap_int(a2, l2, m2-1, n2, jnorm, a1, l1, m1,
                                               n1, inorm, AB, PB, PA);
-                      HDS[coord_by][J][I] += tmp*norm_pf;
+                      HDS[coord_by][J][I] += tmp*hds_norm_pf;
   
                       /*--- d/dAz ---*/
                       tmp = 2.0*a2*overlap_int(a2, l2, m2, n2+1, jnorm, a1, l1, m1,
@@ -260,7 +261,7 @@ void oe_deriv2()
                       if (n2)
                         tmp -= n2*overlap_int(a2, l2, m2, n2-1, jnorm, a1, l1, m1,
                                               n1, inorm, AB, PB, PA);
-                      HDS[coord_bz][J][I] += tmp*norm_pf;
+                      HDS[coord_bz][J][I] += tmp*hds_norm_pf;
 		    }
 
 		    /*----------------------------------
