@@ -162,7 +162,7 @@ void classify_uhf(int p, int q, int r, int s, double value, char *spin,
 		  struct iwlbuf *CBuf1, struct iwlbuf *CBuf2, 
 		  struct iwlbuf *DBuf1, struct iwlbuf *EBuf1,
 		  struct iwlbuf *EBuf2, struct iwlbuf *FBuf1, 
-		  struct iwlbuf *FBuf2)
+		  struct iwlbuf *FBuf2, struct iwlbuf *FBuf3)
 {
   int *occ1, *occ2, *vir1, *vir2;
   int *cc_occ1, *cc_occ2, *cc_vir1, *cc_vir2;
@@ -234,13 +234,19 @@ void classify_uhf(int p, int q, int r, int s, double value, char *spin,
 
 
   if(!strcmp(spin,"AB")) {
-    /* F (vv|vo) integrals */
-    if(vir1[p] && vir1[q] && vir2[r] && occ2[s])
+    /* F (vv|vo) and (vv|ov) integrals */
+    if(vir1[p] && vir1[q] && vir2[r] && occ2[s]) {
       iwl_buf_wrt_val(FBuf2, cc_vir1[p], cc_vir1[q], cc_vir2[r], cc_occ2[s],
 		      value, 0, outfile, dirac);
-    else if(vir1[p] && vir1[q] && vir2[s] && occ2[r])
-      iwl_buf_wrt_val(FBuf2, cc_vir1[p], cc_vir1[q], cc_vir2[s], cc_occ2[r],
+      iwl_buf_wrt_val(FBuf3, cc_vir1[p], cc_vir1[q], cc_occ2[s], cc_vir2[r],
 		      value, 0, outfile, dirac);
+    }
+    else if(vir1[p] && vir1[q] && vir2[s] && occ2[r]) {
+      iwl_buf_wrt_val(FBuf2, cc_vir1[p], cc_vir1[q], cc_vir2[s], cc_occ2[r],
+		      value, 0, outfile, dirac); 
+      iwl_buf_wrt_val(FBuf3, cc_vir1[p], cc_vir1[q], cc_occ2[r], cc_vir2[s],
+		      value, 0, outfile, dirac); 
+   }
   }
 
   /* C (oo|vv) integrals */

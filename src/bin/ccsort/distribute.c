@@ -94,13 +94,13 @@ void classify_uhf(int p, int q, int r, int s, double value, char *spin,
 		  struct iwlbuf *CBuf1, struct iwlbuf *CBuf2, 
 		  struct iwlbuf *DBuf1, struct iwlbuf *EBuf1, 
 		  struct iwlbuf *EBuf2, struct iwlbuf *FBuf1, 
-		  struct iwlbuf *FBuf2);
+		  struct iwlbuf *FBuf2, struct iwlbuf *FBuf3);
 
 void distribute_uhf(char *spin, int filenum, int first_tmp, double tolerance, int keep_input)
 {
   struct iwlbuf InBuf;
   struct iwlbuf ABuf1, BBuf1, CBuf1, CBuf2, DBuf1;
-  struct iwlbuf EBuf1, EBuf2, FBuf1, FBuf2;
+  struct iwlbuf EBuf1, EBuf2, FBuf1, FBuf2, FBuf3;
   int lastbuf;
   Value *valptr;
   Label *lblptr;
@@ -117,6 +117,7 @@ void distribute_uhf(char *spin, int filenum, int first_tmp, double tolerance, in
   iwl_buf_init(&CBuf2, first_tmp+6, tolerance, 0, 0);
   iwl_buf_init(&EBuf2, first_tmp+7, tolerance, 0, 0);
   iwl_buf_init(&FBuf2, first_tmp+8, tolerance, 0, 0);
+  iwl_buf_init(&FBuf3, first_tmp+9, tolerance, 0, 0);
 
   /* Run through the buffer that's already available */
   lblptr = InBuf.labels;
@@ -133,7 +134,7 @@ void distribute_uhf(char *spin, int filenum, int first_tmp, double tolerance, in
 
     /* Check integral into each class */
     classify_uhf(p,q,r,s,value,spin,&ABuf1,&BBuf1,&CBuf1,&CBuf2,
-		 &DBuf1,&EBuf1,&EBuf2,&FBuf1,&FBuf2);
+		 &DBuf1,&EBuf1,&EBuf2,&FBuf1,&FBuf2,&FBuf3);
 
     /*    fprintf(outfile, "(%d %d|%d %d) = %20.10lf\n", p, q, r, s, value);  */
 
@@ -154,7 +155,7 @@ void distribute_uhf(char *spin, int filenum, int first_tmp, double tolerance, in
 
       /* Check integral into each class */
       classify_uhf(p,q,r,s,value,spin,&ABuf1,&BBuf1,&CBuf1,&CBuf2,
-		   &DBuf1,&EBuf1,&EBuf2,&FBuf1,&FBuf2);
+		   &DBuf1,&EBuf1,&EBuf2,&FBuf1,&FBuf2,&FBuf3);
 
       /*      fprintf(outfile, "(%d %d|%d %d) = %20.10lf\n", p, q, r, s, value); */
 
@@ -172,6 +173,7 @@ void distribute_uhf(char *spin, int filenum, int first_tmp, double tolerance, in
   iwl_buf_flush(&EBuf2, 1);
   iwl_buf_flush(&FBuf1, 1);
   iwl_buf_flush(&FBuf2, 1);
+  iwl_buf_flush(&FBuf3, 1);
   iwl_buf_close(&ABuf1, 1);
   iwl_buf_close(&BBuf1, 1);
   iwl_buf_close(&CBuf1, 1);
@@ -181,6 +183,7 @@ void distribute_uhf(char *spin, int filenum, int first_tmp, double tolerance, in
   iwl_buf_close(&EBuf2, 1);
   iwl_buf_close(&FBuf1, 1);
   iwl_buf_close(&FBuf2, 1);
+  iwl_buf_close(&FBuf3, 1);
 
   fflush(outfile);
 }

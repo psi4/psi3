@@ -124,6 +124,10 @@ void sort_tei(void)
     file_build(&F, FIRST_TMP+8, tolerance, 1, 0, 0, 0);
     dpd_file4_close(&F);
 
+    dpd_file4_init_nocache(&F, CC_FINTS, 0, 26, 28, "F <Ai|Bc>");
+    file_build(&F, FIRST_TMP+9, tolerance, 1, 0, 0, 0);
+    dpd_file4_close(&F);
+
   }
   else { /*** RHF or ROHF ***/
     distribute_rhf(PSIF_MO_TEI, FIRST_TMP, tolerance, keep);
