@@ -152,7 +152,7 @@ psi: (
   CCSDEnergy = ($ints $scf $transqt $ccsort $ccenergy)
   CCSDRHFEnergy = ($CCSDEnergy $done)
   CCSDROHFEnergy = ($CCSDEnergy $done)
-  CCSDUHFEnergy = ERROR
+  CCSDUHFEnergy = ($CCSDEnergy $done)
   CCSDTwoConEnergy = ERROR
 
   % Procedures for the CCSD gradient
@@ -160,7 +160,7 @@ psi: (
   CCSDFirst = ($SCFEnergy $transqt $CCSeq $backtransqt $deriv)
   CCSDRHFFirst = $CCSDFirst
   CCSDROHFFirst = $CCSDFirst
-  CCSDUHFFirst = ERROR
+  CCSDUHFFirst = $CCSDFirst
   CCSDTwoConFirst = ERROR
 
   % Testing procedure for optimizing geometries with CCSD finite displacements
@@ -173,14 +173,14 @@ psi: (
     $findif_grad_energy $geomupdate end $done)
   CCSDRHFEnergyOpt = $CCSDEnergyOpt
   CCSDROHFEnergyOpt = $CCSDEnergyOpt
-  CCSDUHFEnergyOpt = ERROR
+  CCSDUHFEnergyOpt = $CCSDEnergyOpt
   CCSDTwoConEnergyOpt = ERROR
 
   % Procedures for the optimizing geomtries with CCSD gradients
   CCSDRHFFirstOpt =
     (repeat $nopt $CCSDRHFFirst $geomupdate end $done)
   CCSDROHFFirstOpt = (repeat $nopt $CCSDROHFFirst $geomupdate end $done)
-  CCSDUHFFirstOpt  = ERROR
+  CCSDUHFFirstOpt  = (repeat $nopt $CCSDUHFFirst $geomupdate end $done)
   CCSDTwoConFirstOpt  = ERROR
 
   % Procedures for the finite displacements of CCSD gradients
@@ -188,7 +188,8 @@ psi: (
     (repeat $ndisp $ugeom $uinput $CCSDRHFFirst $rgeom end $done)
   CCSDROHFFirstDisp = 
     (repeat $ndisp $ugeom $uinput $CCSDROHFFirst $rgeom end $done)
-  CCSDUHFFirstDisp  = ERROR
+  CCSDUHFFirstDisp  = 
+    (repeat $ndisp $ugeom $uinput $CCSDROHFFirst $rgeom end $done)
   CCSDTwoConFirstDisp  = ERROR
 
   % Procedures for symmetric frequencies via finite differences of gradients
@@ -233,7 +234,7 @@ psi: (
     $findif_grad_energy $geomupdate end $done)
   CCSD_TRHFEnergyOpt = $CCSD_TEnergyOpt
   CCSD_TROHFEnergyOpt = $CCSD_TEnergyOpt
-  CCSD_TUHFEnergyOpt = ERROR
+  CCSD_TUHFEnergyOpt = $CCSD_TEnergyOpt
   CCSD_TTwoConEnergyOpt = ERROR
 
   % Procedures for the optimizing geomtries with CCSD(T) gradients
