@@ -514,8 +514,8 @@ Thu Jun 10 13:27:12 2004
 	Reference energy (file100) =  -76.024038511513226
 	MP2 correlation energy     =   -0.204690005384275
 	Total MP2 energy           =  -76.228728516897505
-	CCSD correlation energy    =   -0.217235382059811
-	Total CCSD energy          =  -76.241273893573037
+	CC3 correlation energy     =   -0.217235382059811
+	Total CC3 energy           =  -76.241273893573037
 
 ******************************************************************************
 tstop called on syrma.giga.net
