@@ -55,6 +55,10 @@ psi: (
   cceom      = "cceom"
   ccresponse = "ccresponse"
   ooccman    = "ccman"
+  cclambda_excited = "cclambda --excited"
+  cclambda_zeta = "cclambda --zeta"
+  ccdensity_calc_xi = "ccdensity --calc_xi"
+  ccdensity_use_zeta = "ccdensity --use_zeta"
 
   % Determinant CI specific programs
   detci    = "detci"
@@ -379,6 +383,7 @@ psi: (
   CCSD_TUHFFirstDisp  = ERROR
   CCSD_TTwoConFirstDisp  = ERROR
 
+  % -------------------------------- EOM CCSD Procedures
   % Procedure for the EOM_CCSD energy
   EOM_CCSDEnergy = ($ints $scf $transqt $ccsort $ccenergy $cchbar $cceom)
   EOM_CCSDRHFEnergy = ($EOM_CCSDEnergy $done)
@@ -393,6 +398,48 @@ psi: (
   LEOM_CCSDROHFEnergy = ($LEOM_CCSDEnergy $done) 
   LEOM_CCSDUHFEnergy = ERROR
   LEOM_CCSDTwoConEnergy = ERROR
+
+  % Procedures for optimization via energy points
+  EOM_CCSDEnergyOpt = (repeat $nopt $EOM_CCSDEnergy $findif_disp_symm
+    repeat NUM_DISP $findif_next $EOM_CCSDEnergy $findif_energy end
+    $findif_grad_energy $geomupdate end $done)
+  EOM_CCSDRHFEnergyOpt = $EOM_CCSDEnergyOpt
+  EOM_CCSDROHFEnergyOpt = $EOM_CCSDEnergyOpt
+  EOM_CCSDUHFEnergyOpt = $EOM_CCSDEnergyOpt
+  EOM_CCSDTwoConEnergyOpt = ERROR
+
+  % Procedure for the EOM CCSD gradient
+  EOM_CCSDFirst = ($EOM_CCSDEnergy $cclambda_excited $ccdensity_calc_xi
+    $cclambda_zeta $ccdensity_use_zeta $backtransqt $deriv)
+  EOM_CCSDRHFFirst = $EOM_CCSDFirst
+  EOM_CCSDROHFFirst = $EOM_CCSDFirst
+  EOM_CCSDUHFFirst = ERROR
+  EOM_CCSDTwoConFirst = ERROR
+
+  % Procedure for optimizing geometries with gradients
+  EOM_CCSDRHFFirstOpt = (repeat $nopt $EOM_CCSDRHFFirst $geomupdate end $done)
+  EOM_CCSDROHFFirstOpt = (repeat $nopt $EOM_CCSDROHFFirst $geomupdate end $done)
+  EOM_CCSDUHFFirstOpt  = (repeat $nopt $EOM_CCSDUHFFirst $geomupdate end $done)
+  EOM_CCSDTwoConFirstOpt  = ERROR
+
+  % Procedure for optimizing geometries with energy points
+  EOM_CCSDEnergyOpt = (repeat $nopt $EOM_CCSDEnergy $findif_disp_symm 
+    repeat NUM_DISP $findif_next $EOM_CCSDEnergy $findif_energy end
+    $findif_grad_energy $geomupdate end $done)
+  EOM_CCSDRHFEnergyOpt = $EOM_CCSDEnergyOpt
+  EOM_CCSDROHFEnergyOpt = $EOM_CCSDEnergyOpt
+  EOM_CCSDUHFEnergyOpt = $EOM_CCSDEnergyOpt
+  EOM_CCSDTwoConEnergyOpt = ERROR
+
+  % Procedures for freqs via differences of analytic gradients
+  EOM_CCSDFirstFreq  = 
+    ($EOM_CCSDEnergy $findif_disp repeat NUM_DISP 
+     $findif_next $uinput $EOM_CCSDFirstReset $findif_grad end 
+     $findif_freq_grad $done)
+  EOM_CCSDRHFFirstFreq  = $EOM_CCSDFirstFreq
+  EOM_CCSDROHFFirstFreq  = $EOM_CCSDFirstFreq
+  EOM_CCSDUHFFirstFreq  = $EOM_CCSDFirstFreq
+  EOM_CCSDTwoConFirstFreq  = $EOM_CCSDFirstFreq
 
   % -------------------------------- OOCCD Procedures
   % Procedures for the OOCCD energy
