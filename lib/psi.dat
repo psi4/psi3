@@ -27,6 +27,7 @@ psi: (
   oeprop      = "oeprop"
   optking     = "optking"
   stable      = "stable"
+  cis         = "cis"
   ugeom       = "ugeom"
   rgeom       = ()
   findif_disp        = "optking --disp_nosymm"
@@ -559,5 +560,11 @@ psi: (
   DirectMP2UHFEnergyOpt = ERROR
   DirectMP2TwoConEnergyOpt = ERROR
 
+  % Procedure for the CIS energy
+  CISEnergy = ($input $ints $scf $transqt $ccsort $cis)
+  CISRHFEnergy = ($CISEnergy $done)
+  CISROHFEnergy = ERROR
+  CISUHFEnergy = ($CISEnergy $done)
+  CISTwoConEnergy = ERROR
 ) 
 
