@@ -1,3 +1,10 @@
+09/17/04: Added frequencies by finite differences of energies and gradients
+(3- and 5-point formula) using symmetry-adapted cartesian coordinates.
+Added chkpt_override_occ() to libchkpt to keep DOCC from getting parsed.
+Added jobtype=FC and SYMM_FC to use internal coordinates if desired.
+Added capability to do numerical, constrained optimizations.
+Changed many of the test cases.  -RAK
+
 07/09/04: Added UHF-based CC3 energy code, plus a test case (cc33).  This
 code uses DGEMM calls, but is slow in part because it fails to limit IJK
 combinations in the triples code to unique T3's.  I'll add this later, but
