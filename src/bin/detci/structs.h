@@ -21,6 +21,7 @@
 #define PARM_GUESS_VEC_UNIT        0
 #define PARM_GUESS_VEC_H0_BLOCK    1
 #define PARM_GUESS_VEC_DFILE       3
+#define PARM_GUESS_VEC_IMPORT      4
 #define PARM_OPENTYPE_UNKNOWN     -1
 #define PARM_OPENTYPE_NONE         0
 #define PARM_OPENTYPE_HIGHSPIN     1

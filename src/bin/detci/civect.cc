@@ -1202,10 +1202,14 @@ void CIvect::init_vals(int ivect, int nvals, int *alplist, int *alpidx,
    //ok here it seems safe to set zero blocks
    for (i=0; i<num_blocks; i++) zero_blocks[i] = 1;
 
-   if (Parameters.guess_vector >= PARM_GUESS_VEC_H0_BLOCK) {
+   /* this used to read >= PARM_GUESS_VEC_H0_BLOCK... but these
+      are now gathered from a symnorm so I'll comment this out
+      CDS 8/03
+   if (Parameters.guess_vector == PARM_GUESS_VEC_H0_BLOCK) {
      for (i=0; i<nvals; i++) 
         H0block.c0b[i] = value[i];
      }
+   */
 
    if (icore == 1) { /* whole vector in-core */
       zero();
@@ -1268,10 +1272,14 @@ void CIvect::set_vals(int ivect, int nvals, int *alplist, int *alpidx,
 
    tval = value[0];
 
-   if (Parameters.guess_vector >= PARM_GUESS_VEC_H0_BLOCK) {
+   /* this used to read >= PARM_GUESS_VEC_H0_BLOCK... but these
+      are now gathered from a symnorm so I'll comment this out
+      CDS 8/03
+   if (Parameters.guess_vector == PARM_GUESS_VEC_H0_BLOCK) {
      for (i=0; i<nvals; i++) 
         H0block.c0b[i] = value[i];
      }
+   */
 
    if (icore == 1) { /* whole vector in-core */
       read(ivect, 0);
@@ -1341,7 +1349,7 @@ void CIvect::extract_vals(int ivect, int nvals, int *alplist, int *alpidx,
 
    tval = value[0];
 
-   if (Parameters.guess_vector >= PARM_GUESS_VEC_H0_BLOCK) {
+   if (Parameters.guess_vector == PARM_GUESS_VEC_H0_BLOCK) {
      for (i=0; i<nvals; i++)
         H0block.c0b[i] = value[i];
      }

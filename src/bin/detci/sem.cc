@@ -19,7 +19,7 @@ extern "C" {
    #include <psifiles.h>
    #include <libciomr/libciomr.h>
    #include <libqt/qt.h>
-   #include <libqt/slaterd.h>
+   #include <libqt/slaterdset.h>
    #include <physconst.h>
    #include "structs.h"
    #include "ci_tol.h"
@@ -33,6 +33,9 @@ extern "C" {
       struct olsen_graph *AlphaG, struct olsen_graph *BetaG,
       struct stringwr **alplist, struct stringwr **betlist,
       FILE *outfile);
+   extern void parse_import_vector(SlaterDetVector *vec, int *i_alplist, int
+      *i_alpidx, int *i_betlist, int *i_betidx, int *i_blknums);
+   
 }
 
 extern void H0block_coupling_calc(double E, struct stringwr **alplist,
@@ -260,11 +263,11 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
         Dvec2.restart_reord_fp(maxnvect-1);
         }
 
-      // Temporary 
-      Cvec.civect_psio_debug();
-      Sigma.civect_psio_debug();
-      Dvec.civect_psio_debug();
-      fflush(outfile);
+      // The next few lines might help debugging restarts
+      // Cvec.civect_psio_debug();
+      // Sigma.civect_psio_debug();
+      // Dvec.civect_psio_debug();
+      // fflush(outfile);
 
       Cvec.buf_lock(buffer1);
       Sigma.buf_lock(buffer2);    
@@ -383,16 +386,57 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
 
    /* unit vector */
    else if (Parameters.guess_vector == PARM_GUESS_VEC_UNIT) {
-      tval = 1.0;
-      Cvec.buf_lock(buffer1);
-      Cvec.init_vals(0, 1, &(CalcInfo.ref_alp_list), &(CalcInfo.ref_alp_rel),
-         &(CalcInfo.ref_bet_list), &(CalcInfo.ref_bet_rel), H0block.blknum, 
-         &tval);
-      Cvec.buf_unlock();
-      Cvec.write_num_vecs(1);
-      Sigma.set_zero_blocks_all();
-      k = 1;
-      } 
+     tval = 1.0;
+     Cvec.buf_lock(buffer1);
+     Cvec.init_vals(0, 1, &(CalcInfo.ref_alp_list), &(CalcInfo.ref_alp_rel),
+        &(CalcInfo.ref_bet_list), &(CalcInfo.ref_bet_rel), H0block.blknum, 
+        &tval);
+     Cvec.buf_unlock();
+     Cvec.write_num_vecs(1);
+     Sigma.set_zero_blocks_all();
+     k = 1;
+   } 
+
+   /* import a previously exported CI vector */
+   else if (Parameters.guess_vector == PARM_GUESS_VEC_IMPORT) {
+     if (nroots > 1) {
+       fprintf(outfile, "Sorry, can import only one vector for now!\n"); 
+       abort();
+     }
+
+     SlaterDetVector *vec;
+     int *import_alplist, *import_alpidx, *import_betlist, *import_betidx;
+     int *import_blknums;
+
+     slaterdetvector_read(PSIF_CIVECT, "CI vector", &vec);
+     
+     // store the alpha graph, relative alpha index, beta graph, relative
+     // beta index, and CI block number for each imported determinant
+     import_alplist = init_int_array(vec->size);
+     import_alpidx  = init_int_array(vec->size);
+     import_betlist = init_int_array(vec->size);
+     import_betidx  = init_int_array(vec->size); 
+     import_blknums = init_int_array(vec->size); 
+
+     parse_import_vector(vec, import_alplist, import_alpidx, import_betlist,
+       import_betidx, import_blknums);
+
+     // initialize the values in Cvec
+     Cvec.buf_lock(buffer1);
+     Cvec.init_vals(0, vec->size, import_alplist, import_alpidx,
+       import_betlist, import_betidx, import_blknums, vec->coeffs);
+     Cvec.buf_unlock();
+     Cvec.write_num_vecs(1);
+     Sigma.set_zero_blocks_all();
+     k = 1;
+
+     // when we're done, free the memory
+     slaterdetvector_delete_full(vec); 
+     free(import_alplist);  free(import_alpidx);
+     free(import_betlist);  free(import_betidx);
+     free(import_blknums); 
+   }
+ 
    else { /* use H0BLOCK eigenvector guess */
       if (Parameters.precon == PRECON_GEN_DAVIDSON) L = H0block.size;
       else L = H0block.guess_size;
@@ -473,8 +517,8 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
    /* write file_offset and file_number array out to detci.dat */
    //Cvec.write_detfile(CI_VEC);
    //Sigma.write_detfile(SIGMA_VEC);
-   if (Parameters.print_lvl > 1) 
-     fprintf(outfile,"Restart info written.\n");
+   //if (Parameters.print_lvl > 1) 
+   //  fprintf(outfile,"Restart info written.\n");
    fflush(outfile);
 
    if (k < nroots) {
@@ -1103,33 +1147,62 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
      StringSet alphastrings, betastrings;
      SlaterDetSet dets;
      SlaterDetVector vec;
+     short int *fzc_occ;
+     unsigned char *newocc;
+     int irrep, gr, l, n;
+
+     if (CalcInfo.num_fzc_orbs > 0) {
+       fzc_occ = (short int *) malloc(CalcInfo.num_fzc_orbs*sizeof(short int));
+       for (int l=0; l<CalcInfo.num_fzc_orbs; l++) {
+         fzc_occ[l] = CalcInfo.order[l]; /* put it in Pitzer order */
+       }
+     }
+
+     newocc = (unsigned char *) malloc(((AlphaG->num_el > BetaG->num_el) ? 
+       AlphaG->num_el : BetaG->num_el)*sizeof(unsigned char));
 
      stringset_init(&alphastrings,AlphaG->num_str,AlphaG->num_el,
-                    CalcInfo.num_fzc_orbs);
+                    CalcInfo.num_fzc_orbs, fzc_occ);
      int list_gr = 0;
      int offset = 0;
-     for(int irrep=0; irrep<AlphaG->nirreps; irrep++) {
-       for(int gr=0; gr<AlphaG->subgr_per_irrep; gr++,list_gr++) {
+     for(irrep=0; irrep<AlphaG->nirreps; irrep++) {
+       for(gr=0; gr<AlphaG->subgr_per_irrep; gr++,list_gr++) {
          int nlists_per_gr = AlphaG->sg[irrep][gr].num_strings;
-         for(int l=0; l<nlists_per_gr; l++)
-	   stringset_add(&alphastrings,l+offset,alplist[list_gr][l].occs);
+         for(l=0; l<nlists_per_gr; l++) {
+           /* convert occs to Pitzer order */
+           for (n=0; n<AlphaG->num_el; n++) {
+             newocc[n] = (unsigned char) 
+               CalcInfo.order[alplist[list_gr][l].occs[n] + 
+               CalcInfo.num_fzc_orbs];
+           }
+	   stringset_add(&alphastrings,l+offset,newocc);
+         }
 	 offset += nlists_per_gr;
        }
      }
    
      stringset_init(&betastrings,BetaG->num_str,BetaG->num_el,
-                    CalcInfo.num_fzc_orbs);
+                    CalcInfo.num_fzc_orbs, fzc_occ);
      list_gr = 0;
      offset = 0;
-     for(int irrep=0; irrep<BetaG->nirreps; irrep++) {
-       for(int gr=0; gr<BetaG->subgr_per_irrep; gr++,list_gr++) {
+     for(irrep=0; irrep<BetaG->nirreps; irrep++) {
+       for(gr=0; gr<BetaG->subgr_per_irrep; gr++,list_gr++) {
          int nlists_per_gr = BetaG->sg[irrep][gr].num_strings;
-         for(int l=0; l<nlists_per_gr; l++)
-	   stringset_add(&betastrings,l+offset,betlist[list_gr][l].occs);
+         for(l=0; l<nlists_per_gr; l++) {
+           /* convert occs to Pitzer order */
+           for (n=0; n<BetaG->num_el; n++) {
+             newocc[n] = (unsigned char) 
+               CalcInfo.order[betlist[list_gr][l].occs[n] +
+               CalcInfo.num_fzc_orbs];
+           }
+	   stringset_add(&betastrings,l+offset,newocc);
+         }
 	 offset += nlists_per_gr;
        }
      }
-   
+     free(newocc);
+     free(fzc_occ);
+
      int ii;
      int size = CIblks.vectlen;
      int Iarel, Ialist, Ibrel, Iblist;

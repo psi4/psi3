@@ -320,6 +320,8 @@ void get_parameters(void)
       else if (strcmp(line1, "DFILE")==0) 
          Parameters.guess_vector = PARM_GUESS_VEC_DFILE;
       /* else if (Parameters.mpn) Parameters.guess_vector = PARM_GUESS_VEC_UNIT; */ 
+      else if (strcmp(line1, "IMPORT")==0)
+         Parameters.guess_vector = PARM_GUESS_VEC_IMPORT;
       else Parameters.guess_vector = PARM_GUESS_VEC_UNIT;
       }
    errcod = ip_data("ICORE", "%d", &(Parameters.icore),0);
@@ -713,6 +715,9 @@ void print_parameters(void)
          break;
       case PARM_GUESS_VEC_DFILE:
          fprintf(outfile, "%7s", "D FILE");
+         break;
+      case PARM_GUESS_VEC_IMPORT:
+         fprintf(outfile, "%7s", "IMPORT");
          break;
       default:
          fprintf(outfile, "%7s", "???");

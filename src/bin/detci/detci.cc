@@ -38,7 +38,7 @@ extern "C" {
    #include <libfile30/file30.h>
 #endif
    #include <libpsio/psio.h>
-   #include <libqt/slaterd.h>
+   #include <libqt/slaterdset.h>
    #include "structs.h"
    #include "globals.h"
    #include "ci_tol.h"
@@ -482,6 +482,7 @@ void diag_h(struct stringwr **alplist, struct stringwr **betlist)
 
       /* Dump the vector to a PSIO file
 	 Added by Edward valeev (June 2002) */
+      /*
       if (Parameters.export_ci_vector) {
         StringSet alphastrings, betastrings;
         SlaterDetSet dets;
@@ -535,6 +536,7 @@ void diag_h(struct stringwr **alplist, struct stringwr **betlist)
         stringset_delete(&alphastrings);
         stringset_delete(&betastrings);
       }
+      */
     } /* end RSP section */
 
    /* RSP test of Davidson/Liu (SEM) diagonalization routine */
