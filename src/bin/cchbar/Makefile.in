@@ -11,7 +11,7 @@ CSRC = \
 F.c      Wamef.c  Wmbij.c  cchbar.c      get_params.c \
 Wabei.c  Wmbej.c  Wmnie.c  get_moinfo.c  purge.c      \
 cache.c  sort_amps.c tau.c taut.c Wabei_ROHF.c  \
-WABEI_UHF.c Wabei_UHF.c WAbEi_UHF.c WaBeI_UHF.c
+Wabei_AAAA_UHF.c Wabei_BBBB_UHF.c Wabei_ABAB_UHF.c Wabei_BABA_UHF.c
 
 BINOBJ = $(CSRC:%.c=%.o)
 ALLOC = 
