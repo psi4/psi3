@@ -75,7 +75,7 @@ sub compare_data
   open(RE, ">$RESULT") || die "cannot open $RESULT $!";
   select(RE);
    
-  printf "\nUHF-STAB:\n";
+  printf "\nROHF-STAB:\n";
 
   $diff_enuc = abs ($Enuc_ref - $Enuc_test);
   if ($diff_enuc > $TOL) {

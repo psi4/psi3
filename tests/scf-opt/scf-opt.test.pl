@@ -66,7 +66,7 @@ sub compare_data
   printf "\nSCF-OPT:\n";
 
   $diff_scf = abs ($Escf_ref - $Escf_test);
-  if ($diff_ccsd > $TOL) {
+  if ($diff_scf > $TOL) {
     printf "\nSCF Energy           ... FAILED\n";
   }
   else {
