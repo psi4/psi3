@@ -76,7 +76,12 @@ void freq_energy_cart(cartesians &carts) {
   disp_E = init_array(ndisp_all);
 
   if (optinfo.energy_dat) { /* read energy.dat text file */
+    fprintf(outfile,"Reading displaced energies from energy.dat.\n");
     fp_energy_dat = fopen("energy.dat", "r");
+    if (fp_energy_dat == NULL) {
+      fprintf(outfile,"energy.dat file not found.\n");
+      exit(PSI_RETURN_FAILURE);
+    }
     rewind (fp_energy_dat);
     line1 = new char[MAX_LINE+1];
     for (i=0; i<ndisp_all; ++i) {
@@ -86,7 +91,8 @@ void freq_energy_cart(cartesians &carts) {
     fclose(fp_energy_dat);
     delete [] line1;
   }
-  {
+  else {
+    fprintf(outfile,"Reading displaced energies from PSIF_OPTKING.\n");
     psio_read_entry(PSIF_OPTKING, "OPT: Displaced energies",
         (char *) &(disp_E[0]), ndisp_all*sizeof(double));
   }
