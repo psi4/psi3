@@ -48,6 +48,9 @@
 **   int *vir_off: Offset lookup for translating between absolute and
 **   relative orbital indices for virtual space.
 **
+**   double omega: a constant to add to the final denominators -
+**   needed for CC3 EOM
+**
 ** TDC, July 2004
 */
 
@@ -59,7 +62,7 @@
 
 void T3_AAA(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int Gk, 
 	    dpdbuf4 *T2, dpdbuf4 *F, dpdbuf4 *E, dpdfile2 *fIJ, dpdfile2 *fAB, 
-	    int *occpi, int *occ_off, int *virtpi, int *vir_off)
+	    int *occpi, int *occ_off, int *virtpi, int *vir_off, double omega)
 {
   int h;
   int i, j, k;
@@ -494,7 +497,7 @@ void T3_AAA(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
 	if(fAB->params->rowtot[Gb]) denom -= fAB->matrix[Gb][b][b];
 	if(fAB->params->rowtot[Gc]) denom -= fAB->matrix[Gc][c][c];
 
-	W1[Gab][ab][c] /= denom;
+	W1[Gab][ab][c] /= (omega + denom);
 
       } /* c */
     } /* ab */

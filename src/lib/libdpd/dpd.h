@@ -346,13 +346,13 @@ void dpd_3d_sort(double ***Win, double ***Wout, int nirreps, int h, int *rowtot,
 
 void T3_AAA(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int Gk, 
 	    dpdbuf4 *T2, dpdbuf4 *F, dpdbuf4 *E, dpdfile2 *fIJ, dpdfile2 *fAB,
-	    int *occpi, int *occ_off, int *virtpi, int *vir_off);
+	    int *occpi, int *occ_off, int *virtpi, int *vir_off, double omega);
 
 void T3_AAB(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int Gk, 
 	    dpdbuf4 *T2AA, dpdbuf4 *T2AB, dpdbuf4 *T2BA, dpdbuf4 *FAA, dpdbuf4 *FAB, dpdbuf4 *FBA,
 	    dpdbuf4 *EAA, dpdbuf4 *EAB, dpdbuf4 *EBA, dpdfile2 *fIJ, dpdfile2 *fij, 
 	    dpdfile2 *fAB, dpdfile2 *fab, int *aoccpi, int *aocc_off, int *boccpi, int *bocc_off,
-	    int *avirtpi, int *avir_off, int *bvirtpi, int *bvir_off);
+	    int *avirtpi, int *avir_off, int *bvirtpi, int *bvir_off, double omega);
 
 #endif /* DPD_H */
 
