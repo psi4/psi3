@@ -1,6 +1,6 @@
 /*###########################################################################*/
 /*! \file coord_base.cc
-  \brief Actual constructor and member functions for coordinate base class. */
+  \brief Constructor and member functions for coordinate base class. */
 /*						Joseph P. Kenny 11/29/01
   ###########################################################################*/
 
@@ -10,34 +10,36 @@
 
 
 /*---------------------------------------------------------------------------*/
-/*! \fn coord_base::construct_coord_base(int natm, int nent, int nopt) 
-  \brief Actual constructor.
-  
-  This is the actual constructor.  The parameters may not be known when 
-  a derived class is initialized and this function may be called 
-  later in the derived class's constructor.  This obviously undermines
-  the idea of automatic construction and developers must be careful to 
-  call this function at the appropriate point.
-  \param natm number of atoms
-  \param nent number of entries (atoms + dummy atoms)
-  \param nopt number of optimized coordinates */
+/*! \fn coord_base::coord_base()
+  \brief Coord_base constructor. 
+
+  Parses input */
 /*---------------------------------------------------------------------------*/
 
-void coord_base :: construct_coord_base(int natm, int nent, int nopt) {
+coord_base :: coord_base() : coord_base_carts(), math_tools() {
 
-    num_atoms = natm;
-    num_entries = nent;
-    num_coords =  nopt;
+    coord_base::parse_input();
 
-    parse_input();
+    atomic_nums = file30_rd_zvals();
     
-    carts = init_array(3*num_entries);
-    c_grads = init_array(3*num_entries);
+    return; 
+}
+
+
+
+/*---------------------------------------------------------------------------*/
+/*! \fn coord_base::mem_alloc() 
+  \brief Allocates memory.
+
+  Must be called once number of optimized coordinates
+  is determined. */
+/*---------------------------------------------------------------------------*/
+
+void coord_base :: mem_alloc() {
+    
     coords = init_array(num_coords);
     grads = init_array(num_coords);
     Hi = init_matrix(num_coords,num_coords);
-    u = init_matrix(3*num_entries,3*num_entries);
-    masses = init_array(num_entries);
     coords_old = init_array(num_coords);
     grads_old = init_array(num_coords);  
     Hi_old = init_matrix(num_coords,num_coords);
@@ -64,6 +66,19 @@ void coord_base :: update_Hi() {
     for(i=0;i<num_coords;++i) {
 	coord_dif[i] = coords[i] - coords_old[i];
 	grad_dif[i] = grads[i] - grads_old[i];
+    }
+
+    if(print_lvl >= RIDICULOUS_PRINT) {
+	fprintf(outfile,"\n  Hi matrix from previous itertation:\n");
+	print_mat(Hi_old,num_coords,num_coords,outfile);
+	fprintf(outfile,"\n  Coordinate differences:\n");
+	for(i=0;i<num_coords;++i)
+	    fprintf(outfile,"  %lf - %lf = %lf\n",
+		    coords[i],coords_old[i],coord_dif[i]);
+	fprintf(outfile,"\n  Gradient differences:\n");
+	for(i=0;i<num_coords;++i) 
+	    fprintf(outfile,"  %lf - %lf = %lf\n",
+		    grads[i],grads_old[i],grad_dif[i]);
     }
 
     if(!strcmp(update,"MS")) {
@@ -151,3 +166,45 @@ void coord_base :: H_test() {
 
     return;
 }
+
+
+
+/*---------------------------------------------------------------------------*/
+/*! \fn coord_base::print_Hi()
+  \brief prints inverse of hessian matrix. */
+/*---------------------------------------------------------------------------*/
+
+void coord_base :: print_Hi() {
+
+    fprintf(outfile,"\n  Inverse hessian matrix(a.u.):\n");
+    print_mat(Hi,num_coords,num_coords,outfile);
+
+    return;
+}
+
+
+
+/*---------------------------------------------------------------------------*/
+/*! \fn coord_base::print_H()
+  \brief prints hessian matrix. */
+/*---------------------------------------------------------------------------*/
+
+void coord_base :: print_H() {
+
+    double **H_mat;
+
+    H_mat = symm_matrix_invert(Hi, num_coords, 0, 0);
+
+    fprintf(outfile,"\n  Hessian matrix(a.u.):\n");
+    print_mat(H_mat,num_coords,num_coords,outfile);
+
+    free_matrix(H_mat,num_coords);
+
+    return;
+}
+
+
+
+
+
+

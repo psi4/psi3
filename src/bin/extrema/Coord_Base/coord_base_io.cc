@@ -6,20 +6,19 @@
 
 #define EXTERN
 #include"extrema.h"
-#include<masses.h>
 
 
 
-/*--------------------------------------------------------------------------*/ /*! \fn coord_base::parse_input()
+/*--------------------------------------------------------------------------*/ 
+/*! \fn coord_base::parse_input()
   \brief Parses input for info common to all coordinate types. */
 /*---------------------------------------------------------------------------*/
 
 void coord_base :: parse_input() {
 
     char *buffer;
-    int is_set=0;
 
-    print_lvl = NORMAL_PRINT;
+    print_lvl = NORMAL_PRINT+1;
     errcod = ip_data("PRINT","%d",&print_lvl,0); 
     errcod = ip_data("EXTREMA_PRINT","%d",&print_lvl,0);
     fprintf(outfile,"\n  PRINT:         %d",print_lvl);
@@ -31,115 +30,28 @@ void coord_base :: parse_input() {
     update = "BFGS";
     errcod = ip_string("UPDATE",&update,0);
     fprintf(outfile,"\n  UPDATE:        %s", update);
-  
-    return;
-}
 
+    // if( ip_exist("SYMMETRY",0) ) {
+    //	errcod = ip_string("SYMMETRY",&symmetry,0);
+    //	fprintf(outfile,"\n  SYMMETRY:        %s", symmetry);
+    //   }
+    //else
+    //	symmetry = file30_rd_sym_label();
 
-
-/*---------------------------------------------------------------------------*/
-/*! \fn coord_base::read_file11()
-  \brief Reads gradient info from file11. */
-/*---------------------------------------------------------------------------*/
-
-void coord_base :: read_file11() {
-
-    int i, natom, count = 1, continue_flag = 1;
-    char label[133]; char line1[133]; char *tmp_ptr;
-    FILE *fp_11;
-    double an,x,y,z,energy, *temp_c_grads;
-    temp_c_grads = init_array(3*num_atoms);
-    
-    if ((fp_11 = fopen("file11.dat","r")) == NULL) {
-	punt("Could not open file11.dat");
+    /* do_deriv=1 here only means derivative is possibility
+       must read opt.dat to see when it is time to do it for real */
+    do_deriv = 0;
+    if(ip_exist("DERTYPE",0)) {
+	errcod = ip_string("DERTYPE",&buffer,0);
+	if( !strncmp(buffer,"FIRST",5) && !strncmp(buffer,"SECOND",6) )
+	    do_deriv = 1;
     }
     
-    tmp_ptr = fgets(label, MAX_LINELENGTH, fp_11);
-    
-    if (tmp_ptr == NULL) {
-	punt("Touble reading first line of file11.dat");
+    /* see last comment */
+    if(ip_exist("OPT",0)) {
+	ip_boolean("OPT",&do_opt,0);
     }
-    
-    fgets(line1, MAX_LINELENGTH, fp_11);
-    if (sscanf(line1, "%d %lf", &natom, &energy) != 2) {
-	punt("Trouble reading natoms and energy from file11.dat");
-    }
-    
-    if(natom!=num_atoms)
-	punt("Numbers of atoms differ in file11 and file30");
-    
-    rewind(fp_11);
-    
-    while ( fgets(label, MAX_LINELENGTH, fp_11) != NULL ) {
-	
-	fgets(line1, MAX_LINELENGTH, fp_11);
-	sscanf(line1, "%d %lf", &natom, &energy);
-	
-	/*read in one chunk at a time*/ 
-	for (i=0; i<num_atoms ; i++) {
-	    if(fscanf(fp_11, "%lf %lf %lf %lf", &an, &x, &y, &z) != 4) {
-		punt("Trouble reading cartesian coordinates from file11.dat");
-	    }
-	    masses[i]=u[3*i][3*i]=u[3*i+1][3*i+1]=u[3*i+2][3*i+2]
-		=an2masses[(int) an];
-
-	}
-	
-	for (i=0; i<num_atoms ; i++) {
-	    if(fscanf(fp_11, "%lf %lf %lf", &x, &y, &z) != 3) {
-		punt("Trouble reading gradients from file11.dat");
-	    }
-	    temp_c_grads[3*i] = x;
-	    temp_c_grads[3*i+1] = y;
-	    temp_c_grads[3*i+2] = z;
-	}
-	
-	fgets(line1, MAX_LINELENGTH, fp_11);
-	
-    }
-
-    /* copy temp_c_grads into c_grads, putting zeroes for dummy atoms */
-    int p=0;
-    for(i=0;i<num_entries;++i) {
-	if(!strcmp(felement[i],"X       ")) {
-	    c_grads[3*i] = 0.0;
-	    c_grads[3*i+1] = 0.0;
-	    c_grads[3*i+2] = 0.0;
-	}
-	else {
-	    c_grads[3*i] = temp_c_grads[3*p];
-	    c_grads[3*i+1] = temp_c_grads[3*p+1];
-	    c_grads[3*i+2] = temp_c_grads[3*p+2];
-	    ++p;
-	}
-    }
-
-    free(temp_c_grads);
-    fclose(fp_11);
-    return;
-}
-
-
-
-/*---------------------------------------------------------------------------*/
-/*! \fn coord_base::write_file30()
-  \brief Writes new cartesians to file 30. */
-/*---------------------------------------------------------------------------*/
-
-void coord_base::write_file30() {
-    
-    int i,j, pos=-1;
-    double** cart_matrix;
-    cart_matrix = init_matrix(num_atoms,3);    
-
-    for(i=0;i<num_entries;++i) 
-	for(j=0;j<3;++j) 
-	    cart_matrix[i][j] = carts[++pos];
-
-    file30_init();
-    file30_wt_geom(cart_matrix);
-    file30_close();
-
+         
     return;
 }
 
@@ -156,7 +68,7 @@ void coord_base :: read_opt() {
 
 	FILE *opt_ptr;
 
-	int i, j, error, num_elems;
+	int i, j, error;
 
 	opt_ptr = fopen("opt.dat","r");
 	if( opt_ptr != NULL ) {      
@@ -172,20 +84,16 @@ void coord_base :: read_opt() {
 	    /*read old coordinate vector*/
 	    error = 0;
 	    error += !ip_exist("COORD",0);  
-	    ip_count("COORD",&num_elems,0);
-	    error += ( num_elems != num_coords ); 
-
-	    for (i=0;i<num_coords;++i) {
+	    ip_count("COORD",&num_coords,0);
+	    
+	    for (i=0;i<num_coords;++i) 
 		error += ip_data("COORD","%lf",&coords_old[i],1,i);
-	    }
-      
+		
 	    if(error != 0)
 		punt("Problem reading old coordinate values from opt.dat");
   
 	    /*read old gradient vector*/
 	    error += !ip_exist("GRAD",0);
-	    ip_count("GRAD",&num_elems,0);
-	    error += ( num_elems != num_coords );
 
 	    for (i=0;i<num_coords;++i) {
 		error += ip_data("GRAD","%lf",&grads_old[i],1,i);
@@ -196,10 +104,6 @@ void coord_base :: read_opt() {
 	    
 	    /*read hmat, the inverse of the hessian*/
 	    error += (!ip_exist("HINV",0));
-	    ip_count("HINV",&num_elems,0);
-	    error += ( num_elems != num_coords );
-	    ip_count("HINV",&num_elems,1,0);
-	    error += ( num_elems != num_coords );
 	    
 	    for (i=0;i<num_coords;++i) {
 		for (j=0;j<num_coords;++j) {
@@ -216,7 +120,7 @@ void coord_base :: read_opt() {
 	
 	fprintf(outfile,"\n\n  Beginning iteration: %d\n",iteration);
 
-	ip_done();
+	return;
 }
 
 
@@ -233,12 +137,16 @@ void coord_base :: write_opt() {
     int place, i, r;
     
     FILE *opt_ptr;
-    
+
+    ip_done();
     ffile(&opt_ptr,"opt.dat",0);
     ip_set_uppercase(1);
     ip_initialize(opt_ptr,outfile);
     
     fprintf(opt_ptr,"opt_info: (\n\n");
+
+    /* write number of coords */
+    fprintf(opt_ptr,"  num_coords = %d\n\n",num_coords);    
     
     /*write iteration number*/
     fprintf(opt_ptr,"  iteration = %d\n\n",iteration);
@@ -255,7 +163,7 @@ void coord_base :: write_opt() {
 	++place;
     }
     fprintf(opt_ptr,")\n\n");
-    
+
     /*write gradient vector*/
     place = 0;
     fprintf(opt_ptr,"  grad = ( ");
@@ -291,6 +199,10 @@ void coord_base :: write_opt() {
     fprintf(opt_ptr,"          )\n");
     
     fclose(opt_ptr);
-    ip_done();
     return;
 }
+
+
+
+
+

@@ -1,7 +1,53 @@
 /*###########################################################################*/
 /*! \file coord_base.h
-  \brief Coordinate base class declaration. */
+  \brief Coordinate base class declarations 
+  (coord_base and coord_base_carts).*/
 
+/*! \class coord_base_carts
+  \brief Cartesian information needed for all coordinate representations.
+
+  All coordinate representations are formed from the basic cartesian
+  coordinates and gradients read from file30 and file11.  This basic
+  information is read and stored in this class. */
+/*  						Joseph P. Kenny 12/08/01
+  ###########################################################################*/
+
+class coord_base_carts {
+  
+  protected:
+
+    /* these should belong to coord_base, but are needed 
+       to read and print cartesians */
+    int num_atoms, /*!< number of atoms */ 
+	num_entries; /*!< number of atoms + dummy atoms */
+
+
+    double *carts, /*!< cartesian coordinate array */
+	*c_grads, /*!< cartesian gradient array */
+	*masses; /*!< masses array, should be member of coord_base class,
+		   but it's read in with cartesian info */
+
+    char *symmetry; /*!< symmetry from input.dat or file30 */
+	
+    virtual void print_carts(double conv);
+    virtual void print_c_grads();
+    void read_file11();
+    virtual void write_file30();   
+
+  public:
+
+    coord_base_carts();
+    ~coord_base_carts(){
+	free(carts);
+	free(c_grads);
+	free(masses);
+	return;
+    }
+};
+
+
+
+/*###########################################################################*/
 /*! \class coord_base
   \brief First level of abstract coordinate classes.
 
@@ -19,24 +65,21 @@
 /*  						Joseph P. Kenny 11/29/01
   ###########################################################################*/
 
-class coord_base : public math_tools {
+class coord_base : protected coord_base_carts,  protected math_tools {
   
   protected:
 
     int iteration, /*!< current iteration */ 
-	num_atoms, /*!< number of atoms */
-	num_entries, /*!< number of entries (including dummy atoms) */
 	num_coords, /*!< number of coordinates which are actually optimized */
 	grad_max, /*!< max allowable gradient is 10^-(grad_max) */
-	print_lvl; /*!< print level */
+	print_lvl, /*!< print level */
+    	do_deriv, /*!< are we doing derivatives */
+	do_opt;   /*!< are we doing optimization */
 
     double *coords, /*!< generic coordinate array */ 
-	*carts, /*!< cartesian coordinate array */
 	*grads, /*!< generic gradient array */
-	*c_grads, /*!< cartesian gradient array */
+	*atomic_nums, /*!< atomic numbers */
 	**Hi, /*!< generic inverse hessian matrix */
-	**u, /*!< the u matrix */
-	*masses, /*!< atomic masses array */
 	*coords_old, /*!< generic coordinates from previous iteration */
 	*grads_old, /*!< generic gradients from previous iteration */
 	**Hi_old, /*!< generic hessian inverse */
@@ -52,55 +95,34 @@ class coord_base : public math_tools {
 	**felement; /*!< the full list of element names 
 		      (including dummy atoms) */
 
-  public:
-
-    coord_base() : math_tools() {return;}
-    void construct_coord_base(int natm, int nent, int nopt);
+    coord_base();
     ~coord_base(){
 
-	free(carts);
-	free(c_grads);
 	free(coords);
 	free(grads);
 	free_matrix(Hi, num_coords);
-	free_matrix(u,3*num_entries);
-	free(masses);
 	free(coords_old);
 	free(grads_old);
 	free_matrix(Hi_old,num_coords);
 	free(coord_write);
+	free(atomic_nums);
 	int i;
         for(i=0;i<num_entries;++i)
 	    free(felement[i]);
 
-	ip_done();
-	tstop(outfile);
-	fclose(infile);
-	fclose(outfile);
-
 	return;
     }
+    void mem_alloc();
     void parse_input();
-    void print_carts(double conv);
-    void print_c_grads();
     void print_Hi();
-    void read_opt();
-    void write_opt();
+    void print_H();
+    virtual void read_opt();
+    virtual void write_opt();
     void update_Hi();
-    void read_file11();
-    virtual void write_file30();
     void grad_test();
     virtual void initial_Hi()=0;
     void H_test();
 };
-
-/*! \fn coord_base::coord_base()
-  \brief Dummy constructor.  
-  
-  This is a dummy constructor which exists to make compilers happy.  It does
-  nothing.  The actual constructor may depend on data which is not know
-  when a derived class is initialized and may be called later in that
-  class's constructor. */
 
 /*! \fn coord_base::~coord_base()
   \brief Destructor.  Memory is freed and io is stopped */
@@ -111,3 +133,8 @@ class coord_base : public math_tools {
 /*! \fn coord_base::write_file30()
   \brief Derived classes may override this function and write necessary 
   information to file30 */
+
+
+
+
+
