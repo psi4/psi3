@@ -155,9 +155,7 @@ void exit_io();
 void get_reorder_array(void);
 void fzc_density(int nirreps, int *docc, double *Pc, double **C,
       int *first, int *first_so, int *last_so, int *ioff);
-void reorder_qt(int *docc, int *socc, int *frozen_docc, int *frozen_uocc,
-      int *order, int *orbs_per_irrep, int nirreps);
-double *** construct_evects(int nirreps, int *active, int *sopi, int *orbspi,
+double *** construct_evects(char *spin, int nirreps, int *active, int *sopi, int *orbspi,
                             int *first_so, int *last_so, int *first, int *last,
 			    int *fstact, int *lstact, int printflag);
 int check_C(int nso, int nmo, double **Cmat, double *S);
@@ -263,6 +261,10 @@ void parse_cmdline(int argc, char *argv[])
 	       params.tei_type = ERI;
 	       params.src_tei_file = PSIF_SO_TEI;
 	       params.mfile = PSIF_MO_TEI;
+	       /* UHF additions, -TDC, 6/01 */
+	       params.aa_mfile = PSIF_MO_AA_TEI;
+	       params.bb_mfile = PSIF_MO_BB_TEI;
+	       params.ab_mfile = PSIF_MO_AB_TEI;
 	       params.do_oei = 1;
 	       break;
 
@@ -357,6 +359,13 @@ void get_parameters(void)
   if (strcmp(params.wfn, "MP2") == 0)
       params.tei_trans_type = MAKE_OVOV;
 
+  /* Adding for UHF capabilities -- TDC, 06/14/01 */
+  errcod = ip_string("REFERENCE", &(params.ref), 0);
+  if(errcod == IPE_KEY_NOT_FOUND) {
+    params.ref = (char *) malloc(sizeof(char)*4);
+    strcpy(params.ref, "RHF");
+  }
+
   errcod = ip_boolean("BACKTRANS", &(params.backtr), 0);
 
   params.tolerance = 1e-14;
@@ -366,10 +375,19 @@ void get_parameters(void)
     }
   params.h_bare_file = PSIF_MO_OEI;
   errcod = ip_data("OEI_FILE","%d",&(params.h_bare_file),0);
+  params.h_bare_a_file = PSIF_MO_A_OEI;
+  errcod = ip_data("OEI_A_FILE","%d",&(params.h_bare_a_file),0);
+  params.h_bare_b_file = PSIF_MO_B_OEI;
+  errcod = ip_data("OEI_B_FILE","%d",&(params.h_bare_b_file),0);
+
   params.h_fzc_file = PSIF_MO_FZC;
   errcod = ip_data("FZC_FILE","%d",&(params.h_fzc_file),0);
+
+  /* The sorted_tei value don't actually seem to be used */
   params.sorted_tei_file = PSIF_MO_TEI;
   errcod = ip_data("SORTED_TEI_FILE","%d",&(params.sorted_tei_file),0);
+
+
   if (params.backtr) {
     params.src_tei_file = PSIF_MO_TPDM;
     errcod = ip_data("TPDM_FILE","%d",&(params.src_tei_file),0);
@@ -407,6 +425,15 @@ void get_parameters(void)
   params.mfile = PSIF_MO_TEI;
   if (params.backtr) params.mfile = PSIF_AO_TPDM;
   errcod = ip_data("M_FILE","%d", &(params.mfile),0);
+
+  /* UHF additions, TDC, 6/01 */
+  params.aa_mfile = PSIF_MO_AA_TEI;
+  errcod = ip_data("AA_M_FILE","%d", &(params.aa_mfile),0);
+  params.bb_mfile = PSIF_MO_BB_TEI;
+  errcod = ip_data("BB_M_FILE","%d", &(params.bb_mfile),0);
+  params.ab_mfile = PSIF_MO_AB_TEI;
+  errcod = ip_data("AB_M_FILE","%d", &(params.ab_mfile),0);
+
   params.max_buckets = 199;
   errcod = ip_data("MAX_BUCKETS","%d", &(params.max_buckets),0);
 
@@ -485,6 +512,7 @@ void get_parameters(void)
   params.fzc = 1;
   errcod = ip_boolean("FREEZE_CORE", &(params.fzc),0);
   if (params.backtr) params.fzc = 0; /* can't freeze core for backtr */
+  if (!strcmp(params.ref,"UHF")) params.fzc = 0; /* can't freeze core for UHF yet */
 
   params.print_reorder = 0;
   errcod = ip_boolean("PRINT_REORDER", &(params.print_reorder),0);
@@ -592,6 +620,8 @@ void get_moinfo(void)
   moinfo.escf = file30_rd_escf();
   moinfo.evals = file30_rd_evals();
   moinfo.scf_vector = file30_rd_scf();
+  moinfo.scf_vector_alpha = file30_rd_alpha_scf();
+  moinfo.scf_vector_beta = file30_rd_beta_scf();
   moinfo.nshell = file30_rd_nshell();
   moinfo.sloc = file30_rd_sloc();
   moinfo.snuc = file30_rd_snuc();
@@ -600,61 +630,66 @@ void get_moinfo(void)
   
   /* reorder the MOs if the user has requested it */
   if (params.reorder) {
-      params.moorder = init_int_array(moinfo.nmo);
-      errcod = ip_int_array("MOORDER",params.moorder,moinfo.nmo);
 
-      if (errcod != IPE_OK) {
-          fprintf(stderr,"ERROR: %s\n",ip_error_message(errcod));
-          fprintf(outfile,"\nTrouble parsing MOORDER.  Ignoring it.\n");
-        }
+    if(!strcmp(params.ref, "UHF")) {
+      fprintf(stderr, "ERROR: MO reordering not allowed for UHF references.\n");
+      exit(1);
+    }
+    params.moorder = init_int_array(moinfo.nmo);
+    errcod = ip_int_array("MOORDER",params.moorder,moinfo.nmo);
 
-      else {
-          /* print the MOORDER array */
-          fprintf(outfile, "\nMOORDER array: \n");
-          for (i=0; i<moinfo.nmo; i++) 
-              fprintf(outfile, "%3d", params.moorder[i]);
-          fprintf(outfile, "\n");
+    if (errcod != IPE_OK) {
+      fprintf(stderr,"ERROR: %s\n",ip_error_message(errcod));
+      fprintf(outfile,"\nTrouble parsing MOORDER.  Ignoring it.\n");
+    }
 
-          /* change numbering in MOORDER from relative to absolute Pitzer */
-          for (i=0,k=0,h=-1; i<moinfo.nirreps; i++) {
-              for (j=0; j<moinfo.orbspi[i]; j++) {
-                  params.moorder[k++] += h;
-                }
-              h += j;
-            }
+    else {
+      /* print the MOORDER array */
+      fprintf(outfile, "\nMOORDER array: \n");
+      for (i=0; i<moinfo.nmo; i++) 
+	fprintf(outfile, "%3d", params.moorder[i]);
+      fprintf(outfile, "\n");
+
+      /* change numbering in MOORDER from relative to absolute Pitzer */
+      for (i=0,k=0,h=-1; i<moinfo.nirreps; i++) {
+	for (j=0; j<moinfo.orbspi[i]; j++) {
+	  params.moorder[k++] += h;
+	}
+	h += j;
+      }
  
-          /* swap the rows of the SCF coefficient matrix */
-          tmpmat = init_matrix(moinfo.nso,moinfo.nmo);
-          for (i=0; i<moinfo.nso; i++)
-              for (j=0; j<moinfo.nmo; j++)
-                  tmpmat[i][j] = moinfo.scf_vector[i][j];
-          for (i=0; i<moinfo.nso; i++) 
-              for (j=0; j<moinfo.nmo; j++) 
-                  moinfo.scf_vector[i][j] = tmpmat[i][params.moorder[j]];
+      /* swap the rows of the SCF coefficient matrix */
+      tmpmat = init_matrix(moinfo.nso,moinfo.nmo);
+      for (i=0; i<moinfo.nso; i++)
+	for (j=0; j<moinfo.nmo; j++)
+	  tmpmat[i][j] = moinfo.scf_vector[i][j];
+      for (i=0; i<moinfo.nso; i++) 
+	for (j=0; j<moinfo.nmo; j++) 
+	  moinfo.scf_vector[i][j] = tmpmat[i][params.moorder[j]];
 
-          /* swap around the eigenvalues, too, just in case we ever use them */
-          for (i=0; i<moinfo.nmo; i++)
-              tmpmat[0][i] = moinfo.evals[i];
-          for (i=0; i<moinfo.nmo; i++) 
-              moinfo.evals[i] = tmpmat[0][params.moorder[i]];
+      /* swap around the eigenvalues, too, just in case we ever use them */
+      for (i=0; i<moinfo.nmo; i++)
+	tmpmat[0][i] = moinfo.evals[i];
+      for (i=0; i<moinfo.nmo; i++) 
+	moinfo.evals[i] = tmpmat[0][params.moorder[i]];
 
-          free_matrix(tmpmat, moinfo.nso);        
-        }
-    } 
+      free_matrix(tmpmat, moinfo.nso);        
+    }
+  } 
 
   moinfo.sosym = init_int_array(moinfo.nso);
   for (i=0,k=0; i<moinfo.nirreps; i++) {
-      for (j=0; j<moinfo.sopi[i]; j++,k++) {
-          moinfo.sosym[k] = i;
-        }
+    for (j=0; j<moinfo.sopi[i]; j++,k++) {
+      moinfo.sosym[k] = i;
     }
+  }
   
   moinfo.orbsym = init_int_array(moinfo.nmo);
   for (i=0,k=0; i<moinfo.nirreps; i++) {
-      for (j=0; j<moinfo.orbspi[i]; j++,k++) {
-          moinfo.orbsym[k] = i;
-        }
+    for (j=0; j<moinfo.orbspi[i]; j++,k++) {
+      moinfo.orbsym[k] = i;
     }
+  }
 
   moinfo.frdocc = init_int_array(moinfo.nirreps);
   moinfo.fruocc = init_int_array(moinfo.nirreps);
@@ -662,44 +697,44 @@ void get_moinfo(void)
   errcod = ip_int_array("FROZEN_UOCC", moinfo.fruocc, moinfo.nirreps);
 
   if (!params.fzc) {
-      for (i=0; i<moinfo.nirreps; i++) {
-          moinfo.frdocc[i] = 0;
-        }
+    for (i=0; i<moinfo.nirreps; i++) {
+      moinfo.frdocc[i] = 0;
     }
+  }
 
   moinfo.nfzc = 0;
   moinfo.nfzv = 0;
   for (i=0; i<moinfo.nirreps; i++) {
-      moinfo.nfzc += moinfo.frdocc[i];
-      moinfo.nfzv += moinfo.fruocc[i];
-    }
+    moinfo.nfzc += moinfo.frdocc[i];
+    moinfo.nfzv += moinfo.fruocc[i];
+  }
 
   moinfo.ndocc = 0;
   tmpi = init_int_array(moinfo.nirreps);
   errcod = ip_int_array("DOCC", tmpi, moinfo.nirreps);
   if (errcod == IPE_OK) {
-      for (i=0,warned=0; i<moinfo.nirreps; i++) {
-          if (tmpi[i] != moinfo.clsdpi[i] && !warned && !params.qrhf) {
-              fprintf(outfile, "\tWarning: DOCC doesn't match file30\n");
-              warned = 1;
-            }
-          moinfo.clsdpi[i] = tmpi[i];
-          moinfo.ndocc += tmpi[i];
-        }
+    for (i=0,warned=0; i<moinfo.nirreps; i++) {
+      if (tmpi[i] != moinfo.clsdpi[i] && !warned && !params.qrhf) {
+	fprintf(outfile, "\tWarning: DOCC doesn't match file30\n");
+	warned = 1;
+      }
+      moinfo.clsdpi[i] = tmpi[i];
+      moinfo.ndocc += tmpi[i];
     }
+  }
 
   moinfo.nsocc = 0;
   errcod = ip_int_array("SOCC", tmpi, moinfo.nirreps);
   if (errcod == IPE_OK) {
-      for (i=0,warned=0; i<moinfo.nirreps; i++) {
-          if (tmpi[i] != moinfo.openpi[i] && !warned && !params.qrhf) {
-              fprintf(outfile, "\tWarning: SOCC doesn't match file30\n");
-              warned = 1;
-            }
-          moinfo.openpi[i] = tmpi[i];
-          moinfo.nsocc += tmpi[i];
-        }
+    for (i=0,warned=0; i<moinfo.nirreps; i++) {
+      if (tmpi[i] != moinfo.openpi[i] && !warned && !params.qrhf) {
+	fprintf(outfile, "\tWarning: SOCC doesn't match file30\n");
+	warned = 1;
+      }
+      moinfo.openpi[i] = tmpi[i];
+      moinfo.nsocc += tmpi[i];
     }
+  }
 
   /* Dump the new occupations to file30 if QRHF reference requested 
      TDC,3/20/00 */
@@ -708,35 +743,35 @@ void get_moinfo(void)
     file30_wt_openpi(moinfo.openpi);
     for(i=0,nopen=0; i < moinfo.nirreps; i++) nopen += moinfo.openpi[i];
     file30_wt_iopen(nopen);
-    }
+  }
 
   moinfo.virtpi = init_int_array(moinfo.nirreps);
   for(i=0; i < moinfo.nirreps; i++) {
-      moinfo.virtpi[i] = moinfo.orbspi[i]-moinfo.clsdpi[i]-moinfo.openpi[i];
-    }
+    moinfo.virtpi[i] = moinfo.orbspi[i]-moinfo.clsdpi[i]-moinfo.openpi[i];
+  }
 
   if (params.print_lvl) {
-      fprintf(outfile,"\n\tFile30 Parameters:\n");
-      fprintf(outfile,"\t------------------\n");
-      fprintf(outfile,"\tNumber of irreps = %d\n",moinfo.nirreps);
-      fprintf(outfile,"\tNumber of SOs    = %d\n",moinfo.nso);
-      fprintf(outfile,"\tNumber of MOs    = %d\n\n",moinfo.nmo);
+    fprintf(outfile,"\n\tFile30 Parameters:\n");
+    fprintf(outfile,"\t------------------\n");
+    fprintf(outfile,"\tNumber of irreps = %d\n",moinfo.nirreps);
+    fprintf(outfile,"\tNumber of SOs    = %d\n",moinfo.nso);
+    fprintf(outfile,"\tNumber of MOs    = %d\n\n",moinfo.nmo);
+    fprintf(outfile,
+	    "\tLabel\t# SOs\t# MOs\t# FZDC\t# DOCC\t# SOCC\t# VIRT\t# FZVR\n");
+    fprintf(outfile,
+	    "\t-----\t-----\t-----\t------\t------\t------\t------\t------\n");
+    for(i=0; i < moinfo.nirreps; i++) {
       fprintf(outfile,
-          "\tLabel\t# SOs\t# MOs\t# FZDC\t# DOCC\t# SOCC\t# VIRT\t# FZVR\n");
-      fprintf(outfile,
-          "\t-----\t-----\t-----\t------\t------\t------\t------\t------\n");
-      for(i=0; i < moinfo.nirreps; i++) {
-          fprintf(outfile,
-                  "\t %s\t   %d\t   %d\t    %d\t    %d\t    %d\t    %d\t    %d\n",
-                  moinfo.labels[i],moinfo.sopi[i],moinfo.orbspi[i],moinfo.frdocc[i],
-                  moinfo.clsdpi[i],moinfo.openpi[i],moinfo.virtpi[i],
-                  moinfo.fruocc[i]);
-        }
-      fprintf(outfile,"\n\tNuclear Repulsion Energy    = %20.10f\n",
-                  moinfo.enuc);
-      fprintf(outfile,  "\tTotal SCF Energy            = %20.10f\n",
-                  moinfo.escf);
+	      "\t %s\t   %d\t   %d\t    %d\t    %d\t    %d\t    %d\t    %d\n",
+	      moinfo.labels[i],moinfo.sopi[i],moinfo.orbspi[i],moinfo.frdocc[i],
+	      moinfo.clsdpi[i],moinfo.openpi[i],moinfo.virtpi[i],
+	      moinfo.fruocc[i]);
     }
+    fprintf(outfile,"\n\tNuclear Repulsion Energy    = %20.10f\n",
+	    moinfo.enuc);
+    fprintf(outfile,  "\tTotal SCF Energy            = %20.10f\n",
+	    moinfo.escf);
+  }
 
   /* Set up some other useful parameters */
   moinfo.noeints = moinfo.nso*(moinfo.nso+1)/2;
@@ -744,88 +779,88 @@ void get_moinfo(void)
 
 
   /*
-     Construct first and last index arrays for SOs: this defines the first
-     absolute orbital index and last absolute orbital
-     index for each irrep.  When there are no orbitals for an irrep, the
-     value is -1 for first[] and -2 for last[].  Note that there must be
-     basis functions in the first irrep (i.e. totally symmetric) for this to work.
+    Construct first and last index arrays for SOs: this defines the first
+    absolute orbital index and last absolute orbital
+    index for each irrep.  When there are no orbitals for an irrep, the
+    value is -1 for first[] and -2 for last[].  Note that there must be
+    basis functions in the first irrep (i.e. totally symmetric) for this to work.
   */
   moinfo.first_so = init_int_array(moinfo.nirreps);
   moinfo.last_so = init_int_array(moinfo.nirreps);
   for(h=0; h < moinfo.nirreps; h++) {
-      moinfo.first_so[h] = -1;
-      moinfo.last_so[h] = -2;
-    }
+    moinfo.first_so[h] = -1;
+    moinfo.last_so[h] = -2;
+  }
   first_offset = 0;
   last_offset = moinfo.sopi[0] - 1; 
   moinfo.first_so[0] = first_offset;
   moinfo.last_so[0] = last_offset;
   for(h=1; h < moinfo.nirreps; h++) {
-      first_offset += moinfo.sopi[h-1];
-      last_offset += moinfo.sopi[h];
-      if(moinfo.sopi[h]) {
-          moinfo.first_so[h] = first_offset;
-          moinfo.last_so[h] = last_offset;
-        }
+    first_offset += moinfo.sopi[h-1];
+    last_offset += moinfo.sopi[h];
+    if(moinfo.sopi[h]) {
+      moinfo.first_so[h] = first_offset;
+      moinfo.last_so[h] = last_offset;
     }
+  }
   
   /*
-     Construct first and last index arrays: this defines the first
-     absolute orbital index (Pitzer ordering) and last absolute orbital
-     index for each irrep.  When there are no orbitals for an irrep, the
-     value is -1 for first[] and -2 for last[].  Note that there must be
-     orbitals in the first irrep (i.e. totally symmetric) for this to work.
+    Construct first and last index arrays: this defines the first
+    absolute orbital index (Pitzer ordering) and last absolute orbital
+    index for each irrep.  When there are no orbitals for an irrep, the
+    value is -1 for first[] and -2 for last[].  Note that there must be
+    orbitals in the first irrep (i.e. totally symmetric) for this to work.
   */
   moinfo.first = init_int_array(moinfo.nirreps);
   moinfo.last = init_int_array(moinfo.nirreps);
   for(h=0; h < moinfo.nirreps; h++) {
-      moinfo.first[h] = -1;
-      moinfo.last[h] = -2;
-    }
+    moinfo.first[h] = -1;
+    moinfo.last[h] = -2;
+  }
   first_offset = 0;
   last_offset = moinfo.orbspi[0] - 1; 
   moinfo.first[0] = first_offset;
   moinfo.last[0] = last_offset;
   for(h=1; h < moinfo.nirreps; h++) {
-      first_offset += moinfo.orbspi[h-1];
-      last_offset += moinfo.orbspi[h];
-      if(moinfo.orbspi[h]) {
-          moinfo.first[h] = first_offset;
-          moinfo.last[h] = last_offset;
-        }
+    first_offset += moinfo.orbspi[h-1];
+    last_offset += moinfo.orbspi[h];
+    if(moinfo.orbspi[h]) {
+      moinfo.first[h] = first_offset;
+      moinfo.last[h] = last_offset;
     }
+  }
   /*
-     Construct first and last active index arrays: this defines the first
-     absolute orbital index (Pitzer ordering) and last absolute orbital
-     index for each irrep, excluding frozen orbitals.  When there are no
-     orbitals for an irrep, the value is -1 for first[] and -2 for last[].
-     Note that there must be orbitals in the first irrep (i.e. totally
-     symmetric) for this to work.  
+    Construct first and last active index arrays: this defines the first
+    absolute orbital index (Pitzer ordering) and last absolute orbital
+    index for each irrep, excluding frozen orbitals.  When there are no
+    orbitals for an irrep, the value is -1 for first[] and -2 for last[].
+    Note that there must be orbitals in the first irrep (i.e. totally
+    symmetric) for this to work.  
   */
   moinfo.fstact = init_int_array(moinfo.nirreps);
   moinfo.lstact = init_int_array(moinfo.nirreps);
   for(h=0; h < moinfo.nirreps; h++) {
-      moinfo.fstact[h] = -1;
-      moinfo.lstact[h] = -2;
-    }
+    moinfo.fstact[h] = -1;
+    moinfo.lstact[h] = -2;
+  }
   first_offset = moinfo.frdocc[0];
   last_offset = moinfo.orbspi[0] - moinfo.fruocc[0] - 1; 
   moinfo.fstact[0] = first_offset;
   moinfo.lstact[0] = last_offset;
   for(h=1; h < moinfo.nirreps; h++) {
-      first_offset += moinfo.orbspi[h-1]+moinfo.frdocc[h]-moinfo.frdocc[h-1];
-      last_offset += moinfo.orbspi[h] - moinfo.fruocc[h] + moinfo.fruocc[h-1];
-      if(moinfo.orbspi[h]) {
-          moinfo.fstact[h] = first_offset;
-          moinfo.lstact[h] = last_offset;
-        }
+    first_offset += moinfo.orbspi[h-1]+moinfo.frdocc[h]-moinfo.frdocc[h-1];
+    last_offset += moinfo.orbspi[h] - moinfo.fruocc[h] + moinfo.fruocc[h-1];
+    if(moinfo.orbspi[h]) {
+      moinfo.fstact[h] = first_offset;
+      moinfo.lstact[h] = last_offset;
     }
+  }
 
   /* Now define active[] such that frozen orbitals are taken into account */
   moinfo.active = init_int_array(moinfo.nirreps);
   for(h=0; h < moinfo.nirreps; h++) {
-      moinfo.active[h] = moinfo.orbspi[h]-moinfo.frdocc[h]-moinfo.fruocc[h];
-    }
+    moinfo.active[h] = moinfo.orbspi[h]-moinfo.frdocc[h]-moinfo.fruocc[h];
+  }
 
   /* Organize MOs into symmetry blocks; good for symmetry-blocked transform */
   /* We need to really change things around at this point if it is a        */
@@ -835,23 +870,48 @@ void get_moinfo(void)
   /*   but this requires some complicated sorting that we will avoid now.   */
 
   if(params.print_mos) {
-      fprintf(outfile,"\n\tSCF Eigenvectors (Transformation Matrix):\n");
-      fprintf(outfile,  "\t-----------------------------------------\n");
-    }
+    fprintf(outfile,"\n\tSCF Eigenvectors (Transformation Matrix):\n");
+    fprintf(outfile,  "\t-----------------------------------------\n");
+  }
 
   if (!params.backtr) {
-    if (params.do_all_tei) 
-      moinfo.evects = construct_evects(moinfo.nirreps, moinfo.orbspi,
+    if (params.do_all_tei) {
+
+      moinfo.evects = construct_evects("alpha", moinfo.nirreps, moinfo.orbspi,
 				       moinfo.sopi, moinfo.orbspi,
 				       moinfo.first_so, moinfo.last_so,
 				       moinfo.first, moinfo.last, 
 				       moinfo.first, moinfo.last, params.print_mos);
-    else 
-      moinfo.evects = construct_evects(moinfo.nirreps, moinfo.active,
+
+      moinfo.evects_alpha = construct_evects("alpha", moinfo.nirreps, moinfo.orbspi,
+					     moinfo.sopi, moinfo.orbspi,
+					     moinfo.first_so, moinfo.last_so,
+					     moinfo.first, moinfo.last, 
+					     moinfo.first, moinfo.last, params.print_mos);
+
+      moinfo.evects_beta = construct_evects("beta", moinfo.nirreps, moinfo.orbspi,
+					    moinfo.sopi, moinfo.orbspi,
+					    moinfo.first_so, moinfo.last_so,
+					    moinfo.first, moinfo.last, 
+					    moinfo.first, moinfo.last, params.print_mos);
+    }
+    else {
+      moinfo.evects = construct_evects("alpha", moinfo.nirreps, moinfo.active,
 				       moinfo.sopi, moinfo.orbspi,
 				       moinfo.first_so, moinfo.last_so,
 				       moinfo.first, moinfo.last, 
 				       moinfo.fstact, moinfo.lstact, params.print_mos);
+      moinfo.evects_alpha = construct_evects("alpha", moinfo.nirreps, moinfo.active,
+					     moinfo.sopi, moinfo.orbspi,
+					     moinfo.first_so, moinfo.last_so,
+					     moinfo.first, moinfo.last, 
+					     moinfo.fstact, moinfo.lstact, params.print_mos);
+      moinfo.evects_beta = construct_evects("alpha", moinfo.nirreps, moinfo.active,
+					    moinfo.sopi, moinfo.orbspi,
+					    moinfo.first_so, moinfo.last_so,
+					    moinfo.first, moinfo.last, 
+					    moinfo.fstact, moinfo.lstact, params.print_mos);
+    }
 
   }
 
@@ -865,9 +925,18 @@ void get_moinfo(void)
 
     moinfo.evects = (double ***) malloc (1 * sizeof(double **));
     moinfo.evects[0] = block_matrix(moinfo.nao, moinfo.nmo - moinfo.nfzv);
+
+    moinfo.evects_alpha = (double ***) malloc (1 * sizeof(double **));
+    moinfo.evects_alpha[0] = block_matrix(moinfo.nao, moinfo.nmo - moinfo.nfzv);
+    moinfo.evects_beta = (double ***) malloc (1 * sizeof(double **));
+    moinfo.evects_beta[0] = block_matrix(moinfo.nao, moinfo.nmo - moinfo.nfzv);
     
-    /* fill up a temporary SCF matrix with frozen virt columns deleted */ 
+    if (params.print_mos) fprintf(outfile, "SO to AO matrix\n");
+    so2ao = file30_rd_usotao_new();
+    if (params.print_mos) print_mat(so2ao,moinfo.nso,moinfo.nao,outfile);
     tmpmat = init_matrix(moinfo.nso, moinfo.nmo - moinfo.nfzv);
+
+    /* fill up a temporary SCF matrix with frozen virt columns deleted */ 
     for (h=0,offset=0; h < moinfo.nirreps; h++) {
       if (h > 0) offset += moinfo.fruocc[h-1];
       if (moinfo.first[h] < 0 || moinfo.lstact[h] < 0) continue;
@@ -879,14 +948,47 @@ void get_moinfo(void)
     }
     
     /* now that we have C, multiply it by the SO->AO transform matrix */
-    if (params.print_mos) fprintf(outfile, "SO to AO matrix\n");
-    so2ao = file30_rd_usotao_new();
-    if (params.print_mos) print_mat(so2ao,moinfo.nso,moinfo.nao,outfile);
     mmult(so2ao,1,tmpmat,0,moinfo.evects[0],0,moinfo.nao,moinfo.nso,
 	  moinfo.nmo - moinfo.nfzv,0);
-    if (params.print_mos) {
+    if (params.print_mos && strcmp(params.ref,"UHF")) {
       fprintf(outfile, "C matrix (including AO to SO)\n");
       print_mat(moinfo.evects[0],moinfo.nao,moinfo.nmo-moinfo.nfzv,outfile);
+    }
+
+    /*** Repeat this process for alpha SCF matrix ***/
+    for (h=0,offset=0; h < moinfo.nirreps; h++) {
+      if (h > 0) offset += moinfo.fruocc[h-1];
+      if (moinfo.first[h] < 0 || moinfo.lstact[h] < 0) continue;
+      for (p=moinfo.first_so[h]; p <= moinfo.last_so[h]; p++) {
+	for (q=moinfo.first[h]; q <= moinfo.lstact[h]; q++) {
+	  tmpmat[p][q-offset] = moinfo.scf_vector_alpha[p][q];
+	}
+      }
+    }
+    
+    mmult(so2ao,1,tmpmat,0,moinfo.evects[0],0,moinfo.nao,moinfo.nso,
+	  moinfo.nmo - moinfo.nfzv,0);
+    if (params.print_mos && !strcmp(params.ref,"UHF")) {
+      fprintf(outfile, "Alpha C matrix (including AO to SO)\n");
+      print_mat(moinfo.evects[0],moinfo.nao,moinfo.nmo-moinfo.nfzv,outfile);
+    }
+
+    /*** Repeat this process for beta SCF matrix ***/
+    for (h=0,offset=0; h < moinfo.nirreps; h++) {
+      if (h > 0) offset += moinfo.fruocc[h-1];
+      if (moinfo.first[h] < 0 || moinfo.lstact[h] < 0) continue;
+      for (p=moinfo.first_so[h]; p <= moinfo.last_so[h]; p++) {
+	for (q=moinfo.first[h]; q <= moinfo.lstact[h]; q++) {
+	  tmpmat[p][q-offset] = moinfo.scf_vector_alpha[p][q];
+	}
+      }
+    }
+
+    mmult(so2ao,1,tmpmat,0,moinfo.evects_beta[0],0,moinfo.nao,moinfo.nso,
+	  moinfo.nmo - moinfo.nfzv,0);
+    if (params.print_mos && !strcmp(params.ref,"UHF")) {
+      fprintf(outfile, "Beta C matrix (including AO to SO)\n");
+      print_mat(moinfo.evects_beta[0],moinfo.nao,moinfo.nmo-moinfo.nfzv,outfile);
     }
 
     free_matrix(tmpmat, moinfo.nso);
@@ -935,6 +1037,8 @@ void get_reorder_array(void)
   int j, k, l, fzv_offset;
 
   moinfo.order = init_int_array(moinfo.nmo);
+  moinfo.order_alpha = init_int_array(moinfo.nmo);
+  moinfo.order_beta = init_int_array(moinfo.nmo);
 
   /* for backtransforms, no reorder array...map Pitzer to Pitzer */
   if (strcmp(params.wfn, "CI") == 0 || strcmp(params.wfn, "DETCI") == 0
@@ -964,6 +1068,8 @@ void get_reorder_array(void)
   else { /* default (CC, MP2, other) */
     reorder_qt(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc,
 	       moinfo.order, moinfo.orbspi, moinfo.nirreps);
+    reorder_qt_uhf(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc,
+	       moinfo.order_alpha, moinfo.order_beta, moinfo.orbspi, moinfo.nirreps);
   }
   
   if (params.print_reorder) {
@@ -1107,13 +1213,18 @@ void get_one_electron_integrals()
 ** may be deleted if desired.
 **
 */
-double *** construct_evects(int nirreps, int *active, int *sopi, int *orbspi,
+double *** construct_evects(char *spin, int nirreps, int *active, int *sopi, int *orbspi,
                             int *first_so, int *last_so, int *first, int *last,
 			    int *fstact, int *lstact, int printflag)
 {
 
   int h, row, col, p, q;
   double ***evects;
+  double **scf;
+
+  if(!strcmp(spin,"alpha")) scf = moinfo.scf_vector_alpha;
+  else if(!strcmp(spin,"beta")) scf = moinfo.scf_vector_beta;
+  else { fprintf(stderr, "ERROR: Bad spin value!\n"); exit(1); }
 
   evects = (double ***) malloc(nirreps * sizeof(double **));
 
@@ -1125,7 +1236,7 @@ double *** construct_evects(int nirreps, int *active, int *sopi, int *orbspi,
         row++; col = -1;
         for(q=fstact[h]; q <= lstact[h]; q++) {
           col++;
-          evects[h][row][col] = moinfo.scf_vector[p][q];
+          evects[h][row][col] = scf[p][q];
         }
       }
 
@@ -1151,6 +1262,8 @@ void destruct_evects(int nirreps, double ***evects)
 
   for (h=0; h<nirreps; h++)
     if (evects[h] != NULL) free_block(evects[h]);
+
+  free(evects);
 }
 
 

@@ -21,6 +21,8 @@ void cleanup(void)
   free(moinfo.sosym);
   free(moinfo.orbsym);
   free(moinfo.order);
+  free(moinfo.order_alpha);
+  free(moinfo.order_beta);
   free(moinfo.corr2pitz);
   free(moinfo.fruocc);
   if (params.backtr) free(moinfo.corr2pitz_nofzv);
@@ -36,8 +38,14 @@ void cleanup(void)
   free(moinfo.labels);
   destruct_evects(params.backtr ? moinfo.backtr_nirreps : moinfo.nirreps, 
                   moinfo.evects);
+  destruct_evects(params.backtr ? moinfo.backtr_nirreps : moinfo.nirreps, 
+                  moinfo.evects_alpha);
+  destruct_evects(params.backtr ? moinfo.backtr_nirreps : moinfo.nirreps, 
+                  moinfo.evects_beta);
   free(moinfo.active);
   free_block(moinfo.scf_vector);
+  free_block(moinfo.scf_vector_alpha);
+  free_block(moinfo.scf_vector_beta);
   free(moinfo.evals);
   free(moinfo.oe_ints);
   free(moinfo.fzc_operator);

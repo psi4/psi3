@@ -17,6 +17,7 @@ transform_two.c \
 transform_two_mp2.c \
 transform_two_mp2r12a_gr.c \
 transform_two_mp2r12a_t.c \
+transform_two_uhf.c \
 yoshimine.c \
 frozen_core.c \
 backsort.c \

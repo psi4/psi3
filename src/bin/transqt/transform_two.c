@@ -14,6 +14,7 @@
 
 
 void transform_two_mp2(int maxcor, int maxcord);
+
 double fzc_energy(int nbfso, int *sosym, double *P, double *Hc, double *H,
       int *first_so, int *ioff);
 void backsort_write(int i, int j, double **A, int kfirst, int klast,
@@ -57,6 +58,11 @@ void transform_two(void)
   int A_cols, B_cols, *C_cols;
   struct iwlbuf *twopdm_out;
 
+  /* Special code for UHF transformations */
+  if(!strcmp(params.ref, "UHF")) {
+    transform_two_uhf();
+    return;
+  }
 
   nmo = moinfo.nmo;
   nirreps = params.backtr ? moinfo.backtr_nirreps : moinfo.nirreps;

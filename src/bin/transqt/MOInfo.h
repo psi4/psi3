@@ -27,6 +27,8 @@ struct MOInfo {
     int *orbsym;           /* array giving irrep for each MO                 */
 
     int *order;            /* reordering array                               */
+    int *order_alpha;      /* alpha-orbital reordering array                 */
+    int *order_beta;       /* beta-orbital reordering array                  */
     int *corr2pitz_nofzv;  /* correlated->Pitzer order, excluding fzv's      */
     int *corr2pitz;        /* same as above but includes fzv's               */
     int *fruocc;           /* num of frozen virts per irrep                  */
@@ -34,6 +36,10 @@ struct MOInfo {
     int *active;           /* num of active orbitals per irrep               */
     int *first;            /* first orbital (pitzer address) per irrep       */
     int *last;             /* last orbital per irrep                         */
+    int *first_alpha;      /* first alpha orbital (pitzer) per irrep         */
+    int *last_alpha;       /* last alpha orbital per irrep                   */
+    int *first_beta;       /* first beta orbital (pitzer) per irrep          */
+    int *last_beta;        /* last beta orbital per irrep                    */
     int *first_so;         /* first basis function (SO) per irrep            */
     int *last_so;          /* last basis function (SO) per irrep             */
     int *fstact;           /* first active orbital per irrep                 */
@@ -57,7 +63,11 @@ struct MOInfo {
     double escf;           /* SCF energy                                     */
     double efzc;           /* Frozen core energy                             */
     double ***evects;      /* SCF eigenvector matrix for each irrep          */
+    double ***evects_alpha;/* SCF alpha eigenvector matrix for each irrep    */
+    double ***evects_beta; /* SCF beta eigenvector matrix for each irrep     */
     double **scf_vector;   /* Full SCF eigenvector matrix                    */
+    double **scf_vector_alpha; /* Full SCF eigenvector matrix                */
+    double **scf_vector_beta; /* Full SCF eigenvector matrix                 */
     double *evals;         /* SCF eigenvalue array                           */
     double *oe_ints;       /* one-electron AO integrals (lwr triangle)       */
     double *S;             /* AO overlap matrix (lwr triangle)               */

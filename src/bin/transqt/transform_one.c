@@ -16,11 +16,11 @@
 
 void trans_one_forwards(void);
 void trans_one_backwards(void);
-void tran_one(int nirreps, int src_orbs, int *src_first, int *src_last,
+void tran_one(int nirreps, double ***C, int src_orbs, int *src_first, int *src_last,
               int *src_orbspi, int dst_orbs, int *dst_first, int *dst_last,
-              int *dst_orbspi, double *src_ints, double *dst_ints,
+              int *dst_orbspi, double *src_ints, double *dst_ints, int *order,
               char *label, int backtran, int nfzc, int printflg,FILE *outfile);
-double *** construct_evects(int nirreps, int *active, int *sopi, int *orbspi,
+double *** construct_evects(char *spin, int nirreps, int *active, int *sopi, int *orbspi,
                             int *first_so, int *last_so, int *first, int *last,
 			    int *fstact, int *lstact, int printflag);
 
@@ -103,30 +103,78 @@ void trans_one_forwards(void)
    */ 
   if (!params.do_all_tei) {
     destruct_evects(nirreps, moinfo.evects);
+    destruct_evects(nirreps, moinfo.evects_alpha);
+    destruct_evects(nirreps, moinfo.evects_beta);
 
-    moinfo.evects = construct_evects(moinfo.nirreps, moinfo.orbspi,
+    moinfo.evects = construct_evects("alpha", moinfo.nirreps, moinfo.orbspi,
 				     moinfo.sopi, moinfo.orbspi,
 				     moinfo.first_so, moinfo.last_so,
 				     moinfo.first, moinfo.last,
 				     moinfo.first, moinfo.last, params.print_mos);
+    moinfo.evects_alpha = construct_evects("alpha", moinfo.nirreps, moinfo.orbspi,
+					   moinfo.sopi, moinfo.orbspi,
+					   moinfo.first_so, moinfo.last_so,
+					   moinfo.first, moinfo.last,
+					   moinfo.first, moinfo.last, params.print_mos);
+    moinfo.evects_beta = construct_evects("beta", moinfo.nirreps, moinfo.orbspi,
+					  moinfo.sopi, moinfo.orbspi,
+					  moinfo.first_so, moinfo.last_so,
+					  moinfo.first, moinfo.last,
+					  moinfo.first, moinfo.last, params.print_mos);
   }
 
   if (params.do_h_bare) {
     
-    itap = params.h_bare_file;
     oe_ints = moinfo.oe_ints;
+
+    if(!strcmp(params.ref,"UHF")) {
     
-    tran_one(nirreps, src_orbs, src_first, src_last, src_orbspi, dst_orbs, 
-             dst_first, dst_last, dst_orbspi, oe_ints, new_oe_ints, 
-             "\n\n\tOne-Electron Integrals (MO Basis):\n", 
-             params.backtr, nfzc, print_integrals, outfile);
+      itap = params.h_bare_a_file;
 
-    iwl_wrtone(itap, dst_ntri, new_oe_ints, moinfo.efzc);
+      tran_one(nirreps, moinfo.evects_alpha, src_orbs, src_first, src_last, src_orbspi, dst_orbs, 
+	       dst_first, dst_last, dst_orbspi, oe_ints, new_oe_ints, moinfo.order_alpha,
+	       "\n\n\tOne-Electron Alpha Integrals (MO Basis):\n", 
+	       params.backtr, nfzc, print_integrals, outfile);
 
-    if (params.print_lvl) {
-      fprintf(outfile, "\tOne-electron integrals written to file %d.\n", itap);
-      fflush(outfile);
+      iwl_wrtone(itap, dst_ntri, new_oe_ints, moinfo.efzc);
+
+      if (params.print_lvl) {
+	fprintf(outfile, "\tOne-electron A integrals written to file %d.\n", itap);
+	fflush(outfile);
+      }
+      itap = params.h_bare_b_file;
+
+      /* Clear the new_oe_ints */
+      zero_arr(new_oe_ints,dst_ntri);
+
+      tran_one(nirreps, moinfo.evects_beta, src_orbs, src_first, src_last, src_orbspi, dst_orbs, 
+	       dst_first, dst_last, dst_orbspi, oe_ints, new_oe_ints, moinfo.order_beta,
+	       "\n\n\tOne-Electron Beta Integrals (MO Basis):\n", 
+	       params.backtr, nfzc, print_integrals, outfile);
+
+      iwl_wrtone(itap, dst_ntri, new_oe_ints, moinfo.efzc);
+      if (params.print_lvl) {
+	fprintf(outfile, "\tOne-electron B integrals written to file %d.\n", itap);
+	fflush(outfile);
+      }
     }
+    else {
+
+      itap = params.h_bare_file;
+
+      tran_one(nirreps, moinfo.evects, src_orbs, src_first, src_last, src_orbspi, dst_orbs, 
+	       dst_first, dst_last, dst_orbspi, oe_ints, new_oe_ints, moinfo.order,
+	       "\n\n\tOne-Electron Integrals (MO Basis):\n", 
+	       params.backtr, nfzc, print_integrals, outfile);
+
+
+      iwl_wrtone(itap, dst_ntri, new_oe_ints, moinfo.efzc);
+      if (params.print_lvl) {
+	fprintf(outfile, "\tOne-electron integrals written to file %d.\n", itap);
+	fflush(outfile);
+      }
+    }
+
 
   }
 
@@ -136,8 +184,8 @@ void trans_one_forwards(void)
     itap = params.h_fzc_file;
     oe_ints = moinfo.fzc_operator;
 
-    tran_one(nirreps, src_orbs, src_first, src_last, src_orbspi, dst_orbs, 
-             dst_first, dst_last, dst_orbspi, oe_ints, new_oe_ints, 
+    tran_one(nirreps, moinfo.evects, src_orbs, src_first, src_last, src_orbspi, dst_orbs, 
+             dst_first, dst_last, dst_orbspi, oe_ints, new_oe_ints, moinfo.order,
              "\n\n\tFrozen-Core Operator (MO Basis):\n", 
              params.backtr, nfzc, print_integrals, outfile);
 
@@ -247,8 +295,8 @@ void trans_one_backwards(void)
   oe_ints = opdm;
   new_oe_ints = init_array(dst_ntri);
   
-  tran_one(nirreps, src_orbs, src_first, src_last, src_orbspi, dst_orbs, 
-	   dst_first, dst_last, dst_orbspi, oe_ints, new_oe_ints, 
+  tran_one(nirreps, moinfo.evects, src_orbs, src_first, src_last, src_orbspi, dst_orbs, 
+	   dst_first, dst_last, dst_orbspi, oe_ints, new_oe_ints, moinfo.order,
            "\n\n\tOne-Particle Density Matrix (AO Basis):\n", 
            params.backtr, nfzc, print_integrals, outfile);
 
@@ -326,8 +374,8 @@ void trans_one_backwards(void)
   }
   
   /* now do the backtransformation */
-  tran_one(nirreps, src_orbs, src_first, src_last, src_orbspi, dst_orbs, 
-           dst_first, dst_last, dst_orbspi, opdm, new_oe_ints, 
+  tran_one(nirreps, moinfo.evects, src_orbs, src_first, src_last, src_orbspi, dst_orbs, 
+           dst_first, dst_last, dst_orbspi, opdm, new_oe_ints, moinfo.order,
            "\n\n\tLagrangian (AO Basis):\n", 
 	   params.backtr, nfzc, print_integrals, outfile);
   
@@ -349,18 +397,17 @@ void trans_one_backwards(void)
 
  
 
-void tran_one(int nirreps, int src_orbs, int *src_first, int *src_last,
+void tran_one(int nirreps, double ***C, int src_orbs, int *src_first, int *src_last,
               int *src_orbspi, int dst_orbs, int *dst_first, int *dst_last,
-              int *dst_orbspi, double *src_ints, double *dst_ints,
+              int *dst_orbspi, double *src_ints, double *dst_ints, int *order,
               char *label, int backtran, int nfzc, int printflg, FILE *outfile)
 {
 
   int psym, p, q, P, Q, pfirst, plast, pq;
   int i, j, ifirst, ilast, I, J, i2, j2, ij;
-  double **A, **B, ***C;
+  double **A, **B;
   int A_cols, B_cols, *C_cols;
   
-  C = moinfo.evects;  
   A_cols = MAX0(src_orbs,dst_orbs);
   A = block_matrix(A_cols, A_cols);
   B = block_matrix(src_orbs,dst_orbs);
@@ -413,8 +460,8 @@ void tran_one(int nirreps, int src_orbs, int *src_first, int *src_last,
       for (j=ifirst,J=0; (j <= ilast) && (j <= i); j++, J++) {
 
         if (!backtran) {
-          i2 = moinfo.order[i]-nfzc;
-          j2 = moinfo.order[j]-nfzc;
+          i2 = order[i]-nfzc;
+          j2 = order[j]-nfzc;
           ij = INDEX(i2,j2);
         }
         else
