@@ -4,7 +4,7 @@
 #include<memory.h>
 #include<stdlib.h>
 #include<libint/libint.h>
-#include<libr12.h>
+#include<libr12/libr12.h>
 
 #include"defines.h"
 #define EXTERN

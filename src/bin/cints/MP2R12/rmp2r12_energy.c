@@ -7,7 +7,7 @@
 #include<libqt/qt.h>
 #include<libiwl/iwl.h>
 #include<libint/libint.h>
-#include<libr12.h>
+#include<libr12/libr12.h>
 #include<pthread.h>
 
 #include"defines.h"

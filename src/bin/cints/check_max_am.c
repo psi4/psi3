@@ -8,7 +8,7 @@
  #include<libderiv/libderiv.h>
 #endif
 #ifdef INCLUDE_MP2R12
- #include<libr12.h>
+ #include<libr12/libr12.h>
 #endif
 
 #include"defines.h"
