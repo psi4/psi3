@@ -4,7 +4,7 @@ VPATH = @srcdir@
 include ../MakeVars
 
 LD = $(FC)
-LDLIBS += $(BLAS)
+LDLIBS += $(BLAS) /usr/lib/libpthread.a
 
 PSILIBS = -ldpd -lqt -lfile30 -liwl -lciomr -lpsio -lipv1 -lmalloc
 

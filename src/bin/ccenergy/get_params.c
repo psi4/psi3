@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <math.h>
 #include <ip_libv1.h>
 #include <libciomr.h>
@@ -8,6 +9,7 @@
 void get_params()
 {
   int errcod, iconv;
+  char *cachetype = NULL;
 
   params.maxiter = 50;
   errcod = ip_data("MAXITER","%d",&(params.maxiter),0);
@@ -26,14 +28,33 @@ void get_params()
 
   params.cachelev = 2;
   errcod = ip_data("CACHELEV", "%d", &(params.cachelev),0);
+
+  params.cachetype = 1;
+  errcod = ip_string("CACHETYPE", &(cachetype),0);
+  if(cachetype != NULL && strlen(cachetype)) {
+      if(!strcmp(cachetype,"LOW")) params.cachetype = 1;
+      else if(!strcmp(cachetype,"LRU")) params.cachetype = 0;
+      else {
+          fprintf(outfile, "Error in input: invalid CACHETYPE = %s\n",
+                  cachetype);
+          exit(1);
+        }
+      free(cachetype);
+    }
   
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
-  fprintf(outfile, "\tMaxiter     =    %4d\n", params.maxiter);
-  fprintf(outfile, "\tConvergence = %3.1e\n", params.convergence);
-  fprintf(outfile, "\tRestart     =     %s\n", params.restart ? "Yes" : "No");
-  fprintf(outfile, "\tAO Basis    =     %s\n", params.aobasis ? "Yes" : "No");
-  fprintf(outfile, "\tCache Level =    %1d\n", params.cachelev);
+  fprintf(outfile, "\tMemory (Mbytes) =  %5.1f\n",params.memory/1e6);
+  fprintf(outfile, "\tMaxiter         =   %4d\n", params.maxiter);
+  fprintf(outfile, "\tConvergence     = %3.1e\n", params.convergence);
+  fprintf(outfile, "\tRestart         =     %s\n", 
+          params.restart ? "Yes" : "No");
+  fprintf(outfile, "\tAO Basis        =     %s\n", 
+          params.aobasis ? "Yes" : "No");
+  fprintf(outfile, "\tCache Level     =    %1d\n", 
+          params.cachelev);
+  fprintf(outfile, "\tCache Type      =    %4s\n", 
+          params.cachetype ? "LOW" : "LRU");
   fprintf(outfile, "\n");
 }
 

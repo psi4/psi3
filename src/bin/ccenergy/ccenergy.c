@@ -42,6 +42,7 @@ void diis(int iter);
 void ccdump(void);
 int **cacheprep(int level, int *cachefiles);
 void memchk(void);
+struct dpd_file4_cache_entry *priority_list(void);
 
 int main(int argc, char *argv[])
 {
@@ -50,6 +51,7 @@ int main(int argc, char *argv[])
   double **geom, *zvals;
   FILE *efile;
   int **cachelist, *cachefiles;
+  struct dpd_file4_cache_entry *priority;
 
   moinfo.iter=0;
   
@@ -64,8 +66,10 @@ int main(int argc, char *argv[])
  
   cachefiles = init_int_array(PSIO_MAXUNIT);
   cachelist = cacheprep(params.cachelev, cachefiles);
-  dpd_init(0, moinfo.nirreps, params.memory, cachefiles, cachelist, 
-           2, moinfo.occpi, moinfo.occ_sym, moinfo.virtpi, moinfo.vir_sym);
+  priority = priority_list();
+  dpd_init(0, moinfo.nirreps, params.memory, params.cachetype, cachefiles, 
+           cachelist, priority, 2, moinfo.occpi, moinfo.occ_sym, 
+           moinfo.virtpi, moinfo.vir_sym);
   init_amps();
   tau_build();
   taut_build();

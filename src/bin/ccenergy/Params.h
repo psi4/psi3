@@ -6,5 +6,6 @@ struct Params {
     int memory;
     int aobasis;
     int cachelev;
+    int cachetype;
 };
 
