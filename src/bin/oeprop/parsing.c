@@ -133,6 +133,7 @@ void parsing()
       fprintf(outfile,"MO_TO_PLOT out of range. Aborting\n\n");
       exit(2);
     }
+    mo_to_plot--;
   }
   
   if (grid !=0) {
