@@ -1,4 +1,3 @@
-#define EXTERN
 #include <stdio.h>
 #include <libciomr/libciomr.h>
 #include <stdlib.h>

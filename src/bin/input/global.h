@@ -57,6 +57,7 @@ EXTERN int expert;                  /*If expert is true - safety checks are off 
 				      no guarantee of correctness */
 EXTERN char *frozen_core;           /*Frozen core option*/
 EXTERN char *frozen_virt;           /*Frozen virtuals option*/
+EXTERN int enmo;                    /*ENMO option*/
 
 /*Labels*/
 EXTERN char *label;                 /*Label*/
@@ -133,6 +134,7 @@ EXTERN double *elemsymb_charges;    /*Nuclear charges derived from element names
 EXTERN char **element;       	    /*Atom names*/
 EXTERN char **full_element;         /*Atom names including dummy atoms*/
 EXTERN char **atom_basis;           /*Array of basis set names*/
+EXTERN char **isotope;             /*Array of isotope names*/
 EXTERN int **atom_orbit;            /*Atom orbits*/
 EXTERN int **class_orbit;           /*Class orbits*/
 EXTERN int **red_unique_orbit;      /*Reduced atomic orbits for unique atoms (each symmetry equiv atom appears only once),

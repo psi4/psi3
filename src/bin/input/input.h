@@ -139,6 +139,7 @@ void init_elem_names();
    Main routine to read the basis set info.  It calls recur, and all of the normalization
    routines. */
 void read_basis();
+void nuc_read_basis();
 
 /*
    normalization functions in read_basis.c 
@@ -154,6 +155,10 @@ double ovlp();
    This function calls itself recursively while reading the basis set info. in 
    pbasis.dat (or in input deck) until it has gotten past all of the "GET" levels */
 void recur(char **ip_token1, char **ip_token2, int num_levels, 
+int atom_number, double **basis_set,
+int *count1, int *count2, int num_exponents, int *fprim, int* lprim,
+int *ang_mom);
+void nuc_recur(char **ip_token1, char **ip_token2, int num_levels, 
 int atom_number, double **basis_set,
 int *count1, int *count2, int num_exponents, int *fprim, int* lprim,
 int *ang_mom);

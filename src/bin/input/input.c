@@ -41,6 +41,7 @@ int main(int argc, char *argv[])
    double **Rmat;
    double ***unitvecs;
    double ***bondangles;
+   int num_isotopes;
    
      /*-------------------------------------
        Initialize files and parsing library
@@ -95,6 +96,8 @@ int main(int argc, char *argv[])
        fclose(local_basis);
        if (print_lvl > 0) fprintf(outfile,"\n  Parsed basis sets from basis.dat\n");
      }
+
+     if (enmo) fprintf(outfile,"\n  ENMO basis set option is in effect!\n");
 
      ip_cwk_add(":BASIS");
 
@@ -151,9 +154,25 @@ int main(int argc, char *argv[])
       ---------------------*/
      
      atom_basis = (char **) malloc(sizeof(char *)*num_atoms);
+     isotope = (char **) malloc(sizeof(char *)*num_atoms);
      for(i=0;i<num_atoms;i++)
        atom_basis[i] = NULL;
-     read_basis();
+
+     /*-----------------------------------------------------------
+       For ENMO: Count the particle types using the ENMO_ISOTOPES
+       specification keyword, make an array of the proper size,
+       read nuclear bases for each element in the array using 
+       the NUC_BASIS keyword or default (ccpvtz), call the 
+       build_ routines for each, concatenate all important 
+       arrays, and write a report to disk that explains what 
+       "box" each basis function goes in
+       -----------------------------------------------------------*/
+
+     if (enmo) {
+       enmo_setup();
+       read_nuc_basis();
+     } /* enmo */
+     else read_basis();
      
      /*----------------------------------------------
        Form symmetry information arrays of all kinds
@@ -165,6 +184,9 @@ int main(int argc, char *argv[])
      build_so_classes();
      build_usotao();
 
+       
+       
+     
      /*---------------------
        Read old calculation
       ---------------------*/
