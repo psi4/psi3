@@ -7,7 +7,7 @@ include ../MakeVars
 CDEF_NOAIX = $(CDEF:-DAIX=)
 CFLAGS = $(CDBG) $(COPT) $(CDEF_NOAIX) $(COTH) $(CINC)
 
-PSILIBS = -lPSI_file30 -lPSI_chkpt -lPSI_qt -lPSI_ciomr -lPSI_psio -lPSI_ipv1
+PSILIBS = -lPSI_qt -lPSI_file30 -lPSI_chkpt -lPSI_ciomr -lPSI_psio -lPSI_ipv1
 
 CSRC = main.c oeprop.c parsing.c grid_unitvec.c read_density.c \
 compute_density.c read_basset.c recursion.c populate.c mprefxyz.c \
