@@ -216,7 +216,7 @@ void compute_onecgt()
             for(jbf=0;jbf<jlim;jbf++) {
               ib = i_1stbf + ibf - 1; jb = j_1stbf + jbf - 1;
               dens_pf = Ptot[ioff[ib]+jb] * ((ib == jb) ? 1.0 : 2.0);
-              if (fabs(dens_pf) < PFACCUTOFF) continue;
+/*              if (fabs(dens_pf) < PFACCUTOFF) continue;*/
 
               if (corr)
                 zvec_pf = (ib == jb) ? zvec[ib][ib] : 

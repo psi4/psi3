@@ -59,7 +59,7 @@ int main(int argc, char* argv) {
 
 	/* Reading in basic information from file30 */
  
- title = file30_rd_title();
+ title = file30_rd_label();
  natom = file30_rd_natom();
  natom3 = natom * 3;	/* wrong if the space is other than 3-dimensional */
  nmo = file30_rd_nmo();
