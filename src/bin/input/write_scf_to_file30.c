@@ -4,6 +4,7 @@
 #include <math.h>
 #include <string.h>
 #include <libciomr/libciomr.h>
+#include <libpsio/psio.h>
 #include <file30_params.h>
 #include "input.h"
 #include "global.h"
@@ -26,6 +27,9 @@ void write_scf_to_file30()
   constants = init_int_array(MCONST);
   calcs = init_int_array(MPOINT);
   rfile(CHECKPOINTFILE);
+
+  psio_open(PSIF_CHKPT, PSIO_OPEN_OLD);
+
   /*-----------------
     Update constants
    -----------------*/
@@ -38,6 +42,12 @@ void write_scf_to_file30()
   constants[46] = ref;
   constants[50] = 0;
   wwritw(CHECKPOINTFILE,(char *) constants, MCONST*sizeof(int),100*sizeof(int),&junk);
+
+  psio_write_entry(PSIF_CHKPT, "::Num. HF irreps", (char *) &num_so_typs, sizeof(int));
+  psio_write_entry(PSIF_CHKPT, "::mxcoef", (char *) &mxcoef, sizeof(int));
+  psio_write_entry(PSIF_CHKPT, "::iopen", (char *) &iopen, sizeof(int));
+  psio_write_entry(PSIF_CHKPT, "::Num. MO's", (char *) &num_mo, sizeof(int));
+  psio_write_entry(PSIF_CHKPT, "::Reference", (char *) &ref, sizeof(int));
 
   /* That's where the end of the file is
      and where the calculation-specific data will go */
@@ -60,7 +70,11 @@ void write_scf_to_file30()
   wwritw(CHECKPOINTFILE,(char *) arr_double, 5*sizeof(double),ptr,&ptr);
   free(arr_double);
 
+  psio_write_entry(PSIF_CHKPT, "::SCF energy", (char *) &escf, sizeof(double));
+  psio_write_entry(PSIF_CHKPT, "::Reference energy", (char *) &escf, sizeof(double));
+
   rclose(CHECKPOINTFILE,3);
+  psio_close(PSIF_CHKPT, 1);
   free(constants);
   free(calcs);
   return;

@@ -3,6 +3,7 @@
  ---------------------------------*/
 
 #define CHECKPOINTFILE 30               /*Checkpoint file number*/
+#define PSIF_CHKPT 31 /* temporary until file30 is fully converted to libpsio */
 
 #define NUM_ELEMENTS 108                /*Number of known elements*/
 #define MAXATOM 100
