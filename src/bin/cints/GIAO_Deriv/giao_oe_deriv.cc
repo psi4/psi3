@@ -314,9 +314,10 @@ extern "C" void giao_oe_deriv()
                     dHdBxtemp[ai][aj] += dB_pfac * ( AB.y * zV - AB.z * yV);
                     dHdBytemp[ai][aj] += dB_pfac * ( AB.z * xV - AB.x * zV);
                     dHdBztemp[ai][aj] += dB_pfac * ( AB.x * yV - AB.y * xV);
-                    
-/*                    dHdBytemp[ai][aj] += 2.0*dB_pfac * V;
-                    dHdBztemp[ai][aj] += 2.0*dB_pfac * V;*/
+
+/*                    dHdBxtemp[ai][aj] += dB_pfac * xV;
+                    dHdBytemp[ai][aj] += dB_pfac * yV;
+                    dHdBztemp[ai][aj] += dB_pfac * zV;*/
                   
                     aj++;
                   }
