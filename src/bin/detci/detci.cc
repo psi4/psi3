@@ -183,7 +183,7 @@ main(int argc, char *argv[])
      diag_h(alplist, betlist);
    }
 
-   print_time_new(detci_time);
+   if (Parameters.print_lvl) print_time_new(detci_time);
    if (Parameters.opdm) form_opdm();
    if (Parameters.tpdm) form_tpdm();
    if (Parameters.pthreads) tpool_destroy(thread_pool, 1);
