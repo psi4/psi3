@@ -1,9 +1,12 @@
 /* $Log$
- * Revision 1.20  2002/12/06 15:50:32  crawdad
- * Changed all exit values to PSI_RETURN_SUCCESS or PSI_RETURN_FAILURE as
- * necessary.  This is new for the PSI3 execution driver.
- * -TDC
+ * Revision 1.21  2002/12/06 20:39:08  evaleev
+ * Write total SCF energy as reference energy as well.
  *
+/* Revision 1.20  2002/12/06 15:50:32  crawdad
+/* Changed all exit values to PSI_RETURN_SUCCESS or PSI_RETURN_FAILURE as
+/* necessary.  This is new for the PSI3 execution driver.
+/* -TDC
+/*
 /* Revision 1.19  2002/11/24 22:52:17  crawdad
 /* Merging the gbye-file30 branch into the main trunk.
 /* -TDC
@@ -380,6 +383,7 @@ void cleanup()
   /* write to new checkpoint file */
   chkpt_wt_etot(etot);
   chkpt_wt_escf(etot);
+  chkpt_wt_eref(etot);
 
   /* These new arrays for PSIF_CHKPT contain data for ALL irreps */
   for(i=0; i < num_ir; i++) {
