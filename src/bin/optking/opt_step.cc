@@ -171,7 +171,10 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
         temp = 1;
     }
     else { /* intco is very small */
-      temp = STEP_LIMIT / fabs(dq[i]);
+      if (fabs(dq[i]) < STEP_LIMIT)
+        temp = 1.0; /* step is small enough */
+      else 
+        temp = STEP_LIMIT / fabs(dq[i]);
     }
     if (temp < scale){
       scale = temp;
