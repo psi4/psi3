@@ -29,10 +29,12 @@ char **file30_rd_felement(void)
 
   label = (char **)malloc(nentry*sizeof(char*));
   for(i=0;i<nentry;++i)
-	label[i] = (char *)malloc(8*sizeof(char));
+	label[i] = (char *)malloc(9*sizeof(char));
 
-  for(i=0;i<nentry;++i) 
+  for(i=0;i<nentry;++i) {
     wreadw(info30_.filenum, (char *) label[i], (int) 2*sizeof(int), label_ptr, &label_ptr);
+    label[i][8]='\0';
+  }
 
   return label;  
 }
