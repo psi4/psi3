@@ -132,7 +132,7 @@ typedef struct {
     int max_num_prims;                 /* maximum number of primitives per shell */
     int puream;                        /* pure angular momentum flag */
     int num_ao;                        /* number of AO's */
-    int max_am;                        /* maximum angular momentum in the basis */
+    int max_am;                        /* maximum angular momentum in the basis + 1 */
     double **schwartz_eri;             /* the matrix num_shells by num_shells:
 					  [si][sj] = max(ij|ij) i in si, j in sj  */
     struct shell_def *shells;          /* shell info */
