@@ -5,20 +5,22 @@ struct Params {
   int cachelev;
   int cachetype;
   int ref;
+  int eom_ref;
   int local;
 };
 
 struct Eom_params {
   int max_iter;
   int vectors_per_root;
-  int *rpi;
+  int *states_per_irrep;
+  int *cs_per_irrep;
   double eval_tol;
   double residual_tol;
   int prop_root;
+  int prop_sym;
   int print_singles;
   double complex_tol;
   double schmidt_add_residual_tol;
-
   int max_iter_SS;
   int vectors_per_root_SS;
   int excitation_range;

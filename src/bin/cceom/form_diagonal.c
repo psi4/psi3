@@ -36,8 +36,8 @@ void form_diagonal(int C_irr) {
   dpd_file2_mat_init(&DIA);
   for(h=0; h < nirreps; h++) {
     for(i=0; i < occpi[h]; i++)
-      for(a=0; a < (virtpi[h]-openpi[h]); a++)
-	DIA.matrix[h][i][a] = FAE.matrix[h][a][a] - FMI.matrix[h][i][i];
+      for(a=0; a < (virtpi[h^C_irr]-openpi[h^C_irr]); a++)
+        DIA.matrix[h][i][a] = FAE.matrix[h^C_irr][a][a] - FMI.matrix[h][i][i];
   }
   dpd_file2_mat_wrt(&DIA);
   dpd_file2_close(&DIA);
@@ -46,12 +46,11 @@ void form_diagonal(int C_irr) {
   dpd_file2_mat_init(&Dia);
   for(h=0; h < nirreps; h++) {
     for(i=0; i < (occpi[h]-openpi[h]); i++)
-      for(a=0; a < virtpi[h]; a++) 
-	Dia.matrix[h][i][a] = Fae.matrix[h][a][a] - Fmi.matrix[h][i][i];
+      for(a=0; a < virtpi[h^C_irr]; a++) 
+        Dia.matrix[h][i][a] = Fae.matrix[h^C_irr][a][a] - Fmi.matrix[h][i][i];
   }
   dpd_file2_mat_wrt(&Dia);
   dpd_file2_close(&Dia);
-
 
   dpd_buf4_init(&DIJAB, EOM_D, C_irr, 2, 7, 2, 7, 0, "DIJAB");
   for(h=0; h < nirreps; h++) {
@@ -63,19 +62,19 @@ void form_diagonal(int C_irr) {
       jsym = DIJAB.params->qsym[j];
       I = i - occ_off[isym];
       J = j - occ_off[jsym];
-      for(ab=0; ab < DIJAB.params->coltot[h]; ab++) {
-	a = DIJAB.params->colorb[h][ab][0];
-	b = DIJAB.params->colorb[h][ab][1];
-	asym = DIJAB.params->rsym[a];
-	bsym = DIJAB.params->ssym[b];
-	A = a - vir_off[asym];
-	B = b - vir_off[bsym];
-	tval = FAE.matrix[asym][A][A] + FAE.matrix[bsym][B][B]
-	  - FMI.matrix[isym][I][I] - FMI.matrix[jsym][J][J];
-	DIJAB.matrix[h][ij][ab] =
-	  ((A >= (virtpi[asym] - openpi[asym])) ||
-	   (B >= (virtpi[bsym] - openpi[bsym])) ?
-	   0.0 : tval);
+      for(ab=0; ab < DIJAB.params->coltot[h^C_irr]; ab++) {
+        a = DIJAB.params->colorb[h^C_irr][ab][0];
+        b = DIJAB.params->colorb[h^C_irr][ab][1];
+        asym = DIJAB.params->rsym[a];
+        bsym = DIJAB.params->ssym[b];
+        A = a - vir_off[asym];
+        B = b - vir_off[bsym];
+        tval = FAE.matrix[asym][A][A] + FAE.matrix[bsym][B][B]
+          - FMI.matrix[isym][I][I] - FMI.matrix[jsym][J][J];
+        DIJAB.matrix[h][ij][ab] =
+          ((A >= (virtpi[asym] - openpi[asym])) ||
+           (B >= (virtpi[bsym] - openpi[bsym])) ?
+           0.0 : tval);
       }
     }
     dpd_buf4_mat_irrep_wrt(&DIJAB, h);
@@ -93,19 +92,19 @@ void form_diagonal(int C_irr) {
       jsym = Dijab.params->qsym[j];
       I = i - occ_off[isym];
       J = j - occ_off[jsym];
-      for(ab=0; ab < Dijab.params->coltot[h]; ab++) {
-	a = Dijab.params->colorb[h][ab][0];
-	b = Dijab.params->colorb[h][ab][1];
-	asym = Dijab.params->rsym[a];
-	bsym = Dijab.params->ssym[b];
-	A = a - vir_off[asym];
-	B = b - vir_off[bsym];
-	tval = Fae.matrix[asym][A][A] + Fae.matrix[bsym][B][B]
-	  - Fmi.matrix[isym][I][I] - Fmi.matrix[jsym][J][J];
-	Dijab.matrix[h][ij][ab] =
-	  ((I >= (occpi[isym] - openpi[isym])) ||
-	   (J >= (occpi[jsym] - openpi[jsym])) ?
-	   0.0 : tval);
+      for(ab=0; ab < Dijab.params->coltot[h^C_irr]; ab++) {
+        a = Dijab.params->colorb[h^C_irr][ab][0];
+        b = Dijab.params->colorb[h^C_irr][ab][1];
+        asym = Dijab.params->rsym[a];
+        bsym = Dijab.params->ssym[b];
+        A = a - vir_off[asym];
+        B = b - vir_off[bsym];
+        tval = Fae.matrix[asym][A][A] + Fae.matrix[bsym][B][B]
+          - Fmi.matrix[isym][I][I] - Fmi.matrix[jsym][J][J];
+        Dijab.matrix[h][ij][ab] =
+          ((I >= (occpi[isym] - openpi[isym])) ||
+           (J >= (occpi[jsym] - openpi[jsym])) ?
+           0.0 : tval);
       }
     }
     dpd_buf4_mat_irrep_wrt(&Dijab, h);
@@ -123,19 +122,19 @@ void form_diagonal(int C_irr) {
       jsym = DIjAb.params->qsym[j];
       I = i - occ_off[isym];
       J = j - occ_off[jsym];
-      for(ab=0; ab < DIjAb.params->coltot[h]; ab++) {
-	a = DIjAb.params->colorb[h][ab][0];
-	b = DIjAb.params->colorb[h][ab][1];
-	asym = DIjAb.params->rsym[a];
-	bsym = DIjAb.params->ssym[b];
-	A = a - vir_off[asym];
-	B = b - vir_off[bsym];
-	tval = FAE.matrix[asym][A][A] + Fae.matrix[bsym][B][B]
-	  - FMI.matrix[isym][I][I] - Fmi.matrix[jsym][J][J];
-	DIjAb.matrix[h][ij][ab] =
-	  ((A >= (virtpi[asym] - openpi[asym])) ||
-	   (J >= (occpi[jsym] - openpi[jsym])) ?
-	   0.0 : tval);
+      for(ab=0; ab < DIjAb.params->coltot[h^C_irr]; ab++) {
+        a = DIjAb.params->colorb[h^C_irr][ab][0];
+        b = DIjAb.params->colorb[h^C_irr][ab][1];
+        asym = DIjAb.params->rsym[a];
+        bsym = DIjAb.params->ssym[b];
+        A = a - vir_off[asym];
+        B = b - vir_off[bsym];
+        tval = FAE.matrix[asym][A][A] + Fae.matrix[bsym][B][B]
+          - FMI.matrix[isym][I][I] - Fmi.matrix[jsym][J][J];
+        DIjAb.matrix[h][ij][ab] =
+          ((A >= (virtpi[asym] - openpi[asym])) ||
+           (J >= (occpi[jsym] - openpi[jsym])) ?
+           0.0 : tval);
       }
     }
     dpd_buf4_mat_irrep_wrt(&DIjAb, h);

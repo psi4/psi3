@@ -33,16 +33,21 @@ int main(int argc, char *argv[])
   fprintf(outfile,"\n\t**********************************************************\n");
   fprintf(outfile,"\t*  CCEOM: An Equation of Motion Coupled Cluster Program  *\n");
   fprintf(outfile,"\t**********************************************************\n");
+
   get_moinfo();
+  fflush(outfile);
   get_params();
   get_eom_params();
+#ifdef TIME_CCEOM
+  timer_init();
+  timer_on("cceom");
+#endif
+
   form_dpd_dp();
  
   cachefiles = init_int_array(PSIO_MAXUNIT);
-
-/*
-  cachelist = cacheprep_rhf(params.cachelev, cachefiles);
-*/
+// cachelist = cacheprep_rhf(params.cachelev, cachefiles);
+  cachelist = init_int_matrix(12,12);
 
   dpd_init(0, moinfo.nirreps, params.memory, 0, cachefiles,
            cachelist, NULL, 2, moinfo.occpi, moinfo.occ_sym,
@@ -53,6 +58,10 @@ int main(int argc, char *argv[])
   dpd_close(0);
   if(params.local) local_done();
   cleanup(); 
+#ifdef TIME_CCEOM
+  timer_off("cceom");
+  timer_done();
+#endif
   exit_io();
   exit(0);
 }

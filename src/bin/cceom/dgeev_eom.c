@@ -46,7 +46,7 @@ void dgeev_eom(int L, double **G, double *lambda, double **alpha) {
     tval += fabs(evals_i[i]);
   }
   if (tval > (eom_params.complex_tol)) {
-    fprintf(outfile,"\nSum of complex part of HBar SS eigenvalues %20.15f, %10.2e\n",
+    fprintf(outfile,"\nSum of complex part of HBar eigenvalues %20.15f, %10.2e\n",
       tval, eom_params.complex_tol);
     fflush(outfile);
     exit(1);

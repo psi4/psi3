@@ -16,7 +16,7 @@
 
 void get_moinfo(void)
 {
-  int i, h, errcod, nactive, nirreps;
+  int i, j, sym, h, errcod, nactive, nirreps, ref;
 
   chkpt_init();
   moinfo.nirreps = chkpt_rd_nirreps();
@@ -32,12 +32,17 @@ void get_moinfo(void)
   moinfo.phase = chkpt_rd_phase_check();
   chkpt_close();
 
+  sym = 0;
+    for (i=0;i<moinfo.nirreps;++i)
+      for (j=0;j<moinfo.openpi[i];++j)
+        sym = sym ^ i;
+  moinfo.sym = sym;
+
   nirreps = moinfo.nirreps;
 
-  /*
-  psio_read_entry(CC_INFO, "Reference Wavefunction", (char *) &(params.ref), 
+  // need to know whether to read in UHF data
+  psio_read_entry(CC_INFO, "Reference Wavefunction", (char *) &(ref), 
 		  sizeof(int));
-  */
 
   /* Get frozen and active orbital lookups from CC_INFO */
   moinfo.frdocc = init_int_array(nirreps);
@@ -50,7 +55,7 @@ void get_moinfo(void)
   psio_read_entry(CC_INFO, "No. of Active Orbitals", (char *) &(nactive),
 		  sizeof(int)); 
 
-  if(params.ref == 2) {
+  if(ref == 2) {
 
     moinfo.aoccpi = init_int_array(nirreps);
     moinfo.boccpi = init_int_array(nirreps);
