@@ -3,8 +3,8 @@ psi: (
 
   % Default iteration counts
   ndisp = 1
-  nopt = 1
-  ncasiter = 1
+  nopt = 10
+  ncasiter = 20
 
   % The basic programs
   input      = "input"
