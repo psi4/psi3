@@ -5,11 +5,10 @@
 %
 % Daniel Crawford, 31 January, 1996
 %
-Most of the code in PSI is in the Fortran 77 programming language.  While we
-expect that all of the new code added to the package will be written
-in C or C++, the older modules must be maintained.  Therefore, it is
-appropriate to provide a discussion of the structure of the PSI Fortran
-modules.
+Most of the code in PSI 2 was in the Fortran 77 programming language.  
+Essentially all of the new development in \PSIthree\ has been in C
+or C++.  However, a small amount of Fortran code remains, so in this
+section we will discuss the structure of PSI Fortran modules.
 
 All Fortran 77 programs use static allocation for memory management.  This
 means that the memory requirements of the program must be established when

@@ -7,63 +7,68 @@
 %
 There are two ways to start developing for \PSIthree:
 \begin{itemize}
-\item obtain a tarball containing \PSIthree\ distribution, run installation script,
-and then just add your source code to the resulting local \PSIthree\ source tree
-or modify existing \PSIthree\ modules. Pertinent installation steps are described
-in \PSIthree\ User's Manual.
-\item use the CVS version control system to ``{\em check out}'' a copy of \PSIthree\ 
-source from the main repository, add your new code to the local source tree or modify
-existing \PSIthree\ modules, and then make changes and additions available to
-other parties by checking them back into the main repository;
+\item 
+Obtain a tarball containing \PSIthree\ distribution, run installation 
+script, and then just add your source code to the resulting local 
+\PSIthree\ source tree or modify existing \PSIthree\ modules. Pertinent 
+installation steps are described in \PSIthree\ User's Manual.
+\item 
+Use the CVS version control system to ``{\em check out}'' a copy of
+\PSIthree\ source from the main repository, add your new code to the local 
+source tree or modify existing \PSIthree\ modules, and then make changes 
+and additions available to other parties by checking them back into the 
+main repository.
 \end{itemize}
 The second method is preferred if you are to develop seriously for \PSIthree.
-Note that, although legally you do not have to, we encourage
-you to make results of your hard work available to everyone. If the decision
-to move PSI under GNU Public Liscense is made then you will be {\em required}
-to do so.
 
 This section describes how to access and modify \PSIthree\ code via
 the CVS version control system. For further information,
 please see the cvs(1) info page.
 
 \subsection{Introduction to \PSIthree\ repository}
-The main repository for the \PSIthree\ Source code is
-\file{/home/xerxes/psi3/master}.  Under this root, all of the source code is
-maintained under CVS control.  In order to conveniently examine/alter the
-source code for any part of \PSIthree, one must first ``check out'' a copy of the
-code.  This personal copy may be altered, or code may be added to it.
-After all of the user's changes have been tested thoroughly, this new
-version of the source code may be ``checked in'' to the main respository,
-and then later installed into the local code tree (\file{/home/xerxes/psi3}).
-Any user who is a member of the \unixid{psiadm} group may check out/in code
-from/to to main repository.  Any user with access to the \unixid{psi} user may
-compile/install code under the CCQC-wide installation tree.  CVS allows users to check
-out any stored version of the code.  For example, if a user wishes to
-obtain a copy of the code as it stood on a given date, or even at a given
-time, CVS provides commands for accomplishing this task.
+The main repository for the \PSIthree\ Source code is currently maintained 
+by Prof.~Daniel Crawford at Virginia Tech.  To check out the code, one
+must first gain permission to access the repository by emailing
+\htmladdnormallink{{\tt
+mailto:psimaster@sirius.chem.vt.edu}}{mailto:psimaster@sirius.chem.vt.edu}.
+Once the account has been set up, set your {\tt CVSROOT} variable
+(conveniently defined in your shell dotfiles) to 
+{\tt setenv CVSROOT
+:pserver:login@sirius.chem.vt.edu:/home/users/psi3/master}, where {\tt
+login} is your login name.  Next, do a cvs login to the pserver by 
+typing {\tt cvs login}.  This should ask for your password.  Once this is
+done, you should be able to make subsequent accesses to the repository
+without having to use your password.
+
+Under the {\tt /home/users/psi3/master} repository at Virginia Tech, all 
+of the source code is maintained under CVS control.  In order to 
+conveniently examine/alter the source code for any part of \PSIthree, one 
+must first ``check out'' a local copy of the code.  This personal copy may be 
+altered, or code may be added to it.  After all of the user's changes have 
+been tested thoroughly, this new version of the source code may be ``checked 
+in'' to the main respository, and then later installed into any other
+copies of \PSIthree.  Currently, anyone who has CVS access priviledges can 
+check code in and out of the main repository.  CVS has many convenient
+features, including the ability to check out previous versions of the code
+(useful for finding out when a new bug was introduced!).
 
 \subsection{Prerequisite steps to accessing the master respository}
-Only users who are members of the \unixid{psiadm} group may check out copies of the
-Psi source code.
+As described above, only those who have been granted access will be able
+to check out copies of the \PSIthree\ code using CVS.
 
-The following steps will check out all of the essential Psi code needed for basic,
-independent compilation and testing:
+The following steps will check out all of the essential Psi code needed for 
+basic, independent compilation and testing:
 \begin{enumerate}
 \item Make sure the environmental variable \shellvar{CVSROOT} is set to
-\file{/home/xerxes/psi3/master}. For example, for csh
+{\tt :pserver:login@sirius.chem.vt.edu:/home/users/psi3/master}, where
+{\tt login} is the user's login name on sirius. For example, for csh
 \begin{verbatim}
-setenv CVSROOT /home/xerxes/psi3/master
+setenv CVSROOT :pserver:login@sirius.chem.vt.edu:/home/users/psi3/master
 \end{verbatim}
 will set this correctly. This line should be placed in the user's shell
-resource file. For users at remote sites, the form should be 
-\begin{verbatim}
-USER@CCQC_MACHINE_NAME:/home/xerxes/psi3/master 
-\end{verbatim}
-If you do not what {\tt CCQC\_MACHINE\_NAME} should be set to --
-contact \PSIthree\ developers at \htmladdnormallink{{\tt mailto:psi@ccqc.uga.edu}}
-{mailto:psi@ccqc.uga.edu}
-\item In the desired location for the root of the local
-\PSIthree\ source tree,
+resource file. 
+\item In the desired location for the root of the local \PSIthree\ source 
+tree,
 \begin{verbatim}
 cvs co psi3
 \end{verbatim}
@@ -82,45 +87,52 @@ First, it is necessary to run the autoconf program, which will take the
 information in \file{psi3\_dist/configure.in} and generate a shell
 script named \file{configure} which will later be used to determine
 a large amount of architecture-dependent information needed for correct
-compilation. To do this, in the directory \shellvar{\$HOME}\file{/psi3\_dist} run
+compilation. To do this, in the directory 
+\shellvar{\$HOME}\file{/psi3\_dist}, run
 \begin{verbatim}
 autoconf 
 \end{verbatim}
 Notice that files named \file{Makefile.in}, \file{MakeVars.in}, etc.
 exist after the check out sequence above. These files are input for
-the newly-created \file{configure} script which will generate Makefiles from them.
+the newly-created \file{configure} script which will generate Makefiles from 
+them.
 
 \subsection{Initial compilation of utilities, libraries, and binaries}
-Before one may compile any of the \PSIthree\ binaries (e.g. \PSIcscf, \PSIcints, etc.)
-it is necessary to specify the installation directory for \PSIthree.
-The installation directory may be located anywhere. This offers a lot of
+Before one may compile any of the \PSIthree\ binaries (e.g., 
+\PSIcscf, \PSIcints, etc.) it is necessary to specify the installation 
+directory for \PSIthree.  The installation directory may be located 
+anywhere except as a subdirectory of the source or compilation directories
+(this is changed from previous versions of PSI).  Having separate
+compilation, source, and installation directories offers a lot of
 flexibility to the programmer. Let's say you maintain \PSIthree\ for
-a group of users and you also contribute to \PSIthree. Let's say you do most of your
-development on one machine, and want to make up-to-date \PSIthree\ codes
-available to the group as well. An obvious but not the most efficient way to
-maintain \PSIthree\ in such
-an environment would be to check out two local copies of \PSIthree\ source,
-one on your development machine and one on a public machine.
-However, experience shows that having many checked out copies of \PSIthree\ may
-increase time spent on code maintenance and decrease time spent on code
-development and documentation.
-A more elegant way of doing this that would be to keep only one source directory
-(on your development machine), but have two installation directories:
-one accessible to the group, and one accessible to you only. Then you could make
-any changes to your own binaries without sacrificing stability of the \PSIthree\ code used
-by the group. Each installation directory may contain one or more architecture-specific
-compilation directories. Hence if your group uses a variety of computer architectures,
+a group of users and you also contribute to \PSIthree. Let's say you do most 
+of your development on one machine, and want to make up-to-date \PSIthree\ 
+codes available to the group as well. An obvious but not the most efficient 
+way to maintain \PSIthree\ in such an environment would be to check out two 
+local copies of \PSIthree\ source, one on your development machine and one 
+on a public machine.  However, experience shows that having many checked 
+out copies of \PSIthree\ may increase time spent on code maintenance and 
+decrease time spent on code development and documentation.
+A more elegant way of doing this that would be to keep only one source 
+directory (on your development machine), but have two installation 
+directories: one accessible to the group, and one accessible to you only. 
+Then you could make any changes to your own binaries without sacrificing 
+stability of the \PSIthree\ code used by the group. Each installation 
+directory may contain one or more architecture-specific compilation 
+directories. Hence if your group uses a variety of computer architectures,
 you will be able to keep \PSIthree\ binaries for all of them in one location.
 
-Note that throughout this document, \file{make} automatically implies \file{gmake} (the
-GNU Project's make utility).
+Note that throughout this document, \file{make} automatically 
+implies \file{gmake} (the GNU Project's make utility).  The GNU version
+of \file{make} has many more features than generic UNIX versions of
+\file{make}, which may not suffice to compile \PSIthree.
 
 The following steps will create an installation directory
 \shellvar{\$HOME}\file{/psi3}, under the installation directory
-create an architecture-specific directory
-whose name is determined by the \file{host.sh} script,
-run the \file{configure} script to determine locations and/or existence of
-essential libraries and utilities and generate the appropriate make and other files,
+create an architecture-specific directory whose name is determined 
+by the \file{host.sh} script, run the \file{configure} script to 
+determine locations and/or existence of essential libraries and 
+utilities and generate the appropriate make and other files,
 and compile all of the essential utilities, libraries and binaries
 (we will assume C-shell here):
 \begin{enumerate}
@@ -146,28 +158,36 @@ and compile all of the essential utilities, libraries and binaries
 The last two steps of this procedure also compile and install
 The \PSIthree\ User's and Programmer's manuals.
 
-After running \file{configure}, and prior to compilation of the libraries and binaries, the
-programmer may wish to configure some parts of \PSIthree\ manually. In order
-to allow the \PSIthree\ I/O routines to read and write beyond the default
-file size limit of 4.0 GB, the programmer needs to edit files
-\shellvar{\$HOME}\file{/psi3/}\shellvar{\$ARCH}\file{/src/lib/io/param.h} and
-\shellvar{\$HOME}\file{/psi3/}\shellvar{\$ARCH}\file{/src/lib/libciomr/iomrparam.h}.
-In order to change the angular momentum limit from the default of $g$,
-one needs to edit \shellvar{\$HOME}\file{/psi3/}\shellvar{\$ARCH}\file{/src/lib/libint/input.dat}.
+After running \file{configure}, and prior to compilation of the libraries 
+and binaries, the programmer may wish to configure some parts of \PSIthree\ 
+manually. In order to allow the \PSIthree\ I/O routines to read and write 
+beyond the default file size limit of 4.0 GB, the programmer needs to edit 
+files \shellvar{\$HOME}\file{/psi3/}\shellvar{\$ARCH}\file{/src/lib/io/param.h} 
+and
+\shellvar{\$HOME}\file{/psi3/}\shellvar{\$ARCH}\file{/src/lib/libciomr/iomrparam.h}
+to change {\tt PSI\_FPTR} to {\tt unsigned long long int}.
+This file size issue is now nearly obsolete since almost all of the I/O
+routines have been upgraded to the \library{libpsio} library, which does not
+require a single, global filepointer.
+
+In order to change the angular momentum limit from the default of g,
+one needs to edit 
+\shellvar{\$HOME}\file{/psi3/}\shellvar{\$ARCH}\file{/src/lib/libint/input.dat}.
 The integrals code \PSIcints\ may also require some tuning (edit
 \shellvar{\$HOME}\file{/psi3/}\shellvar{\$ARCH}\file{/src/bin/cints/defines.h}).
-However, it is strongly recommended that this be done only by \PSIthree\ experts, as such changes
-may introduce errors. If you make this modification, you will need to re-edit
-these files to make these changes again if you run config.status or configure
-in the architecture-dependent directory.
+However, it is strongly recommended that this be done only by \PSIthree\ 
+experts, as such changes may introduce errors. If you make this modification, 
+you will need to re-edit these files to make these changes again if you run 
+config.status or configure in the architecture-dependent directory.
 
-The newly-compiled utilities, libraries, binaries, and manuals
-are installed under \shellvar{\$HOME}\file{/psi3}
-(this is why the {\tt --prefix} option to \file{configure} is used) in the architecture-specific
-subdirectory. Each time you wish to compile any part of the code for a machine
-of a different architecture, you must follow the above sequence of steps in order
-to keep object files, binaries, and libraries separated appropriately. After these
-steps, the \shellvar{\$HOME}\file{/psi3} directory should contain the following: 
+The newly-compiled utilities, libraries, binaries, and manuals are installed 
+under \shellvar{\$HOME}\file{/psi3} (this is why the {\tt --prefix} option 
+to \file{configure} is used) in the architecture-specific subdirectory. Each 
+time you wish to compile any part of the code for a machine of a different 
+architecture, you must follow the above sequence of steps in order to keep 
+object files, binaries, and libraries separated appropriately. After these
+steps, the \shellvar{\$HOME}\file{/psi3} directory should contain the 
+following: 
 \begin{verbatim}
 bin  doc  i586-pc-linux-gnu  include  share
 \end{verbatim}
@@ -182,8 +202,8 @@ repository.
 If the programmer has made changes to Psi binaries or libraries which already
 exist, one of two series of steps is necessary to check these changes in to the
 main repository. The first series may be followed if all changes have been made
-only to files which already exist in the current version. The second series should
-be followed if new files must be added to the code in the repository.
+only to files which already exist in the current version. The second series 
+should be followed if new files must be added to the code in the repository.
 \begin{itemize}
 \item No new files need to be added to the repository. We will use
 \library{libciomr} as an example. 
@@ -192,7 +212,8 @@ be followed if new files must be added to the code in the repository.
 \item {\tt cvs ci}
 \item Edit the comment file that CVS provides. 
 \end{enumerate}
-\item New files must be added to the repository. Again, we use \library{libciomr}
+\item New files must be added to the repository. Again, we use 
+\library{libciomr}
 as an example. Suppose the new file is named \file{great\_code.c} .
 \begin{enumerate}
 \item {\tt cd \$HOME/psi3\_dist/src/lib/libciomr} 
@@ -202,24 +223,25 @@ as an example. Suppose the new file is named \file{great\_code.c} .
 \end{enumerate}
 \end{itemize}
 
-The \file{cvs ci} command in both of these sequences will examine all of the code in
-the current \file{libciomr} directory against the current version of the code in the
-main repository. Any files which have been altered (and for which no conflicts
-with newer versions exist!) will be identified and checked in to the main
-repository, as well as the new file in the second series. CVS will open a
-comment file for editing; you should enter a description of the changes you have
-made to the code here, as well as in the code itself. Exit the editing of the
-comment file, and CVS will check the new code into the main repository.
+The \file{cvs ci} command in both of these sequences will examine all of the 
+code in the current \file{libciomr} directory against the current version of 
+the code in the main repository. Any files which have been altered (and for 
+which no conflicts with newer versions exist!) will be identified and checked 
+in to the main repository, as well as the new file in the second series.  
+CVS will open a comment file for editing; you should enter a description of 
+the changes you have made to the code here, as well as in the code itself. 
+Exit the editing of the comment file, and CVS will check the new code into 
+the main repository.
 
-After these steps have been followed, the programmer should make changes available
-to the group. At CCQC it means convincing a user
-with access to the \unixid{psi} user to install the code
-into the CCQC installation tree currently located under
-\file{/home/xerxes/psi3}.
+After these steps have been followed, the programmer should make changes 
+available to the group.  This means convincing a user
+with access to the group's local ``official'' copy of \PSIthree
+(if there is one at your site) to install the new version code.
 
-\subsection{Adding entirely new code to the main \PSIthree\ repository} \label{checkin_new}
-If the programmer is adding a new binary to the \PSIthree\ repository, a number of
-important conventions should be followed:
+\subsection{Adding entirely new code to the main \PSIthree\ repository} 
+\label{checkin_new}
+If the programmer is adding a new binary to the \PSIthree\ repository, a 
+number of important conventions should be followed:
 \begin{enumerate}
 \item The directory containing the new code should be given a name which
 matches the name of the installed code (e.g. if the code will be installed
@@ -256,13 +278,14 @@ piece of code to the main repository:
 \item {\tt cd \$HOME/psi3\_dist/src/bin}
 \item {\tt cvs add great\_code}
 \item Answer ``y'' when CVS asks if you wish to create the new directory in
-the repository. 
+      the repository. 
 \item {\tt cd great\_code}
 \item {\tt cvs add *}
 \item {\tt cvs ci}
 \item Edit the comments file that CVS provides. 
 \item {\tt cd \$HOME/psi3\_dist}
-\item Edit the \file{configure.in} script and add \file{great\_code} to the list. 
+\item Edit the \file{configure.in} script and add \file{great\_code} to the 
+      list. 
 \item {\tt cvs ci}
 \item Edit the comments file that CVS provides. 
 \item {\tt autoconf} 
@@ -273,8 +296,8 @@ the repository.
 \end{enumerate}
 At this point, all of the code has been properly checked in. However, you must
 test to make sure that the code can be checked out by other programmers, and
-that it will compile correctly after being checked out. The following steps will
-store your personal version of the code, check out the new code, and
+that it will compile correctly after being checked out. The following steps 
+will store your personal version of the code, check out the new code, and
 test-compile it:
 \begin{enumerate}
 \item {\tt cd \$HOME/psi3\_dist/src/bin}
@@ -286,15 +309,16 @@ test-compile it:
 \item {\tt cd src/bin/great\_code}
 \item {\tt make install}
 \end{enumerate}
-Your original version of the code remains under \file{great\_code.bak}, but should be
-no longer necessary. Note that it is necessary to re-run \file{configure} explicitly,
-instead of just running \file{config.status}, because the \file{config.status} file
-contains no information about the new code.
+Your original version of the code remains under \file{great\_code.bak}, but 
+should be no longer necessary. Note that it is necessary to re-run 
+\file{configure} explicitly, instead of just running \file{config.status}, 
+because the \file{config.status} file contains no information about the 
+new code.
 
 \subsection{Updating checked out code}
-If the code in the main repository has been altered, users' checked out copies of
-the code will of course not automatically be updated to relect the new changes.
-Users must do this themselves to keep their versions up-to-date.
+If the code in the main repository has been altered, users' checked out copies 
+of the code will of course not automatically be updated to relect the new 
+changes.  Users must do this themselves to keep their versions up-to-date.
 
 In general, it is only necessary to execute the following steps in order to
 completely update your personal checked out version of the \PSIthree\ code:
@@ -304,18 +328,18 @@ completely update your personal checked out version of the \PSIthree\ code:
 \end{enumerate}
 This will examine each entry in your checked out code hierarchy and compare it
 to the most recent version in the main repository. When that in the main
-repository is more recent, your version of the code is updated. If you have made
-changes to your version, but the version in the main repository has not changed,
-the altered code will be identified to you with an ``M''. If you have made
-changes to your version of the code, and one or more newer versions have been
-updated in the main repository, CVS will examine the two versions and attempt
-to merge them -- this process usually has conflicts however, and is rarely
-successful. You will be notified of any conflicts that arise and it will be up to
-you to resolve them.
+repository is more recent, your version of the code is updated. If you have 
+made changes to your version, but the version in the main repository has not 
+changed, the altered code will be identified to you with an ``M''. If you 
+have made changes to your version of the code, and one or more newer versions 
+have been updated in the main repository, CVS will examine the two versions 
+and attempt to merge them -- this process usually has conflicts however, and 
+is rarely successful. You will be notified of any conflicts that arise and it 
+will be up to you to resolve them.
 
-If entirely new code has been added to the main repository, the above steps will
-not automatically check out the new code. To do this, the following steps should
-be executed:
+If entirely new code has been added to the main repository, the above steps 
+will not automatically check out the new code. To do this, the following 
+steps should be executed:
 
 Assume the name of the new code is \file{great\_code}. 
 \begin{enumerate}
@@ -327,19 +351,20 @@ Assume the name of the new code is \file{great\_code}.
 \item {\tt cd src/bin/great\_code}
 \item {\tt make install}
 \end{enumerate}
-This will check out any new code that has been added to the repository since the last time the
-\file{cvs update} command was issued, correctly update the \file{configure} script
-(assuming the programmer who added the code followed the steps from section \ref{checkin_new}
-and edited the \file{configure.in} file), re-configure for the new code (note that
-you must run \file{configure} and not \file{config.status} here), and then compile the
-code.
+This will check out any new code that has been added to the repository since 
+the last time the \file{cvs update} command was issued, correctly update 
+the \file{configure} script (assuming the programmer who added the code 
+followed the steps from section \ref{checkin_new} and edited the 
+\file{configure.in} file), re-configure for the new code (note that
+you must run \file{configure} and not \file{config.status} here), and 
+then compile the code.
 
 \subsection{Removing code from the repository}
-If alterations of libraries or binaries under Psi involves the deletion of source
-code files from the code, these must be explicitly removed through CVS.
+If alterations of libraries or binaries under Psi involves the deletion of 
+source code files from the code, these must be explicitly removed through CVS.
 
-The following steps will remove a source code file named \file{bad\_code.F} from a
-binary named \module{great\_code}:
+The following steps will remove a source code file named \file{bad\_code.F} 
+from a binary module named \module{great\_code}:
 \begin{enumerate}
 \item {\tt cd \$HOME/psi3\_dist/src/bin/great\_code}
 \item {\tt rm bad\_code.F}
@@ -356,72 +381,87 @@ is the case, the following steps will do this:
 \item {\tt cd \$HOME/psi3\_dist/src/bin/input}
 \item {\tt cvs update -D"2 months ago"}
 \end{enumerate}
-This will check the main repository and provide you with the code as it stood 2
-months ago. CVS is quite impressive in this respect. It will accept all sorts of
-input to the -D option. You could even use \file{-D"a fortnight ago"} and CVS
-would get the correct version. (But it doesn't get \file{"two fortnights ago"} right.
-:) You can always get the recent version back by simply using \file{-D"now"}. Note
-that subsequent updates of the current code will use the same date you give
-with the \file{-D} option. 
+This will check the main repository and provide you with the code as it stood 
+2 months ago. CVS is quite impressive in this respect. It will accept all 
+sorts of input to the -D option. You could even use \file{-D"a fortnight ago"}
+and CVS would get the correct version. (But it doesn't get \file{"two 
+fortnights ago"} right.  :) You can always get the recent version back by 
+simply using \file{-D"now"}. Note that subsequent updates of the current 
+code will use the same date you give with the \file{-D} option. 
 
-\subsection{The structure of the \PSIthree\ repository, source, and installation trees} \label{psitree}
-As mentioned above, the main repository tree may be found in
-\file{/home/xerxes/psi3/master/psi3}, which we will call \shellvar{\$ROOT},
-for convenience. \shellvar{\$ROOT} contains a number of important
-installation scripts, and configure input files.
-There are three pertinent subdirectories of \shellvar{\$ROOT}:
+\subsection{The structure of the \PSIthree\ repository, source, and 
+installation trees} 
+\label{psitree} 
+As mentioned previously, the official \PSIthree\ repository is located
+in a directory \file{/home/users/psi3/master} at Virginia Tech.
+Let us call this directory \shellvar{\$ROOT} for short.
+The top level of this directory contains the official version of a number 
+of important installation scripts, and configure input 
+files.  There are three pertinent subdirectories of \shellvar{\$ROOT}:
 \begin{itemize}
-\item \shellvar{\$ROOT}\file{/lib} -- contains the CVS-stored non-architecture-dependent ``library'' data. This
-currently includes the psi man page nroff macro file, \file{macro.psi}, the basis
-set data, \file{pbasis.dat}, the program execution order, \file{psi.dat}, and tmp disk
+\item \shellvar{\$ROOT}\file{/lib} -- contains the CVS-stored 
+non-architecture-dependent ``library'' data. This currently includes the 
+psi man page nroff macro file, \file{macro.psi}, the basis set data, 
+\file{pbasis.dat}, the program execution order, \file{psi.dat}, and tmp disk
 information for the local machines (CCQC by default), \file{tmpdisk.dat}. 
-\item \shellvar{\$ROOT}\file{/include} -- contains the CVS-stored architecture-independent header files.
-\item \shellvar{\$ROOT}\file{/src} -- contains the CVS-stored source code for binaries,
-libraries, and utilities. \\
+\item \shellvar{\$ROOT}\file{/include} -- contains the CVS-stored 
+architecture-independent header files.
+\item \shellvar{\$ROOT}\file{/src} -- contains the CVS-stored source code 
+for binaries, libraries, and utilities. \\
 \shellvar{\$ROOT}\file{/src} has the following subdirectories:
 \begin{itemize}
 \item \shellvar{\$ROOT}\file{/src/util} -- contiains the CVS-stored source code for \module{psipp}, \module{tmpl}.
-\item \shellvar{\$ROOT}\file{/src/lib} -- contains the CVS-stored source code for all of the \PSIthree\ libraries,
+\item \shellvar{\$ROOT}\file{/src/lib} -- contains the CVS-stored source code 
+for all of the \PSIthree\ libraries,
 including \library{libpsio}, \library{libipv1}, etc.
-\item \shellvar{\$ROOT}\file{/src/bin} -- contains the CVS-stored source code for all of the \PSIthree\ 
-binaries. 
+\item \shellvar{\$ROOT}\file{/src/bin} -- contains the CVS-stored source code 
+for all of the \PSIthree\ binaries. 
 \end{itemize}
 \end{itemize}
 
-An example of an installation tree may be found in \file{/home/xerxes/psi3}, which we will call
-\shellvar{\$LOCAL}, for convenience.
-\shellvar{\$LOCAL} has the following pertinent subdirectories:
+Let us suppose we have checked out \PSIthree\ into a directory we will
+call \shellvar{\$SRC}.  The structure of this source tree mirrors that
+of the official \PSIthree\ CVS repository.
+\shellvar{\$SRC} has the following pertinent subdirectories:
 \begin{itemize}
-\item \shellvar{\$LOCAL}\file{/bin} -- contains non-architecture-dependent executables and
-shell scripts. Currently this consists of \file{host.sh}, \file{config.guess}, and \file{config.local}, which
-together define a canonical name for the system.
-\item \shellvar{\$LOCAL}\file{/doc} -- contains \PSIthree\ documentation files.
-\item \shellvar{\$LOCAL}\file{/include} -- contains non-architecture-dependent header files.
-\item \shellvar{\$LOCAL}\file{/share} -- contains non-architecture-dependent ``library'' data.
-This currently includes the psi man page nroff macro file, \file{macro.psi}, the basis
-set data, \file{pbasis.dat}, the program execution order, \file{psi.dat}, and tmp disk
-information for the local machines (CCQC by default), \file{tmpdisk.dat}.
-\item \shellvar{\$LOCAL}\file{/}\shellvar{\$ARCH} -- an architecture-dependent directory
-       containing the executables, libraries, and object code for \PSIthree.
-\end{itemize}
-
-An example of a checked-out source tree is found in \file{/home/xerxes/psi3/psi3\_dist},
-which we will call \shellvar{\$SRC}, for convenience. \shellvar{\$SRC}
-has the following pertinent subdirectories:
-\begin{itemize}
-\item \shellvar{\$SRC}\file{/lib} -- contains non-architecture-dependent ``library'' data. This
-currently includes the psi man page nroff macro file, \file{macro.psi}, the basis
-set data, \file{pbasis.dat}, the program execution order, \file{psi.dat}, and tmp disk
-information for the local machines (CCQC by default), \file{tmpdisk.dat}. 
-\item \shellvar{\$SRC}\file{/include} -- contains architecture-independent header files.
+\item \shellvar{\$SRC}\file{/lib} -- contains non-architecture-dependent 
+``library'' data. This currently includes the psi man page nroff macro file, 
+\file{macro.psi}, the basis set data, \file{pbasis.dat}, the program execution 
+order, \file{psi.dat}, and tmp disk information for the local machines 
+(CCQC by default), \file{tmpdisk.dat}. 
+\item \shellvar{\$SRC}\file{/include} -- contains architecture-independent 
+header files.
 \item \shellvar{\$SRC}\file{/src} -- contains source code for binaries,
 libraries, and utilities. \\
 \shellvar{\$SRC}\file{/src} has the following subdirectories:
 \begin{itemize}
-\item \shellvar{\$SRC}\file{/src/util} -- contiains the source code for \module{psipp}, \module{tmpl}.
-\item \shellvar{\$SRC}\file{/src/lib} -- contains the source code for all of the \PSIthree\ libraries,
-including \library{libpsio}, \library{libipv1}, etc.
-\item \shellvar{\$SRC}\file{/src/bin} -- contains the source code for all of the \PSIthree\ 
-binaries. 
+\item \shellvar{\$SRC}\file{/src/util} -- contiains the source code for 
+\module{psipp}, \module{tmpl}.
+\item \shellvar{\$SRC}\file{/src/lib} -- contains the source code for all of 
+the \PSIthree\ libraries, including \library{libpsio}, \library{libipv1}, etc.
+\item \shellvar{\$SRC}\file{/src/bin} -- contains the source code for all of 
+the \PSIthree\ binaries. 
 \end{itemize}
 \end{itemize}
+
+An example of an installation tree may be found in \file{/usr/local/psi3}, 
+which we will call
+\shellvar{\$LOCAL}, for convenience.
+\shellvar{\$LOCAL} has the following pertinent subdirectories:
+\begin{itemize}
+\item \shellvar{\$LOCAL}\file{/bin} -- contains non-architecture-dependent 
+executables and shell scripts. Currently this consists of \file{host.sh}, 
+\file{config.guess}, and \file{config.local}, which together define a 
+canonical name for the system.
+\item \shellvar{\$LOCAL}\file{/doc} -- contains \PSIthree\ documentation files.
+\item \shellvar{\$LOCAL}\file{/include} -- contains non-architecture-dependent 
+header files.
+\item \shellvar{\$LOCAL}\file{/share} -- contains non-architecture-dependent 
+``library'' data.  This currently includes the psi man page nroff macro 
+file, \file{macro.psi}, the basis set data, \file{pbasis.dat}, the program 
+execution order, \file{psi.dat}, and tmp disk information for the local 
+machines (CCQC by default), \file{tmpdisk.dat}.
+\item \shellvar{\$LOCAL}\file{/}\shellvar{\$ARCH} -- an architecture-dependent 
+directory containing the executables, libraries, and object code for \PSIthree.
+\end{itemize}
+

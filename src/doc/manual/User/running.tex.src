@@ -152,11 +152,13 @@ unique atom out of the set of symmetry equivalent ones.
 \begin{table}
 \caption{Summary of basis sets defined in \PSIthree.}
 \label{table:basisset}
+\begin{center}
 \begin{tabular}{lll} \hline\hline 
 Basis Sets & ID string & Elements \\ \hline
-cc-pV$x$Z & ccpv$x$z & H, Be-Ne \\
+cc-pVxZ & ccpvxz & H, Be-Ne \\
 \hline\hline
 \end{tabular}
+\end{center}
 \end{table}
 
 \subsubsection{Custom Basis Sets}
@@ -179,12 +181,12 @@ on how to access \PSIthree\ repository.
 \end{verbatim}
 Use this option if you want to use the basis set file in a project
 which involves running more than one computation.
-\item File named \basisdat, which resides in the working directory along with \inputdat .
-Same use as the previous entry.
+\item File named \basisdat, which resides in the working directory along 
+with \inputdat .  Same use as the previous entry.
 \item \inputdat
 \end{itemize}
-The order in which \PSIinput\ program searches for basis sets is the order in which files
-appear in our checklist.
+The order in which \PSIinput\ program searches for basis sets is the order 
+in which files appear in our checklist.
 
 A contracted Cartesian Gaussian-Type Orbital
 \begin{eqnarray}
@@ -302,7 +304,7 @@ Along with the wavefunction type, the nuclear framework, basis set,
 and electronic configuration are sufficient
 for a single-point evaluation of the electronic energy.
 The electronic wavefunction is specified via the \keyword{wfn} keyword.
-The range of allowed wavefunctions is listed in Table \ref{table:wfn}
+The range of allowed wavefunctions is listed in Table \ref{table:methods}.
 
 \subsection{Geometry Optimization}
 
@@ -345,7 +347,7 @@ The procedure for setting up such a calculation is as follows:
 The precision with which geometry is optimized depends on the residual
 forces on the nuclei. By default \PSIoptking\ will terminate the job
 if the residual cartesian gradients in \FILE{11.dat} are less than
-$10^{-5}$ in atomic units. It is probably enough for most
+1E-5 in atomic units. It is probably enough for most
 tasks. Going below this will most likely waste CPU
 time unless you are doing benchmarks.
 
@@ -459,9 +461,10 @@ Clearly, the list starts at the most
 approximate and gets more accurate. 
 
 \subsection{Frequency Analysis}
-Currently, analytic second derivatives are not avaliable for any
-method in \PSIthree. Hence, for methods with analytic gradients, one
-must carry out finite difference calculations. If one has the
+Currently, analytic second derivatives are avaliable only for closed-shell
+Hartree-Fock (the preliminary implementation is not yet very efficient).  
+For methods with analytic gradients, one must carry out finite difference 
+calculations to obtain second derivatives. If one has the
 misfortune of needing frequencies for methods where only energies
 exist(e.g. FCI or MP2-R12), finite differences with gradients
 approximated by energy points must be used. At present, obtaining the

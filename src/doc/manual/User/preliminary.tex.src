@@ -13,7 +13,7 @@ methods available in \PSIthree .
 \begin{center}
 \begin{tabular}{lccc} \hline\hline
 Method      & Energy & Gradient & Hessian \\ \hline
-RHF SCF     & Y & Y & N \\
+RHF SCF     & Y & Y & Y \\
 ROHF SCF    & Y & Y & N \\
 UHF SCF     & Y & N & N \\
 TCSCF       & Y & Y & N \\
@@ -88,13 +88,12 @@ and at least 20 MB of scratch space for compilation of machine-generated code (m
 want to use basis functions of high angular momentum, say, past g).
 
 \subsection{How to Obtain \PSIthree}
-\PSIthree\ may be obtained from Center for Computational Quantum Chemistry (CCQC)
-of University of Georgia by sending a request to \htmladdnormallink{{\tt mailto:psi@ccqc.uga.edu}}
-{mailto:psi@ccqc.uga.edu}.\footnote{\PSIthree\ developers
-should refer to the \PSIthree\ Programmer's Manual for information on
-how to obtain \PSIthree\ source code.} As of June 2000, the \PSIthree\ source code
-may be obtained for free; however, the software is distributed without
-a warranty of correctness of results obtained with \PSIthree\ or
+\PSIthree\ may be obtained by sending a request to \htmladdnormallink{{\tt
+mailto:psimaster@sirius.chem.vt.edu}}{mailto:psimaster@sirius.chem.vt.edu}.\footnote{\PSIthree\ 
+developers should refer to the \PSIthree\ Programmer's Manual for information 
+on how to obtain \PSIthree\ source code.} As of June 2000, the \PSIthree\ 
+source code may be obtained for free; however, the software is distributed 
+without a warranty of correctness of results obtained with \PSIthree\ or
 an obligation to provide technical support.
 
 \subsection{How to Install \PSIthree}
@@ -115,7 +114,7 @@ of the human-generated source code for \PSIthree. At this point
 you may choose to rename it to something else, like \file{psi3\_dist}.
 It is better to keep object and binary files
 separate from the source files so that you can wipe out the binaries
-clean and start over at any moment.
+clean and start over at any moment.  
 
 Now enter \PSIthree\ source directory and edit the installation script
 \file{PSI3Install}. Specify a target location for \PSIthree\ installation tree
@@ -140,6 +139,18 @@ check the \file{bin} directory, it should have several
 binary files in it. If you do not have binaries in that location,
 then something went wrong and 
 you should check \file{install.out} for errors.
+
+There are occasionally problems on 64-bit architectures in linking the
+correct 32/64-bit librarires.  For example, on AIX, there may be both 32-bit
+and 64-bit lapack libraries.  If \PSIthree\ is compiled in 64-bit mode and
+the linker picks up a 32-bit liblapack.a, the compilation will fail due to
+unresolved symbols.  To get around this particular problem, one can
+add a flag such as {\tt --with-lapack="/usr/local/lib/liblapack\_64.a"} 
+when running \file{configure}.
+
+To verify that 64-bit compilation flags are set, one can check
+{\tt \$(top\_objdir)/src/lib/MakeVars and \$(top\_objdir)/src/bin/MakeVars}.
+Check the {\tt COPT, CXXOPT, FOPT, LDFLAGS}, and {\tt AR} variables.
 
 \subsection{Post-installation Procedures}
 To verify correct installation of the program, it is useful to

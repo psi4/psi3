@@ -20,8 +20,8 @@ in \file{parse.y} (see below).
 To read a grammar we need a parser -- the first
 component of \library{libipv1.a}. Then the identified lexical elements of
 \inputdat\ (keywords and keyword values) need to be scanned for
-presence of ``forbidden'' characters (e.g.
-a space may not be a part of a string unless the string is placed between parentheses.
+presence of ``forbidden'' characters (e.g.  a space may not be a part of a 
+string unless the string is placed between parentheses).
 This task is performed by the lexer (or scanner) -- the second component of
 \library{libipv1.a}. Finally, scanned in pairs keyword-value(s) are stored in a hierarchical
 data structure (tree). When a particular option is needed, the set of
