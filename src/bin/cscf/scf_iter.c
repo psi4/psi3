@@ -1,8 +1,12 @@
 /* $Log$
- * Revision 1.7  2000/07/06 20:04:02  sbrown
- * Added capabilities to send the eigenvector to cints for DFT
- * calculations.
+ * Revision 1.8  2000/07/10 18:03:34  sbrown
+ * Enabling cscf to send over just the occupied SCF eigenvector for DFT
+ * calculations.  Only done for the RHF case.
  *
+/* Revision 1.7  2000/07/06 20:04:02  sbrown
+/* Added capabilities to send the eigenvector to cints for DFT
+/* calculations.
+/*
 /* Revision 1.6  2000/07/05 21:47:31  sbrown
 /* Enabled the code to export the SCF eigenvector to CINTS when doing DFT.
 /*
@@ -399,29 +403,6 @@ void scf_iter()
            }
          }
        }
-      if(ksdft) {
-       
-       ntri = nbfso*nmo;
-       cmat = block_matrix(nbfso,nmo);
-       for(i=0;i<num_ir;i++){
-	   max = scf_info[i].num_so;
-	   off = scf_info[i].ideg;
-	   for(j=0;j<max;j++){
-	       jj = j+off;
-	       for(k=0;k<max;k++) {
-		   kk = k + off;
-		   cmat[jj][kk] = scf_info[i].cmat[j][k];
-	       }
-	   }
-       }
-       
-       psio_open(itapDSCF, PSIO_OPEN_OLD);
-       psio_write_entry(itapDSCF, "SCF Eigenvector", (char *) &(cmat[0][0]),
-			sizeof(double)*ntri);
-       psio_close(itapDSCF,1);
-       free_block(cmat);
-   }
-     
 /* form new density matrix */
 
       dmat();

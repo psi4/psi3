@@ -16,6 +16,9 @@ void formg_direct()
      Call CINTS to do all the dirty job
      Check if it ran fine
     -----------------------------------*/
+   if(exitflag)
+       exit(1);
+   
    stat = system("cints --fock");
    
    switch (stat) {

@@ -114,7 +114,11 @@ void guess()
 	      
 	      occ_calc();
 	  }
-
+/* STB - 7/10/00 for DFT to ship the eigenvector */
+/* calculate the number of total closed and open shells */
+	  for(i=0; i < num_ir; i++){
+	      n_closed += scf_info[i].nclosed;
+	  }
 /* output occupations to outfile */
 	  occ_out();
 	  

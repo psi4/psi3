@@ -1,7 +1,11 @@
 /* $Log$
- * Revision 1.5  2000/06/27 21:08:10  evaleev
- * Fixed a minor string manipulation problem in scf_input.c
+ * Revision 1.6  2000/07/10 18:03:33  sbrown
+ * Enabling cscf to send over just the occupied SCF eigenvector for DFT
+ * calculations.  Only done for the RHF case.
  *
+/* Revision 1.5  2000/06/27 21:08:10  evaleev
+/* Fixed a minor string manipulation problem in scf_input.c
+/*
 /* Revision 1.4  2000/06/26 19:04:11  sbrown
 /* Added DFT capapbilities to interface with cints using direct scf
 /*
@@ -155,7 +159,11 @@ void scf_input(ipvalue)
          }
        }
      }
-
+   
+   /* Remove after debugging.  Stop cscf right before going to cints */
+   exitflag = 0;
+   errcod = ip_boolean("EXIT_CINTS",&exitflag,0);
+   
    itmax = 40;
    errcod = ip_data("MAXITER","%d",&itmax,0);
 

@@ -1,8 +1,12 @@
 /* $Id$ */
 /* $Log$
- * Revision 1.4  2000/06/22 22:14:58  evaleev
- * Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
+ * Revision 1.5  2000/07/10 18:03:30  sbrown
+ * Enabling cscf to send over just the occupied SCF eigenvector for DFT
+ * calculations.  Only done for the RHF case.
  *
+/* Revision 1.4  2000/06/22 22:14:58  evaleev
+/* Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
+/*
 /* Revision 1.3  2000/06/02 13:32:14  kenny
 /*
 /*
@@ -140,10 +144,12 @@ typedef enum {ref_rhf = 0, ref_uhf = 1, ref_rohf = 2, ref_tcscf = 3,
       ref_rks = 4, ref_uks = 5} reftype;
 EXTERN reftype refnum;
 
+EXTERN int exitflag;            /* remove the after debugging */
 EXTERN int mo_out;              /* 1 if display orbitals in new format at end*/
 EXTERN int n_so_typs;           /* number of irreps w/ non-zero num of so's */
 EXTERN int nbasis;              /* # basis functions */
 EXTERN int nsfmax;              /* max # of so's per irrep */
+EXTERN int n_closed;            /* total number of closed shells */
 EXTERN int n_open;              /* # open shells */
 EXTERN int num_ir;              /* # of symmetry types */
 EXTERN int mxcoef;              /* sum of (# so's per irrep)**2 */

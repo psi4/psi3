@@ -1,8 +1,12 @@
 /* $Log$
- * Revision 1.5  2000/07/06 20:04:01  sbrown
- * Added capabilities to send the eigenvector to cints for DFT
- * calculations.
+ * Revision 1.6  2000/07/10 18:03:30  sbrown
+ * Enabling cscf to send over just the occupied SCF eigenvector for DFT
+ * calculations.  Only done for the RHF case.
  *
+/* Revision 1.5  2000/07/06 20:04:01  sbrown
+/* Added capabilities to send the eigenvector to cints for DFT
+/* calculations.
+/*
 /* Revision 1.4  2000/06/26 19:04:09  sbrown
 /* Added DFT capapbilities to interface with cints using direct scf
 /*
@@ -65,6 +69,7 @@ void dmat()
    int max, off, ntri, joff;
    int ndocc,nsocc,nhocc;
    double ptempc,ptempo,ctmp;
+   double **cmat;
    double *dmat;
    extern double delta;
    struct symm *s;
@@ -150,13 +155,11 @@ void dmat()
           eri_cutoff=1.0E-14;
        }
      }
-     if(ksdft)
-	 psio_open(itapDSCF, PSIO_OPEN_OLD);
-     else
-	 psio_open(itapDSCF,PSIO_OPEN_NEW);
+     
+     psio_open(itapDSCF,PSIO_OPEN_NEW);
      psio_write_entry(itapDSCF, "Integrals cutoff", (char *) &eri_cutoff,
 		      sizeof(double));
-
+     
      ntri = nbasis*(nbasis+1)/2;
 
      /*--- Get full dpmat ---*/
@@ -180,24 +183,31 @@ void dmat()
      psio_write_entry(itapDSCF, "Difference Density", (char *) dmat,
 		      sizeof(double)*ntri);
 
+     /* ----- Get Occupied Eigenvector matrix for DFT ---- */
      if (ksdft) {
-       /*--- Get full pmat for DFT numerical integrator ---*/
-	 ndocc = 0;
-	 for(i=0;i<num_ir;i++) {
-	   ndocc += scf_info[i].nclosed;
-	   /*max = scf_info[i].num_so;
-	   off = scf_info[i].ideg;
-	   for(j=0;j<max;j++) {
-	       jj = j + off;
-	       for(k=0;k<=j;k++) {
-		   kk = k + off;
-		   dmat[ioff[jj]+kk] = scf_info[i].pmat[ioff[j]+k];
-	       }
-	       }*/
-       }
-       psio_write_entry(itapDSCF, "Number of Doubly Occ", (char *) &(ndocc),sizeof(int));
-       /*psio_write_entry(itapDSCF, "Total Density", (char *) dmat,
-	 sizeof(double)*ntri);*/
+	 ntri = nbfso*n_closed;
+	 cmat = block_matrix(nbfso,n_closed);
+	 for(i=l=0;i<num_ir;i++){
+	     max = scf_info[i].nclosed;
+	     off = scf_info[i].ideg;
+	     for(j=0;j<max;j++){
+		 for(k=0;k<scf_info[i].num_mo;k++) {
+		     kk = k + off;
+		     cmat[kk][l] = scf_info[i].cmat[k][j];
+		 }
+		 l++;
+	     }
+	 }
+	 /*fprintf(outfile,"\nOccupied Eigenvector from CSCF");
+	   print_mat(cmat,nbfso,n_closed,outfile);*/
+	 
+	 psio_write_entry(itapDSCF, "Number of MOs", 
+			  (char *) &(nmo),sizeof(int));   
+	 psio_write_entry(itapDSCF, "Number of DOCC",
+			  (char *) &(n_closed),sizeof(int));
+	 psio_write_entry(itapDSCF, "Occupied SCF Eigenvector", 
+			  (char *) &(cmat[0][0]),sizeof(double)*ntri);
+	 free_block(cmat);
      }
 
      /*--- Get full dpmato ---*/
