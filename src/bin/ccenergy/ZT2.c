@@ -6,28 +6,21 @@
 
 void ZT2(void)
 {
-  dpdbuf4 ZIJMA, ZIJAM, Zijma, Zijam, ZIjMa, ZIjAm;
-  dpdbuf4 newtIJAB, newtijab, newtIjAb;
-  dpdfile2 tIA, tia;
-  dpdbuf4 t2;
+  dpdbuf4 ZIJMA, ZIJAM, Zijma, Zijam, ZIjMa, ZIjAm, Z;
+  dpdbuf4 newtIJAB, newtijab, newtIjAb, T2;
+  dpdfile2 tIA, tia, T1;
+  dpdbuf4 t2, X;
 
   if(params.ref == 0) { /** RHF **/
-    dpd_buf4_init(&newtIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb");
-
-    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
-
-    dpd_buf4_init(&ZIjMa, CC_MISC, 0, 0, 10, 0, 10, 0, "ZIjMa");
-    dpd_buf4_init(&ZIjAm, CC_MISC, 0, 0, 11, 0, 11, 0, "ZIjAm");
-
-    dpd_contract424(&ZIjAm, &tIA, &newtIjAb, 3, 0, 0, -1, 1);
-    dpd_contract244(&tIA, &ZIjMa, &newtIjAb, 0, 2, 1, -1, 1);
-
-    dpd_buf4_close(&ZIjMa); 
-    dpd_buf4_close(&ZIjAm);
-
-    dpd_file2_close(&tIA); 
-
-    dpd_buf4_close(&newtIjAb); 
+    dpd_buf4_init(&X, CC_TMP0, 0, 5, 0, 5, 0, 0, "X(Ab,Ij)");
+    dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
+    dpd_buf4_init(&Z, CC_MISC, 0, 10, 0, 10, 0, 0, "ZMbIj");
+    dpd_contract244(&T1, &Z, &X, 0, 0, 0, -1, 0);
+    dpd_buf4_close(&Z); 
+    dpd_file2_close(&T1); 
+    dpd_buf4_sort_axpy(&X, CC_TAMPS, rspq, 0, 5, "New tIjAb", 1);
+    dpd_buf4_sort_axpy(&X, CC_TAMPS, srqp, 0, 5, "New tIjAb", 1);
+    dpd_buf4_close(&X);
   }
   else if(params.ref == 1) { /** ROHF **/
     dpd_buf4_init(&ZIJMA, CC_MISC, 0, 2, 10, 2, 10, 0, "ZIJMA");

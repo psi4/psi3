@@ -7,34 +7,20 @@
 
 void Z_build(void)
 {
-  dpdbuf4 ZIJMA, Zijma, ZIjMa, ZIjmA, ZIjAm, ZMaIj, ZmAIj;
-  dpdbuf4 tauIJAB, tauijab, tauIjAb, tauIjbA, F_anti, F;
+  dpdbuf4 ZIJMA, Zijma, ZIjMa, ZIjmA, ZIjAm, ZMaIj, ZmAIj, Z;
+  dpdbuf4 tauIJAB, tauijab, tauIjAb, tauIjbA, F_anti, F, tau;
 
   timer_on("Z");
 
   if(params.ref == 0) { /** RHF **/
 
-    dpd_buf4_init(&ZMaIj, CC_TMP0, 0, 10, 0, 10, 0, 0, "ZMaIj");
-    dpd_buf4_init(&ZmAIj, CC_TMP0, 0, 10, 0, 10, 0, 0, "ZmAIj");
-
+    dpd_buf4_init(&Z, CC_MISC, 0, 10, 0, 10, 0, 0, "ZMbIj");
     dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
-
-    dpd_buf4_init(&tauIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
-    dpd_contract444(&F, &tauIjAb, &ZMaIj, 0, 0, 1, 0);
-    dpd_buf4_close(&tauIjAb);
-
-    dpd_buf4_init(&tauIjbA, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjbA");
-    dpd_contract444(&F, &tauIjbA, &ZmAIj, 0, 0, 1, 0);
-    dpd_buf4_close(&tauIjbA);
-
+    dpd_buf4_init(&tau, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
+    dpd_contract444(&F, &tau, &Z, 0, 0, 1, 0);
+    dpd_buf4_close(&tau);
     dpd_buf4_close(&F);
-
-    dpd_buf4_sort(&ZMaIj, CC_MISC, rspq, 0, 10, "ZIjMa");
-    dpd_buf4_sort(&ZmAIj, CC_MISC, rsqp, 0, 11, "ZIjAm");
-
-    dpd_buf4_close(&ZMaIj);  
-    dpd_buf4_close(&ZmAIj);
-
+    dpd_buf4_close(&Z);  
   }
   else if(params.ref == 1) { /** ROHF **/
     dpd_buf4_init(&ZIJMA, CC_MISC, 0, 2, 10, 2, 10, 0, "ZIJMA");
