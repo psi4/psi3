@@ -648,6 +648,9 @@ if echo $os | grep aix >/dev/null 2>&1 && test "$bitwidth64" = yes; then
 elif echo $os | grep aix >/dev/null 2>&1; then
     ARFLAGS="rv"
     LDFLAGS="-bmaxdata:2000000000"
+elif echo $os | grep linux >/dev/null 2>&1; then
+    ARFLAGS="rv"
+    LDFLAGS="-static"
 else
     ARFLAGS="rv"
 fi
