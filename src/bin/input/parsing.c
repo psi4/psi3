@@ -98,6 +98,7 @@ void parsing_cmdline(int argc, char *argv[])
    read_chkpt = 0;
    chkpt_mos = 0;
    chkpt_geom = 0;
+   dont_project_mos = 0;
    geomdat_geom = 0;
    save_oldcalc = 0;
    overwrite_output = 1;
@@ -106,16 +107,21 @@ void parsing_cmdline(int argc, char *argv[])
    
    for (i=1; i<argc; i++) {
        
-       /*--- read MOs from checkpoint file and project onto new basis? ---*/
+       /*--- read MOs from checkpoint file and project onto new basis ---*/
        if (strcmp(argv[i], "--chkptmos") == 0) {
 	 read_chkpt = 1;
 	 chkpt_mos = 1;
        }
 
-       /*--- read MOs and project onto new basis? ---*/
+       /*--- read MOs from checkpoint file and save to a separate file ---*/
        if (strcmp(argv[i], "--savemos") == 0) {
 	 read_chkpt = 1;
 	 save_oldcalc = 1;
+       }
+
+       /*--- don't project MOs but simply keep them ---*/
+       if (strcmp(argv[i], "--noproject") == 0) {
+	 dont_project_mos = 1;
        }
 
        /*--- read geometry from checkpoint file (in findif calculations) ---*/

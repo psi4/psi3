@@ -48,7 +48,8 @@ EXTERN int read_chkpt;              /*Read old checkpoint file?*/
 EXTERN int chkpt_geom;              /*Read geometry from checkpoint file?*/
 EXTERN int geomdat_geom;            /*Read geometry from geom.dat?*/
 EXTERN int geomdat_entry;           /*Which entry to read from geom.dat?*/
-EXTERN int chkpt_mos;               /*Project old SCF evector?*/
+EXTERN int chkpt_mos;               /*Put old SCF evector into chkpt file?*/
+EXTERN int dont_project_mos;        /*Don't project MOs but simply keep them*/
 EXTERN int save_oldcalc;            /*Save old calculation and old/new basis overlap?*/
 EXTERN int overwrite_output;        /*Overwrite output.dat?*/
 EXTERN int expert;                  /*If expert is true - safety checks are off - 
