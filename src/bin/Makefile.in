@@ -5,7 +5,7 @@ subdirs = \
 psi3 input cints cscf transqt optking \
 ccsort ccenergy cctriples cchbar cclambda ccdensity cceom ccresponse \
 clag cphf detcas detcasman detci extrema geom mp2 mp2r12 oeprop psiclean \
-mocube localize stable response cis \
+mocube localize stable response cis cceom-d\
 
 all: default
 
