@@ -20,6 +20,7 @@ extern "C" {
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <libfile30/file30.h>
+#include <libchkpt/chkpt.h>
 #include <psifiles.h>
 #include "structs.h"
 #include "globals.h"
@@ -46,9 +47,16 @@ void get_parameters(void)
    /* default value of Ms0 depends on iopen but is modified below 
     * depending on value of opentype
     */
+
+   /*
    file30_init();
    Parameters.Ms0 = !(file30_rd_iopen());
    file30_close();
+   */
+
+   chkpt_init();
+   Parameters.Ms0 = !(chkpt_rd_iopen());
+   chkpt_close();
 
    /* need to figure out wheter to filter tei's */
    errcod = ip_string("DERTYPE", &(Parameters.dertype),0); 
@@ -489,16 +497,7 @@ void get_parameters(void)
    if (Parameters.opdm) Parameters.opdm_write = 1;
    errcod = ip_boolean("OPDM_WRITE",&(Parameters.opdm_write),0);
    errcod = ip_boolean("OPDM_PRINT",&(Parameters.opdm_print),0);
-   errcod = ip_data("OPDM_FILE","%d",&(Parameters.opdm_file),0);
    errcod = ip_data("OPDM_DIAG","%d",&(Parameters.opdm_diag),0);
-   errcod = ip_data("WRTNOS","%d",&(Parameters.opdm_wrtnos),0);
-   errcod = ip_data("OPDM_AVE", "%d", &(Parameters.opdm_ave),0);
-   errcod = ip_data("ORBSFILE", "%d", &(Parameters.opdm_orbsfile),0);
-   errcod = ip_data("ORBS_ROOT", "%d", &(Parameters.opdm_orbs_root),0);
-   if (Parameters.opdm_orbs_root == -1) 
-     Parameters.opdm_orbs_root = 0;
-    /* Parameters.opdm_orbs_root = Parameters.num_roots-1; */
-   else Parameters.opdm_orbs_root -= 1;
 
    errcod = ip_boolean("TPDM",&(Parameters.tpdm),0);
    if (Parameters.tpdm) Parameters.tpdm_write = 1;
@@ -508,9 +507,17 @@ void get_parameters(void)
 
    if (Parameters.guess_vector == PARM_GUESS_VEC_DFILE &&
        strcmp(Parameters.wfn, "DETCAS")!=0) {
+
+      /*
       file30_init();
       i = file30_rd_phase_check();
       file30_close();
+      */
+
+      chkpt_init();
+      i = chkpt_rd_phase_check();
+      chkpt_close();
+
       if (!i) {
          fprintf(outfile, "Can't use d file guess: SCF phase not checked\n");
          if (Parameters.h0guess_size) {
@@ -714,7 +721,7 @@ void print_parameters(void)
            Parameters.mpn ? "yes":"no", Parameters.mpn_schmidt ? "yes":"no");
    fprintf(outfile, "   WIGNER        =   %6s      ZERO BLOCKS  =   %6s\n", 
            Parameters.wigner ? "yes":"no", Parameters.zero_blocks ? "yes":"no");
-   fprintf(outfile, "   PERT Z        =   %1.4f    ROOT         =   %6d\n",
+   fprintf(outfile, "   PERT Z        =   %1.4f      ROOT         =   %6d\n",
            Parameters.perturbation_parameter, Parameters.root);
    fprintf(outfile, "   PTHREADS      =   %6s      NTHREADS     =   %6d\n",
            Parameters.pthreads ? "yes":"no", Parameters.nthreads);

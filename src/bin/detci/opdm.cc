@@ -11,6 +11,7 @@ extern "C" {
    #include <libciomr/libciomr.h>
    #include <libqt/qt.h>
    #include <libfile30/file30.h>
+   #include <libchkpt/chkpt.h>
    #include <libiwl/iwl.h>
    #include <psifiles.h>
    #include "structs.h"
@@ -70,7 +71,9 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
            Jfirstunit, CIblks.first_iablk, CIblks.last_iablk, CIblks.decode);
 
   if (Parameters.opdm_diag) rfile(Parameters.opdm_orbsfile);
-  file30_init();
+
+  // file30_init();
+  chkpt_init();
 
   populated_orbs = CalcInfo.num_ci_orbs + CalcInfo.num_fzc_orbs;
   for (irrep=0; irrep<CalcInfo.nirreps; irrep++) {
@@ -375,7 +378,9 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
             opdm_blk[i][j] = onepdm[i_ci][j_ci];
           }
         }
-      scfvec30 = file30_rd_blk_scf(irrep);    
+      // scfvec30 = file30_rd_blk_scf(irrep);    
+      scfvec30 = chkpt_rd_scf_irrep(irrep);
+
       mmult(opdm_blk,0,scfvec30,1,tmp_mat,0,CalcInfo.orbs_per_irr[irrep],
             CalcInfo.orbs_per_irr[irrep],CalcInfo.so_per_irr[irrep],0);
       mmult(scfvec30,0,tmp_mat,0,opdm_blk,0,CalcInfo.so_per_irr[irrep],
@@ -467,7 +472,8 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
  
         if (k==0 || Parameters.opdm_ave) {
           /* Writting SCF vector to orbsfile for safe keeping */
-          scfvec30 = file30_rd_blk_scf(irrep);
+          // scfvec30 = file30_rd_blk_scf(irrep);
+          scfvec30 = chkpt_rd_scf_irrep(irrep);
             #ifdef DEBUG
             fprintf(outfile,"Cvec for k==0, read in from file30 original\n");
             fprintf(outfile," %s Block \n", CalcInfo.labels[irrep]);
@@ -567,7 +573,8 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
                           irrep, opdm_blk); 
           print_mat(opdm_blk, CalcInfo.so_per_irr[irrep],
                     CalcInfo.orbs_per_irr[irrep], outfile);
-          file30_wt_blk_scf(opdm_blk, irrep);
+          //file30_wt_blk_scf(opdm_blk, irrep);
+          chkpt_wt_scf_irrep(opdm_blk, irrep);
           fprintf(outfile, "\n Warning: Natural Orbitals for the Averaged ");
           fprintf(outfile, "OPDM Have Been Written to file30!\n\n"); 
         }
@@ -577,14 +584,15 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
           for(irrep=0; irrep<CalcInfo.nirreps; irrep++) {
             if (irrep==0) {
               fprintf(outfile,"\n Writing CI Natural Orbitals for root %d"
-                      " to orbsfile in terms of Symmetry Orbitals\n\n",k+1);
+                      " to file30 in terms of Symmetry Orbitals\n\n",k+1);
               }
             fprintf(outfile,"\n %s Block \n", CalcInfo.labels[irrep]);
             orbsfile_rd_blk(Parameters.opdm_orbsfile, k, irrep, opdm_blk); 
             print_mat(opdm_blk, CalcInfo.orbs_per_irr[irrep],
                       CalcInfo.orbs_per_irr[irrep], outfile);
             if (k==Parameters.opdm_orbs_root) { 
-              file30_wt_blk_scf(opdm_blk, irrep);
+              //file30_wt_blk_scf(opdm_blk, irrep);
+              chkpt_wt_scf_irrep(opdm_blk, irrep);
               fprintf(outfile,"\n Warning: Natural Orbitals Have Been "
                     "Written to file30!\n\n"); 
             }
@@ -595,7 +603,8 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
   } 
   /* CINOS completed */
  
-  file30_close();
+  //file30_close();
+  chkpt_close();
 
   fflush(outfile);
   if (Parameters.opdm_diag) {
@@ -870,7 +879,8 @@ void opdm_ke(double **onepdm)
               CalcInfo.so_per_irr[irrep],outfile);
 
     /* transform back to SO basis */
-    scfmat = file30_rd_blk_scf(irrep);    
+    //scfmat = file30_rd_blk_scf(irrep);    
+    scfmat = chkpt_rd_scf_irrep(irrep);
     mmult(opdm_blk,0,scfmat,1,tmp_mat,0,CalcInfo.orbs_per_irr[irrep],
           CalcInfo.orbs_per_irr[irrep],CalcInfo.so_per_irr[irrep],0);
     mmult(scfmat,0,tmp_mat,0,opdm_blk,0,CalcInfo.so_per_irr[irrep],
