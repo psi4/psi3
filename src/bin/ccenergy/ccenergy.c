@@ -221,7 +221,7 @@ int main(int argc, char *argv[])
   }
 
   if(params.local) {
-    local_print_T1_norm();
+/*    local_print_T1_norm(); */
     local_done();
   }
   
