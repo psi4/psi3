@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
   if(params.local) local_init();
 
   hbar_extra();
-  sort_lamps();
+  /* sort_lamps(); now provided by cclambda */
 
   cartcomp = (char **) malloc(3 * sizeof(char *));
   cartcomp[0] = strdup("X");
