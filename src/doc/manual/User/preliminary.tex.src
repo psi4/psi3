@@ -7,27 +7,30 @@ point group describing the full symmetry of the molecule.
 Table \ref{table:methods} displays the range of theoretical
 methods available in \PSIthree .
 \begin{table}
-\caption{Summary of theoretical methods available in \PSIthree.} \label{table:methods}
+\caption{Summary of theoretical methods available in \PSIthree.} 
+\label{table:methods}
 \parsep 10pt
 \begin{tabular}{lccc} \hline\hline
-Method & Energy & Gradient & Hessian \\ \hline
-RHF SCF & Y & Y & N \\
-ROHF SCF & Y & Y & N \\
-UHF SCF & Y & N & N \\
-TCSCF & Y & Y & N \\
-CASSCF & Y & Y & N \\
-RAS-CI & Y & N & N \\
-RHF MP2 & Y & N & N \\
+Method      & Energy & Gradient & Hessian \\ \hline
+RHF SCF     & Y & Y & N \\
+ROHF SCF    & Y & Y & N \\
+UHF SCF     & Y & N & N \\
+TCSCF       & Y & Y & N \\
+CASSCF      & Y & Y & N \\
+RAS-CI      & Y & N & N \\
+RHF MP2     & Y & N & N \\
 RHF MP2-R12 & Y & N & N \\
-ROHF CCSD & Y & Y & N \\
-VOO-BCCD & Y & Y & N \\ \hline\hline
+ROHF CCSD   & Y & Y & N \\
+VOO-CCD     & Y & Y & N \\ \hline\hline
 \end{tabular}
 \end{table}
 Geometry optimization (currently restricted to true minima on the potential
 energy surface) and vibrational frequency computations can be performed
 with the methods for which analytic gradients and Hessian, respectively, are
-available. Appropriate finite difference procedures for gradient and Hessian evaluation
-will be incorporated into \PSIthree\ very soon.
+available.  Methods for which analytic gradients are not yet implemented
+may still be used for geometry optimization if the gradients are computed
+numerically from energies; this is automated by the optking program.
+Numerical computation of Hessians is being developed.
 \PSIthree\ can also compute an extensive list of one-electron properties.
 Finally, it should be mentioned that whenever \PSIthree\ is used,
 it should be cited fully (see appendix).
@@ -47,7 +50,7 @@ IBM C, C++, and Fortran compilers\\
 IBM PowerPC & AIX 4.3.2 & 
 IBM C, C++, and Fortran compilers;
 64-bit mode\\
-Intel i$x$86 & Linux 2.2 & \\
+Intel ix86 & Linux 2.2 & \\
 SGI Origin 2000 & IRIX64 6.5 & 64-bit \\ \hline\hline
 \end{tabular}
 \end{table}
@@ -80,7 +83,7 @@ Programmer's Manuals in HTML-format.
 \end{enumerate}
 You also need to have at least 30 MB of disk space available for the compiled code
 and at least 20 MB of scratch space for compilation of machine-generated code (more if you
-want to use basis functions of high angular momentum, say, past $g$).
+want to use basis functions of high angular momentum, say, past g).
 
 \subsection{How to Obtain \PSIthree}
 \PSIthree\ may be obtained from Center for Computational Quantum Chemistry (CCQC)
@@ -133,8 +136,11 @@ then something went wrong and
 you should check \file{install.out} for errors.
 
 \subsection{Post-installation Procedures}
-As of June 2000, \PSIthree\ does not have a verification
-suite yet. Hopefully, this will change in the near future.
+To verify correct installation of the program, it is useful to
+run the series of test calculations provided in the \file{tests}
+directory.  Reference outputs are contained in the files \file{output.ref}.
+At present, only a small set of test calculations have been added;
+we hope to increase the number and types of tests soon.
 
 The last thing one might want to do is to print out The \PSIthree\
 User's and Programmer's manuals in PostScript form, and/or
@@ -151,7 +157,12 @@ shell environment prior to running \PSIthree:
 \end{enumerate}
 In C-shell it may be achieved like this:
 \begin{verbatim}
-set psipath = /put/the/location/of/the/root/Psi3/directory/here
+set psipath = /put/psi/installation/directory/here
 setenv PATH $psipath`$psipath/bin/host.sh`/bin:$PATH
 setenv MANPATH $psipath/doc/man:$MANPATH
 \end{verbatim}
+Note that in previous versions of PSI, the installation directory
+was frequently in a subdirectory of the source distribution directory.
+This is no longer the case.  Now, \file{psipath} is commonly something
+like \file{/usr/local/psi3} while the source directory will be elsewhere.
+
