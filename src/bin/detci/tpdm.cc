@@ -39,7 +39,8 @@ void tpdm(struct stringwr **alplist, struct stringwr **betlist,
    int i, j, k, l, lmax, ij, kl, ijkl, ijksym;
    int i2, j2, k2, l2, nfzc, populated_orbs;
    int *orbsym;
-   int maxrows, maxcols, bufsz, ntri, ntri2;
+   int maxrows, maxcols, ntri, ntri2;
+   unsigned long bufsz;
    double **transp_tmp = NULL;
    double **transp_tmp2 = NULL;
    double *buffer1, *buffer2, *twopdm, **onepdm, value;

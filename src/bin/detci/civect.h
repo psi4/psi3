@@ -74,16 +74,16 @@ class CIvect {
    public:
       CIvect();
       CIvect(unsigned long vl, int nb, int incor, int ms0, int *iac,
-         int *ibc, int *ias, int *ibs, int *offs, int nac, int nbc, 
+         int *ibc, int *ias, int *ibs, unsigned long *offs, int nac, int nbc, 
          int nirr, int cdperirr, int maxvect, int nunits, 
          int funit, int *fablk, int *lablk, int **dc);
       ~CIvect();
 
       double * buf_malloc(void);
       void set(unsigned long vl, int nb, int incor, int ms0, int *iac,
-         int *ibc, int *ias, int *ibs, int *offs, int nac, int nbc, 
-         int nirr, int cdperirr, int maxvect, int nunits, 
-         int funit, int *fablk, int *lablk, int **dc);
+         int *ibc, int *ias, int *ibs, unsigned long *offs, int nac, int nbc, 
+         int nirr, int cdperirr, int maxvect, int nunits, int funit, 
+         int *fablk, int *lablk, int **dc);
       void print(FILE *outfile);
       double operator*(CIvect &b);
       void set_nvect(int i);

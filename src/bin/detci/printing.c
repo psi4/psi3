@@ -293,9 +293,9 @@ void print_ciblk_summary(FILE *outfile)
 
    fprintf(outfile, "\nCI Block Summary:\n");
    for (blk=0; blk<CIblks.num_blocks; blk++) {
-      fprintf(outfile, "Block %3d: Alp=%3d, Bet=%3d  Size = %4d x %4d\n", blk, 
-         CIblks.Ia_code[blk], CIblks.Ib_code[blk], CIblks.Ia_size[blk],
-         CIblks.Ib_size[blk]);
+      fprintf(outfile, "Block %3d: Alp=%3d, Bet=%3d  Size = %4d x %4d\n", 
+              blk, CIblks.Ia_code[blk], CIblks.Ib_code[blk], 
+              CIblks.Ia_size[blk], CIblks.Ib_size[blk]);
       }
 }
 

@@ -190,7 +190,7 @@ CIvect::CIvect() // Default constructor
 
 
 CIvect::CIvect(unsigned long vl, int nb, int incor, int ms0, int *iac,
-         int *ibc, int *ias, int *ibs, int *offs, int nac, int nbc, 
+         int *ibc, int *ias, int *ibs, unsigned long *offs, int nac, int nbc, 
          int nirr, int cdpirr, int mxv, int nu, 
          int funit, int *fablk, int *lablk, int **dc)
 {
@@ -252,12 +252,13 @@ CIvect::CIvect(unsigned long vl, int nb, int incor, int ms0, int *iac,
 
 
 void CIvect::set(unsigned long vl, int nb, int incor, int ms0, int *iac,
-         int *ibc, int *ias, int *ibs, int *offs, int nac, int nbc, 
-         int nirr, int cdpirr, int mxv, int nu, int fu, 
-         int *fablk, int *lablk, int **dc)
+         int *ibc, int *ias, int *ibs, unsigned long *offs, int nac, int nbc, 
+         int nirr, int cdpirr, int mxv, int nu, int fu, int *fablk, 
+         int *lablk, int **dc)
 {
    int i,j,ij,k,l;
-   int maxrows = 0, maxcols = 0, bufsize, maxbufsize;
+   int maxrows = 0, maxcols = 0;
+   unsigned long bufsize, maxbufsize;
    unsigned long size, cur_offset;
    static int first=1;
    /* int in_file, extras, units_used, cur_unit; */
@@ -354,7 +355,8 @@ void CIvect::set(unsigned long vl, int nb, int incor, int ms0, int *iac,
          buf_size[i] = 0; 
          j = buf2blk[i];
          for (k=first_ablk[j]; k<=last_ablk[j]; k++) {
-            buf_size[i] += Ia_size[k] * Ib_size[k];
+            buf_size[i] += (unsigned long) Ia_size[k] * 
+                           (unsigned long) Ib_size[k];
             }
          }
       } /* end icore==2 */
@@ -2830,7 +2832,7 @@ unsigned long CIvect::get_max_blk_size(void)
    unsigned long blksize, maxblksize=0;
 
    for (i=0; i<num_blocks; i++) {
-      blksize = Ia_size[i] * Ib_size[i];
+      blksize = (unsigned long) Ia_size[i] * (unsigned long) Ib_size[i];
       if (blksize > maxblksize) maxblksize = blksize;
       } 
 

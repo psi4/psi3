@@ -18,7 +18,8 @@ void set_ciblks(struct olsen_graph *AlphaG, struct olsen_graph *BetaG)
    int alp_sym, bet_sym;
    int nalp1, nalp3, alpcode, nbet1, nbet3, betcode;
    int nalp4, nbet4, maxblk, xlvl;
-   int nas, nbs, nblocks=0;
+   int nas, nbs;
+   int nblocks=0;
    double orbsum = 0.0;
 
    CalcInfo.num_alp_str = AlphaG->num_str;
@@ -258,10 +259,12 @@ void set_ciblks(struct olsen_graph *AlphaG, struct olsen_graph *BetaG)
    CIblks.offset[0] = 0;
    for (i=1; i<nblocks; i++) {
       CIblks.offset[i] = CIblks.offset[i-1] +
-         CIblks.Ia_size[i-1] * CIblks.Ib_size[i-1];
+         (unsigned long) CIblks.Ia_size[i-1] * 
+         (unsigned long) CIblks.Ib_size[i-1];
       }
-   CIblks.vectlen = CIblks.offset[nblocks-1] + CIblks.Ia_size[nblocks-1]
-      * CIblks.Ib_size[nblocks-1];
+   CIblks.vectlen = CIblks.offset[nblocks-1] + 
+                    (unsigned long) CIblks.Ia_size[nblocks-1] *
+                    (unsigned long) CIblks.Ib_size[nblocks-1];
 
    if (Parameters.print_lvl) {
      fprintf(outfile,"\nCI space requires %ld determinants\n", CIblks.vectlen);

@@ -35,7 +35,9 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
 {
 
   CIvect Ivec, Jvec;
-  int i, j, k, l, maxrows, maxcols, bufsz, cino_index, roots;
+  int i, j, k, l, cino_index, roots;
+  int maxrows, maxcols;
+  unsigned long bufsz;
   int max_orb_per_irrep;
   double **transp_tmp = NULL;
   double **transp_tmp2 = NULL;
