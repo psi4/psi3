@@ -687,8 +687,9 @@ void diag(void) {
       if (L >= eom_params.vectors_per_root * eom_params.cs_per_irrep[C_irr]) {
         /* For CC3, collapse to only 1 root - the prop_root */
         if ( (!strcmp(params.wfn,"EOM_CC3")) && (cc3_stage>0) && (eom_params.follow_root) ) {
-          fprintf(outfile,"Collapsing to %d vector(s).\n",eom_params.prop_root+1);
-          restart(alpha, L, eom_params.prop_root+1, C_irr, 0);
+          fprintf(outfile,"Collapsing to %d vector(s).\n",cc3_index+1);
+          /* changed 11-04 restart(alpha, L, eom_params.prop_root+1, C_irr, 0); */
+          restart(alpha, L, cc3_index+1, C_irr, 0);
           if (cc3_index > 0) restart_with_root(cc3_index, C_irr);
           L = 1;
           already_sigma = 0;
