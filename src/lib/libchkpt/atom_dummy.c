@@ -47,6 +47,6 @@ void chkpt_wt_atom_dummy(int* atom_dummy)
 {
   int num_allatoms = chkpt_rd_nallatom();
 
-  psio_write_entry(PSIF_CHKPT, "::Dummy atom flags", (char *) &atom_dummy, 
+  psio_write_entry(PSIF_CHKPT, "::Dummy atom flags", (char *) atom_dummy, 
 		   num_allatoms*sizeof(int));
 }
