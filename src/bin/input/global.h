@@ -218,6 +218,7 @@ typedef struct {
 
     int natom;
     double **geometry;
+    double **Rref;
     
     int num_ao;
     int num_so;

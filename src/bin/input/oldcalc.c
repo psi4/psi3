@@ -36,6 +36,7 @@ void init_oldcalc()
   /*--- read the old geometry ---*/
   Oldcalc.natom = chkpt_rd_natom();
   Oldcalc.geometry = chkpt_rd_geom();
+  Oldcalc.Rref = chkpt_rd_rref();
 
   /*--- read the old basis ---*/
   Oldcalc.num_ao = chkpt_rd_nao();
@@ -118,6 +119,7 @@ void init_oldcalc()
 void cleanup_oldcalc()
 {
   free_block(Oldcalc.geometry);
+  free_block(Oldcalc.Rref);
   free(Oldcalc.exponents);
   free_block(Oldcalc.contr_coeff);
   free(Oldcalc.shell_nucleus);
@@ -155,37 +157,41 @@ void store_oldcalc()
   /*--- write things out ---*/
   psio_open(PSIF_OLD_CHKPT, PSIO_OPEN_NEW);
   psio_write_entry(PSIF_OLD_CHKPT, ":PrevCalc:Num. atoms", (char*) &Oldcalc.natom,
-	     sizeof(int));
+		   sizeof(int));
   psio_write_entry(PSIF_OLD_CHKPT, ":PrevCalc:Geometry", (char*) Oldcalc.geometry[0],
-	     Oldcalc.natom*3*sizeof(double));
+		   Oldcalc.natom*3*sizeof(double));
+  psio_write_entry(PSIF_OLD_CHKPT, ":PrevCalc:Transmat to reference frame", (char*) Oldcalc.Rref[0],
+		   9*sizeof(double));
   psio_write_entry(PSIF_OLD_CHKPT, ":PrevCalc:Num. irreps", (char*) &Oldcalc.nirreps,
-	     sizeof(int));
+		   sizeof(int));
   psio_write_entry(PSIF_OLD_CHKPT, ":PrevCalc:SO's per irrep", (char*) Oldcalc.sopi,
-	     Oldcalc.nirreps*sizeof(int));
+		   Oldcalc.nirreps*sizeof(int));
   psio_write_entry(PSIF_OLD_CHKPT, ":PrevCalc:Reference", (char*) &Oldcalc.ref,
-	     sizeof(reftype));
+		   sizeof(reftype));
   psio_write_entry(PSIF_OLD_CHKPT, ":PrevCalc:Num. SO", (char*) &Oldcalc.num_so,
-	     sizeof(int));
+		   sizeof(int));
   psio_write_entry(PSIF_OLD_CHKPT, ":PrevCalc:Num. MO", (char*) &Oldcalc.num_mo,
-	     sizeof(int));
+		   sizeof(int));
   psio_write_entry(PSIF_OLD_CHKPT, ":PrevCalc:MO's per irrep", (char*) Oldcalc.orbspi,
-	     Oldcalc.nirreps*sizeof(int));
+		   Oldcalc.nirreps*sizeof(int));
   psio_write_entry(PSIF_OLD_CHKPT, ":PrevCalc:Closed shells per irrep", (char*) Oldcalc.clsdpi,
-	     Oldcalc.nirreps*sizeof(int));
+		   Oldcalc.nirreps*sizeof(int));
   psio_write_entry(PSIF_OLD_CHKPT, ":PrevCalc:Open shells per irrep", (char*) Oldcalc.openpi,
-	     Oldcalc.nirreps*sizeof(int));
+		   Oldcalc.nirreps*sizeof(int));
   if (Oldcalc.spinrestr_ref) { /* Spin-restricted case */
     psio_write_entry(PSIF_OLD_CHKPT, ":PrevCalc:MOs alpha", (char*) Oldcalc.scf_evect_so[0],
-	       Oldcalc.num_so*Oldcalc.num_mo*sizeof(double));
+		     Oldcalc.num_so*Oldcalc.num_mo*sizeof(double));
   }
   else { /* Spin-unrestricted case */
     psio_write_entry(PSIF_OLD_CHKPT, ":PrevCalc:MOs alpha", (char*) Oldcalc.scf_evect_so_alpha[0],
-	       Oldcalc.num_so*Oldcalc.num_mo*sizeof(double));
+		     Oldcalc.num_so*Oldcalc.num_mo*sizeof(double));
     psio_write_entry(PSIF_OLD_CHKPT, ":PrevCalc:MOs beta", (char*) Oldcalc.scf_evect_so_beta[0],
-	       Oldcalc.num_so*Oldcalc.num_mo*sizeof(double));
+		     Oldcalc.num_so*Oldcalc.num_mo*sizeof(double));
   }
+  psio_write_entry(PSIF_OLD_CHKPT, ":PrevCalc:AO->SO", (char *) Oldcalc.usotao[0],
+		   Oldcalc.num_ao*Oldcalc.num_so*sizeof(double));
   psio_write_entry(PSIF_OLD_CHKPT, ":PrevCalc:New-Old basis overlap", (char*) S12[0],
-	     num_so*Oldcalc.num_so*sizeof(FLOAT));
+		   num_so*Oldcalc.num_so*sizeof(FLOAT));
   psio_close(PSIF_OLD_CHKPT, 1);
 
   delete_matrix(S12);
