@@ -432,9 +432,11 @@ void get_parameters(void)
     params.delete_src_tei = 1;
 
   /* If AO-basis chosen, keep the SO_TEI file */
-  params.aobasis = 0;
-  errcod = ip_boolean("AO_BASIS", &(params.aobasis),0);
-  if(params.aobasis) params.delete_src_tei = 0;
+  if(ip_exist("AO_BASIS",0)) {
+    errcod = ip_string("AO_BASIS", &(params.aobasis),0);
+  }
+  else params.aobasis = strdup("NONE");
+  if(!strcmp(params.aobasis,"DISK")) params.delete_src_tei = 0;
 
   if (!params.backtr) {
     errcod = ip_boolean("DELETE_AO", &(params.delete_src_tei),0);
@@ -983,14 +985,16 @@ void get_moinfo(void)
       }
     
       /* now that we have C, multiply it by the SO->AO transform matrix */
-      mmult(so2ao,1,tmpmat,0,moinfo.evects[0],0,moinfo.nao,moinfo.nso,
+      mmult(so2ao,1,tmpmat,0,moinfo.evects_alpha[0],0,moinfo.nao,moinfo.nso,
 	    moinfo.nmo - moinfo.nfzv,0);
-      if (params.print_mos && !strcmp(params.ref,"UHF")) {
+      if (params.print_mos) {
 	fprintf(outfile, "Alpha C matrix (including AO to SO)\n");
-	print_mat(moinfo.evects[0],moinfo.nao,moinfo.nmo-moinfo.nfzv,outfile);
+	print_mat(moinfo.evects_alpha[0],moinfo.nao,moinfo.nmo-moinfo.nfzv,outfile);
       }
 
       /*** beta SCF matrix ***/
+
+      zero_mat(tmpmat, moinfo.nso, moinfo.nmo - moinfo.nfzv);
 
       /* fill up a temporary SCF matrix with frozen virt columns deleted */ 
       for (h=0,offset=0; h < moinfo.nirreps; h++) {
@@ -998,7 +1002,7 @@ void get_moinfo(void)
 	if (moinfo.first[h] < 0 || moinfo.lstact[h] < 0) continue;
 	for (p=moinfo.first_so[h]; p <= moinfo.last_so[h]; p++) {
 	  for (q=moinfo.first[h]; q <= moinfo.lstact[h]; q++) {
-	    tmpmat[p][q-offset] = moinfo.scf_vector_alpha[p][q];
+	    tmpmat[p][q-offset] = moinfo.scf_vector_beta[p][q];
 	  }
 	}
       }
@@ -1006,7 +1010,7 @@ void get_moinfo(void)
       /* now that we have C, multiply it by the SO->AO transform matrix */
       mmult(so2ao,1,tmpmat,0,moinfo.evects_beta[0],0,moinfo.nao,moinfo.nso,
 	    moinfo.nmo - moinfo.nfzv,0);
-      if (params.print_mos && !strcmp(params.ref,"UHF")) {
+      if (params.print_mos) {
 	fprintf(outfile, "Beta C matrix (including AO to SO)\n");
 	print_mat(moinfo.evects_beta[0],moinfo.nao,moinfo.nmo-moinfo.nfzv,outfile);
       }
@@ -1030,7 +1034,7 @@ void get_moinfo(void)
       /* now that we have C, multiply it by the SO->AO transform matrix */
       mmult(so2ao,1,tmpmat,0,moinfo.evects[0],0,moinfo.nao,moinfo.nso,
 	    moinfo.nmo - moinfo.nfzv,0);
-      if (params.print_mos && strcmp(params.ref,"UHF")) {
+      if (params.print_mos) {
 	fprintf(outfile, "C matrix (including AO to SO)\n");
 	print_mat(moinfo.evects[0],moinfo.nao,moinfo.nmo-moinfo.nfzv,outfile);
       }
@@ -1043,9 +1047,7 @@ void get_moinfo(void)
 
   chkpt_close();  
 
-  /* define some first/last arrays for backtransforms to migrate away  */
-  /* from the total hack we are doing now for backtrans                */
-
+  /* define some first/last arrays for backtransforms */
   moinfo.backtr_nirreps = 1;
   moinfo.backtr_mo_first = init_int_array(moinfo.backtr_nirreps);
   moinfo.backtr_mo_last = init_int_array(moinfo.backtr_nirreps);
@@ -1132,9 +1134,17 @@ void get_reorder_array(void)
   /* construct an array to map the other direction, i.e., from correlated */
   /* to Pitzer order */
   moinfo.corr2pitz = init_int_array(moinfo.nmo);
+  moinfo.corr2pitz_a = init_int_array(moinfo.nmo);
+  moinfo.corr2pitz_b = init_int_array(moinfo.nmo);
   for (i=0; i<moinfo.nmo; i++) {
     j = moinfo.order[i];
     moinfo.corr2pitz[j] = i;
+
+    j = moinfo.order_alpha[i];
+    moinfo.corr2pitz_a[j] = i;
+
+    j = moinfo.order_beta[i];
+    moinfo.corr2pitz_b[j] = i;
   }
 
   if (params.backtr) {
@@ -1144,11 +1154,19 @@ void get_reorder_array(void)
     fzv_offset = 0;
     
     moinfo.corr2pitz_nofzv = init_int_array(moinfo.nmo - moinfo.nfzv);
+    moinfo.corr2pitz_nofzv_a = init_int_array(moinfo.nmo - moinfo.nfzv);
+    moinfo.corr2pitz_nofzv_b = init_int_array(moinfo.nmo - moinfo.nfzv);
     for (i=0,k=0; i<moinfo.nirreps; i++) {
       for (j=0; j<moinfo.orbspi[i]; j++,k++) {
 	if (j<moinfo.orbspi[i] - moinfo.fruocc[i]) {
 	  l = moinfo.order[k];
 	  moinfo.corr2pitz_nofzv[l] = k-fzv_offset;
+
+	  l = moinfo.order_alpha[k];
+	  moinfo.corr2pitz_nofzv_a[l] = k-fzv_offset;
+
+	  l = moinfo.order_beta[k];
+	  moinfo.corr2pitz_nofzv_b[l] = k-fzv_offset;
 	}
 	else fzv_offset++;
       }
@@ -1162,26 +1180,6 @@ void get_reorder_array(void)
       fprintf(outfile, "\n");
     }
 
-    /* Now we do some dirty tricks...the transform must run in C1 symmetry
-     *   at this point (unfortunately), so make various arrays reflect this.
-     * I don't like messing with these globals like this, but it does seem
-     *   to be the correct way to do it...just make sure that nowhere else
-     *   in the program do these variables need to reflect their original
-     *   values...I think they do not.  These are only used in the 
-     *   transform_one() and transform_two() routines, where the appropriate
-     *   values really are those given below.
-     moinfo.first[0] = 0;
-     moinfo.fstact[0] = 0;
-     moinfo.last[0] = moinfo.nao - 1;
-     moinfo.lstact[0] = moinfo.nmo - moinfo.nfzv - 1;
-     moinfo.orbspi[0] = moinfo.nao;
-     moinfo.active[0] = moinfo.nmo - moinfo.nfzv;
-     moinfo.nirreps = 1;
-     for (i=0; i<moinfo.nmo; i++) {
-     moinfo.order[i] = i;
-     moinfo.orbsym[i] = 0;
-     }
-    */
   }
 }
 

@@ -1,8 +1,3 @@
-#include <stdio.h>
-#include <libdpd/dpd.h>
-#include <math.h>
-#include <libciomr/libciomr.h>
-#include <libiwl/iwl.h>
 #define EXTERN
 #include "globals.h"
 
@@ -15,144 +10,11 @@
 ** my sortone.c code here, so don't let some of the variable names
 ** confuse you. */
 
+void sortI_ROHF(void);
+void sortI_UHF(void);
+
 void sortI(void)
 {
-  int h, nirreps, nmo, nfzv, nfzc, nclsd, nopen;
-  int row, col, i, j, I, J, a, b, A, B, p, q;
-  int *occpi, *virtpi, *occ_off, *vir_off; 
-  int *occ_sym, *vir_sym, *openpi;
-  int *qt_occ, *qt_vir;
-  double **O, chksum, value;
-  dpdfile2 D;
-  PSI_FPTR next;
-
-  nmo = moinfo.nmo;
-  nfzc = moinfo.nfzc;
-  nfzv = moinfo.nfzv;
-  nclsd = moinfo.nclsd;
-  nopen = moinfo.nopen;
-  nirreps = moinfo.nirreps;
-  occpi = moinfo.occpi; virtpi = moinfo.virtpi;
-  occ_off = moinfo.occ_off; vir_off = moinfo.vir_off;
-  occ_sym = moinfo.occ_sym; vir_sym = moinfo.vir_sym;
-  openpi = moinfo.openpi;
-  qt_occ = moinfo.qt_occ; qt_vir = moinfo.qt_vir;
-
-  O = init_matrix(nmo,nmo);
-
-  /* Sort alpha components first */
-  dpd_file2_init(&D, CC_OEI, 0, 0, 0, "I(I,J)");
-  dpd_file2_mat_init(&D);
-  dpd_file2_mat_rd(&D);
-  for(h=0; h < nirreps; h++) {
-      for(i=0; i < occpi[h]; i++) {
-          I = qt_occ[occ_off[h] + i];
-          for(j=0; j < occpi[h]; j++) {
-              J = qt_occ[occ_off[h] + j];
-              O[I][J] += D.matrix[h][i][j];
-            }
-        }
-    }
-  dpd_file2_mat_close(&D);
-  dpd_file2_close(&D);
-
-  dpd_file2_init(&D, CC_OEI, 0, 1, 1, "I'AB");
-  dpd_file2_mat_init(&D);
-  dpd_file2_mat_rd(&D);
-  for(h=0; h < nirreps; h++) {
-      for(a=0; a < (virtpi[h] - openpi[h]); a++) {
-          A = qt_vir[vir_off[h] + a];
-          for(b=0; b < (virtpi[h] - openpi[h]); b++) {
-              B = qt_vir[vir_off[h] + b];
-
-              O[A][B] += D.matrix[h][a][b];
-            }
-        }
-    }
-  dpd_file2_mat_close(&D);
-  dpd_file2_close(&D);
-
-  dpd_file2_init(&D, CC_OEI, 0, 0, 1, "I(I,A)");
-  dpd_file2_mat_init(&D);
-  dpd_file2_mat_rd(&D);
-  for(h=0; h < nirreps; h++) {
-      for(i=0; i < occpi[h]; i++) {
-          I = qt_occ[occ_off[h] + i];
-          for(a=0; a < (virtpi[h] - openpi[h]); a++) {
-              A = qt_vir[vir_off[h] + a];
-
-              O[A][I] += D.matrix[h][i][a];
-	      O[I][A] += D.matrix[h][i][a];
-            }
-        }
-    }
-  dpd_file2_mat_close(&D);
-  dpd_file2_close(&D);
-
-  /* Sort beta components */
-  dpd_file2_init(&D, CC_OEI, 0, 0, 0, "I(i,j)");
-  dpd_file2_mat_init(&D); 
-  dpd_file2_mat_rd(&D);
-  for(h=0; h < nirreps; h++) {
-      for(i=0; i < (occpi[h] - openpi[h]); i++) { 
-          I = qt_occ[occ_off[h] + i];
-          for(j=0; j < (occpi[h] - openpi[h]); j++) {
-              J = qt_occ[occ_off[h] + j];
-              O[I][J] += D.matrix[h][i][j];
-            }
-        }
-    }
-  dpd_file2_mat_close(&D);
-  dpd_file2_close(&D);
-
-  dpd_file2_init(&D, CC_OEI, 0, 1, 1, "I'ab");
-  dpd_file2_mat_init(&D);
-  dpd_file2_mat_rd(&D);
-  for(h=0; h < nirreps; h++) {
-      for(a=0; a < virtpi[h]; a++) {
-          A = qt_vir[vir_off[h] + a];
-          for(b=0; b < virtpi[h]; b++) {
-              B = qt_vir[vir_off[h] + b];
-
-              O[A][B] += D.matrix[h][a][b];
-            }
-        }
-    }
-  dpd_file2_mat_close(&D);
-  dpd_file2_close(&D);
-
-  dpd_file2_init(&D, CC_OEI, 0, 0, 1, "I(i,a)");
-  dpd_file2_mat_init(&D);
-  dpd_file2_mat_rd(&D);
-  for(h=0; h < nirreps; h++) {
-      for(i=0; i < (occpi[h] - openpi[h]); i++) {
-          I = qt_occ[occ_off[h] + i];
-          for(a=0; a < virtpi[h]; a++) {
-              A = qt_vir[vir_off[h] + a];
-
-              O[A][I] += D.matrix[h][i][a];
-	      O[I][A] += D.matrix[h][i][a];
-            }
-        }
-    }
-  dpd_file2_mat_close(&D);
-  dpd_file2_close(&D);
-
-  /* Symmetrize the Lagrangian */
-  for(p=0; p < (nmo-nfzv); p++) {
-      for(q=0; q < p; q++) {
-          value = 0.5*(O[p][q] + O[q][p]);
-          O[p][q] = O[q][p] = value;
-        }
-    }
-
-  /* Multiply the Lagrangian by -2.0 for the final energy derivative
-     expression */
-  for(p=0; p < (nmo-nfzv); p++) {
-      for(q=0; q < (nmo-nfzv); q++) {
-	  O[p][q] *= -2.0;
-	}
-    }
-
-  moinfo.I = O;
+  if(params.ref == 0 || params.ref == 1) sortI_ROHF();
+  else if(params.ref == 2) sortI_UHF();
 }

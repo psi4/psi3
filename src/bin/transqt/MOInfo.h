@@ -31,6 +31,10 @@ struct MOInfo {
   int *order_beta;       /* beta-orbital reordering array                  */
   int *corr2pitz_nofzv;  /* correlated->Pitzer order, excluding fzv's      */
   int *corr2pitz;        /* same as above but includes fzv's               */
+  int *corr2pitz_nofzv_a;/* alpha correlated->Pitzer order, excluding fzv's*/
+  int *corr2pitz_a;      /* same as above but includes fzv's               */
+  int *corr2pitz_nofzv_b;/* beta correlated->Pitzer order, excluding fzv's */
+  int *corr2pitz_b;      /* same as above but includes fzv's               */
   int *frdocc;           /* num of frozen core per irrep                   */
   int *fruocc;           /* num of frozen virts per irrep                  */
   int *rstrdocc;         /* num of restricted occupied per irrep           */

@@ -17,6 +17,34 @@ double fzc_energy_uhf(int nbfso, int *sosym, double *Pa, double *Pb,
 		      double *Hca, double *Hcb,double *H, 
 		      int *first_so, int *ioff);
 
+/* transform_two_uhf(): Carry out the transformation of the SO-basis
+** two-electron integrals into the AA, BB, and AB MO-basis classes.
+** In these comments, I use p,q,r,s to denote SO-basis indices,
+** I,J,K,L to denote alpha-MO indices, and i,j,k,l to denote beta-MO
+** indices:
+**
+** (1) Yoshimine presort the SO-basis integrals into a supermatrix,
+** with p>=q, r>=s, but with all pq and rs (just like the usual
+** presort for integral transformations in transform_two.c).
+**
+** (2) Half-transform the integrals into the alpha-MO basis to
+** form a (pq,IJ) matrix and Yoshimine sort the result into the
+** transposed form, (IJ,pq).
+**
+** (3) Complete the second half-transformation for the AA and AB
+** integral lists: (IJ,KL) and (IJ,kl).
+**
+** (4) Half-transform the SO-basis integrals into the beta-MO basis to
+** form a (pq,ij) matrix and Yoshimine sort the result into the
+** transposed form, (ij,pq).
+**
+** (5) Complete the second half-transformation for the BB integral
+** list: (ij,kl).
+**
+** TDC
+** June 2001
+*/
+
 void transform_two_uhf(void)
 {
   int nirreps;

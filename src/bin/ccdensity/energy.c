@@ -36,6 +36,7 @@ void energy(void)
   dpdfile2 D, F;
   dpdbuf4 G, A, B, C, DInts, E, FInts;
   double one_energy=0.0, two_energy=0.0, total_two_energy = 0.0;
+  double this_energy;
 
   fprintf(outfile, "\n\tEnergies re-computed from CC density:\n");
   fprintf(outfile,   "\t-------------------------------------\n");
@@ -44,100 +45,146 @@ void energy(void)
 
     dpd_file2_init(&D, CC_OEI, 0, 0, 0, "DIJ");
     dpd_file2_init(&F, CC_OEI, 0, 0, 0, "fIJ");
-    one_energy += dpd_file2_dot(&D, &F);
+    this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
     dpd_file2_close(&D);
+
+    /*    fprintf(outfile, "\tDIJ = %20.15f\n", this_energy); */
+    one_energy += this_energy;
 
     dpd_file2_init(&D, CC_OEI, 0, 0, 0, "Dij");
     dpd_file2_init(&F, CC_OEI, 0, 0, 0, "fij");
-    one_energy += dpd_file2_dot(&D, &F);
+    this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
     dpd_file2_close(&D);
+
+    /*    fprintf(outfile, "\tDij = %20.15f\n", this_energy); */
+    one_energy += this_energy;
 
     dpd_file2_init(&D, CC_OEI, 0, 1, 1, "DAB");
     dpd_file2_init(&F, CC_OEI, 0, 1, 1, "fAB");
-    one_energy += dpd_file2_dot(&D, &F);
+    this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
     dpd_file2_close(&D);
+
+    /*    fprintf(outfile, "\tDAB = %20.15f\n", this_energy); */
+    one_energy += this_energy;
 
     dpd_file2_init(&D, CC_OEI, 0, 1, 1, "Dab");
     dpd_file2_init(&F, CC_OEI, 0, 1, 1, "fab");
-    one_energy += dpd_file2_dot(&D, &F);
+    this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
     dpd_file2_close(&D);
+
+    /*    fprintf(outfile, "\tDab = %20.15f\n", this_energy); */
+    one_energy += this_energy;
 
     dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DIA");
     dpd_file2_init(&F, CC_OEI, 0, 0, 1, "fIA");
-    one_energy += dpd_file2_dot(&D, &F);
+    this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
     dpd_file2_close(&D);
+
+    /*    fprintf(outfile, "\tDIA = %20.15f\n", this_energy); */
+    one_energy += this_energy;
 
     dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dia");
     dpd_file2_init(&F, CC_OEI, 0, 0, 1, "fia");
-    one_energy += dpd_file2_dot(&D, &F);
+    this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
     dpd_file2_close(&D);
+
+    /*    fprintf(outfile, "\tDia = %20.15f\n", this_energy); */
+    one_energy += this_energy;
 
     dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DAI");
     dpd_file2_init(&F, CC_OEI, 0, 0, 1, "fIA");
-    one_energy += dpd_file2_dot(&D, &F);
+    this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
     dpd_file2_close(&D);
 
+    /*    fprintf(outfile, "\tDAI = %20.15f\n", this_energy);  */
+    one_energy += this_energy;
+
     dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dai");
     dpd_file2_init(&F, CC_OEI, 0, 0, 1, "fia");
-    one_energy += dpd_file2_dot(&D, &F);
+    this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
     dpd_file2_close(&D);
+    /*    fprintf(outfile, "\tDai = %20.15f\n", this_energy); */
+    one_energy += this_energy;
   }
   else if(params.ref == 2) { /** UHF **/
     dpd_file2_init(&D, CC_OEI, 0, 0, 0, "DIJ");
     dpd_file2_init(&F, CC_OEI, 0, 0, 0, "fIJ");
-    one_energy += dpd_file2_dot(&D, &F);
+    this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
     dpd_file2_close(&D);
+
+    /*    fprintf(outfile, "\tDIJ = %20.15f\n", this_energy); */
+    one_energy += this_energy;
 
     dpd_file2_init(&D, CC_OEI, 0, 2, 2, "Dij");
     dpd_file2_init(&F, CC_OEI, 0, 2, 2, "fij");
-    one_energy += dpd_file2_dot(&D, &F);
+    this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
     dpd_file2_close(&D);
+
+    /*    fprintf(outfile, "\tDij = %20.15f\n", this_energy); */
+    one_energy += this_energy;
 
     dpd_file2_init(&D, CC_OEI, 0, 1, 1, "DAB");
     dpd_file2_init(&F, CC_OEI, 0, 1, 1, "fAB");
-    one_energy += dpd_file2_dot(&D, &F);
+    this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
     dpd_file2_close(&D);
+
+    /*    fprintf(outfile, "\tDAB = %20.15f\n", this_energy); */
+    one_energy += this_energy;
 
     dpd_file2_init(&D, CC_OEI, 0, 3, 3, "Dab");
     dpd_file2_init(&F, CC_OEI, 0, 3, 3, "fab");
-    one_energy += dpd_file2_dot(&D, &F);
+    this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
     dpd_file2_close(&D);
+
+    /*    fprintf(outfile, "\tDab = %20.15f\n", this_energy); */
+    one_energy += this_energy;
 
     dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DIA");
     dpd_file2_init(&F, CC_OEI, 0, 0, 1, "fIA");
-    one_energy += dpd_file2_dot(&D, &F);
+    this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
     dpd_file2_close(&D);
+
+    /*    fprintf(outfile, "\tDIA = %20.15f\n", this_energy); */
+    one_energy += this_energy;
 
     dpd_file2_init(&D, CC_OEI, 0, 2, 3, "Dia");
     dpd_file2_init(&F, CC_OEI, 0, 2, 3, "fia");
-    one_energy += dpd_file2_dot(&D, &F);
+    this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
     dpd_file2_close(&D);
+
+    /*    fprintf(outfile, "\tDia = %20.15f\n", this_energy); */
+    one_energy += this_energy;
 
     dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DAI");
     dpd_file2_init(&F, CC_OEI, 0, 0, 1, "fIA");
-    one_energy += dpd_file2_dot(&D, &F);
+    this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
     dpd_file2_close(&D);
 
+    /*    fprintf(outfile, "\tDAI = %20.15f\n", this_energy); */
+    one_energy += this_energy;
+
     dpd_file2_init(&D, CC_OEI, 0, 2, 3, "Dai");
     dpd_file2_init(&F, CC_OEI, 0, 2, 3, "fia");
-    one_energy += dpd_file2_dot(&D, &F);
+    this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
     dpd_file2_close(&D);
+    /*    fprintf(outfile, "\tDai = %20.15f\n", this_energy); */
+    one_energy += this_energy;
   }
 
   fprintf(outfile, "\tOne-electron energy        = %20.15f\n", one_energy);
@@ -220,8 +267,8 @@ void energy(void)
     dpd_buf4_close(&G);
     dpd_buf4_close(&E);
 
-    dpd_buf4_init(&E, CC_EINTS, 0, 2, 30, 2, 30, 0, "E <ij||ka> (i>j,ka)");
-    dpd_buf4_init(&G, CC_GAMMA, 0, 2, 30, 2, 30, 0, "Gijka");
+    dpd_buf4_init(&E, CC_EINTS, 0, 12, 30, 12, 30, 0, "E <ij||ka> (i>j,ka)");
+    dpd_buf4_init(&G, CC_GAMMA, 0, 12, 30, 12, 30, 0, "Gijka");
     two_energy += dpd_buf4_dot(&G, &E);
     dpd_buf4_close(&G);
     dpd_buf4_close(&E);
@@ -412,13 +459,13 @@ void energy(void)
 
     dpd_buf4_init(&FInts, CC_FINTS, 0, 21, 7, 21, 5, 1, "F <AI|BC>");
     dpd_buf4_init(&G, CC_GAMMA, 0, 21, 7, 21, 7, 0, "GCIAB");
-    two_energy -= dpd_buf4_dot(&G, &FInts);
+    two_energy += dpd_buf4_dot(&G, &FInts);
     dpd_buf4_close(&G);
     dpd_buf4_close(&FInts);
 
     dpd_buf4_init(&FInts, CC_FINTS, 0, 31, 17, 31, 15, 1, "F <ai|bc>");
     dpd_buf4_init(&G, CC_GAMMA, 0, 31, 17, 31, 17, 0, "Gciab");
-    two_energy -= dpd_buf4_dot(&G, &FInts);
+    two_energy += dpd_buf4_dot(&G, &FInts);
     dpd_buf4_close(&G);
     dpd_buf4_close(&FInts);
 

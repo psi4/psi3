@@ -6,7 +6,7 @@ include ../MakeVars
 LDLIBS += $(BLAS)
 CDEF += -DUSE_BLAS
 
-PSILIBS = -lPSI_iwl -lPSI_qt -lPSI_chkpt -lPSI_ciomr -lPSI_psio -lPSI_ipv1
+PSILIBS = -lPSI_iwl -lPSI_qt -lPSI_chkpt -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
 CSRC = \
 gprgid.c \
@@ -17,6 +17,7 @@ transform_two_mp2.c \
 transform_two_mp2r12a_gr.c \
 transform_two_mp2r12a_t.c \
 transform_two_uhf.c \
+transform_two_backtr_uhf.c \
 yoshimine.c \
 frozen_core.c \
 backsort.c \

@@ -24,11 +24,17 @@ void cleanup(void)
   free(moinfo.order_alpha);
   free(moinfo.order_beta);
   free(moinfo.corr2pitz);
+  free(moinfo.corr2pitz_a);
+  free(moinfo.corr2pitz_b);
   free(moinfo.frdocc);
   free(moinfo.fruocc);
   free(moinfo.rstrdocc);
   free(moinfo.rstruocc);
-  if (params.backtr) free(moinfo.corr2pitz_nofzv);
+  if (params.backtr) {
+    free(moinfo.corr2pitz_nofzv);
+    free(moinfo.corr2pitz_nofzv_a);
+    free(moinfo.corr2pitz_nofzv_b);
+  }
   free(moinfo.first_so);
   free(moinfo.last_so);
   free(moinfo.first);

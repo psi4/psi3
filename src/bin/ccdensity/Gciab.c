@@ -590,7 +590,7 @@ void Gciab(void)
     dpd_buf4_sort(&Z, CC_TMP2, qprs, 31, 15, "Z(ci,ba)");
     dpd_buf4_close(&Z);
     dpd_buf4_init(&Z, CC_TMP2, 0, 31, 15, 31, 15, 0, "Z(ci,ba)");
-    dpd_buf4_sort(&Z, CC_TMP0, pqsr, 31, 5, "Z(ci,ab)");
+    dpd_buf4_sort(&Z, CC_TMP0, pqsr, 31, 15, "Z(ci,ab)");
     dpd_buf4_init(&Z1, CC_TMP0, 0, 31, 15, 31, 15, 0, "Z(ci,ab)");
     dpd_buf4_axpy(&Z, &Z1, -1.0);
     dpd_buf4_close(&Z);
@@ -809,7 +809,7 @@ void Gciab(void)
     dpd_buf4_sort(&Z, CC_TMP0, pqsr, 25, 29, "Z(cI,aB)");
     dpd_buf4_close(&Z);
     /* V(IB,mc) T(m,a) --> Z(IB,ac) */
-    dpd_buf4_init(&Z, CC_TMP1, 0, 20, 10, 20, 10, 0, "Z(IB,ac)");
+    dpd_buf4_init(&Z, CC_TMP1, 0, 20, 15, 20, 15, 0, "Z(IB,ac)");
     dpd_buf4_init(&V, CC_MISC, 0, 20, 30, 20, 30, 0, "VIAjb");
     dpd_file2_init(&T1, CC_OEI, 0, 2, 3, "tia");
     dpd_contract244(&T1, &V, &Z, 0, 2, 1, 1.0, 0.0);

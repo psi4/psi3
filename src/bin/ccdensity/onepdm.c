@@ -28,6 +28,7 @@ void onepdm(void)
   double trace=0.0;
 
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
+
     dpd_file2_init(&D, CC_OEI, 0, 0, 0, "DIJ");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 7, 2, 7, 0, "tIJAB");
     dpd_buf4_init(&L2, CC_LAMPS, 0, 0, 7, 2, 7, 0, "LIJAB");

@@ -9,6 +9,7 @@
 #include "Params.h"
 #include "globals.h"
 #include "yoshimine.h"
+#include "backsort.h"
 
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
 #define MAX0(a,b) (((a)>(b)) ? (a) : (b))
@@ -18,13 +19,8 @@ void transform_two_mp2(int maxcor, int maxcord);
 
 double fzc_energy(int nbfso, int *sosym, double *P, double *Hc, double *H,
       int *first_so, int *ioff);
-void backsort_write(int i, int j, double **A, int kfirst, int klast,
-		    int lfirst, int llast, int printflag, FILE *outfile,
-		       struct iwlbuf *twopdm_out);
-void backsort_prep(void);
-void backsort(int first_tmp_file, double tolerance);
-
 void transform_two_uhf(void);
+void transform_two_backtr_uhf(void);
 
 void transform_two(void)
 {
@@ -63,7 +59,8 @@ void transform_two(void)
 
   /* Special code for full UHF transformations */
   if(!strcmp(params.ref, "UHF")) {
-    transform_two_uhf();
+    if(params.backtr) transform_two_backtr_uhf();
+    else transform_two_uhf();
     return;
   }
 
@@ -313,7 +310,7 @@ void transform_two(void)
   iwl_buf_init(&JBuff, jfile, tolerance, 1, 1);
   if (!params.backtr) iwl_buf_init(&MBuff, mfile, tolerance, 0, 0);
   else {
-    backsort_prep();
+    backsort_prep(0);
     twopdm_out = (struct iwlbuf *) malloc(nbuckets * sizeof(struct iwlbuf));
     for(p=0; p < nbuckets; p++)
 	iwl_buf_init(&twopdm_out[p], first_tmp_file+p, tolerance, 0, 0);
@@ -381,7 +378,7 @@ void transform_two(void)
 	      
 	      else 
 		backsort_write(k, l, A, ifirst, ilast, jfirst, jlast,
-			       print_integrals, outfile, twopdm_out);
+			       print_integrals, outfile, twopdm_out, 0);
 	    }
 	  }
 	}
@@ -405,7 +402,7 @@ void transform_two(void)
 	iwl_buf_close(&twopdm_out[p], 1);
       }
     free(twopdm_out);
-    backsort(first_tmp_file, tolerance);
+    backsort(first_tmp_file, tolerance, 0);
   }
 
   if (params.print_lvl) {
@@ -416,81 +413,3 @@ void transform_two(void)
   
 }
 
-void backsort_write(int i, int j, double **A, int kfirst, int klast,
-		    int lfirst, int llast, int printflag,FILE *outfile,
-		    struct iwlbuf *twopdm_out)
-{
-
-  int k,l,K,L,ij,kl,idx=0;
-  int shell_i, shell_j, shell_ij, ij_bucket;
-  int shell_k, shell_l, shell_kl, kl_bucket;
-  double value;
-
-  ij = INDEX(i,j);
-
-  shell_i = shell[i];
-  shell_j = shell[j];
-  shell_ij = INDEX(shell_i, shell_j);
-  ij_bucket = bucket_map[shell_ij];
-
-  for (k=kfirst,K=0; k <= klast; k++,K++) {
-    for (l=lfirst,L=0; l <= llast && l<=k ; l++,L++) {
-      kl = INDEX(k,l);
-      if (kl > ij) continue;
-      value = A[K][L];
-      if (printflag) {
-	fprintf(outfile, ">%d %d %d %d [%d] [%d] = %20.10lf\n", 
-		i, j, k, l, ij, kl, value);
-      }
-
-      shell_k = shell[k];
-      shell_l = shell[l];
-      shell_kl = INDEX(shell_k, shell_l);
-      kl_bucket = bucket_map[shell_kl];
-
-      if(shell_ij >= shell_kl) {
-	if(shell_i >= shell_j) {
-	  if(shell_k >= shell_l) {
-	    iwl_buf_wrt_val(&twopdm_out[ij_bucket], i, j, k, l,
-			    value,0,outfile,0);
-	    }
-	  else
-	    iwl_buf_wrt_val(&twopdm_out[ij_bucket], i, j, l, k,
-			    value,0,outfile,0);
-	  }
-	else {
-	  if(shell_k >= shell_l) {
-	    iwl_buf_wrt_val(&twopdm_out[ij_bucket], j, i, k, l,
-			    value,0,outfile,0);
-	    }
-	  else {
-	    iwl_buf_wrt_val(&twopdm_out[ij_bucket], j, i, l, k,
-			    value,0,outfile,0);
-	    }
-	  }
-	}
-      else {
-	if(shell_k >= shell_l) {
-	  if(shell_i >= shell_j) {
-	    iwl_buf_wrt_val(&twopdm_out[kl_bucket], k, l, i, j,
-			    value,0,outfile,0);
-	    }
-	  else {
-	    iwl_buf_wrt_val(&twopdm_out[kl_bucket], k, l, j, i,
-			    value,0,outfile,0);
-	    }
-	  }
-	else {
-	  if(shell_i >= shell_j) {
-	    iwl_buf_wrt_val(&twopdm_out[kl_bucket], l, k, i, j,
-			    value,0,outfile,0);
-	    }
-	  else {
-	    iwl_buf_wrt_val(&twopdm_out[kl_bucket], l, k, j, i,
-			    value,0,outfile,0);
-	    }
-	  }
-	}
-      }
-    }
-}

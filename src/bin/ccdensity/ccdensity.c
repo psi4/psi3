@@ -11,6 +11,7 @@
 #include <libdpd/dpd.h>
 #include <libiwl/iwl.h>
 #include <math.h>
+#include <psifiles.h>
 #include "globals.h"
 
 /* Function prototypes */
@@ -35,9 +36,12 @@ void relax_D(void);
 void sortI(void);
 void fold(void);
 void deanti(void);
-void add_ref(struct iwlbuf *OutBuf);
-void add_core(struct iwlbuf *OutBuf);
-void dump(struct iwlbuf *OutBuf);
+void add_ref_ROHF(struct iwlbuf *);
+void add_ref_UHF(struct iwlbuf *, struct iwlbuf *, struct iwlbuf *);
+void add_core_ROHF(struct iwlbuf *);
+void add_core_UHF(struct iwlbuf *, struct iwlbuf *, struct iwlbuf *);
+void dump_ROHF(struct iwlbuf *);
+void dump_UHF(struct iwlbuf *, struct iwlbuf *, struct iwlbuf *);
 void kinetic(void);
 void probable(void);
 int **cacheprep_rhf(int level, int *cachefiles);
@@ -49,19 +53,18 @@ int main(int argc, char *argv[])
 {
   int **cachelist, *cachefiles;
   struct iwlbuf OutBuf;
+  struct iwlbuf OutBuf_AA, OutBuf_BB, OutBuf_AB;
   
   init_io(argc,argv);
   title();
   get_moinfo();
-  get_frozen();
+  /*  get_frozen(); */
   get_params();
 
-  /*
   if(moinfo.nfzc || moinfo.nfzv) {
     fprintf(outfile, "\n\tGradients involving frozen orbitals not yet available.\n");
-    exit(2);
+    exit(PSI_RETURN_FAILURE);
   }
-  */
 
   cachefiles = init_int_array(PSIO_MAXUNIT);
 
@@ -85,6 +88,7 @@ int main(int argc, char *argv[])
   if(!params.aobasis) energy();
   sortone();
   kinetic();
+  lag();
 
   /*
 
@@ -97,31 +101,60 @@ int main(int argc, char *argv[])
       resort_tei();
       } */
 
-  lag();
   build_X();
   build_A();
   build_Z();
+
+  relax_I();
+  relax_D();
+  sortone();
+  sortI();
+
+  fold();
+  deanti();
 
   /*  
       dpd_close(0);
       dpd_close(1);
   */
 
+  if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
-  relax_I();
-  relax_D();
-  sortone();
-  sortI();
-  fold();
-  deanti();
+    iwl_buf_init(&OutBuf, PSIF_MO_TPDM, params.tolerance, 0, 0);
 
-  iwl_buf_init(&OutBuf, params.tpdmfile, params.tolerance, 0, 0);
+    add_core_ROHF(&OutBuf);
+    add_ref_ROHF(&OutBuf);
+    dump_ROHF(&OutBuf);
 
-  add_core(&OutBuf);
-  add_ref(&OutBuf);
-  dump(&OutBuf);
-  iwl_buf_flush(&OutBuf, 1);
-  iwl_buf_close(&OutBuf, 1);
+    iwl_buf_flush(&OutBuf, 1);
+    iwl_buf_close(&OutBuf, 1);
+
+  }
+  else if(params.ref == 2) { /** UHF **/
+
+    iwl_buf_init(&OutBuf_AA, PSIF_MO_AA_TPDM, params.tolerance, 0, 0);
+    iwl_buf_init(&OutBuf_BB, PSIF_MO_BB_TPDM, params.tolerance, 0, 0);
+    iwl_buf_init(&OutBuf_AB, PSIF_MO_AB_TPDM, params.tolerance, 0, 0);
+
+    /*    add_core_UHF(&OutBuf_AA, &OutBuf_BB, &OutBuf_AB); */
+    add_ref_UHF(&OutBuf_AA, &OutBuf_BB, &OutBuf_AB);
+    dump_UHF(&OutBuf_AA, &OutBuf_BB, &OutBuf_AB);
+
+    iwl_buf_flush(&OutBuf_AA, 1);
+    iwl_buf_flush(&OutBuf_BB, 1);
+    iwl_buf_flush(&OutBuf_AB, 1);
+    iwl_buf_close(&OutBuf_AA, 1);
+    iwl_buf_close(&OutBuf_BB, 1);
+    iwl_buf_close(&OutBuf_AB, 1);
+
+  }
+
+  if(params.ref == 2) { 
+    dpd_close(0);
+    cleanup();
+    exit_io();
+    exit(PSI_RETURN_SUCCESS);
+  }
 
   dpd_close(0);
 

@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
+#include <libciomr/libciomr.h>
+#include <libpsio/psio.h>
 #include <libqt/qt.h>
 #include <libiwl/iwl.h>
 #include <libchkpt/chkpt.h>
@@ -270,6 +271,8 @@ void trans_one_backwards(void)
   int print_integrals;
   double *oe_ints, *new_oe_ints;
   double **A,**B,*opdm,**tmat,**tmat2,**so2ao,tval;
+  double *opdm_a, *opdm_b, *lag_a, *lag_b;
+  double *new_opdm_a, *new_opdm_b, *new_lag_a, *new_lag_b;
   int p,q,pq;
   int I,J,P,Q,PQ;
   PSI_FPTR pdm_fp_in=0, pdm_fp_out=0;
@@ -298,60 +301,128 @@ void trans_one_backwards(void)
   dst_ntri = (dst_orbs * (dst_orbs + 1)) / 2;
   src_ntri = (src_orbs * (src_orbs + 1)) / 2;
 
-  /* read in the MO one-particle density matrix */
-  opdm = init_array(src_ntri);
+  if(!strcmp(params.ref, "UHF")) {
 
-  tmat = block_matrix(src_orbs, src_orbs);
+    tmat = block_matrix(src_orbs, src_orbs);
+    psio_open(PSIF_MO_OPDM, PSIO_OPEN_OLD);
 
-  rfile(params.opdm_in_file);
-  if (flen(params.opdm_in_file)==0) {
-    fprintf(outfile,"\tCan't find the one-particle density matrix file %d\n",
-	    params.opdm_in_file);
-    rclose(params.opdm_in_file, 4);
-    return;
-  }
-  if (strcmp(params.wfn, "OOCCD")!=0)
-    wreadw(params.opdm_in_file, (char *) tmat[0], src_orbs * src_orbs * 
-           sizeof(double), pdm_fp_in, &pdm_fp_in);
-  else {
-    tmat2 = block_matrix(nmo, nmo);
-    wreadw(params.opdm_in_file, (char *) tmat2[0], nmo * nmo *
-           sizeof(double), pdm_fp_in, &pdm_fp_in);
-    for (p=0; p<src_orbs; p++) 
-      for (q=0; q<src_orbs; q++) 
-        tmat[p][q] = tmat2[p][q];
-    free_block(tmat2);
-  } 
+    psio_read_entry(PSIF_MO_OPDM, "MO-basis Alpha OPDM", (char *) tmat[0], 
+		    sizeof(double)*src_orbs*src_orbs);
 
-  if (params.print_lvl > 3) {
-    fprintf(outfile, "One-particle density matrix\n");
-    print_mat(tmat, src_orbs, src_orbs, outfile);
-  }
-  rclose(params.opdm_in_file, 3);
-  
-  /* reorder the opdm into the backtransform order */
-  for (p=0; p<src_orbs; p++) {
-    for (q=0; q<=p; q++) {
-      P = moinfo.corr2pitz_nofzv[p];
-      Q = moinfo.corr2pitz_nofzv[q];
-      PQ = INDEX(P,Q);
-      opdm[PQ] = 0.5 * (tmat[p][q] + tmat[q][p]);
+    opdm_a = init_array(src_ntri);
+    for (p=0; p<src_orbs; p++) {
+      for (q=0; q<=p; q++) {
+	P = moinfo.corr2pitz_nofzv_a[p];
+	Q = moinfo.corr2pitz_nofzv_a[q];
+	PQ = INDEX(P,Q);
+	opdm_a[PQ] = 0.5 * (tmat[p][q] + tmat[q][p]);
+      }
+    } 
+
+    new_opdm_a = init_array(dst_ntri);
+    tran_one(nirreps, moinfo.evects_alpha, src_orbs, src_first, src_last, src_orbspi, dst_orbs, 
+	     dst_first, dst_last, dst_orbspi, opdm_a, new_opdm_a, moinfo.order,
+	     "\n\n\tAlpha Contribution to One-Particle Density Matrix (AO Basis):\n", 
+	     params.backtr, nfzc, print_integrals, outfile);
+    free(opdm_a);
+
+    psio_read_entry(PSIF_MO_OPDM, "MO-basis Beta OPDM", (char *) tmat[0], 
+		    sizeof(double)*src_orbs*src_orbs);
+
+    opdm_b = init_array(src_ntri);
+    for (p=0; p<src_orbs; p++) {
+      for (q=0; q<=p; q++) {
+	P = moinfo.corr2pitz_nofzv_b[p];
+	Q = moinfo.corr2pitz_nofzv_b[q];
+	PQ = INDEX(P,Q);
+	opdm_b[PQ] = 0.5 * (tmat[p][q] + tmat[q][p]);
+      }
+    } 
+
+    new_opdm_b = init_array(dst_ntri);
+    tran_one(nirreps, moinfo.evects_beta, src_orbs, src_first, src_last, src_orbspi, dst_orbs, 
+	     dst_first, dst_last, dst_orbspi, opdm_b, new_opdm_b, moinfo.order,
+	     "\n\n\tBeta Contribution to One-Particle Density Matrix (AO Basis):\n", 
+	     params.backtr, nfzc, print_integrals, outfile);
+    free(opdm_b);
+
+    psio_close(PSIF_MO_OPDM, 1);
+    free_block(tmat);
+
+    if(print_integrals) {
+      fprintf(outfile, "\n\tAlpha AO-basis OPDM:\n");
+      print_array(new_opdm_a, dst_orbs, outfile);
+      fprintf(outfile, "\n\tBeta AO-basis OPDM:\n");
+      print_array(new_opdm_b, dst_orbs, outfile);
     }
-  } 
-  
-  oe_ints = opdm;
-  new_oe_ints = init_array(dst_ntri);
-  
-  tran_one(nirreps, moinfo.evects, src_orbs, src_first, src_last, src_orbspi, dst_orbs, 
-	   dst_first, dst_last, dst_orbspi, oe_ints, new_oe_ints, moinfo.order,
-           "\n\n\tOne-Particle Density Matrix (AO Basis):\n", 
-           params.backtr, nfzc, print_integrals, outfile);
 
-  rfile(itap);
-  wwritw(itap, (char *) new_oe_ints, dst_ntri*sizeof(double), pdm_fp_out,
-	 &pdm_fp_out);
-  free(opdm);
-  free_block(tmat);
+    /* combine the alpha and beta contributions */
+    for(p=0; p < dst_ntri; p++)
+      new_opdm_a[p] += new_opdm_b[p];
+
+    if(print_integrals) {
+      fprintf(outfile, "\n\tTotal AO-basis OPDM:\n");
+      print_array(new_opdm_a, dst_orbs, outfile);
+    }
+
+    psio_open(itap, PSIO_OPEN_OLD);
+    psio_write_entry(itap, "AO-basis OPDM", (char *) new_opdm_a, dst_ntri*sizeof(double));
+    psio_close(itap, 1);
+    
+    free(new_opdm_a);
+    free(new_opdm_b);
+
+  }
+  else {
+    /* read in the MO one-particle density matrix */
+    opdm = init_array(src_ntri);
+
+    tmat = block_matrix(src_orbs, src_orbs);
+
+    psio_open(params.opdm_in_file, PSIO_OPEN_OLD);
+    if (strcmp(params.wfn, "OOCCD")!=0)
+        psio_read_entry(params.opdm_in_file, "MO-basis OPDM", (char *) tmat[0],
+                        src_orbs*src_orbs*sizeof(double));
+    else {
+      tmat2 = block_matrix(nmo, nmo);
+        psio_read_entry(params.opdm_in_file, "MO-basis OPDM", (char *) tmat2[0],
+                        nmo*nmo*sizeof(double));
+      for (p=0; p<src_orbs; p++) 
+	for (q=0; q<src_orbs; q++) 
+	  tmat[p][q] = tmat2[p][q];
+      free_block(tmat2);
+    }
+    psio_close(params.opdm_in_file, 1);
+    if (params.print_lvl > 3) {
+      fprintf(outfile, "One-particle density matrix\n");
+      print_mat(tmat, src_orbs, src_orbs, outfile);
+    }
+
+    /* reorder the opdm into the backtransform order */
+    for (p=0; p<src_orbs; p++) {
+      for (q=0; q<=p; q++) {
+	P = moinfo.corr2pitz_nofzv[p];
+	Q = moinfo.corr2pitz_nofzv[q];
+	PQ = INDEX(P,Q);
+	opdm[PQ] = 0.5 * (tmat[p][q] + tmat[q][p]);
+      }
+    } 
+  
+    oe_ints = opdm;
+    new_oe_ints = init_array(dst_ntri);
+  
+    tran_one(nirreps, moinfo.evects, src_orbs, src_first, src_last, src_orbspi, dst_orbs, 
+	     dst_first, dst_last, dst_orbspi, oe_ints, new_oe_ints, moinfo.order,
+	     "\n\n\tOne-Particle Density Matrix (AO Basis):\n", 
+	     params.backtr, nfzc, print_integrals, outfile);
+
+    psio_open(itap, PSIO_OPEN_OLD);
+    psio_write_entry(itap, "AO-basis OPDM", (char *) new_oe_ints, dst_ntri*sizeof(double));
+    psio_close(itap, 1);
+    
+    free(opdm);
+    free_block(tmat);
+  }  
 
 
   /* If this is a back-transform, we need to do the Lagrangian also */
@@ -360,84 +431,177 @@ void trans_one_backwards(void)
   src_orbspi = moinfo.backtr_mo_orbspi;
   src_orbs = nmo; 
   src_ntri = (src_orbs * (src_orbs + 1)) / 2;
-  
-  /* we need to re-construct the C matrix because we now need the   */
-  /* columns corresponding to frozen virtual orbitals               */
-  destruct_evects(moinfo.backtr_nirreps, moinfo.evects);
-  moinfo.evects = (double ***) malloc (1 * sizeof(double **));
-  moinfo.evects[0] = block_matrix(moinfo.nao, moinfo.nmo);
-  chkpt_init(PSIO_OPEN_OLD);
-  so2ao = chkpt_rd_usotao();
-  chkpt_close();
-  if (params.print_mos) print_mat(so2ao,moinfo.nso,moinfo.nao,outfile);
-  mmult(so2ao,1,moinfo.scf_vector,0,moinfo.evects[0],0,moinfo.nao,moinfo.nso,
-	moinfo.nmo,0);
-  if (params.print_mos) {
-    fprintf(outfile, "C matrix (including AO to SO)\n");
-    print_mat(moinfo.evects[0], moinfo.nao, moinfo.nmo, outfile);
-  }
-  free_block(so2ao);
-  tmat = block_matrix(src_orbs, src_orbs);
+
+  if(!strcmp(params.ref,"UHF")) {
+
+    /* we need to re-construct the C matrices because we now need the   */
+    /* columns corresponding to frozen virtual orbitals               */
+    destruct_evects(moinfo.backtr_nirreps, moinfo.evects_alpha);
+    moinfo.evects_alpha = (double ***) malloc (1 * sizeof(double **));
+    moinfo.evects_alpha[0] = block_matrix(moinfo.nao, moinfo.nmo);
+
+    destruct_evects(moinfo.backtr_nirreps, moinfo.evects_beta);
+    moinfo.evects_beta = (double ***) malloc (1 * sizeof(double **));
+    moinfo.evects_beta[0] = block_matrix(moinfo.nao, moinfo.nmo);
+
+    chkpt_init(PSIO_OPEN_OLD);
+    so2ao = chkpt_rd_usotao();
+    chkpt_close();
+
+    mmult(so2ao,1,moinfo.scf_vector_alpha,0,moinfo.evects_alpha[0],0,moinfo.nao,
+	  moinfo.nso,moinfo.nmo,0);
+    mmult(so2ao,1,moinfo.scf_vector_beta,0,moinfo.evects_beta[0],0,moinfo.nao,
+	  moinfo.nso,moinfo.nmo,0);
+
+    free_block(so2ao);
 
 
-  /* read in the MO Lagrangian */
-  opdm = init_array(src_ntri);
-  rfile(params.lag_in_file);
-  if (flen(params.lag_in_file)==0) {
-    fprintf(outfile,"\tCan't find the Lagrangian matrix file %d\n",
-	    params.lag_in_file);
-    rclose(params.lag_in_file, 4);
-    return;
-  }
-  pdm_fp_in = 0;
-  wreadw(params.lag_in_file,(char *) tmat[0],
-	 src_orbs*src_orbs*sizeof(double), pdm_fp_in, &pdm_fp_in);
-  if (params.print_lvl > 3) {
-    fprintf(outfile, "Lagrangian (MO Basis):\n");
-    print_mat(tmat, src_orbs, src_orbs, outfile);
-  }
-  rclose(params.lag_in_file, 3);
-  
-  /* reorder the Lagrangian to the back-transform order 
-   * and enforce permutational symmetry.  
-   */
-  for (p=0; p<src_orbs; p++) {
-    for (q=0; q<=p; q++) {
-      P = moinfo.corr2pitz[p];
-      Q = moinfo.corr2pitz[q];
-      tval = 0.5 * (tmat[p][q] + tmat[q][p]);
-      if (params.lagran_double) tval *= 2.0;
-      if (params.lagran_halve) tval *= 0.5;
-      PQ = INDEX(P,Q);
-      opdm[PQ] += tval;
+    tmat = block_matrix(src_orbs, src_orbs);
+    psio_open(PSIF_MO_LAG, PSIO_OPEN_OLD);
+
+    psio_read_entry(PSIF_MO_LAG, "MO-basis Alpha Lagrangian", (char *) tmat[0], 
+		    sizeof(double)*src_orbs*src_orbs);
+
+    lag_a = init_array(src_ntri);
+    for (p=0; p<src_orbs; p++) {
+      for (q=0; q<=p; q++) {
+	P = moinfo.corr2pitz_nofzv_a[p];
+	Q = moinfo.corr2pitz_nofzv_a[q];
+	PQ = INDEX(P,Q);
+
+	tval = 0.5 * (tmat[p][q] + tmat[q][p]);
+
+	if (params.lagran_double) tval *= 2.0;
+	if (params.lagran_halve) tval *= 0.5;
+
+	lag_a[PQ] = tval;
+      }
+    } 
+
+    new_lag_a = init_array(dst_ntri);
+    tran_one(nirreps, moinfo.evects_alpha, src_orbs, src_first, src_last, src_orbspi, dst_orbs, 
+	     dst_first, dst_last, dst_orbspi, lag_a, new_lag_a, moinfo.order,
+	     "\n\n\tAlpha Contribution to the Lagrangian (AO Basis):\n", 
+	     params.backtr, nfzc, print_integrals, outfile);
+    free(lag_a);
+
+    psio_read_entry(PSIF_MO_LAG, "MO-basis Beta Lagrangian", (char *) tmat[0], 
+		    sizeof(double)*src_orbs*src_orbs);
+
+    lag_b = init_array(src_ntri);
+    for (p=0; p<src_orbs; p++) {
+      for (q=0; q<=p; q++) {
+	P = moinfo.corr2pitz_nofzv_b[p];
+	Q = moinfo.corr2pitz_nofzv_b[q];
+	PQ = INDEX(P,Q);	
+
+	tval = 0.5 * (tmat[p][q] + tmat[q][p]);
+
+	if (params.lagran_double) tval *= 2.0;
+	if (params.lagran_halve) tval *= 0.5;
+
+	lag_b[PQ] = tval;
+      }
+    } 
+
+    new_lag_b = init_array(dst_ntri);
+    tran_one(nirreps, moinfo.evects_beta, src_orbs, src_first, src_last, src_orbspi, dst_orbs, 
+	     dst_first, dst_last, dst_orbspi, lag_b, new_lag_b, moinfo.order,
+	     "\n\n\tBeta Contribution to the Lagrangian (AO Basis):\n", 
+	     params.backtr, nfzc, print_integrals, outfile);
+    free(lag_b);
+
+    psio_close(PSIF_MO_LAG, 1);
+    free_block(tmat);
+
+    /* combine the alpha and beta contributions */
+    for(p=0; p < dst_ntri; p++)
+      new_lag_a[p] += new_lag_b[p];
+
+    if(print_integrals) {
+      fprintf(outfile, "\n\tTotal AO-basis Lagrangian:\n");
+      print_array(new_lag_a, dst_orbs, outfile);
     }
-  } 
-  free_block(tmat);
-  
-  if (params.print_lvl > 3) {
-    fprintf(outfile, "Reordered, Symmetrized Lagrangian in MO basis\n");
-    print_array(opdm, src_orbs, outfile);
-  }
-  
-  /* now do the backtransformation */
-  tran_one(nirreps, moinfo.evects, src_orbs, src_first, src_last, src_orbspi, dst_orbs, 
-           dst_first, dst_last, dst_orbspi, opdm, new_oe_ints, moinfo.order,
-           "\n\n\tLagrangian (AO Basis):\n", 
-	   params.backtr, nfzc, print_integrals, outfile);
-  
-  /* append the AO Lagrangian to the AO one-particle density matrix */
-  wwritw(itap, (char *) new_oe_ints, dst_ntri*sizeof(double), pdm_fp_out,
-	 &pdm_fp_out);
-  rclose(itap,3);
-  free(opdm);
 
+    /* append the AO Lagrangian to the AO one-particle density matrix */
+    psio_open(itap, PSIO_OPEN_OLD);
+    psio_write_entry(itap, "AO-basis Lagrangian", (char *) new_lag_a, dst_ntri*sizeof(double));
+    psio_close(itap, 1);
+    
+    free(new_lag_a);
+    free(new_lag_b);
+
+  }
+  else {  
+    /* we need to re-construct the C matrix because we now need the   */
+    /* columns corresponding to frozen virtual orbitals               */
+    destruct_evects(moinfo.backtr_nirreps, moinfo.evects);
+    moinfo.evects = (double ***) malloc (1 * sizeof(double **));
+    moinfo.evects[0] = block_matrix(moinfo.nao, moinfo.nmo);
+    chkpt_init(PSIO_OPEN_OLD);
+    so2ao = chkpt_rd_usotao();
+    chkpt_close();
+    mmult(so2ao,1,moinfo.scf_vector,0,moinfo.evects[0],0,moinfo.nao,moinfo.nso,
+	  moinfo.nmo,0);
+    if (params.print_mos) {
+      fprintf(outfile, "C matrix (including AO to SO)\n");
+      print_mat(moinfo.evects[0], moinfo.nao, moinfo.nmo, outfile);
+    }
+    free_block(so2ao);
+    tmat = block_matrix(src_orbs, src_orbs);
+
+
+    /* read in the MO Lagrangian */
+    opdm = init_array(src_ntri);
+    psio_open(params.lag_in_file, PSIO_OPEN_OLD);
+    psio_read_entry(params.lag_in_file, "MO-basis Lagrangian", (char *) tmat[0],
+                    src_orbs*src_orbs*sizeof(double));
+    psio_close(params.lag_in_file, 1);
+    if (params.print_lvl > 3) {
+      fprintf(outfile, "Lagrangian (MO Basis):\n");
+      print_mat(tmat, src_orbs, src_orbs, outfile);
+    }
+  
+    /* reorder the Lagrangian to the back-transform order 
+     * and enforce permutational symmetry.  
+     */
+    for (p=0; p<src_orbs; p++) {
+      for (q=0; q<=p; q++) {
+	P = moinfo.corr2pitz[p];
+	Q = moinfo.corr2pitz[q];
+	tval = 0.5 * (tmat[p][q] + tmat[q][p]);
+	if (params.lagran_double) tval *= 2.0;
+	if (params.lagran_halve) tval *= 0.5;
+	PQ = INDEX(P,Q);
+	opdm[PQ] += tval;
+      }
+    } 
+    free_block(tmat);
+  
+    if (params.print_lvl > 3) {
+      fprintf(outfile, "Reordered, Symmetrized Lagrangian in MO basis\n");
+      print_array(opdm, src_orbs, outfile);
+    }
+  
+    /* now do the backtransformation */
+    tran_one(nirreps, moinfo.evects, src_orbs, src_first, src_last, src_orbspi, dst_orbs, 
+	     dst_first, dst_last, dst_orbspi, opdm, new_oe_ints, moinfo.order,
+	     "\n\n\tLagrangian (AO Basis):\n", 
+	     params.backtr, nfzc, print_integrals, outfile);
+
+    psio_open(itap, PSIO_OPEN_OLD);
+    psio_write_entry(itap, "AO-basis Lagrangian", (char *) new_oe_ints, dst_ntri*sizeof(double));
+    psio_close(itap, 1);
+    free(opdm);
+
+    free(new_oe_ints);
+  
+  }
 
   if (params.print_lvl) {
     fprintf(outfile, "\tOne-pdm and lagrangian written to file%d.\n", itap);
   }
 
-  free(new_oe_ints);
-  
 }
  
 

@@ -7,6 +7,7 @@
 /*
 ** get_frozen(): Routine to get symmetry and orbital reordering arrays
 ** which include frozen orbitals.
+**
 ** TDC, March 2000.
 */
 

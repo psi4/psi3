@@ -64,7 +64,7 @@ struct Params {
   int qrhf;                     /* boolean for QRHF reference             */
   int ivo;                      /* boolean for test IVO's                 */
 
-  int aobasis;                  /* boolean for AO-Basis CC algorithms     */
+  char *aobasis;                /* string for AO-Basis CC algorithms     */
 
   int pitzer;                   /* boolean to override all MO reordering  */
 };

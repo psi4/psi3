@@ -18,6 +18,9 @@ void kinetic(void)
   double junk, tcorr, vcorr, tref, vref, ttot, vtot;
   double *s, *t, **T, **S, **scf_pitzer, **scf_qt, **X;
 
+  /* RHF/ROHF only for now */
+  if(params.ref == 2) return;
+
   /*** Build ioff ***/
   ioff = init_int_array(IOFF_MAX);
   ioff[0] = 0;

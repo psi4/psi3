@@ -16,18 +16,25 @@
 ** for subsequent backtransformation.  Note that the components of the
 ** 1pdm computed into the DIJ, Dij, DAB, Dab, DAI, Dai, DIA, and Dia
 ** matrices remain non-symmetric (e.g., DIJ neq DJI).
+**
+** This will not work at present for frozen orbitals!
+**
+** TDC, 1/03
 */
 
 void sortone_UHF(void)
 {
   int h, nirreps, nmo, nfzv, nfzc, nclsd, nopen;
   int row, col, i, j, I, J, a, b, A, B, p, q;
-  int *occpi, *virtpi, *occ_off, *vir_off; 
-  int *occ_sym, *vir_sym, *openpi;
-  int *qt_occ, *qt_vir;
-  double **O, chksum, value;
+  int *aoccpi, *avirtpi, *aocc_off, *avir_off; 
+  int *boccpi, *bvirtpi, *bocc_off, *bvir_off; 
+  int *aocc_sym, *avir_sym;
+  int *bocc_sym, *bvir_sym;
+  int *qt_aocc, *qt_avir;
+  int *qt_bocc, *qt_bvir;
+  double **O_a, **O_b;
+  double chksum, value;
   dpdfile2 D;
-  psio_address next;
 
   nmo = moinfo.nmo;
   nfzc = moinfo.nfzc;
@@ -35,24 +42,29 @@ void sortone_UHF(void)
   nclsd = moinfo.nclsd;
   nopen = moinfo.nopen;
   nirreps = moinfo.nirreps;
-  occpi = moinfo.occpi; virtpi = moinfo.virtpi;
-  occ_off = moinfo.occ_off; vir_off = moinfo.vir_off;
-  occ_sym = moinfo.occ_sym; vir_sym = moinfo.vir_sym;
-  openpi = moinfo.openpi;
-  qt_occ = moinfo.qt_occ; qt_vir = moinfo.qt_vir;
+  aoccpi = moinfo.aoccpi; avirtpi = moinfo.avirtpi;
+  boccpi = moinfo.boccpi; bvirtpi = moinfo.bvirtpi;
+  aocc_off = moinfo.aocc_off; avir_off = moinfo.avir_off;
+  bocc_off = moinfo.bocc_off; bvir_off = moinfo.bvir_off;
+  aocc_sym = moinfo.aocc_sym; avir_sym = moinfo.avir_sym;
+  bocc_sym = moinfo.bocc_sym; bvir_sym = moinfo.bvir_sym;
 
-  O = init_matrix(nmo-nfzv,nmo-nfzv);
+  qt_aocc = moinfo.qt_aocc; qt_avir = moinfo.qt_avir;
+  qt_bocc = moinfo.qt_bocc; qt_bvir = moinfo.qt_bvir;
+
+  O_a = block_matrix(nmo,nmo);
+  O_b = block_matrix(nmo,nmo);
 
   /* Sort A components first */
   dpd_file2_init(&D, CC_OEI, 0, 0, 0, "DIJ");
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
-      for(i=0; i < occpi[h]; i++) {
-          I = qt_occ[occ_off[h] + i];
-          for(j=0; j < occpi[h]; j++) {
-              J = qt_occ[occ_off[h] + j];
-              O[I][J] += D.matrix[h][i][j];
+      for(i=0; i < aoccpi[h]; i++) {
+          I = qt_aocc[aocc_off[h] + i];
+          for(j=0; j < aoccpi[h]; j++) {
+              J = qt_aocc[aocc_off[h] + j];
+              O_a[I][J] += D.matrix[h][i][j];
             }
         }
     }
@@ -63,12 +75,12 @@ void sortone_UHF(void)
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
-      for(a=0; a < (virtpi[h] - openpi[h]); a++) {
-          A = qt_vir[vir_off[h] + a];
-          for(b=0; b < (virtpi[h] - openpi[h]); b++) {
-              B = qt_vir[vir_off[h] + b];
+      for(a=0; a < avirtpi[h]; a++) {
+          A = qt_avir[avir_off[h] + a];
+          for(b=0; b < avirtpi[h]; b++) {
+              B = qt_avir[avir_off[h] + b];
 
-              O[A][B] += D.matrix[h][a][b];
+              O_a[A][B] += D.matrix[h][a][b];
             }
         }
     }
@@ -80,12 +92,12 @@ void sortone_UHF(void)
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
-      for(i=0; i < occpi[h]; i++) {
-          I = qt_occ[occ_off[h] + i];
-          for(a=0; a < (virtpi[h] - openpi[h]); a++) {
-              A = qt_vir[vir_off[h] + a];
+      for(i=0; i < aoccpi[h]; i++) {
+          I = qt_aocc[aocc_off[h] + i];
+          for(a=0; a < avirtpi[h]; a++) {
+              A = qt_avir[avir_off[h] + a];
 
-              O[A][I] += D.matrix[h][i][a];
+              O_a[A][I] += D.matrix[h][i][a];
             }
         }
     }
@@ -96,12 +108,12 @@ void sortone_UHF(void)
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
-      for(i=0; i < occpi[h]; i++) {
-          I = qt_occ[occ_off[h] + i];
-          for(a=0; a < (virtpi[h] - openpi[h]); a++) {
-              A = qt_vir[vir_off[h] + a];
+      for(i=0; i < aoccpi[h]; i++) {
+          I = qt_aocc[aocc_off[h] + i];
+          for(a=0; a < avirtpi[h]; a++) {
+              A = qt_avir[avir_off[h] + a];
 
-              O[I][A] += D.matrix[h][i][a];
+              O_a[I][A] += D.matrix[h][i][a];
             }
         }
     }
@@ -109,31 +121,31 @@ void sortone_UHF(void)
   dpd_file2_close(&D);
 
   /* Sort B components */
-  dpd_file2_init(&D, CC_OEI, 0, 0, 0, "Dij");
+  dpd_file2_init(&D, CC_OEI, 0, 2, 2, "Dij");
   dpd_file2_mat_init(&D); 
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
-      for(i=0; i < (occpi[h] - openpi[h]); i++) { 
-          I = qt_occ[occ_off[h] + i];
-          for(j=0; j < (occpi[h] - openpi[h]); j++) {
-              J = qt_occ[occ_off[h] + j];
-              O[I][J] += D.matrix[h][i][j];
+      for(i=0; i < boccpi[h]; i++) { 
+          I = qt_bocc[bocc_off[h] + i];
+          for(j=0; j < boccpi[h]; j++) {
+              J = qt_bocc[bocc_off[h] + j];
+              O_b[I][J] += D.matrix[h][i][j];
             }
         }
     }
   dpd_file2_mat_close(&D);
   dpd_file2_close(&D);
 
-  dpd_file2_init(&D, CC_OEI, 0, 1, 1, "Dab");
+  dpd_file2_init(&D, CC_OEI, 0, 3, 3, "Dab");
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
-      for(a=0; a < virtpi[h]; a++) {
-          A = qt_vir[vir_off[h] + a];
-          for(b=0; b < virtpi[h]; b++) {
-              B = qt_vir[vir_off[h] + b];
+      for(a=0; a < bvirtpi[h]; a++) {
+          A = qt_bvir[bvir_off[h] + a];
+          for(b=0; b < bvirtpi[h]; b++) {
+              B = qt_bvir[bvir_off[h] + b];
 
-              O[A][B] += D.matrix[h][a][b];
+              O_b[A][B] += D.matrix[h][a][b];
             }
         }
     }
@@ -141,55 +153,57 @@ void sortone_UHF(void)
   dpd_file2_close(&D);
 
   /* Note that this component of the density is stored occ-vir */
-  dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dai");
+  dpd_file2_init(&D, CC_OEI, 0, 2, 3, "Dai");
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
-      for(i=0; i < (occpi[h] - openpi[h]); i++) {
-          I = qt_occ[occ_off[h] + i];
-          for(a=0; a < virtpi[h]; a++) {
-              A = qt_vir[vir_off[h] + a];
+      for(i=0; i < boccpi[h]; i++) {
+          I = qt_bocc[bocc_off[h] + i];
+          for(a=0; a < bvirtpi[h]; a++) {
+              A = qt_bvir[bvir_off[h] + a];
 
-              O[A][I] += D.matrix[h][i][a];
+              O_b[A][I] += D.matrix[h][i][a];
             }
         }
     }
   dpd_file2_mat_close(&D);
   dpd_file2_close(&D);
 
-  dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dia");
+  dpd_file2_init(&D, CC_OEI, 0, 2, 3, "Dia");
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
-      for(i=0; i < (occpi[h] - openpi[h]); i++) {
-          I = qt_occ[occ_off[h] + i];
-          for(a=0; a < virtpi[h]; a++) {
-              A = qt_vir[vir_off[h] + a];
+      for(i=0; i < boccpi[h]; i++) {
+          I = qt_bocc[bocc_off[h] + i];
+          for(a=0; a < bvirtpi[h]; a++) {
+              A = qt_bvir[bvir_off[h] + a];
 
-              O[I][A] += D.matrix[h][i][a];
+              O_b[I][A] += D.matrix[h][i][a];
             }
         }
     }
   dpd_file2_mat_close(&D);
   dpd_file2_close(&D);
 
-  /* Symmetrize the onepdm */
-  for(p=0; p < (nmo-nfzv); p++) {
+  /*
+  fprintf(outfile, "\n\tAlpha MO OPDM:\n");
+  mat_print(O_a, nmo, nmo, outfile);
+  fprintf(outfile, "\n\tBeta MO OPDM:\n");
+  mat_print(O_b, nmo, nmo, outfile);
+  */
+
+  /* Symmetrize the onepdm's */
+  for(p=0; p < nmo; p++) {
       for(q=0; q < p; q++) {
-          value = 0.5 * (O[p][q] + O[q][p]);
-          O[p][q] = O[q][p] = value;
+
+          value = 0.5 * (O_a[p][q] + O_a[q][p]);
+          O_a[p][q] = O_a[q][p] = value;
+
+          value = 0.5 * (O_b[p][q] + O_b[q][p]);
+          O_b[p][q] = O_b[q][p] = value;
         }
     }
 
-  moinfo.opdm = O;
-
-  /* Write the correlation-only opdm to disk */
-/*
-  psio_open(PSIF_OEI, PSIO_OPEN_OLD);
-  next = PSIO_ZERO;
-  for(p=0; p < (nmo - nfzv); p++)
-    psio_write(PSIF_OEI, "CC OPDM", (char *) &(O[p][0]), (nmo-nfzv)*sizeof(double), next, &next);
-  psio_close(PSIF_OEI, 1);
-*/
-
+  moinfo.opdm_a = O_a;
+  moinfo.opdm_b = O_b;
 }

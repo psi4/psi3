@@ -654,7 +654,7 @@ void Gijka(void)
     dpd_contract424(&V, &T1, &Z, 3, 1, 0, 1.0, 0.0);
     dpd_file2_close(&T1);
     dpd_buf4_close(&V);
-    dpd_buf4_sort(&Z, CC_TMP2, rqps, 24, 29, "Z(Ka,jI)");
+    dpd_buf4_sort(&Z, CC_TMP2, rqps, 24, 23, "Z(Ka,jI)");
     dpd_buf4_close(&Z);
     /* Z(Ka,Ij) - Z(Ka,jI) --> G(Ij,Ka) */
     dpd_buf4_init(&Z2, CC_TMP2, 0, 24, 23, 24, 23, 0, "Z(Ka,jI)");

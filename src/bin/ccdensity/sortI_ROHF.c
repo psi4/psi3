@@ -2,26 +2,20 @@
 #include <libdpd/dpd.h>
 #include <math.h>
 #include <libciomr/libciomr.h>
-#include <libpsio/psio.h>
 #include <libiwl/iwl.h>
 #define EXTERN
 #include "globals.h"
-#include <psifiles.h>
 
-/*
-** sortone_rohf(): Place all the components of the 1pdm into a large
-** matrix, O (moinfo.opdm), which we also symmetrize by computing Opq
-** = 1/2 (Opq + Oqp).  This matrix is later written to disk in dump()
-** for subsequent backtransformation.  Note that the components of the
-** 1pdm computed into the DIJ, Dij, DAB, Dab, DAI, Dai, DIA, and Dia
-** matrices remain non-symmetric (e.g., DIJ neq DJI).
-**
-** This version doesn't work with frozen orbitals yet.
-**
-** TDC, 1/03
-*/
+/* SORTI_ROHF(): Place all the components of the ROHF Lagrangian into
+** a large matrix, I (moinfo.I), which we also symmetrize by computing
+** Ipq = 1/2 (Ipq + Iqp).  This matrix is later written to disk in
+** dump() for subsequent backtransformation.  Note that some of the
+** components of the Lagrangian computed into the IIJ, Iij, IIA, and
+** Iia matrices remain non-symmetric (e.g., IIJ neq IJI).  I re-used
+** my sortone.c code here, so don't let some of the variable names
+** confuse you. */
 
-void sortone_ROHF(void)
+void sortI_ROHF(void)
 {
   int h, nirreps, nmo, nfzv, nfzc, nclsd, nopen;
   int row, col, i, j, I, J, a, b, A, B, p, q;
@@ -30,7 +24,7 @@ void sortone_ROHF(void)
   int *qt_occ, *qt_vir;
   double **O, chksum, value;
   dpdfile2 D;
-  psio_address next;
+  PSI_FPTR next;
 
   nmo = moinfo.nmo;
   nfzc = moinfo.nfzc;
@@ -44,10 +38,10 @@ void sortone_ROHF(void)
   openpi = moinfo.openpi;
   qt_occ = moinfo.qt_occ; qt_vir = moinfo.qt_vir;
 
-  O = block_matrix(nmo-nfzc,nmo-nfzc);
+  O = block_matrix(nmo,nmo);
 
-  /* Sort A components first */
-  dpd_file2_init(&D, CC_OEI, 0, 0, 0, "DIJ");
+  /* Sort alpha components first */
+  dpd_file2_init(&D, CC_OEI, 0, 0, 0, "I(I,J)");
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
@@ -62,7 +56,7 @@ void sortone_ROHF(void)
   dpd_file2_mat_close(&D);
   dpd_file2_close(&D);
 
-  dpd_file2_init(&D, CC_OEI, 0, 1, 1, "DAB");
+  dpd_file2_init(&D, CC_OEI, 0, 1, 1, "I'AB");
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
@@ -78,8 +72,7 @@ void sortone_ROHF(void)
   dpd_file2_mat_close(&D);
   dpd_file2_close(&D);
 
-  /* Note that this component of the density is stored occ-vir */
-  dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DAI");
+  dpd_file2_init(&D, CC_OEI, 0, 0, 1, "I(I,A)");
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
@@ -89,30 +82,15 @@ void sortone_ROHF(void)
               A = qt_vir[vir_off[h] + a];
 
               O[A][I] += D.matrix[h][i][a];
+	      O[I][A] += D.matrix[h][i][a];
             }
         }
     }
   dpd_file2_mat_close(&D);
   dpd_file2_close(&D);
 
-  dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DIA");
-  dpd_file2_mat_init(&D);
-  dpd_file2_mat_rd(&D);
-  for(h=0; h < nirreps; h++) {
-      for(i=0; i < occpi[h]; i++) {
-          I = qt_occ[occ_off[h] + i];
-          for(a=0; a < (virtpi[h] - openpi[h]); a++) {
-              A = qt_vir[vir_off[h] + a];
-
-              O[I][A] += D.matrix[h][i][a];
-            }
-        }
-    }
-  dpd_file2_mat_close(&D);
-  dpd_file2_close(&D);
-
-  /* Sort B components */
-  dpd_file2_init(&D, CC_OEI, 0, 0, 0, "Dij");
+  /* Sort beta components */
+  dpd_file2_init(&D, CC_OEI, 0, 0, 0, "I(i,j)");
   dpd_file2_mat_init(&D); 
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
@@ -127,7 +105,7 @@ void sortone_ROHF(void)
   dpd_file2_mat_close(&D);
   dpd_file2_close(&D);
 
-  dpd_file2_init(&D, CC_OEI, 0, 1, 1, "Dab");
+  dpd_file2_init(&D, CC_OEI, 0, 1, 1, "I'ab");
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
@@ -143,8 +121,7 @@ void sortone_ROHF(void)
   dpd_file2_mat_close(&D);
   dpd_file2_close(&D);
 
-  /* Note that this component of the density is stored occ-vir */
-  dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dai");
+  dpd_file2_init(&D, CC_OEI, 0, 0, 1, "I(i,a)");
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
@@ -154,36 +131,28 @@ void sortone_ROHF(void)
               A = qt_vir[vir_off[h] + a];
 
               O[A][I] += D.matrix[h][i][a];
+	      O[I][A] += D.matrix[h][i][a];
             }
         }
     }
   dpd_file2_mat_close(&D);
   dpd_file2_close(&D);
 
-  dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dia");
-  dpd_file2_mat_init(&D);
-  dpd_file2_mat_rd(&D);
-  for(h=0; h < nirreps; h++) {
-      for(i=0; i < (occpi[h] - openpi[h]); i++) {
-          I = qt_occ[occ_off[h] + i];
-          for(a=0; a < virtpi[h]; a++) {
-              A = qt_vir[vir_off[h] + a];
-
-              O[I][A] += D.matrix[h][i][a];
-            }
-        }
-    }
-  dpd_file2_mat_close(&D);
-  dpd_file2_close(&D);
-
-  /* Symmetrize the onepdm */
+  /* Symmetrize the Lagrangian */
   for(p=0; p < (nmo-nfzv); p++) {
       for(q=0; q < p; q++) {
-          value = 0.5 * (O[p][q] + O[q][p]);
+          value = 0.5*(O[p][q] + O[q][p]);
           O[p][q] = O[q][p] = value;
         }
     }
 
-  moinfo.opdm = O;
+  /* Multiply the Lagrangian by -2.0 for the final energy derivative
+     expression */
+  for(p=0; p < (nmo-nfzv); p++) {
+      for(q=0; q < (nmo-nfzv); q++) {
+	  O[p][q] *= -2.0;
+	}
+    }
 
+  moinfo.I = O;
 }

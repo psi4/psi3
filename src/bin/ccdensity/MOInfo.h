@@ -53,4 +53,6 @@ struct MOInfo {
     double **opdm_a;    /* Alpha Onepdm in the full (fzc+clsd+socc+uocc) space */
     double **opdm_b;    /* Beta Onepdm in the full (fzc+clsd+socc+uocc) space */
     double **I;         /* Lagrangian matrix in the full space */
+    double **I_a;       /* Alpha Lagrangian matrix in the full space */
+    double **I_b;       /* Beta Lagrangian matrix in the full space */
 };

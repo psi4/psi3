@@ -6,9 +6,9 @@
 #define EXTERN
 #include "globals.h"
 
-/* DUMP(): Mulliken-order the two-electron density and dump it to a
-** file for subsequent backtransformation.   Basically all we have to
-** do is swap indices two and three, e.g.
+/* DUMP_ROHF(): Mulliken-order the ROHF-CCSD two-electron density and
+** dump it to a file for subsequent backtransformation.  Basically all
+** we have to do is swap indices two and three, e.g.
 **
 ** G'(pr,qs) = G(pq,rs)
 **
@@ -28,7 +28,7 @@
 ** I really need to give an example of this problem using specific
 ** elements of GIJKA so that the code below will be clearer.*/
 
-void dump(struct iwlbuf *OutBuf)
+void dump_ROHF(struct iwlbuf *OutBuf)
 {
   int nirreps, nmo, nfzv;
   int *qt_occ, *qt_vir;
@@ -41,22 +41,15 @@ void dump(struct iwlbuf *OutBuf)
   nmo = moinfo.nmo;
   nfzv = moinfo.nfzv;
 
-  rfile(PSIF_MO_OPDM);
-  next = 0;
-  for(p=0; p < (nmo-nfzv); p++)
-    wwritw(PSIF_MO_OPDM, (char *) (moinfo.opdm[p]), 
-	   sizeof(double)*(nmo-nfzv), next, &next);
-  rclose(PSIF_MO_OPDM, 3);
+  psio_open(PSIF_MO_OPDM, PSIO_OPEN_OLD);
+  psio_write_entry(PSIF_MO_OPDM, "MO-basis OPDM", (char *) moinfo.opdm[0],
+		   sizeof(double)*nmo*nmo);
+  psio_close(PSIF_MO_OPDM, 1);
 
-  if(!moinfo.nfzc && !moinfo.nfzv) {  /* Can't deal with frozen orbitals yet */
-    rfile(PSIF_MO_LAG);
-    next = 0;
-    for(p=0; p < (nmo-nfzv); p++)
-      wwritw(PSIF_MO_LAG, (char *) (moinfo.I[p]), 
-	     sizeof(double)*(nmo), next, &next);
-    rclose(PSIF_MO_LAG, 3);
-  }
-
+  psio_open(PSIF_MO_LAG, PSIO_OPEN_OLD);
+  psio_write_entry(PSIF_MO_LAG, "MO-basis Lagrangian", (char *) moinfo.I[0],
+		   sizeof(double)*nmo*nmo);
+  psio_close(PSIF_MO_LAG, 1);
 
   dpd_buf4_init(&G, CC_GAMMA, 0, 0, 0, 0, 0, 0, "GIjKl");
   dpd_buf4_sort(&G, CC_TMP0, prqs, 0, 0, "G(IK,JL)");
