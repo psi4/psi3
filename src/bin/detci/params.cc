@@ -15,7 +15,7 @@ extern "C" {
 #ifdef AIX
 #include <string.h>
 #endif
-#include <ip_libv1.h>
+#include <libipv1/ip_lib.h>
 #include <libipv1/ip_data.gbl>
 #include <libciomr.h>
 #include <qt.h>

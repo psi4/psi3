@@ -139,7 +139,7 @@ These are two slightly simplified pieces of actual code.
 
 From \file{cscf.c}:
 \begin{verbatim}
-#include <ip_libv1.h>
+#include <libipv1/ip_lib.h>
 
    ffile(&infile,"input.dat",2);     /* input and output files. */
    ffile(&outfile,"output.dat",1);   /* call them whatever you want. */

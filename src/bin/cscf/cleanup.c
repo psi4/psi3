@@ -1,9 +1,12 @@
 /* $Log$
- * Revision 1.9  2002/03/25 01:07:59  crawdad
- * Some changes to cleanup et al. to write SCF-generated data to both old
- * file30 and new chkpt.
- * -TDC
+ * Revision 1.10  2002/03/25 02:17:36  janssen
+ * Get rid of tmpl.  Use new naming scheme for libipv1 includes.
  *
+/* Revision 1.9  2002/03/25 01:07:59  crawdad
+/* Some changes to cleanup et al. to write SCF-generated data to both old
+/* file30 and new chkpt.
+/* -TDC
+/*
 /* Revision 1.8  2002/03/25 00:02:00  sherrill
 /* Add libpsio
 /*
@@ -88,7 +91,7 @@ static char *rcsid = "$Id$";
 #define EXTERN
 #include "includes.h"
 #include "common.h"
-#include <ip_libv1.h>
+#include <libipv1/ip_lib.h>
 
 /* TDC(6/20/96) - Prototype for phase() */
 int phase(void);

@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <ip_libv1.h>
+#include <libipv1/ip_lib.h>
 #include <math.h>
 #include <masses.h>
 #include <libint.h>

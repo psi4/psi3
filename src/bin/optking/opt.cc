@@ -16,7 +16,7 @@ extern "C" {
   #include <string.h>
   #include <ctype.h>
   #include <libciomr.h>
-  #include <ip_libv1.h>
+  #include <libipv1/ip_lib.h>
   #include <physconst.h>
   int **get_char_table(char *symmetry);
   char **get_symm_ops(char *symmetry);

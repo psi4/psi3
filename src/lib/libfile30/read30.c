@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include "file30.h"
 #include <libciomr.h>
-#include <ip_libv1.h>
+#include <libipv1/ip_lib.h>
 
 FILE *infile, *outfile;
 void init_io(void);

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include <ip_libv1.h>
+#include <libipv1/ip_lib.h>
 #include "psio.h"
 
 int psio_get_tempinfo(ULI *num_temp_vols);

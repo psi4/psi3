@@ -22,7 +22,7 @@ extern "C" {
    #include <stdlib.h>
    #include <stdio.h>
    #include <string.h>
-   #include <ip_libv1.h>
+   #include <libipv1/ip_lib.h>
    #include <qt.h>
    #include <libciomr.h>
    #include <file30.h>

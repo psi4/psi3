@@ -1,8 +1,11 @@
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:51:32  evaleev
- * Initial revision
+ * Revision 1.2  2002/03/25 02:17:36  janssen
+ * Get rid of tmpl.  Use new naming scheme for libipv1 includes.
  *
+/* Revision 1.1.1.1  2000/02/04 22:51:32  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.3  1997/09/12 13:54:49  crawdad
 /* Changing marco name from ULL to PSI_FPTR.
 /*
@@ -52,7 +55,7 @@ static char *rcsid = "$Id$";
 
 #include "includes.h"
 #include "common.h"
-#include <ip_libv1.h>
+#include <libipv1/ip_lib.h>
 
 
 void main()

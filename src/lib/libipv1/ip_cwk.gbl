@@ -1,0 +1,98 @@
+#ifndef _TMPL_H
+#  include <libipv1/tmpl.h>
+#endif
+#ifndef GLOBAL_FUNCTION
+#  define GLOBAL_FUNCTION
+#endif
+#ifndef GLOBAL_VA_FUNCTION
+#  define GLOBAL_VA_FUNCTION
+#endif
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ VOID
+ip_cwk_root(
+#if defined(__STDC__) || defined(__cplusplus)
+
+void
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ VOID
+ip_cwk_clear(
+#if defined(__STDC__) || defined(__cplusplus)
+
+void
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ VOID
+ip_cwk_add(
+#if defined(__STDC__) || defined(__cplusplus)
+char *keyword
+
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ VOID
+ip_cwk_push(
+#if defined(__STDC__) || defined(__cplusplus)
+
+void
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ VOID
+ip_cwk_pop(
+#if defined(__STDC__) || defined(__cplusplus)
+
+void
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ ip_keyword_tree_t *
+ip_cwk_descend_tree(
+#if defined(__STDC__) || defined(__cplusplus)
+char *keyword
+
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ ip_keyword_tree_t *
+ip_descend_tree(
+#if defined(__STDC__) || defined(__cplusplus)
+ip_keyword_tree_t *kt,
+char *keyword
+
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ ip_value_t *
+ip_key_value(
+#if defined(__STDC__) || defined(__cplusplus)
+char *keyword
+
+#endif
+);

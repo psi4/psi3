@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.1  2000/02/04 22:52:30  evaleev
- * Initial revision
+ * Revision 1.2  2002/03/25 02:17:36  janssen
+ * Get rid of tmpl.  Use new naming scheme for libipv1 includes.
  *
+/* Revision 1.1.1.1  2000/02/04 22:52:30  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.2  1999/08/17 19:04:14  evaleev
 /* Changed the default symmetric orthogonalization to the canonical
 /* orthogonalization. Now, if near-linear dependencies in the basis are found,
@@ -19,7 +22,7 @@
 static char *rcsid = "$Id$";
 
 #include <stdio.h>
-#include <ip_libv1.h>
+#include <libipv1/ip_lib.h>
 
 errchk(errcod,token)
 int errcod;

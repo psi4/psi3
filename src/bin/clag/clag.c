@@ -8,7 +8,7 @@
 #include <libciomr.h>
 #include <qt.h>
 #include <iwl.h>
-#include <ip_libv1.h>
+#include <libipv1/ip_lib.h>
 #include <file30.h>
 #include <psifiles.h>
 #include <psio.h>

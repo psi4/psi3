@@ -12,7 +12,7 @@
 #define EXTERN
 #include "includes.h"
 #include "common.h"
-#include <ip_libv1.h>
+#include <libipv1/ip_lib.h>
 
 /* Read the Opentype */
 

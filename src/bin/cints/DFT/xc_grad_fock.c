@@ -2,7 +2,7 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
-#include<ip_libv1.h>
+#include<libipv1/ip_lib.h>
 #include<libciomr.h>
 #include<psio.h>
 #include<libint.h>

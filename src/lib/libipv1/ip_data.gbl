@@ -1,0 +1,196 @@
+#ifndef _TMPL_H
+#  include <libipv1/tmpl.h>
+#endif
+#ifndef GLOBAL_FUNCTION
+#  define GLOBAL_FUNCTION
+#endif
+#ifndef GLOBAL_VA_FUNCTION
+#  define GLOBAL_VA_FUNCTION
+#endif
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ int
+ip_count(
+#if defined(__STDC__) || defined(__cplusplus)
+char *keyword,
+int *count,
+int n,
+...
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ int
+ip_count_v(
+#if defined(__STDC__) || defined(__cplusplus)
+char *keyword,
+int *count,
+int n,
+int *v
+
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ int
+ip_boolean(
+#if defined(__STDC__) || defined(__cplusplus)
+char *keyword,
+int *boolean,
+int n,
+...
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ int
+ip_boolean_v(
+#if defined(__STDC__) || defined(__cplusplus)
+char *keyword,
+int *boolean,
+int n,
+int *v
+
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ int
+ip_exist(
+#if defined(__STDC__) || defined(__cplusplus)
+char *keyword,
+int n,
+...
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ int
+ip_exist_v(
+#if defined(__STDC__) || defined(__cplusplus)
+char *keyword,
+int n,
+int *v
+
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ int
+ip_data(
+#if defined(__STDC__) || defined(__cplusplus)
+char *keyword,
+char *conv,
+VOID *value,
+int n,
+...
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ int
+ip_data_v(
+#if defined(__STDC__) || defined(__cplusplus)
+char *keyword,
+char *conv,
+VOID *value,
+int n,
+int *v
+
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ int
+ip_string(
+#if defined(__STDC__) || defined(__cplusplus)
+char *keyword,
+char **value,
+int n,
+...
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ int
+ip_string_v(
+#if defined(__STDC__) || defined(__cplusplus)
+char *keyword,
+char **value,
+int n,
+int *v
+
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ int
+ip_value(
+#if defined(__STDC__) || defined(__cplusplus)
+char *keyword,
+ip_value_t **value,
+int n,
+...
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ int
+ip_value_v(
+#if defined(__STDC__) || defined(__cplusplus)
+char *keyword,
+ip_value_t **value,
+int n,
+int *v
+
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ int
+ip_int_array(
+#if defined(__STDC__) || defined(__cplusplus)
+char *keyword,
+int *arr,
+int len
+
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ int ip_double_array(
+#if defined(__STDC__) || defined(__cplusplus)
+char *keyword,
+double *arr,
+int len
+
+#endif
+);

@@ -37,7 +37,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
-#include <ip_libv1.h>
+#include <libipv1/ip_lib.h>
 #include <libciomr.h>
 #include <masses.h>
 #include <physconst.h>

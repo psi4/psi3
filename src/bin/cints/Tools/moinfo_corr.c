@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<math.h>
 #include<libciomr.h>
-#include<ip_libv1.h>
+#include<libipv1/ip_lib.h>
 #include<libint.h>
 
 #include"defines.h"

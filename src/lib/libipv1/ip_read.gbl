@@ -1,0 +1,122 @@
+#ifndef _TMPL_H
+#  include <libipv1/tmpl.h>
+#endif
+#ifndef GLOBAL_FUNCTION
+#  define GLOBAL_FUNCTION
+#endif
+#ifndef GLOBAL_VA_FUNCTION
+#  define GLOBAL_VA_FUNCTION
+#endif
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ VOID
+ip_set_uppercase(
+#if defined(__STDC__) || defined(__cplusplus)
+int uc
+
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ VOID
+ip_initialize(
+#if defined(__STDC__) || defined(__cplusplus)
+FILE *in,
+FILE *out
+
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ VOID
+ip_append(
+#if defined(__STDC__) || defined(__cplusplus)
+FILE *in,
+FILE *out
+
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ VOID
+ip_internal_values(
+#if defined(__STDC__) || defined(__cplusplus)
+
+void
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ VOID
+ip_done(
+#if defined(__STDC__) || defined(__cplusplus)
+
+void
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ VOID
+ip_push_keyword(
+#if defined(__STDC__) || defined(__cplusplus)
+char *keyword
+
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ VOID
+ip_pop_keyword(
+#if defined(__STDC__) || defined(__cplusplus)
+
+void
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ VOID
+ip_assign_value(
+#if defined(__STDC__) || defined(__cplusplus)
+ip_value_t *value
+
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ ip_value_t *
+ip_scalar(
+#if defined(__STDC__) || defined(__cplusplus)
+char *scalar
+
+#endif
+);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+ ip_value_t *
+ip_array(
+#if defined(__STDC__) || defined(__cplusplus)
+ip_value_t *arrayval,
+ip_value_t *newval
+
+#endif
+);

@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <ip_libv1.h>
+#include <libipv1/ip_lib.h>
 #include "psio.h"
 
 int psio_get_volpath(ULI unit, ULI volume, char *path)

@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<math.h>
 #include<stdlib.h>
-#include<ip_libv1.h>
+#include<libipv1/ip_lib.h>
 #include<libciomr.h>
 #include<file30.h>
 #include<psio.h>

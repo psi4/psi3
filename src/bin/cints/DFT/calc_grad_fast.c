@@ -10,7 +10,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <ip_libv1.h>
+#include <libipv1/ip_lib.h>
 #include <libciomr.h>
 #include <qt.h>
 #include <libint.h>

@@ -118,7 +118,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
-#include <ip_libv1.h>
+#include <libipv1/ip_lib.h>
 #include <psio.h>
 #include <libciomr.h>
 #include <file30.h>

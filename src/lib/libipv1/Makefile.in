@@ -25,24 +25,13 @@ CSRC = ip_alloc.c ip_cwk.c ip_data.c ip_error.c ip_karray.c ip_print.c ip_read.c
 GENSRC = scan.c y.tab.c
 ALLSRC = $(CSRC) $(GENSRC)
 
-GENINC = $(ALLSRC:%.c=%.gbl)
+GBLINC = $(ALLSRC:%.c=%.gbl)
 
-ALLINCLUDE = ip_lib.h ip_error.h ip_types.h ip_global.h $(GENINC)
+ALLINCLUDE = ip_lib.h ip_error.h ip_types.h ip_global.h $(GBLINC)
 
 LIBOBJ = $(ALLSRC:%.c=%.o)
 
 include ../MakeRules
-
-# make sure that the include files get generated
-$(LIBOBJ): $(GENINC)
-
-default:: ip_lib.h
-	$(MKDIRS) $(objincdir)
-	$(INSTALL_INCLUDE) $< $(objincdir)/ip_libv1.h
-
-default:: ip_error.h ip_types.h $(GENINC)
-	$(MKDIRS) $(objincdir)/libipv1
-	$(INSTALL_INCLUDE) $^ $(objincdir)/libipv1
 
 y.tab.c y.tab.h: parse.y
 	$(YACC) -v -d $<
@@ -50,20 +39,21 @@ y.tab.c y.tab.h: parse.y
 scan.c: scan.l
 	$(LEX) -t $^ > scan.c
 
-install_inc:: ip_lib.h
-	$(MKDIRS) $(incdir)
-	$(INSTALL_INCLUDE) $< $(incdir)/ip_libv1.h
-
-install_inc:: ip_error.h ip_types.h $(GENINC)
+install_inc:: ip_error.h ip_lib.h ip_types.h $(GENINC)
 	$(MKDIRS) $(incdir)/libipv1
 	$(INSTALL_INCLUDE) $^ $(incdir)/libipv1
 
 clean::
-	-/bin/rm -f y.tab.* y.output scan.c
-	-/bin/rm -f *.gbl *.lcl
+	-/bin/rm -f y.tab.h y.tab.c y.output scan.c
 
 depend:: $(ALLINCLUDE) y.tab.h
 
 ifneq ($(DODEPEND),no)
 include $(ALLSRC:%.c=%.d)
 endif
+
+#
+# in case DODEPEND is no
+#
+
+ip_read.o:: y.tab.h

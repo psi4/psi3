@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <ip_libv1.h>
+#include <libipv1/ip_lib.h>
 #include <libciomr.h>
 #include <psio.h>
 #include <iwl.h>

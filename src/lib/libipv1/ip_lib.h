@@ -1,5 +1,5 @@
 
-#include <tmpl.h>
+#include <libipv1/tmpl.h>
 #include <libipv1/ip_types.h>
 #include <libipv1/ip_error.h>
 #include <libipv1/ip_alloc.gbl>

@@ -31,7 +31,7 @@ extern "C" {
   #include <string.h>
   #include <physconst.h>
   #include <libciomr.h>
-  #include <ip_libv1.h>
+  #include <libipv1/ip_lib.h>
 }
 
 #define EXTERN

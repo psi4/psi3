@@ -1,9 +1,12 @@
 /* $Log$
- * Revision 1.12  2002/01/04 17:05:04  crawdad
- * Added read of number of MO's per irrep for non-guess=core cases.  This
- * allows proper correction of MO phases.
- * -TDC
+ * Revision 1.13  2002/03/25 02:17:36  janssen
+ * Get rid of tmpl.  Use new naming scheme for libipv1 includes.
  *
+/* Revision 1.12  2002/01/04 17:05:04  crawdad
+/* Added read of number of MO's per irrep for non-guess=core cases.  This
+/* allows proper correction of MO phases.
+/* -TDC
+/*
 /* Revision 1.11  2001/03/16 15:41:04  evaleev
 /* Fixed more old problems arising from not distinguishing between num_so and num_mo.
 /*
@@ -109,7 +112,7 @@ static char *rcsid = "$Id$";
 #define EXTERN
 #include "includes.h"
 #include "common.h"
-#include <ip_libv1.h>
+#include <libipv1/ip_lib.h>
 #include <file30.h>
 
 void scf_input(ipvalue)

@@ -11,7 +11,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <ip_libv1.h>
+#include <libipv1/ip_lib.h>
 #include <libciomr.h>
 #include <file30.h>
 #include <qt.h>

@@ -3,7 +3,7 @@
 #include <string.h>
 #include <memory.h>
 #include <stdlib.h>
-#include <ip_libv1.h>
+#include <libipv1/ip_lib.h>
 #include <iwl.h>
 #include <libciomr.h>
 #include <libint.h>

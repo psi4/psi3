@@ -1,8 +1,11 @@
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:18  evaleev
- * Initial revision
+ * Revision 1.2  2002/03/25 02:17:36  janssen
+ * Get rid of tmpl.  Use new naming scheme for libipv1 includes.
  *
+/* Revision 1.1.1.1  2000/02/04 22:53:18  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 2.6  1997/08/25 21:49:48  crawdad
 /* Making changes for extension of PSI file size limit.
 /*
@@ -36,7 +39,7 @@ static char *rcsid = "$Id$";
 
 #include "iomrparam.h"
 #include "includes.h"
-#include <ip_libv1.h>
+#include <libipv1/ip_lib.h>
 
 int get_file_info(token,format,val)
   char *token,*format;

@@ -37,11 +37,3 @@ ifneq ($(DODEPEND),no)
 include $(LIBOBJ:%.o=%.d)
 endif
 
-install_inc:: file30.h
-        $(MKDIRS) $(objincdir)
-        $(INSTALL_INCLUDE) $^ $(objincdir)
-
-install_man:: libfile30.txt
-        $(MKDIRS) $(txtdir)
-        $(INSTALL_INCLUDE) $^ $(txtdir)
-

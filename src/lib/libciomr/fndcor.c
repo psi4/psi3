@@ -18,7 +18,7 @@
 */
 
 #include <stdio.h>
-#include <ip_libv1.h>
+#include <libipv1/ip_lib.h>
 
 #define DEF_MAXCRR 100000    /* default maxcor in doubles: used only if
                               * it can't be read in */

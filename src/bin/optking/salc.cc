@@ -5,7 +5,7 @@ extern "C" {
   #include <stdlib.h>
   #include <string.h>
   #include <libciomr.h>
-  #include <ip_libv1.h>
+  #include <libipv1/ip_lib.h>
 }
 
 #define EXTERN

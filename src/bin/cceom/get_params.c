@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-#include <ip_libv1.h>
+#include <libipv1/ip_lib.h>
 #include <libciomr.h>
 #define EXTERN
 #include "globals.h"

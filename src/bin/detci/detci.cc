@@ -26,7 +26,7 @@ extern "C" {
 
    #include <stdlib.h>
    #include <stdio.h>
-   #include <ip_libv1.h>
+   #include <libipv1/ip_lib.h>
    /* seem to need string.h in RedHat 7.1 */
    #include <string.h>
    #include <qt.h>

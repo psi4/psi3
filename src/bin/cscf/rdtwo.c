@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.1  2000/02/04 22:52:29  evaleev
- * Initial revision
+ * Revision 1.2  2002/03/25 02:17:36  janssen
+ * Get rid of tmpl.  Use new naming scheme for libipv1 includes.
  *
+/* Revision 1.1.1.1  2000/02/04 22:52:29  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.6  1999/11/02 23:55:59  localpsi
 /* Shawn Brown - (11/2/99) Modified to the code in a few major ways.
 /*
@@ -51,7 +54,7 @@ static char *rcsid = "$Id$";
 #define EXTERN
 #include "includes.h"
 #include "common.h"
-#include <ip_libv1.h>
+#include <libipv1/ip_lib.h>
 #include <iwl.h>
 
 double *pa, *pb;
