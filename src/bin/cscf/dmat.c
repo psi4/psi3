@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.3  2000/06/22 22:14:59  evaleev
- * Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
+ * Revision 1.4  2000/06/26 19:04:09  sbrown
+ * Added DFT capapbilities to interface with cints using direct scf
  *
+/* Revision 1.3  2000/06/22 22:14:59  evaleev
+/* Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
+/*
 /* Revision 1.2  2000/06/02 13:32:15  kenny
 /*
 /*
@@ -206,8 +209,7 @@ void dmat()
 	   }
 	 }
        }
-       psio_write_entry(itapDSCF, "Difference Open-Shell Density", (char *) dmat,
-			sizeof(double)*ntri);
+       psio_write_entry(itapDSCF, "Difference Open-Shell Density", (char *) dmat,sizeof(double)*ntri);
      }
      free(dmat);
      psio_close(itapDSCF, 1);
@@ -216,3 +218,4 @@ void dmat()
    return;
 }                                            
                                                                                 
+

@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.3  2000/06/22 22:15:02  evaleev
- * Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
+ * Revision 1.4  2000/06/26 19:04:11  sbrown
+ * Added DFT capapbilities to interface with cints using direct scf
  *
+/* Revision 1.3  2000/06/22 22:15:02  evaleev
+/* Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
+/*
 /* Revision 1.2  2000/06/02 13:32:16  kenny
 /*
 /*
@@ -85,6 +88,7 @@ void scf_input(ipvalue)
    double elast;     
    double **scr_mat;
    char *alabel,*bool="YES",*optyp,*wfn,*dertype;
+   char *extmp,*cortmp;
    char cjunk[80];
    int norder,*iorder,reordr;
    int nc,no,nh,nn,num_mo;
@@ -98,6 +102,7 @@ void scf_input(ipvalue)
    int mo_offset, so_offset;
    struct symm *s;
    int reftmp;
+   int depth;
 
    ip_cwk_clear();
    ip_cwk_add(":DEFAULT");
@@ -187,9 +192,27 @@ void scf_input(ipvalue)
    if(!strcmp(dertype,"SECOND")) iconv = 12;
    errcod = ip_data("CONVERGENCE","%d",&iconv,0);
 
-   if (ksdft)
-     errcod = ip_string("FUNCTIONAL",&functional,0);
-
+   if (ksdft){
+       depth = 0;
+       errcod = ip_count("FUNCTIONAL",&depth,0);
+       if(depth == 0){
+	   errcod = ip_string("FUNCTIONAL",&functional,0);
+	   if(errcod != IPE_OK){
+	       fprintf(outfile,"\nMust specify a functional when using ks-dft");
+	       exit(1);
+	   }
+       }
+       else if(depth == 2){
+	   errcod = ip_string("FUNCTIONAL",&extmp,1,0);
+	   errcod = ip_string("FUNCTIONAL",&cortmp,1,1);
+	   functional = strcat(extmp,cortmp);
+       }
+       else{
+	   fprintf(outfile,"\nwrong number of records in FUNCTIONAL keyword");
+	   exit(1);
+       }
+   }
+   
    if(ipvalue) ip_print_value(stdout,ipvalue);
    fprintf(outfile,"  wfn          = %s\n",wfn);
    fprintf(outfile,"  reference    = %s\n",reference);

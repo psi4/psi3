@@ -17,18 +17,19 @@ void formg_direct()
      Check if it ran fine
     -----------------------------------*/
    stat = system("cints --fock");
+   
    switch (stat) {
    case 0:
        /* everything is OK */
        break;
-
+       
    default:
        /* Something went wrong */
        fprintf(outfile,"  formg_direct: System call to CINTS failed. Check to see if it's in your PATH\n");
        fprintf(stderr,"System call to CINTS failed. Check to see if it's in your PATH.\n");
        exit(1);
    }
-
+   
    gtmp = (double *) init_array(ntri);
 
    /*----------------------------------------------------
@@ -74,7 +75,7 @@ void formg_direct()
    
    psio_open(itapDSCF, PSIO_OPEN_OLD);
    if (ksdft) {
-/*     psio_read_entry(itapDSCF, "DFT XC-energy", (char *) &(exc), sizeof(double));*/
+     psio_read_entry(itapDSCF, "DFT XC-energy", (char *) &(exc), sizeof(double));
    }
    if (uhf) {
      psio_read_entry(itapDSCF, "Alpha JX G-matrix", (char *) gtmp, sizeof(double)*ntri);
@@ -102,29 +103,29 @@ void formg_direct()
      }
 
      if (ksdft) {
-/*       psio_read_entry(itapDSCF, "Alpha XC G-matrix", (char *) gtmp, sizeof(double)*ntri);
-       for(k=joff=0; k < num_ir ; k++) {
-	 if(nn=scf_info[k].num_so) {
-	   for(i=0; i < nn ; i++) {
-	     for(j=0; j <= i ; j++) {
-	       spin_info[0].scf_spin[k].xcmat[ioff[i]+j] = gtmp[ioff[i+joff]+j+joff];
+	 psio_read_entry(itapDSCF, "Alpha XC G-matrix", (char *) gtmp, sizeof(double)*ntri);
+	 for(k=joff=0; k < num_ir ; k++) {
+	     if(nn=scf_info[k].num_so) {
+		 for(i=0; i < nn ; i++) {
+		     for(j=0; j <= i ; j++) {
+			 spin_info[0].scf_spin[k].xcmat[ioff[i]+j] = gtmp[ioff[i+joff]+j+joff];
+		     }
+		 }
 	     }
-	   }
+	     joff += nn;
 	 }
-	 joff += nn;
-       }
-     
-       psio_read_entry(itapDSCF, "Beta XC G-matrix", (char *) gtmp, sizeof(double)*ntri);
-       for(k=joff=0; k < num_ir ; k++) {
-	 if(nn=scf_info[k].num_so) {
-	   for(i=0; i < nn ; i++) {
-	     for(j=0; j <= i ; j++) {
-	       spin_info[1].scf_spin[k].xcmat[ioff[i]+j] = gtmp[ioff[i+joff]+j+joff];
+	 
+	 psio_read_entry(itapDSCF, "Beta XC G-matrix", (char *) gtmp, sizeof(double)*ntri);
+	 for(k=joff=0; k < num_ir ; k++) {
+	     if(nn=scf_info[k].num_so) {
+		 for(i=0; i < nn ; i++) {
+		     for(j=0; j <= i ; j++) {
+			 spin_info[1].scf_spin[k].xcmat[ioff[i]+j] = gtmp[ioff[i+joff]+j+joff];
+		     }
+		 }
 	     }
-	   }
+	     joff += nn;
 	 }
-	 joff += nn;
-       }*/
      }
    }
    else {
@@ -141,17 +142,17 @@ void formg_direct()
      }
 
      if (ksdft) {
-/*       psio_read_entry(itapDSCF, "Total XC G-matrix", (char *) gtmp, sizeof(double)*ntri);
-       for(k=joff=0; k < num_ir ; k++) {
-	 if(nn=scf_info[k].num_so) {
-	   for(i=0; i < nn ; i++) {
-	     for(j=0; j <= i ; j++) {
-	       scf_info[k].xcmat[ioff[i]+j] = gtmp[ioff[i+joff]+j+joff];
+	 psio_read_entry(itapDSCF, "Total XC G-matrix", (char *) gtmp, sizeof(double)*ntri);
+	 for(k=joff=0; k < num_ir ; k++) {
+	     if(nn=scf_info[k].num_so) {
+		 for(i=0; i < nn ; i++) {
+		     for(j=0; j <= i ; j++) {
+			 scf_info[k].xcmat[ioff[i]+j] = gtmp[ioff[i+joff]+j+joff];
 	     }
-	   }
+		 }
+	     }
+	     joff += nn;
 	 }
-	 joff += nn;
-       }*/
      }
 
      if (iopen) {

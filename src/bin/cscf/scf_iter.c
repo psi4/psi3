@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.2  2000/06/22 22:15:02  evaleev
- * Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
+ * Revision 1.3  2000/06/26 19:04:12  sbrown
+ * Added DFT capapbilities to interface with cints using direct scf
  *
+/* Revision 1.2  2000/06/22 22:15:02  evaleev
+/* Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
+/*
 /* Revision 1.1.1.1  2000/02/04 22:52:32  evaleev
 /* Started PSI 3 repository
 /*
@@ -135,7 +138,7 @@ void scf_iter()
 
      /*  form fock matrix = h+g */
             add_arr(s->hmat,s->gmat,s->fock_pac,ioff[nn]);
-
+	    
      /* for open shell, form fock_open = h+g-q */
             if(iopen) {
                for (i=0; i < ioff[nn] ; i++)
@@ -158,7 +161,8 @@ void scf_iter()
 	    add_arr(s->fock_pac,s->xcmat,s->fock_pac,ioff[nn]);
 	}
       }
-	
+      fprintf(outfile,"\n full XCJ FOCK");
+      print_array(s->fock_pac,nn,outfile);
    /* create new fock matrix in fock_pac or fock_eff */
       if(!diisflg) diis(scr,fock_c,fock_ct,c1,c2,cimax,newci);
 
