@@ -183,13 +183,8 @@ void print_intro()
 {
   fprintf(outfile,"                                --------------\n");
   fprintf(outfile,"                                  WELCOME TO\n");
-  fprintf(outfile,"                                     PSI\n");
+  fprintf(outfile,"                                    PSI  3\n");
   fprintf(outfile,"                                --------------\n\n");
-  fprintf(outfile,"  **************************************\n");
-  fprintf(outfile,"  *           - New INPUT -            *\n");
-  fprintf(outfile,"  * .. to all people frustrated by PSI *\n");
-  fprintf(outfile,"  *         user-friendliness          *\n");
-  fprintf(outfile,"  **************************************\n\n");
   fflush(outfile);
 }
 
