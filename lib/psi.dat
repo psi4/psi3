@@ -25,6 +25,7 @@ psi: (
   normco      = "normco"
   oeprop      = "oeprop"
   optking     = "optking"
+  stable      = "stable"
   ugeom       = "ugeom"
   rgeom       = ()
   findif_disp        = "optking --disp_all"
