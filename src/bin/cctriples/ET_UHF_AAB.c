@@ -306,18 +306,13 @@ double ET_UHF_AAB(void)
 		  dijk += fIJ.matrix[Gi][i][i];
 		if(fIJ.params->rowtot[Gj])
 		  dijk += fIJ.matrix[Gj][j][j];
-		if(fIJ.params->rowtot[Gk])
+		if(fij.params->rowtot[Gk])
 		  dijk += fij.matrix[Gk][k][k];
 
 		for(Gab=0; Gab < nirreps; Gab++) {
 		  Gc = Gab ^ Gijk;
 
 		  WABc[Gab] = dpd_block_matrix(FAAints.params->coltot[Gab], bvirtpi[Gc]);
-		  WBcA[Gab] = dpd_block_matrix(FABints.params->coltot[Gab], avirtpi[Gc]);
-		  WAcB[Gab] = dpd_block_matrix(FABints.params->coltot[Gab], avirtpi[Gc]);
-		  WcBA[Gab] = dpd_block_matrix(FBAints.params->coltot[Gab], avirtpi[Gc]);
-		  WcAB[Gab] = dpd_block_matrix(FBAints.params->coltot[Gab], avirtpi[Gc]);
-		  VABc[Gab] = dpd_block_matrix(FAAints.params->coltot[Gab], bvirtpi[Gc]);
 		}
 
 		for(Gd=0; Gd < nirreps; Gd++) {
@@ -824,9 +819,9 @@ double ET_UHF_AAB(void)
 
 		      WABc[Gab][ab][c] /= denom;
 
-		    }
-		  }
-		}
+		    } /* c */
+		  } /* ab */
+		} /* Gab */
 
 		/* 1/2 Dot product of final V and W is the energy for this ijk triple */
 		for(Gab=0; Gab < nirreps; Gab++) {

@@ -24,6 +24,7 @@ double ET_UHF_BBB(void);
 double ET_UHF_AAB(void);
 double ET_UHF_AAB_noddy(void);
 double ET_UHF_ABB(void);
+double ET_UHF_ABB_noddy(void);
 void setup(void);
 int **cacheprep_rhf(int level, int *cachefiles);
 int **cacheprep_uhf(int level, int *cachefiles);
