@@ -3,6 +3,30 @@
 #define EXTERN
 #include "globals.h"
 
+/* Wmbej_build(): Computes all contributions to the Wmbej HBAR matrix
+** elements.  These are defined in terms of spin orbitals as:
+**
+** Wmbej = <mb||ej> + t_j^f <mb||ef> - t_n^b <mn||ej> 
+**         - { t_jn^fb + t_j^f t_n^b } <mn||ef>
+**
+** [cf. Gauss and Stanton, JCP 103, 3561-3577 (1995)]
+**
+** There are Wmbej six spin cases, which are stored and named
+** as follows:
+**
+** Spin Case    Storage    Name
+** ----------   ---------  -------
+** WMBEJ        (ME,JB)    "WMBEJ"
+** Wmbej        (me,jb)    "Wmbej"
+** WMbEj        (ME,jb)    "WMbEj"
+** WmBeJ        (me,JB)    "WmBeJ"
+** WMbeJ        (Me,bJ)    "WMbeJ"
+** WmBEj        (mE,Bj)    "WmBEj"
+** -------------------------------
+**
+** TDC, June 2002
+*/
+
 void Wmbej_build(void) {
   dpdbuf4 WMBEJ, Wmbej, WMbEj, WmBeJ, WmBEj, WMbeJ;
   dpdbuf4 tIAJB, tjAIb, tiajb, tIAjb, tiaJB, tIbjA;
