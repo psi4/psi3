@@ -6,10 +6,12 @@ default: (
   dertype = none
   jobtype = sp
 
-  states_per_irrep = (2 2 2 2)
-
   convergence = 12
   maxiter = 100
+
+  states_per_irrep = (2 2 2 2)
+  eval_tol = 10
+  residual_tol = 8
 )
 
 input: (
