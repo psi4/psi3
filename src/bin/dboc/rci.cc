@@ -62,21 +62,22 @@ double eval_rci_derwfn_overlap()
     }
   }
 
+  // Evaluate total overlap in the highest available precision
   int ndets = vecm->size;
-  double S_tot = 0.0;
+  long double S_tot = 0.0;
   for(int I=0; I<ndets; I++) {
     SlaterDet *detI = vecm->sdset->dets + I;
     int Istra = detI->alphastring;
     int Istrb = detI->betastring;
-    double cI = vecm->coeffs[I];
+    long double cI = vecm->coeffs[I];
 
     for(int J=0; J<ndets; J++) {
       SlaterDet *detJ = vecp->sdset->dets + J;
       int Jstra = detJ->alphastring;
       int Jstrb = detJ->betastring;
-      double cJ = vecp->coeffs[J];
+      long double cJ = vecp->coeffs[J];
       
-      double S = S_a[Istra][Jstra] * S_a[Istrb][Jstrb];
+      long double S = (long double)S_a[Istra][Jstra] * (long double)S_a[Istrb][Jstrb];
       S_tot += cI * S * cJ;
     }
   }
@@ -88,9 +89,8 @@ double eval_rci_derwfn_overlap()
   delete[] tmpintvec;
   free_block(CSC);
   free_block(CSC_full);
-  //  double hfval = S_a[0][0] * S_a[0][0];
   free_block(S_a);
-  //  return hfval;
-  return fabs(S_tot);
+  double S_tot_double = (double) S_tot;
+  return fabs(S_tot_double);
 }
 
