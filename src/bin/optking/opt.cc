@@ -140,6 +140,7 @@ int main(void)
 
   // get array of values of symm internal coordinates
     dq = init_array(symm.get_num());
+    q = init_array(symm.get_num());
     q = compute_q(simples,symm);
     //  fprintf(outfile,"The q matrix\n");
     //  print_mat2(&q,1,symm.get_num(),outfile);
