@@ -24,6 +24,12 @@
 
 FILE *infile, *outfile;
 char **psi_file_prefix;
+/* 
+  the following must stay in scope throughout the run, else the 
+  environmental variables will vanish!
+*/
+
+char tmpstr_input[200], tmpstr_output[200], tmpstr_prefix[200];
 
 void psi3_abort(void);
 int execut(char **module_names, int num_modules, int depth);
@@ -448,7 +454,12 @@ int parse_cmdline(int argc, char *argv[])
  
   /* set the environmental variables the modules will look for */ 
   if (ifname != NULL) {
+    #ifdef AIX
+    sprintf(tmpstr_input,"PSI_INPUT=%s",ifname);
+    putenv(tmpstr_input);
+    #else
     setenv("PSI_INPUT",ifname,1);
+    #endif
     infile = fopen(ifname,"r");
   }
   else {
@@ -459,12 +470,22 @@ int parse_cmdline(int argc, char *argv[])
     return(PSI_RETURN_FAILURE);
   }
   if (ofname != NULL) {
+    #ifdef AIX
+    sprintf(tmpstr_output,"PSI_OUTPUT=%s",ofname);
+    putenv(tmpstr_output);
+    #else
     setenv("PSI_OUTPUT",ofname,1);
+    #endif
   }
   outfile = stdout;
-  if (fprefix != NULL)
+  if (fprefix != NULL) {
+    #ifdef AIX
+    sprintf(tmpstr_prefix,"PSI_PREFIX=%s",fprefix);
+    putenv(tmpstr_prefix);
+    #else
     setenv("PSI_PREFIX",fprefix,1);
-
+    #endif
+  }
   return(1);
 }
 
