@@ -1,8 +1,8 @@
  
 .PHONY:	default all install depend clean targetclean
 
-subdirs = libipv1 libciomr libfile30 libqt libpsio libiwl libdpd \
-          libint libderiv libchkpt
+subdirs = libipv1 libciomr libchkpt libqt libpsio libiwl libdpd \
+          libint libderiv
 
 all: default
 
