@@ -308,10 +308,11 @@ void get_parameters(void)
 
   /* The defaults below depend on what run mode we are in */
   if (params.runmode == MODE_NORMAL) {
-    if (strcmp(params.wfn, "MP2") == 0)
+    /*Changed for MP2 gradient*/
+    /*if (strcmp(params.wfn, "MP2") == 0)
       params.tei_trans_type = MAKE_OVOV;
-    else
-      params.tei_trans_type = MAKE_GGGG;
+    else*/
+    params.tei_trans_type = MAKE_GGGG;
     params.tei_type = ERI;
     params.src_tei_file = PSIF_SO_TEI;
     params.mfile = PSIF_MO_TEI;
