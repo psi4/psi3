@@ -26,6 +26,7 @@ void read_cart()
    -----------------------*/
   geometry = block_matrix(num_atoms,3);
   element = (char **) malloc(sizeof(char *)*num_atoms);
+  full_element = (char **) malloc(sizeof(char *)*num_atoms);
   elemsymb_charges = init_array(num_atoms);
 
   for(i=0;i<num_atoms;i++){
@@ -36,6 +37,7 @@ void read_cart()
     free(atom_label);
     elemsymb_charges[i] = Z;
     element[i] = elem_name[(int)Z];
+    full_element[i] = elem_name[(int)Z];
     for(j=0; j<3;j++){
       errcod = ip_data("GEOMETRY","%lf", &tmp,2,i,j+1);
       if (errcod != IPE_OK)

@@ -201,17 +201,21 @@ void write_to_file30(double repulsion)
     strncpy(atom_label,element[atom],strlen(element[atom]));
     wwritw(CHECKPOINTFILE,(char *) atom_label, 8*(sizeof(char)),ptr,&ptr);
   }
-
-  /* Labels of atoms including dummy atoms */
-  pointers[28] = ptr/sizeof(int) + 1;
-  label = init_char_array(8);
-  for(i=0;i<num_entries;i++) {
-    strncpy(label,full_element[i],strlen(full_element[i]));
-    wwritw(CHECKPOINTFILE,(char *) label, 8*(sizeof(char)),ptr,&ptr);
-  }
-  
   free(atom_label);
-  free(label);
+  
+  /* Labels of atoms including dummy atoms */
+ 
+  if(cartOn)
+    j = num_atoms;
+  else j = num_entries;
+  pointers[28] = ptr/sizeof(int) + 1;
+  atom_label = init_char_array(8);
+  for(atom=0;atom<j;atom++) {
+    strncpy(atom_label,full_element[atom],strlen(full_element[atom]));
+    wwritw(CHECKPOINTFILE,(char *) atom_label, 8*(sizeof(char)),ptr,&ptr);
+  }
+ 
+  free(atom_label);
 
   /* Orbitals per irrep */
   pointers[36] = ptr/sizeof(int) + 1;
@@ -344,7 +348,7 @@ void write_to_file30(double repulsion)
   constants[17] = num_so;
   constants[18] = num_atoms;
   if(cartOn)
-    constants[19] = -1;
+    constants[19] = num_atoms;
   else
     constants[19] = num_entries;
   constants[21] = num_ao;

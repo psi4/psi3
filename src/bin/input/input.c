@@ -392,6 +392,7 @@ void cleanup()
   free_block(Rref);
   free(nuclear_charges);
 /*  free_char_matrix(element,num_atoms);
+    free_char_matrix(full_element,num_entries);
   free_char_matrix(atom_basis,num_atoms);*/
   free_int_matrix(atom_orbit,num_atoms);
   free_int_matrix(class_orbit,num_classes);
