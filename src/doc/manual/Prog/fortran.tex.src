@@ -45,8 +45,8 @@ calls, such as \felem{wreadw()} and \felem{rfile()} are actually written in
 Fortran.  The low-level routines are C functions which are constructed very
 similarly to those in \library{libciomr.a} (see section \ref{C_IO}).  All of
 the I/O routines required by the Fortran modules may be found in \library{
-io.a}.\footnote{The I/O routines to be found \library{iomr.a} and \library{
-iomrth.a} are obsolete and should never be used.  In fact, someone should
+io.a}.\footnote{The I/O routines to be found \library{iomr.a} are obsolete
+and should never be used.  In fact, someone should
 really take the time to remove them one day.}
 
 \subsection{The Psi Preprocessor}\label{psipp}
