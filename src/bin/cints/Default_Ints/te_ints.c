@@ -150,12 +150,6 @@ void te_ints()
                       (BasisSet.max_num_prims*
                        BasisSet.max_num_prims);
   init_libint(&Libint, max_num_prim_comb);
-  free_libint(&Libint);
-  init_libint(&Libint, max_num_prim_comb);
-  free_libint(&Libint);
-  init_libint(&Libint, max_num_prim_comb);
-  free_libint(&Libint);
-  init_libint(&Libint, max_num_prim_comb);
 
 /*-------------------------------------------------
   generate all unique shell quartets with ordering
