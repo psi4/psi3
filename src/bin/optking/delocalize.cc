@@ -221,7 +221,7 @@ void delocalize(internals &simples, cartesians &carts) {
 print_mat(evectst_symm,num_nonzero,simples.get_num(),outfile);
 
   // print out coordinates to intco.dat
-  fp_intco = fopen("intco.dat", "r+");
+  ffile(&fp_intco, "intco.dat", 2);
   count = 0;
   for( ; ; ) {
     err = fgets(buffer, MAX_LINELENGTH, fp_intco);

@@ -13,7 +13,8 @@
 
 int psi_start(int argc, char *argv[], int overwrite_output);
 int psi_stop(void);
-void ffile (FILE **fptr, char *suffix, int code);
+void ffile(FILE **fptr, char *suffix, int code);
+void ffile_noexit(FILE **fptr, char *suffix, int code);
 
 void add_arr(double *a, double *b, double *c, int n);
 void add_mat(double **a,double **b,double **c,int n,int m);

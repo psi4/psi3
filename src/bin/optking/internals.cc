@@ -346,7 +346,7 @@ internals :: internals(cartesians& carts, int user_intcos, int *size_arr)
 
       tors.set_num(type_count);
       out.set_num(0);
-      fp_intco = fopen("intco.dat","w");
+      ffile(&fp_intco, "intco.dat",0);
       print(fp_intco,0); 
       fclose(fp_intco);
     }

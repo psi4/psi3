@@ -41,3 +41,33 @@ void ffile(FILE **fptr, char *suffix, int code)
   }
 }
 
+/*!
+** ffile_noexit(): Open a PSI3 ASCII file for reading/writing.
+** Returns a pointer to the new file via an argument.  This function
+** is the same as ffile(), but will not exit if fopen() fails.
+**
+** \param suffix = name of the file, not including automatic prefix
+** \param code = 0 (write), 1 (write/append), 2 (read)
+** \ingroup (CIOMR)
+*/
+void ffile_noexit(FILE **fptr, char *suffix, int code)
+{
+  char name[100];
+
+  /* build the standard file name */
+  sprintf(name, "%s.%s", psi_file_prefix, suffix);
+
+  switch (code) {
+  case 0:
+    *fptr = fopen(name,"w+");
+    break;
+  case 1:
+    *fptr = fopen(name,"a+");
+    break;
+  case 2:
+    *fptr = fopen(name,"r+");
+    break;
+  default:
+    fprintf(stderr,"error in ffile: invalid code %d\n",code);
+  }
+}

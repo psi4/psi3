@@ -204,7 +204,7 @@ void fconst_init(cartesians &carts, internals &simples, salc_set &symm) {
     constants_in_PSIF = 0;
   close_PSIF();
   if (!constants_in_PSIF) {
-    fp_fconst = fopen("fconst.dat","r");
+    ffile_noexit(&fp_fconst, "fconst.dat",2);
     if (fp_fconst == NULL) {
       fprintf(outfile, "\nGenerating empirical Hessian.\n");
       empirical_H(simples,symm,carts);
@@ -214,7 +214,6 @@ void fconst_init(cartesians &carts, internals &simples, salc_set &symm) {
       double **temp_mat;
       dim = symm.get_num();
       temp_mat = block_matrix(dim,dim);
-      ffile(&fp_fconst,"fconst.dat",2);
       for (i=0;i<dim;++i) {
         fgets(buffer,MAX_LINELENGTH,fp_fconst);
         count = 0;

@@ -176,7 +176,7 @@ void opt_energies(cartesians &carts, internals &simples, salc_set &symm) {
         (char *) &(energy), sizeof(double));
     close_PSIF();
 
-    fp_11 = fopen("file11.dat","a");
+    ffile(&fp_11, "file11.dat", 1);
     sprintf(disp_label,"iteration: %d", optinfo.iteration);
     carts.set_energy(energy);
     carts.set_coord(geom);

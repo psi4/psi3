@@ -2,7 +2,6 @@
 
 psi: (
   check = false
-  nopt = 20
   jobtype = opt
 )
 
@@ -10,51 +9,19 @@ default: (
   label = "6-31G** SCF H2O"
   memory = (20.0 MB)
 
-  symmetry = c2v
   wfn = scf
   reference = rhf
   multp = 1
   dertype = none
-  opt = true
-  docc = (3 0 1 1)
-
-  % this was the way to do it in the old psi driver
-  % set nopt to num_opt_steps * ((num_symm_coord * 2) + 1) 
-  % 20 will get you 4 gradients for this case of H2O
-  % nopt = 20 
-  % numerical_dertype=first
-
-  % using the new files section; the default path is given
-  % in the user's ~/.psirc file
-  files: (
-    default: ( name = "h2o" )
-  )
-
 )
 
 input: (
-  basis = 631Gss
+  basis = "6-31G**"
   units = angstrom
   zmat = (
     (o)
     (h 1 1.00)
     (h 1 1.00 2 103.1)
   )
-  origin = (0.0 0.0 0.0)
-)
-
-basis: (
-  oxygen:631Gss = (
-    (get "631GST")
-)
-  hydrogen:631Gss = (
-    (get "631GST")
-    (get "STAR1")
-  )
-)
-
-scf: (
-  maxiter = 100
-  convergence = 12
 )
 

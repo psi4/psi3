@@ -135,7 +135,9 @@ command-line      internal specifier   what it does
     // determine if simples and salcs are present in intco.dat 
     optinfo.simples_present = 0;
     optinfo.salcs_present = 0;
-    if ((fp_intco = fopen("intco.dat","r")) != NULL) {
+
+    ffile_noexit(&fp_intco, "intco.dat", 2);
+    if (fp_intco != NULL) {
       ip_append(fp_intco, outfile) ;
       if ( ip_exist(":INTCO",0) ) {
         ip_cwk_add(":INTCO");
@@ -203,7 +205,7 @@ command-line      internal specifier   what it does
       else {
         fprintf(outfile,"\nUsing simple, possibly redundant, internal \
             coordinates.\n");
-        fp_intco = fopen("intco.dat", "r+");
+        ffile(&fp_intco, "intco.dat", 2);
         count = 0;
         for( ; ; ) {
           err = fgets(buffer, MAX_LINELENGTH, fp_intco);
@@ -222,7 +224,7 @@ command-line      internal specifier   what it does
         fclose(fp_intco);
       }
       /* Add the new intco information to the keyword tree */
-      fp_intco = fopen("intco.dat","r");
+      ffile(&fp_intco, "intco.dat", 2);
       if (fp_intco != NULL) {
         ip_append(fp_intco, outfile) ;
         if (ip_exist(":INTCO",0)) {
