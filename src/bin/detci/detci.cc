@@ -213,10 +213,10 @@ void init_io(int argc, char *argv[])
    Parameters.write_energy = 0;
 
    for (i=1,num_unparsed=0; i<argc; i++) {
-      if (strcmp(argv[i], "-quiet") == 0) {
+      if (strcmp(argv[i], "--quiet") == 0) {
          Parameters.print_lvl = 0;
       }
-      else if (strcmp(argv[i], "-we") == 0) {
+      else if (strcmp(argv[i], "-e") == 0) {
          Parameters.write_energy = 1;
       }
       else if (strcmp(argv[i], "-c") == 0) {
