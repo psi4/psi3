@@ -1,0 +1,16 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include <libciomr.h>
+#include <file30.h>
+#include <psifiles.h>
+
+#define MIN0(a,b) ((a)<(b)) ? (a) : (b)
+#define MAX0(a,b) ((a)>(b)) ? (a) : (b)
+
+#ifdef AIXV3
+# define MALLOC malloc
+#else
+# define MALLOC malloc
+#endif

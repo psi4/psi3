@@ -1,0 +1,38 @@
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+include ../MakeVars
+
+LD = $(FC)
+LDLIBS += $(BLAS)
+CDEF += -DUSE_BLAS
+
+PSILIBS = -lmalloc -liwl -lqt -lfile30 -lciomr -lpsio -lipv1
+
+CSRC = \
+gprgid.c \
+transqt.c \
+transform_one.c \
+transform_two.c \
+transform_two_mp2.c \
+transform_two_mp2r12a_gr.c \
+transform_two_mp2r12a_t.c \
+yoshimine.c \
+frozen_core.c \
+backsort.c \
+cleanup.c
+
+BINOBJ = $(CSRC:%.c=%.o)
+ALLOC = 
+
+include ../MakeRules
+
+ifneq ($(DODEPEND),no)
+$(BINOBJ:%.o=%.d): $(DEPENDINCLUDE)
+include $(BINOBJ:%.o=%.d)
+endif
+
+install_man:: $(TARGET).1
+	$(MKDIRS) $(mandir)/man1
+	$(INSTALL_INCLUDE) $^ $(mandir)/man1
+

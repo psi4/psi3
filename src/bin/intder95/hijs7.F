@@ -1,0 +1,79 @@
+C     //////////////////////////////////////////////////////////////
+C SUBROUTINE HIJS7 WRITTEN BY DOUG GIBSON 4/89
+C OUT
+      SUBROUTINE HIJS7(NAD,K1,K2,K3,K4,XA,H11,H21,H31,H41,
+     $               H22,H32,H42,H33,H43,H44)
+      IMPLICIT REAL*8 (A-H,O-Z)
+      DIMENSION XA(NAD,3),V1(3),V2(3),V3(3),V4(3),V5(3),V6(3)
+      DIMENSION BP3(3),BP4(3),E21(3),E23(3),E24(3)
+      DIMENSION H11(3,3),H21(3,3),H31(3,3),H41(3,3),H22(3,3)
+      DIMENSION H32(3,3),H42(3,3),H33(3,3),H43(3,3),H44(3,3)
+      DIMENSION HP43(3,3),HP44(3,3),CP31(3,3),CP41(3,3),CP43(3,3)
+      PARAMETER(ZERO=0.0D0,ONE=1.0D0)
+         CALL VECT1(NAD,K1,K2,E21,XA,T21)
+         CALL VECT1(NAD,K3,K2,E23,XA,T23)
+         CALL VECT1(NAD,K4,K2,E24,XA,T24)
+         CALL VECT2(NAD,K3,K2,K4,BP3,V2,BP4,XA,PHI)
+         CALL VECT5(NAD,K1,K2,K3,K4,V1,V2,V3,V4,XA,GAMMA)
+         CALL HIJS2(NAD,K3,K2,K4,XA,H11,H21,HP43,H22,H32,HP44)
+      CALL VECPRO(E23,E24,V5)
+      CALL VECPRO(E24,E21,V6)
+      CALL MAT1(CP31,E24)
+      CALL MAT1(CP41,E23)
+      CALL MAT1(CP43,E21)
+      SP=DSIN(PHI)
+      CP=DCOS(PHI)
+      TP=SP/CP
+      SG=DSIN(GAMMA)
+      CG=DCOS(GAMMA)
+      TG=SG/CG
+      C21=ONE/T21
+      C23=ONE/T23
+      C24=ONE/T24
+      CTP=ONE/TP
+      C11=TG*C21*C21
+      C312=C21/(CG*SP)
+      C311=C312*C23
+      C313=C312*CTP
+      C411=C312*C24
+      C3=C23/SP
+      C4=C24/SP
+      C331=T24*C3
+      C332=C331*TG
+      C441=T23*C4
+      C442=C441*TG
+      C431=C3*C24/CG
+      C432=TG
+      C434=TG*C3
+      C435=T24*C3
+      C436=C435*TG
+      DO 3 J=1,3
+      DO 3 I=J,3
+         H11(I,J)=V1(J)*(TG*V1(I)-E21(I)*C21)-V1(I)*E21(J)*C21
+         H11(I,J)=H11(I,J)+E21(I)*E21(J)*C11
+         IF (I.EQ.J) H11(I,J)=H11(I,J)-C11
+         H11(J,I)=H11(I,J)
+         H33(I,J)=V3(I)*BP4(J)*C331+HP43(J,I)*C332
+         H33(I,J)=H33(I,J)+V3(J)*(TG*V3(I)-E23(I)*C23-BP3(I)*CTP)
+         H33(J,I)=H33(I,J)
+         H44(I,J)=V4(I)*BP3(J)*C441+HP43(I,J)*C442
+         H44(I,J)=H44(I,J)+V4(J)*(TG*V4(I)-E24(I)*C24-BP4(I)*CTP)
+ 3       H44(J,I)=H44(I,J)
+      DO 5  J=1,3
+      XJ=TG*V1(J)-E21(J)*C21
+      DO 5  I=1,3
+         H31(I,J)=V3(I)*XJ-CP31(I,J)*C311
+         H31(I,J)=H31(I,J)-E23(I)*V5(J)*C311-BP3(I)*V5(J)*C313
+         H41(I,J)=V4(I)*XJ+CP41(I,J)*C411
+         H41(I,J)=H41(I,J)-E24(I)*V5(J)*C411-BP4(I)*V5(J)*C313
+         H21(I,J)=-(H11(I,J)+H31(I,J)+H41(I,J))
+         H43(I,J)=(CP43(J,I)-E24(I)*V6(J))*C431+V3(J)*V4(I)*C432
+         H43(I,J)=H43(I,J)-V3(J)*BP4(I)*CTP+E24(I)*BP4(J)*C434
+ 5       H43(I,J)=H43(I,J)+V4(I)*BP4(J)*C435+HP44(I,J)*C436
+      DO 10 I=1,3
+      DO 10 J=1,3
+         H32(I,J)=-(H31(I,J)+H33(I,J)+H43(J,I))
+         H42(I,J)=-(H41(I,J)+H43(I,J)+H44(I,J))
+ 10      H22(I,J)=-(H21(J,I)+H32(I,J)+H42(I,J))
+      RETURN
+      END

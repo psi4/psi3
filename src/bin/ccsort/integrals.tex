@@ -1,0 +1,144 @@
+\documentstyle[12pt,aps,preprint,prb]{revtex}
+
+\pagestyle{empty}
+
+\def\ket#1{$| #1 \rangle$}
+\def\bra#1{$\langle #1 |$}
+\def\Int#1#2{\bra{#1}$ #2 \rangle$}
+\def\alp#1{$#1$}
+\def\bet#1{$\overline{#1}$}
+
+\begin{document}
+\begin{table}
+\caption{Sorted integral, amplitude, and intermediate lists for
+coupled-cluster codes.  Upper case letters are used to denote spatial
+orbitals, and lower case letters to denote spin orbitals.  An overbar
+denotes a beta-spin orbital.  Two-electron integrals are organized
+such that the ranges of occupied and unoccupied indices include the
+singly occupied orbitals.}
+\begin{center}
+\begin{tabular}{ccccc}
+File No. & Data Type & DPD Name & Row Ordering & Column Ordering \\
+\hline
+\multicolumn{5}{c}{Two-Electron Integrals} \\
+\hline
+100 & \Int{IJ}{KL} & A & \alp{i},\alp{j} & \alp{k},\alp{l} \\
+101 & \Int{AB}{CD} & B & \bet{a},\bet{b} & \bet{c},\bet{d} \\
+102 & \Int{IA}{JB} & C & \alp{i},\bet{a} & \alp{j},\bet{b} \\
+103 & \bra{IA}\ket{JB} & C Anti & \alp{i},\bet{a} & \alp{j},\bet{b} \\
+104 & \Int{IA}{JB} & Ciabj & \alp{i},\bet{a} & \bet{b},\alp{j} \\
+105 & \Int{IJ}{AB} & D & \alp{i},\alp{j} & \bet{a},\bet{b} \\
+106 & \Int{IA}{BJ} & Diabj & \alp{i},\bet{a} & \bet{b},\alp{j} \\
+108 & \Int{AI}{JK} & E & \bet{a},\alp{i} & \alp{j},\alp{k} \\
+109 & \Int{IJ}{KA} & Eijka & \alp{i},\alp{j} & \alp{k},\bet{a} \\
+110 & \bra{IJ}\ket{KA} & Eijka Anti & \alp{i} $>$ \alp{j} & \alp{k},\bet{a} \\
+111 & \Int{IA}{BC} & F & \alp{i},\bet{a} & \bet{b},\bet{c} \\
+112 & \Int{AI}{BC} & Faibc & \bet{a},\alp{i} & \bet{b},\bet{c} \\
+\hline
+\multicolumn{5}{c}{Energy Denominators} \\
+\hline
+113 & $D_i^a(\alpha)$ & Dia A & \alp{i} & \alp{a} \\
+114 & $D_i^a(\beta)$ & Dia B & \bet{i} & \bet{a} \\
+115 & $D_{ij}^{ab}(\alpha \alpha)$ & Dijab AA & \alp{i} $>$ \alp{j} & \alp{a} $>$ \alp{b} \\
+116 & $D_{ij}^{ab}(\beta \beta)$ & Dijab BB & \bet{i} $>$ \bet{j} & \bet{a} $>$ \bet{b} \\
+117 & $D_{ij}^{ab}(\alpha \beta)$ & Dijab AB & \alp{i},\bet{j} & \alp{a},\bet{b} \\
+\hline
+\multicolumn{5}{c}{Fock Matrices} \\
+\hline
+118 & $f_{ij}(\alpha)$ & Foo A & \alp{i} & \alp{j} \\
+119 & $f_{ij}(\beta)$ & Foo B & \bet{i} & \bet{j} \\
+120 & $f_{ab}(\alpha)$ & Fvv A & \alp{a} & \alp{b} \\
+121 & $f_{ab}(\beta)$ & Fvv B & \bet{a} & \bet{b} \\
+122 & $f_{ia}(\alpha)$ & Fov A & \alp{i} & \alp{a} \\
+123 & $f_{ia}(\beta)$ & Fov B & \bet{i} & \bet{a} \\
+\hline
+\multicolumn{5}{c}{Cluster Amplitudes} \\
+\hline
+124 & $t_{ij}^{ab}(\alpha \alpha)$ &  T2 AA & \alp{i} $>$ \alp{j} &
+\alp{a} $>$ \alp{b} \\
+125 & $t_{ij}^{ab}(\beta \beta)$ & T2 BB &  \bet{i} $>$ \bet{j} &
+\bet{a} $>$ \bet{b} \\
+126 & $t_{ij}^{ab}(\alpha \beta)$ & T2 AB & \alp{i}, \bet{j} &
+\alp{a}, \bet{b} \\
+127 & $t_{ij}^{ab}(\beta \alpha)$ & T2 BA &  \bet{i}, \alp{j} &
+\bet{a}, \alp{b} \\
+128 & $t_{ij}^{ab}(\alpha \alpha)$ &  T2 IAJB & \alp{i},\alp{a} &
+\alp{j},\alp{b} \\
+129 & $t_{ij}^{ab}(\beta \beta)$ & T2 iajb &  \bet{i},\bet{a} &
+\bet{j},\bet{b} \\
+130 & $t_{ij}^{ab}(\alpha \beta)$ & T2 IAjb & \alp{i},\alp{a} &
+\bet{j},\bet{b} \\
+131 & $t_{ij}^{ab}(\beta \alpha)$ & T2 iaJB & \bet{i},\bet{j} &
+\alp{j},\alp{b} \\
+132 & $t_{ij}^{ab}(\alpha \alpha)$ & New T2 AA & \alp{i} $>$ \alp{j} &
+\alp{a} $>$ \alp{b} \\
+133 & $t_{ij}^{ab}(\beta \beta)$ & New T2 BB &  \bet{i} $>$ \bet{j} &
+\bet{a} $>$ \bet{b} \\
+134 & $t_{ij}^{ab}(\alpha \beta)$ & New T2 AB & \alp{i}, \bet{j} &
+\alp{a}, \bet{b} \\
+135 & $t_i^a (\alpha)$ & T1 A & \alp{i} & \alp{a} \\
+136 & $t_i^a (\beta)$ & T1 B & \bet{i} & \bet{a} \\
+137 & $t_i^a (\alpha)$ & New T1 A & \alp{i} & \alp{a} \\
+138 & $t_i^a (\beta)$ & New T1 B & \bet{i} & \bet{a} \\
+139 & $\tau_{ij}^{ab}(\alpha \alpha)$ & Tau AA & \alp{i} $>$ \alp{j} &
+\alp{a} $>$ \alp{b} \\
+140 & $\tau_{ij}^{ab}(\beta \beta)$ & Tau BB &  \bet{i} $>$ \bet{j} &
+\bet{a} $>$ \bet{b} \\
+141 & $\tau_{ij}^{ab}(\alpha \beta)$ & Tau AB & \alp{i}, \bet{j} &
+\alp{a}, \bet{b} \\
+142 & $\tilde{\tau}_{ij}^{ab}(\alpha \alpha)$ & Taut AA & \alp{i} $>$ \alp{j} &
+\alp{a} $>$ \alp{b} \\
+143 & $\tilde{\tau}_{ij}^{ab}(\beta \beta)$ & Taut BB &  \bet{i} $>$ \bet{j} &
+\bet{a} $>$ \bet{b} \\
+144 & $\tilde{\tau}_{ij}^{ab}(\alpha \beta)$ & Taut AB & \alp{i}, \bet{j} &
+\alp{a}, \bet{b} \\
+\hline
+\multicolumn{5}{c}{Intermediates} \\
+\hline
+145 & ${\mathcal{F}}_{ae} (\alpha)$ & Fae A & \alp{a} & \alp{e} \\
+146 & ${\mathcal{F}}_{ae} (\beta)$  & Fae B & \bet{a} & \bet{e} \\
+147 & $\tilde{\mathcal{F}}_{ae} (\alpha)$ & Faet A & \alp{a} & \alp{e} \\
+148 & $\tilde{\mathcal{F}}_{ae} (\beta)$  & Faet B & \bet{a} & \bet{e}
+\\
+149 & ${\mathcal{F}}_{mi} (\alpha)$ & Fmi A & \alp{m} & \alp{i} \\
+150 & ${\mathcal{F}}_{mi} (\beta)$  & Fmi B & \bet{m} & \bet{i} \\
+151 & $\tilde{\mathcal{F}}_{mi} (\alpha)$ & Fmit A & \alp{m} & \alp{i}
+\\
+152 & $\tilde{\mathcal{F}}_{mi} (\beta)$  & Fmit B & \bet{m} & \bet{i}
+\\
+153 & ${\mathcal{F}}_{me} (\alpha)$ & Fme A & \alp{m} & \alp{e} \\
+154 & ${\mathcal{F}}_{me} (\beta)$  & Fme B & \bet{m} & \bet{e} \\
+155 & ${\mathcal{W}}_{mnij} (\alpha \alpha)$ & Wmnij AA & \alp{m} $>$
+\alp{n} & \alp{i} $>$ \alp{j} \\
+156 & ${\mathcal{W}}_{mnij} (\beta \beta)$ & Wmnij BB & \bet{m} $>$
+\bet{n} & \bet{i} $>$ \bet{j} \\
+157 & ${\mathcal{W}}_{mnij} (\alpha \beta)$ & Wmnij AB & \alp{m},
+\bet{n} & \alp{i},\bet{j} \\
+158 & ${\mathcal{W}}_{mbej} (\alpha \alpha \alpha \alpha)$ & Wmbej
+AA & \alp{m},\alp{b} & \alp{e},\alp{j} \\
+159 & ${\mathcal{W}}_{mbej} (\beta \beta \beta \beta)$ & Wmbej
+BB & \bet{m},\bet{b} & \bet{e},\bet{j} \\
+160 & ${\mathcal{W}}_{mbej} (\alpha \beta \alpha \beta)$ & Wmbej
+AB & \alp{m},\bet{b} & \alp{e},\bet{j} \\
+161 & ${\mathcal{W}}_{mbej} (\beta \alpha \beta \alpha)$ & Wmbej
+BA & \bet{m},\alp{b} & \bet{e},\alp{j} \\
+162 & ${\mathcal{W}}_{mbej} (\alpha \beta \beta \alpha)$ & Wmbej
+ABBA & \alp{m},\bet{b} & \bet{e},\alp{j} \\
+163 & ${\mathcal{W}}_{mbej} (\beta \alpha \alpha \beta)$ & Wmbej
+BAAB & \bet{m},\alp{b} & \alp{e},\bet{j} \\
+164 & ${\mathcal{Z}}_{ijam} (\alpha \alpha)$ & Zijam AA & \alp{i} $>$
+\alp{j} & \alp{a},\alp{m} \\
+165 & ${\mathcal{Z}}_{ijma} (\alpha \alpha)$ & Zijma AA & \alp{i} $>$
+\alp{j} & \alp{m},\alp{a} \\
+166 & ${\mathcal{Z}}_{ijam} (\beta \beta)$ & Zijam BB & \bet{i} $>$
+\bet{j} & \bet{a},\bet{m} \\
+167 & ${\mathcal{Z}}_{ijma} (\beta \beta)$ & Zijma BB & \bet{i} $>$
+\bet{j} & \bet{m},\bet{a} \\
+168 & ${\mathcal{Z}}_{ijam} (\alpha \beta)$ & Zijam AB & \alp{i},
+\bet{j} & \alp{a},\bet{m} \\
+169 & ${\mathcal{Z}}_{ijma} (\alpha \beta)$ & Zijma AB & \alp{i},
+\bet{j} & \alp{m},\bet{a} \\
+\end{tabular}
+\end{center}
+\end{table}
+\end{document}

@@ -1,0 +1,5 @@
+libint: (
+  old_am = 0
+  new_am = 8
+  max_class_size = 785 
+)

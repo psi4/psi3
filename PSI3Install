@@ -1,0 +1,26 @@
+#!/bin/csh
+
+autoconf
+
+set distdir = `pwd`
+set prefix = $HOME/psi3
+set arch=`./host.sh`
+
+mkdir $prefix
+cd $prefix
+mkdir $arch
+cd $arch
+$distdir/configure --prefix=$prefix --verbose
+make install_host
+cd include
+make install
+cd ../lib
+make install
+cd ../src/util
+make install
+cd ../lib
+make install
+cd ../bin
+make install
+
+echo ... PSI3.0 installation complete ...

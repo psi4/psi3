@@ -1,0 +1,12 @@
+
+      integer stfree
+      parameter (stfree = 29292929)
+      integer stres
+      parameter (stres  = 39393939)
+      integer NEQUIV, COSTRT, MAXCOR
+      parameter (NEQUIV = 2, COSTRT = 1, MAXCOR = 2)
+
+
+c#define NEQUIV 2
+c#define COSTRT c(1)
+c#define MAXCOR c(2)

@@ -1,0 +1,956 @@
+LIBFILE30: Written by Dr. T. Daniel Crawford with additions 
+     by Dr. C. Brian Kellogg and Edward F. Valeev
+
+Manual for the routines found in libfile30.  Library is currently under
+development and routines should be used with caution and a healthy dose of
+skepticism.
+
+Documentation created by
+Brian Kellogg, June 1996
+
+Additions and corrections by 
+Edward Valeev, Sept and Dec 1997
+
+Last updated Aug 1998 (Edward)
+
+==========================================================================
+  Library Philosophy and Basic use instructions
+==========================================================================
+
+	Following the philosophy that a programmer who wants to read, say,
+the number of atoms and the irrep labels from file30 should not have to use
+fifty lines of code to do so, libfile30 was written.  Following a call to a
+single command, file30_init(), the programmer can extract many useful bits
+of info from file30 relatively painlessly.  libfile30 is dependant upon
+libipv1, and requires that the input parser be initialized so that the
+proper filename labels may be referenced.  An example of a minimal code
+which sets up the input parser, initilizes a special structure within the
+file30 library, and reads the scf energy, eigenvector and eigenvalues is
+given below.  In order to illustrate the writing capability of the library
+routines, a dummy correlated energy is written to file30 and then read out
+again within the code.
+
+==========================================================================
+  Sample Code
+==========================================================================
+#include <stdio.h>
+#include "file30.h"
+#include <libciomr.h>
+#include <ip_libv1.h>
+
+FILE *infile, *outfile;
+
+void main(void)
+{
+ 
+  int nmo;
+
+  double escf, ecorr;
+  double *evals;
+  double **scf;
+
+/* initialize the input parser, read in the files information from the
+** default section
+*/
+  ffile(&infile,"input.dat",2);
+  ffile(&outfile,"output.dat",1);
+  tstart(outfile);
+  ip_set_uppercase(1);
+  ip_initialize(infile,outfile);
+  ip_cwk_clear();
+  ip_cwk_add(":DEFAULT");
+
+/* now initialize the file30 structure and begin reading info
+*/
+  file30_init();
+
+  escf = file30_rd_escf();
+  evals = file30_rd_evals();
+  scf = file30_rd_scf();
+  nmo = file30_rd_nmo();
+ 
+  file30_wt_ecorr(-1000.0);
+  
+  ecorr = file30_rd_ecorr();
+
+  file30_close();
+
+/* print out info to see what has been read in.
+*/
+
+  fprintf(outfile,"\n\n\tEscf  = %20.10lf\n",escf);
+  fprintf(outfile,"\tEcorr = %20.10lf\n",ecorr);
+  fprintf(outfile,"SCF EIGENVECTOR\n");
+
+  eivout(scf,evals,nmo,nmo,outfile); 
+  
+  tstop(outfile);
+  ip_done();
+ }
+
+/* dont forget to add the obligitory gprgid section 
+*/
+
+char *gprgid()
+{
+   char *prgid = "TEST30";
+
+   return(prgid);
+}
+
+==========================================================================
+  Routines for initializing and cleaning up file30 structures
+==========================================================================
+FILE30_INIT
+
+int file30_init(); 
+    
+   Initializes the file30 struct to allow other file30_*
+   functions to perform their duties.
+
+ arguments: none, but it requires that the input parser be initialized
+   so that it can open file30.
+
+ returns: zero.  Perhaps this will change some day.
+
+==========================================================================
+FILE30_CLOSE
+
+int file30_close(); 
+       
+   Closes up file30, frees file30 struct.
+
+ arguments: none, but file30_init must already have been called for
+   this to work.
+
+ returns: zero.  Perhaps this, too, will change one day.
+
+==========================================================================
+  Routines to read information in from file30
+==========================================================================
+FILE30_RD_ANGSO_COEFF
+
+double *file30_rd_angso_coeff():  Reads in the array of SO coefficients
+        for every angular momentum present in the basis. The array is
+        organized in blocks - SO coefficients for atom class 1, 2, etc. Every 
+	block is organized in subblocks: s-subblock of length 1 (1 SO x 1 AO),
+	then p-subblock (if p-functions are present in the basis) of length 9
+	(3 SOs x 3 AOs, first 3 elements correspond to the first SO, pz,
+	next 3 - to the second SO, px, and the last 3 to the 
+	third SO, py), then d-subblock, etc. Ordering of SOs within each 
+	particular block is according to symmetry.
+
+     takes no arguments.
+  
+     returns: double *angso_coeff    a matrix of mx_angso_coeff doubles
+
+==========================================================================
+FILE30_RD_ANGSO_LABELS
+
+int **file30_rd_angso_coeff():  Reads in the array of labels corresponding
+     to the matrix of SO coefficients angso_coeff. Each label consists of 4 
+     integers. The first integer denotes the type of AO (1 - s, 2 - px, 3 - py,
+     4 - pz, 5 - dxx, 6 - dyy, 7 - dzz,  8 - dxy, 9 - dxz, 10 - dyz, 11 - fxxx,
+     12 - fyyy etc.). The third and fourth integers are the symmetry block of the SO
+     and the dimensionality of the irreducible representation. The
+     second integer is the number of the first basis function of this type within the
+     symmetry block. Since there might exist several basis functions that belong
+     to this type withing the given class of atoms, those are taken into account 
+     as well.
+
+     example:  for cc-pVTZ 1A1 CH2 the beginning of angso_labels will look like
+       angso_label[0]        1    1    1    1
+       angso_label[1]        2    5    1    1
+       angso_label[2]        3    5    1    1
+       angso_label[3]        4    5    1    1
+       angso_label[4]        2    1    3    1
+       angso_label[5]        3    1    3    1
+       angso_label[6]        4    1    3    1
+       angso_label[7]        2    1    4    1
+       angso_label[8]        3    1    4    1
+       angso_label[9]        4    1    4    1
+       The first line corresponds to the s-SO on C, it will be the first
+       in the A1 block, but there're 3 more s-shells on C. The next 3 lines
+       correspond to pz function on C, and it will be function # 5 in A1 block.
+       Remember, the content of angso_labels or angso_coeff doesn't depend on
+       whether pure angular momentum d- and f-functions are used or not.
+
+      
+
+
+     takes no arguments.
+  
+     returns: int **angso_labels    a matrix of mx_angso_coeff x 4 integers
+
+==========================================================================
+FILE30_RD_CCVECS
+
+double **file30_rd_ccvecs():	 Reads in a matrix rows of which are 
+	ALPHA (ccvecs[0]) and BETA (ccvecs[1]) matrices of coupling
+	coefficients for open shells stored in lower triangular form.
+	Coupling coefficients are defined NOT as in 
+	C.C.J.Roothaan Rev. Mod. Phys. 32, 179 (1960) as it is stated in the
+	manual pages for CSCF, but according to Pitzer (no reference yet)
+	and are **different** from those in Yamaguchi, Osamura, Goddard, and
+	Schaefer's book "Analytic Derivative Methods in Ab Initio Molecular
+	Electronic Structure Theory".
+	 The relationship between the Pitzer's and Yamaguchi's conventions is 
+	as follows : ALPHA = 1-2*a , BETA = 1+4*b , where a and b are 
+	alpha's and beta's for open shells 
+	defined on pp. 69-70 of Dr. Yamaguchi's book.
+
+  takes no arguments.
+
+  returns:
+	double **ccvecs	a matrix 2 by abs(IOPEN) rows of which are coupling
+			coefficient matrices for open-shells in packed form.
+			For definition of IOPEN see file30_rd_iopen().
+
+==========================================================================
+FILE30_RD_CLSDPI
+
+int *file30_rd_clsdpi();  
+    
+    Reads in the number of closed shells per irrep.
+
+  takes no arguments.
+
+  returns:
+    int *cldpi  an array which has an element for each irrep of the
+                point group of the molecule (n.b. not just the ones
+                with a non-zero number of basis functions). Each element
+                contains the number of closed shells for that irrep.
+
+==========================================================================
+FILE30_RD_CONTR
+
+double *file30_rd_contr();
+    Reads in the normalized contraction coefficients.
+
+  takes no arguments.
+
+  returns:  double *contr 
+    Normalized contraction coefficients are returned as an array of doubles.
+    In file30 they are stored as a matrix 5 by nprim (only 5 types of 
+    angular momentum functions currently supported in PSI, namely s-, p- , 
+    d-, f-, and g-), but each primitive Gaussian function contributes only
+    to one shell (and to one basis function, of course), so most of the values
+    stored in the file are zero and do not need to be returned.
+
+==========================================================================
+FILE30_RD_CORR_LAB
+
+char *file30_rd_corr_lab(); 
+    Reads in a label from file30 which should describe the
+    wavefunction used to get the correlated energy which is stored in
+    file30 (see rd_ecorr() description).
+
+  takes no arguments.
+
+  returns a char *corr_lab  which should be a string like "CISD", or
+       "MCSCF" or some such wavefunction designation.
+
+  N.B. The placement of the correlated energy in file30 is currently
+    under discussion, and this function may disappear with little or
+    no notice.
+
+==========================================================================
+FILE30_RD_ECORR
+
+double file30_rd_ecorr():  
+    
+     Reads in the correlated energy stored in file30.
+
+   takes no arguments.
+
+   returns: double e_corr   the correlated energy.  To get some
+     information (a label) on the type of correlated wavefunction
+     used to get this energy, see rd_corr_lab().
+
+  N.B. The placement of the correlated energy in file30 is currently
+     under discussion, and this function may disappear with little or
+     no notice.
+
+==========================================================================
+FILE30_RD_ENUC
+
+double file30_rd_enuc(); 
+    
+    Reads in the nuclear repulsion energy
+
+  takes no arguments.
+
+  returns: double enuc  the nuclear repulsion energy.
+
+==========================================================================
+FILE30_RD_ESCF
+
+double file30_rd_escf(); 
+
+   Reads in the scf energy.
+
+  takes no arguments.
+
+  returns: double escf  the scf energy.
+
+==========================================================================
+FILE30_RD_EVALS
+
+double *file30_rd_evals();  
+     
+    Reads in the SCF eigenvalues: the SCF orbital energies.
+
+  takes no arguments.
+
+  returns: double *evals   an array of _all_ of the SCF eigenvalues,
+    ordered by irrep, and by increasing energy within each irrep.
+    (i.e. for sto water, the four a1 eigenvalues all come first, and
+    those four are ordered from lowest energy to highest energy,
+    followed by the single b1 eigenvalue, etc. --- Pitzer ordering)
+
+==========================================================================
+FILE30_RD_EXPS
+
+double *file30_rd_exps();
+    Reads in the exponents of the primitive Gaussian functions.
+
+  takes no arguments.
+
+  returns: double *exps   The exponents are returned as an array of doubles.
+
+==========================================================================
+FILE30_RD_GEOM
+
+double **file30_rd_geom(); 
+    Reads in the cartesian geometry from file30.
+
+  takes no arguments.
+
+  returns: double **geom   The cartesian geometry is returned as a matrix
+    of doubles.  The row index is the atomic index, and the column is the
+    cartesian direction index (x=0, y=1, z=2).  Therefore, geom[2][0]
+    would be the x-coordinate of the third atom.
+
+==========================================================================
+FILE30_RD_HFSYM_LABS
+
+char **file30_rd_hfsym_labs(): 
+   
+    Read in the symmetry labels _only_ for those irreps
+    which have basis functions.
+
+  takes no arguments.
+
+  returns: char **hfsym_labs   an array of labels (strings) which denote
+     the irreps which have basis functions (in Cotton ordering).  For DZ or
+     STO water, for example, in C2v symmetry, this would be an array of
+     three labels: "A1", "B1", and "B2".
+
+==========================================================================
+FILE30_RD_ICT
+
+int **file30_rd_ict();  
+    Reads the transformation properties of the nuclei
+    under the operations allowed for the particular symmetry point group
+    in which the molecule is considered.
+
+  takes no arguments.
+
+  returns: int **ict  a matrix of integers. Each row corresponds
+    to a particular symmetry operation, while each column corresponds to
+    a particular atom.  The value of ict[2][1], then, should be interpreted
+    in the following manner: application of the third symmetry operation of 
+    the relavant point group, the second atom is placed in the location
+    originally occupied by the atom with the index ict[2][1].
+
+==========================================================================
+FILE30_RD_IOPEN
+
+int file30_rd_iopen();  
+  
+  Reads in the dimensionality (up to a sign) of ALPHA and BETA vectors of 
+  two-electron coupling coefficients for open shells. (see file30_rd_ccvecs())
+  Note : IOPEN = MM * (MM + 1), where MM is the total number of
+  irreps containing singly occupied orbitals.
+
+  takes no arguments.
+
+  returns: int iopen   the +/- dimensionality of ALPHA and BETA vectors of 
+  coupling coefficients for open shells.
+
+==========================================================================
+FILE30_RD_IRR_LABS
+
+char **file30_rd_irr_labs(); 
+     Read in the symmetry labels for all irreps in the
+     point group in which the molecule is considered.
+
+  takes no arguments.
+
+  returns: char **irr_labs   an array of labels (strings) which denote
+     the irreps for the point group  in which the molecule is considered,
+     _regardless_ of whether there exist any symmetry orbitals which
+     transform as that irrep.
+
+==========================================================================
+FILE30_RD_IPC
+
+int **file30_rd_ipc();
+    Reads in the SO transformation information. Each row-vector equals
+    I + ShellNumber*VecL*DimL, where I is just a row-vector of 1's, 
+    ShellNumber is the number of index of a shell in the corresponding 
+    subset of shells with the particular angular momentum 
+    (e.g. if it's a first p-shell in the full list of shells on atoms of the given class,
+    ShellNumber = 0, etc.), VecL is a row-vector each element of which is the
+    number of basis functions arising from this type of shell that belong ot
+    the particular irreducible representation and DimL is the largest element in VecL 
+
+  example: 
+    1) an atom on the z-axis (C2v symmetry):
+    s-shell VecL=(1 0 0 0)
+    p-shell VecL=(1 0 1 1)
+    d-shell VecL=(3 1 1 1)
+    f-shell VecL=(3 1 3 3)
+    g-shell VecL=(6 3 3 3)
+    2) an atom in the yz-plane (C2v symmetry):
+    s-shell VecL=(1 0 0 1) (+ and - combinations)
+    p-shell VecL=(2 1 1 2)
+    etc.
+
+  takes no arguments.
+
+  returns: int **ipc  a matrix of nshell*nirreps integers.
+
+==========================================================================
+FILE30_RD_ISC
+
+int **file30_rd_isc();
+    Reads in the SO transformation matrix. Apparently, this feature was used
+    when PSI was able to handle degenerate point groups. Now it seems like it 
+    is just ********a matrix full of 1's********* It is not clear what the 
+    content of the matrix is in reality
+
+  takes no arguments.
+
+  returns: int **isc  a matrix of nshell*nirreps integers.
+
+==========================================================================
+FILE30_RD_LABEL
+
+char *file30_rd_label():  Reads the main file30 label.
+
+ takes no arguments.
+
+ returns: char *
+
+==========================================================================
+FILE30_RD_MX_ANGSO_COEFF
+
+int file30_rd_mx_angso_coeff():  Reads in the total number of elements in 
+                                 the array of SO coefficients for every 
+                                 angular momentum present in the basis.
+				 See file30_rd_mx_angso_coeff().
+  
+     takes no arguments.
+  
+     returns: int mx_angso_coeff
+
+==========================================================================
+FILE30_RD_MXCOEF
+
+int file30_rd_mxcoef;  
+
+   Reads the value of the constant mxcoef.
+   takes no arguments.
+
+ returns: int mxcoef   the sum of the squares of the number of symmetry
+   orbitals for each irrep.  This gives the number of elements in the
+   non-zero symmetry blocks of the SCF eigenvector.  For STO water
+   mxcoef = (4*4) + (0*0) + (1*1) + (2*2) = 21.
+
+==========================================================================
+FILE30_RD_NAO
+
+int file30_rd_nao();  
+  
+    Reads in the total number of atomic orbitals.
+
+  takes no arguments.
+
+  returns: int nao   total number of atomic orbitals.
+
+==========================================================================
+FILE30_RD_NATOM
+
+int file30_rd_natom();  
+
+    Reads in the total number of atoms.
+
+  takes no arguments.
+
+  returns: int natom   total number of atoms.
+
+==========================================================================
+FILE30_RD_NIRREPS
+
+int rd_nirreps();  
+  
+    Reads in the total number of irreducible representations
+    in the point group in which the molecule is being considered.
+
+  takes no arguments.
+
+  returns: int nirreps   total number of irreducible representations.
+
+==========================================================================
+FILE30_RD_NMO
+
+int rd_nmo();  
+
+    Reads in the total number of molecular orbitals.
+
+  takes no arguments.
+
+  returns: int nmo   total number of molecular orbitals.
+
+==========================================================================
+FILE30_RD_NPRIM
+
+int file30_rd_nprim();
+
+    Reads in the total number of primitive Gaussian functions 
+    (only primitives of _symmetry independent_ atoms are counted!).
+
+  takes no arguments.
+
+  returns: int nprim   total number of primitive Gaussian functions.
+
+==========================================================================
+FILE30_RD_NSHELL
+
+int file30_rd_nshell();
+
+    Reads in the total number of shells. For example, DZP basis set for 
+    carbon atom (contraction scheme 9s/4s,5p/2p,1d/1d) has total 15 basis 
+    functions, 15 primitives, and 7 shells. Shells of _all_ atoms are counted
+    (not only of the symmetry independent; compare nprim).
+
+  takes no arguments.
+
+  returns: int nshell   total number of shells.
+
+==========================================================================
+FILE30_RD_NSYMHF
+
+int file30_rd_nsymhf();  
+
+    Reads in the total number of irreps
+    in the point group in which the molecule is being considered which
+    have non-zero number of basis functions.
+
+  takes no arguments.
+
+  returns: int nirreps   total number of irreducible representations
+     with a non-zero number of basis functions. For STO or DZ water, for
+     example, this is three, even though nirreps is 4 (see rd_nirreps()).
+
+==========================================================================
+FILE30_RD_OPENPI
+
+int *file30_rd_openpi();  
+
+    Reads in the number of open shells per irrep.
+    takes no arguments.
+
+  returns:
+    int *openpi  an array which has an element for each irrep of the
+         point group of the molecule (n.b. not just the ones
+         with a non-zero number of basis functions).  Each element
+         contains the number of open shells for that irrep.
+
+==========================================================================
+FILE30_RD_ORBSPI
+
+int *file30_rd_orbspi();  
+
+    Reads in the number of symmetry orbitals in each irrep.
+
+  takes no arguments.
+
+  returns: int *orbspi  an array which has an element for each irrep of the
+    point group of the molecule (n.b. not just the ones
+    with a non-zero number of basis functions). each
+    element contains the number of symmetry orbitals for
+    that irrep.
+
+==========================================================================
+FILE30_RD_SCF
+
+double **file30_rd_scf();  
+
+    Reads in the SCF eigenvector (or whatever is stored in its place).
+
+  takes no arguments.
+
+  returns: double **scf_vector    This square matrix has dimentions nmo
+    by nmo (see: rd_nmo()).  The symmetry blocks of the scf vector appear
+    on the diagonal of this matrix.  So, for STO water, scf_vector would
+    come out looking something like the following:
+
+        *** *** *** *** 0.0 0.0 0.0
+        *** *** *** *** 0.0 0.0 0.0
+        *** *** *** *** 0.0 0.0 0.0
+        *** *** *** *** 0.0 0.0 0.0
+        0.0 0.0 0.0 0.0 *** 0.0 0.0
+        0.0 0.0 0.0 0.0 0.0 *** ***
+        0.0 0.0 0.0 0.0 0.0 *** ***
+
+   where the *** represent the non-zero values, and the 0.0 entries
+   represent (double)0.  The eigenvectors are stored with the column 
+   index denoting mos and the row index denoting sos: this means that 
+   scf_vector[i][j] is the contribution of the ith so to the jth mo.
+
+==========================================================================
+FILE30_RD_BLK_SCF
+
+double **file30_rd_blk_scf(int irrep):  Reads in a symmetry block of 
+	the SCF eigenvector (or whatever is stored in its place).
+
+  arguments: int irrep   designates the particular irrep to which the block
+    belongs.
+
+  returns: double **scf_vector    This square matrix has orbspi[irrep]
+    rows.  The eigenvectors are stored with the column 
+    index denoting mos and the row index denoting sos: this means that 
+    scf_vector[i][j] is the contribution of the ith so to the jth mo.
+
+==========================================================================
+FILE30_RD_SHELL_TRANSM
+
+int **file30_rd_shell_transm();
+    Reads in the transformation matrix for the shells. Each row of the 
+    matrix is an orbit of the shell under symmetry operations of the point 
+    group
+
+  takes no arguments.
+
+  returns: int **shell_transm  a matrix of nshell*nirreps integers.
+
+  old fortran name : ISO
+
+==========================================================================
+FILE30_RD_SLOC
+
+file30_rd_sloc():	Read in an array of the numbers of the first basis
+			functions from the shells.
+
+  takes no arguments.
+
+  returns: int *sloc	Read in an array nshell long of the numbers of
+			the first basis functions from the shells.
+
+==========================================================================
+FILE30_RD_SMAX
+
+int *file30_rd_smax():  Reads in the last index in the offset array for
+    that type of the shell. That array used for manipulation with
+    indices in integral calculations.
+      For s-type shells this index is 1(there exists only one possible
+    s-type cartesian primitive Gaussian), for p-type - 4 (there are 3
+    possible p-type primitives), for d-type - 10, for f-type - 20 ...
+    This index exists thanks to the limit on the possible angular momentum
+    of the basis functions. Hopefully, it will be changed soon.
+    Note : smax(l) = smax(l-1) + (l+2)*(l+1)/2
+
+  takes no arguments.
+
+  returns: int *smax   The indices are returned as an array of integers.
+
+==========================================================================
+FILE30_RD_SMIN    
+
+int *file30_rd_smin():  Reads in the first index in the offset array for
+    that type of the shell. That array used for manipulation with
+    indices in integral calculations.
+      For s-type shells this index is 1, for p-type - 2 (there exists
+    only one possible s-type cartesian primitive Gaussian), for d-type - 5
+    (there are 3 possible p-type primitives), for f-type - 11 ... This
+    index exists thanks to the limit on the possible angular momentum
+    of the basis functions. Hopefully, it will be changed soon.
+    Note : smin(l) = smin(l-1) + (l+1)*l/2
+
+  takes no arguments.
+
+  returns: int *smin   The indices are returned as an array of integers.
+
+==========================================================================
+FILE30_RD_SNUC
+
+int *file30_rd_snuc();
+
+    Reads in array of numbers of the nuclei that shells belong to.
+
+  takes no arguments.
+
+  returns: int *snuc  an array nshell long of numbers of the nuclei 
+           that shells belongs to.
+
+==========================================================================
+FILE30_RD_SNUMG
+
+int *file30_rd_snumg():	Reads in array of the numbers of the primitive
+			Gaussians in the shells.
+
+ takes no arguments.
+
+ returns: int *snumg	Reads in an array nshell long of the numbers of 
+			the primitive Gaussians in shells
+==========================================================================
+FILE30_RD_SPRIM
+
+int *file30_rd_sprim():	Reads in array of numbers of the first primitives
+			from the shells.
+
+ takes no arguments.
+
+ returns: int *sprim	Returns an array nshell long of numbers of first 
+			primitives from the shells.
+==========================================================================
+FILE30_RD_STYPE
+
+int *file30_rd_stype():	Reads in an array of the angular momentum numbers of
+			the shells.
+
+ takes no arguments.
+
+ returns: int *stype 	Returns an array nshell long of the angular momentum
+			numbers of the shells.
+
+==========================================================================
+FILE30_RD_TITLE
+
+char *file30_rd_title(): Reads in the title from file30.
+
+ takes no arguments.
+
+ returns a char *title
+
+==========================================================================
+FILE30_RD_USOTAO
+
+double **file30_rd_usotao();
+   
+    Reads in the unitary SO to AO transformation matrix.
+
+  takes no arguments.
+
+  returns: double **usotao   The unitary SO to AO matrix.  It is a matrix
+    of dimentions nmo*nao (there are nmo rows of length nao).
+
+==========================================================================
+FILE30_RD_ZVALS
+
+double *file30_rd_zvals();  
+
+    Reads in nuclear charges.
+
+  takes no arguments.
+
+  returns: double *zvals   An array natom long which contains
+    nuclear charges (as double).
+
+==========================================================================
+  routines to write information to file30
+==========================================================================
+FILE30_WT_CORR_LAB
+
+void file30_wt_corr_lab(char *corr_lab); 
+   
+    Writes a label into file30 which should describe the
+    wavefunction used to get the correlated energy to be stored in
+    file30 (see wt_ecor() description).
+
+  arguments: char *corr_lab  which should be a string like "CISD", or
+       "MCSCF" or some such wavefunction designation.
+
+  returns: nothing.
+
+  N.B. The placement of the correlated energy in file30 is currently
+       under discussion, and this function may disappear with little or
+       no notice.
+
+==========================================================================
+FILE30_WT_ECORR
+
+void file30_wt_ecorr(double ecorr);  
+ 
+   Writes the correlated energy to file30.
+
+   arguments: double ecorr   the correlated energy.  To write some
+       information (a label) on the type of correlated wavefunction
+       used to get this energy, see wt_corr_lab().
+
+  N.B. The placement of the correlated energy in file30 is currently
+       under discussion, and this function may disappear with little or
+       no notice.
+
+==========================================================================
+FILE30_WT_ESCF
+
+void file30_wt_escf(double escf); 
+
+    Writes the scf energy to file30.
+
+  arguments: double escf  the scf energy.
+
+  returns nothing.
+
+
+==========================================================================
+FILE30_WT_EVALS
+
+void file30_wt_evals(double *evals);
+
+    Writes out the SCF eigenvalues: the SCF orbital energies.
+
+  arguments: double *evals   an array of _all_ of the SCF eigenvalues,
+      ordered by irrep, and by increasing energy within each irrep.
+      (i.e. for sto water, the four a1 eigenvalues all come first, and
+      those four are ordered from lowest energy to highest energy,
+      followed by the single b1 eigenvalue, etc. --- Pitzer ordering)
+
+  returns nothing
+
+==========================================================================
+FILE30_WT_IPC
+
+void file30_WT_ipc(int **);
+    Writes out the SO transformation information. Each row-vector equals
+    I + ShellNumber*VecL*DimL, where I is just a row-vector of 1's, 
+    ShellNumber is the number of index of a shell in the corresponding 
+    subset of shells with the particular angular momentum 
+    (e.g. if it's a first p-shell in the full list of shells on all atoms, 
+    ShellNumber = 0, etc.), VecL is a row-vector each element of which is the
+    number of basis functions arising from this type of shell that belong ot
+    the particular irreducible representation (for s-shell in C2v symmetry
+    VecL=(1 0 0 0), for p-shell VecL=(1 0 1 1), for d-shell VecL=(3 1 1 1),
+    for f-shell VecL=(3 1 3 3), for g-shell VecL=(6 3 3 3), etc.), and DimL
+    is the largest element in VecL (s - 1, p - 1, d - 3, f - 3, g - 6, etc.)
+
+  arguments: int **ipc  a matrix of integers nshell by nirreps
+
+  returns nothing
+
+==========================================================================
+FILE30_WT_ISC
+
+void file30_wt_isc(int **);
+    Writes out the SO transformation matrix. Apparently, this feature was used
+    when PSI was able to handle degenerate point groups. Now it seems like it 
+    is just ********a matrix full of 1's*********
+
+  arguments: int **isc  a matrix of integers nshell by nirreps
+
+  returns nothing
+
+==========================================================================
+FILE30_WT_SHELL_TRANSM
+
+void file30_wt_shell_transm(int **);
+    Writes out the transformation matrix for the shells. Each row of the 
+    matrix is an orbit of the shell under symmetry operations of the point 
+    group
+
+  arguments: int **shell_transm  a matrix of nshell*nirreps integers.
+
+  returns nothing
+
+==========================================================================
+FILE30_WT_SCF
+
+void file30_wt_scf(double **scf_vector);    
+
+    Writes a set of molecular orbitals in place of the SCF vector.
+
+  arguments: double **scf_vector    This square matrix has dimentions nmo
+    by nmo (see: rd_nmo()).  The symmetry blocks of the scf vector should
+    appear on the diagonal of this matrix.  So, for STO water, scf_vector
+    should look something like the following:
+
+        *** *** *** *** 0.0 0.0 0.0
+        *** *** *** *** 0.0 0.0 0.0
+        *** *** *** *** 0.0 0.0 0.0
+        *** *** *** *** 0.0 0.0 0.0
+        0.0 0.0 0.0 0.0 *** 0.0 0.0
+        0.0 0.0 0.0 0.0 0.0 *** ***
+        0.0 0.0 0.0 0.0 0.0 *** ***
+
+    where the *** represent the non-zero values, and the 0.0 entries
+    represent (double)0.  The eigenvectors should be stored with the 
+    column index denoting mos and the row index denoting sos: this 
+    means that scf_vector[i][j] is the contribution of the ith so to 
+    the jth mo.
+
+  returns: nothing.
+
+==========================================================================
+FILE30_WT_BLK_SCF
+
+file30_wt_blk_scf(double **scf_vector, int irrep);
+
+    Writes in the SCF eigenvector (or whatever is to be stored in its place).
+
+  arguments:
+
+    int irrep   the number of the irrep to which the symmetry block
+        belongs (this includes irreps with orbspi[irrep] == 0)
+        n.b. this routine assumes that the first irrep will have
+        irrep == 0.
+
+    double **scf_vector    This should be a single symmetry
+       block of the SCF eigenvector.  Its dimension should be
+       orbspi[irrep]*orbspi[irrep]; The eigenvectors should be stored 
+       with the column index denoting mos and the row index denoting sos: 
+       this means that scf_vector[i][j] is the contribution of the ith so 
+       to the jth mo.
+
+  returns: nothing.
+
+==========================================================================
+FILE30_WT_SHELL_TRANSM
+
+void file30_wt_shell_transm(int **);
+    Writes out the transformation matrix for the shells. Each row of the 
+    matrix is an orbit of the shell under symmetry operations of the point 
+    group
+
+  arguments: int **shell_transm  a matrix of nshell*nirreps integers.
+
+  returns nothing
+
+  old fortran name : ISO
+
+==========================================================================
+FILE30_WT_ZVALS
+
+void file30_wt_zvals();
+
+        Writes in an array of nuclear charges.
+
+ arguments:
+	double *zvals	An array natom long which contains nuclear
+			charges (as doubles). This function can
+			be successfully used to provide asymmetric guess
+			orbitals for SCF calculations. For example, if you
+			want to perform an SCF calculation on a homonuclear
+			diatomics (DXh) using CXv guess orbitals, you might
+			want to do an SCF calculation on heteronuclear
+			diatomic molecule with identical basis sets on BOTH
+			atoms, and then use this function to set charges
+			of nuclei back to equal in file30. But don't run
+			inputth after this procedure :-)
+
+ returns no arguments.
+
+==========================================================================
+

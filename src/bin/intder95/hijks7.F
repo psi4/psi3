@@ -1,0 +1,155 @@
+C     ///////////////////////////////////////////////////////////////
+C SUBROUTINE HIJKS7 WRITTEN BY DOUG GIBSON 5/89
+C OUT
+      SUBROUTINE HIJKS7(NAD,K1,K2,K3,K4,XA,H111,H112,H221,H222,H113,
+     $       H123,H223,H331,H332,H333,H411,H421,H422,H431,H432,H433,
+     $       H441,H442,H443,H444)
+      IMPLICIT REAL*8 (A-H,O-Z)
+      DIMENSION XA(NAD,3),V1(3),V2(3),V3(3),V4(3),E21(3),E23(3),E24(3)
+      DIMENSION BP3(3),BP4(3),HP33(3,3),HP43(3,3),HP44(3,3)
+      DIMENSION HT11(3,3),HT111(3,3,3),HP334(3,3,3),HP443(3,3,3)
+      DIMENSION CP21(3,3),CP24(3,3),CP2124(3),PROD(3,3,3)
+      DIMENSION H11(3,3),H21(3,3),H31(3,3),H41(3,3),H22(3,3),H32(3,3)
+      DIMENSION H42(3,3),H33(3,3),H43(3,3),H44(3,3)
+      DIMENSION H111(3,3,3),H112(3,3,3),H221(3,3,3),H222(3,3,3)
+      DIMENSION H113(3,3,3),H123(3,3,3),H223(3,3,3),H331(3,3,3)
+      DIMENSION H332(3,3,3),H333(3,3,3),H411(3,3,3),H421(3,3,3)
+      DIMENSION H422(3,3,3),H431(3,3,3),H432(3,3,3),H433(3,3,3)
+      DIMENSION H441(3,3,3),H442(3,3,3),H443(3,3,3),H444(3,3,3)
+      PARAMETER(ZERO=0.0D0,ONE=1.0D0,TWO=2.0D0)
+      CALL VECT1(NAD,K1,K2,E21,XA,T21)
+      CALL VECT1(NAD,K3,K2,E23,XA,T23)
+      CALL VECT1(NAD,K4,K2,E24,XA,T24)
+      CALL VECT2(NAD,K3,K2,K4,BP3,V2,BP4,XA,PHI)
+      CALL VECT5(NAD,K1,K2,K3,K4,V1,V2,V3,V4,XA,GAMMA)
+      CALL HIJS1(NAD,K1,K2,XA,HT11)
+      CALL HIJS2(NAD,K3,K2,K4,XA,HP33,H32,HP43,H22,H42,HP44)
+      CALL HIJS7(NAD,K1,K2,K3,K4,XA,H11,H21,H31,H41,
+     $           H22,H32,H42,H33,H43,H44)
+      CALL HIJKS1(NAD,K1,K2,XA,HT111)
+      CALL HIJKS2(NAD,K3,K2,K4,XA,H111,H112,HP334,H123,H221,
+     $            H222,H223,HP443,H332,H333)
+      CALL MAT1(CP21,E21)
+      CALL MAT1(CP24,E24)
+      CALL VECPRO(E21,E24,CP2124)
+      CALL TRIPRO(PROD)
+      CG=DCOS(GAMMA)
+      SG=DSIN(GAMMA)
+      TG=SG/CG
+      CP=DCOS(PHI)
+      SP=DSIN(PHI)
+      TP=SP/CP
+      CTP=CP/SP
+      C1=ONE/T21
+      S2G=ONE/(CG*CG)
+      C3=ONE/T23
+      C4=ONE/T24
+      C2P=ONE/(SP*SP)
+      C1111=TG*C1
+      C1112=S2G*C1
+      C3331=T24*C3/SP
+      C3332=C3331*TG
+      C3333=C3331*S2G
+      C3335=C3*C3
+      C3334=TWO*C3335
+      C4411=T23*C4/SP
+      C4412=C4411*S2G
+      C431=C3*C4/(CG*SP)
+      C4311=C431*C1
+      C4312=C431*TG
+      C4313=C3333*C4
+      C4431=C4411*TG
+      C4442=C4*C4
+      C4441=TWO*C4442
+      DO 10 I=1,3
+      DO 10 J=1,I
+      DO 10 K=1,J
+      H111(I,J,K)=S2G*V1(I)*V1(J)*V1(K)+TG*H11(I,J)*V1(K)
+     $    +TG*H11(I,K)*V1(J)+C1111*(E21(I)*V1(J)*V1(K)-HT111(I,J,K))
+     $    -C1112*HT11(J,K)*V1(I)-C1*(E21(I)*H11(J,K)+E21(J)*H11(I,K)
+     $       +E21(K)*H11(I,J)+HT11(I,J)*V1(K)+HT11(I,K)*V1(J))
+      H333(I,J,K)=C3331*(H33(I,J)*BP4(K)+HP43(K,I)*V3(J)
+     $       -(V3(J)*BP4(K)+TG*HP43(K,J))*(C3*E23(I)+CTP*BP3(I)))
+     $    +C3332*HP334(I,J,K)+C3333*HP43(K,J)*V3(I)
+     $    +H33(I,K)*(TG*V3(J)-CTP*BP3(J)-C3*E23(J))
+     $    +V3(K)*(V3(I)*V3(J)*S2G+H33(I,J)*TG+BP3(I)*BP3(J)*C2P
+     $       -HP33(I,J)*CTP+E23(I)*E23(J)*C3334)
+      H444(I,J,K)=C4411*(H44(I,J)*BP3(K)+HP43(I,K)*V4(J)
+     $       -(V4(J)*BP3(K)+HP43(J,K)*TG)*(E24(I)*C4+BP4(I)*CTP))
+     $    +C4431*HP443(I,J,K)+C4412*HP43(J,K)*V4(I)
+     $    +H44(I,K)*(TG*V4(J)-CTP*BP4(J)-C4*E24(J))
+     $    +V4(K)*(V4(I)*V4(J)*S2G+H44(I,J)*TG+BP4(I)*BP4(J)*C2P
+     $       -HP44(I,J)*CTP+E24(I)*E24(J)*C4441)
+      IF (I.EQ.J) THEN
+         H333(I,J,K)=H333(I,J,K)-V3(K)*C3335
+         H444(I,J,K)=H444(I,J,K)-V4(K)*C4442
+      END IF
+10    CONTINUE
+      CALL FILL3B(3,3,H111)
+      CALL FILL3B(3,3,H333)
+      CALL FILL3B(3,3,H444)
+      DO 20 K=1,3
+      DO 20 J=1,K
+      DO 20 I=1,3
+      H113(J,K,I)=S2G*V3(I)*V1(J)*V1(K)+TG*H31(I,J)*V1(K)
+     $    +TG*H31(I,K)*V1(J)-C1*(E21(J)*H31(I,K)+E21(K)*H31(I,J))
+     $    -C1112*HT11(J,K)*V3(I)
+      H113(K,J,I)=H113(J,K,I)
+      H411(I,J,K)=S2G*V4(I)*V1(J)*V1(K)+TG*H41(I,J)*V1(K)
+     $    +TG*H41(I,K)*V1(J)-C1*(E21(J)*H41(I,K)+E21(K)*H41(I,J))
+     $    -C1112*HT11(J,K)*V4(I)
+      H411(I,K,J)=H411(I,J,K)
+      H433(I,J,K)=C3331*(H43(I,J)*BP4(K)+HP44(I,K)*V3(J)
+     $       +(C4*E24(I)-CTP*BP4(I))*(V3(J)*BP4(K)+TG*HP43(K,J)))
+     $    +C3332*HP443(I,K,J)+C3333*HP43(K,J)*V4(I)
+     $    +H43(I,K)*(TG*V3(J)-CTP*BP3(J)-C3*E23(J))+V3(K)*(TG*H43(I,J)
+     $       +S2G*V4(I)*V3(J)-CTP*HP43(I,J)+C2P*BP4(I)*BP3(J))
+20    H433(I,K,J)=H433(I,J,K)
+      DO 30 I=1,3
+      DO 30 J=1,I
+      DO 30 K=1,3
+      H331(I,J,K)=C3331*H31(I,K)*BP4(J)+C3333*HP43(J,I)*V1(K)
+     $    +(TG*V3(I)-CTP*BP3(I)-C3*E23(I))*H31(J,K)+TG*H31(I,K)*V3(J)
+     $    +S2G*V3(I)*V3(J)*V1(K)
+      H331(J,I,K)=H331(I,J,K)
+      H441(I,J,K)=C4411*H41(I,K)*BP3(J)+C4412*HP43(I,J)*V1(K)
+     $    +(TG*V4(I)-CTP*BP4(I)-C4*E24(I))*H41(J,K)+TG*H41(I,K)*V4(J)
+     $    +S2G*V4(I)*V4(J)*V1(K)
+      H441(J,I,K)=H441(I,J,K)
+      H443(I,J,K)=C4411*(H43(J,K)*BP3(I)+HP33(I,K)*V4(J)
+     $       +(C3*E23(K)-CTP*BP3(K))*(BP3(I)*V4(J)+TG*HP43(J,I)))
+     $    +C4431*HP334(I,K,J)+C4412*HP43(J,I)*V3(K)
+     $    +H43(I,K)*(TG*V4(J)-CTP*BP4(J)-C4*E24(J))+V4(I)*(TG*H43(J,K)
+     $       +S2G*V4(J)*V3(K)-CTP*HP43(J,K)+C2P*BP4(J)*BP3(K))
+30    H443(J,I,K)=H443(I,J,K)
+      DO 40 I=1,3
+      DO 40 J=1,3
+      DO 40 K=1,3
+      H431(I,J,K)=C4311*(PROD(K,J,I)+E21(K)*CP21(I,J)+E24(I)*CP24(J,K)
+     $    -E24(I)*E21(K)*CP2124(J))+C4312*V1(K)*(E24(I)*CP2124(J)
+     $       -CP21(I,J))+TG*H41(I,K)*V3(J)+S2G*V4(I)*V3(J)*V1(K)
+     $    +H31(J,K)*(TG*V4(I)-CTP*BP4(I))+C4313*E24(I)*BP4(J)*V1(K)
+     $    +C3331*H41(I,K)*BP4(J)+C3333*HP44(I,J)*V1(K)
+40    CONTINUE
+      DO 50 I=1,3
+      DO 50 J=1,3
+      DO 50 K=1,3
+      H112(I,J,K)=-(H111(I,J,K)+H113(I,J,K)+H411(K,I,J))
+      H421(I,J,K)=-(H411(I,J,K)+H431(I,J,K)+H441(I,J,K))
+      H123(I,J,K)=-(H113(I,J,K)+H331(J,K,I)+H431(J,K,I))
+      H332(I,J,K)=-(H331(I,J,K)+H333(I,J,K)+H433(K,I,J))
+      H432(I,J,K)=-(H431(I,J,K)+H433(I,J,K)+H443(I,K,J))
+50    H442(I,J,K)=-(H441(I,J,K)+H443(I,J,K)+H444(I,J,K))
+      DO 60 I=1,3
+      DO 60 J=1,3
+      DO 60 K=1,3
+      H221(I,J,K)=-(H112(I,K,J)+H123(K,J,I)+H421(I,J,K))
+      H223(I,J,K)=-(H123(I,J,K)+H332(I,K,J)+H432(I,K,J))
+60    H422(I,J,K)=-(H421(I,J,K)+H432(I,K,J)+H442(I,K,J))
+      DO 70 I=1,3
+      DO 70 J=1,I
+      DO 70 K=1,J
+70    H222(I,J,K)=-(H221(I,J,K)+H223(I,J,K)+H422(K,I,J))
+      CALL FILL3B(3,3,H222)
+      RETURN
+      END

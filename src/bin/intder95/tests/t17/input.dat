@@ -1,0 +1,44 @@
+% Intder Test 17
+%
+% SiCH2 TZ2Pf RHF dipole derivative transformation
+%
+% C. D. Sherrill and H. F. Schaefer, J. Phys. Chem. 99, 1949 (1995).
+% NDER=1; NVEC=1
+%
+
+intder: (
+   iprint = 0000
+   read_geom = true
+   trans_dipder = true
+   trans_type = C_TO_I
+   masses = (SI C H H)
+   derlvl = 1
+)
+
+intco: (
+   stre = (
+    (1 1 2)
+    (2 2 3)
+    (3 2 4)
+   )
+   bend = (
+    (4 3 2 4)
+    (5 1 2 3)
+    (6 1 2 4)
+   )
+  out = (
+    (7 1 2 4 3)
+   )
+ symm = (
+  ("A1 Si-C stretch" (1))
+  ("A1 C-H symm stretch" (2 3))
+  ("A1 HCH bend" (4))
+ )
+ asymm = (
+  ("B1 Si oop" (7))
+  ("B2 C-H asymm stretch" (2 -3))
+  ("B2 H-C-Si asym bend" (5 -6))
+ )
+
+)
+

@@ -1,0 +1,64 @@
+ 
+.PHONY:	default all install depend clean targetclean
+
+subdirs = \
+ccdensity ccenergy cchbar cclambda ccsort cints contour contour3d cphf \
+cscf detcas detcasman detci geom input intder95 intdif makepk mp2 \
+mp2r12 muder normco oeprop optking psi psiclean rgeom transqt ugeom vbccd
+
+all: default
+
+default:
+	for dir in $(subdirs); \
+          do \
+            (cd $${dir}; echo ... Making in $${dir} ...; $(MAKE) default); \
+          done
+
+install:
+	for dir in $(subdirs); \
+          do \
+            (cd $${dir}; echo ... Making install in $${dir} ...; $(MAKE) install); \
+          done
+
+install_inc:
+	for dir in $(subdirs); \
+          do \
+            (cd $${dir}; echo ... Making install in $${dir} ...; $(MAKE) install_inc); \
+          done
+
+install_man:
+	for dir in $(subdirs); \
+          do \
+            (cd $${dir}; echo ... Making install in $${dir} ...; $(MAKE) install_man); \
+          done
+
+depend:
+	for dir in $(subdirs); \
+          do \
+            (cd $${dir}; echo ... Making depend in $${dir} ...; $(MAKE) depend); \
+          done
+
+clean:
+	for dir in $(subdirs); \
+          do \
+            (cd $${dir}; echo ... Making clean in $${dir} ...; $(MAKE) clean); \
+          done
+
+targetclean:
+	for dir in $(subdirs); \
+          do \
+            (cd $${dir}; echo ... Making clean in $${dir} ...; $(MAKE) targetclean); \
+          done
+
+top_srcdir = @top_srcdir@
+srcdir = @srcdir@
+top_objdir = @top_objdir@
+
+$(top_srcdir)/configure: $(top_srcdir)/configure.in $(top_srcdir)/aclocal.m4
+	cd $(top_srcdir) && autoconf
+
+$(top_objdir)/config.status: $(top_srcdir)/configure
+	cd $(top_objdir) && ./config.status --recheck
+
+Makefile: $(srcdir)/Makefile.in $(top_objdir)/config.status
+	cd $(top_objdir) && CONFIG_FILES=src/bin/Makefile ./config.status

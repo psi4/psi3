@@ -1,0 +1,2 @@
+
+void compute_enuc();

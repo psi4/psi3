@@ -1,0 +1,20 @@
+
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+include ../MakeVars
+
+TARGET = $(top_objdir)/lib/alloc.a
+
+CSRC = allocate.c
+FSRC = fndcor.F fndcro.F
+
+LIBOBJ = $(CSRC:%.c=%.o) $(FSRC:%.F=%.o)
+
+include ../MakeRules
+
+default:: allocate.o
+	$(INSTALL) $< $(top_objdir)/lib
+
+install_target:: allocate.o
+	$(INSTALL) $< $(libdir)

@@ -1,0 +1,24 @@
+      SUBROUTINE STRNG(B,EX,EY,EZ,NXYZ,NNE)
+      IMPLICIT REAL*8 (A-H,O-Z)
+      DIMENSION B(NXYZ,NXYZ),EX(NNE,NNE),EY(NNE,NNE),EZ(NNE,NNE)
+      COMMON/VIB103/NST,NBND,NLIB,NDEF,NTORS
+      COMMON/VIB301/KR(150),LR(150)
+C
+C   THE CALCULATION OF S VECTORS FOR STRETCHINGS
+      DO 101 I=1,NST
+      K=KR(I)
+      L=LR(I)
+      KX=3*K-2
+      KY=3*K-1
+      KZ=3*K
+      LX=3*L-2
+      LY=3*L-1
+      LZ=3*L
+      B(I,KX)=EX(L,K)
+      B(I,KY)=EY(L,K)
+      B(I,KZ)=EZ(L,K)
+      B(I,LX)=EX(K,L)
+      B(I,LY)=EY(K,L)
+  101 B(I,LZ)=EZ(K,L)
+      RETURN
+      END

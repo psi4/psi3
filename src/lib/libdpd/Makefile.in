@@ -1,0 +1,81 @@
+
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+include ../MakeVars
+
+CDEF += -DBUFF=0 -DSITEDIR=\"$(datadir)\"
+CFLAGS += -DDPD_DEBUG
+
+TARGET = $(top_objdir)/lib/libdpd.a
+
+TRUESRC = \
+axpy.c                        file_mat_irrep_rd_block.c  \
+buf_close.c                   file_mat_irrep_row_close.c \
+buf_dump.c                    file_mat_irrep_row_init.c  \
+buf_init.c                    file_mat_irrep_row_rd.c    \
+buf_mat_irrep_close.c         file_mat_irrep_row_wrt.c   \
+buf_mat_irrep_close_block.c   file_mat_irrep_row_zero.c  \
+buf_mat_irrep_init.c          file_mat_irrep_wrt.c       \
+buf_mat_irrep_init_block.c    file_mat_irrep_wrt_block.c \
+buf_mat_irrep_print.c         file_mat_wrt.c             \
+buf_mat_irrep_rd.c            file_print.c               \
+buf_mat_irrep_rd_block.c      init.c                     \
+buf_mat_irrep_row_close.c     mat_irrep_print.c          \
+buf_mat_irrep_row_init.c      oe_axpy.c                  \
+buf_mat_irrep_row_rd.c        oe_chksum.c                \
+buf_mat_irrep_row_wrt.c       oe_copy.c                  \
+buf_mat_irrep_row_zero.c      oe_dirprd.c                \
+buf_mat_irrep_shift13.c       oe_dot.c                   \
+buf_mat_irrep_shift31.c       oe_file_close.c            \
+buf_mat_irrep_wrt.c           oe_file_init.c             \
+buf_mat_irrep_wrt_block.c     oe_file_mat_close.c        \
+buf_print.c                   oe_file_mat_init.c         \
+buf_sort.c                    oe_file_mat_irrep_close.c  \
+buf_symm.c                    oe_file_mat_irrep_init.c   \
+buf_symm2.c                   oe_file_mat_irrep_print.c  \
+chksum.c                      oe_file_mat_irrep_rd.c     \
+close.c                       oe_file_mat_irrep_wrt.c    \
+contract111.c                 oe_file_mat_rd.c           \
+contract121.c                 oe_file_mat_wrt.c          \
+contract122.c                 oe_file_print.c            \
+contract212.c                 oe_mat_irrep_print.c       \
+contract221.c                 oe_params_print.c          \
+contract222.c                 oe_scm.c                   \
+copy.c                        oe_trace.c                 \
+dirprd.c                      params_print.c             \
+dot.c                         scm.c                      \
+dot13.c                       swap12.c                   \
+dot14.c                       swap13.c                   \
+dot23.c                       swap14.c                   \
+dot24.c                       swap23.c                   \
+error.c                       swap24.c                   \
+file_close.c                  swap34.c                   \
+file_init.c                   swapbk.c                   \
+file_mat_close.c              trans_close.c              \
+file_mat_init.c               trans_init.c               \
+file_mat_irrep_close.c        trans_mat_irrep_close.c    \
+file_mat_irrep_close_block.c  trans_mat_irrep_init.c     \
+file_mat_irrep_init.c         trans_mat_irrep_rd.c       \
+file_mat_irrep_init_block.c   trans_mat_irrep_shift13.c  \
+file_mat_irrep_print.c        trans_mat_irrep_shift31.c  \
+file_mat_irrep_rd.c           trans_mat_irrep_wrt.c      \
+
+DEPENDINCLUDE = dpd.h dpd.gbl
+
+LIBOBJ = $(TRUESRC:%.c=%.o)
+
+include ../MakeRules
+
+ifneq ($(DODEPEND),no)
+include $(LIBOBJ:%.o=%.d)
+endif
+
+install_inc:: dpd.h
+	$(MKDIRS) $(incdir)
+	$(INSTALL_INCLUDE) $^ $(incdir)
+
+install_man:: libdpd.html
+	$(MKDIRS) $(htmldir)
+	$(INSTALL_INCLUDE) $^ $(htmldir)
+

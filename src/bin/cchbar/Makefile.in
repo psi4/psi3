@@ -1,0 +1,32 @@
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+include ../MakeVars
+
+LD = $(FC)
+LDLIBS += $(BLAS)
+
+PSILIBS = -ldpd -lqt -lfile30 -liwl -lciomr -lpsio -lipv1 -lmalloc
+
+CSRC = \
+cchbar.c \
+get_moinfo.c \
+get_params.c \
+F.c \
+Wamef.c \
+Wmnie.c \
+Wmbej.c \
+Wmbij.c \
+Wabei.c \
+purge.c
+
+BINOBJ = $(CSRC:%.c=%.o)
+ALLOC = 
+
+include ../MakeRules
+
+ifneq ($(DODEPEND),no)
+$(BINOBJ:%.o=%.d): $(DEPENDINCLUDE)
+include $(BINOBJ:%.o=%.d)
+endif
+

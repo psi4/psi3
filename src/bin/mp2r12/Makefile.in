@@ -1,0 +1,26 @@
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+include ../MakeVars
+
+LD = $(FC)
+LDLIBS += $(BLAS)
+
+PSILIBS = -lmalloc -lfile30 -lciomr -lqt -liwl -lpsio -lipv1
+
+CSRC = gprgid.c mp2r12.c mp2r12_energy.c
+
+BINOBJ = $(CSRC:%.c=%.o)
+ALLOC = 
+
+include ../MakeRules
+
+ifneq ($(DODEPEND),no)
+$(BINOBJ:%.o=%.d): $(DEPENDINCLUDE)
+include $(BINOBJ:%.o=%.d)
+endif
+
+install_man:: $(TARGET).1
+	$(MKDIRS) $(mandir)/man1
+	$(INSTALL_INCLUDE) $^ $(mandir)/man1
+

@@ -1,0 +1,25 @@
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+include ../MakeVars
+
+LD = $(CC)
+
+PSILIBS = -lpsio -lciomr -lipv1
+
+CSRC = psiclean.c
+
+BINOBJ = $(CSRC:%.c=%.o)
+ALLOC = 
+
+include ../MakeRules
+
+ifneq ($(DODEPEND),no)
+$(BINOBJ:%.o=%.d): $(DEPENDINCLUDE)
+include $(BINOBJ:%.o=%.d)
+endif
+
+install_man:: $(TARGET).1
+	$(MKDIRS) $(mandir)/man1
+	$(INSTALL_INCLUDE) $^ $(mandir)/man1
+

@@ -1,0 +1,301 @@
+<html> <head>
+<title>LIBPSIO --- The New PSIO I/O Library</title>
+</head>
+
+<body>
+<hr>
+<center>
+<h1>Programmer's Manual for LIBPSIO: The New PSI I/O Library
+</h1>
+</center>
+
+<center>T. Daniel Crawford <br>
+Version: October 22, 1998 <br>
+<a href="mailto:crawdad@ccqc.uga.edu">crawdad@ccqc.uga.edu</a></center><p>
+
+<hr>
+
+<h3><a name="philosophy">I. The structure and philosophy of the library</a></h3>
+
+In order to access data in the original PSI I/O library (found in
+<tt>libciomr</tt> and <tt>io</tt>), the programmer is required to know
+the byte-by-byte layout of the given direct access file.  Accordingly,
+the primary read and write functions [<tt>wreadw()</tt> and
+<tt>wwritw()</tt>, respectively] require as an argument a global
+bytewise file pointer to the beginning of the desired data.  As a
+result, when this pointer is defined to be an unsigned four-byte
+integer (common on 32-bit computers), the total size of the direct
+access file is limited to 4 GB (2<sup>32</sup> bytes).  Furthermore,
+in order to avoid code duplication, this I/O design requires that one
+construct specialized libraries of functions (e.g., <tt>libfile30</tt>
+or <tt>libfile34</tt>) for interaction with particularly complicated
+files such as file30 (the PSI checkpoint file) or file34 (the
+AO-/SO-basis integral file).  Even slight modification of the file
+layout can easily require substantial changes to these libraries.<p>
+
+This new I/O library, <tt>libpsio</tt>, is intended to overcome these
+problems in two ways:
+<ul>
+  <li> Each file makes use of its own <b>table of contents (TOC)</b>
+       which contains file-global starting and ending addresses for each
+       data item.</li>
+  <li> Addresses to data items in the TOC are provided to the standard
+       read and write functions by the programmer as <b>entry-relative
+       page/offset pairs</b>, rather than file-global bytewise file
+       pointers.</li>
+</ul><p>
+
+Data items in the TOC are identified by keyword strings (e.g.,
+<tt>"Nuclear Repulsion Energy"</tt>).  If the programmer wishes to
+read or write an entire TOC entry, he/she is required to provide only
+the TOC keyword and the entry size (in bytes) to obtain the data; the
+entry's global starting address is supplied by the TOC.  Furthermore,
+it is possible to read pieces of TOC entries (say a single buffer of a
+large list of two-electron integrals) by providing the appropriate TOC
+keyword, a size, and a starting address relative to the beginning of
+the TOC entry.  In short, the TOC design hides all information about
+the <em>global</em> structure of the direct access file from the
+programmer and allows him/her to be concerned only with the structure
+of individual entries.  The current TOC is written to the end of the
+file when it is closed.<p>
+
+The direct-access file itself is viewed as a series of pages, each of
+which contains an identical number of bytes.  The global address of
+the beginning of a given entry is stored on the TOC as a page/offset
+pair comprised of the starting page and byte-offset on that page where
+the data reside.  The <em>entry-relative</em> page/offset addresses
+which the programmer must provide work in exactly the same manner, but
+the 0/0 position is taken to be the beginning of the TOC entry rather
+than the beginning of the file.
+
+<h3><a name="basic interface">II. The user interface</a></h3>
+
+All of the functions needed to carry out basic I/O are described in
+this subsection.  Proper declarations of these routines are provided
+by the header file <tt><font color=purple>psio.h</font></tt>.  Note
+that before any open/close functions may be called, the input parsing
+library, <tt>libipv1</tt> must be initialized so that the necessary
+file striping information may be read from user input.  (See the <a
+href="http://zopyros.ccqc.uga.edu/psi/Psiman/Devel/Manual/">
+PSI programmer's manual</a> for details on the current version of the
+input parser.) Also note that <tt>ULI</tt> is used as an abbreviation
+for <tt>unsigned long int</tt> in the remainder of this manual.<p>
+
+<tt><b><font color=darkblue>int psio_init(void)</font></b></tt>: Before any
+files may be opened or the basic read/write functions of
+<tt>libpsio</tt> may be used, the global data needed by the library
+functions must be initialized using this function.<p>
+
+<tt><b><font color=darkblue>int psio_done(void)</font></b></tt>: When all
+interaction with the direct-access files is complete, this function is
+used to free the library's global memory.<p>
+
+<tt><b><font color=darkblue>int psio_open(ULI unit, int
+status)</font></b></tt>: Opens the direct access file identified by
+<tt>unit</tt>.  The <tt>status</tt> flag is a boolean used to indicate
+if the file is new (0) or if it already exists and is being re-opened
+(1).  If specified in the user input file, the file will be
+automatically opened as a multivolume (striped) file, and each page of
+data will be read from or written to each volume in succession.<p>
+
+<tt><b><font color=darkblue>int psio_close(ULI unit, int
+keep)</font></b></tt>: Closes a direct access file identified by
+<tt>unit</tt>.  The <tt>keep</tt> flag is a boolean used to indicate
+if the file's volumes should be deleted (0) or retained (1) after
+being closed.<p>
+
+<tt><b><font color=darkblue>int psio_read_entry(ULI unit, char *key, char
+*buffer, ULI size)</font></b></tt>: Used to read an entire TOC entry
+identified by the string <tt>key</tt> from <tt>unit</tt> into the
+array <tt>buffer</tt>.  The number of bytes to be read is given by
+<tt>size</tt>, but this value is only used to ensure that the read
+request does not exceed the end of the entry.  If the entry does not
+exist, an error is printed to <tt>stderr</tt> and the program will
+exit.<p>
+
+<tt><b><font color=darkblue>int psio_write_entry(ULI unit, char *key, char
+*buffer, ULI size)</font></b></tt>: Used to write an entire TOC entry
+idenitified by the string <tt>key</tt> to <tt>unit</tt> into the array
+<tt>buffer</tt>.  The number of bytes to be written is given by
+<tt>size</tt>.  If the entry already exists and its data is being
+overwritten, the value of <tt>size</tt> is used to ensure that the
+write request does not exceed the end of the entry.<p>
+
+<tt><b><font color=darkblue>int psio_read(ULI unit, char *key, char
+*buffer, ULI size, psio_address sadd, psio_address
+*eadd)</font></b></tt>: Used to read a fragment of <tt>size</tt> bytes
+of a given TOC entry identified by <tt>key</tt> from <tt>unit</tt>
+into the array <tt>buffer</tt>.  The starting address is given by the
+<tt>sadd</tt> and the ending address (that is, the entry-relative
+address of the next byte in the file) is returned in
+<tt>*eadd</tt>.<p>
+
+<tt><b><font color=darkblue>int psio_write(ULI unit, char *key, char
+*buffer, ULI size, psio_address sadd, psio_address
+*eadd)</font></b></tt>: Used to write a fragment of <tt>size</tt>
+bytes of a given TOC entry identified by <tt>key</tt> to <tt>unit</tt>
+into the array <tt>buffer</tt>.  The starting address is given by the
+<tt>sadd</tt> and the ending address (that is, the entry-relative
+address of the next byte in the file) is returned in
+<tt>*eadd</tt>.<p>
+
+The page/offset address pairs required by the preceeding read and
+write functions are supplied via variables of the data type
+<tt>psio_address</tt>, defined by:<p>
+
+<tt><b><font color=green>
+typedef struct {<br>
+  ULI page;<br>
+  ULI offset;<br>
+} psio_address;<br>
+</font></b></tt><br>
+
+The <tt>PSIO_ZERO</tt> defined in macro provides a convenient input for the 0/0
+page/offset.<p>
+
+<h3><a name="TOC manipulation">III. Manipulating the table of contents</a></h3>
+
+In addition, to the basic open/close/read/write functions
+described above, the programmer also has a limited ability to directly
+manipulate or examine the data in the TOC itself.<p>
+
+<tt><b><font color=darkblue>int psio_tocprint(ULI unit, FILE
+*outfile)</font></b></tt>: Prints the TOC of <tt>unit</tt> in a
+readable form to <tt>outfile</tt>, including entry keywords and
+starting/ending addresses.<p>
+
+<tt><b><font color=darkblue>int psio_toclen(ULI unit, FILE
+*outfile)</font></b></tt>:  Returns the number of entries in the TOC
+of <tt>unit</tt>.<p>
+
+<tt><b><font color=darkblue>int psio_tocdel(ULI unit, char
+*key)</font></b></tt>: Deletes the TOC entry corresponding to
+<tt>key</tt>.  NB that this function only deletes the entry's
+reference from the TOC itself and does not remove the corresponding
+data from the file.  Hence, it is possible to introduce data "holes"
+into the file.<p>
+
+<tt><b><font color=darkblue>int psio_tocclean(ULI unit, char
+*key)</font></b></tt>: Deletes the TOC entry corresponding to
+<tt>key</tt> and <em>all</em> subsequent entries.  As with
+<tt>psio_tocdel()</tt>, this function only deletes the entry references
+from the TOC itself and does not remove the corresponding data from
+the file.  <b>This function is still under construction.</b><p>
+
+<h3><a name="examples">IV. Some simple examples</a></h3>
+
+The following code illustrates the basic use of the library, as well
+as when/how the <tt>psio_init()</tt> and <tt>psio_done()</tt> functions
+should be called in relation to initialization of <tt>libipv1</tt>.
+
+<pre>
+<font color=purple>
+#include &#60;stdio.h&#62;
+#include &#60;ip_libv1.h&#62;
+#include &#60;psio.h&#62;
+#include &#60;libciomr.h&#62;
+</font>
+
+FILE *infile, *outfile;
+
+int main()
+{
+  int i, M, N;
+  double enuc, *some_data;<font color=green>
+  psio_address next;</font><font color=red>  /* Special page/offset structure */
+</font>
+
+  ffile(&infile,"input.dat",2);
+  ffile(&outfile,"output.dat",1);
+  ip_set_uppercase(1);
+  ip_initialize(infile,outfile);
+  ip_cwk_add(":DEFAULT");
+  ip_cwk_add(progid);
+
+<font color=red>
+  /* Initialize the I/O system */</font><font color=darkblue>
+  psio_init();</font>
+
+<font color=red>
+  /* Open the file and write an energy */</font><font color=darkblue>
+  psio_open(31, PSIO_OPEN_NEW);</font>
+  enuc = 12.3456789; <font color=darkblue>
+  psio_write_entry(31, "Nuclear Repulsion Energy", (char *) &enuc,
+                   sizeof(double));</font><font color=darkblue>
+  psio_close(31,1);</font>
+
+<font color=red>
+  /* Read M rows of an MxN matrix from a file */</font>
+  some_data = init_matrix(M,N);
+
+<font color=darkblue>
+  psio_open(91, PSIO_OPEN_OLD);</font><font color=green>
+  next = PSIO_ZERO;</font><font color=red>/* Note use of the special macro */
+</font>  for(i=0; i < M; i++)<font color=darkblue>
+      psio_read(91, "Some Coefficients", (char *) (some_data + i*N),
+                N*sizeof(double), next, &next);
+  psio_close(91,0);</font>
+
+<font color=red>
+  /* Close the I/O system */</font><font color=darkblue>
+  psio_done();</font>
+
+  ip_done();
+}
+
+char *gprgid()
+{
+   char *prgid = "CODE_NAME";
+   return(prgid);
+}
+</pre>
+<p>
+
+<h3><a name="caveats">V. A few caveats</a></h3>
+
+The interface to the new I/O system has been designed to mimic that of
+the old <tt>wreadw()</tt> and <tt>wwritw()</tt> routines of libciomr.
+The table of contents system introduces a few complications that users
+of the library should be aware of:
+
+<ul>
+  <li> As pointed out earlier, deletion of TOC entries is allowed
+       using <tt>psio_tocdel()</tt> and <tt>psio_tocclean()</tt>.
+       However, since only the TOC reference is removed from the file
+       and the corresponding data is not, a data hole will be left in
+       the file if the deleted entry was not the last one in the TOC.
+       A utility function designed to "defrag" a PSI file may become
+       necessary if such holes ever present a problem.</li>
+  <li> One may append data to an existing TOC entry by simply writing
+       beyond the entry's current boundary; the ending address data
+       in the TOC will be updated automatically.  However, no safety
+       measures have been implemented to prevent one from overwriting
+       data in a subsequent entry thereby corrupting the TOC.
+       This feature/bug remains because (1) it is possible that such
+       error checking functions may slow the I/O codes significantly; (2)
+       it may be occasionally desirable to overwrite exiting data,
+       regardless of its effect on the TOC.  Eventually a utility
+       function which checks the validity of the TOC may be needed if
+       this becomes a problem, particularly for debugging purposes.</li>
+</ul>
+
+<h3><a name="fortran">VI. The Fortran interface</a></h3>
+
+This portion of the library is still under construction, but eventual
+conversion of all existing Fortran codes
+(<tt>inputth</tt>,<tt>intsth</tt>, <tt>gugaci</tt>, etc.) is the
+desired goal.  Two difficulties which must be overcome for this to
+work are: (1) passing character strings from Fortran to C code is
+highly non-standard at present; (2) the page/offset address structures
+used in the C code will have to be mimicked in the Fortran, perhaps
+using a two-element array.
+
+<hr> <address>
+<a href="http://zopyros.ccqc.uga.edu/~crawdad/">T. Daniel Crawford</a>&#160; /
+<a href="mailto:crawdad@ccqc.uga.edu">crawdad@ccqc.uga.edu</a>
+</address>
+<!-- hhmts start -->
+Last modified: Thu Oct 22 22:43:48 1998
+<!-- hhmts end -->
+</body> </html>
+

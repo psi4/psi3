@@ -1,0 +1,43 @@
+/**************************************************************************/
+/*                                                                        */
+/*   CPHF:                                                                */
+/*      Written by Edward Seidl (a NON-hog)                               */
+/*      October 1990                                                      */
+/*      Parts liberally ripped off from HFS group CPXXAOS                 */
+/*        codes written in FORTRAN (Boo!!!)                               */
+/*      Uses PK  supermatrix on file37                                    */
+/*                                                                        */
+/*      Reference: Osamura,Yamaguchi,Saxe,Fox,Vincent,HFS                 */
+/*                 J.Mol.Struct. 103(1983) p.183 (THEOCHEM)               */
+/*                                                                        */
+/**************************************************************************/
+/*                                                                        */
+/*   Description of input                                                 */
+/*                                                                        */
+/*   Line 1:  Six integer flags                                           */
+/*                                                                        */
+/*      1) etest     dummy for compatability with old codes               */
+/*      2) iorb      dummy for compatability with old codes               */
+/*      3) dipole    if 1 no dipole derivatives (do not run diper)        */
+/*                   if 0 calc dipole derivatives (must run diper)        */
+/*                   if dipole is 0 and file43 does not exist,            */
+/*                      dipole is set to 1 and the calculation            */
+/*                      continues                                         */
+/*      4) conv      convergence of cphf equations (default 12)           */
+/*      5) core      dummy for compatability with old codes               */
+/*      6) print     0 minimum output possible                            */
+/*                   1 print 2nd derivs, dipole derivs                    */
+/*                   2 print eigenvectors and dependent pairs             */
+/*                   4 print results of derivs()                          */
+/*                   8 print results of famat()                           */
+/*                  16 print results of bamat()                           */
+/*                  32 print results of bfmat()                           */
+/*                  64 print results of cphf()                            */
+/*                 128 print results of uxmat()                           */
+/*                 256 print results of wamat()                           */
+/*                                                                        */
+/*                     print values can be added together eg.             */
+/*                     if you want output from derivs and uxmat, set      */
+/*                     print = 132                                        */
+/*                                                                        */
+/**************************************************************************/

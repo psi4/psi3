@@ -1,0 +1,24 @@
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+include ../MakeVars
+
+LD = $(CC)
+
+PSILIBS = libciomr.a libipv1.a
+
+CSRC = geom.c read11.c read_geom.c gprgid.c
+
+BINOBJ = $(CSRC:%.c=%.o)
+ALLOC = 
+
+include ../MakeRules
+
+ifneq ($(DODEPEND),no)
+$(BINOBJ:%.o=%.d): $(DEPENDINCLUDE)
+include $(BINOBJ:%.o=%.d)
+endif
+
+install_man:: $(TARGET).1
+	$(MKDIRS) $(mandir)/man1
+	$(INSTALL_INCLUDE) $^ $(mandir)/man1

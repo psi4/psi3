@@ -1,0 +1,50 @@
+.TH ugeom 1 "26 August, 1991" "\*(]W" "\*(]D"
+.SH NAME
+ugeom \- write updated geometry to 
+.pN FILE30
+
+.SH DESCRIPTION
+.LP
+The program
+.B ugeom
+is used to update the geometry information in 
+.pN FILE30 .
+
+.sL
+.pN GEOM
+.eL "FILES REQUIRED"
+
+.sL
+.pN INPUT
+.pN OUTPUT
+.pN FILE30
+.eL "FILES UPDATED"
+
+
+.SH INPUT FORMAT
+.LP
+The
+.B ugeom
+program
+reads the first geometry in the
+.pN GEOM
+file.  The format is as specifed in the geom(2) man page.
+
+.LP
+The
+.B ugeom
+program searches through the default keyword path (first
+.B UGEOM
+and then
+.BR DEFAULT ).
+The following keyword is optional:
+
+
+.IP "\fBGEOMRO =\fP \fIinteger_vector\fP"
+This is a vector containing three elements indicating the 
+desired coordinate frame.  The first element is the number
+of the atom to be maintained at the origin.  The second 
+element is the number of an atom to be maintained on the 
+x-axis.  The third elemment is the number of an atom to
+be maintained in the xy-plane.
+

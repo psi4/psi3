@@ -1,0 +1,11 @@
+% Intder Test 12
+% Cartesian projection of C2H4 DZ(d) RHF quartic force field with 
+% spurious gradients appended
+
+intder: (
+   derlvl = 4
+   read_geom = true
+   iprint = 0000
+   trans_type = project
+)
+

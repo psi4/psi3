@@ -1,0 +1,68 @@
+
+SHELL = /bin/sh
+
+#
+# Initialize variables that have been figured out by configure.
+#
+
+target = @target@
+
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+bindir = @bindir@
+libdir = @libdir@
+incdir = @incdir@
+docdir = @docdir@
+manext = 5
+mandir = @mandir@
+htmldir = @htmldir@
+txtdir = @txtdir@
+datadir = @datadir@
+top_srcdir = @top_srcdir@
+top_objdir = @top_objdir@
+objincdir = @objincdir@
+
+RANLIB = @RANLIB@
+YACC = @YACC@
+CC = @CC@
+CCDEPEND = @CCDEPEND@
+DODEPEND = @DODEPEND@
+FC = @FC@
+INSTALL = @INSTALL@
+INSTALL_INCLUDE = @INSTALL_INCLUDE@
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+
+PSIPP = @PSIPP@
+TMPL = @TMPL@
+MKDIRS = @MKDIRS@
+
+CDEF = @CDEF@ @DEFS@
+COPT = @COPT@
+COTH = @COTH@
+CDBG = @CDBG@
+CINC = @CINC@
+
+FDEF = @FDEF@
+FOPT = @FOPT@
+FOTH = @FOTH@
+FDBG = @FDBG@
+FINC = @FINC@
+FSTATIC = @FSTATIC@
+
+# flags to be passed to compilers
+CFLAGS = @CFLAGS@
+FFLAGS = @FFLAGS@
+FFLAGS_NOSTATIC = $(FOPT) $(FOTH) $(FDBG)
+
+# set up suffixes needed for various files
+F77SUF = @F77SUF@
+OBJSUF = @OBJSUF@
+LIBSUF = @LIBSUF@
+
+#
+# Initialize other variables.
+#
+
+AR = ar
+ARFLAGS = r

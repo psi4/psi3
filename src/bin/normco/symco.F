@@ -1,0 +1,74 @@
+      SUBROUTINE SYMCO(U,B,BS,EE,NXYZ,ISOMOL)
+      IMPLICIT REAL*8 (A-H,O-Z)
+cets030991
+#include <error.h>
+      integer ip,prcntr
+      DIMENSION U(NXYZ,NXYZ),B(NXYZ,NXYZ),BS(NXYZ,NXYZ),EE(NXYZ,NXYZ)
+      LOGICAL ISOMOL
+      COMMON/VIB101/NATOM,NAT1,N3N,ILIN,NVIB,IDIPOL,IPOLAR
+      COMMON/VIB107/NIC,NINT,ISYM,NSYM
+      COMMON/VIB308/IIS(150),JJS(150),KKS(150),LLS(150)
+      DATA A00,ONE / 0.0D+00 , 1.0D+00 /
+    1 FORMAT(//,2X,' U MATRIX'/)
+    2 FORMAT(//,2X,' UNITARITY OF U MATRIX'/)
+    3 FORMAT(//,2X,' BS MATRIX'/)
+    4 FORMAT(//,2X,' INPUT ERROR ',5X,' II,JJ,KK,LL ',4I5/)
+C
+      NROT=3
+      IF(ILIN.NE.0) NROT=2
+C
+C   FORM UNITARY TRANSFORMATION MATRIX
+      IF(ISOMOL) GO TO 201
+      DO 101 I=1,NIC
+      DO 101 J=1,NIC
+  101 U(I,J)=A00
+C
+      DO 102 IXYZ=1,NSYM
+      II=IIS(IXYZ)
+      JJ=JJS(IXYZ)
+      KK=KKS(IXYZ)
+      LL=LLS(IXYZ)
+      XK=FLOAT(KK)
+      XL=FLOAT(LL)
+      FAC=ONE
+      IF(XK.LT.A00) FAC=-ONE
+      IF(XL.LE.A00) GO TO 205
+      U(II,JJ)=FAC*DSQRT(DABS(XK))/DSQRT(XL)
+  102 CONTINUE
+C
+      DO 103 I=1,NROT+3
+      II=NVIB+I
+      JJ=NINT+I
+      U(II,JJ)=ONE
+  103 CONTINUE
+C
+cets030991
+      ip=prcntr('IS_ON BRIEF')
+      if(ip.eq.0) then
+        WRITE(6,1)
+        CALL MATOUT(U,NXYZ,NXYZ,NIC,NIC,6)
+        WRITE(6,2)
+      endif
+      CALL MTXMPY(U,NXYZ,U,NXYZ,EE,NXYZ,EE,NXYZ,NIC,3)
+      ip=prcntr('IS_ON BRIEF')
+      if(ip.eq.0) then
+        CALL MATOUT(EE,NXYZ,NXYZ,NIC,NIC,6)
+      endif
+  201 CONTINUE
+      CALL MTXMPY(U,NXYZ,B,NXYZ,BS,NXYZ,EE,NXYZ,NIC,1)
+cets030991
+      ip=prcntr('IS_ON BRIEF')
+      if(ip.eq.0) then
+        WRITE(6,3)
+        CALL MATOUT(BS,NXYZ,NXYZ,NIC,NIC,6)
+      endif
+      DO 104 I=1,NIC
+      DO 104 J=1,NIC
+  104 B(I,J)=BS(I,J)
+      GO TO 210
+C
+  205 WRITE(6,4) II,JJ,KK,LL
+      STOP
+C
+  210 RETURN
+      END

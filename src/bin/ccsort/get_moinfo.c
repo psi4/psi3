@@ -1,0 +1,469 @@
+#include <stdio.h>
+#include <ip_libv1.h>
+#include <libciomr.h>
+#include <psio.h>
+#include <file30.h>
+#include "MOInfo.h"
+#include "Params.h"
+#define EXTERN
+#include "globals.h"
+
+/* get_moinfo(): Routine to obtain basic orbital information from
+** file30 and compute the associated lookup arrays.
+**
+** Several loookup arrays are written to CC_INFO at the end of this
+** routine for use in other CC programs.  I do this for two reasons:
+** (1) I don't want to have to use redundant code for re-computing the
+** arrays and (2) I don't want to allow certain types of user input
+** (e.g. orbital occupations) to change between CC programs.
+**
+** T. Daniel Crawford, October 1996
+** Modified by TDC March, 1999 */
+
+void get_moinfo(void)
+{
+  int i, j, h, count, ocount, vcount, errcod, col;
+  int active_count, all_count;
+  int warning, *docc, *socc;
+  int fc_offset, cl_offset, op_offset, vr_offset, fv_offset;
+  int nfzc, nuocc, nopen, nclsd;
+  double enuc, escf;
+  double ***evects, ***scf_vector;
+  psio_address next;
+  
+  file30_init();
+  moinfo.nirreps = file30_rd_nirreps();
+  moinfo.nmo = file30_rd_nmo();
+  moinfo.iopen = file30_rd_iopen();
+  moinfo.labels = file30_rd_irr_labs();
+  moinfo.enuc = file30_rd_enuc();
+  escf = file30_rd_escf();
+  moinfo.orbspi = file30_rd_orbspi();
+  moinfo.clsdpi = file30_rd_clsdpi();
+  moinfo.openpi = file30_rd_openpi();
+  file30_close();
+
+  /* get docc and socc arrays from input */
+  docc = init_int_array(moinfo.nirreps);
+  socc = init_int_array(moinfo.nirreps);
+  errcod = ip_int_array("DOCC", docc, moinfo.nirreps);
+  errcod = ip_int_array("SOCC", socc, moinfo.nirreps);
+  warning = 0;
+  for(h=0; h < moinfo.nirreps; h++) {
+      if(moinfo.clsdpi[h] != docc[h]) {
+	  warning = 1;  moinfo.clsdpi[h] = docc[h];
+	}
+      if(moinfo.openpi[h] != socc[h]) {
+	  warning = 1;  moinfo.openpi[h] = socc[h];
+	}
+    }
+  if(warning) fprintf(outfile, "\n\tNB: Using occupations from input.\n");
+  free(docc); free(socc);
+
+  moinfo.frdocc = init_int_array(moinfo.nirreps);
+  moinfo.fruocc = init_int_array(moinfo.nirreps);
+  errcod = ip_int_array("FROZEN_DOCC", moinfo.frdocc, moinfo.nirreps);
+  errcod = ip_int_array("FROZEN_UOCC", moinfo.fruocc, moinfo.nirreps);
+
+  moinfo.nfzc = moinfo.nfzv = 0;
+  for(i=0; i < moinfo.nirreps; i++) {
+      moinfo.nfzc += moinfo.frdocc[i];
+      moinfo.nfzv += moinfo.fruocc[i];
+    }
+
+  /* Dump the frozen orbital arrays to CC_INFO */
+  psio_write_entry(CC_INFO, "Frozen Core Orbs Per Irrep",
+		   (char *) moinfo.frdocc, sizeof(int)*moinfo.nirreps);
+  psio_write_entry(CC_INFO, "Frozen Virt Orbs Per Irrep",
+		   (char *) moinfo.fruocc, sizeof(int)*moinfo.nirreps);
+
+  /* Adjust clsdpi array for frozen orbitals */
+  for(i=0; i < moinfo.nirreps; i++)
+      moinfo.clsdpi[i] -= moinfo.frdocc[i];
+
+  moinfo.uoccpi = init_int_array(moinfo.nirreps);
+  for(i=0; i < moinfo.nirreps; i++)
+      moinfo.uoccpi[i] = moinfo.orbspi[i] - moinfo.clsdpi[i] -
+			 moinfo.openpi[i] - moinfo.fruocc[i] -
+			 moinfo.frdocc[i];
+
+  nclsd = nopen = nuocc = 0;
+  for(i=0; i < moinfo.nirreps; i++) {
+      nclsd += moinfo.clsdpi[i];
+      nopen += moinfo.openpi[i];
+      nuocc += moinfo.uoccpi[i];
+    }
+  nfzc = moinfo.nfzc;
+
+  /* Number of non-frozen orbitals */
+  moinfo.nactive = nclsd + nopen + nuocc;
+  psio_write_entry(CC_INFO, "No. of Active Orbitals", (char *) &(moinfo.nactive), 
+                   sizeof(int));
+
+  /* Number of occupied and virtual orbirals per irrep including
+     open-shells */
+  moinfo.occpi = init_int_array(moinfo.nirreps);
+  moinfo.virtpi = init_int_array(moinfo.nirreps);
+  moinfo.all_occpi = init_int_array(moinfo.nirreps);
+  moinfo.all_virtpi = init_int_array(moinfo.nirreps);
+  for(h=0; h < moinfo.nirreps; h++) {
+      moinfo.occpi[h] = moinfo.clsdpi[h] + moinfo.openpi[h];
+      moinfo.virtpi[h] = moinfo.uoccpi[h] + moinfo.openpi[h];
+      moinfo.all_occpi[h] = moinfo.frdocc[h] + moinfo.clsdpi[h] +
+			    moinfo.openpi[h];
+      moinfo.all_virtpi[h] = moinfo.fruocc[h] + moinfo.uoccpi[h] +
+			     moinfo.openpi[h];
+    }
+
+  /* Dump occpi and virtpi arrays to CC_INFO */
+  psio_write_entry(CC_INFO, "Active Occ Orbs Per Irrep",
+		   (char *) moinfo.occpi, sizeof(int)*moinfo.nirreps);
+  psio_write_entry(CC_INFO, "Active Virt Orbs Per Irrep",
+		   (char *) moinfo.virtpi, sizeof(int)*moinfo.nirreps);
+  psio_write_entry(CC_INFO, "All Occ Orbs Per Irrep",
+		   (char *) moinfo.all_occpi, sizeof(int)*moinfo.nirreps);
+  psio_write_entry(CC_INFO, "All Virt Orbs Per Irrep",
+		   (char *) moinfo.all_virtpi, sizeof(int)*moinfo.nirreps);
+
+  /* Build the boolean arrays for the orbital classification routines.
+     The occ and vir arrays identify active occupied or virtual
+     orbitals (including open shells).  The socc array identifies only
+     the singly occupied orbitals.  The all_occ and all_vir arrays
+     identify any occupied or virtual orbitals (include open shells
+     and frozen orbitals).  The all_socc array identifies only singly
+     occupied orbitals within the full list of orbitals.  The frozen
+     array identifies only frozen orbitals.  The argument for all
+     arrays much be a QT-ordered index. Most of these are used in the
+     integral sorting routines found in CCSORT and CCDENSITY. */
+
+  moinfo.occ = init_int_array(moinfo.nactive);
+  moinfo.vir = init_int_array(moinfo.nactive);
+  moinfo.socc = init_int_array(moinfo.nactive);
+  moinfo.all_occ = init_int_array(moinfo.nmo);
+  moinfo.all_vir = init_int_array(moinfo.nmo);
+  moinfo.all_socc = init_int_array(moinfo.nmo);
+  moinfo.frozen = init_int_array(moinfo.nmo);
+
+  active_count = all_count = 0;
+  for(i=0; i < moinfo.nirreps; i++) {
+      for(j=0; j < moinfo.frdocc[i]; j++, all_count++) {
+	  moinfo.all_occ[all_count] = 1;
+	  moinfo.frozen[all_count] = 1;
+	}
+    }
+  for(i=0; i < moinfo.nirreps; i++) {
+      for(j=0; j < moinfo.clsdpi[i]; j++, active_count++, all_count++) {
+	  moinfo.occ[active_count] = 1;
+	  moinfo.all_occ[all_count] = 1;
+	}
+    }
+  for(i=0; i < moinfo.nirreps; i++) {
+      for(j=0; j < moinfo.openpi[i]; j++, active_count++, all_count++) {
+	  moinfo.occ[active_count] = 1;
+	  moinfo.vir[active_count] = 1;
+	  moinfo.socc[active_count] = 1;
+	  moinfo.all_occ[all_count] = 1;
+	  moinfo.all_vir[all_count] = 1;
+	  moinfo.all_socc[all_count] = 1;
+	}
+    }
+  for(i=0; i < moinfo.nirreps; i++) {
+      for(j=0; j < moinfo.uoccpi[i]; j++, active_count++, all_count++) {
+	  moinfo.vir[active_count] = 1;
+	  moinfo.all_vir[all_count] = 1;
+	}
+    }
+  for(i=0; i < moinfo.nirreps; i++) {
+      for(j=0; j < moinfo.fruocc[i]; j++, all_count++) {
+	  moinfo.all_vir[all_count] = 1;
+	  moinfo.frozen[all_count] = 1;
+	}
+    }
+
+  /* Dump the Boolean arrays to CC_INFO */
+  psio_write_entry(CC_INFO, "Active Occ Orbital Boolean",
+		   (char *) moinfo.occ, sizeof(int)*moinfo.nactive);
+  psio_write_entry(CC_INFO, "Active Virt Orbital Boolean",
+		   (char *) moinfo.vir, sizeof(int)*moinfo.nactive);
+  psio_write_entry(CC_INFO, "Active Socc Orbital Boolean",
+		   (char *) moinfo.socc, sizeof(int)*moinfo.nactive);
+  psio_write_entry(CC_INFO, "All Occ Orbital Boolean",
+		   (char *) moinfo.all_occ, sizeof(int)*moinfo.nmo);
+  psio_write_entry(CC_INFO, "All Virt Orbital Boolean",
+		   (char *) moinfo.all_vir, sizeof(int)*moinfo.nmo);
+  psio_write_entry(CC_INFO, "All Socc Orbital Boolean",
+		   (char *) moinfo.all_socc, sizeof(int)*moinfo.nmo);
+  psio_write_entry(CC_INFO, "Frozen Orbital Boolean",
+		   (char *) moinfo.frozen, sizeof(int)*moinfo.nmo);
+
+  /* Build relative index arrays which map a QT Standard orbital index
+     into the CC occupied or virtual relative index.  In the CC
+     occupied ordering (given by "cc_allocc"), the orbitals are
+     organized with all frozen core orbitals first, followed by doubly
+     occupied orbitals, followed by singly occupied orbitals.  In the
+     CC virtual ordering (given by "cc_allvir"), the orbitals are
+     organized with all frozen virtual orbitals first, followed by
+     active unoccupied orbitals, followed by the singly occupied
+     orbitals.  The "cc_occ" and "cc_vir" arrays are defined similarly,
+     but without frozen orbitals.  These arrays are needed by
+     classification routines used in sorting two-electron integrals
+     (in CCSORT and CCDENSITY) where integrals are divided up by their
+     occupied and virtual index patterns (see classify.c and
+     distribute.c).
+    
+     For example, for 3B1 CH2 in a DZ basis with one frozen core
+     orbital and three frozen virtual orbitals:
+    
+     QT:         0   1   2   3   4   5   6   7   8   9  10  11  12  13
+     Space:     fc   d   d   s   s   u   u   u   u   u   u  fv  fv  fv
+     Symm:      a1  a1  b2  a1  b1  a1  a1  a1  b1  b2  b2  a1  a1  b2
+     -----------------------------------------------------------------
+     cc_occ:     X   0   3   1   2  -1  -1  -1  -1  -1  -1   X   X   X
+     cc_vir:     X  -1  -1   3   5   0   1   2   4   6   7   X   X   X
+     cc_allocc:  0   1   4   2   3  -1  -1  -1  -1  -1  -1  -1  -1  -1
+     cc_allvir: -1  -1  -1   5   7   2   3   4   6   9  10   0   1   8
+
+     A "-1" is used to mark QT indices irrelevant to the given CC
+     ordering array, and an "X" indicates that the element doesn't
+     appear in the CC array at all (i.e., cc_occ and cc_vir are of
+     length nactive and cc_allocc and cc_allvir are of length nmo).
+
+     Note that I also compute the CC->QT versions of the cc_occ and
+     cc_vir arrays (qt_occ and qt_vir, respectively) simultaneously.
+     
+     */
+
+  /* First the active-orbital CC ordering and symmetry arrays */
+  moinfo.cc_occ = init_int_array(moinfo.nactive);
+  moinfo.cc_vir = init_int_array(moinfo.nactive);
+  moinfo.qt_occ = init_int_array(moinfo.nactive);
+  moinfo.qt_vir = init_int_array(moinfo.nactive);
+  for(i=0; i < moinfo.nactive; i++) {
+      moinfo.cc_occ[i] = moinfo.cc_vir[i] = -1;
+      moinfo.qt_occ[i] = moinfo.qt_vir[i] = -1;
+    }
+
+  moinfo.occ_sym = init_int_array(moinfo.nactive);
+  moinfo.vir_sym = init_int_array(moinfo.nactive);
+
+  count = 0;
+  cl_offset = 0;
+  op_offset = nclsd;
+  for(h=0; h < moinfo.nirreps; h++) {
+      if(h) cl_offset += moinfo.clsdpi[h-1];
+      for(i=0; i < moinfo.clsdpi[h]; i++,count++) {
+	  moinfo.cc_occ[cl_offset+i] = count;
+	  moinfo.qt_occ[count] = nfzc + cl_offset+i;
+	  moinfo.occ_sym[count] = h;
+	}
+      if(h) op_offset += moinfo.openpi[h-1];
+      for(i=0; i < moinfo.openpi[h]; i++,count++) {
+	  moinfo.cc_occ[op_offset+i] = count;
+	  moinfo.qt_occ[count] = nfzc + op_offset+i;
+	  moinfo.occ_sym[count] = h;
+	}
+    }
+
+  count = 0;
+  vr_offset = nclsd + nopen;
+  op_offset = nclsd;
+  for(h=0; h < moinfo.nirreps; h++) {
+      if(h) vr_offset += moinfo.uoccpi[h-1];
+      for(i=0; i < moinfo.uoccpi[h]; i++,count++) {
+	  moinfo.cc_vir[vr_offset+i] = count;
+	  moinfo.qt_vir[count] = nfzc + vr_offset+i;
+	  moinfo.vir_sym[count] = h;
+	}
+      if(h) op_offset += moinfo.openpi[h-1];
+      for(i=0; i < moinfo.openpi[h]; i++,count++) {
+	  moinfo.cc_vir[op_offset+i] = count;
+	  moinfo.qt_vir[count] = nfzc + op_offset+i;
+	  moinfo.vir_sym[count] = h;
+	}
+    }
+
+  /* Dump the active-orbital CC and QT ordering and symmetry arrays to CC_INFO */
+  psio_write_entry(CC_INFO, "Active Occ Orb Symmetry",
+		   (char *) moinfo.occ_sym, sizeof(int)*moinfo.nactive);
+  psio_write_entry(CC_INFO, "Active Virt Orb Symmetry",
+		   (char *) moinfo.vir_sym, sizeof(int)*moinfo.nactive);
+  psio_write_entry(CC_INFO, "QT->CC Active Occ Order",
+		   (char *) moinfo.cc_occ, sizeof(int)*moinfo.nactive);
+  psio_write_entry(CC_INFO, "QT->CC Active Virt Order",
+		   (char *) moinfo.cc_vir, sizeof(int)*moinfo.nactive);
+  psio_write_entry(CC_INFO, "CC->QT Active Occ Order",
+		   (char *) moinfo.qt_occ, sizeof(int)*moinfo.nactive);
+  psio_write_entry(CC_INFO, "CC->QT Active Virt Order",
+		   (char *) moinfo.qt_vir, sizeof(int)*moinfo.nactive);
+
+  /* Now the all-orbital CC ordering and symmetry arrays */
+  moinfo.cc_allocc = init_int_array(moinfo.nmo);
+  moinfo.cc_allvir = init_int_array(moinfo.nmo);
+  moinfo.qt_allocc = init_int_array(moinfo.nmo);
+  moinfo.qt_allvir = init_int_array(moinfo.nmo);
+  for(i=0; i < moinfo.nmo; i++) {
+      moinfo.cc_allocc[i] = moinfo.cc_allvir[i] = -1;
+      moinfo.qt_allocc[i] = moinfo.qt_allvir[i] = -1;
+    }
+
+  moinfo.allocc_sym = init_int_array(moinfo.nmo);
+  moinfo.allvir_sym = init_int_array(moinfo.nmo);
+
+  count = 0;
+  fc_offset = 0;
+  cl_offset = nfzc;
+  op_offset = nfzc + nclsd;
+  for(h=0; h < moinfo.nirreps; h++) {
+      if(h) fc_offset += moinfo.frdocc[h-1];
+      for(i=0; i < moinfo.frdocc[h]; i++,count++) {
+	  moinfo.cc_allocc[fc_offset+i] = count;
+	  moinfo.qt_allocc[count] = fc_offset+i;
+	  moinfo.allocc_sym[count] = h;
+	}
+      if(h) cl_offset += moinfo.clsdpi[h-1];
+      for(i=0; i < moinfo.clsdpi[h]; i++,count++) {
+	  moinfo.cc_allocc[cl_offset+i] = count;
+	  moinfo.qt_allocc[count] = cl_offset+i;
+	  moinfo.allocc_sym[count] = h;
+	}
+      if(h) op_offset += moinfo.openpi[h-1];
+      for(i=0; i < moinfo.openpi[h]; i++,count++) {
+	  moinfo.cc_allocc[op_offset+i] = count;
+	  moinfo.qt_allocc[count] = op_offset+i;
+	  moinfo.allocc_sym[count] = h;
+	}
+    }
+
+  count = 0;
+  fv_offset = nfzc + nclsd + nopen + nuocc;
+  vr_offset = nfzc + nclsd + nopen;
+  op_offset = nfzc + nclsd;
+  for(h=0; h < moinfo.nirreps; h++) {
+      if(h) fv_offset += moinfo.fruocc[h-1];
+      for(i=0; i < moinfo.fruocc[h]; i++,count++) {
+	  moinfo.cc_allvir[fv_offset+i] = count;
+	  moinfo.qt_allvir[count] = fv_offset+i;
+	  moinfo.allvir_sym[count] = h;
+	}
+      if(h) vr_offset += moinfo.uoccpi[h-1];
+      for(i=0; i < moinfo.uoccpi[h]; i++,count++) {
+	  moinfo.cc_allvir[vr_offset+i] = count;
+	  moinfo.qt_allvir[count] = vr_offset+i;
+	  moinfo.allvir_sym[count] = h;
+	}
+      if(h) op_offset += moinfo.openpi[h-1];
+      for(i=0; i < moinfo.openpi[h]; i++,count++) {
+	  moinfo.cc_allvir[op_offset+i] = count;
+	  moinfo.qt_allvir[count] = op_offset+i;
+	  moinfo.allvir_sym[count] = h;
+	}
+    }
+
+  /* Dump the all-orbital CC ordering and symmetry arrays to CC_INFO */
+  psio_write_entry(CC_INFO, "All Occ Orb Symmetry",
+		   (char *) moinfo.allocc_sym, sizeof(int)*moinfo.nmo);
+  psio_write_entry(CC_INFO, "All Virt Orb Symmetry",
+		   (char *) moinfo.allvir_sym, sizeof(int)*moinfo.nmo);
+  psio_write_entry(CC_INFO, "QT->CC All Occ Order",
+		   (char *) moinfo.cc_allocc, sizeof(int)*moinfo.nmo);
+  psio_write_entry(CC_INFO, "QT->CC All Virt Order",
+		   (char *) moinfo.cc_allvir, sizeof(int)*moinfo.nmo);
+  psio_write_entry(CC_INFO, "CC->QT All Occ Order",
+		   (char *) moinfo.qt_allocc, sizeof(int)*moinfo.nmo);
+  psio_write_entry(CC_INFO, "CC->QT All Virt Order",
+		   (char *) moinfo.qt_allvir, sizeof(int)*moinfo.nmo);
+  
+  /* Calculate occupied and virtual orbital offsets within each irrep */
+  moinfo.occ_off = init_int_array(moinfo.nirreps);
+  moinfo.vir_off = init_int_array(moinfo.nirreps);
+  ocount = moinfo.occpi[0]; vcount = moinfo.virtpi[0];
+  for(h=1; h < moinfo.nirreps; h++) {
+      moinfo.occ_off[h] = ocount;
+      ocount += moinfo.occpi[h];
+      moinfo.vir_off[h] = vcount;
+      vcount += moinfo.virtpi[h];
+    }
+  moinfo.all_occ_off = init_int_array(moinfo.nirreps);
+  moinfo.all_vir_off = init_int_array(moinfo.nirreps);
+  ocount = moinfo.all_occpi[0]; vcount = moinfo.all_virtpi[0];
+  for(h=1; h < moinfo.nirreps; h++) {
+      moinfo.all_occ_off[h] = ocount;
+      ocount += moinfo.all_occpi[h];
+      moinfo.all_vir_off[h] = vcount;
+      vcount += moinfo.all_virtpi[h];
+    }
+
+  /* Dump occ_off and vir_off arrays to CC_INFO */
+  psio_write_entry(CC_INFO, "Active Occ Orb Offsets",
+		   (char *) moinfo.occ_off, sizeof(int)*moinfo.nirreps);
+  psio_write_entry(CC_INFO, "Active Virt Orb Offsets",
+		   (char *) moinfo.vir_off,  sizeof(int)*moinfo.nirreps);
+  psio_write_entry(CC_INFO, "All Occ Orb Offsets",
+		   (char *) moinfo.all_occ_off, sizeof(int)*moinfo.nirreps);
+  psio_write_entry(CC_INFO, "All Virt Orb Offsets",
+		   (char *) moinfo.all_vir_off, sizeof(int)*moinfo.nirreps);
+
+  fprintf(outfile,"\n\tFile30 Parameters:\n");
+  fprintf(outfile,"\t------------------\n");
+  fprintf(outfile,"\tNumber of irreps     = %d\n",moinfo.nirreps);
+  fprintf(outfile,"\tNumber of MOs        = %d\n",moinfo.nmo);
+  fprintf(outfile,"\tNumber of active MOs = %d\n\n",moinfo.nactive);
+  fprintf(outfile,
+      "\tLabel\t# MOs\t# FZDC\t# DOCC\t# SOCC\t# VIRT\t# FZVR\n");
+  fprintf(outfile,
+      "\t-----\t-----\t------\t------\t------\t------\t------\n");
+  for(i=0; i < moinfo.nirreps; i++) {
+      fprintf(outfile,
+              "\t %s\t   %d\t    %d\t    %d\t    %d\t    %d\t    %d\n",
+              moinfo.labels[i],moinfo.orbspi[i],moinfo.frdocc[i],
+              moinfo.clsdpi[i],moinfo.openpi[i],moinfo.uoccpi[i],
+              moinfo.fruocc[i]);
+    }
+  fprintf(outfile,"\n\tNuclear Rep. energy (file30) = %20.15f\n", moinfo.enuc);
+  fprintf(outfile,  "\tSCF energy          (file30) = %20.15f\n", escf);
+
+  /* Lastly, build the active virtual orbital SCF eigenvector array for
+     the AO-basis code (see CCENERGY) */
+
+  /*
+  reorder_qt(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc,
+	     moinfo.fruocc, moinfo.order,  moinfo.orbspi, moinfo.nirreps);
+  
+  file30_init();
+  evects = (double ***) malloc(moinfo.nirreps * sizeof(double **));
+  scf_vector = (double ***) malloc(moinfo.nirreps * sizeof(double **));
+
+  next = PSIO_ZERO;
+  for(h=0; h < moinfo.nirreps; h++) {
+      evects[h] = file30_rd_blk_scf(h);
+      */
+
+      /* Are there active virtuals in this irrep? */
+  /*
+      if(moinfo.virtpi[h]) {
+	  scf_vector[h] = block_matrix(moinfo.orbspi[h],moinfo.virtpi[h]);
+
+	  for(i=0; i < moinfo.orbspi[h]; i++) {
+	      for(j=0; j < moinfo.virtpi[h]; j++) {
+		  col = j + moinfo.occpi[h] - moinfo.openpi[h];
+		  scf_vector[h][i][j] = evects[h][i][col];
+		}
+	    }
+	  psio_write(CC_INFO, "SCF Active Virtual Orbitals",
+		     (char *) scf_vector[h],
+		     moinfo.orbspi[h]*moinfo.virtpi[h]*sizeof(double),
+		     next, &next);
+	}
+
+      print_mat(evects[h], moinfo.orbspi[h], moinfo.orbspi[h], outfile);
+      print_mat(scf_vector[h], moinfo.orbspi[h], moinfo.virtpi[h], outfile);
+
+      free_matrix(evects[h],moinfo.orbspi[h]);
+      free_block(scf_vector[h]);
+    }
+
+  free(evects);  free(scf_vector);
+
+  file30_close();
+  */
+}

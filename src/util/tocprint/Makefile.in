@@ -1,0 +1,75 @@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+top_objdir = @top_objdir@
+VPATH = @srcdir@
+
+prefix = @prefix@
+incdir = @incdir@
+objincdir = @objincdir@
+target = @target@
+exec_prefix = @exec_prefix@
+bindir = @bindir@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+
+COPT = @COPT@
+CINC = @CINC@
+CDBG = @CDBG@
+COTH = @COTH@
+CDEF = @CDEF@
+CFLAGS = @CFLAGS@
+
+CC = @CC@
+
+DODEPEND = @DODEPEND@
+
+MKDIRS = @MKDIRS@
+
+BINOBJ = tocprint.o
+
+.PHONY:	all default install install_target install_man clean oclean dclean targetclean
+
+all: default
+default: tocprint
+
+tocprint: $(BINOBJ)
+	$(CC) $(CFLAGS) -o $@ $^
+
+install: install_target install_man
+ 
+install_target: tocprint
+	$(MKDIRS) $(bindir)
+	$(INSTALL_PROGRAM) tocprint $(bindir)
+
+install_man:: tocprint.1
+	$(MKDIRS) $(mandir)/man1
+	$(INSTALL_PROGRAM) tocprint.1 $(mandir)/man1
+
+clean: oclean dclean targetclean
+	
+oclean:
+	rm -f *.o
+
+dclean:
+	rm -f *.d
+
+targetclean:
+	rm -f tocprint
+
+
+$(BINOBJ:.o=.d): $(DEPENDINCLUDE)
+ifneq ($(DODEPEND),no)
+include $(BINOBJ:.o=.d)
+endif
+
+
+$(top_srcdir)/configure: $(top_srcdir)/configure.in $(top_srcdir)/aclocal.m4
+	cd $(top_srcdir) && autoconf
+
+$(top_objdir)/config.status: $(top_srcdir)/configure
+	cd $(top_objdir) && ./config.status --recheck
+
+Makefile: $(srcdir)/Makefile.in $(top_objdir)/config.status
+	cd $(top_objdir) && CONFIG_FILES=src/util/tocprint/Makefile ./config.status

@@ -1,0 +1,68 @@
+.TH makepk 1 "5 May, 1991" "\*(]W" "\*(]D"
+.SH NAME
+makepk \- makes a PK-file
+
+.SH DESCRIPTION
+The program
+.B makepk
+creates the super matrix (PK) file
+.pN FILE37 .
+This file is written in a format compatable with cphf(1).
+.B makepk
+also creates the master file
+.pN FILE40 .
+Note, this program must be used in conjuction with cscf(1).
+It is not compatable with scf(1).
+
+.sL
+.pN INPUT 
+.pN FILE30
+.pN FILE31
+.pN FILE47
+.pN FILE49
+.eL "FILES REQUIRED"
+
+.sL
+.pN OUTPUT
+.pN FILE47
+.eL "FILES UPDATED"
+
+.sL
+.pN FILE37
+.pN FILE40
+.eL "FILES GENERATED"
+
+.SH INPUT FORMAT
+.LP
+The
+.B makepk
+program
+searches through the default keyword path (first
+.B MAKEPK
+and then
+.BR DEFAULT )
+for the following keywords:
+
+.IP "\fBWFN =\fP \fIstring\fP"
+This is the type of wavefunction which is ultimately desired.
+The default is 
+.BR SCF .
+If 
+.B WFN 
+= 
+.B CI 
+then 
+.pN FILE37 
+is not created, only
+.pN FILE40 .
+
+.IP "\fBDELETE34 =\fP \fIboolean\fP"
+If true, 
+.B FILE34
+is removed.  The default is true if WFN = SCF and false otherwise.
+
+.IP "\fBCUTOFF =\fP \fIinteger\fP"
+Threshold for eliminating integrals is 10**(-CUTOFF).  The default is 12.
+
+.IP "\fBIPRINT =\fP \fIinteger\fP"
+A printing flag.                               

@@ -1,0 +1,78 @@
+
+srcdir = @srcdir@
+VPATH = @srcdir@
+TEMP_DIR = /tmp1/${USER}/libderiv
+BUILD_BINARY = build_libderiv
+
+include ../MakeVars
+
+LD = $(CC)
+vpath %.a $(top_objdir)/lib:$(libdir)
+
+CSRC = build_libderiv.c mem_man.c \
+emit_order.c  emit_deriv_build.c emit_dhrr_build.c
+
+BINOBJ = $(CSRC:%.c=%.o)
+
+.PHONY: default install all
+.PHONY: clean oclean iclean dclean target_clean
+
+install: $(BUILD_BINARY) Makefile.libderiv
+	if \
+ [ -e $(TEMP_DIR) ]; \
+then \
+ echo "Scratch directory already exists!";\
+ echo "Specify some other location"; \
+ exit; \
+else \
+ mkdir $(TEMP_DIR); \
+fi; \
+cp Makefile.libderiv $(TEMP_DIR)/Makefile; \
+cp $(BUILD_BINARY) $(TEMP_DIR); \
+cd $(TEMP_DIR); \
+./$(BUILD_BINARY); \
+make install; \
+rm -rf $(TEMP_DIR)
+
+all: install
+
+default:
+
+$(BUILD_BINARY): $(BINOBJ) $(PSILIBS) $(LDLIBS)
+	$(LD) $(LDFLAGS) -o $@ $^
+
+%.$(OBJSUF): %.c
+	$(CC) $(CFLAGS) -c $< $(OUTPUT_OPTION)
+
+clean:: iclean oclean dclean targetclean
+
+iclean:
+	-rm -f *.gbl *.lcl
+
+oclean:
+	-rm -f *.o
+
+dclean:
+	-rm -f *.d
+
+targetclean:
+	-rm -f `basename $(BUILD_BINARY)`
+
+#
+# keep the configuration information and makefiles up-to-date
+#
+
+$(top_srcdir)/configure: $(top_srcdir)/configure.in $(top_srcdir)/aclocal.m4
+	cd $(top_srcdir) && autoconf
+
+$(top_objdir)/config.status: $(top_srcdir)/configure
+	cd $(top_objdir) && ./config.status --recheck
+
+Makefile: $(srcdir)/Makefile.in $(top_objdir)/config.status
+	cd $(top_objdir) && CONFIG_FILES=src/lib/`basename $(srcdir)`/Makefile ./config.status
+
+Makefile.libderiv: $(srcdir)/Makefile.libderiv.in $(top_objdir)/config.status
+	cd $(top_objdir) && CONFIG_FILES=src/lib/`basename $(srcdir)`/Makefile.libderiv ./config.status
+
+../MakeVars: $(top_srcdir)/src/lib/MakeVars.in $(top_objdir)/config.status
+	cd $(top_objdir) && CONFIG_FILES=src/lib/MakeVars ./config.status

@@ -1,0 +1,79 @@
+      SUBROUTINE GFMAT(FX,F,G,B,BIN,EE,PIVOT,INDEX,NABC,NXYZ,NPQR,
+     1                 ISOMOL)
+      IMPLICIT REAL*8 (A-H,O-Z)
+cets030991
+#include <error.h>
+      integer ip,prcntr
+      LOGICAL ISOMOL
+      DIMENSION FX(NABC,NABC),F(NABC,NABC),G(NPQR),B(NXYZ,NXYZ)
+      DIMENSION BIN(NABC,NABC),EE(NABC,NABC),PIVOT(NABC),INDEX(NABC)
+      COMMON/VIB101/NATOM,NAT1,N3N,ILIN,NVIB,IDIPOL,IPOLAR
+      COMMON/VIB107/NIC,NINT,ISYM,NSYM
+      COMMON/VIB201/CHG(50),X(50),Y(50),Z(50),W(50)
+      COMMON/VIB205/IOFF(150)
+      DATA A00,ONE / 0.0D+00 , 1.0D+00 /
+    1 FORMAT(//,2X,' B MATRIX'/)
+    2 FORMAT(//,2X,' DETERM OF B MATRIX = ',D15.7/)
+    3 FORMAT(//,2X,' B INVERSE MATRIX'/)
+    4 FORMAT(//,2X,' B * B(-1) = E'/)
+    5 FORMAT(//,2X,' G MATRIX'/)
+    6 FORMAT(//,2X,' F MATRIX'/)
+C
+C   FORM INVERSE B MATRIX
+      DO 101 I=1,N3N
+      DO 101 J=1,N3N
+      BIN(I,J)=B(I,J)
+  101 CONTINUE
+C     WRITE(6,1)
+C     CALL MATOUT(BIN,NABC,NABC,N3N,N3N,6)
+      CALL MATINV(BIN,EE,PIVOT,INDEX,N3N,N3N,DETERM,NABC)
+      WRITE(6,2) DETERM
+cets030991
+      ip=prcntr('IS_ON BRIEF')
+      if(ip.eq.0) then
+        WRITE(6,3)
+        CALL MATOUT(BIN,NABC,NABC,N3N,N3N,6)
+      endif
+      CALL MTXMPY(BIN,NABC,B,NXYZ,EE,NABC,EE,NABC,N3N,1)
+cets030991
+      ip=prcntr('IS_ON BRIEF')
+      if(ip.eq.0) then
+        WRITE(6,4)
+        CALL MATOUT(EE,NABC,NABC,N3N,N3N,6)
+      endif
+C
+C   THE CALCULATION OF G MATRIX
+      IJ=0
+      DO 103 I=1,NIC
+      DO 103 J=1,I
+      IJ=IJ+1
+      VALU=A00
+      DO 102 K=1,NATOM
+      KX=3*K-2
+      KY=3*K-1
+      KZ=3*K
+      VALU=VALU+(B(I,KX)*B(J,KX)+B(I,KY)*B(J,KY)+B(I,KZ)*B(J,KZ))
+     1 *(ONE/W(K))
+  102 CONTINUE
+      G(IJ)=VALU
+  103 CONTINUE
+cets030991
+      ip=prcntr('IS_ON BRIEF')
+      if(ip.eq.0) then
+        WRITE(6,5)
+        CALL PRINT(G,NPQR,NIC,6)
+      endif
+C
+C   THE CALCULATION OF F MATRIX FROM FX MATRIX
+      IF(ISOMOL) GO TO 201
+      CALL MTXMPY(BIN,NABC,FX,NABC,F,NABC,EE,NABC,N3N,5)
+  201 CONTINUE
+cets030991
+      ip=prcntr('IS_ON BRIEF')
+      if(ip.eq.0) then
+        WRITE(6,6)
+        CALL MATOUT(F,NABC,NABC,N3N,N3N,6)
+      endif
+C
+      RETURN
+      END

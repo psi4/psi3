@@ -1,0 +1,37 @@
+
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+include ../MakeVars
+
+CDEF += -DBUFF=0 -DSITEDIR=\"$(datadir)\"
+
+TARGET = $(top_objdir)/lib/libpsio.a
+
+TRUESRC = \
+close.c          get_global_address.c  psiotest.c    tocdel.c    tocwrite.c \
+done.c           get_length.c          read.c        toclast.c   volseek.c \
+error.c          get_numvols.c         read_block.c  toclen.c    write.c \
+get_address.c    get_volpath.c         read_entry.c  tocprint.c \
+write_block.c    get_entry_end.c       init.c        rw.c \
+tocread.c        write_entry.c         get_filename.c   open.c \
+tocclean.c    tocscan.c
+
+DEPENDINCLUDE = psio.h psio.gbl
+
+LIBOBJ = $(TRUESRC:%.c=%.o)
+
+include ../MakeRules
+
+ifneq ($(DODEPEND),no)
+include $(LIBOBJ:%.o=%.d)
+endif
+
+install_inc:: psio.h psio.gbl
+	$(MKDIRS) $(incdir)
+	$(INSTALL_INCLUDE) $^ $(incdir)
+
+install_man:: libpsio.html
+	$(MKDIRS) $(htmldir)
+	$(INSTALL_INCLUDE) $^ $(htmldir)
+

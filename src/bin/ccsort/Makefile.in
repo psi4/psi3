@@ -1,0 +1,37 @@
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+include ../MakeVars
+
+LD = $(FC)
+
+PSILIBS = -ldpd -lqt -lfile30 -liwl -lciomr -lpsio -lipv1 -lmalloc
+
+CSRC = \
+ccsort.c \
+get_params.c \
+get_moinfo.c \
+sort_oei.c \
+sort_tei.c \
+distribute.c \
+classify.c \
+idx_permute.c \
+idx_error.c \
+file_build.c \
+c_sort.c \
+d_sort.c \
+e_sort.c \
+scf_check.c \
+fock.c \
+denom.c \
+
+BINOBJ = $(CSRC:%.c=%.o)
+ALLOC = 
+
+include ../MakeRules
+
+ifneq ($(DODEPEND),no)
+$(BINOBJ:%.o=%.d): $(DEPENDINCLUDE)
+include $(BINOBJ:%.o=%.d)
+endif
+

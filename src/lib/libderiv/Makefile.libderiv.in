@@ -1,0 +1,55 @@
+include @top_objdir@/src/lib/MakeVars
+
+TARGET = $(top_objdir)/lib/libderiv.a
+HEADERS = libderiv.h
+
+TRUESRC = $(shell echo `ls *.c`)
+LIBOBJ = $(TRUESRC:%.c=%.o)
+
+default:: install
+
+%.$(OBJSUF): %.c
+	$(CC) $(CFLAGS) -c $< $(OUTPUT_OPTION)
+
+#
+# do installations
+#
+
+install:: install_inc install_target install_man
+
+install_inc::
+
+$(TARGET): $(LIBOBJ)
+	$(MKDIRS) `dirname $(TARGET)`
+	rm -f `basename $(TARGET)`
+	$(AR) $(ARFLAGS) `basename $(TARGET)` $^
+	$(RANLIB) `basename $(TARGET)`
+
+install_target:: $(TARGET)
+	$(MKDIRS) $(libdir)
+	$(INSTALL_DATA) `basename $<` $(libdir)
+	$(RANLIB) $(libdir)/`basename $(TARGET)`
+
+install_man::
+
+install_inc:: $(HEADERS)
+	$(MKDIRS) $(objincdir)
+	$(INSTALL_INCLUDE) $^ $(objincdir)
+
+#
+# clean up
+#
+
+clean:: iclean oclean dclean targetclean
+
+iclean:
+	-rm -f *.gbl *.lcl
+
+oclean:
+	-rm -f *.o
+
+dclean:
+	-rm -f *.d
+
+targetclean:
+	-rm -f `basename $(TARGET)`

@@ -1,0 +1,10 @@
+% Intder Test 12
+%
+
+intder: (
+   derlvl = 4
+   read_geom = true
+   iprint = 0000
+   trans_type = project
+)
+

@@ -1,0 +1,39 @@
+% Intder Test 4
+%
+% ^3 A'' cyclopentyne DZ(d) RHF SQM analysis with fixed scale factors 
+% from cyclopentene.  NFREQ=-5; NISO=1; NOPT=0.
+% Preliminary NINV=2 and NFREQ=0 run required (change xndter to intder)
+%
+
+xntder: (
+   trans_type = i_to_c_r
+   derlvl = 2
+   read_geom = true
+)
+
+intder: (
+   trans_type = i_to_c_r
+   freq_anal = sqmfc_no_t
+   iprint = 0000
+   read_geom = true
+   isotopes = ((C C C C C H H H H H H))
+)
+
+sqmfc: (
+   opt_sf = false
+   sf_hess = 0
+   weight = 0
+   scale_factors = (
+     (0.8156270 4 5 10 11 16 23)
+     (0.8976664 2 3 21 22)
+     (0.7790154 1)
+     (0.8056087 6 24)
+     (0.7912221 7 8 26)
+     (0.7242280 9 25 27)
+     (0.8110542 13 15 20)
+     (0.7979618 14 18 19)
+     (0.7564924 12)
+     (0.8517593 17)
+     )
+   ) 
+

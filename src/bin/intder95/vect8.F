@@ -1,0 +1,27 @@
+C     ////////////////////////////////////////////////////////////
+C LINX    (OPT2) (NUMB)
+      SUBROUTINE VECT8(NAD,K1,K2,K3,K4,V1,V2,V3,V4,XA,W)
+      IMPLICIT REAL*8 (A-H,O-Z)
+      DIMENSION XA(NAD,3),V1(3),V2(3),V3(3),V4(3)
+      DIMENSION E1(3),E2(3),E3(3),E32(3),E34(3),H3(3,3),H11(3,3)
+      DIMENSION H21(3,3),H31(3,3),H22(3,3),H32(3,3),H33(3,3)
+      PARAMETER(ZERO=0.0D0,ONE=1.0D0,
+     $          PI=3.14159265358979323846264D0)
+      CALL VECT1(NAD,K2,K3,E32,XA,T32)
+      CALL VECT1(NAD,K4,K3,E34,XA,T34)
+      CALL VECT2(NAD,K1,K2,K3,E1,E2,E3,XA,T123)
+      CALL SCAPRO(E34,E3,T)
+      W=-T32*T
+      CALL HIJS1(NAD,K3,K4,XA,H3)
+      CALL HIJS2(NAD,K1,K2,K3,XA,H11,H21,H31,H22,H32,H33)
+      DO 5  I=1,3
+      V1(I)=ZERO
+      V4(I)=ZERO
+      V2(I)=W*E32(I)/T32
+      DO 1 J=1,3
+      V1(I)=V1(I)-T32*E34(J)*H31(J,I)
+      V2(I)=V2(I)-T32*E34(J)*H32(J,I)
+ 1    V4(I)=V4(I)-T32*E3(J)*H3(J,I)
+ 5    V3(I)=-V1(I)-V2(I)-V4(I)
+      RETURN
+      END

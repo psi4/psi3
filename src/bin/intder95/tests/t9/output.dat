@@ -1,0 +1,171 @@
+******************************************************************************
+tstart called on prexaspes.ccqc.uga.edu
+Thu Aug 10 16:43:47 1995
+
+
+ INTDER95
+
+ A GENERAL PROGRAM DEVELOPED BY WESLEY D. ALLEN AND CO-WORKERS
+ WHICH PERFORMS VARIOUS VIBRATIONAL ANALYSES AND HIGHER-ORDER
+ NONLINEAR TRANSFORMATIONS AMONG FORCE FIELD REPRESENTATIONS
+
+   PROGRAM OPTIONS
+
+   NA      NSYM       NEQ      NINV     NTEST     NFREQ      NVEC     NDISP
+        NS      NDER      NPRT      NDUM     NGEOM     IRINT     NSTOP     NMODE
+    4    6    0    0    0    0    0    0    0    1    0    0    0    0   -2    0
+
+
+ NUCLEAR CARTESIAN COORDINATES (BOHR)
+
+         5.1798363607        -.0276096196         .0000000000
+         3.4415593314        -.2672532183         .0000000000
+          .0105481509         .0248929794         .0000000000
+         -.5401745211        1.6884967123         .0000000000
+
+
+ DEFINITION OF INTERNAL COORDINATES
+
+ SIMPLE INTERNAL COORDINATES
+
+L( 1)=   STRE    3    4    0    0     
+L( 2)=   STRE    3    2    0    0     
+L( 3)=   STRE    1    2    0    0     
+L( 4)=   BEND    4    3    2    0     
+L( 5)=   BEND    3    2    1    0     
+L( 6)=   TORS    4    3    2    1     
+
+
+ INTERNAL DISPLACEMENT SUBROUTINE
+
+
+
+NUCLEAR MASSES
+
+   1    1.007825       2   18.998400       3   18.998400       4    1.007825
+
+
+
+ VALUES OF SIMPLE INTERNAL COORDINATES (ANG. OR DEG.) FOR REFERENCE GEOMETRY
+
+   1     .9273252409   2    1.8221830439   3     .9285569685   4  113.1836337827
+   5  167.2836053019   6     .0000000000
+
+ DISPLACEMENT    1
+
+ INTERNAL DISPLACEMENTS
+
+    1         .0200000000
+    2         .7500000000
+    3         .0100000000
+
+
+ INTERNAL (SYMMETRY) COORDINATE FINAL VALUES
+
+    1         .9473252409
+    2        2.5721830439
+    3         .9385569685
+    4        1.9754270689
+    5        2.9196496971
+    6         .0000000000
+
+  ITER =     1   MAX INTERNAL DEVIATION =   .750E+00
+
+ DETERMINANT OF B*BT MATRIX=  5.2083    
+                 XDISP=  .189E-02
+
+  ITER =     2   MAX INTERNAL DEVIATION =   .661E-03
+
+ DETERMINANT OF B*BT MATRIX=  4.4279    
+                 XDISP=  .181E-06
+
+  ITER =     3   MAX INTERNAL DEVIATION =   .415E-10
+
+ DETERMINANT OF B*BT MATRIX=  4.4519    
+                 XDISP=  .702E-21
+
+  ITER =     4   MAX INTERNAL DEVIATION =   .888E-15
+
+ NEW CARTESIAN GEOMETRY FOUND IN     4 ITERATIONS.
+
+ROTATION OF COORDINATES TO SATISFY ECKART CONDITIONS
+
+CENTER OF MASS
+         .9292170484        -.0387577536         .0000000000
+
+ECKART CONDITION VECTORS
+
+         .0000000000         .0000000000         .0000000000
+         .0000000000         .0000000000         .0000000000
+
+ NEW CARTESIAN GEOMETRY (BOHR)
+
+        5.9043774486        -.1046541544         .0000000000
+        4.1463155929        -.3390265846         .0000000000
+        -.6949892040         .0949986643         .0000000000
+       -1.2499913016        1.7969785296         .0000000000
+
+ DISPLACEMENT    2
+
+ INTERNAL DISPLACEMENTS
+
+    2        1.0000000000
+    6        1.5000000000
+
+
+ INTERNAL (SYMMETRY) COORDINATE FINAL VALUES
+
+    1         .9273252409
+    2        2.8221830439
+    3         .9285569685
+    4        1.9754270689
+    5        2.9196496971
+    6        1.5000000000
+
+  ITER =     1   MAX INTERNAL DEVIATION =   .150E+01
+
+ DETERMINANT OF B*BT MATRIX=  5.2083    
+                 XDISP=  .176E+00
+
+  ITER =     2   MAX INTERNAL DEVIATION =   .141E+00
+
+ DETERMINANT OF B*BT MATRIX=  2.3327    
+                 XDISP=  .863E-02
+
+  ITER =     3   MAX INTERNAL DEVIATION =   .184E-02
+
+ DETERMINANT OF B*BT MATRIX=  4.7564    
+                 XDISP=  .978E-06
+
+  ITER =     4   MAX INTERNAL DEVIATION =   .110E-08
+
+ DETERMINANT OF B*BT MATRIX=  4.7252    
+                 XDISP=  .765E-18
+
+  ITER =     5   MAX INTERNAL DEVIATION =   .755E-14
+
+ NEW CARTESIAN GEOMETRY FOUND IN     5 ITERATIONS.
+
+ROTATION OF COORDINATES TO SATISFY ECKART CONDITIONS
+
+CENTER OF MASS
+         .9292170484        -.0387577536         .0000000000
+
+ECKART CONDITION VECTORS
+
+         .0000000000         .0000000000         .0000000000
+         .0000000000         .0000000000         .0000000000
+
+ NEW CARTESIAN GEOMETRY (BOHR)
+
+        6.0963982843        -.4335725124         .3412792674
+        4.3835668361        -.3392477713        -.0279731642
+        -.9301349091         .1138652931         .0142100409
+       -1.4817034085        1.7744136771        -.0818321191
+******************************************************************************
+tstop called on prexaspes.ccqc.uga.edu
+Thu Aug 10 16:43:49 1995
+
+user time   =       0.88 seconds
+system time =       0.12 seconds
+total time  =          2 seconds

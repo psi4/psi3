@@ -1,0 +1,231 @@
+
+psi: (
+
+  % Default iteration counts
+  ndisp = 1
+  nopt = 1
+  ncasiter = 1
+
+  % The basic programs
+  input      = "input3.0"
+  init       = $input
+  done       = ("psiclean")
+  scfdone    = ()
+  ints       = "cints"
+  scf        = "cscf"
+  deriv      = "cints --deriv1"
+  transqt    = "transqt"
+  backtransqt = "transqt -backtr"
+  dipder     = "dipder"
+  cphf       = "cphf"
+  makepk     = "makepk"
+  normco     = "normco"
+  oeprop     = "oeprop"
+  optking    = "optking"
+  ugeom      = "ugeom"
+  rgeom      = "rgeom"
+  geomupdate = ($optking)
+
+  % CASSCF specific programs
+  casscf     = "detcas"
+
+  % CC specific programs
+  ccsort     = "ccsort"
+  ccenergy   = "ccenergy"
+  cchbar     = "cchbar"
+  cclambda   = "cclambda"
+  ccdensity  = "ccdensity"
+  vbccd      = "vbccd"
+
+  % Determinant CI specific programs
+  detci    = "detci"
+  clag     = "clag"
+
+  % Determinant CI based Orbital Optimization
+  detcasman = "detcasman"
+  detcas   = "detcas"
+
+  % MP2-specific programs
+  mp2 = "mp2"
+  mp2_direct = "cints --mp2"
+  mp2r12 = "mp2r12"
+  mp2r12_moints = "cints --mp2r12a"
+  mp2r12_aoints = "cints --r12ints"
+  mp2r12_trans_g = "transqt -mp2r12a 0"
+  mp2r12_trans_r = "transqt -mp2r12a 1"
+  mp2r12_trans_t = "transqt -mp2r12a 2"
+
+  % -------------------------------- SCF Procedures
+  % Procedures for the SCF energy
+  SCFEnergy = ($ints $scf)
+  SCFRHFEnergy = $SCFEnergy
+  SCFROHFEnergy = $SCFEnergy
+  SCFUHFEnergy = $SCFEnergy
+  SCFTwoConEnergy = $SCFEnergy
+
+  % Procedures for the SCF gradients
+  SCFFirst = ($ints $scf $deriv)
+  SCFRHFFirst = $SCFFirst
+  SCFROHFFirst = $SCFFirst
+  SCFUHFFirst = $SCFFirst
+  SCFTwoConFirst = $SCFFirst
+
+  % Procedures for the SCF Second Derivatives
+  SCFSecond = ERROR
+  SCFRHFSecond = $SCFSecond
+  SCFROHFSecond = $SCFSecond
+  SCFUHFSecond = $SCFSecond
+  SCFTwoConSecond = $SCFSecond
+
+  % Procedures for the optimizing geometries with SCF gradients
+  SCFFirstOpt = (repeat $nopt $SCFFirst $geomupdate end $done)
+  SCFRHFFirstOpt  = $SCFFirstOpt
+  SCFROHFFirstOpt  = $SCFFirstOpt
+  SCFUHFFirstOpt  = $SCFFirstOpt
+  SCFTwoConFirstOpt  = $SCFFirstOpt
+
+  % Procedures for the finite displacements of SCF gradients
+  SCFFirstDisp  = (repeat $ndisp $ugeom $SCFFirst $rgeom end $done)
+  SCFRHFFirstDisp  = $SCFFirstDisp
+  SCFROHFFirstDisp  = $SCFFirstDisp
+  SCFUHFFirstDisp  = $SCFFirstDisp
+  SCFTwoConFirstDisp  = $SCFFirstDisp
+
+  % Testing procedure for optimizing geometries with SCF finite displacements
+  SCFROHFEnergyDisp =
+    (repeat $ndisp $ugeom $SCFROHFEnergy $rgeom end $done)
+
+  % -------------------------------- CCSD Procedures
+  % Procedures for the CCSD energy
+  CCSDEnergy = ($ints $scf $transqt $ccsort $ccenergy $done)
+  CCSDRHFEnergy = $CCSDEnergy
+  CCSDROHFEnergy = $CCSDEnergy
+  CCSDUHFEnergy = ERROR
+  CCSDTwoConEnergy = ERROR
+
+  % Procedures for the CCSD gradient
+  CCSeq = ($ccsort $ccenergy $cchbar $cclambda $ccdensity)
+  CCSDFirst = ($SCFEnergy $transqt $CCSeq $backtransqt $deriv $done)
+  CCSDRHFFirst = $CCSDFirst
+  CCSDROHFFirst = $CCSDFirst
+  CCSDUHFFirst = ERROR
+  CCSDTwoConFirst = ERROR
+
+  % Testing procedure for optimizing geometries with CCSD finite displacements
+  CCSDROHFEnergyDisp = 
+    (repeat $ndisp $ugeom $CCSDROHFEnergy $rgeom end $done)
+
+  % Procedures for the optimizing geomtries with CCSD gradients
+  CCSDRHFFirstOpt =
+    (repeat $nopt $CCSDRHFFirst $geomupdate end $done)
+  CCSDROHFFirstOpt = (repeat $nopt $CCSDROHFFirst $geomupdate end $done)
+  CCSDUHFFirstOpt  = ERROR
+  CCSDTwoConFirstOpt  = ERROR
+
+  % Procedures for the finite displacements of CCSD gradients
+  CCSDRHFFirstDisp =
+    (repeat $ndisp $ugeom $CCSDRHFFirst $rgeom end $done)
+  CCSDROHFFirstDisp = 
+    (repeat $ndisp $ugeom $CCSDROHFFirst $rgeom end $done)
+  CCSDUHFFirstDisp  = ERROR
+  CCSDTwoConFirstDisp  = ERROR
+
+  % -------------------------------- VBCCD Procedures
+  % Procedures for the VBCCD energy
+  VBCCDRHFEnergy = ($ints $scf $vbccd $done)
+  VBCCDROHFEnergy = ERROR
+  VBCCDUHFEnergy = ERROR
+  VBCCDTwoConEnergy = ERROR
+
+  % Procedures for the VBCCD gradient
+  VBCCDFirst =
+    ($ints $scf $makepk $vbccd $backtransqt $oeprop "bksort" "deriv97")
+  VBCCDRHFFirst = ($VBCCDFirst $done)
+  VBCCDROHFFirst = ERROR
+  VBCCDUHFFirst = ERROR
+  VBCCDTwoConFirst = ERROR
+
+  % Procedures for the optimizing geomtries with VBCCD gradients
+  VBCCDFirstOpt =
+    (repeat $nopt $VBCCDFirst $geomupdate end $done)
+  VBCCDRHFFirstOpt = $VBCCDFirstOpt
+  VBCCDROHFFirstOpt = ERROR
+  VBCCDUHFFirstOpt  = ERROR
+  VBCCDTwoConFirstOpt  = ERROR
+
+  % Procedures for the finite displacements of VBCCD gradients
+  VBCCDFirstDisp  = (repeat $ndisp $ugeom $VBCCDFirst $rgeom end $done)
+  VBCCDRHFFirstDisp  = $VBCCDFirstDisp
+  VBCCDUHFFirstDisp  = ERROR
+  VBCCDROHFFirstDisp  = ERROR
+  VBCCDTwoConFirstDisp  = ERROR
+
+  % -------------------------------- DETCI Procedures
+  % Procedures for the DETCI energy
+  DETCIEnergy = ($ints $scf $transqt $detci $done)
+  DETCIRHFEnergy = $DETCIEnergy
+  DETCIROHFEnergy = $DETCIEnergy
+  DETCIUHFEnergy = $DETCIEnergy
+  DETCITwoConEnergy = ERROR
+
+  % Procedures for the DETCI gradient: not yet impl, need orb response
+  DETCIFirst = ERROR
+  DETCIRHFFirst = ERROR
+  DETCIROHFFirst = ERROR
+  DETCIUHFFirst = ERROR
+  DETCITwoConFirst = ERROR
+
+  % Procedures for the optimizing geomtries with DETCI gradients
+  DETCIFirstOpt =
+    (repeat $nopt $DETCIFirst $geomupdate end $done)
+  DETCIRHFFirstOpt = $DETCIFirstOpt
+  DETCIROHFFirstOpt = ERROR
+  DETCIUHFFirstOpt  = ERROR
+  DETCITwoConFirstOpt  = ERROR
+
+  % Procedures for the finite displacements of DETCI gradients
+  DETCIFirstDisp  = (repeat $ndisp $ugeom $DETCIFirst $rgeom end $done)
+  DETCIRHFFirstDisp  = $DETCIFirstDisp
+  DETCIUHFFirstDisp  = ERROR
+  DETCIROHFFirstDisp  = ERROR
+  DETCITwoConFirstDisp  = ERROR
+
+  % -------------------------------- DETCAS Procedures
+  % Procedures for the DETCAS energy
+  DETCASEnergy = ($ints $scf $detcasman $done)
+  DETCASRHFEnergy = $DETCASEnergy
+  DETCASROHFEnergy = $DETCASEnergy
+  DETCASUHFEnergy = $DETCASEnergy
+  DETCASTwoConEnergy = ERROR
+
+  % Procedures for the DETCAS gradient
+  DETCASFirst = 
+  ($ints $scf $makepk $detcasman $backtransqt $oeprop "bksort" "deriv97")
+  DETCASRHFFirst = ($DETCASFirst $done)
+  DETCASROHFFirst = ($DETCASFirst $done)
+  DETCASUHFFirst = ($DETCASFirst $done)
+  DETCASTwoConFirst = ERROR
+
+  % Procedures for the optimizing geomtries with DETCAS gradients
+  DETCASFirstOpt =
+    (repeat $nopt $DETCASFirst $geomupdate end $done)
+  DETCASRHFFirstOpt = $DETCASFirstOpt
+  DETCASROHFFirstOpt = $DETCASFirstOpt
+  DETCASUHFFirstOpt  = $DETCASFirstOpt
+  DETCASTwoConFirstOpt  = ERROR
+
+  % Procedures for the finite displacements of DETCAS gradients
+  DETCASFirstDisp  = (repeat $ndisp $ugeom $DETCASFirst $rgeom end $done)
+  DETCASRHFFirstDisp  = $DETCASFirstDisp
+  DETCASUHFFirstDisp  = $DETCASFirstDisp
+  DETCASROHFFirstDisp  = $DETCASFirstDisp
+  DETCASTwoConFirstDisp  = ERROR
+
+  % Procedures for the direct MP2 energy
+  MP2Energy = ($ints $scf $mp2_direct $done)
+  MP2RHFEnergy = $MP2Energy
+  MP2ROHFEnergy = ERROR
+  MP2UHFEnergy = ERROR
+  MP2TwoConEnergy = ERROR
+
+) 

@@ -1,0 +1,125 @@
+.TH muder 1 "20 Oct, 1992" "Psi Release 2.0" "\*(]D"
+.SH NAME
+muder \- determines dipole moment first derivatives
+
+.SH DESCRIPTION
+.LP
+The program
+.B muder
+determines dipole moment first derivatives in
+internal coordinates.  It also updates file12.dat to the format
+of file12a.dat.
+
+.sL
+.pN INPUT      "	"
+.pN FILE12     "	"
+.pN FILE11     "	"
+.pN file28.dat "	(if wfn = ccsd or ccsd_t)"
+.pN file30.dat "	"
+.eL "FILES REQUIRED"
+
+.sL
+.eL "TEMPORARY FILES USED"
+
+.sL
+.pN OUTPUT     "	(output file)"
+.pN FILE12A    "	"
+.pN FILE18     "	(if wfn = ci, ccsd or ccsd_t)"
+.eL "FILES GENERATED"
+
+.SH INPUT FORMAT
+.LP
+The
+.B muder
+program searches for the 
+.B INTCO
+section of the input,
+and then through the default keyword path (first
+.B MUDER
+and then
+.BR DEFAULT ).
+The reference geometry from which the displaced geometries were made should
+appear at the tops of file11.dat, file12.dat and file28.dat.  The 
+following keywords are valid:
+
+.IP "\fBWFN =\fP \fIstring\fP"
+The type of wavefunction for which finite displacements have been run.
+Options are 
+.B SCF,
+.B CI,
+.B CCSD
+or
+.B CCSD_T.
+Dipole moment components are read from
+.pN FILE11 ,
+if wfn is set equal to ci.  If wfn is equal to ccsd or ccsd_t then the
+dipole moment components are read from
+.pN file28.dat. 
+If wfn is equal to scf then no dipole moment components are read.
+
+.IP "\fBN_INTCO =\fP \fIinteger\fP"
+.B muder
+first searches through
+.pN INPUT
+for the
+.B INTCO
+section, and counts the number of elements in the
+.B SYMM
+and
+.B ASYMM
+vectors (see intco(2) for more information on
+.B INTCO
+).
+It is possible, however, to override this and specify the number of
+internal coordinates you wish to work with.  This is not recommended and
+should only be done if you are an experienced user.
+
+.IP "\fBDIP_PAR =\fP \fIinteger_array\fP"
+The DIP_PAR array gives information concerning internal coordinates for which
+only positive displacements were needed.
+The format is as follows:
+
+.DS
+dip_par = (
+  (ni (px py pz))
+   "   "  "  "
+   "   "  "  "
+  )
+.DE
+
+where ni is a coordinate for which only a positive displacement is given,
+and 
+px, py and pz specify the parity (+1 or -1) of the x, y and z components
+of the dipole moment under the symmetry
+operation which generates the -ni displacement from the +ni displacement,
+The number of vectors in the DIP_PAR array should be equal
+to the number of internal coordinates for which only positive displacements
+are needed.
+DIP_PAR defaults to the zero vector.
+
+
+.SH PRINT CONTROL
+The following print control options are recognized by \fBmuder\fP:
+
+.IP \fBBRIEF\fP
+This should be \fBON\fP to indicate that minimal printing is
+desired.  The default is \fBON\fP.
+
+.IP \fBVERBOSE\fP
+Print out more output than is typically necessary.  Defaults to
+OFF.  If VERBOSE is ON, then BRIEF is reset to OFF.
+
+.IP \fBDEBUG\fP
+Print out far more information than anyone could possibly want.
+
+.SH EXAMPLES
+.LP
+To override the 
+.B BRIEF
+printing option and get more output, input.dat should include
+
+.DS
+  muder: (
+    print = ((ON VERBOSE)(OFF BRIEF DEBUG))
+    )
+.DE

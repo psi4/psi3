@@ -1,0 +1,204 @@
+.TH contour 1 "18 June, 1991" "\*(]W" "\*(]D"
+.SH NAME
+contour \- draws contour plots for orbitals
+
+.SH DESCRIPTION
+The program
+.B contour
+draws contour plots for orbitals.
+The user can chose from atomic orbitals, canonical molecular orbitals,
+or localized molecular orbitals.
+The output file,
+.pN CONTOUR ,
+is in the PostScript language.  It can be printed on any
+PostScript printer or displayed on a workstation with a PostScript
+previewer.
+
+The \fBcontour\fP program requires the basis set from
+.pN FILE30 .
+
+.sL
+.pN INPUT
+.pN FILE30
+.pN CMO "	(if \fBORBTYPE = CMO\fP)"
+.pN LMO "	(if \fBORBTYPE = LMO\fP)"
+.eL "FILES REQUIRED"
+
+
+.sL
+.pN OUTPUT
+.eL "FILES UPDATED"
+
+.sL
+.pN CHECK
+.pN FILE6
+.pN CONTOUR
+.eL "FILES GENERATED"
+
+.SH INPUT FORMAT
+.LP
+The
+.B contour
+program
+searches through the default keyword path (first
+.B CONTOUR
+and then
+.BR DEFAULT )
+for the following keywords:
+
+.IP "\fBORBTYPE =\fP \fIstring\fP"
+This gives the type of orbital to be plotted.
+If it is \fBLMO\fP, then a localized molecular orbital will be
+retrieved from the
+.pN LMO
+file.
+If it is \fBCMO\fP, then a canonical molecular orbital
+will be retrieved from the
+.pN CMO
+file.
+If it is \fBAO\fP, then an atomic orbital will be plotted.
+If it is \fBDENS\fP, a density plot is done, using the orbitals
+from the
+.pN CMO
+file.  The latter choice only works
+for closed shell molecules.
+There is no default.
+
+.IP "\fBORBNUM =\fP \fIinteger\fP"
+This gives the number of the orbital to be plotted.  Consult
+the
+.pN CMO
+and
+.pN LMO
+files to get the ordering of the orbitals.
+If 
+.B ORBTYPE
+=
+.B DENS
+, 
+.B ORBNUM
+= the number of doubly-occupied orbitals (closed-shell case only).  Otherwise,
+there is no default.
+
+.IP "\fBPLANE =\fP \fIstring\fP"
+This is the plane for which the contour is generated.  It consists
+of two letters, each of which must be \fBX\fP, \fBY\fP, or \fBZ\fP.
+The first letter indicates which molecular axis becomes the page's
+y axis.  The second indicates which molecular axis becomes the
+page's x axis.  There is no default.
+
+.IP "\fBLABEL =\fP \fIstring\fP"
+This gives a label to be included in the PostScript image.  The
+default is a blank line.
+
+.IP "\fBX0 =\fP \fIreal\fP"
+This gives the minimum value for the page's x axis.  The units are
+Bohr.  The default is the minimum x value for a nuclear
+center (after its axis
+system is converted into the page's axis system using the \fBPLANE\fP
+keyword) minus 1.5 Bohr.
+
+.IP "\fBX1 =\fP \fIreal\fP"
+This gives the maximum value for the page's x axis.  The units are
+Bohr.  The default is the maximum x value for a nuclear
+center (after its axis
+system is converted into the page's axis system using the \fBPLANE\fP
+keyword) plus 1.5 Bohr.
+
+.IP "\fBY0 =\fP \fIreal\fP"
+This gives the minimum value for the page's y axis.  The units are
+Bohr.  The default is the minimum y value for a nuclear
+center (after its axis
+system is converted into the page's axis system using the \fBPLANE\fP
+keyword) minus 1.5 Bohr.
+
+.IP "\fBY1 =\fP \fIreal\fP"
+This gives the maximum value for the page's y axis.  The units are
+Bohr.  The default is the maximum y value for a nuclear
+center (after its axis
+system is converted into the page's axis system using the \fBPLANE\fP
+keyword) plus 1.5 Bohr.
+
+.IP "\fBZ =\fP \fIreal\fP"
+This gives the value for the z axis
+(after the molecular axis
+system is converted into the page's axis system using the \fBPLANE\fP
+keyword).  The default is 0.0.
+
+.IP "\fBCOLOR =\fP \fIboolean\fP"
+If this is set to \fBYES\fP, then output for a PostScript device which
+can use color is generated.  The default is \fBNO\fP.
+
+.IP "\fBROTATE =\fP \fIboolean\fP"
+If this is set to \fBYES\fP, then PostScript output will be rotated.
+If this is set to \fBNO\fP, then PostScript output will not be rotated.
+If \fBROTATE\fP is not given, then the \fBcontour\fP program will
+try to maximize the size of the plot by choosing the appropriate orientation.
+
+.IP "\fBGRIDSIZE =\fP \fIreal\fP"
+The size of the grid use to compute the values of an orbital, in Bohr.
+The default is the maximum of \fBX1\fP\-\fBX0\fP and \fBY1\fP\-\fBY0\fP
+divided by 120.  If you want smoother looking contours, then chose a
+smaller value for \fBGRIDSIZE\fP.
+
+.IP "\fBCONTOURMAX =\fP \fIreal\fP"
+This is the maximum value of a contour line. The default is 1.0.
+
+.IP "\fBCONTOURMIN =\fP \fIreal\fP"
+This is the minimum value of a contour line. The default is -1.0.
+
+.IP "\fBCONTOURSTEP =\fP \fIreal\fP"
+This is the difference of the values adjacent contours, in Bohr.
+The default is 0.1.
+
+.IP "\fBSPLINE =\fP \fIboolean\fP"
+If set to \fByes\fP, then the contour lines will become smoother.
+However, it's effect is limited.
+
+.SH PRINT CONTROL
+The following print control options are recognized by \fBcontour\fP:
+
+.IP \fBBRIEF\fP
+This should be \fBON\fP to indicate that minimal printing is
+desired.  The default is \fBON\fP.
+
+.SH EXAMPLES
+.LP
+In practice, very little input is needed to get started.
+This example plots the
+fourth localized molecular orbital in water:
+
+.DS
+  contour: (
+    label = "H2O DZ"
+    orbtype = lmo
+    orbnum = 4
+    plane = xy
+    )
+.DE
+
+.LP
+If you want to display the PostScript file on a color workstation,
+then the following input could be added to the above (but it is not required
+for a color workstation):
+
+.DS
+  contour: color = yes
+.DE
+
+.LP
+As you fine tune your plot, you will probably eventually override most
+of the defaults.
+
+.SH BUGS
+.LP
+Dimensions of arrays in the \fBcontour\fP program are set at compile
+time and no double checking is done to make sure that memory is not
+being overwritten.  This needs to be fixed, but, for now, if a large
+molecule gives strange results, this could be the reason.
+
+.LP
+Sometimes, when node contours intersect each other, the lines may have defects.
+If this is unacceptable, then try editing the
+.pN CONTOUR
+file.

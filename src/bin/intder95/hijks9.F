@@ -1,0 +1,73 @@
+C     ////////////////////////////////////////////////////////////////
+      SUBROUTINE HIJKS9(NAD,K1,K2,K3,K4,XA,H111,H112,H221,H222,H113,
+     $       H123,H223,H331,H332,H333,H411,H421,H422,H431,H432,H433,
+     $       H441,H442,H443,H444)
+      IMPLICIT REAL*8 (A-H,O-Z)
+      DIMENSION XA(NAD,3),E1(3),E2(3),E3(3),E4(3)
+      DIMENSION Q11(3,3),Q12(3,3),Q13(3,3),Q14(3,3)
+      DIMENSION Q22(3,3),Q23(3,3)
+      DIMENSION Q24(3,3),Q33(3,3),Q34(3,3),Q44(3,3)
+      DIMENSION Q444(3,3,3),Q443(3,3,3),Q334(3,3,3),Q333(3,3,3)
+      DIMENSION Q442(3,3,3),Q432(3,3,3),Q332(3,3,3),Q224(3,3,3)
+      DIMENSION Q223(3,3,3),Q222(3,3,3),Q144(3,3,3),Q134(3,3,3)
+      DIMENSION Q133(3,3,3),Q124(3,3,3),Q123(3,3,3),Q122(3,3,3)
+      DIMENSION Q114(3,3,3),Q113(3,3,3),Q112(3,3,3),Q111(3,3,3)
+      DIMENSION H111(3,3,3),H112(3,3,3),H221(3,3,3),H222(3,3,3)
+      DIMENSION H113(3,3,3),H123(3,3,3),H223(3,3,3),H331(3,3,3)
+      DIMENSION H332(3,3,3),H333(3,3,3),H411(3,3,3),H421(3,3,3)
+      DIMENSION H422(3,3,3),H431(3,3,3),H432(3,3,3),H433(3,3,3)
+      DIMENSION H441(3,3,3),H442(3,3,3),H443(3,3,3),H444(3,3,3)
+      PARAMETER(ZERO=0.0D0,ONE=1.0D0,TWO=2.0D0)
+      CALL VECT5(NAD,K4,K3,K2,K1,E4,E3,E2,E1,XA,TOUT)
+      W=-DSIN(TOUT)
+      COSY=DCOS(TOUT)
+      CALL HIJS7(NAD,K4,K3,K2,K1,XA,Q44,Q34,Q24,Q14,
+     $           Q33,Q23,Q13,Q22,Q12,Q11)
+      CALL HIJKS7(NAD,K4,K3,K2,K1,XA,Q444,Q443,Q334,Q333,Q442,
+     $       Q432,Q332,Q224,Q223,Q222,Q144,Q134,Q133,Q124,Q123,Q122,
+     $       Q114,Q113,Q112,Q111)
+      DO 1 K=1,3
+      DO 1 I=1,3
+      DO 1 J=1,3
+      H222(I,J,K)=COSY*E2(I)*E2(J)*E2(K)-COSY*Q222(I,J,K)-
+     $   W*(E2(I)*Q22(J,K)+E2(J)*Q22(I,K)+E2(K)*Q22(I,J))
+      H223(I,J,K)=COSY*E2(I)*E2(J)*E3(K)-COSY*Q223(I,J,K)-
+     $   W*(E2(I)*Q23(J,K)+E2(J)*Q23(I,K)+E3(K)*Q22(I,J))
+      H422(I,J,K)=COSY*E4(I)*E2(J)*E2(K)-COSY*Q224(J,K,I)-
+     $   W*(E2(K)*Q24(J,I)+E2(J)*Q24(K,I)+E4(I)*Q22(J,K))
+      H333(I,J,K)=COSY*E3(I)*E3(J)*E3(K)-COSY*Q333(I,J,K)-
+     $   W*(E3(K)*Q33(J,I)+E3(J)*Q33(K,I)+E3(I)*Q33(J,K))
+      H433(I,J,K)=COSY*E4(I)*E3(J)*E3(K)-COSY*Q334(J,K,I)-
+     $   W*(E3(K)*Q34(J,I)+E3(J)*Q34(K,I)+E4(I)*Q33(J,K))
+      H332(I,J,K)=COSY*E3(I)*E3(J)*E2(K)-COSY*Q332(I,J,K)-
+     $   W*(E3(I)*Q23(K,J)+E3(J)*Q23(K,I)+E2(K)*Q33(I,J))
+      H432(I,J,K)=COSY*E4(I)*E3(J)*E2(K)-COSY*Q432(I,J,K)-
+     $   W*(E4(I)*Q23(K,J)+E3(J)*Q24(K,I)+E2(K)*Q34(J,I))
+      H444(I,J,K)=COSY*E4(I)*E4(J)*E4(K)-COSY*Q444(I,J,K)-
+     $   W*(E4(I)*Q44(K,J)+E4(J)*Q44(K,I)+E4(K)*Q44(I,J))
+      H443(I,J,K)=COSY*E4(I)*E4(J)*E3(K)-COSY*Q443(I,J,K)-
+     $   W*(E4(I)*Q34(K,J)+E4(J)*Q34(K,I)+E3(K)*Q44(I,J))
+      H442(I,J,K)=COSY*E4(I)*E4(J)*E2(K)-COSY*Q442(I,J,K)-
+     $   W*(E4(I)*Q24(K,J)+E4(J)*Q24(K,I)+E2(K)*Q44(I,J))
+  1   CONTINUE
+      DO 2 K=1,3
+      DO 2 I=1,3
+      DO 2 J=1,3
+      H221(I,J,K)=-H222(I,J,K)-H223(I,J,K)-H422(K,I,J)
+      H331(I,J,K)=-H332(I,J,K)-H333(I,J,K)-H433(K,I,J)
+      H123(I,J,K)=-H332(I,K,J)-H223(I,J,K)-H432(I,K,J)
+      H441(I,J,K)=-H442(I,J,K)-H443(I,J,K)-H444(I,J,K)
+      H431(I,J,K)=-H432(I,J,K)-H433(I,K,J)-H443(I,K,J)
+  2   H421(I,J,K)=-H422(I,J,K)-H432(I,K,J)-H442(I,K,J)
+      DO 3 K=1,3
+      DO 3 I=1,3
+      DO 3 J=1,3
+      H112(I,J,K)=-H421(I,K,J)-H123(J,K,I)-H221(I,K,J)
+      H113(I,J,K)=-H431(I,K,J)-H331(I,K,J)-H123(J,I,K)
+  3   H411(I,J,K)=-H441(I,J,K)-H431(I,J,K)-H421(I,J,K)
+      DO 4 K=1,3
+      DO 4 I=1,3
+      DO 4 J=1,3
+  4   H111(I,J,K)=-H411(K,I,J)-H113(I,J,K)-H112(I,J,K)
+      RETURN
+      END

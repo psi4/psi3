@@ -1,0 +1,53 @@
+      SUBROUTINE DEFORM(B,EX,EY,EZ,NXYZ,NNE)
+      IMPLICIT REAL*8 (A-H,O-Z)
+      DIMENSION B(NXYZ,NXYZ),EX(NNE,NNE),EY(NNE,NNE),EZ(NNE,NNE)
+      COMMON/VIB103/NST,NBND,NLIB,NDEF,NTORS
+      COMMON/VIB202/R(1275)
+      COMMON/VIB205/IOFF(150)
+      COMMON/VIB304/KD(150),LD(150),MD(150),ND(150)
+C
+C   THE CALCULATION OF S VECTORS FOR OUT OF PLANE DEFORMATIONS
+      DO 101 I=1,NDEF
+      II=I+NST+NBND+NLIB
+      K=KD(I)
+      L=LD(I)
+      M=MD(I)
+      N=ND(I)
+      KX=3*K-2
+      KY=3*K-1
+      KZ=3*K
+      LX=3*L-2
+      LY=3*L-1
+      LZ=3*L
+      MX=3*M-2
+      MY=3*M-1
+      MZ=3*M
+      NX=3*N-2
+      NY=3*N-1
+      NZ=3*N
+      NK=IOFF(MAX0(N,K))+MIN0(N,K)
+      NL=IOFF(MAX0(N,L))+MIN0(N,L)
+      NM=IOFF(MAX0(N,M))+MIN0(N,M)
+      CEXLM=EY(N,L)*EZ(N,M)-EZ(N,L)*EY(N,M)
+      CEYLM=EZ(N,L)*EX(N,M)-EX(N,L)*EZ(N,M)
+      CEZLM=EX(N,L)*EY(N,M)-EY(N,L)*EX(N,M)
+      CEXMK=EY(N,M)*EZ(N,K)-EZ(N,M)*EY(N,K)
+      CEYMK=EZ(N,M)*EX(N,K)-EX(N,M)*EZ(N,K)
+      CEZMK=EX(N,M)*EY(N,K)-EY(N,M)*EX(N,K)
+      CEXKL=EY(N,K)*EZ(N,L)-EZ(N,K)*EY(N,L)
+      CEYKL=EZ(N,K)*EX(N,L)-EX(N,K)*EZ(N,L)
+      CEZKL=EX(N,K)*EY(N,L)-EY(N,K)*EX(N,L)
+      B(II,KX)=CEXLM/R(NK)
+      B(II,KY)=CEYLM/R(NK)
+      B(II,KZ)=CEZLM/R(NK)
+      B(II,LX)=CEXMK/R(NL)
+      B(II,LY)=CEYMK/R(NL)
+      B(II,LZ)=CEZMK/R(NL)
+      B(II,MX)=CEXKL/R(NM)
+      B(II,MY)=CEYKL/R(NM)
+      B(II,MZ)=CEZKL/R(NM)
+      B(II,NX)=-B(II,KX)-B(II,LX)-B(II,MX)
+      B(II,NY)=-B(II,KY)-B(II,LY)-B(II,MY)
+  101 B(II,NZ)=-B(II,KZ)-B(II,LZ)-B(II,MZ)
+      RETURN
+      END

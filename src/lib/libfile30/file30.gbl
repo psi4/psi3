@@ -1,0 +1,9 @@
+struct file30_ {
+    int filenum;
+    char label[81];
+    int *mpoint;
+    int *mconst;
+    int *mcalcs;
+};
+
+extern struct file30_ info30_;

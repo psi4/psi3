@@ -1,0 +1,48 @@
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+include ../MakeVars
+
+LD = $(FC)
+LDLIBS += $(BLAS)
+
+PSILIBS = -ldpd -lqt -lfile30 -liwl -lciomr -lpsio -lipv1 -lmalloc
+
+CSRC = \
+cclambda.c \
+get_moinfo.c \
+get_params.c \
+init_amps.c \
+pseudoenergy.c \
+denom.c \
+sort_amps.c \
+G.c \
+L1.c \
+L2.c \
+DL2.c \
+FaeL2.c \
+FmiL2.c \
+WijmnL2.c \
+WefabL2.c \
+WejabL2.c \
+WijmbL2.c \
+L1FL2.c \
+WmbejL2.c \
+GL2.c \
+dijabL2.c \
+Lsave.c \
+overlap.c \
+update.c \
+converged.c \
+diis.c
+
+BINOBJ = $(CSRC:%.c=%.o)
+ALLOC = 
+
+include ../MakeRules
+
+ifneq ($(DODEPEND),no)
+$(BINOBJ:%.o=%.d): $(DEPENDINCLUDE)
+include $(BINOBJ:%.o=%.d)
+endif
+

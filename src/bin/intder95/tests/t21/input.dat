@@ -1,0 +1,47 @@
+% Intder Test 21
+%
+% ^3 A'' ketene DZP CISD transition state for fragmentation to ^3 CH2 + CO
+% Test of B matrix for an imparted redundancy
+% 
+% W. D. Allen and H. F. Schaefer III, J. Chem. Phys. 89, 329 (1988)
+% 
+% NTEST=5
+%
+
+default: (
+   files: (
+    default: (
+      name = "ketene" nvolume = 1
+      volume1 = "./"
+      )
+  )
+)
+
+intder: (
+   derlvl = 0
+   iprint = 0000
+   read_geom = true
+   redun_test = true
+)
+
+intco: (
+   stre = (
+    (1 1 2)
+    (2 2 3)
+    (3 3 4)
+    (4 3 5)
+   )
+   bend = (
+    (5 1 2 3)
+    (6 3 4 5)
+    (7 2 3 4)
+    (8 2 3 5)
+   )
+  out = (
+    (9 2 3 5 4)
+   )
+  tors = (
+    (10 5 3 2 1)
+   )
+)
+

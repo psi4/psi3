@@ -1,0 +1,87 @@
+      SUBROUTINE DROOT
+C
+C     GENERAL SUBROUTINE TO FIND WEIGHTS AND ROOTS FOR RYS QUADRATURE.
+C     CALLS DSMIT, DFUNC AND DNODE
+C
+C     THIS VERSION USES CHRISTOFFEL FORMULA FOR WEIGHTS.
+C
+C     IMPLICIT REAL*12 (A-H,O-Z)
+C     DOUBLE PRECISION XX,UF,WF
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+C
+ctph  COMMON /ROOT/   XX,UF(9),WF(9),NROOTS
+      COMMON /ROOT/   XX,UF(10),WF(10),NROOTS
+ctph  COMMON /FFM/    FF(19)
+      COMMON /FFM/    FF(21)
+ctph  COMMON /DROOTS/  R(9,9),W(9,9)
+      COMMON /DROOTS/  R(10,10),W(10,10)
+C
+ctph  DIMENSION C(10,10),S(10,10),A(10),RT(10)
+      DIMENSION C(11,11),S(11,11),A(11),RT(11)
+C
+      DATA A0, A1S2, A1, A4 /0.0D0, 0.5D0, 1.0D0, 4.0D0/
+C
+C     ITH ROOT OF THE JTH RYS POLYNOMIAL IS RETURNED IN R(I,J) WITH
+C     THE CORRESPONDING WEIGHT FACTOR IN W(I,J).   J=1,2,...,N
+C
+C
+C1    WRITE(3,1) N
+C1  1 FORMAT(' ##### ENTERED DROOT, NROOTS=',I2,' #####')
+C
+      N=NROOTS
+      X=XX
+      IF(N.LT.2) N=2
+      N1=N+1
+      NN=N+N
+      CALL DFUNC(X,NN)
+      DO 10 I=1,N1
+      DO 10 J=1,N1
+   10 S(I,J)=FF(I+J-1)
+      CALL DSMIT(C,S,N1)
+      DO 20 I=1,N
+      DO 20 J=1,I
+      W(I,J)=A0
+   20 R(I,J)=A0
+      WSUM=FF(1)
+      W(1,1)=WSUM
+      R(1,1)=FF(2)/WSUM
+      DUM=DSQRT(C(2,3)**2-A4*C(1,3)*C(3,3))
+      R(1,2)=A1S2*(-C(2,3)-DUM)/C(3,3)
+      R(2,2)=A1S2*(-C(2,3)+DUM)/C(3,3)
+      IF(N.EQ.2) GO TO 70
+      DO 25 I=3,N1
+   25 RT(I)=A1
+      RT(1)=R(1,2)
+      RT(2)=R(2,2)
+      DO 60 K=3,N
+      K1=K+1
+      DO 30 I=1,K1
+   30 A(I)=C(I,K1)
+      CALL DNODE(A,RT,K)
+      DO 50 I=1,K
+   50 R(I,K)=RT(I)
+   60 CONTINUE
+   70 DO 150 K=2,N
+      JMAX=K-1
+      DO 150 I=1,K
+      ROOT=R(I,K)
+      DUM=A1/FF(1)
+      DO 110 J=1,JMAX
+      J1=J+1
+      POLY=C(J1,J1)
+      DO 100 M=1,J
+  100 POLY=POLY*ROOT+C(J1-M,J1)
+  110 DUM=DUM+POLY*POLY
+  150 W(I,K)=A1/DUM
+      DO 160 K=1,NROOTS
+      DUM=R(K,NROOTS)
+      UF(K)=DUM/(A1-DUM)
+  160 WF(K)=W(K,NROOTS)
+C
+C1    WRITE (3,2) (UF(IQ),WF(IQ),IQ=1,NROOTS)
+C1  2 FORMAT (' ROOTS AND WEIGHTS',/,(1X,2G25.10))
+C1    WRITE (3,3)
+C1  3 FORMAT (' ##### EXITING DROOT ###########################')
+C
+      RETURN
+      END

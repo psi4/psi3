@@ -1,0 +1,72 @@
+
+.PHONY:	default all install install_man install_inc install_host depend clean targetclean
+
+default: all
+
+subdirs = lib include src
+
+top_srcdir = @top_srcdir@
+srcdir = @srcdir@
+VPATH = @srcdir@
+top_objdir = @top_objdir@
+
+prefix = @prefix@
+scriptdir = $(prefix)/bin
+MKDIRS = @MKDIRS@
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+
+all:
+	for dir in $(subdirs); \
+          do \
+            (cd $${dir}; echo ... Making in $${dir} ...; $(MAKE) all); \
+          done
+
+install: install_host
+	for dir in $(subdirs); \
+          do \
+            (cd $${dir}; echo ... Making install in $${dir} ...; $(MAKE) install); \
+          done
+
+install_host: host.sh
+	$(MKDIRS) $(scriptdir)
+	$(INSTALL_PROGRAM) $< $(scriptdir)
+
+install_inc:
+	for dir in $(subdirs); \
+          do \
+            (cd $${dir}; echo ... Making install in $${dir} ...; $(MAKE) install_inc); \
+          done
+
+install_man:
+	for dir in $(subdirs); \
+          do \
+            (cd $${dir}; echo ... Making install in $${dir} ...; $(MAKE) install_man); \
+          done
+
+depend:
+	for dir in $(subdirs); \
+          do \
+            (cd $${dir}; echo ... Making depend in $${dir} ...; $(MAKE) depend); \
+          done
+
+clean:
+	for dir in $(subdirs); \
+          do \
+            (cd $${dir}; echo ... Making clean in $${dir} ...; $(MAKE) clean); \
+          done
+
+targetclean:
+	for dir in $(subdirs); \
+          do \
+            (cd $${dir}; echo ... Making clean in $${dir} ...; $(MAKE) targetclean); \
+          done
+
+$(top_srcdir)/configure: $(top_srcdir)/configure.in $(top_srcdir)/aclocal.m4
+	cd $(top_srcdir) && autoconf
+
+$(top_objdir)/config.status: $(top_srcdir)/configure
+	cd $(top_objdir) && ./config.status --recheck
+
+Makefile: $(srcdir)/Makefile.in $(top_objdir)/config.status
+	cd $(top_objdir) && CONFIG_FILES=src/Makefile ./config.status

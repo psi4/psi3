@@ -1,0 +1,57 @@
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+include ../MakeVars
+
+LD = $(FC)
+LDLIBS += $(BLAS)
+
+PSILIBS = -ldpd -lqt -lfile30 -liwl -lciomr -lpsio -lipv1 -lmalloc
+
+CSRC = \
+ccenergy.c \
+get_moinfo.c \
+get_params.c \
+init_amps.c \
+tau.c \
+taut.c \
+sort_amps.c \
+Fme.c \
+Fae.c \
+Fmi.c \
+t1.c \
+energy.c \
+Wmnij.c \
+X.c \
+Y.c \
+Z.c \
+Wmbej.c \
+t2.c \
+FaetT2.c \
+FmitT2.c \
+WmnijT2.c \
+WmbejT2.c \
+BT2.c \
+CT2.c \
+DT2.c \
+ET2.c \
+FT2.c \
+ZT2.c \
+dijabT2.c \
+tsave.c \
+converged.c \
+update.c \
+diagnostic.c \
+d1diag.c \
+diis.c
+
+BINOBJ = $(CSRC:%.c=%.o)
+ALLOC = 
+
+include ../MakeRules
+
+ifneq ($(DODEPEND),no)
+$(BINOBJ:%.o=%.d): $(DEPENDINCLUDE)
+include $(BINOBJ:%.o=%.d)
+endif
+

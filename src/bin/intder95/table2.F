@@ -1,0 +1,31 @@
+C//////////////////////////////////////////////////////////////////////
+      SUBROUTINE TABLE2(NN,N,M,W,A)
+      REAL*8 A(NN,NN),W(NN)
+      CHARACTER LINE*10
+      COMMON /IO/ IIN1,IOUT,IIN2,ICHECK,NPRT,
+     $   I11,I15,I17,I20,I24,
+     $   I12,I16,I18,I21,I25,
+     $   I31,I32,I33,I35,I36,I37,
+     $   ISCR1,ISCR2,ISCR3,ISCR4,ISCR5,ISCR6,ISCR7,ISCR8,ISCR9,ISCR10,
+     $   ISCR11,ISCR12,ISCR13,ISCR14
+ 1    FORMAT(1X,11A10)
+ 2    FORMAT(11X,10(I6,4X))
+ 3    FORMAT(1X,'COORDINATE',10F10.3)
+ 4    FORMAT(I7,4X,10F10.6)
+ 5    FORMAT(//)
+      LINE='----------'
+      N2=0
+ 100  N1=N2+1
+      N2=N2+10
+      IF(N2.GT.M) N2=M
+      WRITE(IOUT,1) (LINE,I=N1,N2+1)
+      WRITE(IOUT,2) (I,I=N1,N2)
+      WRITE(IOUT,3) (W(I),I=N1,N2)
+      WRITE(IOUT,1) (LINE,I=N1,N2+1)
+      DO 105 I=1,N
+ 105  WRITE(IOUT,4) I,(A(I,J),J=N1,N2)
+      WRITE(IOUT,1) (LINE,I=N1,N2+1)
+      WRITE(IOUT,5)
+      IF(N2.LT.M) GO TO 100
+      RETURN
+      END

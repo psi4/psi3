@@ -1,0 +1,27 @@
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+include ../MakeVars
+
+LD = $(CC)
+
+PSILIBS = -lmalloc -lfile30 -lqt -lciomr -lipv1
+
+CSRC = oeprop.c parsing.c grid_unitvec.c read_density.c compute_density.c \
+read_basset.c onecgt.c recursion.c populate.c mprefxyz.c initialize.c \
+read_zvec.c overlap.c get_nmo.c
+
+BINOBJ = $(CSRC:%.c=%.o)
+ALLOC = 
+
+include ../MakeRules
+
+ifneq ($(DODEPEND),no)
+$(BINOBJ:%.o=%.d): $(DEPENDINCLUDE)
+include $(BINOBJ:%.o=%.d)
+endif
+
+install_man:: $(TARGET).1
+	$(MKDIRS) $(mandir)/man1
+	$(INSTALL_INCLUDE) $^ $(mandir)/man1
+

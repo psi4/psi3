@@ -1,0 +1,702 @@
+AC_REVISION([$Id$])
+AC_INIT(aclocal.m4)
+
+# Make srcdir an absolute path
+srcdir=`(cd $srcdir; pwd)`
+
+# Set up the default paths.
+AC_PREFIX_DEFAULT(/usr/local/psi)
+
+# exec_prefix is annoyingly preset to NONE by autoconf 2.x
+test "$exec_prefix" = "NONE" && exec_prefix='$(prefix)/$(target)'
+
+test -z "$bindir" && bindir='$(exec_prefix)/bin'
+test -z "$libdir" && libdir='$(exec_prefix)/lib'
+test -z "$docdir" && docdir='$(prefix)/doc'
+mandir='$(docdir)/man'
+txtdir='$(docdir)/txt'
+htmldir='$(docdir)/html'
+test -z "$datadir" && datadir='$(prefix)/lib'
+test -z "$incdir" && incdir='$(prefix)/include'
+
+# To make a "make all" at the top level work before the utilities
+# and include files are installed, the include files
+# will be put into an objincdir and the utilities will be accessed
+# from src/util in the object directory.
+top_objdir=`pwd`
+objincdir=$top_objdir/include
+AC_SUBST(objincdir)
+
+AC_SUBST(bindir)
+AC_SUBST(libdir)
+AC_SUBST(docdir)
+AC_SUBST(mandir)
+AC_SUBST(htmldir)
+AC_SUBST(txtdir)
+AC_SUBST(datadir)
+AC_SUBST(incdir)
+AC_SUBST(top_objdir)
+
+changequote(,)
+
+# If target wasn't given, then examine the current host and try
+# to make it the target.
+if [ -z "$target" ] || [ "$target" = NONE ]; then
+  target=`$srcdir/host.sh`
+fi
+
+# Convert target into a arch, vendor, and os.
+arch=`echo $target | sed 's/\([^-]*\)-\([^-]*\)-\([^-]*\)-*.*/\1/'`
+vendor=`echo $target | sed 's/\([^-]*\)-\([^-]*\)-\([^-]*\)-*.*/\2/'`
+os=`echo $target | sed 's/\([^-]*\)-\([^-]*\)-\([^-]*\)-*.*/\3/'`
+if [ "$arch" = NONE ]; then arch=''; fi
+
+# If anything is missing, then fill it in with unknown.
+if [ -z "$arch" ]; then arch=unknown; fi
+if [ -z "$vendor" ]; then vendor=unknown; fi
+if [ -z "$os" ]; then os=unknown; fi
+
+changequote([,])
+
+target=$arch-$vendor-$os
+echo using machine type $target
+AC_SUBST(target)
+
+# potential names of compilers
+FC_LIST="g77 f77 fc f2c"
+CC_LIST="gcc cc"
+CXX_LIST="g++ c++"
+
+# set up os specific options
+case $os in
+  aix*)
+    FC_LIST="xlf $FC_LIST"
+    CC_LIST="cc gcc xlc"
+    CXX_LIST="xlC c++ g++"
+    ;;
+esac
+
+AC_ARG_WITH(cc,--with-cc		which cc command to use,[
+case $withval in
+  yes)
+    CC='cc'
+    ;;
+  no)
+    CC=''
+    ;;
+  *)
+    CC=$withval
+    ;;
+esac
+])
+
+AC_ARG_WITH(cxx,--with-cxx                which cxx command to use,[
+case $withval in
+  yes)
+    CC='c++'
+    ;;
+  no)
+    CC=''
+    ;;
+  *)
+    CC=$withval
+    ;;
+esac
+])
+
+AC_ARG_WITH(fc,--with-fc		which fortran compiler to use,[
+case $withval in
+  yes)
+    FC='fc'
+    ;;
+  no)
+    FC=''
+    ;;
+  *)
+    FC=$withval
+    ;;
+esac
+])
+
+# Find out which compilers are available.
+if test -z "$FC"; then
+  AC_PROGRAMS_CHECK(FC,$FC_LIST,f77)
+fi
+
+if test -z "$CC"; then
+  AC_PROGRAMS_CHECK(CC,$CC_LIST,cc)
+fi
+
+if test -z "$CXX"; then
+  AC_PROGRAMS_CHECK(CXX,$CXX_LIST,c++)
+fi
+
+
+# Get info on the utility programs.
+AC_PROG_CPP()
+AC_PROG_CXXCPP()
+AC_PROG_YACC()
+AC_PROG_RANLIB()
+AC_PROG_INSTALL()
+INSTALL_INCLUDE='$(top_srcdir)/installinc.sh' AC_SUBST(INSTALL_INCLUDE)
+MKDIRS='$(top_srcdir)/mkdirs.sh' AC_SUBST(MKDIRS)
+
+AC_PROG_LEX()
+# If we got flex but didn't get LEXLIB try to find LEXLIB
+case "$LEX" in
+  flex*)
+    if test -z "$LEXLIB"; then
+      AC_PROGRAM_PATH(FLEXPATH,flex)
+      FLEXLIBPATH=`echo $FLEXPATH|sed "s bin/flex.* lib/libfl.a "`
+      if test -n "$FLEXLIBPATH" && test -f "$FLEXLIBPATH"; then
+        LEXLIB=$FLEXLIBPATH
+        test -n "$verbose" && echo "setting LEXLIB to $LEXLIB"
+      fi
+    fi
+  ;;
+  *)
+  ;;
+esac
+
+AC_SET_MAKE
+
+TMPL=$top_objdir/src/util/tmpl/tmpl AC_SUBST(TMPL)
+PSIPP=$top_objdir/src/util/psipp/psipp AC_SUBST(PSIPP)
+
+# Figure out the suffix used for fortran for files (as $(FC) needs
+# them--not F since that is psipp's input suffix).
+test -z "$F77SUF" && F77SUF=f AC_SUBST(F77SUF)
+
+# Figure out the library suffix.
+test -z "$LIBSUF" && LIBSUF=a AC_SUBST(LIBSUF)
+
+# Figure out the object file suffix.
+test -z "$OBJSUF" && OBJSUF=o AC_SUBST(OBJSUF)
+
+# See if the C compiler can do dependency checking.
+AC_CC_PROCESS_CHECK(C dependency processing,[
+#include "nosuchincludefile.h"
+],-M,CCDEPEND='$(CC) -M'; DODEPEND=yes,CCDEPEND=":"; DODEPEND=no)
+AC_SUBST(CCDEPEND)
+AC_SUBST(DODEPEND)
+AC_MSG_RESULT(CCDEPEND is $CCDEPEND)
+AC_MSG_RESULT(DODEPEND is $DODEPEND)
+
+# find the c libraries
+AC_CHECK_LIB(m,exit,CLIBS="$CLIBS -lm")
+AC_CHECK_LIB(bsd,exit,CLIBS="$CLIBS -lbsd")
+AC_MSG_RESULT(c libs: $CLIBS)
+
+AC_SUBST(CLIBS)
+
+# some c libraries are also c++ libraries
+AC_CHECK_LIB(m,exit,CXXLIBS="$CXXLIBS -lm")
+AC_MSG_RESULT(c++ libs: $CXXLIBS)
+
+AC_SUBST(CXXLIBS)
+
+# find the f77 libraries
+AC_HAVE_FC_LIBRARY(-lm,FLIBS="$FLIBS -lm")
+AC_HAVE_FC_LIBRARY(-lbsd,FLIBS="$FLIBS -lbsd")
+AC_MSG_RESULT(fortran libs: $FLIBS)
+
+AC_SUBST(FLIBS)
+
+# find the BLAS library  
+AC_HAVE_FC_LIBRARY(-lblas,BLAS="-lblas")
+
+AC_SUBST(BLAS)
+
+############################################################################
+# Set up compiler flags:
+#
+# FDBG   Fortran debug flags.
+# FOPT   Fortran opt flags.
+# FDEF   Fortran defines (for psipp).
+# FINC   Fortran include directories (for psipp).
+# FOTH   Other fortran flags.
+# CDBG   C debug flags.
+# COPT   C opt flags.
+# CDEF   C defines.
+# COTH   Other C flags.
+# CINC   C include directories (with -I in front).
+# CXXDBG C++ debug flags.
+# CXXOPT C++ opt flags.
+# CXXDEF C++ defines.
+# CXXOTH Other C++ flags.
+# CXXINC C++ include directories (with -I in front).
+
+
+FDBG='-g' AC_SUBST(FDBG)
+FOPT='-O' AC_SUBST(FOPT)
+FDEF='' AC_SUBST(FDEF)
+FOTH='' AC_SUBST(FOTH)
+FSTATIC='' AC_SUBST(FSTATIC)
+FINC='-I. -I$(objincdir) -I$(incdir)' AC_SUBST(FINC)
+CDBG='-g' AC_SUBST(CDBG)
+COPT='-O2' AC_SUBST(COPT)
+CDEF='' AC_SUBST(CDEF)
+COTH='' AC_SUBST(COTH)
+CINC='-I. -I$(objincdir) -I$(incdir)' AC_SUBST(CINC)
+CXXDBG='-g' AC_SUBST(CXXDBG)
+CXXOPT='-O2' AC_SUBST(CXXOPT)
+CXXDEF='' AC_SUBST(CXXDEF)
+CXXOTH='' AC_SUBST(CXXOTH)
+CXXINC='-I. -I$(objincdir) -I$(incdir)' AC_SUBST(CXXINC)
+
+
+#check for const
+AC_C_CONST()
+
+# check for header files
+AC_HAVE_HEADERS(errno.h fcntl.h unistd.h sys/types.h sys/times.h sys/param.h)
+
+#check to see if void* is allowed
+AC_MSG_CHECKING(for void pointers)
+psi_ac_voidptr=yes
+AC_TRY_COMPILE(,[
+;}
+void *func(void*ptr) { return ptr;
+],,psi_ac_voidptr=no)
+AC_MSG_RESULT($psi_ac_voidptr)
+if test $psi_ac_voidptr = "no"; then
+  CDEF="$CDEF -DNO_VOID_PTR"
+fi
+
+#check for perror
+AC_MSG_CHECKING(for perror)
+psi_ac_perror=yes
+AC_TRY_LINK([
+#include<errno.h>
+],[
+  perror("error");
+],,psi_ac_perror=no)
+AC_MSG_RESULT($psi_ac_perror)
+if test $psi_ac_perror = "no"; then
+  CDEF="$CDEF -DNO_PERROR"
+fi
+
+#check for strstr
+AC_MSG_CHECKING(for strstr)
+psi_ac_strstr=yes
+AC_TRY_LINK([
+#include<string.h>
+],[
+  char *a,*b;
+  strstr(a,b);
+],,psi_ac_strstr=no)
+AC_MSG_RESULT($psi_ac_strstr)
+if test $psi_ac_strstr = "no"; then
+  CDEF="$CDEF -DNO_STRSTR"
+fi
+
+# check for integer bitwise intrinsics.  at one time it was
+# hip to use ior, ishft, etc.  these days it seems that or and rshift, etc
+# are in vogue
+AC_FC_COMPILE_CHECK(fortran iand,[
+      I = IAND(1,1)
+],,FDEF="$FDEF -DHAS_IAND",)
+
+AC_FC_COMPILE_CHECK(fortran ior,[
+      I = IOR(1,1)
+],,FDEF="$FDEF -DHAS_IOR")
+
+AC_FC_COMPILE_CHECK(fortran ieor,[
+      I = IEOR(1,1)
+],,FDEF="$FDEF -DHAS_IEOR")
+
+AC_FC_COMPILE_CHECK(fortran ishft,[
+      I = ISHFT(1,1)
+],,FDEF="$FDEF -DHAS_ISHFT",)
+
+AC_FC_COMPILE_CHECK(fortran rshft,[
+      I = RSHFT(1,1)
+],,FDEF="$FDEF -DHAS_RSHFT",)
+
+AC_FC_COMPILE_CHECK(fortran lshft,[
+      I = LSHFT(1,1)
+],,FDEF="$FDEF -DHAS_LSHFT",)
+
+# See if the fortran 'flush' routine exists.
+# If not, define NO_FLUSH_ROUTINE in FDEFS.
+AC_FC_COMPILE_CHECK(fortran flush,[
+      CALL FLUSH(6)
+],,,FDEF="$FDEF -DNO_FLUSH_ROUTINE")
+
+# See if the fortran 'exit' routine exists.
+# If not, define NO_EXIT_ROUTINE in FDEFS.
+AC_FC_COMPILE_CHECK(fortran exit,[
+      CALL EXIT(0)
+],,,FDEF="$FDEF -DNO_EXIT_ROUTINE")
+
+# See if the fortran compiler takes 'implicit undefined'.
+# If so define UNDEFINED in FDEFS.
+AC_FC_COMPILE_CHECK(implicit undefined,[
+      IMPLICIT UNDEFINED(A-Z)
+],,FDEF="$FDEF -DUNDEFINED")
+
+# See if the fortran compiler takes accepts 'APPEND' as a file status in open
+# If so define APPEND_OK in FDEFS.
+AC_FC_COMPILE_CHECK(append,[
+      OPEN(1,FILE='foo',STATUS='APPEND')
+],,FDEF="$FDEF -DAPPEND_OK")
+
+# See if ieee_init() exists.
+# If so define HAS_IEEE in FDEFS.
+AC_FC_COMPILE_CHECK(ieee,[
+      CALL IEEE_INIT()
+      CALL IEEE_DONE()
+],,FDEF="$FDEF -DHAS_IEEE")
+
+# Find out how to turn off automatic variables
+
+# HP specific option to turn off automatic variables
+if test "$vendor" = hp && test "$FC" = f77 ; then
+  FSTATIC=-K
+fi
+
+# try -fno-automatic option to turn off automatic variables (GNU F77)
+if test -z "$FSTATIC"; then
+  AC_FC_COMPILE_CHECK(-fno-automatic,,-fno-automatic,
+                      FSTATIC="-fno-automatic";
+                      AC_MSG_RESULT(using -fno-automatic))
+fi
+
+# as a last resort try -static (hopefully this doesn't just link
+# libraries statically)
+if test -z "$FSTATIC"; then
+  AC_FC_COMPILE_CHECK(-static,,-static,
+                      FSTATIC="$FSTATIC -static"; AC_MSG_RESULT(using
+-static))
+fi
+
+# check for an option that zeros local variables (GNU F77)
+AC_FC_COMPILE_CHECK(-finit-local-zero,,-finit-local-zero,
+                    FSTATIC="$FSTATIC -finit-local-zero";
+                    AC_MSG_RESULT(using -finit-local-zero))
+
+# check to see what main is called, as well as how to call fortran from
+# C and vice versa
+AC_FC_LINKAGE_CHECK(main routine,)
+
+# now determine sizes of some basic types
+AC_C_SIZES_CHECK(sizeof basic types)
+if test "$ac_sizeof_int" = "$ac_sizeof_integer" ; then
+  INT_TYPE=int
+elif test "$ac_sizeof_long" = "$ac_sizeof_integer" ; then
+  INT_TYPE=long
+elif test "$ac_sizeof_long_long" = "$ac_sizeof_integer" ; then
+  INT_TYPE="long long"
+else
+  echo "cannot determine INT_TYPE"
+fi
+AC_SUBST(INT_TYPE)
+
+if test "$ac_sizeof_double" = "$ac_sizeof_real" ; then
+  REAL_TYPE=double
+elif test "$ac_sizeof_long_double" = "$ac_sizeof_real" ; then
+  REAL_TYPE="long double"
+else
+  echo "cannot determine REAL_TYPE"
+fi
+AC_SUBST(REAL_TYPE)
+
+REAL_SIZE=$ac_sizeof_real
+AC_SUBST(REAL_SIZE)
+INT_SIZE=$ac_sizeof_integer
+AC_SUBST(INT_SIZE)
+
+
+if test "$ac_sizeof_real" != "$ac_sizeof_dprec" ; then
+  echo "WARNING! PSI probably won't work if double precision is not the"
+  echo "         same size as real*8"
+  echo "         try setting FOTH environment variable"
+fi
+
+# I'm not keeping this for now due to problems with unsigned long long on
+# artaxerxes1.  -Daniel, 8/24/97
+# check for long long int type; if we have it, use it
+#AC_CC_PROCESS_CHECK(C integer size test,[
+#unsigned long long i;
+#],-o conftest,LONG_TYPE="unsigned long long";
+#AC_MSG_RESULT(using unsigned long long int),
+#LONG_TYPE="unsigned long";
+#AC_MSG_RESULT(using unsigned long int))
+#AC_SUBST(LONG_TYPE)
+
+# See if the fortran compiler takes '-Olimit 3000'.  If so then
+# use it.
+AC_FC_COMPILE_CHECK(-Olimit 3000,,-Olimit 3000,
+                    FOPT="$FOPT -Olimit 3000" AC_MSG_RESULT(using -Olimit 3000))
+
+# The sgi f77 compiler needs to have the number of labels allowed
+# in a computed goto increased.  See if the compiler takes
+# the -Nl option.
+AC_FC_COMPILE_CHECK(-Nl1000,,-Nl1000,
+                    FOPT="$FOPT -Nl1000" AC_MSG_RESULT(using -Nl1000))
+
+# The sgi f77 compiler needs to have the number of names allowed
+# increased.  See if the compiler takes the -Nn option.
+AC_FC_COMPILE_CHECK(-Nn10000,,-Nn10000,
+                    FOPT="$FOPT -Nn10000" AC_MSG_RESULT(using -Nn10000))
+
+AC_CHECKING(machine specfic optimization flags)
+changequote(,)
+# set up arch specific flags
+case $arch in
+  power)
+    # should give -qarch=pwr -qtune=pwr, but i'm not sure if the older
+    # compilers take these
+    if [ "$FC" = xlf ]; then
+      FOPT="-O -qxflag=xalias -qdpc -qfold -qmaf"
+      AC_MSG_RESULT(fortran flags: $FOPT)
+    fi
+    if [ "$CC" = xlc ] || [ "$CC" = cc ]; then
+      COPT="-O2 -qarch=pwr -qmaf"
+      AC_MSG_RESULT(c flags: $COPT)
+    fi
+    if [ "$CXX" = xlC ] || [ "$CXX" = c++ ]; then
+      CXXOPT="-O2 -qarch=pwr -qmaf"
+      AC_MSG_RESULT(c++ flags: $CXXOPT)
+    fi
+    ;;
+  power2)
+    if [ "$FC" = xlf ]; then
+      FOPT="-O2 -qxflag=xalias -qdpc"
+      AC_MSG_RESULT(fortran flags: $FOPT)
+    fi
+    if [ "$CC" = xlc ] || [ "$CC" = cc ]; then
+      COPT="-O2 -qarch=pwr2 -qtune=pwr2 -qfloat=maf -qfloat=fold"
+      AC_MSG_RESULT(c flags: $COPT)
+    fi
+    if [ "$CXX" = xlC ] || [ "$CXX" = c++ ]; then
+      CXXOPT="-O2 -qarch=pwr2 -qtune=pwr2 -qfloat=maf -qfloat=fold"
+      AC_MSG_RESULT(c++ flags: $CXXOPT)
+    fi
+    ;;
+  power3)
+    if [ "$FC" = xlf ]; then
+      FOPT="-O2 -qxflag=xalias"
+      AC_MSG_RESULT(fortran flags: $FOPT)
+    fi
+    if [ "$CC" = xlc ] || [ "$CC" = cc ]; then
+      COPT="-O2 -qarch=pwr3 -qtune=pwr3 -qcache=auto -qfloat=maf -qfloat=fold"
+      AC_MSG_RESULT(c flags: $COPT)
+    fi
+    if [ "$CXX" = xlC ] || [ "$CXX" = c++ ]; then
+      CXXOPT="-O2 -qarch=pwr3 -qtune=pwr3 -qcache=auto -qfloat=maf -qfloat=fold"
+      AC_MSG_RESULT(c++ flags: $CXXOPT)
+    fi
+    ;;
+  i386)
+    if [ "$FC" = g77 ]; then
+      FOPT="-O2 -m386"
+      AC_MSG_RESULT(fortran flags: $FOPT)
+    fi
+    if [ "$CC" = gcc ] || [ "$CC" = cc ]; then
+      COPT="-O2 -m386"
+      AC_MSG_RESULT(c flags: $COPT)
+    fi
+    if [ "$CXX" = g++ ] || [ "$CXX" = c++ ] || [ "$CXX" = gcc ]; then
+      CXXOPT="-O2 -m386"
+      AC_MSG_RESULT(c++ flags: $CXXOPT)
+    fi
+    ;;
+  i486)
+    if [ "$FC" = g77 ]; then
+      FOPT="-O2 -m486"                            
+      AC_MSG_RESULT(fortran flags: $FOPT)
+    fi
+    if [ "$CC" = gcc ] || [ "$CC" = cc ]; then
+      COPT="-O2 -m486"           
+      AC_MSG_RESULT(c flags: $COPT)
+    fi
+    if [ "$CXX" = g++ ] || [ "$CXX" = c++ ] || [ "$CXX" = gcc ]; then
+      CXXOPT="-O2 -m486"           
+      AC_MSG_RESULT(c++ flags: $CXXOPT)
+    fi
+    ;;
+  i586)
+    if [ "$FC" = g77 ]; then
+      FOPT="-O2 -march=pentium"                            
+      AC_MSG_RESULT(fortran flags: $FOPT)
+    fi
+    if [ "$CC" = gcc ] || [ "$CC" = cc ]; then
+      COPT="-O2 -march=pentium"           
+      AC_MSG_RESULT(c flags: $COPT)
+    fi
+    if [ "$CXX" = g++ ] || [ "$CXX" = c++ ] || [ "$CXX" = gcc ]; then
+      CXXOPT="-O2 -march=pentium"
+      AC_MSG_RESULT(c++ flags: $CXXOPT)
+    fi
+    ;;
+  i686)
+    if [ "$FC" = g77 ]; then
+      FOPT="-O2 -march=pentiumpro"                            
+      AC_MSG_RESULT(fortran flags: $FOPT)
+    fi
+    if [ "$CC" = gcc ] || [ "$CC" = cc ]; then
+      COPT="-O2 -march=pentiumpro"           
+      AC_MSG_RESULT(c flags: $COPT)
+    fi
+    if [ "$CXX" = g++ ] || [ "$CXX" = c++ ] || [ "$CXX" = gcc ]; then
+      CXXOPT="-O2 -march=pentiumpro"           
+      AC_MSG_RESULT(c++ flags: $CXXOPT)
+    fi
+    ;;
+esac
+changequote([,])
+
+# Set up CFLAGS and FFLAGS.
+
+CFLAGS='$(CDBG) $(COPT) $(CDEF) $(COTH) $(CINC)' AC_SUBST(CFLAGS)
+CXXFLAGS='$(CXXDBG) $(CXXOPT) $(CXXDEF) $(CXXOTH) $(CXXINC)' AC_SUBST(CXXFLAGS)
+FFLAGS='$(FDBG) $(FOPT) $(FOTH) $(FSTATIC)' AC_SUBST(FFLAGS)
+
+# Adjust the debug flags.
+# The default is to not debug.  --with-debug will turn on debugging.
+AC_ARG_WITH(debug,--with-debug		will turn on debugging,[
+case $withval in
+  yes)
+    ;;
+  no)
+    CDBG=''
+    CXXDBG=''
+    FDBG=''
+    ;;
+  *)
+    CDBG="$withval"
+    CXXDBG="$withval"
+    FDBG="$withval"
+    ;;
+esac
+],CDBG='' CXXDBG='' FDBG='')
+
+# Adjust the optimize flags.
+# The default is to optimize.  --with-opt=no or --without-opt will turn
+# off optimization.
+AC_ARG_WITH(opt,--with-opt		--with-opt=no will turn off optimization,[
+case $withval in
+  yes)
+    ;;
+  no)
+    COPT=''
+    CXXOPT=''
+    FOPT=''
+    ;;
+  *)
+    COPT="$withval"
+    CXXOPT="$withval"
+    FOPT="$withval"
+    ;;
+esac
+])
+
+# See if parallelism has been requested.
+FPARDEF=''
+FPAROPT=''
+AC_ARG_WITH(parallel,--with-parallel		use parallelization,[
+case $withval in
+  sgi)
+    FPARDEF="-DSGI_PARALLEL -DPARALLEL"
+    FPAROPT="-mp"
+    ;;
+  *)
+    AC_ERROR(invalid value $withval for --with-parallel)
+    ;;
+esac
+])
+AC_SUBST(FPARDEF)
+AC_SUBST(FPAROPT)
+
+# These nasty machine dependent tests should go away soon.
+AC_CHECKING(os specific flags)
+case $os in
+  aix*)
+    fextra="-DAIX"
+    cextra="-DAIX -D_POSIX_SOURCE"
+    cxxextra="-DAIX -D_POSIX_SOURCE"
+    AC_MSG_RESULT(fortran flags: $fextra)
+    AC_MSG_RESULT(c flags: $cextra)
+    AC_MSG_RESULT(c++ flags: $cxxextra)
+  ;;        
+  linux*)
+    fextra="-DLinux"
+    cextra="-DLinux"
+    cxxextra="-DLinux"
+    AC_MSG_RESULT(fortran flags: $fextra)
+    AC_MSG_RESULT(c flags: $cextra)
+    AC_MSG_RESULT(c++ flags: $cxxextra)
+  ;;
+esac
+FDEF="$FDEF $fextra"
+CDEF="$CDEF $cextra"
+CXXDEF="$CXXDEF $cxxextra"
+
+AC_OUTPUT(include/psiconfig.h include/cfuncs.h include/ffuncs.h
+          include/sizeof.h include/file30_params.h include/Makefile
+          Makefile lib/Makefile src/Makefile
+          src/lib/Makefile src/lib/MakeRules src/lib/MakeVars
+          src/util/Makefile
+          src/util/psipp/Makefile
+          src/util/tmpl/Makefile
+          src/util/tocprint/Makefile
+
+          src/lib/alloc/Makefile
+          src/lib/io/Makefile
+          src/lib/io/param.h
+          src/lib/iomr/Makefile
+          src/lib/iomrth/Makefile
+          src/lib/libciomr/Makefile
+          src/lib/libciomr/iomrparam.h
+          src/lib/libcoallc/Makefile
+          src/lib/libipv1/Makefile
+          src/lib/libmalloc/Makefile
+          src/lib/libparse/Makefile
+
+          src/lib/libderiv/Makefile
+          src/lib/libderiv/Makefile.libderiv
+          src/lib/libdpd/Makefile
+          src/lib/libfile30/Makefile
+          src/lib/libint/Makefile
+          src/lib/libint/Makefile.libint
+          src/lib/libint/input.dat
+          src/lib/libiwl/Makefile
+          src/lib/libpsio/Makefile
+          src/lib/libqt/Makefile
+          src/lib/libr12/Makefile
+          src/lib/libr12/Makefile.libr12
+          src/bin/Makefile src/bin/MakeRules src/bin/MakeVars
+
+          src/bin/contour/Makefile
+          src/bin/contour3d/Makefile
+          src/bin/cphf/Makefile
+          src/bin/normco/Makefile
+          src/bin/intder95/Makefile
+          src/bin/intdif/Makefile
+          src/bin/makepk/Makefile
+          src/bin/muder/Makefile
+          src/bin/psi/Makefile
+          src/bin/ugeom/Makefile
+          src/bin/rgeom/Makefile
+
+          src/bin/ccdensity/Makefile
+          src/bin/ccenergy/Makefile
+          src/bin/cchbar/Makefile
+          src/bin/cclambda/Makefile
+          src/bin/ccsort/Makefile
+          src/bin/cints/Makefile
+          src/bin/cscf/Makefile
+          src/bin/detci/Makefile
+          src/bin/detcas/Makefile
+          src/bin/detcasman/Makefile
+          src/bin/geom/Makefile
+          src/bin/input/Makefile
+          src/bin/mp2/Makefile
+          src/bin/mp2r12/Makefile
+          src/bin/oeprop/Makefile
+          src/bin/optking/Makefile
+          src/bin/psiclean/Makefile
+          src/bin/transqt/Makefile
+          src/bin/vbccd/Makefile
+          )

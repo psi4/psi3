@@ -1,0 +1,85 @@
+
+srcdir = @srcdir@
+VPATH = @srcdir@
+TEMP_DIR = /tmp1/${USER}/libint
+BUILD_BINARY = build_libint
+
+include ../MakeVars
+
+LD = $(CC)
+PSILIBS = libipv1.a
+vpath %.a $(top_objdir)/lib:$(libdir)
+
+CSRC = build_libint.c emit_vrr_build.c emit_hrr_build.c mem_man.c \
+emit_order.c
+
+BINOBJ = $(CSRC:%.c=%.o)
+
+.PHONY: default install all
+.PHONY: clean oclean iclean dclean target_clean
+
+install: $(BUILD_BINARY) input.dat Makefile.libint
+	if \
+ [ -e $(TEMP_DIR) ]; \
+then \
+ echo "Scratch directory already exists!";\
+ echo "Specify some other location"; \
+ exit; \
+else \
+ mkdir $(TEMP_DIR); \
+fi; \
+cp input.dat $(TEMP_DIR); \
+cp Makefile.libint $(TEMP_DIR)/Makefile; \
+cp $(BUILD_BINARY) $(TEMP_DIR); \
+cd $(TEMP_DIR); \
+./$(BUILD_BINARY); \
+make install; \
+rm -rf $(TEMP_DIR)
+
+all: install
+
+default:
+
+$(BUILD_BINARY): $(BINOBJ) $(PSILIBS) $(LDLIBS)
+	$(LD) $(LDFLAGS) -o $@ $^
+
+%.$(OBJSUF): %.c
+	$(CC) $(CFLAGS) -c $< $(OUTPUT_OPTION)
+
+clean:: iclean oclean dclean targetclean
+
+iclean:
+	-rm -f *.gbl *.lcl
+
+oclean:
+	-rm -f *.o
+
+dclean:
+	-rm -f *.d
+
+targetclean:
+	-rm -f `basename $(BUILD_BINARY)`
+
+#
+# keep the configuration information and makefiles up-to-date
+#
+
+$(top_srcdir)/configure: $(top_srcdir)/configure.in $(top_srcdir)/aclocal.m4
+	cd $(top_srcdir) && autoconf
+
+$(top_objdir)/config.status: $(top_srcdir)/configure
+	cd $(top_objdir) && ./config.status --recheck
+
+Makefile: $(srcdir)/Makefile.in $(top_objdir)/config.status
+	cd $(top_objdir) && CONFIG_FILES=src/lib/`basename $(srcdir)`/Makefile ./config.status
+
+Makefile.libint: $(srcdir)/Makefile.libint.in $(top_objdir)/config.status
+	cd $(top_objdir) && CONFIG_FILES=src/lib/`basename $(srcdir)`/Makefile.libint ./config.status
+
+input.dat: $(srcdir)/input.dat.in $(top_objdir)/config.status
+	cd $(top_objdir) && CONFIG_FILES=src/lib/`basename $(srcdir)`/input.dat ./config.status
+
+../MakeVars: $(top_srcdir)/src/lib/MakeVars.in $(top_objdir)/config.status
+	cd $(top_objdir) && CONFIG_FILES=src/lib/MakeVars ./config.status
+
+

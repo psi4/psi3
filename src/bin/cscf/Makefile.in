@@ -1,0 +1,31 @@
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+include ../MakeVars
+
+LD = $(CC)
+
+PSILIBS = -lfile30 -liwl -lpsio -lciomr -lipv1 -lmalloc
+
+TRUESRC = \
+cscf.c cleanup.c diis.c dmat.c dmat_2.c ecalc.c errchk.c findit.c \
+formg2.c formgc.c formgo.c form_vec.c gprgid.c init_scf.c make_47.c \
+packit_c.c packit_o.c rdone.c rdtwo.c rotate_vector.c scf_input.c \
+scf_iter.c scf_iter_2.c schmit.c sdot.c shalf.c check_rot.c phases.c\
+guess.c sortev.c occ_fun.c init_uhf.c cmatsplit.c dmatuhf.c \
+findit_uhf.c uhf_iter.c schmit_uhf.c diis2_uhf.c formg_direct.c \
+orb_mix.c
+
+BINOBJ = $(TRUESRC:%.c=%.o)
+ALLOC = 
+
+include ../MakeRules
+
+ifneq ($(DODEPEND),no)
+$(BINOBJ:%.o=%.d): $(DEPENDINCLUDE)
+include $(BINOBJ:%.o=%.d)
+endif
+
+install_man:: cscf.1
+	$(MKDIRS) $(mandir)/man1
+	$(INSTALL_INCLUDE) $^ $(mandir)/man1

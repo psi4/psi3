@@ -1,0 +1,52 @@
+% Intder Test 11
+%
+% New User-Friendly Input Style
+%
+% David Sherrill, 1995
+%
+
+intder: (
+   derlvl = 2
+   iprint = 0000
+   trans_type = I_TO_C_R
+   read_geom = true
+   trans_1der = true
+   freq_anal = rxn_path
+   rxn_coord = 1
+)
+
+intco: (
+   stre = (
+    (1 1 2)
+    (2 3 4)
+    (3 3 5)
+   )
+   bend = (
+    (4 4 3 5)
+    (6 1 2 3)
+    (8 2 3 4)
+    (9 2 3 5)
+   )
+  out = (
+    (5 2 3 4 5)
+   )
+  tors = (
+    (10 1 2 3 4)
+    (11 1 2 3 5)
+    )
+  rcom = (
+    (7 1 2 3 5)
+   )
+  symm = (
+    ("01" (7))
+    ("02" (1))
+    ("03" (2 3))
+    ("04" (4))
+    ("05" (6))
+    ("06" (8 9))
+    ("07" (2 -3))
+    ("08" (8 -9))
+    ("09" (10 11))
+     )
+)
+
