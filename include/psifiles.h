@@ -114,9 +114,9 @@ integrals out (i.e. multiply by i=sqrt(-1) to get the integrals) */
 #define PSIF_AO_D2HDBDE_ZX  "AO-basis d2h/dBzdEx Ints"
 #define PSIF_AO_D2HDBDE_ZY  "AO-basis d2h/dBzdEy Ints"
 #define PSIF_AO_D2HDBDE_ZZ  "AO-basis d2h/dBzdEz Ints"
-#define PSIF_AO_DFDB_X      "AO-basis dF/dBx Ints"      /* Fock operator derivative integrals WRT B field */
-#define PSIF_AO_DFDB_Y      "AO-basis dF/dBy Ints"
-#define PSIF_AO_DFDB_Z      "AO-basis dF/dBz Ints"
+#define PSIF_MO_DFDB_X      "AO-basis dF/dBx Ints"      /* Fock operator derivative integrals WRT B field */
+#define PSIF_MO_DFDB_Y      "AO-basis dF/dBy Ints"
+#define PSIF_MO_DFDB_Z      "AO-basis dF/dBz Ints"
 
 #define PSIF_MO_OEI         "MO-basis One-electron Ints"
 #define PSIF_MO_A_OEI       "MO-basis Alpha One-electron Ints"
