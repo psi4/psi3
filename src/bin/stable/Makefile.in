@@ -1,0 +1,23 @@
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+include ../MakeVars
+
+LDLIBS += $(BLAS)
+
+PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
+
+CSRC = \
+stable.c  get_moinfo.c get_params.c sort_oei.c fock.c build_A.c \
+sort_tei.c distribute.c classify.c file_build.c idx_permute.c diag_A.c \
+
+BINOBJ = $(CSRC:%.c=%.o)
+ALLOC = 
+
+include ../MakeRules
+
+ifneq ($(DODEPEND),no)
+$(BINOBJ:%.o=%.d): $(DEPENDINCLUDE)
+include $(BINOBJ:%.o=%.d)
+endif
+
