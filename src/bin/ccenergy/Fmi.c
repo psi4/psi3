@@ -3,6 +3,10 @@
 #define EXTERN
 #include "globals.h"
 
+/* Still need to spin-adapt the D-integral contributions to FMI 
+** -TDC, 8/19/01
+*/
+
 void Fmi_build(void)
 {
   int h,m,i;
@@ -11,107 +15,184 @@ void Fmi_build(void)
   dpdbuf4 E_anti, E, D_anti, D;
   dpdbuf4 tautIJAB, tautijab, tautIjAb;
 
-  dpd_file2_init(&fIJ, CC_OEI, 0, 0, 0, "fIJ");
-  dpd_file2_copy(&fIJ, CC_OEI, "FMI");
-  dpd_file2_close(&fIJ);
+  if(params.ref == 0) { /** RHF **/
+    dpd_file2_init(&fIJ, CC_OEI, 0, 0, 0, "fIJ");
+    dpd_file2_copy(&fIJ, CC_OEI, "FMI");
+    dpd_file2_close(&fIJ);
+  }
+  else if(params.ref == 1) { /** ROHF **/
+    dpd_file2_init(&fIJ, CC_OEI, 0, 0, 0, "fIJ");
+    dpd_file2_copy(&fIJ, CC_OEI, "FMI");
+    dpd_file2_close(&fIJ);
   
-  dpd_file2_init(&fij, CC_OEI, 0, 0, 0, "fij");
-  dpd_file2_copy(&fij, CC_OEI, "Fmi");
-  dpd_file2_close(&fij);
+    dpd_file2_init(&fij, CC_OEI, 0, 0, 0, "fij");
+    dpd_file2_copy(&fij, CC_OEI, "Fmi");
+    dpd_file2_close(&fij);
+  }
 
-  dpd_file2_init(&FMI, CC_OEI, 0, 0, 0, "FMI");
-  dpd_file2_init(&Fmi, CC_OEI, 0, 0, 0, "Fmi");
+  if(params.ref == 0) { /** RHF **/
+    dpd_file2_init(&FMI, CC_OEI, 0, 0, 0, "FMI");
+    dpd_file2_mat_init(&FMI);
+    dpd_file2_mat_rd(&FMI);
 
-  dpd_file2_mat_init(&FMI);
-  dpd_file2_mat_rd(&FMI);
-  dpd_file2_mat_init(&Fmi);
-  dpd_file2_mat_rd(&Fmi);
-
-  for(h=0; h < moinfo.nirreps; h++) {
+    for(h=0; h < moinfo.nirreps; h++) {
       for(m=0; m < FMI.params->rowtot[h]; m++) 
-	  for(i=0; i < FMI.params->coltot[h]; i++)
-	      FMI.matrix[h][m][i] *= (1 - (m==i));
+	FMI.matrix[h][m][m] = 0;
+    }
+    dpd_file2_mat_wrt(&FMI);
+    dpd_file2_mat_close(&FMI);
+    dpd_file2_close(&FMI);
+  }
+  else if(params.ref == 1) { /** ROHF **/
+    dpd_file2_init(&FMI, CC_OEI, 0, 0, 0, "FMI");
+    dpd_file2_init(&Fmi, CC_OEI, 0, 0, 0, "Fmi");
+
+    dpd_file2_mat_init(&FMI);
+    dpd_file2_mat_rd(&FMI);
+    dpd_file2_mat_init(&Fmi);
+    dpd_file2_mat_rd(&Fmi);
+
+    for(h=0; h < moinfo.nirreps; h++) {
+      for(m=0; m < FMI.params->rowtot[h]; m++) 
+	FMI.matrix[h][m][m] = 0;
 
       for(m=0; m < Fmi.params->rowtot[h]; m++) 
-	  for(i=0; i < Fmi.params->coltot[h]; i++) 
-	      Fmi.matrix[h][m][i] *= (1 - (m==i));
+	Fmi.matrix[h][m][m] = 0;
     }
 
-  dpd_file2_mat_wrt(&FMI);
-  dpd_file2_mat_close(&FMI);
-  dpd_file2_mat_wrt(&Fmi);
-  dpd_file2_mat_close(&Fmi);
+    dpd_file2_mat_wrt(&FMI);
+    dpd_file2_mat_close(&FMI);
+    dpd_file2_mat_wrt(&Fmi);
+    dpd_file2_mat_close(&Fmi);
 
-  dpd_file2_init(&fIA, CC_OEI, 0, 0, 1, "fIA");
-  dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
-  dpd_contract222(&fIA, &tIA, &FMI, 0, 0, 0.5, 1);
-  dpd_file2_close(&tIA);
-  dpd_file2_close(&fIA);
+    dpd_file2_close(&FMI);
+    dpd_file2_close(&Fmi);
+  }
+
+  if(params.ref == 0) { /** RHF **/
+    dpd_file2_init(&FMI, CC_OEI, 0, 0, 0, "FMI");
+
+    dpd_file2_init(&fIA, CC_OEI, 0, 0, 1, "fIA");
+    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+    dpd_contract222(&fIA, &tIA, &FMI, 0, 0, 0.5, 1);
+    dpd_file2_close(&tIA);
+    dpd_file2_close(&fIA);
   
-  dpd_file2_init(&fia, CC_OEI, 0, 0, 1, "fia");
-  dpd_file2_init(&tia, CC_OEI, 0, 0, 1, "tia");
-  dpd_contract222(&fia, &tia, &Fmi, 0, 0, 0.5, 1);
-  dpd_file2_close(&tia);
-  dpd_file2_close(&fia);
+    dpd_buf4_init(&E_anti, CC_EINTS, 0, 11, 0, 11, 0, 1, "E <ai|jk>");
+    dpd_buf4_init(&E, CC_EINTS, 0, 11, 0, 11, 0, 0, "E <ai|jk>");
+
+    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+
+    dpd_dot13(&tIA, &E_anti, &FMI, 1, 1, 1.0, 1.0);
+    dpd_dot13(&tIA, &E, &FMI, 1, 1, 1.0, 1.0);
+
+    dpd_file2_close(&tIA);
+
+    dpd_buf4_close(&E_anti);
+    dpd_buf4_close(&E);
+
+    dpd_buf4_init(&D_anti, CC_DINTS, 0, 0, 7, 0, 7, 0, "D <ij||ab> (ij,a>b)");
+    dpd_buf4_init(&tautIJAB, CC_TAMPS, 0, 0, 7, 2, 7, 0, "tautIJAB");
+    dpd_contract442(&D_anti, &tautIJAB, &FMI, 0, 0, 1, 1);
+    dpd_buf4_close(&tautIJAB);
+    dpd_buf4_close(&D_anti);
+
+    dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
+    dpd_buf4_init(&tautIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tautIjAb");
+    dpd_contract442(&D, &tautIjAb, &FMI, 0, 0, 1, 1);
+    dpd_buf4_close(&tautIjAb);
+    dpd_buf4_close(&D);
+
+    /* Build the tilde intermediate */
+    dpd_file2_copy(&FMI, CC_OEI, "FMIt");
+    dpd_file2_close(&FMI);
+
+    dpd_file2_init(&FMIt, CC_OEI, 0, 0, 0, "FMIt");
+
+    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+    dpd_file2_init(&FME, CC_OEI, 0, 0, 1, "FME");
+    dpd_contract222(&FME, &tIA, &FMIt, 0, 0, 0.5, 1);
+    dpd_file2_close(&FME);
+    dpd_file2_close(&tIA);
+
+    dpd_file2_close(&FMIt);
+  }
+  else if(params.ref == 1) { /** ROHF **/
+
+    dpd_file2_init(&FMI, CC_OEI, 0, 0, 0, "FMI");
+    dpd_file2_init(&Fmi, CC_OEI, 0, 0, 0, "Fmi");
+
+    dpd_file2_init(&fIA, CC_OEI, 0, 0, 1, "fIA");
+    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+    dpd_contract222(&fIA, &tIA, &FMI, 0, 0, 0.5, 1);
+    dpd_file2_close(&tIA);
+    dpd_file2_close(&fIA);
   
-  dpd_buf4_init(&E_anti, CC_EINTS, 0, 11, 0, 11, 0, 1, "E <ai|jk>");
-  dpd_buf4_init(&E, CC_EINTS, 0, 11, 0, 11, 0, 0, "E <ai|jk>");
-  dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
-  dpd_file2_init(&tia, CC_OEI, 0, 0, 1, "tia");
+    dpd_file2_init(&fia, CC_OEI, 0, 0, 1, "fia");
+    dpd_file2_init(&tia, CC_OEI, 0, 0, 1, "tia");
+    dpd_contract222(&fia, &tia, &Fmi, 0, 0, 0.5, 1);
+    dpd_file2_close(&tia);
+    dpd_file2_close(&fia);
+  
+    dpd_buf4_init(&E_anti, CC_EINTS, 0, 11, 0, 11, 0, 1, "E <ai|jk>");
+    dpd_buf4_init(&E, CC_EINTS, 0, 11, 0, 11, 0, 0, "E <ai|jk>");
+    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+    dpd_file2_init(&tia, CC_OEI, 0, 0, 1, "tia");
 
-  dpd_dot13(&tIA, &E_anti, &FMI, 1, 1, 1.0, 1.0);
-  dpd_dot13(&tia, &E, &FMI, 1, 1, 1.0, 1.0);
+    dpd_dot13(&tIA, &E_anti, &FMI, 1, 1, 1.0, 1.0);
+    dpd_dot13(&tia, &E, &FMI, 1, 1, 1.0, 1.0);
 
-  dpd_dot13(&tia, &E_anti, &Fmi, 1, 1, 1.0, 1.0);
-  dpd_dot13(&tIA, &E, &Fmi, 1, 1, 1.0, 1.0);
+    dpd_dot13(&tia, &E_anti, &Fmi, 1, 1, 1.0, 1.0);
+    dpd_dot13(&tIA, &E, &Fmi, 1, 1, 1.0, 1.0);
 
-  dpd_file2_close(&tIA);
-  dpd_file2_close(&tia);
-  dpd_buf4_close(&E_anti);
-  dpd_buf4_close(&E);
+    dpd_file2_close(&tIA);
+    dpd_file2_close(&tia);
+    dpd_buf4_close(&E_anti);
+    dpd_buf4_close(&E);
 
-  dpd_buf4_init(&D_anti, CC_DINTS, 0, 0, 7, 0, 7, 0, "D <ij||ab> (ij,a>b)");
-  dpd_buf4_init(&tautIJAB, CC_TAMPS, 0, 0, 7, 2, 7, 0, "tautIJAB");
-  dpd_buf4_init(&tautijab, CC_TAMPS, 0, 0, 7, 2, 7, 0, "tautijab");
+    dpd_buf4_init(&D_anti, CC_DINTS, 0, 0, 7, 0, 7, 0, "D <ij||ab> (ij,a>b)");
+    dpd_buf4_init(&tautIJAB, CC_TAMPS, 0, 0, 7, 2, 7, 0, "tautIJAB");
+    dpd_buf4_init(&tautijab, CC_TAMPS, 0, 0, 7, 2, 7, 0, "tautijab");
 
-  dpd_contract442(&D_anti, &tautIJAB, &FMI, 0, 0, 1, 1);
-  dpd_contract442(&D_anti, &tautijab, &Fmi, 0, 0, 1, 1);
+    dpd_contract442(&D_anti, &tautIJAB, &FMI, 0, 0, 1, 1);
+    dpd_contract442(&D_anti, &tautijab, &Fmi, 0, 0, 1, 1);
 
-  dpd_buf4_close(&tautIJAB);
-  dpd_buf4_close(&tautijab);
-  dpd_buf4_close(&D_anti);
+    dpd_buf4_close(&tautIJAB);
+    dpd_buf4_close(&tautijab);
+    dpd_buf4_close(&D_anti);
 
-  dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
-  dpd_buf4_init(&tautIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tautIjAb");
+    dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
+    dpd_buf4_init(&tautIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tautIjAb");
 
-  dpd_contract442(&D, &tautIjAb, &FMI, 0, 0, 1, 1);
-  dpd_contract442(&D, &tautIjAb, &Fmi, 1, 1, 1, 1);
+    dpd_contract442(&D, &tautIjAb, &FMI, 0, 0, 1, 1);
+    dpd_contract442(&D, &tautIjAb, &Fmi, 1, 1, 1, 1);
 
-  dpd_buf4_close(&tautIjAb);
-  dpd_buf4_close(&D);
+    dpd_buf4_close(&tautIjAb);
+    dpd_buf4_close(&D);
 
-  /* Build the tilde intermediate */
-  dpd_file2_copy(&FMI, CC_OEI, "FMIt");
-  dpd_file2_copy(&Fmi, CC_OEI, "Fmit");
+    /* Build the tilde intermediate */
+    dpd_file2_copy(&FMI, CC_OEI, "FMIt");
+    dpd_file2_copy(&Fmi, CC_OEI, "Fmit");
 
-  dpd_file2_close(&FMI);
-  dpd_file2_close(&Fmi);
+    dpd_file2_close(&FMI);
+    dpd_file2_close(&Fmi);
 
-  dpd_file2_init(&FMIt, CC_OEI, 0, 0, 0, "FMIt");
-  dpd_file2_init(&Fmit, CC_OEI, 0, 0, 0, "Fmit");
+    dpd_file2_init(&FMIt, CC_OEI, 0, 0, 0, "FMIt");
+    dpd_file2_init(&Fmit, CC_OEI, 0, 0, 0, "Fmit");
 
-  dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
-  dpd_file2_init(&FME, CC_OEI, 0, 0, 1, "FME");
-  dpd_contract222(&FME, &tIA, &FMIt, 0, 0, 0.5, 1);
-  dpd_file2_close(&FME);
-  dpd_file2_close(&tIA);
+    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+    dpd_file2_init(&FME, CC_OEI, 0, 0, 1, "FME");
+    dpd_contract222(&FME, &tIA, &FMIt, 0, 0, 0.5, 1);
+    dpd_file2_close(&FME);
+    dpd_file2_close(&tIA);
 
-  dpd_file2_init(&tia, CC_OEI, 0, 0, 1, "tia");
-  dpd_file2_init(&Fme, CC_OEI, 0, 0, 1, "Fme");
-  dpd_contract222(&Fme, &tia, &Fmit, 0, 0, 0.5, 1);
-  dpd_file2_close(&Fme);
-  dpd_file2_close(&tia);
+    dpd_file2_init(&tia, CC_OEI, 0, 0, 1, "tia");
+    dpd_file2_init(&Fme, CC_OEI, 0, 0, 1, "Fme");
+    dpd_contract222(&Fme, &tia, &Fmit, 0, 0, 0.5, 1);
+    dpd_file2_close(&Fme);
+    dpd_file2_close(&tia);
 
-  dpd_file2_close(&FMIt);
-  dpd_file2_close(&Fmit);
+    dpd_file2_close(&FMIt);
+    dpd_file2_close(&Fmit);
+  }
 }

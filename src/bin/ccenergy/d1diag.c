@@ -109,7 +109,7 @@ d1diag_t1_rohf()
       int ncol = T1_a.params->coltot[h];
       int nopen = moinfo.openpi[h];
       if(nrow && ncol) {
-         Tave = block_matrix(ncol, ncol);
+         Tave = block_matrix(nrow, ncol);
 
          for (i=0; i<nrow; i++) {
              for (j=0; j<ncol; j++) {
@@ -150,11 +150,12 @@ d1diag_t1_rohf()
 double d1diag(void)
 {
   double norm = 0.0;
-  if (moinfo.iopen) {
-      norm = d1diag_t1_rohf();
-    }
-  else {
-      norm = d1diag_t1_rhf();
-    }
+
+  if(params.ref == 0) { /** RHF **/
+    /*    norm = d1diag_t1_rhf(); */
+  }
+  else if (params.ref == 1) { /** ROHF **/
+    /*    norm = d1diag_t1_rohf(); */
+  }
   return norm;
 }

@@ -44,6 +44,7 @@ int **cacheprep_uhf(int level, int *cachefiles);
 int **cacheprep_rhf(int level, int *cachefiles);
 void memchk(void);
 struct dpd_file4_cache_entry *priority_list(void);
+void spinad_amps(void);
 
 int main(int argc, char *argv[])
 {
@@ -129,6 +130,10 @@ int main(int argc, char *argv[])
     timer_on("T2 Build");
     t2_build();
     timer_off("T2 Build");
+
+    timer_on("Spinad Amps");
+    spinad_amps();
+    timer_off("Spinad Amps");
 
     if(converged()) {
       done = 1;
