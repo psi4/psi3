@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <libiwl/iwl.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
@@ -50,7 +51,7 @@ void classify(int p, int q, int r, int s, double value,
 		    value, 0, outfile, dirac);
 
   /* B (vv|vv) integrals */
-  if(!params.aobasis) {
+  if(!strcmp(params.aobasis,"NONE")) {
     if((vir[p] && vir[q] && vir[r] && vir[s]))
       iwl_buf_wrt_val(BBuf, cc_vir[p], cc_vir[q], cc_vir[r], cc_vir[s],
 		      value, 0, outfile, dirac);

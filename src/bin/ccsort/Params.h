@@ -7,5 +7,5 @@ struct Params {
   int cachelev;
   int ref;
   int dertype;
-  int aobasis;
+  char *aobasis;
 };
