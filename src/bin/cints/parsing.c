@@ -91,20 +91,6 @@ void parsing_cmdline(int argc, char *argv[])
    int i, errcod;
    char *refstring;
 
-   /* try to detect if we've called CINTS by itself but don't 
-      really need it, as in a direct SCF calculation
-    */
-   if (argc < 2) {
-     ip_cwk_add(":SCF");
-     ip_cwk_add(":CSCF");
-     errcod = ip_boolean("DIRECT_SCF",&i,0);
-     if (errcod == IPE_OK && i == 1) {
-        UserOptions.print_lvl = 0;
-        stop_io();
-        exit(PSI_RETURN_SUCCESS);
-     }
-   }
-
    for (i=1; i<argc; i++) {
        
        /*--- build Fock option ---*/
