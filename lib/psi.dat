@@ -165,14 +165,14 @@ psi: (
 
   % -------------------------------- OOCCD Procedures
   % Procedures for the OOCCD energy
-  OOCCDRHFEnergy = ($ints $scf $ooccman $done)
+  OOCCDRHFEnergy = ($ints $scf $transqt $ooccman $done)
   OOCCDROHFEnergy = ERROR
   OOCCDUHFEnergy = ERROR
   OOCCDTwoConEnergy = ERROR
 
   % Procedures for the OOCCD gradient
   OOCCDFirst =
-    ($ints $scf $ooccman $backtransqt $oeprop $deriv)
+    ($ints $scf $transqt $ooccman $backtransqt $oeprop $deriv)
   OOCCDRHFFirst = ($OOCCDFirst $done)
   OOCCDROHFFirst = ERROR
   OOCCDUHFFirst = ERROR
