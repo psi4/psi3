@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <libdpd/dpd.h>
+#include <libqt/qt.h>
 #define EXTERN
 #include "globals.h"
 
@@ -16,13 +17,14 @@
 
 void Wabei_RHF_FT2_a(void)
 {
-  int nirreps; 
+  int h, nirreps; 
   int Gam, Ga, Gm;
   int Gef, Gmf, Ge, Gf, Gae;
   int a, A, e, E, m, M, f, FF;
   int mf, am , ef;
   int *virtpi, *vir_off, *occpi, *occ_off;
-  double ***W, ***X;
+  double ***W;
+  double value;
   dpdbuf4 F, T2, Z;
 
   nirreps = moinfo.nirreps;
@@ -35,7 +37,7 @@ void Wabei_RHF_FT2_a(void)
   /**** this contraction still requires storage of a full <ia|bc> set *****/
   dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
   dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIAjb");
-  dpd_buf4_init(&Z, CC_TMP2, 0, 5, 10, 5, 10, 0, "Z(EA,ib)");
+  dpd_buf4_init(&Z, CC_TMP2, 0, 5, 10, 5, 10, 0, "Z(AE,ib)");
   dpd_contract444(&F, &T2, &Z, 1, 1, -1, 0);
   dpd_buf4_close(&T2);
   dpd_buf4_close(&F);
@@ -44,7 +46,7 @@ void Wabei_RHF_FT2_a(void)
   /* Zaeib <-- <am|ef> [ 2 t_mi^fb - t_mi^bf ] */
 
   dpd_buf4_init(&F, CC_FINTS, 0, 11, 5, 11, 5, 0, "F <ai|bc>");
-  dpd_buf4_init(&Z, CC_TMP2, 0, 5, 10, 5, 10, 0, "Z(EA,ib)");
+  dpd_buf4_init(&Z, CC_TMP2, 0, 5, 10, 5, 10, 0, "Z(AE,ib)");
   dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "2 tIAjb - tIBja");
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_init(&T2, h);
@@ -61,11 +63,11 @@ void Wabei_RHF_FT2_a(void)
       F.matrix[Gam] = dpd_block_matrix(occpi[Gm], F.params->coltot[Gam]);
     }
 
-    /* allocate space for the reordered integrals, W[e][mf] and target, X[e][ib] */
+    /* allocate space for the reordered integrals, W[e][mf] and target, Z[e][ib] */
     for(Ge=0; Ge < nirreps; Ge++) {
       Gae = Ga^Ge; Gmf = Gae;
       W[Ge] = dpd_block_matrix(virtpi[Ge], Z.params->coltot[Gmf]);
-      X[Ge] = dpd_block_matrix(virtpi[Ge], Z.params->coltot[Gmf]);
+      Z.matrix[Gae] = dpd_block_matrix(virtpi[Ge], Z.params->coltot[Gmf]);
     }
 
     for(a=0; a < virtpi[Ga]; a++) {
@@ -106,10 +108,17 @@ void Wabei_RHF_FT2_a(void)
 	  } /* Gm */
 	} /* e */
 
+	/* read all existing Z(ae,ib) for a given orbital index a -->  Z[e][ib] */
+	dpd_buf4_mat_irrep_rd_block(&Z, Gae, Z.params->start13[Gae][A], virtpi[Ge]);
+
 	/* contract W[e][mf] * T[mf][ib] -> Z[e][ib] */
-	C_DGEMM('n','n', virtpi[Ge], Z.params->coltot[Gmf], 1.0, Z.params->coltot[Gmf], W[Ge], 
-		Z.params->coltot[Gmf], T2.matrix[Gmf][0], Z.params->coltot[Gmf], 0.0,
-		X[Ge], Z.params->coltot[Gmf]);
+	if(virtpi[Ge] && Z.params->coltot[Gmf]) 
+	  C_DGEMM('n','n', virtpi[Ge], Z.params->coltot[Gmf], Z.params->coltot[Gmf], 1.0,
+		  W[Ge][0], Z.params->coltot[Gmf], T2.matrix[Gmf][0], Z.params->coltot[Gmf],
+		  1.0, Z.matrix[Gae][0], Z.params->coltot[Gmf]);
+
+	/* write out the new Z(ae,ib) */
+	dpd_buf4_mat_irrep_wrt_block(&Z, Gae, Z.params->start13[Gae][A], virtpi[Ge]);
 
       } /* Ge */
 
@@ -123,13 +132,16 @@ void Wabei_RHF_FT2_a(void)
     for(Ge=0; Ge < nirreps; Ge++) {
       Gae = Ga^Ge; Gmf = Gae;
       dpd_free_block(W[Ge], virtpi[Ge], Z.params->coltot[Gmf]);
-      dpd_free_block(Z[Ge], virtpi[Ge], Z.params->coltot[Gmf]);
+      dpd_free_block(Z.matrix[Gae], virtpi[Ge], Z.params->coltot[Gmf]);
     }
 
   } /* Ga */
 
   for(h=0; h < nirreps; h++) dpd_buf4_mat_irrep_close(&T2, h);
   dpd_buf4_close(&T2);
+  dpd_buf4_sort_axpy(&Z, CC_HBAR, prqs, 11, 5, "WEiAb", 1);
   dpd_buf4_close(&Z);
   dpd_buf4_close(&F);
+
+
 }

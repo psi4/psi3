@@ -142,39 +142,11 @@ void Wabei_RHF(void)
   dpd_contract444(&F, &T2, &Z, 1, 1, -1.0, 0.0);
   dpd_buf4_close(&T2);
   dpd_buf4_close(&F);
-  value = dpd_buf4_dot_self(&Z);
-  fprintf(outfile, "\nZ(Eb,iA) * Z(Eb,iA) = %20.12f\n", value);
-  fflush(outfile);
-  dpd_buf4_sort_axpy(&Z, CC_HBAR, prsq, 11, 5, "WEiAb", 1);  /***** BOTTLENECK *****/
+  dpd_buf4_sort_axpy(&Z, CC_HBAR, prsq, 11, 5, "WEiAb", 1);
   dpd_buf4_close(&Z);
-
-  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WEiAb");
-  value = dpd_buf4_dot_self(&W);
-  fprintf(outfile, "\nWEiAb * WEiAb = %20.12f\n", value);
-  fflush(outfile);
-  dpd_buf4_close(&W);
 
   Wabei_RHF_FT2_a();
 
-  dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
-  dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIAjb");
-  dpd_buf4_init(&Z, CC_TMP2, 0, 5, 10, 5, 10, 0, "Z(EA,ib)");
-  dpd_contract444(&F, &T2, &Z, 1, 1, -1, 0);
-  dpd_buf4_close(&T2);
-  dpd_buf4_close(&F);
-  dpd_buf4_close(&Z);
-
-  dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
-  dpd_buf4_sort(&F, CC_TMP2, prsq, 10, 5, "F <ia|bc> (ib,ca)");
-  dpd_buf4_close(&F);
-  dpd_buf4_init(&F, CC_TMP2, 0, 10, 5, 10, 5, 0, "F <ia|bc> (ib,ca)");
-  dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "2 tIAjb - tIBja");
-  dpd_buf4_init(&Z, CC_TMP2, 0, 5, 10, 5, 10, 0, "Z(EA,ib)");
-  dpd_contract444(&F, &T2, &Z, 1, 1, 1, 1);
-  dpd_buf4_close(&T2);
-  dpd_buf4_close(&F);
-  dpd_buf4_sort_axpy(&Z, CC_HBAR, prqs, 11, 5, "WEiAb", 1);  /***** BOTTLENECK *****/
-  dpd_buf4_close(&Z);
   if(params.print & 2) fprintf(outfile, "done.\n");
 
   /** Final terms of Wabei **/
@@ -219,7 +191,7 @@ void Wabei_RHF(void)
   dpd_file2_close(&T1);
   dpd_buf4_close(&Z);
   /* NB: This sort_axpy implicitly includes terms from B*T1 and F*T1*T1 from above */
-  dpd_buf4_sort_axpy(&Z1, CC_HBAR, rspq, 11, 5, "WEiAb", 1);   /******** BOTTLENECK!!! *********/
+  dpd_buf4_sort_axpy(&Z1, CC_HBAR, rspq, 11, 5, "WEiAb", 1);
   dpd_buf4_close(&Z1);
 
   /** t_m^b ( - <mA|iE> + Z(mA,iE) ) --> Z2(Ab,Ei) **/
@@ -232,7 +204,7 @@ void Wabei_RHF(void)
   dpd_contract244(&T1, &Z, &Z2, 0, 0, 0, 1, 0);
   dpd_file2_close(&T1);
   dpd_buf4_close(&Z);
-  dpd_buf4_sort_axpy(&Z2, CC_HBAR, srqp, 11, 5, "WEiAb", 1);  /******** BOTTLENECK!!! **********/
+  dpd_buf4_sort_axpy(&Z2, CC_HBAR, srqp, 11, 5, "WEiAb", 1);
   dpd_buf4_close(&Z2);
   if(params.print & 2) fprintf(outfile, "done.\n");
 
