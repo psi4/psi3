@@ -1,7 +1,16 @@
 /* $Log$
- * Revision 1.1  2000/02/04 22:52:33  evaleev
- * Initial revision
+ * Revision 1.2  2000/06/02 13:32:15  kenny
+ * Added dynamic integral accuracy cutoffs for direct scf.  Added a few global
+ * variables.  Added keyword 'dyn_acc'; true--use dynamic cutoffs.  Use of
+ * 'dconv' and 'delta' to keep track of density convergence somewhat awkward,
+ * but avoids problems when accuracy is switched and we have to wipe out density
+ * matrices.  Also added error message and exit if direct rohf singlet is
+ * attempted since it doesn't work.
+ * --Joe Kenny
  *
+/* Revision 1.1.1.1  2000/02/04 22:52:33  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.2  1999/11/17 19:40:46  evaleev
 /* Made all the adjustments necessary to have direct UHF working. Still doesn't work though..
 /*
@@ -105,6 +114,20 @@ void dmatuhf()
        }
    }
 
+   /*decide what accuracy to request for direct_scf*/
+   if(direct_scf && dyn_acc) {
+ 
+     if((iter<30)&&(tight_ints==0)&&(delta>1.0E-5)) {
+        eri_cutoff=1.0E-6;
+     }
+ 
+     if((tight_ints==0)&&(delta<=1.0E-5)){
+        fprintf(outfile,"  Switching to full integral accuracy\n");
+        acc_switch=1;
+        tight_ints=1;
+        eri_cutoff=1.0E-14; }
+   }
+                                                      
    
    /*---------------------------
      Get full dpmata and dpmatb
@@ -119,24 +142,26 @@ void dmatuhf()
      for(j=0;j<max;j++) {
        jj = j + off;
        for(k=0;k<=j;k++) {
-	 kk = k + off;
-	 dmata[ioff[jj]+kk] = spin_info[0].scf_spin[i].dpmat[ioff[j]+k];
-	 dmatb[ioff[jj]+kk] = spin_info[1].scf_spin[i].dpmat[ioff[j]+k];
+         kk = k + off;
+         if(acc_switch) {
+            dmata[ioff[jj]+kk] = spin_info[0].scf_spin[i].pmato[ioff[j]+k];
+            spin_info[0].scf_spin[i].dpmat[ioff[j]+k] = 0.0;
+            dmatb[ioff[jj]+kk] = spin_info[1].scf_spin[i].pmato[ioff[j]+k];
+            spin_info[1].scf_spin[i].dpmat[ioff[j]+k] = 0.0;
+         }
+         else {
+            dmata[ioff[jj]+kk] = spin_info[0].scf_spin[i].dpmat[ioff[j]+k];
+            dmatb[ioff[jj]+kk] = spin_info[1].scf_spin[i].dpmat[ioff[j]+k];
+         }
        }
      }
-   }
+   }                       
+
 
    if (direct_scf) {
      psio_open(itapDSCF, PSIO_OPEN_NEW);
      ctmp = 1.0;
      psio_write_entry(itapDSCF, "HF exchange contribution", (char *) &ctmp, sizeof(double));
-     /*--- Decide what accuracy to request ---*/
-     if (iconv <= 3)
-       eri_cutoff = 1.0E-8;
-     else if (iconv <= 5)
-       eri_cutoff = 1.0E-11;
-     else
-       eri_cutoff = 1.0E-14;
      psio_write_entry(itapDSCF, "Integrals cutoff", (char *) &eri_cutoff, sizeof(double));
      psio_write_entry(itapDSCF, "Alpha SO Density", (char *) dmata, sizeof(double)*ntri);
      psio_write_entry(itapDSCF, "Beta SO Density", (char *) dmatb, sizeof(double)*ntri);

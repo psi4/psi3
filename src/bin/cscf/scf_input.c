@@ -1,7 +1,16 @@
 /* $Log$
- * Revision 1.1  2000/02/04 22:52:32  evaleev
- * Initial revision
+ * Revision 1.2  2000/06/02 13:32:16  kenny
+ * Added dynamic integral accuracy cutoffs for direct scf.  Added a few global
+ * variables.  Added keyword 'dyn_acc'; true--use dynamic cutoffs.  Use of
+ * 'dconv' and 'delta' to keep track of density convergence somewhat awkward,
+ * but avoids problems when accuracy is switched and we have to wipe out density
+ * matrices.  Also added error message and exit if direct rohf singlet is
+ * attempted since it doesn't work.
+ * --Joe Kenny
  *
+/* Revision 1.1.1.1  2000/02/04 22:52:32  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.8  1999/11/17 19:40:47  evaleev
 /* Made all the adjustments necessary to have direct UHF working. Still doesn't work though..
 /*
@@ -177,6 +186,8 @@ void scf_input(ipvalue)
    fprintf(outfile,"  multiplicity = %d\n",multp);
    fprintf(outfile,"  charge       = %d\n",charge);
    fprintf(outfile,"  direct SCF   = %s\n",(direct_scf) ? "true" : "false");
+   if(direct_scf)
+   fprintf(outfile,"  dyn_acc      = %s\n",(dyn_acc) ? "true" : "false");
    fprintf(outfile,"  dertype      = %s\n",dertype);
    fprintf(outfile,"  convergence  = %d\n",iconv);
    fprintf(outfile,"  maxiter      = %d\n",itmax);

@@ -1,4 +1,5 @@
-/**************************************************************************/
+/*
+/*************************************************************************/
 /*                                                                        */
 /*   CSCF:                                                                */
 /*      Written by Edward Seidl (a NON-hog)                               */
@@ -230,7 +231,14 @@ int main(argc,argv)
    /* EFV 10/24/98 Get the integral format: IWL = true */
    use_iwl = 1;
    ip_boolean("USE_IWL",&use_iwl,0);
-   
+
+/* JPK 6/1/00 integral accuracy: dynamic(default)=1, static=0 */
+   dyn_acc = 1;
+   eri_cutoff = 1.0E-14;
+   ip_boolean("DYN_ACC",&dyn_acc,0);
+   tight_ints=0;
+   delta = 1.0;
+                                                      
 /* open integrals file(s) */
 
    if (use_iwl)
@@ -334,7 +342,24 @@ int main(argc,argv)
    }
    else {
 /* form the Fock matrix directly */
+
+   /*check for rohf singlet...doesn't work direct*/
+ 
+      if(!uhf && singlet) {
+  
+         fprintf(outfile,"\n  rohf open shell singlet doesn't work direct\n");
+         fprintf(outfile,"  remove 'direct_scf = true' from input\n");
+         fprintf(stdout,"rohf open shell singlet doesn't work direct\n");
+         fprintf(stdout,"remove 'direct_scf = true' from input\n");
+ 
+         psio_done();
+         file30_close();
+         exit(1);
+      }
+                                               
+
      formg_direct();
+     if(dyn_acc)  fprintf(outfile,"\n  Using inexpensive integrals");   
    }
 
 /* iterate */

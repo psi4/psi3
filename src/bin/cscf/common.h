@@ -1,8 +1,17 @@
 /* $Id$ */
 /* $Log$
- * Revision 1.2  2000/03/28 15:45:31  evaleev
- * Increased the MAX_BASIS and MAXIOFF to 4096
+ * Revision 1.3  2000/06/02 13:32:14  kenny
+ * Added dynamic integral accuracy cutoffs for direct scf.  Added a few global
+ * variables.  Added keyword 'dyn_acc'; true--use dynamic cutoffs.  Use of
+ * 'dconv' and 'delta' to keep track of density convergence somewhat awkward,
+ * but avoids problems when accuracy is switched and we have to wipe out density
+ * matrices.  Also added error message and exit if direct rohf singlet is
+ * attempted since it doesn't work.
+ * --Joe Kenny
  *
+/* Revision 1.2  2000/03/28 15:45:31  evaleev
+/* Increased the MAX_BASIS and MAXIOFF to 4096
+/*
  * Revision 1.1.1.1  2000/02/04  22:52:29  evaleev
  * Started PSI 3 repository
  *
@@ -217,3 +226,11 @@ EXTERN int phase_check;
 
 /* EFV(10/24/98) - Added an array that maps an SO number to the symmetry block number */
 EXTERN int *so2symblk;
+
+/* JPK(6/1/00) added variables for dynamic integral accuracy in direct scf*/
+EXTERN int tight_ints, ok_ints,    /*keeps track of acccuracy being used*/
+       dyn_acc,                    /*1 for dynamic integral accuracy, else 0*/    
+       acc_switch;                 /*accuracy switch:  1 -> accuracy has been 
+                                     switched*/
+EXTERN double delta;               /*just another density convergence
+                                     variable*/

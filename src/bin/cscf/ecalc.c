@@ -1,7 +1,16 @@
 /* $Log$
- * Revision 1.1  2000/02/04 22:52:30  evaleev
- * Initial revision
+ * Revision 1.2  2000/06/02 13:32:16  kenny
+ * Added dynamic integral accuracy cutoffs for direct scf.  Added a few global
+ * variables.  Added keyword 'dyn_acc'; true--use dynamic cutoffs.  Use of
+ * 'dconv' and 'delta' to keep track of density convergence somewhat awkward,
+ * but avoids problems when accuracy is switched and we have to wipe out density
+ * matrices.  Also added error message and exit if direct rohf singlet is
+ * attempted since it doesn't work.
+ * --Joe Kenny
  *
+/* Revision 1.1.1.1  2000/02/04 22:52:30  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.3  1999/11/02 23:55:56  localpsi
 /* Shawn Brown - (11/2/99) Modified to the code in a few major ways.
 /*
@@ -43,7 +52,7 @@ static char *rcsid = "$Id$";
 
 static double twocut=1.0;
 static double eelec;
-double delta;
+double dconv;
 
 int ecalc(incr)
    double incr;
@@ -99,15 +108,22 @@ int ecalc(incr)
 	 }
       }
    }
-   
-   delta = sqrt(delta)/mxcoef2;
+ 
+   /*JPK(6/1/00) dynamic integral accuracy modifications*/
+   dconv = sqrt(delta)/mxcoef2;
+   delta = dconv;
+   if(acc_switch==1 || iter==0) {
+      delta=1.0;
+      acc_switch=0;
+   }                            
+
    etot = repnuc + neelec;
    edif =  eelec - neelec;
    ediff = edif;
 
    if (!iter) fprintf(outfile,"\n  iter       total energy        delta E         delta P          diiser\n");
    fprintf(outfile, "%5d %20.10f %15.6e %15.6e %15.6e\n", 
-                                    ++iter, etot, edif, delta, diiser);
+                                    ++iter, etot, edif, dconv, diiser);
    fflush(outfile);
    diiser=0.0;
 

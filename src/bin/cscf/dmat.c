@@ -1,7 +1,16 @@
 /* $Log$
- * Revision 1.1  2000/02/04 22:52:29  evaleev
- * Initial revision
+ * Revision 1.2  2000/06/02 13:32:15  kenny
+ * Added dynamic integral accuracy cutoffs for direct scf.  Added a few global
+ * variables.  Added keyword 'dyn_acc'; true--use dynamic cutoffs.  Use of
+ * 'dconv' and 'delta' to keep track of density convergence somewhat awkward,
+ * but avoids problems when accuracy is switched and we have to wipe out density
+ * matrices.  Also added error message and exit if direct rohf singlet is
+ * attempted since it doesn't work.
+ * --Joe Kenny
  *
+/* Revision 1.1.1.1  2000/02/04 22:52:29  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.6  1999/11/17 19:40:45  evaleev
 /* Made all the adjustments necessary to have direct UHF working. Still doesn't work though..
 /*
@@ -41,7 +50,7 @@ static char *rcsid = "$Id$";
 void dmat()
 {
    int i,j,k,l,ij,jj,kk,nn;
-   int max, off, ntri;
+   int max, off, ntri, joff;
    int ndocc,nsocc,nhocc;
    double ptempc,ptempo,ctmp;
    double *dmat, *dmato;
@@ -112,55 +121,81 @@ void dmat()
          }
       }
 
-   /*------------------------
-     Get full dpmat and dpmato
-    ------------------------*/
+     /*decide what accuracy to request for direct_scf*/
+     if(direct_scf && dyn_acc) {
+ 
+       if((iter<30)&&(tight_ints==0)&&(delta>1.0E-5)) {
+          eri_cutoff=1.0E-6;
+       }
+ 
+       if((tight_ints==0)&&(delta<=1.0E-5)){
+          fprintf(outfile,"  Switching to full integral accuracy\n");
+          acc_switch=1;
+          tight_ints=1;
+          eri_cutoff=1.0E-14; }
+      }
+                                                   
+
+   /*---------------------------------------------------------
+     Get full dpmat and dpmato (or full pmat if acc_switch==1)
+    --------------------------------------------------------*/
    ntri = nbasis*(nbasis+1)/2;
    dmat = init_array(ntri);
    if (iopen)
      dmato = init_array(ntri);
-
+ 
    for(i=0;i<num_ir;i++) {
      max = scf_info[i].num_so;
      off = scf_info[i].ideg;
      for(j=0;j<max;j++) {
        jj = j + off;
        for(k=0;k<=j;k++) {
-	 kk = k + off;
-	 dmat[ioff[jj]+kk] = scf_info[i].dpmat[ioff[j]+k];
+         kk = k + off;
+         if(acc_switch) {
+            dmat[ioff[jj]+kk] = scf_info[i].pmat[ioff[j]+k];
+            scf_info[i].dpmat[ioff[j]+k] = 0.0;
+          }
+         else
+            dmat[ioff[jj]+kk] = scf_info[i].dpmat[ioff[j]+k];
        }
      }
+ 
      if (iopen)
        for(j=0;j<max;j++) {
-	 jj = j + off;
-	 for(k=0;k<=j;k++) {
-	   kk = k + off;
-	   dmato[ioff[jj]+kk] = scf_info[i].dpmato[ioff[j]+k];
-	 }
+         jj = j + off;
+         for(k=0;k<=j;k++) {
+           kk = k + off;
+           if(acc_switch) {
+              dmato[ioff[jj]+kk] = scf_info[i].pmato[ioff[j]+k];
+              scf_info[i].dpmato[ioff[j]+k] = 0.0;
+           }
+           else
+              dmato[ioff[jj]+kk] = scf_info[i].dpmato[ioff[j]+k];
+         }
        }
-   }
+ 
+}
+ 
 
    if (direct_scf) {
      psio_open(itapDSCF, PSIO_OPEN_NEW);
      ctmp = 1.0;
-     psio_write_entry(itapDSCF, "HF exchange contribution", (char *) &ctmp, sizeof(double));
-     /*--- Decide what accuracy to request ---*/
-     if (iconv <= 3)
-       eri_cutoff = 1.0E-8;
-     else if (iconv <= 5)
-       eri_cutoff = 1.0E-11;
-     else
-       eri_cutoff = 1.0E-14;
-     psio_write_entry(itapDSCF, "Integrals cutoff", (char *) &eri_cutoff, sizeof(double));
-     psio_write_entry(itapDSCF, "Total SO Density", (char *) dmat, sizeof(double)*ntri);
+     psio_write_entry(itapDSCF, "HF exchange contribution", (char *) &ctmp,
+sizeof(double));
+     psio_write_entry(itapDSCF, "Integrals cutoff", (char *) &eri_cutoff,
+sizeof(double));
+     psio_write_entry(itapDSCF, "Total SO Density", (char *) dmat,
+sizeof(double)*ntri);
      if (iopen) {
-       psio_write_entry(itapDSCF, "Open-shell SO Density", (char *) dmato, sizeof(double)*ntri);
+       psio_write_entry(itapDSCF, "Open-shell SO Density", (char *) dmato,
+sizeof(double)*ntri);
      }
      psio_close(itapDSCF, 1);
    }
-
+ 
    free(dmat);
    if (iopen)
      free(dmato);
-   
-}
+ 
+}                                            
+                                                                                
