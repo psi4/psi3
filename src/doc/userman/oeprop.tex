@@ -231,3 +231,108 @@ Recommended value (default) is 5. This keyword is only useful when
 
 \end{description}
 
+\subsubsection{Grid specification mini-tutorial}
+
+Let's look at how to set up input for spin density evaluation on a
+two-dimensional grid.  The relevant input section of \PSIthree\ might look like
+this:
+\begin{verbatim}
+
+  jobtype = oeprop
+
+  grid = 2
+  spin_prop = true
+  grid_origin = (0.0 -5.0 -5.0)
+  grid_unit_x = (0.0 1.0 0.0)
+  grid_unit_y = (0.0 0.0 1.0)
+  grid_xy0 = (0.0 0.0)
+  grid_xy1 = (10.0 10.0)
+  nix = 30
+  niy = 30
+
+\end{verbatim}
+\keyword{grid} specifies the type of a property and the type of a grid
+\PSIoeprop\ needs to compute.
+Since \keyword{spin\_prop}\ is set and {\tt grid=2}, the spin density will be
+evaluated on a grid.
+
+Grid specification is a little bit tricky but very
+flexible. \keyword{grid\_origin}\ specifies the origin of the
+rectangular coordinate system associated with the grid in the
+reference frame. \keyword{grid\_unit\_x}\ specifies a reference frame
+vector which designates the direction of the x-axis of the grid
+coordinate system.  \keyword{grid\_unit\_y}\ is analogously a
+reference frame vector which, along with the \keyword{grid\_unit\_x},
+completely specifies the grid coordinate system.
+\keyword{grid\_unit\_x}\ and \keyword{grid\_unit\_y}\ do not have to
+be normalized, neither they need to be orthogonal to either other -
+orthogonalization is done automatically to ensure that unit vectors of
+the grid coordinate system are normalized in the reference frame too.
+\keyword{grid\_xy0}\ is a vector in the grid coordinate system that
+specifies a vertex of the grid rectangle with the most negative
+coordinates. Similarly, \keyword{grid\_xy1}\ specifies a vertex of the
+the grid rectangle diagonally opposite to \keyword{grid\_xy0}.
+Finally, \keyword{nix}\ and \keyword{niy}\ specify the number of
+intervals into which the $x$ and $y$ sides of the grid rectangle are
+subdivided.  To summarize, the above input specifies a rectangular (in
+fact, square) 30 by 30 grid of dimensions 10.0 by 10.0 lying in the
+$yz$ plane and centered at origin of molecular frame.
+
+Running \PSIthree\ on such input will create a file called
+\file{sdens.dat} (for file names refer to man page on \PSIoeprop),
+which can be fed directly to {\tt PlotMTV} to plot the 2-D data.
+
+Specification of a three-dimensional grid for plotting MOs
+({\tt grid = 5}) or densities ({\tt grid = 6}) is just slightly
+more complicated.
+For example, let's look at producing data for plotting a HOMO and
+a LUMO. The indices of the
+MOs which needs to be plotted will be specified by keyword
+\keyword{mo\_to\_plot}.
+The reference frame is
+specified by keywords \keyword{grid\_origin}, \keyword{grid\_unit\_x}\
+and \keyword{grid\_origin\_y}\ (the third axis of the grid coordinate
+system is specified by by the vector product of
+\keyword{grid\_unit\_x}\ and \keyword{grid\_unit\_y}).  Since in this
+case we are dealing with the three-dimensional grid coordinate system,
+one needs to specify two diagonally opposite vertices of the grid box
+via \keyword{grid\_xyz0}\ and \keyword{grid\_xyz1}.  The number of
+intervals along $z$ is specified via \keyword{niz}.  The relevant section of
+input file may look like this:
+\begin{verbatim}
+
+  jobtype = oeprop
+
+  grid = 5
+  mo_to_plot = (-1 +1)
+  grid_origin = (-5.0 -5.0 -5.0)
+  grid_unit_x = (1.0 0.0 0.0)
+  grid_unit_y = (0.0 1.0 0.0)
+  grid_xyz0 = (0.0 0.0 0.0)
+  grid_xyz1 = (10.0 10.0 10.0)
+  nix = 30
+  niy = 30
+  niz = 30
+
+\end{verbatim}
+
+Running \PSIthree\ on input like this will produce a {\tt Gaussian Cube}
+file called {\tt mo.cube}, which can be used to render images of HOMO
+and LUMO using
+an external visualization software.
+
+\subsubsection{Plotting grid data}
+2-D grids should be plotted by an interactive visualization
+code {\tt PlotMTV}. {\tt PlotMTV} is a freeware code
+developed by Kenny Toh. It can be downloaded off many web sites in
+source or binary form.
+
+3-D grids can be produced in two formats: {\tt megapovplus}  and {\tt gausscube}
+(see \keyword{GRID\_FORMAT}).
+First is used to render high-quality images with a program {\tt MegaPov} (version
+0.5).  {\tt MegaPov} is an unofficial patch for a ray-tracing code
+{\tt POV-Ray}. Information on {\tt MegaPov} can be found at
+\htmladdnormallink{{http://nathan.kopp.com/patched.htm}}{http://nathan.kopp.com/patched.htm}.
+{\tt Gaussian Cube} files can be processed by a number of programs. We cannot recommend
+any particular program for that purpose here.
+

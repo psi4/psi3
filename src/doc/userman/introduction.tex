@@ -37,15 +37,15 @@ adapted to enable new capabilities.
 The latest version of the \PSIthree\ program package may be obtained
 at \htmladdnormallink{{\tt www.psicode.org}}{http://www.psicode.org}.
 The source code is available as a gzipped tar archive (named, for
-example, {\tt psi3.X.tar.gz}), and binaries (in {\tt .rpm} format) may
+example, {\tt psi3.X.tar.gz}), and binaries may
 be available for certain architectures.  For detailed installation and
 testing instructions, please refer to the the \PSIthree\
 Installation Manual, available as part of the package or at the
 \PSIthree\ website above.
 
 \subsection{Supported Architectures}
-The majority of \PSIthree\ was developed on IBM RS/6000//AIX
-and Intel x86/Linux workstations. The complete list of
+The majority of \PSIthree\ was developed on IBM RS/6000/AIX
+and x86/GNU Linux workstations. The complete list of
 tested architectures to which \PSIthree\ has
 been ported is shown in Table \ref{table:ports}.
 \begin{table}[h]
@@ -55,16 +55,16 @@ been ported is shown in Table \ref{table:ports}.
 \begin{tabular}{ll} \hline\hline
 Architecture              &  Notes \\ \hline
 Compaq Alpha Tru64 UNIX   & 64-bit mode \\
-IBM RS/6000 AIX 4.1-4.3   & 64-bit mode \\
+IBM RS/6000 AIX 4.1-4.3   & \\
 IBM PowerPC AIX 4.3       & 64-bit mode \\
-Linux (Intel x86, Athlon, Opteron)  & Linux 2.2-2.4 \\
+Linux (Intel/AMD x86, AMD x86-64)  & 32 and 64-bit\\
 SGI IRIX64 ($>$6.5.15)    & 64-bit \\ \hline\hline
 \end{tabular}
 \end{center}
 \end{table}
 If you don't find your system in the Table, there's a good chance
 that you will be able to install \PSIthree\ on your system
-if you have the prerequisite math and utility libraries described 
+if you have the prerequisite tools and math and utility libraries described 
 in the installation manual.
 
 \subsection{Capabilities}
@@ -84,10 +84,12 @@ Method        & Energy & Gradient & Hessian \\ \hline
 RHF SCF       & Y & Y & Y \\
 ROHF SCF      & Y & Y & N \\
 UHF SCF       & Y & N & N \\
+HF DBOC       & Y & N & N \\
 CIS/RPA/TDHF  & Y & N & N \\
 TCSCF         & Y & Y & N \\
 CASSCF        & Y & Y & N \\
 RAS-CI        & Y & N & N \\
+RAS-CI DBOC   & Y & N & N \\
 RHF MP2       & Y & N & N \\
 RHF MP2-R12   & Y & N & N \\
 RHF CCSD      & Y & Y & N \\

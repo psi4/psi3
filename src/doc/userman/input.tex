@@ -402,9 +402,8 @@ psi: (
 
 \subsection{Specifying Basis Sets} \label{basis-spec}
 
-\PSIthree\ uses basis sets comprised of Cartesian (\keyword{puream =
-false}, default) or spherical harmonic (\keyword{puream = true})
-Gaussian functions.  A basis set is identified by a string, enclosed
+\PSIthree\ uses basis sets comprised of Cartesian or spherical harmonic
+Gaussian functions. A basis set is identified by a string, enclosed
 in double quotes. Currently, there exist three ways to specify which
 basis sets to use for which atoms:
 \begin{itemize}
@@ -429,10 +428,6 @@ so-called unique atom out of the set of symmetry equivalent ones.
 \keyword{string {\em i}} specifies the basis set for chemical element 
 \keyword{element {\em i}}.
 \end{itemize}
-{\bf NB: \PSIthree\ uses Cartesian polarization functions by default.
-  If you require a basis set whose definition requires spherical harmonic
-  polarization functions (e.g., the cc-pVXZ basis sets), be sure to
-  use the {\tt puream=true} keyword.}
 
 \subsubsection{Default Basis Sets}
 
@@ -441,6 +436,17 @@ found by default in {\tt \$psipath/share}. Tables
 \ref{table:poplebasis}, \ref{table:dunningbasis},
 \ref{table:wachtersbasis}, and \ref{table:ccbasis} list basis sets
 pre-defined in \pbasisdat.
+
+The predefined basis sets use either spherical harmonics or Cartesian
+Gaussians, which is determined by the authors of the basis.
+Currently \PSIthree\ cannot handle basis sets that consist
+of a mix of Cartesian and spherical harmonics Gaussians.
+Therefore there may be combinations of basis sets that are forbidden,
+e.g. {\tt cc-pVTZ} and {\tt 6-31G**}.
+In such case one can override the predetermined choice
+of the type of the Gaussians by specifying the \keyword{puream}
+keyword. It takes two values, {\tt true} or {\tt false},
+for spherical harmonics and Cartesian Gaussians, respectively.
 
 \begin{table}[p]
 \caption{Pople-type basis sets available in \PSIthree}
@@ -570,6 +576,37 @@ basis: (
     )
   )
 \end{verbatim}
+
+One must further specify whether Cartesian or spherical harmonics
+Gaussians are to be used. One can specify that in two ways:
+\begin{itemize}
+\item It can be done on a basis
+by basis case, such as
+\begin{verbatim}
+basis: (
+  "BASIS_SET_LABEL1":puream = true
+  "BASIS_SET_LABEL2":puream = false
+  "BASIS_SET_LABEL3":puream = true
+  ....
+)
+\end{verbatim}
+By default, if \keyword{puream} is not given for a basis,
+then Cartesian Gaussians will be used.
+\item
+The choice between Cartesian or spherical harmonics Gaussian
+can be made globally by specifying \keyword{puream} keyword
+in the standard input section, e.g.
+\begin{verbatim}
+psi: (
+  ...
+  puream = true
+  ...
+)
+\end{verbatim}
+\end{itemize}
+Note that currently \PSIthree\ cannot handle basis sets that consist
+of a mix of Cartesian and spherical harmonics Gaussians.
+
 Note that the basis set must be given in a separate {\tt basis:}
 section of input, outside all other sections (including {\tt psi:}).
 For example, the \PSIthree\ DZP basis set for carbon could be

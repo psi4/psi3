@@ -51,7 +51,6 @@ psi: (
   wfn = scf
   reference = rhf
   basis = "cc-pVDZ"
-  puream = true
   zmat = (
     o
     h 1 0.957
@@ -80,16 +79,6 @@ tutorial on Z-matrix inputs is available at
 \htmladdnormallink{{\tt www-rcf.usc.edu/$\sim$krylov/AbInitioCourse/zmat.html}}{
 http://www-rcf.usc.edu/~krylov/AbInitioCourse/zmat.html}).  Geometries
 may also be input in Cartesian coordinates, as we will see later.
-
-The final keyword, \keyword{puream}, tells the program whether or not
-to use Cartesian basis functions, or basis functions derived from the
-pure angular momentum functions.  For $d$ orbitals, for example, 
-there are 6 Cartesian $d$ functions, but only 5 pure angular 
-momentum $d$ functions.  Dunning's correlation consistent basis sets
-(cc-pVXZ, etc.) were designed to use pure angular momentum functions
-(\keyword{puream=true}), and other basis sets may have different 
-``standard choices'' for using pure or Cartesian functions.  The \PSIthree\ 
-program defaults to \keyword{puream = false} unless told otherwise.
 
 Why are some strings in quotation marks (e.g., \keyword{label = "cc-pVDZ
 SCF H2O"}), while others are not (e.g., \keyword{wfn = scf})?  Any
@@ -204,11 +193,15 @@ the number of SO's per irredicible representation (irrep) of the point group:
       3            4
       4            7
 \end{verbatim}
-The number of SO's is very useful to check to verify that the pure
-angular momentum setting is correct; for example, using 
-6 Cartesian d functions (\keyword{puream=false}) or 5 pure 
-angular momentum d functions (\keyword{puream=true}) will 
+The number of SO's can be very useful to check to verify that the
+correct type of Gaussian basis functions are used; for example, using 
+6 Cartesian d functions or 5 spherical harmonics 
+d functions will 
 give the same number of AO's, but a different number of SO's.
+In this case, we are using Dunning and co-workers' correlation consistent
+{\tt cc-pVDZ} basis set, which always utilize spherical harmonics
+Gaussians, hence the number of SO's is smaller than the number
+of AO's.
 
 After some additional geometry information, the \PSIinput\ program
 prints the nuclear repulsion energy and then a list of internuclear
