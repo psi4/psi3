@@ -20,6 +20,7 @@
 extern "C" {
    #include <stdlib.h>
    #include <stdio.h>
+   #include <string.h>
    #include <ip_libv1.h>
    #include <math.h>
    #include <qt.h>
