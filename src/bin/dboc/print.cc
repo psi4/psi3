@@ -39,14 +39,32 @@ void print_params()
     else if (Params.reftype == Params_t::uhf)
       fprintf(outfile,"    Wave function               = UHF SCF\n");
     fprintf(outfile,"\n");
+    if (Params.coords) {
+      fprintf(outfile,"    User-specified displacements:\n");
+      for(int coord=0; coord<Params.ncoord; coord++) {
+	int atom = Params.coords[coord].index/3;
+	int xyz = Params.coords[coord].index%3;
+	char dir;
+	switch (xyz) {
+	  case 0:  dir = 'x'; break;
+	  case 1:  dir = 'y'; break;
+	  case 2:  dir = 'z'; break;
+	}
+	fprintf(outfile,"      atom %d  %c  degen %5.1lf\n",
+		atom, dir, Params.coords[coord].coeff);
+	fprintf(outfile,"\n");
+      }
+    }
+    else
+      fprintf(outfile,"    Makeing displacements along all cartesian degrees of freedom\n\n");
     if (Params.isotopes) {
-      fprintf(outfile,"    Isotope labels:\n");
+      fprintf(outfile,"    User-specified isotope labels:\n");
       for(int atom=0; atom<Params.nisotope; atom++)
 	fprintf(outfile,"      %s\n",Params.isotopes[atom]);
       fprintf(outfile,"\n");
     }
     else
-      fprintf(outfile,"    Using most abundant isotopes\n\n");
+      fprintf(outfile,"    By default, using the most abundant isotope for each element\n\n");
   }
 
   fflush(outfile);

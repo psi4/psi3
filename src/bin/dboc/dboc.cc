@@ -99,6 +99,27 @@ void parsing()
   Params.print_lvl = 1;
   errcod = ip_data("PRINT","%d",&Params.print_lvl,0);
 
+  int coords_given = ip_exist(":DBOC:COORDS",0);
+  if (coords_given) {
+    Params.ncoord = 0;
+    ip_count(":DBOC:COORDS",&Params.ncoord,0);
+    if (Params.ncoord == 0)
+      done("Keyword COORDS should be a vector of 2-element vectors");
+    Params.coords = new Params_t::Coord_t[Params.ncoord];
+    for(int coord=0; coord<Params.ncoord; coord++) {
+      int nelem = 0;
+      ip_count(":DBOC:COORDS",&nelem,1,coord);
+      if (nelem != 2)
+	done("Keyword COORDS should be a vector of 2-element vectors");
+      errcod = ip_data(":DBOC:COORDS","%d",&Params.coords[coord].index,2,coord,0);
+      errcod = ip_data(":DBOC:COORDS","%lf",&Params.coords[coord].coeff,2,coord,1);
+    }
+  }
+  else {
+    Params.ncoord = 0;
+    Params.coords = NULL;
+  }
+
   int isotopes_given = ip_exist(":DBOC:ISOTOPES",0);
   if (isotopes_given) {
     Params.nisotope = 0;
@@ -208,12 +229,13 @@ double eval_dboc()
   for(int atom=0; atom<Molecule.natom; atom++)
     atomic_mass[atom] /= _au2amu;
 
-  const int ndisp = Params.disp_per_coord * Molecule.natom * 3;
+  const int ndisp = Params.disp_per_coord * Params.ncoord;
   double E_dboc = 0.0;
 
   for(int disp=1; disp<=ndisp; disp++) {
     char *inputcmd = new char[80];
-    int atom = (disp-1)/6;
+    Params_t::Coord_t* coord = &(Params.coords[(disp-1)/2]);
+    int atom = coord->index/3;
     sprintf(inputcmd,"input --geomdat %d --noreorient --nocomshift",disp);
     int errcod = system(inputcmd);
     if (errcod) {
@@ -250,11 +272,13 @@ double eval_dboc()
     // mass of nucleus = atomic mass - mass of electrons
     double nuclear_mass = atomic_mass[atom]  - Z;
     double E_i = -del2/(2.0*nuclear_mass);
+    // multiply by the degeneracy factor
+    E_i *= coord->coeff;
     if (Params.print_lvl > PrintLevels::print_intro) {
       fprintf(outfile,"  +- wave function overlap = %25.15lf\n",S);
       fprintf(outfile,"  <d2/dx2>                 = %25.15lf\n",del2);
       fprintf(outfile,"  DBOC contribution from cartesian degree of freedom %d = %20.10lf a.u.\n\n",
-	      (disp-1)/2+1,E_i);
+	      coord->index+1,E_i);
       fflush(outfile);
     }
     E_dboc += E_i;
