@@ -56,14 +56,14 @@ void s3_block_vdiag(struct stringwr *alplist, struct stringwr *betlist,
   thread = (pthread_t *) malloc(sizeof(pthread_t)*Parameters.nthreads);
 
   /*
-  thread_info = (struct pthreads_s3diag *)
-                malloc(sizeof(struct pthreads_s3diag));
-  */
-    thread_info = (struct pthreads_s3diag **)
-    malloc(sizeof(struct pthreads_s3diag *) * nas);
-    for (i=0; i<nas; i++) {
-    thread_info[i] = (struct pthreads_s3diag *)
+    thread_info = (struct pthreads_s3diag *)
     malloc(sizeof(struct pthreads_s3diag));
+  */
+  thread_info = (struct pthreads_s3diag **)
+                malloc(sizeof(struct pthreads_s3diag *) * nas);
+  for (i=0; i<nas; i++) {
+      thread_info[i] = (struct pthreads_s3diag *)
+                       malloc(sizeof(struct pthreads_s3diag));
     }
   
   norbs = CalcInfo.num_ci_orbs;
@@ -275,11 +275,11 @@ void s3_block_v(struct stringwr *alplist, struct stringwr *betlist,
    
    norbs = CalcInfo.num_ci_orbs;
    orbsym = CalcInfo.orbsym + CalcInfo.num_fzc_orbs;
-   npthreads = Parameters.nthreads-1;
+
    thread = (pthread_t *) malloc(sizeof(pthread_t)*Parameters.nthreads);
    thread_info = (struct pthreads_s3diag **)
-                  malloc(sizeof(struct pthreads_s3diag *) * Parameters.nthreads);
-   for (i=0; i<Parameters.nthreads; i++) {
+                  malloc(sizeof(struct pthreads_s3diag *) * nas);
+   for (i=0; i<nas; i++) {
        thread_info[i] = (struct pthreads_s3diag *)
                         malloc(sizeof(struct pthreads_s3diag));
      }
@@ -307,41 +307,22 @@ void s3_block_v(struct stringwr *alplist, struct stringwr *betlist,
 
 
        /* loop over Ia */
-       /* if (Parameters.pthreads && Parameters.nthreads > ) */
-       if (0) {
-           Ia_global = alplist;
-           Ia_idx_global = 0;
-           pthread_mutex_init(&inc_Ia_mutex,NULL);
-           for (t=0; t<Parameters.nthreads; t++) {
-               thread_info[t]->nas = nas;
-               thread_info[t]->jlen = jlen;
-               thread_info[t]->ij = ij;
-               thread_info[t]->Cprime = Cprime;    
-               thread_info[t]->Ja_list = Ja_list;
-               thread_info[t]->Tptr = tei;
-               thread_info[t]->S = S;
-               thread_info[t]->R = R;
-               thread_info[t]->thread_id = t;
+       if (Parameters.pthreads) {
+           tpool_queue_open(thread_pool);
+           for (Ia=alplist, Ia_idx=0; Ia_idx<nas; Ia_idx++, Ia++) {
+               thread_info[Ia_idx]->nas = nas;
+               thread_info[Ia_idx]->jlen = jlen;
+               thread_info[Ia_idx]->ij = ij;
+               thread_info[Ia_idx]->Cprime = Cprime;    
+               thread_info[Ia_idx]->Ja_list = Ja_list;
+               thread_info[Ia_idx]->Tptr = tei;
+               thread_info[Ia_idx]->S = S;
+               thread_info[Ia_idx]->R = R;
+               thread_info[Ia_idx]->Ia_local = Ia;
+               thread_info[Ia_idx]->Ia_idx_local = Ia_idx;
+               tpool_add_work(thread_pool, (void *) s3_block_v_pthread, (void *) thread_info[Ia_idx]);
              }
-           for (t=1; t<Parameters.nthreads; t++) {
-               rc = pthread_create(&thread[t], NULL,
-                                   (void *) s3_block_v_pthread, (void *) thread_info[t]);
-               if (rc) {
-                   fprintf(outfile,"S3_BLOCK_V: Error in return code for pthread_create, "
-                           " thread %d code is %d\n", t, rc);
-                 }
-             }
-           s3_block_v_pthread( (void *) thread_info[0]);
-
-           for (t=1; t<Parameters.nthreads; t++) {
-               rc = pthread_join(thread[t], NULL);
-               if (rc) {
-                   fprintf(outfile,"S3_BLOCK_V: Error in return code for pthread_join, "
-                           " thread %d status is %d\n", t, status);
-                   exit(0);
-                 }
-             }
-           pthread_mutex_destroy(&inc_Ia_mutex);
+           tpool_queue_close(thread_pool, 1);
          }
        else {
            for (Ia=alplist, Ia_idx=0; Ia_idx<nas; Ia_idx++, Ia++) {
@@ -384,7 +365,7 @@ void s3_block_v(struct stringwr *alplist, struct stringwr *betlist,
        
      } /* end loop over j */
    } /* end loop over i */
-  for (i=0; i<Parameters.nthreads; i++) free(thread_info[i]);
+  for (i=0; i<nas; i++) free(thread_info[i]);
   free(thread);
    
 }
