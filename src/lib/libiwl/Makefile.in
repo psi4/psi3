@@ -4,7 +4,7 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-TARGET = $(top_objdir)/lib/libPSI_iwl.a
+PSITARGET = $(top_objdir)/lib/libPSI_iwl.a
 
 TRUESRC = \
 buf_close.c   buf_rd_all_act.c      buf_wrt_arr2.c          buf_wrt_val_SI.c \

@@ -4,7 +4,7 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-TARGET = $(top_objdir)/lib/libPSI_basis.a
+PSITARGET = $(top_objdir)/lib/libPSI_basis.a
 
 TRUESRC = \
 basisset.cc shell.cc overlap.cc osrecur.cc gnorm.cc rotation.cc combinate.cc

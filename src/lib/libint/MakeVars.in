@@ -1,4 +1,4 @@
-TARGET = $(top_objdir)/lib/libPSI_int.a
+PSITARGET = $(top_objdir)/lib/libPSI_int.a
 srcdir = @srcdir@
 VPATH = @srcdir@
 BUILD_BINARY = build_libint

@@ -4,6 +4,7 @@
 #include <math.h>
 extern "C" {
   #include <libciomr/libciomr.h>
+  #include <physconst.h>
 }
 
 #include "basisset.h"

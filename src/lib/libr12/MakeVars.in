@@ -1,4 +1,4 @@
-TARGET = $(top_objdir)/lib/libPSI_r12.a
+PSITARGET = $(top_objdir)/lib/libPSI_r12.a
 srcdir = @srcdir@
 VPATH = @srcdir@
 BUILD_BINARY = build_libr12

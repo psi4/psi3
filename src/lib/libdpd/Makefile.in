@@ -8,7 +8,7 @@ CFLAGS += -DDPD_TIMER
 #CFLAGS += -DDPD_DEBUG
 #CFLAGS += -DUSE_DMALLOC
 
-TARGET = $(top_objdir)/lib/libPSI_dpd.a
+PSITARGET = $(top_objdir)/lib/libPSI_dpd.a
 
 TRUESRC = \
 4mat_irrep_print.c           buf4_symm2.c      file2_trace.c                \

@@ -4,7 +4,7 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-TARGET = $(top_objdir)/lib/libPSI_psio.a
+PSITARGET = $(top_objdir)/lib/libPSI_psio.a
 
 TRUESRC = \
 close.c          get_global_address.c  tocdel.c    tocwrite.c \

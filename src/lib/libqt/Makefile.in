@@ -8,7 +8,7 @@ include ../MakeVars
 
 CDEF += -DFC_SYMBOL=$(FC_SYMBOL)
 
-TARGET = $(top_objdir)/lib/libPSI_qt.a
+PSITARGET = $(top_objdir)/lib/libPSI_qt.a
 
 CSRC = \
 blas_intfc.c       invert.c     ras_set.c       schmidt.c \

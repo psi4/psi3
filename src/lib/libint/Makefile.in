@@ -10,12 +10,12 @@ TEMP_DIR = ${SCRATCH}/libint
 .PHONY: default install all
 .PHONY: clean oclean iclean dclean target_clean
 
-default:: $(TARGET) $(TARGET_HEADERS)
+default:: $(PSITARGET) $(TARGET_HEADERS)
 
 PWD=$(shell pwd)
 top_objdir_path=$(PWD)/$(top_objdir)
 
-$(TARGET): $(BUILD_SRC) $(LIB_SRC) $(srcdir)/Makefile.libint
+$(PSITARGET): $(BUILD_SRC) $(LIB_SRC) $(srcdir)/Makefile.libint
 	if \
 ! [ -e $(SCRATCH) ]; \
  then \
@@ -61,10 +61,10 @@ dclean:
 
 targetclean:
 
-install: $(TARGET) $(TARGET_HEADERS)
+install: $(PSITARGET) $(TARGET_HEADERS)
 	$(MKDIRS) $(libdir)
 	$(INSTALL_DATA) $< $(libdir)
-	$(RANLIB) $(libdir)/`basename $(TARGET)`
+	$(RANLIB) $(libdir)/`basename $(PSITARGET)`
 	$(MKDIRS) $(incdir)/libint
 	$(INSTALL_INCLUDE) $(TARGET_HEADERS) $(incdir)/libint
 

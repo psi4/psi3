@@ -10,12 +10,12 @@ TEMP_DIR = ${SCRATCH}/libr12
 .PHONY: default install all
 .PHONY: clean oclean iclean dclean target_clean
 
-default: $(TARGET)
+default: $(PSITARGET)
 
 PWD=$(shell pwd)
 top_objdir_path=$(PWD)/$(top_objdir)
 
-$(TARGET): $(BUILD_SRC) $(LIB_SRC) $(srcdir)/Makefile.libr12
+$(PSITARGET): $(BUILD_SRC) $(LIB_SRC) $(srcdir)/Makefile.libr12
 	if \
 ! [ -e $(SCRATCH) ]; \
  then \
@@ -63,10 +63,10 @@ dclean:
 
 targetclean:
 
-install: $(TARGET)
+install: $(PSITARGET)
 	$(MKDIRS) $(libdir)
 	$(INSTALL_DATA) $< $(libdir)
-	$(RANLIB) $(libdir)/`basename $(TARGET)`
+	$(RANLIB) $(libdir)/`basename $(PSITARGET)`
 	$(MKDIRS) $(incdir)/libr12
 	$(INSTALL_INCLUDE) $(TARGET_HEADERS) $(incdir)/libr12
 
