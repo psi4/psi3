@@ -5,7 +5,7 @@ MAN = install
 
 include ../MakeVars
 
-TEX = install.tex
+TEX = installation.tex
 
 SUBTEX = \
 
