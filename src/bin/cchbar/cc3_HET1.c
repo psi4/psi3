@@ -526,6 +526,26 @@ void HET1_Wmbej(void)
     dpd_file2_close(&tIA);
     dpd_file2_close(&tia);
 
+    /* also store lists as Wmbej (mb,ej) */
+    dpd_buf4_init(&W, CC3_HET1, 0, 20, 20, 20, 20, 0, "CC3 WMBEJ (ME,JB)");
+    dpd_buf4_sort(&W, CC3_HET1, psqr, 20, 21, "CC3 WMBEJ (MB,EJ)");
+    dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC3_HET1, 0, 30, 30, 30, 30, 0, "CC3 Wmbej (me,jb)");
+    dpd_buf4_sort(&W, CC3_HET1, psqr, 30, 31, "CC3 Wmbej (mb,ej)");
+    dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC3_HET1, 0, 20, 30, 20, 30, 0, "CC3 WMbEj (ME,jb)");
+    dpd_buf4_sort(&W, CC3_HET1, psqr, 24, 26, "CC3 WMbEj (Mb,Ej)");
+    dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC3_HET1, 0, 30, 20, 30, 20, 0, "CC3 WmBeJ (me,JB)");
+    dpd_buf4_sort(&W, CC3_HET1, psqr, 27, 25, "CC3 WmBeJ (mB,eJ)");
+    dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC3_HET1, 0, 24, 24, 24, 24, 0, "CC3 WMbeJ (Me,Jb)");
+    dpd_buf4_sort(&W, CC3_HET1, psqr, 24, 25, "CC3 WMbeJ (Mb,eJ)");
+    dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC3_HET1, 0, 27, 27, 27, 27, 0, "CC3 WmBEj (mE,jB)");
+    dpd_buf4_sort(&W, CC3_HET1, psqr, 27, 26, "CC3 WmBEj (mB,Ej)");
+    dpd_buf4_close(&W);
+
   } /** UHF **/
   return;
 }
