@@ -131,4 +131,7 @@ void print_int_mat(int **a, int m, int n, FILE *out);
 double ** block_matrix(int n,int m);
 void free_block(double **array);
 
+/* Functions in fndcor */
+void fndcor(long int *maxcrb, FILE *infile, FILE *outfile);
+
 #endif
