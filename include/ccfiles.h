@@ -33,7 +33,15 @@
 #define CC_TMP9        124
 #define CC_TMP10       125
 #define CC_TMP11       126
+#define CC_OEI_NEW     127
+#define CC_GAMMA_NEW   128
+#define CC_AINTS_NEW   129
+#define CC_BINTS_NEW   130
+#define CC_CINTS_NEW   131
+#define CC_DINTS_NEW   132
+#define CC_EINTS_NEW   133
+#define CC_FINTS_NEW   134
 
 /* Markers for the first and last file numbers */
 #define CC_MIN  CC_INFO
-#define CC_MAX  CC_TMP11
+#define CC_MAX  CC_FINTS_NEW
