@@ -17,7 +17,9 @@ file in the directory above each module or library's source code directory.
 For example, to debug the \PSIcscf\ program, one would first clean the
 existing object code out of the \file{~/psi3\_dist/src/\$ARCH/src/bin/cscf}
 directory (using \file{make clean}).  Then edit the \file{MakeVars} file
-above the \PSIcscf\ source code: set \file{COPT = -g}.  Then re-compile the
+above the \PSIcscf\ source code: set \file{COPT = -g} (for modules using
+C++, you should also insert a line setting \file{CXXOPT = -g}.  
+Then re-compile the
 module.  If debugging information is needed for a library routine as well,
 then follow this same procedure for the library in question.  Technically
 only the routines of interest need to be re-compiled, though it is
