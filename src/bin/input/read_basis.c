@@ -133,7 +133,7 @@ void read_basis()
 
    /*Create basis "keyword"*/
    for(i=0;i<num_uniques;i++){
-      sprintf(ip_token1[i],":BASIS:%s",elem_name[(int)nuclear_charges[u2a[i]]]);
+      sprintf(ip_token1[i],":BASIS:%s",elem_name[(int)elemsymb_charges[u2a[i]]]);
       sprintf(ip_token2[i],"%s:%s", ip_token1[i],atom_basis[u2a[i]]);
      }
 
@@ -441,14 +441,17 @@ void normalize(bs, fp, lp, am)
   norm = sqrt(1.0/(tmp1*e_sum));
   
   if(shownorm){
-    if(fabs(norm-1.0)>ZERO) printf("Needed normalization: %lf\n", norm);
-   }
-  for(i=fp; i<=lp; i++){
-     bs[i][1] = bs[i][1]*norm;
-     if(shownorm){
-       printf("%15.9lf\t%15.9lf\n", bs[i][0], bs[i][1]);
-     }
-   }
+    if(fabs(norm-1.0)>ZERO) printf("Needed normalization: norm=%lf\n", norm);
+  }
+  if (normalize_contractions) {
+    printf("Normalizing current contraction:\n");
+    for(i=fp; i<=lp; i++){
+      bs[i][1] = bs[i][1]*norm;
+      if(shownorm){
+	printf("%15.9lf\t%15.9lf\n", bs[i][0], bs[i][1]);
+      }
+    }
+  }
 
 /* end normalization of contracted function */
 

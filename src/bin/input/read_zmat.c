@@ -68,7 +68,7 @@ void read_zmat()
   z_geom = (struct z_entry *) malloc(sizeof(struct z_entry)*num_entries); 
   element = (char **) malloc(sizeof(char *)*num_atoms);
   full_element = (char **) malloc(sizeof(char *)*num_entries);
-  nuclear_charges = init_array(num_atoms);
+  elemsymb_charges = init_array(num_atoms);
   full_geom = init_matrix(num_entries,3);
 
   atomcount = 0;
@@ -272,7 +272,7 @@ void read_zmat()
      if (strcmp(buffer,"X")) {
        atom_num(buffer, &Z);
        free(buffer);
-       nuclear_charges[atomcount] = Z;
+       elemsymb_charges[atomcount] = Z;
        element[atomcount] = elem_name[(int)Z];
        full_element[fatomcount] = elem_name[(int)Z];
        geometry[atomcount][0] = full_geom[i][0]*conv_factor;
@@ -292,6 +292,8 @@ void read_zmat()
 	full_geom[i][1] *=conv_factor;
 	full_geom[i][2] *=conv_factor;
   }
+
+  read_charges();
 
   return;
 }

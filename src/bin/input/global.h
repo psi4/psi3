@@ -34,6 +34,7 @@ EXTERN char **elem_name;            /*Element names*/
 EXTERN int cartOn;                  /*Cartesian input flag*/
 EXTERN int puream;
 EXTERN int shownorm;		    /*Show normalized basis set*/
+EXTERN int normalize_contractions;  /*Re-normalize contractions or leave as is*/
 EXTERN char *units;
 EXTERN int print_lvl;               /*Printing level*/
 EXTERN int no_reorient;             /*No reorientation?*/
@@ -104,6 +105,7 @@ EXTERN int disp_num;                /*Number of the displacement corresponding t
 EXTERN double **geometry;	    /*Cartesian coordinates (in a.u.) of atoms*/
 EXTERN double **full_geom;          /*carts including dummy atoms*/
 EXTERN double *nuclear_charges;	    /*Nuclear charges*/
+EXTERN double *elemsymb_charges;    /*Nuclear charges derived from element names*/
 EXTERN char **element;       	    /*Atom names*/
 EXTERN char **full_element;         /*Atom names including dummy atoms*/
 EXTERN char **atom_basis;           /*Array of basis set names*/

@@ -26,7 +26,7 @@ void read_cart()
    -----------------------*/
   geometry = block_matrix(num_atoms,3);
   element = (char **) malloc(sizeof(char *)*num_atoms);
-  nuclear_charges = init_array(num_atoms);
+  elemsymb_charges = init_array(num_atoms);
 
   for(i=0;i<num_atoms;i++){
     errcod = ip_string("GEOMETRY",&atom_label,2,i,0);
@@ -34,7 +34,7 @@ void read_cart()
       punt("Problem with the GEOMETRY array.");
     atom_num(atom_label, &Z);
     free(atom_label);
-    nuclear_charges[i] = Z;
+    elemsymb_charges[i] = Z;
     element[i] = elem_name[(int)Z];
     for(j=0; j<3;j++){
       errcod = ip_data("GEOMETRY","%lf", &tmp,2,i,j+1);
@@ -44,6 +44,8 @@ void read_cart()
 	geometry[i][j] = tmp*conv_factor;
     }
   }
+
+  read_charges();
 
   return;
 }

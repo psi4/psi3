@@ -22,7 +22,12 @@ void parsing()
      /*Flag if the user wants to see that his/her basis set is normalized*/
      shownorm = 0;
      errcod = ip_boolean("SHOWNORM",&shownorm,0);
-	 
+
+     /*Default = true*/
+     /*Flag if the user wants to have his/her basis set normalized*/
+     normalize_contractions = 1;
+     errcod = ip_boolean("NORMALIZE",&normalize_contractions,0);
+
      /*Default = false*/
      puream = 0;
      errcod = ip_boolean("PUREAM",&puream,0);
