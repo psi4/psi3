@@ -212,7 +212,6 @@ esac
 
 AC_SET_MAKE
 
-TMPL='$(top_objdir)/src/util/tmpl/tmpl' AC_SUBST(TMPL)
 PSIPP='$(top_objdir)/src/util/psipp/psipp' AC_SUBST(PSIPP)
 
 # Figure out the suffix used for fortran for files (as $(FC) needs

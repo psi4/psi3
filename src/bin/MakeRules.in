@@ -22,9 +22,6 @@ all: default
 
 %.o : %.F
 
-%.lcl %.gbl: %.c
-	@$(TMPL) $<
-
 %.$(F77SUF): %.F
 	$(PSIPP) $(FDEF) $(FINC) -o $@ $<
 
