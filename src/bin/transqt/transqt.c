@@ -103,6 +103,9 @@
 ** in Pitzer order. Sad but true.
 ** EFV 08/05/99
 **
+** Added forward and backward transformations for UHF cases.
+** TDC, 03
+**
 ** Daniel Crawford, David Sherrill, and Justin Fermann
 ** Center for Computational Quantum Chemistry
 ** University of Georgia */
