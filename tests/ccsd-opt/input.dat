@@ -1,0 +1,48 @@
+% 6-31G** H2O Test CCSD optimization
+
+psi: (
+  check = false
+)
+
+default: (
+  label = "6-31G** CCSD H2O"
+  memory = (20.0 MB)
+
+  symmetry = c2v
+  wfn = CCSD
+  reference = rhf
+  multp = 1
+  dertype = first
+  opt = true
+  nopt = 20 
+  docc = (3 0 1 1)
+
+  % using the new files section; the default path is given
+  % in the user's ~/.psirc file
+
+  files: (
+    default: ( name = "h2o" )
+  )
+)
+
+input: (
+  basis = 631Gss
+  units = angstrom
+  zmat = (
+    (o)
+    (h 1 0.97)
+    (h 1 0.97 2 103.0)
+  )
+  origin = (0.0 0.0 0.0)
+)
+
+basis: (
+  oxygen:631Gss = (
+    (get "631GST")
+)
+  hydrogen:631Gss = (
+    (get "631GST")
+    (get "STAR1")
+  )
+)
+
