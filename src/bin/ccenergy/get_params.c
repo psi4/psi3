@@ -10,7 +10,7 @@
 
 void get_params()
 {
-  int errcod, iconv, ref, forceit;
+  int errcod, iconv, forceit;
   char *cachetype = NULL;
   char *junk;
 
@@ -26,27 +26,25 @@ void get_params()
     params.brueckner = 1;
   else params.brueckner = 0;
 
+  params.semicanonical = 0;
   errcod = ip_string("REFERENCE", &(junk),0);
   /* if no reference is given, assume rhf */
   if (errcod != IPE_OK) {
-    ref = 0;
+    params.ref = 0;
   }
   else {
-    if(!strcmp(junk, "RHF")) ref = 0;
-    else if(!strcmp(junk, "ROHF")) ref = 1;
-    else if(!strcmp(junk, "UHF")) ref = 2;
+    if(!strcmp(junk, "RHF")) params.ref = 0;
+    else if(!strcmp(junk,"ROHF") && !strcmp(params.wfn,"MP2") || !strcmp(params.wfn,"CCSD_T")) {
+      params.ref = 2;
+      params.semicanonical = 1;
+    }
+    else if(!strcmp(junk, "ROHF")) params.ref = 1;
+    else if(!strcmp(junk, "UHF")) params.ref = 2;
     else { 
       printf("Invalid value of input keyword REFERENCE: %s\n", junk);
       exit(PSI_RETURN_FAILURE); 
     }
     free(junk);
-  }
-
-  /* Make sure the value of ref matches that from CC_INFO */
-  if(params.ref != ref) {
-    printf("Value of REFERENCE from input.dat (%1d) and CC_INFO (%1d) do not match!\n", 
-        ref, params.ref);
-    exit(PSI_RETURN_FAILURE);
   }
 
   params.print = 0;
@@ -150,8 +148,13 @@ void get_params()
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
   fprintf(outfile, "\tWave function   =    %6s\n", params.wfn);
+  if(params.semicanonical) {
+  fprintf(outfile, "\tReference wfn   =    ROHF changed to UHF for Semicanonical Orbitals\n");
+  }
+  else {
   fprintf(outfile, "\tReference wfn   =    %5s\n",
            (params.ref == 0) ? "RHF" : ((params.ref == 1) ? "ROHF" : "UHF"));
+  }
   if(params.brueckner) 
     fprintf(outfile, "\tBrueckner conv. =    %3.1e\n", params.bconv);
   fprintf(outfile, "\tMemory (Mbytes) =  %5.1f\n",params.memory/1e6);

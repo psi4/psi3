@@ -17,7 +17,7 @@
 void get_moinfo(void)
 {
   int i, h, errcod, nactive, nirreps;
-
+  char *junk;
   chkpt_init(PSIO_OPEN_OLD);
   moinfo.nirreps = chkpt_rd_nirreps();
   moinfo.nmo = chkpt_rd_nmo();
@@ -33,8 +33,33 @@ void get_moinfo(void)
 
   nirreps = moinfo.nirreps;
 
-  psio_read_entry(CC_INFO, "Reference Wavefunction", (char *) &(params.ref), 
-		  sizeof(int));
+  errcod = ip_string("WFN", &(params.wfn), 0);
+  if(strcmp(params.wfn, "CCSD") && strcmp(params.wfn, "CCSD_T") &&
+     strcmp(params.wfn,"BCCD") && strcmp(params.wfn,"BCCD_T")) {
+    fprintf(outfile, "Invalid value of input keyword WFN: %s\n", params.wfn);
+    exit(PSI_RETURN_FAILURE);
+  }
+
+  params.semicanonical = 0;
+  errcod = ip_string("REFERENCE", &(junk),0);
+  /* if no reference is given, assume rhf */
+  if (errcod != IPE_OK) params.ref = 0;
+  else {
+    if(!strcmp(junk, "RHF")) params.ref = 0;
+    else if(!strcmp(junk,"ROHF") && !strcmp(params.wfn,"CCSD_T")) {
+      params.ref = 2;
+      params.semicanonical = 1;
+    }
+    else if(!strcmp(junk, "ROHF")) params.ref = 1;
+    else if(!strcmp(junk, "UHF")) params.ref = 2;
+    else { 
+      printf("Invalid value of input keyword REFERENCE: %s\n", junk);
+      exit(PSI_RETURN_FAILURE); 
+    }
+    free(junk);
+  }
+  /*psio_read_entry(CC_INFO, "Reference Wavefunction", (char *) &(params.ref), 
+		  sizeof(int));*/
 
   /* Get frozen and active orbital lookups from CC_INFO */
   moinfo.frdocc = init_int_array(moinfo.nirreps);
@@ -130,7 +155,16 @@ void get_moinfo(void)
     moinfo.uoccpi[i] = moinfo.orbspi[i] - moinfo.clsdpi[i] -
       moinfo.openpi[i] - moinfo.fruocc[i] -
       moinfo.frdocc[i];
-
+  
+  fprintf(outfile,"\n\n");
+  fprintf(outfile, "\tWave function   =    %6s\n",params.wfn);
+  if(params.semicanonical) {
+  fprintf(outfile, "\tReference wfn   =    ROHF changed to UHF for Semicanonical Orbitals\n");
+  }
+  else {
+  fprintf(outfile, "\tReference wfn   =    %5s\n",
+           (params.ref == 0) ? "RHF" : ((params.ref == 1) ? "ROHF" : "UHF"));
+  }
   psio_read_entry(CC_INFO, "Reference Energy", (char *) &(moinfo.eref),
 		  sizeof(double));
   psio_read_entry(CC_INFO, "CCSD Energy", (char *) &(moinfo.ecc),

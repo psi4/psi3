@@ -56,13 +56,6 @@ int main(int argc, char *argv[])
   get_moinfo();
   fndcor(&(memory),infile,outfile);
 
-  errcod = ip_string("WFN", &(params.wfn), 0);
-  if(strcmp(params.wfn, "CCSD") && strcmp(params.wfn, "CCSD_T") &&
-     strcmp(params.wfn,"BCCD") && strcmp(params.wfn,"BCCD_T")) {
-    fprintf(outfile, "Invalid value of input keyword WFN: %s\n", params.wfn);
-    exit(PSI_RETURN_FAILURE);
-  }
-
   cachefiles = init_int_array(PSIO_MAXUNIT);
 
   if(params.ref == 0) { /*** RHF ***/
@@ -189,6 +182,7 @@ void init_io(int argc, char *argv[])
   sprintf(progid, ":%s",gprgid());
 
   psi_start(argc-1,argv+1,0);
+  ip_cwk_add(":INPUT");
   ip_cwk_add(progid);
   free(progid);
   tstart(outfile);

@@ -28,6 +28,7 @@ void get_params()
   /* NB: SCF wfns are allowed because, at present, ccsort is needed for 
      RPA calculations */
   
+  params.semicanonical = 0;
   errcod = ip_string("REFERENCE", &(junk),0);
   if (errcod != IPE_OK) {
     /* if no reference is given, assume rhf */
@@ -35,6 +36,10 @@ void get_params()
   }
   else {
     if(!strcmp(junk, "RHF")) params.ref = 0;
+    else if(!strcmp(junk,"ROHF") && !strcmp(params.wfn,"MP2") || !strcmp(params.wfn,"CCSD_T")) {
+      params.ref = 2;
+      params.semicanonical = 1;
+    }
     else if(!strcmp(junk, "ROHF")) params.ref = 1;
     else if(!strcmp(junk, "UHF")) params.ref = 2;
     else { 
@@ -92,8 +97,13 @@ void get_params()
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
   fprintf(outfile, "\tWave function   =\t%s\n", params.wfn);
+  if(params.semicanonical) {
+  fprintf(outfile, "\tReference wfn   =\tROHF changed to UHF for Semicanonical Orbitals\n"); 
+  }
+  else {
   fprintf(outfile, "\tReference wfn   =\t%s\n", 
 	  (params.ref == 0) ? "RHF" : ((params.ref == 1) ? "ROHF" : "UHF"));
+  }	  
   if(params.dertype == 0) fprintf(outfile, "\tDerivative      =\tNone\n");
   else if(params.dertype == 1) fprintf(outfile, "\tDerivative      =\tFirst\n");
   else if(params.dertype == 3) fprintf(outfile, "\tDerivative      =\tResponse\n");
@@ -104,4 +114,5 @@ void get_params()
   fprintf(outfile, "\tCache Level     =\t%d\n", params.cachelev);
   fprintf(outfile, "\tCache Type      =\t%s\n", "LRU");
   fprintf(outfile, "\n");
+  fflush(outfile);
 }

@@ -583,7 +583,7 @@ void fock_rhf(void)
   dpd_file2_mat_close(&fij);
   dpd_file2_close(&fIJ);
   dpd_file2_close(&fij);
-
+  
   /* Prepare the alpha and beta vir-vir Fock matrix files */
   dpd_file2_init(&fAB, CC_OEI, 0, 1, 1, "fAB");
   dpd_file2_init(&fab, CC_OEI, 0, 1, 1, "fab");
@@ -712,7 +712,7 @@ void fock_rhf(void)
   dpd_file2_mat_close(&fab);
   dpd_file2_close(&fAB);
   dpd_file2_close(&fab);
-
+  
   /* Prepare the alpha and beta occ-vir Fock matrix files */
   dpd_file2_init(&fIA, CC_OEI, 0, 0, 1, "fIA");
   dpd_file2_init(&fia, CC_OEI, 0, 0, 1, "fia");

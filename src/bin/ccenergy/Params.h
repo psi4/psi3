@@ -17,5 +17,6 @@ struct Params {
   int brueckner;
   double bconv;
   int analyze;
+  int semicanonical;
 };
 
