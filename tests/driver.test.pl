@@ -218,6 +218,7 @@ else {
                  "uhf-stab",
                  "rohf-stab",
 		 "mp2-sp",
+		 "mp2-oeprop",
 		 "mp2-direct-sp",
                  "extrema-zmat",
                  "extrema-deloc",
