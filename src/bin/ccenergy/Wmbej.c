@@ -20,7 +20,7 @@
 void Wmbej_build(void)
 {
   dpdbuf4 WMBEJ, Wmbej, WMbEj, WmBeJ, WmBEj, WMbeJ, W; 
-  dpdbuf4 C, D, E, F, X, tIAjb, tiaJB, t2, W, Y;
+  dpdbuf4 C, D, E, F, X, tIAjb, tiaJB, t2, Y;
   dpdfile2 tIA, tia;
 
   timer_on("C->Wmbej");
@@ -239,7 +239,7 @@ void Wmbej_build(void)
   else if(params.ref == 2) { /** UHF **/
 
     dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
-    dpd_file2_init(&tia, CC_OEI, 0, 2, 3 "tia");
+    dpd_file2_init(&tia, CC_OEI, 0, 2, 3, "tia");
 
     dpd_buf4_init(&W, CC_TMP0, 0, 20, 21, 20, 21, 0, "WMBEJ");
     dpd_buf4_init(&E, CC_EINTS, 0, 0, 21, 2, 21, 0, "E <IJ||KA> (I>J,AK)");
