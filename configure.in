@@ -863,6 +863,11 @@ AC_OUTPUT(include/psiconfig.h
           tests/cc17/Makefile
           tests/cc18/Makefile
           tests/cc19/Makefile
+          tests/dboc-rhf1/Makefile
+          tests/dboc-rohf1/Makefile
+          tests/dboc-uhf1/Makefile
+          tests/dboc-rcisd1/Makefile
+          tests/dboc-rocisd1/Makefile
 
           src/doc/MakeVars src/doc/MakeRules src/doc/Makefile
           src/doc/install/Makefile
