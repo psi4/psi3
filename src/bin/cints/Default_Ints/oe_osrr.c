@@ -28,7 +28,7 @@ void AI_OSrecurs(double ***AI0, struct coordinates PA, struct coordinates PB,
   int ix,iy,iz,jx,jy,jz;
   int iind,jind;
   double pp = 1/(2*gamma);
-  double mmax = iang+jang;
+  int mmax = iang+jang;
   double tmp = sqrt(gamma)*M_2_SQRTPI;
   double u = gamma*(PC.x*PC.x + PC.y*PC.y + PC.z*PC.z);
   static double F[2*CINTS_MAX_AM+1];
