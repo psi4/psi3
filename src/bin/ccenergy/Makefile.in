@@ -17,7 +17,7 @@ cache.c priority.c spinad_amps.c BT2_AO.c halftrans.c  AO_contribute.c status.c 
 local.c lmp2.c new_d1diag.c amp_write.c rotate.c fock_build.c \
 diis_RHF.c diis_UHF.c diis_ROHF.c analyze.c  \
 cc3.c cc3_Wmnij.c cc3_Wmbij.c cc3_Wmnie.c cc3_Wamef.c cc3_Wabei.c \
-local_response.c FT2_cc2.c cc3_RHF.c cc3_UHF.c init_3d_array.c \
+local_response.c FT2_cc2.c cc3_RHF.c cc3_UHF.c \
 
 BINOBJ = $(CSRC:%.c=%.o)
 

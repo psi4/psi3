@@ -118,7 +118,7 @@ void cc3_RHF(void)
 	      kj = T2.params->rowidx[K][J];
 
               T3_RHF(W3, nirreps, I, Gi, J, Gj, K, Gk, &T2, &F, &E,
-                     &fIJ2, &fAB2, occpi, occ_off, virtpi, vir_off);
+                     &fIJ2, &fAB2, occpi, occ_off, virtpi, vir_off, 0.0);
 
 
               /* sort (ab,c) into T3[A][B][C] */
