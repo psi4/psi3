@@ -3,7 +3,7 @@
 #define EXTERN
 #include "globals.h"
 
-void Lmag(void)
+void Lmag(int L_irr)
 {
   dpdfile2 R1, L1, LIA, Lia, RIA, Ria;
   dpdbuf4 R2, L2, LIJAB, Lijab, LIjAb, RIJAB, Rijab, RIjAb;
@@ -13,9 +13,9 @@ void Lmag(void)
 
     dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "New LIA");
     dpd_file2_init(&Lia, CC_OEI, L_irr, 0, 1, "New Lia");
-    dpd_buf4_init(&LIJAB, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "New LIJAB");
-    dpd_buf4_init(&Lijab, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "New Lijab");
-    dpd_buf4_init(&LIjAb, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
+    dpd_buf4_init(&LIJAB, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "New LIJAB");
+    dpd_buf4_init(&Lijab, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "New Lijab");
+    dpd_buf4_init(&LIjAb, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
 
     norm = dpd_file2_dot_self(&LIA);
     norm += dpd_file2_dot_self(&Lia);

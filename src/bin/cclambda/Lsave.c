@@ -3,7 +3,7 @@
 #define EXTERN
 #include "globals.h"
 
-void Lsave(void)
+void Lsave(int L_irr)
 {
   dpdfile2 L1;
   dpdbuf4 L2;
@@ -18,16 +18,16 @@ void Lsave(void)
     dpd_file2_copy(&L1, CC_OEI, "Lia");
     dpd_file2_close(&L1);
 
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "New LIJAB");
-    dpd_buf4_copy(&L2, CC_LAMPS, "LIJAB");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "New LIJAB");
+    dpd_buf4_copy(&L2, CC_LAMBDA, "LIJAB");
     dpd_buf4_close(&L2);
 
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "New Lijab");
-    dpd_buf4_copy(&L2, CC_LAMPS, "Lijab");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "New Lijab");
+    dpd_buf4_copy(&L2, CC_LAMBDA, "Lijab");
     dpd_buf4_close(&L2);
 
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
-    dpd_buf4_copy(&L2, CC_LAMPS, "LIjAb");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
+    dpd_buf4_copy(&L2, CC_LAMBDA, "LIjAb");
     dpd_buf4_close(&L2);
   }
   else if(params.ref == 2) { /** UHF **/
@@ -39,16 +39,16 @@ void Lsave(void)
     dpd_file2_copy(&L1, CC_OEI, "Lia");
     dpd_file2_close(&L1);
 
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "New LIJAB");
-    dpd_buf4_copy(&L2, CC_LAMPS, "LIJAB");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "New LIJAB");
+    dpd_buf4_copy(&L2, CC_LAMBDA, "LIJAB");
     dpd_buf4_close(&L2);
 
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 12, 17, 12, 17, 0, "New Lijab");
-    dpd_buf4_copy(&L2, CC_LAMPS, "Lijab");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 12, 17, 12, 17, 0, "New Lijab");
+    dpd_buf4_copy(&L2, CC_LAMBDA, "Lijab");
     dpd_buf4_close(&L2);
 
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 22, 28, 22, 28, 0, "New LIjAb");
-    dpd_buf4_copy(&L2, CC_LAMPS, "LIjAb");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 22, 28, 22, 28, 0, "New LIjAb");
+    dpd_buf4_copy(&L2, CC_LAMBDA, "LIjAb");
     dpd_buf4_close(&L2);
 
   }

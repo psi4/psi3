@@ -31,6 +31,7 @@ struct MOInfo {
   int *avir_off;      /* virtual alpha orbital offsets within each irrep */
   int *bvir_off;      /* virtual beta orbital offsets within each irrep */
   int iter;           /* Current lambda iteration */
+  int sym; /* symmetry of converged CCSD state */
   double conv;        /* Current convergence level */
   double enuc;        /* Nuclear repulsion energy */
   double escf;        /* SCF energy from file30 */

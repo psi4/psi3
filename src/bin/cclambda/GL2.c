@@ -14,7 +14,7 @@
 ** TDC, July 2002
 */
 
-void GaeL2(void)
+void GaeL2(int L_irr)
 {
   dpdbuf4 L2, newLijab, newLIJAB, newLIjAb;
   dpdbuf4 D;
@@ -34,7 +34,7 @@ void GaeL2(void)
     dpd_contract244(&GAE, &D, &X2, 1, 2, 1, 1.0, 0.0);
     dpd_buf4_axpy(&X1, &X2, 1.0);
     dpd_buf4_close(&X1);
-    dpd_buf4_init(&newLIJAB, CC_LAMPS, L_irr, 2, 5, 2, 7, 0, "New LIJAB");
+    dpd_buf4_init(&newLIJAB, CC_LAMBDA, L_irr, 2, 5, 2, 7, 0, "New LIJAB");
     dpd_buf4_axpy(&X2, &newLIJAB, 1.0);
     dpd_buf4_close(&X2);
     dpd_buf4_close(&newLIJAB);
@@ -47,13 +47,13 @@ void GaeL2(void)
     dpd_buf4_close(&D);
     dpd_buf4_axpy(&X1, &X2, 1.0);
     dpd_buf4_close(&X1);
-    dpd_buf4_init(&newLijab, CC_LAMPS, L_irr, 2, 5, 2, 7, 0, "New Lijab");
+    dpd_buf4_init(&newLijab, CC_LAMBDA, L_irr, 2, 5, 2, 7, 0, "New Lijab");
     dpd_buf4_axpy(&X2, &newLijab, 1.0);
     dpd_buf4_close(&X2);
     dpd_buf4_close(&newLijab);
 
 
-    dpd_buf4_init(&newLIjAb, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
+    dpd_buf4_init(&newLIjAb, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
 
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
     dpd_contract424(&D, &Gae, &newLIjAb, 3, 1, 0, 1.0, 1.0);
@@ -82,7 +82,7 @@ void GaeL2(void)
     dpd_buf4_axpy(&X2, &X1, -1);
     dpd_buf4_close(&X2);
     /** X(IJ,AB) --> New L(IJ,AB) **/
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 5, 2, 7, 0, "New LIJAB");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 2, 5, 2, 7, 0, "New LIJAB");
     dpd_buf4_axpy(&X1, &L2, 1);
     dpd_buf4_close(&X1);
     dpd_buf4_close(&L2);
@@ -99,13 +99,13 @@ void GaeL2(void)
     dpd_buf4_axpy(&X2, &X1, -1);
     dpd_buf4_close(&X2);
     /** X(ij,ab) --> New L(ij,ab) **/
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 12, 15, 12, 17, 0, "New Lijab");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 12, 15, 12, 17, 0, "New Lijab");
     dpd_buf4_axpy(&X1, &L2, 1);
     dpd_buf4_close(&X1);
     dpd_buf4_close(&L2);
 
     /** New L(Ij,Ab) = <Ij|Ae> G(b,e) + <Ij|Eb> G(A,E) **/
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 22, 28, 22, 28, 0, "New LIjAb");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 22, 28, 22, 28, 0, "New LIjAb");
     dpd_buf4_init(&D, CC_DINTS, 0, 22, 28, 22, 28, 0, "D <Ij|Ab>");
     dpd_contract424(&D, &Gae, &L2, 3, 1, 0, 1, 1);
     dpd_contract244(&GAE, &D, &L2, 1, 2, 1, 1, 1);
@@ -129,7 +129,7 @@ void GaeL2(void)
 ** TDC, July 2002
 */
 
-void GmiL2(void)
+void GmiL2(int L_irr)
 {
 
   dpdbuf4 L2, newLijab, newLIJAB, newLIjAb;
@@ -150,7 +150,7 @@ void GmiL2(void)
     dpd_contract244(&GMI, &D, &X2, 0, 0, 0, -1.0, 0.0);
     dpd_buf4_axpy(&X1, &X2, 1.0);
     dpd_buf4_close(&X1);
-    dpd_buf4_init(&newLIJAB, CC_LAMPS, L_irr, 0, 7, 2, 7, 0, "New LIJAB");
+    dpd_buf4_init(&newLIJAB, CC_LAMBDA, L_irr, 0, 7, 2, 7, 0, "New LIJAB");
     dpd_buf4_axpy(&X2, &newLIJAB, 1.0);
     dpd_buf4_close(&X2);
     dpd_buf4_close(&newLIJAB);
@@ -163,12 +163,12 @@ void GmiL2(void)
     dpd_buf4_close(&D);
     dpd_buf4_axpy(&X1, &X2, 1.0);
     dpd_buf4_close(&X1);
-    dpd_buf4_init(&newLijab, CC_LAMPS, L_irr, 0, 7, 2, 7, 0, "New Lijab");
+    dpd_buf4_init(&newLijab, CC_LAMBDA, L_irr, 0, 7, 2, 7, 0, "New Lijab");
     dpd_buf4_axpy(&X2, &newLijab, 1.0);
     dpd_buf4_close(&X2);
     dpd_buf4_close(&newLijab);
 
-    dpd_buf4_init(&newLIjAb, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
+    dpd_buf4_init(&newLIjAb, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
 
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
     dpd_contract424(&D, &Gmi, &newLIjAb, 1, 0, 1, -1.0, 1.0);
@@ -197,7 +197,7 @@ void GmiL2(void)
     dpd_buf4_axpy(&X2, &X1, -1);
     dpd_buf4_close(&X2);
     /** X(IJ,AB) --> New L(IJ,AB) **/
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 0, 7, 2, 7, 0, "New LIJAB");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 7, 2, 7, 0, "New LIJAB");
     dpd_buf4_axpy(&X1, &L2, 1);
     dpd_buf4_close(&L2);
     dpd_buf4_close(&X1);
@@ -214,14 +214,14 @@ void GmiL2(void)
     dpd_buf4_axpy(&X2, &X1, -1);
     dpd_buf4_close(&X2);
     /** X(ij,ab) --> New L(ij,ab) **/
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 10, 17, 12, 17, 0, "New Lijab");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 10, 17, 12, 17, 0, "New Lijab");
     dpd_buf4_axpy(&X1, &L2, 1);
     dpd_buf4_close(&L2);
     dpd_buf4_close(&X1);
 
 
     /* New L(Ij,Ab) <-- - <Im|Ab> G(m,j) - G(M,I) <Mj|Ab> **/
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 22, 28, 22, 28, 0, "New LIjAb");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 22, 28, 22, 28, 0, "New LIjAb");
     dpd_buf4_init(&D, CC_DINTS, 0, 22, 28, 22, 28, 0, "D <Ij|Ab>");
     dpd_contract424(&D, &Gmi, &L2, 1, 0, 1, -1, 1);
     dpd_contract244(&GMI, &D, &L2, 0, 0, 0, -1, 1);

@@ -27,7 +27,7 @@
 ** TDC, July 2002
 */
 
-void WijmbL2(void)
+void WijmbL2(int L_irr)
 {
   dpdfile2 LIA, Lia;
   dpdbuf4 L2, newLijab, newLIJAB, newLIjAb;
@@ -48,7 +48,7 @@ void WijmbL2(void)
     dpd_buf4_init(&X2, CC_TMP1, L_irr, 2, 5, 2, 5, 0, "X(2,5) 2");
     dpd_buf4_axpy(&X2, &X1, -1.0);
     dpd_buf4_close(&X2);
-    dpd_buf4_init(&newLIJAB, CC_LAMPS, L_irr, 2, 5, 2, 7, 0, "New LIJAB");
+    dpd_buf4_init(&newLIJAB, CC_LAMBDA, L_irr, 2, 5, 2, 7, 0, "New LIJAB");
     dpd_buf4_axpy(&X1, &newLIJAB, 1.0);
     dpd_buf4_close(&newLIJAB);
 
@@ -61,11 +61,11 @@ void WijmbL2(void)
     dpd_buf4_init(&X2, CC_TMP1, L_irr, 2, 5, 2, 5, 0, "X(2,5) 2");
     dpd_buf4_axpy(&X2, &X1, -1.0);
     dpd_buf4_close(&X2);
-    dpd_buf4_init(&newLijab, CC_LAMPS, L_irr, 2, 5, 2, 7, 0, "New Lijab");
+    dpd_buf4_init(&newLijab, CC_LAMBDA, L_irr, 2, 5, 2, 7, 0, "New Lijab");
     dpd_buf4_axpy(&X1, &newLijab, 1.0);
     dpd_buf4_close(&newLijab);
 
-    dpd_buf4_init(&newLIjAb, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
+    dpd_buf4_init(&newLIjAb, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
 
     dpd_buf4_init(&WMnIe, CC_HBAR, 0, 0, 11, 0, 11, 0, "WMnIe");
     dpd_buf4_sort(&WMnIe, CC_TMP0, pqsr, 0, 10, "WMnIe (Mn,Ie)");
@@ -108,7 +108,7 @@ void WijmbL2(void)
     dpd_buf4_axpy(&Z2, &Z1, -1);
     dpd_buf4_close(&Z2);
     /** Z(IJ,AB) --> New L(IJ,AB) **/
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 5, 2, 7, 0, "New LIJAB");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 2, 5, 2, 7, 0, "New LIJAB");
     dpd_buf4_axpy(&Z1, &L2, 1);
     dpd_buf4_close(&L2);
     dpd_buf4_close(&Z1);
@@ -128,7 +128,7 @@ void WijmbL2(void)
     dpd_buf4_axpy(&Z2, &Z1, -1);
     dpd_buf4_close(&Z2);
     /** Z(ij,ab) --> New L(ij,ab) **/
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 12, 15, 12, 17, 0, "New Lijab");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 12, 15, 12, 17, 0, "New Lijab");
     dpd_buf4_axpy(&Z1, &L2, 1);
     dpd_buf4_close(&L2);
     dpd_buf4_close(&Z1);
@@ -140,7 +140,7 @@ void WijmbL2(void)
     dpd_contract424(&W, &Lia, &Z, 3, 0, 0, -1, 0);
     dpd_buf4_close(&W);
     /** Z(jI,Ab) --> New L(Ij,Ab) **/
-    dpd_buf4_sort_axpy(&Z, CC_LAMPS, qprs, 22, 28, "New LIjAb", 1);
+    dpd_buf4_sort_axpy(&Z, CC_LAMBDA, qprs, 22, 28, "New LIjAb", 1);
     dpd_buf4_close(&Z);
 
     /** Z(Ij,bA) = W(Ij,bM) L(M,A) **/
@@ -149,7 +149,7 @@ void WijmbL2(void)
     dpd_contract424(&W, &LIA, &Z, 3, 0, 0, -1, 0);
     dpd_buf4_close(&W);
     /** Z(Ij,bA) --> New L(Ij,Ab) **/
-    dpd_buf4_sort_axpy(&Z, CC_LAMPS, pqsr, 22, 28, "New LIjAb", 1);
+    dpd_buf4_sort_axpy(&Z, CC_LAMBDA, pqsr, 22, 28, "New LIjAb", 1);
     dpd_buf4_close(&Z);
 
     dpd_file2_close(&Lia);

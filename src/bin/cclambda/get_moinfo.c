@@ -18,7 +18,7 @@
 
 void get_moinfo(void)
 {
-  int i, h, p, q, errcod, nactive, nirreps;
+  int i,j, h, p, q, errcod, nactive, nirreps, sym;
   double ***C, ***Ca, ***Cb;
   psio_address next;
 
@@ -35,6 +35,12 @@ void get_moinfo(void)
   moinfo.openpi = chkpt_rd_openpi();
   moinfo.phase = chkpt_rd_phase_check();
   chkpt_close();
+
+  sym = 0;
+  for (i=0;i<moinfo.nirreps;++i)
+    for (j=0;j<moinfo.openpi[i];++j)
+      sym = sym ^ i;
+  moinfo.sym = sym;
 
   psio_read_entry(CC_INFO, "Reference Wavefunction", (char *) &(params.ref),
                   sizeof(int));
@@ -184,14 +190,6 @@ void get_moinfo(void)
   fprintf(outfile,  "\tCCSD energy         (CC_INFO) = %20.15f\n",moinfo.ecc);
   fprintf(outfile,  "\tTotal CCSD energy   (CC_INFO) = %20.15f\n", 
           moinfo.eref+moinfo.ecc);
-  fprintf(outfile,"\tExcited State L calculation?  = ");
-  if (params.ground) fprintf(outfile,"No\n"); else fprintf(outfile,"Yes\n"); 
-  fprintf(outfile,"\tIrrep of L          (CC_INFO) = %s\n", moinfo.labels[L_irr]);
-  if (!params.ground) {
-    fprintf(outfile,"\tEOM R0 value        (CC_INFO) = %20.15f\n",params.R0);
-    fprintf(outfile,"\tCCEOM Energy        (CC_INFO) = %20.15f\n",params.cceom_energy);
-  }
-
 }
 
 /* Frees memory allocated in get_moinfo() and dumps some info. */

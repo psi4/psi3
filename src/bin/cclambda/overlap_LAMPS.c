@@ -3,7 +3,7 @@
 #define EXTERN
 #include "globals.h"
 
-void overlap(int L_irr)
+void overlap_LAMPS(int L_irr)
 {
   int h, nirreps;
   int row, col;
@@ -33,18 +33,18 @@ void overlap(int L_irr)
   dpd_file2_close(&L1);
   dpd_file2_close(&T1);
 
-  dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "LIJAB");
+  dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "LIJAB");
   dpd_buf4_init(&T2, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tIJAB");
   ST2AA = dpd_buf4_dot(&L2, &T2);
   dpd_buf4_close(&T2);
   dpd_buf4_close(&L2);
 
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
-    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "Lijab");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "Lijab");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tijab");
   }
   else if(params.ref == 2) { /** UHF **/
-    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 12, 17, 12, 17, 0, "Lijab");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 12, 17, 12, 17, 0, "Lijab");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 12, 17, 12, 17, 0, "tijab");
   }
   ST2BB = dpd_buf4_dot(&L2, &T2);
@@ -52,11 +52,11 @@ void overlap(int L_irr)
   dpd_buf4_close(&L2);
 
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
-    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "LIjAb");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "LIjAb");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
   }
   else if(params.ref = 2) { /** UHF **/
-    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 22, 28, 22, 28, 0, "LIjAb");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 22, 28, 22, 28, 0, "LIjAb");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tIjAb");
   }
   ST2AB = dpd_buf4_dot(&L2, &T2);
@@ -74,7 +74,7 @@ void overlap(int L_irr)
   dpd_file2_mat_rd(&T1B);
 
   ST12AA = 0.0;
-  dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "LIJAB");
+  dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "LIJAB");
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_init(&L2, h); 0,
 				       dpd_buf4_mat_irrep_rd(&L2, h);
@@ -103,9 +103,9 @@ void overlap(int L_irr)
   ST12BB = 0.0;
 
   if(params.ref == 0 || params.ref == 1)
-    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "Lijab");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "Lijab");
   else if(params.ref == 2)
-    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 12, 17, 12, 17, 0, "Lijab");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 12, 17, 12, 17, 0, "Lijab");
 
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_init(&L2, h); 0,
@@ -135,9 +135,9 @@ void overlap(int L_irr)
   ST12AB = 0.0;
 
   if(params.ref == 0 || params.ref == 1)
-    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "LIjAb");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "LIjAb");
   else if(params.ref == 2)
-    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 22, 28, 22, 28, 0, "LIjAb");
+    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 22, 28, 22, 28, 0, "LIjAb");
 
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_init(&L2, h); 0,

@@ -66,7 +66,7 @@
 ** TDC, July 2002
 */
 
-void WefabL2(void)
+void WefabL2(int L_irr)
 {
   dpdbuf4 Lijab, LIJAB, LIjAb;
   dpdbuf4 newLijab, newLIJAB, newLIjAb;
@@ -79,19 +79,18 @@ void WefabL2(void)
     dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
     dpd_file2_init(&tia, CC_OEI, 0, 0, 1, "tia");
 
-
-    dpd_buf4_init(&LIJAB, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "LIJAB");
+    dpd_buf4_init(&LIJAB, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "LIJAB");
     dpd_buf4_init(&Z, CC_TMP2, L_irr, 7, 2, 7, 2, 0, "ZABIJ");
     dpd_buf4_init(&B, CC_BINTS, 0, 7, 7, 5, 5, 1, "B <ab|cd>");
     dpd_contract444(&B, &LIJAB, &Z, 0, 0, 1, 0);
     dpd_buf4_close(&B);
-    dpd_buf4_sort_axpy(&Z, CC_LAMPS, rspq, 2, 7, "New LIJAB", 1);
+    dpd_buf4_sort_axpy(&Z, CC_LAMBDA, rspq, 2, 7, "New LIJAB", 1);
     dpd_buf4_close(&LIJAB);
     dpd_buf4_close(&Z);
 
-    dpd_buf4_init(&newLIJAB, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "New LIJAB");
+    dpd_buf4_init(&newLIJAB, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "New LIJAB");
 
-    dpd_buf4_init(&LIJAB, CC_LAMPS, L_irr, 2, 5, 2, 7, 0, "LIJAB");
+    dpd_buf4_init(&LIJAB, CC_LAMBDA, L_irr, 2, 5, 2, 7, 0, "LIJAB");
     dpd_buf4_init(&Ltmp, CC_TMP0, L_irr, 2, 10, 2, 10, 0, "Ltmp (I>J,MF)");
     dpd_buf4_init(&F, CC_FINTS, 0, 10, 7, 10, 5, 1, "F <ia|bc>");
     dpd_contract244(&tIA, &LIJAB, &Ltmp, 1, 2, 1, 1.0, 0.0);
@@ -102,7 +101,7 @@ void WefabL2(void)
 
     dpd_buf4_init(&Z, CC_TMP0, L_irr, 2, 2, 2, 2, 0, "Z(IJ,MN)");
     dpd_buf4_init(&Tau, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauIJAB");
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "LIJAB");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "LIJAB");
     dpd_contract444(&L2, &Tau, &Z, 0, 0, 1.0, 0.0);
     dpd_buf4_close(&L2);
     dpd_buf4_close(&Tau);
@@ -112,19 +111,18 @@ void WefabL2(void)
     dpd_buf4_close(&Z);
     dpd_buf4_close(&newLIJAB);
 
-
-    dpd_buf4_init(&Lijab, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "Lijab");
+    dpd_buf4_init(&Lijab, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "Lijab");
     dpd_buf4_init(&Z, CC_TMP2, L_irr, 7, 2, 7, 2, 0, "Zabij");
     dpd_buf4_init(&B, CC_BINTS, 0, 7, 7, 5, 5, 1, "B <ab|cd>");
     dpd_contract444(&B, &Lijab, &Z, 0, 0, 1, 0);
     dpd_buf4_close(&B);
     dpd_buf4_close(&Lijab);
-    dpd_buf4_sort_axpy(&Z, CC_LAMPS, rspq, 2, 7, "New Lijab", 1);
+    dpd_buf4_sort_axpy(&Z, CC_LAMBDA, rspq, 2, 7, "New Lijab", 1);
     dpd_buf4_close(&Z);
 
-    dpd_buf4_init(&newLijab, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "New Lijab");
+    dpd_buf4_init(&newLijab, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "New Lijab");
 
-    dpd_buf4_init(&Lijab, CC_LAMPS, L_irr, 2, 5, 2, 7, 0, "Lijab");
+    dpd_buf4_init(&Lijab, CC_LAMBDA, L_irr, 2, 5, 2, 7, 0, "Lijab");
     dpd_buf4_init(&Ltmp, CC_TMP0, L_irr, 2, 10, 2, 10, 0, "Ltmp (i>j,mf)");
     dpd_buf4_init(&F, CC_FINTS, 0, 10, 7, 10, 5, 1, "F <ia|bc>");
     dpd_contract244(&tia, &Lijab, &Ltmp, 1, 2, 1, 1.0, 0.0);
@@ -135,7 +133,7 @@ void WefabL2(void)
 
     dpd_buf4_init(&Z, CC_TMP0, L_irr, 2, 2, 2, 2, 0, "Z(ij,mn)");
     dpd_buf4_init(&Tau, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauijab");
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "Lijab");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "Lijab");
     dpd_contract444(&L2, &Tau, &Z, 0, 0, 1.0, 0.0);
     dpd_buf4_close(&L2);
     dpd_buf4_close(&Tau);
@@ -146,17 +144,15 @@ void WefabL2(void)
     dpd_buf4_close(&newLijab);
 
 
-
-    dpd_buf4_init(&LIjAb, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "LIjAb");
-
+    dpd_buf4_init(&LIjAb, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "LIjAb");
     dpd_buf4_init(&Z, CC_TMP2, L_irr, 5, 0, 5, 0, 0, "ZAbIj");
     dpd_buf4_init(&B, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>");
     dpd_contract444(&B, &LIjAb, &Z, 0, 0, 1, 0);
     dpd_buf4_close(&B);
-    dpd_buf4_sort_axpy(&Z, CC_LAMPS, rspq, 0, 5, "New LIjAb", 1);
+    dpd_buf4_sort_axpy(&Z, CC_LAMBDA, rspq, 0, 5, "New LIjAb", 1);
     dpd_buf4_close(&Z);
 
-    dpd_buf4_init(&newLIjAb, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
+    dpd_buf4_init(&newLIjAb, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
 
     dpd_buf4_init(&Ltmp, CC_TMP1, L_irr, 0, 11, 0, 11, 0, "Lt (Ij,Em)");
     dpd_contract424(&LIjAb, &tia, &Ltmp, 3, 1, 0, 1.0, 0.0);
@@ -183,7 +179,7 @@ void WefabL2(void)
 
     dpd_buf4_init(&Z, CC_TMP0, L_irr, 0, 0, 0, 0, 0, "Z(Ij,Mn)");
     dpd_buf4_init(&Tau, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "LIjAb");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "LIjAb");
     dpd_contract444(&L2, &Tau, &Z, 0, 0, 1.0, 0.0);
     dpd_buf4_close(&L2);
     dpd_buf4_close(&Tau);
@@ -205,23 +201,23 @@ void WefabL2(void)
 
     /** Z(AB,IJ) = <AB||CD> L(IJ,CD) **/
     dpd_buf4_init(&Z, CC_TMP1, L_irr, 7, 2, 7, 2, 0, "Z(AB,IJ)");
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "LIJAB");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "LIJAB");
     dpd_buf4_init(&B, CC_BINTS, 0, 7, 7, 5, 5, 1, "B <AB|CD>");
     dpd_contract444(&B, &L2, &Z, 0, 0, 1, 0);
     dpd_buf4_close(&B);
     dpd_buf4_close(&L2);
     /** Z(AB,IJ) --> New L(IJ,AB) **/
-    dpd_buf4_sort_axpy(&Z, CC_LAMPS, rspq, 2, 7, "New LIJAB", 1);
+    dpd_buf4_sort_axpy(&Z, CC_LAMBDA, rspq, 2, 7, "New LIJAB", 1);
     dpd_buf4_close(&Z);
 
     /** Z(IJ,EM) = -L(IJ,EFf) t(M,F) **/
     dpd_buf4_init(&Z, CC_TMP1, L_irr, 2, 21, 2, 21, 0, "Z(IJ,EM)");
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 5, 2, 7, 0, "LIJAB");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 2, 5, 2, 7, 0, "LIJAB");
     dpd_contract424(&L2, &tIA, &Z, 3, 1, 0, -1, 0);
     dpd_buf4_close(&L2);
     /** New L(IJ,AB) <-- Z(IJ,EM) <EM||AB> **/
     dpd_buf4_init(&F, CC_FINTS, 0, 21, 7, 21, 5, 1, "F <AI|BC>");
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "New LIJAB");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "New LIJAB");
     dpd_contract444(&Z, &F, &L2, 0, 1, 1, 1);
     dpd_buf4_close(&L2);
     dpd_buf4_close(&F);
@@ -230,12 +226,12 @@ void WefabL2(void)
     /** Z(IJ,MN) = 1/2 L(IJ,EF) tau_MN^EF **/
     dpd_buf4_init(&Z, CC_TMP1, L_irr, 2, 2, 2, 2, 0, "Z(IJ,MN)");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauIJAB");
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "LIJAB");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "LIJAB");
     dpd_contract444(&L2, &T2, &Z, 0, 0, 1, 0);
     dpd_buf4_close(&L2);
     dpd_buf4_close(&T2);
     /** New L(IJ,AB) <-- 1/2 Z(IJ,MN) <MN||AB> **/
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "New LIJAB");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "New LIJAB");
     dpd_buf4_init(&D, CC_DINTS, 0, 2, 7, 2, 7, 0, "D <IJ||AB> (I>J,A>B)");
     dpd_contract444(&Z, &D, &L2, 0, 1, 1, 1);
     dpd_buf4_close(&D);
@@ -245,23 +241,23 @@ void WefabL2(void)
 
     /** Z(ab,ij) = <ab||cd> L(ij,cd) **/
     dpd_buf4_init(&Z, CC_TMP1, L_irr, 17, 12, 17, 12, 0, "Z(ab,ij)");
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 12, 17, 12, 17, 0, "Lijab");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 12, 17, 12, 17, 0, "Lijab");
     dpd_buf4_init(&B, CC_BINTS, 0, 17, 17, 15, 15, 1, "B <ab|cd>");
     dpd_contract444(&B, &L2, &Z, 0, 0, 1, 0);
     dpd_buf4_close(&B);
     dpd_buf4_close(&L2);
     /** Z(ab,ij) --> New L(ij,ab) **/
-    dpd_buf4_sort_axpy(&Z, CC_LAMPS, rspq, 12, 17, "New Lijab", 1);
+    dpd_buf4_sort_axpy(&Z, CC_LAMBDA, rspq, 12, 17, "New Lijab", 1);
     dpd_buf4_close(&Z);
 
     /** Z(ij,em) = -L(ij,ef) t(m,f) **/
     dpd_buf4_init(&Z, CC_TMP1, L_irr, 12, 31, 12, 31, 0, "Z(ij,em)");
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 12, 15, 12, 17, 0, "Lijab");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 12, 15, 12, 17, 0, "Lijab");
     dpd_contract424(&L2, &tia, &Z, 3, 1, 0, -1, 0);
     dpd_buf4_close(&L2);
     /** New L(ij,ab) <-- Z(ij,em) <em||ab> **/
     dpd_buf4_init(&F, CC_FINTS, 0, 31, 17, 31, 15, 1, "F <ai|bc>");
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 12, 17, 12, 17, 0, "New Lijab");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 12, 17, 12, 17, 0, "New Lijab");
     dpd_contract444(&Z, &F, &L2, 0, 1, 1, 1);
     dpd_buf4_close(&L2);
     dpd_buf4_close(&F);
@@ -270,12 +266,12 @@ void WefabL2(void)
     /** Z(ij,mn) = 1/2 L(ij,ef) tau_mn^ef **/
     dpd_buf4_init(&Z, CC_TMP1, L_irr, 12, 12, 12, 12, 0, "Z(ij,mn)");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 12, 17, 12, 17, 0, "tauijab");
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 12, 17, 12, 17, 0, "Lijab");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 12, 17, 12, 17, 0, "Lijab");
     dpd_contract444(&L2, &T2, &Z, 0, 0, 1, 0);
     dpd_buf4_close(&L2);
     dpd_buf4_close(&T2);
     /** New L(ij,ab) <-- 1/2 Z(ij,mn) <mn||ab> **/
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 12, 17, 12, 17, 0, "New Lijab");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 12, 17, 12, 17, 0, "New Lijab");
     dpd_buf4_init(&D, CC_DINTS, 0, 12, 17, 12, 17, 0, "D <ij||ab> (i>j,a>b)");
     dpd_contract444(&Z, &D, &L2, 0, 1, 1, 1);
     dpd_buf4_close(&D);
@@ -285,22 +281,22 @@ void WefabL2(void)
 
     /** Z(Ab,Ij) = <Ab|Cd> L(Ij,Cd) **/
     dpd_buf4_init(&Z, CC_TMP1, L_irr, 28, 22, 28, 22, 0, "Z(Ab,Ij)");
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 22, 28, 22, 28, 0, "LIjAb");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 22, 28, 22, 28, 0, "LIjAb");
     dpd_buf4_init(&B, CC_BINTS, 0, 28, 28, 28, 28, 0, "B <Ab|Cd>");
     dpd_contract444(&B, &L2, &Z, 0, 0, 1, 0);
     dpd_buf4_close(&B);
     dpd_buf4_close(&L2);
     /** Z(Ab,Ij) --> New L(Ij,Ab) **/
-    dpd_buf4_sort_axpy(&Z, CC_LAMPS, rspq, 22, 28, "New LIjAb", 1);
+    dpd_buf4_sort_axpy(&Z, CC_LAMBDA, rspq, 22, 28, "New LIjAb", 1);
     dpd_buf4_close(&Z);
 
     /** Z(Ij,Em) = -L(Ij,Ef) t(m,f) **/
     dpd_buf4_init(&Z, CC_TMP1, L_irr, 22, 26, 22, 26, 0, "Z(Ij,Em)");
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 22, 28, 22, 28, 0, "LIjAb");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 22, 28, 22, 28, 0, "LIjAb");
     dpd_contract424(&L2, &tia, &Z, 3, 1, 0, -1, 0);
     dpd_buf4_close(&L2);
     /** New L(Ij,Ab) <-- Z(Ij,Em) <Em|Ab> **/
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 22, 28, 22, 28, 0, "New LIjAb");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 22, 28, 22, 28, 0, "New LIjAb");
     dpd_buf4_init(&F, CC_FINTS, 0, 26, 28, 26, 28, 0, "F <Ai|Bc>");
     dpd_contract444(&Z, &F, &L2, 0, 1, 1, 1);
     dpd_buf4_close(&F);
@@ -309,11 +305,11 @@ void WefabL2(void)
 
     /** Z(Ij,Mf) = -t(M,E) L(Ij,Ef) **/
     dpd_buf4_init(&Z, CC_TMP1, L_irr, 22, 24, 22, 24, 0, "Z(Ij,Mf)");
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 22, 28, 22, 28, 0, "LIjAb");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 22, 28, 22, 28, 0, "LIjAb");
     dpd_contract244(&tIA, &L2, &Z, 1, 2, 1, -1, 0);
     dpd_buf4_close(&L2);
     /** New L(Ij,Ab) <-- Z(Ij,Mf) <Mf|Ab> **/
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 22, 28, 22, 28, 0, "New LIjAb");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 22, 28, 22, 28, 0, "New LIjAb");
     dpd_buf4_init(&F, CC_FINTS, 0, 24, 28, 24, 28, 0, "F <Ia|Bc>");
     dpd_contract444(&Z, &F, &L2, 0, 1, 1, 1);
     dpd_buf4_close(&F);
@@ -322,13 +318,13 @@ void WefabL2(void)
 
     /** Z(Ij,Mn) = L(Ij,Ef) tau(Mn,Ef) **/
     dpd_buf4_init(&Z, CC_TMP1, L_irr, 22, 22, 22, 22, 0, "Z(Ij,Mn)");
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 22, 28, 22, 28, 0, "LIjAb");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 22, 28, 22, 28, 0, "LIjAb");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tauIjAb");
     dpd_contract444(&L2, &T2, &Z, 0, 0, 1, 0);
     dpd_buf4_close(&T2);
     dpd_buf4_close(&L2);
     /** New L(Ij,Ab) <-- Z(Ij,Mn) <Mn|Ab> **/
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 22, 28, 22, 28, 0, "New LIjAb");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 22, 28, 22, 28, 0, "New LIjAb");
     dpd_buf4_init(&D, CC_DINTS, 0, 22, 28, 22, 28, 0, "D <Ij|Ab>");
     dpd_contract444(&Z, &D, &L2, 0, 1, 1, 1);
     dpd_buf4_close(&D);

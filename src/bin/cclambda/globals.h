@@ -2,6 +2,7 @@
 #include <libdpd/dpd.h>
 #include "MOInfo.h"
 #include "Params.h"
+#include <libciomr/libciomr.h>
 #include "Local.h"
 
 /* Global variables */
@@ -12,10 +13,11 @@
 #define EXTERN
 #endif
 
+/* #define EOM_DEBUG (1) */
+
 EXTERN FILE *infile, *outfile;
 EXTERN char *psi_file_prefix;
 EXTERN struct MOInfo moinfo;
 EXTERN struct Params params;
 EXTERN struct Local local;
-EXTERN int L_irr;
-EXTERN int R_irr;
+void check_sum(char *lbl, int L_irr);

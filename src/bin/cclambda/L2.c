@@ -3,34 +3,81 @@
 #define EXTERN
 #include "globals.h"
 
-void DL2(void);
-void FaeL2(void);
-void FmiL2(void);
-void WijmnL2(void);
-void WefabL2(void);
-void WejabL2(void);
-void WijmbL2(void);
-void L1FL2(void);
-void WmbejL2(void);
-void GaeL2(void);
-void GmiL2(void);
-void dijabL2(void);
+void DL2(int L_irr);
+void FaeL2(int L_irr);
+void FmiL2(int L_irr);
+void WijmnL2(int L_irr);
+void WefabL2(int L_irr);
+void WejabL2(int L_irr);
+void WijmbL2(int L_irr);
+void L1FL2(int L_irr);
+void WmbejL2(int L_irr);
+void GaeL2(int L_irr);
+void GmiL2(int L_irr);
+void dijabL2(int L_irr);
 
-void BL2_AO(void);
+void BL2_AO(int L_irr);
 
-void L2_build(void) {
+void L2_build(int L_irr) {
 
-  DL2();
-  FaeL2();
-  FmiL2();
-  WijmnL2();
-  WefabL2();
-  WejabL2();
-  WijmbL2();
-  WmbejL2(); 
-  L1FL2();
-  GaeL2();
-  GmiL2();
-  dijabL2();
+  DL2(L_irr);
+#ifdef EOM_DEBUG
+check_sum("DL2", L_irr);
+#endif
+
+  FaeL2(L_irr);
+#ifdef EOM_DEBUG
+check_sum("FaeL2", L_irr);
+#endif
+
+  FmiL2(L_irr);
+#ifdef EOM_DEBUG
+check_sum("FmiL2", L_irr);
+#endif
+
+  WijmnL2(L_irr);
+#ifdef EOM_DEBUG
+check_sum("WijmnL2", L_irr);
+#endif
+
+  WefabL2(L_irr);
+#ifdef EOM_DEBUG
+check_sum("WefabL2", L_irr);
+#endif
+
+  WejabL2(L_irr);
+#ifdef EOM_DEBUG
+check_sum("WejabL2", L_irr);
+#endif
+
+  WijmbL2(L_irr);
+#ifdef EOM_DEBUG
+check_sum("WijmbL2", L_irr);
+#endif
+
+  WmbejL2(L_irr); 
+#ifdef EOM_DEBUG
+check_sum("WmbejL2", L_irr);
+#endif
+
+  L1FL2(L_irr);
+#ifdef EOM_DEBUG
+check_sum("L1FL2", L_irr);
+#endif
+
+  GaeL2(L_irr);
+#ifdef EOM_DEBUG
+check_sum("GaeL2", L_irr);
+#endif
+
+  GmiL2(L_irr);
+#ifdef EOM_DEBUG
+check_sum("GmiL2", L_irr);
+#endif
+
+  dijabL2(L_irr);
+#ifdef EOM_DEBUG
+  check_sum("after D2s", L_irr);
+#endif
 }
 

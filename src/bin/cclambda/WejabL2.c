@@ -27,7 +27,7 @@
 ** for the Wamef matrix elements, as I've done for the UHF case.
 */
 
-void WejabL2(void)
+void WejabL2(int L_irr)
 {
   dpdbuf4 W, Wamef, WAmEf, WaMeF, WAMEF;
   dpdbuf4 L2, newLijab, newLIJAB, newLIjAb;
@@ -49,14 +49,14 @@ void WejabL2(void)
     dpd_buf4_init(&X2, CC_TMP1, L_irr, 0, 7, 0, 7, 0, "X(0,7) 2");
     dpd_buf4_axpy(&X2, &X1, -1.0);
     dpd_buf4_close(&X2);
-    dpd_buf4_init(&newLIJAB, CC_LAMPS, L_irr, 0, 7, 2, 7, 0, "New LIJAB");
+    dpd_buf4_init(&newLIJAB, CC_LAMBDA, L_irr, 0, 7, 2, 7, 0, "New LIJAB");
     dpd_buf4_axpy(&X1, &newLIJAB, 1.0);
     dpd_buf4_close(&X1);
     dpd_buf4_close(&newLIJAB);
 
     /*
       dpd_buf4_init(&WAMEF, CC_HBAR, 0, 10, 7, 10, 7, 0, "WAMEF");
-      dpd_buf4_init(&newLIJAB, CC_LAMPS, L_irr, 0, 7, 2, 7, 0, "New LIJAB");
+      dpd_buf4_init(&newLIJAB, CC_LAMBDA, L_irr, 0, 7, 2, 7, 0, "New LIJAB");
       dpd_contract424(&WAMEF, &LIA, &newLIJAB, 1, 1, 1, -1.0, 1.0);
 
       dpd_buf4_init(&Ltmp, CC_TMP0, L_irr, 0, 7, 0, 7, 0, "LIJAB (JI,A>B)");
@@ -78,14 +78,14 @@ void WejabL2(void)
     dpd_buf4_init(&X2, CC_TMP1, L_irr, 0, 7, 0, 7, 0, "X(0,7) 2");
     dpd_buf4_axpy(&X2, &X1, -1.0);
     dpd_buf4_close(&X2);
-    dpd_buf4_init(&newLijab, CC_LAMPS, L_irr, 0, 7, 2, 7, 0, "New Lijab");
+    dpd_buf4_init(&newLijab, CC_LAMBDA, L_irr, 0, 7, 2, 7, 0, "New Lijab");
     dpd_buf4_axpy(&X1, &newLijab, 1.0);
     dpd_buf4_close(&X1);
     dpd_buf4_close(&newLijab);
 
     /*
       dpd_buf4_init(&Wamef, CC_HBAR, 0, 10, 7, 10, 7, 0, "Wamef");
-      dpd_buf4_init(&newLijab, CC_LAMPS, L_irr, 0, 7, 2, 7, 0, "New Lijab");
+      dpd_buf4_init(&newLijab, CC_LAMBDA, L_irr, 0, 7, 2, 7, 0, "New Lijab");
       dpd_contract424(&Wamef, &Lia, &newLijab, 1, 1, 1, -1.0, 1.0);
 
       dpd_buf4_init(&Ltmp, CC_TMP0, L_irr, 0, 7, 0, 7, 0, "Lijab (ji,a>b)");
@@ -99,7 +99,7 @@ void WejabL2(void)
       dpd_buf4_close(&Wamef);
     */
 
-    dpd_buf4_init(&newLIjAb, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
+    dpd_buf4_init(&newLIjAb, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
 
     dpd_buf4_init(&WaMeF, CC_HBAR, 0, 10, 5, 10, 5, 0, "WaMeF");
     dpd_buf4_sort(&WaMeF, CC_TMP0, pqsr, 10, 5, "WaMeF (Ma,Fe)");
@@ -143,7 +143,7 @@ void WejabL2(void)
     dpd_buf4_axpy(&Z2, &Z1, -1);
     dpd_buf4_close(&Z2);
     /** Z(IJ,AB) --> New L(IJ,AB) **/
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 0, 7, 2, 7, 0, "New LIJAB");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 7, 2, 7, 0, "New LIJAB");
     dpd_buf4_axpy(&Z1, &L2, 1);
     dpd_buf4_close(&L2);
     dpd_buf4_close(&Z1);
@@ -162,14 +162,14 @@ void WejabL2(void)
     dpd_buf4_axpy(&Z2, &Z1, -1);
     dpd_buf4_close(&Z2);
     /** Z(ij,ab) --> New L(ij,ab) **/
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 10, 17, 12, 17, 0, "New Lijab");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 10, 17, 12, 17, 0, "New Lijab");
     dpd_buf4_axpy(&Z1, &L2, 1);
     dpd_buf4_close(&L2);
     dpd_buf4_close(&Z1);
 
 
     /** New L(Ij,Ab) <-- L(I,E) W(Ej,Ab) **/
-    dpd_buf4_init(&L2, CC_LAMPS, L_irr, 22, 28, 22, 28, 0, "New LIjAb");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 22, 28, 22, 28, 0, "New LIjAb");
     dpd_buf4_init(&W, CC_HBAR, 0, 26, 28, 26, 28, 0, "WAmEf");
     dpd_contract244(&LIA, &W, &L2, 1, 0, 0, 1, 1);
     dpd_buf4_close(&W);
@@ -181,7 +181,7 @@ void WejabL2(void)
     dpd_contract244(&Lia, &W, &Z, 1, 0, 0, 1, 0);
     dpd_buf4_close(&W);
     /** Z(jI,bA) --> New L(Ij,Ab) **/
-    dpd_buf4_sort_axpy(&Z, CC_LAMPS, qpsr, 22, 28, "New LIjAb", 1);
+    dpd_buf4_sort_axpy(&Z, CC_LAMBDA, qpsr, 22, 28, "New LIjAb", 1);
     dpd_buf4_close(&Z);
 
     dpd_file2_close(&Lia);

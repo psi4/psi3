@@ -3,15 +3,15 @@
 #define EXTERN
 #include "globals.h"
 
-void denom_rohf(void);
-void denom_uhf(void);
+void denom_rohf(int L_irr, int e_index);
+void denom_uhf(int L_irr, int e_index);
 
-void denom(void) {
-  if(params.ref == 0 || params.ref == 1) denom_rohf();
-  else if(params.ref == 2) denom_uhf();
+void denom(int L_irr, int e_index) {
+  if(params.ref == 0 || params.ref == 1) denom_rohf(L_irr, e_index);
+  else if(params.ref == 2) denom_uhf(L_irr, e_index);
 }
 
-void denom_uhf(void)
+void denom_uhf(int L_irr, int e_index)
 {
   int nirreps, h, i, j, a, b, ij, ab, I, J, A, B, isym, jsym, asym, bsym;
   int *aoccpi, *boccpi, *avirtpi, *bvirtpi; 
@@ -53,9 +53,8 @@ void denom_uhf(void)
     for(i=0; i < aoccpi[h]; i++) {
       Fii = LFMIt.matrix[h][i][i];
       for(a=0; a < avirtpi[h^L_irr]; a++) {
-	Faa = LFAEt.matrix[h^L_irr][a][a];
-	dIA.matrix[h][i][a] = 1.0/(Fii - Faa
-            + params.cceom_energy);
+        Faa = LFAEt.matrix[h^L_irr][a][a];
+        dIA.matrix[h][i][a] = 1.0/(Fii - Faa + params.cceom_energy[e_index]);
       }
     }
   }
@@ -69,9 +68,8 @@ void denom_uhf(void)
     for(i=0; i < boccpi[h]; i++) {
       Fii = LFmit.matrix[h][i][i];
       for(a=0; a < bvirtpi[h^L_irr]; a++) {
-	Faa = LFaet.matrix[h^L_irr][a][a];
-	dia.matrix[h][i][a] = 1.0/(Fii - Faa
-            + params.cceom_energy);
+        Faa = LFaet.matrix[h^L_irr][a][a];
+        dia.matrix[h][i][a] = 1.0/(Fii - Faa + params.cceom_energy[e_index]);
       }
     }
   }
@@ -103,7 +101,7 @@ void denom_uhf(void)
 	Fbb = LFAEt.matrix[bsym][B][B];
 
 	dIJAB.matrix[h][ij][ab] = 1.0/(Fii + Fjj - Faa - Fbb
-            + params.cceom_energy);
+            + params.cceom_energy[e_index]);
       }
     }
     dpd_file4_mat_irrep_wrt(&dIJAB, h);
@@ -136,7 +134,7 @@ void denom_uhf(void)
 	Fbb = LFaet.matrix[bsym][B][B];
 
 	dijab.matrix[h][ij][ab] = 1.0/(Fii + Fjj - Faa - Fbb
-            + params.cceom_energy);
+            + params.cceom_energy[e_index]);
       }
     }
     dpd_file4_mat_irrep_wrt(&dijab, h);
@@ -169,7 +167,7 @@ void denom_uhf(void)
 	Fbb = LFaet.matrix[bsym][B][B];
 
 	dIjAb.matrix[h][ij][ab] = 1.0/(Fii + Fjj - Faa - Fbb
-            + params.cceom_energy);
+            + params.cceom_energy[e_index]);
       }
     }
     dpd_file4_mat_irrep_wrt(&dIjAb, h);
@@ -189,7 +187,7 @@ void denom_uhf(void)
   return;
 }
 
-void denom_rohf(void)
+void denom_rohf(int L_irr, int e_index)
 {
   dpdfile2 LFAEt, LFaet, LFMIt, LFmit;
   dpdfile2 dIA, dia;
@@ -234,7 +232,7 @@ void denom_rohf(void)
       Fii = LFMIt.matrix[h][i][i];
       for(a=0; a < (virtpi[h^L_irr] - openpi[h^L_irr]); a++) {
         Faa = LFAEt.matrix[h^L_irr][a][a];
-        dIA.matrix[h][i][a] = 1.0/(Fii - Faa + params.cceom_energy);
+        dIA.matrix[h][i][a] = 1.0/(Fii - Faa + params.cceom_energy[e_index]);
       }
     }
   }
@@ -250,7 +248,7 @@ void denom_rohf(void)
       Fii = LFmit.matrix[h][i][i];
       for(a=0; a < virtpi[h^L_irr]; a++) {
         Faa = LFaet.matrix[h^L_irr][a][a];
-        dia.matrix[h][i][a] = 1.0/(Fii - Faa + params.cceom_energy);
+        dia.matrix[h][i][a] = 1.0/(Fii - Faa + params.cceom_energy[e_index]);
       }
     }
   }
@@ -295,7 +293,7 @@ void denom_rohf(void)
                 ((A >= (virtpi[asym] - openpi[asym])) ||
                  (B >= (virtpi[bsym] - openpi[bsym])) ?
                  0.0 : 1.0/(Fii + Fjj - Faa - Fbb
-                   + params.cceom_energy));
+                   + params.cceom_energy[e_index]));
           }
       }
     dpd_file4_mat_irrep_wrt(&dIJAB, h);
@@ -340,7 +338,7 @@ void denom_rohf(void)
                 ((I >= (occpi[isym] - openpi[isym])) ||
                  (J >= (occpi[jsym] - openpi[jsym])) ?
                  0.0 : 1.0/(Fii + Fjj - Faa - Fbb
-                   + params.cceom_energy));
+                   + params.cceom_energy[e_index]));
       }
     }
     dpd_file4_mat_irrep_wrt(&dijab, h);
@@ -385,7 +383,7 @@ void denom_rohf(void)
                 ((A >= (virtpi[asym] - openpi[asym])) ||
                  (J >= (occpi[jsym] - openpi[jsym])) ?
                  0.0 : 1.0/(Fii + Fjj - Faa - Fbb
-                   + params.cceom_energy));
+                   + params.cceom_energy[e_index]));
             }
         }
     dpd_file4_mat_irrep_wrt(&dIjAb, h);

@@ -7,10 +7,13 @@ struct Params {
   int cachelev;
   int aobasis;
   int ref;
-  int ground;
+  int ground; /* =1 implies only ground state calculation */
   double L0; /* 1 for ground states, 0 for excited states */
-  double R0; /* only matters for excited states - read from CC_INFO */
-  double cceom_energy; /* only matters for excited states - read from CC_INFO */
+  double *R0; /* read from CC_INFO if necessary */
+  double *cceom_energy; /* read from CC_INFO if necessary */
+  int *states_per_irrep; /* determined from input file */
+  int *Ls_per_irrep;
+  int nstates; /* total number of states to solve for */
   int local;  /* boolean for using simulated local-CC framework */
 };
 
