@@ -1,7 +1,12 @@
 /* $Log$
- * Revision 1.1  2000/02/04 22:52:30  evaleev
- * Initial revision
+ * Revision 1.2  2002/12/06 15:50:32  crawdad
+ * Changed all exit values to PSI_RETURN_SUCCESS or PSI_RETURN_FAILURE as
+ * necessary.  This is new for the PSI3 execution driver.
+ * -TDC
  *
+/* Revision 1.1.1.1  2000/02/04 22:52:30  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.3  1999/08/17 19:04:14  evaleev
 /* Changed the default symmetric orthogonalization to the canonical
 /* orthogonalization. Now, if near-linear dependencies in the basis are found,
@@ -124,7 +129,7 @@ L1:
           fprintf(outfile,"\n pathological problems with realloc in findit\n");
           fprintf(outfile," try upping intmx to %d\n",intmx);
           fflush(outfile);
-          exit(1);
+          exit(PSI_RETURN_FAILURE);
           }
 
         start = 2*lij + lkl;

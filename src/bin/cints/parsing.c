@@ -2,6 +2,7 @@
 #include<math.h>
 #include<libipv1/ip_lib.h>
 #include<libint/libint.h>
+#include <psifiles.h>
 
 #include"defines.h"
 #define EXTERN
@@ -83,7 +84,7 @@ void parsing_cmdline(int argc, char *argv[])
      if (errcod == IPE_OK && i == 1) {
         UserOptions.print_lvl = 0;
         stop_io();
-        exit(0);
+        exit(PSI_RETURN_SUCCESS);
      }
    }
 

@@ -21,7 +21,7 @@ char *determine_functional(void){
 	errcod = ip_string("FUNCTIONAL",&functional,0);
 	if(errcod != IPE_OK){
 	    fprintf(outfile," Must specify a functional when using ks-dft\n");
-	    exit(1);
+	    exit(PSI_RETURN_FAILURE);
 	}
     }
     else if(depth == 2){
@@ -29,13 +29,13 @@ char *determine_functional(void){
 	if(errcod != IPE_OK){
 	    fprintf(outfile,
 		    " Exchange functional specification is invalid or missing.\n");
-	    exit(1);
+	    exit(PSI_RETURN_FAILURE);
 	}
 	errcod = ip_string("FUNCTIONAL",&corr_str,1,1);
 	if(errcod != IPE_OK){
 	    fprintf(outfile,
 		    " Correlation functional specification is invalid or missing.\n");
-	    exit(1);
+	    exit(PSI_RETURN_FAILURE);
 	}
 	if (!strcmp(exch_str,"NONE"))
 	    exch_str[0] = '\0';
@@ -53,7 +53,7 @@ char *determine_functional(void){
     }
     else{
 	fprintf(outfile,"\nwrong number of records in FUNCTIONAL keyword");
-	exit(1);
+	exit(PSI_RETURN_FAILURE);
     }
     return functional;
 }
@@ -86,7 +86,7 @@ char *determine_grid(void){
     else{
 	fprintf(outfile,"\nProblem with Grid specification: Wrong number of elements for keyword Grid");
 	
-	exit(1);
+	exit(PSI_RETURN_FAILURE);
     }
     return grid_str;
 }

@@ -55,7 +55,7 @@ void occ_init(void){
 		fprintf(outfile,"\nYou must specify MULTP");
 		fprintf(outfile,"\nI have no way of discerning between");
 		fprintf(outfile,"\na triplet and open shell singlet\n");
-		exit(1);
+		exit(PSI_RETURN_FAILURE);
 	    }
 	    else{
 		fprintf(outfile,"\nThe multiplicity will be highspin\n");
@@ -110,7 +110,7 @@ void occ_init(void){
 	    fprintf(outfile," with multpicity > 1\n");
 	    fprintf(outfile," multiplicity = %d\n",multp);
 	    fprintf(outfile," meference    = %s\n",reference);
-	    exit(1);
+	    exit(PSI_RETURN_FAILURE);
 	}
     }
 	
@@ -146,7 +146,7 @@ void occ_init(void){
 	    fprintf(outfile," and # of electrons specified\n\n");
 	    fprintf(outfile,"\nMultiplicity = %d\nCharge = %d",multp,charge);
 	    fprintf(outfile,"\nNumber of Electrons = %d\n",nelec);
-	    exit(1); }
+	    exit(PSI_RETURN_FAILURE); }
     }
     else if(multp == 3 || (multp == 1 && singlet == 1)) {
 	if(nelec%2==1) {
@@ -154,21 +154,21 @@ void occ_init(void){
 	    fprintf(outfile," and # of electrons specified\n\n");
 	    fprintf(outfile,"\nMultiplicity = %d\nCharge = %d",multp,charge);
 	    fprintf(outfile,"\nNumber of Electrons = %d\n",nelec);
-	    exit(1); }
+	    exit(PSI_RETURN_FAILURE); }
     }
     else if(multp%2 == 1 && nelec%2 ==1){
 	fprintf(outfile,"\nImpossible multiplicity with charge");
 	fprintf(outfile," and # of electrons specified\n");
 	fprintf(outfile,"\nMultiplicity = %d\nCharge = %d",multp,charge);
 	fprintf(outfile,"\nNumber of Electrons = %d\n",nelec);
-	exit(1); 
+	exit(PSI_RETURN_FAILURE); 
     }
     else if(multp%2 == 0 && nelec%2 ==0){
 	fprintf(outfile,"\nImpossible multiplicity with charge");
 	fprintf(outfile," and # of electrons specified\n");
 	fprintf(outfile,"\nMultiplicity = %d\nCharge = %d",multp,charge);
 	fprintf(outfile,"\nNumber of Electrons = %d\n",nelec);
-	exit(1); 
+	exit(PSI_RETURN_FAILURE); 
     }
     else {
 	fprintf(outfile,
@@ -204,7 +204,7 @@ void occ_calc(void){
     else if(multp == 4) {
 	if(nelec < 3){
 	    fprintf(outfile,"\nNot enough electrons for a quartet\n\n");
-	    exit(1);
+	    exit(PSI_RETURN_FAILURE);
 	}
 	fprintf(outfile,
 		"\n*****CSCF3.0 can only guess at highspin quartets*****\n");
@@ -221,7 +221,7 @@ void occ_calc(void){
 	    fprintf(outfile,
 		    "\n  Not enough electrons for a Multiplicity %d \n\n"
 		    ,multp);
-	    exit(1);
+	    exit(PSI_RETURN_FAILURE);
 	}
 	fprintf(outfile,
 		"\n*****CSCF3.0 can only guess at highspin \n");
@@ -241,7 +241,7 @@ void occ_calc(void){
 	    fprintf(outfile,
 		    "\n  Not enough electrons for a Multiplicity %d \n\n"
 		    ,multp);
-	    exit(1);
+	    exit(PSI_RETURN_FAILURE);
 	}
 	
 	a = (nelec/2)-((multp)-3);

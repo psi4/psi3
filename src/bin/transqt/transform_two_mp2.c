@@ -3,6 +3,7 @@
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <libiwl/iwl.h>
+#include <psifiles.h>
 #include "MOInfo.h"
 #include "Params.h"
 #include "globals.h"
@@ -58,7 +59,7 @@ void transform_two_mp2(void)
       fprintf(outfile,"MP2 restricted transformations are available only ");
       fprintf(outfile,"for closed-shell molecules.\n");
       exit_io();
-      exit(1);
+      exit(PSI_RETURN_FAILURE);
     }
 
   if (params.backtr) {

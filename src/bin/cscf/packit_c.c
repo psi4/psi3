@@ -1,7 +1,12 @@
 /* $Log$
- * Revision 1.2  2001/06/29 20:39:29  evaleev
- * Modified cscf to use libpsio to store supermatrix files.
+ * Revision 1.3  2002/12/06 15:50:32  crawdad
+ * Changed all exit values to PSI_RETURN_SUCCESS or PSI_RETURN_FAILURE as
+ * necessary.  This is new for the PSI3 execution driver.
+ * -TDC
  *
+/* Revision 1.2  2001/06/29 20:39:29  evaleev
+/* Modified cscf to use libpsio to store supermatrix files.
+/*
 /* Revision 1.1.1.1  2000/02/04 22:52:31  evaleev
 /* Started PSI 3 repository
 /*
@@ -80,7 +85,7 @@ void packit_closed(lbij,lbkl,endflg)
       if((c_outbuf=(struct c_pkints *) malloc(maxbuf*sizeof(struct c_pkints)))
                                                                    ==NULL) {
          fprintf(stderr,"cannot allocate memory for c_outbuf in packit\n");
-         exit(4);
+         exit(PSI_RETURN_FAILURE);
          }
       }
 

@@ -1,7 +1,12 @@
 /* $Log$
- * Revision 1.4  2000/12/05 19:40:04  sbrown
- * Added Unrestricted Kohn-Sham DFT.
+ * Revision 1.5  2002/12/06 15:50:32  crawdad
+ * Changed all exit values to PSI_RETURN_SUCCESS or PSI_RETURN_FAILURE as
+ * necessary.  This is new for the PSI3 execution driver.
+ * -TDC
  *
+/* Revision 1.4  2000/12/05 19:40:04  sbrown
+/* Added Unrestricted Kohn-Sham DFT.
+/*
 /* Revision 1.3  2000/10/13 19:51:22  evaleev
 /* Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
 /*
@@ -195,7 +200,7 @@ void uhf_iter()
 	       free_matrix(fock_c,nsfmax);
 	       free_matrix(fock_ct,nsfmax);
 	       free_matrix(ctrans,nsfmax);
-	       exit(1);
+	       exit(PSI_RETURN_FAILURE);
 	       cleanup();
 	   }
        }

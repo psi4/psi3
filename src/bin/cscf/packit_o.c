@@ -1,7 +1,12 @@
 /* $Log$
- * Revision 1.3  2001/06/29 20:39:29  evaleev
- * Modified cscf to use libpsio to store supermatrix files.
+ * Revision 1.4  2002/12/06 15:50:32  crawdad
+ * Changed all exit values to PSI_RETURN_SUCCESS or PSI_RETURN_FAILURE as
+ * necessary.  This is new for the PSI3 execution driver.
+ * -TDC
  *
+/* Revision 1.3  2001/06/29 20:39:29  evaleev
+/* Modified cscf to use libpsio to store supermatrix files.
+/*
 /* Revision 1.2  2000/06/22 22:15:01  evaleev
 /* Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
 /*
@@ -94,12 +99,12 @@ void packit_open(lbij,lbkl,endflg)
       if((c_outbuf =(struct c_pkints *) malloc(maxbuf*sizeof(struct c_pkints)))
                                                                    ==NULL) {
          fprintf(stderr,"cannot allocate memory for c_outbuf in packit\n");
-         exit(4);
+         exit(PSI_RETURN_FAILURE);
          }
       if((o_outbuf = (struct o_pkints *) malloc(maxbuf*sizeof(struct o_pkints)))
                                                                    ==NULL) {
          fprintf(stderr,"cannot allocate memory for o_outbuf in packit\n");
-         exit(4);
+         exit(PSI_RETURN_FAILURE);
          }
       }
 

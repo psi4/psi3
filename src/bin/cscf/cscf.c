@@ -357,7 +357,7 @@ int main(argc,argv)
     psio_done();
     tstop(outfile);
     ip_done();
-    exit(0);
+    exit(PSI_RETURN_SUCCESS);
   }
 
   if (!twocon){
@@ -406,7 +406,7 @@ int main(argc,argv)
       file30_close();
 #endif
       psio_done();
-      exit(1);
+      exit(PSI_RETURN_FAILURE);
     }
 
     formg_direct();

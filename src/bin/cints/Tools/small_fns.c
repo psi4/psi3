@@ -4,6 +4,7 @@
 #include<math.h>
 #include<libciomr/libciomr.h>
 #include<libchkpt/chkpt.h>
+#include <psifiles.h>
 
 #include"defines.h"
 #define EXTERN
@@ -86,7 +87,7 @@ void punt(char *mess)
   fprintf(outfile, "  error: %s\n", mess);
   fprintf(stderr, "  CINTS error: %s\n", mess);
   stop_io();
-  exit(1);
+  exit(PSI_RETURN_FAILURE);
 }
 
 double distance_calc(struct coordinates g1, struct coordinates g2)

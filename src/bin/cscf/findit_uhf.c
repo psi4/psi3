@@ -1,7 +1,12 @@
 /* $Log$
- * Revision 1.1  2000/02/04 22:52:33  evaleev
- * Initial revision
+ * Revision 1.2  2002/12/06 15:50:32  crawdad
+ * Changed all exit values to PSI_RETURN_SUCCESS or PSI_RETURN_FAILURE as
+ * necessary.  This is new for the PSI3 execution driver.
+ * -TDC
  *
+/* Revision 1.1.1.1  2000/02/04 22:52:33  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.1  1999/11/02 23:55:57  localpsi
 /* Shawn Brown - (11/2/99) Modified to the code in a few major ways.
 /*
@@ -144,7 +149,7 @@ L1:
           fprintf(outfile,"\n pathological problems with realloc in findit\n");
           fprintf(outfile," try upping intmx to %d\n",intmx);
           fflush(outfile);
-          exit(1);
+          exit(PSI_RETURN_FAILURE);
           }
 
         start = 2*lij + lkl;

@@ -67,7 +67,7 @@ void orb_mix(void)
     if (!found_guess) {
       fprintf(outfile, 
               "cscf: (orb_mix): Can't find a valid guess for HOMO irrep!\n");
-      exit(1);
+      exit(PSI_RETURN_FAILURE);
     } 
 
 
@@ -96,7 +96,7 @@ void orb_mix(void)
     if (!found_guess) {
       fprintf(outfile, 
               "cscf: (orb_mix): Can't find a valid guess for LUMO irrep!\n");
-      exit(1);
+      exit(PSI_RETURN_FAILURE);
     } 
 
 

@@ -11,6 +11,7 @@
 #include <math.h>
 #include <libciomr/libciomr.h>
 #include <libint/libint.h>
+#include <psifiles.h>
 
 #include"defines.h"
 #define EXTERN
@@ -177,7 +178,7 @@ void int_fjt(double_array_t *table, int J, double wval)
   if (J>maxj) {
     fprintf(stderr,"the int_fjt routine has been incorrectly used\n");
     fprintf(stderr,"J = %d but maxj = %d\n",J,maxj);
-    exit(1);
+    exit(PSI_RETURN_FAILURE);
     }
 
   /* Compute an index into the table. */

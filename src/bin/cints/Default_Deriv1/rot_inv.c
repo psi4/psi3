@@ -3,6 +3,7 @@
 #include <math.h>
 #include <masses.h>
 #include <libint/libint.h>
+#include <psifiles.h>
 
 #include "defines.h"
 #define EXTERN
@@ -26,7 +27,7 @@ void check_rot_inv()
     printf("  Rotational invariance of the energy derivative is violated!\n\n");
     fprintf(outfile,"  Rotational invariance of the energy derivative is violated!\n");
     fprintf(outfile,"  |X cross Grad| = %15.12lf\n\n",mod_cross);
-    exit(1);
+    exit(PSI_RETURN_FAILURE);
   }
   else {
     fprintf(outfile,"  Rotational invariance condition satisfied.\n");

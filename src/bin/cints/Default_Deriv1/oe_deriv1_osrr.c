@@ -3,6 +3,7 @@
 #include <libciomr/libciomr.h>
 #include <libint/libint.h>
 #include <libderiv/libderiv.h>
+#include <psifiles.h>
 #include "defines.h"
 #define EXTERN
 #include "global.h"
@@ -136,7 +137,7 @@ void AI_Deriv1_OSrecurs(double ***AI0, double ***AIX, double ***AIY, double ***A
         }
       }
       else /*--- Should never happen ---*/
-	exit(97);
+	exit(PSI_RETURN_FAILURE);
     }
  
 
@@ -277,7 +278,7 @@ void AI_Deriv1_OSrecurs(double ***AI0, double ***AIX, double ***AIY, double ***A
           }
         }
         else  /*--- Should never happen ---*/
-	  exit(97);
+	  exit(PSI_RETURN_FAILURE);
       }
     }
 

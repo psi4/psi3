@@ -11,6 +11,7 @@ calculations */
 #include "global.h"
 #include "defines.h"
 #include <libqt/qt.h>
+#include <psifiles.h>
 
 /*
    strange, but necessary, gprgid function
@@ -29,7 +30,7 @@ void punt(const char *mess)
   fprintf(outfile, "  error: %s\n", mess);
   fprintf(stderr, "  INPUT error: %s\n", mess);
   stop_io();
-  exit(1);
+  exit(PSI_RETURN_FAILURE);
 }
 
 

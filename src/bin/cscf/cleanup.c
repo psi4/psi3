@@ -1,8 +1,13 @@
 /* $Log$
- * Revision 1.19  2002/11/24 22:52:17  crawdad
- * Merging the gbye-file30 branch into the main trunk.
+ * Revision 1.20  2002/12/06 15:50:32  crawdad
+ * Changed all exit values to PSI_RETURN_SUCCESS or PSI_RETURN_FAILURE as
+ * necessary.  This is new for the PSI3 execution driver.
  * -TDC
  *
+/* Revision 1.19  2002/11/24 22:52:17  crawdad
+/* Merging the gbye-file30 branch into the main trunk.
+/* -TDC
+/*
 /* Revision 1.18.2.4  2002/11/23 21:54:45  crawdad
 /* Removal of mxcoef stuff for chkpt runs.
 /* -TDC
@@ -805,8 +810,8 @@ void cleanup()
   tstop(outfile);
   ip_done();
       
-  if(!converged) exit(3);
-  exit(0);
+  if(!converged) exit(PSI_RETURN_FAILURE);
+  exit(PSI_RETURN_SUCCESS);
 
 }
 

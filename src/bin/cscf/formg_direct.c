@@ -18,7 +18,7 @@ void formg_direct()
      Check if it ran fine
     -----------------------------------*/
    if(exitflag)
-       exit(1);
+       exit(PSI_RETURN_FAILURE);
    
    stat = system("cints --fock");
    
@@ -31,7 +31,7 @@ void formg_direct()
        /* Something went wrong */
        fprintf(outfile,"  formg_direct: System call to CINTS failed. Check to see if it's in your PATH\n");
        fprintf(stderr,"System call to CINTS failed. Check to see if it's in your PATH.\n");
-       exit(1);
+       exit(PSI_RETURN_FAILURE);
    }
    
    gtmp = (double *) init_array(ntri);

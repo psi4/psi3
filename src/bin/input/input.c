@@ -7,6 +7,7 @@
 #if !USE_LIBCHKPT
 #include <file30_params.h>
 #endif
+#include <psifiles.h>
 #include "input.h"
 #include <physconst.h>
 #include "global.h"
@@ -218,7 +219,7 @@ int main(int argc, char *argv[])
 
      cleanup();
      stop_io();
-     exit(0);
+     exit(PSI_RETURN_SUCCESS);
 
 }
 

@@ -1,8 +1,13 @@
 /* $Log$
- * Revision 1.15  2002/11/24 22:52:17  crawdad
- * Merging the gbye-file30 branch into the main trunk.
+ * Revision 1.16  2002/12/06 15:50:32  crawdad
+ * Changed all exit values to PSI_RETURN_SUCCESS or PSI_RETURN_FAILURE as
+ * necessary.  This is new for the PSI3 execution driver.
  * -TDC
  *
+/* Revision 1.15  2002/11/24 22:52:17  crawdad
+/* Merging the gbye-file30 branch into the main trunk.
+/* -TDC
+/*
 /* Revision 1.14.2.2  2002/11/23 21:54:45  crawdad
 /* Removal of mxcoef stuff for chkpt runs.
 /* -TDC
@@ -205,7 +210,7 @@ void scf_input(ipvalue)
      else {
        if(size != nbasis) {
          fprintf(outfile,"\n you have not given enough mos to MOORDER\n");
-         exit(size);
+         exit(PSI_RETURN_FAILURE);
          }
        iorder = (int *) malloc(sizeof(int)*size);
        for(i=0; i < size ; i++) {

@@ -1,7 +1,12 @@
 /* $Log$
- * Revision 1.5  2002/04/03 02:06:01  janssen
- * Finish changes to use new include paths for libraries.
+ * Revision 1.6  2002/12/06 15:50:32  crawdad
+ * Changed all exit values to PSI_RETURN_SUCCESS or PSI_RETURN_FAILURE as
+ * necessary.  This is new for the PSI3 execution driver.
+ * -TDC
  *
+/* Revision 1.5  2002/04/03 02:06:01  janssen
+/* Finish changes to use new include paths for libraries.
+/*
 /* Revision 1.4  2002/03/06 22:44:41  sherrill
 /* Add new keyword orthog_only = true to just orthogonalize orbitals and do
 /* nothing else.
@@ -67,7 +72,7 @@ void rdone_iwl()
       /* Something went wrong */
       fprintf(outfile,"  rdone_iwl: System call to CINTS failed. Check to see if it's in your PATH\n");
       fprintf(stderr,"System call to CINTS failed. Check to see if it's in your PATH.\n");
-      exit(1);
+      exit(PSI_RETURN_FAILURE);
     }
   }
 

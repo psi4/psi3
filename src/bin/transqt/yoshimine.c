@@ -17,6 +17,7 @@
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <libiwl/iwl.h>
+#include <psifiles.h>
 #define YEXTERN
 #include "yoshimine.h"
 #include "MOInfo.h"
@@ -83,7 +84,7 @@ void yosh_init(struct yoshimine *YBuff, unsigned bra_indices,
       fprintf(outfile, "(yosh_init): maximum number of buckets exceeded\n") ;
       fprintf(outfile, "   wanted %d buckets\n", nbuckets) ;
       tstop(outfile) ;
-      exit(1) ;
+      exit(PSI_RETURN_FAILURE) ;
       }
 
    /* if the number of pq does not divide evenly among the buckets, then

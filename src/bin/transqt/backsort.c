@@ -3,6 +3,7 @@
 #include <psifiles.h>
 #include <libciomr/libciomr.h>
 #include <libiwl/iwl.h>
+#include <psifiles.h>
 #include "MOInfo.h"
 #include "Params.h"
 #include "globals.h"
@@ -180,7 +181,7 @@ void backsort(int first_tmp_file, double tolerance)
       if(nquarts != bucket_quarts[n]) {
 	  printf("Quartet error: nquarts = %d; bucket_quarts[%d] = %d\n",
 		 nquarts, n, bucket_quarts[n]);
-	  exit(20);
+	  exit(PSI_RETURN_FAILURE);
 	}
 
       while(!lastbuf) {
@@ -320,7 +321,7 @@ void backsort(int first_tmp_file, double tolerance)
 				}
 			    }
 			  else {
-			      exit(1);
+			      exit(PSI_RETURN_FAILURE);
 			    }
 			}
 		    }
@@ -340,7 +341,7 @@ void backsort(int first_tmp_file, double tolerance)
 		  else { /* (pp|pp) */
 		      /* This shouldn't actually occur because of the
 			 snuc[] filter above */
-		      exit(1);
+		      exit(PSI_RETURN_FAILURE);
 		    }
 		}
 	    }

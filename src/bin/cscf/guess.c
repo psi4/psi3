@@ -54,12 +54,12 @@ void guess()
 	      if(errcod == IPE_OK && size != num_ir) {
 		  fprintf(outfile,"\n  DOCC array is the wrong size\n");
 		  fprintf(outfile,"  is %d, should be %d\n",size,num_ir);
-		  exit(size);
+		  exit(PSI_RETURN_FAILURE);
 		}
 	      if(errcod != IPE_OK && !iopen) {
 		  fprintf(outfile,"\n  try adding some electrons buddy!\n");
 		  fprintf(outfile,"  need DOCC\n");
-		  exit(1);
+		  exit(PSI_RETURN_FAILURE);
 	      }
 	      
 	      if(iopen || uhf) {
@@ -67,14 +67,14 @@ void guess()
 		  if(errcod == IPE_OK && size != num_ir) {
 		      fprintf(outfile,"\n  SOCC array is the wrong size\n");
 		      fprintf(outfile,"  is %d, should be %d\n",size,num_ir);
-		      exit(size);
+		      exit(PSI_RETURN_FAILURE);
 		  }
 		  
 		  errcod = ip_count("HOCC",&size,0);
 		  if(errcod == IPE_OK && size != num_ir) {
 		      fprintf(outfile,"\n  HOCC array is the wrong size\n");
 		      fprintf(outfile,"  is %d, should be %d\n",size,num_ir);
-		      exit(size);
+		      exit(PSI_RETURN_FAILURE);
 		  }
 	      }
 	      
@@ -99,7 +99,7 @@ void guess()
 		 fprintf(outfile,"\n  in them.  Should have %d total electrons"
 			 ,nelec);
 		 fprintf(outfile,"\n  and there are %d present\n\n\n",netmp);
-		 exit(1);
+		 exit(PSI_RETURN_FAILURE);
 	      }
 	  }
 	  else if(inflg == 1 && (reftmp == refnum) )
@@ -159,7 +159,7 @@ void guess()
 		      = "cscf: invalid number of electrons in irrep %d\n";
 		  fprintf(stderr,fmt,i);
 		  fprintf(outfile,fmt,i);
-		  exit(3);
+		  exit(PSI_RETURN_FAILURE);
 		} 
 	      
 	      if(uhf){
@@ -167,7 +167,7 @@ void guess()
 		  spin_info[1].scf_spin[i].noccup = nc;
 		  if(nh != 0){
 		      fprintf(outfile,"\nCannot use HOCC with UHF\n");
-		      exit(1);
+		      exit(PSI_RETURN_FAILURE);
 		  }
 	      }
 	      
@@ -209,7 +209,7 @@ void guess()
 	  if(optri == 0){
 	      fprintf(outfile,"\nNot an open shell molecule.\n");
 	      fprintf(outfile,"Re-check opentype!!!!\n\n");
-	      exit(1);
+	      exit(PSI_RETURN_FAILURE);
 	  }
 	  
 	  if(iter == 0 || print & 1){
@@ -233,7 +233,7 @@ void guess()
 		  fprintf(outfile,
 			  "this program cannot handle same symmetry\n");
 		  fprintf(outfile," tcscf. try SCFX\n");
-		  exit(1);
+		  exit(PSI_RETURN_FAILURE);
 	      }
 	  }
 	  else if(singlet) {
@@ -250,7 +250,7 @@ void guess()
 		  fprintf(outfile,
 			  "this program cannot handle same symmetry\n");
 		  fprintf(outfile," singlets. try SCFX\n");
-		  exit(1);
+		  exit(PSI_RETURN_FAILURE);
 	      }
 	  }
 	  else if(hsos) {

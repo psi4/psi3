@@ -132,5 +132,5 @@ int main(int argc, char *argv[])
    cleanup_molecule();
 
    stop_io();
-   exit(0);
+   exit(PSI_RETURN_SUCCESS);
 }
