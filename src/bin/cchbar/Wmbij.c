@@ -260,9 +260,9 @@ void Wmbij_build(void)
     dpd_buf4_init(&Tau, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauIJAB");
     dpd_buf4_init(&W, CC_HBAR, 0, 20, 2, 20, 2, 0, "WMBIJ");
     dpd_contract444(&I, &Tau, &W, 0, 0, 1.0, 1.0);
-    dpd_buf4_close(&W);
     dpd_buf4_close(&Tau);
     dpd_buf4_close(&I);
+    dpd_buf4_close(&W);
 
     /* <mb||ef> tau_ij^ef **/
     dpd_buf4_init(&I, CC_FINTS, 0, 30, 17, 30, 15, 1, "F <ia|bc>");
@@ -528,8 +528,8 @@ void Wmbij_build(void)
     /** Z(MB,IJ) --> W(MB,IJ) **/
     dpd_buf4_init(&W, CC_HBAR, 0, 20, 0, 20, 2, 0, "WMBIJ");
     dpd_buf4_axpy(&Z1, &W, 1.0);
-    dpd_buf4_close(&W);
     dpd_buf4_close(&Z1);
+    dpd_buf4_close(&W);
 
 
     dpd_buf4_init(&Z, CC_TMP0, 0, 10, 30, 10, 30, 0, "Z(mi,jb)");
@@ -563,6 +563,7 @@ void Wmbij_build(void)
     dpd_buf4_init(&W, CC_HBAR, 0, 30, 10, 30, 12, 0, "Wmbij");
     dpd_buf4_axpy(&Z1, &W, 1.0);
     dpd_buf4_close(&Z1);
+    dpd_buf4_close(&W);
 
 
     dpd_buf4_init(&Z, CC_TMP0, 0, 0, 30, 0, 30, 0, "Z(MI,jb)");
@@ -1116,8 +1117,8 @@ void Wmbij_build(void)
     /** Z2(mB,iJ) --> W_mBiJ **/
     dpd_buf4_init(&W, CC_HBAR, 0, 27, 23, 27, 23, 0, "WmBiJ");
     dpd_buf4_axpy(&Z1, &W, 1.0);
-    dpd_buf4_close(&W);
     dpd_buf4_close(&Z1);
+    dpd_buf4_close(&W);
 
   }
 }

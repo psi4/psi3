@@ -310,7 +310,7 @@ void F_build(void) {
     dpd_file2_init(&tia, CC_OEI, 0, 2, 3, "tia");
 
     dpd_buf4_init(&F, CC_FINTS, 0, 20, 5, 20, 5, 1, "F <IA|BC>");
-    dpd_dot13(&tIA, &F, &FAE, 0, 0, 1, 0);
+    dpd_dot13(&tIA, &F, &FAE, 0, 0, 1, 1);
     dpd_buf4_close(&F);
 
     dpd_buf4_init(&F, CC_FINTS, 0, 27, 29, 27, 29, 0, "F <iA|bC>");
@@ -318,7 +318,7 @@ void F_build(void) {
     dpd_buf4_close(&F);
 
     dpd_buf4_init(&F, CC_FINTS, 0, 30, 15, 30, 15, 1, "F <ia|bc>");
-    dpd_dot13(&tia, &F, &Fae, 0, 0, 1, 0);
+    dpd_dot13(&tia, &F, &Fae, 0, 0, 1, 1);
     dpd_buf4_close(&F);
 
     dpd_buf4_init(&F, CC_FINTS, 0, 24, 28, 24, 28, 0, "F <Ia|Bc>");
@@ -330,7 +330,7 @@ void F_build(void) {
 
     dpd_buf4_init(&D, CC_DINTS, 0, 2, 5, 2, 5, 0, "D <IJ||AB> (I>J,AB)");
     dpd_buf4_init(&taut, CC_TAMPS, 0, 2, 5, 2, 7, 0, "tautIJAB");
-    dpd_contract442(&taut, &D, &FAE, 2, 2, -1, 1);
+    dpd_contract442(&taut, &D, &FAE, 3, 3, -1, 1);
     dpd_buf4_close(&taut);
     dpd_buf4_close(&D);
 
@@ -342,7 +342,7 @@ void F_build(void) {
 
     dpd_buf4_init(&D, CC_DINTS, 0, 12, 15, 12, 15, 0, "D <ij||ab> (i>j,ab)");
     dpd_buf4_init(&taut, CC_TAMPS, 0, 12, 15, 12, 17, 0, "tautijab");
-    dpd_contract442(&taut, &D, &Fae, 2, 2, -1, 1);
+    dpd_contract442(&taut, &D, &Fae, 3, 3, -1, 1);
     dpd_buf4_close(&taut);
     dpd_buf4_close(&D);
 
@@ -356,26 +356,20 @@ void F_build(void) {
     dpd_file2_copy(&FAE, CC_OEI, "FAEt");
     dpd_file2_copy(&Fae, CC_OEI, "Faet");
 
-    dpd_file2_close(&FAE);
-    dpd_file2_close(&Fae);
-
-    dpd_file2_init(&FAEt, CC_OEI, 0, 1, 1, "FAEt");
-    dpd_file2_init(&Faet, CC_OEI, 0, 3, 3, "Faet");
-
     dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
     dpd_file2_init(&FME, CC_OEI, 0, 0, 1, "FME");
-    dpd_contract222(&tIA, &FME, &FAEt, 1, 1, -0.5, 1);
+    dpd_contract222(&tIA, &FME, &FAE, 1, 1, -0.5, 1);
     dpd_file2_close(&tIA);
     dpd_file2_close(&FME);
   
     dpd_file2_init(&tia, CC_OEI, 0, 2, 3, "tia");
     dpd_file2_init(&Fme, CC_OEI, 0, 2, 3, "Fme");
-    dpd_contract222(&tia, &Fme, &Faet, 1, 1, -0.5, 1);
+    dpd_contract222(&tia, &Fme, &Fae, 1, 1, -0.5, 1);
     dpd_file2_close(&tia);
     dpd_file2_close(&Fme);
 
-    dpd_file2_close(&FAEt);
-    dpd_file2_close(&Faet); 
+    dpd_file2_close(&FAE);
+    dpd_file2_close(&Fae); 
 
     /* FMI and Fmi */
     dpd_file2_init(&fIJ, CC_OEI, 0, 0, 0, "fIJ");
@@ -395,7 +389,7 @@ void F_build(void) {
     dpd_buf4_init(&E_anti, CC_EINTS, 0, 21, 0, 21, 0, 1, "E <AI|JK>");
     dpd_buf4_init(&E, CC_EINTS, 0, 22, 24, 22, 24, 0, "E <Ij|Ka>");
 
-    dpd_dot13(&tIA, &E_anti, &FMI, 1, 1, 1, 0);
+    dpd_dot13(&tIA, &E_anti, &FMI, 1, 1, 1, 1);
     dpd_dot24(&tia, &E, &FMI, 0, 0, 1, 1);
 
     dpd_buf4_close(&E);
@@ -404,7 +398,7 @@ void F_build(void) {
     dpd_buf4_init(&E_anti, CC_EINTS, 0, 31, 10, 31, 10, 1, "E <ai|jk>");
     dpd_buf4_init(&E, CC_EINTS, 0, 26, 22, 26, 22, 0, "E <Ai|Jk>");
 
-    dpd_dot13(&tia, &E_anti, &Fmi, 1, 1, 1, 0);
+    dpd_dot13(&tia, &E_anti, &Fmi, 1, 1, 1, 1);
     dpd_dot13(&tIA, &E, &Fmi, 1, 1, 1, 1);
 
     dpd_buf4_close(&E);
@@ -441,26 +435,21 @@ void F_build(void) {
     dpd_file2_copy(&FMI, CC_OEI, "FMIt");
     dpd_file2_copy(&Fmi, CC_OEI, "Fmit");
 
-    dpd_file2_close(&FMI);
-    dpd_file2_close(&Fmi);
-
-    dpd_file2_init(&FMIt, CC_OEI, 0, 0, 0, "FMIt");
-    dpd_file2_init(&Fmit, CC_OEI, 0, 2, 2, "Fmit");
-
     dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
     dpd_file2_init(&FME, CC_OEI, 0, 0, 1, "FME");
-    dpd_contract222(&FME, &tIA, &FMIt, 0, 0, 0.5, 1);
+    dpd_contract222(&FME, &tIA, &FMI, 0, 0, 0.5, 1);
     dpd_file2_close(&FME);
     dpd_file2_close(&tIA);
 
     dpd_file2_init(&tia, CC_OEI, 0, 2, 3, "tia");
     dpd_file2_init(&Fme, CC_OEI, 0, 2, 3, "Fme");
-    dpd_contract222(&Fme, &tia, &Fmit, 0, 0, 0.5, 1);
+    dpd_contract222(&Fme, &tia, &Fmi, 0, 0, 0.5, 1);
     dpd_file2_close(&Fme);
     dpd_file2_close(&tia);
 
-    dpd_file2_close(&FMIt);
-    dpd_file2_close(&Fmit);
+
+    dpd_file2_close(&FMI);
+    dpd_file2_close(&Fmi);
 
 
     /* remove diagonal elements from Ft's */
