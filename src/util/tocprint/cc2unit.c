@@ -27,6 +27,7 @@ int cc2unit(char *cc)
   else if (!strcmp(cc, "HBAR") || !strcmp(cc, "hbar")) return CC_HBAR;
   else if (!strcmp(cc, "GAMMA") || !strcmp(cc, "gamma")) return CC_GAMMA;
   else if (!strcmp(cc, "MISC") || !strcmp(cc, "misc")) return CC_MISC;
+  else if (!strcmp(cc, "LR") || !strcmp(cc, "lr")) return CC_LR;
 
   else if (!strcmp(cc, "TMP") || !strcmp(cc, "tmp")) return CC_TMP;
   else if (!strcmp(cc, "TMP0") || !strcmp(cc, "tmp0")) return CC_TMP0;

@@ -1,7 +1,7 @@
 
 .PHONY:	default all install depend clean targetclean
 
-subdirs = tocprint
+subdirs = tocprint psi2molden
 
 all: default
 
