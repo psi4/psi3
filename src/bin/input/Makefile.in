@@ -12,7 +12,8 @@ find_symmetry.c count_uniques.c functions.c sym_operations.c atom_num.c \
 init_elem_names.c read_basis.c build_transmat.c build_cart2pureang.c \
 build_so_classes.c build_usotao.c write_to_chkpt.c projection.c oe_osrr.c \
 overlap.c gto.c oldcalc.c write_scf_to_chkpt.c globals.c read_chkpt.c \
-read_charges.c read_geomdat.c linalg.c overlap_float.c oe_osrr_float.c
+read_charges.c read_geomdat.c linalg.c overlap_float.c oe_osrr_float.c \
+freeze_core.c
 
 BINOBJ = $(CSRC:%.c=%.o)
 ALLOC = 

@@ -93,6 +93,8 @@ int main(int argc, char *argv[])
        read_geomdat();
      }
 
+     freeze_core();
+
      repulsion = 0.0;
      if (num_atoms > 1) {
        natomtri = num_atoms*(num_atoms+1)/2;

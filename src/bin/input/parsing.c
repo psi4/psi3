@@ -90,6 +90,13 @@ void parsing()
 	 }
      }
 
+
+     /* Check if need to freeze core */
+     frozen_core = NULL;
+     errcod = ip_string(":DEFAULT:FREEZE_CORE",&frozen_core,0);
+     if (frozen_core == NULL)
+       frozen_core = strdup("FALSE");
+
      return;
 }
 

@@ -171,6 +171,7 @@ double **overlap();
 void write_scf_to_chkpt();
 
 void parsing();
+void freeze_core();
 
 /*
   Make canonical and reference frames equivalent
