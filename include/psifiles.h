@@ -48,6 +48,9 @@
 #define PSIF_MO_AA_TEI      81
 #define PSIF_MO_BB_TEI      82
 #define PSIF_MO_AB_TEI      83
+#define PSIF_MO_AA_TPDM     84
+#define PSIF_MO_BB_TPDM     85
+#define PSIF_MO_AB_TPDM     86
 
 /*
 ** MO Hessian File (also contains specialized integral and Fock lists.
