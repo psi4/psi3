@@ -36,13 +36,13 @@ int phase()
       s = &scf_info[k];
       if(nn=s->num_so) {
 	  num_mo = s->num_mo;
-	  cnew[k] = init_matrix(nn,nn);
+	  cnew[k] = init_matrix(nn,num_mo);
 	  for(j=0; j < nn; j++)
 	      for(i=0; i < num_mo; i++)
 		  cnew[k][j][i] = s->cmat[j][i];
 	}
 /*      fprintf(outfile, "MOs for Irrep %d\n", k);
-      print_mat(cnew[k], nn, nn, outfile); */
+      print_mat(cnew[k], nn, num_mo, outfile); */
     }
 
   for(k=0; k < num_ir; k++) {
@@ -51,8 +51,8 @@ int phase()
 	  num_mo = s->num_mo;
 
 	  smat = init_matrix(nn,nn);
-	  tmp = init_matrix(nn,nn);
-	  identity = init_matrix(nn,nn);
+	  tmp = init_matrix(num_mo,nn);
+	  identity = init_matrix(num_mo,num_mo);
 
 	  /* Unpack the overlap matrix */
 	  tri_to_sq(s->smat,smat,nn);
@@ -64,7 +64,7 @@ int phase()
 	  mmult(tmp,0,s->cmat_orig,0,identity,0,num_mo,nn,num_mo,0);
 
 /*	  fprintf(outfile, "Approximate Identity Matrix for Irrep %d\n", k);
-	  print_mat(identity, nn, nn, outfile); */
+	  print_mat(identity, num_mo, num_mo, outfile); */
 
 	  /* Check for MO swapping */
 	  for(j=0; j < num_mo; j++) {
@@ -86,11 +86,11 @@ int phase()
 		    }
 		}
 /*	      fprintf(outfile, "Corrected MOs for irrep %d\n", k);
-	      print_mat(cnew[k], nn, nn, outfile); */
+	      print_mat(cnew[k], nn, num_mo, outfile); */
 	    }
 	  free_matrix(smat,nn);
-	  free_matrix(tmp,nn);
-	  free_matrix(identity,nn);
+	  free_matrix(tmp,num_mo);
+	  free_matrix(identity,num_mo);
 	}
     }
 

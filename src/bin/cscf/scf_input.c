@@ -1,8 +1,11 @@
 /* $Log$
- * Revision 1.10  2001/01/04 14:13:35  sbrown
- * Fixed the problem with iconv:  The new versions of linux had iconv already
- * assigned to something else so I changed all references of it to scf_conv.
+ * Revision 1.11  2001/03/16 15:41:04  evaleev
+ * Fixed more old problems arising from not distinguishing between num_so and num_mo.
  *
+/* Revision 1.10  2001/01/04 14:13:35  sbrown
+/* Fixed the problem with iconv:  The new versions of linux had iconv already
+/* assigned to something else so I changed all references of it to scf_conv.
+/*
 /* Revision 1.9  2000/10/13 19:51:22  evaleev
 /* Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
 /*
@@ -253,7 +256,6 @@ void scf_input(ipvalue)
    if (second_root)
      fprintf(outfile,"  second_root = TRUE\n");
 
-
    diisflg = 0;
    errcod = ip_string("DIIS",&bool,0);
    if(errcod == IPE_OK) {
@@ -326,15 +328,16 @@ void scf_input(ipvalue)
 	       for(k=0; k < num_ir; k++) {
 		   s = &scf_info[k];
 		   if(nn=s->num_so) {
-		       for(j=0; j < nn; j++)
-			   for(i=0; i < nn; i++) 
+		     num_mo = s->num_mo;
+		       for(i=0; i < nn; i++) 
+		           for(j=0; j < num_mo; j++)
 			       spin_info[m].scf_spin[k].cmat_orig[i][j] 
 				   = spin_info[m].scf_spin[k].cmat[i][j];
 		   }
 	       }
 	   }
 	   phase_check = 1;
-	   
+
 /* reorder vector if norder = 1 */
 	   
 	   if (norder) {
@@ -350,8 +353,9 @@ void scf_input(ipvalue)
 		   for (i=0; i < num_ir; i++) {
 		       s = &scf_info[i];
 		       if (nn=s->num_so) {
-			   scr_mat = (double **) init_matrix(nn,nn);
-			   for (j=0; j < nn; j++) {
+			   num_mo = s->num_mo;
+			   scr_mat = (double **) init_matrix(nn,num_mo);
+			   for (j=0; j < num_mo; j++) {
 			       jnew = iorder[j+loff]-1;
 			       for (k=0; k < nn ; k++) {
 				   scr_mat[k][j]
@@ -359,13 +363,13 @@ void scf_input(ipvalue)
 			       }
 			   }
 			   for (j=0; j < nn ; j++)
-			       for (k=0; k < nn ; k++) 
+			       for (k=0; k < num_mo ; k++) 
 				   spin_info[m].scf_spin[i].cmat[j][k] = scr_mat[j][k];
 			   
 			   fprintf(outfile,"\n reordered %s mo's for irrep %s\n",
 				   spin_info[m].spinlabel,s->irrep_label);
-			   print_mat(spin_info[m].scf_spin[i].cmat,nn,nn,outfile);
-			   loff += nn;
+			   print_mat(spin_info[m].scf_spin[i].cmat,nn,num_mo,outfile);
+			   loff += num_mo;
 			   free_matrix(scr_mat,nn);
 		       }
 		   }
@@ -373,7 +377,6 @@ void scf_input(ipvalue)
 	       free(iorder);
 	   }
        }
-   
        else{
 	   for(k=0; k < num_ir ; k++) {
 	       s = &scf_info[k];
@@ -381,18 +384,20 @@ void scf_input(ipvalue)
 		   s->cmat = file30_rd_blk_scf(k);
 	       }
 	   }
-	   
+
 /* TDC(6/19/96) - Make a copy of the vector for later MO phase
    checking and temporarily set the phase_check flag to true */
 	   
 	   for(k=0; k < num_ir; k++) {
 	       s = &scf_info[k];
 	       if(nn=s->num_so) {
-		   for(j=0; j < nn; j++)
-		       for(i=0; i < nn; i++) s->cmat_orig[i][j] = s->cmat[i][j];
+		   num_mo = s->num_mo;
+		   for(i=0; i < nn; i++) 
+		       for(j=0; j < num_mo; j++)
+                           s->cmat_orig[i][j] = s->cmat[i][j];
 	       }
 	   }
-	   
+
 	   phase_check = 1;
 	   
 /* reorder vector if norder = 1 */
@@ -409,20 +414,21 @@ void scf_input(ipvalue)
 	       for (i=0; i < num_ir; i++) {
 		   s = &scf_info[i];
 		   if (nn=s->num_so) {
-		       scr_mat = (double **) init_matrix(nn,nn);
-		       for (j=0; j < nn; j++) {
+		       num_mo = s->num_mo;
+		       scr_mat = (double **) init_matrix(nn,num_mo);
+		       for (j=0; j < num_mo; j++) {
 			   jnew = iorder[j+loff]-1;
 			   for (k=0; k < nn ; k++) {
 			       scr_mat[k][j]=s->cmat[k][jnew];
 			   }
 		       }
 		       for (j=0; j < nn ; j++)
-			   for (k=0; k < nn ; k++) s->cmat[j][k] = scr_mat[j][k];
+			   for (k=0; k < num_mo ; k++) s->cmat[j][k] = scr_mat[j][k];
 		       
 		       fprintf(outfile,"\n reordered mo's for irrep %s\n",
 			       s->irrep_label);
-		       print_mat(s->cmat,nn,nn,outfile);
-		       loff += nn;
+		       print_mat(s->cmat,nn,num_mo,outfile);
+		       loff += num_mo;
 		       free_matrix(scr_mat,nn);
 		   }
 	       }
