@@ -5,15 +5,18 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <libipv1/ip_lib.h>
 #include "psio.h"
+
+extern char *psi_file_prefix;
 
 /*!
 ** PSIO_GET_FILENAME(): Get the filename for filenumber 'unit'
 **
 ** Returns: 
 **   0 if a user-specified filename was found
-**   1 if the default "psi" is to be used
+**   1 if the global default will be used
 **
 ** \ingroup (PSIO)
 */
@@ -35,23 +38,7 @@ int psio_get_filename(ULI unit, char *name)
   errcod = ip_data(ip_token,"%s",name,0);
   if(errcod == IPE_OK) return(0);
 
-  sprintf(ip_token,":DEFAULT:FILES:DEFAULT:NAME");
-  errcod = ip_data(ip_token,"%s",name,0);
-  if(errcod == IPE_OK) return(0);
-
-  sprintf(ip_token,":DEFAULT:NAME");
-  errcod = ip_data(ip_token,"%s",name,0);
-  if(errcod == IPE_OK) return(0);
-
-  /* check the environment */
-  if(getenv("PSI_SCRATCH") != NULL) {
-    strcpy(name, getenv("PSI_SCRATCH"));
-    return(0);
-  }
-
-  /* use a default filename */
-  strcpy(name, "psi");
-
+  strcpy(name,psi_file_prefix);
   return(1);
 }
 
@@ -64,18 +51,6 @@ int psio_get_filename_default(char *name)
   int errcod;
   char ip_token[PSIO_MAXSTR];
 
-  sprintf(ip_token,":DEFAULT:FILES:DEFAULT:NAME");
-  errcod = ip_data(ip_token,"%s",name,0);
-  if(errcod == IPE_OK) return(0);
-
-  /* check the environment */
-  if(getenv("PSI_SCRATCH") != NULL) {
-    strcpy(name, getenv("PSI_SCRATCH"));
-    return(0);
-  }
-
-  /* use a default filename */
-  strcpy(name, "psi");
-
+  strcpy(name,psi_file_prefix);
   return(1);
 }
