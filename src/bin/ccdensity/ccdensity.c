@@ -115,6 +115,23 @@ int main(int argc, char *argv[])
   else
     zero_onepdm();
 
+  /* Compute a few one-electron properties and exit if --onepdm on cmdline */
+  if(params.onepdm) {
+    sortone();
+    dipole();
+    kinetic();
+
+    dpd_close(0);
+
+    if(params.ref == 2) cachedone_uhf(cachelist);
+    else cachedone_rhf(cachelist);
+    free(cachefiles);
+
+    cleanup(); 
+    exit_io();
+    exit(PSI_RETURN_SUCCESS);
+  }
+
   if ( (!params.calc_xi) && ( (params.L_irr == params.G_irr) || (params.use_zeta) ) ) {
     V_build(); /* uses CC_GLG, writes to CC_MISC */
     G_build(); /* uses CC_GLG, writes to CC_GLG */
@@ -168,7 +185,7 @@ int main(int argc, char *argv[])
     zero_twopdm();
 
   /* fprintf(outfile,"After ground state parts\n");
-    G_norm(); */
+     G_norm(); */
 
   /* add in non-R0 parts of onepdm and twopdm */
   if (!params.ground) {
@@ -181,7 +198,7 @@ int main(int argc, char *argv[])
     x_Gijab();
   }
   /* fprintf(outfile,"After excited state parts\n");
-  G_norm(); */
+     G_norm(); */
   
   if(!params.aobasis) energy();
 
@@ -190,13 +207,13 @@ int main(int argc, char *argv[])
   kinetic();
 
   /* fprintf(outfile,"\tDipole moments without orbital relaxation\n");
-  dipole(); */
+     dipole(); */
 
   lag();
 
   /*
-  dpd_init(1, moinfo.nirreps, params.memory, 2, frozen.occpi, frozen.occ_sym,
-  frozen.virtpi, frozen.vir_sym);
+    dpd_init(1, moinfo.nirreps, params.memory, 2, frozen.occpi, frozen.occ_sym,
+    frozen.virtpi, frozen.vir_sym);
   */
 
   /*  if(moinfo.nfzc || moinfo.nfzv) {
@@ -283,13 +300,18 @@ void init_io(int argc, char *argv[])
   progid = (char *) malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s",gprgid());
 
+  params.onepdm = 0;
   params.ground = 1;
   params.calc_xi = 0;
   params.restart = 0;
   params.use_zeta = 0;
   params.user_transition = 0;
+
   for (i=1, num_unparsed=0; i<argc; ++i) {
-    if (!strcmp(argv[i],"--excited")) {
+    if(!strcmp(argv[i], "--onepdm")) {
+      params.onepdm = 1; /* generate ONLY the onepdm (for one-electron properties) */
+    }
+    else if (!strcmp(argv[i],"--excited")) {
       params.ground = 0;
     }
     else if (!strcmp(argv[i],"--use_zeta")) {

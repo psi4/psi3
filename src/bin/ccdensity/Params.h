@@ -5,6 +5,7 @@ struct Params {
   int cachelev;
   int aobasis;
   int ref;
+  int onepdm; /* produce ONLY the onepdm for properties */
   int relax_opdm;
   int use_zeta;
   int calc_xi;

@@ -54,6 +54,8 @@ void get_params()
   fprintf(outfile, "\tCache Level  =    %1d\n", params.cachelev);
   fprintf(outfile, "\tAO Basis     =     %s\n", 
           params.aobasis ? "Yes" : "No");
+  fprintf(outfile, "\tOPDM Only    =     %s\n", 
+	  params.onepdm ? "Yes" : "No");
   fprintf(outfile, "\tRelax OPDM   =     %s\n", 
           params.relax_opdm ? "Yes" : "No");
   fprintf(outfile, "\tExcited State=     %s\n", 
