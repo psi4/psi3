@@ -28,6 +28,8 @@
 #endif
 
 FILE *infile, *outfile;
+FILE _infile_pristine,_infile_copy;
+
 char **psi_file_prefix;
 /* 
   the following must stay in scope throughout the run, else the 
@@ -76,6 +78,7 @@ int main(int argc, char *argv[])
 
   if (!parse_cmdline(argc,argv))
     psi3_abort();
+  _infile_pristine=*infile;
 
   fprintf(outfile, "\n\n The PSI3 Execution Driver \n");
 
@@ -382,7 +385,10 @@ int execut(char **exec, int nexec, int depth)
     if (strcmp(exec[i],"END")==0) return(i);
     if (strcmp(exec[i],"REPEAT")!=0) {
       fprintf(outfile,"%s%s\n", spaces, exec[i]);
+      _infile_copy=*infile;
+      *infile=_infile_pristine;
       runcmd(&errcod,exec[i]);
+      *infile=_infile_copy;
 
       /* fprintf(stderr,"%serrcod before filter is %d\n",spaces,errcod); */
 
@@ -563,7 +569,10 @@ int parse_cmdline(int argc, char *argv[])
 #else
 #error "Have neither putenv nor setenv. Something must be very broken on this system."
 #endif
-    infile = fopen(ifname,"r");
+    if(ifname[0]=='-' && ifname[1]=='\x0')
+      infile = stdin;
+    else
+      infile = fopen(ifname,"r");
   }
   else {
     infile = fopen("input.dat","r");

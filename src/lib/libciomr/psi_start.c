@@ -124,15 +124,28 @@ int psi_start(int argc, char *argv[], int overwrite_output)
   /* default prefix is not assigned here yet because need to check input file first */
 
   /* open input and output files */
-  infile = fopen(ifname, "r");
+  if(ifname[0]=='-' && ifname[1]=='\x0')
+    infile=stdin;
+  else
+    infile = fopen(ifname, "r");
   if (infile == NULL) {
     fprintf(stderr, "Error: could not open input file %s\n",ifname);
     return(PSI_RETURN_FAILURE);
   }
   if (overwrite_output)
-    outfile = fopen(ofname, "w");
+    {
+      if(ofname[0]=='-' && ofname[1]=='\x0')
+	outfile=stdout;
+      else
+	outfile = fopen(ofname, "w");
+    }
   else
-    outfile = fopen(ofname, "a");
+    {
+      if(ofname[0]=='-' && ofname[1]=='\x0')
+	outfile=stdout;
+      else
+	outfile = fopen(ofname, "a");
+    }
   if (outfile == NULL) {
     fprintf(stderr, "Error: could not open output file %s\n",ofname);
     return(PSI_RETURN_FAILURE);
