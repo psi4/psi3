@@ -2,11 +2,6 @@
 
 psi: (
   check = false
-  exec = (
-    repeat 20
-    $ints $scf $transqt $detci "optking"
-    end
-  )
 )
 
 default: (
@@ -23,7 +18,7 @@ default: (
   nopt = 20 
   docc = (3 0 1 1)
 
-files: (
+  files: (
     default: ( name = "h2o" nvolume = 1
       volume1 = "/scratch/sherrill/"
       )
