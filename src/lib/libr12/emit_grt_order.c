@@ -42,10 +42,12 @@ static int first_hrr_to_compute = 0; /* Number of the first class to be computed
 static int first_vrr_to_compute = 0; /* Number of the first class to be computed
 				    (pointer to the beginning of the linked list) */
 
-static int hrr_hash_table[NUMGRTTYPES][2*MAX_AM][2*MAX_AM][2*MAX_AM][2*MAX_AM];
-static int vrr_hash_table[NUMGRTTYPES][2*MAX_AM][2*MAX_AM][4*MAX_AM];
+/*--- This is the maximum ang. momentum allowed for any (intermediate) classes ---*/
+#define LMAX_AM LIBINT_MAX_AM
+static int hrr_hash_table[NUMGRTTYPES][2*LMAX_AM][2*LMAX_AM][2*LMAX_AM][2*LMAX_AM];
+static int vrr_hash_table[NUMGRTTYPES][2*LMAX_AM][2*LMAX_AM][4*LMAX_AM];
 
-int emit_grt_order(int old_am, int new_am)
+int emit_grt_order(int old_am, int new_am, int opt_am)
 {
 
   int i, j, k, l;
@@ -327,14 +329,14 @@ int emit_grt_order(int old_am, int new_am)
 	Zero out the hashing tables
        ----------------------------*/
       for(i=0;i<NUMGRTTYPES;i++)
-	for(j=0;j<2*MAX_AM;j++)
-	  for(k=0;k<2*MAX_AM;k++)
-	    memset(vrr_hash_table[i][j][k],0,(4*MAX_AM)*sizeof(int));
+	for(j=0;j<2*LMAX_AM;j++)
+	  for(k=0;k<2*LMAX_AM;k++)
+	    memset(vrr_hash_table[i][j][k],0,(4*LMAX_AM)*sizeof(int));
       for(i=0;i<NUMGRTTYPES;i++)
-	for(j=0;j<2*MAX_AM;j++)
-	  for(k=0;k<2*MAX_AM;k++)
-	    for(l=0;l<2*MAX_AM;l++)
-	      memset(hrr_hash_table[i][j][k][l],0,(2*MAX_AM)*sizeof(int));
+	for(j=0;j<2*LMAX_AM;j++)
+	  for(k=0;k<2*LMAX_AM;k++)
+	    for(l=0;l<2*LMAX_AM;l++)
+	      memset(hrr_hash_table[i][j][k][l],0,(2*LMAX_AM)*sizeof(int));
 
       
       /*------------------------------------------------------------------
@@ -392,7 +394,7 @@ int emit_grt_order(int old_am, int new_am)
       if (max_stack_size < vrr_mem)
 	max_stack_size = vrr_mem;
       fprintf(vrr_code," double *r12vrr_stack = Libr12->r12vrr_stack;\n");
-      fprintf(vrr_code," double *tmp, *target_ptr;\n int i;\n\n");
+      fprintf(vrr_code," double *tmp, *target_ptr;\n int i, am[2];\n\n");
       
       j = first_vrr_to_compute;
       do {
@@ -419,19 +421,38 @@ int emit_grt_order(int old_am, int new_am)
 	 ---------------------------------------------------------*/
 	switch (vrr_nodes[j].grt_type) {
 	case 0:
-	    fprintf(vrr_code," ");
+	    if (vrr_nodes[j].A <= LIBINT_OPT_AM && vrr_nodes[j].C <= LIBINT_OPT_AM)
+	      fprintf(vrr_code, " _BUILD_%c0%c0(Data,", am_letter[vrr_nodes[j].A], am_letter[vrr_nodes[j].C]);
+	    else {
+	      fprintf(vrr_code, " am[0] = %d;  am[1] = %d;\n", vrr_nodes[j].A, vrr_nodes[j].C);
+	      fprintf(vrr_code, " vrr_build_xxxx(am,Data,");
+	    }
 	    break;
 	case 1:
-	    fprintf(vrr_code," _R");
+	    if (vrr_nodes[j].A <= opt_am && vrr_nodes[j].C <= opt_am)
+	      fprintf(vrr_code, " _R_BUILD_%c0%c0(Data,", am_letter[vrr_nodes[j].A], am_letter[vrr_nodes[j].C]);
+	    else {
+	      fprintf(vrr_code, " am[0] = %d;  am[1] = %d;\n", vrr_nodes[j].A, vrr_nodes[j].C);
+	      fprintf(vrr_code, " r_vrr_build_xxxx(am,Data,");
+	    }
 	    break;
 	case 2:
-	    fprintf(vrr_code," _T1");
+	    if (vrr_nodes[j].A <= opt_am && vrr_nodes[j].C <= opt_am)
+	      fprintf(vrr_code, " _T1_BUILD_%c0%c0(Data,", am_letter[vrr_nodes[j].A], am_letter[vrr_nodes[j].C]);
+	    else {
+	      fprintf(vrr_code, " am[0] = %d;  am[1] = %d;\n", vrr_nodes[j].A, vrr_nodes[j].C);
+	      fprintf(vrr_code, " t1_vrr_build_xxxx(am,Data,");
+	    }
 	    break;
 	case 3:
-	    fprintf(vrr_code," _T2");
+	    if (vrr_nodes[j].A <= opt_am && vrr_nodes[j].C <= opt_am)
+	      fprintf(vrr_code, " _T2_BUILD_%c0%c0(Data,", am_letter[vrr_nodes[j].A], am_letter[vrr_nodes[j].C]);
+	    else {
+	      fprintf(vrr_code, " am[0] = %d;  am[1] = %d;\n", vrr_nodes[j].A, vrr_nodes[j].C);
+	      fprintf(vrr_code, " t2_vrr_build_xxxx(am,Data,");
+	    }
 	    break;
 	}
-	fprintf(vrr_code, "_BUILD_%c0%c0(Data,", am_letter[vrr_nodes[j].A], am_letter[vrr_nodes[j].C]);
 	switch (vrr_nodes[j].grt_type) {
 	case 2:
 	    fprintf(vrr_code,"&(Libr12->ShellQuartet),");

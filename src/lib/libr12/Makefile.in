@@ -12,7 +12,7 @@ TEMP_DIR = ${SCRATCH}/libr12
 
 install: $(TARGET)
 
-$(TARGET): $(CSRC) Makefile.libr12
+$(TARGET): $(BUILD_SRC) $(LIB_SRC) input.dat Makefile.libr12
 	if \
 ! [ -e $(SCRATCH) ]; \
  then \
@@ -30,6 +30,7 @@ fi; \
 cp Makefile.compiler $(TEMP_DIR); \
 $(MAKE); \
 cp Makefile.libr12 $(TEMP_DIR); \
+cp input.dat $(TEMP_DIR); \
 cd $(TEMP_DIR); \
 cp Makefile.compiler Makefile; \
 $(MAKE); \

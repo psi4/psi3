@@ -1,9 +1,11 @@
 include @top_objdir@/src/lib/MakeVars
+include @top_objdir@/src/lib/libr12/MakeVars
 
+VPATH = .:$(top_srcdir)/src/lib/libr12
 TARGET = $(top_objdir)/lib/libr12.a
 HEADERS = libr12.h
 
-TRUESRC = $(shell echo `ls *.c`)
+TRUESRC = $(shell echo `ls *.c`) $(LIB_SRC)
 LIBOBJ = $(TRUESRC:%.c=%.o)
 
 default:: install
