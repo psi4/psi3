@@ -28,6 +28,12 @@ rd_ref.c \
 rd_rottype.c \
 rd_am2canon_shell_order.c \
 rd_atom_pos.c \
+rd_orbspi.c \
+rd_sopi.c \
+rd_clsdpi.c \
+rd_openpi.c \
+rd_irr_labs.c \
+rd_hfsym_labs.c
 
 DEPENDINCLUDE = psio.h chkpt.h
 

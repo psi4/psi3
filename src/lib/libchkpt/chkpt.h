@@ -18,22 +18,30 @@ struct z_entry {
 typedef enum {ref_rhf = 0, ref_uhf = 1, ref_rohf = 2, ref_tcscf = 3,
       ref_rks = 4, ref_uks = 5} reftype;
 
-int chkpt_rd_iopen();
-int chkpt_rd_max_am();
-int chkpt_rd_mxcoef();
-int chkpt_rd_nao();
-int chkpt_rd_natom();
-int chkpt_rd_ncalcs();
-int chkpt_rd_nirreps();
-int chkpt_rd_nmo();
-int chkpt_rd_nprim();
-int chkpt_rd_nshell();
-int chkpt_rd_nso();
-int chkpt_rd_nsymhf();
-int chkpt_rd_num_unique_atom();
-int chkpt_rd_num_unique_shell();
-int chkpt_rd_phase_check();
-int chkpt_rd_ref();
-int chkpt_rd_rottype();
-int *chkpt_rd_am2canon_shell_order();
-int *chkpt_rd_atom_position();
+int chkpt_rd_iopen(void);
+int chkpt_rd_max_am(void);
+int chkpt_rd_mxcoef(void);
+int chkpt_rd_nao(void);
+int chkpt_rd_natom(void);
+int chkpt_rd_ncalcs(void);
+int chkpt_rd_nirreps(void);
+int chkpt_rd_nmo(void);
+int chkpt_rd_nprim(void);
+int chkpt_rd_nshell(void);
+int chkpt_rd_nso(void);
+int chkpt_rd_nsymhf(void);
+int chkpt_rd_num_unique_atom(void);
+int chkpt_rd_num_unique_shell(void);
+int chkpt_rd_phase_check(void);
+int chkpt_rd_ref(void);
+int chkpt_rd_rottype(void);
+int *chkpt_rd_am2canon_shell_order(void);
+int *chkpt_rd_atom_position(void);
+
+int *chkpt_rd_orbspi(void);
+int *chkpt_rd_clsdpi(void);
+int *chkpt_rd_openpi(void);
+int *chkpt_rd_sopi(void);
+
+char **chkpt_rd_irr_labs(void);
+char **chkpt_rd_hfsym_labs(void);
