@@ -3,12 +3,15 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
+CDBG = -g
+COPT = 
+
 LDLIBS += $(LAPACK) $(BLAS)
 
 PSILIBS = -lPSI_qt -lPSI_chkpt -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
 CSRC = \
-psi2molden.c
+psi2molden.c \
 
 BINOBJ = $(CSRC:%.c=%.o)
 ALLOC = 
@@ -19,8 +22,4 @@ ifneq ($(DODEPEND),no)
 $(BINOBJ:%.o=%.d): $(DEPENDINCLUDE)
 include $(BINOBJ:%.o=%.d)
 endif
-
-install_man:: $(TARGET).1
-	$(MKDIRS) $(mandir)/man1
-	$(INSTALL_INCLUDE) $^ $(mandir)/man1
 

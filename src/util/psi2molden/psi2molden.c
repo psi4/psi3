@@ -17,17 +17,17 @@ void exit_io(void);
 
 int main(int argc, char *argv[])
 {
-  int i, j, h;
+  int i, j, h, I;
   int this_atom, this_mo;
   FILE *molfile;
   int natom, nprim, nshell;
-  int nmo, nso, nao, nirreps;
+  int nmo, nso, nao, nirreps, ndocc;
   int *snumg, *stype, *snuc, *sprim;
-  int *orbspi, *clsdpi, *openpi, *offset;
+  int *orbspi, *clsdpi, *openpi, *orbsym;
   double **scf_so, **scf;
   double *evals;
   double **usotao;
-  double **geom, *zvals, *exps, *contr;
+  double **geom, *zvals, *exps, *contr, occ;
   char **atom_labs, *am_labs[7], **irr_labs;
 
   /* I don't think molden knows anything > f, but it's here anyway */
@@ -95,15 +95,20 @@ int main(int argc, char *argv[])
 
   /** MO's **/
   fprintf(molfile, "[MO]\n");
+  fflush(molfile);
+
+  scf_so = chkpt_rd_scf();
+  if(scf_so == NULL) {
+    printf("You must run cscf before psi2molden.\n");
+    exit(PSI_RETURN_SUCCESS);
+  }
 
   nmo = chkpt_rd_nmo();
   nao = chkpt_rd_nao();
   nso = chkpt_rd_nso();
   nirreps = chkpt_rd_nirreps();
   orbspi = chkpt_rd_orbspi();
-  openpi = chkpt_rd_openpi();
   clsdpi = chkpt_rd_clsdpi();
-  scf_so = chkpt_rd_scf();
   evals = chkpt_rd_evals();
   usotao = chkpt_rd_usotao();
   irr_labs = chkpt_rd_irr_labs();
@@ -113,35 +118,29 @@ int main(int argc, char *argv[])
   C_DGEMM('t', 'n', nao, nmo, nso, 1.0, &(usotao[0][0]), nao, &(scf_so[0][0]), nmo, 
 	  0.0, &(scf[0][0]), nmo);
 
-  offset = init_int_array(nirreps);
-  offset[0] = 0;
-  for(h=1; h < nirreps; h++) offset[h] = offset[h-1] + orbspi[h-1];
+  ndocc = 0;
+  for(i=0; i < nirreps; i++) ndocc += clsdpi[i];
 
-  /** occupied orbitals **/
-  for(h=0; h < nirreps; h++) {
-    for(i=offset[h]; i < offset[h] + clsdpi[h]; i++) {
-      fprintf(molfile, " Sym= %s\n", irr_labs[h]);
-      fprintf(molfile, " Ene= %20.10f\n", evals[i]);
-      fprintf(molfile, " Spin= Alpha\n", evals[i]);
-      fprintf(molfile, " Occup= %d\n", 2);
-      for(j=0; j < nao; j++) fprintf(molfile, "%3d %20.12f\n", j, scf[j][i]);
-    }
+  /* set up list of MO irreps */
+  orbsym = init_int_array(nmo);
+  for(h=0,I=0; h < nirreps; h++)
+    for(i=0; i < orbspi[h]; i++,I++)
+      orbsym[I] = h;
+
+  /* arrange MO's in ascending order */
+  mosort(evals, scf, orbsym, nso, nmo);
+
+  for(i=0; i < nmo; i++) {
+    fprintf(molfile, " Sym=A\n");
+    fprintf(molfile, " Ene=%20.10f\n", evals[i]);
+    fprintf(molfile, " Spin=Alpha\n");
+    occ = (i < ndocc) ? 2.0 : 0.0;
+    fprintf(molfile, " Occup=%3.1f\n", occ);
+    for(j=0; j < nso; j++) fprintf(molfile, "%3d %20.12f\n", j+1, scf[j][i]);
   }
 
-  /** unoccupied orbitals **/
-  for(h=0; h < nirreps; h++) {
-    for(i=offset[h]+clsdpi[h]; i < offset[h] + orbspi[h];i++) {
-      fprintf(molfile, " Sym= %s\n", irr_labs[h]);
-      fprintf(molfile, " Ene= %20.10f\n", evals[i]);
-      fprintf(molfile, " Spin= Alpha\n", evals[i]);
-      fprintf(molfile, " Occup= %d\n", 0);
-      for(j=0; j < nao; j++) fprintf(molfile, "%3d %20.12f\n", j, scf[j][i]);
-    }
-  }
-
+  free(orbsym);
   free(orbspi);
-  free(clsdpi);
-  free(openpi);
   free_block(scf_so);
   free_block(scf);
   free(evals);

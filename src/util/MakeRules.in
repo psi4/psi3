@@ -1,0 +1,110 @@
+
+#
+# Targets which don't generate files should be listed as dependencies
+# of the special target .PHONY
+#
+
+.PHONY:	all default install install_inc install_target install_man
+.PHONY:	 clean oclean iclean dclean target_clean
+
+#
+# This should be the first rule.  It will create a library without
+# installing it.
+#
+
+default:: $(TARGET)
+
+all: default
+
+#
+# run compilers or utilities
+#
+
+%.o : %.F
+
+%.$(F77SUF): %.F
+	$(PSIPP) $(FDEF) $(FINC) -o $@ $<
+
+%.$(OBJSUF): %.c
+	$(CC) $(CFLAGS) -c $< $(OUTPUT_OPTION)
+
+%.$(OBJSUF): %.$(F77SUF)
+	$(FC) $(FFLAGS) -c $< $(OUTPUT_OPTION)
+
+%.$(OBJSUF): %.C
+	$(CXX) $(CXXFLAGS) $(CXXINCLUDE) -c $< $(OUTPUT_OPTION)
+
+%.$(OBJSUF): %.cc
+	$(CXX) $(CXXFLAGS) $(CXXINCLUDE) -c $< $(OUTPUT_OPTION)
+
+#
+# do installations
+#
+
+install:: install_inc install_target install_man
+
+install_inc::
+
+install_man::
+
+$(TARGET): $(ALLOC) $(BINOBJ) $(PSILIBS)
+	$(LD) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+
+install_target:: $(TARGET)
+	$(MKDIRS) $(bindir)
+	$(INSTALL_PROGRAM) $< $(bindir)
+
+#
+# clean up
+#
+
+clean:: oclean dclean uclean targetclean
+
+oclean:
+	-rm -f *.o
+
+dclean:
+	-rm -f *.d
+
+uclean:
+	-rm -f *.u
+
+targetclean:
+	-rm -f $(TARGET)
+
+#
+# find dependencies
+#
+
+depend::
+
+%.d: %.c
+	$(CCDEPEND) $(CDEF) $(CINC) $< | sed 's/$*.o/$*.o $*.d/g' > $@
+
+%.u: %.c
+        $(CCDEPEND) $(CDEF) $(CINC) $< > /dev/null
+
+%.d: %.C
+	$(CXXDEPEND) $(CXXDEF) $(CXXINC) $< | sed 's/$*.o/$*.o $*.d/g' > $@
+
+%.d: %.cc
+	$(CXXDEPEND) $(CXXDEF) $(CXXINC) $< | sed 's/$*.o/$*.o $*.d/g' > $@
+
+#
+# keep the configuration information and makefiles up-to-date
+#
+
+$(top_srcdir)/configure: $(top_srcdir)/configure.in $(top_srcdir)/aclocal.m4
+	cd $(top_srcdir) && autoconf
+
+$(top_objdir)/config.status: $(top_srcdir)/configure
+	cd $(top_objdir) && ./config.status --recheck
+
+Makefile: $(srcdir)/Makefile.in $(top_objdir)/config.status
+	cd $(top_objdir) && CONFIG_FILES=src/bin/`basename $(srcdir)`/Makefile ./config.status
+
+../MakeVars: $(top_srcdir)/src/bin/MakeVars.in $(top_objdir)/config.status
+	cd $(top_objdir) && CONFIG_FILES=src/bin/MakeVars ./config.status
+
+../MakeRules: $(top_srcdir)/src/bin/MakeRules.in $(top_objdir)/config.status
+	cd $(top_objdir) && CONFIG_FILES=src/bin/MakeRules ./config.status
