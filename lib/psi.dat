@@ -7,7 +7,8 @@ psi: (
   ncasiter = 1
 
   % The basic programs
-  input      = "input3.0"
+  input      = "input"
+  uinput     = "input --getgeom"
   init       = $input
   done       = ("psiclean")
   scfdone    = ()
@@ -85,7 +86,7 @@ psi: (
   SCFTwoConFirstOpt  = $SCFFirstOpt
 
   % Procedures for the finite displacements of SCF gradients
-  SCFFirstDisp  = (repeat $ndisp $ugeom $SCFFirst $rgeom end $done)
+  SCFFirstDisp  = (repeat $ndisp $ugeom $uinput $SCFFirst $rgeom end $done)
   SCFRHFFirstDisp  = $SCFFirstDisp
   SCFROHFFirstDisp  = $SCFFirstDisp
   SCFUHFFirstDisp  = $SCFFirstDisp
@@ -93,7 +94,7 @@ psi: (
 
   % Testing procedure for optimizing geometries with SCF finite displacements
   SCFROHFEnergyDisp =
-    (repeat $ndisp $ugeom $SCFROHFEnergy $rgeom end $done)
+    (repeat $ndisp $ugeom $uinput $SCFROHFEnergy $rgeom end $done)
 
   % -------------------------------- CCSD Procedures
   % Procedures for the CCSD energy
@@ -113,7 +114,7 @@ psi: (
 
   % Testing procedure for optimizing geometries with CCSD finite displacements
   CCSDROHFEnergyDisp = 
-    (repeat $ndisp $ugeom $CCSDROHFEnergy $rgeom end $done)
+    (repeat $ndisp $ugeom $uinput $CCSDROHFEnergy $rgeom end $done)
 
   % Procedures for the optimizing geomtries with CCSD gradients
   CCSDRHFFirstOpt =
@@ -124,9 +125,9 @@ psi: (
 
   % Procedures for the finite displacements of CCSD gradients
   CCSDRHFFirstDisp =
-    (repeat $ndisp $ugeom $CCSDRHFFirst $rgeom end $done)
+    (repeat $ndisp $ugeom $uinput $CCSDRHFFirst $rgeom end $done)
   CCSDROHFFirstDisp = 
-    (repeat $ndisp $ugeom $CCSDROHFFirst $rgeom end $done)
+    (repeat $ndisp $ugeom $uinput $CCSDROHFFirst $rgeom end $done)
   CCSDUHFFirstDisp  = ERROR
   CCSDTwoConFirstDisp  = ERROR
 
