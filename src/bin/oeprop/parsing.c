@@ -127,6 +127,7 @@ void parsing()
   if (grid == 5) {
     grid3d = 1;
     mo_to_plot = 1;
+    read_opdm = 0;
     errcod = ip_data("MO_TO_PLOT","%d",&mo_to_plot,0);
     if (mo_to_plot <= 0 || mo_to_plot > nmo) {
       fprintf(outfile,"MO_TO_PLOT out of range. Aborting\n\n");
