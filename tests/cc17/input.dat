@@ -1,0 +1,31 @@
+default: (
+  label = "3B1 CH2 cc-pVDZ/UHF-EOM-CCSD Energies"
+  memory = (32.0 MB)
+
+  jobtype = sp
+  wfn = eom_ccsd
+  reference = uhf
+  dertype = none
+  multp = 3
+  convergence = 12
+  maxiter = 100
+
+  states_per_irrep = (2 2 2 2)
+  eval_tol = 10
+  residual_tol = 8
+)
+
+input: (
+  basis = "cc-pVDZ"
+  puream = true
+  zmat = (
+    (c)
+    (h 1 r)
+    (h 1 r 2 a)
+  )
+  zvars = (
+   (r 1.1)
+   (a 109.0)
+  )
+)
+
