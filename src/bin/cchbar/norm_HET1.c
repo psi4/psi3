@@ -53,10 +53,10 @@ void norm_HET1(void) {
     fprintf(outfile,"<WMbeJ (Me,Jb) | WMbeJ (Me,Jb)> = %15.10lf\n", dot);
 
     /** WABEI **/
-    dpd_buf4_init(&W, CC3_HET1, 0, 10, 5, 10, 5, 0, "CC3 WAbEi (Ie,Ab)");
+    dpd_buf4_init(&W, CC3_HET1, 0, 10, 5, 10, 5, 0, "CC3 WAbEi (Ie,bA)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
-    fprintf(outfile,"<WAbEi (Ie,Ab) | WAbEi (Ie,Ab)> = %15.10lf\n", dot);
+    fprintf(outfile,"<WAbEi (Ie,bA) | WAbEi (Ie,bA)> = %15.10lf\n", dot);
 
   }
 
@@ -224,25 +224,25 @@ void norm_HET1(void) {
 
     fprintf(outfile,"Doing Wabei terms.\n");
 
-    dpd_buf4_init(&W, CC3_HET1, 0, 10, 5, 10, 7, 0, "CC3 WABEI (IE,A>B)");
+    dpd_buf4_init(&W, CC3_HET1, 0, 10, 5, 10, 7, 0, "CC3 WABEI (IE,B>A)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
-    fprintf(outfile,"\t<WABEI (IE,A>B) |WABEI> = %15.10lf\n", dot);
+    fprintf(outfile,"\t<WABEI (IE,B>A) |WABEI> = %15.10lf\n", dot);
 
-    dpd_buf4_init(&W, CC3_HET1, 0, 10, 5, 10, 7, 0, "CC3 Wabei (ie,a>b)");
+    dpd_buf4_init(&W, CC3_HET1, 0, 10, 5, 10, 7, 0, "CC3 Wabei (ie,b>a)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
-    fprintf(outfile,"\t<Wabei (ie,a>b) |Wabei> = %15.10lf\n", dot);
+    fprintf(outfile,"\t<Wabei (ie,b>a) |Wabei> = %15.10lf\n", dot);
 
-    dpd_buf4_init(&W, CC3_HET1, 0, 10, 5, 10, 5, 0, "CC3 WAbEi (iE,Ab)");
+    dpd_buf4_init(&W, CC3_HET1, 0, 10, 5, 10, 5, 0, "CC3 WAbEi (iE,bA)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
-    fprintf(outfile,"\t<WAbEi (iE,Ab) |WAbEi> = %15.10lf\n", dot);
+    fprintf(outfile,"\t<WAbEi (iE,bA) |WAbEi> = %15.10lf\n", dot);
 
-    dpd_buf4_init(&W, CC3_HET1, 0, 10, 5, 10, 5, 0, "CC3 WaBeI (Ie,aB)");
+    dpd_buf4_init(&W, CC3_HET1, 0, 10, 5, 10, 5, 0, "CC3 WaBeI (Ie,Ba)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
-    fprintf(outfile,"\t<WaBeI (Ie,aB) |WaBeI> = %15.10lf\n", dot);
+    fprintf(outfile,"\t<WaBeI (Ie,Ba) |WaBeI> = %15.10lf\n", dot);
   }
 
 
@@ -413,25 +413,25 @@ void norm_HET1(void) {
 
     fprintf(outfile,"Doing Wabei terms.\n");
 
-    dpd_buf4_init(&W, CC3_HET1, 0, 20, 5, 20, 7, 0, "CC3 WABEI (IE,A>B)");
+    dpd_buf4_init(&W, CC3_HET1, 0, 20, 5, 20, 7, 0, "CC3 WABEI (IE,B>A)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
-    fprintf(outfile,"\t<WABEI (IE,A>B) |WABEI> = %15.10lf\n", dot);
+    fprintf(outfile,"\t<WABEI (IE,B>A) |WABEI> = %15.10lf\n", dot);
 
-    dpd_buf4_init(&W, CC3_HET1, 0, 30, 15, 30, 17, 0, "CC3 Wabei (ie,a>b)");
+    dpd_buf4_init(&W, CC3_HET1, 0, 30, 15, 30, 17, 0, "CC3 Wabei (ie,b>a)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
-    fprintf(outfile,"\t<Wabei (ie,a>b)|Wabei> = %15.10lf\n", dot);
+    fprintf(outfile,"\t<Wabei (ie,b>a)|Wabei> = %15.10lf\n", dot);
 
-    dpd_buf4_init(&W, CC3_HET1, 0, 27, 28, 27, 28, 0, "CC3 WAbEi (iE,Ab)");
+    dpd_buf4_init(&W, CC3_HET1, 0, 27, 29, 27, 29, 0, "CC3 WAbEi (iE,bA)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
-    fprintf(outfile,"\t<WAbEi (iE,Ab)|WAbEi> = %15.10lf\n", dot);
+    fprintf(outfile,"\t<WAbEi (iE,bA)|WAbEi> = %15.10lf\n", dot);
 
-    dpd_buf4_init(&W, CC3_HET1, 0, 24, 29, 24, 29, 0, "CC3 WaBeI (Ie,aB)");
+    dpd_buf4_init(&W, CC3_HET1, 0, 24, 28, 24, 28, 0, "CC3 WaBeI (Ie,Ba)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
-    fprintf(outfile,"\t<WAbEi (iE,Ab)|WAbEi> = %15.10lf\n", dot);
+    fprintf(outfile,"\t<WAbEi (iE,Ba)|WAbEi> = %15.10lf\n", dot);
   }
 
   return;
