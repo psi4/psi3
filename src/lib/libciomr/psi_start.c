@@ -13,6 +13,10 @@
 extern FILE *infile, *outfile;
 extern char *psi_file_prefix;
 
+static char *ifname = NULL;
+static char *ofname = NULL;
+static char *fprefix = NULL;
+
 /*!
 ** psi_start()
 **
@@ -40,9 +44,6 @@ int psi_start(int argc, char *argv[], int overwrite_output)
   int found_if_p = 0;           /* found input file name with -f */
   int found_of_p = 0;           /* found output file name with -o */
   int found_fp_p = 0;           /* found file prefix name with -p */
-  char *ifname = NULL;
-  char *ofname = NULL;
-  char *fprefix = NULL;
   char *cfname = NULL;
   char *userhome;
   FILE *psirc;
@@ -172,4 +173,56 @@ int psi_start(int argc, char *argv[], int overwrite_output)
     psi_file_prefix = strdup(fprefix);
 
   return(PSI_RETURN_SUCCESS);
+}
+
+
+/*!
+** psi_ifname()
+**
+** This function returns the input file name
+**
+** Arguments: none
+**
+** Returns: the pointer to the string containing the input
+**          file name if it has been determined, NULL otherwise
+** \ingroup (CIOMR)
+*/
+
+char* psi_ifname()
+{
+  return ifname;
+}
+
+/*!
+** psi_ofname()
+**
+** This function returns the output file name
+**
+** Arguments: none
+**
+** Returns: the pointer to the string containing the output
+**          file name if it has been determined, NULL otherwise
+** \ingroup (CIOMR)
+*/
+
+char* psi_ofname()
+{
+  return ofname;
+}
+
+/*!
+** psi_ifname()
+**
+** This function returns the PSI file prefix
+**
+** Arguments: none
+**
+** Returns: the pointer to the string containing the PSI
+**          file prefix if it has been determined, NULL otherwise
+** \ingroup (CIOMR)
+*/
+
+char* psi_fprefix()
+{
+  return fprefix;
 }

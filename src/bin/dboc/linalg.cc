@@ -2,7 +2,9 @@
 // Local definitions for matrix operations: (de)allocation, product, LU decomposition
 //
 
-#include <iostream.h>
+// NOTE: on IBM AIX 4.3.3 with IBM VisualAge C++ 5.0.2.0 delete[] doesn't seem
+// to release the memory and memory leaks result. Using malloc/free instead.
+#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -15,11 +17,11 @@ FLOAT** create_matrix(int a, int b)
   FLOAT** M;
 
   if (a>=0 && b>=0) {
-    M = new FLOAT*[a];
+    M = (FLOAT**) malloc(sizeof(FLOAT*)*a);
     if (M == NULL) {
       done("create_matrix failed -- probably not enough memory.");
     }
-    M[0] = new FLOAT[a*b];
+    M[0] = (FLOAT*) malloc(sizeof(FLOAT)*a*b);
     if (M[0] == NULL) {
       done("create_matrix failed -- probably not enough memory.");
     }
@@ -35,8 +37,8 @@ FLOAT** create_matrix(int a, int b)
 void delete_matrix(FLOAT** M)
 {
   if (M) {
-    delete[] M[0];
-    delete[] M;
+    free(M[0]);
+    free(M);
     M = NULL;
   }
 }
@@ -135,7 +137,13 @@ void lu_decom(FLOAT** a, int n, int* indx, FLOAT* d)
 {
   int i,imax,j,k;
   FLOAT big,dum,sum,temp;
-  FLOAT* vv = new FLOAT[n];
+  static int max_size = 0;
+  static FLOAT* vv = NULL;
+
+  if (max_size < n || vv == NULL) {
+    vv = (FLOAT*) malloc(sizeof(FLOAT)*n);
+    max_size = n;
+  }
 
   *d = 1.0;
 
@@ -182,5 +190,4 @@ void lu_decom(FLOAT** a, int n, int* indx, FLOAT* d)
       for (i=j+1; i < n ; i++) a[i][j] *= dum;
     }
   }
-  delete[] vv;
 }

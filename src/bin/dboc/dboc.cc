@@ -44,7 +44,6 @@ char *psi_file_prefix;
 Molecule_t Molecule;
 MOInfo_t MOInfo;
 Params_t Params;
-BasisSet* RefBasis;
 BasisSet* BasisDispP;
 BasisSet* BasisDispM;
 
@@ -59,10 +58,10 @@ int main(int argc, char *argv[])
   FILE *geometry;
 
   init_io(argc,argv);
-  parsing();
   print_intro();
-  print_params();
   read_molecule();
+  parsing();
+  print_params();
   read_moinfo();
   setup_geoms();
   double E_dboc = eval_dboc();
@@ -121,6 +120,8 @@ void parsing()
       if (nelem != 2)
 	done("Keyword COORDS should be a vector of 2-element vectors");
       errcod = ip_data(":DBOC:COORDS","%d",&Params.coords[coord].index,2,coord,0);
+      if (Params.coords[coord].index < 0 || Params.coords[coord].index >= Molecule.natom*3)
+	done("Keyword COORDS contains an out-of-bounds index");
       errcod = ip_data(":DBOC:COORDS","%lf",&Params.coords[coord].coeff,2,coord,1);
     }
   }
@@ -152,7 +153,6 @@ void parsing()
 void read_molecule()
 {
   chkpt_init(PSIO_OPEN_OLD);
-  RefBasis = new BasisSet(PSIF_CHKPT);
   Molecule.natom = chkpt_rd_natom();
   Molecule.geom = chkpt_rd_geom();
   Molecule.zvals = chkpt_rd_zvals();
@@ -211,14 +211,6 @@ double eval_dboc()
     int atom = coord->index/3;
     int xyz = coord->index%3;
 
-    double AplusD[3];
-    AplusD[0] = Molecule.geom[atom][0];
-    AplusD[1] = Molecule.geom[atom][1];
-    AplusD[2] = Molecule.geom[atom][2];
-    AplusD[xyz] += Params.delta;
-    BasisDispP = new BasisSet(*RefBasis);
-    BasisDispP->set_center(atom,AplusD);
-
     char *inputcmd = new char[80];
 #if USE_INPUT_S
     sprintf(inputcmd,"input --geomdat %d --noreorient --nocomshift",disp);
@@ -235,6 +227,22 @@ double eval_dboc()
     }
     disp++;
 
+    //
+    // Read in the "-" displaced basis
+    //
+    chkpt_init(PSIO_OPEN_OLD);
+    BasisDispM = new BasisSet(PSIF_CHKPT);
+    // rotate the geometry back to the original frame and change shell centers
+    double **rref_m = chkpt_rd_rref();
+    double **geom_m = chkpt_rd_geom();
+    chkpt_close();
+    double **geom_m_ref = block_matrix(Molecule.natom,3);
+    mmult(geom_m,0,rref_m,0,geom_m_ref,0,Molecule.natom,3,3,0);
+    free_block(geom_m);
+    free_block(rref_m);
+    for(int a=0; a<Molecule.natom; a++)
+      BasisDispM->set_center(a,geom_m_ref[a]);
+
     // For CI method rename the saved wave function
     if (!strcmp(Params.wfn,"DETCI") || !strcmp(Params.wfn,"DETCAS")) {
       SlaterDetVector *vec;
@@ -243,13 +251,15 @@ double eval_dboc()
       slaterdetvector_delete_full(vec);
     }
 
-    double AminusD[3];
-    AminusD[0] = Molecule.geom[atom][0];
-    AminusD[1] = Molecule.geom[atom][1];
-    AminusD[2] = Molecule.geom[atom][2];
-    AminusD[xyz] -= Params.delta;
-    BasisDispM = new BasisSet(*RefBasis);
-    BasisDispM->set_center(atom,AminusD);
+    // obtain "+"-displaced basis by shiting the "active" center in the
+    // "-"-displaced center by twice the displacement size
+    double AplusD[3];
+    AplusD[0] = geom_m_ref[atom][0];
+    AplusD[1] = geom_m_ref[atom][1];
+    AplusD[2] = geom_m_ref[atom][2];
+    AplusD[xyz] += 2*Params.delta;
+    BasisDispP = new BasisSet(*BasisDispM);
+    BasisDispP->set_center(atom,AplusD);
 
 #if USE_INPUT_S
     sprintf(inputcmd,"input --savemos --geomdat %d --noreorient --nocomshift",disp);
@@ -316,12 +326,23 @@ void init_io(int argc, char *argv[])
   tstart(outfile);
   psio_init();
 
+  // Psi modules called by dboc should read from the same input file
+  // set the value of PSI_INPUT for the duration of this run
+  char* ifname = psi_ifname();
+#ifndef HAVE_SETENV
+  char* tmpstr1 = (char *) malloc(11+strlen(ifname));
+  sprintf(tmpstr1, "PSI_INPUT=%s", ifname);
+  putenv(tmpstr1);
+#else
+  setenv("PSI_OUTPUT",ifname,1);
+#endif
+
   // Psi modules called by dboc should write to a different output file
   // reset the value of PSI_OUTPUT for the duration of this run
   orig_psi_output_env = getenv("PSI_OUTPUT");
 #ifndef HAVE_SETENV
-  char* tmpstr = strdup("PSI_OUTPUT=dboc.findif.out");
-  putenv(tmpstr);
+  char* tmpstr2 = strdup("PSI_OUTPUT=dboc.findif.out");
+  putenv(tmpstr2);
 #else
   setenv("PSI_OUTPUT","dboc.findif.out",1);
 #endif

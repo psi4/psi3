@@ -74,21 +74,21 @@ the configure script:
    with single right-quotes, e.g., --with-lapack='-llapack -lcblas -latlas'.
 
    * --with-max-am-eri=integer --- Specifies the maximum angular momentum
-   level (+1) for the primitive Gaussian basis functions when computing
-   electron repulsion integrals.  This is set to g-type functions (AM=5)
+   level for the primitive Gaussian basis functions when computing
+   electron repulsion integrals.  This is set to g-type functions (AM=4)
    by default.
 
    * --with-max-am-deriv1=integer --- Specifies the maximum angular
-   momentum level (+1) for first derivatives of the primitive Gaussian
-   basis functions.  This is set to f-type functions (AM=4) by default.
+   momentum level for first derivatives of the primitive Gaussian
+   basis functions.  This is set to f-type functions (AM=3) by default.
 
    * --with-max-am-deriv2=integer --- Specifies the maximum angular
-   momentum level (+1) for second derivatives of the primitive Gaussian
-   basis functions.  This is set to d-type functions (AM=3) by default.
+   momentum level for second derivatives of the primitive Gaussian
+   basis functions.  This is set to d-type functions (AM=2) by default.
 
    * --with-max-am-r12=integer --- Specifies the maximum angular momentum
-   level (+1) for primitive Gaussian basis functions used in r_12 explicitly
-   correlated methods.  This is set to f-type functions (AM=4) by default.
+   level for primitive Gaussian basis functions used in r_12 explicitly
+   correlated methods.  This is set to f-type functions (AM=3) by default.
 
    * --with-debug=option --- This option turns on debugging options.
    If the argument is omitted, `` -g'' will be used by default.
@@ -217,4 +217,10 @@ IV. Miscellaneous architecture-specific notes
     Note that the reentrant versions of the compilers are used. Also, we
     haven't had much luck using xlc_r because of its handling of functions
     with variable argument lists, use cc_r instead.
+
+ * Compaq Alpha/OSF 5.1:
+
+   Default shell ({\tt /bin/sh} is not POSIX-compliant which causes some 
+   \PSIthree\ makefiles to fail. Set environmental variable {\tt BIN\_SH}
+   to {\tt xpg4}.
 

@@ -14,6 +14,10 @@
 
 int psi_start(int argc, char *argv[], int overwrite_output);
 int psi_stop(void);
+char* psi_ifname();
+char* psi_ofname();
+char* psi_fprefix();
+
 void ffile(FILE **fptr, char *suffix, int code);
 void ffile_noexit(FILE **fptr, char *suffix, int code);
 

@@ -945,7 +945,7 @@ sub build_psi_cmd
   }
 
   if($QUIET == 1) {
-      $PSICMD = $PSICMD . " >& /dev/null";
+      $PSICMD = $PSICMD . " 1>/dev/null 2>/dev/null";
   }
 
   return $PSICMD;

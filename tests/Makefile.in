@@ -3,7 +3,7 @@
 
 subdirs = \
 scf-opt scf-opt2 scf-opt3 scf-opt4 scf-opt5 scf-opt6 scf-opt7 scf-opt8 \
-scf-opt9 scf-opt10 scf-opt11 \
+scf-opt9 scf-opt11 \
 scf-opt-numer scf-freq scf-freq-numer scf-freq-symm-numer \
 scf-polar rhf-stab uhf-stab rohf-stab mp2-sp mp2-direct-sp cis-sp cisd-sp \
 cisd-opt-numer cc1 cc2 cc3 cc4 cc8 cc9 cc10 cc11 cc12 cc13 cc14 cc15 cc16 \

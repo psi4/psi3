@@ -135,21 +135,21 @@ the {\tt configure} script:
   enclose the file list with single right-quotes, e.g., {\tt
   -}{\tt -with-lapack='-llapack -lcblas -latlas'}.
 \item {\tt -}{\tt -with-max-am-eri=integer} --- Specifies the maximum
-  angular momentum level ($+1$) for the primitive Gaussian basis functions
+  angular momentum level for the primitive Gaussian basis functions
   when computing electron repulsion integrals.  This is set to
-  $g$-type functions (AM=5) by default.
+  $g$-type functions (AM=4) by default.
 \item {\tt -}{\tt -with-max-am-deriv1=integer} --- Specifies the maximum
-  angular momentum level ($+1$) for first derivatives of the primitive
-  Gaussian basis functions.  This is set to $f$-type functions (AM=4)
+  angular momentum level for first derivatives of the primitive
+  Gaussian basis functions.  This is set to $f$-type functions (AM=3)
   by default.
 \item {\tt -}{\tt -with-max-am-deriv2=integer} --- Specifies the maximum
-  angular momentum level ($+1$) for second derivatives of the primitive
-  Gaussian basis functions.  This is set to $d$-type functions (AM=3)
+  angular momentum level for second derivatives of the primitive
+  Gaussian basis functions.  This is set to $d$-type functions (AM=2)
   by default.
 \item {\tt -}{\tt -with-max-am-r12=integer} --- Specifies the maximum
-  angular momentum level ($+1$) for primitive Gaussian basis functions used
+  angular momentum level for primitive Gaussian basis functions used
   in $r_{12}$ explicitly correlated methods.  This is set to $f$-type
-  functions (AM=4) by default.
+  functions (AM=3) by default.
 \item {\tt -}{\tt -with-debug=option} --- This option turns on debugging
   options.  If the argument is omitted, ``{\tt -g}'' will be used by default.
 \item {\tt -}{\tt -with-opt=options} --- This option may be used to select
@@ -281,13 +281,16 @@ one has to manually specify
 the {\tt -q64} compiler flag
 that enables production of 64-bit executables.
 The following configure options should be used:
-{\tt -}{\tt -with-cc='cc\_r -q64' -}{\tt -with-cxx='xlC\_r -q64'
- -}{\tt -with-fc='xlf\_r -q64'}. Note that
+{\tt -}{\tt -with-cc='cc\_r -q64 -DFCLINK=2' -}{\tt -with-cxx='xlC\_r -q64
+-DFCLINK=2' -}{\tt -with-fc='xlf\_r -q64'}. Note that
 the reentrant versions of the compilers
 are used. Also, we haven't had much luck
 using {\tt xlc\_r} because of its
 handling of functions with variable argument lists,
 use {\tt cc\_r} instead.
+\item Compaq Alpha/OSF 5.1: default shell ({\tt /bin/sh})
+is not POSIX-compliant which causes some \PSIthree\ makefiles
+to fail. Set environmental variable {\tt BIN\_SH} to {\tt xpg4}.
 \end{itemize}
 
 

@@ -7,6 +7,7 @@ extern "C" {
 #include <libqt/qt.h>
 #include <psifiles.h>
 }
+#include "params.h"
 #include "moinfo.h"
 #include "mo_overlap.h"
 #include "float.h"
@@ -14,6 +15,7 @@ extern "C" {
 
 extern MOInfo_t MOInfo;
 extern FILE *outfile;
+extern Params_t Params;
 
 extern void done(const char *);
 
@@ -55,6 +57,10 @@ double eval_rhf_derwfn_overlap()
   }
   delete_matrix(CSC);
 
+  if (Params.print_lvl > PrintLevels::print_contrib) {
+    fprintf(outfile,"  +/- overlap in the basis of doubly-occupied MOs:\n");
+    print_mat(CSC_occ, ndocc, ndocc, outfile);
+  }
 
   // Compute the determinant
   int *tmpintvec = new int[ndocc];

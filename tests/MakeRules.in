@@ -3,4 +3,4 @@ $(TARGET):
 	@cat $(TARGET_DIR).test >> ../../test-case-results
 
 clean:
-	/bin/rm -f $(TARGET) output.dat psi.* timer.dat file14.dat
+	/bin/rm -f $(TARGET) output.dat psi.* timer.dat file14.dat dboc.findif.out
