@@ -93,13 +93,13 @@ void parsing()
 
      /* Check if need to freeze core */
      frozen_core = NULL;
-     errcod = ip_string(":DEFAULT:FREEZE_CORE",&frozen_core,0);
+     errcod = ip_string("FREEZE_CORE",&frozen_core,0);
      if (frozen_core == NULL)
        frozen_core = strdup("FALSE");
 
      /* Check if need to freeze virtuals */
      frozen_virt = NULL;
-     errcod = ip_string(":DEFAULT:FREEZE_VIRT",&frozen_virt,0);
+     errcod = ip_string("FREEZE_VIRT",&frozen_virt,0);
      if (frozen_virt == NULL)
        frozen_virt = strdup("FALSE");
 
