@@ -3,7 +3,16 @@
 #define EXTERN
 #include "globals.h"
 
-/* RHS += P(ij)P(ab)Lia*Fjb */
+/* L2FL2(): Computes the contributions of the Fme HBAR matrix elements
+** to the Lambda doubles equations.  These contributions are given in
+** spin orbitals as:
+**
+** L_ij^ab <-- P(ij) P(ab) L_i^a Fjb
+**
+** where Fjb = fjb + t_n^f <jn||bf>
+**
+** TDC, July 2002
+*/
 
 void L1FL2(void)
 {

@@ -85,7 +85,7 @@ void FaeL2(void)
     /** X(ij,ab) = L_ij^ae F_eb **/
     dpd_buf4_init(&X, CC_TMP1, 0, 12, 15, 12, 15, 0, "X(ij,ab)");
     dpd_buf4_init(&LIJAB, CC_LAMPS, 0, 12, 15, 12, 17, 0, "Lijab");
-    dpd_contract424(&LIJAB, &LFAEt2, &X, 3, 0, 0, 1, 0);
+    dpd_contract424(&LIJAB, &LFaet2, &X, 3, 0, 0, 1, 0);
     dpd_buf4_close(&LIJAB);
     /** X(ij,ab) --> X'(ij,ba) **/
     dpd_buf4_sort(&X, CC_TMP1, pqsr, 12, 15, "X'(ij,ba)");

@@ -3,8 +3,29 @@
 #define EXTERN
 #include "globals.h"
 
-/** The ROHF case needs to be re-written to use (AM,EF) ordering for the Wamef
-    matrix elements, as I've done for the UHF case.  **/
+/* WejabL2(): Computes the contribution of the Wamef HBAR matrix
+** elements to the Lambda double de-excitation amplitude equations.
+** These contributions are given in spin orbitals as:
+**
+** L_ij^ab = P(ij) L_i^e Wejab
+**
+** where Wejab = Wamef and is defined as:
+**
+** Wamef = <am||ef> - t_n^a <nm||ef>
+**
+** [cf. Gauss and Stanton, JCP 103, 3561-3577 (1995).]
+**
+** By spin case of L_ij^ab, these contributions are computed as:
+**
+** L(IJ,AB) = L(I,E) W(EJ,AB) - L(J,E) W(EI,AB) (only one unique contraction)
+** L(ij,ab) = L(i,e) W(ej,ab) - L(j,e) W(ei,ab) (only one unique contraction)
+** L(Ij,Ab) = L(I,E) W(Ej,Ab) + L(j,e) W(eI,bA)
+**
+** TDC, July 2002
+**
+** NB: The ROHF case needs to be re-written to use (AM,EF) ordering
+** for the Wamef matrix elements, as I've done for the UHF case.
+*/
 
 void WejabL2(void)
 {
@@ -147,7 +168,7 @@ void WejabL2(void)
     dpd_buf4_close(&Z1);
 
 
-    /** New L(Ij,Ab) <-- L(I,A) W(Ej,Ab) **/
+    /** New L(Ij,Ab) <-- L(I,E) W(Ej,Ab) **/
     dpd_buf4_init(&L2, CC_LAMPS, 0, 22, 28, 22, 28, 0, "New LIjAb");
     dpd_buf4_init(&W, CC_HBAR, 0, 26, 28, 26, 28, 0, "WAmEf");
     dpd_contract244(&LIA, &W, &L2, 1, 0, 0, 1, 1);
@@ -157,12 +178,11 @@ void WejabL2(void)
     /** Z(jI,bA) = -L(j,e) W(eI,bA) **/
     dpd_buf4_init(&Z, CC_TMP1, 0, 23, 29, 23, 29, 0, "Z(jI,bA)");
     dpd_buf4_init(&W, CC_HBAR, 0, 25, 29, 25, 29, 0, "WaMeF");
-    dpd_contract244(&Lia, &W, &Z, 1, 0, 0, -1, 1);
+    dpd_contract244(&Lia, &W, &Z, 1, 0, 0, 1, 0);
     dpd_buf4_close(&W);
-    /** Z(jI,aB) --> New L(Ij,Ab) **/
+    /** Z(jI,bA) --> New L(Ij,Ab) **/
     dpd_buf4_sort_axpy(&Z, CC_LAMPS, qpsr, 22, 28, "New LIjAb", 1);
     dpd_buf4_close(&Z);
-
 
     dpd_file2_close(&Lia);
     dpd_file2_close(&LIA);

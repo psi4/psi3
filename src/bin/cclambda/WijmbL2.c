@@ -3,6 +3,30 @@
 #define EXTERN
 #include "globals.h"
 
+/* WijmbL2(): Computes the contributions of the Wmnie HBAR matrix
+** elements to the Lambda double de-excitation amplitude equations.
+** These contributions are given in spin orbitals as:
+** 
+** L_ij^ab = - P(ab) L_m^a Wijmb
+**
+** where Wijmb = Wmnie is defined as:
+**
+** Wmnie = <mn||ie> + t_i^f <mn||fe>
+**
+** [cf. Gauss and Stanton, JCP 103, 3561-3577 (1995)]
+**
+** All four spin cases are stored in (mn,ei) ordering (see Wmnie.c in
+** the CCHBAR code).  The three L_ij^ab spin cases are computed as:
+**
+** L(IJ,AB) <-- - L(M,A) W(IJ,BM) + L(M,B) W(IJ,AM) (one unique
+** contraction)
+** L(ij,ab) <-- - L(m,a) W(ij,bm) + L(m,b) W(ij,am) (one unique
+** contraction)
+** L(Ij,Ab) <-- - L(M,A) W(Ij,bM) - L(m,b) W(jI,Am)
+**
+** TDC, July 2002
+*/
+
 void WijmbL2(void)
 {
   dpdfile2 LIA, Lia;
@@ -71,16 +95,16 @@ void WijmbL2(void)
     dpd_file2_init(&Lia, CC_OEI, 0, 2, 3, "Lia");
 
     /** W(IJ,AM) L(M,B) --> Z(IJ,AB) **/
-    dpd_buf4_init(&Z, CC_TMP1, 0, 2, 5, 2, 5, 0, "Z(IJ,AB)");
+    dpd_buf4_init(&Z, CC_TMP2, 0, 2, 5, 2, 5, 0, "Z(IJ,AB)");
     dpd_buf4_init(&W, CC_HBAR, 0, 2, 21, 2, 21, 0, "WMNIE");
     dpd_contract424(&W, &LIA, &Z, 3, 0, 0, 1, 0);
     dpd_buf4_close(&W);
     /** Z(IJ,AB) --> Z(IJ,BA) **/
-    dpd_buf4_sort(&Z, CC_TMP1, pqsr, 2, 5, "Z(IJ,BA)");
+    dpd_buf4_sort(&Z, CC_TMP2, pqsr, 2, 5, "Z(IJ,BA)");
     dpd_buf4_close(&Z);
     /** Z(IJ,AB) = Z(IJ,AB) - Z(IJ,BA) **/
-    dpd_buf4_init(&Z1, CC_TMP1, 0, 2, 5, 2, 5, 0, "Z(IJ,AB)");
-    dpd_buf4_init(&Z2, CC_TMP1, 0, 2, 5, 2, 5, 0, "Z(IJ,BA)");
+    dpd_buf4_init(&Z1, CC_TMP2, 0, 2, 5, 2, 5, 0, "Z(IJ,AB)");
+    dpd_buf4_init(&Z2, CC_TMP2, 0, 2, 5, 2, 5, 0, "Z(IJ,BA)");
     dpd_buf4_axpy(&Z2, &Z1, -1);
     dpd_buf4_close(&Z2);
     /** Z(IJ,AB) --> New L(IJ,AB) **/
@@ -91,16 +115,16 @@ void WijmbL2(void)
 
 
     /** W(ij,am) L(m,b) --> Z(ij,ab) **/
-    dpd_buf4_init(&Z, CC_TMP1, 0, 12, 15, 12, 15, 0, "Z(ij,ab)");
+    dpd_buf4_init(&Z, CC_TMP2, 0, 12, 15, 12, 15, 0, "Z(ij,ab)");
     dpd_buf4_init(&W, CC_HBAR, 0, 12, 31, 12, 31, 0, "Wmnie");
     dpd_contract424(&W, &Lia, &Z, 3, 0, 0, 1, 0);
     dpd_buf4_close(&W);
     /** Z(ij,ab) --> Z(ij,ba) **/
-    dpd_buf4_sort(&Z, CC_TMP1, pqsr, 12, 15, "Z(ij,ba)");
+    dpd_buf4_sort(&Z, CC_TMP2, pqsr, 12, 15, "Z(ij,ba)");
     dpd_buf4_close(&Z);
     /** Z(ij,ab) = Z(ij,ab) - Z(ij,ba) **/
-    dpd_buf4_init(&Z1, CC_TMP1, 0, 12, 15, 12, 15, 0, "Z(ij,ab)");
-    dpd_buf4_init(&Z2, CC_TMP1, 0, 12, 15, 12, 15, 0, "Z(ij,ba)");
+    dpd_buf4_init(&Z1, CC_TMP2, 0, 12, 15, 12, 15, 0, "Z(ij,ab)");
+    dpd_buf4_init(&Z2, CC_TMP2, 0, 12, 15, 12, 15, 0, "Z(ij,ba)");
     dpd_buf4_axpy(&Z2, &Z1, -1);
     dpd_buf4_close(&Z2);
     /** Z(ij,ab) --> New L(ij,ab) **/
@@ -111,23 +135,22 @@ void WijmbL2(void)
 
 
     /** Z(jI,Ab) = W(jI,Am) L(m,b) **/
-    dpd_buf4_init(&Z, CC_TMP1, 0, 23, 28, 23, 28, 0, "Z(jI,Ab)");
+    dpd_buf4_init(&Z, CC_TMP2, 0, 23, 28, 23, 28, 0, "Z(jI,Ab)");
     dpd_buf4_init(&W, CC_HBAR, 0, 23, 26, 23, 26, 0, "WmNiE");
-    dpd_contract424(&W, &Lia, &Z, 3, 0, 0, 1, 0);
+    dpd_contract424(&W, &Lia, &Z, 3, 0, 0, -1, 0);
     dpd_buf4_close(&W);
     /** Z(jI,Ab) --> New L(Ij,Ab) **/
     dpd_buf4_sort_axpy(&Z, CC_LAMPS, qprs, 22, 28, "New LIjAb", 1);
     dpd_buf4_close(&Z);
 
     /** Z(Ij,bA) = W(Ij,bM) L(M,A) **/
-    dpd_buf4_init(&Z, CC_TMP1, 0, 22, 29, 22, 29, 0, "Z(Ij,bA)");
+    dpd_buf4_init(&Z, CC_TMP2, 0, 22, 29, 22, 29, 0, "Z(Ij,bA)");
     dpd_buf4_init(&W, CC_HBAR, 0, 22, 25, 22, 25, 0, "WMnIe");
-    dpd_contract424(&W, &Lia, &Z, 3, 0, 0, 1, 0);
+    dpd_contract424(&W, &LIA, &Z, 3, 0, 0, -1, 0);
     dpd_buf4_close(&W);
     /** Z(Ij,bA) --> New L(Ij,Ab) **/
     dpd_buf4_sort_axpy(&Z, CC_LAMPS, pqsr, 22, 28, "New LIjAb", 1);
     dpd_buf4_close(&Z);
-
 
     dpd_file2_close(&Lia);
     dpd_file2_close(&LIA);

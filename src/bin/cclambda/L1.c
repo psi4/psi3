@@ -97,16 +97,10 @@ void L1_build(void) {
 
     dpd_file2_init(&LFAEt2, CC_OEI, 0, 1, 1, "FAEt");
     dpd_file2_init(&LFaet2, CC_OEI, 0, 3, 3, "Faet");
-    dpd_file2_print(&LFAEt2, outfile);
-    dpd_file2_print(&LFaet2, outfile);
     dpd_contract222(&Lia,&LFaet2,&newLia, 0, 1, 1, 1);
     dpd_contract222(&LIA,&LFAEt2,&newLIA, 0, 1, 1, 1);
     dpd_file2_close(&LFaet2);
     dpd_file2_close(&LFAEt2);
-
-    dpd_file2_print(&newLIA, outfile);
-    dpd_file2_print(&newLia, outfile);
-
 
     /* L1 RHS += -Lma*Fim */
     dpd_file2_init(&LFMIt2,CC_OEI, 0, 0, 0, "FMIt");
@@ -115,7 +109,6 @@ void L1_build(void) {
     dpd_contract222(&LFMIt2,&LIA,&newLIA, 0, 1, -1, 1);
     dpd_file2_close(&LFmit2);
     dpd_file2_close(&LFMIt2);
-
 
     /* L1 RHS += Lme*Wieam */
     dpd_buf4_init(&WMBEJ, CC_HBAR, 0, 20, 20, 20, 20, 0, "WMBEJ");
@@ -168,7 +161,7 @@ void L1_build(void) {
 
     dpd_buf4_init(&W, CC_HBAR, 0, 21, 7, 21, 7, 0, "WEIAB");
     dpd_buf4_init(&L2, CC_LAMPS, 0, 0, 7, 2, 7, 0, "LIJAB");
-    dpd_contract442(&L2, &W, &newLIA, 0, 0, 10, 1);
+    dpd_contract442(&L2, &W, &newLIA, 0, 0, 1, 1);
     dpd_buf4_close(&W);
     dpd_buf4_close(&L2);
     dpd_buf4_init(&W, CC_HBAR, 0, 26, 28, 26, 28, 0, "WEiAb");
@@ -184,7 +177,7 @@ void L1_build(void) {
     dpd_buf4_close(&L2);
     dpd_buf4_init(&W, CC_HBAR, 0, 25, 29, 25, 29, 0, "WeIaB");
     dpd_buf4_init(&L2, CC_LAMPS, 0, 23, 29, 23, 29, 0, "LiJaB");
-    dpd_contract442(&L2, &W, &newLia, 0, 0, 1.0, 1.0);
+    dpd_contract442(&L2, &W, &newLia, 0, 0, 1, 1);
     dpd_buf4_close(&W);
     dpd_buf4_close(&L2);
 
@@ -276,21 +269,21 @@ void L1_build(void) {
     dpd_file2_init(&GAE, CC_OEI, 0, 1, 1, "GAE");
     dpd_file2_init(&Gae, CC_OEI, 0, 3, 3, "Gae");
 
-    dpd_buf4_init(&WAMEF, CC_HBAR, 0, 21, 5, 21, 7, 0, "WAMEF");
-    dpd_dot13(&GAE,&WAMEF,&newLIA, 0, 0, -1, 1);
-    dpd_buf4_close(&WAMEF);
+    dpd_buf4_init(&W, CC_HBAR, 0, 21, 5, 21, 7, 0, "WAMEF");
+    dpd_dot13(&GAE,&W,&newLIA, 0, 0, -1, 1);
+    dpd_buf4_close(&W);
 
-    dpd_buf4_init(&WaMeF, CC_HBAR, 0, 25, 29, 25, 29, 0, "WaMeF");
-    dpd_dot13(&Gae,&WaMeF,&newLIA, 0, 0, -1, 1);
-    dpd_buf4_close(&WaMeF);
+    dpd_buf4_init(&W, CC_HBAR, 0, 25, 29, 25, 29, 0, "WaMeF");
+    dpd_dot13(&Gae,&W,&newLIA, 0, 0, -1, 1);
+    dpd_buf4_close(&W);
 
-    dpd_buf4_init(&Wamef, CC_HBAR, 0, 31, 15, 31, 17, 0, "Wamef");
-    dpd_dot13(&Gae,&Wamef,&newLia, 0, 0, -1, 1);
-    dpd_buf4_close(&Wamef);
+    dpd_buf4_init(&W, CC_HBAR, 0, 31, 15, 31, 17, 0, "Wamef");
+    dpd_dot13(&Gae,&W,&newLia, 0, 0, -1, 1);
+    dpd_buf4_close(&W);
 
-    dpd_buf4_init(&WAmEf, CC_HBAR, 0, 26, 28, 26, 28, 0, "WAmEf");
-    dpd_dot13(&GAE,&WAmEf,&newLia, 0, 0, -1.0, 1.0);
-    dpd_buf4_close(&WAmEf);
+    dpd_buf4_init(&W, CC_HBAR, 0, 26, 28, 26, 28, 0, "WAmEf");
+    dpd_dot13(&GAE,&W,&newLia, 0, 0, -1, 1);
+    dpd_buf4_close(&W);
 
     dpd_file2_close(&Gae);
     dpd_file2_close(&GAE);
@@ -328,25 +321,24 @@ void L1_build(void) {
     dpd_file2_init(&GMI, CC_OEI, 0, 0, 0, "GMI");
     dpd_file2_init(&Gmi, CC_OEI, 0, 2, 2, "Gmi");
 
-    dpd_buf4_init(&WMNIE, CC_HBAR, 0, 0, 21, 2, 21, 0, "WMNIE");
-    dpd_dot14(&GMI, &WMNIE, &newLIA, 0, 0, -1, 1); 
-    dpd_buf4_close(&WMNIE);
+    dpd_buf4_init(&W, CC_HBAR, 0, 0, 21, 2, 21, 0, "WMNIE");
+    dpd_dot14(&GMI, &W, &newLIA, 0, 0, -1, 1); 
+    dpd_buf4_close(&W);
 
-    dpd_buf4_init(&WmNiE, CC_HBAR, 0, 23, 27, 23, 27, 0, "WmNiE");
-    dpd_dot14(&Gmi, &WmNiE, &newLIA, 0, 0, -1, 1);
-    dpd_buf4_close(&WmNiE);
+    dpd_buf4_init(&W, CC_HBAR, 0, 23, 26, 23, 26, 0, "WmNiE");
+    dpd_dot14(&Gmi, &W, &newLIA, 0, 0, -1, 1);
+    dpd_buf4_close(&W);
 
-    dpd_buf4_init(&Wmnie, CC_HBAR, 0, 10, 31, 12, 31, 0, "Wmnie");
-    dpd_dot14(&Gmi, &Wmnie, &newLia, 0, 0, -1.0, 1.0);
-    dpd_buf4_close(&Wmnie);
+    dpd_buf4_init(&W, CC_HBAR, 0, 10, 31, 12, 31, 0, "Wmnie");
+    dpd_dot14(&Gmi, &W, &newLia, 0, 0, -1, 1);
+    dpd_buf4_close(&W);
 
-    dpd_buf4_init(&WMnIe, CC_HBAR, 0, 22, 24, 22, 24, 0, "WMnIe");
-    dpd_dot14(&GMI, &WMnIe, &newLia, 0, 0, -1.0, 1.0);
-    dpd_buf4_close(&WMnIe);
+    dpd_buf4_init(&W, CC_HBAR, 0, 22, 25, 22, 25, 0, "WMnIe");
+    dpd_dot14(&GMI, &W, &newLia, 0, 0, -1, 1);
+    dpd_buf4_close(&W);
 
     dpd_file2_close(&Gmi);
     dpd_file2_close(&GMI);
-
   }
 
 

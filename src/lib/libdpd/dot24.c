@@ -28,64 +28,64 @@ int dpd_dot24(dpdfile2 *T, dpdbuf4 *I, dpdfile2 *Z,
 
   for(h=0; h < nirreps; h++) {
 
-      dpd_buf4_mat_irrep_init(I, h);
-      dpd_buf4_mat_irrep_rd(I, h);
+    dpd_buf4_mat_irrep_init(I, h);
+    dpd_buf4_mat_irrep_rd(I, h);
 
-      /* Loop over irreps of the target */
-      for(Gp=0; Gp < nirreps; Gp++) {
-	  Gr = Gp;  Gq = Gs = h^Gp;
+    /* Loop over irreps of the target */
+    for(Gp=0; Gp < nirreps; Gp++) {
+      Gr = Gp;  Gq = Gs = h^Gp;
 
-	  /* Allocate space for the X buffer */
-	  if(T->params->ppi[Gq] && T->params->qpi[Gs])
-	      X = block_matrix(T->params->ppi[Gq],T->params->qpi[Gs]);
+      /* Allocate space for the X buffer */
+      if(T->params->ppi[Gq] && T->params->qpi[Gs])
+	X = block_matrix(T->params->ppi[Gq],T->params->qpi[Gs]);
 
-	  /* Loop over orbitals of the target */
-	  for(p=0; p < Z->params->ppi[Gp]; p++) {
-	      P = Z->params->poff[Gp] + p;
-	      for(r=0; r < Z->params->qpi[Gr]; r++) {
-		  R = Z->params->qoff[Gr] + r;
+      /* Loop over orbitals of the target */
+      for(p=0; p < Z->params->ppi[Gp]; p++) {
+	P = Z->params->poff[Gp] + p;
+	for(r=0; r < Z->params->qpi[Gr]; r++) {
+	  R = Z->params->qoff[Gr] + r;
 
-		  /* Loop over orbitals of the two-index term */
-		  for(q=0; q < T->params->ppi[Gq]; q++) {
-		      Q = T->params->poff[Gq] + q;
-		      for(s=0; s < T->params->qpi[Gs]; s++) {
-			  S = T->params->qoff[Gs] + s;
+	  /* Loop over orbitals of the two-index term */
+	  for(q=0; q < T->params->ppi[Gq]; q++) {
+	    Q = T->params->poff[Gq] + q;
+	    for(s=0; s < T->params->qpi[Gs]; s++) {
+	      S = T->params->qoff[Gs] + s;
 
-			  /* Calculate row and column indices in I */
-                          if(!transt && !transz) {
-                              row = I->params->rowidx[P][Q];
-                              col = I->params->colidx[R][S];
-                            }
-                          else if(transt && !transz) {
-                              row = I->params->rowidx[P][S];
-                              col = I->params->colidx[R][Q];
-                            }
-                          else if(!transt && transz) {
-                              row = I->params->rowidx[R][Q];
-                              col = I->params->colidx[P][S];
-                            }
-                          else if(transt && transz) {
-                              row = I->params->rowidx[R][S];
-                              col = I->params->colidx[P][Q];
-                            }
+	      /* Calculate row and column indices in I */
+	      if(!transt && !transz) {
+		row = I->params->rowidx[P][Q];
+		col = I->params->colidx[R][S];
+	      }
+	      else if(transt && !transz) {
+		row = I->params->rowidx[P][S];
+		col = I->params->colidx[R][Q];
+	      }
+	      else if(!transt && transz) {
+		row = I->params->rowidx[R][Q];
+		col = I->params->colidx[P][S];
+	      }
+	      else if(transt && transz) {
+		row = I->params->rowidx[R][S];
+		col = I->params->colidx[P][Q];
+	      }
 
-			  /* Build the X buffer */
-			  X[q][s] = I->matrix[h][row][col]; 
+	      /* Build the X buffer */
+	      X[q][s] = I->matrix[h][row][col]; 
 
-			}
-		    }
-
-		  value = dot_block(T->matrix[Gq], X, T->params->ppi[Gq],
-				    T->params->qpi[Gs], alpha); 
-		  
-		  Z->matrix[Gp][p][r] += value;
-		}
 	    }
-	  if(T->params->ppi[Gq] && T->params->qpi[Gs])
-	      dpd_free_block(X, T->params->ppi[Gq],T->params->qpi[Gs]);
+	  }
+
+	  value = dot_block(T->matrix[Gq], X, T->params->ppi[Gq],
+			    T->params->qpi[Gs], alpha); 
+		  
+	  Z->matrix[Gp][p][r] += value;
 	}
-      dpd_buf4_mat_irrep_close(I, h);
+      }
+      if(T->params->ppi[Gq] && T->params->qpi[Gs])
+	dpd_free_block(X, T->params->ppi[Gq],T->params->qpi[Gs]);
     }
+    dpd_buf4_mat_irrep_close(I, h);
+  }
 
 #ifdef DPD_TIMER
   timer_off("dot24");

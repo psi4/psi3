@@ -83,7 +83,7 @@ void FmiL2(void)
     /** X(ij,ab) = F(i,m) L(mj,ab) **/
     dpd_buf4_init(&X, CC_TMP1, 0, 10, 17, 10, 17, 0, "X(ij,ab)");
     dpd_buf4_init(&LIJAB, CC_LAMPS, 0, 10, 17, 12, 17, 0, "Lijab");
-    dpd_contract244(&LFMIt2, &LIJAB, &X, 1, 0, 0, -1, 0);
+    dpd_contract244(&LFmit2, &LIJAB, &X, 1, 0, 0, -1, 0);
     dpd_buf4_close(&LIJAB);
     /** X(ij,ab) --> X'(ji,ab) **/
     dpd_buf4_sort(&X, CC_TMP1, qprs, 10, 17, "X'(ji,ab)");
