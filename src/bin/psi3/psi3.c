@@ -46,8 +46,10 @@ int main(int argc, char *argv[])
 {
   FILE *psidat;
   char *wfn, *dertyp, *reftyp, *calctyp, **exec, proced[132];
+  char tmpstr[133];
   int check;
   int i,j,nexec=0,rdepth=0;
+  int direct=0;
   int errcod;
 
   enum CalcCode {
@@ -81,6 +83,14 @@ int main(int argc, char *argv[])
     psi3_abort();
   }
 
+  errcod = ip_boolean("DIRECT",&direct,0);
+  if ((errcod == IPE_OK) && (direct==1)) {
+    sprintf(tmpstr,"DIRECT%s",wfn);
+    free(wfn);
+    wfn = (char *) malloc (sizeof(tmpstr)+1);
+    strcpy(wfn,tmpstr);
+  }
+    
   errcod = ip_string("REFERENCE",&reftyp,0);
   if (errcod == IPE_KEY_NOT_FOUND) {
     reftyp = (char *) malloc(sizeof(char)*4);
