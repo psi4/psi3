@@ -72,7 +72,7 @@ void print_geom(int natom, double *X, double *Y, double *Z, FILE *fpo);
 int read_aces_geom(char *fname, int *natom, double **X, double **Y,
                    double **Z, double **AN, FILE *fpo);
 void print_aces_geom(int natom, double *X, double *Y, double *Z, double *AN,
-                     FILE *fpo);
+                     char **labels, FILE *fpo);
 int read_qchem_geom(char *fname, int *natom, double **X, double **Y,
                     double **Z, double **AN, FILE *fpo);
 int read_xyz_geom(char *fname, int *natom, double **X, double **Y,
@@ -127,6 +127,8 @@ main(argc, argv)
   int num_array;                 /* number of arrays of isotopes */
   char tmpstr[100];              /* tmp string for geom isotopes array */
   int tmpi = -1;                 /* tmp stor for casting atomic nums to int */
+  int num_unparsed=0;            /* number of unparsed cmd line args */
+  char *argv_unparsed[100];      /* pointers to unparsed cmd line args */
   double tval;                   
   enum GeomFormat { 
     PSI_FILE11,
@@ -136,22 +138,6 @@ main(argc, argv)
     XYZ
   } InputType;
 
-  /* open output file */
-  ffile(&outfile,outfname,0);
-  ffile(&infile,"input.dat",2); 
-  tstart(outfile);
-
-  fprintf(outfile, "          ***********************************\n");
-  fprintf(outfile, "          **   GEOMETRY ANALYSIS PROGRAM   **\n");
-  fprintf(outfile, "          **     David Sherrill,  1993     **\n");   
-  fprintf(outfile, "          ***********************************\n");
-  fprintf(outfile, "\n");
-  fprintf(outfile, "   Use the -h flag to list available options\n\n");
-
-  /* do input parsing stuff */
-  ip_set_uppercase(1);
-  ip_initialize(infile,outfile);
-  ip_cwk_add(":GEOM");
 
   /* Initialize and zero data */ 
   for (i=0; i<MAXATOM; i++) { 
@@ -163,56 +149,42 @@ main(argc, argv)
     }
   }
     
-  /* check input.dat for running parameters */
   InputType = PSI_FILE11;
-  errcod = ip_boolean("READ_GEOM",&i,0);
-  if ((errcod == IPE_OK) && i==1) InputType = PSI_GEOM;
-  errcod = ip_boolean("ACES",&i,0);
-  if ((errcod == IPE_OK) && i==1) InputType = ACES2;
-  errcod = ip_boolean("QCHEM",&i,0);
-  if ((errcod == IPE_OK) && i==1) InputType = QCHEM;
-  errcod = ip_boolean("XYZ",&i,0);
-  if ((errcod == IPE_OK) && i==1) InputType = XYZ;
-  errcod = ip_boolean("PRINT_ALL_DIST",&print_all_dist,0);
-  errcod = ip_boolean("DO_OOP",&do_oop,0);
-  errcod = ip_boolean("ANGSTROM",&ang_in,0);
-  errcod = ip_boolean("ANGSTROMS",&ang_in,0);
-  errcod = ip_data("PRINT_DIST","%lf",&print_dist,0);
    
   /* get command line arguments */
   strcpy(geom_file, "geom.dat");
-  for (i=1; i<argc; i++) {
+  for (i=1, num_unparsed=0; i<argc; i++) {
     if (strcmp("-g", argv[i]) == 0) {
       InputType = PSI_GEOM;
       if ( (i+1 < argc) && (strchr(argv[i+1], '-') == NULL) ) 
 	strcpy(geom_file, argv[i+1]) ;
     }
-    if (strcmp("-aces", argv[i]) == 0) {
+    else if (strcmp("-aces", argv[i]) == 0) {
       InputType = ACES2;
       if ( (i+1 < argc) && (strchr(argv[i+1], '-') == NULL) ) 
 	strcpy(geom_file, argv[i+1]) ;
     }
-    if (strcmp("-qchem", argv[i]) == 0) {
+    else if (strcmp("-qchem", argv[i]) == 0) {
       InputType = QCHEM;
       ang_in = 1;  /* QCHEM format is in Angstrom */
       if ( (i+1 < argc) && (strchr(argv[i+1], '-') == NULL) ) 
 	strcpy(geom_file, argv[i+1]) ;
     }
-    if (strcmp("-xyz", argv[i]) == 0) {
+    else if (strcmp("-xyz", argv[i]) == 0) {
       InputType = XYZ;
       ang_in = 1;  /* XYZ format is in Angstrom */
       if ( (i+1 < argc) && (strchr(argv[i+1], '-') == NULL) ) 
 	strcpy(geom_file, argv[i+1]) ;
     }
-    if (strcmp("-oop", argv[i]) == 0) do_oop = 1;
-    if (strcmp("-a", argv[i]) == 0) print_all_dist = 1;
-    if (strcmp("-angstroms", argv[i]) == 0) ang_in = 1;
-    if (strcmp("-angstrom", argv[i]) == 0) ang_in = 1;
-    if (strcmp("-d", argv[i]) == 0) { 
+    else if (strcmp("-oop", argv[i]) == 0) do_oop = 1;
+    else if (strcmp("-a", argv[i]) == 0) print_all_dist = 1;
+    else if (strcmp("-angstroms", argv[i]) == 0) ang_in = 1;
+    else if (strcmp("-angstrom", argv[i]) == 0) ang_in = 1;
+    else if (strcmp("-d", argv[i]) == 0) { 
       if (sscanf(argv[i+1], "%lf", &print_dist)!=1) print_dist = PRINT_DIST;
       i++;
     }
-    if (strcmp("-h", argv[i]) == 0) {
+    else if (strcmp("-h", argv[i]) == 0) {
       fprintf(stdout,
 	      "geom: options available\n");
       fprintf(stdout,
@@ -241,7 +213,43 @@ main(argc, argv)
 	      " -angstrom  = input is in angstroms\n");
       exit(0);
     }
+    else {
+      argv_unparsed[num_unparsed++] = argv[i];
+    }
   }
+
+  /* open files */
+  errcod = psi_start(num_unparsed,argv_unparsed,0);
+  ip_cwk_add(":GEOM");
+  /* done inside psi_start now
+  ffile(&outfile,outfname,0);
+  ffile(&infile,"input.dat",2); 
+  */
+  tstart(outfile);
+
+  /* check input.dat for running parameters */
+  errcod = ip_boolean("READ_GEOM",&i,0);
+  if ((errcod == IPE_OK) && i==1) InputType = PSI_GEOM;
+  errcod = ip_boolean("ACES",&i,0);
+  if ((errcod == IPE_OK) && i==1) InputType = ACES2;
+  errcod = ip_boolean("QCHEM",&i,0);
+  if ((errcod == IPE_OK) && i==1) InputType = QCHEM;
+  errcod = ip_boolean("XYZ",&i,0);
+  if ((errcod == IPE_OK) && i==1) InputType = XYZ;
+  errcod = ip_boolean("PRINT_ALL_DIST",&print_all_dist,0);
+  errcod = ip_boolean("DO_OOP",&do_oop,0);
+  errcod = ip_boolean("ANGSTROM",&ang_in,0);
+  errcod = ip_boolean("ANGSTROMS",&ang_in,0);
+  errcod = ip_data("PRINT_DIST","%lf",&print_dist,0);
+
+  /* print program identification */
+  fprintf(outfile, "          ***********************************\n");
+  fprintf(outfile, "          **   GEOMETRY ANALYSIS PROGRAM   **\n");
+  fprintf(outfile, "          **     David Sherrill,  1993     **\n");   
+  fprintf(outfile, "          ***********************************\n");
+  fprintf(outfile, "\n");
+  fprintf(outfile, "   Use the -h flag to list available options\n\n");
+
 
   /* first, read in the data */
   switch (InputType) {
@@ -267,7 +275,10 @@ main(argc, argv)
       sprintf(line1, "geom: trouble reading geom file %s\n", geom_file);
       prf_abort(outfile, line1);
     }
-    print_aces_geom(natom, X, Y, Z, AN, outfile);
+    fprintf(outfile, "DATA FROM INPUT\n"); 
+    fprintf(outfile, "Number of atoms = %d\n", natom); 
+    fprintf(outfile, "\nCartesian coordinates (bohr) :\n"); 
+    print_aces_geom(natom, X, Y, Z, AN, atomic_labels, outfile);
     break;
   case QCHEM:
     if (!read_qchem_geom(geom_file, &natom, &X, &Y, &Z, &AN, outfile)) {
@@ -289,8 +300,7 @@ main(argc, argv)
     fprintf(outfile, "Number of atoms = %d\n", natom) ;
     fprintf(outfile, "Cartesian coordinates (%s):\n", ang_in ? 
 	    "angstroms" : "bohr");
-    print_aces_geom(natom, X, Y, Z, AN, outfile);
-    /* print_geom(natom, X, Y, Z, outfile); */
+    print_aces_geom(natom, X, Y, Z, AN, atomic_labels, outfile);
     break;
   default:
     prf_abort(outfile, "Couldn't figure out your input type!\n");
@@ -308,7 +318,11 @@ main(argc, argv)
   
   fprintf(outfile, "Cartesian coordinates (%s):\n", ang_in ?
 	  "bohr" : "angstroms");
-  print_geom(natom, Tmat[0], Tmat[1], Tmat[2], outfile);
+  if (InputType == PSI_GEOM || InputType == QCHEM)
+    print_geom(natom, Tmat[0], Tmat[1], Tmat[2], outfile);
+  else 
+    print_aces_geom(natom, Tmat[0], Tmat[1], Tmat[2], AN, atomic_labels, 
+                    outfile);
   
   if (ang_in) {
     for (i=0; i<natom; i++) {
@@ -381,7 +395,7 @@ main(argc, argv)
     /* close files */
     fprintf(outfile, "\n");
     tstop(outfile);
-    fclose(outfile);
+    psi_stop();
     exit(0);
   }
   
@@ -394,7 +408,7 @@ main(argc, argv)
       printf("GEOM: trouble parsing isotopes array %d\n", i) ; 
       fprintf(outfile, "\n") ;
       tstop(outfile);
-      fclose(outfile);
+      psi_stop();
       exit(0) ;
     } 
     
@@ -423,7 +437,7 @@ main(argc, argv)
   /* close files */
   fprintf(outfile, "\n");
   tstop(outfile);
-  fclose(outfile);
+  psi_stop();
 }
 
 

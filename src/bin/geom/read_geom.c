@@ -236,19 +236,24 @@ int read_aces_geom(char *fname, int *natom, double **X, double **Y,
 **      natom   = number of atoms
 **      X, Y, Z = arrays of cartesian coordinates (assume bohr)
 **      AN      = atomic number array (allocated here)
+**      labels  = atomic labels
 **      fpo     = file pointer for output
 */
 void print_aces_geom(int natom, double *X, double *Y, double *Z, double *AN, 
-		     FILE *fpo) 
+		     char **labels, FILE *fpo) 
 {
   int i;
   
-  fprintf(fpo, "DATA FROM INPUT\n");
-  fprintf(fpo, "Number of atoms = %d\n", natom);
-  fprintf(fpo, "\nCartesian coordinates (bohr) :\n");
+  /* fprintf(fpo, "DATA FROM INPUT\n"); */
+  /* fprintf(fpo, "Number of atoms = %d\n", natom); */
+  /* fprintf(fpo, "\nCartesian coordinates (bohr) :\n"); */
   for (i=0; i<natom; i++) {
+    fprintf(fpo, "     %3s    %12.7lf    %12.7lf    %12.7lf\n",
+            labels[(int) AN[i]], X[i], Y[i], Z[i]);
+    /*
     fprintf(fpo, "     %11.6lf    %12.7lf    %12.7lf    %12.7lf\n",
             AN[i], X[i], Y[i], Z[i]);
+    */
   }
   fprintf(fpo, "\n");
   fflush(fpo);
