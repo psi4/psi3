@@ -103,7 +103,7 @@ double ****init_cc2pp(int max_am)
   for(l1=0;l1<max_am;l1++)
     cc2pp[l1] = (double ***) malloc(sizeof(double **)*max_am);
   for(l1=0;l1<max_am;l1++)
-    for(l2=0;l2<=l1;l2++) {
+    for(l2=0;l2<max_am;l2++) {
       nc2 = ioff[l2+1];
       np2 = 2*l2+1;
       cc2pp[l1][l2] = block_matrix((2*l1+1)*np2,ioff[l1+1]*nc2);
@@ -141,6 +141,10 @@ void init_sparse_cc2pp(int max_am)
   int increment;
   double value;
 
+  /*---------------------------------------------------------------------
+    cc2pp matrices are computed for all l1 and l2, not only for l1 >= l2
+    (1/13/2004) EFV
+   ---------------------------------------------------------------------*/
   cc2pp_sparse = (mat_elem ****) malloc(sizeof(mat_elem ***)*max_am);
   cc2pp_rowlength = (int ***) malloc(sizeof(int **)*max_am);
   for(l1=0;l1<max_am;l1++) {
@@ -148,7 +152,7 @@ void init_sparse_cc2pp(int max_am)
     cc2pp_rowlength[l1] = (int **) malloc(sizeof(int *)*max_am);
   }
   for(l1=0;l1<max_am;l1++)
-    for(l2=0;l2<=l1;l2++) {
+    for(l2=0;l2<max_am;l2++) {
       nc2 = ioff[l2+1];
       np2 = 2*l2+1;
       cc2pp_sparse[l1][l2] = (mat_elem **) malloc(sizeof(mat_elem *)*ioff[l1+1]*nc2);
@@ -195,7 +199,7 @@ void init_sparse_cc2pp(int max_am)
     pp2cc_rowlength[l1] = (int **) malloc(sizeof(int *)*max_am);
   }
   for(l1=0;l1<max_am;l1++)
-    for(l2=0;l2<=l1;l2++) {
+    for(l2=0;l2<max_am;l2++) {
       nc2 = ioff[l2+1];
       np2 = 2*l2+1;
       pp2cc_sparse[l1][l2] = (mat_elem **) malloc(sizeof(mat_elem *)*(2*l1+1)*np2);
