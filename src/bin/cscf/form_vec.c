@@ -1,7 +1,11 @@
 /* $Log$
- * Revision 1.2  2000/07/05 21:47:30  sbrown
- * Enabled the code to export the SCF eigenvector to CINTS when doing DFT.
+ * Revision 1.3  2000/07/06 20:04:01  sbrown
+ * Added capabilities to send the eigenvector to cints for DFT
+ * calculations.
  *
+/* Revision 1.2  2000/07/05 21:47:30  sbrown
+/* Enabled the code to export the SCF eigenvector to CINTS when doing DFT.
+/*
 /* Revision 1.1.1.1  2000/02/04 22:52:30  evaleev
 /* Started PSI 3 repository
 /*
@@ -68,11 +72,11 @@ void form_vec()
    if(ksdft) {
        
        ntri = nmo*nbfso;
-       cmat = block_matrix(nmo,nbfso);
+       cmat = block_matrix(nbfso,nmo);
        for(i=0;i<num_ir;i++){
 	   max = scf_info[i].num_so;
 	   off = scf_info[i].ideg;
-	   printf("\nideg for %d = %d",i,scf_info[i].ideg);
+	   /*printf("\nideg for %d = %d",i,scf_info[i].ideg);*/
 	   for(j=0;j<max;j++){
 	       jj = j+off;
 	       for(k=0;k<max;k++) {
@@ -80,11 +84,11 @@ void form_vec()
 		   cmat[jj][kk] = scf_info[i].cmat[j][k];
 	       }
 	   }
-	   free_block(cmat);
        }
-       
-       
-       psio_open(itapDSCF, PSIO_OPEN_OLD);
+       fprintf(outfile,"\nSCF Eigenvector from CSCF");
+       print_mat(cmat,nbfso,nmo,outfile);
+       psio_open(itapDSCF, PSIO_OPEN_NEW);
+       psio_write_entry(itapDSCF, "Number of MOs", (char *) &(nmo),sizeof(int));    
        psio_write_entry(itapDSCF, "SCF Eigenvector", (char *) &(cmat[0][0]),
 			sizeof(double)*ntri);
        psio_close(itapDSCF,1);
@@ -94,6 +98,14 @@ void form_vec()
    free_matrix(temp,nsfmax);
    free_matrix(sqhmat,nsfmax);
    free_matrix(sqhmat2,nsfmax);
-   free(cmat);
+   free_block(cmat);
 }
+
+
+
+
+
+
+
+
 

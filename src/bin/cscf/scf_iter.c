@@ -1,7 +1,11 @@
 /* $Log$
- * Revision 1.6  2000/07/05 21:47:31  sbrown
- * Enabled the code to export the SCF eigenvector to CINTS when doing DFT.
+ * Revision 1.7  2000/07/06 20:04:02  sbrown
+ * Added capabilities to send the eigenvector to cints for DFT
+ * calculations.
  *
+/* Revision 1.6  2000/07/05 21:47:31  sbrown
+/* Enabled the code to export the SCF eigenvector to CINTS when doing DFT.
+/*
 /* Revision 1.5  2000/06/27 21:12:33  evaleev
 /* .
 /*
@@ -398,11 +402,10 @@ void scf_iter()
       if(ksdft) {
        
        ntri = nbfso*nmo;
-       cmat = block_matrix(nmo,nbfso);
+       cmat = block_matrix(nbfso,nmo);
        for(i=0;i<num_ir;i++){
 	   max = scf_info[i].num_so;
 	   off = scf_info[i].ideg;
-	   printf("\nideg for %d = %d",i,scf_info[i].ideg);
 	   for(j=0;j<max;j++){
 	       jj = j+off;
 	       for(k=0;k<max;k++) {
