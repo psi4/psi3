@@ -1,5 +1,5 @@
-include @top_objdir@/src/lib/MakeVars
-include @top_objdir@/src/lib/libint/MakeVars
+include $(top_objdir)/src/lib/MakeVars
+include $(top_objdir)/src/lib/libint/MakeVars
 
 LD = $(CC)
 LDFLAGS += -lm

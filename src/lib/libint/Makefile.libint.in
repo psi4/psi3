@@ -1,5 +1,5 @@
-include @top_objdir@/src/lib/MakeVars
-include @top_objdir@/src/lib/libint/MakeVars
+include $(top_objdir)/src/lib/MakeVars
+include $(top_objdir)/src/lib/libint/MakeVars
 
 VPATH = .:$(top_srcdir)/src/lib/libint
 TARGET = $(top_objdir)/lib/libPSI_int.a
