@@ -8,4 +8,6 @@ struct Params {
   int ref;
   int dertype;
   char *aobasis;
+  int reset;  /* cmdline argument; if true, all CC-related files are deleted 
+		 at the beginning of the run */
 };

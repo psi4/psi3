@@ -141,20 +141,30 @@ int main(int argc, char *argv[])
 
 void init_io(int argc, char *argv[])
 {
-  int i;
+  int i, num_unparsed;
   extern char *gprgid();
-  char *progid;
+  char *progid, **argv_unparsed;
 
   progid = (char *) malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s",gprgid());
 
-  psi_start(argc-1,argv+1,0);/* this assumes no cmd args except filenames */
+  argv_unparsed = (char **) malloc(argc * sizeof(char *));
+  params.reset = 0;
+  for(i=1, num_unparsed=0; i < argc; i++) {
+    if(!strcmp(argv[i], "--reset")) params.reset = 1;
+    else argv_unparsed[num_unparsed++] = argv[i];
+  }
+
+  psi_start(num_unparsed, argv_unparsed, 0);
+  free(argv_unparsed);
+
   ip_cwk_add(progid);
   free(progid);
   tstart(outfile);
   psio_init();
 
-  for(i=CC_MIN; i <= CC_MAX; i++) psio_open(i,0);
+  if(params.reset) for(i=CC_MIN; i <= CC_MAX; i++) psio_open(i,0);
+  else for(i=CC_MIN; i <= CC_MAX; i++) psio_open(i,1);
 }
 
 void title(void)
