@@ -29,6 +29,7 @@ extern "C" {
 double *compute_q(internals &simples, salc_set &all_salcs);
 double **compute_B(internals &simples, salc_set &all_salcs);
 double **compute_G(double **B, int num_intcos, cartesians &carts);
+void symmetrize_geom(double *x);
 
 int new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
     double *dq, int print_flag, int restart_geom_file,
@@ -201,6 +202,10 @@ int new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
     fprintf(outfile,"Setting cartesian coodinates less than %e to zero.", MIN_CART_OUT);
     */
 
+  /* Symmetry adapt the resulting geometry */
+  if (optinfo.mode == MODE_OPT_STEP)
+    symmetrize_geom(x);
+
   //  carts.set_coord(x); can't change calling geometry - may be reused
   no_fx = new double [3*optinfo.nallatom];
 
@@ -251,5 +256,43 @@ int new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
   free_block(u);
   free_block(temp_mat);
   return 1;
+}
+
+
+void symmetrize_geom(double *x) {
+  int ua, op, xyz, num_uniques, i;
+  int atom1, atom2, *ua2a, **ict, diag_ind, natom;
+  double **cartrep, *x_temp;
+
+  chkpt_init(PSIO_OPEN_OLD);
+  num_uniques = chkpt_rd_num_unique_atom();
+  ua2a = chkpt_rd_ua2a();
+  nirreps = chkpt_rd_nirreps();
+  ict = chkpt_rd_ict();
+  cartrep = chkpt_rd_cartrep();
+  natom = chkpt_rd_natom();
+  chkpt_close();
+
+  x_temp = init_array(natom*3);
+
+  for(ua=0; ua<num_uniques; ua++) {
+    atom1 = ua2a[ua];
+    for(op=0; op < nirreps; op++) {
+      atom2 = ict[op][atom1] - 1;
+      for(xyz=0; xyz<3; xyz++) {
+        diag_ind = xyz*3 + xyz;
+        x_temp[3*atom2+xyz] = cartrep[op][diag_ind] * x[3*atom1+xyz];
+      }
+    }
+  }
+
+  for (i=0;i<3*natom;++i)
+    x[i] = x_temp[i];
+
+  free(x_temp);
+  free(ua2a);
+  free_int_matrix(ict, nirreps);
+  free_block(cartrep);
+  return;
 }
 

@@ -73,10 +73,10 @@ void get_optinfo() {
     {  optinfo.redundant = 0; optinfo.delocalize =1; }
 
   /* takes values of 1,2,3 for x,y,z for location of first dummy of linear bend*/
-  optinfo.dummy_axis_1 = 1;
+  optinfo.dummy_axis_1 = 2;
   ip_data("DUMMY_AXIS_1","%d",&(optinfo.dummy_axis_1),0);
   optinfo.dummy_axis_1 -= 1;
-  optinfo.dummy_axis_2 = 2;
+  optinfo.dummy_axis_2 = 3;
   ip_data("DUMMY_AXIS_2","%d",&(optinfo.dummy_axis_2),0);
   optinfo.dummy_axis_2 -= 1;
 

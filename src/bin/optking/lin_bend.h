@@ -252,6 +252,7 @@ class lin_bend_set {
       if (dotprod > 1.0) angle_ABD = 0.0;
       else if (dotprod < -1.0) angle_ABD = _pi;
       else angle_ABD = acos(dotprod)*180.0/_pi;
+//fprintf(outfile,"angleABD %20.15lf\n",angle_ABD);
 
       // compute value of CBD
       for (j=0;j<3;++j) {
@@ -263,9 +264,11 @@ class lin_bend_set {
       scalar_div(rBA,eBA);
       scalar_div(rBC,eBC);
       dot_arr(eBA,eBC,3,&dotprod);
+//fprintf(outfile,"dotprod %20.15lf\n",dotprod);
       if (dotprod > (1.0-MIN_LIN_COS)) angle_CBD = 0.0;
       else if (dotprod < (-1.0+MIN_LIN_COS)) angle_CBD = _pi;
       else angle_CBD = acos(dotprod)*180.0/_pi;
+//fprintf(outfile,"angleCBD %20.15lf\n",angle_CBD);
 
       set_val(i,angle_ABD+angle_CBD);
     } // end loop over linear angles

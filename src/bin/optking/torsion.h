@@ -353,17 +353,17 @@ class torsion_set {
              return get_id(i);
        }
 
-       if (optinfo.delocalize)
-         fprintf(outfile,"assuming torsion has no symmetry partners\n");
        for (i=0;i<num;++i) {
          if ( (a == get_A(i)) && (c == get_B(i))
            && (b == get_C(i)) && (d == get_D(i)))
              return get_id(i);
        }
-       if (i == num) {
-         fprintf(outfile,"Could not find simple torsion for atoms  \
-             %d %d %d %d in list.\n", a+1, b+1, c+1, d+1);
-         exit(2);
+       if (optinfo.delocalize) {
+         if (i == num) {
+           fprintf(outfile,"Could not find simple torsion for atoms  \
+               %d %d %d %d in list.\n", a+1, b+1, c+1, d+1);
+           exit(2);
+         }
        }
        return -1;
 //   fprintf(outfile,"Returning id: %d\n",get_id(i));

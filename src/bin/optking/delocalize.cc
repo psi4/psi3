@@ -31,7 +31,7 @@ extern double **irrep(internals &simples, double **evectst);
 void rm_rotations(internals &simples, cartesians &carts, int &num_nonzero, double **evects);
 
 void delocalize(internals &simples, cartesians &carts) {
-  int error,i,j,k,a,b,c,d,id,count,intco_type,sub_index,row[4],dim[4];
+  int error,i,j,k,a,b,c,d,id,count,intco_type,sub_index,row[5],dim[5];
   int rotor_type, degrees_of_freedom, col, natom;
   double **stre_mat, **bend_mat, **tors_mat, **out_mat;
   double **evectst, **evectst_symm, **coord_symm, *fmass;
@@ -88,6 +88,17 @@ void delocalize(internals &simples, cartesians &carts) {
       B[count][3*d+k] += simples.out.get_s_D(i,k);
     }
   }
+  for (i=0;i<simples.lin_bend.get_num();++i) {
+    a = simples.lin_bend.get_A(i);
+    b = simples.lin_bend.get_B(i);
+    c = simples.lin_bend.get_C(i);
+    ++count;
+    for (k=0;k<3;++k) {
+      B[count][3*a+k] += simples.lin_bend.get_s_A(i,k);
+      B[count][3*b+k] += simples.lin_bend.get_s_B(i,k);
+      B[count][3*c+k] += simples.lin_bend.get_s_C(i,k);
+    }
+  }
   //  print_mat2(B,simples.get_num(),natom*3,outfile);
 
   uBt = block_matrix(3*natom, simples.get_num());
@@ -110,13 +121,15 @@ void delocalize(internals &simples, cartesians &carts) {
     dim[1] = simples.bend.get_num();
     dim[2] = simples.tors.get_num();
     dim[3] = simples.out.get_num();
+    dim[4] = simples.lin_bend.get_num();
     row[0] = 0;
     row[1] = dim[0];
     row[2] = row[1]+dim[1];
     row[3] = row[2]+dim[2];
+    row[4] = row[3]+dim[3];
     double **ptr;
     ptr = (double **) malloc(simples.get_num()*sizeof(double *));
-    for (i=0;i<4;++i) {
+    for (i=0;i<5;++i) {
       for (j=0;j<dim[i];++j) {
         ptr[j] = BBt[row[i]+j] + row[i];
       }

@@ -233,7 +233,7 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
   fprintf(outfile,
       "\nInternal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad\n");
   fprintf(outfile,
-      "       Value        Force      Displacement  New Value\n");
+      "       Value         Force        Displacement  New Value\n");
   for (i=0;i<symm.get_num();++i)
     //fprintf(outfile,"%2d %20.15lf %20.15lf %20.15lf %20.15lf\n",
     fprintf(outfile,"%2d %13.8lf %13.8lf %13.8lf %13.8lf\n",
