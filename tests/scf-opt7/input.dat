@@ -4,11 +4,11 @@ psi: (
   reference = rhf
   jobtype = opt
   dertype = first
-  basis = dz
+  basis = "DZ"
   geometry = (
-    ( H -0.6   0.6  0.0 )
-    ( H -0.6  -0.6  0.0 )
-    ( C  0.0   0.0  0.0 )
-    ( O  1.2  0.0  0.0 )
-    )
+    H -0.6   0.6  0.0
+    H -0.6  -0.6  0.0
+    C  0.0   0.0  0.0
+    O  1.2   0.0  0.0
+  )
 )

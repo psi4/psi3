@@ -1,19 +1,17 @@
 psi: (
   label = "DZP SCF optimization of CO2"
-  memory = (20.0 MB)
   wfn = scf
   reference = rhf
   jobtype = opt
   dertype = first
-  basis = dzp
-  units = angstrom
+  basis = "DZP"
   zmat = (
-    ( C )
-    ( O 1 CO$ )
-    ( O 1 CO$ 2 CO2$ )
+    C
+    O 1 CO$
+    O 1 CO$ 2 CO2$
   )
   zvars = (
-    (CO 1.1)
-    (CO2 178.0)
+    CO 1.1
+    CO2 178.0
   )
 )
