@@ -1,7 +1,12 @@
 /* $Log$
- * Revision 1.12  2002/03/25 03:16:51  sherrill
- * Changed name of mxcoef keyword to Mxcoef
+ * Revision 1.13  2002/04/27 18:33:20  crawdad
+ * Working on changes for new libchkpt code.  Current version does no reading
+ * from chkpt yet.
+ * -TDC
  *
+/* Revision 1.12  2002/03/25 03:16:51  sherrill
+/* Changed name of mxcoef keyword to Mxcoef
+/*
 /* Revision 1.11  2002/03/25 03:05:45  crawdad
 /* More additions for new chkpoint file.
 /* -TDC
@@ -124,7 +129,6 @@ void cleanup()
    double ekin,epot,enpot,ovlp,virial,num_elec,s2;
    double *scr_arr, *lagrangian;
    double **scr1, **scr2;
-   double *scrtmp,**scrbtmp;
    double *temp;
    struct symm *s;
    int *pointers;  /* Array to hold pointers to the scf info */
@@ -133,8 +137,6 @@ void cleanup()
    psio_address chkptr;
    int tmp_iopen;
 
-   psio_open(PSIF_CHKPT, PSIO_OPEN_OLD);
- 
    ip_cwk_clear();
    ip_cwk_add(":DEFAULT");
    ip_cwk_add(":SCF");
@@ -202,20 +204,21 @@ void cleanup()
    i10[45] = nmo;
 
    /* psio_write calls for above */
-   psio_write_entry(PSIF_CHKPT, "::Num. HF irreps", (char *) &n_so_typs, sizeof(int));
-   psio_write_entry(PSIF_CHKPT, "::Mxcoef", (char *) &mxcoef, sizeof(int));
-   psio_write_entry(PSIF_CHKPT, "::Num. MO's", (char *) &nmo, sizeof(int));
+   chkpt_wt_nsymhf(n_so_typs);
+   chkpt_wt_mxcoef(mxcoef);
+   chkpt_wt_nmo(nmo);
+
    tmp_iopen = ioff[n_open];
    if(twocon) tmp_iopen = -tmp_iopen;
-   psio_write_entry(PSIF_CHKPT, "::Iopen", (char *) &tmp_iopen, sizeof(int));
+   chkpt_wt_iopen(tmp_iopen);
    
    /* STB(10/28/99) - Flag to tell what reference is being used*/
    i10[46] = refnum;
-   psio_write_entry(PSIF_CHKPT, "::Reference", (char *) &refnum, sizeof(int));
+   chkpt_wt_ref(refnum);
    
    /* TDC(6/19/96) - Set the phase_check flag here */
    i10[50] = phase_check;
-   psio_write_entry(PSIF_CHKPT, "::Phase check", (char *) &phase_check, sizeof(int));
+   chkpt_wt_phase_check(phase_check);
   
    wwritw(itap30,(char *) i10,sizeof(int)*200,(PSI_FPTR) sizeof(int)*100,&junk);
 
@@ -312,15 +315,11 @@ void cleanup()
    wwritw(itap30,(char *) &etot,sizeof(double)*1,junk,&junk);
 
 /* write to new checkpoint file */
-   psio_write_entry(PSIF_CHKPT, "::Total energy", (char *) &etot, 
-     sizeof(double));
-   psio_write_entry(PSIF_CHKPT, "::SCF energy", (char *) &etot, 
-     sizeof(double));
+   chkpt_wt_etot(etot);
+   chkpt_wt_escf(etot);
 
 /* write new vector and eigenvalues to file30 and file49 */
    scr_arr = (double *) init_array(mxcoef);
-   scrtmp = (double *) init_array(mxcoef);
-   scrbtmp = (double **) init_matrix(scf_info[0].num_so,scf_info[0].num_so);
 
    if(uhf){
        for(m=0;m<2;m++){
@@ -336,12 +335,6 @@ void cleanup()
 	   }
 	   wwritw(itap30,(char *) scr_arr,sizeof(double)*mxcoef,locvec,&locvec);
 	   pointers[m+1] = locvec;
-           if (m==0) 
-             psio_write_entry(PSIF_CHKPT, "::MOs alpha", 
-                              (char *) scr_arr, sizeof(double)*mxcoef);
-           else 
-             psio_write_entry(PSIF_CHKPT, "::MOs beta", 
-                              (char *) scr_arr, sizeof(double)*mxcoef);
        }
    }
    else{
@@ -356,8 +349,7 @@ void cleanup()
        }
        
        wwritw(itap30,(char *) scr_arr,sizeof(double)*mxcoef,locvec,&locvec);
-       psio_write_entry(PSIF_CHKPT, "::MOs alpha", 
-                        (char *) scr_arr, sizeof(double)*mxcoef);
+
        pointers[1] = 0;
        pointers[2] = locvec;
    }
@@ -375,12 +367,6 @@ void cleanup()
 	       }
 	   }
 	   wwritw(itap30,(char *) scr_arr,sizeof(double)*nmo,locvec,&locvec);
-           if (m==0) 
-             psio_write_entry(PSIF_CHKPT, "::Orbital energies alpha", 
-                              (char *) scr_arr, sizeof(double)*mxcoef);
-           else 
-             psio_write_entry(PSIF_CHKPT, "::Orbital energies beta", 
-                              (char *) scr_arr, sizeof(double)*mxcoef);
 	   pointers[m+3] = locvec;
        }  
    }
@@ -585,8 +571,6 @@ void cleanup()
    pointers[12]=locvec;
    }
 
-   psio_close(PSIF_CHKPT, 1);
-   
    if(newvec) {
       iend = (int) locvec/sizeof(int)+1;
       wwritw(itap30,(char *) &iend,sizeof(int)*1,(PSI_FPTR) sizeof(int)*100,&locvec);
@@ -666,6 +650,7 @@ void cleanup()
       }
       
       file30_close();
+      chkpt_close();
       if(!direct_scf){
 	psio_close(Pmat.unit, 0);
 	psio_close(PKmat.unit, 0);

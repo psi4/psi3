@@ -6,6 +6,7 @@
 #include <libpsio/psio.h>
 #include <libfile30/file30.h>
 #include <file30_params.h>
+#include <libchkpt/chkpt.h>
 #include <psifiles.h>
 
 #define MIN0(a,b) ((a)<(b)) ? (a) : (b)

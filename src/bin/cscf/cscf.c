@@ -235,7 +235,6 @@ int main(argc,argv)
    itapDSCF = PSIF_DSCF;
    itap92 = PSIF_SO_PKSUPER1;
    itap93 = PSIF_SO_PKSUPER2;
-   file30_init();
 
    /* EFV 10/24/98 Get the integral format: IWL = true */
    use_iwl = 1;
@@ -265,6 +264,9 @@ int main(argc,argv)
    /* STB (6/30/99) - Function added because in order to initialize things
       one must know whether you are doing UHF or restricted */   
    
+   file30_init();
+   chkpt_init();
+
    occ_init();
    
 /* initialize some constants and arrays */
@@ -385,8 +387,9 @@ int main(argc,argv)
          fprintf(outfile,"  remove 'direct_scf = true' from input\n");
          fprintf(stderr,"rohf open shell singlet doesn't work direct\n");
          fprintf(stderr,"remove 'direct_scf = true' from input\n");
-         psio_done();
          file30_close();
+	 chkpt_close();
+         psio_done();
          exit(1);
       }
 
