@@ -105,7 +105,9 @@ the {\tt configure} script:
 \item {\tt --with-cc=compiler} --- Use this option to specify a C
   compiler.  The default search order for compilers is: {\tt gcc},
   {\tt cc}, {\tt ccc}.  (NB: On AIX systems, the search order is {\tt
-  cc\_r}, {\tt cc}, {\tt gcc}, {\tt xlc}.)
+  cc\_r}, {\tt cc}, {\tt gcc}, {\tt xlc}. When compiling in 64-bit
+  mode on AIX, you must manually specify {\tt cc\_r} as the C compiler
+  of choice.)
 \item {\tt --with-cxx=compiler} --- Use this option to specify a C++
   compiler.  The default search order for compilers is: {\tt g++},
   {\tt c++}, {\tt cxx}.  (NB: On AIX systems, the search order is {\tt
@@ -115,6 +117,8 @@ the {\tt configure} script:
   {\tt g77}, {\tt f77}, {\tt fc}, {\tt f2c}.  (NB: On AIX systems, the
   search order is {\tt xlf\_r}, {\tt xlf}, {\tt g77}, {\tt f77}, {\tt
   fc}, {\tt f2c}.)
+\item {\tt --with-ar=compiler} --- Use this option to specify an
+  archiver.  The default is {\tt ar}.
 \item {\tt --with-blas=library} --- Use this option to specify a BLAS
   library.  If your BLAS library has multiple components, enclose the
   file list with single right-quotes, e.g., {\tt
