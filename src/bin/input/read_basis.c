@@ -172,7 +172,7 @@ void read_basis()
       fprintf(outfile,")\n"); 
 
       for(k=first_shell_unique_atom; k<=last_shell_unique_atom; k++)
-	max_angmom = (max_angmom > ang_mom[k]) ? max_angmom : ang_mom[k];
+	max_angmom = (max_angmom > ang_mom[k-1]) ? max_angmom : ang_mom[k-1];
       
       num_shells_per_unique[i] = last_shell_unique_atom - first_shell_unique_atom + 1;
       num_unique_shells += num_shells_per_unique[i];
