@@ -34,7 +34,7 @@ void build_Z(void)
   for(h=0; h < nirreps; h++)
       num_ai += virtpi[h] * occpi[h];
 
-  fprintf(outfile, "num_ai = %d\n", num_ai);
+  /*  fprintf(outfile, "num_ai = %d\n", num_ai); */
 
   /* Malloc space for the transformation matrix */
   T = block_matrix(num_ai,num_ai);
@@ -108,7 +108,7 @@ void build_Z(void)
   free_block(Y);
 
   /* Trying out Matt's Pople code --- way to go, Matt! */
-  pople(A.matrix[0], X[0], rank, 1, 1e-12, outfile, 7);
+  pople(A.matrix[0], X[0], rank, 1, 1e-12, outfile, 0);
 
   dpd_buf4_mat_irrep_close(&A, 0);
   dpd_buf4_close(&A);

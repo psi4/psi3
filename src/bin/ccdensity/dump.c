@@ -44,18 +44,18 @@ void dump(struct iwlbuf *OutBuf)
   rfile(PSIF_MO_OPDM);
   next = 0;
   for(p=0; p < (nmo-nfzv); p++)
-      wwritw(PSIF_MO_OPDM, (char *) (moinfo.opdm[p]), 
-              sizeof(double)*(nmo-nfzv), next, &next);
+    wwritw(PSIF_MO_OPDM, (char *) (moinfo.opdm[p]), 
+	   sizeof(double)*(nmo-nfzv), next, &next);
   rclose(PSIF_MO_OPDM, 3);
 
   if(!moinfo.nfzc && !moinfo.nfzv) {  /* Can't deal with frozen orbitals yet */
-      rfile(PSIF_MO_LAG);
-      next = 0;
-      for(p=0; p < (nmo-nfzv); p++)
-	  wwritw(PSIF_MO_LAG, (char *) (moinfo.I[p]), 
-		 sizeof(double)*(nmo), next, &next);
-      rclose(PSIF_MO_LAG, 3);
-    }
+    rfile(PSIF_MO_LAG);
+    next = 0;
+    for(p=0; p < (nmo-nfzv); p++)
+      wwritw(PSIF_MO_LAG, (char *) (moinfo.I[p]), 
+	     sizeof(double)*(nmo), next, &next);
+    rclose(PSIF_MO_LAG, 3);
+  }
 
 
   dpd_buf4_init(&G, CC_GAMMA, 0, 0, 0, 0, 0, 0, "GIjKl");
@@ -71,24 +71,24 @@ void dump(struct iwlbuf *OutBuf)
   dpd_buf4_init(&G, CC_TMP0, 0, 0, 10, 0, 10, 0, "G(IK,JA)");
   
   for(h=0; h < nirreps; h++) {
-  dpd_buf4_mat_irrep_init(&G, h); 0,
-      dpd_buf4_mat_irrep_rd(&G, h);
+    dpd_buf4_mat_irrep_init(&G, h);
+    dpd_buf4_mat_irrep_rd(&G, h);
 
-      for(row=0; row < G.params->rowtot[h]; row++) {
-	  p = G.params->roworb[h][row][0];
-	  q = G.params->roworb[h][row][1];
-	  for(col=0; col < G.params->coltot[h]; col++) {
-	      r = G.params->colorb[h][col][0];
-	      s = G.params->colorb[h][col][1];
+    for(row=0; row < G.params->rowtot[h]; row++) {
+      p = G.params->roworb[h][row][0];
+      q = G.params->roworb[h][row][1];
+      for(col=0; col < G.params->coltot[h]; col++) {
+	r = G.params->colorb[h][col][0];
+	s = G.params->colorb[h][col][1];
 
-	      if((qt_occ[q] == qt_vir[s]) && (p == r))
-		  G.matrix[h][row][col] *= 2;
-	    }
-	}
-
-      dpd_buf4_mat_irrep_wrt(&G, h);
-      dpd_buf4_mat_irrep_close(&G, h);
+	if((qt_occ[q] == qt_vir[s]) && (p == r))
+	  G.matrix[h][row][col] *= 2;
+      }
     }
+
+    dpd_buf4_mat_irrep_wrt(&G, h);
+    dpd_buf4_mat_irrep_close(&G, h);
+  }
 
   dpd_buf4_dump(&G, OutBuf, qt_occ, qt_occ, qt_occ, qt_vir, 0, 0);
   dpd_buf4_close(&G);
@@ -108,24 +108,24 @@ void dump(struct iwlbuf *OutBuf)
   dpd_buf4_scm(&G, 0.5);
 
   for(h=0; h < nirreps; h++) {
-  dpd_buf4_mat_irrep_init(&G, h); 0,
-      dpd_buf4_mat_irrep_rd(&G, h);
+    dpd_buf4_mat_irrep_init(&G, h);
+    dpd_buf4_mat_irrep_rd(&G, h);
 
-      for(row=0; row < G.params->rowtot[h]; row++) {
-	  p = G.params->roworb[h][row][0];
-	  q = G.params->roworb[h][row][1];
-	  for(col=0; col < G.params->coltot[h]; col++) {
-	      r = G.params->colorb[h][col][0];
-	      s = G.params->colorb[h][col][1];
+    for(row=0; row < G.params->rowtot[h]; row++) {
+      p = G.params->roworb[h][row][0];
+      q = G.params->roworb[h][row][1];
+      for(col=0; col < G.params->coltot[h]; col++) {
+	r = G.params->colorb[h][col][0];
+	s = G.params->colorb[h][col][1];
 
-	      if((qt_occ[p] == qt_vir[r]) && (qt_occ[q] == qt_vir[s]))
-		  G.matrix[h][row][col] *= 2;
-	    }
-	}
-
-      dpd_buf4_mat_irrep_wrt(&G, h);
-      dpd_buf4_mat_irrep_close(&G, h);
+	if((qt_occ[p] == qt_vir[r]) && (qt_occ[q] == qt_vir[s]))
+	  G.matrix[h][row][col] *= 2;
+      }
     }
+
+    dpd_buf4_mat_irrep_wrt(&G, h);
+    dpd_buf4_mat_irrep_close(&G, h);
+  }
   
   dpd_buf4_dump(&G, OutBuf, qt_occ, qt_occ, qt_vir, qt_vir, 0, 0);
   dpd_buf4_close(&G);
@@ -136,24 +136,24 @@ void dump(struct iwlbuf *OutBuf)
   dpd_buf4_init(&G, CC_TMP0, 0, 5, 10, 5, 10, 0, "G(ca,IB)");
 
   for(h=0; h < nirreps; h++) {
-  dpd_buf4_mat_irrep_init(&G, h); 0,
-      dpd_buf4_mat_irrep_rd(&G, h);
+    dpd_buf4_mat_irrep_init(&G, h);
+    dpd_buf4_mat_irrep_rd(&G, h);
 
-      for(row=0; row < G.params->rowtot[h]; row++) {
-	  p = G.params->roworb[h][row][0];
-	  q = G.params->roworb[h][row][1];
-	  for(col=0; col < G.params->coltot[h]; col++) {
-	      r = G.params->colorb[h][col][0];
-	      s = G.params->colorb[h][col][1];
+    for(row=0; row < G.params->rowtot[h]; row++) {
+      p = G.params->roworb[h][row][0];
+      q = G.params->roworb[h][row][1];
+      for(col=0; col < G.params->coltot[h]; col++) {
+	r = G.params->colorb[h][col][0];
+	s = G.params->colorb[h][col][1];
 
-	      if((qt_vir[p] == qt_occ[r]) && (q == s))
-		  G.matrix[h][row][col] *= 2;
-	    }
-	}
-
-      dpd_buf4_mat_irrep_wrt(&G, h);
-      dpd_buf4_mat_irrep_close(&G, h);
+	if((qt_vir[p] == qt_occ[r]) && (q == s))
+	  G.matrix[h][row][col] *= 2;
+      }
     }
+
+    dpd_buf4_mat_irrep_wrt(&G, h);
+    dpd_buf4_mat_irrep_close(&G, h);
+  }
 
   dpd_buf4_dump(&G, OutBuf, qt_vir, qt_vir, qt_occ, qt_vir, 0, 0);
   dpd_buf4_close(&G);

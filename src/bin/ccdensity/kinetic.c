@@ -93,6 +93,11 @@ void kinetic(void)
 
   /*** Contract the correlated kinetic energy ***/
 
+  /*
+  fprintf(outfile, "\n\tOne-PDM:\n");
+  print_mat(moinfo.opdm, nmo, nmo, outfile);
+  */
+
   tcorr = 0.0;
   for(i=0; i < nmo; i++)
       for(j=0; j < nmo; j++)
