@@ -44,3 +44,10 @@
 #define PSIF_MO_R12         79
 #define PSIF_MO_R12T1       80
 
+/*
+** MO Hessian File (also contains specialized integral and Fock lists.
+** See program STABLE for more info.
+** -TDC, 7/00
+*/
+#define PSIF_MO_HESS        81
+
