@@ -205,10 +205,6 @@ double ET_RHF(void)
 
 		  W0[Gab] = dpd_block_matrix(Fints.params->coltot[Gab],virtpi[Gc]);
 		  W1[Gab] = dpd_block_matrix(Fints.params->coltot[Gab],virtpi[Gc]);
-		  V[Gab] = dpd_block_matrix(Fints.params->coltot[Gab],virtpi[Gc]);
-		  X[Gab] = dpd_block_matrix(Fints.params->coltot[Gab],virtpi[Gc]);
-		  Y[Gab] = dpd_block_matrix(Fints.params->coltot[Gab],virtpi[Gc]);
-		  Z[Gab] = dpd_block_matrix(Fints.params->coltot[Gab],virtpi[Gc]);
 		}
 		timer_off("malloc");
 
@@ -522,6 +518,15 @@ double ET_RHF(void)
 
 		timer_off("N7 Terms");
 
+		timer_on("malloc");
+		for(Gab=0; Gab < nirreps; Gab++) {
+		  Gc = Gab ^ Gijk;
+		  dpd_free_block(W1[Gab],Fints.params->coltot[Gab],virtpi[Gc]);
+
+		  V[Gab] = dpd_block_matrix(Fints.params->coltot[Gab],virtpi[Gc]);
+		}
+		timer_off("malloc");
+
 		/* Copy W intermediate into V */
 		for(Gab=0; Gab < nirreps; Gab++) {
 		  Gc = Gab ^ Gijk;
@@ -607,6 +612,16 @@ double ET_RHF(void)
 
 		timer_off("EST Terms");
 
+		timer_on("malloc");
+		for(Gab=0; Gab < nirreps; Gab++) {
+		  Gc = Gab ^ Gijk;
+
+		  X[Gab] = dpd_block_matrix(Fints.params->coltot[Gab],virtpi[Gc]);
+		  Y[Gab] = dpd_block_matrix(Fints.params->coltot[Gab],virtpi[Gc]);
+		  Z[Gab] = dpd_block_matrix(Fints.params->coltot[Gab],virtpi[Gc]);
+		}
+		timer_off("malloc");
+
 		timer_on("XYZ");
 		/* Build X, Y, and Z intermediates */
 
@@ -651,6 +666,14 @@ double ET_RHF(void)
 		  }
 		}
 		timer_off("XYZ");
+
+		timer_on("malloc");
+		for(Gab=0; Gab < nirreps; Gab++) {
+		  Gc = Gab ^ Gijk;
+
+		  dpd_free_block(V[Gab], Fints.params->coltot[Gab], virtpi[Gc]);
+		}
+		timer_off("malloc");
 
 		timer_on("Energy");
 		for(Gab=0; Gab < nirreps; Gab++) {
@@ -716,8 +739,6 @@ double ET_RHF(void)
 		  Gc = Gab ^ Gijk;
 
 		  dpd_free_block(W0[Gab],Fints.params->coltot[Gab],virtpi[Gc]);
-		  dpd_free_block(W1[Gab],Fints.params->coltot[Gab],virtpi[Gc]);
-		  dpd_free_block(V[Gab],Fints.params->coltot[Gab],virtpi[Gc]);
 		  dpd_free_block(X[Gab],Fints.params->coltot[Gab],virtpi[Gc]);
 		  dpd_free_block(Y[Gab],Fints.params->coltot[Gab],virtpi[Gc]);
 		  dpd_free_block(Z[Gab],Fints.params->coltot[Gab],virtpi[Gc]);
