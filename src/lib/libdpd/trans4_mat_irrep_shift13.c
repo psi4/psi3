@@ -22,7 +22,7 @@ int dpd_trans4_mat_irrep_shift13(dpdtrans4 *Trans, int buf_block)
   if(Trans->shift.shift_type) {
       fprintf(stderr, "\n\tShift is already on! %d\n",
 	      Trans->shift.shift_type);
-      exit(Trans->shift.shift_type);
+      exit(PSI_RETURN_FAILURE);
     }
   else Trans->shift.shift_type = 13;
 

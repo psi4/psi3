@@ -9,6 +9,7 @@
 #include <libciomr/libciomr.h>
 #include <libchkpt/chkpt.h>
 #include <libqt/qt.h>
+#include <psifiles.h>
 
 void compute_phi(double *phi, double x, double y, double z);
 void setup_delta(void);
@@ -86,7 +87,7 @@ void setup_delta(void)
   /*
   if(nfzc || nfzv) {
     printf("Frozen orbitals not yet coded!\n");
-    exit(2);
+    exit(PSI_RETURN_FAILURE);
   }
   */
 

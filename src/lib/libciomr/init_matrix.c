@@ -4,9 +4,16 @@
 */ 
 
 /* $Log$
- * Revision 1.5  2002/06/01 18:23:54  sherrill
- * Upgrade doxygen documentation
+ * Revision 1.6  2003/05/22 06:20:06  crawdad
+ * Corrected most of the libraries and modules to use proper PSI_RETURN_XX
+ * values from psifiles.h.  Modified ccdensity, ccenergy, cchbar, cclambda,
+ * ccsort, cctriples, cis, cphf, cusp, localize, stable, libchkpt, libciomr,
+ * libdpd, libipv1, libpsio, libqt, and tocprint.
+ * -TDC
  *
+/* Revision 1.5  2002/06/01 18:23:54  sherrill
+/* Upgrade doxygen documentation
+/*
 /* Revision 1.4  2002/04/19 21:48:06  sherrill
 /* Remove some unused functions and do doxygen markup of libciomr.
 /*
@@ -29,6 +36,7 @@
 
 static char *rcsid = "$Id$";
 
+#include <psifiles.h>
 #include "includes.h"
 
 extern void resource_command(void);
@@ -56,7 +64,7 @@ double ** init_matrix(unsigned long int n, unsigned long int m)
          fprintf(stderr,"init_matrix: trouble allocating memory \n");
          fprintf(stderr,"n = %ld\n",n);
          resource_command();
-         exit(2);
+         exit(PSI_RETURN_FAILURE);
          }
 
     for (i = 0; i < n; i++) {
@@ -65,7 +73,7 @@ double ** init_matrix(unsigned long int n, unsigned long int m)
            fprintf(stderr,"init_matrix: trouble allocating memory \n");
            fprintf(stderr,"i = %ld m = %ld\n",i,m);
            resource_command();
-           exit(3);
+           exit(PSI_RETURN_FAILURE);
            }
         bzero(array[i],m*(unsigned long int)sizeof(double));
         }

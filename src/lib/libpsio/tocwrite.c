@@ -5,6 +5,7 @@
 
 #include <unistd.h>
 #include "psio.h"
+#include <psifiles.h>
 
 /*!
 ** PSIO_TOCWRITE(): Write the table of contents for file number 'unit'.
@@ -28,24 +29,24 @@ int psio_tocwrite(ULI unit)
   errcod = lseek(stream, 0L, SEEK_SET);
   if(errcod == -1) {
      fprintf(stderr, "Error in PSIO_TOCWRITE()!\n");
-     exit(1);
+     exit(PSI_RETURN_FAILURE);
     }
 
   /* Dump the TOC stats to disk */
   errcod = write(stream, (char *) &(this_unit->tocaddress.page), sizeof(ULI));
   if(errcod != sizeof(ULI)) {
      fprintf(stderr, "Error in PSIO_TOCWRITE()!\n");
-     exit(1);
+     exit(PSI_RETURN_FAILURE);
     }
   errcod = write(stream, (char *) &(this_unit->tocaddress.offset), sizeof(ULI));
   if(errcod != sizeof(ULI)) {
      fprintf(stderr, "Error in PSIO_TOCWRITE()!\n");
-     exit(1);
+     exit(PSI_RETURN_FAILURE);
     }
   errcod = write(stream, (char *) &(this_unit->toclen), sizeof(ULI));
   if(errcod != sizeof(ULI)) {
      fprintf(stderr, "Error in PSIO_TOCWRITE()!\n");
-     exit(1);
+     exit(PSI_RETURN_FAILURE);
     }
 
   /* Seek the TOC volume to the correct position */
@@ -54,7 +55,7 @@ int psio_tocwrite(ULI unit)
 	                this_unit->tocaddress.offset,this_unit->numvols);
   if(errcod == -1) {
       fprintf(stderr, "Error in PSIO_TOCWRITE()!\n");
-      exit(1);
+      exit(PSI_RETURN_FAILURE);
     }
 
   this_entry = this_unit->toc;
@@ -65,7 +66,7 @@ int psio_tocwrite(ULI unit)
 		     entry_size);
       if(errcod != entry_size) {
       fprintf(stderr, "Error in PSIO_TOCWRITE()!\n");
-      exit(1);
+      exit(PSI_RETURN_FAILURE);
         }
 
       this_entry = this_entry->next;

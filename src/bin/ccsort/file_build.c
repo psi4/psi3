@@ -4,6 +4,7 @@
 #include <libpsio/psio.h>
 #include <libiwl/iwl.h>
 #include <ccfiles.h>
+#include <psifiles.h>
 #include <libdpd/dpd.h>
 #define EXTERN
 #include "globals.h"
@@ -177,7 +178,7 @@ int file_build(dpdfile4 *File, int inputfile, double tolerance,
               if(row >= File->params->rowtot[h] ||
                  col >= File->params->coltot[h]) {
                     fprintf(outfile, "CCSORT ERROR: DPD File Build Problem!\n");
-                    exit(2);
+                    exit(PSI_RETURN_FAILURE);
                 }
                     
 	      File->matrix[h][row-offset][col] = value;

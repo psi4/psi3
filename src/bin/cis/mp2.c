@@ -1,4 +1,5 @@
 #include <libdpd/dpd.h>
+#include <psifiles.h>
 #define EXTERN
 #include "globals.h"
 
@@ -112,7 +113,7 @@ void mp2(void)
 
     if(!conv) {
       fprintf(outfile, "\n\tMP2 iterative procedure failed.\n");
-      exit(2);
+      exit(PSI_RETURN_FAILURE);
     }
 
     /* spin adapt the final amplitudes */

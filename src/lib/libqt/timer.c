@@ -44,6 +44,8 @@
 #include <sys/param.h>
 #include <sys/times.h>
 
+#include <psifiles.h>
+
 #define TIMER_KEYLEN 12
 #define TIMER_OFF 0
 #define TIMER_ON 1
@@ -187,7 +189,7 @@ void timer_on(char *key)
 
   if((this_timer->status == TIMER_ON) && (this_timer->calls)) {
       fprintf(stderr, "Timer %s is already on.\n", key);
-      exit(1);
+      exit(PSI_RETURN_FAILURE);
     }
 
   this_timer->status = TIMER_ON;
@@ -215,12 +217,12 @@ void timer_off(char *key)
 
   if(this_timer == NULL) {
       fprintf(stderr, "Bad timer key: %s\n", key);
-      exit(1);
+      exit(PSI_RETURN_FAILURE);
     }
 
   if(this_timer->status == TIMER_OFF) {
      fprintf(stderr, "Timer %s is already off.\n", this_timer->key);
-     exit(1);
+     exit(PSI_RETURN_FAILURE);
     }
 
   ontime = this_timer->ontime;

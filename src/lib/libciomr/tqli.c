@@ -4,9 +4,16 @@
 */ 
 
 /* $Log$
- * Revision 1.3  2002/06/01 18:23:54  sherrill
- * Upgrade doxygen documentation
+ * Revision 1.4  2003/05/22 06:20:07  crawdad
+ * Corrected most of the libraries and modules to use proper PSI_RETURN_XX
+ * values from psifiles.h.  Modified ccdensity, ccenergy, cchbar, cclambda,
+ * ccsort, cctriples, cis, cphf, cusp, localize, stable, libchkpt, libciomr,
+ * libdpd, libipv1, libpsio, libqt, and tocprint.
+ * -TDC
  *
+/* Revision 1.3  2002/06/01 18:23:54  sherrill
+/* Upgrade doxygen documentation
+/*
 /* Revision 1.2  2002/04/19 21:48:06  sherrill
 /* Remove some unused functions and do doxygen markup of libciomr.
 /*
@@ -22,6 +29,7 @@
 
 static char *rcsid = "$Id$";
 
+#include <psifiles.h>
 # include "includes.h"
 
 /*!
@@ -66,7 +74,7 @@ L2:
                fprintf (stderr,"tqli not converging\n");
                 continue;
 #if 0
-               exit(30);
+               exit(PSI_RETURN_FAILURE);
 #endif
                }
 

@@ -6,6 +6,7 @@
 #include <libpsio/psio.h>
 #include <libchkpt/chkpt.h>
 #include <libqt/qt.h>
+#include <psifiles.h>
 #include "MOInfo.h"
 #include "Params.h"
 #define EXTERN
@@ -97,7 +98,7 @@ void get_moinfo(void)
     fprintf(outfile, "\tbut frozen core energy is small!\n");
     fprintf(outfile, "\tCalculation will be aborted...\n");
     fflush(outfile);
-    exit(2);
+    exit(PSI_RETURN_FAILURE);
   }
   else if(!moinfo.nfzc && fabs(moinfo.efzc)) {
     fprintf(outfile, "\tCCSORT Warning: No orbitals are frozen,\n");

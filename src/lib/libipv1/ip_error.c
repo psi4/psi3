@@ -1,7 +1,14 @@
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:26  evaleev
- * Initial revision
+ * Revision 1.2  2003/05/22 06:20:07  crawdad
+ * Corrected most of the libraries and modules to use proper PSI_RETURN_XX
+ * values from psifiles.h.  Modified ccdensity, ccenergy, cchbar, cclambda,
+ * ccsort, cctriples, cis, cphf, cusp, localize, stable, libchkpt, libciomr,
+ * libdpd, libipv1, libpsio, libqt, and tocprint.
+ * -TDC
  *
+/* Revision 1.1.1.1  2000/02/04 22:53:26  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.5  1994/08/04 17:33:33  dcrawfrd
 /* Added vars for $(LEX) = lex or flex and $(LEXLIB) = -ll or -fl.  These are
 /* necessary for portability.  This will have to be thoroughly tested for IBM'
@@ -22,6 +29,7 @@
 #include <tmpl.h>
 #include "ip_types.h"
 #include "ip_global.h"
+#include <psifiles.h>
 
 static char rcs_id[] = "$Id$";
 
@@ -67,7 +75,7 @@ char *msg;
   fprintf(ip_out,"\n");
   va_end(args);
   showpos();
-  exit(1);
+  exit(PSI_RETURN_FAILURE);
   }
 
 GLOBAL_VA_FUNCTION VOID

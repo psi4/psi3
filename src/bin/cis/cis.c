@@ -7,6 +7,7 @@
 #include <libchkpt/chkpt.h>
 #include <libqt/qt.h>
 #include <physconst.h>
+#include <psifiles.h>
 #include "globals.h"
 
 void init_io(int argc, char *argv[]);
@@ -322,7 +323,7 @@ int main(int argc, char *argv[])
   cleanup();
 
   exit_io();
-  exit(0);
+  exit(PSI_RETURN_SUCCESS);
 }
 
 void init_io(int argc, char *argv[])

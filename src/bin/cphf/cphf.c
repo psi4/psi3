@@ -163,7 +163,7 @@ int main(int argc, char *argv[])
   timer_done();
 
   exit_io();
-  exit(0);
+  exit(PSI_RETURN_SUCCESS);
 }
 
 void init_io(int argc, char *argv[])

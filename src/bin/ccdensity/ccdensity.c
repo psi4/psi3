@@ -164,7 +164,7 @@ int main(int argc, char *argv[])
 
   cleanup(); 
   exit_io();
-  exit(0);
+  exit(PSI_RETURN_FAILURE);
 }
 
 void init_io(int argc, char *argv[])

@@ -1,8 +1,15 @@
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:17  evaleev
- * Initial revision
+ * Revision 1.2  2003/05/22 06:20:06  crawdad
+ * Corrected most of the libraries and modules to use proper PSI_RETURN_XX
+ * values from psifiles.h.  Modified ccdensity, ccenergy, cchbar, cclambda,
+ * ccsort, cctriples, cis, cphf, cusp, localize, stable, libchkpt, libciomr,
+ * libdpd, libipv1, libpsio, libqt, and tocprint.
+ * -TDC
  *
+/* Revision 1.1.1.1  2000/02/04 22:53:17  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 2.3  1994/06/02 02:30:26  seidl
 /* add test for too many rows
 /*
@@ -18,6 +25,7 @@
 
 static char *rcsid = "$Id$";
 
+#include <psifiles.h>
 #include "includes.h"
 
 double *** block_mat_alloc(n_so_typs,num_ir,num_so)
@@ -29,7 +37,7 @@ double *** block_mat_alloc(n_so_typs,num_ir,num_so)
 
       if ((array = (double ***) malloc(sizeof(double **)*n_so_typs))==NULL) {
           fprintf(stderr,"trouble in block_mat_alloc\n");
-          exit(3);
+          exit(PSI_RETURN_FAILURE);
           }
 
       for (i=0,blk=0; i < num_ir ; i++) {
@@ -70,7 +78,7 @@ double ** block_arr_alloc(n_so_typs,num_ir,num_so)
 
       if ((array = (double **) malloc(sizeof(double *)*n_so_typs))==NULL) {
           fprintf(stderr,"trouble in block_arr_alloc\n");
-          exit(3);
+          exit(PSI_RETURN_FAILURE);
           }
 
       for (i=0; i < num_ir ; i++) {
@@ -78,7 +86,7 @@ double ** block_arr_alloc(n_so_typs,num_ir,num_so)
             int nget = num_so[i]*(num_so[i]+1)/2;
             if (j>=n_so_typs) {
                 fprintf(stderr,"block_arr_alloc: too many rows\n");
-                exit(3);
+                exit(PSI_RETURN_FAILURE);
               }
             array[j] = (double *) init_array(nget);
             j++;

@@ -1,8 +1,15 @@
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:22  evaleev
- * Initial revision
+ * Revision 1.2  2003/05/22 06:20:07  crawdad
+ * Corrected most of the libraries and modules to use proper PSI_RETURN_XX
+ * values from psifiles.h.  Modified ccdensity, ccenergy, cchbar, cclambda,
+ * ccsort, cctriples, cis, cphf, cusp, localize, stable, libchkpt, libciomr,
+ * libdpd, libipv1, libpsio, libqt, and tocprint.
+ * -TDC
  *
+/* Revision 1.1.1.1  2000/02/04 22:53:22  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 2.4  1997/09/12 13:52:57  crawdad
 /* Changing marco name from ULL to PSI_FPTR.
 /*
@@ -21,6 +28,7 @@
 
 static char *rcsid = "$Id$";
 
+#include <psifiles.h>
 #include "iomrparam.h"
 #include "includes.h"
 #include "pointers.h"
@@ -39,7 +47,7 @@ void rgetsa(unit,iadr)
       if (ipos != test) {
          fprintf(stderr,"error encountered in rgetsa for file %d",unit);
          fprintf(stderr,"ipos,test = %lu %lu",ipos,test);
-         exit(unit);
+         exit(PSI_RETURN_FAILURE);
          }
 
       *iadr=irec;

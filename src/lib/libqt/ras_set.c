@@ -8,6 +8,7 @@
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include "qt.h"
+#include <psifiles.h>
 
 /*!
 ** ras_set()
@@ -184,7 +185,7 @@ int ras_set(int nirreps, int nbfso, int freeze_core, int *orbspi,
 	point = used[irrep] + offset[irrep];
 	if (point < 0 || point >= nbfso) {
 	  fprintf(stderr, "(ras_set): Invalid point value\n");
-	  exit(1);
+	  exit(PSI_RETURN_FAILURE);
 	}
 	order[point] = cnt++;
 	used[irrep]++;
@@ -447,7 +448,7 @@ int ras_set2(int nirreps, int nbfso, int delete_fzdocc,
 	point = used[irrep] + offset[irrep];
 	if (point < 0 || point >= nbfso) {
 	  fprintf(stderr, "(ras_set): Invalid point value\n");
-	  exit(1);
+	  exit(PSI_RETURN_FAILURE);
 	}
 	order[point] = cnt++;
 	used[irrep]++;

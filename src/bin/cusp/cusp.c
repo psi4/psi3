@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
   chkpt_close();
 
   /*  local();
-      exit(1); */
+      exit(PSI_RETURN_FAILURE); */
 
   /*** Build the QT-ordered SCF density ***/
   /*
@@ -375,6 +375,7 @@ int main(int argc, char *argv[])
 
   dpd_close(0);
   exit_io();
+  exit(PSI_RETURN_SUCCESS);
 }
 
 void init_io(int argc, char *argv[])

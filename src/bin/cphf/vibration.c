@@ -74,7 +74,7 @@ void vibration(double **hessian, double **dipder)
 
   if(stat = C_DSYEV('v','u',natom*3,&(hessian[0][0]),natom*3,&(km[0]),&(work[0]),natom*3*3)) {
     fprintf(outfile, "vibration(): Error in hessian diagonalization. stat = %d\n", stat);
-    exit(2);
+    exit(PSI_RETURN_FAILURE);
   }
 
   /* Construct the mass-weighted normal coordinates, lx */

@@ -5,6 +5,7 @@
 #include <libpsio/psio.h>
 #include <libdpd/dpd.h>
 #include <libqt/qt.h>
+#include <psifiles.h>
 #define EXTERN
 #include "globals.h"
 
@@ -185,7 +186,7 @@ void diis(int iter)
     errcod = C_DGESV(nvector+1, 1, &(B[0][0]), nvector+1, &(ipiv[0]), &(C[0]), nvector+1);
     if(errcod) {
       fprintf(outfile, "\nError in DGESV return in diis.\n");
-      exit(2);
+      exit(PSI_RETURN_FAILURE);
     }
 
     /* Build a new amplitude vector from the old ones */

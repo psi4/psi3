@@ -157,7 +157,7 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
 
       if(!Ytrans) { 
 	fprintf(stderr, "Contract444: Problem!  Out-of-core algorithm used, but Ytrans == 0!\n");
-	exit(2);
+	exit(PSI_RETURN_FAILURE);
       }
 
       dpd_buf4_mat_irrep_init_block(X, Hx, rows_per_bucket);

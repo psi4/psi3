@@ -5,6 +5,7 @@
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
 #include <libiwl/iwl.h>
+#include <psifiles.h>
 
 #ifdef USE_DMALLOC
 #include <dmalloc.h>

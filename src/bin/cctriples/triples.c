@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
   if(strcmp(params.wfn, "CCSD") && strcmp(params.wfn, "CCSD_T") &&
      strcmp(params.wfn,"BCCD") && strcmp(params.wfn,"BCCD_T")) {
     fprintf(outfile, "Invalid value of input keyword WFN: %s\n", params.wfn);
-    exit(2);
+    exit(PSI_RETURN_FAILURE);
   }
 
   cachefiles = init_int_array(PSIO_MAXUNIT);
@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
   else if(params.ref == 1) { /** ROHF --- don't use this right now! **/
 
     fprintf(outfile, "\nROHF-CCSD(T) is not yet available...\n");
-    exit(2); 
+    exit(PSI_RETURN_FAILURE); 
 
     ETAAA = ET_AAA();
     fprintf(outfile, "\tAAA (T) energy                = %20.15f\n", ETAAA);

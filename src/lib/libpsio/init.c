@@ -8,6 +8,7 @@
 #include "psio.h"
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
+#include <psifiles.h>
 
 /* Definitions of global structs */
 psio_ud *psio_unit;
@@ -45,7 +46,7 @@ int psio_init(void)
 
   if(psio_unit == NULL) {
     fprintf(stderr, "Error in PSIO_INIT()!\n");
-    exit(1);
+    exit(PSI_RETURN_FAILURE);
   }
 
   for(i=0; i < PSIO_MAXUNIT; i++) {

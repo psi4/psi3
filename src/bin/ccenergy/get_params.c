@@ -19,7 +19,7 @@ void get_params()
      strcmp(params.wfn, "EOM_CCSD") && strcmp(params.wfn, "LEOM_CCSD") &&
      strcmp(params.wfn, "BCCD") && strcmp(params.wfn,"BCCD_T")) {
     fprintf(outfile, "Invalid value of input keyword WFN: %s\n", params.wfn);
-    exit(2);
+    exit(PSI_RETURN_FAILURE);
   }
 
   if(!strcmp(params.wfn,"BCCD") || !strcmp(params.wfn,"BCCD_T")) 
@@ -37,7 +37,7 @@ void get_params()
     else if(!strcmp(junk, "UHF")) ref = 2;
     else { 
       printf("Invalid value of input keyword REFERENCE: %s\n", junk);
-      exit(2); 
+      exit(PSI_RETURN_FAILURE); 
     }
     free(junk);
   }
@@ -46,7 +46,7 @@ void get_params()
   if(params.ref != ref) {
     printf("Value of REFERENCE from input.dat (%1d) and CC_INFO (%1d) do not match!\n", 
         ref, params.ref);
-    exit(2);
+    exit(PSI_RETURN_FAILURE);
   }
 
   params.print = 0;

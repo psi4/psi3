@@ -3,6 +3,7 @@
 #include <libipv1/ip_lib.h>
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
+#include <psifiles.h>
 
 /* Function prototypes */
 void init_io(int argc, char *argv[]);
@@ -28,7 +29,7 @@ int main(int argc, char *argv[])
          }
     }
 
-  if(!unit) { printf("Bad unit number.\n"); exit(1); }
+  if(!unit) { printf("Bad unit number.\n"); exit(PSI_RETURN_FAILURE); }
 
   init_io(argc-1, argv+i);
 
@@ -37,7 +38,7 @@ int main(int argc, char *argv[])
   psio_close(unit,1);
 
   exit_io();
-  exit(0);
+  exit(PSI_RETURN_SUCCESS);
 }
 
 void init_io(int argc, char *argv[])

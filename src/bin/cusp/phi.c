@@ -10,6 +10,7 @@
 #include <libciomr/libciomr.h>
 #include <libchkpt/chkpt.h>
 #include <libint/libint.h>  /* for the maximum angluar momentum, LIBINT_MAX_AM */
+#include <psifiles.h>
 
 #define MAXFACT 100
 
@@ -108,7 +109,7 @@ void compute_phi(double *phi, double x, double y, double z)
 
       if(am > LIBINT_MAX_AM) {
 	  printf("Angular momentum max. exceeded.\n");
-	  exit(2);
+	  exit(PSI_RETURN_FAILURE);
 	}
 
       /* Loop over the primitive Gaussians in this shell */

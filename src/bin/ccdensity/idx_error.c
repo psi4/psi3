@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <psifiles.h>
 
 void idx_error(char *message, int p, int q, int r, int s, int pq, int rs,
 	       int pq_sym, int rs_sym, FILE *outfile)
@@ -11,6 +12,6 @@ void idx_error(char *message, int p, int q, int r, int s, int pq, int rs,
 	  "\t    p      q      r      s  [   pq]  [   rs] pq_symm rs_symm\n");
   fprintf(outfile,"\t%5d  %5d  %5d  %5d  [%5d]  [%5d]   %1d   %1d\n", p,q,r,s,
           pq,rs,pq_sym,rs_sym);
-  exit(1);
+  exit(PSI_RETURN_FAILURE);
 }
 

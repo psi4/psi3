@@ -66,7 +66,7 @@ int dpd_buf4_mat_irrep_rd(dpdbuf4 *Buf, int irrep)
       if(f_perm_pq && !b_perm_pq) {
 	  if(Buf->anti) {
 	      printf("\n\tUnpack pq and antisymmetrize?\n");
-	      exit(2);
+	      exit(PSI_RETURN_FAILURE);
 	    }
 	  method = 21;
 	}
@@ -76,7 +76,7 @@ int dpd_buf4_mat_irrep_rd(dpdbuf4 *Buf, int irrep)
 	}
       else {
 	  printf("\n\tInvalid second-level method!\n");
-	  exit(2);
+	  exit(PSI_RETURN_FAILURE);
 	}
     }
   else if((b_perm_pq == f_perm_pq) && (b_perm_rs != f_perm_rs) &&
@@ -84,7 +84,7 @@ int dpd_buf4_mat_irrep_rd(dpdbuf4 *Buf, int irrep)
       if(f_perm_rs && !b_perm_rs) {
 	  if(Buf->anti) {
 	      printf("\n\tUnpack rs and antisymmetrize?\n");
-	      exit(3);
+	      exit(PSI_RETURN_FAILURE);
 	    }
 	  method = 31;
 	}
@@ -94,7 +94,7 @@ int dpd_buf4_mat_irrep_rd(dpdbuf4 *Buf, int irrep)
 	}
       else {
 	  printf("\n\tInvalid third-level method!\n");
-	  exit(3);
+	  exit(PSI_RETURN_FAILURE);
 	}
     }
   else if((b_perm_pq != f_perm_pq) && (b_perm_rs != f_perm_rs)) {
@@ -102,14 +102,14 @@ int dpd_buf4_mat_irrep_rd(dpdbuf4 *Buf, int irrep)
 	  if(f_perm_rs && !b_perm_rs) {
 	      if(Buf->anti) {
 		  printf("\n\tUnpack pq and rs and antisymmetrize?\n");
-		  exit(4);
+		  exit(PSI_RETURN_FAILURE);
 		}
 	      else method = 41;
 	    }
 	  else if(!f_perm_rs && b_perm_rs) {
 	      if(Buf->anti) {
 		  printf("\n\tUnpack pq and antisymmetrize?\n");
-		  exit(4);
+		  exit(PSI_RETURN_FAILURE);
 		}
 	      else method = 42;
 	    }
@@ -118,7 +118,7 @@ int dpd_buf4_mat_irrep_rd(dpdbuf4 *Buf, int irrep)
 	  if(f_perm_rs && !b_perm_rs) {
 	      if(Buf->anti) {
 		  printf("\n\tUnpack rs and antisymmetrize?\n");
-		  exit(4);
+		  exit(PSI_RETURN_FAILURE);
 		}
 	      else method = 43;
 	    }
@@ -129,12 +129,12 @@ int dpd_buf4_mat_irrep_rd(dpdbuf4 *Buf, int irrep)
 	}
       else {
 	  printf("\n\tInvalid fourth-level method!\n");
-	  exit(4);
+	  exit(PSI_RETURN_FAILURE);
 	}
     }
   else {
       printf("\n\tInvalid method in dpd_buf_mat_irrep_rd!\n");
-      exit(5);
+      exit(PSI_RETURN_FAILURE);
     }
 
 
@@ -527,12 +527,12 @@ int dpd_buf4_mat_irrep_rd(dpdbuf4 *Buf, int irrep)
       break;
   case 42: /* Pack pq; unpack rs */
       printf("\n\tHaven't programmed method 42 yet!\n");
-      exit(42);
+      exit(PSI_RETURN_FAILURE);
 
       break;
   case 43: /* Unpack pq; pack rs */
       printf("\n\tHaven't programmed method 43 yet!\n");
-      exit(43);
+      exit(PSI_RETURN_FAILURE);
 
       break;
   case 44: /* Pack pq; pack rs; antisymmetrize */
@@ -607,7 +607,7 @@ int dpd_buf4_mat_irrep_rd(dpdbuf4 *Buf, int irrep)
 
 	      if(filers < 0) {
 		  printf("\n\tNegative colidx in method 44?\n");
-		  exit(44);
+		  exit(PSI_RETURN_FAILURE);
 		}
 
 	      value = Buf->file.matrix[irrep][filerow][filers];
@@ -627,7 +627,7 @@ int dpd_buf4_mat_irrep_rd(dpdbuf4 *Buf, int irrep)
       break;
   default:  /* Error trapping */
       printf("\n\tInvalid switch case in dpd_buf_mat_irrep_rd!\n");
-      exit(6);
+      exit(PSI_RETURN_FAILURE);
       break;
     }
 

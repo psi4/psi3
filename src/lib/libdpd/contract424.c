@@ -54,7 +54,7 @@ int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
   dpd_file2_mat_rd(Y);
   if(sum_Y == 0) { Ytrans = 0; numlinks = Y->params->rowtot; symlink=0; }
   else if(sum_Y == 1) { Ytrans = 1; numlinks = Y->params->coltot; symlink=GY; }
-  else { fprintf(stderr, "Junk Y index %d\n", sum_Y); exit(sum_Y); }
+  else { fprintf(stderr, "Junk Y index %d\n", sum_Y); exit(PSI_RETURN_FAILURE); }
 
   if((sum_X == 1) || (sum_X == 2)) dpd_trans4_init(&Xt, X);
 

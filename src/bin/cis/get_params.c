@@ -4,6 +4,7 @@
 #include <math.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
+#include <psifiles.h>
 #define EXTERN
 #include "globals.h"
 
@@ -17,7 +18,7 @@ void get_params()
   if(strcmp(params.wfn, "CCSD") && strcmp(params.wfn, "CCSD_T") &&
      strcmp(params.wfn, "EOM_CCSD") && strcmp(params.wfn, "CIS")) {
     fprintf(outfile, "Invalid value of input keyword WFN: %s\n", params.wfn);
-    exit(2);
+    exit(PSI_RETURN_FAILURE);
   }
 
   errcod = ip_string("REFERENCE", &(junk),0);
@@ -31,7 +32,7 @@ void get_params()
     else if(!strcmp(junk, "UHF")) ref = 2;
     else { 
       printf("Invalid value of input keyword REFERENCE: %s\n", junk);
-      exit(2); 
+      exit(PSI_RETURN_FAILURE); 
     }
     free(junk);
   }
@@ -40,7 +41,7 @@ void get_params()
   if(params.ref != ref) {
     printf("Value of REFERENCE from input.dat (%1d) and CC_INFO (%1d) do not match!\n", 
 	   ref, params.ref);
-    exit(2);
+    exit(PSI_RETURN_FAILURE);
   }
 
   local.amp_print_cutoff = 0.60;
@@ -60,12 +61,12 @@ void get_params()
     ip_count("RPI", &i, 0);
     if (i != moinfo.nirreps) {
       fprintf(outfile,"Dim. of rpi vector must be %d\n", moinfo.nirreps) ;
-      exit(0);
+      exit(PSI_RETURN_FAILURE);
     }
     for (i=0;i<moinfo.nirreps;++i)
       errcod = ip_data("RPI","%d",&(params.rpi[i]),1,i);
   }
-  else { fprintf(outfile,"Must have rpi vector in input.\n"); exit(0); } 
+  else { fprintf(outfile,"Must have rpi vector in input.\n"); exit(PSI_RETURN_FAILURE); } 
 
   /* Test RPI vector for correct dimensions */
   for(h=0; h < moinfo.nirreps; h++) {
@@ -86,7 +87,7 @@ void get_params()
     errcod = ip_string("DIAG_METHOD", &(params.diag_method), 0);
     if(strcmp(params.diag_method,"DAVIDSON") && strcmp(params.diag_method,"FULL")) {
       fprintf(outfile, "Invalid diagonalization method requested: %s\n", params.diag_method);
-      exit(2);
+      exit(PSI_RETURN_FAILURE);
     }
   }
   else {
@@ -103,7 +104,7 @@ void get_params()
     errcod = ip_string("LOCAL_METHOD", &(local.method), 0);
     if(strcmp(local.method,"AOBASIS") && strcmp(local.method,"WERNER")) {
       fprintf(outfile, "Invalid local correlation method: %s\n", local.method);
-      exit(2);
+      exit(PSI_RETURN_FAILURE);
     }
   }
   else if(params.local) {
@@ -115,7 +116,7 @@ void get_params()
     errcod = ip_string("LOCAL_WEAKP", &(local.weakp), 0);
     if(strcmp(local.weakp,"MP2") && strcmp(local.weakp,"NEGLECT") && strcmp(local.weakp,"NONE")) {
       fprintf(outfile, "Invalid method for treating local pairs: %s\n", local.weakp);
-      exit(2);
+      exit(PSI_RETURN_FAILURE);
     }
   }
   else if(params.local) {

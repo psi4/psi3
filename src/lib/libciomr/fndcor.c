@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <libipv1/ip_lib.h>
+#include <psifiles.h>
 
 #define DEF_MAXCRR 32000000  /* default maxcor in doubles: used only if
                               * it can't be read in */
@@ -103,7 +104,7 @@ static void fndcor_abort(FILE *infile, FILE *outfile)
    ip_done();
    fclose(infile);
    fclose(outfile);
-   exit(0);
+   exit(PSI_RETURN_FAILURE);
 }
  
 

@@ -112,7 +112,7 @@ int dpd_contract442(dpdbuf4 *X, dpdbuf4 *Y, dpdfile2 *Z, int target_X,
     }
     else {
       fprintf(stderr, "Junk X index %d in dpd_contract442\n", target_X);
-      exit(target_X);
+      exit(PSI_RETURN_FAILURE);
     }
 
     /* read in appropriate block of Y buffer */
@@ -177,7 +177,7 @@ int dpd_contract442(dpdbuf4 *X, dpdbuf4 *Y, dpdfile2 *Z, int target_X,
     }
     else {
       fprintf(stderr, "Junk Y index %d in contract442\n", target_Y);
-      exit(target_Y);
+      exit(PSI_RETURN_FAILURE);
     }
 
     if(rking)

@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include "chkpt.h"
 #include <libpsio/psio.h>
+#include <psifiles.h>
 
 char *chkpt_build_keyword(char *key)
 {
@@ -18,7 +19,7 @@ char *chkpt_build_keyword(char *key)
   if(keylen > PSIO_KEYLEN) {
     printf("LIBCHKPT: requested key exceeds allowed LIBPSIO length: :%s:%s\n", 
 	   chkpt_prefix, key);
-    exit(2);
+    exit(PSI_RETURN_FAILURE);
   }
 
   keyword = (char *) malloc((keylen+1)*sizeof(char));

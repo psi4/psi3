@@ -32,13 +32,13 @@ int dpd_contract222(dpdfile2 *X, dpdfile2 *Y, dpdfile2 *Z, int target_X,
   else if(target_X == 1) { Xtrans = 1; numlinks = X->params->rowtot; symlink = 0; }
   else {
     fprintf(stderr, "Junk X index %d in contract222\n", target_X);
-    exit(target_X);
+    exit(PSI_RETURN_FAILURE);
   }
   if(target_Y == 0) Ytrans = 1;
   else if(target_Y == 1) Ytrans = 0;
   else {
     fprintf(stderr, "Junk Y index %d in contract222\n", target_Y);
-    exit(target_Y);
+    exit(PSI_RETURN_FAILURE);
   }
 
 #ifdef DPD_DEBUG

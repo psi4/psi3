@@ -8,6 +8,7 @@
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
 #include <libdpd/dpd.h>
+#include <psifiles.h>
 #include "globals.h"
 
 /* Function prototypes */
@@ -118,7 +119,7 @@ int main(int argc, char *argv[])
     dpd_close(0);
     cleanup();
     exit_io();
-    exit(1);
+    exit(PSI_RETURN_FAILURE);
   }
   if (params.ground) overlap();
   if (!params.ground) Lnorm();
@@ -135,7 +136,7 @@ int main(int argc, char *argv[])
 
   cleanup(); 
   exit_io();
-  exit(0);
+  exit(PSI_RETURN_SUCCESS);
 }
 
 /* parse command line arguments */

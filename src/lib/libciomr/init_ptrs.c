@@ -1,12 +1,19 @@
 
 /* $Log$
- * Revision 1.3  2002/06/24 01:02:26  crawdad
- * Various changes.  (1) Added new function to libdpd: buf4_sort_axpy(), which
- * will perform a sort and axpy at the same time.  Convenient for many
- * things.  (2) Added a new sort to all buf4_sort* functions.  (3) Some
- * documentation changes.
+ * Revision 1.4  2003/05/22 06:20:06  crawdad
+ * Corrected most of the libraries and modules to use proper PSI_RETURN_XX
+ * values from psifiles.h.  Modified ccdensity, ccenergy, cchbar, cclambda,
+ * ccsort, cctriples, cis, cphf, cusp, localize, stable, libchkpt, libciomr,
+ * libdpd, libipv1, libpsio, libqt, and tocprint.
  * -TDC
  *
+/* Revision 1.3  2002/06/24 01:02:26  crawdad
+/* Various changes.  (1) Added new function to libdpd: buf4_sort_axpy(), which
+/* will perform a sort and axpy at the same time.  Convenient for many
+/* things.  (2) Added a new sort to all buf4_sort* functions.  (3) Some
+/* documentation changes.
+/* -TDC
+/*
 /* Revision 1.2  2001/08/28 18:42:44  crawdad
 /* Minor changes associated with memory-leak tracking.
 /* -TDC
@@ -48,6 +55,7 @@
 
 static char *rcsid = "$Id$";
 
+#include <psifiles.h>
 #include "iomrparam.h"
 #include "includes.h"
 #include "pointers.h"
@@ -62,7 +70,7 @@ void init_ptrs(void)
 
   if (ptr.wptr == NULL) {
     fprintf(stderr,"trouble allocating memory for pointers!\n");
-    exit(1);
+    exit(PSI_RETURN_FAILURE);
   }
 }
 

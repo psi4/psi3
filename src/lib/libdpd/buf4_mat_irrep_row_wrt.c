@@ -29,7 +29,7 @@ int dpd_buf4_mat_irrep_row_wrt(dpdbuf4 *Buf, int irrep, int pq)
   if(Buf->anti) {
       fprintf(stderr, "\n\tCannot write antisymmetrized buffer\n");
       fprintf(stderr,   "\tback to original DPD file!\n");
-      exit(1);
+      exit(PSI_RETURN_FAILURE);
     }
 
   if((b_perm_pq == f_perm_pq) && (b_perm_rs == f_perm_rs) &&
@@ -40,7 +40,7 @@ int dpd_buf4_mat_irrep_row_wrt(dpdbuf4 *Buf, int irrep, int pq)
       else if(!f_perm_pq && b_perm_pq) method = 23;
       else {
 	  fprintf(stderr, "\n\tInvalid second-level method!\n");
-	  exit(2);
+	  exit(PSI_RETURN_FAILURE);
 	}
     }
   else if((b_perm_pq == f_perm_pq) && (b_perm_rs != f_perm_rs) &&
@@ -49,7 +49,7 @@ int dpd_buf4_mat_irrep_row_wrt(dpdbuf4 *Buf, int irrep, int pq)
       else if(!f_perm_rs && b_perm_rs) method = 33;
       else {
 	  fprintf(stderr, "\n\tInvalid third-level method!\n");
-	  exit(3);
+	  exit(PSI_RETURN_FAILURE);
 	}
     }
   else if((b_perm_pq != f_perm_pq) && (b_perm_rs != f_perm_rs)) {
@@ -63,12 +63,12 @@ int dpd_buf4_mat_irrep_row_wrt(dpdbuf4 *Buf, int irrep, int pq)
 	}
       else {
 	  fprintf(stderr, "\n\tInvalid fourth-level method!\n");
-	  exit(4);
+	  exit(PSI_RETURN_FAILURE);
 	}
     }
   else {
       fprintf(stderr, "\n\tInvalid method in dpd_buf_mat_irrep_rd!\n");
-      exit(5);
+      exit(PSI_RETURN_FAILURE);
     }
 
 
@@ -116,7 +116,7 @@ int dpd_buf4_mat_irrep_row_wrt(dpdbuf4 *Buf, int irrep, int pq)
   case 23: /* Unpack pq; no change in rs */
       /* I don't know if I'll ever use this, so I'll avoid it for now */
       fprintf(stderr, "\n\tShould you be using method %d?\n", method);
-      exit(method);
+      exit(PSI_RETURN_FAILURE);
 
       break;
   case 31: /* No change in pq; pack rs */
@@ -147,7 +147,7 @@ int dpd_buf4_mat_irrep_row_wrt(dpdbuf4 *Buf, int irrep, int pq)
   case 33: /* No change in pq; unpack rs */
       /* I'm not sure if I'll ever need this, so I'm removing it for now */
       fprintf(stderr, "\n\tShould you be using method %d?\n", method);
-      exit(method);
+      exit(PSI_RETURN_FAILURE);
 
       break;
   case 41: /* Pack pq and rs */
@@ -182,23 +182,23 @@ int dpd_buf4_mat_irrep_row_wrt(dpdbuf4 *Buf, int irrep, int pq)
       break;
   case 42: /* Pack pq; unpack rs */
       fprintf(stderr, "\n\tHaven't programmed method 42 yet!\n");
-      exit(42);
+      exit(PSI_RETURN_FAILURE);
 
       break;
   case 43: /* Unpack pq; pack rs */
       fprintf(stderr, "\n\tHaven't programmed method 43 yet!\n");
-      exit(43);
+      exit(PSI_RETURN_FAILURE);
 
       break;
   case 45: /* Unpack pq and rs */
       /* I'm not sure if I'll ever need this, so I'm removing it for now */
       fprintf(stderr, "\n\tShould you be using method %d?\n", method);
-      exit(method);
+      exit(PSI_RETURN_FAILURE);
 
       break;
   default:  /* Error trapping */
       fprintf(stderr, "\n\tInvalid switch case in dpd_buf_mat_irrep_rd!\n");
-      exit(6);
+      exit(PSI_RETURN_FAILURE);
       break;
     }
   

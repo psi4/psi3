@@ -92,14 +92,14 @@ void local_init(void)
   nirreps = moinfo.nirreps;
   if(nirreps != 1) {
     fprintf(outfile, "\nError: localization must use C1 symmetry.\n");
-    exit(2);
+    exit(PSI_RETURN_FAILURE);
   }
 
   nso = moinfo.nso;
   nmo = moinfo.nmo; /* should be the same as nso */
   if(nmo != nso) {
     fprintf(outfile, "\nError: NMO != NSO!  %d != %d\n", nmo, nso);
-    exit(2);
+    exit(PSI_RETURN_FAILURE);
   }
 
   nocc = moinfo.occpi[0]; /* active doubly occupied orbitals */
@@ -276,7 +276,7 @@ void local_init(void)
       errcod = C_DGESV(row, 1, &(X[0][0]), nso, &(ipiv[0]), &(Z[0]), nso);
       if(errcod) {
 	fprintf(outfile, "\nError in DGESV return in orbital domain construction.\n");
-	exit(2);
+	exit(PSI_RETURN_FAILURE);
       }
 
       fR[i-nfzc] = 1.0;
@@ -439,7 +439,7 @@ void local_init(void)
   ip_boolean("DOMAIN_PRINT",&(print_test),0);
   if(print_test) {
     fprintf(outfile, "Printing of orbital domains requested...exiting.\n\n");
-    exit(2);
+    exit(PSI_RETURN_FAILURE);
   }
 
   /************* Orbital Domains Complete ***************/
@@ -578,7 +578,7 @@ void local_init(void)
 
   /*
   fprintf(outfile, "Non-redundant space= %d; nvir = %d\n", nso-cnt, nvir);
-  if(nso-cnt != nvir) { fprintf(outfile, "nvir != nso-cnt!\n"); exit(2); }
+  if(nso-cnt != nvir) { fprintf(outfile, "nvir != nso-cnt!\n"); exit(PSI_RETURN_FAILURE); }
   */
 
   Xt = block_matrix(nso,nvir);
@@ -939,7 +939,7 @@ void local_filter_T1(dpdfile2 *T1, int denom)
 
     if(!pairdom_len[ii]) {
       fprintf(outfile, "\n\tlocal_filter_T1: Pair ii = [%d] is zero-length, which makes no sense.\n",ii);
-      exit(2);
+      exit(PSI_RETURN_FAILURE);
     }
 
     T1tilde = init_array(pairdom_len[ii]);

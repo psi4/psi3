@@ -168,7 +168,7 @@ void local(void)
   free_block(X);
   free(scratch);
   
-  exit(1);
+  exit(PSI_RETURN_FAILURE);
   */
 
   /*
@@ -179,7 +179,7 @@ void local(void)
 
   /* Compute nocc --- closed-shells only */
   for(i=0,nocc=0; i < nirreps; i++) {
-    if(openpi[i]) exit(1);
+    if(openpi[i]) exit(PSI_RETURN_FAILURE);
     nocc += clsdpi[i];
   }
 

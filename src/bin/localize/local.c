@@ -53,11 +53,11 @@ int main(int argc, char *argv[])
   /* A couple of error traps */
   if(nirreps != 1) {
     fprintf(outfile, "\n\tError: localization is only valid in C1 symmetry!\n");
-    exit(2);
+    exit(PSI_RETURN_FAILURE);
   }
   if(openpi[0]) {
     fprintf(outfile, "\n\tError: localization available for closed-shells only!\n");
-    exit(2);
+    exit(PSI_RETURN_FAILURE);
   }
 
   /* Frozen orbital info */
@@ -301,7 +301,7 @@ int main(int argc, char *argv[])
   fprintf(outfile, "\n\tLocalization of occupied orbitals complete.\n");
 
   exit_io();
-  exit(0);
+  exit(PSI_RETURN_SUCCESS);
 }
 
 void init_io(int argc, char * argv[])

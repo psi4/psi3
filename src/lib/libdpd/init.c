@@ -221,7 +221,7 @@ int dpd_init(int dpd_num, int nirreps, long int memory, int cachetype,
     }
 
   /* Temporary check until I'm sure I'm doing this right */
-  if(num_pairs != cnt) { printf("Error in dpd_init()!\n"); exit(2); }
+  if(num_pairs != cnt) { printf("Error in dpd_init()!\n"); exit(PSI_RETURN_FAILURE); }
 
   /* Build the row/column index lookup arrays */
   pairidx = (int ***) malloc(num_pairs * sizeof(int **));
@@ -436,7 +436,7 @@ int dpd_init(int dpd_num, int nirreps, long int memory, int cachetype,
   }
 
   /* Temporary check until I'm sure I'm doing this right */
-  if(num_pairs != cnt) { printf("Error in dpd_init()!\n"); exit(3); }
+  if(num_pairs != cnt) { printf("Error in dpd_init()!\n"); exit(PSI_RETURN_FAILURE); }
 
   /* Now generate the global list of DPD parameters */
   this_dpd->params4 =

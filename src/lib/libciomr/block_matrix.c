@@ -6,6 +6,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include <psifiles.h>
 
 void bzero();
 
@@ -37,13 +38,13 @@ double ** block_matrix(unsigned long int n, unsigned long int m)
     if ((A = (double **) malloc(n * (unsigned long int)sizeof(double *)))==NULL) {
          fprintf(stderr,"block_matrix: trouble allocating memory \n");
          fprintf(stderr,"n = %ld\n",n);
-         exit(1);
+         exit(PSI_RETURN_FAILURE);
          }
 
     if ((B = (double *) malloc(m*n * (unsigned long int)sizeof(double)))==NULL) {
          fprintf(stderr,"block_matrix: trouble allocating memory \n");
          fprintf(stderr,"m = %ld\n",m);
-         exit(1);
+         exit(PSI_RETURN_FAILURE);
          }
 
     bzero(B, m*n*(unsigned long int)sizeof(double));

@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "psio.h"
+#include <psifiles.h>
 
 /*!
 ** \ingroup (PSIO)
@@ -95,5 +96,5 @@ void psio_error(ULI unit, ULI errval)
 	      PSIO_ERROR_BLKEND);
       break;
     }
-  exit(errval);
+  exit(PSI_RETURN_FAILURE);
 }

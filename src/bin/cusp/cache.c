@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <libciomr/libciomr.h>
 #include <ccfiles.h>
+#include <psifiles.h>
 
 void cache_abcd(int **cachelist);
 void cache_iabc(int **cachelist);
@@ -72,7 +73,7 @@ int **cacheprep(int level, int *cachefiles)
 
       return cachelist;
     }
-  else { printf("Error: invalid cache level!\n"); exit(1); }
+  else { printf("Error: invalid cache level!\n"); exit(PSI_RETURN_FAILURE); }
 }
 
 void cache_abcd(int **cachelist)

@@ -1,8 +1,15 @@
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:20  evaleev
- * Initial revision
+ * Revision 1.2  2003/05/22 06:20:07  crawdad
+ * Corrected most of the libraries and modules to use proper PSI_RETURN_XX
+ * values from psifiles.h.  Modified ccdensity, ccenergy, cchbar, cclambda,
+ * ccsort, cctriples, cis, cphf, cusp, localize, stable, libchkpt, libciomr,
+ * libdpd, libipv1, libpsio, libqt, and tocprint.
+ * -TDC
  *
+/* Revision 1.1.1.1  2000/02/04 22:53:20  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 2.7  1999/11/01 20:10:56  evaleev
 /* Added explicit extern declarations of functions within the library.
 /*
@@ -41,6 +48,7 @@ static char *rcsid = "$Id$";
 
 #define MAIN
 
+#include <psifiles.h>
 #include "iomrparam.h"
 #include "includes.h"
 #include "types.h"
@@ -248,7 +256,7 @@ void
 ioabort()
 {
   fprintf(stderr,"ioabort: current unit = %d\n",current_unit);
-  exit(1);
+  exit(PSI_RETURN_FAILURE);
   }
 
 PSI_FPTR

@@ -21,7 +21,7 @@ int dpd_buf4_mat_irrep_shift31(dpdbuf4 *Buf, int buf_block)
   if(Buf->shift.shift_type) {
     fprintf(stderr, "\n\tShift is already on! %d\n",
         Buf->shift.shift_type);
-    exit(Buf->shift.shift_type);
+    exit(PSI_RETURN_FAILURE);
   }
   else Buf->shift.shift_type = 31;
 

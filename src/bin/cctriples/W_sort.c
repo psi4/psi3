@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <libqt/qt.h>
+#include <psifiles.h>
 
 enum pattern {abc, acb, cab, cba, bca, bac};
 
@@ -18,7 +19,7 @@ void W_sort(double ***Win, double ***Wout, int nirreps, int h, int *coltot, int 
 
   case abc:
     fprintf(stderr, "\nW_sort: abc pattern is invalid.\n");
-    exit(2);
+    exit(PSI_RETURN_FAILURE);
     break;
 
   case acb:

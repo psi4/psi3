@@ -10,6 +10,7 @@
 **
 */
 
+#include <psifiles.h>
 #include "includes.h"
 
 extern int resource_command(void);
@@ -37,7 +38,7 @@ int * init_int_array(int size)
       fprintf(stderr,"init_array:  trouble allocating memory \n");
       fprintf(stderr,"size = %d\n",size);
       resource_command();
-      exit(2);
+      exit(PSI_RETURN_FAILURE);
       }
    bzero(array,sizeof(int)*size);
    return(array);
@@ -72,14 +73,14 @@ int **init_int_matrix(int rows, int cols)
    if ((array = (int **) malloc(sizeof(int *)*rows))==NULL) {
       fprintf(stderr,"init_int_matrix: trouble allocating memory \n") ; 
       fprintf(stderr,"rows = %d\n", rows) ;
-      exit(1) ;
+      exit(PSI_RETURN_FAILURE) ;
       }
 
    for (i=0; i<rows; i++) {
       if ((array[i] = (int *) malloc (sizeof(int)*cols))==NULL) {
          fprintf(stderr,"init_int_matrix: trouble allocating memory \n") ; 
          fprintf(stderr,"row = %d, cols = %d", i, cols) ;
-         exit(1) ;
+         exit(PSI_RETURN_FAILURE) ;
          }
       bzero(array[i], sizeof(int)*cols) ;
       }

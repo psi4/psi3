@@ -4,9 +4,16 @@
 */
 
 /* $Log$
- * Revision 1.6  2002/07/09 15:48:15  sherrill
- * Make it clear rsp is for symmetric matrices
+ * Revision 1.7  2003/05/22 06:20:07  crawdad
+ * Corrected most of the libraries and modules to use proper PSI_RETURN_XX
+ * values from psifiles.h.  Modified ccdensity, ccenergy, cchbar, cclambda,
+ * ccsort, cctriples, cis, cphf, cusp, localize, stable, libchkpt, libciomr,
+ * libdpd, libipv1, libpsio, libqt, and tocprint.
+ * -TDC
  *
+/* Revision 1.6  2002/07/09 15:48:15  sherrill
+/* Make it clear rsp is for symmetric matrices
+/*
 /* Revision 1.5  2002/06/01 18:23:54  sherrill
 /* Upgrade doxygen documentation
 /*
@@ -37,6 +44,7 @@
 
 static char *rcsid = "$Id$";
 
+#include <psifiles.h>
 #include "includes.h"
 
 extern void tred2(int, double **, double *, double *, int);
@@ -95,14 +103,14 @@ void rsp(int nm, int n,int nv,double *array, double *e_vals, int matz,
       if (n > nm) {
          ierr = 10*n;
          fprintf(stderr,"n = %d is greater than nm = %d in rsp\n",n,nm);
-         exit(ierr);
+         exit(PSI_RETURN_FAILURE);
          }
 
       if (nv < (n*(n+1)/2)) {
          int num = n*(n+1)/2;
          ierr = 20*n;
          fprintf(stderr,"nv = %d is less than n*(n+1)/2 = %d in rsp\n",nv,num);
-         exit(ierr);
+         exit(PSI_RETURN_FAILURE);
          }
 
       for (i=0,ij=0; i < n; i++) {

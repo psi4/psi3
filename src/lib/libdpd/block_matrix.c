@@ -75,7 +75,7 @@ double **dpd_block_matrix(int n, int m)
   if((A = (double **) malloc(n * sizeof(double *)))==NULL) {
     fprintf(stderr,"dpd_block_matrix: trouble allocating memory \n");
     fprintf(stderr,"n = %d  m = %d\n",n, m);
-    exit(1);
+    exit(PSI_RETURN_FAILURE);
   }
 
   /* Allocate the main block here */

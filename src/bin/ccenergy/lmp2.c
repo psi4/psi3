@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <libdpd/dpd.h>
+#include <psifiles.h>
 #define EXTERN
 #include "globals.h"
 
@@ -165,7 +166,7 @@ void lmp2(void)
 
   if(!conv) {
     fprintf(outfile, "\n\tLMP2 Iterative procedure failed.\n");
-    exit(2);
+    exit(PSI_RETURN_FAILURE);
   }
 
   /* Turn off weak pairs again for the LCCSD */

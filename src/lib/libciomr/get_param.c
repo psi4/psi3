@@ -1,8 +1,15 @@
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:19  evaleev
- * Initial revision
+ * Revision 1.2  2003/05/22 06:20:06  crawdad
+ * Corrected most of the libraries and modules to use proper PSI_RETURN_XX
+ * values from psifiles.h.  Modified ccdensity, ccenergy, cchbar, cclambda,
+ * ccsort, cctriples, cis, cphf, cusp, localize, stable, libchkpt, libciomr,
+ * libdpd, libipv1, libpsio, libqt, and tocprint.
+ * -TDC
  *
+/* Revision 1.1.1.1  2000/02/04 22:53:19  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 2.5  1999/11/01 20:10:55  evaleev
 /* Added explicit extern declarations of functions within the library.
 /*
@@ -28,6 +35,7 @@
 static char *rcsid = "$Id$";
 
 
+#include <psifiles.h>
 #include "iomrparam.h"
 #include "includes.h"
 
@@ -162,7 +170,7 @@ char *seg[MAX_SEGMENT];
   for (tloop=token; *tloop!='\0'; tloop++) {
     if (segn >= MAX_SEGMENT) {
       fprintf(stderr,"token_to_segments: too many segments\n");
-      exit(3);
+      exit(PSI_RETURN_FAILURE);
       }
     else if (*tloop == ':') {
       seg[segn] = (char *) malloc(tloop - sloop + 1);
@@ -224,12 +232,12 @@ char *seg1, *seg2;
   if (recompch) {
     fprintf(stderr,"regex: failed, string = %s\n",seg1);
     fprintf(stderr,"regex: %s\n",recompch);
-    exit(1);
+    exit(PSI_RETURN_FAILURE);
     }
   result = re_exec(seg2);
   if (result == -1) {
     fprintf(stderr,"regex: internal error: %s %s\n",seg1,seg2);
-    exit(1);
+    exit(PSI_RETURN_FAILURE);
     }
   return(result);
 #else
