@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <math.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
@@ -26,7 +27,7 @@ void get_eom_params()
 
   eom_params.cs_per_irrep = (int *) malloc(moinfo.nirreps * sizeof(int));
   for (state_irrep=0; state_irrep<moinfo.nirreps; ++state_irrep) {
-	eom_params.cs_per_irrep[state_irrep^moinfo.sym] = eom_params.states_per_irrep[state_irrep];
+    eom_params.cs_per_irrep[state_irrep^moinfo.sym] = eom_params.states_per_irrep[state_irrep];
   }
 
   /* eom_params.prop_sym holds irrep of state used for properties */
@@ -87,13 +88,11 @@ void get_eom_params()
 
   eom_params.max_iter_SS = 500;
 
-  if(ip_exist("EOM_GUESS",0)) {
-    eom_params.guess = (char *) malloc(6 * sizeof(char));
-    sprintf(eom_params.guess, "%s", "INPUT");
-  }
-  else {
-    eom_params.guess = (char *) malloc(8 * sizeof(char));
-    sprintf(eom_params.guess, "%s", "SINGLES");
+  if(eom_params.guess == NULL) { /* we didn't use the cmdline arg --reuse */
+    if(ip_exist("EOM_GUESS",0))
+      errcod = ip_string("EOM_GUESS", &(eom_params.guess), 0);
+    else
+      eom_params.guess = strdup("SINGLES");
   }
 
   fprintf(outfile, "\n\tCCEOM parameters:\n");

@@ -88,18 +88,38 @@ void diag(void) {
     form_diagonal(C_irr);
 
     if(params.local) {
-      local_guess();
-      if(local.do_singles) diagSS(C_irr);
+      if(!strcmp(eom_params.guess,"DISK")) { /* only do this if we don't already have guesses on disk */
+	fprintf(outfile, "\n\tUsing C1 vectors on disk as initial guesses.\n");
+      }
+      else {
+	local_guess();
+	if(local.do_singles) diagSS(C_irr);
+      }
     }
     else {
       if(!strcmp(eom_params.guess,"SINGLES")) {
-	    /* Diagonalize Hbar-SS to obtain initial CME and Cme guess */
-	    fprintf(outfile,"Obtaining initial guess from singles-singles block of Hbar...");
-	    diagSS(C_irr);
+	/* Diagonalize Hbar-SS to obtain initial CME and Cme guess */
+	fprintf(outfile,"Obtaining initial guess from singles-singles block of Hbar...");
+	diagSS(C_irr);
         if (!eom_params.print_singles) fprintf(outfile,"Done.\n\n");
       }
       else if(!strcmp(eom_params.guess,"INPUT")) {
         read_guess(C_irr);
+      }
+      else if(!strcmp(eom_params.guess,"DISK") && params.ref == 0) {
+	fprintf(outfile, "Using C1 vectors on disk as initial guesses.\n");
+	/* renormalize the initial guesses */
+	for(i=0; i < eom_params.cs_per_irrep[C_irr]; i++) {
+	  sprintf(lbl, "%s %d", "CME", i);
+	  dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
+	  norm = norm_C1_rhf(&CME);
+	  dpd_file2_scm(&CME, 1.0/norm);
+	  dpd_file2_close(&CME);
+	}
+      }
+      else {
+	fprintf(outfile, "Invalid initial guess method.\n");
+	exit(PSI_RETURN_FAILURE);
       }
     }
 
@@ -493,8 +513,8 @@ void diag(void) {
         fprintf(outfile,"Norm of residual vector %d  before precondition %18.13lf\n",k,norm);
 #endif
 
-	    if(params.eom_ref == 0) precondition_RHF(&RIA, &RIjAb, lambda[k]);
-	    else precondition(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb, lambda[k]);
+	if(params.eom_ref == 0) precondition_RHF(&RIA, &RIjAb, lambda[k]);
+	else precondition(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb, lambda[k]);
 
         if (params.eom_ref == 0) {
           dpd_buf4_sort(&RIjAb, EOM_TMP, pqsr, 0, 5, "RIjbA");
@@ -517,15 +537,15 @@ void diag(void) {
 	     (fabs(lambda[k]-lambda_old[k]) > eom_params.eval_tol) ) {
           fprintf(outfile,"%7s\n","N");
 
-	    /*  if(params.eom_ref == 0) precondition_RHF(&RIA, &RIjAb, lambda[k]);
-	        else precondition(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb, lambda[k]); */
+	  /*  if(params.eom_ref == 0) precondition_RHF(&RIA, &RIjAb, lambda[k]);
+	      else precondition(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb, lambda[k]); */
 
-        if(params.eom_ref == 0) {
+	  if(params.eom_ref == 0) {
 
 	    /* if(params.local) {
-	      local_filter_T1(&RIA, 0);
-	      local_filter_T2(&RIjAb, 0);
-	      } */
+	       local_filter_T1(&RIA, 0);
+	       local_filter_T2(&RIjAb, 0);
+	       } */
 
             dpd_buf4_sort(&RIjAb, EOM_TMP, pqsr, 0, 5, "RIjbA");
             dpd_buf4_init(&RIjbA, EOM_TMP, C_irr, 0, 5, 0, 5, 0, "RIjbA");
@@ -683,10 +703,15 @@ void diag(void) {
     fprintf(outfile,"\n");
 
     /* remove all temporary files */
-  free(lambda_old);
-  free(converged);
-    for(i=CC_TMP; i<CC_RAMPS; i++) psio_close(i,0);
-    for(i=CC_TMP; i<CC_RAMPS; i++) psio_open(i,0);
+    free(lambda_old);
+    free(converged);
+    /* I don't want to do this for local CC calculations -TDC */
+    /*
+    if(!params.local) {
+      for(i=CC_TMP; i<CC_RAMPS; i++) psio_close(i,0);
+      for(i=CC_TMP; i<CC_RAMPS; i++) psio_open(i,0);
+    }
+      */
   }
 
   if (params.eom_ref == 0) rzero_rhf(eom_params.prop_sym^moinfo.sym);
