@@ -186,7 +186,7 @@ int main(int argc, char *argv[])
     if(params.print & 2) status("T2 amplitudes", outfile);
     timer_off("T2 Build");
 
-    if(!strcmp(params.wfn,"CC3")) {
+    if( (!strcmp(params.wfn,"CC3")) || (!strcmp(params.wfn,"EOM_CC3"))) {
 
       /* step1: build cc3 intermediates, Wabei, Wmnie, Wmbij, Wamef */
       cc3_Wmnij();
@@ -247,7 +247,7 @@ int main(int argc, char *argv[])
     fprintf(outfile, "\tTotal MP2 energy           = %20.15f\n", 
 	    moinfo.eref + moinfo.emp2);
   }
-  if(!strcmp(params.wfn,"CC3")) {
+  if( (!strcmp(params.wfn,"CC3")) || (!strcmp(params.wfn,"EOM_CC3"))) {
     fprintf(outfile, "\tCC3 correlation energy     = %20.15f\n", moinfo.ecc);
     fprintf(outfile, "\tTotal CC3 energy           = %20.15f\n", 
             moinfo.eref + moinfo.ecc);
@@ -298,7 +298,8 @@ int main(int argc, char *argv[])
     timer_off("spinad Amps");
   }
 
-  if(!strcmp(params.wfn,"CC3") && params.dertype == 3 && params.ref == 0) {
+  if( ((!strcmp(params.wfn,"CC3")) || (!strcmp(params.wfn,"EOM_CC3")))
+  && params.dertype == 3 && params.ref == 0) {
     params.ref = 1;
     /* generate the ROHF versions of the He^T1 intermediates */
     cc3_Wmnij(); 

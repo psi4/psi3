@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
   Wmbij_build();
   if(params.print & 2) status("Wmbij elements", outfile);
 
-  if(!strcmp(params.wfn,"CC3")) {
+  if( (!strcmp(params.wfn,"CC3")) || (!strcmp(params.wfn,"EOM_CC3")) ) {
     /* switch to ROHF to generate all spin cases of He^T1 elements */
     if(params.dertype == 3 && params.ref == 0) {
       params.ref = 1;
