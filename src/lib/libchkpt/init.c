@@ -16,8 +16,10 @@ char chkpt_prefix[CHKPT_PREFIX_LEN];
 **  chkpt_init()  Initializes the checkpoint file for other chkpt_
 **    functions to perform their duties.
 **
-**  arguments: none, but it requires that the input parser be initialized
-**    so that it can open the file.  
+**  arguments: 
+**    int status: boolean indicating if the chkpt file should be
+**                initialized (PSIO_OPEN_NEW) or the old chkpt 
+**                file should be used (PSIO_OPEN_OLD).
 **
 **  returns: zero.  Perhaps this will change some day.
 ** \ingroup (CHKPT)
