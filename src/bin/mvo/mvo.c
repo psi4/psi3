@@ -18,7 +18,7 @@
 #include <libipv1/ip_lib.h>
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
-#include <libfile30/file30.h>
+#include <libchkpt/chkpt.h>
 #include <libqt/qt.h>
 #include <psifiles.h>
 #include <libiwl/iwl.h>
@@ -274,6 +274,7 @@ void get_moinfo(void)
   double **tmpmat, **so2ao;
   double N; /* number of valence electrons */
 
+  /*
   file30_init();
   moinfo.nmo = file30_rd_nmo();
   moinfo.nso = file30_rd_nso();
@@ -286,8 +287,20 @@ void get_moinfo(void)
   moinfo.clsdpi = file30_rd_clsdpi();
   moinfo.openpi = file30_rd_openpi();
   moinfo.scf_vector = file30_rd_scf();
+  */
 
-  
+  chkpt_init();
+  moinfo.nmo = chkpt_rd_nmo();
+  moinfo.nso = chkpt_rd_nso();
+  moinfo.nao = chkpt_rd_nao();
+  moinfo.nirreps = chkpt_rd_nirreps();
+  moinfo.iopen = chkpt_rd_iopen();
+  moinfo.labels = chkpt_rd_irr_labs();
+  moinfo.sopi   = chkpt_rd_sopi();
+  moinfo.orbspi = chkpt_rd_orbspi();
+  moinfo.clsdpi = chkpt_rd_clsdpi();
+  moinfo.openpi = chkpt_rd_openpi();
+
   moinfo.fzc_op_size = (moinfo.nmo * (moinfo.nmo + 1)) / 2;
 
   moinfo.sosym = init_int_array(moinfo.nso);
@@ -360,7 +373,7 @@ void get_moinfo(void)
     }
 
   if (params.print_lvl) {
-      fprintf(outfile,"\n\tFile30 Parameters:\n");
+      fprintf(outfile,"\n\tCheckpoint file parameters:\n");
       fprintf(outfile,"\t------------------\n");
       fprintf(outfile,"\tNumber of irreps = %d\n",moinfo.nirreps);
       fprintf(outfile,"\tNumber of SOs    = %d\n",moinfo.nso);
@@ -465,7 +478,8 @@ void get_moinfo(void)
       moinfo.active[h] = moinfo.orbspi[h]-moinfo.frdocc[h]-moinfo.fruocc[h];
     }
 
-  file30_close();
+  /* file30_close(); */
+  chkpt_close();
 
   /* in case IVO's have been asked for */
   if (params.ivo) {
@@ -555,13 +569,21 @@ void get_mvos(void)
   int ndv, ndoccv, *ndvph, k, colv;
   int errcod;
   double *FCvv, *FC, **evecs, *evals, **Cvv, **Cvvp, **Cnew;
-  double *eig_unsrt;
+  double *eig_unsrt, **scf_vector;
 
   FC = moinfo.fzc_operator;
   nirreps = moinfo.nirreps;
+
+  /*
   file30_init();
   eig_unsrt = file30_rd_evals();
   file30_close();
+  */
+
+  chkpt_init();
+  scf_vector = chkpt_rd_scf();
+  eig_unsrt = chkpt_rd_evals();
+  chkpt_close();
 
   /* read in which of the doccs are to be treated as virtuals */
   ndv = 0;
@@ -606,7 +628,6 @@ void get_mvos(void)
 
     if (nvir < 1) break;
 
-  /*    if (params.print_lvl > 3) {  */
     if (params.print_lvl) {
       fprintf(outfile, "Working on irrep %d (%d vir, %d occ)\n", 
               h, nvir, nocc);
@@ -673,12 +694,12 @@ void get_mvos(void)
       colv = 0;
       for (j=moinfo.first_so[h],k=0; j < (moinfo.first_so[h]+nocc+ndoccv); j++,k++) {
         if (ndvph[k] != 0) {
-           Cvv[row][colv] = moinfo.scf_vector[i][j];
+           Cvv[row][colv] = scf_vector[i][j];
            colv += 1;
         }
       }
       for (j=moinfo.first_so[h]+nocc+ndoccv,col=ndoccv; j<=moinfo.last_so[h]; j++,col++) {
-        Cvv[row][col] = moinfo.scf_vector[i][j];
+        Cvv[row][col] = scf_vector[i][j];
       }
     } 
 
@@ -704,7 +725,7 @@ void get_mvos(void)
           Cnew[row][col] = Cvvp[row][(ndvph[col]-1)];
         }
         else {
-          Cnew[row][col] = moinfo.scf_vector[i][j];
+          Cnew[row][col] = scf_vector[i][j];
         }
       }
     }
@@ -721,9 +742,15 @@ void get_mvos(void)
       print_mat(Cnew, moinfo.sopi[h], moinfo.orbspi[h], outfile);
     }
 
+    /*
     file30_init();
     file30_wt_blk_scf(Cnew, h);
     file30_close();
+    */
+
+    chkpt_init();
+    chkpt_wt_scf_irrep(Cnew, h);
+    chkpt_close();
 
     offset += moinfo.orbspi[h];
     free(FCvv);
@@ -731,5 +758,7 @@ void get_mvos(void)
     free_block(evecs);
   }
 
+  free(eig_unsrt);
+  free_block(scf_vector);
 }
 
