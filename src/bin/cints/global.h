@@ -47,6 +47,9 @@ EXTERN Fm_Eval_t Taylor_Fm_Eval;
 /*--- Information about MOs ---*/
 EXTERN MOInfo_t MOInfo;
 
+/*--- Information about direct-CC calcs ---*/
+EXTERN CCInfo_t CCInfo;
+
 /*--- DFT information ---*/
 EXTERN DFT_options_t DFT_options;
 

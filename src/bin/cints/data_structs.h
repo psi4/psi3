@@ -284,7 +284,10 @@ typedef struct {
 
 
 typedef struct {
-  double **T2_so;
+  double **T2_s;  /* source T2's */
+  double **T2_t;  /* target T2's */
+  int nvirt;  /* no. active virtuals */
+  int nocc;   /* no. active occupieds */
 } CCInfo_t;
 
 /* -------------------------------------------------------
