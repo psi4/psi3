@@ -35,7 +35,7 @@ psi: (
   cchbar     = "cchbar"
   cclambda   = "cclambda"
   ccdensity  = "ccdensity"
-  vbccd      = "vbccd"
+  ooccman    = "ooccman"
 
   % Determinant CI specific programs
   detci    = "detci"
@@ -130,35 +130,35 @@ psi: (
   CCSDUHFFirstDisp  = ERROR
   CCSDTwoConFirstDisp  = ERROR
 
-  % -------------------------------- VBCCD Procedures
-  % Procedures for the VBCCD energy
-  VBCCDRHFEnergy = ($ints $scf $vbccd $done)
-  VBCCDROHFEnergy = ERROR
-  VBCCDUHFEnergy = ERROR
-  VBCCDTwoConEnergy = ERROR
+  % -------------------------------- OOCCD Procedures
+  % Procedures for the OOCCD energy
+  OOCCDRHFEnergy = ($ints $scf $ooccman $done)
+  OOCCDROHFEnergy = ERROR
+  OOCCDUHFEnergy = ERROR
+  OOCCDTwoConEnergy = ERROR
 
-  % Procedures for the VBCCD gradient
-  VBCCDFirst =
-    ($ints $scf $makepk $vbccd $backtransqt $oeprop "bksort" "deriv97")
-  VBCCDRHFFirst = ($VBCCDFirst $done)
-  VBCCDROHFFirst = ERROR
-  VBCCDUHFFirst = ERROR
-  VBCCDTwoConFirst = ERROR
+  % Procedures for the OOCCD gradient
+  OOCCDFirst =
+    ($ints $scf $ooccman $backtransqt $oeprop $deriv)
+  OOCCDRHFFirst = ($OOCCDFirst $done)
+  OOCCDROHFFirst = ERROR
+  OOCCDUHFFirst = ERROR
+  OOCCDTwoConFirst = ERROR
 
-  % Procedures for the optimizing geomtries with VBCCD gradients
-  VBCCDFirstOpt =
-    (repeat $nopt $VBCCDFirst $geomupdate end $done)
-  VBCCDRHFFirstOpt = $VBCCDFirstOpt
-  VBCCDROHFFirstOpt = ERROR
-  VBCCDUHFFirstOpt  = ERROR
-  VBCCDTwoConFirstOpt  = ERROR
+  % Procedures for the optimizing geomtries with OOCCD gradients
+  OOCCDFirstOpt =
+    (repeat $nopt $OOCCDFirst $geomupdate end $done)
+  OOCCDRHFFirstOpt = $OOCCDFirstOpt
+  OOCCDROHFFirstOpt = ERROR
+  OOCCDUHFFirstOpt  = ERROR
+  OOCCDTwoConFirstOpt  = ERROR
 
-  % Procedures for the finite displacements of VBCCD gradients
-  VBCCDFirstDisp  = (repeat $ndisp $ugeom $VBCCDFirst $rgeom end $done)
-  VBCCDRHFFirstDisp  = $VBCCDFirstDisp
-  VBCCDUHFFirstDisp  = ERROR
-  VBCCDROHFFirstDisp  = ERROR
-  VBCCDTwoConFirstDisp  = ERROR
+  % Procedures for the finite displacements of OOCCD gradients
+  OOCCDFirstDisp  = (repeat $ndisp $ugeom $OOCCDFirst $rgeom end $done)
+  OOCCDRHFFirstDisp  = $OOCCDFirstDisp
+  OOCCDUHFFirstDisp  = ERROR
+  OOCCDROHFFirstDisp  = ERROR
+  OOCCDTwoConFirstDisp  = ERROR
 
   % -------------------------------- DETCI Procedures
   % Procedures for the DETCI energy

@@ -144,10 +144,13 @@ CDEF="$CDEF -DMAIN_FUNC=$MAIN_FUNC"
 dnl
 if eval nm -p conftest.o | egrep $ac_egrep_silent foo2_; then
   CDEF="$CDEF -DFCLINK=1"
+  CXXDEF="$CXXDEF -DFCLINK=1"
 elif eval nm -p conftest.o | egrep $ac_egrep_silent foo2; then
   CDEF="$CDEF -DFCLINK=2"
+  CXXDEF="$CXXDEF -DFCLINK=2"
 elif eval nm -p conftest.o | egrep $ac_egrep_silent FOO2; then
   CDEF="$CDEF -DFCLINK=3"
+  CXXDEF="$CXXDEF -DFCLINK=3"
 fi
 rm -f conftest*]
 )dnl
