@@ -28,7 +28,6 @@ class zmat : public internals {
     void write_file30();
     void read_file11();
     void opt_step();   
-    double* compute_s(); 
 };
 
 

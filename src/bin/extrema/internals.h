@@ -13,7 +13,7 @@ class internals : public coord_base {
   public:
     internals() : coord_base() {
 	full_geom = init_matrix(num_entries,3);
-	B = init_matrix(num_coords,3*num_entries);
+        B = (double**) malloc(num_coords*sizeof(double*));
 	G = init_matrix(num_coords,num_coords);
         A = init_matrix(3*num_entries,num_coords);
 	return;

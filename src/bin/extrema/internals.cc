@@ -28,12 +28,11 @@ void internals :: back_transform() {
   fprintf(outfile,"\n\n  Iter    dq (internals)          dx (cartesians)");
   fprintf(outfile,  "\n  ---- ----------------------  ----------------------");  
 
-  while((!converged) && (loop<500) ) {
+  while((!converged) && (loop<bt_loop) ) {
   
       /*compute A*/
-      //print_B();
-      compute_G(); //print_G();
-      compute_A(); //print_A();
+      compute_G(); 
+      compute_A(); 
 
       for(i=0;i<num_coords;++i) {
 	  dq[i] = coords[i] - coord_temp[i];
@@ -60,12 +59,25 @@ void internals :: back_transform() {
 
       compute_B();
     
+      if(print_lvl >= RIDICULOUS_PRINT) {
+        fprintf(outfile,"\n\n  dx:");
+        for(i=0;i<(3*num_entries);++i)
+          fprintf(outfile,"\n   dx[%d] = %lf",i,dx[i]);
+        fprintf(outfile,"\n\n  dq:");
+        for(i=0;i<num_coords;++i)
+          fprintf(outfile,"\n   dq[%d] = %lf - %lf = %lf",i+1,coords[i],coord_temp[i],dq[i]);
+        print_B();
+        print_G();
+        print_A();
+      }
+
       conv=0;
       for(i=0;i<num_coords;++i) {
 	  conv += sqrt((coords[i] - coord_temp[i])*(coords[i] -coord_temp[i]));
       }
+      conv /= num_coords;
       fprintf(outfile,"\n  %3d  %.20lf  %.20lf",loop+1,conv,dx_sum);
-       if((conv<criteria)&&(dx_sum<criteria))
+       if( (conv<BT_CONV) && (dx_sum<BT_CONV) )
 	  converged = 1;
       ++loop;
   }
@@ -177,8 +189,7 @@ double* internals :: B_row_tors(double* c_arr,int atom1, int atom2, int atom3, i
 
   
   /* entries for atom3 same as those for atom2 with permutation of 1 with 4 and 2 with 3,
-     entries for atom4 same as those for atom1 with same permutations,
-     (this may be lazy, but I write and debug less code this way) */
+     entries for atom4 same as those for atom1 with same permutations*/
 
   /* I permute everything but the angles here */
   unit12 = unit_vector(c_arr,atom4, atom3);
@@ -243,7 +254,7 @@ inline double vec_norm(double* cart_arr, int atom1, int atom2 ) {
     }
 
   norm = sqrt(norm);
-  
+
   return norm;
 }
 
@@ -328,14 +339,17 @@ void internals :: grad_trans() {
 
 
 void internals :: optimize_internals(internals *icrd) {
+ 
     (*icrd).grad_test();
     (*icrd).print_internals();
     (*icrd).compute_B();
-    //(*icrd).print_B();
+    if(print_lvl > 1)
+      (*icrd).print_B();
     (*icrd).grad_trans();
     switch(iteration) {
-    case 1: (*icrd).initial_H(); break;
-    default: (*icrd).update_bfgs(); break; }
+        case 1: (*icrd).initial_H(); break;
+	default: (*icrd).update_bfgs(); break; 
+}
     (*icrd).opt_step();
     (*icrd).back_transform();
     (*icrd).print_carts(1.0);

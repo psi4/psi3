@@ -312,9 +312,9 @@ double* coord_base :: compute_s() {
 	    s[i] += -H[i][j] * grads[j];
 
     if(print_lvl>1) {
-	fprintf(outfile,"\n  Unscaled displacement vector:\n");
+	fprintf(outfile,"\n  Initial displacement vector:");
 	for(i=0;i<num_coords;++i) 
-	    fprintf(outfile,"\n  Coordinate %4d: %15.12lf",i,s[i]);
+	    fprintf(outfile,"\n  Coordinate %4d: %15.12lf",i+1,s[i]);
     }
     return s;
 }

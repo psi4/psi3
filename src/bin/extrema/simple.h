@@ -14,6 +14,7 @@ class simple {
     int type, equiv_grp;
     double val;
     int atom, bond, angle, tors;
+    char *label;
   public:
      void set_simple(int ty, double value, int at, int bd, int an, int tr) {
 	 type=ty; val=value; atom=at; bond=bd; angle=an; tors=tr;
@@ -23,6 +24,8 @@ class simple {
     int get_equiv_grp() {return equiv_grp;}
     void set_val(double value) { val = value; return; }
     double get_val() { return val; }
+    void set_label(char *lab) { label = lab; return; }
+    char *get_label() { return label; }
     int get_type() { return type; }
     int get_atom() { return atom; }
     int get_bond() { return bond; }

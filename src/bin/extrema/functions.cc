@@ -97,6 +97,12 @@ double **symm_matrix_invert(double **A, int dim, int print_det, int redundant) {
         fprintf(outfile,"Determinant: %10.6e\n",det);
   }
 
+  if(print_lvl >= RIDICULOUS_PRINT) {
+    fprintf(outfile,"\n  Eigenvalues of diagonalized matrix:");
+    for (i=0;i<dim;++i) 
+	fprintf(outfile,"\n    %lf",A_vals[i]);
+  }
+
   mmult(A_inv,0,A_vects,1,A_temp,0,dim,dim,dim,0);
   mmult(A_vects,0,A_temp,0,A_inv,0,dim,dim,dim,0);
 

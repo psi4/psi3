@@ -27,6 +27,7 @@ void parsing() {
   ip_cwk_clear();
   
   ip_cwk_add(":EXTREMA");
+  ip_cwk_add(":DEFAULT");
   
   if(ip_exist("COORDINATES",0)) {
       errcod = ip_string("COORDINATES", &buffer,0);
@@ -61,6 +62,13 @@ void parsing() {
 	  angle_lim = angle_lim * _pi/180.0;
       }
   }      
+
+  if( (coord_type==2) || (coord_type==3 ) ) {
+      bt_loop = 500;
+      errcod = ip_data("BT_LOOP","%d",&bt_loop,0);
+  }
+
+  fprintf(outfile,"\nPRINT LEVEL: %d",print_lvl);
 
   return;
 }

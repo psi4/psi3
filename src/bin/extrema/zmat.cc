@@ -67,17 +67,23 @@ zmat :: zmat()
   for(i=1;i<num_entries;++i) {
       if(i==1) {
 	  strcpy( labels[p], z_geom[1].bond_label );
+	  simples[p].set_label(z_geom[1].bond_label);
 	  ++p;
       }
       else if( i==2) {
 	  strcpy(labels[p], z_geom[2].bond_label );
+          simples[p].set_label(z_geom[2].bond_label);
 	  strcpy(labels[p+1], z_geom[2].angle_label );
+          simples[p+1].set_label(z_geom[2].angle_label );
 	  p+=2;
       }
       else if (i>2) {
 	  strcpy(labels[p], z_geom[i].bond_label );
+          simples[p].set_label(z_geom[i].bond_label);
 	  strcpy(labels[p+1],z_geom[i].angle_label);
+          simples[p+1].set_label(z_geom[i].angle_label);
 	  strcpy(labels[p+2],z_geom[i].tors_label);
+          simples[p+2].set_label(z_geom[i].tors_label);
 	  p+=3;
       }
   }
@@ -98,7 +104,8 @@ zmat :: zmat()
 	      }
 	  }
 	  if(!is_set) {
-	      simples[i].set_equiv_grp(-1);
+	      simples[i].set_equiv_grp(p);
+              ++p;
 	  }
       }
       else if( labels[i][0] == '\0' )
@@ -217,25 +224,35 @@ void zmat :: cart_to_internal(double* z_array) {
 
 	if(i>2) {
 	    
-		z_array[pos] = norm( carts, i, simples[pos].get_bond()-1);
-		z_array[pos+1] = acos( dot_pdt( unit_vec( carts, simples[pos+1].get_bond()-1, i ), 
-					      unit_vec( carts, simples[pos+1].get_bond()-1, simples[pos+1].get_angle()-1 ) ) );
+	   z_array[pos] = norm( carts, i, simples[pos].get_bond()-1);
+	   z_array[pos+1] = acos( dot_pdt( 
+               unit_vec( carts, simples[pos+1].get_bond()-1, i ), 
+	       unit_vec( carts, simples[pos+1].get_bond()-1, 
+                         simples[pos+1].get_angle()-1 ) ) );
 
-		temp1 = cross_pdt( unit_vec( carts, simples[pos+2].get_angle()-1, simples[pos+2].get_tors()-1 ), 
-				   unit_vec( carts, simples[pos+2].get_angle()-1, simples[pos+2].get_bond()-1 ) );
+	   temp1 = cross_pdt( unit_vec( carts, 
+					simples[pos+2].get_bond()-1, 
+					simples[pos+2].get_angle()-1 ),
+			      unit_vec( carts, 
+					simples[pos+2].get_angle()-1, 
+					simples[pos+2].get_tors()-1 ) );
 		
-		temp2 = cross_pdt( unit_vec( carts, simples[pos+2].get_bond()-1, simples[pos+2].get_angle()-1 ),
-				   unit_vec( carts,simples[pos+2].get_bond()-1,i ) );
-
-		n1 = sqrt(dot_pdt(temp1,temp1));
-		n2 = sqrt(dot_pdt(temp2,temp2));
-
-		for(j=0;j<3;++j) {
-		    temp1[j] /= n1;
-		    temp2[j] /= n2;
-		}
+	   temp2 = cross_pdt( unit_vec( carts,i,simples[pos+2].get_bond()-1), 
+			      unit_vec( carts, simples[pos+2].get_bond()-1, 
+					simples[pos+2].get_angle()-1 ) );
 
 		temp_num = dot_pdt(temp1,temp2);
+
+                temp_num /= sin( acos( dot_pdt(
+		                unit_vec( carts, simples[pos+2].get_angle()-1, 
+                                        simples[pos+2].get_tors()-1 ), 
+			        unit_vec( carts, simples[pos+2].get_angle()-1, 
+					  simples[pos+2].get_bond()-1 ) ) ) )
+		    * sin( acos( dot_pdt(
+                                unit_vec( carts, simples[pos+2].get_bond()-1, 
+                                        simples[pos+2].get_angle()-1 ),
+				unit_vec( carts,simples[pos+2].get_bond()-1,i )
+			) ) );
 
 		if(temp_num>0.999999999999999)
 		    z_array[pos+2] = 0.0;
@@ -246,6 +263,11 @@ void zmat :: cart_to_internal(double* z_array) {
 		pos += 3;
 	}
 		
+    }
+
+    for(i=0;i<num_coords;++i) {
+	if( (simples[i].get_type() == 2) && (simples[i].get_val() < 0.0) ) 
+	    z_array[i] *= -1.0;
     }
 
     return;
@@ -357,8 +379,8 @@ void zmat :: initial_H() {
     
     for(i=0;i<num_coords;++i) {
 	switch( simples[i].get_type() ) {
-	case 0: H[i][i] = 5.0; break;
-	case 1: H[i][i] = 2.0; break;
+	case 0: H[i][i] = 1.0; break;
+	case 1: H[i][i] = 1.0; break;
 	case 2: H[i][i] = 1.0; break;
 	}
     }
@@ -426,45 +448,124 @@ void zmat :: opt_step() {
     int i, j;
     double *s;
 
-    s = zmat::compute_s();
+    s = coord_base::compute_s();
 
+    int is_group;
+    if(print_lvl>1) {
+      fprintf(outfile,"\n\n  User specified equivalent coordinate groups:");
+      for(i=0;i<num_coords;++i){
+        is_group=0;
+        for(j=0;j<num_coords;++j) {
+          if(simples[j].get_equiv_grp()==i)
+            is_group=1;
+        }
+        if(is_group) {
+          fprintf(outfile,"\n    Coordinates in group %d: ",i);
+          for(j=0;j<num_coords;++j) {
+            if(simples[j].get_equiv_grp()==i)
+              fprintf(outfile,"%d ",j+1);
+            }
+          }
+        }
+        fprintf(outfile,"\n");
+    }
+	
+
+    /* set equivalent coordinate values to group average */
+    double eq_sum;
+    int eq_num;
     for(i=0;i<num_coords;++i) {
-	for(j=0;j<i;++j) {
-	    if((simples[i].get_equiv_grp() == simples[j].get_equiv_grp()) 
- 	        && (simples[i].get_equiv_grp() != (-1))) { 
-		s[i] = s[j];
+        eq_sum = 0.0;
+        eq_num = 0;
+	for(j=0;j<num_coords;++j) {
+	    if( i == simples[j].get_equiv_grp() ) { 
+		eq_sum += s[j];
+                ++eq_num;	    
+	    }
+	}
+        eq_sum /= (double) eq_num;
+        for(j=0;j<num_coords;++j) {
+            if( i == simples[j].get_equiv_grp() ) 
+                s[j] = eq_sum;
+        }
+    }
+
+    /* also ensure pos/neg torsion angle pairs match */
+    for(i=5;i<num_coords;i+=3) {
+	for(j=i+3;j<num_coords;j+=3) {
+	    if( (fabs(simples[i].get_val() + simples[j].get_val()))
+		< 1.0e-6) {
+		fprintf(outfile,"\n %d and %d are pos/neg pair",i+1,j+1);  
+		if(simples[i].get_val() < 0.0)
+		    s[i] = -1.0*s[j];
+		if(simples[j].get_val() < 0.0)
+		    s[j] = -1.0*s[i];
 	    }
 	}
     }
+	
+
+    fprintf(outfile,"\n  Displacements after checking equiv.");
+    for(i=0;i<num_coords;++i)
+	fprintf(outfile,"\nDisplacement %d: %lf",i+1,s[i]);
+
+    /* enforce bond and angle limits */
+    fprintf(outfile,"\n  Bond limit:  %lf",bond_lim);
+    fprintf(outfile,"\n  Angle limit: %lf\n",angle_lim);
+
+    for(i=0;i<num_coords;++i) {
+        if(simples[i].get_type()==0) {
+            if(s[i] > bond_lim) {
+                s[i] = bond_lim; }
+            else if (s[i] < (-1.0*bond_lim) ) {
+                s[i] = (-1.0*bond_lim); }
+        }
+        else {
+            if(s[i] > angle_lim) {
+                s[i] = angle_lim; }
+            else if (s[i] < (-1.0*angle_lim) ) {
+                s[i] = (-1.0*angle_lim); }
+        }
+    }
+
 
     for(i=0;i<num_coords;++i)
 	coord_write[i] = coords[i];
     for(i=1;i<num_entries;++i) {
-	if( (i==1) && z_geom[1].bond_opt)
-	    coords[0] += s[0];
+	if(i==1) {
+            if(z_geom[1].bond_opt)
+	      coords[0] += s[0];
+            else s[0] = 0.0;
+        }
 	else if(i==2) {
 	    if(z_geom[2].bond_opt)
 		coords[1] += s[1];
+            else s[1] = 0.0;
 	    if(z_geom[2].angle_opt)
 		coords[2] += s[2];
+            else s[2] = 0.0;
 	}
 	else if(i>2) {
 	    if(z_geom[i].bond_opt) 
 		coords[(i-2)*3] += s[(i-2)*3];
+            else s[(i-2)*3] = 0.0;
 	    if(z_geom[i].angle_opt) 
 		coords[(i-2)*3+1] += s[(i-2)*3+1];
+            else s[(i-2)*3+1] = 0.0;
 	    if(z_geom[i].tors_opt)
 		coords[(i-2)*3+2] += s[(i-2)*3+2];
+            else s[(i-2)*3+2] = 0.0;
 	    }
     }
 
-    fprintf(outfile,"\n  Coord   initial value        gradient");      
+    fprintf(outfile,"\n  Coord    label   initial value        gradient");      
     fprintf(outfile,"    displacement       new value");
-    fprintf(outfile,"\n  ----- --------------- ---------------"); 
+    fprintf(outfile,"\n  ----- -------- --------------- ---------------"); 
     fprintf(outfile," --------------- ---------------");
     for(i=0;i<num_coords;++i)
-	fprintf(outfile,"\n  %5d %15.10lf %15.10lf %15.10lf %15.10lf",
-		i+1,coord_write[i], grads[i], s[i], coords[i]);
+	fprintf(outfile,"\n  %5d %-8s %15.10lf %15.10lf %15.10lf %15.10lf",
+		i+1,simples[i].get_label(),coord_write[i], grads[i], 
+		s[i], coords[i]);
 
     for(i=0;i<num_coords;++i) 
 	simples[i].set_val(coords[i]);
@@ -508,34 +609,6 @@ void zmat :: read_file11() {
 }
 
 
-double* zmat :: compute_s() {
-    
-    double *s;
-    int i;
-
-    s = coord_base::compute_s();
-
-    fprintf(outfile,"\n  Bond limit:  %lf",bond_lim);
-    fprintf(outfile,"\n  Angle limit: %lf\n",angle_lim);
-
-    for(i=0;i<num_coords;++i) {
-	if(simples[i].get_type()==0) {
-	    if(s[i] > bond_lim) {
-		s[i] = bond_lim; }
-	    else if (s[i] < (-1.0*bond_lim) ) {
-		s[i] = (-1.0*bond_lim); }
-	}
-	else {
-	    if(s[i] > angle_lim) {
-		s[i] = angle_lim; }
-	    else if (s[i] < (-1.0*angle_lim) ) {
-		s[i] = (-1.0*angle_lim); }
-	}
-    }
-
-    return s;
-}
-		
 	    
 
 
