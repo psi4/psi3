@@ -10,7 +10,9 @@
 #define EXTERN
 #include"global.h"
 #include"functional.h"
-#include"calc_den.h"
+#include"functional_u.h"
+#include"calc_den_fast.h"
+#include"calc_den_u.h"
 #include"lebedev_init.h"
 #include"grid_init.h"
 
@@ -40,14 +42,25 @@ void dft_init(void){
 	if(errcod == IPE_OK){
 	    if(!strcmp(funcstring,"XALPHA")){
 		UserOptions.hf_exch = 0.0;
+		if(UserOptions.reftype == rhf){
 		DFT_options.exchange_function = slater;
 		DFT_options.exchange_V_function = d_slater;
-		DFT_options.den_calc = calc_density;
+		DFT_options.den_calc = calc_density_fast;
 		DFT_options.correlation_function = no_funct;
 		DFT_options.correlation_V_function = no_funct;
+		}
+		else{
+		    DFT_options.exchange_function = slater_u;
+		    DFT_options.exchange_V_function_a = d_slater_a;
+		    DFT_options.exchange_V_function_b = d_slater_b;
+		    DFT_options.den_calc = calc_density_u;
+		    DFT_options.correlation_function = no_funct;
+		    DFT_options.correlation_V_function_a = no_funct;
+		    DFT_options.correlation_V_function_b = no_funct;
+		}
 	    }
 	    else
-		punt("Unrecognized fucntional specified with keyword FUNCTIONAL");
+		punt("Unrecognized fucntional specified with keyword FUNCTIONALu");
 	}
 	else
 	    punt("Must define a functional with keyword FUNCTIONAL");
@@ -58,32 +71,83 @@ void dft_init(void){
 	
         if(!strcmp(exchstring,"SLATER")){
 	    UserOptions.hf_exch = 0.0;
-	    DFT_options.exchange_function = slater;
-	    DFT_options.exchange_V_function = d_slater;
-	    DFT_options.den_calc = calc_density;
+	    if(UserOptions.reftype == rhf){
+		DFT_options.exchange_function = slater;
+		DFT_options.exchange_V_function = d_slater;
+		DFT_options.den_calc = calc_density_fast;
+	    }
+	    else{
+	      DFT_options.exchange_function = slater_u;
+	      DFT_options.exchange_V_function_a = d_slater_a;
+	      DFT_options.exchange_V_function_b = d_slater_b;
+	      DFT_options.den_calc = calc_density_u;
+	    }
+	}
+	else if(!strcmp(exchstring,"NONE")){
+	    UserOptions.hf_exch = 0.0;
+	    if(UserOptions.reftype == rhf){
+		DFT_options.exchange_function = no_funct;
+		DFT_options.exchange_V_function = no_funct;
+		DFT_options.den_calc = calc_density_fast;
+		exchstring[0] = '\0';
+	    }
+	    else{
+		DFT_options.exchange_function = no_funct;
+		DFT_options.exchange_V_function_a = no_funct;
+		DFT_options.exchange_V_function_b = no_funct;
+		DFT_options.den_calc = calc_density_u;
+		exchstring[0] = '\0';
+	    }
 	}
 	else if(!strcmp(exchstring,"DENSITY")){
-	    DFT_options.exchange_function = density;
-	    DFT_options.exchange_V_function = density;
-	    DFT_options.den_calc = calc_density;
-	}
+	    if(UserOptions.reftype == rhf){
+		DFT_options.exchange_function = density;
+		DFT_options.exchange_V_function = density;
+		DFT_options.den_calc = calc_density_fast;
+	    }
+	    
+	    else{
+		DFT_options.exchange_function = density;
+		DFT_options.exchange_V_function_a = density_a;
+		DFT_options.exchange_V_function_b = density_b;
+		DFT_options.den_calc = calc_density_u;
+	    }
+        }
 	else
 	    punt("Unrecognized or nonimplemented exchange functional specified");
 	
 	errcod = ip_string("FUNCTIONAL",&corrstring,1,1);
 	
 	if(!strcmp(corrstring,"NONE")){
-	    DFT_options.correlation_function = no_funct;
-	    DFT_options.correlation_V_function = no_funct;
-	    corrstring[0] = '\0';
+	    UserOptions.hf_exch = 0.0;
+	    if(UserOptions.reftype == rhf){
+		DFT_options.correlation_function = no_funct;
+		DFT_options.correlation_V_function = no_funct;
+		corrstring[0] = '\0';
+	    }
+	    else{
+		DFT_options.correlation_function = no_funct;
+		DFT_options.correlation_V_function_a = no_funct;
+		DFT_options.correlation_V_function_b = no_funct;
+		corrstring[0] = '\0';
+	    }
 	}
         else if(!strcmp(corrstring,"VWN5")){
-            DFT_options.correlation_function = VWN5_r;
-            DFT_options.correlation_V_function = d_VWN5_r;
+	    if(UserOptions.reftype == rhf){
+		DFT_options.correlation_function = VWN5_r;
+		DFT_options.correlation_V_function = d_VWN5_r;
+	    }
+	    else
+		punt("\nUHF for Correlation functionals not implemented yet");
         }           
+
 	else if(!strcmp(corrstring,"VWN4")){
-            DFT_options.correlation_function = VWN4_r;
-            DFT_options.correlation_V_function = d_VWN4_r;
+	    if(UserOptions.reftype == rhf){
+		DFT_options.correlation_function = VWN4_r;
+		DFT_options.correlation_V_function = d_VWN4_r;
+	    }
+	    else
+		punt("\nUHF for Correlation functionals not implemented yet");
         }           
 	else
 	    punt("Unrecognized or nonimplemented correlation fuctional specified");

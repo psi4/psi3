@@ -22,7 +22,7 @@
 #include"global.h"
 #include"bas_comp_functions.h"
 
-struct den_info_s calc_density_fast(struct coordinates geom, int atom_num){
+struct den_info_s calc_density_u(struct coordinates geom, int atom_num){
     
     int i,j,k,l,m;
     int am2shell;
@@ -30,7 +30,8 @@ struct den_info_s calc_density_fast(struct coordinates geom, int atom_num){
     int shell_start;
     int shell_end;
     int n_shells;
-    int num_ao,ndocc;
+    int num_ao;
+    int aocc,bocc;
     int shell_center;
     double x,y,z;
     double xa,ya,za;
@@ -42,7 +43,7 @@ struct den_info_s calc_density_fast(struct coordinates geom, int atom_num){
     double expon;
     double *norm_ptr;
     double *dist_atom;
-    double *temp_arr;
+    double *temp_arr_a,*temp_arr_b;
     double *coord_array[14];
     double *expon_arr;
     double norm_ptr0,norm_ptr1,norm_ptr2;
@@ -64,8 +65,11 @@ struct den_info_s calc_density_fast(struct coordinates geom, int atom_num){
     z = geom.z;
     
     num_ao = BasisSet.num_ao;
-    ndocc = MOInfo.ndocc;
-    temp_arr = init_array(ndocc);
+    aocc = MOInfo.alpha_occ;
+    bocc = MOInfo.beta_occ;
+    temp_arr_a = init_array(aocc);
+    temp_arr_b = init_array(bocc);
+    
     close = &(DFT_options.close_shell_info);
     /* ---------------------------------
        Compute distances from atom that 
@@ -426,27 +430,40 @@ struct den_info_s calc_density_fast(struct coordinates geom, int atom_num){
 /* Now contract the basis functions with the AO density matrix elements */
     timer_on("density"); 
     /*for(i=0;i<close->num_close_aos;i++)
-	fprintf(outfile,"\nBasis[%d] = %10.10lf",i,DFT_options.basis[i]);*/
-   
-    den_sum = 0.0; 
+	fprintf(outfile,"\nBasis[%d]=%10.10lf",i,DFT_options.basis[i]);*/
+    /*print_mat(close->close_COCC_a,close->num_close_aos,aocc,outfile);*/
+    
+	den_sum = 0.0; 
 #if USE_BLAS
-    C_DGEMV('t',close->num_close_aos,ndocc,1.0,close->close_COCC[0],ndocc,
-	    DFT_options.basis,1,0.0,temp_arr,1);
-    den_sum = C_DDOT(ndocc,temp_arr,1,temp_arr,1);
+	C_DGEMV('t',close->num_close_aos,aocc,1.0,close->close_COCC_a[0],aocc,
+		DFT_options.basis,1,0.0,temp_arr_a,1);
+	den_info.dena = C_DDOT(aocc,temp_arr_a,1,temp_arr_a,1);
+	C_DGEMV('t',close->num_close_aos,bocc,1.0,close->close_COCC_b[0],bocc,
+		DFT_options.basis,1,0.0,temp_arr_b,1);
+	den_info.denb = C_DDOT(bocc,temp_arr_b,1,temp_arr_b,1);
 #else
-    for(i=0;i<ndocc;i++){
-	for(j=0;j<close->num_close_aos;j++){
-	    temp_arr[i] += close->close_COCC[j][i]*DFT_options.basis[j];
+	for(i=0;i<aocc;i++){
+	    for(j=0;j<close->num_close_aos;j++){
+		temp_arr_a[i] += close->close_COCC_a[j][i]*DFT_options.basis[j];
+	    }
+	    /*fprintf(outfile,"\ntemp_arr_a[%d] = %10.10lf",i,temp_arr_a[i]);*/
 	}
-	/*fprintf(outfile,"\ntemp_arr[%d] = %10.10lf",i,temp_arr[i]);*/
-    }
-    dot_arr(temp_arr,temp_arr,MOInfo.ndocc,&den_sum);
+	dot_arr(temp_arr_a,temp_arr_a,aocc,&den_sum);
+	den_info.dena = den_sum;
+	den_sum=0;
+	for(i=0;i<bocc;i++){
+	    for(j=0;j<close->num_close_aos;j++){
+		temp_arr_b[i] += close->close_COCC_b[j][i]*DFT_options.basis[j];
+	    }
+	    /*fprintf(outfile,"\ntemp_arr[%d] = %10.10lf",i,temp_arr[i]);*/
+	}
+	dot_arr(temp_arr_b,temp_arr_b,bocc,&den_sum);
+	den_info.denb = den_sum;
 #endif
-    den_info.den = den_sum;
-    /*fprintf(outfile,"\nden = %10.10lf",den_info.den);*/
-    
-    
-    free(temp_arr);
+
+	/*fprintf(outfile,"\ndena = %10.10lf denb = %10.10lf",den_info.dena,den_info.denb);*/
+
+    free(temp_arr_a);free(temp_arr_b);
     timer_off("density");
     free(dist_coord);
     free(dist_atom);
@@ -455,3 +472,5 @@ struct den_info_s calc_density_fast(struct coordinates geom, int atom_num){
 
 	
 	
+
+

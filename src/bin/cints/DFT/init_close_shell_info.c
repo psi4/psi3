@@ -14,7 +14,14 @@ struct close_shell_info_s init_close_shell_info(void){
     close.aos_close_to_chunk = (int *)malloc(sizeof(int)*BasisSet.num_ao);
     close.close_shells_per_am = (int *)malloc(sizeof(int)*BasisSet.max_am);
     /*close.close_COCC = (double **)malloc(sizeof(double *)*BasisSet.num_ao);*/
-    close.close_COCC = block_matrix(BasisSet.num_ao,MOInfo.ndocc);
+    if(UserOptions.reftype == uhf){
+	close.close_COCC_a = block_matrix(BasisSet.num_ao,MOInfo.alpha_occ);
+	close.close_COCC_b = block_matrix(BasisSet.num_ao,MOInfo.alpha_occ);
+    }
+    else{
+	close.close_COCC = block_matrix(BasisSet.num_ao,MOInfo.ndocc);
+    }
+    
     return close;
 }
 
@@ -22,8 +29,13 @@ void free_close_shell_info(struct close_shell_info_s close_shell_info){
     
     free(close_shell_info.shells_close_to_chunk);
     free(close_shell_info.close_shells_per_am);
-    free(close_shell_info.close_COCC);
-    
+    if(UserOptions.reftype == uhf){
+	free(close_shell_info.close_COCC_a);
+	free(close_shell_info.close_COCC_b);
+    }
+    else{
+	free(close_shell_info.close_COCC);
+    }
 }
 
 void print_close_shell_info(struct close_shell_info_s close){
@@ -40,8 +52,18 @@ void print_close_shell_info(struct close_shell_info_s close){
 	fprintf(outfile,"\naos_close_to_chunk[%d] = %d",i,close.aos_close_to_chunk[i]);
     for(i=0;i<BasisSet.max_am;i++)
 	fprintf(outfile,"\nclose_shells_per_am[%d] = %d",i,close.close_shells_per_am[i]);
-    fprintf(outfile,"\nClose Occupied Eigenvector");
-    print_mat(close.close_COCC,close.num_close_aos,MOInfo.ndocc,outfile);
-    fprintf(outfile,"\n\n");
+    if(UserOptions.reftype == uhf){
+	fprintf(outfile,"\nClose Alpha Occupied Eigenvector");
+	print_mat(close.close_COCC_a,close.num_close_aos,MOInfo.alpha_occ,outfile);
+	fprintf(outfile,"\n\n");
+	fprintf(outfile,"\nClose Beta Occupied Eigenvector");
+	print_mat(close.close_COCC_b,close.num_close_aos,MOInfo.beta_occ,outfile);
+	fprintf(outfile,"\n\n");
+    }
+    else{
+	fprintf(outfile,"\nClose Occupied Eigenvector");
+	print_mat(close.close_COCC,close.num_close_aos,MOInfo.ndocc,outfile);
+	fprintf(outfile,"\n\n");
+    }
     fflush(outfile);
 }

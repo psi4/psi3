@@ -15,18 +15,18 @@
 
 #include"dft_init.h"
 #include"weighting.h"
-#include"calc_den_fast.h"
-#include"calc_den.h"
+#include"calc_den_u.h"
 #include"functional.h"
+#include"functional_u.h"
 #include"physconst.h"
 #include"grid_init.h"
 #include"free_grid_structs.h"
 #include"dcr.h"
 #include"init_close_shell_info.h"
-#include"calc_close_basis.h"
+#include"calc_close_basis_u.h"
 
  
-void xc_fock(void){
+void xc_fock_u(void){
   int i,j,k,l,m,n,q,s,t,u;
   int ua, atom, ua_deg;
   int rpoints;
@@ -48,7 +48,7 @@ void xc_fock(void){
   double temp;
   double *temp_arr;
   double **tmpmat1;
-  double *Gtri, *Gtri_o;  /* Total and open-shell 
+  double *Gtria, *Gtrib;  /* Total and open-shell 
 			     G matrices and lower 
 			     triagonal form in SO basis */  
   double r;
@@ -63,20 +63,28 @@ void xc_fock(void){
   double Becke_weight;
   double ang_quad;
   double four_pi_div_by_rps;
-  double exch_vfunc_val=0.0;
+  double exch_vfunc_val_a=0.0;
+  double exch_vfunc_val_b=0.0;
   double exch_efunc_val=0.0;
-  double corr_vfunc_val=0.0;
+  double corr_vfunc_val_a=0.0;
+  double corr_vfunc_val_b=0.0;
   double corr_efunc_val=0.0;
   double den_val=0.0;
-  double exch_vval=0.0;
-  double corr_vval=0.0;
+  double exch_vval_a=0.0;
+  double exch_vval_b=0.0;
+  double corr_vval_a=0.0;
+  double corr_vval_b=0.0;
   double exch_eval=0.0;
   double corr_eval=0.0;
-  double vval = 0.0;
+  double vval_a = 0.0;
+  double vval_b = 0.0;
   double eval = 0.0;
   double bas1 = 0.0;
+  double bas1a = 0.0;
+  double bas1b = 0.0;
   double bas2 = 0.0;
-  double vvalbas = 0.0;
+  double bas2a = 0.0;
+  double bas2b = 0.0;
   
   struct coordinates geom;
   struct den_info_s den_info;
@@ -90,10 +98,9 @@ void xc_fock(void){
   /*fprintf(outfile,"\nPade_int = %10.10lf\n",Pade_int(0.5,-0.10498,3.72744,12.9352,0.0621814,6.1519908198));*/
   num_ao = BasisSet.num_ao;
   DFT_options.basis = (double *)malloc(sizeof(double)*num_ao);
-  
-  G = init_matrix(num_ao,num_ao);
-  if(UserOptions.reftype == uhf)
-      Go = block_matrix(num_ao,num_ao);
+ 
+  Ga = block_matrix(num_ao,num_ao);
+  Gb = block_matrix(num_ao,num_ao);
   
   /* ----Initialize Close shell data structure ---- */
   
@@ -130,7 +137,7 @@ void xc_fock(void){
       for(j=0;j<atm_grd->chunk_num;j++){
 	  chnk = &(atm_grd->leb_chunk[j]);
 	  timer_on("close basis");
-	  calc_close_basis(ua,j);
+	  calc_close_basis_u(ua,j);
 	  close_shells = DFT_options.close_shell_info.num_close_shells;
 	  close_aos = DFT_options.close_shell_info.num_close_aos;
 	  timer_off("close basis");
@@ -163,7 +170,6 @@ void xc_fock(void){
 		      timer_on("DEN1");
 		      den_info = DFT_options.den_calc(geom,ua);
 		      timer_off("DEN1");
-		      
 		      if(den_info.den > DEN_CUTOFF){
 			  /*-------------------------------------
 			    Weight from Lebedev
@@ -176,30 +182,37 @@ void xc_fock(void){
 			    and energy functional at this
 			    point
 			    -----------------------------------*/
-			  /*fprintf(outfile,"\nua_deg = %10.10lf",ua_deg_d);*/
-			  den_val += 2.0*ua_deg_d*drdq*ang_quad
-			      *Becke_weight*den_info.den;
+			 
+			  den_val += ua_deg_d*drdq*ang_quad
+			      *Becke_weight*(den_info.dena + den_info.denb);
 			  
-			  exch_vfunc_val = DFT_options.
-			      exchange_V_function(den_info);
+			  exch_vfunc_val_a = DFT_options.
+			      exchange_V_function_a(den_info);
+			  exch_vfunc_val_b = DFT_options.
+			      exchange_V_function_b(den_info);   
 			  
-			  /*fprintf(outfile,"\nexch_vfunc_val = %10.10lf"
-				  ,exch_vfunc_val);*/
-
-			  corr_vfunc_val = DFT_options.
-			      correlation_V_function(den_info);
-		      
+			  corr_vfunc_val_a = DFT_options.
+			      correlation_V_function_a(den_info);
+			  corr_vfunc_val_b = DFT_options.
+			      correlation_V_function_b(den_info);
+		      		  
 			  exch_efunc_val = DFT_options.
 			      exchange_function(den_info);
-			  
 			  corr_efunc_val = DFT_options.
 			      correlation_function(den_info);
-		      
-			  exch_vval = ua_deg_d*drdq*ang_quad
-			      *Becke_weight*exch_vfunc_val;
-			  corr_vval = ua_deg_d*drdq*ang_quad
-			      *Becke_weight*corr_vfunc_val;
-			  vval = exch_vval+corr_vval;
+			  
+			  exch_vval_a = ua_deg_d*drdq*ang_quad
+			      *Becke_weight*exch_vfunc_val_a;
+			  exch_vval_b = ua_deg_d*drdq*ang_quad
+			      *Becke_weight*exch_vfunc_val_b;
+
+			  corr_vval_a = ua_deg_d*drdq*ang_quad
+			      *Becke_weight*corr_vfunc_val_a;
+			  corr_vval_b = ua_deg_d*drdq*ang_quad
+			      *Becke_weight*corr_vfunc_val_b;
+
+			  vval_a = exch_vval_a+corr_vval_a;
+			  vval_b = exch_vval_b+corr_vval_b;
 			  
 			  exch_eval += ua_deg_d*drdq*ang_quad
 			      *Becke_weight*exch_efunc_val;
@@ -218,19 +231,28 @@ void xc_fock(void){
 			  t=0;
 			  
 			  for(m=0;m<close_aos;m++){
-			      bas1 = vval*DFT_options.basis[m];
+			      bas1 = DFT_options.basis[m];
+			      bas1a = vval_a*bas1;
+			      bas1b = vval_b*bas1;
 			      moff = DFT_options.close_shell_info.
 				  aos_close_to_chunk[m];
 			      for(n=m;n<close_aos;n++){
-				  bas2 = bas1*DFT_options.basis[n];
+				  bas2 = DFT_options.basis[n];
+				  bas2a = bas1a*bas2;
+				  bas2b = bas1b*bas2;
 				  noff = DFT_options.close_shell_info.
 				      aos_close_to_chunk[n];
-				  if(noff > moff)
-				      G[moff][noff] += bas2;
-				  else
-				      G[noff][moff] += bas2;
+				  if(noff > moff){
+				      Ga[moff][noff] += bas2a;
+				      Gb[moff][noff] += bas2b;
+				  }				  
+				  else{
+				      Ga[noff][moff] += bas2a;
+				      Gb[noff][moff] += bas2b;
+				  }
 			      }
 			  }
+			  
 			  timer_off("FOCK");
 		      }
 
@@ -242,11 +264,15 @@ void xc_fock(void){
 
   
   free_close_shell_info(DFT_options.close_shell_info);
-  /*print_mat(G,num_ao,num_ao,outfile);*/
+  
    for(m=0;m<num_ao;m++)
       for(n=m;n<num_ao;n++)
-	  G[n][m]=G[m][n];
-  
+	  Ga[n][m]=Ga[m][n];
+   for(m=0;m<num_ao;m++)
+      for(n=m;n<num_ao;n++)
+	  Gb[n][m]=Gb[m][n];
+   /*print_mat(Ga,num_ao,num_ao,outfile);
+  print_mat(Gb,num_ao,num_ao,outfile);*/
   timer_off("DFT");
   timer_done();
   
@@ -262,23 +288,20 @@ void xc_fock(void){
   ----------------------*/
   if (Symmetry.nirreps > 1 || BasisSet.puream) {
       tmpmat1 = block_matrix(Symmetry.num_so,BasisSet.num_ao);
-      mmult(Symmetry.usotao,0,G,0,tmpmat1,0,Symmetry.num_so,BasisSet.num_ao,BasisSet.num_ao,0);
-      mmult(tmpmat1,0,Symmetry.usotao,1,G,0,Symmetry.num_so,BasisSet.num_ao,Symmetry.num_so,0);
-      if (UserOptions.reftype == rohf || UserOptions.reftype == uhf) {
-	  mmult(Symmetry.usotao,0,Go,0,tmpmat1,0,Symmetry.num_so,BasisSet.num_ao,BasisSet.num_ao,0);
-	  mmult(tmpmat1,0,Symmetry.usotao,1,Go,0,Symmetry.num_so,BasisSet.num_ao,Symmetry.num_so,0);
-      }
+      mmult(Symmetry.usotao,0,Ga,0,tmpmat1,0,Symmetry.num_so,BasisSet.num_ao,BasisSet.num_ao,0);
+      mmult(tmpmat1,0,Symmetry.usotao,1,Ga,0,Symmetry.num_so,BasisSet.num_ao,Symmetry.num_so,0);
+      mmult(Symmetry.usotao,0,Gb,0,tmpmat1,0,Symmetry.num_so,BasisSet.num_ao,BasisSet.num_ao,0);
+      mmult(tmpmat1,0,Symmetry.usotao,1,Gb,0,Symmetry.num_so,BasisSet.num_ao,Symmetry.num_so,0);
+      
       free_block(tmpmat1);
   }
   
   /*-------------------------
     Write G-matrices to disk
-    -------------------------*/
+    -------------------------*/  
+ 
+
   
-  nstri = ioff[Symmetry.num_so];
-  Gtri = init_array(nstri);
-  sq_to_tri(G,Gtri,Symmetry.num_so);
-  free_block(G);
   /*fprintf(outfile,"\nDFT_energy = %10.10lf",eval);
   fprintf(outfile,"\nX-Energy = %10.10lf",exch_eval);
   fprintf(outfile,"\nC-Energy = %10.10lf",corr_eval);
@@ -292,40 +315,21 @@ void xc_fock(void){
 		   (char *) &(eval), sizeof(double));
   psio_write_entry(IOUnits.itapDSCF,"DFT Den",
 		   (char *) &(den_val), sizeof(double));
-  switch (UserOptions.reftype) {
-  case rohf:
-      Gtri_o = init_array(nstri);
-      sq_to_tri(Go,Gtri_o,Symmetry.num_so);
-      free_block(Go);
-      psio_write_entry(IOUnits.itapDSCF, "Open-shell XC G-matrix"
-		       , (char *) Gtri_o, sizeof(double)*nstri);
-      free(Gtri_o);
-  case rhf:
-      psio_write_entry(IOUnits.itapDSCF, "Total XC G-matrix"
-		       , (char *) Gtri, sizeof(double)*nstri);
-      free(Gtri);
-      break;
-      
-  case uhf:
-      Gtri_o = init_array(nstri);
-      sq_to_tri(Go,Gtri_o,Symmetry.num_so);
-      free_block(Go);
-      /*--- Form alpha and beta Fock matrices first
-	and then write them out ---*/      
-      
-      for(i=0;i<nstri;i++) {
-	  temp = Gtri[i] + Gtri_o[i];
-	  Gtri[i] = Gtri[i] - Gtri_o[i];
-	  Gtri_o[i] = temp;
-      }
-      psio_write_entry(IOUnits.itapDSCF, "Alpha XC G-matrix"
-		       , (char *) Gtri, sizeof(double)*nstri);
-      psio_write_entry(IOUnits.itapDSCF, "Beta XC G-matrix"
-		       , (char *) Gtri_o, sizeof(double)*nstri);
-      free(Gtri);
-      free(Gtri_o);
-      break;
-  }
+  nstri = ioff[Symmetry.num_so];
+  Gtria = init_array(nstri);
+  sq_to_tri(Ga,Gtria,Symmetry.num_so);
+  free_block(Ga);
+  Gtrib = init_array(nstri);
+  sq_to_tri(Gb,Gtrib,Symmetry.num_so);
+  free_block(Gb);
+  
+  psio_write_entry(IOUnits.itapDSCF, "Alpha XC G-matrix"
+		   , (char *) Gtria, sizeof(double)*nstri);
+  psio_write_entry(IOUnits.itapDSCF, "Beta XC G-matrix"
+		   , (char *) Gtrib, sizeof(double)*nstri);
+  free(Gtria);
+  free(Gtrib);
+
   /*-- Cleanup the DFT stuff and close files --*/
   cleanup_grid_type(DFT_options.grid);
   psio_close(IOUnits.itapDSCF, 1);
