@@ -230,6 +230,7 @@ int read_aces_geom(char *fname, int *natom, double **X, double **Y,
 ** PRINT_ACES_GEOM()
 **
 ** Function prints out the geometry information obtained in ACES format
+** (or XYZ)
 **
 ** Arguments:
 **      natom   = number of atoms
@@ -242,7 +243,7 @@ void print_aces_geom(int natom, double *X, double *Y, double *Z, double *AN,
 {
   int i;
   
-  fprintf(fpo, "DATA FROM ACES INPUT\n");
+  fprintf(fpo, "DATA FROM INPUT\n");
   fprintf(fpo, "Number of atoms = %d\n", natom);
   fprintf(fpo, "\nCartesian coordinates (bohr) :\n");
   for (i=0; i<natom; i++) {
@@ -317,6 +318,82 @@ int read_qchem_geom(char *fname, int *natom, double **X, double **Y,
   }
 
   *natom = i;
+  fclose(fpi);
+  return(1);
+}
+
+
+/*
+** READ_XYZ_GEOM()
+**
+** This function reads geometry data in the form of a standard XYZ
+** file, which has the number of atoms on the first line, a commnent
+** on the second line, and following lines contain an atomic symbol
+** followed by X Y and Z coordinates.
+**
+** Arguments: 
+**      fname   = filename to read
+**      natom   = pointer to variable to hold number of atoms
+**      X, Y, Z = pointers to arrays of cartesian coordinates (assume bohr)
+**                (these are currently allocated in THIS function)
+**      AN      = pointer to array of atomic numbers (alloc'd here)
+**      fpo     = file pointer for output
+**
+** Returns: success (1) or failure (0) 
+**
+*/
+int read_xyz_geom(char *fname, int *natom, double **X, double **Y, 
+                  double **Z, double **AN, FILE *fpo) 
+{
+  int i;                          /* loop variable */
+  FILE *fpi;                      /* pointer for input file */
+  char alabel[MAX_ATOM_LABEL];
+  int junk;                       /* for holding the atom numbers */
+  
+  /* open file for reading */
+  if ((fpi = fopen(fname, "r")) == NULL) {
+    printf("(read_xyz_geom): Error opening %s\n", fname);
+    exit(0);
+  }
+
+  /* get the number of data lines */
+  fgets(line1, MAX_LINE, fpi);
+  if (sscanf(line1, "%d", natom) != 1) {
+    printf("(read_xyz_geom): Trouble reading number of atoms\n");
+    exit(0);
+  }
+
+  /* now make room for the Cartesian coordinates */
+  *X = (double *) malloc (*natom * sizeof(double));
+  malloc_check(*X, "(read_xyz_geom): Trouble allocating Cartesian array\n");
+  *Y = (double *) malloc (*natom * sizeof(double));
+  malloc_check(*Y, "(read_xyz_geom): Trouble allocating Cartesian array\n");
+  *Z = (double *) malloc (*natom * sizeof(double));
+  malloc_check(*Z, "(read_xyz_geom): Trouble allocating Cartesian array\n");
+  *AN = (double *) malloc (*natom * sizeof(double));
+  malloc_check(*AN, "(read_xyz_geom): Trouble allocating atomic num array\n");
+  
+  /* read the comment line and ignore it */
+  fgets(line1, MAX_LINE, fpi);
+  
+  /* read atom number and Cartesians */
+  i=0;
+  while (fgets(line1, MAX_LINE, fpi) != NULL) {
+    if (sscanf(line1, "%s %lf %lf %lf", alabel, (*X+i),
+	       (*Y+i), (*Z+i)) != 4) 
+      prf_abort(fpo, "(read_xyz_geom): Trouble reading data\n");
+    junk = label2an(alabel);
+    if (junk == -1) 
+      prf_abort(fpo, "(read_xyz_geom): Trouble parsing atom label\n");
+    (*AN)[i] = junk;
+    i++; 
+  }
+
+  if (*natom != i) {
+    fprintf(fpo, "(read_xyz_geom): Should be %d atoms but read %d!\n",
+            *natom, i);
+    fprintf(fpo, "Extra atoms will be ignored.\n");
+  }
   fclose(fpi);
   return(1);
 }

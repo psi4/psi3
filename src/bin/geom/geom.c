@@ -74,6 +74,8 @@ void print_aces_geom(int natom, double *X, double *Y, double *Z, double *AN,
                      FILE *fpo);
 int read_qchem_geom(char *fname, int *natom, double **X, double **Y,
                     double **Z, double **AN, FILE *fpo);
+int read_xyz_geom(char *fname, int *natom, double **X, double **Y,
+                  double **Z, double **AN, FILE *fpo);
 void calc_distances(int natom, double *X, double *Y, double *Z, double ***R);
 void calc_unit_vectors(int natom, double *X, double *Y, double *Z,
                        double **R, double E[MAXATOM][MAXATOM][3]);
@@ -129,7 +131,8 @@ main(argc, argv)
     PSI_FILE11,
     PSI_GEOM,
     ACES2,
-    QCHEM
+    QCHEM,
+    XYZ
   } InputType;
 
   /* open output file */
@@ -167,6 +170,8 @@ main(argc, argv)
   if ((errcod == IPE_OK) && i==1) InputType = ACES2;
   errcod = ip_boolean("QCHEM",&i,0);
   if ((errcod == IPE_OK) && i==1) InputType = QCHEM;
+  errcod = ip_boolean("XYZ",&i,0);
+  if ((errcod == IPE_OK) && i==1) InputType = XYZ;
   errcod = ip_boolean("PRINT_ALL_DIST",&print_all_dist,0);
   errcod = ip_boolean("DO_OOP",&do_oop,0);
   errcod = ip_boolean("ANGSTROM",&ang_in,0);
@@ -192,6 +197,12 @@ main(argc, argv)
       if ( (i+1 < argc) && (strchr(argv[i+1], '-') == NULL) ) 
 	strcpy(geom_file, argv[i+1]) ;
     }
+    if (strcmp("-xyz", argv[i]) == 0) {
+      InputType = XYZ;
+      ang_in = 1;  /* XYZ format is in Angstrom */
+      if ( (i+1 < argc) && (strchr(argv[i+1], '-') == NULL) ) 
+	strcpy(geom_file, argv[i+1]) ;
+    }
     if (strcmp("-oop", argv[i]) == 0) do_oop = 1;
     if (strcmp("-a", argv[i]) == 0) print_all_dist = 1;
     if (strcmp("-angstroms", argv[i]) == 0) ang_in = 1;
@@ -213,6 +224,8 @@ main(argc, argv)
 	      " -aces [fname]  = read geom in Aces output format\n");
       fprintf(stdout,
 	      " -qchem [fname] = read geom in QCHEM output format\n");
+      fprintf(stdout,
+	      " -xyz [fname] = read geom in XYZ output format\n");
       fprintf(stdout,
 	      "                 from geom.dat or specified file.\n");
       fprintf(stdout,
@@ -265,6 +278,18 @@ main(argc, argv)
     fprintf(outfile, "Cartesian coordinates (%s):\n", ang_in ? 
 	    "angstroms" : "bohr");
     print_geom(natom, X, Y, Z, outfile);
+    break;
+  case XYZ:
+    if (!read_xyz_geom(geom_file, &natom, &X, &Y, &Z, &AN, outfile)) {
+      sprintf(line1, "geom: trouble reading geom file %s\n", geom_file);
+      prf_abort(outfile, line1);
+    }
+    fprintf(outfile, "GEOMETRY DATA INPUT\n") ;
+    fprintf(outfile, "Number of atoms = %d\n", natom) ;
+    fprintf(outfile, "Cartesian coordinates (%s):\n", ang_in ? 
+	    "angstroms" : "bohr");
+    print_aces_geom(natom, X, Y, Z, AN, outfile);
+    /* print_geom(natom, X, Y, Z, outfile); */
     break;
   default:
     prf_abort(outfile, "Couldn't figure out your input type!\n");
@@ -1019,11 +1044,11 @@ int label2an(char *label)
   int i, j, k;
   char p, q;
 
-  for (i=0; i<LAST_MASS_INDEX; i++) {
+  for (i=0; i<LAST_ATOMIC_INDEX; i++) {
     k = strlen(label);
     for (j=0; j < k; j++) {
        p = label[j];
-       q = mass_labels[i][j];
+       q = atomic_labels[i][j];
        if (toupper(p) != toupper(q)) break; 
     }
     if (j == k) return(i);
