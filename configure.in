@@ -73,9 +73,9 @@ CXX_LIST="g++ c++"
 # set up os specific options
 case $os in
   aix*)
-    FC_LIST="xlf $FC_LIST"
-    CC_LIST="cc gcc xlc"
-    CXX_LIST="xlC c++ g++"
+    FC_LIST="xlf_r xlf $FC_LIST"
+    CC_LIST="cc_r cc gcc xlc"
+    CXX_LIST="xlC_r xlC c++ g++"
     ;;
 esac
 
