@@ -737,3 +737,11 @@ AC_OUTPUT(include/psiconfig.h include/cfuncs.h include/ffuncs.h
           src/bin/psiclean/Makefile
           src/bin/transqt/Makefile
           )
+# The following should be added to config_files/ac_output for 
+# libmathtools/ooccman
+#         src/lib/libmathtools/Makefile
+#         src/lib/libmathtools/containers/templates/Makefile
+#         src/lib/libmathtools/solvers/templates/Makefile
+#         src/lib/libmathtools/general/Makefile
+#         src/lib/libmathtools/tensor/Makefile
+#         src/bin/ooccman/Makefile
