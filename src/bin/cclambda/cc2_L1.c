@@ -147,9 +147,9 @@ void cc2_L1_build(struct L_Params L_params) {
     dpd_file2_init(&newLIA, CC_LAMBDA, L_irr, 0, 1, "New LIA");
 
     /* L1 RHS += 1/2 Limef*Wefam */
-    dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "CC2 WAbEi (Ei,Ab)");
+    dpd_buf4_init(&W, CC_HBAR, 0, 5, 11, 5, 11, 0, "CC2 WAbEi");
     dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "2 LIjAb - LIjBa");
-    dpd_contract442(&L2, &W, &newLIA, 0, 0, 1, 1);
+    dpd_contract442(&L2, &W, &newLIA, 0, 2, 1, 1);
     dpd_buf4_close(&L2);
     dpd_buf4_close(&W);
 
