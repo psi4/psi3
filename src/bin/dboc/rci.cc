@@ -29,7 +29,6 @@ extern void done(const char *);
 double eval_rci_derwfn_overlap()
 {
   int ndocc = MOInfo.ndocc;
-  int nfzc = 0;
   FLOAT **CSC_full = eval_S_alpha();
   FLOAT **CSC = create_matrix(ndocc,ndocc);
   int *tmpintvec = new int[ndocc];
@@ -43,6 +42,7 @@ double eval_rci_derwfn_overlap()
   StringSet *ssetm;
   ssetm = vecm->sdset->alphastrings;
   int nstr_a = ssetm->size;
+  int nfzc = ssetm->nfzc;
   int nact = ndocc - nfzc;
   FLOAT **S_a = create_matrix(nstr_a,nstr_a);
   
