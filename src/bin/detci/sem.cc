@@ -1027,7 +1027,8 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
 
    stringset_init(&alphastrings,AlphaG->num_str,AlphaG->num_el,CalcInfo.num_fzc_orbs);
    int list_gr = 0;
-   for(int irrep=0; irrep<AlphaG->nirreps; irrep++) {
+   int irrep;
+   for(irrep=0; irrep<AlphaG->nirreps; irrep++) {
      for(int gr=0; gr<AlphaG->subgr_per_irrep; gr++,list_gr++) {
        int nlists_per_gr = AlphaG->sg[irrep][gr].num_strings;
        int offset = AlphaG->sg[irrep][gr].offset;
@@ -1038,7 +1039,7 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
    
    stringset_init(&betastrings,BetaG->num_str,BetaG->num_el,CalcInfo.num_fzc_orbs);
    list_gr = 0;
-   for(int irrep=0; irrep<BetaG->nirreps; irrep++) {
+   for(irrep=0; irrep<BetaG->nirreps; irrep++) {
      for(int gr=0; gr<BetaG->subgr_per_irrep; gr++,list_gr++) {
        int nlists_per_gr = BetaG->sg[irrep][gr].num_strings;
        int offset = BetaG->sg[irrep][gr].offset;
@@ -1047,12 +1048,13 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
      }
    }
    
+   int ii;
    int size = CIblks.vectlen;
    int Iarel, Ialist, Ibrel, Iblist;
    slaterdetset_init(&dets,size,&alphastrings,&betastrings);
-   for (int ii=0; ii<size; ii++) {
+   for (ii=0; ii<size; ii++) {
      Dvec.det2strings(ii, &Ialist, &Iarel, &Iblist, &Ibrel);
-     int irrep = Ialist/AlphaG->subgr_per_irrep;
+     irrep = Ialist/AlphaG->subgr_per_irrep;
      int gr = Ialist%AlphaG->subgr_per_irrep;
      int Ia = Iarel + AlphaG->sg[irrep][gr].offset;
      irrep = Iblist/BetaG->subgr_per_irrep;
@@ -1062,7 +1064,7 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
    }
 
    Dvec.buf_lock(buffer1);
-   for(int ii=0; ii<size; ii++)
+   for(ii=0; ii<size; ii++)
      buffer1[ii] = 0.0;
    Dvec.read(0,0);
    slaterdetvector_init(&vec, &dets);

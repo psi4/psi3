@@ -454,7 +454,8 @@ void diag_h(struct stringwr **alplist, struct stringwr **betlist)
 
       stringset_init(&alphastrings,AlphaG->num_str,AlphaG->num_el,CalcInfo.num_fzc_orbs);
       int list_gr = 0;
-      for(int irrep=0; irrep<AlphaG->nirreps; irrep++) {
+      int irrep;
+      for(irrep=0; irrep<AlphaG->nirreps; irrep++) {
 	for(int gr=0; gr<AlphaG->subgr_per_irrep; gr++,list_gr++) {
 	  int nlists_per_gr = AlphaG->sg[irrep][gr].num_strings;
 	  int offset = AlphaG->sg[irrep][gr].offset;
@@ -465,7 +466,7 @@ void diag_h(struct stringwr **alplist, struct stringwr **betlist)
 	
       stringset_init(&betastrings,BetaG->num_str,BetaG->num_el,CalcInfo.num_fzc_orbs);
       list_gr = 0;
-      for(int irrep=0; irrep<BetaG->nirreps; irrep++) {
+      for(irrep=0; irrep<BetaG->nirreps; irrep++) {
 	for(int gr=0; gr<BetaG->subgr_per_irrep; gr++,list_gr++) {
 	  int nlists_per_gr = BetaG->sg[irrep][gr].num_strings;
 	  int offset = BetaG->sg[irrep][gr].offset;
@@ -477,7 +478,7 @@ void diag_h(struct stringwr **alplist, struct stringwr **betlist)
       slaterdetset_init(&dets,size,&alphastrings,&betastrings);
       for (ii=0; ii<size; ii++) {
 	Cvec.det2strings(ii, &Ialist, &Iarel, &Iblist, &Ibrel);
-	int irrep = Ialist/AlphaG->subgr_per_irrep;
+	irrep = Ialist/AlphaG->subgr_per_irrep;
 	int gr = Ialist%AlphaG->subgr_per_irrep;
 	int Ia = Iarel + AlphaG->sg[irrep][gr].offset;
 	irrep = Iblist/BetaG->subgr_per_irrep;
