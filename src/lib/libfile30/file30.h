@@ -127,4 +127,8 @@ void file30_wt_blk_scf(double **,int);
 void file30_wt_zmat(struct z_entry *z_geom, int num_atoms);
 void file30_wt_disp(int disp);
 
+#ifdef USE_DMALLOC
+#include <dmalloc.h>
+#endif
+
 #endif
