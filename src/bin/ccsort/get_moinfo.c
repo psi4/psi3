@@ -1096,7 +1096,6 @@ void get_moinfo(void)
       }
 
       free_block(evects[h]);
-    }
 
     /*
       fprintf(outfile, "\n\tOriginal SCF Eigenvectors:\n");
@@ -1105,10 +1104,10 @@ void get_moinfo(void)
       fprintf(outfile, "\n\tRe-ordered Virtual SCF Eigenvectors:\n");
       print_mat(scf_vector[h], moinfo.orbspi[h], moinfo.virtpi[h], outfile);
     */
+    }
 
+    free(evects);  free(scf_vector);
+    free(pitz_offset);
+    chkpt_close();
   }
-
-  free(evects);  free(scf_vector);
-  free(pitz_offset);
-  chkpt_close();
 }
