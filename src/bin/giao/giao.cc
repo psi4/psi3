@@ -153,7 +153,6 @@ int main(int argc, char* argv[])
   print_1e("H (MO basis)", H, nmo);
 
   // For comparison make L in MO basis
-  // Make MO basis dS/dBi
   double** Lx_ao = block_matrix(nao,nao);
   double** Ly_ao = block_matrix(nao,nao);
   double** Lz_ao = block_matrix(nao,nao);
@@ -176,6 +175,23 @@ int main(int argc, char* argv[])
   delete[] Lx;
   delete[] Ly;
   delete[] Lz;
+
+  // Form F and dF/dBi (just to check against ACES2 and other programs) in MO basis from dH/dBi and dg/dBi
+  double** F = block_matrix(nmo,nmo);
+  double** dFdBx = block_matrix(nmo,nmo);
+  double** dFdBy = block_matrix(nmo,nmo);
+  double** dFdBz = block_matrix(nmo,nmo);
+  form_hamiltonian_deriv(H,g,nmo,ndocc,F);
+  form_hamiltonian_deriv(dHdBx,dgdBx,nmo,ndocc,dFdBx);
+  form_hamiltonian_deriv(dHdBy,dgdBy,nmo,ndocc,dFdBy);
+  form_hamiltonian_deriv(dHdBz,dgdBz,nmo,ndocc,dFdBz);
+  print_1e("F (MO basis)", F, nmo);
+  print_1e("dF/dBx (GIAO MO basis)", dFdBx, nmo);
+  print_1e("dF/dBy (GIAO MO basis)", dFdBy, nmo);
+  print_1e("dF/dBz (GIAO MO basis)", dFdBz, nmo);
+  free_block(dFdBx);
+  free_block(dFdBy);
+  free_block(dFdBz);
 
   // Now form dH~/dBi in MO basis from H, dS/dBi and dH/dBi
   double** dHtdBx = block_matrix(nmo,nmo);
@@ -218,16 +234,13 @@ int main(int argc, char* argv[])
   write_2e_iwl(dgtdBy, nmo, 49);
   write_2e_iwl(dgtdBz, nmo, 50);
 
-  // Finally form F (just a check) and dF~/dBi in MO basis from dH~/dBi and dg~/dBi
-  double** F = block_matrix(nmo,nmo);
+  // Finally form dF~/dBi in MO basis from dH~/dBi and dg~/dBi
   double** dFtdBx = block_matrix(nmo,nmo);
   double** dFtdBy = block_matrix(nmo,nmo);
   double** dFtdBz = block_matrix(nmo,nmo);
-  form_hamiltonian_deriv(H,g,nmo,ndocc,F);
   form_hamiltonian_deriv(dHtdBx,dgtdBx,nmo,ndocc,dFtdBx);
   form_hamiltonian_deriv(dHtdBy,dgtdBx,nmo,ndocc,dFtdBy);
   form_hamiltonian_deriv(dHtdBz,dgtdBx,nmo,ndocc,dFtdBz);
-  print_1e("F (MO basis)", F, nmo);
   print_1e("dFt/dBx (GIAO MO basis)", dFtdBx, nmo);
   print_1e("dFt/dBy (GIAO MO basis)", dFtdBy, nmo);
   print_1e("dFt/dBz (GIAO MO basis)", dFtdBz, nmo);
