@@ -67,10 +67,7 @@ install_tmpl::
 # clean up
 #
 
-clean:: iclean oclean dclean targetclean
-
-iclean:
-	-rm -f *.gbl *.lcl
+clean:: oclean dclean targetclean
 
 oclean:
 	-rm -f *.o
