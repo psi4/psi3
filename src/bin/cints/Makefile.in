@@ -12,7 +12,7 @@
 # 5. Default_Deriv1
 # 6. Default_Deriv2
 # 7. MP2R12
-# 8. R12_Ints
+# 8. R12_Ints (8/30/03 EFV - doesn't work anymore, transqt needs to be fixed)
 # 9. CC
 #
 SUBDIRS = Default_Ints OEProp_Ints Fock MP2 Default_Deriv1 Default_Deriv2 CC \
