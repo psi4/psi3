@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<math.h>
 #include<libciomr/libciomr.h>
-#include<libipv1/ip_lib.h>
+#include<libqt/qt.h>
 #include<libint/libint.h>
 
 #include"defines.h"
@@ -24,22 +24,8 @@ void init_moinfo_corr()
   double **mo_row;
 
   /*--- Read in frozen MOs ---*/
-  MOInfo.frozen_docc = init_int_array(Symmetry.nirreps);
-  errcod = ip_count("FROZEN_DOCC",&size,0);
-  if (errcod == IPE_OK && size != Symmetry.nirreps)
-    punt("FROZEN_DOCC has a wrong number of elements");
-  if(errcod == IPE_OK) {
-    for(irrep=0; irrep < Symmetry.nirreps; irrep++)
-      errcod = ip_data("FROZEN_DOCC","%d",(&(MOInfo.frozen_docc)[irrep]),1,irrep);
-  }
-  MOInfo.frozen_uocc = init_int_array(Symmetry.nirreps);
-  errcod = ip_count("FROZEN_UOCC",&size,0);
-  if (errcod == IPE_OK && size != Symmetry.nirreps)
-    punt("FROZEN_UOCC has a wrong number of elements");
-  if(errcod == IPE_OK) {
-    for(irrep=0; irrep < Symmetry.nirreps; irrep++)
-      errcod = ip_data("FROZEN_UOCC","%d",(&(MOInfo.frozen_uocc)[irrep]),1,irrep);
-  }
+  MOInfo.frozen_docc = get_frzcpi();
+  MOInfo.frozen_uocc = get_frzvpi();
 
   print_moinfo_corr();
 

@@ -3,7 +3,7 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-PSILIBS = -lPSI_file30 -lPSI_chkpt -lPSI_qt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
+PSILIBS = -lPSI_qt -lPSI_file30 -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
 CSRC = gprgid.c mp2.c energy.c
 

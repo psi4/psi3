@@ -121,18 +121,8 @@ void get_moinfo(void)
 {
   int i,errcod,size;
 
-  moinfo.frdocc = init_int_array(8);
-  errcod = ip_count("FROZEN_DOCC",&size,0);
-  if(errcod == IPE_OK) {
-      for(i=0; i < size; i++)
-          errcod = ip_data("FROZEN_DOCC","%d",(&(moinfo.frdocc)[i]),1,i);
-    }
-  moinfo.fruocc = init_int_array(8);
-  errcod = ip_count("FROZEN_UOCC",&size,0);
-  if(errcod == IPE_OK) {
-      for(i=0; i < size; i++)
-          errcod = ip_data("FROZEN_UOCC","%d",(&(moinfo.fruocc)[i]),1,i);
-    }
+  moinfo.frdocc = get_frzcpi();
+  moinfo.fruocc = get_frzvpi();
   
   moinfo.nmo = chkpt_rd_nmo();
   moinfo.nirreps = chkpt_rd_nirreps();
