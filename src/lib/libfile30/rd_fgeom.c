@@ -22,7 +22,7 @@
 
   fgeom = block_matrix(nentry,3);
 
-  fgeom_ptr = (PSI_FPTR) (info30_.mpoint[45] - 1)*sizeof(int);
+  fgeom_ptr = (PSI_FPTR) (info30_.mpoint[50] - 1)*sizeof(int);
 
   wreadw(info30_.filenum, (char *) fgeom[0], (int) 3*nentry*sizeof(double),
            fgeom_ptr, &junk);

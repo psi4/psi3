@@ -21,7 +21,7 @@ void file30_wt_fgeom(double **fgeom) {
   PSI_FPTR f_ptr;
 
   num_entries = file30_rd_nentry();
-  f_ptr = (PSI_FPTR) (info30_.mpoint[45] - 1) * sizeof(int);
+  f_ptr = (PSI_FPTR) (info30_.mpoint[50] - 1) * sizeof(int);
 
   temp_geom = init_array(3*num_entries);
 
