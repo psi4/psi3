@@ -46,14 +46,20 @@ timer_on("block_mat");
 
       /* Priority-based cache */
       if(dpd_default->cachetype == 1) {
-          if(dpd_file4_cache_del_low())
+          if(dpd_file4_cache_del_low()) {
+              dpd_file4_cache_print(stderr);
+              fprintf(stderr, "dpd_block_matrix: n = %d  m = %d\n", n, m);
 	      dpd_error("dpd_block_matrix: No memory left.", stderr);
+            }
 	}
 
       /* Least-recently-used cache */
       else if(dpd_default->cachetype == 0) {
-          if(dpd_file4_cache_del_lru())
+          if(dpd_file4_cache_del_lru()) {
+              dpd_file4_cache_print(stderr);
+              fprintf(stderr, "dpd_block_matrix: n = %d  m = %d\n", n, m);
 	      dpd_error("dpd_block_matrix: No memory left.", stderr);
+            }
 	}
 
       else dpd_error("LIBDPD Error: invalid cachetype.", stderr);
