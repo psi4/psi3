@@ -6,6 +6,10 @@
 #include <libciomr.h>
 #include <iwl.h>
 
+#ifdef DMALLOC
+#include <dmalloc.h>
+#endif
+
 typedef struct {
     int nirreps;      /* No. of irreps */
     int pqnum;        /* Pair number for the row indices */
