@@ -123,8 +123,12 @@ void diagSS(int C_irr) {
   dpd_file2_close(&Ria);
 
   L = num_roots = C_index;
-  converged = init_int_array(num_roots);
-  lambda_old = init_array(num_roots);
+  /* arrays must be dimensioned with the final number of roots - even though
+     num_roots may be limited until the first collapse by the number of good
+     initial guesses obtained above. */
+
+  converged = init_int_array(eom_params.rpi[C_irr]);
+  lambda_old = init_array(eom_params.rpi[C_irr]);
 
   /* make zero C2's and S2's (needed by sigmaSS's checksum) */
   for (i=0; i < (eom_params.vectors_per_root_SS+1) * eom_params.rpi[C_irr]; ++i) {
