@@ -28,8 +28,8 @@ psi: (
   stable      = "stable"
   ugeom       = "ugeom"
   rgeom       = ()
-  findif_disp        = "optking --disp_all"
-  findif_disp_symm   = "optking --disp_symm"
+  findif_disp        = "optking --disp_nosymm"
+  findif_disp_symm   = "optking --disp_irrep --irrep 1"
   findif_freq_grad   = "optking --freq_grad"
   findif_freq_grad_symm   = "optking --freq_grad_symm"
   findif_next        = "optking --disp_load"
