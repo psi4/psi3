@@ -1,8 +1,11 @@
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:18  evaleev
- * Initial revision
+ * Revision 1.2  2002/03/25 02:43:45  sherrill
+ * Update documentation
  *
+/* Revision 1.1.1.1  2000/02/04 22:53:18  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 2.2  1994/06/02 02:28:51  seidl
 /* define ALLOC_GLOBALS
 /*
@@ -17,12 +20,12 @@ static char *rcsid = "$Id$";
 #undef ALLOC_GLOBALS
 #include "common.h"
 
-/* does dot product of 2d matrix */
-
-void dot_mat(a,b,n,value)
-   double **a, **b, *value;
-   int n;
-
+/*!
+** dot_mat():
+** Takes the dot product between two 2D matrices a and b with dimensions
+** n x n and returns the value
+*/
+void dot_mat(double **a, double **b, int n, double *value)
    {
       register int i,j;
       double *ta, *tb, tval;
@@ -38,12 +41,12 @@ void dot_mat(a,b,n,value)
       *value = tval;
       }
 
-/* does dot product of matrix stored as linear array */
-
-void dot_arr(a,b,n,value)
-   double *a, *b, *value;
-   int n;
-
+/*!
+** dot_arr():
+** Take the dot product of the first n elements of two arrays a and b
+** and put the result in variable value.
+*/
+void dot_arr(double *a, double *b, int n, double *value)
    {
       register int i;
       double tval;

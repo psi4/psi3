@@ -1,8 +1,11 @@
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:17  evaleev
- * Initial revision
+ * Revision 1.2  2002/03/25 02:43:45  sherrill
+ * Update documentation
  *
+/* Revision 1.1.1.1  2000/02/04 22:53:17  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 2.1  1991/06/15 18:28:43  seidl
 /* *** empty log message ***
 /* */
@@ -11,10 +14,10 @@ static char *rcsid = "$Id$";
 
 #include "includes.h"
 
-void add_mat(a,b,c,n,m)
-   double **a, **b, **c;
-   int n,m;
-
+/*!
+** add_mat(): Add matrices a and b into c for n rows and m columns
+*/
+void add_mat(double **a, double **b, double **c, int n, int m)
    {
       register int i,j;
 

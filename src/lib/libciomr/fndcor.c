@@ -1,4 +1,16 @@
-/*
+/*!
+  \file fndcor.c
+*/
+
+#include <stdio.h>
+#include <libipv1/ip_lib.h>
+
+#define DEF_MAXCRR 100000    /* default maxcor in doubles: used only if
+                              * it can't be read in */
+
+static void fndcor_abort();
+
+/*!
 ** fndcor(): C translation of the Fortran version, to remove the need to
 **    link the library alloc, which also requires the linking of libparse,
 **    etc, etc...
@@ -8,22 +20,14 @@
 ** libipv1.  
 **
 ** Arguments: 
-**    maxcrb  = long int ptr to hold size of maxcore in bytes
-**    infile  = file pointer to input file (eg input.dat)
-**    outfile = file pointer to output file (eg output.dat)
+**    \param maxcrb  = long int ptr to hold size of maxcore in bytes
+**    \param infile  = file pointer to input file (eg input.dat)
+**    \param outfile = file pointer to output file (eg output.dat)
 **
 ** David Sherrill, February 1994
 ** Revised to handle more than 2GB of memory by Ed Valeev, October 2000
 **
 */
-
-#include <stdio.h>
-#include <libipv1/ip_lib.h>
-
-#define DEF_MAXCRR 100000    /* default maxcor in doubles: used only if
-                              * it can't be read in */
-
-static void fndcor_abort() ;
 
 void fndcor(long int *maxcrb, FILE *infile, FILE *outfile)
 {

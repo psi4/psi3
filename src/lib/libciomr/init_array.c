@@ -1,8 +1,14 @@
+/*
+ \file init_array.c
+*/
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:19  evaleev
- * Initial revision
+ * Revision 1.2  2002/03/25 02:43:45  sherrill
+ * Update documentation
  *
+/* Revision 1.1.1.1  2000/02/04 22:53:19  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 2.2  1999/11/01 20:10:56  evaleev
 /* Added explicit extern declarations of functions within the library.
 /*
@@ -16,12 +22,11 @@ static char *rcsid = "$Id$";
 
 extern void resource_command(void);
 
-/* allocates memory for one-D array of dimension size */
-/* returns pointer to 1st element */
-
-double * init_array(size)
-   int size;
-
+/*
+** init_array(): This function initializes an array of doubles of 
+** length 'size' and returns a pointer to the first element
+*/
+double * init_array(int size)
    {
     double *array;
 

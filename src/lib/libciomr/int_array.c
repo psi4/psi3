@@ -1,8 +1,5 @@
-#include "includes.h"
-
-extern int resource_command(void);
-
-/*
+/*!
+** \file int_array.c
 ** INT_ARRAY.C
 ** This file includes the integer versions of several psi routines
 ** for handling arrays and matrices of doubles 
@@ -11,21 +8,25 @@ extern int resource_command(void);
 **
 */
 
+#include "includes.h"
+
+extern int resource_command(void);
 
 
-/* 
-** init_int_array() 
+/*!
+** init_int_array():
 ** Allocates memory for one-D array of ints of dimension 'size'
 ** and returns pointer to 1st element.  Zeroes all elements.
 **
 ** Just modified the init_array() routine to do int's instead.
 ** This will avoid the temptation to allocate 5 integers by  
 **    p = (int *) init_array(5/2), which is bad.             
-**                            
+**
+** \param size = length of array to allocate
+**
+** Returns: pointer to new array
 */
-int * init_int_array(size)
-   int size;
-
+int * init_int_array(int size)
 {
    int *array;
 
@@ -40,7 +41,7 @@ int * init_int_array(size)
 }
 
 
-/*
+/*!
 ** zero_int_array()
 ** Zeroes out an array of integers 'size' integers long
 **
@@ -51,8 +52,8 @@ void zero_int_array(int *a, int size)
 }
 
 
-/*
-** init_int_matrix()
+/*!
+** init_int_matrix():
 ** Function initializes (allocates and clears) a matrix of integers with 
 ** dimensions 'rows' by 'cols' and returns a pointer to it (ptr to first 
 ** row ptr).
@@ -82,8 +83,8 @@ int **init_int_matrix(int rows, int cols)
 }
 
 
-/*
-** free_int_matrix() 
+/*!
+** free_int_matrix():
 ** Free a matrix of integers.  Pass a pointer to the matrix and the
 ** number of rows.
 */
@@ -100,8 +101,8 @@ void free_int_matrix(int **array, int size)
 }
 
 
-/*
-** zero_int_matrix()
+/*!
+** zero_int_matrix():
 ** Zero a matrix of integers.  Pass the matrix, the number of rows,
 ** and the number of columns.
 */
@@ -115,8 +116,8 @@ void zero_int_matrix(int **array, int rows, int cols)
 }
 
 
-/*
-** print_int_mat()
+/*!
+** print_int_mat():
 ** Print a matrix of integers.  Pass the matrix, the number of rows and
 ** columns, and the output file pointer.
 */
