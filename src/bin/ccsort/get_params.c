@@ -11,6 +11,7 @@
 void get_params()
 {
   int i, errcod, tol;
+  char *junk;
 
   params.print_lvl = 1;
   errcod = ip_data("PRINT_LVL","%d",&(params.print_lvl),0);
@@ -33,5 +34,13 @@ void get_params()
 
   params.cachelev = 2;
   errcod = ip_data("CACHELEV", "%d", &(params.cachelev),0);
+
+  errcod = ip_string("REFERENCE", &(junk),0);
+  if(!strcmp(junk, "RHF")) params.ref = 0;
+  else if(!strcmp(junk, "ROHF")) params.ref = 1;
+  else { 
+     printf("Invalid value of input keyword REFERENCE: %s\n", junk);
+     exit(2); 
+    }
 }
 

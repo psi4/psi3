@@ -10,6 +10,7 @@ void get_params()
 {
   int errcod, iconv;
   char *cachetype = NULL;
+  char *junk;
 
   params.maxiter = 50;
   errcod = ip_data("MAXITER","%d",&(params.maxiter),0);
@@ -41,6 +42,14 @@ void get_params()
         }
       free(cachetype);
     }
+
+  errcod = ip_string("REFERENCE", &(junk),0);
+  if(!strcmp(junk, "RHF")) params.ref = 0;
+  else if(!strcmp(junk, "ROHF")) params.ref = 1;
+  else { 
+     printf("Invalid value of input keyword REFERENCE: %s\n", junk);
+     exit(2); 
+    }
   
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
@@ -55,6 +64,7 @@ void get_params()
           params.cachelev);
   fprintf(outfile, "\tCache Type      =    %4s\n", 
           params.cachetype ? "LOW" : "LRU");
+  fprintf(outfile, "\tReference wfn   =    %4s\n", junk);
   fprintf(outfile, "\n");
 }
 
