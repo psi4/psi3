@@ -1,8 +1,12 @@
 /* $Id$ */
 /* $Log$
- * Revision 1.8  2000/12/05 19:40:02  sbrown
- * Added Unrestricted Kohn-Sham DFT.
+ * Revision 1.9  2001/01/04 14:13:34  sbrown
+ * Fixed the problem with iconv:  The new versions of linux had iconv already
+ * assigned to something else so I changed all references of it to scf_conv.
  *
+/* Revision 1.8  2000/12/05 19:40:02  sbrown
+/* Added Unrestricted Kohn-Sham DFT.
+/*
 /* Revision 1.7  2000/10/13 19:51:19  evaleev
 /* Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
 /*
@@ -132,7 +136,7 @@ EXTERN double eri_cutoff;       /* accuracy of integrals to request from cints i
 
 EXTERN int direct_scf;          /* 1 to request direct formation of the Fock matrices */
 EXTERN int diisflg;             /* 0 for diis, 1 disables diis */
-EXTERN int iconv;               /* dmat convg. criterion */
+EXTERN int scf_conv;               /* dmat convg. criterion */
 EXTERN int iopen;               /* 0 for closed, 1 for open, 2 for twocon */
 EXTERN int inflg;               /* 0 default, 1 use old guess, 2 use core H */
 EXTERN int print;               /* print flag */

@@ -1,7 +1,11 @@
 /* $Log$
- * Revision 1.7  2000/12/05 19:40:03  sbrown
- * Added Unrestricted Kohn-Sham DFT.
+ * Revision 1.8  2001/01/04 14:13:35  sbrown
+ * Fixed the problem with iconv:  The new versions of linux had iconv already
+ * assigned to something else so I changed all references of it to scf_conv.
  *
+/* Revision 1.7  2000/12/05 19:40:03  sbrown
+/* Added Unrestricted Kohn-Sham DFT.
+/*
 /* Revision 1.6  2000/09/02 20:48:51  evaleev
 /* Print out one- and two-electron energies every iteration if iprint&2 .
 /*
@@ -79,7 +83,7 @@ int ecalc(incr)
 {
    int i,j,k,ij,nn;
    double edif;
-   double plimit = pow(10.0,(double) -iconv);
+   double plimit = pow(10.0,(double) -scf_conv);
    double neelec = 0.0;
    double oe_energy, te_energy, dtmp, dtmp1;
    double cinext;

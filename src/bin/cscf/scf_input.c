@@ -1,7 +1,11 @@
 /* $Log$
- * Revision 1.9  2000/10/13 19:51:22  evaleev
- * Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
+ * Revision 1.10  2001/01/04 14:13:35  sbrown
+ * Fixed the problem with iconv:  The new versions of linux had iconv already
+ * assigned to something else so I changed all references of it to scf_conv.
  *
+/* Revision 1.9  2000/10/13 19:51:22  evaleev
+/* Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
+/*
 /* Revision 1.8  2000/08/23 17:15:16  sbrown
 /* Added portions to separate out the correlation and exchange energy at the
 /* end the calculation as well as do the consistency check on the integrated
@@ -211,7 +215,7 @@ void scf_input(ipvalue)
 
    if(ipvalue) ip_print_tree(stdout,NULL);
 
-   iconv = 7;
+   scf_conv = 7;
    if(ipvalue) ip_print_value(stdout,ipvalue);
    errcod = ip_string("WFN",&wfn,0);
    if(ipvalue) ip_print_value(stdout,ipvalue);
@@ -220,9 +224,9 @@ void scf_input(ipvalue)
      dertype = (char *) malloc(sizeof(char)*5);
      strcpy(dertype,"NONE");
      }
-   if(strcmp(wfn,"SCF")) iconv = 10;
-   if(!strcmp(dertype,"SECOND")) iconv = 12;
-   errcod = ip_data("CONVERGENCE","%d",&iconv,0);
+   if(strcmp(wfn,"SCF")) scf_conv = 10;
+   if(!strcmp(dertype,"SECOND")) scf_conv = 12;
+   errcod = ip_data("CONVERGENCE","%d",&scf_conv,0);
 
    if (ksdft){
        functional = (char *)determine_functional();
@@ -242,7 +246,7 @@ void scf_input(ipvalue)
    if(direct_scf)
    fprintf(outfile,"  dyn_acc      = %s\n",(dyn_acc) ? "true" : "false");
    fprintf(outfile,"  dertype      = %s\n",dertype);
-   fprintf(outfile,"  convergence  = %d\n",iconv);
+   fprintf(outfile,"  convergence  = %d\n",scf_conv);
    fprintf(outfile,"  maxiter      = %d\n",itmax);
    fprintf(outfile,"  guess        = %s\n",guess);
    if(print) fprintf(outfile,"  iprint       = %d\n",print);
