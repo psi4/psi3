@@ -347,7 +347,7 @@ psi: (
   % Procedures for the CCSD(T) energy
   CCSD_TEnergy = ($ints $scf $transqt $ccsort $ccenergy $cctriples)
   CCSD_TRHFEnergy = ($CCSD_TEnergy $done)
-  CCSD_TROHFEnergy = ERROR
+  CCSD_TROHFEnergy = ($CCSD_TEnergy $done) 
   CCSD_TUHFEnergy = ($CCSD_TEnergy $done)
   CCSD_TTwoConEnergy = ERROR
 
@@ -557,8 +557,8 @@ psi: (
   % Procedures for the conventional MP2 energy
   MP2Energy = ($ints $scf $transqt $ccsort $mp2)
   MP2RHFEnergy = ($MP2Energy $done)
-  MP2ROHFEnergy = ERROR
-  MP2UHFEnergy = ERROR
+  MP2ROHFEnergy = ($MP2Energy $done) 
+  MP2UHFEnergy =  ($MP2Energy $done)
   MP2TwoConEnergy = ERROR
 
   % Procedures for optimization via energy points
@@ -574,8 +574,8 @@ psi: (
   % properties calculation
   MP2EnergyOEPROP = ($ints $scf $transqt $ccsort $mp2prop $oeprop)
   MP2RHFEnergyOEPROP = ($MP2EnergyOEPROP $done)
-  MP2ROHFEnergyOEPROP = ERROR
-  MP2UHFEnergyOEPROP = ERROR
+  MP2ROHFEnergyOEPROP = ($MP2EnergyOEPROP $done) 
+  MP2UHFEnergyOEPROP =  ($MP2EnergyOEPROP $done)
   MP2TwoConEnergyOEPROP = ERROR
 
   % Procedures for the direct MP2 energy
@@ -590,8 +590,8 @@ psi: (
     repeat $ndisp $findif_next $MP2Energy $findif_energy end
     $findif_grad_energy $geomupdate end $done)
   MP2RHFEnergyOpt = $MP2EnergyOpt
-  MP2ROHFEnergyOpt = ERROR
-  MP2UHFEnergyOpt = ERROR
+  MP2ROHFEnergyOpt = $MP2EnergyOpt 
+  MP2UHFEnergyOpt = $MP2EnergyOpt
   MP2TwoConEnergyOpt = ERROR
 
   % Procedures for optimization via DirectMP2 energy points
