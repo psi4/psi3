@@ -21,10 +21,11 @@
 ** define input parsing files and ioff array 
 */
 
-FILE *outfile;    /* pointer to the file output.dat */
-FILE *infile;     /* pointer to the file input.dat  */
-int *ioff;        /* the ioff array                 */
-int print_lvl=1;  /* diagnostic info flag           */
+FILE *outfile;           /* pointer to the output file */
+FILE *infile;            /* pointer to the input file  */
+char *psi_file_prefix;   /* pointer to the file prefix string */
+int *ioff;               /* the ioff array                 */
+int print_lvl=1;         /* diagnostic info flag           */
 
 /***************************************************************************/
 /* The main procedure                                                      */
@@ -223,23 +224,23 @@ main(int argc, char **argv)
 void init_io(int argc, char **argv)
 {
    int i;
-   int parsed = 1;
+   int num_extra_args=0;
+   char **extra_args;
+
+   extra_args = (char **) malloc(argc*sizeof(char *));
 
    for (i=1; i<argc; i++) {
      if (strcmp("--quiet", argv[i]) == 0) {
        print_lvl = 0;
-       parsed++;
+     }
+     else {
+       extra_args[num_extra_args++] = argv[i];
      }
    }
    
-   init_in_out(argc-parsed,argv+parsed);
-   
-   if (print_lvl > 0) tstart(outfile);
-   ip_set_uppercase(1);
-   ip_initialize(infile, outfile);
-   ip_cwk_clear();
-   ip_cwk_add(":DEFAULT");  
+   psi_start(num_extra_args, extra_args, 0);
    ip_cwk_add(":CLAG");  
+   if (print_lvl > 0) tstart(outfile);
    psio_init();
 }
 
@@ -250,10 +251,8 @@ void init_io(int argc, char **argv)
 void close_io(void)
 {
    psio_done();
-   fclose(infile);
    if (print_lvl > 0) tstop(outfile);
-   ip_done();
-   fclose(outfile);
+   psi_stop();
 }
 
 /****************************************************************************/
