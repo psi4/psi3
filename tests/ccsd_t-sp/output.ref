@@ -1,0 +1,556 @@
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Fri Jun  7 16:28:45 2002
+
+                                --------------
+                                  WELCOME TO
+                                    PSI  3
+                                --------------
+
+  LABEL       =	BH cc-pVQZ CCSD(T)
+  SHOWNORM    =	0
+  PUREAM      =	1
+  PRINT_LVL   =	1
+
+  -Geometry before Center-of-Mass shift (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+           BORON      0.000000000000     0.000000000000     0.000000000000
+        HYDROGEN      0.000000000000     0.000000000000     1.889725988579
+
+
+  -Rotational constants (cm-1) :
+    A = **********  B =   18.25796  C =   18.25796
+    It is a linear molecule.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+           BORON      0.000000000000     0.000000000000     0.158483189783
+        HYDROGEN      0.000000000000     0.000000000000    -1.731242798796
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 2
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S ( 23870.00000000     0.00008800)
+           (  3575.00000000     0.00068700)
+           (   812.80000000     0.00360000)
+           (   229.70000000     0.01494900)
+           (    74.69000000     0.05143500)
+           (    26.81000000     0.14330200)
+           (    10.32000000     0.30093500)
+           (     4.17800000     0.40352600)
+           (     1.72700000     0.22534000)
+           (     0.47040000     0.01540700)
+           (     0.18960000    -0.00395500)
+           (     0.07394000     0.00112400) )
+        (S ( 23870.00000000    -0.00001800)
+           (  3575.00000000    -0.00013900)
+           (   812.80000000    -0.00072500)
+           (   229.70000000    -0.00306300)
+           (    74.69000000    -0.01058100)
+           (    26.81000000    -0.03136500)
+           (    10.32000000    -0.07101200)
+           (     4.17800000    -0.13210300)
+           (     1.72700000    -0.12307200)
+           (     0.47040000     0.26181900)
+           (     0.18960000     0.58666200)
+           (     0.07394000     0.29049400) )
+        (S (     0.47040000     1.00000000) )
+        (S (     0.18960000     1.00000000) )
+        (S (     0.07394000     1.00000000) )
+        (P (    22.26000000     0.00509500)
+           (     5.05800000     0.03320600)
+           (     1.48700000     0.13231400)
+           (     0.50710000     0.33181800)
+           (     0.18120000     0.47206300)
+           (     0.06463000     0.25797900) )
+        (P (     0.50710000     1.00000000) )
+        (P (     0.18120000     1.00000000) )
+        (P (     0.06463000     1.00000000) )
+        (D (     1.11000000     1.00000000) )
+        (D (     0.40200000     1.00000000) )
+        (D (     0.14500000     1.00000000) )
+        (F (     0.88200000     1.00000000) )
+        (F (     0.31100000     1.00000000) )
+        (G (     0.67300000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    82.64000000     0.00200600)
+           (    12.41000000     0.01534300)
+           (     2.82400000     0.07557900)
+           (     0.79770000     0.25687500)
+           (     0.25810000     0.49736800)
+           (     0.08989000     0.29613300) )
+        (S (     0.79770000     1.00000000) )
+        (S (     0.25810000     1.00000000) )
+        (S (     0.08989000     1.00000000) )
+        (P (     2.29200000     1.00000000) )
+        (P (     0.83800000     1.00000000) )
+        (P (     0.29200000     1.00000000) )
+        (D (     2.06200000     1.00000000) )
+        (D (     0.66200000     1.00000000) )
+        (F (     1.39700000     1.00000000) )
+       )
+
+
+    Wrote 137896 bytes to FILE30
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 25
+    Number of primitives   = 57
+    Number of AO           = 105
+    Number of SO           = 85
+
+    Irrep    Number of SO
+    -----    ------------
+      1           35
+      2           10
+      3           20
+      4           20
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+           BORON      0.000000000000     0.000000000000     0.158483189783
+        HYDROGEN      0.000000000000     0.000000000000    -1.731242798796
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+           BORON      0.000000000000     0.000000000000     0.158483189783
+        HYDROGEN      0.000000000000     0.000000000000    -1.731242798796
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+           BORON      0.000000000000     0.000000000000     0.083865698382
+        HYDROGEN      0.000000000000     0.000000000000    -0.916134301618
+
+
+  -Geometry in the reference coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+           BORON      0.000000000000     0.000000000000     0.158483189783
+        HYDROGEN      0.000000000000     0.000000000000    -1.731242798796
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       2.645886245000
+
+  -The Interatomic Distances in angstroms:
+
+           1           2
+
+    1   0.0000000
+    2   1.0000000   0.0000000
+
+
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Fri Jun  7 16:28:46 2002
+
+user time   =       0.23 seconds
+system time =       0.12 seconds
+total time  =          1 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Fri Jun  7 16:28:48 2002
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 12500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = BH cc-pVQZ CCSD(T)                                                              
+    Number of atoms             = 2
+    Number of atomic orbitals   = 105
+    Number of symmetry orbitals = 85
+    Maximum AM in the basis     = 4
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+    Wrote 1213052 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Fri Jun  7 16:29:04 2002
+
+user time   =      15.20 seconds
+system time =       0.40 seconds
+total time  =         16 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Fri Jun  7 16:29:04 2002
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+
+  label       = BH cc-pVQZ CCSD(T)
+  wfn          = CCSD_T
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct SCF   = false
+  dertype      = NONE
+  convergence  = 11
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy        2.6458862450000
+  first run, so defaulting to core-hamiltonian guess
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  using buffered io, 2 buffers, each 4888544 bytes in size
+
+  The lowest eigenvalue of the overlap matrix was 2.044281e-04
+
+
+  Using DOCC and SOCC to 
+  determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     0     0   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 395421 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -22.2233242962    2.486921e+01    0.000000e+00    0.000000e+00
+    2       -24.8405444076    2.617220e+00    5.293930e-02    8.076156e-01
+    3       -25.0950499212    2.545055e-01    8.189175e-03    2.038986e-01
+    4       -25.1025114524    7.461531e-03    8.539058e-04    3.287614e-02
+    5       -25.1034633316    9.518792e-04    3.195756e-04    7.589939e-03
+    6       -25.1035439740    8.064241e-05    8.840640e-05    2.433176e-03
+    7       -25.1035468478    2.873845e-06    1.848523e-05    4.878965e-04
+    8       -25.1035468719    2.401426e-08    2.857009e-06    4.441733e-05
+    9       -25.1035468734    1.556536e-09    4.968132e-07    1.361764e-05
+   10       -25.1035468736    1.897007e-10    1.473514e-07    4.745830e-06
+   11       -25.1035468736    5.929479e-12    3.223241e-08    7.765670e-07
+   12       -25.1035468736    2.842171e-14    2.446398e-09    3.761460e-08
+   13       -25.1035468736   -3.552714e-15    6.178316e-10    1.499990e-08
+   14       -25.1035468736   -3.552714e-15    6.308022e-11    1.702443e-09
+   15       -25.1035468736    3.552714e-15    1.350468e-11    9.315039e-11
+   16       -25.1035468736    0.000000e+00    1.884315e-12    2.479191e-11
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1     -7.656449     2A1     -0.715781     3A1     -0.341709  
+
+  Unoccupied orbitals
+   1B2      0.045923     1B1      0.045923     4A1      0.154085  
+   5A1      0.215379     6A1      0.264489     2B2      0.267602  
+   2B1      0.267602     3B1      0.395341     3B2      0.395341  
+   1A2      0.408508     7A1      0.408508     8A1      0.498906  
+   9A1      0.694962    10A1      0.760301     4B2      0.858235  
+   4B1      0.858235     5B2      1.013777     5B1      1.013777  
+  11A1      1.210558     6B1      1.219679     6B2      1.219679  
+  12A1      1.221072     2A2      1.221072     7B2      1.316383  
+   7B1      1.316383    13A1      1.341361     3A2      1.341361  
+  14A1      1.348576    15A1      1.473935     8B2      1.532751  
+   8B1      1.532751    16A1      1.726656    17A1      2.136117  
+   4A2      2.538373    18A1      2.538373     9B2      2.610957  
+   9B1      2.610957    19A1      2.855272    10B2      3.064834  
+  10B1      3.064834     5A2      3.397074    20A1      3.397074  
+  11B1      3.412515    11B2      3.412515    21A1      3.566685  
+  12B1      3.739854    12B2      3.739854     6A2      3.809173  
+  22A1      3.809173    23A1      3.897341     7A2      3.897341  
+  24A1      3.908670    13B1      3.947554    13B2      3.947554  
+  14B2      3.949190    14B1      3.949190    15B1      4.001132  
+  15B2      4.001132    25A1      4.099324     8A2      4.099324  
+  26A1      4.138267    27A1      5.032926    28A1      5.283525  
+  16B2      5.505709    16B1      5.505709    17B1      6.418822  
+  17B2      6.418822    29A1      7.300731    18B1      7.574075  
+  18B2      7.574075    30A1      7.596982     9A2      7.596982  
+  31A1      8.191050    32A1      8.448402    10A2      8.448402  
+  19B1      8.895755    19B2      8.895755    20B2      9.775047  
+  20B1      9.775047    33A1      9.801553    34A1     11.149103  
+  35A1     17.128233  
+
+
+        total energy       =     -25.103546873615
+        kinetic energy     =      25.410117389243
+        nuc. attr. energy  =     -63.481105164843
+        elec. rep. energy  =      12.967440901985
+        potential energy   =     -50.513664262858
+        virial theorem     =       2.012212239058
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Fri Jun  7 16:29:07 2002
+
+user time   =       1.37 seconds
+system time =       1.00 seconds
+total time  =          3 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Fri Jun  7 16:29:07 2002
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CCSD_T
+	Reference orbitals     =  RHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            = Yes
+	Do All TEI             = No
+	Memory (Mbytes)        =  100.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	File30 Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 85
+	Number of MOs    = 85
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   35	   35	    1	    3	    0	    32	    0
+	 A2 	   10	   10	    0	    0	    0	    10	    0
+	 B1 	   20	   20	    0	    0	    0	    20	    0
+	 B2 	   20	   20	    0	    0	    0	    20	    0
+
+	Nuclear Repulsion Energy    =         2.6458862450
+	Total SCF Energy            =       -25.1035468736
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =  -23.044437479862609
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Fri Jun  7 16:29:30 2002
+
+user time   =      14.44 seconds
+system time =       6.49 seconds
+total time  =         23 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Fri Jun  7 16:29:30 2002
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Reference wfn   =      RHF
+	Derivative      =     None
+	Memory (Mbytes) =    100.0
+	AO Basis        =       No
+	Cache Level     =        2
+	Cache Type      =      LRU
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 85
+	Number of active MOs = 84
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   35	    1	    2	    0	    32	    0
+	 A2 	   10	    0	    0	    0	    10	    0
+	 B1 	   20	    0	    0	    0	    20	    0
+	 B2 	   20	    0	    0	    0	    20	    0
+
+	Nuclear Rep. energy (chkpt) =      2.64588624500000
+	SCF energy          (chkpt) =    -25.10354687361505
+	One-electron energy          =     -7.29501042165773
+	Two-electron (AA) energy     =      0.68288025532805
+	Two-electron (BB) energy     =      0.68288025532805
+	Two-electron (AB) energy     =      1.90713452757725
+	Two-electron energy          =      2.59001478290530
+	Frozen-core energy (transqt) =    -23.04443747986261
+	Reference energy             =    -25.10354687361503
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Fri Jun  7 16:29:51 2002
+
+user time   =       5.26 seconds
+system time =       8.43 seconds
+total time  =         21 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Fri Jun  7 16:29:51 2002
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    2.645886245000000
+	SCF energy          (chkpt)   =  -25.103546873615048
+	Reference energy    (file100) =  -25.103546873615031
+
+	Input parameters:
+	-----------------
+	Wave function   =    CCSD_T
+	Reference wfn   =     RHF
+	Memory (Mbytes) =  100.0
+	Maxiter         =     50
+	Convergence     = 1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	Local CC        =     No
+	Local Cutoff    = 1.0e-02
+	AO Basis        =     No
+	Cache Level     =    2
+	Cache Type      =     LOW
+	Print Level     =    0
+
+	                     Solving CCSD Equations
+	                     ----------------------
+	Iter             Energy               RMS       T1Diag      D1Diag
+	----     ---------------------     --------   ----------  ----------
+	   0        -0.077761727085805    0.000e+00    0.000000    0.000000
+	   1        -0.090565418781973    5.829e-02    0.005971    0.011378
+	   2        -0.099495831053776    3.230e-02    0.010799    0.021037
+	   3        -0.100028586546511    1.064e-02    0.012663    0.024895
+	   4        -0.100273127825027    3.505e-03    0.013052    0.025729
+	   5        -0.100252815632707    1.289e-03    0.013046    0.025728
+	   6        -0.100258384837696    4.069e-04    0.013001    0.025635
+	   7        -0.100267433345263    9.945e-05    0.012989    0.025611
+	   8        -0.100265921876272    2.126e-05    0.012984    0.025599
+	   9        -0.100265784494534    4.744e-06    0.012982    0.025596
+	  10        -0.100265805354316    1.353e-06    0.012982    0.025595
+	  11        -0.100265809574561    3.294e-07    0.012982    0.025595
+	  12        -0.100265806016475    1.059e-07    0.012982    0.025595
+	  13        -0.100265804679640    2.286e-08    0.012982    0.025595
+
+	Iterations converged.
+
+	SCF energy       (chkpt)   =  -25.103546873615048
+	Reference energy (file100) =  -25.103546873615031
+	CCSD correlation energy    =   -0.100265804679640
+	Total CCSD energy          =  -25.203812678294671
+
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Fri Jun  7 16:30:19 2002
+
+user time   =       6.51 seconds
+system time =      21.45 seconds
+total time  =         28 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Fri Jun  7 16:30:19 2002
+
+			**************************
+			*                        *
+			*        CCTRIPLES       *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    2.645886245000000
+	SCF energy          (chkpt)   =  -25.103546873615048
+	Reference energy    (file100) =  -25.103546873615031
+	CCSD energy         (file100) =   -0.100265804679640
+	Total CCSD energy   (file100) =  -25.203812678294671
+
+	Number of ijk index combinations: 4
+
+	(T) energy                    =   -0.002090933502274
+	Total CCSD(T) energy          =  -25.205903611796945
+
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Fri Jun  7 16:30:22 2002
+
+user time   =       1.98 seconds
+system time =       0.51 seconds
+total time  =          3 seconds
