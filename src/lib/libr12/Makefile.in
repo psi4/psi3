@@ -14,7 +14,7 @@ default: $(TARGET)
 
 top_objdir_path=$(PWD)/$(top_objdir)
 
-$(TARGET): $(BUILD_SRC) $(LIB_SRC) input.dat Makefile.libr12
+$(TARGET) $(top_objdir)/libr12.h: $(BUILD_SRC) $(LIB_SRC) input.dat Makefile.libr12
 	if \
 ! [ -e $(SCRATCH) ]; \
  then \

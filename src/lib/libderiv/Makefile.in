@@ -14,7 +14,7 @@ default: $(TARGET)
 
 top_objdir_path=$(PWD)/$(top_objdir)
 
-$(TARGET): $(BUILD_SRC) Makefile.libderiv input.dat
+$(TARGET) $(top_objdir)/libderiv.h: $(BUILD_SRC) Makefile.libderiv input.dat
 	if \
 ! [ -e $(SCRATCH) ]; \
  then \
@@ -36,7 +36,9 @@ cd $(TEMP_DIR); \
 cp Makefile.compiler Makefile; \
 $(MAKE) top_objdir=$(top_objdir_path); \
 rm -f Makefile; \
-./$(BUILD_BINARY); \
+if ! ./$(BUILD_BINARY); then \
+ cd ..; rm -fR $(TEMP_DIR); exit 1; \
+fi; \
 cp Makefile.libderiv Makefile; \
 ${MAKE} top_objdir=$(top_objdir_path) install; \
 cd ..; \
