@@ -497,7 +497,7 @@ void Gciab(void)
     dpd_buf4_close(&G);
 
     /* - ( g(C,A) T(I,B) - g(C,B) T(I,A) ) --> G(CI,AB) */
-    dpd_file2_init(&g, CC_OEI, 0, 1, 1, "GAE");
+    dpd_file2_init(&g, CC_GLG, 0, 1, 1, "GAE");
     dpd_file2_mat_init(&g);
     dpd_file2_mat_rd(&g);
     dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
