@@ -10,7 +10,7 @@ PSILIBS = -lPSI_file30 -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 TRUESRC = \
 cscf.c cleanup.c dft_inputs.c diis.c dmat.c \
 dmat_2.c ecalc.c errchk.c findit.c \
-formg2.c formgc.c formgo.c form_vec.c gprgid.c init_scf.c make_47.c \
+formg2.c formgc.c formgo.c form_vec.c gprgid.c init_scf.c \
 packit_c.c packit_o.c rdone.c rdtwo.c rotate_vector.c scf_input.c \
 scf_iter.c scf_iter_2.c schmit.c sdot.c shalf.c check_rot.c phases.c\
 guess.c sortev.c occ_fun.c init_uhf.c cmatsplit.c dmatuhf.c \

@@ -1,7 +1,11 @@
 /* $Log$
- * Revision 1.3  2000/10/13 19:51:21  evaleev
- * Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
+ * Revision 1.4  2002/03/24 17:28:14  crawdad
+ * Minor modifications in preparation for conversion to libpsio-based file30.
+ * -TDC
  *
+/* Revision 1.3  2000/10/13 19:51:21  evaleev
+/* Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
+/*
 /* Revision 1.2  2000/06/22 22:15:01  evaleev
 /* Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
 /*
@@ -49,16 +53,9 @@ init_scf()
    int i,jj;
    int nn,isadr;
    int nkind,junk;
-   PSI_FPTR next;
    int degen[20],*num_so;
-   double *real_dum;
    char char_dum[80];
    char **irr_labs;
-
-   i10 = (int *) init_int_array(200);
-   real_dum = (double *) init_array(MAX_BASIS);
-
-   wreadw(itap30,(char *) i10,sizeof(int)*200,(PSI_FPTR) sizeof(int)*100,&next);
 
    ioff[0] = 0;
    for (i = 1; i < MAXIOFF ; i++) {
