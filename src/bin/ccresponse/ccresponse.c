@@ -330,7 +330,7 @@ int main(int argc, char *argv[])
 
     /* compute the specific rotation */
     for(i=0,M=0.0; i < moinfo.natom ;i++) M += an2masses[(int) moinfo.zvals[i]]; /* amu */
-    TrG = (tensor[0][0] + tensor[1][1] + tensor[2][2])/(3.0 * 2.0 * _pi * params.omega);
+    TrG = (tensor[0][0] + tensor[1][1] + tensor[2][2])/(3.0 * params.omega);
     nu = params.omega; /* hartree */
     bohr2a4 = _bohr2angstroms * _bohr2angstroms * _bohr2angstroms * _bohr2angstroms;
     m2a = _bohr2angstroms * 1.0e-10;
@@ -340,12 +340,13 @@ int main(int argc, char *argv[])
     prefactor *= 288.0e-30 * _pi * _pi * _na * bohr2a4;
     rotation = prefactor * TrG * nu * nu / M;
     fprintf(outfile, "[alpha]_(%5.3f) = %20.12f\n", params.omega, rotation);
+
+    free_block(tensor);
   }
 
   for(alpha=0; alpha < 3; alpha++) free(cartcomp[alpha]);
   free(cartcomp);
 
-  free_block(tensor);
 
   if(params.local) local_done();
 
