@@ -11,6 +11,23 @@ void init_globals()
 {
   IOUnits.itap30 = 30;
   IOUnits.itap33 = PSIF_SO_TEI;
+  IOUnits.itapDSCF = PSIF_DSCF;
+  IOUnits.itapG = PSIF_AO_TPDM;
+  IOUnits.itapR12 = PSIF_SO_R12;
+  IOUnits.itapT1  = PSIF_SO_R12T1;
+  IOUnits.itapERI_MO = PSIF_MO_TEI;
+  IOUnits.itapR12_MO = PSIF_MO_R12;
+  IOUnits.itapR12T2_MO = PSIF_MO_R12T1;
+  IOUnits.itapD = PSIF_AO_OPDM;
+
+  IOUnits.itapS = PSIF_OEI;
+  IOUnits.itapT = PSIF_OEI;
+  IOUnits.itapV = PSIF_OEI;
+  IOUnits.itapS_AO = PSIF_OEI;
+  IOUnits.itapMX_AO = PSIF_OEI;
+  IOUnits.itapMY_AO = PSIF_OEI;
+  IOUnits.itapMZ_AO = PSIF_OEI;
+  /*
   IOUnits.itapS = PSIF_SO_S;
   IOUnits.itapT = PSIF_SO_T;
   IOUnits.itapV = PSIF_SO_V;
@@ -18,14 +35,7 @@ void init_globals()
   IOUnits.itapMX_AO = PSIF_AO_MX;
   IOUnits.itapMY_AO = PSIF_AO_MY;
   IOUnits.itapMZ_AO = PSIF_AO_MZ;
-  IOUnits.itapDSCF = PSIF_DSCF;
-  IOUnits.itapD = PSIF_AO_OPDM;
-  IOUnits.itapG = PSIF_AO_TPDM;
-  IOUnits.itapR12 = PSIF_SO_R12;
-  IOUnits.itapT1  = PSIF_SO_R12T1;
-  IOUnits.itapERI_MO = PSIF_MO_TEI;
-  IOUnits.itapR12_MO = PSIF_MO_R12;
-  IOUnits.itapR12T2_MO = PSIF_MO_R12T1;
+  */
 
   return;
 }

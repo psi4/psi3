@@ -5,6 +5,7 @@
 #include <qt.h>
 #include <iwl.h>
 #include <file30.h>
+#include <psifiles.h>
 #include "MOInfo.h"
 #include "Params.h"
 #include "globals.h"
@@ -142,7 +143,7 @@ void trans_one_forwards(void)
 	       "\n\n\tOne-Electron Alpha Integrals (MO Basis):\n", 
 	       params.backtr, nfzc, print_integrals, outfile);
 
-      iwl_wrtone(itap, dst_ntri, new_oe_ints, moinfo.efzc);
+      iwl_wrtone(itap, PSIF_MO_A_OEI, dst_ntri, new_oe_ints);
 
       if (params.print_lvl) {
 	fprintf(outfile, "\tOne-electron A integrals written to file %d.\n", itap);
@@ -159,7 +160,7 @@ void trans_one_forwards(void)
 	       "\n\n\tOne-Electron Beta Integrals (MO Basis):\n", 
 	       params.backtr, nfzc, print_integrals, outfile);
 
-      iwl_wrtone(itap, dst_ntri, new_oe_ints, moinfo.efzc);
+      iwl_wrtone(itap, PSIF_MO_B_OEI, dst_ntri, new_oe_ints);
       if (params.print_lvl) {
 	fprintf(outfile, "\tOne-electron B integrals written to file %d.\n", itap);
 	fflush(outfile);
@@ -175,7 +176,7 @@ void trans_one_forwards(void)
 	       params.backtr, nfzc, print_integrals, outfile);
 
 
-      iwl_wrtone(itap, dst_ntri, new_oe_ints, moinfo.efzc);
+      iwl_wrtone(itap, PSIF_MO_OEI, dst_ntri, new_oe_ints);
       if (params.print_lvl) {
 	fprintf(outfile, "\tOne-electron integrals written to file %d.\n", itap);
 	fflush(outfile);
@@ -198,7 +199,7 @@ void trans_one_forwards(void)
 	       "\n\n\tAlpha Frozen-Core Operator (MO Basis):\n", 
 	       params.backtr, nfzc, print_integrals, outfile);
 
-      iwl_wrtone(itap, dst_ntri, new_oe_ints, moinfo.efzc);
+      iwl_wrtone(itap, PSIF_MO_A_FZC, dst_ntri, new_oe_ints);
 
       if (params.print_lvl) {
 	fprintf(outfile, "\tAlpha frozen-core operator written to file %d.\n", itap);
@@ -216,7 +217,7 @@ void trans_one_forwards(void)
 	       "\n\n\tBeta Frozen-Core Operator (MO Basis):\n", 
 	       params.backtr, nfzc, print_integrals, outfile);
 
-      iwl_wrtone(itap, dst_ntri, new_oe_ints, moinfo.efzc);
+      iwl_wrtone(itap, PSIF_MO_B_FZC, dst_ntri, new_oe_ints);
 
       if (params.print_lvl) {
 	fprintf(outfile, "\tBeta frozen-core operator written to file %d.\n", itap);
@@ -233,7 +234,7 @@ void trans_one_forwards(void)
 	       "\n\n\tFrozen-Core Operator (MO Basis):\n", 
 	       params.backtr, nfzc, print_integrals, outfile);
 
-      iwl_wrtone(itap, dst_ntri, new_oe_ints, moinfo.efzc);
+      iwl_wrtone(itap, PSIF_MO_FZC, dst_ntri, new_oe_ints);
 
       if (params.print_lvl) {
 	fprintf(outfile, "\tFrozen-core operator written to file %d.\n", itap);

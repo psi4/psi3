@@ -41,6 +41,7 @@ void get_mo_info(void)
    CalcInfo.open_per_irr = file30_rd_openpi();
    CalcInfo.enuc = file30_rd_enuc();
    CalcInfo.escf = file30_rd_escf();
+   CalcInfo.efzc = file30_rd_efzc();
    eig_unsrt = file30_rd_evals();
    file30_close();
  

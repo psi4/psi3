@@ -41,9 +41,6 @@ void get_params()
   params.keep_OEIFile = 1;
   errcod = ip_boolean("KEEP_OEIFILE",&(params.keep_OEIFile),0);
 
-  params.FZCFile = PSIF_MO_FZC;
-  errcod = ip_data("FZC_FILE","%d",&(params.FZCFile),0);
-
   params.tolerance = 1e-14;
   errcod = ip_data("TOLERANCE", "%d", &(tol),0);
   if(errcod == IPE_OK) params.tolerance = 1.0*pow(10.0,(double) -tol);

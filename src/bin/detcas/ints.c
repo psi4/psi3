@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <iwl.h>
 #include <libciomr.h>
+#include <psifiles.h>
 #include "globaldefs.h"
 #include "globals.h"
 
@@ -31,8 +32,7 @@ void read_integrals()
   if (Params.print_lvl > 3) 
     fprintf(outfile, "\n\tOne-electron integrals (frozen core operator):\n");
 
-  iwl_rdone(Params.oei_file, CalcInfo.onel_ints, &(CalcInfo.efzc),
-     ioff, CalcInfo.nbfso, 0, 0, Params.oei_erase, 
+  iwl_rdone(Params.oei_file, PSIF_MO_FZC, CalcInfo.onel_ints, nbstri, Params.oei_erase, 
      (Params.print_lvl>3), outfile);
 
   if (Params.print_lvl > 4) 

@@ -30,22 +30,17 @@ struct iwlbuf {
    };
 
 #define IWL_KEY_BUF "IWL Buffers"
-#define IWL_KEY_EFZC "IWL Frozen Core Energy"
 #define IWL_KEY_ONEL "IWL One-electron matrix elements"
 
 #define IWL_INTS_PER_BUF 2980
 
 extern void iwl_buf_fetch(struct iwlbuf *Buf);
-extern int iwl_rdone(int itap, double *ints, double *e_fzc, int *ioff,
-              int norbs, int nfzc, int nfzv, int erase,
+
+extern int iwl_rdone(int itap, char *label, double *ints, int ntri, int erase,
               int printflg, FILE *outfile);
-extern int iwl_rdone_all(int itap, int nbstri, double *onel_ints,
-              double *efzc, int erase);
-/*
-extern void iwl_rdone(int itap, int nbstri, double *onel_ints, double *efzc,
-      int erase);
-*/
-extern void iwl_wrtone(int itap, int ntri, double *onel_ints, double e_fzc);
+
+extern void iwl_wrtone(int itap, char *label, int ntri, double *onel_ints);
+
 extern void iwl_rdtwo(int itap, double *ints, int *ioff, int norbs,
                       int nfzc, int nfzv, int printflg, FILE *outfile);
 extern void iwl_wrttwo(int itap, int nbfso, double *ints, int *ioff, 

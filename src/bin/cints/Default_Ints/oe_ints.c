@@ -6,6 +6,7 @@
 #include<iwl.h>
 #include<libciomr.h>
 #include<libint.h>
+#include<psifiles.h>
 
 #include"defines.h"
 #define EXTERN
@@ -374,9 +375,9 @@ void oe_ints()
   if (BasisSet.puream)
     free_matrix(temp,dimension); 
   dimension=ioff[Symmetry.num_so];
-  iwl_wrtone(IOUnits.itapS,dimension,S,0.0);
-  iwl_wrtone(IOUnits.itapT,dimension,T,0.0);
-  iwl_wrtone(IOUnits.itapV,dimension,V,0.0);
+  iwl_wrtone(IOUnits.itapS,PSIF_SO_S,dimension,S);
+  iwl_wrtone(IOUnits.itapT,PSIF_SO_T,dimension,T);
+  iwl_wrtone(IOUnits.itapV,PSIF_SO_V,dimension,V);
   if (UserOptions.print_lvl >= PRINT_OEI) {
     fprintf(outfile,"  -Overlap integrals:\n\n");
     print_array(S,Symmetry.num_so,outfile);

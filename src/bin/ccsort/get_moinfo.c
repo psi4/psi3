@@ -39,6 +39,7 @@ void get_moinfo(void)
   moinfo.labels = file30_rd_irr_labs();
   moinfo.enuc = file30_rd_enuc();
   escf = file30_rd_escf();
+  moinfo.efzc = file30_rd_efzc();
   moinfo.orbspi = file30_rd_orbspi();
   moinfo.clsdpi = file30_rd_clsdpi();
   moinfo.openpi = file30_rd_openpi();

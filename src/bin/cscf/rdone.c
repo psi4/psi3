@@ -1,7 +1,17 @@
 /* $Log$
- * Revision 1.2  2000/10/13 19:51:21  evaleev
- * Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
+ * Revision 1.3  2001/06/21 21:00:37  crawdad
+ * I have simplified the libiwl functions iwl_rdone() and iwl_wrtone() to only
+ * read and write one-electron quantities and to more explicitly use the libpsio
+ * structure to allow multiple quantities in a single one-electron IWL file.
+ * The frozen-core energy is no longer dealt with in these functions, but is
+ * now handled in libfile30.  The argument lists for these functions have
+ * therefore changed quite a lot, and I've tried to correct all the PSI3
+ * codes that are affected.
+ * -TDC
  *
+/* Revision 1.2  2000/10/13 19:51:21  evaleev
+/* Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
+/*
 /* Revision 1.1.1.1  2000/02/04 22:52:31  evaleev
 /* Started PSI 3 repository
 /*
@@ -57,7 +67,7 @@ void rdone_iwl()
   ints = init_array(ntri);
 
   /* S integrals */
-  stat = iwl_rdone_all(itapS,ntri,ints,&e_fzc,delete_1e);
+  stat = iwl_rdone(itapS,PSIF_SO_S,ints,ntri,0, 0, outfile);
   for(i=0;i<num_ir;i++) {
     max = scf_info[i].num_so;
     off = scf_info[i].ideg;
@@ -71,7 +81,7 @@ void rdone_iwl()
   }
 
   /* T integrals */
-  stat = iwl_rdone_all(itapT,ntri,ints,&e_fzc,delete_1e);
+  stat = iwl_rdone(itapT,PSIF_SO_T,ints,ntri, 0, 0, outfile);
   for(i=0;i<num_ir;i++) {
     max = scf_info[i].num_so;
     off = scf_info[i].ideg;
@@ -85,7 +95,7 @@ void rdone_iwl()
   }
 
   /* V integrals */
-  stat = iwl_rdone_all(itapV,ntri,ints,&e_fzc,delete_1e);
+  stat = iwl_rdone(itapV,PSIF_SO_V,ints,ntri,delete_1e, 0, outfile);
   for(i=0;i<num_ir;i++) {
     max = scf_info[i].num_so;
     off = scf_info[i].ideg;

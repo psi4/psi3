@@ -116,7 +116,7 @@ void get_oeints()
   ints = init_array(ntri);
 
   /* S integrals */
-  stat = iwl_rdone_all(PSIF_SO_S,ntri,ints,&e_fzc,1);
+  stat = iwl_rdone(PSIF_OEI,PSIF_SO_S,ints,ntri,0,0,outfile);
   S11 = block_matrix(num_so,num_so);
   count = 0;
   for(i=0;i<num_so;i++)
@@ -125,7 +125,7 @@ void get_oeints()
 
   
   /* T integrals */
-  stat = iwl_rdone_all(PSIF_SO_T,ntri,ints,&e_fzc,1);
+  stat = iwl_rdone(PSIF_OEI,PSIF_SO_T,ints,ntri,0,0,outfile);
   H11 = block_matrix(num_so,num_so);
   count = 0;
   for(i=0;i<num_so;i++)
@@ -133,7 +133,7 @@ void get_oeints()
 	  H11[i][j] = H11[j][i] = ints[count++];
 
   /* V integrals */
-  stat = iwl_rdone_all(PSIF_SO_V,ntri,ints,&e_fzc,1);
+  stat = iwl_rdone(PSIF_OEI,PSIF_SO_V,ints,ntri,1,0,outfile);
   count = 0;
   for(i=0;i<num_so;i++)
       for(j=0;j<=i;j++) {

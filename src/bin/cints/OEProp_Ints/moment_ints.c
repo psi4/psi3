@@ -6,6 +6,7 @@
 #include<iwl.h>
 #include<libciomr.h>
 #include<libint.h>
+#include<psifiles.h>
 
 #include"defines.h"
 #define EXTERN
@@ -169,10 +170,10 @@ void moment_ints()
   free_block(OIY);
   free_block(OIZ);
   dimension=ioff[BasisSet.num_ao];
-  iwl_wrtone(IOUnits.itapS_AO,dimension,S,0.0);
-  iwl_wrtone(IOUnits.itapMX_AO,dimension,MX,0.0);
-  iwl_wrtone(IOUnits.itapMY_AO,dimension,MY,0.0);
-  iwl_wrtone(IOUnits.itapMX_AO,dimension,MZ,0.0);
+  iwl_wrtone(IOUnits.itapS_AO, PSIF_AO_S, dimension,S);
+  iwl_wrtone(IOUnits.itapMX_AO,PSIF_AO_MX,dimension,MX);
+  iwl_wrtone(IOUnits.itapMY_AO,PSIF_AO_MY,dimension,MY);
+  iwl_wrtone(IOUnits.itapMX_AO,PSIF_AO_MZ,dimension,MZ);
   if (UserOptions.print_lvl >= PRINT_OEI) {
     fprintf(outfile,"  -Overlap AO integrals:\n\n");
     print_array(S,BasisSet.num_ao,outfile);

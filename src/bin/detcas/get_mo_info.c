@@ -37,6 +37,7 @@ void get_mo_info(void)
    CalcInfo.labels = file30_rd_irr_labs();
    CalcInfo.orbs_per_irr = file30_rd_orbspi();
    CalcInfo.enuc = file30_rd_enuc();
+   CalcInfo.efzc = file30_rd_efzc();
    file30_close();
  
    CalcInfo.docc = init_int_array(CalcInfo.nirreps);

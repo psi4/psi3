@@ -110,6 +110,12 @@ void transform_two_uhf(void)
 				 moinfo.fzc_density_beta, moinfo.fzc_operator_alpha,
 				 moinfo.fzc_operator_beta, moinfo.oe_ints,
 				 moinfo.first_so, ioff);
+
+    /* Write efzc to file30 */
+    file30_init();
+    file30_wt_efzc(moinfo.efzc);
+    file30_close();
+
     if (params.print_lvl) 
       fprintf(outfile, "\n\tFrozen core energy = %20.15lf\n", moinfo.efzc);
     free(moinfo.fzc_density_alpha);

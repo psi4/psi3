@@ -58,9 +58,9 @@ void kinetic(void)
   /*** Transform the kinetic energy integrals to the MO basis ***/
 
   t = init_array(noei);
-  stat = iwl_rdone_all(PSIF_SO_T,noei,t,&junk,0);
+  stat = iwl_rdone(PSIF_OEI,PSIF_SO_T,t,noei,0,0,outfile);
   s = init_array(noei);
-  stat = iwl_rdone_all(PSIF_SO_S,noei,s,&junk,0);
+  stat = iwl_rdone(PSIF_OEI,PSIF_SO_S,s,noei,0,0,outfile);
 
   T = block_matrix(nmo,nmo);
   S = block_matrix(nmo,nmo);

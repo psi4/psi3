@@ -79,7 +79,7 @@ void get_parameters(void)
    Parameters.S = 0;
    Parameters.opentype = PARM_OPENTYPE_UNKNOWN;
    Parameters.ref_sym = -1;
-   Parameters.oei_file = PSIF_MO_FZC;  /* always need fzc operator */
+   Parameters.oei_file = PSIF_OEI;  /* always need fzc operator */
    Parameters.oei_erase = 0;
    Parameters.tei_file = PSIF_MO_TEI;
    Parameters.tei_erase = 0;

@@ -373,20 +373,20 @@ void get_parameters(void)
   if(errcod == IPE_OK) {
       params.tolerance = 1.0*pow(10.0,(double) -tol);
     }
-  params.h_bare_file = PSIF_MO_OEI;
+  params.h_bare_file = PSIF_OEI;
   errcod = ip_data("OEI_FILE","%d",&(params.h_bare_file),0);
   /* UHF additions, TDC 6/01 */
-  params.h_bare_a_file = PSIF_MO_A_OEI;
+  params.h_bare_a_file = PSIF_OEI;
   errcod = ip_data("OEI_A_FILE","%d",&(params.h_bare_a_file),0);
-  params.h_bare_b_file = PSIF_MO_B_OEI;
+  params.h_bare_b_file = PSIF_OEI;
   errcod = ip_data("OEI_B_FILE","%d",&(params.h_bare_b_file),0);
 
-  params.h_fzc_file = PSIF_MO_FZC;
+  params.h_fzc_file = PSIF_OEI;
   errcod = ip_data("FZC_FILE","%d",&(params.h_fzc_file),0);
   /* UHF additions, TDC 6/01 */
-  params.h_fzc_a_file = PSIF_MO_A_FZC;
+  params.h_fzc_a_file = PSIF_OEI;
   errcod = ip_data("FZC_A_FILE","%d",&(params.h_fzc_a_file),0);
-  params.h_fzc_b_file = PSIF_MO_B_FZC;
+  params.h_fzc_b_file = PSIF_OEI;
   errcod = ip_data("FZC_B_FILE","%d",&(params.h_fzc_b_file),0);
 
   /* The sorted_tei values don't actually seem to be used */
@@ -399,11 +399,11 @@ void get_parameters(void)
     errcod = ip_data("TPDM_FILE","%d",&(params.src_tei_file),0);
   }
   else {
-    params.src_S_file = PSIF_SO_S;
+    params.src_S_file = PSIF_OEI;
     errcod = ip_data("SO_S_FILE","%d",&(params.src_S_file),0);
-    params.src_T_file = PSIF_SO_T;
+    params.src_T_file = PSIF_OEI;
     errcod = ip_data("SO_T_FILE","%d",&(params.src_T_file),0);
-    params.src_V_file = PSIF_SO_V;
+    params.src_V_file = PSIF_OEI;
     errcod = ip_data("SO_V_FILE","%d",&(params.src_V_file),0);
     params.src_tei_file = PSIF_SO_TEI;
     errcod = ip_data("SO_TEI_FILE","%d",&(params.src_tei_file),0);
@@ -1186,17 +1186,17 @@ void get_one_electron_integrals()
   
   if (params.print_lvl) 
     fprintf(outfile, "\n\tReading one-electron integrals...");
-  stat = iwl_rdone_all(params.src_S_file,moinfo.noeints,moinfo.S,&e_fzc,0);
+  stat = iwl_rdone(params.src_S_file,PSIF_SO_S,moinfo.S,moinfo.noeints,0,0,outfile);
   if (!stat) {
     printf("(transqt): Error reading overlap ints\n");
     exit(1);
   }
-  stat = iwl_rdone_all(params.src_T_file,moinfo.noeints,T,&e_fzc,0);
+  stat = iwl_rdone(params.src_T_file,PSIF_SO_T,T,moinfo.noeints,0,0,outfile);
   if (!stat) {
     printf("(transqt): Error reading kinetic energy ints\n");
     exit(1);
   }
-  stat = iwl_rdone_all(params.src_V_file,moinfo.noeints,V,&e_fzc,0);
+  stat = iwl_rdone(params.src_V_file,PSIF_SO_V,V,moinfo.noeints,0,0,outfile);
   if (!stat) {
     printf("(transqt): Error reading potential energy ints\n");
     exit(1);

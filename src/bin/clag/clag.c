@@ -52,7 +52,7 @@ main(int argc, char **argv)
   int *corr_to_pitz;                   /* map orbs correlated order->Pitz */
   int nirreps;                         /* number of irreps                */
   double efzc;                         /* frozen core energy              */
-  int oei_file = PSIF_MO_OEI;          /* where 1e mo ints are stored     */
+  int oei_file = PSIF_OEI;             /* where 1e mo ints are stored     */
   int oei_erase = 0;                   /* 0=do not erase 1e ints 1=do     */
   int tei_file = PSIF_MO_TEI;          /* where 2e mo ints are stored     */
   int opdm_file = PSIF_MO_OPDM;        /* file number for one-pdm         */ 
@@ -145,7 +145,7 @@ main(int argc, char **argv)
     fprintf(outfile, "\nOne-electron integrals\n");
   }
 
-  if (!iwl_rdone(oei_file, onel_ints, &efzc, ioff, nmo, 0, 0, oei_erase,
+  if (!iwl_rdone(oei_file, PSIF_MO_OEI, onel_ints, ntri, oei_erase,
             (print_lvl>4), outfile)) {
     fprintf(outfile, "Failed to read one-electron integrals\n");
     exit(1);

@@ -48,7 +48,7 @@ void get_parameters(void)
   /* Params.print_lvl is set in detcas.cc */
   Params.print_mos = 0;
   Params.filter_ints = 0;  /* assume we need all for MCSCF */
-  Params.oei_file = PSIF_MO_FZC;  /* should be fzc */
+  Params.oei_file = PSIF_OEI;  /* should be fzc */
   Params.oei_erase = 0;
   Params.tei_file = PSIF_MO_TEI;
   Params.tei_erase = 0;

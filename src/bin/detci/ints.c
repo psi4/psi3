@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include <iwl.h>
 #include <libciomr.h>
+#include <psifiles.h>
 #include "structs.h"
 #define EXTERN
 #include "globals.h"
@@ -48,10 +49,8 @@ void read_integrals()
    /* iwl_rdone(Parameters.oei_file, nbstri, CalcInfo.onel_ints, 
                 &(CalcInfo.efzc), Parameters.oei_erase); */
 
-   iwl_rdone(Parameters.oei_file, CalcInfo.onel_ints, &(CalcInfo.efzc),
-             ioff, CalcInfo.nbfso, CalcInfo.num_fzc_orbs, 
-             CalcInfo.num_fzv_orbs, Parameters.oei_erase, 
-             (Parameters.print_lvl>4), outfile);
+   iwl_rdone(Parameters.oei_file, PSIF_MO_FZC, CalcInfo.onel_ints, nbstri,
+             Parameters.oei_erase, (Parameters.print_lvl>4), outfile);
 
    iwl_rdtwo(Parameters.tei_file, CalcInfo.twoel_ints, ioff, CalcInfo.nbfso, 
              Parameters.filter_ints ? CalcInfo.num_fzc_orbs : 0, 

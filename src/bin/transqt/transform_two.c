@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <libciomr.h>
 #include <ip_libv1.h>
+#include <file30.h>
 #include <qt.h>
 #include <iwl.h>
 #include "MOInfo.h"
@@ -171,6 +172,11 @@ void transform_two(void)
     moinfo.efzc = fzc_energy(moinfo.nso, moinfo.sosym, moinfo.fzc_density, 
 			     moinfo.fzc_operator, moinfo.oe_ints,
 			     moinfo.first_so, ioff);
+    /* Write efzc to file30 */
+    file30_init();
+    file30_wt_efzc(moinfo.efzc);
+    file30_close();
+
     if (params.print_lvl) 
       fprintf(outfile, "\n\tFrozen core energy = %20.15lf\n", moinfo.efzc);
     free(moinfo.fzc_density);

@@ -222,9 +222,14 @@ int main(argc,argv)
    itap30 = 30;
    itap33 = PSIF_SO_TEI;
    itap34 = PSIF_SO_INTS;
+   itapS  = PSIF_OEI;
+   itapT  = PSIF_OEI;
+   itapV  = PSIF_OEI;
+   /*
    itapS  = PSIF_SO_S;
    itapT  = PSIF_SO_T;
    itapV  = PSIF_SO_V;
+   */
    itapDSCF = PSIF_DSCF;
    itap92 = 92;
    itap93 = 93;

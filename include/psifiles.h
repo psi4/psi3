@@ -15,7 +15,8 @@
 */
 
 #define PSIF_SO_INTS        34
-#define PSIF_MO_OEI         71
+#define PSIF_OEI            35
+
 #define PSIF_MO_TEI         72
 #define PSIF_MO_OPDM        73
 #define PSIF_MO_TPDM        74
@@ -23,7 +24,6 @@
 /* PSIF_AO_OPDM also contains AO Lagrangian */
 #define PSIF_AO_OPDM        76      
 #define PSIF_AO_TPDM        77
-#define PSIF_MO_FZC         78
 
 /*--- 
       New additions by Edward Valeev
@@ -32,15 +32,8 @@
  ---*/
 #define PSIF_DSCF           31
 #define PSIF_SO_TEI         33
-#define PSIF_SO_S           35
-#define PSIF_SO_T           36
-#define PSIF_SO_V           37
 #define PSIF_SO_R12         38
 #define PSIF_SO_R12T1       39
-#define PSIF_AO_S           40
-#define PSIF_AO_MX          41
-#define PSIF_AO_MY          42
-#define PSIF_AO_MZ          43
 #define PSIF_MO_R12         79
 #define PSIF_MO_R12T1       80
 
@@ -51,10 +44,6 @@
 #define PSIF_MO_AA_TEI      81
 #define PSIF_MO_BB_TEI      82
 #define PSIF_MO_AB_TEI      83
-#define PSIF_MO_A_OEI       84
-#define PSIF_MO_B_OEI       85
-#define PSIF_MO_A_FZC       86
-#define PSIF_MO_B_FZC       87
 
 /*
 ** MO Hessian File (also contains specialized integral and Fock lists.
@@ -63,3 +52,34 @@
 */
 #define PSIF_MO_HESS        88
 
+/* All of these one-electron quantities have been moved into PSIF_OEI */
+/* These macros give libpsio TOC strings for easy identification.     */
+#define PSIF_SO_S           "SO-basis Overlap Ints"
+#define PSIF_SO_T           "SO-basis Kinetic Energy Ints"
+#define PSIF_SO_V           "SO-basis Potential Energy Ints"
+#define PSIF_AO_S           "AO-basis Overlap Ints"
+#define PSIF_AO_MX          "AO-basis Mu-X Ints"
+#define PSIF_AO_MY          "AO-basis Mu-Y Ints"
+#define PSIF_AO_MZ          "AO-basis Mu-Z Ints"
+#define PSIF_MO_OEI         "MO-basis One-electron Ints"
+#define PSIF_MO_A_OEI       "MO-basis Alpha One-electron Ints"
+#define PSIF_MO_B_OEI       "MO-basis Beta One-electron Ints"
+#define PSIF_MO_FZC         "MO-basis Frozen-Core Operator"
+#define PSIF_MO_A_FZC       "MO-basis Alpha Frozen-Core Oper"
+#define PSIF_MO_B_FZC       "MO-basis Beta Frozen-Core Oper"
+
+/*
+#define PSIF_SO_S           35
+#define PSIF_SO_T           36
+#define PSIF_SO_V           37
+#define PSIF_AO_S           40
+#define PSIF_AO_MX          41
+#define PSIF_AO_MY          42
+#define PSIF_AO_MZ          43
+#define PSIF_MO_OEI         71
+#define PSIF_MO_FZC         78
+#define PSIF_MO_A_OEI       84
+#define PSIF_MO_B_OEI       85
+#define PSIF_MO_A_FZC       86
+#define PSIF_MO_B_FZC       87
+*/

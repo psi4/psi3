@@ -31,6 +31,7 @@
 #include <iwl.h>
 #include <dpd.h>
 #include <psifiles.h>
+#include <qt.h>
 #include "MOInfo.h"
 #include "Params.h"
 #define EXTERN
@@ -49,15 +50,17 @@ void sort_oei(void)
 
 void sort_oei_uhf(void)
 {
-  int h, nirreps, nactive;
+  int h, nirreps, nmo, nactive, ntri_all, ntri_act;
   int p, q, pq, pnew, qnew, psym, qsym;
   int *aocc, *bocc, *aocc_off, *bocc_off, *aocc_sym, *bocc_sym;
   int *avir, *bvir, *avir_off, *bvir_off, *avir_sym, *bvir_sym;
   int *cc_aocc, *cc_bocc, *cc_avir, *cc_bvir;
-  double *a_oei, *b_oei;
+  double *a_oei, *b_oei, *tmp_oei;
   dpdfile2 hIJ, hij, hAB, hab, hIA, hia;
 
-  nirreps = moinfo.nirreps; nactive = moinfo.nactive;
+  nirreps = moinfo.nirreps; 
+  nactive = moinfo.nactive;
+  nmo = moinfo.nmo;
   aocc = moinfo.aocc;  bocc = moinfo.bocc;
   avir = moinfo.avir; bvir = moinfo.bvir;
   aocc_off = moinfo.aocc_off; bocc_off = moinfo.bocc_off;
@@ -67,12 +70,16 @@ void sort_oei_uhf(void)
   cc_aocc = moinfo.cc_aocc; cc_bocc = moinfo.cc_bocc;
   cc_avir = moinfo.cc_avir; cc_bvir = moinfo.cc_bvir;
 
-  a_oei = init_array(nactive * (nactive+1)/2);
-  b_oei = init_array(nactive * (nactive+1)/2);
-  iwl_rdone(PSIF_MO_A_FZC, a_oei, &moinfo.efzc, ioff, moinfo.nmo,
-	    moinfo.nfzc, moinfo.nfzv, 0, 0, outfile);
-  iwl_rdone(PSIF_MO_B_FZC, b_oei, &moinfo.efzc, ioff, moinfo.nmo,
-	    moinfo.nfzc, moinfo.nfzv, 0, 0, outfile);
+  ntri_all = nmo * (nmo+1)/2;
+  ntri_act = nactive * (nactive+1)/2;
+  tmp_oei = init_array(ntri_all);
+  a_oei = init_array(ntri_act);
+  b_oei = init_array(ntri_act);
+  iwl_rdone(PSIF_OEI, PSIF_MO_A_FZC, tmp_oei, ntri_all, 0, 0, outfile);
+  filter(tmp_oei,a_oei,ioff,nmo,moinfo.nfzc,moinfo.nfzv);
+  iwl_rdone(PSIF_OEI, PSIF_MO_B_FZC, tmp_oei, ntri_all, 0, 0, outfile);
+  filter(tmp_oei,b_oei,ioff,nmo,moinfo.nfzc,moinfo.nfzv);
+  free(tmp_oei);
 
   dpd_file2_init(&hIJ, CC_OEI, 0, 0, 0, "h(I,J)");
   dpd_file2_init(&hij, CC_OEI, 0, 2, 2, "h(i,j)");
@@ -165,25 +172,32 @@ void sort_oei_uhf(void)
 
 void sort_oei_rhf(void)
 {
-  int h, nirreps, nactive;
+  int h, nirreps, nactive, nmo, ntri_all, ntri_act;
   int p, q, pq, pnew, qnew, psym, qsym;
   int *occ, *vir;
   int *cc_occ, *cc_vir;
   int *occ_sym, *vir_sym;
   int *occ_off, *vir_off;
-  double *oei;
+  double *oei, *tmp_oei;
   dpdfile2 Hoo, Hov, Hvv;
 
-  nirreps = moinfo.nirreps; nactive = moinfo.nactive;
+  nirreps = moinfo.nirreps; 
+  nactive = moinfo.nactive;
+  nmo = moinfo.nmo;
   occ = moinfo.occ; vir = moinfo.vir;
   cc_occ = moinfo.cc_occ; cc_vir = moinfo.cc_vir;
   occ_sym = moinfo.occ_sym; vir_sym = moinfo.vir_sym;
   occ_off = moinfo.occ_off; vir_off = moinfo.vir_off;
 
   /* Grab the frozen-core opertor */
-  oei = init_array(nactive*(nactive+1)/2);
-  iwl_rdone(PSIF_MO_FZC, oei, &moinfo.efzc, ioff, moinfo.nmo,
-	    moinfo.nfzc, moinfo.nfzv, 0, 0, outfile);
+  ntri_all = nmo * (nmo + 1)/2;
+  ntri_act = nactive * (nactive + 1)/2;
+
+  tmp_oei = init_array(ntri_all);
+  oei = init_array(ntri_act);
+  iwl_rdone(PSIF_OEI, PSIF_MO_FZC, tmp_oei, ntri_all, 0, 0, outfile);
+  filter(tmp_oei, oei, ioff, nmo, moinfo.nfzc, moinfo.nfzv);
+  free(tmp_oei);
 
   if(params.print_lvl > 5) {
       fprintf(outfile, "\n\tFrozen-Core Operator:\n");
