@@ -1,11 +1,14 @@
 /* $Log$
- * Revision 1.4  2001/04/11 19:31:46  sherrill
- * I removed printing all MO's by default, since this gets pretty big
- * and useless for many of the molecules of interest today.  I added
- * a nice subroutine to print out orbital eigenvalues.  It seems
- * to work for RHF/ROHF/UHF but is probably broken for TCSCF, which
- * I'll try to check later.
+ * Revision 1.5  2001/05/31 01:12:25  sherrill
+ * fix up printing orbital eigenvalues, now does TCSCF too!
  *
+/* Revision 1.4  2001/04/11 19:31:46  sherrill
+/* I removed printing all MO's by default, since this gets pretty big
+/* and useless for many of the molecules of interest today.  I added
+/* a nice subroutine to print out orbital eigenvalues.  It seems
+/* to work for RHF/ROHF/UHF but is probably broken for TCSCF, which
+/* I'll try to check later.
+/*
 /* Revision 1.3  2000/10/13 19:51:19  evaleev
 /* Cleaned up a lot of stuff in order to get CSCF working with the new 
 /* "Mo-projection-capable" INPUT.
@@ -739,11 +742,41 @@ void print_mo_eigvals(void)
 
   fprintf(outfile, "\nOrbital energies (a.u.):\n");
 
+  /* TWOCON case */
+  if (twocon) {
+
+    /* Ok, just go through and pick out the lowest one each time */
+    done = 0;
+    printctr = 1;
+    while (!done) {
+      lowest = 1E9; lowest_irrep = 0;
+      done = 1;
+      for (irrep=0; irrep < num_ir; irrep++) {
+        if (counter[irrep] == scf_info[irrep].num_mo) continue;
+        done = 0;
+        if ((tval = scf_info[irrep].fock_evals[counter[irrep]]) < lowest) {
+          lowest = tval;
+          lowest_irrep = irrep;
+          occup = scf_info[lowest_irrep].occ_num[counter[lowest_irrep]];
+        }
+      }
+      if (!done) {
+        fprintf(outfile, " %3d%3s %9.4lf (%5.3lf) ",
+                ++(counter[lowest_irrep]), scf_info[lowest_irrep].irrep_label,
+                lowest, occup);
+        if ((printctr % 3) == 0) fprintf(outfile, "\n");
+        printctr++;
+      } 
+    }
+    fprintf(outfile, "\n");
+  }
+
   /* RHF/ROHF case */
-  if (!uhf) {
+  else if (!uhf) {
 
     /* Need to count up how many there are of each type */
     /* I'm not sure what the nopen/nhalf distinction is ... */
+    /* It appears that nopen is used for both high-spin and twocon */
     for (irrep=0; irrep < num_ir; irrep++) {
       num_closed += scf_info[irrep].nclosed;    
       num_open += scf_info[irrep].nopen + scf_info[irrep].nhalf;
@@ -761,8 +794,8 @@ void print_mo_eigvals(void)
     done = 0;
     while (!done) {
       lowest = 1E9; lowest_irrep = 0;
+      done = 1;
       for (irrep=0; irrep < num_ir; irrep++) {
-        done = 1;
         if (counter[irrep] == scf_info[irrep].num_mo) continue;
         done = 0;
         if ((tval = scf_info[irrep].fock_evals[counter[irrep]]) < lowest) {
@@ -848,8 +881,8 @@ void print_mo_eigvals(void)
     done = 0;
     while (!done) {
       lowest = 1E9; lowest_irrep = 0;
+      done = 1;
       for (irrep=0; irrep < num_ir; irrep++) {
-        done = 1;
         if (counter[irrep] == scf_info[irrep].num_mo) continue;
         done = 0;
         if ((tval = spin_info[0].scf_spin[irrep].fock_evals[counter[irrep]]) 
@@ -907,8 +940,8 @@ void print_mo_eigvals(void)
     done = 0;
     while (!done) {
       lowest = 1E9; lowest_irrep = 0;
+      done = 1;
       for (irrep=0; irrep < num_ir; irrep++) {
-        done = 1;
         if (counter[irrep] == scf_info[irrep].num_mo) continue;
         done = 0;
         if ((tval = spin_info[1].scf_spin[irrep].fock_evals[counter[irrep]]) 
