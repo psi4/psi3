@@ -29,6 +29,7 @@ void write_to_file30(double repulsion)
   int eq_atom;
   int *arr_int;
   double *arr_double;
+  double **mat_double;
   int *ict, **ict_tmp;
   int *scf_pointers;
   double *cspd;     /*Array of contraction coefficients in file30 format*/
@@ -211,13 +212,20 @@ void write_to_file30(double repulsion)
   /* Transformation matrices for coordinates (or p-functions) */
   pointers[24] = ptr/sizeof(int) + 1;
   arr_double = init_array(3);
-  for(symop=0;symop<nirreps;symop++)
+  mat_double = block_matrix(nirreps,9);
+  for(symop=0;symop<nirreps;symop++) {
     for(i=0;i<3;i++) {
       arr_double[i] = ao_type_transmat[1][symop][i];
       wwritw(CHECKPOINTFILE,(char *) arr_double, 3*sizeof(double),ptr,&ptr);
       arr_double[i] = 0.0;
     }
+    mat_double[symop][0] = ao_type_transmat[1][symop][0];
+    mat_double[symop][4] = ao_type_transmat[1][symop][1];
+    mat_double[symop][8] = ao_type_transmat[1][symop][2];
+  }
   free(arr_double);
+  chkpt_wt_cartrep(mat_double);
+  free(mat_double);
 
   /* Transformation matrix for shells */
   pointers[26] = ptr/sizeof(int) + 1;
