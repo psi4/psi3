@@ -369,12 +369,49 @@ void diag_h(struct stringwr **alplist, struct stringwr **betlist)
       SlaterDeterminant I, J;
       int *mi_iac, *mi_ibc, *mi_iaidx, *mi_ibidx; 
       double *mi_coeff;
- 
+
       if (Parameters.print_lvl) {
          fprintf(outfile, "\nFind all roots with RSP\n") ;
          fprintf(outfile, "\n") ;
          fflush(outfile) ;
          }
+
+      /* construct and print one block at a time for debugging */
+      /*
+      int ii2, jj2, blk, blk2, det1, det2;
+      double **Hpart;
+
+      for (blk = 0; blk < CIblks.num_blocks; blk++) {
+        for (blk2 = 0; blk2 < CIblks.num_blocks; blk2++) {
+          Hpart = init_matrix(CIblks.Ia_size[blk]*CIblks.Ib_size[blk],
+	                      CIblks.Ia_size[blk2]*CIblks.Ib_size[blk2]);
+          for (ii=0,det1=0; ii<CIblks.Ia_size[blk]; ii++) {
+            for (jj=0; jj<CIblks.Ib_size[blk]; jj++, det1++) {
+              I.set(CalcInfo.num_alp_expl,alplist[CIblks.Ia_code[blk]][ii].occs,
+                   CalcInfo.num_bet_expl,betlist[CIblks.Ib_code[blk]][jj].occs);
+              for (ii2=0,det2=0; ii2<CIblks.Ia_size[blk2]; ii2++) {
+                for (jj2=0; jj2<CIblks.Ib_size[blk2]; jj2++,det2++) {
+                  J.set(CalcInfo.num_alp_expl,
+                        alplist[CIblks.Ia_code[blk2]][ii2].occs,
+                        CalcInfo.num_bet_expl,
+                        betlist[CIblks.Ib_code[blk2]][jj2].occs);
+                  Hpart[det1][det2] = matrix_element(&I,&J);
+		}
+              }
+            }
+          }
+          if (Parameters.print_lvl > 4 && size < 200) {
+            fprintf(outfile, "\nBlock %d %d of ", blk, blk2);
+            fprintf(outfile, "Hamiltonian matrix:\n");
+            print_mat(Hpart, CIblks.Ia_size[blk]*CIblks.Ib_size[blk], 
+			     CIblks.Ia_size[blk2]*CIblks.Ib_size[blk2],
+                      outfile);
+          }
+          free_matrix(Hpart, CIblks.Ia_size[blk]*CIblks.Ib_size[blk]);
+        }
+      }
+      */
+      /* end block-at-a-time stuff */
 
       H = init_matrix(size, size);
       rsp_evecs = init_matrix(size, size) ;
@@ -399,7 +436,7 @@ void diag_h(struct stringwr **alplist, struct stringwr **betlist)
          H[jj][jj] = matrix_element(&J, &J) + CalcInfo.efzc;
          }
 
-      if (Parameters.print_lvl > 4 && size < 20) {
+      if (Parameters.print_lvl > 4 && size < 200) {
          fprintf(outfile, "\nHamiltonian matrix:\n");
          print_mat(H, size, size, outfile);
          }
