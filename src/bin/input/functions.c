@@ -327,14 +327,15 @@ void free_char_matrix(char **mat, int A)
 }
 
 
-void setup(maxdf)
-  int maxdf;
+void setup(int maxioff)
 {
   int i;
 
-  if(maxdf<100) maxdf = 100;
+  if(maxioff<100) maxioff = 100;
+  maxdf = 300;
+
   df = (double *) malloc(sizeof(double)*maxdf);
-  ioff = (int *) malloc(sizeof(int)*maxdf);
+  ioff = (int *) malloc(sizeof(int)*maxioff);
 
 /* df[i] = (i-1)!! */
   df[0] = 1;
@@ -344,7 +345,7 @@ void setup(maxdf)
     df[i] = (i-1)*df[i-2];
 
   ioff[0] = 0;
-  for(i=1;i<maxdf;i++)
+  for(i=1;i<maxioff;i++)
     ioff[i] = ioff[i-1]+i;
 }
 
