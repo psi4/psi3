@@ -47,6 +47,7 @@ void cachedone_uhf(int **cachelist);
 void memchk(void);
 struct dpd_file4_cache_entry *priority_list(void);
 void spinad_amps(void);
+void status(char *, FILE *);
 
 /* local correlation functions */
 void local_init(void);
@@ -128,21 +129,27 @@ int main(int argc, char *argv[])
 
     timer_on("Wmbej build");
     Wmbej_build();
+    if(params.print & 2) status("Wmbej", outfile);
     timer_off("Wmbej build");
 
     timer_on("F build");
     Fme_build(); Fae_build(); Fmi_build();
+    if(params.print & 2) status("F intermediates", outfile);
     timer_off("F build");
 
     timer_on("T1 Build");
     t1_build();
+    if(params.print & 2) status("T1 amplitudes", outfile);
     timer_off("T1 Build");
 
     Z_build();
+    if(params.print & 2) status("Z", outfile);
     Wmnij_build();
+    if(params.print & 2) status("Wmnij", outfile);
 
     timer_on("T2 Build");
     t2_build();
+    if(params.print & 2) status("T2 amplitudes", outfile);
     timer_off("T2 Build");
 
     if(converged()) {

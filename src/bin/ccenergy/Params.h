@@ -10,6 +10,7 @@ struct Params {
   int ref;
   int diis;
   char *wfn;
+  int print;
   int local;
 };
 

@@ -33,6 +33,9 @@ void get_params()
 	   ref, params.ref);
     exit(2);
   }
+
+  params.print = 0;
+  errcod = ip_data("PRINT", "%d", &(params.print),0);
   
   params.maxiter = 50;
   errcod = ip_data("MAXITER","%d",&(params.maxiter),0);
@@ -86,10 +89,10 @@ void get_params()
   fprintf(outfile, "\tLocal CC        =     %s\n", params.local ? "Yes" : "No");
   fprintf(outfile, "\tAO Basis        =     %s\n", 
           params.aobasis ? "Yes" : "No");
-  fprintf(outfile, "\tCache Level     =    %1d\n", 
-          params.cachelev);
+  fprintf(outfile, "\tCache Level     =    %1d\n", params.cachelev);
   fprintf(outfile, "\tCache Type      =    %4s\n", 
           params.cachetype ? "LOW" : "LRU");
+  fprintf(outfile, "\tPrint Level     =    %1d\n",  params.print);
   fprintf(outfile, "\n");
 
   free(junk);

@@ -10,7 +10,7 @@ void t1_build(void)
   dpdfile2 FAE, Fae, FMI, Fmi, FME, Fme;
   dpdfile2 dIA, dia;
   dpdbuf4 tIJAB, tijab, tIjAb, tiJaB;
-  dpdbuf4 C, C_anti, D, F_anti, F, E_anti, E;
+  dpdbuf4 C, C_anti, D, F_anti, F, E_anti, E, Z;
 
   if(params.ref == 0) { /** RHF **/
     dpd_file2_init(&fIA, CC_OEI, 0, 0, 1, "fIA");
@@ -52,11 +52,16 @@ void t1_build(void)
     dpd_buf4_close(&C_anti);  
     dpd_buf4_close(&D);
 
+    dpd_buf4_init(&Z, CC_TMP0, 0, 10, 0, 10, 0, 0, "Z(ma,mi)");
     dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0, "F 2<ia|bc> - <ia|cb>");
     dpd_buf4_init(&tIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
-    dpd_contract442(&tIjAb, &F, &newtIA, 1, 1, 1, 1);
+    dpd_contract444(&F, &tIjAb, &Z, 0, 0, 1.0, 0.0);
     dpd_buf4_close(&tIjAb);
     dpd_buf4_close(&F);
+    dpd_trace42_13(&Z, &newtIA, 1, 1.0, 1.0);
+    dpd_buf4_close(&Z);
+
+    /*    dpd_contract442(&tIjAb, &F, &newtIA, 1, 1, 1, 1); */
 
     dpd_buf4_init(&E, CC_EINTS, 0, 11, 0, 11, 0, 0, "E 2<ai|jk> - <ai|kj>");
     dpd_buf4_init(&tIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");

@@ -13,7 +13,7 @@ void halftrans(dpdbuf4 *Buf1, int dpdnum1, dpdbuf4 *Buf2, int dpdnum2, double **
                int nirreps, int **mo_row, int **so_row, int *mospi_left, int *mospi_right,
                int *sospi, int type, double alpha, double beta);
 
-void AO_contribute(struct iwlbuf *InBuf, dpdbuf4 *tau1_AO, dpdbuf4 *tau2_AO);
+int AO_contribute(struct iwlbuf *InBuf, dpdbuf4 *tau1_AO, dpdbuf4 *tau2_AO);
 
 void BT2_AO(void)
 {
@@ -31,6 +31,7 @@ void BT2_AO(void)
   double tolerance=1e-14;
   double **integrals;
   int **tau1_cols, **tau2_cols, *num_ints;
+  int counter=0, counterAA=0, counterBB=0, counterAB=0;
 
   nirreps = moinfo.nirreps;
   orbspi = moinfo.orbspi;
@@ -104,7 +105,6 @@ void BT2_AO(void)
     dpd_buf4_close(&tau);
     dpd_buf4_close(&tau1_AO);
 
-
     /* Transpose tau1_AO for better memory access patterns */
     dpd_set_default(1);
     dpd_buf4_init(&tau1_AO, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjPq (1)");
@@ -125,16 +125,18 @@ void BT2_AO(void)
 
     lastbuf = InBuf.lastbuf;
 
-    AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
+    counter += AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
 
     while(!lastbuf) {
       iwl_buf_fetch(&InBuf);
       lastbuf = InBuf.lastbuf;
 
-      AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
+      counter += AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
     }
 
     iwl_buf_close(&InBuf, 1);
+
+    if(params.print & 2) fprintf(outfile, "     *** Processed %d SO integrals for <ab||cd> --> T2\n", counter);
 
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_wrt(&tau2_AO, h);
@@ -199,16 +201,18 @@ void BT2_AO(void)
 
     lastbuf = InBuf.lastbuf;
 
-    AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
+    counterAA += AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
 
     while(!lastbuf) {
       iwl_buf_fetch(&InBuf);
       lastbuf = InBuf.lastbuf;
 
-      AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
+      counterAA += AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
     }
 
     iwl_buf_close(&InBuf, 1);
+
+    if(params.print & 2) fprintf(outfile, "     *** Processed %d SO integrals for <AB||CD> --> T2\n", counterAA);
 
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_wrt(&tau2_AO, h);
@@ -271,16 +275,18 @@ void BT2_AO(void)
 
     lastbuf = InBuf.lastbuf;
 
-    AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
+    counterBB += AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
 
     while(!lastbuf) {
       iwl_buf_fetch(&InBuf);
       lastbuf = InBuf.lastbuf;
 
-      AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
+      counterBB += AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
     }
 
     iwl_buf_close(&InBuf, 1);
+
+    if(params.print & 2) fprintf(outfile, "     *** Processed %d SO integrals for <ab||cd> --> T2\n", counterBB);
 
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_wrt(&tau2_AO, h);
@@ -344,16 +350,18 @@ void BT2_AO(void)
 
     lastbuf = InBuf.lastbuf;
 
-    AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
+    counterAB += AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
 
     while(!lastbuf) {
       iwl_buf_fetch(&InBuf);
       lastbuf = InBuf.lastbuf;
 
-      AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
+      counterAB += AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
     }
 
     iwl_buf_close(&InBuf, 1);
+
+    if(params.print & 2) fprintf(outfile, "     *** Processed %d SO integrals for <Ab|Cd> --> T2\n", counterAB);
 
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_wrt(&tau2_AO, h);
@@ -418,16 +426,18 @@ void BT2_AO(void)
 
     lastbuf = InBuf.lastbuf;
 
-    AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
+    counterAA += AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
 
     while(!lastbuf) {
       iwl_buf_fetch(&InBuf);
       lastbuf = InBuf.lastbuf;
 
-      AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
+      counterAA += AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
     }
 
     iwl_buf_close(&InBuf, 1);
+
+    if(params.print & 2) fprintf(outfile, "     *** Processed %d SO integrals for <AB||CD> --> T2\n", counterAA);
 
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_wrt(&tau2_AO, h);
@@ -490,16 +500,18 @@ void BT2_AO(void)
 
     lastbuf = InBuf.lastbuf;
 
-    AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
+    counterBB += AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
 
     while(!lastbuf) {
       iwl_buf_fetch(&InBuf);
       lastbuf = InBuf.lastbuf;
 
-      AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
+      counterBB += AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
     }
 
     iwl_buf_close(&InBuf, 1);
+
+    if(params.print & 2) fprintf(outfile, "     *** Processed %d SO integrals for <ab||cd> --> T2\n", counterBB);
 
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_wrt(&tau2_AO, h);
@@ -563,16 +575,18 @@ void BT2_AO(void)
 
     lastbuf = InBuf.lastbuf;
 
-    AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
+    counterAB += AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
 
     while(!lastbuf) {
       iwl_buf_fetch(&InBuf);
       lastbuf = InBuf.lastbuf;
 
-      AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
+      counterAB += AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
     }
 
     iwl_buf_close(&InBuf, 1);
+
+    if(params.print & 2) fprintf(outfile, "     *** Processed %d SO integrals for <Ab|Cd> --> T2\n", counterAB);
 
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_wrt(&tau2_AO, h);
@@ -602,15 +616,16 @@ void BT2_AO(void)
   }  /** UHF **/
 
   if(params.ref == 0 || params.ref == 1)
-    free(T2_cd_row_start);
+    free_int_matrix(T2_cd_row_start, nirreps);
   else if(params.ref ==2) {
-    free(T2_CD_row_start);
-    free(T2_cd_row_start);
-    free(T2_Cd_row_start);
+    free_int_matrix(T2_CD_row_start, nirreps);
+    free_int_matrix(T2_cd_row_start, nirreps);
+    free_int_matrix(T2_Cd_row_start,nirreps);
   }
 
-  free(T2_pq_row_start);
+  free_int_matrix(T2_pq_row_start, nirreps);
 
   /* Reset the default dpd back to 0 --- this stuff gets really ugly */
   dpd_set_default(0);
+
 }

@@ -10,21 +10,31 @@ void FT2(void)
   dpdfile2 tIA, tia;
   dpdbuf4 newtIJAB, newtijab, newtIjAb, t2, t2a, t2b;
   dpdbuf4 F_anti, F;
+  dpdbuf4 Z;
 
   if(params.ref == 0) { /** RHF **/
 
     dpd_buf4_init(&newtIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb");
 
-    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
-
+    /*
     dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
     dpd_contract424(&F, &tIA, &newtIjAb, 1, 1, 1, 1, 1);
     dpd_buf4_close(&F);
+    */
+
+    dpd_buf4_init(&Z, CC_TMP0, 0, 0, 5, 0, 5, 0, "Z1(ij,ab)");
     dpd_buf4_init(&F, CC_FINTS, 0, 11, 5, 11, 5, 0, "F <ai|bc>");
-    dpd_contract244(&tIA, &F, &newtIjAb, 1, 0, 0, 1, 1);
+    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+    dpd_contract244(&tIA, &F, &Z, 1, 0, 0, 1, 0);
+    dpd_file2_close(&tIA); 
     dpd_buf4_close(&F);
 
-    dpd_file2_close(&tIA); 
+    dpd_buf4_sort(&Z, CC_TMP0, qpsr, 0, 5, "Z2(ji,ba)");
+    dpd_buf4_axpy(&Z, &newtIjAb, 1.0);
+    dpd_buf4_close(&Z);
+    dpd_buf4_init(&Z, CC_TMP0, 0, 0, 5, 0, 5, 0, "Z2(ji,ba)");
+    dpd_buf4_axpy(&Z, &newtIjAb, 1.0);
+    dpd_buf4_close(&Z);
 
     dpd_buf4_close(&newtIjAb);
   }

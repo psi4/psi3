@@ -5,7 +5,7 @@
 #include <qt.h>
 #include <dpd.h>
 
-void AO_contribute(struct iwlbuf *InBuf, dpdbuf4 *tau1_AO, dpdbuf4 *tau2_AO)
+int AO_contribute(struct iwlbuf *InBuf, dpdbuf4 *tau1_AO, dpdbuf4 *tau2_AO)
 {
   int idx, p, q, r, s;
   double value;
@@ -13,6 +13,7 @@ void AO_contribute(struct iwlbuf *InBuf, dpdbuf4 *tau1_AO, dpdbuf4 *tau2_AO)
   Label *lblptr;
   int Gp, Gq, Gr, Gs, Gpr, Gps, Gqr, Gqs, Grp, Gsp, Grq, Gsq;
   int pr, ps, qr, qs, rp, rq, sp, sq, pq, rs;
+  int count=0;
 
   lblptr = InBuf->labels;
   valptr = InBuf->values;
@@ -24,6 +25,7 @@ void AO_contribute(struct iwlbuf *InBuf, dpdbuf4 *tau1_AO, dpdbuf4 *tau2_AO)
     s = (int) lblptr[idx++];
 
     value = (double) valptr[InBuf->idx];
+    count++;
 
     Gp = tau1_AO->params->psym[p]; 
     Gq = tau1_AO->params->psym[q]; 
@@ -156,5 +158,5 @@ void AO_contribute(struct iwlbuf *InBuf, dpdbuf4 *tau1_AO, dpdbuf4 *tau2_AO)
     }
   }
 
-  return;
+  return count;
 }
