@@ -10,6 +10,10 @@
 /*!
 ** PSIO_GET_FILENAME(): Get the filename for filenumber 'unit'
 **
+** Returns: 
+**   0 if a user-specified filename was found
+**   1 if the default "psi" is to be used
+**
 ** \ingroup (PSIO)
 */
 int psio_get_filename(ULI unit, char *name)
@@ -38,6 +42,9 @@ int psio_get_filename(ULI unit, char *name)
   errcod = ip_data(ip_token,"%s",name,0);
   if(errcod == IPE_OK) return(0);
 
+  /* use a default filename */
+  strcpy(name, "psi");
+
   return(1);
 }
 
@@ -53,6 +60,9 @@ int psio_get_filename_default(char *name)
   sprintf(ip_token,":DEFAULT:FILES:DEFAULT:NAME");
   errcod = ip_data(ip_token,"%s",name,0);
   if(errcod == IPE_OK) return(0);
+
+  /* use a default filename */
+  strcpy(name, "psi");
 
   return(1);
 }

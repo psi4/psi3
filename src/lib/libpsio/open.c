@@ -42,7 +42,6 @@ int psio_open(ULI unit, int status)
 
   /* Get the file name prefix */
   errcod = psio_get_filename(unit,name);
-  if(errcod) strcpy(name,"psi");
 
   /* Build the name for each volume and open the file */
   for(i=0; i < this_unit->numvols; i++) {
