@@ -165,7 +165,7 @@ psi: (
   DETCIEnergy = ($ints $scf $transqt $detci $done)
   DETCIRHFEnergy = $DETCIEnergy
   DETCIROHFEnergy = $DETCIEnergy
-  DETCIUHFEnergy = $DETCIEnergy
+  DETCIUHFEnergy = ERROR 
   DETCITwoConEnergy = ERROR
 
   % Procedures for the DETCI gradient: not yet impl, need orb response
@@ -195,7 +195,7 @@ psi: (
   DETCASEnergy = ($ints $scf $detcasman $done)
   DETCASRHFEnergy = $DETCASEnergy
   DETCASROHFEnergy = $DETCASEnergy
-  DETCASUHFEnergy = $DETCASEnergy
+  DETCASUHFEnergy = ERROR
   DETCASTwoConEnergy = ERROR
 
   % Procedures for the DETCAS gradient
@@ -203,7 +203,7 @@ psi: (
   ($ints $scf $makepk $detcasman $backtransqt $oeprop "bksort" "deriv97")
   DETCASRHFFirst = ($DETCASFirst $done)
   DETCASROHFFirst = ($DETCASFirst $done)
-  DETCASUHFFirst = ($DETCASFirst $done)
+  DETCASUHFFirst = ERROR
   DETCASTwoConFirst = ERROR
 
   % Procedures for the optimizing geomtries with DETCAS gradients
@@ -211,14 +211,14 @@ psi: (
     (repeat $nopt $DETCASFirst $geomupdate end $done)
   DETCASRHFFirstOpt = $DETCASFirstOpt
   DETCASROHFFirstOpt = $DETCASFirstOpt
-  DETCASUHFFirstOpt  = $DETCASFirstOpt
+  DETCASUHFFirstOpt  = ERROR
   DETCASTwoConFirstOpt  = ERROR
 
   % Procedures for the finite displacements of DETCAS gradients
   DETCASFirstDisp  = (repeat $ndisp $ugeom $DETCASFirst $rgeom end $done)
   DETCASRHFFirstDisp  = $DETCASFirstDisp
-  DETCASUHFFirstDisp  = $DETCASFirstDisp
   DETCASROHFFirstDisp  = $DETCASFirstDisp
+  DETCASUHFFirstDisp  = ERROR
   DETCASTwoConFirstDisp  = ERROR
 
   % Procedures for the direct MP2 energy
