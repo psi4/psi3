@@ -1,8 +1,9 @@
+#include <math.h>
+
 extern "C" {
   #include <stdio.h>
   #include <stdlib.h>
   #include <string.h>
-  #include <math.h>
   #include <libciomr.h>
   #include <ip_libv1.h>
 }

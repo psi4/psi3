@@ -2,12 +2,13 @@
 // new cartesian geometry from an old cartesian geometry and a set
 // of internal coordinate displacements
 
+#include <math.h>
+
 extern "C" {
   #include <stdio.h>
   #include <file30.h>
   #include <stdlib.h>
   #include <string.h>
-  #include <math.h>
   #include <libciomr.h>
   #include <physconst.h>
 }

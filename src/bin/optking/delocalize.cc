@@ -4,13 +4,14 @@
 // s-vectors.  The new coordinates will not mix stretches and
 // bends unless MIX_TYPES is set to 1.
 
+#include <math.h>
+
 extern "C" {
   #include <stdio.h>
   #include <file30.h>
   #include <stdlib.h>
   #include <string.h>
   #include <physconst.h>
-  #include <math.h>
   #include <libciomr.h>
   #include <ip_libv1.h>
 }

@@ -2,12 +2,13 @@
 // it to H_inv, and then BFGS updates it.  It writes the new
 // Hessian to fconst.dat and returns H_inv
 
+#include <math.h>
+
 extern "C" {
   #include <stdio.h>
   #include <file30.h>
   #include <stdlib.h>
   #include <string.h>
-  #include <math.h>
   #include <libciomr.h>
   #include <physconst.h>
 }

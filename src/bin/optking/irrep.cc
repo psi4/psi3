@@ -22,13 +22,14 @@
 						  J. Kenny June '00
 ******************************************************************************/
 
+#include <math.h>
+
 extern "C" {
   #include <stdio.h>
   #include <file30.h>
   #include <stdlib.h>
   #include <string.h>
   #include <physconst.h>
-  #include <math.h>
   #include <libciomr.h>
   #include <ip_libv1.h>
 }
