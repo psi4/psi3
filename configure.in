@@ -793,19 +793,11 @@ AC_OUTPUT(include/psiconfig.h
           Makefile lib/Makefile src/Makefile
           src/lib/Makefile src/lib/MakeRules src/lib/MakeVars
           src/util/Makefile
-          src/util/psipp/Makefile
           src/util/tocprint/Makefile
 
-          src/lib/alloc/Makefile
-          src/lib/io/Makefile
-          src/lib/io/param.h
-          src/lib/iomr/Makefile
           src/lib/libciomr/Makefile
           src/lib/libciomr/iomrparam.h
-          src/lib/libcoallc/Makefile
           src/lib/libipv1/Makefile
-          src/lib/libmalloc/Makefile
-          src/lib/libparse/Makefile
           src/lib/libchkpt/Makefile
 
           src/lib/libderiv/Makefile
@@ -831,21 +823,8 @@ AC_OUTPUT(include/psiconfig.h
           src/lib/libr12/input.dat
           src/bin/Makefile src/bin/MakeRules src/bin/MakeVars
 
-          src/bin/contour/Makefile
-          src/bin/contour3d/Makefile
           src/bin/cphf/Makefile
-          src/bin/normco/Makefile
-          src/bin/intder/Makefile
-          src/bin/intder95/Makefile
-          src/bin/intdif/Makefile
-          src/bin/local/Makefile
-          src/bin/makepk/Makefile
-          src/bin/muder/Makefile
-          src/bin/psi/Makefile
           src/bin/psi3/Makefile
-          src/bin/ugeom/Makefile
-          src/bin/rgeom/Makefile
-
           src/bin/ccdensity/Makefile
           src/bin/ccenergy/Makefile
           src/bin/cchbar/Makefile
@@ -873,6 +852,7 @@ AC_OUTPUT(include/psiconfig.h
           src/bin/dboc/Makefile
           src/bin/cusp/Makefile
           src/bin/mocube/Makefile
+          src/bin/localize/Makefile
 
           src/doc/MakeVars src/doc/MakeRules src/doc/Makefile
           src/doc/install/Makefile
