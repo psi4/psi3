@@ -148,7 +148,7 @@ void xc_fock(void){
 		  bas1 = DFT_options.basis[m];
 		  for(n=0;n<num_ao;n++){
 		      bas2 = DFT_options.basis[n];
-		      G[m][n] += vval*bas1*bas2;x
+		      G[m][n] += vval*bas1*bas2;
 		  }
 	      }
 	  }
