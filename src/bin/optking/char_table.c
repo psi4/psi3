@@ -761,8 +761,7 @@ int *get_ops_in_class(char *ptgrp) {
   if(error_var != 0) {
     fprintf(outfile,"\nerror -- problem assigning number of operations per class");
     fprintf(outfile,"\n      ** stopping execution **\n");
-    printf("\nerror -- problem assigning number of operations per
-class");
+    printf("\nerror -- problem assigning number of operations per class");
     printf("\n      ** stopping execution **\n");       
     exit(1);
   } 

@@ -7,13 +7,13 @@
 
 #define OPT_AUX (13)
 #define SQR(A) ((A)*(A))
-// These are just internal type specifiers
+/*--- These are just internal type specifiers ---*/
 #define STRE_TYPE (0)
 #define BEND_TYPE (1)
 #define TORS_TYPE (2)
 #define OUT_TYPE (3)
 #define NUM_INTCO_TYPES (4)
-// Limits to hard-wired arrays
+/*--- Limits to hard-wired arrays ---*/
 #define MAX_STRETCHES (100)
 #define MAX_BENDS (100)
 #define MAX_TORSIONS (200)
@@ -26,8 +26,6 @@
 #define MIN(I,J) ((I>J) ? J : I)
 #define EVAL_TOL (1.0E-14)
 #define REDUNDANT_EVAL_TOL (1.0E-7)
-// for irrep
-// #define IRREP_TOL (1.0E-8)
 #define LABEL_LENGTH (4) // for point group and irrep labels
 
 EXTERN char *gprgid();
