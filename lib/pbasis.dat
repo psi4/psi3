@@ -16622,8 +16622,13 @@ HYDROGEN:"D-AUG-CC-PV6Z" = (
 %  it has been shown possible to estimate the contribution of the missing         
 %  functions by plotting the energy contribution of each l shell for d,f,g etc.   
 %  and then perform an exponential extrapolation.                                 
+%
+%  8/26/03 EFV -- rename pV7Z basis for C to __pV7Z so that people don't use it
+%                 it seems to be of questionable quality (a local minimum?)
+%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+  HYDROGEN:"PV7Z":puream = true
   HYDROGEN:"PV7Z" = (
   (S    (      2762.5161400000            0.0000220000)
         (      1211.8584400000            0.0000060000)
@@ -16662,7 +16667,8 @@ HYDROGEN:"D-AUG-CC-PV6Z" = (
   (I    (         3.4140000000            1.0000000000))
 )
 
-  CARBON:"PV7Z" = (
+  CARBON:"__PV7Z":puream = true
+  CARBON:"__PV7Z" = (
   (S    (    949028.8000000000            0.0000014000)
         (    142083.0000000000            0.0000110000)
         (     32332.4700000000            0.0000578000)
@@ -16727,6 +16733,7 @@ HYDROGEN:"D-AUG-CC-PV6Z" = (
   (I    (         0.6777000000            1.0000000000))
   )
 
+  NITROGEN:"PV7Z":puream = true
   NITROGEN:"PV7Z" = (
   (S    (   1296296.0000000000            0.0000014000)
         (    194068.6000000000            0.0000110000)
@@ -16792,6 +16799,7 @@ HYDROGEN:"D-AUG-CC-PV6Z" = (
   (I    (         1.5800000000            1.0000000000))
   )
 
+  OXYGEN:"PV7Z":puream = true
   OXYGEN:"PV7Z" = (
   (S    (   1678789.0000000000            0.0000014000)
         (    251388.2000000000            0.0000112000)
@@ -16857,6 +16865,7 @@ HYDROGEN:"D-AUG-CC-PV6Z" = (
   (I    (         2.0780000000            1.0000000000))
   )
 
+  FLUORINE:"PV7Z":puream = true
   FLUORINE:"PV7Z" = (
   (S    (   2115112.0000000000            0.0000015000)
         (    316699.7000000000            0.0000113000)
@@ -16922,6 +16931,7 @@ HYDROGEN:"D-AUG-CC-PV6Z" = (
   (I    (         2.1600000000            1.0000000000))
   )
 
+  SULFUR:"PV7Z":puream = true
   SULFUR:"PV7Z" = (
   (S    (   7010036.0000000000            0.0000014394)
         (   3489316.1000000001           -0.0000008403)
@@ -17045,11 +17055,12 @@ HYDROGEN:"D-AUG-CC-PV6Z" = (
 
 %%%%%%%%%%  ALIAS pV7Z => PV7Z %%%%%%%%%%%%%%%
 
+  "pV7Z":puream = true
   HYDROGEN:"pV7Z" = (
         (GET "PV7Z")
         )
-  CARBON:"pV7Z" = (
-        (GET "PV7Z")
+  CARBON:"__pV7Z" = (
+        (GET "__PV7Z")
         )
   NITROGEN:"pV7Z" = (
         (GET "PV7Z")
@@ -17071,6 +17082,7 @@ HYDROGEN:"D-AUG-CC-PV6Z" = (
 % To be published
 %  -EV 01/29/2001
 
+  "CC-PV7Z":puream = true
   HYDROGEN:"CC-PV7Z" = (
     (GET "PV7Z")
   )
@@ -17097,28 +17109,24 @@ HYDROGEN:"D-AUG-CC-PV6Z" = (
 
 %%%%%%%%%%  ALIASES cc-pV7Z => CC-PV7Z %%%%%%%%%%%%%%%%%%%%%
 
+  "cc-pV7Z":puream = true
   HYDROGEN:"cc-pV7Z" = (
-    (GET "PV7Z")
+    (GET "CC-PV7Z")
   )
   CARBON:"cc-pV7Z" = (
-    (GET "PV7Z")
-    (K    (         1.9560000000            1.0000000000))
+    (GET "CC-PV7Z")
   )
   NITROGEN:"cc-pV7Z" = (
-    (GET "PV7Z")
-    (K    (         2.3790000000            1.0000000000))
+    (GET "CC-PV7Z")
   )
   OXYGEN:"cc-pV7Z" = (
-    (GET "PV7Z")
-    (K    (         3.1270000000            1.0000000000))
+    (GET "CC-PV7Z")
   )
   FLUORINE:"cc-pV7Z" = (
-    (GET "PV7Z")
-    (K    (         4.2520000000            1.0000000000))
+    (GET "CC-PV7Z")
   )
   SULFUR:"cc-pV7Z" = (
-    (GET "PV7Z")
-    (K    (         1.2090000000            1.0000000000))
+    (GET "CC-PV7Z")
   )
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -17143,6 +17151,7 @@ HYDROGEN:"D-AUG-CC-PV6Z" = (
 %  and then perform an exponential extrapolation.                                 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+  "AUG-PV7Z":puream = true
   HYDROGEN:"AUG-PV7Z" = (
     (GET "PV7Z")
     (S    (         0.0270000000            1.0000000000))
@@ -17206,6 +17215,7 @@ HYDROGEN:"D-AUG-CC-PV6Z" = (
 
 %%%%%%%%%%%%% ALIASES aug-pV7Z => AUG-PV7Z	%%%%%%%
 
+  "aug-pV7Z":puream = true
   HYDROGEN:"aug-pV7Z" = (
     (GET "AUG-PV7Z")
   )
@@ -17231,6 +17241,7 @@ HYDROGEN:"D-AUG-CC-PV6Z" = (
 % Diffuse k exponents optimized at the CCSD(FC) level
 % To be published
 %  -EV 04/05/2001
+  "AUG-CC-PV7Z":puream = true
   HYDROGEN:"AUG-CC-PV7Z" = (
     (GET "AUG-PV7Z")
   )
@@ -17249,5 +17260,32 @@ HYDROGEN:"D-AUG-CC-PV6Z" = (
     (K    (         4.2520000000            1.0000000000))
     (K    (         1.5970000000            1.0000000000))
   )
+
+%%%%%%%%%%  ALIASES aug-cc-pV7Z => AUG-CC-PV7Z %%%%%%%%%%%%%%%%%%%%%
+
+  "aug-cc-pV7Z":puream = true
+  HYDROGEN:"aug-cc-pV7Z" = (
+    (GET "AUG-CC-PV7Z")
+  )
+  CARBON:"aug-cc-pV7Z" = (
+    (GET "AUG-CC-PV7Z")
+  )
+  NITROGEN:"aug-cc-pV7Z" = (
+    (GET "AUG-CC-PV7Z")
+  )
+  OXYGEN:"aug-cc-pV7Z" = (
+    (GET "AUG-CC-PV7Z")
+  )
+  FLUORINE:"aug-cc-pV7Z" = (
+    (GET "AUG-CC-PV7Z")
+  )
+  SULFUR:"aug-cc-pV7Z" = (
+    (GET "AUG-CC-PV7Z")
+  )
+
+
+
 )
+
+
 %
