@@ -479,7 +479,7 @@ void get_moinfo(void)
 void get_reorder_array(void)
 {
   int i, errcod;
-  int *tdocc, *tsocc, *tfrdocc, *tfruocc, **ras_opi;
+  int **ras_opi;
   int j, k, l, fzv_offset;
 
   moinfo.order = init_int_array(moinfo.nmo);
@@ -490,21 +490,15 @@ void get_reorder_array(void)
        || strcmp(params.wfn, "OOCCD") == 0 
        || strcmp(params.wfn, "DETCAS") == 0) {
     
-    tdocc = init_int_array(moinfo.nirreps);
-    tsocc = init_int_array(moinfo.nirreps);
-    tfrdocc = init_int_array(moinfo.nirreps);
-    tfruocc = init_int_array(moinfo.nirreps);
     ras_opi = init_int_matrix(4,moinfo.nirreps); 
     
-    
     if (!ras_set(moinfo.nirreps, moinfo.nmo, params.fzc, moinfo.orbspi,
-                 tdocc, tsocc, tfrdocc, tfruocc, ras_opi, moinfo.order,
-                 params.ras_type)) {
+                 moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc, 
+		 ras_opi, moinfo.order, params.ras_type)) {
       fprintf(outfile, "Error in ras_set().  Aborting.\n");
       exit(1);
     }
     
-    free(tdocc);  free(tsocc);  free(tfrdocc);  free(tfruocc);
     free_int_matrix(ras_opi, 4);
     
   } 
