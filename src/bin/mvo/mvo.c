@@ -55,6 +55,7 @@ void exit_io();
 void get_reorder_array(void);
 void get_fzc_operator(void);
 void get_mvos(void);
+void get_canonical(void);
 void get_mp2nos(void);
 
 main(int argc, char *argv[])
@@ -69,6 +70,9 @@ main(int argc, char *argv[])
   init_ioff();
   if (params.mp2nos) {
     get_mp2nos();
+  }
+  else if (params.canonical) {
+    get_canonical();
   }
   else {
     get_fzc_operator();
@@ -186,6 +190,8 @@ void get_parameters(void)
   params.ivo = 0;
   errcod = ip_boolean("IVO", &(params.ivo), 0);
 
+  params.canonical = 0;
+  errcod = ip_boolean("CANONICAL", &(params.canonical), 0);
   return;
 
 }
@@ -206,6 +212,8 @@ void print_parameters(void)
                                   (params.fzc ? "Yes": "No"));
       fprintf(outfile,"\tIVO                    =  %s\n", 
                                   (params.ivo ? "Yes": "No"));
+      fprintf(outfile,"\tCanonical              =  %s\n",
+		                  (params.canonical ? "Yes": "No"));
       fprintf(outfile,"\tFrozen Core OEI file   =  %d\n", 
                                   params.h_fzc_file);
       fprintf(outfile,"\tfzc_fock_coeff         =  %lf\n", 
@@ -242,21 +250,6 @@ void get_moinfo(void)
   int *tmpi, nopen;
   double **tmpmat, **so2ao;
   double N; /* number of valence electrons */
-
-  /*
-  file30_init();
-  moinfo.nmo = file30_rd_nmo();
-  moinfo.nso = file30_rd_nso();
-  moinfo.nao = file30_rd_nao();
-  moinfo.nirreps = file30_rd_nirreps();
-  moinfo.iopen = file30_rd_iopen();
-  moinfo.labels = file30_rd_irr_labs();
-  moinfo.sopi   = file30_rd_sopi();
-  moinfo.orbspi = file30_rd_orbspi();
-  moinfo.clsdpi = file30_rd_clsdpi();
-  moinfo.openpi = file30_rd_openpi();
-  moinfo.scf_vector = file30_rd_scf();
-  */
 
   chkpt_init(PSIO_OPEN_OLD);
   moinfo.nmo = chkpt_rd_nmo();
@@ -479,10 +472,12 @@ void get_moinfo(void)
 void get_reorder_array(void)
 {
   int i, errcod;
-  int **ras_opi;
   int j, k, l, fzv_offset;
 
   moinfo.order = init_int_array(moinfo.nmo);
+
+  /* the following will only be set nonzero if it is a CI related WFN */
+  moinfo.ras_opi = init_int_matrix(4,moinfo.nirreps);
 
   /* for backtransforms, no reorder array...map Pitzer to Pitzer */
   if (strcmp(params.wfn, "CI") == 0 || strcmp(params.wfn, "DETCI") == 0
@@ -490,17 +485,14 @@ void get_reorder_array(void)
        || strcmp(params.wfn, "OOCCD") == 0 
        || strcmp(params.wfn, "DETCAS") == 0) {
     
-    ras_opi = init_int_matrix(4,moinfo.nirreps); 
+    moinfo.ras_opi = init_int_matrix(4,moinfo.nirreps); 
     
     if (!ras_set(moinfo.nirreps, moinfo.nmo, params.fzc, moinfo.orbspi,
                  moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc, 
-		 ras_opi, moinfo.order, params.ras_type)) {
+		 moinfo.ras_opi, moinfo.order, params.ras_type)) {
       fprintf(outfile, "Error in ras_set().  Aborting.\n");
       exit(1);
     }
-    
-    free_int_matrix(ras_opi, 4);
-    
   } 
   
   else { /* default (CC, MP2, other) */
@@ -522,6 +514,7 @@ void get_reorder_array(void)
 void cleanup(void)
 {
   free(moinfo.fzc_operator);
+  free_int_matrix(moinfo.ras_opi, 4);
 }
 
 void get_mvos(void)

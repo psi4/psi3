@@ -37,5 +37,6 @@ struct MOInfo {
 
     double ***evects;      /* SCF eigenvector matrix for each irrep          */
     double *fzc_operator;  /* AO frozen core operator (lwr triangle)         */
+    int **ras_opi;         /* orbs per ras space per irrep                   */
 };
     

@@ -31,6 +31,7 @@ struct Params {
    double fzc_fock_coeff;   /* coefficient for the frozen core fock matrix  */
    double fock_coeff;       /* coefficient of the regular fock matrix       */
    int mp2nos;              /* if true, get ump2nos                         */
+   int canonical;           /* if true, rediag Fock mat in each RAS subspc  */
    int ivo;                 /* get improved virtual orbitals not MVO's      */
    int *docc_virt;          /* treat this doubly occupied orbital as a part */
                             /* of the virtual space during mvo calculations */
