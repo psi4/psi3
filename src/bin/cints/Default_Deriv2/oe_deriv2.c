@@ -220,6 +220,7 @@ void oe_deriv2()
 		      tmp -= l1*overlap_int(a1, l1-1, m1, n1, inorm, a2, l2, m2, 
 					    n2, jnorm, AB, PA, PB);
 		    S[coord_ax][I][J] += tmp*norm_pf;
+		    Half_Deriv_S[coord_ax][I][J] += tmp*norm_pf;
 
 		    /*--- d/dAy ---*/
 		    tmp = 2.0*a1*overlap_int(a1, l1, m1+1, n1, inorm, a2, l2, m2, 
@@ -228,6 +229,7 @@ void oe_deriv2()
 		      tmp -= m1*overlap_int(a1, l1, m1-1, n1, inorm, a2, l2, m2, 
 					    n2, jnorm, AB, PA, PB);
 		    S[coord_ay][I][J] += tmp*norm_pf;
+		    Half_Deriv_S[coord_ay][I][J] += tmp*norm_pf;
 
 		    /*--- d/dAz ---*/
 		    tmp = 2.0*a1*overlap_int(a1, l1, m1, n1+1, inorm, a2, l2, m2, 
@@ -236,6 +238,7 @@ void oe_deriv2()
 		      tmp -= n1*overlap_int(a1, l1, m1, n1-1, inorm, a2, l2, m2, 
 					    n2, jnorm, AB, PA, PB);
 		    S[coord_az][I][J] += tmp*norm_pf;
+		    Half_Deriv_S[coord_az][I][J] += tmp*norm_pf;
 
 		    /*--- d/dBx ---*/
 		    tmp = 2.0*a2*overlap_int(a1, l1, m1, n1, inorm, a2, l2+1, m2, 

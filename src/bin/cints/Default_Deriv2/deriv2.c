@@ -25,7 +25,7 @@
 
 void deriv2(void)
 {
-  int i, j, ij, coord, ntri, natom;
+  int i, j, ij, coord, ntri, natom, size;
   char *label;
   double **tmpmat, **my_grad, *outbuf;
   double **C;
@@ -36,9 +36,11 @@ void deriv2(void)
   /* Derivative Fock and overlap matrices */
   F = (double ***) malloc(Molecule.num_atoms * 3 * sizeof(double **));
   S = (double ***) malloc(Molecule.num_atoms * 3 * sizeof(double **));
+  Half_Deriv_S = (double ***) malloc(Molecule.num_atoms * 3 * sizeof(double **));
   for(i=0; i < Molecule.num_atoms*3; i++) {
     F[i] = block_matrix(BasisSet.num_ao, BasisSet.num_ao);
     S[i] = block_matrix(BasisSet.num_ao, BasisSet.num_ao);
+    Half_Deriv_S[i] = block_matrix(BasisSet.num_ao, BasisSet.num_ao);
   }
 
   init_moinfo();
@@ -50,6 +52,8 @@ void deriv2(void)
 #if DO_OE
   oe_deriv2();
 #endif
+
+
 
   /* Multiply the F's by 2 -- accounts for orbital population factor */
   for(coord=0; coord < Molecule.num_atoms*3; coord++) {
@@ -143,8 +147,22 @@ void deriv2(void)
     }
     for(i=0; i < PSIO_KEYLEN; i++) label[i] = '\0';
   }
-  free(outbuf);
+  /* Write half-differentiated overlap integrals to disk */
+  size = BasisSet.num_ao * BasisSet.num_ao;
+  for(coord=0; coord < Molecule.num_atoms*3; coord++) {
 
+    sprintf(label, "AO-basis Half-Diff Overlap (%d)", coord);
+    psio_open(PSIF_OEI, PSIO_OPEN_OLD);
+    psio_write_entry(PSIF_OEI, label, (char *) Half_Deriv_S[coord][0], size*sizeof(double));
+    psio_close(PSIF_OEI, 1);
+    if (UserOptions.print_lvl >= PRINT_OEDERIV) {
+      fprintf(outfile,"  -%s\n",label);
+      print_mat(Half_Deriv_S[coord],BasisSet.num_ao,BasisSet.num_ao,outfile);
+    }
+    for(i=0; i < PSIO_KEYLEN; i++) label[i] = '\0';
+  }
+  free(outbuf);
+  free(label);
 
   print_atommat("Skeleton contribution to the molecular Hessian (a.u.)",Hess);
   natom = Molecule.num_atoms;
@@ -155,8 +173,9 @@ void deriv2(void)
   for(i=0; i < Molecule.num_atoms*3; i++) {
     free_block(F[i]);
     free_block(S[i]);
+    free_block(Half_Deriv_S[i]);
   }
-  free(F);  free(S);
+  free(F);  free(S);  free(Half_Deriv_S);
   free_block(Hess);
   cleanup_moinfo();
 
