@@ -52,7 +52,7 @@
  -------------------------*/
 #define MAXFACT 100
 #define MAXNIRREPS 8
-#define IOFFMAX 16384
+#define IOFFMAX 512000 
 
 /*----------------
   Macro functions

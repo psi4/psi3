@@ -34,7 +34,7 @@ void check_max_am()
 #ifdef INCLUDE_MP2R12
   if ((UserOptions.make_r12ints || UserOptions.make_mp2r12) &&
       (BasisSet.max_am > LIBR12_MAX_AM ||
-       CINTS_MAX_AM < LIBR12_MAX_AM + DERIV_LVL) {
+       CINTS_MAX_AM < LIBR12_MAX_AM + 1)) {
     punt("Angular momentum limit exceeded, link CINTS against a LIBR12 library with higher NEW_AM");
   }
 #endif

@@ -307,13 +307,13 @@ void *hf_fock_thread(void *tnum_ptr)
 		sj = sj_arr[plquartet];
 		sk = sk_arr[plquartet];
 		sl = sl_arr[plquartet];
-		dmax = MAX(BasisSet.shell_pairs[si][sj].Dmax, BasisSet.shell_pairs[sk][sl].Dmax);
+/*		dmax = MAX(BasisSet.shell_pairs[si][sj].Dmax, BasisSet.shell_pairs[sk][sl].Dmax);
 		dmax = MAX(dmax, 0.25*BasisSet.shell_pairs[si][sk].Dmax);
 		dmax = MAX(dmax, 0.25*BasisSet.shell_pairs[si][sl].Dmax);
 		dmax = MAX(dmax, 0.25*BasisSet.shell_pairs[sj][sk].Dmax);
 		dmax = MAX(dmax, 0.25*BasisSet.shell_pairs[sj][sl].Dmax);
 		if (BasisSet.schwartz_eri[si][sj]*BasisSet.schwartz_eri[sk][sl]*dmax < UserOptions.cutoff)
-		  continue;
+		  continue;*/
 		
 		fac1 = fac2 = fac3 = 1.0;
 		if (si != sj)
@@ -342,13 +342,13 @@ void *hf_fock_thread(void *tnum_ptr)
 		sj = htable.table[htable_ptr].sj;
 		sk = htable.table[htable_ptr].sk;
 		sl = htable.table[htable_ptr].sl;
-		dmax = MAX(BasisSet.shell_pairs[si][sj].Dmax, BasisSet.shell_pairs[sk][sl].Dmax);
+/*		dmax = MAX(BasisSet.shell_pairs[si][sj].Dmax, BasisSet.shell_pairs[sk][sl].Dmax);
 		dmax = MAX(dmax, 0.25*BasisSet.shell_pairs[si][sk].Dmax);
 		dmax = MAX(dmax, 0.25*BasisSet.shell_pairs[si][sl].Dmax);
 		dmax = MAX(dmax, 0.25*BasisSet.shell_pairs[sj][sk].Dmax);
 		dmax = MAX(dmax, 0.25*BasisSet.shell_pairs[sj][sl].Dmax);
 		if (BasisSet.schwartz_eri[si][sj]*BasisSet.schwartz_eri[sk][sl]*dmax < UserOptions.cutoff)
-		  continue;
+		  continue;*/
 
 		fac1 = htable.table[htable_ptr].q4ijkl;
 		fac2 = htable.table[htable_ptr].q4ikjl;
@@ -484,14 +484,14 @@ void *hf_fock_thread(void *tnum_ptr)
 			llmax = (kk==ii)? jj : kk ;
 			for(ll=0; ll <= llmax; ll++){
 			  ijkl = ll+nl*(kk+nk*(jj+nj*ii));
-			  if (fabs(data[ijkl])>UserOptions.cutoff) {
+/*			  if (fabs(data[ijkl])>UserOptions.cutoff) {*/
 			    tot_data[num].i = (short int) ii;
 			    tot_data[num].j = (short int) jj;
 			    tot_data[num].k = (short int) kk;
 			    tot_data[num].l = (short int) ll;
 			    tot_data[num].val = data[ijkl];
 			    num++;
-			  }
+/*			  }*/
 			}
 		      }
 		    }
@@ -507,14 +507,14 @@ void *hf_fock_thread(void *tnum_ptr)
 			llmax = (kk==ii)? jj : nl - 1;
 			for(ll=0; ll <= llmax; ll++){
 			  ijkl = ll+nl*(kk+nk*(jj+nj*ii));
-			  if(fabs(data[ijkl])>UserOptions.cutoff){
+/*			  if(fabs(data[ijkl])>UserOptions.cutoff){*/
 			    tot_data[num].i = (short int) ii;
 			    tot_data[num].j = (short int) jj;
 			    tot_data[num].k = (short int) kk;
 			    tot_data[num].l = (short int) ll;
 			    tot_data[num].val = data[ijkl];
 			    num++;
-			  }
+/*			  }*/
 			}
 		      }
 		    }
@@ -530,14 +530,14 @@ void *hf_fock_thread(void *tnum_ptr)
 			llmax = (sk == sl) ? kk : nl - 1;
 			for(ll=0; ll <= llmax; ll++){
 			  ijkl = ll+nl*(kk+nk*(jj+nj*ii));
-			  if(fabs(data[ijkl])>UserOptions.cutoff){
+/*			  if(fabs(data[ijkl])>UserOptions.cutoff){*/
 			    tot_data[num].i = (short int) ii;
 			    tot_data[num].j = (short int) jj;
 			    tot_data[num].k = (short int) kk;
 			    tot_data[num].l = (short int) ll;
 			    tot_data[num].val = data[ijkl];
 			    num++;
-			  }
+/*			  }*/
 			}
 		      }
 		    }
@@ -553,7 +553,7 @@ void *hf_fock_thread(void *tnum_ptr)
 		tot_data[0].i = tot_data[0].j = tot_data[0].k = tot_data[0].l = 0;
 		tot_data[0].val = temp;
 		num = 0;
-		if (fabs(temp) > UserOptions.cutoff)
+/*		if (fabs(temp) > UserOptions.cutoff)*/
 		  num = 1;
 
 	      }

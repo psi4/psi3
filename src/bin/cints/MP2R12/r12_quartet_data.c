@@ -30,7 +30,7 @@ void r12_quartet_data(prim_data* Data, double_array_t *fjt_table, double AB2, do
                   1.0/51.0, 1.0/53.0, 1.0/55.0, 1.0/57.0, 1.0/59.0,
                   1.0/61.0, 1.0/63.0, 1.0/65.0, 1.0/67.0, 1.0/69.0,
                   1.0/71.0, 1.0/73.0, 1.0/75.0, 1.0/77.0, 1.0/79.0};
-  static double small_T = UserOptions.cutoff;       /*--- Use only one term in Taylor expansion of Fj(T) if T < small_T ---*/
+  double small_T = UserOptions.cutoff;       /*--- Use only one term in Taylor expansion of Fj(T) if T < small_T ---*/
   int deriv_lvl = 1;
 
   /*----------------

@@ -53,7 +53,8 @@ void hf_fock()
     Initialization
    ---------------*/
 #ifdef USE_TAYLOR_FM
-  init_Taylor_Fm_Eval(BasisSet.max_am*4-4,UserOptions.cutoff);
+/*  init_Taylor_Fm_Eval(BasisSet.max_am*4-4,UserOptions.cutoff);*/
+  init_Taylor_Fm_Eval(BasisSet.max_am*4-4,1.0E-20);
 #else
   init_fjt(BasisSet.max_am*4);
 #endif

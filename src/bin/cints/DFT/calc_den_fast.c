@@ -414,9 +414,9 @@ struct den_info_s calc_density_fast(struct coordinates geom, int atom_num, int c
 	    break;
 	    
 	default:
-	    fprintf(stderr,"Basis Functions of Angular Momentum 
+	    fprintf(stderr,"Basis Functions of Angular Momentum \ 
 %d not implemented in get_density function",shell_type);
-	    fprintf(outfile,"Basis Functions of Angular Momentum 
+	    fprintf(outfile,"Basis Functions of Angular Momentum \ 
 %d not implemented in get_density function",shell_type);
 	    punt("");
 	}
