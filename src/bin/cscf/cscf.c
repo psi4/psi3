@@ -181,7 +181,8 @@ int main(argc,argv)
    char *output="APPEND  ";
    struct symm *s;
    ip_value_t *ipvalue=NULL;
-   int orthog_only;
+   int errcod, orthog_only;
+   char *wfn;
  
    ffile(&infile,"input.dat",2);
    ffile(&outfile,"output.dat",1);
@@ -248,8 +249,11 @@ int main(argc,argv)
    delta = 1.0;
                                                       
 /* CDS 3/6/02 add flag to do only orthogonalization */
-   orthog_only = 0;
+   errcod = ip_string("WFN",&wfn,0);
+   if (strcmp(wfn,"DETCAS")==0) orthog_only = 1;
+   else orthog_only = 0;
    ip_boolean("ORTHOG_ONLY",&orthog_only,0);
+   free(wfn);
 
 /* open integrals file(s) */
 
