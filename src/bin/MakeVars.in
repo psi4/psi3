@@ -76,6 +76,7 @@ FLIBS = @FLIBS@
 CLIBS = @CLIBS@
 CXXLIBS = @CXXLIBS@
 BLAS = @BLAS@
+LAPACK = @LAPACK@
 
 # where to find main for fortran programs
 ALLOC = allocate.o

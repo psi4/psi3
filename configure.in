@@ -250,7 +250,31 @@ esac
 if test "X$BLAS" = X; then
  AC_HAVE_FC_LIBRARY(-lblas,BLAS="-lblas")
 fi
+if test "X$BLAS" = X; then
+ AC_MSG_ERROR("Did not find a BLAS library")
+fi
 AC_SUBST(BLAS)
+
+AC_ARG_WITH(lapack,--with-lapack                which lapack library to use,[
+case $withval in
+  yes)
+    LAPACK='-llapack'
+    ;;
+  no)
+    LAPACK=''
+    ;;
+  *)
+    LAPACK=$withval
+    ;;
+esac
+])
+if test "X$LAPACK" = X; then
+ AC_HAVE_FC_LIBRARY(-llapack,LAPACK="-llapack")
+fi
+if test "X$LAPACK" = X; then
+ AC_MSG_ERROR("Did not find a LAPACK library")
+fi
+AC_SUBST(LAPACK)
 
 ############################################################################
 # Set up compiler flags:
@@ -661,9 +685,6 @@ if echo $os | grep aix >/dev/null 2>&1 && test "$bitwidth64" = yes; then
 elif echo $os | grep aix >/dev/null 2>&1; then
     ARFLAGS="rv"
     LDFLAGS="-bmaxdata:2000000000"
-elif echo $os | grep linux >/dev/null 2>&1; then
-    ARFLAGS="rv"
-    LDFLAGS="-static"
 else
     ARFLAGS="rv"
 fi
