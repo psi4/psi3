@@ -186,6 +186,8 @@ typedef struct {
 
 typedef struct {
     double Escf;              /* SCF energy */
+    double Ecorr;             /* Correlation energy */
+    double Eref;              /* Reference energy (if not SCF reference) */
     double *scf_evals[2];     /* SCF eigenvalues (alpha and beta spin) */
     double *scf_evals_occ[2]; /* Eigenvalues for active occupied orbitals in QTS order */
     double *scf_evals_uocc[2];/* Eigenvalues for active virtual orbitals in QTS order */

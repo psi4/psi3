@@ -24,6 +24,13 @@ void init_moinfo()
   double **scf_evec_so;
 
   MOInfo.Escf = file30_rd_escf();
+  if (strcmp(UserOptions.wfn,"SCF")) {
+    MOInfo.Ecorr = file30_rd_ecorr();
+    /* Check if non-SCF reference, otherwise just use Escf as Eref */
+    MOInfo.Eref = file30_rd_eref();
+    if (fabs(MOInfo.Eref)<ZERO)
+      MOInfo.Eref = MOInfo.Escf;
+  }
   MOInfo.num_mo = file30_rd_nmo();
   MOInfo.orbspi = file30_rd_orbspi();
   MOInfo.clsdpi = file30_rd_clsdpi();
