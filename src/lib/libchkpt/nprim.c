@@ -4,6 +4,7 @@
 */
 
 #include "chkpt.h"
+#include <stdlib.h>
 #include <psifiles.h>
 #include <libpsio/psio.h>
 
@@ -19,9 +20,12 @@
 int chkpt_rd_nprim(void)
 {
   int nprim;
+  char *keyword;
+  keyword = chkpt_build_keyword("Num. primitives");
 
-  psio_read_entry(PSIF_CHKPT, "::Num. primitives", (char *) &nprim, 
-                  sizeof(int));
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) &nprim, sizeof(int));
+
+  free(keyword);
   return nprim;
 }
 
@@ -39,6 +43,10 @@ int chkpt_rd_nprim(void)
 
 void chkpt_wt_nprim(int nprim)
 {
-  psio_write_entry(PSIF_CHKPT, "::Num. primitives", (char *) &nprim, 
-                   sizeof(int));
+  char *keyword;
+  keyword = chkpt_build_keyword("Num. primitives");
+
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) &nprim, sizeof(int));
+
+  free(keyword);
 }

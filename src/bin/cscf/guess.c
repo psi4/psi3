@@ -42,6 +42,12 @@ void guess()
   if(inflg == 1) reftmp = chkpt_rd_ref();
 
 /*---If first calculation either read occupations from DOCC or form an initial guess---*/
+  /* check checkpoint flag to see if occupations in ckhpt file should be forced;
+    this is needed to override DOCC vectors in finite difference calculations */ 
+  if ( chkpt_rd_override_occ() ) {
+	occ_read();
+  }
+  else {
       
 	  errcod = ip_exist("DOCC",0);
 	  if(errcod) {
@@ -115,6 +121,7 @@ void guess()
 	      
 	      occ_calc();
 	  }
+  }
 /* STB - 7/10/00 for DFT to ship the eigenvector */
 /* calculate the number of total closed and open shells */
 	  if(uhf){

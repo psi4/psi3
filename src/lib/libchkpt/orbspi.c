@@ -3,6 +3,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "chkpt.h"
 #include <psifiles.h>
 #include <libciomr/libciomr.h>
@@ -25,13 +26,15 @@ int *chkpt_rd_orbspi(void)
 {
   int nirreps;
   int *orbspi;
+  char *keyword;
+  keyword = chkpt_build_keyword("MO's per irrep");
 
   nirreps = chkpt_rd_nirreps();
   orbspi = init_int_array(nirreps);
 
-  psio_read_entry(PSIF_CHKPT, "::MO's per irrep", (char *) orbspi, 
-                  nirreps*sizeof(int));
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) orbspi, nirreps*sizeof(int));
 
+  free(keyword);
   return orbspi;
 }
 
@@ -51,9 +54,12 @@ int *chkpt_rd_orbspi(void)
 void chkpt_wt_orbspi(int *orbspi)
 {
   int nirreps;
+  char *keyword;
+  keyword = chkpt_build_keyword("MO's per irrep");
 
   nirreps = chkpt_rd_nirreps();
 
-  psio_write_entry(PSIF_CHKPT, "::MO's per irrep", (char *) orbspi, 
-                   nirreps*sizeof(int));
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) orbspi, nirreps*sizeof(int));
+
+  free(keyword);
 }

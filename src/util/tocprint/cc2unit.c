@@ -24,10 +24,14 @@ int cc2unit(char *cc)
   else if (!strcmp(cc, "DENOM") || !strcmp(cc, "denom")) return CC_DENOM;
   else if (!strcmp(cc, "TAMPS") || !strcmp(cc, "tamps")) return CC_TAMPS;
   else if (!strcmp(cc, "LAMPS") || !strcmp(cc, "lamps")) return CC_LAMPS;
+  else if (!strcmp(cc, "LAMBDA") || !strcmp(cc, "lambda")) return CC_LAMBDA;
+  else if (!strcmp(cc, "RAMPS") || !strcmp(cc, "ramps")) return CC_RAMPS;
   else if (!strcmp(cc, "HBAR") || !strcmp(cc, "hbar")) return CC_HBAR;
   else if (!strcmp(cc, "GAMMA") || !strcmp(cc, "gamma")) return CC_GAMMA;
   else if (!strcmp(cc, "MISC") || !strcmp(cc, "misc")) return CC_MISC;
-  else if (!strcmp(cc, "LR") || !strcmp(cc, "lr")) return CC_LR;
+  else if (!strcmp(cc, "GLG") || !strcmp(cc, "glg")) return CC_GLG;
+  else if (!strcmp(cc, "GL") || !strcmp(cc, "gl")) return CC_GL;
+  else if (!strcmp(cc, "GR") || !strcmp(cc, "gr")) return CC_GR;
 
   else if (!strcmp(cc, "TMP") || !strcmp(cc, "tmp")) return CC_TMP;
   else if (!strcmp(cc, "TMP0") || !strcmp(cc, "tmp0")) return CC_TMP0;

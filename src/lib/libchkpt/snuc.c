@@ -4,6 +4,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <libciomr/libciomr.h>
 #include "chkpt.h"
 #include <psifiles.h>
@@ -24,14 +25,16 @@ int *chkpt_rd_snuc(void)
 {
   int *snuc;
   int nshell;
+  char *keyword;
+  keyword = chkpt_build_keyword("Shell nucleus");
 
   nshell = chkpt_rd_nshell();
 
   snuc = init_int_array(nshell);
 
-  psio_read_entry(PSIF_CHKPT, "::Shell nucleus", (char *) snuc, 
-                  nshell*sizeof(int));
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) snuc, nshell*sizeof(int));
 
+  free(keyword);
   return snuc;
 }
 
@@ -49,9 +52,12 @@ int *chkpt_rd_snuc(void)
 void chkpt_wt_snuc(int *snuc)
 {
   int nshell;
+  char *keyword;
+  keyword = chkpt_build_keyword("Shell nucleus");
 
   nshell = chkpt_rd_nshell();
 
-  psio_write_entry(PSIF_CHKPT, "::Shell nucleus", (char *) snuc, 
-                   nshell*sizeof(int));
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) snuc, nshell*sizeof(int));
+
+  free(keyword);
 }

@@ -3,7 +3,7 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-PSILIBS = libPSI_ciomr.a libPSI_ipv1.a 
+PSILIBS = libPSI_ciomr.a libPSI_ipv1.a -lPSI_psio
 
 CINC += -DINSTALLEDPSIDATADIR=\"$(datadir)\"
 

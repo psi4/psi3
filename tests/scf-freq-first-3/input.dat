@@ -1,10 +1,10 @@
 psi: (
-  label = "6-31G** SCF H2O"
+  label = "6-31G** SCF H2O Frequencies First 3"
   jobtype = freq
+  dertype = first
   wfn = scf
   reference = rhf
   multp = 1
-  dertype = first
   basis = "6-31G**"
   zmat = (
     o

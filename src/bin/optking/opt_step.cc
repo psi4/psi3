@@ -41,7 +41,7 @@ extern double **compute_H(internals &simples, salc_set &symm, double **P, cartes
 
 int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
 
-  int i,j,a,b, dim, dim_carts, success,nbfgs;
+  int i,j,k,a,b, dim, dim_carts, success,nbfgs, nsimples, constraint;
   double **B, **G, **G2, **G_inv, **H_inv, **temp_mat, **u, **P;
   double **C, **T, **T2, **T3;
   double *temp_arr2, *temp_arr, *masses, *geom, *forces;
@@ -124,9 +124,40 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
     dim = symm.get_num();
     // C has 1's on diagonal for constraints and 0's elsewhere
     C = block_matrix(dim,dim);
-    for (i=0;i<optinfo.nconstraints;++i)
-      C[optinfo.constraints[i]][optinfo.constraints[i]] = 1.0;
-    //print_mat2(C, dim, dim, outfile);
+    if (optinfo.redundant) {
+      for (i=0;i<optinfo.nconstraints;++i)
+        C[optinfo.constraints[i]][optinfo.constraints[i]] = 1.0;
+    }
+    else if (optinfo.delocalize) {
+
+      double i_overlap, j_overlap;
+      for (b=0; b<optinfo.nconstraints; ++b) {
+        constraint = simples.index_to_id(optinfo.constraints[b]);
+
+        for (i=0; i<dim; ++i)
+          for (j=0; j<=i; ++j) {
+
+            i_overlap = 0.0;
+            for (k=0;k<symm.get_length(i);++k) {
+              a = symm.get_simple(i,k);
+              if ( a != constraint ) continue;
+              i_overlap += symm.get_coeff(i,k) * symm.get_prefactor(i);
+            }
+
+            j_overlap = 0.0;
+            for (k=0;k<symm.get_length(j);++k) {
+              a = symm.get_simple(j,k);
+              if ( a != constraint ) continue;
+              j_overlap += symm.get_coeff(j,k) * symm.get_prefactor(j);
+            }
+
+            C[i][j] += ( i_overlap * j_overlap );
+            C[j][i] = C[i][j];
+          }
+        }
+     }
+     // print_mat2(C,dim,dim,outfile);
+     // fflush(outfile);
 
   // P = P' - P' C (CPC)^-1 C P'
     T = block_matrix(dim,dim);
@@ -376,3 +407,4 @@ void fconst_init(cartesians &carts, internals &simples, salc_set &symm) {
   }
   delete [] buffer;
 }
+

@@ -1,11 +1,9 @@
 psi: (
-  label = "DZ SCF Optimization of H2CO"
+  label = "DZ RHF Optimization of H2CO"
   wfn = scf
   reference = rhf
   jobtype = opt
   dertype = first
-  convergence = 13
-  conv = 10
   basis = "DZ"
   geometry = (
     H -0.6   0.6  0.0

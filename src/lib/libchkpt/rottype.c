@@ -24,11 +24,12 @@
 int chkpt_rd_rottype(void)
 {
   int rottype;
-  char *key;
+  char *keyword;
+  keyword = chkpt_build_keyword("Rotor type");
 
-  key = chkpt_build_keyword("Rotor type");
-  psio_read_entry(PSIF_CHKPT, key, (char *) &rottype, sizeof(int));
-  free(key);
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) &rottype, sizeof(int));
+
+  free(keyword);
   return rottype;
 }
 
@@ -50,9 +51,10 @@ int chkpt_rd_rottype(void)
 
 void chkpt_wt_rottype(int rottype)
 {
-  char *key;
+  char *keyword;
+  keyword = chkpt_build_keyword("Rotor type");
 
-  key = chkpt_build_keyword("Rotor type");
-  psio_write_entry(PSIF_CHKPT, "::Rotor type", (char *) &rottype, sizeof(int));
-  free(key);
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) &rottype, sizeof(int));
+
+  free(keyword);
 }

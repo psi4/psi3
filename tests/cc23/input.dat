@@ -1,6 +1,6 @@
 % EOM CCSD/DZ Molecular gradient of lowest B1 state of H2O+
 default: (
-   label = "DZ EOM CCSD H2O+ gradient"
+   label = "DZ EOM_CCSD H2O+ gradient"
    symmetry = c2v
    wfn = eom_ccsd
    docc = (3 0 0 1)

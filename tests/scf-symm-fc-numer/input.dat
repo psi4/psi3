@@ -1,0 +1,18 @@
+psi: (
+  label = "6-31G** SCF H2O"
+  jobtype = SYMM_FC
+  wfn = scf
+  reference = rhf
+  multp = 1
+  dertype = first
+  basis = "6-31G**"
+  zmat = (
+    o
+    h 1 roh
+    h 1 roh 2 ahoh
+  )
+  zvars = (
+    roh    0.94305663
+    ahoh 105.96876874
+  )
+)

@@ -14,7 +14,7 @@ void scf_input(ipvalue)
    int i,j,k,ijk,m;
    double elast;     
    double **scr_mat;
-   char *alabel,*bool="YES",*optyp,*wfn,*dertype,*guess;
+   char *alabel,*bool="YES",*optyp,*wfn,*dertype,*guess,*jobtype;
    char *grid_str;
    char cjunk[80];
    int norder,*iorder,reordr;
@@ -132,7 +132,14 @@ void scf_input(ipvalue)
      strcpy(dertype,"NONE");
      }
    if(strcmp(wfn,"SCF")) scf_conv = 10;
+   if(!strcmp(dertype,"FIRST")) scf_conv = 10;
    if(!strcmp(dertype,"SECOND")) scf_conv = 12;
+
+   /* for freq finite difference calculations */
+   errcod = ip_string("JOBTYPE",&jobtype,0);
+   if (errcod == IPE_OK) 
+     if (!strcmp(jobtype,"FREQ")) scf_conv = 12;
+
    errcod = ip_data("CONVERGENCE","%d",&scf_conv,0);
 
    if (ksdft){

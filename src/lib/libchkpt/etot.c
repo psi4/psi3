@@ -3,6 +3,8 @@
   \ingroup (CHKPT)
 */
 
+#include <stdlib.h>
+#include "chkpt.h"
 #include <psifiles.h>
 #include <libpsio/psio.h>
 
@@ -18,7 +20,12 @@
 double chkpt_rd_etot(void)
 {
   double etot;
-  psio_read_entry(PSIF_CHKPT, "::Total energy", (char *) &etot, sizeof(double));
+  char *keyword;
+  keyword = chkpt_build_keyword("Total energy");
+
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) &etot, sizeof(double));
+
+  free(keyword);
   return etot;
 }
 
@@ -34,6 +41,10 @@ double chkpt_rd_etot(void)
 
 void chkpt_wt_etot(double etot)
 {
-  psio_write_entry(PSIF_CHKPT, "::Total energy", (char *) &etot, 
-		   sizeof(double));
+  char *keyword;
+  keyword = chkpt_build_keyword("Total energy");
+
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) &etot, sizeof(double));
+
+  free(keyword);
 }

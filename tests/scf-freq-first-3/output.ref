@@ -1,0 +1,2081 @@
+******************************************************************************
+tstart called on localhost
+Tue Sep  7 21:30:43 2004
+
+                                --------------
+                                  WELCOME TO
+                                    PSI  3
+                                --------------
+
+  LABEL       =	6-31G** SCF H2O
+  SHOWNORM    =	0
+  PUREAM      =	0
+  PRINT_LVL   =	1
+
+  Parsed basis sets from /usr/local/psi/share/pbasis.dat
+
+  -Geometry before Center-of-Mass shift (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.000000000000
+        HYDROGEN      0.000000000000     0.000000000000     1.782118622413
+        HYDROGEN      1.713349872280     0.000000000000    -0.490284610720
+
+
+  -Rotational constants (cm-1) :
+    A =   29.21536  B =   14.74983  C =    9.80143
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000    -0.120072753754     0.000000000000
+        HYDROGEN      1.422970856939     0.952820868490     0.000000000000
+        HYDROGEN     -1.422970856939     0.952820868490     0.000000000000
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S (  5484.67166000     0.00183107)
+           (   825.23494600     0.01395017)
+           (   188.04695800     0.06844508)
+           (    52.96450000     0.23271434)
+           (    16.89757040     0.47019290)
+           (     5.79963534     0.35852085) )
+        (S (    15.53961625    -0.11077755)
+           (     3.59993359    -0.14802626)
+           (     1.01376175     1.13076701) )
+        (S (     0.27000582     1.00000000) )
+        (P (    15.53961625     0.07087427)
+           (     3.59993359     0.33975284)
+           (     1.01376175     0.72715858) )
+        (P (     0.27000582     1.00000000) )
+        (D (     0.80000000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    18.73113696     0.03349460)
+           (     2.82539437     0.23472695)
+           (     0.64012169     0.81375733) )
+        (S (     0.16127776     1.00000000) )
+        (P (     1.10000000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 12
+    Number of primitives   = 20
+    Number of AO           = 25
+    Number of SO           = 25
+
+    Irrep    Number of SO
+    -----    ------------
+      1           12
+      2            2
+      3            4
+      4            7
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.120072753754
+        HYDROGEN      0.000000000000     1.422970856939     0.952820868490
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.120072753754
+        HYDROGEN      0.000000000000     1.422970856939     0.952820868490
+        HYDROGEN      0.000000000000    -1.422970856939     0.952820868490
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.063539769512
+        HYDROGEN      0.000000000000     0.753003803482     0.504211125977
+        HYDROGEN      0.000000000000    -0.753003803482     0.504211125977
+
+
+  -Geometry in the reference coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.120072753754
+        HYDROGEN      0.000000000000     1.422970856939     0.952820868490
+        HYDROGEN      0.000000000000    -1.422970856939     0.952820868490
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       9.329455542090
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   0.9430566   0.0000000
+    3   0.9430566   1.5060076   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+tstop called on localhost
+Tue Sep  7 21:30:43 2004
+
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost
+Tue Sep  7 21:30:43 2004
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 13617 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on localhost
+Tue Sep  7 21:30:44 2004
+
+user time   =       0.45 seconds =       0.01 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on localhost
+Tue Sep  7 21:30:44 2004
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+  label        = 6-31G** SCF H2O
+  wfn          = SCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 12
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        9.3294555420901
+  first run, so defaulting to core-hamiltonian guess
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.228303e-02
+
+  Using core guess to determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 6516 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -68.2404187674    7.756987e+01    0.000000e+00    0.000000e+00
+    2       -71.3491093419    3.108691e+00    1.221368e-01    1.193652e+00
+    3       -75.8522208728    4.503112e+00    1.134429e-01    8.579907e-01
+    4       -76.0117357945    1.595149e-01    3.480000e-03    2.178019e-01
+    5       -76.0234215132    1.168572e-02    1.304079e-03    5.490365e-02
+    6       -76.0235932102    1.716970e-04    1.468539e-04    1.098714e-02
+    7       -76.0236145476    2.133738e-05    7.249877e-05    3.770031e-03
+    8       -76.0236149991    4.515248e-07    1.146860e-05    2.562759e-04
+    9       -76.0236150181    1.899514e-08    3.290433e-06    6.090118e-05
+   10       -76.0236150193    1.147839e-09    9.265917e-07    1.158733e-05
+   11       -76.0236150193    2.414424e-11    1.032909e-07    1.789992e-06
+   12       -76.0236150193    2.131628e-12    4.001988e-08    4.763080e-07
+   13       -76.0236150193   -4.263256e-14    2.272365e-09    3.708586e-08
+   14       -76.0236150193   -1.421085e-14    5.634912e-10    1.076085e-08
+   15       -76.0236150193    1.421085e-14    9.437593e-11    4.229861e-09
+   16       -76.0236150193    2.842171e-14    1.303973e-11    2.783170e-10
+   17       -76.0236150193    0.000000e+00    3.940015e-12    8.066324e-11
+   18       -76.0236150193    0.000000e+00    7.311765e-13    1.122631e-11
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.557268     2A1     -1.346467     1B2     -0.713893  
+   3A1     -0.568284     1B1     -0.497607  
+
+
+  Unoccupied orbitals
+   4A1      0.215332     2B2      0.308437     3B2      1.016902  
+   5A1      1.093015     6A1      1.134579     2B1      1.168985  
+   4B2      1.295523     7A1      1.411677     1A2      1.802541  
+   8A1      1.829512     3B1      1.931474     5B2      2.582662  
+   9A1      2.588840     6B2      2.841674     4B1      2.997535  
+   2A2      3.006369    10A1      3.406560    11A1      3.745709  
+   7B2      3.945219    12A1      4.128460  
+
+
+        SCF total energy   =     -76.023615019312
+        kinetic energy     =      75.864589306043
+        nuc. attr. energy  =    -199.203693733288
+        elec. rep. energy  =      47.315489407933
+        potential energy   =    -151.888204325355
+        virial theorem     =       1.997908206375
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on localhost
+Tue Sep  7 21:30:44 2004
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+
+******* OPTKING: --disp_freq_grad_cart 
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1200727538
+  1.0     1.00782503   0.0000000000   1.4229708569   0.9528208685
+  1.0     1.00782503   0.0000000000  -1.4229708569   0.9528208685
+
+Generating simple internals
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94305663)
+    (2 1 3) (0.94305663)
+Bends
+    (3 2 1 3) (105.96876874)
+
+Putting simple, possibly redundant, internal coordinates in intco.dat.
+
+ * Performing displacements along symmetry adapted cartesian coordinates *
+
+Number of A1  displaced geometries is 4.
+Number of A2  displaced geometries is 0.
+Number of B1  displaced geometries is 0.
+Number of B2  displaced geometries is 1.
+Total number of displaced geometries is 5.
+
+******** OPTKING execution completed ********
+
+
+******* OPTKING: --disp_load 
+Reading symmetry information from root area of checkpoint.
+
+Setting chkpt prefix to irrep A1 .
+
+ ** Geometry for displacement 1 sent to chkpt. **
+
+           1           2           3
+
+    1   0.0000000  -0.0000000  -0.1204910
+    2   0.0000000   1.4229709   0.9561397
+    3   0.0000000  -1.4229709   0.9561397
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on localhost
+Tue Sep  7 21:30:44 2004
+
+
+  -Geometry before Center-of-Mass shift (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000    -0.000000000000    -0.120490991230
+        HYDROGEN      0.000000000000     1.422970856939     0.956139734614
+        HYDROGEN      0.000000000000    -1.422970856939     0.956139734614
+
+
+  -Rotational constants (cm-1) :
+    A =   29.01289  B =   14.74983  C =    9.77853
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.120490991230
+        HYDROGEN      0.000000000000     1.422970856939     0.956139734614
+        HYDROGEN      0.000000000000    -1.422970856939     0.956139734614
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S (  5484.67166000     0.00183107)
+           (   825.23494600     0.01395017)
+           (   188.04695800     0.06844508)
+           (    52.96450000     0.23271434)
+           (    16.89757040     0.47019290)
+           (     5.79963534     0.35852085) )
+        (S (    15.53961625    -0.11077755)
+           (     3.59993359    -0.14802626)
+           (     1.01376175     1.13076701) )
+        (S (     0.27000582     1.00000000) )
+        (P (    15.53961625     0.07087427)
+           (     3.59993359     0.33975284)
+           (     1.01376175     0.72715858) )
+        (P (     0.27000582     1.00000000) )
+        (D (     0.80000000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    18.73113696     0.03349460)
+           (     2.82539437     0.23472695)
+           (     0.64012169     0.81375733) )
+        (S (     0.16127776     1.00000000) )
+        (P (     1.10000000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 12
+    Number of primitives   = 20
+    Number of AO           = 25
+    Number of SO           = 25
+
+    Irrep    Number of SO
+    -----    ------------
+      1           12
+      2            2
+      3            4
+      4            7
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.120490991230
+        HYDROGEN      0.000000000000     1.422970856939     0.956139734614
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.120490991230
+        HYDROGEN      0.000000000000     1.422970856939     0.956139734614
+        HYDROGEN      0.000000000000    -1.422970856939     0.956139734614
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.063761091268
+        HYDROGEN      0.000000000000     0.753003803482     0.505967394423
+        HYDROGEN      0.000000000000    -0.753003803482     0.505967394423
+
+
+  -Geometry in the reference coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.120490991230
+        HYDROGEN      0.000000000000     1.422970856939     0.956139734614
+        HYDROGEN      0.000000000000    -1.422970856939     0.956139734614
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       9.318122806179
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   0.9442485   0.0000000
+    3   0.9442485   1.5060076   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+tstop called on localhost
+Tue Sep  7 21:30:44 2004
+
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost
+Tue Sep  7 21:30:44 2004
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 13617 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on localhost
+Tue Sep  7 21:30:45 2004
+
+user time   =       0.45 seconds =       0.01 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on localhost
+Tue Sep  7 21:30:45 2004
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+  label        = 6-31G** SCF H2O
+  wfn          = SCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 12
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        9.3181228061794
+  first run, so defaulting to core-hamiltonian guess
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.232108e-02
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 6516 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -68.2427295058    7.756085e+01    0.000000e+00    0.000000e+00
+    2       -71.3482515515    3.105522e+00    1.219271e-01    1.193862e+00
+    3       -75.8532267442    4.504975e+00    1.132191e-01    8.576373e-01
+    4       -76.0118561572    1.586294e-01    3.471352e-03    2.169876e-01
+    5       -76.0234175042    1.156135e-02    1.296716e-03    5.450744e-02
+    6       -76.0235893829    1.718787e-04    1.470166e-04    1.100224e-02
+    7       -76.0236108235    2.144068e-05    7.278858e-05    3.780320e-03
+    8       -76.0236112757    4.521962e-07    1.145282e-05    2.563881e-04
+    9       -76.0236112947    1.896912e-08    3.279126e-06    6.101645e-05
+   10       -76.0236112959    1.143903e-09    9.217118e-07    1.153461e-05
+   11       -76.0236112959    2.413003e-11    1.030062e-07    1.788674e-06
+   12       -76.0236112959    2.117417e-12    4.016768e-08    4.780633e-07
+   13       -76.0236112959    2.842171e-14    2.278310e-09    3.720988e-08
+   14       -76.0236112959   -2.842171e-14    5.615227e-10    1.072510e-08
+   15       -76.0236112959    2.842171e-14    9.470733e-11    4.247251e-09
+   16       -76.0236112959   -2.842171e-14    1.298015e-11    2.787947e-10
+   17       -76.0236112959    2.842171e-14    3.943796e-12    8.093115e-11
+   18       -76.0236112959   -4.263256e-14    7.265829e-13    1.121510e-11
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.557589     2A1     -1.346002     1B2     -0.712874  
+   3A1     -0.568465     1B1     -0.497593  
+
+
+  Unoccupied orbitals
+   4A1      0.215052     2B2      0.308134     3B2      1.015526  
+   5A1      1.092681     6A1      1.134476     2B1      1.168963  
+   4B2      1.295439     7A1      1.412111     1A2      1.802771  
+   8A1      1.827976     3B1      1.930720     5B2      2.582705  
+   9A1      2.587404     6B2      2.838607     4B1      2.997468  
+   2A2      3.003701    10A1      3.404163    11A1      3.742535  
+   7B2      3.943826    12A1      4.126279  
+
+
+        SCF total energy   =     -76.023611295880
+        kinetic energy     =      75.860040800309
+        nuc. attr. energy  =    -199.178463083384
+        elec. rep. energy  =      47.294810987195
+        potential energy   =    -151.883652096189
+        virial theorem     =       1.997848425078
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on localhost
+Tue Sep  7 21:30:45 2004
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost
+Tue Sep  7 21:30:45 2004
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -SCF forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000    -0.001991811321
+       2        0.000000000000     0.000888956897     0.000995905661
+       3        0.000000000000    -0.000888956897     0.000995905661
+
+******************************************************************************
+tstop called on localhost
+Tue Sep  7 21:30:46 2004
+
+user time   =       0.75 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+
+******* OPTKING: --grad_save 
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1204909912
+  1.0     1.00782503   0.0000000000   1.4229708569   0.9561397346
+  1.0     1.00782503   0.0000000000  -1.4229708569   0.9561397346
+                       0.0000000000   0.0000000000  -0.0019918113
+                       0.0000000000   0.0008889569   0.0009959057
+                       0.0000000000  -0.0008889569   0.0009959057
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94424852)
+    (2 1 3) (0.94424852)
+Bends
+    (3 2 1 3) (105.77713931)
+Saving gradient and energy.
+
+******** OPTKING execution completed ********
+
+
+******* OPTKING: --disp_load 
+Reading symmetry information from root area of checkpoint.
+
+Setting chkpt prefix to irrep A1 .
+
+ ** Geometry for displacement 2 sent to chkpt. **
+
+           1           2           3
+
+    1   0.0000000  -0.0000000  -0.1196545
+    2   0.0000000   1.4229709   0.9495020
+    3   0.0000000  -1.4229709   0.9495020
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on localhost
+Tue Sep  7 21:30:46 2004
+
+
+  -Geometry before Center-of-Mass shift (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000    -0.000000000000    -0.119654516279
+        HYDROGEN      0.000000000000     1.422970856939     0.949502002365
+        HYDROGEN      0.000000000000    -1.422970856939     0.949502002365
+
+
+  -Rotational constants (cm-1) :
+    A =   29.41995  B =   14.74983  C =    9.82435
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.119654516279
+        HYDROGEN      0.000000000000     1.422970856939     0.949502002365
+        HYDROGEN      0.000000000000    -1.422970856939     0.949502002365
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S (  5484.67166000     0.00183107)
+           (   825.23494600     0.01395017)
+           (   188.04695800     0.06844508)
+           (    52.96450000     0.23271434)
+           (    16.89757040     0.47019290)
+           (     5.79963534     0.35852085) )
+        (S (    15.53961625    -0.11077755)
+           (     3.59993359    -0.14802626)
+           (     1.01376175     1.13076701) )
+        (S (     0.27000582     1.00000000) )
+        (P (    15.53961625     0.07087427)
+           (     3.59993359     0.33975284)
+           (     1.01376175     0.72715858) )
+        (P (     0.27000582     1.00000000) )
+        (D (     0.80000000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    18.73113696     0.03349460)
+           (     2.82539437     0.23472695)
+           (     0.64012169     0.81375733) )
+        (S (     0.16127776     1.00000000) )
+        (P (     1.10000000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 12
+    Number of primitives   = 20
+    Number of AO           = 25
+    Number of SO           = 25
+
+    Irrep    Number of SO
+    -----    ------------
+      1           12
+      2            2
+      3            4
+      4            7
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.119654516279
+        HYDROGEN      0.000000000000     1.422970856939     0.949502002365
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.119654516279
+        HYDROGEN      0.000000000000     1.422970856939     0.949502002365
+        HYDROGEN      0.000000000000    -1.422970856939     0.949502002365
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.063318447755
+        HYDROGEN      0.000000000000     0.753003803482     0.502454857531
+        HYDROGEN      0.000000000000    -0.753003803482     0.502454857531
+
+
+  -Geometry in the reference coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.119654516279
+        HYDROGEN      0.000000000000     1.422970856939     0.949502002365
+        HYDROGEN      0.000000000000    -1.422970856939     0.949502002365
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       9.340791725673
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   0.9418674   0.0000000
+    3   0.9418674   1.5060076   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+tstop called on localhost
+Tue Sep  7 21:30:46 2004
+
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost
+Tue Sep  7 21:30:46 2004
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 13617 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on localhost
+Tue Sep  7 21:30:46 2004
+
+user time   =       0.44 seconds =       0.01 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost
+Tue Sep  7 21:30:46 2004
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+  label        = 6-31G** SCF H2O
+  wfn          = SCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 12
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        9.3407917256726
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.02361130
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.224511e-02
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 6516 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -76.0236051167    8.536440e+01    0.000000e+00    0.000000e+00
+    2       -76.0236106362    5.519494e-06    4.053115e-05    9.095471e-04
+    3       -76.0236111676    5.313872e-07    1.272250e-05    3.925872e-04
+    4       -76.0236112805    1.129225e-07    5.501388e-06    1.444847e-04
+    5       -76.0236112889    8.400846e-09    2.077597e-06    3.512392e-05
+    6       -76.0236112893    4.078515e-10    5.381809e-07    7.533732e-06
+    7       -76.0236112893    1.568878e-11    1.059237e-07    1.054667e-06
+    8       -76.0236112893    3.126388e-13    9.897928e-09    1.917727e-07
+    9       -76.0236112893    5.684342e-14    2.212989e-09    4.092638e-08
+   10       -76.0236112893   -7.105427e-14    3.849560e-10    4.507266e-09
+   11       -76.0236112893    4.263256e-14    4.668638e-11    2.193485e-09
+   12       -76.0236112893    7.105427e-14    2.340590e-11    4.630686e-10
+   13       -76.0236112893   -8.526513e-14    1.856309e-12    8.166901e-11
+   14       -76.0236112893    1.421085e-14    4.864848e-13    8.243872e-12
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.556947     2A1     -1.346931     1B2     -0.714914  
+   3A1     -0.568100     1B1     -0.497621  
+
+
+  Unoccupied orbitals
+   4A1      0.215611     2B2      0.308737     3B2      1.018287  
+   5A1      1.093342     6A1      1.134678     2B1      1.169005  
+   4B2      1.295611     7A1      1.411253     1A2      1.802314  
+   8A1      1.831050     3B1      1.932231     5B2      2.582599  
+   9A1      2.590270     6B2      2.844760     4B1      2.997587  
+   2A2      3.009045    10A1      3.408922    11A1      3.748902  
+   7B2      3.946626    12A1      4.130688  
+
+
+        SCF total energy   =     -76.023611289338
+        kinetic energy     =      75.869145844420
+        nuc. attr. energy  =    -199.228924507939
+        elec. rep. energy  =      47.336167374181
+        potential energy   =    -151.892757133758
+        virial theorem     =       1.997968191167
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on localhost
+Tue Sep  7 21:30:47 2004
+
+user time   =       0.04 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on localhost
+Tue Sep  7 21:30:47 2004
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -SCF forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000     0.001997035442
+       2        0.000000000000    -0.000898226718    -0.000998517721
+       3        0.000000000000     0.000898226718    -0.000998517721
+
+******************************************************************************
+tstop called on localhost
+Tue Sep  7 21:30:47 2004
+
+user time   =       0.73 seconds =       0.01 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+
+******* OPTKING: --grad_save 
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1196545163
+  1.0     1.00782503   0.0000000000   1.4229708569   0.9495020024
+  1.0     1.00782503   0.0000000000  -1.4229708569   0.9495020024
+                       0.0000000000   0.0000000000   0.0019970354
+                       0.0000000000  -0.0008982267  -0.0009985177
+                       0.0000000000   0.0008982267  -0.0009985177
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94186738)
+    (2 1 3) (0.94186738)
+Bends
+    (3 2 1 3) (106.16088263)
+Saving gradient and energy.
+
+******** OPTKING execution completed ********
+
+
+******* OPTKING: --disp_load 
+Reading symmetry information from root area of checkpoint.
+
+Setting chkpt prefix to irrep A1 .
+
+ ** Geometry for displacement 3 sent to chkpt. **
+
+           1           2           3
+
+    1   0.0000000  -0.0000000  -0.1200728
+    2   0.0000000   1.4194491   0.9528209
+    3   0.0000000  -1.4194491   0.9528209
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on localhost
+Tue Sep  7 21:30:48 2004
+
+
+  -Geometry before Center-of-Mass shift (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000    -0.000000000000    -0.120072753754
+        HYDROGEN      0.000000000000     1.419449075210     0.952820868490
+        HYDROGEN      0.000000000000    -1.419449075210     0.952820868490
+
+
+  -Rotational constants (cm-1) :
+    A =   29.21536  B =   14.82311  C =    9.83373
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000    -0.000000000000    -0.120072753754
+        HYDROGEN      0.000000000000     1.419449075210     0.952820868490
+        HYDROGEN      0.000000000000    -1.419449075210     0.952820868490
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S (  5484.67166000     0.00183107)
+           (   825.23494600     0.01395017)
+           (   188.04695800     0.06844508)
+           (    52.96450000     0.23271434)
+           (    16.89757040     0.47019290)
+           (     5.79963534     0.35852085) )
+        (S (    15.53961625    -0.11077755)
+           (     3.59993359    -0.14802626)
+           (     1.01376175     1.13076701) )
+        (S (     0.27000582     1.00000000) )
+        (P (    15.53961625     0.07087427)
+           (     3.59993359     0.33975284)
+           (     1.01376175     0.72715858) )
+        (P (     0.27000582     1.00000000) )
+        (D (     0.80000000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    18.73113696     0.03349460)
+           (     2.82539437     0.23472695)
+           (     0.64012169     0.81375733) )
+        (S (     0.16127776     1.00000000) )
+        (P (     1.10000000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 12
+    Number of primitives   = 20
+    Number of AO           = 25
+    Number of SO           = 25
+
+    Irrep    Number of SO
+    -----    ------------
+      1           12
+      2            2
+      3            4
+      4            7
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000    -0.000000000000    -0.120072753754
+        HYDROGEN      0.000000000000     1.419449075210     0.952820868490
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000    -0.000000000000    -0.120072753754
+        HYDROGEN      0.000000000000     1.419449075210     0.952820868490
+        HYDROGEN      0.000000000000    -1.419449075210     0.952820868490
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000    -0.000000000000    -0.063539769512
+        HYDROGEN      0.000000000000     0.751140156715     0.504211125977
+        HYDROGEN      0.000000000000    -0.751140156715     0.504211125977
+
+
+  -Geometry in the reference coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000    -0.000000000000    -0.120072753754
+        HYDROGEN      0.000000000000     1.419449075210     0.952820868490
+        HYDROGEN      0.000000000000    -1.419449075210     0.952820868490
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       9.344510043512
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   0.9415692   0.0000000
+    3   0.9415692   1.5022803   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+tstop called on localhost
+Tue Sep  7 21:30:48 2004
+
+user time   =       0.09 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost
+Tue Sep  7 21:30:48 2004
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 13617 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on localhost
+Tue Sep  7 21:30:48 2004
+
+user time   =       0.46 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost
+Tue Sep  7 21:30:48 2004
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+  label        = 6-31G** SCF H2O
+  wfn          = SCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 12
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        9.3445100435115
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.02361129
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.222687e-02
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 6516 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -76.0236079419    8.536812e+01    0.000000e+00    0.000000e+00
+    2       -76.0236090596    1.117687e-06    1.889588e-05    4.380293e-04
+    3       -76.0236091089    4.932953e-08    4.090558e-06    9.624192e-05
+    4       -76.0236091103    1.407770e-09    6.629236e-07    1.839524e-05
+    5       -76.0236091105    1.884217e-10    2.486181e-07    5.851779e-06
+    6       -76.0236091105    2.516742e-11    1.016510e-07    2.383023e-06
+    7       -76.0236091106    2.174261e-12    4.306956e-08    5.604053e-07
+    8       -76.0236091106    1.421085e-14    2.984705e-09    4.903767e-08
+    9       -76.0236091106    4.263256e-14    8.536797e-10    1.443936e-08
+   10       -76.0236091106   -2.842171e-14    7.531031e-11    1.840470e-09
+   11       -76.0236091106   -2.842171e-14    1.847580e-11    2.963473e-10
+   12       -76.0236091106    4.263256e-14    1.858304e-12    7.011319e-11
+   13       -76.0236091106   -1.421085e-14    6.412911e-13    1.522612e-11
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.557082     2A1     -1.347384     1B2     -0.714464  
+   3A1     -0.568832     1B1     -0.497777  
+
+
+  Unoccupied orbitals
+   4A1      0.215622     2B2      0.308803     3B2      1.017062  
+   5A1      1.094489     6A1      1.134998     2B1      1.168904  
+   4B2      1.295591     7A1      1.412408     1A2      1.803060  
+   8A1      1.828545     3B1      1.931126     5B2      2.585552  
+   9A1      2.590998     6B2      2.844443     4B1      3.000358  
+   2A2      3.007292    10A1      3.409407    11A1      3.749050  
+   7B2      3.948430    12A1      4.129059  
+
+
+        SCF total energy   =     -76.023609110552
+        kinetic energy     =      75.870956305437
+        nuc. attr. energy  =    -199.236116377669
+        elec. rep. energy  =      47.341550961680
+        potential energy   =    -151.894565415989
+        virial theorem     =       1.997992034226
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on localhost
+Tue Sep  7 21:30:48 2004
+
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost
+Tue Sep  7 21:30:48 2004
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -SCF forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000     0.001696426558
+       2        0.000000000000    -0.001680118533    -0.000848213279
+       3        0.000000000000     0.001680118533    -0.000848213279
+
+******************************************************************************
+tstop called on localhost
+Tue Sep  7 21:30:49 2004
+
+user time   =       0.77 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+
+******* OPTKING: --grad_save 
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  8.0    15.99491462   0.0000000000  -0.0000000000  -0.1200727538
+  1.0     1.00782503   0.0000000000   1.4194490752   0.9528208685
+  1.0     1.00782503   0.0000000000  -1.4194490752   0.9528208685
+                       0.0000000000   0.0000000000   0.0016964266
+                       0.0000000000  -0.0016801185  -0.0008482133
+                       0.0000000000   0.0016801185  -0.0008482133
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94156923)
+    (2 1 3) (0.94156923)
+Bends
+    (3 2 1 3) (105.83222112)
+Saving gradient and energy.
+
+******** OPTKING execution completed ********
+
+
+******* OPTKING: --disp_load 
+Reading symmetry information from root area of checkpoint.
+
+Setting chkpt prefix to irrep A1 .
+
+ ** Geometry for displacement 4 sent to chkpt. **
+
+           1           2           3
+
+    1   0.0000000  -0.0000000  -0.1200728
+    2   0.0000000   1.4264926   0.9528209
+    3   0.0000000  -1.4264926   0.9528209
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on localhost
+Tue Sep  7 21:30:49 2004
+
+
+  -Geometry before Center-of-Mass shift (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000    -0.000000000000    -0.120072753754
+        HYDROGEN      0.000000000000     1.426492638668     0.952820868490
+        HYDROGEN      0.000000000000    -1.426492638668     0.952820868490
+
+
+  -Rotational constants (cm-1) :
+    A =   29.21536  B =   14.67709  C =    9.76925
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.120072753754
+        HYDROGEN      0.000000000000     1.426492638668     0.952820868490
+        HYDROGEN      0.000000000000    -1.426492638668     0.952820868490
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S (  5484.67166000     0.00183107)
+           (   825.23494600     0.01395017)
+           (   188.04695800     0.06844508)
+           (    52.96450000     0.23271434)
+           (    16.89757040     0.47019290)
+           (     5.79963534     0.35852085) )
+        (S (    15.53961625    -0.11077755)
+           (     3.59993359    -0.14802626)
+           (     1.01376175     1.13076701) )
+        (S (     0.27000582     1.00000000) )
+        (P (    15.53961625     0.07087427)
+           (     3.59993359     0.33975284)
+           (     1.01376175     0.72715858) )
+        (P (     0.27000582     1.00000000) )
+        (D (     0.80000000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    18.73113696     0.03349460)
+           (     2.82539437     0.23472695)
+           (     0.64012169     0.81375733) )
+        (S (     0.16127776     1.00000000) )
+        (P (     1.10000000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 12
+    Number of primitives   = 20
+    Number of AO           = 25
+    Number of SO           = 25
+
+    Irrep    Number of SO
+    -----    ------------
+      1           12
+      2            2
+      3            4
+      4            7
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.120072753754
+        HYDROGEN      0.000000000000     1.426492638668     0.952820868490
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.120072753754
+        HYDROGEN      0.000000000000     1.426492638668     0.952820868490
+        HYDROGEN      0.000000000000    -1.426492638668     0.952820868490
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.063539769512
+        HYDROGEN      0.000000000000     0.754867450249     0.504211125977
+        HYDROGEN      0.000000000000    -0.754867450249     0.504211125977
+
+
+  -Geometry in the reference coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.120072753754
+        HYDROGEN      0.000000000000     1.426492638668     0.952820868490
+        HYDROGEN      0.000000000000    -1.426492638668     0.952820868490
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       9.314437345184
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   0.9445454   0.0000000
+    3   0.9445454   1.5097349   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+tstop called on localhost
+Tue Sep  7 21:30:50 2004
+
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on localhost
+Tue Sep  7 21:30:50 2004
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 13617 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on localhost
+Tue Sep  7 21:30:50 2004
+
+user time   =       0.46 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost
+Tue Sep  7 21:30:50 2004
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+  label        = 6-31G** SCF H2O
+  wfn          = SCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 12
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        9.3144373451842
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.02360911
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.233930e-02
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 6516 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -76.0236030055    8.533804e+01    0.000000e+00    0.000000e+00
+    2       -76.0236086648    5.659315e-06    3.488626e-05    9.245114e-04
+    3       -76.0236090555    3.907328e-07    1.099015e-05    3.856924e-04
+    4       -76.0236091380    8.248242e-08    3.989534e-06    1.304157e-04
+    5       -76.0236091433    5.262592e-09    1.436785e-06    3.152949e-05
+    6       -76.0236091438    4.720278e-10    5.738125e-07    8.328091e-06
+    7       -76.0236091438    1.435296e-11    1.023652e-07    1.370239e-06
+    8       -76.0236091438    1.563194e-13    8.898413e-09    1.544467e-07
+    9       -76.0236091438    4.263256e-14    2.160153e-09    3.870619e-08
+   10       -76.0236091438    1.421085e-14    2.981591e-10    4.077916e-09
+   11       -76.0236091438   -2.842171e-14    2.539270e-11    9.932376e-10
+   12       -76.0236091438   -1.421085e-14    1.077589e-11    2.976557e-10
+   13       -76.0236091438    5.684342e-14    2.271145e-12    6.073784e-11
+   14       -76.0236091438    2.842171e-14    2.499335e-13    5.348032e-12
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.557454     2A1     -1.345553     1B2     -0.713320  
+   3A1     -0.567737     1B1     -0.497437  
+
+
+  Unoccupied orbitals
+   4A1      0.215040     2B2      0.308071     3B2      1.016740  
+   5A1      1.091488     6A1      1.134222     2B1      1.169064  
+   4B2      1.295464     7A1      1.410948     1A2      1.802028  
+   8A1      1.830474     3B1      1.931824     5B2      2.579782  
+   9A1      2.586679     6B2      2.838917     4B1      2.994714  
+   2A2      3.005441    10A1      3.403680    11A1      3.742381  
+   7B2      3.942040    12A1      4.127878  
+
+
+        SCF total energy   =     -76.023609143777
+        kinetic energy     =      75.858249570601
+        nuc. attr. energy  =    -199.171342151131
+        elec. rep. energy  =      47.289483436753
+        potential energy   =    -151.881858714378
+        virial theorem     =       1.997824891832
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on localhost
+Tue Sep  7 21:30:50 2004
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost
+Tue Sep  7 21:30:50 2004
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -SCF forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000    -0.001672052853
+       2        0.000000000000     0.001666010753     0.000836026426
+       3        0.000000000000    -0.001666010753     0.000836026426
+
+******************************************************************************
+tstop called on localhost
+Tue Sep  7 21:30:51 2004
+
+user time   =       0.76 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+
+******* OPTKING: --grad_save 
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1200727538
+  1.0     1.00782503   0.0000000000   1.4264926387   0.9528208685
+  1.0     1.00782503   0.0000000000  -1.4264926387   0.9528208685
+                       0.0000000000   0.0000000000  -0.0016720529
+                       0.0000000000   0.0016660108   0.0008360264
+                       0.0000000000  -0.0016660108   0.0008360264
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94454537)
+    (2 1 3) (0.94454537)
+Bends
+    (3 2 1 3) (106.10488611)
+Saving gradient and energy.
+
+******** OPTKING execution completed ********
+
+
+******* OPTKING: --disp_load 
+Reading symmetry information from root area of checkpoint.
+
+Setting chkpt prefix to irrep B2 .
+
+ ** Geometry for displacement 5 sent to chkpt. **
+
+           1           2           3
+
+    1   0.0000000  -0.0003409  -0.1200728
+    2   0.0000000   1.4256763   0.9548607
+    3   0.0000000  -1.4202654   0.9507810
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on localhost
+Tue Sep  7 21:30:51 2004
+
+
+  -Geometry before Center-of-Mass shift (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000    -0.000340936945    -0.120072753754
+        HYDROGEN      0.000000000000     1.425676315304     0.954860733895
+        HYDROGEN      0.000000000000    -1.420265398575     0.950781003084
+
+
+  -Rotational constants (cm-1) :
+    A =   29.21620  B =   14.74953  C =    9.80139
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000    -0.000340936945    -0.120072753754
+        HYDROGEN      0.000000000000     1.425676315304     0.954860733895
+        HYDROGEN      0.000000000000    -1.420265398575     0.950781003084
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is Cs  
+    Number of irr. rep.      = 2
+    Number of atoms          = 3
+    Number of unique atoms   = 3
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S (  5484.67166000     0.00183107)
+           (   825.23494600     0.01395017)
+           (   188.04695800     0.06844508)
+           (    52.96450000     0.23271434)
+           (    16.89757040     0.47019290)
+           (     5.79963534     0.35852085) )
+        (S (    15.53961625    -0.11077755)
+           (     3.59993359    -0.14802626)
+           (     1.01376175     1.13076701) )
+        (S (     0.27000582     1.00000000) )
+        (P (    15.53961625     0.07087427)
+           (     3.59993359     0.33975284)
+           (     1.01376175     0.72715858) )
+        (P (     0.27000582     1.00000000) )
+        (D (     0.80000000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    18.73113696     0.03349460)
+           (     2.82539437     0.23472695)
+           (     0.64012169     0.81375733) )
+        (S (     0.16127776     1.00000000) )
+        (P (     1.10000000     1.00000000) )
+       )
+
+   -Basis set on unique center 3:
+      ( (S (    18.73113696     0.03349460)
+           (     2.82539437     0.23472695)
+           (     0.64012169     0.81375733) )
+        (S (     0.16127776     1.00000000) )
+        (P (     1.10000000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 12
+    Number of primitives   = 25
+    Number of AO           = 25
+    Number of SO           = 25
+
+    Irrep    Number of SO
+    -----    ------------
+      1           19
+      2            6
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN     -0.000340936945    -0.120072753754     0.000000000000
+        HYDROGEN      1.425676315304     0.954860733895     0.000000000000
+        HYDROGEN     -1.420265398575     0.950781003084     0.000000000000
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN     -0.000340936945    -0.120072753754     0.000000000000
+        HYDROGEN      1.425676315304     0.954860733895     0.000000000000
+        HYDROGEN     -1.420265398575     0.950781003084     0.000000000000
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN     -0.000180416075    -0.063539769512     0.000000000000
+        HYDROGEN      0.754435470497     0.505290576341     0.000000000000
+        HYDROGEN     -0.751572136468     0.503131675613     0.000000000000
+
+
+  -Geometry in the reference coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000    -0.000340936945    -0.120072753754
+        HYDROGEN      0.000000000000     1.425676315304     0.954860733895
+        HYDROGEN      0.000000000000    -1.420265398575     0.950781003084
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       9.329493000529
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   0.9449937   0.0000000
+    3   0.9411196   1.5060092   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+tstop called on localhost
+Tue Sep  7 21:30:52 2004
+
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on localhost
+Tue Sep  7 21:30:52 2004
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = Cs 
+    Number of irreps                 = 2
+
+    Wrote 26107 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on localhost
+Tue Sep  7 21:30:52 2004
+
+user time   =       0.48 seconds =       0.01 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost
+Tue Sep  7 21:30:52 2004
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+  label        = 6-31G** SCF H2O
+  wfn          = SCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 12
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        9.3294930005286
+  first run, so defaulting to core-hamiltonian guess
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 357936 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.143178e-02
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   Ap    App  
+  DOCC:              4     1   
+  SOCC:              0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 20263 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -68.2404008094    7.756989e+01    0.000000e+00    0.000000e+00
+    2       -71.3490889588    3.108688e+00    8.595845e-02    1.191955e+00
+    3       -75.8520150697    4.502926e+00    8.203658e-02    8.560994e-01
+    4       -76.0116983157    1.596832e-01    2.055082e-03    2.179286e-01
+    5       -76.0234125652    1.171425e-02    7.914910e-04    5.498186e-02
+    6       -76.0235845523    1.719871e-04    8.693421e-05    1.099608e-02
+    7       -76.0236059439    2.139156e-05    4.196430e-05    3.774580e-03
+    8       -76.0236063959    4.520005e-07    7.227381e-06    2.563144e-04
+    9       -76.0236064149    1.903022e-08    2.246524e-06    6.090061e-05
+   10       -76.0236064160    1.150781e-09    6.378942e-07    1.160259e-05
+   11       -76.0236064161    2.417266e-11    7.404598e-08    1.790903e-06
+   12       -76.0236064161    2.060574e-12    2.847055e-08    4.761161e-07
+   13       -76.0236064161   -1.421085e-14    1.427989e-09    3.710575e-08
+   14       -76.0236064161    4.263256e-14    3.834689e-10    1.077595e-08
+   15       -76.0236064161    1.421085e-14    5.545434e-11    4.214053e-09
+   16       -76.0236064161    4.263256e-14    8.764562e-12    2.775907e-10
+   17       -76.0236064161    4.263256e-14    2.625792e-12    8.057545e-11
+   18       -76.0236064161   -5.684342e-14    5.039903e-13    1.124083e-11
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1Ap    -20.557267     2Ap     -1.346471     3Ap     -0.713894  
+   4Ap     -0.568283     1App    -0.497607  
+
+
+  Unoccupied orbitals
+   5Ap      0.215329     6Ap      0.308438     7Ap      1.016875  
+   8Ap      1.093048     9Ap      1.134578     2App     1.168984  
+  10Ap      1.295531    11Ap      1.411680     3App     1.802544  
+  12Ap      1.829514     4App     1.931477    13Ap      2.582578  
+  14Ap      2.588876    15Ap      2.841712     5App     2.996873  
+   6App     3.007033    16Ap      3.406566    17Ap      3.745642  
+  18Ap      3.945325    19Ap      4.128483  
+
+
+        SCF total energy   =     -76.023606416066
+        kinetic energy     =      75.864616177907
+        nuc. attr. energy  =    -199.203770487660
+        elec. rep. energy  =      47.315547893687
+        potential energy   =    -151.888222593973
+        virial theorem     =       1.997908672771
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on localhost
+Tue Sep  7 21:30:52 2004
+
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost
+Tue Sep  7 21:30:52 2004
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = Cs 
+    Number of irreps                 = 2
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -SCF forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000    -0.003753305322     0.000019526582
+       2        0.000000000000     0.001864500815     0.001405201475
+       3        0.000000000000     0.001888804507    -0.001424728057
+
+******************************************************************************
+tstop called on localhost
+Tue Sep  7 21:30:53 2004
+
+user time   =       0.82 seconds =       0.01 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+
+******* OPTKING: --grad_save 
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  8.0    15.99491462  -0.0003409369  -0.1200727538   0.0000000000
+  1.0     1.00782503   1.4256763153   0.9548607339   0.0000000000
+  1.0     1.00782503  -1.4202653986   0.9507810031   0.0000000000
+                      -0.0037533053   0.0000195266   0.0000000000
+                       0.0018645008   0.0014052015   0.0000000000
+                       0.0018888045  -0.0014247281   0.0000000000
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94499370)
+    (2 1 3) (0.94111957)
+Bends
+    (3 2 1 3) (105.96874163)
+Saving gradient and energy.
+Last displacement done, resetting checkpoint prefix.
+
+******** OPTKING execution completed ********
+
+
+******* OPTKING: --freq_grad_cart 
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1200727538
+  1.0     1.00782503   0.0000000000   1.4229708569   0.9528208685
+  1.0     1.00782503   0.0000000000  -1.4229708569   0.9528208685
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94305663)
+    (2 1 3) (0.94305663)
+Bends
+    (3 2 1 3) (105.96876874)
+
+ ** Calculating frequencies from gradients. **
+
+ total nsalc: 3, total ndisp: 5
+nsalc per irrep: 2 0 0 1 
+ndisp per irrep: 4 0 0 1 
+
+	Operation that takes plus displacement 5 to minus is C2.
+Computing B^-1: Determinant: 8.812906e-01
+ ** Using 3-point formula.
+Force Constants
+
+           1           2
+
+    1   0.2981347  -0.2517628
+    2  -0.2517671   0.4713735
+Computing B^-1: Determinant: 9.230940e-01
+ ** Using 3-point formula.
+Force Constants
+
+           1
+
+    1   0.6882691
+
+	 Harmonic Vibrational Frequencies in cm^(-1)
+	--------------------------------------------
+	   B2    4264.648
+	   A1    4147.588
+	   A1    1769.590
+	----------------------------
+
+******** OPTKING execution completed ********
+

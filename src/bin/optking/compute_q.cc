@@ -25,7 +25,7 @@ extern "C" {
 
 double *compute_q(internals &simples,salc_set &symm) {
   int i, j, simple, intco_type, sub_index;
-  double *q, coeff, prefactor;
+  double *q, coeff, prefactor, tval;
 
   q = init_array(symm.get_num());
 
@@ -48,7 +48,9 @@ double *compute_q(internals &simples,salc_set &symm) {
         q[i] += prefactor * coeff * simples.out.get_val(sub_index)*_pi/180.0;
       }
       else if (intco_type == LIN_BEND_TYPE) {
-        q[i] += prefactor * coeff * simples.lin_bend.get_val(sub_index)*_pi/180.0;
+        tval = simples.lin_bend.get_val(sub_index);
+        // if ( fabs(180.0-tval) < 0.001 ) tval = 180.0;
+        q[i] += prefactor * coeff * tval*_pi/180.0;
       }
     }
   }

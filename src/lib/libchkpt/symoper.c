@@ -23,14 +23,15 @@ int *chkpt_rd_symoper(void)
 {
   int *symoper;
   int nirreps;
-  char *key;
+  char *keyword;
+  keyword = chkpt_build_keyword("Cotton -> local map");
 
   nirreps = chkpt_rd_nirreps();
   symoper = init_int_array(nirreps);
-  key = chkpt_build_keyword("Cotton -> local map");
-  psio_read_entry(PSIF_CHKPT, key, (char *) symoper, nirreps*sizeof(int));
-  free(key);
 
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) symoper, nirreps*sizeof(int));
+
+  free(keyword);
   return symoper;
 }
 
@@ -50,11 +51,12 @@ int *chkpt_rd_symoper(void)
 void chkpt_wt_symoper(int *symoper)
 {
   int nirreps;
-  char *key;
+  char *keyword;
+  keyword = chkpt_build_keyword("Cotton -> local map");
 
   nirreps = chkpt_rd_nirreps();
 
-  key = chkpt_build_keyword("Cotton -> local map");
-  psio_write_entry(PSIF_CHKPT, key, (char *) symoper, nirreps*sizeof(int));
-  free(key);
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) symoper, nirreps*sizeof(int));
+
+  free(keyword);
 }

@@ -3,6 +3,7 @@
   \ingroup (CHKPT)
 */
 
+#include <stdlib.h>
 #include "chkpt.h"
 #include <psifiles.h>
 #include <libpsio/psio.h>
@@ -21,13 +22,16 @@ int *chkpt_rd_shells_per_am(void)
 {
   int *shells_per_am;
   int max_am;
+  char *keyword;
+  keyword = chkpt_build_keyword("Shells per am");
 
   max_am = chkpt_rd_max_am();
   shells_per_am = init_int_array(max_am+1);
 
-  psio_read_entry(PSIF_CHKPT, "::Shells per am", (char *) shells_per_am,
-		  (max_am+1)*sizeof(int));
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) shells_per_am,
+    (max_am+1)*sizeof(int));
 
+  free(keyword);
   return shells_per_am; 
 }
 
@@ -46,9 +50,13 @@ int *chkpt_rd_shells_per_am(void)
 void chkpt_wt_shells_per_am(int *shells_per_am)
 {
   int max_am;
+  char *keyword;
+  keyword = chkpt_build_keyword("Shells per am");
 
   max_am = chkpt_rd_max_am();
 
-  psio_write_entry(PSIF_CHKPT, "::Shells per am", (char *) shells_per_am,
-		   (max_am+1)*sizeof(int));
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) shells_per_am,
+    (max_am+1)*sizeof(int));
+
+  free(keyword);
 }

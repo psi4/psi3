@@ -19,11 +19,12 @@
 int chkpt_rd_num_unique_shell(void)
 {
   int nunique;
-  char *key;
+  char *keyword;
+  keyword = chkpt_build_keyword("Num. unique shells");
 
-  key = chkpt_build_keyword("Num. unique shells");
-  psio_read_entry(PSIF_CHKPT, key, (char *) &nunique, sizeof(int));
-  free(key);
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) &nunique, sizeof(int));
+
+  free(keyword);
   return nunique;
 }
 
@@ -40,8 +41,10 @@ int chkpt_rd_num_unique_shell(void)
 
 void chkpt_wt_num_unique_shell(int nunique)
 {
-  char *key;
-  key = chkpt_build_keyword("Num. unique shells");
-  psio_write_entry(PSIF_CHKPT, key, (char *) &nunique, sizeof(int));
-  free(key);
+  char *keyword;
+  keyword = chkpt_build_keyword("Num. unique shells");
+
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) &nunique, sizeof(int));
+
+  free(keyword);
 }

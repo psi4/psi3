@@ -29,14 +29,15 @@
 int *chkpt_rd_sopi(void)
 {
   int nirreps, *sopi;
-  char *key;
+  char *keyword;
+  keyword = chkpt_build_keyword("SO's per irrep");
 
   nirreps = chkpt_rd_nirreps();
   sopi = init_int_array(nirreps);
-  key = chkpt_build_keyword("SO's per irrep");
-  psio_read_entry(PSIF_CHKPT, key, (char *) sopi, nirreps*sizeof(int));
-  free(key);
+
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) sopi, nirreps*sizeof(int));
   
+  free(keyword);
   return sopi;
 }
 
@@ -58,12 +59,12 @@ int *chkpt_rd_sopi(void)
 void chkpt_wt_sopi(int *sopi)
 {
   int nirreps;
-  char *key;
+  char *keyword;
+  keyword = chkpt_build_keyword("SO's per irrep");
 
   nirreps = chkpt_rd_nirreps();
 
-  key = chkpt_build_keyword("SO's per irrep");
-  psio_write_entry(PSIF_CHKPT, "::SO's per irrep", (char *) sopi, 
-                   nirreps*sizeof(int));
-  free(key);
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) sopi, nirreps*sizeof(int));
+
+  free(keyword);
 }

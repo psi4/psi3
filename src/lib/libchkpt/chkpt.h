@@ -264,4 +264,12 @@ void chkpt_wt_disp(int);
 int* chkpt_rd_atom_dummy(void);
 void chkpt_wt_atom_dummy(int *);
 
+int chkpt_rd_disp_irrep(void);
+void chkpt_wt_disp_irrep(int);
+
+int chkpt_exist(char *);
+
+int chkpt_rd_override_occ(void);
+void chkpt_wt_override_occ(int);
+
 #endif

@@ -4,6 +4,7 @@
 */
 
 #include "chkpt.h"
+#include <stdlib.h>
 #include <psifiles.h>
 #include <libpsio/psio.h>
 
@@ -18,8 +19,12 @@
 int chkpt_rd_nao(void)
 {
   int nao;
+  char *keyword;
+  keyword = chkpt_build_keyword("Num. AO");
 
-  psio_read_entry(PSIF_CHKPT, "::Num. AO", (char *) &nao, sizeof(int));
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) &nao, sizeof(int));
+
+  free(keyword);
   return nao;
 }
 
@@ -36,5 +41,10 @@ int chkpt_rd_nao(void)
 
 void chkpt_wt_nao(int nao)
 {
-  psio_write_entry(PSIF_CHKPT, "::Num. AO", (char *) &nao, sizeof(int));
+  char *keyword;
+  keyword = chkpt_build_keyword("Num. AO");
+
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) &nao, sizeof(int));
+
+  free(keyword);
 }

@@ -3,6 +3,8 @@
   \ingroup (CHKPT)
 */
 
+#include <stdlib.h>
+#include "chkpt.h"
 #include <psifiles.h>
 #include <libpsio/psio.h>
 
@@ -18,7 +20,12 @@
 double chkpt_rd_escf(void)
 {
   double escf;
-  psio_read_entry(PSIF_CHKPT, "::SCF energy", (char *) &escf, sizeof(double));
+  char *keyword;
+  keyword = chkpt_build_keyword("SCF energy");
+
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) &escf, sizeof(double));
+
+  free(keyword);
   return escf;
 }
 
@@ -34,5 +41,10 @@ double chkpt_rd_escf(void)
 
 void chkpt_wt_escf(double escf)
 {
-  psio_write_entry(PSIF_CHKPT, "::SCF energy", (char *) &escf, sizeof(double));
+  char *keyword;
+  keyword = chkpt_build_keyword("SCF energy");
+
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) &escf, sizeof(double));
+
+  free(keyword);
 }

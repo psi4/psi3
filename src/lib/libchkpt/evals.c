@@ -4,6 +4,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <libciomr/libciomr.h>
 #include "chkpt.h"
 #include <psifiles.h>
@@ -25,11 +26,15 @@
 double *chkpt_rd_evals(void)
 {
   double *energies;
+  char *keyword;
+  keyword = chkpt_build_keyword("MO energies");
   
   energies = init_array(chkpt_rd_nmo());
-  psio_read_entry(PSIF_CHKPT, "::MO energies", (char *) energies, 
+
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) energies, 
 		  chkpt_rd_nmo()*sizeof(double));
 
+  free(keyword);
   return energies;
 }
 
@@ -50,11 +55,15 @@ double *chkpt_rd_evals(void)
 double *chkpt_rd_alpha_evals(void)
 {
   double *energies;
+  char *keyword;
+  keyword = chkpt_build_keyword("Alpha MO energies");
   
   energies = init_array(chkpt_rd_nmo());
-  psio_read_entry(PSIF_CHKPT, "::Alpha MO energies", (char *) energies, 
-		  chkpt_rd_nmo()*sizeof(double));
 
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) energies, 
+    chkpt_rd_nmo()*sizeof(double));
+
+  free(keyword);
   return energies;
 }
 
@@ -74,11 +83,15 @@ double *chkpt_rd_alpha_evals(void)
 double *chkpt_rd_beta_evals(void)
 {
   double *energies;
+  char *keyword;
+  keyword = chkpt_build_keyword("Beta MO energies");
   
   energies = init_array(chkpt_rd_nmo());
-  psio_read_entry(PSIF_CHKPT, "::Beta MO energies", (char *) energies, 
-		  chkpt_rd_nmo()*sizeof(double));
 
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) energies, 
+    chkpt_rd_nmo()*sizeof(double));
+
+  free(keyword);
   return energies;
 }
 
@@ -99,8 +112,13 @@ double *chkpt_rd_beta_evals(void)
 
 void chkpt_wt_evals(double *energies)
 {
-  psio_write_entry(PSIF_CHKPT, "::MO energies", (char *) energies, 
-		   chkpt_rd_nmo()*sizeof(double));
+  char *keyword;
+  keyword = chkpt_build_keyword("MO energies");
+
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) energies, 
+    chkpt_rd_nmo()*sizeof(double));
+
+  free(keyword);
 }
 
 
@@ -120,8 +138,13 @@ void chkpt_wt_evals(double *energies)
 
 void chkpt_wt_alpha_evals(double *energies)
 {
-  psio_write_entry(PSIF_CHKPT, "::Alpha MO energies", (char *) energies, 
-		   chkpt_rd_nmo()*sizeof(double));
+  char *keyword;
+  keyword = chkpt_build_keyword("Alpha MO energies");
+
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) energies, 
+    chkpt_rd_nmo()*sizeof(double));
+
+  free(keyword);
 }
 
 
@@ -141,7 +164,12 @@ void chkpt_wt_alpha_evals(double *energies)
 
 void chkpt_wt_beta_evals(double *energies)
 {
-  psio_write_entry(PSIF_CHKPT, "::Beta MO energies", (char *) energies, 
+  char *keyword;
+  keyword = chkpt_build_keyword("Beta MO energies");
+
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) energies, 
 		   chkpt_rd_nmo()*sizeof(double));
+
+  free(keyword);
 }
 

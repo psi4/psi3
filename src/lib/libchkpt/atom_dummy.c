@@ -4,6 +4,7 @@
 */
 
 #include <stdlib.h>
+#include "chkpt.h"
 #include <psifiles.h>
 #include <libpsio/psio.h>
 
@@ -22,12 +23,16 @@ int* chkpt_rd_atom_dummy(void)
 {
   int num_allatoms;
   int *atom_dummy;
+  char *keyword;
+  keyword = chkpt_build_keyword("Dummy atom flags");
 
   num_allatoms = chkpt_rd_nallatom();
   atom_dummy = (int *) malloc(sizeof(int)*num_allatoms);
 
-  psio_read_entry(PSIF_CHKPT, "::Dummy atom flags", (char *) atom_dummy, 
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) atom_dummy, 
 		  num_allatoms*sizeof(int));
+
+  free(keyword);
   return atom_dummy;
 }
 
@@ -46,7 +51,11 @@ int* chkpt_rd_atom_dummy(void)
 void chkpt_wt_atom_dummy(int* atom_dummy)
 {
   int num_allatoms = chkpt_rd_nallatom();
+  char *keyword;
+  keyword = chkpt_build_keyword("Dummy atom flags");
 
-  psio_write_entry(PSIF_CHKPT, "::Dummy atom flags", (char *) atom_dummy, 
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) atom_dummy, 
 		   num_allatoms*sizeof(int));
+
+  free(keyword);
 }

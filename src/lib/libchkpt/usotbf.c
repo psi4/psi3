@@ -4,6 +4,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "chkpt.h"
 #include <psifiles.h>
 #include <libciomr/libciomr.h>
@@ -24,17 +25,17 @@ double **chkpt_rd_usotbf(void)
   double **usotbf;
   int num_so, i;
   psio_address ptr;
-  char *key;
+  char *keyword;
+  keyword = chkpt_build_keyword("SO->BF transmat");
 
   num_so = chkpt_rd_nso();
-
   usotbf = block_matrix(num_so,num_so);
-  key = chkpt_build_keyword("SO->BF transmat");
+
   ptr = PSIO_ZERO;
   for(i=0;i<num_so;i++)
-    psio_read(PSIF_CHKPT, key, (char *) usotbf[i], (int) num_so*sizeof(double), ptr, &ptr);
-  free(key);
+    psio_read(PSIF_CHKPT, keyword, (char *) usotbf[i], (int) num_so*sizeof(double), ptr, &ptr);
 
+  free(keyword);
   return usotbf;
 }
 
@@ -54,13 +55,14 @@ void chkpt_wt_usotbf(double **usotbf)
 {
   int num_so, i;
   psio_address ptr;
-  char *key;
+  char *keyword;
+  keyword = chkpt_build_keyword("SO->BF transmat");
 
   num_so = chkpt_rd_nso();
 
-  key = chkpt_build_keyword("SO->BF transmat");
   ptr = PSIO_ZERO;
   for(i=0;i<num_so;i++)
-    psio_write(PSIF_CHKPT, key, (char *) usotbf[i], (int) num_so*sizeof(double), ptr, &ptr);
-  free(key);
+    psio_write(PSIF_CHKPT, keyword, (char *) usotbf[i], (int) num_so*sizeof(double), ptr, &ptr);
+
+  free(keyword);
 }

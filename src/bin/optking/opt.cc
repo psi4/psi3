@@ -11,12 +11,17 @@ command-line      internal specifier   what it does
 --freq_energy      MODE_FREQ_ENERGY     not yet supported
 --grad_energy      MODE_GRAD_ENERGY     use energies in chkpt to compute a gradient
 --freq_grad_nosymm MODE_FREQ_GRAD_NOSYMM use grads in chkpt to compute freqs, assumes no sym
---freq_grad_irrep  MODE_FREQ_GRAD_IRREP use grads in chkpt to compute IRREP freqs
+--freq_grad_irrep  MODE_FREQ_GRAD_IRREP  use grads in chkpt to compute IRREP freqs
 --grad_save        MODE_GRAD_SAVE       save the gradient in chkpt to PSIF list
 --energy_save      MODE_ENERGY_SAVE     save the energy in chkpt to PSIF list
 --points           optinfo.points       save the energy in chkpt to PSIF list
 --disp_num         optinfo.disp_num     displacement index (by default read from PSIF)
 --irrep            optinfo.irrep       the irrep (1,2,...) being displaced or computed
+
+--disp_freq_grad_cart   MODE_DISP_FREQ_GRAD_CART   displaces along SA cart. coordinates
+--freq_grad_cart        MODE_FREQ_GRAD_CART        use grads in chkpt to compute freqs
+--disp_freq_energy_cart MODE_DISP_FREQ_ENERGY_CART displaces along SA cart. coordinates
+--freq_energy_cart      MODE_FREQ_ENERGY_CART      use energies in chkpt to compute freqs
 */
 
 #if HAVE_CMATH
@@ -70,9 +75,16 @@ extern void energy_save(cartesians &carts);
 extern int opt_step(cartesians &carts, internals &simples, salc_set &symm_salcs);
 extern int *read_constraints(internals &simples);
 
+extern int disp_freq_grad_cart(cartesians &carts);
+extern void freq_grad_cart(cartesians &carts);
+extern int disp_freq_energy_cart(cartesians &carts);
+extern void freq_energy_cart(cartesians &carts);
+
+void chkpt_restart(char *new_prefix);
+
 int main(int argc, char **argv) {
 
-    int i,j,a,b,dim,count,dim_carts,user_intcos, *constraints;
+    int i,j,a,b,dim,count,dim_carts,user_intcos, *constraints,xyz;
     int parsed=1, num_disps, disp_length;
     double *f, *coord; 
     char aline[MAX_LINELENGTH], *disp_label, **buffer, *err;
@@ -85,6 +97,14 @@ int main(int argc, char **argv) {
     for (i=1; i<argc; ++i) {
       if (!strcmp(argv[i],"--disp_nosymm")) {
         optinfo.mode = MODE_DISP_NOSYMM;
+        parsed++;
+      }
+      else if (!strcmp(argv[i],"--disp_freq_grad_cart")) {
+        optinfo.mode = MODE_DISP_FREQ_GRAD_CART;
+        parsed++;
+      }
+      else if (!strcmp(argv[i],"--disp_freq_energy_cart")) {
+        optinfo.mode = MODE_DISP_FREQ_ENERGY_CART;
         parsed++;
       }
       else if (!strcmp(argv[i],"--disp_irrep")) {
@@ -121,6 +141,14 @@ int main(int argc, char **argv) {
       }
       else if (!strcmp(argv[i],"--freq_grad_irrep")) {
         optinfo.mode = MODE_FREQ_GRAD_IRREP;
+        parsed++;
+      }
+      else if (!strcmp(argv[i],"--freq_grad_cart")) {
+        optinfo.mode = MODE_FREQ_GRAD_CART;
+        parsed++;
+      }
+      else if (!strcmp(argv[i],"--freq_energy_cart")) {
+        optinfo.mode = MODE_FREQ_ENERGY_CART;
         parsed++;
       }
       else if (!strcmp(argv[i],"--grad_save")) {
@@ -206,7 +234,7 @@ int main(int argc, char **argv) {
     fflush(outfile);
 
     internals simples(carts, optinfo.simples_present);
-    optinfo.constraints = read_constraints(simples);
+    if (optinfo.mode == MODE_OPT_STEP) optinfo.constraints = read_constraints(simples);
     coord = carts.get_coord();
     simples.compute_internals(carts.get_natom(), coord);
     simples.compute_s(carts.get_natom(), coord);
@@ -231,7 +259,7 @@ int main(int argc, char **argv) {
         delocalize(simples, carts);
       }
       else {
-        fprintf(outfile,"\nUsing simple, possibly redundant, internal coordinates.\n");
+        fprintf(outfile,"\nPutting simple, possibly redundant, internal coordinates in intco.dat.\n");
         ffile(&fp_intco, "intco.dat", 2);
         count = 0;
         for( ; ; ) {
@@ -300,6 +328,24 @@ int main(int argc, char **argv) {
       return 0;
     }
 
+    if (optinfo.mode == MODE_DISP_FREQ_GRAD_CART) {
+      fprintf(outfile,
+      "\n * Performing displacements along symmetry adapted cartesian coordinates *\n\n");
+      i = disp_freq_grad_cart(carts);
+      free_info(simples.get_num());
+      exit_io();
+      return i;
+    }
+    if (optinfo.mode == MODE_DISP_FREQ_ENERGY_CART) {
+      fprintf(outfile,
+      "\n * Performing displacements along symmetry adapted cartesian coordinates *\n\n");
+      i = disp_freq_energy_cart(carts);
+      free_info(simples.get_num());
+      exit_io();
+      return i;
+    }
+
+
     if ((optinfo.mode == MODE_DISP_NOSYMM) || (optinfo.mode == MODE_DISP_IRREP)) {
       // generate unique displacements
       salc_set all_salcs;
@@ -343,18 +389,25 @@ int main(int argc, char **argv) {
 
     if (optinfo.mode == MODE_DISP_LOAD) {
       double **micro_geoms, **geom2D;
+      int *irrep_per_disp;
+      psio_address next;
 
       open_PSIF();
       psio_read_entry(PSIF_OPTKING, "OPT: Current disp_num",
           (char *) &(optinfo.disp_num), sizeof(int));
-      psio_read_entry(PSIF_OPTKING, "OPT: Total num. of disp.",
+      psio_read_entry(PSIF_OPTKING, "OPT: Num. of disp.",
           (char *) &(total_num_disps), sizeof(int));
 
       micro_geoms = block_matrix(total_num_disps, dim_carts);
       psio_read_entry(PSIF_OPTKING, "OPT: Displaced geometries",
-          (char *) &(micro_geoms[0][0]), total_num_disps*dim_carts*
-          sizeof(double));
+          (char *) &(micro_geoms[0][0]), total_num_disps*dim_carts* sizeof(double));
+
+      irrep_per_disp = (int *) malloc(total_num_disps * sizeof(int));
+      psio_read_entry(PSIF_OPTKING, "OPT: Irrep per disp",
+          (char *) &(irrep_per_disp[0]), total_num_disps*sizeof(int));
       close_PSIF();
+
+      chkpt_restart( syminfo.irrep_lbls[ irrep_per_disp[optinfo.disp_num]] );
 
       geom2D = block_matrix(carts.get_natom(),3);
       for (i=0; i<carts.get_natom(); ++i)
@@ -362,13 +415,22 @@ int main(int argc, char **argv) {
           geom2D[i][j] = micro_geoms[optinfo.disp_num][3*i+j];
 
       chkpt_init(PSIO_OPEN_OLD);
+
+      chkpt_wt_disp_irrep( irrep_per_disp[optinfo.disp_num] );
+
+      /* set flag to tell cscf to use checkpoint occupations (ignoring DOCC, etc.);
+       these are determined and written by input */
+      chkpt_wt_override_occ(1);
+
       chkpt_wt_geom(geom2D);
       chkpt_close();
       fprintf(outfile,"\n ** Geometry for displacement %d sent to chkpt. **\n", 
               optinfo.disp_num+1);
       free_block(micro_geoms);
-      free_block(geom2D);
 
+      print_mat(geom2D,carts.get_natom(),3,outfile);
+
+      free_block(geom2D);
       free_info(simples.get_num());
       exit_io();
       return(0);
@@ -399,6 +461,21 @@ int main(int argc, char **argv) {
         freq_grad_irrep(carts, simples, all_salcs);
       else
         freq_grad_nosymm(carts, simples, all_salcs);
+      free_info(simples.get_num());
+      exit_io();
+      return(0);
+    }
+
+    if (optinfo.mode==MODE_FREQ_GRAD_CART) {
+      fprintf(outfile,"\n ** Calculating frequencies from gradients. **\n");
+      freq_grad_cart(carts);
+      free_info(simples.get_num());
+      exit_io();
+      return(0);
+    }
+    if (optinfo.mode==MODE_FREQ_ENERGY_CART) {
+      fprintf(outfile,"\n ** Calculating frequencies from energies. **\n");
+      freq_energy_cart(carts);
       free_info(simples.get_num());
       exit_io();
       return(0);
@@ -463,6 +540,7 @@ void load_ref(cartesians &carts) {
   int i,j,cnt;
   double *geom, **geom2D,*grad, energy;
 
+  /*
   geom = init_array(carts.get_natom() * 3);
   open_PSIF();
   psio_read_entry(PSIF_OPTKING, "OPT: Reference geometry",
@@ -478,17 +556,47 @@ void load_ref(cartesians &carts) {
   for (i=0;i<carts.get_natom();++i)
     for (j=0;j<3;++j)
       geom2D[i][j] = geom[cnt++];
+  fprintf(outfile,"Geometry written.\n");
+  print_mat(geom2D,carts.get_natom(),3,outfile);
+  */
+
+  chkpt_reset_prefix();
 
   /*
-  for (i=0;i<carts.get_natom();++i)
-    for (j=0;j<3;++j)
-      fprintf(outfile,"%15.10lf\n", geom2D[i][j]);
-      */
-
   chkpt_init(PSIO_OPEN_OLD);
   chkpt_wt_geom(geom2D);
   chkpt_wt_grad(grad);
   chkpt_wt_etot(energy);
-//  fprintf(outfile,"%15.10lf\n",energy);
   chkpt_close();
+  */
+}
+
+void chkpt_restart(char *new_prefix) {
+  int nallatom, natom, *atom_dummy;
+  double **fgeom, *zvals;
+  char **felement;
+
+  fprintf(outfile,"\nSetting chkpt prefix to irrep %s.\n",new_prefix);
+
+  chkpt_init(PSIO_OPEN_OLD);
+  nallatom = chkpt_rd_nallatom();
+  natom = chkpt_rd_natom();
+  fgeom = chkpt_rd_fgeom();
+  atom_dummy = chkpt_rd_atom_dummy();
+  zvals = chkpt_rd_zvals();
+  felement = chkpt_rd_felement();
+
+  chkpt_set_prefix(new_prefix);
+  chkpt_commit_prefix();
+  chkpt_close();
+                                                                                                                
+  chkpt_init(PSIO_OPEN_OLD);
+  chkpt_wt_nallatom(nallatom);
+  chkpt_wt_natom(natom);
+  chkpt_wt_fgeom(fgeom);
+  chkpt_wt_atom_dummy(atom_dummy);
+  chkpt_wt_zvals(zvals);
+  chkpt_wt_felement(felement);
+  chkpt_close();
+  return;
 }

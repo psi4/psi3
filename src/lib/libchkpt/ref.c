@@ -3,6 +3,7 @@
   \ingroup (CHKPT)
 */
 
+#include <stdlib.h>
 #include "chkpt.h"
 #include <psifiles.h>
 #include <libpsio/psio.h>
@@ -19,9 +20,12 @@
 int chkpt_rd_ref(void)
 {
   int refnum;
+  char *keyword;
+  keyword = chkpt_build_keyword("Reference");
 
-  psio_read_entry(PSIF_CHKPT, "::Reference", (char *) &refnum, 
-                  sizeof(int) );
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) &refnum, sizeof(int) );
+
+  free(keyword);
   return refnum;
 }
 
@@ -37,5 +41,10 @@ int chkpt_rd_ref(void)
 
 void chkpt_wt_ref(int refnum)
 {
-  psio_write_entry(PSIF_CHKPT, "::Reference", (char *) &refnum, sizeof(int));
+  char *keyword;
+  keyword = chkpt_build_keyword("Reference");
+
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) &refnum, sizeof(int));
+
+  free(keyword);
 }

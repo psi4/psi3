@@ -67,7 +67,7 @@ void start_io(int argc, char *argv[])
     else if (strcmp(argv[i], "--noreorient") == 0) {
       no_reorient = 1;
     }
-    else if (strcmp(argv[i], "--keep_chkpt") == 0) {
+    else if (strcmp(argv[i], "--keepchkpt") == 0) {
       keep_chkpt = 1;
     }
     else {

@@ -763,30 +763,32 @@ void get_moinfo(void)
     moinfo.nfzv += moinfo.fruocc[i];
   }
 
-  moinfo.ndocc = 0;
-  tmpi = init_int_array(moinfo.nirreps);
-  errcod = ip_int_array("DOCC", tmpi, moinfo.nirreps);
-  if (errcod == IPE_OK) {
-    for (i=0,warned=0; i<moinfo.nirreps; i++) {
-      if (tmpi[i] != moinfo.clsdpi[i] && !warned && !params.qrhf) {
-	fprintf(outfile, "\tWarning: DOCC doesn't match chkpt file\n");
-	warned = 1;
+  if ( chkpt_rd_override_occ() == 0 ) {
+    moinfo.ndocc = 0;
+    tmpi = init_int_array(moinfo.nirreps);
+    errcod = ip_int_array("DOCC", tmpi, moinfo.nirreps);
+    if (errcod == IPE_OK) {
+      for (i=0,warned=0; i<moinfo.nirreps; i++) {
+        if (tmpi[i] != moinfo.clsdpi[i] && !warned && !params.qrhf) {
+	  fprintf(outfile, "\tWarning: DOCC doesn't match chkpt file\n");
+	  warned = 1;
+        }
+        moinfo.clsdpi[i] = tmpi[i];
+        moinfo.ndocc += tmpi[i];
       }
-      moinfo.clsdpi[i] = tmpi[i];
-      moinfo.ndocc += tmpi[i];
     }
-  }
 
-  moinfo.nsocc = 0;
-  errcod = ip_int_array("SOCC", tmpi, moinfo.nirreps);
-  if (errcod == IPE_OK) {
-    for (i=0,warned=0; i<moinfo.nirreps; i++) {
-      if (tmpi[i] != moinfo.openpi[i] && !warned && !params.qrhf) {
-	fprintf(outfile, "\tWarning: SOCC doesn't match chkpt file\n");
-	warned = 1;
+    moinfo.nsocc = 0;
+    errcod = ip_int_array("SOCC", tmpi, moinfo.nirreps);
+    if (errcod == IPE_OK) {
+      for (i=0,warned=0; i<moinfo.nirreps; i++) {
+        if (tmpi[i] != moinfo.openpi[i] && !warned && !params.qrhf) {
+	  fprintf(outfile, "\tWarning: SOCC doesn't match chkpt file\n");
+	  warned = 1;
+        }
+        moinfo.openpi[i] = tmpi[i];
+        moinfo.nsocc += tmpi[i];
       }
-      moinfo.openpi[i] = tmpi[i];
-      moinfo.nsocc += tmpi[i];
     }
   }
 

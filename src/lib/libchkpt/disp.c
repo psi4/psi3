@@ -4,6 +4,7 @@
 */
 
 #include "chkpt.h"
+#include <stdlib.h>
 #include <psifiles.h>
 #include <libpsio/psio.h>
 
@@ -12,15 +13,21 @@
 **
 **   takes no arguments.
 **
+** not used by OPTKING; used by anybody else ???
+**
 **   returns: int disp   the current geometry displacement number
 ** \ingroup (CHKPT)
 */
 int chkpt_rd_disp(void)
 {
   int disp;
+  char *keyword;
+  keyword = chkpt_build_keyword("Current displacement");
 
-  psio_read_entry(PSIF_CHKPT, "::Current displacement", (char *) &disp,
-		  sizeof(int));
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) &disp,
+    sizeof(int));
+
+  free(keyword);
   return disp;
 }
 
@@ -36,6 +43,11 @@ int chkpt_rd_disp(void)
 */
 void chkpt_wt_disp(int disp)
 {
-  psio_write_entry(PSIF_CHKPT, "::Current displacement", (char *) &disp,
-		   sizeof(int));
+  char *keyword;
+  keyword = chkpt_build_keyword("Current displacement");
+
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) &disp,
+    sizeof(int));
+
+  free(keyword);
 }

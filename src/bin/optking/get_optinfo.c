@@ -21,7 +21,8 @@
 double power(double x, int y);
 
 void get_optinfo() {
-  int a, i, cnt, cnt2, natom, nallatom;
+  int a, i, cnt, cnt2, natom, nallatom, errcod;
+  char *junk;
 
   optinfo.iteration = 0;
   optinfo.micro_iteration = 0;
@@ -35,7 +36,34 @@ void get_optinfo() {
   close_PSIF();
 
   optinfo.dertype = 0;
+  if (ip_exist("DERTYPE",0)) {
+    errcod = ip_string("DERTYPE", &(junk),0);
+    if (errcod != IPE_OK) optinfo.dertype = 0;
+    else if(!strcmp(junk,"NONE")) optinfo.dertype = 0;
+    else if(!strcmp(junk,"FIRST")) optinfo.dertype = 1;
+    else if(!strcmp(junk,"SECOND")) optinfo.dertype = 2;
+    else if(!strcmp(junk,"RESPONSE")) optinfo.dertype = 3; /* linear response */
+    else {
+      printf("Invalid value of input keyword DERTYPE: %s\n", junk);
+      exit(PSI_RETURN_FAILURE);
+    }
+  }
+
+  errcod = ip_string("WFN", &(optinfo.wfn), 0);
+  errcod = ip_string("JOBTYPE", &(optinfo.jobtype), 0);
+ 
   optinfo.numerical_dertype = 0;
+  if (ip_exist("DERTYPE",0)) {
+    if ( (strcmp(optinfo.jobtype,"OPT")==0) && (optinfo.dertype==0) ) 
+      optinfo.numerical_dertype = 1;
+  }
+
+  optinfo.redundant = 1; optinfo.delocalize = 0;
+  if ((optinfo.mode == MODE_DISP_IRREP) || (optinfo.mode == MODE_DISP_NOSYMM) ) 
+    { optinfo.redundant = 0; optinfo.delocalize =1; }
+  if ( optinfo.numerical_dertype == 1 )
+    { optinfo.redundant = 0; optinfo.delocalize =1; }
+  ip_boolean("DELOCALIZE", &(optinfo.delocalize),0);
 
   /* print options */
   optinfo.print_simples = 0;
@@ -48,6 +76,8 @@ void get_optinfo() {
   ip_boolean("PRINT_SYMMETRY", &(optinfo.print_symmetry),0);
   optinfo.print_hessian = 0;
   ip_boolean("PRINT_HESSIAN", &(optinfo.print_hessian),0);
+  optinfo.print_cartesians = 0;
+  ip_boolean("PRINT_CARTESIANS", &(optinfo.print_cartesians),0);
 
   /* optimization parameters */
   optinfo.optimize = 1;
@@ -57,6 +87,11 @@ void get_optinfo() {
     optinfo.optimize = 0;
   }
 
+  optinfo.freq_irrep = -1;
+  if (ip_exist("FREQ_IRREP",0)) {
+    ip_data("FREQ_IRREP","%d",&(optinfo.freq_irrep),0);
+  }
+
   optinfo.bfgs = 1;
   ip_boolean("BFGS",&(optinfo.bfgs),0);
   optinfo.bfgs_use_last = 6;
@@ -64,13 +99,13 @@ void get_optinfo() {
   optinfo.mix_types = 1;
   ip_boolean("MIX_TYPES",&(optinfo.mix_types),0);
 
-  optinfo.redundant = 1;
-  optinfo.delocalize = 0;
-  ip_boolean("DELOCALIZE", &(optinfo.delocalize),0);
-  if (optinfo.delocalize)
-    optinfo.redundant = 0;
-  if ((optinfo.mode == MODE_DISP_IRREP) || (optinfo.mode == MODE_DISP_NOSYMM) ) 
-    {  optinfo.redundant = 0; optinfo.delocalize =1; }
+  ip_data("POINTS","%d",&(optinfo.points),0);
+  /*
+  if ( (optinfo.dertype == 0) && (optinfo.numerical_dertype == 2) ) {
+    fprintf(outfile,"O(h^2) formula used for frequencies by energy points.\n");
+    optinfo.points = 3;
+  }
+  */
 
   /* takes values of 1,2,3 for x,y,z for location of first dummy of linear bend*/
   optinfo.dummy_axis_1 = 2;
@@ -88,6 +123,7 @@ void get_optinfo() {
 
   a = 5;
   ip_data("CONV","%d",&a,0);
+//  ip_data("CONVERGENCE","%d",&a,0);
   optinfo.conv = power(10.0, -1*a);
 
   a= 5;
@@ -97,7 +133,7 @@ void get_optinfo() {
   optinfo.scale_connectivity = 1.3;
   ip_data("SCALE_CONNECTIVITY","%lf",&(optinfo.scale_connectivity),0);
 
-  optinfo.disp_size = 0.0010;
+  optinfo.disp_size = 0.005;
   ip_data("EDISP","%lf",&(optinfo.disp_size),0);
 
   /* back-transformation parameters */

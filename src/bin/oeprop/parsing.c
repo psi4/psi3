@@ -17,7 +17,7 @@ void parsing()
   if (errcod == IPE_OK) {
     if (!strcmp(wfn, "CI") || !strcmp(wfn, "DETCI") ||
         !strcmp(wfn, "CCSD") || !strcmp(wfn, "DETCAS") ||
-	!strcmp(wfn, "MP2"))  {
+	    !strcmp(wfn, "MP2") || !strcmp(wfn, "EOM_CCSD"))  {
       read_opdm = 1;
       opdm_file = PSIF_MO_OPDM;
       corr = 0;

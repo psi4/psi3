@@ -1,0 +1,27 @@
+psi: (
+  label = "ketene"
+  wfn = scf
+  jobtype = opt
+  dertype = first
+  multp = 1
+  reference = rhf
+  basis = 3-21G
+  zmat = (
+    C
+    C 1 R1
+    H 2 R3 1 A3
+    H 2 R3 1 A3    3 180.0
+    O 1 R2 2 180.0 3 0.0
+  )
+  zvars = (
+    R1 1.521
+    R2 1.194
+    R3 1.087
+    A3  117.0
+  )
+)
+fixed_intco: (
+  stre = (
+    (1 2)
+  )
+)

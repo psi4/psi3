@@ -23,13 +23,15 @@ int *chkpt_rd_ua2a(void)
 {
   int *ua2a;
   int num_unique_atoms;
-  char *key;
+  char *keyword;
+  keyword = chkpt_build_keyword("Unique atom -> full atom map");
 
   num_unique_atoms = chkpt_rd_num_unique_atom();
   ua2a = init_int_array(num_unique_atoms);
-  key = chkpt_build_keyword("Unique atom -> full atom map");
-  psio_read_entry(PSIF_CHKPT, key, (char *) ua2a, num_unique_atoms*sizeof(int));
-  free(key);
+
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) ua2a, num_unique_atoms*sizeof(int));
+
+  free(keyword);
   return ua2a;
 }
 
@@ -47,11 +49,12 @@ int *chkpt_rd_ua2a(void)
 void chkpt_wt_ua2a(int *ua2a)
 {
   int num_unique_atoms;
-  char *key;
+  char *keyword;
+  keyword = chkpt_build_keyword("Unique atom -> full atom map");
 
   num_unique_atoms = chkpt_rd_num_unique_atom();
 
-  key = chkpt_build_keyword("Unique atom -> full atom map");
-  psio_write_entry(PSIF_CHKPT, key, (char *) ua2a, num_unique_atoms*sizeof(int));
-  free(key);
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) ua2a, num_unique_atoms*sizeof(int));
+
+  free(keyword);
 }

@@ -1,12 +1,10 @@
 psi: (
-  label = "DZ SCF Optimization of Ketene"
+  label = "DZ RHF Opt Ketene delocalized coords"
   wfn = scf
   reference = rhf
   jobtype = opt
   dertype = first
-  basis = "DZ"
-  convergence = 12
-  conv = 10
+  basis = DZ
   delocalize = true
   geometry = (
     H -0.6   0.6  0.0

@@ -4,6 +4,7 @@ psi: (
   reference = rhf
   jobtype = opt
   dertype = none
+  docc = (3 0 1 1)
   basis = "6-31G**"
   zmat = (
     o

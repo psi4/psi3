@@ -4,6 +4,7 @@
 */
 
 #include "chkpt.h"
+#include <stdlib.h>
 #include <psifiles.h>
 #include <libpsio/psio.h>
 

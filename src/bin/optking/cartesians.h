@@ -84,6 +84,14 @@ class cartesians {
         copy[i] = mass[i];
       return copy;
     }
+    double *get_Zvals() {
+      int i;
+      double *copy;
+      copy = init_array(natom*3);
+      for (i=0;i<natom*3;++i)
+        copy[i] = atomic_num[i];
+      return copy;
+    }
     double *get_fmass() {
       int i;
       double *copy;

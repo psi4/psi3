@@ -20,10 +20,14 @@
 char *chkpt_rd_label(void)
 {
   char *label;
+  char *keyword;
+  keyword = chkpt_build_keyword("Label");
 
   label = (char *) malloc(80 * sizeof(char));
-  psio_read_entry(PSIF_CHKPT, "::Label", (char *) label, 80*sizeof(char));
 
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) label, 80*sizeof(char));
+
+  free(keyword);
   return label;
 }
 
@@ -39,5 +43,10 @@ char *chkpt_rd_label(void)
 
 void chkpt_wt_label(char *label)
 {
-  psio_write_entry(PSIF_CHKPT, "::Label", (char *) label, 80*sizeof(char));
+  char *keyword;
+  keyword = chkpt_build_keyword("Label");
+
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) label, 80*sizeof(char));
+
+  free(keyword);
 }

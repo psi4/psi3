@@ -42,6 +42,17 @@ void parsing()
      /* Safe behavior is on by default */
      expert = 0;
      errcod = ip_boolean("EXPERT",&expert,0);
+
+     /* read print_lvl if chkpt_geom too */
+	 errcod = ip_data("PRINT","%d",&print_lvl,0);
+
+     /* allow the user to specify subgroup=C1 for entire findif calc -
+        hope this doesn't mess anything up (RAK 9-04) */
+	 subgroup = NULL;
+	 errcod = ip_string("SUBGROUP", &subgroup,0);
+	 if (subgroup != NULL && strlen(subgroup) != 0)
+	     if ( strcmp(subgroup,"C1") )
+		   subgroup = NULL;
 	 
      /*------------------------------------------
        Parse Some boolean information from input

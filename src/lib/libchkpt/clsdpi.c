@@ -29,13 +29,16 @@ int *chkpt_rd_clsdpi(void)
 {
   int nirreps;
   int *clsdpi;
+  char *keyword;
+  keyword = chkpt_build_keyword("Closed shells per irrep");
 
   nirreps = chkpt_rd_nirreps();
   clsdpi = init_int_array(nirreps);
 
-  psio_read_entry(PSIF_CHKPT, "::Closed shells per irrep", (char *) clsdpi, 
-                  nirreps*sizeof(int));
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) clsdpi, 
+    nirreps*sizeof(int));
 
+  free(keyword);
   return clsdpi;
 }
 
@@ -56,9 +59,13 @@ int *chkpt_rd_clsdpi(void)
 void chkpt_wt_clsdpi(int *clsdpi)
 {
   int nirreps;
+  char *keyword;
+  keyword = chkpt_build_keyword("Closed shells per irrep");
 
   nirreps = chkpt_rd_nirreps();
 
-  psio_write_entry(PSIF_CHKPT, "::Closed shells per irrep", (char *) clsdpi, 
-                   nirreps*sizeof(int));
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) clsdpi, 
+    nirreps*sizeof(int));
+
+  free(keyword);
 }

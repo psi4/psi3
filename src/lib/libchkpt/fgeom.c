@@ -4,6 +4,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <libciomr/libciomr.h>
 #include "chkpt.h"
 #include <psifiles.h>
@@ -21,17 +22,16 @@ double **chkpt_rd_fgeom(void)
 {
   int nallatom;
   double **fgeom;
-  char keyword[PSIO_KEYLEN];
-
+  char *keyword;
+  keyword = chkpt_build_keyword("Full cartesian geometry");
+  
   nallatom = chkpt_rd_nallatom();
-
   fgeom = block_matrix(nallatom,3);
 
-  /* build keyword string */
-  sprintf(keyword, ":%s:%s", chkpt_prefix, "Full cartesian geometry");
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) fgeom[0],
+      (int) 3*nallatom*sizeof(double));
 
-  psio_read_entry(PSIF_CHKPT, keyword, (char *) fgeom[0], (int) 3*nallatom*sizeof(double));
-
+  free(keyword);
   return  fgeom;
 }
 
@@ -48,11 +48,13 @@ double **chkpt_rd_fgeom(void)
 void chkpt_wt_fgeom(double **fgeom)
 {
   int nallatom;
-  char keyword[PSIO_KEYLEN];
+  char *keyword;
+  keyword = chkpt_build_keyword("Full cartesian geometry");
 
   nallatom = chkpt_rd_nallatom();
 
-  sprintf(keyword, ":%s:%s", chkpt_prefix, "Full cartesian geometry");
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) fgeom[0],
+      (int) 3*nallatom*sizeof(double));
 
-  psio_write_entry(PSIF_CHKPT, keyword, (char *) fgeom[0], (int) 3*nallatom*sizeof(double));
+  free(keyword);
 }

@@ -58,6 +58,7 @@ void vibration(double **hessian, double **dipder)
   for(i=0; i < natom; i++) {
     for(j=0; j < 3; j++)  {
       M[i*3+j][i*3+j] = 1/sqrt(an2masses[(int) zvals[i]]);
+  /* M[i*3+j][i*3+j] = 1.0; */
     }
   }
 

@@ -18,6 +18,7 @@ extern "C" {
 #include <libpsio/psio.h>
 #include <physconst.h>
 #include <psifiles.h>
+#include <ccfiles.h>
 }
 
 #define EXTERN
@@ -37,7 +38,7 @@ void grad_save(cartesians &carts) {
   open_PSIF();
   psio_read_entry(PSIF_OPTKING, "OPT: Current disp_num",
       (char *) &(optinfo.disp_num), sizeof(int));
-  psio_read_entry(PSIF_OPTKING, "OPT: Total num. of disp.",
+  psio_read_entry(PSIF_OPTKING, "OPT: Num. of disp.",
       (char *) &(total_num_disps), sizeof(int));
 
   micro_e = new double[total_num_disps];
@@ -95,8 +96,41 @@ void grad_save(cartesians &carts) {
   optinfo.disp_num += 1;
   psio_write_entry(PSIF_OPTKING, "OPT: Current disp_num",
       (char *) &(optinfo.disp_num), sizeof(int));
+
+    /* delete CC temporary files */
+  if(!strcmp(optinfo.wfn, "MP2")       || !strcmp(optinfo.wfn, "CCSD")  ||
+     !strcmp(optinfo.wfn, "CCSD_T")    || !strcmp(optinfo.wfn, "EOM_CCSD")  ||
+     !strcmp(optinfo.wfn, "LEOM_CCSD") || !strcmp(optinfo.wfn, "BCCD")  ||
+     !strcmp(optinfo.wfn,"BCCD_T")     || !strcmp(optinfo.wfn, "SCF")  ||
+     !strcmp(optinfo.wfn,"CIS")        || !strcmp(optinfo.wfn,"RPA")  ||
+     !strcmp(optinfo.wfn,"CC2")        || !strcmp(optinfo.wfn,"CC3")  ||
+     !strcmp(optinfo.wfn,"EOM_CC3") ) {
+     fprintf(outfile, "Deleting CC binary files\n");
+     for(i=CC_MIN; i <= CC_MAX; i++) {
+       psio_open(i,1); psio_close(i,0);
+     }
+    psio_open(35,1); psio_close(35,0);
+    psio_open(72,1); psio_close(72,0);
+  }
+  else if (!strcmp(optinfo.wfn, "DETCI")) {
+    fprintf(outfile, "Deleting CI binary files\n");
+    psio_open(35,1); psio_close(35,0);
+    psio_open(72,1); psio_close(72,0);
+    psio_open(50,1); psio_close(50,0);
+    psio_open(51,1); psio_close(51,0);
+    psio_open(52,1); psio_close(52,0);
+    psio_open(53,1); psio_close(53,0);
+  }
+
   close_PSIF();
 
+  if (optinfo.disp_num == total_num_disps) {
+    fprintf(outfile,"Last displacement done, resetting checkpoint prefix.\n");
+    chkpt_init(PSIO_OPEN_OLD);
+    chkpt_reset_prefix();
+    chkpt_commit_prefix();
+    chkpt_close();
+  }
   return ;
 }
 

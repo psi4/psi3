@@ -211,11 +211,13 @@ int *read_constraints(internals &simples) {
   if (optinfo.nconstraints > 0)
     optinfo.constraints_present = 1;
 
-  if ( (optinfo.constraints_present) && (optinfo.delocalize == true) ) {
+  /* fixed?
+  if ( (optinfo.constraints_present) && (optinfo.delocalize == 1) ) {
     fprintf(outfile,"Constraints may only be imposed on simple internal coordinates,");
     fprintf(outfile,"\nso coordinates cannot be delocalized.\n");
     exit(2);
   }
+  */
 
   return constraints;
 }

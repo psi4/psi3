@@ -22,6 +22,8 @@ char **chkpt_rd_felement(void)
   char **label;
   int nallatom, i;
   psio_address ptr;
+  char *keyword;
+  keyword = chkpt_build_keyword("Full atom labels");
 
   nallatom = chkpt_rd_nallatom();
 
@@ -31,9 +33,10 @@ char **chkpt_rd_felement(void)
 
   ptr = PSIO_ZERO;
   for(i=0; i < nallatom; i++)
-    psio_read(PSIF_CHKPT, "::Full atom labels", (char *) label[i], 
+    psio_read(PSIF_CHKPT, keyword, (char *) label[i], 
               MAX_ELEMNAME*sizeof(char), ptr, &ptr);
 
+  free(keyword);
   return label;  
 }
 
@@ -52,11 +55,15 @@ void chkpt_wt_felement(char **label)
 {
   int nallatom, i;
   psio_address ptr;
+  char *keyword;
+  keyword = chkpt_build_keyword("Full atom labels");
 
   nallatom = chkpt_rd_nallatom();
 
   ptr = PSIO_ZERO;
   for(i=0; i < nallatom; i++)
-    psio_write(PSIF_CHKPT, "::Full atom labels", (char *) label[i], 
+    psio_write(PSIF_CHKPT, keyword, (char *) label[i], 
                MAX_ELEMNAME*sizeof(char), ptr, &ptr);
+
+  free(keyword);
 }

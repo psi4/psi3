@@ -39,6 +39,7 @@ extern int new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
 int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs) 
 {
   int i,j,a,b, cnt,dim, dim_carts, ndisps, nsalcs, *irrep_salcs, irrep;
+  int *irrep_per_disp;
   double *fgeom, energy, **micro_geoms, **displacements;
   double *f, *q, tval, **fgeom2D;
   char *disp_label, **disp_irrep_lbls, *salc_lbl;
@@ -119,7 +120,6 @@ int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
     }
   }
 
-  // count number of unique displacements; 2 disps for symm modes
   fprintf(outfile,"Generating a total of %d displacements ", ndisps);
   fprintf(outfile,"using %d-point formula for modes of irrep %d.\n",
       optinfo.points, irrep+1);
@@ -144,10 +144,9 @@ int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
   psio_write_entry(PSIF_OPTKING, "OPT: Current disp_num",
       (char *) &(optinfo.disp_num),sizeof(int));
 
-  psio_write_entry(PSIF_OPTKING, "OPT: Total num. of disp.",
+  psio_write_entry(PSIF_OPTKING, "OPT: Num. of disp.",
       (char *) &(ndisps), sizeof(int));
 
-  close_PSIF();
   free_block(micro_geoms);
 
   // make room for storage of energy and gradients of displacements
@@ -155,16 +154,18 @@ int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
 
   disp_e = new double[ndisps];
   disp_grad = new double [ndisps*3*carts.get_natom()*sizeof(double)];
-
-  open_PSIF();
   psio_write_entry(PSIF_OPTKING, "OPT: Displaced gradients",
       (char *) &(disp_grad[0]), ndisps*3*carts.get_natom()*sizeof(double));
-
   psio_write_entry(PSIF_OPTKING, "OPT: Displaced energies",
       (char *) &(disp_e[0]), ndisps*sizeof(double));
 
-  close_PSIF();
+  irrep_per_disp = init_int_array(ndisps);
+  for (i=0; i<ndisps; ++i) irrep_per_disp[i] = irrep;
+  psio_write_entry(PSIF_OPTKING, "OPT: Irrep per disp",
+    (char *) &(irrep_per_disp[0]), ndisps*sizeof(int));
+  free(irrep_per_disp);
 
+  close_PSIF();
 
   // Reset microiteration counter
   optinfo.micro_iteration = 0;
@@ -188,10 +189,10 @@ int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
 
 int make_disp_nosymm(cartesians &carts, internals &simples, salc_set &all_salcs) 
 {
-  int i,j,a,b, dim, dim_carts, ndisps, nsalcs;
+  int i,j,a,b, dim, dim_carts, ndisps, nsalcs, *irrep_per_disp, cnt;
   double *fgeom, energy, **micro_geoms, **displacements;
   double *f, *q, tval, **fgeom2D;
-  char *disp_label, **disp_irrep_lbls;
+  char *disp_label, **disp_irrep_lbls, *lbl;
 
   disp_label = new char[MAX_LINELENGTH];
   dim_carts = 3*carts.get_natom();
@@ -254,7 +255,7 @@ int make_disp_nosymm(cartesians &carts, internals &simples, salc_set &all_salcs)
   psio_write_entry(PSIF_OPTKING, "OPT: Current disp_num",
       (char *) &(optinfo.disp_num),sizeof(int));
 
-  psio_write_entry(PSIF_OPTKING, "OPT: Total num. of disp.",
+  psio_write_entry(PSIF_OPTKING, "OPT: Num. of disp.",
       (char *) &(ndisps), sizeof(int));
 
   close_PSIF();
@@ -272,6 +273,30 @@ int make_disp_nosymm(cartesians &carts, internals &simples, salc_set &all_salcs)
 
   psio_write_entry(PSIF_OPTKING, "OPT: Displaced energies",
       (char *) &(disp_e[0]), ndisps*sizeof(double));
+
+  irrep_per_disp = init_int_array(ndisps);
+
+  cnt = -1;
+  for (i=0; i<ndisps; ++i) {
+    lbl = all_salcs.get_label(i);
+    for (j=0; j<syminfo.nirreps; ++j) {
+      if ( strcmp( lbl, syminfo.irrep_lbls[j]) == 0) {
+        irrep_per_disp[++cnt] = j;
+        irrep_per_disp[++cnt] = j;
+      }
+    }
+    free(lbl);
+  } 
+
+  fprintf(outfile,"Irrep per displacement:\n");
+  for (i=0;i<ndisps;++i)
+    fprintf(outfile,"%3d",irrep_per_disp[i]);
+  fprintf(outfile,"\n");
+
+  psio_write_entry(PSIF_OPTKING, "OPT: Irrep per disp",
+    (char *) &(irrep_per_disp[0]), ndisps*sizeof(int));
+  free(irrep_per_disp);
+
 
   close_PSIF();
 

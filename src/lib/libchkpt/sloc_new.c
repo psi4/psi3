@@ -3,6 +3,7 @@
   \ingroup (CHKPT)
 */
 
+#include <stdlib.h>
 #include "chkpt.h"
 #include <psifiles.h>
 #include <libpsio/psio.h>
@@ -22,13 +23,15 @@ int *chkpt_rd_sloc_new(void)
 {
   int *sloc_new;
   int nshell;
+  char *keyword;
+  keyword = chkpt_build_keyword("First BF per shell");
 
   nshell = chkpt_rd_nshell();
   sloc_new = init_int_array(nshell);
 
-  psio_read_entry(PSIF_CHKPT, "::First BF per shell", (char *) sloc_new, 
-                  nshell*sizeof(int));
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) sloc_new, nshell*sizeof(int));
 
+  free(keyword);
   return sloc_new;
 }
 
@@ -47,9 +50,12 @@ int *chkpt_rd_sloc_new(void)
 void chkpt_wt_sloc_new(int *sloc_new)
 {
   int nshell;
+  char *keyword;
+  keyword = chkpt_build_keyword("First BF per shell");
 
   nshell = chkpt_rd_nshell();
 
-  psio_write_entry(PSIF_CHKPT, "::First BF per shell", 
-		   (char *) sloc_new, nshell*sizeof(int));
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) sloc_new, nshell*sizeof(int));
+
+  free(keyword);
 }

@@ -77,7 +77,10 @@ keyword.c \
 nfzc.c \
 nfzv.c \
 frzcpi.c \
-frzvpi.c
+frzvpi.c \
+disp_irrep.c \
+exist.c \
+override_occ.c
 
 DEPENDINCLUDE = chkpt.h
 

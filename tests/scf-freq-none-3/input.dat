@@ -1,0 +1,17 @@
+psi: (
+  label = "DZ Frequencies ketene by energies 3-pt"
+  memory = (50.0 MB)
+  jobtype = freq
+  dertype = none
+  wfn = scf
+  reference = rhf
+  basis = DZ
+  units = bohr
+  geometry = (
+  (  C 0.0  0.0000000000   0.2089354436 )
+  (  C 0.0 -0.0000000000   2.6853384568 )
+  (  O 0.0 -0.0000000000  -2.0030611072 )
+  (  H 0.0  1.7523136182   3.6957249206 )
+  (  H 0.0  -1.7523136182  3.6957249206 )
+  )
+)

@@ -243,7 +243,7 @@ void occ_calc(void){
 void occ_read(int *cldpi, int *openpi){
     int i;	
     
-    fprintf(outfile,"\n  Reading Occupations from file30\n");
+    fprintf(outfile,"\n  Reading Occupations from checkpoint file.\n");
     cldpi = chkpt_rd_clsdpi();
     openpi = chkpt_rd_openpi();
     

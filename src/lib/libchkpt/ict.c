@@ -30,20 +30,20 @@ int **chkpt_rd_ict(void)
   int i, natom, nirreps;
   int **ict;
   psio_address ptr;
-  char *key;
+  char *keyword;
+  keyword = chkpt_build_keyword("ICT Table");
 
   nirreps = chkpt_rd_nirreps();
   natom = chkpt_rd_natom();
 
   ptr = PSIO_ZERO;
   ict = (int **) malloc(sizeof(char *) * nirreps);
-  key = chkpt_build_keyword("ICT Table");
   for(i=0; i < nirreps; i++) {
     ict[i] = (int *) malloc(sizeof(int) * natom);
-    psio_read(PSIF_CHKPT, key, (char *) ict[i], natom*sizeof(int), ptr, &ptr);
+    psio_read(PSIF_CHKPT, keyword, (char *) ict[i], natom*sizeof(int), ptr, &ptr);
   }
-  free(key);
 
+  free(keyword);
   return ict;
 }
 
@@ -69,15 +69,16 @@ void chkpt_wt_ict(int **ict)
 {
   int i, natom, nirreps;
   psio_address ptr;
-  char *key;
+  char *keyword;
+  keyword = chkpt_build_keyword("ICT Table");
 
   nirreps = chkpt_rd_nirreps();
   natom = chkpt_rd_natom();
 
-  key = chkpt_build_keyword("ICT Table");
   ptr = PSIO_ZERO;
   for(i=0; i < nirreps; i++)
-    psio_write(PSIF_CHKPT, key, (char *) ict[i], natom*sizeof(int), 
+    psio_write(PSIF_CHKPT, keyword, (char *) ict[i], natom*sizeof(int), 
                ptr, &ptr);
-  free(key);
+
+  free(keyword);
 }

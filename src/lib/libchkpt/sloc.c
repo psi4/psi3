@@ -4,6 +4,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <libciomr/libciomr.h>
 #include "chkpt.h"
 #include <psifiles.h>
@@ -25,14 +26,16 @@ int *chkpt_rd_sloc(void)
 {
   int *sloc;
   int nshell;
+  char *keyword;
+  keyword = chkpt_build_keyword("First AO per shell");
 
   nshell = chkpt_rd_nshell();
 
   sloc = init_int_array(nshell);
 
-  psio_read_entry(PSIF_CHKPT, "::First AO per shell", (char *) sloc, 
-                  nshell*sizeof(int));
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) sloc, nshell*sizeof(int));
 
+  free(keyword);
   return sloc;
 }
 
@@ -51,9 +54,12 @@ int *chkpt_rd_sloc(void)
 void chkpt_wt_sloc(int *sloc)
 {
   int nshell;
+  char *keyword;
+  keyword = chkpt_build_keyword("First AO per shell");
 
   nshell = chkpt_rd_nshell();
 
-  psio_write_entry(PSIF_CHKPT, "::First AO per shell", (char *) sloc, 
-                   nshell*sizeof(int));
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) sloc, nshell*sizeof(int));
+
+  free(keyword);
 }

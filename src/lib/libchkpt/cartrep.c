@@ -27,15 +27,17 @@ double **chkpt_rd_cartrep(void)
   int i, nirrep;
   double **cartrep;
   psio_address ptr;
+  char *keyword;
+  keyword = chkpt_build_keyword("Cart. Repr. Matrices");
 
   nirrep = chkpt_rd_nirreps();
-
   ptr = PSIO_ZERO;
   cartrep = block_matrix(nirrep,9);
 
-  psio_read_entry(PSIF_CHKPT, "::Cart. Repr. Matrices", (char *) cartrep[0], 
-                  9*nirrep*sizeof(double));
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) cartrep[0], 
+      9*nirrep*sizeof(double));
 
+  free(keyword);
   return cartrep;
 }
 
@@ -56,11 +58,15 @@ void chkpt_wt_cartrep(double **cartrep)
 {
   int i, nirrep;
   psio_address ptr;
+  char *keyword;
+  keyword = chkpt_build_keyword("Cart. Repr. Matrices");
 
   nirrep = chkpt_rd_nirreps();
 
   ptr = PSIO_ZERO;
   for(i=0; i < nirrep; i++)
-    psio_write(PSIF_CHKPT, "::Cart. Repr. Matrices", (char *) cartrep[i], 
+    psio_write(PSIF_CHKPT, keyword, (char *) cartrep[i], 
                9*sizeof(double), ptr, &ptr);
+
+  free(keyword);
 }

@@ -1,11 +1,10 @@
 psi: (
   label = "6-31G** SCF H2O"
-  jobtype = symm_freq
+  jobtype = FC
   wfn = scf
   reference = rhf
   multp = 1
   dertype = first
-  convergence = 13
   basis = "6-31G**"
   zmat = (
     o

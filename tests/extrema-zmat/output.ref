@@ -1,16 +1,18 @@
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:11 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:53 2004
 
                                 --------------
                                   WELCOME TO
                                     PSI  3
                                 --------------
 
-  LABEL       =	STO-3G SCF H2O optimization using exterma/zmatrix
+  LABEL       =	STO-3G SCF NO2 opt using extrema/zmatrix
   SHOWNORM    =	0
   PUREAM      =	0
   PRINT_LVL   =	1
+
+  Parsed basis sets from /home/rking/psi3/lib/pbasis.dat
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
@@ -131,17 +133,20 @@ Wed Aug 27 19:40:11 2003
     2   1.3300000   0.0000000
     3   1.3300000   2.5693627   0.0000000
 
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
 
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:11 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:53 2004
 
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:53 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -157,27 +162,28 @@ Wed Aug 27 19:40:12 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = STO-3G SCF H2O optimization using exterma/zmatrix                               
+    Label                       = STO-3G SCF NO2 opt using extrema/zmatrix
     Number of atoms             = 3
     Number of atomic orbitals   = 15
     Number of symmetry orbitals = 15
     Maximum AM in the basis     = 1
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C2v
+    Computational point group        = C2v
     Number of irreps                 = 4
+
     Wrote 1970 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:53 2004
 
-user time   =       0.02 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:53 2004
 
 
              ------------------------------------------
@@ -191,14 +197,14 @@ Wed Aug 27 19:40:12 2003
   I think the multiplicity is 1.
   If this is wrong, please specify the MULTP keyword
 
-  label       = STO-3G SCF H2O optimization using exterma/zmatrix
+  label        = STO-3G SCF NO2 opt using extrema/zmatrix
   wfn          = SCF
   reference    = RHF
   multiplicity = 1
   charge       = -1
   direct       = false
   dertype      = FIRST
-  convergence  = 7
+  convergence  = 10
   maxiter      = 40
   guess        = AUTO
 
@@ -227,46 +233,49 @@ Wed Aug 27 19:40:12 2003
   iter       total energy        delta E         delta P          diiser
     1      -196.6109353106    2.543545e+02    0.000000e+00    0.000000e+00
     2      -200.4514303852    3.840495e+00    1.388871e-01    4.237868e-01
-    3      -200.9604306748    5.090003e-01    2.499184e-02    3.079700e-01
-    4      -200.9971712646    3.674059e-02    6.245161e-03    8.918365e-02
-    5      -201.0112567082    1.408544e-02    6.288360e-03    4.857857e-02
-    6      -201.0127521783    1.495470e-03    1.700048e-03    1.772206e-02
-    7      -201.0130563073    3.041290e-04    1.158585e-03    7.810259e-03
-    8      -201.0130576189    1.311599e-06    6.470002e-05    3.567806e-04
-    9      -201.0130577135    9.458830e-08    2.180699e-05    1.033421e-04
-   10      -201.0130577142    7.225935e-10    1.912349e-06    7.732465e-06
-   11      -201.0130577143    1.625722e-11    2.022838e-07    1.138766e-06
-   12      -201.0130577143    1.080025e-12    8.002424e-08    4.025827e-07
+    3      -200.9850425594    5.336122e-01    3.042643e-02    3.079700e-01
+    4      -201.0048010836    1.975852e-02    6.313392e-03    5.982603e-02
+    5      -201.0112688524    6.467769e-03    3.616097e-03    3.078507e-02
+    6      -201.0129164980    1.647646e-03    2.295929e-03    1.202741e-02
+    7      -201.0130574857    1.409877e-04    8.011969e-04    4.621418e-03
+    8      -201.0130576976    2.118780e-07    2.538392e-05    1.894594e-04
+    9      -201.0130577134    1.582617e-08    7.294721e-06    4.605254e-05
+   10      -201.0130577142    8.183179e-10    1.942436e-06    1.160360e-05
+   11      -201.0130577143    1.045919e-11    2.423655e-07    1.208421e-06
+   12      -201.0130577143    5.684342e-14    2.090637e-08    1.475412e-07
+   13      -201.0130577143    5.684342e-14    4.327380e-09    2.548026e-08
+   14      -201.0130577143    0.000000e+00    6.274901e-10    3.040968e-09
+   15      -201.0130577143    5.684342e-14    1.967272e-11    1.140362e-10
 
 Orbital energies (a.u.):
 
   Doubly occupied orbitals
-   1B2    -19.812069     1A1    -19.811974     2A1    -14.953363  
+   1B2    -19.812069     1A1    -19.811975     2A1    -14.953363  
    3A1     -0.964421     2B2     -0.850524     4A1     -0.400468  
    1B1     -0.180959     3B2     -0.130231     5A1     -0.118094  
    1A2     -0.025316     4B2      0.054803     2B1      0.187056  
 
   Unoccupied orbitals
-   6A1      0.579424     7A1      0.895168     5B2      1.309171  
+   6A1      0.579424     7A1      0.895168     5B2      1.309172  
 
 
-        SCF total energy   =    -201.013057714253
-        kinetic energy     =     201.587726485193
-        nuc. attr. energy  =    -605.089757994318
-        elec. rep. energy  =     202.488973794872
-        potential energy   =    -402.600784199446
-        virial theorem     =       2.002858862889
+        SCF total energy   =    -201.013057714254
+        kinetic energy     =     201.587726326615
+        nuc. attr. energy  =    -605.089757786754
+        elec. rep. energy  =     202.488973745886
+        potential energy   =    -402.600784040868
+        virial theorem     =       2.002858862100
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:53 2004
 
-user time   =       0.00 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:53 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -282,14 +291,14 @@ Wed Aug 27 19:40:12 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = STO-3G SCF H2O optimization using exterma/zmatrix                               
+    Label                       = STO-3G SCF NO2 opt using extrema/zmatrix
     Number of atoms             = 3
     Number of atomic orbitals   = 15
     Number of symmetry orbitals = 15
     Maximum AM in the basis     = 1
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C2v
+    Computational point group        = C2v
     Number of irreps                 = 4
   Rotational invariance condition satisfied.
   |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
@@ -299,20 +308,20 @@ Wed Aug 27 19:40:12 2003
   -SCF forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000     0.016845332576
-       2        0.000000000000    -0.018922909282    -0.008422666288
-       3        0.000000000000     0.018922909282    -0.008422666288
+       1        0.000000000000     0.000000000000     0.016845441504
+       2        0.000000000000    -0.018922853381    -0.008422720752
+       3        0.000000000000     0.018922853381    -0.008422720752
 
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:53 2004
 
-user time   =       0.13 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.27 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:53 2004
 
                   --------------------------------------------
                                    EXTREMA 
@@ -343,11 +352,11 @@ Wed Aug 27 19:40:12 2003
                        x              y                z
                 --------------- --------------- ---------------
              X     0.0000000000    0.0000000000    0.0000000000
-      NITROGEN     0.0000000000    0.0000000000    0.0168453326
-        OXYGEN     0.0000000000   -0.0189229093   -0.0084226663
-        OXYGEN     0.0000000000    0.0189229093   -0.0084226663
+      NITROGEN     0.0000000000    0.0000000000    0.0168454415
+        OXYGEN     0.0000000000   -0.0189228534   -0.0084227208
+        OXYGEN     0.0000000000    0.0189228534   -0.0084227208
 
-  RMS gradient = 0.0079484982
+  RMS gradient = 0.0079485100
 
   Z-matrix (angstroms and degrees):
 
@@ -358,10 +367,10 @@ Wed Aug 27 19:40:12 2003
 
   Internal coordinate gradients (a.u):
   1         :   -0.0000000000
-  2       R1:   -0.0160981804
-  3       A1:   -0.0327570067
-  4       R1:   -0.0160981804
-  5       A1:   -0.0327570067
+  2       R1:   -0.0160981123
+  3       A1:   -0.0327571026
+  4       R1:   -0.0160981123
+  5       A1:   -0.0327571026
   6         :   -0.0000000000
 
   H matrix (a.u.):
@@ -382,14 +391,14 @@ Wed Aug 27 19:40:12 2003
 
   Displacements before limit enforcement (angstroms and degrees):
   2       R1: 0.008519
-  3       A1: 7.507353
+  3       A1: 7.507375
 
   Optimization Step (angstroms and degrees):
 
   label    initial value   gradient (a.u.) displacement    new value
   -------- --------------- --------------- --------------- ---------------
-  R1          1.3300000000   -0.0160981804    0.0085187908    1.3385187908
-  A1         75.0000000000   -0.0327570067    5.0000000000   80.0000000000
+  R1          1.3300000000   -0.0160981123    0.0085187548    1.3385187548
+  A1         75.0000000000   -0.0327571026    5.0000000000   80.0000000000
 
 
   ----------------------------------------------------------------------------
@@ -397,36 +406,36 @@ Wed Aug 27 19:40:12 2003
   ----------------------------------------------------------------------------
   Iter    dq (internals)          dx (cartesians)
   ---- ----------------------  ----------------------
-    1  0.00342103248545000405  0.04666771794014420299
-    2  0.00000121820009106136  0.00209814720862052826
-    3  0.00000000000382464430  0.00000151677552852741
-    4  0.00000000000000003701  0.00000000000234470208
+    1  0.00342103179799927793  0.04666770991513970873
+    2  0.00000121819571989127  0.00209814645424032933
+    3  0.00000000000382445927  0.00000151677070260688
+    4  0.00000000000000003701  0.00000000000234461896
   Back transformation to cartesians completed
 
   Cartesian Coordinates (angstroms):
                        x              y                z
                 --------------- --------------- ---------------
-             X     0.0000000000   -0.0000000000   -0.8366803637
-      NITROGEN    -0.0000000000   -0.0000000000    0.1633196363
-        OXYGEN     0.0000000000    1.3181836827   -0.0691117125
-        OXYGEN    -0.0000000000   -1.3181836827   -0.0691117125
+             X     0.0000000000   -0.0000000000   -0.8366803679
+      NITROGEN    -0.0000000000   -0.0000000000    0.1633196321
+        OXYGEN     0.0000000000    1.3181836472   -0.0691117105
+        OXYGEN    -0.0000000000   -1.3181836472   -0.0691117105
 
   Z-matrix (angstroms and degrees):
 
              X
       NITROGEN    1    1.0000000000
-        OXYGEN    2    1.3385187908    1   80.0000000000
-        OXYGEN    2    1.3385187908    1   80.0000000000    3  180.0000000000
+        OXYGEN    2    1.3385187548    1   80.0000000000
+        OXYGEN    2    1.3385187548    1   80.0000000000    3  180.0000000000
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:53 2004
 
-user time   =       0.00 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:53 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -442,27 +451,28 @@ Wed Aug 27 19:40:12 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = STO-3G SCF H2O optimization using exterma/zmatrix                               
+    Label                       = STO-3G SCF NO2 opt using extrema/zmatrix
     Number of atoms             = 3
     Number of atomic orbitals   = 15
     Number of symmetry orbitals = 15
     Maximum AM in the basis     = 1
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C2v
+    Computational point group        = C2v
     Number of irreps                 = 4
+
     Wrote 1970 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:53 2004
 
-user time   =       0.01 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:53 2004
 
 
              ------------------------------------------
@@ -476,18 +486,18 @@ Wed Aug 27 19:40:12 2003
   I think the multiplicity is 1.
   If this is wrong, please specify the MULTP keyword
 
-  label       = STO-3G SCF H2O optimization using exterma/zmatrix
+  label        = STO-3G SCF NO2 opt using extrema/zmatrix
   wfn          = SCF
   reference    = RHF
   multiplicity = 1
   charge       = -1
   direct       = false
   dertype      = FIRST
-  convergence  = 7
+  convergence  = 10
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy       57.1249007240029
+  nuclear repulsion energy       57.1249022618519
 
   using old vector from file30 as initial guess
   energy from old vector:  -201.01305771
@@ -502,7 +512,7 @@ Wed Aug 27 19:40:12 2003
   The lowest eigenvalue of the overlap matrix was 4.818770e-01
 
 
-  Reading Occupations from file30
+  Reading Occupations from checkpoint file.
 
   Symmetry block:   A1    A2    B1    B2   
   DOCC:              5     1     2     4   
@@ -512,16 +522,20 @@ Wed Aug 27 19:40:12 2003
   wrote 1020 integrals to file92
 
   iter       total energy        delta E         delta P          diiser
-    1      -201.0045407405    2.581294e+02    0.000000e+00    0.000000e+00
-    2      -201.0144317580    9.891018e-03    4.173609e-03    4.537241e-02
-    3      -201.0174596482    3.027890e-03    3.259849e-03    1.860087e-02
-    4      -201.0176569174    1.972693e-04    9.131799e-04    4.153784e-03
-    5      -201.0176681786    1.126113e-05    2.038307e-04    1.460170e-03
-    6      -201.0176691842    1.005652e-06    4.782697e-05    3.991045e-04
-    7      -201.0176693431    1.588558e-07    2.605862e-05    1.554508e-04
-    8      -201.0176693436    5.821335e-10    1.472163e-06    8.335013e-06
-    9      -201.0176693437    1.432454e-11    2.730333e-07    1.443235e-06
-   10      -201.0176693437    0.000000e+00    1.029386e-08    5.389392e-08
+    1      -201.0045407562    2.581294e+02    0.000000e+00    0.000000e+00
+    2      -201.0144317623    9.891006e-03    4.173606e-03    4.537238e-02
+    3      -201.0175061989    3.074437e-03    3.411096e-03    1.860085e-02
+    4      -201.0176583465    1.521475e-04    8.015696e-04    3.775882e-03
+    5      -201.0176680257    9.679214e-06    1.712588e-04    1.500446e-03
+    6      -201.0176691691    1.143379e-06    5.309074e-05    3.602013e-04
+    7      -201.0176693431    1.740581e-07    2.747037e-05    1.458558e-04
+    8      -201.0176693436    4.985736e-10    1.329555e-06    8.004900e-06
+    9      -201.0176693436    1.449507e-11    2.509098e-07    1.412784e-06
+   10      -201.0176693436   -5.684342e-14    6.982270e-09    5.799839e-08
+   11      -201.0176693436    5.684342e-14    1.981207e-09    1.577154e-08
+   12      -201.0176693436    1.136868e-13    7.594214e-10    4.817673e-09
+   13      -201.0176693436   -1.136868e-13    4.037875e-10    2.181326e-09
+   14      -201.0176693436    0.000000e+00    4.816854e-11    2.955025e-10
 
  Correcting phases of orbitals.
 
@@ -534,26 +548,26 @@ Orbital energies (a.u.):
    1A2     -0.024594     4B2      0.052935     2B1      0.181997  
 
   Unoccupied orbitals
-   6A1      0.597945     7A1      0.840110     5B2      1.320634  
+   6A1      0.597945     7A1      0.840111     5B2      1.320634  
 
 
-        SCF total energy   =    -201.017669343664
-        kinetic energy     =     201.574594410983
-        nuc. attr. energy  =    -603.854959461618
-        elec. rep. energy  =     201.262695706971
-        potential energy   =    -402.592263754647
-        virial theorem     =       2.002770527930
+        SCF total energy   =    -201.017669343639
+        kinetic energy     =     201.574594457341
+        nuc. attr. energy  =    -603.854962503399
+        elec. rep. energy  =     201.262698702419
+        potential energy   =    -402.592263800980
+        virial theorem     =       2.002770528161
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:53 2004
 
 user time   =       0.01 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:53 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -569,14 +583,14 @@ Wed Aug 27 19:40:12 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = STO-3G SCF H2O optimization using exterma/zmatrix                               
+    Label                       = STO-3G SCF NO2 opt using extrema/zmatrix
     Number of atoms             = 3
     Number of atomic orbitals   = 15
     Number of symmetry orbitals = 15
     Maximum AM in the basis     = 1
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C2v
+    Computational point group        = C2v
     Number of irreps                 = 4
   Rotational invariance condition satisfied.
   |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
@@ -586,20 +600,20 @@ Wed Aug 27 19:40:12 2003
   -SCF forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000     0.014089362363
-       2        0.000000000000    -0.001430336945    -0.007044681182
-       3        0.000000000000     0.001430336945    -0.007044681182
+       1        0.000000000000     0.000000000000     0.014089376831
+       2        0.000000000000    -0.001430387489    -0.007044688415
+       3        0.000000000000     0.001430387489    -0.007044688415
 
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:53 2004
 
-user time   =       0.10 seconds =       0.00 minutes
+user time   =       0.28 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:53 2004
 
                   --------------------------------------------
                                    EXTREMA 
@@ -621,34 +635,34 @@ Wed Aug 27 19:40:12 2003
   Cartesian Coordinates (angstroms):
                        x              y                z
                 --------------- --------------- ---------------
-             X     0.0000000000   -0.0000000000   -0.8366803637
-      NITROGEN    -0.0000000000   -0.0000000000    0.1633196363
-        OXYGEN     0.0000000000    1.3181836827   -0.0691117125
-        OXYGEN    -0.0000000000   -1.3181836827   -0.0691117125
+             X     0.0000000000   -0.0000000000   -0.8366803679
+      NITROGEN    -0.0000000000   -0.0000000000    0.1633196321
+        OXYGEN     0.0000000000    1.3181836472   -0.0691117105
+        OXYGEN    -0.0000000000   -1.3181836472   -0.0691117105
 
   Cartesian Gradients (a.u):
                        x              y                z
                 --------------- --------------- ---------------
              X     0.0000000000    0.0000000000    0.0000000000
-      NITROGEN     0.0000000000    0.0000000000    0.0140893624
-        OXYGEN     0.0000000000   -0.0014303369   -0.0070446812
-        OXYGEN     0.0000000000    0.0014303369   -0.0070446812
+      NITROGEN     0.0000000000    0.0000000000    0.0140893768
+        OXYGEN     0.0000000000   -0.0014303875   -0.0070446884
+        OXYGEN     0.0000000000    0.0014303875   -0.0070446884
 
-  RMS gradient = 0.0034488221
+  RMS gradient = 0.0034488365
 
   Z-matrix (angstroms and degrees):
 
              X
       NITROGEN    1    1.0000000000
-        OXYGEN    2    1.3385187908    1   80.0000000000
-        OXYGEN    2    1.3385187908    1   80.0000000000    3  180.0000000000
+        OXYGEN    2    1.3385187548    1   80.0000000000
+        OXYGEN    2    1.3385187548    1   80.0000000000    3  180.0000000000
 
   Internal coordinate gradients (a.u):
   1         :    0.0000000000
-  2       R1:   -0.0001853108
-  3       A1:   -0.0181765920
-  4       R1:   -0.0001853108
-  5       A1:   -0.0181765920
+  2       R1:   -0.0001853594
+  3       A1:   -0.0181766317
+  4       R1:   -0.0001853594
+  5       A1:   -0.0181766317
   6         :   -0.0000000000
 
   Performing bfgs update of inverse hessian
@@ -657,12 +671,12 @@ Wed Aug 27 19:40:12 2003
 
            1           2
 
-    1   1.0458558  -0.0105774
-    2  -0.0105774   0.1690305
+    1   1.0458541  -0.0105776
+    2  -0.0105776   0.1690312
 
   H eigenvalues:
-  0.168903
-  1.045983
+  0.168904
+  1.045982
 
 
   ----------------------------------------------------------------------------
@@ -671,14 +685,14 @@ Wed Aug 27 19:40:12 2003
 
   Displacements before limit enforcement (angstroms and degrees):
   2       R1: 0.000670
-  3       A1: 6.165803
+  3       A1: 6.165792
 
   Optimization Step (angstroms and degrees):
 
   label    initial value   gradient (a.u.) displacement    new value
   -------- --------------- --------------- --------------- ---------------
-  R1          1.3385187908   -0.0001853108    0.0006696996    1.3391884904
-  A1         80.0000000000   -0.0181765920    5.0000000000   85.0000000000
+  R1          1.3385187548   -0.0001853594    0.0006697351    1.3391884899
+  A1         80.0000000000   -0.0181766317    5.0000000000   85.0000000000
 
 
   ----------------------------------------------------------------------------
@@ -686,36 +700,36 @@ Wed Aug 27 19:40:12 2003
   ----------------------------------------------------------------------------
   Iter    dq (internals)          dx (cartesians)
   ---- ----------------------  ----------------------
-    1  0.00329071370289605670  0.04278967086845789775
-    2  0.00000036347142543895  0.00183675402376561937
-    3  0.00000000000043498538  0.00000047114688640221
-    4  0.00000000000000003701  0.00000000000024269488
+    1  0.00329071429740431442  0.04278967879147077547
+    2  0.00000036347482845756  0.00183675481762332941
+    3  0.00000000000043491137  0.00000047115107929174
+    4  0.00000000000000000000  0.00000000000024269983
   Back transformation to cartesians completed
 
   Cartesian Coordinates (angstroms):
                        x              y                z
                 --------------- --------------- ---------------
-             X     0.0000000000   -0.0000000000   -0.9154507960
-      NITROGEN    -0.0000000000   -0.0000000000    0.0845492040
-        OXYGEN     0.0000000000    1.3340924739   -0.0321687636
-        OXYGEN    -0.0000000000   -1.3340924739   -0.0321687636
+             X     0.0000000000   -0.0000000000   -0.9154507961
+      NITROGEN    -0.0000000000   -0.0000000000    0.0845492039
+        OXYGEN     0.0000000000    1.3340924733   -0.0321687636
+        OXYGEN    -0.0000000000   -1.3340924733   -0.0321687636
 
   Z-matrix (angstroms and degrees):
 
              X
       NITROGEN    1    1.0000000000
-        OXYGEN    2    1.3391884904    1   85.0000000000
-        OXYGEN    2    1.3391884904    1   85.0000000000    3  180.0000000000
+        OXYGEN    2    1.3391884899    1   85.0000000000
+        OXYGEN    2    1.3391884899    1   85.0000000000    3  180.0000000000
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:53 2004
 
 user time   =       0.00 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:53 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -731,27 +745,28 @@ Wed Aug 27 19:40:12 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = STO-3G SCF H2O optimization using exterma/zmatrix                               
+    Label                       = STO-3G SCF NO2 opt using extrema/zmatrix
     Number of atoms             = 3
     Number of atomic orbitals   = 15
     Number of symmetry orbitals = 15
     Maximum AM in the basis     = 1
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C2v
+    Computational point group        = C2v
     Number of irreps                 = 4
+
     Wrote 1970 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:53 2004
 
-user time   =       0.00 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:53 2004
 
 
              ------------------------------------------
@@ -765,18 +780,18 @@ Wed Aug 27 19:40:12 2003
   I think the multiplicity is 1.
   If this is wrong, please specify the MULTP keyword
 
-  label       = STO-3G SCF H2O optimization using exterma/zmatrix
+  label        = STO-3G SCF NO2 opt using extrema/zmatrix
   wfn          = SCF
   reference    = RHF
   multiplicity = 1
   charge       = -1
   direct       = false
   dertype      = FIRST
-  convergence  = 7
+  convergence  = 10
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy       56.9495692945934
+  nuclear repulsion energy       56.9495693171588
 
   using old vector from file30 as initial guess
   energy from old vector:  -201.01766934
@@ -791,7 +806,7 @@ Wed Aug 27 19:40:12 2003
   The lowest eigenvalue of the overlap matrix was 4.753297e-01
 
 
-  Reading Occupations from file30
+  Reading Occupations from checkpoint file.
 
   Symmetry block:   A1    A2    B1    B2   
   DOCC:              5     1     2     4   
@@ -801,16 +816,19 @@ Wed Aug 27 19:40:12 2003
   wrote 1020 integrals to file92
 
   iter       total energy        delta E         delta P          diiser
-    1      -201.0067662877    2.579563e+02    0.000000e+00    0.000000e+00
-    2      -201.0167463729    9.980085e-03    4.273904e-03    4.605071e-02
-    3      -201.0197837907    3.037418e-03    3.429047e-03    2.024554e-02
-    4      -201.0199331693    1.493786e-04    8.405058e-04    4.571960e-03
-    5      -201.0199388831    5.713792e-06    1.595072e-04    8.919825e-04
-    6      -201.0199391088    2.257634e-07    2.165292e-05    1.625679e-04
-    7      -201.0199391679    5.907884e-08    1.600685e-05    9.958339e-05
-    8      -201.0199391682    2.498268e-10    9.444567e-07    4.671222e-06
-    9      -201.0199391682    6.536993e-12    1.717062e-07    9.537064e-07
-   10      -201.0199391682   -1.136868e-13    5.253200e-09    4.323596e-08
+    1      -201.0067662935    2.579563e+02    0.000000e+00    0.000000e+00
+    2      -201.0167463744    9.980081e-03    4.273903e-03    4.605069e-02
+    3      -201.0198123555    3.065981e-03    3.536150e-03    2.024554e-02
+    4      -201.0199341391    1.217837e-04    7.697921e-04    4.084230e-03
+    5      -201.0199388119    4.672741e-06    1.279427e-04    9.583388e-04
+    6      -201.0199391086    2.967494e-07    2.767712e-05    2.316188e-04
+    7      -201.0199391679    5.930644e-08    1.586939e-05    8.748222e-05
+    8      -201.0199391682    2.492584e-10    9.485670e-07    5.036192e-06
+    9      -201.0199391682    5.968559e-12    1.558953e-07    9.878059e-07
+   10      -201.0199391682    0.000000e+00    5.330302e-09    4.457606e-08
+   11      -201.0199391682    1.136868e-13    1.548074e-09    9.115707e-09
+   12      -201.0199391682   -1.136868e-13    3.756525e-10    1.933552e-09
+   13      -201.0199391682   -1.136868e-13    7.365718e-11    6.395202e-10
 
  Correcting phases of orbitals.
 
@@ -826,23 +844,23 @@ Orbital energies (a.u.):
    6A1      0.616251     7A1      0.806334     5B2      1.336015  
 
 
-        SCF total energy   =    -201.019939168158
-        kinetic energy     =     201.571158633282
-        nuc. attr. energy  =    -603.498278538764
-        elec. rep. energy  =     200.907180737324
-        potential energy   =    -402.591097801440
-        virial theorem     =       2.002742113381
+        SCF total energy   =    -201.019939168165
+        kinetic energy     =     201.571158661936
+        nuc. attr. energy  =    -603.498278626146
+        elec. rep. energy  =     200.907180796045
+        potential energy   =    -402.591097830101
+        virial theorem     =       2.002742113524
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:53 2004
 
 user time   =       0.00 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:53 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -858,14 +876,14 @@ Wed Aug 27 19:40:12 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = STO-3G SCF H2O optimization using exterma/zmatrix                               
+    Label                       = STO-3G SCF NO2 opt using extrema/zmatrix
     Number of atoms             = 3
     Number of atomic orbitals   = 15
     Number of symmetry orbitals = 15
     Maximum AM in the basis     = 1
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C2v
+    Computational point group        = C2v
     Number of irreps                 = 4
   Rotational invariance condition satisfied.
   |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
@@ -875,20 +893,20 @@ Wed Aug 27 19:40:12 2003
   -SCF forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000     0.007138675453
-       2        0.000000000000     0.003199615202    -0.003569337726
-       3        0.000000000000    -0.003199615202    -0.003569337726
+       1        0.000000000000     0.000000000000     0.007138700601
+       2        0.000000000000     0.003199608741    -0.003569350300
+       3        0.000000000000    -0.003199608741    -0.003569350300
 
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:54 2004
 
-user time   =       0.12 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.27 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:54 2004
 
                   --------------------------------------------
                                    EXTREMA 
@@ -910,34 +928,34 @@ Wed Aug 27 19:40:12 2003
   Cartesian Coordinates (angstroms):
                        x              y                z
                 --------------- --------------- ---------------
-             X     0.0000000000   -0.0000000000   -0.9154507960
-      NITROGEN    -0.0000000000   -0.0000000000    0.0845492040
-        OXYGEN     0.0000000000    1.3340924739   -0.0321687636
-        OXYGEN    -0.0000000000   -1.3340924739   -0.0321687636
+             X     0.0000000000   -0.0000000000   -0.9154507961
+      NITROGEN    -0.0000000000   -0.0000000000    0.0845492039
+        OXYGEN     0.0000000000    1.3340924733   -0.0321687636
+        OXYGEN    -0.0000000000   -1.3340924733   -0.0321687636
 
   Cartesian Gradients (a.u):
                        x              y                z
                 --------------- --------------- ---------------
              X     0.0000000000    0.0000000000    0.0000000000
-      NITROGEN     0.0000000000    0.0000000000    0.0071386755
-        OXYGEN     0.0000000000    0.0031996152   -0.0035693377
-        OXYGEN     0.0000000000   -0.0031996152   -0.0035693377
+      NITROGEN     0.0000000000    0.0000000000    0.0071387006
+        OXYGEN     0.0000000000    0.0031996087   -0.0035693503
+        OXYGEN     0.0000000000   -0.0031996087   -0.0035693503
 
-  RMS gradient = 0.0022973979
+  RMS gradient = 0.0022974021
 
   Z-matrix (angstroms and degrees):
 
              X
       NITROGEN    1    1.0000000000
-        OXYGEN    2    1.3391884904    1   85.0000000000
-        OXYGEN    2    1.3391884904    1   85.0000000000    3  180.0000000000
+        OXYGEN    2    1.3391884899    1   85.0000000000
+        OXYGEN    2    1.3391884899    1   85.0000000000    3  180.0000000000
 
   Internal coordinate gradients (a.u):
   1         :    0.0000000000
-  2       R1:    0.0034985280
-  3       A1:   -0.0082928244
-  4       R1:    0.0034985280
-  5       A1:   -0.0082928244
+  2       R1:    0.0034985226
+  3       A1:   -0.0082928576
+  4       R1:    0.0034985226
+  5       A1:   -0.0082928576
   6         :   -0.0000000000
 
   Performing bfgs update of inverse hessian
@@ -946,12 +964,12 @@ Wed Aug 27 19:40:12 2003
 
            1           2
 
-    1   1.0613807   0.0268244
-    2   0.0268244   0.1128702
+    1   1.0613789   0.0268249
+    2   0.0268249   0.1128702
 
   H eigenvalues:
   0.112112
-  1.062139
+  1.062137
 
 
   ----------------------------------------------------------------------------
@@ -960,14 +978,14 @@ Wed Aug 27 19:40:12 2003
 
   Displacements before limit enforcement (angstroms and degrees):
   2       R1: -0.002743
-  3       A1: 4.280241
+  3       A1: 4.280257
 
   Optimization Step (angstroms and degrees):
 
   label    initial value   gradient (a.u.) displacement    new value
   -------- --------------- --------------- --------------- ---------------
-  R1          1.3391884904    0.0034985280   -0.0027433685    1.3364451219
-  A1         85.0000000000   -0.0082928244    4.2802410446   89.2802410446
+  R1          1.3391884899    0.0034985226   -0.0027433941    1.3364450958
+  A1         85.0000000000   -0.0082928576    4.2802573667   89.2802573667
 
 
   ----------------------------------------------------------------------------
@@ -975,36 +993,36 @@ Wed Aug 27 19:40:12 2003
   ----------------------------------------------------------------------------
   Iter    dq (internals)          dx (cartesians)
   ---- ----------------------  ----------------------
-    1  0.00236005950555865729  0.03334986793390257165
-    2  0.00000001313126692567  0.00118655199296312046
-    3  0.00000000000000066613  0.00000001664161032185
-    4  0.00000000000000022204  0.00000000000000033481
+    1  0.00236007762911842134  0.03334999075419258635
+    2  0.00000001313176474967  0.00118656058748736358
+    3  0.00000000000000074015  0.00000001664223311665
+    4  0.00000000000000014803  0.00000000000000042445
   Back transformation to cartesians completed
 
   Cartesian Coordinates (angstroms):
                        x              y                z
                 --------------- --------------- ---------------
-             X     0.0000000000   -0.0000000000   -0.9834767310
-      NITROGEN    -0.0000000000   -0.0000000000    0.0165232690
-        OXYGEN     0.0000000000    1.3363396725   -0.0002649317
-        OXYGEN    -0.0000000000   -1.3363396725   -0.0002649317
+             X     0.0000000000   -0.0000000000   -0.9834769903
+      NITROGEN    -0.0000000000   -0.0000000000    0.0165230097
+        OXYGEN     0.0000000000    1.3363396511   -0.0002648100
+        OXYGEN    -0.0000000000   -1.3363396511   -0.0002648100
 
   Z-matrix (angstroms and degrees):
 
              X
       NITROGEN    1    1.0000000000
-        OXYGEN    2    1.3364451219    1   89.2802410446
-        OXYGEN    2    1.3364451219    1   89.2802410446    3  180.0000000000
+        OXYGEN    2    1.3364450958    1   89.2802573667
+        OXYGEN    2    1.3364450958    1   89.2802573667    3  180.0000000000
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:54 2004
 
 user time   =       0.00 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:54 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1020,27 +1038,28 @@ Wed Aug 27 19:40:12 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = STO-3G SCF H2O optimization using exterma/zmatrix                               
+    Label                       = STO-3G SCF NO2 opt using extrema/zmatrix
     Number of atoms             = 3
     Number of atomic orbitals   = 15
     Number of symmetry orbitals = 15
     Maximum AM in the basis     = 1
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C2v
+    Computational point group        = C2v
     Number of irreps                 = 4
+
     Wrote 1970 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:54 2004
 
-user time   =       0.01 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.04 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:54 2004
 
 
              ------------------------------------------
@@ -1054,18 +1073,18 @@ Wed Aug 27 19:40:12 2003
   I think the multiplicity is 1.
   If this is wrong, please specify the MULTP keyword
 
-  label       = STO-3G SCF H2O optimization using exterma/zmatrix
+  label        = STO-3G SCF NO2 opt using extrema/zmatrix
   wfn          = SCF
   reference    = RHF
   multiplicity = 1
   charge       = -1
   direct       = false
   dertype      = FIRST
-  convergence  = 7
+  convergence  = 10
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy       57.0190715864238
+  nuclear repulsion energy       57.0190726570184
 
   using old vector from file30 as initial guess
   energy from old vector:  -201.01993917
@@ -1077,10 +1096,10 @@ Wed Aug 27 19:40:12 2003
 
   keeping integrals in 18128 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 4.703874e-01
+  The lowest eigenvalue of the overlap matrix was 4.703873e-01
 
 
-  Reading Occupations from file30
+  Reading Occupations from checkpoint file.
 
   Symmetry block:   A1    A2    B1    B2   
   DOCC:              5     1     2     4   
@@ -1090,16 +1109,19 @@ Wed Aug 27 19:40:12 2003
   wrote 1020 integrals to file92
 
   iter       total energy        delta E         delta P          diiser
-    1      -201.0109522891    2.580300e+02    0.000000e+00    0.000000e+00
-    2      -201.0183451586    7.392869e-03    3.709533e-03    3.992933e-02
-    3      -201.0205801264    2.234968e-03    3.045450e-03    1.785520e-02
-    4      -201.0206652284    8.510196e-05    6.653387e-04    3.868927e-03
-    5      -201.0206670668    1.838409e-06    9.532216e-05    4.745529e-04
-    6      -201.0206670859    1.910962e-08    7.947908e-06    5.971612e-05
-    7      -201.0206670865    5.960601e-10    1.460351e-06    8.571402e-06
-    8      -201.0206670865    5.178435e-11    3.825190e-07    2.953347e-06
-    9      -201.0206670865    4.376943e-12    1.367640e-07    8.262797e-07
-   10      -201.0206670865    0.000000e+00    2.491343e-09    3.224144e-08
+    1      -201.0109522201    2.580300e+02    0.000000e+00    0.000000e+00
+    2      -201.0183451429    7.392923e-03    3.709547e-03    3.992947e-02
+    3      -201.0205863239    2.241181e-03    3.075845e-03    1.785527e-02
+    4      -201.0206655139    7.919005e-05    6.498023e-04    3.729257e-03
+    5      -201.0206670297    1.515791e-06    8.098106e-05    4.107894e-04
+    6      -201.0206670867    5.700286e-08    1.312152e-05    1.049495e-04
+    7      -201.0206670873    5.256879e-10    1.248121e-06    7.300169e-06
+    8      -201.0206670873    5.462653e-11    3.713923e-07    2.718159e-06
+    9      -201.0206670873    6.821210e-12    1.737445e-07    9.515482e-07
+   10      -201.0206670873    0.000000e+00    2.466039e-09    2.607062e-08
+   11      -201.0206670873   -5.684342e-14    9.034661e-10    4.430002e-09
+   12      -201.0206670873    1.136868e-13    1.201336e-10    7.770430e-10
+   13      -201.0206670873    0.000000e+00    9.476104e-12    6.468565e-11
 
  Correcting phases of orbitals.
 
@@ -1115,23 +1137,23 @@ Orbital energies (a.u.):
    6A1      0.625265     7A1      0.796376     5B2      1.346699  
 
 
-        SCF total energy   =    -201.020667086521
-        kinetic energy     =     201.571336354138
-        nuc. attr. energy  =    -603.628303506893
-        elec. rep. energy  =     201.036300066234
-        potential energy   =    -402.592003440659
-        virial theorem     =       2.002739366432
+        SCF total energy   =    -201.020667087318
+        kinetic energy     =     201.571336363847
+        nuc. attr. energy  =    -603.628305582345
+        elec. rep. energy  =     201.036302131179
+        potential energy   =    -402.592003451166
+        virial theorem     =       2.002739366477
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:54 2004
 
-user time   =       0.01 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:54 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1147,14 +1169,14 @@ Wed Aug 27 19:40:12 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = STO-3G SCF H2O optimization using exterma/zmatrix                               
+    Label                       = STO-3G SCF NO2 opt using extrema/zmatrix
     Number of atoms             = 3
     Number of atomic orbitals   = 15
     Number of symmetry orbitals = 15
     Maximum AM in the basis     = 1
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C2v
+    Computational point group        = C2v
     Number of irreps                 = 4
   Rotational invariance condition satisfied.
   |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
@@ -1164,20 +1186,20 @@ Wed Aug 27 19:40:12 2003
   -SCF forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000     0.000962639757
-       2        0.000000000000     0.001283619023    -0.000481319879
-       3        0.000000000000    -0.001283619023    -0.000481319879
+       1        0.000000000000     0.000000000000     0.000962632280
+       2        0.000000000000     0.001283589142    -0.000481316140
+       3        0.000000000000    -0.001283589142    -0.000481316140
 
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:54 2004
 
-user time   =       0.13 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.26 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:54 2004
 
                   --------------------------------------------
                                    EXTREMA 
@@ -1199,34 +1221,34 @@ Wed Aug 27 19:40:12 2003
   Cartesian Coordinates (angstroms):
                        x              y                z
                 --------------- --------------- ---------------
-             X     0.0000000000   -0.0000000000   -0.9834767310
-      NITROGEN    -0.0000000000   -0.0000000000    0.0165232690
-        OXYGEN     0.0000000000    1.3363396725   -0.0002649317
-        OXYGEN    -0.0000000000   -1.3363396725   -0.0002649317
+             X     0.0000000000   -0.0000000000   -0.9834769903
+      NITROGEN    -0.0000000000   -0.0000000000    0.0165230097
+        OXYGEN     0.0000000000    1.3363396511   -0.0002648100
+        OXYGEN    -0.0000000000   -1.3363396511   -0.0002648100
 
   Cartesian Gradients (a.u):
                        x              y                z
                 --------------- --------------- ---------------
              X     0.0000000000    0.0000000000    0.0000000000
-      NITROGEN     0.0000000000    0.0000000000    0.0009626398
-        OXYGEN     0.0000000000    0.0012836190   -0.0004813199
-        OXYGEN     0.0000000000   -0.0012836190   -0.0004813199
+      NITROGEN     0.0000000000    0.0000000000    0.0009626323
+        OXYGEN     0.0000000000    0.0012835891   -0.0004813161
+        OXYGEN     0.0000000000   -0.0012835891   -0.0004813161
 
-  RMS gradient = 0.0004991686
+  RMS gradient = 0.0004991603
 
   Z-matrix (angstroms and degrees):
 
              X
       NITROGEN    1    1.0000000000
-        OXYGEN    2    1.3364451219    1   89.2802410446
-        OXYGEN    2    1.3364451219    1   89.2802410446    3  180.0000000000
+        OXYGEN    2    1.3364450958    1   89.2802573667
+        OXYGEN    2    1.3364450958    1   89.2802573667    3  180.0000000000
 
   Internal coordinate gradients (a.u):
   1         :    0.0000000000
-  2       R1:    0.0012895640
-  3       A1:   -0.0011747618
-  4       R1:    0.0012895640
-  5       A1:   -0.0011747618
+  2       R1:    0.0012895339
+  3       A1:   -0.0011747541
+  4       R1:    0.0012895339
+  5       A1:   -0.0011747541
   6         :   -0.0000000000
 
   Performing bfgs update of inverse hessian
@@ -1235,12 +1257,12 @@ Wed Aug 27 19:40:12 2003
 
            1           2
 
-    1   1.0511719   0.0433741
-    2   0.0433741   0.0982932
+    1   1.0511703   0.0433742
+    2   0.0433742   0.0982934
 
   H eigenvalues:
   0.096323
-  1.053142
+  1.053141
 
 
   ----------------------------------------------------------------------------
@@ -1249,14 +1271,14 @@ Wed Aug 27 19:40:12 2003
 
   Displacements before limit enforcement (angstroms and degrees):
   2       R1: -0.000927
-  3       A1: 0.729069
+  3       A1: 0.729062
 
   Optimization Step (angstroms and degrees):
 
   label    initial value   gradient (a.u.) displacement    new value
   -------- --------------- --------------- --------------- ---------------
-  R1          1.3364451219    0.0012895640   -0.0009270336    1.3355180883
-  A1         89.2802410446   -0.0011747618    0.7290686598   90.0093097044
+  R1          1.3364450958    0.0012895339   -0.0009270179    1.3355180778
+  A1         89.2802573667   -0.0011747541    0.7290619924   90.0093193591
 
 
   ----------------------------------------------------------------------------
@@ -1264,36 +1286,36 @@ Wed Aug 27 19:40:12 2003
   ----------------------------------------------------------------------------
   Iter    dq (internals)          dx (cartesians)
   ---- ----------------------  ----------------------
-    1  0.00007091322347089572  0.00558396218440628672
-    2  0.00000000024799125716  0.00003753050867682481
-    3  0.00000000000000029606  0.00000000029171743522
-    4  0.00000000000000022204  0.00000000000000014820
+    1  0.00007091190359657477  0.00558391017740507162
+    2  0.00000000024797996989  0.00003752980010400567
+    3  0.00000000000000025905  0.00000000029170433551
+    4  0.00000000000000025905  0.00000000000000012011
   Back transformation to cartesians completed
 
   Cartesian Coordinates (angstroms):
                        x              y                z
                 --------------- --------------- ---------------
-             X     0.0000000000   -0.0000000000   -0.9950528091
-      NITROGEN    -0.0000000000   -0.0000000000    0.0049471909
-        OXYGEN     0.0000000000    1.3355180707    0.0051641926
-        OXYGEN    -0.0000000000   -1.3355180707    0.0051641926
+             X     0.0000000000   -0.0000000000   -0.9950529623
+      NITROGEN    -0.0000000000   -0.0000000000    0.0049470377
+        OXYGEN     0.0000000000    1.3355180602    0.0051642644
+        OXYGEN    -0.0000000000   -1.3355180602    0.0051642644
 
   Z-matrix (angstroms and degrees):
 
              X
       NITROGEN    1    1.0000000000
-        OXYGEN    2    1.3355180883    1   90.0093097044
-        OXYGEN    2    1.3355180883    1   90.0093097044    3  180.0000000000
+        OXYGEN    2    1.3355180778    1   90.0093193591
+        OXYGEN    2    1.3355180778    1   90.0093193591    3  180.0000000000
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:54 2004
 
 user time   =       0.00 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:54 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1309,27 +1331,28 @@ Wed Aug 27 19:40:12 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = STO-3G SCF H2O optimization using exterma/zmatrix                               
+    Label                       = STO-3G SCF NO2 opt using extrema/zmatrix
     Number of atoms             = 3
     Number of atomic orbitals   = 15
     Number of symmetry orbitals = 15
     Maximum AM in the basis     = 1
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C2v
+    Computational point group        = C2v
     Number of irreps                 = 4
+
     Wrote 1970 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:54 2004
 
-user time   =       0.01 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.06 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:54 2004
 
 
              ------------------------------------------
@@ -1343,18 +1366,18 @@ Wed Aug 27 19:40:12 2003
   I think the multiplicity is 1.
   If this is wrong, please specify the MULTP keyword
 
-  label       = STO-3G SCF H2O optimization using exterma/zmatrix
+  label        = STO-3G SCF NO2 opt using extrema/zmatrix
   wfn          = SCF
   reference    = RHF
   multiplicity = 1
   charge       = -1
   direct       = false
   dertype      = FIRST
-  convergence  = 7
+  convergence  = 10
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy       57.0576503207598
+  nuclear repulsion energy       57.0576507681653
 
   using old vector from file30 as initial guess
   energy from old vector:  -201.02066709
@@ -1369,7 +1392,7 @@ Wed Aug 27 19:40:12 2003
   The lowest eigenvalue of the overlap matrix was 4.694641e-01
 
 
-  Reading Occupations from file30
+  Reading Occupations from checkpoint file.
 
   Symmetry block:   A1    A2    B1    B2   
   DOCC:              5     1     2     4   
@@ -1379,14 +1402,18 @@ Wed Aug 27 19:40:12 2003
   wrote 1020 integrals to file92
 
   iter       total energy        delta E         delta P          diiser
-    1      -201.0204018668    2.580781e+02    0.000000e+00    0.000000e+00
-    2      -201.0206173178    2.154510e-04    6.325652e-04    6.833235e-03
-    3      -201.0206824357    6.511789e-05    5.293814e-04    3.038623e-03
-    4      -201.0206845526    2.116829e-06    1.123618e-04    6.100585e-04
-    5      -201.0206845607    8.096094e-09    6.816904e-06    3.233590e-05
-    6      -201.0206845609    2.498268e-10    6.101956e-07    1.008560e-05
-    7      -201.0206845609    2.432898e-11    2.733555e-07    1.931048e-06
-    8      -201.0206845609    1.818989e-12    7.502836e-08    5.367728e-07
+    1      -201.0204018724    2.580781e+02    0.000000e+00    0.000000e+00
+    2      -201.0206173192    2.154468e-04    6.325589e-04    6.833167e-03
+    3      -201.0206823628    6.504363e-05    5.271183e-04    3.038593e-03
+    4      -201.0206845421    2.179296e-06    1.104574e-04    6.204129e-04
+    5      -201.0206845606    1.850350e-08    1.065402e-05    4.889219e-05
+    6      -201.0206845609    2.898446e-10    6.663317e-07    1.074305e-05
+    7      -201.0206845609    2.120260e-11    2.317802e-07    1.543231e-06
+    8      -201.0206845609    2.046363e-12    7.374376e-08    5.101198e-07
+    9      -201.0206845609    1.705303e-13    3.079558e-08    1.325070e-07
+   10      -201.0206845609    5.684342e-14    4.794725e-10    4.381192e-09
+   11      -201.0206845609   -5.684342e-14    1.255785e-10    6.539105e-10
+   12      -201.0206845609   -5.684342e-14    3.575711e-11    1.807591e-10
 
  Correcting phases of orbitals.
 
@@ -1402,23 +1429,23 @@ Orbital energies (a.u.):
    6A1      0.625884     7A1      0.796961     5B2      1.348554  
 
 
-        SCF total energy   =    -201.020684560933
-        kinetic energy     =     201.571688862215
-        nuc. attr. energy  =    -603.703111977521
-        elec. rep. energy  =     201.110738554373
-        potential energy   =    -402.592373423149
-        virial theorem     =       2.002741032857
+        SCF total energy   =    -201.020684560938
+        kinetic energy     =     201.571688071311
+        nuc. attr. energy  =    -603.703111784994
+        elec. rep. energy  =     201.110739152745
+        potential energy   =    -402.592372632249
+        virial theorem     =       2.002741028922
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:54 2004
 
-user time   =       0.00 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:54 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1434,14 +1461,14 @@ Wed Aug 27 19:40:12 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = STO-3G SCF H2O optimization using exterma/zmatrix                               
+    Label                       = STO-3G SCF NO2 opt using extrema/zmatrix
     Number of atoms             = 3
     Number of atomic orbitals   = 15
     Number of symmetry orbitals = 15
     Maximum AM in the basis     = 1
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C2v
+    Computational point group        = C2v
     Number of irreps                 = 4
   Rotational invariance condition satisfied.
   |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
@@ -1451,20 +1478,20 @@ Wed Aug 27 19:40:12 2003
   -SCF forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000    -0.000012232095
-       2        0.000000000000     0.000244738284     0.000006116048
-       3        0.000000000000    -0.000244738284     0.000006116048
+       1        0.000000000000     0.000000000000    -0.000012181154
+       2        0.000000000000     0.000244892254     0.000006090577
+       3        0.000000000000    -0.000244892254     0.000006090577
 
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:55 2004
 
-user time   =       0.13 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.27 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:55 2004
 
                   --------------------------------------------
                                    EXTREMA 
@@ -1486,34 +1513,34 @@ Wed Aug 27 19:40:12 2003
   Cartesian Coordinates (angstroms):
                        x              y                z
                 --------------- --------------- ---------------
-             X     0.0000000000   -0.0000000000   -0.9950528091
-      NITROGEN    -0.0000000000   -0.0000000000    0.0049471909
-        OXYGEN     0.0000000000    1.3355180707    0.0051641926
-        OXYGEN    -0.0000000000   -1.3355180707    0.0051641926
+             X     0.0000000000   -0.0000000000   -0.9950529623
+      NITROGEN    -0.0000000000   -0.0000000000    0.0049470377
+        OXYGEN     0.0000000000    1.3355180602    0.0051642644
+        OXYGEN    -0.0000000000   -1.3355180602    0.0051642644
 
   Cartesian Gradients (a.u):
                        x              y                z
                 --------------- --------------- ---------------
              X     0.0000000000    0.0000000000    0.0000000000
-      NITROGEN     0.0000000000    0.0000000000   -0.0000122321
-        OXYGEN     0.0000000000    0.0002447383    0.0000061160
-        OXYGEN     0.0000000000   -0.0002447383    0.0000061160
+      NITROGEN     0.0000000000    0.0000000000   -0.0000121812
+        OXYGEN     0.0000000000    0.0002448923    0.0000060906
+        OXYGEN     0.0000000000   -0.0002448923    0.0000060906
 
-  RMS gradient = 0.0000571045
+  RMS gradient = 0.0000571274
 
   Z-matrix (angstroms and degrees):
 
              X
       NITROGEN    1    1.0000000000
-        OXYGEN    2    1.3355180883    1   90.0093097044
-        OXYGEN    2    1.3355180883    1   90.0093097044    3  180.0000000000
+        OXYGEN    2    1.3355180778    1   90.0093193591
+        OXYGEN    2    1.3355180778    1   90.0093193591    3  180.0000000000
 
   Internal coordinate gradients (a.u):
-  1         :   -0.0000000000
-  2       R1:    0.0002447393
-  3       A1:    0.0000153350
-  4       R1:    0.0002447393
-  5       A1:    0.0000153350
+  1         :    0.0000000000
+  2       R1:    0.0002448933
+  3       A1:    0.0000152707
+  4       R1:    0.0002448933
+  5       A1:    0.0000152707
   6         :    0.0000000000
 
   Performing bfgs update of inverse hessian
@@ -1522,12 +1549,12 @@ Wed Aug 27 19:40:12 2003
 
            1           2
 
-    1   1.0188578   0.0581517
-    2   0.0581517   0.1015311
+    1   1.0188380   0.0581643
+    2   0.0581643   0.1015260
 
   H eigenvalues:
-  0.097859
-  1.022529
+  0.097853
+  1.022511
 
 
   ----------------------------------------------------------------------------
@@ -1536,14 +1563,14 @@ Wed Aug 27 19:40:12 2003
 
   Displacements before limit enforcement (angstroms and degrees):
   2       R1: -0.000127
-  3       A1: -0.000797
+  3       A1: -0.000753
 
   Optimization Step (angstroms and degrees):
 
   label    initial value   gradient (a.u.) displacement    new value
   -------- --------------- --------------- --------------- ---------------
-  R1          1.3355180883    0.0002447393   -0.0001266932    1.3353913951
-  A1         90.0093097044    0.0000153350   -0.0007971643   90.0085125401
+  R1          1.3355180778    0.0002448933   -0.0001267990    1.3353912788
+  A1         90.0093193591    0.0000152707   -0.0007526371   90.0085667220
 
 
   ----------------------------------------------------------------------------
@@ -1551,35 +1578,35 @@ Wed Aug 27 19:40:12 2003
   ----------------------------------------------------------------------------
   Iter    dq (internals)          dx (cartesians)
   ---- ----------------------  ----------------------
-    1  0.00000000052142656859  0.00004576033962118764
-    2  0.00000000000000014803  0.00000000059596165461
+    1  0.00000000048835372783  0.00004546684683707518
+    2  0.00000000000000014803  0.00000000056096442406
     3  0.00000000000000007401  0.00000000000000009707
   Back transformation to cartesians completed
 
   Cartesian Coordinates (angstroms):
                        x              y                z
                 --------------- --------------- ---------------
-             X     0.0000000000   -0.0000000000   -0.9950401473
-      NITROGEN    -0.0000000000   -0.0000000000    0.0049598527
-        OXYGEN     0.0000000000    1.3353913804    0.0051582542
-        OXYGEN    -0.0000000000   -1.3353913804    0.0051582542
+             X     0.0000000000   -0.0000000000   -0.9950410070
+      NITROGEN    -0.0000000000   -0.0000000000    0.0049589930
+        OXYGEN     0.0000000000    1.3353912639    0.0051586574
+        OXYGEN    -0.0000000000   -1.3353912639    0.0051586574
 
   Z-matrix (angstroms and degrees):
 
              X
       NITROGEN    1    1.0000000000
-        OXYGEN    2    1.3353913951    1   90.0085125401
-        OXYGEN    2    1.3353913951    1   90.0085125401    3  180.0000000000
+        OXYGEN    2    1.3353912788    1   90.0085667220
+        OXYGEN    2    1.3353912788    1   90.0085667220    3  180.0000000000
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:55 2004
 
-user time   =       0.00 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:12 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:55 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1595,27 +1622,28 @@ Wed Aug 27 19:40:12 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = STO-3G SCF H2O optimization using exterma/zmatrix                               
+    Label                       = STO-3G SCF NO2 opt using extrema/zmatrix
     Number of atoms             = 3
     Number of atomic orbitals   = 15
     Number of symmetry orbitals = 15
     Maximum AM in the basis     = 1
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C2v
+    Computational point group        = C2v
     Number of irreps                 = 4
+
     Wrote 1970 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:13 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:55 2004
 
-user time   =       0.02 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:13 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:55 2004
 
 
              ------------------------------------------
@@ -1629,18 +1657,18 @@ Wed Aug 27 19:40:13 2003
   I think the multiplicity is 1.
   If this is wrong, please specify the MULTP keyword
 
-  label       = STO-3G SCF H2O optimization using exterma/zmatrix
+  label        = STO-3G SCF NO2 opt using extrema/zmatrix
   wfn          = SCF
   reference    = RHF
   multiplicity = 1
   charge       = -1
   direct       = false
   dertype      = FIRST
-  convergence  = 7
+  convergence  = 10
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy       57.0630635485043
+  nuclear repulsion energy       57.0630685197274
 
   using old vector from file30 as initial guess
   energy from old vector:  -201.02068456
@@ -1652,10 +1680,10 @@ Wed Aug 27 19:40:13 2003
 
   keeping integrals in 18128 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 4.693448e-01
+  The lowest eigenvalue of the overlap matrix was 4.693447e-01
 
 
-  Reading Occupations from file30
+  Reading Occupations from checkpoint file.
 
   Symmetry block:   A1    A2    B1    B2   
   DOCC:              5     1     2     4   
@@ -1665,12 +1693,16 @@ Wed Aug 27 19:40:13 2003
   wrote 1020 integrals to file92
 
   iter       total energy        delta E         delta P          diiser
-    1      -201.0206846292    2.580837e+02    0.000000e+00    0.000000e+00
-    2      -201.0206846402    1.096970e-08    4.547468e-06    4.668043e-05
-    3      -201.0206846433    3.097625e-09    3.008423e-06    1.969966e-05
-    4      -201.0206846437    3.558966e-10    1.213721e-06    5.651257e-06
-    5      -201.0206846437    5.570655e-12    1.112525e-07    1.053273e-06
-    6      -201.0206846437    1.250555e-12    7.347763e-08    6.437185e-07
+    1      -201.0206846293    2.580838e+02    0.000000e+00    0.000000e+00
+    2      -201.0206846403    1.091360e-08    4.534890e-06    4.659728e-05
+    3      -201.0206846432    2.951253e-09    2.748201e-06    1.968488e-05
+    4      -201.0206846437    4.773710e-10    1.391669e-06    6.261935e-06
+    5      -201.0206846437    9.777068e-12    1.471720e-07    1.245339e-06
+    6      -201.0206846437    7.389644e-13    4.817849e-08    5.700335e-07
+    7      -201.0206846437    0.000000e+00    3.820130e-09    2.746656e-08
+    8      -201.0206846437    1.136868e-13    1.567452e-09    1.050674e-08
+    9      -201.0206846437   -5.684342e-14    5.719217e-10    2.719384e-09
+   10      -201.0206846437   -5.684342e-14    7.764501e-12    5.688481e-11
 
  Correcting phases of orbitals.
 
@@ -1678,7 +1710,7 @@ Orbital energies (a.u.):
 
   Doubly occupied orbitals
    1B2    -19.808072     1A1    -19.807915     2A1    -14.964848  
-   3A1     -0.958986     2B2     -0.854573     4A1     -0.401928  
+   3A1     -0.958987     2B2     -0.854573     4A1     -0.401928  
    1B1     -0.181160     3B2     -0.131720     5A1     -0.114728  
    1A2     -0.024111     4B2      0.052675     2B1      0.182561  
 
@@ -1686,23 +1718,23 @@ Orbital energies (a.u.):
    6A1      0.625945     7A1      0.797080     5B2      1.348791  
 
 
-        SCF total energy   =    -201.020684643673
-        kinetic energy     =     201.571739785819
-        nuc. attr. energy  =    -603.713622561801
-        elec. rep. energy  =     201.121198132309
-        potential energy   =    -402.592424429492
-        virial theorem     =       2.002741285769
+        SCF total energy   =    -201.020684643690
+        kinetic energy     =     201.571739866036
+        nuc. attr. energy  =    -603.713632270518
+        elec. rep. energy  =     201.121207760792
+        potential energy   =    -402.592424509726
+        virial theorem     =       2.002741286168
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:13 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:55 2004
 
 user time   =       0.00 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:13 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:55 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1718,14 +1750,14 @@ Wed Aug 27 19:40:13 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = STO-3G SCF H2O optimization using exterma/zmatrix                               
+    Label                       = STO-3G SCF NO2 opt using extrema/zmatrix
     Number of atoms             = 3
     Number of atomic orbitals   = 15
     Number of symmetry orbitals = 15
     Maximum AM in the basis     = 1
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C2v
+    Computational point group        = C2v
     Number of irreps                 = 4
   Rotational invariance condition satisfied.
   |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
@@ -1735,20 +1767,20 @@ Wed Aug 27 19:40:13 2003
   -SCF forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000    -0.000011162694
-       2        0.000000000000     0.000098968796     0.000005581347
-       3        0.000000000000    -0.000098968796     0.000005581347
+       1        0.000000000000     0.000000000000    -0.000011161641
+       2        0.000000000000     0.000098828320     0.000005580820
+       3        0.000000000000    -0.000098828320     0.000005580820
 
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:13 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:55 2004
 
-user time   =       0.13 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.26 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:13 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:55 2004
 
                   --------------------------------------------
                                    EXTREMA 
@@ -1770,34 +1802,34 @@ Wed Aug 27 19:40:13 2003
   Cartesian Coordinates (angstroms):
                        x              y                z
                 --------------- --------------- ---------------
-             X     0.0000000000   -0.0000000000   -0.9950401473
-      NITROGEN    -0.0000000000   -0.0000000000    0.0049598527
-        OXYGEN     0.0000000000    1.3353913804    0.0051582542
-        OXYGEN    -0.0000000000   -1.3353913804    0.0051582542
+             X     0.0000000000   -0.0000000000   -0.9950410070
+      NITROGEN    -0.0000000000   -0.0000000000    0.0049589930
+        OXYGEN     0.0000000000    1.3353912639    0.0051586574
+        OXYGEN    -0.0000000000   -1.3353912639    0.0051586574
 
   Cartesian Gradients (a.u):
                        x              y                z
                 --------------- --------------- ---------------
              X     0.0000000000    0.0000000000    0.0000000000
-      NITROGEN     0.0000000000    0.0000000000   -0.0000111627
-        OXYGEN     0.0000000000    0.0000989688    0.0000055813
-        OXYGEN     0.0000000000   -0.0000989688    0.0000055813
+      NITROGEN     0.0000000000    0.0000000000   -0.0000111616
+        OXYGEN     0.0000000000    0.0000988283    0.0000055808
+        OXYGEN     0.0000000000   -0.0000988283    0.0000055808
 
-  RMS gradient = 0.0000244737
+  RMS gradient = 0.0000244422
 
   Z-matrix (angstroms and degrees):
 
              X
       NITROGEN    1    1.0000000000
-        OXYGEN    2    1.3353913951    1   90.0085125401
-        OXYGEN    2    1.3353913951    1   90.0085125401    3  180.0000000000
+        OXYGEN    2    1.3353912788    1   90.0085667220
+        OXYGEN    2    1.3353912788    1   90.0085667220    3  180.0000000000
 
   Internal coordinate gradients (a.u):
-  1         :   -0.0000000000
-  2       R1:    0.0000989696
-  3       A1:    0.0000140475
-  4       R1:    0.0000989696
-  5       A1:    0.0000140475
+  1         :    0.0000000000
+  2       R1:    0.0000988291
+  3       A1:    0.0000140460
+  4       R1:    0.0000988291
+  5       A1:    0.0000140460
   6         :    0.0000000000
 
   Performing bfgs update of inverse hessian
@@ -1806,12 +1838,12 @@ Wed Aug 27 19:40:13 2003
 
            1           2
 
-    1   0.6094887  -0.0003693
-    2  -0.0003693   0.0975695
+    1   0.6101512  -0.0002480
+    2  -0.0002480   0.0976068
 
   H eigenvalues:
-  0.097569
-  0.609489
+  0.097607
+  0.610151
 
 
   ----------------------------------------------------------------------------
@@ -1820,14 +1852,14 @@ Wed Aug 27 19:40:13 2003
 
   Displacements before limit enforcement (angstroms and degrees):
   2       R1: -0.000086
-  3       A1: -0.008284
+  3       A1: -0.008269
 
   Optimization Step (angstroms and degrees):
 
   label    initial value   gradient (a.u.) displacement    new value
   -------- --------------- --------------- --------------- ---------------
-  R1          1.3353913951    0.0000989696   -0.0000859749    1.3353054202
-  A1         90.0085125401    0.0000140475   -0.0082843503   90.0002281897
+  R1          1.3353912788    0.0000988291   -0.0000857444    1.3353055344
+  A1         90.0085667220    0.0000140460   -0.0082686725   90.0002980495
 
 
   ----------------------------------------------------------------------------
@@ -1835,35 +1867,35 @@ Wed Aug 27 19:40:13 2003
   ----------------------------------------------------------------------------
   Iter    dq (internals)          dx (cartesians)
   ---- ----------------------  ----------------------
-    1  0.00000001189621323672  0.00008788553328781701
-    2  0.00000000000000055511  0.00000000831147418251
-    3  0.00000000000000044409  0.00000000000000022124
+    1  0.00000001184878632247  0.00008769782985019960
+    2  0.00000000000000051810  0.00000000827696456347
+    3  0.00000000000000037007  0.00000000000000018827
   Back transformation to cartesians completed
 
   Cartesian Coordinates (angstroms):
                        x              y                z
                 --------------- --------------- ---------------
-             X     0.0000000000   -0.0000000000   -0.9949087082
-      NITROGEN    -0.0000000000   -0.0000000000    0.0050912918
-        OXYGEN     0.0000000000    1.3353054202    0.0050966099
-        OXYGEN    -0.0000000000   -1.3353054202    0.0050966099
+             X     0.0000000000   -0.0000000000   -0.9949098165
+      NITROGEN    -0.0000000000   -0.0000000000    0.0050901835
+        OXYGEN     0.0000000000    1.3353055344    0.0050971297
+        OXYGEN    -0.0000000000   -1.3353055344    0.0050971297
 
   Z-matrix (angstroms and degrees):
 
              X
       NITROGEN    1    1.0000000000
-        OXYGEN    2    1.3353054202    1   90.0002281897
-        OXYGEN    2    1.3353054202    1   90.0002281897    3  180.0000000000
+        OXYGEN    2    1.3353055344    1   90.0002980495
+        OXYGEN    2    1.3353055344    1   90.0002980495    3  180.0000000000
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:13 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:55 2004
 
-user time   =       0.00 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:13 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:55 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1879,27 +1911,28 @@ Wed Aug 27 19:40:13 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = STO-3G SCF H2O optimization using exterma/zmatrix                               
+    Label                       = STO-3G SCF NO2 opt using extrema/zmatrix
     Number of atoms             = 3
     Number of atomic orbitals   = 15
     Number of symmetry orbitals = 15
     Maximum AM in the basis     = 1
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C2v
+    Computational point group        = C2v
     Number of irreps                 = 4
-    Wrote 1967 two-electron integrals to IWL file 33
+
+    Wrote 1969 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:13 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:55 2004
 
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:13 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:55 2004
 
 
              ------------------------------------------
@@ -1913,18 +1946,18 @@ Wed Aug 27 19:40:13 2003
   I think the multiplicity is 1.
   If this is wrong, please specify the MULTP keyword
 
-  label       = STO-3G SCF H2O optimization using exterma/zmatrix
+  label        = STO-3G SCF NO2 opt using extrema/zmatrix
   wfn          = SCF
   reference    = RHF
   multiplicity = 1
   charge       = -1
   direct       = false
   dertype      = FIRST
-  convergence  = 7
+  convergence  = 10
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy       57.0667374680797
+  nuclear repulsion energy       57.0667325886828
 
   using old vector from file30 as initial guess
   energy from old vector:  -201.02068464
@@ -1936,10 +1969,10 @@ Wed Aug 27 19:40:13 2003
 
   keeping integrals in 18128 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 4.692638e-01
+  The lowest eigenvalue of the overlap matrix was 4.692639e-01
 
 
-  Reading Occupations from file30
+  Reading Occupations from checkpoint file.
 
   Symmetry block:   A1    A2    B1    B2   
   DOCC:              5     1     2     4   
@@ -1949,12 +1982,16 @@ Wed Aug 27 19:40:13 2003
   wrote 1020 integrals to file92
 
   iter       total energy        delta E         delta P          diiser
-    1      -201.0206846190    2.580874e+02    0.000000e+00    0.000000e+00
-    2      -201.0206846516    3.265558e-08    7.795077e-06    7.769070e-05
-    3      -201.0206846613    9.639109e-09    6.028450e-06    3.449650e-05
-    4      -201.0206846618    5.458674e-10    1.747918e-06    8.690081e-06
-    5      -201.0206846618    4.376943e-12    1.128716e-07    7.886942e-07
-    6      -201.0206846618    2.842171e-13    3.273650e-08    4.196534e-07
+    1      -201.0206846191    2.580874e+02    0.000000e+00    0.000000e+00
+    2      -201.0206846516    3.254240e-08    7.781724e-06    7.756005e-05
+    3      -201.0206846613    9.606822e-09    6.018269e-06    3.444587e-05
+    4      -201.0206846618    5.409788e-10    1.674787e-06    8.677912e-06
+    5      -201.0206846618    7.503331e-12    1.712278e-07    8.714930e-07
+    6      -201.0206846618    2.842171e-13    2.543459e-08    4.210449e-07
+    7      -201.0206846618    1.705303e-13    2.006202e-08    1.063050e-07
+    8      -201.0206846618    5.684342e-14    3.590321e-09    2.306296e-08
+    9      -201.0206846618   -5.684342e-14    6.177186e-10    3.779896e-09
+   10      -201.0206846618    5.684342e-14    1.569307e-11    2.216428e-10
 
  Correcting phases of orbitals.
 
@@ -1970,23 +2007,23 @@ Orbital energies (a.u.):
    6A1      0.625986     7A1      0.797160     5B2      1.348952  
 
 
-        SCF total energy   =    -201.020684661801
-        kinetic energy     =     201.571775714633
-        nuc. attr. energy  =    -603.720757671627
-        elec. rep. energy  =     201.128297295193
-        potential energy   =    -402.592460376434
-        virial theorem     =       2.002741464411
+        SCF total energy   =    -201.020684661800
+        kinetic energy     =     201.571775061338
+        nuc. attr. energy  =    -603.720747414038
+        elec. rep. energy  =     201.128287690899
+        potential energy   =    -402.592459723138
+        virial theorem     =       2.002741461161
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:13 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:55 2004
 
-user time   =       0.01 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:13 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:55 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -2002,14 +2039,14 @@ Wed Aug 27 19:40:13 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = STO-3G SCF H2O optimization using exterma/zmatrix                               
+    Label                       = STO-3G SCF NO2 opt using extrema/zmatrix
     Number of atoms             = 3
     Number of atomic orbitals   = 15
     Number of symmetry orbitals = 15
     Maximum AM in the basis     = 1
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C2v
+    Computational point group        = C2v
     Number of irreps                 = 4
   Rotational invariance condition satisfied.
   |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
@@ -2019,20 +2056,20 @@ Wed Aug 27 19:40:13 2003
   -SCF forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000    -0.000000496838
-       2        0.000000000000    -0.000000288820     0.000000248419
-       3        0.000000000000     0.000000288820     0.000000248419
+       1        0.000000000000     0.000000000000    -0.000000387421
+       2        0.000000000000    -0.000000017783     0.000000193710
+       3        0.000000000000     0.000000017783     0.000000193710
 
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:13 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:55 2004
 
-user time   =       0.13 seconds =       0.00 minutes
+user time   =       0.28 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:13 2003
+tstart called on boromir.chem
+Thu Sep 16 16:17:55 2004
 
                   --------------------------------------------
                                    EXTREMA 
@@ -2054,26 +2091,26 @@ Wed Aug 27 19:40:13 2003
   Cartesian Coordinates (angstroms):
                        x              y                z
                 --------------- --------------- ---------------
-             X     0.0000000000   -0.0000000000   -0.9949087082
-      NITROGEN    -0.0000000000   -0.0000000000    0.0050912918
-        OXYGEN     0.0000000000    1.3353054202    0.0050966099
-        OXYGEN    -0.0000000000   -1.3353054202    0.0050966099
+             X     0.0000000000   -0.0000000000   -0.9949098165
+      NITROGEN    -0.0000000000   -0.0000000000    0.0050901835
+        OXYGEN     0.0000000000    1.3353055344    0.0050971297
+        OXYGEN    -0.0000000000   -1.3353055344    0.0050971297
 
   Cartesian Gradients (a.u):
                        x              y                z
                 --------------- --------------- ---------------
              X     0.0000000000    0.0000000000    0.0000000000
-      NITROGEN     0.0000000000    0.0000000000   -0.0000004968
-        OXYGEN     0.0000000000   -0.0000002888    0.0000002484
-        OXYGEN     0.0000000000    0.0000002888    0.0000002484
+      NITROGEN     0.0000000000    0.0000000000   -0.0000003874
+        OXYGEN     0.0000000000   -0.0000000178    0.0000001937
+        OXYGEN     0.0000000000    0.0000000178    0.0000001937
 
-  RMS gradient = 0.0000001746
+  RMS gradient = 0.0000000900
 
   All gradients below convergence criteria of 10^-5
   Optimization completed
 ******************************************************************************
-tstop called on kenny.ca.sandia.gov
-Wed Aug 27 19:40:13 2003
+tstop called on boromir.chem
+Thu Sep 16 16:17:55 2004
 
 user time   =       0.00 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes

@@ -24,13 +24,17 @@ double **chkpt_rd_lagr(void)
 {
   int nmo;
   double **lagr;
+  char *keyword;
+  keyword = chkpt_build_keyword("MO Lagrangian");
 
   nmo = chkpt_rd_nmo();
 
   lagr = block_matrix(nmo,nmo);
-  psio_read_entry(PSIF_CHKPT, "::MO Lagrangian", (char *) lagr[0], 
-		  nmo*nmo*sizeof(double));
 
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) lagr[0], 
+    nmo*nmo*sizeof(double));
+
+  free(keyword);
   return lagr;
 }
 
@@ -46,11 +50,15 @@ double **chkpt_rd_lagr(void)
 void chkpt_wt_lagr(double **lagr)
 {
   int nmo;
+  char *keyword;
+  keyword = chkpt_build_keyword("MO Lagrangian");
 
   nmo = chkpt_rd_nmo();
 
-  psio_write_entry(PSIF_CHKPT, "::MO Lagrangian", (char *) lagr[0], 
-		   nmo*nmo*sizeof(double));
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) lagr[0],
+    nmo*nmo*sizeof(double));
+
+  free(keyword);
 }
 
 
@@ -67,13 +75,17 @@ double **chkpt_rd_alpha_lagr(void)
 {
   int nmo;
   double **lagr;
+  char *keyword;
+  keyword = chkpt_build_keyword("Alpha MO Lagrangian");
 
   nmo = chkpt_rd_nmo();
 
   lagr = block_matrix(nmo,nmo);
-  psio_read_entry(PSIF_CHKPT, "::Alpha MO Lagrangian", (char *) lagr[0], 
-		  nmo*nmo*sizeof(double));
 
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) lagr[0], 
+    nmo*nmo*sizeof(double));
+
+  free(keyword);
   return lagr;
 }
 
@@ -89,11 +101,15 @@ double **chkpt_rd_alpha_lagr(void)
 void chkpt_wt_alpha_lagr(double **lagr)
 {
   int nmo;
+  char *keyword;
+  keyword = chkpt_build_keyword("Alpha MO Lagrangian");
 
   nmo = chkpt_rd_nmo();
 
-  psio_write_entry(PSIF_CHKPT, "::Alpha MO Lagrangian", (char *) lagr[0], 
-		   nmo*nmo*sizeof(double));
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) lagr[0], 
+    nmo*nmo*sizeof(double));
+
+  free(keyword);
 }
 
 
@@ -110,13 +126,17 @@ double **chkpt_rd_beta_lagr(void)
 {
   int nmo;
   double **lagr;
+  char *keyword;
+  keyword = chkpt_build_keyword("Beta MO Lagrangian");
 
   nmo = chkpt_rd_nmo();
 
   lagr = block_matrix(nmo,nmo);
-  psio_read_entry(PSIF_CHKPT, "::Beta MO Lagrangian", (char *) lagr[0], 
-		  nmo*nmo*sizeof(double));
 
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) lagr[0], 
+    nmo*nmo*sizeof(double));
+
+  free(keyword);
   return lagr;
 }
 
@@ -132,9 +152,13 @@ double **chkpt_rd_beta_lagr(void)
 void chkpt_wt_beta_lagr(double **lagr)
 {
   int nmo;
+  char *keyword;
+  keyword = chkpt_build_keyword("Beta MO Lagrangian");
 
   nmo = chkpt_rd_nmo();
 
-  psio_write_entry(PSIF_CHKPT, "::Beta MO Lagrangian", (char *) lagr[0], 
-		   nmo*nmo*sizeof(double));
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) lagr[0], 
+    nmo*nmo*sizeof(double));
+
+  free(keyword);
 }

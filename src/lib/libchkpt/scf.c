@@ -4,6 +4,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "chkpt.h"
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
@@ -35,18 +36,23 @@ double **chkpt_rd_scf(void)
 {
   double **scf;
   int nmo, nso;
+  char *keyword;
+  keyword = chkpt_build_keyword("MO coefficients");
 
-  if (psio_tocscan(PSIF_CHKPT,"::MO coefficients") != NULL) {
+  if (psio_tocscan(PSIF_CHKPT, keyword) != NULL) {
+
     nmo = chkpt_rd_nmo();
     nso = chkpt_rd_nso();
     
     scf = block_matrix(nso,nmo);
-    psio_read_entry(PSIF_CHKPT, "::MO coefficients", (char *) scf[0], 
-		    nso*nmo*sizeof(double));
+    psio_read_entry(PSIF_CHKPT, keyword, (char *) scf[0], 
+      nso*nmo*sizeof(double));
   }
-  else
+  else {
     scf = chkpt_rd_alpha_scf();
+  }
 
+  free(keyword);
   return scf;
 }
 
@@ -77,18 +83,21 @@ double **chkpt_rd_alpha_scf(void)
 {
   double **scf;
   int nmo, nso;
+  char *keyword;
+  keyword = chkpt_build_keyword("Alpha MO coefficients");
 
-  if (psio_tocscan(PSIF_CHKPT,"::Alpha MO coefficients") != NULL) {
+  if (psio_tocscan(PSIF_CHKPT, keyword) != NULL) {
     nmo = chkpt_rd_nmo();
     nso = chkpt_rd_nso();
     
     scf = block_matrix(nso,nmo);
-    psio_read_entry(PSIF_CHKPT, "::Alpha MO coefficients", (char *) scf[0], 
+    psio_read_entry(PSIF_CHKPT, keyword, (char *) scf[0], 
 		    nso*nmo*sizeof(double));
   }
   else
     scf = NULL;
 
+  free(keyword);
   return scf;
 }
 
@@ -119,18 +128,21 @@ double **chkpt_rd_beta_scf(void)
 {
   double **scf;
   int nmo, nso;
+  char *keyword;
+  keyword = chkpt_build_keyword("Beta MO coefficients");
 
-  if (psio_tocscan(PSIF_CHKPT,"::Beta MO coefficients") != NULL) {
+  if (psio_tocscan(PSIF_CHKPT, keyword) != NULL) {
     nmo = chkpt_rd_nmo();
     nso = chkpt_rd_nso();
     
     scf = block_matrix(nso,nmo);
-    psio_read_entry(PSIF_CHKPT, "::Beta MO coefficients", (char *) scf[0], 
-		    nso*nmo*sizeof(double));
+    psio_read_entry(PSIF_CHKPT, keyword, (char *) scf[0], 
+      nso*nmo*sizeof(double));
   }
   else
     scf = NULL;
 
+  free(keyword);
   return scf;
 }
 
@@ -164,12 +176,15 @@ double **chkpt_rd_beta_scf(void)
 void chkpt_wt_scf(double **scf)
 {
   int nmo, nso;
+  char *keyword;
+  keyword = chkpt_build_keyword("MO coefficients");
 
   nmo = chkpt_rd_nmo();
   nso = chkpt_rd_nso();
 
-  psio_write_entry(PSIF_CHKPT, "::MO coefficients", (char *) scf[0], 
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) scf[0], 
                    nso*nmo*sizeof(double));
+  free(keyword);
 }
 
 
@@ -202,12 +217,16 @@ void chkpt_wt_scf(double **scf)
 void chkpt_wt_alpha_scf(double **scf)
 {
   int nmo, nso;
+  char *keyword;
+  keyword = chkpt_build_keyword("Alpha MO coefficients");
 
   nmo = chkpt_rd_nmo();
   nso = chkpt_rd_nso();
 
-  psio_write_entry(PSIF_CHKPT, "::Alpha MO coefficients", (char *) scf[0], 
-                   nso*nmo*sizeof(double));
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) scf[0], 
+    nso*nmo*sizeof(double));
+
+  free(keyword);
 }
 
 
@@ -240,12 +259,16 @@ void chkpt_wt_alpha_scf(double **scf)
 void chkpt_wt_beta_scf(double **scf)
 {
   int nmo, nso;
+  char *keyword;
+  keyword = chkpt_build_keyword("Beta MO coefficients");
 
   nmo = chkpt_rd_nmo();
   nso = chkpt_rd_nso();
 
-  psio_write_entry(PSIF_CHKPT, "::Beta MO coefficients", (char *) scf[0], 
-                   nso*nmo*sizeof(double));
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) scf[0], 
+    nso*nmo*sizeof(double));
+
+  free(keyword);
 }
 
 
@@ -558,7 +581,6 @@ double **chkpt_set_mo_phases(double **coeff, int nrows, int ncols)
   }
 
   chkpt_wt_phase_check(1);
-
 }
 
 /*!
@@ -573,14 +595,16 @@ double **chkpt_rd_local_scf(void)
 {
   double **scf;
   int nmo, nso;
+  char *keyword;
+  keyword = chkpt_build_keyword("Local MO coefficients");
 
-  if (psio_tocscan(PSIF_CHKPT,"::Local MO coefficients") != NULL) {
+  if (psio_tocscan(PSIF_CHKPT, keyword) != NULL) {
     nmo = chkpt_rd_nmo();
     nso = chkpt_rd_nso();
     
     scf = block_matrix(nso,nmo);
-    psio_read_entry(PSIF_CHKPT, "::Local MO coefficients", (char *) scf[0], 
-		    nso*nmo*sizeof(double));
+    psio_read_entry(PSIF_CHKPT, keyword, (char *) scf[0], 
+      nso*nmo*sizeof(double));
   }
   else
     scf = NULL;
@@ -599,10 +623,14 @@ double **chkpt_rd_local_scf(void)
 void chkpt_wt_local_scf(double **scf)
 {
   int nmo, nso;
+  char *keyword;
+  keyword = chkpt_build_keyword("Local MO coefficients");
 
   nmo = chkpt_rd_nmo();
   nso = chkpt_rd_nso();
 
-  psio_write_entry(PSIF_CHKPT, "::Local MO coefficients", (char *) scf[0], 
-                   nso*nmo*sizeof(double));
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) scf[0], 
+    nso*nmo*sizeof(double));
+
+  free(keyword);
 }

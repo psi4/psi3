@@ -3,6 +3,8 @@
   \ingroup (CHKPT)
 */
 
+#include <stdlib.h>
+#include "chkpt.h"
 #include <psifiles.h>
 #include <libpsio/psio.h>
 
@@ -20,9 +22,12 @@
 int chkpt_rd_nallatom(void)
 {
   int num_allatoms;
+  char *keyword;
+  keyword = chkpt_build_keyword("Num. all atoms");
 
-  psio_read_entry(PSIF_CHKPT, "::Num. all atoms", (char *) &num_allatoms, 
-		  sizeof(int));
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) &num_allatoms, sizeof(int));
+
+  free(keyword);
   return num_allatoms;
 }
 
@@ -40,6 +45,10 @@ int chkpt_rd_nallatom(void)
 
 void chkpt_wt_nallatom(int num_allatoms)
 {
-  psio_write_entry(PSIF_CHKPT, "::Num. all atoms", (char *) &num_allatoms, 
-		   sizeof(int));
+  char *keyword;
+  keyword = chkpt_build_keyword("Num. all atoms");
+
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) &num_allatoms, sizeof(int));
+
+  free(keyword);
 }

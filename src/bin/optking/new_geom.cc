@@ -67,8 +67,16 @@ int new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
 
   B = compute_B(simples, all_salcs);
   q = compute_q(simples, all_salcs);
-  for (i=0;i<nsalcs;++i)
+
+  // fprintf(outfile,"Current q internal coordinates\n");
+  // for (i=0;i<nsalcs;++i) fprintf(outfile,"%15.10lf",q[i]);
+
+  for (i=0;i<nsalcs;++i) {
     q[i] += dq[i];
+  }
+
+  // fprintf(outfile,"Target q internal coordinates\n");
+  // for (i=0;i<nsalcs;++i) fprintf(outfile,"%15.10lf",q[i]);
 
   x = carts.get_coord();
   scalar_mult(_bohr2angstroms,x,dim_carts); // x now holds geom in Ang
@@ -142,6 +150,9 @@ int new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
     free(new_q);
     new_q = compute_q(simples, all_salcs);
 
+  // fprintf(outfile,"Obtained q internal coordinates\n");
+  // for (i=0;i<nsalcs;++i) fprintf(outfile,"%15.10lf",new_q[i]);
+
     for (i=0;i< nsalcs;++i)
       dq[i] = q[i] - new_q[i];
  
@@ -158,9 +169,11 @@ int new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
     for (i=0;i<nsalcs;++i)
       dq_sum += dq[i]*dq[i];
     dq_sum = sqrt(dq_sum / ((double) nsalcs));
-    // for (i=0;i<nsalcs;++i)
-    // if (fabs( dq[i] * dq[i] > 1E-8) )
-    // fprintf(outfile,"internal coordinate %d contributing\n", i);
+
+   // fprintf(outfile,"\n");
+   // for (i=0;i<nsalcs;++i)
+     // if ( (dq[i]*dq[i]) > 1E-8 )
+       // fprintf(outfile,"internal coordinate %d contributing: %15.10lf \n", i, dq[i]);
 
     if ((dx_sum < optinfo.bt_dx_conv) && (dq_sum < optinfo.bt_dq_conv))
       bmat_iter_done = 1;

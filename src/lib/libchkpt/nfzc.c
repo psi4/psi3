@@ -4,6 +4,7 @@
 */
 
 #include "chkpt.h"
+#include <stdlib.h>
 #include <psifiles.h>
 #include <libpsio/psio.h>
 
@@ -18,9 +19,12 @@
 int chkpt_rd_nfzc(void)
 {
   int nfzc;
+  char *keyword;
+  keyword = chkpt_build_keyword("Num. Frozen DOCC");
 
-  psio_read_entry(PSIF_CHKPT, "::Num. Frozen DOCC", (char *) &nfzc, 
-                  sizeof(int) );
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) &nfzc, sizeof(int) );
+
+  free(keyword);
   return nfzc;
 }
 
@@ -36,5 +40,10 @@ int chkpt_rd_nfzc(void)
 
 void chkpt_wt_nfzc(int nfzc)
 {
-  psio_write_entry(PSIF_CHKPT, "::Num. Frozen DOCC", (char *) &nfzc, sizeof(int));
+  char *keyword;
+  keyword = chkpt_build_keyword("Num. Frozen DOCC");
+
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) &nfzc, sizeof(int));
+
+  free(keyword);
 }

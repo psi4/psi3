@@ -4,6 +4,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "chkpt.h"
 #include <psifiles.h>
 #include <libciomr/libciomr.h>
@@ -22,10 +23,13 @@
 double chkpt_rd_ecorr(void)
 {
   double ecorr;
+  char *keyword;
+  keyword = chkpt_build_keyword("Correlation energy");
 
-  psio_read_entry(PSIF_CHKPT, "::Correlation energy", (char *) &ecorr,
-		  sizeof(double));
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) &ecorr,
+    sizeof(double));
 
+  free(keyword);
   return ecorr;
 }
 
@@ -42,7 +46,12 @@ double chkpt_rd_ecorr(void)
 */
 void chkpt_wt_ecorr(double ecorr)
 {
-  psio_write_entry(PSIF_CHKPT, "::Correlation energy", (char *) &ecorr,
-		   sizeof(double));
+  char *keyword;
+  keyword = chkpt_build_keyword("Correlation energy");
+
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) &ecorr,
+    sizeof(double));
+
+  free(keyword);
 }
 

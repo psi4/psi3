@@ -26,12 +26,15 @@ double *chkpt_rd_grad(void)
 {
   int natom;
   double *grad;
+  char *keyword;
+  keyword = chkpt_build_keyword("Energy Gradient");
 
   natom = chkpt_rd_natom();
-
   grad = init_array(natom*3);
-  psio_read_entry(PSIF_CHKPT, "::Energy Gradient", (char *) grad, natom*3*sizeof(double));
 
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) grad, natom*3*sizeof(double));
+
+  free(keyword);
   return grad;
 }
 
@@ -52,6 +55,12 @@ double *chkpt_rd_grad(void)
 void chkpt_wt_grad(double *grad)
 {
   int natom;
+  char *keyword;
+  keyword = chkpt_build_keyword("Energy Gradient");
+
   natom = chkpt_rd_natom();
-  psio_write_entry(PSIF_CHKPT, "::Energy Gradient", (char *) grad, natom*3*sizeof(double));
+
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) grad, natom*3*sizeof(double));
+
+  free(keyword);
 }

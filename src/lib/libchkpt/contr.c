@@ -4,6 +4,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <libciomr/libciomr.h>
 #include "chkpt.h"
 #include <psifiles.h>
@@ -28,14 +29,16 @@ double *chkpt_rd_contr(void)
   double *contr;
   double *temp_contr;
   int nprim, i, j, ij = 0;
+  char *keyword;
+  keyword = chkpt_build_keyword("Contraction coefficients");
 
   nprim = chkpt_rd_nprim();
 
   temp_contr = init_array(MAXANGMOM*nprim);
   contr = init_array(nprim);
 
-  psio_read_entry(PSIF_CHKPT, "::Contraction coefficients", (char *) temp_contr,
-		  MAXANGMOM*nprim*sizeof(double));
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) temp_contr,
+    MAXANGMOM*nprim*sizeof(double));
 
 /* Picking non-zero coefficients to the "master" array contr */
   for(i=0; i < MAXANGMOM; i++) 
@@ -46,7 +49,7 @@ double *chkpt_rd_contr(void)
     }
 
   free(temp_contr);
-
+  free(keyword);
   return contr;
 }
 
@@ -64,8 +67,13 @@ double *chkpt_rd_contr(void)
 void chkpt_wt_contr(double *contr)
 {
   int nprim;
+  char *keyword;
+  keyword = chkpt_build_keyword("Contraction coefficients");
+
   nprim = chkpt_rd_nprim();
 
-  psio_write_entry(PSIF_CHKPT, "::Contraction coefficients", (char *) contr,
-		  MAXANGMOM*nprim*sizeof(double));
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) contr,
+    MAXANGMOM*nprim*sizeof(double));
+
+  free(keyword);
 }

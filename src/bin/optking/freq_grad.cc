@@ -68,7 +68,7 @@ void freq_grad_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
 fprintf(outfile,"Found %d salcs of this irrep\n",nirr_salcs);
 
   open_PSIF();
-  psio_read_entry(PSIF_OPTKING, "OPT: Total num. of disp.",
+  psio_read_entry(PSIF_OPTKING, "OPT: Num. of disp.",
       (char *) &(ndisps), sizeof(int));
 
   // needed?
@@ -150,6 +150,7 @@ fprintf(outfile,"Found %d salcs of this irrep\n",nirr_salcs);
   }
   free_block(all_f_q);
 
+  /*
   for (i=0;i<2*nsalcs;++i) {
     fprintf(outfile,
         "Redundant values of internal coordinate forces, displacement %d\n",i);
@@ -157,6 +158,7 @@ fprintf(outfile,"Found %d salcs of this irrep\n",nirr_salcs);
       fprintf(outfile,"%15.10lf",full_all_f_q[i][j]);
     fprintf(outfile,"\n");
   }
+  */
 
   // apply three point formula - to generate force constants in this irrep block
   fprintf(outfile,"Applying %d-point formula\n",optinfo.points_freq);
@@ -204,8 +206,9 @@ fprintf(outfile,"Found %d salcs of this irrep\n",nirr_salcs);
     evals[i] = cm_convert * sqrt( evals[i] );
   }
 
-  fprintf(outfile,"\nHarmonic Vibrational Frequencies in cm^(-1) for Irrep %s\n",
+  fprintf(outfile,"\n  Harmonic Vibrational Frequencies in cm^(-1) for Irrep %s\n",
       syminfo.irrep_lbls[irrep]) ;
+  fprintf(outfile,"  -----------------------------------------------------------\n");
   for (i=0; i<nirr_salcs; ++i) {
     tmp = -9999;
     for (j=0; j<nsalcs; ++j) {
@@ -247,7 +250,7 @@ void freq_grad_nosymm(cartesians &carts, internals &simples,
   nsalcs = all_salcs.get_num();
 
   open_PSIF();
-  psio_read_entry(PSIF_OPTKING, "OPT: Total num. of disp.",
+  psio_read_entry(PSIF_OPTKING, "OPT: Num. of disp.",
       (char *) &(ndisps), sizeof(int));
   if (ndisps != 2*nsalcs) 
     punt("Error: number of displacements is incorrect.");
@@ -366,6 +369,7 @@ void freq_grad_nosymm(cartesians &carts, internals &simples,
   }
 
   fprintf(outfile,"\nHarmonic Vibrational Frequencies\n");
+  fprintf(outfile,"  -----------------------------------------------------------\n");
   for (i=0; i<nsalcs; ++i) {
     tmp = -9999;
     for (j=0; j<nsalcs; ++j) {

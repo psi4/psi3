@@ -19,11 +19,12 @@
 int chkpt_rd_num_unique_atom(void)
 {
   int nunique;
-  char *key;
+  char *keyword;
+  keyword = chkpt_build_keyword("Num. unique atoms");
 
-  key = chkpt_build_keyword("Num. unique atoms");
-  psio_read_entry(PSIF_CHKPT, key, (char *) &nunique, sizeof(int));
-  free(key);
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) &nunique, sizeof(int));
+
+  free(keyword);
   return nunique;
 }
 
@@ -40,8 +41,10 @@ int chkpt_rd_num_unique_atom(void)
 
 void chkpt_wt_num_unique_atom(int nunique)
 {
-  char *key;
-  key = chkpt_build_keyword("Num. unique atoms");
-  psio_write_entry(PSIF_CHKPT, key, (char *) &nunique, sizeof(int));
-  free(key);
+  char *keyword;
+  keyword = chkpt_build_keyword("Num. unique atoms");
+
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) &nunique, sizeof(int));
+
+  free(keyword);
 }

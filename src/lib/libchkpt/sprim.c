@@ -4,6 +4,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <libciomr/libciomr.h>
 #include "chkpt.h"
 #include <psifiles.h>
@@ -25,14 +26,16 @@ int *chkpt_rd_sprim(void)
 {
   int *sprim;
   int nshell;
+  char *keyword;
+  keyword = chkpt_build_keyword("First primitive per shell");
 
   nshell = chkpt_rd_nshell();
 
   sprim = init_int_array(nshell);
 
-  psio_read_entry(PSIF_CHKPT, "::First primitive per shell", (char *) sprim, 
-		  nshell*sizeof(int));
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) sprim, nshell*sizeof(int));
 
+  free(keyword);
   return sprim;
 }
 
@@ -52,9 +55,12 @@ int *chkpt_rd_sprim(void)
 void chkpt_wt_sprim(int *sprim)
 {
   int nshell;
+  char *keyword;
+  keyword = chkpt_build_keyword("First primitive per shell");
 
   nshell = chkpt_rd_nshell();
 
-  psio_write_entry(PSIF_CHKPT, "::First primitive per shell", (char *) sprim, 
-		   nshell*sizeof(int));
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) sprim, nshell*sizeof(int));
+
+  free(keyword);
 }

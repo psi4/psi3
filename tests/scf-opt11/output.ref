@@ -1,167 +1,138 @@
 ******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:24 2004
+tstart called on localhost
+Mon Sep 13 21:44:45 2004
 
                                 --------------
                                   WELCOME TO
                                     PSI  3
                                 --------------
 
-  LABEL       =	nh3
+  LABEL       =	3-21G RHF opt of H2O with fixed angle
   SHOWNORM    =	0
   PUREAM      =	0
   PRINT_LVL   =	1
 
-  Parsed basis sets from /home/users/crawdad/psi3/xeon/share/pbasis.dat
+  Parsed basis sets from /usr/local/psi/share/pbasis.dat
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-        NITROGEN      0.121371634700     0.011087678900     0.012272067100
-        HYDROGEN     -0.708851367100    -0.436368474200     1.661631092200
-        HYDROGEN     -0.710738423100     1.616704030900    -0.565809690000
-        HYDROGEN     -0.266790215600    -1.334391651000    -1.266333801100
+        HYDROGEN      0.000000000000     0.000000000000     0.000000000000
+          OXYGEN      0.000000000000     0.000000000000     1.889725988579
+        HYDROGEN      1.889725988579     0.000000000000     1.889725988579
 
 
   -Rotational constants (cm-1) :
-    A =   10.38987  B =    9.98873  C =    6.36498
+    A =   18.83462  B =   16.72674  C =    8.85910
     It is an asymmetric top.
 
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-        NITROGEN      0.004415632366    -0.003255773615     0.122370405337
-        HYDROGEN     -1.242352873232    -1.261577247933    -0.564701494877
-        HYDROGEN     -0.542329456426     1.685688605347    -0.550776108171
-        HYDROGEN      1.723329986914    -0.378874498414    -0.584779671182
+        HYDROGEN     -1.336238061109     1.186693147855     0.000000000000
+          OXYGEN      0.000000000000    -0.149544913254     0.000000000000
+        HYDROGEN      1.336238061109     1.186693147855     0.000000000000
 
 
   -SYMMETRY INFORMATION:
-    Computational point group is C1  
-    Number of irr. rep.      = 1
-    Number of atoms          = 4
-    Number of unique atoms   = 4
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
 
 
   -BASIS SETS:
 
    -Basis set on unique center 1:
-      ( (S (  5909.44000000     0.00200400)
-           (   887.45100000     0.01531000)
-           (   204.74900000     0.07429300)
-           (    59.83760000     0.25336400)
-           (    19.99810000     0.60057600)
-           (     2.68600000     0.24511100) )
-        (S (     7.19270000     1.00000000) )
-        (S (     0.70000000     1.00000000) )
-        (S (     0.21330000     1.00000000) )
-        (P (    26.78600000     0.01825700)
-           (     5.95640000     0.11640700)
-           (     1.70740000     0.39011100)
-           (     0.53140000     0.63722100) )
-        (P (     0.16540000     1.00000000) )
-        (D (     0.80000000     1.00000000) )
+      ( (S (   322.03700000     0.05923940)
+           (    48.43080000     0.35150000)
+           (    10.42060000     0.70765800) )
+        (S (     7.40294000    -0.40445300)
+           (     1.57620000     1.22156000) )
+        (S (     0.37368400     1.00000000) )
+        (P (     7.40294000     0.24458600)
+           (     1.57620000     0.85395500) )
+        (P (     0.37368400     1.00000000) )
        )
 
    -Basis set on unique center 2:
-      ( (S (    19.24060000     0.03282800)
-           (     2.89920000     0.23120800)
-           (     0.65340000     0.81723800) )
-        (S (     0.17760000     1.00000000) )
-        (P (     0.75000000     1.00000000) )
-       )
-
-   -Basis set on unique center 3:
-      ( (S (    19.24060000     0.03282800)
-           (     2.89920000     0.23120800)
-           (     0.65340000     0.81723800) )
-        (S (     0.17760000     1.00000000) )
-        (P (     0.75000000     1.00000000) )
-       )
-
-   -Basis set on unique center 4:
-      ( (S (    19.24060000     0.03282800)
-           (     2.89920000     0.23120800)
-           (     0.65340000     0.81723800) )
-        (S (     0.17760000     1.00000000) )
-        (P (     0.75000000     1.00000000) )
+      ( (S (     5.44717800     0.15628500)
+           (     0.82454724     0.90469100) )
+        (S (     0.18319158     1.00000000) )
        )
 
 
   -BASIS SET INFORMATION:
-    Total number of shells = 16
-    Number of primitives   = 30
-    Number of AO           = 31
-    Number of SO           = 31
+    Total number of shells = 9
+    Number of primitives   = 12
+    Number of AO           = 13
+    Number of SO           = 13
 
     Irrep    Number of SO
     -----    ------------
-      1           31
+      1            7
+      2            0
+      3            2
+      4            4
 
 
   -Unique atoms in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-        NITROGEN      0.004415632366    -0.003255773615     0.122370405337
-        HYDROGEN     -1.242352873232    -1.261577247933    -0.564701494877
-        HYDROGEN     -0.542329456426     1.685688605347    -0.550776108171
-        HYDROGEN      1.723329986914    -0.378874498414    -0.584779671182
+          OXYGEN      0.000000000000     0.000000000000    -0.149544913254
+        HYDROGEN      0.000000000000     1.336238061109     1.186693147855
 
 
   -Geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-        NITROGEN      0.004415632366    -0.003255773615     0.122370405337
-        HYDROGEN     -1.242352873232    -1.261577247933    -0.564701494877
-        HYDROGEN     -0.542329456426     1.685688605347    -0.550776108171
-        HYDROGEN      1.723329986914    -0.378874498414    -0.584779671182
+        HYDROGEN      0.000000000000    -1.336238061109     1.186693147855
+          OXYGEN      0.000000000000     0.000000000000    -0.149544913254
+        HYDROGEN      0.000000000000     1.336238061109     1.186693147855
 
 
   -Geometry in the canonical coordinate system (Angstrom):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-        NITROGEN      0.002336652188    -0.001722881325     0.064755634455
-        HYDROGEN     -0.657424875744    -0.667597977462    -0.298827183565
-        HYDROGEN     -0.286988409803     0.892028058848    -0.291458185737
-        HYDROGEN      0.911947021594    -0.200491764787    -0.309452097667
+        HYDROGEN      0.000000000000    -0.707106781187     0.627971015389
+          OXYGEN      0.000000000000     0.000000000000    -0.079135765797
+        HYDROGEN      0.000000000000     0.707106781187     0.627971015389
 
 
   -Geometry in the reference coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-        NITROGEN      0.004415632366    -0.003255773615     0.122370405337
-        HYDROGEN     -1.242352873232    -1.261577247933    -0.564701494877
-        HYDROGEN     -0.542329456426     1.685688605347    -0.550776108171
-        HYDROGEN      1.723329986914    -0.378874498414    -0.584779671182
+        HYDROGEN      0.000000000000    -1.336238061109     1.186693147855
+          OXYGEN      0.000000000000     0.000000000000    -0.149544913254
+        HYDROGEN      0.000000000000     1.336238061109     1.186693147855
 
 
   --------------------------------------------------------------------------
 
-    Nuclear Repulsion Energy (a.u.) =      12.042221549144
+    Nuclear Repulsion Energy (a.u.) =       8.841020805218
 
   -The Interatomic Distances in angstroms:
 
-           1           2           3           4
+           1           2           3
 
     1   0.0000000
-    2   1.0054190   0.0000000
-    3   1.0046830   1.6030318   0.0000000
-    4   1.0034598   1.6374460   1.6221497   0.0000000
+    2   1.0000000   0.0000000
+    3   1.4142136   1.0000000   0.0000000
 
     Note: To print *all* bond angles, out-of-plane
           angles, and torsion angles set print = 3
 
 
 ******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:24 2004
+tstop called on localhost
+Mon Sep 13 21:44:45 2004
 
-user time   =       0.05 seconds =       0.00 minutes
+user time   =       0.07 seconds =       0.00 minutes
 system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:24 2004
+tstart called on localhost
+Mon Sep 13 21:44:45 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -177,28 +148,28 @@ Fri Apr 23 15:29:24 2004
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = nh3
-    Number of atoms             = 4
-    Number of atomic orbitals   = 31
-    Number of symmetry orbitals = 31
-    Maximum AM in the basis     = 2
+    Label                       = 3-21G RHF opt of H2O with fixed angle
+    Number of atoms             = 3
+    Number of atomic orbitals   = 13
+    Number of symmetry orbitals = 13
+    Maximum AM in the basis     = 1
 
   -SYMMETRY INFORMATION;
-    Computational point group        = C1 
-    Number of irreps                 = 1
+    Computational point group        = C2v
+    Number of irreps                 = 4
 
-    Wrote 115267 two-electron integrals to IWL file 33
+    Wrote 1270 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:24 2004
+tstop called on localhost
+Mon Sep 13 21:44:45 2004
 
-user time   =       0.07 seconds =       0.00 minutes
-system time =       0.04 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:24 2004
+tstart called on localhost
+Mon Sep 13 21:44:45 2004
 
 
              ------------------------------------------
@@ -208,22 +179,18 @@ Fri Apr 23 15:29:24 2004
               Written by too many people to mention here
 
              ------------------------------------------
-
-  I think the multiplicity is 1.
-  If this is wrong, please specify the MULTP keyword
-
-  label        = nh3
+  label        = 3-21G RHF opt of H2O with fixed angle
   wfn          = SCF
   reference    = RHF
   multiplicity = 1
   charge       = 0
   direct       = false
   dertype      = FIRST
-  convergence  = 13
+  convergence  = 10
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy       12.0422215491441
+  nuclear repulsion energy        8.8410208052175
   first run, so defaulting to core-hamiltonian guess
 
   level shift                      = 0.100000
@@ -231,78 +198,66 @@ Fri Apr 23 15:29:24 2004
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
-  keeping integrals in 1972176 bytes of core
+  keeping integrals in 13856 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 1.627962e-02
+  The lowest eigenvalue of the overlap matrix was 1.207769e-01
 
   Using core guess to determine occupations
 
 
-  Symmetry block:   A    
-  DOCC:              5   
-  SOCC:              0   
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
 
   reading integrals in the IWL format from files 33,35,36,37
-  wrote 115267 integrals to file92
+  wrote 771 integrals to file92
 
   iter       total energy        delta E         delta P          diiser
-    1       -48.0741160003    6.011634e+01    0.000000e+00    0.000000e+00
-    2       -51.9476991948    3.873583e+00    9.069201e-02    1.338235e+00
-    3       -55.3244973330    3.376798e+00    8.871109e-02    5.233748e-01
-    4       -56.1354199473    8.109226e-01    2.638485e-03    3.926585e-01
-    5       -56.2080727512    7.265280e-02    9.942717e-04    1.258775e-01
-    6       -56.2087216890    6.489377e-04    1.600718e-04    6.934192e-03
-    7       -56.2088447061    1.230171e-04    8.888271e-05    2.906098e-03
-    8       -56.2088566835    1.197742e-05    3.460614e-05    1.322830e-03
-    9       -56.2088569587    2.752210e-07    5.718778e-06    1.758533e-04
-   10       -56.2088569683    9.526460e-09    1.273628e-06    3.469799e-05
-   11       -56.2088569686    3.023075e-10    2.605343e-07    6.633067e-06
-   12       -56.2088569686    7.077006e-12    4.290935e-08    9.624198e-07
-   13       -56.2088569686    2.842171e-14    2.131999e-09    5.593319e-08
-   14       -56.2088569686    1.421085e-14    2.060652e-10    6.480593e-09
-   15       -56.2088569686    0.000000e+00    2.462388e-11    9.676107e-10
-   16       -56.2088569686   -1.421085e-14    9.101663e-12    3.286987e-10
-   17       -56.2088569686    0.000000e+00    4.130688e-12    1.203562e-10
-   18       -56.2088569686    0.000000e+00    1.361699e-12    2.958421e-11
-   19       -56.2088569686    1.421085e-14    2.189679e-13    5.621737e-12
-   20       -56.2088569686    0.000000e+00    6.986981e-14    1.396363e-12
+    1       -65.9969542931    7.483798e+01    0.000000e+00    0.000000e+00
+    2       -71.4034693780    5.406515e+00    2.055910e-01    1.340447e+00
+    3       -75.5365288781    4.133060e+00    1.637549e-01    9.967091e-01
+    4       -75.5738398013    3.731092e-02    5.813891e-03    9.044767e-02
+    5       -75.5754212997    1.581498e-03    1.927329e-03    2.144961e-02
+    6       -75.5755169262    9.562650e-05    4.921395e-04    8.581278e-03
+    7       -75.5755179399    1.013646e-06    5.275019e-05    5.443674e-04
+    8       -75.5755181526    2.127032e-07    2.200965e-05    2.025860e-04
+    9       -75.5755181674    1.481618e-08    9.303092e-06    4.168462e-05
+   10       -75.5755181675    8.283507e-11    6.031428e-07    4.622314e-06
+   11       -75.5755181675    1.051603e-12    5.388561e-08    7.129382e-07
+   12       -75.5755181675    1.421085e-14    9.447554e-09    7.052651e-08
+   13       -75.5755181675    4.263256e-14    1.343334e-09    1.256575e-08
+   14       -75.5755181675    0.000000e+00    9.815837e-11    1.401827e-09
 
 Orbital energies (a.u.):
 
   Doubly occupied orbitals
-   1A     -15.536481     2A      -1.140168     3A      -0.632723  
-   4A      -0.623770     5A      -0.421541  
+   1A1    -20.449406     2A1     -1.325898     1B2     -0.638689  
+   3A1     -0.561339     1B1     -0.486500  
 
 
   Unoccupied orbitals
-   6A       0.240094     7A       0.348165     8A       0.350788  
-   9A       0.654393    10A       0.655315    11A       0.691265  
-  12A       1.101700    13A       1.122775    14A       1.140804  
-  15A       1.148398    16A       1.344230    17A       1.359950  
-  18A       1.798285    19A       1.816159    20A       1.948379  
-  21A       1.965032    22A       2.395285    23A       2.405657  
-  24A       2.540216    25A       2.816947    26A       2.827317  
-  27A       3.026378    28A       3.279732    29A       3.300469  
-  30A       4.340096    31A      35.808030  
+   4A1      0.246568     2B2      0.338289     3B2      1.116168  
+   5A1      1.318068     2B1      1.773841     6A1      1.914652  
+   4B2      1.985259     7A1      3.104996  
 
 
-        SCF total energy   =     -56.208856968567
-        kinetic energy     =      56.165784788273
-        nuc. attr. energy  =    -155.958578278894
-        elec. rep. energy  =      43.583936522054
-        potential energy   =    -112.374641756840
-        virial theorem     =       1.999233711863
+        SCF total energy   =     -75.575518167461
+        kinetic energy     =      75.336449735280
+        nuc. attr. energy  =    -197.245865700456
+        elec. rep. energy  =      46.333897797715
+        potential energy   =    -150.911967902741
+        virial theorem     =       1.996836694766
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:24 2004
+tstop called on localhost
+Mon Sep 13 21:44:45 2004
 
-user time   =       0.09 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:24 2004
+tstart called on localhost
+Mon Sep 13 21:44:45 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -318,15 +273,15 @@ Fri Apr 23 15:29:24 2004
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = nh3
-    Number of atoms             = 4
-    Number of atomic orbitals   = 31
-    Number of symmetry orbitals = 31
-    Maximum AM in the basis     = 2
+    Label                       = 3-21G RHF opt of H2O with fixed angle
+    Number of atoms             = 3
+    Number of atomic orbitals   = 13
+    Number of symmetry orbitals = 13
+    Maximum AM in the basis     = 1
 
   -SYMMETRY INFORMATION;
-    Computational point group        = C1 
-    Number of irreps                 = 1
+    Computational point group        = C2v
+    Number of irreps                 = 4
   Rotational invariance condition satisfied.
   |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
   So long..
@@ -335,60 +290,51 @@ Fri Apr 23 15:29:24 2004
   -SCF forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.005357313498    -0.002815802002     0.001738968638
-       2       -0.004537410700     0.001857386331    -0.000944323548
-       3       -0.002591455043    -0.000589482249    -0.001676234713
-       4        0.001771552245     0.001547897920     0.000881589623
+       1        0.000000000000     0.012013711638     0.034685165066
+       2        0.000000000000     0.000000000000    -0.069370330132
+       3        0.000000000000    -0.012013711638     0.034685165066
 
 ******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:25 2004
+tstop called on localhost
+Mon Sep 13 21:44:45 2004
 
-user time   =       0.38 seconds =       0.01 minutes
-system time =       0.08 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
 	------------------------------------------------------
 
 Cartesian geometry and possibly gradient in a.u. with masses
-  7.0    14.00307401   0.0044156324  -0.0032557736   0.1223704053
-  1.0     1.00782503  -1.2423528732  -1.2615772479  -0.5647014949
-  1.0     1.00782503  -0.5423294564   1.6856886053  -0.5507761082
-  1.0     1.00782503   1.7233299869  -0.3788744984  -0.5847796712
-                       0.0053573135  -0.0028158020   0.0017389686
-                      -0.0045374107   0.0018573863  -0.0009443235
-                      -0.0025914550  -0.0005894822  -0.0016762347
-                       0.0017715522   0.0015478979   0.0008815896
+  1.0     1.00782503   0.0000000000  -1.3362380611   1.1866931479
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1495449133
+  1.0     1.00782503   0.0000000000   1.3362380611   1.1866931479
+                       0.0000000000   0.0120137116   0.0346851651
+                       0.0000000000   0.0000000000  -0.0693703301
+                       0.0000000000  -0.0120137116   0.0346851651
 
 Generating simple internals
-
-Generating simple internals
+Searching for geometrical constraints...1 found.
+Coordinates to be constrained:
+Angle 3: 1 2 3
 
 Simple Internal Coordinates and Values
 Stretches
-    (1 1 2) (1.00541901)
-    (2 1 3) (1.00468304)
-    (3 1 4) (1.00345977)
+    (1 1 2) (1.00000000)
+    (2 2 3) (1.00000000)
 Bends
-    (4 2 1 3) (105.78172544)
-    (5 2 1 4) (109.19533522)
-    (6 3 1 4) (107.76034121)
-Torsions
-    (7 1 2 3 4) (36.98785135)
-    (8 1 3 4 2) (38.05313445)
-    (9 1 4 2 3) (38.82726760)
+    (3 1 2 3) (90.00000000)
 
-Using simple, possibly redundant, internal coordinates.
+Putting simple, possibly redundant, internal coordinates in intco.dat.
  
  ** Taking normal optimization step. **
 
-Current SCF energy before step       -56.2088569686
+Current SCF energy before step       -75.5755181675
 
 Taking geometry step number 1
 
-BuB^t Determinant: 1.522415e-46
+BuB^t Determinant: 2.338605e+00
 
 Generating empirical Hessian.
 
@@ -399,38 +345,30 @@ No BFGS update performed.
 Scaling displacements by 1.000000
 
 Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
-         Value          Force        Displacement   New Value
- 1   1.0054190086  -0.0163330076  -0.0023639854   1.0030550233
- 2   1.0046830447  -0.0040724458  -0.0009128004   1.0037702443
- 3   1.0034597750  -0.0115289293  -0.0010998368   1.0023599382
- 4   1.8462393974   0.0188907111   0.0353753339   1.8816147313
- 5   1.9058181274  -0.0168878072  -0.0277801615   1.8780379659
- 6   1.8807727572  -0.0006782373  -0.0010026356   1.8797701216
- 7   0.6455597893   0.0084995713   0.0142387878   0.6597985771
- 8   0.6641524868  -0.0031594547  -0.0045321108   0.6596203760
- 9   0.6776636592  -0.0075356951  -0.0192557416   0.6584079176
-   MAX force:    0.0188907111   RMS force:    0.0115364000
+       Value         Force        Displacement  New Value
+ 1    1.00000000   -0.13207608   -0.01778907    0.98221093
+ 2    1.00000000   -0.13207608   -0.01778907    0.98221093
+ 3    1.57079633    0.00000000    0.00000000    1.57079633
+   MAX force:    0.1320760800   RMS force:    0.1078396677
 
 Back-transformation to cartesian coordinates...
  Iter   RMS Delta(dx)   RMS Delta(dq)
-    2  0.007945911375  0.000168342952
-    3  0.000074472110  0.000131479638
-    4  0.000000006120  0.000131479637
-Convergence to displaced geometry took 4 iterations.
+    2  0.007944364259  0.000000000000
+    3  0.000000000000  0.000000000000
+Convergence to displaced geometry took 3 iterations.
 
 New Cartesian Geometry in a.u.
-  7.0   0.0016978996  -0.0012544628   0.1216010163
-  1.0  -1.2127098648  -1.2873596505  -0.5601437251
-  1.0  -0.5227028781   1.6982662889  -0.5374007729
-  1.0   1.7118215309  -0.3934766930  -0.5920226150
+  1.0   0.0000000000  -1.3124676257   1.1655829777
+  8.0   0.0000000000   0.0000000000  -0.1468846480
+  1.0   0.0000000000   1.3124676257   1.1655829777
 
 Geometry written to chkpt
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:25 2004
+tstart called on localhost
+Mon Sep 13 21:44:45 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -446,28 +384,28 @@ Fri Apr 23 15:29:25 2004
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = nh3
-    Number of atoms             = 4
-    Number of atomic orbitals   = 31
-    Number of symmetry orbitals = 31
-    Maximum AM in the basis     = 2
+    Label                       = 3-21G RHF opt of H2O with fixed angle
+    Number of atoms             = 3
+    Number of atomic orbitals   = 13
+    Number of symmetry orbitals = 13
+    Maximum AM in the basis     = 1
 
   -SYMMETRY INFORMATION;
-    Computational point group        = C1 
-    Number of irreps                 = 1
+    Computational point group        = C2v
+    Number of irreps                 = 4
 
-    Wrote 115267 two-electron integrals to IWL file 33
+    Wrote 1270 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:25 2004
+tstop called on localhost
+Mon Sep 13 21:44:45 2004
 
-user time   =       0.07 seconds =       0.00 minutes
-system time =       0.05 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:25 2004
+tstart called on localhost
+Mon Sep 13 21:44:45 2004
 
 
              ------------------------------------------
@@ -477,102 +415,87 @@ Fri Apr 23 15:29:25 2004
               Written by too many people to mention here
 
              ------------------------------------------
-
-  I think the multiplicity is 1.
-  If this is wrong, please specify the MULTP keyword
-
-  label        = nh3
+  label        = 3-21G RHF opt of H2O with fixed angle
   wfn          = SCF
   reference    = RHF
   multiplicity = 1
   charge       = 0
   direct       = false
   dertype      = FIRST
-  convergence  = 13
+  convergence  = 10
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy       12.0587768759770
+  nuclear repulsion energy        9.0011427845500
 
   using old vector from file30 as initial guess
-  energy from old vector:   -56.20885697
+  energy from old vector:   -75.57551817
 
   level shift                      = 0.100000
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
-  keeping integrals in 1972176 bytes of core
+  keeping integrals in 13856 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 1.626227e-02
+  The lowest eigenvalue of the overlap matrix was 1.166658e-01
 
 
-  Reading Occupations from file30
+  Reading Occupations from checkpoint file.
 
-  Symmetry block:   A    
-  DOCC:              5   
-  SOCC:              0   
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
 
   reading integrals in the IWL format from files 33,35,36,37
-  wrote 115267 integrals to file92
+  wrote 771 integrals to file92
 
   iter       total energy        delta E         delta P          diiser
-    1       -56.2089706956    6.826775e+01    0.000000e+00    0.000000e+00
-    2       -56.2090127639    4.206831e-05    3.224874e-05    2.379198e-03
-    3       -56.2090154594    2.695488e-06    9.080767e-06    6.759613e-04
-    4       -56.2090156645    2.050482e-07    2.120537e-06    1.843109e-04
-    5       -56.2090156901    2.559166e-08    1.061910e-06    5.956921e-05
-    6       -56.2090156912    1.175749e-09    2.967796e-07    8.989500e-06
-    7       -56.2090156913    7.396750e-11    1.055366e-07    2.759070e-06
-    8       -56.2090156913    2.643219e-12    1.830781e-08    5.861355e-07
-    9       -56.2090156913    2.842171e-13    6.994565e-09    1.757244e-07
-   10       -56.2090156913    0.000000e+00    6.439380e-10    1.788923e-08
-   11       -56.2090156913    1.421085e-14    5.919192e-11    2.992975e-09
-   12       -56.2090156913    0.000000e+00    1.352422e-11    7.209502e-10
-   13       -56.2090156913    0.000000e+00    6.033018e-12    2.793117e-10
-   14       -56.2090156913    0.000000e+00    1.161598e-12    3.007299e-11
-   15       -56.2090156913    0.000000e+00    4.480374e-13    1.013624e-11
-   16       -56.2090156913    0.000000e+00    1.030287e-13    2.792340e-12
-   17       -56.2090156913    0.000000e+00    3.609705e-14    8.919883e-13
+    1       -75.5758429873    8.457699e+01    0.000000e+00    0.000000e+00
+    2       -75.5760540097    2.110224e-04    5.712537e-04    6.373548e-03
+    3       -75.5760736719    1.966225e-05    1.833251e-04    3.034382e-03
+    4       -75.5760775284    3.856459e-06    1.003269e-04    9.214540e-04
+    5       -75.5760779371    4.086841e-07    4.353553e-05    2.404188e-04
+    6       -75.5760779562    1.916912e-08    1.004806e-05    4.549744e-05
+    7       -75.5760779567    4.576179e-10    1.277655e-06    8.476662e-06
+    8       -75.5760779567    1.904255e-12    9.325008e-08    5.428238e-07
+    9       -75.5760779567    2.842171e-14    1.442496e-08    1.042784e-07
+   10       -75.5760779567   -1.421085e-14    5.752816e-10    5.940636e-09
+   11       -75.5760779567    4.263256e-14    1.290898e-10    1.046991e-09
+   12       -75.5760779567   -4.263256e-14    2.229226e-11    1.301709e-10
 
- No phase correction possible.
+ Correcting phases of orbitals.
 
 Orbital energies (a.u.):
 
   Doubly occupied orbitals
-   1A     -15.535918     2A      -1.140663     3A      -0.629149  
-   4A      -0.628961     5A      -0.421235  
+   1A1    -20.445431     2A1     -1.334634     1B2     -0.646771  
+   3A1     -0.563999     1B1     -0.486914  
 
 
   Unoccupied orbitals
-   6A       0.240548     7A       0.349994     8A       0.350165  
-   9A       0.654172    10A       0.654507    11A       0.691291  
-  12A       1.101934    13A       1.123274    14A       1.145132  
-  15A       1.145216    16A       1.352359    17A       1.353406  
-  18A       1.799642    19A       1.818603    20A       1.956422  
-  21A       1.957759    22A       2.403251    23A       2.403999  
-  24A       2.539198    25A       2.825225    26A       2.826228  
-  27A       3.030324    28A       3.291198    29A       3.294211  
-  30A       4.341402    31A      35.808944  
+   4A1      0.251592     2B2      0.345713     3B2      1.121577  
+   5A1      1.342343     2B1      1.774373     6A1      1.908784  
+   4B2      1.986541     7A1      3.117185  
 
 
-        SCF total energy   =     -56.209015691317
-        kinetic energy     =      56.172422225605
-        nuc. attr. energy  =    -155.996154422074
-        elec. rep. energy  =      43.614716505152
-        potential energy   =    -112.381437916922
-        virial theorem     =       1.999348975155
+        SCF total energy   =     -75.576077956704
+        kinetic energy     =      75.400439969522
+        nuc. attr. energy  =    -197.599382421729
+        elec. rep. energy  =      46.622864495502
+        potential energy   =    -150.976517926226
+        virial theorem     =       1.997676010823
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:25 2004
+tstop called on localhost
+Mon Sep 13 21:44:45 2004
 
-user time   =       0.08 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:25 2004
+tstart called on localhost
+Mon Sep 13 21:44:45 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -588,15 +511,15 @@ Fri Apr 23 15:29:25 2004
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = nh3
-    Number of atoms             = 4
-    Number of atomic orbitals   = 31
-    Number of symmetry orbitals = 31
-    Maximum AM in the basis     = 2
+    Label                       = 3-21G RHF opt of H2O with fixed angle
+    Number of atoms             = 3
+    Number of atomic orbitals   = 13
+    Number of symmetry orbitals = 13
+    Maximum AM in the basis     = 1
 
   -SYMMETRY INFORMATION;
-    Computational point group        = C1 
-    Number of irreps                 = 1
+    Computational point group        = C2v
+    Number of irreps                 = 4
   Rotational invariance condition satisfied.
   |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
   So long..
@@ -605,17 +528,16 @@ Fri Apr 23 15:29:25 2004
   -SCF forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000669185665    -0.000436153316     0.000249704880
-       2        0.000161178987    -0.000265297393    -0.000128936997
-       3       -0.000063926463     0.000687873458    -0.000236801642
-       4       -0.000766438188     0.000013577250     0.000116033759
+       1        0.000000000000     0.024900586939     0.025344340911
+       2        0.000000000000     0.000000000000    -0.050688681821
+       3        0.000000000000    -0.024900586939     0.025344340911
 
 ******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:25 2004
+tstop called on localhost
+Mon Sep 13 21:44:45 2004
 
-user time   =       0.40 seconds =       0.01 minutes
-system time =       0.03 seconds =       0.00 minutes
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
@@ -623,36 +545,30 @@ total time  =          0 seconds =       0.00 minutes
 	------------------------------------------------------
 
 Cartesian geometry and possibly gradient in a.u. with masses
-  7.0    14.00307401   0.0016978996  -0.0012544628   0.1216010163
-  1.0     1.00782503  -1.2127098648  -1.2873596505  -0.5601437251
-  1.0     1.00782503  -0.5227028781   1.6982662889  -0.5374007729
-  1.0     1.00782503   1.7118215309  -0.3934766930  -0.5920226150
-                       0.0006691857  -0.0004361533   0.0002497049
-                       0.0001611790  -0.0002652974  -0.0001289370
-                      -0.0000639265   0.0006878735  -0.0002368016
-                      -0.0007664382   0.0000135773   0.0001160338
+  1.0     1.00782503   0.0000000000  -1.3124676257   1.1655829777
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1468846480
+  1.0     1.00782503   0.0000000000   1.3124676257   1.1655829777
+                       0.0000000000   0.0249005869   0.0253443409
+                       0.0000000000   0.0000000000  -0.0506886818
+                       0.0000000000  -0.0249005869   0.0253443409
+Searching for geometrical constraints...1 found.
+Coordinates to be constrained:
+Angle 3: 1 2 3
 
 Simple Internal Coordinates and Values
 Stretches
-    (1 1 2) (1.00315436)
-    (2 1 3) (1.00371552)
-    (3 1 4) (1.00231532)
+    (1 1 2) (0.98221093)
+    (2 2 3) (0.98221093)
 Bends
-    (4 2 1 3) (107.80811939)
-    (5 2 1 4) (107.60239287)
-    (6 3 1 4) (107.71376068)
-Torsions
-    (7 1 2 3 4) (37.81251890)
-    (8 1 3 4 2) (37.78098050)
-    (9 1 4 2 3) (37.73438982)
+    (3 1 2 3) (90.00000000)
  
  ** Taking normal optimization step. **
 
-Current SCF energy before step       -56.2090156913
+Current SCF energy before step       -75.5760779567
 
 Taking geometry step number 2
 
-BuB^t Determinant: 2.910040e-47
+BuB^t Determinant: 2.424083e+00
 
 Force Constants read from PSIF_OPTKING
 
@@ -661,38 +577,30 @@ Performing BFGS Hessian update with previous 1 gradient(s).
 Scaling displacements by 1.000000
 
 Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
-         Value          Force        Displacement   New Value
- 1   1.0031543566  -0.0009278256  -0.0001521822   1.0030021745
- 2   1.0037155181  -0.0055294347  -0.0007683207   1.0029471974
- 3   1.0023153243   0.0056255669   0.0007978695   1.0031131937
- 4   1.8816066438  -0.0018446026  -0.0008699923   1.8807366515
- 5   1.8780160386   0.0022292788   0.0022689813   1.8802850199
- 6   1.8799597736   0.0002851664   0.0002814937   1.8802412673
- 7   0.6599529533   0.0008803627  -0.0011949419   0.6587580113
- 8   0.6594025043  -0.0005263758  -0.0009496025   0.6584529018
- 9   0.6585893436  -0.0012686723  -0.0001346258   0.6584547178
-   MAX force:    0.0056255669   RMS force:    0.0028712698
+       Value         Force        Displacement  New Value
+ 1    0.98221093   -0.00258516   -0.00035514    0.98185579
+ 2    0.98221093   -0.00258516   -0.00035514    0.98185579
+ 3    1.57079633    0.00000000    0.00000000    1.57079633
+   MAX force:    0.0025851578   RMS force:    0.0021107725
 
 Back-transformation to cartesian coordinates...
  Iter   RMS Delta(dx)   RMS Delta(dq)
-    2  0.000570985879  0.000000552546
-    3  0.000000314203  0.000000092359
-    4  0.000000000000  0.000000092359
-Convergence to displaced geometry took 4 iterations.
+    2  0.000158601352  0.000000000000
+    3  0.000000000000  0.000000000000
+Convergence to displaced geometry took 3 iterations.
 
 New Cartesian Geometry in a.u.
-  7.0   0.0016796690  -0.0012975364   0.1214301584
-  1.0  -1.2143138308  -1.2860913362  -0.5591603309
-  1.0  -0.5230696019   1.6968104698  -0.5367582552
-  1.0   1.7140455233  -0.3926907078  -0.5912745681
+  1.0   0.0000000000  -1.3119930725   1.1651615341
+  8.0   0.0000000000   0.0000000000  -0.1468315384
+  1.0   0.0000000000   1.3119930725   1.1651615341
 
 Geometry written to chkpt
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:26 2004
+tstart called on localhost
+Mon Sep 13 21:44:45 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -708,28 +616,28 @@ Fri Apr 23 15:29:26 2004
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = nh3
-    Number of atoms             = 4
-    Number of atomic orbitals   = 31
-    Number of symmetry orbitals = 31
-    Maximum AM in the basis     = 2
+    Label                       = 3-21G RHF opt of H2O with fixed angle
+    Number of atoms             = 3
+    Number of atomic orbitals   = 13
+    Number of symmetry orbitals = 13
+    Maximum AM in the basis     = 1
 
   -SYMMETRY INFORMATION;
-    Computational point group        = C1 
-    Number of irreps                 = 1
+    Computational point group        = C2v
+    Number of irreps                 = 4
 
-    Wrote 115267 two-electron integrals to IWL file 33
+    Wrote 1270 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:26 2004
+tstop called on localhost
+Mon Sep 13 21:44:45 2004
 
-user time   =       0.08 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:26 2004
+tstart called on localhost
+Mon Sep 13 21:44:45 2004
 
 
              ------------------------------------------
@@ -739,100 +647,85 @@ Fri Apr 23 15:29:26 2004
               Written by too many people to mention here
 
              ------------------------------------------
-
-  I think the multiplicity is 1.
-  If this is wrong, please specify the MULTP keyword
-
-  label        = nh3
+  label        = 3-21G RHF opt of H2O with fixed angle
   wfn          = SCF
   reference    = RHF
   multiplicity = 1
   charge       = 0
   direct       = false
   dertype      = FIRST
-  convergence  = 13
+  convergence  = 10
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy       12.0590636559497
+  nuclear repulsion energy        9.0043985340535
 
   using old vector from file30 as initial guess
-  energy from old vector:   -56.20901569
+  energy from old vector:   -75.57607796
 
   level shift                      = 0.100000
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
-  keeping integrals in 1972176 bytes of core
+  keeping integrals in 13856 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 1.627139e-02
+  The lowest eigenvalue of the overlap matrix was 1.165837e-01
 
 
-  Reading Occupations from file30
+  Reading Occupations from checkpoint file.
 
-  Symmetry block:   A    
-  DOCC:              5   
-  SOCC:              0   
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
 
   reading integrals in the IWL format from files 33,35,36,37
-  wrote 115267 integrals to file92
+  wrote 771 integrals to file92
 
   iter       total energy        delta E         delta P          diiser
-    1       -56.2090169913    6.826808e+01    0.000000e+00    0.000000e+00
-    2       -56.2090174085    4.172677e-07    3.335893e-06    1.914658e-04
-    3       -56.2090174343    2.572310e-08    8.742397e-07    3.641293e-05
-    4       -56.2090174368    2.536353e-09    3.025588e-07    1.222986e-05
-    5       -56.2090174371    3.246470e-10    1.230764e-07    4.219431e-06
-    6       -56.2090174372    4.020251e-11    5.672509e-08    1.316853e-06
-    7       -56.2090174372    1.989520e-12    1.478783e-08    3.448136e-07
-    8       -56.2090174372    8.526513e-14    3.507874e-09    7.949844e-08
-    9       -56.2090174372    1.421085e-14    5.989019e-10    1.094481e-08
-   10       -56.2090174372    0.000000e+00    3.911614e-11    1.427114e-09
-   11       -56.2090174372   -1.421085e-14    8.944068e-12    4.556663e-10
-   12       -56.2090174372    0.000000e+00    2.084289e-12    7.620524e-11
-   13       -56.2090174372    1.421085e-14    6.622984e-13    4.652185e-11
-   14       -56.2090174372    0.000000e+00    2.822952e-13    7.348365e-12
-   15       -56.2090174372   -1.421085e-14    9.195904e-14    2.372917e-12
+    1       -75.5760780580    8.458048e+01    0.000000e+00    0.000000e+00
+    2       -75.5760781448    8.684692e-08    1.155307e-05    1.289658e-04
+    3       -75.5760781528    7.983502e-09    3.705567e-06    6.108067e-05
+    4       -75.5760781544    1.560991e-09    2.012833e-06    1.848681e-05
+    5       -75.5760781545    1.642775e-10    8.720874e-07    4.818004e-06
+    6       -75.5760781545    7.730705e-12    2.013967e-07    9.162954e-07
+    7       -75.5760781545    1.563194e-13    2.594870e-08    1.692372e-07
+    8       -75.5760781545    1.421085e-14    1.902031e-09    1.073488e-08
+    9       -75.5760781545    0.000000e+00    2.919198e-10    2.106722e-09
+   10       -75.5760781545   -2.842171e-14    1.145151e-11    1.216352e-10
 
- No phase correction possible.
+ Correcting phases of orbitals.
 
 Orbital energies (a.u.):
 
   Doubly occupied orbitals
-   1A     -15.535878     2A      -1.140621     3A      -0.629174  
-   4A      -0.629056     5A      -0.421140  
+   1A1    -20.445351     2A1     -1.334813     1B2     -0.646935  
+   3A1     -0.564052     1B1     -0.486923  
 
 
   Unoccupied orbitals
-   6A       0.240579     7A       0.350078     8A       0.350135  
-   9A       0.654317    10A       0.654340    11A       0.691326  
-  12A       1.101693    13A       1.123187    14A       1.145202  
-  15A       1.145317    16A       1.352983    17A       1.353116  
-  18A       1.799451    19A       1.818986    20A       1.956916  
-  21A       1.957034    22A       2.403775    23A       2.404014  
-  24A       2.538580    25A       2.825896    26A       2.825964  
-  27A       3.030837    28A       3.292655    29A       3.292738  
-  30A       4.341478    31A      35.808937  
+   4A1      0.251691     2B2      0.345860     3B2      1.121693  
+   5A1      1.342847     2B1      1.774384     6A1      1.908661  
+   4B2      1.986569     7A1      3.117418  
 
 
-        SCF total energy   =     -56.209017437170
-        kinetic energy     =      56.172426716225
-        nuc. attr. energy  =    -155.996851904298
-        elec. rep. energy  =      43.615407750903
-        potential energy   =    -112.381444153395
-        virial theorem     =       1.999349024007
+        SCF total energy   =     -75.576078154526
+        kinetic energy     =      75.401754862900
+        nuc. attr. energy  =    -197.606559118846
+        elec. rep. energy  =      46.628726101420
+        potential energy   =    -150.977833017425
+        virial theorem     =       1.997693406487
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:26 2004
+tstop called on localhost
+Mon Sep 13 21:44:45 2004
 
-user time   =       0.07 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:26 2004
+tstart called on localhost
+Mon Sep 13 21:44:45 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -848,34 +741,33 @@ Fri Apr 23 15:29:26 2004
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = nh3
-    Number of atoms             = 4
-    Number of atomic orbitals   = 31
-    Number of symmetry orbitals = 31
-    Maximum AM in the basis     = 2
+    Label                       = 3-21G RHF opt of H2O with fixed angle
+    Number of atoms             = 3
+    Number of atomic orbitals   = 13
+    Number of symmetry orbitals = 13
+    Maximum AM in the basis     = 1
 
   -SYMMETRY INFORMATION;
-    Computational point group        = C1 
-    Number of irreps                 = 1
+    Computational point group        = C2v
+    Number of irreps                 = 4
   Rotational invariance condition satisfied.
-  |X cross Grad| =  0.000000000001   (it is the accuracy of the computed forces)
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
   So long..
 
 
   -SCF forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1       -0.000152035617     0.000073832097     0.000147787713
-       2        0.000021765984    -0.000021639878    -0.000035905450
-       3        0.000048856206    -0.000038528136    -0.000019189235
-       4        0.000081413427    -0.000013664083    -0.000092693027
+       1        0.000000000000     0.025172437794     0.025145359098
+       2        0.000000000000     0.000000000000    -0.050290718195
+       3        0.000000000000    -0.025172437794     0.025145359098
 
 ******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:26 2004
+tstop called on localhost
+Mon Sep 13 21:44:45 2004
 
-user time   =       0.46 seconds =       0.01 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
@@ -883,36 +775,30 @@ total time  =          0 seconds =       0.00 minutes
 	------------------------------------------------------
 
 Cartesian geometry and possibly gradient in a.u. with masses
-  7.0    14.00307401   0.0016796690  -0.0012975364   0.1214301584
-  1.0     1.00782503  -1.2143138308  -1.2860913362  -0.5591603309
-  1.0     1.00782503  -0.5230696019   1.6968104698  -0.5367582552
-  1.0     1.00782503   1.7140455233  -0.3926907078  -0.5912745681
-                      -0.0001520356   0.0000738321   0.0001477877
-                       0.0000217660  -0.0000216399  -0.0000359055
-                       0.0000488562  -0.0000385281  -0.0000191892
-                       0.0000814134  -0.0000136641  -0.0000926930
+  1.0     1.00782503   0.0000000000  -1.3119930725   1.1651615341
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1468315384
+  1.0     1.00782503   0.0000000000   1.3119930725   1.1651615341
+                       0.0000000000   0.0251724378   0.0251453591
+                       0.0000000000   0.0000000000  -0.0502907182
+                       0.0000000000  -0.0251724378   0.0251453591
+Searching for geometrical constraints...1 found.
+Coordinates to be constrained:
+Angle 3: 1 2 3
 
 Simple Internal Coordinates and Values
 Stretches
-    (1 1 2) (1.00300222)
-    (2 1 3) (1.00294720)
-    (3 1 4) (1.00311315)
+    (1 1 2) (0.98185579)
+    (2 2 3) (0.98185579)
 Bends
-    (4 2 1 3) (107.75826371)
-    (5 2 1 4) (107.73239025)
-    (6 3 1 4) (107.72988678)
-Torsions
-    (7 1 2 3 4) (37.74405570)
-    (8 1 3 4 2) (37.72656196)
-    (9 1 4 2 3) (37.72667236)
+    (3 1 2 3) (90.00000000)
  
  ** Taking normal optimization step. **
 
-Current SCF energy before step       -56.2090174372
+Current SCF energy before step       -75.5760781545
 
 Taking geometry step number 3
 
-BuB^t Determinant: -4.282822e-47
+BuB^t Determinant: 2.425837e+00
 
 Force Constants read from PSIF_OPTKING
 
@@ -921,37 +807,30 @@ Performing BFGS Hessian update with previous 2 gradient(s).
 Scaling displacements by 1.000000
 
 Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
-         Value          Force        Displacement   New Value
- 1   1.0030022162  -0.0001428277  -0.0000240250   1.0029781912
- 2   1.0029471964   0.0002690878   0.0000309487   1.0029781451
- 3   1.0031131530  -0.0008136314  -0.0000967089   1.0030164441
- 4   1.8807364979   0.0000359540   0.0000575524   1.8807940503
- 5   1.8802849210   0.0001012025   0.0004930803   1.8807780013
- 6   1.8802412271   0.0002003127   0.0002704500   1.8805116771
- 7   0.6587580451  -0.0004187245  -0.0005118375   0.6582462075
- 8   0.6584527216  -0.0000727786  -0.0003707215   0.6580820001
- 9   0.6584546484   0.0000336126  -0.0002315613   0.6582230871
-   MAX force:    0.0008136314   RMS force:    0.0003313643
+       Value         Force        Displacement  New Value
+ 1    0.98185579    0.00015775    0.00002043    0.98187621
+ 2    0.98185579    0.00015775    0.00002043    0.98187621
+ 3    1.57079633    0.00000000    0.00000000    1.57079633
+   MAX force:    0.0001577512   RMS force:    0.0001288033
 
 Back-transformation to cartesian coordinates...
  Iter   RMS Delta(dx)   RMS Delta(dq)
-    2  0.000122946564  0.000000069096
-    3  0.000000025010  0.000000060590
+    2  0.000009121538  0.000000000000
+    3  0.000000000000  0.000000000000
 Convergence to displaced geometry took 3 iterations.
 
 New Cartesian Geometry in a.u.
-  7.0   0.0017046172  -0.0013201252   0.1213448714
-  1.0  -1.2145899688  -1.2860160883  -0.5587657187
-  1.0  -0.5232376400   1.6969382347  -0.5364701260
-  1.0   1.7141430605  -0.3925798649  -0.5907723017
+  1.0   0.0000000000  -1.3120203652   1.1651857723
+  8.0   0.0000000000   0.0000000000  -0.1468345929
+  1.0   0.0000000000   1.3120203652   1.1651857723
 
 Geometry written to chkpt
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:26 2004
+tstart called on localhost
+Mon Sep 13 21:44:46 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -967,28 +846,28 @@ Fri Apr 23 15:29:26 2004
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = nh3
-    Number of atoms             = 4
-    Number of atomic orbitals   = 31
-    Number of symmetry orbitals = 31
-    Maximum AM in the basis     = 2
+    Label                       = 3-21G RHF opt of H2O with fixed angle
+    Number of atoms             = 3
+    Number of atomic orbitals   = 13
+    Number of symmetry orbitals = 13
+    Maximum AM in the basis     = 1
 
   -SYMMETRY INFORMATION;
-    Computational point group        = C1 
-    Number of irreps                 = 1
+    Computational point group        = C2v
+    Number of irreps                 = 4
 
-    Wrote 115267 two-electron integrals to IWL file 33
+    Wrote 1270 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:26 2004
+tstop called on localhost
+Mon Sep 13 21:44:46 2004
 
-user time   =       0.07 seconds =       0.00 minutes
-system time =       0.05 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:26 2004
+tstart called on localhost
+Mon Sep 13 21:44:46 2004
 
 
              ------------------------------------------
@@ -998,100 +877,84 @@ Fri Apr 23 15:29:26 2004
               Written by too many people to mention here
 
              ------------------------------------------
-
-  I think the multiplicity is 1.
-  If this is wrong, please specify the MULTP keyword
-
-  label        = nh3
+  label        = 3-21G RHF opt of H2O with fixed angle
   wfn          = SCF
   reference    = RHF
   multiplicity = 1
   charge       = 0
   direct       = false
   dertype      = FIRST
-  convergence  = 13
+  convergence  = 10
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy       12.0593255920441
+  nuclear repulsion energy        9.0042112243948
 
   using old vector from file30 as initial guess
-  energy from old vector:   -56.20901744
+  energy from old vector:   -75.57607815
 
   level shift                      = 0.100000
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
-  keeping integrals in 1972176 bytes of core
+  keeping integrals in 13856 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 1.627545e-02
+  The lowest eigenvalue of the overlap matrix was 1.165884e-01
 
 
-  Reading Occupations from file30
+  Reading Occupations from checkpoint file.
 
-  Symmetry block:   A    
-  DOCC:              5   
-  SOCC:              0   
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
 
   reading integrals in the IWL format from files 33,35,36,37
-  wrote 115267 integrals to file92
+  wrote 771 integrals to file92
 
   iter       total energy        delta E         delta P          diiser
-    1       -56.2090174848    6.826834e+01    0.000000e+00    0.000000e+00
-    2       -56.2090175043    1.952598e-08    7.594633e-07    6.977978e-05
-    3       -56.2090175059    1.617181e-09    2.782104e-07    1.574286e-05
-    4       -56.2090175061    2.000036e-10    8.132756e-08    4.224934e-06
-    5       -56.2090175062    2.918910e-11    6.188581e-08    1.791818e-06
-    6       -56.2090175062    1.435296e-12    1.711820e-08    4.662936e-07
-    7       -56.2090175062    5.684342e-14    3.812567e-09    9.427484e-08
-    8       -56.2090175062    1.421085e-14    3.660034e-10    1.585768e-08
-    9       -56.2090175062    0.000000e+00    8.152618e-11    4.136177e-09
-   10       -56.2090175062   -1.421085e-14    1.016600e-11    4.013535e-10
-   11       -56.2090175062    1.421085e-14    1.828088e-12    1.309228e-10
-   12       -56.2090175062    0.000000e+00    5.308772e-13    3.067669e-11
-   13       -56.2090175062   -1.421085e-14    2.583934e-13    8.826566e-12
-   14       -56.2090175062    1.421085e-14    1.026885e-13    2.350480e-12
-   15       -56.2090175062    0.000000e+00    3.343260e-14    7.235647e-13
+    1       -75.5760781549    8.458029e+01    0.000000e+00    0.000000e+00
+    2       -75.5760781552    2.874572e-10    6.646070e-07    7.418856e-06
+    3       -75.5760781553    2.640377e-11    2.131647e-07    3.513423e-06
+    4       -75.5760781553    5.144329e-12    1.157726e-07    1.063334e-06
+    5       -75.5760781553    5.684342e-13    5.015857e-08    2.771126e-07
+    6       -75.5760781553    2.842171e-14    1.158465e-08    5.271156e-08
+    7       -75.5760781553   -1.421085e-14    1.493029e-09    9.734250e-09
+    8       -75.5760781553    1.421085e-14    1.094538e-10    6.173256e-10
+    9       -75.5760781553    2.842171e-14    1.679438e-11    1.211985e-10
 
  Correcting phases of orbitals.
 
 Orbital energies (a.u.):
 
   Doubly occupied orbitals
-   1A     -15.535855     2A      -1.140605     3A      -0.629175  
-   4A      -0.629122     5A      -0.421093  
+   1A1    -20.445356     2A1     -1.334802     1B2     -0.646925  
+   3A1     -0.564049     1B1     -0.486923  
 
 
   Unoccupied orbitals
-   6A       0.240596     7A       0.350113     8A       0.350132  
-   9A       0.654317    10A       0.654324    11A       0.691342  
-  12A       1.101577    13A       1.123147    14A       1.145285  
-  15A       1.145331    16A       1.353092    17A       1.353174  
-  18A       1.799366    19A       1.819178    20A       1.956887  
-  21A       1.956971    22A       2.404003    23A       2.404084  
-  24A       2.538289    25A       2.826013    26A       2.826068  
-  27A       3.031116    28A       3.292666    29A       3.292768  
-  30A       4.341525    31A      35.808940  
+   4A1      0.251686     2B2      0.345851     3B2      1.121686  
+   5A1      1.342818     2B1      1.774383     6A1      1.908668  
+   4B2      1.986567     7A1      3.117404  
 
 
-        SCF total energy   =     -56.209017506174
-        kinetic energy     =      56.172480695444
-        nuc. attr. energy  =    -155.997464513648
-        elec. rep. energy  =      43.615966312030
-        potential energy   =    -112.381498201618
-        virial theorem     =       1.999349983110
+        SCF total energy   =     -75.576078155264
+        kinetic energy     =      75.401679199551
+        nuc. attr. energy  =    -197.606146241383
+        elec. rep. energy  =      46.628388886568
+        potential energy   =    -150.977757354815
+        virial theorem     =       1.997692405322
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:27 2004
+tstop called on localhost
+Mon Sep 13 21:44:46 2004
 
-user time   =       0.08 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:27 2004
+tstart called on localhost
+Mon Sep 13 21:44:46 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1107,15 +970,15 @@ Fri Apr 23 15:29:27 2004
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = nh3
-    Number of atoms             = 4
-    Number of atomic orbitals   = 31
-    Number of symmetry orbitals = 31
-    Maximum AM in the basis     = 2
+    Label                       = 3-21G RHF opt of H2O with fixed angle
+    Number of atoms             = 3
+    Number of atomic orbitals   = 13
+    Number of symmetry orbitals = 13
+    Maximum AM in the basis     = 1
 
   -SYMMETRY INFORMATION;
-    Computational point group        = C1 
-    Number of irreps                 = 1
+    Computational point group        = C2v
+    Number of irreps                 = 4
   Rotational invariance condition satisfied.
   |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
   So long..
@@ -1124,17 +987,16 @@ Fri Apr 23 15:29:27 2004
   -SCF forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1       -0.000050465020    -0.000011115082     0.000077826635
-       2       -0.000000651868    -0.000001033865    -0.000014740024
-       3        0.000022208897    -0.000002315902    -0.000024739575
-       4        0.000028907991     0.000014464850    -0.000038347037
+       1        0.000000000000     0.025156786970     0.025156816834
+       2        0.000000000000     0.000000000000    -0.050313633667
+       3        0.000000000000    -0.025156786970     0.025156816834
 
 ******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:27 2004
+tstop called on localhost
+Mon Sep 13 21:44:46 2004
 
-user time   =       0.40 seconds =       0.01 minutes
-system time =       0.03 seconds =       0.00 minutes
+user time   =       0.06 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
@@ -1142,36 +1004,30 @@ total time  =          0 seconds =       0.00 minutes
 	------------------------------------------------------
 
 Cartesian geometry and possibly gradient in a.u. with masses
-  7.0    14.00307401   0.0017046172  -0.0013201252   0.1213448714
-  1.0     1.00782503  -1.2145899688  -1.2860160883  -0.5587657187
-  1.0     1.00782503  -0.5232376400   1.6969382347  -0.5364701260
-  1.0     1.00782503   1.7141430605  -0.3925798649  -0.5907723017
-                      -0.0000504650  -0.0000111151   0.0000778266
-                      -0.0000006519  -0.0000010339  -0.0000147400
-                       0.0000222089  -0.0000023159  -0.0000247396
-                       0.0000289080   0.0000144648  -0.0000383470
+  1.0     1.00782503   0.0000000000  -1.3120203652   1.1651857723
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1468345929
+  1.0     1.00782503   0.0000000000   1.3120203652   1.1651857723
+                       0.0000000000   0.0251567870   0.0251568168
+                       0.0000000000   0.0000000000  -0.0503136337
+                       0.0000000000  -0.0251567870   0.0251568168
+Searching for geometrical constraints...1 found.
+Coordinates to be constrained:
+Angle 3: 1 2 3
 
 Simple Internal Coordinates and Values
 Stretches
-    (1 1 2) (1.00297820)
-    (2 1 3) (1.00297816)
-    (3 1 4) (1.00301642)
+    (1 1 2) (0.98187621)
+    (2 2 3) (0.98187621)
 Bends
-    (4 2 1 3) (107.76155522)
-    (5 2 1 4) (107.76063878)
-    (6 3 1 4) (107.74537866)
-Torsions
-    (7 1 2 3 4) (37.71472983)
-    (8 1 3 4 2) (37.70531721)
-    (9 1 4 2 3) (37.71339926)
+    (3 1 2 3) (90.00000000)
  
  ** Taking normal optimization step. **
 
-Current SCF energy before step       -56.2090175062
+Current SCF energy before step       -75.5760781553
 
 Taking geometry step number 4
 
-BuB^t Determinant: -1.040765e-45
+BuB^t Determinant: 2.425736e+00
 
 Force Constants read from PSIF_OPTKING
 
@@ -1180,2049 +1036,18 @@ Performing BFGS Hessian update with previous 3 gradient(s).
 Scaling displacements by 1.000000
 
 Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
-         Value          Force        Displacement   New Value
- 1   1.0029781970  -0.0000790463  -0.0000255530   1.0029526440
- 2   1.0029781620  -0.0000061058  -0.0000093670   1.0029687949
- 3   1.0030164215  -0.0002798805  -0.0000598750   1.0029565464
- 4   1.8807939456   0.0000311983   0.0001535918   1.8809475374
- 5   1.8807779508  -0.0000087325   0.0002811914   1.8810591423
- 6   1.8805116115   0.0001575876   0.0003588088   1.8808704202
- 7   0.6582462121  -0.0001577557  -0.0004289424   0.6578172696
- 8   0.6580819309  -0.0000133932  -0.0003069296   0.6577750013
- 9   0.6582229892  -0.0000733755  -0.0003418496   0.6578811396
-   MAX force:    0.0002798805   RMS force:    0.0001251454
-
-Back-transformation to cartesian coordinates...
- Iter   RMS Delta(dx)   RMS Delta(dq)
-    2  0.000109208706  0.000000058463
-    3  0.000000019067  0.000000052191
-Convergence to displaced geometry took 3 iterations.
-
-New Cartesian Geometry in a.u.
-  7.0   0.0017184732  -0.0013200498   0.1212624582
-  1.0  -1.2147111042  -1.2860445801  -0.5584180691
-  1.0  -0.5233945631   1.6970392428  -0.5361045183
-  1.0   1.7142285990  -0.3926534282  -0.5903404814
-
-Geometry written to chkpt
-
-******** OPTKING execution completed ********
-
-******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:27 2004
-
-                  --------------------------------------------
-                    CINTS: An integrals program written in C
-                     Justin T. Fermann and Edward F. Valeev
-                  --------------------------------------------
-
-
-  -OPTIONS:
-    Print level                 = 1
-    Integral tolerance          = 1e-15
-    Max. memory to use          = 2500000 double words
-    Number of threads           = 1
-    LIBINT's real type length   = 64 bit
-
-  -CALCULATION CONSTANTS:
-    Label                       = nh3
-    Number of atoms             = 4
-    Number of atomic orbitals   = 31
-    Number of symmetry orbitals = 31
-    Maximum AM in the basis     = 2
-
-  -SYMMETRY INFORMATION;
-    Computational point group        = C1 
-    Number of irreps                 = 1
-
-    Wrote 115267 two-electron integrals to IWL file 33
-
-******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:27 2004
-
-user time   =       0.06 seconds =       0.00 minutes
-system time =       0.06 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:27 2004
-
-
-             ------------------------------------------
-
-                CSCF3.0: An SCF program written in C
-
-              Written by too many people to mention here
-
-             ------------------------------------------
-
-  I think the multiplicity is 1.
-  If this is wrong, please specify the MULTP keyword
-
-  label        = nh3
-  wfn          = SCF
-  reference    = RHF
-  multiplicity = 1
-  charge       = 0
-  direct       = false
-  dertype      = FIRST
-  convergence  = 13
-  maxiter      = 40
-  guess        = AUTO
-
-  nuclear repulsion energy       12.0596109847343
-
-  using old vector from file30 as initial guess
-  energy from old vector:   -56.20901751
-
-  level shift                      = 0.100000
-  diis scale factor                = 1.000000
-  iterations before extrapolation  = 0
-  6 error matrices will be kept
-
-  keeping integrals in 1972176 bytes of core
-
-  The lowest eigenvalue of the overlap matrix was 1.627928e-02
-
-
-  Reading Occupations from file30
-
-  Symmetry block:   A    
-  DOCC:              5   
-  SOCC:              0   
-
-  reading integrals in the IWL format from files 33,35,36,37
-  wrote 115267 integrals to file92
-
-  iter       total energy        delta E         delta P          diiser
-    1       -56.2090175121    6.826863e+01    0.000000e+00    0.000000e+00
-    2       -56.2090175275    1.547313e-08    7.010170e-07    6.745679e-05
-    3       -56.2090175288    1.241503e-09    2.545202e-07    1.521291e-05
-    4       -56.2090175290    1.786447e-10    7.777407e-08    3.843874e-06
-    5       -56.2090175290    2.475531e-11    6.192423e-08    1.809080e-06
-    6       -56.2090175290    1.151079e-12    1.620381e-08    4.306271e-07
-    7       -56.2090175290    4.263256e-14    3.251294e-09    7.776759e-08
-    8       -56.2090175290    1.421085e-14    2.083811e-10    1.584181e-08
-    9       -56.2090175290   -1.421085e-14    6.724373e-11    4.137764e-09
-   10       -56.2090175290    1.421085e-14    7.230582e-12    2.788933e-10
-   11       -56.2090175290    0.000000e+00    1.093988e-12    8.049455e-11
-   12       -56.2090175290    0.000000e+00    4.007190e-13    2.220989e-11
-   13       -56.2090175290    0.000000e+00    1.259906e-13    3.598521e-12
-   14       -56.2090175290    0.000000e+00    5.736347e-14    1.428795e-12
-
- Correcting phases of orbitals.
-
-Orbital energies (a.u.):
-
-  Doubly occupied orbitals
-   1A     -15.535833     2A      -1.140592     3A      -0.629198  
-   4A      -0.629166     5A      -0.421049  
-
-
-  Unoccupied orbitals
-   6A       0.240613     7A       0.350134     8A       0.350145  
-   9A       0.654311    10A       0.654311    11A       0.691358  
-  12A       1.101467    13A       1.123111    14A       1.145342  
-  15A       1.145370    16A       1.353189    17A       1.353238  
-  18A       1.799286    19A       1.819365    20A       1.956863  
-  21A       1.956912    22A       2.404169    23A       2.404215  
-  24A       2.538011    25A       2.826134    26A       2.826166  
-  27A       3.031392    28A       3.292717    29A       3.292769  
-  30A       4.341573    31A      35.808945  
-
-
-        SCF total energy   =     -56.209017528978
-        kinetic energy     =      56.172546488870
-        nuc. attr. energy  =    -155.998128674530
-        elec. rep. energy  =      43.616564656682
-        potential energy   =    -112.381564017848
-        virial theorem     =       1.999351153219
-        wavefunction norm  =       1.000000000000
-******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:27 2004
-
-user time   =       0.08 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:27 2004
-
-                  --------------------------------------------
-                    CINTS: An integrals program written in C
-                     Justin T. Fermann and Edward F. Valeev
-                  --------------------------------------------
-
-
-  -OPTIONS:
-    Print level                 = 1
-    Integral tolerance          = 1e-15
-    Max. memory to use          = 2500000 double words
-    Number of threads           = 1
-    LIBINT's real type length   = 64 bit
-
-  -CALCULATION CONSTANTS:
-    Label                       = nh3
-    Number of atoms             = 4
-    Number of atomic orbitals   = 31
-    Number of symmetry orbitals = 31
-    Maximum AM in the basis     = 2
-
-  -SYMMETRY INFORMATION;
-    Computational point group        = C1 
-    Number of irreps                 = 1
-  Rotational invariance condition satisfied.
-  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
-  So long..
-
-
-  -SCF forces in the reference frame (a.u.):
-     Atom            X                  Y                   Z
-    ------   -----------------  -----------------  -----------------
-       1       -0.000000931771    -0.000028349767     0.000009301181
-       2       -0.000002970197     0.000008896833     0.000002445065
-       3        0.000004490525     0.000004834703    -0.000010089051
-       4       -0.000000588557     0.000014618231    -0.000001657194
-
-******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:28 2004
-
-user time   =       0.40 seconds =       0.01 minutes
-system time =       0.03 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
-
-	------------------------------------------------------
-	    OPTKING: for internal coordinate optimizations    
-	------------------------------------------------------
-
-Cartesian geometry and possibly gradient in a.u. with masses
-  7.0    14.00307401   0.0017184732  -0.0013200498   0.1212624582
-  1.0     1.00782503  -1.2147111042  -1.2860445801  -0.5584180691
-  1.0     1.00782503  -0.5233945631   1.6970392428  -0.5361045183
-  1.0     1.00782503   1.7142285990  -0.3926534282  -0.5903404814
-                      -0.0000009318  -0.0000283498   0.0000093012
-                      -0.0000029702   0.0000088968   0.0000024451
-                       0.0000044905   0.0000048347  -0.0000100891
-                      -0.0000005886   0.0000146182  -0.0000016572
-
-Simple Internal Coordinates and Values
-Stretches
-    (1 1 2) (1.00295265)
-    (2 1 3) (1.00296880)
-    (3 1 4) (1.00295654)
-Bends
-    (4 2 1 3) (107.77035053)
-    (5 2 1 4) (107.77674614)
-    (6 3 1 4) (107.76593337)
-Torsions
-    (7 1 2 3 4) (37.69015182)
-    (8 1 3 4 2) (37.68772751)
-    (9 1 4 2 3) (37.69380917)
- 
- ** Taking normal optimization step. **
-
-Current SCF energy before step       -56.2090175290
-
-Taking geometry step number 5
-
-BuB^t Determinant: -3.372147e-47
-
-Force Constants read from PSIF_OPTKING
-
-Performing BFGS Hessian update with previous 4 gradient(s).
-
-Scaling displacements by 1.000000
-
-Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
-         Value          Force        Displacement   New Value
- 1   1.0029526505   0.0000280820  -0.0000000727   1.0029525778
- 2   1.0029687988  -0.0000378789  -0.0000097066   1.0029590922
- 3   1.0029565360   0.0000208509  -0.0000026121   1.0029539239
- 4   1.8809474527   0.0000134064   0.0000645184   1.8810119711
- 5   1.8810590773  -0.0000402656  -0.0000222995   1.8810367777
- 6   1.8808703587   0.0000564606   0.0001088941   1.8809792528
- 7   0.6578172448  -0.0000049213  -0.0000603816   0.6577568632
- 8   0.6577749327   0.0000206557  -0.0000359093   0.6577390234
- 9   0.6578810776  -0.0000559693  -0.0001090974   0.6577719802
-   MAX force:    0.0000564606   RMS force:    0.0000353246
-
-Back-transformation to cartesian coordinates...
- Iter   RMS Delta(dx)   RMS Delta(dq)
-    2  0.000025965667  0.000000002748
-    3  0.000000001065  0.000000002413
-Convergence to displaced geometry took 3 iterations.
-
-New Cartesian Geometry in a.u.
-  7.0   0.0017185226  -0.0013118638   0.1212471107
-  1.0  -1.2146845373  -1.2860953071  -0.5583691331
-  1.0  -0.5234285579   1.6970608286  -0.5360051463
-  1.0   1.7142353397  -0.3927380263  -0.5902755462
-
-Geometry written to chkpt
-
-******** OPTKING execution completed ********
-
-******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:28 2004
-
-                  --------------------------------------------
-                    CINTS: An integrals program written in C
-                     Justin T. Fermann and Edward F. Valeev
-                  --------------------------------------------
-
-
-  -OPTIONS:
-    Print level                 = 1
-    Integral tolerance          = 1e-15
-    Max. memory to use          = 2500000 double words
-    Number of threads           = 1
-    LIBINT's real type length   = 64 bit
-
-  -CALCULATION CONSTANTS:
-    Label                       = nh3
-    Number of atoms             = 4
-    Number of atomic orbitals   = 31
-    Number of symmetry orbitals = 31
-    Maximum AM in the basis     = 2
-
-  -SYMMETRY INFORMATION;
-    Computational point group        = C1 
-    Number of irreps                 = 1
-
-    Wrote 115267 two-electron integrals to IWL file 33
-
-******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:28 2004
-
-user time   =       0.08 seconds =       0.00 minutes
-system time =       0.04 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:28 2004
-
-
-             ------------------------------------------
-
-                CSCF3.0: An SCF program written in C
-
-              Written by too many people to mention here
-
-             ------------------------------------------
-
-  I think the multiplicity is 1.
-  If this is wrong, please specify the MULTP keyword
-
-  label        = nh3
-  wfn          = SCF
-  reference    = RHF
-  multiplicity = 1
-  charge       = 0
-  direct       = false
-  dertype      = FIRST
-  convergence  = 13
-  maxiter      = 40
-  guess        = AUTO
-
-  nuclear repulsion energy       12.0596426478009
-
-  using old vector from file30 as initial guess
-  energy from old vector:   -56.20901753
-
-  level shift                      = 0.100000
-  diis scale factor                = 1.000000
-  iterations before extrapolation  = 0
-  6 error matrices will be kept
-
-  keeping integrals in 1972176 bytes of core
-
-  The lowest eigenvalue of the overlap matrix was 1.628008e-02
-
-
-  Reading Occupations from file30
-
-  Symmetry block:   A    
-  DOCC:              5   
-  SOCC:              0   
-
-  reading integrals in the IWL format from files 33,35,36,37
-  wrote 115267 integrals to file92
-
-  iter       total energy        delta E         delta P          diiser
-    1       -56.2090175301    6.826866e+01    0.000000e+00    0.000000e+00
-    2       -56.2090175308    7.052563e-10    1.435889e-07    1.287950e-05
-    3       -56.2090175309    5.363177e-11    5.076422e-08    2.892006e-06
-    4       -56.2090175309    5.528022e-12    1.369252e-08    8.371470e-07
-    5       -56.2090175309    8.952838e-13    1.083190e-08    3.164218e-07
-    6       -56.2090175309    4.263256e-14    3.012319e-09    8.413558e-08
-    7       -56.2090175309    0.000000e+00    7.396558e-10    1.819889e-08
-    8       -56.2090175309    1.421085e-14    5.898230e-11    2.776420e-09
-    9       -56.2090175309   -1.421085e-14    1.449720e-11    7.802279e-10
-   10       -56.2090175309    0.000000e+00    1.857343e-12    7.164836e-11
-   11       -56.2090175309    0.000000e+00    3.193200e-13    2.160199e-11
-   12       -56.2090175309    0.000000e+00    7.760966e-14    5.146707e-12
-
- Correcting phases of orbitals.
-
-Orbital energies (a.u.):
-
-  Doubly occupied orbitals
-   1A     -15.535829     2A      -1.140588     3A      -0.629192  
-   4A      -0.629183     5A      -0.421040  
-
-
-  Unoccupied orbitals
-   6A       0.240616     7A       0.350140     8A       0.350144  
-   9A       0.654310    10A       0.654310    11A       0.691361  
-  12A       1.101445    13A       1.123103    14A       1.145360  
-  15A       1.145369    16A       1.353221    17A       1.353236  
-  18A       1.799269    19A       1.819400    20A       1.956870  
-  21A       1.956885    22A       2.404210    23A       2.404225  
-  24A       2.537956    25A       2.826164    26A       2.826173  
-  27A       3.031440    28A       3.292736    29A       3.292751  
-  30A       4.341580    31A      35.808945  
-
-
-        SCF total energy   =     -56.209017530886
-        kinetic energy     =      56.172549403548
-        nuc. attr. energy  =    -155.998204355530
-        elec. rep. energy  =      43.616637421096
-        potential energy   =    -112.381566934434
-        virial theorem     =       1.999351205039
-        wavefunction norm  =       1.000000000000
-******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:28 2004
-
-user time   =       0.06 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:28 2004
-
-                  --------------------------------------------
-                    CINTS: An integrals program written in C
-                     Justin T. Fermann and Edward F. Valeev
-                  --------------------------------------------
-
-
-  -OPTIONS:
-    Print level                 = 1
-    Integral tolerance          = 1e-15
-    Max. memory to use          = 2500000 double words
-    Number of threads           = 1
-    LIBINT's real type length   = 64 bit
-
-  -CALCULATION CONSTANTS:
-    Label                       = nh3
-    Number of atoms             = 4
-    Number of atomic orbitals   = 31
-    Number of symmetry orbitals = 31
-    Maximum AM in the basis     = 2
-
-  -SYMMETRY INFORMATION;
-    Computational point group        = C1 
-    Number of irreps                 = 1
-  Rotational invariance condition satisfied.
-  |X cross Grad| =  0.000000000001   (it is the accuracy of the computed forces)
-  So long..
-
-
-  -SCF forces in the reference frame (a.u.):
-     Atom            X                  Y                   Z
-    ------   -----------------  -----------------  -----------------
-       1       -0.000000920984    -0.000009713191    -0.000001716809
-       2        0.000000547998     0.000003149780     0.000002557314
-       3        0.000002011863     0.000001811807    -0.000001797174
-       4       -0.000001638877     0.000004751604     0.000000956669
-
-******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:28 2004
-
-user time   =       0.43 seconds =       0.01 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-
-	------------------------------------------------------
-	    OPTKING: for internal coordinate optimizations    
-	------------------------------------------------------
-
-Cartesian geometry and possibly gradient in a.u. with masses
-  7.0    14.00307401   0.0017185226  -0.0013118638   0.1212471107
-  1.0     1.00782503  -1.2146845373  -1.2860953071  -0.5583691331
-  1.0     1.00782503  -0.5234285579   1.6970608286  -0.5360051463
-  1.0     1.00782503   1.7142353397  -0.3927380263  -0.5902755462
-                      -0.0000009210  -0.0000097132  -0.0000017168
-                       0.0000005480   0.0000031498   0.0000025573
-                       0.0000020119   0.0000018118  -0.0000017972
-                      -0.0000016389   0.0000047516   0.0000009567
-
-Simple Internal Coordinates and Values
-Stretches
-    (1 1 2) (1.00295258)
-    (2 1 3) (1.00295909)
-    (3 1 4) (1.00295392)
-Bends
-    (4 2 1 3) (107.77404707)
-    (5 2 1 4) (107.77546823)
-    (6 3 1 4) (107.77217246)
-Torsions
-    (7 1 2 3 4) (37.68669202)
-    (8 1 3 4 2) (37.68566985)
-    (9 1 4 2 3) (37.68755845)
- 
- ** Taking normal optimization step. **
-
-Current SCF energy before step       -56.2090175309
-
-Taking geometry step number 6
-
-BuB^t Determinant: 2.840375e-47
-
-Force Constants read from PSIF_OPTKING
-
-Performing BFGS Hessian update with previous 5 gradient(s).
-
-Scaling displacements by 1.000000
-
-Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
-         Value          Force        Displacement   New Value
- 1   1.0029525785   0.0000233033   0.0000028564   1.0029554349
- 2   1.0029590908  -0.0000083714  -0.0000023594   1.0029567314
- 3   1.0029539245   0.0000224374   0.0000020128   1.0029559373
- 4   1.8810119697  -0.0000032974   0.0000026390   1.8810146087
- 5   1.8810367735  -0.0000120422  -0.0000237620   1.8810130115
- 6   1.8809792515   0.0000153675   0.0000272204   1.8810064719
- 7   0.6577568599   0.0000020809  -0.0000019883   0.6577548715
- 8   0.6577390198   0.0000122956   0.0000113500   0.6577503698
- 9   0.6577719821  -0.0000144146  -0.0000176508   0.6577543313
-   MAX force:    0.0000233033   RMS force:    0.0000144218
-
-Back-transformation to cartesian coordinates...
- Iter   RMS Delta(dx)   RMS Delta(dq)
-    2  0.000006318583  0.000000000121
-    3  0.000000000049  0.000000000098
-Convergence to displaced geometry took 3 iterations.
-
-New Cartesian Geometry in a.u.
-  7.0   0.0017189961  -0.0013086870   0.1212466368
-  1.0  -1.2146733358  -1.2861065729  -0.5583765582
-  1.0  -0.5234437890   1.6970593403  -0.5359922694
-  1.0   1.7142327909  -0.3927694112  -0.5902744123
-
-Geometry written to chkpt
-
-******** OPTKING execution completed ********
-
-******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:28 2004
-
-                  --------------------------------------------
-                    CINTS: An integrals program written in C
-                     Justin T. Fermann and Edward F. Valeev
-                  --------------------------------------------
-
-
-  -OPTIONS:
-    Print level                 = 1
-    Integral tolerance          = 1e-15
-    Max. memory to use          = 2500000 double words
-    Number of threads           = 1
-    LIBINT's real type length   = 64 bit
-
-  -CALCULATION CONSTANTS:
-    Label                       = nh3
-    Number of atoms             = 4
-    Number of atomic orbitals   = 31
-    Number of symmetry orbitals = 31
-    Maximum AM in the basis     = 2
-
-  -SYMMETRY INFORMATION;
-    Computational point group        = C1 
-    Number of irreps                 = 1
-
-    Wrote 115267 two-electron integrals to IWL file 33
-
-******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:29 2004
-
-user time   =       0.11 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
-******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:29 2004
-
-
-             ------------------------------------------
-
-                CSCF3.0: An SCF program written in C
-
-              Written by too many people to mention here
-
-             ------------------------------------------
-
-  I think the multiplicity is 1.
-  If this is wrong, please specify the MULTP keyword
-
-  label        = nh3
-  wfn          = SCF
-  reference    = RHF
-  multiplicity = 1
-  charge       = 0
-  direct       = false
-  dertype      = FIRST
-  convergence  = 13
-  maxiter      = 40
-  guess        = AUTO
-
-  nuclear repulsion energy       12.0596318620983
-
-  using old vector from file30 as initial guess
-  energy from old vector:   -56.20901753
-
-  level shift                      = 0.100000
-  diis scale factor                = 1.000000
-  iterations before extrapolation  = 0
-  6 error matrices will be kept
-
-  keeping integrals in 1972176 bytes of core
-
-  The lowest eigenvalue of the overlap matrix was 1.628015e-02
-
-
-  Reading Occupations from file30
-
-  Symmetry block:   A    
-  DOCC:              5   
-  SOCC:              0   
-
-  reading integrals in the IWL format from files 33,35,36,37
-  wrote 115267 integrals to file92
-
-  iter       total energy        delta E         delta P          diiser
-    1       -56.2090175310    6.826865e+01    0.000000e+00    0.000000e+00
-    2       -56.2090175310    3.122125e-11    2.599546e-08    1.738954e-06
-    3       -56.2090175310    2.501110e-12    8.759277e-09    6.285614e-07
-    4       -56.2090175310    9.947598e-14    1.855248e-09    1.466459e-07
-    5       -56.2090175310    1.421085e-14    6.392042e-10    4.649295e-08
-    6       -56.2090175310    0.000000e+00    1.442287e-10    5.459375e-09
-    7       -56.2090175310    0.000000e+00    3.983658e-11    1.313241e-09
-    8       -56.2090175310    1.421085e-14    9.507177e-12    3.268831e-10
-    9       -56.2090175310    0.000000e+00    3.719156e-12    1.058829e-10
-   10       -56.2090175310   -1.421085e-14    6.917644e-13    1.528053e-11
-   11       -56.2090175310    0.000000e+00    1.245016e-13    2.610614e-12
-   12       -56.2090175310    0.000000e+00    1.075348e-14    8.584969e-13
-
- Correcting phases of orbitals.
-
-Orbital energies (a.u.):
-
-  Doubly occupied orbitals
-   1A     -15.535829     2A      -1.140588     3A      -0.629188  
-   4A      -0.629187     5A      -0.421040  
-
-
-  Unoccupied orbitals
-   6A       0.240616     7A       0.350142     8A       0.350142  
-   9A       0.654310    10A       0.654310    11A       0.691361  
-  12A       1.101443    13A       1.123103    14A       1.145363  
-  15A       1.145365    16A       1.353228    17A       1.353230  
-  18A       1.799267    19A       1.819400    20A       1.956875  
-  21A       1.956877    22A       2.404215    23A       2.404218  
-  24A       2.537953    25A       2.826167    26A       2.826169  
-  27A       3.031439    28A       3.292740    29A       3.292743  
-  30A       4.341580    31A      35.808944  
-
-
-        SCF total energy   =     -56.209017531042
-        kinetic energy     =      56.172544411009
-        nuc. attr. energy  =    -155.998180399790
-        elec. rep. energy  =      43.616618457739
-        potential energy   =    -112.381561942051
-        virial theorem     =       1.999351116215
-        wavefunction norm  =       1.000000000000
-******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:29 2004
-
-user time   =       0.07 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:29 2004
-
-                  --------------------------------------------
-                    CINTS: An integrals program written in C
-                     Justin T. Fermann and Edward F. Valeev
-                  --------------------------------------------
-
-
-  -OPTIONS:
-    Print level                 = 1
-    Integral tolerance          = 1e-15
-    Max. memory to use          = 2500000 double words
-    Number of threads           = 1
-    LIBINT's real type length   = 64 bit
-
-  -CALCULATION CONSTANTS:
-    Label                       = nh3
-    Number of atoms             = 4
-    Number of atomic orbitals   = 31
-    Number of symmetry orbitals = 31
-    Maximum AM in the basis     = 2
-
-  -SYMMETRY INFORMATION;
-    Computational point group        = C1 
-    Number of irreps                 = 1
-  Rotational invariance condition satisfied.
-  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
-  So long..
-
-
-  -SCF forces in the reference frame (a.u.):
-     Atom            X                  Y                   Z
-    ------   -----------------  -----------------  -----------------
-       1       -0.000000681513    -0.000001401453    -0.000001202987
-       2        0.000000679450     0.000000506458     0.000000778042
-       3        0.000000554140     0.000000282590     0.000000095849
-       4       -0.000000552077     0.000000612405     0.000000329096
-
-******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:29 2004
-
-user time   =       0.40 seconds =       0.01 minutes
-system time =       0.02 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-
-	------------------------------------------------------
-	    OPTKING: for internal coordinate optimizations    
-	------------------------------------------------------
-
-Cartesian geometry and possibly gradient in a.u. with masses
-  7.0    14.00307401   0.0017189961  -0.0013086870   0.1212466368
-  1.0     1.00782503  -1.2146733358  -1.2861065729  -0.5583765582
-  1.0     1.00782503  -0.5234437890   1.6970593403  -0.5359922694
-  1.0     1.00782503   1.7142327909  -0.3927694112  -0.5902744123
-                      -0.0000006815  -0.0000014015  -0.0000012030
-                       0.0000006795   0.0000005065   0.0000007780
-                       0.0000005541   0.0000002826   0.0000000958
-                      -0.0000005521   0.0000006124   0.0000003291
-
-Simple Internal Coordinates and Values
-Stretches
-    (1 1 2) (1.00295543)
-    (2 1 3) (1.00295673)
-    (3 1 4) (1.00295594)
-Bends
-    (4 2 1 3) (107.77419829)
-    (5 2 1 4) (107.77410677)
-    (6 3 1 4) (107.77373207)
-Torsions
-    (7 1 2 3 4) (37.68657808)
-    (8 1 3 4 2) (37.68632017)
-    (9 1 4 2 3) (37.68654715)
- 
- ** Taking normal optimization step. **
-
-Current SCF energy before step       -56.2090175310
-
-Taking geometry step number 7
-
-BuB^t Determinant: -1.143757e-45
-
-Force Constants read from PSIF_OPTKING
-
-Performing BFGS Hessian update with previous 6 gradient(s).
-
-Scaling displacements by 1.000000
-
-Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
-         Value          Force        Displacement   New Value
- 1   1.0029554349   0.0000078076   0.0000012468   1.0029566817
- 2   1.0029567314   0.0000001620   0.0000000418   1.0029567732
- 3   1.0029559374   0.0000063723   0.0000008237   1.0029567610
- 4   1.8810146088  -0.0000027099  -0.0000053346   1.8810092742
- 5   1.8810130115  -0.0000006781  -0.0000048463   1.8810081652
- 6   1.8810064719   0.0000017133   0.0000017299   1.8810082017
- 7   0.6577548714   0.0000002327   0.0000025425   0.6577574139
- 8   0.6577503699   0.0000031272   0.0000064456   0.6577568155
- 9   0.6577543315  -0.0000010833   0.0000024999   0.6577568314
-   MAX force:    0.0000078076   RMS force:    0.0000037019
-
-Back-transformation to cartesian coordinates...
- Iter   RMS Delta(dx)   RMS Delta(dq)
-    2  0.000001507035  0.000000000010
-    3  0.000000000004  0.000000000009
-Convergence to displaced geometry took 3 iterations.
-
-New Cartesian Geometry in a.u.
-  7.0   0.0017193201  -0.0013082941   0.1212475569
-  1.0  -1.2146732178  -1.2861057635  -0.5583826276
-  1.0  -0.5234476281   1.6970569474  -0.5359954496
-  1.0   1.7142320104  -0.3927732876  -0.5902779478
-
-Geometry written to chkpt
-
-******** OPTKING execution completed ********
-
-******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:29 2004
-
-                  --------------------------------------------
-                    CINTS: An integrals program written in C
-                     Justin T. Fermann and Edward F. Valeev
-                  --------------------------------------------
-
-
-  -OPTIONS:
-    Print level                 = 1
-    Integral tolerance          = 1e-15
-    Max. memory to use          = 2500000 double words
-    Number of threads           = 1
-    LIBINT's real type length   = 64 bit
-
-  -CALCULATION CONSTANTS:
-    Label                       = nh3
-    Number of atoms             = 4
-    Number of atomic orbitals   = 31
-    Number of symmetry orbitals = 31
-    Maximum AM in the basis     = 2
-
-  -SYMMETRY INFORMATION;
-    Computational point group        = C1 
-    Number of irreps                 = 1
-
-    Wrote 115267 two-electron integrals to IWL file 33
-
-******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:29 2004
-
-user time   =       0.10 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:29 2004
-
-
-             ------------------------------------------
-
-                CSCF3.0: An SCF program written in C
-
-              Written by too many people to mention here
-
-             ------------------------------------------
-
-  I think the multiplicity is 1.
-  If this is wrong, please specify the MULTP keyword
-
-  label        = nh3
-  wfn          = SCF
-  reference    = RHF
-  multiplicity = 1
-  charge       = 0
-  direct       = false
-  dertype      = FIRST
-  convergence  = 13
-  maxiter      = 40
-  guess        = AUTO
-
-  nuclear repulsion energy       12.0596244024140
-
-  using old vector from file30 as initial guess
-  energy from old vector:   -56.20901753
-
-  level shift                      = 0.100000
-  diis scale factor                = 1.000000
-  iterations before extrapolation  = 0
-  6 error matrices will be kept
-
-  keeping integrals in 1972176 bytes of core
-
-  The lowest eigenvalue of the overlap matrix was 1.628012e-02
-
-
-  Reading Occupations from file30
-
-  Symmetry block:   A    
-  DOCC:              5   
-  SOCC:              0   
-
-  reading integrals in the IWL format from files 33,35,36,37
-  wrote 115267 integrals to file92
-
-  iter       total energy        delta E         delta P          diiser
-    1       -56.2090175310    6.826864e+01    0.000000e+00    0.000000e+00
-    2       -56.2090175310    2.799538e-12    9.181439e-09    7.140365e-07
-    3       -56.2090175310    2.415845e-13    3.337739e-09    1.632419e-07
-    4       -56.2090175310    4.263256e-14    1.163152e-09    6.946762e-08
-    5       -56.2090175310    1.421085e-14    7.913939e-10    2.269197e-08
-    6       -56.2090175310   -1.421085e-14    2.066709e-10    5.496971e-09
-    7       -56.2090175310    1.421085e-14    4.028275e-11    1.028227e-09
-    8       -56.2090175310    0.000000e+00    4.894361e-12    1.942194e-10
-    9       -56.2090175310    0.000000e+00    9.193804e-13    4.910195e-11
-   10       -56.2090175310    0.000000e+00    1.477881e-13    4.962850e-12
-   11       -56.2090175310    0.000000e+00    2.274901e-14    1.615961e-12
-
- Correcting phases of orbitals.
-
-Orbital energies (a.u.):
-
-  Doubly occupied orbitals
-   1A     -15.535829     2A      -1.140588     3A      -0.629187  
-   4A      -0.629187     5A      -0.421040  
-
-
-  Unoccupied orbitals
-   6A       0.240615     7A       0.350141     8A       0.350142  
-   9A       0.654310    10A       0.654310    11A       0.691361  
-  12A       1.101444    13A       1.123103    14A       1.145363  
-  15A       1.145363    16A       1.353228    17A       1.353228  
-  18A       1.799267    19A       1.819398    20A       1.956876  
-  21A       1.956876    22A       2.404214    23A       2.404214  
-  24A       2.537955    25A       2.826166    26A       2.826166  
-  27A       3.031436    28A       3.292740    29A       3.292740  
-  30A       4.341579    31A      35.808944  
-
-
-        SCF total energy   =     -56.209017531049
-        kinetic energy     =      56.172541838235
-        nuc. attr. energy  =    -155.998163430068
-        elec. rep. energy  =      43.616604060784
-        potential energy   =    -112.381559369284
-        virial theorem     =       1.999351070444
-        wavefunction norm  =       1.000000000000
-******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:29 2004
-
-user time   =       0.06 seconds =       0.00 minutes
-system time =       0.04 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:29 2004
-
-                  --------------------------------------------
-                    CINTS: An integrals program written in C
-                     Justin T. Fermann and Edward F. Valeev
-                  --------------------------------------------
-
-
-  -OPTIONS:
-    Print level                 = 1
-    Integral tolerance          = 1e-15
-    Max. memory to use          = 2500000 double words
-    Number of threads           = 1
-    LIBINT's real type length   = 64 bit
-
-  -CALCULATION CONSTANTS:
-    Label                       = nh3
-    Number of atoms             = 4
-    Number of atomic orbitals   = 31
-    Number of symmetry orbitals = 31
-    Maximum AM in the basis     = 2
-
-  -SYMMETRY INFORMATION;
-    Computational point group        = C1 
-    Number of irreps                 = 1
-  Rotational invariance condition satisfied.
-  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
-  So long..
-
-
-  -SCF forces in the reference frame (a.u.):
-     Atom            X                  Y                   Z
-    ------   -----------------  -----------------  -----------------
-       1       -0.000000146227    -0.000000034024    -0.000000153332
-       2        0.000000121026     0.000000003080     0.000000082034
-       3        0.000000077363     0.000000023653     0.000000052866
-       4       -0.000000052162     0.000000007291     0.000000018432
-
-******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:30 2004
-
-user time   =       0.40 seconds =       0.01 minutes
-system time =       0.07 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
-
-	------------------------------------------------------
-	    OPTKING: for internal coordinate optimizations    
-	------------------------------------------------------
-
-Cartesian geometry and possibly gradient in a.u. with masses
-  7.0    14.00307401   0.0017193201  -0.0013082941   0.1212475569
-  1.0     1.00782503  -1.2146732178  -1.2861057635  -0.5583826276
-  1.0     1.00782503  -0.5234476281   1.6970569474  -0.5359954496
-  1.0     1.00782503   1.7142320104  -0.3927732876  -0.5902779478
-                      -0.0000001462  -0.0000000340  -0.0000001533
-                       0.0000001210   0.0000000031   0.0000000820
-                       0.0000000774   0.0000000237   0.0000000529
-                      -0.0000000522   0.0000000073   0.0000000184
-
-Simple Internal Coordinates and Values
-Stretches
-    (1 1 2) (1.00295668)
-    (2 1 3) (1.00295677)
-    (3 1 4) (1.00295676)
-Bends
-    (4 2 1 3) (107.77389264)
-    (5 2 1 4) (107.77382909)
-    (6 3 1 4) (107.77383119)
-Torsions
-    (7 1 2 3 4) (37.68672376)
-    (8 1 3 4 2) (37.68668947)
-    (9 1 4 2 3) (37.68669038)
- 
- ** Taking normal optimization step. **
-
-Current SCF energy before step       -56.2090175310
-
-Taking geometry step number 8
-
-BuB^t Determinant: -4.466973e-47
-
-Force Constants read from PSIF_OPTKING
-
-Performing BFGS Hessian update with previous 6 gradient(s).
-
-Scaling displacements by 1.000000
-
-Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
-         Value          Force        Displacement   New Value
- 1   1.0029566817   0.0000008232   0.0000001440   1.0029568257
- 2   1.0029567732   0.0000001480   0.0000000490   1.0029568222
- 3   1.0029567610   0.0000005390   0.0000000777   1.0029568387
- 4   1.8810092742  -0.0000005118  -0.0000011741   1.8810081002
- 5   1.8810081652   0.0000001962  -0.0000001616   1.8810080035
- 6   1.8810082017   0.0000000542  -0.0000001511   1.8810080506
- 7   0.6577574138  -0.0000000927   0.0000003096   0.6577577235
- 8   0.6577568155   0.0000003164   0.0000008768   0.6577576922
- 9   0.6577568313   0.0000001316   0.0000008346   0.6577576660
-   MAX force:    0.0000008232   RMS force:    0.0000003971
-
-Back-transformation to cartesian coordinates...
- Iter   RMS Delta(dx)   RMS Delta(dq)
-    2  0.000000247075  0.000000000000
-    3  0.000000000000  0.000000000000
-Convergence to displaced geometry took 3 iterations.
-
-New Cartesian Geometry in a.u.
-  7.0   0.0017193872  -0.0013083011   0.1212477138
-  1.0  -1.2146735881  -1.2861052173  -0.5583834924
-  1.0  -0.5234481522   1.6970564851  -0.5359962642
-  1.0   1.7142319717  -0.3927732745  -0.5902784477
-
-Geometry written to chkpt
-
-******** OPTKING execution completed ********
-
-******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:30 2004
-
-                  --------------------------------------------
-                    CINTS: An integrals program written in C
-                     Justin T. Fermann and Edward F. Valeev
-                  --------------------------------------------
-
-
-  -OPTIONS:
-    Print level                 = 1
-    Integral tolerance          = 1e-15
-    Max. memory to use          = 2500000 double words
-    Number of threads           = 1
-    LIBINT's real type length   = 64 bit
-
-  -CALCULATION CONSTANTS:
-    Label                       = nh3
-    Number of atoms             = 4
-    Number of atomic orbitals   = 31
-    Number of symmetry orbitals = 31
-    Maximum AM in the basis     = 2
-
-  -SYMMETRY INFORMATION;
-    Computational point group        = C1 
-    Number of irreps                 = 1
-
-    Wrote 115267 two-electron integrals to IWL file 33
-
-******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:30 2004
-
-user time   =       0.08 seconds =       0.00 minutes
-system time =       0.04 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:30 2004
-
-
-             ------------------------------------------
-
-                CSCF3.0: An SCF program written in C
-
-              Written by too many people to mention here
-
-             ------------------------------------------
-
-  I think the multiplicity is 1.
-  If this is wrong, please specify the MULTP keyword
-
-  label        = nh3
-  wfn          = SCF
-  reference    = RHF
-  multiplicity = 1
-  charge       = 0
-  direct       = false
-  dertype      = FIRST
-  convergence  = 13
-  maxiter      = 40
-  guess        = AUTO
-
-  nuclear repulsion energy       12.0596234946275
-
-  using old vector from file30 as initial guess
-  energy from old vector:   -56.20901753
-
-  level shift                      = 0.100000
-  diis scale factor                = 1.000000
-  iterations before extrapolation  = 0
-  6 error matrices will be kept
-
-  keeping integrals in 1972176 bytes of core
-
-  The lowest eigenvalue of the overlap matrix was 1.628011e-02
-
-
-  Reading Occupations from file30
-
-  Symmetry block:   A    
-  DOCC:              5   
-  SOCC:              0   
-
-  reading integrals in the IWL format from files 33,35,36,37
-  wrote 115267 integrals to file92
-
-  iter       total energy        delta E         delta P          diiser
-    1       -56.2090175310    6.826864e+01    0.000000e+00    0.000000e+00
-    2       -56.2090175310    7.105427e-14    1.479543e-09    1.260687e-07
-    3       -56.2090175310    0.000000e+00    5.269323e-10    2.861315e-08
-    4       -56.2090175310    0.000000e+00    1.716243e-10    1.136402e-08
-    5       -56.2090175310   -1.421085e-14    1.260225e-10    3.708036e-09
-    6       -56.2090175310    1.421085e-14    3.387733e-11    9.209498e-10
-    7       -56.2090175310    0.000000e+00    7.364447e-12    1.806598e-10
-    8       -56.2090175310    0.000000e+00    6.423548e-13    3.383940e-11
-    9       -56.2090175310    0.000000e+00    1.492990e-13    9.044531e-12
-   10       -56.2090175310    0.000000e+00    2.029544e-14    7.104596e-13
-
- No phase correction possible.
-
-Orbital energies (a.u.):
-
-  Doubly occupied orbitals
-   1A     -15.535829     2A      -1.140588     3A      -0.629187  
-   4A      -0.629187     5A      -0.421041  
-
-
-  Unoccupied orbitals
-   6A       0.240615     7A       0.350141     8A       0.350141  
-   9A       0.654310    10A       0.654310    11A       0.691361  
-  12A       1.101444    13A       1.123103    14A       1.145363  
-  15A       1.145363    16A       1.353228    17A       1.353228  
-  18A       1.799268    19A       1.819398    20A       1.956876  
-  21A       1.956876    22A       2.404214    23A       2.404214  
-  24A       2.537956    25A       2.826166    26A       2.826166  
-  27A       3.031435    28A       3.292740    29A       3.292740  
-  30A       4.341579    31A      35.808944  
-
-
-        SCF total energy   =     -56.209017531049
-        kinetic energy     =      56.172541557004
-        nuc. attr. energy  =    -155.998161350489
-        elec. rep. energy  =      43.616602262436
-        potential energy   =    -112.381559088053
-        virial theorem     =       1.999351065440
-        wavefunction norm  =       1.000000000000
-******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:30 2004
-
-user time   =       0.05 seconds =       0.00 minutes
-system time =       0.03 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:30 2004
-
-                  --------------------------------------------
-                    CINTS: An integrals program written in C
-                     Justin T. Fermann and Edward F. Valeev
-                  --------------------------------------------
-
-
-  -OPTIONS:
-    Print level                 = 1
-    Integral tolerance          = 1e-15
-    Max. memory to use          = 2500000 double words
-    Number of threads           = 1
-    LIBINT's real type length   = 64 bit
-
-  -CALCULATION CONSTANTS:
-    Label                       = nh3
-    Number of atoms             = 4
-    Number of atomic orbitals   = 31
-    Number of symmetry orbitals = 31
-    Maximum AM in the basis     = 2
-
-  -SYMMETRY INFORMATION;
-    Computational point group        = C1 
-    Number of irreps                 = 1
-  Rotational invariance condition satisfied.
-  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
-  So long..
-
-
-  -SCF forces in the reference frame (a.u.):
-     Atom            X                  Y                   Z
-    ------   -----------------  -----------------  -----------------
-       1       -0.000000017962     0.000000010849    -0.000000000784
-       2        0.000000008843    -0.000000000913     0.000000001365
-       3        0.000000005415    -0.000000005492     0.000000004268
-       4        0.000000003704    -0.000000004444    -0.000000004849
-
-******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:31 2004
-
-user time   =       0.37 seconds =       0.01 minutes
-system time =       0.07 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
-
-	------------------------------------------------------
-	    OPTKING: for internal coordinate optimizations    
-	------------------------------------------------------
-
-Cartesian geometry and possibly gradient in a.u. with masses
-  7.0    14.00307401   0.0017193872  -0.0013083011   0.1212477138
-  1.0     1.00782503  -1.2146735881  -1.2861052173  -0.5583834924
-  1.0     1.00782503  -0.5234481522   1.6970564851  -0.5359962642
-  1.0     1.00782503   1.7142319717  -0.3927732745  -0.5902784477
-                      -0.0000000180   0.0000000108  -0.0000000008
-                       0.0000000088  -0.0000000009   0.0000000014
-                       0.0000000054  -0.0000000055   0.0000000043
-                       0.0000000037  -0.0000000044  -0.0000000048
-
-Simple Internal Coordinates and Values
-Stretches
-    (1 1 2) (1.00295683)
-    (2 1 3) (1.00295682)
-    (3 1 4) (1.00295684)
-Bends
-    (4 2 1 3) (107.77382537)
-    (5 2 1 4) (107.77381983)
-    (6 3 1 4) (107.77382253)
-Torsions
-    (7 1 2 3 4) (37.68674150)
-    (8 1 3 4 2) (37.68673971)
-    (9 1 4 2 3) (37.68673820)
- 
- ** Taking normal optimization step. **
-
-Current SCF energy before step       -56.2090175310
-
-Taking geometry step number 9
-
-BuB^t Determinant: -1.196121e-45
-
-Force Constants read from PSIF_OPTKING
-
-Performing BFGS Hessian update with previous 6 gradient(s).
-
-Scaling displacements by 1.000000
-
-Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
-         Value          Force        Displacement   New Value
- 1   1.0029568257   0.0000000430   0.0000000060   1.0029568317
- 2   1.0029568222   0.0000000555   0.0000000089   1.0029568311
- 3   1.0029568387  -0.0000000379  -0.0000000068   1.0029568319
- 4   1.8810081002  -0.0000000161  -0.0000000423   1.8810080579
- 5   1.8810080035   0.0000000227   0.0000000512   1.8810080547
- 6   1.8810080506  -0.0000000022   0.0000000043   1.8810080549
- 7   0.6577577235  -0.0000000337  -0.0000000343   0.6577576892
- 8   0.6577576922   0.0000000049  -0.0000000047   0.6577576875
- 9   0.6577576660   0.0000000228   0.0000000212   0.6577576872
-   MAX force:    0.0000000555   RMS force:    0.0000000313
-
-Back-transformation to cartesian coordinates...
- Iter   RMS Delta(dx)   RMS Delta(dq)
-    2  0.000000011780  0.000000000000
-Convergence to displaced geometry took 2 iterations.
-
-New Cartesian Geometry in a.u.
-  7.0   0.0017193923  -0.0013083051   0.1212477127
-  1.0  -1.2146736383  -1.2861051881  -0.5583834887
-  1.0  -0.5234481812   1.6970564842  -0.5359962783
-  1.0   1.7142319808  -0.3927732473  -0.5902784221
-
-Geometry written to chkpt
-
-******** OPTKING execution completed ********
-
-******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:31 2004
-
-                  --------------------------------------------
-                    CINTS: An integrals program written in C
-                     Justin T. Fermann and Edward F. Valeev
-                  --------------------------------------------
-
-
-  -OPTIONS:
-    Print level                 = 1
-    Integral tolerance          = 1e-15
-    Max. memory to use          = 2500000 double words
-    Number of threads           = 1
-    LIBINT's real type length   = 64 bit
-
-  -CALCULATION CONSTANTS:
-    Label                       = nh3
-    Number of atoms             = 4
-    Number of atomic orbitals   = 31
-    Number of symmetry orbitals = 31
-    Maximum AM in the basis     = 2
-
-  -SYMMETRY INFORMATION;
-    Computational point group        = C1 
-    Number of irreps                 = 1
-
-    Wrote 115267 two-electron integrals to IWL file 33
-
-******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:31 2004
-
-user time   =       0.08 seconds =       0.00 minutes
-system time =       0.04 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:31 2004
-
-
-             ------------------------------------------
-
-                CSCF3.0: An SCF program written in C
-
-              Written by too many people to mention here
-
-             ------------------------------------------
-
-  I think the multiplicity is 1.
-  If this is wrong, please specify the MULTP keyword
-
-  label        = nh3
-  wfn          = SCF
-  reference    = RHF
-  multiplicity = 1
-  charge       = 0
-  direct       = false
-  dertype      = FIRST
-  convergence  = 13
-  maxiter      = 40
-  guess        = AUTO
-
-  nuclear repulsion energy       12.0596234608261
-
-  using old vector from file30 as initial guess
-  energy from old vector:   -56.20901753
-
-  level shift                      = 0.100000
-  diis scale factor                = 1.000000
-  iterations before extrapolation  = 0
-  6 error matrices will be kept
-
-  keeping integrals in 1972176 bytes of core
-
-  The lowest eigenvalue of the overlap matrix was 1.628012e-02
-
-
-  Reading Occupations from file30
-
-  Symmetry block:   A    
-  DOCC:              5   
-  SOCC:              0   
-
-  reading integrals in the IWL format from files 33,35,36,37
-  wrote 115267 integrals to file92
-
-  iter       total energy        delta E         delta P          diiser
-    1       -56.2090175310    6.826864e+01    0.000000e+00    0.000000e+00
-    2       -56.2090175310    0.000000e+00    5.128522e-11    4.394954e-09
-    3       -56.2090175310    0.000000e+00    1.812072e-11    1.324212e-09
-    4       -56.2090175310    0.000000e+00    4.073548e-12    3.992553e-10
-    5       -56.2090175310    0.000000e+00    1.791746e-12    1.226920e-10
-    6       -56.2090175310    0.000000e+00    3.588419e-13    1.279980e-11
-    7       -56.2090175310    0.000000e+00    9.296076e-14    3.243106e-12
-
- No phase correction possible.
-
-Orbital energies (a.u.):
-
-  Doubly occupied orbitals
-   1A     -15.535829     2A      -1.140588     3A      -0.629187  
-   4A      -0.629187     5A      -0.421041  
-
-
-  Unoccupied orbitals
-   6A       0.240615     7A       0.350141     8A       0.350141  
-   9A       0.654310    10A       0.654310    11A       0.691361  
-  12A       1.101444    13A       1.123103    14A       1.145363  
-  15A       1.145363    16A       1.353228    17A       1.353228  
-  18A       1.799267    19A       1.819398    20A       1.956876  
-  21A       1.956876    22A       2.404214    23A       2.404214  
-  24A       2.537956    25A       2.826166    26A       2.826166  
-  27A       3.031435    28A       3.292740    29A       3.292740  
-  30A       4.341579    31A      35.808944  
-
-
-        SCF total energy   =     -56.209017531049
-        kinetic energy     =      56.172541541770
-        nuc. attr. energy  =    -155.998161275221
-        elec. rep. energy  =      43.616602202402
-        potential energy   =    -112.381559072819
-        virial theorem     =       1.999351065169
-        wavefunction norm  =       1.000000000000
-******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:31 2004
-
-user time   =       0.06 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:31 2004
-
-                  --------------------------------------------
-                    CINTS: An integrals program written in C
-                     Justin T. Fermann and Edward F. Valeev
-                  --------------------------------------------
-
-
-  -OPTIONS:
-    Print level                 = 1
-    Integral tolerance          = 1e-15
-    Max. memory to use          = 2500000 double words
-    Number of threads           = 1
-    LIBINT's real type length   = 64 bit
-
-  -CALCULATION CONSTANTS:
-    Label                       = nh3
-    Number of atoms             = 4
-    Number of atomic orbitals   = 31
-    Number of symmetry orbitals = 31
-    Maximum AM in the basis     = 2
-
-  -SYMMETRY INFORMATION;
-    Computational point group        = C1 
-    Number of irreps                 = 1
-  Rotational invariance condition satisfied.
-  |X cross Grad| =  0.000000000002   (it is the accuracy of the computed forces)
-  So long..
-
-
-  -SCF forces in the reference frame (a.u.):
-     Atom            X                  Y                   Z
-    ------   -----------------  -----------------  -----------------
-       1       -0.000000000627     0.000000000606     0.000000000551
-       2       -0.000000000178    -0.000000000518    -0.000000000185
-       3        0.000000000214     0.000000000052     0.000000000017
-       4        0.000000000591    -0.000000000141    -0.000000000383
-
-******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:31 2004
-
-user time   =       0.43 seconds =       0.01 minutes
-system time =       0.03 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-
-	------------------------------------------------------
-	    OPTKING: for internal coordinate optimizations    
-	------------------------------------------------------
-
-Cartesian geometry and possibly gradient in a.u. with masses
-  7.0    14.00307401   0.0017193923  -0.0013083051   0.1212477127
-  1.0     1.00782503  -1.2146736383  -1.2861051881  -0.5583834887
-  1.0     1.00782503  -0.5234481812   1.6970564842  -0.5359962783
-  1.0     1.00782503   1.7142319808  -0.3927732473  -0.5902784221
-                      -0.0000000006   0.0000000006   0.0000000006
-                      -0.0000000002  -0.0000000005  -0.0000000002
-                       0.0000000002   0.0000000001   0.0000000000
-                       0.0000000006  -0.0000000001  -0.0000000004
-
-Simple Internal Coordinates and Values
-Stretches
-    (1 1 2) (1.00295683)
-    (2 1 3) (1.00295683)
-    (3 1 4) (1.00295683)
-Bends
-    (4 2 1 3) (107.77382295)
-    (5 2 1 4) (107.77382277)
-    (6 3 1 4) (107.77382278)
-Torsions
-    (7 1 2 3 4) (37.68673953)
-    (8 1 3 4 2) (37.68673944)
-    (9 1 4 2 3) (37.68673942)
- 
- ** Taking normal optimization step. **
-
-Current SCF energy before step       -56.2090175310
-
-Taking geometry step number 10
-
-BuB^t Determinant: -2.346170e-46
-
-Force Constants read from PSIF_OPTKING
-
-Performing BFGS Hessian update with previous 6 gradient(s).
-
-Scaling displacements by 1.000000
-
-Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
-         Value          Force        Displacement   New Value
- 1   1.0029568317  -0.0000000044  -0.0000000007   1.0029568310
- 2   1.0029568311  -0.0000000003  -0.0000000000   1.0029568311
- 3   1.0029568319  -0.0000000054  -0.0000000009   1.0029568311
- 4   1.8810080579  -0.0000000007  -0.0000000015   1.8810080564
- 5   1.8810080547   0.0000000002   0.0000000019   1.8810080566
- 6   1.8810080549   0.0000000008   0.0000000018   1.8810080567
- 7   0.6577576892  -0.0000000013  -0.0000000023   0.6577576869
- 8   0.6577576875  -0.0000000001  -0.0000000005   0.6577576870
- 9   0.6577576872   0.0000000011  -0.0000000002   0.6577576870
-   MAX force:    0.0000000054   RMS force:    0.0000000024
-
-Back-transformation to cartesian coordinates...
- Iter   RMS Delta(dx)   RMS Delta(dq)
-    2  0.000000000606  0.000000000000
-Convergence to displaced geometry took 2 iterations.
-
-New Cartesian Geometry in a.u.
-  7.0   0.0017193925  -0.0013083052   0.1212477124
-  1.0  -1.2146736391  -1.2861051861  -0.5583834876
-  1.0  -0.5234481831   1.6970564837  -0.5359962776
-  1.0   1.7142319803  -0.3927732471  -0.5902784199
-
-Geometry written to chkpt
-
-******** OPTKING execution completed ********
-
-******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:31 2004
-
-                  --------------------------------------------
-                    CINTS: An integrals program written in C
-                     Justin T. Fermann and Edward F. Valeev
-                  --------------------------------------------
-
-
-  -OPTIONS:
-    Print level                 = 1
-    Integral tolerance          = 1e-15
-    Max. memory to use          = 2500000 double words
-    Number of threads           = 1
-    LIBINT's real type length   = 64 bit
-
-  -CALCULATION CONSTANTS:
-    Label                       = nh3
-    Number of atoms             = 4
-    Number of atomic orbitals   = 31
-    Number of symmetry orbitals = 31
-    Maximum AM in the basis     = 2
-
-  -SYMMETRY INFORMATION;
-    Computational point group        = C1 
-    Number of irreps                 = 1
-
-    Wrote 115267 two-electron integrals to IWL file 33
-
-******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:31 2004
-
-user time   =       0.08 seconds =       0.00 minutes
-system time =       0.04 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:31 2004
-
-
-             ------------------------------------------
-
-                CSCF3.0: An SCF program written in C
-
-              Written by too many people to mention here
-
-             ------------------------------------------
-
-  I think the multiplicity is 1.
-  If this is wrong, please specify the MULTP keyword
-
-  label        = nh3
-  wfn          = SCF
-  reference    = RHF
-  multiplicity = 1
-  charge       = 0
-  direct       = false
-  dertype      = FIRST
-  convergence  = 13
-  maxiter      = 40
-  guess        = AUTO
-
-  nuclear repulsion energy       12.0596234669518
-
-  using old vector from file30 as initial guess
-  energy from old vector:   -56.20901753
-
-  level shift                      = 0.100000
-  diis scale factor                = 1.000000
-  iterations before extrapolation  = 0
-  6 error matrices will be kept
-
-  keeping integrals in 1972176 bytes of core
-
-  The lowest eigenvalue of the overlap matrix was 1.628012e-02
-
-
-  Reading Occupations from file30
-
-  Symmetry block:   A    
-  DOCC:              5   
-  SOCC:              0   
-
-  reading integrals in the IWL format from files 33,35,36,37
-  wrote 115267 integrals to file92
-
-  iter       total energy        delta E         delta P          diiser
-    1       -56.2090175310    6.826864e+01    0.000000e+00    0.000000e+00
-    2       -56.2090175310    0.000000e+00    3.883355e-12    3.305565e-10
-    3       -56.2090175310    0.000000e+00    1.381614e-12    8.704093e-11
-    4       -56.2090175310    1.421085e-14    5.954326e-13    3.978681e-11
-    5       -56.2090175310   -1.421085e-14    3.295506e-13    9.365826e-12
-    6       -56.2090175310    0.000000e+00    9.109965e-14    2.473537e-12
-
- No phase correction possible.
-
-Orbital energies (a.u.):
-
-  Doubly occupied orbitals
-   1A     -15.535829     2A      -1.140588     3A      -0.629187  
-   4A      -0.629187     5A      -0.421041  
-
-
-  Unoccupied orbitals
-   6A       0.240615     7A       0.350141     8A       0.350141  
-   9A       0.654310    10A       0.654310    11A       0.691361  
-  12A       1.101444    13A       1.123103    14A       1.145363  
-  15A       1.145363    16A       1.353228    17A       1.353228  
-  18A       1.799267    19A       1.819398    20A       1.956876  
-  21A       1.956876    22A       2.404214    23A       2.404214  
-  24A       2.537956    25A       2.826166    26A       2.826166  
-  27A       3.031435    28A       3.292740    29A       3.292740  
-  30A       4.341579    31A      35.808944  
-
-
-        SCF total energy   =     -56.209017531049
-        kinetic energy     =      56.172541544212
-        nuc. attr. energy  =    -155.998161289007
-        elec. rep. energy  =      43.616602213746
-        potential energy   =    -112.381559075262
-        virial theorem     =       1.999351065213
-        wavefunction norm  =       1.000000000000
-******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:32 2004
-
-user time   =       0.06 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
-******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:32 2004
-
-                  --------------------------------------------
-                    CINTS: An integrals program written in C
-                     Justin T. Fermann and Edward F. Valeev
-                  --------------------------------------------
-
-
-  -OPTIONS:
-    Print level                 = 1
-    Integral tolerance          = 1e-15
-    Max. memory to use          = 2500000 double words
-    Number of threads           = 1
-    LIBINT's real type length   = 64 bit
-
-  -CALCULATION CONSTANTS:
-    Label                       = nh3
-    Number of atoms             = 4
-    Number of atomic orbitals   = 31
-    Number of symmetry orbitals = 31
-    Maximum AM in the basis     = 2
-
-  -SYMMETRY INFORMATION;
-    Computational point group        = C1 
-    Number of irreps                 = 1
-  Rotational invariance condition satisfied.
-  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
-  So long..
-
-
-  -SCF forces in the reference frame (a.u.):
-     Atom            X                  Y                   Z
-    ------   -----------------  -----------------  -----------------
-       1       -0.000000000001    -0.000000000042    -0.000000000042
-       2        0.000000000062     0.000000000085     0.000000000022
-       3       -0.000000000009    -0.000000000047     0.000000000003
-       4       -0.000000000052     0.000000000003     0.000000000017
-
-******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:32 2004
-
-user time   =       0.42 seconds =       0.01 minutes
-system time =       0.02 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-
-	------------------------------------------------------
-	    OPTKING: for internal coordinate optimizations    
-	------------------------------------------------------
-
-Cartesian geometry and possibly gradient in a.u. with masses
-  7.0    14.00307401   0.0017193925  -0.0013083052   0.1212477124
-  1.0     1.00782503  -1.2146736391  -1.2861051861  -0.5583834876
-  1.0     1.00782503  -0.5234481831   1.6970564837  -0.5359962776
-  1.0     1.00782503   1.7142319803  -0.3927732471  -0.5902784199
-                      -0.0000000000  -0.0000000000  -0.0000000000
-                       0.0000000001   0.0000000001   0.0000000000
-                      -0.0000000000  -0.0000000000   0.0000000000
-                      -0.0000000001   0.0000000000   0.0000000000
-
-Simple Internal Coordinates and Values
-Stretches
-    (1 1 2) (1.00295683)
-    (2 1 3) (1.00295683)
-    (3 1 4) (1.00295683)
-Bends
-    (4 2 1 3) (107.77382286)
-    (5 2 1 4) (107.77382287)
-    (6 3 1 4) (107.77382288)
-Torsions
-    (7 1 2 3 4) (37.68673940)
-    (8 1 3 4 2) (37.68673941)
-    (9 1 4 2 3) (37.68673941)
- 
- ** Taking normal optimization step. **
-
-Current SCF energy before step       -56.2090175310
-
-Taking geometry step number 11
-
-BuB^t Determinant: -4.441882e-47
-
-Force Constants read from PSIF_OPTKING
-
-Performing BFGS Hessian update with previous 6 gradient(s).
-
-Scaling displacements by 1.000000
-
-Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
-         Value          Force        Displacement   New Value
- 1   1.0029568310   0.0000000008   0.0000000001   1.0029568311
- 2   1.0029568311   0.0000000004   0.0000000000   1.0029568311
- 3   1.0029568311   0.0000000004   0.0000000001   1.0029568311
- 4   1.8810080564   0.0000000001   0.0000000002   1.8810080567
- 5   1.8810080566   0.0000000000   0.0000000001   1.8810080567
- 6   1.8810080567  -0.0000000001  -0.0000000000   1.8810080567
- 7   0.6577576869  -0.0000000000  -0.0000000001   0.6577576868
- 8   0.6577576870   0.0000000000  -0.0000000002   0.6577576868
- 9   0.6577576870  -0.0000000001  -0.0000000002   0.6577576868
-   MAX force:    0.0000000008   RMS force:    0.0000000003
-
-Back-transformation to cartesian coordinates...
- Iter   RMS Delta(dx)   RMS Delta(dq)
-    2  0.000000000065  0.000000000000
-Convergence to displaced geometry took 2 iterations.
-
-New Cartesian Geometry in a.u.
-  7.0   0.0017193925  -0.0013083052   0.1212477124
-  1.0  -1.2146736392  -1.2861051863  -0.5583834875
-  1.0  -0.5234481830   1.6970564839  -0.5359962775
-  1.0   1.7142319804  -0.3927732471  -0.5902784198
-
-Geometry written to chkpt
-
-******** OPTKING execution completed ********
-
-******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:32 2004
-
-                  --------------------------------------------
-                    CINTS: An integrals program written in C
-                     Justin T. Fermann and Edward F. Valeev
-                  --------------------------------------------
-
-
-  -OPTIONS:
-    Print level                 = 1
-    Integral tolerance          = 1e-15
-    Max. memory to use          = 2500000 double words
-    Number of threads           = 1
-    LIBINT's real type length   = 64 bit
-
-  -CALCULATION CONSTANTS:
-    Label                       = nh3
-    Number of atoms             = 4
-    Number of atomic orbitals   = 31
-    Number of symmetry orbitals = 31
-    Maximum AM in the basis     = 2
-
-  -SYMMETRY INFORMATION;
-    Computational point group        = C1 
-    Number of irreps                 = 1
-
-    Wrote 115267 two-electron integrals to IWL file 33
-
-******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:32 2004
-
-user time   =       0.08 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:32 2004
-
-
-             ------------------------------------------
-
-                CSCF3.0: An SCF program written in C
-
-              Written by too many people to mention here
-
-             ------------------------------------------
-
-  I think the multiplicity is 1.
-  If this is wrong, please specify the MULTP keyword
-
-  label        = nh3
-  wfn          = SCF
-  reference    = RHF
-  multiplicity = 1
-  charge       = 0
-  direct       = false
-  dertype      = FIRST
-  convergence  = 13
-  maxiter      = 40
-  guess        = AUTO
-
-  nuclear repulsion energy       12.0596234661422
-
-  using old vector from file30 as initial guess
-  energy from old vector:   -56.20901753
-
-  level shift                      = 0.100000
-  diis scale factor                = 1.000000
-  iterations before extrapolation  = 0
-  6 error matrices will be kept
-
-  keeping integrals in 1972176 bytes of core
-
-  The lowest eigenvalue of the overlap matrix was 1.628012e-02
-
-
-  Reading Occupations from file30
-
-  Symmetry block:   A    
-  DOCC:              5   
-  SOCC:              0   
-
-  reading integrals in the IWL format from files 33,35,36,37
-  wrote 115267 integrals to file92
-
-  iter       total energy        delta E         delta P          diiser
-    1       -56.2090175310    6.826864e+01    0.000000e+00    0.000000e+00
-    2       -56.2090175310    0.000000e+00    3.438242e-13    2.566757e-11
-    3       -56.2090175310   -1.421085e-14    9.010067e-14    7.029346e-12
-
- No phase correction possible.
-
-Orbital energies (a.u.):
-
-  Doubly occupied orbitals
-   1A     -15.535829     2A      -1.140588     3A      -0.629187  
-   4A      -0.629187     5A      -0.421041  
-
-
-  Unoccupied orbitals
-   6A       0.240615     7A       0.350141     8A       0.350141  
-   9A       0.654310    10A       0.654310    11A       0.691361  
-  12A       1.101444    13A       1.123103    14A       1.145363  
-  15A       1.145363    16A       1.353228    17A       1.353228  
-  18A       1.799267    19A       1.819398    20A       1.956876  
-  21A       1.956876    22A       2.404214    23A       2.404214  
-  24A       2.537956    25A       2.826166    26A       2.826166  
-  27A       3.031435    28A       3.292740    29A       3.292740  
-  30A       4.341579    31A      35.808944  
-
-
-        SCF total energy   =     -56.209017531049
-        kinetic energy     =      56.172541543889
-        nuc. attr. energy  =    -155.998161287287
-        elec. rep. energy  =      43.616602212349
-        potential energy   =    -112.381559074938
-        virial theorem     =       1.999351065207
-        wavefunction norm  =       1.000000000000
-******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:32 2004
-
-user time   =       0.01 seconds =       0.00 minutes
-system time =       0.04 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-******************************************************************************
-tstart called on diadem.giga.net
-Fri Apr 23 15:29:32 2004
-
-                  --------------------------------------------
-                    CINTS: An integrals program written in C
-                     Justin T. Fermann and Edward F. Valeev
-                  --------------------------------------------
-
-
-  -OPTIONS:
-    Print level                 = 1
-    Integral tolerance          = 1e-15
-    Max. memory to use          = 2500000 double words
-    Number of threads           = 1
-    LIBINT's real type length   = 64 bit
-
-  -CALCULATION CONSTANTS:
-    Label                       = nh3
-    Number of atoms             = 4
-    Number of atomic orbitals   = 31
-    Number of symmetry orbitals = 31
-    Maximum AM in the basis     = 2
-
-  -SYMMETRY INFORMATION;
-    Computational point group        = C1 
-    Number of irreps                 = 1
-  Rotational invariance condition satisfied.
-  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
-  So long..
-
-
-  -SCF forces in the reference frame (a.u.):
-     Atom            X                  Y                   Z
-    ------   -----------------  -----------------  -----------------
-       1        0.000000000003     0.000000000000    -0.000000000001
-       2       -0.000000000003    -0.000000000002    -0.000000000000
-       3       -0.000000000000     0.000000000001     0.000000000000
-       4       -0.000000000001     0.000000000001     0.000000000001
-
-******************************************************************************
-tstop called on diadem.giga.net
-Fri Apr 23 15:29:33 2004
-
-user time   =       0.41 seconds =       0.01 minutes
-system time =       0.02 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
-
-	------------------------------------------------------
-	    OPTKING: for internal coordinate optimizations    
-	------------------------------------------------------
-
-Cartesian geometry and possibly gradient in a.u. with masses
-  7.0    14.00307401   0.0017193925  -0.0013083052   0.1212477124
-  1.0     1.00782503  -1.2146736392  -1.2861051863  -0.5583834875
-  1.0     1.00782503  -0.5234481830   1.6970564839  -0.5359962775
-  1.0     1.00782503   1.7142319804  -0.3927732471  -0.5902784198
-                       0.0000000000   0.0000000000  -0.0000000000
-                      -0.0000000000  -0.0000000000  -0.0000000000
-                      -0.0000000000   0.0000000000   0.0000000000
-                      -0.0000000000   0.0000000000   0.0000000000
-
-Simple Internal Coordinates and Values
-Stretches
-    (1 1 2) (1.00295683)
-    (2 1 3) (1.00295683)
-    (3 1 4) (1.00295683)
-Bends
-    (4 2 1 3) (107.77382288)
-    (5 2 1 4) (107.77382288)
-    (6 3 1 4) (107.77382288)
-Torsions
-    (7 1 2 3 4) (37.68673940)
-    (8 1 3 4 2) (37.68673940)
-    (9 1 4 2 3) (37.68673940)
- 
- ** Taking normal optimization step. **
-
-Current SCF energy before step       -56.2090175310
-
-Taking geometry step number 12
-
-BuB^t Determinant: 6.345024e-46
-
-Force Constants read from PSIF_OPTKING
-
-Performing BFGS Hessian update with previous 6 gradient(s).
-
-Scaling displacements by 1.000000
-
-Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
-         Value          Force        Displacement   New Value
- 1   1.0029568311  -0.0000000000  -0.0000000000   1.0029568311
- 2   1.0029568311  -0.0000000000  -0.0000000000   1.0029568311
- 3   1.0029568311   0.0000000000   0.0000000000   1.0029568311
- 4   1.8810080567  -0.0000000000  -0.0000000000   1.8810080567
- 5   1.8810080567  -0.0000000000  -0.0000000000   1.8810080567
- 6   1.8810080567   0.0000000000  -0.0000000000   1.8810080567
- 7   0.6577576868   0.0000000000   0.0000000000   0.6577576868
- 8   0.6577576868  -0.0000000000   0.0000000000   0.6577576868
- 9   0.6577576868   0.0000000000   0.0000000000   0.6577576868
-   MAX force:    0.0000000000   RMS force:    0.0000000000
-
-MAX force is < 1.0e-10.  Optimization is complete.
-Final SCF energy is  -56.2090175310
+       Value         Force        Displacement  New Value
+ 1    0.98187621   -0.00000017   -0.00000002    0.98187619
+ 2    0.98187621   -0.00000017   -0.00000002    0.98187619
+ 3    1.57079633    0.00000000    0.00000000    1.57079633
+   MAX force:    0.0000001740   RMS force:    0.0000001420
+
+MAX force is < 1.0e-05.  Optimization is complete.
+Final SCF energy is  -75.5760781553
 The Optimized geometry in a.u.
-  (  N   0.0017193925  -0.0013083052   0.1212477124 )
-  (  H  -1.2146736392  -1.2861051863  -0.5583834875 )
-  (  H  -0.5234481830   1.6970564839  -0.5359962775 )
-  (  H   1.7142319804  -0.3927732471  -0.5902784198 )
+  (  H   0.0000000000  -1.3120203652   1.1651857723 )
+  (  O   0.0000000000   0.0000000000  -0.1468345929 )
+  (  H   0.0000000000   1.3120203652   1.1651857723 )
 
 ******** OPTKING execution completed ********
 

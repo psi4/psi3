@@ -4,6 +4,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "chkpt.h"
 #include <psifiles.h>
 #include <libpsio/psio.h>
@@ -30,14 +31,14 @@ double **chkpt_rd_rref(void)
 {
   char *key;
   double **Rref;
+  char *keyword;
+  keyword = chkpt_build_keyword("Transmat to reference frame");
 
   Rref = block_matrix(3,3);
 
-  key = chkpt_build_keyword("Transmat to reference frame");
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) Rref[0], sizeof(double)*9);
 
-  psio_read_entry(PSIF_CHKPT, key, (char *) Rref[0], sizeof(double)*9);
-  free(key);
-
+  free(keyword);
   return Rref;
 }
 
@@ -61,8 +62,10 @@ double **chkpt_rd_rref(void)
 
 void chkpt_wt_rref(double **Rref)
 {
-  char *key;
-  key = chkpt_build_keyword("Transmat to reference frame");
-  psio_write_entry(PSIF_CHKPT, key, (char *) Rref[0], sizeof(double)*9);
-  free(key);
+  char *keyword;
+  keyword = chkpt_build_keyword("Transmat to reference frame");
+
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) Rref[0], sizeof(double)*9);
+
+  free(keyword);
 }

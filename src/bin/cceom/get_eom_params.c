@@ -23,7 +23,7 @@ void get_eom_params()
     for (i=0;i<moinfo.nirreps;++i)
       errcod = ip_data("STATES_PER_IRREP","%d",&(eom_params.states_per_irrep[i]),1,i);
   }
-  else { fprintf(outfile,"Must have states_per_irrep vector in input.\n"); exit(0); } 
+  else { fprintf(outfile,"Must have states_per_irrep vector in input.\n"); exit(PSI_RETURN_FAILURE); } 
 
   eom_params.cs_per_irrep = (int *) malloc(moinfo.nirreps * sizeof(int));
   for (state_irrep=0; state_irrep<moinfo.nirreps; ++state_irrep) {

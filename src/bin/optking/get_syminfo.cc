@@ -39,6 +39,11 @@ void get_syminfo(internals &simples) {
   natom = optinfo.natom;
 
   chkpt_init(PSIO_OPEN_OLD);
+  if (optinfo.mode == MODE_DISP_LOAD) {
+    fprintf(outfile,"Reading symmetry information from root area of checkpoint.\n");
+    chkpt_reset_prefix();
+    chkpt_commit_prefix();
+  }
 
   if (ip_exist("SYMMETRY",0))
     ip_string("SYMMETRY",&syminfo.symmetry,0);

@@ -3,9 +3,9 @@
   \ingroup (CHKPT)
 */
 
+#include <stdlib.h>
 #include "chkpt.h"
 #include <psifiles.h>
-#include <stdlib.h>
 #include <libpsio/psio.h>
 
 /*!
@@ -23,14 +23,16 @@ struct z_entry *chkpt_rd_zmat(void)
 {
   int nallatom;
   struct z_entry *z_geom;
+  char *keyword;
+  keyword = chkpt_build_keyword("Z-matrix");
 
   nallatom = chkpt_rd_nallatom();
-
   z_geom = (struct z_entry *) malloc(nallatom*(sizeof(struct z_entry)));
 
-  psio_read_entry(PSIF_CHKPT, "::Z-matrix", (char *) z_geom, 
-                  sizeof(struct z_entry)*nallatom);
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) z_geom, 
+    sizeof(struct z_entry)*nallatom);
 
+  free(keyword);
   return z_geom;
 }
 
@@ -49,9 +51,13 @@ struct z_entry *chkpt_rd_zmat(void)
 void chkpt_wt_zmat(struct z_entry *z_geom)
 {
   int nallatom;
+  char *keyword;
+  keyword = chkpt_build_keyword("Z-matrix");
 
   nallatom = chkpt_rd_nallatom();
 
-  psio_write_entry(PSIF_CHKPT, "::Z-matrix", (char *) z_geom, 
-                   sizeof(struct z_entry)*nallatom);
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) z_geom, 
+    sizeof(struct z_entry)*nallatom);
+
+  free(keyword);
 }

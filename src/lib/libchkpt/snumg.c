@@ -4,6 +4,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <libciomr/libciomr.h>
 #include "chkpt.h"
 #include <psifiles.h>
@@ -27,13 +28,15 @@ int *chkpt_rd_snumg(void)
 {
   int *snumg;
   int nshell;
+  char *keyword;
+  keyword = chkpt_build_keyword("Primitives per shell");
 
   nshell = chkpt_rd_nshell();
   snumg = init_int_array(nshell);
 
-  psio_read_entry(PSIF_CHKPT, "::Primitives per shell", (char *) snumg, 
-                  nshell*sizeof(int));
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) snumg, nshell*sizeof(int));
 
+  free(keyword);
   return snumg;
 }
 
@@ -52,9 +55,12 @@ int *chkpt_rd_snumg(void)
 void chkpt_wt_snumg(int *snumg)
 {
   int nshell;
+  char *keyword;
+  keyword = chkpt_build_keyword("Primitives per shell");
 
   nshell = chkpt_rd_nshell();
 
-  psio_write_entry(PSIF_CHKPT, "::Primitives per shell", (char *) snumg, 
-                   nshell*sizeof(int));
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) snumg, nshell*sizeof(int));
+
+  free(keyword);
 }

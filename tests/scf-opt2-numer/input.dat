@@ -1,0 +1,21 @@
+psi: (
+  label = "DZP RHF optimization H2O by energies fixed angle"
+  memory = (20.0 MB)
+  wfn = scf
+  reference = rhf
+  jobtype = opt
+  dertype = none
+  basis = DZP
+  zmat = (
+    ( H )
+    ( O 1 OH )
+    ( H 2 OH 1 HOH )
+  )
+  zvars = (
+    (OH 1.0)
+    (HOH 160.0)
+  )
+)
+fixed_intco: (
+  bend = ( (1 2 3) )
+)

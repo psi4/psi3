@@ -1,18 +1,16 @@
 psi: (
-  label = "DZP SCF optimization of CH4"
+  label = "DZP RHF optimization of CH4"
   wfn = scf
   reference = rhf
   jobtype = opt
   dertype = first
-  convergence = 13
-  conv = 10
   basis = "DZP"
   zmat = (
     C
-    H 1 CH$
-    H 1 CH$ 2 HCH$
-    H 1 CH$ 2 HCH$ 3 TORS$
-    H 1 CH$ 2 HCH$ 3 TORS2$
+    H 1 CH
+    H 1 CH 2 HCH
+    H 1 CH 2 HCH 3 TORS
+    H 1 CH 2 HCH 3 TORS2
   )
   zvars = (
     CH 0.9

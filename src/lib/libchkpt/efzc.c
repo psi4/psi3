@@ -4,6 +4,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "chkpt.h"
 #include <psifiles.h>
 #include <libciomr/libciomr.h>
@@ -20,10 +21,12 @@
 double chkpt_rd_efzc(void)
 {
   double efzc;
+  char *keyword;
+  keyword = chkpt_build_keyword("Frozen core energy");
 
-  psio_read_entry(PSIF_CHKPT, "::Frozen core energy", (char *) &efzc, 
-                  sizeof(double));
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) &efzc, sizeof(double));
 
+  free(keyword);
   return efzc;
 }
 
@@ -38,7 +41,12 @@ double chkpt_rd_efzc(void)
 */
 void chkpt_wt_efzc(double efzc)
 {
-  psio_write_entry(PSIF_CHKPT, "::Frozen core energy", (char *) &efzc, 
-		   sizeof(double));
+  char *keyword;
+  keyword = chkpt_build_keyword("Frozen core energy");
+
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) &efzc, 
+    sizeof(double));
+
+  free(keyword);
 }
 

@@ -6,7 +6,7 @@ include ../MakeVars
 
 CSRC = tocprint.c cc2unit.c
 BINOBJ = $(CSRC:%.c=%.o)
-PSILIBS = -lPSI_psio -lPSI_ciomr -lPSI_ipv1
+PSILIBS = -lPSI_chkpt -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 ALLOC =
 
 include ../MakeRules

@@ -4,6 +4,7 @@
 */
 
 #include "chkpt.h"
+#include <stdlib.h>
 #include <psifiles.h>
 #include <libpsio/psio.h>
 
@@ -18,8 +19,12 @@
 int chkpt_rd_natom(void)
 {  
   int natom;
+  char *keyword;
+  keyword = chkpt_build_keyword("Num. atoms");
 
-  psio_read_entry(PSIF_CHKPT, "::Num. atoms", (char *) &natom, sizeof(int));
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) &natom, sizeof(int));
+
+  free(keyword);
   return natom;
 }
 
@@ -36,6 +41,11 @@ int chkpt_rd_natom(void)
 
 void chkpt_wt_natom(int natom)
 {  
-  psio_write_entry(PSIF_CHKPT, "::Num. atoms", (char *) &natom, sizeof(int));
+  char *keyword;
+  keyword = chkpt_build_keyword("Num. atoms");
+
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) &natom, sizeof(int));
+
+  free(keyword);
 }
 

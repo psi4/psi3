@@ -3,7 +3,9 @@
   \ingroup (CHKPT)
 */
 
+#include <stdlib.h>
 #include "chkpt.h"
+#include <stdlib.h>
 #include <psifiles.h>
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
@@ -23,13 +25,15 @@ int *chkpt_rd_us2s(void)
 {
   int *us2s;
   int num_unique_shells;
-  char *key;
+  char *keyword;
+  keyword = chkpt_build_keyword("Unique shell -> full shell map");
 
   num_unique_shells = chkpt_rd_num_unique_shell();
   us2s = init_int_array(num_unique_shells);
-  key = chkpt_build_keyword("Unique shell -> full shell map");
-  psio_read_entry(PSIF_CHKPT, key, (char *) us2s, num_unique_shells*sizeof(int));
-  free(key);
+
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) us2s, num_unique_shells*sizeof(int));
+
+  free(keyword);
   return us2s;
 }
 
@@ -49,11 +53,12 @@ int *chkpt_rd_us2s(void)
 void chkpt_wt_us2s(int *us2s)
 {
   int num_unique_shells;
-  char *key;
+  char *keyword;
+  keyword = chkpt_build_keyword("Unique shell -> full shell map");
 
   num_unique_shells = chkpt_rd_num_unique_shell();
 
-  key = chkpt_build_keyword("Unique shell -> full shell map");
-  psio_write_entry(PSIF_CHKPT, key, (char *) us2s, num_unique_shells*sizeof(int));
-  free(key);
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) us2s, num_unique_shells*sizeof(int));
+
+  free(keyword);
 }

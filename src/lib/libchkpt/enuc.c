@@ -4,6 +4,7 @@
 */
 
 #include "chkpt.h"
+#include <stdlib.h>
 #include <psifiles.h>
 #include <libpsio/psio.h>
 
@@ -20,12 +21,12 @@
 double chkpt_rd_enuc(void)
 {
   double enuc;
-  char *key;
+  char *keyword;
+  keyword = chkpt_build_keyword("Nuclear rep. energy");
 
-  key = chkpt_build_keyword("Nuclear rep. energy");
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) &enuc, sizeof(double));
 
-  psio_read_entry(PSIF_CHKPT, key, (char *) &enuc, sizeof(double));
-  free(key);
+  free(keyword);
   return enuc;
 }
 
@@ -40,9 +41,10 @@ double chkpt_rd_enuc(void)
 
 void chkpt_wt_enuc(double enuc)
 {
-  char *key;
-  key = chkpt_build_keyword("Nuclear rep. energy");
+  char *keyword;
+  keyword = chkpt_build_keyword("Nuclear rep. energy");
 
-  psio_write_entry(PSIF_CHKPT, key, (char *) &enuc, sizeof(double));
-  free(key);
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) &enuc, sizeof(double));
+
+  free(keyword);
 }

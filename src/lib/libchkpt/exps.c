@@ -4,6 +4,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <libciomr/libciomr.h>
 #include "chkpt.h"
 #include <psifiles.h>
@@ -23,14 +24,16 @@ double *chkpt_rd_exps(void)
 {
   double *exps;
   int nprim = 0;
+  char *keyword;
+  keyword = chkpt_build_keyword("Exponents");
 
   nprim = chkpt_rd_nprim();
-
   exps = init_array(nprim);
 
-  psio_read_entry(PSIF_CHKPT, "::Exponents", (char *) exps, 
-		  nprim*sizeof(double));
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) exps, 
+    nprim*sizeof(double));
 
+  free(keyword);
   return exps;
 }
 
@@ -49,9 +52,13 @@ double *chkpt_rd_exps(void)
 void chkpt_wt_exps(double *exps)
 {
   int nprim;
+  char *keyword;
+  keyword = chkpt_build_keyword("Exponents");
 
   nprim = chkpt_rd_nprim();
 
-  psio_write_entry(PSIF_CHKPT, "::Exponents", (char *) exps, 
-		   nprim*sizeof(double));
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) exps, 
+    nprim*sizeof(double));
+
+  free(keyword);
 }

@@ -4,6 +4,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <libciomr/libciomr.h>
 #include "chkpt.h"
 #include <psifiles.h>
@@ -23,13 +24,15 @@ double **chkpt_rd_contr_full(void)
 {
   double **contr, *temp_contr;
   int nprim, i, j, ij = 0;
+  char *keyword;
+  keyword = chkpt_build_keyword("Contraction coefficients");
 
   nprim = chkpt_rd_nprim();
 
   temp_contr = init_array(MAXANGMOM*nprim);
   contr = block_matrix(nprim,MAXANGMOM);
 
-  psio_read_entry(PSIF_CHKPT, "::Contraction coefficients", (char *) temp_contr,
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) temp_contr,
 		  MAXANGMOM*nprim*sizeof(double));
 
   /* Picking non-zero coefficients to the "master" array contr */
@@ -39,7 +42,7 @@ double **chkpt_rd_contr_full(void)
     }
 
   free(temp_contr);
-
+  free(keyword);
   return contr;
 }
 

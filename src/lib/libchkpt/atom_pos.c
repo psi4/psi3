@@ -4,6 +4,7 @@
 */
 
 #include "chkpt.h"
+#include <stdlib.h>
 #include <psifiles.h>
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
@@ -29,15 +30,16 @@
 int *chkpt_rd_atom_position(void)
 {
   int *atom_position, natom;
-  char *key;
+  char *keyword;
+  keyword = chkpt_build_keyword("Atomic symm positions");
 
   natom = chkpt_rd_natom();
   atom_position = init_int_array(natom);
 
-  key = chkpt_build_keyword("Atomic symm positions");
-  psio_read_entry(PSIF_CHKPT, key, (char *) atom_position, natom*sizeof(int));
-  free(key);
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) atom_position,
+      natom*sizeof(int));
 
+  free(keyword);
   return atom_position;
 }
 
@@ -66,11 +68,13 @@ int *chkpt_rd_atom_position(void)
 void chkpt_wt_atom_position(int *atom_position)
 {
   int natom;
-  char *key;
+  char *keyword;
+  keyword = chkpt_build_keyword("Atomic symm positions");
 
   natom = chkpt_rd_natom();
 
-  key = chkpt_build_keyword("Atomic symm positions");
-  psio_write_entry(PSIF_CHKPT, key, (char *) atom_position, natom*sizeof(int));
-  free(key);
+  psio_write_entry(PSIF_CHKPT, keyword,
+      (char *) atom_position, natom*sizeof(int));
+
+  free(keyword);
 }

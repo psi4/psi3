@@ -443,12 +443,12 @@ internals :: internals(cartesians& carts, int user_intcos)
       cnt_bend = type_count;
 
       /* Determine linear bond angles - code matches that above */
+      /*
       type_count = 0;
       for(i=0;i<natom;++i)
         for(j=0;j<natom;++j)
           for(k=i+1; k<natom; ++k)
-            if (bonds[i][j] && bonds[j][k]) {
-              /* check if angle is linear */
+            if (bonds[i][j] && bonds[j][k]) { // check if angle is linear
                 tval = atom_dist[i][k] - atom_dist[i][j] - atom_dist[j][k];
                 lin = 0;
                 if ( fabs(tval) < NONLINEAR_DIST ) {
@@ -472,6 +472,7 @@ internals :: internals(cartesians& carts, int user_intcos)
                 }
             }
       cnt_lin_bend = type_count;
+      */
 
       /* Determine torsions */
       type_count = 0;
@@ -554,7 +555,7 @@ internals :: internals(cartesians& carts, int user_intcos)
                     tval = atom_dist[cc][bc] - atom_dist[cc][c] - atom_dist[bc][c];
                     if ( fabs(tval) > NONLINEAR_DIST ) { 
                     // b-c-cc is not linear
-                      fprintf(outfile,"found cc to a,b,c to %d %d %d, %d\n", a,bc,c,cc);
+                      // fprintf(outfile,"found cc to a,b,c to %d %d %d, %d\n", a,bc,c,cc);
                       found_cc = 1;
                       if (is_unique(aa,a,c,cc,taa,tbb,tcc,tdd)) {
                         if (cnt) 
@@ -743,6 +744,6 @@ int is_unique(int a, int b, int c, int d, int *aa, int *bb, int *cc, int *dd) {
     aa[n] = a; bb[n] = b; cc[n] = c; dd[n] = d;
     ++n;
   }
-  fprintf(outfile,"unique returning %d\n",unique);
+  // fprintf(outfile,"unique returning %d\n",unique);
   return unique;
 }

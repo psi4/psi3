@@ -38,7 +38,7 @@
 /* step size limits */
 #define STEP_LIMIT (0.1)     /* max step size if coord has small value */
 #define STEP_PERCENT (0.3)   /* if coord large valued, max percentage allowed for step */
-#define NONLINEAR_DIST (4.0E-3)
+#define NONLINEAR_DIST (1.0E-4) /* designed to exclude angle for CO2 if angle exceeds 179 */
 #define MIN_DQ_STEP (1.0E-12)
 #define MIN_CART_OUT (1.0E-12)
 #define MIN_LIN_COS (1.0E-10)
@@ -111,14 +111,19 @@ extern "C" void zval_to_symbol(double zval, char *sym);
 #define MODE_GRAD_ENERGY   (17)
 #define MODE_FREQ_GRAD_NOSYMM (18)
 #define MODE_FREQ_GRAD_IRREP  (19)
-#define MODE_GRAD_SAVE        (20)
-#define MODE_ENERGY_SAVE      (21)
+#define MODE_DISP_FREQ_GRAD_CART  (20)
+#define MODE_FREQ_GRAD_CART  (21)
+#define MODE_DISP_FREQ_ENERGY_CART  (22)
+#define MODE_FREQ_ENERGY_CART  (23)
+#define MODE_GRAD_SAVE        (24)
+#define MODE_ENERGY_SAVE      (25)
 
 struct OPTInfo {
 
   int mode;
   int disp_num;
   int points;
+  int freq_irrep;
   int points_freq;
   int irrep;
   int simples_present;
@@ -133,6 +138,7 @@ struct OPTInfo {
   int print_delocalize;
   int print_symmetry;
   int print_hessian;
+  int print_cartesians;
 
 /* optimization parameters */
   int optimize;
@@ -159,6 +165,8 @@ struct OPTInfo {
   int *to_nodummy;
   int dummy_axis_1;
   int dummy_axis_2;
+  char *wfn;
+  char *jobtype;
 
 /* Back-transformation parameters */
   int bt_max_iter;

@@ -20,11 +20,12 @@
 int chkpt_rd_nirreps(void)
 {
   int nirreps;
-  char *key;
+  char *keyword;
+  keyword = chkpt_build_keyword("Num. irreps");
 
-  key = chkpt_build_keyword("Num. irreps");
-  psio_read_entry(PSIF_CHKPT, key, (char *) &nirreps, sizeof(int));
-  free(key);
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) &nirreps, sizeof(int));
+
+  free(keyword);
   return nirreps;
 }
 
@@ -42,9 +43,10 @@ int chkpt_rd_nirreps(void)
 
 void chkpt_wt_nirreps(int nirreps)
 {
-  char *key;
+  char *keyword;
+  keyword = chkpt_build_keyword("Num. irreps");
 
-  key = chkpt_build_keyword("Num. irreps");
-  psio_write_entry(PSIF_CHKPT, key, (char *) &nirreps, sizeof(int));
-  free(key);
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) &nirreps, sizeof(int));
+
+  free(keyword);
 }

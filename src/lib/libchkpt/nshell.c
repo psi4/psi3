@@ -4,6 +4,7 @@
 */
 
 #include "chkpt.h"
+#include <stdlib.h>
 #include <psifiles.h>
 #include <libpsio/psio.h>
 
@@ -21,8 +22,12 @@
 int chkpt_rd_nshell(void)
 {
   int nshell;
+  char *keyword;
+  keyword = chkpt_build_keyword("Num. shells");
 
-  psio_read_entry(PSIF_CHKPT, "::Num. shells", (char *) &nshell, sizeof(int));
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) &nshell, sizeof(int));
+
+  free(keyword);
   return nshell;
 }
 
@@ -43,5 +48,10 @@ int chkpt_rd_nshell(void)
 
 void chkpt_wt_nshell(int nshell)
 {
-  psio_write_entry(PSIF_CHKPT, "::Num. shells", (char *) &nshell, sizeof(int));
+  char *keyword;
+  keyword = chkpt_build_keyword("Num. shells");
+
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) &nshell, sizeof(int));
+
+  free(keyword);
 }

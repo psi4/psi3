@@ -1,17 +1,23 @@
 psi: (
-  label = "nh3"
+  label = "3-21G RHF opt of H2O with fixed angle"
   wfn = scf
-  reference = rhf
   jobtype = opt
   dertype = first
-  convergence = 13
-  conv = 10
-  basis = "DZP"
-  units = bohr
-  geometry = (
-   N        0.1213716347        0.0110876789        0.0122720671
-   H       -0.7088513671       -0.4363684742        1.6616310922
-   H       -0.7107384231        1.6167040309       -0.5658096900
-   H       -0.2667902156       -1.3343916510       -1.2663338011
- )
+  multp = 1
+  reference = rhf
+  basis = 3-21G
+  zmat = (
+    H
+    O 1 R1
+    H 2 R1 1 A1
+  )
+  zvars = (
+    R1 1.0
+    A1 90.0
+  )
+)
+fixed_intco: (
+  bend = (
+    (1 2 3)
+  )
 )

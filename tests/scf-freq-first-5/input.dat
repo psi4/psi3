@@ -1,0 +1,19 @@
+psi: (
+  label = "DZ SCF Frequencies First 5"
+  jobtype = freq
+  dertype = first
+  wfn = scf
+  reference = rhf
+  basis = dz
+  docc = (5 0 2 1)
+  units = au
+  geometry = (
+        (H 0.0  1.7458287351   -2.2263774777)
+        (H 0.0 -1.7458287351   -2.2263774777)
+        (C 0.0  0.0000000000   -1.1537322833)
+        (O 0.0 -0.0000000000    1.1461383657)
+    )
+)
+% has order h^4 error
+optking: ( points = 5 )
+

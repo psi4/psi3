@@ -4,6 +4,7 @@
 */
 
 #include "chkpt.h"
+#include <stdlib.h>
 #include <psifiles.h>
 #include <libpsio/psio.h>
 
@@ -24,8 +25,12 @@
 int chkpt_rd_iopen(void)
 {
   int iopen;
+  char *keyword;
+  keyword = chkpt_build_keyword("Iopen");
 
-  psio_read_entry(PSIF_CHKPT, "::Iopen", (char *) &iopen, sizeof(int));
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) &iopen, sizeof(int));
+
+  free(keyword);
   return iopen;
 }
 
@@ -46,5 +51,10 @@ int chkpt_rd_iopen(void)
 
 void chkpt_wt_iopen(int iopen)
 {
-  psio_write_entry(PSIF_CHKPT, "::Iopen", (char *) &iopen, sizeof(int));
+  char *keyword;
+  keyword = chkpt_build_keyword("Iopen");
+
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) &iopen, sizeof(int));
+
+  free(keyword);
 }

@@ -19,6 +19,8 @@
 #include <psifiles.h>          /* where return values are */
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <libpsio/psio.h>
+#include <psifiles.h>
 
 #define MXEXEC 100
 #define MAX_EXEC_STR 80
@@ -27,8 +29,10 @@
   extern int setenv(const char *, const char *, int);
 #endif
 
+int get_ndisp(void);
 FILE *infile, *outfile;
-char **psi_file_prefix;
+//char **psi_file_prefix;
+char *psi_file_prefix;
 /* 
   the following must stay in scope throughout the run, else the 
   environmental variables will vanish!
@@ -69,7 +73,8 @@ int main(int argc, char *argv[])
     OPT,              /* optimization */
     DISP,             /* displacements */
     FREQ,             /* frequencies */
-    SYMM_FREQ,        /* frequencies for symmetric modes */
+    SYMM_FC,        /* force constants in internal coordinates, symmetric modes */
+    FC,             /* force constants in internal coordinates, all modes */
     OEPROP,           /* one-electron properties */
     DBOC              /* compute Diagonal Born-Oppenheimer Correction (DBOC) by finite difference */
   } JobType;
@@ -178,9 +183,10 @@ int main(int argc, char *argv[])
     JobType = OPT;
   else if ((strcmp(calctyp,"DISP")==0) || (strcmp(calctyp,"DISPLACEMENTS")==0))
     JobType = DISP;
-  else if ((strcmp(calctyp,"FREQ_SYMM")==0)||(strcmp(calctyp,"FREQ-SYMM")==0)||
-           (strcmp(calctyp,"SYMM_FREQ")==0)||(strcmp(calctyp,"SYMM-FREQ")==0)||
-	   (strcmp(calctyp,"SYMMETRIC_FREQUENCY")==0)) JobType = SYMM_FREQ;
+  else if ( (strcmp(calctyp,"SYMM_FC")==0)||(strcmp(calctyp,"SYMM-FC")==0))
+    JobType = SYMM_FC;
+  else if ( (strcmp(calctyp,"FC")==0) )
+    JobType = FC;
   else if ((strcmp(calctyp,"SP")==0) || (strcmp(calctyp,"SINGLE-POINT")==0) ||
            (strcmp(calctyp,"SINGLE_POINT")==0) ||
 	   (strcmp(calctyp,"FORCE")==0)) JobType = SP;
@@ -204,7 +210,7 @@ int main(int argc, char *argv[])
     if (strcmp(calctyp,"FORCE")==0) 
       strcpy(dertyp,"FIRST");
     else if (JobType == OPT) strcpy(dertyp, "FIRST");
-    else if (JobType == FREQ || JobType == SYMM_FREQ) {
+    else if (JobType == FREQ || JobType == SYMM_FC) {
       if (strcmp(wfn,"SCF")==0) strcpy(dertyp,"SECOND");
       else strcpy(dertyp,"FIRST"); /* guess analyt grads unless overridden */
     }
@@ -260,7 +266,7 @@ int main(int argc, char *argv[])
     else if (strcmp(dertyp,"SECOND")==0)
       fprintf(outfile, "analytic frequency computation.\n");
   }
-  else if (JobType == SYMM_FREQ) {
+  else if (JobType == SYMM_FC) {
     if (strcmp(dertyp,"NONE")==0)
       fprintf(outfile,"symmetric frequency computation via energies.\n");
     else if (strcmp(dertyp,"FIRST")==0)
@@ -315,8 +321,10 @@ int main(int argc, char *argv[])
         jobtype = strdup("OPT"); break;
       case FREQ:
         jobtype = strdup("FREQ"); break;
-      case SYMM_FREQ:
-        jobtype = strdup("SYMM_FREQ"); break;
+      case SYMM_FC:
+        jobtype = strdup("SYMM_FC"); break;
+      case FC:
+        jobtype = strdup("FC"); break;
       case DISP:
         jobtype = strdup("DISP"); break;
       case OEPROP:
@@ -430,14 +438,17 @@ int execut(char **exec, int nexec, int depth)
       /* fprintf(stderr,"%serrcod after filter is %d\n",spaces,errcod); */
 
       /* if we're getting ndisp from optking */
-      if (strncmp("optking --disp_irrep",exec[i],
-          strlen("optking --disp_irrep"))==0 ||
-          strcmp(exec[i],"optking --disp_nosymm")==0) {
+      if ( !(strncmp("optking --disp_irrep",exec[i],strlen("optking --disp_irrep")))
+        || !(strcmp(exec[i],"optking --disp_nosymm"))
+        || !(strcmp(exec[i],"optking --disp_freq_grad_cart")) 
+        || !(strcmp(exec[i],"optking --disp_freq_energy_cart")) 
+        ) {
         /* fprintf(outfile, "optking got exit code %d\n", errcod); */
         for (j=i; j<nexec; j++) {
           /* fprintf(outfile,"Scanning exec[%d] = %s\n", j, exec[j]);  */
           if (strcmp(exec[j],"NUM_DISP")==0) {	
             sprintf(exec[j],"%d",errcod);
+         /*   sprintf(exec[j], "%d", get_ndisp() ); */
             break;
           }
         }
@@ -481,7 +492,7 @@ int execut(char **exec, int nexec, int depth)
 /* this code is essentially the same as in the psi_start() lib funct */
 int parse_cmdline(int argc, char *argv[])
 {
-  int i;
+  int i,errcod;
   int found_if_np = 0;          /* found input file name without -i */
   int found_of_np = 0;          /* found output file name without -o */
   int found_fp_np = 0;          /* found file prefix name without -p */
@@ -625,6 +636,40 @@ int parse_cmdline(int argc, char *argv[])
 #error "Have neither putenv nor setenv. Something must be very broken on this system."
 #endif
   }
+
+  /*RAK */
+  /* this hack works but doesn't pick up psi prefixes
+  fclose(infile);
+  psi_start(0,NULL,0);
+  ip_done();
+  fclose(outfile);
+  fclose(infile);
+  if (ifname != NULL)
+    infile = fopen(ifname,"r");
+  else
+    infile = fopen("input.dat","r");
+  outfile = stdout;
+  */
   return(1);
 }
 
+int get_ndisp(void) {
+  int ndisp;
+  FILE *outfile_psi3;
+
+  outfile_psi3 = outfile;
+
+  //psi_file_prefix = getenv("PSI_PREFIX");
+  //printf("%s\n", psi_file_prefix);
+
+//  psi_start(0,NULL,0);
+  /* need to remove psi_start */
+  psio_init();
+  psio_open(PSIF_OPTKING, PSIO_OPEN_OLD);
+  psio_read_entry(PSIF_OPTKING, "OPT: Num. of disp.", (char *) &(ndisp), sizeof(int));
+  psio_close(PSIF_OPTKING,1);
+  psio_done();
+printf("ndisp: %d\n",ndisp);
+  outfile = outfile_psi3;
+  return ndisp;
+}

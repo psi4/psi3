@@ -47,9 +47,10 @@ void freq_grad_cart(cartesians &carts) {
   double **evects, *evals, **FG, tmp, **force_constants_x, **tmp_mat_inv;
   double *micro_e, **micro_geom, **disp_grad, *grad, **grads_adapted, **tmp_mat;
   double *evals_all, **cartrep, **disp_grad_all;
-
   int *nsalc, *ndisp, ndisp_all, nsalc_all, **ict;
   double ***salc, ***disp;
+  int print;
+  print = optinfo.print_cartesians;
 
   nirreps = syminfo.nirreps;
   natom = carts.get_natom();
@@ -75,18 +76,25 @@ void freq_grad_cart(cartesians &carts) {
   psio_read_entry(PSIF_OPTKING, "OPT: Coord. per irrep",
       (char *) &(nsalc[0]), nirreps*sizeof(int));
 
-  fprintf(outfile,"nsalc_all: %d ndisp_all%d\n", nsalc_all, ndisp_all);
-  fprintf(outfile,"nsalc:"); for (h=0; h<nirreps; ++h) fprintf(outfile,"%d",nsalc[h]);
-  fprintf(outfile,"ndisp:"); for (h=0; h<nirreps; ++h) fprintf(outfile,"%d",ndisp[h]);
+  fprintf(outfile,"\n total nsalc: %d, total ndisp: %d\n", nsalc_all, ndisp_all);
+  fprintf(outfile,"nsalc per irrep: "); for (h=0; h<nirreps; ++h) fprintf(outfile,"%d ",nsalc[h]);
+  fprintf(outfile,"\n");
+  fprintf(outfile,"ndisp per irrep: "); for (h=0; h<nirreps; ++h) fprintf(outfile,"%d ",ndisp[h]);
+  fprintf(outfile,"\n\n");
 
   disp_grad = block_matrix(ndisp_all,3*natom);
   psio_read_entry(PSIF_OPTKING, "OPT: Displaced gradients",
     (char *) &(disp_grad[0][0]), ndisp_all*3*natom*sizeof(double));
-  fprintf(outfile,"Gradients of displaced geometries\n");
-  print_mat(disp_grad,ndisp_all,3*natom,outfile);
+  if (print) {
+    fprintf(outfile,"Gradients of displaced geometries\n");
+    print_mat(disp_grad,ndisp_all,3*natom,outfile);
+  }
 
   /**** construct full gradient list using unique ones ****/
-  disp_grad_all = block_matrix(2*nsalc_all, 3*natom);
+  if (optinfo.points == 3) 
+    disp_grad_all = block_matrix(2*nsalc_all, 3*natom);
+  else if (optinfo.points == 5) 
+    disp_grad_all = block_matrix(4*nsalc_all, 3*natom);
   /* just copy symmetric gradients */
   for (j=0; j<ndisp[0]; ++j) {
     for (I=0; I<3*natom; ++I)
@@ -110,31 +118,20 @@ void freq_grad_cart(cartesians &carts) {
       for (op_disp=0; op_disp<syminfo.nirreps; ++op_disp) {
         if ( syminfo.ct[h][op_disp] == -1 )
           break;
-        /*
-        match = 1;
-        for (atom=0; atom<natom_unique; ++atom) {
-          atom2 = ict[op_disp][atom] - 1;
-          for (xyz=0; xyz<3; ++xyz)
-            if ( cartrep[op_disp][3*xyz+xyz] * disp_grad[cnt][3*atom2+xyz]
-                                     != -1.0 * disp_grad[cnt][3*atom +xyz])
-              match = 0;
-        }
-        if (match) break;
-        */
       }
-      fprintf(outfile,"Operation that takes plus displacement %d to minus is %s.\n",
-          cnt, syminfo.op_lbls[op_disp]);
+      fprintf(outfile,"\tOperation that takes plus displacement %d to minus is %s.\n",
+          cnt+1, syminfo.op_lbls[op_disp]);
 
       /* what is the parity of the irrep for this special operation ? */
-      sign = syminfo.ct[h][op_disp];
-      fprintf(outfile,"Parity of irrep %s for this operation is %d.\n",
-         syminfo.clean_irrep_lbls[h], sign);
+      //sign = syminfo.ct[h][op_disp];
+      //fprintf(outfile,"\tParity of irrep %s for this operation is %d.\n",
+      //syminfo.clean_irrep_lbls[h], sign);
 
       ++cnt_all;
       for (atom=0; atom<natom; ++atom) {
         for (xyz=0; xyz<3; ++xyz) {
           atom2 = ict[op_disp][atom] - 1;
-          disp_grad_all[cnt_all][3*atom2+xyz] = /*sign **/ disp_grad[cnt][3*atom+xyz] * cartrep[op_disp][3*xyz+xyz];
+          disp_grad_all[cnt_all][3*atom2+xyz] = disp_grad[cnt][3*atom+xyz] * cartrep[op_disp][3*xyz+xyz];
         }
       }
     }
@@ -147,25 +144,17 @@ void freq_grad_cart(cartesians &carts) {
   for (h=0; h<nirreps; ++h) {
     ndisp_all += ndisp[h];
   }
-  fprintf(outfile,"total constructed ndisp_all: %d\n",ndisp_all);
 
   B = block_matrix(nsalc_all,3*natom);
   psio_read_entry(PSIF_OPTKING, "OPT: Adapted cartesians",
     (char *) &(B[0][0]), nsalc_all*3*natom*sizeof(double));
-  fprintf(outfile,"B matrix\n");
-  print_mat(B,nsalc_all,3*natom,outfile);
+  if (print) {
+    fprintf(outfile,"B matrix\n");
+    print_mat(B,nsalc_all,3*natom,outfile);
+  }
 
   evals_all = init_array(nsalc_all);
   evals_all_irrep = init_int_array(nsalc_all);
-
-  /* not used 
-  micro_e = init_array(ndisps);
-  psio_read_entry(PSIF_OPTKING, "OPT: Displaced energies",
-    (char *) &(micro_e[0]), ndisps*sizeof(double));
-  micro_geom = block_matrix(ndisps,3*natom);
-  psio_read_entry(PSIF_OPTKING, "OPT: Displaced geometries",
-    (char *) &(micro_geom[0][0]), ndisps*3*natom*sizeof(double));
-  */
 
   /**** loop over irreps of salcs and vibrations ****/
   start_salc = 0;
@@ -175,6 +164,7 @@ void freq_grad_cart(cartesians &carts) {
     if (!nsalc[h]) continue;
 
     /* construct B_inv = (BuBt)-1 B u = G-1 B u */
+    fprintf(outfile,"Computing B^-1: ");
     G = compute_G(&(B[start_salc]),nsalc[h],carts);
     G_inv = symm_matrix_invert(G,nsalc[h],1,0);
     free_block(G);
@@ -184,9 +174,12 @@ void freq_grad_cart(cartesians &carts) {
     for (k=0; k<ndisp[h]; ++k)
       for (j=0;j<3*natom;++j)
         disp_grad_all[k+start_disp][j] /= sqrt(masses[j]);
-    fprintf(outfile,"Displaced gradients/sqrt(masses[j])\n");
-    print_mat(&(disp_grad_all[start_disp]),ndisp[h],3*natom,outfile);
-    fflush(outfile);
+
+    if (print) {
+      fprintf(outfile,"Displaced gradients/sqrt(masses[j])\n");
+      print_mat(&(disp_grad_all[start_disp]),ndisp[h],3*natom,outfile);
+      fflush(outfile);
+    }
 
     // compute forces in internal coordinates, f_q = G_inv B u f_x
     f_q = init_array(nsalc[h]);
@@ -194,10 +187,10 @@ void freq_grad_cart(cartesians &carts) {
     temp_arr2 = init_array(3*natom);
     grads_adapted = block_matrix(ndisp[h],3*natom);
   
-    fprintf(outfile,"Gradients recomputed from internal coordinate gradients\n");
+    if (print) fprintf(outfile,"Gradients recomputed from internal coordinate gradients\n");
     for (k=0; k<ndisp[h]; ++k) {
 
-      fprintf(outfile,"ndisp[h]: %d, start_disp: %d\n", ndisp[h], start_disp);
+      if (print) fprintf(outfile,"ndisp[h]: %d, start_disp: %d\n", ndisp[h], start_disp);
       mmult(u,0,&(disp_grad_all[k+start_disp]),1,&temp_arr2,1,3*natom,3*natom,1,0);
       mmult(&(B[start_salc]),0,&temp_arr2,1,&temp_arr,1,nsalc[h],3*natom,1,0);
       mmult(G_inv,0,&temp_arr,1,&f_q,1,nsalc[h],nsalc[h],1,0);
@@ -207,7 +200,7 @@ void freq_grad_cart(cartesians &carts) {
 
       /* test by transforming f_q back to cartesian forces and compare */
       mmult(B,1,&(grads_adapted[k]),1,&temp_arr2,1,3*natom,nsalc[h],1,0);
-      print_mat2(&temp_arr2, 1, 3*natom, outfile);
+      if (print) print_mat2(&temp_arr2, 1, 3*natom, outfile);
     }
 
     free(f_q);
@@ -219,17 +212,31 @@ void freq_grad_cart(cartesians &carts) {
     print_mat(grads_adapted,ndisps,ncoord,outfile);
     fflush(outfile); */
 
-    fprintf(outfile," ** Using %d-point formula.\n",optinfo.points_freq);
     force_constants = block_matrix(nsalc[h],nsalc[h]);
 
-    /** construct force constant matrix **/
-    for (i=0; i<nsalc[h]; ++i) {
-      for (j=0; j<nsalc[h]; ++j) {
-        force_constants[i][j] = 
-          (grads_adapted[2*i+1][j] - grads_adapted[2*i][j])
-            / (2.0 * optinfo.disp_size);
+    /*** Construct force constant matrix from finite differences of forces ***/
+    fprintf(outfile," ** Using %d-point formula.\n",optinfo.points);
+    if (optinfo.points == 3) {
+      for (i=0; i<nsalc[h]; ++i) {
+        for (j=0; j<nsalc[h]; ++j) {
+          force_constants[i][j] = 
+            (grads_adapted[2*i+1][j] - grads_adapted[2*i][j])
+              / (2.0 * optinfo.disp_size);
+        }
       }
     }
+    else if (optinfo.points == 5) {
+      for (i=0; i<nsalc[h]; ++i) {
+        for (j=0; j<nsalc[h]; ++j) {
+          force_constants[i][j] = 
+            /* 1f(-2) - 1f(+2) - 8f(-1) + 8f(+1)  / 12h */
+            (  1.0 * grads_adapted[4*i][j]   - 1.0 * grads_adapted[4*i+1][j]
+             - 8.0 * grads_adapted[4*i+2][j] + 8.0 * grads_adapted[4*i+3][j] )
+             / (12.0 * optinfo.disp_size);
+        }
+      }
+    }
+
     fprintf(outfile,"Force Constants\n");
     print_mat(force_constants, nsalc[h], nsalc[h], outfile);
     fflush(outfile);
@@ -271,17 +278,16 @@ void freq_grad_cart(cartesians &carts) {
 
   /* convert evals from H/(kg bohr^2) to J/(kg m^2) = 1/s^2 */
   /* v = 1/(2 pi c) sqrt( eval ) */
-  fprintf(outfile, "\n\t        Harmonic Frequencies  \n");
-  fprintf(outfile,   "\t              (cm-1)          \n");
-  fprintf(outfile,   "\t------------------------------\n");
+  fprintf(outfile, "\n\t Harmonic Vibrational Frequencies in cm^(-1)\n");
+  fprintf(outfile,   "\t--------------------------------------------\n");
   k_convert = _hartree2J/(_bohr2m * _bohr2m * _amu2kg);
   cm_convert = 1.0/(2.0 * _pi * _c * 100.0);
   for(i=nsalc_all-1; i>-1; --i) {
     if(evals_all[i] < 0.0)
-      fprintf(outfile, "\t %3d %5s %10.3fi\n", i, syminfo.irrep_lbls[evals_all_irrep[i]],
+      fprintf(outfile, "\t %5s %10.3fi\n", syminfo.irrep_lbls[evals_all_irrep[i]],
           cm_convert * sqrt(-k_convert * evals_all[i]));
     else
-      fprintf(outfile, "\t %3d %5s %10.3f\n", i, syminfo.irrep_lbls[evals_all_irrep[i]],
+      fprintf(outfile, "\t %5s %10.3f\n", syminfo.irrep_lbls[evals_all_irrep[i]],
           cm_convert * sqrt(k_convert * evals_all[i]));
     }
   fprintf(outfile,   "\t----------------------------\n");

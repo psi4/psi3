@@ -3,6 +3,7 @@
   \ingroup (CHKPT)
 */
 
+#include <stdlib.h>
 #include "chkpt.h"
 #include <psifiles.h>
 #include <libpsio/psio.h>
@@ -23,8 +24,12 @@
 int chkpt_rd_phase_check(void)
 {
   int pcheck;
+  char *keyword;
+  keyword = chkpt_build_keyword("Phase check");
 
-  psio_read_entry(PSIF_CHKPT, "::Phase check", (char *) &pcheck, sizeof(int));
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) &pcheck, sizeof(int));
+
+  free(keyword);
   return pcheck;
 }
 
@@ -45,5 +50,10 @@ int chkpt_rd_phase_check(void)
 
 void chkpt_wt_phase_check(int pcheck)
 {
-  psio_write_entry(PSIF_CHKPT, "::Phase check", (char *) &pcheck, sizeof(int));
+  char *keyword;
+  keyword = chkpt_build_keyword("Phase check");
+
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) &pcheck, sizeof(int));
+
+  free(keyword);
 }

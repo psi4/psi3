@@ -4,6 +4,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "chkpt.h"
 #include <psifiles.h>
 #include <libciomr/libciomr.h>
@@ -21,10 +22,12 @@
 double chkpt_rd_eref(void)
 {
   double eref;
+  char *keyword;
+  keyword = chkpt_build_keyword("Reference energy");
 
-  psio_read_entry(PSIF_CHKPT, "::Reference energy", (char *) &eref, 
-                  sizeof(double));
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) &eref, sizeof(double));
 
+  free(keyword);
   return eref;
 }
 
@@ -40,7 +43,11 @@ double chkpt_rd_eref(void)
 */
 void chkpt_wt_eref(double eref)
 {
-  psio_write_entry(PSIF_CHKPT, "::Reference energy", (char *) &eref, 
-                   sizeof(double));
-}
+  char *keyword;
+  keyword = chkpt_build_keyword("Reference energy");
 
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) &eref, 
+                   sizeof(double));
+
+  free(keyword);
+}

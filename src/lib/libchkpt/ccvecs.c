@@ -4,6 +4,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 #include "chkpt.h"
 #include <libciomr/libciomr.h>
@@ -39,6 +40,7 @@ double **chkpt_rd_ccvecs(void)
 {
   int nmo, ccvec_length;
   double **ccvecs;
+  char *keyword;
   
   nmo = chkpt_rd_nmo();
   ccvec_length = abs(chkpt_rd_iopen());
@@ -46,8 +48,12 @@ double **chkpt_rd_ccvecs(void)
   if (ccvec_length > 0) {
     ccvecs = block_matrix(2,ccvec_length);
 
-    psio_read_entry(PSIF_CHKPT, "::SCF coupling coefficients", 
-		    (char *) ccvecs[0], 2*ccvec_length*sizeof(double));
+    keyword = chkpt_build_keyword("SCF coupling coefficients"); 
+
+    psio_read_entry(PSIF_CHKPT, keyword, (char *) ccvecs[0],
+        2*ccvec_length*sizeof(double));
+
+    free(keyword);
 
     return ccvecs;
   }
@@ -68,14 +74,18 @@ double **chkpt_rd_ccvecs(void)
 void chkpt_wt_ccvecs(double **ccvecs)
 {
   int nmo, ccvec_length;
+  char *keyword;
   
   nmo = chkpt_rd_nmo();
   ccvec_length = abs(chkpt_rd_iopen());
   
   if (ccvec_length > 0) {
-    psio_write_entry(PSIF_CHKPT, "::SCF coupling coefficients", 
-		    (char *) ccvecs[0], 2*ccvec_length*sizeof(double));
+    keyword = chkpt_build_keyword("SCF coupling coefficients");
 
+    psio_write_entry(PSIF_CHKPT, keyword, (char *) ccvecs[0],
+       2*ccvec_length*sizeof(double));
+
+    free(keyword);
   }
 }
 

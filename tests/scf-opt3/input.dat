@@ -1,12 +1,10 @@
 psi: (
-  label = "bh3"
+  label = "DZP RHF optimization of BH3"
   wfn = scf
   reference = rhf
   jobtype = opt
   dertype = first
   basis = "DZP"
-  convergence = 13
-  conv = 10
   zmat = (
     B
     H 1 BH$

@@ -37,7 +37,7 @@ $PSITEST_TARGET_SUFFIX = "test";
 $PSITEST_TEST_SCRIPT = "runtest.pl";
 
 # These are definitions that default tester knows about -- should match Psi driver!
-@PSITEST_JOBTYPES = ("SP", "OPT", "DISP", "FREQ", "SYMM_FREQ", "OEPROP", "DBOC");
+@PSITEST_JOBTYPES = ("SP", "OPT", "DISP", "FREQ", "SYMM_FC", "FC", "OEPROP", "DBOC");
 @PSITEST_WFNS = ("SCF", "MP2", "MP2R12", "DETCI", "DETCAS", "BCCD", "BCCD_T", "CCSD", "CCSD_T", "CC3",
 "EOM_CCSD", "LEOM_CCSD", "OOCCD", "CIS");
 @PSITEST_REFTYPES = ("RHF", "ROHF", "UHF", "TWOCON");
@@ -130,8 +130,8 @@ sub do_tests
     }
 
     # I'll lump all single-point computations together
-    if ( $jobtype eq "SP" || $jobtype eq "FREQ" || $jobtype eq "SYMM_FREQ" || $jobtype eq "OEPROP" ||
-         $jobtype eq "DBOC" || $jobtype eq "RESPONSE" ) {
+    if ( $jobtype eq "SP" || $jobtype eq "FREQ" || $jobtype eq "SYMM_FC" || $jobtype eq "OEPROP" ||
+         $jobtype eq "DBOC" || $jobtype eq "RESPONSE" || $jobtype eq "FC" ) {
       
       $fail |= compare_nuc();
       # All computations in Psi3 start with an SCF run
@@ -171,8 +171,15 @@ sub do_tests
         $fail |= compare_findif_freq($wfn);
       }
 
-      if ($jobtype eq "SYMM_FREQ" && $dertype eq "FIRST") {
+      if ($jobtype eq "FREQ" && $dertype eq "NONE") {
+        $fail |= compare_findif_freq($wfn);
+      }
+
+      if ($jobtype eq "SYMM_FC" && $dertype eq "FIRST") {
         $fail |= compare_findif_symm_freq($wfn);
+      }
+      if ($jobtype eq "FC" && $dertype eq "FIRST") {
+        $fail |= compare_findif_freq($wfn);
       }
       if ($jobtype eq "DBOC") {
         $fail |= compare_dboc()
@@ -1270,7 +1277,7 @@ sub seek_energy_file11
   @datafile = <OUT>;
   close(OUT);
 
-  printf "Entering seek_energy_file11.\n";
+#  printf "Entering seek_energy_file11.\n";
 
   $match = "$_[1]";
   $linenum = 0;
@@ -1285,7 +1292,7 @@ sub seek_energy_file11
 
   @line = split(/ +/, $datafile[$lastiter+1]);
   $energy = $line[2];
-  printf $energy;
+#  printf $energy;
 
   if($energy != 0.0) {
     return $energy;
@@ -1329,7 +1336,7 @@ sub seek_geom_file11
   @datafile = <OUT>;
   close(OUT);
 
-  printf "Entering seek_geom_file11.\n";
+#  printf "Entering seek_geom_file11.\n";
 
   $match = "$_[1]";
   $linenum = 0;
@@ -1340,7 +1347,7 @@ sub seek_geom_file11
     if($line =~ m/$match/) {
       $foundit = 1;
       $lastiter = $linenum;
-      printf $line;
+#      printf $line;
     }
     $linenum++;
   }
@@ -1414,7 +1421,7 @@ sub seek_findif_freq
     $linenum++;
     if ($line =~ m/$match/) {
       while ($j<$ndof) {
-        @test = split (/ +/,$datafile[$linenum+$j]);
+        @test = split (/ +/,$datafile[$linenum+1+$j]);
         $freq[$j] = $test[2];
         $j++;
       }

@@ -4,6 +4,7 @@
 */
 
 #include "chkpt.h"
+#include <stdlib.h>
 #include <psifiles.h>
 #include <libpsio/psio.h>
 
@@ -22,9 +23,12 @@
 int chkpt_rd_nsymhf(void)
 {
   int nsymhf;
+  char *keyword;
+  keyword = chkpt_build_keyword("Num. HF irreps");
 
-  psio_read_entry(PSIF_CHKPT, "::Num. HF irreps", (char *) &nsymhf, 
-                  sizeof(int));
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) &nsymhf, sizeof(int));
+
+  free(keyword);
   return nsymhf;
 }
 
@@ -43,6 +47,10 @@ int chkpt_rd_nsymhf(void)
 
 void chkpt_wt_nsymhf(int nsymhf)
 {
-  psio_write_entry(PSIF_CHKPT, "::Num. HF irreps", (char *) &nsymhf, 
-                   sizeof(int));
+  char *keyword;
+  keyword = chkpt_build_keyword("Num. HF irreps");
+
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) &nsymhf, sizeof(int));
+
+  free(keyword);
 }
