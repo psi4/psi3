@@ -6,6 +6,7 @@ include ../MakeVars
 
 CFLAGS += -DDPD_TIMER
 #CFLAGS += -DDPD_DEBUG
+#CFLAGS += -DUSE_DMALLOC
 
 TARGET = $(top_objdir)/lib/libdpd.a
 

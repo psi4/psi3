@@ -6,7 +6,7 @@
 #include <libciomr.h>
 #include <iwl.h>
 
-#ifdef DMALLOC
+#ifdef USE_DMALLOC
 #include <dmalloc.h>
 #endif
 

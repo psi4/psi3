@@ -13,7 +13,7 @@
 */
 
 int dpd_buf4_axpbycz(dpdbuf4 *FileA, dpdbuf4 *FileB, dpdbuf4 *FileC,
-  double a, double b, double c)
+		     double a, double b, double c)
 {
   dpd_buf4_scm(FileC, c);
 

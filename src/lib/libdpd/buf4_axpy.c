@@ -33,15 +33,6 @@ int dpd_buf4_axpy(dpdbuf4 *BufX, dpdbuf4 *BufY, double alpha)
       dpd_buf4_mat_irrep_init(BufY, h);
       dpd_buf4_mat_irrep_rd(BufY, h);
 
-      /* I need to replace this with a BLAS1 call */
-/*
-      for(row=0; row < BufX->params->rowtot[h]; row++) {
-	  for(col=0; col < BufX->params->coltot[h^my_irrep]; col++) {
-	      BufY->matrix[h][row][col] += alpha*BufX->matrix[h][row][col]; 
-	    }
-	}
-*/
-
       length = BufX->params->rowtot[h] * BufX->params->coltot[h];
       if(length) {
           X = &(BufX->matrix[h][0][0]);
