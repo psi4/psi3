@@ -59,6 +59,7 @@ void pair_energies(double** epair_aa, double** epair_ab)
           ij = (i > j) ? i*(i-1)/2 + j : j*(j-1)/2 + i;
           eaa[ij] = block[p][p];
         }
+	dpd_buf4_mat_irrep_close(&E, irrep);
       }
 
       *epair_aa = eaa;
@@ -99,6 +100,7 @@ void pair_energies(double** epair_aa, double** epair_ab)
           ij = i*nocc_act + j;
           eab[ij] = block[p][p];
         }
+	dpd_buf4_mat_irrep_close(&E, irrep);
       }
 
       *epair_ab = eab;
