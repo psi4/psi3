@@ -852,6 +852,7 @@ AC_OUTPUT(include/psiconfig.h
           src/bin/cctriples/Makefile
           src/bin/cceom/Makefile
           src/bin/cints/Makefile
+          src/bin/cis/Makefile
           src/bin/clag/Makefile
           src/bin/cscf/Makefile
           src/bin/detci/Makefile

@@ -21,6 +21,7 @@ COMMONSRC = \
 macros.tex \
 reference.tex \
 history.tex
+install.tex
 
 USERMANSRC = userman.tex
 USERMANSRCS = \
