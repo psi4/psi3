@@ -13,7 +13,7 @@ gprgid.c get_mo_info.c check_energy.c ints.c \
 stringlist.c og_addr.c printing.c set_ciblks.c calc_hd_block.c \
 misc.c h0block.c olsenupdt.c b2brepl.c vector.c calc_d.c \
 sem_test.c slater.c form_ov.c s3_block_bz.c s1v.c s2v.c s3v.c \
-s1.c s2.c s3.c gencic.c ssq.c tpool.c
+s1.c s2.c s3.c gencic.c ssq.c tpool.c time.c
 
 CXXSRC = detci.cc params.cc olsengraph.cc civect.cc odometer.cc slaterd.cc \
 mitrush_iter.cc sem.cc sigma.cc opdm.cc tpdm.cc genci.cc mpn.cc
