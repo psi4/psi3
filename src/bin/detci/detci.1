@@ -129,6 +129,15 @@ correction vector of H0BLOCK.  The H0BLOCK_INV, GEN_DAVIDSON, and
 ITER_INV approaches are all formally equivalent but the ITER_INV is 
 less computationally expensive.  Default is \fBDAVIDSON\fP.
 
+.IP "\fBREFERENCE =\fP \fIstring\fP"
+This specifies the type of reference function.  This is RHF or ROHF.
+UHF and TWOCON are not supported.
+For ROHF, a multiplicity of 1 implies an open-shell singlet.  The
+program will run for open-shell singlets, but it has not been properly
+adapted to use a correct two-determinant reference in this case, so 
+running with open-shell singlet references is not advised except for
+full CI's.
+
 .IP "\fBUPDATE =\fP \fIstring\fP"
 \fBDAVIDSON\fP employs the standard DAVIDSON update or correction vector 
 formula, while \fBOLSEN\fP uses the OLSEN correction vector.
@@ -242,7 +251,7 @@ be raised before long.
 
 .IP "\fBMAXITER =\fP \fIinteger\fP"
 Maximum number of iterations to diagonalize the Hamiltonian.
-Defaults to 10.
+Defaults to 12.
 
 .IP "\fBMs0 =\fP \fIboolean\fP"
 If \fBTRUE\fP, use the Ms=0 component of the state.  Defaults to \fBTRUE\fP
