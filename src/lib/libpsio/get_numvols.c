@@ -14,9 +14,9 @@
 **
 ** \ingroup (PSIO)
 */
-ULI psio_get_numvols(ULI unit)
+unsigned int psio_get_numvols(unsigned int unit)
 {
-  ULI num;
+  unsigned int num;
   int errcod;
   char ip_token[PSIO_MAXSTR];
   char *gprgid();
@@ -58,9 +58,9 @@ ULI psio_get_numvols(ULI unit)
 **
 ** \ingroup (PSIO)
 */
-ULI psio_get_numvols_default(void)
+unsigned int psio_get_numvols_default(void)
 {
-  ULI num;
+  unsigned int num;
   int errcod;
   char ip_token[PSIO_MAXSTR];
 

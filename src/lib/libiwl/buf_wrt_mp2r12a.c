@@ -29,7 +29,7 @@ void iwl_buf_wrt_mp2r12a(struct iwlbuf *Buf, int p, int q, int pq, int pqsym,
    double **arr, int rsym, int *firstr, int *lastr, int *firsts, int *lasts,
    int *occ, int bra_ket_symm, int *ioff, int printflag, FILE *outfile)
 {
-   int idx, j, r, s, rs, ssym, smax;
+   int idx, r, s, rs, ssym;
    int R,S,rnew,snew;
    double value;
    Label *lblptr;

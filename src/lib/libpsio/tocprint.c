@@ -12,7 +12,7 @@
 ** \ingroup (PSIO)
 */
 
-void psio_tocprint(ULI unit, FILE *output)
+void psio_tocprint(unsigned int unit, FILE *output)
 {
   psio_tocentry *this_entry;
 
@@ -27,7 +27,7 @@ void psio_tocprint(ULI unit, FILE *output)
 "----------------------------------------------------------------------------\n");
 
   while(this_entry != NULL) {
-      fprintf(output, "%-32s %10u %10u %10u %10u\n",
+      fprintf(output, "%-32s %10lu %10lu %10lu %10lu\n",
 	      this_entry->key,
 	      this_entry->sadd.page, this_entry->sadd.offset,
 	      this_entry->eadd.page, this_entry->eadd.offset);

@@ -11,7 +11,7 @@
 ** \ingroup (PSIO)
 */
 
-psio_address psio_get_entry_end(ULI unit, char *key)
+psio_address psio_get_entry_end(unsigned int unit, char *key)
 {
   psio_tocentry *this_entry;
 

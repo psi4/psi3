@@ -12,14 +12,16 @@
 **
 ** \ingroup (PSIO)
 */
-int psio_rw(ULI unit, char *buffer, psio_address address, ULI size, int wrt)
+int psio_rw(unsigned int unit, char *buffer, psio_address address, ULI size, int wrt)
 {
-  int errcod, i;
+  int errcod;
+  unsigned int i;
+  ULI errcod_uli;
   ULI page, offset;
-  ULI buf_offset, toc_page, toc_offset;
+  ULI buf_offset;
   ULI this_page, this_page_max, this_page_total;
-  ULI first_vol, this_vol;
-  ULI numvols, bytes_left, num_full_pages;
+  unsigned int first_vol, this_vol, numvols;
+  ULI bytes_left, num_full_pages;
   psio_ud *this_unit;
 
   this_unit = &(psio_unit[unit]);
@@ -47,14 +49,14 @@ int psio_rw(ULI unit, char *buffer, psio_address address, ULI size, int wrt)
 
   buf_offset = 0;
   if(wrt) {
-      errcod = write(this_unit->vol[first_vol].stream, &(buffer[buf_offset]),
+      errcod_uli = write(this_unit->vol[first_vol].stream, &(buffer[buf_offset]),
 		     this_page_total);
-      if(errcod != this_page_total) psio_error(unit,PSIO_ERROR_WRITE);
+      if(errcod_uli != this_page_total) psio_error(unit,PSIO_ERROR_WRITE);
     }
   else {
-      errcod = read(this_unit->vol[first_vol].stream, &(buffer[buf_offset]),
+      errcod_uli = read(this_unit->vol[first_vol].stream, &(buffer[buf_offset]),
 		    this_page_total);
-      if(errcod != this_page_total) psio_error(unit,PSIO_ERROR_READ);
+      if(errcod_uli != this_page_total) psio_error(unit,PSIO_ERROR_READ);
     }
 
   /* Total number of bytes remaining to be read/written */
@@ -67,14 +69,14 @@ int psio_rw(ULI unit, char *buffer, psio_address address, ULI size, int wrt)
       this_vol = this_page % numvols;
       this_page_total = PSIO_PAGELEN;
       if(wrt) {
-	  errcod = write(this_unit->vol[this_vol].stream, &(buffer[buf_offset]),
+	  errcod_uli = write(this_unit->vol[this_vol].stream, &(buffer[buf_offset]),
 			 this_page_total);
-	  if(errcod != this_page_total) psio_error(unit,PSIO_ERROR_WRITE);
+	  if(errcod_uli != this_page_total) psio_error(unit,PSIO_ERROR_WRITE);
 	}
       else {
-	  errcod = read(this_unit->vol[this_vol].stream, &(buffer[buf_offset]),
+	  errcod_uli = read(this_unit->vol[this_vol].stream, &(buffer[buf_offset]),
 			this_page_total);
-	  if(errcod != this_page_total) psio_error(unit,PSIO_ERROR_READ);
+	  if(errcod_uli != this_page_total) psio_error(unit,PSIO_ERROR_READ);
 	}
       buf_offset += this_page_total;
     }
@@ -84,14 +86,14 @@ int psio_rw(ULI unit, char *buffer, psio_address address, ULI size, int wrt)
   this_vol = this_page % numvols;
   if(bytes_left) {
       if(wrt) {
-	  errcod = write(this_unit->vol[this_vol].stream, &(buffer[buf_offset]),
+	  errcod_uli = write(this_unit->vol[this_vol].stream, &(buffer[buf_offset]),
 			 bytes_left);
-	  if(errcod != bytes_left) psio_error(unit,PSIO_ERROR_WRITE);
+	  if(errcod_uli != bytes_left) psio_error(unit,PSIO_ERROR_WRITE);
 	}
       else {
-	  errcod = read(this_unit->vol[this_vol].stream, &(buffer[buf_offset]),
+	  errcod_uli = read(this_unit->vol[this_vol].stream, &(buffer[buf_offset]),
 			 bytes_left);
-	  if(errcod != bytes_left) psio_error(unit,PSIO_ERROR_READ);
+	  if(errcod_uli != bytes_left) psio_error(unit,PSIO_ERROR_READ);
 	}
     }
 

@@ -13,7 +13,7 @@
 ** \ingroup (PSIO)
 */
 
-psio_tocentry *psio_tocscan(ULI unit, char *key)
+psio_tocentry *psio_tocscan(unsigned int unit, char *key)
 {
   psio_tocentry *this_entry;
 

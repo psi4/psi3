@@ -7,6 +7,7 @@
 
 #include <unistd.h>
 #include <string.h>
+#include <stdlib.h>
 #include "psio.h"
 
 /*!
@@ -19,9 +20,9 @@
 **                retained (1).
 */
 
-int psio_close(ULI unit, int keep)
+int psio_close(unsigned int unit, int keep)
 {
-  int i, errcod, stream;
+  unsigned int i;
   psio_ud *this_unit;
   psio_tocentry *this_entry, *next_entry;
 

@@ -30,8 +30,7 @@ void iwl_buf_wrt_val_SI(struct iwlbuf *Buf, short int p, short int q,
                         short int r, short int s, double value, int printflag, 
                         FILE *outfile, int dirac)
 {
-   int lastbuf;
-   int idx, j;
+   int idx;
    Label *lblptr;
    Value *valptr;
 

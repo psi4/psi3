@@ -23,7 +23,7 @@ void iwl_buf_wrt(struct iwlbuf *Buf, int p, int q, int pq, int pqsym,
    double *arr, int rmax, int *active, int *ioff, int *orbsym, int *firsti, 
    int *lasti, int sortby_rs, int printflag, FILE *outfile)
 {
-  int j, r, s, rs, rsym, ssym, smax, idx;
+  int r, s, rs, rsym, ssym, smax, idx;
   double value;
   Label *lblptr;
   Value *valptr;
@@ -53,7 +53,7 @@ void iwl_buf_wrt(struct iwlbuf *Buf, int p, int q, int pq, int pqsym,
 	if (Buf->idx == Buf->ints_per_buf) {
 	  Buf->inbuf = Buf->idx;
 	  Buf->lastbuf = 0;
-	  buf_put(Buf);
+	  iwl_buf_put(Buf);
 	  Buf->idx = 0;
 	}
 	

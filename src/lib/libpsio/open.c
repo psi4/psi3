@@ -25,12 +25,12 @@
 ** \ingroup (PSIO)
 */
 
-int psio_open(ULI unit, int status)
+int psio_open(unsigned int unit, int status)
 {
-  int i, j, errcod, stream, tocstat;
+  unsigned int i, j;
+  int errcod, stream, tocstat;
   char name[PSIO_MAXSTR],path[PSIO_MAXSTR],fullpath[PSIO_MAXSTR];
   psio_ud *this_unit;
-  psio_tocentry *this_entry, *last_entry;
 
   this_unit = &(psio_unit[unit]);
 
@@ -79,7 +79,7 @@ int psio_open(ULI unit, int status)
   }
 
   if (status == PSIO_OPEN_OLD) tocstat = psio_tocread(unit);
-  else if (status == PSIO_OPEN_NEW || tocstat) {
+  else if (status == PSIO_OPEN_NEW) {
       
     /* Init the TOC stats and write them to disk */
     this_unit->tocaddress.page = 0;

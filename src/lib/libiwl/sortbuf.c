@@ -173,7 +173,7 @@ void sortbuf(struct iwlbuf *Inbuf, struct iwlbuf *Outbuf,
         else ints[pqrs-offset] += valptr[Inbuf->idx];
 
 	if (printflg) 
-	  fprintf(outfile, "<%d %d %d %d | %d %d [%d] = %10.6lf\n",
+	  fprintf(outfile, "<%d %d %d %d | %d %d [%ld] = %10.6lf\n",
 		  p, q, r, s, pq, rs, pqrs, ints[pqrs-offset]) ;
       }
    } while (!lastbuf);
@@ -241,7 +241,7 @@ void sortbuf(struct iwlbuf *Inbuf, struct iwlbuf *Outbuf,
 	     lblptr[idx++] = s;
 	     valptr[Outbuf->idx] = ints[pqrs-offset];
 	     if (printflg) 
-	       fprintf(outfile, ">%d %d %d %d | %d %d [%d] = %10.6lf\n",
+	       fprintf(outfile, ">%d %d %d %d | %d %d [%ld] = %10.6lf\n",
 		       p, q, r, s, pq, rs, pqrs, ints[pqrs-offset]) ;
 	     
 	     Outbuf->idx++;

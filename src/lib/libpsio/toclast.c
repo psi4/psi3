@@ -11,7 +11,7 @@
 ** \ingroup (PSIO)
 */
 
-psio_tocentry *psio_toclast(ULI unit)
+psio_tocentry *psio_toclast(unsigned int unit)
 {
   psio_tocentry *this_entry;
 

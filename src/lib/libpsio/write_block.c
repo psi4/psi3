@@ -4,6 +4,7 @@
 */
  
 #include <stdlib.h>
+#include <string.h>
 #include "psio.h"
 
 /*!
@@ -12,10 +13,10 @@
 ** \ingroup (PSIO)
 */
 
-int psio_write_block(ULI unit, char *key, char *buffer, ULI blksiz,
+int psio_write_block(unsigned int unit, char *key, char *buffer, ULI blksiz,
   		     ULI start_blk, ULI  end_blk)
 {
-  ULI size, shift, bytes_added;
+  ULI size, shift;
   psio_ud *this_unit;
   psio_tocentry *this_entry, *last_entry;
   psio_address sadd, eadd;

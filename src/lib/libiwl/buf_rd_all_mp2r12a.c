@@ -72,7 +72,7 @@ int iwl_buf_rd_all_mp2r12a(struct iwlbuf *Buf, double *ints,
     }
     
     if (printflg) 
-      fprintf(outfile, "<%2d %2d %2d %2d [%2d][%2d] [[%3d]] = %20.10lf\n",
+      fprintf(outfile, "<%2d %2d %2d %2d [%2ld][%2ld] [[%3ld]] = %20.10lf\n",
 	      p, q, r, s, pq, rs, pqrs, ints[pqrs]) ;
     
   } /*! end loop through current buffer */
@@ -103,7 +103,7 @@ int iwl_buf_rd_all_mp2r12a(struct iwlbuf *Buf, double *ints,
       }
       
       if (printflg) 
-	fprintf(outfile, "<%d %d %d %d [%d][%d] [[%d]] = %20.10lf\n",
+	fprintf(outfile, "<%d %d %d %d [%ld][%ld] [[%ld]] = %20.10lf\n",
 		p, q, r, s, pq, rs, pqrs, ints[pqrs]) ;
       
     } /*! end loop through current buffer */

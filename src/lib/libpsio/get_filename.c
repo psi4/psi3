@@ -20,7 +20,7 @@ extern char *psi_file_prefix;
 **
 ** \ingroup (PSIO)
 */
-int psio_get_filename(ULI unit, char *name)
+int psio_get_filename(unsigned int unit, char *name)
 {
   int errcod;
   char ip_token[PSIO_MAXSTR];
@@ -52,9 +52,6 @@ int psio_get_filename(ULI unit, char *name)
 */
 int psio_get_filename_default(char *name)
 {
-  int errcod;
-  char ip_token[PSIO_MAXSTR];
-
   strcpy(name,psi_file_prefix);
   return(1);
 }

@@ -30,7 +30,7 @@ int iwl_buf_rd_arr(struct iwlbuf *Buf, int target_pq, double *ints,
       int printflg, FILE *outfile)
 {
    int lastbuf;
-   int idx, p, q, r, s, pq, rs;
+   int idx, p, q, r, s, pq;
    double value;
    Value *valptr;
    Label *lblptr;

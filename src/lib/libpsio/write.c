@@ -4,6 +4,7 @@
 */
 
 #include <stdlib.h>
+#include <string.h>
 #include "psio.h"
 
 /*!
@@ -21,7 +22,7 @@
 ** \ingroup (PSIO)
 */
 
-int psio_write(ULI unit, char *key, char *buffer, ULI size,
+int psio_write(unsigned int unit, char *key, char *buffer, ULI size,
 	       psio_address rel_start, psio_address *rel_end)
 {
   psio_ud *this_unit;

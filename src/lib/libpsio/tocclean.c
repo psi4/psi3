@@ -3,6 +3,8 @@
    \ingroup (PSIO)
 */
 
+#include <string.h>
+#include <stdlib.h>
 #include "psio.h"
 
 /*!
@@ -12,7 +14,7 @@
 ** \ingroup (PSIO)
 */
 
-int psio_tocclean(ULI unit, char *key)
+int psio_tocclean(unsigned int unit, char *key)
 {
   psio_tocentry *this_entry, *last_entry, *prev_entry;
 

@@ -4,6 +4,7 @@
 */
 
 #include <stdlib.h>
+#include <string.h>
 #include "psio.h"
 
 /*!
@@ -15,7 +16,7 @@
 ** \ingroup (PSIO)
 */
 
-int psio_tocdel(ULI unit, char *key)
+int psio_tocdel(unsigned int unit, char *key)
 {
   psio_tocentry *this_entry, *last_entry, *next_entry;
 

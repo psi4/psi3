@@ -20,7 +20,7 @@ void iwl_buf_wrt_arr_SI(struct iwlbuf *Buf, double *arr, short int *p,
 		     short int *q, short int *r, short int *s, int size)
 {
 
-  int i,j,idx;
+  int i,idx;
   double value;
   Label *lblptr;
   Value *valptr;

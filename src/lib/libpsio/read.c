@@ -22,7 +22,7 @@
 ** \ingroup (PSIO)
 */
 
-int psio_read(ULI unit, char *key, char *buffer, ULI size,
+int psio_read(unsigned int unit, char *key, char *buffer, ULI size,
 	       psio_address sadd, psio_address *eadd)
 {
   psio_ud *this_unit;

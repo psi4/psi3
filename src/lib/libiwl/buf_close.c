@@ -5,6 +5,7 @@
   \ingroup (IWL)
 */
 #include <stdio.h>
+#include <stdlib.h>
 #include <libpsio/psio.h>
 #include "iwl.h"
 

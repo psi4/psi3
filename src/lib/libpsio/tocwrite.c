@@ -3,6 +3,7 @@
    \ingroup (PSIO)
 */
 
+#include <stdlib.h>
 #include <unistd.h>
 #include "psio.h"
 #include <psifiles.h>
@@ -12,11 +13,12 @@
 **
 ** \ingroup (PSIO)
 */
-int psio_tocwrite(ULI unit)
+int psio_tocwrite(unsigned int unit)
 {
-  int i, errcod, volume, entry_size, stream;
+  unsigned int i;
+  int errcod, volume, entry_size, stream;
   psio_ud *this_unit;
-  psio_tocentry *next_entry, *this_entry;
+  psio_tocentry *this_entry;
 
   this_unit = &(psio_unit[unit]);
   entry_size = sizeof(psio_tocentry) - 2*sizeof(psio_tocentry *);

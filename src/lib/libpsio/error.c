@@ -17,7 +17,7 @@
 ** \param errval = error code (defined symbolically, PSIO_ERROR_XXX)
 **
 */
-void psio_error(ULI unit, ULI errval)
+void psio_error(unsigned int unit, unsigned int errval)
 {
   int i;
 

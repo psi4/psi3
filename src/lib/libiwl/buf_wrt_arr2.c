@@ -22,7 +22,7 @@
 void iwl_buf_wrt_arr2(struct iwlbuf *Buf, double *arr, int p, int q, 
       int *rlist, int *slist, int size, int printflag, FILE *outfile)
 {
-  int i,j,idx;
+  int i,idx;
   double value;
   Label *lblptr;
   Value *valptr;

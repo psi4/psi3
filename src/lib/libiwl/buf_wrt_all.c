@@ -34,7 +34,7 @@
 void iwl_buf_wrt_all(struct iwlbuf *Buf, int nbfso, double *ints, int *ioff,
       int printflg, FILE *outfile)
 {
-  int idx, i, p, q, r, s, smax, pq, rs, pqrs;
+  int idx, p, q, r, s, smax, pq, rs, pqrs;
   Label *lblptr;
   Value *valptr;
 

@@ -12,9 +12,10 @@
 ** 
 ** \ingroup (PSIO)
 */
-int psio_tocread(ULI unit)
+int psio_tocread(unsigned int unit)
 {
-  int i, errcod, stream, volume, entry_size;
+  unsigned int i;
+  int errcod, stream, volume, entry_size;
   psio_ud *this_unit;
   psio_tocentry *last_entry, *this_entry; 
 

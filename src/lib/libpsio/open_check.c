@@ -14,7 +14,7 @@
 ** \ingroup (PSIO)
 */
 
-int psio_open_check(ULI unit)
+int psio_open_check(unsigned int unit)
 {
   psio_ud *this_unit;
 

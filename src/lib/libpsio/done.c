@@ -54,4 +54,6 @@ int psio_done(void)
   free(psio_unit);
 
   _psi3_libpsio_state_ = 0;
+
+  return(0);
 }

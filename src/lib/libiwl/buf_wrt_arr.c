@@ -28,7 +28,7 @@ void iwl_buf_wrt_arr(struct iwlbuf *Buf, double *arr, int *p, int *q,
   Value *valptr;
 
   if (size < 0) {
-    printf("(iwl_buf_wrt_arr): Called with size = %d\n", size);
+    printf("(iwl_buf_wrt_arr): Called with size = %ld\n", size);
     return;
   }
 

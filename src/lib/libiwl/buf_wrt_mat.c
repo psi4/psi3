@@ -45,9 +45,8 @@ void iwl_buf_wrt_mat(struct iwlbuf *Buf, int ptr, int qtr,
      int *reorder, int reorder_offset, int printflag, int *ioff,
       FILE *outfile)
 {
-   int lastbuf;
    int idx, r, s, R, S, rtr, str;
-   int j, ij, kl;
+   int ij, kl;
    double value;
    Label *lblptr;
    Value *valptr;
@@ -108,9 +107,8 @@ void iwl_buf_wrt_mat2(struct iwlbuf *Buf, int ptr, int qtr,
      int *reorder, int reorder_offset, int printflag, int *ioff,
       FILE *outfile)
 {
-   int lastbuf;
    int idx, r, s, R, S, rtr, str;
-   int j, ij, kl;
+   int ij, kl;
    double value;
    Label *lblptr;
    Value *valptr;

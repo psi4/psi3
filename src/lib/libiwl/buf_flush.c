@@ -19,7 +19,7 @@
 */
 void iwl_buf_flush(struct iwlbuf *Buf, int lastbuf)
 {
-  int i, idx;
+  int idx;
   Label *lblptr;
   Value *valptr;
   

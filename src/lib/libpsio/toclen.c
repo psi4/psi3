@@ -11,9 +11,9 @@
 ** \ingroup (PSIO)
 */
 
-ULI psio_toclen(ULI unit)
+unsigned int psio_toclen(unsigned int unit)
 {
-  ULI toclen=0;
+  unsigned int toclen=0;
   psio_tocentry *this_entry;
 
   this_entry = psio_unit[unit].toc;

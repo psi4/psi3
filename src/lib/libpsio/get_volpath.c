@@ -14,7 +14,7 @@
 **
 ** \ingroup (PSIO)
 */
-int psio_get_volpath(ULI unit, ULI volume, char *path)
+int psio_get_volpath(unsigned int unit, unsigned int volume, char *path)
 {
   int errcod;
   char ip_token[PSIO_MAXSTR];
@@ -57,7 +57,7 @@ int psio_get_volpath(ULI unit, ULI volume, char *path)
 **
 ** \ingroup (PSIO)
 */
-int psio_get_volpath_default(ULI volume, char *path)
+int psio_get_volpath_default(unsigned int volume, char *path)
 {
   int errcod;
   char ip_token[PSIO_MAXSTR];
