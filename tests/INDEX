@@ -1,0 +1,15 @@
+INDEX for PSI3 Coupled Cluster Test Cases
+-----------------------------------------
+cc1: RHF-CCSD/6-31G** H2O geometry optimization via analytic gradients 
+  (all electron, MO-basis <ab|cd>)
+
+cc2: RHF-CCSD/6-31G** H2O geometry optimization via finite differences
+  (all electron, MO-basis <ab|cd>)
+
+cc3: RHF-CCSD/6-31G** H2O symmetric frequencies via finite differences of
+gradients (all electron, MO-basis <ab|cd>)
+
+cc4: RHF-CCSD(T)/cc-pVQZ BH single-point energy (fzc, MO-basis <ab|cd>)
+
+cc5: RHF-CCSD(T)/aug-cc-pVTZ planar (C2v) C4NH4 single-point energy 
+  (fzc, MO-basis <ab|cd>)
