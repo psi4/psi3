@@ -20,7 +20,7 @@ void stop_io();
 
 
 
-void main() {
+int main() {
 
     start_io();
     print_intro();
@@ -53,6 +53,7 @@ void main() {
     
     stop_io();
     exit(0);
+    return 0;
 }
 
 
