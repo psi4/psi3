@@ -6,6 +6,7 @@ struct MOInfo {
   int phase;             /* Boolean for consistency of orbital phases */
   int aobasis;
   int *orbspi;           /* no. of MOs per irrep */
+  int *orbsym;           /* orbital symmetry (Pitzer/SO) */
   int *clsdpi;           /* no. of closed-shells per irrep excl. frdocc */
   int *openpi;           /* no. of open-shells per irrep */
   int *uoccpi;           /* no. of unoccupied orbitals per irr. ex. fruocc */
@@ -32,4 +33,5 @@ struct MOInfo {
   double ecc;            /* Current coupled cluster energy */
   double t1diag;         /* Standard open- or closed-shell T1 diagnostic */
   double d1diag;         /* Janssen and Nielsen's D1 Diagnostic */
+  double ***C;           /* Virtual orbital transformation matrix (for AO-basis B terms) */
 };

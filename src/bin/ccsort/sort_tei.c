@@ -125,9 +125,11 @@ void sort_tei(void)
     file_build(&A, FIRST_TMP, tolerance, 1, 1, 1, 0);
     dpd_file4_close(&A);
 
-    dpd_file4_init_nocache(&B, CC_BINTS, 0, 5, 5, "B <ab|cd>");
-    file_build(&B, FIRST_TMP+1, tolerance, 1, 1, 1, 0);
-    dpd_file4_close(&B);
+    if(!params.aobasis) {
+      dpd_file4_init_nocache(&B, CC_BINTS, 0, 5, 5, "B <ab|cd>");
+      file_build(&B, FIRST_TMP+1, tolerance, 1, 1, 1, 0);
+      dpd_file4_close(&B);
+    }
 
     dpd_file4_init_nocache(&C, CC_CINTS, 0, 10, 10, "C <ia|jb>");
     file_build(&C, FIRST_TMP+2, tolerance, 1, 1, 0, 0);

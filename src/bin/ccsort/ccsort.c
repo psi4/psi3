@@ -68,12 +68,12 @@ int main(int argc, char *argv[])
 
   sort_oei();
   sort_tei();
-  b_sort();
+/*  b_sort(); */
   c_sort();
   d_sort();
   d_spinad();
   e_sort();
-  f_sort();
+  f_sort(); 
   scf_check();
   fock();
   denom();

@@ -429,11 +429,6 @@ void get_parameters(void)
   errcod = ip_data("PRESORT_FILE", "%d", &(params.presort_file),0);
   params.keep_presort = 0;
   errcod = ip_boolean("KEEP_PRESORT", &(params.keep_presort),0);
-  /* Check for AO-Basis CC flag */
-  params.aobasis = 0;
-  errcod = ip_boolean("AO_BASIS", &(params.aobasis),0);
-  /* If AO-basis chosen, keep the presort file */
-  if(params.aobasis) params.keep_presort = 1;
 
   params.jfile = 91;
   errcod = ip_data("J_FILE","%d", &(params.jfile),0);
@@ -459,12 +454,19 @@ void get_parameters(void)
     params.delete_src_tei = 0;
   else 
     params.delete_src_tei = 1;
+
+  /* If AO-basis chosen, keep the SO_TEI file */
+  params.aobasis = 0;
+  errcod = ip_boolean("AO_BASIS", &(params.aobasis),0);
+  if(params.aobasis) params.delete_src_tei = 0;
+
   if (!params.backtr) {
     errcod = ip_boolean("DELETE_AO", &(params.delete_src_tei),0);
   }
   else {
     errcod = ip_boolean("DELETE_TPDM", &(params.delete_src_tei),0);
   }
+
   params.print_te_ints = 0;
   errcod = ip_boolean("PRINT_TE_INTEGRALS", &(params.print_te_ints),0);
   params.print_oe_ints = 0;
@@ -917,6 +919,7 @@ void get_moinfo(void)
 					 moinfo.first_so, moinfo.last_so,
 					 moinfo.first, moinfo.last, 
 					 moinfo.first, moinfo.last, params.print_mos);
+
       }
     }
     else {
@@ -938,6 +941,7 @@ void get_moinfo(void)
 					 moinfo.first_so, moinfo.last_so,
 					 moinfo.first, moinfo.last, 
 					 moinfo.fstact, moinfo.lstact, params.print_mos);
+
       }
     }
 

@@ -14,7 +14,7 @@ CT2.c  FaetT2.c  WmbejT2.c  Z.c          diagnostic.c  get_params.c  tau.c    \
 DT2.c  Fme.c     Wmnij.c    ZT2.c        diis.c        init_amps.c   taut.c   \
 ET2.c  Fmi.c     WmnijT2.c  ccenergy.c   dijabT2.c     sort_amps.c   tsave.c  \
 FT2.c  FmitT2.c             converged.c  energy.c      t1.c          update.c \
-cache.c priority.c BT2_AO.c \
+cache.c priority.c BT2_AO.c halftrans.c \
 
 BINOBJ = $(CSRC:%.c=%.o)
 ALLOC = 

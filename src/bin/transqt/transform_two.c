@@ -24,6 +24,7 @@ void backsort_write(int i, int j, double **A, int kfirst, int klast,
 void backsort_prep(void);
 void backsort(int first_tmp_file, double tolerance);
 
+void transform_two_uhf(void);
 
 void transform_two(void)
 {
@@ -60,7 +61,7 @@ void transform_two(void)
   int A_cols, B_cols, *C_cols;
   struct iwlbuf *twopdm_out;
 
-  /* Special code for UHF transformations */
+  /* Special code for full UHF transformations */
   if(!strcmp(params.ref, "UHF")) {
     transform_two_uhf();
     return;
@@ -288,7 +289,7 @@ void transform_two(void)
       }
     }
   }
-  
+
   if (params.print_lvl) 
     fprintf(outfile, "\tSorting half-transformed integrals...\n");
   

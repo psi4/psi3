@@ -34,8 +34,11 @@ void classify(int p, int q, int r, int s, double value,
     }
   }
 
-  occ = moinfo.occ; vir = moinfo.vir; socc = moinfo.socc;
-  cc_occ = moinfo.cc_occ; cc_vir = moinfo.cc_vir;
+  occ = moinfo.occ; 
+  vir = moinfo.vir; 
+  socc = moinfo.socc;
+  cc_occ = moinfo.cc_occ; 
+  cc_vir = moinfo.cc_vir;
 
   soccs = socc[p] + socc[q] + socc[r] + socc[s];
  
@@ -45,9 +48,11 @@ void classify(int p, int q, int r, int s, double value,
 		    value, 0, outfile, dirac);
 
   /* B (vv|vv) integrals */
-  if((vir[p] && vir[q] && vir[r] && vir[s]))
-    iwl_buf_wrt_val(BBuf, cc_vir[p], cc_vir[q], cc_vir[r], cc_vir[s],
-		    value, 0, outfile, dirac);
+  if(!params.aobasis) {
+    if((vir[p] && vir[q] && vir[r] && vir[s]))
+      iwl_buf_wrt_val(BBuf, cc_vir[p], cc_vir[q], cc_vir[r], cc_vir[s],
+		      value, 0, outfile, dirac);
+  }
 
   /* C (oo|vv) integrals */
   if(soccs > 1) {

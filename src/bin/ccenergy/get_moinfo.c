@@ -16,7 +16,9 @@
 
 void get_moinfo(void)
 {
-  int i, h, errcod, nactive, nirreps;
+  int i, h, p, q, errcod, nactive, nirreps;
+  double ***C;
+  psio_address next;
 
   file30_init();
   moinfo.nirreps = file30_rd_nirreps();
@@ -96,6 +98,23 @@ void get_moinfo(void)
 		    (char *) moinfo.vir_sym, sizeof(int)*nactive);
   }
 
+  /* Build orbsym array (for AO-basis BT2) */
+  moinfo.orbsym = init_int_array(moinfo.nso);
+  for(h=0,q=0; h < nirreps; h++)
+    for(p=0; p < moinfo.orbspi[h]; p++)
+      moinfo.orbsym[q++] = h;
+
+  C = (double ***) malloc(nirreps * sizeof(double **));
+  next = PSIO_ZERO;
+  for(h=0; h < nirreps; h++) {
+    if(moinfo.orbspi[h] && moinfo.virtpi[h]) {
+      C[h] = block_matrix(moinfo.orbspi[h],moinfo.virtpi[h]);
+      psio_read(CC_INFO, "RHF/ROHF Active Virtual Orbitals", (char *) C[h][0],
+		moinfo.orbspi[h]*moinfo.virtpi[h]*sizeof(double), next, &next);
+    }
+  }
+  moinfo.C = C;
+
   /* Adjust clsdpi array for frozen orbitals */
   for(i=0; i < nirreps; i++)
     moinfo.clsdpi[i] -= moinfo.frdocc[i];
@@ -117,12 +136,17 @@ void get_moinfo(void)
 /* Frees memory allocated in get_moinfo() and dumps out the energy. */
 void cleanup(void)
 {
-  int i;
+  int i, h;
 
   psio_write_entry(CC_INFO, "CCSD Energy", (char *) &(moinfo.ecc),
 		   sizeof(double));
 
+  for(h=0; h < moinfo.nirreps; h++)
+    if(moinfo.orbspi[h] && moinfo.virtpi[h]) free_block(moinfo.C[h]);
+  free(moinfo.C);
+
   free(moinfo.orbspi);
+  free(moinfo.orbsym);
   free(moinfo.clsdpi);
   free(moinfo.openpi);
   free(moinfo.uoccpi);
@@ -147,5 +171,6 @@ void cleanup(void)
     free(moinfo.occ_sym);
     free(moinfo.vir_sym);
   }
+
 }
 

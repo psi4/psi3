@@ -184,10 +184,14 @@ void sort_oei_rhf(void)
   nirreps = moinfo.nirreps; 
   nactive = moinfo.nactive;
   nmo = moinfo.nmo;
-  occ = moinfo.occ; vir = moinfo.vir;
-  cc_occ = moinfo.cc_occ; cc_vir = moinfo.cc_vir;
-  occ_sym = moinfo.occ_sym; vir_sym = moinfo.vir_sym;
-  occ_off = moinfo.occ_off; vir_off = moinfo.vir_off;
+  occ = moinfo.occ; 
+  vir = moinfo.vir;
+  cc_occ = moinfo.cc_occ; 
+  cc_vir = moinfo.cc_vir;
+  occ_sym = moinfo.occ_sym; 
+  vir_sym = moinfo.vir_sym;
+  occ_off = moinfo.occ_off; 
+  vir_off = moinfo.vir_off;
 
   /* Grab the frozen-core opertor */
   ntri_all = nmo * (nmo + 1)/2;

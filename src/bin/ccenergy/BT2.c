@@ -28,19 +28,18 @@ void BT2(void)
   /* AA and BB terms */
   dpd_buf4_init(&Z1, CC_TMP0, 0, 7, 2, 7, 2, 0, "Z(ab,ij)");
 
-  if(!params.aobasis) {
-    dpd_contract444(&B_anti, &tauIJAB, &Z1, 0, 0, 1, 0);
-    dpd_buf4_sort(&Z1, CC_TMP0, rspq, 2, 7, "Z(ij,ab)");
-    dpd_buf4_init(&Z2, CC_TMP0, 0, 2, 7, 2, 7, 0, "Z(ij,ab)");
-    dpd_buf4_axpy(&Z2, &newtIJAB, 1);
-    dpd_buf4_close(&Z2);
-  }
+  dpd_contract444(&B_anti, &tauIJAB, &Z1, 0, 0, 1, 0);
+  dpd_buf4_sort(&Z1, CC_TMP0, rspq, 2, 7, "Z(ij,ab)");
+  dpd_buf4_init(&Z2, CC_TMP0, 0, 2, 7, 2, 7, 0, "Z(ij,ab)");
+  dpd_buf4_axpy(&Z2, &newtIJAB, 1);
+  dpd_buf4_close(&Z2);
 
   dpd_contract444(&B_anti, &tauijab, &Z1, 0, 0, 1, 0);
   dpd_buf4_sort(&Z1, CC_TMP0, rspq, 2, 7, "Z(ij,ab)");
   dpd_buf4_init(&Z2, CC_TMP0, 0, 2, 7, 2, 7, 0, "Z(ij,ab)");
   dpd_buf4_axpy(&Z2, &newtijab, 1);
   dpd_buf4_close(&Z2);
+
   dpd_buf4_close(&Z1);
 
   /* AB term */

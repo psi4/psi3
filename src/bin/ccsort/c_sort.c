@@ -49,6 +49,8 @@ void c_sort(void)
     dpd_buf4_sort(&C, CC_CINTS, pqsr, 30, 31, "C <ia||jb> (ia,bj)");
     dpd_buf4_close(&C);
 
+    /* <Ai|Bj> (iA,Bj) (Wmbej.c) */
+
   }
   else {
     /* <ia||jb> = <ia|jb> - <ia|bj> = <ia|jb> - <ij|ba> */
