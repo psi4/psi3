@@ -8,7 +8,7 @@
 ** file30_wt_openpi():  Writes out number of open shells per irrep.
 **
 **   arguments:
-**     int *clsdpi -- an array containing the number of open shells for
+**     int *openpi -- an array containing the number of open shells for
 **    every irrep in the point group, not just those used in the HF procedure.
 **
 **   returns: nothing
@@ -32,7 +32,7 @@ void file30_wt_openpi(int *openpi)
   mxcoef = file30_rd_mxcoef();
   nmo = file30_rd_nmo();
   irr_labs = file30_rd_irr_labs();
-  scf_ptrs = file30_rd_ptrs();
+  scf_ptrs = file30_rd_scf_ptrs();
   hfsym_labs = file30_rd_hfsym_labs();
 
   index = init_int_array(nsymhf);
