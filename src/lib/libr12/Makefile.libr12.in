@@ -5,8 +5,26 @@ VPATH = .:$(top_srcdir)/src/lib/libr12
 TARGET = $(top_objdir)/lib/libr12.a
 HEADERS = libr12.h
 
-TRUESRC = $(shell echo `ls *.c`) $(LIB_SRC)
-LIBOBJ = $(TRUESRC:%.c=%.o)
+#
+# List all generated routines. Do it a safe way in case the list is too long
+#
+TRUESRC1 = $(shell echo `ls vrr_grt_order_*.c`)
+TRUESRC2 = $(shell echo `ls hrr_grt_order_*.c`)
+TRUESRC3 = $(shell echo `ls r_build_*.c`)
+TRUESRC4 = $(shell echo `ls t1_build_*.c`)
+TRUESRC5 = $(shell echo `ls t2_build_*.c`)
+TRUESRC6 = $(shell echo `ls t1hrr1_build_*.c`)
+TRUESRC7 = $(shell echo `ls t2hrr3_build_*.c`)
+TRUESRC8 = init_libr12.c $(LIB_SRC)
+LIBOBJ1 = $(TRUESRC1:%.c=%.o)
+LIBOBJ2 = $(TRUESRC2:%.c=%.o)
+LIBOBJ3 = $(TRUESRC3:%.c=%.o)
+LIBOBJ4 = $(TRUESRC4:%.c=%.o)
+LIBOBJ5 = $(TRUESRC5:%.c=%.o)
+LIBOBJ6 = $(TRUESRC6:%.c=%.o)
+LIBOBJ7 = $(TRUESRC7:%.c=%.o)
+LIBOBJ8 = $(TRUESRC8:%.c=%.o)
+LIBOBJ = $(LIBOBJ1) $(LIBOBJ2) $(LIBOBJ3) $(LIBOBJ4) $(LIBOBJ5) $(LIBOBJ6) $(LIBOBJ7) $(LIBOBJ8)
 
 default:: install
 
@@ -24,7 +42,14 @@ install_inc::
 $(TARGET): $(LIBOBJ)
 	$(MKDIRS) `dirname $(TARGET)`
 	rm -f `basename $(TARGET)`
-	$(AR) $(ARFLAGS) `basename $(TARGET)` $^
+	$(AR) $(ARFLAGS) `basename $(TARGET)` $(LIBOBJ1)
+	$(AR) $(ARFLAGS) `basename $(TARGET)` $(LIBOBJ2)
+	$(AR) $(ARFLAGS) `basename $(TARGET)` $(LIBOBJ3)
+	$(AR) $(ARFLAGS) `basename $(TARGET)` $(LIBOBJ4)
+	$(AR) $(ARFLAGS) `basename $(TARGET)` $(LIBOBJ5)
+	$(AR) $(ARFLAGS) `basename $(TARGET)` $(LIBOBJ6)
+	$(AR) $(ARFLAGS) `basename $(TARGET)` $(LIBOBJ7)
+	$(AR) $(ARFLAGS) `basename $(TARGET)` $(LIBOBJ8)
 	$(RANLIB) `basename $(TARGET)`
 
 install_target:: $(TARGET)

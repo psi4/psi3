@@ -78,7 +78,10 @@ int main()
   if (errcod != IPE_OK || opt_am < 2)
     opt_am = DEFAULT_OPT_AM;
   if (opt_am > new_am) opt_am = new_am;
-  fprintf(stderr," NEW_AM = %d, OPT_AM = %d\n",new_am,opt_am);
+
+  errcod = ip_data("MAX_CLASS_SIZE","%d",&max_class_size,0);
+  if (max_class_size < 10)
+    punt("  MAX_CLASS_SIZE cannot be smaller than 10.");
   
   /* Setting up init_libr12.c, header.h */
   fprintf(init_code,"#include <stdlib.h>\n");
@@ -93,16 +96,16 @@ int main()
   fprintf(init_code,"void init_libr12_base()\n{\n");
 
   /* Declare generic build routines */
-  fprintf(vrr_header,"double *r_vrr_build_xxxx(int am[2], prim_data *, double *, const double *, const double *, double *,
-const double *, const double *, const double *);\n");
-  fprintf(vrr_header,"double *t1_vrr_build_xxxx(int am[2], prim_data *, contr_data *, double *, double *, const double *,
-const double *, const double *, const double *);\n");
-  fprintf(vrr_header,"double *t2_vrr_build_xxxx(int am[2], prim_data *, contr_data *, double *, double *, const double *,
-const double *, const double *, const double *);\n");
+  fprintf(vrr_header,"double *r_vrr_build_xxxx(int am[2], prim_data *, double *, const double *,");
+  fprintf(vrr_header," const double *, double *, const double *, const double *, const double *);\n");
+  fprintf(vrr_header,"double *t1_vrr_build_xxxx(int am[2], prim_data *, contr_data *, double *,");
+  fprintf(vrr_header," double *, const double *, const double *, const double *, const double *);\n");
+  fprintf(vrr_header,"double *t2_vrr_build_xxxx(int am[2], prim_data *, contr_data *, double *,");
+  fprintf(vrr_header," double *, const double *, const double *, const double *, const double *);\n");
   
 /*  emit_gr_order(0,new_am); */
   stack_size = emit_grt_order(0,new_am,opt_am);
-  emit_hrr_t_build(0,new_am);
+  emit_hrr_t_build(new_am, max_class_size);
   /*--- VRR build routines are optimized for classes up to opt_am/2 ---*/
   emit_vrr_r_build(0,opt_am,max_class_size);
   emit_vrr_t1_build(0,opt_am,max_class_size);
