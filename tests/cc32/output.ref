@@ -1,0 +1,526 @@
+******************************************************************************
+tstart called on syrma.giga.net
+Thu Jun 10 13:26:51 2004
+
+                                --------------
+                                  WELCOME TO
+                                    PSI  3
+                                --------------
+
+  LABEL       =	CC3 H2O Test
+  SHOWNORM    =	0
+  PUREAM      =	0
+  PRINT_LVL   =	1
+
+  Parsed basis sets from /home/users/crawdad/psi3/xeon/share/pbasis.dat
+
+  -Geometry before Center-of-Mass shift (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.009000000000
+        HYDROGEN      0.000000000000    -1.515263000000    -1.058898000000
+        HYDROGEN      0.000000000000     1.515263000000    -1.058898000000
+
+
+  -Rotational constants (cm-1) :
+    A =   30.50916  B =   13.00778  C =    9.11958
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.117499201605     0.000000000000
+        HYDROGEN     -1.515263000000    -0.932398798395     0.000000000000
+        HYDROGEN      1.515263000000    -0.932398798395     0.000000000000
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S ( 11720.00000000     0.00071000)
+           (  1759.00000000     0.00547000)
+           (   400.80000000     0.02783700)
+           (   113.70000000     0.10480000)
+           (    37.03000000     0.28306200)
+           (    13.27000000     0.44871900)
+           (     5.02500000     0.27095200)
+           (     1.01300000     0.01545800)
+           (     0.30230000    -0.00258500) )
+        (S ( 11720.00000000    -0.00016000)
+           (  1759.00000000    -0.00126300)
+           (   400.80000000    -0.00626700)
+           (   113.70000000    -0.02571600)
+           (    37.03000000    -0.07092400)
+           (    13.27000000    -0.16541100)
+           (     5.02500000    -0.11695500)
+           (     1.01300000     0.55736800)
+           (     0.30230000     0.57275900) )
+        (S (     0.30230000     1.00000000) )
+        (P (    17.70000000     0.04301800)
+           (     3.85400000     0.22891300)
+           (     1.04600000     0.50872800)
+           (     0.27530000     0.46053100) )
+        (P (     0.27530000     1.00000000) )
+        (D (     1.18500000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    13.01000000     0.01968500)
+           (     1.96200000     0.13797700)
+           (     0.44460000     0.47814800)
+           (     0.12200000     0.50124000) )
+        (S (     0.12200000     1.00000000) )
+        (P (     0.72700000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 12
+    Number of primitives   = 31
+    Number of AO           = 25
+    Number of SO           = 24
+
+    Irrep    Number of SO
+    -----    ------------
+      1           11
+      2            2
+      3            4
+      4            7
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.117499201605
+        HYDROGEN      0.000000000000     1.515263000000    -0.932398798395
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.117499201605
+        HYDROGEN      0.000000000000    -1.515263000000    -0.932398798395
+        HYDROGEN      0.000000000000     1.515263000000    -0.932398798395
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.062177904265
+        HYDROGEN      0.000000000000    -0.801842705851    -0.493404231105
+        HYDROGEN      0.000000000000     0.801842705851    -0.493404231105
+
+
+  -Geometry in the reference coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.117499201605
+        HYDROGEN      0.000000000000    -1.515263000000    -0.932398798395
+        HYDROGEN      0.000000000000     1.515263000000    -0.932398798395
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       9.009354229663
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   0.9755118   0.0000000
+    3   0.9755118   1.6036854   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+tstop called on syrma.giga.net
+Thu Jun 10 13:26:51 2004
+
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on syrma.giga.net
+Thu Jun 10 13:26:53 2004
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = CC3 H2O Test
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 24
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 11412 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on syrma.giga.net
+Thu Jun 10 13:26:53 2004
+
+user time   =       0.36 seconds =       0.01 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on syrma.giga.net
+Thu Jun 10 13:26:54 2004
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+  label        = CC3 H2O Test
+  wfn          = CC3
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = NONE
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        9.0093542296627
+  first run, so defaulting to core-hamiltonian guess
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 92528 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.076066e-02
+
+  Using core guess to determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 5210 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -68.9118103504    7.792116e+01    0.000000e+00    0.000000e+00
+    2       -71.3792328433    2.467422e+00    1.997309e-01    8.548966e-01
+    3       -76.0045717592    4.625339e+00    7.712048e-02    9.864816e-01
+    4       -76.0227902527    1.821849e-02    4.426421e-03    5.170175e-02
+    5       -76.0239378765    1.147624e-03    1.189224e-03    1.514444e-02
+    6       -76.0240334344    9.555784e-05    3.429742e-04    3.895688e-03
+    7       -76.0240384139    4.979483e-06    7.594723e-05    9.911724e-04
+    8       -76.0240384904    7.654180e-08    1.028407e-05    1.377556e-04
+    9       -76.0240385110    2.064394e-08    4.648086e-06    4.643816e-05
+   10       -76.0240385115    4.542926e-10    7.194098e-07    5.884072e-06
+   11       -76.0240385115    1.864464e-11    1.722826e-07    2.037699e-06
+   12       -76.0240385115    6.679102e-13    3.188073e-08    2.840313e-07
+   13       -76.0240385115    4.263256e-14    4.703867e-09    5.048888e-08
+   14       -76.0240385115   -4.263256e-14    5.949950e-10    5.096652e-09
+   15       -76.0240385115    1.421085e-14    1.118589e-10    8.155662e-10
+   16       -76.0240385115    0.000000e+00    1.347582e-11    1.359686e-10
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.549977     2A1     -1.322974     1B2     -0.700162  
+   3A1     -0.550962     1B1     -0.489509  
+
+
+  Unoccupied orbitals
+   4A1      0.183200     2B2      0.252970     3B2      0.798319  
+   5A1      0.809777     6A1      1.162582     2B1      1.201770  
+   4B2      1.247938     1A2      1.453909     7A1      1.498062  
+   3B1      1.702166     5B2      1.882574     8A1      1.885220  
+   6B2      2.429776     9A1      2.436671     4B1      3.238117  
+   2A2      3.343815    10A1      3.442925    11A1      3.904617  
+   7B2      4.089524  
+
+
+        SCF total energy   =     -76.024038511513
+        kinetic energy     =      75.911628750104
+        nuc. attr. energy  =    -198.751247114040
+        elec. rep. energy  =      46.815579852423
+        potential energy   =    -151.935667261617
+        virial theorem     =       1.998521391870
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on syrma.giga.net
+Thu Jun 10 13:26:54 2004
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on syrma.giga.net
+Thu Jun 10 13:27:10 2004
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CC3
+	Reference orbitals     =  RHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            =  Yes
+	Delete Restricted Docc =  No
+	Do All TEI             =  No
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Semicanonical orbitals =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 24
+	Number of MOs    = 24
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   11	   11	    0	    3	    0	    8	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    1	    0	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         9.0093542297
+	Total SCF Energy            =       -76.0240385115
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on syrma.giga.net
+Thu Jun 10 13:27:12 2004
+
+user time   =       0.08 seconds =       0.00 minutes
+system time =       1.56 seconds =       0.03 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on syrma.giga.net
+Thu Jun 10 13:27:12 2004
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	CC3
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Local CC        =     No
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 24
+	Number of active MOs = 24
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   11	    0	    3	    0	    8	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.00935422966267
+	SCF energy          (chkpt) =    -76.02403851151321
+
+	Size of <ab|cd> integrals:     0.013 (MW) /     0.102 (MB)
+	Size of <ia|bc> integrals:     0.004 (MW) /     0.030 (MB)
+	Size of Tijab amplitudes:      0.001 (MW) /     0.010 (MB)
+
+	One-electron energy          =   -122.83961836393622
+	Two-electron (AA) energy     =     14.42439697027515
+	Two-electron (BB) energy     =     14.42439697027515
+	Two-electron (AB) energy     =     23.38182865248518
+	Two-electron energy          =     37.80622562276033
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.02403851151323
+******************************************************************************
+tstop called on syrma.giga.net
+Thu Jun 10 13:27:12 2004
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.08 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on syrma.giga.net
+Thu Jun 10 13:27:12 2004
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    9.009354229662666
+	SCF energy          (chkpt)   =  -76.024038511513211
+	Reference energy    (file100) =  -76.024038511513226
+
+	Input parameters:
+	-----------------
+	Wave function   =       CC3
+	Reference wfn   =      RHF
+	Memory (Mbytes) =  256.0
+	Maxiter         =     50
+	Convergence     = 1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	Local CC        =     No
+	AO Basis        =     NONE
+	Cache Level     =    2
+	Cache Type      =     LOW
+	Print Level     =    0
+	# Amps to Print =    10
+	Print MP2 Amps? =    No
+	Analyze T2 Amps =    No
+
+	                     Solving CCSD Equations
+	                     ----------------------
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.204690005384275    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.212564207003199    2.781e-02    0.003598    0.007561    0.007561
+     2        -0.216986916913856    1.023e-02    0.004766    0.010065    0.010065
+     3        -0.217205216621119    2.238e-03    0.005153    0.011255    0.011255
+     4        -0.217234524409104    6.156e-04    0.005230    0.011619    0.011619
+     5        -0.217238426691868    1.950e-04    0.005266    0.011787    0.011787
+     6        -0.217235476533302    6.010e-05    0.005276    0.011839    0.011839
+     7        -0.217235576813635    1.545e-05    0.005279    0.011855    0.011855
+     8        -0.217235377484535    2.814e-06    0.005280    0.011856    0.011856
+     9        -0.217235381736471    5.953e-07    0.005280    0.011857    0.011857
+    10        -0.217235383854135    1.269e-07    0.005280    0.011857    0.011857
+    11        -0.217235382059811    2.245e-08    0.005280    0.011857    0.011857
+
+	Iterations converged.
+
+
+	Largest TIA Amplitudes:
+	          2   0        -0.0082153205
+	          4  17         0.0069222111
+	          4  13        -0.0054869392
+	          2   5        -0.0046346738
+	          1   2         0.0040746240
+	          4  15         0.0040000055
+	          2   1        -0.0039307471
+	          1   0         0.0036988407
+	          3  11         0.0031298705
+	          2   3         0.0030709183
+
+	Largest TIjAb Amplitudes:
+	  3   3  10  10        -0.0517373280
+	  2   2   2   2        -0.0380822743
+	  4   4  14  14        -0.0370377675
+	  4   4   1   1        -0.0318786306
+	  4   4  13  13        -0.0313664137
+	  2   3   2  10         0.0300367798
+	  3   2  10   2         0.0300367798
+	  2   2  14  14        -0.0258547842
+	  2   4  14   1        -0.0232217909
+	  4   2   1  14        -0.0232217909
+
+	SCF energy       (chkpt)   =  -76.024038511513211
+	Reference energy (file100) =  -76.024038511513226
+	MP2 correlation energy     =   -0.204690005384275
+	Total MP2 energy           =  -76.228728516897505
+	CCSD correlation energy    =   -0.217235382059811
+	Total CCSD energy          =  -76.241273893573037
+
+******************************************************************************
+tstop called on syrma.giga.net
+Thu Jun 10 13:27:22 2004
+
+user time   =       9.86 seconds =       0.16 minutes
+system time =       0.41 seconds =       0.01 minutes
+total time  =         10 seconds =       0.17 minutes

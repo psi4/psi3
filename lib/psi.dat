@@ -383,6 +383,14 @@ psi: (
   CCSD_TUHFFirstDisp  = ERROR
   CCSD_TTwoConFirstDisp  = ERROR
 
+  % -------------------------------- CC3 Procedures
+  % Procedures for the CC3 energy
+  CC3Energy = ($ints $scf $transqt $ccsort $ccenergy)
+  CC3RHFEnergy = ($CC3Energy $done)
+  CC3ROHFEnergy = ERROR
+  CC3UHFEnergy = ERROR
+  CCTwoConEnergy = ERROR
+
   % -------------------------------- EOM CCSD Procedures
   % Procedure for the EOM_CCSD energy
   EOM_CCSDEnergy = ($ints $scf $transqt $ccsort $ccenergy $cchbar $cceom)

@@ -38,7 +38,7 @@ $PSITEST_TEST_SCRIPT = "runtest.pl";
 
 # These are definitions that default tester knows about -- should match Psi driver!
 @PSITEST_JOBTYPES = ("SP", "OPT", "DISP", "FREQ", "SYMM_FREQ", "OEPROP", "DBOC");
-@PSITEST_WFNS = ("SCF", "MP2", "MP2R12", "DETCI", "DETCAS", "BCCD", "BCCD_T", "CCSD", "CCSD_T",
+@PSITEST_WFNS = ("SCF", "MP2", "MP2R12", "DETCI", "DETCAS", "BCCD", "BCCD_T", "CCSD", "CCSD_T", "CC3",
 "EOM_CCSD", "LEOM_CCSD", "OOCCD", "CIS");
 @PSITEST_REFTYPES = ("RHF", "ROHF", "UHF", "TWOCON");
 @PSITEST_DERTYPES = ("NONE", "FIRST", "SECOND", "RESPONSE");
@@ -141,6 +141,7 @@ sub do_tests
         
           if ($wfn eq "CCSD")     { $fail |= compare_ccsd_energy(); last SWITCH2; }
           if ($wfn eq "CCSD_T")   { $fail |= compare_ccsd_t_energy(); last SWITCH2; }
+          if ($wfn eq "CC3")      { $fail |= compare_cc3_energy(); last SWITCH2; }
           if ($wfn eq "EOM_CCSD") { $fail |= compare_eomccsd_energy(); last SWITCH2; }
           if ($wfn eq "BCCD")     { $fail |= compare_bccd_energy(); last SWITCH2; }
           if ($wfn eq "BCCD_T")   { $fail |= compare_bccd_t_energy(); last SWITCH2; }
@@ -349,6 +350,22 @@ sub compare_ccsd_t_energy
     pass_test("CCSD(T) energy");
   }
   
+  return $fail;
+}
+
+sub compare_cc3_energy
+{
+  my $fail = 0;
+  my $REF_FILE = "$SRC_PATH/output.ref";
+  my $TEST_FILE = "output.dat";
+
+  if(abs(seek_cc3($REF_FILE) - seek_cc3($TEST_FILE)) > $PSITEST_ETOL) {
+    fail_test("CC3 energy"); $fail = 1;
+  }
+  else {
+    pass_test("CC3 energy");
+  }
+ 
   return $fail;
 }
 
@@ -1144,6 +1161,23 @@ sub seek_ccsd_t
   close(OUT);
 
   printf "Error: Could not find CCSD(T) energy in $_[0].\n";
+  exit 1;
+}
+
+sub seek_cc3
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  seek(OUT,0,0);
+  while(<OUT>) {
+    if (/Total CC3 energy/) {
+      @data = split(/ +/, $_);
+      $ccsd = $data[4];
+      return $ccsd;
+    }
+  }
+  close(OUT);
+
+  printf "Error: Could not find CC3 energy in $_[0].\n";
   exit 1;
 }
 

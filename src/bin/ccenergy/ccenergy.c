@@ -142,8 +142,8 @@ int main(int argc, char *argv[])
   if(params.print_mp2_amps) amp_write();
   tau_build();
   taut_build();
-  fprintf(outfile, "\t                     Solving CCSD Equations\n");
-  fprintf(outfile, "\t                     ----------------------\n");
+  fprintf(outfile, "\t            Solving CC Amplitude Equations\n");
+  fprintf(outfile, "\t            ------------------------------\n");
   fprintf(outfile, "  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag\n");
   fprintf(outfile, "  ----     ---------------------    ---------   ----------  ----------  ----------\n");
   moinfo.ecc = energy();
@@ -247,12 +247,19 @@ int main(int argc, char *argv[])
     fprintf(outfile, "\tTotal MP2 energy           = %20.15f\n", 
 	    moinfo.eref + moinfo.emp2);
   }
-  fprintf(outfile, "\tCCSD correlation energy    = %20.15f\n", moinfo.ecc);
-  fprintf(outfile, "\tTotal CCSD energy          = %20.15f\n", 
-          moinfo.eref + moinfo.ecc);
+  if(!strcmp(params.wfn,"CC3")) {
+    fprintf(outfile, "\tCC3 correlation energy    = %20.15f\n", moinfo.ecc);
+    fprintf(outfile, "\tTotal CC3 energy          = %20.15f\n", 
+            moinfo.eref + moinfo.ecc);
+  }
+  else {
+    fprintf(outfile, "\tCCSD correlation energy    = %20.15f\n", moinfo.ecc);
+    fprintf(outfile, "\tTotal CCSD energy          = %20.15f\n", 
+            moinfo.eref + moinfo.ecc);
   if(params.local && !strcmp(local.weakp,"MP2")) 
     fprintf(outfile, "\tTotal LCCSD energy (+LMP2) = %20.15f\n", 
 	    moinfo.eref + moinfo.ecc + local.weak_pair_energy);
+  }
   fprintf(outfile, "\n");
 
   /* Write total energy to the checkpoint file */
