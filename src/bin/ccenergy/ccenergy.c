@@ -146,7 +146,7 @@ int main(int argc, char *argv[])
       fflush(outfile);
       break;
     }
-    diis(moinfo.iter);
+    if(params.diis) diis(moinfo.iter);
     tsave();
     tau_build(); taut_build();
     moinfo.ecc = energy();
@@ -194,9 +194,9 @@ int main(int argc, char *argv[])
 
   /* Generate the spin-adapted RHF amplitudes for later codes */
   if(params.ref == 0) {
-    timer_on("Spinad Amps");
+    timer_on("spinad Amps");
     spinad_amps();
-    timer_off("Spinad Amps");
+    timer_off("spinad Amps");
   }
 
   if(params.aobasis) dpd_close(1);

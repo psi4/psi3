@@ -46,6 +46,12 @@ int main(int argc, char *argv[])
   dpd_init(0, moinfo.nirreps, params.memory, 0, cachefiles, cachelist, NULL, 
            2, moinfo.occpi, moinfo.occ_sym, moinfo.virtpi, moinfo.vir_sym);
 
+  if(params.aobasis) { /* Set up new DPD for AO-basis algorithm */
+    dpd_init(1, moinfo.nirreps, params.memory, 0, cachefiles, cachelist, NULL, 
+	     2, moinfo.occpi, moinfo.orbsym, moinfo.orbspi, moinfo.orbsym);
+    dpd_set_default(0);
+  }
+
   init_amps();
   fprintf(outfile, "\t          Solving Lambda Equations\n");
   fprintf(outfile, "\t          ------------------------\n");
@@ -57,35 +63,35 @@ int main(int argc, char *argv[])
   denom();
 
   for(moinfo.iter=1 ; moinfo.iter <= params.maxiter; moinfo.iter++) {
-      sort_amps();
-      G_build();
-      L1_build();
-      L2_build();
-      if(converged()) {
-         done = 1;  /* Boolean for convergence */
-         Lsave();
-         moinfo.lcc = pseudoenergy();
-         sort_amps();  /* For later calculations */
-         update();
-          fprintf(outfile, "\n\tIterations converged.\n");
-          fflush(outfile);
-          break;
-        }
-      diis(moinfo.iter); 
+    sort_amps();
+    G_build();
+    L1_build();
+    L2_build();
+    if(converged()) {
+      done = 1;  /* Boolean for convergence */
       Lsave();
       moinfo.lcc = pseudoenergy();
+      sort_amps();  /* For later calculations */
       update();
+      fprintf(outfile, "\n\tIterations converged.\n");
+      fflush(outfile);
+      break;
     }
+    diis(moinfo.iter); 
+    Lsave();
+    moinfo.lcc = pseudoenergy();
+    update();
+  }
   fprintf(outfile, "\n");
   if(!done) {
-     fprintf(outfile, "\t ** Lambda not converged to %2.1e ** \n",
-             params.convergence);
-     fflush(outfile);
-     dpd_close(0);
-     cleanup();
-     exit_io();
-     exit(1);
-   }
+    fprintf(outfile, "\t ** Lambda not converged to %2.1e ** \n",
+	    params.convergence);
+    fflush(outfile);
+    dpd_close(0);
+    cleanup();
+    exit_io();
+    exit(1);
+  }
   overlap();
   dpd_close(0);
   cleanup(); 

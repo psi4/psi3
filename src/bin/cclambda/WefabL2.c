@@ -16,11 +16,13 @@ void WefabL2(void)
 
   dpd_buf4_init(&newLIJAB, CC_LAMPS, 0, 2, 7, 2, 7, 0, "New LIJAB");
 
-  dpd_buf4_init(&LIJAB, CC_LAMPS, 0, 2, 7, 2, 7, 0, "LIJAB");
-  dpd_buf4_init(&B, CC_BINTS, 0, 7, 7, 5, 5, 1, "B <ab|cd>");
-  dpd_contract444(&LIJAB, &B, &newLIJAB, 0, 1, 1.0, 1.0);
-  dpd_buf4_close(&B);
-  dpd_buf4_close(&LIJAB);
+  if(!params.aobasis) {
+    dpd_buf4_init(&LIJAB, CC_LAMPS, 0, 2, 7, 2, 7, 0, "LIJAB");
+    dpd_buf4_init(&B, CC_BINTS, 0, 7, 7, 5, 5, 1, "B <ab|cd>");
+    dpd_contract444(&LIJAB, &B, &newLIJAB, 0, 1, 1.0, 1.0);
+    dpd_buf4_close(&B);
+    dpd_buf4_close(&LIJAB);
+  }
 
   dpd_buf4_init(&LIJAB, CC_LAMPS, 0, 2, 5, 2, 7, 0, "LIJAB");
   dpd_buf4_init(&Ltmp, CC_TMP0, 0, 2, 10, 2, 10, 0, "Ltmp (I>J,MF)");
@@ -45,11 +47,13 @@ void WefabL2(void)
 
   dpd_buf4_init(&newLijab, CC_LAMPS, 0, 2, 7, 2, 7, 0, "New Lijab");
 
-  dpd_buf4_init(&Lijab, CC_LAMPS, 0, 2, 7, 2, 7, 0, "Lijab");
-  dpd_buf4_init(&B, CC_BINTS, 0, 7, 7, 5, 5, 1, "B <ab|cd>");
-  dpd_contract444(&Lijab, &B, &newLijab, 0, 1, 1.0, 1.0);
-  dpd_buf4_close(&B);
-  dpd_buf4_close(&Lijab);
+  if(!params.aobasis) {
+    dpd_buf4_init(&Lijab, CC_LAMPS, 0, 2, 7, 2, 7, 0, "Lijab");
+    dpd_buf4_init(&B, CC_BINTS, 0, 7, 7, 5, 5, 1, "B <ab|cd>");
+    dpd_contract444(&Lijab, &B, &newLijab, 0, 1, 1.0, 1.0);
+    dpd_buf4_close(&B);
+    dpd_buf4_close(&Lijab);
+  }
 
   dpd_buf4_init(&Lijab, CC_LAMPS, 0, 2, 5, 2, 7, 0, "Lijab");
   dpd_buf4_init(&Ltmp, CC_TMP0, 0, 2, 10, 2, 10, 0, "Ltmp (i>j,mf)");
@@ -77,9 +81,12 @@ void WefabL2(void)
 
   dpd_buf4_init(&LIjAb, CC_LAMPS, 0, 0, 5, 0, 5, 0, "LIjAb");
 
-  dpd_buf4_init(&B, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>");
-  dpd_contract444(&LIjAb, &B, &newLIjAb, 0, 1, 1.0, 1.0);
-  dpd_buf4_close(&B);
+  if(!params.aobasis) {
+    dpd_buf4_init(&B, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>");
+    dpd_contract444(&LIjAb, &B, &newLIjAb, 0, 1, 1.0, 1.0);
+    dpd_buf4_close(&B);
+  }
+
   dpd_buf4_init(&Ltmp, CC_TMP1, 0, 0, 11, 0, 11, 0, "Lt (Ij,Em)");
   dpd_contract424(&LIjAb, &tia, &Ltmp, 3, 1, 0, 1.0, 0.0);
   dpd_buf4_sort(&Ltmp, CC_TMP2, pqsr, 0, 10, "Lt (Ij,mE)");

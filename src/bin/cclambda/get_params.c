@@ -23,6 +23,10 @@ void get_params()
 
   params.cachelev = 2;
   errcod = ip_data("CACHELEV", "%d", &(params.cachelev),0);
+
+  params.aobasis = 0;
+  errcod = ip_boolean("AO_BASIS", &(params.aobasis),0);
+  params.aobasis = 0;  /* AO basis code not yet working for lambda */
   
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
@@ -30,6 +34,8 @@ void get_params()
   fprintf(outfile, "\tConvergence = %3.1e\n", params.convergence);
   fprintf(outfile, "\tRestart     =     %s\n", params.restart ? "Yes" : "No");
   fprintf(outfile, "\tCache Level =     %1d\n", params.cachelev);
+  fprintf(outfile, "\tAO Basis        =     %s\n", 
+          params.aobasis ? "Yes" : "No");
   fprintf(outfile, "\n");
 }
 

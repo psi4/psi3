@@ -16,12 +16,15 @@ void GaeL2(void);
 void GmiL2(void);
 void dijabL2(void);
 
+void BL2_AO(void);
+
 void L2_build(void) {
 
   DL2();
   FaeL2();
   FmiL2();
   WijmnL2();
+  if(params.aobasis) BL2_AO();
   WefabL2();
   WejabL2();
   WijmbL2();

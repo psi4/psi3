@@ -941,8 +941,8 @@ void get_moinfo(void)
 	    moinfo.clsdpi[i],moinfo.openpi[i],moinfo.uoccpi[i],
 	    moinfo.fruocc[i]);
   }
-  fprintf(outfile,"\n\tNuclear Rep. energy (file30) = %20.15f\n", moinfo.enuc);
-  fprintf(outfile,  "\tSCF energy          (file30) = %20.15f\n", escf);
+  fprintf(outfile,"\n\tNuclear Rep. energy (file30) =  %20.14f\n", moinfo.enuc);
+  fprintf(outfile,  "\tSCF energy          (file30) =  %20.14f\n", escf);
 
   /* Lastly, build the active virtual orbital SCF eigenvector array for
      the AO-basis code (see CCENERGY) */

@@ -61,6 +61,9 @@ void get_params()
   if(params.ref == 2) /* No LRU cacheing yet for UHF references */
     params.cachetype = 0;
 
+  params.diis = 1;
+  errcod = ip_boolean("DIIS", &(params.diis),0);
+
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
   fprintf(outfile, "\tReference wfn   =    %4s\n", junk);
@@ -69,6 +72,7 @@ void get_params()
   fprintf(outfile, "\tConvergence     = %3.1e\n", params.convergence);
   fprintf(outfile, "\tRestart         =     %s\n", 
           params.restart ? "Yes" : "No");
+  fprintf(outfile, "\tDIIS            =     %s\n", params.diis ? "Yes" : "No");
   fprintf(outfile, "\tAO Basis        =     %s\n", 
           params.aobasis ? "Yes" : "No");
   fprintf(outfile, "\tCache Level     =    %1d\n", 

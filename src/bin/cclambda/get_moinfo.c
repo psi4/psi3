@@ -16,11 +16,14 @@
 
 void get_moinfo(void)
 {
-  int i, h, errcod, nactive;
+  int i, h, p, q, errcod, nactive, nirreps;
+  double ***C;
+  psio_address next;
 
   file30_init();
   moinfo.nirreps = file30_rd_nirreps();
   moinfo.nmo = file30_rd_nmo();
+  moinfo.nso = file30_rd_nso();
   moinfo.iopen = file30_rd_iopen();
   moinfo.labels = file30_rd_irr_labs();
   moinfo.enuc = file30_rd_enuc();
@@ -63,6 +66,23 @@ void get_moinfo(void)
   psio_read_entry(CC_INFO, "Active Virt Orb Offsets",
 		  (char *) moinfo.vir_off, sizeof(int)*moinfo.nirreps);
 
+  /* Build orbsym array (for AO-basis BT2) */
+  moinfo.orbsym = init_int_array(moinfo.nso);
+  for(h=0,q=0; h < moinfo.nirreps; h++)
+    for(p=0; p < moinfo.orbspi[h]; p++)
+      moinfo.orbsym[q++] = h;
+
+  C = (double ***) malloc(moinfo.nirreps * sizeof(double **));
+  next = PSIO_ZERO;
+  for(h=0; h < moinfo.nirreps; h++) {
+    if(moinfo.orbspi[h] && moinfo.virtpi[h]) {
+      C[h] = block_matrix(moinfo.orbspi[h],moinfo.virtpi[h]);
+      psio_read(CC_INFO, "RHF/ROHF Active Virtual Orbitals", (char *) C[h][0],
+		moinfo.orbspi[h]*moinfo.virtpi[h]*sizeof(double), next, &next);
+    }
+  }
+  moinfo.C = C;
+
   /* Adjust clsdpi array for frozen orbitals */
   for(i=0; i < moinfo.nirreps; i++)
       moinfo.clsdpi[i] -= moinfo.frdocc[i];
@@ -89,12 +109,17 @@ void get_moinfo(void)
 /* Frees memory allocated in get_moinfo() and dumps some info. */
 void cleanup(void)
 {
-  int i;
+  int i, h;
 
   psio_write_entry(CC_INFO, "Lambda Pseudoenergy", (char *) &(moinfo.lcc),
 		   sizeof(double));
 
+  for(h=0; h < moinfo.nirreps; h++)
+    if(moinfo.orbspi[h] && moinfo.virtpi[h]) free_block(moinfo.C[h]);
+  free(moinfo.C);
+
   free(moinfo.orbspi);
+  free(moinfo.orbsym);
   free(moinfo.clsdpi);
   free(moinfo.openpi);
   free(moinfo.uoccpi);

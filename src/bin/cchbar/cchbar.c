@@ -32,6 +32,7 @@ void Wabei_build(void);
 void purge(void);
 void cleanup(void);
 int **cacheprep(int level, int *cachefiles);
+void sort_amps(void);
 
 int main(int argc, char *argv[])
 {
@@ -47,6 +48,9 @@ int main(int argc, char *argv[])
 
   dpd_init(0, moinfo.nirreps, params.memory, 0, cachefiles, cachelist, NULL,
            2, moinfo.occpi, moinfo.occ_sym, moinfo.virtpi, moinfo.vir_sym);
+
+  sort_amps();
+  tau_build();
 
   if(!REDO) F_build();
   if(!REDO) Wmbej_build();
