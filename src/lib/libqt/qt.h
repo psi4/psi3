@@ -48,12 +48,17 @@ void dirprd_block(double **A, double **B, int rows, int cols);
 int pople(double **A, double *x, int dimen, int num_vecs, double tolerance,
            FILE *outfile, int print_lvl);
 void mat_print(double **A, int rows, int cols, FILE *outfile);
-double eri(unsigned int l1, unsigned int m1, unsigned int n1, double alpha1, double A[3],
-	   unsigned int l2, unsigned int m2, unsigned int n2, double alpha2, double B[3],
-	   unsigned int l3, unsigned int m3, unsigned int n3, double alpha3, double C[3],
-	   unsigned int l4, unsigned int m4, unsigned int n4, double alpha4, double D[3],
+double eri(unsigned int l1, unsigned int m1, unsigned int n1, 
+           double alpha1, double A[3],
+	   unsigned int l2, unsigned int m2, unsigned int n2, 
+           double alpha2, double B[3],
+	   unsigned int l3, unsigned int m3, unsigned int n3, 
+           double alpha3, double C[3],
+	   unsigned int l4, unsigned int m4, unsigned int n4, 
+           double alpha4, double D[3],
 	   int norm_flag);
-double norm_const(unsigned int l1, unsigned int m1, unsigned int n1, double alpha1, double A[3]);
+double norm_const(unsigned int l1, unsigned int m1, unsigned int n1, 
+                  double alpha1, double A[3]);
 
 extern void C_DAXPY(int length, double a, double *x, int inc_x,
              double *y, int inc_y);
@@ -78,7 +83,8 @@ void timer_done(void);
 void timer_on(char *key);
 void timer_off(char *key);
 
-void filter(double *input, double *output, int *ioff, int norbs, int nfzc, int nfzv);
+void filter(double *input, double *output, int *ioff, int norbs, int nfzc, 
+  int nfzv);
 
 int C_DGEEV(int n, double **a, int lda,
   double *wr, double *wi, double **vl, int ldvl, double **vr,
@@ -86,9 +92,11 @@ int C_DGEEV(int n, double **a, int lda,
 
 int C_DGESV(int n, int nrhs, double *a, int lda, int *ipiv, double *b, int ldb);
 int C_DGETRI(int n, double *a, int lda, int *ipiv, double *work, int lwork);
-int C_DGESVD(char jobu, char jobvt, int m, int n, double *A, int lda, double *s, int lds,
-	     double *u, int ldu, double *vt, int ldvt, double *work, int lwork);
-int C_DSYEV(char jobz, char uplo, int n, double *A, int lda, double *w, double *work, int lwork);
+int C_DGESVD(char jobu, char jobvt, int m, int n, double *A, int lda, 
+  double *s, int lds, double *u, int ldu, double *vt, int ldvt, double *work, 
+  int lwork);
+int C_DSYEV(char jobz, char uplo, int n, double *A, int lda, double *w, 
+  double *work, int lwork);
 
 void print_block(double *, int, int, FILE *);
 
@@ -99,5 +107,7 @@ int david(double **A, int N, int M, double *eps, double **v, double cutoff,
 
 int* get_frzcpi();
 int* get_frzvpi();
+
+#define MAX_RAS_SPACES 4
 
 #endif
