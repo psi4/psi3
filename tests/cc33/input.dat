@@ -1,6 +1,6 @@
 psi: (
-  label = "CC2 H2O+ Test"
-  wfn = cc2
+  label = "CC3 H2O+ Test"
+  wfn = cc3
   reference = uhf
   multp = 2
   charge = 1
