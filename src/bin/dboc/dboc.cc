@@ -283,6 +283,9 @@ double* get_atomic_masses()
 //
 void run_psi_firstdisp(int disp)
 {
+  if (!strcmp(Params.wfn,"DETCI") || !strcmp(Params.wfn,"DETCAS")) {
+    system("/bin/rm -f file14.dat");
+  }
   char *inputcmd = new char[80];
   sprintf(inputcmd,"input --geomdat %d",disp);
   int errcod = system(inputcmd);
@@ -320,6 +323,8 @@ void run_psi_firstdisp(int disp)
     slaterdetvector_read(PSIF_CIVECT,"CI vector",&vec);
     slaterdetvector_write(PSIF_CIVECT,CI_Vector_Labels[0],vec);
     slaterdetvector_delete_full(vec);
+
+    system("/bin/rm -f file14.dat");
   }
 }
 
@@ -376,6 +381,8 @@ void run_psi_otherdisp(int disp)
     slaterdetvector_read(PSIF_CIVECT,"CI vector",&vec);
     slaterdetvector_write(PSIF_CIVECT,CI_Vector_Labels[disp_coord],vec);
     slaterdetvector_delete_full(vec);
+
+    system("/bin/rm -f file14.dat");
   }
 }
 
