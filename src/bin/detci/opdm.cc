@@ -337,8 +337,8 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
       populated_orbs * sizeof(double), onepdm_idx, &onepdm_idx);
   }
 
-   /* Convert the OPDMMO into pitzer ordering and backtransform to the SO basis */ 
-   /* OPDMSO in pitzer ordering is written to the end of targetfile */
+   /* Convert the OPDMMO into pitzer ordering and backtransform to the SO */ 
+   /* basis OPDMSO in pitzer ordering is written to the end of targetfile */
   /*
    offset = 0;
    fprintf(outfile,"OPDM in SO basis\n");
@@ -402,7 +402,8 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
     */
     if (Parameters.opdm_ave) {
       cino_index = Parameters.num_roots;
-      onepdm_idx = Parameters.num_roots*populated_orbs*populated_orbs*sizeof(double);
+      onepdm_idx = Parameters.num_roots*populated_orbs*
+                   populated_orbs*sizeof(double);
       roots = Parameters.num_roots+1; 
     }
     else {
@@ -429,8 +430,10 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
              populated_orbs * sizeof(double), onepdm_idx, &onepdm_idx); 
       for (irrep=0; irrep<CalcInfo.nirreps; irrep++) {
         if (CalcInfo.orbs_per_irr[irrep] == 0) continue; 
-        for (i=0; i<CalcInfo.orbs_per_irr[irrep]-CalcInfo.frozen_uocc[irrep]; i++) {
-          for (j=0; j<CalcInfo.orbs_per_irr[irrep]-CalcInfo.frozen_uocc[irrep]; j++) {
+        for (i=0; i<CalcInfo.orbs_per_irr[irrep]-
+                    CalcInfo.frozen_uocc[irrep]; i++) {
+          for (j=0; j<CalcInfo.orbs_per_irr[irrep]-
+                    CalcInfo.frozen_uocc[irrep]; j++) {
             i_ci = CalcInfo.reorder[i+offset];
             j_ci = CalcInfo.reorder[j+offset]; 
             opdm_blk[i][j] = onepdm[i_ci][j_ci];
@@ -449,6 +452,9 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
           orbsfile_wt_blk(Parameters.opdm_orbsfile, Parameters.num_roots, 
                           irrep, scfvec30);
         }
+
+        zero_mat(opdm_eigvec, max_orb_per_irrep, max_orb_per_irrep);
+
         if (CalcInfo.orbs_per_irr[irrep]-CalcInfo.frozen_uocc[irrep] > 0) {
           sq_rsp(CalcInfo.orbs_per_irr[irrep]-CalcInfo.frozen_uocc[irrep],
                  CalcInfo.orbs_per_irr[irrep]-CalcInfo.frozen_uocc[irrep],
