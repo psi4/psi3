@@ -3,6 +3,7 @@
  ***************************/
 
 /*need this for z_entry structure*/
+/* #include <libchkpt/chkpt.h> */
 #include<libfile30/file30.h>
 
 #ifdef EXTERN

@@ -407,7 +407,7 @@ void cleanup()
 /*  free_char_matrix(elem_name,NUM_ELEMENTS);*/
   free(sym_oper);
   free_block(geometry);
-  free_matrix(full_geom,num_entries);
+  free_block(full_geom);
   free_block(Rref);
   free(nuclear_charges);
 /*  free_char_matrix(element,num_atoms);

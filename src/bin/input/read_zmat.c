@@ -69,7 +69,7 @@ void read_zmat()
   element = (char **) malloc(sizeof(char *)*num_atoms);
   full_element = (char **) malloc(sizeof(char *)*num_entries);
   elemsymb_charges = init_array(num_atoms);
-  full_geom = init_matrix(num_entries,3);
+  full_geom = block_matrix(num_entries,3);
 
   atomcount = 0;
   fatomcount = 0;
