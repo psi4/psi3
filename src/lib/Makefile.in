@@ -3,7 +3,7 @@
 
 subdirs = libipv1 libciomr libparse alloc io iomr \
           libcoallc libmalloc libfile30 libqt libpsio libiwl libdpd \
-          libint libderiv
+          libint libderiv libchkpt
 
 all: default
 
