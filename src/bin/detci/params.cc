@@ -9,19 +9,20 @@
 #define EXTERN
 
 extern "C" {
-   #include <stdlib.h>
-   #include <stdio.h>
-   #include <string.h>
-   #ifdef AIX
-      #include <string.h>
-   #endif
-   #include <ip_libv1.h>
-   #include <libciomr.h>
-   #include <qt.h>
-   #include <file30.h>
-   #include <psifiles.h>
-   #include "structs.h"
-   #include "globals.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#ifdef AIX
+#include <string.h>
+#endif
+#include <ip_libv1.h>
+#include <libipv1/ip_data.gbl>
+#include <libciomr.h>
+#include <qt.h>
+#include <file30.h>
+#include <psifiles.h>
+#include "structs.h"
+#include "globals.h"
 }
 
 
@@ -50,7 +51,7 @@ void get_parameters(void)
    file30_close();
 
    /* need to figure out wheter to filter tei's */
-   errcod = ip_string("DERTYPE", &(Parameters.dertype),0);
+   errcod = ip_string("DERTYPE", &(Parameters.dertype),0); 
    if(errcod == IPE_KEY_NOT_FOUND) {
      Parameters.dertype = (char *) malloc(sizeof(char)*5);
      strcpy(Parameters.dertype, "NONE");
@@ -472,7 +473,7 @@ void get_parameters(void)
    errcod = ip_data("ORBS_ROOT","%d",&(Parameters.opdm_orbs_root),0);
    
    if (Parameters.opdm_orbs_root != -1) Parameters.opdm_orbs_root -= 1;
-   if (Parameters.opdm_orbs_root < 0) Parameters.opdm_orbs_root == 0;
+   if (Parameters.opdm_orbs_root < 0) Parameters.opdm_orbs_root = 0;
    if (Parameters.opdm_wrtnos) Parameters.opdm_diag = 1;
    if (Parameters.opdm_print || Parameters.opdm_diag || Parameters.opdm_wrtnos 
        || Parameters.opdm_ave) Parameters.opdm = 1;
