@@ -90,7 +90,7 @@ CRC Handbook of chemistry and physics. Edited by D. R. Lide. 73rd edition
     sdens.dat        \-   Spin density on a 2D grid
     sdgrad.dat       \-   Spin density gradient on a 2D grid
     sdlapl.dat       \-   Laplacian of the spin density on a 2D grid
-    mo.dat           \-   Molecular orbital values on a 3D grid
+    mo.dat           \-   Molecular orbital/Density values on a 3D grid
     mo.pov           \-   MegaPov input file for rendering an image of mo.dat
 .fi
 
@@ -161,7 +161,7 @@ Default is false.
 Flag for computing correlation corrections for electric multipole moments
 using Z-vector in external file (default - file86) produced by 
 .B cphfci
-. Default is false.
+. This option is obsolete now.
 
 .IP "\fBZVEC_FILE = \fP \fIinteger\fP"
 Specifies Z-vector file number. This keyword is mostly intended for future use,
@@ -236,6 +236,9 @@ a two-dimensional grid;
 used in the field, what actually gets plotted are the Laplacians taken with negative sign.
 
 \fBGRID = \fP5 - values of molecular orbitals on a three-dimensional grid.
+
+\fBGRID = \fP6 - values of the electron density (spin density gradient if \fBSPIN_PROP\fP
+is set to true) on a three-dimensional grid.
 
 .IP "\fBMO_TO_PLOT =\fP \fIinteger\fP"
 Specifies the index of the molecular orbital to be plotted. It in Pitzer ordering
@@ -352,7 +355,7 @@ Three-dimensional grids are output in format suitable for plotting with a progra
 version 0.5. This freeware program is a patched version of POV-Ray. It is developed by a number of people, and
 can be downloaded off the Internet (go to
 .B http://nathan.kopp.com/patched.htm
-to find out more info). To render an MO image, edit (if necessary) command file
+to find out more info). To render an MO or density image, edit (if necessary) command file
 .B mo.pov
 created by
 .B oeprop

@@ -18,7 +18,7 @@ void parsing()
           /* wfn = one of CC types */
     if ( (strcmp(wfn, "CCSD")==0) ) {
       read_opdm = 1;
-      opdm_file = 76;
+      opdm_file = PSIF_AO_OPDM;
       corr = 0;
       opdm_basis = (char *) malloc(3*sizeof(char));
       strcpy(opdm_basis,"AO");
@@ -30,7 +30,7 @@ void parsing()
     if (strcmp(wfn, "CI")==0 || strcmp(wfn, "OOCCD")==0 ||
 	strcmp(wfn, "DETCI")==0 || strcmp(wfn, "DETCAS")==0) {
       read_opdm = 1;
-      opdm_file = 76;
+      opdm_file = PSIF_AO_OPDM;
       corr = 0;
       opdm_basis = (char *) malloc(3*sizeof(char));
       strcpy(opdm_basis,"SO");
@@ -88,7 +88,9 @@ void parsing()
   if (print_lvl < 0)
     print_lvl = 1;
 
-  errcod = ip_boolean("CORREL_CORR",&corr,0);    
+  errcod = ip_boolean("CORREL_CORR",&corr,0);
+  /*--- corr should be zero since we are not using Psi2 any longer ---*/
+  corr = 0;
   if (corr) {
     errcod = ip_data("ZVEC_FILE","%d",&zvec_file,0);
     if ((zvec_file >= MAX_UNIT) || (zvec_file <= 0)) {
@@ -135,8 +137,9 @@ void parsing()
     fprintf(outfile,"GRID type must be positive. Aborting\n\n");
     exit(2);
   }
-  if (grid == 5) {
+  if (grid == 5 || grid == 6)
     grid3d = 1;
+  if (grid == 5) {
     mo_to_plot = 1;
     read_opdm = 0;
     errcod = ip_data("MO_TO_PLOT","%d",&mo_to_plot,0);

@@ -3,7 +3,7 @@
 #include "globals.h"
 #include "prototypes.h"
 
-void compute_grid_mos()
+void compute_grid_dens_3d()
 {
   int i,j,k,l,ig,jg,ibf,jbf,ib,jb,jlim,kk,ll;
   int iatom, jatom, iang, jang, i_1stbf, j_1stbf, nbfi, nbfj;
@@ -16,16 +16,16 @@ void compute_grid_mos()
   double x,y,z;
   double r,r2,tmp;
   double *bf_values, *values;
-  double *evec;
+  double *Density;
 
+  if (spin_prop)    /* If spin_prop is set, compute the spin density... */
+    Density = Pspin;
+  else              /* .. otherwise compute the electron density */
+    Density = Ptot;
 
   /* Initialize some intermediates */
   grid3d_pts = init_box(nix+1,niy+1,niz+1);
   bf_values = init_array(nbfao);
-  evec = init_array(nbfao);
-
-  for(i=0;i<nbfao;i++)
-    evec[i] = scf_evec_ao[i][mo_to_plot];
 
   for(ix=0;ix<=nix;ix++) {
       for(iy=0;iy<=niy;iy++) {
@@ -134,7 +134,8 @@ void compute_grid_mos()
 	  } /*--- end of shell loop ---*/
 	  tmp = 0;
 	  for(i=0;i<nbfao;i++)
-	      tmp += bf_values[i]*evec[i];
+	    for(j=0;j<=i;j++)
+	      tmp += bf_values[i] * Density[ioff[i]+j] * bf_values[j] * (i!=j ? 2.0 : 1.0);
 	  grid3d_pts[ix][iy][iz] = tmp;
 	  
           x += grid_step_z[0];

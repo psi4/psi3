@@ -156,12 +156,14 @@ void print_grid_megapovray()
   /*--- Write out a data file ---*/
   switch (grid) {
   case 5:
+  case 6:
       grid_file = fopen("mo.dat","w");
       break;
   }
 
   switch (grid) {
   case 5:
+  case 6:
     for(k=0;k<=niz;k++)
       for(j=0;j<=niy;j++)
 	for(i=0;i<=nix;i++) {
