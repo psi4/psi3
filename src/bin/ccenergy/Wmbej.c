@@ -326,6 +326,7 @@ void Wmbej_build(void)
     dpd_buf4_close(&WmBEj);
   }
   else if(params.ref == 2) { /** UHF **/
+
     dpd_buf4_init(&W, CC_TMP0, 0, 20, 21, 20, 21, 0, "WMBEJ");
     dpd_buf4_sort(&W, CC_HBAR, prsq, 20, 20, "WMBEJ");
     dpd_buf4_close(&W);
