@@ -1,9 +1,15 @@
 /* $Log$
- * Revision 1.3  2002/12/06 15:50:32  crawdad
- * Changed all exit values to PSI_RETURN_SUCCESS or PSI_RETURN_FAILURE as
- * necessary.  This is new for the PSI3 execution driver.
+ * Revision 1.4  2003/04/10 20:36:01  crawdad
+ * Modifications to cscf to account for *very* large cases.  Mainly converted
+ * terms to unsigned ints and more carefully computed pk-block sizes to avoid
+ * overflows.
  * -TDC
  *
+/* Revision 1.3  2002/12/06 15:50:32  crawdad
+/* Changed all exit values to PSI_RETURN_SUCCESS or PSI_RETURN_FAILURE as
+/* necessary.  This is new for the PSI3 execution driver.
+/* -TDC
+/*
 /* Revision 1.2  2001/06/29 20:39:29  evaleev
 /* Modified cscf to use libpsio to store supermatrix files.
 /*
@@ -80,11 +86,13 @@ void packit_closed(lbij,lbkl,endflg)
    int tmpsiz,nn;
    double pval;
    double tol = 10e-14;
+   unsigned int pk_size;
    
    if(!c_outbuf) {
-      if((c_outbuf=(struct c_pkints *) malloc(maxbuf*sizeof(struct c_pkints)))
-                                                                   ==NULL) {
+      pk_size = maxbuf*sizeof(struct c_pkints);
+      if((c_outbuf=(struct c_pkints *) malloc(pk_size))==NULL) {
          fprintf(stderr,"cannot allocate memory for c_outbuf in packit\n");
+         fprintf(stderr, "size = %ud\n", pk_size);
          exit(PSI_RETURN_FAILURE);
          }
       }

@@ -1,8 +1,14 @@
 /* $Log$
- * Revision 1.9  2002/11/24 22:52:17  crawdad
- * Merging the gbye-file30 branch into the main trunk.
+ * Revision 1.10  2003/04/10 20:36:01  crawdad
+ * Modifications to cscf to account for *very* large cases.  Mainly converted
+ * terms to unsigned ints and more carefully computed pk-block sizes to avoid
+ * overflows.
  * -TDC
  *
+/* Revision 1.9  2002/11/24 22:52:17  crawdad
+/* Merging the gbye-file30 branch into the main trunk.
+/* -TDC
+/*
 /* Revision 1.8.2.1  2002/07/29 23:08:30  evaleev
 /* A major set of changes designed to convert all psi modules to use libchkpt.
 /*
@@ -180,7 +186,7 @@ init_scf2()
    int i,j,k;
    int n,nn,m,mm;
    int junk;
-   int opconst,outbuf,mxcoef3,ntri,mtri;
+   unsigned int opconst,outbuf,mxcoef3,ntri,mtri;
    struct symm *s;
 
    opconst = (iopen) ? 3 : 2;
@@ -227,7 +233,7 @@ init_scf2()
      outbuf = 884736;
      outbuf = MIN0(outbuf,mxcoef3);
      if(outbuf == 884736) {
-       int pass = mxcoef3/outbuf+1;
+       unsigned int pass = mxcoef3/outbuf+1;
        readflg = 1;
        maxbuf = (mxcoef3/pass)/opconst + 2;
        if(iopen) maxbuf /= 2;
@@ -236,12 +242,12 @@ init_scf2()
        pass = mxcoef3/(maxbuf*opconst)+1;
 #endif
        fprintf(outfile,
-	       "\n  using buffered io, %d buffers, each %d bytes in size\n",
+	       "\n  using buffered io, %u buffers, each %u bytes in size\n",
 	       pass,maxbuf*opconst*sizeof(double));
-       if(print) fprintf(outfile,"  mxcoef3 = %d maxbuf = %d\n",mxcoef3,maxbuf);
-       if(print) fprintf(outfile,"  outbuf = %d\n",outbuf);
+       if(print) fprintf(outfile,"  mxcoef3 = %u maxbuf = %u\n",mxcoef3,maxbuf);
+       if(print) fprintf(outfile,"  outbuf = %u\n",outbuf);
      }
-     else fprintf(outfile,"\n  keeping integrals in %d bytes of core\n",
+     else fprintf(outfile,"\n  keeping integrals in %u bytes of core\n",
 		  maxbuf*opconst*sizeof(double));
    }
      
