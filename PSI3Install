@@ -16,7 +16,7 @@ autoconf
 set distdir = `pwd`
 
 # installation directory
-set prefix = /usr/local/psi3-bin
+set prefix = /home/rking/psi3-bin
 
 # machine architecture
 set arch=`./bin/host.sh`
@@ -26,7 +26,7 @@ set compdir = `pwd`/$arch
 
 mkdir $compdir
 cd $compdir
-$distdir/configure --prefix=$prefix --verbose
+$distdir/configure --prefix=$prefix --verbose --with-cc="/usr/bin/gcc" --with-cxx="/usr/bin/g++" --with-blas="-lf77blas -latlas" --with-lapack="/usr/local/lib/lapack.a"
 make
 make install
 

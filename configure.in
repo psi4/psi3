@@ -805,6 +805,7 @@ AC_OUTPUT(include/psiconfig.h
           src/bin/ccsort/Makefile
           src/bin/cctriples/Makefile
           src/bin/cceom/Makefile
+          src/bin/cceom-d/Makefile
           src/bin/ccresponse/Makefile
           src/bin/cints/Makefile
           src/bin/cis/Makefile
