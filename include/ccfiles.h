@@ -72,7 +72,10 @@
 #define EOM_TMP_XI     157 /* intermediates for xi computation */
 #define EOM_XI         158 /* xi = dE/dt amplitudes */
 #define EOM_TMP        159 /* intermediates used more than once */
+#define CC3_HET1       160 /* [H,e^T1] */
+#define CC3_HC1        161 /* [H,C1] */
+#define CC3_HC1ET1     162 /* [[H,e^T1],C1] */
 
 /* Markers for the first and last file numbers */
 #define CC_MIN  CC_INFO
-#define CC_MAX  EOM_TMP
+#define CC_MAX  CC3_HC1ET1
