@@ -911,8 +911,10 @@ void H0block_fill(struct stringwr **alplist, struct stringwr **betlist)
 void form_opdm(void)
 {
 
-   opdm(alplist, betlist, Parameters.num_roots, 0, Parameters.num_d_tmp_units,
-      Parameters.first_d_tmp_unit, Parameters.num_roots, 0, 
+   /* don't need Parameters.root since it writes all opdm's */
+   opdm(alplist, betlist, Parameters.num_roots, 0,
+      Parameters.num_d_tmp_units, Parameters.first_d_tmp_unit, 
+      Parameters.num_roots, 0,
       Parameters.num_d_tmp_units, Parameters.first_d_tmp_unit, 
       Parameters.opdm_file, Parameters.opdm_write, Parameters.opdm_print);
 }
@@ -920,8 +922,9 @@ void form_opdm(void)
 
 void form_tpdm(void)
 {
-  tpdm(alplist, betlist, Parameters.num_roots, 0, Parameters.num_d_tmp_units,
-       Parameters.first_d_tmp_unit, Parameters.num_roots, 0,
+  tpdm(alplist, betlist, Parameters.num_roots, Parameters.root, 
+       Parameters.num_d_tmp_units, Parameters.first_d_tmp_unit, 
+       Parameters.num_roots, Parameters.root,
        Parameters.num_d_tmp_units, Parameters.first_d_tmp_unit, 
        Parameters.tpdm_file, Parameters.tpdm_write, Parameters.tpdm_print);
 }

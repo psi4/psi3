@@ -183,6 +183,7 @@ void get_parameters(void)
    Parameters.opdm_ke = 0;
    Parameters.tpdm_file = PSIF_MO_TPDM;
    Parameters.tpdm_print = 0;
+   Parameters.root = 0;
 
    Parameters.nthreads = 1;
    Parameters.pthreads = 0;
@@ -473,6 +474,7 @@ void get_parameters(void)
    errcod = ip_data("ORBSFILE","%d",&(Parameters.opdm_orbsfile),0);
    errcod = ip_data("ORBS_ROOT","%d",&(Parameters.opdm_orbs_root),0);
    errcod = ip_boolean("OPDM_KE",&(Parameters.opdm_ke),0);
+   errcod = ip_data("ROOT","%d",&(Parameters.root),0);
    
    if (Parameters.opdm_orbs_root != -1) Parameters.opdm_orbs_root -= 1;
    if (Parameters.opdm_orbs_root < 0) Parameters.opdm_orbs_root = 0;
@@ -708,10 +710,10 @@ void print_parameters(void)
            Parameters.mpn ? "yes":"no", Parameters.mpn_schmidt ? "yes":"no");
    fprintf(outfile, "   WIGNER        =   %6s      ZERO BLOCKS  =   %6s\n", 
            Parameters.wigner ? "yes":"no", Parameters.zero_blocks ? "yes":"no");
-   fprintf(outfile, "   PERT Z        =   %1.4f      NTHREADS     =        %d\n",
-           Parameters.perturbation_parameter, Parameters.nthreads);
-   fprintf(outfile, "   PTHREADS      =   %6s\n",
-           Parameters.pthreads ? "yes":"no");
+   fprintf(outfile, "   PERT Z        =   %1.4f    ROOT         =   %6d\n",
+           Parameters.perturbation_parameter, Parameters.root);
+   fprintf(outfile, "   PTHREADS      =   %6s      NTHREADS     =   %6d\n",
+           Parameters.pthreads ? "yes":"no", Parameters.nthreads);
    fprintf(outfile, "\n   FILES         =     %3d %3d %3d %3d\n",
       Parameters.first_hd_tmp_unit, Parameters.first_c_tmp_unit,
       Parameters.first_s_tmp_unit, Parameters.first_d_tmp_unit);

@@ -422,6 +422,7 @@ struct params {
    int tpdm_write;         /* write the tpdm? */
    int tpdm_print;         /* print the tpdm? */
    int tpdm_file;          /* file number for tpdm */
+   int root;               /* which root to optimize (write opdm/tpdm for) */
    int zero_blocks;        /* 1(0) if use/ignore zero_blocks array when icore=0,2 */
    double perturbation_parameter; /* z in H = H0 + z * H1 */
    int z_scale_H;          /* 1(0) if pert. scaling used */

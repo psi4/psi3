@@ -719,7 +719,7 @@ void calc_h0_blk(double *h0, int *detref, double *detval, int h0blocksize,
              int tridim, struct stringwr **alplist, 
              struct stringwr **betlist) 
 {
- register int i,j;
+ int i,j;
  int tmp, Ialist, Iarel, Iblist, Ibrel;
  static SlaterDeterminant I, J;
 

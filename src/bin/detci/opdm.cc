@@ -137,6 +137,9 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
     }
   }
  
+  if (writeflag) 
+    rfile(targetfile);
+
   for (k=0; k<Parameters.num_roots; k++) {
    
     if (k != 0) zero_mat(onepdm, populated_orbs, populated_orbs); 
@@ -339,7 +342,8 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
 
   /* write and/or print the opdm */
   if (printflag) {
-    fprintf(outfile, "\n\nOne-particle density matrix MO basis\n");
+    fprintf(outfile, 
+            "\n\nOne-particle density matrix MO basis for root %d\n", Iroot+1);
     print_mat(onepdm, populated_orbs, populated_orbs, outfile);
     fprintf(outfile, "\n");
   }
@@ -395,11 +399,11 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
      print_mat(opdmso,CalcInfo.nmo,CalcInfo.nmo,outfile);
   */
 
-  if (writeflag) rclose(targetfile, 3);
-  
   fflush(outfile);
   Iroot++; Jroot++;
   } /* end loop over num_roots k */  
+
+  if (writeflag) rclose(targetfile, 3);
 
   if (transp_tmp != NULL) free_block(transp_tmp);
   if (transp_tmp2 != NULL) free_block(transp_tmp2);
