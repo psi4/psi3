@@ -62,8 +62,7 @@ int main(int argc, char *argv[])
   }
 
   /* Frozen orbital info */
-  frdocc = init_int_array(1);
-  errcod = ip_int_array("FROZEN_DOCC", frdocc, 1);
+  frdocc = get_frzcpi();
   nfzc = frdocc[0];
   free(frdocc);
 
