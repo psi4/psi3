@@ -129,6 +129,60 @@ void reorder_qt(int *docc_in, int *socc_in, int *frozen_docc_in,
    free(uocc);
 }
 
+void reorder_qt_inverse(int *docc, int *socc, int *frozen_docc, int *frozen_uocc, 
+			int *order, int *orbspi, int nirreps)
+{
+  int irrep, h, p, nmo, cnt, tmpi, this_offset;
+  int *offset, *uocc;
+
+  offset = init_int_array(nirreps);
+  uocc = init_int_array(nirreps);
+
+  offset[0] = 0;
+  for(irrep=1; irrep < nirreps; irrep++)
+    offset[irrep] = offset[irrep-1] + orbspi[irrep-1];
+
+  nmo = 0;
+  for(irrep=0; irrep < nirreps; irrep++) {
+    nmo += orbspi[irrep];
+    tmpi = frozen_uocc[irrep] + docc[irrep] + socc[irrep];
+    uocc[irrep] = orbspi[irrep] - tmpi;
+  }
+
+  cnt = 0;
+
+  /* frozen core */
+  for(h=0; h < nirreps; h++) {
+    this_offset = offset[h];
+    for(p=0; p < frozen_docc[h]; p++)
+      order[cnt++] = this_offset + p;
+  }
+
+  /* doubly occupied */
+  for(h=0; h < nirreps; h++) {
+    this_offset = offset[h] + frozen_docc[h];
+    for(p=0; p < docc[h]; p++) 
+      order[cnt++] = this_offset + p;
+  }
+
+  /* singly occupied */
+  for(h=0; h < nirreps; h++) {
+    this_offset = offset[h] + frozen_docc[h] + docc[h];
+    for(p=0; p < socc[h]; p++) 
+      order[cnt++] = this_offset + p;
+  }
+
+  /* unoccupied */
+  for(h=0; h < nirreps; h++) {
+    this_offset = offset[h] + frozen_docc[h] + docc[h] + socc[h];
+    for(p=0; p < uocc[h]; p++)
+      order[cnt++] = this_offset + p;
+  }
+
+  free(offset);
+  free(uocc);
+}
+
 
 void reorder_qt_uhf(int *docc, int *socc, int *frozen_docc, 
 		    int *frozen_uocc, int *order_alpha, int *order_beta,
