@@ -28,9 +28,9 @@ sub extract_data
 
   seek(OUT,0,0);
   while (<OUT>) {
-    if (/total energy       =/) {
+    if (/SCF total energy   =/) {
       @data2 = split(/ +/, $_);
-      $_[2] = $data2[4];
+      $_[2] = $data2[5];
     }
   }
 
