@@ -42,29 +42,31 @@ void read_density_matrices(void)
 ** reads the one particle density matrix from opdm_file and returns opdm 
 ** as a block matrix
 **
-** Taken from CLAG
-** April 1998
+** Taken from CLAG, April 1998
+** upgraded to libpsio 6/03 by CDS
 */
 double **rdopdm(int nbf, int print_lvl, int opdm_file, int erase)
 {
 
   int i, root, errcod;
   double **opdm;
-  PSI_FPTR index = 0;
+  char opdm_key[80];
 
-  rfile(opdm_file);
-  if (flen(opdm_file)==0) {
-    fprintf(outfile,"\tCan't find the one-particle density matrix file %d\n",
-      opdm_file);
-    rclose(opdm_file, 4);
-    exit(1);
-  }
+  psio_open(opdm_file, PSIO_OPEN_OLD);
 
   opdm = block_matrix(nbf, nbf);
-  root = 1;
-  errcod = ip_data("ROOT","%d",&root,0);
-  for (i =0; i<root; i++) {
-    wreadw(opdm_file, (char *) opdm[0], (sizeof(double)*nbf*nbf), index, &index);
+
+  /* if the user hasn't specified a root, just get "the" onepdm */
+  if (!ip_exist("ROOT",0)) {
+    psio_read_entry(opdm_file, "MO-basis OPDM", (char *) opdm[0], 
+                    nbf*nbf*sizeof(double));
+  }
+  else {
+    root = 1;
+    errcod = ip_data("ROOT","%d",&root,0);
+    sprintf(opdm_key, "MO-basis OPDM Root %d", root);
+    psio_read_entry(opdm_file, opdm_key, (char *) opdm[0], 
+                    nbf*nbf*sizeof(double));
   }
 
   if (print_lvl > 3) {
@@ -73,7 +75,7 @@ double **rdopdm(int nbf, int print_lvl, int opdm_file, int erase)
     fprintf(outfile,"\n\n");
   }
 
-  rclose(opdm_file, erase ? 4 : 3);
+  psio_close(opdm_file, erase ? 0 : 1);
   return(opdm);
 
 }

@@ -47,13 +47,13 @@ void tpdm(struct stringwr **alplist, struct stringwr **betlist,
    int Iblock, Iblock2, Ibuf, Iac, Ibc, Inas, Inbs, Iairr;
    int Jblock, Jblock2, Jbuf, Jac, Jbc, Jnas, Jnbs, Jairr;
    int do_Jblock, do_Jblock2;
-   PSI_FPTR onepdm_idx=0;
+   char opdm_key[80];
 
    nfzc = CalcInfo.num_fzc_orbs;
    populated_orbs = CalcInfo.nmo - CalcInfo.num_fzv_orbs;
 
    if (nfzc) {
-     rfile(Parameters.opdm_file);
+     psio_open(Parameters.opdm_file, PSIO_OPEN_OLD);
      onepdm = block_matrix(populated_orbs, populated_orbs);
    }
 
@@ -324,10 +324,9 @@ void tpdm(struct stringwr **alplist, struct stringwr **betlist,
 
      /* do the core-core and core-active part here */
      if (nfzc) {
-       for (i=0; i<=Iroot; i++) {
-         wreadw(Parameters.opdm_file, (char *) onepdm[0], sizeof(double) *
-                populated_orbs * populated_orbs, onepdm_idx, &onepdm_idx);
-       }
+         sprintf(opdm_key, "MO-basis OPDM Root %d", Iroot);
+         psio_read_entry(Parameters.opdm_file, opdm_key, (char *) onepdm[0],
+           populated_orbs * populated_orbs * sizeof(double));
 
        /* core-core part */
        for (i=0; i<nfzc; i++) {
@@ -381,7 +380,7 @@ void tpdm(struct stringwr **alplist, struct stringwr **betlist,
 
 
    if (nfzc) {
-     rclose(Parameters.opdm_file, 3);
+     psio_close(Parameters.opdm_file, 1);
      free_block(onepdm);
    }
 

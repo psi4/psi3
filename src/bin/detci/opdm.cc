@@ -31,7 +31,7 @@ extern "C" {
 
 void orbsfile_rd_blk(int targetfile, int root, int irrep, double **orbs_vector);
 void orbsfile_wt_blk(int targetfile, int root, int irrep, double **orbs_vector);
-void ave(int targetfile, double **onepdm);
+void ave(int targetfile);
 void opdm_block(struct stringwr **alplist, struct stringwr **betlist,
 		double **onepdm, double **CJ, double **CI, int Ja_list, 
 		int Jb_list, int Jnas, int Jnbs, int Ia_list, int Ib_list, 
@@ -45,7 +45,7 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
 {
 
   CIvect Ivec, Jvec;
-  int i, j, k, l, cino_index, roots;
+  int i, j, k, l, klast, roots;
   int maxrows, maxcols;
   unsigned long bufsz;
   int max_orb_per_irrep;
@@ -53,13 +53,13 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
   double **transp_tmp2 = NULL;
   double *buffer1, *buffer2, **onepdm;
   int i_ci, j_ci, irrep, mo_offset, so_offset, orb_length=0, opdm_length=0;
-  double *opdm_eigval, **opdm_eigvec, **opdm_blk, **scfvec, **scfvec30; 
+  double *opdm_eigval, **opdm_eigvec, **opdm_blk, **scfvec;
   int Iblock, Iblock2, Ibuf, Iac, Ibc, Inas, Inbs, Iairr;
   int Jblock, Jblock2, Jbuf, Jac, Jbc, Jnas, Jnbs, Jairr;
   int do_Jblock, do_Jblock2;
   int populated_orbs;
-  PSI_FPTR ljunk=0, onepdm_idx=0;
   double **tmp_mat, **opdmso;
+  char opdm_key[80]; /* libpsio TOC entry name for OPDM for each root */
 
   Ivec.set(CIblks.vectlen, CIblks.num_blocks, Parameters.icore, Parameters.Ms0,
            CIblks.Ia_code, CIblks.Ib_code, CIblks.Ia_size, CIblks.Ib_size,
@@ -73,13 +73,6 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
            CalcInfo.nirreps, AlphaG->subgr_per_irrep, Jnroots, Jnunits,
            Jfirstunit, CIblks.first_iablk, CIblks.last_iablk, CIblks.decode);
 
-  if (Parameters.opdm_diag) rfile(Parameters.opdm_orbsfile);
-
-#if USE_LIBCHKPT
-  chkpt_init(PSIO_OPEN_OLD);
-#else
-  file30_init();
-#endif
 
   populated_orbs = CalcInfo.num_ci_orbs + CalcInfo.num_fzc_orbs;
   for (irrep=0; irrep<CalcInfo.nirreps; irrep++) {
@@ -99,7 +92,8 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
   opdm_blk = block_matrix(max_orb_per_irrep, max_orb_per_irrep);
   opdmso = block_matrix(CalcInfo.nso, CalcInfo.nso);
   tmp_mat = block_matrix(max_orb_per_irrep, max_orb_per_irrep);
-  scfvec = block_matrix(max_orb_per_irrep, max_orb_per_irrep);
+
+  /* this index stuff is probably irrelevant now ... CDS 6/03 */
   Parameters.opdm_idxmat =
     init_int_matrix(Parameters.num_roots+2, CalcInfo.nirreps);
   Parameters.orbs_idxmat = 
@@ -147,7 +141,8 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
   }
  
   if (writeflag) 
-    rfile(targetfile);
+    /* rfile(targetfile); */
+    psio_open(targetfile, PSIO_OPEN_OLD);
 
   for (k=0; k<Parameters.num_roots; k++) {
    
@@ -197,224 +192,190 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
                        Jnas, Iac, Ibc, Inas, Inbs);
           }
 	 
-       } /* end loop over Jbuf */
-       
-      if (Ivec.buf_offdiag[Ibuf]) { /* need to get contrib of transpose */
-        Iblock2 = Ivec.decode[Ibc][Iac];
-        Iac = Ivec.Ia_code[Iblock2];
-        Ibc = Ivec.Ib_code[Iblock2];
-        Inas = Ivec.Ia_size[Iblock2];
-        Inbs = Ivec.Ib_size[Iblock2];
-       
-        Ivec.transp_block(Iblock, transp_tmp2);
-
-        for (Jbuf=0; Jbuf<Jvec.buf_per_vect; Jbuf++) {
-          do_Jblock=0; do_Jblock2=0;
-          Jblock = Jvec.buf2blk[Jbuf];
-          Jblock2 = -1;
-          Jac = Jvec.Ia_code[Jblock];
-          Jbc = Jvec.Ib_code[Jblock];
-          if (Jvec.Ms0) Jblock2 = Jvec.decode[Jbc][Jac];
-          Jnas = Jvec.Ia_size[Jblock];
-          Jnbs = Jvec.Ib_size[Jblock];
-          if (s1_contrib[Iblock2][Jblock] || s2_contrib[Iblock2][Jblock]) 
-            do_Jblock = 1;
-          if (Jvec.buf_offdiag[Jbuf] && (s1_contrib[Iblock2][Jblock2] ||
-                                         s2_contrib[Iblock2][Jblock2]))
-            do_Jblock2 = 1;
-          if (!do_Jblock && !do_Jblock2) continue;
-	   
-          Jvec.read(Jroot, Jbuf);
-	 
-          if (do_Jblock) {
-            opdm_block(alplist, betlist, onepdm, Jvec.blocks[Jblock], 
-                       transp_tmp2, Jac, Jbc, Jnas,
-                       Jnbs, Iac, Ibc, Inas, Inbs);
-          }
-	   
-          if (do_Jblock2) {
-            Jvec.transp_block(Jblock, transp_tmp);
-            opdm_block(alplist, betlist, onepdm, transp_tmp,
-                       transp_tmp2, Jbc, Jac, Jnbs,
-                       Jnas, Iac, Ibc, Inas, Inbs);
-          }
         } /* end loop over Jbuf */
-      } /* end loop over Ibuf transpose */
-    } /* end loop over Ibuf */
-  } /* end icore==0 */
-
-  else if (Parameters.icore==1) { /* whole vectors in-core */
-    Ivec.read(Iroot, 0);
-    Jvec.read(Jroot, 0);
-    for (Iblock=0; Iblock<Ivec.num_blocks; Iblock++) {
-      Iac = Ivec.Ia_code[Iblock];
-      Ibc = Ivec.Ib_code[Iblock];
-      Inas = Ivec.Ia_size[Iblock];
-      Inbs = Ivec.Ib_size[Iblock];
-      if (Inas==0 || Inbs==0) continue;
-      for (Jblock=0; Jblock<Jvec.num_blocks; Jblock++) {
-        Jac = Jvec.Ia_code[Jblock];
-        Jbc = Jvec.Ib_code[Jblock];
-        Jnas = Jvec.Ia_size[Jblock];
-        Jnbs = Jvec.Ib_size[Jblock];
-        if (s1_contrib[Iblock][Jblock] || s2_contrib[Iblock][Jblock])
-          opdm_block(alplist, betlist, onepdm, Jvec.blocks[Jblock],
-                     Ivec.blocks[Iblock], Jac, Jbc, Jnas,
-                     Jnbs, Iac, Ibc, Inas, Inbs);
-      }
-    } /* end loop over Iblock */
-  } /* end icore==1 */
-
-  else if (Parameters.icore==2) { /* icore==2 */
-    for (Ibuf=0; Ibuf<Ivec.buf_per_vect; Ibuf++) {
-      Ivec.read(Iroot, Ibuf);
-      Iairr = Ivec.buf2blk[Ibuf];
-
-      for (Jbuf=0; Jbuf<Jvec.buf_per_vect; Jbuf++) {
-        Jvec.read(Jroot, Jbuf);
-        Jairr = Jvec.buf2blk[Jbuf];
-	
-      for (Iblock=Ivec.first_ablk[Iairr]; Iblock<=Ivec.last_ablk[Iairr];
-           Iblock++) {
-        Iac = Ivec.Ia_code[Iblock];
-        Ibc = Ivec.Ib_code[Iblock];
-        Inas = Ivec.Ia_size[Iblock];
-        Inbs = Ivec.Ib_size[Iblock];
-	   
-        for (Jblock=Jvec.first_ablk[Jairr]; Jblock<=Jvec.last_ablk[Jairr];
-             Jblock++) {
-          Jac = Jvec.Ia_code[Jblock];
-          Jbc = Jvec.Ib_code[Jblock];
-          Jnas = Jvec.Ia_size[Jblock];
-          Jnbs = Jvec.Ib_size[Jblock];
-	   
-          if (s1_contrib[Iblock][Jblock] || s2_contrib[Iblock][Jblock])
-            opdm_block(alplist, betlist, onepdm, Jvec.blocks[Jblock],
-                       Ivec.blocks[Iblock], Jac, Jbc, Jnas,
-                       Jnbs, Iac, Ibc, Inas, Inbs);
-
-          if (Jvec.buf_offdiag[Jbuf]) {
-            Jblock2 = Jvec.decode[Jbc][Jac];
-            if (s1_contrib[Iblock][Jblock2] ||
-                s2_contrib[Iblock][Jblock2]) {
-            Jvec.transp_block(Jblock, transp_tmp);
-              opdm_block(alplist, betlist, onepdm, transp_tmp,
-                Ivec.blocks[Iblock], Jbc, Jac,
-                Jnbs, Jnas, Iac, Ibc, Inas, Inbs);
-	    }
-	  }
-
-        } /* end loop over Jblock */
-
-        if (Ivec.buf_offdiag[Ibuf]) {
+       
+        if (Ivec.buf_offdiag[Ibuf]) { /* need to get contrib of transpose */
           Iblock2 = Ivec.decode[Ibc][Iac];
-          Ivec.transp_block(Iblock, transp_tmp2);
           Iac = Ivec.Ia_code[Iblock2];
           Ibc = Ivec.Ib_code[Iblock2];
           Inas = Ivec.Ia_size[Iblock2];
           Inbs = Ivec.Ib_size[Iblock2];
+       
+          Ivec.transp_block(Iblock, transp_tmp2);
+
+          for (Jbuf=0; Jbuf<Jvec.buf_per_vect; Jbuf++) {
+            do_Jblock=0; do_Jblock2=0;
+            Jblock = Jvec.buf2blk[Jbuf];
+            Jblock2 = -1;
+            Jac = Jvec.Ia_code[Jblock];
+            Jbc = Jvec.Ib_code[Jblock];
+            if (Jvec.Ms0) Jblock2 = Jvec.decode[Jbc][Jac];
+            Jnas = Jvec.Ia_size[Jblock];
+            Jnbs = Jvec.Ib_size[Jblock];
+            if (s1_contrib[Iblock2][Jblock] || s2_contrib[Iblock2][Jblock]) 
+              do_Jblock = 1;
+            if (Jvec.buf_offdiag[Jbuf] && (s1_contrib[Iblock2][Jblock2] ||
+                                           s2_contrib[Iblock2][Jblock2]))
+              do_Jblock2 = 1;
+            if (!do_Jblock && !do_Jblock2) continue;
+	   
+            Jvec.read(Jroot, Jbuf);
+	 
+            if (do_Jblock) {
+              opdm_block(alplist, betlist, onepdm, Jvec.blocks[Jblock], 
+                         transp_tmp2, Jac, Jbc, Jnas,
+                         Jnbs, Iac, Ibc, Inas, Inbs);
+            }
+	   
+            if (do_Jblock2) {
+              Jvec.transp_block(Jblock, transp_tmp);
+              opdm_block(alplist, betlist, onepdm, transp_tmp,
+                         transp_tmp2, Jbc, Jac, Jnbs,
+                         Jnas, Iac, Ibc, Inas, Inbs);
+            }
+          } /* end loop over Jbuf */
+        } /* end loop over Ibuf transpose */
+      } /* end loop over Ibuf */
+    } /* end icore==0 */
+
+    else if (Parameters.icore==1) { /* whole vectors in-core */
+      Ivec.read(Iroot, 0);
+      Jvec.read(Jroot, 0);
+      for (Iblock=0; Iblock<Ivec.num_blocks; Iblock++) {
+        Iac = Ivec.Ia_code[Iblock];
+        Ibc = Ivec.Ib_code[Iblock];
+        Inas = Ivec.Ia_size[Iblock];
+        Inbs = Ivec.Ib_size[Iblock];
+        if (Inas==0 || Inbs==0) continue;
+        for (Jblock=0; Jblock<Jvec.num_blocks; Jblock++) {
+          Jac = Jvec.Ia_code[Jblock];
+          Jbc = Jvec.Ib_code[Jblock];
+          Jnas = Jvec.Ia_size[Jblock];
+          Jnbs = Jvec.Ib_size[Jblock];
+          if (s1_contrib[Iblock][Jblock] || s2_contrib[Iblock][Jblock])
+            opdm_block(alplist, betlist, onepdm, Jvec.blocks[Jblock],
+                       Ivec.blocks[Iblock], Jac, Jbc, Jnas,
+                       Jnbs, Iac, Ibc, Inas, Inbs);
+        }
+      } /* end loop over Iblock */
+    } /* end icore==1 */
+
+    else if (Parameters.icore==2) { /* icore==2 */
+      for (Ibuf=0; Ibuf<Ivec.buf_per_vect; Ibuf++) {
+        Ivec.read(Iroot, Ibuf);
+        Iairr = Ivec.buf2blk[Ibuf];
+
+        for (Jbuf=0; Jbuf<Jvec.buf_per_vect; Jbuf++) {
+          Jvec.read(Jroot, Jbuf);
+          Jairr = Jvec.buf2blk[Jbuf];
+	
+        for (Iblock=Ivec.first_ablk[Iairr]; Iblock<=Ivec.last_ablk[Iairr];
+             Iblock++) {
+          Iac = Ivec.Ia_code[Iblock];
+          Ibc = Ivec.Ib_code[Iblock];
+          Inas = Ivec.Ia_size[Iblock];
+          Inbs = Ivec.Ib_size[Iblock];
 	   
           for (Jblock=Jvec.first_ablk[Jairr]; Jblock<=Jvec.last_ablk[Jairr];
-            Jblock++) {
+               Jblock++) {
             Jac = Jvec.Ia_code[Jblock];
             Jbc = Jvec.Ib_code[Jblock];
             Jnas = Jvec.Ia_size[Jblock];
             Jnbs = Jvec.Ib_size[Jblock];
 	   
-            if (s1_contrib[Iblock2][Jblock] || s2_contrib[Iblock2][Jblock])
+            if (s1_contrib[Iblock][Jblock] || s2_contrib[Iblock][Jblock])
               opdm_block(alplist, betlist, onepdm, Jvec.blocks[Jblock],
-                         transp_tmp2, Jac, Jbc, Jnas, Jnbs, Iac, Ibc, 
-                         Inas, Inbs);
+                         Ivec.blocks[Iblock], Jac, Jbc, Jnas,
+                         Jnbs, Iac, Ibc, Inas, Inbs);
 
-              if (Jvec.buf_offdiag[Jbuf]) {
-                Jblock2 = Jvec.decode[Jbc][Jac];
-                if (s1_contrib[Iblock][Jblock2] || 
+            if (Jvec.buf_offdiag[Jbuf]) {
+              Jblock2 = Jvec.decode[Jbc][Jac];
+              if (s1_contrib[Iblock][Jblock2] ||
                   s2_contrib[Iblock][Jblock2]) {
-                  Jvec.transp_block(Jblock, transp_tmp);
-                  opdm_block(alplist, betlist, onepdm, transp_tmp,
-                    transp_tmp2, Jbc, Jac, Jnbs, Jnas, Iac, Ibc, Inas, Inbs);
-                }
+              Jvec.transp_block(Jblock, transp_tmp);
+                opdm_block(alplist, betlist, onepdm, transp_tmp,
+                  Ivec.blocks[Iblock], Jbc, Jac,
+                  Jnbs, Jnas, Iac, Ibc, Inas, Inbs);
 	      }
+	    }
 
-	    } /* end loop over Jblock */
-          } /* end Ivec offdiag */
+          } /* end loop over Jblock */
 
-        } /* end loop over Iblock */
-      } /* end loop over Jbuf */
-    } /* end loop over Ibuf */
-  } /* end icore==2 */
+          if (Ivec.buf_offdiag[Ibuf]) {
+            Iblock2 = Ivec.decode[Ibc][Iac];
+            Ivec.transp_block(Iblock, transp_tmp2);
+            Iac = Ivec.Ia_code[Iblock2];
+            Ibc = Ivec.Ib_code[Iblock2];
+            Inas = Ivec.Ia_size[Iblock2];
+            Inbs = Ivec.Ib_size[Iblock2];
+	   
+            for (Jblock=Jvec.first_ablk[Jairr]; Jblock<=Jvec.last_ablk[Jairr];
+              Jblock++) {
+              Jac = Jvec.Ia_code[Jblock];
+              Jbc = Jvec.Ib_code[Jblock];
+              Jnas = Jvec.Ia_size[Jblock];
+              Jnbs = Jvec.Ib_size[Jblock];
+	   
+              if (s1_contrib[Iblock2][Jblock] || s2_contrib[Iblock2][Jblock])
+                opdm_block(alplist, betlist, onepdm, Jvec.blocks[Jblock],
+                           transp_tmp2, Jac, Jbc, Jnas, Jnbs, Iac, Ibc, 
+                           Inas, Inbs);
 
-  else {
-    printf("opdm: unrecognized core option!\n");
-    return;
-  }
+                if (Jvec.buf_offdiag[Jbuf]) {
+                  Jblock2 = Jvec.decode[Jbc][Jac];
+                  if (s1_contrib[Iblock][Jblock2] || 
+                    s2_contrib[Iblock][Jblock2]) {
+                    Jvec.transp_block(Jblock, transp_tmp);
+                    opdm_block(alplist, betlist, onepdm, transp_tmp,
+                      transp_tmp2, Jbc, Jac, Jnbs, Jnas, Iac, Ibc, Inas, Inbs);
+                  }
+	        }
 
-  /* write and/or print the opdm */
-  if (printflag) {
-    fprintf(outfile, 
-            "\n\nOne-particle density matrix MO basis for root %d\n", Iroot+1);
-    print_mat(onepdm, populated_orbs, populated_orbs, outfile);
-    fprintf(outfile, "\n");
-  }
+	      } /* end loop over Jblock */
+            } /* end Ivec offdiag */
+
+          } /* end loop over Iblock */
+        } /* end loop over Jbuf */
+      } /* end loop over Ibuf */
+    } /* end icore==2 */
+
+    else {
+      printf("opdm: unrecognized core option!\n");
+      return;
+    }
+
+    /* write and/or print the opdm */
+    if (printflag) {
+      fprintf(outfile, 
+              "\n\nOne-particle density matrix MO basis for root %d\n",Iroot+1);
+      print_mat(onepdm, populated_orbs, populated_orbs, outfile);
+      fprintf(outfile, "\n");
+    }
 
 
-  if (writeflag) {
-    rfile(targetfile);
-    wwritw(targetfile, (char *) onepdm[0], populated_orbs *
-      populated_orbs * sizeof(double), onepdm_idx, &onepdm_idx);
-  }
+    if (writeflag) {
+      sprintf(opdm_key,"MO-basis OPDM Root %d",k);
+      psio_write_entry(targetfile, opdm_key, (char *) onepdm[0], 
+        populated_orbs * populated_orbs * sizeof(double));
 
-   /* Get the kinetic energy if requested */
-   if (Parameters.opdm_ke) {
-     opdm_ke(onepdm);
-   }
+      /* write it without the "Root n" part if it's the desired root      */
+      /* plain old "MO-basis OPDM" is what is searched by the rest of PSI */
+      if (k==Parameters.root) {
+        psio_write_entry(targetfile, "MO-basis OPDM", (char *) onepdm[0],
+          populated_orbs * populated_orbs * sizeof(double));
+      }
+    }
 
-   /* Convert the OPDMMO into pitzer ordering and backtransform to the SO */ 
-   /* basis OPDMSO in pitzer ordering is written to the end of targetfile */
-  /*
-   mo_offset = 0;
-   so_offset = 0;
-   fprintf(outfile,"OPDM in SO basis\n");
-   for (irrep=0; irrep<CalcInfo.nirreps; irrep++) {
-      if (CalcInfo.orbs_per_irr[irrep] == 0) continue;
-      for (i=0; i<CalcInfo.orbs_per_irr[irrep]; i++) {
-         for (j=0; j<CalcInfo.orbs_per_irr[irrep]; j++) {
-            i_ci = CalcInfo.reorder[i+mo_offset];
-            j_ci = CalcInfo.reorder[j+mo_offset];
-            opdm_blk[i][j] = onepdm[i_ci][j_ci];
-          }
-        }
-      // scfvec30 = file30_rd_blk_scf(irrep);    
-      scfvec30 = chkpt_rd_scf_irrep(irrep);
+    /* Get the kinetic energy if requested */
+    if (Parameters.opdm_ke) {
+      opdm_ke(onepdm);
+    }
 
-      mmult(opdm_blk,0,scfvec30,1,tmp_mat,0,CalcInfo.orbs_per_irr[irrep],
-            CalcInfo.orbs_per_irr[irrep],CalcInfo.so_per_irr[irrep],0);
-      mmult(scfvec30,0,tmp_mat,0,opdm_blk,0,CalcInfo.so_per_irr[irrep],
-            CalcInfo.orbs_per_irr[irrep],CalcInfo.so_per_irr[irrep],0); 
-      print_mat(opdm_blk,CalcInfo.so_per_irr[irrep],
-                CalcInfo.so_per_irr[irrep],outfile);
-      for (i=0; i<CalcInfo.so_per_irr[irrep]; i++) 
-         for (j=0; j<CalcInfo.so_per_irr[irrep]; j++) 
-            opdmso[i+so_offset][j+so_offset] = opdm_blk[i][j];
-      mo_offset += CalcInfo.orbs_per_irr[irrep];
-      so_offset += CalcInfo.so_per_irr[irrep];
-     }
-
-  if (writeflag) wwritw(targetfile, (char *) opdmso[0],sizeof(double)*
-                         CalcInfo.nmo*CalcInfo.nmo, onepdm_idx, &onepdm_idx);
-   */
-  /*
-  wreadw(targetfile, (char *) opdmso[0],sizeof(double)*
-         CalcInfo.nmo*CalcInfo.nmo, 5000, &onepdm_idx);
-   fprintf(outfile,"OPDM in SO basis read from file %d\n",targetfile);
-     print_mat(opdmso,CalcInfo.nmo,CalcInfo.nmo,outfile);
-  */
-
-  fflush(outfile);
-  Iroot++; Jroot++;
+    fflush(outfile);
+    Iroot++; Jroot++;
   } /* end loop over num_roots k */  
 
-  if (writeflag) rclose(targetfile, 3);
+  if (writeflag) psio_close(targetfile, 1);
 
   if (transp_tmp != NULL) free_block(transp_tmp);
   if (transp_tmp2 != NULL) free_block(transp_tmp2);
@@ -424,33 +385,31 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
   free(buffer2);
 
   /* Average the opdm's */
-  if (Parameters.opdm_diag) rfile(targetfile);
-  if (Parameters.opdm_ave) ave(Parameters.opdm_file, onepdm); 
+  /* if (Parameters.opdm_diag) rfile(targetfile); */
+  if (Parameters.opdm_ave) {
+    psio_open(targetfile, PSIO_OPEN_OLD); 
+    ave(targetfile); 
+    psio_close(targetfile, 1);
+  }
 
   /* get CI Natural Orbitals */
   if (Parameters.opdm_diag) {
 
-#if !USE_LIBCHKPT
-  file30_init();
-#endif
+    psio_open(targetfile, PSIO_OPEN_OLD);
+    chkpt_init(PSIO_OPEN_OLD);
 
     /* reorder opdm from ci to pitzer and diagonalize each 
     ** symmetry blk
     */
     if (Parameters.opdm_ave) {
-      cino_index = Parameters.num_roots;
-      onepdm_idx = Parameters.num_roots*populated_orbs*
-                   populated_orbs*sizeof(double);
-      roots = Parameters.num_roots+1; 
+      klast = 1;
     }
     else {
-      cino_index = 0;
-      onepdm_idx = 0;
-      roots = Parameters.num_roots;
+      klast = Parameters.num_roots;
     }
 
     /* loop over roots or averaged opdm */
-    for(k=cino_index; k<roots; k++) {
+    for(k=0; k<klast; k++) {
       if (Parameters.opdm_ave && Parameters.print_lvl > 1) {
         fprintf(outfile,"\n\n\t\t\tCI Natural Orbitals for the Averaged\n");
         fprintf(outfile,"\t\t\tOPDM of %d Roots in terms of Molecular"
@@ -462,9 +421,17 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
         fprintf(outfile,"\t\t\t Root %d\n\n",k+1);
         fflush(outfile);
       }
+
       mo_offset = 0;
-      wreadw(targetfile, (char *) onepdm[0], populated_orbs * 
-             populated_orbs * sizeof(double), onepdm_idx, &onepdm_idx); 
+
+      if (!Parameters.opdm_ave)
+        sprintf(opdm_key, "MO-basis OPDM Root %d", k);
+      else 
+        sprintf(opdm_key, "MO-basis OPDM Ave");
+
+      psio_read_entry(targetfile, opdm_key, (char *) onepdm[0],
+        populated_orbs * populated_orbs * sizeof(double));
+
       for (irrep=0; irrep<CalcInfo.nirreps; irrep++) {
         if (CalcInfo.orbs_per_irr[irrep] == 0) continue; 
         for (i=0; i<CalcInfo.orbs_per_irr[irrep]-
@@ -477,21 +444,26 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
           } 
         }
  
-        if (k==0 || Parameters.opdm_ave) {
-          /* Writting SCF vector to orbsfile for safe keeping */
-#if USE_LIBCHKPT
-          scfvec30 = chkpt_rd_scf_irrep(irrep);
-#else
-          scfvec30 = file30_rd_blk_scf(irrep);
-#endif
+        /* Writing SCF vector to OPDM file for safe keeping 
+         * because you might overwrite it with NO's for earlier root 
+         * and we're only storing one irrep in core.  Only need to do once.
+         */
+        if (k==0) {
+
+          scfvec = chkpt_rd_scf_irrep(irrep);
+
             #ifdef DEBUG
-            fprintf(outfile,"Cvec for k==0, read in from file30 original\n");
+            fprintf(outfile,"Cvec for k==0, read in from chkpt original\n");
             fprintf(outfile," %s Block \n", CalcInfo.labels[irrep]);
-            print_mat(scfvec30, CalcInfo.orbs_per_irr[irrep],
+            print_mat(scfvec, CalcInfo.orbs_per_irr[irrep],
                       CalcInfo.orbs_per_irr[irrep], outfile);
             #endif
-          orbsfile_wt_blk(Parameters.opdm_orbsfile, Parameters.num_roots, 
-                          irrep, scfvec30);
+
+          sprintf(opdm_key, "Old SCF Matrix Irrep %d", irrep);
+          psio_write_entry(targetfile, opdm_key, (char *) scfvec[0],
+            CalcInfo.orbs_per_irr[irrep] * CalcInfo.orbs_per_irr[irrep] *
+            sizeof(double));
+	  free_block(scfvec);
         }
 
         zero_mat(opdm_eigvec, max_orb_per_irrep, max_orb_per_irrep);
@@ -510,35 +482,35 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
         if (Parameters.print_lvl > 0) {
           if (irrep==0) {
             if (Parameters.opdm_ave) { 
-              fprintf(outfile,
-               "\n Averaged CI Natural Orbitals in terms of Molecular Orbitals\n\n");
+              fprintf(outfile, "\n Averaged CI Natural Orbitals in terms "
+                "of Molecular Orbitals\n\n");
               }
-            else fprintf(outfile, 
-           "\n CI Natural Orbitals in terms of Molecular Orbitals: Root %d\n\n",
-                  k+1);
+            else fprintf(outfile, "\n CI Natural Orbitals in terms of "
+                   "Molecular Orbitals: Root %d\n\n", k+1);
           }
-          fprintf(outfile,"\n %s Block \n", CalcInfo.labels[irrep]);        
+          fprintf(outfile,"\n %s Block (MO basis)\n", CalcInfo.labels[irrep]);
           eivout(opdm_eigvec, opdm_eigval, CalcInfo.orbs_per_irr[irrep],
                  CalcInfo.orbs_per_irr[irrep], outfile);
         }
 
-        if (Parameters.opdm_wrtnos) {
-        /*
-        */
+        /* Write them if we need to */
+        if (Parameters.opdm_wrtnos && (k==Parameters.opdm_orbs_root)) {
           if (irrep==0) {
-            if (Parameters.opdm_ave) {
-              fprintf(outfile,"\n Writing CI Natural Orbitals from Averaged "
-                "OPDM to orbsfile\n in terms of Symmetry Orbitals\n\n");
-            }
-            else {
+            if (!Parameters.opdm_ave) {
               fprintf(outfile,"\n Writing CI Natural Orbitals for root %d"
-                      " to orbsfile in terms of Symmetry Orbitals\n\n",k+1);
+                      " to checkpoint in terms of Symmetry Orbitals\n\n",k+1);
             }
           }
-          orbsfile_rd_blk(Parameters.opdm_orbsfile, Parameters.num_roots, 
-                          irrep, &scfvec[0]);  
+	  
+	  scfvec = block_matrix(CalcInfo.orbs_per_irr[irrep], 
+                       CalcInfo.orbs_per_irr[irrep]);
+          sprintf(opdm_key, "Old SCF Matrix Irrep %d", irrep);
+          psio_read_entry(targetfile, opdm_key, (char *) scfvec[0],
+            CalcInfo.orbs_per_irr[irrep] * CalcInfo.orbs_per_irr[irrep] *
+            sizeof(double));
+
           #ifdef DEBUG
-          fprintf(outfile,"\nCvec read from orbsfile for MO to SO trans\n\n");
+          fprintf(outfile,"\nCvec read for MO to SO trans\n\n");
           fprintf(outfile," %s Block \n", CalcInfo.labels[irrep]);
           print_mat(scfvec, CalcInfo.orbs_per_irr[irrep],
                     CalcInfo.orbs_per_irr[irrep], outfile);
@@ -550,90 +522,33 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
           mmult(scfvec, 0, opdm_eigvec, 0, opdm_blk, 0,
                 CalcInfo.so_per_irr[irrep], CalcInfo.orbs_per_irr[irrep],
                 CalcInfo.orbs_per_irr[irrep], 0); 
-          if (Parameters.opdm_ave) { 
-            orbsfile_wt_blk(Parameters.opdm_orbsfile, Parameters.num_roots+1, 
-                            irrep, opdm_blk); 
-          }
-          else orbsfile_wt_blk(Parameters.opdm_orbsfile, k, irrep, opdm_blk); 
-          #ifdef DEBUG
-          fprintf(outfile,"\nOpdm_blk right after writting to orbsfile\n\n");
-          fprintf(outfile," %s Block \n", CalcInfo.labels[irrep]);
+          free_block(scfvec);
+
+          fprintf(outfile," %s Block (SO basis)\n", CalcInfo.labels[irrep]);
           print_mat(opdm_blk, CalcInfo.so_per_irr[irrep],
-                    CalcInfo.orbs_per_irr[irrep], outfile); 
-          #endif
-        }
+                    CalcInfo.orbs_per_irr[irrep], outfile);
+          chkpt_wt_scf_irrep(opdm_blk, irrep);
+          fprintf(outfile, "\n Warning: Natural Orbitals for the ");
+	  if (Parameters.opdm_ave)
+            fprintf(outfile, "Averaged OPDM ");
+          else
+            fprintf(outfile, "Root %d OPDM ", k);
+          fprintf(outfile, "have been written to the checkpoint file!\n\n"); 
+        } /* end code to write the NO's to disk */
         mo_offset += CalcInfo.orbs_per_irr[irrep];
       } /* end loop over irreps */
     } /* end loop over roots */
 
-    free_block(scfvec30);
     free_block(onepdm);
-
-    /* now get appropriate orbitals from orbsfile and write to file30 */
-
-    if (Parameters.opdm_wrtnos) {
-      if (Parameters.opdm_ave) {
-        for (irrep=0; irrep<CalcInfo.nirreps; irrep++) {
-          if (irrep==0) {
-            fprintf(outfile,"\n Writing CI Natural Orbitals from Averaged "
-                "OPDM to orbsfile\n in terms of Symmetry Orbitals\n\n");
-            }
-          fprintf(outfile," %s Block \n", CalcInfo.labels[irrep]);
-          orbsfile_rd_blk(Parameters.opdm_orbsfile, Parameters.num_roots+1, 
-                          irrep, opdm_blk); 
-          print_mat(opdm_blk, CalcInfo.so_per_irr[irrep],
-                    CalcInfo.orbs_per_irr[irrep], outfile);
-#if USE_LIBCHKPT
-          chkpt_wt_scf_irrep(opdm_blk, irrep);
-#else
-          file30_wt_blk_scf(opdm_blk, irrep);
-#endif
-          fprintf(outfile, "\n Warning: Natural Orbitals for the Averaged ");
-          fprintf(outfile, "OPDM Have Been Written to file30!\n\n"); 
-        }
-      }
-      else {
-        for(k=0; k<Parameters.num_roots; k++) {
-          for(irrep=0; irrep<CalcInfo.nirreps; irrep++) {
-            if (irrep==0) {
-              fprintf(outfile,"\n Writing CI Natural Orbitals for root %d"
-                      " to file30 in terms of Symmetry Orbitals\n\n",k+1);
-              }
-            fprintf(outfile,"\n %s Block \n", CalcInfo.labels[irrep]);
-            orbsfile_rd_blk(Parameters.opdm_orbsfile, k, irrep, opdm_blk); 
-            print_mat(opdm_blk, CalcInfo.orbs_per_irr[irrep],
-                      CalcInfo.orbs_per_irr[irrep], outfile);
-            if (k==Parameters.opdm_orbs_root) { 
-#if USE_LIBCHKPT
-              chkpt_wt_scf_irrep(opdm_blk, irrep);
-#else
-              file30_wt_blk_scf(opdm_blk, irrep);
-#endif
-              fprintf(outfile,"\n Warning: Natural Orbitals Have Been "
-                    "Written to file30!\n\n"); 
-            }
-          } /* end irrep */
-        } /* end num_roots */
-      } /* end else */
-    }
-  } 
-  /* CINOS completed */
-
-#if USE_LIBCHKPT
-  chkpt_close();
-#else
-  file30_close();
-#endif
-
-  fflush(outfile);
-  if (Parameters.opdm_diag) {
-    rclose(targetfile, 3);
-    rclose(Parameters.opdm_orbsfile, 3);
-    free_block(scfvec);
-    free_block(opdm_blk);
     free_block(opdm_eigvec);
     free(opdm_eigval); 
-  }
+    chkpt_close();
+    psio_close(targetfile, 1);
+  } /* CINOS completed */
+
+
+  fflush(outfile);
+  free_block(opdm_blk);
 
 }
 
@@ -701,97 +616,32 @@ void opdm_block(struct stringwr **alplist, struct stringwr **betlist,
 }
 
 
-
-/*
-** orbsfile_wt_blk()
-**
-** Parameters:
-**    root        = number of the current CI root 
-**    irrep       = number of the current irrep
-**    orbs_vector = orbs_vector containing the block of orbitals
-**                  for the current root and irrep number 
-*/
-void orbsfile_wt_blk(int targetfile, int root, int irrep, double **orbs_vector)
-{
-  int i, j, count;
-  double *tmp_vector;
-  PSI_FPTR jnk=0;
-
-  if (CalcInfo.orbs_per_irr[irrep])
-    {
-    tmp_vector = init_array(CalcInfo.so_per_irr[irrep]*
-                            CalcInfo.orbs_per_irr[irrep]);
-    count = 0;
-    for(i=0; i<CalcInfo.so_per_irr[irrep]; i++)
-       for(j=0; j<CalcInfo.orbs_per_irr[irrep]; j++, count++) {
-          tmp_vector[count] = orbs_vector[j][i];
-         }
-    wwritw(targetfile, (char *) tmp_vector, sizeof(double)*
-           CalcInfo.so_per_irr[irrep]*CalcInfo.orbs_per_irr[irrep],
-           (PSI_FPTR) Parameters.orbs_idxmat[root][irrep], &jnk);
-    free(tmp_vector);
-    }
-}
-
-
-
-/*
-** orbsfile_rd_blk()
-**
-** Parameters:
-**    root   = number of the current CI root
-**    irrep  = number of the current irrep
-*/
-void orbsfile_rd_blk(int targetfile, int root, int irrep, double **orbs_vector)
-{
-  int i, j, count;
-  double *tmp_vector;
-  PSI_FPTR jnk=0;
-
-  if(CalcInfo.orbs_per_irr[irrep])
-    {
-    tmp_vector = init_array(CalcInfo.so_per_irr[irrep]*
-                            CalcInfo.orbs_per_irr[irrep]);
-
-    wreadw(targetfile, (char *) tmp_vector, sizeof(double)*
-           CalcInfo.so_per_irr[irrep]*CalcInfo.orbs_per_irr[irrep],
-           (PSI_FPTR) Parameters.orbs_idxmat[root][irrep], &jnk);
-
-    count = 0;
-    for(i=0; i<CalcInfo.so_per_irr[irrep]; i++)
-      for(j=0; j<CalcInfo.orbs_per_irr[irrep]; j++, count++) {
-         orbs_vector[j][i] = tmp_vector[count];
-      } 
-    free(tmp_vector);
-    }
-}
-
-
 /*
 ** ave()
 ** 
 ** Parameters:
 **  targetfile = file number to obtain matrices from 
-**  opdm_blk = use old opdm_blk matrix to store tmp matrices
-**  opdm_eigvec = use old opdm_eigvec matrix to store tmp matrices 
 **
 */
-void ave(int targetfile, double **tmp_mat1)
+void ave(int targetfile)
 {
   int root, i, j, populated_orbs;
-  double **tmp_mat2;
-  PSI_FPTR jnk;
+  double **tmp_mat1, **tmp_mat2;
+  char opdm_key[80];
 
   populated_orbs = CalcInfo.nmo-CalcInfo.num_fzv_orbs;
-  zero_mat(tmp_mat1, populated_orbs, populated_orbs);
+  tmp_mat1 = block_matrix(populated_orbs, populated_orbs);  
   tmp_mat2 = block_matrix(populated_orbs, populated_orbs);  
+  zero_mat(tmp_mat1, populated_orbs, populated_orbs);
 
   for(root=0; root<Parameters.num_roots; root++) {
 
+    sprintf(opdm_key, "MO-basis OPDM Root %d", root);
+
     if (root==0) {
-      wreadw(targetfile,(char *) tmp_mat1[0], 
-             populated_orbs * populated_orbs * sizeof(double), 
-             0, &jnk);
+      psio_read_entry(targetfile, opdm_key, (char *) tmp_mat1[0],
+        populated_orbs * populated_orbs * sizeof(double));
+
       if (Parameters.opdm_print) {
         fprintf(outfile,"\n\n\t\tOPDM for Root 1");
         print_mat(tmp_mat1, populated_orbs, populated_orbs, outfile);
@@ -799,9 +649,9 @@ void ave(int targetfile, double **tmp_mat1)
     }
 
     else {
-      wreadw(targetfile, (char *) tmp_mat2[0], 
-             populated_orbs*populated_orbs*sizeof(double),
-             root*populated_orbs*populated_orbs*sizeof(double), &jnk);
+      psio_read_entry(targetfile, opdm_key, (char *) tmp_mat2[0],
+        populated_orbs * populated_orbs * sizeof(double));
+
       for(i=0; i<populated_orbs; i++)
          for(j=0; j<populated_orbs; j++) 
             tmp_mat1[i][j] += tmp_mat2[i][j];    
@@ -814,13 +664,14 @@ void ave(int targetfile, double **tmp_mat1)
     zero_mat(tmp_mat2, populated_orbs, populated_orbs);
   }
 
-  free(tmp_mat2);
+
   for (i=0; i<populated_orbs; i++)
     for (j=0; j<populated_orbs; j++) 
        tmp_mat1[i][j] *= (1.0/((double)Parameters.num_roots));
-       wwritw(targetfile, (char *) tmp_mat1[0], 
-        populated_orbs*populated_orbs*sizeof(double), 
-         (Parameters.num_roots)*populated_orbs*populated_orbs*sizeof(double),&jnk);
+
+  psio_write_entry(targetfile, "MO-basis OPDM Ave", (char *) tmp_mat1[0],
+    populated_orbs*populated_orbs*sizeof(double));
+
   if (Parameters.print_lvl > 0 || Parameters.opdm_print) {
     fprintf(outfile,
       "\n\t\t\t Averaged OPDM's for %d Roots written to opdm_file \n\n",
@@ -830,7 +681,11 @@ void ave(int targetfile, double **tmp_mat1)
     print_mat(tmp_mat1, populated_orbs, populated_orbs, outfile);
   }
 
+  free_block(tmp_mat1);
+  free_block(tmp_mat2);
+
 }
+
 
 /*
 ** opdm_ke
