@@ -286,7 +286,7 @@ int main(int argc, char *argv[])
   free(wfn);
   free(dertyp);
   free(reftyp);
-  for (i=0; i<MXEXEC; i++) free(exec[i]);
+  for (i=0; i<nexec; i++) free(exec[i]);
 
 }
 
