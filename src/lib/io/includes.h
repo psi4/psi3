@@ -6,12 +6,8 @@
 #include <string.h>
 #include <errno.h>
 
-#if (defined(DEC)||defined(MIPS)||defined(SGI))
 #include <sys/param.h>
 #include <sys/mount.h>
-#else
-#include <sys/vfs.h>
-#endif
 
 #if (defined(DEC)||defined(SUN)||defined(MIPS)||defined(SGI))
 #define SEEK_SET 0
