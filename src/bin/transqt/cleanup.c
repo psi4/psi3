@@ -24,9 +24,11 @@ void cleanup(void)
   free(moinfo.order_alpha);
   free(moinfo.order_beta);
   free(moinfo.corr2pitz);
-  free(moinfo.fruocc);
-  if (params.backtr) free(moinfo.corr2pitz_nofzv);
   free(moinfo.frdocc);
+  free(moinfo.fruocc);
+  free(moinfo.rstrdocc);
+  free(moinfo.rstruocc);
+  if (params.backtr) free(moinfo.corr2pitz_nofzv);
   free(moinfo.first_so);
   free(moinfo.last_so);
   free(moinfo.first);
@@ -52,7 +54,7 @@ void cleanup(void)
     free_block(moinfo.scf_vector_beta);
   }
   else free_block(moinfo.scf_vector);
-  free(moinfo.evals);
+  /* free(moinfo.evals); */
   free(moinfo.oe_ints);
   if(!strcmp(params.ref,"UHF")) {
     free(moinfo.fzc_operator_alpha);

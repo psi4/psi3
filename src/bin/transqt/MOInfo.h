@@ -31,8 +31,10 @@ struct MOInfo {
   int *order_beta;       /* beta-orbital reordering array                  */
   int *corr2pitz_nofzv;  /* correlated->Pitzer order, excluding fzv's      */
   int *corr2pitz;        /* same as above but includes fzv's               */
-  int *fruocc;           /* num of frozen virts per irrep                  */
   int *frdocc;           /* num of frozen core per irrep                   */
+  int *fruocc;           /* num of frozen virts per irrep                  */
+  int *rstrdocc;         /* num of restricted occupied per irrep           */
+  int *rstruocc;         /* num of restricted unoccupied per irrep         */
   int *active;           /* num of active orbitals per irrep               */
   int *first;            /* first orbital (pitzer address) per irrep       */
   int *last;             /* last orbital per irrep                         */
@@ -68,15 +70,15 @@ struct MOInfo {
   double **scf_vector;   /* Full SCF eigenvector matrix                    */
   double **scf_vector_alpha; /* Full SCF eigenvector matrix                */
   double **scf_vector_beta; /* Full SCF eigenvector matrix                 */
-  double *evals;         /* SCF eigenvalue array                           */
+  /* double *evals;          SCF eigenvalue array                           */
   double *oe_ints;       /* one-electron AO integrals (lwr triangle)       */
   double *S;             /* AO overlap matrix (lwr triangle)               */
   double *fzc_density;   /* AO frozen core density matrix (lwr triangle)   */
-  double *fzc_density_alpha; /* AO frozen core density matrix (lwr triangle)   */
-  double *fzc_density_beta;   /* AO frozen core density matrix (lwr triangle)   */
+  double *fzc_density_alpha; /* AO frozen core density matrix (lwr tri)    */
+  double *fzc_density_beta;   /* AO frozen core density matrix (lwr tri)   */ 
   double *fzc_operator;  /* AO frozen core operator (lwr triangle)         */
-  double *fzc_operator_alpha;  /* AO frozen core operator (lwr triangle)         */
-  double *fzc_operator_beta;  /* AO frozen core operator (lwr triangle)         */
+  double *fzc_operator_alpha;  /* AO frozen core operator (lwr tri)        */
+  double *fzc_operator_beta;  /* AO frozen core operator (lwr tri)         */
   /* double *te_ints; */
 };
     

@@ -533,6 +533,10 @@ void get_parameters(void)
   errcod = ip_boolean("FREEZE_CORE", &(params.fzc),0);
   if (params.backtr) params.fzc = 0; /* can't freeze core for backtr */
 
+  params.del_restr_docc = 0;
+  errcod = ip_boolean("DELETE_RESTR_DOCC",&(params.del_restr_docc),0);
+  if (params.backtr) params.del_restr_docc = 0;
+
   params.print_reorder = 0;
   errcod = ip_boolean("PRINT_REORDER", &(params.print_reorder),0);
 
@@ -577,6 +581,8 @@ void print_parameters(void)
                                   (params.print_mos ? "Yes": "No"));
       fprintf(outfile,"\tFreeze Core            = %s\n", 
                                   (params.fzc ? "Yes" : "No"));
+      fprintf(outfile,"\tDelete Restricted Docc =  %s\n", 
+		                  (params.del_restr_docc ? "Yes" : "No"));
       fprintf(outfile,"\tDo All TEI             = %s\n", 
                                   (params.do_all_tei ? "Yes" : "No"));
       fprintf(outfile,"\tMemory (Mbytes)        =  %5.1f\n",params.maxcor/1e6);
@@ -654,19 +660,20 @@ void get_moinfo(void)
   moinfo.enuc = chkpt_rd_enuc();
   moinfo.escf = chkpt_rd_escf();
   if(!strcmp(params.ref, "UHF")) {
-    moinfo.evals = chkpt_rd_alpha_evals();
+    /* moinfo.evals = chkpt_rd_alpha_evals(); */
     moinfo.scf_vector_alpha = chkpt_rd_alpha_scf();
     moinfo.scf_vector_beta = chkpt_rd_beta_scf();
   }
   else {
-    moinfo.evals = chkpt_rd_evals();
+    /* moinfo.evals = chkpt_rd_evals(); */
     moinfo.scf_vector = chkpt_rd_scf();
   }
   moinfo.nshell = chkpt_rd_nshell();
   moinfo.sloc = chkpt_rd_sloc();
   moinfo.snuc = chkpt_rd_snuc();
   moinfo.stype = chkpt_rd_stype();
-
+  moinfo.rstrdocc = init_int_array(moinfo.nirreps);
+  moinfo.rstruocc = init_int_array(moinfo.nirreps);
   
   /* reorder the MOs if the user has requested it */
   if (params.reorder) {
@@ -707,11 +714,12 @@ void get_moinfo(void)
 	for (j=0; j<moinfo.nmo; j++) 
 	  moinfo.scf_vector[i][j] = tmpmat[i][params.moorder[j]];
 
-      /* swap around the eigenvalues, too, just in case we ever use them */
+      /*
       for (i=0; i<moinfo.nmo; i++)
 	tmpmat[0][i] = moinfo.evals[i];
       for (i=0; i<moinfo.nmo; i++) 
 	moinfo.evals[i] = tmpmat[0][params.moorder[i]];
+      */
 
       free_matrix(tmpmat, moinfo.nso);        
     }
@@ -826,7 +834,8 @@ void get_moinfo(void)
     absolute orbital index and last absolute orbital
     index for each irrep.  When there are no orbitals for an irrep, the
     value is -1 for first[] and -2 for last[].  Note that there must be
-    basis functions in the first irrep (i.e. totally symmetric) for this to work.
+    basis functions in the first irrep (i.e. totally symmetric) for this to 
+    work.
   */
   moinfo.first_so = init_int_array(moinfo.nirreps);
   moinfo.last_so = init_int_array(moinfo.nirreps);
@@ -1116,9 +1125,15 @@ void get_reorder_array(void)
     tfruocc = init_int_array(moinfo.nirreps);
     ras_opi = init_int_matrix(4,moinfo.nirreps); 
     
-    
-    if (!ras_set(moinfo.nirreps, moinfo.nmo, params.fzc, moinfo.orbspi,
-                 tdocc, tsocc, tfrdocc, tfruocc, ras_opi, moinfo.order,
+    for (i=0; i<moinfo.nirreps; i++) {
+      tdocc[i] = moinfo.clsdpi[i];
+      tsocc[i] = moinfo.openpi[i];
+    }
+
+    if (!ras_set2(moinfo.nirreps, moinfo.nmo, params.fzc, 
+                 params.del_restr_docc, moinfo.orbspi,
+                 tdocc, tsocc, tfrdocc, tfruocc, moinfo.rstrdocc,
+		 moinfo.rstruocc, ras_opi, moinfo.order,
                  params.ras_type)) {
       fprintf(outfile, "Error in ras_set().  Aborting.\n");
       exit(1);
@@ -1133,7 +1148,8 @@ void get_reorder_array(void)
     reorder_qt(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc,
 	       moinfo.order, moinfo.orbspi, moinfo.nirreps);
     reorder_qt_uhf(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc,
-		   moinfo.order_alpha, moinfo.order_beta, moinfo.orbspi, moinfo.nirreps);
+		   moinfo.order_alpha, moinfo.order_beta, moinfo.orbspi, 
+                   moinfo.nirreps);
   }
   
   /* Until I clean up all this, allow a PITZER flag */
