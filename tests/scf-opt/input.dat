@@ -9,7 +9,6 @@ default: (
   label = "6-31G** SCF H2O"
   memory = (20.0 MB)
 
-  symmetry = c2v
   wfn = scf
   reference = rhf
   multp = 1
