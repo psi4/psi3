@@ -1223,7 +1223,13 @@ void HC1_Wabei(int i, int C_irr) {
     dpd_contract244(&CME, &B, &Z, 1, 0, 0, 1.0, 0.0);
     dpd_buf4_close(&B);
     /** Z(Ie,Ba) --> W'(aB,eI) **/
-    dpd_buf4_sort(&Z, CC_TMP0, srqp, 29, 25, "WaBeI (aB,eI)");
+    /* srqp seems to have a bug
+     dpd_buf4_sort(&Z, CC_TMP0, srqp, 29, 25, "WaBeI (aB,eI)");
+    */
+    dpd_buf4_sort(&Z, CC_TMP0, rspq, 28, 24, "WaBeI (Ba,Ie) 1");
+    dpd_buf4_close(&Z);
+    dpd_buf4_init(&Z, CC_TMP0, C_irr, 28, 24, 28, 24, 0, "WaBeI (Ba,Ie)");
+    dpd_buf4_sort(&Z, CC_TMP0, qpsr, 29, 25, "WaBeI (aB,eI)");
     dpd_buf4_close(&Z);
 
     /** UHF term 2 **/

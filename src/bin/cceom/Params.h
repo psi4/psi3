@@ -31,6 +31,7 @@ struct Eom_params {
   char *guess;
   int rhf_triplets;
   int mult;
+  int follow_root;
 
   /* compute overlap of normalized R with L (must run cclambda first) */
   int dot_with_L;

@@ -55,6 +55,9 @@ void read_guess_init(void);
 extern double norm_C1_rhf(dpdfile2 *C1A);
 void cc3_HC1(int i, int C_irr); /* compute [H,C1] */
 void norm_HC1(int i, int C_irr); /* compute norms for [H,C1] */
+extern void restart_with_root(int i, int C_irr);
+extern void save_C_ccsd(int i, int C_irr);
+extern int follow_root(int L, double **alpha, int C_irr);
 
 void diag(void) {
   dpdfile2 CME, CME2, Cme, SIA, Sia, RIA, Ria, DIA, Dia, tIA, tia, LIA, Lia;
@@ -62,13 +65,15 @@ void diag(void) {
   dpdbuf4 CMnEf1, CMnfE1, CMnfE, CMneF, C2;
   char lbl[32];
   int num_converged, num_converged_index=0, *converged, keep_going, already_sigma;
-  int irrep, numCs, iter, lwork, info, doing_cc3_prep=0;
+  int irrep, numCs, iter, lwork, info;
   int get_right_ev = 1, get_left_ev = 0;
   int L,h,i,j,k,a,nirreps,errcod,C_irr;
   double norm, tval, **G, *work, *evals_complex, **alpha, **evectors_left;
   double *lambda, *lambda_old;
-  int num_vecs;
-  double ra, rb, r2aa, r2bb, r2ab;
+  int num_vecs, cc3_index, num_cc3_restarts = 0;
+  double ra, rb, r2aa, r2bb, r2ab, cc3_eval, cc3_last_converged_eval=0.0;
+  int cc3_stage; /* 0=eom_ccsd; 1=eom_cc3 (reuse sigmas), 2=recompute sigma */
+
 
   hbar_extra(); /* sort hbar matrix elements for sigma equations */
 #ifdef EOM_DEBUG
@@ -79,7 +84,7 @@ void diag(void) {
     read_guess_init();
 
   if (!strcmp(params.wfn,"EOM_CC3"))
-    doing_cc3_prep = 1; /* boolean tells code to converge EOM_CCSD first for initial guess */
+    cc3_stage = 0; /* do EOM_CCSD first */
 
   fprintf(outfile,"Symmetry of ground state: %s\n", moinfo.labels[moinfo.sym]);
   /* loop over symmetry of C's */
@@ -243,10 +248,10 @@ void diag(void) {
 
         /* assuming we want only one and lowest state - otherwise 
          * things get more complicated */
-        if ( (!strcmp(params.wfn,"EOM_CC3")) && !doing_cc3_prep) {
+        if ( (!strcmp(params.wfn,"EOM_CC3")) && (cc3_stage>0) ) {
           cc3_HC1(i,C_irr);
           cc3_HC1ET1(i,C_irr);
-          sigmaCC3(i,C_irr,lambda_old[0]);
+          sigmaCC3(i,C_irr,cc3_eval);
 
 #ifdef EOM_DEBUG
           check_sum("D(norm triples)", i, C_irr);
@@ -256,9 +261,6 @@ void diag(void) {
 
 #ifdef EOM_DEBUG
         check_sum("reset",0,0);
-//        sprintf(lbl, "Total sigma %d norm", i);
-//        check_sum(lbl, i, C_irr);
-
         /*
           sprintf(lbl, "%s %d", "SIA", i);
           dpd_file2_init(&SIA, EOM_SIA, C_irr, 0, 1, lbl);
@@ -270,17 +272,14 @@ void diag(void) {
           dpd_buf4_init(&Sijab, EOM_Sijab, C_irr, 2, 7, 2, 7, 0, lbl);
           sprintf(lbl, "%s %d", "SIjAb", i);
           dpd_buf4_init(&SIjAb, EOM_SIjAb, C_irr, 0, 5, 0, 5, 0, lbl);
-
           tval = norm_C(&SIA, &Sia, &SIJAB, &Sijab, &SIjAb);
           fprintf(outfile,"Total norm of S %15.10lf\n", tval);
-
           dpd_file2_close(&SIA);
           dpd_file2_close(&Sia);
           dpd_buf4_close(&SIJAB);
           dpd_buf4_close(&Sijab);
           dpd_buf4_close(&SIjAb);
           */
-
 #endif
 
         /* Cleaning out sigma vectors for open-shell cases  */
@@ -399,8 +398,7 @@ void diag(void) {
             dpd_buf4_init(&SIjAb, EOM_SIjAb, C_irr, 0, 5, 0, 5, 0, lbl);
             tval += r2ab = dpd_buf4_dot(&CMnEf, &SIjAb);
             dpd_buf4_close(&SIjAb);
-
-            fprintf(outfile,"r2aa %12.7lf r2bb %12.7lf r2ab %12.7lf\n", r2aa, r2bb, r2ab);
+            /* fprintf(outfile,"r2aa %12.7lf r2bb %12.7lf r2ab %12.7lf\n", r2aa, r2bb, r2ab); */
           }
           else if (params.eom_ref == 2) {
             sprintf(lbl, "%s %d", "SIA", j);
@@ -475,6 +473,11 @@ void diag(void) {
           dpd_file2_scm(&Ria, 0.0);
           dpd_buf4_scm(&RIJAB, 0.0);
           dpd_buf4_scm(&Rijab, 0.0);
+        }
+
+        /* only one cc3 root can be sought */
+        if ( (!strcmp(params.wfn,"EOM_CC3")) && (cc3_stage>0) && (eom_params.follow_root) ) {
+          k = follow_root(L, alpha, C_irr);
         }
 
         converged[k] = 0;
@@ -657,6 +660,13 @@ void diag(void) {
           ++num_converged;
           converged[k] = 1;
         }
+
+        /* only one cc3 root can be sought */
+        if ( (!strcmp(params.wfn,"EOM_CC3")) && (cc3_stage>0) ) {
+          cc3_index = k;
+          cc3_eval = lambda[k];
+          /* fprintf(outfile,"Setting CC3 eigenvalue to %15.10lf\n",cc3_eval); */
+        }
       }
 
       dpd_file2_close(&RIA);
@@ -669,20 +679,33 @@ void diag(void) {
 
       for (i=0;i<eom_params.cs_per_irrep[C_irr];++i) lambda_old[i] = lambda[i];
       free(lambda);
+      if ( (!strcmp(params.wfn,"EOM_CC3")) && (cc3_stage>0) ) {
+          lambda_old[cc3_index] = cc3_eval; /* a hack to make Delta E work next iteration */
+      }
 
       /* restart with new B vectors if there are too many */
       if (L >= eom_params.vectors_per_root * eom_params.cs_per_irrep[C_irr]) {
-        restart(alpha, L, eom_params.cs_per_irrep[C_irr], C_irr, 1);
-
-/* not yet working -- would this help?
-        orthogonalize(eom_params.cs_per_irrep[C_irr], C_irr);
-        */
-
-        L = eom_params.cs_per_irrep[C_irr];
+        /* For CC3, collapse to only 1 root - the prop_root */
+        if ( (!strcmp(params.wfn,"EOM_CC3")) && (cc3_stage>0) && (eom_params.follow_root) ) {
+          fprintf(outfile,"Collapsing to %d vector(s).\n",eom_params.prop_root+1);
+          restart(alpha, L, eom_params.prop_root+1, C_irr, 0);
+          if (cc3_index > 0) restart_with_root(cc3_index, C_irr);
+          L = 1;
+          already_sigma = 0;
+        }
+        else {
+          restart(alpha, L, eom_params.cs_per_irrep[C_irr], C_irr, 1);
+          L = eom_params.cs_per_irrep[C_irr];
+          already_sigma = L;
+        }
         keep_going = 1;
-        if (!strcmp(params.wfn,"EOM_CC3"))
-            already_sigma = 0;
-        else already_sigma = L;
+        /* keep track of number of triples restarts */
+        if ( (!strcmp(params.wfn,"EOM_CC3")) && (cc3_stage>0) ) {
+          fprintf(outfile,"Change in CC3 energy from last iterated value %15.10lf\n",
+              cc3_eval - cc3_last_converged_eval);
+          cc3_last_converged_eval = cc3_eval;
+          ++num_cc3_restarts;
+        }
       }
       else {
         /* If any new vectors were added, then continue */
@@ -693,46 +716,58 @@ void diag(void) {
       }
 
       ++iter;
-      /* If we're all done then collapse to one vector per root - but don't orthogonalize */
       if ( (keep_going == 0) && (iter < eom_params.max_iter) ) {
-        fprintf(outfile,"Collapsing to only %d vectors.\n", eom_params.cs_per_irrep[C_irr]);
-        restart(alpha, L, eom_params.cs_per_irrep[C_irr], C_irr, 0);
 
-/* debugging grab C[1] */
-        /*
-  dpd_file2_init(&SIA, EOM_CME, C_irr, 0, 1, "CME 3");
-  dpd_file2_copy(&SIA, EOM_CME, "CME 0");
-  dpd_file2_close(&SIA);
-
-  dpd_file2_init(&Sia, EOM_Cme, C_irr, 2, 3, "Cme 3");
-  dpd_file2_copy(&Sia, EOM_Cme, "Cme 0");
-  dpd_file2_close(&Sia);
-
-  dpd_buf4_init(&SIJAB, EOM_CMNEF, C_irr, 2, 7, 2, 7, 0, "CMNEF 3");
-  dpd_buf4_copy(&SIJAB, EOM_CMNEF, "CMNEF 0");
-  dpd_buf4_close(&SIJAB);
-
-  dpd_buf4_init(&Sijab, EOM_Cmnef, C_irr, 12, 17, 12, 17, 0, "Cmnef 3");
-  dpd_buf4_copy(&Sijab, EOM_Cmnef, "Cmnef 0");
-  dpd_buf4_close(&Sijab);
-
-  dpd_buf4_init(&SIjAb, EOM_CMnEf, C_irr, 22, 28, 22, 28, 0, "CMnEf 3");
-  dpd_buf4_copy(&SIjAb, EOM_CMnEf, "CMnEf 0");
-  dpd_buf4_close(&SIjAb);
-
-  eom_params.cs_per_irrep[0] = 1;
-  */
-
-
-        if ( (!strcmp(params.wfn,"EOM_CC3")) && doing_cc3_prep ) {
-          /* done with EOM CCSD - now do EOM CC3 */
+        /* for CC3: done with EOM CCSD - now do EOM CC3 */
+        if ( (!strcmp(params.wfn,"EOM_CC3")) && (cc3_stage == 0) ) {
           fprintf(outfile, "Completed EOM_CCSD\n");
-          doing_cc3_prep = 0;
+          fprintf(outfile,"Collapsing to only %d vector(s).\n", eom_params.cs_per_irrep[C_irr]);
+          restart(alpha, L, eom_params.cs_per_irrep[C_irr], C_irr, 0);
+          save_C_ccsd(eom_params.prop_root, C_irr);
+          if (eom_params.prop_root > 0) restart_with_root(eom_params.prop_root, C_irr);
+
+          cc3_last_converged_eval = cc3_eval = lambda_old[eom_params.prop_root];
+          fprintf(outfile,"Setting initial CC3 eigenvalue to %15.10lf\n",cc3_eval);
+
+          eom_params.cs_per_irrep[C_irr] = 1; /* only get 1 CC3 solution */
           keep_going = 1;
-          already_sigma = 0; /* should be recomputed for CC3 sigmas */
-          L = 1 ; /* must also = 1 for now */
+          already_sigma = 0;
+          L = 1 ;
           iter = 0;
+          cc3_stage = 1;
         }
+        else if ( (!strcmp(params.wfn,"EOM_CC3")) && (cc3_stage == 1) && (num_cc3_restarts==0) ) {
+          /* for CC3: restart one time if no cc3_restarts have yet been done */
+          fprintf(outfile, "Forcing one restart and sigma recomputation.\n");
+          fprintf(outfile,"Collapsing to only %d vector(s).\n", cc3_index+1);
+          restart(alpha, L, cc3_index+1, C_irr, 0);
+          if (cc3_index > 0) restart_with_root(cc3_index, C_irr);
+
+          cc3_eval = lambda_old[cc3_index];
+          fprintf(outfile,"Change in CC3 energy from last iterated value %15.10lf\n", cc3_eval - 0.0);
+          cc3_last_converged_eval = cc3_eval;
+
+          fprintf(outfile,"Setting initial CC3 eigenvalue to %15.10lf\n",cc3_eval);
+          keep_going = 1;
+          already_sigma = 0;
+          L = 1;
+          cc3_stage = 2;
+        }
+        else if (!strcmp(params.wfn,"EOM_CC3")) {
+          /* for CC3: collapse to one final root and place in location 0 */
+          fprintf(outfile,"Collapsing to only %d vector(s).\n", cc3_index+1);
+          restart(alpha, L, cc3_index+1, C_irr, 0);
+          if (cc3_index > 0) restart_with_root(cc3_index, C_irr);
+          converged[0] = 1;
+          cc3_eval = lambda_old[0] = lambda_old[cc3_index];
+          fprintf(outfile,"Change in CC3 energy from last iterated value %15.10lf\n",
+              cc3_eval - cc3_last_converged_eval);
+        }
+        else {
+          fprintf(outfile,"Collapsing to only %d vector(s).\n", eom_params.cs_per_irrep[C_irr]);
+          restart(alpha, L, eom_params.cs_per_irrep[C_irr], C_irr, 0);
+        }
+
       }
       free_block(alpha);
     }
@@ -743,6 +778,7 @@ void diag(void) {
       fprintf(outfile,"\nMaximum number of iterations exceeded, ");
       fprintf(outfile,"so not all roots converged!\n\n");
     }
+    else if ( (!strcmp(params.wfn,"EOM_CC3")) && (num_converged == 1) ) { }
     else {
       fprintf(outfile,"\nAlgorithm failure: No vectors could be added, ");
       fprintf(outfile,"though not all roots converged!\n\n");
@@ -998,4 +1034,3 @@ void init_S2(int i, int C_irr) {
     dpd_buf4_close(&SIjAb);
   }
 }
-

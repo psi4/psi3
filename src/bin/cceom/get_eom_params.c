@@ -52,6 +52,14 @@ void get_eom_params()
   }
   --eom_params.prop_root;
 
+  if ( (!strcmp(params.wfn,"EOM_CC3")) && (eom_params.prop_root != 0) ) {
+    eom_params.follow_root = 1;
+  }
+  /*
+    eom_params.follow_root = 0;
+    ip_boolean("FOLLOW_ROOT",&(eom_params.follow_root),0);
+  */
+
   eom_params.save_all = 0;
   errcod = ip_data("SAVE_ALL","%d",&(eom_params.save_all),0);
 
@@ -69,7 +77,7 @@ void get_eom_params()
   eom_params.vectors_per_root_SS = 5;
   errcod = ip_data("VECTORS_PER_ROOT_SS","%d",&(eom_params.vectors_per_root_SS),0);
 
-  eom_params.vectors_per_root = 8;
+  eom_params.vectors_per_root = 12;
   errcod = ip_data("VECTORS_PER_ROOT","%d",&(eom_params.vectors_per_root),0);
 
   eom_params.complex_tol = 1E-12;
@@ -122,6 +130,8 @@ void get_eom_params()
   fprintf(outfile, "\tSave all R vectors          = %5d\n", eom_params.save_all);
   fprintf(outfile, "\tSym of state for properties = %6s\n", moinfo.labels[eom_params.prop_sym]);
   fprintf(outfile, "\tGuess vectors taken from    = %s\n", eom_params.guess);
+  if (eom_params.follow_root)
+    fprintf(outfile, "\tRoot following for CC3 turned on.\n");
   fprintf(outfile, "\n\n");
 }
 

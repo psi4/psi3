@@ -16,8 +16,8 @@ sigmaSS.c     sigmaSD.c    FSD.c       WmnieSD.c    WamefSD.c  \
 sigmaDS.c     WmaijDS.c    WabejDS.c   WnmjeDS.c    WbmfeDS.c  \
 sigmaDD.c     FDD.c        WmnijDD.c   WabefDD.c    WmbejDD.c  WmnefDD.c \
 local.c restart.c sort_C.c amp_write.c read_guess.c local_guess.c  sort_amps.c  \
-write_Rs.c sigmaCC3.c norm_HC1.c cc3_HC1.c \
-cc3_sigma_UHF.c cc3_HC1ET1.c \
+write_Rs.c sigmaCC3.c norm_HC1.c cc3_HC1.c restart_with_root.c\
+cc3_sigma_UHF.c cc3_HC1ET1.c follow_root.c \
 
 BINOBJ = $(CSRC:%.c=%.o)
 
