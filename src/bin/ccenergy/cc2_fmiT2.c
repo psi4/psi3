@@ -9,16 +9,20 @@ void cc2_fmiT2(void) {
   dpdfile2 fia, fIA, Fmi, FMI, fMI, tIA, tia;
   dpdbuf4 tIjAb, tIJAB, tijab, t2;
   dpdbuf4 newtIjAb, newtIJAB, newtijab;
+  dpdbuf4 Zijab;
 
   if(params.ref == 0) { /** RHF **/
     dpd_file2_init(&fMI, CC_OEI, 0, 0, 0, "fIJ");
 
+    dpd_buf4_init(&Zijab, CC_TMP0, 0, 0, 5, 0, 5, 0, "CC2 ZIjAb");
     dpd_buf4_init(&tIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
-    dpd_buf4_init(&newtIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb");
-    dpd_contract424(&tIjAb, &fMI, &newtIjAb, 1, 0, 1, -1, 1);
-    dpd_contract244(&fMI, &tIjAb, &newtIjAb, 0, 0, 0, -1, 1);
-    dpd_buf4_close(&newtIjAb);
+    dpd_contract244(&fMI, &tIjAb, &Zijab, 0, 0, 0, -1, 0);
     dpd_buf4_close(&tIjAb);
+    dpd_buf4_init(&newtIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb");
+    dpd_buf4_axpy(&Zijab, &newtIjAb, 1);
+    dpd_buf4_close(&newtIjAb);
+    dpd_buf4_sort_axpy(&Zijab, CC_TAMPS, qpsr, 0, 5, "New tIjAb", 1);
+    dpd_buf4_close(&Zijab);
 
     dpd_file2_close(&fMI);
   }

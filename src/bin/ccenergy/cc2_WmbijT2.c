@@ -14,15 +14,13 @@ void cc2_WmbijT2(void) {
 
     dpd_file2_init(&t1, CC_OEI, 0, 0, 1, "tIA");
 
-    dpd_buf4_init(&Z, CC_TMP0, 0, 0, 5, 0, 5, 0, "CC2 ZIjAb");
+    dpd_buf4_init(&Z, CC_TMP0, 0, 5, 0, 5, 0, 0, "CC2 ZAbIj");
     dpd_buf4_init(&W, CC2_HET1, 0, 10, 0, 10, 0, 0, "CC2 WMbIj");
-    dpd_contract244(&t1, &W, &Z, 0, 0, 1, -1, 0);
+    dpd_contract244(&t1, &W, &Z, 0, 0, 0, -1, 0);
     dpd_buf4_close(&W);
 
-    dpd_buf4_init(&t2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb");
-    dpd_buf4_axpy(&Z, &t2, 1);
-    dpd_buf4_close(&t2);
-    dpd_buf4_sort_axpy(&Z, CC_TAMPS, qpsr, 0, 5, "New tIjAb", 1);
+    dpd_buf4_sort_axpy(&Z, CC_TAMPS, rspq, 0, 5, "New tIjAb", 1);
+    dpd_buf4_sort_axpy(&Z, CC_TAMPS, srqp, 0, 5, "New tIjAb", 1);
     dpd_buf4_close(&Z);
 
     dpd_file2_close(&t1);
