@@ -25,6 +25,7 @@ void cachedone_rhf(int **cachelist);
 struct dpd_file4_cache_entry *priority_list(void);
 void energy(void);
 void opdm(void);
+void lag(void);
 void cleanup(void);
 void exit_io(void);
 
@@ -58,6 +59,8 @@ int main(int argc, char *argv[])
   opdm();
   }
   
+  /* lag() */
+
   dpd_close(0);
   
   cleanup();
@@ -108,172 +111,6 @@ void title(void)
  * when all docc or all virt are used the
  * meaning is intrinsic
 */
-
-void get_moinfo(void)
-{
-  int i;
-  
-  chkpt_init(PSIO_OPEN_OLD);
-
-  mo.nmo = chkpt_rd_nmo();
-  mo.nso = chkpt_rd_nso();
-  mo.nirreps = chkpt_rd_nirreps();
-  mo.irreplabels = chkpt_rd_irr_labs();
-
-  mo.mopi = chkpt_rd_orbspi();
-  mo.doccpi = chkpt_rd_clsdpi();
-  
-  mo.Enuc = chkpt_rd_enuc();
-  mo.Escf = chkpt_rd_escf();
-  mo.scfevals = chkpt_rd_evals();
-  
-  mo.fzdoccpi = get_frzcpi();
-  mo.fzvirtpi = get_frzvpi();
-  
-  chkpt_close();
-
-  mo.nfzdocc = 0;
-  mo.nfzvirt = 0;
-  for (i=0; i<mo.nirreps; i++) {
-    mo.nfzdocc += mo.fzdoccpi[i];
-    mo.nfzvirt += mo.fzvirtpi[i];
-  }
-
-  mo.virtpi = init_int_array(mo.nirreps);
-  for(i=0; i < mo.nirreps; i++) {
-    mo.virtpi[i] = mo.mopi[i]-mo.doccpi[i];
-  }
-  
-  mo.ndocc = 0;
-  mo.nvirt = 0;
-  for(i=0; i < mo.nirreps; i++) {
-    mo.ndocc += mo.doccpi[i];
-    mo.nvirt += mo.mopi[i] - mo.doccpi[i];
-  }
-  
-  mo.actdoccpi = init_int_array(mo.nirreps);
-  mo.actvirtpi = init_int_array(mo.nirreps);
-  for(i=0; i < mo.nirreps; i++) {
-    mo.actdoccpi[i] = mo.doccpi[i]-mo.fzdoccpi[i];
-    mo.actvirtpi[i] = mo.virtpi[i]-mo.fzvirtpi[i];
-  }
-
-  mo.nactdocc = 0;
-  mo.nactvirt = 0;
-  for (i=0; i < mo.nirreps; i++) {
-    mo.nactdocc += mo.actdoccpi[i];
-    mo.nactvirt += mo.actvirtpi[i];
-  }
- 
-  mo.nactmo = mo.nactdocc + mo.nactvirt;
-  
-  mo.actdoccsym = init_int_array(mo.nactmo);
-  mo.actvirtsym = init_int_array(mo.nactmo);
-  psio_read_entry(CC_INFO, "Active Occ Orb Symmetry",
-	         (char *) mo.actdoccsym, sizeof(int)*mo.nactmo);
-  psio_read_entry(CC_INFO, "Active Virt Orb Symmetry",
-		 (char *) mo.actvirtsym, sizeof(int)*mo.nactmo);
-
-  mo.docc_off = init_int_array(mo.nirreps);
-  mo.virt_off = init_int_array(mo.nirreps);
-  psio_read_entry(CC_INFO, "Active Occ Orb Offsets",
-	          (char *) mo.docc_off, sizeof(int)*mo.nirreps);
-  psio_read_entry(CC_INFO, "Active Virt Orb Offsets",
-		  (char *) mo.virt_off, sizeof(int)*mo.nirreps);
-
-  mo.qt_docc = init_int_array(mo.nactmo);
-  mo.qt_virt = init_int_array(mo.nactmo);
-
-  psio_read_entry(CC_INFO, "CC->QT Active Occ Order",
-                 (char *) mo.qt_docc, sizeof(int)*mo.nactmo);
-  psio_read_entry(CC_INFO, "CC->QT Active Virt Order",
-	         (char *) mo.qt_virt, sizeof(int)*mo.nactmo);
-	      
-  fprintf(outfile,"\n");
-  fprintf(outfile,"\tChkpt Parameters:\n");
-  fprintf(outfile,"\t--------------------\n");
-  fprintf(outfile,"\tNumber of irreps     = %d\n",mo.nirreps);
-  fprintf(outfile,"\tNumber of MOs        = %d\n",mo.nmo);
-  fprintf(outfile,"\n");
-  fprintf(outfile,
-    "\tLabel\tFZDC\tACTD\tDOCC\tACTV\tFZVI\tVIRT\tMOs\n");
-  fprintf(outfile,
-    "\t-----\t----\t----\t----\t----\t----\t----\t---\n");
-  for(i=0; i < mo.nirreps; i++) {
-    fprintf(outfile,
-    "\t  %s \t  %d\t  %d\t  %d\t  %d\t  %d\t  %d\t %d\n",
-	    mo.irreplabels[i],mo.fzdoccpi[i],mo.actdoccpi[i],mo.doccpi[i],
-	    mo.actvirtpi[i],mo.fzvirtpi[i],mo.virtpi[i],mo.mopi[i]);
-  }
-  
-  fprintf(outfile,"\n");
-  fprintf(outfile,"\tNuclear Rep. energy \t=\t  %.12f\n",mo.Enuc);
-  fprintf(outfile,"\tSCF energy          \t=\t%.12f\n",mo.Escf);
-}
-
-
-void get_params()
-{
-  int errcod;
-  char *cachetype = NULL;
-  
-  errcod = ip_string("WFN", &(params.wfn), 0);
-
-  errcod = ip_string("REFERENCE", &(params.ref),0);
-  if (strcmp(params.ref,"RHF")) {
-    fprintf(outfile, "\nIncorrect Reference: RHF only\n");
-    abort();
-  }
-  
-  params.print = 0;
-  errcod = ip_data("PRINT", "%d", &(params.print),0);
-  
-  params.opdm = 0;
-  errcod = ip_boolean("OPDM", &(params.opdm),0);
-  
-  if (params.opdm) {
-    params.opdm_write = 1;
-  }  
-  else {
-    params.opdm_write = 0;
-  }
-  errcod = ip_boolean("OPDM_WRITE", &(params.opdm_write),0);
-  
-  params.opdm_print = 0;
-  errcod = ip_boolean("OPDM_PRINT", &(params.opdm_print),0);
-
-  params.cachelev = 2;
-  errcod = ip_data("CACHELEV", "%d", &(params.cachelev),0);
-  
-  params.cachetype = 1;
-  errcod = ip_string("CACHETYPE", &(cachetype),0);
-  if (cachetype != NULL && strlen(cachetype)) {
-    if (!strcmp(cachetype,"LOW")) 
-      params.cachetype = 1;
-    else if (!strcmp(cachetype,"LRU")) 
-      params.cachetype = 0;
-    else {
-      fprintf(outfile, "Invalide CACHETYPE = %s\n",cachetype);
-      abort();
-    }
-    free(cachetype);
-  }
-  
-  fndcor(&(params.memory),infile,outfile);
- 
-  fprintf(outfile, "\n");
-  fprintf(outfile, "\tInput parameters:\n");
-  fprintf(outfile, "\t-----------------\n");
-  fprintf(outfile, "\tWave function \t=\t%s\n", params.wfn);
-  fprintf(outfile, "\tReference WFN \t=\t%s\n", params.ref);
-  fprintf(outfile, "\tCache Level   \t=\t%d\n", params.cachelev);
-  fprintf(outfile, "\tCache Type    \t=\t%s\n", params.cachetype ? "LOW":"LRU");
-  fprintf(outfile, "\tMemory (MB)   \t=\t%.1f\n",params.memory/1e6);
-  fprintf(outfile, "\tPrint Level   \t=\t%d\n", params.print);
-  fprintf(outfile, "\tOPDM          \t=\t%s\n", params.opdm ? "YES":"NO");
-  fprintf(outfile, "\tWrite OPDM    \t=\t%s\n", params.opdm_write ? "YES":"NO");
-  fprintf(outfile, "\tPrint OPDM    \t=\t%s\n", params.opdm_print ? "YES":"NO");
-}
 
 void init_ioff(void)
 {
