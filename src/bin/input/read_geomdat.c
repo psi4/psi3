@@ -15,7 +15,7 @@ void read_geomdat()
   double tmp = 0.0;
   char entry_name[20];
 
-  geomdat = fopen("./geom.dat", "r");
+  ffile(&geomdat, "geom.dat", 2);
   if (geomdat != NULL) {
     ip_append(geomdat, outfile);
     fclose(geomdat);
