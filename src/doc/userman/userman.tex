@@ -28,58 +28,59 @@
 %%%%%%%%%%%%%%%%%%%%%%%
 \include{macros}
 
-%%%%%%%%%%%%%%%%%%%%%%%
-% Title page
-%%%%%%%%%%%%%%%%%%%%%%%
-\title{\vspace{2.0in} {\bf The \PSIthree\ User's Manual}}
+\begin{center}
+\ \\
+\vspace{2.0in}
+{\bf {\Large Installation Manual for the \PSIthree\ Program Package}} \\
+\vspace{0.5in}
+C\ David Sherrill$^a$ and T.\ Daniel Crawford$^b$ \\
+\ \\
+{\em $^a$Center for Computational Molecular Science and Technology, \mbox{Georgia 
+Institute of Technology,} Atlanta, Georgia 30332-0400} \\
+\vspace{0.1in}
+{\em $^b$Department of Chemistry, Virginia Tech, Blacksburg, Virginia 24061-0001}
+\ \\
+\vspace{0.3in}
+Version of: \today
+\end{center}
 
-\author{Jeffrey C.~Stephens, George Vacek, \\
-C.~David Sherrill, Justin T.~Fermann, \\
-Timothy J.~Van Huis, and T.~Daniel Crawford \\
-Revised for \PSIthree\ by Edward F.~Valeev  and C.~David Sherrill \\
-\\
-{\em Center for Computational Quantum Chemistry} \\
-{\em University of Georgia} \\ 
-{\em Athens, Georgia 30602} \\
-\\
-{\em Center for Computational Molecular Science and Technology} \\
-{\em Georgia Institute of Technology} \\
-{\em Atlanta, GA 30332-0400} \\
-\\
-{\em Department of Chemistry} \\
-{\em Virginia Tech} \\
-{\em Blacksburg, VA 24061-0212}
-}
-
-\date{Version of:  \today}
-\maketitle
 \thispagestyle{empty}
 
 \newpage
-\tableofcontents
+%\tableofcontents
 \newpage
 
 \section{Introduction} \label{introduction}
-\input{introduction}
+%\input{introduction}
 
-\section{\PSIthree\ Preliminaries} \label{preliminary}
-\input{preliminary}
+\section{Obtaining and Installing \PSIthree} \label{installation}
+%\input{installation}
 
-\section{\PSIthree\ Tutorial} \label{tutorial}
-\input{tutorial}
+\section{A \PSIthree\ Tutorial} \label{tutorial}
+%\input{tutorial}
 
-\section{Running \PSIthree} \label{running}
-\input{running}
+\section{\PSIthree\ Input Files} \label{input}
+%\input{input}
 
-\section{\PSIthree\ modules} \label{modules}
-\input{modules}
+\section{Overview of \PSIthree\ Computations} \label{overview}
+
+\subsection{Hartree-Fock SCF}
+\subsection{MP2 and MP2-R12}
+\subsection{Coupled Cluster}
+\subsection{Configuration Interaction}
+\subsection{Complete Active Space SCF (CASSCF)}
+\subsection{Excited State Methods: CIS, RPA, EOM-CCSD}
+\subsection{Geometry Optimizations and {\tt optking}}
+\subsection{Vibrational Frequency Analyses}
+\subsection{One-Electron Properties}
+\subsection{User-Specified Basis Sets}
 
 \newpage
 \appendix
 \section{\PSIthree\ Reference}\label{PSI_Reference}
-\input{reference}
+%\input{reference}
 
-\input{appendix}
+%\input{appendix}
 
 %%%%%%%%%%%%%%%%%%%%%%%
 % References
