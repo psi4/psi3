@@ -341,9 +341,9 @@ sub seek_eomcc
   $eval = 0;
   foreach $line (@datafile) {
     $linenum++;
-    if ($line =~ m/Largest components of/) {
-      @test = split (/ +/,$datafile[$linenum-3]);
-      $evals[$eval] = $test[5];
+    if ($line =~ m/EOM State/) {
+      @test = split (/ +/,$datafile[$linenum-1]);
+      $evals[$eval] = $test[6];
       $eval++;
     }
   }
