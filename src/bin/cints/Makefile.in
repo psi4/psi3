@@ -88,7 +88,7 @@ LD = $(FC)
 LDLIBS += $(BLAS)
 ALLOC = 
 PSILIBS = -lfile30 $(INTLIBS) -lqt -liwl \
-          -lpsio -lciomr -lipv1 -lpthread
+          -lpsio -lciomr -lipv1 -lpthread 
 
 CSRC = main.c parsing.c gprgid.c init_globals.c check_max_am.c $(DIRS:%=%/*.c)
 TRUESRC = $(notdir $(shell echo `ls $(CSRC:%=$(srcdir)/%)`))

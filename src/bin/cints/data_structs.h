@@ -380,7 +380,27 @@ struct den_info_s{
     double den;
     double dena;
     double denb;
-    double eval_temp;
+    double gradx;
+    double grady;
+    double gradz;
+    double gamma;
+};
+
+struct fun_info_s{
+    double eval;
+    double dval;
+    double dvala;
+    double dvalb;
+    double dpval;
+    double dgval;
+    double ddval;
+    double ddvala;
+    double ddvalb;
+};
+
+struct xc_info_s{
+    struct fun_info_s exch_info;
+    struct fun_info_s corr_info;
 };
 
 
@@ -389,31 +409,28 @@ typedef struct{
 
     double *basis;              /* This is an array to hold the value of
 				   basis functions at a given point */
+    
+    double *gamma_basis;
+    double *gradx;
+    double *grady;
+    double *gradz;
+    
     double *Bragg;
     double XC_energy;           /* Exchange Correlation Energy */
     double X_energy;            /* Exchange Energy */
     double C_energy;            /* Correlation Energy */
     
     /* All function pointers */
-
-    double (*exchange_function)(struct den_info_s);
-    double (*exchange_V_function)(struct den_info_s);
-                                /* pointer to the exchange function */
-    /* For UHF */
-    double (*exchange_V_function_a)(struct den_info_s);
-    double (*exchange_V_function_b)(struct den_info_s);
     
-    double (*correlation_function)(struct den_info_s);
-    double (*correlation_V_function)(struct den_info_s);
-                               /* pointer to the correlation function */
-    /* For UHF */
-    double (*correlation_V_function_a)(struct den_info_s);
-    double (*correlation_V_function_b)(struct den_info_s);
-    
-    struct den_info_s (*den_calc)(struct coordinates geom,int atom_num);
-                   /* pointer to the correct density calculation function */
+    struct fun_info_s (*exchange_func)(struct den_info_s);
+    struct fun_info_s (*correlation_func)(struct den_info_s);
+     
+    struct den_info_s (*den_calc)(struct coordinates,int);
+ 
     struct close_shell_info_s close_shell_info;
+    
     grid_t grid;
+    
 } DFT_options_t;
 
 

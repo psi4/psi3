@@ -459,8 +459,8 @@ struct den_info_s calc_grad_fast(struct coordinates geom, int atom_num){
     timer_off("basis"); 
 /* Now contract the basis functions with the AO density matrix elements */
     timer_on("density"); 
-    /*for(i=0;i<close->num_close_aos;i++)
-	fprintf(outfile,"\nBasis[%d] = %10.10lf Grad[%d] = %10.10lf",i,DFT_options.basis[i],i,DFT_options.grad_basis[i]);*/
+    for(i=0;i<close->num_close_aos;i++)
+	fprintf(outfile,"\nBasis[%d] = %10.10lf Grad[%d] = %10.10lf",i,DFT_options.basis[i],i,DFT_options.basis[i]);
    
     den_sum = 0.0; 
     gradx_sum = 0.0;grady_sum = 0.0;gradz_sum = 0.0;

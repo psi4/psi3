@@ -19,6 +19,8 @@
 #include"shell_block_matrix.h"
 #include"hf_fock.h"
 #include"xc_fock.h"
+#include"xc_fock_u.h"
+#include"xc_grad_fock.h"
 
 pthread_mutex_t fock_mutex;            /* Lock on the global AO matrix */
 
@@ -54,7 +56,7 @@ void fock()
       read_scf_occ_evec();
     /*-- Compute exch+corr contribution to the Fock matrix ---*/
     if(UserOptions.reftype == rhf)
-	xc_fock();
+	xc_grad_fock();
     else if(UserOptions.reftype == uhf)
 	xc_fock_u();
     else
