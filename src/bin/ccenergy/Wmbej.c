@@ -45,7 +45,7 @@ void Wmbej_build(void)
     dpd_buf4_scmcopy(&C, CC_TMP0, "WMbeJ", -1);
     dpd_buf4_close(&C);
 
-  }
+    }
   else { /*** RHF/ROHF ***/
 
 

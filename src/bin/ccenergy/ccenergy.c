@@ -95,36 +95,20 @@ int main(int argc, char *argv[])
   init_amps();
   tau_build();
   taut_build();
-  if(!moinfo.iopen) {
-    fprintf(outfile, "\t                     Solving CCSD Equations\n");
-    fprintf(outfile, "\t                     ----------------------\n");
-    fprintf(outfile, "\tIter             Energy               RMS       T1Diag      D1Diag\n");
-    fprintf(outfile, "\t----     ---------------------     --------   ----------  ----------\n");
-  }
-  else {
-    fprintf(outfile, "\t                Solving CCSD Equations\n");
-    fprintf(outfile, "\t                ----------------------\n");
-    fprintf(outfile, "\tIter             Energy               RMS       T1Diag\n");
-    fprintf(outfile, "\t----     ---------------------     --------   ----------\n");
-  }
+  fprintf(outfile, "\t                     Solving CCSD Equations\n");
+  fprintf(outfile, "\t                     ----------------------\n");
+  fprintf(outfile, "\tIter             Energy               RMS       T1Diag      D1Diag\n");
+  fprintf(outfile, "\t----     ---------------------     --------   ----------  ----------\n");
   moinfo.ecc = energy();
   moinfo.t1diag = diagnostic();
-  if(!moinfo.iopen) moinfo.d1diag = d1diag();
+  moinfo.d1diag = d1diag();
   update();
   if(params.ref == 2) params.maxiter = 0;
   for(moinfo.iter=1; moinfo.iter <= params.maxiter; moinfo.iter++) {
-    /*      memchk();  */
+
     timer_on("sort_amps");
     sort_amps();
     timer_off("sort_amps");
-    /*
-      timer_on("Y");
-      Y_build();
-      timer_off("Y");
-      timer_on("X");
-      X_build();
-      timer_off("X");
-    */
 
     timer_on("Wmbej build");
     Wmbej_build();
@@ -152,7 +136,7 @@ int main(int argc, char *argv[])
       tau_build(); taut_build();
       moinfo.ecc = energy();
       moinfo.t1diag = diagnostic();
-      if(!moinfo.iopen) moinfo.d1diag = d1diag();
+      moinfo.d1diag = d1diag();
       sort_amps();
       update();
       fprintf(outfile, "\n\tIterations converged.\n");
@@ -164,7 +148,7 @@ int main(int argc, char *argv[])
     tau_build(); taut_build();
     moinfo.ecc = energy();
     moinfo.t1diag = diagnostic();
-    if(!moinfo.iopen) moinfo.d1diag = d1diag();
+    moinfo.d1diag = d1diag();
     update();
   }
   fprintf(outfile, "\n");
