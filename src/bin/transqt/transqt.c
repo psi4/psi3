@@ -1078,7 +1078,7 @@ void get_moinfo(void)
 void get_reorder_array(void)
 {
   int i, errcod;
-  int *tdocc, *tsocc, *tfrdocc, *tfruocc, **ras_opi;
+  int **ras_opi;
   int j, k, l, fzv_offset;
 
   moinfo.order = init_int_array(moinfo.nmo);
@@ -1091,27 +1091,17 @@ void get_reorder_array(void)
       || strcmp(params.wfn, "OOCCD") == 0 
       || strcmp(params.wfn, "DETCAS") == 0) {
     
-    tdocc = init_int_array(moinfo.nirreps);
-    tsocc = init_int_array(moinfo.nirreps);
-    tfrdocc = init_int_array(moinfo.nirreps);
-    tfruocc = init_int_array(moinfo.nirreps);
     ras_opi = init_int_matrix(4,moinfo.nirreps); 
     
-    for (i=0; i<moinfo.nirreps; i++) {
-      tdocc[i] = moinfo.clsdpi[i];
-      tsocc[i] = moinfo.openpi[i];
-    }
-
     if (!ras_set2(moinfo.nirreps, moinfo.nmo, params.fzc, 
                  params.del_restr_docc, moinfo.orbspi,
-                 tdocc, tsocc, tfrdocc, tfruocc, moinfo.rstrdocc,
-		 moinfo.rstruocc, ras_opi, moinfo.order,
+                 moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc, 
+		 moinfo.rstrdocc, moinfo.rstruocc, ras_opi, moinfo.order,
                  params.ras_type)) {
       fprintf(outfile, "Error in ras_set().  Aborting.\n");
       exit(PSI_RETURN_FAILURE);
     }
     
-    free(tdocc);  free(tsocc);  free(tfrdocc);  free(tfruocc);
     free_int_matrix(ras_opi, 4);
     
   } 
