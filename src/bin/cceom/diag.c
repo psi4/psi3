@@ -52,6 +52,10 @@ void local_filter_T2_nodenom(dpdbuf4 *);
 void read_guess(int);
 void read_guess_init(void);
 extern double norm_C1_rhf(dpdfile2 *C1A);
+int sigmaCC3(int i, int C_irr);
+void cc3_HC1(int i, int C_irr); /* compute [H,C1] */
+void norm_HC1(int i, int C_irr); /* compute norms for [H,C1] */
+void norm_HET1(void); /* compute norms for [H,e^T1] */
 
 void diag(void) {
   dpdfile2 CME, CME2, Cme, SIA, Sia, RIA, Ria, DIA, Dia, tIA, tia, LIA, Lia;
@@ -232,6 +236,9 @@ void diag(void) {
         sigmaSD(i,C_irr);
         sigmaDS(i,C_irr);
         sigmaDD(i,C_irr);
+   //     if (!strcmp(params.wfn,"EOM_CC3"))
+   //       sigmaCC3(i,C_irr);
+
 #endif
 
 #ifdef EOM_DEBUG
@@ -715,6 +722,11 @@ void diag(void) {
 	        dpd_file2_close(&Cme);
           }
         }
+        
+        cc3_HC1(i, C_irr);
+        norm_HC1(i, C_irr);
+        cc3_HET1();
+        norm_HET1();
       }
       /*
       psio_write_entry(CC_INFO, "CCEOM Energy",

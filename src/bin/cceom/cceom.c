@@ -21,6 +21,7 @@ int **cacheprep_uhf(int level, int *cachefiles);
 int **cacheprep_rhf(int level, int *cachefiles);
 void sort_amps(void);
 void hbar_norms(void);
+void cc3_HETI(void);
 
 /* local correlation functions */
 void local_init(void);
@@ -65,6 +66,8 @@ int main(int argc, char *argv[])
   }
 
   if(params.local) local_init();
+
+  // cc3_HET1(); /* compute Wmbej <- [H,e^T1] */
 
   diag();
   /* sort_amps(); */
