@@ -28,7 +28,7 @@ void psi3_abort(void);
 int execut(char **module_names, int num_modules, int depth);
 extern char **parse_var(int *nvars, int mxvars, char *name);
 extern void runcmd(int *errcod, char *cmd);
-
+void parse_cmdline(int argc, char *argv[]);
   
 
 int main(int argc, char *argv[])
@@ -47,8 +47,7 @@ int main(int argc, char *argv[])
     SYMM_FREQ         /* frequencies for symmetric modes */
   } JobType;
 
-  ffile(&infile,"input.dat",2);
-  outfile = stdout;
+  parse_cmdline(argc,argv);
 
   fprintf(outfile, "\nThe PSI3 Execution Driver\n");
 
@@ -322,9 +321,9 @@ int execut(char **exec, int nexec, int depth)
       /* if we're getting ndisp from optking */
       if (strcmp(exec[i],"optking --disp_symm")==0 ||
           strcmp(exec[i],"optking --disp_all")==0) {
-        //fprintf(outfile, "optking got exit code %d\n", errcod);
+        /* fprintf(outfile, "optking got exit code %d\n", errcod); */
         for (j=i; j<nexec; j++) {
-          //fprintf(outfile,"Scanning exec[%d] = %s\n", j, exec[j]); 
+          /* fprintf(outfile,"Scanning exec[%d] = %s\n", j, exec[j]);  */
           if (strcmp(exec[j],"NUM_DISP")==0) {	
             sprintf(exec[j],"%d",errcod);
             break;
@@ -365,5 +364,38 @@ int execut(char **exec, int nexec, int depth)
     }
   }
   return(i);
+}
+
+
+void parse_cmdline(int argc, char *argv[])
+{
+  int c;
+
+  if (argc < 2) {
+    ffile(&infile,"input.dat",2);
+    outfile = stdout;
+    setenv("PSI_INPUT","input.dat",1);
+    setenv("PSI_OUTPUT","output.dat",1);
+  } 
+  else if (argc == 2) {
+    ffile(&infile,argv[1],2);
+    outfile = stdout;
+    setenv("PSI_INPUT",argv[1],1);
+    setenv("PSI_OUTPUT","output.dat",1);
+  }
+  else if (argc == 3) {
+    ffile(&infile,argv[1],2);
+    outfile = stdout;
+    setenv("PSI_INPUT",argv[1],1);
+    setenv("PSI_OUTPUT",argv[2],1);
+  }
+  else {
+    ffile(&infile,argv[1],2);
+    outfile = stdout;
+    setenv("PSI_INPUT",argv[1],1);
+    setenv("PSI_OUTPUT",argv[2],1);
+    setenv("PSI_SCRATCH",argv[3],1);
+  } 
+
 }
 
