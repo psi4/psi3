@@ -64,8 +64,6 @@ int* get_frzvpi()
 PSIO_INIT
 CHKPT_INIT(PSIO_OPEN_OLD);
   nirreps = chkpt_rd_nirreps();
-CHKPT_DONE
-PSIO_DONE
   
   frzvpi = init_int_array(nirreps);
   
@@ -73,6 +71,13 @@ PSIO_DONE
   if (if_exists) {
     errcod = ip_int_array(":DEFAULT:FROZEN_UOCC",frzvpi,nirreps);
   }
+  else {
+    free(frzvpi);
+    frzvpi = chkpt_rd_frzvpi();
+  }
+
+CHKPT_DONE
+PSIO_DONE
 
   return frzvpi;
 }
