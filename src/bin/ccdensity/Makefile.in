@@ -3,7 +3,6 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-LD = $(F77)
 LDLIBS += $(BLAS)
 
 PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
@@ -20,7 +19,7 @@ file_build.c idx_permute.c idx_error.c kinetic.c \
 cache.c
 
 BINOBJ = $(CSRC:%.c=%.o)
-ALLOC = 
+ALLOC =
 
 include ../MakeRules
 

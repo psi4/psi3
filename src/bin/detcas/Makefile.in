@@ -4,7 +4,7 @@ VPATH = @srcdir@
 include ../MakeVars
 
 LD = $(CXX)
-LDLIBS += $(BLAS) $(FLIBS)
+LDLIBS += $(BLAS)
 
 PSILIBS = libPSI_qt.a libPSI_file30.a libPSI_iwl.a -lPSI_psio libPSI_ciomr.a libPSI_ipv1.a
 

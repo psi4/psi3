@@ -3,6 +3,8 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
+LD = $(FC)
+
 #
 # there is no memory allocation for this program, linking allocate.o
 #   messes up the DEC3100 compilation

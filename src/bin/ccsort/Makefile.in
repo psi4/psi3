@@ -3,12 +3,6 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-ifneq (,$(findstring alphaev6,$(target)))
-LD = $(CC)
-else
-LD = $(FC)
-endif
-
 LDLIBS += $(BLAS)
 
 PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1

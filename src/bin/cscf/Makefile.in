@@ -3,8 +3,6 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-LD = $(CC)
-
 PSILIBS = -lPSI_file30 -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
 TRUESRC = \

@@ -3,7 +3,6 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-LD = $(FC)
 LDLIBS += $(BLAS)
 CDEF += -DUSE_BLAS
 

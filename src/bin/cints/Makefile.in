@@ -95,10 +95,9 @@ CFLAGS = $(CDBG) $(COPT) $(CDEF_NOAIX) $(COTH) $(CINC)
 CINC = -I$(srcdir) $(DIRS:%=-I$(srcdir)/%)  -I$(objincdir) -I$(incdir) $(CPPFLAGS)
 CDEF += $(OPTIONS)
 
-LD = $(FC)
 LDLIBS += $(BLAS)
 ALLOC = 
-PSILIBS = -lPSI_file30 $(INTLIBS) -lPSI_qt -lPSI_iwl \
+PSILIBS = -lPSI_chkpt -lPSI_file30 $(INTLIBS) -lPSI_qt -lPSI_iwl \
           -lPSI_psio -lPSI_ciomr -lPSI_ipv1 -lpthread 
 
 CSRC = main.c parsing.c gprgid.c init_globals.c check_max_am.c $(DIRS:%=%/*.c)

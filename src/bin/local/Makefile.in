@@ -3,7 +3,6 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-LD = $(FC) -Mnomain
 LDLIBS += $(BLAS)
 
 PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_file30 -lPSI_iwl -lPSI_ciomr -lPSI_psio -lPSI_ipv1

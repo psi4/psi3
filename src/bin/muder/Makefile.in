@@ -3,6 +3,8 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
+LD = $(FC)
+
 PSILIBS = libPSI_io.a libPSI_alloc.a libPSI_parse.a libPSI_coallc.a libPSI_iomr.a libPSI_ciomr.a
 
 TRUESRC = fentry.F gprgid.F inisic.F readmu.F readr.F
