@@ -306,7 +306,10 @@ void parse_zmat(int i, int position, double *value, struct definition
 
    value_set = 0;
    ip_string("ZMAT",&temp_string,2,i,position);
-   if( !isalnum( temp_string[0] ) )
+   if( !isalnum( temp_string[0] ) &&
+       temp_string[0] != '-' &&
+       temp_string[0] != '+' &&
+       temp_string[0] != '.')
        punt("z-matrix entry doesn't begin with letter or number");
    dollar = strchr(temp_string,'$');
    if( dollar != NULL ) {
@@ -327,7 +330,10 @@ void parse_zmat(int i, int position, double *value, struct definition
            z_geom[i].tors_opt = 0;
      }
        
-   if( isdigit( temp_string[0] ) ) { 
+   if( isdigit( temp_string[0] ) ||
+       temp_string[0] == '-' ||
+       temp_string[0] == '+' ||
+       temp_string[0] == '.') { 
        *value = atof( temp_string );
        ++value_set;
      }
