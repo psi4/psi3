@@ -1,0 +1,34 @@
+default: (
+  label = "ROHF-CCSD(T)/cc-pVDZ 2Sigma+ CN"
+
+  jobtype = sp
+  wfn = ccsd
+  reference = rohf
+  multi = 2
+  dertype = none
+
+  docc = (4 0 1 1)
+  socc = (1 0 0 0)
+  frozen_docc = (2 0 0 0)
+  maxiter = 100
+
+  print = 2
+  ao_basis = true
+
+  memory = (32.0 MB)
+
+  files: ( default: ( name = "cn" ) )
+)
+
+input: (
+  basis = ccpvdz
+  puream = true
+  units = angstrom
+  zmat = (
+   (C)
+   (N 1 R)
+  )
+  zvars = (
+   (R 1.175)
+  )
+)
