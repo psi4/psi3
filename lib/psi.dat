@@ -18,14 +18,18 @@ psi: (
   deriv2     = "cints --deriv2"
   transqt    = "transqt"
   backtransqt = "transqt -backtr"
-  dipder     = "dipder"
-  cphf       = "cphf"
-  normco     = "normco"
-  oeprop     = "oeprop"
-  optking    = "optking"
-  ugeom      = "ugeom"
-  rgeom      = ""
-  geomupdate = ($optking)
+  dipder      = "dipder"
+  cphf        = "cphf"
+  normco      = "normco"
+  oeprop      = "oeprop"
+  optking     = "optking"
+  ugeom       = "ugeom"
+  rgeom       = ()
+  findif_disp = "optking --disp_all"
+  findif_calc = "optking --freq_grad"
+  findif_next = "optking --disp_load"
+  findif_grad = "optking --grad_save"
+  geomupdate  = ($optking)
 
   % CASSCF specific programs
   casscf     = "detcas"
@@ -95,7 +99,9 @@ psi: (
   SCFTwoConEnergyOpt = $SCFEnergyOpt
 
   % Procedures for the finite displacements of SCF gradients
-  SCFFirstDisp  = (repeat $ndisp $ugeom $uinput $SCFFirst $rgeom end $done)
+  SCFFirstDisp  = 
+    ($input $findif_disp repeat $ndisp 
+     $findif_next $uinput $SCFFirst $findif_grad end $findif_calc $done)
   SCFRHFFirstDisp  = $SCFFirstDisp
   SCFROHFFirstDisp  = $SCFFirstDisp
   SCFUHFFirstDisp  = $SCFFirstDisp
