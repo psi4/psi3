@@ -131,8 +131,7 @@ void grid_init(){
 	grid->n_rad_points = rpointstmp+1;
     }
     else
-	punt("Problem with Grid specification: Wrong number of elements
-              for keyword Grid");
+	punt("Problem with Grid specification: Wrong number of elements for keyword Grid");
     
     
     for(i=0;i<Symmetry.num_unique_atoms;i++){
