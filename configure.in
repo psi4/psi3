@@ -687,6 +687,7 @@ esac
 AC_SUBST(FPARDEF)
 AC_SUBST(FPAROPT)
 
+AR="ar"
 AC_ARG_WITH(ar,--with-ar		which library archiver to use,[AR=$withval])
 AC_SUBST(AR)
 ARFLAGS="rv"
