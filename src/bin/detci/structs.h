@@ -430,6 +430,11 @@ struct params {
    int pthreads;           /* 1(0) if use/not multithreading */
    int export_ci_vector;   /* 1 if export the CI vector with string info,
                               useful for BODC */
+   int sf_restrict;        /* 1 if restrict CI space (CI blocks) to 
+                              do only determinants (or their
+                              spin-complements) in RASCI versions of
+                              Krylov's SF CI */
+
 };
 
 

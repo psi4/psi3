@@ -423,7 +423,6 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
   free(buffer1);
   free(buffer2);
 
-
   /* Average the opdm's */
   if (Parameters.opdm_diag) rfile(targetfile);
   if (Parameters.opdm_ave) ave(Parameters.opdm_file, onepdm); 
@@ -619,7 +618,7 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
     }
   } 
   /* CINOS completed */
- 
+
 #if USE_LIBCHKPT
   chkpt_close();
 #else

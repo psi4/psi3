@@ -199,6 +199,17 @@ void set_ciblks(struct olsen_graph *AlphaG, struct olsen_graph *BetaG)
                               (AlphaG->ras1_max - nalp1 + BetaG->ras1_max -
                                nbet1 > xlvl)) continue;
 
+                           /* add special constraint if we want to kick 
+                              out any determinants which would not be
+                              included in (spin-complete) DETCI translations
+                              of Anna Krylov's SF-CI stuff
+                              CDS 3/19/02
+                            */
+                           if (Parameters.sf_restrict && (nalp4 || nbet4)
+                               && (nalp1<AlphaG->ras1_max || 
+                                   nbet1<BetaG->ras1_max) && 
+                                  (nalp3+nbet3==0)) continue;
+
                            betcode = 
                              BetaG->decode[nbet1-BetaG->ras1_min][nbet3][nbet4];
                            if (betcode == -1) continue;
