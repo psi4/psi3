@@ -323,65 +323,65 @@ void parse_zmat(int i, int position, double *value, struct definition
        temp_string[0] != '-' &&
        temp_string[0] != '+' &&
        temp_string[0] != '.')
-       punt("z-matrix entry doesn't begin with letter or number");
+     punt("z-matrix entry doesn't begin with letter or number");
    dollar = strchr(temp_string,'$');
    if( dollar != NULL ) {
-       if(position == 2) 
-           z_geom[i].bond_opt = 1;
-       else if(position == 4)
-           z_geom[i].angle_opt = 1;
-       else if(position == 6)
-           z_geom[i].tors_opt = 1;
-       *dollar = '\0';
-     }
+     if(position == 2) 
+       z_geom[i].bond_opt = 1;
+     else if(position == 4)
+       z_geom[i].angle_opt = 1;
+     else if(position == 6)
+       z_geom[i].tors_opt = 1;
+     *dollar = '\0';
+   }
    else {
-        if(position == 2) 
-           z_geom[i].bond_opt = 0;
-       else if(position == 4)
-           z_geom[i].angle_opt = 0;
-       else if(position == 6)
-           z_geom[i].tors_opt = 0;
-     }
-       
+     if(position == 2) 
+       z_geom[i].bond_opt = 0;
+     else if(position == 4)
+       z_geom[i].angle_opt = 0;
+     else if(position == 6)
+       z_geom[i].tors_opt = 0;
+   }
+   
    if( isdigit( temp_string[0] ) ||
        temp_string[0] == '-' ||
        temp_string[0] == '+' ||
        temp_string[0] == '.') { 
-       *value = atof( temp_string );
-       ++value_set;
-     }
+     *value = atof( temp_string );
+     ++value_set;
+   }
    if( isalpha( temp_string[0] ) && zvar_exist ) {
-       for(j=0;j<num_vals;++j) 
-      	   if( !strcmp(temp_string,array[j].variable) ) {
-	       *value = array[j].value;
-	       ++value_set;
-	     }
-     }
-    if(value_set != 1 ) {
-        fprintf(outfile,"  Problem with variable definition from line %i\n",i+1);
-        punt("Invalid ZMAT");
-	}
-
-    if( isalpha( temp_string[0] ) ) {
-       if(position == 2) 
-          strcpy( z_geom[i].bond_label, temp_string );
-       if(position == 4)
-          strcpy( z_geom[i].angle_label, temp_string );
-       if(position == 6)
-          strcpy( z_geom[i].tors_label, temp_string );
-     }
-    else {
-       if(position == 2)
-          z_geom[i].bond_label[0] = '\0';
-       if(position == 4)
-          z_geom[i].angle_label[0] = '\0';
-       if(position == 6)
-          z_geom[i].tors_label[0] = '\0';
-     }
- 
-    free(temp_string);	
-
-	
-return;
- }
+     for(j=0;j<num_vals;++j) 
+       if( !strcmp(temp_string,array[j].variable) ) {
+	 *value = array[j].value;
+	 ++value_set;
+       }
+   }
+   if(value_set != 1 ) {
+     fprintf(outfile,"  Problem with variable definition from line %i\n",i+1);
+     punt("Invalid ZMAT");
+   }
+   
+   if( isalpha( temp_string[0] ) ) {
+     if(position == 2) 
+       strcpy( z_geom[i].bond_label, temp_string );
+     if(position == 4)
+       strcpy( z_geom[i].angle_label, temp_string );
+     if(position == 6)
+       strcpy( z_geom[i].tors_label, temp_string );
+   }
+   else {
+     if(position == 2)
+       z_geom[i].bond_label[0] = '\0';
+     if(position == 4)
+       z_geom[i].angle_label[0] = '\0';
+     if(position == 6)
+       z_geom[i].tors_label[0] = '\0';
+   }
+   
+   free(temp_string);	
+   
+   
+   return;
+}
 
