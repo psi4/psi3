@@ -117,13 +117,16 @@ int emit_order(int old_am, int new_am)
       fprintf(hrr_code,"extern void vrr_order_%c%c%c%c();\n\n",am_letter[la-lb],am_letter[lb],am_letter[lc-ld],am_letter[ld]);
       fprintf(hrr_code,"  /* Computes quartets of (%c%c|%c%c) integrals */\n\n",
 	      am_letter[la-lb],am_letter[lb],am_letter[lc-ld],am_letter[ld]);
-      fprintf(hrr_code,"double *%s(int num_prim_comb)\n{\n",hrr_function_name);
-
+      fprintf(hrr_code,"double *%s(Libint_t *Libint, int num_prim_comb)\n{\n",hrr_function_name);
+      fprintf(hrr_code," prim_data *Data = Libint->PrimQuartet;\n");
+      fprintf(hrr_code," double *int_stack = Libint->int_stack;\n");
+      fprintf(hrr_code," int i;\n\n");
+      
       /*-------------------------------------------------------------
 	Include the function into the hrr_header.h and init_libint.c
        -------------------------------------------------------------*/
-      fprintf(hrr_header,"double *%s(int);\n",hrr_function_name);
-      fprintf(init_code,"  top_build_abcd[%d][%d][%d][%d] = %s;\n",la-lb,lb,lc-ld,ld,hrr_function_name);
+      fprintf(hrr_header,"double *%s(Libint_t *, int);\n",hrr_function_name);
+      fprintf(init_code,"  build_eri[%d][%d][%d][%d] = %s;\n",la-lb,lb,lc-ld,ld,hrr_function_name);
 
       /*-----------------------------------
 	Write the overhead to the VRR code
@@ -133,7 +136,7 @@ int emit_order(int old_am, int new_am)
       fprintf(vrr_code,"#include \"vrr_header.h\"\n\n");
       fprintf(vrr_code,"  /* Computes quartets necessary to compute (%c%c|%c%c) integrals */\n\n",
 	      am_letter[la-lb],am_letter[lb],am_letter[lc-ld],am_letter[ld]);
-      fprintf(vrr_code,"void %s()\n{\n",vrr_function_name);
+      fprintf(vrr_code,"void %s(Libint_t * Libint, prim_data *Data)\n{\n",vrr_function_name);
 
       /*----------------------------
 	Zero out the hashing tables
@@ -166,11 +169,6 @@ int emit_order(int old_am, int new_am)
 	if(hrr_nodes[0].children[k]>0)
 	  mark_hrr_parents(hrr_nodes[0].children[k], hrr_nodes, 0);
 
-      fprintf(hrr_code," extern double *int_stack;\n extern prim_data *Shell_Data;\n\n");
-      fprintf(hrr_code," extern double *vrr_stack;\n extern prim_data *Data;\n extern double *vrr_classes[%d][%d];\n\n",
-	      new_am+1,new_am+1);
-      fprintf(hrr_code," int i;\n\n");
-      
       init_mem(100000);
 
       
@@ -181,12 +179,13 @@ int emit_order(int old_am, int new_am)
 	if (hrr_nodes[i].B == 0 && hrr_nodes[i].D == 0) {
 	  hrr_nodes[i].marked = 1;
 	  hrr_nodes[i].pointer = get_mem(hrr_nodes[i].size);
-	  fprintf(hrr_code," vrr_classes[%d][%d] = int_stack + %d;\n",hrr_nodes[i].A,hrr_nodes[i].C,hrr_nodes[i].pointer);
+	  fprintf(hrr_code," Libint->vrr_classes[%d][%d] = int_stack + %d;\n",
+		  hrr_nodes[i].A,hrr_nodes[i].C,hrr_nodes[i].pointer);
 	}
       }
       base_mem = get_total_memory();
       fprintf(hrr_code," memset(int_stack,0,%d);\n\n",base_mem*sizeof(double));
-      fprintf(hrr_code," vrr_stack = int_stack + %d;\n",base_mem);
+      fprintf(hrr_code," Libint->vrr_stack = int_stack + %d;\n",base_mem);
       
       /*----------------------------
 	Build the HRR call sequence
@@ -195,10 +194,10 @@ int emit_order(int old_am, int new_am)
       hrr_mem = get_total_memory();
       if (max_stack_size < hrr_mem)
 	max_stack_size = hrr_mem;
-      fprintf(hrr_code," Data = Shell_Data;\n");
       fprintf(hrr_code," for(i=0;i<num_prim_comb;i++) {\n");
-	fprintf(hrr_code,"   vrr_order_%c%c%c%c();\n",am_letter[la-lb],am_letter[lb],am_letter[lc-ld],am_letter[ld]);
-      fprintf(hrr_code,"   Data++;\n }\n\n");
+      fprintf(hrr_code,"   vrr_order_%c%c%c%c(Libint, Data);\n",
+	      am_letter[la-lb],am_letter[lb],am_letter[lc-ld],am_letter[ld]);
+      fprintf(hrr_code,"   Data++;\n }\n");
       
       j = first_hrr_to_compute;
       do {
@@ -206,14 +205,14 @@ int emit_order(int old_am, int new_am)
 		am_letter[hrr_nodes[j].A],am_letter[hrr_nodes[j].B],
 		am_letter[hrr_nodes[j].C],am_letter[hrr_nodes[j].D]);
 	if (hrr_nodes[j].B == 0 && hrr_nodes[j].D != 0) {
-	  fprintf(hrr_code, " hrr3_build_%c%c(int_stack+%d,int_stack+%d,",
+	  fprintf(hrr_code, " hrr3_build_%c%c(Libint->CD,int_stack+%d,int_stack+%d,",
 		  am_letter[hrr_nodes[j].C], am_letter[hrr_nodes[j].D], hrr_nodes[j].pointer,
 		  hrr_nodes[hrr_nodes[j].children[0]].pointer);
 	  fprintf(hrr_code, "int_stack+%d,%d);\n", hrr_nodes[hrr_nodes[j].children[1]].pointer,
 		  io[hrr_nodes[j].A]*io[hrr_nodes[j].B]);
 	}
 	else if (hrr_nodes[j].B != 0) {
-	  fprintf(hrr_code, " hrr1_build_%c%c(int_stack+%d,int_stack+%d,",
+	  fprintf(hrr_code, " hrr1_build_%c%c(Libint->AB,int_stack+%d,int_stack+%d,",
 		  am_letter[hrr_nodes[j].A], am_letter[hrr_nodes[j].B], hrr_nodes[j].pointer,
 		  hrr_nodes[hrr_nodes[j].children[0]].pointer);
 	  fprintf(hrr_code, "int_stack+%d,%d);\n", hrr_nodes[hrr_nodes[j].children[1]].pointer,
@@ -281,12 +280,12 @@ int emit_order(int old_am, int new_am)
       vrr_mem = base_mem + get_total_memory();
       if (max_stack_size < vrr_mem)
 	max_stack_size = vrr_mem;
-      fprintf(vrr_code," extern double *vrr_stack;\n extern prim_data *Data;\n double *tmp, *target_ptr;\n int i;\n");
-      fprintf(vrr_code," extern double *vrr_classes[%d][%d];\n\n",new_am+1,new_am+1);
+      fprintf(vrr_code," double *vrr_stack = Libint->vrr_stack;\n");
+      fprintf(vrr_code," double *tmp, *target_ptr;\n int i;\n");
       
       j = first_vrr_to_compute;
       do {
-	fprintf(vrr_code, " _BUILD_%c0%c0(", am_letter[vrr_nodes[j].A], am_letter[vrr_nodes[j].C]);
+	fprintf(vrr_code, " _BUILD_%c0%c0(Data,", am_letter[vrr_nodes[j].A], am_letter[vrr_nodes[j].C]);
 	fprintf(vrr_code, "vrr_stack+%d", vrr_nodes[j].pointer);
 	for(k=0; k<5; k++){
 	  if(vrr_nodes[j].children[k] > 0)
@@ -299,7 +298,7 @@ int emit_order(int old_am, int new_am)
 	fprintf(vrr_code, ");\n");
 	if (vrr_nodes[j].target == 1) {
 	  fprintf(vrr_code, "   tmp = vrr_stack + %d;\n", vrr_nodes[j].pointer);
-	  fprintf(vrr_code, "   target_ptr = vrr_classes[%d][%d];\n",vrr_nodes[j].A,vrr_nodes[j].C);
+	  fprintf(vrr_code, "   target_ptr = Libint->vrr_classes[%d][%d];\n",vrr_nodes[j].A,vrr_nodes[j].C);
 	  fprintf(vrr_code, "   for(i=0;i<%d;i++)\n",(vrr_nodes[j].A+1)*(vrr_nodes[j].A+2)*(vrr_nodes[j].C+1)*(vrr_nodes[j].C+2)/4);
 	  fprintf(vrr_code, "     target_ptr[i] += tmp[i];\n");
 	}

@@ -112,16 +112,21 @@ int emit_order(int old_am, int new_am)
       fprintf(hrr_code,"#include \"libderiv.h\"\n");
       fprintf(hrr_code,"#include <hrr_header.h>\n\n");
       fprintf(hrr_code,"#include \"dhrr_header.h\"\n\n");
-      fprintf(hrr_code,"extern void dvrr_order_%c%c%c%c();\n\n",am_letter[la-lb],am_letter[lb],am_letter[lc-ld],am_letter[ld]);
+      fprintf(hrr_code,"extern void dvrr_order_%c%c%c%c(Libderiv_t *, prim_data *);\n\n",
+	      am_letter[la-lb],am_letter[lb],am_letter[lc-ld],am_letter[ld]);
       fprintf(hrr_code,"  /* Computes derivatives of (%c%c|%c%c) integrals */\n\n",
 	      am_letter[la-lb],am_letter[lb],am_letter[lc-ld],am_letter[ld]);
-      fprintf(hrr_code,"void %s(int num_prim_comb)\n{\n",hrr_function_name);
+      fprintf(hrr_code,"void %s(Libderiv_t *Libderiv, int num_prim_comb)\n{\n",hrr_function_name);
+      fprintf(hrr_code," prim_data *Data = Libderiv->PrimQuartet;\n");
+      fprintf(hrr_code," double *int_stack = Libderiv->int_stack;\n");
+      fprintf(hrr_code," double *zero_stack = Libderiv->zero_stack;\n");
+      fprintf(hrr_code," int i,j;\n double tmp, *target;\n\n");
 
       /*-------------------------------------------------------------
 	Include the function into the hrr_header.h and init_libint.c
        -------------------------------------------------------------*/
-      fprintf(dhrr_header,"void %s(int);\n",hrr_function_name);
-      fprintf(init_code,"  dbuild_abcd[%d][%d][%d][%d] = %s;\n",la-lb,lb,lc-ld,ld,hrr_function_name);
+      fprintf(dhrr_header,"void %s(Libderiv_t *, int);\n",hrr_function_name);
+      fprintf(init_code,"  build_deriv1_eri[%d][%d][%d][%d] = %s;\n",la-lb,lb,lc-ld,ld,hrr_function_name);
 
       /*-----------------------------------
 	Write the overhead to the VRR code
@@ -134,7 +139,7 @@ int emit_order(int old_am, int new_am)
       fprintf(vrr_code,"#include \"deriv_header.h\"\n\n");
       fprintf(vrr_code,"  /* Computes quartets necessary to compute derivatives of (%c%c|%c%c) integrals */\n\n",
 	      am_letter[la-lb],am_letter[lb],am_letter[lc-ld],am_letter[ld]);
-      fprintf(vrr_code,"void %s()\n{\n",vrr_function_name);
+      fprintf(vrr_code,"void %s(Libderiv_t *Libderiv, prim_data *Data)\n{\n",vrr_function_name);
 
       
       /*--------------------------------------------------
@@ -186,13 +191,6 @@ int emit_order(int old_am, int new_am)
       /*------------------------
 	Declare local variables
        ------------------------*/
-      fprintf(hrr_code," extern double *int_stack;\n extern double *zero_stack;\n");
-      fprintf(hrr_code," extern prim_data *Shell_Data;\n extern double *ABCD[12];\n\n");
-      fprintf(hrr_code," extern double *dvrr_stack;\n extern prim_data *Data;\n");
-      fprintf(hrr_code," extern double *deriv_classes[%d][%d][%d];\n extern double *dvrr_classes[%d][%d];\n\n",
-	      new_am+1,new_am+1,12,new_am+1,new_am+1);
-      fprintf(hrr_code," int i,j;\n double tmp, *target;\n\n");
-      
       init_mem(100000);
 
       
@@ -204,14 +202,14 @@ int emit_order(int old_am, int new_am)
 	  hrr_nodes[i].marked = 1;
 	  hrr_nodes[i].pointer = get_mem(hrr_nodes[i].size);
 	  if (hrr_nodes[i].deriv_lvl == 0)
-	    fprintf(hrr_code," dvrr_classes[%d][%d] = int_stack + %d;\n",
+	    fprintf(hrr_code," Libderiv->dvrr_classes[%d][%d] = int_stack + %d;\n",
 		    hrr_nodes[i].A,hrr_nodes[i].C,hrr_nodes[i].pointer);
 	  else {
 	    for(j=0;j<12;j++)
 	      if (hrr_nodes[i].deriv_ind[j] != 0) {
 		break;
 	      }
-	    fprintf(hrr_code," deriv_classes[%d][%d][%d] = int_stack + %d;\n",
+	    fprintf(hrr_code," Libderiv->deriv_classes[%d][%d][%d] = int_stack + %d;\n",
 		    hrr_nodes[i].A,hrr_nodes[i].C,j,hrr_nodes[i].pointer);
 	  }
 	}
@@ -228,10 +226,9 @@ int emit_order(int old_am, int new_am)
 
 
       last_mem = get_total_memory();
-      fprintf(hrr_code," dvrr_stack = int_stack + %d;\n",last_mem);
-      fprintf(hrr_code," Data = Shell_Data;\n");
+      fprintf(hrr_code," Libderiv->dvrr_stack = int_stack + %d;\n",last_mem);
       fprintf(hrr_code," for(i=0;i<num_prim_comb;i++) {\n");
-	fprintf(hrr_code,"   dvrr_order_%c%c%c%c();\n",am_letter[la-lb],am_letter[lb],am_letter[lc-ld],am_letter[ld]);
+	fprintf(hrr_code,"   dvrr_order_%c%c%c%c(Libderiv, Data);\n",am_letter[la-lb],am_letter[lb],am_letter[lc-ld],am_letter[ld]);
       fprintf(hrr_code,"   Data++;\n }\n\n");
 
       
@@ -255,19 +252,19 @@ int emit_order(int old_am, int new_am)
 	  if (hrr_nodes[j].B == 0 && hrr_nodes[j].D != 0) {
 	    offset = 6;
 	    if (num_children > 2)
-	      fprintf(hrr_code, "   dhrr3_build_%c%c(int_stack+%d,",
+	      fprintf(hrr_code, "   dhrr3_build_%c%c(Libderiv->CD,int_stack+%d,",
 		      am_letter[hrr_nodes[j].C], am_letter[hrr_nodes[j].D], hrr_nodes[j].pointer);
 	    else
-	      fprintf(hrr_code, "   hrr3_build_%c%c(int_stack+%d,",
+	      fprintf(hrr_code, "   hrr3_build_%c%c(Libderiv->CD,int_stack+%d,",
 		      am_letter[hrr_nodes[j].C], am_letter[hrr_nodes[j].D], hrr_nodes[j].pointer);
 	  }
 	  else if (hrr_nodes[j].B != 0) {
 	    offset = 0;
 	    if (num_children > 2)
-	      fprintf(hrr_code, "   dhrr1_build_%c%c(int_stack+%d,",
+	      fprintf(hrr_code, "   dhrr1_build_%c%c(Libderiv->AB,int_stack+%d,",
 		      am_letter[hrr_nodes[j].A], am_letter[hrr_nodes[j].B], hrr_nodes[j].pointer);
 	    else
-	      fprintf(hrr_code, "   hrr1_build_%c%c(int_stack+%d,",
+	      fprintf(hrr_code, "   hrr1_build_%c%c(Libderiv->AB,int_stack+%d,",
 		      am_letter[hrr_nodes[j].A], am_letter[hrr_nodes[j].B], hrr_nodes[j].pointer);
 	  }
 	
@@ -284,7 +281,9 @@ int emit_order(int old_am, int new_am)
 	    for(i=0;i<6;i++) {
 	      if (hrr_nodes[j].children[i+2] > 0) {
 		child = hrr_nodes[j].children[i+2];
-		fprintf(hrr_code, " %.1lf, int_stack+%d,", (double) hrr_nodes[j].deriv_ind[offset+i], hrr_nodes[child].pointer, hrr_nodes[child].size);
+		fprintf(hrr_code, " %.1lf, int_stack+%d,",
+			(double) hrr_nodes[j].deriv_ind[offset+i],
+			hrr_nodes[child].pointer, hrr_nodes[child].size);
 	      }
 	      else
 		fprintf(hrr_code, " 0.0, zero_stack,");
@@ -304,7 +303,7 @@ int emit_order(int old_am, int new_am)
 	    if (hrr_nodes[j].deriv_ind[i] != 0) {
 	      break;
 	    }
-	  fprintf(hrr_code,"     ABCD[%d] = int_stack + %d;\n",i,hrr_nodes[j].pointer);
+	  fprintf(hrr_code,"     Libderiv->ABCD[%d] = int_stack + %d;\n",i,hrr_nodes[j].pointer);
 	}
 	j = hrr_nodes[j].rlink;
       } while (j != -1);
@@ -382,9 +381,7 @@ int emit_order(int old_am, int new_am)
       last_mem += get_total_memory();
       if (max_stack_size < last_mem)
 	max_stack_size = last_mem;
-      fprintf(vrr_code," extern double *dvrr_stack;\n extern prim_data *Data;\n double *tmp, *target_ptr;\n int i;\n");
-      fprintf(vrr_code," extern double *deriv_classes[%d][%d][%d];\n extern double *dvrr_classes[%d][%d];\n\n",
-	      new_am+1,new_am+1,12,new_am+1,new_am+1);
+      fprintf(vrr_code," double *dvrr_stack = Libderiv->dvrr_stack;\n double *tmp, *target_ptr;\n int i;\n");
       
       j = first_vrr_to_compute;
       do {
@@ -411,22 +408,22 @@ int emit_order(int old_am, int new_am)
 	    }
 	  switch (i) {
 	  case 0: case 1: case 2:
-	      fprintf(vrr_code, "A%c_%c(%d,",cart_comp[i],am_letter[vrr_nodes[j].A],
+	      fprintf(vrr_code, "A%c_%c(Data,%d,",cart_comp[i],am_letter[vrr_nodes[j].A],
 		      io[vrr_nodes[j].B]*io[vrr_nodes[j].C]*io[vrr_nodes[j].D]);
 	      break;
 
 	  case 3: case 4: case 5:
-	      fprintf(vrr_code, "B%c_%c(%d,%d,",cart_comp[i-3],am_letter[vrr_nodes[j].B],
+	      fprintf(vrr_code, "B%c_%c(Data,%d,%d,",cart_comp[i-3],am_letter[vrr_nodes[j].B],
 		      io[vrr_nodes[j].A],io[vrr_nodes[j].C]*io[vrr_nodes[j].D]);
 	      break;
 
 	  case 6: case 7: case 8:
-	      fprintf(vrr_code, "C%c_%c(%d,%d,",cart_comp[i-6],am_letter[vrr_nodes[j].C],
+	      fprintf(vrr_code, "C%c_%c(Data,%d,%d,",cart_comp[i-6],am_letter[vrr_nodes[j].C],
 		      io[vrr_nodes[j].A]*io[vrr_nodes[j].B],io[vrr_nodes[j].D]);
 	      break;
 
 	  case 9: case 10: case 11:
-	      fprintf(vrr_code, "D%c_%c(%d,",cart_comp[i-9],am_letter[vrr_nodes[j].D],
+	      fprintf(vrr_code, "D%c_%c(Data,%d,",cart_comp[i-9],am_letter[vrr_nodes[j].D],
 		      io[vrr_nodes[j].A]*io[vrr_nodes[j].B]*io[vrr_nodes[j].C]);
 	      break;
 	  }
@@ -444,7 +441,7 @@ int emit_order(int old_am, int new_am)
 	}
 	else if (vrr_nodes[j].B + vrr_nodes[j].D > 0) { /*--- build_hrr ---*/
 	  if (vrr_nodes[j].B == 0 && vrr_nodes[j].D != 0) {
-	    fprintf(vrr_code, " hrr3_build_%c%c(dvrr_stack+%d,dvrr_stack+%d,",
+	    fprintf(vrr_code, " hrr3_build_%c%c(Libderiv->CD,dvrr_stack+%d,dvrr_stack+%d,",
 		    am_letter[vrr_nodes[j].C], am_letter[vrr_nodes[j].D], vrr_nodes[j].pointer,
 		    vrr_nodes[vrr_nodes[j].children[0]].pointer);
 	    if (vrr_nodes[j].children[1] > 0)
@@ -454,7 +451,7 @@ int emit_order(int old_am, int new_am)
 	      fprintf(vrr_code, "Data->F,%d);\n\n", io[vrr_nodes[j].A]*io[vrr_nodes[j].B]);
 	  }
 	  else if (vrr_nodes[j].B != 0) {
-	    fprintf(vrr_code, " hrr1_build_%c%c(dvrr_stack+%d,dvrr_stack+%d,",
+	    fprintf(vrr_code, " hrr1_build_%c%c(Libderiv->AB,dvrr_stack+%d,dvrr_stack+%d,",
 		    am_letter[vrr_nodes[j].A], am_letter[vrr_nodes[j].B], vrr_nodes[j].pointer,
 		    vrr_nodes[vrr_nodes[j].children[0]].pointer);
 	    if (vrr_nodes[j].children[1] > 0)
@@ -465,7 +462,7 @@ int emit_order(int old_am, int new_am)
 	  }
 	}
 	else { /*--- build_vrr ---*/
-	  fprintf(vrr_code, " _BUILD_%c0%c0(", am_letter[vrr_nodes[j].A], am_letter[vrr_nodes[j].C]);
+	  fprintf(vrr_code, " _BUILD_%c0%c0(Data,", am_letter[vrr_nodes[j].A], am_letter[vrr_nodes[j].C]);
 	  fprintf(vrr_code, "dvrr_stack+%d", vrr_nodes[j].pointer);
 	  for(k=0; k<5; k++){
 	    if(vrr_nodes[j].children[k] > 0)
@@ -486,10 +483,10 @@ int emit_order(int old_am, int new_am)
 	if (vrr_nodes[j].target == 1) {
 	  fprintf(vrr_code, " tmp = dvrr_stack + %d;\n", vrr_nodes[j].pointer);
 	  if (vrr_nodes[j].deriv_lvl == 0)
-	    fprintf(vrr_code, " target_ptr = dvrr_classes[%d][%d];\n",
+	    fprintf(vrr_code, " target_ptr = Libderiv->dvrr_classes[%d][%d];\n",
 		    vrr_nodes[j].A,vrr_nodes[j].C);
 	  else
-	    fprintf(vrr_code, " target_ptr = deriv_classes[%d][%d][%d];\n",
+	    fprintf(vrr_code, " target_ptr = Libderiv->deriv_classes[%d][%d][%d];\n",
 		    vrr_nodes[j].A,vrr_nodes[j].C,i);
 	  fprintf(vrr_code, " for(i=0;i<%d;i++)\n",vrr_nodes[j].size);
 	  fprintf(vrr_code, "   target_ptr[i] += tmp[i];\n\n");

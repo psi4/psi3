@@ -45,18 +45,17 @@ int emit_dhrr_build(int old_am, int new_am)
       code = fopen(code_name,"w");
 
       /* include the function into the dhrr_header.h */
-      fprintf(dhrr_header,"void %s(double *, const double *, const double *, \n",function_name);
+      fprintf(dhrr_header,"void %s(const double *, double *, const double *, const double *, \n",function_name);
       fprintf(dhrr_header,"        double, const double *, double, const double *, double, const double *,\n");
       fprintf(dhrr_header,"        double, const double *, double, const double *, double, const double *, int);\n");
 
       fprintf(code,"  /* This machine-generated function computes a quartet of |%c%c) derivative ERIs */\n\n",
 	      am_letter[am_in[0]],am_letter[am_in[1]]);
 
-      fprintf(code,"void %s(double *vp, const double *I0, const double *I1,\n",function_name);
+      fprintf(code,"void %s(const double *CD, double *vp, const double *I0, const double *I1,\n",function_name);
       fprintf(code,"        double c2, const double *I2, double c3, const double *I3, double c4, const double *I4,\n");
       fprintf(code,"        double c5, const double *I5, double c6, const double *I6, double c7, const double *I7, int ab_num)\n{\n");
       fprintf(code,"  int ab;\n");
-      fprintf(code,"  extern double CD[3];\n");
       fprintf(code,"  const double CD0 = CD[0];\n");
       fprintf(code,"  const double CD1 = CD[1];\n");
       fprintf(code,"  const double CD2 = CD[2];\n");
@@ -119,7 +118,7 @@ int emit_dhrr_build(int old_am, int new_am)
       am_in[1] = lb;
 
       /* include the function into the dhrr_header.h */
-      fprintf(dhrr_header,"void %s(double *, const double *, const double *,",function_name);
+      fprintf(dhrr_header,"void %s(const double *, double *, const double *, const double *,",function_name);
       fprintf(dhrr_header,"        double, const double *, double, const double *, double, const double *,\n");
       fprintf(dhrr_header,"        double, const double *, double, const double *, double, const double *, int);\n");
       
@@ -130,12 +129,11 @@ int emit_dhrr_build(int old_am, int new_am)
       fprintf(code,"  /* This machine-generated function computes a quartet of (%c%c| integrals */\n\n",
 	      am_letter[am_in[0]],am_letter[am_in[1]]);
 
-      fprintf(code,"void %s(double *vp, const double *I0, const double *I1,\n",function_name);
+      fprintf(code,"void %s(const double *AB, double *vp, const double *I0, const double *I1,\n",function_name);
       fprintf(code,"        double c2, const double *I2, double c3, const double *I3, double c4, const double *I4,\n");
       fprintf(code,"        double c5, const double *I5, double c6, const double *I6, double c7, const double *I7, int cd_num)\n{\n");
       fprintf(code,"  int cd;\n");
       fprintf(code,"  const double *i0, *i1, *i2, *i3, *i4, *i5, *i6, *i7;\n");
-      fprintf(code,"  extern double AB[3];\n");
       fprintf(code,"  const double AB0 = AB[0];\n");
       fprintf(code,"  const double AB1 = AB[1];\n");
       fprintf(code,"  const double AB2 = AB[2];\n");

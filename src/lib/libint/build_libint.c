@@ -89,24 +89,41 @@ int main()
   if (max_class_size < 10)
     punt("  MAX_CLASS_SIZE cannot be smaller than 10.");
 
-  /* Setting up init_libint.c, header.h, and libintsrc.Make */
+  /* Setting up init_libint.c, header.h */
+  fprintf(init_code,"#include <stdio.h>\n");
+  fprintf(init_code,"#include <stdlib.h>\n");
   fprintf(init_code,"#include \"libint.h\"\n");
   fprintf(init_code,"#include \"hrr_header.h\"\n\n");
   fprintf(init_code,"/* This function initializes a matrix of pointers to routines */\n");
-  fprintf(init_code,"/* for computing derivatives of ERI classes up to (%cs|%cs) */\n\n",am_letter[new_am],am_letter[new_am]);
-  fprintf(init_code,"double *(*top_build_abcd[%d][%d][%d][%d])();\n",new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
-  fprintf(init_code,"prim_data *Data;\n");
-  fprintf(init_code,"double *vrr_classes[%d][%d];\n",1+new_am,1+new_am);
-  fprintf(init_code,"double *vrr_stack;\n\n");
-  fprintf(init_code,"void init_libint()\n{\n");
-
+  fprintf(init_code,"/* for computing ERI classes up to (%cs|%cs) - the base of the library */\n\n",
+	  am_letter[new_am],am_letter[new_am]);
+  fprintf(init_code,"double *(*build_eri[%d][%d][%d][%d])(Libint_t *, int);\n",new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
+  fprintf(init_code,"void init_libint_base()\n{\n");
 
   stack_size = emit_order(old_am,new_am);
   emit_vrr_build(old_am, new_am, max_class_size);
   emit_hrr_build(old_am, new_am);
-
   
   fprintf(init_code,"}\n");
+  fprintf(init_code,"/* These functions initialize library objects */\n");
+  fprintf(init_code,"/* Library objects operate independently of each other */\n");
+  fprintf(init_code,"int init_libint(Libint_t *libint, int num_prim_quartets)\n{\n");
+  fprintf(init_code,"  int memory = 0;\n\n");
+  fprintf(init_code,"  libint->int_stack = (double *) malloc(STACK_SIZE*sizeof(double));\n");
+  fprintf(init_code,"  memory += STACK_SIZE;\n");
+  fprintf(init_code,"  libint->PrimQuartet = (prim_data *) malloc(num_prim_quartets*sizeof(prim_data));\n");
+  fprintf(init_code,"  memory += num_prim_quartets*sizeof(prim_data)/sizeof(double);\n");
+  fprintf(init_code,"  return memory;\n}\n\n");
+  fprintf(init_code,"void free_libint(Libint_t *libint)\n{\n");
+  fprintf(init_code,"  if (libint->int_stack != NULL) {\n");
+  fprintf(init_code,"    free(libint->int_stack);\n");
+  fprintf(init_code,"    libint->int_stack = NULL;\n");
+  fprintf(init_code,"  }\n");
+  fprintf(init_code,"  if (libint->PrimQuartet != NULL) {\n");
+  fprintf(init_code,"    free(libint->PrimQuartet);\n");
+  fprintf(init_code,"    libint->PrimQuartet = NULL;\n");
+  fprintf(init_code,"  }\n\n");
+  fprintf(init_code,"  return;\n}\n");
   fclose(init_code);
   fclose(vrr_header);
   fclose(hrr_header);
@@ -130,8 +147,19 @@ int main()
   fprintf(libint_header,"  double oo2p;\n");
   fprintf(libint_header,"  double ss_r12_ss;\n");
   fprintf(libint_header,"  } prim_data;\n\n");
-  fprintf(libint_header,"extern double *(*top_build_abcd[%d][%d][%d][%d])();\n",new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
-  fprintf(libint_header,"void init_libint();\n\n");
+  fprintf(libint_header,"typedef struct {\n");
+  fprintf(libint_header,"  double *int_stack;\n"); 
+  fprintf(libint_header,"  prim_data *PrimQuartet;\n"); 
+  fprintf(libint_header,"  double AB[3];\n");
+  fprintf(libint_header,"  double CD[3];\n");
+  fprintf(libint_header,"  double *vrr_classes[%d][%d];\n",1+new_am,1+new_am);
+  fprintf(libint_header,"  double *vrr_stack;\n");
+  fprintf(libint_header,"  } Libint_t;\n\n");
+  fprintf(libint_header,"extern double *(*build_eri[%d][%d][%d][%d])(Libint_t *, int);\n",
+	  new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
+  fprintf(libint_header,"void init_libint_base();\n");
+  fprintf(libint_header,"int  init_libint(Libint_t *, int);\n");
+  fprintf(libint_header,"void free_libint(Libint_t *);\n\n");
   fclose(libint_header);
   ip_done();
   fclose(outfile);

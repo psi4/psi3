@@ -49,13 +49,12 @@ int emit_deriv_build(int old_am, int new_am)
 	code = fopen(code_name,"w");
 
 	/* include the function into the deriv_header.h */
-	fprintf(deriv_header,"void %s(const int, double *, const double *, const double *);\n",
+	fprintf(deriv_header,"void %s(prim_data *, const int, double *, const double *, const double *);\n",
 		function_name);
 
         fprintf(code,"#include <libint.h>\n");
 	fprintf(code,"#include \"libderiv.h\"\n\n");
-	fprintf(code,"void %s(const int bcd_num, double *vp, const double *I0, const double *I1)\n{\n",function_name);
-	fprintf(code,"  extern prim_data *Data;\n");
+	fprintf(code,"void %s(prim_data *Data, const int bcd_num, double *vp, const double *I0, const double *I1)\n{\n",function_name);
 	fprintf(code,"  const double twotzeta = Data->twozeta_a;\n");
 	fprintf(code,"  const double *i0, *i1;\n");
 	fprintf(code,"  int bcd;\n\n");
@@ -151,14 +150,13 @@ int emit_deriv_build(int old_am, int new_am)
 	code = fopen(code_name,"w");
 
 	/* include the function into the deriv_header.h */
-	fprintf(deriv_header,"void %s(const int, const int, double *, const double *, const double *);\n",
+	fprintf(deriv_header,"void %s(prim_data *, const int, const int, double *, const double *, const double *);\n",
 		function_name);
 
 	fprintf(code,"#include <libint.h>\n");
 	fprintf(code,"#include \"libderiv.h\"\n\n");
-	fprintf(code,"void %s(const int a_num, const int cd_num, double *vp, const double *I0, const double *I1)\n{\n",
+	fprintf(code,"void %s(prim_data *Data, const int a_num, const int cd_num, double *vp, const double *I0, const double *I1)\n{\n",
 		function_name);
-	fprintf(code,"  extern prim_data *Data;\n");
 	fprintf(code,"  const double twotzeta = Data->twozeta_b;\n");
 	fprintf(code,"  const double *i0, *i1;\n");
 	fprintf(code,"  int a,cd;\n\n");
@@ -255,14 +253,13 @@ int emit_deriv_build(int old_am, int new_am)
 	code = fopen(code_name,"w");
 
 	/* include the function into the deriv_header.h */
-	fprintf(deriv_header,"void %s(const int, const int, double *, const double *, const double *);\n",
+	fprintf(deriv_header,"void %s(prim_data *, const int, const int, double *, const double *, const double *);\n",
 		function_name);
 
 	fprintf(code,"#include <libint.h>\n");
 	fprintf(code,"#include \"libderiv.h\"\n\n");
-	fprintf(code,"void %s(const int ab_num, const int d_num, double *vp, const double *I0, const double *I1)\n{\n",
+	fprintf(code,"void %s(prim_data *Data, const int ab_num, const int d_num, double *vp, const double *I0, const double *I1)\n{\n",
 		function_name);
-	fprintf(code,"  extern prim_data *Data;\n");
 	fprintf(code,"  const double twotzeta = Data->twozeta_c;\n");
 	fprintf(code,"  const double *i0, *i1;\n");
 	fprintf(code,"  int ab,d;\n\n");
@@ -358,14 +355,13 @@ int emit_deriv_build(int old_am, int new_am)
 	code = fopen(code_name,"w");
 
 	/* include the function into the deriv_header.h */
-	fprintf(deriv_header,"void %s(const int, double *, const double *, const double *);\n",
+	fprintf(deriv_header,"void %s(prim_data *, const int, double *, const double *, const double *);\n",
 		function_name);
 
 	fprintf(code,"#include <libint.h>\n");
 	fprintf(code,"#include \"libderiv.h\"\n\n");
-	fprintf(code,"void %s(const int abc_num, double *vp, const double *I0, const double *I1)\n{\n",
+	fprintf(code,"void %s(prim_data *Data, const int abc_num, double *vp, const double *I0, const double *I1)\n{\n",
 		function_name);
-	fprintf(code,"  extern prim_data *Data;\n");
 	fprintf(code,"  const double twotzeta = Data->twozeta_d;\n");
 	fprintf(code,"  const double *i0, *i1;\n");
 	fprintf(code,"  int abc;\n\n");

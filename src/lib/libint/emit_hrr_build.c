@@ -49,15 +49,14 @@ int emit_hrr_build(int old_am, int new_am)
       code = fopen(code_name,"w");
 
       /* include the function into the hrr_header.h */
-      fprintf(hrr_header,"void %s(double *, const double *, const double *, int);\n",
+      fprintf(hrr_header,"void %s(const double *, double *, const double *, const double *, int);\n",
 	      function_name);
 
       fprintf(code,"  /* This machine-generated function computes a quartet of |%c%c) integrals */\n\n",
 	      am_letter[am_in[0]],am_letter[am_in[1]]);
 
-      fprintf(code,"void %s(double *vp, const double *I0, const double *I1, int ab_num)\n{\n",function_name);
+      fprintf(code,"void %s(const double *CD, double *vp, const double *I0, const double *I1, int ab_num)\n{\n",function_name);
       fprintf(code,"  int ab;\n");
-      fprintf(code,"  extern double CD[3];\n");
       fprintf(code,"  const double CD0 = CD[0];\n");
       fprintf(code,"  const double CD1 = CD[1];\n");
       fprintf(code,"  const double CD2 = CD[2];\n");
@@ -118,21 +117,18 @@ int emit_hrr_build(int old_am, int new_am)
       am_in[1] = lb;
 
       /* include the function into the hrr_header.h */
-      fprintf(hrr_header,"void %s(double *, const double *, const double *, int);\n",
+      fprintf(hrr_header,"void %s(const double *, double *, const double *, const double *, int);\n",
 	      function_name);
       
       sprintf(function_name,"hrr1_build_%c%c",am_letter[am_in[0]],am_letter[am_in[1]]);
       sprintf(code_name,"hrr1_build_%c%c.c",am_letter[am_in[0]],am_letter[am_in[1]]);
       code = fopen(code_name,"w");
 
-      fprintf(code,"#include \"hrr_header.h\"\n\n");
       fprintf(code,"  /* This machine-generated function computes a quartet of (%c%c| integrals */\n\n",
 	      am_letter[am_in[0]],am_letter[am_in[1]]);
-
-      fprintf(code,"void %s(double *vp, const double *I0, const double *I1, int cd_num)\n{\n",function_name);
+      fprintf(code,"void %s(const double *AB, double *vp, const double *I0, const double *I1, int cd_num)\n{\n",function_name);
       fprintf(code,"  int cd;\n");
       fprintf(code,"  const double *i0, *i1;\n");
-      fprintf(code,"  extern double AB[3];\n");
       fprintf(code,"  const double AB0 = AB[0];\n");
       fprintf(code,"  const double AB1 = AB[1];\n");
       fprintf(code,"  const double AB2 = AB[2];\n");

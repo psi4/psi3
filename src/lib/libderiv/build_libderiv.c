@@ -41,17 +41,15 @@ int main()
   new_am = (MAX_AM - 1 - DERIV_LVL)*2;
 
   /* Setting up init_libderiv.c, header.h */
+  fprintf(init_code,"#include <stdlib.h>\n");
+  fprintf(init_code,"#include <string.h>\n");
   fprintf(init_code,"#include <libint.h>\n");
   fprintf(init_code,"#include \"libderiv.h\"\n");
   fprintf(init_code,"#include \"dhrr_header.h\"\n\n");
   fprintf(init_code,"/* This function initializes a matrix of pointers to routines */\n");
   fprintf(init_code,"/* for computing derivatives of ERI classes up to (%cs|%cs) */\n\n",am_letter[new_am],am_letter[new_am]);
-  fprintf(init_code,"void (*dbuild_abcd[%d][%d][%d][%d])();\n",new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
-  fprintf(init_code,"prim_data *Data;\n");
-  fprintf(init_code,"double *deriv_classes[%d][%d][%d];\n",1+new_am,1+new_am,12);
-  fprintf(init_code,"double *dvrr_classes[%d][%d];\n",1+new_am,1+new_am);
-  fprintf(init_code,"double *dvrr_stack;\n\n");
-  fprintf(init_code,"void init_libderiv()\n{\n");
+  fprintf(init_code,"void (*build_deriv1_eri[%d][%d][%d][%d])(Libderiv_t *, int);\n",new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
+  fprintf(init_code,"void init_libderiv_base()\n{\n");
 
 
   stack_size = emit_order(0,new_am);
@@ -60,6 +58,32 @@ int main()
 
   
   fprintf(init_code,"}\n");
+  fprintf(init_code,"/* These functions initialize library objects */\n");
+  fprintf(init_code,"/* Library objects operate independently of each other */\n");
+  fprintf(init_code,"int init_libderiv(Libderiv_t *libderiv, int num_prim_quartets, int max_cart_class_size)\n{\n");
+  fprintf(init_code,"  int memory = 0;\n\n");
+  fprintf(init_code,"  libderiv->int_stack = (double *) malloc(STACK_SIZE*sizeof(double));\n");
+  fprintf(init_code,"  memory += STACK_SIZE;\n");
+  fprintf(init_code,"  libderiv->zero_stack = (double *) malloc(max_cart_class_size*sizeof(double));\n");
+  fprintf(init_code,"  bzero((char *)libderiv->zero_stack,max_cart_class_size*sizeof(double));\n");
+  fprintf(init_code,"  memory += max_cart_class_size;\n");
+  fprintf(init_code,"  libderiv->PrimQuartet = (prim_data *) malloc(num_prim_quartets*sizeof(prim_data));\n");
+  fprintf(init_code,"  memory += num_prim_quartets*sizeof(prim_data)/sizeof(double);\n");
+  fprintf(init_code,"  return memory;\n}\n\n");
+  fprintf(init_code,"void free_libderiv(Libderiv_t *libderiv)\n{\n");
+  fprintf(init_code,"  if (libderiv->int_stack != NULL) {\n");
+  fprintf(init_code,"    free(libderiv->int_stack);\n");
+  fprintf(init_code,"    libderiv->int_stack = NULL;\n");
+  fprintf(init_code,"  }\n");
+  fprintf(init_code,"  if (libderiv->zero_stack != NULL) {\n");
+  fprintf(init_code,"    free(libderiv->zero_stack);\n");
+  fprintf(init_code,"    libderiv->zero_stack = NULL;\n");
+  fprintf(init_code,"  }\n");
+  fprintf(init_code,"  if (libderiv->PrimQuartet != NULL) {\n");
+  fprintf(init_code,"    free(libderiv->PrimQuartet);\n");
+  fprintf(init_code,"    libderiv->PrimQuartet = NULL;\n");
+  fprintf(init_code,"  }\n\n");
+  fprintf(init_code,"  return;\n}\n");
   fclose(init_code);
   fclose(dhrr_header);
   fclose(deriv_header);
@@ -90,8 +114,22 @@ int main()
   fprintf(libderiv_header,"  double oo2p;\n");
   fprintf(libderiv_header,"  double ss_r12_ss;\n");
   fprintf(libderiv_header,"  } prim_data;\n\n");*/
-  fprintf(libderiv_header,"extern void (*dbuild_abcd[%d][%d][%d][%d])();\n",new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
-  fprintf(libderiv_header,"void init_libderiv();\n\n");
+  fprintf(libderiv_header,"typedef struct {\n");
+  fprintf(libderiv_header,"  double *int_stack;\n"); 
+  fprintf(libderiv_header,"  prim_data *PrimQuartet;\n");
+  fprintf(libderiv_header,"  double *zero_stack;\n");
+  fprintf(libderiv_header,"  double *ABCD[12];\n");
+  fprintf(libderiv_header,"  double AB[3];\n");
+  fprintf(libderiv_header,"  double CD[3];\n");
+  fprintf(libderiv_header,"  double *deriv_classes[%d][%d][%d];\n",1+new_am,1+new_am,12);
+  fprintf(libderiv_header,"  double *dvrr_classes[%d][%d];\n",1+new_am,1+new_am);
+  fprintf(libderiv_header,"  double *dvrr_stack;\n");
+  fprintf(libderiv_header,"  } Libderiv_t;\n\n");
+  fprintf(libderiv_header,"extern void (*build_deriv1_eri[%d][%d][%d][%d])(Libderiv_t *, int);\n",
+	  new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
+  fprintf(libderiv_header,"void init_libderiv_base();\n\n");
+  fprintf(libderiv_header,"int  init_libderiv(Libderiv_t *, int, int);\n");
+  fprintf(libderiv_header,"void free_libderiv(Libderiv_t *);\n\n");
   fclose(libderiv_header);
   fclose(outfile);
   exit(0);
