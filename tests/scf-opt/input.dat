@@ -5,6 +5,9 @@ psi: (
   reference = rhf
   dertype = first
   basis = "6-31G**"
+)
+
+input: (
   zmat = (
     o
     h 1 1.00

@@ -206,6 +206,8 @@ else {
 
 $pwd = cwd();
 
+unlink <test-case-results>;
+
 foreach $name (@DIR_NAMES) {
   print "$name\n";
   chdir ("$name");

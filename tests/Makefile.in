@@ -1,0 +1,33 @@
+
+.PHONY: tests clean
+
+subdirs = \
+scf-opt scf-opt-numer scf-freq scf-freq-numer scf-freq-symm-numer \
+scf-polar rhf-stab uhf-stab rohf-stab cis-sp cisd-sp cisd-opt-numer \
+cc1 cc2 cc3 cc4 cc8 cc9 cc10 cc11 cc12 cc13 cc14 cc15 cc16 cc17 cc18 cc19 \
+
+tests:
+	for dir in $(subdirs); \
+	do \
+	 (cd $${dir}; echo ...Testing $${dir}...; $(MAKE)) || exit 1; \
+	done
+
+clean:
+	for dir in $(subdirs); \
+	do \
+	 (cd $${dir}; echo ...Cleaning $${dir}...; $(MAKE) clean) || exit 1; \
+	done
+
+top_srcdir = @top_srcdir@
+srcdir = @srcdir@
+top_objdir = ..
+
+$(top_srcdir)/configure: $(top_srcdir)/configure.in $(top_srcdir)/aclocal.m4
+	cd $(top_srcdir) && autoconf
+
+$(top_objdir)/config.status: $(top_srcdir)/configure
+	cd $(top_objdir) && ./config.status --recheck
+
+Makefile: $(srcdir)/Makefile.in $(top_objdir)/config.status
+	cd $(top_objdir) && CONFIG_FILES=tests/Makefile ./config.status
+

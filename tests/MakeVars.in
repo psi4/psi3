@@ -1,0 +1,4 @@
+test_srcdir = @srcdir@
+top_objdir = ../..
+TARGET_DIR = $(shell basename `pwd`)
+TARGET = $(TARGET_DIR).test

@@ -559,13 +559,39 @@ sub compare_arrays
 
   $OK = 1;
   for($i=0; $i < $row*$col; $i++) {
-    printf "%d %20.12f %20.12f\n", $i, @$A[$i], @$B[$i];
+#    printf "%d %20.12f %20.12f\n", $i, @$A[$i], @$B[$i];
     if(abs(@$A[$i] - @$B[$i]) > $tol) {
       $OK = 0;
     }
   }
 
   return $OK;
+}
+
+sub build_psi_cmd
+{
+  $QUIET = $_[0];
+  $SRC_PATH = $_[1];
+  $EXEC_PATH = $_[2];
+
+  $PSICMD = "";
+
+  if($EXEC_PATH ne "") {
+      $PSICMD = "PATH=$EXEC_PATH:\$PATH;export PATH;psi3";
+  }
+  else {
+      $PSICMD = "psi3";
+  }
+
+  if($SRC_PATH ne "") {
+      $PSICMD = $PSICMD . " -i $SRC_PATH/input.dat";
+  }
+
+  if($QUIET == 1) {
+      $PSICMD = $PSICMD . " >& /dev/null";
+  }
+
+  return $PSICMD;
 }
 
 1;
