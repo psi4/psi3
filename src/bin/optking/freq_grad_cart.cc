@@ -27,12 +27,14 @@ extern "C" {
 #include "internals.h"
 #include "salc.h"
 #include "bond_lengths.h"
+#define MAX_LINE 132
 
 extern double **compute_B(internals &simples, salc_set &salcs);
 extern double *compute_q(internals &simples, salc_set &symm);
 extern double **compute_G(double **B, int num_intcos, cartesians &carts);
 extern int get_irrep_xyz(double **cartrep, int xyz);
 void sort_evals_all(int nsalc_all, double *evals_all, int *evals_all_irrep);
+FILE *fp11;
 
 /**** FREQ_GRAD_CART compute frequencies from gradients for cartesian
   displacements ****/
@@ -50,7 +52,9 @@ void freq_grad_cart(cartesians &carts) {
   int *nsalc, *ndisp, ndisp_all, nsalc_all, **ict;
   double ***salc, ***disp;
   int print;
+  char *line1;
   print = optinfo.print_cartesians;
+  print = 1;
 
   nirreps = syminfo.nirreps;
   natom = carts.get_natom();
@@ -83,8 +87,31 @@ void freq_grad_cart(cartesians &carts) {
   fprintf(outfile,"\n\n");
 
   disp_grad = block_matrix(ndisp_all,3*natom);
-  psio_read_entry(PSIF_OPTKING, "OPT: Displaced gradients",
-    (char *) &(disp_grad[0][0]), ndisp_all*3*natom*sizeof(double));
+  if (optinfo.grad_dat) { /* read in gradients from "file11.dat" */
+    ffile(&fp11, "file11.dat", 2);
+    rewind(fp11);
+    line1 = new char[MAX_LINE+1];
+    for (i=0;i<ndisp_all;++i) {
+      /* read in 2 header lines */
+      fgets(line1, MAX_LINE, fp11);
+      fgets(line1, MAX_LINE, fp11);
+
+      for (j=0; j<natom; ++j) {
+        fgets(line1, MAX_LINE, fp11);
+      }
+      /* read in xyz for N atoms */
+      for (j=0; j<natom; ++j) {
+        fgets(line1, MAX_LINE, fp11);
+        sscanf(line1, "%lf %lf %lf",
+           &(disp_grad[i][3*j]), &(disp_grad[i][3*j+1]), &(disp_grad[i][3*j+2]) );
+      }
+    }
+    fclose(fp11);
+  }
+  else {
+    psio_read_entry(PSIF_OPTKING, "OPT: Displaced gradients",
+      (char *) &(disp_grad[0][0]), ndisp_all*3*natom*sizeof(double));
+  }
   if (print) {
     fprintf(outfile,"Gradients of displaced geometries\n");
     print_mat(disp_grad,ndisp_all,3*natom,outfile);

@@ -26,6 +26,7 @@ extern "C" {
 #include "internals.h"
 #include "salc.h"
 #include "bond_lengths.h"
+#define MAX_LINE 132
 
 double **compute_B(internals &simples, salc_set &symm);
 
@@ -35,7 +36,8 @@ void grad_energy(cartesians &carts, internals &simples, salc_set &symm) {
   double **B, *geom, *forces;
   double energy, *energies, **micro_geoms, **displacements;
   double *f, *f_q, *dq, *q, tval, **geom2D;
-  char *disp_label;
+  char *disp_label, *line1;
+  FILE *fp_energy_dat;
 
   disp_label = new char[MAX_LINELENGTH];
   natom = carts.get_natom();
@@ -51,12 +53,27 @@ void grad_energy(cartesians &carts, internals &simples, salc_set &symm) {
   else if (optinfo.points == 5)
     num_disps = 4 * symm.get_num();
 
-  // report energies
-  open_PSIF();
+  /* read in energies */
   energies = new double[num_disps];
-  psio_read_entry(PSIF_OPTKING, "OPT: Displaced energies",
-      (char *) &(energies[0]), num_disps*sizeof(double));
-  close_PSIF();
+  for (i=0;i<num_disps;++i) energies[i] = 0;
+  if (optinfo.energy_dat) { /* read from energy.dat text file */
+    fp_energy_dat = fopen("energy.dat", "r");
+    rewind (fp_energy_dat);
+    line1 = new char[MAX_LINE+1];
+    for (i=0; i<num_disps; ++i) {
+      fgets(line1, MAX_LINE, fp_energy_dat);
+      sscanf(line1, "%lf", &(energies[i]));
+    }
+    fclose(fp_energy_dat);
+    delete [] line1;
+  }
+  else { /* read from checkpoint file (default) */
+    open_PSIF();
+    psio_read_entry(PSIF_OPTKING, "OPT: Displaced energies",
+        (char *) &(energies[0]), num_disps*sizeof(double));
+    close_PSIF();
+  }
+
   fprintf(outfile,"Energies of displaced geometries. Check for precision!\n");
   cnt = -1;
   for (i=0;i<symm.get_num();++i) {

@@ -117,6 +117,8 @@ extern "C" void zval_to_symbol(double zval, char *sym);
 #define MODE_FREQ_ENERGY_CART  (23)
 #define MODE_GRAD_SAVE        (24)
 #define MODE_ENERGY_SAVE      (25)
+#define MODE_RESET_PREFIX      (26)
+#define MODE_DISP_NUM_PLUS      (27)
 
 struct OPTInfo {
 
@@ -167,6 +169,8 @@ struct OPTInfo {
   int dummy_axis_2;
   char *wfn;
   char *jobtype;
+  int energy_dat;
+  int grad_dat;
 
 /* Back-transformation parameters */
   int bt_max_iter;

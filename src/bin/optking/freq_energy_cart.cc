@@ -28,8 +28,10 @@ extern "C" {
 #include "internals.h"
 #include "salc.h"
 #include "bond_lengths.h"
+#define MAX_LINE 132
 
 void sort_evals_all(int nsalc_all, double *evals_all, int *evals_all_irrep);
+FILE *fp_energy_dat;
 
 void freq_energy_cart(cartesians &carts) {
   int i, j, k, l, cnt, dim, natom, cnt_eval = -1, *evals_all_irrep;
@@ -38,6 +40,7 @@ void freq_energy_cart(cartesians &carts) {
   double *f, tval, **evects, *evals, tmp;
   double *disp_E, *evals_all, **cartrep, ***salc, ***disp;
   int print;
+  char *line1;
   print = optinfo.print_cartesians;
 
   nirreps = syminfo.nirreps;
@@ -71,8 +74,24 @@ void freq_energy_cart(cartesians &carts) {
   fprintf(outfile,"\n\n");
 
   disp_E = init_array(ndisp_all);
-  psio_read_entry(PSIF_OPTKING, "OPT: Displaced energies",
-      (char *) &(disp_E[0]), ndisp_all*sizeof(double));
+
+  if (optinfo.energy_dat) { /* read energy.dat text file */
+    fp_energy_dat = fopen("energy.dat", "r");
+    rewind (fp_energy_dat);
+    line1 = new char[MAX_LINE+1];
+    for (i=0; i<ndisp_all; ++i) {
+      fgets(line1, MAX_LINE, fp_energy_dat);
+      sscanf(line1, "%lf", &(disp_E[i]));
+    }
+    fclose(fp_energy_dat);
+    delete [] line1;
+  }
+  {
+    psio_read_entry(PSIF_OPTKING, "OPT: Displaced energies",
+        (char *) &(disp_E[0]), ndisp_all*sizeof(double));
+  }
+
+
   B = block_matrix(nsalc_all,3*natom);
   psio_read_entry(PSIF_OPTKING, "OPT: Adapted cartesians",
     (char *) &(B[0][0]), nsalc_all*3*natom*sizeof(double));

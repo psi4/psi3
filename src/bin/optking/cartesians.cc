@@ -66,7 +66,8 @@ cartesians::cartesians() {
 
   if ((optinfo.mode == MODE_OPT_STEP) || (optinfo.mode == MODE_ENERGY_SAVE)
     ||(optinfo.mode == MODE_DISP_NOSYMM) || (optinfo.mode == MODE_DISP_IRREP)
-    ||(optinfo.mode == MODE_DISP_LOAD) || (optinfo.mode == MODE_DISP_USER)
+//    ||(optinfo.mode == MODE_DISP_LOAD) || (optinfo.mode == MODE_DISP_USER)
+    || (optinfo.mode == MODE_DISP_USER)
     ||(optinfo.mode == MODE_DISP_FREQ_GRAD_CART) || (optinfo.mode == MODE_FREQ_GRAD_CART)
     ||(optinfo.mode == MODE_DISP_FREQ_ENERGY_CART) || (optinfo.mode == MODE_FREQ_ENERGY_CART)
     )

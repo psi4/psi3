@@ -14,6 +14,8 @@ command-line      internal specifier   what it does
 --freq_grad_irrep  MODE_FREQ_GRAD_IRREP  use grads in chkpt to compute IRREP freqs
 --grad_save        MODE_GRAD_SAVE       save the gradient in chkpt to PSIF list
 --energy_save      MODE_ENERGY_SAVE     save the energy in chkpt to PSIF list
+--reset_prefix     MODE_RESET_PREFIX    only reset the prefix of PSIF
+--disp_num_plus    MODE_DISP_NUM_PLUS   only increment the current displacement number PSIF
 --points           optinfo.points       save the energy in chkpt to PSIF list
 --disp_num         optinfo.disp_num     displacement index (by default read from PSIF)
 --irrep            optinfo.irrep       the irrep (1,2,...) being displaced or computed
@@ -22,6 +24,8 @@ command-line      internal specifier   what it does
 --freq_grad_cart        MODE_FREQ_GRAD_CART        use grads in chkpt to compute freqs
 --disp_freq_energy_cart MODE_DISP_FREQ_ENERGY_CART displaces along SA cart. coordinates
 --freq_energy_cart      MODE_FREQ_ENERGY_CART      use energies in chkpt to compute freqs
+--energy_dat       optinfo.energy_dat   read energy points from the file "energy.dat"
+--grad_dat         optinfo.grad_dat   read gradients from file11.dat 
 */
 
 #if HAVE_CMATH
@@ -42,6 +46,7 @@ extern "C" {
   #include <libpsio/psio.h>
   #include <libqt/qt.h>	  
   #include <psifiles.h>
+  #include <ccfiles.h>
 }
 
 #include "opt.h"
@@ -94,6 +99,8 @@ int main(int argc, char **argv) {
     optinfo.disp_num = 0;
     optinfo.points = 3;
     optinfo.points_freq = 3; // always 3 for now
+    optinfo.energy_dat = 0;
+    optinfo.grad_dat = 0;
     for (i=1; i<argc; ++i) {
       if (!strcmp(argv[i],"--disp_nosymm")) {
         optinfo.mode = MODE_DISP_NOSYMM;
@@ -159,6 +166,14 @@ int main(int argc, char **argv) {
         optinfo.mode = MODE_ENERGY_SAVE;
         parsed++;
       }
+      else if (!strcmp(argv[i],"--reset_prefix")) {
+        optinfo.mode = MODE_RESET_PREFIX;
+        parsed++;
+      }
+      else if (!strcmp(argv[i],"--disp_num_plus")) {
+        optinfo.mode = MODE_DISP_NUM_PLUS;
+        parsed++;
+      }
       else if (!strcmp(argv[i],"--points")) {
         sscanf(argv[++i], "%d", &optinfo.points);
         parsed+=2;
@@ -171,6 +186,14 @@ int main(int argc, char **argv) {
         sscanf(argv[++i], "%d", &optinfo.irrep);
         optinfo.irrep -= 1;
         parsed+=2;
+      }
+      else if (!strcmp(argv[i],"--energy_dat")) {
+        optinfo.energy_dat = 1;
+        parsed++;
+      }
+      else if (!strcmp(argv[i],"--grad_dat")) {
+        optinfo.grad_dat = 1;
+        parsed++;
       }
       else {
         printf("command line argument not understood.\n");
@@ -224,8 +247,8 @@ int main(int argc, char **argv) {
       "\nCartesian geometry and possibly gradient in a.u. with masses\n");
       carts.print(3,outfile,0,disp_label,0);
     }
-    else if ((optinfo.mode != MODE_DISP_LOAD)
-        && (optinfo.mode != MODE_LOAD_REF)) {
+    else if ((optinfo.mode != MODE_DISP_LOAD) && (optinfo.mode != MODE_LOAD_REF)
+            && (optinfo.mode != MODE_RESET_PREFIX) && (optinfo.mode != MODE_DISP_NUM_PLUS) ) {
       fprintf(outfile,
       "\nCartesian geometry and possibly gradient in a.u. with masses\n");
       carts.print(2,outfile,0,disp_label,0);
@@ -240,7 +263,8 @@ int main(int argc, char **argv) {
     simples.compute_s(carts.get_natom(), coord);
     // simples.print_s();
     free(coord);
-    if ( (optinfo.mode != MODE_DISP_LOAD) && (optinfo.mode != MODE_LOAD_REF)) {
+    if ( (optinfo.mode != MODE_DISP_LOAD) && (optinfo.mode != MODE_LOAD_REF)
+      && (optinfo.mode != MODE_RESET_PREFIX) && (optinfo.mode != MODE_DISP_NUM_PLUS) ) {
       fprintf(outfile,"\nSimple Internal Coordinates and Values\n");
       simples.print(outfile,1);
     }
@@ -481,6 +505,48 @@ int main(int argc, char **argv) {
       return(0);
     }
 
+    if (optinfo.mode == MODE_RESET_PREFIX) {
+      /* delete CC temporary files */
+      if((strcmp(optinfo.wfn, "MP2")==0)       || (strcmp(optinfo.wfn, "CCSD")==0)  ||
+         (strcmp(optinfo.wfn, "CCSD_T")==0)    || (strcmp(optinfo.wfn, "EOM_CCSD")==0)  ||
+         (strcmp(optinfo.wfn, "LEOM_CCSD")==0) || (strcmp(optinfo.wfn, "BCCD")==0)  ||
+         (strcmp(optinfo.wfn,"BCCD_T")==0)     || (strcmp(optinfo.wfn, "SCF")==0)  ||
+         (strcmp(optinfo.wfn,"CIS")==0)        || (strcmp(optinfo.wfn,"RPA")==0)  ||
+         (strcmp(optinfo.wfn,"CC2")==0)        || (strcmp(optinfo.wfn,"CC3")==0)  ||
+         (strcmp(optinfo.wfn,"EOM_CC3")==0) ) {
+          fprintf(outfile, "Deleting binary files\n");
+          for(i=CC_MIN; i <= CC_MAX; i++) {
+            psio_open(i,1); psio_close(i,0);
+          }
+          psio_open(35,1); psio_close(35,0);
+          psio_open(72,1); psio_close(72,0);
+      }
+      else if ( (strcmp(optinfo.wfn, "DETCI")==0) ) {
+        fprintf(outfile, "Deleting CI binary files\n");
+        psio_open(35,1); psio_close(35,0);
+        psio_open(72,1); psio_close(72,0);
+        psio_open(50,1); psio_close(50,0);
+        psio_open(51,1); psio_close(51,0);
+        psio_open(52,1); psio_close(52,0);
+        psio_open(53,1); psio_close(53,0);
+      }
+      fprintf(outfile,"Resetting checkpoint prefix.\n");
+      chkpt_init(PSIO_OPEN_OLD);
+      chkpt_reset_prefix();
+      chkpt_commit_prefix();
+      chkpt_close();
+    }
+
+    /* increment current displacement number */
+    if (optinfo.mode == MODE_DISP_NUM_PLUS) {
+      open_PSIF();
+      psio_read_entry(PSIF_OPTKING, "OPT: Current disp_num",
+                (char *) &(optinfo.disp_num), sizeof(int));
+      optinfo.disp_num += 1;
+      psio_write_entry(PSIF_OPTKING, "OPT: Current disp_num",
+                (char *) &(optinfo.disp_num), sizeof(int));
+      close_PSIF();
+    }
     return(0);
   }
 
