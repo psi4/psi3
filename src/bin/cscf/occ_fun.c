@@ -29,8 +29,10 @@ void occ_init(void){
     num_ir = file30_rd_nirreps();
     
     multp=1;
-    errcod = ip_data("MULTP","%d",&multp,0);
-    if(errcod != IPE_OK){
+    if(ip_exist("MULTIPLICITY", 0)) errcod = ip_data("MULTIPLICITY","%d",&multp,0);
+    else if(ip_exist("MULTI", 0)) errcod = ip_data("MULTI","%d",&multp,0);
+    else if(ip_exist("MULTP", 0)) errcod = ip_data("MULTP","%d",&multp,0);
+    else {
 	/*open = (int *) init_array(num_ir);*/
         if(ip_exist("SOCC",0)){
 	    for(i=0;i<num_ir;i++){
