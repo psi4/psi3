@@ -158,7 +158,7 @@ void t1_build(void)
     dpd_buf4_close(&C_anti);  
     dpd_buf4_close(&D);
 
-    dpd_buf4_init(&F_anti, CC_FINTS, 0, 10, 7, 10, 7, 0, "F <ia||bc> (ia,b>c)");
+    dpd_buf4_init(&F_anti, CC_FINTS, 0, 10, 7, 10, 5, 1, "F <ia|bc>");
     dpd_buf4_init(&tIJAB, CC_TAMPS, 0, 0, 7, 2, 7, 0, "tIJAB");
     dpd_buf4_init(&tijab, CC_TAMPS, 0, 0, 7, 2, 7, 0, "tijab");
 

@@ -127,11 +127,6 @@ int main(int argc, char *argv[])
     sort_amps();
     timer_off("sort_amps");
 
-    timer_on("Wmbej build");
-    Wmbej_build();
-    if(params.print & 2) status("Wmbej", outfile);
-    timer_off("Wmbej build");
-
     timer_on("F build");
     Fme_build(); Fae_build(); Fmi_build();
     if(params.print & 2) status("F intermediates", outfile);
@@ -141,6 +136,11 @@ int main(int argc, char *argv[])
     t1_build();
     if(params.print & 2) status("T1 amplitudes", outfile);
     timer_off("T1 Build");
+
+    timer_on("Wmbej build");
+    Wmbej_build();
+    if(params.print & 2) status("Wmbej", outfile);
+    timer_off("Wmbej build");
 
     Z_build();
     if(params.print & 2) status("Z", outfile);

@@ -84,7 +84,7 @@ void Fae_build(void)
     dpd_file2_close(&tIA);
     dpd_file2_close(&fIA);
 
-    dpd_buf4_init(&F_anti, CC_FINTS, 0, 10, 5, 10, 7, 0, "F <ia||bc> (ia,b>c)");
+    dpd_buf4_init(&F_anti, CC_FINTS, 0, 10, 5, 10, 5, 1, "F <ia|bc>");
     dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0,"F <ia|bc>");
     dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
     dpd_dot13(&tIA, &F_anti, &FAE, 0, 0, 1.0, 1.0);
@@ -129,7 +129,7 @@ void Fae_build(void)
     dpd_file2_close(&tia);
     dpd_file2_close(&fia);
 
-    dpd_buf4_init(&F_anti, CC_FINTS, 0, 10, 5, 10, 7, 0, "F <ia||bc> (ia,b>c)");
+    dpd_buf4_init(&F_anti, CC_FINTS, 0, 10, 5, 10, 5, 1, "F <ia|bc>");
     dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0,"F <ia|bc>");
     dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
     dpd_file2_init(&tia, CC_OEI, 0, 0, 1, "tia");

@@ -118,7 +118,7 @@ void Wmbej_build(void)
     dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
     dpd_file2_init(&tia, CC_OEI, 0, 0, 1, "tia");
 
-    dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 7, 0, "F <ia||bc> (ia,b>c)");
+    dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 1, "F <ia|bc>");
     dpd_buf4_init(&WMBEJ, CC_TMP0, 0, 10, 11, 10, 11, 0, "WMBEJ");
     dpd_contract424(&F, &tIA, &WMBEJ, 3, 1, 0, 1, 1);
     dpd_buf4_close(&WMBEJ);
