@@ -28,18 +28,21 @@ extern void done(const char *);
 
 double eval_roci_derwfn_overlap()
 {
-  int nalpha = MOInfo.nalpha;
-  int nbeta = MOInfo.nbeta;
-  FLOAT **CSC_a_full = eval_S_alpha();
-  FLOAT **CSC_a = create_matrix(nalpha,nalpha);
-  FLOAT **CSC_b_full = eval_S_beta();
-  FLOAT **CSC_b = create_matrix(nbeta,nbeta);
-  int *tmpintvec = new int[nalpha];
-
   // Read in CI vectors
   SlaterDetVector *vecm, *vecp;
   slaterdetvector_read(PSIF_CIVECT,"Old CI vector",&vecm);
   slaterdetvector_read(PSIF_CIVECT,"CI vector",&vecp);
+
+  int nfzc = vecm->sdset->alphastrings->nfzc;
+  int nalpha = MOInfo.nalpha;
+  int nact_a = nalpha - nfzc;
+  int nbeta = MOInfo.nbeta;
+  int nact_b = nbeta - nfzc;
+
+  FLOAT **CSC_full = eval_S_alpha();
+  FLOAT **CSC_a = create_matrix(nalpha,nalpha);
+  FLOAT **CSC_b = create_matrix(nbeta,nbeta);
+  int *tmpintvec = new int[nalpha];
 
   // Compute overlap between strings for alpha spin case
   StringSet *ssetm;
@@ -52,9 +55,22 @@ double eval_roci_derwfn_overlap()
     for(int im=0; im<nstr_a; im++) {
       String *str_i = &ssetm->strings[im];
 
-      for(int j=0;j<nalpha;j++)
-	for(int i=0;i<nalpha;i++)
-	  CSC_a[j][i] = CSC_a_full[str_j->occ[j]][str_i->occ[i]];
+      for(int j=0;j<nact_a;j++)
+	for(int i=0;i<nact_a;i++)
+	  CSC_a[j+nfzc][i+nfzc] = CSC_full[str_j->occ[j]+nfzc][str_i->occ[i]+nfzc];
+
+      // all frozen orbitals come together first since it's a C1 case
+      for(int j=0; j<nact_a; j++)
+	for(int i=0; i<nfzc; i++)
+	  CSC_a[j+nfzc][i] = CSC_full[str_j->occ[j]+nfzc][i];
+
+      for(int j=0; j<nfzc; j++)
+	for(int i=0; i<nact_a; i++)
+	  CSC_a[j][i+nfzc] = CSC_full[j][str_i->occ[i]+nfzc];
+
+      for(int i=0;i<nfzc;i++)
+	for(int j=0;j<nfzc;j++)
+	  CSC_a[i][j] = CSC_full[i][j];
 
       FLOAT sign;
       lu_decom(CSC_a, nalpha, tmpintvec, &sign);
@@ -76,9 +92,22 @@ double eval_roci_derwfn_overlap()
     for(int im=0; im<nstr_b; im++) {
       String *str_i = &ssetm->strings[im];
 
-      for(int j=0;j<nbeta;j++)
-	for(int i=0;i<nbeta;i++)
-	  CSC_b[j][i] = CSC_b_full[str_j->occ[j]][str_i->occ[i]];
+      for(int j=0;j<nact_b;j++)
+	for(int i=0;i<nact_b;i++)
+	  CSC_b[j+nfzc][i+nfzc] = CSC_full[str_j->occ[j]+nfzc][str_i->occ[i]+nfzc];
+
+      // all frozen orbitals come together first since it's a C1 case
+      for(int j=0; j<nact_b; j++)
+	for(int i=0; i<nfzc; i++)
+	  CSC_b[j+nfzc][i] = CSC_full[str_j->occ[j]+nfzc][i];
+
+      for(int j=0; j<nfzc; j++)
+	for(int i=0; i<nact_b; i++)
+	  CSC_b[j][i+nfzc] = CSC_full[j][str_i->occ[i]+nfzc];
+
+      for(int i=0;i<nfzc;i++)
+	for(int j=0;j<nfzc;j++)
+	  CSC_b[i][j] = CSC_full[i][j];
 
       FLOAT sign;
       lu_decom(CSC_b, nbeta, tmpintvec, &sign);
@@ -124,9 +153,8 @@ double eval_roci_derwfn_overlap()
   slaterdetvector_delete_full(vecp);
   delete[] tmpintvec;
   delete_matrix(CSC_a);
-  delete_matrix(CSC_a_full);
+  delete_matrix(CSC_full);
   delete_matrix(CSC_b);
-  delete_matrix(CSC_b_full);
   delete_matrix(S_a);
   delete_matrix(S_b);
   double S_tot_double = (double) S_tot;

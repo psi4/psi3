@@ -141,6 +141,8 @@ void read_chkpt()
   int *openpi = chkpt_rd_openpi();
   MOInfo.nsocc = openpi[0];
   delete[] openpi;
+  MOInfo.nalpha = MOInfo.ndocc + MOInfo.nsocc;
+  MOInfo.nbeta = MOInfo.ndocc;
 #endif
 
   chkpt_close();
