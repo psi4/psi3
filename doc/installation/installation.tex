@@ -105,56 +105,56 @@ for installation.
 You may need to make use of one or more of the following options to
 the {\tt configure} script:
 \begin{itemize}
-\item {\tt --prefix=directory} --- Use this option if you wish to
+\item {\tt -}{\tt -prefix=directory} --- Use this option if you wish to
   install the \PSIthree\ package somewhere other than the default
   directory, {\tt /usr/local/psi}.
-\item {\tt --with-cc=compiler} --- Use this option to specify a C
+\item {\tt -}{\tt -with-cc=compiler} --- Use this option to specify a C
   compiler.  One should use compilers that generate reentrant code,
   if possible. The default search order for compilers is: {\tt gcc},
   {\tt cc}.  (NB: On AIX systems, the search order is {\tt
   cc\_r}, {\tt gcc}.)
-\item {\tt --with-cxx=compiler} --- Use this option to specify a C++
+\item {\tt -}{\tt -with-cxx=compiler} --- Use this option to specify a C++
   compiler.  One should use compilers that generate reentrant code,
   if possible. The default search order for compilers is: {\tt g++},
   {\tt c++}, {\tt cxx}.  (NB: On AIX systems, the search order is {\tt
   xlC\_r}, {\tt c++}, {\tt g++}.)
-\item {\tt --with-fc=compiler} --- Use this option to specify a
+\item {\tt -}{\tt -with-fc=compiler} --- Use this option to specify a
   Fortran-77 compiler.  One should use compilers that generate reentrant code,
   if possible. The default search order for compilers is:
   {\tt g77}, {\tt f77}, {\tt fc}, {\tt f2c}.  (NB: On AIX systems, the
   search order is {\tt xlf\_r}, {\tt g77}, {\tt f77}, {\tt
   fc}, {\tt f2c}.)
-\item {\tt --with-ar=archiver} --- Use this option to specify an
+\item {\tt -}{\tt -with-ar=archiver} --- Use this option to specify an
   archiver.  The default is {\tt ar}.
-\item {\tt --with-blas=library} --- Use this option to specify a BLAS
+\item {\tt -}{\tt -with-blas=library} --- Use this option to specify a BLAS
   library.  If your BLAS library has multiple components, enclose the
   file list with single right-quotes, e.g., {\tt
-  --with-blas='-lf77blas -latlas'}.
-\item {\tt --with-lapack=library} --- Use this option to specify a
+  -}{\tt -with-blas='-lf77blas -latlas'}.
+\item {\tt -}{\tt -with-lapack=library} --- Use this option to specify a
   LAPACK library.  If your LAPACK library has multiple components,
   enclose the file list with single right-quotes, e.g., {\tt
-  --with-lapack='-llapack -lcblas -latlas'}.
-\item {\tt --with-max-am-eri=integer} --- Specifies the maximum
+  -}{\tt -with-lapack='-llapack -lcblas -latlas'}.
+\item {\tt -}{\tt -with-max-am-eri=integer} --- Specifies the maximum
   angular momentum level for the primitive Gaussian basis functions
   when computing electron repulsion integrals.  This is set to
   $g$-type functions (AM=5) by default.
-\item {\tt --with-max-am-deriv1=integer} --- Specifies the maximum
+\item {\tt -}{\tt -with-max-am-deriv1=integer} --- Specifies the maximum
   angular momentum level for first derivatives of the primitive
   Gaussian basis functions.  This is set to $f$-type functions (AM=4)
   by default.
-\item {\tt --with-max-am-deriv2=integer} --- Specifies the maximum
+\item {\tt -}{\tt -with-max-am-deriv2=integer} --- Specifies the maximum
   angular momentum level for second derivatives of the primitive
   Gaussian basis functions.  This is set to $d$-type functions (AM=3)
   by default.
-\item {\tt --with-max-am-r12=integer} --- Specifies the maximum
+\item {\tt -}{\tt -with-max-am-r12=integer} --- Specifies the maximum
   angular momentum level for primitive Gaussian basis functions used
   in $r_{12}$ explicitly correlated methods.  This is set to $f$-type
   functions (AM=4) by default.
-\item {\tt --with-debug=option} --- This option turns on debugging
+\item {\tt -}{\tt -with-debug=option} --- This option turns on debugging
   options.  If the argument is omitted, ``{\tt -g}'' will be used by default.
-\item {\tt --with-opt=options} --- This option may be used to select
+\item {\tt -}{\tt -with-opt=options} --- This option may be used to select
   special optimization flags, overriding defaults.
-\item {\tt --with-parallel=sgi} --- This option turns on automatic
+\item {\tt -}{\tt -with-parallel=sgi} --- This option turns on automatic
   parallelization available with some SGI systems.  Since none of the
   primary developers of \PSIthree\ actually {\em uses} SGI systems at
   present, it seems likely that this option will not work.
@@ -187,10 +187,10 @@ certain libraries, header files, etc. needed for complete compilation.
 The script accepts a number of options, all of which are listed above.
 The most important of these is the {\tt --prefix} option, which selects the
 installation directory for the executables, the libraries, header files,
-basis set data, and other administrative files.  The default {\tt --prefix}
+basis set data, and other administrative files.  The default {\tt -}{\tt -prefix}
 is {\tt /usr/local/psi}.
 
-$\bullet$ The configure script's {\tt --prefix} directory will be referred
+$\bullet$ The configure script's {\tt -}{\tt -prefix} directory will be referred
 to as {\tt \$prefix} for the remainder of these instructions.
 
 \subsection{Step 2: Compilation}
@@ -281,8 +281,8 @@ one has to manually specify
 the {\tt -q64} compiler flag
 that enables production of 64-bit executables.
 The following configure options should be used:
-{\tt --with-cc='cc\_r -q64' --with-cxx='xlC\_r -q64'
- --with-fc='xlf\_r -q64'}. Note that
+{\tt -}{\tt -with-cc='cc\_r -q64' -}{\tt -with-cxx='xlC\_r -q64'
+ -}{\tt -with-fc='xlf\_r -q64'}. Note that
 the reentrant versions of the compilers
 are used. Also, we haven't had much luck
 using {\tt xlc\_r} because of its

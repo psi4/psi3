@@ -160,7 +160,7 @@ test-compile it:
 \item {\tt cd \$PSI3/..}
 \item {\tt cvs co \$PSI3/src/bin/great\_code}
 \item {\tt cd \$objdir}
-\item {\tt \$PSI3/configure --prefix=\$prefix --verbose}
+\item {\tt \$PSI3/configure -}{\tt -prefix=\$prefix}
 \item {\tt cd src/bin/great\_code}
 \item {\tt make install}
 \end{enumerate}
@@ -206,7 +206,7 @@ compile the new codes.  For example,
 \item {\tt cvs update -dP}
 \item {\tt autoconf}
 \item {\tt cd \$objdir}
-\item {\tt \$PSI3/configure --prefix=\$prefix --verbose}
+\item {\tt \$PSI3/configure -}{\tt -prefix=\$prefix}
 \item {\tt cd src/bin/great\_code}
 \item {\tt make install}
 \end{enumerate}
