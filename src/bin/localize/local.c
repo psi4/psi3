@@ -17,12 +17,12 @@ void title(void);
 
 int main(int argc, char *argv[])
 {
-  int iter, s, t, A, k, l, m, inew, iold, max;
+  int iter, s, t, A, k, l, m, p, q, inew, iold, max, max_col, phase_ok, phase_chk;
   int i, j, ij, am, atom, shell_length, offset, stat;
   int nirreps, nao, nmo, nso, natom, nshell, noei, nocc, errcod, nfzc;
   int *stype, *snuc, *aostart, *aostop, *ao2atom, *l_length;
   int *clsdpi, *openpi, *orbspi, *dummy, *order, *frdocc;
-  double *ss, **S, **scf, **u, **Ctmp, **C, *evals;
+  double *ss, **S, **scf, **u, **Ctmp, **C, *evals, **MO_S, **scf_old, **X;
 
   int *orb_order, *orb_boolean, puream;
   double P, PiiA, Pst, Pss, Ptt, Ast, Bst, AB;
@@ -230,8 +230,8 @@ int main(int argc, char *argv[])
 	F[i][j] += V[k][i] * evals[k] * V[k][j];
 
   /*
-  fprintf(outfile, "\nTransformed Orbital Energies:\n");
-  print_mat(F, nocc, nocc, outfile);
+    fprintf(outfile, "\nTransformed Orbital Energies:\n");
+    print_mat(F, nocc, nocc, outfile);
   */
 
   /* Compute a reordering array based on the diagonal elements of F */
@@ -253,12 +253,12 @@ int main(int argc, char *argv[])
   }
 
   /*
-  for(i=0; i < nocc; i++) fprintf(outfile, "%d %d\n", i, orb_order[i]);
+    for(i=0; i < nocc; i++) fprintf(outfile, "%d %d\n", i, orb_order[i]);
   */
 
- /*
-  fprintf(outfile, "\n\tPipek-Mezey Localized MO's (before sort):\n");
-  print_mat(C, nso, nmo, outfile);
+  /*
+    fprintf(outfile, "\n\tPipek-Mezey Localized MO's (before sort):\n");
+    print_mat(C, nso, nmo, outfile);
   */
 
   /* Now reorder the localized MO's according to F */
@@ -282,20 +282,64 @@ int main(int argc, char *argv[])
 
   /* Check MO normalization */
   /*
-  for(i=0; i < nmo; i++) {
+    for(i=0; i < nmo; i++) {
     norm = 0.0;
     for(j=0; j < nao; j++) 
-      for(k=0; k < nao; k++) {
-	norm += C[j][i] * C[k][i] * S[j][k];
-      }
+    for(k=0; k < nao; k++) {
+    norm += C[j][i] * C[k][i] * S[j][k];
+    }
 
     fprintf(outfile, "norm[%d] = %20.10f\n", i, norm);
-  }
+    }
   */
+
+  /* correct orbital phases for amplitude restarts */
+  chkpt_init(PSIO_OPEN_OLD);
+  scf_old = chkpt_rd_local_scf();
+  chkpt_close();
+  if (scf_old != NULL) {
+    MO_S = block_matrix(nmo, nmo);
+    X = block_matrix(nso, nmo);
+    C_DGEMM('n','n',nso, nmo, nso, 1, &(S[0][0]), nso, &(C[0][0]), nmo,
+	    0, &(X[0][0]), nmo);
+    C_DGEMM('t','n',nmo, nmo, nso, 1, &(scf_old[0][0]), nmo, &(X[0][0]), nmo,
+	    0, &(MO_S[0][0]), nmo);
+    free_block(X);
+
+    fprintf(outfile, "Approximate Overlap Matrix\n");
+    print_mat(MO_S, nmo, nmo, outfile);
+
+    for(p=0; p < nmo; p++) {
+      max = 0.0;
+      for(q=0; q < nmo; q++) {
+	if(fabs(MO_S[p][q]) > max) {
+	  max = fabs(MO_S[p][q]); max_col = q;
+	}
+      }
+      if(max_col != p) phase_ok = 0;
+    }
+
+    chkpt_init(PSIO_OPEN_OLD);
+    chkpt_wt_phase_check(phase_ok);
+    chkpt_close();
+    if(phase_ok) {
+      for(p=0; p < nmo; p++) {
+	if(MO_S[p][p] < 0.0) {
+	  for(q=0; q < nso; q++)
+	    C[q][p] *= -1.0;
+	}
+      }
+    }
+
+    free_block(MO_S);
+    free_block(scf_old);
+  }
+  free_block(S);
 
   /* Write the new MO's to chkpt */
   chkpt_init(PSIO_OPEN_OLD);
   chkpt_wt_scf(C);
+  chkpt_wt_local_scf(C);
   chkpt_close();
 
   free_block(C);
