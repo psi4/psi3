@@ -3,7 +3,7 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-PSILIBS = -lPSI_psio -lPSI_ciomr -lPSI_ipv1
+PSILIBS = -lPSI_qt -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
 CSRC = psiclean.c
 

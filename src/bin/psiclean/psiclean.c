@@ -14,13 +14,14 @@
 #include <libipv1/ip_lib.h>
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
+#include <libqt/qt.h>
 
 
 FILE *infile, *outfile;
 void exit_bad(void);
 
 
-int main()
+int main(int argc, char *argv[])
 {
   ULI i, nvol;
   int errcod;
@@ -29,8 +30,8 @@ int main()
   char fileslist[MAX_STRING];
   char cmdstring[MAX_STRING];
 
-  ffile(&infile,"input.dat",2);
-  ffile(&outfile,"output.dat",1);
+  init_in_out(argc-1,argv+1);
+  
   ip_set_uppercase(1);
   ip_initialize(infile,outfile);
   ip_cwk_add(":DEFAULT");
