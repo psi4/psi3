@@ -37,9 +37,7 @@ qstring \"[^"\n]+\"
 %%
 
 /* Convert a string to uppercase. */
-LOCAL_FUNCTION VOID
-cvs_toupper(s)
-char *s;
+LOCAL_FUNCTION void cvs_toupper(char *s)
 {
   for (; *s!='\0'; s++) {
     if (*s>='a' && *s <='z') *s = *s + 'A' - 'a';
@@ -47,8 +45,7 @@ char *s;
   }
 
 /* Show position. */
-GLOBAL_FUNCTION VOID
-showpos()
+void showpos(void)
 {
   printf("error occurred at line number %d\n",lineno);
   }

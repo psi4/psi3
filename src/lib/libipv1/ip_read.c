@@ -24,9 +24,7 @@ extern FILE *yyin;
 /*static ip_keyword_tree_t *sub_tree = NULL;*/
 
 /* Set the ip_uppercase global. */
-GLOBAL_FUNCTION VOID
-ip_set_uppercase(uc)
-int uc;
+void ip_set_uppercase(int uc)
 {
   if (uc) ip_uppercase = 1;
   else ip_uppercase = 0;
@@ -36,10 +34,7 @@ int uc;
  * converting it into an internal representation. */
 /* in = the input file. */
 /* out = the output file. */
-GLOBAL_FUNCTION VOID
-ip_initialize(in,out)
-FILE *in;
-FILE *out;
+void ip_initialize(FILE *in, FILE *out)
 {
 
   if (in)  ip_in = yyin = in;
@@ -70,10 +65,7 @@ FILE *out;
  * are allowed. */
 /* in = the input file. */
 /* out = the output file. */
-GLOBAL_FUNCTION VOID
-ip_append(in,out)
-FILE *in;
-FILE *out;
+void ip_append(FILE *in, FILE *out)
 {
 
   if (in)  ip_in = yyin = in;
@@ -106,8 +98,7 @@ FILE *out;
   }
 
 /* Set up internal ip variables based on the input that has been read in. */
-GLOBAL_FUNCTION VOID
-ip_internal_values()
+void ip_internal_values(void)
 {
   int errcod;
 
@@ -117,8 +108,7 @@ ip_internal_values()
   }
 
 /* Free all of the data. */
-GLOBAL_FUNCTION VOID
-ip_done()
+void ip_done(void)
 {
   ip_free_keyword_tree(ip_tree);
   ip_tree = NULL;
@@ -127,9 +117,7 @@ ip_done()
   ip_out = NULL;
   }
 
-GLOBAL_FUNCTION VOID
-ip_push_keyword(keyword)
-char *keyword;
+void ip_push_keyword(char *keyword)
 {
   ip_keyword_tree_t *I, *new_keyword;
 
@@ -188,8 +176,7 @@ char *keyword;
   sub_tree = new_keyword;
   }
 
-GLOBAL_FUNCTION VOID
-ip_pop_keyword()
+void ip_pop_keyword(void)
 {
   /* Make sure we aren't already on top. */
   if (!sub_tree) {
@@ -198,9 +185,7 @@ ip_pop_keyword()
   sub_tree = sub_tree->up;
   }
 
-GLOBAL_FUNCTION VOID
-ip_assign_value(value)
-ip_value_t *value;
+void ip_assign_value(ip_value_t *value)
 {
 
   /* If sub_tree is still NULL then we have a problem. */
@@ -222,9 +207,7 @@ ip_value_t *value;
   else sub_tree->value = value;
   }
 
-GLOBAL_FUNCTION ip_value_t *
-ip_scalar(scalar)
-char *scalar;
+ip_value_t *ip_scalar(char *scalar)
 {
   ip_value_t *result;
 
@@ -236,10 +219,7 @@ char *scalar;
   }
 
 /* This adds an element to the end of an array, arrayval. */
-GLOBAL_FUNCTION ip_value_t *
-ip_array(arrayval, newval)
-ip_value_t *arrayval;
-ip_value_t *newval;
+ip_value_t *ip_array(ip_value_t *arrayval, ip_value_t *newval)
 {
   int i;
   ip_value_t *result, **oldvalues;

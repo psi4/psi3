@@ -9,8 +9,7 @@
 
 #include "ip_error.gbl"
 
-GLOBAL_FUNCTION ip_keyword_tree_t *
-ip_alloc_keyword_tree()
+ip_keyword_tree_t *ip_alloc_keyword_tree(void)
 {
   ip_keyword_tree_t *result;
 
@@ -29,9 +28,7 @@ ip_alloc_keyword_tree()
   return result;
   }
 
-GLOBAL_FUNCTION VOID
-ip_free_keyword_tree(tree)
-ip_keyword_tree_t *tree;
+void ip_free_keyword_tree(ip_keyword_tree_t *tree)
 {
   ip_keyword_tree_t *I,*nextI;
 
@@ -56,8 +53,7 @@ ip_keyword_tree_t *tree;
 
   }
 
-GLOBAL_FUNCTION ip_value_t *
-ip_alloc_value()
+ip_value_t *ip_alloc_value(void)
 {
   ip_value_t *result;
 
@@ -71,9 +67,7 @@ ip_alloc_value()
   return result;
   }
 
-GLOBAL_FUNCTION VOID
-ip_free_value(value)
-ip_value_t *value;
+void ip_free_value(ip_value_t *value)
 {
   if (!value) return;
 
@@ -89,9 +83,7 @@ ip_value_t *value;
   free(value);
   }
 
-GLOBAL_FUNCTION VOID
-ip_free_array(array)
-ip_array_t *array;
+void ip_free_array(ip_array_t *array)
 {
   int i;
 

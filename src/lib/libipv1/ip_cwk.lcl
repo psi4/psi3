@@ -1,7 +1,4 @@
 
-#ifndef _TMPL_H
-#  include <libipv1/tmpl.h>
-#endif
 #ifdef LOCAL_HEADER_USED
 /* #  error included two local headers */#else
 #  define LOCAL_HEADER_USED

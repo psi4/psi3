@@ -1,39 +1,3 @@
-/* $Log$
- * Revision 1.3  2004/01/02 06:37:12  crawdad
- * Merging psi-3-2 branch (from release tag psi-3-2-rc-2 to head at psi-3-2-0)
- * into main trunk.  This code compiles and runs correctly on sirius.
- * -TDC
- *
-/* Revision 1.2.4.1  2003/11/23 19:17:39  crawdad
-/* Minor fixes: (1) Corrected dependencies in doc/Make*.in; (2) Elimintated
-/* warnings from gcc -Wall in several libipv1 routines and psi2molden.
-/* -TDC
-/*
-/* Revision 1.2  2003/05/22 06:20:07  crawdad
-/* Corrected most of the libraries and modules to use proper PSI_RETURN_XX
-/* values from psifiles.h.  Modified ccdensity, ccenergy, cchbar, cclambda,
-/* ccsort, cctriples, cis, cphf, cusp, localize, stable, libchkpt, libciomr,
-/* libdpd, libipv1, libpsio, libqt, and tocprint.
-/* -TDC
-/*
-/* Revision 1.1.1.1  2000/02/04 22:53:26  evaleev
-/* Started PSI 3 repository
-/*
-/* Revision 1.5  1994/08/04 17:33:33  dcrawfrd
-/* Added vars for $(LEX) = lex or flex and $(LEXLIB) = -ll or -fl.  These are
-/* necessary for portability.  This will have to be thoroughly tested for IBM'
-/* AIX.
-/*
- * Revision 1.4  1994/06/02  02:22:25  seidl
- * using new tmpl now...change .global to .gbl and .local to .lcl
- *
- * Revision 1.1.1.1  1994/05/02  17:05:52  cljanss
- * The May 1, 1994 version of psi as on the CCQC machines.
- *
- * Revision 1.3  1991/07/30  03:28:45  seidl
- * add rcs log and id
- * */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -50,9 +14,7 @@
 #include "scan.gbl"
 
 /* Returns some text for an errcod. */
-GLOBAL_FUNCTION char *
-ip_error_message(errcod)
-int errcod;
+char *ip_error_message(int errcod)
 {
   static char *ipe_ok = "No problem has been detected.";
   static char *ipe_key_not_found = "No match was found for the given keyword.";
@@ -73,9 +35,7 @@ int errcod;
   return huh;
   }
 
-GLOBAL_VA_FUNCTION VOID
-ip_error(msg)
-char *msg;
+void ip_error(char *msg, ...)
 {
   va_list args;
   va_start(args,msg);
@@ -87,9 +47,7 @@ char *msg;
   exit(PSI_RETURN_FAILURE);
   }
 
-GLOBAL_VA_FUNCTION VOID
-ip_warn(msg)
-char *msg;
+void ip_warn(char *msg, ...)
 {
   va_list args;
   va_start(args,msg);

@@ -1,20 +1,9 @@
-#ifndef _TMPL_H
-#  include <libipv1/tmpl.h>
-#endif
-#ifndef GLOBAL_FUNCTION
-#  define GLOBAL_FUNCTION
-#endif
-#ifndef GLOBAL_VA_FUNCTION
-#  define GLOBAL_VA_FUNCTION
-#endif
-extern
 #ifdef __cplusplus
-"C"
+extern "C" {
 #endif
- VOID
-showpos(
-#if defined(__STDC__) || defined(__cplusplus)
 
-void
+void showpos(void);
+
+#ifdef __cplusplus
+}
 #endif
-);

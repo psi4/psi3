@@ -1,39 +1,3 @@
-
-/* $Log$
- * Revision 1.2  2004/01/02 06:37:12  crawdad
- * Merging psi-3-2 branch (from release tag psi-3-2-rc-2 to head at psi-3-2-0)
- * into main trunk.  This code compiles and runs correctly on sirius.
- * -TDC
- *
-/* Revision 1.1.1.1.12.1  2003/11/23 19:17:39  crawdad
-/* Minor fixes: (1) Corrected dependencies in doc/Make*.in; (2) Elimintated
-/* warnings from gcc -Wall in several libipv1 routines and psi2molden.
-/* -TDC
-/*
-/* Revision 1.1.1.1  2000/02/04 22:53:26  evaleev
-/* Started PSI 3 repository
-/*
-/* Revision 1.7  1995/01/16 23:03:26  cljanss
-/* Minor changes so the SGI compiler won't complain.
-/*
- * Revision 1.6  1994/08/09  22:33:59  crawdad
- * Added check for AIX before including globals.
- *
- * Revision 1.5  1994/08/04  17:33:42  dcrawfrd
- * Added vars for $(LEX) = lex or flex and $(LEXLIB) = -ll or -fl.  These are
- * necessary for portability.  This will have to be thoroughly tested for IBM'
- * AIX.
- *
- * Revision 1.4  1994/06/02  02:22:26  seidl
- * using new tmpl now...change .global to .gbl and .local to .lcl
- *
- * Revision 1.1.1.1  1994/05/02  17:05:52  cljanss
- * The May 1, 1994 version of psi as on the CCQC machines.
- *
- * Revision 1.3  1991/07/30  03:28:45  seidl
- * add rcs log and id
- * */
-
 /* These routines manipulate keyword arrays.  A keyword
  * array differs from a data array in that its indices are indicated
  * by a keyword segment.  For example: array:0:1 = 6 is a keyword
@@ -68,10 +32,7 @@
 
 #include "ip_cwk.gbl"
 
-GLOBAL_VA_FUNCTION VOID
-ip_cwk_karray_add_v(n,v)
-int n;
-int *v;
+void ip_cwk_karray_add_v(int n, int *v, ...)
 {
   int i;
   char indices[110],index[10];
@@ -94,9 +55,7 @@ int *v;
   return;
   }
 
-GLOBAL_VA_FUNCTION VOID
-ip_cwk_karray_add(n)
-int n;
+void ip_cwk_karray_add(int n, ...)
 {
   va_list args;
   int i;
@@ -123,11 +82,7 @@ int n;
     }
   }
 
-GLOBAL_VA_FUNCTION ip_keyword_tree_t *
-ip_karray_descend_v(kt,n,v)
-ip_keyword_tree_t *kt;
-int n;
-int *v;
+ip_keyword_tree_t *ip_karray_descend_v(ip_keyword_tree_t *kt, int n, int *v, ...)
 {
   ip_keyword_tree_t *r;
   int i;
@@ -153,10 +108,7 @@ int *v;
   return r;
   }
 
-GLOBAL_VA_FUNCTION ip_keyword_tree_t *
-ip_karray_descend(kt,n)
-ip_keyword_tree_t *kt;
-int n;
+ip_keyword_tree_t *ip_karray_descend(ip_keyword_tree_t *kt, int n, ...)
 {
   va_list args;
   int i;
@@ -181,12 +133,7 @@ int n;
     }
   }
 
-GLOBAL_FUNCTION int
-ip_karray_count_v(keyword,karray_count,n,v)
-char *keyword;
-int *karray_count;
-int n;
-int *v;
+int ip_karray_count_v(char *keyword, int *karray_count, int n, int *v)
 {
   ip_keyword_tree_t *kt,*I;
   int index;
@@ -214,11 +161,7 @@ int *v;
   }
 
 /* This counts the number of elements in a keyword array. */
-GLOBAL_VA_FUNCTION int
-ip_karray_count(keyword,karray_count,n)
-char *keyword;
-int *karray_count;
-int n;
+int ip_karray_count(char *keyword, int *karray_count, int n, ...)
 {
   va_list args;
   int i;

@@ -14,7 +14,7 @@ endif
 
 CINC += -I$(srcdir)
 
-TARGET = $(top_objdir)/lib/libPSI_ipv1.a
+PSITARGET = $(top_objdir)/lib/libPSI_ipv1.a
 
 DEFINES += -DNO_TEMPLATES
 

@@ -1,64 +1,13 @@
-#ifndef _TMPL_H
-#  include <libipv1/tmpl.h>
-#endif
-#ifndef GLOBAL_FUNCTION
-#  define GLOBAL_FUNCTION
-#endif
-#ifndef GLOBAL_VA_FUNCTION
-#  define GLOBAL_VA_FUNCTION
-#endif
-extern
 #ifdef __cplusplus
-"C"
+extern "C" {
 #endif
- ip_keyword_tree_t *
-ip_alloc_keyword_tree(
-#if defined(__STDC__) || defined(__cplusplus)
 
-void
-#endif
-);
-extern
+ip_keyword_tree_t * ip_alloc_keyword_tree(void);
+void ip_free_keyword_tree(ip_keyword_tree_t *tree);
+ip_value_t * ip_alloc_value(void);
+void ip_free_value(ip_value_t *value);
+void ip_free_array(ip_array_t *array);
+
 #ifdef __cplusplus
-"C"
+}
 #endif
- VOID
-ip_free_keyword_tree(
-#if defined(__STDC__) || defined(__cplusplus)
-ip_keyword_tree_t *tree
-
-#endif
-);
-extern
-#ifdef __cplusplus
-"C"
-#endif
- ip_value_t *
-ip_alloc_value(
-#if defined(__STDC__) || defined(__cplusplus)
-
-void
-#endif
-);
-extern
-#ifdef __cplusplus
-"C"
-#endif
- VOID
-ip_free_value(
-#if defined(__STDC__) || defined(__cplusplus)
-ip_value_t *value
-
-#endif
-);
-extern
-#ifdef __cplusplus
-"C"
-#endif
- VOID
-ip_free_array(
-#if defined(__STDC__) || defined(__cplusplus)
-ip_array_t *array
-
-#endif
-);

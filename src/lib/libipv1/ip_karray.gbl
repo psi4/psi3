@@ -1,84 +1,14 @@
-#ifndef _TMPL_H
-#  include <libipv1/tmpl.h>
-#endif
-#ifndef GLOBAL_FUNCTION
-#  define GLOBAL_FUNCTION
-#endif
-#ifndef GLOBAL_VA_FUNCTION
-#  define GLOBAL_VA_FUNCTION
-#endif
-extern
 #ifdef __cplusplus
-"C"
+extern "C" {
 #endif
- VOID
-ip_cwk_karray_add_v(
-#if defined(__STDC__) || defined(__cplusplus)
-int n,
-int *v,
-...
-#endif
-);
-extern
-#ifdef __cplusplus
-"C"
-#endif
- VOID
-ip_cwk_karray_add(
-#if defined(__STDC__) || defined(__cplusplus)
-int n,
-...
-#endif
-);
-extern
-#ifdef __cplusplus
-"C"
-#endif
- ip_keyword_tree_t *
-ip_karray_descend_v(
-#if defined(__STDC__) || defined(__cplusplus)
-ip_keyword_tree_t *kt,
-int n,
-int *v,
-...
-#endif
-);
-extern
-#ifdef __cplusplus
-"C"
-#endif
- ip_keyword_tree_t *
-ip_karray_descend(
-#if defined(__STDC__) || defined(__cplusplus)
-ip_keyword_tree_t *kt,
-int n,
-...
-#endif
-);
-extern
-#ifdef __cplusplus
-"C"
-#endif
- int
-ip_karray_count_v(
-#if defined(__STDC__) || defined(__cplusplus)
-char *keyword,
-int *karray_count,
-int n,
-int *v
 
-#endif
-);
-extern
+void ip_cwk_karray_add_v(int n, int *v, ...);
+void ip_cwk_karray_add(int n, ...);
+ip_keyword_tree_t *ip_karray_descend_v(ip_keyword_tree_t *kt, int n, int *v, ...);
+ip_keyword_tree_t *ip_karray_descend(ip_keyword_tree_t *kt, int n, ...);
+int ip_karray_count_v(char *keyword, int *karray_count, int n, int *v);
+int ip_karray_count(char *keyword, int *karray_count, int n, ...);
+
 #ifdef __cplusplus
-"C"
+}
 #endif
- int
-ip_karray_count(
-#if defined(__STDC__) || defined(__cplusplus)
-char *keyword,
-int *karray_count,
-int n,
-...
-#endif
-);

@@ -1,33 +1,3 @@
-
-/* $Log$
- * Revision 1.3  2004/01/02 06:37:12  crawdad
- * Merging psi-3-2 branch (from release tag psi-3-2-rc-2 to head at psi-3-2-0)
- * into main trunk.  This code compiles and runs correctly on sirius.
- * -TDC
- *
-/* Revision 1.2.4.1  2003/11/23 19:17:39  crawdad
-/* Minor fixes: (1) Corrected dependencies in doc/Make*.in; (2) Elimintated
-/* warnings from gcc -Wall in several libipv1 routines and psi2molden.
-/* -TDC
-/*
-/* Revision 1.2  2003/08/21 19:03:36  evaleev
-/* Fixed ip_cwk_add to add the keyword to the current keyword tree list even if
-/* no parsed input contains entries under the keyword. Subsequent ip_append is
-/* thus guaranteed to set the current keyword list properly.
-/*
-/* Revision 1.1.1.1  2000/02/04 22:53:26  evaleev
-/* Started PSI 3 repository
-/*
-/* Revision 1.4  1994/06/02 02:22:28  seidl
-/* using new tmpl now...change .global to .gbl and .local to .lcl
-/*
- * Revision 1.1.1.1  1994/05/02  17:05:52  cljanss
- * The May 1, 1994 version of psi as on the CCQC machines.
- *
- * Revision 1.3  1991/07/30  03:28:45  seidl
- * add rcs log and id
- * */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -41,10 +11,7 @@
 
 #define N_INDENT 2
 
-GLOBAL_FUNCTION VOID
-ip_print_keyword(fp,st)
-FILE *fp;
-ip_keyword_tree_t *st;
+void ip_print_keyword(FILE *fp, ip_keyword_tree_t *st)
 {
   if (st->up) ip_print_keyword(fp,st->up);
   fprintf(fp,"%s:",st->keyword);
@@ -52,10 +19,7 @@ ip_keyword_tree_t *st;
 
 /* This prints out a keyword tree, tree.  If tree is NULL then ip_tree
  * is printed out. */
-GLOBAL_FUNCTION VOID
-ip_print_tree(fp,tree)
-FILE *fp;
-ip_keyword_tree_t *tree;
+void ip_print_tree(FILE *fp, ip_keyword_tree_t *tree)
 {
   if (!tree) tree = ip_tree;
 
@@ -66,11 +30,7 @@ ip_keyword_tree_t *tree;
 /* This prints out a keyword tree, tree.  If tree is NULL then ip_tree
  * is printed out.  Indent is used to record how deep in the tree we
  * are, so we know how far to indent things. */
-LOCAL_FUNCTION VOID
-ip_print_tree_(fp,tree,indent)
-FILE *fp;
-ip_keyword_tree_t *tree;
-int indent;
+LOCAL_FUNCTION void ip_print_tree_(FILE *fp, ip_keyword_tree_t *tree, int indent)
 {
   ip_keyword_tree_t *I;
 
@@ -119,31 +79,21 @@ int indent;
 
   }
 
-LOCAL_FUNCTION VOID
-ip_indent(fp,n)
-FILE *fp;
-int n;
+LOCAL_FUNCTION void ip_indent(FILE *fp, int n)
 {
   int i;
 
   for (i=0; i<n; i++) fprintf(fp," ");
   }
 
-GLOBAL_FUNCTION VOID
-ip_print_value(fp,value)
-FILE *fp;
-ip_value_t *value;
+void ip_print_value(FILE *fp, ip_value_t *value)
 {
   if (!value) return;
   ip_print_value_(fp,value,0);
   fprintf(fp,"\n");
   }
 
-LOCAL_FUNCTION VOID
-ip_print_value_(fp,value,indent)
-FILE *fp;
-ip_value_t *value;
-int indent;
+LOCAL_FUNCTION void ip_print_value_(FILE *fp, ip_value_t *value, int indent)
 {
   if (value->type == IP_SCALAR) {
     if (ip_special_characters(value->v.scalar)) {
@@ -161,11 +111,7 @@ int indent;
     }
   }
 
-LOCAL_FUNCTION VOID
-ip_print_array_(fp,array,indent)
-FILE *fp;
-ip_array_t *array;
-int indent;
+LOCAL_FUNCTION void ip_print_array_(FILE *fp, ip_array_t *array, int indent)
 {
   int i;
   fprintf(fp,"(");
@@ -176,9 +122,7 @@ int indent;
   fprintf(fp,")");
   }
 
-LOCAL_FUNCTION int
-ip_special_characters(keyword)
-char *keyword;
+LOCAL_FUNCTION int ip_special_characters(char *keyword)
 {
   char *ch=keyword;
 

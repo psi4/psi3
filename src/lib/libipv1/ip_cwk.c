@@ -27,8 +27,7 @@ static ip_cwk_stack_t *cwkstack = NULL;
 
 /* This sets up the current working keyword path to the declaration
  * list. */
-GLOBAL_FUNCTION VOID
-ip_cwk_root()
+void ip_cwk_root(void)
 {
   free_keyword_tree_list(ip_cwk);
   ip_cwk = splice_keyword_tree_list(ip_tree,NULL);
@@ -36,8 +35,7 @@ ip_cwk_root()
 
 /* This sets up the current working keyword path to NULL
  * list. */
-GLOBAL_FUNCTION VOID
-ip_cwk_clear()
+void ip_cwk_clear(void)
 {
   free_keyword_tree_list(ip_cwk);
   ip_cwk = NULL;
@@ -45,9 +43,7 @@ ip_cwk_clear()
 
 /* This adds a keyword to the keyword path. */
 /* NOTE: the last path to be searched must be added first. */
-GLOBAL_FUNCTION VOID
-ip_cwk_add(keyword)
-char *keyword;
+void ip_cwk_add(char *keyword)
 {
   ip_keyword_tree_t *kt;
   ip_keyword_tree_list_t *I,*old_cwk;
@@ -116,8 +112,7 @@ char *keyword;
   }
 
 /* This pushes the old cwk list without modifying the current cwk list. */
-GLOBAL_FUNCTION VOID
-ip_cwk_push()
+void ip_cwk_push(void)
 {
   ip_keyword_tree_list_t *I;
 
@@ -145,8 +140,7 @@ ip_cwk_push()
 /* This moves up the keyword tree for each member of the cwk list.
  * If a cwk is already at the top of the tree, then that cwk list entry
  * will be deleted. */
-GLOBAL_FUNCTION VOID
-ip_cwk_pop()
+void ip_cwk_pop(void)
 {
   ip_cwk_stack_t *tmp;
   if (!cwkstack) {
@@ -160,9 +154,7 @@ ip_cwk_pop()
   }
 
 /* Descend the keyword tree using the cwk and obtain a new keyword tree. */
-GLOBAL_FUNCTION ip_keyword_tree_t *
-ip_cwk_descend_tree(keyword)
-char *keyword;
+ip_keyword_tree_t *ip_cwk_descend_tree(char *keyword)
 {
   ip_keyword_tree_list_t *I;
   ip_keyword_tree_t *kt=NULL;
@@ -188,10 +180,7 @@ char *keyword;
 
 /* Descend the given keyword tree using the info in the passed string.
  * The new keyword tree or NULL, if it is not found, will be returned. */
-GLOBAL_FUNCTION ip_keyword_tree_t *
-ip_descend_tree(kt,keyword)
-ip_keyword_tree_t *kt;
-char *keyword;
+ip_keyword_tree_t *ip_descend_tree(ip_keyword_tree_t *kt, char *keyword)
 {
   ip_keyword_tree_t *I,*r;
 #define KEYWORD_LENGTH 256
@@ -233,9 +222,7 @@ char *keyword;
   }
 
 /* Return the value of the given keyword. */
-GLOBAL_FUNCTION ip_value_t *
-ip_key_value(keyword)
-char *keyword;
+ip_value_t *ip_key_value(char *keyword)
 {
   ip_keyword_tree_t *kt;
 
@@ -252,7 +239,7 @@ char *keyword;
   }
 
 /* Free memory for a keyword tree list. */
-LOCAL_FUNCTION VOID
+LOCAL_FUNCTION void
 free_keyword_tree_list(ktl)
 ip_keyword_tree_list_t *ktl;
 {

@@ -1,9 +1,0 @@
-#ifndef _TMPL_H
-#  include <libipv1/tmpl.h>
-#endif
-#ifndef GLOBAL_FUNCTION
-#  define GLOBAL_FUNCTION
-#endif
-#ifndef GLOBAL_VA_FUNCTION
-#  define GLOBAL_VA_FUNCTION
-#endif
