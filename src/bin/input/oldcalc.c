@@ -96,6 +96,9 @@ void init_oldcalc()
       Oldcalc.scf_evect_so_beta = chkpt_rd_beta_scf();
   }
 
+  /* read the old localized MOs, if present */
+  Oldcalc.local = chkpt_rd_local_scf();
+
   /*--- Done with the checkpoint file ---*/
   chkpt_close();
 
@@ -133,11 +136,13 @@ void cleanup_oldcalc()
   free(Oldcalc.clsdpi);
   free(Oldcalc.openpi);
   if (Oldcalc.spinrestr_ref)
-      free(Oldcalc.scf_evect_so);
+      free_block(Oldcalc.scf_evect_so);
   else {
-      free(Oldcalc.scf_evect_so_alpha);
-      free(Oldcalc.scf_evect_so_beta);
+      free_block(Oldcalc.scf_evect_so_alpha);
+      free_block(Oldcalc.scf_evect_so_beta);
   }
+
+  if(Oldcalc.local != NULL) free_block(Oldcalc.local);
 
   return;
 }

@@ -65,6 +65,8 @@ void write_scf_calc()
     chkpt_wt_beta_evals(zero_array);
   }
   free(zero_array);
+
+  if(scf_evect_local != NULL) chkpt_wt_local_scf(scf_evect_local);
       
   /* irrep labels for non-empty blocks */
   chkpt_wt_irr_labs(irr_labels);

@@ -215,6 +215,7 @@ EXTERN double **scf_evect_so;           /* the old eigenvector projected onto ne
 EXTERN double **scf_evect_so_alpha;     /* the old eigenvector projected onto new SO basis */
 EXTERN double **scf_evect_so_beta;      /* the old eigenvector projected onto new SO basis */
 EXTERN int num_so_typs;                 /* number of non-empty symmetry blocks */
+EXTERN double **scf_evect_local;        /* old localized SCF MOs (for copy) */
 EXTERN int mxcoef;
 
 typedef struct {
@@ -251,6 +252,8 @@ typedef struct {
     double **scf_evect_so;
     double **scf_evect_so_alpha;
     double **scf_evect_so_beta;
+
+    double **local;
 } Oldcalc_t;
 
 EXTERN Oldcalc_t Oldcalc;

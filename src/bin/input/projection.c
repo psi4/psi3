@@ -42,6 +42,7 @@ void oldcalc_projection()
   double **P12;                 /* Projection operator from the old to the new basis */
   double **CV1;                 /* Core Hamiltonian eigenvector -- to be used to provide
 				   virtual MOs for the projected vector */
+  double **local;               /* localized SCF MOs */
 
   if (max_angmom > Oldcalc.max_angmom)
       init_gto(max_angmom);
@@ -83,6 +84,15 @@ void oldcalc_projection()
 	for(mo=0;mo<num_mo;mo++)
 	  scf_evect_so_beta[so][mo] = Oldcalc.scf_evect_so_beta[so][mo];
     }
+
+    /* copy localized MOs, too, if available */
+    if(Oldcalc.local != NULL) {
+      scf_evect_local = block_matrix(num_so,num_mo);
+      for(so=0;so<num_so;so++)
+	for(mo=0;mo<num_mo;mo++)
+	  scf_evect_local[so][mo] = Oldcalc.local[so][mo];
+    }
+    else scf_evect_local = NULL;
   }
   else {
     if (Oldcalc.spinrestr_ref)
