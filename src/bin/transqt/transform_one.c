@@ -40,8 +40,10 @@ double *** construct_evects(char *spin, int nirreps, int *active, int *sopi, int
 */
 void transform_one()
 {
-  /*The line was commented for MP2 gradients*/
-  /*if (!strcmp(params.wfn,"MP2")) return;*/
+  /*Changed for MP2 gradients*/
+  if (strcmp(params.wfn,"MP2") == 0 && strcmp(params.dertype,"NONE") == 0) {
+    return;
+  }
   if (params.backtr) { 
     trans_one_backwards();
   }

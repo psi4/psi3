@@ -306,12 +306,18 @@ void get_parameters(void)
     strcpy(params.wfn, "CCSD");
   }
 
+  errcod = ip_string("DERTYPE", &(params.dertype),0);
+  if(errcod == IPE_KEY_NOT_FOUND) {
+    params.dertype = (char *) malloc(sizeof(char)*5);
+    strcpy(params.dertype, "NONE");
+  }
+
   /* The defaults below depend on what run mode we are in */
   if (params.runmode == MODE_NORMAL) {
     /*Changed for MP2 gradient*/
-    /*if (strcmp(params.wfn, "MP2") == 0)
+    if (strcmp(params.wfn, "MP2") == 0 && strcmp(params.dertype, "NONE") == 0)
       params.tei_trans_type = MAKE_OVOV;
-    else*/
+    else
     params.tei_trans_type = MAKE_GGGG;
     params.tei_type = ERI;
     params.src_tei_file = PSIF_SO_TEI;
@@ -438,7 +444,9 @@ void get_parameters(void)
     errcod = ip_string("AO_BASIS", &(params.aobasis),0);
   }
   else params.aobasis = strdup("NONE");
-  if(!strcmp(params.aobasis,"DISK")) params.delete_src_tei = 0;
+  if(!strcmp(params.aobasis,"DISK")) {
+    params.delete_src_tei = 0;
+  }
 
   if (!params.backtr) {
     errcod = ip_boolean("DELETE_AO", &(params.delete_src_tei),0);
@@ -474,11 +482,6 @@ void get_parameters(void)
   errcod = ip_boolean("LAGRAN_HALVE", &(params.lagran_halve),0);
  
 
-  errcod = ip_string("DERTYPE", &(params.dertype),0);
-  if(errcod == IPE_KEY_NOT_FOUND) {
-    params.dertype = (char *) malloc(sizeof(char)*5);
-    strcpy(params.dertype, "NONE");
-  }
 
   if ((strcmp(params.wfn, "OOCCD")==0 || strcmp(params.dertype, "FIRST")==0
        || strcmp(params.wfn, "DETCAS")==0) && !params.backtr) 
