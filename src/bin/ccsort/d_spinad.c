@@ -14,13 +14,10 @@ void d_spinad(void)
   if(params.ref == 0) { /*** RHF ***/
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
     dpd_buf4_scmcopy(&D, CC_DINTS, "D 2<ij|ab> - <ij|ba>", 2);
-    dpd_buf4_sort(&D, CC_TMP0, pqsr, 0, 5, "D <ij|ba>");
+    dpd_buf4_sort_axpy(&D, CC_DINTS, pqsr, 0, 5, "D 2<ij|ab> - <ij|ba>", -1);
     dpd_buf4_close(&D);
 
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D 2<ij|ab> - <ij|ba>");
-    dpd_buf4_init(&D1, CC_TMP0, 0, 0, 5, 0, 5, 0, "D <ij|ba>");
-    dpd_buf4_axpy(&D1, &D, -1);
-    dpd_buf4_close(&D1);
     dpd_buf4_sort(&D, CC_DINTS, prqs, 10, 10, "D 2<ij|ab> - <ij|ba> (ia,jb)");
     dpd_buf4_close(&D);
 
