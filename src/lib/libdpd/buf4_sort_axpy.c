@@ -706,24 +706,24 @@ int dpd_buf4_sort_axpy(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 
     /* r->p; s->q; p->r; q->s = rspq */
 
+    /* loop over row irreps of OutBuf */
     for(h=0; h < nirreps; h++) {
       r_irrep = h^my_irrep;
 	  
       for(pq=0; pq < OutBuf.params->rowtot[h]; pq++) {
-	p = OutBuf.params->roworb[h][pq][0];
-	q = OutBuf.params->roworb[h][pq][1];
+        p = OutBuf.params->roworb[h][pq][0];
+        q = OutBuf.params->roworb[h][pq][1];
 
-	col = InBuf->params->colidx[p][q];
+        col = InBuf->params->colidx[p][q];
 	  
-	for(rs=0; rs < OutBuf.params->coltot[r_irrep]; rs++) {
-	  r = OutBuf.params->colorb[r_irrep][rs][0];
-	  s = OutBuf.params->colorb[r_irrep][rs][1];
+        for(rs=0; rs < OutBuf.params->coltot[r_irrep]; rs++) {
+          r = OutBuf.params->colorb[r_irrep][rs][0];
+          s = OutBuf.params->colorb[r_irrep][rs][1];
 
-	  row = InBuf->params->rowidx[r][s];
-		  
-	  OutBuf.matrix[h][pq][rs] += alpha * InBuf->matrix[h][row][col];
-
-	}
+          row = InBuf->params->rowidx[r][s];
+  
+          OutBuf.matrix[h][pq][rs] += alpha * InBuf->matrix[r_irrep][row][col];
+        }
       }
     }
 
