@@ -52,7 +52,7 @@ struct den_info_s calc_density(struct coordinates geom){
     
     num_ao = BasisSet.num_ao;
     ndocc = MOInfo.ndocc;
-    temp_arr = init_array(ndocc);
+    temp_arr = init_array(num_ao);
     dist_atom = init_array(Molecule.num_atoms);
     dist_coord = (struct coordinates *)malloc(sizeof(struct coordinates)*Molecule.num_atoms);
     timer_on("distance");
@@ -216,7 +216,8 @@ timer_off("exponent");
     }
     /*for(i=0;i<num_ao;i++){
 	fprintf(outfile,"\nBasis[%d] = %10.10lf",i,DFT_options.basis[i]);
-	}*/
+    }
+    fprintf(outfile,"\n");*/
 	timer_off("basis"); 
     /* Now contract the basis functions with the AO density matrix elements */
    timer_on("density"); 
@@ -238,6 +239,7 @@ timer_off("exponent");
        den_info.den = den_sum;
         
     }
+   /*fprintf(outfile,"\ndensity = %10.10lf",den_info.den);*/
    free(temp_arr);
    timer_off("density");
    free(dist_coord);

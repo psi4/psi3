@@ -15,12 +15,15 @@
 
 #include"dft_init.h"
 #include"weighting.h"
+#include"calc_den_fast.h"
+#include"calc_den_new.h"
 #include"calc_den.h"
 #include"functional.h"
 #include"physconst.h"
 #include"grid_init.h"
 #include"dcr.h"
-
+#include"calc_close_basis.h"
+    
 void xc_fock(void){
   int i,j,k,l,m,n;
   int ua, atom, ua_deg;
@@ -41,6 +44,7 @@ void xc_fock(void){
   double r;
   double rind;
   double rpoints_double;
+  double ua_deg_d;
   double bragg;
   double qr;
   double drdq;
@@ -61,7 +65,8 @@ void xc_fock(void){
   double vval = 0.0;
   double eval = 0.0;
   double bas1,bas2;
-   
+  double vvalbas;
+  
   struct coordinates geom;
   struct den_info_s den_info;
   
@@ -78,9 +83,9 @@ void xc_fock(void){
       Go = block_matrix(num_ao,num_ao);
   timer_init();
   timer_on("DFT");
-
+  timer_on("grid_init");
   grid_init();
-  
+  timer_off("grid_init");
   /*-------------------------------------------------------
     Loop over symmetry-unique atoms only since integration
     domains around symm.-unique atoms are equivalent
@@ -96,7 +101,7 @@ void xc_fock(void){
 /*--- Cheap trick to get degeneracies of each unique atom ---*/
       
       ua_deg = atm_grd->atom_degen;
-     
+      ua_deg_d = (double) ua_deg;
 
       xa = atm_grd->atom_center.x;
       ya = atm_grd->atom_center.y;
@@ -106,8 +111,9 @@ void xc_fock(void){
       
       for(j=0;j<atm_grd->chunk_num;j++){
 	  chnk = &(atm_grd->leb_chunk[j]);
-	  
+	  calc_close_basis(ua,j);
 	  for(k=0;k<chnk->size;k++){
+	      
 	      sphr = &(chnk->spheres[k]);
 	  
 	      r = sphr->r*bragg;
@@ -133,8 +139,8 @@ void xc_fock(void){
 			Get the density information for this 
 			point
 			----------------------------------*/
-		      den_info = calc_density(geom);
-		      fprintf(outfile,"\nden = %10.10lf",den_info.den);
+		      /*den_info = calc_density_new(geom);*/
+		      den_info = calc_density_fast(geom);
 		      if(den_info.den > DEN_CUTOFF){
 			  /*-------------------------------------
 			    Weight from Lebedev
@@ -148,7 +154,7 @@ void xc_fock(void){
 			    point
 			    -----------------------------------*/
 		      
-			  den_val += 2.0*ua_deg*drdq*ang_quad
+			  den_val += 2.0*ua_deg_d*drdq*ang_quad
 			      *Becke_weight*den_info.den;
 			  
 			  exch_vfunc_val = DFT_options.
@@ -162,17 +168,17 @@ void xc_fock(void){
 			  corr_efunc_val = DFT_options.
 			      correlation_function(den_info);
 		      
-			  exch_vval = ua_deg*drdq*ang_quad
+			  exch_vval = ua_deg_d*drdq*ang_quad
 			      *Becke_weight*exch_vfunc_val;
-			  corr_vval = ua_deg*drdq*ang_quad
+			  corr_vval = ua_deg_d*drdq*ang_quad
 			      *Becke_weight*corr_vfunc_val;
 			  vval = exch_vval+corr_vval;
 			  
-			  exch_eval += ua_deg*drdq*ang_quad
+			  exch_eval += ua_deg_d*drdq*ang_quad
 			      *Becke_weight*exch_efunc_val;
-			  corr_eval += ua_deg*drdq*ang_quad
+			  corr_eval += ua_deg_d*drdq*ang_quad
 			      *Becke_weight*corr_efunc_val;
-			  eval += ua_deg*drdq*ang_quad
+			  eval += ua_deg_d*drdq*ang_quad
 			      *Becke_weight*(exch_efunc_val
 					     +corr_efunc_val);
 			  
@@ -181,13 +187,15 @@ void xc_fock(void){
 			  /*------------------------------------
 			    Update the G matrix
 			    -----------------------------------*/
+			  timer_on("FOCK");
 			  for(m=0;m<num_ao;m++){
-			      bas1 = DFT_options.basis[m];
-			      for(n=0;n<num_ao;n++){
+			      bas1 = vval*DFT_options.basis[m];
+			      for(n=m;n<num_ao;n++){
 				  bas2 = DFT_options.basis[n];
-				  G[m][n] += vval*bas1*bas2;
+				  G[m][n] += bas1*bas2;
 			      }
 			  }
+			  timer_off("FOCK");
 		      }
 		  }
 	      }
@@ -196,9 +204,17 @@ void xc_fock(void){
   }
   timer_off("DFT");
   timer_done();
+  
+  
   /*----------------------
-    Transform to SO basis
-    ----------------------*/
+    Unsort the Fock matrix
+    back to shell ordering
+    ---------------------*/
+  
+  
+/*----------------------
+  Transform to SO basis
+  ----------------------*/
   if (Symmetry.nirreps > 1 || BasisSet.puream) {
       tmpmat1 = block_matrix(Symmetry.num_so,BasisSet.num_ao);
       mmult(Symmetry.usotao,0,G,0,tmpmat1,0,Symmetry.num_so,BasisSet.num_ao,BasisSet.num_ao,0);

@@ -68,6 +68,8 @@ void init_uniform_con_grid(void){
 	    
 	    chnk->bf_close_to_chunk = 
 		(int *)malloc(sizeof(int)*BasisSet.num_ao);
+	    chnk->close_shells_per_am = 
+		(int *)malloc(sizeof(int)*BasisSet.num_ao);
 	}
     }
     return;

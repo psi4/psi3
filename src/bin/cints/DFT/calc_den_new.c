@@ -55,7 +55,8 @@ struct den_info_s calc_density_new(struct coordinates geom){
     ndocc = MOInfo.ndocc;
     temp_arr = init_array(ndocc);
     dist_atom = init_array(Molecule.num_atoms);
-    dist_coord = (struct coordinates *)malloc(sizeof(struct coordinates)*Molecule.num_atoms);
+    dist_coord = (struct coordinates *)
+	malloc(sizeof(struct coordinates)*Molecule.num_atoms);
     timer_on("distance");
     for(i=0;i<Molecule.num_atoms;i++){
         dist_coord[i].x = x-Molecule.centers[i].x;
@@ -66,8 +67,8 @@ struct den_info_s calc_density_new(struct coordinates geom){
 	    +dist_coord[i].z*dist_coord[i].z;
     }
     n_shells = BasisSet.num_shells;
-timer_off("distance");
-timer_on("basis");
+    timer_off("distance");
+    timer_on("basis");
     for(i=k=0;i<n_shells;i++){
         am2shell = BasisSet.am2shell[i];
 	shell_type = BasisSet.shells[am2shell].am;
@@ -89,7 +90,7 @@ timer_on("basis");
 	    coeff = BasisSet.cgtos[j].ccoeff[shell_type-1];
 	    bastmp += coeff*exp(expon*rr);
 	}
-timer_off("exponent");	
+	timer_off("exponent");	
 	/*----------------------------------
 	  Compute values of basis functions
 
@@ -215,35 +216,27 @@ timer_off("exponent");
 	    punt("");
 	}
     }
-    for(i=0;i<num_ao;i++){
-	fprintf(outfile,"\nBasis[%d] = %10.10lf",i,DFT_options.basis[i]);
-    }
-	timer_off("basis"); 
-    /* Now contract the basis functions with the AO density matrix elements */
-   timer_on("density"); 
     
-   if(UserOptions.reftype == rhf){
-       den_sum = 0.0;
-#if USE_BLAS
-       C_DGEMV('t',num_ao,ndocc,1.0,Cocc[0],ndocc,
-	       DFT_options.basis,1,0.0,temp_arr,1);
-       den_sum = C_DDOT(ndocc,temp_arr,1,temp_arr,1);
-#else
-       for(i=0;i<ndocc;i++){
-	   for(j=0;j<num_ao;j++){
-	       temp_arr[i] += Cocc[j][i]*DFT_options.basis[j];
-	   }
-       }
-       dot_arr(temp_arr,temp_arr,MOInfo.ndocc,&den_sum);
-#endif
-       den_info.den = den_sum;
-        
+    timer_off("basis"); 
+    
+/* Now contract the basis functions with the AO density matrix elements */
+    timer_on("density"); 
+    
+    if(UserOptions.reftype == rhf){
+	den_sum = 0.0;    
+	for(i=0;i<ndocc;i++){
+	    for(j=0;j<num_ao;j++){
+		temp_arr[i] += Cocc[j][i]*DFT_options.basis[j];
+	    }
+	}
+	dot_arr(temp_arr,temp_arr,MOInfo.ndocc,&den_sum);
+        den_info.den = den_sum;
     }
-   free(temp_arr);
-   timer_off("density");
-   free(dist_coord);
-   free(dist_atom);
-   return den_info;
+    free(temp_arr);
+    timer_off("density");
+    free(dist_coord);
+    free(dist_atom);
+    return den_info;
 }
 
 	

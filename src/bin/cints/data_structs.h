@@ -312,9 +312,9 @@ typedef struct{
 } leb_sphere_t;
 
 typedef struct{
+    int size;
     int radial_start;
     int radial_end;
-    int size;
     leb_sphere_t *spheres;
 } prim_leb_chunk_t;
 
@@ -328,11 +328,12 @@ typedef struct{
    ----------------------*/
 
 struct leb_chunk_s{
+    int size;
     int radial_start;
     int radial_end;
-    int size;
     leb_sphere_t *spheres;
     int *bf_close_to_chunk;
+    int *close_shells_per_am;
 };
 
 struct atomic_grid_s{
@@ -359,6 +360,7 @@ struct den_info_s{
     double dena;
     double denb;
 };
+
 
 typedef struct{
     int prtflag;                /* dft printing flag */

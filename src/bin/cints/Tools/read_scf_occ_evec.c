@@ -67,19 +67,20 @@ void read_scf_occ_evec(void)
 	fprintf(outfile,"\nSO Cmat");
 	print_mat(SO_cmat,num_so,num_mo,outfile);
       */
-      Cocc = block_matrix(num_ao,ndocc);
+      /*Cocc = block_matrix(num_ao,ndocc);
       mmult(Symmetry.usotao,1,SO_cmat,0,Cocc,0,num_ao,num_so,ndocc,0);
       free_block(SO_cmat);
-      
+      */
       /* ---------------------
 	 Order according to 
 	 angular momentum   
 	 --------------------*/
+      Cocc_un = block_matrix(num_ao,ndocc);
+      mmult(Symmetry.usotao,1,SO_cmat,0,Cocc_un,0,num_ao,num_so,ndocc,0);
+      free_block(SO_cmat);
       
-      /*Cocc = (double **)malloc(sizeof(double *)*num_ao);
-     
-      for(i=0;i<BasisSet.num_shells;i++)
-	  fprintf(outfile,"\nam2shell[%d] = %d",i,BasisSet.am2shell[i]);
+      Cocc = (double **)malloc(sizeof(double *)*num_ao);
+      
       k=0;
       for(i=0;i<BasisSet.num_shells;i++){
 	  bas_off = BasisSet.am2shell[i];
@@ -87,13 +88,11 @@ void read_scf_occ_evec(void)
 	  shell_start = BasisSet.shells[bas_off].fao-1;
 	  shell_end = shell_start+ioff[shell_type]; 
 	  for(j=shell_start;j<shell_end;j++){
-	      fprintf(outfile,"\ni = %d k = %d j = %d shell_start = %d shell_end = %d",i,k,j,shell_start,shell_end);
 	      Cocc[k]=Cocc_un[j];
 	      k++;
 	  }
-	  }*/
-      /*print_mat(Cocc,num_ao,ndocc,outfile);
-	print_mat(Cocc_un,num_ao,ndocc,outfile);*/
+      }
+      
       /*--------------------------
 	Remove after done testing
 	--------------------------*/   
