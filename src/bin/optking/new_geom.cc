@@ -162,7 +162,7 @@ void new_geom(cartesians &carts, internals &simples, salc_set &symm,
   }
 
   free(masses);
-  free(q); free(dq); free(new_q);
+  free(q); free(new_q);
   free(x); free(dx); free(new_x);
   free_matrix(A,dim_carts);
   free_matrix(G,symm.get_num());
