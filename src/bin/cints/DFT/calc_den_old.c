@@ -21,7 +21,8 @@
 #define EXTERN
 #include"global.h"
 
-struct den_info_s calc_density(struct coordinates geom){
+struct den_info_s calc_density_old(struct coordinates geom){
+
     
     int i,j,k;
     int si,sj;
@@ -223,7 +224,7 @@ timer_off("exponent");
    timer_on("density"); 
     if(UserOptions.reftype == rhf){
 	den_sum = 0.0;
-/*	for(si=0;si<n_shells;si++){
+	for(si=0;si<n_shells;si++){
 	    si_n_ao = ioff[BasisSet.shells[si].am];
 	    starti = BasisSet.shells[si].fao-1;
 	    for(sj=0;sj<n_shells;sj++){
@@ -239,13 +240,6 @@ timer_off("exponent");
 		    }
 	    }
 	    
-	    }*/
-	for(i=0;i<BasisSet.num_ao;i++){
-	    bas1 = DFT_options.basis[i];
-	    for(j=0;j<BasisSet.num_ao;j++){
-		bas2 = DFT_options.basis[j];
-		den_sum += Dens[i][j]*bas1*bas2;
-	    }
 	}
 	den_info.den = 0.5*den_sum;
     }

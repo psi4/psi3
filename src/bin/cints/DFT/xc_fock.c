@@ -7,6 +7,7 @@
 #include<psio.h>
 #include<libint.h>
 #include<pthread.h>
+#include<qt.h>
 
 #include"defines.h"
 #define EXTERN
@@ -51,6 +52,7 @@ void xc_fock(void){
   double vval;
   double eval = 0.0;
   double bas1,bas2;
+  int point_count =0;
     
   struct den_info_s den_info;
 
@@ -64,7 +66,8 @@ void xc_fock(void){
   G = block_matrix(num_ao,num_ao);
   if(UserOptions.reftype == uhf)
       Go = block_matrix(num_ao,num_ao);
-  
+  timer_init();
+  timer_on("DFT");
   /* Must set the Bragg-Slater radii */
   DFT_options.bragg = init_array(Molecule.num_atoms);
   
@@ -111,50 +114,54 @@ void xc_fock(void){
 		Calculate the weighting funtion 
 		----------------------------------*/
 	      Becke_weight = weight_calc(i,geom,3);
-	      
+	      if(Becke_weight > 10E-10){
 	      /*-----------------------------------
 		Get the density information for this 
 		point
 		----------------------------------*/
-	      
-	      den_info = calc_density(geom);
-	      
-	      /*-------------------------------------
-		Weight from Lebedev
-		-----------------------------------*/
-	      
-	      ang_quad = DFT_options.grid_info[0].leb_point[k].ang_quad_weight;
-	      
-	      /*------------------------------------
-		Calculate the potential functional
-		and energy functional at this
-		point
-		-----------------------------------*/
-	      
-	      vfunc_val = DFT_options.exchange_V_function(den_info)
-		  +DFT_options.correlation_V_function(den_info);
-	      
-	      efunc_val = DFT_options.exchange_function(den_info)
-		  + DFT_options.correlation_function(den_info);
-	      
-	      vval = drdq*ang_quad*Becke_weight*vfunc_val;
-	      eval += drdq*ang_quad*Becke_weight*efunc_val;
-	      
-	      /* ------------------------------------
-		 Update the G matrix
-		 -----------------------------------*/
-	      
-	      for(m=0;m<num_ao;m++){
-		  bas1 = DFT_options.basis[m];
-		  for(n=0;n<num_ao;n++){
-		      bas2 = DFT_options.basis[n];
-		      G[m][n] += vval*bas1*bas2;
-		  }
-	      }
+		  
+		  den_info = calc_density(geom);
+		  if(den_info.den > 1.0E-10){
+		      point_count++;
+		      /*-------------------------------------
+			Weight from Lebedev
+			-----------------------------------*/
+		      
+		      ang_quad = DFT_options.grid_info[0].leb_point[k].ang_quad_weight;
+		      
+		      /*------------------------------------
+			Calculate the potential functional
+			and energy functional at this
+			point
+			-----------------------------------*/
+		      
+		      vfunc_val = DFT_options.exchange_V_function(den_info)
+			  +DFT_options.correlation_V_function(den_info);
+		      
+		      efunc_val = DFT_options.exchange_function(den_info)
+			  + DFT_options.correlation_function(den_info);
+		      
+		      vval = drdq*ang_quad*Becke_weight*vfunc_val;
+		      eval += drdq*ang_quad*Becke_weight*efunc_val;
+		      
+		      /* ------------------------------------
+			 Update the G matrix
+			 -----------------------------------*/
+		      
+		      for(m=0;m<num_ao;m++){
+			  bas1 = DFT_options.basis[m];
+			  for(n=0;n<num_ao;n++){
+			      bas2 = DFT_options.basis[n];
+			      G[m][n] += vval*bas1*bas2;
+			  }
+		      }
 	  }
       }
   }
-  
+}
+  }
+  timer_off("DFT");
+  timer_done();
   /*----------------------
     Transform to SO basis
     ----------------------*/
@@ -215,7 +222,7 @@ void xc_fock(void){
   }
   free(DFT_options.basis);
   psio_close(IOUnits.itapDSCF, 1);
-
+  printf("\npoint_count = %d",point_count);
   return;
 }
 
