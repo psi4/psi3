@@ -85,11 +85,12 @@ void rotate_orbs(void);
 
 
 /* GLOBAL VARIABLES (other modules load these via globals.h) */
-
-struct calcinfo CalcInfo;
-struct params Params;
-int *ioff;
-FILE *infile, *outfile;
+extern "C" {
+  struct calcinfo CalcInfo;
+  struct params Params;
+  int *ioff;
+  FILE *infile, *outfile;
+}
 IndepPairs IndPairs;
 
 

@@ -8,6 +8,7 @@
 ** April 1998
 */
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <libciomr.h>
 #include <ip_libv1.h>
