@@ -1,18 +1,18 @@
 ******************************************************************************
-tstart called on lynx.chem.vt.edu
-Tue Mar  8 08:34:16 2005
+tstart called on syrma.giga.net
+Thu Jun 10 13:26:51 2004
 
                                 --------------
                                   WELCOME TO
                                     PSI  3
                                 --------------
 
-  LABEL       =	CC2 H2O Test
+  LABEL       =	CC3 H2O Test
   SHOWNORM    =	0
   PUREAM      =	0
   PRINT_LVL   =	1
 
-  Parsed basis sets from /usr/local/psi3/lynx/share/pbasis.dat
+  Parsed basis sets from /home/users/crawdad/psi3/xeon/share/pbasis.dat
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
@@ -143,15 +143,15 @@ Tue Mar  8 08:34:16 2005
 
 
 ******************************************************************************
-tstop called on lynx.chem.vt.edu
-Tue Mar  8 08:34:17 2005
+tstop called on syrma.giga.net
+Thu Jun 10 13:26:51 2004
 
-user time   =       0.03 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on lynx.chem.vt.edu
-Tue Mar  8 08:34:17 2005
+tstart called on syrma.giga.net
+Thu Jun 10 13:26:53 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -167,7 +167,7 @@ Tue Mar  8 08:34:17 2005
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = CC2 H2O Test
+    Label                       = CC3 H2O Test
     Number of atoms             = 3
     Number of atomic orbitals   = 25
     Number of symmetry orbitals = 24
@@ -180,15 +180,15 @@ Tue Mar  8 08:34:17 2005
     Wrote 11412 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on lynx.chem.vt.edu
-Tue Mar  8 08:34:17 2005
+tstop called on syrma.giga.net
+Thu Jun 10 13:26:53 2004
 
-user time   =       0.07 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.36 seconds =       0.01 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on lynx.chem.vt.edu
-Tue Mar  8 08:34:17 2005
+tstart called on syrma.giga.net
+Thu Jun 10 13:26:54 2004
 
 
              ------------------------------------------
@@ -198,8 +198,8 @@ Tue Mar  8 08:34:17 2005
               Written by too many people to mention here
 
              ------------------------------------------
-  label        = CC2 H2O Test
-  wfn          = CC2
+  label        = CC3 H2O Test
+  wfn          = CC3
   reference    = RHF
   multiplicity = 1
   charge       = 0
@@ -240,14 +240,14 @@ Tue Mar  8 08:34:17 2005
     6       -76.0240334344    9.555784e-05    3.429742e-04    3.895688e-03
     7       -76.0240384139    4.979483e-06    7.594723e-05    9.911724e-04
     8       -76.0240384904    7.654180e-08    1.028407e-05    1.377556e-04
-    9       -76.0240385110    2.064395e-08    4.648086e-06    4.643816e-05
-   10       -76.0240385115    4.543494e-10    7.194098e-07    5.884072e-06
-   11       -76.0240385115    1.857359e-11    1.722826e-07    2.037699e-06
-   12       -76.0240385115    6.963319e-13    3.188073e-08    2.840313e-07
-   13       -76.0240385115   -1.421085e-14    4.703867e-09    5.048888e-08
-   14       -76.0240385115   -1.421085e-14    5.949949e-10    5.096651e-09
-   15       -76.0240385115    1.421085e-14    1.118589e-10    8.155663e-10
-   16       -76.0240385115    2.842171e-14    1.347577e-11    1.359682e-10
+    9       -76.0240385110    2.064394e-08    4.648086e-06    4.643816e-05
+   10       -76.0240385115    4.542926e-10    7.194098e-07    5.884072e-06
+   11       -76.0240385115    1.864464e-11    1.722826e-07    2.037699e-06
+   12       -76.0240385115    6.679102e-13    3.188073e-08    2.840313e-07
+   13       -76.0240385115    4.263256e-14    4.703867e-09    5.048888e-08
+   14       -76.0240385115   -4.263256e-14    5.949950e-10    5.096652e-09
+   15       -76.0240385115    1.421085e-14    1.118589e-10    8.155662e-10
+   16       -76.0240385115    0.000000e+00    1.347582e-11    1.359686e-10
 
 Orbital energies (a.u.):
 
@@ -268,21 +268,21 @@ Orbital energies (a.u.):
 
         SCF total energy   =     -76.024038511513
         kinetic energy     =      75.911628750104
-        nuc. attr. energy  =    -198.751247114041
-        elec. rep. energy  =      46.815579852424
+        nuc. attr. energy  =    -198.751247114040
+        elec. rep. energy  =      46.815579852423
         potential energy   =    -151.935667261617
         virial theorem     =       1.998521391870
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on lynx.chem.vt.edu
-Tue Mar  8 08:34:17 2005
+tstop called on syrma.giga.net
+Thu Jun 10 13:26:54 2004
 
-user time   =       0.00 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on lynx.chem.vt.edu
-Tue Mar  8 08:34:18 2005
+tstart called on syrma.giga.net
+Thu Jun 10 13:27:10 2004
 
 
 	**************************************************
@@ -295,7 +295,7 @@ Tue Mar  8 08:34:18 2005
 
 	Input Parameters:
 	-----------------
-	Wavefunction           =  CC2
+	Wavefunction           =  CC3
 	Reference orbitals     =  RHF
 	Backtrans              =  No
 	Print MOs              =  No
@@ -369,15 +369,15 @@ Tue Mar  8 08:34:18 2005
 	One-electron integrals written to file 35.
 	Frozen-core operator written to file 35.
 ******************************************************************************
-tstop called on lynx.chem.vt.edu
-Tue Mar  8 08:34:19 2005
+tstop called on syrma.giga.net
+Thu Jun 10 13:27:12 2004
 
-user time   =       0.14 seconds =       0.00 minutes
-system time =       0.95 seconds =       0.02 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.08 seconds =       0.00 minutes
+system time =       1.56 seconds =       0.03 minutes
+total time  =          2 seconds =       0.03 minutes
 ******************************************************************************
-tstart called on lynx.chem.vt.edu
-Tue Mar  8 08:34:19 2005
+tstart called on syrma.giga.net
+Thu Jun 10 13:27:12 2004
 
 
 			**************************
@@ -389,7 +389,7 @@ Tue Mar  8 08:34:19 2005
 
 	Input parameters:
 	-----------------
-	Wave function   =	CC2
+	Wave function   =	CC3
 	Reference wfn   =	RHF
 	Derivative      =	None
 	Memory (Mbytes) =	256.0
@@ -414,32 +414,29 @@ Tue Mar  8 08:34:19 2005
 	 B2 	   7	    0	    1	    0	    6	    0
 
 	Nuclear Rep. energy (chkpt) =      9.00935422966267
-	SCF energy          (chkpt) =    -76.02403851151263
+	SCF energy          (chkpt) =    -76.02403851151321
 
 	Size of <ab|cd> integrals:     0.013 (MW) /     0.102 (MB)
-	No. of <vv|vv> allowed in memory:      2506 
 	Size of <ia|bc> integrals:     0.004 (MW) /     0.030 (MB)
-	No. of <ov|vv> allowed in memory:      8581 
 	Size of Tijab amplitudes:      0.001 (MW) /     0.010 (MB)
-	A cachelevel of 4 is suggested.
 
-	One-electron energy          =   -122.83961836393642
-	Two-electron (AA) energy     =     14.42439697027549
-	Two-electron (BB) energy     =     14.42439697027549
-	Two-electron (AB) energy     =     23.38182865248564
-	Two-electron energy          =     37.80622562276113
+	One-electron energy          =   -122.83961836393622
+	Two-electron (AA) energy     =     14.42439697027515
+	Two-electron (BB) energy     =     14.42439697027515
+	Two-electron (AB) energy     =     23.38182865248518
+	Two-electron energy          =     37.80622562276033
 	Frozen-core energy (transqt) =      0.00000000000000
-	Reference energy             =    -76.02403851151263
+	Reference energy             =    -76.02403851151323
 ******************************************************************************
-tstop called on lynx.chem.vt.edu
-Tue Mar  8 08:34:19 2005
+tstop called on syrma.giga.net
+Thu Jun 10 13:27:12 2004
 
-user time   =       0.03 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.08 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on lynx.chem.vt.edu
-Tue Mar  8 08:34:19 2005
+tstart called on syrma.giga.net
+Thu Jun 10 13:27:12 2004
 
 			**************************
 			*                        *
@@ -448,12 +445,12 @@ Tue Mar  8 08:34:19 2005
 			**************************
 
 	Nuclear Rep. energy (chkpt)   =    9.009354229662666
-	SCF energy          (chkpt)   =  -76.024038511512629
-	Reference energy    (file100) =  -76.024038511512629
+	SCF energy          (chkpt)   =  -76.024038511513211
+	Reference energy    (file100) =  -76.024038511513226
 
 	Input parameters:
 	-----------------
-	Wave function   =       CC2
+	Wave function   =       CC3
 	Reference wfn   =      RHF
 	Memory (Mbytes) =  256.0
 	Maxiter         =     50
@@ -468,62 +465,62 @@ Tue Mar  8 08:34:19 2005
 	# Amps to Print =    10
 	Print MP2 Amps? =    No
 	Analyze T2 Amps =    No
-	Print Pair Ener =    No
 
-	            Solving CC Amplitude Equations
-	            ------------------------------
+	                     Solving CCSD Equations
+	                     ----------------------
   Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
   ----     ---------------------    ---------   ----------  ----------  ----------
-     0        -0.204690005384254    0.000e+00    0.000000    0.000000    0.000000
-     1        -0.204682498798850    1.296e-02    0.004097    0.008642    0.008642
-     2        -0.205493344486315    3.455e-03    0.004956    0.010294    0.010294
-     3        -0.205580695460363    1.234e-03    0.005350    0.011148    0.011148
-     4        -0.205565233261032    4.154e-04    0.005428    0.011556    0.011556
-     5        -0.205566618446339    1.359e-04    0.005463    0.011732    0.011732
-     6        -0.205567276277400    1.878e-05    0.005463    0.011739    0.011739
-     7        -0.205567277263237    3.378e-06    0.005463    0.011740    0.011740
-     8        -0.205567278582523    6.837e-07    0.005463    0.011740    0.011740
-     9        -0.205567280139561    1.343e-07    0.005463    0.011740    0.011740
-    10        -0.205567280635605    2.703e-08    0.005463    0.011740    0.011740
+     0        -0.204690005384275    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.212564207003199    2.781e-02    0.003598    0.007561    0.007561
+     2        -0.216986916913856    1.023e-02    0.004766    0.010065    0.010065
+     3        -0.217205216621119    2.238e-03    0.005153    0.011255    0.011255
+     4        -0.217234524409104    6.156e-04    0.005230    0.011619    0.011619
+     5        -0.217238426691868    1.950e-04    0.005266    0.011787    0.011787
+     6        -0.217235476533302    6.010e-05    0.005276    0.011839    0.011839
+     7        -0.217235576813635    1.545e-05    0.005279    0.011855    0.011855
+     8        -0.217235377484535    2.814e-06    0.005280    0.011856    0.011856
+     9        -0.217235381736471    5.953e-07    0.005280    0.011857    0.011857
+    10        -0.217235383854135    1.269e-07    0.005280    0.011857    0.011857
+    11        -0.217235382059811    2.245e-08    0.005280    0.011857    0.011857
 
 	Iterations converged.
 
 
 	Largest TIA Amplitudes:
-	          2   0        -0.0089629780
-	          4  17         0.0074420164
-	          4  13        -0.0059592668
-	          2   5        -0.0050496339
-	          4  15         0.0047108597
-	          1   2         0.0041382128
-	          3  10        -0.0035794540
-	          3  11         0.0032944679
-	          1   0         0.0032147063
-	          2   3         0.0028168813
+	          2   0        -0.0082153205
+	          4  17         0.0069222111
+	          4  13        -0.0054869392
+	          2   5        -0.0046346738
+	          1   2         0.0040746240
+	          4  15         0.0040000055
+	          2   1        -0.0039307471
+	          1   0         0.0036988407
+	          3  11         0.0031298705
+	          2   3         0.0030709183
 
 	Largest TIjAb Amplitudes:
-	  3   3  10  10        -0.0473652111
-	  2   2   2   2        -0.0350775971
-	  2   3   2  10         0.0306163633
-	  3   2  10   2         0.0306163633
-	  4   4  14  14        -0.0302856571
-	  4   4  13  13        -0.0276354775
-	  4   4   1   1        -0.0258309011
-	  3   4  10  13        -0.0236598399
-	  4   3  13  10        -0.0236598399
-	  3   4  10  15        -0.0225643753
+	  3   3  10  10        -0.0517373280
+	  2   2   2   2        -0.0380822743
+	  4   4  14  14        -0.0370377675
+	  4   4   1   1        -0.0318786306
+	  4   4  13  13        -0.0313664137
+	  2   3   2  10         0.0300367798
+	  3   2  10   2         0.0300367798
+	  2   2  14  14        -0.0258547842
+	  2   4  14   1        -0.0232217909
+	  4   2   1  14        -0.0232217909
 
-	SCF energy       (chkpt)   =  -76.024038511512629
-	Reference energy (file100) =  -76.024038511512629
-	MP2 correlation energy     =   -0.204690005384254
-	Total MP2 energy           =  -76.228728516896879
-	CC2 correlation energy     =   -0.205567280635605
-	Total CC2 energy           =  -76.229605792148234
+	SCF energy       (chkpt)   =  -76.024038511513211
+	Reference energy (file100) =  -76.024038511513226
+	MP2 correlation energy     =   -0.204690005384275
+	Total MP2 energy           =  -76.228728516897505
+	CC3 correlation energy     =   -0.217235382059811
+	Total CC3 energy           =  -76.241273893573037
 
 ******************************************************************************
-tstop called on lynx.chem.vt.edu
-Tue Mar  8 08:34:20 2005
+tstop called on syrma.giga.net
+Thu Jun 10 13:27:22 2004
 
-user time   =       0.25 seconds =       0.00 minutes
-system time =       0.27 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       9.86 seconds =       0.16 minutes
+system time =       0.41 seconds =       0.01 minutes
+total time  =         10 seconds =       0.17 minutes
