@@ -1,0 +1,542 @@
+******************************************************************************
+tstart called on tool.chemistry.gatech.edu
+Thu Jul  3 18:14:34 2003
+
+                                --------------
+                                  WELCOME TO
+                                    PSI  3
+                                --------------
+
+  LABEL       =	6-31G** SCF H2O
+  SHOWNORM    =	0
+  PUREAM      =	0
+  PRINT_LVL   =	1
+
+  -Geometry before Center-of-Mass shift (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.000000000000
+        HYDROGEN      0.000000000000     0.000000000000     1.889725988579
+        HYDROGEN      1.840547697619     0.000000000000    -0.428308866009
+
+
+  -Rotational constants (cm-1) :
+    A =   24.35463  B =   13.63610  C =    8.74166
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000    -0.131510165098     0.000000000000
+        HYDROGEN      1.479940996653     1.043580877476     0.000000000000
+        HYDROGEN     -1.479940996653     1.043580877476     0.000000000000
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S (  5484.67166000     0.00183107)
+           (   825.23494600     0.01395017)
+           (   188.04695800     0.06844508)
+           (    52.96450000     0.23271434)
+           (    16.89757040     0.47019290)
+           (     5.79963534     0.35852085) )
+        (S (    15.53961625    -0.11077755)
+           (     3.59993359    -0.14802626)
+           (     1.01376175     1.13076701) )
+        (S (     0.27000582     1.00000000) )
+        (P (    15.53961625     0.07087427)
+           (     3.59993359     0.33975284)
+           (     1.01376175     0.72715858) )
+        (P (     0.27000582     1.00000000) )
+        (D (     0.80000000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    18.73113696     0.03349460)
+           (     2.82539437     0.23472695)
+           (     0.64012169     0.81375733) )
+        (S (     0.16127776     1.00000000) )
+        (P (     1.10000000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 12
+    Number of primitives   = 20
+    Number of AO           = 25
+    Number of SO           = 25
+
+    Irrep    Number of SO
+    -----    ------------
+      1           12
+      2            2
+      3            4
+      4            7
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.131510165098
+        HYDROGEN      0.000000000000     1.479940996653     1.043580877476
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.131510165098
+        HYDROGEN      0.000000000000     1.479940996653     1.043580877476
+        HYDROGEN      0.000000000000    -1.479940996653     1.043580877476
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.069592187382
+        HYDROGEN      0.000000000000     0.783151105291     0.552239257852
+        HYDROGEN      0.000000000000    -0.783151105291     0.552239257852
+
+
+  -Geometry in the reference coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.131510165098
+        HYDROGEN      0.000000000000     1.479940996653     1.043580877476
+        HYDROGEN      0.000000000000    -1.479940996653     1.043580877476
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       8.804687290999
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   1.0000000   0.0000000
+    3   1.0000000   1.5663022   0.0000000
+
+
+******************************************************************************
+tstop called on tool.chemistry.gatech.edu
+Thu Jul  3 18:14:34 2003
+
+user time   =       0.10 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on tool.chemistry.gatech.edu
+Thu Jul  3 18:14:36 2003
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O                                                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+    Wrote 13617 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on tool.chemistry.gatech.edu
+Thu Jul  3 18:14:36 2003
+
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on tool.chemistry.gatech.edu
+Thu Jul  3 18:14:36 2003
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+
+  label       = 6-31G** SCF H2O
+  wfn          = SCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = NONE
+  convergence  = 7
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        8.8046872909987
+  first run, so defaulting to core-hamiltonian guess
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.424690e-02
+
+  Using core guess to determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 6516 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -68.3548843162    7.715957e+01    0.000000e+00    0.000000e+00
+    2       -71.3777628421    3.022879e+00    1.130296e-01    1.175783e+00
+    3       -75.8581629361    4.480400e+00    1.037941e-01    8.860959e-01
+    4       -75.9956701999    1.375073e-01    5.906119e-03    2.044394e-01
+    5       -76.0169750721    2.130487e-02    1.931266e-03    1.024212e-01
+    6       -76.0172760736    3.010015e-04    2.842273e-04    9.429688e-03
+    7       -76.0172962933    2.021965e-05    7.939114e-05    2.474006e-03
+    8       -76.0172965444    2.510913e-07    9.894937e-06    1.856559e-04
+    9       -76.0172965714    2.696443e-08    3.411769e-06    8.255086e-05
+   10       -76.0172965718    4.839507e-10    3.849065e-07    1.190427e-05
+   11       -76.0172965718    5.911716e-12    4.827812e-08    9.566678e-07
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.568998     2A1     -1.320609     1B2     -0.678724  
+   3A1     -0.563930     1B1     -0.495003  
+
+
+  Unoccupied orbitals
+   4A1      0.202466     2B2      0.292719     3B2      0.981164  
+   5A1      1.056318     6A1      1.129180     2B1      1.168639  
+   4B2      1.294986     7A1      1.413596     1A2      1.802875  
+   8A1      1.806917     3B1      1.918872     9A1      2.513249  
+   5B2      2.537822     6B2      2.713578     2A2      2.921065  
+   4B1      2.947486    10A1      3.291755    11A1      3.620731  
+   7B2      3.874917    12A1      4.077741  
+
+
+        SCF total energy   =     -76.017296571840
+        kinetic energy     =      75.657176480828
+        nuc. attr. energy  =    -198.046606262313
+        elec. rep. energy  =      46.372133209644
+        potential energy   =    -151.674473052669
+        virial theorem     =       1.995262655905
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on tool.chemistry.gatech.edu
+Thu Jul  3 18:14:36 2003
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on tool.chemistry.gatech.edu
+Thu Jul  3 18:14:42 2003
+
+    **********************************************
+    *                    OEPROP                  *
+    *          A simple property program         *
+    *              by a big TOOL fan             *
+    **********************************************
+
+
+  TASKS to be performed :
+    $One-particle density will be computed from the eigenvector in checkpoint.
+    $Electric dipole, quadrupole, and octopole moments will be computed.
+    $Reference point for the electric multipole moments calculation is 
+      the center of mass.
+    $Reference point for the electric angular momentum calculation is 
+      at (0.000000 0.000000 0.000000)
+    $Electrostatic properties at the nuclei will be evaluated.
+will be evaluated over a rectangular 40x40 grid.
+
+  Title : '6-31G** SCF H2O                                                                 '
+
+  List of PARAMETERS :
+    # of atoms                 =	3
+    # of molecular orbitals    =	25
+    # of basis functions       =	25
+    # of atomic orbitals       =	25
+    # of irreps                =	4
+    Total charge               =	0
+    # of unique shells         =	12
+    # of primitives            =	20
+    Print level                =	1
+
+  List of GRID PARAMETERS :
+    GRID_ORIGIN                =	( -4.00000 -4.00000 -4.00000 )
+    GRID_STEP_X                =	(  0.20513  0.00000  0.00000 )
+    GRID_STEP_Y                =	(  0.00000  0.20513  0.00000 )
+    GRID_STEP_Z                =	(  0.00000  0.00000  0.20513 )
+    NIX                        =	  40
+    NIY                        =	  40
+    NIZ                        =	  40
+
+ --------------------------------------------------------------
+   ** Mulliken population analysis of one-particle density **
+ --------------------------------------------------------------
+
+ -Gross orbital populations :
+
+  Center   AO          L          Q(AO)
+  ------  ----        ---      -----------
+     1      1          0        1.99546097
+     1      2          0        0.90536020
+     1      3          0        0.91192851
+     1      4          1        1.14764460
+     1      5          1        0.77862789
+     1      6          1        0.91698335
+     1      7          1        0.83243731
+     1      8          1        0.49607745
+     1      9          1        0.66326399
+     1     10          2        0.00472906
+     1     11          2        0.00000000
+     1     12          2        0.00191567
+     1     13          2        0.01003172
+     1     14          2        0.01425632
+     1     15          2        0.00449155
+     2     16          0        0.46371916
+     2     17          0        0.15715195
+     2     18          1        0.00900121
+     2     19          1        0.01610324
+     2     20          1        0.01242015
+     3     21          0        0.46371916
+     3     22          0        0.15715195
+     3     23          1        0.00900121
+     3     24          1        0.01610324
+     3     25          1        0.01242015
+
+
+ -Atomic bond populations :
+
+           1           2           3
+
+    1   7.0949687   0.2932585   0.2932585
+    2   0.2932585   0.3216917  -0.0234583
+    3   0.2932585  -0.0234583   0.3216917
+
+
+ -Gross atomic populations and net charges :
+
+    Center    Atomic Population    Net Charge
+    ------    -----------------    ----------
+       1            8.683209        -0.683209
+       2            0.658396        +0.341604
+       3            0.658396        +0.341604
+
+
+ --------------------------------------------------------------
+                *** Electric multipole moments ***
+ --------------------------------------------------------------
+
+  CAUTION : The system has non-vanishing dipole moment, therefore
+    quadrupole and higher moments depend on the reference point.
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000         -0.0000000000         -0.0000000000
+
+ -Electric dipole moment (expectation values) :
+
+    mu(X)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
+    mu(Y)  =  -0.00000 D  =  -9.41286816e-45 C*m  =  -0.00000000 a.u.
+    mu(Z)  =   2.24145 D  =   7.47667986e-30 C*m  =   0.88185471 a.u.
+    |mu|   =   2.24145 D  =   7.47667986e-30 C*m  =   0.88185471 a.u.
+
+ -Components of electric quadrupole moment (expectation values) (a.u.) :
+
+     Q(XX) =   -1.76092233   Q(YY) =    1.75857095   Q(ZZ) =    0.00235138
+     Q(XY) =    0.00000000   Q(XZ) =    0.00000000   Q(YZ) =    0.09791257
+
+ -Principal values (a.u.) and axis of electric quadrupole moment :
+
+    Q1     =   -1.76092233      V1 = ( 1.00000000  0.00000000  0.00000000)
+    Q2     =   -0.00309057      V2 = ( 0.00000000 -0.05549403  0.99845902)
+    Q3     =    1.76401290      V3 = ( 0.00000000 -0.99845902 -0.05549403)
+
+ -Components of electric octopole moment (expectation values) (a.u.) :
+
+    O(XXX) =    0.00000000  O(XXY) =    0.00000000  O(XXZ) =   -1.39735155
+    O(YYY) =   -0.00000000  O(XYY) =    0.00000000  O(YYZ) =    3.34015457
+    O(ZZZ) =   -1.94280302  O(XZZ) =    0.00000000  O(YZZ) =    0.00000000
+                            O(XYZ) =    0.00000000 
+
+
+ --------------------------------------------------------------
+              *** Electronic angular momentum ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000          0.0000000000          0.0000000000
+
+ -Electronic angular momentum (expectation values) :
+
+    Lx  =   0.00000000 a.u.
+    Ly  =   0.00000000 a.u.
+    Lz  =   0.00000000 a.u.
+    Lx^2 =  0.00000000 a.u.
+    Ly^2 =  0.00000000 a.u.
+    Lz^2 =  0.00000000 a.u.
+    L^2 =   0.00000000 a.u.
+
+
+ --------------------------------------------------------------
+      *** Electrostatic  properties at atomic centers ***
+ --------------------------------------------------------------
+
+ -Coordinates of atomic centers (a.u.):
+    #   Charge           x                     y                     z
+   ---  ------  --------------------  --------------------  --------------------
+    1      8            0.0000000000          0.0000000000         -0.1315101651
+    2      1            0.0000000000          1.4799409967          1.0435808775
+    3      1            0.0000000000         -1.4799409967          1.0435808775
+
+
+ -Electrostatic potential and electric field (a.u.) :
+
+    Center         phi            Ex             Ey           Ez
+    ------    ------------   ------------  ------------  ------------
+       1      -22.30375315     0.00000000   -0.00000000   -0.11900142
+       2       -1.00360324     0.00000000   -0.03191577   -0.03315459
+       3       -1.00360324     0.00000000    0.03191577   -0.03315459
+
+
+ -Electric field gradient (regular form) (a.u.):
+
+    Center           XX                    YY                    ZZ
+    ------  --------------------  --------------------  --------------------
+       1          -1214.68596459        -1218.42231060        -1217.05544729
+       2             -1.34576666           -1.73327541           -1.60376479
+       3             -1.34576666           -1.73327541           -1.60376479
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000           -0.00000000
+       2              0.00000000            0.00000000            1.48137886
+       3              0.00000000            0.00000000           -1.48137886
+
+
+ -Electric field gradient (traceless tensor form) (a.u.):
+
+    Center        XX - RR/3             YY - RR/3             ZZ - RR/3
+    ------  --------------------  --------------------  --------------------
+       1              2.03527623           -1.70106977           -0.33420646
+       2              0.21516896           -0.17233979           -0.04282917
+       3              0.21516896           -0.17233979           -0.04282917
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000           -0.00000000
+       2              0.00000000            0.00000000            1.48137886
+       3              0.00000000            0.00000000           -1.48137886
+
+
+ -Electron density (a.u.):
+
+    Center           rho
+    ------  --------------------
+       1            290.47079976
+       2              0.37264593
+       3              0.37264593
+
+
+ --------------------------------------------------------------
+    *** Evaluating properties over a rectangular 3D grid ***
+ --------------------------------------------------------------
+
+ -Coordinates of the lower left and upper right corners of
+  the grid box (a.u.):
+    **            x                     y                     z
+   ----  --------------------  --------------------  --------------------
+    LL          -4.0000000000         -4.0000000000         -4.0000000000
+    UR           4.0000000000          4.0000000000          4.0000000000
+ --------------------------------------------------------------
+                *** Miscellaneous properties ***
+ --------------------------------------------------------------
+
+ -Relativistic MVD one-electron corrections to the energy (a.u.):
+
+    Mass-velocity (p^4) term     :    -0.24538837
+    One-electron Darwin term     :     0.19443853
+    Total one-electron MVD terms :    -0.05094984
+
+
+  NOTE : Spatial extents are computed with respect to the same reference point
+         as multipole moments.
+
+ -Electronic spatial extents (a.u.) :
+
+     <X^2> =       5.3981    <Y^2> =       7.4322    <Z^2> =       6.5390
+                             <R^2> =      19.3693
+
+ -Orbital spatial extents of MOs in checkpoint (a.u.) :
+
+    MO #   Symm     <X^2>        <Y^2>        <Z^2>        <R^2>
+   ------  ----  -----------  -----------  -----------  -----------
+      2     A1       0.5041       0.7356       0.6173       0.0705
+      3     A1       0.4626       0.6907       1.4658       1.8570
+      4     A1       1.7784       5.1551       3.9671       2.6191
+      5     A1       0.9059       2.9915       1.9627      10.9006
+      6     A1       1.1214       1.3495       2.7994       5.8601
+      7     A1       1.6975       1.7126       1.8390       5.2703
+      8     A1       0.6146       1.1631       1.2997       5.2492
+      9     A1       0.8139       1.4535       0.9838       3.0774
+     10     A1       0.3299       2.1249       1.5866       3.2513
+     11     A1       0.6217       2.3871       1.4543       4.0413
+     12     A1       0.8329       1.2143       1.2301       4.4631
+     13     A1       0.8293       1.4930       0.6534       3.2773
+     14     A2       0.7979       1.9431       1.0933       2.9757
+     15     A2       1.2677       0.4420       0.4414       3.8343
+     16     B1       2.3912       0.8023       0.8151       2.1510
+     17     B1       0.9226       0.8071       1.0795       4.0087
+     18     B1       0.9660       1.9422       1.2285       2.8091
+     19     B1       0.4469       1.8301       0.7100       4.1367
+     20     B2       1.5154       6.2984       3.3961       2.9870
+     21     B2       0.8695       3.4650       1.8228      11.2099
+     22     B2       0.9173       3.0304       1.5641       6.1573
+     23     B2       0.2846       2.5910       1.7005       5.5118
+     24     B2       0.4221       2.0860       1.2580       4.5761
+     25     B2       0.4500       2.2811       1.4525       3.7661
+     26     B2       0.0000       0.0000       0.0000       4.1835
+
+******************************************************************************
+tstop called on tool.chemistry.gatech.edu
+Thu Jul  3 18:14:43 2003
+
+user time   =       1.03 seconds =       0.02 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes

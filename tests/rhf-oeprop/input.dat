@@ -1,0 +1,45 @@
+%
+% Test for OEPROP
+%
+% 6-31G** H2O RHF one-electron property computations
+%
+
+psi: (
+  check = false
+  jobtype = sp
+)
+
+default: (
+  label = "6-31G** SCF H2O"
+  memory = (20.0 MB)
+
+  wfn = scf
+  reference = rhf
+  multp = 1
+)
+
+input: (
+  basis = "6-31G**"
+  zmat = (
+    (o)
+    (h 1 1.00)
+    (h 1 1.00 2 103.1)
+  )
+)
+
+oeprop: (
+  mpmax = 3
+  grid = 5
+%  grid_format = megapovplus
+  grid_format = gausscube
+  mo_to_plot = (-1)
+  grid_origin = (-4.0 -4.0 -4.0)
+  grid_unit_x = ( 1.0  0.0  0.0)
+  grid_unit_y = ( 0.0  1.0  0.0)
+  grid_xyz0 =   ( 0.0  0.0  0.0)
+  grid_xyz1 =   ( 8.0  8.0  8.0)
+  nix = 40
+  niy = 40
+  niz = 40
+)
+
