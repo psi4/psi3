@@ -1,11 +1,11 @@
 /*** GET_SYMINFO   gets symmetry info from chkpt and char_table.c ***/ 
 
+#include <cmath>
 extern "C" {
   #include <stdio.h>
   #include <stdlib.h>
   #include <string.h>
   #include <ctype.h>
-  #include <math.h>
   #include <libchkpt/chkpt.h>
   #include <libciomr/libciomr.h>
   #include <libipv1/ip_lib.h>

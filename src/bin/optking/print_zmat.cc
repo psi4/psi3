@@ -1,10 +1,10 @@
 /*** PRINT_ZMAT() printout z-matrix ***/ 
 
+#include <cmath>
 extern "C" {
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 #include <physconst.h>
 #include <libciomr/libciomr.h>
 #include <libchkpt/chkpt.h>

@@ -1,12 +1,12 @@
 /*** GRAD_ENERGY computes a file11 entry from energies in chkpt Rollin King, 2002 ***/ 
 
+#include <cmath>
 extern "C" {
 #include <stdio.h>
 #include <libchkpt/chkpt.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <math.h>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
 #include <physconst.h>

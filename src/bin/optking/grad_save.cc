@@ -1,12 +1,12 @@
 /*** ENERGY_SAVE.CC Rollin King, 2002 ***/
 // function executes if optinfo.mode == MODE_ENERGY_SAVE
 
+#include <cmath>
 extern "C" {
 #include <stdio.h>
 #include <libchkpt/chkpt.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 #include <ctype.h>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>

@@ -1,7 +1,7 @@
 // This function computes G via BuB^t where u is a diagonal matrix
 // of inverse masses.
 
-#include <math.h>
+#include <cmath>
 
 extern "C" {
   #include <stdio.h>

@@ -19,12 +19,12 @@ command-line      internal specifier   what it does
 --irrep            optinfo.irrep       the irrep (1,2,...) being displaced or computed
 */
 
+#include <cmath>
 extern "C" {
   #include <stdio.h>
   #include <libchkpt/chkpt.h>
   #include <stdlib.h>
   #include <string.h>
-  #include <math.h>
   #include <ctype.h>
   #include <libciomr/libciomr.h>
   #include <libipv1/ip_lib.h>

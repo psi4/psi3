@@ -1,12 +1,12 @@
 /** FREQ_GRAD computes frequencies from gradients */
 
+#include <cmath>
 extern "C" {
   #include <stdio.h>
   #include <libchkpt/chkpt.h>
   #include <stdlib.h>
   #include <string.h>
   #include <ctype.h>
-  #include <math.h>
   #include <libciomr/libciomr.h>
   #include <libipv1/ip_lib.h>
   #include <physconst.h>

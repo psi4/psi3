@@ -8,12 +8,12 @@
                properly symmetrized delocalized internal coordinate vectors
 significant modifications by J. Kenny June '00 ***/
 
+#include <cmath>
 extern "C" {
 #include <stdio.h>
 #include <libchkpt/chkpt.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 #include <physconst.h>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>

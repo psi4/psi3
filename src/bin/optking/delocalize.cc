@@ -3,12 +3,12 @@
 // s-vectors.  The new coordinates will not mix coordinates of
 // different types if mix_types == 1
 
+#include <cmath>
 extern "C" {
 #include <stdio.h>
 #include <libchkpt/chkpt.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 #include <physconst.h>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>

@@ -1,12 +1,11 @@
 // This function constructs the B matrix for a set of salcs
 
-
+#include <cmath>
 extern "C" {
 #include <stdio.h>
 #include <libchkpt/chkpt.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 #include <physconst.h>
 #include <libciomr/libciomr.h>
 }

@@ -1,11 +1,11 @@
 // returns the values of salcs given the simple internals and salc_set
 // the value of the simple internals must already be computed
+#include <cmath>
 extern "C" {
 #include <stdio.h>
 #include <libchkpt/chkpt.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 #include <libciomr/libciomr.h>
 #include <physconst.h>
 }

@@ -1,11 +1,11 @@
 /*** DISP_USER only performs input-specified displacements ***/ 
 
+#include <cmath>
 extern "C" {
 #include <stdio.h>
 #include <libchkpt/chkpt.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 #include <ctype.h>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>

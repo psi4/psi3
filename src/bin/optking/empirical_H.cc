@@ -1,12 +1,12 @@
 // This function generates an empirical guess Hessian from a given set of
 //   salcs according to Schlegel, Theor. Chim. Acta, 66, 333 (1984).
 
+#include <cmath>
 extern "C" {
   #include <stdio.h>
   #include <libchkpt/chkpt.h>
   #include <stdlib.h>
   #include <string.h>
-  #include <math.h>
   #include <libciomr/libciomr.h>
   #include <physconst.h>
   #include <libipv1/ip_lib.h>

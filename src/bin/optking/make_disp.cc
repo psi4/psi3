@@ -1,13 +1,13 @@
 /** displaces along all coordinates + and - by disp_size **/ 
 // need to save geometry to last step for gradients by energy
 
+#include <cmath>
 extern "C" {
 #include <stdio.h>
 #include <libchkpt/chkpt.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <math.h>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
 #include <physconst.h>
