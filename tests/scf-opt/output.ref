@@ -1,6 +1,6 @@
 ******************************************************************************
-tstart called on boromir.chem
-Sat Aug 30 12:37:14 2003
+tstart called on algol.local.net
+Sat Aug 30 14:16:39 2003
 
                                 --------------
                                   WELCOME TO
@@ -127,15 +127,15 @@ Sat Aug 30 12:37:14 2003
 
 
 ******************************************************************************
-tstop called on boromir.chem
-Sat Aug 30 12:37:14 2003
+tstop called on algol.local.net
+Sat Aug 30 14:16:39 2003
 
-user time   =       0.08 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Sat Aug 30 12:37:14 2003
+tstart called on algol.local.net
+Sat Aug 30 14:16:39 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -163,15 +163,15 @@ Sat Aug 30 12:37:14 2003
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on boromir.chem
-Sat Aug 30 12:37:14 2003
+tstop called on algol.local.net
+Sat Aug 30 14:16:39 2003
 
-user time   =       0.05 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Sat Aug 30 12:37:14 2003
+tstart called on algol.local.net
+Sat Aug 30 14:16:39 2003
 
 
              ------------------------------------------
@@ -227,7 +227,7 @@ Sat Aug 30 12:37:14 2003
     6       -76.0172760736    3.010015e-04    2.842273e-04    9.429688e-03
     7       -76.0172962933    2.021965e-05    7.939114e-05    2.474006e-03
     8       -76.0172965444    2.510913e-07    9.894937e-06    1.856559e-04
-    9       -76.0172965714    2.696444e-08    3.411769e-06    8.255086e-05
+    9       -76.0172965714    2.696443e-08    3.411769e-06    8.255086e-05
    10       -76.0172965718    4.839507e-10    3.849065e-07    1.190427e-05
    11       -76.0172965718    5.911716e-12    4.827812e-08    9.566678e-07
 
@@ -256,15 +256,15 @@ Orbital energies (a.u.):
         virial theorem     =       1.995262655905
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on boromir.chem
-Sat Aug 30 12:37:14 2003
+tstop called on algol.local.net
+Sat Aug 30 14:16:39 2003
 
-user time   =       0.00 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Sat Aug 30 12:37:14 2003
+tstart called on algol.local.net
+Sat Aug 30 14:16:39 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -302,52 +302,16 @@ Sat Aug 30 12:37:14 2003
        3        0.000000000000    -0.041734309569     0.034959041205
 
 ******************************************************************************
-tstop called on boromir.chem
-Sat Aug 30 12:37:14 2003
+tstop called on algol.local.net
+Sat Aug 30 14:16:39 2003
 
-user time   =       0.26 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.15 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
 	------------------------------------------------------
-atom_dummy[0]: 0
-atom_dummy[1]: 0
-atom_dummy[2]: 0
-to_dummy[0]: 0
-to_dummy[1]: 1
-to_dummy[2]: 2
-to_nodummy[0]: 0
-to_nodummy[1]: 1
-to_nodummy[2]: 2
-
-+++ Optinfo Parameters +++
-print_params:  1
-print_simples: 0
-print_delocalize 0
-print_symmetry 0
-optimize:      1
-zmat:          1
-zmat_simples:  0
-redundant:     1
-bfgs:          1
-bfgs_use_last: 6
-mix_types:     1
-delocalize:    0
-conv:          1.0e-05
-dertype:       0
-numerical dertype: 0
-iteration:       0
-micro_iteration: 0
-scale_connectivity: 1.300
-disp_size: 0.0010
-bt_max_iter:   60
-bt_max_dq_conv:    1.0e-02
-bt_max_dx_conv:    1.0e-07
-cos_tors_near_1_tol:     1.000000e-00
-cos_tors_near_neg1_tol: -1.000000e-00
-sin_phi_denominator_tol: 1.000000e-09
 
 Cartesian geometry and possibly gradient in a.u. with masses
   8.0    15.99491462   0.0000000000   0.0000000000  -0.1315101651
@@ -410,8 +374,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on boromir.chem
-Sat Aug 30 12:37:14 2003
+tstart called on algol.local.net
+Sat Aug 30 14:16:39 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -439,15 +403,15 @@ Sat Aug 30 12:37:14 2003
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on boromir.chem
-Sat Aug 30 12:37:14 2003
+tstop called on algol.local.net
+Sat Aug 30 14:16:39 2003
 
-user time   =       0.04 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Sat Aug 30 12:37:14 2003
+tstart called on algol.local.net
+Sat Aug 30 14:16:39 2003
 
 
              ------------------------------------------
@@ -504,8 +468,8 @@ Sat Aug 30 12:37:14 2003
     5       -76.0234748296    4.601235e-06    4.777636e-05    8.970025e-04
     6       -76.0234749924    1.628160e-07    1.017585e-05    1.557025e-04
     7       -76.0234750017    9.359582e-09    2.641313e-06    3.114679e-05
-    8       -76.0234750019    1.319620e-10    2.208782e-07    4.349285e-06
-    9       -76.0234750019    6.011192e-12    3.866173e-08    8.722689e-07
+    8       -76.0234750019    1.319762e-10    2.208782e-07    4.349285e-06
+    9       -76.0234750019    5.982770e-12    3.866173e-08    8.722689e-07
 
  Correcting phases of orbitals.
 
@@ -528,21 +492,21 @@ Orbital energies (a.u.):
 
         SCF total energy   =     -76.023475001882
         kinetic energy     =      75.882183903164
-        nuc. attr. energy  =    -199.282749581393
+        nuc. attr. energy  =    -199.282749581392
         elec. rep. energy  =      47.377090676347
         potential energy   =    -151.905658905046
         virial theorem     =       1.998141480658
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on boromir.chem
-Sat Aug 30 12:37:14 2003
+tstop called on algol.local.net
+Sat Aug 30 14:16:39 2003
 
 user time   =       0.01 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Sat Aug 30 12:37:14 2003
+tstart called on algol.local.net
+Sat Aug 30 14:16:39 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -580,52 +544,16 @@ Sat Aug 30 12:37:14 2003
        3        0.000000000000     0.006326003647    -0.000336874338
 
 ******************************************************************************
-tstop called on boromir.chem
-Sat Aug 30 12:37:15 2003
+tstop called on algol.local.net
+Sat Aug 30 14:16:39 2003
 
-user time   =       0.26 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.14 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
 	------------------------------------------------------
-atom_dummy[0]: 0
-atom_dummy[1]: 0
-atom_dummy[2]: 0
-to_dummy[0]: 0
-to_dummy[1]: 1
-to_dummy[2]: 2
-to_nodummy[0]: 0
-to_nodummy[1]: 1
-to_nodummy[2]: 2
-
-+++ Optinfo Parameters +++
-print_params:  1
-print_simples: 0
-print_delocalize 0
-print_symmetry 0
-optimize:      1
-zmat:          1
-zmat_simples:  0
-redundant:     1
-bfgs:          1
-bfgs_use_last: 6
-mix_types:     1
-delocalize:    0
-conv:          1.0e-05
-dertype:       0
-numerical dertype: 0
-iteration:       1
-micro_iteration: 0
-scale_connectivity: 1.300
-disp_size: 0.0010
-bt_max_iter:   60
-bt_max_dq_conv:    1.0e-02
-bt_max_dx_conv:    1.0e-07
-cos_tors_near_1_tol:     1.000000e-00
-cos_tors_near_neg1_tol: -1.000000e-00
-sin_phi_denominator_tol: 1.000000e-09
 
 Cartesian geometry and possibly gradient in a.u. with masses
   8.0    15.99491462   0.0000000000   0.0000000000  -0.1222527974
@@ -680,8 +608,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on boromir.chem
-Sat Aug 30 12:37:15 2003
+tstart called on algol.local.net
+Sat Aug 30 14:16:39 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -709,15 +637,15 @@ Sat Aug 30 12:37:15 2003
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on boromir.chem
-Sat Aug 30 12:37:15 2003
+tstop called on algol.local.net
+Sat Aug 30 14:16:39 2003
 
-user time   =       0.05 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Sat Aug 30 12:37:15 2003
+tstart called on algol.local.net
+Sat Aug 30 14:16:39 2003
 
 
              ------------------------------------------
@@ -771,10 +699,10 @@ Sat Aug 30 12:37:15 2003
     2       -76.0236104393    5.160165e-05    1.224794e-04    3.180810e-03
     3       -76.0236123459    1.906574e-06    2.510152e-05    7.187147e-04
     4       -76.0236125055    1.595576e-07    4.869725e-06    2.372031e-04
-    5       -76.0236125135    8.056105e-09    1.529456e-06    4.402415e-05
+    5       -76.0236125135    8.056119e-09    1.529456e-06    4.402415e-05
     6       -76.0236125140    4.409770e-10    3.909603e-07    9.042524e-06
     7       -76.0236125140    3.340972e-11    1.581460e-07    2.170727e-06
-    8       -76.0236125140    6.110668e-13    1.877490e-08    2.551702e-07
+    8       -76.0236125140    5.968559e-13    1.877490e-08    2.551702e-07
 
  Correcting phases of orbitals.
 
@@ -803,15 +731,15 @@ Orbital energies (a.u.):
         virial theorem     =       1.997864604269
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on boromir.chem
-Sat Aug 30 12:37:15 2003
+tstop called on algol.local.net
+Sat Aug 30 14:16:39 2003
 
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Sat Aug 30 12:37:15 2003
+tstart called on algol.local.net
+Sat Aug 30 14:16:39 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -849,52 +777,16 @@ Sat Aug 30 12:37:15 2003
        3        0.000000000000    -0.001003668889     0.000268148733
 
 ******************************************************************************
-tstop called on boromir.chem
-Sat Aug 30 12:37:15 2003
+tstop called on algol.local.net
+Sat Aug 30 14:16:39 2003
 
-user time   =       0.27 seconds =       0.00 minutes
+user time   =       0.14 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
 	------------------------------------------------------
-atom_dummy[0]: 0
-atom_dummy[1]: 0
-atom_dummy[2]: 0
-to_dummy[0]: 0
-to_dummy[1]: 1
-to_dummy[2]: 2
-to_nodummy[0]: 0
-to_nodummy[1]: 1
-to_nodummy[2]: 2
-
-+++ Optinfo Parameters +++
-print_params:  1
-print_simples: 0
-print_delocalize 0
-print_symmetry 0
-optimize:      1
-zmat:          1
-zmat_simples:  0
-redundant:     1
-bfgs:          1
-bfgs_use_last: 6
-mix_types:     1
-delocalize:    0
-conv:          1.0e-05
-dertype:       0
-numerical dertype: 0
-iteration:       2
-micro_iteration: 0
-scale_connectivity: 1.300
-disp_size: 0.0010
-bt_max_iter:   60
-bt_max_dq_conv:    1.0e-02
-bt_max_dx_conv:    1.0e-07
-cos_tors_near_1_tol:     1.000000e-00
-cos_tors_near_neg1_tol: -1.000000e-00
-sin_phi_denominator_tol: 1.000000e-09
 
 Cartesian geometry and possibly gradient in a.u. with masses
   8.0    15.99491462   0.0000000000   0.0000000000  -0.1198922771
@@ -949,8 +841,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on boromir.chem
-Sat Aug 30 12:37:15 2003
+tstart called on algol.local.net
+Sat Aug 30 14:16:40 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -978,15 +870,15 @@ Sat Aug 30 12:37:15 2003
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on boromir.chem
-Sat Aug 30 12:37:15 2003
+tstop called on algol.local.net
+Sat Aug 30 14:16:40 2003
 
-user time   =       0.03 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Sat Aug 30 12:37:15 2003
+tstart called on algol.local.net
+Sat Aug 30 14:16:40 2003
 
 
              ------------------------------------------
@@ -1039,9 +931,9 @@ Sat Aug 30 12:37:15 2003
     1       -76.0236143668    8.535339e+01    0.000000e+00    0.000000e+00
     2       -76.0236149824    6.155903e-07    1.220867e-05    2.925906e-04
     3       -76.0236150083    2.590834e-08    2.959122e-06    8.711136e-05
-    4       -76.0236150133    5.074199e-09    8.904209e-07    3.452341e-05
-    5       -76.0236150135    1.300009e-10    1.856149e-07    5.291958e-06
-    6       -76.0236150135    1.097078e-11    7.668649e-08    1.290195e-06
+    4       -76.0236150133    5.074185e-09    8.904209e-07    3.452341e-05
+    5       -76.0236150135    1.300293e-10    1.856149e-07    5.291958e-06
+    6       -76.0236150135    1.094236e-11    7.668649e-08    1.290195e-06
 
  Correcting phases of orbitals.
 
@@ -1070,15 +962,15 @@ Orbital energies (a.u.):
         virial theorem     =       1.997909856320
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on boromir.chem
-Sat Aug 30 12:37:15 2003
+tstop called on algol.local.net
+Sat Aug 30 14:16:40 2003
 
 user time   =       0.01 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Sat Aug 30 12:37:15 2003
+tstart called on algol.local.net
+Sat Aug 30 14:16:40 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1116,52 +1008,16 @@ Sat Aug 30 12:37:15 2003
        3        0.000000000000     0.000017264884    -0.000036445438
 
 ******************************************************************************
-tstop called on boromir.chem
-Sat Aug 30 12:37:15 2003
+tstop called on algol.local.net
+Sat Aug 30 14:16:40 2003
 
-user time   =       0.27 seconds =       0.00 minutes
+user time   =       0.14 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
 	------------------------------------------------------
-atom_dummy[0]: 0
-atom_dummy[1]: 0
-atom_dummy[2]: 0
-to_dummy[0]: 0
-to_dummy[1]: 1
-to_dummy[2]: 2
-to_nodummy[0]: 0
-to_nodummy[1]: 1
-to_nodummy[2]: 2
-
-+++ Optinfo Parameters +++
-print_params:  1
-print_simples: 0
-print_delocalize 0
-print_symmetry 0
-optimize:      1
-zmat:          1
-zmat_simples:  0
-redundant:     1
-bfgs:          1
-bfgs_use_last: 6
-mix_types:     1
-delocalize:    0
-conv:          1.0e-05
-dertype:       0
-numerical dertype: 0
-iteration:       3
-micro_iteration: 0
-scale_connectivity: 1.300
-disp_size: 0.0010
-bt_max_iter:   60
-bt_max_dq_conv:    1.0e-02
-bt_max_dx_conv:    1.0e-07
-cos_tors_near_1_tol:     1.000000e-00
-cos_tors_near_neg1_tol: -1.000000e-00
-sin_phi_denominator_tol: 1.000000e-09
 
 Cartesian geometry and possibly gradient in a.u. with masses
   8.0    15.99491462   0.0000000000   0.0000000000  -0.1200516476
@@ -1215,8 +1071,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on boromir.chem
-Sat Aug 30 12:37:15 2003
+tstart called on algol.local.net
+Sat Aug 30 14:16:40 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1244,15 +1100,15 @@ Sat Aug 30 12:37:15 2003
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on boromir.chem
-Sat Aug 30 12:37:15 2003
+tstop called on algol.local.net
+Sat Aug 30 14:16:40 2003
 
-user time   =       0.03 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Sat Aug 30 12:37:15 2003
+tstart called on algol.local.net
+Sat Aug 30 14:16:40 2003
 
 
              ------------------------------------------
@@ -1303,9 +1159,9 @@ Sat Aug 30 12:37:15 2003
 
   iter       total energy        delta E         delta P          diiser
     1       -76.0236150156    8.535302e+01    0.000000e+00    0.000000e+00
-    2       -76.0236150189    3.220592e-09    1.030990e-06    2.146676e-05
-    3       -76.0236150191    2.689831e-10    3.046134e-07    8.466995e-06
-    4       -76.0236150192    4.995115e-11    1.043159e-07    3.230624e-06
+    2       -76.0236150189    3.220578e-09    1.030990e-06    2.146676e-05
+    3       -76.0236150191    2.689973e-10    3.046134e-07    8.466995e-06
+    4       -76.0236150192    4.993694e-11    1.043159e-07    3.230624e-06
     5       -76.0236150192    6.352252e-12    5.956695e-08    1.001556e-06
 
  Correcting phases of orbitals.
@@ -1331,19 +1187,19 @@ Orbital energies (a.u.):
         kinetic energy     =      75.864570836066
         nuc. attr. energy  =    -199.203586966508
         elec. rep. energy  =      47.315401111250
-        potential energy   =    -151.888185855258
+        potential energy   =    -151.888185855259
         virial theorem     =       1.997907963426
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on boromir.chem
-Sat Aug 30 12:37:15 2003
+tstop called on algol.local.net
+Sat Aug 30 14:16:40 2003
 
-user time   =       0.01 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Sat Aug 30 12:37:15 2003
+tstart called on algol.local.net
+Sat Aug 30 14:16:40 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1381,52 +1237,16 @@ Sat Aug 30 12:37:15 2003
        3        0.000000000000    -0.000002579659     0.000005261093
 
 ******************************************************************************
-tstop called on boromir.chem
-Sat Aug 30 12:37:16 2003
+tstop called on algol.local.net
+Sat Aug 30 14:16:40 2003
 
-user time   =       0.28 seconds =       0.00 minutes
+user time   =       0.15 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
 	------------------------------------------------------
-atom_dummy[0]: 0
-atom_dummy[1]: 0
-atom_dummy[2]: 0
-to_dummy[0]: 0
-to_dummy[1]: 1
-to_dummy[2]: 2
-to_nodummy[0]: 0
-to_nodummy[1]: 1
-to_nodummy[2]: 2
-
-+++ Optinfo Parameters +++
-print_params:  1
-print_simples: 0
-print_delocalize 0
-print_symmetry 0
-optimize:      1
-zmat:          1
-zmat_simples:  0
-redundant:     1
-bfgs:          1
-bfgs_use_last: 6
-mix_types:     1
-delocalize:    0
-conv:          1.0e-05
-dertype:       0
-numerical dertype: 0
-iteration:       4
-micro_iteration: 0
-scale_connectivity: 1.300
-disp_size: 0.0010
-bt_max_iter:   60
-bt_max_dq_conv:    1.0e-02
-bt_max_dx_conv:    1.0e-07
-cos_tors_near_1_tol:     1.000000e-00
-cos_tors_near_neg1_tol: -1.000000e-00
-sin_phi_denominator_tol: 1.000000e-09
 
 Cartesian geometry and possibly gradient in a.u. with masses
   8.0    15.99491462   0.0000000000   0.0000000000  -0.1200757508
@@ -1480,8 +1300,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on boromir.chem
-Sat Aug 30 12:37:16 2003
+tstart called on algol.local.net
+Sat Aug 30 14:16:40 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1509,15 +1329,15 @@ Sat Aug 30 12:37:16 2003
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on boromir.chem
-Sat Aug 30 12:37:16 2003
+tstop called on algol.local.net
+Sat Aug 30 14:16:40 2003
 
-user time   =       0.04 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Sat Aug 30 12:37:16 2003
+tstart called on algol.local.net
+Sat Aug 30 14:16:40 2003
 
 
              ------------------------------------------
@@ -1542,7 +1362,7 @@ Sat Aug 30 12:37:16 2003
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy        9.3294557798590
+  nuclear repulsion energy        9.3294557798589
 
   using old vector from file30 as initial guess
   energy from old vector:   -76.02361502
@@ -1568,8 +1388,8 @@ Sat Aug 30 12:37:16 2003
 
   iter       total energy        delta E         delta P          diiser
     1       -76.0236150193    8.535307e+01    0.000000e+00    0.000000e+00
-    2       -76.0236150193    5.070433e-11    1.270166e-07    2.750477e-06
-    3       -76.0236150193    4.121148e-12    3.751037e-08    1.080173e-06
+    2       -76.0236150193    5.071854e-11    1.270166e-07    2.750477e-06
+    3       -76.0236150193    4.106937e-12    3.751037e-08    1.080173e-06
 
  Correcting phases of orbitals.
 
@@ -1598,15 +1418,15 @@ Orbital energies (a.u.):
         virial theorem     =       1.997908152878
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on boromir.chem
-Sat Aug 30 12:37:16 2003
+tstop called on algol.local.net
+Sat Aug 30 14:16:40 2003
 
 user time   =       0.01 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Sat Aug 30 12:37:16 2003
+tstart called on algol.local.net
+Sat Aug 30 14:16:40 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1644,52 +1464,16 @@ Sat Aug 30 12:37:16 2003
        3        0.000000000000    -0.000000002196    -0.000000126583
 
 ******************************************************************************
-tstop called on boromir.chem
-Sat Aug 30 12:37:16 2003
+tstop called on algol.local.net
+Sat Aug 30 14:16:40 2003
 
-user time   =       0.26 seconds =       0.00 minutes
+user time   =       0.14 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
 	------------------------------------------------------
-atom_dummy[0]: 0
-atom_dummy[1]: 0
-atom_dummy[2]: 0
-to_dummy[0]: 0
-to_dummy[1]: 1
-to_dummy[2]: 2
-to_nodummy[0]: 0
-to_nodummy[1]: 1
-to_nodummy[2]: 2
-
-+++ Optinfo Parameters +++
-print_params:  1
-print_simples: 0
-print_delocalize 0
-print_symmetry 0
-optimize:      1
-zmat:          1
-zmat_simples:  0
-redundant:     1
-bfgs:          1
-bfgs_use_last: 6
-mix_types:     1
-delocalize:    0
-conv:          1.0e-05
-dertype:       0
-numerical dertype: 0
-iteration:       5
-micro_iteration: 0
-scale_connectivity: 1.300
-disp_size: 0.0010
-bt_max_iter:   60
-bt_max_dq_conv:    1.0e-02
-bt_max_dx_conv:    1.0e-07
-cos_tors_near_1_tol:     1.000000e-00
-cos_tors_near_neg1_tol: -1.000000e-00
-sin_phi_denominator_tol: 1.000000e-09
 
 Cartesian geometry and possibly gradient in a.u. with masses
   8.0    15.99491462   0.0000000000   0.0000000000  -0.1200727399
