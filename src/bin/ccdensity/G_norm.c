@@ -71,7 +71,6 @@ void G_norm(void) {
 
   dpd_buf4_init(&G, CC_GAMMA, G_irr, 10, 10, 10, 10, 0, "GIBJA");
   value = dpd_buf4_dot_self(&G);
-  //fprintf(outfile,"\t<GIBJA|GIBJA> = %15.10lf\n",value);
   dpd_buf4_close(&G);
   dpd_buf4_init(&G, CC_GAMMA, G_irr, 10, 10, 10, 10, 0, "Gibja");
   value += dpd_buf4_dot_self(&G);

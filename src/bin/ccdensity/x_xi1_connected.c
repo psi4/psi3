@@ -3,23 +3,43 @@
 #define EXTERN
 #include "globals.h"
 
-/*
-  In the case (xi_connected == 0) only diagrams that 
-  involve intermediate states that are at least triply excited
-  are included.
+/* In the case (xi_connected == 0) only diagrams that involve intermediate
+   states that are at least triply excited are included,e.g.,
+   xi1 += <0|L Hbar|T,Q><T,Q|R|S,D> 
 
-  However, if (xi_connected), then Hbar must be connected to
-  R and to the density.  So additional terms must be added
-  to xi_1 += <0|L Hbar R|g> with Hbar connected to both R and g
-  The new terms look like
-    xi1 += <0|L Hbar|D> <D|R|S> 
+   However, if (xi_connected), then Hbar must be connected to R and to the
+   density, but triply excited intermediate states are not required.
+   Additional terms to xi_1 look like 
+     xi_1 += <0|L Hbar R|g> with Hbar connected to both R and g
+   The new terms all have doubly excited intermediate states,
+     xi1 += <0|L Hbar|D><D|R|S>  (Hbar connected to R and S)
 
-  Terms like <0|L Hbar|T> <T|R|S> and <0|L Hbar|T> <T|R|D>
-  have already been included because they involve triply
-  excited intermediate states.
+   We remove all terms from the xi_1 and xi_2 equations that do not have
+   Hbar connected to R and to S,D.  The exceptions are that we keep
+   <ij||ab> in xi_2 and Fia in xi_1.  See below.
+
+   The new terms may be beautifully evaluted by:
+     xi_1 +=  (E <0|L|D><D|R|S>) => E*<Limae|Rme> minus all the diagrams
+        of <0|L Hbar R|S> where Hbar is not connected to S and R.
+
+   We do _not_ substract <Lme|Rme> Fia, because this term adds to the
+   normal xi_1 term <Lmnef|Rmnef> to make (1)Fia.  This constant term
+   (along with <ij||ab> in xi_2) causes cclambda to solve the ground-state
+   lambda equations implicitly at the same time as zeta.
+
+   We set R0=0, in the sense that the ground state density code now
+   acts on only zeta, spat out by cclambda, not some linear
+   combination (like R0 * L + Zeta).
+
+   We remove all terms in the excited state density code that do not have
+   R connected to the density (many of these terms involve L2R1_OV).
+
+   This trick was provided compliments of Dr. John Stanton.
+
+   RAK 4/04
  */
 
-double aug_xi_check(dpdfile2 *HIA, dpdfile2 *Hia);
+/* double aug_xi_check(dpdfile2 *HIA, dpdfile2 *Hia); */
 
 void x_xi1_connected(void)
 {
@@ -32,13 +52,96 @@ void x_xi1_connected(void)
   R_irr = params.R_irr;
   G_irr = params.G_irr;
 
-  if(params.ref == 0 || params.ref == 1) {
+  if (params.ref == 0) { /* RHF */
+    dpd_file2_init(&HIA, EOM_TMP0, G_irr, 0, 1, "HIA");
 
-    /* <0|L Hbar|D> <D|R|S> (Hbar connected to R and S)
-        = E <0|L|D> <D|R|S> = E*(L2 dot R1)
-        minus all the diagrams of <0|L Hbar R|S> where Hbar is not
-       connected to either S or R */
+    dpd_buf4_init(&L2, CC_GL, L_irr, 0, 5, 0, 5, 0, "2LIjAb - LIjbA");
+    dpd_file2_init(&R1, CC_GR, R_irr, 0, 1, "RIA");
+    dpd_dot24(&R1, &L2, &HIA, 0, 0, 1.0, 0.0);
+    dpd_file2_close(&R1);
+    dpd_buf4_close(&L2);
 
+    tval =  params.cceom_energy;
+    /* fprintf(outfile,"\nenergy: %15.10lf\n",tval); */
+    dpd_file2_scm(&HIA, tval);
+
+    /* -= (Fme Rme) Lia */
+    if (R_irr == 0) {
+      dpd_file2_init(&F1, CC_OEI, 0, 0, 1, "FME");
+      dpd_file2_init(&R1, CC_GR, R_irr, 0, 1, "RIA");
+      dot = 2.0 * dpd_file2_dot(&F1, &R1);
+      dpd_file2_close(&R1);
+      dpd_file2_close(&F1);
+
+      dpd_file2_init(&L1, CC_GL, L_irr, 0, 1, "LIA");
+      dpd_file2_axpy(&L1, &HIA, -dot, 0);
+      dpd_file2_close(&L1);
+    }
+
+    /* -= - (Rme Lmnea) Fin */
+    dpd_file2_init(&I1, EOM_TMP, G_irr, 0, 1, "L2R1_OV");
+    dpd_file2_init(&F1, CC_OEI, 0, 0, 0, "FMI");
+    dpd_contract222(&F1, &I1, &HIA, 0, 1, 1.0, 1.0);
+    dpd_file2_close(&F1);
+    dpd_file2_close(&I1);
+
+    /* -= Rme Lmief Ffa */
+    dpd_file2_init(&I1, EOM_TMP, G_irr, 0, 1, "L2R1_OV");
+    dpd_file2_init(&F1, CC_OEI, 0, 1, 1, "FAE");
+    dpd_contract222(&I1, &F1, &HIA, 0, 1, -1.0, 1.0);
+    dpd_file2_close(&F1);
+    dpd_file2_close(&I1);
+
+    /* -= Rme Lmnef Wifan */
+    dpd_buf4_init(&H2, CC_HBAR, 0, 10, 10, 10, 10, 0, "2 W(ME,jb) + W(Me,Jb)");
+    dpd_buf4_sort(&H2, EOM_TMP_XI, prqs, 0, 5, "2 W(ME,jb) + W(Me,Jb) (Mj,Eb)");
+    dpd_buf4_close(&H2);
+
+    dpd_file2_init(&I1, EOM_TMP, G_irr, 0, 1, "L2R1_OV");
+    dpd_buf4_init(&H2, EOM_TMP_XI, 0, 0, 5, 0, 5, 0, "2 W(ME,jb) + W(Me,Jb) (Mj,Eb)");
+    dpd_dot24(&I1, &H2, &HIA, 0, 0, -1.0, 1.0);
+    dpd_buf4_close(&H2);
+    dpd_file2_close(&I1);
+
+    /* -= Limae ( Rmf Fef - Rne Fnm + Rnf Wnefm ) */
+    dpd_file2_init(&IME, EOM_TMP_XI, R_irr, 0, 1, "IME");
+
+    dpd_file2_init(&R1, CC_GR, R_irr, 0, 1, "RIA");
+    dpd_file2_init(&F1, CC_OEI, 0, 1, 1, "FAE");
+    dpd_contract222(&R1, &F1, &IME, 0, 0, 1.0, 0.0);
+    dpd_file2_close(&F1);
+    dpd_file2_close(&R1);
+
+    dpd_file2_init(&F1, CC_OEI, 0, 0, 0, "FMI");
+    dpd_file2_init(&R1, CC_GR, R_irr, 0, 1, "RIA");
+    dpd_contract222(&F1, &R1, &IME, 1, 1, -1.0, 1.0);
+    dpd_file2_close(&R1);
+    dpd_file2_close(&F1);
+
+    dpd_file2_init(&R1, CC_GR, R_irr, 0, 1, "RIA");
+    dpd_buf4_init(&H2, EOM_TMP_XI, 0, 0, 5, 0, 5, 0, "2 W(ME,jb) + W(Me,Jb) (Mj,Eb)");
+    dpd_dot13(&R1, &H2, &IME, 0, 0, 1.0, 1.0);
+    dpd_buf4_close(&H2);
+    dpd_file2_close(&R1);
+
+    /* HIA -= LIAME IME + LIAme Ime */
+    dpd_buf4_init(&L2, CC_GL, L_irr, 0, 5, 0, 5, 0, "2LIjAb - LIjbA");
+    dpd_dot24(&IME, &L2, &HIA, 0, 0, -1.0, 1.0);
+    dpd_buf4_close(&L2);
+
+    dpd_file2_close(&IME);
+
+    /* add to Xi1 */
+    /* aug_xi_check(&HIA, &Hia); */
+
+    dpd_file2_init(&XIA, EOM_XI, G_irr, 0, 1, "XIA");
+    dpd_file2_axpy(&HIA, &XIA, 1.0, 0);
+    dpd_file2_close(&XIA);
+    dpd_file2_close(&HIA);
+  }
+
+
+  else if (params.ref == 1) { /* ROHF */
     dpd_file2_init(&HIA, EOM_TMP0, G_irr, 0, 1, "HIA");
     dpd_file2_init(&Hia, EOM_TMP0, G_irr, 0, 1, "Hia");
 
@@ -64,7 +167,6 @@ void x_xi1_connected(void)
     dpd_file2_close(&R1);
     dpd_buf4_close(&L2);
 
-    /* tval =  moinfo.ecc + params.cceom_energy; */
     tval =  params.cceom_energy;
     fprintf(outfile,"\nenergy: %15.10lf\n",tval);
     dpd_file2_scm(&HIA, tval);
@@ -211,8 +313,7 @@ void x_xi1_connected(void)
     dpd_file2_close(&Ime);
 
     /* add to Xi1 */
-
-/* aug_xi_check(&HIA, &Hia); */
+    /* aug_xi_check(&HIA, &Hia); */
 
     dpd_file2_init(&XIA, EOM_XI, G_irr, 0, 1, "XIA");
     dpd_file2_init(&Xia, EOM_XI, G_irr, 0, 1, "Xia");
@@ -252,7 +353,6 @@ void x_xi1_connected(void)
     dpd_file2_close(&R1);
     dpd_buf4_close(&L2);
 
-    //tval =  moinfo.ecc + params.cceom_energy;
     tval =  params.cceom_energy;
     fprintf(outfile,"\nenergy: %15.10lf\n",tval);
     dpd_file2_scm(&HIA, tval);
@@ -396,7 +496,7 @@ void x_xi1_connected(void)
     dpd_file2_close(&IME);
     dpd_file2_close(&Ime);
 
-/* aug_xi_check(&HIA, &Hia); */
+    /* aug_xi_check(&HIA, &Hia); */
 
     /* add to Xi1 */
     dpd_file2_init(&XIA, EOM_XI, G_irr, 0, 1, "XIA");
@@ -414,17 +514,18 @@ void x_xi1_connected(void)
 /*
 double aug_xi_check(dpdfile2 *HIA, dpdfile2 *Hia) 
 {
-
   double tvalA, tvalB;
+  tvalA = tvalB = 0.0;
 
-  tvalA = dpd_file2_dot_self(HIA);
-  tvalB = dpd_file2_dot_self(Hia);
-
-  fprintf(outfile, "<HIA|HIA> = %15.10lf\n", tvalA);
-  fprintf(outfile, "<Hia|Hia> = %15.10lf\n", tvalB);
+  if (params.ref == 0) {
+    tvalA = dpd_file2_dot_self(HIA);
+    fprintf(outfile, "<HIA|HIA> = %15.10lf\n", tvalA);
+  }
+  else {
+    tvalB = dpd_file2_dot_self(Hia);
+    fprintf(outfile, "<HIA|HIA> = %15.10lf\n", tvalA);
+  }
   fprintf(outfile, "<H1|H1> = %15.10lf\n", tvalA + tvalB);
-
   return;
 }
-
 */

@@ -50,7 +50,6 @@ void x_xi_check(char *term_lbl) {
     dpd_buf4_init(&Xijab, EOM_XI, irrep, 2, 7, 2, 7, 0, "Xijab");
     dpd_buf4_init(&XIjAb, EOM_XI, irrep, 0, 5, 0, 5, 0, "XIjAb");
 
-    //c_cleanSS(&XIA, &Xia);
     c_clean(&XIA, &Xia, &XIJAB, &Xijab, &XIjAb);
     norm = norm_C(&XIA, &Xia, &XIJAB, &Xijab, &XIjAb);
     

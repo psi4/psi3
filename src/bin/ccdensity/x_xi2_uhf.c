@@ -27,7 +27,6 @@ void x_xi2_uhf(void)
 
   /* terms 1 and 5, Xijab += (Lme Rme + 0.25 Lmnef Rmnef) <ij||eb> */
   /* overlaps in params are assigned in x_xi1.c */
-//    if (!params.connect_xi) {
   dpd_buf4_init(&D2, CC_DINTS, 0, 2, 7, 2, 7, 0, "D <IJ||AB> (I>J,A>B)");
   dpd_buf4_scmcopy(&D2, EOM_XI, "XIJAB", params.overlap1+params.overlap2);
   dpd_buf4_close(&D2);
@@ -40,7 +39,6 @@ void x_xi2_uhf(void)
 #ifdef DEBUG_XI
 x_xi_check("terms 1 and 5");
 #endif
-//   }
 
   /* terms 2 and 9, XIJAB -= P(AB) (LMA RME + LMNFA RMNFE) <IJ||EB> */
   dpd_buf4_init(&Z2, EOM_TMP1, 0, 2, 5, 2, 5, 0, "Z (I>J,AB)");
@@ -458,7 +456,7 @@ x_xi_check("term 22 (Wamef)");
   if (!params.connect_xi) {
     dpd_buf4_init(&Z2, EOM_TMP1, G_irr, 2, 5, 2, 5, 0, "Z (I>J,AB)");
     dpd_file2_init(&I1, EOM_TMP, G_irr, 0, 1, "L2R1_OV");
-    dpd_buf4_init(&H2, CC_HBAR, 0, 2, 20, 2, 20, 0, "WMNIE (M>N,IE)");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 2, 20, 2, 20, 0, "WMNIE");
     dpd_contract244(&I1, &H2, &Z2, 0, 2, 1, 1.0, 0.0);
     dpd_buf4_close(&H2);
     dpd_file2_close(&I1);
@@ -470,7 +468,7 @@ x_xi_check("term 22 (Wamef)");
 
     dpd_buf4_init(&Z2, EOM_TMP1, G_irr, 12, 15, 12, 15, 0, "Z (i>j,ab)");
     dpd_file2_init(&I1, EOM_TMP, G_irr, 2, 3, "L2R1_ov");
-    dpd_buf4_init(&H2, CC_HBAR, 0, 12, 30, 12, 30, 0, "Wmnie (m>n,ie)");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 12, 30, 12, 30, 0, "Wmnie");
     dpd_contract244(&I1, &H2, &Z2, 0, 2, 1, 1.0, 0.0);
     dpd_buf4_close(&H2);
     dpd_file2_close(&I1);
@@ -482,7 +480,7 @@ x_xi_check("term 22 (Wamef)");
 
     dpd_buf4_init(&XIjAb, EOM_XI, G_irr, 22, 28, 22, 28, 0, "XIjAb");
     dpd_file2_init(&I1, EOM_TMP, G_irr, 0, 1, "L2R1_OV");
-    dpd_buf4_init(&H2, CC_HBAR, 0, 22, 24, 22, 24, 0, "WMnIe (Mn,Ie)");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 22, 24, 22, 24, 0, "WMnIe");
     dpd_contract244(&I1, &H2, &XIjAb, 0, 2, 1, -1.0, 1.0);
     dpd_buf4_close(&H2);
     dpd_file2_close(&I1);
@@ -490,7 +488,7 @@ x_xi_check("term 22 (Wamef)");
 
     dpd_buf4_init(&Z2, EOM_TMP1, G_irr, 23, 28, 23, 28, 0, "Z (jI,Ab)");
     dpd_file2_init(&I1, EOM_TMP, G_irr, 2, 3, "L2R1_ov");
-    dpd_buf4_init(&H2, CC_HBAR, 0, 23, 26, 23, 26, 0, "WmNiE");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 23, 26, 23, 26, 0, "WmNiE (mN,Ei)");
     dpd_contract424(&H2, &I1, &Z2, 3, 0, 0, 1.0, 0.0);
     dpd_buf4_close(&H2);
     dpd_file2_close(&I1);
@@ -504,7 +502,7 @@ x_xi_check("term 23 (Wmnie)");
   /* term 25, Xijab += (Lnmab Rme) Wijne */
   dpd_buf4_init(&XIJAB, EOM_XI, G_irr, 2, 7, 2, 7, 0, "XIJAB");
   dpd_buf4_init(&I2, EOM_TMP, G_irr, 7, 20, 7, 20, 0, "L2R1_VVOV");
-  dpd_buf4_init(&H2, CC_HBAR, 0, 2, 20, 2, 20, 0, "WMNIE (M>N,IE)");
+  dpd_buf4_init(&H2, CC_HBAR, 0, 2, 20, 2, 20, 0, "WMNIE");
   dpd_contract444(&H2, &I2, &XIJAB, 0, 0, 1.0, 1.0); 
   dpd_buf4_close(&H2);
   dpd_buf4_close(&I2);
@@ -512,7 +510,7 @@ x_xi_check("term 23 (Wmnie)");
 
   dpd_buf4_init(&Xijab, EOM_XI, G_irr, 12, 17, 12, 17, 0, "Xijab");
   dpd_buf4_init(&I2, EOM_TMP, G_irr, 17, 30, 17, 30, 0, "L2R1_vvov");
-  dpd_buf4_init(&H2, CC_HBAR, 0, 12, 30, 12, 30, 0, "Wmnie (m>n,ie)");
+  dpd_buf4_init(&H2, CC_HBAR, 0, 12, 30, 12, 30, 0, "Wmnie");
   dpd_contract444(&H2, &I2, &Xijab, 0, 0, 1.0, 1.0); 
   dpd_buf4_close(&H2);
   dpd_buf4_close(&I2);
@@ -520,7 +518,7 @@ x_xi_check("term 23 (Wmnie)");
 
   dpd_buf4_init(&XIjAb, EOM_XI, G_irr, 22, 28, 22, 28, 0, "XIjAb");
   dpd_buf4_init(&I2, EOM_TMP, G_irr, 28, 24, 28, 24, 0, "L2R1_VvOv");
-  dpd_buf4_init(&H2, CC_HBAR, 0, 22, 24, 22, 24, 0, "WMnIe (Mn,Ie)");
+  dpd_buf4_init(&H2, CC_HBAR, 0, 22, 24, 22, 24, 0, "WMnIe");
   dpd_contract444(&H2, &I2, &XIjAb, 0, 0, 1.0, 1.0); 
   dpd_buf4_close(&H2);
   dpd_buf4_close(&I2);
@@ -528,7 +526,7 @@ x_xi_check("term 23 (Wmnie)");
 
   dpd_buf4_init(&Z2, EOM_TMP1, G_irr, 23, 28, 23, 28, 0, "Z (jI,Ab)");
   dpd_buf4_init(&I2, EOM_TMP, G_irr, 28, 27, 28, 27, 0, "L2R1_VvoV");
-  dpd_buf4_init(&H2, CC_HBAR, 0, 23, 27, 23, 27, 0, "WmNiE (mN,iE)");
+  dpd_buf4_init(&H2, CC_HBAR, 0, 23, 27, 23, 27, 0, "WmNiE");
   dpd_contract444(&H2, &I2, &Z2, 0, 0, 1.0, 0.0); 
   dpd_buf4_close(&H2);
   dpd_buf4_close(&I2);
@@ -583,7 +581,7 @@ x_xi_check("term 24 (Wamef)");
   /* terms 18, 19: Xijab -= P(ij) P(ab) Linae (Rme Wmjnb + Rnf Wejbf) */
   /* construct Z(JB,NE) = RME WMJNB + RNF WEJBF */
   dpd_buf4_init(&Z, EOM_TMP1, R_irr, 21, 21, 21, 21, 0, "Z (EJ,BN)");
-  dpd_buf4_init(&H2, CC_HBAR, 0, 0, 21, 2, 21, 0, "WMNIE");
+  dpd_buf4_init(&H2, CC_HBAR, 0, 0, 21, 2, 21, 0, "WMNIE (M>N,EI)");
   dpd_file2_init(&R1, CC_GR, R_irr, 0, 1, "RIA");
   dpd_contract244(&R1, &H2, &Z, 0, 0, 0, 1.0, 0.0);
   dpd_buf4_close(&H2);
@@ -598,7 +596,7 @@ x_xi_check("term 24 (Wamef)");
   dpd_buf4_close(&Z);
 
   dpd_buf4_init(&Z, EOM_TMP1, R_irr, 25, 27, 25, 27, 0, "Z (eJ,nB)");
-  dpd_buf4_init(&H2, CC_HBAR, 0, 23, 27, 23, 27, 0, "WmNiE (mN,iE)");
+  dpd_buf4_init(&H2, CC_HBAR, 0, 23, 27, 23, 27, 0, "WmNiE");
   dpd_file2_init(&R1, CC_GR, R_irr, 2, 3, "Ria");
   dpd_contract244(&R1, &H2, &Z, 0, 0, 0, 1.0, 0.0);
   dpd_buf4_close(&H2);
@@ -613,7 +611,7 @@ x_xi_check("term 24 (Wamef)");
   dpd_buf4_close(&Z);
 
   dpd_buf4_init(&Z, EOM_TMP1, R_irr, 31, 31, 31, 31, 0, "Z (ej,bn)");
-  dpd_buf4_init(&H2, CC_HBAR, 0, 10, 31, 12, 31, 0, "Wmnie");
+  dpd_buf4_init(&H2, CC_HBAR, 0, 10, 31, 12, 31, 0, "Wmnie (m>n,ei)");
   dpd_file2_init(&R1, CC_GR, R_irr, 2, 3, "Ria");
   dpd_contract244(&R1, &H2, &Z, 0, 0, 0, 1.0, 0.0);
   dpd_buf4_close(&H2);
@@ -628,7 +626,7 @@ x_xi_check("term 24 (Wamef)");
   dpd_buf4_close(&Z);
 
   dpd_buf4_init(&Z, EOM_TMP1, R_irr, 26, 24, 26, 24, 0, "Z (Ej,Nb)");
-  dpd_buf4_init(&H2, CC_HBAR, 0, 22, 24, 22, 24, 0, "WMnIe (Mn,Ie)");
+  dpd_buf4_init(&H2, CC_HBAR, 0, 22, 24, 22, 24, 0, "WMnIe");
   dpd_file2_init(&R1, CC_GR, R_irr, 0, 1, "RIA");
   dpd_contract244(&R1, &H2, &Z, 0, 0, 0, 1.0, 0.0);
   dpd_buf4_close(&H2);
@@ -644,7 +642,7 @@ x_xi_check("term 24 (Wamef)");
 
   /* construct Z(Jb,Ne) <= Z(Je,bN) = - Rme WJmNb + WeJbF RNF */
   dpd_buf4_init(&Z, EOM_TMP1, R_irr, 24, 25, 24, 25, 0, "Z (Je,bN)");
-  dpd_buf4_init(&H2, CC_HBAR, 0, 22, 25, 22, 25, 0, "WMnIe");
+  dpd_buf4_init(&H2, CC_HBAR, 0, 22, 25, 22, 25, 0, "WMnIe (Mn,eI)");
   dpd_file2_init(&R1, CC_GR, R_irr, 2, 3, "Ria");
   dpd_contract424(&H2, &R1, &Z, 1, 0, 1, -1.0, 0.0);
   dpd_file2_close(&R1);
@@ -664,7 +662,7 @@ x_xi_check("term 24 (Wamef)");
 
   /* construct Z(jB,nE) <= Z(jE,Bn) = - RME WjMnB + WEjBf Rnf */
   dpd_buf4_init(&Z, EOM_TMP1, R_irr, 27, 26, 27, 26, 0, "Z (jE,Bn)");
-  dpd_buf4_init(&H2, CC_HBAR, 0, 23, 26, 23, 26, 0, "WmNiE");
+  dpd_buf4_init(&H2, CC_HBAR, 0, 23, 26, 23, 26, 0, "WmNiE (mN,Ei)");
   dpd_file2_init(&R1, CC_GR, R_irr, 0, 1, "RIA");
   dpd_contract424(&H2, &R1, &Z, 1, 0, 1, -1.0, 0.0);
   dpd_file2_close(&R1);
@@ -781,7 +779,6 @@ x_xi_check("terms 18, 19 (Wmnie, Wamef)");
   psio_write_entry(CC_INFO, "XI Irrep", (char *) &G_irr,sizeof(int));
 
   dpd_file2_init(&XIA, EOM_XI, G_irr, 0, 1, "XIA");
-//dpd_file2_print(&XIA,outfile);
   tval = dpd_file2_dot_self(&XIA);
   dpd_file2_close(&XIA);
   fprintf(outfile,"XIA amplitudes: norm=%20.15lf dot=%20.15lf\n", sqrt(tval), tval );
@@ -790,15 +787,12 @@ x_xi_check("terms 18, 19 (Wmnie, Wamef)");
   fprintf(outfile,"X1 amplitudes:  norm=%20.15lf dot=%20.15lf\n", sqrt(tval), tval );
   dpd_file2_close(&Xia);
   dpd_buf4_init(&XIJAB, EOM_XI, G_irr, 2, 7, 2, 7, 0, "XIJAB");
-//dpd_buf4_print(&XIJAB,outfile,1);
   tval += dpd_buf4_dot_self(&XIJAB);
   dpd_buf4_close(&XIJAB);
   dpd_buf4_init(&Xijab, EOM_XI, G_irr, 12, 17, 12, 17, 0, "Xijab");
-//dpd_buf4_print(&Xijab,outfile,1);
   tval += dpd_buf4_dot_self(&Xijab);
   dpd_buf4_close(&Xijab);
   dpd_buf4_init(&XIjAb, EOM_XI, G_irr, 22, 28, 22, 28, 0, "XIjAb");
-//dpd_buf4_print(&XIjAb,outfile,1);
   tval += dpd_buf4_dot_self(&XIjAb);
   dpd_buf4_close(&XIjAb);
   fprintf(outfile,"Norm of Xi: %20.15lf\n", sqrt(tval) );

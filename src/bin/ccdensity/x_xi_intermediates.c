@@ -13,7 +13,67 @@ void x_xi_intermediates(void)
   R_irr = params.R_irr;
   G_irr = params.G_irr;
 
-  if ( (params.ref == 0) || (params.ref == 1) ) {
+  if (params.ref == 0) {
+
+    /* RD_OO(I,J) = (2RImEf - RImFe) <jm|ef> */
+    dpd_file2_init(&I, EOM_TMP_XI, R_irr, 0, 0, "RD_OO");
+    dpd_buf4_init(&R2, CC_GR, R_irr, 0, 5, 0, 5, 0, "2RIjAb - RIjbA");
+    dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
+    dpd_contract442(&R2, &D, &I, 0, 0, 1.0, 0.0);
+    dpd_buf4_close(&D);
+    dpd_buf4_close(&R2);
+    dpd_file2_close(&I);
+
+    /* RD_VV(E,A) = (2RMnFe - RMnEf) <mn|fa> */
+    dpd_file2_init(&I, EOM_TMP_XI, R_irr, 1, 1, "RD_VV");
+    dpd_buf4_init(&R2, CC_GR, R_irr, 0, 5, 0, 5, 0, "2RIjAb - RIjbA");
+    dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
+    dpd_contract442(&R2, &D, &I, 3, 3, 1.0, 0.0);
+    dpd_buf4_close(&D);
+    dpd_buf4_close(&R2);
+    dpd_file2_close(&I);
+
+    /* R2Wamef_OV(n,g) = Rnmef Wgmef */
+    dpd_file2_init(&I, EOM_TMP, R_irr, 0, 1, "R2Wamef_OV");
+    dpd_buf4_init(&R2, CC_GR, R_irr, 0, 5, 0, 5, 0, "2RIjAb - RIjbA");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");
+    dpd_contract442(&R2, &H2, &I, 0, 0, 1.0, 0.0);
+    dpd_buf4_close(&H2);
+    dpd_buf4_close(&R2);
+    dpd_file2_close(&I);
+
+    /* R2Wamef_OOOV = Rmnfg Weifg */
+    dpd_buf4_init(&I2, EOM_TMP1, R_irr, 0, 11, 0, 11, 0, "Z(Mn,eI)");
+    dpd_buf4_init(&R2, CC_GR, R_irr, 0, 5, 0, 5, 0, "RIjaB");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");
+    dpd_contract444(&R2, &H2, &I2, 0, 0, -1.0, 0.0);
+    dpd_buf4_close(&H2);
+    dpd_buf4_close(&R2);
+    dpd_buf4_close(&I2);
+    dpd_buf4_init(&I2, EOM_TMP1, R_irr, 0, 11, 0, 11, 0, "Z(Mn,eI)");
+    dpd_buf4_sort(&I2, EOM_TMP, pqsr, 0, 10, "R2Wamef_OoOv");
+    dpd_buf4_close(&I2);
+
+    /* R1Wamef_VV (a,e) = Rmf Wamef */
+    dpd_file2_init(&I, EOM_TMP_XI, R_irr, 1, 1, "R1Wamef_VV");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf 2(Am,Ef) - (Am,fE)");
+    dpd_file2_init(&R1, CC_GR, R_irr, 0, 1, "RIA");
+    dpd_dot24(&R1, &H2, &I, 0, 0, 1.0, 0.0);
+    dpd_file2_close(&R1);
+    dpd_buf4_close(&H2);
+    dpd_file2_close(&I);
+
+    /* R1Wmnie_OO (M,I) = Rne Wmnie */
+    dpd_file2_init(&I, EOM_TMP_XI, R_irr, 0, 0, "R1Wmnie_OO");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 0, 10, 0, 10, 0, "2WMnIe - WnMIe");
+    dpd_file2_init(&R1, CC_GR, R_irr, 0, 1, "RIA");
+    dpd_dot24(&R1, &H2, &I, 0, 0, 1.0, 1.0);
+    dpd_file2_close(&R1);
+    dpd_buf4_close(&H2);
+    dpd_file2_close(&I);
+
+  }
+  else if (params.ref == 1) {
     /* RD_OO(I,J)  =  RIMEF * <JM||EF> + RImEf <Jm|Ef> */
     dpd_file2_init(&I, EOM_TMP_XI, R_irr, 0, 0, "RD_OO");
     dpd_buf4_init(&R2, CC_GR, R_irr, 0, 7, 2, 7, 0, "RIJAB");
@@ -71,122 +131,125 @@ void x_xi_intermediates(void)
     dpd_file2_close(&I);
   
     /* R2Wamef_OOVO = Rmnfg Weifg -> OOOV (mn,ie) */
-    dpd_buf4_init(&I2, EOM_TMP, R_irr, 2, 10, 2, 10, 0, "R2Wamef_OOOV");
+    dpd_buf4_init(&I2, EOM_TMP1, R_irr, 2, 11, 2, 11, 0, "Z(M>N,EI)");
     dpd_buf4_init(&R2, CC_GR, R_irr, 2, 7, 2, 7, 0, "RIJAB");
-    dpd_buf4_init(&H2, CC_HBAR, 0, 10, 7, 10, 7, 0, "WAMEF");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 11, 7, 11, 7, 0, "WAMEF");
     dpd_contract444(&R2, &H2, &I2, 0, 0, 1.0, 0.0);
     dpd_buf4_close(&H2);
     dpd_buf4_close(&R2);
     dpd_buf4_close(&I2);
-  
-    dpd_buf4_init(&I2, EOM_TMP, R_irr, 0, 10, 0, 10, 0, "R2Wamef_OoOv");
+    dpd_buf4_init(&I2, EOM_TMP1, R_irr, 2, 11, 2, 11, 0, "Z(M>N,EI)");
+    dpd_buf4_sort(&I2, EOM_TMP, pqsr, 2, 10, "R2Wamef_OOOV"); 
+    dpd_buf4_close(&I2);
+
+    dpd_buf4_init(&I2, EOM_TMP1, R_irr, 0, 11, 0, 11, 0, "Z(Mn,eI)");
     dpd_buf4_init(&R2, CC_GR, R_irr, 0, 5, 0, 5, 0, "RIjaB");
-    dpd_buf4_init(&H2, CC_HBAR, 0, 10, 5, 10, 5, 0, "WaMeF");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 11, 5, 11, 5, 0, "WaMeF");
     dpd_contract444(&R2, &H2, &I2, 0, 0, -1.0, 0.0);
     dpd_buf4_close(&H2);
     dpd_buf4_close(&R2);
     dpd_buf4_close(&I2);
+    dpd_buf4_init(&I2, EOM_TMP1, R_irr, 0, 11, 0, 11, 0, "Z(Mn,eI)");
+    dpd_buf4_sort(&I2, EOM_TMP, pqsr, 0, 10, "R2Wamef_OoOv");
+    dpd_buf4_close(&I2);
   
-    dpd_buf4_init(&I2, EOM_TMP, R_irr, 0, 10, 0, 10, 0, "R2Wamef_oOoV");
+    dpd_buf4_init(&I2, EOM_TMP1, R_irr, 0, 11, 0, 11, 0, "Z(mN,Ei)");
     dpd_buf4_init(&R2, CC_GR, R_irr, 0, 5, 0, 5, 0, "RiJAb");
-    dpd_buf4_init(&H2, CC_HBAR, 0, 10, 5, 10, 5, 0, "WAmEf");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");
     dpd_contract444(&R2, &H2, &I2, 0, 0, -1.0, 0.0);
     dpd_buf4_close(&H2);
     dpd_buf4_close(&R2);
     dpd_buf4_close(&I2);
-  
-    dpd_buf4_init(&I2, EOM_TMP, R_irr, 2, 10, 2, 10, 0, "R2Wamef_ooov");
+    dpd_buf4_init(&I2, EOM_TMP1, R_irr, 0, 11, 0, 11, 0, "Z(mN,Ei)");
+    dpd_buf4_sort(&I2, EOM_TMP, pqsr, 0, 10, "R2Wamef_oOoV");
+    dpd_buf4_close(&I2);
+
+    dpd_buf4_init(&I2, EOM_TMP1, R_irr, 2, 11, 2, 11, 0, "Z(m>n,ei)");
     dpd_buf4_init(&R2, CC_GR, R_irr, 2, 7, 2, 7, 0, "Rijab");
-    dpd_buf4_init(&H2, CC_HBAR, 0, 10, 7, 10, 7, 0, "Wamef");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 11, 7, 11, 7, 0, "Wamef");
     dpd_contract444(&R2, &H2, &I2, 0, 0, 1.0, 0.0);
     dpd_buf4_close(&H2);
     dpd_buf4_close(&R2);
+    dpd_buf4_close(&I2);
+    dpd_buf4_init(&I2, EOM_TMP1, R_irr, 2, 11, 2, 11, 0, "Z(m>n,ei)");
+    dpd_buf4_sort(&I2, EOM_TMP, pqsr, 2, 10, "R2Wamef_ooov");
     dpd_buf4_close(&I2);
   
     /* R2Wamef_OV(n,g) = Rnmef Wgmef */
     dpd_file2_init(&I, EOM_TMP, R_irr, 0, 1, "R2Wamef_OV");
-  
     dpd_buf4_init(&R2, CC_GR, R_irr, 0, 7, 2, 7, 0, "RIJAB");
-    dpd_buf4_init(&H2, CC_HBAR, 0, 11, 7, 11, 7, 0, "WAMEF (AM,E>F)");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 11, 7, 11, 7, 0, "WAMEF");
     dpd_contract442(&R2, &H2, &I, 0, 0, 1.0, 0.0);
     dpd_buf4_close(&H2);
     dpd_buf4_close(&R2);
     dpd_buf4_init(&R2, CC_GR, R_irr, 0, 5, 0, 5, 0, "RIjAb");
-    dpd_buf4_init(&H2, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf (Am,Ef)");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");
     dpd_contract442(&R2, &H2, &I, 0, 0, 1.0, 1.0);
     dpd_buf4_close(&H2);
     dpd_buf4_close(&R2);
-  
     dpd_file2_close(&I);
   
     dpd_file2_init(&I, EOM_TMP, R_irr, 0, 1, "R2Wamef_ov");
-  
     dpd_buf4_init(&R2, CC_GR, R_irr, 0, 7, 2, 7, 0, "Rijab");
-    dpd_buf4_init(&H2, CC_HBAR, 0, 11, 7, 11, 7, 0, "Wamef (am,e>f)");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 11, 7, 11, 7, 0, "Wamef");
     dpd_contract442(&R2, &H2, &I, 0, 0, 1.0, 0.0);
     dpd_buf4_close(&H2);
     dpd_buf4_close(&R2);
     dpd_buf4_init(&R2, CC_GR, R_irr, 0, 5, 0, 5, 0, "RiJaB");
-    dpd_buf4_init(&H2, CC_HBAR, 0, 11, 5, 11, 5, 0, "WaMeF (aM,eF)");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 11, 5, 11, 5, 0, "WaMeF");
     dpd_contract442(&R2, &H2, &I, 0, 0, 1.0, 1.0);
     dpd_buf4_close(&H2);
     dpd_buf4_close(&R2);
-
     dpd_file2_close(&I);
 
     /* R1Wmnie_OO (M,I) = Rne Wmnie */
     dpd_file2_init(&I, EOM_TMP_XI, R_irr, 0, 0, "R1Wmnie_OO");
-
-    dpd_buf4_init(&H2, CC_HBAR, 0, 0, 10, 2, 10, 0, "WMNIE (M>N,IE)");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 0, 10, 2, 10, 0, "WMNIE");
     dpd_file2_init(&R1, CC_GR, R_irr, 0, 1, "RIA");
     dpd_dot24(&R1, &H2, &I, 0, 0, 1.0, 0.0);
     dpd_file2_close(&R1);
     dpd_buf4_close(&H2);
-    dpd_buf4_init(&H2, CC_HBAR, 0, 0, 10, 0, 10, 0, "WMnIe (Mn,Ie)");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 0, 10, 0, 10, 0, "WMnIe");
     dpd_file2_init(&R1, CC_GR, R_irr, 0, 1, "Ria");
     dpd_dot24(&R1, &H2, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&R1);
     dpd_buf4_close(&H2);
-
     dpd_file2_close(&I);
-    dpd_file2_init(&I, EOM_TMP_XI, R_irr, 0, 0, "R1Wmnie_oo");
 
-    dpd_buf4_init(&H2, CC_HBAR, 0, 0, 10, 2, 10, 0, "Wmnie (m>n,ie)");
+    dpd_file2_init(&I, EOM_TMP_XI, R_irr, 0, 0, "R1Wmnie_oo");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 0, 10, 2, 10, 0, "Wmnie");
     dpd_file2_init(&R1, CC_GR, R_irr, 0, 1, "Ria");
     dpd_dot24(&R1, &H2, &I, 0, 0, 1.0, 0.0);
     dpd_file2_close(&R1);
     dpd_buf4_close(&H2);
-    dpd_buf4_init(&H2, CC_HBAR, 0, 0, 10, 0, 10, 0, "WmNiE (mN,iE)");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 0, 10, 0, 10, 0, "WmNiE");
     dpd_file2_init(&R1, CC_GR, R_irr, 0, 1, "RIA");
     dpd_dot24(&R1, &H2, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&R1);
     dpd_buf4_close(&H2);
-
     dpd_file2_close(&I);
 
     /* R1Wamef_VV (a,e) = Rmf Wamef */
     dpd_file2_init(&I, EOM_TMP_XI, R_irr, 1, 1, "R1Wamef_VV");
-
-    dpd_buf4_init(&H2, CC_HBAR, 0, 11, 5, 11, 7, 0, "WAMEF (AM,E>F)");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 11, 5, 11, 7, 0, "WAMEF");
     dpd_file2_init(&R1, CC_GR, R_irr, 0, 1, "RIA");
     dpd_dot24(&R1, &H2, &I, 0, 0, 1.0, 0.0);
     dpd_file2_close(&R1);
     dpd_buf4_close(&H2);
-    dpd_buf4_init(&H2, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf (Am,Ef)");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");
     dpd_file2_init(&R1, CC_GR, R_irr, 0, 1, "Ria");
     dpd_dot24(&R1, &H2, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&R1);
     dpd_buf4_close(&H2);
-
     dpd_file2_close(&I);
-    dpd_file2_init(&I, EOM_TMP_XI, R_irr, 1, 1, "R1Wamef_vv");
 
-    dpd_buf4_init(&H2, CC_HBAR, 0, 11, 5, 11, 7, 0, "Wamef (am,e>f)");
+    dpd_file2_init(&I, EOM_TMP_XI, R_irr, 1, 1, "R1Wamef_vv");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 11, 5, 11, 7, 0, "Wamef");
     dpd_file2_init(&R1, CC_GR, R_irr, 0, 1, "Ria");
     dpd_dot24(&R1, &H2, &I, 0, 0, 1.0, 0.0);
     dpd_file2_close(&R1);
     dpd_buf4_close(&H2);
-    dpd_buf4_init(&H2, CC_HBAR, 0, 11, 5, 11, 5, 0, "WaMeF (aM,eF)");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 11, 5, 11, 5, 0, "WaMeF");
     dpd_file2_init(&R1, CC_GR, R_irr, 0, 1, "RIA");
     dpd_dot24(&R1, &H2, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&R1);
@@ -334,12 +397,12 @@ void x_xi_intermediates(void)
     /* R1Wmnie_OO (M,I) = Rne Wmnie */
     dpd_file2_init(&I, EOM_TMP_XI, R_irr, 0, 0, "R1Wmnie_OO");
 
-    dpd_buf4_init(&H2, CC_HBAR, 0, 0, 20, 2, 20, 0, "WMNIE (M>N,IE)");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 0, 20, 2, 20, 0, "WMNIE");
     dpd_file2_init(&R1, CC_GR, R_irr, 0, 1, "RIA");
     dpd_dot24(&R1, &H2, &I, 0, 0, 1.0, 0.0);
     dpd_file2_close(&R1);
     dpd_buf4_close(&H2);
-    dpd_buf4_init(&H2, CC_HBAR, 0, 22, 24, 22, 24, 0, "WMnIe (Mn,Ie)");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 22, 24, 22, 24, 0, "WMnIe");
     dpd_file2_init(&R1, CC_GR, R_irr, 2, 3, "Ria");
     dpd_dot24(&R1, &H2, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&R1);
@@ -348,12 +411,12 @@ void x_xi_intermediates(void)
     dpd_file2_close(&I);
     dpd_file2_init(&I, EOM_TMP_XI, R_irr, 2, 2, "R1Wmnie_oo");
 
-    dpd_buf4_init(&H2, CC_HBAR, 0, 10, 30, 12, 30, 0, "Wmnie (m>n,ie)");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 10, 30, 12, 30, 0, "Wmnie");
     dpd_file2_init(&R1, CC_GR, R_irr, 2, 3, "Ria");
     dpd_dot24(&R1, &H2, &I, 0, 0, 1.0, 0.0);
     dpd_file2_close(&R1);
     dpd_buf4_close(&H2);
-    dpd_buf4_init(&H2, CC_HBAR, 0, 23, 27, 23, 27, 0, "WmNiE (mN,iE)");
+    dpd_buf4_init(&H2, CC_HBAR, 0, 23, 27, 23, 27, 0, "WmNiE");
     dpd_file2_init(&R1, CC_GR, R_irr, 0, 1, "RIA");
     dpd_dot24(&R1, &H2, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&R1);

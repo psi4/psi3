@@ -120,16 +120,25 @@ int main(int argc, char *argv[])
     G_build(); /* uses CC_GLG, writes to CC_GLG */
   }
 
+  if (params.calc_xi && params.ref == 0) {
+    x_oe_intermediates_rhf();
+    x_te_intermediates_rhf();
+  }
+  else {
+    x_oe_intermediates(); /* recalculate these until density code gets spin-adapted */
+    x_te_intermediates(); /* recalculate these until density code gets spin-adapted */
+  }
+
   /* calculate intermediates not already on disk */
   if (!params.restart) {
     if (!params.ground) {
       /* the following intermediates go in EOM_TMP */
       V_build_x(); /* use CC_GL write to EOM_TMP */
-      x_oe_intermediates();
-      x_te_intermediates();
+      /* x_te_intermediates(); */
       if (params.calc_xi) {
         /* the following intermediates go in EOM_TMP_XI */
         x_xi_intermediates();
+        /* x_oe_intermediates(); */
       }
     }
   }
@@ -156,8 +165,8 @@ int main(int argc, char *argv[])
   else
     zero_twopdm();
 
-  //fprintf(outfile,"After ground state parts\n");
-  //G_norm();
+  /* fprintf(outfile,"After ground state parts\n");
+    G_norm(); */
 
   /* add in non-R0 parts of onepdm and twopdm */
   if (!params.ground) {
@@ -169,19 +178,17 @@ int main(int argc, char *argv[])
     x_Gciab();
     x_Gijab();
   }
-  //fprintf(outfile,"After excited state parts\n");
-  //G_norm();
+  /* fprintf(outfile,"After excited state parts\n");
+  G_norm(); */
   
   if(!params.aobasis) energy();
 
   sortone();
-  // dipole();
+  /* dipole(); */
   kinetic();
 
-  /*
-  fprintf(outfile,"\tDipole moments without orbital relaxation\n");
-  dipole();
-  */
+  /* fprintf(outfile,"\tDipole moments without orbital relaxation\n");
+  dipole(); */
 
   lag();
 
@@ -203,10 +210,6 @@ int main(int argc, char *argv[])
   if(params.relax_opdm) {
     relax_D();
   }
-  /*testing
-  fprintf(outfile,"After orbital response\n");
-  if(!params.aobasis) energy();
-  */
 
   sortone();
 
@@ -347,10 +350,10 @@ void exit_io(void)
   /* delete temporary EOM files */
   psio_close(EOM_TMP0,0);
   psio_close(EOM_TMP1,0);
-//psio_close(CC_GLG,0);
+/*psio_close(CC_GLG,0); */
   psio_open(EOM_TMP0,PSIO_OPEN_NEW);
   psio_open(EOM_TMP1,PSIO_OPEN_NEW);
-//psio_open(CC_GLG,PSIO_OPEN_NEW);
+/*psio_open(CC_GLG,PSIO_OPEN_NEW);*/
   if (!params.calc_xi) {
     psio_close(EOM_TMP,0);
     psio_open(EOM_TMP,PSIO_OPEN_NEW);

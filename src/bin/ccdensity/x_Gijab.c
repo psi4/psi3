@@ -29,19 +29,16 @@ void x_Gijab_rohf(void)
   nirreps = moinfo.nirreps;
   R_irr = params.R_irr; L_irr = params.L_irr; G_irr = params.G_irr;
 
-  /* term 1,2: (L*R) * Tau(IJ,AB) */
-  if ( (G_irr == 0) /*&& (!params.connect_xi)*/ ) {
+  /* term 1,2: (L*R) * Tau(IJ,AB), see comments in xi_connected */
+  if (G_irr == 0) {
     dpd_buf4_init(&T, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauIJAB");
-    //dpd_buf4_scmcopy(&T, EOM_TMP0, "GIJAB", 1.0 - params.R0);
-      dpd_buf4_scmcopy(&T, EOM_TMP0, "GIJAB", 1.0);
+    dpd_buf4_copy(&T, EOM_TMP0, "GIJAB");
     dpd_buf4_close(&T);
     dpd_buf4_init(&T, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauijab");
-    //dpd_buf4_scmcopy(&T, EOM_TMP0, "Gijab", 1.0 - params.R0);
-      dpd_buf4_scmcopy(&T, EOM_TMP0, "Gijab", 1.0);
+    dpd_buf4_copy(&T, EOM_TMP0, "Gijab");
     dpd_buf4_close(&T);
     dpd_buf4_init(&T, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
-    //dpd_buf4_scmcopy(&T, EOM_TMP0, "GIjAb", 1.0 - params.R0);
-      dpd_buf4_scmcopy(&T, EOM_TMP0, "GIjAb", 1.0);
+    dpd_buf4_copy(&T, EOM_TMP0, "GIjAb");
     dpd_buf4_close(&T);
   }
   else {
@@ -62,7 +59,7 @@ void x_Gijab_rohf(void)
   dpd_file2_init(&Z1, EOM_TMP1, G_irr, 0, 0, "Z(N,I)");
   dpd_file2_axpy(&I1, &Z1, 1.0, 0);
   dpd_file2_close(&I1);
-  // -P(ij) L2R1_OV(M,F) T(I,F) Tau(MJ,AB); terms 35, 36 */
+  /* -P(ij) L2R1_OV(M,F) T(I,F) Tau(MJ,AB); terms 35, 36 */
   if (!params.connect_xi) {
   dpd_file2_init(&I1, EOM_TMP, G_irr, 0, 1, "L2R1_OV");
   dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");

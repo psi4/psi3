@@ -252,6 +252,7 @@ void x_onepdm_rohf(void)
   dpd_file2_close(&Lia);
 
   /* compute overlaps */
+  /*
   dpd_file2_init(&DIA, CC_OEI, G_irr, 0, 1, "DIA");
   dot_IA = dpd_file2_dot_self(&DIA);
   dpd_file2_close(&DIA);
@@ -269,5 +270,6 @@ void x_onepdm_rohf(void)
   fprintf(outfile,"<DAI|DAI> = %15.10lf\n", dot_AI);
   fprintf(outfile,"<Dai|Dai> = %15.10lf\n", dot_ai);
   fprintf(outfile,"<Dpq|Dqp> = %15.10lf\n", dot_IA+dot_ia+dot_AI+dot_ai);
+  */
   return;
 }

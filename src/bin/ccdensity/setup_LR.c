@@ -108,8 +108,11 @@ void setup_LR(void)
   /* put copy of L in CC_GL for excited state parts of density */
   if (!params.ground) {
     if (params.ref == 0) {
-      dpd_buf4_init(&L2, CC_GLG, L_irr, 0, 5, 0, 5, 0, "2LIjAb - LIjbA");
+      dpd_buf4_init(&L2, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, L2RHF_lbl);
       dpd_buf4_copy(&L2, CC_GL, "2LIjAb - LIjbA");
+      dpd_buf4_close(&L2);
+      dpd_buf4_init(&L2, CC_GL, L_irr, 0, 5, 0, 5, 0, "2LIjAb - LIjbA");
+      dpd_buf4_sort(&L2, CC_GL, prqs, 10, 10, "2LIjAb - LIjbA (IA,jb)");
       dpd_buf4_close(&L2);
     }
     if ( (params.ref==0) || (params.ref==1) ) {
@@ -409,6 +412,9 @@ void setup_LR(void)
     if (params.ref == 0) {
       dpd_buf4_init(&R2, CC_RAMPS, R_irr, 0, 5, 0, 5, 0, R2RHF_lbl);
       dpd_buf4_copy(&R2, CC_GR, "2RIjAb - RIjbA");
+      dpd_buf4_close(&R2);
+      dpd_buf4_init(&R2, CC_GR, R_irr, 0, 5, 0, 5, 0, "2RIjAb - RIjbA");
+      dpd_buf4_sort(&R2, CC_GR, prqs, 10, 10, "2RIjAb - RIjbA (IA,jb)");
       dpd_buf4_close(&R2);
     }
     if ( (params.ref == 0) || (params.ref == 1) ) {
