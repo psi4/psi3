@@ -71,26 +71,42 @@ void get_params()
   else
     params.gauge = strdup("LENGTH");
 
-  /* grab the field strength from input -- a few different units are converted to E_h */
-  params.omega = 0.0; /* static polarizability by default */
+  /* grab the field frequencies from input -- a few different units are converted to E_h */
   if(ip_exist("OMEGA",0)) {
     errcod = ip_count("OMEGA", &count, 0);
 
-    if(errcod == IPE_NOT_AN_ARRAY)  /* assume Hartrees */
-      errcod = ip_data("OMEGA", "%lf", &(params.omega), 0);
+    if(errcod == IPE_NOT_AN_ARRAY || count == 1) { /* assume Hartrees and only one frequency */
+      params.nomega = 1;
+      params.omega = init_array(1);
+      errcod = ip_data("OMEGA", "%lf", &(params.omega[0]), 0);
+    }
+    else if(count >= 2) {
+      params.nomega = count-1;
+      params.omega = init_array(params.nomega);
 
-    else if(count == 2) {
-
-      errcod = ip_data("OMEGA", "%lf", &(params.omega), 1, 0);
-      errcod = ip_data("OMEGA", "%s", units, 1, 1);
-
+      errcod = ip_data("OMEGA", "%s", units, 1, count-1);
       for(junk = units; *junk != '\0'; junk++)
 	if(*junk>='a' && *junk <= 'z') *junk += 'A' - 'a';
 
-      if(!strcmp(units, "HZ")) params.omega *= _h / _hartree2J;
-      else if(!strcmp(units, "NM")) params.omega = (_c*_h*1e9)/(params.omega*_hartree2J);
-      else if(!strcmp(units, "EV")) params.omega /= _hartree2ev;
+      for(i=0; i < count-1; i++) {
+	errcod = ip_data("OMEGA", "%lf", &(params.omega[i]), 1, i);
+
+	if(!strcmp(units, "HZ")) params.omega[i] *= _h / _hartree2J;
+	else if(!strcmp(units, "NM")) params.omega[i] = (_c*_h*1e9)/(params.omega[i]*_hartree2J);
+	else if(!strcmp(units, "EV")) params.omega[i] /= _hartree2ev;
+      }
     }
+    else {
+      fprintf(outfile, "\n\tError reading input field frequencies.  Please use the format:\n");
+      fprintf(outfile,   "\t  omega = (value1 value2 ... units)\n");
+      fprintf(outfile,   "\twhere units = hartrees, hz, nm, or ev.\n");
+      exit(PSI_RETURN_FAILURE);
+    }
+  }
+  else { /* assume static field by default */
+    params.omega = init_array(1);
+    params.omega[0] = 0.0;
+    params.nomega = 1;
   }
 
   moinfo.mu_irreps = init_int_array(3);
@@ -187,38 +203,40 @@ void get_params()
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
   if(!strcmp(params.prop,"ALL"))
-    fprintf(outfile, "\tProperty        =    POLARIZABILITY + ROTATION\n");
+    fprintf(outfile, "\tProperty         =    POLARIZABILITY + ROTATION\n");
   else
-    fprintf(outfile, "\tProperty        =    %s\n", params.prop);
-  fprintf(outfile, "\tReference wfn   =    %5s\n",
+    fprintf(outfile, "\tProperty         =    %s\n", params.prop);
+  fprintf(outfile, "\tReference wfn    =    %5s\n",
 	  (params.ref == 0) ? "RHF" : ((params.ref == 1) ? "ROHF" : "UHF"));
-  fprintf(outfile, "\tMemory (Mbytes) =  %5.1f\n",params.memory/1e6);
-  fprintf(outfile, "\tCache Level     =    %1d\n", params.cachelev);
-  fprintf(outfile, "\tPrint Level     =    %1d\n",  params.print);
-  fprintf(outfile, "\tMaxiter         =    %3d\n",  params.maxiter);
-  fprintf(outfile, "\tConvergence     = %3.1e\n", params.convergence);
-  fprintf(outfile, "\tDIIS            =     %s\n", params.diis ? "Yes" : "No");
-  fprintf(outfile, "\tIrrep X         =    %3s\n", moinfo.labels[moinfo.irrep_x]);
-  fprintf(outfile, "\tIrrep Y         =    %3s\n", moinfo.labels[moinfo.irrep_y]);
-  fprintf(outfile, "\tIrrep Z         =    %3s\n", moinfo.labels[moinfo.irrep_z]);
-  fprintf(outfile, "\tIrrep RX        =    %3s\n", moinfo.labels[moinfo.irrep_Rx]);
-  fprintf(outfile, "\tIrrep RY        =    %3s\n", moinfo.labels[moinfo.irrep_Ry]);
-  fprintf(outfile, "\tIrrep RZ        =    %3s\n", moinfo.labels[moinfo.irrep_Rz]);
-  fprintf(outfile, "\tGauge           =    %s\n", params.gauge);
-  if(params.omega == 0.0) 
-    fprintf(outfile, "\tApplied field   = none\n");
-  else 
-    fprintf(outfile, "\tApplied field   =    %5.3f E_h (%6.2f nm, %5.3f eV, %8.2f cm-1)\n", params.omega,
-	    (_c*_h*1e9)/(_hartree2J*params.omega), _hartree2ev*params.omega,
-	    _hartree2wavenumbers*params.omega);
-  fprintf(outfile, "\tLocal CC        =     %s\n", params.local ? "Yes" : "No");
+  fprintf(outfile, "\tMemory (Mbytes)  =  %5.1f\n",params.memory/1e6);
+  fprintf(outfile, "\tCache Level      =    %1d\n", params.cachelev);
+  fprintf(outfile, "\tPrint Level      =    %1d\n",  params.print);
+  fprintf(outfile, "\tMaxiter          =    %3d\n",  params.maxiter);
+  fprintf(outfile, "\tConvergence      = %3.1e\n", params.convergence);
+  fprintf(outfile, "\tDIIS             =     %s\n", params.diis ? "Yes" : "No");
+  fprintf(outfile, "\tIrrep X          =    %3s\n", moinfo.labels[moinfo.irrep_x]);
+  fprintf(outfile, "\tIrrep Y          =    %3s\n", moinfo.labels[moinfo.irrep_y]);
+  fprintf(outfile, "\tIrrep Z          =    %3s\n", moinfo.labels[moinfo.irrep_z]);
+  fprintf(outfile, "\tIrrep RX         =    %3s\n", moinfo.labels[moinfo.irrep_Rx]);
+  fprintf(outfile, "\tIrrep RY         =    %3s\n", moinfo.labels[moinfo.irrep_Ry]);
+  fprintf(outfile, "\tIrrep RZ         =    %3s\n", moinfo.labels[moinfo.irrep_Rz]);
+  fprintf(outfile, "\tGauge            =    %s\n", params.gauge);
+  for(i=0; i < params.nomega; i++) {
+    if(params.omega[i] == 0.0) 
+      fprintf(outfile, "\tApplied field %2d = none\n", i);
+    else 
+      fprintf(outfile, "\tApplied field %2d =    %5.3f E_h (%6.2f nm, %5.3f eV, %8.2f cm-1)\n", i, params.omega[i],
+	      (_c*_h*1e9)/(_hartree2J*params.omega[i]), _hartree2ev*params.omega[i],
+	      _hartree2wavenumbers*params.omega[i]);
+  }
+  fprintf(outfile, "\tLocal CC         =    %s\n", params.local ? "Yes" : "No");
   if(params.local) {
-    fprintf(outfile, "\tLocal Cutoff    = %3.1e\n", local.cutoff);
-    fprintf(outfile, "\tLocal Method    =    %s\n", local.method);
-    fprintf(outfile, "\tWeak pairs      =    %s\n", local.weakp);
-    fprintf(outfile, "\tFilter singles  =    %s\n", local.filter_singles ? "Yes" : "No");
-    fprintf(outfile, "\tLocal pairs       =    %s\n", local.pairdef);
-    fprintf(outfile, "\tLocal CPHF cutoff =  %3.1e\n", local.cphf_cutoff);
+    fprintf(outfile, "\tLocal Cutoff     = %3.1e\n", local.cutoff);
+    fprintf(outfile, "\tLocal Method     =    %s\n", local.method);
+    fprintf(outfile, "\tWeak pairs       =    %s\n", local.weakp);
+    fprintf(outfile, "\tFilter singles   =    %s\n", local.filter_singles ? "Yes" : "No");
+    fprintf(outfile, "\tLocal pairs        =    %s\n", local.pairdef);
+    fprintf(outfile, "\tLocal CPHF cutoff  =  %3.1e\n", local.cphf_cutoff);
   }
   fprintf(outfile, "\tAnalyze X2 Amps  =    %s\n", params.analyze ? "Yes" : "No");
   fprintf(outfile, "\n");

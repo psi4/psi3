@@ -24,104 +24,129 @@ double LHX1Y2(char *pert_x, char *cart_x, int irrep_x, double omega_x,
 
 void polar(void)
 {
-  double **tensor;
+  double ***tensor;
   double polar, polar_LCX, polar_HXY, polar_LHX1Y1, polar_LHX2Y2, polar_LHX1Y2;
   char **cartcomp;
-  int alpha, beta;
-  double omega_nm, omega_ev, omega_cm;
+  int alpha, beta, i;
+  double omega_nm, omega_ev, omega_cm, *trace;
 
   cartcomp = (char **) malloc(3 * sizeof(char *));
   cartcomp[0] = strdup("X");
   cartcomp[1] = strdup("Y");
   cartcomp[2] = strdup("Z");
 
-  tensor = block_matrix(3,3);
+  tensor = (double ***) malloc(params.nomega * sizeof(double **));
+  for(i=0; i < params.nomega; i++) 
+    tensor[i] = block_matrix(3,3);
+
+  trace = init_array(params.nomega);
 
   transmu();
   sortmu();
   mubar();
 
-  /* Compute the electric-dipole-perturbed CC wave functions */
-  for(alpha=0; alpha < 3; alpha++) {
-    compute_X("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], params.omega);
-    if(params.omega != 0.0) compute_X("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega);
-  }
+  for(i=0; i < params.nomega; i++) {
 
-  for(alpha=0; alpha < 3; alpha++) {
-    for(beta=0; beta < 3; beta++) {
+    /* Compute the electric-dipole-perturbed CC wave functions */
+    for(alpha=0; alpha < 3; alpha++) {
+      compute_X("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], params.omega[i]);
+      if(params.omega[i] != 0.0) compute_X("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i]);
+    }
 
-      tensor[alpha][beta] = 0.0;
-      polar_LCX = 0.0;
-      polar_HXY = 0.0;
-      polar_LHX1Y1 = 0.0;
-      polar_LHX2Y2 = 0.0;
-      polar_LHX1Y2 = 0.0;
+    for(alpha=0; alpha < 3; alpha++) {
+      for(beta=0; beta < 3; beta++) {
 
-      if(!(moinfo.mu_irreps[alpha]^moinfo.mu_irreps[beta])) {
+	tensor[i][alpha][beta] = 0.0;
+	polar_LCX = 0.0;
+	polar_HXY = 0.0;
+	polar_LHX1Y1 = 0.0;
+	polar_LHX2Y2 = 0.0;
+	polar_LHX1Y2 = 0.0;
 
-	if(params.omega != 0.0) {
-	  polar_LCX = LCX("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], "Mu", cartcomp[beta], 
-			  moinfo.mu_irreps[beta], params.omega);
-	  polar_LCX += LCX("Mu", cartcomp[beta], moinfo.mu_irreps[beta], "Mu", cartcomp[alpha],
-			   moinfo.mu_irreps[alpha], -params.omega);
-	  polar_HXY = HXY("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega,
-			  "Mu", cartcomp[beta], moinfo.mu_irreps[beta], params.omega);
-	  polar_LHX1Y1 = LHX1Y1("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega,
-				"Mu", cartcomp[beta], moinfo.mu_irreps[beta], params.omega);
-	  polar_LHX2Y2 = LHX2Y2("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega,
-				"Mu", cartcomp[beta], moinfo.mu_irreps[beta], params.omega);
-	  polar_LHX1Y2 = LHX1Y2("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega,
-				"Mu", cartcomp[beta], moinfo.mu_irreps[beta], params.omega);
-	  polar_LHX1Y2 += LHX1Y2("Mu", cartcomp[beta], moinfo.mu_irreps[beta], params.omega,
-				 "Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega);
+	if(!(moinfo.mu_irreps[alpha]^moinfo.mu_irreps[beta])) {
+
+	  if(params.omega[i] != 0.0) {
+	    polar_LCX = LCX("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], "Mu", cartcomp[beta], 
+			    moinfo.mu_irreps[beta], params.omega[i]);
+	    polar_LCX += LCX("Mu", cartcomp[beta], moinfo.mu_irreps[beta], "Mu", cartcomp[alpha],
+			     moinfo.mu_irreps[alpha], -params.omega[i]);
+	    polar_HXY = HXY("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i],
+			    "Mu", cartcomp[beta], moinfo.mu_irreps[beta], params.omega[i]);
+	    polar_LHX1Y1 = LHX1Y1("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i],
+				  "Mu", cartcomp[beta], moinfo.mu_irreps[beta], params.omega[i]);
+	    polar_LHX2Y2 = LHX2Y2("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i],
+				  "Mu", cartcomp[beta], moinfo.mu_irreps[beta], params.omega[i]);
+	    polar_LHX1Y2 = LHX1Y2("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i],
+				  "Mu", cartcomp[beta], moinfo.mu_irreps[beta], params.omega[i]);
+	    polar_LHX1Y2 += LHX1Y2("Mu", cartcomp[beta], moinfo.mu_irreps[beta], params.omega[i],
+				   "Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i]);
+	  }
+	  else {
+	    polar_LCX = LCX("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], "Mu", cartcomp[beta],
+			    moinfo.mu_irreps[beta], 0.0);
+	    polar_LCX += LCX("Mu", cartcomp[beta], moinfo.mu_irreps[beta], "Mu", cartcomp[alpha],
+			     moinfo.mu_irreps[alpha], 0.0);
+	    polar_HXY = HXY("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
+			    "Mu", cartcomp[beta], moinfo.mu_irreps[beta], 0.0);
+	    polar_LHX1Y1 = LHX1Y1("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
+				  "Mu", cartcomp[beta], moinfo.mu_irreps[beta], 0.0);
+	    polar_LHX2Y2 = LHX2Y2("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
+				  "Mu", cartcomp[beta], moinfo.mu_irreps[beta], 0.0);
+	    polar_LHX1Y2 = LHX1Y2("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
+				  "Mu", cartcomp[beta], moinfo.mu_irreps[beta], 0.0);
+	    polar_LHX1Y2 += LHX1Y2("Mu", cartcomp[beta], moinfo.mu_irreps[beta], 0.0,
+				   "Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0);
+	  }
+
+	  polar = polar_LCX + polar_HXY + polar_LHX1Y1 + polar_LHX2Y2 + polar_LHX1Y2;
+	  /*
+	    fprintf(outfile, "polar_LCX    = %20.12f\n", polar_LCX);
+	    fprintf(outfile, "polar_HXY    = %20.12f\n", polar_HXY);
+	    fprintf(outfile, "polar_LHX1Y1 = %20.12f\n", polar_LHX1Y1);
+	    fprintf(outfile, "polar_LHX2Y2 = %20.12f\n", polar_LHX2Y2);
+	    fprintf(outfile, "polar_LHX1Y2 = %20.12f\n", polar_LHX1Y2);
+	  */
+
+	  tensor[i][alpha][beta] = -polar;
 	}
-	else {
-	  polar_LCX = LCX("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], "Mu", cartcomp[beta],
-			  moinfo.mu_irreps[beta], 0.0);
-	  polar_LCX += LCX("Mu", cartcomp[beta], moinfo.mu_irreps[beta], "Mu", cartcomp[alpha],
-			   moinfo.mu_irreps[alpha], 0.0);
-	  polar_HXY = HXY("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
-			  "Mu", cartcomp[beta], moinfo.mu_irreps[beta], 0.0);
-	  polar_LHX1Y1 = LHX1Y1("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
-				"Mu", cartcomp[beta], moinfo.mu_irreps[beta], 0.0);
-	  polar_LHX2Y2 = LHX2Y2("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
-				"Mu", cartcomp[beta], moinfo.mu_irreps[beta], 0.0);
-	  polar_LHX1Y2 = LHX1Y2("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
-				"Mu", cartcomp[beta], moinfo.mu_irreps[beta], 0.0);
-	  polar_LHX1Y2 += LHX1Y2("Mu", cartcomp[beta], moinfo.mu_irreps[beta], 0.0,
-				 "Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0);
-	}
-
-	polar = polar_LCX + polar_HXY + polar_LHX1Y1 + polar_LHX2Y2 + polar_LHX1Y2;
-	/*
-	  fprintf(outfile, "polar_LCX    = %20.12f\n", polar_LCX);
-	  fprintf(outfile, "polar_HXY    = %20.12f\n", polar_HXY);
-	  fprintf(outfile, "polar_LHX1Y1 = %20.12f\n", polar_LHX1Y1);
-	  fprintf(outfile, "polar_LHX2Y2 = %20.12f\n", polar_LHX2Y2);
-	  fprintf(outfile, "polar_LHX1Y2 = %20.12f\n", polar_LHX1Y2);
-	*/
-
-	tensor[alpha][beta] = -polar;
       }
     }
+
+    fprintf(outfile, "\n                 CCSD Dipole Polarizability [(e^2 a0^2)/E_h]:\n");
+    fprintf(outfile, "  -------------------------------------------------------------------------\n");
+    if(params.omega[i] != 0.0) 
+      omega_nm = (_c*_h*1e9)/(_hartree2J*params.omega[i]);
+    omega_ev = _hartree2ev*params.omega[i];
+    omega_cm = _hartree2wavenumbers*params.omega[i];
+    if(params.omega[i] != 0.0)
+      fprintf(outfile,   "   Evaluated at omega = %8.6f E_h (%6.2f nm, %5.3f eV, %8.2f cm-1)\n", 
+	      params.omega[i], omega_nm, omega_ev, omega_cm);
+    else
+      fprintf(outfile,   "   Evaluated at omega = %8.6f E_h (Inf nm, %5.3f eV, %8.2f cm-1)\n", 
+	      params.omega[i], omega_ev, omega_cm);
+    fprintf(outfile, "  -------------------------------------------------------------------------\n");
+    mat_print(tensor[i], 3, 3, outfile);
+    trace[i] = tensor[i][0][0] + tensor[i][1][1] + tensor[i][2][2];
+    fprintf(outfile, "\n\talpha_(%5.3f) = %20.12f a.u.\n", params.omega[i], trace[i]);
   }
 
-  fprintf(outfile, "\n                 CCSD Dipole Polarizability [(e^2 a0^2)/E_h]:\n");
-  fprintf(outfile, "  -------------------------------------------------------------------------\n");
-  if(params.omega != 0.0) 
-    omega_nm = (_c*_h*1e9)/(_hartree2J*params.omega);
-  omega_ev = _hartree2ev*params.omega;
-  omega_cm = _hartree2wavenumbers*params.omega;
-  if(params.omega != 0.0)
-    fprintf(outfile,   "   Evaluated at omega = %8.6f E_h (%6.2f nm, %5.3f eV, %8.2f cm-1)\n", 
-	    params.omega, omega_nm, omega_ev, omega_cm);
-  else
-    fprintf(outfile,   "   Evaluated at omega = %8.6f E_h (Inf nm, %5.3f eV, %8.2f cm-1)\n", 
-	    params.omega, omega_ev, omega_cm);
-  fprintf(outfile, "  -------------------------------------------------------------------------\n");
-  mat_print(tensor, 3, 3, outfile);
+  if(params.nomega > 1) {  /* print a summary table for multi-wavelength calcs */
 
-  free_block(tensor);
+    fprintf(outfile, "\n\t-------------------------------\n");
+    fprintf(outfile,   "\t      CCSD Polarizability\n");
+    fprintf(outfile,   "\t-------------------------------\n");
+    fprintf(outfile,   "\t    Omega          alpha\n");
+    fprintf(outfile,   "\t E_h      nm        a.u.        \n");
+    fprintf(outfile,   "\t-----   ------ ----------------\n");
+    for(i=0; i < params.nomega; i++)
+      fprintf(outfile, "\t%5.3f   %6.2f      %10.5f\n", params.omega[i], (_c*_h*1e9)/(_hartree2J*params.omega[i]), trace[i]);
+  }
+
+  for(i=0; i < params.nomega; i++)
+    free_block(tensor[i]);
+  free(tensor);
+
+  free(trace);
 
   free(cartcomp[0]);
   free(cartcomp[1]);

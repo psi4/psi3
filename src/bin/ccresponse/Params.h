@@ -3,7 +3,8 @@ struct Params {
   long int memory;       /* Memory available (in bytes) */
   int cachelev;          /* cacheing level for libdpd */
   int ref;               /* reference determinant (0=RHF, 1=ROHF, 2=UHF) */
-  double omega;          /* energy of applied field (a.u) for dynamic polarizabilities */
+  double *omega;         /* energy of applied field (a.u) for dynamic polarizabilities */
+  int nomega;            /* number of field energies desired */
   int maxiter;           /* maximum number of iterations allowed to converge perturbed amp eqns. */
   double convergence;    /* convergence criterion for perturbed wfns */
   int diis;              /* boolean for using DIIS extrapolation */
