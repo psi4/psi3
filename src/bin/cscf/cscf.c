@@ -176,240 +176,240 @@ int main(argc,argv)
    int argc;
    char *argv[];
 {
-   int i,nn;
-   char *prog_name="CSCF3.0: An SCF program written in C";
-   char *output="APPEND  ";
-   struct symm *s;
-   ip_value_t *ipvalue=NULL;
-   int errcod, orthog_only;
-   char *wfn;
+  int i,nn;
+  char *prog_name="CSCF3.0: An SCF program written in C";
+  char *output="APPEND  ";
+  struct symm *s;
+  ip_value_t *ipvalue=NULL;
+  int errcod, orthog_only;
+  char *wfn;
  
-   ffile(&infile,"input.dat",2);
-   ffile(&outfile,"output.dat",1);
-   /*ffile(&JK,"jandk.dat",0);
-   ffile(&gmat,"gmat.dat",0);
-   ffile(&diis_out,"diis_out.dat",0);*/
+  ffile(&infile,"input.dat",2);
+  ffile(&outfile,"output.dat",1);
+  /*ffile(&JK,"jandk.dat",0);
+    ffile(&gmat,"gmat.dat",0);
+    ffile(&diis_out,"diis_out.dat",0);*/
 
-   ip_set_uppercase(1);
-   ip_initialize(infile,outfile);
+  ip_set_uppercase(1);
+  ip_initialize(infile,outfile);
 
 #if 0
-   ip_cwk_clear();
+  ip_cwk_clear();
 #endif
-   ip_cwk_add(":DEFAULT");
-   ip_cwk_add(":SCF");
+  ip_cwk_add(":DEFAULT");
+  ip_cwk_add(":SCF");
 
-   ip_string("OUTPUT",&output,0);
-   if(!strcmp(output,"TERMINAL")) {
-     outfile = stdout;
-     }
-   else if(!strcmp(output,"WRITE")) {
-     fclose(outfile);
-     ffile(&outfile,"output.dat",0);
-     }
+  ip_string("OUTPUT",&output,0);
+  if(!strcmp(output,"TERMINAL")) {
+    outfile = stdout;
+  }
+  else if(!strcmp(output,"WRITE")) {
+    fclose(outfile);
+    ffile(&outfile,"output.dat",0);
+  }
 
-   if(argc > 1) {
-     ip_print_tree(stdout,NULL);
-     if(ipvalue != NULL) ip_print_value(stdout,ipvalue);
-     }
+  if(argc > 1) {
+    ip_print_tree(stdout,NULL);
+    if(ipvalue != NULL) ip_print_value(stdout,ipvalue);
+  }
 
-   tstart(outfile);
+  tstart(outfile);
    
-   fprintf(outfile,"\n%13c------------------------------------------\n",' ');
-   fprintf(outfile,"\n%16c%s\n",' ',prog_name);
-   fprintf(outfile,"\n%14cWritten by too many people to mention here\n",' ');
-   fprintf(outfile,"\n%13c------------------------------------------\n\n\n",' ');
+  fprintf(outfile,"\n%13c------------------------------------------\n",' ');
+  fprintf(outfile,"\n%16c%s\n",' ',prog_name);
+  fprintf(outfile,"\n%14cWritten by too many people to mention here\n",' ');
+  fprintf(outfile,"\n%13c------------------------------------------\n\n\n",' ');
    
    
-   itap30 = 30;
-   itap33 = PSIF_SO_TEI;
-   itap34 = 34;
-   itapS  = PSIF_OEI;
-   itapT  = PSIF_OEI;
-   itapV  = PSIF_OEI;
-   /*
-   itapS  = PSIF_SO_S;
-   itapT  = PSIF_SO_T;
-   itapV  = PSIF_SO_V;
-   */
-   itapDSCF = PSIF_DSCF;
-   itap92 = PSIF_SO_PKSUPER1;
-   itap93 = PSIF_SO_PKSUPER2;
+  itap30 = 30;
+  itap33 = PSIF_SO_TEI;
+  itap34 = 34;
+  itapS  = PSIF_OEI;
+  itapT  = PSIF_OEI;
+  itapV  = PSIF_OEI;
+  /*
+    itapS  = PSIF_SO_S;
+    itapT  = PSIF_SO_T;
+    itapV  = PSIF_SO_V;
+  */
+  itapDSCF = PSIF_DSCF;
+  itap92 = PSIF_SO_PKSUPER1;
+  itap93 = PSIF_SO_PKSUPER2;
 
-   /* EFV 10/24/98 Get the integral format: IWL = true */
-   use_iwl = 1;
-   ip_boolean("USE_IWL",&use_iwl,0);
+  /* EFV 10/24/98 Get the integral format: IWL = true */
+  use_iwl = 1;
+  ip_boolean("USE_IWL",&use_iwl,0);
 
-/* JPK 6/1/00 integral accuracy: dynamic(default)=1, static=0 */
-   dyn_acc = 1;
-   eri_cutoff = 1.0E-14;
-   ip_boolean("DYN_ACC",&dyn_acc,0);
-   tight_ints=0;
-   delta = 1.0;
+  /* JPK 6/1/00 integral accuracy: dynamic(default)=1, static=0 */
+  dyn_acc = 1;
+  eri_cutoff = 1.0E-14;
+  ip_boolean("DYN_ACC",&dyn_acc,0);
+  tight_ints=0;
+  delta = 1.0;
                                                       
-/* CDS 3/6/02 add flag to do only orthogonalization */
-   errcod = ip_string("WFN",&wfn,0);
-   if (strcmp(wfn,"DETCAS")==0) orthog_only = 1;
-   else orthog_only = 0;
-   ip_boolean("ORTHOG_ONLY",&orthog_only,0);
-   free(wfn);
+  /* CDS 3/6/02 add flag to do only orthogonalization */
+  errcod = ip_string("WFN",&wfn,0);
+  if (strcmp(wfn,"DETCAS")==0) orthog_only = 1;
+  else orthog_only = 0;
+  ip_boolean("ORTHOG_ONLY",&orthog_only,0);
+  free(wfn);
 
-/* open integrals file(s) */
+  /* open integrals file(s) */
 
-   if (use_iwl)
-     psio_init();
-   else
-     rfile(itap34);
+  if (use_iwl)
+    psio_init();
+  else
+    rfile(itap34);
    
-   /* STB (6/30/99) - Function added because in order to initialize things
-      one must know whether you are doing UHF or restricted */   
+  /* STB (6/30/99) - Function added because in order to initialize things
+     one must know whether you are doing UHF or restricted */   
    
-   file30_init();
-   chkpt_init();
+  file30_init();
+  chkpt_init();
 
-   occ_init();
+  occ_init();
    
-/* initialize some constants and arrays */
-   if (uhf)
-       init_uhf();
-   else
-       init_scf();
+  /* initialize some constants and arrays */
+  if (uhf)
+    init_uhf();
+  else
+    init_scf();
 
-/* read input.dat, get occupations, flags, etc. */
+  /* read input.dat, get occupations, flags, etc. */
 
-   scf_input(ipvalue);
+  scf_input(ipvalue);
 
-/* we can't just orthogonalize the orbitals if there aren't any */
-   if (inflg != 1) orthog_only = 0;
+  /* we can't just orthogonalize the orbitals if there aren't any */
+  if (inflg != 1) orthog_only = 0;
 
-/* set up other useful arrays */
+  /* set up other useful arrays */
 
-   init_scf2();
+  init_scf2();
 
-/* get one electron integrals */
+  /* get one electron integrals */
 
-   rdone_iwl();
+  rdone_iwl();
    
-   if(print & 1) {
-      for (i=0; i < num_ir; i++) {
-         s = &scf_info[i];
-         if (nn=s->num_so) {
-            fprintf(outfile,"\nsmat for irrep %s\n",s->irrep_label);
-            print_array(s->smat,nn,outfile);
-            fprintf(outfile,"\ntmat for irrep %s\n",s->irrep_label);
-            print_array(s->tmat,nn,outfile);
-            fprintf(outfile,"\nhmat for irrep %s\n",s->irrep_label);
-            print_array(s->hmat,nn,outfile);
-            }
-         }
+  if(print & 1) {
+    for (i=0; i < num_ir; i++) {
+      s = &scf_info[i];
+      if (nn=s->num_so) {
+	fprintf(outfile,"\nsmat for irrep %s\n",s->irrep_label);
+	print_array(s->smat,nn,outfile);
+	fprintf(outfile,"\ntmat for irrep %s\n",s->irrep_label);
+	print_array(s->tmat,nn,outfile);
+	fprintf(outfile,"\nhmat for irrep %s\n",s->irrep_label);
+	print_array(s->hmat,nn,outfile);
       }
+    }
+  }
 
-/* form S-1/2 matrix sahalf */
+  /* form S-1/2 matrix sahalf */
 
-   shalf();
+  shalf();
 
-   if (print & 1) {
-      for (i=0; i < num_ir ; i++) {
-         s = &scf_info[i];
-         if (nn=s->num_so) {
-            fprintf(outfile,"\nsahalf for irrep %s\n",s->irrep_label);
-            print_mat(s->sahalf,nn,s->num_mo,outfile);
-            }
-         }
+  if (print & 1) {
+    for (i=0; i < num_ir ; i++) {
+      s = &scf_info[i];
+      if (nn=s->num_so) {
+	fprintf(outfile,"\nsahalf for irrep %s\n",s->irrep_label);
+	print_mat(s->sahalf,nn,s->num_mo,outfile);
       }
+    }
+  }
 
-/* if no initial vector, form one from core hamiltonian */
+  /* if no initial vector, form one from core hamiltonian */
 
-   if (inflg == 2) form_vec();
-   fflush(outfile);
+  if (inflg == 2) form_vec();
+  fflush(outfile);
 
-/* guess or designate orbital occupations*/
-   guess();
+  /* guess or designate orbital occupations*/
+  guess();
 
-/* orthogonalize old vector and form first density matrix */
-   if (inflg == 1) {
-       if(uhf)
-	   schmit_uhf(1);
-       else
-	   schmit(1);
-   }
+  /* orthogonalize old vector and form first density matrix */
+  if (inflg == 1) {
+    if(uhf)
+      schmit_uhf(1);
+    else
+      schmit(1);
+  }
    
-/* Print out the first vector */
-   if (print & 2)
-       print_initial_vec();
+  /* Print out the first vector */
+  if (print & 2)
+    print_initial_vec();
 
-/* if we are only orthogonalizing, then quit here */
-   if (orthog_only) {
-       fprintf(outfile, "Only orbital orthogonalization has been performed\n");
-       psio_done();
-       tstop(outfile);
-       ip_done();
-       exit(0);
-   }
+  /* if we are only orthogonalizing, then quit here */
+  if (orthog_only) {
+    fprintf(outfile, "Only orbital orthogonalization has been performed\n");
+    psio_done();
+    tstop(outfile);
+    ip_done();
+    exit(0);
+  }
 
-   if (!twocon){
-       if(!uhf)
-	   dmat();
-       else{
-	   /*--- Prepare alpha and beta eigenvectors from
-	     the core Hamiltonian guess ---*/
-	   if(inflg == 2)
-	       cmatsplit();
-	   dmatuhf();
+  if (!twocon){
+    if(!uhf)
+      dmat();
+    else{
+      /*--- Prepare alpha and beta eigenvectors from
+	the core Hamiltonian guess ---*/
+      if(inflg == 2)
+	cmatsplit();
+      dmatuhf();
 	   
-       }
-   }
+    }
+  }
 
-/* Decide how to form the Fock matrix */
+  /* Decide how to form the Fock matrix */
 
-   if (!direct_scf) {
+  if (!direct_scf) {
 
-/* read in tei's and form supermatrix */
+    /* read in tei's and form supermatrix */
 
-     num_ints = 0;
-     num_bufs = 0;
-     Pmat.unit = itap92;
-     Pmat.key = strdup("P-supermatrix");
-     Pmat.bufpos = PSIO_ZERO;
-     PKmat.unit = itap93;
-     PKmat.key = strdup("PK-supermatrix");
-     PKmat.bufpos = PSIO_ZERO;
-     psio_open(Pmat.unit,PSIO_OPEN_NEW);
-     psio_open(PKmat.unit,PSIO_OPEN_NEW);
-     rdtwo();
+    num_ints = 0;
+    num_bufs = 0;
+    Pmat.unit = itap92;
+    Pmat.key = strdup("P-supermatrix");
+    Pmat.bufpos = PSIO_ZERO;
+    PKmat.unit = itap93;
+    PKmat.key = strdup("PK-supermatrix");
+    PKmat.bufpos = PSIO_ZERO;
+    psio_open(Pmat.unit,PSIO_OPEN_NEW);
+    psio_open(PKmat.unit,PSIO_OPEN_NEW);
+    rdtwo();
      
-   }
-   else {
-/* form the Fock matrix directly */
-/*check for rohf singlet...doesn't work direct*/
-      if(!uhf && singlet) {
-         fprintf(outfile,"\n  rohf open shell singlet doesn't work direct\n");
-         fprintf(outfile,"  remove 'direct_scf = true' from input\n");
-         fprintf(stderr,"rohf open shell singlet doesn't work direct\n");
-         fprintf(stderr,"remove 'direct_scf = true' from input\n");
-         file30_close();
-	 chkpt_close();
-         psio_done();
-         exit(1);
-      }
+  }
+  else {
+    /* form the Fock matrix directly */
+    /*check for rohf singlet...doesn't work direct*/
+    if(!uhf && singlet) {
+      fprintf(outfile,"\n  rohf open shell singlet doesn't work direct\n");
+      fprintf(outfile,"  remove 'direct_scf = true' from input\n");
+      fprintf(stderr,"rohf open shell singlet doesn't work direct\n");
+      fprintf(stderr,"remove 'direct_scf = true' from input\n");
+      file30_close();
+      chkpt_close();
+      psio_done();
+      exit(1);
+    }
 
-     formg_direct();
-     if(dyn_acc)  fprintf(outfile,"\n  Using inexpensive integrals");   
-   }
+    formg_direct();
+    if(dyn_acc)  fprintf(outfile,"\n  Using inexpensive integrals");   
+  }
 
-/* iterate */
+  /* iterate */
 
-   iter = 0;
-   converged = 0;
+  iter = 0;
+  converged = 0;
       
-   if(twocon) scf_iter_2();
-   else if(uhf) uhf_iter();
-   else scf_iter();
+  if(twocon) scf_iter_2();
+  else if(uhf) uhf_iter();
+  else scf_iter();
 
-   psio_done();
 
-   cleanup();
-   }
+  cleanup();
+  psio_done();
+}
 
 
 void print_initial_vec()

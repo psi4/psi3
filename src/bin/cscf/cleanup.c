@@ -1,8 +1,12 @@
 /* $Log$
- * Revision 1.16  2002/05/07 22:40:56  sherrill
- * Fix missing s=&scf_info[k] in UHF case for evals, fix missing bracket
- * in RHF case.
+ * Revision 1.17  2002/05/30 12:57:08  crawdad
+ * Buf fix.  psio_done() was called before chkpt_close().
+ * -TDC
  *
+/* Revision 1.16  2002/05/07 22:40:56  sherrill
+/* Fix missing s=&scf_info[k] in UHF case for evals, fix missing bracket
+/* in RHF case.
+/*
 /* Revision 1.15  2002/04/28 04:34:10  crawdad
 /* Finshed initial additions for mirroring old file30 with new PSIF_CHKPT.  I
 /* believe that everything cscf wrote to file30 is also written to PSIF_CHKPT.
@@ -119,6 +123,8 @@ static char *rcsid = "$Id$";
 #include "common.h"
 #include <libipv1/ip_lib.h>
 
+#include <dmalloc.h>
+
 /* TDC(6/20/96) - Prototype for phase() */
 int phase(void);
 double ssquare(void);
@@ -218,9 +224,11 @@ void cleanup()
   if(twocon) i10[42] = -i10[42];
   i10[45] = nmo;
 
+  dmalloc_verify(0);
+
   /* psio_write calls for above */
-  chkpt_wt_nsymhf(n_so_typs);
   chkpt_wt_mxcoef(mxcoef);
+  chkpt_wt_nsymhf(n_so_typs);
   chkpt_wt_nmo(nmo);
 
   tmp_iopen = ioff[n_open];
@@ -367,6 +375,8 @@ void cleanup()
 	scr_arr[i] = s->fock_evals[j];
       }
     }
+
+    dmalloc_verify(0);
 
     chkpt_wt_evals(scr_arr);
 
