@@ -5,9 +5,8 @@
   ###############################################################################*/
 
 template<class coord_type>class coord_base {
-  protected:
-    coord_type* coord_arr;
   public:
+    coord_type* coord_arr;
     coord_base( int num_coord ) {
       coord_arr = new coord_type[num_coord];
     }
