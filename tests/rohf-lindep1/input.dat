@@ -1,0 +1,23 @@
+psi: (
+  label = "X_Sigma AlO"
+  reference = rohf
+  wfn = scf
+  basis = "cc-pVDZ"
+  multp = 2
+  charge = 0
+  docc = (6 0 2 2)
+  socc = (1 0 0 0)
+  units = bohr
+  geometry = (
+    AL       0.0000000000        0.0000000000 -1.1253048102
+     O       0.0000000000        0.0000000000  1.8982567716
+     O       0.0000000000        0.0000000000  1.9002567716
+    )
+  charges = (13.0 8.0 0.0)
+)
+
+scf: (
+  maxiter = 5000
+  convergence = 11
+)
+

@@ -3,6 +3,7 @@
 #include <string.h>
 #include <memory.h>
 #include <stdlib.h>
+#include <psitypes.h>
 #include <libciomr/libciomr.h>
 #include <libint/libint.h>
 #include <libderiv/libderiv.h>
@@ -30,7 +31,7 @@ void te_deriv1_print(void)
   int max_num_unique_quartets;
   int *sj_arr, *sk_arr, *sl_arr;
   int usii, usjj, uskk, usll;
-  long int quartet_index;
+  PSI_INT_LEAST64 quartet_index;
   int sii, sjj, skk, sll;
   int num_unique_quartets;
   int ni, nj, nk, nl;

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <math.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
@@ -10,6 +11,7 @@ void get_params(void)
 {
   int errcod, iconv,i,j,k,l,prop_sym,prop_root;
   char lbl[32];
+  char *junk;
 
   params.maxiter = 50;
   errcod = ip_data("MAXITER","%d",&(params.maxiter),0);
@@ -28,6 +30,20 @@ void get_params(void)
 
   params.cachelev = 2;
   errcod = ip_data("CACHELEV", "%d", &(params.cachelev),0);
+
+  params.dertype = 0;
+  if(ip_exist("DERTYPE",0)) {
+    errcod = ip_string("DERTYPE", &(junk),0);
+    if(errcod != IPE_OK) params.dertype = 0;
+    else if(!strcmp(junk,"NONE")) params.dertype = 0;
+    else if(!strcmp(junk,"FIRST")) params.dertype = 1;
+    else if(!strcmp(junk,"RESPONSE")) params.dertype = 3; /* linear response */
+    else {
+      printf("Invalid value of input keyword DERTYPE: %s\n", junk);
+      exit(PSI_RETURN_FAILURE); 
+    }
+    free(junk);
+  }
 
   params.aobasis = 0;
   errcod = ip_boolean("AO_BASIS", &(params.aobasis),0);
@@ -211,6 +227,23 @@ void get_params(void)
   local.filter_singles = 1;
   ip_boolean("LOCAL_FILTER_SINGLES", &(local.filter_singles), 0);
 
+  local.cphf_cutoff = 0.01;
+  ip_data("LOCAL_CPHF_CUTOFF", "%lf", &(local.cphf_cutoff), 0);
+
+  local.freeze_core = NULL;
+  ip_string("FREEZE_CORE", &local.freeze_core, 0);
+  if(local.freeze_core == NULL) local.freeze_core = strdup("FALSE");
+
+  if(ip_exist("LOCAL_PAIRDEF",0)){
+    errcod = ip_string("LOCAL_PAIRDEF", &(local.pairdef), 0);
+    if(strcmp(local.pairdef,"BP") && strcmp(local.pairdef,"RESPONSE")) {
+      fprintf(outfile, "Invalid keyword for strong/weak pair definition: %s\n", local.pairdef);
+      exit(PSI_RETURN_FAILURE);
+    }
+  }
+  else if(params.local)
+    local.pairdef = strdup("RESPONSE");
+
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
   fprintf(outfile, "\tMaxiter       =    %4d\n", params.maxiter);
@@ -221,13 +254,15 @@ void get_params(void)
           params.aobasis ? "Yes" : "No");
   fprintf(outfile, "\tExcited State  =     %s\n", 
           params.ground ? "No" : "Yes");
+  fprintf(outfile, "\tLocal CC        =     %s\n", params.local ? "Yes" : "No");
   if(params.local) {
     fprintf(outfile, "\tLocal Cutoff    = %3.1e\n", local.cutoff);
     fprintf(outfile, "\tLocal Method    =    %s\n", local.method);
     fprintf(outfile, "\tWeak pairs      =    %s\n", local.weakp);
     fprintf(outfile, "\tFilter singles  =    %s\n", local.filter_singles ? "Yes" : "No");
+    fprintf(outfile, "\tLocal pairs       =    %s\n", local.pairdef);
+    fprintf(outfile, "\tLocal CPHF cutoff =  %3.1e\n", local.cphf_cutoff);
   }
-  fprintf(outfile, "\tLocal CC        =     %s\n", params.local ? "Yes" : "No");
 
   fprintf(outfile,"\tParamaters for left-handed eigenvectors:\n");
   fprintf(outfile,"\tIrr   Root  Ground-State?    EOM energy        R0\n");

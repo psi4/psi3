@@ -4,6 +4,8 @@ psi: (
   reference = rhf
   jobtype = opt
   dertype = first
+  convergence = 13
+  conv = 10
   basis = "DZ"
   geometry = (
     H -0.6   0.6  0.0

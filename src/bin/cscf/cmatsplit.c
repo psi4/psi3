@@ -14,13 +14,14 @@
 
 void cmatsplit(void){
     int i,j,k,l;
-    int nn;
+    int nn, nmo;
     double temp;
     
     for(i=0;i<num_ir;i++){
 	nn=scf_info[i].num_so;
+        nmo=scf_info[i].num_mo;
 	for(j=0;j<nn;j++){
-	    for(k=0;k<nn;k++){
+	    for(k=0;k<nmo;k++){
 		temp = scf_info[i].cmat[j][k];
 		spin_info[0].scf_spin[i].cmat[j][k] = temp;
 		spin_info[1].scf_spin[i].cmat[j][k] = temp;
@@ -28,10 +29,10 @@ void cmatsplit(void){
 	}
 	/*fprintf(outfile,"\n\nCmat for spin = %d and irrep = %s\n"
 		,0,scf_info[i].irrep_label);
-	print_mat(spin_info[0].scf_spin[i].cmat,nn,nn,outfile);
+	print_mat(spin_info[0].scf_spin[i].cmat,nn,nmo,outfile);
 	fprintf(outfile,"\n\nCmat for spin = %d and irrep = %s\n"
 		,1,scf_info[i].irrep_label);
-		print_mat(spin_info[1].scf_spin[i].cmat,nn,nn,outfile);*/
+		print_mat(spin_info[1].scf_spin[i].cmat,nn,nmo,outfile);*/
     }
 }
 		

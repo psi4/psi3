@@ -18,5 +18,6 @@ struct Params {
   double bconv;
   int analyze;
   int semicanonical;
+  int dertype;
 };
 

@@ -1,9 +1,22 @@
 /* $Log$
- * Revision 1.9  2003/04/14 17:25:47  sherrill
- * Change "total energy" to "SCF total energy" to make more explicit for
- * new users.  Yeah, this will probably break some test case perl scripts
- * temporarily :)
+ * Revision 1.10  2004/05/03 04:32:40  crawdad
+ * Major mods based on merge with stable psi-3-2-1 release.  Note that this
+ * version has not been fully tested and some scf-optn test cases do not run
+ * correctly beccause of changes in mid-March 2004 to optking.
+ * -TDC
  *
+/* Revision 1.9.4.1  2004/04/10 19:41:32  crawdad
+/* Fixed the DIIS code for UHF cases.  The new version uses the Pulay scheme of
+/* building the error vector in the AO basis as FDS-SDF, followed by xformation
+/* into the orthogonal AO basis.   This code converges faster for test cases
+/* like cc8, but fails for linearly dependent basis sets for unknown reasons.
+/* -TDC
+/*
+/* Revision 1.9  2003/04/14 17:25:47  sherrill
+/* Change "total energy" to "SCF total energy" to make more explicit for
+/* new users.  Yeah, this will probably break some test case perl scripts
+/* temporarily :)
+/*
 /* Revision 1.8  2001/01/04 14:13:35  sbrown
 /* Fixed the problem with iconv:  The new versions of linux had iconv already
 /* assigned to something else so I changed all references of it to scf_conv.
@@ -86,97 +99,98 @@ int ecalc(incr)
    double incr;
 
 {
-   int i,j,k,ij,nn;
-   double edif;
-   double plimit = pow(10.0,(double) -scf_conv);
-   double neelec = 0.0;
-   double oe_energy, te_energy, dtmp, dtmp1;
-   double cinext;
-   struct symm *s;
+  int i,j,k,ij,nn;
+  double edif;
+  double plimit = pow(10.0,(double) -scf_conv);
+  double neelec = 0.0;
+  double oe_energy, te_energy, dtmp, dtmp1;
+  double cinext;
+  struct symm *s;
 
-   delta=0.0;
-   oe_energy = te_energy = 0.0;
-   for (k=0; k < num_ir ; k++) {
-      s = &scf_info[k];
-      if (nn=s->num_so) {
-         for (i=ij=0; i < nn ; i++) {
-            for (j = 0 ; j <= i ; j++,ij++) {
-	       oe_energy += 0.5*s->pmat[ij]*s->hmat[ij];
-               if(uhf) {
-		   te_energy += 0.5*((spin_info[0].scf_spin[k].pmat[ij]
-				      *spin_info[0].scf_spin[k].fock_pac[ij])
-				     +(spin_info[1].scf_spin[k].pmat[ij]
-				       *spin_info[1].scf_spin[k].fock_pac[ij]));
-	       }
-	       else if(!iopen) {
-		   te_energy += 0.5*s->pmat[ij]*s->fock_pac[ij];
-	       }
-	       else {
-		   te_energy += 0.5*s->pmat[ij]*s->fock_pac[ij]
-		       - 0.5*s->pmato[ij]*s->gmato[ij];
-	       }
-	    }
-	 }
-         if (iter) {
-	     if(uhf){
-		 for (i = 0; i < ioff[nn] ; i++) {
-		     dtmp = spin_info[0].scf_spin[k].dpmat[i];
-		     dtmp1 = spin_info[1].scf_spin[k].dpmat[i];
-		     delta += dtmp*dtmp;
-		     delta += dtmp1*dtmp1;
-		 }
-	     }
-	     else {
-		 for (i = 0; i < ioff[nn] ; i++) {
-		     dtmp = s->dpmat[i];
-		     delta += dtmp*dtmp;
-		 }
-	     }
-	 }
+  delta=0.0;
+  oe_energy = te_energy = 0.0;
+  for (k=0; k < num_ir ; k++) {
+    s = &scf_info[k];
+    if (nn=s->num_so) {
+
+      for (i=ij=0; i < nn ; i++) {
+	for (j = 0 ; j <= i ; j++,ij++) {
+	  oe_energy += 0.5*s->pmat[ij]*s->hmat[ij];
+	  if(uhf) {
+	    te_energy += 0.5*((spin_info[0].scf_spin[k].pmat[ij]
+			       *spin_info[0].scf_spin[k].fock_pac[ij])
+			      +(spin_info[1].scf_spin[k].pmat[ij]
+				*spin_info[1].scf_spin[k].fock_pac[ij]));
+	  }
+	  else if(!iopen) {
+	    te_energy += 0.5*s->pmat[ij]*s->fock_pac[ij];
+	  }
+	  else {
+	    te_energy += 0.5*s->pmat[ij]*s->fock_pac[ij]
+	      - 0.5*s->pmato[ij]*s->gmato[ij];
+	  }
+	}
       }
-   }
-   neelec = oe_energy + te_energy;
+      if (iter) {
+	if(uhf){
+	  for (i = 0; i < ioff[nn] ; i++) {
+	    dtmp = spin_info[0].scf_spin[k].dpmat[i];
+	    dtmp1 = spin_info[1].scf_spin[k].dpmat[i];
+	    delta += dtmp*dtmp;
+	    delta += dtmp1*dtmp1;
+	  }
+	}
+	else {
+	  for (i = 0; i < ioff[nn] ; i++) {
+	    dtmp = s->dpmat[i];
+	    delta += dtmp*dtmp;
+	  }
+	}
+      }
+    }
+  }
+  neelec = oe_energy + te_energy;
  
-   /*JPK(6/1/00) dynamic integral accuracy modifications*/
-   dconv = sqrt(delta)/mxcoef2;
-   delta = dconv;
-   if(acc_switch==1 || iter==0) {
-      delta=1.0;
-      acc_switch=0;
-   }                            
-   coulomb_energy = neelec;
-   if (ksdft){      
-       neelec += exc;
-   /*printf("XC_energy = %10.10lf",exc);*/
-   }
+  /*JPK(6/1/00) dynamic integral accuracy modifications*/
+  dconv = sqrt(delta)/mxcoef2;
+  delta = dconv;
+  if(acc_switch==1 || iter==0) {
+    delta=1.0;
+    acc_switch=0;
+  }                            
+  coulomb_energy = neelec;
+  if (ksdft){      
+    neelec += exc;
+    /*printf("XC_energy = %10.10lf",exc);*/
+  }
    
-   etot = repnuc + neelec;
-   edif =  eelec - neelec;
-   ediff = edif;
+  etot = repnuc + neelec;
+  edif =  eelec - neelec;
+  ediff = edif;
 
-   if (!iter) fprintf(outfile,"\n  iter       total energy        delta E         delta P          diiser\n");
-   fprintf(outfile, "%5d %20.10f %15.6e %15.6e %15.6e\n", 
-                                    ++iter, etot, edif, dconv, diiser);
-   if (print & 2) {
-     fprintf(outfile, "one-electron energy = %25.15f\n", oe_energy);
-     fprintf(outfile, "two-electron energy = %25.15f\n", te_energy);
-     fprintf(outfile, "coulomb energy      = %25.15f\n",coulomb_energy);
-     fprintf(outfile, "SCF total energy    = %25.15f\n", etot);
-   }
-   fflush(outfile);
-   diiser=0.0;
+  if (!iter) fprintf(outfile,"\n  iter       total energy        delta E         delta P          diiser\n");
+  fprintf(outfile, "%5d %20.10f %15.6e %15.6e %15.6e\n", 
+	  ++iter, etot, edif, dconv, diiser);
+  if (print & 2) {
+    fprintf(outfile, "one-electron energy = %25.15f\n", oe_energy);
+    fprintf(outfile, "two-electron energy = %25.15f\n", te_energy);
+    fprintf(outfile, "coulomb energy      = %25.15f\n",coulomb_energy);
+    fprintf(outfile, "SCF total energy    = %25.15f\n", etot);
+  }
+  fflush(outfile);
+  diiser=0.0;
 
-   if ( delta < plimit && iter > 1) {
-      converged=1;
-      if(!iopen || iopen && fock_typ >= 2) cleanup();
-      }
+  if ( delta < plimit && iter > 1) {
+    converged=1;
+    if(!iopen || iopen && fock_typ >= 2) cleanup();
+  }
 
-   eelec = neelec;
+  eelec = neelec;
 
-   cinext = pow(10.0,-twocut);
-   if (delta < cinext && delta && !converged) {
-      twocut += incr;
-      return(1);
-      }
-   else return(0);
-   }
+  cinext = pow(10.0,-twocut);
+  if (delta < cinext && delta && !converged) {
+    twocut += incr;
+    return(1);
+  }
+  else return(0);
+}

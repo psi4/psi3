@@ -150,6 +150,20 @@ main(int argc, char *argv[])
       }
 
    get_mo_info();               /* read DOCC, SOCC, frozen, nmo, etc        */
+
+   if (Parameters.fci) {
+      int num_electrons = 0;
+      for (i=0; i<CalcInfo.nirreps; i++) {
+         num_electrons += 2 * CalcInfo.docc[i];
+         num_electrons += CalcInfo.socc[i];
+         num_electrons -= 2 * CalcInfo.frozen_docc[i];
+         }
+      if (num_electrons != Parameters.ex_lvl) {
+         Parameters.ex_lvl = num_electrons;
+         fprintf(outfile, "\nEX_LVL was incorrect for full CI changed to %d\n\n", num_electrons);
+         }
+      }
+
    set_ras_parms();             /* set fermi levels and the like            */ 
    fflush(outfile); 
    form_strings();              /* form the alpha/beta strings              */

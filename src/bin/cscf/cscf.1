@@ -269,13 +269,12 @@ make sure that they do not appear in your input.  The defaults will
 work in the overwhelming majority of cases.
 These are specified with the following keywords:
 
-.IP "\fBDELETE34 =\fP \fIboolean\fP"
-.pN FILE34
+.IP "\fBDELETE_INTS =\fP \fIboolean\fP"
+Integrals files
 will be erased if \fBWFN = SCF\fP and \fBDERTYPE = FIRST\fP
 or \fBDERTYPE = NONE\fP.  
 If you wish to keep 
-.pn FILE34
-then set DELETE34 = false.  The default is true.
+integrals files then set \fBDELETE_INTS\fP = false.  The default is true.
 
 .IP "\fBREORDER =\fP \fIboolean\fP"
 The molecular orbitals will be reordered if this is true, in which

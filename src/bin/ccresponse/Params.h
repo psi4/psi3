@@ -10,4 +10,5 @@ struct Params {
   char *prop;            /* user-selected property */
   int local;             /* boolean for simluation of local correlation */
   int analyze;
+  int dertype;
 };

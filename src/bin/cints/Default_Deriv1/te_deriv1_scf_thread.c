@@ -3,6 +3,7 @@
 #include <string.h>
 #include <memory.h>
 #include <stdlib.h>
+#include <psitypes.h>
 #include <libipv1/ip_lib.h>
 #include <libiwl/iwl.h>
 #include <libciomr/libciomr.h>
@@ -35,7 +36,7 @@ void *te_deriv1_scf_thread(void *tnum_ptr)
   double_array_t fjt_table;               /* table of auxiliary function F_m(u) for each primitive combination */
 #endif
 
-  long int quartet_index;
+  PSI_INT_LEAST64 quartet_index;
   int ij, kl, ik, jl, ijkl;
   int ioffset, joffset, koffset, loffset;
   int count ;

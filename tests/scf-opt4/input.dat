@@ -6,6 +6,8 @@ psi: (
   dertype = first
   docc = (4 1 1 3)
   basis = "DZP"
+  convergence = 13
+  conv = 10
   zmat = (
     H
     C 1 CH$

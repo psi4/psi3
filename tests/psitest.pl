@@ -48,7 +48,8 @@ $PSITEST_DEFAULT_NSTAB = 5;       # number of eigenvalues STABLE prints out
 $PSITEST_ETOL = 10**-8;           # Default test criterion for energies
 $PSITEST_ENUCTOL = 10**-13;       # Check nuclear repulsion energy tighter than other energies
 $PSITEST_EEOMTOL = 10**-5;        # Less stringent test for EOM-CC energies
-$PSITEST_GTOL = 10**-8;           # Default test criterion for gradients
+$PSITEST_GEOMTOL = 10**-6;        # Default test criterion for Cartesian geometries
+$PSITEST_GTOL = 10**-6;           # Default test criterion for gradients
 $PSITEST_HTOL = 10**-2;           # Default test criterion for Hessians
 $PSITEST_POLARTOL = 10**-4;       # Default test criterion for polarizabilities
 $PSITEST_STABTOL = 10**-4;        # Default test criterion for Hessian eigenvalues
@@ -864,7 +865,7 @@ sub compare_geom_file11
 
   my @geom_ref = seek_geom_file11($REF_FILE, $wfn);
   my @geom_test = seek_geom_file11($TEST_FILE, $wfn);
-  if(!compare_arrays(\@geom_ref, \@geom_test, ($#geom_ref+1), $PSITEST_GTOL)) {
+  if(!compare_arrays(\@geom_ref, \@geom_test, ($#geom_ref+1), $PSITEST_GEOMTOL)) {
     fail_test("$wfn Geometry"); $fail = 1;
   }
   else {

@@ -1,15 +1,9 @@
 
-#ifndef _psiconfig_h
-#define _psiconfig_h
+#ifndef _psi_src_psiconfig_h
+#define _psi_src_psiconfig_h
 
-typedef @INT_TYPE@ psi_int;
-typedef unsigned @INT_TYPE@ psi_uint;
-typedef @REAL_TYPE@ psi_real;
+/* Define if you have <stdint.h>.  */
+#undef HAVE_STDINT_H
 
-#ifdef NO_VOID_PTR
-typedef char* void_ptr;
-#else
-typedef void* void_ptr;
-#endif
+#endif /* _psi_src_psiconfig_h */
 
-#endif /* _psiconfig_h */

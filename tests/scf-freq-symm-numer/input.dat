@@ -5,6 +5,7 @@ psi: (
   reference = rhf
   multp = 1
   dertype = first
+  convergence = 13
   basis = "6-31G**"
   zmat = (
     o

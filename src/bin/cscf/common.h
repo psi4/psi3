@@ -1,11 +1,28 @@
 /* $Id$ */
 /* $Log$
- * Revision 1.15  2003/08/17 22:57:37  crawdad
- * Removing libfile30 from the repository.  I believe that all code reference
- * to the library have also been properly removed.  The current version
- * passes all test cases on my systems.
+ * Revision 1.16  2004/05/03 04:32:40  crawdad
+ * Major mods based on merge with stable psi-3-2-1 release.  Note that this
+ * version has not been fully tested and some scf-optn test cases do not run
+ * correctly beccause of changes in mid-March 2004 to optking.
  * -TDC
  *
+/* Revision 1.15.4.2  2004/04/21 15:45:07  evaleev
+/* Modified DIIS algorithm for RHF and ROHF to work in OSO basis rather than in
+/* AO basis, to avoid difficulties of transforming between MO and AO bases
+/* when linear dependencies are present.
+/*
+/* Revision 1.15.4.1  2004/04/06 21:29:05  crawdad
+/* Corrections to the RHF/ROHF DIIS algorithm, which was simply incorrect.
+/* The backtransformation of the DIIS error vectors to the AO basis was not
+/* mathematically right.
+/* -TDC and EFV
+/*
+/* Revision 1.15  2003/08/17 22:57:37  crawdad
+/* Removing libfile30 from the repository.  I believe that all code reference
+/* to the library have also been properly removed.  The current version
+/* passes all test cases on my systems.
+/* -TDC
+/*
 /* Revision 1.14  2002/12/22 17:01:14  evaleev
 /* Updated cints, cscf, psi3 (probably not complete) and transqt to use psi_start/psi_stop.
 /*
@@ -260,18 +277,21 @@ EXTERN struct symm {
     double *gmat;
     double *gmato;
     double *xcmat;  /* Exchange-correlation Fock matrix for KS DFT */
-    double *pmat;   /* Closed-shell density matrixin RHF, alpha or beta in UHF) */
+    double *pmat;   /* Closed-shell density matrix in RHF, alpha or beta in UHF) */
     double *pmato;
     double *pmat2;
     double *pmato2;
     double *dpmat;
     double *dpmato;
-    double **cmat;
+    double **cmat;  /* MO eigenvector in terms of SOs */
+    double **ucmat; /* MO eigenvector in terms of orthogonal SOs (see sahalf) */
     /* STB(4/1/98) - Added array for saving evalues of core H */
     double *hevals;
     /* TDC(6/19/96) - Added array for saving original MO vector */
     double **cmat_orig;
-    double **sahalf;
+    double **sahalf;  /* Transformation matrix from SO to orthogonal SO basis (num_so by num_mo)
+		         The core Hamiltonian eigenvector is factored in! */
+    double **pinv;    /* The overlap matrix reconstructed using SVD */
     double *occ_num;
     int nclosed;
     int nopen;

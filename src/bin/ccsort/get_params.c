@@ -14,6 +14,7 @@ void get_params()
 {
   int errcod, tol;
   char *junk;
+  int *mu_irreps;
   
   errcod = ip_string("WFN", &(params.wfn), 0);
   if(strcmp(params.wfn, "MP2") && strcmp(params.wfn, "CCSD") && 
@@ -95,6 +96,24 @@ void get_params()
   params.cachelev = 2;
   errcod = ip_data("CACHELEV", "%d", &(params.cachelev),0);
 
+  params.local = 0;
+  errcod = ip_boolean("LOCAL", &(params.local),0);
+
+  mu_irreps = init_int_array(3);
+  errcod = ip_int_array("MU_IRREPS", mu_irreps, 3);
+  if(errcod == IPE_OK) {
+    moinfo.irrep_x = mu_irreps[0];
+    moinfo.irrep_y = mu_irreps[1];
+    moinfo.irrep_z = mu_irreps[2];
+  }
+  else {
+    if(params.dertype == 3) {
+      fprintf(outfile, "\nYou must supply the irreps of x, y, and z with the MU_IRREPS keyword.\n");
+      exit(PSI_RETURN_FAILURE);
+    }
+  }
+  free(mu_irreps);
+
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
   fprintf(outfile, "\tWave function   =\t%s\n", params.wfn);
@@ -114,6 +133,7 @@ void get_params()
 	  (params.make_abcd == 1) ? "True" : "False");
   fprintf(outfile, "\tCache Level     =\t%d\n", params.cachelev);
   fprintf(outfile, "\tCache Type      =\t%s\n", "LRU");
+  fprintf(outfile, "\tLocal CC        =     %s\n", params.local ? "Yes" : "No");
   fprintf(outfile, "\n");
   fflush(outfile);
 }

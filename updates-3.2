@@ -1,4 +1,49 @@
-Updates since psi-3.2-rc2
+Updates between psi-3.2.0 and psi-3.2.1
+
+4/23/04: Update the scf-optn test cases to use tight convergence criteria.
+This makes comparisons between architectures easier.  Also added
+configure checks for isinf() and finite() functions, which are needed by
+src/bin/cints/Tools/molecule.c. -TDC
+
+4/10/04: Fixed the DIIS code for UHF cases.  The new version uses the Pulay
+scheme of building the error vector in the AO basis as FDS-SDF, followed
+by xformation into the orthogonal AO basis.   This code converges faster
+for test cases like cc8.  -TDC
+
+4/8/04: Fixed a bunch of bugs in UHF part of cscf that occur when the
+basis set is nearly linearly dependent.  -EFV
+
+4/6/04: Corrections to the RHF/ROHF DIIS algorithm, which was simply
+incorrect.  The backtransformation of the DIIS error vectors to the AO
+basis was not mathematically right.  -TDC and EFV
+
+4/1/04: Fixed a bug src/bin/cscf/cleanup.c which caused incorrect lagrangian
+written to chkpt file. ROHF SCF gradients now should be correct even when
+symmetry group is not C1.  -EFV
+
+3/24/04: Fixed a bug in cints associated with the shell quartet index being
+greater than the range of a long int can allow in 32-bit environments.
+include/psitypes.h has several new types defined that have specified
+precision.  -EFV
+
+1/26/04: Fixed a bug in src/lib/libdpd/contract444.c for out-of-core cases.
+I was not including the size of a single file4 row on the X component of
+the X*Y-->Z contraction, which is necessary for some <ab|cd> cases in
+cclambda.  -TDC
+
+1/19/04: Fixed a typo in src/lib/Makefile.in concerning the Makefile remake
+rule.  -EFV
+
+1/7/04: Modified detci so that when fci = true the ex_lvl is set
+correctly. -JMT
+
+1/2/04: Modified the lapack checks in configure.in to look for DGEEV rather
+than DGESV.  Some optimized BLAS libs (e.g. the one from Katzushige Goto for
+Alpha) include limited LAPACK support, including DGESV, in which case the
+configure script thinks it doesn't need to link -llapack on top of -lblas.
+DGEEV doesn't appear to be included in either ATLAS of Goto's libs. -TDC
+
+Updates between psi-3.2-rc2 and psi-3.2.0
 
 12/30/03: Removed use_iwl option from cscf, since the old style I/O is no
 longer used.  cscf now relies only on libpsio. -TDC

@@ -20,7 +20,6 @@
 #include"dcr.h"
 #include"gto.h"
 #ifdef INCLUDE_Default_Ints
- #include"enuc.h"
  #include"oe_ints.h"
  #include"te_ints.h"
 #endif

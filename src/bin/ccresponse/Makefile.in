@@ -43,6 +43,7 @@ LHX2Y2.c \
 LHX1Y2.c \
 local.c \
 analyze.c \
+local_response.c \
 
 BINOBJ = $(CSRC:%.c=%.o)
 

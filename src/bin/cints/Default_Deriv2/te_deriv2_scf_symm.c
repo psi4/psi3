@@ -3,6 +3,7 @@
 #include <string.h>
 #include <memory.h>
 #include <stdlib.h>
+#include <psitypes.h>
 #include <libipv1/ip_lib.h>
 #include <libiwl/iwl.h>
 #include <libciomr/libciomr.h>
@@ -39,7 +40,7 @@ void te_deriv2_scf_symm(void)
 #endif
   double **hess_te;
 
-  long int quartet_index;
+  PSI_INT_LEAST64 quartet_index;
   int ij, kl, ik, jl, ijkl;
   int ioffset, joffset, koffset, loffset;
   int count ;
@@ -70,7 +71,7 @@ void te_deriv2_scf_symm(void)
   int num_unique_quartets;
   int max_num_unique_quartets;
   int plquartet;
-  long int key, key1, key2, key3;
+  PSI_INT_LEAST64 key, key1, key2, key3;
   int new_quartet, htable_ptr, nstri;
   double q4ijkl;
 

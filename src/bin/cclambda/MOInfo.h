@@ -2,6 +2,7 @@ struct MOInfo {
   int nirreps;        /* no. of irreducible representations */
   int nmo;            /* no. of molecular orbitals */
   int nso;
+  int nao;
   int iopen;          /* 0=closed shell; >0=open shell */
   int phase;          /* Boolean for consistency of orbital phases */
   int *orbspi;        /* no. of MOs per irrep */

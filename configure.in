@@ -1,5 +1,4 @@
 # Definitions
-#define([psi],[Psi])
 define([psi_mmm_version],[3.3.0])
 define([psi_buildid],[alpha])
 define([psi_so_version],[1:0:0])
@@ -11,8 +10,7 @@ define([AC_CACHE_SAVE], )dnl for debugging configure.in
 AC_PREREQ(2.52)
 AC_INIT(psi,psi_mmm_version,psi_email)
 AC_CONFIG_SRCDIR(aclocal.m4)
-# I don't have a config header yet -EFV
-# AC_CONFIG_HEADER(src/psi_config.h)
+AC_CONFIG_HEADER(include/psiconfig.h)
 AC_SET_MAKE
 
 # Make srcdir an absolute path
@@ -367,7 +365,7 @@ case $withval in
     LAPACK='-llapack'
     ;;
   no)
-    LAPACK=' '
+    LAPACK=''
     ;;
   *)
     LAPACK=" $withval"
@@ -379,11 +377,11 @@ if test "X$LAPACK" = X; then
   CURRENT_LIBS=$LIBS
   LIBS="$BLAS $LIBS"
   AC_MSG_CHECKING(whether BLAS library contains LAPACK)
-  AC_TRY_LINK_FUNC(DGESV,[LAPACK=" ";AC_MSG_RESULT(yes)])
+  AC_TRY_LINK_FUNC(DGEEV,[LAPACK=" ";AC_MSG_RESULT(yes)],AC_MSG_RESULT(no))
   LIBS=$CURRENT_LIBS
 fi
 if test "X$LAPACK" = X; then
-  AC_CHECK_LIB(lapack,DGESV, LAPACK="-llapack",,$BLAS)
+  AC_CHECK_LIB(lapack,DGEEV, LAPACK="-llapack",,$BLAS)
 fi
 if test "X$LAPACK" = X; then
  AC_MSG_ERROR("Did not find a LAPACK library")
@@ -432,7 +430,7 @@ CXXINC='$(CPPFLAGS) $(PSICPPFLAGS)' AC_SUBST(CXXINC)
 AC_C_CONST()
 
 # check for header files
-AC_HAVE_HEADERS(errno.h fcntl.h unistd.h sys/types.h sys/times.h sys/param.h)
+AC_HAVE_HEADERS(errno.h fcntl.h unistd.h stdint.h sys/types.h sys/times.h sys/param.h)
 
 # check for C++ headers
 AC_CXX_PROCESS_CHECK([cmath],[#include <cmath>],,[HAVE_CMATH=1],[HAVE_CMATH=0]) CXXDEF="$CXXDEF -DHAVE_CMATH=$HAVE_CMATH"
@@ -468,6 +466,17 @@ CXXDEF="$CXXDEF $extradef"
 AC_CHECK_FUNC(setenv,[extradef="-DHAVE_SETENV=1"])
 CDEF="$CDEF $extradef"
 CXXDEF="$CXXDEF $extradef"
+
+AC_CHECK_LIB(m,isinf,[extradef="-DHAVE_FUNC_ISINF=1"],[extradef=""])
+if test X$extradef = X; then
+  AC_CHECK_LIB(m,finite,[extradef="-DHAVE_FUNC_FINITE=1"],[extradef=""])
+fi
+if test X$extradef = X; then
+  AC_ERROR([Did not find isinf() or finite() functions.])
+else
+  CDEF="$CDEF $extradef"
+  CXXDEF="$CXXDEF $extradef"
+fi
 
 # set up cpu specific flags
 AC_MSG_CHECKING([for architecture/compiler specific optimization flags])
@@ -671,8 +680,7 @@ AC_SUBST(CXXDEPENDSUF)
 AC_SUBST(CCDEPENDFLAGS)
 AC_SUBST(CXXDEPENDFLAGS)
 
-AC_OUTPUT(include/psiconfig.h
-          include/sizeof.h include/Makefile
+AC_OUTPUT(include/sizeof.h include/Makefile
           include/chkpt_params.h
           Makefile lib/Makefile src/Makefile
           src/lib/Makefile src/lib/MakeRules src/lib/MakeVars
@@ -802,6 +810,9 @@ AC_OUTPUT(include/psiconfig.h
           tests/extrema-deloc/extrema-deloc.pl
 	  tests/mp2r12-sp1/Makefile
 	  tests/mp2-opt-numer/Makefile
+          tests/rhf-lindep1/Makefile
+          tests/rohf-lindep1/Makefile
+          tests/uhf-lindep1/Makefile
 	  tests/psi_start/Makefile
 	  tests/psi_start/psi_start.pl
 

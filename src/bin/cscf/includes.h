@@ -4,6 +4,7 @@
 #include <math.h>
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
+#include <libqt/qt.h>
 #include <psifiles.h>
 
 #define MIN0(a,b) ((a)<(b)) ? (a) : (b)

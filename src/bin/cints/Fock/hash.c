@@ -54,10 +54,10 @@ void free_htable(htable_t *htable)
 /*------------------------------------------
   Compute the key from four (shell) indices
  ------------------------------------------*/
-long int compute_key(int si, int sj, int sk, int sl)
+PSI_INT_LEAST64 compute_key(int si, int sj, int sk, int sl)
 {
-  long int ij, kl, ijkl;
-  long int key;
+  PSI_INT_LEAST64 ij, kl, ijkl;
+  PSI_INT_LEAST64 key;
 
   ij = INDEX(si,sj);
   kl = INDEX(sk,sl);
@@ -107,7 +107,7 @@ long int compute_key(int si, int sj, int sk, int sl)
   This means that P is either P12 or P34 we need to swap q4ikjl and q4ilkj.
 
  ----------------------------------------------------*/
-int put_entry(htable_t *htable, long int key, int si, int sj, int sk, int sl, double q4ijkl, double q4ikjl, double q4ilkj)
+int put_entry(htable_t *htable, PSI_INT_LEAST64 key, int si, int sj, int sk, int sl, double q4ijkl, double q4ikjl, double q4ilkj)
 {
   int curr_ptr;
   int hvalue = hashing_function(key);
@@ -165,7 +165,7 @@ int put_entry(htable_t *htable, long int key, int si, int sj, int sk, int sl, do
   Put an entry into the table. Return the location if
   it's a new entry, or -1 if it has been in the table
  ----------------------------------------------------*/
-int find_entry(htable_t *htable, long int key)
+int find_entry(htable_t *htable, PSI_INT_LEAST64 key)
 {
   int curr_ptr;
   int hvalue = hashing_function(key);

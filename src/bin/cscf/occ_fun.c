@@ -101,7 +101,7 @@ void occ_init(void){
 		    "\n Please specify an open shell reference\n");
 	    fprintf(outfile," with multpicity > 1\n");
 	    fprintf(outfile," multiplicity = %d\n",multp);
-	    fprintf(outfile," meference    = %s\n",reference);
+	    fprintf(outfile," reference    = %s\n",reference);
 	    exit(PSI_RETURN_FAILURE);
 	}
     }

@@ -226,30 +226,35 @@ IV. Miscellaneous architecture-specific notes
 
  * Compaq Alpha/OSF 5.1:
 
-   Default shell under Tru64 (/bin/sh is not POSIX-compliant which causes some 
-   PSI3 makefiles to fail. Set environmental variable BIN_SH to xpg4.
+   Default Bourne shell under Tru64 (/bin/sh) is not POSIX-compliant which 
+   causes some PSI3 makefiles to fail. Set environmental variable BIN_SH to 
+   xpg4.
 
- * Mac OS 10.2.X:
+ * Mac OS 10.2.X and 10.3.X (recommended):
 
    For Apple systems, several issues arise that we hope to address with the 
    configure script in the near future:
 
-   (1) The compilation requires a developer's toolkit from apple.com.
+   (1) The compilation requires a developer's toolkit (Xcode) from apple.com.  
+   However, you should probably install the latest gcc package, because the 
+   Xcode toolkit doesn't include a Fortran compiler (which is needed 
+   for determining how to link BLAS and LAPACK codes into PSI3).
 
-   (2) You need the libcompat library. It can be obtained from Apple's 
-   website at http://www.opensource.apple.com/. Then add -lcompat to the
-   configure flag --with-libs.
+   (2) For OS 10.2.X, you'll also need the libcompat library. (As of 
+   23 April 2004, it can be obtained from Apple's website at 
+   http://www.opensource.apple.com/darwinsource/ under the 10.2.8 source 
+   directory.)  Then add -lcompat to the configure flag --with-libs.
 
-   (3) If you are using compilers from the developer's kit then for
-   BLAS and LAPACK, use the configure options:
-
-      --with-blas='-altivec -framework vecLib' --with-lapack=' '
-
-   If you compiled compilers yourself from GNU source code then
-   Apple-specific extensions will not work and you will have to specify
-   the location of vecLib manually:
+   (3) If you compiled compilers yourself from GNU source code (the most 
+   likely scenario) you must specify explicitly the location of vecLib for 
+   optimized BLAS and LAPACK:
 
       --with-blas='/System/Library/Frameworks/vecLib.framework/vecLib'
+
+   If you are using compilers from the developer's kit, then you can instead 
+   use the Apple-specific extensions:
+
+      --with-blas='-altivec -framework vecLib' --with-lapack=' '
 
    (4) The Fortran compiler in gcc version 3.3 and higher requires the latest
    assembler, as. It can be obtained as a part of cctools from 
@@ -258,7 +263,8 @@ IV. Miscellaneous architecture-specific notes
 
    (5) Certain PSI3 codes require significant stackspace for compilation.
    Increase your shell's stacksize limit before running "make".  For csh,
-   for example, this is done using "unlimit stacksize".
+   for example, this is done using "unlimit stacksize".  [NB: This limit 
+   appears to have been lifted in Mac OS 10.3.X (Panther).]
 
  * SGI IRIX 6.x:
 

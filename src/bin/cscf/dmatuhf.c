@@ -1,7 +1,20 @@
 /* $Log$
- * Revision 1.5  2002/04/03 02:06:01  janssen
- * Finish changes to use new include paths for libraries.
+ * Revision 1.6  2004/05/03 04:32:40  crawdad
+ * Major mods based on merge with stable psi-3-2-1 release.  Note that this
+ * version has not been fully tested and some scf-optn test cases do not run
+ * correctly beccause of changes in mid-March 2004 to optking.
+ * -TDC
  *
+/* Revision 1.5.8.1  2004/04/10 19:41:32  crawdad
+/* Fixed the DIIS code for UHF cases.  The new version uses the Pulay scheme of
+/* building the error vector in the AO basis as FDS-SDF, followed by xformation
+/* into the orthogonal AO basis.   This code converges faster for test cases
+/* like cc8, but fails for linearly dependent basis sets for unknown reasons.
+/* -TDC
+/*
+/* Revision 1.5  2002/04/03 02:06:01  janssen
+/* Finish changes to use new include paths for libraries.
+/*
 /* Revision 1.4  2000/12/05 19:40:03  sbrown
 /* Added Unrestricted Kohn-Sham DFT.
 /*
@@ -61,221 +74,221 @@ static char *rcsid = "$Id$";
 
 void dmatuhf()
 {
-   int i,j,k,l,ij,n,m,jj,kk;
-   int max, off, ntri;
-   int ndocc;
-   int nn;
-   double ptemp,ctmp;
-   struct symm *s;
-   struct spin *sp;
-   double *dmat;
-   double **cmat;
+  int i,j,k,l,ij,n,m,jj,kk;
+  int max, off, ntri;
+  int ndocc;
+  int nn;
+  double ptemp,ctmp;
+  struct symm *s;
+  struct spin *sp;
+  double *dmat;
+  double **cmat;
    
-   for(m = 0; m < 2; m++){
-       for (l=0; l < num_ir ; l++) {
-	   sp = &spin_info[m];
-	   if (n=scf_info[l].num_so) {
-	       ndocc = sp->scf_spin[l].noccup;
-	       for (i=ij=0; i < n ; i++ ) {
-/*--------------------------------------
+  for(m = 0; m < 2; m++){
+    for (l=0; l < num_ir ; l++) {
+      sp = &spin_info[m];
+      if (n=scf_info[l].num_so) {
+	ndocc = sp->scf_spin[l].noccup;
+	for (i=ij=0; i < n ; i++ ) {
+	  /*--------------------------------------
 
-  OFF DIAGONAL ELEMENTS
+	  OFF DIAGONAL ELEMENTS
 
-  -------------------------------------*/
+	  -------------------------------------*/
 
-		   for (j=0; j <i; j++,ij++) {
-		       ptemp=0.0;
-		       for (k=0; k < ndocc ; k++)
-			   ptemp += 2.0*sp->scf_spin[l].cmat[i][k]
-			       *sp->scf_spin[l].cmat[j][k];
-		       sp->scf_spin[l].dpmat[ij] = ptemp - sp->scf_spin[l].pmat[ij];
-		       sp->scf_spin[l].pmat[ij] = ptemp; 
-		   }
-/*----------------------------------
+	  for (j=0; j <i; j++,ij++) {
+	    ptemp=0.0;
+	    for (k=0; k < ndocc ; k++)
+	      ptemp += 2.0*sp->scf_spin[l].cmat[i][k]
+		*sp->scf_spin[l].cmat[j][k];
+	    sp->scf_spin[l].dpmat[ij] = ptemp - sp->scf_spin[l].pmat[ij];
+	    sp->scf_spin[l].pmat[ij] = ptemp; 
+	  }
+	  /*----------------------------------
  
-  DIAGONAL ELEMENTS
+	  DIAGONAL ELEMENTS
 
-  --------------------------------*/
-		   ptemp = 0.0;
-		   for (k=0; k < ndocc ; k++) {
-		       ctmp=sp->scf_spin[l].cmat[i][k];
-		       ptemp += ctmp*ctmp;
-		   }
-		   sp->scf_spin[l].dpmat[ij] = ptemp - sp->scf_spin[l].pmat[ij];
-		   sp->scf_spin[l].pmat[ij] = ptemp;
-		   ij++;
-	       } 
-	       if(print & 4) {
-	           fprintf(outfile,
-		   "\nSpin case %d density matrix for irrep %s",m,scf_info[l].irrep_label);
-		   print_array(spin_info[m].scf_spin[l].pmat,
-			       scf_info[l].num_so,outfile);
-	       }
-	   }
-       }
-   }
+	  --------------------------------*/
+	  ptemp = 0.0;
+	  for (k=0; k < ndocc ; k++) {
+	    ctmp=sp->scf_spin[l].cmat[i][k];
+	    ptemp += ctmp*ctmp;
+	  }
+	  sp->scf_spin[l].dpmat[ij] = ptemp - sp->scf_spin[l].pmat[ij];
+	  sp->scf_spin[l].pmat[ij] = ptemp;
+	  ij++;
+	} 
+	if(print & 4) {
+	  fprintf(outfile,
+		  "\nSpin case %d density matrix for irrep %s",m,scf_info[l].irrep_label);
+	  print_array(spin_info[m].scf_spin[l].pmat,
+		      scf_info[l].num_so,outfile);
+	}
+      }
+    }
+  }
    
-   for(l=0;l < num_ir; l++){
-       if(nn=scf_info[l].num_so) {
-	   for(ij=0;ij<ioff[nn];ij++) {
-	       ptemp = spin_info[0].scf_spin[l].pmat[ij] +
-		       spin_info[1].scf_spin[l].pmat[ij];
-	       scf_info[l].dpmat[ij] = ptemp - scf_info[l].pmat[ij];
-	       scf_info[l].pmat[ij] = ptemp;
-	   }
-       }
-   }
+  for(l=0;l < num_ir; l++){
+    if(nn=scf_info[l].num_so) {
+      for(ij=0;ij<ioff[nn];ij++) {
+	ptemp = spin_info[0].scf_spin[l].pmat[ij] +
+	  spin_info[1].scf_spin[l].pmat[ij];
+	scf_info[l].dpmat[ij] = ptemp - scf_info[l].pmat[ij];
+	scf_info[l].pmat[ij] = ptemp;
+      }
+    }
+  }
 
-   /*-----------------------
-     Handle direct SCF here
+  /*-----------------------
+    Handle direct SCF here
     -----------------------*/
-   if(direct_scf) {
-     /*decide what accuracy to request for direct_scf*/
-     if (dyn_acc) {
-       if((iter<30)&&(tight_ints==0)&&(delta>1.0E-5)) {
-	 eri_cutoff=1.0E-6;
-       }
-       if((tight_ints==0)&&(delta<=1.0E-5)){
-	 fprintf(outfile,"  Switching to full integral accuracy\n");
-	 acc_switch=1;
-	 tight_ints=1;
-	 eri_cutoff=1.0E-14;
-       }
-     }
+  if(direct_scf) {
+    /*decide what accuracy to request for direct_scf*/
+    if (dyn_acc) {
+      if((iter<30)&&(tight_ints==0)&&(delta>1.0E-5)) {
+	eri_cutoff=1.0E-6;
+      }
+      if((tight_ints==0)&&(delta<=1.0E-5)){
+	fprintf(outfile,"  Switching to full integral accuracy\n");
+	acc_switch=1;
+	tight_ints=1;
+	eri_cutoff=1.0E-14;
+      }
+    }
 
-     psio_open(itapDSCF, PSIO_OPEN_NEW);
-     psio_write_entry(itapDSCF, "Integrals cutoff", (char *) &eri_cutoff, sizeof(double));
+    psio_open(itapDSCF, PSIO_OPEN_NEW);
+    psio_write_entry(itapDSCF, "Integrals cutoff", (char *) &eri_cutoff, sizeof(double));
 
-     ntri = nbasis*(nbasis+1)/2;
-     dmat = init_array(ntri);
+    ntri = nbasis*(nbasis+1)/2;
+    dmat = init_array(ntri);
 
-     /*--- Get full dpmata ---*/
-     for(i=0;i<num_ir;i++) {
-       max = scf_info[i].num_so;
-       off = scf_info[i].ideg;
-       for(j=0;j<max;j++) {
-	 jj = j + off;
-	 for(k=0;k<=j;k++) {
-	   kk = k + off;
-	   if(acc_switch) {
-	     dmat[ioff[jj]+kk] = spin_info[0].scf_spin[i].pmat[ioff[j]+k];
-	     spin_info[0].scf_spin[i].dpmat[ioff[j]+k] = 0.0;
-	   }
-	   else {
-	     dmat[ioff[jj]+kk] = spin_info[0].scf_spin[i].dpmat[ioff[j]+k];
-	   }
-	 }
-       }
-     }
-     psio_write_entry(itapDSCF, "Difference Alpha Density", (char *) dmat, sizeof(double)*ntri);
+    /*--- Get full dpmata ---*/
+    for(i=0;i<num_ir;i++) {
+      max = scf_info[i].num_so;
+      off = scf_info[i].ideg;
+      for(j=0;j<max;j++) {
+	jj = j + off;
+	for(k=0;k<=j;k++) {
+	  kk = k + off;
+	  if(acc_switch) {
+	    dmat[ioff[jj]+kk] = spin_info[0].scf_spin[i].pmat[ioff[j]+k];
+	    spin_info[0].scf_spin[i].dpmat[ioff[j]+k] = 0.0;
+	  }
+	  else {
+	    dmat[ioff[jj]+kk] = spin_info[0].scf_spin[i].dpmat[ioff[j]+k];
+	  }
+	}
+      }
+    }
+    psio_write_entry(itapDSCF, "Difference Alpha Density", (char *) dmat, sizeof(double)*ntri);
 
-     /*--- Get full dpmatb ---*/
-     for(i=0;i<num_ir;i++) {
-       max = scf_info[i].num_so;
-       off = scf_info[i].ideg;
-       for(j=0;j<max;j++) {
-	 jj = j + off;
-	 for(k=0;k<=j;k++) {
-	   kk = k + off;
-	   if(acc_switch) {
-	     dmat[ioff[jj]+kk] = spin_info[1].scf_spin[i].pmat[ioff[j]+k];
-	     spin_info[1].scf_spin[i].dpmat[ioff[j]+k] = 0.0;
-	   }
-	   else {
-	     dmat[ioff[jj]+kk] = spin_info[1].scf_spin[i].dpmat[ioff[j]+k];
-	   }
-	 }
-       }
-     }
-     psio_write_entry(itapDSCF, "Difference Beta Density", (char *) dmat, sizeof(double)*ntri);
+    /*--- Get full dpmatb ---*/
+    for(i=0;i<num_ir;i++) {
+      max = scf_info[i].num_so;
+      off = scf_info[i].ideg;
+      for(j=0;j<max;j++) {
+	jj = j + off;
+	for(k=0;k<=j;k++) {
+	  kk = k + off;
+	  if(acc_switch) {
+	    dmat[ioff[jj]+kk] = spin_info[1].scf_spin[i].pmat[ioff[j]+k];
+	    spin_info[1].scf_spin[i].dpmat[ioff[j]+k] = 0.0;
+	  }
+	  else {
+	    dmat[ioff[jj]+kk] = spin_info[1].scf_spin[i].dpmat[ioff[j]+k];
+	  }
+	}
+      }
+    }
+    psio_write_entry(itapDSCF, "Difference Beta Density", (char *) dmat, sizeof(double)*ntri);
      
-     if (ksdft) {
-	 /* ---- Get Occupied Eigenvector matrix for DFT ----*/
+    if (ksdft) {
+      /* ---- Get Occupied Eigenvector matrix for DFT ----*/
 	 
-	 /*------ Get the Alpha Occupied Eigenvector --------*/
-	 ntri = nbfso*a_elec;
-	 cmat = block_matrix(nbfso,a_elec);
-	 for(i=l=0;i<num_ir;i++){
-	     max = spin_info[0].scf_spin[i].nclosed;
-	     off = scf_info[i].ideg;
-	     for(j=0;j<max;j++){
-		 for(k=0;k<scf_info[i].num_mo;k++) {
-		     kk = k + off;
-		     cmat[kk][l] = spin_info[0].scf_spin[i].cmat[k][j];
-		 }
-		 l++;
-	     }
-	 }
-	 /*fprintf(outfile,"\na_elec = %d",a_elec);
-	 fprintf(outfile,"\nAlpha Occupied Eigenvector from CSCF");
-	   print_mat(cmat,nbfso,a_elec,outfile);*/
+      /*------ Get the Alpha Occupied Eigenvector --------*/
+      ntri = nbfso*a_elec;
+      cmat = block_matrix(nbfso,a_elec);
+      for(i=l=0;i<num_ir;i++){
+	max = spin_info[0].scf_spin[i].nclosed;
+	off = scf_info[i].ideg;
+	for(j=0;j<max;j++){
+	  for(k=0;k<scf_info[i].num_mo;k++) {
+	    kk = k + off;
+	    cmat[kk][l] = spin_info[0].scf_spin[i].cmat[k][j];
+	  }
+	  l++;
+	}
+      }
+      /*fprintf(outfile,"\na_elec = %d",a_elec);
+	fprintf(outfile,"\nAlpha Occupied Eigenvector from CSCF");
+	print_mat(cmat,nbfso,a_elec,outfile);*/
 	 
-	 psio_write_entry(itapDSCF, "Number of MOs", 
-			  (char *) &(nmo),sizeof(int)); 
+      psio_write_entry(itapDSCF, "Number of MOs", 
+		       (char *) &(nmo),sizeof(int)); 
 	
-	 psio_write_entry(itapDSCF, "Number of Alpha DOCC",
-			  (char *) &(a_elec),sizeof(int));
+      psio_write_entry(itapDSCF, "Number of Alpha DOCC",
+		       (char *) &(a_elec),sizeof(int));
        
-	 psio_write_entry(itapDSCF, "Alpha Occupied SCF Eigenvector", 
-			  (char *) &(cmat[0][0]),sizeof(double)*ntri);
-	 /*fprintf(outfile,"\na_elec = %d",a_elec);*/
-	 free_block(cmat);
-	 /*------ Get the Alpha Occupied Eigenvector --------*/
-	 ntri = nbfso*b_elec;
-	 cmat = block_matrix(nbfso,b_elec);
-	 for(i=l=0;i<num_ir;i++){
-	     max = spin_info[1].scf_spin[i].nclosed;
-	     off = scf_info[i].ideg;
-	     for(j=0;j<max;j++){
-		 for(k=0;k<scf_info[i].num_mo;k++) {
-		     kk = k + off;
-		     cmat[kk][l] = spin_info[1].scf_spin[i].cmat[k][j];
-		 }
-		 l++;
-	     }
-	 }
-	 /*fprintf(outfile,"\nBeta Occupied Eigenvector from CSCF");
-	   print_mat(cmat,nbfso,b_elec,outfile);*/
+      psio_write_entry(itapDSCF, "Alpha Occupied SCF Eigenvector", 
+		       (char *) &(cmat[0][0]),sizeof(double)*ntri);
+      /*fprintf(outfile,"\na_elec = %d",a_elec);*/
+      free_block(cmat);
+      /*------ Get the Alpha Occupied Eigenvector --------*/
+      ntri = nbfso*b_elec;
+      cmat = block_matrix(nbfso,b_elec);
+      for(i=l=0;i<num_ir;i++){
+	max = spin_info[1].scf_spin[i].nclosed;
+	off = scf_info[i].ideg;
+	for(j=0;j<max;j++){
+	  for(k=0;k<scf_info[i].num_mo;k++) {
+	    kk = k + off;
+	    cmat[kk][l] = spin_info[1].scf_spin[i].cmat[k][j];
+	  }
+	  l++;
+	}
+      }
+      /*fprintf(outfile,"\nBeta Occupied Eigenvector from CSCF");
+	print_mat(cmat,nbfso,b_elec,outfile);*/
 
-	 psio_write_entry(itapDSCF, "Number of Beta DOCC",
-			  (char *) &(b_elec),sizeof(int));
-	 psio_write_entry(itapDSCF, "Beta Occupied SCF Eigenvector", 
-			  (char *) &(cmat[0][0]),sizeof(double)*ntri);
-	 free_block(cmat);
+      psio_write_entry(itapDSCF, "Number of Beta DOCC",
+		       (char *) &(b_elec),sizeof(int));
+      psio_write_entry(itapDSCF, "Beta Occupied SCF Eigenvector", 
+		       (char *) &(cmat[0][0]),sizeof(double)*ntri);
+      free_block(cmat);
 	 
-       /*--- Get full dpmata ---*/
-       for(i=0;i<num_ir;i++) {
-	 max = scf_info[i].num_so;
-	 off = scf_info[i].ideg;
-	 for(j=0;j<max;j++) {
-	   jj = j + off;
-	   for(k=0;k<=j;k++) {
-	     kk = k + off;
-	     dmat[ioff[jj]+kk] = spin_info[0].scf_spin[i].pmat[ioff[j]+k];
-	   }
-	 }
-       }
-       psio_write_entry(itapDSCF, "Total Alpha Density", (char *) dmat, sizeof(double)*ntri);
+      /*--- Get full dpmata ---*/
+      for(i=0;i<num_ir;i++) {
+	max = scf_info[i].num_so;
+	off = scf_info[i].ideg;
+	for(j=0;j<max;j++) {
+	  jj = j + off;
+	  for(k=0;k<=j;k++) {
+	    kk = k + off;
+	    dmat[ioff[jj]+kk] = spin_info[0].scf_spin[i].pmat[ioff[j]+k];
+	  }
+	}
+      }
+      psio_write_entry(itapDSCF, "Total Alpha Density", (char *) dmat, sizeof(double)*ntri);
 
-       /*--- Get full dpmatb ---*/
-       for(i=0;i<num_ir;i++) {
-	 max = scf_info[i].num_so;
-	 off = scf_info[i].ideg;
-	 for(j=0;j<max;j++) {
-	   jj = j + off;
-	   for(k=0;k<=j;k++) {
-	     kk = k + off;
-	     dmat[ioff[jj]+kk] = spin_info[1].scf_spin[i].pmat[ioff[j]+k];
-	   }
-	 }
-       }
-       psio_write_entry(itapDSCF, "Total Beta Density", (char *) dmat, sizeof(double)*ntri);
-     }
-     free(dmat);
-     psio_close(itapDSCF, 1);
-   }
+      /*--- Get full dpmatb ---*/
+      for(i=0;i<num_ir;i++) {
+	max = scf_info[i].num_so;
+	off = scf_info[i].ideg;
+	for(j=0;j<max;j++) {
+	  jj = j + off;
+	  for(k=0;k<=j;k++) {
+	    kk = k + off;
+	    dmat[ioff[jj]+kk] = spin_info[1].scf_spin[i].pmat[ioff[j]+k];
+	  }
+	}
+      }
+      psio_write_entry(itapDSCF, "Total Beta Density", (char *) dmat, sizeof(double)*ntri);
+    }
+    free(dmat);
+    psio_close(itapDSCF, 1);
+  }
 
-   return;
+  return;
 }
 
 

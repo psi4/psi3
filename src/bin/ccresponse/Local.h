@@ -18,4 +18,7 @@ struct Local {
   int filter_singles;
   char *method;
   char *weakp;
+  double cphf_cutoff;
+  char *freeze_core;
+  char *pairdef;
 };

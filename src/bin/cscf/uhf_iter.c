@@ -1,9 +1,29 @@
 /* $Log$
- * Revision 1.5  2002/12/06 15:50:32  crawdad
- * Changed all exit values to PSI_RETURN_SUCCESS or PSI_RETURN_FAILURE as
- * necessary.  This is new for the PSI3 execution driver.
+ * Revision 1.6  2004/05/03 04:32:40  crawdad
+ * Major mods based on merge with stable psi-3-2-1 release.  Note that this
+ * version has not been fully tested and some scf-optn test cases do not run
+ * correctly beccause of changes in mid-March 2004 to optking.
  * -TDC
  *
+/* Revision 1.5.4.3  2004/04/10 19:41:32  crawdad
+/* Fixed the DIIS code for UHF cases.  The new version uses the Pulay scheme of
+/* building the error vector in the AO basis as FDS-SDF, followed by xformation
+/* into the orthogonal AO basis.   This code converges faster for test cases
+/* like cc8, but fails for linearly dependent basis sets for unknown reasons.
+/* -TDC
+/*
+/* Revision 1.5.4.2  2004/04/09 00:17:37  evaleev
+/* Corrected dimensions of the matrix.
+/*
+/* Revision 1.5.4.1  2004/04/07 03:23:32  crawdad
+/* Working to fix UHF-based DIIS.
+/* -TDC
+/*
+/* Revision 1.5  2002/12/06 15:50:32  crawdad
+/* Changed all exit values to PSI_RETURN_SUCCESS or PSI_RETURN_FAILURE as
+/* necessary.  This is new for the PSI3 execution driver.
+/* -TDC
+/*
 /* Revision 1.4  2000/12/05 19:40:04  sbrown
 /* Added Unrestricted Kohn-Sham DFT.
 /*
@@ -77,163 +97,187 @@ static char *rcsid = "$Id$";
 void uhf_iter()
 
 {
-   int i,j,l,m,t,ij;
-   int nn,num_mo,newci;
-   double cimax;
-   double **scr;
-   double **fock_c;
-   double **fock_ct;
-   double **ctrans;
-   double tol = 1.0e-14;
-   struct symm *s;
-   struct spin *sp;
+  int i,j,l,m,t,ij;
+  int nn,num_mo,newci;
+  double cimax;
+  double **scr;
+  double **fock_c;
+  double **fock_ct;
+  double **ctrans;
+  double tol = 1.0e-14;
+  struct symm *s;
+  struct spin *sp;
 
-   diiser = 0.0;
-   scr = (double **) init_matrix(nsfmax,nsfmax);
-   fock_c = (double **) init_matrix(nsfmax,nsfmax);
-   fock_ct = (double **) init_matrix(nsfmax,nsfmax);
-   ctrans = (double **) init_matrix(nsfmax,nsfmax);
+  diiser = 0.0;
+  scr = block_matrix(nsfmax,nsfmax);
+  fock_c = block_matrix(nsfmax,nsfmax);
+  fock_ct = block_matrix(nsfmax,nsfmax);
+  ctrans = block_matrix(nsfmax,nsfmax);
    
-/* and iterate */
+  /* and iterate */
 
-   for (iter=0; iter < itmax ; ) {
-       for(t = 0; t<2 ;t++){
-	   sp = &spin_info[t];
+  for (iter=0; iter < itmax ; ) {
+    for(t = 0; t<2 ;t++){
+      sp = &spin_info[t];
 
-	   if(print & 4) {
-	     for(m=0; m < num_ir ; m++) {
-	       if (nn=scf_info[m].num_so) {
-		 fprintf(outfile,
-			 "\n%s gmat for irrep %s",sp->spinlabel,scf_info[m].irrep_label);
-		 print_array(sp->scf_spin[m].gmat,nn,outfile);
-		 if (ksdft) {
-		   fprintf(outfile,
-			   "\n%s xcmat for irrep %s",sp->spinlabel,scf_info[m].irrep_label);
-		   print_array(sp->scf_spin[m].xcmat,nn,outfile);
-		 }
-	       }
-	     }
-	   }
+      if(print & 4) {
+	for(m=0; m < num_ir ; m++) {
+	  if (nn=scf_info[m].num_so) {
+	    fprintf(outfile,
+		    "\n%s gmat for irrep %s",sp->spinlabel,scf_info[m].irrep_label);
+	    print_array(sp->scf_spin[m].gmat,nn,outfile);
+	    if (ksdft) {
+	      fprintf(outfile,
+		      "\n%s xcmat for irrep %s",sp->spinlabel,scf_info[m].irrep_label);
+	      print_array(sp->scf_spin[m].xcmat,nn,outfile);
+	    }
+	  }
+	}
+      }
 	   
-	   for (m=0; m < num_ir ; m++) {
-	       s = &scf_info[m];
+      for (m=0; m < num_ir ; m++) {
+	s = &scf_info[m];
 	       
-	       if (nn=s->num_so) {
-		   
-		   /*  form fock matrix = h+g */
-		   add_arr(s->hmat,sp->scf_spin[m].gmat,
-			   sp->scf_spin[m].fock_pac,ioff[nn]);
-	       }
-	   }
-       }
+	if (nn=s->num_so) {
 
-       /*----------------------------------------------------
-	 In KS DFT case, Fock matrix doesn't include Fxc yet
-	 add them up only after the computation of energy
-	----------------------------------------------------*/
-       ecalc(tol);
-       if (ksdft) {
-	 /* now form f = h + g + fxc */
-	 /* it should be alright to use fock_pac as 2 arguments */
-	 for(t = 0; t<2 ;t++){
-	   sp = &spin_info[t];
-	   for (m=0; m < num_ir ; m++) {
-	     s = &(sp->scf_spin[m]);
-	     if (nn=scf_info[m].num_so)
-	       add_arr(s->fock_pac,s->xcmat,s->fock_pac,ioff[nn]);
-	     if(print & 4) {
-	     fprintf(outfile,"\n%s fock for irrep %s"
+	  /*		   
+	  if(!m && !t) {
+	    fprintf(outfile, "Fock matrix in top of uhf_iter:\n");
+	    print_array(sp->scf_spin[m].fock_pac, nn, outfile);
+	  }
+	  */
+
+	  /*  form fock matrix = h+g */
+	  add_arr(s->hmat,sp->scf_spin[m].gmat,
+		  sp->scf_spin[m].fock_pac,ioff[nn]);
+
+	}
+      }
+    }
+
+    /*----------------------------------------------------
+      In KS DFT case, Fock matrix doesn't include Fxc yet
+      add them up only after the computation of energy
+      ----------------------------------------------------*/
+    ecalc(tol);
+    if (ksdft) {
+      /* now form f = h + g + fxc */
+      /* it should be alright to use fock_pac as 2 arguments */
+      for(t = 0; t<2 ;t++){
+	sp = &spin_info[t];
+	for (m=0; m < num_ir ; m++) {
+	  s = &(sp->scf_spin[m]);
+	  if (nn=scf_info[m].num_so)
+	    add_arr(s->fock_pac,s->xcmat,s->fock_pac,ioff[nn]);
+	  if(print & 4) {
+	    fprintf(outfile,"\n%s fock for irrep %s"
 		    ,sp->spinlabel,scf_info[m].irrep_label);
-		 print_array(sp->scf_spin[m].fock_pac,nn,outfile);
-	     }
-	   }
-	 }
-       }
+	    print_array(sp->scf_spin[m].fock_pac,nn,outfile);
+	  }
+	}
+      }
+    }
        
-       /* create new fock matrix in fock_pac or fock_eff */
-       if(!diisflg) diis_uhf(scr,fock_c,fock_ct);
+    /* create new fock matrix in fock_pac or fock_eff */
+    if(!diisflg) diis_uhf();
        
-       for(t=0;t<2;t++){
-	   sp = &spin_info[t];
-	   for (m=0; m < num_ir ; m++) {
-	       s = &scf_info[m];
-	       if (nn=s->num_so) {
-		   num_mo = s->num_mo;
-		   
-		   /* transform fock_pac to mo basis */
-		   tri_to_sq(sp->scf_spin[m].fock_pac,fock_ct,nn);
-/*		   mxmb(sp->scf_spin[m].cmat,nn,1
-			,fock_ct,1,nn,scr,1,nn,nn,nn,nn);
-		   mxmb(scr,1,nn,sp->scf_spin[m].cmat,1
-			,nn,fock_c,1,nn,nn,nn,nn);*/
-		   mmult(sp->scf_spin[m].cmat,1,fock_ct,0,scr,0,num_mo,nn,nn,0);
-		   mmult(scr,0,sp->scf_spin[m].cmat,0,fock_c,0,num_mo,nn,num_mo,0);
-		   
-		   /*  diagonalize fock_c to get ctrans */
-		   sq_rsp(nn,nn,fock_c,sp->scf_spin[m].fock_evals
-			  ,1,ctrans,tol);
-		   
-		   if(print & 4) {
-		       fprintf(outfile,"\n %s eigenvector for irrep %s\n"
-			       ,sp->spinlabel,s->irrep_label);
-		       eivout(ctrans,sp->scf_spin[m].fock_evals,num_mo,num_mo,outfile);
-		   }
-		   
-/*		   mxmb(sp->scf_spin[m].cmat,1,nn,
-			ctrans,1,nn,scr,1,nn,nn,nn,nn);*/
-		   mmult(sp->scf_spin[m].cmat,0,ctrans,0,scr,0,nn,num_mo,num_mo,0);
-				   
-		   if(print & 4) {
-		       fprintf(outfile,"\n %s eigenvector after irrep %s\n",
-			       sp->spinlabel,s->irrep_label);
-		       print_mat(scr,nn,num_mo,outfile);
-		   }
-		   
-		   for (i=0; i < nn; i++)
-		       for (j=0; j < num_mo; j++)
-			   sp->scf_spin[m].cmat[i][j] = scr[i][j];
-               }
-	   }
+    for(t=0;t<2;t++){
+      sp = &spin_info[t];
+      for (m=0; m < num_ir ; m++) {
+	s = &scf_info[m];
+	if (nn=s->num_so) {
+	  num_mo = s->num_mo;
+	
+	  /*
+	  if(!m && !t) {
+	    fprintf(outfile, "\nuhf_iter Fock matrix irrep %d spin %d iter %d\n", m, t, iter);
+	    print_array(sp->scf_spin[m].fock_pac, nn, outfile);
+	  }
+	  */
 	   
-	   if(converged) {
-	       free_matrix(scr,nsfmax);
-	       free_matrix(fock_c,nsfmax);
-	       free_matrix(fock_ct,nsfmax);
-	       free_matrix(ctrans,nsfmax);
-	       exit(PSI_RETURN_FAILURE);
-	       cleanup();
-	   }
-       }
-       schmit_uhf(1);
-       
-       if(print & 4) {
-	   for(j=0; j < 2; j++){
-	       for(i=0; i < num_ir ; i++) {
-		   s = &scf_info[i];
-		   if (nn=s->num_so) {
-		       num_mo = s->num_mo;
-		       fprintf(outfile,"\northogonalized mos irrep %s\n",
-			       s->irrep_label);
-		       print_mat(spin_info[j].scf_spin[i].cmat,nn,num_mo,outfile);
-		   }
-	       }
-	   }
-       }
-       
-       if(mixing && iter ==1)
-	   orb_mix();
+	  /* transform fock_pac to mo basis */
+	  tri_to_sq(sp->scf_spin[m].fock_pac,fock_ct,nn);
+	  /*		   mxmb(sp->scf_spin[m].cmat,nn,1
+			   ,fock_ct,1,nn,scr,1,nn,nn,nn,nn);
+			   mxmb(scr,1,nn,sp->scf_spin[m].cmat,1
+			   ,nn,fock_c,1,nn,nn,nn,nn);*/
 
-       /* form new density matrix */
-       dmatuhf();
+	  mmult(sp->scf_spin[m].cmat,1,fock_ct,0,scr,0,num_mo,nn,nn,0);
+	  mmult(scr,0,sp->scf_spin[m].cmat,0,fock_c,0,num_mo,nn,num_mo,0);
+
+	  /*
+	  if(!m && !t) {
+	    fprintf(outfile, "\nMO uhf_iter Fock matrix irrep %d spin %d iter %d\n", m, t, iter);
+	    print_mat(fock_c, num_mo, num_mo, outfile);
+	  }
+	  */
+		   
+	  /*  diagonalize fock_c to get ctrans */
+	  sq_rsp(num_mo,num_mo,fock_c,sp->scf_spin[m].fock_evals
+		 ,1,ctrans,tol);
+		   
+	  if(print & 4) {
+	    fprintf(outfile,"\n %s eigenvector for irrep %s\n"
+		    ,sp->spinlabel,s->irrep_label);
+	    eivout(ctrans,sp->scf_spin[m].fock_evals,num_mo,num_mo,outfile);
+	  }
+		   
+	  /*		   mxmb(sp->scf_spin[m].cmat,1,nn,
+			   ctrans,1,nn,scr,1,nn,nn,nn,nn);*/
+	  mmult(sp->scf_spin[m].cmat,0,ctrans,0,scr,0,nn,num_mo,num_mo,0);
+				   
+	  if(print & 4) {
+	    fprintf(outfile,"\n %s eigenvector after irrep %s\n",
+		    sp->spinlabel,s->irrep_label);
+	    print_mat(scr,nn,num_mo,outfile);
+	  }
+		   
+	  for (i=0; i < nn; i++)
+	    for (j=0; j < num_mo; j++)
+	      sp->scf_spin[m].cmat[i][j] = scr[i][j];
+
+	}
+      }
+	   
+      if(converged) {
+	free_block(scr);
+	free_block(fock_c);
+	free_block(fock_ct);
+	free_block(ctrans);
+	exit(PSI_RETURN_FAILURE);
+	cleanup();
+      }
+    }
+    schmit_uhf(1);
        
-       /* and form new fock matrix */
-       if(iter < itmax) {
-	   if (!direct_scf)
-	       formg_open();
-	   else
-	       formg_direct();
-       }
-   }
+    if(print & 4) {
+      for(j=0; j < 2; j++){
+	for(i=0; i < num_ir ; i++) {
+	  s = &scf_info[i];
+	  if (nn=s->num_so) {
+	    num_mo = s->num_mo;
+	    fprintf(outfile,"\northogonalized mos irrep %s\n",
+		    s->irrep_label);
+	    print_mat(spin_info[j].scf_spin[i].cmat,nn,num_mo,outfile);
+	  }
+	}
+      }
+    }
+       
+    if(mixing && iter ==1)
+      orb_mix();
+
+    /* form new density matrix */
+    dmatuhf();
+       
+    /* and form new fock matrix */
+    if(iter < itmax) {
+      if (!direct_scf)
+	formg_open();
+      else
+	formg_direct();
+    }
+  }
 }
 
 

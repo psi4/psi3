@@ -47,6 +47,10 @@ void init_uhf()
    spin in mind */
    
    spin_info = (struct spin *) malloc(sizeof(struct spin)*2);
+
+   /* compute nsfmax */
+   for(i=0; i < num_ir; i++) { nn = num_so[i]; if(nn > nsfmax) nsfmax = nn; }
+
    
    for(m=0;m<2;m++){
        spin_info[m].scf_spin = 
@@ -71,19 +75,19 @@ void init_uhf()
        nbasis += nn;
        if (nn) {
 	   n_so_typs++;
-	   if (nn > nsfmax) nsfmax = nn;
 	   
 	   scf_info[i].smat = init_array(ioff[nn]);
 	   scf_info[i].tmat = init_array(ioff[nn]);
 	   scf_info[i].hmat = init_array(ioff[nn]);
-	   scf_info[i].sahalf = init_matrix(nn,nn);
+	   scf_info[i].sahalf = block_matrix(nn,nn);
+	   scf_info[i].pinv = block_matrix(nn,nn);
 	   scf_info[i].occ_num = init_array(nn);
 	   /* STB (6/30/99) - There is no P matrix in UHF only
 	      J and K/2 */
 	   
 	   scf_info[i].dpmat = init_array(ioff[nn]);
 	   scf_info[i].pmat = init_array(ioff[nn]);
-	   scf_info[i].cmat = init_matrix(nn,nn);
+	   scf_info[i].cmat = block_matrix(nn,nn);
 	   /* STB(4/1/98) - Added array to store the eigenvalues of the
 	      core hamiltonian for mo guessing*/
 	   scf_info[i].hevals = init_array(nn);
@@ -98,9 +102,9 @@ void init_uhf()
 	       sp->scf_spin[i].gmato = NULL;
 	       sp->scf_spin[i].occ_num = init_array(nn);
 	       sp->scf_spin[i].fock_evals = init_array(nn);
-	       sp->scf_spin[i].cmat = init_matrix(nn,nn);
+	       sp->scf_spin[i].cmat = block_matrix(nn,nn);
 	       /* TDC(6/19/96) - Added array for saving original MO vector */
-	       sp->scf_spin[i].cmat_orig = init_matrix(nn,nn);
+	       sp->scf_spin[i].cmat_orig = block_matrix(nn,nn);
 	       /* STB(4/1/98) - Added array to store the eigenvalues of the
 		  core hamiltonian for mo guessing*/
 	       sp->scf_spin[i].hevals = init_array(nn);

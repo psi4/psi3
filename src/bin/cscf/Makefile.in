@@ -3,6 +3,7 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
+LDLIBS += $(LAPACK) $(BLAS)
 PSILIBS = -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
 TRUESRC = \

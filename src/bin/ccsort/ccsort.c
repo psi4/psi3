@@ -44,6 +44,11 @@ int **cacheprep_rhf(int level, int *cachefiles);
 void cachedone_uhf(int **cachelist);
 void cachedone_rhf(int **cachelist);
 
+void transmu(void);
+void sortmu(void);
+void build_A_RHF(void);
+void cphf_F(void);
+
 int main(int argc, char *argv[])
 {
   int i;
@@ -127,6 +132,15 @@ int main(int argc, char *argv[])
   scf_check();
   fock();
   denom();
+
+  /* CPHF stuff for local correlation tests */
+  if(params.local && params.dertype == 3) {
+    fprintf(outfile, "\n\tGenerating electric-field CPHF solutions for local-CC.\n");
+    transmu();
+    sortmu();
+    build_A_RHF();
+    cphf_F();
+  }
 
   dpd_close(0);
 
@@ -222,6 +236,12 @@ void cleanup(void)
   free(moinfo.labels);
 
   if(params.ref == 2) {
+
+    free(moinfo.pitz2qt_A);
+    free(moinfo.pitz2qt_B);
+    free(moinfo.qt2pitz_A);
+    free(moinfo.qt2pitz_B);
+
     free(moinfo.aocc);
     free(moinfo.bocc);
     free(moinfo.avir);
@@ -275,6 +295,9 @@ void cleanup(void)
     free(moinfo.all_bvir_off);
   }
   else {
+    free(moinfo.pitz2qt);
+    free(moinfo.qt2pitz);
+
     free(moinfo.occ);
     free(moinfo.vir);
     free(moinfo.all_occ);

@@ -1,10 +1,21 @@
 /* $Log$
- * Revision 1.28  2003/08/17 22:57:37  crawdad
- * Removing libfile30 from the repository.  I believe that all code reference
- * to the library have also been properly removed.  The current version
- * passes all test cases on my systems.
+ * Revision 1.29  2004/05/03 04:32:40  crawdad
+ * Major mods based on merge with stable psi-3-2-1 release.  Note that this
+ * version has not been fully tested and some scf-optn test cases do not run
+ * correctly beccause of changes in mid-March 2004 to optking.
  * -TDC
  *
+/* Revision 1.28.4.1  2004/04/01 22:04:49  evaleev
+/* A critical bug: lagrangian was not written out to chkpt file correctly
+/* thanks to missing symblk offsets in computing MO indices. ROHF HF gradients
+/* now work correctly.
+/*
+/* Revision 1.28  2003/08/17 22:57:37  crawdad
+/* Removing libfile30 from the repository.  I believe that all code reference
+/* to the library have also been properly removed.  The current version
+/* passes all test cases on my systems.
+/* -TDC
+/*
 /* Revision 1.27  2003/08/09 17:39:56  crawdad
 /* I added the ability to determine frozen core orbitals for UHF references to
 /* cleanup.c.  I also commented out ip_cwk_clear and ip_cwk_add calls in
@@ -492,7 +503,7 @@ void cleanup()
 	for(i=0; i < num_mo ; i++)
 	  for(j=0; j <= i ; j++) {
 	    lagrangian[ioff[i+ijk]+j+ijk] = scf_info[k].fock_pac[ioff[i]+j];
-	    lagr[i][j] = lagr[j][i] = scf_info[k].fock_pac[ioff[i]+j];
+	    lagr[i+ijk][j+ijk] = lagr[j+ijk][i+ijk] = scf_info[k].fock_pac[ioff[i]+j];
 	  }
 	ijk += num_mo;
       }

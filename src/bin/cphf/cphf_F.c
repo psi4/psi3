@@ -83,6 +83,11 @@ void cphf_F(double **Aaibj, double ***U)
   C_DGEMM('t','n',nmo,nmo,nso,1,&(scf[0][0]),nmo,&(X[0][0]),nao,
 	  0,&(B[0][0][0]),nmo);
 
+  /*
+  fprintf(outfile, "\tMO-basis MuX Integrals:\n");
+  print_mat(B[0], nmo, nmo, outfile);
+  */
+
   for(i=0,ij=0; i < nmo; i++)
     for(j=0; j <= i; j++,ij++)
       scratch[ij] = B[0][i][j];

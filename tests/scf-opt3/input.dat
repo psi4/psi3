@@ -5,6 +5,8 @@ psi: (
   jobtype = opt
   dertype = first
   basis = "DZP"
+  convergence = 13
+  conv = 10
   zmat = (
     B
     H 1 BH$

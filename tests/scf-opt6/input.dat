@@ -4,6 +4,8 @@ psi: (
   reference = rhf
   jobtype = opt
   dertype = first
+  convergence = 13
+  conv = 10
   basis = "DZP"
   zmat = (
     C
@@ -12,6 +14,6 @@ psi: (
   )
   zvars = (
     CO 1.1
-    CO2 180.0
+    CO2 178.0
   )
 )

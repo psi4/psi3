@@ -233,6 +233,9 @@ void mpn_generator(CIvect &Hd, struct stringwr **alplist,
        fprintf(outfile,"\t\t\t\t\t\t\t\t"
                " %2d %25.15f %25.15f\n", 2*k+1, mp2k_energy[2*k+1], Empn2);
        }
+     else
+       fprintf(outfile, "\n");
+
      fflush(outfile);
 
      if (k+1 == Parameters.maxnvect) break;

@@ -3,6 +3,7 @@
 #include<string.h>
 #include<memory.h>
 #include<stdlib.h>
+#include<psitypes.h>
 #include<libipv1/ip_lib.h>
 #include<libciomr/libciomr.h>
 #include<libpsio/psio.h>
@@ -87,9 +88,9 @@ void *hf_fock_thread(void *tnum_ptr)
   int irrep, npi_ij, npi_kl, npi_ik, npi_jl, ind_offset;
 
   int num_prim_comb, p;
-  long int key, key1, key2, key3;
+  PSI_INT_LEAST64 key, key1, key2, key3;
   int new_quartet, htable_ptr, nstri;
-  long int quartet_index;
+  PSI_INT_LEAST64 quartet_index;
 
   double so_int;
   double lambda_T = 0.5/Symmetry.nirreps;

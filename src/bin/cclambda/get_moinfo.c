@@ -26,6 +26,7 @@ void get_moinfo(void)
   moinfo.nirreps = chkpt_rd_nirreps();
   moinfo.nmo = chkpt_rd_nmo();
   moinfo.nso = chkpt_rd_nso();
+  moinfo.nao = chkpt_rd_nao();
   moinfo.iopen = chkpt_rd_iopen();
   moinfo.labels = chkpt_rd_irr_labs();
   moinfo.enuc = chkpt_rd_enuc();

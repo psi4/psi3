@@ -13,7 +13,7 @@ introduction.tex  tutorial.tex  input.tex \
 cc.tex \
 
 DVI = $(TEX:%.tex=%.dvi)
-PS = $(TEX:%.tex=%.ps)
+PS = $(DVI:%.dvi=%.ps)
 HTML = $(TEX:%.tex=%.html)
 
 include ../MakeRules

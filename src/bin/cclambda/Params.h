@@ -13,6 +13,7 @@ struct Params {
   int ground; /* find L for only ground state */
   int zeta; /* boolean for solving zeta equations - implies excited state*/
   int print;
+  int dertype;
 };
 
 struct L_Params {

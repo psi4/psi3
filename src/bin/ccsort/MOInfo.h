@@ -1,6 +1,8 @@
 struct MOInfo {
   int nirreps;           /* no. of irreducible representations */
   int nmo;               /* no. of molecular orbitals */
+  int nso;               /* no. of symmetry orbitals */
+  int nao;               /* no. of atomic orbitals */
   int noeints;           /* no. unique one-electron integrals (ex. fruocc) */
   int iopen;             /* 0=closed shell; >0=open shell */
   int *orbspi;           /* no. of MOs per irrep */
@@ -14,6 +16,13 @@ struct MOInfo {
   int nfzv;              /* total no. of frozen virtual orbitals */
   int nactive;           /* total no. of active orbitals */
   int *orbsym;           /* QT-ordered orbital symmetry array */
+
+  int *pitz2qt;          /* RHF/ROHF Pitzer->QT translation lookup */
+  int *pitz2qt_A;        /* UHF Alpha Pitzer->QT translation lookup */
+  int *pitz2qt_B;        /* UHF Beta Pitzer->QT translation lookup */
+  int *qt2pitz;          /* RHF QT->Pitzer translation lookup */
+  int *qt2pitz_A;        /* UHF Alpha QT->Pitzer translation */
+  int *qt2pitz_B;        /* UHF Beta QT->Pitzer translation */
 
   int *occ;              /* boolean array for active occ. orbs. */
   int *aocc;              /* boolean array for active occ. orbs. */
@@ -99,4 +108,13 @@ struct MOInfo {
   double enuc;           /* Nuclear repulsion energy */
   double efzc;           /* Frozen core energy */
   double eref;           /* The reference energy (computed here) */
+
+  double **scf;
+  double **usotao;
+  double **MUX;
+  double **MUY;
+  double **MUZ;
+  int irrep_x;
+  int irrep_y;
+  int irrep_z;
 };

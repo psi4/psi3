@@ -1,7 +1,20 @@
 /* $Log$
- * Revision 1.8  2002/04/03 02:06:01  janssen
- * Finish changes to use new include paths for libraries.
+ * Revision 1.9  2004/05/03 04:32:40  crawdad
+ * Major mods based on merge with stable psi-3-2-1 release.  Note that this
+ * version has not been fully tested and some scf-optn test cases do not run
+ * correctly beccause of changes in mid-March 2004 to optking.
+ * -TDC
  *
+/* Revision 1.8.8.1  2004/04/10 19:41:32  crawdad
+/* Fixed the DIIS code for UHF cases.  The new version uses the Pulay scheme of
+/* building the error vector in the AO basis as FDS-SDF, followed by xformation
+/* into the orthogonal AO basis.   This code converges faster for test cases
+/* like cc8, but fails for linearly dependent basis sets for unknown reasons.
+/* -TDC
+/*
+/* Revision 1.8  2002/04/03 02:06:01  janssen
+/* Finish changes to use new include paths for libraries.
+/*
 /* Revision 1.7  2002/03/25 02:51:57  janssen
 /* libciomr.h -> libciomr/libciomr.h
 /*
@@ -49,44 +62,44 @@ static char *rcsid = "$Id$";
 
 void form_vec()
 {
-   int i,nn,num_mo;
-   int j,k,l;
-   double **ctrans;
-   double **temp;
-   double **sqhmat;
-   double **sqhmat2;
-   double tol=1.0e-20;
-   struct symm *s;
+  int i,nn,num_mo;
+  int j,k,l;
+  double **ctrans;
+  double **temp;
+  double **sqhmat;
+  double **sqhmat2;
+  double tol=1.0e-20;
+  struct symm *s;
    
 
-   ctrans = (double **) init_matrix(nsfmax,nsfmax); 
-   temp = (double **) init_matrix(nsfmax,nsfmax);
-   sqhmat = (double **) init_matrix(nsfmax,nsfmax);
-   sqhmat2 = (double **) init_matrix(nsfmax,nsfmax);
+  ctrans = (double **) init_matrix(nsfmax,nsfmax); 
+  temp = (double **) init_matrix(nsfmax,nsfmax);
+  sqhmat = (double **) init_matrix(nsfmax,nsfmax);
+  sqhmat2 = (double **) init_matrix(nsfmax,nsfmax);
    
-   for (i=0; i < num_ir ; i++) {
-       s = &scf_info[i];
-       if (nn=s->num_so) {
-	   num_mo = s->num_mo;
-	   tri_to_sq(s->hmat,sqhmat,nn);
-	   mmult(s->sahalf,1,sqhmat,0,temp,0,num_mo,nn,nn,0);
-	   mmult(temp,0,s->sahalf,0,sqhmat2,0,num_mo,nn,num_mo,0);
-	   sq_rsp(num_mo,num_mo,sqhmat2,s->hevals,1,ctrans,tol);
-	   mxmb(s->sahalf,1,0,ctrans,1,0,s->cmat,1,0,nn,num_mo,num_mo);
-	   for(k=0;k < nn; k++)
-	       for(l=0;l < num_mo; l++) s->sahalf[k][l]=s->cmat[k][l];
+  for (i=0; i < num_ir ; i++) {
+    s = &scf_info[i];
+    if (nn=s->num_so) {
+      num_mo = s->num_mo;
+      tri_to_sq(s->hmat,sqhmat,nn);
+      mmult(s->sahalf,1,sqhmat,0,temp,0,num_mo,nn,nn,0);
+      mmult(temp,0,s->sahalf,0,sqhmat2,0,num_mo,nn,num_mo,0);
+      sq_rsp(num_mo,num_mo,sqhmat2,s->hevals,1,ctrans,tol);
+      mxmb(s->sahalf,1,0,ctrans,1,0,s->cmat,1,0,nn,num_mo,num_mo);
+      for(k=0;k < nn; k++)
+	for(l=0;l < num_mo; l++) s->sahalf[k][l]=s->cmat[k][l];
 	   
-	   if(print & 2) {
-	       fprintf(outfile,"\nguess vector for irrep %s\n",s->irrep_label);
-	       print_mat(s->cmat,nn,num_mo,outfile);
-	   }
-       }
-   }
+      if(print & 2) {
+	fprintf(outfile,"\nguess vector for irrep %s\n",s->irrep_label);
+	print_mat(s->cmat,nn,num_mo,outfile);
+      }
+    }
+  }
    
-   free_matrix(ctrans,nsfmax);
-   free_matrix(temp,nsfmax);
-   free_matrix(sqhmat,nsfmax);
-   free_matrix(sqhmat2,nsfmax);
+  free_matrix(ctrans,nsfmax);
+  free_matrix(temp,nsfmax);
+  free_matrix(sqhmat,nsfmax);
+  free_matrix(sqhmat2,nsfmax);
 }
 
 

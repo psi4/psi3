@@ -33,6 +33,8 @@
 ** TDC, Jan-June 2002
 */
 
+void local_response(int ** domain, int *domain_len, int natom, int *aostart, int *aostop);
+
 void local_init(void)
 {
   int i, j, k, ij, stat, a, b, r, l, I, L;
@@ -126,18 +128,6 @@ void local_init(void)
   for(i=0; i < nso; i++)
     for(j=0; j < nso; j++)
       C[i][j] = Y[i][j];
-
-  /*
-    fprintf(outfile, "\n\tC inverse (Ci):\n");
-    print_mat(Ci, nso, nso, outfile);
-  */
-
-  /* Compute the AO-basis overlap integrals */
-  /*
-    S = block_matrix(nso,nso);
-    C_DGEMM('t','n',nso,nso,nso,1.0,&(Ci[0][0]),nso,&(Ci[0][0]),nso,
-    0.0,&(S[0][0]),nso);
-  */
 
   /* Get the overlap integrals -- these should be identical to AO S */
   noei = nso*(nso+1)/2;
@@ -296,6 +286,52 @@ void local_init(void)
 
   } /* i */
 
+  /* Print the orbital domains */
+  max = 0;
+  for(i=0; i < nocc; i++) 
+    if(domain_len[i] > max) max = domain_len[i];
+
+  fprintf(outfile, "\n   ****** Boughton-Pulay Occupied Orbital Domains ******\n");
+  fprintf(outfile, "   Orbital  Domain");
+  for(i=0; i < max-2; i++) fprintf(outfile, "   "); /* formatting junk */
+  fprintf(outfile, "  Completeness\n");
+  fprintf(outfile, "   -------  ------");
+  for(i=0; i < max-2; i++) fprintf(outfile, "---"); /* more formatting junk */
+  fprintf(outfile, "  ------------\n");
+  for(i=0; i < nocc; i++) {
+    fprintf(outfile, "      %2d    ",i);
+    for(j=0,cnt=0; j < natom; j++) if(domain[i][j]) { fprintf(outfile, " %2d", j); cnt++; }
+    if(cnt < max) for(; cnt < max; cnt++) fprintf(outfile, "   ");
+    fprintf(outfile, "     %7.5f\n", fR[i]);
+  }
+  fflush(outfile);
+
+  /* Identify and/or remove weak pairs -- using Bougton-Pulay domains */
+  if(!strcmp(local.pairdef,"BP")) {
+    weak_pairs = init_int_array(nocc*nocc);
+    fprintf(outfile, "\n");
+    for(i=0,ij=0; i < nocc; i++)
+      for(j=0; j < nocc; j++,ij++) {
+	weak = 1;
+	for(k=0; k < natom; k++)
+	  if(domain[i][k] && domain[j][k]) weak = 0;
+
+	if(weak && strcmp(local.weakp,"NONE")) {
+	  weak_pairs[ij] = 1;
+
+	  if(!strcmp(local.weakp,"MP2"))
+	    fprintf(outfile, "\tPair %d %d [%d] is weak and will be treated with MP2.\n", i, j, ij);
+	  else if(!strcmp(local.weakp,"NEGLECT")) {
+	    fprintf(outfile, "\tPair %d %d = [%d] is weak and will be deleted.\n", i, j, ij);
+	  }
+	}
+	else weak_pairs[ij] = 0; 
+      }
+  }
+
+  /* If this is a response calculation, augment domains using polarized orbitals */
+  if(params.dertype == 3) local_response(domain, domain_len, natom, aostart, aostop);
+
   /* Allow user input of selected domains */
   if(ip_exist("DOMAINS",0)) {
     ip_count("DOMAINS", &num_entries,0);
@@ -320,7 +356,7 @@ void local_init(void)
   for(i=0; i < nocc; i++) 
     if(domain_len[i] > max) max = domain_len[i];
 
-  fprintf(outfile, "\n   ****** Occupied Orbital Domains ******\n");
+  fprintf(outfile, "\n   ****** Final Occupied Orbital Domains ******\n");
   fprintf(outfile, "   Orbital  Domain");
   for(i=0; i < max-2; i++) fprintf(outfile, "   "); /* formatting junk */
   fprintf(outfile, "  Completeness\n");
@@ -347,29 +383,31 @@ void local_init(void)
 	}
       }
 
-  /* Identify and/or remove weak pairs */
-  weak_pairs = init_int_array(nocc*nocc);
-  fprintf(outfile, "\n");
-  for(i=0,ij=0; i < nocc; i++)
-    for(j=0; j < nocc; j++,ij++) {
-      weak = 1;
-      for(k=0; k < natom; k++)
-        if(domain[i][k] && domain[j][k]) weak = 0;
+  /* Identify and/or remove weak pairs -- for CPHF "response" domains */
+  if(!strcmp(local.pairdef,"RESPONSE")) {
+    weak_pairs = init_int_array(nocc*nocc);
+    fprintf(outfile, "\n");
+    for(i=0,ij=0; i < nocc; i++)
+      for(j=0; j < nocc; j++,ij++) {
+	weak = 1;
+	for(k=0; k < natom; k++)
+	  if(domain[i][k] && domain[j][k]) weak = 0;
 
-      if(weak && strcmp(local.weakp,"NONE")) {
-	weak_pairs[ij] = 1;
+	if(weak && strcmp(local.weakp,"NONE")) {
+	  weak_pairs[ij] = 1;
 
-	if(!strcmp(local.weakp,"MP2"))
-	  fprintf(outfile, "\tPair %d %d [%d] is weak and will be treated with MP2.\n", i, j, ij);
-	else if(!strcmp(local.weakp,"NEGLECT")) {
-	  fprintf(outfile, "\tPair %d %d = [%d] is weak and will be deleted.\n", i, j, ij);
+	  if(!strcmp(local.weakp,"MP2"))
+	    fprintf(outfile, "\tPair %d %d [%d] is weak and will be treated with MP2.\n", i, j, ij);
+	  else if(!strcmp(local.weakp,"NEGLECT")) {
+	    fprintf(outfile, "\tPair %d %d = [%d] is weak and will be deleted.\n", i, j, ij);
+	  }
 	}
+	else weak_pairs[ij] = 0; 
       }
-      else weak_pairs[ij] = 0; 
-    }
+  }
 
   /* Compute the total number of singles and doubles */
-/* replacement code from TDC on 11-5-02 */
+  /* replacement code from TDC on 11-5-02 */
   t1_length = t2_length = 0;
   for(i=0,ij=0; i < nocc; i++) {
     for(k=0; k < natom; k++) {
@@ -441,7 +479,7 @@ void local_init(void)
       norm += Rt_full[j][i] * Rt_full[j][i];
     }
     norm = sqrt(norm);
-    if(norm < 0.1) {
+    if(norm < 0.1 && strcmp(local.freeze_core,"FALSE")) {
       fprintf(outfile, "\tNorm of orbital %4d = %20.12f...deleteing\n", i, norm);
       for(j=0; j < nso; j++) Rt_full[j][i] = 0.0; 
     }
@@ -529,9 +567,9 @@ void local_init(void)
 	      &(V[ij][0][0]),pairdom_len[ij]);
 
       /*
-      fprintf(outfile, "\nV[%d]:\n", ij);
-      fprintf(outfile,   "======\n");
-      print_mat(V[ij], nvir, pairdom_len[ij], outfile);
+	fprintf(outfile, "\nV[%d]:\n", ij);
+	fprintf(outfile,   "======\n");
+	print_mat(V[ij], nvir, pairdom_len[ij], outfile);
       */
 
       /* Virtual space metric */

@@ -1,10 +1,22 @@
 /* $Log$
- * Revision 1.11  2003/08/17 22:57:37  crawdad
- * Removing libfile30 from the repository.  I believe that all code reference
- * to the library have also been properly removed.  The current version
- * passes all test cases on my systems.
+ * Revision 1.12  2004/05/03 04:32:40  crawdad
+ * Major mods based on merge with stable psi-3-2-1 release.  Note that this
+ * version has not been fully tested and some scf-optn test cases do not run
+ * correctly beccause of changes in mid-March 2004 to optking.
  * -TDC
  *
+/* Revision 1.11.4.1  2004/04/06 21:29:05  crawdad
+/* Corrections to the RHF/ROHF DIIS algorithm, which was simply incorrect.
+/* The backtransformation of the DIIS error vectors to the AO basis was not
+/* mathematically right.
+/* -TDC and EFV
+/*
+/* Revision 1.11  2003/08/17 22:57:37  crawdad
+/* Removing libfile30 from the repository.  I believe that all code reference
+/* to the library have also been properly removed.  The current version
+/* passes all test cases on my systems.
+/* -TDC
+/*
 /* Revision 1.10  2003/04/10 20:36:01  crawdad
 /* Modifications to cscf to account for *very* large cases.  Mainly converted
 /* terms to unsigned ints and more carefully computed pk-block sizes to avoid
@@ -111,6 +123,9 @@ init_scf()
    
    scf_info = (struct symm *) malloc(sizeof(struct symm)*num_ir);
 
+   /* compute nsfmax */
+   for(i=0; i < num_ir; i++) { nn = num_so[i]; if(nn > nsfmax) nsfmax = nn; }
+
    jj=0;
    for(i=0; i < num_ir ; i++) {
       scf_info[i].num_so = nn = num_so[i];
@@ -129,7 +144,7 @@ init_scf()
       nbasis += nn;
       if (nn) {
          n_so_typs++;
-         if (nn > nsfmax) nsfmax = nn;
+	 /*         if (nn > nsfmax) nsfmax = nn; */
 
          scf_info[i].smat = (double *) init_array(ioff[nn]);
          scf_info[i].tmat = (double *) init_array(ioff[nn]);
@@ -147,10 +162,11 @@ init_scf()
          scf_info[i].gmato = (double *) NULL;
          scf_info[i].occ_num = (double *) init_array(nn);
          scf_info[i].fock_evals = (double *) init_array(nn);
-         scf_info[i].cmat = (double **) init_matrix(nn,nn);
+         scf_info[i].cmat = block_matrix(nn,nn);
 	 /* TDC(6/19/96) - Added array for saving original MO vector */
-	 scf_info[i].cmat_orig = (double **) init_matrix(nn,nn);
-         scf_info[i].sahalf = (double **) init_matrix(nn,nn);
+	 scf_info[i].cmat_orig = block_matrix(nn,nn);
+         scf_info[i].sahalf = block_matrix(nn,nn);
+	 scf_info[i].pinv = block_matrix(nn,nn);
          /* STB(4/1/98) - Added array to store the eigenvalues of the
 	                  core hamiltonian for mo guessing*/
          scf_info[i].hevals = (double *) init_array(nn);

@@ -42,6 +42,8 @@ void get_moinfo(void)
   chkpt_init(PSIO_OPEN_OLD);
   moinfo.nirreps = chkpt_rd_nirreps();
   moinfo.nmo = chkpt_rd_nmo();
+  moinfo.nso = chkpt_rd_nso();
+  moinfo.nao = chkpt_rd_nao();
   moinfo.iopen = chkpt_rd_iopen();
   moinfo.labels = chkpt_rd_irr_labs();
   moinfo.enuc = chkpt_rd_enuc();
@@ -49,26 +51,9 @@ void get_moinfo(void)
   moinfo.orbspi = chkpt_rd_orbspi();
   moinfo.clsdpi = chkpt_rd_clsdpi();
   moinfo.openpi = chkpt_rd_openpi();
+  moinfo.usotao = chkpt_rd_usotao();
+  if(params.ref == 0) moinfo.scf = chkpt_rd_scf();
   chkpt_close();
-
-  /* get docc and socc arrays from input */
-  /*
-    docc = init_int_array(moinfo.nirreps);
-    socc = init_int_array(moinfo.nirreps);
-    errcod = ip_int_array("DOCC", docc, moinfo.nirreps);
-    errcod = ip_int_array("SOCC", socc, moinfo.nirreps);
-    warning = 0;
-    for(h=0; h < moinfo.nirreps; h++) {
-    if(moinfo.clsdpi[h] != docc[h]) {
-    warning = 1;  moinfo.clsdpi[h] = docc[h];
-    }
-    if(moinfo.openpi[h] != socc[h]) {
-    warning = 1;  moinfo.openpi[h] = socc[h];
-    }
-    }
-    if(warning) fprintf(outfile, "\n\tNB: Using occupations from input.\n");
-    free(docc); free(socc);
-  */
 
   /* Dump the reference wave function ID to CC_INFO */
   psio_write_entry(CC_INFO, "Reference Wavefunction",
@@ -114,23 +99,23 @@ void get_moinfo(void)
 
   /* Get the Pitzer->QT reordering array and compute its inverse */
   if(params.ref == 2) { /* UHF */
-    pitz2qt_A = init_int_array(moinfo.nmo);
-    qt2pitz_A = init_int_array(moinfo.nmo);
-    pitz2qt_B = init_int_array(moinfo.nmo);
-    qt2pitz_B = init_int_array(moinfo.nmo);
+    moinfo.pitz2qt_A = init_int_array(moinfo.nmo);
+    moinfo.qt2pitz_A = init_int_array(moinfo.nmo);
+    moinfo.pitz2qt_B = init_int_array(moinfo.nmo);
+    moinfo.qt2pitz_B = init_int_array(moinfo.nmo);
     reorder_qt_uhf(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc,
-		   pitz2qt_A, pitz2qt_B, moinfo.orbspi, moinfo.nirreps);
+		   moinfo.pitz2qt_A, moinfo.pitz2qt_B, moinfo.orbspi, moinfo.nirreps);
     for(i=0; i < moinfo.nmo; i++) {
-      qt2pitz_A[pitz2qt_A[i]] = i;
-      qt2pitz_B[pitz2qt_B[i]] = i;
+      moinfo.qt2pitz_A[moinfo.pitz2qt_A[i]] = i;
+      moinfo.qt2pitz_B[moinfo.pitz2qt_B[i]] = i;
     }
   }
   else { /* RHF and ROHF */
-    pitz2qt = init_int_array(moinfo.nmo);
-    qt2pitz = init_int_array(moinfo.nmo);
+    moinfo.pitz2qt = init_int_array(moinfo.nmo);
+    moinfo.qt2pitz = init_int_array(moinfo.nmo);
     reorder_qt(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc,
-	       moinfo.fruocc, pitz2qt,  moinfo.orbspi, moinfo.nirreps);
-    for(i=0; i < moinfo.nmo; i++) qt2pitz[pitz2qt[i]] = i;  
+	       moinfo.fruocc, moinfo.pitz2qt,  moinfo.orbspi, moinfo.nirreps);
+    for(i=0; i < moinfo.nmo; i++) moinfo.qt2pitz[moinfo.pitz2qt[i]] = i;  
   }
 
   /* Adjust clsdpi array for frozen orbitals */
@@ -991,7 +976,7 @@ void get_moinfo(void)
 	  for(j=0; j < moinfo.avirtpi[h]; j++) { /* CC-ordered relative index */
 	    J = moinfo.avir_off[h] + j;          /* CC-ordered absolute index */
 	    qt_j = moinfo.qt_avir[J];            /* QT-ordered absolute index */
-	    pitz_J = qt2pitz_A[qt_j];            /* Pitzer-ordered absolute index */
+	    pitz_J = moinfo.qt2pitz_A[qt_j];            /* Pitzer-ordered absolute index */
             pitz_j = pitz_J - pitz_offset[h];    /* Pitzer-ordered relative index */
             scf_vector_A[h][i][j] = evects_A[h][i][pitz_j];
 	  }
@@ -1023,7 +1008,7 @@ void get_moinfo(void)
 	  for(j=0; j < moinfo.bvirtpi[h]; j++) { /* CC-ordered relative index */
 	    J = moinfo.bvir_off[h] + j;          /* CC-ordered absolute index */
 	    qt_j = moinfo.qt_bvir[J];            /* QT-ordered absolute index */
-	    pitz_J = qt2pitz_B[qt_j];            /* Pitzer-ordered absolute index */
+	    pitz_J = moinfo.qt2pitz_B[qt_j];            /* Pitzer-ordered absolute index */
             pitz_j = pitz_J - pitz_offset[h];    /* Pitzer-ordered relative index */
             scf_vector_B[h][i][j] = evects_B[h][i][pitz_j];
 	  }
@@ -1042,8 +1027,6 @@ void get_moinfo(void)
     free(evects_B);  free(scf_vector_B);
 
     free(pitz_offset);
-    free(pitz2qt_A);  free(qt2pitz_A);
-    free(pitz2qt_B);  free(qt2pitz_B);
     chkpt_close();
   }
   else { /*** RHF/ROHF references ***/
@@ -1070,7 +1053,7 @@ void get_moinfo(void)
 	  for(j=0; j < moinfo.virtpi[h]; j++) { /* CC-ordered relative index */
 	    J = moinfo.vir_off[h] + j;          /* CC-ordered absolute index */
 	    qt_j = moinfo.qt_vir[J];            /* QT-ordered absolute index */
-	    pitz_J = qt2pitz[qt_j];             /* Pitzer-ordered absolute index */
+	    pitz_J = moinfo.qt2pitz[qt_j];             /* Pitzer-ordered absolute index */
 	    pitz_j = pitz_J - pitz_offset[h];   /* Pitzer-order relative index */
 	    scf_vector[h][i][j] = evects[h][i][pitz_j];
 	  }
@@ -1084,23 +1067,48 @@ void get_moinfo(void)
 	free_block(scf_vector[h]);
 
       }
-
       free_block(evects[h]);
-
-      /*
-	fprintf(outfile, "\n\tOriginal SCF Eigenvectors:\n");
-	print_mat(evects[h], moinfo.orbspi[h], moinfo.orbspi[h], outfile);
-
-	fprintf(outfile, "\n\tRe-ordered Virtual SCF Eigenvectors:\n");
-	print_mat(scf_vector[h], moinfo.orbspi[h], moinfo.virtpi[h], outfile);
-      */
-
     }
 
-    free(evects);  free(scf_vector);
-    free(pitz_offset);
-    free(pitz2qt);  free(qt2pitz);
-    chkpt_close();
+    for(h=0; h < moinfo.nirreps; h++) {
+      evects[h] = chkpt_rd_scf_irrep(h); /* Pitzer-order MO's */
+      next = PSIO_ZERO;
+      if(moinfo.occpi[h]) {
+	scf_vector[h] = block_matrix(moinfo.orbspi[h],moinfo.occpi[h]);
+
+	for(i=0; i < moinfo.orbspi[h]; i++) {
+	  for(j=0; j < moinfo.occpi[h]; j++) { /* CC-ordered relative index */
+	    J = moinfo.occ_off[h] + j;          /* CC-ordered absolute index */
+	    qt_j = moinfo.qt_occ[J];            /* QT-ordered absolute index */
+	    pitz_J = moinfo.qt2pitz[qt_j];             /* Pitzer-ordered absolute index */
+	    pitz_j = pitz_J - pitz_offset[h];   /* Pitzer-order relative index */
+	    scf_vector[h][i][j] = evects[h][i][pitz_j];
+	  }
+	}
+
+	psio_write(CC_INFO, "RHF/ROHF Active Occupied Orbitals",
+		   (char *) scf_vector[h][0],
+		   moinfo.orbspi[h]*moinfo.occpi[h]*sizeof(double),
+		   next, &next);
+
+	free_block(scf_vector[h]);
+
+      }
+
+      free_block(evects[h]);
+    }
+
+    /*
+      fprintf(outfile, "\n\tOriginal SCF Eigenvectors:\n");
+      print_mat(evects[h], moinfo.orbspi[h], moinfo.orbspi[h], outfile);
+
+      fprintf(outfile, "\n\tRe-ordered Virtual SCF Eigenvectors:\n");
+      print_mat(scf_vector[h], moinfo.orbspi[h], moinfo.virtpi[h], outfile);
+    */
+
   }
 
+  free(evects);  free(scf_vector);
+  free(pitz_offset);
+  chkpt_close();
 }

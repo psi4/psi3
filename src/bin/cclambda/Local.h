@@ -18,4 +18,7 @@ struct Local {
   char *method;
   char *weakp;
   int filter_singles;
+  double cphf_cutoff;
+  char *freeze_core;
+  char *pairdef;
 };

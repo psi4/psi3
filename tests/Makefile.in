@@ -10,7 +10,9 @@ cisd-opt-numer cc1 cc2 cc3 cc4 cc8 cc9 cc10 cc11 cc12 cc13 cc14 cc15 cc16 \
 cc17 cc18 cc19 cc21 cc22 \
 dboc-rhf1 dboc-rohf1 dboc-uhf1 dboc-rcisd1 dboc-rocisd1 \
 rhf-oeprop mp2-oeprop \
-extrema-deloc extrema-zmat mp2r12-sp1 mp2-opt-numer psi_start
+extrema-deloc extrema-zmat mp2r12-sp1 mp2-opt-numer \
+rhf-lindep1 rohf-lindep1 uhf-lindep1 \
+psi_start
 
 tests:
 	for dir in $(subdirs); \

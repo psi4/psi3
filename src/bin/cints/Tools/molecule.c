@@ -12,7 +12,6 @@
   Explicit function declarations
  -------------------------------*/
 static void get_geometry(void);
-static void compute_enuc(void);
 
 void init_molecule()
 {
@@ -65,21 +64,31 @@ void get_geometry()
 void compute_enuc()
 {  
   int i, j;
-  double r = 0.0;
+  double Z1Z2, r2, oor;
   double E = 0.0;
 
   if(Molecule.num_atoms > 1)
     for(i=1; i<Molecule.num_atoms; i++)
       for(j=0; j<i; j++){
-	r = 0.0;
-	r += (Molecule.centers[i].x-Molecule.centers[j].x)*
+	r2 = 0.0;
+	r2 += (Molecule.centers[i].x-Molecule.centers[j].x)*
 	     (Molecule.centers[i].x-Molecule.centers[j].x);
-	r += (Molecule.centers[i].y-Molecule.centers[j].y)*
+	r2 += (Molecule.centers[i].y-Molecule.centers[j].y)*
 	     (Molecule.centers[i].y-Molecule.centers[j].y);
-	r += (Molecule.centers[i].z-Molecule.centers[j].z)*
+	r2 += (Molecule.centers[i].z-Molecule.centers[j].z)*
 	     (Molecule.centers[i].z-Molecule.centers[j].z);
-	r = 1.0/sqrt(r);
-	E += (Molecule.centers[i].Z_nuc*Molecule.centers[j].Z_nuc)*r;
+	oor = 1.0/sqrt(r2);
+        Z1Z2 = Molecule.centers[i].Z_nuc*Molecule.centers[j].Z_nuc;
+#ifdef HAVE_FUNC_ISINF
+        if (isnan(oor) || isinf(oor)) {
+#elif HAVE_FUNC_FINITE
+        if (isnan(oor) || !finite(oor)) {
+#endif
+          if (fabs(Z1Z2) != 0.0)
+            punt("compute_enuc -- charges too close to each other");
+        }
+        else
+	  E += Z1Z2 * oor;
       }
   Molecule.Enuc = E;
 
