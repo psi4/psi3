@@ -8,7 +8,6 @@ psi: (
   multp = 1
   dertype = none
   basis = "6-31G**"
-  delocalize = true
   zmat = (
     o
     h 1 1.00

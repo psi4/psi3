@@ -7,7 +7,6 @@ psi: (
   reference = rhf
   dertype = none
   basis = "6-31G**"
-  delocalize = true
   zmat = (
     o
     h 1 0.97

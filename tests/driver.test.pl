@@ -257,7 +257,9 @@ else {
 
 $pwd = cwd();
 
-unlink <test-case-results>;
+if ($ARGV[0] != "--clean" || $ARGV[1] != "--clean") {
+  unlink <test-case-results>;
+}
 
 foreach $name (@DIR_NAMES) {
   print "$name\n";

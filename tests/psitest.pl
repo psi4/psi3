@@ -5,12 +5,12 @@
 
 sub pass_test
 {
-  printf "%-24s...PASSED\n", $_[0];
+  printf "%-42s...PASSED\n", $_[0];
 }
 
 sub fail_test
 {
-  printf "%-24s...FAILED\n", $_[0];
+  printf "%-42s...FAILED\n", $_[0];
 }
 
 sub seek_nuc
