@@ -836,6 +836,16 @@ AC_OUTPUT(include/psiconfig.h
           tests/MakeVars
           tests/MakeRules
           tests/scf-opt/Makefile
+          tests/scf-opt2/Makefile
+          tests/scf-opt3/Makefile
+          tests/scf-opt4/Makefile
+          tests/scf-opt5/Makefile
+          tests/scf-opt6/Makefile
+          tests/scf-opt7/Makefile
+          tests/scf-opt8/Makefile
+          tests/scf-opt9/Makefile
+          tests/scf-opt10/Makefile
+          tests/scf-opt11/Makefile
           tests/scf-opt-numer/Makefile
           tests/scf-freq/Makefile
           tests/scf-freq-numer/Makefile
@@ -878,9 +888,9 @@ AC_OUTPUT(include/psiconfig.h
           tests/extrema-deloc/Makefile
 	  tests/mp2r12-sp1/Makefile
 
-          src/doc/MakeVars src/doc/MakeRules src/doc/Makefile
-          src/doc/install/Makefile
-          src/doc/progman/Makefile src/doc/userman/Makefile
+          doc/MakeVars doc/MakeRules doc/Makefile
+          doc/installation/Makefile
+          doc/progman/Makefile doc/userman/Makefile
           )
 # The following should be added to config_files/ac_output for 
 # libmathtools/ccman.  You have to move those lines up above this
