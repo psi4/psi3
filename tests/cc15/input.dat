@@ -1,0 +1,20 @@
+% 6-31G** H2O Test B-CCD(T) energy
+
+default: (
+  label = "6-31G** B-CCD(T) H2O"
+
+  jobtype = sp
+  wfn = bccd_t
+  reference = rhf
+  dertype = none
+  frozen_docc = (1 0 0 0)
+)
+
+input: (
+  basis = "6-31G**"
+  zmat = (
+    (o)
+    (h 1 0.97)
+    (h 1 0.97 2 103.0)
+  )
+)
