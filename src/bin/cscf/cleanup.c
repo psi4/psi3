@@ -1,7 +1,11 @@
 /* $Log$
- * Revision 1.10  2002/03/25 02:17:36  janssen
- * Get rid of tmpl.  Use new naming scheme for libipv1 includes.
+ * Revision 1.11  2002/03/25 03:05:45  crawdad
+ * More additions for new chkpoint file.
+ * -TDC
  *
+/* Revision 1.10  2002/03/25 02:17:36  janssen
+/* Get rid of tmpl.  Use new naming scheme for libipv1 includes.
+/*
 /* Revision 1.9  2002/03/25 01:07:59  crawdad
 /* Some changes to cleanup et al. to write SCF-generated data to both old
 /* file30 and new chkpt.
@@ -124,6 +128,7 @@ void cleanup()
    char **labs;
    void print_mo_eigvals(void);
    psio_address chkptr;
+   int tmp_iopen;
 
    psio_open(PSIF_CHKPT, PSIO_OPEN_OLD);
  
@@ -192,12 +197,22 @@ void cleanup()
    i10[42] = ioff[n_open];
    if(twocon) i10[42] = -i10[42];
    i10[45] = nmo;
+
+   /* psio_write calls for above */
+   psio_write_entry(PSIF_CHKPT, "::Num. HF irreps", (char *) &n_so_typs, sizeof(int));
+   psio_write_entry(PSIF_CHKPT, "::mxcoef", (char *) &mxcoef, sizeof(int));
+   psio_write_entry(PSIF_CHKPT, "::Num. MO's", (char *) &nmo, sizeof(int));
+   tmp_iopen = ioff[n_open];
+   if(twocon) tmp_iopen = -tmp_iopen;
+   psio_write_entry(PSIF_CHKPT, "::Iopen", (char *) &tmp_iopen, sizeof(int));
    
    /* STB(10/28/99) - Flag to tell what reference is being used*/
    i10[46] = refnum;
+   psio_write_entry(PSIF_CHKPT, "::Reference", (char *) &refnum, sizeof(int));
    
    /* TDC(6/19/96) - Set the phase_check flag here */
    i10[50] = phase_check;
+   psio_write_entry(PSIF_CHKPT, "::Phase check", (char *) &phase_check, sizeof(int));
   
    wwritw(itap30,(char *) i10,sizeof(int)*200,(PSI_FPTR) sizeof(int)*100,&junk);
 
@@ -406,13 +421,13 @@ void cleanup()
    pointers[5] = locvec;
    
    wwritw(itap30,(char *) n_there,sizeof(int)*n_so_typs,locvec,&locvec);
-   psio_write_entry(PSIF_CHKPT, "::Orbitals per irrep", (char *) n_there, 
+   psio_write_entry(PSIF_CHKPT, "::Orbitals per HF irrep", (char *) n_there, 
 		    n_so_typs*sizeof(int));
    
    pointers[6] = locvec;
    
    wwritw(itap30,(char *) nc,sizeof(int)*n_so_typs,locvec,&locvec);
-   psio_write_entry(PSIF_CHKPT, "::Closed shells per irrep", (char *) nc, 
+   psio_write_entry(PSIF_CHKPT, "::Closed shells per HF irrep", (char *) nc, 
 		    n_so_typs*sizeof(int));
    
    pointers[7] = locvec;
@@ -421,7 +436,7 @@ void cleanup()
       wwritw(itap30,(char *) no,sizeof(int)*n_so_typs,locvec,&locvec);
       pointers[8] = locvec;
 
-      psio_write_entry(PSIF_CHKPT, "::Open shells per irrep", (char *) no,
+      psio_write_entry(PSIF_CHKPT, "::Open shells per HF irrep", (char *) no,
 		       n_so_typs*sizeof(int));
    }
    if(iopen){
