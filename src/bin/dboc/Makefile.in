@@ -3,11 +3,12 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-LD = $(CC)
+LD = $(CXX)
+LDLIBS += $(LAPACK) $(BLAS) $(FLIBS)
 
-PSILIBS = -lPSI_file30 -lPSI_ciomr -lPSI_psio -lPSI_ipv1
+PSILIBS = -lPSI_file30 -lPSI_qt -lPSI_ciomr -lPSI_psio -lPSI_ipv1
 
-CXXSRC = dboc.cc geom.cc rhf.cc
+CXXSRC = dboc.cc geom.cc print.cc overlap.cc mo_overlap.cc rhf.cc rohf.cc uhf.cc
 
 BINOBJ = $(CXXSRC:%.cc=%.o)
 ALLOC = 

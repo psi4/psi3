@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <stdlib.h>
+extern "C" {
+#include <libciomr/libciomr.h>
+#include <libqt/qt.h>
+#include <psifiles.h>
+}
+#include "params.h"
+#include "mo_overlap.h"
+
+extern Params_t Params;
+extern FILE *outfile;
+
+extern void done(const char *);
+extern double eval_rhf_derwfn_overlap();
+extern double eval_rohf_derwfn_overlap();
+extern double eval_uhf_derwfn_overlap();
+
+double eval_derwfn_overlap()
+{
+  double S;
+
+  if (!strcmp(Params.wfn,"SCF")) {
+    if (Params.reftype == Params_t::rhf) {
+      S = eval_rhf_derwfn_overlap();
+    }
+    else if (Params.reftype == Params_t::rohf) {
+      S = eval_rohf_derwfn_overlap();
+    }
+    else if (Params.reftype == Params_t::uhf) {
+      S = eval_uhf_derwfn_overlap();
+    }
+    else
+      done("This SCF method is not supported at the moment");
+  }
+
+  return S;
+}  

@@ -21,6 +21,7 @@ void setup_geoms()
 
   /*--- Open geom.dat for writing ---*/
   ffile(&geometry, "geom.dat", 0);
+  fprintf(geometry,"input:(\n");
 
   /*--- make a local copy of reference geometry ---*/
   double **geom_copy = block_matrix(Molecule.natom,3);
@@ -38,6 +39,7 @@ void setup_geoms()
       }
   
   free_block(geom_copy);
+  fprintf(geometry,")\n");
   fclose(geometry);
 
 }
@@ -50,4 +52,5 @@ void append_geom(FILE *geomdat, double **geom, int disp)
   for(int atom=0; atom<Molecule.natom; atom++)
     fprintf(geomdat,"  (%4.2lf %20.15lf %20.15lf %20.15lf)\n",
 	    Molecule.zvals[atom],geom[atom][0],geom[atom][1],geom[atom][2]);
+  fprintf(geomdat,")\n",disp);
 }
