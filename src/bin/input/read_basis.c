@@ -52,6 +52,8 @@ void read_basis()
    int *ang_mom;
    int *num_shells_per_unique;
    double **basis_set;                  /*Contains basis set for unique atoms*/
+   int user_puream_set;                 /*Whether or not user provided PUREAM in input file (overrides
+					  other data for puream)*/
    
    
    /*-----------------------------------------
@@ -122,7 +124,7 @@ void read_basis()
 	 for(i=0;i<num_atoms;i++)
 	   if (atom_basis[i] == NULL) {
 	     fprintf(outfile,"  Missing basis set for %s\n",element[i]);
-	     punt("Missing basis set");;
+	     punt("Missing basis set");
 	   }
        }
      }
@@ -130,11 +132,49 @@ void read_basis()
    ip_token1 = init_char_matrix(MAXATOM,50);
    ip_token2 = init_char_matrix(MAXATOM,50);   
 
+   /* Check if puream is set in input file. If yes then set user_puream_set to true */
+   puream = 0;
+   errcod = ip_boolean("PUREAM",&puream,0);
+   if (errcod == IPE_OK)
+     user_puream_set = 1;
+   else {
+     char* ip_token;
+     user_puream_set = 0;
+     /* set the initial value for puream to the value for the first unique atom's name
+	from basis sets file */
+     ip_token = (char *) malloc(15+strlen(atom_basis[u2a[0]]));
+     sprintf(ip_token,":BASIS:%s:PUREAM",atom_basis[u2a[0]]);
+     puream = 0;
+     ip_boolean(ip_token,&puream,0);
+     free(ip_token);
+   }
+
    /*Create basis "keyword"*/
    for(i=0;i<num_uniques;i++){
-      sprintf(ip_token1[i],":BASIS:%s",elem_name[(int)elemsymb_charges[u2a[i]]]);
-      sprintf(ip_token2[i],"%s:%s", ip_token1[i],atom_basis[u2a[i]]);
+     sprintf(ip_token1[i],":BASIS:%s",elem_name[(int)elemsymb_charges[u2a[i]]]);
+     sprintf(ip_token2[i],"%s:%s", ip_token1[i],atom_basis[u2a[i]]);
+
+     /* If user didn't specify PUREAM in input file, then use the data
+	hard-coded in basis set file(s):
+	 for each basis check is puream is defined in the basis set file,
+	 and make sure the value of puream is consistent between all sets.
+	 unfortunately, input can only use either cartesian Gaussians only
+	 or pherical harmonics Gaussian only, no mixing */
+     if (!user_puream_set) {
+       int curr_puream;
+       char* ip_token;
+       ip_token = (char *) malloc(15+strlen(atom_basis[u2a[i]]));
+       sprintf(ip_token,":BASIS:%s:PUREAM",atom_basis[u2a[i]]);
+       curr_puream=0;
+       ip_boolean(ip_token,&curr_puream,0);
+       if (curr_puream != puream) {
+	 fprintf(outfile,"  Current puream = %d, puream for basis %s = %d\n",
+		 puream, atom_basis[u2a[i]], curr_puream);
+	 punt("Inconsistent PUREAM between basis sets");;
+       }
+       free(ip_token);
      }
+   }
 
    /*holds basis set for just the symmetry unique atoms*/
    basis_set = init_matrix(MAXCONTRACTION,MAXBASISCOLUMNS);
