@@ -197,17 +197,13 @@ void C_DGEMM(char transa, char transb, int m, int n, int k, double alpha,
 **
 ** char transa:       Indicates whether the matrix A should be
 **                    transposed ('t') or left alone ('n').
-** int m:             The row dimension of A and the length of Y if
-**                    transa is 'n' or the column dimension of A and
-**                    the length of X if transa is 't'.
-** int n:             The column dimension of A and the length of X if
-**                    transa is 'n' or the row dimension of A and
-**                    the length of Y if transa is 't'.
+** int m:             The row dimension of A and the length of Y
+** int n:             The column dimension of A and the length of X
 ** double alpha:      The scalar alpha.
 ** double *A:         A pointer to the beginning of the data in A.
 ** int nca:           The number of columns *actually* in A.  This is
 **                    useful if one only wishes to multiply the first
-**                    n (or m) columns of A times X even though A
+**                    n columns of A times X even though A
 **                    contains nca columns.
 ** double *X:         A pointer to the beginning of the data in X.
 ** int inc_x:         The desired stride for X.  Useful for skipping
