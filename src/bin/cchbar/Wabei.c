@@ -7,8 +7,8 @@
 
 void Wabei_build(void)
 {
-  if(params.ref == 0 || params.ref == 1) 
-    Wabei_ROHF();
+  if(params.ref == 0) Wabei_RHF();
+  else if(params.ref == 1) Wabei_ROHF();
   else if(params.ref == 2) {
     WABEI_UHF();
     Wabei_UHF();

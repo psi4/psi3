@@ -3,12 +3,32 @@
 #define EXTERN
 #include "globals.h"
 
+/** Wmbij_build(): Constructs the Wmbij HBAR intermediate, defined in 
+ ** spin orbitals as:
+ **
+ ** Wmbij = <mb||ij> - Fme t_ij^be - t_n^b Wmnij + 1/2 <mb||ef> tau_ij^ef
+ **    + P(ij) <mn||ie> t_jn^be + P(ij) t_i^e { <mb||ej> - t_nj^bf <mn||ef> }
+ **
+ ** [cf. Gauss and Stanton, JCP 103, 3561-3577 (1995)]
+ **
+ ** For RHF orbitals, there is only one unique spin case: WMbIj.
+ **
+ ** TDC, March 2004
+ */
+
 void Wmbij_build(void)
 {
   dpdfile2 Fme, T1;
   dpdbuf4 W, E, T2, Wmnij, I, Tau, Z, Z1, Z2, C, D;
 
-  if(params.ref == 0 || params.ref == 1) { /** RHF or ROHF **/
+  if(params.ref == 0) { /** RHF **/
+
+    dpd_buf4_init(&E, CC_EINTS, 0, 0, 10, 0, 10, 0, "E <ij|ka>");
+    dpd_buf4_sort(&E, CC_HBAR, rspq, 10, 0, "WMbIj");
+    dpd_buf4_close(&E);
+
+  }
+  else if(params.ref == 1) { /** ROHF **/
 
     dpd_buf4_init(&E, CC_EINTS, 0, 2, 10, 2, 10, 0, "E <ij||ka> (i>j,ka)");
     /** <MB||IJ> **/
@@ -49,7 +69,19 @@ void Wmbij_build(void)
 
   }
 
-  if(params.ref == 0 || params.ref ==1) { /** RHF or ROHF **/
+  if(params.ref == 0) { /** RHF **/
+
+    /** F_ME t_Ij^Eb --> W(Mb,Ij) **/
+    dpd_file2_init(&Fme, CC_OEI, 0, 0, 1, "FME");
+    dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
+    dpd_buf4_init(&W, CC_HBAR, 0, 10, 0, 10, 0, 0, "WMbIj");
+    dpd_contract244(&Fme, &T2, &W, 1, 2, 0, 1.0, 1.0);
+    dpd_buf4_close(&W);
+    dpd_buf4_close(&T2);
+    dpd_file2_close(&Fme);
+
+  }
+  else if(params.ref ==1) { /** ROHF **/
 
     /** F_ME t_IJ^EB --> W(MB,IJ) **/
     dpd_file2_init(&Fme, CC_OEI, 0, 0, 1, "FME");
@@ -128,7 +160,19 @@ void Wmbij_build(void)
 
   }
 
-  if(params.ref == 0 || params.ref == 1) { /** RHF or ROHF **/
+  if(params.ref == 0) { /** RHF **/
+
+    /** - t_n^b W_MnIj **/
+    dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
+    dpd_buf4_init(&Wmnij, CC_HBAR, 0, 0, 0, 0, 0, 0, "WMnIj");
+    dpd_buf4_init(&W, CC_HBAR, 0, 10, 0, 10, 0, 0, "WMbIj");
+    dpd_contract424(&Wmnij, &T1, &W, 1, 0, 1, -1.0, 1.0);
+    dpd_buf4_close(&W);
+    dpd_buf4_close(&Wmnij);
+    dpd_file2_close(&T1);
+
+  }
+  else if(params.ref == 1) { /** ROHF **/
 
     /** - t_N^B W_MNIJ --> W(MB,IJ) **/
     dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
@@ -215,7 +259,19 @@ void Wmbij_build(void)
 
   }
 
-  if(params.ref == 0 || params.ref == 1) { /** RHF or ROHF **/
+  if(params.ref == 0) { /** RHF **/
+
+    /** <Mb|Ef> tau_Ij^Ef **/
+    dpd_buf4_init(&I, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
+    dpd_buf4_init(&Tau, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
+    dpd_buf4_init(&W, CC_HBAR, 0, 10, 0, 10, 0, 0, "WMbIj");
+    dpd_contract444(&I, &Tau, &W, 0, 0, 1.0, 1.0);
+    dpd_buf4_close(&W);
+    dpd_buf4_close(&Tau);
+    dpd_buf4_close(&I);
+
+  }
+  else if(params.ref == 1) { /** ROHF **/
 
     /** <MB||EF> tau_IJ^EF **/
     dpd_buf4_init(&I, CC_FINTS, 0, 10, 7, 10, 5, 1, "F <ia|bc>");
@@ -294,7 +350,18 @@ void Wmbij_build(void)
   }
 
   /* Sort <ij||ka> integrals for the E*T2 contributions */
-  if(params.ref == 0 || params.ref == 1) { /** RHF or ROHF **/
+  if(params.ref == 0) { /** RHF **/
+
+    dpd_buf4_init(&I, CC_EINTS, 0, 0, 10, 0, 10, 0, "E <ij|ka>");
+    dpd_buf4_sort(&I, CC_TMP0, prqs, 0, 10, "<Mn|Ie> (MI,ne)");
+    dpd_buf4_close(&I);
+
+    dpd_buf4_init(&I, CC_EINTS, 0, 11, 0, 11, 0, 0, "E 2<ai|jk> - <ai|kj>");
+    dpd_buf4_sort(&I, CC_TMP0, sqrp, 0, 10, "2 <Mn|Ie> - <Nm|Ie> (MI,ne)");
+    dpd_buf4_close(&I);
+
+  }
+  else if(params.ref == 1) { /** ROHF **/
 
     dpd_buf4_init(&I, CC_EINTS, 0, 0, 10, 2, 10, 0, "E <ij||ka> (i>j,ka)");
     dpd_buf4_sort(&I, CC_TMP0, prqs, 0, 10, "I(MI,NE)");
@@ -324,7 +391,37 @@ void Wmbij_build(void)
 
   }
 
-  if(params.ref == 0 || params.ref == 1) { /** RHF or ROHF **/
+  if(params.ref == 0) { /** RHF **/
+
+    dpd_buf4_init(&Z, CC_TMP0, 0, 0, 10, 0, 10, 0, "Z(MI,jb)");
+
+    dpd_buf4_init(&I, CC_TMP0, 0, 0, 10, 0, 10, 0, "2 <Mn|Ie> - <Nm|Ie> (MI,ne)");
+    dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIAjb");
+    dpd_contract444(&I, &T2, &Z, 0, 0, 1, 0);
+    dpd_buf4_close(&T2);
+    dpd_buf4_close(&I);
+
+    dpd_buf4_init(&I, CC_TMP0, 0, 0, 10, 0, 10, 0, "<Mn|Ie> (MI,ne)");
+    dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIbjA");
+    dpd_contract444(&I, &T2, &Z, 0, 1, -1, 1);
+    dpd_buf4_close(&T2);
+    dpd_buf4_close(&I);
+
+    dpd_buf4_sort_axpy(&Z, CC_HBAR, psqr, 10, 0, "WMbIj", 1);
+    dpd_buf4_close(&Z);
+
+    dpd_buf4_init(&Z, CC_TMP0, 0, 0, 10, 0, 10, 0, "Z(Mj,Ib)");
+    dpd_buf4_init(&I, CC_EINTS, 0, 0, 11, 0, 11, 0, "E <ij|ak>");
+    dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 11, 10, 11, 0, "tIbAj");
+    dpd_contract444(&I, &T2, &Z, 0, 0, 1, 0);
+    dpd_buf4_close(&T2);
+    dpd_buf4_close(&I);
+
+    dpd_buf4_sort_axpy(&Z, CC_HBAR, psrq, 10, 0, "WMbIj", -1);
+    dpd_buf4_close(&Z);
+
+  }
+  else if(params.ref == 1) { /** ROHF **/
 
     /** <MN||IE> t_JN^BE **/
     dpd_buf4_init(&I, CC_TMP0, 0, 0, 10, 0, 10, 0, "I(MI,NE)");
@@ -657,7 +754,7 @@ void Wmbij_build(void)
   } /** UHF **/
 
 
-  if(params.ref == 0 || params.ref == 1) { /** RHF or ROHF **/
+  if(params.ref == 1) { /** RHF or ROHF **/
 
     /* Sort <ai||jk> integrals for remaining E*T2 contributions */
     /** THIS IS NOT ACTUALLY NECESSARY!  FIX THESE CONTRACTIONS! (11/14/01) **/
@@ -669,7 +766,7 @@ void Wmbij_build(void)
     dpd_buf4_close(&I);
 
 
-    /** -<Mn|Ej> t_In^EB **/
+    /** -<Mn|Ej> t_In^EB **/ /** Can be written as: - <Mj|En> t_In^Eb !! **/
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
     dpd_buf4_sort(&T2, CC_TMP0, psrq, 10, 11, "T2(Ib,En)");
     dpd_buf4_close(&T2);
@@ -688,7 +785,7 @@ void Wmbij_build(void)
     dpd_buf4_close(&W);
   
 
-    /** -<mN|eJ> t_iN^eB **/
+    /** -<mN|eJ> t_iN^eB **/ /** Can be written as: -<mJ|eN> t_iN^Eb !! **/
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tiJaB");
     dpd_buf4_sort(&T2, CC_TMP0, psrq, 10, 11, "T2(iB,eN)");
     dpd_buf4_close(&T2);
@@ -709,7 +806,63 @@ void Wmbij_build(void)
 
   /** Prepare intermediates for final term of Wmbij **/
 
-  if(params.ref == 0 || params.ref == 1) { /** RHF or ROHF **/
+  if(params.ref == 0) { /** RHF **/
+
+    /* Z(ME,jb) = { <Mb|Ej> + t_jN^bF [2 <Mn|Ef> - <Mn|Fe>] - t_jN^Fb <Mn|Ef> } */
+    dpd_buf4_init(&Z, CC_TMP0, 0, 10, 10, 10, 10, 0, "Z(ME,jb)");
+
+    dpd_buf4_init(&D, CC_DINTS, 0, 10, 10, 10, 10, 0, "D 2<ij|ab> - <ij|ba> (ia,jb)");
+    dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIAjb");
+    dpd_contract444(&D, &T2, &Z, 0, 0, 1, 0);
+    dpd_buf4_close(&T2);
+    dpd_buf4_close(&D);
+
+    dpd_buf4_init(&D, CC_DINTS, 0, 10, 10, 10, 10, 0, "D <ij|ab> (ia,jb)");
+    dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIbjA");
+    dpd_contract444(&D, &T2, &Z, 0, 0, -1, 1);
+    dpd_buf4_close(&T2);
+    dpd_buf4_close(&D);
+
+    dpd_buf4_init(&D, CC_DINTS, 0, 10, 10, 10, 10, 0, "D <ij|ab> (ia,jb)");
+    dpd_buf4_axpy(&D, &Z, 1);
+    dpd_buf4_close(&D);
+
+    /* W(Mb,Ij) <-- Z(ME,jb) t_I^E */
+    dpd_buf4_init(&Z1, CC_TMP0, 0, 0, 10, 0, 10, 0, "Z(MI,jb)");
+    dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
+    dpd_contract424(&Z, &T1, &Z1, 1, 1, 1, 1, 0);
+    dpd_file2_close(&T1);
+    dpd_buf4_close(&Z);
+
+    dpd_buf4_sort_axpy(&Z1, CC_HBAR, psqr, 10, 0, "WMbIj", 1);
+    dpd_buf4_close(&Z1);
+
+    /* Z(Me,Ib) = { - <Mb|Ie> + t_In^Fb <Mn|Fe> } */
+    dpd_buf4_init(&Z, CC_TMP0, 0, 10, 10, 10, 10, 0, "Z(Me,Ib)");
+    dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIbjA");
+    dpd_buf4_init(&D, CC_DINTS, 0, 10, 10, 10, 10, 0, "D <ij|ab> (ib,ja)");
+    dpd_contract444(&D, &T2, &Z, 0, 0, 1, 0);
+    dpd_buf4_close(&D);
+    dpd_buf4_close(&T2);
+    dpd_buf4_close(&Z);
+
+    dpd_buf4_init(&C, CC_CINTS, 0, 11, 10, 11, 10, 0, "C <ia|jb> (bi,ja)");
+    dpd_buf4_sort_axpy(&C, CC_TMP0, qprs, 10, 10, "Z(Me,Ib)", -1);
+    dpd_buf4_close(&C);
+
+    /* W(Mb,Ij) <-- Z(Me,Ib) t_j^e */
+    dpd_buf4_init(&Z1, CC_TMP0, 0, 0, 10, 0, 10, 0, "Z(Mj,Ib)");
+    dpd_buf4_init(&Z, CC_TMP0, 0, 10, 10, 10, 10, 0, "Z(Me,Ib)");
+    dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
+    dpd_contract424(&Z, &T1, &Z1, 1, 1, 1, 1, 0);
+    dpd_file2_close(&T1);
+    dpd_buf4_close(&Z);
+
+    dpd_buf4_sort_axpy(&Z1, CC_HBAR, psrq, 10, 0, "WMbIj", -1);
+    dpd_buf4_close(&Z1);
+
+  }
+  else if(params.ref == 1) { /** ROHF **/
 
     /** t_JN^BF <MN||EF> --> Z_MBJE **/
     dpd_buf4_init(&Z, CC_TMP0, 0, 10, 10, 10, 10, 0, "Z(ME,JB)");
