@@ -22,7 +22,7 @@ void BT2(void)
   dpd_buf4_init(&tauijab, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauijab");
   dpd_buf4_init(&tauIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
 
-  dpd_buf4_init(&B_anti, CC_BINTS, 0, 7, 7, 5, 5, 1, "B <ab|cd>");
+  dpd_buf4_init(&B_anti, CC_BINTS, 0, 7, 7, 7, 7, 0, "B <ab||cd> (a>b,c>d)");
   dpd_buf4_init(&B, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>");
 
   /* AA and BB terms */

@@ -24,6 +24,7 @@ void get_params(void);
 void get_moinfo(void);
 void sort_oei(void);
 void sort_tei(void);
+void b_sort(void);
 void c_sort(void);
 void d_sort(void);
 void e_sort(void);
@@ -51,6 +52,7 @@ int main(int argc, char *argv[])
            2, moinfo.occpi, moinfo.occ_sym, moinfo.virtpi, moinfo.vir_sym);
   sort_oei();
   sort_tei();
+  b_sort();
   c_sort();
   d_sort();
   e_sort();

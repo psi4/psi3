@@ -177,6 +177,7 @@ int main(int argc, char *argv[])
   fprintf(efile, "CCSD      %22.12f\n", (moinfo.ecc+moinfo.eref));
   fclose(efile);
   
+  dpd_file4_cache_print(outfile);
   dpd_close(0);
   cleanup();
 
