@@ -56,7 +56,8 @@ int main(int argc, char* argv[])
   free_block(Uso2ao);
 
   struct iwlbuf g_Buf, dgdBx_Buf, dgdBy_Buf, dgdBz_Buf;
-  iwl_buf_init(&g_Buf, PSIF_SO_TEI, 0.0, 1, 1);
+//  iwl_buf_init(&g_Buf, PSIF_SO_TEI, 0.0, 1, 1);
+  iwl_buf_init(&g_Buf, 47, 0.0, 1, 1);
   iwl_buf_init(&dgdBx_Buf, PSIF_AO_DGDBX, 0.0, 1, 1);
   iwl_buf_init(&dgdBy_Buf, PSIF_AO_DGDBY, 0.0, 1, 1);
   iwl_buf_init(&dgdBz_Buf, PSIF_AO_DGDBZ, 0.0, 1, 1);
@@ -66,7 +67,8 @@ int main(int argc, char* argv[])
   double* dgdBx_ao = new double[nijkl];
   double* dgdBy_ao = new double[nijkl];
   double* dgdBz_ao = new double[nijkl];
-  iwl_buf_rd_all_noperm(&g_Buf, g_ao, nso, 1, 0);
+//  iwl_buf_rd_all_noperm(&g_Buf, g_ao, nso, 1, 0);
+  iwl_buf_rd_all_noperm(&g_Buf, g_ao, nao, 0, 0);
   iwl_buf_rd_all_noperm(&dgdBx_Buf, dgdBx_ao, nao, 0, 0);
   iwl_buf_rd_all_noperm(&dgdBy_Buf, dgdBy_ao, nao, 0, 0);
   iwl_buf_rd_all_noperm(&dgdBz_Buf, dgdBz_ao, nao, 0, 0);
@@ -78,6 +80,8 @@ int main(int argc, char* argv[])
   
   // Make MO basis 2-e integrals
   double* scratch_buf = new double[nijkl];
+  //print_2e("Canonical list of ERIs", g_ao, nao, CUTOFF);
+//  double* g = transform_2e_4(g_ao, nao, Cao, nmo, scratch_buf);
   double* g = transform_2e_4(g_ao, nso, Cso, nmo, scratch_buf);
   //print_2e_canon("Canonical list of ERIs", g, nmo, CUTOFF);
   double* dgdBx = transform_2e_4(dgdBx_ao, nao, Cao, nmo, scratch_buf);
@@ -85,7 +89,7 @@ int main(int argc, char* argv[])
   double* dgdBy = transform_2e_4(dgdBy_ao, nao, Cao, nmo, scratch_buf);
   //print_2e("dg/dBy (GIAO MO basis)", dgdBy, nmo, CUTOFF);
   double* dgdBz = transform_2e_4(dgdBz_ao, nao, Cao, nmo, scratch_buf);
-  print_2e("dg/dBz (GIAO MO basis)", dgdBz, nmo, CUTOFF);
+  //print_2e("dg/dBz (GIAO MO basis)", dgdBz, nmo, CUTOFF);
   
   // Make MO basis dS/dBi
   double** dSdBx_ao = block_matrix(nao,nao);
@@ -187,7 +191,7 @@ int main(int argc, char* argv[])
   free_block(dHdBx);
   free_block(dHdBy);
   free_block(dHdBz);
-  free_block(H);
+//  free_block(H);
 
   // Also form dg~/dBi in MO basis from g, dS/dBi and dg/dBi
   nijkl = nmo*nmo*nmo*nmo;
@@ -199,15 +203,22 @@ int main(int argc, char* argv[])
   tildeize_2e(g,dgdBz,dSdBz,nmo,dgtdBz);
   //print_2e("dgt/dBx (GIAO MO basis)", dgtdBx, nmo, CUTOFF);
   //print_2e("dgt/dBy (GIAO MO basis)", dgtdBy, nmo, CUTOFF);
-  print_2e("dgt/dBz (GIAO MO basis)", dgtdBz, nmo, CUTOFF);  
+  //print_2e("dgt/dBz (GIAO MO basis)", dgtdBz, nmo, CUTOFF);  
+//  delete[] g;
+  delete[] dgdBx;
+  delete[] dgdBy;
+  delete[] dgdBz;
 
-  // Finally form dF~/dBi in MO basis from dH~/dBi and dg~/dBi
+  // Finally form F (just a check) and dF~/dBi in MO basis from dH~/dBi and dg~/dBi
+  double** F = block_matrix(nmo,nmo);
   double** dFtdBx = block_matrix(nmo,nmo);
   double** dFtdBy = block_matrix(nmo,nmo);
   double** dFtdBz = block_matrix(nmo,nmo);
+  form_hamiltonian_deriv(H,g,nmo,ndocc,F);
   form_hamiltonian_deriv(dHtdBx,dgtdBx,nmo,ndocc,dFtdBx);
   form_hamiltonian_deriv(dHtdBy,dgtdBx,nmo,ndocc,dFtdBy);
   form_hamiltonian_deriv(dHtdBz,dgtdBx,nmo,ndocc,dFtdBz);
+  print_1e("F (MO basis)", F, nmo);
   print_1e("dFt/dBx (GIAO MO basis)", dFtdBx, nmo);
   print_1e("dFt/dBy (GIAO MO basis)", dFtdBy, nmo);
   print_1e("dFt/dBz (GIAO MO basis)", dFtdBz, nmo);
@@ -215,6 +226,7 @@ int main(int argc, char* argv[])
   iwl_wrtone(PSIF_OEI, PSIF_MO_DFDB_Y, nmo*nmo, dFtdBy[0]);
   iwl_wrtone(PSIF_OEI, PSIF_MO_DFDB_Z, nmo*nmo, dFtdBz[0]);
 
+  free_block(F);
   free_block(dFtdBx);
   free_block(dFtdBy);
   free_block(dFtdBz);
@@ -224,10 +236,9 @@ int main(int argc, char* argv[])
   free_block(dSdBx);
   free_block(dSdBy);
   free_block(dSdBz);
-  delete[] g;
-  delete[] dgdBx;
-  delete[] dgdBy;
-  delete[] dgdBz;
+  delete[] dgtdBx;
+  delete[] dgtdBy;
+  delete[] dgtdBz;
 
   free_block(Cso);
   free_block(Cao);
@@ -270,7 +281,7 @@ int iwl_buf_rd_all_noperm(struct iwlbuf *Buf, double *ints, int nbf, int unsymm,
     long int s = (long int) lblptr[idx++];
 
     long int pqrs = INDEX44(p,q,r,s,nbf);
-
+    
     double value = (double) valptr[Buf->idx];
     ints[pqrs] = value;
     if (unsymm) {
@@ -292,7 +303,7 @@ int iwl_buf_rd_all_noperm(struct iwlbuf *Buf, double *ints, int nbf, int unsymm,
    /*! read new PSI buffers */
   while (!lastbuf) {
     iwl_buf_fetch(Buf);
-    int lastbuf = Buf->lastbuf;
+    lastbuf = Buf->lastbuf;
     
     for (int idx=4*Buf->idx; Buf->idx<Buf->inbuf; Buf->idx++) {
       long int p = (long int) fabs((long int) lblptr[idx++]);
@@ -407,16 +418,28 @@ double* transform_2e_4(double* SSSS, int ns, double** U, int nu, double* scr)
 
 void tildeize_1e(double** H0, double** H1, double** S1, int nbf, double** Ht1)
 {
-  double** S1xH0 = block_matrix(nbf,nbf);
+/*  double** S1xH0 = block_matrix(nbf,nbf);
   mmult(S1,0,H0,0,S1xH0,0,nbf,nbf,nbf,0);
   double** H0xS1t = block_matrix(nbf,nbf);
   mmult(H0,0,S1,1,H0xS1t,0,nbf,nbf,nbf,0);
   for(int i=0; i<nbf; i++)
     for(int j=0; j<nbf; j++) {
       Ht1[i][j] = H1[i][j] - 0.5 * (S1xH0[i][j] - H0xS1t[i][j]);
-  }
+    }
   free_block(S1xH0);
-  free_block(H0xS1t);
+  free_block(H0xS1t);*/
+  
+  for(int i=0; i<nbf; i++) {
+    for(int j=0; j<nbf; j++) {
+      
+      double value = 0.0;
+      for(int p=0; p<nbf; p++)
+        value += S1[i][p] * H0[p][j] - S1[j][p] * H0[i][p];
+      
+      Ht1[i][j] = H1[i][j] - 0.5 * value;
+    }
+  }
+  
   return;
 }
 
@@ -439,7 +462,7 @@ void tildeize_2e(double* g0, double* g1, double** S1, int nbf, double* gt1)
                     + S1[k][p] * g0[ijpl] - S1[l][p] * g0[ijkp];
            }
            
-           gt1[ijkl] = g1[ijkl] - 0.5*value;
+           gt1[ijkl] = g1[ijkl] - 0.5 * value;
         }
       }
     }
@@ -486,7 +509,7 @@ void print_2e(const char* label, double* ints, int nbf, double cutoff)
           double value = ints[ijkl];
 
           if (fabs(value) > cutoff)
-            fprintf(outfile, ">%d %d %d %d [%d] = %20.10lf\n",
+            fprintf(stdout, ">%d %d %d %d [%d] = %20.10lf\n",
                     i, j, k, l, ijkl, value);          
         }
       }
