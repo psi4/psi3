@@ -186,7 +186,7 @@ void GmiL2(void)
     dpd_file2_init(&Gmi, CC_OEI, 0, 2, 2, "Gmi");
 
     /** X(IJ,AB) = - G(M,I) <MJ||AB> **/
-    dpd_buf4_init(&X1, CC_TMP2, 0, 0, 7, 0, 7, 0, "X(IJ,AB)");
+    dpd_buf4_init(&X1, CC_TMP2, 0, 0, 7, 0, 7, 0, "X(IJ,AB) C");
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 7, 0, 7, 0, "D <IJ||AB> (IJ,A>B)");
     dpd_contract244(&GMI, &D, &X1, 0, 0, 0, -1, 0);
     dpd_buf4_close(&D);
@@ -203,7 +203,7 @@ void GmiL2(void)
     dpd_buf4_close(&X1);
 
     /** X(ij,ab) = - G(m,i) <mj||ab> **/
-    dpd_buf4_init(&X1, CC_TMP2, 0, 10, 17, 10, 17, 0, "X(ij,ab)");
+    dpd_buf4_init(&X1, CC_TMP2, 0, 10, 17, 10, 17, 0, "X(ij,ab) C");
     dpd_buf4_init(&D, CC_DINTS, 0, 10, 17, 10, 17, 0, "D <ij||ab> (ij,a>b)");
     dpd_contract244(&Gmi, &D, &X1, 0, 0, 0, -1, 0);
     dpd_buf4_close(&D);

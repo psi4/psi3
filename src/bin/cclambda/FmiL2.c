@@ -60,7 +60,7 @@ void FmiL2(void)
     dpd_file2_init(&LFmit2, CC_OEI, 0, 2, 2, "Fmit");
 
     /** X(IJ,AB) = F(I,M) L(MJ,AB) **/
-    dpd_buf4_init(&X, CC_TMP1, 0, 0, 7, 0, 7, 0, "X(IJ,AB)");
+    dpd_buf4_init(&X, CC_TMP1, 0, 0, 7, 0, 7, 0, "X(IJ,AB) B");
     dpd_buf4_init(&LIJAB, CC_LAMPS, 0, 0, 7, 2, 7, 0, "LIJAB");
     dpd_contract244(&LFMIt2, &LIJAB, &X, 1, 0, 0, -1, 0);
     dpd_buf4_close(&LIJAB);
@@ -69,7 +69,7 @@ void FmiL2(void)
     dpd_buf4_close(&X);
 
     /** X(IJ,AB) = X(IJ,AB) - X'(JI,AB) **/
-    dpd_buf4_init(&X1, CC_TMP1, 0, 0, 7, 0, 7, 0, "X(IJ,AB)");
+    dpd_buf4_init(&X1, CC_TMP1, 0, 0, 7, 0, 7, 0, "X(IJ,AB) B");
     dpd_buf4_init(&X2, CC_TMP1, 0, 0, 7, 0, 7, 0, "X'(JI,AB)");
     dpd_buf4_axpy(&X2, &X1, -1.0);
     dpd_buf4_close(&X2);
@@ -81,7 +81,7 @@ void FmiL2(void)
 
 
     /** X(ij,ab) = F(i,m) L(mj,ab) **/
-    dpd_buf4_init(&X, CC_TMP1, 0, 10, 17, 10, 17, 0, "X(ij,ab)");
+    dpd_buf4_init(&X, CC_TMP1, 0, 10, 17, 10, 17, 0, "X(ij,ab) B");
     dpd_buf4_init(&LIJAB, CC_LAMPS, 0, 10, 17, 12, 17, 0, "Lijab");
     dpd_contract244(&LFmit2, &LIJAB, &X, 1, 0, 0, -1, 0);
     dpd_buf4_close(&LIJAB);
@@ -90,7 +90,7 @@ void FmiL2(void)
     dpd_buf4_close(&X);
 
     /** X(ij,ab) = X(ij,ab) - X'(ji,ab) **/
-    dpd_buf4_init(&X1, CC_TMP1, 0, 10, 17, 10, 17, 0, "X(ij,ab)");
+    dpd_buf4_init(&X1, CC_TMP1, 0, 10, 17, 10, 17, 0, "X(ij,ab) B");
     dpd_buf4_init(&X2, CC_TMP1, 0, 10, 17, 10, 17, 0, "X'(ji,ab)");
     dpd_buf4_axpy(&X2, &X1, -1.0);
     dpd_buf4_close(&X2);
