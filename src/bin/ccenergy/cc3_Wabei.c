@@ -93,7 +93,7 @@ void cc3_Wabei(void)
     dpd_buf4_sort_axpy(&Z1, CC_TMP0, rspq, 11, 5, "CC3 Z(Ei,Ab)", 1);
     dpd_buf4_close(&Z1);
     dpd_buf4_init(&Z2, CC_TMP0, 0, 11, 5, 11, 5, 0, "CC3 Z(Ei,Ab)");
-    dpd_buf4_sort(&Z2, CC3_HET1, qpsr, 10, 5, "CC3 WAbEi (iE,aB)");
+    dpd_buf4_sort(&Z2, CC3_HET1, qpsr, 10, 5, "CC3 WAbEi (iE,bA)");
     dpd_buf4_close(&Z2);
 
     dpd_file2_close(&t1);
@@ -477,18 +477,27 @@ void cc3_Wabei(void)
 
     purge_Wabei();
 
-    /* sort to Wabei (ie,ab) */
+    /* sort to Wabei (ie,ba) */
     dpd_buf4_init(&W, CC_TMP2, 0, 11, 7, 11, 7, 0, "CC3 WABEI (EI,A>B)");
-    dpd_buf4_sort(&W, CC3_HET1, qprs, 10, 7, "CC3 WABEI (IE,A>B)");
+    dpd_buf4_sort(&W, CC3_HET1, qprs, 10, 7, "CC3 WABEI (IE,B>A)");
     dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC3_HET1, 0, 10, 7, 10, 7, 0, "CC3 WABEI (IE,B>A)");
+    dpd_buf4_scm(&W, -1.0);
+    dpd_buf4_close(&W);
+
     dpd_buf4_init(&W, CC_TMP2, 0, 11, 7, 11, 7, 0, "CC3 Wabei (ei,a>b)");
-    dpd_buf4_sort(&W, CC3_HET1, qprs, 10, 7, "CC3 Wabei (ie,a>b)");
+    dpd_buf4_sort(&W, CC3_HET1, qprs, 10, 7, "CC3 Wabei (ie,b>a)");
     dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC3_HET1, 0, 10, 7, 10, 7, 0, "CC3 Wabei (ie,b>a)");
+    dpd_buf4_scm(&W, -1.0);
+    dpd_buf4_close(&W);
+
     dpd_buf4_init(&W, CC_TMP2, 0, 11, 5, 11, 5, 0, "CC3 WAbEi (Ei,Ab)");
-    dpd_buf4_sort(&W, CC3_HET1, qprs, 10, 5, "CC3 WAbEi (iE,Ab)");
+    dpd_buf4_sort(&W, CC3_HET1, qpsr, 10, 5, "CC3 WAbEi (iE,bA)");
     dpd_buf4_close(&W);
+
     dpd_buf4_init(&W, CC_TMP2, 0, 11, 5, 11, 5, 0, "CC3 WaBeI (eI,aB)");
-    dpd_buf4_sort(&W, CC3_HET1, qprs, 10, 5, "CC3 WaBeI (Ie,aB)");
+    dpd_buf4_sort(&W, CC3_HET1, qpsr, 10, 5, "CC3 WaBeI (Ie,Ba)");
     dpd_buf4_close(&W);
   }
 
@@ -880,16 +889,25 @@ void cc3_Wabei(void)
 
     /* sort to Wabei (ie,ab) */
     dpd_buf4_init(&W, CC_TMP2, 0, 21, 7, 21, 7, 0, "CC3 WABEI (EI,A>B)");
-    dpd_buf4_sort(&W, CC3_HET1, qprs, 20, 7, "CC3 WABEI (IE,A>B)");
+    dpd_buf4_sort(&W, CC3_HET1, qprs, 20, 7, "CC3 WABEI (IE,B>A)");
     dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC_TMP2, 0, 20, 7, 20, 7, 0, "CC3 WABEI (IE,B>A)");
+    dpd_buf4_scm(&W, -1.0);
+    dpd_buf4_close(&W);
+
     dpd_buf4_init(&W, CC_TMP2, 0, 31, 17, 31, 17, 0, "CC3 Wabei (ei,a>b)");
-    dpd_buf4_sort(&W, CC3_HET1, qprs, 30, 17, "CC3 Wabei (ie,a>b)");
+    dpd_buf4_sort(&W, CC3_HET1, qprs, 30, 17, "CC3 Wabei (ie,b>a)");
     dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC_TMP2, 0, 30, 17, 30, 17, 0, "CC3 Wabei (ie,b>a)");
+    dpd_buf4_scm(&W, -1.0);
+    dpd_buf4_close(&W);
+
     dpd_buf4_init(&W, CC_TMP2, 0, 26, 28, 26, 28, 0, "CC3 WAbEi (Ei,Ab)");
-    dpd_buf4_sort(&W, CC3_HET1, qprs, 27, 28, "CC3 WAbEi (iE,Ab)");
+    dpd_buf4_sort(&W, CC3_HET1, qpsr, 27, 29, "CC3 WAbEi (iE,bA)");
     dpd_buf4_close(&W);
+
     dpd_buf4_init(&W, CC_TMP2, 0, 25, 29, 25, 29, 0, "CC3 WaBeI (eI,aB)");
-    dpd_buf4_sort(&W, CC3_HET1, qprs, 24, 29, "CC3 WaBeI (Ie,aB)");
+    dpd_buf4_sort(&W, CC3_HET1, qpsr, 24, 28, "CC3 WaBeI (Ie,Ba)");
     dpd_buf4_close(&W);
   }
 }
