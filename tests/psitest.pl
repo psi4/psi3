@@ -451,7 +451,7 @@ sub seek_cis
     return @evals;
   }
     
-  printf "Error: Could not find EOM-CCSD energies in $_[0].\n";
+  printf "Error: Could not find CIS energies in $_[0].\n";
   exit 1;
 }
 
