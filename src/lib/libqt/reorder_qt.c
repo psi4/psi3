@@ -1,8 +1,12 @@
+/*!
+  \file reorder_qt.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <libciomr.h>
 
-/*
+/*!
 ** reorder_qt()
 **
 ** This function constructs a reordering array according to the
@@ -129,6 +133,9 @@ void reorder_qt(int *docc_in, int *socc_in, int *frozen_docc_in,
    free(uocc);
 }
 
+/*!
+** reorder_qt_uhf()
+*/
 void reorder_qt_uhf(int *docc, int *socc, int *frozen_docc, 
 		    int *frozen_uocc, int *order_alpha, int *order_beta,
 		    int *orbspi, int nirreps)

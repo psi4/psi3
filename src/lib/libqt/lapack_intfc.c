@@ -1,5 +1,6 @@
-/*
-** Interface to LAPACK routines
+/*!
+** \file lapack_intfc.c
+** \brief Interface to LAPACK routines
 **
 ** Rollin A. King and T. Daniel Crawford
 ** August 2001 - January 2002

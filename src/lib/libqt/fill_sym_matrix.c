@@ -1,11 +1,14 @@
-/*
-** FILL_SYM_MATRIX(): This function fills a symmetric matrix by
-**    placing the elements of the lower triangle into the upper
-**    triangle.
+/*!
+  \file fill_sym_matrix.c
+*/
+
+/*!
+** fill_sym_matrix():
+** This function fills a symmetric matrix by placing the elements of 
+** the lower triangle into the upper triangle.
 **
-** Arguments:
-**    A    = matrix to symmetrize
-**    size = number of rows or columns in matrix (assume square)
+** \param double A: matrix to symmetrize
+** \param int size: number of rows or columns (assume square)
 **
 ** Returns: 
 **    none

@@ -1,9 +1,13 @@
+/*!
+  \file ras_set.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <ip_libv1.h>
 #include <libciomr.h>
 
-/*
+/*!
 ** ras_set()
 **
 ** This function sets up the number of orbitals per irrep for each of the
@@ -19,20 +23,20 @@
 ** University of Georgia, 25 June 1995
 **
 ** Parameters:
-**   nirreps     =  num of irreps in computational point group
-**   nbfso       =  num of basis functions in symmetry orbitals (num MOs) 
-**   freeze_core =  1 to remove frozen core orbitals from ras_opi
-**   orbspi      =  array giving num symmetry orbitals (or MOs) per irrep
-**   docc        =  array of doubly occupied orbitals per irrep
-**   socc        =  array of singly occupied orbitals per irrep
-**   frdocc      =  array of frozen core per irrep
-**   fruocc      =  array of frozen virtuals per irrep
-**   ras_opi     =  matrix giving num of orbitals per irrep per ras space,
-**                  addressed as ras_opi[ras_space][irrep]
-**   order       =  array nbfso big which maps Pitzer to Correlated order
-**   ras_type    =  if 1, put docc and socc together in same RAS space 
-**                  (RAS I), as appropriate for DETCI.  If 0, put socc
-**                  in its own RAS space (RAS II), as appropriate for CC.
+**  \param nirreps     =  num of irreps in computational point group
+**  \param nbfso       =  num of basis functions in symmetry orbitals (num MOs) 
+**  \param freeze_core =  1 to remove frozen core orbitals from ras_opi
+**  \param orbspi      =  array giving num symmetry orbitals (or MOs) per irrep
+**  \param docc        =  array of doubly occupied orbitals per irrep
+**  \param socc        =  array of singly occupied orbitals per irrep
+**  \param frdocc      =  array of frozen core per irrep
+**  \param fruocc      =  array of frozen virtuals per irrep
+**  \param ras_opi     =  matrix giving num of orbitals per irrep per ras space,
+**                        addressed as ras_opi[ras_space][irrep]
+**  \param order       =  array nbfso big which maps Pitzer to Correlated order
+**  \param ras_type    =  if 1, put docc and socc together in same RAS space 
+**                        (RAS I), as appropriate for DETCI.  If 0, put socc
+**                        in its own RAS space (RAS II), as appropriate for CC.
 **
 ** Returns: 1 for success, 0 otherwise
 **

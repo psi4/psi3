@@ -1,3 +1,7 @@
+/*!
+ \file invert.c
+*/
+
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
@@ -6,16 +10,18 @@
 
 #define SMALL_DET 1.0E-10
 
-/*
+/*!
 ** INVERT_MATRIX(): The function takes the inverse of a matrix using the
 **    C routines in Numerical Recipes in C.  
 ** 
 ** Matt Leininger, Summer 1994
 **
 ** Parameters: 
-**    a  = matrix to take the inverse of (is modified by invert_matrix())
-**    y  = the inverse matrix
-**    N  = the size of the matrices
+**    \param a       = matrix to take the inverse of 
+**                     (is modified by invert_matrix())
+**    \param y       = the inverse matrix
+**    \param N       = the size of the matrices
+**    \param outfile = file for error messages
 **
 ** Other variables:
 **    col and indx are temporary arrays

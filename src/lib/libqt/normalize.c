@@ -1,9 +1,5 @@
-/*
-** NORMALIZE.C : Normalize a set of vectors
-**
-** Assume we're normalizing the ROWS
-**
-** David Sherrill, Feb 1994
+/*!
+** \file normalize.c
 */
 
 #include <stdio.h>
@@ -11,6 +7,14 @@
 #include <libciomr.h>
 
 /* #define STANDALONE */
+
+/*!
+** normalize(): Normalize a set of vectors
+**
+** Assume we're normalizing the ROWS
+**
+** David Sherrill, Feb 1994
+*/
 
 void normalize(double **A, int rows, int cols)
 {

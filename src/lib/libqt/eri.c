@@ -1,17 +1,13 @@
+/*!
+  \file eri.c
+  By Edward Valeev
+*/
+
 #include <stdio.h>
 #include <math.h>
 #include <libciomr.h>
 #include "qt.h"
 
-
-/*-------------------------------------------------------
-  This is a very inefficient function for computing ERIs
-  over primitive Gaussian functions. The argument 
-  list is self-explanatory, except for form_flag:
-  norm_flag tells what kind of normalization to use:
-  0 - no normalization
-  >0 - normalized ERI
- -------------------------------------------------------*/
 
 #define MAXFAC 100
 #define EPS 1.0E-17     /* Absolute precision in computing Fm(t)
@@ -21,14 +17,28 @@
 static double *df;
 static double *fac;
 static double **bc;
-static void calc_f(double *, int, double);
+static void calc_f(double *, int, double); 
 
 
-double eri(unsigned int l1, unsigned int m1, unsigned int n1, double alpha1, double A[3],
-	   unsigned int l2, unsigned int m2, unsigned int n2, double alpha2, double B[3],
-	   unsigned int l3, unsigned int m3, unsigned int n3, double alpha3, double C[3],
-	   unsigned int l4, unsigned int m4, unsigned int n4, double alpha4, double D[3],
-	   int norm_flag)
+/*!
+  eri()
+
+  This is a very inefficient function for computing ERIs
+  over primitive Gaussian functions. The argument 
+  list is self-explanatory, except for norm_flag:
+
+  \param int norm_flag:  tells what kind of normalization to use,
+         0 - no normalization, >0 - normalized ERI
+*/
+
+double eri(unsigned int l1, unsigned int m1, unsigned int n1, 
+           double alpha1, double A[3],
+	   unsigned int l2, unsigned int m2, unsigned int n2, 
+           double alpha2, double B[3],
+	   unsigned int l3, unsigned int m3, unsigned int n3, 
+           double alpha3, double C[3],
+	   unsigned int l4, unsigned int m4, unsigned int n4, 
+           double alpha4, double D[3], int norm_flag)
 {
 
   const double gammap = alpha1 + alpha2;
@@ -239,29 +249,14 @@ double eri(unsigned int l1, unsigned int m1, unsigned int n1, double alpha1, dou
 }
 
 
+/*!
+  calc_f()
 
-double norm_const(unsigned int l1, unsigned int m1, unsigned int n1, double alpha1, double A[3])
-{
-  int i;
-  
-  if (df == NULL) {
-    df = init_array(2*MAXFAC);
-    df[0] = 1.0;
-    df[1] = 1.0;
-    df[2] = 1.0;
-    for(i=3; i<MAXFAC*2; i++) {
-      df[i] = (i-1)*df[i-2];
-    }
-  }
-  
-  return pow(2*alpha1/M_PI,0.75)*pow(4*alpha1,0.5*(l1+m1+n1))/sqrt(df[2*l1]*df[2*m1]*df[2*n1]);
-}
-
-        /* This function computes infamous integral Fn(t). For its definition
-           see Obara and Saika paper, or Shavitt's chapter in the
-           "Methods in Computational Physics" book (see reference below).
-           This piece of code is from Dr. Justin Fermann's program CINTS */
-
+ This function computes infamous integral Fn(t). For its definition
+ see Obara and Saika paper, or Shavitt's chapter in the
+ Methods in Computational Physics book (see reference below).
+ This piece of code is from Dr. Justin Fermann's program CINTS 
+*/
 void calc_f(double *F, int n, double t)
 {
   int i, m, k;
@@ -285,8 +280,8 @@ void calc_f(double *F, int n, double t)
   }
   else {        /* For smaller t's compute F with highest n using
                    asymptotic series (see I. Shavitt in
-                   "Methods in Computational Physics", ed. B. Alder etal,
-                   vol 2, 1963, page 8 */
+                   Methods in Computational Physics, ed. B. Alder eta l,
+                   vol 2, 1963, page 8) */
     et = exp(-t);
     t2 = 2*t;
     m2 = 2*n;
@@ -305,4 +300,26 @@ void calc_f(double *F, int n, double t)
     }
   }
 }
+
+
+/*!
+  norm_const()
+*/  
+double norm_const(unsigned int l1, unsigned int m1, unsigned int n1, double alpha1, double A[3])
+{
+  int i;
+  
+  if (df == NULL) {
+    df = init_array(2*MAXFAC);
+    df[0] = 1.0;
+    df[1] = 1.0;
+    df[2] = 1.0;
+    for(i=3; i<MAXFAC*2; i++) {
+      df[i] = (i-1)*df[i-2];
+    }
+  }
+  
+  return pow(2*alpha1/M_PI,0.75)*pow(4*alpha1,0.5*(l1+m1+n1))/sqrt(df[2*l1]*df[2*m1]*df[2*n1]);
+}
+
 

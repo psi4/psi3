@@ -1,3 +1,7 @@
+/*!
+  \file pople.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -5,23 +9,23 @@
 #include "qt.h"
 #define ZERO 1e-13
 
-/*
+/*!
 ** POPLE(): Uses Pople's method to iteratively solve linear equations
 **          Ax = b
 **
 ** Matt Leininger, April 1998
 **
 ** Arguments: 
-**   A       = matrix 
-**   x       = initially has vector b, but returns vector x.
-**   dimen   = dimension of vector x.
-**   num_vecs= number of vectors x to obtain.
-** tolerance = cutoff threshold for norm of expansion vector.
+**  \param A         = matrix 
+**  \param x         = initially has vector b, but returns vector x.
+**  \param dimen     = dimension of vector x.
+**  \param num_vecs  = number of vectors x to obtain.
+**  \param tolerance = cutoff threshold for norm of expansion vector.
 **
 ** Returns: none
 */
 int pople(double **A, double *x, int dimen, int num_vecs, double tolerance,
-FILE *outfile, int print_lvl)
+          FILE *outfile, int print_lvl)
 {
    double det, tval;
    double **Bmat; /* Matrix of expansion vectors */ 

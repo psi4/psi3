@@ -1,5 +1,10 @@
-/*
-** FILTER(): Given a lower-triangle array of integrals in the full
+/*!
+  \file filter.c
+*/
+
+/*!
+** filter():
+** Given a lower-triangle array of integrals in the full
 ** space of orbitals as well as numbers of frozen core and virtual
 ** orbitals, this function returns a list of integrals involving only
 ** active orbitals.

@@ -1,10 +1,15 @@
-/*
+/*!
+  \file probabil.c
+  \brief Contains some probability functions
+*/
+
+/*!
 ** combinations() : Calculates the number of ways to choose k objects
 **    from n objects, or "n choose k" 
 **
 ** Parameters:
-**   n   =  number of objects in total
-**   k   =  number of objects taken at a time
+**   \param n   =  number of objects in total
+**   \param k   =  number of objects taken at a time
 **
 ** Returns:
 **    number of combinations of n objects taken k at a time ("n choose k")
@@ -25,11 +30,11 @@ double combinations(int n, int k)
 }
 
 
-/* 
+/*!
 ** factorial(): Returns n!
 ** 
 ** Parameters:
-**    n  = number to take factorial of
+**    \param n  = number to take factorial of
 **
 ** Returns:
 **    n factorial, as a double word (since n! can get very large).

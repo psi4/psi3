@@ -1,5 +1,7 @@
-/*
-** ROOTFIND.C : Find the root of an equation using the following methods:
+/*!
+** \file rootfind.c
+** \brief Simple root finding methods
+**
 **      (1) Bisection method
 **      (2) Newton's method
 **      (3) Secant method
@@ -28,8 +30,7 @@
 #include <math.h>
 
 
-
-/*
+/*!
 ** BISECT(): Finds the root of a function between two points to within a 
 **   given tolerance.  Iterations are limited to a given maximum, and
 **   a print flag specifies whether this function should print the results
@@ -38,12 +39,14 @@
 **   bisection method to work!  This routine checks for this initially.
 **
 ** Arguments:
-**   function  = pointer to function we want to examine (must return double)
-**   low       = lower bound of interval to search for root
-**   high      = upper bound of interval
-**   tolerance = how small is the maximum allowable error
-**   maxiter   = maximum number of iterations
-**   printflag = whether or not to print results for each iteration (1 or 0)
+**   \param function  = pointer to function we want to examine 
+**                      (must return double)
+**   \param low       = lower bound of interval to search for root
+**   \param high      = upper bound of interval
+**   \param tolerance = how small is the maximum allowable error
+**   \param maxiter   = maximum number of iterations
+**   \param printflag = whether or not to print results for each iteration 
+**                      (1 or 0)
 **
 ** Returns:
 **   the value of the root
@@ -103,7 +106,7 @@ double bisect(function, low, high, tolerance, maxiter, printflag)
 } 
 
 
-/*
+/*!
 ** NEWTON(): Find the root of a function by Newton's method.  Iterations are
 **   limited to a maximum value.  The algorithm stops when the difference
 **   between successive estimates of the root is less than the specified
@@ -111,12 +114,14 @@ double bisect(function, low, high, tolerance, maxiter, printflag)
 **   the function AND it's derivative.
 **
 ** Arguments:
-**   F         = pointer to function we want to examine (must return double)
-**   dF        = pointer to _derivative_ of function F
-**   x         = initial guess for root
-**   tolerance = how close successive guesses must get before convergence
-**   maxiter   = maximum number of iterations
-**   printflag = whether or not to print results for each iteration (1 or 0)
+**   \param F         = pointer to function we want to examine 
+**                      (must return double)
+**   \param dF        = pointer to _derivative_ of function F
+**   \param x         = initial guess for root
+**   \param tolerance = how close successive guesses must get before convergence
+**   \param maxiter   = maximum number of iterations
+**   \param printflag = whether or not to print results for each iteration 
+**                      (1 or 0)
 **
 ** Returns: 
 **   the value of the root
@@ -150,7 +155,7 @@ double newton(F, dF, x, tolerance, maxiter, printflag)
 }
 
 
-/*
+/*!
 ** SECANT(): Find the root of a function by the Secant Method.  Iterations are
 **   limited to a maximum value.  The algorithm stops when the relative 
 **   difference between successive guesses is less than the specified
@@ -158,12 +163,14 @@ double newton(F, dF, x, tolerance, maxiter, printflag)
 **   as the function itself.
 **
 ** Arguments:
-**   F         = pointer to function we want to examine (must return double)
-**   x0        = 1st guess for root
-**   x1        = 2nd guess for root
-**   tolerance = how close successive guesses must get before convergence
-**   maxiter   = maximum number of iterations
-**   printflag = whether or not to print results for each iteration (1 or 0)
+**   \param F         = pointer to function we want to examine 
+**                      (must return double)
+**   \param x0        = 1st guess for root
+**   \param x1        = 2nd guess for root
+**   \param tolerance = how close successive guesses must get before convergence
+**   \param maxiter   = maximum number of iterations
+**   \param printflag = whether or not to print results for each iteration 
+**                      (1 or 0)
 **
 ** Returns:
 **   the value of the root

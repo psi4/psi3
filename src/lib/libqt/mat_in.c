@@ -1,14 +1,19 @@
 #include <stdio.h>
 
-/*
+/*!
+  \file mat_in.c
+*/
+
+/*!
 ** MAT_IN(): Function to read in a matrix.  Simple version for now.
 **
 ** Parameters:
-**    fp         =  file pointer to input stream
-**    array      =  matrix to hold data
-**    width      =  number of columns to read
-**    max_length = maximum number of rows to read
-**    stat       = pointer to int to hold status flag (0=read ok, 1=error)
+**    \param fp         =  file pointer to input stream
+**    \param array      =  matrix to hold data
+**    \param width      =  number of columns to read
+**    \param max_length =  maximum number of rows to read
+**    \param stat       =  pointer to int to hold status flag 
+**                         (0=read ok, 1=error)
 **
 ** Returns: 
 **    number of rows read

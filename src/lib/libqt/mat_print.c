@@ -1,6 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/*!
+  \file mat_print.c
+*/
+
+/*!
+** mat_print()
+** This function prints a matrix to a file
+**
+*/
 int mat_print(double **matrix, int rows, int cols, FILE *outfile)
 {
   div_t fraction;
