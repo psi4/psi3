@@ -37,13 +37,14 @@ double **chkpt_rd_scf(void)
   nso = chkpt_rd_nso();
 
   scf = block_matrix(nso,nmo);
-  psio_read_entry(PSIF_CHKPT, "::MO coefficients", (char *) scf[0], nso*nmo*sizeof(double));
+  psio_read_entry(PSIF_CHKPT, "::MO coefficients", (char *) scf[0], 
+                  nso*nmo*sizeof(double));
 
   return scf;
 }
 
 /*!
-** chkpt_rd_alpha_scf():  Reads in the full alpha SCF eigenvector matrix for UHF.
+** chkpt_rd_alpha_scf(): Reads in the full alpha SCF eigenvector matrix for UHF
 **  
 **   takes no arguments.
 **  
@@ -71,7 +72,8 @@ double **chkpt_rd_alpha_scf(void)
   nso = chkpt_rd_nso();
 
   scf = block_matrix(nso,nmo);
-  psio_read_entry(PSIF_CHKPT, "::Alpha MO coefficients", (char *) scf[0], nso*nmo*sizeof(double));
+  psio_read_entry(PSIF_CHKPT, "::Alpha MO coefficients", (char *) scf[0], 
+                  nso*nmo*sizeof(double));
 
   return scf;
 }
@@ -105,7 +107,8 @@ double **chkpt_rd_beta_scf(void)
   nso = chkpt_rd_nso();
 
   scf = block_matrix(nso,nmo);
-  psio_read_entry(PSIF_CHKPT, "::Beta MO coefficients", (char *) scf[0], nso*nmo*sizeof(double));
+  psio_read_entry(PSIF_CHKPT, "::Beta MO coefficients", (char *) scf[0], 
+                  nso*nmo*sizeof(double));
 
   return scf;
 }
@@ -142,7 +145,8 @@ void chkpt_wt_scf(double **scf)
   nmo = chkpt_rd_nmo();
   nso = chkpt_rd_nso();
 
-  psio_write_entry(PSIF_CHKPT, "::MO coefficients", (char *) scf[0], nso*nmo*sizeof(double));
+  psio_write_entry(PSIF_CHKPT, "::MO coefficients", (char *) scf[0], 
+                   nso*nmo*sizeof(double));
 }
 
 /*!
@@ -177,7 +181,8 @@ void chkpt_wt_alpha_scf(double **scf)
   nmo = chkpt_rd_nmo();
   nso = chkpt_rd_nso();
 
-  psio_write_entry(PSIF_CHKPT, "::Alpha MO coefficients", (char *) scf[0], nso*nmo*sizeof(double));
+  psio_write_entry(PSIF_CHKPT, "::Alpha MO coefficients", (char *) scf[0], 
+                   nso*nmo*sizeof(double));
 }
 
 /*!
@@ -212,12 +217,14 @@ void chkpt_wt_beta_scf(double **scf)
   nmo = chkpt_rd_nmo();
   nso = chkpt_rd_nso();
 
-  psio_write_entry(PSIF_CHKPT, "::Beta MO coefficients", (char *) scf[0], nso*nmo*sizeof(double));
+  psio_write_entry(PSIF_CHKPT, "::Beta MO coefficients", (char *) scf[0], 
+                   nso*nmo*sizeof(double));
 }
 
 
 /*!
-** chkpt_rd_scf_irrep(): Reads a single irrep of the SCF eigenvectors for RHF/ROHF.
+** chkpt_rd_scf_irrep(): Reads a single irrep of the SCF eigenvectors for 
+** RHF/ROHF.
 **
 ** arguments:
 **  \param int irrep  The desired irreducible representation.
@@ -259,7 +266,8 @@ double **chkpt_rd_scf_irrep(int irrep)
 }
 
 /*!
-** chkpt_rd_scf_alpha_irrep(): Reads a single irrep of the alpha SCF eigenvectors for UHF.
+** chkpt_rd_scf_alpha_irrep(): Reads a single irrep of the alpha SCF 
+** eigenvectors for UHF.
 **
 ** arguments:
 **  \param int irrep  The desired irreducible representation.
@@ -301,7 +309,8 @@ double **chkpt_rd_alpha_scf_irrep(int irrep)
 }
 
 /*!
-** chkpt_rd_scf_beta_irrep(): Reads a single irrep of the beta SCF eigenvectors for UHF.
+** chkpt_rd_scf_beta_irrep(): Reads a single irrep of the beta SCF 
+** eigenvectors for UHF.
 **
 ** arguments:
 **  \param int irrep  The desired irreducible representation.
@@ -343,7 +352,8 @@ double **chkpt_rd_beta_scf_irrep(int irrep)
 }
 
 /*!
-** chkpt_wt_scf_irrep(): Writes a single irrep of the SCF eigenvectors for RHF/ROHF.
+** chkpt_wt_scf_irrep(): Writes a single irrep of the SCF eigenvectors for 
+** RHF/ROHF.
 **
 ** arguments:
 **  \param int irrep  The desired irreducible representation.
