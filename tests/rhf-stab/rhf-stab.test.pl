@@ -128,17 +128,17 @@ sub compare_data
   }
 
   if ($stab1_out eq "FAIL") {
-    printf "\nRHF->RHF stability   ... FAILED\n\n";
+    printf "\nRHF->RHF stability   ... FAILED\n";
   }
   else {
-    printf "\nRHF->RHF stability   ... PASSED\n\n";
+    printf "\nRHF->RHF stability   ... PASSED\n";
   }
 
   if ($stab2_out eq "FAIL") {
-    printf "\nRHF->UHF stability   ... FAILED\n\n";
+    printf "\nRHF->UHF stability   ... FAILED\n";
   }
   else {
-    printf "\nRHF->UHF stability   ... PASSED\n\n";
+    printf "\nRHF->UHF stability   ... PASSED\n";
   }
 
   close (RE);
