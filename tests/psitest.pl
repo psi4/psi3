@@ -273,7 +273,44 @@ sub seek_grad_file11
   exit 1;
 }
 
-sub seek_freq
+sub seek_findif_freq
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  @datafile = <OUT>;
+  close(OUT);
+
+  $match = "$_[1]";
+  $ndof = "$_[2]";
+  $j=0;
+  $linenum=0;
+  foreach $line (@datafile) {
+    $linenum++;
+    if ($line =~ m/$match/) {
+      while ($j<$ndof) {
+        @test = split (/ +/,$datafile[$linenum+$j]);
+        $freq[$j] = $test[2];
+        $j++;
+      }
+    }
+  }
+
+  $OK = 1;
+  for($i=0; $i < $ndof; $i++) {
+#    printf "%d %6.1f\n", $i, $freq[$i];
+    if($freq[$i] == 0.0 || $freq[$i] > 6000) {
+      $OK = 0; 
+    }
+  }
+  
+  if($OK && $ndof > 0) {
+    return @freq;
+  }
+
+  printf "Error: Check $_[1] in $_[0].\n";
+  exit 1;
+}
+
+sub seek_anal_freq
 {
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";
   @datafile = <OUT>;
@@ -293,8 +330,16 @@ sub seek_freq
       }
     }
   }
+
+  $OK = 1;
+  for($i=0; $i < $ndof; $i++) {
+#    printf "%d %6.1f\n", $i, $freq[$i];
+    if($freq[$i] == 0.0 || $freq[$i] > 6000) {
+      $OK = 0; 
+    }
+  }
   
-  if($freq >= 0 && $freq < 6000) {
+  if($OK && $ndof > 0) {
     return @freq;
   }
 
@@ -307,6 +352,11 @@ sub seek_int
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";
   @datafile = <OUT>;
   close(OUT);
+
+  # set up some initial values to be overwritten 
+  for($i=0; $i < $ndof; $i++) {
+    $int[$i] = -1.0;
+  }
 
   $match = "$_[1]";
   $ndof = "$_[2]";
@@ -322,8 +372,15 @@ sub seek_int
       }
     }
   }
-  
-  if($int >= 0) {
+
+  $OK = 1;
+  for($i=0; $i < $ndof; $i++) {
+    if($int[$i] < 0.0) {
+      $OK = 0;
+    }
+  }
+
+  if($OK && $ndof > 0) {
     return @int;
   }
 
