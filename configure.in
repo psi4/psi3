@@ -190,8 +190,9 @@ AC_PROG_INSTALL()
 INSTALL_INCLUDE='$(top_srcdir)/bin/installinc.sh' AC_SUBST(INSTALL_INCLUDE)
 MKDIRS='$(top_srcdir)/bin/mkdirs.sh' AC_SUBST(MKDIRS)
 
-# On 64-bit POWER platforms you need lex rather than flex
-if echo $os | grep aix >/dev/null 2>&1 && test "$bitwidth64" = yes; then
+# Under AIX we use lex rather than flex -- the latter didn't work well in 64-bit
+# environment (as of 1998)
+if echo $os | grep aix >/dev/null 2>&1; then
     test -z "$LEX" && AC_PATH_PROG(LEX,lex) AC_SUBST(LEX)
     test -z "$LEXLIB" && LEXLIB=`echo $LEX|sed "s bin/lex.* lib/libl.a "`
     if test -n "$LEXLIB" && test -f "$LEXLIB"; then
