@@ -2,6 +2,8 @@
 // Local definitions for matrix operations: (de)allocation, product, LU decomposition
 //
 
+#include <iostream.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include "linalg.h"
@@ -12,7 +14,15 @@ FLOAT** create_matrix(int a, int b)
 
   if (a>=0 && b>=0) {
     M = new FLOAT*[a];
+    if (M == NULL) {
+      cerr << "create_matrix: failed to allocate an array of " << a << " pointers to FLOAT" << endl;
+      abort();
+    }
     M[0] = new FLOAT[a*b];
+    if (M[0] == NULL) {
+      cerr << "create_matrix: failed to allocate an array of " << a*b << " FLOATs" << endl;
+      abort();
+    }
     for(int i=1; i<a; i++)
       M[i] = M[i-1] + b;
   }
@@ -27,7 +37,42 @@ void delete_matrix(FLOAT** M)
   if (M) {
     delete[] M[0];
     delete[] M;
+    M = NULL;
   }
+}
+
+void print_mat(FLOAT** a, int m, int n, FILE* out)
+{
+  int ii,jj,kk,nn,ll;
+  int i,j,k;
+
+  ii=0;jj=0;
+L200:
+  ii++;
+  jj++;
+  kk=10*jj;
+  nn=n;
+  if (nn > kk) nn=kk;
+  ll = 2*(nn-ii+1)+1;
+  fprintf (out,"\n");
+  for (i=ii; i <= nn; i++) fprintf(out,"       %5d",i);
+  fprintf (out,"\n");
+  for (i=0; i < m; i++) {
+    fprintf (out,"\n%5d",i+1);
+    for (j=ii-1; j < nn; j++) {
+#if LONG_DOUBLE
+      fprintf (out,"%12.7Lf",a[i][j]);
+#else
+      fprintf (out,"%12.7lf",a[i][j]);
+#endif
+    }
+  }
+  fprintf (out,"\n");
+  if (n <= kk) {
+    fflush(out);
+    return;
+  }
+  ii=kk; goto L200;
 }
 
 FLOAT** convert_matrix(double **m, int a, int b, int transpose)
