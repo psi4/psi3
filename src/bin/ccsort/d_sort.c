@@ -140,5 +140,10 @@ void d_sort(void)
     dpd_buf4_init(&D, CC_DINTS, 0, 10, 10, 10, 10, 0, "D <ij||ab> (ia,jb)");
     dpd_buf4_sort(&D, CC_DINTS, pqsr, 10, 11, "D <ij||ab> (ia,bj)");
     dpd_buf4_close(&D);
+
+    /* <ib|aj> (ib,aj) */
+    dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
+    dpd_buf4_sort(&D, CC_DINTS, psrq, 10, 11, "D <ib|aj> (ib,aj)");
+    dpd_buf4_close(&D);
   }
 }
