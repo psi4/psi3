@@ -65,7 +65,7 @@ void get_mo_info(void)
                 CalcInfo.orbs_per_irr, CalcInfo.docc, CalcInfo.socc, 
                 CalcInfo.frozen_docc, CalcInfo.frozen_uocc, 
                 CalcInfo.rstr_docc, CalcInfo.rstr_uocc,
-                CalcInfo.ras_opi, CalcInfo.pitz2ci, 1)) 
+                CalcInfo.ras_opi, CalcInfo.pitz2ci, 1, 0)) 
    { 
      fprintf(outfile, "Error in ras_set().  Aborting.\n");
      exit(1);
