@@ -54,3 +54,8 @@ int tpool_destroy(
     int              finish);
 
 tpool_t thread_pool;
+
+void tpool_queue_open(tpool_t tpool);
+
+void tpool_queue_close(tpool_t tpool, int finish);
+

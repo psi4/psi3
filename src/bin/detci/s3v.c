@@ -408,65 +408,45 @@ void *s3_block_v_pthread(void *threadarg)
   tei = thread_info_i->Tptr;
   R = thread_info_i->R;
   thread_id = thread_info_i->thread_id;
-
+  Ia_idx_local = thread_info_i->Ia_idx_local;
+  Ia_local = thread_info_i->Ia_local;
+  
   V = init_array(jlen);
 
-  /* loop over Ia */
-  Ia_idx_local=0;
-  Ia_local = NULL;
+  /* loop over excitations E^a_{kl} from |A(I_a)> */
+  Jacnt = Ia_local->cnt[Ja_list];
+  Iaridx = Ia_local->ridx[Ja_list];
+  Iasgn = Ia_local->sgn[Ja_list];
+  Iaij = Ia_local->ij[Ja_list];
 
-  while (1) {
-      pthread_mutex_lock(&inc_Ia_mutex);
-      if (Ia_idx_global < nas) {
-          Ia_idx_local = Ia_idx_global;
-          Ia_local = Ia_global;
-          Ia_idx_global++;
-          Ia_global++;
-          pthread_mutex_unlock(&inc_Ia_mutex);
-        }
-      else {
-          pthread_mutex_unlock(&inc_Ia_mutex);
-          break;
-        }
-
-      /* loop over excitations E^a_{kl} from |A(I_a)> */
-      Jacnt = Ia_local->cnt[Ja_list];
-      Iaridx = Ia_local->ridx[Ja_list];
-      Iasgn = Ia_local->sgn[Ja_list];
-      Iaij = Ia_local->ij[Ja_list];
-
-      work_units++;
+  work_units++;
       
-      zero_arr(V, jlen);
+  zero_arr(V, jlen);
          
-      for (Ia_ex=0; Ia_ex < Jacnt; Ia_ex++) {
-          kl = *Iaij++;
-          I = *Iaridx++;
-          tval = *Iasgn++;
-          ijkl = INDEX(ij,kl);
-          VS = tval * tei[ijkl];
-          CprimeI0 = Cprime[I];
+  for (Ia_ex=0; Ia_ex < Jacnt; Ia_ex++) {
+      kl = *Iaij++;
+      I = *Iaridx++;
+      tval = *Iasgn++;
+      ijkl = INDEX(ij,kl);
+      VS = tval * tei[ijkl];
+      CprimeI0 = Cprime[I];
 
 #ifdef USE_BLAS
-          C_DAXPY(jlen, VS, CprimeI0, 1, V, 1);
+      C_DAXPY(jlen, VS, CprimeI0, 1, V, 1);
 #else
-          for (J=0; J<jlen; J++) {
-              V[J] += VS * CprimeI0[J];
-            }
-#endif
-        }
-
-      /* scatter */
       for (J=0; J<jlen; J++) {
-          RJ = R[J];
-          S[Ia_idx_local][RJ] += V[J];
+          V[J] += VS * CprimeI0[J];
         }
-    } /* end loop over Ia */
+#endif
+    }
+
+  /* scatter */
+  for (J=0; J<jlen; J++) {
+      RJ = R[J];
+      S[Ia_idx_local][RJ] += V[J];
+    }
+
   free(V);
-/*
-  fprintf(outfile,"S3_BLOCK_V_PTHREAD: Thread %d finished %d work units.\n", thread_id, work_units);
-  fflush(outfile);
-*/
   return 0;
   
 }

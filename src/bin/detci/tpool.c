@@ -192,8 +192,9 @@ int tpool_destroy(tpool_t          tpool,
     free(cur_nodep);
   }
   free(tpool); 
+  return(1);
 }
-void *tpool_queue_open(tpool_t tpool)
+void tpool_queue_open(tpool_t tpool)
 {
   pthread_mutex_lock(&tpool->queue_lock);
   tpool->queue_closed = 0;
@@ -201,7 +202,7 @@ void *tpool_queue_open(tpool_t tpool)
   pthread_mutex_unlock(&tpool->queue_lock);
 }
   
-void *tpool_queue_close(tpool_t tpool, int finish)
+void tpool_queue_close(tpool_t tpool, int finish)
 {
   int rtn;
   

@@ -11,6 +11,7 @@
 extern "C" {
    #include <stdlib.h>
    #include <stdio.h>
+   #include <string.h>
    #ifdef AIX
       #include <string.h>
    #endif
