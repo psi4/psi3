@@ -15,7 +15,7 @@ buf_flush.c   buf_rd_arr.c          buf_wrt_arr_SI_nocut.c  rdtwo.c \
 buf_init.c    buf_rd_arr2.c         buf_wrt_mat.c           sortbuf.c \
 buf_put.c     buf_wrt.c             buf_wrt_mp2.c           wrtone.c \
 buf_rd.c      buf_wrt_all.c         buf_wrt_mp2r12a.c       wrttwo.c \
-buf_rd_all.c  buf_wrt_arr.c         buf_wrt_val.c
+buf_rd_all.c  buf_wrt_arr.c         buf_wrt_val.c           buf_toend.c
 
 
 DEPENDINCLUDE = iwl.h
