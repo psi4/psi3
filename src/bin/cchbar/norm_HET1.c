@@ -53,7 +53,7 @@ void norm_HET1(void) {
     fprintf(outfile,"<WMbeJ (Me,Jb) | WMbeJ (Me,Jb)> = %15.10lf\n", dot);
 
     /** WABEI **/
-    dpd_buf4_init(&W, CC3_HET1, 0, 10, 5, 10, 5, 0, "CC3 WAbEi (Ie,bA)");
+    dpd_buf4_init(&W, CC3_HET1, 0, 10, 5, 10, 5, 0, "CC3 WAbEi (iE,bA)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
     fprintf(outfile,"<WAbEi (Ie,bA) | WAbEi (Ie,bA)> = %15.10lf\n", dot);
