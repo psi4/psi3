@@ -34,6 +34,7 @@ endif
 
 ifndef DVIPS
   TARGET_PS =
+  TARGET_HTML =
 endif
 
 ifndef LATEX
