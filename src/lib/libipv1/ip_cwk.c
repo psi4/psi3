@@ -1,8 +1,13 @@
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:26  evaleev
- * Initial revision
+ * Revision 1.2  2003/08/21 19:03:36  evaleev
+ * Fixed ip_cwk_add to add the keyword to the current keyword tree list even if
+ * no parsed input contains entries under the keyword. Subsequent ip_append is
+ * thus guaranteed to set the current keyword list properly.
  *
+/* Revision 1.1.1.1  2000/02/04 22:53:26  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.5  1995/01/16 23:01:38  cljanss
 /* Minor changes so the SGI compiler won't complain.
 /*
@@ -29,6 +34,7 @@
 #include "ip_types.h"
 #include "ip_global.h"
 
+#include "ip_read.gbl"
 #include "ip_cwk.gbl"
 #include "ip_cwk.lcl"
 
@@ -87,7 +93,19 @@ char *keyword;
       }
     /* Add the keyword into the keyword list. */
     kt = ip_descend_tree(ip_tree,&(keyword[1]));
-    if (kt) ip_cwk = splice_keyword_tree_list(kt->down,ip_cwk);
+    /* If the tree is not found -- create it in case future ip_appends will
+       use need it (EFV 08/15/2003) */
+    if (kt)
+      ip_cwk = splice_keyword_tree_list(kt->down,ip_cwk);
+    else {
+      /* Need to create an empty subtree DEFAULT so that this tree can
+         be descended into (EFV 08/15/2003) */
+      ip_push_keyword(strdup(&(keyword[1])));
+      ip_push_keyword(strdup("DEFAULT"));
+      /* this is now guaranteed to work */
+      kt = ip_descend_tree(ip_tree,&(keyword[1]));
+      ip_cwk = splice_keyword_tree_list(kt->down,ip_cwk);
+    }
     free_keyword_tree_list(old_cwk);
     }
   else {

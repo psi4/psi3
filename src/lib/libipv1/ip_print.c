@@ -1,8 +1,13 @@
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:26  evaleev
- * Initial revision
+ * Revision 1.2  2003/08/21 19:03:36  evaleev
+ * Fixed ip_cwk_add to add the keyword to the current keyword tree list even if
+ * no parsed input contains entries under the keyword. Subsequent ip_append is
+ * thus guaranteed to set the current keyword list properly.
  *
+/* Revision 1.1.1.1  2000/02/04 22:53:26  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.4  1994/06/02 02:22:28  seidl
 /* using new tmpl now...change .global to .gbl and .local to .lcl
 /*
@@ -14,6 +19,7 @@
  * */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <tmpl.h>
 #include "ip_types.h"
 #include "ip_global.h"
@@ -64,9 +70,12 @@ int indent;
       ip_warn("ip_print_tree: tree has both value and subtrees - can't print");
       }
 
+    /* Now empty trees are also allowed - do not print
+                                          this warning (EFV 08/15/2003)
     if (!(I->value || I->down)) {
       ip_warn("ip_print_tree: tree has neither value nor subtrees-impossible");
       }
+    */
 
     if (!I->keyword) {
       ip_warn("ip_print_tree: tree has no keyword - impossible");
@@ -85,6 +94,10 @@ int indent;
       ip_print_tree_(fp,I->down,indent + N_INDENT);
       ip_indent(fp,indent + N_INDENT);
       fprintf(fp,")\n");
+      }
+    /* Now empty trees are allowed (EFV 08/15/2003) */
+    else if (I->down == NULL && I->value == NULL) {
+      fprintf(fp,": ()\n");
       }
     else {
       fprintf(fp," = ");

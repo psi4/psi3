@@ -87,8 +87,11 @@ Clears current working keyword.  Used when initializing input or switching
 from one section to another (:DEFAULT and :CSCF to :INTCO, for instance).
 
 \celem{void ip\_cwk\_add(char *kwd);} \\
-Adds \celem{kwd} to current working keyword.  Allows parsing of 
-variables under that keyword out of the input file which has been read.
+Adds \celem{kwd} to the list of current working keywords.  Allows parsing of 
+variables under that keyword out of the input file (files) which has
+(have) been read or will be read in the future using \celem{ip\_append}.
+The keyword \celem{kwd} can only be removed from the list of current working
+keywords by purging the entire list using \celem{ip\_cwk\_clear}. 
 
 \begin{center} \file{ip\_data.c} \\ \end{center}
 
