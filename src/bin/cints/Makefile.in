@@ -49,25 +49,25 @@ endif
 # and form the list of the libraries. Remember that libderiv and libr12
 # depend on libint, and hence need to come first for GNU ld to work.
 #
-INTLIBS := -lint
+INTLIBS := -lPSI_int
 ifeq ($(findstring MP2R12,$(SUBDIRS)),MP2R12)
-  ifneq ($(findstring -lr12,$(INTLIBS)),-lr12)
-    INTLIBS := -lr12 $(INTLIBS)
+  ifneq ($(findstring -lPSI_r12,$(INTLIBS)),-lPSI_r12)
+    INTLIBS := -lPSI_r12 $(INTLIBS)
   endif
 endif
 ifeq ($(findstring R12_Ints,$(SUBDIRS)),R12_Ints)
-  ifneq ($(findstring -lr12,$(INTLIBS)),-lr12)
-    INTLIBS := -lr12 $(INTLIBS)
+  ifneq ($(findstring -lPSI_r12,$(INTLIBS)),-lPSI_r12)
+    INTLIBS := -lPSI_r12 $(INTLIBS)
   endif
 endif
 ifeq ($(findstring Default_Deriv1,$(SUBDIRS)),Default_Deriv1)
-  ifneq ($(findstring -lderiv,$(INTLIBS)),-lderiv)
-    INTLIBS := -lderiv $(INTLIBS)
+  ifneq ($(findstring -lPSI_deriv,$(INTLIBS)),-lPSI_deriv)
+    INTLIBS := -lPSI_deriv $(INTLIBS)
   endif
 endif
 ifeq ($(findstring Default_Deriv2,$(SUBDIRS)),Default_Deriv2)
-  ifneq ($(findstring -lderiv,$(INTLIBS)),-lderiv)
-    INTLIBS := -lderiv $(INTLIBS)
+  ifneq ($(findstring -lderiv,$(INTLIBS)),-lPSI_deriv)
+    INTLIBS := -lPSI_deriv $(INTLIBS)
   endif
 endif
 
@@ -98,8 +98,8 @@ CDEF += $(OPTIONS)
 LD = $(FC)
 LDLIBS += $(BLAS)
 ALLOC = 
-PSILIBS = -lfile30 $(INTLIBS) -lqt -liwl \
-          -lpsio -lciomr -lipv1 -lpthread 
+PSILIBS = -lPSI_file30 $(INTLIBS) -lPSI_qt -lPSI_iwl \
+          -lPSI_psio -lPSI_ciomr -lPSI_ipv1 -lpthread 
 
 CSRC = main.c parsing.c gprgid.c init_globals.c check_max_am.c $(DIRS:%=%/*.c)
 TRUESRC = $(notdir $(shell echo `ls $(CSRC:%=$(srcdir)/%)`))

@@ -5,7 +5,7 @@ include ../MakeVars
 
 LD = $(CC)
 
-PSILIBS = -lfile30 -lciomr -lipv1 -lmalloc
+PSILIBS = -lPSI_file30 -lPSI_ciomr -lPSI_ipv1 -lPSI_malloc
 
 TRUESRC = \
 ugeom.c \

@@ -4,7 +4,7 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-TARGET = $(top_objdir)/lib/libparse.a
+TARGET = $(top_objdir)/lib/libPSI_parse.a
 
 TRUESRC = charlib.F error.F fcount.F fio.F frdboo.F frdc.F frdc1.F frdc2.F \
           frdc3.F frdc4.F frdca1.F frdca2.F frdcm.F frdct2.F frdf.F frdf1.F \

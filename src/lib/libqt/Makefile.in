@@ -6,7 +6,7 @@ include ../MakeVars
 
 CDEF += -DBUFF=0 -DSITEDIR=\"$(datadir)\"
 
-TARGET = $(top_objdir)/lib/libqt.a
+TARGET = $(top_objdir)/lib/libPSI_qt.a
 
 CSRC = \
 blas_intfc.c       invert.c     ras_set.c       schmidt.c \

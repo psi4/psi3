@@ -11,7 +11,7 @@ endif
 
 LDLIBS += $(BLAS)
 
-PSILIBS = -ldpd -lqt -lfile30 -liwl -lciomr -lpsio -lipv1
+PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_file30 -lPSI_iwl -lPSI_ciomr -lPSI_psio -lPSI_ipv1
 
 
 CSRC = \

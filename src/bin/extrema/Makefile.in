@@ -8,7 +8,7 @@ VPATH += $(DIRS:%=$(srcdir)/%)
 
 LD = $(CXX)
 
-PSILIBS = -lfile30 -lciomr -lipv1 -lpsio 
+PSILIBS = -lPSI_file30 -lPSI_ciomr -lPSI_ipv1 -lPSI_psio 
 
 CXXSRC = extrema.cc small_functions.cc $(DIRS:%=%/*.cc)
 TRUESRC = $(notdir $(shell echo `ls $(CXXSRC:%=$(srcdir)/%)`))

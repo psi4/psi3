@@ -3,7 +3,7 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-PSILIBS = io.a alloc.a libparse.a libcoallc.a iomr.a libciomr.a
+PSILIBS = libPSI_io.a libPSI_alloc.a libPSI_parse.a libPSI_coallc.a libPSI_iomr.a libPSI_ciomr.a
 
 TRUESRC = \
 ampfx.F ampgf.F bendng.F deform.F dist.F fconst.F fentry.F gfmat.F gprgid.F irintr.F irintx.F linbnd.F moment.F mtxmpy.F normfx.F normgf.F ramanr.F ramanx.F strng.F symco.F thermo.F tors.F vibfx.F vibgf.F

@@ -12,7 +12,7 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-TARGET = $(top_objdir)/lib/libmalloc.a
+TARGET = $(top_objdir)/lib/libPSI_malloc.a
 
 CDEF += -Ddebug
 

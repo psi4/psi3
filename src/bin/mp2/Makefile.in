@@ -5,7 +5,7 @@ include ../MakeVars
 
 LD = $(CC)
 
-PSILIBS = -lfile30 -lqt -liwl -lpsio -lciomr -lipv1 -lmalloc
+PSILIBS = -lPSI_file30 -lPSI_qt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1 -lPSI_malloc
 
 CSRC = gprgid.c mp2.c energy.c
 

@@ -6,7 +6,7 @@ include ../MakeVars
 
 CDEF += -DBUFF=0 -DSITEDIR=\"$(datadir)\"
 
-TARGET = $(top_objdir)/lib/libiwl.a
+TARGET = $(top_objdir)/lib/libPSI_iwl.a
 
 TRUESRC = \
 buf_close.c   buf_rd_all_act.c      buf_wrt_arr2.c          buf_wrt_val_SI.c \

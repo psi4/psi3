@@ -5,7 +5,7 @@ include ../MakeVars
 
 LD = $(CC)
 
-PSILIBS = libciomr.a libipv1.a
+PSILIBS = libPSI_ciomr.a libPSI_ipv1.a
 
 CSRC = geom.c read11.c read_geom.c gprgid.c
 

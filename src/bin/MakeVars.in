@@ -92,6 +92,9 @@ vpath %.a $(top_objdir)/lib:$(libdir)
 #
 TARGET = $(shell basename `pwd`)
 
+# Force -lx to only look for libx.a.
+.LIBPATTERNS = lib%.a
+
 #
 # Initialize other variables.
 #

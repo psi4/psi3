@@ -6,7 +6,7 @@ include ../MakeVars
 
 CDEF += -DBUFF=0 -DSITEDIR=\"$(datadir)\"
 
-TARGET = $(top_objdir)/lib/libciomr.a
+TARGET = $(top_objdir)/lib/libPSI_ciomr.a
 
 TRUESRC = \
 add_arr.c \

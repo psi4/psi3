@@ -4,7 +4,7 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-TARGET = $(top_objdir)/lib/libcoallc.a
+TARGET = $(top_objdir)/lib/libPSI_coallc.a
 
 TRUESRC = \
   coallc.F cochec.F codump.F cofree.F coinit.F corllc.F cosize.F sizeof.F

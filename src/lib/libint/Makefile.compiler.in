@@ -3,7 +3,7 @@ include @top_objdir@/src/lib/libint/MakeVars
 
 LD = $(CC)
 LDFLAGS += -lm
-PSILIBS = libipv1.a
+PSILIBS = libPSI_ipv1.a
 vpath %.a $(top_objdir)/lib:$(libdir)
 
 BINOBJ = $(BUILD_SRC:%.c=%.o)

@@ -4,7 +4,7 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-TARGET = $(top_objdir)/lib/alloc.a
+TARGET = $(top_objdir)/lib/libPSI_alloc.a
 
 CSRC = allocate.c
 FSRC = fndcor.F fndcro.F

@@ -5,7 +5,7 @@ include ../MakeVars
 
 LD = $(CXX)
 
-PSILIBS = libqt.a libfile30.a libiwl.a -lpsio libciomr.a libipv1.a
+PSILIBS = libPSI_qt.a libPSI_file30.a libPSI_iwl.a -lPSI_psio libPSI_ciomr.a libPSI_ipv1.a
 
 CSRC = mvo.c gprgid.c
 

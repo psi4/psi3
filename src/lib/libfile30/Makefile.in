@@ -6,7 +6,7 @@ include ../MakeVars
 
 CDEF += -DBUFF=0 -DSITEDIR=\"$(datadir)\"
 
-TARGET = $(top_objdir)/lib/libfile30.a
+TARGET = $(top_objdir)/lib/libPSI_file30.a
 
 TRUESRC = \
 init.c \

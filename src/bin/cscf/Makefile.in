@@ -5,7 +5,7 @@ include ../MakeVars
 
 LD = $(CC)
 
-PSILIBS = -lfile30 -liwl -lpsio -lciomr -lipv1
+PSILIBS = -lPSI_file30 -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
 TRUESRC = \
 cscf.c cleanup.c dft_inputs.c diis.c dmat.c \

@@ -6,7 +6,7 @@ include ../MakeVars
 LD = $(F77)
 LDLIBS += $(BLAS)
 
-PSILIBS = -ldpd -lqt -lfile30 -liwl -lciomr -lpsio -lipv1 -lmalloc
+PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_file30 -lPSI_iwl -lPSI_ciomr -lPSI_psio -lPSI_ipv1 -lPSI_malloc
 
 CSRC = \
 DL2.c    L1.c       WefabL2.c  cclambda.c   get_moinfo.c    sort_amps.c \

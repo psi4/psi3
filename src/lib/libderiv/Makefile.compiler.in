@@ -2,7 +2,7 @@ include @top_objdir@/src/lib/MakeVars
 include @top_objdir@/src/lib/libderiv/MakeVars
 
 LD = $(CC)
-PSILIBS = libipv1.a
+PSILIBS = libPSI_ipv1.a
 vpath %.a $(top_objdir)/lib:$(libdir)
 
 BINOBJ = $(BUILD_SRC:%.c=%.o)

@@ -89,7 +89,7 @@ void get_parameters(void)
    Parameters.h0block_coupling = 0;
    Parameters.h0block_coupling_size = 0;
    Parameters.nprint = 20;
-   Parameters.hd_ave = HD_KAVE;
+   Parameters.hd_ave = EVANGELISTI;
    Parameters.hd_otf = TRUE;
    Parameters.nodfile = 0;
    Parameters.fzc = 1;
@@ -220,6 +220,9 @@ void get_parameters(void)
       } 
    else { /* no opentype keyword, as appropriate for PSI3 */
      errcod = ip_data("REFERENCE","%s",line1,0);
+     fprintf(outfile, "line1 = ");     
+     for (int ij = 0; ij<3; ij++) fprintf(outfile, "%1c", line1[ij]); 
+     fprintf(outfile,"\n");
      if (errcod == IPE_OK) {
        if (strcmp(line1, "RHF")==0) {
          Parameters.opentype = PARM_OPENTYPE_NONE;

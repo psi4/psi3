@@ -4,7 +4,7 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-TARGET = $(top_objdir)/lib/iomr.a
+TARGET = $(top_objdir)/lib/libPSI_iomr.a
 
 FSRC = \
 ambc.F ambct.F ambtc.F ambtct.F apbc.F apbct.F apbctt.F apbtc.F apbtct.F \

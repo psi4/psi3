@@ -3,7 +3,7 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-PSILIBS = io.a alloc.a libparse.a libcoallc.a iomr.a libciomr.a
+PSILIBS = libPSI_io.a libPSI_alloc.a libPSI_parse.a libPSI_coallc.a libPSI_iomr.a libPSI_ciomr.a
 
 #
 # there is no memory allocation for this program, linking allocate.o

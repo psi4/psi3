@@ -7,7 +7,7 @@ BINOBJ = gprgid.o rgeom.o
 
 ALLOC =
 
-PSILIBS = io.a alloc.a libparse.a libcoallc.a iomr.a
+PSILIBS = libPSI_io.a libPSI_alloc.a libPSI_parse.a libPSI_coallc.a libPSI_iomr.a
 
 include ../MakeRules
 

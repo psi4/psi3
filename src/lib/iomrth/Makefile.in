@@ -4,7 +4,7 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-TARGET = $(top_objdir)/lib/iomrth.a
+TARGET = $(top_objdir)/lib/libPSI_iomrth.a
 
 TRUESRC = dfunc.F dnode.F droot.F dsmit.F root4.F root5.F rt123.F
 

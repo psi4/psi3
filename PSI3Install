@@ -16,7 +16,7 @@ autoconf
 set distdir = `pwd`
 
 # installation directory
-set prefix = $HOME/psi3
+set prefix = $HOME/src/psi3.32
 
 # machine architecture
 set arch=`./host.sh`

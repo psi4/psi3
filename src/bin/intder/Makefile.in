@@ -3,7 +3,7 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-PSILIBS = alloc.a io.a libparse.a iomr.a libcoallc.a
+PSILIBS = libPSI_alloc.a libPSI_io.a libPSI_parse.a libPSI_iomr.a libPSI_coallc.a
 
 TRUESRC = \
 ahx2.F    fill4a.F  hijs6.F   machx.F       readsymm.F  vect1.F  xrow.F  \

@@ -6,7 +6,7 @@ include ../MakeVars
 
 CDEF += -DSITEDIR=\"$(datadir)\"
 
-TARGET = $(top_objdir)/lib/io.a
+TARGET = $(top_objdir)/lib/libPSI_io.a
 
 FSRC = c_to_f.F fortran.F iobuf.F iogtln.F rclose.F rfile.F rread.F rwrit.F \
        sread.F swrit.F wfile.F wreadw.F wwritw.F zfile.F
