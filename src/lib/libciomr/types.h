@@ -1,14 +1,17 @@
 
 /* $Id$ */
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:24  evaleev
- * Initial revision
+ * Revision 1.2  2001/08/08 14:31:25  sherrill
+ * removed some slashes in comments to make compiler shut up
  *
-/* Revision 2.6  1997/09/14 03:28:55  sherrill
-/* Added iosize_() to types.h so the function prototype could be passed to
-/* flen.c, which was getting the wrong return type.  Also reformatted some
-/* of my old code just a little to make it look a bit nicer.
-/*
+ * Revision 1.1.1.1  2000/02/04 22:53:24  evaleev
+ * Started PSI 3 repository
+ *
+ * Revision 2.6  1997/09/14 03:28:55  sherrill
+ * Added iosize_() to types.h so the function prototype could be passed to
+ * flen.c, which was getting the wrong return type.  Also reformatted some
+ * of my old code just a little to make it look a bit nicer.
+ *
  * Revision 2.5  1997/09/12  13:53:07  crawdad
  * Changing marco name from ULL to PSI_FPTR.
  *
