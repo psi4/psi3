@@ -43,7 +43,7 @@ void amp_write_T1(dpdfile2 *T1, int length, FILE *outfile)
     for(i=0; i < T1->params->rowtot[h]; i++) {
       I = T1->params->roworb[h][i];
       for(a=0; a < T1->params->coltot[h^Gia]; a++) {
-	A = T1->params->colorb[h][a];
+	A = T1->params->colorb[h^Gia][a];
 	value = T1->matrix[h][i][a];
 	for(m=0; m < length; m++) {
 	  if((fabs(value) - fabs(t1stack[m].value)) > 1e-12) {

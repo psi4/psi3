@@ -135,7 +135,10 @@ void exit_io(void)
   /* for(i=CC_MIN; i <= CC_MISC; i++) psio_close(i,1);
   for(i=CC_TMP; i <= CC_MAX; i++) psio_close(i,1);
   */
-  for(i=CC_MIN; i <= CC_MAX; i++) psio_close(i,1);
+  for(i=CC_MIN; i <= CC_DIIS_AMP; i++) psio_close(i,1);
+  for(i=CC_TMP; i <= CC_TMP11; i++) psio_close(i,0);
+  for(i=CC_TMP11+1; i <= CC_MAX; i++) psio_close(i,1);
+
   psio_done();
   tstop(outfile);
   psi_stop();
