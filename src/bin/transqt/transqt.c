@@ -418,16 +418,23 @@ void get_parameters(void)
 
   params.first_tmp_file = 150;
   errcod = ip_data("FIRST_TMP_FILE", "%d", &(params.first_tmp_file),0);
-  params.presort_file = 41;
-  errcod = ip_data("PRESORT_FILE", "%d", &(params.presort_file),0);
   params.opdm_in_file = PSIF_MO_OPDM;
   errcod = ip_data("OPDM_IN_FILE", "%d", &(params.opdm_in_file),0);
   params.opdm_out_file = PSIF_AO_OPDM;
   errcod = ip_data("OPDM_OUT_FILE", "%d", &(params.opdm_out_file),0);
   params.lag_in_file = PSIF_MO_LAG;
   errcod = ip_data("LAG_IN_FILE", "%d", &(params.lag_in_file),0);
+
+  params.presort_file = PSIF_SO_PRESORT;
+  errcod = ip_data("PRESORT_FILE", "%d", &(params.presort_file),0);
   params.keep_presort = 0;
   errcod = ip_boolean("KEEP_PRESORT", &(params.keep_presort),0);
+  /* Check for AO-Basis CC flag */
+  params.aobasis = 0;
+  errcod = ip_boolean("AO_BASIS", &(params.aobasis),0);
+  /* If AO-basis chosen, keep the presort file */
+  if(params.aobasis) params.keep_presort = 1;
+
   params.jfile = 91;
   errcod = ip_data("J_FILE","%d", &(params.jfile),0);
   params.keep_half_tf = 0;

@@ -221,7 +221,7 @@ void transform_two(void)
 	  pq = ioff[p] + q;
 	  
 	  zero_arr(P_block,src_ntri);
-	  iwl_buf_rd(&PBuff, pq, P_block, ioff, ioff, 0, (print_lvl>4), 
+	  iwl_buf_rd(&PBuff, pq, P_block, ioff, ioff, 0, (params.print_lvl > 4),
                      outfile);
 	  
 	  for (rsym=0; rsym < nirreps; rsym++) {

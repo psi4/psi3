@@ -61,6 +61,8 @@ struct Params {
   int check_C_orthonorm;        /* check orthonormality of C matrix?      */
   int qrhf;                     /* boolean for QRHF reference             */
   int ivo;                      /* boolean for test IVO's                 */
+
+  int aobasis;                  /* boolean for AO-Basis CC algorithms     */
 };
 
 /* Note that the current version does a reordering of orbital indices.
