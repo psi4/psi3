@@ -27,8 +27,8 @@ void parsing()
       opdm_format = (char *) malloc(7*sizeof(char));
       strcpy(opdm_format,"TRIANG");
     }
-          /* wfn = vbccd, detci, detcas */
-    if (strcmp(wfn, "CI")==0 || strcmp(wfn, "VBCCD")==0 ||
+          /* wfn = ooccd, detci, detcas */
+    if (strcmp(wfn, "CI")==0 || strcmp(wfn, "OOCCD")==0 ||
 	strcmp(wfn, "DETCI")==0 || strcmp(wfn, "DETCAS")==0) {
       read_opdm = 1;
       opdm_file = 76;

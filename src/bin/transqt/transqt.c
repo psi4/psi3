@@ -139,6 +139,7 @@ struct Params params;
 #define IOFF_MAX 32641
 
 /* Function prototypes */
+void check_quiet_mode(int argc, char *argv[]);
 void parse_cmdline(int argc, char *argv[]);
 void init_io();
 void title();
@@ -165,10 +166,11 @@ int check_C(int nso, int nmo, double **Cmat, double *S);
 main(int argc, char *argv[])
 {
   params.print_lvl = 1;
+  check_quiet_mode(argc,argv);
   init_io();
   title();
   get_parameters();
-  parse_cmdline(argc,argv);  /*--- Command-line arguments override input.dat ---*/
+  parse_cmdline(argc,argv);  /*--- Command-line args override input.dat ---*/
   print_parameters();
   get_moinfo();
   get_reorder_array();
@@ -201,6 +203,27 @@ main(int argc, char *argv[])
   cleanup();
   exit_io();
   exit(0);
+}
+
+
+/*
+** check_quiet_mode()
+**
+** See if the user has requested "quiet" mode.  If so, print *nothing*.
+** We have to do this very early in the program, obviously.
+** We'll check for -quiet again later in parse_cmdline() to make sure
+** the printing value wasn't changed by input.
+*/
+void check_quiet_mode(int argc, char *argv[])
+{
+
+   int i;
+
+   for (i=1; i<argc; i++) {
+       if (strcmp(argv[i], "-quiet") == 0) {
+           params.print_lvl = 0;
+         }
+   }
 }
 
 
