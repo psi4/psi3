@@ -162,9 +162,9 @@ psi: (
 
   % -------------------------------- DETCI Procedures
   % Procedures for the DETCI energy
-  DETCIEnergy = ($ints $scf $transqt $detci $done)
-  DETCIRHFEnergy = $DETCIEnergy
-  DETCIROHFEnergy = $DETCIEnergy
+  DETCIEnergy = ($ints $scf $transqt $detci)
+  DETCIRHFEnergy = ($DETCIEnergy $done)
+  DETCIROHFEnergy = ($DETCIEnergy $done)
   DETCIUHFEnergy = ERROR 
   DETCITwoConEnergy = ERROR
 
@@ -189,6 +189,13 @@ psi: (
   DETCIUHFFirstDisp  = ERROR
   DETCIROHFFirstDisp  = ERROR
   DETCITwoConFirstDisp  = ERROR
+
+  % Procedures for displacements of energies
+  DETCIEnergyDisp = (repeat $ndisp $ugeom $DETCIEnergy $rgeom end $done)
+  DETCIRHFEnergyDisp = $DETCIEnergyDisp
+  DETCIROHFEnergyDisp = $DETCIEnergyDisp
+  DETCIUHFEnergyDisp = ERROR
+  DETCITwoConEnergyDisp = ERROR
 
   % -------------------------------- DETCAS Procedures
   % Procedures for the DETCAS energy
