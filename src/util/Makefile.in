@@ -1,7 +1,7 @@
 
 .PHONY:	default all install depend clean targetclean
 
-subdirs = 
+subdirs = tocprint
 
 all: default
 
