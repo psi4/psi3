@@ -16,28 +16,18 @@ autoconf
 set distdir = `pwd`
 
 # installation directory
-set prefix = $HOME/src/psi3.32
+set prefix = /usr/local/psi3
 
 # machine architecture
 set arch=`./host.sh`
 
-mkdir $prefix
-cd $prefix
-mkdir $arch
-cd $arch
+# compilation directory
+set compdir = `pwd`/$arch
+
+mkdir $compdir
+cd $compdir
 $distdir/configure --prefix=$prefix --verbose
-make install_host
-cd include
-make install
-cd ../lib
-make install
-cd ../src/util
-make install
-cd ../lib
-make install
-cd ../bin
-make install
-cd ../doc
+make
 make install
 
 echo ... PSI3.0 installation complete ...
