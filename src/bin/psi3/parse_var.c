@@ -12,6 +12,7 @@
 
 extern FILE *outfile;
 extern void psi3_abort();
+extern int call_done;
 
 /*
  * This function will parse variable "name" and return an array
@@ -41,7 +42,14 @@ char **parse_var(int *nvars, int mxvars, char *name)
   if (errcod == IPE_NOT_AN_ARRAY) {
     /* vars[0] = (char *) malloc(MAX_VAR_SIZE*sizeof(char)); */
     /* ip_data(name,"%s",vars[0],0); */
-    ip_string(name,&(vars[0]),0);
+
+    /* Check if $done should not be run */
+    if ( !strcmp(name,"DONE") && call_done == 0 ) {
+      vars[0] = (char *) malloc(sizeof(char));
+      vars[0][0] = '\0';
+    }
+    else
+      ip_string(name,&(vars[0]),0);
     if (vars[0][0] != '$') {
       *nvars = 1;
       return(vars);
@@ -66,10 +74,18 @@ char **parse_var(int *nvars, int mxvars, char *name)
   for (idx=0; idx<count; idx++) {
     /* vars[num_vars] = (char *) malloc(MAX_VAR_SIZE*sizeof(char)); */
     /* errcod = ip_data(name,"%s",vars[num_vars],1,idx); */
-    errcod = ip_string(name,&(vars[num_vars]),1,idx);
-    if (errcod != IPE_OK) {
-      fprintf(outfile,"Error: can't read %s element %d\n", name, idx);
-      psi3_abort();
+
+    /* Check if $done should not be run */
+    if ( !strcmp(name,"DONE") && call_done == 0 ) {
+      vars[num_vars] = (char *) malloc(sizeof(char));
+      vars[num_vars][0] = '\0';
+    }
+    else {
+      errcod = ip_string(name,&(vars[num_vars]),1,idx);
+      if (errcod != IPE_OK) {
+	fprintf(outfile,"Error: can't read %s element %d\n", name, idx);
+	psi3_abort();
+      }
     }
     if (vars[num_vars][0] != '$') num_vars++;
     else { 

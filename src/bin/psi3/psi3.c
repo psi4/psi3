@@ -13,6 +13,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
 #include <psifiles.h>          /* where return values are */
@@ -45,7 +46,10 @@ int parse_cmdline(int argc, char *argv[]);
 int auto_input;
 /* boolean for checking input w/o running any programs */
 int auto_check;
-  
+/* boolean for whether called from dboc module (if yes - ignore jobtype=dboc) */
+int called_from_dboc;
+/* boolean for whether $done should be called */
+int call_done;
 
 int main(int argc, char *argv[])
 {
@@ -64,12 +68,13 @@ int main(int argc, char *argv[])
     OPT,              /* optimization */
     DISP,             /* displacements */
     FREQ,             /* frequencies */
-    SYMM_FREQ         /* frequencies for symmetric modes */
+    SYMM_FREQ,        /* frequencies for symmetric modes */
+    DBOC              /* compute Diagonal Born-Oppenheimer Correction (DBOC) by finite difference */
   } JobType;
 
 
   if (!parse_cmdline(argc,argv))
-    exit(1);
+    psi3_abort();
 
   fprintf(outfile, "\n\n The PSI3 Execution Driver \n");
 
@@ -170,6 +175,12 @@ int main(int argc, char *argv[])
   else if ((strcmp(calctyp,"SP")==0) || (strcmp(calctyp,"SINGLE-POINT")==0) ||
            (strcmp(calctyp,"SINGLE_POINT")==0) ||
 	   (strcmp(calctyp,"FORCE")==0)) JobType = SP;
+  else if ((strcmp(calctyp,"DBOC")==0)) {
+    if (called_from_dboc)
+      JobType = SP;
+    else
+      JobType = DBOC;
+  }
   else {
     fprintf(outfile,"Error: Unrecognized calculation type %s\n", calctyp);
     psi3_abort();
@@ -188,7 +199,11 @@ int main(int argc, char *argv[])
     else
       strcpy(dertyp,"NONE");
   }
-
+  /* DBOC doesn't need derivatives, only wave functions */
+  if (JobType == DBOC || (JobType == SP && called_from_dboc)) {
+    free(dertyp);
+    dertyp = strdup("NONE");
+  }
 
   /* make some basic checks on the requested computation type */
   if ((strcmp(reftyp,"RHF")!=0) && (strcmp(reftyp,"ROHF")!=0) &&
@@ -249,6 +264,9 @@ int main(int argc, char *argv[])
     else fprintf(outfile, "unrecognized-dertype");
     fprintf(outfile, " computation.\n");
   }
+  else if (JobType == DBOC) {
+    fprintf(outfile, "Diagonal Born-Oppenheimer Correction (DBOC) computation.\n");
+  }
   else { 
     fprintf(outfile, "calculation of unrecognized type.\n");
   }
@@ -264,12 +282,16 @@ int main(int argc, char *argv[])
     strcpy(proced,"");
     strcat(proced,wfn);
     strcat(proced,reftyp);
-    if (strcmp(dertyp,"NONE")==0) strcat(proced,"ENERGY");
-    else strcat(proced,dertyp);
-    if (JobType==OPT) strcat(proced,"OPT");
-    else if (JobType==FREQ) strcat(proced,"FREQ");
-    else if (JobType==SYMM_FREQ) strcat(proced,"SYMM_FREQ");
-    else if (JobType==DISP) strcat(proced,"DISP");
+    if (JobType == DBOC)
+      strcat(proced,"DBOC");
+    else {
+      if (strcmp(dertyp,"NONE")==0) strcat(proced,"ENERGY");
+      else strcat(proced,dertyp);
+      if (JobType==OPT) strcat(proced,"OPT");
+      else if (JobType==FREQ) strcat(proced,"FREQ");
+      else if (JobType==SYMM_FREQ) strcat(proced,"SYMM_FREQ");
+      else if (JobType==DISP) strcat(proced,"DISP");
+    }
 
     /* fprintf(outfile, "Calculation type string = %s\n", proced); */
 
@@ -307,8 +329,8 @@ int main(int argc, char *argv[])
       fprintf(outfile," %s %s\n",exec[i],exec[i+1]);
       i++;
     }
-    else 
-      fprintf(outfile," %s\n",exec[i]);
+    else if (strlen(exec[i]) != 0)
+	fprintf(outfile," %s\n",exec[i]);
   }
 
   fprintf(outfile,"\n");
@@ -331,7 +353,7 @@ int main(int argc, char *argv[])
 void psi3_abort(void)
 {
   fprintf(outfile,"\nPSI3 exiting.\n");
-  exit(0);
+  abort();
 }
 
 int execut(char **exec, int nexec, int depth)
@@ -354,8 +376,8 @@ int execut(char **exec, int nexec, int depth)
 
       /* exited with signal */
       if (WIFSIGNALED(errcod)) {
-        fprintf(outfile,"\nCommand was terminated with signal %d",
-                WTERMSIG(errcod));
+        fprintf(outfile,"\nCommand %s was terminated with signal %d",
+                exec[i], WTERMSIG(errcod));
 	psi3_abort();
       }
 
@@ -391,7 +413,7 @@ int execut(char **exec, int nexec, int depth)
       }
       /* if we got a 'command failed' failed flag */
       else if (errcod == PSI_RETURN_FAILURE) {
-        fprintf(outfile,"\nCommand has returned a fail status.");
+        fprintf(outfile,"\nCommand %s has returned a fail status.", exec[i]);
 	psi3_abort();
       }
     }
@@ -427,6 +449,8 @@ int parse_cmdline(int argc, char *argv[])
   /* defaults */
   auto_input = 1;
   auto_check = 0;
+  called_from_dboc = 0;
+  call_done = 1;
 
   /* process command-line arguments in sequence */
   for(i=1; i<argc; i++) {
@@ -437,6 +461,15 @@ int parse_cmdline(int argc, char *argv[])
     }
     else if(!strcmp(arg,"--check") || !strcmp(arg,"-c")) {
       auto_check = 1;
+    }
+    /* check if called by dboc, which means ignore jobtype=dboc keyword
+       and pretend jobtype=sp */
+    else if(!strcmp(arg,"--dboc") || !strcmp(arg,"-d")) {
+      called_from_dboc = 1;
+    }
+    /* check if $done command should not be executed */
+    else if(!strcmp(arg,"--messy") || !strcmp(arg,"-m")) {
+      call_done = 0;
     }
     else if ((!strcmp(arg,"-f") || !strcmp(arg,"-i")) && !found_if_p) {
       ifname = argv[++i];

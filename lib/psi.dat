@@ -39,6 +39,7 @@ psi: (
   findif_grad        = "optking --grad_save"
   findif_grad_energy = "optking --grad_energy"
   geomupdate  = ("optking --opt_step")
+  dboc        = "dboc"
 
   % CASSCF specific programs
   casscf     = "detcas"
@@ -157,6 +158,13 @@ psi: (
   SCFUHFResponse = ERROR
   SCFROHFResponse = ERROR
   SCFTwoConResponse = ERROR
+
+  % Procedure for an SCF DBOC computation
+  SCFDBOC = ($SCFEnergy $dboc)
+  SCFRHFDBOC = ($SCFRHFEnergy $dboc)
+  SCFROHFDBOC = ($SCFROHFEnergy $dboc)
+  SCFUHFDBOC = ($SCFUHFEnergy $dboc)
+  SCFTwoConDBOC = ERROR
 
   % -------------------------------- Direct SCF Procedures
   % Procedures for the Direct SCF energy
@@ -460,6 +468,13 @@ psi: (
   DETCIROHFEnergyOpt = $DETCIEnergyOpt 
   DETCIUHFEnergyOpt = ERROR
   DETCITwoConEnergyOpt = $DETCIEnergyOpt
+
+  % Procedures for CI DBOC computation
+  DETCIDBOC = ($DETCIEnergy $dboc)
+  DETCIRHFDBOC = ($DETCIRHFEnergy $dboc)
+  DETCIROHFDBOC = ($DETCIROHFEnergy $dboc)
+  DETCIUHFDBOC = ($DETCIUHFEnergy $dboc)
+  DETCITwoConDBOC = ($DETCITwoConEnergy $dboc)
 
   % -------------------------------- DETCAS Procedures
   % Procedures for the DETCAS energy
