@@ -120,13 +120,15 @@ int main(int argc, char *argv[])
     G_build(); /* uses CC_GLG, writes to CC_GLG */
   }
 
-  if (params.calc_xi && params.ref == 0) {
-    x_oe_intermediates_rhf();
-    x_te_intermediates_rhf();
-  }
-  else {
-    x_oe_intermediates(); /* recalculate these until density code gets spin-adapted */
-    x_te_intermediates(); /* recalculate these until density code gets spin-adapted */
+  if (!params.ground) {
+    if (params.calc_xi && params.ref == 0) {
+      x_oe_intermediates_rhf();
+      x_te_intermediates_rhf();
+    }
+    else {
+      x_oe_intermediates(); /* recalculate these until density code gets spin-adapted */
+      x_te_intermediates(); /* recalculate these until density code gets spin-adapted */
+    }
   }
 
   /* calculate intermediates not already on disk */
