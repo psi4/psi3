@@ -3959,7 +3959,7 @@ ARGON:"6311GP" = (
 %       * THE D-FUNCTIONS FOR THE GAUSSIAN 82 6311G BASIS
 %	VITALY A. RASSOLOV, MARK A. RATNER, JOHN A. POPLE,
 %	PAUL C. REDFERN, LARRY A. CURTISS.  
-%	J. Comp. Chem. Vol.22 No 9. 976-984.  2000
+%	J. Comp. Chem. Vol.22 No 9. 976-984.  2001
 %	
 %	Added on Jan 7, 2003
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -3971,9 +3971,9 @@ POTASSIUM:"631GD" = (
 (D	(0.179389    1.000000))
 	)
 CALCIUM:"631GD" = (
-(D      (9.029078    0.08747672)
-        (2.285045    0.3795635)
-        (0.663892    0.7180393))
+(D     (10.11067     0.08747672)
+        (2.558769    0.3795635)
+        (0.743420    0.7180393))
 (D	(0.200878    1.0000000))
 	)
 
@@ -4942,6 +4942,24 @@ CALCIUM:"631GD" = (
     (GET "631GP")
     (GET "STAR1")
   )
+  POTASSIUM:"6-31G*" = (
+    (GET "631GS")
+    (GET "631GP")
+    (GET "631GD")
+    (GET "STAR1")
+  )
+  CALCIUM:"6-31G*" = (
+    (GET "631GS")
+    (GET "631GP")
+    (GET "631GD")
+    (GET "STAR1")
+  )
+  COPPER:"6-31G*" = (
+    (GET "631GS")
+    (GET "631GP")
+    (GET "631GD")
+    (GET "STAR1")
+  )
   COPPER:"6-31G*" = (
     (GET "631GS")
     (GET "631GP")
@@ -5633,6 +5651,12 @@ CALCIUM:"631GD" = (
   )
   ARGON:"STAR1" = (
     (D (    0.850000000         1.0000000000))
+  )
+  POTASSIUM:"STAR1" = (
+    (D (    0.044850         1.0000000000))
+  )
+  CALCIUM:"STAR1" = (
+    (D (    0.050200         1.0000000000))
   )
   COPPER:"STAR1" = (
     (F (    0.800000000         1.0000000000))
