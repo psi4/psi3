@@ -157,6 +157,7 @@ typedef struct {
     int num_unique_shells;             /* number of symmetry unique shells */
     int num_so;                        /* number of SO's */
     int *atom_positions;               /* symmetry positions/stabilizers of atoms */
+    int **ict;                        /* transformation properties of nuclei under symmetry operations */
     int *ua2a;                         /* unique atom number to full atom number mapping array */
     int *us2s;                         /* unique shell number to full shell number mapping array */
     int *sopi;                         /* number of SO per irrep */
@@ -170,6 +171,7 @@ typedef struct {
     int **GnG;
     char *symlabel;                    /* symmetry label */
     char **irr_labels;                 /* labels of irreps */
+    double **cartrep;                  /* cartesian representation matrices */
     double **usotao;                   /* SO to (basis functions if puream && !make_fock, AO otherwise)
 					  transformation matrix */
     struct unique_shell_pair **us_pairs; /* unique shell symmetry info */

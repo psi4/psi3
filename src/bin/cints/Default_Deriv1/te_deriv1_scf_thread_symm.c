@@ -111,6 +111,12 @@ void *te_deriv1_scf_thread_symm(void *tnum_ptr)
 		      (BasisSet.max_num_prims*BasisSet.max_num_prims);
   init_libderiv(&Libderiv,BasisSet.max_am-1,max_num_prim_comb,max_class_size);
   FourInd = init_array(max_cart_class_size);
+  max_num_unique_quartets = Symmetry.max_stab_index*
+                            Symmetry.max_stab_index*
+                            Symmetry.max_stab_index;
+  sj_arr = (int *)malloc(sizeof(int)*max_num_unique_quartets);
+  sk_arr = (int *)malloc(sizeof(int)*max_num_unique_quartets);
+  sl_arr = (int *)malloc(sizeof(int)*max_num_unique_quartets);
 
   grad_te_local = block_matrix(Molecule.num_atoms,3);
 
@@ -123,14 +129,19 @@ void *te_deriv1_scf_thread_symm(void *tnum_ptr)
       for (uskk=0; uskk<=usii; uskk++)
 	for (usll=0; usll<= ((usii == uskk) ? usjj : uskk); usll++, quartet_index++){
 
+	  usi = usii;
+	  usj = usjj;
+	  usk = uskk;
+	  usl = usll;
+
 	  /*--- Decide if this thread will do this ---*/
 	  if ( quartet_index%UserOptions.num_threads != thread_num )
 	    continue;
 
-	  si = Symmetry.us2s[usi];
-	  sjj = Symmetry.us2s[usj];
-	  skk = Symmetry.us2s[usk];
-	  sll = Symmetry.us2s[usl];
+	  si = Symmetry.us2s[usii];
+	  sjj = Symmetry.us2s[usjj];
+	  skk = Symmetry.us2s[uskk];
+	  sll = Symmetry.us2s[usll];
 
 	  if (Symmetry.nirreps > 1) { /*--- Non-C1 symmetry case ---*/
 	      /*--- Generate the petite list of shell quadruplets using DCD approach of Davidson ---*/
@@ -210,6 +221,7 @@ void *te_deriv1_scf_thread_symm(void *tnum_ptr)
 	    Compute the nonredundant quartets
 	   ----------------------------------*/
 	  for(plquartet=0;plquartet<num_unique_quartets;plquartet++) {
+	    si = Symmetry.us2s[usii];
 	    sj = sj_arr[plquartet];
 	    sk = sk_arr[plquartet];
 	    sl = sl_arr[plquartet];
@@ -288,11 +300,11 @@ void *te_deriv1_scf_thread_symm(void *tnum_ptr)
 	      Figure out the prefactor
 	     -------------------------*/
 	    pfac = 1.0;
-	    if (si == sj)
+	    if (usi == usj)
 	      pfac *= 0.5;
-	    if (sk == sl)
+	    if (usk == usl)
 	      pfac *= 0.5;
-	    if (si == sk && sj == sl || si == sl && sj == sk)
+	    if (usi == usk && usj == usl || usi == usl && usj == usk)
 	      pfac *= 0.5;
 
 	    /*--- Compute data for primitive quartets here ---*/
@@ -308,11 +320,11 @@ void *te_deriv1_scf_thread_symm(void *tnum_ptr)
 #ifdef USE_TAYLOR_FM
 		    deriv1_quartet_data(&(Libderiv.PrimQuartet[num_prim_comb++]),
 					NULL, AB2, CD2,
-					sp_ij, sp_kl, am, pi, pj, pk, pl, n*pfac);
+					sp_ij, sp_kl, am, pi, pj, pk, pl, n*pfac*lambda_T);
 #else
 		    deriv1_quartet_data(&(Libderiv.PrimQuartet[num_prim_comb++]),
 					&fjt_table, AB2, CD2,
-					sp_ij, sp_kl, am, pi, pj, pk, pl, n*pfac);
+					sp_ij, sp_kl, am, pi, pj, pk, pl, n*pfac*lambda_T);
 #endif		    
 		  }
 		}
@@ -462,6 +474,9 @@ void *te_deriv1_scf_thread_symm(void *tnum_ptr)
   /*---------
     Clean-up
    ---------*/
+  free(sj_arr);
+  free(sk_arr);
+  free(sl_arr);
   free(FourInd);
   free_block(grad_te_local);
   free_libderiv(&Libderiv);

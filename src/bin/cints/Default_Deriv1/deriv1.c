@@ -15,6 +15,7 @@
 #include"oe_deriv1.h"
 #include"te_deriv1_scf.h"
 #include"te_deriv1_corr.h"
+#include"symmetrize_deriv1.h"
 #include"rot_inv.h"
 #include"file11.h"
 
@@ -39,6 +40,7 @@ void deriv1()
       te_deriv1_scf();
     else
       te_deriv1_corr();
+    symmetrize_deriv1();
     check_rot_inv();
     if (!strcmp(UserOptions.wfn,"SCF"))
       cleanup_moinfo();

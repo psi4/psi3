@@ -3,6 +3,7 @@
 #include<libipv1/ip_lib.h>
 #include<math.h>
 #include<libciomr/libciomr.h>
+#include<libchkpt/chkpt.h>
 
 #include"defines.h"
 #define EXTERN
@@ -57,12 +58,15 @@ void start_io()
   psio_init();
   /*--- Initialize libfile30 library ---*/
   file30_init();
+  /*--- Initialize libchkpt library ---*/
+  chkpt_init();
 
   return;
 }
 
 void stop_io()
 {
+  chkpt_close();
   file30_close();
   if(UserOptions.print_lvl)
     tstop(outfile);

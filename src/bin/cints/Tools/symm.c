@@ -3,6 +3,7 @@
 #include<libipv1/ip_lib.h>
 #include<libciomr/libciomr.h>
 #include<libfile30/file30.h>
+#include<libchkpt/chkpt.h>
 
 #include<libint/libint.h>
 #include"defines.h"
@@ -30,6 +31,8 @@ void init_symmetry()
   Symmetry.sopi = file30_rd_sopi();
   Symmetry.sym_oper = file30_rd_symoper();
   Symmetry.irr_labels = file30_rd_irr_labs();
+  Symmetry.ict = file30_rd_ict();
+  Symmetry.cartrep = chkpt_rd_cartrep();
 
   if (Symmetry.nirreps) {
   /* Symmetry.dp_table = */ init_dp_table();
@@ -58,6 +61,7 @@ void cleanup_symmetry()
   free_block(Symmetry.usotao);
   free(Symmetry.us2s);
   free(Symmetry.atom_positions);
+  free(Symmetry.cartrep);
 
   return;
 }

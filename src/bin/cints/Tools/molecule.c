@@ -43,10 +43,8 @@ void get_geometry()
    
    Molecule.centers = (struct coordinates *)malloc(sizeof(struct coordinates)*Molecule.num_atoms);
 
-   chkpt_init();
    g = chkpt_rd_geom();
    Z = chkpt_rd_zvals();
-   chkpt_close();
 
    /*--- move it into the appropriate struct form ---*/
    for (i=0; i<Molecule.num_atoms; i++){
