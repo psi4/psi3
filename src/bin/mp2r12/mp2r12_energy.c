@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <libciomr.h>
 #include <qt.h>
-#include <iwl.h>
+#include <psio.h>
 #include <math.h>
 #include <psifiles.h>
 #include "MOInfo.h"
@@ -17,23 +17,19 @@ static void make_arrays(double *evals, double **evals_docc, double **evals_virt,
 
 void mp2r12_energy(void)
 {
-
-  struct iwlbuf ERIBuff;                /* holds ERIs */
-  struct iwlbuf R12Buff;                /* holds r12 integrals */
-  struct iwlbuf R12TBuff;                /* holds [T1+T2,r12] integrals */
-
+  char ij_key_string[80], kl_key_string[80];
+  
   int ndocc, ndocc_act, nvirt, nmo, ndg, nte;
   int *ioff3;
   int *clsdpi, *frdocc, *orbspi;
   int nirreps;
-  int i,j,a,b,p,q,g,h;
-  int ij,kl,mn,ab,pq,ip,jp,jq,iq;
-  int ipjq,iqjp;
+  int i,j,k,l,a,b,p,q,g,h;
+  int ij,kl,mn,ab,pq,qp,pqtri,ip,jp,jq,iq;
   int ij_act;
-  int psym,isym,qsym,jsym,ijsym;
+  int psym,isym,qsym,jsym,ijsym,ksym,lsym,klsym;
   int asym,bsym;
-  int ifirst,jfirst,afirst,bfirst,pfirst,qfirst;
-  int ilast,jlast,alast,blast,plast,qlast;
+  int ifirst,jfirst,kfirst,lfirst,afirst,bfirst,pfirst,qfirst;
+  int ilast,jlast,klast,llast,alast,blast,plast,qlast;
   int ntri_docc, ntri_docc_act, ntri;
   int spin;
   int print_lvl,keep_integrals;
@@ -46,8 +42,8 @@ void mp2r12_energy(void)
   double mp2r12_energy = 0.0;
   double escf;
   double tolerance;
-  double *moints;
-  double **K, **R, **U, **V_full[2], **V[2], **T_full[2], **B[2];
+  double *xy_buf;
+  double *K_ij, *R_ij, *U_ij, **V_full[2], **V[2], **T_full[2], **B[2];
   double **Binv[2];
   double *pair_energy[2];               /* MP2 pair energies for each spin case */
   double *evals_docc, *evals_virt;
@@ -83,7 +79,10 @@ void mp2r12_energy(void)
   ntri = nmo*(nmo+1)/2;
   ndg = ndocc*nmo;
   nte = ndg*(ndg+1)/2;
-  moints = init_array(nte);
+  xy_buf = init_array(nmo*nmo);
+  K_ij = init_array(ntri);
+  R_ij = init_array(ntri);
+  U_ij = init_array(ntri);
   pair_energy[0] = init_array(ntri_docc);
   pair_energy[1] = init_array(ntri_docc);
   V_full[0]   = block_matrix(ntri_docc,ntri_docc);
@@ -120,12 +119,10 @@ void mp2r12_energy(void)
        array for K, R, and U since ijpq loops run over
        the same range every time
        */
-    memset(moints, 0, nte*sizeof(double));
-    iwl_buf_init(&ERIBuff, PSIF_MO_TEI, tolerance, 1, 1);
-    iwl_buf_rd_all_mp2r12a(&ERIBuff, moints, ioff3, ioff3, 1, ioff, (print_lvl > 3), outfile);
-    iwl_buf_close(&ERIBuff, keep_integrals);
-    K   = block_matrix(ntri_docc,ntri);
-    spin_pfac = 1.0 - 2.0*spin;
+    psio_open(PSIF_MO_TEI, PSIO_OPEN_OLD);
+    psio_tocprint(PSIF_MO_TEI, stdout);
+   psio_open(PSIF_MO_R12, PSIO_OPEN_OLD);
+    psio_open(PSIF_MO_R12T1, PSIO_OPEN_OLD);
     for(isym=0; isym < nirreps; isym++) {
       ifirst = focact[isym];
       ilast = locact[isym];
@@ -135,53 +132,26 @@ void mp2r12_energy(void)
 	  jfirst = focact[jsym];
 	  /*--- i >= j ---*/
 	  jlast = MIN(locact[jsym],i);
-	  for(j=jfirst; j <= jlast; j++) {
-	    ij = ioff[i]+j;
-	    for(psym=0; psym < nirreps; psym++) {
-	      pfirst = first[psym];
-	      plast = last[psym];
-	      for(p=pfirst; p <= plast; p++) {
-		ip = ioff3[i] + p;
-		jp = ioff3[j] + p;
-		/*--- We need p >= q -> if qsym > psym - continue ---*/
-		qsym = ijsym^psym;
-		if (qsym > psym)
-		  continue;
-		qfirst = first[qsym];
-		/*--- p >= q ---*/
-		qlast = MIN(last[qsym],p);
-		for(q=qfirst; q <= qlast; q++) {
-		  iq = ioff3[i] + q;
-		  jq = ioff3[j] + q;
-		  pq = ioff[p]+q;
-		  ipjq = INDEX(ip,jq);
-		  iqjp = INDEX(iq,jp);
-		  perm_pfac = (p == q) ? oosqrt2 : 1.0;
-		  perm_pfac *= (i == j) ? oosqrt2 : 1.0;
-		  K[ij][pq] = perm_pfac*(moints[ipjq] + spin_pfac*moints[iqjp]);
-		}
-	      }
-	    }
-	  }
-	}
-      }
-    }
-
-    /*---------------------------------------
-      Compute conventional MP2 pair energies
-     ---------------------------------------*/
-    spin_pfac = 2.0*spin + 1.0;
-    for(isym=0; isym < nirreps; isym++) {
-      ifirst = focact[isym];
-      ilast = locact[isym];
-      for(i=ifirst; i <= ilast; i++) {
-	for(jsym=0; jsym <= isym; jsym++) {
-	  jfirst = focact[jsym];
-	  /*--- i >= j ---*/
-	  jlast = MIN(locact[jsym],i);
-	  ijsym = isym^jsym;
 	  for(j=jfirst; j <= jlast; j++) {
 	    ij = INDEX(i,j);
+
+	    sprintf(ij_key_string,"Block_%d_x_%d_y",i,j);
+	    psio_read_entry(PSIF_MO_TEI, ij_key_string, (char *)xy_buf,
+			    nmo*nmo*sizeof(double));
+	    spin_pfac = 1.0 - 2.0*spin;
+	    for(p=0,pqtri=0; p < nmo; p++)
+	      for(q=0;q <= p; q++, pqtri++) {
+		perm_pfac = (p == q) ? oosqrt2 : 1.0;
+		perm_pfac *= (i == j) ? oosqrt2 : 1.0;
+		pq = p*nmo+q;
+		qp = q*nmo+p;
+		K_ij[pqtri] = perm_pfac*(xy_buf[pq] + spin_pfac*xy_buf[qp]);
+	      }
+
+	    /*---------------------------------------
+	      Compute conventional MP2 pair energies
+	     ---------------------------------------*/
+	    spin_pfac = 2.0*spin + 1.0;
 	    for(asym=0; asym < nirreps; asym++) {
 	      afirst = fvract[asym];
 	      alast = lvract[asym];
@@ -194,9 +164,9 @@ void mp2r12_energy(void)
 		blast = MIN(lvract[bsym],a);
 		for(b=bfirst; b <= blast; b++) {
 		  ab = INDEX(vir_Q2P[a],vir_Q2P[b]);
-		  pair_energy[spin][ij] += spin_pfac*K[ij][ab]*K[ij][ab]/
-			    (evals_docc[i] + evals_docc[j] -
-			     evals_virt[a] - evals_virt[b]);
+		  pair_energy[spin][ij] += spin_pfac*K_ij[ab]*K_ij[ab]/
+		    (evals_docc[i] + evals_docc[j] -
+		     evals_virt[a] - evals_virt[b]);
 		}
 	      }
 	    }
@@ -204,7 +174,6 @@ void mp2r12_energy(void)
 	}
       }
     }
-
     for(ij=0;ij<ntri_docc_act;ij++)
       mp2_energy += pair_energy[spin][act2full[ij]];
 
@@ -228,67 +197,13 @@ void mp2r12_energy(void)
 	  }
       fprintf(outfile,"\n");
     }
-    
-    memset(moints, 0, nte*sizeof(double));
-    iwl_buf_init(&R12Buff, PSIF_MO_R12, tolerance, 1, 1);
-    iwl_buf_rd_all_mp2r12a(&R12Buff, moints, ioff3, ioff3, 1, ioff, (print_lvl > 3), outfile);
-    iwl_buf_close(&R12Buff, keep_integrals);
-    R   = block_matrix(ntri_docc,ntri);
-    spin_pfac = 1.0 - 2.0*spin;
-    for(isym=0; isym < nirreps; isym++) {
-      ifirst = focact[isym];
-      ilast = locact[isym];
-      for(i=ifirst; i <= ilast; i++) {
-	for(jsym=0; jsym <= isym; jsym++) {
-	  ijsym = isym^jsym;
-	  jfirst = focact[jsym];
-	  /*--- i >= j ---*/
-	  jlast = MIN(locact[jsym],i);
-	  for(j=jfirst; j <= jlast; j++) {
-	    ij = ioff[i]+j;
-	    for(psym=0; psym < nirreps; psym++) {
-	      pfirst = first[psym];
-	      plast = last[psym];
-	      for(p=pfirst; p <= plast; p++) {
-		ip = ioff3[i] + p;
-		jp = ioff3[j] + p;
-		/*--- We need p >= q -> if qsym > psym - continue ---*/
-		qsym = ijsym^psym;
-		if (qsym > psym)
-		  continue;
-		qfirst = first[qsym];
-		/*--- p >= q ---*/
-		qlast = MIN(last[qsym],p);
-		for(q=qfirst; q <= qlast; q++) {
-		  iq = ioff3[i] + q;
-		  jq = ioff3[j] + q;
-		  pq = ioff[p]+q;
-		  ipjq = INDEX(ip,jq);
-		  iqjp = INDEX(iq,jp);
-		  perm_pfac = (p == q) ? oosqrt2 : 1.0;
-		  perm_pfac *= (i == j) ? oosqrt2 : 1.0;
-		  R[ij][pq] = perm_pfac*(moints[ipjq] + spin_pfac*moints[iqjp]);
-		}
-	      }
-	    }
-	  }
-	}
-      }
-    }
 
-    for(ij=0;ij<ntri_docc;ij++) {
-      V_full[spin][ij][ij] = 1.0;
+
+
+    for(p=0;p<ntri_docc;p++) {
+      V_full[spin][p][p] = 1.0;
+      T_full[spin][p][p] = 1.0;
     }
-    C_DGEMM('n','t',ntri_docc,ntri_docc,ntri,-1.0,
-	    R[0],ntri,K[0],ntri,1.0,V_full[spin][0],ntri_docc);
-    free_block(K);
-    
-    memset(moints, 0, nte*sizeof(double));
-    iwl_buf_init(&R12TBuff, PSIF_MO_R12T1, tolerance, 1, 1);
-    iwl_buf_rd_all_mp2r12a(&R12TBuff, moints, ioff3, ioff3, 0, ioff, (print_lvl > 3), outfile);
-    iwl_buf_close(&R12TBuff, keep_integrals);
-    U   = block_matrix(ntri_docc,ntri);
-    spin_pfac = 1.0 - 2.0*spin;
     for(isym=0; isym < nirreps; isym++) {
       ifirst = focact[isym];
       ilast = locact[isym];
@@ -299,47 +214,118 @@ void mp2r12_energy(void)
 	  /*--- i >= j ---*/
 	  jlast = MIN(locact[jsym],i);
 	  for(j=jfirst; j <= jlast; j++) {
-	    ij = ioff[i]+j;
-	    for(psym=0; psym < nirreps; psym++) {
-	      pfirst = first[psym];
-	      plast = last[psym];
-	      for(p=pfirst; p <= plast; p++) {
-		ip = ioff3[i] + p;
-		jp = ioff3[j] + p;
-		/*--- We need p >= q -> if qsym > psym - continue ---*/
-		qsym = ijsym^psym;
-		if (qsym > psym)
-		  continue;
-		qfirst = first[qsym];
-		/*--- p >= q ---*/
-		qlast = MIN(last[qsym],p);
-		for(q=qfirst; q <= qlast; q++) {
-		  iq = ioff3[i] + q;
-		  jq = ioff3[j] + q;
-		  pq = ioff[p]+q;
-		  ipjq = INDEX(ip,jq);
-		  iqjp = INDEX(iq,jp);
-		  perm_pfac = (p == q) ? oosqrt2 : 1.0;
-		  perm_pfac *= (i == j) ? oosqrt2 : 1.0;
-		  U[ij][pq] = perm_pfac*(moints[ipjq] + spin_pfac*moints[iqjp]);
+	    ij = INDEX(i,j);
+
+	    sprintf(ij_key_string,"Block_%d_x_%d_y",i,j);
+	    psio_read_entry(PSIF_MO_R12, ij_key_string, (char *)xy_buf,
+			    nmo*nmo*sizeof(double));
+	    spin_pfac = 1.0 - 2.0*spin;
+	    for(p=0,pqtri=0; p < nmo; p++)
+	      for(q=0;q <= p; q++, pqtri++) {
+		perm_pfac = (p == q) ? oosqrt2 : 1.0;
+		perm_pfac *= (i == j) ? oosqrt2 : 1.0;
+		pq = p*nmo+q;
+		qp = q*nmo+p;
+		R_ij[pqtri] = perm_pfac*(xy_buf[pq] + spin_pfac*xy_buf[qp]);
+	      }
+
+	    /*---------------------------
+	      Compute ij-row of V-matrix
+	     ---------------------------*/
+	    for(ksym=0; ksym < nirreps; ksym++) {
+	      kfirst = focact[ksym];
+	      klast = locact[ksym];
+	      for(k=kfirst; k <= klast; k++) {
+		for(lsym=0; lsym <= ksym; lsym++) {
+		  klsym = ksym^lsym;
+		  if (ijsym != klsym) continue;
+		  lfirst = focact[lsym];
+		  /*--- k >= l ---*/
+		  llast = MIN(locact[lsym],k);
+		  for(l=lfirst; l <= llast; l++) {
+		    kl = INDEX(k,l);
+		    
+		    sprintf(kl_key_string,"Block_%d_x_%d_y",k,l);
+		    psio_read_entry(PSIF_MO_TEI, kl_key_string, (char *)xy_buf,
+				    nmo*nmo*sizeof(double));
+		    spin_pfac = 1.0 - 2.0*spin;
+		    for(p=0,pqtri=0; p < nmo; p++)
+		      for(q=0;q <= p; q++, pqtri++) {
+			perm_pfac = (p == q) ? oosqrt2 : 1.0;
+			perm_pfac *= (k == l) ? oosqrt2 : 1.0;
+			pq = p*nmo+q;
+			qp = q*nmo+p;
+			K_ij[pqtri] = perm_pfac*(xy_buf[pq] + spin_pfac*xy_buf[qp]);
+		      }
+
+		    for(p=0,pqtri=0; p < nmo; p++)
+		      for(q=0;q <= p; q++, pqtri++) {
+			V_full[spin][ij][kl] -= R_ij[pqtri]*K_ij[pqtri];
+		      }
+
+
+		  }
 		}
 	      }
 	    }
+
+	    /*---------------------------
+	      Compute ij-row of T-matrix
+	     ---------------------------*/
+	    for(ksym=0; ksym < nirreps; ksym++) {
+	      kfirst = focact[ksym];
+	      klast = locact[ksym];
+	      for(k=kfirst; k <= klast; k++) {
+		for(lsym=0; lsym <= ksym; lsym++) {
+		  klsym = ksym^lsym;
+		  if (ijsym != klsym) continue;
+		  lfirst = focact[lsym];
+		  /*--- k >= l ---*/
+		  llast = MIN(locact[lsym],k);
+		  for(l=lfirst; l <= llast; l++) {
+		    kl = INDEX(k,l);
+		    
+		    sprintf(kl_key_string,"Block_%d_x_%d_y",k,l);
+		    psio_read_entry(PSIF_MO_R12T1, kl_key_string, (char *)xy_buf,
+				    nmo*nmo*sizeof(double));
+		    spin_pfac = 1.0 - 2.0*spin;
+		    for(p=0,pqtri=0; p < nmo; p++)
+		      for(q=0;q <= p; q++, pqtri++) {
+			perm_pfac = (p == q) ? oosqrt2 : 1.0;
+			perm_pfac *= (k == l) ? oosqrt2 : 1.0;
+			pq = p*nmo+q;
+			qp = q*nmo+p;
+			U_ij[pqtri] = -perm_pfac*(xy_buf[pq] + spin_pfac*xy_buf[qp]);
+		      }
+
+		    sprintf(kl_key_string,"Block_%d_x_%d_y",l,k);
+		    psio_read_entry(PSIF_MO_R12T1, kl_key_string, (char *)xy_buf,
+				    nmo*nmo*sizeof(double));
+		    spin_pfac = 1.0 - 2.0*spin;
+		    for(p=0,pqtri=0; p < nmo; p++)
+		      for(q=0;q <= p; q++, pqtri++) {
+			perm_pfac = (p == q) ? oosqrt2 : 1.0;
+			perm_pfac *= (k == l) ? oosqrt2 : 1.0;
+			pq = p*nmo+q;
+			qp = q*nmo+p;
+			U_ij[pqtri] -= perm_pfac*(xy_buf[qp] + spin_pfac*xy_buf[pq]);
+		      }
+
+		    for(p=0,pqtri=0; p < nmo; p++)
+		      for(q=0;q <= p; q++, pqtri++) {
+			T_full[spin][ij][kl] += R_ij[pqtri]*U_ij[pqtri];
+		      }
+
+
+		  }
+		}
+	      }
+	    }
+
 	  }
 	}
       }
     }
-    
-    /*-------------------------
-      Compute V and T matrices
-     -------------------------*/
-    for(ij=0;ij<ntri_docc;ij++) {
-      T_full[spin][ij][ij] = 1.0;
-    }
-    C_DGEMM('n','t',ntri_docc,ntri_docc,ntri,+1.0,          /* <- "+"-sign here because apparently I am missing it somewhere */
-	    R[0],ntri,U[0],ntri,1.0,T_full[spin][0],ntri_docc);
-    free_block(R);
-    free_block(U);
 
     if (ndocc != ndocc_act) {
       for(ij=0;ij<ntri_docc_act;ij++)
@@ -348,7 +334,6 @@ void mp2r12_energy(void)
     }
     else
       V[spin] = V_full[spin];
-    
     /*-----------------
       Compute B matrix
      -----------------*/
@@ -361,15 +346,13 @@ void mp2r12_energy(void)
 	      (spin == 0) ? "Singlet" : "Triplet");
       print_mat(V[spin],ntri_docc_act,ntri_docc_act,outfile);
       fprintf(outfile,"\n");
-
+      
       fprintf(outfile," %s B-matrix (the difference between the unit matrix and its\n ???? representation in this basis)::\n",
 	      (spin == 0) ? "Singlet" : "Triplet");
       print_mat(B[spin],ntri_docc_act,ntri_docc_act,outfile);
       fprintf(outfile,"\n");
     }
 
-    free_block(T_full[spin]);
-    
     /*-------------------------------
       Compute basis set completeness
      -------------------------------*/
@@ -429,8 +412,10 @@ void mp2r12_energy(void)
 
     fprintf(outfile,"\t%s -Tr(V)/Tr(B) = %lf\n\n",(spin == 0) ? "Singlet" : "Triplet",
 	    (-1.0)*VoBtrace[spin]);
-    
-    
+
+    psio_close(PSIF_MO_TEI, 1);
+    psio_close(PSIF_MO_R12, 1);
+    psio_close(PSIF_MO_R12T1, 1);
   }
 
   fprintf(outfile, "\n\tMBPT(2) Energy        = %20.10lf\n", mp2_energy);
@@ -438,7 +423,6 @@ void mp2r12_energy(void)
   fprintf(outfile,   "\tTotal Energy          = %20.10lf\n", escf+mp2r12_energy);
   fflush(outfile);
 
-  free(moints);
   if (ndocc_act != ndocc) {
     free_block(V[0]);
     free_block(V[1]);

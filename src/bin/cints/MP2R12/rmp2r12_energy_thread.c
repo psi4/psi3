@@ -5,7 +5,7 @@
 #include<stdlib.h>
 #include<libciomr.h>
 #include<qt.h>
-#include<iwl.h>
+#include<psio.h>
 #include<libint.h>
 #include<libr12.h>
 #include<pthread.h>
@@ -100,13 +100,12 @@ void *rmp2r12_energy_thread(void *tnum_ptr)
   extern int *act2fullQTS;                           /* Maps "active"(taking frozen core into account) QTS into "frozen" QTS index */
   extern int *ioff3;                                 /* returns pointers to the beginning of rows in a rectangular matrix */
 
-  struct iwlbuf MOBuf[3];
   struct shell_pair *sp_ij, *sp_kl;
   Libr12_t Libr12;
   double_array_t fjt_table;
 
   int ij, kl, ik, jl, ijkl;
-  int count, dum;
+  int count, dum, status;
   int te_type;
   int n, num[NUM_TE_TYPES];
   int total_am, am;
@@ -143,11 +142,13 @@ void *rmp2r12_energy_thread(void *tnum_ptr)
   int imin, imax, jmin;
   int max_bf_per_shell;
   int mo_i, mo_j, mo_x, mo_y;
-  int ix;
+  int ix, xy;
   int rs, qrs;
   int rs_offset, rsi_offset, rsp_offset;
   int num_prim_comb;
 
+  char ij_key_string[80];
+  int iounits[NUM_TE_TYPES];                  /* integrals file numbers */
   double AB2, CD2;
   double *raw_data[NUM_TE_TYPES];             /* pointers to the unnormalized target quartet of integrals */
   double *data[NUM_TE_TYPES];                 /* pointers to the transformed normalized target quartet of integrals */
@@ -164,6 +165,7 @@ void *rmp2r12_energy_thread(void *tnum_ptr)
 						 i runs over I-batch, x runs over all MOs */
   double *i_row;
   double **jy_buf;
+  double *xy_buf;
   double *jsi_row;
   double *jyi_row;
   double temp1,temp2,*iq_row,*ip_row;
@@ -172,7 +174,10 @@ void *rmp2r12_energy_thread(void *tnum_ptr)
   /*---------------
     Initialization
    ---------------*/
-  
+  iounits[0] = IOUnits.itapERI_MO;
+  iounits[1] = IOUnits.itapR12_MO;
+  iounits[2] = IOUnits.itapR12T2_MO;
+
   /*-------------------------
     Allocate data structures
    -------------------------*/
@@ -200,11 +205,6 @@ void *rmp2r12_energy_thread(void *tnum_ptr)
   init_libr12(&Libr12,max_num_prim_comb);
   init_fjt_table(&fjt_table);
 
-  /*---
-    Minimum number of I-batches - 
-    take sizes of rsiq_buf, jsix_buf, and
-    jyix_buf into account
-   ---*/
   num_i_per_ibatch = RMP2R12_Status.num_i_per_ibatch;
   num_ibatch = RMP2R12_Status.num_ibatch;
   ibatch_first = RMP2R12_Status.ibatch_first;
@@ -215,6 +215,7 @@ void *rmp2r12_energy_thread(void *tnum_ptr)
 				   max_bf_per_shell*max_bf_per_shell);
   }
   jy_buf = block_matrix(MOInfo.ndocc,MOInfo.num_mo);
+  xy_buf = init_array(MOInfo.num_mo*MOInfo.num_mo);
   scratch_buf = init_array(MAX(MOInfo.nactdocc*MOInfo.num_mo*
 			       num_i_per_ibatch*MOInfo.num_mo,
 			       MAX(max_cart_class_size,
@@ -249,7 +250,7 @@ void *rmp2r12_energy_thread(void *tnum_ptr)
 	  For 2-electron integrals of Hermitian operators it does not matter
 	  if we swap si and sj, or sk and sl, or even si,sj and sk,sl. It
 	  matters here though since [r12,T1] is non-Hermitian! What we want
-	  in the end are the integrals or [r12,T1] operator of this type:
+	  in the end are the integrals of the [r12,T1] operator of this type:
 	  (si sj|[r12,T1]|sk sl). If we have to swap bra and ket in the process
 	  we will end up with having to compute (sk sl|[r12,T2]|si sj) instead.
 	  Therefore if we have to swap bra and ket (swap_ij_kl = 1), then we
@@ -643,6 +644,13 @@ void *rmp2r12_energy_thread(void *tnum_ptr)
 		  r_abs = r + sr_fao;
 		  s_abs = s + ss_fao;
 		  for(mo_i=0;mo_i<ibatch_length;mo_i++,rsi_row+=MOInfo.num_mo) {
+		    /*-----------------------------------------------------
+		      The mo_j range for Hermitian operators needs to only
+		      be <= mo_i; it's just easier to transform [r12,T1]
+		      for all mo_j than transform both [r12,T1] and
+		      [r12,T2] (need less memory to do the same pass in
+		      the former case)
+		     -----------------------------------------------------*/
 		    for(mo_j=0;mo_j<MOInfo.nactdocc;mo_j++) {
 #if !LOCK_RS_SHELL
 		      pthread_mutex_lock(&rmp2r12_sindex_mutex[s_abs]);
@@ -741,105 +749,63 @@ void *rmp2r12_energy_thread(void *tnum_ptr)
     }
 #endif
 
-    /*--- Files are opened and closed each pass to ensure integrity of TOCs ---*/
-    if (ibatch != 0) {
-      iwl_buf_init(&MOBuf[0], IOUnits.itapERI_MO, toler, 1, 0);
-      iwl_buf_toend(&MOBuf[0]);
-      iwl_buf_init(&MOBuf[1], IOUnits.itapR12_MO, toler, 1, 0);
-      iwl_buf_toend(&MOBuf[1]);
-      iwl_buf_init(&MOBuf[2], IOUnits.itapR12T2_MO, toler, 1, 0);
-      iwl_buf_toend(&MOBuf[2]);
-    }
-    else {
-      iwl_buf_init(&MOBuf[0], IOUnits.itapERI_MO, toler, 0, 0);
-      iwl_buf_init(&MOBuf[1], IOUnits.itapR12_MO, toler, 0, 0);
-      iwl_buf_init(&MOBuf[2], IOUnits.itapR12T2_MO, toler, 0, 0);
-    }
+    /*--- Files are opened and closed each pass to ensure integrity of TOCs
+      if restart ever needed ---*/
+    for(te_type=0;te_type<NUM_TE_TYPES-1;te_type++)
+      psio_open(iounits[te_type], (ibatch != 0) ? PSIO_OPEN_OLD : PSIO_OPEN_NEW);
 
     /*--------------------------------------------------------
-      Dump all fully transformed integrals to disk including
-      the ones corresponding to non-active orbitals. That way
-      it's easy to recompute MP2-R12 energy with and without
-      frozen core later on. Zero out
+      Dump all fully transformed integrals to disk. Zero out
       non-symmetrical integrals (what's left of the Pitzer's
       equal contribution theorem in Abelian case).
      --------------------------------------------------------*/
     for(te_type=0;te_type<NUM_TE_TYPES-1;te_type++) {
 	/*--------------------------------------------------------------------
-	  Here's the tricky part. IWL routine wants all integrals with common
-	  first two indices (i and x) and the same symmetry (jsym) of the
-	  third index (j) in a buffer (jy_buf) of dimensions jrange x yrange,
-	  where jrange is the number of DOCCs in jsym block, and yrange is
-	  the number MOs in ysym block. We have to do some serious reindexing
-	  here since we transformed only the integrals with active DOCC i
-	  and j, etc.
+	  Write integrals out in num_mo by num_mo batches corresponding to
+	  each active ij pair.
 	 --------------------------------------------------------------------*/
 	for(mo_i=0;mo_i<ibatch_length;mo_i++) {
 	  i = act2fullQTS[mo_i+imin];       /*--- mo_i+imin is the index in QTS "active" indexing scheme
 					          we need i to be in QTS "full" indexing scheme, that's
-						  what IWL and MP2R12 code expect ---*/
+						  what the MP2R12 code expects ---*/
 	  isym = MOInfo.mo2symblk_occ[0][mo_i+imin];
-	  for(mo_x=0;mo_x<MOInfo.num_mo;mo_x++) {
-	    x = mo_x;    /*--- The second index is a Pitzer index, that's fine ---*/
-	    xsym = MOInfo.mo2symblk[x];
-	    /*--- Put all integrals with common i and x into a buffer ---*/
-	    for(jsym = 0;jsym<Symmetry.nirreps;jsym++) {
-	      /*--- if there're any active DOCCs in this jsym - proceed ---*/
-	      if (MOInfo.clsdpi[jsym] - MOInfo.frozen_docc[jsym] != 0) {
-		memset(jy_buf[0],0,MOInfo.ndocc*MOInfo.num_mo*sizeof(double));
-		for(mo_j=0;mo_j<MOInfo.nactdocc;mo_j++) {
-		  /*--- if this j is in jsym block - proceed ---*/
-		  if (jsym == MOInfo.mo2symblk_occ[0][mo_j+jmin]) {
-		    j = act2fullQTS[mo_j+jmin];    /*--- Again, get the "full" QTS index ---*/
-		    for(mo_y=0;mo_y<MOInfo.num_mo;mo_y++) {
-		      y = mo_y;                    /*--- Again, the Pitzer index here is what we need ---*/
-		      ysym = MOInfo.mo2symblk[y];
-		      /*--- Skip this indegral if it's non-totally symmetric -
-			    Pitzer's contribution theorem in Abelian case ---*/
-		      if ((isym ^ jsym) ^ (xsym ^ ysym))
-			continue;
-		      /*--- find the integral in ixjy_buf ---*/
-		      m = (((mo_j*MOInfo.num_mo + mo_y)*ibatch_length + mo_i)*MOInfo.num_mo + mo_x);
-		      /*--- Now, the buffer is expected to be of jrange by yrange, hence we
-			have to reindex to know where to put the integral. The required
-			indices are simply relative indices in symmetry blocks - so far we've had
-			absolute indices - hence have to subtract offsets
-			first[jsym] - the offset for jsym in Pitzer scheme
-			occ[fstocc[jsym]] - maps Pitzer offset index to "full" QTS DOCC index
-			first[ysym] - the offset for ysym in Pitzer scheme ---*/
-		      jy_buf[j-occ[first[jsym]]][y-first[ysym]] = jyix_buf[te_type][m];
-		    }
-		  }
-		}
-		iwl_buf_wrt_mp2r12a(&MOBuf[te_type], i, x, ioff3[i]+x,
-				    isym^xsym, jy_buf, jsym,
-				    fstocc, lstocc, first, last,
-				    occ,
-				    (te_type == 2) ? 0 : 1,    /*--- No bra-ket permutational symmetry
-								     for [r12,T2] integrals ---*/
-				    ioff3, 0, outfile);
+	  for(mo_j=0;mo_j<MOInfo.nactdocc;mo_j++) {
+	    jsym = MOInfo.mo2symblk_occ[0][mo_j+jmin];
+	    j = act2fullQTS[mo_j+jmin];    /*--- Again, get the "full" QTS index ---*/
+	    sprintf(ij_key_string,"Block_%d_x_%d_y",i,j);
+	    memset(xy_buf,0,MOInfo.num_mo*MOInfo.num_mo*sizeof(double));
+	    /*--- Put all integrals with common i and j into a buffer ---*/
+	    for(mo_x=0,xy=0;mo_x<MOInfo.num_mo;mo_x++) {
+	      x = mo_x;    /*--- The second index is a Pitzer index, that's fine ---*/
+	      xsym = MOInfo.mo2symblk[x];
+	      for(mo_y=0;mo_y<MOInfo.num_mo;mo_y++,xy++) {
+		y = mo_y;                    /*--- Again, the Pitzer index here is what we need ---*/
+		ysym = MOInfo.mo2symblk[y];
+		/*--- Skip this indegral if it's non-totally symmetric -
+		  Pitzer's contribution theorem in Abelian case ---*/
+		if ((isym ^ jsym) ^ (xsym ^ ysym))
+		  continue;
+		/*--- find the integral in ixjy_buf and put it in xy_buf ---*/
+		m = (((mo_j*MOInfo.num_mo + mo_y)*ibatch_length + mo_i)*MOInfo.num_mo + mo_x);
+		xy_buf[xy] = jyix_buf[te_type][m];
 	      }
 	    }
+	    psio_write_entry(iounits[te_type], ij_key_string, (char *)xy_buf,
+			     MOInfo.num_mo*MOInfo.num_mo*sizeof(double));
 	  }
 	}
+	psio_close(iounits[te_type], 1);
     }
 
     if (ibatch < num_ibatch-1)
       for(te_type=0;te_type<NUM_TE_TYPES-1;te_type++) {
-	iwl_buf_flush(&MOBuf[te_type], 0);
-	iwl_buf_close(&MOBuf[te_type], 1);
 	memset(jsix_buf[te_type],0,MOInfo.nactdocc*BasisSet.num_ao*ibatch_length*MOInfo.num_mo*sizeof(double));
 	memset(jyix_buf[te_type],0,MOInfo.nactdocc*MOInfo.num_mo*ibatch_length*MOInfo.num_mo*sizeof(double));
       }
-    else
-      for(te_type=0;te_type<NUM_TE_TYPES-1;te_type++) {
-	iwl_buf_flush(&MOBuf[te_type], 1);
-	iwl_buf_close(&MOBuf[te_type], 1);
-      }
     /*--- Done with the non-threaded part - wake everybody up and prepare for the next ibatch ---*/
-      RMP2R12_Status.num_arrived = 0;
-      pthread_cond_broadcast(&rmp2r12_energy_cond);
-      pthread_mutex_unlock(&rmp2r12_energy_mutex);
+    RMP2R12_Status.num_arrived = 0;
+    pthread_cond_broadcast(&rmp2r12_energy_cond);
+    pthread_mutex_unlock(&rmp2r12_energy_mutex);
     }
   } /* End of "I"-loop */
 
@@ -850,6 +816,7 @@ void *rmp2r12_energy_thread(void *tnum_ptr)
     free(rsiq_buf[te_type]);
     free(rsix_buf[te_type]);
   }
+  free(xy_buf);
   free_block(jy_buf);
   free_libr12(&Libr12);
   free_fjt_table(&fjt_table);
