@@ -45,8 +45,13 @@ int *chkpt_rd_us2s(void);
 void chkpt_wt_us2s(int *);
 
 int *chkpt_rd_orbspi(void);
+void chkpt_wt_orbspi(int *);
+
 int *chkpt_rd_clsdpi(void);
+void chkpt_wt_clsdpi(int *);
+
 int *chkpt_rd_openpi(void);
+void chkpt_wt_openpi(int *);
 
 int *chkpt_rd_sopi(void);
 void chkpt_wt_sopi(int *);
@@ -56,8 +61,6 @@ void chkpt_wt_label(char *);
 
 char **chkpt_rd_irr_labs(void);
 void chkpt_wt_irr_labs(char **);
-
-char **chkpt_rd_hfsym_labs(void);
 
 double *chkpt_rd_contr(void);
 void chkpt_wt_contr(double *);
@@ -153,11 +156,20 @@ void chkpt_wt_nprim(int);
 int chkpt_rd_natom(void);
 void chkpt_wt_natom(int);
 
-double *chkpt_rd_scf_packed(void);
-void chkpt_wt_scf_packed(double *scf_vector);
+double *chkpt_rd_evals(void);
+double *chkpt_rd_alpha_evals(void);
+double *chkpt_rd_beta_evals(void);
+void chkpt_wt_evals(double *);
+void chkpt_wt_alpha_evals(double *);
+void chkpt_wt_beta_evals(double *);
 
-double *chkpt_rd_alpha_scf_packed(void);
-void chkpt_wt_alpha_scf_packed(double *scf_vector);
+double **chkpt_rd_scf(void);
+double **chkpt_rd_alpha_scf(void);
+double **chkpt_rd_beta_scf(void);
+void chkpt_wt_scf(double **);
+void chkpt_wt_alpha_scf(double **);
+void chkpt_wt_beta_scf(double **);
 
-double *chkpt_rd_beta_scf_packed(void);
-void chkpt_wt_beta_scf_packed(double *scf_vector);
+double **chkpt_rd_scf_irrep(int);
+double **chkpt_rd_alpha_scf_irrep(int);
+double **chkpt_rd_beta_scf_irrep(int);

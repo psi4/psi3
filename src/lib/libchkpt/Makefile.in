@@ -25,7 +25,6 @@ sopi.c \
 clsdpi.c \
 openpi.c \
 irr_labs.c \
-hfsym_labs.c \
 label.c \
 zvals.c \
 ict.c \
@@ -65,6 +64,8 @@ nprim.c \
 natom.c \
 escf.c \
 etot.c \
+evals.c \
+scf.c \
 
 DEPENDINCLUDE = psio.h chkpt.h
 
