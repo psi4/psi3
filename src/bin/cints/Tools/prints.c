@@ -31,6 +31,8 @@ void print_scalars()
    if (UserOptions.print_lvl >= PRINT_OPTIONS) {
      fprintf(outfile,"\n  -OPTIONS:\n");
      fprintf(outfile,"    Print level                 = %d\n",UserOptions.print_lvl);
+     if (UserOptions.restart)
+       fprintf(outfile,"    Restart                     = yes\n");
      fprintf(outfile,"    Integral tolerance          = %1.0e\n",UserOptions.cutoff);
      fprintf(outfile,"    Max. memory to use          = %ld double words\n",UserOptions.max_memory);
      fprintf(outfile,"    Number of threads           = %d\n",UserOptions.num_threads);

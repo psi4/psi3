@@ -1,12 +1,13 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
 <HTML>
 <HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
 	<TITLE></TITLE>
-	<META NAME="GENERATOR" CONTENT="StarOffice/5.1 (Linux)">
+	<META NAME="GENERATOR" CONTENT="StarOffice/5.2 (Linux)">
 	<META NAME="AUTHOR" CONTENT="Edward Valeev">
 	<META NAME="CREATED" CONTENT="20000105;16103400">
 	<META NAME="CHANGEDBY" CONTENT="Edward Valeev">
-	<META NAME="CHANGED" CONTENT="20000620;22352400">
+	<META NAME="CHANGED" CONTENT="20001201;13264800">
 </HEAD>
 <BODY>
 <H3>Valid keywords</H3>
@@ -33,6 +34,15 @@
 	number of threads to use. Values higher than 1 are valid only while
 	computing the Fock matrix and HF gradients. In other modes <FONT COLOR="#ff0000">CINTS</FONT>
 	will use just 1 thread Default is 1</P>
+	<LI><P ALIGN=LEFT STYLE="font-weight: medium"><B>RESTART</B> -
+	whether to a calculation is a restart. At the moment, only the
+	direct MP2-R12/A integrals transformation can be restarted. For
+	example, if your MP2-R12/A transformation is done in several passes
+	and the calculation terminates after a few passes, you may restart
+	the calculation provided you preserved the transformed integrals
+	files (files 72, 79, and 80). To do that, set <B>RESTART</B>=true
+	and <B>RESTART_TASK</B>=<I>i</I> where <I>i</I><SPAN STYLE="font-style: normal">
+	is the number of the pass which wasn't completed.</SPAN></P>
 </UL>
 <P><SPAN STYLE="font-weight: medium">Other keywords, such as <B>WFN</B>,
 <B>REFERENCE</B>, and <B>DERTYPE</B> are also checked in certain

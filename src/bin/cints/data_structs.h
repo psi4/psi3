@@ -127,6 +127,8 @@ typedef struct {
 					  (may save some space) */
     int num_threads;                   /* Number of threads */
     enum scftype reftype;              /* Reference type, e.g. RHF, ROHF, UHF */
+    int restart;                       /* Is this a restart? */
+    int restart_task;                  /* Where to restart? */
 } UserOptions_t;
 
 typedef struct {

@@ -56,6 +56,14 @@ void parsing()
   if (UserOptions.num_threads < 1)
     UserOptions.num_threads = 1;
 
+  UserOptions.restart = 0;
+  errcod = ip_boolean("RESTART",&UserOptions.restart,0);
+  if (UserOptions.restart) {
+    errcod = ip_data("RESTART_TASK","%d",&UserOptions.restart_task,0);
+    if (UserOptions.restart_task < 0)
+      punt("RESTART_TASK < 0");
+  }
+
   return;
 
 }

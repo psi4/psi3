@@ -85,8 +85,7 @@ void rmp2r12_energy()
   static char *te_operator[] = { "1/r12", "r12", "[r12,T1]" };
   int total_te_count[NUM_TE_TYPES] = {0, 0, 0, 0};
   int ij, kl, ik, jl, ijkl;
-  int count ;
-  int dum;
+  int count, dum;
   int te_type;
   int n, num[NUM_TE_TYPES];
   int total_am, am;
@@ -119,7 +118,7 @@ void rmp2r12_energy()
   int np_i, np_j, np_k, np_l;
   int nr, ns, np, nq;
 
-  int num_ibatch, num_i_per_ibatch, ibatch, ibatch_length;
+  int num_ibatch, num_i_per_ibatch, ibatch, ibatch_first, ibatch_length;
   int imin, imax, jmin;
   int max_bf_per_shell;
   int mo_i, mo_j, mo_x, mo_y;
@@ -162,12 +161,9 @@ void rmp2r12_energy()
    ---------------*/
   init_fjt(BasisSet.max_am*4+1);
   init_libr12_base();
-  iwl_buf_init(&MOBuf[0], IOUnits.itapERI_MO, toler, 0, 0);
-  iwl_buf_init(&MOBuf[1], IOUnits.itapR12_MO, toler, 0, 0);
-  iwl_buf_init(&MOBuf[2], IOUnits.itapR12T2_MO, toler, 0, 0);
   make_transqt_arrays(&first, &last, &fstocc, &lstocc, &occ, &act2fullQTS, &ioff3);
   timer_init();
-  fprintf(outfile,"  Performing AO->MO integral tranformation for RHF MP2-R12/A via direct algorithm\n");
+  fprintf(outfile,"  Performing direct AO->MO integral tranformation for RHF MP2-R12/A energy\n");
   
   /*-------------------------
     Allocate data structures
@@ -224,14 +220,22 @@ void rmp2r12_energy()
   }
   ix_buf = block_matrix(num_i_per_ibatch,MOInfo.num_mo);
   jy_buf = block_matrix(MOInfo.ndocc,MOInfo.num_mo);
-  fprintf(outfile,"  Using %d %s\n\n",num_ibatch, (num_ibatch == 1) ? "pass" : "passes");
+  fprintf(outfile,"  Using total of %d %s\n",num_ibatch, (num_ibatch == 1) ? "pass" : "passes");
+  if (UserOptions.restart) {
+    fprintf(outfile,"  (Re)starting at pass %d\n\n",UserOptions.restart_task);
+    ibatch_first = UserOptions.restart_task;
+  }
+  else {
+    fprintf(outfile,"\n");
+    ibatch_first = 0;
+  }
 
 
 /*-----------------------------------
   generate all unique shell quartets
  -----------------------------------*/
   /*--- I-batch loop ---*/
-  for (ibatch=0;ibatch<num_ibatch;ibatch++) {
+  for (ibatch=ibatch_first;ibatch<num_ibatch;ibatch++) {
     imin = ibatch * num_i_per_ibatch + MOInfo.nfrdocc;
     imax = MIN( imin+num_i_per_ibatch , MOInfo.ndocc );
     ibatch_length = imax - imin;
@@ -723,6 +727,21 @@ void rmp2r12_energy()
       }
     }*/
 
+    /*--- Files are opened and closed each pass to ensure integrity of TOCs ---*/
+    if (ibatch != 0) {
+      iwl_buf_init(&MOBuf[0], IOUnits.itapERI_MO, toler, 1, 0);
+      iwl_buf_toend(&MOBuf[0]);
+      iwl_buf_init(&MOBuf[1], IOUnits.itapR12_MO, toler, 1, 0);
+      iwl_buf_toend(&MOBuf[1]);
+      iwl_buf_init(&MOBuf[2], IOUnits.itapR12T2_MO, toler, 1, 0);
+      iwl_buf_toend(&MOBuf[2]);
+    }
+    else {
+      iwl_buf_init(&MOBuf[0], IOUnits.itapERI_MO, toler, 0, 0);
+      iwl_buf_init(&MOBuf[1], IOUnits.itapR12_MO, toler, 0, 0);
+      iwl_buf_init(&MOBuf[2], IOUnits.itapR12T2_MO, toler, 0, 0);
+    }
+
     /*--------------------------------------------------------
       Dump all fully transformed integrals to disk including
       the ones corresponding to non-active orbitals. That way
@@ -798,19 +817,21 @@ void rmp2r12_energy()
 	}
     }
 
-    if (ibatch < num_ibatch-1) {
+    if (ibatch < num_ibatch-1)
       for(te_type=0;te_type<NUM_TE_TYPES-1;te_type++) {
+	iwl_buf_flush(&MOBuf[te_type], 0);
+	iwl_buf_close(&MOBuf[te_type], 1);
 	memset(jsix_buf[te_type],0,MOInfo.nactdocc*BasisSet.num_ao*ibatch_length*MOInfo.num_mo*sizeof(double));
 	memset(jyix_buf[te_type],0,MOInfo.nactdocc*MOInfo.num_mo*ibatch_length*MOInfo.num_mo*sizeof(double));
       }
-    }
-
+    else
+      for(te_type=0;te_type<NUM_TE_TYPES-1;te_type++) {
+	iwl_buf_flush(&MOBuf[te_type], 1);
+	iwl_buf_close(&MOBuf[te_type], 1);
+      }
+    
   } /* End of "I"-loop */
 
-  for(te_type=0;te_type<NUM_TE_TYPES-1;te_type++) {
-    iwl_buf_flush(&MOBuf[te_type], 1); 
-    iwl_buf_close(&MOBuf[te_type], 1);
-  }
   fprintf(outfile,"  Transformation finished. Use the MP2R12 program to compute MP2-R12 energy.\n");
   fprintf(outfile,"  WARNING: Please, use the same FROZEN_DOCC vector with MP2-R12 as here,\n");
   fprintf(outfile,"           otherwise you will get meaningless results.\n\n");
