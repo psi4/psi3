@@ -180,7 +180,7 @@ case $cpu in
   powerpc*)
     ARFLAGS="-X32_64 rv"
     ;;
-  default)
+  *)
     ARFLAGS="rv"
     ;;
 esac
@@ -189,7 +189,7 @@ case $cpu in
   powerpc*)
     LDFLAGS="-q64"
     ;;
-  default)
+  *)
     LDFLAGS=""
     ;;
 esac     
