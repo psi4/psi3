@@ -8,7 +8,7 @@
 
 void get_params()
 {
-  int errcod, iconv, ref;
+  int errcod, iconv, ref, forceit;
   char *cachetype = NULL;
   char *junk;
 
@@ -46,6 +46,9 @@ void get_params()
   errcod = ip_boolean("RESTART", &(params.restart),0);
   /* If the MO orbital phases are screwed up, don't restart */
   if(!moinfo.phase) params.restart = 0;
+  /* BUT, the user can force an override of the phase problem */
+  errcod = ip_boolean("FORCE_RESTART", &forceit,0);
+  if(forceit) params.restart = 1;
 
   fndcor(&(params.memory),infile,outfile);
 
