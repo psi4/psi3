@@ -64,6 +64,8 @@ typedef struct {
   dpdparams4 *params;
   dpdfile4 file;
   dpdshift4 shift;
+  int **row_offset;
+  int **col_offset;
   double ***matrix;
 } dpdbuf4;
 
