@@ -329,7 +329,7 @@ void free_char_matrix(char **mat, int A)
 
 void setup(int maxioff)
 {
-  int i;
+  int i, maxdf;
 
   if(maxioff<100) maxioff = 100;
   maxdf = 300;
