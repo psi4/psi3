@@ -6,7 +6,7 @@
 #define EXTERN
 #include "globals.h"
 
-void out_of_core(double ***F, double ***S, double ***B, double **A, double **AH)
+void out_of_core(double ***F, double ***S, double ***B, double **A)
 {
   int coord;
   int i, j, ij;
@@ -106,7 +106,6 @@ void out_of_core(double ***F, double ***S, double ***B, double **A, double **AH)
    * MO basis
    * B_a_pq = -S_a_rs*(2*(pq|rs)-(pr|qs))
    * A_pq,rs = -4*(pq|rs)+(pr|qs)+(ps|qr)
-   * AH_pq,rs = 4*(pq|rs)-(pr|qs)-(ps|qr)
    * 
   */
 
@@ -154,8 +153,6 @@ void out_of_core(double ***F, double ***S, double ***B, double **A, double **AH)
 	ii = INDEX(i,i);
 	
 	A[ii][ii] -= 2 * intvalue;
-	
-	AH[ii][ii] += 2 * intvalue;
       }  
      
       /* Case 2 : (pp|pq) */
@@ -181,9 +178,6 @@ void out_of_core(double ***F, double ***S, double ***B, double **A, double **AH)
 	
 	A[ii][il] -= 2 * intvalue;
 	A[il][ii] -= 2 * intvalue;
-	
-	AH[ii][il] += 2 * intvalue;
-	AH[il][ii] += 2 * intvalue;
       }  
         
       /* Case 3 : (pq|qq) */
@@ -209,9 +203,6 @@ void out_of_core(double ***F, double ***S, double ***B, double **A, double **AH)
         
 	A[ij][jj] -= 2 * intvalue;
 	A[jj][ij] -= 2 * intvalue;
-	
-        AH[ij][jj] += 2 * intvalue;
-        AH[jj][ij] += 2 * intvalue;
       } 
         
       /* Case 4 : (pp|qq) */
@@ -245,10 +236,6 @@ void out_of_core(double ***F, double ***S, double ***B, double **A, double **AH)
 	A[ik][ik] += 1 * intvalue;
 	A[ii][kk] -= 4 * intvalue;
 	A[kk][ii] -= 4 * intvalue;
-	
-	AH[ik][ik] -= 1 * intvalue;
-	AH[ii][kk] += 4 * intvalue;
-        AH[kk][ii] += 4 * intvalue;
       } 
 	    
       /* Case 5 : (pq|pq) */
@@ -282,10 +269,6 @@ void out_of_core(double ***F, double ***S, double ***B, double **A, double **AH)
 	A[ij][ij] -= 3 * intvalue;
 	A[ii][jj] += 2 * intvalue;
 	A[jj][ii] += 2 * intvalue;
-	
-	AH[ij][ij] += 3 * intvalue;
-	AH[ii][jj] -= 2 * intvalue;
-	AH[jj][ii] -= 2 * intvalue;
       }
       
       /* Case 6 : (pp|qr) */
@@ -343,12 +326,6 @@ void out_of_core(double ***F, double ***S, double ***B, double **A, double **AH)
 	A[kl][ii] -= 4 * intvalue;
 	A[ik][il] += 1 * intvalue;
         A[il][ik] += 1 * intvalue;
-				
-	
-	AH[ii][kl] += 4 * intvalue;
-	AH[kl][ii] += 4 * intvalue;
-	AH[ik][il] -= 1 * intvalue;
-	AH[il][ik] -= 1 * intvalue;
       }
      
       /* Case 7 : (pq|qr) */
@@ -406,12 +383,6 @@ void out_of_core(double ***F, double ***S, double ***B, double **A, double **AH)
 	A[jl][ij] -= 3 * intvalue;
 	A[il][jj] += 2 * intvalue;
 	A[jj][il] += 2 * intvalue;
-				
-	
-	AH[ij][jl] += 3 * intvalue;
-        AH[jl][ij] += 3 * intvalue;
-	AH[il][jj] -= 2 * intvalue;
-	AH[jj][il] -= 2 * intvalue;
       }
       
       /* Case 8 : (pq|pr) */
@@ -469,11 +440,6 @@ void out_of_core(double ***F, double ***S, double ***B, double **A, double **AH)
 	A[il][ij] -= 3 * intvalue;
 	A[ii][jl] += 2 * intvalue;
 	A[jl][ii] += 2 * intvalue;
-        
-        AH[ij][il] += 3 * intvalue;
-	AH[il][ij] += 3 * intvalue;
-	AH[ii][jl] -= 2 * intvalue;
-	AH[jl][ii] -= 2 * intvalue;
       }
 
       /* Case 9 : (pq|rq) */
@@ -531,12 +497,6 @@ void out_of_core(double ***F, double ***S, double ***B, double **A, double **AH)
 	A[kj][ij] -= 3 * intvalue;
 	A[jj][ik] += 2 * intvalue;
 	A[ik][jj] += 2 * intvalue;
-				
-	
-        AH[ij][kj] += 3 * intvalue;
-	AH[kj][ij] += 3 * intvalue;
-	AH[jj][ik] -= 2 * intvalue;
-        AH[ik][jj] -= 2 * intvalue;
       }
 
       /* Case 10 : (pq|rr) */
@@ -594,11 +554,6 @@ void out_of_core(double ***F, double ***S, double ***B, double **A, double **AH)
 	A[kk][ij] -= 4 * intvalue;
 	A[ik][jk] += 1 * intvalue;
 	A[jk][ik] += 1 * intvalue;
-        
-	AH[ij][kk] += 4 * intvalue;
-        AH[kk][ij] += 4 * intvalue;
-        AH[ik][jk] -= 1 * intvalue;
-        AH[jk][ik] -= 1 * intvalue;
       }
 
       /* Case 11 : (pq|rs) */
@@ -720,13 +675,6 @@ void out_of_core(double ***F, double ***S, double ***B, double **A, double **AH)
 	A[jl][ik] += 1 * intvalue;
 	A[il][jk] += 1 * intvalue;
 	A[jk][il] += 1 * intvalue;
-	
-	AH[ij][kl] += 4 * intvalue;
-	AH[kl][ij] += 4 * intvalue;
-	AH[ik][jl] -= 1 * intvalue;
-	AH[jl][ik] -= 1 * intvalue;
-	AH[il][jk] -= 1 * intvalue;
-	AH[jk][il] -= 1 * intvalue;
       }
 
     } /* end of for loop: buffer */
@@ -744,11 +692,6 @@ void out_of_core(double ***F, double ***S, double ***B, double **A, double **AH)
       print_mat(B[coord], nmo, nmo, outfile);
     }
   }
-  if (print_lvl > 5) {
-    fprintf(outfile, "AH(pq,rs) (MO): \n");
-    print_mat(AH, num_pq, num_pq, outfile);
-  }
-  
 }
 
 void sort_B(double ***B, double **Baijk)

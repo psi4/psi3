@@ -47,7 +47,7 @@ void init_ioff(void);
 void setup(void);
 void cleanup(void);
 
-void out_of_core(double ***, double ***, double ***, double **, double **);
+void out_of_core(double ***, double ***, double ***, double **);
 void sort_B(double ***, double **);
 void sort_A(double **, double **);
 void mohess(double **);
@@ -66,7 +66,6 @@ int main(int argc, char *argv[])
   double ***S;
   double ***B;
   double **A;
-  double **AH;
   double **Baijk;
   double **Aaibj;
   double ***UX;
@@ -96,9 +95,8 @@ int main(int argc, char *argv[])
   }
 
   A = block_matrix(num_pq,num_pq);
-  AH = block_matrix(num_pq,num_pq);
 
-  out_of_core(F, S, B, A, AH);
+  out_of_core(F, S, B, A);
 
   Baijk = block_matrix(natom*3, num_ai);
   
@@ -112,8 +110,6 @@ int main(int argc, char *argv[])
   Aaibj = block_matrix(num_ai,num_ai);
   
   sort_A(A, Aaibj);
-  
-  free_block(A);
   
   mohess(Aaibj);
   
@@ -134,7 +130,7 @@ int main(int argc, char *argv[])
   polarize(UF);
   
   hessian = block_matrix(natom*3, natom*3);
-  build_hessian(F, S, AH, UX, hessian);
+  build_hessian(F, S, A, UX, hessian);
   
   dipder = block_matrix(3, natom*3);
   build_dipder(UX, dipder);
@@ -143,7 +139,7 @@ int main(int argc, char *argv[])
   
   cleanup(); 
 
-  free_block(AH);
+  free_block(A);
   free_block(Baijk);
   free_block(Aaibj);
 
