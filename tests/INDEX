@@ -82,3 +82,4 @@ cc33: UHF-CC3/cc-pVDZ energy of H2O+.
 
 cc34: RHF-CCSD/cc-pVDZ energy of H2O partitioned into pair energy contributions.
 
+cc35: ROHF-C3/cc-pVDZ energy of H2O+.
