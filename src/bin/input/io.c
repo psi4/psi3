@@ -15,7 +15,8 @@ void start_io(int argc, char *argv[])
   int num_extra_args = 0;
   char **extra_args;
   extra_args = (char **) malloc(argc*sizeof(char *));
-  
+
+  keep_chkpt = 0;  
   read_chkpt = 0;
   chkpt_mos = 0;
   chkpt_geom = 0; 
@@ -65,6 +66,9 @@ void start_io(int argc, char *argv[])
     }
     else if (strcmp(argv[i], "--noreorient") == 0) {
       no_reorient = 1;
+    }
+    else if (strcmp(argv[i], "--keep_chkpt") == 0) {
+      keep_chkpt = 1;
     }
     else {
       extra_args[num_extra_args++] = argv[i];
