@@ -12,7 +12,7 @@
 # installing it.
 #
 
-default:: $(TARGET)
+default:: $(PSITARGET)
 
 all: default
 
@@ -47,11 +47,11 @@ install_inc::
 
 install_man::
 
-$(TARGET): $(BINOBJ) $(PSILIBS)
-	$(MKDIRS) `dirname $(TARGET)`
+$(PSITARGET): $(BINOBJ) $(PSILIBS)
+	$(MKDIRS) `dirname $(PSITARGET)`
 	$(LD) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
-install_target:: $(TARGET)
+install_target:: $(PSITARGET)
 	$(MKDIRS) $(bindir)
 	$(INSTALL_PROGRAM) $< $(bindir)
 
@@ -71,7 +71,7 @@ uclean:
 	-rm -f *.u
 
 targetclean:
-	-rm -f $(TARGET)
+	-rm -f $(PSITARGET)
 
 #
 # find dependencies
