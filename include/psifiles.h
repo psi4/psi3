@@ -14,8 +14,17 @@
 ** Created by C. David Sherrill on 29 April 1998
 */
 
-#define PSIF_SO_INTS        34
+#define PSIF_CHKPT          30
+
+#define PSIF_DSCF           31
+#define PSIF_SO_TEI         33
 #define PSIF_OEI            35
+#define PSIF_SO_R12         38
+#define PSIF_SO_R12T1       39
+#define PSIF_MO_R12         79
+#define PSIF_MO_R12T1       80
+#define PSIF_SO_PKSUPER1    92
+#define PSIF_SO_PKSUPER2    93
 
 #define PSIF_MO_TEI         72
 #define PSIF_MO_OPDM        73
@@ -24,18 +33,6 @@
 /* PSIF_AO_OPDM also contains AO Lagrangian */
 #define PSIF_AO_OPDM        76      
 #define PSIF_AO_TPDM        77
-
-/*--- 
-      New additions by Edward Valeev
-      Please, contact me if these conflict
-      with your definitions
- ---*/
-#define PSIF_DSCF           31
-#define PSIF_SO_TEI         33
-#define PSIF_SO_R12         38
-#define PSIF_SO_R12T1       39
-#define PSIF_MO_R12         79
-#define PSIF_MO_R12T1       80
 
 /*
 ** Additions for UHF-based transformations.
