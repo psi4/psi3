@@ -4,7 +4,7 @@
 #include "globals.h"
 
 /*
-** GIBJA(): Constructs the ibja block of the two-electron density
+** Gibja(): Constructs the ibja block of the two-electron density
 ** matrix, defined based on the energy contribution:
 **
 **  E(TWO) <-- sum_ibja G(ib,ja) <ja||ib>

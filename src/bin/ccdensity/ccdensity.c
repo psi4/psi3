@@ -40,7 +40,10 @@ void add_core(struct iwlbuf *OutBuf);
 void dump(struct iwlbuf *OutBuf);
 void kinetic(void);
 void probable(void);
-int **cacheprep(int level, int *cachefiles);
+int **cacheprep_rhf(int level, int *cachefiles);
+int **cacheprep_uhf(int level, int *cachefiles);
+void cachedone_rhf(int **cachelist);
+void cachedone_uhf(int **cachelist);
 
 int main(int argc, char *argv[])
 {
@@ -59,10 +62,21 @@ int main(int argc, char *argv[])
   }
 
   cachefiles = init_int_array(PSIO_MAXUNIT);
-  cachelist = cacheprep(params.cachelev, cachefiles);
 
-  dpd_init(0, moinfo.nirreps, params.memory, 0, cachefiles, cachelist, NULL, 
-           2, moinfo.occpi, moinfo.occ_sym, moinfo.virtpi, moinfo.vir_sym);
+  if(params.ref == 0 || params.ref == 1) { /** RHF or ROHF **/
+    cachelist = cacheprep_rhf(params.cachelev, cachefiles);
+
+    dpd_init(0, moinfo.nirreps, params.memory, 0, cachefiles, cachelist, NULL, 
+	     2, moinfo.occpi, moinfo.occ_sym, moinfo.virtpi, moinfo.vir_sym);
+
+  }
+  else if(params.ref == 2) { /** UHF **/
+    cachelist = cacheprep_uhf(params.cachelev, cachefiles);
+
+    dpd_init(0, moinfo.nirreps, params.memory, 0, cachefiles, 
+	     cachelist, NULL, 4, moinfo.aoccpi, moinfo.aocc_sym, moinfo.avirtpi,
+	     moinfo.avir_sym, moinfo.boccpi, moinfo.bocc_sym, moinfo.bvirtpi, moinfo.bvir_sym);
+  }
 
   onepdm();
   twopdm();
@@ -73,13 +87,13 @@ int main(int argc, char *argv[])
   /*
 
   dpd_init(1, moinfo.nirreps, params.memory, 2, frozen.occpi, frozen.occ_sym,
-	   frozen.virtpi, frozen.vir_sym);
-	   */
+  frozen.virtpi, frozen.vir_sym);
+  */
 
-/*  if(moinfo.nfzc || moinfo.nfzv) {
+  /*  if(moinfo.nfzc || moinfo.nfzv) {
       resort_gamma();
       resort_tei();
-    } */
+      } */
 
   lag();
   build_X();
@@ -87,8 +101,8 @@ int main(int argc, char *argv[])
   build_Z();
 
   /*  
-  dpd_close(0);
-  dpd_close(1);
+      dpd_close(0);
+      dpd_close(1);
   */
 
 
@@ -108,6 +122,10 @@ int main(int argc, char *argv[])
   iwl_buf_close(&OutBuf, 1);
 
   dpd_close(0);
+
+  if(params.ref == 2) cachedone_uhf(cachelist);
+  else cachedone_rhf(cachelist);
+  free(cachefiles);
 
   cleanup(); 
   exit_io();
