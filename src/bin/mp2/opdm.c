@@ -8,8 +8,8 @@ void uhf_opdm(void);
 
 void opdm(void)
 {
-  if(params.ref == 0) return(rhf_opdm());
-  else if(params.ref == 2) return(uhf_opdm());
+  if(params.ref == 0) rhf_opdm();
+  else if(params.ref == 2) uhf_opdm();
 }
 
 void rhf_opdm(void)

@@ -8,8 +8,8 @@ void uhf_lag(void);
 
 void lag(void)
 {
-  if(params.ref == 0) return(rhf_lag());
-  else if(params.ref == 2) return(uhf_lag());
+  if(params.ref == 0) rhf_lag();
+  else if(params.ref == 2) uhf_lag();
 }
 
 void rhf_lag(void)
