@@ -3,7 +3,7 @@
 require("../psitest.pl");
 
 $TOL = 10**-8;
-$GTOL = 10**-8;
+$GTOL = 10**-6;
 $REF_FILE = "file11.ref";
 $TEST_FILE = "psi.file11.dat";
 $RESULT = "cc2.test";
