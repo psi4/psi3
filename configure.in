@@ -736,6 +736,7 @@ AC_OUTPUT(include/psiconfig.h include/cfuncs.h include/ffuncs.h
           src/bin/contour3d/Makefile
           src/bin/cphf/Makefile
           src/bin/normco/Makefile
+          src/bin/intder/Makefile
           src/bin/intder95/Makefile
           src/bin/intdif/Makefile
           src/bin/makepk/Makefile
