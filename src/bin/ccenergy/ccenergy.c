@@ -70,15 +70,22 @@ int main(int argc, char *argv[])
  
   cachefiles = init_int_array(PSIO_MAXUNIT);
 
-  if(params.ref == 2) {
+  if(params.ref == 2) { /** UHF **/
     cachelist = cacheprep_uhf(params.cachelev, cachefiles);
 
     dpd_init(0, moinfo.nirreps, params.memory, 0, cachefiles, 
 	     cachelist, NULL, 4, moinfo.aoccpi, moinfo.aocc_sym, moinfo.avirtpi,
 	     moinfo.avir_sym, moinfo.boccpi, moinfo.bocc_sym, moinfo.bvirtpi, moinfo.bvir_sym);
 
+    if(params.aobasis) { /* Set up new DPD's for AO-basis algorithm */
+      dpd_init(1, moinfo.nirreps, params.memory, 0, cachefiles, cachelist, NULL, 
+               4, moinfo.aoccpi, moinfo.aocc_sym, moinfo.orbspi, moinfo.orbsym, 
+	       moinfo.boccpi, moinfo.bocc_sym, moinfo.orbspi, moinfo.orbsym);
+      dpd_set_default(0);
+    }
+
   }
-  else {
+  else { /** RHF or ROHF **/
     cachelist = cacheprep_rhf(params.cachelev, cachefiles);
 
     priority = priority_list();
@@ -89,7 +96,7 @@ int main(int argc, char *argv[])
    
     if(params.aobasis) { /* Set up new DPD for AO-basis algorithm */
       dpd_init(1, moinfo.nirreps, params.memory, 0, cachefiles, cachelist, NULL, 
-	       2, moinfo.occpi, moinfo.orbsym, moinfo.orbspi, moinfo.orbsym);
+	       2, moinfo.occpi, moinfo.occ_sym, moinfo.orbspi, moinfo.orbsym);
       dpd_set_default(0);
     }
 
@@ -106,7 +113,7 @@ int main(int argc, char *argv[])
   moinfo.t1diag = diagnostic();
   moinfo.d1diag = d1diag();
   update();
-  if(params.ref == 2) params.maxiter = 0;
+  /*  if(params.ref == 2) params.maxiter = 0; */
   for(moinfo.iter=1; moinfo.iter <= params.maxiter; moinfo.iter++) {
 
     timer_on("sort_amps");
@@ -125,9 +132,8 @@ int main(int argc, char *argv[])
     t1_build();
     timer_off("T1 Build");
 
-      
-    Wmnij_build();
     Z_build();
+    Wmnij_build();
 
     timer_on("T2 Build");
     t2_build();

@@ -90,15 +90,11 @@ void init_amps(void)
   else if(params.ref == 2) { /*** UHF ***/
 
     dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
-    dpd_file2_mat_init(&tIA);
-    dpd_file2_mat_wrt(&tIA);
-    dpd_file2_mat_close(&tIA);
+    dpd_file2_scm(&tIA, 0);
     dpd_file2_close(&tIA);
 
     dpd_file2_init(&tIA, CC_OEI, 0, 2, 3, "tia");
-    dpd_file2_mat_init(&tIA);
-    dpd_file2_mat_wrt(&tIA);
-    dpd_file2_mat_close(&tIA);
+    dpd_file2_scm(&tIA, 0);
     dpd_file2_close(&tIA);
 
     dpd_buf4_init(&D, CC_DINTS, 0, 2, 7, 2, 7, 0, "D <IJ||AB> (I>J,A>B)");

@@ -58,7 +58,7 @@ void get_params()
     }
     free(cachetype);
   }
-  if(params.ref == 2) /* No LRU cacheing yet for UHF references */
+  if(params.ref == 2) /* No LOW cacheing yet for UHF references */
     params.cachetype = 0;
 
   params.diis = 1;

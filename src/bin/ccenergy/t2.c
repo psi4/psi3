@@ -10,7 +10,7 @@ void BT2_AO(void);
 void t2_build(void)
 {
   DT2();
-  FaetT2(); 
+  FaetT2();
   FmitT2();
 
   timer_on("WmnijT2", outfile);

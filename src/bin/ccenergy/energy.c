@@ -88,6 +88,7 @@ double uhf_energy(void)
 {
   double E2AA, E2BB, E2AB;
   dpdbuf4 T2, D;
+  dpdfile2 T1;
 
   dpd_buf4_init(&T2, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauIJAB");
   dpd_buf4_init(&D, CC_DINTS, 0, 2, 7, 2, 7, 0, "D <IJ||AB> (I>J,A>B)");
@@ -106,6 +107,12 @@ double uhf_energy(void)
   E2AB = dpd_buf4_dot(&D, &T2);
   dpd_buf4_close(&D);
   dpd_buf4_close(&T2);
+
+/*
+  fprintf(outfile, "Two AA Energy = %20.14f\n", E2AA);
+  fprintf(outfile, "Two BB Energy = %20.14f\n", E2BB);
+  fprintf(outfile, "Two AB Energy = %20.14f\n", E2AB);
+*/
 
   return(E2AA + E2BB + E2AB);
 }

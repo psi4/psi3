@@ -201,7 +201,7 @@ void Fae_build(void)
     dpd_file2_init(&tia, CC_OEI, 0, 2, 3, "tia");
 
     dpd_buf4_init(&F, CC_FINTS, 0, 20, 5, 20, 5, 1, "F <IA|BC>");
-    dpd_dot13(&tIA, &F, &FAE, 0, 0, 1, 1);
+    dpd_dot13(&tIA, &F, &FAE, 0, 0, 1, 0);
     dpd_buf4_close(&F);
 
     dpd_buf4_init(&F, CC_FINTS, 0, 27, 29, 27, 29, 0, "F <iA|bC>");
@@ -209,7 +209,7 @@ void Fae_build(void)
     dpd_buf4_close(&F);
 
     dpd_buf4_init(&F, CC_FINTS, 0, 30, 15, 30, 15, 1, "F <ia|bc>");
-    dpd_dot13(&tia, &F, &Fae, 0, 0, 1, 1);
+    dpd_dot13(&tia, &F, &Fae, 0, 0, 1, 0);
     dpd_buf4_close(&F);
 
     dpd_buf4_init(&F, CC_FINTS, 0, 24, 28, 24, 28, 0, "F <Ia|Bc>");
@@ -227,7 +227,7 @@ void Fae_build(void)
 
     dpd_buf4_init(&D, CC_DINTS, 0, 22, 28, 22, 28, 0, "D <Ij|Ab>");
     dpd_buf4_init(&taut, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tautIjAb");
-    dpd_contract442(&D, &taut, &FAE, 2, 2, -1, 1);
+    dpd_contract442(&taut, &D, &FAE, 2, 2, -1, 1);
     dpd_buf4_close(&taut);
     dpd_buf4_close(&D);
 
@@ -239,12 +239,34 @@ void Fae_build(void)
 
     dpd_buf4_init(&D, CC_DINTS, 0, 22, 28, 22, 28, 0, "D <Ij|Ab>");
     dpd_buf4_init(&taut, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tautIjAb");
-    dpd_contract442(&D, &taut, &Fae, 3, 3, -1, 1);
+    dpd_contract442(&taut, &D, &Fae, 3, 3, -1, 1);
     dpd_buf4_close(&taut);
     dpd_buf4_close(&D);
+
+    /* Build the tilde intermediates */
+    dpd_file2_copy(&FAE, CC_OEI, "FAEt");
+    dpd_file2_copy(&Fae, CC_OEI, "Faet");
 
     dpd_file2_close(&FAE);
     dpd_file2_close(&Fae);
 
+    dpd_file2_init(&FAEt, CC_OEI, 0, 1, 1, "FAEt");
+    dpd_file2_init(&Faet, CC_OEI, 0, 3, 3, "Faet");
+
+    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+    dpd_file2_init(&FME, CC_OEI, 0, 0, 1, "FME");
+    dpd_contract222(&tIA, &FME, &FAEt, 1, 1, -0.5, 1);
+    dpd_file2_close(&tIA);
+    dpd_file2_close(&FME);
+  
+    dpd_file2_init(&tia, CC_OEI, 0, 2, 3, "tia");
+    dpd_file2_init(&Fme, CC_OEI, 0, 2, 3, "Fme");
+    dpd_contract222(&tia, &Fme, &Faet, 1, 1, -0.5, 1);
+    dpd_file2_close(&tia);
+    dpd_file2_close(&Fme);
+
+
+    dpd_file2_close(&FAEt);
+    dpd_file2_close(&Faet); 
   }
 }

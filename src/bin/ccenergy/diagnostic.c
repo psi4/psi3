@@ -114,9 +114,7 @@ double diagnostic(void)
     }
 
 
-    t1diag_a /= num_elec_a;
-    t1diag_b /= num_elec_b;
-    t1diag = sqrt(t1diag_a + t1diag_b);
+    t1diag = sqrt((t1diag_a + t1diag_b)/(num_elec_a + num_elec_b));
 
     dpd_file2_mat_close(&T1A);
     dpd_file2_mat_close(&T1B);

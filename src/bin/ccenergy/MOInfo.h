@@ -34,4 +34,6 @@ struct MOInfo {
   double t1diag;         /* Standard open- or closed-shell T1 diagnostic */
   double d1diag;         /* Janssen and Nielsen's D1 Diagnostic */
   double ***C;           /* Virtual orbital transformation matrix (for AO-basis B terms) */
+  double ***Ca;          /* UHF alpha virtual orbital transformation matrix (for AO-basis B terms) */
+  double ***Cb;          /* UHF beta virtual orbital transformation matrix (for AO-basis B terms) */
 };

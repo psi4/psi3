@@ -69,7 +69,7 @@ void Fme_build(void)
     dpd_file2_init(&tia, CC_OEI, 0, 2, 3, "tia");
 
     dpd_buf4_init(&D, CC_DINTS, 0, 20, 20, 20, 20, 0, "D <IJ||AB> (IA,JB)");
-    dpd_contract422(&D, &tIA, &FME, 0, 0, 1, 1);
+    dpd_contract422(&D, &tIA, &FME, 0, 0, 1, 0);
     dpd_buf4_close(&D);
 
     dpd_buf4_init(&D, CC_DINTS, 0, 20, 30, 20, 30, 0, "D <Ij|Ab> (IA,jb)");
@@ -77,11 +77,11 @@ void Fme_build(void)
     dpd_buf4_close(&D);
 
     dpd_buf4_init(&D, CC_DINTS, 0, 30, 30, 30, 30, 0, "D <ij||ab> (ia,jb)");
-    dpd_contract422(&D, &tia, &Fme, 0, 0, 1, 1);
+    dpd_contract422(&D, &tia, &Fme, 0, 0, 1, 0);
     dpd_buf4_close(&D);
 
-    dpd_buf4_init(&D, CC_DINTS, 0, 30, 20, 30, 20, 0, "D <iJ|aB> (ia,JB)");
-    dpd_contract422(&D, &tIA, &FME, 0, 0, 1, 1);
+    dpd_buf4_init(&D, CC_DINTS, 0, 30, 20, 30, 20, 0, "D <Ij|Ab> (ia,JB)");
+    dpd_contract422(&D, &tIA, &Fme, 0, 0, 1, 1);
     dpd_buf4_close(&D);
 
     dpd_file2_close(&tIA);
