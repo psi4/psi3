@@ -38,5 +38,9 @@ void init_globals()
   IOUnits.itapNablaZ_AO = PSIF_OEI;
   IOUnits.itapOEInt_Misc = PSIF_OEI;
 
+  IOUnits.itapdgdB[0] = PSIF_AO_DGDBX;
+  IOUnits.itapdgdB[1] = PSIF_AO_DGDBY;
+  IOUnits.itapdgdB[2] = PSIF_AO_DGDBZ;
+
   return;
 }

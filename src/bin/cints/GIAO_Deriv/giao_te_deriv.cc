@@ -21,7 +21,7 @@ extern "C" {
 #else
   #include"int_fjt.h"
 #endif
-#include "deriv1_quartet_data.h"
+#include "iwl_tebuf.h"
 #include "symmetrize.h"
 #include "small_fns.h"
 #include "compute_eri.h"
@@ -32,7 +32,8 @@ static inline int hash(int L, int M, int N);
 extern "C" void giao_te_deriv(void)
 {
   /*--- Various data structures ---*/
-  Libint_t Libint;                /* Integrals library object */
+  Libint_t Libint;                    /* Integrals library object */
+  struct iwlbuf DGDBX, DGDBY, DGDBZ;  // IWL buffers
 
   /*---------------
     Initialization
@@ -51,11 +52,18 @@ extern "C" void giao_te_deriv(void)
     (BasisSet.max_num_prims*BasisSet.max_num_prims);
   init_libint(&Libint,BasisSet.max_am,max_num_prim_comb);
 
+  iwl_buf_init(&DGDBX, IOUnits.itapdgdB[0], 0.0, 0, 0);
+  iwl_buf_init(&DGDBY, IOUnits.itapdgdB[1], 0.0, 0, 0);
+  iwl_buf_init(&DGDBZ, IOUnits.itapdgdB[2], 0.0, 0, 0);
+  
   int max_cart_size = ioff[BasisSet.max_am]*ioff[BasisSet.max_am]*ioff[BasisSet.max_am]*ioff[BasisSet.max_am];
   double* abcd_buf = new double[max_cart_size];
   double* dgdBx_buf = new double[max_cart_size];
   double* dgdBy_buf = new double[max_cart_size];
   double* dgdBz_buf = new double[max_cart_size];
+  struct tebuf* dgdBx_tebuf = new struct tebuf[max_cart_size];
+  struct tebuf* dgdBy_tebuf = new struct tebuf[max_cart_size];
+  struct tebuf* dgdBz_tebuf = new struct tebuf[max_cart_size];
   int max_cart_size_1000 = ioff[BasisSet.max_am+1]*ioff[BasisSet.max_am]*ioff[BasisSet.max_am]*ioff[BasisSet.max_am];
   double* ap1bcd_buf = new double[max_cart_size_1000];
   double* abcp1d_buf = new double[max_cart_size_1000];
@@ -263,9 +271,20 @@ extern "C" void giao_te_deriv(void)
           
 
           // Normalize integrals
-          norm_quartet(dgdBx_buf, NULL, am, 0);
-          norm_quartet(dgdBy_buf, NULL, am, 0);
-          norm_quartet(dgdBz_buf, NULL, am, 0);
+          double* dgdBx_target_buf;
+          double* dgdBy_target_buf;
+          double* dgdBz_target_buf;
+          if (am) {
+            // No transformation to spherical harmonics basis, only normalization
+            dgdBx_target_buf = norm_quartet(dgdBx_buf, NULL, am, 0);
+            dgdBy_target_buf = norm_quartet(dgdBy_buf, NULL, am, 0);
+            dgdBz_target_buf = norm_quartet(dgdBz_buf, NULL, am, 0);
+          }
+          else {
+            dgdBx_target_buf = dgdBx_buf;
+            dgdBy_target_buf = dgdBy_buf;
+            dgdBz_target_buf = dgdBz_buf;
+          }
 
           // Print integrals out
           if(UserOptions.print_lvl >= PRINT_DEBUG) {
@@ -278,20 +297,18 @@ extern "C" void giao_te_deriv(void)
                   int kk = k+BasisSet.shells[sk].fao-1;
                   for(int l=0; l<nao[3]; l++, ijkl++) {
                     int ll = l+BasisSet.shells[sl].fao-1;
-                    
-                    if (ii*BasisSet.num_ao + jj >= kk*BasisSet.num_ao + ll) {
-                      if (fabs(dgdBx_buf[ijkl]) > UserOptions.cutoff) {
-                        fprintf(stdout, "%5d%5d%5d%5d%20.10lf\n",
-                                ii, jj, kk, ll, dgdBx_buf[ijkl]);
-                      }
-                      if (fabs(dgdBy_buf[ijkl]) > UserOptions.cutoff) {
-                        fprintf(stdout, "%5d%5d%5d%5d%20.10lf\n",
-                                ii, jj, kk, ll, dgdBy_buf[ijkl]);
-                      }
-                      if (fabs(dgdBz_buf[ijkl]) > UserOptions.cutoff) {
-                        fprintf(stdout, "%5d%5d%5d%5d%20.10lf\n",
-                                ii, jj, kk, ll, dgdBz_buf[ijkl]);
-                      }
+
+                    if (fabs(dgdBx_buf[ijkl]) > UserOptions.cutoff) {
+                      fprintf(stdout, "%5d%5d%5d%5d%20.10lf\n",
+                              ii, jj, kk, ll, dgdBx_buf[ijkl]);
+                    }
+                    if (fabs(dgdBy_buf[ijkl]) > UserOptions.cutoff) {
+                      fprintf(stdout, "%5d%5d%5d%5d%20.10lf\n",
+                              ii, jj, kk, ll, dgdBy_buf[ijkl]);
+                    }
+                    if (fabs(dgdBz_buf[ijkl]) > UserOptions.cutoff) {
+                      fprintf(stdout, "%5d%5d%5d%5d%20.10lf\n",
+                              ii, jj, kk, ll, dgdBz_buf[ijkl]);
                     }
                   }
                 }
@@ -299,11 +316,53 @@ extern "C" void giao_te_deriv(void)
 	    }
           }
 
+          // Write integrals out
+          int fao[4];
+          fao[0] = BasisSet.shells[si].fao - 1;
+          fao[1] = BasisSet.shells[sj].fao - 1;
+          fao[2] = BasisSet.shells[sk].fao - 1;
+          fao[3] = BasisSet.shells[sl].fao - 1;
+          int ijkl = 0;
+          for(int i=0; i<nao[0]; i++) {
+            int ii = i + fao[0];
+            for(int j=0; j<nao[1]; j++) {
+              int jj = j + fao[1];
+              for(int k=0; k<nao[2]; k++) {
+                int kk = k + fao[2];
+                for(int l=0; l<nao[3]; l++, ijkl++) {
+                  int ll = l + fao[3];
+                    
+                  dgdBx_tebuf[ijkl].i = ii;
+                  dgdBy_tebuf[ijkl].i = ii;
+                  dgdBz_tebuf[ijkl].i = ii;
+                  dgdBx_tebuf[ijkl].j = jj;
+                  dgdBy_tebuf[ijkl].j = jj;
+                  dgdBz_tebuf[ijkl].j = jj;
+                  dgdBx_tebuf[ijkl].k = kk;
+                  dgdBy_tebuf[ijkl].k = kk;
+                  dgdBz_tebuf[ijkl].k = kk;
+                  dgdBx_tebuf[ijkl].l = ll;
+                  dgdBy_tebuf[ijkl].l = ll;
+                  dgdBz_tebuf[ijkl].l = ll;
+                  dgdBx_tebuf[ijkl].val = dgdBx_target_buf[ijkl];
+                  dgdBy_tebuf[ijkl].val = dgdBy_target_buf[ijkl];
+                  dgdBz_tebuf[ijkl].val = dgdBz_target_buf[ijkl];
+                }
+              }
+            }
+          }
+          iwl_buf_wrt_struct(&DGDBX, dgdBx_tebuf, quartet_size, UserOptions.cutoff);
+          iwl_buf_wrt_struct(&DGDBY, dgdBy_tebuf, quartet_size, UserOptions.cutoff);
+          iwl_buf_wrt_struct(&DGDBZ, dgdBz_tebuf, quartet_size, UserOptions.cutoff);
+
 	} /* sll */
       } /* skk */
     } /* sjj */
   } /* sii */
 
+  iwl_buf_flush(&DGDBX, 1);  iwl_buf_close(&DGDBX, 1);
+  iwl_buf_flush(&DGDBY, 1);  iwl_buf_close(&DGDBY, 1);
+  iwl_buf_flush(&DGDBZ, 1);  iwl_buf_close(&DGDBZ, 1);
 
   /*---------
     Clean-up
@@ -318,10 +377,10 @@ extern "C" void giao_te_deriv(void)
   return;
 }
 
-static int io[] = {0,1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153};
-
 static inline int hash(int L, int M, int N)
 {
+  static int io[] = {0,1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153};
+
   int MpN = M+N;
   int result = N + io[MpN];
   return result;

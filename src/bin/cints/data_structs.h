@@ -218,6 +218,7 @@ typedef struct {
     int itapERI_MO;           /* MO ERI integrals */
     int itapR12_MO;           /* MO R12 integrals */
     int itapR12T2_MO;         /* MO [r12,T2] integrals */
+    int itapdgdB[3];          /* AO dgd/Bi integrals over GIAO Gaussians */
 } IOUnits_t;
  
 typedef struct {
