@@ -2,6 +2,7 @@
 #include <math.h>
 #include <libciomr/libciomr.h>
 #include <libint/libint.h>
+#include <libchkpt/chkpt.h>
 #include <libfile30/file30.h>
 #include <libiwl/iwl.h>
 #include <psifiles.h>
@@ -22,7 +23,7 @@ int main(int argc, char *argv[])
   int *clsdpi, *openpi, *orbspi, *dummy, *order, *frdocc;
   double *ss, **S, **scf, **u, **Ctmp, **C, *evals;
 
-  int *orb_order, *orb_boolean;
+  int *orb_order, *orb_boolean, puream;
   double P, PiiA, Pst, Pss, Ptt, Ast, Bst, AB;
   double Uss, Utt, Ust, Uts, Cks, Ckt, **U, **V, **VV, **F;
   double cos4a, alpha, alphamax, alphalast, conv, norm;
@@ -32,30 +33,26 @@ int main(int argc, char *argv[])
   init_io();
   title();
 
-  file30_init();
-  nao = file30_rd_nao();
-  nmo = file30_rd_nmo();
-  nso = file30_rd_nso();
-  natom = file30_rd_natom();
-  nshell = file30_rd_nshell();
-  stype = file30_rd_stype();
-  snuc = file30_rd_snuc();
-  u = file30_rd_usotao_new();
-  nirreps = file30_rd_nirreps();
-  clsdpi = file30_rd_clsdpi();
-  openpi = file30_rd_openpi();
-  orbspi = file30_rd_orbspi();
-  scf = file30_rd_scf();
-  evals = file30_rd_evals();
-  file30_close();
+  chkpt_init();
+  nao = chkpt_rd_nao();
+  nmo = chkpt_rd_nmo();
+  nso = chkpt_rd_nso();
+  natom = chkpt_rd_natom();
+  nshell = chkpt_rd_nshell();
+  stype = chkpt_rd_stype();
+  snuc = chkpt_rd_snuc();
+  u = chkpt_rd_usotao();
+  nirreps = chkpt_rd_nirreps();
+  clsdpi = chkpt_rd_clsdpi();
+  openpi = chkpt_rd_openpi();
+  orbspi = chkpt_rd_orbspi();
+  C = chkpt_rd_scf();
+  evals = chkpt_rd_evals();
+  chkpt_close();
 
   /* A couple of error traps */
   if(nirreps != 1) {
     fprintf(outfile, "\n\tError: localization is only valid in C1 symmetry!\n");
-    exit(2);
-  }
-  if(nso != nao) {
-    fprintf(outfile, "\n\tError: localization is only valid with cartesian polarization!\n");
     exit(2);
   }
   if(openpi[0]) {
@@ -70,10 +67,13 @@ int main(int argc, char *argv[])
   free(frdocc);
 
   /* Compute the length of each AM block */
+  ip_boolean("PUREAM", &(puream), 0);
   l_length = init_int_array(LIBINT_MAX_AM);
   l_length[0] = 1;
-  for(l=0; l < (LIBINT_MAX_AM); l++) 
-    if(l) l_length[l] = l_length[l-1] + l + 1;
+  for(l=1; l < (LIBINT_MAX_AM); l++) {
+    if(puream) l_length[l] = 2 * l + 1;
+    else l_length[l] = l_length[l-1] + l + 1;
+  }
 
   /* Set up the atom->AO and AO->atom lookup arrays */
   aostart = init_int_array(natom);
@@ -92,31 +92,20 @@ int main(int argc, char *argv[])
   }
   aostop[atom] = offset-1;
 
-  ao2atom = init_int_array(nao);
+  ao2atom = init_int_array(nso);
   for(i=0; i < natom; i++)
     for(j=aostart[i]; j <= aostop[i]; j++) ao2atom[j] = i;
 
   /* Get the overlap integrals -- these should be identical to AO S */
-  noei = nmo*(nmo+1)/2;
+  noei = nso*(nso+1)/2;
   ss = init_array(noei);
   stat = iwl_rdone(PSIF_OEI,PSIF_SO_S,ss,noei,0,0,outfile);
-  S = block_matrix(nao,nao);
-  for(i=0,ij=0; i < nmo; i++)
+  S = block_matrix(nso,nso);
+  for(i=0,ij=0; i < nso; i++)
     for(j=0; j <= i; j++,ij++) {
       S[i][j] = S[j][i] = ss[ij];
     }
   free(ss);
-
-  /* transform the MO coefficients to the AO basis */
-  C = block_matrix(nao,nmo);
-  C_DGEMM('t','n',nao,nmo,nso,1,&(u[0][0]),nao,&(scf[0][0]),nmo,
-	  0,&(C[0][0]),nmo);
-
-  /*
-  fprintf(outfile, "\tCanonical MO's:\n");
-  print_mat(C,nao,nmo,outfile);
-  */
-
 
   /* Compute nocc --- closed-shells only */
   for(i=0,nocc=0; i < nirreps; i++) nocc += clsdpi[i];
@@ -139,7 +128,7 @@ int main(int argc, char *argv[])
 	PiiA = 0.0;
 
 	for(l=aostart[A]; l <= aostop[A]; l++)
-	  for(k=0; k < nao; k++) 
+	  for(k=0; k < nso; k++) 
 	    PiiA += C[k][i] * C[l][i] * S[k][l];
 
 	P += PiiA * PiiA;
@@ -158,7 +147,7 @@ int main(int argc, char *argv[])
 	  Pst = Pss = Ptt = 0.0;
 	      
 	  for(l=aostart[A]; l <= aostop[A]; l++) {
-	    for(k=0; k < nao; k++) {
+	    for(k=0; k < nso; k++) {
 	      Pst += 0.5 * (C[k][s] * C[l][t] +
 			    C[l][s] * C[k][t]) * S[k][l];
 
@@ -182,7 +171,7 @@ int main(int argc, char *argv[])
 	else alpha = 0.0;
 
 	/* Keep up with the maximum 2x2 rotation angle */
-	alphamax = (alpha > alphamax ? alpha : alphamax);
+	alphamax = (fabs(alpha) > alphamax ? alpha : alphamax);
 
 	Uss = cos(alpha);
 	Utt = cos(alpha);
@@ -190,7 +179,7 @@ int main(int argc, char *argv[])
 	Uts = -Ust;
 
 	/* Now do the rotation */
-	for(k=0; k < nao; k++) {
+	for(k=0; k < nso; k++) {
 	  Cks = C[k][s];
 	  Ckt = C[k][t];
 	  C[k][s] = Uss * Cks + Ust * Ckt;
@@ -221,9 +210,9 @@ int main(int argc, char *argv[])
       } /* t-loop */
     } /* s-loop */
 
-    conv = fabs(alphamax - alphalast);
+    conv = fabs(alphamax) - fabs(alphalast);
     fprintf(outfile, "\t%4d  %20.10f  %20.10f  %4.3e\n", iter, P, alphamax, conv);
-    if(iter && (conv < 1e-12)) break;
+    if(iter && ((fabs(conv) < 1e-12) || alphamax == 0.0)) break;
     alphalast = alphamax;
 
     fflush(outfile);
@@ -268,22 +257,22 @@ int main(int argc, char *argv[])
 
   /*
   fprintf(outfile, "\n\tPipek-Mezey Localized MO's (before sort):\n");
-  print_mat(C, nao, nmo, outfile);
+  print_mat(C, nso, nmo, outfile);
   */
 
   /* Now reorder the localized MO's according to F */
-  /* no re-ordering for now
-  Ctmp = block_matrix(nao,nocc);
+  Ctmp = block_matrix(nso,nocc);
   for(i=0; i < nocc; i++)
-    for(j=0; j < nao; j++) Ctmp[j][i] = C[j][i];
+    for(j=0; j < nso; j++) Ctmp[j][i] = C[j][i];
 
   for(i=0; i < nocc; i++) {
     iold = orb_order[i];
-    for(j=0; j < nao; j++) C[j][i] = Ctmp[j][iold];
+    for(j=0; j < nso; j++) C[j][i] = Ctmp[j][iold];
     evals[i] = F[iold][iold];
   }
   free_block(Ctmp);
 
+  /*
   fprintf(outfile, "\n\tPipek-Mezey Localized MO's (after sort):\n");
   print_mat(C, nao, nmo, outfile);
   */
@@ -301,7 +290,11 @@ int main(int argc, char *argv[])
   }
   */
 
-  /* Write the new MO's to file30 */
+  /* Write the new MO's to chkpt */
+  chkpt_init();
+  chkpt_wt_scf(C);
+  chkpt_close();
+
   file30_init();
   file30_wt_scf(C);
   file30_close();
@@ -328,6 +321,7 @@ void init_io(void)
   tstart(outfile);
   ip_set_uppercase(1);
   ip_initialize(infile,outfile);
+  ip_cwk_add(":INPUT"); /* for checking puream keyword */
   ip_cwk_add(":DEFAULT");
   ip_cwk_add(progid);
 
