@@ -153,10 +153,10 @@ typedef struct {
 } dpd_data;
 
 typedef struct {
-  int memory;        /* Total memory requested by the user */
-  int memused;       /* Total memory used (cache + other) */
-  int memcache;      /* Total memory in cache (locked and unlocked) */
-  int memlocked;     /* Total memory locked in the cache */
+  unsigned int memory;        /* Total memory requested by the user */
+  unsigned int memused;       /* Total memory used (cache + other) */
+  unsigned int memcache;      /* Total memory in cache (locked and unlocked) */
+  unsigned int memlocked;     /* Total memory locked in the cache */
 
   struct dpd_file2_cache_entry *file2_cache;
   struct dpd_file4_cache_entry *file4_cache;
