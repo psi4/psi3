@@ -248,38 +248,103 @@ typedef struct {
     int num_openmoshells;     /* number of shells of singly-occupied MOs */
 } MOInfo_t;
 
-struct leb_point_s{
-    struct coordinates p_cart; /* cartesian coordinate of one point */
-    double ang_quad_weight;    /* Contribution from lebedev scheme  */
+
+/* -------------------------------------------------------
+   
+   DFT Data Structures
+
+   -------------------------------------------------------*/
+/* -------------------------
+   Pruned Grid parameters
+   ------------------------*/
+struct param_set_s { 
+    int n_ang_grids;               /* Number of different lebedev spheres 
+				      in atomic grid */
+    double *alpha;                 /* The cutoff parameters */
+    int *angpoints;                /* the different angular grids */
 };
 
-struct grid_info_s{
-    int angpoints;             /* # of angular points in lebedev sphere */
-    char *grid_label;           /* name of grid */
-    int rcut;                  /* radial cutoff grid */
-    struct leb_point_s *leb_point; /* info for one radial shell of the grid
-*/
+struct pruned_info_s {
+    int *a2param;                  /* Elements tell which parameter set 
+				      is used for each atom */
+    int n_diff_ang_grids;          /* If there are more than one sets 
+			               of angular grids, this is how many */
+    int n_tot_ang_grids;         /* Total number of different angular grids */
+    int n_param_sets;              /* Number of total parameter sets */
+    struct param_set_s *param_set; /* The parameter sets */
 };
 
+/*------------------------------
+  Primitve class types
+  -----------------------------*/
+
+typedef struct{
+    struct coordinates p_cart;
+    double ang_weight;
+} leb_point_t;
+
+typedef struct{
+    double r;
+    double drdq;
+    int n_ang_points;
+    leb_point_t *points;
+} leb_sphere_t;
+
+typedef struct{
+    int radial_start;
+    int radial_end;
+    int size;
+    leb_sphere_t *spheres;
+} prim_leb_chunk_t;
+
+typedef struct{
+    int chunk_num;
+    prim_leb_chunk_t *leb_chunk;
+} prim_atomic_grid_t;
+
+/* ----------------------
+   Concrete classes
+   ----------------------*/
+
+struct leb_chunk_s{
+    int radial_start;
+    int radial_end;
+    int size;
+    leb_sphere_t *spheres;
+    int *bf_close_to_chunk;
+};
+
+struct atomic_grid_s{
+    int atom_num;
+    int atom_degen;
+    struct coordinates atom_center;
+    double Bragg_radii;
+    int chunk_num;
+    struct leb_chunk_s *leb_chunk;
+};
+
+typedef struct{
+    int n_rad_points;
+    int pruned_flag;
+    char *label;
+    struct atomic_grid_s *atomic_grid;
+    prim_atomic_grid_t prim_atomic_grid;
+    prim_atomic_grid_t *prim_pruned_atomic_grids;
+    struct pruned_info_s pruned_info;
+} grid_t;
+ 
 struct den_info_s{
-    double den;                /* value of density at a point */
-    double den_o;
-    double den_a;
-    double den_b;
-    double dpdx;               /* value of gradient at a point */
-    double dpdx_o;
-    double dtdx;                /* gradient of the kinetic energy */
+    double den;
+    double dena;
+    double denb;
 };
 
 typedef struct{
     int prtflag;                /* dft printing flag */
-    int grid_dim;               /* How many leb grids are there? */
-    int rpoints;                /* Number of radial points */ 
 
-    double *bragg;              /* Bragg-Slater radii */
     double *basis;              /* This is an array to hold the value of
 				   basis functions at a given point */
-
+    double *Bragg;
     double XC_energy;           /* Exchange Correlation Energy */
     double X_energy;            /* Exchange Energy */
     double C_energy;            /* Correlation Energy */
@@ -295,8 +360,11 @@ typedef struct{
     struct den_info_s (*den_calc)(struct coordinates geom);
                    /* pointer to the correct density calculation function */
 
-    struct grid_info_s *grid_info;
+    grid_t grid;
 } DFT_options_t;
+
+
+
 #endif
 
 

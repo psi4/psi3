@@ -58,3 +58,6 @@ EXTERN double ***ShDens; /* MO shell density */
 EXTERN double **G;       /* G-matrix (t.e. part of the Fock matrix) in AO basis */
 EXTERN double **Go;      /* open-shell G-matrix in AO basis */
 EXTERN double **Grad;    /* Nuclear forces */
+
+
+
