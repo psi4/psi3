@@ -3,10 +3,7 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-LDLIBS += $(LAPACK) $(BLAS)
-
-PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
-
+PSILIBS = -lPSI_chkpt -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
 XXSRC = \
 intder.cc cartesian.cc atom.cc molecule.cc displacements.cc         \
