@@ -600,6 +600,124 @@ sub seek_dboc
   exit 1;
 }   
 
+sub seek_mulliken_gop
+{   
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  seek(OUT,0,0);
+  while(<OUT>) {
+    if (/# of atomic orbitals/) {
+      @data = split(/ +/, $_);
+      $nao = $data[6];
+    }
+  }
+  close (OUT);
+
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  @datafile = <OUT>;
+  close (OUT);
+
+  $linenum=0;
+  $start = 0;
+  foreach $line (@datafile) {
+    if ($line =~ m/-Gross orbital populations/) {
+      $start = $linenum;
+    }
+    $linenum++;
+  }
+
+  for($i=0; $i<$nao; $i++) {
+    @line = split(/ +/, $datafile[$start+4+$i]);
+    $mulliken[$i] = $line[4];
+  }
+    
+  if($start != 0) {
+    return @mulliken;
+  }
+  
+  printf "Error: Could not find Gross orbital populations in $_[0].\n";
+  exit 1;
+}
+
+sub seek_mulliken_abp
+{   
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  seek(OUT,0,0);
+  while(<OUT>) {
+    if (/# of atoms/) {
+      @data = split(/ +/, $_);
+      $noa = $data[5];
+    }
+  }
+  close (OUT);
+
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  @datafile = <OUT>;
+  close (OUT);
+
+  $linenum=0;
+  $start = 0;
+  foreach $line (@datafile) {
+    if ($line =~ m/-Atomic bond populations/) {
+      $start = $linenum;
+    }
+    $linenum++;
+  }
+
+  for($i=0; $i<$noa; $i++) {
+    @line = split(/ +/, $datafile[$start+4+$i]);
+    for($j=0; $j<$noa; $j++) {
+      $mulliken[$noa*$i+$j] = $line[$j+2];
+    }
+  }
+  
+  if($start != 0) {
+    return @mulliken;
+  }
+  
+  printf "Error: Could not find Gross orbital populations in $_[0].\n";
+  exit 1;
+}
+
+sub seek_mulliken_apnc
+{   
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  seek(OUT,0,0);
+  while(<OUT>) {
+    if (/# of atoms/) {
+      @data = split(/ +/, $_);
+      $noa = $data[5];
+    }
+  }
+  close (OUT);
+
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  @datafile = <OUT>;
+  close (OUT);
+
+  $linenum=0;
+  $start = 0;
+  foreach $line (@datafile) {
+    if ($line =~ m/-Gross atomic populations/) {
+      $start = $linenum;
+    }
+    $linenum++;
+  }
+
+  for($i=0; $i<$noa; $i++) {
+    @line = split(/ +/, $datafile[$start+4+$i]);
+    for($j=0; $j<$noa; $j++) {
+      $mulliken[$noa*$i+$j] = $line[$j+2];
+    }
+  }
+  
+  if($start != 0) {
+    return @mulliken;
+  }
+  
+  printf "Error: Could not find Gross atomic populations in $_[0].\n";
+  exit 1;
+}
+
 sub compare_arrays
 {
   $A = $_[0];
