@@ -11,7 +11,7 @@ static double **init_bf_norm(int);
 
 void init_gto(max_angmom)
 {
-  if (max_angmom > GTOs.max_angmom) {
+  if (max_angmom > GTOs.max_angmom || GTOs.bf_norm == NULL) {
     GTOs.max_angmom = max_angmom;
     GTOs.bf_norm = init_bf_norm(max_angmom+1);
   }

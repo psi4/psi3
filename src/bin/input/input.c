@@ -80,14 +80,17 @@ int main(int argc, char *argv[])
      /*-----------------
        Read in geometry
       -----------------*/
-     if (chkpt_geom == 0) { /* read geometry from input.dat */
+     if (chkpt_geom == 0 && geomdat_geom == 0) { /* read geometry from input.dat */
        if (cartOn)
 	 read_cart();
        else
 	 read_zmat();
      }
-     else { /* else read the next molecular geometry from checkpoint file */
+     else if (chkpt_geom) { /* else read the next molecular geometry from checkpoint file */
        read_chkpt_geom();
+     }
+     else if (geomdat_geom) { /* else read the next molecular geometry from geom.dat */
+       read_geomdat();
      }
 
      repulsion = 0.0;

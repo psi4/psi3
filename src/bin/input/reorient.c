@@ -45,20 +45,22 @@ void reorient()
     }
     Xcm /= mass; Ycm /= mass; Zcm /= mass;
 
-    /*center-of-mass shift*/
-    for(i=0;i<num_atoms;i++) {
-      geometry[i][0] -= Xcm;
-      geometry[i][1] -= Ycm;
-      geometry[i][2] -= Zcm;
-    }
-
-    /*full geom center-of-mass shift*/
-    if(!cartOn) 
-      for(i=0;i<num_entries;i++) {
-        full_geom[i][0] -= Xcm;
-        full_geom[i][1] -= Ycm;
-        full_geom[i][2] -= Zcm;
+    if (!no_comshift) {
+      /*center-of-mass shift*/
+      for(i=0;i<num_atoms;i++) {
+	geometry[i][0] -= Xcm;
+	geometry[i][1] -= Ycm;
+	geometry[i][2] -= Zcm;
       }
+      
+      /*full geom center-of-mass shift*/
+      if(!cartOn) 
+	for(i=0;i<num_entries;i++) {
+	  full_geom[i][0] -= Xcm;
+	  full_geom[i][1] -= Ycm;
+	  full_geom[i][2] -= Zcm;
+	}
+    }
 
 
     /*Computing inertia tensor, moments of inertia, and principal axes*/
@@ -119,14 +121,15 @@ void reorient()
 
       /*Reorient if degen < 2 (non-spherical top case).
 	Otherwise hope user knows what he/she's doing and leave it as it is.*/
-      if (degen < 2 && !no_reorient)
+      if (degen < 2) {
 	rotate_geometry(geometry,ITAxes);
 	if(!cartOn)
           rotate_full_geom(full_geom,ITAxes);
+      }
 
       /*If degen=0 (asymmetric top) - do nothing
 	   degen=1 (linear molecule or symmetric top) - set unique axis along Z
-           denen=2 (atom or spherical top) - do a lot of stuff - see below*/
+           denen=2 (atom or spherical top) - do lots of stuff - see below*/
       if (degen == 0) {
 	fprintf(outfile,"    It is an asymmetric top.\n");
 	rotor = asymmtop;
@@ -140,8 +143,8 @@ void reorient()
 		  R[2][0] = -1.0;
 		  R[0][2] = 1.0;
 		  rotate_geometry(geometry,R);
-                  if(!cartOn)
-                    rotate_full_geom(full_geom,R);
+		  if(!cartOn)
+		    rotate_full_geom(full_geom,R);
 		  free_block(R);
 		  if (IM[0] < ZERO_MOMENT_INERTIA) {
 		    fprintf(outfile,"    It is a linear molecule.\n");
@@ -207,8 +210,8 @@ void reorient()
 		  cross_prod(v1, v2, v3);
 		  vectors_to_matrix(v1, v2, v3, ITAxes);
 		  rotate_geometry(geometry, ITAxes);
-                  if(!cartOn)
-	            rotate_full_geom(full_geom, ITAxes);
+		  if(!cartOn)
+		    rotate_full_geom(full_geom, ITAxes);
 		  break;
 
 	  case 6: /*Octahedron*/
@@ -222,8 +225,8 @@ void reorient()
 		  cross_prod(v3, v1, v2);
 		  vectors_to_matrix(v1, v2, v3, ITAxes);
 		  rotate_geometry(geometry, ITAxes);
-                  if(!cartOn)
-                    rotate_full_geom(full_geom, ITAxes);
+		  if(!cartOn)
+		    rotate_full_geom(full_geom, ITAxes);
 	          break;
 
 	  case 8: /*Cube*/
@@ -247,8 +250,8 @@ void reorient()
 		  cross_prod(v1, v2, v3);
 		  vectors_to_matrix(v1, v2, v3, ITAxes);
 		  rotate_geometry(geometry,ITAxes);
-                  if(!cartOn)
-	            rotate_full_geom(full_geom, ITAxes);
+		  if(!cartOn)
+		    rotate_full_geom(full_geom, ITAxes);
 		  free(sset_dist);
 	          break;
 

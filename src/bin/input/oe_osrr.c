@@ -12,11 +12,15 @@ void OI_OSrecurs(double **OIX, double **OIY, double **OIZ, struct coordinates PA
 
   OIX[0][0] = OIY[0][0] = OIZ[0][0] = 1.0;
 
-	/* Upward recursion in j for i=0 */
+  if (!lmaxi && !lmaxj)
+    return;
 
-  OIX[0][1] = PB.x;
-  OIY[0][1] = PB.y;
-  OIZ[0][1] = PB.z;
+	/* Upward recursion in j for i=0 */
+  if (lmaxj) {
+    OIX[0][1] = PB.x;
+    OIY[0][1] = PB.y;
+    OIZ[0][1] = PB.z;
+  }
 
   for(j=1;j<lmaxj;j++) {
     OIX[0][j+1] = PB.x*OIX[0][j];
@@ -29,9 +33,11 @@ void OI_OSrecurs(double **OIX, double **OIY, double **OIZ, struct coordinates PA
 
 	/* Upward recursion in i for all j's */
 
-  OIX[1][0] = PA.x;
-  OIY[1][0] = PA.y;
-  OIZ[1][0] = PA.z;
+  if (lmaxi) {
+    OIX[1][0] = PA.x;
+    OIY[1][0] = PA.y;
+    OIZ[1][0] = PA.z;
+  }
   for(j=1;j<=lmaxj;j++) {
     OIX[1][j] = PA.x*OIX[0][j];
     OIY[1][j] = PA.y*OIY[0][j];

@@ -38,13 +38,16 @@ EXTERN int shownorm;		    /*Show normalized basis set*/
 EXTERN int normalize_contractions;  /*Re-normalize contractions or leave as is*/
 EXTERN char *units;
 EXTERN int print_lvl;               /*Printing level*/
-EXTERN int no_reorient;             /*No reorientation?*/
+EXTERN int no_comshift;             /*No Center-of-Mass shift?*/
+EXTERN int no_reorient;             /*No reorientation into the principal system?*/
 EXTERN int keep_ref_frame;          /*Use the input geometry frame as the reference frame
 				      rather than the canonical frame - later cints and others
 				      will use that to rotate gradients, etc. into the
 				      reference frame*/
-EXTERN int read_chkpt;              /*Read old data from checkpoint file?*/
+EXTERN int read_chkpt;              /*Read old checkpoint file?*/
 EXTERN int chkpt_geom;              /*Read geometry from checkpoint file?*/
+EXTERN int geomdat_geom;            /*Read geometry from geom.dat?*/
+EXTERN int geomdat_entry;           /*Which entry to read from geom.dat?*/
 EXTERN int chkpt_mos;               /*Project old SCF evector?*/
 EXTERN int save_oldcalc;            /*Save old calculation and old/new basis overlap?*/
 EXTERN int overwrite_output;        /*Overwrite output.dat?*/

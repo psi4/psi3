@@ -178,7 +178,7 @@ void store_oldcalc()
   else { /* Spin-unrestricted case */
     psio_write_entry(PSIF_OLD_CHKPT, ":PrevCalc:MOs alpha", (char*) Oldcalc.scf_evect_so_alpha[0],
 	       Oldcalc.num_so*Oldcalc.num_mo*sizeof(double));
-    psio_write_entry(PSIF_OLD_CHKPT, ":PrevCalc:MOs beta", (char*) Oldcalc.scf_evect_so_alpha[0],
+    psio_write_entry(PSIF_OLD_CHKPT, ":PrevCalc:MOs beta", (char*) Oldcalc.scf_evect_so_beta[0],
 	       Oldcalc.num_so*Oldcalc.num_mo*sizeof(double));
   }
   psio_write_entry(PSIF_OLD_CHKPT, ":PrevCalc:New-Old basis overlap", (char*) S12[0],
