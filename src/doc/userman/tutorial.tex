@@ -6,7 +6,7 @@ computations.
 
 The first thing to point out is that electronic structure programs
 like \PSIthree\ make significant use of disk drives.  Therefore, 
-for any but the smallest calculations, {\em it is very important for the user 
+for any but the smallest calculations, {\em it is very important 
 to be sure that \PSIthree\ is writing its temporary files to a 
 disk drive physically attached to the computer running the computation}.
 If a user's directory is remotely mounted by NFS, and if \PSIthree\
@@ -15,7 +15,7 @@ the program and the network down dramatically.  To avoid this
 situation, by default \PSIthree\ will write temporary files to 
 \file{/tmp}.  This will work for the small examples in this tutorial,
 but for real computations you will want to set up a default scratch
-file path as described in sections \ref{scratchfile} and \ref{psirc},
+file path as described in sections \ref{scratchfiles} and \ref{psirc},
 since your \file{/tmp} directory may not be large enough.
 
 The \PSIthree\ suite of codes is built around a modular design which 
@@ -353,7 +353,6 @@ procedure is considered complete.
 At the end of the computation, the orbital energies are reported (in 
 Hartrees), along with their symmetry labels:
 \begin{verbatim}
- 
 Orbital energies (a.u.):
                                                                                 
   Doubly occupied orbitals

@@ -1,3 +1,5 @@
+\section{\PSIthree\ Input Files} \label{input}
+
 \PSIthree\ input files are case-insensitive and free-format, with
 a grammar designed for maximum flexibility and relative simplicity.
 Input values are assigned using the structure:
@@ -22,9 +24,19 @@ multidimensional arrays, with elements of more than one data type.  A
 good example is the z-matrix keyword:
 \begin{verbatim}
 zmat = (
-  (o)
-  (h 1 r)
-  (h 1 r 2 a)
+  (O)
+  (H 1 r)
+  (H 1 r 2 a)
+)
+\end{verbatim}
+For z-matrices, z-matrix variables, and Cartesian coordinates, 
+it is also possible to dispense with the inner parentheses.
+The following is equivalent in this case:
+\begin{verbatim}
+zmat = (
+  O
+  H 1 r
+  H 1 r 2 a
 )
 \end{verbatim}
 
@@ -41,13 +53,13 @@ psi: (
   jobtype = sp
   basis = "6-31G**"
   zmat = (
-    (o)
-    (h 1 r)
-    (h 1 r 2 a)
+     O
+     H 1 r 
+     H 1 r 2 a 
   )
   zvars = (
-    (r 1.0)
-    (a 104.5)
+     r 1.0 
+     a 104.5 
   )
 )
 \end{verbatim}
@@ -86,11 +98,11 @@ Z-matrix coordinates.  Cartesian coordinates are specified via the
 keyword \keyword{geometry}:
 \begin{verbatim}
   geometry = (
-    (atomname1 x1 y1 z1)
-    (atomname2 x2 y2 z2)
-    (atomname3 x3 y3 z3)
+     atomname1 x1 y1 z1 
+     atomname2 x2 y2 z2 
+     atomname3 x3 y3 z3 
              ...
-    (atomnameN xN yN zN)
+     atomnameN xN yN zN 
   )
 \end{verbatim}
 where \keyword{atomname$i$} can take the following values:
@@ -107,20 +119,22 @@ which contain linear fragments.
 Hence the following two examples are equivalent to one another:
 \begin{verbatim}
   geometry = (
-    (H 0.0 0.0 0.0)
-    (f 1.0 0.0 0.0)
-    (Li 3.0 0.0 0.0)
-    (BE 6.0 0.0 0.0)
+     H 0.0 0.0 0.0 
+     f 1.0 0.0 0.0 
+     Li 3.0 0.0 0.0 
+     BE 6.0 0.0 0.0 
   )
 \end{verbatim}
 \begin{verbatim}
   geometry = (
-    (hydrogen  0.0 0.0 0.0)
-    (FLUORINE  1.0 0.0 0.0)
-    (Lithium   3.0 0.0 0.0)
-    (beryllium 6.0 0.0 0.0)
+     hydrogen  0.0 0.0 0.0 
+     FLUORINE  1.0 0.0 0.0 
+     Lithium   3.0 0.0 0.0 
+     beryllium 6.0 0.0 0.0 
   )
 \end{verbatim}
+It is also possible to include an inner set 
+of parentheses around each line containing {\tt atomname1 x1 y1 z1}.
 
 The keyword \keyword{units} specifies the units for the coordinates:
 \begin{itemize}
@@ -132,13 +146,13 @@ The keyword \keyword{units} specifies the units for the coordinates:
 Z-matrix coordinates are specified using the keyword \keyword{zmat}:
 \begin{verbatim}
   zmat = (
-    (atomname1)
-    (atomname2 ref21 bond_dist2)
-    (atomname3 ref31 bond_dist3 ref32 bond_angle3)
-    (atomname4 ref41 bond_dist4 ref42 bond_angle4 ref43 tors_angle4)
-    (atomname5 ref51 bond_dist5 ref52 bond_angle5 ref53 tors_angle5)
+     atomname1
+     atomname2 ref21 bond_dist2
+     atomname3 ref31 bond_dist3 ref32 bond_angle3 
+     atomname4 ref41 bond_dist4 ref42 bond_angle4 ref43 tors_angle4 
+     atomname5 ref51 bond_dist5 ref52 bond_angle5 ref53 tors_angle5 
                              ...                
-    (atomnameN refN1 bond_distN refN2 bond_angleN refN3 tors_angleN)
+     atomnameN refN1 bond_distN refN2 bond_angleN refN3 tors_angleN 
   )
 \end{verbatim}
 where
@@ -160,12 +174,12 @@ to the linear HNC fragment. The solution is to add 2 dummy atoms to
 the definition:
 \begin{verbatim}
   zmat = (
-    (h)
-    (n 1 1.012)
-    (x 2 1.000 1  90.0)
-    (c 2 1.234 3  90.0 1 180.0)
-    (x 4 1.000 2  90.0 3 180.0)
-    (o 4 1.114 5  90.0 2 180.0)
+    h
+    n 1 1.012
+    x 2 1.000 1  90.0
+    c 2 1.234 3  90.0 1 180.0
+    x 4 1.000 2  90.0 3 180.0
+    o 4 1.114 5  90.0 2 180.0
   )
 \end{verbatim}
 Alternatively, one could use, for example, only a single dummy atom above the
@@ -201,8 +215,7 @@ the computational point group:
   )
 \end{verbatim}
 
-\subsection{Specifying Scratch Disk Usage in \PSIthree: The {\tt
-    files:} Section of Input} \label{scratchfiles}
+\subsection{Specifying Scratch Disk Usage in \PSIthree} \label{scratchfiles}
 
 Depending on the calculation, the \PSIthree\ package often requires
 substantial temporary disk storage for integrals, wave function
@@ -283,7 +296,7 @@ kB each) to three separate files, e.g., {\tt /scr1/psi.72}, {\tt
 allowed for striping files is eight (8), though this may be easily
 extended in the \PSIthree\ I/O code, if necessary.
 
-The format of the {\tt files:} section of input also allows the user to
+The format of the {\tt files} section of input also allows the user to
 place selected files in alternative directories, such as the current
 working directory.  This feature is especially important if some of
 the data need to be retained between calculations.  For example, the

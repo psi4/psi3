@@ -1,0 +1,42 @@
+\section{Hartree-Fock Self-Consistent-Field} \label{scf}
+                                                                                
+Hartree-Fock molecular orbital theory forms the cornerstone of
+ab initio quantum chemistry.  Until the advances in the accuracy
+of Kohn-Sham density functional theory in the 1990's, Hartree-Fock
+theory was the method of choice for obtaining results for large
+molecules without resorting to standard empirical or semiempirical
+approaches.  Molecular properties obtained by Hatree-Fock theory are
+generally at least qualitatively correct, although they can be
+quantitatively poor in many instances.
+                                                                                
+\PSIthree\ solves the Hatree-Fock equations in a basis of Gaussian 
+functions using an iterative, self-consistent-field (SCF) procedure.  The
+final molecular orbitals are those which minimize the energy, 
+subject to the electron configuration specified by the user (or
+guessed by the program).  It is important to point out that the
+SCF approach does not rigorously guarantee that the final orbitals
+actually correspond to a minimum in orbital space; at convergence,
+the only guarantee is that the gradient of the energy with respect 
+to orbital rotations is zero: this could be a global minimum, a local
+minimum, or a saddle point in orbital rotation space.  While this
+is not usually an issue, it can be a problem sometimes for radicals,
+diradicals, bond breaking, or unusual bonding situations.  The
+\PSIstable\ module can be used to test for the stability of Hartree-Fock
+wave functions.
+
+Of course the efficiency of the iterative procedure depends on the choice of
+initial guess.  The \PSIcscf\ module will attempt to use previously obtained
+orbitals as a guess if they are available.  This can be particularly
+advantageous when diffuse functions are present; in that case, it may
+be easiest to run the computation with a smaller basis and project
+those orbitals onto the larger basis by specifying the \keyword{--chkptmos}
+option when running the \PSIinput\ program for the larger basis.  If
+old MO's are not available, \PSIcscf\ uses a core Hamiltonian guess
+by default.
+
+Convergence, DIIS.
+
+Keywords.
+
+
+
