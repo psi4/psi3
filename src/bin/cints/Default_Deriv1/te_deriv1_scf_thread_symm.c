@@ -46,12 +46,23 @@ void *te_deriv1_scf_thread_symm(void *tnum_ptr)
   int i, j, k, l, m, ii, jj, kk, ll;
   int si, sj, sk, sl ;
   int sii, sjj, skk, sll, slll;
+  int usi, usj, usk, usl;
   int usii, usjj, uskk, usll, uslll;
   int pi, pj, pk, pl ;
   int max_pj, max_pl;
   register int pii, pjj, pkk, pll ;
   int switch_ij, switch_kl, switch_ijkl;
   int center_i, center_j, center_k, center_l;
+
+  int *sj_arr, *sk_arr, *sl_arr;
+  int stab_i,stab_j,stab_k,stab_l,stab_ij,stab_kl;
+  int *R_list, *S_list, *T_list;
+  int R,S,T;
+  int dcr_ij, dcr_kl, dcr_ijkl;
+  int lambda_T = 1;
+  int num_unique_quartets;
+  int max_num_unique_quartets;
+  int plquartet;
 
   int class_size;
   int max_class_size;
@@ -108,7 +119,7 @@ void *te_deriv1_scf_thread_symm(void *tnum_ptr)
   suitable for building the PK-matrix
  -------------------------------------------------*/
   for (usii=0; usii<Symmetry.num_unique_shells; usii++)
-    for (usjj=0; usjj<=usii; usjj++) {
+    for (usjj=0; usjj<=usii; usjj++)
       for (uskk=0; uskk<=usii; uskk++)
 	for (usll=0; usll<= ((usii == uskk) ? usjj : uskk); usll++, quartet_index++){
 
@@ -142,9 +153,6 @@ void *te_deriv1_scf_thread_symm(void *tnum_ptr)
 	      memset(sj_arr,0,sizeof(int)*max_num_unique_quartets);
 	      memset(sk_arr,0,sizeof(int)*max_num_unique_quartets);
 	      memset(sl_arr,0,sizeof(int)*max_num_unique_quartets);
-	      memset(sj_fbf_arr,0,sizeof(int)*max_num_unique_quartets);
-	      memset(sk_fbf_arr,0,sizeof(int)*max_num_unique_quartets);
-	      memset(sl_fbf_arr,0,sizeof(int)*max_num_unique_quartets);
 	      count = 0;
 	      for(dcr_ij=0;dcr_ij<Symmetry.dcr_dim[stab_i][stab_j];dcr_ij++){
 		R = R_list[dcr_ij];
@@ -175,9 +183,6 @@ void *te_deriv1_scf_thread_symm(void *tnum_ptr)
 		      sj_arr[count] = sj;
 		      sk_arr[count] = sk;
 		      sl_arr[count] = sl;
-		      sj_fbf_arr[count] = BasisSet.shells[sj].fbf-1;
-		      sk_fbf_arr[count] = BasisSet.shells[sk].fbf-1;
-		      sl_fbf_arr[count] = BasisSet.shells[sl].fbf-1;
 		      count++;
 		    }
 		  }
@@ -201,7 +206,13 @@ void *te_deriv1_scf_thread_symm(void *tnum_ptr)
 	    }
 
 
-	  si = sii; sj = sjj; sk = skk; sl = sll;
+	  /*----------------------------------
+	    Compute the nonredundant quartets
+	   ----------------------------------*/
+	  for(plquartet=0;plquartet<num_unique_quartets;plquartet++) {
+	    sj = sj_arr[plquartet];
+	    sk = sk_arr[plquartet];
+	    sl = sl_arr[plquartet];
 
 	    /*--- Skip this quartet if all four centers are the same ---*/
 	    if (BasisSet.shells[si].center == BasisSet.shells[sj].center &&
@@ -437,7 +448,8 @@ void *te_deriv1_scf_thread_symm(void *tnum_ptr)
 	    grad_te_local[center_j][0] -= ddax + ddcx + dddx;
 	    grad_te_local[center_j][1] -= dday + ddcy + dddy;
 	    grad_te_local[center_j][2] -= ddaz + ddcz + dddz;
-	}
+	  }
+	} /* end of unique shell loops */
 
   pthread_mutex_lock(&deriv1_mutex);
   for(i=0;i<Molecule.num_atoms;i++) {
