@@ -75,16 +75,13 @@ main(int argc, char **argv)
   double eci_30;                       /* ci energy from file 30          */
   double lagtr;                        /* trace of lagrangian             */
 
-  for (i=1; i<argc; i++) 
-     if (strcmp("-quiet", argv[i]) == 0) print_lvl = 0; 
-  
   /*
   ** initialize the io parser
   */
-  init_io(); 
+  init_io(argc,argv); 
 
   errcod = ip_data("PRINT","%d", &print_lvl,0);  
-  errcod = ip_boolean("WRITE_CAS_FILES",&write_cas_files,0);
+  errcod = ip_boolean("WRITE_CAS_FILES", &write_cas_files,0);
 
   /*
   ** print out header information
@@ -222,10 +219,20 @@ main(int argc, char **argv)
 /****************************************************************************/
 /* init_io(): Function opens input and output files                         */
 /****************************************************************************/
-void init_io(void)
+void init_io(int argc, char **argv)
 {
-   ffile(&infile,"input.dat",2) ;
-   ffile(&outfile,"output.dat",1);
+   int i;
+   int parsed = 1;
+
+   for (i=1; i<argc; i++) {
+     if (strcmp("-quiet", argv[i]) == 0) {
+       print_lvl = 0;
+       parsed++;
+     }
+   }
+   
+   init_in_out(argc-parsed,argv+parsed);
+   
    if (print_lvl > 0) tstart(outfile);
    ip_set_uppercase(1);
    ip_initialize(infile, outfile);

@@ -4,7 +4,7 @@
  
 double **rdopdm(int nbf, int print_lvl, int opdm_file) ;  
 double *rdtpdm(int nbf, int print_lvl, int tpdm_file) ; 
-void init_io(void) ; 
+void init_io(int argc, char **argv) ; 
 void close_io(void) ;
 void trace_opdm(double **opdm, int nbf);
 void trace_tpdm(double *tpdm, int nbf);
