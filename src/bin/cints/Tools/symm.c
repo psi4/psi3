@@ -53,7 +53,7 @@ void cleanup_symmetry()
   if (Symmetry.nirreps > 1)
     free_int_matrix(Symmetry.dp_table,Symmetry.nirreps);
   free(Symmetry.sopi);
-  free_matrix(Symmetry.usotao,Symmetry.num_so);
+  free_block(Symmetry.usotao);
   free(Symmetry.us2s);
   free(Symmetry.atom_positions);
 

@@ -77,7 +77,7 @@ void schwartz_eri()
     return;
   }
   else
-    BasisSet.schwartz_eri = init_matrix(BasisSet.num_shells,BasisSet.num_shells);
+    BasisSet.schwartz_eri = block_matrix(BasisSet.num_shells,BasisSet.num_shells);
   
   /*---------------
     Initialization
