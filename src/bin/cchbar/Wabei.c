@@ -3,6 +3,8 @@
 #define EXTERN
 #include "globals.h"
 
+/** Wabei intermediates are stored here as (ei,ab) **/
+
 void Wabei_build(void)
 {
   dpdfile2 Fme, T1;
