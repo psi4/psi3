@@ -372,6 +372,7 @@ double norm, dot,                                      /* norm and dot product o
   fprintf(outfile,"error -- num_spanned < num_nonzero, it should not happen\n");
   fprintf(outfile,"      -- stopping execution\n");
   exit(1);
+  return NULL;
 
 }
 
