@@ -329,8 +329,8 @@ int execut(char **exec, int nexec, int depth)
       /* fprintf(stderr,"%serrcod after filter is %d\n",spaces,errcod); */
 
       /* if we're getting ndisp from optking */
-      if (strcmp(exec[i],"optking --disp_symm")==0 ||
-          strcmp(exec[i],"optking --disp_all")==0) {
+      if (strcmp(exec[i],"optking --disp_irrep --irrep 1")==0 ||
+          strcmp(exec[i],"optking --disp_nosymm")==0) {
         /* fprintf(outfile, "optking got exit code %d\n", errcod); */
         for (j=i; j<nexec; j++) {
           /* fprintf(outfile,"Scanning exec[%d] = %s\n", j, exec[j]);  */
