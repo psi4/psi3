@@ -46,6 +46,10 @@ void zeta_norm(struct L_Params pL_params);
 void spinad_amps(void);
 void status(char *, FILE *);
 
+void cc2_L1_build(struct L_Params L_params);
+void cc2_L2_build(struct L_Params L_params);
+void cc2_Gai_build(int L_irr);
+
 void cc3_t3z(void);
 void cc3_t3x(void);
 void cc3_l3l2(void);
@@ -97,7 +101,12 @@ int main(int argc, char *argv[])
 
   if(params.local) local_init();
 
-  if(params.ref == 0) hbar_extra();
+  if(params.ref == 0) {
+    if (!strcmp(params.wfn,"CC2"))
+      cc2_hbar_extra();
+    else
+      hbar_extra();
+  }
 
   /* CC3: Z-build */
   if(!strcmp(params.wfn,"CC3")) cc3_t3z();
@@ -108,7 +117,7 @@ int main(int argc, char *argv[])
     psio_open(CC_TMP,0); psio_open(CC_TMP1,0); psio_open(CC_TMP2,0); psio_open(CC_LAMBDA,0);
 
     fprintf(outfile,"\tSymmetry of left-hand state: %s\n",
-        moinfo.labels[ moinfo.sym^(pL_params[i].irrep) ]);
+	    moinfo.labels[ moinfo.sym^(pL_params[i].irrep) ]);
     fprintf(outfile,"\tSymmetry of left-hand eigenvector: %s\n",moinfo.labels[(pL_params[i].irrep)]);
 
     denom(pL_params[i]);     /* uses L_params.cceom_energy for excited states */
@@ -124,20 +133,31 @@ int main(int argc, char *argv[])
 
     for(moinfo.iter=1 ; moinfo.iter <= params.maxiter; moinfo.iter++) {
       sort_amps(pL_params[i].irrep);
-      G_build(pL_params[i].irrep);
 
       /* must zero New L before adding RHS */
       L_zero(pL_params[i].irrep);
 
       if(!strcmp(params.wfn,"CC3")) cc3_t3x();
 
-      L1_build(pL_params[i]);
-      if(params.print & 2) status("L1 amplitudes", outfile);
-      L2_build(pL_params[i]);
+      if(!strcmp(params.wfn,"CC2")) {
 
-      if(!strcmp(params.wfn, "CC3")) {
-	cc3_l3l2();
-	cc3_l3l1();
+	cc2_Gai_build(pL_params[i].irrep);
+	cc2_L1_build(pL_params[i]);
+	if(params.print & 2) status("L1 amplitudes", outfile);
+	cc2_L2_build(pL_params[i]);
+
+      }
+
+      else {
+	G_build(pL_params[i].irrep);
+	L1_build(pL_params[i]);
+	if(params.print & 2) status("L1 amplitudes", outfile);
+	L2_build(pL_params[i]);
+
+	if(!strcmp(params.wfn, "CC3")) {
+	  cc3_l3l2();
+	  cc3_l3l1();
+	}
       }
 
       if (params.ref == 1) L_clean(pL_params[i]);
@@ -151,7 +171,7 @@ int main(int argc, char *argv[])
           Lnorm(pL_params[i]); /* normalize against R */
         }
         Lsave_index(pL_params[i]); /* save Ls with indices in LAMPS */
-       /* sort_amps(); to be done by later functions */
+	/* sort_amps(); to be done by later functions */
         fprintf(outfile, "\n\tIterations converged.\n");
         fflush(outfile);
         break;
@@ -165,7 +185,7 @@ int main(int argc, char *argv[])
     fprintf(outfile, "\n");
     if(!done) {
       fprintf(outfile, "\t ** Lambda not converged to %2.1e ** \n",
-          params.convergence);
+	      params.convergence);
       fflush(outfile);
       dpd_close(0);
       cleanup();
