@@ -37,8 +37,9 @@ void get_params()
   }
   else {
     if(!strcmp(junk, "RHF")) params.ref = 0;
-    else if(!strcmp(junk,"ROHF") && (!strcmp(params.wfn,"MP2") || !strcmp(params.wfn,"CCSD_T")
-				     || !strcmp(params.wfn, "CC3") || !strcmp(params.wfn,"EOM_CC3"))) {
+    else if(!strcmp(junk,"ROHF") && (!strcmp(params.wfn,"MP2") || !strcmp(params.wfn,"CCSD_T") ||
+				     !strcmp(params.wfn, "CC3") || !strcmp(params.wfn,"EOM_CC3") ||
+				     !strcmp(params.wfn, "CC2") || !strcmp(params.wfn,"EOM_CC2"))) {
       params.ref = 2;
       params.semicanonical = 1;
     }
@@ -47,6 +48,21 @@ void get_params()
     else { 
       printf("Invalid value of input keyword REFERENCE: %s\n", junk);
       exit(PSI_RETURN_FAILURE); 
+    }
+    free(junk);
+  }
+
+  errcod = ip_string("ANALYZE", &(junk),0);
+  /* if no analyze parameter assume canonical */
+  if (errcod != IPE_OK) {
+    params.analyze = 0;
+  }
+  else {
+    if(!strcmp(junk, "CANONICAL")) params.analyze = 2;
+    else if(!strcmp(junk, "LOCAL")) params.analyze = 1;
+    else {
+      printf("Invalid value of input keyword ANALYZE: %s\n", junk);
+      exit(PSI_RETURN_FAILURE);
     }
     free(junk);
   }
@@ -116,10 +132,15 @@ void get_params()
   params.diis = 1;
   errcod = ip_boolean("DIIS", &(params.diis),0);
 
+  params.t2_coupled = 0;
+  errcod = ip_boolean("T2_COUPLED", &(params.t2_coupled),0);
+
   params.local = 0;
   errcod = ip_boolean("LOCAL", &(params.local),0);
   local.cutoff = 0.02;
   errcod = ip_data("LOCAL_CUTOFF", "%lf", &(local.cutoff), 0);
+  params.local_mos = 0;
+  errcod = ip_boolean("LOCAL_MOS", &(params.local_mos),0);
 
   if(ip_exist("LOCAL_METHOD",0)) {
     errcod = ip_string("LOCAL_METHOD", &(local.method), 0);
@@ -176,9 +197,6 @@ void get_params()
 
   params.print_mp2_amps = 0;
   errcod = ip_boolean("PRINT_MP2_AMPS", &(params.print_mp2_amps), 0);
-
-  params.analyze = 0;
-  errcod = ip_boolean("ANALYZE", &(params.analyze), 0);
 
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");

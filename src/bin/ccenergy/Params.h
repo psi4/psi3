@@ -18,6 +18,7 @@ struct Params {
   double bconv;
   int analyze;
   int semicanonical;
+  int local_mos;
   int dertype;
+  int t2_coupled;
 };
-

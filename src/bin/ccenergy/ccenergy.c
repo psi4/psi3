@@ -65,12 +65,14 @@ void amp_write(void);
 void amp_write(void);
 int rotate(void);
 double **fock_build(double **D);
+void analyze(void);
 void cc3_Wmnie(void);
 void cc3_Wamef(void);
 void cc3_Wmnij(void);
 void cc3_Wmbij(void);
 void cc3_Wabei(void);
 void cc3(void);
+void cc2(void);
 
 /* local correlation functions */
 void local_init(void);
@@ -137,8 +139,16 @@ int main(int argc, char *argv[])
     local_init();
     if(!strcmp(local.weakp,"MP2")) lmp2();
   }
+  if(params.local_mos) {
+    local_init();
+    if(!strcmp(local.weakp,"MP2")) lmp2();
+  }
 
   init_amps();
+  /*
+    if (params.analyze != 0)
+    analyze();
+  */
   if(params.print_mp2_amps) amp_write();
   tau_build();
   taut_build();
@@ -169,7 +179,32 @@ int main(int argc, char *argv[])
     if(params.print & 2) status("T1 amplitudes", outfile);
     timer_off("T1 Build");
 
-    if(strcmp(params.wfn,"CC2")) {
+    if((!strcmp(params.wfn,"CC2")) || (!strcmp(params.wfn,"EOM_CC2"))) {
+
+      timer_on("Wmnij build");
+      cc2_Wmnij_build();
+      if(params.print & 2) status("Wmnij", outfile);
+      timer_off("Wmnij build");
+
+      timer_on("Wmbij build");
+      cc2_Wmbij_build();
+      if(params.print & 2) status("Wmbij", outfile);
+      timer_off("Wmbij build");
+
+      timer_on("Wabei build");
+      cc2_Wabei_build();
+      if(params.print & 2) status("Wabei", outfile);
+      timer_off("Wabei build");
+
+      timer_on("T2 Build");
+      cc2_t2_build();
+      if(params.print & 2) status("T2 amplitudes", outfile);
+      timer_off("T2 Build");
+
+    }
+
+    else {
+
       timer_on("Wmbej build");
       Wmbej_build();
       if(params.print & 2) status("Wmbej", outfile);
@@ -179,24 +214,24 @@ int main(int argc, char *argv[])
       if(params.print & 2) status("Z", outfile);
       Wmnij_build();
       if(params.print & 2) status("Wmnij", outfile);
-    }
 
-    timer_on("T2 Build");
-    t2_build();
-    if(params.print & 2) status("T2 amplitudes", outfile);
-    timer_off("T2 Build");
+      timer_on("T2 Build");
+      t2_build();
+      if(params.print & 2) status("T2 amplitudes", outfile);
+      timer_off("T2 Build");
 
-    if( (!strcmp(params.wfn,"CC3")) || (!strcmp(params.wfn,"EOM_CC3"))) {
+      if( (!strcmp(params.wfn,"CC3")) || (!strcmp(params.wfn,"EOM_CC3"))) {
 
-      /* step1: build cc3 intermediates, Wabei, Wmnie, Wmbij, Wamef */
-      cc3_Wmnij();
-      cc3_Wmbij();
-      cc3_Wmnie();
-      cc3_Wamef();
-      cc3_Wabei();
+	/* step1: build cc3 intermediates, Wabei, Wmnie, Wmbij, Wamef */
+	cc3_Wmnij();
+	cc3_Wmbij();
+	cc3_Wmnie();
+	cc3_Wamef();
+	cc3_Wabei();
 
-      /* step2: loop over T3's and add contributions to T1 and T2 as you go */
-      cc3();
+	/* step2: loop over T3's and add contributions to T1 and T2 as you go */
+	cc3();
+      }
     }
 
     if(converged()) {
@@ -214,7 +249,8 @@ int main(int argc, char *argv[])
       fflush(outfile);
       fprintf(outfile, "\n");
       amp_write();
-
+      if (params.analyze != 0)
+	analyze();
       break;
     }
     if(params.diis) diis(moinfo.iter);
@@ -250,6 +286,11 @@ int main(int argc, char *argv[])
   if( (!strcmp(params.wfn,"CC3")) || (!strcmp(params.wfn,"EOM_CC3"))) {
     fprintf(outfile, "\tCC3 correlation energy     = %20.15f\n", moinfo.ecc);
     fprintf(outfile, "\tTotal CC3 energy           = %20.15f\n", 
+            moinfo.eref + moinfo.ecc);
+  }
+  else if( (!strcmp(params.wfn,"CC2")) || (!strcmp(params.wfn,"EOM_CC2"))) {
+    fprintf(outfile, "\tCC2 correlation energy     = %20.15f\n", moinfo.ecc);
+    fprintf(outfile, "\tTotal CC2 energy           = %20.15f\n", 
             moinfo.eref + moinfo.ecc);
   }
   else {
@@ -299,7 +340,7 @@ int main(int argc, char *argv[])
   }
 
   if( ((!strcmp(params.wfn,"CC3")) || (!strcmp(params.wfn,"EOM_CC3")))
-  && params.dertype == 3 && params.ref == 0) {
+      && params.dertype == 3 && params.ref == 0) {
     params.ref = 1;
     /* generate the ROHF versions of the He^T1 intermediates */
     cc3_Wmnij(); 
@@ -314,8 +355,6 @@ int main(int argc, char *argv[])
     /*    local_print_T1_norm(); */
     local_done();
   }
-
-  if(params.analyze) analyze();
 
   if(params.brueckner) brueckner_done = rotate();
   
