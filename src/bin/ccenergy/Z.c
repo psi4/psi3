@@ -9,15 +9,41 @@ void Z_build(void)
 {
   dpdbuf4 ZIJMA, Zijma, ZIjMa, ZIjmA, ZIjAm, ZMaIj, ZmAIj, Z;
   dpdbuf4 tauIJAB, tauijab, tauIjAb, tauIjbA, F_anti, F, tau;
+  int Gmb, Gij, mb, nrows, ncols;
 
   timer_on("Z");
 
   if(params.ref == 0) { /** RHF **/
-
+    /* ZMbIj = <Mb|Ef> * tau(Ij,Ef) */
+    /* OOC code added 3/23/05  -TDC */
     dpd_buf4_init(&Z, CC_MISC, 0, 10, 0, 10, 0, 0, "ZMbIj");
     dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
     dpd_buf4_init(&tau, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
-    dpd_contract444(&F, &tau, &Z, 0, 0, 1, 0);
+/*     dpd_contract444(&F, &tau, &Z, 0, 0, 1, 0); */
+    for(Gmb=0; Gmb < moinfo.nirreps; Gmb++) {
+      Gij = Gmb;  /* tau is totally symmetric */
+      dpd_buf4_mat_irrep_init(&tau, Gij);
+      dpd_buf4_mat_irrep_rd(&tau, Gij);
+
+      dpd_buf4_mat_irrep_init(&Z, Gmb);
+
+      dpd_buf4_mat_irrep_row_init(&F, Gmb);
+
+      for(mb=0; mb < F.params->rowtot[Gmb]; mb++) {
+	dpd_buf4_mat_irrep_row_rd(&F, Gmb, mb);
+
+	nrows = tau.params->rowtot[Gij];
+	ncols = tau.params->coltot[Gij];
+	if(nrows && ncols)
+	  C_DGEMV('n',nrows,ncols,1.0,tau.matrix[Gij][0],ncols,F.matrix[Gmb][0],1,
+		  0.0,Z.matrix[Gmb][mb],1);
+      }
+
+      dpd_buf4_mat_irrep_row_close(&F, Gmb);
+      dpd_buf4_mat_irrep_wrt(&Z, Gmb);
+      dpd_buf4_mat_irrep_close(&Z, Gmb);
+      dpd_buf4_mat_irrep_close(&tau, Gij);
+    }
     dpd_buf4_close(&tau);
     dpd_buf4_close(&F);
     dpd_buf4_close(&Z);  
