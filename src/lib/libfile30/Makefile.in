@@ -19,6 +19,8 @@ rd_ua2a.c \
 rd_rottype.c \
 rd_eref.c \
 rd_efzc.c \
+rd_fgeom.c \
+rd_felement.c \
 rd_schwartz.c \
 rd_symoper.c \
 rd_nso.c \
@@ -58,6 +60,7 @@ rd_iopen.c \
 rd_label.c \
 rd_phase_check.c \
 rd_natom.c \
+rd_nentry.c \
 rd_alpha_evals.c \
 rd_beta_evals.c \
 rd_evals.c \
@@ -85,6 +88,7 @@ wt_efzc.c \
 wt_enuc.c \
 wt_escf.c \
 wt_ecorr.c \
+wt_fgeom.c \
 wt_clsdpi.c \
 wt_corr_lab.c \
 wt_geom.c \

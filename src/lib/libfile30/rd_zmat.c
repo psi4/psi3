@@ -14,17 +14,17 @@
 
  struct z_entry *file30_rd_zmat(void)
 {
-  int natom;
+  int nentry;
   PSI_FPTR z_geom_ptr, junk;
   struct z_entry *z_geom;
 
-  natom = file30_rd_natom();
+  nentry = file30_rd_nentry();
 
-  z_geom = (struct z_entry *) malloc(natom*(sizeof(struct z_entry)));
+  z_geom = (struct z_entry *) malloc(nentry*(sizeof(struct z_entry)));
 
   z_geom_ptr = (PSI_FPTR) (info30_.mpoint[46] - 1)*sizeof(int);
 
-  wreadw(info30_.filenum, (char *) z_geom, (int) sizeof(struct z_entry)*natom,
+  wreadw(info30_.filenum, (char *) z_geom, (int) sizeof(struct z_entry)*nentry,
          z_geom_ptr, &junk);
 
   return  z_geom;
