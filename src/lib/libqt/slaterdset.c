@@ -373,6 +373,7 @@ void slaterdetvector_delete(SlaterDetVector *sdvector)
   }
 }
 
+
 /*! slaterdetvector_delete_full()
  */
 void slaterdetvector_delete_full(SlaterDetVector *sdvector)
@@ -388,6 +389,7 @@ void slaterdetvector_delete_full(SlaterDetVector *sdvector)
   }
 }
 
+
 /*! slaterdetvector_add
  */
 void slaterdetvector_add(SlaterDetVector *sdvector, int index, double coeff)
@@ -396,6 +398,7 @@ void slaterdetvector_add(SlaterDetVector *sdvector, int index, double coeff)
     sdvector->coeffs[index] = coeff;
   }
 }
+
 
 /*! slaterdetvector_set
  */
@@ -411,23 +414,55 @@ void slaterdetvector_set(SlaterDetVector *sdvector, double *coeffs)
 }
 
 
+/*
+** Use this if we only need to write a single vector.  Otherwise, call
+** slaterdetset_write(); slaterdetset_write_vect();
+** to allow for multiple vectors per slaterdetset to be written to disk.
+*/
 void slaterdetvector_write(ULI unit, char *prefix, SlaterDetVector *vector)
 {
-  int i;
   int need_to_init_psio = 0;
   int unit_opened = 1;
-  char *vector_key;
-  psio_address ptr;
 
 PSIO_INIT
 PSIO_OPEN(unit,PSIO_OPEN_OLD)
 
-  slaterdetset_write( unit, prefix, vector->sdset);
+  slaterdetset_write(unit, prefix, vector->sdset);
+  slaterdetset_write_vect(unit, prefix, vector->coeffs, vector->size, 0);
 
-  vector_key = (char *) malloc( strlen(prefix) + strlen(SDVECTOR_KEY_VECTOR) + 3);
-  sprintf(vector_key,":%s:%s",prefix,SDVECTOR_KEY_VECTOR);
+PSIO_CLOSE(unit)
+PSIO_DONE
 
-  psio_write_entry( unit, vector_key, (char *)vector->coeffs, vector->size*sizeof(double));
+}
+
+
+/*
+** This function already assumes we've already called slaterdetset_write()
+** to write out the string and determinant information.  This is only 
+** going to write out the coefficients.  This has been split out because
+** we might want to write several roots for a given determinant setup.
+**
+** CDS 8/03
+*/
+void slaterdetset_write_vect(ULI unit, char *prefix, 
+  double *coeffs, int size, int vectnum)
+{
+  int need_to_init_psio = 0;
+  int unit_opened = 1;
+  char *vector_key;
+
+PSIO_INIT
+PSIO_OPEN(unit,PSIO_OPEN_OLD)
+
+  if (vectnum < 0 || vectnum > 99) {
+    fprintf(stderr, "(slaterdetset_write_vect): vectnum out of bounds\n");
+    abort();
+  }
+
+  vector_key = (char *) malloc(strlen(prefix)+strlen(SDVECTOR_KEY_VECTOR)+5);
+  sprintf(vector_key,":%s:%s%2d",prefix,SDVECTOR_KEY_VECTOR,vectnum);
+
+  psio_write_entry(unit, vector_key, (char *)coeffs, size*sizeof(double));
 
 PSIO_CLOSE(unit)
 PSIO_DONE
@@ -436,26 +471,26 @@ PSIO_DONE
 }
 
 
+
+/*
+** Use this if we only need to read a single vector.  Otherwise, call
+** slaterdetset_read(); slaterdetset_read_vect();
+** to allow for multiple vectors per slaterdetset to be read from disk.
+*/
 void slaterdetvector_read(ULI unit, char *prefix, SlaterDetVector **sdvector)
 {
-  int i;
   int need_to_init_psio = 0;
   int unit_opened = 1;
   char *vector_key;
-  psio_address ptr;
   SlaterDetSet *sdset;
   SlaterDetVector *vector = (SlaterDetVector *) malloc(sizeof(SlaterDetVector));
 
 PSIO_INIT
 PSIO_OPEN(unit,PSIO_OPEN_OLD)
 
-  slaterdetset_read( unit, prefix, &sdset);
+  slaterdetset_read(unit, prefix, &sdset);
   slaterdetvector_init(vector,sdset);
-
-  vector_key = (char *) malloc( strlen(prefix) + strlen(SDVECTOR_KEY_VECTOR) + 3);
-  sprintf(vector_key,":%s:%s",prefix,SDVECTOR_KEY_VECTOR);
-
-  psio_read_entry( unit, vector_key, (char *)vector->coeffs, vector->size*sizeof(double));
+  slaterdetset_read_vect(unit, prefix, vector->coeffs, vector->size, 0);
 
 PSIO_CLOSE(unit)
 PSIO_DONE
@@ -464,5 +499,37 @@ PSIO_DONE
 
   *sdvector = vector;
 }
+
+
+/*
+** This function already assumes we've already called slaterdetset_read()
+** to read in the string and determinant information.  This is only 
+** going to read in the coefficients.  This has been split out because
+** we might want to read several roots for a given determinant setup.
+**
+** CDS 8/03
+*/
+void slaterdetset_read_vect(ULI unit, char *prefix, double *coeffs, 
+  int size, int vectnum)
+{
+  int need_to_init_psio = 0;
+  int unit_opened = 1;
+  char *vector_key;
+
+PSIO_INIT
+PSIO_OPEN(unit,PSIO_OPEN_OLD)
+
+  vector_key = (char *) malloc(strlen(prefix)+strlen(SDVECTOR_KEY_VECTOR)+5);
+  sprintf(vector_key,":%s:%s%2d",prefix,SDVECTOR_KEY_VECTOR,vectnum);
+
+  psio_read_entry(unit, vector_key, (char *)coeffs, size*sizeof(double));
+
+PSIO_CLOSE(unit)
+PSIO_DONE
+  
+  free(vector_key);
+
+}
+
 
 

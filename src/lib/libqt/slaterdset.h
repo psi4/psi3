@@ -95,14 +95,75 @@ void slaterdetvector_write(ULI unit, char *prefix, SlaterDetVector *vector);
 
 
 /*!
+  slaterdetset_write_vect()
+
+  Writes a vector in the space of Slater determinants to a PSIO file.  
+  Similar to slaterdetvector_write() except that this one writes only 
+  the vector, not the string and determinant information.  This does
+  not actually depend on the presence of a SlaterDetVector object, so it 
+  is called a SlaterDetSet function.
+
+  \param
+  ULI unit:  the unit number of the <em>uninitialized</em> PSIO file
+  
+  \param
+  char *prefix:  the prefix to be used for PSIO keys of the file entries
+  associated with the vector
+
+  \param
+  double *coeffs: the coefficient array
+
+  \param 
+  int size: the number of coefficients to write
+
+  \param 
+  int vectnum: an integer to be written in the TOC key.  Usually 
+  corresponds to which root is being written.  Start numbering from 0.
+
+*/
+void slaterdetset_write_vect(ULI unit, char *prefix,
+  double *coeffs, int size, int vectnum);
+
+
+/*!
   slaterdetvector_read()
 
-  Reads a vector in the space of Slater determinants from a PSIO file. complimentary and analogous
-  to slaterdetvector_write()
+  Reads a vector in the space of Slater determinants from a PSIO file. 
+  Complementary and analogous to slaterdetvector_write()
 
 */
 void slaterdetvector_read(ULI unit, char *prefix, SlaterDetVector **vector);
 
+/*
+  slaterdetset_read_vect()
+                                                                                
+  Reads a vector in the space of Slater determinants from a PSIO file.
+  Similar to slaterdetvector_read() except that this one reads only
+  the vector, not the string and determinant information.  This does
+  not actually depend on the presence of a SlaterDetVector object, so it
+  is called a SlaterDetSet function.
+
+  \param
+  ULI unit:  the unit number of the <em>uninitialized</em> PSIO file
+                                                                                
+  \param
+  char *prefix:  the prefix to be used for PSIO keys of the file entries
+  associated with the vector
+                                                                                
+  \param
+  double *coeffs:  the vector
+
+  \param
+  int size: the length of the coefficient array 
+                                                                                
+  \param
+  int vectnum: which vector number to read (start from 0)
+
+*/
+void slaterdetset_read_vect(ULI unit, char *prefix, double *coeffs,
+  int size, int vectnum);
+
+ 
 #define STRINGSET_KEY_SIZE "StringSet Size"
 #define STRINGSET_KEY_NELEC "StringSet Num. of Electrons"
 #define STRINGSET_KEY_NFZC "StringSet Num. of Frozen DOCCs"
