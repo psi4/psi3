@@ -118,10 +118,6 @@ void parsing()
      if (frozen_virt == NULL)
        frozen_virt = strdup("FALSE");
 
-     /* Check for ENMO flag */
-     enmo = 0;
-     errcod = ip_boolean("ENMO",&enmo,0);
-
      return;
 }
 
