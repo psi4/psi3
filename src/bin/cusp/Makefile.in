@@ -1,0 +1,20 @@
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+include ../MakeVars
+
+PSILIBS = -ldpd -lqt -lfile30 -liwl -lpsio -lciomr -lipv1
+
+CSRC = \
+cusp.c phi.c delta.c cache.c local.c
+
+BINOBJ = $(CSRC:%.c=%.o)
+ALLOC = 
+
+include ../MakeRules
+
+ifneq ($(DODEPEND),no)
+$(BINOBJ:%.o=%.d): $(DEPENDINCLUDE)
+include $(BINOBJ:%.o=%.d)
+endif
+
