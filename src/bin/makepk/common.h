@@ -1,8 +1,13 @@
 /* $Id$ */
 /* $Log$
- * Revision 1.1  2000/02/04 22:51:33  evaleev
- * Initial revision
+ * Revision 1.2  2002/05/10 05:44:06  crawdad
+ * Changed to variable name "nint" to "nnint" to avoid conflict with typedef
+ * in Tru64's math.h.
+ * -TDC
  *
+/* Revision 1.1.1.1  2000/02/04 22:51:33  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.1  1991/06/15 22:06:42  seidl
 /* Initial revision
 /* */
@@ -29,7 +34,7 @@ EXTERN int toler;               /* max iterations */
 EXTERN int n_so_typs;           /* number of irreps w/ non-zero num of so's */
 EXTERN int num_ir;              /* # of symmetry types */
 EXTERN int pos34;               /* pointer to location in file34 */
-EXTERN int nint;                /* number of pki ints in present batch */
+EXTERN int nnint;                /* number of pki ints in present batch */
 EXTERN int nbfao;
 EXTERN int nbfso;
 EXTERN int nbatri;

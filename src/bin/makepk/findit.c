@@ -1,8 +1,13 @@
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:51:33  evaleev
- * Initial revision
+ * Revision 1.2  2002/05/10 05:44:06  crawdad
+ * Changed to variable name "nint" to "nnint" to avoid conflict with typedef
+ * in Tru64's math.h.
+ * -TDC
  *
+/* Revision 1.1.1.1  2000/02/04 22:51:33  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.1  1991/06/15 22:06:29  seidl
 /* Initial revision
 /* */
@@ -46,7 +51,7 @@ void findit(ii,jj,kk,ll,ism,ksm,value,iab)
    lij = ii*(ii+1)/2 + jj;
    lkl = kk*(kk+1)/2 + ll;
 
-   if(!nint) {
+   if(!nnint) {
       bzero(inext,sizeof(int)*old_nint);
       bzero(&inext[intmx],sizeof(int)*keep);
       }
@@ -64,9 +69,9 @@ L1:
          }
       }
    else {
-      i=nint;
-      inext[start] = ++nint;
-      if(nint >= intmx) {
+      i=nnint;
+      inext[start] = ++nnint;
+      if(nnint >= intmx) {
         fprintf(outfile,"\n  increasing size of buffers in findit\n");
         fprintf(outfile,"  intmx was %d, is %d\n",intmx,intmx*2);
         fflush(outfile);
@@ -134,5 +139,5 @@ L1:
          pa[i] = 0.5*value2;
          pb[i] = 0.5*value2;
       }
-   old_nint=nint;
+   old_nint=nnint;
    }

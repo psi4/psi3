@@ -1,8 +1,13 @@
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:51:34  evaleev
- * Initial revision
+ * Revision 1.2  2002/05/10 05:44:06  crawdad
+ * Changed to variable name "nint" to "nnint" to avoid conflict with typedef
+ * in Tru64's math.h.
+ * -TDC
  *
+/* Revision 1.1.1.1  2000/02/04 22:51:34  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.2  1997/08/25 21:52:30  crawdad
 /* Making changes for extension of PSI file size limit.
 /*
@@ -62,7 +67,7 @@ void packit(lbij,lbkl,endflg)
          }
 
       if(!endflg) {
-         for(i=0; i < nint ; i++) {
+         for(i=0; i < nnint ; i++) {
             pval=pa[i];
             qval=pb[i];
             ij = lbij[i];
@@ -100,7 +105,7 @@ void packit(lbij,lbkl,endflg)
                   }
                }
             }
-         nint=0;
+         nnint=0;
          }
       else {
          num_ints += ibl;

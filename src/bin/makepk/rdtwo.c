@@ -1,8 +1,13 @@
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:51:34  evaleev
- * Initial revision
+ * Revision 1.2  2002/05/10 05:44:06  crawdad
+ * Changed to variable name "nint" to "nnint" to avoid conflict with typedef
+ * in Tru64's math.h.
+ * -TDC
  *
+/* Revision 1.1.1.1  2000/02/04 22:51:34  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 1.2  1997/08/25 21:52:32  crawdad
 /* Making changes for extension of PSI file size limit.
 /*
@@ -38,7 +43,7 @@ void rdtwo()
    union psi_buffer inbuf;
 
    if(nbfso > 150) intmx *= 4;
-   nint=0;
+   nnint=0;
 
    inbuf.pki = (double *) init_array(ibufsz/2);
    pa = (double *) init_array(intmx);
@@ -121,7 +126,7 @@ void rdtwo()
             }
          if(iopen || ci_calc) make_zeta(ii,jj,kk,ll,pki_int);
 
-         if(iii && nint) packit(lbij,lbkl,0);
+         if(iii && nnint) packit(lbij,lbkl,0);
          }
       } while(!ilsti);
 
