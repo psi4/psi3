@@ -31,8 +31,8 @@ else {
   pass_test("RHF Energy");
 }
 
-@freq_ref = seek_freq($REF_FILE,"Harmonic Frequency",$NDOF);
-@freq_test = seek_freq($TEST_FILE,"Harmonic Frequency",$NDOF);
+@freq_ref = seek_anal_freq($REF_FILE,"Harmonic Frequency",$NDOF);
+@freq_test = seek_anal_freq($TEST_FILE,"Harmonic Frequency",$NDOF);
 
 if(!compare_arrays(\@freq_ref, \@freq_test, $NDOF, 1, $HTOL)) {
   fail_test("SCF Frequencies");
