@@ -39,8 +39,8 @@ struct Params {
     char *wfn;                    /* string describing wavefunction type    */
     char *dertype;                /* derivative lvl: none, first, second..  */
     double tolerance;             /* tolerance on keeping integrals         */
-    int maxcor;                   /* maximum available core memory in bytes */
-    int maxcord;                  /* max ava core memory in doubles         */
+    long int maxcor;              /* maximum available core memory in bytes */
+    long int maxcord;             /* max ava core memory in doubles         */
     int fzc;                      /* really freeze core (FZC) (1) or trans
                                      the core orbitals also (COR) (0)?      */
     int print_reorder;            /* print the reordering array?            */
