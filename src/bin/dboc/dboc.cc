@@ -325,8 +325,11 @@ void exit_io()
 
   if (orig_psi_output_env != NULL)
     setenv("PSI_OUTPUT",orig_psi_output_env,1);
-  else
+  else {
+#ifdef HAVE_UNSETENV
     unsetenv("PSI_OUTPUT");
+#endif
+  }
 
   psio_done();
   tstop(outfile);
