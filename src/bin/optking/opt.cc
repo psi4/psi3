@@ -577,6 +577,10 @@ void get_optinfo() {
   ip_data("IRREP_TOL","%d",&a,0);
   optinfo.irrep_tol = power(10.0, -1*a);
 
+  a= 5;
+  ip_data("EV_TOL","%d",&a,0);
+  optinfo.ev_tol = power(10.0, -1*a);
+
   /* back-transformation parameters */
   optinfo.bt_max_iter = 100;
   ip_data("BT_MAX_ITER","%d",&(optinfo.bt_max_iter),0);

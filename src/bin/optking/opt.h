@@ -21,7 +21,7 @@
 #define MAX_SALCS (800)
 #define MAX_ATOMS (100)
 #define MAX_LINELENGTH (133)
-#define MAX_SALC_LENGTH (50)
+#define MAX_SALC_LENGTH (500)
 #define MAX(I,J) ((I>J) ? I : J)
 #define MIN(I,J) ((I>J) ? J : I)
 #define EVAL_TOL (1.0E-14)
@@ -60,6 +60,7 @@ struct OPTInfo {
   int bfgs;
   double conv; /* MAX force */
   double irrep_tol;
+  double ev_tol;
   int mix_types;
 
 /* Back-transformation parameters */
@@ -87,4 +88,13 @@ struct SYMInfo {
 
 EXTERN struct OPTInfo optinfo;
 EXTERN struct SYMInfo syminfo;
+
+
+
+
+
+
+
+
+
 

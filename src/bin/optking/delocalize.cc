@@ -77,6 +77,7 @@ void delocalize(int num_atoms,internals &simples) {
       B[count][3*d+k] += simples.out.get_s_D(i,k);
     }
   }
+  //  print_mat2(B,simples.get_num(),num_atoms*3,outfile);
 
  // Form BBt matrix
   BBt = init_matrix(simples.get_num(),simples.get_num());
@@ -104,43 +105,65 @@ void delocalize(int num_atoms,internals &simples) {
     }
     free(ptr);
   }
+  //  fprintf(outfile,"The BB^t Matrix:\n");
+  //  print_mat2(BBt,simples.get_num(),simples.get_num(),outfile);
 
  // Diagonalize BBt
   evals = init_array(simples.get_num());
   evects = init_matrix(simples.get_num(),simples.get_num());
   sq_rsp(simples.get_num(),simples.get_num(), BBt, evals, 1, evects, 1.0E-14);
 
+  /* check eigenvectors of BBt */
   if (optinfo.print_delocalize) {
-    fprintf(outfile,"Checking eigenvectors of BBt...");
-    temp_mat = init_matrix(simples.get_num(),simples.get_num());
-    eivout(evects, evals, simples.get_num(), simples.get_num(), outfile);
-    mmult(BBt,0,evects,0,temp_mat,0,simples.get_num(),
-          simples.get_num(),simples.get_num(),0);
-    for (j=0;j<simples.get_num();++j) {
-      error = 0;
-      for (i=0;i<simples.get_num();++i) {
-        if ( fabs(temp_mat[i][j] - evals[j]*evects[i][j]) > 1.0E-13) error = 1;
-      }
-      if (error == 1) { fprintf(outfile,"Error in evect %d\n",j); error = 0;}
+     fprintf(outfile,"\n\n+++Delocalized Coordinate Formation+++\n");
+     fprintf(outfile,"\n\nChecking eigenvectors of BBt...\n");
+     eivout(evects, evals, simples.get_num(), simples.get_num(), outfile);
+   }
+  temp_mat = init_matrix(simples.get_num(),simples.get_num());
+  mmult(BBt,0,evects,0,temp_mat,0,simples.get_num(),simples.get_num(),simples.get_num(),0);
+  for (j=0;j<simples.get_num();++j) {
+     error = 0;
+     for (i=0;i<simples.get_num();++i) {
+        if ( fabs(temp_mat[i][j] - evals[j]*evects[i][j]) > 1.0E-13)  error = 1;
+        if (error == 1) { fprintf(outfile,"Error in evect %d\n",j); error = 0;}
+       }
     }
-    fprintf(outfile,"Done.\n"); fflush(outfile);
+
+    fflush(outfile);
     free_matrix(temp_mat,simples.get_num());
-  }
   
+
+  
+  /* check for proper number of non-redundant coordinates (3n-6) */ 
+  num_nonzero = 0;
+  for (i=0;i<simples.get_num();++i)
+    if( evals[i] > optinfo.ev_tol ) ++num_nonzero;
+
+  if (num_nonzero != (3 * num_atoms - 6)) {
+    if (num_nonzero < (3 * num_atoms - 6)) {
+       fprintf(outfile,"\nerror -- too few non-redundant coordinates");
+       fprintf(outfile,"\n      -- should have %i (3n-6) but only have %i",3 * num_atoms - 6, num_nonzero);
+       fprintf(outfile,"\n      -- try reducing eigenvalue tolerance and check atom connectivity ( set print_simples = 1 )");
+      }
+    if (num_nonzero > (3 * num_atoms - 6)) {
+       fprintf(outfile,"\nerror -- too many non-redundant coordinates");
+       fprintf(outfile,"\n      -- should have %i (3n-6) but have %i",3 * num_atoms - 6, num_nonzero);
+       fprintf(outfile,"\n      -- try increasing eigenvalue tolerance");
+      }
+      fprintf(outfile,"\n       -- stopping execution\n");
+      fflush(outfile);
+      exit(1);
+  }
+
+
+  /* transpose evects matrix, also throw out redundant coordinates
+     (eigenvectors corresponding to zero eigenvalues*/
+
   double **evectst;
   char buffer[MAX_LINELENGTH], *err;
   int h;
   irr = init_int_array(simples.get_num());
 
-  /* transpose evects matrix also throw out redundant coordinates
-     (eigenvectors corresponding to zero eigenvalues*/
-
-  
-  num_nonzero = simples.get_num();
-  for (i=0;i<simples.get_num();++i)
-    if( evals[i] < 1.0E-14 )
-	--num_nonzero;
-  
   evectst = init_matrix(num_nonzero,simples.get_num());
   
   for (i=0;i<simples.get_num();++i) {
@@ -148,7 +171,13 @@ void delocalize(int num_atoms,internals &simples) {
 	  evectst[j-simples.get_num()+num_nonzero][i] = evects[i][j];
 	}
     }
-   free_matrix(evects,simples.get_num());
+  if (optinfo.print_delocalize == 1) {
+    fprintf(outfile,"\n\nTransposed non-redundant delocalized internal coordinate matrix (each row is a coordinate):\n");
+    print_mat(evectst,num_nonzero,simples.get_num(),outfile);
+  }
+  free_matrix(evects,simples.get_num());
+
+
 
   fp_intco = fopen("intco.dat", "r+");
   count = 0;
@@ -162,8 +191,12 @@ void delocalize(int num_atoms,internals &simples) {
     err = fgets(buffer, MAX_LINELENGTH, fp_intco);
   fflush(fp_intco);
 
- // send evectst to irrep.cc to be properly symmetrized
+
+
+  /* send evectst to irrep.cc to be properly symmetrized */
     evectst = irrep(simples, evectst);
+
+
 
  // Print out coordinates to intco.dat
   int col;

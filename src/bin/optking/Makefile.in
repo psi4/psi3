@@ -5,7 +5,7 @@ include ../MakeVars
 
 LD = $(CXX)
 
-PSILIBS = -lfile30 -lciomr -lipv1
+PSILIBS = -lfile30 -lciomr -lipv1 
 
 CSRC = gprgid.c char_table.c
 
