@@ -19,6 +19,9 @@ double invert_matrix(double **a, double **y, int N, FILE *outfile);
 void solve_2x2_pep(double **H, double S, double *evals, double **evecs);
 void reorder_qt(int *docc_in, int *socc_in, int *frozen_docc_in,
       int *frozen_uocc_in, int *order, int *orbs_per_irrep, int nirreps);
+void reorder_qt_uhf(int *docc, int *socc, int *frozen_docc, 
+		    int *frozen_uocc, int *order_alpha, int *order_beta,
+		    int *orbspi, int nirreps);
 void reorder_ras(int *docc_in, int *socc_in, int *frozen_docc_in,
       int *frozen_uocc_in, int *order, int *orbs_per_irrep,
       int *ras1, int *ras2, int *ras3, int *ras4, int do_ras4, int nirreps);

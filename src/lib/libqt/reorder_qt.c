@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <libciomr.h>
 
-
 /*
 ** reorder_qt()
 **
@@ -128,6 +127,110 @@ void reorder_qt(int *docc_in, int *socc_in, int *frozen_docc_in,
    free(used);  free(offset);
    free(docc);  free(socc);  free(frozen_docc);  free(frozen_uocc);
    free(uocc);
+}
+
+
+void reorder_qt_uhf(int *docc, int *socc, int *frozen_docc, 
+		    int *frozen_uocc, int *order_alpha, int *order_beta,
+		    int *orbspi, int nirreps)
+{
+  int p, nmo;
+  int cnt_alpha, cnt_beta, irrep, point, point_alpha, point_beta, tmpi;
+  int *offset, this_offset; 
+  int *uocc;
+
+  offset = init_int_array(nirreps);
+
+  uocc = init_int_array(nirreps);
+
+  /* construct the offset array */
+  offset[0] = 0;
+  for (irrep=1; irrep<nirreps; irrep++) {
+    offset[irrep] = offset[irrep-1] + orbspi[irrep-1];
+  }
+   
+  /* construct the uocc array */
+  nmo = 0;
+  for (irrep=0; irrep<nirreps; irrep++) {
+    nmo += orbspi[irrep];
+    tmpi = frozen_uocc[irrep] + docc[irrep] + socc[irrep];
+    if (tmpi > orbspi[irrep]) {
+      fprintf(stderr, "(reorder_qt_uhf): orbitals don't add up for irrep %d\n",
+	      irrep);
+      return;
+    }
+    else
+      uocc[irrep] = orbspi[irrep] - tmpi;
+  }
+
+  cnt_alpha = cnt_beta = 0;
+
+  /* do the frozen core */
+  for(irrep=0; irrep<nirreps; irrep++) { 
+    this_offset = offset[irrep];
+    for(p=0; p < frozen_docc[irrep]; p++) {
+      order_alpha[this_offset+p] = cnt_alpha++;
+      order_beta[this_offset+p] = cnt_beta++;
+    }
+  }
+
+  /* alpha occupied orbitals */
+  for(irrep=0; irrep<nirreps; irrep++) {
+    this_offset = offset[irrep] + frozen_docc[irrep];
+    for(p=0; p < docc[irrep] + socc[irrep] - frozen_docc[irrep]; p++) {
+      order_alpha[this_offset + p] = cnt_alpha++;
+    }
+  }
+
+  /* beta occupied orbitals */
+  for(irrep=0; irrep<nirreps; irrep++) {
+    this_offset = offset[irrep] + frozen_docc[irrep];
+    for(p=0; p < docc[irrep] - frozen_docc[irrep]; p++) {
+      order_beta[this_offset + p] = cnt_beta++;
+    }
+  }
+
+  /* alpha unoccupied orbitals */
+  for(irrep=0; irrep<nirreps; irrep++) {
+    this_offset = offset[irrep] + docc[irrep] + socc[irrep];
+    for(p=0; p < uocc[irrep]; p++) {
+      order_alpha[this_offset + p] = cnt_alpha++;
+    }
+  }
+
+  /* beta unoccupied orbitals */
+  for(irrep=0; irrep<nirreps; irrep++) {
+    this_offset = offset[irrep] + docc[irrep];
+    for(p=0; p < uocc[irrep] + socc[irrep]; p++) {
+      order_beta[this_offset + p] = cnt_beta++;
+    }
+  }
+
+  /* do the frozen uocc */
+  for (irrep=0; irrep<nirreps; irrep++) {
+    this_offset = offset[irrep] + docc[irrep] + socc[irrep] + uocc[irrep];
+    for(p=0; p < frozen_uocc[irrep]; p++) {
+      order_alpha[this_offset + p] = cnt_alpha++;
+      order_beta[this_offset + p] = cnt_beta++;
+    }
+  }
+
+  /* do a final check */
+  for (irrep=0; irrep<nirreps; irrep++) {
+    if (cnt_alpha > nmo) {
+      fprintf(stderr, "(reorder_qt_uhf): on final check, used more orbitals");
+      fprintf(stderr, "   than were available (%d vs %d) for irrep %d\n",
+	      cnt_alpha, nmo, irrep);
+    } 
+    if (cnt_beta > nmo) {
+      fprintf(stderr, "(reorder_qt_uhf): on final check, used more orbitals");
+      fprintf(stderr, "   than were available (%d vs %d) for irrep %d\n",
+	      cnt_beta, nmo, irrep);
+    } 
+  }
+
+  free(offset);
+  free(uocc);
 }
 
 
