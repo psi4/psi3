@@ -317,10 +317,12 @@ int *ang_mom)
    int errcod = 0;
    int cnt = 0;
    int num_levels2 = 0;
+   int do_scale = 0;
+   double tval, scale_factor = 1.0;
    char **temp;
    char *grep;
    char *next_key;
- 
+    
    next_key = init_char_array(50);
    temp = init_char_matrix(MAXATOM,50);
  
@@ -368,6 +370,17 @@ int *ang_mom)
       /*Start print and read scheme for formatted basis set output*/
       fprintf(outfile," (%s",grep);
 
+      /* see if the last item is a scale factor */
+      do_scale = 0;
+      scale_factor = 1.0;
+      errcod = ip_data(ip_token2[atom_number],"%lf",&scale_factor,
+                       2,i,num_exponents-1);
+      if (errcod == IPE_OK) {
+        do_scale = 1;
+        num_exponents--; 
+        /* fprintf(outfile, "Do scaling factor %lf\n", scale_factor); */
+      }
+
       /*exponent loop*/
       for(j=0;j<(num_exponents-1);j++){
          fprintf(outfile," (");
@@ -375,8 +388,12 @@ int *ang_mom)
          /*alternate between exponent and coefficient*/
          for(k=0;k<2;k++){
 
-            errcod = ip_data(ip_token2[atom_number],"%lf",
-                             &basis_set[*unique_prim_cnt][k],3,i,j+1,k);
+            errcod = ip_data(ip_token2[atom_number],"%lf",&tval,3,i,j+1,k);
+
+            if (k==0 && do_scale) {
+              tval = tval * scale_factor * scale_factor;
+            }
+            basis_set[*unique_prim_cnt][k] = tval;
 
             fprintf(outfile,"%15.8lf",basis_set[*unique_prim_cnt][k]);
          
