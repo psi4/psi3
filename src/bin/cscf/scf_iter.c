@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.5  2000/06/27 21:12:33  evaleev
- * .
+ * Revision 1.6  2000/07/05 21:47:31  sbrown
+ * Enabled the code to export the SCF eigenvector to CINTS when doing DFT.
  *
+/* Revision 1.5  2000/06/27 21:12:33  evaleev
+/* .
+/*
 /* Revision 1.4  2000/06/27 21:08:11  evaleev
 /* Fixed a minor string manipulation problem in scf_input.c
 /*
@@ -64,15 +67,19 @@ static char *rcsid = "$Id$";
 #define EXTERN
 #include "includes.h"
 #include "common.h"
+#include "psio.h"
 
 void scf_iter()
 
 {
-   int i,j,m,ij;
+   int i,j,k,m,ij;
+   int max,off,jj,kk;
+   int ntri;
    int nn,num_mo,newci;
    double cimax;
    double occi, occj, occ0, den;
    double **scr;
+   double **cmat;
    double *c1, *c2;
    double **fock_c, **fock_o;
    double **fock_ct;
@@ -388,7 +395,30 @@ void scf_iter()
            }
          }
        }
-
+      if(ksdft) {
+       
+       ntri = nbfso*nmo;
+       cmat = block_matrix(nmo,nbfso);
+       for(i=0;i<num_ir;i++){
+	   max = scf_info[i].num_so;
+	   off = scf_info[i].ideg;
+	   printf("\nideg for %d = %d",i,scf_info[i].ideg);
+	   for(j=0;j<max;j++){
+	       jj = j+off;
+	       for(k=0;k<max;k++) {
+		   kk = k + off;
+		   cmat[jj][kk] = scf_info[i].cmat[j][k];
+	       }
+	   }
+       }
+       
+       psio_open(itapDSCF, PSIO_OPEN_OLD);
+       psio_write_entry(itapDSCF, "SCF Eigenvector", (char *) &(cmat[0][0]),
+			sizeof(double)*ntri);
+       psio_close(itapDSCF,1);
+       free_block(cmat);
+   }
+     
 /* form new density matrix */
 
       dmat();
