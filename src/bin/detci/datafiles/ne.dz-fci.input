@@ -55,5 +55,6 @@ detci: (
    fci = true
    h0_blocksize = 400
    convergence = 6
+   maxiter = 10
 )
 
