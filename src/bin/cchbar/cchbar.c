@@ -72,9 +72,7 @@ int main(int argc, char *argv[])
   Wmnie_build();
   Wamef_build();
   Wmbij_build();
-  /*
   Wabei_build();
-  */
 
   if(params.ref == 1) purge(); /** ROHF only **/
   dpd_close(0);
