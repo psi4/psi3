@@ -69,6 +69,8 @@ void get_optinfo() {
   ip_boolean("DELOCALIZE", &(optinfo.delocalize),0);
   if (optinfo.delocalize)
     optinfo.redundant = 0;
+  if ((optinfo.mode == MODE_DISP_IRREP) || (optinfo.mode == MODE_DISP_NOSYMM) ) 
+    {  optinfo.redundant = 0; optinfo.delocalize =1; }
 
   optinfo.zmat = 0;
   if (ip_exist("ZMAT",0)) optinfo.zmat = 1;
