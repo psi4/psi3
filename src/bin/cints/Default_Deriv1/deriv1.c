@@ -23,6 +23,7 @@ double **grad_te;
 
 void deriv1()
 {
+  /*--- Gradient in the canonical frame ---*/
   Grad = block_matrix(Molecule.num_atoms,3);
 
   if (Molecule.num_atoms != 0) {

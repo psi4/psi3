@@ -178,6 +178,7 @@ typedef struct {
     double Enuc;                       /* nuclear repulsion energy */
     char *label;                       /* calculation label */
     struct coordinates *centers;       /* nuclear centers */
+    double **Rref;                     /* rotation back to reference frame */
 } Molecule_t;
     
 typedef struct {
@@ -201,8 +202,8 @@ typedef struct {
 } IOUnits_t;
  
 typedef struct {
-    double **bf_norm;                  /* normalization constants for cartesian GTOs of each
-					 angular momentum level */
+    double **bf_norm;                  /* "angular" parts of the normalization constants for cartesian GTOs of each
+					  angular momentum level */
     double ***cart2pureang;            /* cartesian to pure angular momentum transformation matrices */
     double ****cc2pp;                  /* composite (CxC) cartesian to pure angular momentum transformation
 					  matrices */
