@@ -54,7 +54,12 @@ The following external software packages are needed to complile \PSIthree:
 \item The linear algebra package (LAPACK), also available from
   netlib.org.  \PSIthree\ makes use of LAPACK's eigenvalue/eigenvector
   and matrix inversion routines.  {\tt http://www.netlib.org/netlib}
-\item The GNU make, flex, and bison programs. {\tt http://www.gnu.org}
+\item Various GNU utilies: {\tt http://www.gnu.org}
+\begin{itemize}
+\item {\tt make}
+\item {\tt flex}
+\item {\tt bison}
+\item {\tt fileutils} (esp.\ {\tt install})
 \end{itemize}
 
 \section{Basic Configuration and Installation}
