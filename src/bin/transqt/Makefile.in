@@ -7,7 +7,7 @@ LD = $(FC)
 LDLIBS += $(BLAS)
 CDEF += -DUSE_BLAS
 
-PSILIBS = -lmalloc -liwl -lqt -lfile30 -lciomr -lpsio -lipv1
+PSILIBS = -liwl -lqt -lfile30 -lciomr -lpsio -lipv1
 
 CSRC = \
 gprgid.c \
