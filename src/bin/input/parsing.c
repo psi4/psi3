@@ -97,6 +97,12 @@ void parsing()
      if (frozen_core == NULL)
        frozen_core = strdup("FALSE");
 
+     /* Check if need to freeze virtuals */
+     frozen_virt = NULL;
+     errcod = ip_string(":DEFAULT:FREEZE_VIRT",&frozen_virt,0);
+     if (frozen_virt == NULL)
+       frozen_virt = strdup("FALSE");
+
      return;
 }
 

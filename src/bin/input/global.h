@@ -56,6 +56,7 @@ EXTERN int overwrite_output;        /*Overwrite output.dat?*/
 EXTERN int expert;                  /*If expert is true - safety checks are off - 
 				      no guarantee of correctness */
 EXTERN char *frozen_core;           /*Frozen core option*/
+EXTERN char *frozen_virt;           /*Frozen virtuals option*/
 
 /*Labels*/
 EXTERN char *label;                 /*Label*/
@@ -119,6 +120,7 @@ EXTERN int disp_num;                /*Number of the displacement corresponding t
 				      the geometry in checkpoint file */
 
 EXTERN int nfzc;                    /*Number of frozen doubly-occupied orbitals */
+EXTERN int nfzv;                    /*Number of frozen unoccupied orbitals */
 
 /*Calculation-dependent arrays*/
 EXTERN double **full_geom;          /*Cartesian coordinates (in a.u.) of all atoms (including dummies) */

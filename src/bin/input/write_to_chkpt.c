@@ -64,6 +64,7 @@ void write_to_chkpt(double repulsion)
   chkpt_wt_natom(num_atoms);
   chkpt_wt_nallatom(num_allatoms);
   chkpt_wt_nfzc(nfzc);
+  chkpt_wt_nfzv(nfzv);
   free(calc_label);
 
 

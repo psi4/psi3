@@ -94,6 +94,7 @@ int main(int argc, char *argv[])
      }
 
      freeze_core();
+     freeze_virt();
 
      repulsion = 0.0;
      if (num_atoms > 1) {

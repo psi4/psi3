@@ -13,14 +13,12 @@ void freeze_core()
   int atom;
 
   if (!strcmp(frozen_core,"FALSE") ||
-      !strcmp(frozen_core,"NO") ||
-      !strcmp(frozen_core,"0")) {
+      !strcmp(frozen_core,"NO")) {
     nfzc = 0;
     return;
   }
   else if (!strcmp(frozen_core,"TRUE") ||
 	   !strcmp(frozen_core,"YES") ||
-	   !strcmp(frozen_core,"1") ||
 	   !strcmp(frozen_core,"SMALL") ||
 	   !strcmp(frozen_core,"LARGE")) {
 
@@ -45,7 +43,26 @@ void freeze_core()
 	  punt("Cannot freeze core automatically for fourth and higher row elements yet");
       }
   }
+  else if (frozen_core[0] >= '0' && frozen_core[0] <= '9') {
+    nfzc = atoi(frozen_core);
+  }
   else
     punt("Invalid value for FROZEN_CORE");
+
+}
+
+
+void freeze_virt()
+{
+  if (!strcmp(frozen_virt,"FALSE") ||
+      !strcmp(frozen_virt,"NO")) {
+    nfzv = 0;
+    return;
+  }
+  else if (frozen_virt[0] >= '0' && frozen_virt[0] <= '9') {
+    nfzv = atoi(frozen_virt);
+  }
+  else
+    punt("Invalid value for FROZEN_VIRT");
 
 }
