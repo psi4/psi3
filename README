@@ -1,23 +1,51 @@
               PSI3: A Quantum Chemical Program Package
-              ----------------------------------------
+	      ========================================
 
 PSI3 is a suite of ab initio quantum chemistry programs designed to compute
 various molecular properties.  A few highlights of the package include:
 
    * Coupled cluster (CC) methods, including CCSD and CCSD(T).  
    * Determinant-based configuration interaction (CI) methods, including
-   full CI and various flavors of multireference CI.
+     full CI and various flavors of multireference CI.
    * Integrals and derivative integrals over Gaussian functions of 
-   arbitrary angular momentum (up to k-type functions have been tested).
+     arbitrary angular momentum (up to k-type functions have been tested).
    * Linear R12 methods, including MP2-R12.
    * Excited-state methods, including CIS(D), RPA, and EOM-CCSD.
 
 ------------------------------------------------------------------------------
+
+AUTHORS:
+========
 T. Daniel Crawford, C. David Sherrill, Edward F. Valeev, Justin T. Fermann,
 Rollin A. King, Matthew L. Leininger, Shawn T. Brown, Curtis L. Janssen,
 Edward T. Seidl, Joseph P. Kenny, and Wesley D. Allen, PSI 3.2, 2003.
+
 ------------------------------------------------------------------------------
-** The file "INSTALL" provides detailed installation instructions for PSI3.
+
+INSTALLATION:
+=============
+The file "INSTALL" provides detailed installation instructions for PSI3.
+
+------------------------------------------------------------------------------
+
+LICENSE: 
+========
+This software is distributed under the GNU General Public License.  See the
+file LICENSE for more information.
+
+------------------------------------------------------------------------------
+
+DISCLAIMER: 
+===========
+There is no warranty for the program, to the extent permitted by applicable
+law.  Except when otherwise stated in writing the copyright holders and/or
+other parties provide the program "as is" without warranty of any kind,
+either expressed or implied, including, but not limited to, the implied
+warranties of merchantability and fitness for a particular purpose.  The
+entire risk as to the quality and performance of the program is with you.
+Should the program prove defective, you assume the cost of all necessary
+servicing, repair or correction.
+
 ------------------------------------------------------------------------------
 
 *** SPECIAL NOTE for LaTeX2HTML users *** EFV 6/15/00 At least the
@@ -28,4 +56,3 @@ applied directly to the latex2html script (type 'which latex2html' to
 find its precise location on your system). To apply the patch just type
 'patch latex2html misc/latex2html.v0.99_1.patch'. You might need superuser
 privileges to do that.
-
