@@ -54,7 +54,7 @@ void read_integrals()
    tmp_onel_ints = init_array(nbstri);
    iwl_rdone(Parameters.oei_file, PSIF_MO_FZC, tmp_onel_ints, nbstri,
              Parameters.oei_erase, (Parameters.print_lvl>4), outfile);
-   filter(tmp_onel_ints, CalcInfo.onel_ints, ioff, nbstri, 
+   filter(tmp_onel_ints, CalcInfo.onel_ints, ioff, CalcInfo.nbfso, 
 	  CalcInfo.num_fzc_orbs, CalcInfo.num_fzv_orbs);
    free(tmp_onel_ints);
 

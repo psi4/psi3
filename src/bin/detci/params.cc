@@ -32,7 +32,7 @@ extern "C" {
 void get_parameters(void)
 {
    int i, errcod;
-   int iopen=0;
+   int iopen=0, tval;
    char line1[133];
    
    ip_set_uppercase(1);
@@ -197,6 +197,8 @@ void get_parameters(void)
    errcod = ip_data("ENERGY_CONVERGENCE","%d",
                &(Parameters.energy_convergence),0);
    errcod = ip_data("S","%d",&(Parameters.S),0);
+
+   /* this stuff was appropriate to the OPENTYPE keyword in PSI2 */
    errcod = ip_data("OPENTYPE","%s",line1,0);
    if (errcod == IPE_OK) {
       if (strcmp(line1, "NONE")==0) { 
@@ -213,6 +215,37 @@ void get_parameters(void)
          }
       else Parameters.opentype = PARM_OPENTYPE_UNKNOWN;
       } 
+   else { /* no opentype keyword, as appropriate for PSI3 */
+     errcod = ip_data("REFERENCE","%s",line1,0);
+     if (errcod == IPE_OK) {
+       if (strcmp(line1, "RHF")==0) {
+         Parameters.opentype = PARM_OPENTYPE_NONE;
+         Parameters.Ms0 = 1;
+         }
+       if (strcmp(line1, "ROHF")==0) {
+         if (ip_data("MULTP","%d",&tval,0) == IPE_OK) {
+           if (tval == 1) {
+             Parameters.opentype = PARM_OPENTYPE_SINGLET;
+             Parameters.Ms0 = 1;
+             }
+           else {
+             Parameters.opentype = PARM_OPENTYPE_HIGHSPIN;
+             Parameters.Ms0 = 0;
+             }
+           }
+         else {
+           fprintf(outfile, "detci: trouble reading MULTP\n");
+           exit(0);
+           }
+         }  /* end ROHF parsing */
+       else {
+         fprintf(outfile, "detci: can only handle RHF or ROHF\n");
+         exit(0);
+         }
+       }
+     else Parameters.opentype = PARM_OPENTYPE_UNKNOWN;
+     } /* end PSI3 parsing */
+
    errcod = ip_boolean("MS0",&(Parameters.Ms0),0);
    errcod = ip_data("REF_SYM","%d",&(Parameters.ref_sym),0);
    errcod = ip_data("OEI_FILE","%d",&(Parameters.oei_file),0);
@@ -224,7 +257,8 @@ void get_parameters(void)
    errcod = ip_data("H0_GUESS_SIZE","%d",&(Parameters.h0guess_size),0);
    if (Parameters.h0guess_size > Parameters.h0blocksize)
      Parameters.h0guess_size = Parameters.h0blocksize; 
-   errcod = ip_data("H0_BLOCK_COUPLING_SIZE","%d",&(Parameters.h0block_coupling_size),0);
+   errcod = ip_data("H0_BLOCK_COUPLING_SIZE","%d",
+                    &(Parameters.h0block_coupling_size),0);
    errcod = ip_boolean("H0_BLOCK_COUPLING",&(Parameters.h0block_coupling),0);
    errcod = ip_data("NPRINT","%d",&(Parameters.nprint),0);
    errcod = ip_boolean("FREEZE_CORE",&(Parameters.fzc),0);
