@@ -49,7 +49,7 @@ void get_geometry()
       Molecule.centers[i].z = g[i][2];
       Molecule.centers[i].Z_nuc = Z[i];
    }
-   free_matrix(g,Molecule.num_atoms);
+   free_block(g);
    free(Z);
 
    return;
