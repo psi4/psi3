@@ -22,13 +22,6 @@ include ../MakeRules
 # so local data must be on the stack.
 zero.$(OBJSUF): zero.$(F77SUF)
 	$(FC) $(FFLAGS_NOSTATIC) -c $< $(OUTPUT_OPTION)
-bit.$(OBJSUF): bit.$(F77SUF)
-	$(FC) $(FFLAGS_NOSTATIC) -c $< $(OUTPUT_OPTION)
-
-ifneq (,$(findstring linux,$(target)))
-givens.o: givens.f
-	$(FC) $(FDBG) $(FDEF) $(FOTH) $(FINC) -c $< $(OUTPUT_OPTION)
-endif
 
 ifneq ($(DODEPEND),no)
 include $(CSRC:%.c=%.d)
