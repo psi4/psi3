@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
   cube.natom = params.natom;
   chkpt_close();
 
-  // print_mat(cube.geom, cube.natom, 3, stdout);
+  /* print_mat(cube.geom, cube.natom, 3, stdout); */
 
   /* determine output filename */
   if (ip_exist("CUBFILE",0))
@@ -186,7 +186,7 @@ void init_io(int argc, char *argv[]) {
 
 void exit_io(void) {
   int i;
-//  psio_close(32,1);
+/*  psio_close(32,1); */
   psio_done();
   tstop(outfile);
   ip_done();
@@ -285,7 +285,7 @@ void setup_delta(double **scf, double **u)
   /* read SCF eigenvectors in Pitzer ordering */
   chkpt_init(PSIO_OPEN_OLD);
   scf_pitzer = chkpt_rd_scf();
-  // u = chkpt_rd_usotao();
+  /* u = chkpt_rd_usotao(); */
   evals_pitzer = chkpt_rd_evals();
   chkpt_close();
 
@@ -305,7 +305,7 @@ void setup_delta(double **scf, double **u)
   reorder_qt(clsdpi, openpi, frdocc, fruocc, order, orbspi, nirreps);
 
   /*** Arrange the SCF eigenvectors into QT ordering ***/
- // scf = block_matrix(nmo, nmo);
+ /* scf = block_matrix(nmo, nmo); */
   evals = (double *) malloc(nmo * sizeof(double));
   for(i=0; i < nmo; i++) {
       I = order[i];  /* Pitzer --> QT */
@@ -336,9 +336,9 @@ void setup_delta(double **scf, double **u)
   free(evals_pitzer);
 
   free(order);
-  // free(clsdpi);
-  // free(openpi);
-  // free(orbspi);
+  /* free(clsdpi);
+  free(openpi);
+  free(orbspi); */
   free(fruocc);
   free(frdocc);
   free_block(scf_pitzer);
