@@ -49,9 +49,15 @@ struct shell_pair{
   double *a1, *a2, **gamma;
   double *inorm, *jnorm;
   double **Sovlp;
-  /*--- Densities, Largangian, G-matrices ---*/
+  /*--- Having closed-shell and open-shell and alpha and beta densities
+        is redundant. Thus only one pair is used at a given time, and the
+	other pair is empty (ptr=NULL)! If the other pair is needed do the
+	transformation ---*/
   double **dmat;
   double **dmato;
+  double **dmata;
+  double **dmatb;
+  /*--- SCF Lagrangian ---*/
   double **lagr;
   double Smax;
   double Dmax;
@@ -102,6 +108,7 @@ typedef struct {
     int make_fock;                     /* Flag to compute Fock matrix */
     int make_eri;                      /* Flag to compute two-electron integrals */
     int make_deriv1;                   /* Flag to compute first derivatives of one- and two-electron integrals */
+    int make_oeprop;                   /* Flag tp compute one-electron property integrals */
     int make_mp2;                      /* Flag to compute MP2 energy directly */
     int make_r12ints;                  /* Compute integrals for linear R12 methods */
     int make_mp2r12;                   /* Flag to compute MP2-R12 ebergy directly */
@@ -163,6 +170,10 @@ typedef struct {
     int itapS;                /* SO Overlap IWL file */
     int itapT;                /* SO Kinetic energy IWL file */
     int itapV;                /* SO Potential energy IWL file */
+    int itapS_AO;             /* AO Overlap IWL file */
+    int itapMX_AO;            /* AO mu(x) IWL file */
+    int itapMY_AO;            /* AO mu(y) IWL file */
+    int itapMZ_AO;            /* AO mu(z) IWL file */
     int itapDSCF;             /* "Interface" file between DSCF and CINTS */
     int itapD;                /* Correlated AO OPDM and Lagrangian from transqt */
     int itapG;                /* Correlated AO TPDM from transqt */

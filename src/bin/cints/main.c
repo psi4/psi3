@@ -24,11 +24,14 @@
  #include"oe_ints.h"
  #include"te_ints.h"
 #endif
-#ifdef INCLUDE_HF_Fock
+#ifdef INCLUDE_Fock
  #include"fock.h"
 #endif
 #ifdef INCLUDE_Default_Deriv1
  #include"deriv1.h"
+#endif
+#ifdef INCLUDE_OEProp_Ints
+ #include"oeprop_ints.h"
 #endif
 #ifdef INCLUDE_MP2
  #include"mp2.h"
@@ -80,7 +83,7 @@ int main(int argc, char *argv[])
    if (UserOptions.make_eri)
      te_ints();
 #endif
-#ifdef INCLUDE_HF_Fock
+#ifdef INCLUDE_Fock
    if (UserOptions.make_fock)
      fock();
 #endif
@@ -88,6 +91,10 @@ int main(int argc, char *argv[])
 #ifdef INCLUDE_Default_Deriv1
    if (UserOptions.make_deriv1)
      deriv1();
+#endif
+#ifdef INCLUDE_OEProp_Ints
+   if (UserOptions.make_oeprop)
+     oeprop_ints();
 #endif
 #ifdef INCLUDE_MP2
    if (UserOptions.make_mp2)

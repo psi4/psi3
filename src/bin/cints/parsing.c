@@ -78,7 +78,7 @@ void parsing_cmdline(int argc, char *argv[])
        
        /*--- build Fock option ---*/
        if (strcmp(argv[i], "--fock") == 0) {
-#ifdef INCLUDE_HF_Fock
+#ifdef INCLUDE_Fock
            UserOptions.make_oei = 0;
 	   UserOptions.make_eri = 0;
 	   UserOptions.make_fock = 1;
@@ -96,7 +96,7 @@ void parsing_cmdline(int argc, char *argv[])
 	   else
 	     punt("The specified REFERENCE not implemented");
 #else
-	   punt("--fock option is not supported by your CINTS executable.\nRecompile the code including files in HF_Fock subdirectory.");
+	   punt("--fock option is not supported by your CINTS executable.\nRecompile the code including files in Fock subdirectory.");
 #endif
 	   return;
        }
@@ -165,6 +165,20 @@ void parsing_cmdline(int argc, char *argv[])
 	   return;
        }
 
+       /*--- compute one-electron property integrals option ---*/
+       if (strcmp(argv[i], "--oeprop") == 0) {
+#ifdef INCLUDE_OEProp_Ints
+           UserOptions.make_oei = 0;
+	   UserOptions.make_eri = 0;
+	   UserOptions.make_fock = 0;
+	   UserOptions.make_oeprop = 1;
+	   UserOptions.symm_ints = 0;
+#else
+	   punt("--oeprop option is not supported by your CINTS executable.\nRecompile the code including files in OEProp_Ints subdirectory.");
+#endif
+	   return;
+       }
+       
        /*--- compute MP2 energy option ---*/
        if (strcmp(argv[i], "--mp2") == 0) {
 #ifdef INCLUDE_MP2

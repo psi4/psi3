@@ -129,6 +129,11 @@ void read_scf_opdm()
 	  joffset = BasisSet.shells[sh_j].fao-1;
 	  nao_j = ioff[BasisSet.shells[sh_j].am];
 	  sp->dmato = block_matrix(nao_i,nao_j);
+
+	  /*--- No alpha or beta densities yet since HF Fock is computed first ---*/
+	  sp->dmata = NULL;
+	  sp->dmatb = NULL;
+
 	  max_elem = sp->Dmax;
 	  for(i=0;i<nao_i;i++)
 	    for(j=0;j<nao_j;j++) {

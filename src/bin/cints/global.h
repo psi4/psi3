@@ -48,6 +48,6 @@ EXTERN double **Dens;    /* Total density in AO basis */
 EXTERN double **Denso;   /* Open-shell density in AO basis */
 EXTERN double **Lagr;    /* Energy-weighted density of lagrangian in AO basis */
 EXTERN double ***ShDens; /* MO shell density */
-EXTERN double **G;       /* in SO basis */
-EXTERN double **Go;      /* in SO basis */
+EXTERN double **G;       /* G-matrix (t.e. part of the Fock matrix) in AO basis */
+EXTERN double **Go;      /* open-shell G-matrix in AO basis */
 EXTERN double **Grad;    /* Nuclear forces */
