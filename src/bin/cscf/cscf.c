@@ -221,7 +221,7 @@ int main(argc,argv)
    fprintf(outfile,"\n%13c------------------------------------------\n\n\n",' ');
    
    
-   itap30 = PSIF_CHKPT;
+   itap30 = 30;
    itap33 = PSIF_SO_TEI;
    itap34 = 34;
    itapS  = PSIF_OEI;

@@ -1,7 +1,12 @@
 /* $Log$
- * Revision 1.8  2002/03/25 00:02:00  sherrill
- * Add libpsio
+ * Revision 1.9  2002/03/25 01:07:59  crawdad
+ * Some changes to cleanup et al. to write SCF-generated data to both old
+ * file30 and new chkpt.
+ * -TDC
  *
+/* Revision 1.8  2002/03/25 00:02:00  sherrill
+/* Add libpsio
+/*
 /* Revision 1.7  2002/01/04 18:03:24  crawdad
 /* Minor change to set phase_check flag to true when starting from a core
 /* guess.  This is to allow correlated calculations that might have stopped
@@ -115,6 +120,9 @@ void cleanup()
    int *pointers;  /* Array to hold pointers to the scf info */
    char **labs;
    void print_mo_eigvals(void);
+   psio_address chkptr;
+
+   psio_open(PSIF_CHKPT, PSIO_OPEN_OLD);
  
    ip_cwk_clear();
    ip_cwk_add(":DEFAULT");
@@ -367,6 +375,8 @@ void cleanup()
 	   }
        }
        wwritw(itap30,(char *) scr_arr,sizeof(double)*nmo,locvec,&locvec);
+       psio_write_entry(PSIF_CHKPT, "::Orbital energies alpha",
+			(char *) scr_arr, sizeof(double)*mxcoef);
        pointers[3] = 0;
        pointers[4] = locvec;
    }
@@ -382,23 +392,34 @@ void cleanup()
        }
    }
    
+   chkptr = PSIO_ZERO;
    for (i=0 ; i < num_ir ; i++) 
-      if (scf_info[i].num_so)
+     if (scf_info[i].num_so) {
 	  wwritw(itap30,(char *) scf_info[i].irrep_label,sizeof(char)*4,locvec,&locvec);
+	  psio_write(PSIF_CHKPT, "::HF irrep labels", (char *) scf_info[i].irrep_label,
+			   4*sizeof(char), chkptr, &chkptr);
+     }
    
    pointers[5] = locvec;
    
    wwritw(itap30,(char *) n_there,sizeof(int)*n_so_typs,locvec,&locvec);
+   psio_write_entry(PSIF_CHKPT, "::Orbitals per irrep", (char *) n_there, 
+		    n_so_typs*sizeof(int));
    
    pointers[6] = locvec;
    
    wwritw(itap30,(char *) nc,sizeof(int)*n_so_typs,locvec,&locvec);
+   psio_write_entry(PSIF_CHKPT, "::Closed shells per irrep", (char *) nc, 
+		    n_so_typs*sizeof(int));
    
    pointers[7] = locvec;
    
    if(iopen || uhf) {
       wwritw(itap30,(char *) no,sizeof(int)*n_so_typs,locvec,&locvec);
       pointers[8] = locvec;
+
+      psio_write_entry(PSIF_CHKPT, "::Open shells per irrep", (char *) no,
+		       n_so_typs*sizeof(int));
    }
    if(iopen){
       if(twocon) {
@@ -413,8 +434,12 @@ void cleanup()
       if(ci_calc && !twocon)
          for (i=0; i < ioff[n_open] ; i++) beta[i] = -beta[i];
       wwritw(itap30,(char *) alpha,sizeof(double)*ioff[n_open],locvec,&locvec);
+      psio_write_entry(PSIF_CHKPT, "::Alpha coupling coeffs", (char *) alpha,
+		       ioff[n_open]*sizeof(double));
       pointers[9] = locvec;
       wwritw(itap30,(char *) beta,sizeof(double)*ioff[n_open],locvec,&locvec);
+      psio_write_entry(PSIF_CHKPT, "::Beta coupling coeffs", (char *) beta,
+		       ioff[n_open]*sizeof(double));
       pointers[10] = locvec;
       }
 
@@ -447,6 +472,12 @@ void cleanup()
 	       }
 	   }
 	   wwritw(itap30,(char *) lagrangian,sizeof(double)*nx,locvec,&locvec); 
+	   if(m==0) 
+	     psio_write_entry(PSIF_CHKPT, "::Alpha Lagrangian", (char *) lagrangian,
+			      nx*sizeof(double));
+	   else
+	     psio_write_entry(PSIF_CHKPT, "::Beta Lagrangian", (char *) lagrangian,
+			      nx*sizeof(double));
 	   pointers[m+11] = locvec; 
        }
    }
@@ -527,9 +558,13 @@ void cleanup()
          }
       }
    wwritw(itap30,(char *) lagrangian,sizeof(double)*nx,locvec,&locvec);
+   psio_write_entry(PSIF_CHKPT, "::Alpha Lagrangian", (char *) lagrangian,
+		    nx*sizeof(double));
    pointers[11]=0;
    pointers[12]=locvec;
    }
+
+   psio_close(PSIF_CHKPT, 1);
    
    if(newvec) {
       iend = (int) locvec/sizeof(int)+1;
