@@ -23,6 +23,13 @@
 ** Center for Computational Quantum Chemistry
 ** University of Georgia, 1995
 **
+** \param docc_in        = doubly occupied orbitals per irrep
+** \param socc_in        = singly occupied orbitals per irrep
+** \param frozen_docc_in = frozen occupied orbitals per irrep
+** \param frozen_uocc_in = frozen unoccupied orbitals per irrep
+** \param order          = reordering array (Pitzer->QT order)
+** \param nirreps        = number of irreducible representations
+**
 */
 void reorder_qt(int *docc_in, int *socc_in, int *frozen_docc_in, 
       int *frozen_uocc_in, int *order, int *orbs_per_irrep, int nirreps)
@@ -137,6 +144,14 @@ void reorder_qt(int *docc_in, int *socc_in, int *frozen_docc_in,
 ** reorder_qt_uhf()
 **
 ** Generalization of reorder_qt() for UHF case
+**
+** \param docc        = doubly occupied orbitals per irrep
+** \param socc        = singly occupied orbitals per irrep
+** \param frozen_docc = frozen occupied orbitals per irrep
+** \param frozen_uocc = frozen unoccupied orbitals per irrep
+** \param order_alpha = reordering array for alpha (Pitzer->QT order)
+** \param order_beta  = reordering array for beta  (Pitzer->QT order)
+** \param nirreps     = number of irreducible representations
 */
 void reorder_qt_uhf(int *docc, int *socc, int *frozen_docc, 
 		    int *frozen_uocc, int *order_alpha, int *order_beta,

@@ -38,7 +38,6 @@
 **   the two endpoints of the interval must have _different_ signs for the
 **   bisection method to work!  This routine checks for this initially.
 **
-** Arguments:
 **   \param function  = pointer to function we want to examine 
 **                      (must return double)
 **   \param low       = lower bound of interval to search for root
@@ -113,7 +112,6 @@ double bisect(function, low, high, tolerance, maxiter, printflag)
 **   tolerance.  An initial guess for the root must be given, as well as
 **   the function AND it's derivative.
 **
-** Arguments:
 **   \param F         = pointer to function we want to examine 
 **                      (must return double)
 **   \param dF        = pointer to _derivative_ of function F
@@ -162,7 +160,6 @@ double newton(F, dF, x, tolerance, maxiter, printflag)
 **   tolerance.  An initial TWO guesses for the root must be given, as well
 **   as the function itself.
 **
-** Arguments:
 **   \param F         = pointer to function we want to examine 
 **                      (must return double)
 **   \param x0        = 1st guess for root

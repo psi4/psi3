@@ -22,7 +22,6 @@
 ** Center for Computational Quantum Chemistry
 ** University of Georgia, 25 June 1995
 **
-** Parameters:
 **  \param nirreps     =  num of irreps in computational point group
 **  \param nbfso       =  num of basis functions in symmetry orbitals (num MOs) 
 **  \param freeze_core =  1 to remove frozen core orbitals from ras_opi

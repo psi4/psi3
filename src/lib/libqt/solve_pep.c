@@ -12,7 +12,6 @@
 **    [ H11 - E    H12 - E*S ]  [c1]  
 **    [ H12 - E*S  H22 - E   ]  [c2]  = 0
 **
-** Arguments:
 **  \param H     =  matrix to get eigenvalues of
 **  \param S     =  overlap between states 1 & 2
 **  \param evals =  pointer to array to hold 2 eigenvalues

@@ -17,7 +17,6 @@
 **
 ** David Sherrill, Feb 1994
 **
-** Arguments: 
 **   \param A    = matrix to orthogonalize (matrix of doubles)
 **   \param rows = rows of A 
 **   \param cols = columns of A
