@@ -15,7 +15,6 @@ char *psi_file_prefix;
 int main(int argc, char *argv[])
 {
   int unit=0, i=0;
-  init_io(argc, argv);
 
   while(--argc > 0) {
        i++;
@@ -30,6 +29,8 @@ int main(int argc, char *argv[])
     }
 
   if(!unit) { printf("Bad unit number.\n"); exit(1); }
+
+  init_io(argc-1, argv+i);
 
   psio_open(unit,PSIO_OPEN_OLD);
   psio_tocprint(unit,stdout);
@@ -57,9 +58,7 @@ void init_io(int argc, char *argv[])
 void exit_io(void)
 {
   psio_done();
-  ip_done();
-  fclose(infile);
-  fclose(outfile);
+  psi_stop();
 }
 
 char *gprgid()
