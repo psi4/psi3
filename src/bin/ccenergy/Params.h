@@ -4,7 +4,7 @@ struct Params {
   double convergence;
   int restart;
   long int memory;
-  int aobasis;
+  char *aobasis;
   int cachelev;
   int cachetype;
   int ref;

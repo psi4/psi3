@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
 	     cachelist, NULL, 4, moinfo.aoccpi, moinfo.aocc_sym, moinfo.avirtpi,
 	     moinfo.avir_sym, moinfo.boccpi, moinfo.bocc_sym, moinfo.bvirtpi, moinfo.bvir_sym);
 
-    if(params.aobasis) { /* Set up new DPD's for AO-basis algorithm */
+    if(strcmp(params.aobasis,"NONE")) { /* Set up new DPD's for AO-basis algorithm */
       dpd_init(1, moinfo.nirreps, params.memory, 0, cachefiles, cachelist, NULL, 
                4, moinfo.aoccpi, moinfo.aocc_sym, moinfo.orbspi, moinfo.orbsym, 
 	       moinfo.boccpi, moinfo.bocc_sym, moinfo.orbspi, moinfo.orbsym);
@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
 	     cachelist, priority, 2, moinfo.occpi, moinfo.occ_sym, 
 	     moinfo.virtpi, moinfo.vir_sym);
    
-    if(params.aobasis) { /* Set up new DPD for AO-basis algorithm */
+    if(strcmp(params.aobasis,"NONE")) { /* Set up new DPD for AO-basis algorithm */
       dpd_init(1, moinfo.nirreps, params.memory, 0, cachefiles, cachelist, NULL, 
 	       2, moinfo.occpi, moinfo.occ_sym, moinfo.orbspi, moinfo.orbsym);
       dpd_set_default(0);
@@ -193,7 +193,7 @@ int main(int argc, char *argv[])
     fprintf(outfile, "\t ** Wave function not converged to %2.1e ** \n",
 	    params.convergence);
     fflush(outfile);
-    if(params.aobasis) dpd_close(1);
+    if(strcmp(params.aobasis,"NONE")) dpd_close(1);
     dpd_close(0);
     cleanup();
     timer_off("CCEnergy");
@@ -255,7 +255,7 @@ int main(int argc, char *argv[])
     local_done();
   }
   
-  if(params.aobasis) dpd_close(1);
+  if(strcmp(params.aobasis,"NONE")) dpd_close(1);
   dpd_close(0);
 
   if(params.ref == 2) cachedone_uhf(cachelist);

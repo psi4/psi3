@@ -25,7 +25,8 @@ void t2_build(void)
   timer_off("WmnijT2", outfile);
 
   timer_on("BT2", outfile);
-  if(params.aobasis) BT2_AO();
+  if(!strcmp(params.aobasis,"DISK") || !strcmp(params.aobasis,"DIRECT"))
+      BT2_AO();
   else BT2();
   if(params.print & 2) status("<ab||cd> -> T2", outfile);
   timer_off("BT2", outfile);

@@ -4,6 +4,7 @@
 #include <math.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
+#include <psifiles.h>
 #define EXTERN
 #include "globals.h"
 
@@ -62,8 +63,16 @@ void get_params()
 
   fndcor(&(params.memory),infile,outfile);
 
-  params.aobasis = 0;
-  errcod = ip_boolean("AO_BASIS", &(params.aobasis),0);
+  if(ip_exist("AO_BASIS",0)) {
+      errcod = ip_string("AO_BASIS", &(params.aobasis),0);
+  }
+  else params.aobasis = strdup("NONE");
+  if(strcmp(params.aobasis,"DISK") && strcmp(params.aobasis,"DIRECT") &&
+     strcmp(params.aobasis,"NONE")) {
+      fprintf(outfile, "Error in input: invalid AO_BASIS = %s\n",
+              params.aobasis);
+      exit(PSI_RETURN_FAILURE);
+  }
 
   params.cachelev = 2;
   errcod = ip_data("CACHELEV", "%d", &(params.cachelev),0);
@@ -76,7 +85,7 @@ void get_params()
     else {
       fprintf(outfile, "Error in input: invalid CACHETYPE = %s\n",
           cachetype);
-      exit(1);
+      exit(PSI_RETURN_FAILURE);
     }
     free(cachetype);
   }
@@ -95,7 +104,7 @@ void get_params()
     errcod = ip_string("LOCAL_METHOD", &(local.method), 0);
     if(strcmp(local.method,"AOBASIS") && strcmp(local.method,"WERNER")) {
       fprintf(outfile, "Invalid local correlation method: %s\n", local.method);
-      exit(2);
+      exit(PSI_RETURN_FAILURE);
     }
   }
   else if(params.local) {
@@ -107,7 +116,7 @@ void get_params()
     errcod = ip_string("LOCAL_WEAKP", &(local.weakp), 0);
     if(strcmp(local.weakp,"MP2") && strcmp(local.weakp,"NEGLECT") && strcmp(local.weakp,"NONE")) {
       fprintf(outfile, "Invalid method for treating local pairs: %s\n", local.weakp);
-      exit(2);
+      exit(PSI_RETURN_FAILURE);
     }
   }
   else if(params.local) {
@@ -132,8 +141,7 @@ void get_params()
     fprintf(outfile, "\tLocal Method    =    %s\n", local.method);
     fprintf(outfile, "\tWeak pairs      =    %s\n", local.weakp);
   }
-  fprintf(outfile, "\tAO Basis        =     %s\n", 
-      params.aobasis ? "Yes" : "No");
+  fprintf(outfile, "\tAO Basis        =     %s\n", params.aobasis);
   fprintf(outfile, "\tCache Level     =    %1d\n", params.cachelev);
   fprintf(outfile, "\tCache Type      =    %4s\n", 
       params.cachetype ? "LOW" : "LRU");

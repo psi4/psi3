@@ -36,6 +36,7 @@ int converged(void)
     dpd_file2_close(&T1old);
 
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb");
+    dpd_buf4_print(&T2, outfile, 1);
     dpd_buf4_init(&T2old, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_init(&T2, h);

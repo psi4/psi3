@@ -26,6 +26,7 @@ void BT2_AO(void)
   int **T2_cd_row_start, **T2_pq_row_start, offset, cd, pq;
   int **T2_CD_row_start, **T2_Cd_row_start;
   dpdbuf4 tau, t2, tau1_AO, tau2_AO;
+  dpdfile4 T;
   psio_address next;
   struct iwlbuf InBuf;
   int lastbuf;
@@ -92,7 +93,10 @@ void BT2_AO(void)
 
   }
 
-  if(params.ref == 0) { /** RHF **/
+if(params.ref == 0) { /** RHF **/
+
+    if(!strcmp(params.aobasis,"DISK")) {
+
     dpd_set_default(1);
     dpd_buf4_init(&tau1_AO, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjPq (1)");
     dpd_buf4_scm(&tau1_AO, 0.0);
@@ -112,40 +116,41 @@ void BT2_AO(void)
     dpd_buf4_sort(&tau1_AO, CC_TMP0, rspq, 5, 0, "tauPqIj (1)");
     dpd_buf4_close(&tau1_AO);
 
-    dpd_buf4_init(&tau1_AO, CC_TMP0, 0, 5, 0, 5, 0, 0, "tauPqIj (1)");
-    dpd_buf4_init(&tau2_AO, CC_TMP0, 0, 5, 0, 5, 0, 0, "tauPqIj (2)");
-    dpd_buf4_scm(&tau2_AO, 0.0);
-
-    for(h=0; h < nirreps; h++) {
-      dpd_buf4_mat_irrep_init(&tau1_AO, h);
-      dpd_buf4_mat_irrep_rd(&tau1_AO, h);
-      dpd_buf4_mat_irrep_init(&tau2_AO, h);
-    }
-
-    iwl_buf_init(&InBuf, PSIF_SO_TEI, tolerance, 1, 1);
-
-    lastbuf = InBuf.lastbuf;
-
-    counter += AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
-
-    while(!lastbuf) {
-      iwl_buf_fetch(&InBuf);
-      lastbuf = InBuf.lastbuf;
-
-      counter += AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
-    }
-
-    iwl_buf_close(&InBuf, 1);
-
-    if(params.print & 2) fprintf(outfile, "     *** Processed %d SO integrals for <ab||cd> --> T2\n", counter);
-
-    for(h=0; h < nirreps; h++) {
-      dpd_buf4_mat_irrep_wrt(&tau2_AO, h);
-      dpd_buf4_mat_irrep_close(&tau2_AO, h);
-      dpd_buf4_mat_irrep_close(&tau1_AO, h);
-    }
-    dpd_buf4_close(&tau1_AO);
-    dpd_buf4_close(&tau2_AO);
+    
+        dpd_buf4_init(&tau1_AO, CC_TMP0, 0, 5, 0, 5, 0, 0, "tauPqIj (1)");
+        dpd_buf4_init(&tau2_AO, CC_TMP0, 0, 5, 0, 5, 0, 0, "tauPqIj (2)");
+        dpd_buf4_scm(&tau2_AO, 0.0);
+        
+        for(h=0; h < nirreps; h++) {
+            dpd_buf4_mat_irrep_init(&tau1_AO, h);
+            dpd_buf4_mat_irrep_rd(&tau1_AO, h);
+            dpd_buf4_mat_irrep_init(&tau2_AO, h);
+        }
+        
+        iwl_buf_init(&InBuf, PSIF_SO_TEI, tolerance, 1, 1);
+        
+        lastbuf = InBuf.lastbuf;
+        
+        counter += AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
+        
+        while(!lastbuf) {
+            iwl_buf_fetch(&InBuf);
+            lastbuf = InBuf.lastbuf;
+        
+            counter += AO_contribute(&InBuf, &tau1_AO, &tau2_AO);
+        }
+        
+        iwl_buf_close(&InBuf, 1);
+        
+        if(params.print & 2) fprintf(outfile, "     *** Processed %d SO integrals for <ab||cd> --> T2\n", counter);
+        
+        for(h=0; h < nirreps; h++) {
+            dpd_buf4_mat_irrep_wrt(&tau2_AO, h);
+            dpd_buf4_mat_irrep_close(&tau2_AO, h);
+            dpd_buf4_mat_irrep_close(&tau1_AO, h);
+        }
+        dpd_buf4_close(&tau1_AO);
+        dpd_buf4_close(&tau2_AO);
 
     /* Transpose tau2_AO for the half-backtransformation */
     dpd_set_default(1);
@@ -154,15 +159,37 @@ void BT2_AO(void)
     dpd_buf4_close(&tau2_AO);
 
     dpd_buf4_init(&tau2_AO, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjPq (2)");
-
+    dpd_buf4_print(&tau2_AO, outfile, 1);
+    
     dpd_set_default(0);
     dpd_buf4_init(&t2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb");
+    dpd_buf4_scm(&t2, 0.0);
 
     halftrans(&t2, 0, &tau2_AO, 1, C, C, nirreps, T2_cd_row_start, T2_pq_row_start, 
 	      virtpi, virtpi, orbspi, 1, 1.0, 1.0);
 
     dpd_buf4_close(&t2);
     dpd_buf4_close(&tau2_AO);
+
+    }
+    else if(!strcmp(params.aobasis,"DIRECT")) {
+        dpd_file4_cache_print(stdout);
+        dpd_file4_init(&T, CC_TAMPS, 0, 0, 5, "tauIjAb");
+        dpd_file4_cache_del(&T);
+        dpd_file4_close(&T);
+
+        dpd_file4_init(&T, CC_TAMPS, 0, 0, 5, "New tIjAb");
+        dpd_file4_cache_del(&T);
+        dpd_file4_close(&T);
+
+        /* close the CC_TAMPS file for cints to use it */
+        psio_close(CC_TAMPS, 1);
+        
+        system("cints --cc_bt2");
+
+        /* re-open CCC_TAMPS for remaining terms */
+        psio_open(CC_TAMPS, PSIO_OPEN_OLD);
+    }
 
   }
   else if(params.ref == 1) { /** ROHF **/
