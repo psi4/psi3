@@ -65,7 +65,7 @@ void WmbejDD(int i, int C_irr) {
     dpd_buf4_close(&SIjAb);
   }
 
-  else { // ROHF
+  else { /* ROHF */
     sprintf(CMNEF_lbl, "%s %d", "CMNEF", i);
     sprintf(Cmnef_lbl, "%s %d", "Cmnef", i);
     sprintf(CMnEf_lbl, "%s %d", "CMnEf", i);
@@ -193,7 +193,7 @@ void WmbejDD(int i, int C_irr) {
     dpd_buf4_close(&S2);
     /* C2(Ib,mE) * W(mE,jA) --> S2(Ib,jA) */
     dpd_buf4_init(&S2, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "SIbjA");
- //   dpd_buf4_init(&CMnEf, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "CMenF");
+    /* dpd_buf4_init(&CMnEf, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "CMenF"); */
     dpd_buf4_init(&CMnEf, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "CMfnE");
     dpd_buf4_init(&W, CC_HBAR, H_IRR, 10, 10, 10, 10, 0, "WmBEj");
     dpd_contract444(&CMnEf, &W, &S2, 0, 1, 1, 0);

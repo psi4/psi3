@@ -131,18 +131,18 @@ void rzero_rhf(int C_irr) {
   dpd_buf4_init(&RIjbA, CC_RAMPS, C_irr, 0, 5, 0, 5, 0, "RIjbA");
 
   norm = norm_C_rhf(&RIA, &RIjAb, &RIjbA);
-//  norm *= norm;
-//  norm += rzero * rzero;
-//  norm = sqrt(norm);
-//  rzero = rzero / norm;
-
-//  dpd_file2_scm(&RIA, 1.0/norm);
-//  dpd_buf4_scm(&RIjAb, 1.0/norm);
-
+  /*    norm *= norm;
+        norm += rzero * rzero;
+        norm = sqrt(norm);
+        rzero = rzero / norm;
+      
+        dpd_file2_scm(&RIA, 1.0/norm);
+        dpd_buf4_scm(&RIjAb, 1.0/norm);
+  */
   dpd_file2_close(&RIA);
   dpd_buf4_close(&RIjAb);
 
-//  psio_write_entry(CC_INFO, "EOM R0", (char *) &rzero, sizeof(double));
+  /*  psio_write_entry(CC_INFO, "EOM R0", (char *) &rzero, sizeof(double)); */
 
   /* Now make useful copies in RAMPS */
   /*

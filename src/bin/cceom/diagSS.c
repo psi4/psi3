@@ -43,17 +43,17 @@ void diagSS(int C_irr) {
 
   if (pf) fprintf(outfile,"\n\n");
 
-  // a bunch of tedious code to setup reasonable HOMO-LUMO guess vectors */
+  /* a bunch of tedious code to setup reasonable HOMO-LUMO guess vectors */
   C_index=0;
   if (2 * range * range * nirreps < eom_params.cs_per_irrep[C_irr])
     range = eom_params.cs_per_irrep[C_irr] / 2;
 
-  for (cnt=0; cnt<nirreps; ++cnt) { // cnt loops over dp's to get C_irr
+  for (cnt=0; cnt<nirreps; ++cnt) { /* cnt loops over dp's to get C_irr */
     irr_occ = dpd_dp[C_irr][cnt][0];
     irr_virt = dpd_dp[C_irr][cnt][1];
-    // C_irr = irr_occ * irr_virt
+    /* C_irr = irr_occ * irr_virt */
 
-    if (params.eom_ref == 0)  { // ref = RHF; eom_ref = RHF
+    if (params.eom_ref == 0)  { /* ref = RHF; eom_ref = RHF */
       begin_occ = MAX(occpi[irr_occ]-range, 0);
       end_virt = MIN(range, virtpi[irr_virt]);
       for (i=begin_occ; i < occpi[irr_occ]; ++i)
@@ -67,7 +67,7 @@ void diagSS(int C_irr) {
           dpd_file2_close(&CME);
         }
     }
-    // ref = RHF or UHF (closed) ; eom_ref = ROHF, UHF
+    /* ref = RHF or UHF (closed) ; eom_ref = ROHF, UHF */
     else if (moinfo.iopen == 0) {
       begin_occ = MAX(occpi[irr_occ]-range, 0);
       end_virt = MIN(range, virtpi[irr_virt]);
@@ -104,8 +104,8 @@ void diagSS(int C_irr) {
           dpd_file2_close(&Cme);
         }
     }
-    else { // open-shell ROHF or UHF
-      // alpha excitations
+    else { /* open-shell ROHF or UHF */
+      /* alpha excitations */
       begin_occ = MAX(occpi[irr_occ]-range, 0);
       end_virt = MIN( virtpi[irr_virt]-openpi[irr_virt], range);
       for (i=begin_occ; i < occpi[irr_occ] ; ++i)
@@ -122,7 +122,7 @@ void diagSS(int C_irr) {
           dpd_file2_mat_wrt(&Cme);
           dpd_file2_close(&Cme);
         }
-      // beta excitations into open shells
+      /* beta excitations into open shells */
       begin_occ = MAX(occpi[irr_occ]-openpi[irr_occ]-range, 0);
       begin_virt = virtpi[irr_virt] - openpi[irr_virt];
       for (i=begin_occ; i < occpi[irr_occ]-openpi[irr_occ]; ++i)
@@ -139,7 +139,7 @@ void diagSS(int C_irr) {
           dpd_file2_mat_wrt(&CME);
           dpd_file2_close(&CME);
         }
-      // beta excitations into unoccupied orbitals
+      /* beta excitations into unoccupied orbitals */
       begin_occ = MAX(occpi[irr_occ]-openpi[irr_occ]-range, 0);
       end_virt = MIN(range - openpi[irr_virt], 0);
       for (i=begin_occ; i < occpi[irr_occ]-openpi[irr_occ]; ++i)
@@ -210,7 +210,7 @@ void diagSS(int C_irr) {
     numCs = L;
     num_converged = 0;
 
-    // zero S vectors
+    /* zero S vectors */
     for (i=0;i<L;++i) {
       if (params.eom_ref == 0) {
         sprintf(lbl, "%s %d", "SIA", i);
@@ -264,13 +264,13 @@ void diagSS(int C_irr) {
       if (params.eom_ref > 0) dpd_file2_close(&Cme);
     }
 
-// print_mat(G, L, L, outfile);
+    /* print_mat(G, L, L, outfile); */
 
     lambda = init_array(L);        /* holds real part of eigenvalues of G */
     alpha = block_matrix(L,L);     /* will hold eigenvectors of G */
     dgeev_eom(L, G, lambda, alpha);
     eigsort(lambda, alpha, L);
-    //  eivout(alpha, lambda, L, L, outfile);
+    /*  eivout(alpha, lambda, L, L, outfile); */
     free_block(G);
 
     if (pf) fprintf(outfile,
@@ -318,7 +318,7 @@ void diagSS(int C_irr) {
         if (params.eom_ref == 0) precondition_SS_RHF(&RIA, lambda[k]);
         else precondition_SS(&RIA, &Ria, lambda[k]);
 
-        // normalize preconditioned residual
+        /* normalize preconditioned residual */
         if (params.eom_ref == 0) {
           norm = norm_C1_rhf(&RIA);
           dpd_file2_scm(&RIA, 1.0/norm);
@@ -354,7 +354,7 @@ void diagSS(int C_irr) {
       free_block(alpha);
     }
     else {
-      if (numCs > L) { // successfully added vectors
+      if (numCs > L) { /* successfully added vectors */
         keep_going = 1;
         free_block(alpha);
         L = numCs;

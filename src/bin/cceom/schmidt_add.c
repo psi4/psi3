@@ -119,7 +119,7 @@ void schmidt_add_RHF(dpdfile2 *RIA, dpdbuf4 *RIjAb, int *numCs, int irrep)
   dpd_buf4_sort(RIjAb, EOM_TMP, pqsr, 0, 5, "RIjbA");
   dpd_buf4_init(&R2b, EOM_TMP, irrep, 0, 5, 0, 5, 0, "RIjbA");
 
- // norm = norm_C_rhf(RIA, RIjAb, &R2b);
+  /* norm = norm_C_rhf(RIA, RIjAb, &R2b); */
   norm  = 2.0 * dpd_file2_dot_self(RIA);
   norm += 2.0 * dpd_buf4_dot_self(RIjAb);
   norm -= dpd_buf4_dot(RIjAb, &R2b);

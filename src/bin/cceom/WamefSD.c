@@ -12,7 +12,7 @@ void WamefSD(int i, int C_irr) {
   dpdbuf4 CMNEF, Cmnef, CMnEf, CmNeF;
   char lbl[32];
 
-  if (params.eom_ref == 0) { // RHF
+  if (params.eom_ref == 0) { /* RHF */
     sprintf(lbl, "%s %d", "SIA", i);
     dpd_file2_init(&SIA, EOM_SIA, C_irr, 0, 1, lbl);
     sprintf(lbl, "%s %d", "CMnEf", i);
@@ -24,7 +24,7 @@ void WamefSD(int i, int C_irr) {
     dpd_file2_close(&SIA);
   }
 
-  else { // ROHF
+  else { /* ROHF */
     sprintf(lbl, "%s %d", "SIA", i);
     dpd_file2_init(&SIA, EOM_SIA, C_irr, 0, 1, lbl);
     sprintf(lbl, "%s %d", "Sia", i);

@@ -22,7 +22,7 @@ void get_params()
     exit(2); 
   }
 
-  if (params.ref == 0) { // for RHF refs, allow CCEOM to do RHF, ROHF, UHF modes
+  if (params.ref == 0) { /* for RHF refs, allow CCEOM to do RHF, ROHF, UHF modes b*/
     errcod = ip_string("EOM_REFERENCE", &(read_eom_ref),0);
     if (errcod == IPE_OK) {
       if(!strcmp(read_eom_ref, "RHF")) params.eom_ref = 0;
@@ -37,10 +37,10 @@ void get_params()
     else {
       params.eom_ref = 0;
       read_eom_ref = (char *) malloc(10*sizeof(char));
-      sprintf(read_eom_ref,"%s","RHF"); // just for printing below
+      sprintf(read_eom_ref,"%s","RHF"); /* just for printing below */
     }
   }
-  else if (params.ref == 1) { // for ROHF refs, allow CCEOM to do ROHF & UHF modes
+  else if (params.ref == 1) { /* for ROHF refs, allow CCEOM to do ROHF & UHF modes */
     errcod = ip_string("EOM_REFERENCE", &(read_eom_ref),0);
     if (errcod == IPE_OK) {
       if(!strcmp(read_eom_ref, "ROHF")) params.eom_ref = 1;
@@ -54,13 +54,13 @@ void get_params()
     else {
       params.eom_ref = 1;
       read_eom_ref = (char *) malloc(10*sizeof(char));
-      sprintf(read_eom_ref,"%s","ROHF"); // just for printing below
+      sprintf(read_eom_ref,"%s","ROHF"); /* just for printing below */
     }
   }
-  else { // run in UHF mode - ignore EOM_REFERENCE
+  else { /* run in UHF mode - ignore EOM_REFERENCE */
     params.eom_ref = 2;
     read_eom_ref = (char *) malloc(10*sizeof(char));
-    sprintf(read_eom_ref,"%s","UHF"); // just for printing below
+    sprintf(read_eom_ref,"%s","UHF"); /* just for printing below */
   }
 
   if (params.eom_ref == 2) {

@@ -12,7 +12,7 @@ void WabejDS(int i, int C_irr) {
   dpdbuf4 WABEI, Wabei, WAbEi, WaBeI, WM, WP, Z;
   char CME_lbl[32], Cme_lbl[32], SIJAB_lbl[32], Sijab_lbl[32], SIjAb_lbl[32];
 
-  if (params.eom_ref == 0) { // RHF
+  if (params.eom_ref == 0) { /* RHF */
     sprintf(CME_lbl, "%s %d", "CME", i);
     sprintf(SIjAb_lbl, "%s %d", "SIjAb", i);
 
@@ -32,7 +32,7 @@ void WabejDS(int i, int C_irr) {
     dpd_buf4_close(&SIjAb);
   }
 
-  else { // ROHF
+  else { /* ROHF */
     sprintf(CME_lbl, "%s %d", "CME", i);
     sprintf(Cme_lbl, "%s %d", "Cme", i);
     sprintf(SIJAB_lbl, "%s %d", "SIJAB", i);

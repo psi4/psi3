@@ -40,7 +40,7 @@ void get_moinfo(void)
 
   nirreps = moinfo.nirreps;
 
-  // need to know whether to read in UHF data
+  /* need to know whether to read in UHF data */
   psio_read_entry(CC_INFO, "Reference Wavefunction", (char *) &(ref), 
 		  sizeof(int));
 
