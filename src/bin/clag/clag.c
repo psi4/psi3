@@ -106,16 +106,19 @@ main(int argc, char **argv)
   file30_close();
   ***/
 
+  docc = init_int_array(nirreps);
+  socc = init_int_array(nirreps);
+
   chkpt_init(PSIO_OPEN_OLD);
   nmo = chkpt_rd_nmo();
   enuc = chkpt_rd_enuc();
   eci_30 = chkpt_rd_etot(); 
   nirreps = chkpt_rd_nirreps();
   orbspi = chkpt_rd_orbspi();
+  docc = chkpt_rd_clsdpi();
+  socc = chkpt_rd_openpi();
   chkpt_close();
 
-  docc = init_int_array(nirreps);
-  socc = init_int_array(nirreps);
   frdocc = init_int_array(nirreps);
   fruocc = init_int_array(nirreps);
   ras_opi = init_int_matrix(4,nirreps);
