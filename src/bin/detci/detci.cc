@@ -452,25 +452,25 @@ void diag_h(struct stringwr **alplist, struct stringwr **betlist)
       SlaterDetSet dets;
       SlaterDetVector vec;
 
-      stringset_init(&alphastrings,AlphaG->num_str);
+      stringset_init(&alphastrings,AlphaG->num_str,AlphaG->num_el,CalcInfo.num_fzc_orbs);
       int list_gr = 0;
       for(int irrep=0; irrep<AlphaG->nirreps; irrep++) {
 	for(int gr=0; gr<AlphaG->subgr_per_irrep; gr++,list_gr++) {
 	  int nlists_per_gr = AlphaG->sg[irrep][gr].num_strings;
 	  int offset = AlphaG->sg[irrep][gr].offset;
 	  for(int l=0; l<nlists_per_gr; l++)
-	    stringset_add(&alphastrings,l+offset,AlphaG->num_el,alplist[list_gr][l].occs);
+	    stringset_add(&alphastrings,l+offset,alplist[list_gr][l].occs);
 	}
       }
 	
-      stringset_init(&betastrings,CalcInfo.num_bet_str);
+      stringset_init(&betastrings,BetaG->num_str,BetaG->num_el,CalcInfo.num_fzc_orbs);
       list_gr = 0;
       for(int irrep=0; irrep<BetaG->nirreps; irrep++) {
 	for(int gr=0; gr<BetaG->subgr_per_irrep; gr++,list_gr++) {
 	  int nlists_per_gr = BetaG->sg[irrep][gr].num_strings;
 	  int offset = BetaG->sg[irrep][gr].offset;
 	  for(int l=0; l<nlists_per_gr; l++)
-	    stringset_add(&betastrings,l+offset,BetaG->num_el,betlist[list_gr][l].occs);
+	    stringset_add(&betastrings,l+offset,betlist[list_gr][l].occs);
 	}
       }
 
