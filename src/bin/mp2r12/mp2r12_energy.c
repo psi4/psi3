@@ -208,6 +208,26 @@ void mp2r12_energy(void)
     for(ij=0;ij<ntri_docc_act;ij++)
       mp2_energy += pair_energy[spin][act2full[ij]];
 
+    /*-----------------------------------------
+      Print out conventional MP2 pair energies
+     -----------------------------------------*/
+    if (params.print_lvl) {
+      fprintf(outfile,"\t%s MP2 pair energies:\n",(spin == 0) ? "Singlet" : "Triplet");
+      fprintf(outfile,"\t    i       j         e(ij)\n");
+      fprintf(outfile,"\t  -----   -----   ------------\n");
+      ij_act = 0;
+      for(g=0; g < nirreps; g++)
+	  for(i=focact[g]; i <= locact[g] ; i++) {
+	      for(h=0; h <= g; h++) {
+		  jlast  = (locact[h] > i) ? i : locact[h];
+		  for(j=focact[h]; j <= jlast ; j++,ij_act++) {
+		      if (spin == 0 || i != j)
+			  fprintf(outfile,"\t  %3d     %3d     %12.9lf\n",i+1,j+1,pair_energy[spin][act2full[ij_act]]);
+		  }
+	      }
+	  }
+      fprintf(outfile,"\n");
+    }
     
     memset(moints, 0, nte*sizeof(double));
     iwl_buf_init(&R12Buff, PSIF_MO_R12, tolerance, 1, 1);
@@ -370,7 +390,7 @@ void mp2r12_energy(void)
       tmp1[i][i] = 1.0/tmp_ptr[i];
     mmult(tmp1,0,evecs,1,tmp2,0,ntri_docc_act,ntri_docc_act,ntri_docc_act,0);  
     mmult(evecs,0,tmp2,0,Binv[spin],0,ntri_docc_act,ntri_docc_act,ntri_docc_act,0);
-    
+
     /*-------------------------------------------------
       Compute MP2-R12/A contributions to pair energies
      -------------------------------------------------*/
@@ -388,7 +408,10 @@ void mp2r12_energy(void)
     for(ij=0;ij<ntri_docc_act;ij++)
       mp2r12_energy += pair_energy[spin][act2full[ij]];
 
-    fprintf(outfile,"\t%s pair energies:\n",(spin == 0) ? "Singlet" : "Triplet");
+    /*--------------------------------
+      Print out MP2-R12 pair energies
+     --------------------------------*/
+    fprintf(outfile,"\t%s MP2-R12 pair energies:\n",(spin == 0) ? "Singlet" : "Triplet");
     fprintf(outfile,"\t    i       j         e(ij)\n");
     fprintf(outfile,"\t  -----   -----   ------------\n");
     ij_act = 0;
