@@ -1,8 +1,12 @@
 /* $Log$
- * Revision 1.17  2002/05/30 12:57:08  crawdad
- * Buf fix.  psio_done() was called before chkpt_close().
+ * Revision 1.18  2002/05/30 20:16:49  crawdad
+ * Accidentally left dmalloc calls in place.  Fixed.
  * -TDC
  *
+/* Revision 1.17  2002/05/30 12:57:08  crawdad
+/* Buf fix.  psio_done() was called before chkpt_close().
+/* -TDC
+/*
 /* Revision 1.16  2002/05/07 22:40:56  sherrill
 /* Fix missing s=&scf_info[k] in UHF case for evals, fix missing bracket
 /* in RHF case.
@@ -123,8 +127,6 @@ static char *rcsid = "$Id$";
 #include "common.h"
 #include <libipv1/ip_lib.h>
 
-#include <dmalloc.h>
-
 /* TDC(6/20/96) - Prototype for phase() */
 int phase(void);
 double ssquare(void);
@@ -223,8 +225,6 @@ void cleanup()
   i10[42] = ioff[n_open];
   if(twocon) i10[42] = -i10[42];
   i10[45] = nmo;
-
-  dmalloc_verify(0);
 
   /* psio_write calls for above */
   chkpt_wt_mxcoef(mxcoef);
@@ -375,8 +375,6 @@ void cleanup()
 	scr_arr[i] = s->fock_evals[j];
       }
     }
-
-    dmalloc_verify(0);
 
     chkpt_wt_evals(scr_arr);
 
