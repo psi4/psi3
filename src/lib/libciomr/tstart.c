@@ -1,7 +1,12 @@
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:24  evaleev
- * Initial revision
+ * Revision 1.2  2000/03/26 22:03:26  sherrill
+ * Added more characters to allow longer machine names in tstart.c.
+ * Added support for C++ libraries in src/lib/MakeRules and MakeVars.
+ * CDS 3/26/00
+ *
+ * Revision 1.1.1.1  2000/02/04  22:53:24  evaleev
+ * Started PSI 3 repository
  *
 /* Revision 2.7  1996/07/03 11:26:39  psi
 /* Added free_ptrs() function in init_ptrs.c.  Added free() calls to tstart()
@@ -60,8 +65,8 @@ void tstart(outfile)
    {
        int i,error;
        char *name;
-       name = (char *) malloc(26 * sizeof(char));
-       error = gethostname(name, 26);
+       name = (char *) malloc(40 * sizeof(char));
+       error = gethostname(name, 40);
        if(error != 0) strncpy(name,"nohostname", 11);
 
        time_start = time(NULL);
@@ -87,8 +92,8 @@ void tstop(outfile)
    time_t total_time;
    struct tms total_tmstime;
    char *name;
-   name = (char *) malloc(26 * sizeof(char));
-   error = gethostname(name, 26);
+   name = (char *) malloc(40 * sizeof(char));
+   error = gethostname(name, 40);
    if(error != 0) strncpy(name,"nohostname", 11);
 
    time_end = time(NULL);

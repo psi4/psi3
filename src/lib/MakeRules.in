@@ -44,7 +44,7 @@ all: default
 # do installations
 #
 
-install:: install_inc install_target install_man
+install:: install_inc install_target install_man install_tmpl
 
 install_inc::
 
@@ -60,6 +60,8 @@ install_target:: $(TARGET)
 	$(RANLIB) $(libdir)/`basename $(TARGET)`
 
 install_man::
+
+install_tmpl::
 
 #
 # clean up
@@ -87,6 +89,12 @@ depend::
 
 %.d: %.c
 	$(CCDEPEND) $(CDEF) $(CINC) $< | sed 's/$*.o/$*.o $*.d/g' > $@
+
+%.d: %.C
+	$(CXXDEPEND) $(CXXDEF) $(CXXINC) $< | sed 's/$*.o/$*.o $*.d/g' > $@
+
+%.d: %.cc
+	$(CXXDEPEND) $(CXXDEF) $(CXXINC) $< | sed 's/$*.o/$*.o $*.d/g' > $@
 
 #
 # keep the configuration information and makefiles up-to-date
