@@ -9,6 +9,8 @@
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <libfile30/file30.h>
+#include <libpsio/psio.h>
+#include <libchkpt/chkpt.h>
 
 /* Function prototypes */
 void init_io(void);
@@ -84,6 +86,10 @@ int main(int argc, char *argv[])
   file30_wt_geom(geom);
   file30_wt_disp(++num);  /* Here we assume all is well! */
   file30_close();
+  chkpt_init();
+  chkpt_wt_geom(geom);
+  chkpt_wt_disp(num);
+  chkpt_close();
   
   fprintf(outfile, "New Geometry from geom.dat:\n");
   for(i=0; i < natom; i++) {
@@ -122,6 +128,8 @@ void init_io(void)
   ip_cwk_add(":DEFAULT");
   ip_cwk_add(progid);
 
+  psio_init();
+
   free(progid);
 }
 
@@ -129,6 +137,7 @@ void exit_io(void)
 {
   int i;
  
+  psio_done();
   ip_done();
   tstop(outfile);
   fclose(infile);

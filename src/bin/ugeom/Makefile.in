@@ -3,7 +3,7 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-PSILIBS = -lPSI_file30 -lPSI_ciomr -lPSI_ipv1
+PSILIBS = -lPSI_chkpt -lPSI_file30 -lPSI_ciomr -lPSI_psio -lPSI_ipv1
 
 TRUESRC = \
 ugeom.c \
