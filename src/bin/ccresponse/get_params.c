@@ -61,6 +61,16 @@ void get_params()
     free(junk);
   }
 
+  if(ip_exist("GAUGE",0)) {
+    errcod = ip_string("GAUGE", &(params.gauge), 0);
+    if(strcmp(params.gauge,"LENGTH") && strcmp(params.gauge,"VELOCITY")) {
+      printf("Invalid choice of gauge: %s\n", params.gauge);
+      exit(PSI_RETURN_FAILURE);
+    }
+  }
+  else
+    params.gauge = strdup("LENGTH");
+
   /* grab the field strength from input -- a few different units are converted to E_h */
   params.omega = 0.0; /* static polarizability by default */
   if(ip_exist("OMEGA",0)) {
@@ -194,6 +204,7 @@ void get_params()
   fprintf(outfile, "\tIrrep RX        =    %3s\n", moinfo.labels[moinfo.irrep_Rx]);
   fprintf(outfile, "\tIrrep RY        =    %3s\n", moinfo.labels[moinfo.irrep_Ry]);
   fprintf(outfile, "\tIrrep RZ        =    %3s\n", moinfo.labels[moinfo.irrep_Rz]);
+  fprintf(outfile, "\tGauge           =    %s\n", params.gauge);
   if(params.omega == 0.0) 
     fprintf(outfile, "\tApplied field   = none\n");
   else 

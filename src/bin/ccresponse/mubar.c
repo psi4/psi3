@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <libdpd/dpd.h>
 #define EXTERN
 #include "globals.h"
@@ -50,6 +51,8 @@ void mubar(void)
   dpd_file2_close(&mu);
 
   dpd_file2_init(&mubar1, CC_OEI, irrep, 0, 1, "MuBAR_X_IA");
+  if(!strcmp(params.gauge,"VELOCITY"))
+    dpd_file2_scm(&mubar1, -1); /* the p integrals are antisymmetric! */
 
   dpd_file2_init(&mu, CC_OEI, irrep, 1, 1, "Mu_X_AB");
   dpd_file2_init(&t1, CC_OEI, 0, 0, 1, "tIA");
@@ -177,6 +180,8 @@ void mubar(void)
   dpd_file2_close(&mu);
 
   dpd_file2_init(&mubar1, CC_OEI, irrep, 0, 1, "MuBAR_Y_IA");
+  if(!strcmp(params.gauge,"VELOCITY"))
+    dpd_file2_scm(&mubar1, -1); /* the p integrals are antisymmetric! */
 
   dpd_file2_init(&mu, CC_OEI, irrep, 1, 1, "Mu_Y_AB");
   dpd_file2_init(&t1, CC_OEI, 0, 0, 1, "tIA");
@@ -304,6 +309,8 @@ void mubar(void)
   dpd_file2_close(&mu);
 
   dpd_file2_init(&mubar1, CC_OEI, irrep, 0, 1, "MuBAR_Z_IA");
+  if(!strcmp(params.gauge,"VELOCITY"))
+    dpd_file2_scm(&mubar1, -1); /* the p integrals are antisymmetric! */
 
   dpd_file2_init(&mu, CC_OEI, irrep, 1, 1, "Mu_Z_AB");
   dpd_file2_init(&t1, CC_OEI, 0, 0, 1, "tIA");

@@ -11,4 +11,5 @@ struct Params {
   int local;             /* boolean for simluation of local correlation */
   int analyze;
   int dertype;
+  char *gauge;           /* choice of gauge for optical rotation */
 };
