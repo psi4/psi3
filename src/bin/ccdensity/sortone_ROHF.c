@@ -177,6 +177,7 @@ void sortone_ROHF(void)
   dpd_file2_close(&D);
 
   /* Symmetrize the onepdm */
+
   for(p=0; p < (nmo-nfzv); p++) {
       for(q=0; q < p; q++) {
           value = 0.5 * (O[p][q] + O[q][p]);

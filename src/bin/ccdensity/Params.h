@@ -6,5 +6,8 @@ struct Params {
   int cachelev;
   int aobasis;
   int ref;
+  int ground;
+  double cceom_energy;
+  double R0;
 };
 

@@ -110,7 +110,17 @@ void onepdm(void)
     dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
     dpd_file2_copy(&T1, CC_OEI, "DIA");
     dpd_file2_close(&T1);
+
     dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DIA");
+
+    /* full tIA must be included in excited-state 1-pdm so anticipate that
+     * this tIA term will be multiplied by R0 */
+    /*
+    if (!params.ground) {
+      dpd_file2_scm(&D, 1.0/params.R0);
+    }
+    */
+
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tIJAB");
     dpd_file2_init(&L1, CC_OEI, 0, 0, 1, "LIA");
     dpd_dot24(&L1, &T2, &D, 0, 0, 1.0, 1.0);
@@ -166,7 +176,17 @@ void onepdm(void)
     dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tia");
     dpd_file2_copy(&T1, CC_OEI, "Dia");
     dpd_file2_close(&T1);
+
     dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dia");
+
+    /* full tia must be included in excited-state 1-pdm so anticipate
+     * that this tia term will be multiplied by R0 */
+    /*
+    if (!params.ground) {
+      dpd_file2_scm(&D, 1.0/params.R0);
+    }
+    */
+
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tijab");
     dpd_file2_init(&L1, CC_OEI, 0, 0, 1, "Lia");
     dpd_dot24(&L1, &T2, &D, 0, 0, 1.0, 1.0);

@@ -43,11 +43,14 @@ void add_core_UHF(struct iwlbuf *, struct iwlbuf *, struct iwlbuf *);
 void dump_ROHF(struct iwlbuf *);
 void dump_UHF(struct iwlbuf *, struct iwlbuf *, struct iwlbuf *);
 void kinetic(void);
+void dipole(void);
 void probable(void);
 int **cacheprep_rhf(int level, int *cachefiles);
 int **cacheprep_uhf(int level, int *cachefiles);
 void cachedone_rhf(int **cachelist);
 void cachedone_uhf(int **cachelist);
+void add_eom_d(void);
+void sort_Ls(void);
 
 int main(int argc, char *argv[])
 {
@@ -83,11 +86,29 @@ int main(int argc, char *argv[])
 	     moinfo.avir_sym, moinfo.boccpi, moinfo.bocc_sym, moinfo.bvirtpi, moinfo.bvir_sym);
   }
 
+  if (params.ground)
+    sort_Ls();
+
   onepdm();
+
+  if (!params.ground) {
+    add_eom_d(); /* R0 * ground D + excited parts of onepdm */
+    fprintf(outfile,"\tStill using ground-state 2-pdm\n");
+  }
+
+
   twopdm();
+
   if(!params.aobasis) energy();
   sortone();
+  /* dipole(); */
   kinetic();
+
+  /*
+  fprintf(outfile,"\tDipole moments without orbital relaxation\n");
+  dipole();
+  */
+
   lag();
 
   /*
@@ -108,6 +129,7 @@ int main(int argc, char *argv[])
   relax_I();
   relax_D();
   sortone();
+
   sortI();
 
   fold();
@@ -169,22 +191,37 @@ int main(int argc, char *argv[])
 
 void init_io(int argc, char *argv[])
 {
-  int i;
+  int i, num_unparsed;
   extern char *gprgid();
-  char *progid;
+  char *progid, *argv_unparsed[100];;
 
   progid = (char *) malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s",gprgid());
 
-  psi_start(argc-1,argv+1,0);
+  params.ground = 1;
+  for (i=1, num_unparsed=0; i<argc; ++i) {
+    if (!strcmp(argv[i],"--excited")) {
+      params.ground = 0;
+    }
+    else {
+      argv_unparsed[num_unparsed++] = argv[i];
+    }
+  }
+
+  psi_start(num_unparsed,argv_unparsed,0);
   ip_cwk_add(progid);
   free(progid);
   tstart(outfile);
-
   psio_init();
 
   /* Open all dpd data files here */
   for(i=CC_MIN; i <= CC_MAX; i++) psio_open(i,1);
+
+  if (!params.ground) {
+    /* assume symmetry of L is that of R */
+    psio_read_entry(CC_INFO,"EOM R0", (char *) &(params.R0),sizeof(double));
+    psio_read_entry(CC_INFO,"CCEOM Energy", (char *) &(params.cceom_energy),sizeof(double));
+  }
 }
 
 void title(void)
@@ -215,4 +252,69 @@ char *gprgid()
    char *prgid = "CCDENSITY";
 
    return(prgid);
+}
+
+/* R0 * ground D + excited parts of onepdm */
+void add_eom_d(void) {
+  dpdfile2 DG, DX;
+
+  fprintf(outfile,"Multiplying density by R0 and adding in excited parts of onepdm\n");
+
+  dpd_file2_init(&DG, CC_OEI, 0, 0, 0, "DIJ");
+  dpd_file2_scm(&DG, params.R0);
+  dpd_file2_init(&DX, EOM_D, 0, 0, 0, "DIJ");
+  dpd_file2_axpy(&DX, &DG, 1.0, 0);
+  dpd_file2_close(&DX);
+  dpd_file2_close(&DG);
+
+  dpd_file2_init(&DG, CC_OEI, 0, 0, 0, "Dij");
+  dpd_file2_scm(&DG, params.R0);
+  dpd_file2_init(&DX, EOM_D, 0, 0, 0, "Dij");
+  dpd_file2_axpy(&DX, &DG, 1.0, 0);
+  dpd_file2_close(&DX);
+  dpd_file2_close(&DG);
+
+  dpd_file2_init(&DG, CC_OEI, 0, 1, 1, "DAB");
+  dpd_file2_scm(&DG, params.R0);
+  dpd_file2_init(&DX, EOM_D, 0, 1, 1, "DAB");
+  dpd_file2_axpy(&DX, &DG, 1.0, 0);
+  dpd_file2_close(&DX);
+  dpd_file2_close(&DG);
+
+  dpd_file2_init(&DG, CC_OEI, 0, 1, 1, "Dab");
+  dpd_file2_scm(&DG, params.R0);
+  dpd_file2_init(&DX, EOM_D, 0, 1, 1, "Dab");
+  dpd_file2_axpy(&DX, &DG, 1.0, 0);
+  dpd_file2_close(&DX);
+  dpd_file2_close(&DG);
+
+  dpd_file2_init(&DG, CC_OEI, 0, 0, 1, "DIA");
+  dpd_file2_scm(&DG, params.R0);
+  dpd_file2_init(&DX, EOM_D, 0, 0, 1, "DIA");
+  dpd_file2_axpy(&DX, &DG, 1.0, 0);
+  dpd_file2_close(&DX);
+  dpd_file2_close(&DG);
+
+  dpd_file2_init(&DG, CC_OEI, 0, 0, 1, "Dia");
+  dpd_file2_scm(&DG, params.R0);
+  dpd_file2_init(&DX, EOM_D, 0, 0, 1, "Dia");
+  dpd_file2_axpy(&DX, &DG, 1.0, 0);
+  dpd_file2_close(&DX);
+  dpd_file2_close(&DG);
+
+  dpd_file2_init(&DG, CC_OEI, 0, 0, 1, "DAI");
+  dpd_file2_scm(&DG, params.R0);
+  dpd_file2_init(&DX, EOM_D, 0, 0, 1, "DAI");
+  dpd_file2_axpy(&DX, &DG, 1.0, 0);
+  dpd_file2_close(&DX);
+  dpd_file2_close(&DG);
+  
+  dpd_file2_init(&DG, CC_OEI, 0, 0, 1, "Dai");
+  dpd_file2_scm(&DG, params.R0);
+  dpd_file2_init(&DX, EOM_D, 0, 0, 1, "Dai");
+  dpd_file2_axpy(&DX, &DG, 1.0, 0);
+  dpd_file2_close(&DX);
+  dpd_file2_close(&DG);
+
+  return;
 }
