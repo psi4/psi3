@@ -18,13 +18,6 @@ void read_gen_opdm()
   dens = init_array(natri);
   lagr = init_array(natri);
 
-  /*
-  rfile(IOUnits.itapD);
-  wreadw(IOUnits.itapD, (char *) dens, sizeof(double)*natri,    0, &next);
-  wreadw(IOUnits.itapD, (char *) lagr, sizeof(double)*natri, next, &next);
-  rclose(IOUnits.itapD,3);
-  */
-
   psio_open(IOUnits.itapD, PSIO_OPEN_OLD);
   psio_read_entry(IOUnits.itapD, "AO-basis OPDM", (char *) dens, sizeof(double)*natri);
   psio_read_entry(IOUnits.itapD, "AO-basis Lagrangian", (char *) lagr, sizeof(double)*natri);
