@@ -32,6 +32,7 @@ void stringset_delete(StringSet *stringset);
 void stringset_add(StringSet *stringset, int index, unsigned char *Occ);
 void stringset_write(ULI unit, char *prefix, StringSet *sset);
 void stringset_read(ULI unit, char *prefix, StringSet **sset);
+void stringset_reindex(StringSet *stringset, short int* mo_map);
 
 /*!
   SlaterDet is a Slater determinant
