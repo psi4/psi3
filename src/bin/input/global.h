@@ -95,14 +95,12 @@ EXTERN int *uc2c;                   /*Mapping of unique class number on the full
 EXTERN int *unique_degen;           /*Degeneracy of unique atoms*/
 EXTERN int *unique_class_degen;     /*Degeneracy of unique classes*/
 
-
 /*Irrep-dependent arrays*/
 EXTERN int *num_cart_so_per_irrep;  /*Number of cartesian SOs per irrep*/
 EXTERN int *num_so_per_irrep;       /*Number of cart/pureang SOs per irrep*/
 EXTERN int **num_cart_so;           /*Number of cartesian type SOs in each irrep for each angular momentum type*/
 EXTERN int **num_pureang_so;        /*Number of pure ang. momentum type SOs in each irrep for each angular momentum type*/
 EXTERN int **num_redun_so;          /*Difference between num_cart_so and num_pureang_so*/
-
 
 /*Basis set arrays - written to file30*/
 EXTERN int *nshells_per_atom;         /*Number of shells per atom*/
@@ -150,3 +148,21 @@ EXTERN int **ao_type_irr;        /*Irreducible representation an AO of a given t
 /* Arrays of x, y, and z exponents in cartesian Gaussians (AOs)*/
 EXTERN int **xexp_ao, **yexp_ao, **zexp_ao;
 
+/*struct and array of structures for z-mat entry*/
+/*IMPORTANT: this structure is used to write AND READ zmat in file30,
+  other modules (currently only extrema) have exact copies of this
+  structure so that they can interact with file30 properly, if you change
+  anything here you MUST change it EVERYWHERE else */
+struct z_entry {
+  int bond_atom;                    /*first reference atom (bond)*/
+  int angle_atom;                   /*second reference atom (angle)*/
+  int tors_atom;                    /*third reference atom (torsion)*/
+  int bond_opt;                     /*flag indicating to optimize variable
+(default=false)*/
+  int angle_opt;
+  int tors_opt;
+  double bond_val;                  /*coordinate values*/
+  double angle_val;
+  double tors_val;
+  };
+struct z_entry* z_geom;          

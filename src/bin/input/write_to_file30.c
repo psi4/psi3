@@ -53,6 +53,7 @@ void write_to_file30(double repulsion)
   wwritw(CHECKPOINTFILE,(char *) pointers, 80*(sizeof(int)),ptr,&ptr);
 
 
+
   /*------------------------------------------------------
     Zero arrays for constants, pointers, and calculations
    ------------------------------------------------------*/
@@ -254,6 +255,12 @@ void write_to_file30(double repulsion)
   pointers[44] = ptr/sizeof(int) + 1;
   wwritw(CHECKPOINTFILE,(char *) sym_oper, nirreps*sizeof(int),ptr,&ptr);
 
+  /* write z_mat if it exists, see global.h for info about z_entry structure */
+   if(!cartOn) {
+      pointers[46] = ptr/sizeof(int) + 1;
+      wwritw(CHECKPOINTFILE,(char *) z_geom, num_atoms*(sizeof(struct z_entry)),ptr,&ptr);
+   }   
+ 
   
   /*---------------------------
     Write pointers to the file

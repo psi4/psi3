@@ -214,7 +214,7 @@ void print_geometry(double conv_factor)
   fprintf(outfile,"    ------------   -----------------  -----------------  -----------------\n");
 
   for(i=0;i<num_atoms;i++){
-    fprintf(outfile,"    %12s ",element[i]);
+    fprintf(outfile,"    %12s ",element[i]); fflush(outfile);
     for(j=0;j<3;j++)
       fprintf(outfile,"  %17.12lf",geometry[i][j]*conv_factor);
     fprintf(outfile,"\n");

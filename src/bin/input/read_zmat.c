@@ -44,6 +44,8 @@ void read_zmat()
     Allocate global arrays
    -----------------------*/
   geometry = init_matrix(num_atoms,3);
+  /* see global.h for info about z_entry structure */
+  z_geom = (struct z_entry *) malloc(sizeof(struct z_entry)*num_entries); 
   element = (char **) malloc(sizeof(char *)*num_atoms);
   nuclear_charges = init_array(num_atoms);
 
@@ -51,7 +53,7 @@ void read_zmat()
   atomcount = 0;
   
   for (i=0;i<num_entries;++i) {
-     /* Process a line of ZMAT */
+     /* Process a line of ZMAT and write to z_geom array */
      ip_count("ZMAT",&entry_length,1,i);
      if ( ((i == 0) && (entry_length != 1)) ||
           ((i == 1) && (entry_length != 3)) ||
@@ -66,6 +68,10 @@ void read_zmat()
         full_geom[i][0] = 0.0;
         full_geom[i][1] = 0.0;
         full_geom[i][2] = 0.0;
+
+        z_geom[0].bond_atom = z_geom[0].angle_atom = z_geom[0].tors_atom = -1;
+        z_geom[0].bond_opt  = z_geom[0].angle_opt  = z_geom[0].tors_opt  = -1;
+        z_geom[0].bond_val  = z_geom[0].angle_val  = z_geom[0].tors_val  = -999.9;
      }
 
      else if (i == 1) {					/*	2nd atom */
@@ -73,6 +79,14 @@ void read_zmat()
         if (a != 1)
           punt("Problem in line 2 in zmat.");
         ip_data("ZMAT","%lf",&rAB,2,i,2);
+
+        z_geom[1].bond_atom = a;
+        z_geom[1].angle_atom = z_geom[1].tors_atom = -1;
+        z_geom[1].bond_opt = -1;
+        z_geom[1].angle_opt = z_geom[1].tors_opt = -1; 
+        z_geom[1].bond_val = rAB * conv_factor;
+        z_geom[1].angle_val = z_geom[1].tors_val = -999.9;
+
         if (rAB < ZERO_BOND_DISTANCE)
            punt("Invalid bond length in line 2.");
         full_geom[i][0] = 0.0;
@@ -96,6 +110,14 @@ void read_zmat()
               fprintf(outfile,"  Invalid bond angle in line 3.\n");
               punt("Invalid ZMAT");
            }
+           z_geom[2].bond_atom = a;
+           z_geom[2].bond_val = rBC * conv_factor;
+           z_geom[2].angle_atom = b;
+           z_geom[2].angle_val = thetaABC;
+           z_geom[2].tors_atom = -1;
+           z_geom[2].tors_val = -999.9;
+           z_geom[2].bond_opt = z_geom[2].angle_opt = z_geom[2].tors_opt = -1;
+
            thetaABC = thetaABC*M_PI/180.0;
            
            if (a == 2) {				/*	ABC case */
@@ -138,9 +160,17 @@ void read_zmat()
 	   fprintf(outfile,"  Invalid bond angle in line %d.\n",i+1);
 	   punt("Invalid ZMAT");
 	}
-	thetaBCD = thetaBCD * M_PI/180.0;
-	
 	ip_data("ZMAT","%lf",&phiABCD,2,i,6);
+
+        z_geom[i].bond_atom = c+1;
+        z_geom[i].angle_atom = b+1;
+        z_geom[i].tors_atom = a+1;
+        z_geom[i].bond_val = rCD * conv_factor;
+        z_geom[i].angle_val = thetaBCD;
+        z_geom[i].tors_val = phiABCD;
+        z_geom[i].bond_opt = z_geom[i].angle_opt = z_geom[i].tors_opt = -1;
+
+        thetaBCD = thetaBCD * M_PI/180.0; 
 	phiABCD = phiABCD * M_PI/180.0;
 
 
@@ -212,6 +242,7 @@ void read_zmat()
        atomcount++;
      }
   }
+
 
   free_matrix(full_geom,num_entries);
   return;
