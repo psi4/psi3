@@ -1,0 +1,20 @@
+psi: (
+  label = "3B1 CH2 cc-pVDZ/ROHF-EOM-CCSD Energies"
+  jobtype = sp
+  wfn = eom_ccsd
+  reference = rohf
+  dertype = none
+  multp = 3
+  states_per_irrep = (1 0 0 1)
+  basis = "DZ"
+  zmat = (
+    c
+    h 1 r
+    h 1 r 2 a
+  )
+  zvars = (
+   r 1.1
+   a 109.0
+  )
+)
+

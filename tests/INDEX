@@ -49,3 +49,8 @@ cc17: UHF-EOM-CCSD/cc-pVDZ on the lowest two states of each irrep in 3B1 CH2.
 cc18: RHF-CCSD-LR/cc-pVDZ static polarizabilities of HOF molecule.
 
 cc19: RHF-CCSD-LR/cc-pVDZ dynamic polarizabilities of HOF molecule.
+
+cc21: ROHF-EOM-CCSD/DZ geometry optimization of the lowest 2A1 excited
+  state of H2O+.
+
+cc22: ROHF-EOM-CCSD/DZ on the lowest two states of each irrep in 3B1 CH2.
