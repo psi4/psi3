@@ -443,8 +443,8 @@ psi: (
   % -------------------------------- CC3 Procedures
   % Procedures for the CC3 energy
   CC3Energy = ($ints $scf $transqt $ccsort $ccenergy)
-  CC3RHFEnergy = ERROR
-  CC3ROHFEnergy = ERROR
+  CC3RHFEnergy = ($CC3Energy $done) 
+  CC3ROHFEnergy = ($CC3Energy $done) 
   CC3UHFEnergy = ($CC3Energy $done)
   CCTwoConEnergy = ERROR
 
@@ -452,8 +452,8 @@ psi: (
   CC3EnergyOpt = (repeat $nopt $CC3Energy $findif_disp_symm
     repeat NUM_DISP $findif_next $findif_input $CC3Energy $findif_energy_save end
     $findif_grad_energy $geomupdate end $done)
-  CC3RHFEnergyOpt = ERROR 
-  CC3ROHFEnergyOpt = ERROR
+  CC3RHFEnergyOpt = $CC3EnergyOpt
+  CC3ROHFEnergyOpt = $CC3EnergyOpt 
   CC3UHFEnergyOpt = $CC3EnergyOpt
   CC3TwoConEnergyOpt = ERROR
 
@@ -462,8 +462,8 @@ psi: (
     ($CC3Energy $findif_disp_freq_energy_cart repeat NUM_DISP
      $findif_next $findif_input $CC3Energy $findif_energy_save end
      $findif_freq_energy_cart $done)
-  CC3RHFEnergyFreq  = ERROR
-  CC3ROHFEnergyFreq  = ERROR
+  CC3RHFEnergyFreq  = $CC3EnergyFreq 
+  CC3ROHFEnergyFreq  = $CC3EnergyFreq 
   CC3UHFEnergyFreq  = $CC3EnergyFreq
   CC3TwoConEnergyFreq  = ERROR
 
