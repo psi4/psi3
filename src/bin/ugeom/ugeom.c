@@ -16,6 +16,8 @@ void exit_io(void);
 
 FILE *infile, *outfile;
 
+#define MAX_GEOM_STRING 20
+
 int main(int argc, char *argv[])
 {
   int i,j;
@@ -42,14 +44,19 @@ int main(int argc, char *argv[])
     }
   fprintf(outfile, "\n\n");
 
+  geom_string = (char *) malloc(MAX_GEOM_STRING);
+
   /* Check command line for desired geometry -- NB: C ordering */
   if(argc > 1) {
       if(strcmp(argv[1], "-n") == 0) {
          num = atoi(argv[2]);  
         }
     }
-  geom_string = (char *) malloc(8 + (num > 9 ? 2 : 1));
-  sprintf(geom_string, "%s%d", "GEOMETRY", num);
+  if((argc > 1) && (strcmp(argv[1], "-t") == 0)) 
+      sprintf(geom_string, "%s", "GEOMETRY");
+  else 
+      sprintf(geom_string, "%s%d", "GEOMETRY", num);
+  
 
   /* Append geom.dat to the IP tree */
   ffile(&geometry, "geom.dat", 2);
@@ -58,7 +65,7 @@ int main(int argc, char *argv[])
   /* Grab the desired geometry from geom.dat */
   ip_cwk_add(":OPTKING");
   if(!ip_exist(geom_string,0)) { 
-     printf("No such geometry in geom.dat!\n");
+     printf("No such geometry entry %s in geom.dat!\n", geom_string);
      exit(2);
     }
 
