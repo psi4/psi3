@@ -96,13 +96,13 @@ esac
 AC_ARG_WITH(cxx,--with-cxx                which cxx command to use,[
 case $withval in
   yes)
-    CC='c++'
+    CXX='c++'
     ;;
   no)
-    CC=''
+    CXX=''
     ;;
   *)
-    CC=$withval
+    CXX=$withval
     ;;
 esac
 ])
