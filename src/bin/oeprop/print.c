@@ -73,6 +73,9 @@ void print_tasks()
    }
   if (corr)
     fprintf(outfile,"    $Correlation corrections to electric multipole moments will be computed.\n");
+  fprintf(outfile,"    $Reference point for the electric angular momentum calculation is ");
+  fprintf(outfile,"\n      at (%lf %lf %lf)\n",
+	  Lm_ref_xyz[0],Lm_ref_xyz[1],Lm_ref_xyz[2]);
   if (nuc_esp)
     fprintf(outfile,"    $Electrostatic properties at the nuclei will be evaluated.\n");
   if (grid) {
@@ -265,6 +268,31 @@ void print_mp()
               ozzz+ozzzcc,oxzz+oxzzcc,oyzz+oyzzcc);
       fprintf(outfile,"                            O(XYZ) =  %12.8lf \n",oxyz+oxyzcc);
     }
+  }
+  fprintf(outfile,"\n\n");
+}
+
+
+void print_lm()
+{
+  fprintf(outfile," --------------------------------------------------------------\n");
+  fprintf(outfile,"              *** Electronic angular momentum ***\n");
+  fprintf(outfile," --------------------------------------------------------------\n\n");
+
+  fprintf(outfile," -Coordinates of the reference point (a.u.) :\n");
+  fprintf(outfile,"           x                     y                     z\n");
+  fprintf(outfile,"  --------------------  --------------------  --------------------\n");
+  fprintf(outfile,"  %20.10lf  %20.10lf  %20.10lf\n\n",
+          Lm_ref_xyz[0],Lm_ref_xyz[1],Lm_ref_xyz[2]);
+  fprintf(outfile," -Electronic angular momentum (expectation values) :\n\n");
+  fprintf(outfile,"    Lx  =  %11.8lf a.u.\n", Lx);
+  fprintf(outfile,"    Ly  =  %11.8lf a.u.\n", Ly);
+  fprintf(outfile,"    Lz  =  %11.8lf a.u.\n", Lz);
+  if (mpmax > 1) {
+    fprintf(outfile,"    Lx^2 = %11.8lf a.u.\n", Lx2);
+    fprintf(outfile,"    Ly^2 = %11.8lf a.u.\n", Ly2);
+    fprintf(outfile,"    Lz^2 = %11.8lf a.u.\n", Lz2);
+    fprintf(outfile,"    L^2 =  %11.8lf a.u.\n", Lx2+Ly2+Lz2);
   }
   fprintf(outfile,"\n\n");
 }
