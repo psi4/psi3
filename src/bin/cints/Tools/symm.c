@@ -21,9 +21,11 @@ void init_symmetry()
   Symmetry.symlabel = file30_rd_sym_label();
   Symmetry.nirreps = file30_rd_nirreps();
   Symmetry.num_so = file30_rd_nso();
+  Symmetry.num_unique_atoms = file30_rd_num_unique_atom();
   Symmetry.num_unique_shells = file30_rd_num_unique_shell();
 
   Symmetry.atom_positions = file30_rd_atom_position();
+  Symmetry.ua2a = file30_rd_ua2a();
   Symmetry.us2s = file30_rd_us2s();
   Symmetry.sopi = file30_rd_sopi();
   Symmetry.sym_oper = file30_rd_symoper();

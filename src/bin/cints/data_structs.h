@@ -141,11 +141,13 @@ typedef struct {
 } BasisSet_t;
 
 typedef struct {
-    int num_unique_shells;             /* number of symmetry unique shells */
-    int num_so;                        /* number of SO's */
     int nirreps;                       /* number of irreps */
     int max_stab_index;                /* maximum stabilizer index */
+    int num_unique_atoms;              /* number of symmetry unique atoms */
+    int num_unique_shells;             /* number of symmetry unique shells */
+    int num_so;                        /* number of SO's */
     int *atom_positions;               /* symmetry positions/stabilizers of atoms */
+    int *ua2a;                         /* unique atom number to full atom number mapping array */
     int *us2s;                         /* unique shell number to full shell number mapping array */
     int *sopi;                         /* number of SO per irrep */
     int *sym_oper;                     /* mapping array between "canonical" and symmetry.h-defined

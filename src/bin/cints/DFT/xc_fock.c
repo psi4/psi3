@@ -19,10 +19,12 @@
 #include"functional.h"
 #include"physconst.h"
 #include"bragg.h"
+#include"dcr.h"
 
 void xc_fock(void){
   int i,j,k,l,m,n;
-  int natoms, rpoints;
+  int ua, atom, ua_deg;
+  int rpoints;
   int ang_points;
   int num_ao;
 
@@ -56,7 +58,6 @@ void xc_fock(void){
   struct coordinates geom;
   struct den_info_s den_info;
 
-  natoms = Molecule.num_atoms;
   num_ao = BasisSet.num_ao;
   rpoints = DFT_options.rpoints;
   ang_points = DFT_options.grid_info[0].angpoints;
@@ -74,13 +75,27 @@ void xc_fock(void){
   for(i=0;i<Molecule.num_atoms;i++)
       DFT_options.bragg[i] =
 	  Bragg_radii[(int) Molecule.centers[i].Z_nuc]*1.8897269;
-  
-  for(i=0;i<natoms;i++){
-      xa = Molecule.centers[i].x;
-      ya = Molecule.centers[i].y;
-      za = Molecule.centers[i].z;
+
+  /*-------------------------------------------------------
+    Loop over symmetry-unique atoms only since integration
+    domains around symm.-unique atoms are equivalent
+    We are NOT employing the symmetry of angular grids
+    about atoms in special positions (on symm. elements)
+    like Handy & co. do
+   -------------------------------------------------------*/
+  for(ua=0;ua<Symmetry.num_unique_atoms;ua++){
+      atom = Symmetry.ua2a[ua];
+      /*--- Cheap trick to get degeneracies of each unique atom ---*/
+      if (Symmetry.nirreps > 1)
+	ua_deg = Symmetry.nirreps/Symmetry.dcr_deg[Symmetry.atom_positions[atom]][Symmetry.atom_positions[atom]];
+      else
+	ua_deg = 1;
+
+      xa = Molecule.centers[atom].x;
+      ya = Molecule.centers[atom].y;
+      za = Molecule.centers[atom].z;
       
-      bragg = DFT_options.bragg[i];
+      bragg = DFT_options.bragg[atom];
       
       for(j=1;j<rpoints;j++){
 	  rind = (double) j;
@@ -113,7 +128,7 @@ void xc_fock(void){
 	      /*-----------------------------------
 		Calculate the weighting funtion 
 		----------------------------------*/
-	      Becke_weight = weight_calc(i,geom,3);
+	      Becke_weight = weight_calc(atom,geom,3);
 	      if(Becke_weight > WEIGHT_CUTOFF){
 	      /*-----------------------------------
 		Get the density information for this 
@@ -140,12 +155,12 @@ void xc_fock(void){
 		      efunc_val = DFT_options.exchange_function(den_info)
 			  + DFT_options.correlation_function(den_info);
 		      
-		      vval = drdq*ang_quad*Becke_weight*vfunc_val;
-		      eval += drdq*ang_quad*Becke_weight*efunc_val;
+		      vval = ua_deg*drdq*ang_quad*Becke_weight*vfunc_val;
+		      eval += ua_deg*drdq*ang_quad*Becke_weight*efunc_val;
 		      
-		      /* ------------------------------------
-			 Update the G matrix
-			 -----------------------------------*/
+		      /*------------------------------------
+			Update the G matrix
+		       -----------------------------------*/
 		      for(m=0;m<num_ao;m++){
 			  bas1 = DFT_options.basis[m];
 			  for(n=0;n<num_ao;n++){
