@@ -33,7 +33,6 @@ EXTERN void cross_product(double *u,double *v,double *out);
 EXTERN void scalar_mult(double a, double *vect, int dim);
 EXTERN void scalar_div(double a, double *vect);
 EXTERN double **symm_matrix_invert(double **A, int rows, int cols, int redundant);
-EXTERN char *gprgid();
 EXTERN int div_int(int big, int little);
 EXTERN void print_mat2(double **matrix, int rows, int cols, FILE *of);
 EXTERN int *ops_in_class;
