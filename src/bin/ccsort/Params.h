@@ -6,6 +6,7 @@ struct Params {
   long int memory;            /* Memory available (in bytes) */
   int cachelev;
   int ref;
+  char *wfn;
   int dertype;
   char *aobasis;
   int reset;  /* cmdline argument; if true, all CC-related files are deleted 

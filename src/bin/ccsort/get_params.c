@@ -14,7 +14,16 @@ void get_params()
 {
   int i, errcod, tol;
   char *junk;
-
+  
+  errcod = ip_string("WFN", &(params.wfn), 0);
+  if(strcmp(params.wfn, "MP2") && strcmp(params.wfn, "CCSD") && 
+     strcmp(params.wfn, "CCSD_T") && strcmp(params.wfn, "EOM_CCSD") && 
+     strcmp(params.wfn, "LEOM_CCSD") && strcmp(params.wfn, "BCCD") && 
+     strcmp(params.wfn,"BCCD_T")) {
+    fprintf(outfile, "Invalid value of input keyword WFN: %s\n", params.wfn);
+    exit(PSI_RETURN_FAILURE);
+  }
+  
   errcod = ip_string("REFERENCE", &(junk),0);
   if (errcod != IPE_OK) {
     /* if no reference is given, assume rhf */
@@ -69,6 +78,7 @@ void get_params()
 
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
+  fprintf(outfile, "\tWave function   =    %6s\n", params.wfn);
   fprintf(outfile, "\tReference wfn   =    %5s\n", 
       (params.ref == 0) ? "RHF" : ((params.ref == 1) ? "ROHF" : "UHF"));
   fprintf(outfile, "\tDerivative      =    %5s\n", 
