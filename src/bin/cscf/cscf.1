@@ -367,3 +367,12 @@ This is used in tcscf to determine how often the ci
 coefficients are recalculated.  A small number (~0.25)  
 will cause them to be recalculated nearly every scf      
 iteration.  The default is 0.25. 
+
+.IP "\fBDYN_ACC = \fP \fIboolean\fP"
+When performing direct scf this specifies whether dynamic integral
+accuracy cutoffs will be used.  Default is true (use dynamic cutoffs).
+Initial iterations are performed with integrals accurate to six digits.
+After density is converged to 10^-5 or 30 iterations are completed,
+full integral accuracy is used.  If scf convergence problems are experienced
+disabling dynamic cutoffs by setting this variable to false might help.
+                                                                        
