@@ -279,7 +279,7 @@ void te_deriv1_corr()
 		      l = dum;
 		    }
 		    offset = ((i*nj+j)*nk+k)*nl+l;
-		    FourInd[offset] = TPDM.values[buf_offset]*
+		    FourInd[offset] += TPDM.values[buf_offset]*
 				      GTOs.bf_norm[orig_am[0]][i]*
 				      GTOs.bf_norm[orig_am[1]][j]*
 				      GTOs.bf_norm[orig_am[2]][k]*
