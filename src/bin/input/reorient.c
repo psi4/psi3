@@ -27,6 +27,11 @@ void reorient()
   double **sset_geom, *sset_dist;
   double origin[] = {0.0, 0.0, 0.0};
 
+  double cos_theta, sin_theta, theta;
+  double cos_phix, cos_phiy, phix, sin_phix;
+  double v2norm;
+  double **Rz, **Rx, **Rzt;
+
   const double im2rotconst = 0.25/(M_PI*_c_au*_bohr2cm);
 
     v1 = init_array(3);
@@ -82,18 +87,6 @@ void reorient()
 	fprintf(outfile,"B = %10.5lf  C = %10.5lf\n",im2rotconst/IM[1],im2rotconst/IM[2]);
 
     
-      /*Ensuring the righthandedness of the reference coordinate system*/
-      v1[0] = ITAxes[0][1];
-      v1[1] = ITAxes[1][1];
-      v1[2] = ITAxes[2][1];
-      v2[0] = ITAxes[0][2];
-      v2[1] = ITAxes[1][2];
-      v2[2] = ITAxes[2][2];
-      cross_prod(v1,v2,v3);
-      ITAxes[0][0] = v3[0];
-      ITAxes[1][0] = v3[1];
-      ITAxes[2][0] = v3[2];
-
       /*Computing degeneracy*/
       degen = 0;
       for(i=0;i<2;i++)
@@ -111,14 +104,107 @@ void reorient()
 	  }
 	}
 
-      /*Reorient if degen < 2 (non-spherical top case).
+      /*Ensuring the righthandedness of the reference coordinate system*/
+      v1[0] = ITAxes[0][1];
+      v1[1] = ITAxes[1][1];
+      v1[2] = ITAxes[2][1];
+      v2[0] = ITAxes[0][2];
+      v2[1] = ITAxes[1][2];
+      v2[2] = ITAxes[2][2];
+      cross_prod(v1,v2,v3);
+      ITAxes[0][0] = v3[0];
+      ITAxes[1][0] = v3[1];
+      ITAxes[2][0] = v3[2];
+
+      /*Reorient if degen == 0 (asymmetric top case).
 	Otherwise hope user knows what he/she's doing and leave it as it is.*/
-      if (degen < 2 && !no_reorient) {
+      if (degen == 0 && !no_reorient) {
 	rotate_full_geom(ITAxes);
       }
 
+      /*-------------------------------------------------------------
+	For linear or symmetric tops need to rotate so that
+	the nondegenerate moment of inertia is along z:
+	1. v1 - nondegenerate
+	2. cos(Theta) = v1.dot.Z
+	3. v2 = v1.cross.Z
+	4. cos(Phi_x) = v2.dot.X
+	5. cos(Phi_y) = v2.dot.Y
+	6. From 4 and 5 determine quadrant
+	7. Rotate around Z by Phi_x or -Phi_x so that v2 is along X
+	8. Rotate around X by Theta
+	9. Rotate around Z by -Phi_x or Phi_x
+
+	Added 4/26/2003 by EFV.
+       ------------------------------------------------------------*/
+      if (degen == 1 && !no_reorient) {
+	if (deg_IM1 + deg_IM2 == 3) {
+	  v1[0] = ITAxes[0][0];
+	  v1[1] = ITAxes[1][0];
+	  v1[2] = ITAxes[2][0];
+	}
+	else {
+	  v1[0] = ITAxes[0][2];
+	  v1[1] = ITAxes[1][2];
+	  v1[2] = ITAxes[2][2];
+	}
+
+	cos_theta = v1[2];
+	if ( (1.0 - fabs(cos_theta)) > ZERO_MOMENT_INERTIA) {
+	  theta = acos(cos_theta);
+	  sin_theta = sin(theta);
+	  
+	  v3[0] = 0.0;
+	  v3[1] = 0.0;
+	  v3[2] = 1.0;
+	  cross_prod(v1,v3,v2);
+	  v2norm = sqrt(v2[0] * v2[0] +
+			v2[1] * v2[1] +
+			v2[2] * v2[2]);
+	  v2[0] /= v2norm;
+	  v2[1] /= v2norm;
+	  v2[2] /= v2norm;
+	  
+	  cos_phix = v2[0];
+	  cos_phiy = v2[1];
+	  phix = acos(cos_phix);
+	  
+	  if (cos_phiy > 0.0) {
+	    phix *= -1.0; 
+	  }
+	  sin_phix = sin(phix);
+
+	  Rz = block_matrix(3,3);
+	  Rz[2][2] = 1.0;
+	  Rz[0][0] = cos_phix;
+	  Rz[1][1] = cos_phix;
+	  Rz[0][1] = sin_phix;
+	  Rz[1][0] = -sin_phix;
+	  rotate_full_geom(Rz);
+	  free_block(Rz);
+
+	  Rx = block_matrix(3,3);
+	  Rx[0][0] = 1.0;
+	  Rx[1][1] = cos_theta;
+	  Rx[2][2] = cos_theta;
+	  Rx[1][2] = sin_theta;
+	  Rx[2][1] = -sin_theta;
+	  rotate_full_geom(Rx);
+	  free_block(Rx);
+
+	  Rzt = block_matrix(3,3);
+	  Rzt[2][2] = 1.0;
+	  Rzt[0][0] = cos_phix;
+	  Rzt[1][1] = cos_phix;
+	  Rzt[0][1] = -sin_phix;
+	  Rzt[1][0] = sin_phix;
+	  rotate_full_geom(Rzt);
+	  free_block(Rzt);
+	}
+      }
+
       /*If degen=0 (asymmetric top) - do nothing
-	   degen=1 (linear molecule or symmetric top) - set unique axis along Z
+	   degen=1 (linear molecule or symmetric top) - do nothing
            denen=2 (atom or spherical top) - do lots of stuff - see below*/
       if (degen == 0) {
 	fprintf(outfile,"    It is an asymmetric top.\n");
@@ -126,16 +212,7 @@ void reorient()
       }
       else if (degen == 1)
 	switch (deg_IM1 + deg_IM2) {
-	  case 3: /*B and C are degenerate - linear or prolate symm. top.
-		    A is the unique axis. Rotate around y-axis.*/
-                  if (!no_reorient) {
-	            R = block_matrix(3,3);
-		    R[1][1] = 1.0;
-		    R[2][0] = -1.0;
-		    R[0][2] = 1.0;
-		    rotate_full_geom(R);
-		    free_block(R);
-                  }
+	  case 3: /*B and C are degenerate - linear or prolate symm. top.*/
 		  if (IM[0] < ZERO_MOMENT_INERTIA) {
 		    fprintf(outfile,"    It is a linear molecule.\n");
 		    rotor = linear;
