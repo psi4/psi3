@@ -281,11 +281,10 @@ void init_ioff(void)
 */
 void close_io(void)
 {
+   int errcod;
    psio_done();
-   fclose(infile);
    if (Parameters.print_lvl) tstop(outfile);
-   ip_done();
-   fclose(outfile);
+   errcod = psi_stop();
 }
 
 
