@@ -43,9 +43,7 @@ struct Params params;
 
 
 /* Function prototypes */
-void check_quiet_mode(int argc, char *argv[]);
-void parse_cmdline(int argc, char *argv[]);
-void init_io();
+void init_io(int argc, char *argv[]);
 void title();
 void init_ioff();
 void get_parameters();
@@ -61,11 +59,9 @@ void get_mp2nos(void);
 main(int argc, char *argv[])
 {
   params.print_lvl = 1;
-  check_quiet_mode(argc,argv);
-  init_io();
+  init_io(argc, argv);
   title();
   get_parameters();
-  parse_cmdline(argc,argv);  /*--- Command-line args override input.dat ---*/
   get_moinfo();
   print_parameters();
   get_reorder_array();
@@ -82,47 +78,20 @@ main(int argc, char *argv[])
   exit(0);
 }
 
-
-/*
-** check_quiet_mode()
-**
-** See if the user has requested "quiet" mode.  If so, print *nothing*.
-** We have to do this very early in the program, obviously.
-** We'll check for -quiet again later in parse_cmdline() to make sure
-** the printing value wasn't changed by input.
-*/
-void check_quiet_mode(int argc, char *argv[])
+void init_io(int argc, char *argv[])
 {
-
-   int i;
+  int i;
+  int parsed=1;
 
    for (i=1; i<argc; i++) {
-       if (strcmp(argv[i], "-quiet") == 0) {
-           params.print_lvl = 0;
-         }
+     if (strcmp(argv[i], "-quiet") == 0) {
+       params.print_lvl = 0;
+       parsed++;
+     }
    }
-}
-
-
-void parse_cmdline(int argc, char *argv[])
-{
-   int i;
-
-   for (i=1; i<argc; i++) {
-       
-       /*--- "Quiet" option ---*/
-       if (strcmp(argv[i], "-quiet") == 0) {
-           params.print_lvl = 0;
-         }
-
-   }
-}
-
-
-void init_io(void)
-{
-  ffile(&infile,"input.dat",2);
-  ffile(&outfile,"output.dat",1);
+	
+  init_in_out(argc-parsed, argv+parsed);
+  
   if (params.print_lvl) tstart(outfile);
   ip_set_uppercase(1);
   ip_initialize(infile,outfile);
