@@ -184,8 +184,8 @@ esac
 
 AC_SET_MAKE
 
-TMPL=$top_objdir/bin/tmpl AC_SUBST(TMPL)
-PSIPP=$top_objdir/bin/psipp AC_SUBST(PSIPP)
+TMPL=$top_objdir/src/util/tmpl/tmpl AC_SUBST(TMPL)
+PSIPP=$top_objdir/src/util/psipp/psipp AC_SUBST(PSIPP)
 
 # Figure out the suffix used for fortran for files (as $(FC) needs
 # them--not F since that is psipp's input suffix).
@@ -739,6 +739,7 @@ AC_OUTPUT(include/psiconfig.h include/cfuncs.h include/ffuncs.h
           src/bin/intder/Makefile
           src/bin/intder95/Makefile
           src/bin/intdif/Makefile
+          src/bin/local/Makefile
           src/bin/makepk/Makefile
           src/bin/muder/Makefile
           src/bin/psi/Makefile
