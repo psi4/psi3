@@ -44,6 +44,7 @@ struct den_info_s calc_density(struct coordinates geom){
     double expon;
     int n_shells;
     int shell_center;
+    double *temp_arr;
     double **dens;
     double *norm_ptr;
     double *dist_atom;
@@ -57,7 +58,6 @@ struct den_info_s calc_density(struct coordinates geom){
     z = geom.z;
     
     dist_atom = init_array(Molecule.num_atoms);
-    
     dist_coord = (struct coordinates *)malloc(sizeof(struct coordinates)*Molecule.num_atoms);
     timer_on("distance");
     for(i=0;i<Molecule.num_atoms;i++){
@@ -223,56 +223,19 @@ timer_off("exponent");
    timer_on("density"); 
     if(UserOptions.reftype == rhf){
 	den_sum = 0.0;
-/*	for(si=0;si<n_shells;si++){
-	    si_n_ao = ioff[BasisSet.shells[si].am];
-	    starti = BasisSet.shells[si].fao-1;
-	    for(sj=0;sj<n_shells;sj++){
-		sj_n_ao = ioff[BasisSet.shells[sj].am];
-		startj = BasisSet.shells[sj].fao-1;		
-		sp = &(BasisSet.shell_pairs[si][sj]);
-		    for(i=0;i<si_n_ao;i++){
-			bas1 = DFT_options.basis[starti+i];
-			for(j=0;j<sj_n_ao;j++){
-			    bas2 = DFT_options.basis[startj+j];
-			    den_sum += sp->dmat[i][j]*bas1*bas2;
-			}
-		    }
-	    }
-	    
-	    }*/
-	for(i=0;i<BasisSet.num_ao;i++){
+	temp_arr = init_array(BasisSet.num_ao);
+	C_DGEMV('n',BasisSet.num_ao,BasisSet.num_ao,1.0,Cmat[0],BasisSet.num_ao,DFT_options.basis,1,1.0,temp_arr,1);
+	dot_arr(temp_arr,DFT_options.basis,BasisSet.num_ao,&den_sum);
+	/*for(i=0;i<BasisSet.num_ao;i++){
 	    bas1 = DFT_options.basis[i];
 	    for(j=0;j<BasisSet.num_ao;j++){
 		bas2 = DFT_options.basis[j];
 		den_sum += Dens[i][j]*bas1*bas2;
 	    }
-	}
+	    }*/
 	den_info.den = 0.5*den_sum;
     }
    timer_off("density"); 
-    /*if(UserOptions.reftype == uhf){
-	for(si=0;si<n_shells;si++){
-	    si_n_ao = ioff[BasisSet.shells[si].am];
-	    starti = BasisSet.shells[si].fao-1;
-	    for(sj=si;sj<n_shells;sj++){
-		sj_n_ao = ioff[BasisSet.shells[sj].am];
-		startj = BasisSet.shells[sj].fao-1;
-		sp = &(BasisSet.shell_pairs[si][sj]);
-		    for(i=starti;i<starti+si_n_ao;i++){
-			bas1 = den_info.basis_arr[starti+i];
-			for(j=startj;j<startj+sj_n_ao;j++){
-			    dena = sp->dmata[i][j];
-			    denb = sp->dmatb[i][j];
-			    bas2 = den_info.basis_arr[startj+j];
-			    den_sum += dena*bas1*bas2;
-			    den_sum_o += denb*bas1*bas2; 
-			}
-		    }
-	    }
-	}
-	den_info.den_a = den_sum;
-	den_info.den_b = den_sum_o;
-	}*/
    free(dist_coord);
    free(dist_atom);
    return den_info;

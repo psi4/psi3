@@ -51,6 +51,10 @@ EXTERN double **Dens;    /* Total density in AO basis */
 EXTERN double **Denso;   /* Open-shell density in AO basis */
 EXTERN double **Densa;    /* Alpha density in AO basis */
 EXTERN double **Densb;    /* Beta density in AO basis */
+EXTERN double **Cmat;
+EXTERN double **Cmato;
+EXTERN double **Cmata;
+EXTERN double **Cmatb;
 EXTERN double **Lagr;    /* Energy-weighted density of lagrangian in AO basis */
 EXTERN double ***ShDens; /* MO shell density */
 EXTERN double **G;       /* G-matrix (t.e. part of the Fock matrix) in AO basis */

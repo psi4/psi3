@@ -48,7 +48,7 @@ void fock()
    -----------------------------------*/
   if(UserOptions.make_dft){
     /*--- Read in the total DFT density ---*/
-    read_total_opdm();
+    read_scf_evec();
 
     /*-- Compute exch+corr contribution to the Fock matrix ---*/
     xc_fock();
