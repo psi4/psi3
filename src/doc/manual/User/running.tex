@@ -1,29 +1,192 @@
 \subsection{Geometry Specification}
 Full molecular geometry has to be specified in form of Cartesian coordinates or
-a Z-matrix. Cartesian coordinates of atoms are specified via keyword
-\keyword{geometry}:
+a Z-matrix. Cartesian coordinates of atoms are specified via a keyword
+\keyword{geometry} which has to be a member of either \keyword{default}
+or \keyword{input} sections:
 \begin{verbatim}
   geometry = (
     (atomname1 x1 y1 z1)
     (atomname2 x2 y2 z2)
     (atomname3 x3 y3 z3)
         ..........
-    (atomnamen xn yn zn)
+    (atomnameN xN yN zN)
   )
 \end{verbatim}
-where \keyword{atomnamei} can be either an element symbol or a full
+where \keyword{atomname$i$} can take the following values:
+\begin{itemize}
+\item element symbol (H, He, Li, Be, B, etc.);
+\item full element name (hydrogen, helium, lithium, etc.);
+\item {\em ghost} atom symbol (G) or name (ghost). Ghost atom is an atom
+of formal charge 0.0, it can be useful to specify the location of
+the off-nucleus basis functions;
+\item {\em dummy} atom symbol (X). Dummy atoms can be useful only to specify
+Z-matrices of proper symmetry (not used in \PSIthree; see below) or
+which contain linear fragments.
+\end{itemize}
+Hence the following two examples are equivalent to one another:
+\begin{verbatim}
+  geometry = (
+    (H 0.0 0.0 0.0)
+    (f 1.0 0.0 0.0)
+    (Li 3.0 0.0 0.0)
+    (BE 6.0 0.0 0.0)
+  )
+\end{verbatim}
+\begin{verbatim}
+  geometry = (
+    (hydrogen  0.0 0.0 0.0)
+    (FLUORINE  1.0 0.0 0.0)
+    (Lithium   3.0 0.0 0.0)
+    (berillium 6.0 0.0 0.0)
+  )
+\end{verbatim}
+
+The keyword \keyword{units} specifies the units for the coordinates:
+\begin{itemize}
+\item \keyword{units = bohr} -- atomic units (Bohr), default;
+\item \keyword{units = angstrom} -- angstroms ($\AA$);
+\end{itemize}
+
+The \keyword{zmat} keyword can be used to specify a Z-matrix for the molecule.
+It also has to be put in either \keyword{default} or \keyword{input} sections.
+The format of this vector is as follows:
+\begin{verbatim}
+  zmat = (
+    (atomname1)
+    (atomname2 ref21 bond_dist2)
+    (atomname3 ref31 bond_dist3 ref32 bond_angle3)
+    (atomname4 ref41 bond_dist4 ref42 bond_angle4 ref43 tors_angle4)
+    (atomname5 ref51 bond_dist5 ref52 bond_angle5 ref53 tors_angle5)
+                     ...........................
+    (atomnameN refN1 bond_distN refN2 bond_angleN refN3 tors_angleN)
+  )
+\end{verbatim}
+where
+\begin{itemize}
+\item \keyword{bond\_dist$i$} is the distance (in units specified by
+keyword \keyword{units}) from nucleus number $i$ to
+nucleus number \keyword{ref$i$1}. The units 
+\item \keyword{bond\_angle$i$} is the angle formed by nuclei $i$,
+\keyword{ref$i$1}, and \keyword{ref$i$2};
+\item \keyword{tors\_angle$i$} is the torsion angle formed by nuclei $i$,
+\keyword{ref$i$1}, \keyword{ref$i$2}, and \keyword{ref$i$3};
+\end{itemize}
+Some care has to be taken when constructing a Z-matrix for a molecule
+which contains linear fragments. For example, let's construct a Z-matrix
+for a linear conformation of HNCO. The first three atoms (HNC) can be specified
+as is, but the fourth atom (O) poses a problem -- the torsional angle cannot be
+defined with respect to the linear HNC fragment. The solution is to add
+2 dummy atoms to the definition:
+\begin{verbatim}
+  zmat = (
+    (h)
+    (n 1 1.012)
+    (x 2 1.000 1  90.0)
+    (c 2 1.234 3  90.0 1 180.0)
+    (x 4 1.000 2  90.0 3 180.0)
+    (o 4 1.114 5  90.0 2 180.0)
+  )
+\end{verbatim}
+
+Of course, a choice of the method for geometry specification is solely
+a matter of convenience.
+
+\subsection{Molecular Symmetry}
+\PSIthree\ can determine automatically the largest Abelian point group
+for a valid framework of centers (the framework also includes ghost
+atoms, but it does not include dummy atoms).
+It will then use the symmetry porperties of the system in computing energy,
+forces, and other properties.
+However, in certain instances it is desirable to use a lower than the
+full symmetry. The keyword \keyword{subgroup} is used to specify a subgroup of
+the full molecular point group. The allowed values are \keyword{c2v},
+\keyword{c2h}, \keyword{d2}, \keyword{c2}, \keyword{cs}, \keyword{ci},
+and \keyword{c1}. For certain combinations of a group and
+its subgroup there is no unique way to determine which subgroup is
+implied. For example, $D_{\rm 2h}$ has 3 non-equivalent $C_{\rm 2v}$ subgroups,
+e.g. $C_{\rm 2v}(X)$ consists of symmetry operations $\hat{E}$, $\hat{C}_2(x)$,
+$\hat{\sigma}_{xy}$, and $\hat{\sigma_{xz}}$. 
+To specify subgroups precisely one has to use the \keyword{unique\_axis}
+keyword. E.g. the following input will specify the $C_{\rm 2v}(X)$
+subgroup of $D_{\rm 2h}$ to be the computational point group:
+\begin{verbatim}
+  input: (
+    geometry = (
+      ........
+    )
+    units = angstrom
+    subgroup = c2v
+    unique_axis = x
+  )
+\end{verbatim}
 
 \subsection{Basis Sets}
+\PSIthree\ uses basis sets comprised of Cartesian (\keyword{puream = false}, default)
+or Spherical Harmonic (\keyword{puream = true}) Gaussian basis functions.
+An atomic basis set is normally identified by a string. Currently, there exist
+three ways to specify which basis sets to use for which atoms:
+\begin{itemize}
+\item \keyword{basis = string} -- all atoms use basis set type
+\keyword{string};
+\item \keyword{basis = (string1 string2 string3 ... stringN)} -- \keyword{string$i$}
+specifies the basis set for atom $i$. Thus, the number of strings in the \keyword{basis}
+vector has to be the same as the number of atoms (including ghost atoms but excluding
+dummy atoms). Another restriction is that symmetry equivalent atoms should have
+same basis sets, otherwise \PSIinput\ will use the string provided for the so-called
+unique atom out of the set of symmetry equivalent ones.
+\item 
+\begin{verbatim}
+  basis = (
+    (element1 string1)
+    (element2 string2)
+       ...........
+    (elementN stringN)
+  )
+\end{verbatim}
+\keyword{string$i$} specifies the basis set for chemical element \keyword{element$i$}.
+\end{itemize}
+
+\subsubsection{Default Basis Sets}
 \PSIthree\ default basis sets are located in \pbasisdat\ which is located in
-{\tt \$psipath/share}. Table X lists basis sets defined in \pbasisdat.
-Needless to say, most of them are not commonly used:
+{\tt \$psipath/share}. Table \ref{table:basisset} lists basis sets defined in \pbasisdat.
+\begin{table}
+\caption{Summary of basis sets defined in \PSIthree.}
+\label{table:basisset}
+\begin{tabular}{lll} \hline\hline 
+Basis Sets & ID string & Elements \\ \hline
+cc-pV$x$Z & ccpv$x$z & H, Be-Ne \\
+\hline\hline
+\end{tabular}
+\end{table}
 
-"Insert a table here"
+\subsubsection{Custom Basis Sets}
+To make a custom basis set, enter the information in either of the following four files:
+\begin{itemize}
+\item \pbasisdat\ -- only if you think it should be added to \PSIthree. You also
+might want to check in your additions and changes so that everyone could
+benefit from them. Refer to the \PSIthree\ Programmer's Manual for information
+on how to access \PSIthree\ repository.
+\item An arbitrary text file. To specify the file's location use keyword
+\keyword{basisfile}:
+\begin{verbatim}
+  input: (
+    % The meaning of this is pretty obvious
+    basisfile = "/home/users/tool/chem/h2o/mybasis.in"
+    % If the location ends with '/', "basis.dat" is automatically appended
+    % Hence this specifies /home/users/tool/chem/basis.dat !
+    basisfile = "/home/users/tool/chem/"
+  )
+\end{verbatim}
+Use this option if you want to use the basis set file in a project
+which involves running more than one computation.
+\item File named \basisdat, which resides in the working directory along with \inputdat .
+Same use as the previous entry.
+\item \inputdat
+\end{itemize}
+The order in which \PSIinput\ program searches for basis sets is the order in which files
+appear in our checklist.
 
-Table 2: Summary of Basis sets defined in \PSIthree.
-
-To make a custom basis set, enter the information in either
-\basisdat\ or \inputdat. A contracted Cartesian Gaussian-Type Orbital
+A contracted Cartesian Gaussian-Type Orbital
 \begin{eqnarray}
 \phi_{\rm CGTO} & = & x^ly^mz^n\sum_i C_i \exp(-\alpha_i[x^2+y^2+z^2])
 \end{eqnarray}
@@ -44,60 +207,20 @@ basis: (
   )
 \end{verbatim}
 
-\subsection{Geometry Optimization}
-\PSIoptking\ is the program responsible for orchestrating the
-process of geometry optimization. It can do a number of tasks
-automatically, such as generating internal coordinates, produce
-empirical force constant matrix, if necessary, update it, and
-check if geometry optimization is over. Some or all of the following
-files are necessary to perform a geometry optimization with \PSIoptking:
-\begin{itemize} 
-\item \FILE{11.dat} - contains the cartesian geometry and the nuclear forces, produced by \PSIcderiv ;
-\item \fconstdat - contains force constants; if absent - empirical force constants will
-be generated by \PSIoptking ;
-\item \intcodat - contains internal coordinates in a format readable by a human;
-if absent - internal coordinates are generated automatically by \PSIoptking .
-\end{itemize}
-
-The procedure for setting up such a calculation is as follows: 
-\begin{itemize}
-\item define geometry 
-\item determine occupations if desired
-\item define internal coordinates if desired (if unsure - do not)
-\item obtain a set of force constants in an fconst.dat file (if unsure - do not) 
-\item run a first derivative with the \keyword{opt} flag set to true and \keyword{ nopt} around 5
-\end{itemize}
-Precision with which geometry is optimized depends on the residual
-forces on the nuclei. By default \PSIoptking\ will terminate the job
-if the residual cartesian gradients in \FILE{11.dat} are less than
-$10^{-5}$ in atomic units. It is probably enough for most
-tasks. Going below this will most likely waste CPU
-time unless you are doing benchmarks.
-
-An important aspect of a geometry optimization is the accuracy
-of the first derivatives of energy that \PSIthree\ computes.
-Depending on how poorly your wavefunction has been convereged, the
-gradients themselves may not be sufficiently accurate for
-the requested convergence criterion. After computing first
-derivatives of the energy, \PSIcints\ runs a simple check
-of the quality of the energy derivative. It's a good idea to
-look at \PSIcints ' output to make sure that the gradients are OK. 
-
-Let us take a look at each step involved in optimizing molecular geometry.
-
-\subsubsection{How to specify geometry}
-See documentation for \PSIinput .
-
-\subsubsection{Specifying Electronic Configuration}
+\subsection{Electronic Structure Specification}
 The reference electronic configuration of a molecule is specified
 via a combination of keywords \keyword{reference} and \keyword{multiplicity}
-and occupation vectors \keyword{docc} and \keyword{socc}. Although the latter
-may not be necessary as \PSIcscf\ may guess occupations for you
-had \keyword{charge}, \keyword{multiplicity}, and \keyword{reference} have been specified.
+and occupation vectors \keyword{docc} and \keyword{socc}. However, the latter
+may not be necessary as \PSIcscf\ may guess occupations (\keyword{docc}
+and \keyword{socc} arrays) for you
+had \keyword{charge}, \keyword{multiplicity}, and \keyword{reference}
+have been specified. It is the easiest way to specify electronic configuration
+for your system, but remember that guessing algorithms \PSIcscf\ uses are
+far from perfect. Hence you should check guessed occupations every time you
+let \PSIcscf\ guess them for you.
 
-\PSIthree\ is only capable of recognizing the electronic structure
-for molecules in $D_{\rm 2h}$ and its subgroups. To determine the
-electronic occupations in \PSIthree, first construct symmetry
+To determine the electronic occupations in \PSIthree\ manually, first
+construct symmetry
 orbitals using group theory and fill them according to regular
 valence bond arguments. To define your occupations in \PSIthree,
 use the \keyword{docc} and \keyword{socc} arrays. But only \keyword{docc}
@@ -152,13 +275,59 @@ frozen_docc = (1 0 0 0)
 frozen_uocc = (0 0 0 1)
 \end{verbatim}
 
+\subsection{Single-Point Energy Computation}
+Along with the wavefunction type, the nuclear framework, basis set,
+and electronic configuration are sufficient
+for a single-point evaluation of the electronic energy.
+The electronic wavefunction is specified via the \keyword{wfn} keyword.
+The range of allowed wavefunctions is listed in Table \ref{table:wfn}
+
+\subsection{Geometry Optimization}
+\PSIoptking\ is the program responsible for orchestrating the
+process of geometry optimization. It can do a number of tasks
+automatically, such as generating internal coordinates, produce
+empirical force constant matrix, if necessary, update it, and
+check if geometry optimization is over. Some or all of the following
+files are necessary to perform a geometry optimization with \PSIoptking:
+\begin{itemize} 
+\item \FILE{11.dat} - contains the cartesian geometry and the nuclear forces, produced by \PSIcderiv ;
+\item \fconstdat - contains force constants; if absent - empirical force constants will
+be generated by \PSIoptking ;
+\item \intcodat - contains internal coordinates in a format readable by a human;
+if absent - internal coordinates are generated automatically by \PSIoptking .
+\end{itemize}
+
+The procedure for setting up such a calculation is as follows: 
+\begin{itemize}
+\item define internal coordinates if desired (if unsure - do not)
+\item obtain a set of force constants in an fconst.dat file (if unsure - do not) 
+\item run a first derivative with the \keyword{opt} flag set to true and \keyword{ nopt} around 5
+\end{itemize}
+Precision with which geometry is optimized depends on the residual
+forces on the nuclei. By default \PSIoptking\ will terminate the job
+if the residual cartesian gradients in \FILE{11.dat} are less than
+$10^{-5}$ in atomic units. It is probably enough for most
+tasks. Going below this will most likely waste CPU
+time unless you are doing benchmarks.
+
+An important aspect of a geometry optimization is the accuracy
+of the first derivatives of energy that \PSIthree\ computes.
+Depending on how poorly your wavefunction has been convereged, the
+gradients themselves may not be sufficiently accurate for
+the requested convergence criterion. After computing first
+derivatives of the energy, \PSIcints\ runs a simple check
+of the quality of the energy derivative. It's a good idea to
+look at \PSIcints ' output to make sure that the gradients are OK. 
+
+Let us take a look at each step involved in optimizing molecular geometry.
+
 \subsubsection{Internal Coordinates and Structure of \keyword{intco} Vector}
 This section is largely obsolete now with the addition of the \PSIoptking\ 
 program which can generate internal coordinates automatically. At present
 \PSIoptking\ cannot handle molecules larger than a few
-atoms but it should change in very near future. Hence 
+atoms but it should change in the immediate future. Hence 
 you may still specify internal coordinates manually
-as described here, but this ability may become obsolete someday.
+as described here, but this ability will become obsolete someday.
 
 \PSIthree\ currently carries out all optimizations in
 internal coordinates. The internals are specified in either
