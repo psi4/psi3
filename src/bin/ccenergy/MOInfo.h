@@ -28,6 +28,7 @@ struct MOInfo {
   int iter;              /* Current CCSD iteration */
   double conv;           /* Current convergence level */
   double enuc;           /* Nuclear repulsion energy */
+  double emp2;           /* MP2 energy */
   double escf;           /* SCF energy (from file30) */
   double eref;           /* Reference energy (file100) */
   double ecc;            /* Current coupled cluster energy */
