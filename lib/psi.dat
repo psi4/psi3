@@ -19,7 +19,6 @@ psi: (
   backtransqt = "transqt -backtr"
   dipder     = "dipder"
   cphf       = "cphf"
-  makepk     = "makepk"
   normco     = "normco"
   oeprop     = "oeprop"
   optking    = "optking"
@@ -201,7 +200,7 @@ psi: (
 
   % Procedures for the DETCAS gradient
   DETCASFirst = 
-  ($ints $scf $makepk $detcasman $backtransqt $oeprop "bksort" "deriv97")
+  ($ints $scf $detcasman $backtransqt $oeprop $deriv)
   DETCASRHFFirst = ($DETCASFirst $done)
   DETCASROHFFirst = ($DETCASFirst $done)
   DETCASUHFFirst = ERROR
