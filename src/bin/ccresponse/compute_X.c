@@ -17,14 +17,12 @@ void diis(int iter, char *pert, char *cart, int irrep, double omega);
 double pseudopolar(char *pert, char *cart, int irrep, double omega);
 void cleanup(void);
 void exit_io(void);
+void analyze(char *pert, char *cart, int irrep, double omega);
 
 void compute_X(char *pert, char *cart, int irrep, double omega)
 {
   int iter=0, done=0;
   double rms, polar;
-  dpdfile2 X1;
-  dpdbuf4 X2;
-  char lbl[32];
 
   fprintf(outfile, "\n\tComputing %s-%1s-Perturbed Wave Function (%5.3f E_h).\n", pert, cart, omega);
   fprintf(outfile, "\tIter   Pseudopolarizability       RMS \n");
@@ -70,6 +68,8 @@ void compute_X(char *pert, char *cart, int irrep, double omega)
     exit_io();
     exit(PSI_RETURN_FAILURE);
   }
+
+  if(params.analyze) analyze(pert, cart, irrep, omega);
 
   /*  print_X(pert, cart, irrep, omega); */
 }

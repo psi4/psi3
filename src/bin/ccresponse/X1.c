@@ -44,12 +44,12 @@ void X1_build(char *pert, char *cart, int irrep, double omega)
 
   /*** S-D ***/
 
+  dpd_file2_init(&F, CC_OEI, 0, 0, 1, "FME");
   sprintf(lbl, "X_%s_%1s_(2IjAb-IjbA) (%5.3f)", pert, cart, omega);
   dpd_buf4_init(&X2, CC_LR, irrep, 0, 5, 0, 5, 0, lbl);
-  dpd_file2_init(&F, CC_OEI, 0, 0, 1, "FME");
   dpd_dot24(&F, &X2, &X1new, 0, 0, 1, 1);
-  dpd_file2_close(&F);
   dpd_buf4_close(&X2);
+  dpd_file2_close(&F);
 
   sprintf(lbl, "X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
   dpd_buf4_init(&X2, CC_LR, irrep, 0, 5, 0, 5, 0, lbl);

@@ -140,6 +140,9 @@ void get_params()
   local.filter_singles = 1;
   ip_boolean("LOCAL_FILTER_SINGLES", &(local.filter_singles), 0);
 
+  params.analyze = 0;
+  ip_boolean("ANALYZE", &(params.analyze), 0);
+
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
   if(!strcmp(params.prop,"ALL"))
@@ -173,6 +176,7 @@ void get_params()
     fprintf(outfile, "\tWeak pairs      =    %s\n", local.weakp);
     fprintf(outfile, "\tFilter singles  =    %s\n", local.filter_singles ? "Yes" : "No");
   }
+  fprintf(outfile, "\tAnalyze X2 Amps  =    %s\n", params.analyze ? "Yes" : "No");
   fprintf(outfile, "\n");
 }
 

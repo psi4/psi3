@@ -9,4 +9,5 @@ struct Params {
   int diis;              /* boolean for using DIIS extrapolation */
   char *prop;            /* user-selected property */
   int local;             /* boolean for simluation of local correlation */
+  int analyze;
 };

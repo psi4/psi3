@@ -157,11 +157,13 @@ int main(int argc, char *argv[])
 	  }
 
 	  polar = polar_LCX + polar_HXY + polar_LHX1Y1 + polar_LHX2Y2 + polar_LHX1Y2;
+	  /*
 	  fprintf(outfile, "polar_LCX    = %20.12f\n", polar_LCX);
 	  fprintf(outfile, "polar_HXY    = %20.12f\n", polar_HXY);
 	  fprintf(outfile, "polar_LHX1Y1 = %20.12f\n", polar_LHX1Y1);
 	  fprintf(outfile, "polar_LHX2Y2 = %20.12f\n", polar_LHX2Y2);
 	  fprintf(outfile, "polar_LHX1Y2 = %20.12f\n", polar_LHX1Y2);
+	  */
 
 	  tensor[alpha][beta] = -polar;
 	}
@@ -241,11 +243,13 @@ int main(int argc, char *argv[])
 	  }
 
 	  polar = polar_LCX + polar_HXY + polar_LHX1Y1 + polar_LHX2Y2 + polar_LHX1Y2;
+	  /*
 	  fprintf(outfile, "polar_LCX    = %20.12f\n", polar_LCX);
 	  fprintf(outfile, "polar_HXY    = %20.12f\n", polar_HXY);
 	  fprintf(outfile, "polar_LHX1Y1 = %20.12f\n", polar_LHX1Y1);
 	  fprintf(outfile, "polar_LHX2Y2 = %20.12f\n", polar_LHX2Y2);
 	  fprintf(outfile, "polar_LHX1Y2 = %20.12f\n", polar_LHX1Y2);
+	  */
 
 	  tensor[alpha][beta] = 0.5 * polar;
 	}
@@ -308,12 +312,13 @@ int main(int argc, char *argv[])
 	  }
 
 	  polar = polar_LCX + polar_HXY + polar_LHX1Y1 + polar_LHX2Y2 + polar_LHX1Y2;
+	  /*
 	  fprintf(outfile, "polar_LCX    = %20.12f\n", polar_LCX);
 	  fprintf(outfile, "polar_HXY    = %20.12f\n", polar_HXY);
 	  fprintf(outfile, "polar_LHX1Y1 = %20.12f\n", polar_LHX1Y1);
 	  fprintf(outfile, "polar_LHX2Y2 = %20.12f\n", polar_LHX2Y2);
 	  fprintf(outfile, "polar_LHX1Y2 = %20.12f\n", polar_LHX1Y2);
-
+	  */
 	  tensor[alpha][beta] += 0.5 * polar;
 	}
 	/*      fprintf(outfile, "%1s%1s polar = %20.12f\n", cartcomp[alpha], cartcomp[beta], polar); */
@@ -339,7 +344,7 @@ int main(int argc, char *argv[])
     prefactor *= prefactor;
     prefactor *= 288.0e-30 * _pi * _pi * _na * bohr2a4;
     rotation = prefactor * TrG * nu * nu / M;
-    fprintf(outfile, "[alpha]_(%5.3f) = %20.12f\n", params.omega, rotation);
+    fprintf(outfile, "\n\t[alpha]_(%5.3f) = %20.12f deg/[dm (gm/cm^3)]\n", params.omega, rotation);
 
     free_block(tensor);
   }

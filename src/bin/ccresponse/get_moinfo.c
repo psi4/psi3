@@ -19,7 +19,8 @@ void get_moinfo(void)
 {
   int i, j, h, p, q, errcod, nactive, nirreps, nfzc, nfzv;
   int *actpi, offset, act_offset;
-  double **scf;
+  double **scf, ***C;
+  psio_address next;
 
   psio_read_entry(CC_INFO, "Reference Wavefunction", (char *) &(params.ref), 
 		  sizeof(int));
@@ -232,6 +233,21 @@ void get_moinfo(void)
     free_block(scf);
   }
 
+  /* Get the active virtual orbitals */
+  if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
+
+    C = (double ***) malloc(nirreps * sizeof(double **));
+    next = PSIO_ZERO;
+    for(h=0; h < nirreps; h++) {
+      if(moinfo.orbspi[h] && moinfo.virtpi[h]) {
+	C[h] = block_matrix(moinfo.orbspi[h],moinfo.virtpi[h]);
+	psio_read(CC_INFO, "RHF/ROHF Active Virtual Orbitals", (char *) C[h][0],
+		  moinfo.orbspi[h]*moinfo.virtpi[h]*sizeof(double), next, &next);
+      }
+    }
+    moinfo.C = C;
+  }
+
   chkpt_close();
 }
 
@@ -281,6 +297,9 @@ void cleanup(void)
     free(moinfo.qt_occ);
     free(moinfo.qt_vir);
     free_block(moinfo.scf);
+    for(i=0; i < moinfo.nirreps; i++)
+      if(moinfo.orbspi[i] && moinfo.virtpi[i]) free_block(moinfo.C[i]);
+    free(moinfo.C);
   }
 
   free_block(moinfo.usotao);

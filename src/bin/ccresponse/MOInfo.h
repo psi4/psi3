@@ -68,4 +68,5 @@ struct MOInfo {
   int *l_irreps;      /* irreps of x,y,z angular momentum components */
   int natom;          /* number of atoms */
   double *zvals;      /* atomic zvals */
+  double ***C;        /* Virtual orbital transformation matrix */
 };

@@ -42,6 +42,7 @@ LHX1Y1.c \
 LHX2Y2.c \
 LHX1Y2.c \
 local.c \
+analyze.c \
 
 BINOBJ = $(CSRC:%.c=%.o)
 ALLOC = 
