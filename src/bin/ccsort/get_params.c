@@ -58,7 +58,8 @@ void get_params()
   }
   else params.aobasis = strdup("NONE");
 
-  if(strcmp(params.wfn,"MP2") || !strcmp(params.aobasis,"NONE")) {
+  if(!strcmp(params.wfn,"MP2") || !strcmp(params.aobasis,"DISK") ||
+      !strcmp(params.aobasis,"DIRECT")) {
     params.make_abcd = 0;
   }
   else {
