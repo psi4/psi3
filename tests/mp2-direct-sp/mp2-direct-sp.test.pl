@@ -32,7 +32,7 @@ $FAIL = 0;
 
 open(RE, ">$RESULT") || die "cannot open $RESULT: $!";
 select (RE);
-printf "MP2-SP:\n";
+printf "MP2-DIRECT-SP:\n";
 
 if (abs(seek_nuc($REF_FILE) - seek_nuc($TEST_FILE)) > $TOL) {
   fail_test("Nuclear Repulsion Energy"); $FAIL = 1;
