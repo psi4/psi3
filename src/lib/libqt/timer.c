@@ -1,4 +1,7 @@
-/*
+/*!
+**  \file timer.c
+**  \brief Obtain user and system timings for blocks of code
+**
 ** TIMER.C: These functions allow one to obtain user and system
 ** timings for arbitrary blocks of code.  If a code block is called
 ** repeatedly during the course of program execution, the timer

@@ -1,3 +1,7 @@
+/*!
+  \file schmidt.c
+*/
+ 
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -5,7 +9,7 @@
 
 /* #define STANDALONE */
 
-/*
+/*!
 ** SCHMIDT(): Gram-Schmidt orthogonalize a set of vectors
 **
 ** Assume we're orthogonalizing the ROWS, since in C
@@ -14,9 +18,9 @@
 ** David Sherrill, Feb 1994
 **
 ** Arguments: 
-**   A    = matrix to orthogonalize (matrix of doubles)
-**   rows = rows of A 
-**   cols = columns of A
+**   \param A    = matrix to orthogonalize (matrix of doubles)
+**   \param rows = rows of A 
+**   \param cols = columns of A
 **
 ** Returns: none
 */

@@ -1,10 +1,14 @@
+/*!
+  \file schmidt_add.c
+*/
+ 
 #include <stdio.h>
 #include <math.h>
 #include <libciomr.h>
 
 #define NORM_TOL 1.0E-5
 
-/*
+/*!
 ** SCHMIDT_ADD(): Assume A is a orthogonal matrix.  This function Gram-Schmidt
 ** orthogonalizes a new vector v and adds it to matrix A.  A must contain
 ** a free row pointer for a new row.  Don't add orthogonalized v' if 
@@ -13,10 +17,12 @@
 ** David Sherrill, Feb 1994
 **
 ** Arguments:
-**    A    = matrix to add new vector to
-**    rows = current number of rows in A (A must have ptr for 'rows+1' row.)
-**    cols = columns in A
-**    v    = vector to add to A after it has been made orthogonal to rest of A
+**    \param A    = matrix to add new vector to
+**    \param rows = current number of rows in A 
+**                  (A must have ptr for 'rows+1' row.)
+**    \param cols = columns in A
+**    \parm v     = vector to add to A after it has been made orthogonal 
+**                  to rest of A
 **
 ** Returns: 1 if a vector is added to A, 0 otherwise
 */

@@ -1,18 +1,22 @@
+/*!
+  \file solve_pep.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #define A_MIN 1.0E-10
 
-/*
+/*!
 ** solve_2x2_pep(): Solve a 2x2 pseudo-eigenvalue problem of the form
 **    [ H11 - E    H12 - E*S ]  [c1]  
 **    [ H12 - E*S  H22 - E   ]  [c2]  = 0
 **
 ** Arguments:
-**  H     =  matrix to get eigenvalues of
-**  S     =  overlap between states 1 & 2
-**  evals =  pointer to array to hold 2 eigenvalues
-**  evecs =  matrix to hold 2 eigenvectors
+**  \param H     =  matrix to get eigenvalues of
+**  \param S     =  overlap between states 1 & 2
+**  \param evals =  pointer to array to hold 2 eigenvalues
+**  \param evecs =  matrix to hold 2 eigenvectors
 */
 void solve_2x2_pep(double **H, double S, double *evals, double **evecs)
 {
