@@ -5,16 +5,16 @@
 	<META NAME="GENERATOR" CONTENT="StarOffice/5.1 (Linux)">
 	<META NAME="CREATED" CONTENT="20000105;17030500">
 	<META NAME="CHANGEDBY" CONTENT="Edward Valeev">
-	<META NAME="CHANGED" CONTENT="20000106;15380300">
+	<META NAME="CHANGED" CONTENT="20000620;22320400">
 </HEAD>
 <BODY>
 <H3>Configuration</H3>
 <UL>
 	<LI><P>Depending on your system environment and what capabilities of
-	CINTS you want to enable, you might have to edit Makefile first. Add
-	subdirectories which contain code you want to include to SUBDIRS and
-	edit CLIBS accordingly. Here's the current list of directories and
-	the required additions to CLIBS:</P>
+	<FONT COLOR="#ff0000">CINTS</FONT> you want to enable, you might
+	have to edit Makefile first. Add subdirectories which contain code
+	you want to include to SUBDIRS and edit CLIBS accordingly. Here's
+	the current list of directories and the required additions to CLIBS:</P>
 </UL>
 <TABLE WIDTH=100% BORDER=1 CELLPADDING=4 CELLSPACING=3>
 	<COL WIDTH=85*>
@@ -48,12 +48,10 @@
 			<P>OEProp_Ints</P>
 		</TD>
 		<TD WIDTH=33%>
-			<P>Compute one-electron property integrals in AO basis and store them
-			out to disk</P>
+			<P>Compute one-electron property integrals in AO basis and store
+			them out to disk</P>
 		</TD>
-		<TD WIDTH=33%>
-			<P></P>
-		</TD>
+		<TD WIDTH=33%></TD>
 	</TR>
 	<TR VALIGN=TOP>
 		<TD WIDTH=33%>
@@ -106,7 +104,7 @@
 			<P>R12_Ints MP2R12</P>
 		</TD>
 		<TD WIDTH=33%>
-			<P>Compute AO basis non-standard two-electron integrals necessary
+			<P>Compute SO basis non-standard two-electron integrals necessary
 			for linear R12-theories and store them to disk</P>
 		</TD>
 		<TD WIDTH=33%>
@@ -123,7 +121,7 @@
 	available - USE_BLAS should be set to 0.</P>
 </UL>
 <H3>Compilation</H3>
-<P>Go to src/bin/cints, type 'make install'. Voila! 
-</P>
+<P>Refer to PSI 3 Programmer's Manual for information on how to
+compile the package.</P>
 </BODY>
 </HTML>

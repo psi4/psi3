@@ -6,7 +6,7 @@
 	<META NAME="AUTHOR" CONTENT="Edward Valeev">
 	<META NAME="CREATED" CONTENT="20000105;16103400">
 	<META NAME="CHANGEDBY" CONTENT="Edward Valeev">
-	<META NAME="CHANGED" CONTENT="20000106;15340600">
+	<META NAME="CHANGED" CONTENT="20000620;22352400">
 </HEAD>
 <BODY>
 <H3>Valid keywords</H3>
@@ -18,25 +18,25 @@
 	<LI><P><B>CUTOFF</B> - integer; 10^(-<B>CUTOFF</B>) is the cutoff on
 	the integrals to be computed. Defaults value is 15 and can be
 	changed by prior to compilation by editing defines.h. Keyword <B>CUTOFF</B>
-	is not-used when CINTS is run in direct Hartree-Fock mode (<B>--fock</B>
-	is specified).</P>
+	is not-used when <FONT COLOR="#ff0000">CINTS</FONT> is run in direct
+	Hartree-Fock mode (<B>--fock</B> is specified).</P>
 	<LI><P><B>S_FILE, T_FILE, V_FILE, ERI_FILE</B> <SPAN STYLE="font-weight: medium">-
 	integers specifying file numbers to store overlap, kinetic energy,
 	potential energy, and electron-repulsion integrals. Defaults are 35,
 	36, 37, and 33.</SPAN></P>
 	<LI><P ALIGN=LEFT STYLE="font-weight: medium"><B>MEMORY</B> - number
 	of double-precision words to use. Valid only in MP2 and MP2-R12
-	modes. In other modes CINTS will use the minimal amount of memory
-	possible. Default is 2500000 (20 MB) and can be changed by editing
-	defines.h.</P>
-	<LI><P ALIGN=LEFT STYLE="font-weight: medium"><B>NUM_THREADS</B> - number
-	of threads to use. Values higher than 1 are valid only while computing
-	the Fock matrix and HF gradients. In other modes CINTS will use just 1 thread
-	Default is 1</P>
+	modes. In other modes <FONT COLOR="#ff0000">CINTS</FONT> will use
+	the minimal amount of memory possible. Default is 2500000 (20 MB)
+	and can be changed by editing defines.h.</P>
+	<LI><P ALIGN=LEFT STYLE="font-weight: medium"><B>NUM_THREADS</B> -
+	number of threads to use. Values higher than 1 are valid only while
+	computing the Fock matrix and HF gradients. In other modes <FONT COLOR="#ff0000">CINTS</FONT>
+	will use just 1 thread Default is 1</P>
 </UL>
 <P><SPAN STYLE="font-weight: medium">Other keywords, such as <B>WFN</B>,
 <B>REFERENCE</B>, and <B>DERTYPE</B> are also checked in certain
 modes.</SPAN> It is done primarily to double-check users intentions
-and to detect inconsistencies in program's input.</P>
+and to detect inconsistencies in the program's input.</P>
 </BODY>
 </HTML>
