@@ -215,7 +215,7 @@ functions, 15 primitives, and 7 shells. Shells of \_all\_ atoms are counted
 (not only of the symmetry independent; compare \celem{file30\_rd\_nprim}).}
 {takes no arguments.}
 {total number of shells.} \\
-\funcdesc{file30\_rd\_nso()}
+\funcdesc{int file30\_rd\_nso()}
 {Reads in the total number of symmetry-adapted basis functions (read:
 Cartesian or Spherical Harmonic Gaussians).}
 {takes no arguments.}
@@ -225,27 +225,32 @@ Cartesian or Spherical Harmonic Gaussians).}
 in the point group in which the molecule is being considered which
 have non-zero number of basis functions. For STO-3G or DZ water, for
 example, this is three, even though \celem{nirreps} is 4 (compare
-\celem{file30\_rd\_nirreps()}).}
+\celem{int file30\_rd\_nirreps()}).}
 {takes no arguments.}
 {total number of irreducible representations
 with a non-zero number of basis functions.} \\
-\funcdesc{file30\_rd\_num\_unique\_atom()}
+\funcdesc{int file30\_rd\_num\_unique\_atom()}
 {Reads in the number of symmetry unique atoms.}
 {takes no arguments.}
 {number of symmetry unique atoms.} \\
-\funcdesc{file30\_rd\_num\_unique\_shell()}
+\funcdesc{int file30\_rd\_num\_unique\_shell()}
 {Reads in the number of symmetry unique shells.}
 {takes no arguments.}
 {number of symmetry unique shells.} \\
-\funcdesc{file30\_rd\_phase\_check()}
+\funcdesc{int file30\_rd\_phase\_check()}
 {Reads the phase flag???}
 {takes no arguments.}
 {flag.}
-\funcdesc{file30\_rd\_ref()}
+\funcdesc{int file30\_rd\_ref()}
 {Reads the reference type from the flag in \FILE{30}.
 0 = RHF, 1 = UHF, 2 = ROHF, 3 = TCSCF.}
 {takes no arguments.}
 {flag indicating the reference.}
+\funcdesc{int file30\_rd\_rottype()}
+{Reads the rigid rotor type the molecule represents.
+0 = asymmetric, 1 = symmetric, 2 = spherical, 3 = linear, 6 = atom.}
+{takes no arguments.}
+{rigid rotor type.}
 
 \begin{center}
 Functions that return \celem{int*}
