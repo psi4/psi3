@@ -33,10 +33,12 @@ void get_mo_info(void)
    
    file30_init();
    CalcInfo.nirreps = file30_rd_nirreps();
-   CalcInfo.nbfso = file30_rd_nmo();
+   CalcInfo.nso = file30_rd_nmo();
+   CalcInfo.nmo = file30_rd_nmo();
    CalcInfo.iopen = file30_rd_iopen();
    CalcInfo.labels = file30_rd_irr_labs();
    CalcInfo.orbs_per_irr = file30_rd_orbspi();
+   CalcInfo.so_per_irr = file30_rd_sopi();
    CalcInfo.closed_per_irr = file30_rd_clsdpi();
    CalcInfo.open_per_irr = file30_rd_openpi();
    CalcInfo.enuc = file30_rd_enuc();
@@ -63,10 +65,10 @@ void get_mo_info(void)
    CalcInfo.socc = init_int_array(CalcInfo.nirreps);
    CalcInfo.frozen_docc = init_int_array(CalcInfo.nirreps);
    CalcInfo.frozen_uocc = init_int_array(CalcInfo.nirreps);
-   CalcInfo.reorder = init_int_array(CalcInfo.nbfso);
+   CalcInfo.reorder = init_int_array(CalcInfo.nmo);
    CalcInfo.ras_opi = init_int_matrix(4,CalcInfo.nirreps);
       
-   if (!ras_set(CalcInfo.nirreps, CalcInfo.nbfso, Parameters.fzc, 
+   if (!ras_set(CalcInfo.nirreps, CalcInfo.nmo, Parameters.fzc, 
                 CalcInfo.orbs_per_irr, CalcInfo.docc, CalcInfo.socc, 
                 CalcInfo.frozen_docc, CalcInfo.frozen_uocc, 
                 CalcInfo.ras_opi, CalcInfo.reorder, 1)) 
@@ -76,7 +78,7 @@ void get_mo_info(void)
    }
    
    /* calculate number of orbitals active in CI */
-   CalcInfo.num_ci_orbs = CalcInfo.nbfso ;
+   CalcInfo.num_ci_orbs = CalcInfo.nmo ;
    for (i=0; i<CalcInfo.nirreps; i++) {
       CalcInfo.num_ci_orbs -= CalcInfo.frozen_uocc[i] ;
       }
@@ -103,8 +105,8 @@ void get_mo_info(void)
 
    /* construct the "ordering" array, which maps the other direction */
    /* i.e. from a CI orbital to a Pitzer orbital                     */
-   CalcInfo.order = init_int_array(CalcInfo.nbfso);
-   for (i=0; i<CalcInfo.nbfso; i++) {
+   CalcInfo.order = init_int_array(CalcInfo.nmo);
+   for (i=0; i<CalcInfo.nmo; i++) {
       j = CalcInfo.reorder[i];
       CalcInfo.order[j] = i;
       }
@@ -112,17 +114,17 @@ void get_mo_info(void)
 
    if (Parameters.print_lvl > 4) {
       fprintf(outfile, "\nReordering array = \n");
-      for (i=0; i<CalcInfo.nbfso; i++) {
+      for (i=0; i<CalcInfo.nmo; i++) {
          fprintf(outfile, "%3d ", CalcInfo.reorder[i]);
          }
       fprintf(outfile, "\n");
       }
 
-   CalcInfo.nbstri = (CalcInfo.nbfso * (CalcInfo.nbfso + 1)) / 2 ;
+   CalcInfo.nmotri = (CalcInfo.nmo * (CalcInfo.nmo + 1)) / 2 ;
 
    /* transform orbsym vector to new MO order */
-   CalcInfo.orbsym = init_int_array(CalcInfo.nbfso);
-   CalcInfo.scfeigval = init_array(CalcInfo.nbfso);
+   CalcInfo.orbsym = init_int_array(CalcInfo.nmo);
+   CalcInfo.scfeigval = init_array(CalcInfo.nmo);
 
    for (i=0,cnt=0; i<CalcInfo.nirreps; i++) {
       for (j=0; j<CalcInfo.orbs_per_irr[i]; j++,cnt++) {
@@ -131,7 +133,7 @@ void get_mo_info(void)
          }
       }
 
-   for (i=0; i<CalcInfo.nbfso; i++) {
+   for (i=0; i<CalcInfo.nmo; i++) {
       j = CalcInfo.reorder[i];
       CalcInfo.scfeigval[j] = eig_unsrt[i];
       }
@@ -238,8 +240,8 @@ void get_mo_info(void)
          }
       fprintf(outfile, "\n");
       */
-      fprintf(outfile, "   NBFSO        =   %6d      NUM ALP      =   %6d\n",
-         CalcInfo.nbfso, CalcInfo.num_alp);
+      fprintf(outfile, "   NMO          =   %6d      NUM ALP      =   %6d\n",
+         CalcInfo.nmo, CalcInfo.num_alp);
       fprintf(outfile, "   ORBS IN CI   =   %6d      NUM ALP EXPL =   %6d\n",
          CalcInfo.num_ci_orbs, CalcInfo.num_alp_expl);
       fprintf(outfile, "   FROZEN CORE  =   %6d      NUM BET      =   %6d\n",

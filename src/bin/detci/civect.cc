@@ -2332,11 +2332,11 @@ double CIvect::dcalc2(int rootnum, double lambda, CIvect &Hd,
         if (Parameters.mpn) 
           Hd.diag_mat_els_otf(alplist, betlist, CalcInfo.onel_ints, 
              CalcInfo.twoel_ints, CalcInfo.e0_fzc, CalcInfo.num_alp_expl, 
-             CalcInfo.num_bet_expl, CalcInfo.nbfso, buf, Parameters.hd_ave);
+             CalcInfo.num_bet_expl, CalcInfo.nmo, buf, Parameters.hd_ave);
         else 
           Hd.diag_mat_els_otf(alplist, betlist, CalcInfo.onel_ints, 
              CalcInfo.twoel_ints, CalcInfo.efzc, CalcInfo.num_alp_expl, 
-             CalcInfo.num_bet_expl, CalcInfo.nbfso, buf, Parameters.hd_ave);
+             CalcInfo.num_bet_expl, CalcInfo.nmo, buf, Parameters.hd_ave);
         }
 
       if (Parameters.mpn) norm = calc_mpn_vec(buffer, lambda, Hd.buffer,
@@ -2394,7 +2394,7 @@ void CIvect::construct_kth_order_wf(CIvect &Hd, CIvect &S, CIvect &C,
         Hd.buf_lock(buf2);
         Hd.diag_mat_els_otf(alplist, betlist, CalcInfo.onel_ints,
              CalcInfo.twoel_ints, CalcInfo.e0_fzc, CalcInfo.num_alp_expl,
-             CalcInfo.num_bet_expl, CalcInfo.nbfso, buf, Parameters.hd_ave);
+             CalcInfo.num_bet_expl, CalcInfo.nmo, buf, Parameters.hd_ave);
         read(k-1, buf);
         norm = calc_mpn_vec(buffer, (mp_energy[1]-CalcInfo.efzc), 
                 Hd.buffer, buf_size[buf], 1.0, 1.0, MULT);
@@ -2429,7 +2429,7 @@ void CIvect::construct_kth_order_wf(CIvect &Hd, CIvect &S, CIvect &C,
         Hd.buf_lock(buf2);
         Hd.diag_mat_els_otf(alplist, betlist, CalcInfo.onel_ints,
              CalcInfo.twoel_ints, CalcInfo.e0_fzc, CalcInfo.num_alp_expl,
-             CalcInfo.num_bet_expl, CalcInfo.nbfso, buf, Parameters.hd_ave);
+             CalcInfo.num_bet_expl, CalcInfo.nmo, buf, Parameters.hd_ave);
         norm = calc_mpn_vec(buffer, CalcInfo.e0, Hd.buffer, buf_size[buf],
                 -1.0, 1.0, DIV);
 
@@ -2544,7 +2544,7 @@ void CIvect::wigner_E2k_formula(CIvect &Hd, CIvect &S, CIvect &C,
       Hd.buf_lock(buf2);
       Hd.diag_mat_els_otf(alplist, betlist, CalcInfo.onel_ints,
            CalcInfo.twoel_ints, CalcInfo.e0_fzc, CalcInfo.num_alp_expl,
-           CalcInfo.num_bet_expl, CalcInfo.nbfso, buf, Parameters.hd_ave);
+           CalcInfo.num_bet_expl, CalcInfo.nmo, buf, Parameters.hd_ave);
       xexy(Hd.buffer, buffer, buf_size[buf]);
       dot_arr(buffer, Hd.buffer, buf_size[buf], &tval);
       if (buf_offdiag[buf]) tval *= 2.0;
@@ -3160,7 +3160,7 @@ void olsen_iter_xy(CIvect &C, CIvect &S, CIvect &Hd, double *x, double *y,
       if (Parameters.hd_otf == FALSE) Hd.read(0,buf);
       else Hd.diag_mat_els_otf(alplist, betlist, CalcInfo.onel_ints,
            CalcInfo.twoel_ints, CalcInfo.efzc, CalcInfo.num_alp_expl,
-           CalcInfo.num_bet_expl, CalcInfo.nbfso, buf, Parameters.hd_ave);
+           CalcInfo.num_bet_expl, CalcInfo.nmo, buf, Parameters.hd_ave);
       tx = buf_xy1(buffer1, buffer2, E, Hd.buf_size[buf]);
       /* buffer2 = Hd * Ci */
       C.buf_unlock();
@@ -3242,7 +3242,7 @@ void olsen_update(CIvect &C, CIvect &S, CIvect &Hd, double E, double E_est,
       if (Parameters.hd_otf == FALSE) Hd.read(0,buf);
       else Hd.diag_mat_els_otf(alplist, betlist, CalcInfo.onel_ints,
            CalcInfo.twoel_ints, CalcInfo.efzc, CalcInfo.num_alp_expl,
-           CalcInfo.num_bet_expl, CalcInfo.nbfso, buf, Parameters.hd_ave);
+           CalcInfo.num_bet_expl, CalcInfo.nmo, buf, Parameters.hd_ave);
       /* Check norm of residual vector i.e. before preconditioning */
       dot_arr(buffer1, buffer1, C.buf_size[buf], &rnormtmp);
       /* C = C/(Hd - E) */
@@ -3921,7 +3921,7 @@ void CIvect::scale_sigma(CIvect &Hd, CIvect &C,
       Hd.buf_lock(buf1);
       Hd.diag_mat_els_otf(alplist, betlist, CalcInfo.onel_ints,
          CalcInfo.twoel_ints, CalcInfo.e0_fzc, CalcInfo.num_alp_expl,
-         CalcInfo.num_bet_expl, CalcInfo.nbfso, buf, ORB_ENER);
+         CalcInfo.num_bet_expl, CalcInfo.nmo, buf, ORB_ENER);
       C.buf_lock(buf2);
       C.read(i, buf);
       xexy(buf1, buf2, C.buf_size[buf]);
@@ -3987,7 +3987,7 @@ double CIvect::dcalc_evangelisti(int rootnum, int num_vecs, double lambda,
       else if (Parameters.hd_otf == TRUE) {
           Hd.diag_mat_els_otf(alplist, betlist, CalcInfo.onel_ints,
              CalcInfo.twoel_ints, CalcInfo.efzc, CalcInfo.num_alp_expl,
-             CalcInfo.num_bet_expl, CalcInfo.nbfso, buf, Parameters.hd_ave);
+             CalcInfo.num_bet_expl, CalcInfo.nmo, buf, Parameters.hd_ave);
         }
 /*      
 */

@@ -147,7 +147,7 @@ main(int argc, char *argv[])
       print_parameters();       /* print running parameters                 */
       }
 
-   get_mo_info();               /* read DOCC, SOCC, frozen, nbfso, etc      */
+   get_mo_info();               /* read DOCC, SOCC, frozen, nmo, etc        */
    set_ras_parms();             /* set fermi levels and the like            */ 
    fflush(outfile); 
    form_strings();              /* form the alpha/beta strings              */

@@ -180,6 +180,7 @@ void get_parameters(void)
    Parameters.opdm_orbsfile = 76;
    Parameters.opdm_ave = 0;
    Parameters.opdm_orbs_root = -1;
+   Parameters.opdm_ke = 0;
    Parameters.tpdm_file = PSIF_MO_TPDM;
    Parameters.tpdm_print = 0;
 
@@ -471,12 +472,13 @@ void get_parameters(void)
    errcod = ip_boolean("OPDM_AVE",&(Parameters.opdm_ave),0);
    errcod = ip_data("ORBSFILE","%d",&(Parameters.opdm_orbsfile),0);
    errcod = ip_data("ORBS_ROOT","%d",&(Parameters.opdm_orbs_root),0);
+   errcod = ip_boolean("OPDM_KE",&(Parameters.opdm_ke),0);
    
    if (Parameters.opdm_orbs_root != -1) Parameters.opdm_orbs_root -= 1;
    if (Parameters.opdm_orbs_root < 0) Parameters.opdm_orbs_root = 0;
    if (Parameters.opdm_wrtnos) Parameters.opdm_diag = 1;
    if (Parameters.opdm_print || Parameters.opdm_diag || Parameters.opdm_wrtnos 
-       || Parameters.opdm_ave) Parameters.opdm = 1;
+       || Parameters.opdm_ave || Parameters.opdm_ke) Parameters.opdm = 1;
    errcod = ip_boolean("OPDM",&(Parameters.opdm),0);
    if (Parameters.opdm) Parameters.opdm_write = 1;
    errcod = ip_boolean("OPDM_WRITE",&(Parameters.opdm_write),0);

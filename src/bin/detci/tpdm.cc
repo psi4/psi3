@@ -50,7 +50,7 @@ void tpdm(struct stringwr **alplist, struct stringwr **betlist,
    PSI_FPTR onepdm_idx=0;
 
    nfzc = CalcInfo.num_fzc_orbs;
-   populated_orbs = CalcInfo.nbfso - CalcInfo.num_fzv_orbs;
+   populated_orbs = CalcInfo.nmo - CalcInfo.num_fzv_orbs;
 
    if (nfzc) {
      rfile(Parameters.opdm_file);

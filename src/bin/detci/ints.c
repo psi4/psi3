@@ -28,7 +28,7 @@
 void read_integrals()
 {
    int i, j, ij, k, l, kl, ijkl, ijij;
-   int nbstri, nbstri_full;
+   int nmotri, nmotri_full;
    double value;
    extern void check_energy(double *H, double *twoel_ints, int *docc, 
       int *frozen_docc, int fzc_flag, double escf, double enuc, double efzc, 
@@ -37,10 +37,10 @@ void read_integrals()
    double *tmp_onel_ints;
 
    /* allocate memory for one and two electron integrals */
-   nbstri_full = (CalcInfo.nbfso * (CalcInfo.nbfso + 1)) / 2;
-   nbstri = (CalcInfo.num_ci_orbs * (CalcInfo.num_ci_orbs + 1)) / 2 ;
-   CalcInfo.onel_ints = (double *) init_array(nbstri) ;
-   CalcInfo.twoel_ints = (double *) init_array(nbstri * (nbstri + 1) / 2);
+   nmotri_full = (CalcInfo.nmo * (CalcInfo.nmo + 1)) / 2;
+   nmotri = (CalcInfo.num_ci_orbs * (CalcInfo.num_ci_orbs + 1)) / 2 ;
+   CalcInfo.onel_ints = (double *) init_array(nmotri) ;
+   CalcInfo.twoel_ints = (double *) init_array(nmotri * (nmotri + 1) / 2);
    CalcInfo.maxK = (double *) init_array(CalcInfo.num_ci_orbs);  
 
    /* replace old iwl_rdone call with the new one which filters 
@@ -49,17 +49,17 @@ void read_integrals()
     * or for MCSCF 
     */
 
-   /* iwl_rdone(Parameters.oei_file, nbstri, CalcInfo.onel_ints, 
+   /* iwl_rdone(Parameters.oei_file, nmotri, CalcInfo.onel_ints, 
                 &(CalcInfo.efzc), Parameters.oei_erase); */
 
-   tmp_onel_ints = init_array(nbstri_full);
-   iwl_rdone(Parameters.oei_file, PSIF_MO_FZC, tmp_onel_ints, nbstri_full,
+   tmp_onel_ints = init_array(nmotri_full);
+   iwl_rdone(Parameters.oei_file, PSIF_MO_FZC, tmp_onel_ints, nmotri_full,
              Parameters.oei_erase, (Parameters.print_lvl>4), outfile);
-   filter(tmp_onel_ints, CalcInfo.onel_ints, ioff, CalcInfo.nbfso, 
+   filter(tmp_onel_ints, CalcInfo.onel_ints, ioff, CalcInfo.nmo, 
 	  CalcInfo.num_fzc_orbs, CalcInfo.num_fzv_orbs);
    free(tmp_onel_ints);
 
-   iwl_rdtwo(Parameters.tei_file, CalcInfo.twoel_ints, ioff, CalcInfo.nbfso, 
+   iwl_rdtwo(Parameters.tei_file, CalcInfo.twoel_ints, ioff, CalcInfo.nmo, 
              Parameters.filter_ints ? CalcInfo.num_fzc_orbs : 0, 
              Parameters.filter_ints ? CalcInfo.num_fzv_orbs : 0, 
              (Parameters.print_lvl>4), outfile);

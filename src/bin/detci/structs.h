@@ -228,10 +228,9 @@ struct H_zero_block {
 struct calcinfo {
    int natom;            /* number of atoms */
    int natom3;           /* number of atoms * 3 (to save calculations) */
-   int nbfso;            /* number of basis functions in symmetry orbitals */
-   int nbstri;           /* num elements in lwr diag matrix nbfso big */
-   int nbfao;            /* number of basis functions in atomic orbitals */
-   int nbatri;           /* num elements in lwr diag matrix nbfao big */
+   int nso;              /* number of symmetry orbitals */
+   int nmo;              /* number of molecular orbitals */
+   int nmotri;           /* num elements in lwr diag matrix nmo big */
    int nirreps;          /* number of irreducible representations in pt grp */
    int *docc;            /* doubly occupied orbitals per irrep */
    int *socc;            /* singly occupied orbitals per irrep */
@@ -249,7 +248,8 @@ struct calcinfo {
    int num_alp_expl;     /* number of alpha electrons explicitly treated */
    int num_bet_expl;     /* number of beta electrons explicitly treated */
    char **labels;        /* labels for irreps */
-   int *orbs_per_irr;    /* orbitals per irrep */
+   int *orbs_per_irr;    /* (molecular) orbitals per irrep */
+   int *so_per_irr;      /* symmetry orbitals per irrep */
    int *closed_per_irr;  /* closed per irrep */
    int *open_per_irr;    /* open per irrep */
    int *orbsym;          /* irrep for each orbital */
@@ -266,7 +266,7 @@ struct calcinfo {
    int num_cor_orbs;     /* number of COR orbitals (i.e. restricted core) */
    int num_alp_str;      /* number of alpha strings */
    int num_bet_str;      /* number of beta strings */
-   int num_ci_orbs;      /* nbfso - num orbs frozen */
+   int num_ci_orbs;      /* nmo - num orbs frozen */
    int num_fzv_orbs;     /* number of frozen/deleted virtual orbitals */
    int ref_alp;          /* address of reference alpha string */
    int ref_bet;          /* address of reference beta string */
@@ -410,6 +410,7 @@ struct params {
    int opdm_file;          /* file number for opdm */
    int opdm_diag;          /* get ci natural orbitals? */
    int opdm_wrtnos;        /* write ci natural orbitals to file 30? */
+   int opdm_ke;            /* get kinetic energy dotted with opdm? for TDC */
    int opdm_ave;           /* average the opdm over several states */
    int opdm_orbsfile;      /* file number to write various orbitals */
    int opdm_orbs_root;     /* write ci natural orbs of this root to file30 */

@@ -195,7 +195,7 @@ void print_ci_space(struct stringwr *strlist, int num_strings,
 **                     Pitzer orbital (the opposite mapping from the 
 **                     "reorder" array)
 **    irreps         = number of irreducible reps
-**    nbfso          = num basis functs in symmetry orbitals
+**    nmo            = num of molecular orbitals
 **    labels         = labels for all the irreps
 **
 ** Notes:
@@ -217,8 +217,8 @@ void orb2lbl(int orbnum, char *label)
    /* get Pitzer ordering */
    pitzer_orb = CalcInfo.order[orbnum];
    
-   if (pitzer_orb > CalcInfo.nbfso) {
-      fprintf(outfile, "(orb2lbl): pitzer_orb > nbfso!\n");
+   if (pitzer_orb > CalcInfo.nmo) {
+      fprintf(outfile, "(orb2lbl): pitzer_orb > nmo!\n");
       }
 
    for (ir=0,j=0; ir<CalcInfo.nirreps; ir++) {
