@@ -27,6 +27,6 @@ struct Eom_params {
   int excitation_range;
   double residual_tol_SS;
   char *guess;
-  int dot_with_Lg; // check orthogonality with Lg (must run cclambda first)
+  int dot_with_Lg; /* check orthogonality with Lg (must run cclambda first) */
 };
 

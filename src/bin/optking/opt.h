@@ -43,8 +43,8 @@ EXTERN int *ops_in_class;
 EXTERN int nirreps, *irr;
 EXTERN int num_nonzero;      /* number of non-redundant di coordinates (eigenvectors of G with nonzero eigenvalues) */
 EXTERN char ptgrp[4];        /*molecular point group*/
-//EXTERN int *number_internals;
-//EXTERN double energy_chkpt(void);
+/* EXTERN int *number_internals; */
+/* EXTERN double energy_chkpt(void); */
 
 #ifdef C_CODE
 C_EXTERN void punt(char *message);
@@ -62,10 +62,10 @@ C_EXTERN void dgeev_optking(int L, double **G, double *lambda, double **alpha);
 C_EXTERN double **mass_mat(double *masses);
 C_EXTERN void swap(int *a, int *b);
 C_EXTERN void swap_tors(int *a, int *b, int *c, int *d);
-//C_EXTERN int **get_char_table(char *ptgrp);    /* returns the character table */
-//C_EXTERN char **get_symm_ops(char *ptgrp);     /* "     " symm operation labels */
-//C_EXTERN int *get_ops_in_class(char *ptgrp);
-// #include <dmalloc.h>
+/* C_EXTERN int **get_char_table(char *ptgrp); returns the character table 
+   C_EXTERN char **get_symm_ops(char *ptgrp); "     " symm operation labels 
+   C_EXTERN int *get_ops_in_class(char *ptgrp);
+   #include <dmalloc.h> */
 #else
 extern "C" void punt(char *message);
 extern "C" void open_PSIF(void);
@@ -82,9 +82,9 @@ extern "C" void dgeev_optking(int L, double **G, double *lambda, double **alpha)
 extern "C" double **mass_mat(double *masses);
 extern "C" void swap(int *a, int *b);
 extern "C" void swap_tors(int *a, int *b, int *c, int *d);
-//extern "C" int **get_char_table(char *ptgrp);    /* returns the character table */
-//extern "C"  char **get_symm_ops(char *ptgrp);     /* "     " symm operation labels */
-// extern "C" { #include <dmalloc.h> }
+/* extern "C" int **get_char_table(char *ptgrp); returns the character table 
+   extern "C"  char **get_symm_ops(char *ptgrp); "     " symm operation labels
+   extern "C" { #include <dmalloc.h> } */
 #endif
 
 #define MODE_DISP_SYMM (10)

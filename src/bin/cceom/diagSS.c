@@ -54,12 +54,12 @@ void diagSS(int C_irr) {
 
   if(!params.local) { /* guesses should already be built for local mode */
 
-    for (cnt=0; cnt<nirreps; ++cnt) { // cnt loops over dp's to get C_irr
+    for (cnt=0; cnt<nirreps; ++cnt) { /* cnt loops over dp's to get C_irr */
       irr_occ = dpd_dp[C_irr][cnt][0];
       irr_virt = dpd_dp[C_irr][cnt][1];
-      // C_irr = irr_occ * irr_virt
+      /* C_irr = irr_occ * irr_virt */
 
-      if (params.eom_ref == 0)  { // ref = RHF; eom_ref = RHF
+      if (params.eom_ref == 0)  { /* ref = RHF; eom_ref = RHF */
 	begin_occ = MAX(occpi[irr_occ]-range, 0);
 	end_virt = MIN(range, virtpi[irr_virt]);
 	for (i=begin_occ; i < occpi[irr_occ]; ++i)
@@ -73,7 +73,7 @@ void diagSS(int C_irr) {
 	    dpd_file2_close(&CME);
 	  }
       }
-      // eom_ref = ROHF, closed shell
+      /* eom_ref = ROHF, closed shell */
       else if ((params.eom_ref < 2) && (moinfo.iopen == 0)) {
 	begin_occ = MAX(occpi[irr_occ]-range, 0);
 	end_virt = MIN(range, virtpi[irr_virt]);
@@ -110,8 +110,8 @@ void diagSS(int C_irr) {
 	    dpd_file2_close(&Cme);
 	  }
       }
-      else if (params.eom_ref == 1) { // open-shell ROHF
-	// alpha excitations
+      else if (params.eom_ref == 1) { /* open-shell ROHF */
+	/* alpha excitations */
 	begin_occ = MAX(occpi[irr_occ]-range, 0);
 	end_virt = MIN( virtpi[irr_virt]-openpi[irr_virt], range);
 	for (i=begin_occ; i < occpi[irr_occ] ; ++i)
@@ -128,7 +128,7 @@ void diagSS(int C_irr) {
 	    dpd_file2_mat_wrt(&Cme);
 	    dpd_file2_close(&Cme);
 	  }
-	// beta excitations into open shells
+	/* beta excitations into open shells */
 	begin_occ = MAX(occpi[irr_occ]-openpi[irr_occ]-range, 0);
 	begin_virt = virtpi[irr_virt] - openpi[irr_virt];
 	for (i=begin_occ; i < occpi[irr_occ]-openpi[irr_occ]; ++i)
@@ -145,7 +145,7 @@ void diagSS(int C_irr) {
 	    dpd_file2_mat_wrt(&CME);
 	    dpd_file2_close(&CME);
 	  }
-	// beta excitations into unoccupied orbitals
+	/* beta excitations into unoccupied orbitals */
 	begin_occ = MAX(occpi[irr_occ]-openpi[irr_occ]-range, 0);
 	end_virt = MIN(range - openpi[irr_virt], 0);
 	for (i=begin_occ; i < occpi[irr_occ]-openpi[irr_occ]; ++i)
@@ -163,8 +163,8 @@ void diagSS(int C_irr) {
 	    dpd_file2_close(&CME);
 	  }
       }
-      else { // UHF
-	// alpha excitations
+      else { /* UHF */
+	/* alpha excitations */
 	begin_occ = MAX(aoccpi[irr_occ]-range, 0);
 	end_virt = MIN( avirtpi[irr_virt]-openpi[irr_virt], range);
 	for (i=begin_occ; i < aoccpi[irr_occ] ; ++i)
@@ -538,7 +538,7 @@ void precondition_SS_RHF(dpdfile2 *RIA, double eval)
       for(a=0; a < pairdom_nrlen[ii]; a++) {
 	tval = eval + eps_occ[i] - eps_vir[ii][a];
 	if(fabs(tval) > 0.0001) T1bar[a] /= tval;
-/*	else T1bar[a] = 0.0; */
+      /* else T1bar[a] = 0.0; */
       }
 
       /* Transform the new T1's to the redundant projected virtual basis */

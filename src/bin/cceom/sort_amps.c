@@ -3,15 +3,15 @@
 #define EXTERN
 #include "globals.h"
 
-// copied from cclamba to make consistent copies of R and L
-// changes should be made to sort_amps in both programs as
-// cceom_density is written
+/* copied from cclamba to make consistent copies of R and L */
+/* changes should be made to sort_amps in both programs as */
+/* cceom_density is written */
 
 void sort_amps(void)
 {
   dpdbuf4 R2;
 
-  if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
+  if(params.ref == 0 || params.ref == 1) { /* RHF/ROHF */
     /* Build R2iJaB list */
     dpd_buf4_init(&R2, CC_RAMPS, 0, 0, 5, 0, 5, 0, "RIjAb");
     dpd_buf4_sort(&R2, CC_RAMPS, qpsr, 0, 5, "RiJaB");
@@ -43,7 +43,7 @@ void sort_amps(void)
     dpd_buf4_sort(&R2, CC_RAMPS, rqps, 10, 10, "RjAIb");
     dpd_buf4_close(&R2);
   }
-  else if(params.ref == 2) { /** UHF **/
+  else if(params.ref == 2) { /* UHF */
 
     dpd_buf4_init(&R2, CC_RAMPS, 0, 22, 28, 22, 28, 0, "RIjAb");
     dpd_buf4_sort(&R2, CC_RAMPS, qpsr, 23, 29, "RiJaB");

@@ -17,7 +17,7 @@ void form_diagonal(int C_irr) {
   nirreps = moinfo.nirreps;
   openpi = moinfo.openpi;
 
-  if ((params.ref == 0) || (params.ref == 1)) { // RHF or ROHF
+  if ((params.ref == 0) || (params.ref == 1)) { /* RHF or ROHF */
     occpi = moinfo.occpi;
     virtpi = moinfo.virtpi;
     occ_off = moinfo.occ_off;
@@ -154,7 +154,7 @@ void form_diagonal(int C_irr) {
     dpd_file2_close(&FAE);
   }
 
-  else { // UHF
+  else { /* UHF */
     aoccpi = moinfo.aoccpi;     boccpi = moinfo.boccpi;
     avirtpi = moinfo.avirtpi;   bvirtpi = moinfo.bvirtpi;
     aocc_off = moinfo.aocc_off; bocc_off = moinfo.bocc_off;

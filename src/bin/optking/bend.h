@@ -5,7 +5,7 @@ class bend_class {
     int B;
     int C;
     double value;
-    double *s_A; // The s vector for atom A
+    double *s_A; /* The s vector for atom A */
     double *s_B;
     double *s_C;
   public:
@@ -15,7 +15,7 @@ class bend_class {
       s_C = new double[3];
     }
     ~bend_class() {
-    //  fprintf(stdout,"destructing bend class\n");
+    /*  fprintf(stdout,"destructing bend class\n"); */
       delete [] s_A;
       delete [] s_B;
       delete [] s_C;
@@ -63,7 +63,7 @@ class bend_set {
      }
 
    ~bend_set() {
-     // fprintf(stdout,"destructing bend_set\n");
+     /* fprintf(stdout,"destructing bend_set\n"); */
      delete [] bend_array;
    }
 
@@ -195,12 +195,12 @@ class bend_set {
       return;
     }
     int get_id_from_atoms(int a, int b, int c) {
-       int i;
-//       fprintf(outfile,"bend.get_id_from_atoms(%d,%d,%d)\n",a,b,c);
+      int i;
+        /* fprintf(outfile,"bend.get_id_from_atoms(%d,%d,%d)\n",a,b,c); */
        for (i=0;i<num;++i) {
          if ( (a == get_A(i)) && (b == get_B(i)) && (c == get_C(i)) ) break;
        }
- //      fprintf(outfile,"Returning id: %d\n",get_id(i));
+       /* fprintf(outfile,"Returning id: %d\n",get_id(i)); */
        return get_id(i);
     }
 };

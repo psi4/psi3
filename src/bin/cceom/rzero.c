@@ -13,7 +13,7 @@ void rzero(int C_irr) {
   dpdbuf4 RIJAB, Rijab, RIjAb, D, R2, LIJAB, Lijab, LIjAb;
   dpdbuf4 fRIJAB, fRijab, fRIjAb;
 
-  // Calculate R0 consistent with R1 and R2
+  /* Calculate R0 consistent with R1 and R2 */
   if (C_irr == H_IRR) {
     dpd_file2_init(&FIA, CC_OEI, H_IRR, 0, 1, "FME");
     dpd_file2_init(&RIA, CC_RAMPS, C_irr, 0, 1, "RIA");
@@ -49,7 +49,7 @@ void rzero(int C_irr) {
     rzero = 0.0;
   }
 
-  // normalize full R
+  /* normalize full R */
   dpd_file2_init(&RIA, CC_RAMPS, C_irr, 0, 1, "RIA");
   dpd_file2_init(&Ria, CC_RAMPS, C_irr, 0, 1, "Ria");
   dpd_buf4_init(&fRIJAB, CC_RAMPS, C_irr, 2, 7, 2, 7, 0, "RIJAB");
@@ -72,7 +72,7 @@ void rzero(int C_irr) {
   psio_write_entry(CC_INFO, "EOM R0", (char *) &rzero, sizeof(double));
   fprintf(outfile,"R0 of normalized R = %15.10lf\n", rzero);
 
-  // testing
+  /* testing */
   /*
      dpd_file2_init(&RIA, CC_RAMPS, C_irr, 0, 1, "RIA");
      dpd_file2_init(&Ria, CC_RAMPS, C_irr, 0, 1, "Ria");
@@ -112,10 +112,10 @@ void rzero(int C_irr) {
      dpd_buf4_close(&Rijab);
      dpd_buf4_close(&RIjAb);
    */
-  // end testing junk
+  /* end testing junk */
 
   if (eom_params.dot_with_Lg) {
-    // evaluate check <Rx|Lg> == 0
+    /* evaluate check <Rx|Lg> == 0 */
     if (C_irr == H_IRR ) {
       dpd_file2_init(&RIA, CC_RAMPS, C_irr, 0, 1, "RIA");
       dpd_file2_init(&Ria, CC_RAMPS, C_irr, 0, 1, "Ria");
@@ -183,7 +183,7 @@ void rzero_rhf(int C_irr) {
   dpd_buf4_close(&RIjbA);
   dpd_buf4_close(&RIjAb);
 
-  // calculate R0 consistent with R1 and R2
+  /* calculate R0 consistent with R1 and R2 */
   if (C_irr == H_IRR) {
     dpd_file2_init(&FIA, CC_OEI, H_IRR, 0, 1, "FME");
     dpd_file2_init(&RIA, CC_RAMPS, C_irr, 0, 1, "RIA");
@@ -204,7 +204,7 @@ void rzero_rhf(int C_irr) {
     rzero = 0.0;
   }
 
-  // normalize full R
+  /* normalize full R */
   dpd_file2_init(&RIA, CC_RAMPS, C_irr, 0, 1, "RIA");
   dpd_buf4_init(&RIjAb, CC_RAMPS, C_irr, 0, 5, 0, 5, 0, "RIjAb");
   dpd_buf4_init(&RIjbA, CC_RAMPS, C_irr, 0, 5, 0, 5, 0, "RIjbA");
@@ -245,7 +245,7 @@ void rzero_rhf(int C_irr) {
   dpd_buf4_close(&RIjbA);
 
   if (eom_params.dot_with_Lg) {
-    // check orthogonality with ground state (1+lambda)
+    /* check orthogonality with ground state (1+lambda) */
     if (C_irr == H_IRR) {
       dpd_file2_init(&LIA, CC_OEI, H_IRR, 0, 1, "LIA");
       dpd_file2_init(&RIA, CC_RAMPS, H_IRR, 0, 1, "RIA");
@@ -268,7 +268,7 @@ void rzero_rhf(int C_irr) {
     fprintf(outfile,"<LIjAb|2RIjAb-RIjbA> = %15.10lf\n",r2);
     fprintf(outfile,"<Lg|Rx>              = %15.10lf\n", dotval);
 
-     // double check orthogonality rohf-like
+     /* double check orthogonality rohf-like */
     fprintf(outfile,"\nROHF-like orthogonality test\n");
       dpd_file2_init(&LIA, CC_OEI, H_IRR, 0, 1, "LIA");
       dpd_file2_init(&RIA, CC_RAMPS, H_IRR, 0, 1, "RIA");

@@ -37,7 +37,7 @@ void sigmaSS(int i, int C_irr) {
     dpd_file2_close(&SIA);
   }
 
-  else if (params.eom_ref == 1) { // ROHF
+  else if (params.eom_ref == 1) { /* ROHF */
     sprintf(lbl, "%s %d", "SIA", i);
     dpd_file2_init(&SIA, EOM_SIA, C_irr, 0, 1, lbl);
     sprintf(lbl, "%s %d", "CME", i);
@@ -93,7 +93,7 @@ void sigmaSS(int i, int C_irr) {
     dpd_file2_close(&CME);
     dpd_file2_close(&SIA);
   }
-  else { // UHF
+  else { /* UHF */
     sprintf(lbl, "%s %d", "SIA", i);
     dpd_file2_init(&SIA, EOM_SIA, C_irr, 0, 1, lbl);
     sprintf(lbl, "%s %d", "CME", i);

@@ -1,4 +1,4 @@
-/*** GET_OPTINFO   reads optimization parameters from input.dat ***/
+/* GET_OPTINFO   reads optimization parameters from input.dat */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,7 +26,7 @@ void get_optinfo() {
   optinfo.iteration = 0;
   optinfo.micro_iteration = 0;
   open_PSIF();
-  //psio_tocprint(PSIF_OPTKING,outfile);
+  /* psio_tocprint(PSIF_OPTKING,outfile); */
   if (psio_tocscan(PSIF_OPTKING, "Iteration") != NULL)
     psio_read_entry(PSIF_OPTKING, "Iteration",
         (char *) &(optinfo.iteration),sizeof(int));
@@ -38,7 +38,7 @@ void get_optinfo() {
   optinfo.dertype = 0;
   optinfo.numerical_dertype = 0;
 
-  // print options
+  /* print options */
   optinfo.print_simples = 0;
   ip_boolean("PRINT_SIMPLES", &(optinfo.print_simples),0);
   optinfo.print_params = 0;
@@ -48,7 +48,7 @@ void get_optinfo() {
   optinfo.print_symmetry = 0;
   ip_boolean("PRINT_SYMMETRY", &(optinfo.print_symmetry),0);
 
-  // optimization parameters
+  /* optimization parameters */
   optinfo.optimize = 1;
   if (ip_exist("DISPLACEMENTS",0)) {
     optinfo.do_only_displacements = 1;
@@ -85,7 +85,7 @@ void get_optinfo() {
   optinfo.disp_size = 0.0010;
   ip_data("EDISP","%lf",&(optinfo.disp_size),0);
 
-  // back-transformation parameters
+  /* back-transformation parameters */
   optinfo.bt_max_iter = 500;
   ip_data("BT_MAX_ITER","%d",&(optinfo.bt_max_iter),0);
   a = 11;
@@ -96,7 +96,7 @@ void get_optinfo() {
   optinfo.bt_dx_conv  = power(10.0, -1*a);
 
 
-  // Obscure limits in intco evaluation
+  /* Obscure limits in intco evaluation */
   optinfo.cos_tors_near_1_tol = 0.99999;
   ip_data("COS_TORS_NEAR_1_TOL","%lf",&(optinfo.cos_tors_near_1_tol),0);
   optinfo.cos_tors_near_neg1_tol = -0.99999;
@@ -105,7 +105,7 @@ void get_optinfo() {
   ip_data("SIN_PHI_DENOMINATOR_TOL","%lf",&(optinfo.sin_phi_denominator_tol),0);
 
 
-  // Compute dummy atom lookup arrays
+  /* Compute dummy atom lookup arrays */
 
   chkpt_init(PSIO_OPEN_OLD);
   optinfo.natom = natom = chkpt_rd_natom();

@@ -33,7 +33,7 @@ void WmaijDS(int i, int C_irr) {
     dpd_buf4_close(&SIjAb);
   }
 
-  else if (params.eom_ref == 1) { // ROHF
+  else if (params.eom_ref == 1) { /* ROHF */
     sprintf(CME_lbl, "%s %d", "CME", i);
     sprintf(Cme_lbl, "%s %d", "Cme", i);
     sprintf(SIJAB_lbl, "%s %d", "SIJAB", i);
@@ -88,7 +88,7 @@ void WmaijDS(int i, int C_irr) {
     dpd_buf4_close(&SIjAb);
   }
 
-  else if (params.eom_ref == 2) { // UHF
+  else if (params.eom_ref == 2) { /* UHF */
     sprintf(CME_lbl, "%s %d", "CME", i);
     sprintf(Cme_lbl, "%s %d", "Cme", i);
     sprintf(SIJAB_lbl, "%s %d", "SIJAB", i);

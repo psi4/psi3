@@ -81,8 +81,8 @@ void punt(char *message) {
   fprintf(outfile,"         *** stopping execution ***\n");
   fprintf(stderr,"\n OPTKING error: %s\n", message);
   fprintf(stderr,"                 *** stopping execution ***\n");
-  // fclose(outfile);
-  // exit(1);
+  /* fclose(outfile); */
+  /* exit(1); */
   exit_io();
 }
 
@@ -106,7 +106,7 @@ void exit_io(void) {
   fprintf(outfile,"\n******** OPTKING execution completed ********\n\n");
   psio_done();
   ip_done();
-  // tstop(outfile);
+  /* tstop(outfile); */
   fclose(fp_input);
   fclose(outfile);
 }
@@ -199,7 +199,7 @@ double energy_chkpt(void) {
   double energy;
 
   chkpt_init(PSIO_OPEN_OLD);
-  //  energy = chkpt_rd_escf();
+  /* energy = chkpt_rd_escf(); */
   energy = chkpt_rd_etot();
   chkpt_close();
   return energy;

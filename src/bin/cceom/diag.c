@@ -65,7 +65,7 @@ void diag(void) {
 
   hbar_extra(); /* sort hbar matrix elements for sigma equations */
 #ifdef EOM_DEBUG
-  // hbar_norms();
+  /* hbar_norms(); */
 #endif
 
   fprintf(outfile,"Symmetry of ground state: %s\n", moinfo.labels[moinfo.sym]);
@@ -117,13 +117,13 @@ void diag(void) {
 
     /* Setup and zero initial C2 and S2 vector to go with Hbar_SS */
     for (i=0;i<eom_params.cs_per_irrep[C_irr];++i) {
-      // init_S1(i, C_irr); gets done at first iteration anyway
+      /* init_S1(i, C_irr); gets done at first iteration anyway */
       init_C2(i, C_irr);
-      // init_S2(i, C_irr);
+      /* init_S2(i, C_irr); */
     }
 
 #ifdef EOM_DEBUG
-    check_sum("reset", 0, 0); // reset checksum
+    check_sum("reset", 0, 0); /* reset checksum */ 
 #endif
 
     converged = init_int_array(eom_params.cs_per_irrep[C_irr]);
@@ -387,8 +387,8 @@ void diag(void) {
 	     (fabs(lambda[k]-lambda_old[k]) > eom_params.eval_tol) ) {
           fprintf(outfile,"%7s\n","N");
 
-	//      if(params.eom_ref == 0) precondition_RHF(&RIA, &RIjAb, lambda[k]);
-	//      else precondition(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb, lambda[k]);
+	    /*  if(params.eom_ref == 0) precondition_RHF(&RIA, &RIjAb, lambda[k]);
+	        else precondition(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb, lambda[k]); */
 
         if(params.eom_ref == 0) {
 
@@ -556,7 +556,7 @@ void diag(void) {
   return;
 }
 
-// zeroes ith CME (and Cme) vectors on disk
+/* zeroes ith CME (and Cme) vectors on disk */
 void init_C1(int i, int C_irr ){
   dpdfile2 CME, Cme;
   char lbl[32];
@@ -578,7 +578,7 @@ void init_C1(int i, int C_irr ){
   }
 }
 
-// zeroes ith SIA (and Sia) vectors on disk
+/* zeroes ith SIA (and Sia) vectors on disk */
 void init_S1(int i, int C_irr) {
   dpdfile2 SIA, Sia;
   char lbl[32];
@@ -600,7 +600,7 @@ void init_S1(int i, int C_irr) {
   }
 }
 
-// zeroes ith CMnEf (+ CMNEF + Cmnef) on disk
+/* zeroes ith CMnEf (+ CMNEF + Cmnef) on disk */
 void init_C2(int i, int C_irr) {
   dpdbuf4 CMNEF, Cmnef, CMnEf;
   char lbl[32];
@@ -626,7 +626,7 @@ void init_C2(int i, int C_irr) {
     else if (params.eom_ref == 2)
       dpd_buf4_init(&CMnEf, EOM_CMnEf, C_irr, 22, 28, 22, 28, 0, lbl);
 
-    // scm_C2(&CMNEF, &Cmnef, &CMnEf, 0.0);
+    /* scm_C2(&CMNEF, &Cmnef, &CMnEf, 0.0); */
     dpd_buf4_scm(&CMNEF, 0.0);
     dpd_buf4_scm(&Cmnef, 0.0);
     dpd_buf4_scm(&CMnEf, 0.0);

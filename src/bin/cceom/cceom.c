@@ -50,8 +50,8 @@ int main(int argc, char *argv[])
   form_dpd_dp();
  
   cachefiles = init_int_array(PSIO_MAXUNIT);
-
-  if (params.ref == 2) { // UHF 
+  
+  if (params.ref == 2) { /* UHF */ 
     cachelist = cacheprep_uhf(params.cachelev, cachefiles);
     /* cachelist = init_int_matrix(32,32); */
 
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     cachelist, NULL, 4, moinfo.aoccpi, moinfo.aocc_sym, moinfo.avirtpi,
     moinfo.avir_sym, moinfo.boccpi, moinfo.bocc_sym, moinfo.bvirtpi, moinfo.bvir_sym);
   }
-  else { // RHF or ROHF
+  else { /* RHF or ROHF */
     cachelist = cacheprep_rhf(params.cachelev, cachefiles);
     /* cachelist = init_int_matrix(12,12); */
 

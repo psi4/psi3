@@ -72,7 +72,7 @@ void zmat_to_intco() {
     fclose(fp_intco);
   }
 
-  // free zmat?
+  /* free zmat? */
 
   return;
 }
