@@ -22,10 +22,6 @@
 
 #define MXEXEC 100
 #define MAX_EXEC_STR 80
-/* Added 052503 by Chris Barden to get it working for IRIX */
-#ifdef __sgi
-#define AIX
-#endif
 
 FILE *infile, *outfile;
 char **psi_file_prefix;
@@ -543,12 +539,12 @@ int parse_cmdline(int argc, char *argv[])
  
   /* set the environmental variables the modules will look for */ 
   if (ifname != NULL) {
-    #ifdef AIX
+#ifndef HAVE_SETENV
     sprintf(tmpstr_input,"PSI_INPUT=%s",ifname);
     putenv(tmpstr_input);
-    #else
+#else
     setenv("PSI_INPUT",ifname,1);
-    #endif
+#endif
     infile = fopen(ifname,"r");
   }
   else {
@@ -559,21 +555,21 @@ int parse_cmdline(int argc, char *argv[])
     return(PSI_RETURN_FAILURE);
   }
   if (ofname != NULL) {
-    #ifdef AIX
+#ifndef HAVE_SETENV
     sprintf(tmpstr_output,"PSI_OUTPUT=%s",ofname);
     putenv(tmpstr_output);
-    #else
+#else
     setenv("PSI_OUTPUT",ofname,1);
-    #endif
+#endif
   }
   outfile = stdout;
   if (fprefix != NULL) {
-    #ifdef AIX
+#ifndef HAVE_SETENV
     sprintf(tmpstr_prefix,"PSI_PREFIX=%s",fprefix);
     putenv(tmpstr_prefix);
-    #else
+#else
     setenv("PSI_PREFIX",fprefix,1);
-    #endif
+#endif
   }
   return(1);
 }

@@ -319,7 +319,12 @@ void init_io(int argc, char *argv[])
   // Psi modules called by dboc should write to a different output file
   // reset the value of PSI_OUTPUT for the duration of this run
   orig_psi_output_env = getenv("PSI_OUTPUT");
+#ifndef HAVE_SETENV
+  char* tmpstr = strdup("PSI_OUTPUT=dboc.findif.out");
+  putenv(tmpstr);
+#else
   setenv("PSI_OUTPUT","dboc.findif.out",1);
+#endif
 
   free(progid);
 }
@@ -328,8 +333,15 @@ void exit_io()
 {
   int i;
 
-  if (orig_psi_output_env != NULL)
+  if (orig_psi_output_env != NULL) {
+#ifndef HAVE_SETENV
+    char* tmpstr = (char *) malloc(sizeof(char)*(strlen(orig_psi_output_env)+12));
+    sprintf(tmpstr,"PSI_OUTPUT=%s",orig_psi_output_env);
+    putenv(tmpstr);
+#else
     setenv("PSI_OUTPUT",orig_psi_output_env,1);
+#endif
+  }
   else {
 #ifdef HAVE_UNSETENV
     unsetenv("PSI_OUTPUT");
