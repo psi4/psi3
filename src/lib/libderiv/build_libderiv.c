@@ -5,7 +5,8 @@
 #include <libint.h>
 #include "build_libderiv.h"
 
-FILE *outfile, *vrr_header, *hrr_header, *dhrr_header, *deriv_header, *libderiv_header, *init_code;
+FILE *infile, *outfile, *vrr_header, *hrr_header, *dhrr_header,
+     *deriv_header, *libderiv_header, *init_code;
 
 void punt();
 int emit_vrr_build(int,int,int);
@@ -29,16 +30,29 @@ int main()
   /*-------------------------------
     Initialize files and libraries
    -------------------------------*/
+  infile = fopen("./input.dat", "r");
   outfile = fopen("./output.dat", "w");
   dhrr_header = fopen("./dhrr_header.h","w");
   deriv_header = fopen("./deriv_header.h","w");
   libderiv_header = fopen("./libderiv.h","w");
   init_code = fopen("./init_libderiv.c","w");
 
-  /*---------------------------------
-    Getting the new_am from libint.h
-   ---------------------------------*/
-  new_am = (MAX_AM - 1 - DERIV_LVL)*2;
+  ip_set_uppercase(1);
+  ip_initialize(infile,outfile);
+  ip_cwk_add(":DEFAULT");
+  ip_cwk_add(":LIBDERIV");
+  
+  /*----------------------------------------
+    Getting the new_am from user and making
+    sure it is consistent with libint.h
+   ----------------------------------------*/
+  errcod = ip_data("NEW_AM","%d",&new_am,0);
+  if (errcod != IPE_OK)
+    new_am = DEFAULT_NEW_AM;
+  if (new_am <= 0)
+    punt("  NEW_AM must be positive.");
+  if (new_am > (LIBINT_MAX_AM - 1 - DERIV_LVL)*2)
+    punt("  Maximum NEW_AM is greater installed libint.a allows.\n  Recompile libint.a with greater NEW_AM.");
 
   /* Setting up init_libderiv.c, header.h */
   fprintf(init_code,"#include <stdlib.h>\n");
@@ -90,7 +104,7 @@ int main()
   
     /* Setting up libderiv.h */
   fprintf(libderiv_header,"/* Maximum angular momentum of functions in a basis set plus 1 */\n");
-/*  fprintf(libderiv_header,"#define MAX_AM %d\n",1+new_am/2);*/
+  fprintf(libderiv_header,"#define LIBDERIV_MAX_AM %d\n",1+new_am/2);
   fprintf(libderiv_header,"#ifdef STACK_SIZE\n");
   fprintf(libderiv_header," #undef STACK_SIZE\n");
   fprintf(libderiv_header,"#endif\n");
@@ -99,21 +113,6 @@ int main()
   fprintf(libderiv_header," #undef DERIV_LVL\n");
   fprintf(libderiv_header,"#endif\n");
   fprintf(libderiv_header,"#define DERIV_LVL %d\n\n",DERIV_LVL);
-/*  fprintf(libderiv_header,"typedef struct {\n");
-  fprintf(libderiv_header,"  double F[%d];\n",4*MAX_AM-3);
-  fprintf(libderiv_header,"  double U[6][3];\n");
-  fprintf(libderiv_header,"  double twozeta_a;\n");
-  fprintf(libderiv_header,"  double twozeta_b;\n");
-  fprintf(libderiv_header,"  double twozeta_c;\n");
-  fprintf(libderiv_header,"  double twozeta_d;\n");
-  fprintf(libderiv_header,"  double oo2z;\n");
-  fprintf(libderiv_header,"  double oo2n;\n");
-  fprintf(libderiv_header,"  double oo2zn;\n");
-  fprintf(libderiv_header,"  double poz;\n");
-  fprintf(libderiv_header,"  double pon;\n");
-  fprintf(libderiv_header,"  double oo2p;\n");
-  fprintf(libderiv_header,"  double ss_r12_ss;\n");
-  fprintf(libderiv_header,"  } prim_data;\n\n");*/
   fprintf(libderiv_header,"typedef struct {\n");
   fprintf(libderiv_header,"  double *int_stack;\n"); 
   fprintf(libderiv_header,"  prim_data *PrimQuartet;\n");
@@ -131,6 +130,8 @@ int main()
   fprintf(libderiv_header,"int  init_libderiv(Libderiv_t *, int, int);\n");
   fprintf(libderiv_header,"void free_libderiv(Libderiv_t *);\n\n");
   fclose(libderiv_header);
+  ip_done();
+  fclose(infile);
   fclose(outfile);
   exit(0);
 }

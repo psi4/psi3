@@ -12,7 +12,7 @@ TEMP_DIR = ${SCRATCH}/libderiv
 
 install: $(TARGET)
 
-$(TARGET): $(CSRC) Makefile.libderiv
+$(TARGET): $(BUILD_SRC) Makefile.libderiv input.dat
 	if \
 ! [ -e $(SCRATCH) ]; \
  then \
@@ -29,6 +29,7 @@ else \
 fi; \
 cp Makefile.compiler $(TEMP_DIR); \
 $(MAKE); \
+cp input.dat $(TEMP_DIR); \
 cp Makefile.libderiv $(TEMP_DIR); \
 cd $(TEMP_DIR); \
 cp Makefile.compiler Makefile; \

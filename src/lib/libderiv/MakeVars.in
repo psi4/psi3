@@ -3,6 +3,6 @@ srcdir = @srcdir@
 VPATH = @srcdir@
 BUILD_BINARY = build_libderiv
 
-CSRC = build_libderiv.c mem_man.c \
+BUILD_SRC = build_libderiv.c mem_man.c \
 emit_order.c  emit_deriv_build.c emit_dhrr_build.c
 

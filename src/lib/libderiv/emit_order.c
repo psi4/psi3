@@ -7,7 +7,7 @@
 #include <libint.h>
 #include "mem_man.h"
 #include "build_libderiv.h"
-#define MAXNODE 3000
+#define MAXNODE 5000
 #define NONODE -1000000
 #define NUMPARENTS 21
 
@@ -38,8 +38,10 @@ static int first_hrr_to_compute = 0; /* Number of the first class to be computed
 static int first_vrr_to_compute = 0; /* Number of the first class to be computed
 				    (pointer to the beginning of the linked list) */
 
-static int hrr_hash_table[2*MAX_AM][2*MAX_AM][2*MAX_AM][2*MAX_AM];
-static int vrr_hash_table[2*MAX_AM][2*MAX_AM][4*MAX_AM];
+/*--- This is the maximum ang. momentum allowed for any (intermediate) classes ---*/
+#define LMAX_AM LIBINT_MAX_AM
+static int hrr_hash_table[2*LMAX_AM][2*LMAX_AM][2*LMAX_AM][2*LMAX_AM];
+static int vrr_hash_table[2*LMAX_AM][2*LMAX_AM][4*LMAX_AM];
 
 int emit_order(int old_am, int new_am)
 {
@@ -320,13 +322,13 @@ int emit_order(int old_am, int new_am)
       /*----------------------------
 	Zero out the hashing tables
        ----------------------------*/
-      for(i=0;i<2*MAX_AM;i++)
-	for(j=0;j<2*MAX_AM;j++)
-	  memset(vrr_hash_table[i][j],0,(4*MAX_AM)*sizeof(int));
-      for(i=0;i<2*MAX_AM;i++)
-	for(j=0;j<2*MAX_AM;j++)
-	  for(k=0;k<2*MAX_AM;k++)
-	    memset(hrr_hash_table[i][j][k],0,(2*MAX_AM)*sizeof(int));
+      for(i=0;i<2*LMAX_AM;i++)
+	for(j=0;j<2*LMAX_AM;j++)
+	  memset(vrr_hash_table[i][j],0,(4*LMAX_AM)*sizeof(int));
+      for(i=0;i<2*LMAX_AM;i++)
+	for(j=0;j<2*LMAX_AM;j++)
+	  for(k=0;k<2*LMAX_AM;k++)
+	    memset(hrr_hash_table[i][j][k],0,(2*LMAX_AM)*sizeof(int));
 
       
       /*------------------------------------------------------------------
@@ -381,7 +383,8 @@ int emit_order(int old_am, int new_am)
       last_mem += get_total_memory();
       if (max_stack_size < last_mem)
 	max_stack_size = last_mem;
-      fprintf(vrr_code," double *dvrr_stack = Libderiv->dvrr_stack;\n double *tmp, *target_ptr;\n int i;\n");
+      fprintf(vrr_code," double *dvrr_stack = Libderiv->dvrr_stack;\n double *tmp, *target_ptr;\n");
+      fprintf(vrr_code," int i, am[2];\n");
       
       j = first_vrr_to_compute;
       do {
@@ -462,7 +465,12 @@ int emit_order(int old_am, int new_am)
 	  }
 	}
 	else { /*--- build_vrr ---*/
-	  fprintf(vrr_code, " _BUILD_%c0%c0(Data,", am_letter[vrr_nodes[j].A], am_letter[vrr_nodes[j].C]);
+	  if (vrr_nodes[j].A <= LIBINT_OPT_AM && vrr_nodes[j].C <= LIBINT_OPT_AM)
+	    fprintf(vrr_code, " _BUILD_%c0%c0(Data,", am_letter[vrr_nodes[j].A], am_letter[vrr_nodes[j].C]);
+	  else {
+	    fprintf(vrr_code, " am[0] = %d;  am[1] = %d;\n", vrr_nodes[j].A, vrr_nodes[j].C);
+	    fprintf(vrr_code, " vrr_build_xxxx(am,Data,");
+	  }
 	  fprintf(vrr_code, "dvrr_stack+%d", vrr_nodes[j].pointer);
 	  for(k=0; k<5; k++){
 	    if(vrr_nodes[j].children[k] > 0)
