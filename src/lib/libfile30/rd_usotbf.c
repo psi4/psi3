@@ -20,7 +20,7 @@ double **file30_rd_usotbf(void)
   num_so = file30_rd_nso();
   usotbf_ptr = (PSI_FPTR) (info30_.mpoint[41] - 1)*sizeof(int);
 
-  usotbf = init_matrix(num_so,num_so);
+  usotbf = block_matrix(num_so,num_so);
 
   for(i=0;i<num_so;i++)
     wreadw(info30_.filenum, (char *) usotbf[i], (int) num_so*sizeof(double),

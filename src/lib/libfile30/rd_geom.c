@@ -27,7 +27,7 @@ double **file30_rd_geom(void)
   geom_ptr = (PSI_FPTR) (info30_.mcalcs[0] + 60 + 20 -1)*sizeof(int);
 
   temp_geom = init_array(3*natom);
-  geom = init_matrix(natom, 3);
+  geom = block_matrix(natom, 3);
 
   wreadw(info30_.filenum, (char *) temp_geom, (int) 3*natom*sizeof(double),
 	 geom_ptr, &junk);

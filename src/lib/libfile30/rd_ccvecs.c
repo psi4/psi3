@@ -53,7 +53,7 @@ double **file30_rd_ccvecs(void)
   free(scf_ptrs);
   
   if (ccvec_length > 0) {
-    ccvecs = init_matrix(2,ccvec_length);
+    ccvecs = block_matrix(2,ccvec_length);
 
   /*scf_ptr = (PSI_FPTR) (info30_.mcalcs[0]+60-1)*sizeof(int);
   wreadw(info30_.filenum, (char *) &tmp, sizeof(int), scf_ptr,

@@ -26,7 +26,7 @@ double **file30_rd_schwartz(void)
   else {
     schwartz_ptr = (PSI_FPTR) (info30_.mpoint[45] - 1)*sizeof(int);
     num_shells = file30_rd_nshell();
-    schwartz = init_matrix(num_shells, num_shells);
+    schwartz = block_matrix(num_shells, num_shells);
 
     for(i=0;i<num_shells;i++) {
       wreadw(info30_.filenum, (char *) schwartz[i], num_shells*sizeof(double),

@@ -55,7 +55,7 @@ double **file30_rd_beta_blk_scf(int irrep)
     wreadw(info30_.filenum, (char *) tmp_vector, 
            (sopi[irrep]*mopi[irrep])*sizeof(double), mo_coeff_ptr, &junk);
   
-    scf_vector = init_matrix(sopi[irrep],mopi[irrep]);
+    scf_vector = block_matrix(sopi[irrep],mopi[irrep]);
     
     count = 0;
     for(i=0; i < mopi[irrep] ; i++)

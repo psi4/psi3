@@ -24,7 +24,7 @@ double **file30_rd_contr_full(void)
   contr_ptr = (PSI_FPTR) (info30_.mpoint[5] - 1)*sizeof(int);
 
   temp_contr = init_array(MAXANGMOM*nprim);
-  contr = init_matrix(nprim,MAXANGMOM);
+  contr = block_matrix(nprim,MAXANGMOM);
 
   wreadw(info30_.filenum, (char *) temp_contr, (int) MAXANGMOM*nprim*sizeof(double),
 	 contr_ptr, &junk);

@@ -56,7 +56,7 @@ double **file30_rd_beta_scf(void)
 
   mopi = file30_rd_orbspi();
   sopi = file30_rd_sopi();
-  scf_vector = init_matrix(file30_rd_nso(),file30_rd_nmo());
+  scf_vector = block_matrix(file30_rd_nso(),file30_rd_nmo());
 
 /*  count = 0;
   for(i=0; i < nirreps; i++) {

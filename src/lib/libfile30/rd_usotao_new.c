@@ -21,7 +21,7 @@ double **file30_rd_usotao_new(void)
   num_so = file30_rd_nso();
   usotao_ptr = (PSI_FPTR) (info30_.mpoint[40] - 1)*sizeof(int);
 
-  usotao = init_matrix(num_so,num_ao);
+  usotao = block_matrix(num_so,num_ao);
 
   for(i=0;i<num_so;i++)
     wreadw(info30_.filenum, (char *) usotao[i], (int) num_ao*sizeof(double),
