@@ -48,6 +48,7 @@ void memchk(void);
 struct dpd_file4_cache_entry *priority_list(void);
 void spinad_amps(void);
 void status(char *, FILE *);
+void lmp2(void);
 
 /* local correlation functions */
 void local_init(void);
@@ -108,7 +109,10 @@ int main(int argc, char *argv[])
 
   }
 
-  if(params.local) local_init(); 
+  if(params.local) {
+    local_init();
+    if(!strcmp(local.weakp,"MP2")) lmp2();
+  }
  
   init_amps();
   tau_build();
@@ -263,6 +267,7 @@ void init_io(void)
   ip_set_uppercase(1);
   ip_initialize(infile,outfile);
   ip_cwk_add(":DEFAULT");
+  ip_cwk_add(":INPUT");
   ip_cwk_add(progid);
 
   free(progid);

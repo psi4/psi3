@@ -1,6 +1,6 @@
 struct Local {
   int natom;
-  int nao;
+  int nso;
   int nocc;
   int nvir;
   int *aostart;
@@ -8,9 +8,12 @@ struct Local {
   int **pairdomain;
   int *pairdom_len;
   int *pairdom_nrlen;
+  int *weak_pairs;
   double ***V;
   double ***W;
   double *eps_occ;
   double **eps_vir;
   double cutoff;
+  char *method;
+  char *weakp;
 };
