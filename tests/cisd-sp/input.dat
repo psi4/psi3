@@ -50,3 +50,7 @@ scf: (
   convergence = 12
 )
 
+detci: (
+  hd_ave = hd_kave
+)
+
