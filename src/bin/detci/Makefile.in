@@ -4,9 +4,9 @@ VPATH = @srcdir@
 include ../MakeVars
 
 LD = $(CXX)
-LDLIBS += $(BLAS) $(FLIBS)
+LDLIBS += $(BLAS) $(FLIBS) -lpthread
 
-PSILIBS = libqt.a libfile30.a libiwl.a libpsio.a libciomr.a libipv1.a -lpthread
+PSILIBS = libqt.a libfile30.a libiwl.a libpsio.a libciomr.a libipv1.a 
 
 CSRC = \
 gprgid.c get_mo_info.c check_energy.c ints.c \
