@@ -50,7 +50,7 @@ The following external software packages are needed to complile \PSIthree:
 \item A well-optimized basic linear algebra subroutine (BLAS) library
   for vital matrix-matrix and matrix-vector multiplication routines.
   We recommend the excellent ATLAS package developed at the University
-  of Tennessee.  {\tt http://www.sourceforge.net/atlas}
+  of Tennessee.  {\tt http://math-atlas.sourceforge.net}
 \item The linear algebra package (LAPACK), also available from
   netlib.org.  \PSIthree\ makes use of LAPACK's eigenvalue/eigenvector
   and matrix inversion routines.  {\tt http://www.netlib.org/netlib}

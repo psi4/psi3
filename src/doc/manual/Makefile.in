@@ -20,7 +20,7 @@ LOCALTEXINPUTS =
 COMMONSRC = \
 macros.tex \
 reference.tex \
-history.tex
+history.tex \
 install.tex
 
 USERMANSRC = userman.tex
