@@ -785,6 +785,7 @@ AC_SUBST(CXXDEPENDFLAGS)
 
 AC_OUTPUT(include/psiconfig.h
           include/sizeof.h include/file30_params.h include/Makefile
+          include/chkpt_params.h
           Makefile lib/Makefile src/Makefile
           src/lib/Makefile src/lib/MakeRules src/lib/MakeVars
           src/util/Makefile
@@ -810,6 +811,7 @@ AC_OUTPUT(include/psiconfig.h
           src/lib/libderiv/input.dat
           src/lib/libdpd/Makefile
           src/lib/libfile30/Makefile
+          src/lib/libchkpt/Makefile
           src/lib/libint/Makefile
           src/lib/libint/MakeVars
           src/lib/libint/Makefile.compiler
