@@ -12,7 +12,7 @@ void Wabei_build(void)
   else if(params.ref == 2) {
     WABEI_UHF();
     Wabei_UHF();
-    /*    WAbEi_UHF(); */
-    /*    WaBeI_UHF(); */
+    WAbEi_UHF();
+    WaBeI_UHF();
   }
 }
