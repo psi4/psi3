@@ -6,10 +6,8 @@ default: (
   reference = rhf
   dertype = none
   charge = -1
-
   docc = (13 5)
-  frozen_docc = (4 1)
-
+  freeze_core = true
   print = 2
   ao_basis = disk
   cachelev = 0
