@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
 
     if( (!strcmp(params.wfn,"CC3")) || (!strcmp(params.wfn,"EOM_CC3")) ) {
       /* switch to ROHF to generate all spin cases of He^T1 elements */
-      if(params.dertype == 3 && params.ref == 0) {
+      if((params.dertype == 3 || params.dertype == 1) && params.ref == 0) {
 	params.ref = 1;
 	cc3_HET1(); /* compute remaining Wmbej [H,eT1] */
 	norm_HET1();
