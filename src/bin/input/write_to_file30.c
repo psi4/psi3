@@ -249,19 +249,26 @@ void write_to_file30(double repulsion)
     j = num_atoms;
   else j = num_entries;
   pointers[28] = ptr/sizeof(int) + 1;
-  atom_label = init_char_array(8);
+  atom_label = init_char_array(MAX_ELEMNAME);
   for(atom=0;atom<j;atom++) {
+    if(strlen(full_element[atom]) > MAX_ELEMNAME)
+      punt("Element name exceeds limit, MAX_ELEMNAME.\n");
+
     strncpy(atom_label,full_element[atom],strlen(full_element[atom]));
     atom_label[strlen(full_element[atom])] = '\0';
-    wwritw(CHECKPOINTFILE,(char *) atom_label, 8*(sizeof(char)),ptr,&ptr);
+    wwritw(CHECKPOINTFILE,(char *) atom_label, MAX_ELEMNAME*(sizeof(char)),ptr,&ptr);
   }
   free(atom_label);
 
   tmp_atom_label = (char **) malloc(j*sizeof(char *));
   for(atom=0; atom<j; atom++) {
-    tmp_atom_label[atom] = init_char_array(8);
+    tmp_atom_label[atom] = init_char_array(MAX_ELEMNAME);
+
+    if(strlen(full_element[atom]) > MAX_ELEMNAME)
+      punt("Element name exceeds limit, MAX_ELEMNAME.\n");
+
     strncpy(tmp_atom_label[atom],full_element[atom],strlen(full_element[atom]));
-    tmp_atom_label[strlen(full_element[atom])] = '\0';
+    tmp_atom_label[atom][strlen(full_element[atom])] = '\0';
   }
   chkpt_wt_felement(tmp_atom_label);
   for(atom=0; atom<j; atom++) {
