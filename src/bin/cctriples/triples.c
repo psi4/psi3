@@ -66,10 +66,12 @@ int main(int argc, char *argv[])
     fprintf(outfile, "\t(T) energy                    = %20.15f\n", ET);
     fprintf(outfile, "\tTotal CCSD(T) energy          = %20.15f\n", 
 	    ET + moinfo.ecc + moinfo.eref);
+    /*
     ET = ET_RHF_allijk();
     fprintf(outfile, "\t(T) energy                    = %20.15f\n", ET);
     fprintf(outfile, "\tTotal CCSD(T) energy          = %20.15f\n", 
 	    ET + moinfo.ecc + moinfo.eref);
+    */
   }
   else if(refwfn == 1) {
     /*    setup(); */
