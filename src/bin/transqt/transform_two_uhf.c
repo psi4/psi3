@@ -3,7 +3,6 @@
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <libiwl/iwl.h>
-#include <libfile30/file30.h>
 #include <libchkpt/chkpt.h>
 
 #include "MOInfo.h"
@@ -117,11 +116,8 @@ void transform_two_uhf(void)
     free(moinfo.fzc_density_beta);
   }
 
-  /* Write efzc to file30 */
-  file30_init();
-  file30_wt_efzc(moinfo.efzc);
-  file30_close();
-  chkpt_init();
+  /* Write efzc to chkpt file */
+  chkpt_init(PSIO_OPEN_OLD);
   chkpt_wt_efzc(moinfo.efzc);
   chkpt_close();
 

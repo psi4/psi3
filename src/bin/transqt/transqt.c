@@ -58,12 +58,6 @@
 ** way.
 ** CDS 6/26/96
 **
-** Replaced libread30 calls with the new and improved libfile30
-** routines, and made a minor correction to the command-line option
-** -quiet that conflicted with the get_parameters() function.  Also
-** removed the integral sorting routines from this module altogether.
-** TDC 6/27/96
-**
 ** Finished a backtransformation routine that runs in C1 symmetry
 ** by folding the AO/SO transform into C.
 ** CDS 1/30/98
@@ -121,7 +115,6 @@
 #include <libipv1/ip_lib.h>
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
-#include <libfile30/file30.h>
 #include <libchkpt/chkpt.h>
 #include <libqt/qt.h>
 #include <psifiles.h>
@@ -645,8 +638,7 @@ void get_moinfo(void)
   int *tmpi, nopen;
   double **tmpmat, **so2ao;
 
-  file30_init();
-  chkpt_init();
+  chkpt_init(PSIO_OPEN_OLD);
   moinfo.nmo = chkpt_rd_nmo();
   moinfo.nso = chkpt_rd_nso();
   moinfo.nao = chkpt_rd_nao();
@@ -763,7 +755,7 @@ void get_moinfo(void)
   if (errcod == IPE_OK) {
     for (i=0,warned=0; i<moinfo.nirreps; i++) {
       if (tmpi[i] != moinfo.clsdpi[i] && !warned && !params.qrhf) {
-	fprintf(outfile, "\tWarning: DOCC doesn't match file30\n");
+	fprintf(outfile, "\tWarning: DOCC doesn't match chkpt file\n");
 	warned = 1;
       }
       moinfo.clsdpi[i] = tmpi[i];
@@ -776,7 +768,7 @@ void get_moinfo(void)
   if (errcod == IPE_OK) {
     for (i=0,warned=0; i<moinfo.nirreps; i++) {
       if (tmpi[i] != moinfo.openpi[i] && !warned && !params.qrhf) {
-	fprintf(outfile, "\tWarning: SOCC doesn't match file30\n");
+	fprintf(outfile, "\tWarning: SOCC doesn't match chkpt file\n");
 	warned = 1;
       }
       moinfo.openpi[i] = tmpi[i];
@@ -784,15 +776,12 @@ void get_moinfo(void)
     }
   }
 
-  /* Dump the new occupations to file30 if QRHF reference requested 
+  /* Dump the new occupations to chkpt file if QRHF reference requested 
      TDC,3/20/00 */
   if(params.qrhf) {
-    file30_wt_clsdpi(moinfo.clsdpi);
-    file30_wt_openpi(moinfo.openpi);
     chkpt_wt_clsdpi(moinfo.clsdpi);
     chkpt_wt_openpi(moinfo.openpi);
     for(i=0,nopen=0; i < moinfo.nirreps; i++) nopen += moinfo.openpi[i];
-    file30_wt_iopen(nopen);
     chkpt_wt_iopen(nopen);
   }
 
@@ -802,7 +791,7 @@ void get_moinfo(void)
   }
 
   if (params.print_lvl) {
-    fprintf(outfile,"\n\tFile30 Parameters:\n");
+    fprintf(outfile,"\n\tChkpt File Parameters:\n");
     fprintf(outfile,"\t------------------\n");
     fprintf(outfile,"\tNumber of irreps = %d\n",moinfo.nirreps);
     fprintf(outfile,"\tNumber of SOs    = %d\n",moinfo.nso);
@@ -985,7 +974,6 @@ void get_moinfo(void)
   else {
 
     if (params.print_mos) fprintf(outfile, "SO to AO matrix\n");
-    /*    so2ao = file30_rd_usotao_new(); */
     so2ao = chkpt_rd_usotao();
     if (params.print_mos) print_mat(so2ao,moinfo.nso,moinfo.nao,outfile);
     tmpmat = init_matrix(moinfo.nso, moinfo.nmo - moinfo.nfzv);
@@ -1069,7 +1057,6 @@ void get_moinfo(void)
   }
 
   chkpt_close();  
-  file30_close();
 
   /* define some first/last arrays for backtransforms to migrate away  */
   /* from the total hack we are doing now for backtrans                */

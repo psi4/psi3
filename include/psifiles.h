@@ -24,8 +24,8 @@
 #define PSIF_SO_R12T1       39
 #define PSIF_DERINFO        40
 #define PSIF_SO_PRESORT     41
-#define PSIF_OLD_CHKPT      42             /* Until we have flexible PSIF_CHKPT this will store previous calculation info */
-#define PSIF_CIVECT         43             /* CI vector from DETCI along with string and determinant info */
+#define PSIF_OLD_CHKPT      42   /* Until we have flexible PSIF_CHKPT this will store previous calculation info */
+#define PSIF_CIVECT         43   /* CI vector from DETCI along with string and determinant info */
 #define PSIF_MO_R12         79
 #define PSIF_MO_R12T1       80
 #define PSIF_SO_PKSUPER1    92
@@ -53,6 +53,7 @@
 ** -TDC, 7/00
 */
 #define PSIF_MO_HESS        88
+#define PSIF_CPHF           88
 
 /* All of these one-electron quantities have been moved into PSIF_OEI */
 /* These macros give libpsio TOC strings for easy identification.     */
@@ -63,6 +64,12 @@
 #define PSIF_AO_MX          "AO-basis Mu-X Ints"
 #define PSIF_AO_MY          "AO-basis Mu-Y Ints"
 #define PSIF_AO_MZ          "AO-basis Mu-Z Ints"
+#define PSIF_MO_MX          "MO-basis Mu-X Ints"
+#define PSIF_MO_MY          "MO-basis Mu-Y Ints"
+#define PSIF_MO_MZ          "MO-basis Mu-Z Ints"
+#define PSIF_AO_NablaX      "AO-basis Nabla-X Ints"
+#define PSIF_AO_NablaY      "AO-basis Nabla-Y Ints"
+#define PSIF_AO_NablaZ      "AO-basis Nabla-Z Ints"
 #define PSIF_MO_OEI         "MO-basis One-electron Ints"
 #define PSIF_MO_A_OEI       "MO-basis Alpha One-electron Ints"
 #define PSIF_MO_B_OEI       "MO-basis Beta One-electron Ints"
@@ -73,6 +80,9 @@
 /* More macros */
 #define PSIF_AO_OPDM_TRIANG "AO-basis OPDM triang"
 #define PSIF_AO_LAG_TRIANG  "AO-basis Lagrangian triang"
+#define PSIF_AO_OPDM_SQUARE "AO-basis OPDM square"
+#define PSIF_SO_OPDM        "SO-basis OPDM"
+#define PSIF_SO_OPDM_TRIANG "SO-basis triang"
 
 /*
 #define PSIF_SO_S           35
@@ -89,3 +99,9 @@
 #define PSIF_MO_A_FZC       86
 #define PSIF_MO_B_FZC       87
 */
+
+/* PSI return codes --- for new PSI driver           */
+#define PSI_RETURN_SUCCESS      0
+#define PSI_RETURN_FAILURE      1
+#define PSI_RETURN_ENDLOOP      2
+

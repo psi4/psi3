@@ -2,7 +2,11 @@
 #include <stdlib.h>
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
-#include <libfile30/file30.h>
+#if USE_LIBCHKPT
+#  include <libchkpt/chkpt.h>
+#else
+#  include <libfile30/file30.h>
+#endif
 #include <psifiles.h>
 
 #include "input.h"
@@ -10,57 +14,47 @@
 #define EXTERN
 #include "global.h"
 
+#include "float.h"
+#include "linalg.h"
 
 void init_oldcalc()
 {
   int s, ncalcs;
-  
-  /*--- initialize the old checkpoint file ---*/
-  file30_init();
 
-  /*--- check if MO vector is there ---*/
-  ncalcs = file30_rd_ncalcs();
-  if (ncalcs = 0) {
-      fprintf(outfile,"  Did not find MOs in the checkpoint file\n");
-      fprintf(outfile,"  Will continue without the MO projection\n");
-      fprintf(stderr,"  Did not find MOs in the checkpoint file\n");
-      fprintf(stderr,"  Will continue without the MO projection\n");
-      chkpt_mos = 0;
-      file30_close();
-      return;
-  }
+  /*--- initialize the old checkpoint file ---*/
+  chkpt_init(PSIO_OPEN_OLD);
 
   /*--- check if the symmetry is the same ---*/
-  Oldcalc.symmetry = file30_rd_sym_label();
+  Oldcalc.symmetry = chkpt_rd_sym_label();
   if (strncmp(Oldcalc.symmetry,symmetry,3)) {
       fprintf(outfile,"  Old file30 uses different point group from the current one\n");
       fprintf(outfile,"  Will continue without the MO projection\n");
       fprintf(stderr,"  Old file30 uses different point group from the current one\n");
       fprintf(stderr,"  Will continue without the MO projection\n");
       chkpt_mos = 0;
-      file30_close();
+      chkpt_close();
       return;
   }
-  Oldcalc.nirreps = file30_rd_nirreps();
+  Oldcalc.nirreps = chkpt_rd_nirreps();
 
   /*--- read the old geometry ---*/
-  Oldcalc.natom = file30_rd_natom();
-  Oldcalc.geometry = file30_rd_geom();
+  Oldcalc.natom = chkpt_rd_natom();
+  Oldcalc.geometry = chkpt_rd_geom();
 
   /*--- read the old basis ---*/
-  Oldcalc.num_ao = file30_rd_nao();
-  Oldcalc.num_so = file30_rd_nso();
-  Oldcalc.sopi = file30_rd_sopi();
-  Oldcalc.num_shells = file30_rd_nshell();
-  Oldcalc.num_prims = file30_rd_nprim();
-  Oldcalc.exponents = file30_rd_exps();
-  Oldcalc.contr_coeff = file30_rd_contr_full();
-  Oldcalc.shell_nucleus = file30_rd_snuc();
-  Oldcalc.first_prim_shell = file30_rd_sprim();
-  Oldcalc.shell_ang_mom = file30_rd_stype();
-  Oldcalc.nprim_in_shell = file30_rd_snumg();
-  Oldcalc.first_ao_shell = file30_rd_sloc();
-  Oldcalc.usotao = file30_rd_usotao_new();
+  Oldcalc.num_ao = chkpt_rd_nao();
+  Oldcalc.num_so = chkpt_rd_nso();
+  Oldcalc.sopi = chkpt_rd_sopi();
+  Oldcalc.num_shells = chkpt_rd_nshell();
+  Oldcalc.num_prims = chkpt_rd_nprim();
+  Oldcalc.exponents = chkpt_rd_exps();
+  Oldcalc.contr_coeff = chkpt_rd_contr_full();
+  Oldcalc.shell_nucleus = chkpt_rd_snuc();
+  Oldcalc.first_prim_shell = chkpt_rd_sprim();
+  Oldcalc.shell_ang_mom = chkpt_rd_stype();
+  Oldcalc.nprim_in_shell = chkpt_rd_snumg();
+  Oldcalc.first_ao_shell = chkpt_rd_sloc();
+  Oldcalc.usotao = chkpt_rd_usotao();
 
   /*--- Convert to C-numbering ---*/
   Oldcalc.max_angmom = 0;
@@ -74,7 +68,7 @@ void init_oldcalc()
   }
 
   /*--- read the old SCF eigenvector, RHF case so far ---*/
-  Oldcalc.ref = file30_rd_ref();
+  Oldcalc.ref = chkpt_rd_ref();
   if (Oldcalc.ref == ref_rhf   ||
       Oldcalc.ref == ref_rohf  ||
       Oldcalc.ref == ref_tcscf ||
@@ -87,26 +81,39 @@ void init_oldcalc()
       fprintf(outfile,"  Input is not aware of reference type %d\n",Oldcalc.ref);
       fprintf(outfile,"  Will continue without the MO projection\n");
       chkpt_mos = 0;
-      file30_close();
+      chkpt_close();
       return;
   }
 
-  Oldcalc.iopen = file30_rd_iopen();
-  Oldcalc.num_mo = file30_rd_nmo();
-  Oldcalc.orbspi = file30_rd_orbspi();
-  Oldcalc.clsdpi = file30_rd_clsdpi();
-  Oldcalc.openpi = file30_rd_openpi();
-  Oldcalc.escf = file30_rd_escf();
+  Oldcalc.iopen = chkpt_rd_iopen();
+  Oldcalc.num_mo = chkpt_rd_nmo();
+  Oldcalc.orbspi = chkpt_rd_orbspi();
+  Oldcalc.clsdpi = chkpt_rd_clsdpi();
+  Oldcalc.openpi = chkpt_rd_openpi();
+  Oldcalc.escf = chkpt_rd_escf();
   if (Oldcalc.spinrestr_ref) { /* Spin-restricted case */
-      Oldcalc.scf_evect_so = file30_rd_scf();
+      Oldcalc.scf_evect_so = chkpt_rd_scf();
   }
   else { /* Spin-unrestricted case */
-      Oldcalc.scf_evect_so_alpha = file30_rd_alpha_scf();
-      Oldcalc.scf_evect_so_beta = file30_rd_beta_scf();
+      Oldcalc.scf_evect_so_alpha = chkpt_rd_alpha_scf();
+      Oldcalc.scf_evect_so_beta = chkpt_rd_beta_scf();
   }
 
   /*--- Done with the checkpoint file ---*/
-  file30_close();
+  chkpt_close();
+
+  if (print_lvl >= DEBUGPRINT) {
+    if (Oldcalc.spinrestr_ref) {
+      fprintf(outfile,"  -Old eigenvector (in SO basis):\n");
+      print_mat(Oldcalc.scf_evect_so,Oldcalc.num_so,Oldcalc.num_mo,outfile);
+    }
+    else {
+      fprintf(outfile,"  -Old alpha eigenvector (in SO basis):\n");
+      print_mat(Oldcalc.scf_evect_so_alpha,Oldcalc.num_so,Oldcalc.num_mo,outfile);
+      fprintf(outfile,"  -Old beta eigenvector (in SO basis):\n");
+      print_mat(Oldcalc.scf_evect_so_beta,Oldcalc.num_so,Oldcalc.num_mo,outfile);
+    }
+  }
   
   return;
 }
@@ -140,14 +147,14 @@ void cleanup_oldcalc()
 
 void store_oldcalc()
 {
-  double **S12;
+  FLOAT **S12;
 
   if (max_angmom > Oldcalc.max_angmom)
     init_gto(max_angmom);
   else
     init_gto(Oldcalc.max_angmom);
 
-  S12 = overlap_new_old();
+  S12 = overlap_new_old_float();
   
   /*--- write things out ---*/
   psio_open(PSIF_OLD_CHKPT, PSIO_OPEN_NEW);
@@ -182,8 +189,8 @@ void store_oldcalc()
 	       Oldcalc.num_so*Oldcalc.num_mo*sizeof(double));
   }
   psio_write_entry(PSIF_OLD_CHKPT, ":PrevCalc:New-Old basis overlap", (char*) S12[0],
-	     num_so*Oldcalc.num_so*sizeof(double));
+	     num_so*Oldcalc.num_so*sizeof(FLOAT));
   psio_close(PSIF_OLD_CHKPT, 1);
 
-  free_block(S12);
+  delete_matrix(S12);
 }

@@ -3,6 +3,7 @@
   \ingroup (CHKPT)
 */
 
+#include <stdlib.h>
 #include "chkpt.h"
 #include <psifiles.h>
 #include <libpsio/psio.h>
@@ -23,9 +24,11 @@
 int chkpt_rd_rottype(void)
 {
   int rottype;
+  char *key;
 
-  psio_read_entry(PSIF_CHKPT, "::Rotor type", (char *) &rottype, 
-                  sizeof(int) );
+  key = chkpt_build_keyword("Rotor type");
+  psio_read_entry(PSIF_CHKPT, key, (char *) &rottype, sizeof(int));
+  free(key);
   return rottype;
 }
 
@@ -47,5 +50,9 @@ int chkpt_rd_rottype(void)
 
 void chkpt_wt_rottype(int rottype)
 {
+  char *key;
+
+  key = chkpt_build_keyword("Rotor type");
   psio_write_entry(PSIF_CHKPT, "::Rotor type", (char *) &rottype, sizeof(int));
+  free(key);
 }

@@ -15,7 +15,7 @@ error.c          get_numvols.c         read_block.c  toclen.c    write.c \
 get_address.c    get_volpath.c         read_entry.c  tocprint.c \
 write_block.c    get_entry_end.c       init.c        rw.c \
 tocread.c        write_entry.c         get_filename.c   open.c \
-tocclean.c    tocscan.c open_check.c
+tocclean.c    tocscan.c tocrename.c open_check.c
 
 DEPENDINCLUDE = psio.h psio.gbl
 

@@ -2,7 +2,11 @@
 #include<stdlib.h>
 #include<math.h>
 #include<libciomr/libciomr.h>
+#if USE_LIBCHKPT
+#include<libchkpt/chkpt.h>
+#else
 #include<libfile30/file30.h>
+#endif
 #include<libint/libint.h>
 
 #include"defines.h"
@@ -23,7 +27,11 @@ void init_moinfo()
   double **ccvecs, *alpha, *beta;
   double **scf_evec_so;
 
+#if USE_LIBCHKPT
+  MOInfo.Escf = chkpt_rd_escf();
+#else
   MOInfo.Escf = file30_rd_escf();
+#endif
   MOInfo.Eref = 0.0;
   MOInfo.Ecorr = 0.0;
 
@@ -34,36 +42,62 @@ void init_moinfo()
     MOInfo.Eref = MOInfo.Escf;
   }
   else {
+#if USE_LIBCHKPT
+    MOInfo.Eref = chkpt_rd_eref();
+    MOInfo.Ecorr = chkpt_rd_ecorr();
+#else
     MOInfo.Eref = file30_rd_eref();
     MOInfo.Ecorr = file30_rd_ecorr();
+#endif
   }
 
   /* Note: this init_moinfo() routine is not always called!  We'll need
      to re-grab some of the above energies in other subroutines to be
      positive we have them on-hand */
 
+#if USE_LIBCHKPT
+  MOInfo.num_mo = chkpt_rd_nmo();
+  MOInfo.orbspi = chkpt_rd_orbspi();
+  MOInfo.clsdpi = chkpt_rd_clsdpi();
+  MOInfo.openpi = chkpt_rd_openpi();
+#else
   MOInfo.num_mo = file30_rd_nmo();
   MOInfo.orbspi = file30_rd_orbspi();
   MOInfo.clsdpi = file30_rd_clsdpi();
   MOInfo.openpi = file30_rd_openpi();
+#endif
   MOInfo.virtpi = init_int_array(Symmetry.nirreps);
   for(irrep=0;irrep<Symmetry.nirreps;irrep++)
     MOInfo.virtpi[irrep] = MOInfo.orbspi[irrep] - MOInfo.clsdpi[irrep] - MOInfo.openpi[irrep];
+#if USE_LIBCHKPT
+  MOInfo.scf_evals[0] = chkpt_rd_evals();
+  scf_evec_so = chkpt_rd_scf();
+#else
   MOInfo.scf_evals[0] = file30_rd_evals();
   scf_evec_so = file30_rd_scf();
+#endif
   MOInfo.scf_evec[0] = block_matrix(MOInfo.num_mo,BasisSet.num_ao);
   mmult(Symmetry.usotao,1,scf_evec_so,0,MOInfo.scf_evec[0],1,BasisSet.num_ao,Symmetry.num_so,MOInfo.num_mo,0);
   free_block(scf_evec_so);
   if (UserOptions.reftype == uhf) {
+#if USE_LIBCHKPT
+    MOInfo.scf_evals[1] = chkpt_rd_beta_evals();
+    scf_evec_so = chkpt_rd_beta_scf();
+#else
     MOInfo.scf_evals[1] = file30_rd_beta_evals();
     scf_evec_so = file30_rd_beta_scf();
+#endif
     MOInfo.scf_evec[1] = block_matrix(MOInfo.num_mo,BasisSet.num_ao);
     mmult(Symmetry.usotao,1,scf_evec_so,0,MOInfo.scf_evec[1],1,BasisSet.num_ao,Symmetry.num_so,MOInfo.num_mo,0);
     free_block(scf_evec_so);
   }
 
   /*--- Check the validity of the checkpoint file ---*/
+#if USE_LIBCHKPT
+  iopen = chkpt_rd_iopen();
+#else
   iopen = file30_rd_iopen();
+#endif
   switch (UserOptions.reftype) {
   case rhf:     if (iopen != 0) punt("Content of checkpoint file inconsistent with REFERENCE\n"); break;
   case uhf:     if (iopen != 0) punt("Content of checkpoint file inconsistent with REFERENCE\n"); break;
@@ -90,7 +124,11 @@ void init_moinfo()
 
   
   /*--- Read in open-shell coupling coeffcients ---*/
+#if USE_LIBCHKPT
+  ccvecs = chkpt_rd_ccvecs();
+#else
   ccvecs = file30_rd_ccvecs();
+#endif
   if (iopen != 0) {    /*--- NOTE! These are Pitzer's coupling constants (a and b).
 			 To get Yamaguchi's constants (alpha and beta) use this:
 			 alpha = (1-a)/2  beta = (b-1)/4

@@ -3,7 +3,7 @@
 #include <math.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
-#include <libfile30/file30.h>
+#include <libchkpt/chkpt.h>
 #include <psifiles.h>
 #include <libiwl/iwl.h>
 #include <libpsio/psio.h>
@@ -46,16 +46,16 @@ int main(int argc, char *argv[])
 
   init_io();
 
-  file30_init();
-  nmo = file30_rd_nmo();
-  nso = file30_rd_nso();
-  geom = file30_rd_geom();
-  natom = file30_rd_natom();
-  nirreps = file30_rd_nirreps();
-  clsdpi = file30_rd_clsdpi();
-  openpi = file30_rd_openpi();
-  orbspi = file30_rd_orbspi();
-  file30_close();
+  chkpt_init(PSIO_OPEN_OLD);
+  nmo = chkpt_rd_nmo();
+  nso = chkpt_rd_nso();
+  geom = chkpt_rd_geom();
+  natom = chkpt_rd_natom();
+  nirreps = chkpt_rd_nirreps();
+  clsdpi = chkpt_rd_clsdpi();
+  openpi = chkpt_rd_openpi();
+  orbspi = chkpt_rd_orbspi();
+  chkpt_close();
 
   /*  local();
       exit(1); */

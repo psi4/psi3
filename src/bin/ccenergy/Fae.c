@@ -35,11 +35,13 @@ void Fae_build(void)
   
     dpd_file2_mat_init(&FAE);
     dpd_file2_mat_rd(&FAE);
-  
+
+    /*
     for(h=0; h < moinfo.nirreps; h++) {
       for(a=0; a < FAE.params->rowtot[h]; a++) 
 	FAE.matrix[h][a][a] = 0;
     }
+    */
 
     dpd_file2_mat_wrt(&FAE);
     dpd_file2_mat_close(&FAE);

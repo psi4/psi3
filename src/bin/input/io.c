@@ -3,7 +3,6 @@
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <stdlib.h>
-#include <file30_params.h>
 #include "input.h"
 #include <physconst.h>
 #include "global.h"

@@ -130,7 +130,7 @@ void calc_distance(double **geom, double *A, int num)
          temp2  = (geom[i][1]-geom[j][1])*(geom[i][1]-geom[j][1]); 
          temp3  = (geom[i][2]-geom[j][2])*(geom[i][2]-geom[j][2]); 
          dist = sqrt(temp1 + temp2 + temp3);
-	 if (dist < ZERO_BOND_DISTANCE &&
+	 if (!expert && dist < ZERO_BOND_DISTANCE &&
 	     nuclear_charges[i] != 0.0 &&
 	     nuclear_charges[j] != 0.0 ) {
 	   printf("  Atoms %d and %d are separated by only %lf!\n",i+1,j+1,dist);
@@ -333,7 +333,7 @@ void setup(maxdf)
   int i;
 
   if(maxdf<100) maxdf = 100;
-  df = (int *) malloc(sizeof(int)*maxdf);
+  df = (double *) malloc(sizeof(double)*maxdf);
   ioff = (int *) malloc(sizeof(int)*maxdf);
 
 /* df[i] = (i-1)!! */

@@ -1,7 +1,14 @@
 /* $Log$
- * Revision 1.8  2002/05/15 02:29:14  sherrill
- * Read from checkpoint
+ * Revision 1.9  2002/11/24 22:52:17  crawdad
+ * Merging the gbye-file30 branch into the main trunk.
+ * -TDC
  *
+/* Revision 1.8.2.1  2002/07/29 23:08:30  evaleev
+/* A major set of changes designed to convert all psi modules to use libchkpt.
+/*
+/* Revision 1.8  2002/05/15 02:29:14  sherrill
+/* Read from checkpoint
+/*
 /* Revision 1.7  2002/04/03 02:06:01  janssen
 /* Finish changes to use new include paths for libraries.
 /*
@@ -60,7 +67,11 @@ static char *rcsid = "$Id$";
 #define EXTERN
 #include "includes.h"
 #include "common.h"
-#include <libfile30/file30.h>
+#if USE_LIBCHKPT
+#  include <libchkpt/chkpt.h>
+#else
+#  include <libfile30/file30.h>
+#endif
 
 init_scf()
 {
@@ -72,9 +83,6 @@ init_scf()
    char char_dum[80];
    char **irr_labs;
 
-   i10 = (int *) init_int_array(200);
-   wreadw(itap30,(char *) i10,sizeof(int)*200,(PSI_FPTR) sizeof(int)*100,&next);
-
    ioff[0] = 0;
    for (i = 1; i < MAXIOFF ; i++) {
       ioff[i] = ioff[i-1] + i;
@@ -82,16 +90,17 @@ init_scf()
 
 /* EFV 10/24/98 All requests for file30 should be handled with libfile30
    but for now I'll use wreadw */
-   /*
-   num_ir = file30_rd_nirreps();
-   num_so = file30_rd_sopi();
-   repnuc = file30_rd_enuc();
-   irr_labs = file30_rd_irr_labs();
-   */
+#if USE_LIBCHKPT
    num_ir = chkpt_rd_nirreps();
    num_so = chkpt_rd_sopi();
    repnuc = chkpt_rd_enuc();
    irr_labs = chkpt_rd_irr_labs();
+#else
+   num_ir = file30_rd_nirreps();
+   num_so = file30_rd_sopi();
+   repnuc = file30_rd_enuc();
+   irr_labs = file30_rd_irr_labs();
+#endif
 
 /* now initialize scf_info */
    
@@ -150,9 +159,15 @@ init_scf()
          }
      }
    /* read in number of atoms and nuclear charges and total number of MO*/
+#if USE_LIBCHKPT
+   natom = chkpt_rd_natom();
+   zvals = chkpt_rd_zvals();
+   nbfso = chkpt_rd_nso();
+#else
    natom = file30_rd_natom();
    zvals = file30_rd_zvals();
    nbfso = file30_rd_nso();
+#endif
    
 /* Initialize arrays to hold energy and symmetry arrays */
    ener_tot = (double *) init_array(nbfso);

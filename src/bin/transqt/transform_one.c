@@ -4,7 +4,6 @@
 #include <libipv1/ip_lib.h>
 #include <libqt/qt.h>
 #include <libiwl/iwl.h>
-#include <libfile30/file30.h>
 #include <libchkpt/chkpt.h>
 #include <psifiles.h>
 #include "MOInfo.h"
@@ -367,12 +366,7 @@ void trans_one_backwards(void)
   destruct_evects(moinfo.backtr_nirreps, moinfo.evects);
   moinfo.evects = (double ***) malloc (1 * sizeof(double **));
   moinfo.evects[0] = block_matrix(moinfo.nao, moinfo.nmo);
-  /*
-  file30_init();
-  so2ao = file30_rd_usotao_new();
-  file30_close();
-  */
-  chkpt_init();
+  chkpt_init(PSIO_OPEN_OLD);
   so2ao = chkpt_rd_usotao();
   chkpt_close();
   if (params.print_mos) print_mat(so2ao,moinfo.nso,moinfo.nao,outfile);
@@ -382,7 +376,6 @@ void trans_one_backwards(void)
     fprintf(outfile, "C matrix (including AO to SO)\n");
     print_mat(moinfo.evects[0], moinfo.nao, moinfo.nmo, outfile);
   }
-/* TDC --- converted libfile30 to use block_matrix() */
   free_block(so2ao);
   tmat = block_matrix(src_orbs, src_orbs);
 

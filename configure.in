@@ -840,6 +840,7 @@ AC_OUTPUT(include/psiconfig.h
           src/bin/makepk/Makefile
           src/bin/muder/Makefile
           src/bin/psi/Makefile
+          src/bin/psi3/Makefile
           src/bin/ugeom/Makefile
           src/bin/rgeom/Makefile
 
@@ -868,6 +869,7 @@ AC_OUTPUT(include/psiconfig.h
           src/bin/mvo/Makefile
           src/bin/dboc/Makefile
           src/bin/cusp/Makefile
+          src/bin/mocube/Makefile
 
           src/doc/MakeVars src/doc/MakeRules src/doc/Makefile
           src/doc/manual/Makefile

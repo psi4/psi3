@@ -34,69 +34,80 @@ int psio_write(ULI unit, char *key, char *buffer, ULI size,
   this_entry = psio_tocscan(unit, key);
 
   if(this_entry == NULL) { /* New TOC entry */
-      if(rel_start.page||rel_start.offset) psio_error(unit,PSIO_ERROR_BLKSTART);
+    if(rel_start.page||rel_start.offset) psio_error(unit,PSIO_ERROR_BLKSTART);
 
-      this_entry = (psio_tocentry *) malloc(sizeof(psio_tocentry));
-      strcpy(this_entry->key,key);
-      this_entry->next = NULL;
-      this_entry->last = NULL;
+    this_entry = (psio_tocentry *) malloc(sizeof(psio_tocentry));
+    strcpy(this_entry->key,key);
+    this_entry->next = NULL;
+    this_entry->last = NULL;
 
-      /* Compute the address of the entry */
-      if(!(this_unit->toclen)) { /* First TOC entry */
-	  this_entry->sadd.page = 0;
-	  this_entry->sadd.offset = 3*sizeof(ULI);
+    /* Compute the address of the entry */
+    if(!(this_unit->toclen)) { /* First TOC entry */
+      this_entry->sadd.page = 0;
+      this_entry->sadd.offset = 3*sizeof(ULI);
 
-	  this_unit->toc = this_entry;
-	}
-      else {  /* Use ending address from last TOC entry */
-	  last_entry = psio_toclast(unit);
-	  this_entry->sadd = last_entry->eadd;
-
-	  last_entry->next = this_entry;
-	  this_entry->last = last_entry;
-	}
-
-      /* Data for the write call */
-      address = this_entry->sadd;
-
-      /* Set the end address for this_entry */
-      this_entry->eadd = psio_get_address(this_entry->sadd, size);
-
-      /* Update the unit's TOC stats */
-      this_unit->toclen++;
-      this_unit->tocaddress = this_entry->eadd;
-
-      /* Update the rel_end argument value for the caller */
-      *rel_end = psio_get_address(rel_start,size);
+      this_unit->toc = this_entry;
     }
+    else {  /* Use ending address from last TOC entry */
+      last_entry = psio_toclast(unit);
+      this_entry->sadd = last_entry->eadd;
+
+      last_entry->next = this_entry;
+      this_entry->last = last_entry;
+    }
+
+    /* Data for the write call */
+    address = this_entry->sadd;
+
+    /* Set the end address for this_entry */
+    this_entry->eadd = psio_get_address(this_entry->sadd, size);
+
+    /* Update the unit's TOC stats */
+    this_unit->toclen++;
+    this_unit->tocaddress = this_entry->eadd;
+
+    /* Update the rel_end argument value for the caller */
+    *rel_end = psio_get_address(rel_start,size);
+  }
   else { /* Old TOC entry */
 
-      /* Compute the global starting page and offset for the block */
-      address = psio_get_global_address(this_entry->sadd, rel_start);
+    /* Compute the global starting page and offset for the block */
+    address = psio_get_global_address(this_entry->sadd, rel_start);
 
-      /* Make sure this block doesn't start past the end of the entry */
-      if(address.page > this_entry->eadd.page)
-	  psio_error(unit,PSIO_ERROR_BLKSTART);
-      else if((address.page == this_entry->eadd.page) &&
-	      (address.offset > this_entry->eadd.offset))
-	  psio_error(unit,PSIO_ERROR_BLKSTART);
+    /* Make sure this block doesn't start past the end of the entry */
+    if(address.page > this_entry->eadd.page)
+      psio_error(unit,PSIO_ERROR_BLKSTART);
+    else if((address.page == this_entry->eadd.page) &&
+	    (address.offset > this_entry->eadd.offset))
+      psio_error(unit,PSIO_ERROR_BLKSTART);
 
-      /* Compute the new global ending address for the entry, if necessary */
-      end_address = psio_get_address(address, size);
-      if(end_address.page > this_entry->eadd.page) {
-	  this_entry->eadd = end_address;
-	  this_unit->tocaddress = end_address;
-	}
-      else if((end_address.page == this_entry->eadd.page) &&
-	      (end_address.offset > this_entry->eadd.offset))
-	  {
-	    this_entry->eadd = end_address;
-	    this_unit->tocaddress = end_address;
-	  }
-
-      /* Update the eadd argument value for the caller */
-      *rel_end = psio_get_address(rel_start, size);
+    /* Compute the new global ending address for the entry, if necessary */
+    end_address = psio_get_address(address, size);
+    if(end_address.page > this_entry->eadd.page) {
+      if(this_entry->next != NULL) {
+	fprintf(stderr, "PSIO_ERROR: Attempt to write into next entry: %d, %s\n", 
+		unit, key);
+	psio_error(unit, PSIO_ERROR_BLKEND);
+      }
+      this_entry->eadd = end_address;
+      this_unit->tocaddress = end_address;
+	  
     }
+    else if((end_address.page == this_entry->eadd.page) &&
+	    (end_address.offset > this_entry->eadd.offset))
+      {
+	if(this_entry->next != NULL) {
+	  fprintf(stderr, "PSIO_ERROR: Attempt to write into next entry: %d, %s\n", 
+		  unit, key);
+	  psio_error(unit, PSIO_ERROR_BLKEND);
+	}
+	this_entry->eadd = end_address;
+	this_unit->tocaddress = end_address;
+      }
+
+    /* Update the eadd argument value for the caller */
+    *rel_end = psio_get_address(rel_start, size);
+  }
 
   /* Now write the actual data to the unit */
   psio_rw(unit, buffer, address, size, 1);

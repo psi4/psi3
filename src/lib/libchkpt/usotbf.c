@@ -24,15 +24,16 @@ double **chkpt_rd_usotbf(void)
   double **usotbf;
   int num_so, i;
   psio_address ptr;
+  char *key;
 
   num_so = chkpt_rd_nso();
 
   usotbf = block_matrix(num_so,num_so);
-
+  key = chkpt_build_keyword("SO->BF transmat");
   ptr = PSIO_ZERO;
   for(i=0;i<num_so;i++)
-    psio_read(PSIF_CHKPT, "::SO->BF transmat", (char *) usotbf[i], 
-	      (int) num_so*sizeof(double), ptr, &ptr);
+    psio_read(PSIF_CHKPT, key, (char *) usotbf[i], (int) num_so*sizeof(double), ptr, &ptr);
+  free(key);
 
   return usotbf;
 }
@@ -53,11 +54,13 @@ void chkpt_wt_usotbf(double **usotbf)
 {
   int num_so, i;
   psio_address ptr;
+  char *key;
 
   num_so = chkpt_rd_nso();
 
+  key = chkpt_build_keyword("SO->BF transmat");
   ptr = PSIO_ZERO;
   for(i=0;i<num_so;i++)
-    psio_write(PSIF_CHKPT, "::SO->BF transmat", (char *) usotbf[i], 
-	       (int) num_so*sizeof(double), ptr, &ptr);
+    psio_write(PSIF_CHKPT, key, (char *) usotbf[i], (int) num_so*sizeof(double), ptr, &ptr);
+  free(key);
 }

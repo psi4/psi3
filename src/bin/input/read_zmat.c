@@ -66,7 +66,7 @@ void read_zmat()
   full_geom = block_matrix(num_allatoms,3);
   geometry = (double **) malloc(num_atoms*sizeof(double *));
   atom_dummy = (int *) malloc(sizeof(int)*num_allatoms);
-  /* see file30.h for info about z_entry structure */
+  /* see chkpt.h for info about z_entry structure */
   z_geom = (struct z_entry *) malloc(sizeof(struct z_entry)*num_allatoms); 
   element = (char **) malloc(sizeof(char *)*num_atoms);
   full_element = (char **) malloc(sizeof(char *)*num_allatoms);

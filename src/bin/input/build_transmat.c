@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <libciomr/libciomr.h>
 #include <math.h>
-#include <file30_params.h>
 #include <symmetry.h>
 #include "input.h"
 #include "global.h"

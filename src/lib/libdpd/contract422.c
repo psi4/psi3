@@ -23,7 +23,7 @@
 int dpd_contract422(dpdbuf4 *X, dpdfile2 *Y, dpdfile2 *Z, int trans_Y,
 		    int trans_Z, double alpha, double beta)
 {
-  int nirreps, GX, GY, GZ, hx, hy, hz, hxbuf;
+  int nirreps, GX, GY, GZ, hxbuf;
   int row,p,q,r,s, psym, qsym, Gr, Gs, P, Q, R, S, col;
   double **TMP;
   double value;
@@ -55,7 +55,7 @@ int dpd_contract422(dpdbuf4 *X, dpdfile2 *Y, dpdfile2 *Z, int trans_Y,
   }
 #endif
 
-  // read in block of X whose row irrep is same as target Gpq=GZ
+  /* read in block of X whose row irrep is same as target Gpq=GZ */
   hxbuf = GZ;
   dpd_buf4_mat_irrep_init(X, hxbuf);
   dpd_buf4_mat_irrep_rd(X, hxbuf);

@@ -6,10 +6,11 @@
 void hbar_norms() {
   double tval;
   dpdfile2 FAE, Fae, FMI, Fmi, FME, Fme;
-  dpdbuf4 WMBIJ, Wmbij, WMbIj, WmBiJ;
+  dpdbuf4 WMBIJ, Wmbij, WMbIj, WmBiJ, W;
 
   fprintf(outfile,"\n");
 
+  if ((params.eom_ref == 0) || (params.eom_ref == 1)) {
   dpd_file2_init(&FAE, CC_OEI, H_IRR, 1, 1, "FAE");
   dpd_file2_init(&Fae, CC_OEI, H_IRR, 1, 1, "Fae");
   tval = dpd_file2_dot_self(&FAE);
@@ -54,7 +55,28 @@ void hbar_norms() {
   tval = dpd_buf4_dot_self(&WmBiJ);
   dpd_buf4_close(&WmBiJ);
   fprintf(outfile,"WmBiJ dot WmBiJ total %15.10lf\n", tval);
+  }
+  
+  else if (params.eom_ref == 2) {
+    dpd_buf4_init(&W, CC_HBAR, H_IRR, 2, 21, 2, 21, 0, "WMNIE");
+    tval = 2.0 * dpd_buf4_dot_self(&W);
+    dpd_buf4_close(&W);
+    fprintf(outfile,"WMNIE dot WMNIE total %15.10lf\n", tval);
 
+    dpd_buf4_init(&W, CC_HBAR, H_IRR, 12, 31, 12, 31, 0, "Wmnie");
+    tval += 2.0 * dpd_buf4_dot_self(&W);
+    dpd_buf4_close(&W);
+    fprintf(outfile,"Wmnie dot Wmnie total %15.10lf\n", tval);
 
+    dpd_buf4_init(&W, CC_HBAR, H_IRR, 22, 25, 22, 25, 0, "WMnIe");
+    tval += dpd_buf4_dot_self(&W);
+    dpd_buf4_close(&W);
+    fprintf(outfile,"WMnIe dot WMnIe total %15.10lf\n", tval);
+
+    dpd_buf4_init(&W, CC_HBAR, H_IRR, 23, 26, 23, 26, 0, "WmNiE");
+    tval += dpd_buf4_dot_self(&W);
+    dpd_buf4_close(&W);
+    fprintf(outfile,"WmNiE dot WmNiE total %15.10lf\n", tval);
+  }
   return;
 }

@@ -28,17 +28,19 @@ char **chkpt_rd_irr_labs(void)
   int i,nirreps;
   char **irr_labs;
   psio_address ptr;
+  char *key;
 
   nirreps = chkpt_rd_nirreps();
 
   ptr = PSIO_ZERO;
   irr_labs = (char **)malloc(sizeof(char *)*nirreps);
+  key = chkpt_build_keyword("Irrep labels");
   for(i=0;i<nirreps;i++) {
     irr_labs[i] = (char *) malloc(4*sizeof(char));
-    psio_read(PSIF_CHKPT, "::Irrep labels", (char *) irr_labs[i], 
-	      4*sizeof(char), ptr, &ptr);
+    psio_read(PSIF_CHKPT, key, (char *) irr_labs[i],  4*sizeof(char), ptr, &ptr);
     irr_labs[i][3] = '\0';
   }
+  free(key);
 
   return irr_labs;
 }
@@ -60,12 +62,14 @@ void chkpt_wt_irr_labs(char **irr_labs)
 {
   int i,nirreps;
   psio_address ptr;
+  char *key;
 
   nirreps = chkpt_rd_nirreps();
 
+  key = chkpt_build_keyword("Irrep labels");
   ptr = PSIO_ZERO;
   for(i=0;i<nirreps;i++)
-    psio_write(PSIF_CHKPT, "::Irrep labels", (char *) irr_labs[i], 
-               4*sizeof(char), ptr, &ptr);
+    psio_write(PSIF_CHKPT, key, (char *) irr_labs[i], 4*sizeof(char), ptr, &ptr);
+  free(key);
 }
 

@@ -413,7 +413,7 @@ struct params {
    int opdm_ke;            /* get kinetic energy dotted with opdm? for TDC */
    int opdm_ave;           /* average the opdm over several states */
    int opdm_orbsfile;      /* file number to write various orbitals */
-   int opdm_orbs_root;     /* write ci natural orbs of this root to file30 */
+   int opdm_orbs_root;     /* write ci natural orbs of this root to checkpt */
    int **opdm_idxmat;      /* matrix of index values for the various
                               roots and irreps of opdm in opdmfile */ 
    int **orbs_idxmat;      /* matrix of index values for various
@@ -423,7 +423,7 @@ struct params {
    int tpdm_print;         /* print the tpdm? */
    int tpdm_file;          /* file number for tpdm */
    int root;               /* which root to optimize (write opdm/tpdm for) */
-   int zero_blocks;        /* 1(0) if use/ignore zero_blocks array when icore=0,2 */
+   int zero_blocks;        /* 1(0) if use/ignore zero_blocks array if icore=0,2 */
    double perturbation_parameter; /* z in H = H0 + z * H1 */
    int z_scale_H;          /* 1(0) if pert. scaling used */
    int have_special_conv;  /* have a special convergence value from the

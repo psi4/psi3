@@ -1,7 +1,15 @@
 /* $Log$
- * Revision 1.2  2000/10/13 19:51:22  evaleev
- * Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
+ * Revision 1.3  2002/11/24 22:52:17  crawdad
+ * Merging the gbye-file30 branch into the main trunk.
+ * -TDC
  *
+/* Revision 1.2.6.1  2002/11/23 21:54:45  crawdad
+/* Removal of mxcoef stuff for chkpt runs.
+/* -TDC
+/*
+/* Revision 1.2  2000/10/13 19:51:22  evaleev
+/* Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
+/*
 /* Revision 1.1.1.1  2000/02/04 22:52:33  evaleev
 /* Started PSI 3 repository
 /*
@@ -43,7 +51,9 @@ void shalf()
      eig_vals = (double *) init_array(nsfmax);
      eig_vecs = (double **) init_matrix(nsfmax,nsfmax);
 
+#if !USE_LIBCHKPT
      mxcoef = 0;
+#endif
      mxcoef2 = 0;
      nmo = 0;
      
@@ -74,7 +84,9 @@ void shalf()
 	       num_mo++;
 	     }
 	   s->num_mo = num_mo;
+#if !USE_LIBCHKPT
 	   mxcoef += num_mo * nn;
+#endif
 	   mxcoef2 += ioff[nn];
 	   nmo += num_mo;
 	   if (num_mo < nn)

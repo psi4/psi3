@@ -5,7 +5,7 @@ include ../MakeVars
 
 LDLIBS += $(BLAS)
 
-PSILIBS = -lPSI_malloc -lPSI_file30 -lPSI_ciomr -lPSI_qt -lPSI_iwl -lPSI_psio -lPSI_ipv1
+PSILIBS = -lPSI_file30 -lPSI_chkpt -lPSI_qt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
 CSRC = gprgid.c mp2r12.c mp2r12_energy.c
 

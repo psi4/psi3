@@ -49,7 +49,7 @@ void dgeev_eom(int L, double **G, double *lambda, double **alpha) {
     fprintf(outfile,"\nSum of complex part of HBar eigenvalues %20.15f, %10.2e\n",
       tval, eom_params.complex_tol);
     fflush(outfile);
-    exit(1);
+    /*    exit(1); */
   }
   free(evals_i);
   free_block(left_evects);

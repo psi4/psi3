@@ -2,6 +2,8 @@
 
 psi: (
   check = false
+  jobtype = opt
+  nopt = 20 
 )
 
 default: (
@@ -13,9 +15,6 @@ default: (
   reference = rhf
   multp = 1
   dertype = none
-  opt = true
-  numerical_dertype=first
-  nopt = 20 
   docc = (3 0 1 1)
 
   files: (

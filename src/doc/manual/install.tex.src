@@ -1,0 +1,145 @@
+%
+% The PSI Installation Manual
+%
+
+\documentclass[12pt]{article}
+\usepackage{html}
+\setlength{\textheight}{9in}
+\setlength{\textwidth}{6.5in}
+\setlength{\hoffset}{0in}
+\setlength{\voffset}{0in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\topmargin}{0in}
+\setlength{\oddsidemargin}{-0.05in}
+\setlength{\evensidemargin}{-0.05in}
+\setlength{\marginparsep}{0in}
+\setlength{\marginparwidth}{0in}
+\setlength{\parsep}{0.8ex}
+\setlength{\parskip}{1ex plus \fill}
+\baselineskip 18pt
+\renewcommand{\topfraction}{.8}
+\renewcommand{\bottomfraction}{.2}
+
+\begin{document}
+\include{macros}
+
+\begin{center}
+\ \\
+\vspace{2.0in}
+{\bf {\Large Installation Manual for the \PSIthree\ Program Package}} \\
+\vspace{0.5in}
+T.\ Daniel Crawford,$^a$ C.\ David Sherrill,$^b$ and Edward F.\ Valeev$^b$ \\
+\ \\
+{\em $^a$Department of Chemistry, Virginia Tech, Blacksburg, Virginia 24061} \\
+\vspace{0.1in}
+{\em $^b$Center for Computational Molecular Science and Technology, \mbox{Georgia 
+Institute of Technology,} Atlanta, Georgia 30332-0400} 
+\ \\
+\vspace{0.3in}
+Version of: \today
+\end{center}
+
+\thispagestyle{empty}
+
+\newpage
+\subsection{Compilation Prerequisites}
+
+The following external software packages are needed to complile \PSIthree:
+\begin{itemize}
+\item A well-optimized basic linear algebra subroutine (BLAS) library
+  for vital matrix-matrix and matrix-vector multiplication routines.
+  We recommend the excellent ATLAS package developed at the University
+  of Tennessee.  {\tt http://www.sourceforge.net/atlas}
+\item The linear algebra package (LAPACK), also available from
+  netlib.org.  \PSIthree\ makes use of LAPACK's eigenvalue/eigenvector
+  and matrix inversion routines.  {\tt http://www.netlib.org/netlib}
+\item The GNU make, lex, and yacc programs. {\tt http://www.gnu.org}
+\end{itemize}
+
+\section{Basic Configuration and Installation}
+
+The following series of steps will configure and build the \PSIthree\
+package and install the executables in.
+
+\begin{enumerate}
+\item {\tt cd \$PSI3} (your top-level \PSIthree source directory)
+\item {\tt mkdir objdir}
+\item {\tt cd objdir}
+nitem {\tt ../configure}
+\item {\tt make}
+\item {\tt make install}
+\end{enumerate}
+
+\noindent
+You may need to make use of one or more of the following options to
+the {\tt configure} script:
+\begin{itemize}
+\item {\tt --prefix=directory} --- Use this option if you wish to
+  install the \PSIthree\ package somewhere other than the default
+  directory, {\tt /usr/local/psi}.
+\item {\tt --with-cc=compiler} --- Use this option to specify a C
+  compiler.  The default search order for compilers is: {\tt gcc},
+  {\tt cc}, {\tt ccc}.  (NB: On AIX systems, the search order is {\tt
+  cc\_r}, {\tt cc}, {\tt gcc}, {\tt xlc}.)
+\item {\tt --with-cxx=compiler} --- Use this option to specify a C++
+  compiler.  The default search order for compilers is: {\tt g++},
+  {\tt c++}, {\tt cxx}.  (NB: On AIX systems, the search order is {\tt
+  xlC\_r}, {\tt xlC}, {\tt c++}, {\tt g++}.)
+\item {\tt --with-fc=compiler} --- Use this option to specify a
+  Fortran-77 compiler.  The default search order for compilers is:
+  {\tt g77}, {\tt f77}, {\tt fc}, {\tt f2c}.  (NB: On AIX systems, the
+  search order is {\tt xlf\_r}, {\tt xlf}, {\tt g77}, {\tt f77}, {\tt
+  fc}, {\tt f2c}.)
+\item {\tt --with-blas=library} --- Use this option to specify a BLAS
+  library.  If your BLAS library has multiple components, enclose the
+  file list with single right-quotes, e.g., {\tt
+  --with-blas='-lf77blas -latlas'}.
+\item {\tt --with-lapack=library} --- Use this option to specify a
+  LAPACK library.  If your LAPACK library has multiple components,
+  enclose the file list with single right-quotes, e.g., {\tt
+  --with-lapack='-llapack -lcblas -latlas'}.
+\item {\tt --with-max-am-eri=integer} --- Specifies the maximum
+  angular momentum level for the primitive Gaussian basis functions
+  when computing electron repulsion integrals.  This is set to
+  $g$-type functions (AM=5) by default.
+\item {\tt --with-max-am-deriv1=integer} --- Specifies the maximum
+  angular momentum level for first derivatives of the primitive
+  Gaussian basis functions.  This is set to $f$-type functions (AM=4)
+  by default.
+\item {\tt --with-max-am-deriv2=integer} --- Specifies the maximum
+  angular momentum level for second derivatives of the primitive
+  Gaussian basis functions.  This is set to $d$-type functions (AM=3)
+  by default.
+\item {\tt --with-max-am-r12=integer} --- Specifies the maximum
+  angular momentum level for primitive Gaussian basis functions used
+  in $r_{12}$ explicitly correlated methods.  This is set to $f$-type
+  functions (AM=4) by default.
+\item {\tt --with-debug=option} --- This option turns on debugging
+  options.  If the argument is omitted, ``{\tt -g}'' will be used by default.
+\item {\tt --with-opt=options} --- This option may be used to select
+  special optimization flags, overriding defaults.
+\item {\tt --with-parallel=sgi} --- This option turns on automatic
+  parallelization available with some SGI systems.  Since none of the
+  primary developers of \PSIthree\ actually {\em uses} SGI systems at
+  present, it seems likely that this option will not work.
+\end{itemize}
+
+\section{Detailed Installation Guide}
+
+This section provides detailed instructions for compiling and
+installing the \PSIthree\ package.  
+
+\subsection{Step 1: Configuration}
+
+It is best to keep the source code separate from the compilation area,
+so you must first choose a subdirectory for compilation of the codes.
+A simple option is {\tt psi3/objdir}, particularly if one requires
+only a single copy of the object codes.  If multiple compilations are
+required (e.g., if you need executables for several architectures),
+choose meaningful subdirectory names.  Note, however, that the
+executable programs will installed in 
+
+\end{document}
+
+

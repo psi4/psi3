@@ -68,6 +68,7 @@ EXTERN char *opdm_format;	/* Format of onepdm file (lower triangle or square) */
 EXTERN int asymm_opdm;		/* Flag for symmetrization of opdm read in from a file */
 EXTERN int wrtnos;		/* Flag for writing NOs to file30 */
 EXTERN int print_lvl;		/* Overall printing level */
+EXTERN int print_nos;           /* Print natural orbitals? */
 EXTERN int spin_prop;		/* Write dipole moment to ASCII file ? */
 EXTERN int corr;		/* Correlation correction to the first-order 
 				   properties flag */

@@ -24,7 +24,7 @@ extern FILE *outfile;
 int dpd_contract442(dpdbuf4 *X, dpdbuf4 *Y, dpdfile2 *Z, int target_X,
     int target_Y, double alpha, double beta)
 {
-  int h,hxbuf,hybuf,nirreps,Gtar,GX,GY,GZ,hx,hy,hz,hlinks;
+  int h,hxbuf,hybuf,nirreps,Gtar,GX,GY,GZ,Hx,Hy,Hz,hlinks;
   int rking=0;
   dpdtrans4 Xt, Yt;
   double ***Xmat, ***Ymat, ***Zmat;
@@ -52,7 +52,7 @@ int dpd_contract442(dpdbuf4 *X, dpdbuf4 *Y, dpdfile2 *Z, int target_X,
   zcol = Z->params->coltot;
 #endif
 
-  // loop over row buffer irreps of X
+  /* loop over row buffer irreps of X */
   for(hxbuf=0; hxbuf < nirreps; hxbuf++) {
     if(target_X == 0) {
       dpd_buf4_mat_irrep_init(X, hxbuf);
@@ -181,48 +181,48 @@ int dpd_contract442(dpdbuf4 *X, dpdbuf4 *Y, dpdfile2 *Z, int target_X,
     }
 
     if(rking)
-      for(hx=0; hx < nirreps; hx++) {
+      for(Hx=0; Hx < nirreps; Hx++) {
 #ifdef DPD_DEBUG
-        if((xrow[hx] != zrow[hx]) || (ycol[hx] != zcol[hx]) ||
-            (xcol[hx] != yrow[hx])) {
+        if((xrow[Hx] != zrow[Hx]) || (ycol[Hx] != zcol[Hx]) ||
+            (xcol[Hx] != yrow[Hx])) {
           fprintf(stderr, "** Alignment error in contract442 **\n");
-          fprintf(stderr, "** Irrep %d; Subirrep %d **\n", h,hx);
+          fprintf(stderr, "** Irrep %d; Subirrep %d **\n", h,Hx);
           dpd_error("dpd_contract442", stderr);
         }
 #endif
-        if      ((!Xtrans) && (!Ytrans)) { hy = hx^GX;    hz = hx;    }
-        else if ((!Xtrans) && (Ytrans) ) { hy = hx^GX^GY; hz = hx;    }
-        else if ( (Xtrans) && (!Ytrans)) { hy = hx;       hz = hx^GX; }
-        else /* ( (Xtrans) && (Ytrans))*/{ hy = hx^GY;    hz = hx^GX; }
+        if      ((!Xtrans) && (!Ytrans)) { Hy = Hx^GX;    Hz = Hx;    }
+        else if ((!Xtrans) && (Ytrans) ) { Hy = Hx^GX^GY; Hz = Hx;    }
+        else if ( (Xtrans) && (!Ytrans)) { Hy = Hx;       Hz = Hx^GX; }
+        else /* ( (Xtrans) && (Ytrans))*/{ Hy = Hx^GY;    Hz = Hx^GX; }
 
-       // fprintf(stdout,"rows %d links %d cols %d\n",
-       // Z->params->rowtot[hz], numlinks[hx], Z->params->coltot[hz]);
+	/* fprintf(stdout,"rows %d links %d cols %d\n",
+	   Z->params->rowtot[Hz], numlinks[Hx], Z->params->coltot[Hz]); */
 
-        newmm_rking(Xmat[hx], Xtrans, Ymat[hy], Ytrans,
-            Z->matrix[hz], Z->params->rowtot[hz],
-            numlinks[hx], Z->params->coltot[hz^GZ],
+        newmm_rking(Xmat[Hx], Xtrans, Ymat[Hy], Ytrans,
+            Z->matrix[Hz], Z->params->rowtot[Hz],
+            numlinks[Hx], Z->params->coltot[Hz^GZ],
             alpha, 1.0);
       }
     else
-      for(hx=0; hx < nirreps; hx++) {
+      for(Hx=0; Hx < nirreps; Hx++) {
 #ifdef DPD_DEBUG
-        if((xrow[hx] != zrow[hx]) || (ycol[hx] != zcol[hx]) ||
-            (xcol[hx] != yrow[hx])) {
+        if((xrow[Hx] != zrow[Hx]) || (ycol[Hx] != zcol[Hx]) ||
+            (xcol[Hx] != yrow[Hx])) {
           fprintf(stderr, "** Alignment error in contract442 **\n");
-          fprintf(stderr, "** Irrep %d; Subirrep %d **\n", h,hx);
+          fprintf(stderr, "** Irrep %d; Subirrep %d **\n", h,Hx);
           dpd_error("dpd_contract442", stderr);
         }
 #endif	      
-        if      ((!Xtrans) && (!Ytrans)) { hy = hx^GX;    hz = hx;    }
-        else if ((!Xtrans) && (Ytrans) ) { hy = hx^GX^GY; hz = hx;    }
-        else if ( (Xtrans) && (!Ytrans)) { hy = hx;       hz = hx^GX; }
-        else /* ( (Xtrans) && (Ytrans))*/{ hy = hx^GY;    hz = hx^GX; }
-       // fprintf(stdout,"rows %d links %d cols %d\n",
-       // Z->params->rowtot[hz], numlinks[hx], Z->params->coltot[hz]);
+        if      ((!Xtrans) && (!Ytrans)) { Hy = Hx^GX;    Hz = Hx;    }
+        else if ((!Xtrans) && (Ytrans) ) { Hy = Hx^GX^GY; Hz = Hx;    }
+        else if ( (Xtrans) && (!Ytrans)) { Hy = Hx;       Hz = Hx^GX; }
+        else /* ( (Xtrans) && (Ytrans))*/{ Hy = Hx^GY;    Hz = Hx^GX; }
+	/* fprintf(stdout,"rows %d links %d cols %d\n",
+	   Z->params->rowtot[Hz], numlinks[Hx], Z->params->coltot[Hz]); */
 
-        newmm(Xmat[hx], Xtrans, Ymat[hy], Ytrans,
-            Z->matrix[hz], Z->params->rowtot[hz],
-            numlinks[hx], Z->params->coltot[hz^GZ],
+        newmm(Xmat[Hx], Xtrans, Ymat[Hy], Ytrans,
+            Z->matrix[Hz], Z->params->rowtot[Hz],
+            numlinks[Hx], Z->params->coltot[Hz^GZ],
             alpha, 1.0);
       }
 

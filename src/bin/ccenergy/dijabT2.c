@@ -4,21 +4,39 @@
 #define EXTERN
 #include "globals.h"
 
-void local_filter_T2(dpdbuf4 *T2);
+void local_filter_T2(dpdbuf4 *T2, int denom);
+void local_filter_T2_nodenom(dpdbuf4 *T2);
+void local_filter_V2_nodenom(dpdbuf4 *T2);
 
 void dijabT2(void)
 {
-  dpdbuf4 newtIJAB, newtijab, newtIjAb;
+  dpdbuf4 newtIJAB, newtijab, newtIjAb, tIjAb;
   dpdbuf4 dIJAB, dijab, dIjAb;
 
   if(params.ref == 0) { /*** RHF ***/
     dpd_buf4_init(&newtIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb");
-    if(params.local) local_filter_T2(&newtIjAb);
+    dpd_buf4_copy(&newtIjAb, CC_TAMPS, "New tIjAb Increment");
+    dpd_buf4_close(&newtIjAb);
+
+    dpd_buf4_init(&newtIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb Increment");
+    if(params.local) {
+      local_filter_T2(&newtIjAb, 1);
+    }
     else {
       dpd_buf4_init(&dIjAb, CC_DENOM, 0, 0, 5, 0, 5, 0, "dIjAb");
       dpd_buf4_dirprd(&dIjAb, &newtIjAb);
       dpd_buf4_close(&dIjAb);
     }
+    dpd_buf4_close(&newtIjAb);
+
+    /* Add the new increment to the old tIjAb to get the new tIjAb */
+    dpd_buf4_init(&tIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
+    dpd_buf4_copy(&tIjAb, CC_TAMPS, "New tIjAb");
+    dpd_buf4_close(&tIjAb);
+    dpd_buf4_init(&newtIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb");
+    dpd_buf4_init(&tIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb Increment");
+    dpd_buf4_axpy(&tIjAb, &newtIjAb, 1);
+    dpd_buf4_close(&tIjAb);
     dpd_buf4_close(&newtIjAb);
   }
   else if(params.ref == 1) { /*** ROHF ***/

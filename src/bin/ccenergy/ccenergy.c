@@ -49,6 +49,8 @@ struct dpd_file4_cache_entry *priority_list(void);
 void spinad_amps(void);
 void status(char *, FILE *);
 void lmp2(void);
+void local_filter_T1_nodenom(dpdfile2 *);
+void local_filter_T2_nodenom(dpdbuf4 *);
 
 /* local correlation functions */
 void local_init(void);
@@ -62,7 +64,8 @@ int main(int argc, char *argv[])
   FILE *efile;
   int **cachelist, *cachefiles;
   struct dpd_file4_cache_entry *priority;
-  dpdfile2 T1;
+  dpdfile2 t1;
+  dpdbuf4 t2;
 
   moinfo.iter=0;
   
@@ -113,7 +116,7 @@ int main(int argc, char *argv[])
     local_init();
     if(!strcmp(local.weakp,"MP2")) lmp2();
   }
- 
+
   init_amps();
   tau_build();
   taut_build();
@@ -158,6 +161,7 @@ int main(int argc, char *argv[])
 
     if(converged()) {
       done = 1;
+
       tsave();
       tau_build(); taut_build();
       moinfo.ecc = energy();
@@ -167,6 +171,7 @@ int main(int argc, char *argv[])
       update();
       fprintf(outfile, "\n\tIterations converged.\n");
       fflush(outfile);
+
       break;
     }
     if(params.diis) diis(moinfo.iter);
@@ -197,19 +202,19 @@ int main(int argc, char *argv[])
   fprintf(outfile, "\tTotal CCSD energy          = %20.15f\n", 
           moinfo.eref + moinfo.ecc);
   if(params.local && !strcmp(local.weakp,"MP2")) 
-  fprintf(outfile, "\tTotal LCCSD energy         = %20.15f\n", 
+  fprintf(outfile, "\tTotal LCCSD energy (+LMP2) = %20.15f\n", 
           moinfo.eref + moinfo.ecc + local.weak_pair_energy);
   fprintf(outfile, "\n");
 
   /* Write total energy to the checkpoint file */
-  chkpt_init();
+  chkpt_init(PSIO_OPEN_OLD);
   chkpt_wt_etot(moinfo.ecc+moinfo.eref); 
   chkpt_close();
 
   /* Write pertinent data to energy.dat for Dr. Yamaguchi */
   if(!strcmp(params.wfn,"CCSD")) {
 
-    chkpt_init();
+    chkpt_init(PSIO_OPEN_OLD);
     natom = chkpt_rd_natom();
     geom = chkpt_rd_geom();
     zvals = chkpt_rd_zvals();

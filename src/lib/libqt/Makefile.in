@@ -14,9 +14,8 @@ dirprd_block.c     mat_in.c     newmm_rking.c  reorder_qt.c    schmidt_add.c \
 dot_block.c        mat_print.c  normalize.c    \
 eri.c              newmm.c      pople.c        solve_pep.c \
 fill_sym_matrix.c  newmm2.c     probabil.c     rootfind.c      timer.c \
-filter.c           lapack_intfc.c              slaterd.c
+filter.c           lapack_intfc.c  sort.c      slaterd.c   david.c
 
-#FSRC = dgemmc.F dgeevF.F
 FSRC = dgemmc.F
 
 DEPENDINCLUDE = qt.h
@@ -36,4 +35,3 @@ install_inc:: qt.h
 install_man:: libqt.txt
 	$(MKDIRS) $(txtdir)
 	$(INSTALL_INCLUDE) $^ $(txtdir)
-

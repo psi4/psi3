@@ -20,9 +20,12 @@
 double chkpt_rd_enuc(void)
 {
   double enuc;
+  char *key;
 
-  psio_read_entry(PSIF_CHKPT, "::Nuclear rep. energy", (char *) &enuc, 
-                  sizeof(double));
+  key = chkpt_build_keyword("Nuclear rep. energy");
+
+  psio_read_entry(PSIF_CHKPT, key, (char *) &enuc, sizeof(double));
+  free(key);
   return enuc;
 }
 
@@ -37,6 +40,9 @@ double chkpt_rd_enuc(void)
 
 void chkpt_wt_enuc(double enuc)
 {
-  psio_write_entry(PSIF_CHKPT, "::Nuclear rep. energy", (char *) &enuc, 
-                   sizeof(double));
+  char *key;
+  key = chkpt_build_keyword("Nuclear rep. energy");
+
+  psio_write_entry(PSIF_CHKPT, key, (char *) &enuc, sizeof(double));
+  free(key);
 }

@@ -32,10 +32,13 @@ void Fmi_build(void)
     dpd_file2_mat_init(&FMI);
     dpd_file2_mat_rd(&FMI);
 
+    /*
     for(h=0; h < moinfo.nirreps; h++) {
       for(m=0; m < FMI.params->rowtot[h]; m++) 
 	FMI.matrix[h][m][m] = 0;
     }
+    */
+
     dpd_file2_mat_wrt(&FMI);
     dpd_file2_mat_close(&FMI);
     dpd_file2_close(&FMI);

@@ -31,26 +31,8 @@ void get_mo_info(void)
 
    CalcInfo.maxKlist = 0.0; 
    
-   /*
-   file30_init();
-   CalcInfo.nirreps = file30_rd_nirreps();
-   CalcInfo.nso = file30_rd_nmo();
-   CalcInfo.nmo = file30_rd_nmo();
-   CalcInfo.iopen = file30_rd_iopen();
-   CalcInfo.labels = file30_rd_irr_labs();
-   CalcInfo.orbs_per_irr = file30_rd_orbspi();
-   CalcInfo.so_per_irr = file30_rd_sopi();
-   CalcInfo.closed_per_irr = file30_rd_clsdpi();
-   CalcInfo.open_per_irr = file30_rd_openpi();
-   CalcInfo.enuc = file30_rd_enuc();
-   CalcInfo.escf = file30_rd_escf();
-   CalcInfo.efzc = file30_rd_efzc();
- 
-   eig_unsrt = file30_rd_evals();
-   file30_close();
-   */
-
-   chkpt_init();
+#if USE_LIBCHKPT
+   chkpt_init(PSIO_OPEN_OLD);
    CalcInfo.nirreps = chkpt_rd_nirreps();
    CalcInfo.nso = chkpt_rd_nmo();
    CalcInfo.nmo = chkpt_rd_nmo();
@@ -65,6 +47,23 @@ void get_mo_info(void)
    CalcInfo.efzc = chkpt_rd_efzc();
    eig_unsrt = chkpt_rd_evals(); 
    chkpt_close(); 
+#else
+   file30_init();
+   CalcInfo.nirreps = file30_rd_nirreps();
+   CalcInfo.nso = file30_rd_nmo();
+   CalcInfo.nmo = file30_rd_nmo();
+   CalcInfo.iopen = file30_rd_iopen();
+   CalcInfo.labels = file30_rd_irr_labs();
+   CalcInfo.orbs_per_irr = file30_rd_orbspi();
+   CalcInfo.so_per_irr = file30_rd_sopi();
+   CalcInfo.closed_per_irr = file30_rd_clsdpi();
+   CalcInfo.open_per_irr = file30_rd_openpi();
+   CalcInfo.enuc = file30_rd_enuc();
+   CalcInfo.escf = file30_rd_escf();
+   CalcInfo.efzc = file30_rd_efzc();
+   eig_unsrt = file30_rd_evals();
+   file30_close();
+#endif
 
    if (CalcInfo.iopen && Parameters.opentype == PARM_OPENTYPE_NONE) {
       fprintf(outfile, "Warning: iopen=1,opentype=none. Making iopen=0\n");

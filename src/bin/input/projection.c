@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <math.h>
 #include <libciomr/libciomr.h>
-#include <libfile30/file30.h>
 #include <psifiles.h>
 
 #include "input.h"
@@ -36,6 +35,7 @@ static double **H11;          /* Core Hamiltonian matrix */
  -------------------------------------------------------*/
 void oldcalc_projection()
 {
+  int i, so, mo;
   double **S12;                 /* Overlap matrix 12 - between the bases */
   double **X1;                  /* transforms from the new basis to the orthogonal new basis
 				   (canonical orthogonalization, see Szabo and Ostlund) */
@@ -59,12 +59,38 @@ void oldcalc_projection()
   S12 = overlap_new_old();
 
   P12 = projector(S12,X1);
-  
-  if (Oldcalc.spinrestr_ref)
-      scf_evect_so = project(P12,Oldcalc.scf_evect_so,CV1);
+
+  if (dont_project_mos) {
+    /* Check that the new calculation can use the old eigenvector */
+    for(i=0;i<nirreps;i++)
+      if (num_so_per_irrep[i] != Oldcalc.sopi[i] ||
+	  orbspi[i] != Oldcalc.orbspi[i])
+	punt("Symmetry block structure of old MOs is not suitable for the new calculation. Cannot use old MOs.");
+
+    if (Oldcalc.spinrestr_ref) {
+      scf_evect_so = block_matrix(num_so,num_mo);
+      for(so=0;so<num_so;so++)
+	for(mo=0;mo<num_mo;mo++)
+	  scf_evect_so[so][mo] = Oldcalc.scf_evect_so[so][mo];
+    }
+    else {
+      scf_evect_so_alpha = block_matrix(num_so,num_mo);
+      for(so=0;so<num_so;so++)
+	for(mo=0;mo<num_mo;mo++)
+	  scf_evect_so_alpha[so][mo] = Oldcalc.scf_evect_so_alpha[so][mo];
+      scf_evect_so_beta = block_matrix(num_so,num_mo);
+      for(so=0;so<num_so;so++)
+	for(mo=0;mo<num_mo;mo++)
+	  scf_evect_so_beta[so][mo] = Oldcalc.scf_evect_so_beta[so][mo];
+    }
+  }
   else {
+    if (Oldcalc.spinrestr_ref)
+      scf_evect_so = project(P12,Oldcalc.scf_evect_so,CV1);
+    else {
       scf_evect_so_alpha = project(P12,Oldcalc.scf_evect_so_alpha,CV1);
       scf_evect_so_beta = project(P12,Oldcalc.scf_evect_so_beta,CV1);
+    }
   }
   
   free_block(S12);
@@ -101,6 +127,10 @@ void get_oeints()
   int i, j, count;
   double *ints;
   double e_fzc;
+
+  /* clear out the old PSIF_OEI */
+  psio_open(PSIF_OEI, PSIO_OPEN_OLD);
+  psio_close(PSIF_OEI, 0);
 
   stat = system("cints --oeints");
   switch (stat) {
@@ -335,7 +365,7 @@ void finish_projection()
       if (orbspi[irrep]) num_so_typs++;
   }
 
-  if (print_lvl > 0) {
+  if (print_lvl > 0 && !dont_project_mos) {
       fprintf(outfile,"  -MO projection\n");
       fprintf(outfile,"    MO projection is complete.\n\n");
   }

@@ -15,7 +15,7 @@ void get_params()
 
   errcod = ip_string("WFN", &(params.wfn), 0);
   if(strcmp(params.wfn, "CCSD") && strcmp(params.wfn, "CCSD_T") &&
-      strcmp(params.wfn, "EOM_CCSD")) {
+      strcmp(params.wfn, "EOM_CCSD") && strcmp(params.wfn, "LEOM_CCSD")) {
     fprintf(outfile, "Invalid value of input keyword WFN: %s\n", params.wfn);
     exit(2);
   }

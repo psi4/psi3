@@ -5,13 +5,19 @@
 #include <string.h>
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
+#if !USE_LIBCHKPT
 #include <file30_params.h>
+#endif
 #include <psifiles.h>
 #include "input.h"
 #include "global.h"
 #include "defines.h"
 
+#if USE_LIBCHKPT
+void write_scf_calc();
+#else
 void write_scf_calc(PSI_FPTR *ptr, int *pointers);
+#endif
 
 /*-----------------------------------------------------------------------------------------------------------------
 
@@ -25,15 +31,18 @@ void write_scf_to_file30()
   double *arr_double;
   int *scf_pointers;
   
+#if USE_LIBCHKPT
+  psio_open(PSIF_CHKPT, PSIO_OPEN_OLD);
+#else
   constants = init_int_array(MCONST);
   calcs = init_int_array(MPOINT);
   rfile(CHECKPOINTFILE);
-
-  psio_open(PSIF_CHKPT, PSIO_OPEN_OLD);
+#endif
 
   /*-----------------
     Update constants
    -----------------*/
+#if !USE_LIBCHKPT
   wreadw(CHECKPOINTFILE,(char *) constants, MCONST*(sizeof(int)),100*sizeof(int),&junk);
   constants[40] = num_so_typs;
   constants[41] = mxcoef;
@@ -43,13 +52,14 @@ void write_scf_to_file30()
   constants[46] = ref;
   constants[50] = 0;
   wwritw(CHECKPOINTFILE,(char *) constants, MCONST*sizeof(int),100*sizeof(int),&junk);
+#else
+  chkpt_wt_nsymhf(num_so_typs);
+  chkpt_wt_iopen(iopen);
+  chkpt_wt_nmo(num_mo);
+  chkpt_wt_ref(ref);
+#endif
 
-  psio_write_entry(PSIF_CHKPT, "::Num. HF irreps", (char *) &num_so_typs, sizeof(int));
-  psio_write_entry(PSIF_CHKPT, "::mxcoef", (char *) &mxcoef, sizeof(int));
-  psio_write_entry(PSIF_CHKPT, "::iopen", (char *) &iopen, sizeof(int));
-  psio_write_entry(PSIF_CHKPT, "::Num. MO's", (char *) &num_mo, sizeof(int));
-  psio_write_entry(PSIF_CHKPT, "::Reference", (char *) &ref, sizeof(int));
-
+#if !USE_LIBCHKPT
   /* That's where the end of the file is
      and where the calculation-specific data will go */
   ptr = (constants[0] - 1)*sizeof(int);
@@ -61,8 +71,13 @@ void write_scf_to_file30()
   ptr = (calcs[0] + 60 - 1)*sizeof(int);
   wwritw(CHECKPOINTFILE,(char *) scf_pointers, 20*sizeof(int),ptr,&ptr);
   free(scf_pointers);
+#else
+  /* write the data out */
+  write_scf_calc(&ptr,scf_pointers);
+#endif
   
   /* Update energies */
+#if !USE_LIBCHKPT
   arr_double = init_array(5);
   ptr += 3*num_atoms*sizeof(double);
   wreadw(CHECKPOINTFILE,(char *) arr_double, 5*sizeof(double), ptr, &junk);
@@ -70,18 +85,59 @@ void write_scf_to_file30()
   arr_double[2] = escf;   /* Ref. energy (if different from SCF - put SCF anyway) */
   wwritw(CHECKPOINTFILE,(char *) arr_double, 5*sizeof(double),ptr,&ptr);
   free(arr_double);
-
+#else
   psio_write_entry(PSIF_CHKPT, "::SCF energy", (char *) &escf, sizeof(double));
   psio_write_entry(PSIF_CHKPT, "::Reference energy", (char *) &escf, sizeof(double));
+#endif
 
-  rclose(CHECKPOINTFILE,3);
+#if USE_LIBCHKPT
   psio_close(PSIF_CHKPT, 1);
+#else
+  rclose(CHECKPOINTFILE,3);
   free(constants);
   free(calcs);
+#endif
   return;
 }
 
+#if USE_LIBCHKPT
+void write_scf_calc()
+{
+  double *zero_array;
+  zero_array = init_array(num_mo*(num_mo+1)/2);
+      
+  if (spinrestr_ref) {
+    /* SCF eigenvector */
+    chkpt_wt_scf(scf_evect_so);
+    
+    /* SCF eigenvalues */
+    chkpt_wt_evals(zero_array);
+  }
+  else {
+    /* SCF eigenvectors */
+    chkpt_wt_alpha_scf(scf_evect_so_alpha);
+    chkpt_wt_beta_scf(scf_evect_so_beta);
+    
+    /* SCF eigenvalues */
+    chkpt_wt_alpha_evals(zero_array);
+    chkpt_wt_beta_evals(zero_array);
+  }
+      
+  /* irrep labels for non-empty blocks */
+  chkpt_wt_irr_labs(irr_labels);
 
+  /* MOs per block */
+  chkpt_wt_orbspi(orbspi);
+
+  /* doubly-occupied MOs per block */
+  chkpt_wt_clsdpi(clsdpi);
+
+  /* singly-occupied MOs per block */
+  chkpt_wt_openpi(openpi);
+  
+  return;
+}
+#else
 void write_scf_calc(PSI_FPTR *ptr, int *pointers)
 {
   int irrep, count, irr_count;
@@ -173,3 +229,4 @@ void write_scf_calc(PSI_FPTR *ptr, int *pointers)
   
   return;
 }
+#endif

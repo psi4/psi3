@@ -16,68 +16,72 @@ extern void scm_C(dpdfile2 *CME, dpdfile2 *Cme, dpdbuf4 *CMNEF,
 void schmidt_add(dpdfile2 *RIA, dpdfile2 *Ria,
   dpdbuf4 *RIJAB, dpdbuf4 *Rijab, dpdbuf4 *RIjAb, int *numCs, int irrep)
 {
-   double dotval;
-   double norm;
-   int i, I;
-   dpdfile2 Cme, CME, Cme2, CME2;
-   dpdbuf4 CMNEF, Cmnef, CMnEf, CMNEF2, Cmnef2, CMnEf2;
-   dpdbuf4 CMnEf_buf;
-   char CME_lbl[32], Cme_lbl[32], CMNEF_lbl[32], Cmnef_lbl[32], CMnEf_lbl[32];
+  double dotval;
+  double norm;
+  int i, I;
+  dpdfile2 Cme, CME, Cme2, CME2;
+  dpdbuf4 CMNEF, Cmnef, CMnEf, CMNEF2, Cmnef2, CMnEf2;
+  dpdbuf4 CMnEf_buf;
+  char CME_lbl[32], Cme_lbl[32], CMNEF_lbl[32], Cmnef_lbl[32], CMnEf_lbl[32];
 
-   for (i=0; i<*numCs; i++) {
-      sprintf(CME_lbl, "%s %d", "CME", i);
-      sprintf(Cme_lbl, "%s %d", "Cme", i);
-      sprintf(CMNEF_lbl, "%s %d", "CMNEF", i);
-      sprintf(Cmnef_lbl, "%s %d", "Cmnef", i);
-      sprintf(CMnEf_lbl, "%s %d", "CMnEf", i);
+  for (i=0; i<*numCs; i++) {
+    sprintf(CME_lbl, "%s %d", "CME", i);
+    sprintf(Cme_lbl, "%s %d", "Cme", i);
+    sprintf(CMNEF_lbl, "%s %d", "CMNEF", i);
+    sprintf(Cmnef_lbl, "%s %d", "Cmnef", i);
+    sprintf(CMnEf_lbl, "%s %d", "CMnEf", i);
 
-      dpd_file2_init(&CME, EOM_CME, irrep, 0, 1, CME_lbl);
-      dpd_file2_init(&Cme, EOM_Cme, irrep, 0, 1, Cme_lbl);
-      dpd_buf4_init(&CMNEF, EOM_CMNEF, irrep, 2, 7, 2, 7, 0, CMNEF_lbl);
-      dpd_buf4_init(&Cmnef, EOM_Cmnef, irrep, 2, 7, 2, 7, 0, Cmnef_lbl);
-      dpd_buf4_init(&CMnEf, EOM_CMnEf, irrep, 0, 5, 0, 5, 0, CMnEf_lbl);
+    dpd_file2_init(&CME, EOM_CME, irrep, 0, 1, CME_lbl);
+    dpd_file2_init(&Cme, EOM_Cme, irrep, 0, 1, Cme_lbl);
+    dpd_buf4_init(&CMNEF, EOM_CMNEF, irrep, 2, 7, 2, 7, 0, CMNEF_lbl);
+    dpd_buf4_init(&Cmnef, EOM_Cmnef, irrep, 2, 7, 2, 7, 0, Cmnef_lbl);
+    dpd_buf4_init(&CMnEf, EOM_CMnEf, irrep, 0, 5, 0, 5, 0, CMnEf_lbl);
 
-      dotval  = dpd_file2_dot(RIA, &CME);
-      dotval += dpd_file2_dot(Ria, &Cme);
-      dotval += dpd_buf4_dot(RIJAB, &CMNEF);
-      dotval += dpd_buf4_dot(Rijab, &Cmnef);
-      dotval += dpd_buf4_dot(RIjAb, &CMnEf);
+    dotval  = dpd_file2_dot(RIA, &CME);
+    dotval += dpd_file2_dot(Ria, &Cme);
+    /*    fprintf(outfile, "OE Dotval for vector %d = %20.14f\n", i, dotval); */
+    dotval += dpd_buf4_dot(RIJAB, &CMNEF);
+    dotval += dpd_buf4_dot(Rijab, &Cmnef);
+    dotval += dpd_buf4_dot(RIjAb, &CMnEf);
 
-      dpd_file2_axpy(&CME, RIA, -1.0*dotval, 0);
-      dpd_file2_axpy(&Cme, Ria, -1.0*dotval, 0);
-      dpd_buf4_axpy(&CMNEF, RIJAB, -1.0*dotval);
-      dpd_buf4_axpy(&Cmnef, Rijab, -1.0*dotval);
-      dpd_buf4_axpy(&CMnEf, RIjAb, -1.0*dotval);
+    /*    fprintf(outfile, "Dotval for vector %d = %20.14f\n", i, dotval); */
 
-      dpd_file2_close(&CME);
-      dpd_file2_close(&Cme);
-      dpd_buf4_close(&CMNEF);
-      dpd_buf4_close(&Cmnef);
-      dpd_buf4_close(&CMnEf);
-   }
+    dpd_file2_axpy(&CME, RIA, -1.0*dotval, 0);
+    dpd_file2_axpy(&Cme, Ria, -1.0*dotval, 0);
+    dpd_buf4_axpy(&CMNEF, RIJAB, -1.0*dotval);
+    dpd_buf4_axpy(&Cmnef, Rijab, -1.0*dotval);
+    dpd_buf4_axpy(&CMnEf, RIjAb, -1.0*dotval);
 
-   norm = norm_C(RIA, Ria, RIJAB, Rijab, RIjAb);
+    dpd_file2_close(&CME);
+    dpd_file2_close(&Cme);
+    dpd_buf4_close(&CMNEF);
+    dpd_buf4_close(&Cmnef);
+    dpd_buf4_close(&CMnEf);
+  }
 
-   if (norm < eom_params.schmidt_add_residual_tol) {
-      return;
-   }
-   else {
-      scm_C(RIA, Ria, RIJAB, Rijab, RIjAb, 1.0/norm);
-      sprintf(CME_lbl, "%s %d", "CME", *numCs);
-      sprintf(Cme_lbl, "%s %d", "Cme", *numCs);
-      sprintf(CMNEF_lbl, "%s %d", "CMNEF", *numCs);
-      sprintf(Cmnef_lbl, "%s %d", "Cmnef", *numCs);
-      sprintf(CMnEf_lbl, "%s %d", "CMnEf", *numCs);
+  norm = norm_C(RIA, Ria, RIJAB, Rijab, RIjAb);
+  /*  fprintf(outfile, "Norm of residual (TDC) = %20.14f\n", norm); */
 
-      dpd_file2_copy(RIA, EOM_CME, CME_lbl);
-      dpd_file2_copy(Ria, EOM_Cme, Cme_lbl);
-      dpd_buf4_copy(RIJAB, EOM_CMNEF, CMNEF_lbl);
-      dpd_buf4_copy(Rijab, EOM_Cmnef, Cmnef_lbl);
-      dpd_buf4_copy(RIjAb, EOM_CMnEf, CMnEf_lbl);
+  if (norm < eom_params.schmidt_add_residual_tol) {
+    return;
+  }
+  else {
+    scm_C(RIA, Ria, RIJAB, Rijab, RIjAb, 1.0/norm);
+    sprintf(CME_lbl, "%s %d", "CME", *numCs);
+    sprintf(Cme_lbl, "%s %d", "Cme", *numCs);
+    sprintf(CMNEF_lbl, "%s %d", "CMNEF", *numCs);
+    sprintf(Cmnef_lbl, "%s %d", "Cmnef", *numCs);
+    sprintf(CMnEf_lbl, "%s %d", "CMnEf", *numCs);
 
-      ++(*numCs);
-   }
-   return;
+    dpd_file2_copy(RIA, EOM_CME, CME_lbl);
+    dpd_file2_copy(Ria, EOM_Cme, Cme_lbl);
+    dpd_buf4_copy(RIJAB, EOM_CMNEF, CMNEF_lbl);
+    dpd_buf4_copy(Rijab, EOM_Cmnef, Cmnef_lbl);
+    dpd_buf4_copy(RIjAb, EOM_CMnEf, CMnEf_lbl);
+
+    ++(*numCs);
+  }
+  return;
 }
 
 void schmidt_add_RHF(dpdfile2 *RIA, dpdbuf4 *RIjAb, int *numCs, int irrep)
@@ -107,8 +111,11 @@ void schmidt_add_RHF(dpdfile2 *RIA, dpdbuf4 *RIjAb, int *numCs, int irrep)
     dpd_file2_init(&CME, EOM_CME, irrep, 0, 1, CME_lbl);
     dpd_buf4_init(&CMnEf, EOM_CMnEf, irrep, 0, 5, 0, 5, 0, CMnEf_lbl);
     dotval  = 2.0 * dpd_file2_dot(RIA, &CME);
+    /*     fprintf(outfile, "OE Dotval for vector %d = %20.14f\n", i, dotval); */
     dotval += dpd_buf4_dot(&R2a, &CMnEf);
     dpd_buf4_close(&R2a);
+
+    /*    fprintf(outfile, "Dotval for vector %d = %20.14f\n", i, dotval); */
 
     dpd_file2_axpy(&CME, RIA, -1.0*dotval, 0);
     dpd_buf4_axpy(&CMnEf, RIjAb, -1.0*dotval);
@@ -116,16 +123,19 @@ void schmidt_add_RHF(dpdfile2 *RIA, dpdbuf4 *RIjAb, int *numCs, int irrep)
     dpd_buf4_close(&CMnEf);
   }
 
+
   dpd_buf4_sort(RIjAb, EOM_TMP, pqsr, 0, 5, "RIjbA");
   dpd_buf4_init(&R2b, EOM_TMP, irrep, 0, 5, 0, 5, 0, "RIjbA");
 
- // norm = norm_C_rhf(RIA, RIjAb, &R2b);
+  /* norm = norm_C_rhf(RIA, RIjAb, &R2b); */
   norm  = 2.0 * dpd_file2_dot_self(RIA);
   norm += 2.0 * dpd_buf4_dot_self(RIjAb);
   norm -= dpd_buf4_dot(RIjAb, &R2b);
   norm = sqrt(norm);
 
   dpd_buf4_close(&R2b);
+
+  /*  fprintf(outfile, "Norm of residual (TDC) = %20.14f\n", norm); */
 
   if (norm < eom_params.schmidt_add_residual_tol) {
     return;
@@ -134,6 +144,14 @@ void schmidt_add_RHF(dpdfile2 *RIA, dpdbuf4 *RIjAb, int *numCs, int irrep)
 
     dpd_file2_scm(RIA, 1.0/norm);
     dpd_buf4_scm(RIjAb, 1.0/norm);
+
+    dpd_buf4_sort(RIjAb, EOM_TMP, pqsr, 0, 5, "RIjbA");
+    dpd_buf4_init(&R2b, EOM_TMP, irrep, 0, 5, 0, 5, 0, "RIjbA");
+    norm  = 2.0 * dpd_file2_dot_self(RIA);
+    norm += 2.0 * dpd_buf4_dot_self(RIjAb);
+    norm -= dpd_buf4_dot(RIjAb, &R2b);
+    norm = sqrt(norm);
+    dpd_buf4_close(&R2b);
 
     sprintf(CME_lbl, "%s %d", "CME", *numCs);
     sprintf(CMnEf_lbl, "%s %d", "CMnEf", *numCs);

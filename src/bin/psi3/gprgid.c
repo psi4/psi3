@@ -1,7 +1,8 @@
 
 char *gprgid()
 {
-   char *prgid = "OPTKING";
+   char *prgid = "PSI3";
+
    return(prgid);
 }
 

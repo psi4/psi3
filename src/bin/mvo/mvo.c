@@ -289,7 +289,7 @@ void get_moinfo(void)
   moinfo.scf_vector = file30_rd_scf();
   */
 
-  chkpt_init();
+  chkpt_init(PSIO_OPEN_OLD);
   moinfo.nmo = chkpt_rd_nmo();
   moinfo.nso = chkpt_rd_nso();
   moinfo.nao = chkpt_rd_nao();
@@ -580,7 +580,7 @@ void get_mvos(void)
   file30_close();
   */
 
-  chkpt_init();
+  chkpt_init(PSIO_OPEN_OLD);
   scf_vector = chkpt_rd_scf();
   eig_unsrt = chkpt_rd_evals();
   chkpt_close();
@@ -748,7 +748,7 @@ void get_mvos(void)
     file30_close();
     */
 
-    chkpt_init();
+    chkpt_init(PSIO_OPEN_OLD);
     chkpt_wt_scf_irrep(Cnew, h);
     chkpt_close();
 

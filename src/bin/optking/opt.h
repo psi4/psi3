@@ -5,6 +5,13 @@
 # define EXTERN
 #endif
 
+#ifdef C_EXTERN
+# undef C_EXTERN
+# define C_EXTERN extern
+#else
+# define C_EXTERN
+#endif
+
 #define OPT_AUX (13)
 #define SQR(A) ((A)*(A))
 /*--- These are just internal type specifiers ---*/
@@ -16,7 +23,7 @@
 #define PRINT_TO_GEOM (113)
 #define PRINT_TO_30 (114)
 /* Limits to hard-wired arrays */
-#define MAX_SALCS (1000)
+#define MAX_SALCS (500)
 #define MAX_ATOMS (300)
 #define MAX_LINELENGTH (133)
 #define MAX_SALC_LENGTH (1000)
@@ -30,28 +37,74 @@
 #define STEP_LIMIT (0.1)                                       /* max step size if di coord has small value */
 #define STEP_PERCENT (0.1)                                     /* if di coord large valued, max percentage allowed for step */
 
-EXTERN FILE *fp_input, *fp_intco, *outfile, *fp_fconst, *fp_opt_aux;
-EXTERN void cross_product(double *u,double *v,double *out);
-EXTERN void scalar_mult(double a, double *vect, int dim);
-EXTERN void scalar_div(double a, double *vect);
-EXTERN double **symm_matrix_invert(double **A, int rows, int cols, int redundant);
-EXTERN int div_int(int big, int little);
-EXTERN void print_mat2(double **matrix, int rows, int cols, FILE *of);
+EXTERN FILE *fp_input, *fp_intco, *outfile, *fp_fconst, *fp_opt_aux, *fp_11;
 EXTERN int *ops_in_class;
-EXTERN int num_irreps, *irr;
+EXTERN int nirreps, *irr;
 EXTERN int num_nonzero;      /* number of non-redundant di coordinates (eigenvectors of G with nonzero eigenvalues) */
 EXTERN char ptgrp[4];        /*molecular point group*/
-EXTERN int *number_internals;
-EXTERN void open_PSIF(void);
-EXTERN void close_PSIF(void);
-EXTERN double energy_chkpt(void);
+//EXTERN int *number_internals;
+//EXTERN double energy_chkpt(void);
 
-/* C functions we may want to use (or need to keep as C functions so they can be called from C code) */
+#ifdef C_CODE
+C_EXTERN void punt(char *message);
+C_EXTERN void open_PSIF(void);
+C_EXTERN void close_PSIF(void);
+C_EXTERN void exit_io(void);
+C_EXTERN void print_mat2(double **matrix, int rows, int cols, FILE *of);
+C_EXTERN void cross_product(double *u,double *v,double *out);
+C_EXTERN void scalar_mult(double a, double *vect, int dim);
+C_EXTERN void scalar_div(double a, double *vect);
+C_EXTERN int div_int(int big, int little);
+C_EXTERN double **symm_matrix_invert(double **A, int dim, int print_det, int redundant);
+C_EXTERN double energy_chkpt(void);
+C_EXTERN void dgeev_optking(int L, double **G, double *lambda, double **alpha);
+C_EXTERN double **mass_mat(double *masses);
+C_EXTERN void swap(int *a, int *b);
+C_EXTERN void swap_tors(int *a, int *b, int *c, int *d);
+//C_EXTERN int **get_char_table(char *ptgrp);    /* returns the character table */
+//C_EXTERN char **get_symm_ops(char *ptgrp);     /* "     " symm operation labels */
+//C_EXTERN int *get_ops_in_class(char *ptgrp);
+// #include <dmalloc.h>
+#else
 extern "C" void punt(char *message);
-extern "C" char *gprgid();
+extern "C" void open_PSIF(void);
+extern "C" void close_PSIF(void);
+extern "C" void exit_io(void);
+extern "C" void print_mat2(double **matrix, int rows, int cols, FILE *of);
+extern "C" void cross_product(double *u,double *v,double *out);
+extern "C" void scalar_mult(double a, double *vect, int dim);
+extern "C" void scalar_div(double a, double *vect);
+extern "C" int div_int(int big, int little);
+extern "C" double **symm_matrix_invert(double **A, int dim, int print_det, int redundant);
+extern "C" double energy_chkpt(void);
+extern "C" void dgeev_optking(int L, double **G, double *lambda, double **alpha);
+extern "C" double **mass_mat(double *masses);
+extern "C" void swap(int *a, int *b);
+extern "C" void swap_tors(int *a, int *b, int *c, int *d);
+//extern "C" int **get_char_table(char *ptgrp);    /* returns the character table */
+//extern "C"  char **get_symm_ops(char *ptgrp);     /* "     " symm operation labels */
+// extern "C" { #include <dmalloc.h> }
+#endif
+
+#define MODE_DISP_SYMM (10)
+#define MODE_DISP_ALL  (11)
+#define MODE_DISP_LOAD (12)
+#define MODE_DISP_USER (13)
+#define MODE_OPT_STEP  (14)
+#define MODE_FREQ_ENERGY (15)
+#define MODE_FREQ_GRAD   (16)
+#define MODE_GRAD_ENERGY (17)
+#define MODE_GRAD_SAVE   (18)
+#define MODE_ENERGY_SAVE   (19)
+#define MODE_FREQ_GRAD_SYMM (20)
 
 struct OPTInfo {
-  double *masses;
+
+  int mode;
+  int disp_num;
+  int points;
+  int simples_present;
+  int salcs_present;
 
 /* print options */
   int print_simples;
@@ -63,6 +116,9 @@ struct OPTInfo {
   int optimize;
   int redundant;
   int delocalize;
+  int do_only_displacements;
+  int zmat;
+  int zmat_simples;
   int bfgs;
   int dertype;
   int numerical_dertype;
@@ -71,8 +127,12 @@ struct OPTInfo {
   double conv; /* MAX force */
   double ev_tol;
   double scale_connectivity;
-  double edisp;
+  double disp_size;
   int mix_types;
+  int natom;
+  int nallatom;
+  int *to_dummy;
+  int *to_nodummy;
 
 /* Back-transformation parameters */
   int bt_max_iter;
@@ -87,12 +147,13 @@ struct OPTInfo {
 
 struct SYMInfo {
   char *symmetry;
-  int num_irreps;
+  int nirreps;
   int **ct;
   char **irrep_lbls;
   char **clean_irrep_lbls;
   char **op_lbls;
   int **ict;
+  int **fict;
   int **ict_ops;
   int **ict_ops_sign;
 };

@@ -1,0 +1,3461 @@
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:42:53 2002
+
+                                --------------
+                                  WELCOME TO
+                                    PSI  3
+                                --------------
+
+  LABEL       =	6-31G** SCF H2O
+  SHOWNORM    =	0
+  PUREAM      =	0
+  PRINT_LVL   =	1
+
+  -Geometry before Center-of-Mass shift (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.000000000000
+        HYDROGEN      0.000000000000     0.000000000000     1.782118622413
+        HYDROGEN      1.713349872280     0.000000000000    -0.490284610720
+
+
+  -Rotational constants (cm-1) :
+    A =   29.21536  B =   14.74983  C =    9.80143
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.120072747839     0.000000000000
+        HYDROGEN      1.422970856939    -0.952820874405     0.000000000000
+        HYDROGEN     -1.422970856939    -0.952820874405     0.000000000000
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S (  5484.67166000     0.00183107)
+           (   825.23494600     0.01395017)
+           (   188.04695800     0.06844508)
+           (    52.96450000     0.23271434)
+           (    16.89757040     0.47019290)
+           (     5.79963534     0.35852085) )
+        (S (    15.53961625    -0.11077755)
+           (     3.59993359    -0.14802626)
+           (     1.01376175     1.13076701) )
+        (S (     0.27000582     1.00000000) )
+        (P (    15.53961625     0.07087427)
+           (     3.59993359     0.33975284)
+           (     1.01376175     0.72715858) )
+        (P (     0.27000582     1.00000000) )
+        (D (     0.80000000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    18.73113696     0.03349460)
+           (     2.82539437     0.23472695)
+           (     0.64012169     0.81375733) )
+        (S (     0.16127776     1.00000000) )
+        (P (     1.10000000     1.00000000) )
+       )
+
+
+    Wrote 10804 bytes to FILE30
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 12
+    Number of primitives   = 20
+    Number of AO           = 25
+    Number of SO           = 25
+
+    Irrep    Number of SO
+    -----    ------------
+      1           12
+      2            2
+      3            4
+      4            7
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.120072747839
+        HYDROGEN      0.000000000000     1.422970856939    -0.952820874405
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.120072747839
+        HYDROGEN      0.000000000000     1.422970856939    -0.952820874405
+        HYDROGEN      0.000000000000    -1.422970856939    -0.952820874405
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.063539766381
+        HYDROGEN      0.000000000000     0.753003803482    -0.504211129108
+        HYDROGEN      0.000000000000    -0.753003803482    -0.504211129108
+
+
+  -Geometry in the reference coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.120072747839
+        HYDROGEN      0.000000000000     1.422970856939    -0.952820874405
+        HYDROGEN      0.000000000000    -1.422970856939    -0.952820874405
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       9.329455542090
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   0.9430566   0.0000000
+    3   0.9430566   1.5060076   0.0000000
+
+
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:42:53 2002
+
+user time   =       0.09 seconds
+system time =       0.02 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:42:53 2002
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O                                                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+    Wrote 13617 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:42:53 2002
+
+user time   =       0.02 seconds
+system time =       0.00 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:42:53 2002
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+
+  label       = 6-31G** SCF H2O
+  wfn          = CCSD
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct SCF   = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        9.3294555420901
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.02361390
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.228303e-02
+
+
+  Using DOCC and SOCC to 
+  determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 6516 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -76.0236146859    8.535307e+01    0.000000e+00    0.000000e+00
+    2       -76.0236149863    3.003257e-07    8.316055e-06    2.034284e-04
+    3       -76.0236150136    2.731450e-08    2.683639e-06    1.000256e-04
+    4       -76.0236150187    5.148038e-09    1.112766e-06    3.036410e-05
+    5       -76.0236150193    5.508127e-10    5.138850e-07    9.942931e-06
+    6       -76.0236150193    2.376055e-11    1.243961e-07    1.887601e-06
+    7       -76.0236150193    1.222134e-12    3.009416e-08    3.450070e-07
+    8       -76.0236150193    2.842171e-14    2.919853e-09    4.533538e-08
+    9       -76.0236150193    0.000000e+00    4.275689e-10    9.515656e-09
+   10       -76.0236150193   -1.421085e-14    1.152170e-10    1.456588e-09
+   11       -76.0236150193    1.421085e-14    1.661323e-11    2.405228e-10
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.557268     2A1     -1.346467     1B2     -0.713893  
+   3A1     -0.568284     1B1     -0.497607  
+
+
+  Unoccupied orbitals
+   4A1      0.215332     2B2      0.308437     3B2      1.016902  
+   5A1      1.093015     6A1      1.134579     2B1      1.168985  
+   4B2      1.295523     7A1      1.411677     1A2      1.802541  
+   8A1      1.829512     3B1      1.931474     5B2      2.582662  
+   9A1      2.588840     6B2      2.841674     4B1      2.997535  
+   2A2      3.006369    10A1      3.406560    11A1      3.745709  
+   7B2      3.945219    12A1      4.128460  
+
+
+        total energy       =     -76.023615019311
+        kinetic energy     =      75.864589306235
+        nuc. attr. energy  =    -199.203693733450
+        elec. rep. energy  =      47.315489407904
+        potential energy   =    -151.888204325547
+        virial theorem     =       1.997908206377
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:42:53 2002
+
+user time   =       0.01 seconds
+system time =       0.00 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:42:53 2002
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CCSD
+	Reference orbitals     =  RHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            = Yes
+	Delete Restricted Docc =  No
+	Do All TEI             = Yes
+	Memory (Mbytes)        =   20.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	File30 Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 25
+	Number of MOs    = 25
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   12	   12	    0	    3	    0	    9	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    1	    0	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         9.3294555421
+	Total SCF Energy            =       -76.0236150193
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:42:54 2002
+
+user time   =       0.15 seconds
+system time =       0.10 seconds
+total time  =          1 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:42:54 2002
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Reference wfn   =      RHF
+	Derivative      =    First
+	Memory (Mbytes) =     20.0
+	AO Basis        =       No
+	Cache Level     =        2
+	Cache Type      =      LRU
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 25
+	Number of active MOs = 25
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   12	    0	    3	    0	    9	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.32945554209011
+	SCF energy          (chkpt) =    -76.02361501931125
+	One-electron energy          =   -123.33910442721481
+	Two-electron (AA) energy     =     14.50383116210733
+	Two-electron (BB) energy     =     14.50383116210733
+	Two-electron (AB) energy     =     23.48220270370612
+	Two-electron energy          =     37.98603386581345
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.02361501931125
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:42:54 2002
+
+user time   =       0.04 seconds
+system time =       0.04 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:42:54 2002
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    9.329455542090109
+	SCF energy          (chkpt)   =  -76.023615019311251
+	Reference energy    (file100) =  -76.023615019311251
+
+	Input parameters:
+	-----------------
+	Wave function   =      CCSD
+	Reference wfn   =      RHF
+	Memory (Mbytes) =   20.0
+	Maxiter         =     50
+	Convergence     = 1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	Local CC        =     No
+	AO Basis        =     No
+	Cache Level     =    2
+	Cache Type      =     LOW
+	Print Level     =    0
+
+	                     Solving CCSD Equations
+	                     ----------------------
+	Iter             Energy               RMS       T1Diag      D1Diag
+	----     ---------------------     --------   ----------  ----------
+	   0        -0.198157296959999    0.000e+00    0.000000    0.000000
+	   1        -0.202768591645727    2.616e-02    0.004263    0.008257
+	   2        -0.206460273718143    9.097e-03    0.004858    0.009574
+	   3        -0.206915685804174    2.492e-03    0.005317    0.010941
+	   4        -0.206920894666907    5.715e-04    0.005362    0.011211
+	   5        -0.206933378437358    1.761e-04    0.005393    0.011374
+	   6        -0.206930248340077    5.575e-05    0.005404    0.011434
+	   7        -0.206929708952188    1.397e-05    0.005407    0.011450
+	   8        -0.206929717064707    2.542e-06    0.005408    0.011452
+	   9        -0.206929651099981    5.729e-07    0.005408    0.011453
+	  10        -0.206929667553169    1.182e-07    0.005408    0.011453
+	  11        -0.206929666558627    2.325e-08    0.005408    0.011453
+
+	Iterations converged.
+
+	SCF energy       (chkpt)   =  -76.023615019311251
+	Reference energy (file100) =  -76.023615019311251
+	CCSD correlation energy    =   -0.206929666558627
+	Total CCSD energy          =  -76.230544685869873
+
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:42:54 2002
+
+user time   =       0.24 seconds
+system time =       0.12 seconds
+total time  =          0 seconds
+	________________________________________________________
+	|                                                      |
+	| OPTKING: For internal coordinate optimizations and   |
+	| and vibrational frequencies, Rollin King, 1999, 2002 |
+	|______________________________________________________|
+
+Iteration: 1     
+
+Cartesian geometry and gradient (if available) in a.u. with masses
+  8.0    15.99491500   0.0000000000   0.0000000000   0.1200727478
+  1.0     1.00782500   0.0000000000   1.4229708569  -0.9528208744
+  1.0     1.00782500   0.0000000000  -1.4229708569  -0.9528208744
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94305663)
+    (2 1 3) (0.94305663)
+Bends
+    (3 2 1 3) (105.96876874)
+ 
+ ** Displacing symmetric modes for 3-point formula
+
+  SYMM = (
+    ("A1 " (1 2 3)
+     (-0.71 -0.71 -0.07))
+    ("A1 " (1 2 3)
+     (-0.05 -0.05  1.00))
+  )
+
+Displacement Matrix
+     -0.001000000000      0.000000000000
+
+      0.001000000000      0.000000000000
+
+      0.000000000000     -0.001000000000
+
+      0.000000000000      0.001000000000
+
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    1  0.000321791182  0.000707106781
+    2  0.000321791182  0.000000034487
+    3  0.000000010092  0.000000000000
+    4  0.000000000000  0.000000000000
+Convergence to displaced geometry took 4 iterations.
+
+Displaced geometry 1 in a.u.
+
+  8.0   0.0000000000   0.0000000000   0.1201573894
+  1.0   0.0000000000   1.4240705488  -0.9534925357
+  1.0   0.0000000000  -1.4240705488  -0.9534925357
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    1  0.000321791182  0.000707106781
+    2  0.000321791182  0.000000034538
+    3  0.000000010092  0.000000000000
+    4  0.000000000000  0.000000000000
+Convergence to displaced geometry took 4 iterations.
+
+Displaced geometry 2 in a.u.
+
+  8.0   0.0000000000   0.0000000000   0.1199880984
+  1.0   0.0000000000   1.4218712159  -0.9521491504
+  1.0   0.0000000000  -1.4218712159  -0.9521491504
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    1  0.000205557396  0.000707106781
+    2  0.000205557396  0.000000122359
+    3  0.000000055271  0.000000000000
+    4  0.000000000000  0.000000000000
+Convergence to displaced geometry took 4 iterations.
+
+Displaced geometry 3 in a.u.
+
+  8.0   0.0000000000   0.0000000000   0.1201580654
+  1.0   0.0000000000   1.4225049425  -0.9534979003
+  1.0   0.0000000000  -1.4225049425  -0.9534979003
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    1  0.000205557396  0.000707106781
+    2  0.000205557396  0.000000122338
+    3  0.000000055271  0.000000000000
+    4  0.000000000000  0.000000000000
+Convergence to displaced geometry took 4 iterations.
+
+Displaced geometry 4 in a.u.
+
+  8.0   0.0000000000   0.0000000000   0.1199874081
+  1.0   0.0000000000   1.4234363648  -0.9521436730
+  1.0   0.0000000000  -1.4234363648  -0.9521436730
+
+******** OPTKING execution completed ********
+
+	________________________________________________________
+	|                                                      |
+	| OPTKING: For internal coordinate optimizations and   |
+	| and vibrational frequencies, Rollin King, 1999, 2002 |
+	|______________________________________________________|
+
+Iteration: 1     
+
+Cartesian geometry and gradient (if available) in a.u. with masses
+  8.0    15.99491500   0.0000000000   0.0000000000   0.1200727478
+  1.0     1.00782500   0.0000000000   1.4229708569  -0.9528208744
+  1.0     1.00782500   0.0000000000  -1.4229708569  -0.9528208744
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94305663)
+    (2 1 3) (0.94305663)
+Bends
+    (3 2 1 3) (105.96876874)
+
+ ** Geometry for displacement 0 sent to chkpt. **
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:42:55 2002
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O                                                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+    Wrote 13617 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:42:55 2002
+
+user time   =       0.01 seconds
+system time =       0.02 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:42:55 2002
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+
+  label       = 6-31G** SCF H2O
+  wfn          = CCSD
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct SCF   = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        9.3224717693451
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.02361502
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.230827e-02
+
+
+  Using DOCC and SOCC to 
+  determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 6516 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -76.0236135629    8.534609e+01    0.000000e+00    0.000000e+00
+    2       -76.0236138633    3.003815e-07    8.316381e-06    2.032387e-04
+    3       -76.0236138906    2.731232e-08    2.683147e-06    1.000031e-04
+    4       -76.0236138957    5.151719e-09    1.113204e-06    3.037264e-05
+    5       -76.0236138963    5.512959e-10    5.137656e-07    9.955357e-06
+    6       -76.0236138963    2.381739e-11    1.244447e-07    1.889203e-06
+    7       -76.0236138963    1.222134e-12    3.013540e-08    3.448030e-07
+    8       -76.0236138963    4.263256e-14    2.936076e-09    4.511839e-08
+    9       -76.0236138963   -1.421085e-14    4.296769e-10    9.533042e-09
+   10       -76.0236138963    0.000000e+00    1.158911e-10    1.462795e-09
+   11       -76.0236138963    1.421085e-14    1.657476e-11    2.401749e-10
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.557391     2A1     -1.346087     1B2     -0.713508  
+   3A1     -0.568150     1B1     -0.497551  
+
+
+  Unoccupied orbitals
+   4A1      0.215185     2B2      0.308262     3B2      1.016572  
+   5A1      1.092477     6A1      1.134441     2B1      1.169005  
+   4B2      1.295487     7A1      1.411536     1A2      1.802427  
+   8A1      1.829502     3B1      1.931431     5B2      2.581773  
+   9A1      2.587876     6B2      2.840189     4B1      2.996642  
+   2A2      3.005540    10A1      3.405184    11A1      3.744025  
+   7B2      3.943942    12A1      4.127833  
+
+
+        total energy       =     -76.023613896313
+        kinetic energy     =      75.861687695481
+        nuc. attr. energy  =    -199.188485161137
+        elec. rep. energy  =      47.303183569343
+        potential energy   =    -151.885301591794
+        virial theorem     =       1.997870053888
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:42:55 2002
+
+user time   =       0.01 seconds
+system time =       0.01 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:42:55 2002
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CCSD
+	Reference orbitals     =  RHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            = Yes
+	Delete Restricted Docc =  No
+	Do All TEI             = Yes
+	Memory (Mbytes)        =   20.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	File30 Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 25
+	Number of MOs    = 25
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   12	   12	    0	    3	    0	    9	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    1	    0	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         9.3224717693
+	Total SCF Energy            =       -76.0236138963
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:42:55 2002
+
+user time   =       0.15 seconds
+system time =       0.08 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:42:55 2002
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Reference wfn   =      RHF
+	Derivative      =    First
+	Memory (Mbytes) =     20.0
+	AO Basis        =       No
+	Cache Level     =        2
+	Cache Type      =      LRU
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 25
+	Number of active MOs = 25
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   12	    0	    3	    0	    9	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.32247176934509
+	SCF energy          (chkpt) =    -76.02361389631317
+	One-electron energy          =   -123.32679746565614
+	Two-electron (AA) energy     =     14.50156375069687
+	Two-electron (BB) energy     =     14.50156375069687
+	Two-electron (AB) energy     =     23.47914804930104
+	Two-electron energy          =     37.98071179999792
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.02361389631314
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:42:55 2002
+
+user time   =       0.02 seconds
+system time =       0.06 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:42:55 2002
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    9.322471769345089
+	SCF energy          (chkpt)   =  -76.023613896313165
+	Reference energy    (file100) =  -76.023613896313137
+
+	Input parameters:
+	-----------------
+	Wave function   =      CCSD
+	Reference wfn   =      RHF
+	Memory (Mbytes) =   20.0
+	Maxiter         =     50
+	Convergence     = 1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	Local CC        =     No
+	AO Basis        =     No
+	Cache Level     =    2
+	Cache Type      =     LOW
+	Print Level     =    0
+
+	                     Solving CCSD Equations
+	                     ----------------------
+	Iter             Energy               RMS       T1Diag      D1Diag
+	----     ---------------------     --------   ----------  ----------
+	   0        -0.198206368339843    0.000e+00    0.000000    0.000000
+	   1        -0.202809631389239    2.618e-02    0.004268    0.008271
+	   2        -0.206507012362642    9.113e-03    0.004865    0.009594
+	   3        -0.206963741162829    2.498e-03    0.005326    0.010966
+	   4        -0.206968947860967    5.734e-04    0.005370    0.011238
+	   5        -0.206981482466794    1.769e-04    0.005402    0.011401
+	   6        -0.206978327602783    5.603e-05    0.005413    0.011462
+	   7        -0.206977786944737    1.402e-05    0.005416    0.011478
+	   8        -0.206977794478534    2.553e-06    0.005417    0.011480
+	   9        -0.206977728212776    5.762e-07    0.005417    0.011481
+	  10        -0.206977744762765    1.189e-07    0.005417    0.011481
+	  11        -0.206977743757943    2.340e-08    0.005417    0.011481
+
+	Iterations converged.
+
+	SCF energy       (chkpt)   =  -76.023613896313165
+	Reference energy (file100) =  -76.023613896313137
+	CCSD correlation energy    =   -0.206977743757943
+	Total CCSD energy          =  -76.230591640071083
+
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:42:56 2002
+
+user time   =       0.23 seconds
+system time =       0.13 seconds
+total time  =          1 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:42:56 2002
+
+
+			**************************
+			*                        *
+			*         CCHBAR         *
+			*                        *
+			**************************
+
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:42:56 2002
+
+user time   =       0.18 seconds
+system time =       0.13 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:42:56 2002
+
+
+			**************************
+			*                        *
+			*        CCLAMBDA        *
+			*                        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    9.322471769345089
+	SCF energy          (chkpt)   =  -76.023613896313165
+	Reference energy    (file100) =  -76.023613896313137
+	CCSD energy         (file100) =   -0.206977743757943
+	Total CCSD energy   (file100) =  -76.230591640071083
+
+	Input parameters:
+	-----------------
+	Maxiter     =      50
+	Convergence = 1.0e-11
+	Restart     =     Yes
+	Cache Level =     2
+	AO Basis        =     No
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter         PseudoEnergy             RMS  
+	----     ---------------------     --------
+	   0        -0.207014016529338    0.000e+00
+	   1        -0.204615883271931    8.146e-03
+	   2        -0.204206654515361    1.322e-03
+	   3        -0.204123647428283    5.888e-04
+	   4        -0.204118868907214    2.405e-04
+	   5        -0.204123194803763    1.157e-04
+	   6        -0.204122956439683    5.733e-05
+	   7        -0.204123098541160    3.183e-05
+	   8        -0.204123002006210    1.823e-05
+	   9        -0.204123027861793    1.078e-05
+	  10        -0.204122969831445    5.729e-06
+	  11        -0.204122964064414    3.577e-06
+	  12        -0.204122940835424    1.840e-06
+	  13        -0.204122951137375    1.353e-06
+	  14        -0.204122944059160    5.712e-07
+	  15        -0.204122943271409    3.858e-07
+	  16        -0.204122942518940    2.630e-07
+	  17        -0.204122939897496    2.016e-07
+	  18        -0.204122940904791    2.069e-07
+	  19        -0.204122940575266    7.639e-08
+	  20        -0.204122940031239    6.835e-08
+	  21        -0.204122939922558    4.107e-08
+	  22        -0.204122939938619    2.713e-08
+	  23        -0.204122939901843    2.310e-08
+	  24        -0.204122939800234    1.884e-08
+	  25        -0.204122939815139    1.312e-08
+	  26        -0.204122939740198    1.357e-08
+	  27        -0.204122939759633    1.526e-08
+	  28        -0.204122939750783    1.503e-08
+	  29        -0.204122939638629    1.535e-08
+	  30        -0.204122939426882    1.109e-08
+	  31        -0.204122939466938    6.547e-09
+	  32        -0.204122939450141    3.392e-09
+	  33        -0.204122939361429    2.432e-09
+	  34        -0.204122939417760    2.449e-09
+	  35        -0.204122939403387    8.577e-10
+	  36        -0.204122939389474    5.944e-10
+	  37        -0.204122939385981    3.973e-10
+	  38        -0.204122939386957    2.469e-10
+	  39        -0.204122939385779    1.153e-10
+	  40        -0.204122939385227    7.282e-11
+	  41        -0.204122939384605    4.364e-11
+	  42        -0.204122939385046    3.138e-11
+	  43        -0.204122939385095    1.144e-11
+	  44        -0.204122939384787    9.658e-12
+
+	Iterations converged.
+
+	Overlap =    0.944712165495964
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:42:59 2002
+
+user time   =       1.56 seconds
+system time =       0.94 seconds
+total time  =          3 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:42:59 2002
+
+
+			**************************
+			*                        *
+			*        CCDENSITY       *
+			*                        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    9.322471769345089
+	SCF energy          (chkpt)   =  -76.023613896313165
+	Reference energy    (file100) =  -76.023613896313137
+	CCSD energy         (file100) =   -0.206977743757943
+	Total CCSD energy   (file100) =  -76.230591640071083
+
+	Input parameters:
+	-----------------
+	Two-pdm file =      74
+	Tolerance    = 1.0e-14
+	Cache Level  =    2
+	AO Basis        =     No
+
+
+	Trace of onepdm =   -0.000000000000000
+
+	Energies re-computed from CC density:
+	-------------------------------------
+	One-electron energy        =    0.218903246459245
+	IJKL energy                =    0.040935072874765
+	IJKA energy                =   -0.001358792054446
+	IJAB energy                =   -0.408416523072962
+	IBJA energy                =   -0.098406275181473
+	CIAB energy                =   -0.000063044742504
+	ABCD energy                =    0.041428571752672
+	Total two-electron energy  =   -0.425880990423948
+	CCSD correlation energy    =   -0.206977743964703
+	Total CCSD energy          =  -76.230591640277837
+
+	Virial Theorem Data:
+	--------------------
+	Kinetic energy (ref)   =   75.861687695480867
+	Kinetic energy (corr)  =    0.140374578075792
+	Kinetic energy (total) =   76.002062273556660
+	-V/T (ref)             =    2.002134492465845
+	-V/T (corr)            =    2.474467432744058
+	-V/T (total)           =    2.003006883756547
+
+	Energies re-computed from Fock-adjusted CC density:
+	---------------------------------------------------
+	One-electron energy        =    0.247678478096133
+	IJKL energy                =   -0.655379952084371
+	IJKA energy                =   -0.048612471743348
+	IJAB energy                =   -0.408416523072962
+	IBJA energy                =    0.616387197829691
+	CIAB energy                =   -0.000063044742504
+	ABCD energy                =    0.041428571752672
+	Total two-electron energy  =   -0.454656222060821
+	CCSD correlation energy    =   -0.206977743964688
+	Total CCSD energy          =  -76.230591640277822
+
+	Energies re-computed from Mulliken density:
+	-------------------------------------------
+	One-electron energy        =    0.247678478096133
+	IJKL energy                =   -0.655379952084371
+	IJKA energy                =   -0.048612471743348
+	IJAB energy                =   -0.377813526716699
+	IBJA energy                =    0.585784201473428
+	CIAB energy                =   -0.000063044742504
+	ABCD energy                =    0.041428571752672
+	Total two-electron energy  =   -0.454656222060821
+	CCSD correlation energy    =   -0.206977743964688
+	Total CCSD energy          =  -76.230591640277822
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:00 2002
+
+user time   =       0.24 seconds
+system time =       0.23 seconds
+total time  =          1 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:00 2002
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CCSD
+	Reference orbitals     =  RHF
+	Backtrans              =  Yes
+	Print MOs              =  No
+	Freeze Core            = No
+	Delete Restricted Docc =  No
+	Do All TEI             = Yes
+	Memory (Mbytes)        =   20.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  74
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  77
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  No
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  No
+	Do FZC  OEI tranform   =  No
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	File30 Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 25
+	Number of MOs    = 25
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   12	   12	    0	    3	    0	    9	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    1	    0	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         9.3224717693
+	Total SCF Energy            =       -76.0236138963
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file77.
+
+	Transforming one-electron integrals...
+	One-pdm and lagrangian written to file76.
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:00 2002
+
+user time   =       0.18 seconds
+system time =       0.13 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:00 2002
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O                                                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -CCSD forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000    -0.023934556434
+       2        0.000000000000    -0.012611606493     0.011967278217
+       3        0.000000000000     0.012611606493     0.011967278217
+
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:00 2002
+
+user time   =       0.16 seconds
+system time =       0.01 seconds
+total time  =          0 seconds
+	________________________________________________________
+	|                                                      |
+	| OPTKING: For internal coordinate optimizations and   |
+	| and vibrational frequencies, Rollin King, 1999, 2002 |
+	|______________________________________________________|
+
+Iteration: 1     
+
+Cartesian geometry and gradient (if available) in a.u. with masses
+  8.0    15.99491500   0.0000000000   0.0000000000   0.1201573894
+  1.0     1.00782500   0.0000000000   1.4240705488  -0.9534925357
+  1.0     1.00782500   0.0000000000  -1.4240705488  -0.9534925357
+                       0.0000000000   0.0000000000  -0.0239345564
+                       0.0000000000  -0.0126116065   0.0119672782
+                       0.0000000000   0.0126116065   0.0119672782
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94376223)
+    (2 1 3) (0.94376223)
+Bends
+    (3 2 1 3) (105.97250594)
+Saving gradient and energy.
+
+******** OPTKING execution completed ********
+
+	________________________________________________________
+	|                                                      |
+	| OPTKING: For internal coordinate optimizations and   |
+	| and vibrational frequencies, Rollin King, 1999, 2002 |
+	|______________________________________________________|
+
+Iteration: 1     
+
+Cartesian geometry and gradient (if available) in a.u. with masses
+  8.0    15.99491500   0.0000000000   0.0000000000   0.1201573894
+  1.0     1.00782500   0.0000000000   1.4240705488  -0.9534925357
+  1.0     1.00782500   0.0000000000  -1.4240705488  -0.9534925357
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94376223)
+    (2 1 3) (0.94376223)
+Bends
+    (3 2 1 3) (105.97250594)
+
+ ** Geometry for displacement 1 sent to chkpt. **
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:01 2002
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O                                                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+    Wrote 13617 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:01 2002
+
+user time   =       0.01 seconds
+system time =       0.02 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:01 2002
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+
+  label       = 6-31G** SCF H2O
+  wfn          = CCSD
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct SCF   = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        9.3364497740661
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.02361390
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.225779e-02
+
+
+  Using DOCC and SOCC to 
+  determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 6516 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -76.0236125582    8.536006e+01    0.000000e+00    0.000000e+00
+    2       -76.0236137604    1.202150e-06    1.664019e-05    4.071772e-04
+    3       -76.0236138697    1.093011e-07    5.370013e-06    2.000913e-04
+    4       -76.0236138903    2.058630e-08    2.224745e-06    6.075245e-05
+    5       -76.0236138925    2.200522e-09    1.027619e-06    1.985850e-05
+    6       -76.0236138926    9.490009e-11    2.488309e-07    3.774221e-06
+    7       -76.0236138926    4.888534e-12    6.010488e-08    6.904835e-07
+    8       -76.0236138926    8.526513e-14    5.813286e-09    9.117645e-08
+    9       -76.0236138926   -1.421085e-14    8.509888e-10    1.899729e-08
+   10       -76.0236138926    1.421085e-14    2.291540e-10    2.900549e-09
+   11       -76.0236138926   -1.421085e-14    3.328139e-11    4.815703e-10
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.557145     2A1     -1.346847     1B2     -0.714278  
+   3A1     -0.568418     1B1     -0.497663  
+
+
+  Unoccupied orbitals
+   4A1      0.215479     2B2      0.308612     3B2      1.017232  
+   5A1      1.093548     6A1      1.134724     2B1      1.168964  
+   4B2      1.295561     7A1      1.411818     1A2      1.802656  
+   8A1      1.829522     3B1      1.931519     5B2      2.583553  
+   9A1      2.589804     6B2      2.843159     4B1      2.998428  
+   2A2      3.007199    10A1      3.407935    11A1      3.747396  
+   7B2      3.946504    12A1      4.129094  
+
+
+        total energy       =     -76.023613892571
+        kinetic energy     =      75.867498080727
+        nuc. attr. energy  =    -199.218923469828
+        elec. rep. energy  =      47.327811496531
+        potential energy   =    -151.891111973298
+        virial theorem     =       1.997946482628
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:01 2002
+
+user time   =       0.02 seconds
+system time =       0.01 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:01 2002
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CCSD
+	Reference orbitals     =  RHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            = Yes
+	Delete Restricted Docc =  No
+	Do All TEI             = Yes
+	Memory (Mbytes)        =   20.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	File30 Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 25
+	Number of MOs    = 25
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   12	   12	    0	    3	    0	    9	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    1	    0	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         9.3364497741
+	Total SCF Energy            =       -76.0236138926
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:01 2002
+
+user time   =       0.11 seconds
+system time =       0.13 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:01 2002
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Reference wfn   =      RHF
+	Derivative      =    First
+	Memory (Mbytes) =     20.0
+	AO Basis        =       No
+	Cache Level     =        2
+	Cache Type      =      LRU
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 25
+	Number of active MOs = 25
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   12	    0	    3	    0	    9	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.33644977406609
+	SCF energy          (chkpt) =    -76.02361389257069
+	One-electron energy          =   -123.35142538910156
+	Two-electron (AA) energy     =     14.50610101458355
+	Two-electron (BB) energy     =     14.50610101458355
+	Two-electron (AB) energy     =     23.48526070788123
+	Two-electron energy          =     37.99136172246478
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.02361389257069
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:01 2002
+
+user time   =       0.05 seconds
+system time =       0.04 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:01 2002
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    9.336449774066091
+	SCF energy          (chkpt)   =  -76.023613892570694
+	Reference energy    (file100) =  -76.023613892570694
+
+	Input parameters:
+	-----------------
+	Wave function   =      CCSD
+	Reference wfn   =      RHF
+	Memory (Mbytes) =   20.0
+	Maxiter         =     50
+	Convergence     = 1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	Local CC        =     No
+	AO Basis        =     No
+	Cache Level     =    2
+	Cache Type      =     LOW
+	Print Level     =    0
+
+	                     Solving CCSD Equations
+	                     ----------------------
+	Iter             Energy               RMS       T1Diag      D1Diag
+	----     ---------------------     --------   ----------  ----------
+	   0        -0.198108233389015    0.000e+00    0.000000    0.000000
+	   1        -0.202727545281283    2.613e-02    0.004258    0.008243
+	   2        -0.206413542085858    9.081e-03    0.004851    0.009555
+	   3        -0.206867642912011    2.485e-03    0.005309    0.010916
+	   4        -0.206872853905412    5.695e-04    0.005353    0.011185
+	   5        -0.206885287030975    1.752e-04    0.005384    0.011346
+	   6        -0.206882181591255    5.547e-05    0.005395    0.011406
+	   7        -0.206881643484532    1.392e-05    0.005398    0.011422
+	   8        -0.206881652169336    2.532e-06    0.005399    0.011425
+	   9        -0.206881586505032    5.697e-07    0.005399    0.011425
+	  10        -0.206881602861688    1.174e-07    0.005399    0.011425
+	  11        -0.206881601877326    2.309e-08    0.005399    0.011425
+
+	Iterations converged.
+
+	SCF energy       (chkpt)   =  -76.023613892570694
+	Reference energy (file100) =  -76.023613892570694
+	CCSD correlation energy    =   -0.206881601877326
+	Total CCSD energy          =  -76.230495494448022
+
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:02 2002
+
+user time   =       0.26 seconds
+system time =       0.11 seconds
+total time  =          1 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:02 2002
+
+
+			**************************
+			*                        *
+			*         CCHBAR         *
+			*                        *
+			**************************
+
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:02 2002
+
+user time   =       0.18 seconds
+system time =       0.13 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:02 2002
+
+
+			**************************
+			*                        *
+			*        CCLAMBDA        *
+			*                        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    9.336449774066091
+	SCF energy          (chkpt)   =  -76.023613892570694
+	Reference energy    (file100) =  -76.023613892570694
+	CCSD energy         (file100) =   -0.206881601877326
+	Total CCSD energy   (file100) =  -76.230495494448022
+
+	Input parameters:
+	-----------------
+	Maxiter     =      50
+	Convergence = 1.0e-11
+	Restart     =     Yes
+	Cache Level =     2
+	AO Basis        =     No
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter         PseudoEnergy             RMS  
+	----     ---------------------     --------
+	   0        -0.206917859491723    0.000e+00
+	   1        -0.204525718081981    8.143e-03
+	   2        -0.204117211497772    1.318e-03
+	   3        -0.204034494321692    5.864e-04
+	   4        -0.204029757997295    2.393e-04
+	   5        -0.204034055109613    1.150e-04
+	   6        -0.204033821588775    5.697e-05
+	   7        -0.204033961197953    3.160e-05
+	   8        -0.204033865841460    1.809e-05
+	   9        -0.204033892408511    1.070e-05
+	  10        -0.204033836581259    5.669e-06
+	  11        -0.204033827701084    3.517e-06
+	  12        -0.204033809810528    1.862e-06
+	  13        -0.204033813077411    1.196e-06
+	  14        -0.204033809509014    5.535e-07
+	  15        -0.204033808811273    3.651e-07
+	  16        -0.204033808196119    2.844e-07
+	  17        -0.204033808320144    2.920e-07
+	  18        -0.204033805519159    4.179e-07
+	  19        -0.204033806211724    2.128e-07
+	  20        -0.204033806053996    1.134e-07
+	  21        -0.204033805531367    1.093e-07
+	  22        -0.204033805178183    7.052e-08
+	  23        -0.204033804468465    5.040e-08
+	  24        -0.204033804408056    4.058e-08
+	  25        -0.204033804384188    1.857e-08
+	  26        -0.204033804384283    9.764e-09
+	  27        -0.204033804459222    4.839e-09
+	  28        -0.204033804295355    2.860e-09
+	  29        -0.204033804346137    2.222e-09
+	  30        -0.204033804381651    1.160e-09
+	  31        -0.204033804400546    2.268e-09
+	  32        -0.204033804404487    2.829e-09
+	  33        -0.204033804391750    3.121e-09
+	  34        -0.204033804335026    2.660e-09
+	  35        -0.204033804353633    1.470e-09
+	  36        -0.204033804344114    6.912e-10
+	  37        -0.204033804339758    4.764e-10
+	  38        -0.204033804327413    3.252e-10
+	  39        -0.204033804331320    2.635e-10
+	  40        -0.204033804329022    9.727e-11
+	  41        -0.204033804329920    7.412e-11
+	  42        -0.204033804329217    3.625e-11
+	  43        -0.204033804329035    2.491e-11
+	  44        -0.204033804329018    1.632e-11
+	  45        -0.204033804328931    7.667e-12
+
+	Iterations converged.
+
+	Overlap =    0.944807669806366
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:05 2002
+
+user time   =       1.55 seconds
+system time =       1.01 seconds
+total time  =          3 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:05 2002
+
+
+			**************************
+			*                        *
+			*        CCDENSITY       *
+			*                        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    9.336449774066091
+	SCF energy          (chkpt)   =  -76.023613892570694
+	Reference energy    (file100) =  -76.023613892570694
+	CCSD energy         (file100) =   -0.206881601877326
+	Total CCSD energy   (file100) =  -76.230495494448022
+
+	Input parameters:
+	-----------------
+	Two-pdm file =      74
+	Tolerance    = 1.0e-14
+	Cache Level  =    2
+	AO Basis        =     No
+
+
+	Trace of onepdm =   -0.000000000000000
+
+	Energies re-computed from CC density:
+	-------------------------------------
+	One-electron energy        =    0.218792571801008
+	IJKL energy                =    0.040883489927587
+	IJKA energy                =   -0.001357331685633
+	IJAB energy                =   -0.408237931437418
+	IBJA energy                =   -0.098270034925260
+	CIAB energy                =   -0.000056821904598
+	ABCD energy                =    0.041364456143784
+	Total two-electron energy  =   -0.425674173881538
+	CCSD correlation energy    =   -0.206881602080530
+	Total CCSD energy          =  -76.230495494651223
+
+	Virial Theorem Data:
+	--------------------
+	Kinetic energy (ref)   =   75.867498080726875
+	Kinetic energy (corr)  =    0.139844887262808
+	Kinetic energy (total) =   76.007342967989686
+	-V/T (ref)             =    2.002057742983401
+	-V/T (corr)            =    2.479364787134032
+	-V/T (total)           =    2.002935933789349
+
+	Energies re-computed from Fock-adjusted CC density:
+	---------------------------------------------------
+	One-electron energy        =    0.247754109962336
+	IJKL energy                =   -0.654543834613770
+	IJKA energy                =   -0.048668853033953
+	IJAB energy                =   -0.408237931437418
+	IBJA energy                =    0.615507272803060
+	CIAB energy                =   -0.000056821904598
+	ABCD energy                =    0.041364456143784
+	Total two-electron energy  =   -0.454635712042895
+	CCSD correlation energy    =   -0.206881602080559
+	Total CCSD energy          =  -76.230495494651251
+
+	Energies re-computed from Mulliken density:
+	-------------------------------------------
+	One-electron energy        =    0.247754109962336
+	IJKL energy                =   -0.654543834613770
+	IJKA energy                =   -0.048668853033953
+	IJAB energy                =   -0.377659830904839
+	IBJA energy                =    0.584929172270481
+	CIAB energy                =   -0.000056821904598
+	ABCD energy                =    0.041364456143784
+	Total two-electron energy  =   -0.454635712042895
+	CCSD correlation energy    =   -0.206881602080559
+	Total CCSD energy          =  -76.230495494651251
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:06 2002
+
+user time   =       0.24 seconds
+system time =       0.20 seconds
+total time  =          1 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:06 2002
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CCSD
+	Reference orbitals     =  RHF
+	Backtrans              =  Yes
+	Print MOs              =  No
+	Freeze Core            = No
+	Delete Restricted Docc =  No
+	Do All TEI             = Yes
+	Memory (Mbytes)        =   20.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  74
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  77
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  No
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  No
+	Do FZC  OEI tranform   =  No
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	File30 Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 25
+	Number of MOs    = 25
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   12	   12	    0	    3	    0	    9	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    1	    0	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         9.3364497741
+	Total SCF Energy            =       -76.0236138926
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file77.
+
+	Transforming one-electron integrals...
+	One-pdm and lagrangian written to file76.
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:06 2002
+
+user time   =       0.20 seconds
+system time =       0.15 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:06 2002
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O                                                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -CCSD forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000    -0.025773612358
+       2        0.000000000000    -0.014013258423     0.012886806179
+       3        0.000000000000     0.014013258423     0.012886806179
+
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:06 2002
+
+user time   =       0.17 seconds
+system time =       0.01 seconds
+total time  =          0 seconds
+	________________________________________________________
+	|                                                      |
+	| OPTKING: For internal coordinate optimizations and   |
+	| and vibrational frequencies, Rollin King, 1999, 2002 |
+	|______________________________________________________|
+
+Iteration: 1     
+
+Cartesian geometry and gradient (if available) in a.u. with masses
+  8.0    15.99491500   0.0000000000   0.0000000000   0.1199880984
+  1.0     1.00782500   0.0000000000   1.4218712159  -0.9521491504
+  1.0     1.00782500   0.0000000000  -1.4218712159  -0.9521491504
+                       0.0000000000   0.0000000000  -0.0257736124
+                       0.0000000000  -0.0140132584   0.0128868062
+                       0.0000000000   0.0140132584   0.0128868062
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94235103)
+    (2 1 3) (0.94235103)
+Bends
+    (3 2 1 3) (105.96503154)
+Saving gradient and energy.
+
+******** OPTKING execution completed ********
+
+	________________________________________________________
+	|                                                      |
+	| OPTKING: For internal coordinate optimizations and   |
+	| and vibrational frequencies, Rollin King, 1999, 2002 |
+	|______________________________________________________|
+
+Iteration: 1     
+
+Cartesian geometry and gradient (if available) in a.u. with masses
+  8.0    15.99491500   0.0000000000   0.0000000000   0.1199880984
+  1.0     1.00782500   0.0000000000   1.4218712159  -0.9521491504
+  1.0     1.00782500   0.0000000000  -1.4218712159  -0.9521491504
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94235103)
+    (2 1 3) (0.94235103)
+Bends
+    (3 2 1 3) (105.96503154)
+
+ ** Geometry for displacement 2 sent to chkpt. **
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:07 2002
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O                                                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+    Wrote 13617 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:07 2002
+
+user time   =       0.02 seconds
+system time =       0.01 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:07 2002
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+
+  label       = 6-31G** SCF H2O
+  wfn          = CCSD
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct SCF   = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        9.3291315594581
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.02361389
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.228335e-02
+
+
+  Using DOCC and SOCC to 
+  determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 6516 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -76.0236144860    8.535275e+01    0.000000e+00    0.000000e+00
+    2       -76.0236148831    3.970332e-07    1.020362e-05    2.489378e-04
+    3       -76.0236149223    3.919901e-08    3.263488e-06    1.145931e-04
+    4       -76.0236149300    7.746252e-09    1.399542e-06    3.719981e-05
+    5       -76.0236149309    9.036114e-10    6.863917e-07    1.235803e-05
+    6       -76.0236149309    2.758327e-11    1.323784e-07    2.016601e-06
+    7       -76.0236149309    1.833200e-12    3.670048e-08    3.803398e-07
+    8       -76.0236149309    1.421085e-14    3.099495e-09    5.636170e-08
+    9       -76.0236149309    1.421085e-14    5.744942e-10    1.168992e-08
+   10       -76.0236149309   -1.421085e-14    1.389414e-10    1.744123e-09
+   11       -76.0236149309    0.000000e+00    2.074040e-11    2.944902e-10
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.557309     2A1     -1.346493     1B2     -0.713760  
+   3A1     -0.568393     1B1     -0.497627  
+
+
+  Unoccupied orbitals
+   4A1      0.215314     2B2      0.308424     3B2      1.016641  
+   5A1      1.093145     6A1      1.134610     2B1      1.168970  
+   4B2      1.295514     7A1      1.411862     1A2      1.802656  
+   8A1      1.829070     3B1      1.931274     5B2      2.583054  
+   9A1      2.588833     6B2      2.841413     4B1      2.997895  
+   2A2      3.005947    10A1      3.406451    11A1      3.745501  
+   7B2      3.945356    12A1      4.128090  
+
+
+        total energy       =     -76.023614930933
+        kinetic energy     =      75.864500651360
+        nuc. attr. energy  =    -199.202829070932
+        elec. rep. energy  =      47.314713488640
+        potential energy   =    -151.888115582292
+        virial theorem     =       1.997907041388
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:07 2002
+
+user time   =       0.02 seconds
+system time =       0.01 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:07 2002
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CCSD
+	Reference orbitals     =  RHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            = Yes
+	Delete Restricted Docc =  No
+	Do All TEI             = Yes
+	Memory (Mbytes)        =   20.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	File30 Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 25
+	Number of MOs    = 25
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   12	   12	    0	    3	    0	    9	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    1	    0	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         9.3291315595
+	Total SCF Energy            =       -76.0236149309
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:07 2002
+
+user time   =       0.16 seconds
+system time =       0.07 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:07 2002
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Reference wfn   =      RHF
+	Derivative      =    First
+	Memory (Mbytes) =     20.0
+	AO Basis        =       No
+	Cache Level     =        2
+	Cache Type      =      LRU
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 25
+	Number of active MOs = 25
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   12	    0	    3	    0	    9	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.32913155945812
+	SCF energy          (chkpt) =    -76.02361493093260
+	One-electron energy          =   -123.33832841957231
+	Two-electron (AA) energy     =     14.50363374221034
+	Two-electron (BB) energy     =     14.50363374221034
+	Two-electron (AB) energy     =     23.48194818697123
+	Two-electron energy          =     37.98558192918156
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.02361493093262
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:07 2002
+
+user time   =       0.03 seconds
+system time =       0.06 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:07 2002
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    9.329131559458125
+	SCF energy          (chkpt)   =  -76.023614930932595
+	Reference energy    (file100) =  -76.023614930932624
+
+	Input parameters:
+	-----------------
+	Wave function   =      CCSD
+	Reference wfn   =      RHF
+	Memory (Mbytes) =   20.0
+	Maxiter         =     50
+	Convergence     = 1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	Local CC        =     No
+	AO Basis        =     No
+	Cache Level     =    2
+	Cache Type      =     LOW
+	Print Level     =    0
+
+	                     Solving CCSD Equations
+	                     ----------------------
+	Iter             Energy               RMS       T1Diag      D1Diag
+	----     ---------------------     --------   ----------  ----------
+	   0        -0.198164366560411    0.000e+00    0.000000    0.000000
+	   1        -0.202774335047549    2.616e-02    0.004264    0.008259
+	   2        -0.206466573675356    9.099e-03    0.004859    0.009576
+	   3        -0.206922244829360    2.493e-03    0.005319    0.010942
+	   4        -0.206927440360102    5.715e-04    0.005363    0.011213
+	   5        -0.206939931992992    1.760e-04    0.005394    0.011375
+	   6        -0.206936803319656    5.573e-05    0.005405    0.011435
+	   7        -0.206936264111103    1.397e-05    0.005408    0.011452
+	   8        -0.206936272168390    2.543e-06    0.005409    0.011454
+	   9        -0.206936206192402    5.731e-07    0.005409    0.011454
+	  10        -0.206936222651524    1.182e-07    0.005409    0.011454
+	  11        -0.206936221657242    2.325e-08    0.005409    0.011454
+
+	Iterations converged.
+
+	SCF energy       (chkpt)   =  -76.023614930932595
+	Reference energy (file100) =  -76.023614930932624
+	CCSD correlation energy    =   -0.206936221657242
+	Total CCSD energy          =  -76.230551152589868
+
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:08 2002
+
+user time   =       0.24 seconds
+system time =       0.14 seconds
+total time  =          1 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:08 2002
+
+
+			**************************
+			*                        *
+			*         CCHBAR         *
+			*                        *
+			**************************
+
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:08 2002
+
+user time   =       0.10 seconds
+system time =       0.19 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:08 2002
+
+
+			**************************
+			*                        *
+			*        CCLAMBDA        *
+			*                        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    9.329131559458125
+	SCF energy          (chkpt)   =  -76.023614930932595
+	Reference energy    (file100) =  -76.023614930932624
+	CCSD energy         (file100) =   -0.206936221657242
+	Total CCSD energy   (file100) =  -76.230551152589868
+
+	Input parameters:
+	-----------------
+	Maxiter     =      50
+	Convergence = 1.0e-11
+	Restart     =     Yes
+	Cache Level =     2
+	AO Basis        =     No
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter         PseudoEnergy             RMS  
+	----     ---------------------     --------
+	   0        -0.206972486605872    0.000e+00
+	   1        -0.204576903070646    8.145e-03
+	   2        -0.204167976914087    1.320e-03
+	   3        -0.204085101687164    5.878e-04
+	   4        -0.204080344248378    2.399e-04
+	   5        -0.204084656601426    1.154e-04
+	   6        -0.204084420156803    5.715e-05
+	   7        -0.204084561287001    3.172e-05
+	   8        -0.204084464997787    1.816e-05
+	   9        -0.204084491435975    1.074e-05
+	  10        -0.204084434597382    5.696e-06
+	  11        -0.204084426938889    3.543e-06
+	  12        -0.204084406770248    1.853e-06
+	  13        -0.204084413731604    1.260e-06
+	  14        -0.204084407851799    5.604e-07
+	  15        -0.204084407228645    3.816e-07
+	  16        -0.204084406884210    2.747e-07
+	  17        -0.204084406194523    2.523e-07
+	  18        -0.204084405164216    3.125e-07
+	  19        -0.204084403937363    2.057e-07
+	  20        -0.204084404204991    1.444e-07
+	  21        -0.204084404421204    6.077e-08
+	  22        -0.204084404329096    4.649e-08
+	  23        -0.204084404087397    5.494e-08
+	  24        -0.204084403675091    4.612e-08
+	  25        -0.204084403215266    2.961e-08
+	  26        -0.204084403267371    1.949e-08
+	  27        -0.204084403304839    1.023e-08
+	  28        -0.204084403367919    7.491e-09
+	  29        -0.204084403055349    8.612e-09
+	  30        -0.204084403142728    5.284e-09
+	  31        -0.204084403037609    4.551e-09
+	  32        -0.204084403145472    2.783e-09
+	  33        -0.204084402987785    4.917e-09
+	  34        -0.204084403015514    3.065e-09
+	  35        -0.204084403019193    8.812e-10
+	  36        -0.204084403022485    5.092e-10
+	  37        -0.204084403007191    5.044e-10
+	  38        -0.204084403000680    2.958e-10
+	  39        -0.204084403002763    2.195e-10
+	  40        -0.204084403001479    8.047e-11
+	  41        -0.204084403002512    5.689e-11
+	  42        -0.204084403002248    2.182e-11
+	  43        -0.204084403002412    1.430e-11
+	  44        -0.204084403002318    1.140e-11
+	  45        -0.204084403001969    9.609e-12
+
+	Iterations converged.
+
+	Overlap =    0.944754643868780
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:11 2002
+
+user time   =       1.67 seconds
+system time =       0.90 seconds
+total time  =          3 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:11 2002
+
+
+			**************************
+			*                        *
+			*        CCDENSITY       *
+			*                        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    9.329131559458125
+	SCF energy          (chkpt)   =  -76.023614930932595
+	Reference energy    (file100) =  -76.023614930932624
+	CCSD energy         (file100) =   -0.206936221657242
+	Total CCSD energy   (file100) =  -76.230551152589868
+
+	Input parameters:
+	-----------------
+	Two-pdm file =      74
+	Tolerance    = 1.0e-14
+	Cache Level  =    2
+	AO Basis        =     No
+
+
+	Trace of onepdm =    0.000000000000000
+
+	Energies re-computed from CC density:
+	-------------------------------------
+	One-electron energy        =    0.218854621395892
+	IJKL energy                =    0.040912019883272
+	IJKA energy                =   -0.001358142642192
+	IJAB energy                =   -0.408339321800067
+	IBJA energy                =   -0.098345378590541
+	CIAB energy                =   -0.000060412922698
+	ABCD energy                =    0.041400392813243
+	Total two-electron energy  =   -0.425790843258984
+	CCSD correlation energy    =   -0.206936221863092
+	Total CCSD energy          =  -76.230551152795712
+
+	Virial Theorem Data:
+	--------------------
+	Kinetic energy (ref)   =   75.864500651359933
+	Kinetic energy (corr)  =    0.140150136484339
+	Kinetic energy (total) =   76.004650787844270
+	-V/T (ref)             =    2.002097348274972
+	-V/T (corr)            =    2.476532430493678
+	-V/T (total)           =    2.002972191338345
+
+	Energies re-computed from Fock-adjusted CC density:
+	---------------------------------------------------
+	One-electron energy        =    0.247703125620446
+	IJKL energy                =   -0.655010263732425
+	IJKA energy                =   -0.048632081122423
+	IJAB energy                =   -0.408339321800067
+	IBJA energy                =    0.616002339280860
+	CIAB energy                =   -0.000060412922698
+	ABCD energy                =    0.041400392813243
+	Total two-electron energy  =   -0.454639347483512
+	CCSD correlation energy    =   -0.206936221863066
+	Total CCSD energy          =  -76.230551152795684
+
+	Energies re-computed from Mulliken density:
+	-------------------------------------------
+	One-electron energy        =    0.247703125620446
+	IJKL energy                =   -0.655010263732425
+	IJKA energy                =   -0.048632081122423
+	IJAB energy                =   -0.377747582267586
+	IBJA energy                =    0.585410599748379
+	CIAB energy                =   -0.000060412922698
+	ABCD energy                =    0.041400392813243
+	Total two-electron energy  =   -0.454639347483512
+	CCSD correlation energy    =   -0.206936221863066
+	Total CCSD energy          =  -76.230551152795684
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:12 2002
+
+user time   =       0.23 seconds
+system time =       0.24 seconds
+total time  =          1 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:12 2002
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CCSD
+	Reference orbitals     =  RHF
+	Backtrans              =  Yes
+	Print MOs              =  No
+	Freeze Core            = No
+	Delete Restricted Docc =  No
+	Do All TEI             = Yes
+	Memory (Mbytes)        =   20.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  74
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  77
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  No
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  No
+	Do FZC  OEI tranform   =  No
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	File30 Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 25
+	Number of MOs    = 25
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   12	   12	    0	    3	    0	    9	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    1	    0	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         9.3291315595
+	Total SCF Energy            =       -76.0236149309
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file77.
+
+	Transforming one-electron integrals...
+	One-pdm and lagrangian written to file76.
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:12 2002
+
+user time   =       0.16 seconds
+system time =       0.14 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:12 2002
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O                                                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -CCSD forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000    -0.024693408734
+       2        0.000000000000    -0.013343241476     0.012346704367
+       3        0.000000000000     0.013343241476     0.012346704367
+
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:12 2002
+
+user time   =       0.15 seconds
+system time =       0.01 seconds
+total time  =          0 seconds
+	________________________________________________________
+	|                                                      |
+	| OPTKING: For internal coordinate optimizations and   |
+	| and vibrational frequencies, Rollin King, 1999, 2002 |
+	|______________________________________________________|
+
+Iteration: 1     
+
+Cartesian geometry and gradient (if available) in a.u. with masses
+  8.0    15.99491500   0.0000000000   0.0000000000   0.1201580654
+  1.0     1.00782500   0.0000000000   1.4225049425  -0.9534979003
+  1.0     1.00782500   0.0000000000  -1.4225049425  -0.9534979003
+                       0.0000000000   0.0000000000  -0.0246934087
+                       0.0000000000  -0.0133432415   0.0123467044
+                       0.0000000000   0.0133432415   0.0123467044
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94310275)
+    (2 1 3) (0.94310275)
+Bends
+    (3 2 1 3) (105.91159497)
+Saving gradient and energy.
+
+******** OPTKING execution completed ********
+
+	________________________________________________________
+	|                                                      |
+	| OPTKING: For internal coordinate optimizations and   |
+	| and vibrational frequencies, Rollin King, 1999, 2002 |
+	|______________________________________________________|
+
+Iteration: 1     
+
+Cartesian geometry and gradient (if available) in a.u. with masses
+  8.0    15.99491500   0.0000000000   0.0000000000   0.1201580654
+  1.0     1.00782500   0.0000000000   1.4225049425  -0.9534979003
+  1.0     1.00782500   0.0000000000  -1.4225049425  -0.9534979003
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94310275)
+    (2 1 3) (0.94310275)
+Bends
+    (3 2 1 3) (105.91159497)
+
+ ** Geometry for displacement 3 sent to chkpt. **
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:13 2002
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O                                                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+    Wrote 13617 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:13 2002
+
+user time   =       0.02 seconds
+system time =       0.01 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:13 2002
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+
+  label       = 6-31G** SCF H2O
+  wfn          = CCSD
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct SCF   = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        9.3297797433456
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.02361493
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.228271e-02
+
+
+  Using DOCC and SOCC to 
+  determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 6516 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -76.0236147732    8.535339e+01    0.000000e+00    0.000000e+00
+    2       -76.0236149205    1.472401e-07    7.123792e-06    1.625243e-04
+    3       -76.0236149299    9.461047e-09    1.830991e-06    4.951393e-05
+    4       -76.0236149308    8.758008e-10    4.402081e-07    1.370597e-05
+    5       -76.0236149310    1.758593e-10    3.010159e-07    5.375558e-06
+    6       -76.0236149310    5.229595e-12    5.996000e-08    8.070150e-07
+    7       -76.0236149310    1.421085e-13    9.673400e-09    1.227487e-07
+    8       -76.0236149310    0.000000e+00    1.362115e-09    2.970953e-08
+    9       -76.0236149310    0.000000e+00    2.695502e-10    4.960717e-09
+   10       -76.0236149310    1.421085e-14    5.609685e-11    6.852526e-10
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.557227     2A1     -1.346441     1B2     -0.714025  
+   3A1     -0.568174     1B1     -0.497587  
+
+
+  Unoccupied orbitals
+   4A1      0.215351     2B2      0.308450     3B2      1.017162  
+   5A1      1.092883     6A1      1.134549     2B1      1.169000  
+   4B2      1.295532     7A1      1.411494     1A2      1.802427  
+   8A1      1.829953     3B1      1.931675     5B2      2.582269  
+   9A1      2.588847     6B2      2.841938     4B1      2.997173  
+   2A2      3.006792    10A1      3.406665    11A1      3.745918  
+   7B2      3.945082    12A1      4.128833  
+
+
+        total energy       =     -76.023614930993
+        kinetic energy     =      75.864677960396
+        nuc. attr. energy  =    -199.204558645097
+        elec. rep. energy  =      47.316265753708
+        potential energy   =    -151.888292891389
+        virial theorem     =       1.997909373676
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:13 2002
+
+user time   =       0.00 seconds
+system time =       0.01 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:13 2002
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CCSD
+	Reference orbitals     =  RHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            = Yes
+	Delete Restricted Docc =  No
+	Do All TEI             = Yes
+	Memory (Mbytes)        =   20.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	File30 Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 25
+	Number of MOs    = 25
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   12	   12	    0	    3	    0	    9	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    1	    0	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         9.3297797433
+	Total SCF Energy            =       -76.0236149310
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:13 2002
+
+user time   =       0.15 seconds
+system time =       0.08 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:13 2002
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Reference wfn   =      RHF
+	Derivative      =    First
+	Memory (Mbytes) =     20.0
+	AO Basis        =       No
+	Cache Level     =        2
+	Cache Type      =      LRU
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 25
+	Number of active MOs = 25
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   12	    0	    3	    0	    9	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.32977974334558
+	SCF energy          (chkpt) =    -76.02361493099285
+	One-electron energy          =   -123.33988068470114
+	Two-electron (AA) energy     =     14.50402870249889
+	Two-electron (BB) energy     =     14.50402870249889
+	Two-electron (AB) energy     =     23.48245730786385
+	Two-electron energy          =     37.98648601036274
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.02361493099282
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:14 2002
+
+user time   =       0.02 seconds
+system time =       0.07 seconds
+total time  =          1 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:14 2002
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    9.329779743345584
+	SCF energy          (chkpt)   =  -76.023614930992849
+	Reference energy    (file100) =  -76.023614930992821
+
+	Input parameters:
+	-----------------
+	Wave function   =      CCSD
+	Reference wfn   =      RHF
+	Memory (Mbytes) =   20.0
+	Maxiter         =     50
+	Convergence     = 1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	Local CC        =     No
+	AO Basis        =     No
+	Cache Level     =    2
+	Cache Type      =     LOW
+	Print Level     =    0
+
+	                     Solving CCSD Equations
+	                     ----------------------
+	Iter             Energy               RMS       T1Diag      D1Diag
+	----     ---------------------     --------   ----------  ----------
+	   0        -0.198150240760819    0.000e+00    0.000000    0.000000
+	   1        -0.202762857673192    2.615e-02    0.004262    0.008255
+	   2        -0.206453983372070    9.095e-03    0.004857    0.009573
+	   3        -0.206909136905769    2.491e-03    0.005316    0.010939
+	   4        -0.206914359063843    5.714e-04    0.005361    0.011210
+	   5        -0.206926834975308    1.761e-04    0.005392    0.011372
+	   6        -0.206923703460134    5.576e-05    0.005403    0.011432
+	   7        -0.206923163893679    1.397e-05    0.005406    0.011449
+	   8        -0.206923172061792    2.542e-06    0.005407    0.011451
+	   9        -0.206923106108342    5.727e-07    0.005407    0.011451
+	  10        -0.206923122555635    1.181e-07    0.005407    0.011451
+	  11        -0.206923121560835    2.324e-08    0.005407    0.011451
+
+	Iterations converged.
+
+	SCF energy       (chkpt)   =  -76.023614930992849
+	Reference energy (file100) =  -76.023614930992821
+	CCSD correlation energy    =   -0.206923121560835
+	Total CCSD energy          =  -76.230538052553655
+
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:14 2002
+
+user time   =       0.23 seconds
+system time =       0.16 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:14 2002
+
+
+			**************************
+			*                        *
+			*         CCHBAR         *
+			*                        *
+			**************************
+
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:14 2002
+
+user time   =       0.14 seconds
+system time =       0.16 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:15 2002
+
+
+			**************************
+			*                        *
+			*        CCLAMBDA        *
+			*                        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    9.329779743345584
+	SCF energy          (chkpt)   =  -76.023614930992849
+	Reference energy    (file100) =  -76.023614930992821
+	CCSD energy         (file100) =   -0.206923121560835
+	Total CCSD energy   (file100) =  -76.230538052553655
+
+	Input parameters:
+	-----------------
+	Maxiter     =      50
+	Convergence = 1.0e-11
+	Restart     =     Yes
+	Cache Level =     2
+	AO Basis        =     No
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter         PseudoEnergy             RMS  
+	----     ---------------------     --------
+	   0        -0.206959386784666    0.000e+00
+	   1        -0.204564704708903    8.144e-03
+	   2        -0.204155896838134    1.319e-03
+	   3        -0.204073048102826    5.874e-04
+	   4        -0.204068290852512    2.398e-04
+	   5        -0.204072601467333    1.154e-04
+	   6        -0.204072366044160    5.714e-05
+	   7        -0.204072506616781    3.171e-05
+	   8        -0.204072411017723    1.816e-05
+	   9        -0.204072437007192    1.074e-05
+	  10        -0.204072380007447    5.701e-06
+	  11        -0.204072372988645    3.550e-06
+	  12        -0.204072351947260    1.848e-06
+	  13        -0.204072359996567    1.285e-06
+	  14        -0.204072353646869    5.639e-07
+	  15        -0.204072353009357    3.839e-07
+	  16        -0.204072352510885    2.712e-07
+	  17        -0.204072350945337    2.328e-07
+	  18        -0.204072350131083    1.508e-07
+	  19        -0.204072350267346    8.588e-08
+	  20        -0.204072349400158    8.017e-08
+	  21        -0.204072349709566    5.013e-08
+	  22        -0.204072349206039    4.392e-08
+	  23        -0.204072348925228    2.744e-08
+	  24        -0.204072348863399    2.281e-08
+	  25        -0.204072349049587    7.653e-09
+	  26        -0.204072348973096    5.368e-09
+	  27        -0.204072348931911    3.645e-09
+	  28        -0.204072348904938    2.399e-09
+	  29        -0.204072348907381    1.567e-09
+	  30        -0.204072348892834    8.429e-10
+	  31        -0.204072348892224    5.758e-10
+	  32        -0.204072348876331    3.364e-10
+	  33        -0.204072348888920    3.697e-10
+	  34        -0.204072348883331    1.380e-10
+	  35        -0.204072348884046    7.604e-11
+	  36        -0.204072348883914    4.104e-11
+	  37        -0.204072348883197    2.910e-11
+	  38        -0.204072348883289    2.333e-11
+	  39        -0.204072348883191    9.646e-12
+
+	Iterations converged.
+
+	Overlap =    0.944765268325765
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:17 2002
+
+user time   =       1.37 seconds
+system time =       0.84 seconds
+total time  =          2 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:17 2002
+
+
+			**************************
+			*                        *
+			*        CCDENSITY       *
+			*                        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    9.329779743345584
+	SCF energy          (chkpt)   =  -76.023614930992849
+	Reference energy    (file100) =  -76.023614930992821
+	CCSD energy         (file100) =   -0.206923121560835
+	Total CCSD energy   (file100) =  -76.230538052553655
+
+	Input parameters:
+	-----------------
+	Two-pdm file =      74
+	Tolerance    = 1.0e-14
+	Cache Level  =    2
+	AO Basis        =     No
+
+
+	Trace of onepdm =    0.000000000000000
+
+	Energies re-computed from CC density:
+	-------------------------------------
+	One-electron energy        =    0.218841162590436
+	IJKL energy                =    0.040906505565284
+	IJKA energy                =   -0.001357974642345
+	IJAB energy                =   -0.408315147931623
+	IBJA energy                =   -0.098330819700718
+	CIAB energy                =   -0.000059444122095
+	ABCD energy                =    0.041392596477619
+	Total two-electron energy  =   -0.425764284353878
+	CCSD correlation energy    =   -0.206923121763441
+	Total CCSD energy          =  -76.230538052756259
+
+	Virial Theorem Data:
+	--------------------
+	Kinetic energy (ref)   =   75.864677960395710
+	Kinetic energy (corr)  =    0.140069165840378
+	Kinetic energy (total) =   76.004747126236083
+	-V/T (ref)             =    2.002095006198801
+	-V/T (corr)            =    2.477292452763249
+	-V/T (total)           =    2.002970747681623
+
+	Energies re-computed from Fock-adjusted CC density:
+	---------------------------------------------------
+	One-electron energy        =    0.247729305211665
+	IJKL energy                =   -0.654912855699524
+	IJKA energy                =   -0.048649125747852
+	IJAB energy                =   -0.408315147931623
+	IBJA energy                =    0.615891550047977
+	CIAB energy                =   -0.000059444122095
+	ABCD energy                =    0.041392596477619
+	Total two-electron energy  =   -0.454652426975497
+	CCSD correlation energy    =   -0.206923121763831
+	Total CCSD energy          =  -76.230538052756657
+
+	Energies re-computed from Mulliken density:
+	-------------------------------------------
+	One-electron energy        =    0.247729305211665
+	IJKL energy                =   -0.654912855699524
+	IJKA energy                =   -0.048649125747852
+	IJAB energy                =   -0.377725763393336
+	IBJA energy                =    0.585302165509691
+	CIAB energy                =   -0.000059444122095
+	ABCD energy                =    0.041392596477619
+	Total two-electron energy  =   -0.454652426975497
+	CCSD correlation energy    =   -0.206923121763832
+	Total CCSD energy          =  -76.230538052756657
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:18 2002
+
+user time   =       0.27 seconds
+system time =       0.17 seconds
+total time  =          1 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:19 2002
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CCSD
+	Reference orbitals     =  RHF
+	Backtrans              =  Yes
+	Print MOs              =  No
+	Freeze Core            = No
+	Delete Restricted Docc =  No
+	Do All TEI             = Yes
+	Memory (Mbytes)        =   20.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  74
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  77
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  No
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  No
+	Do FZC  OEI tranform   =  No
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	File30 Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 25
+	Number of MOs    = 25
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   12	   12	    0	    3	    0	    9	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    1	    0	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         9.3297797433
+	Total SCF Energy            =       -76.0236149310
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file77.
+
+	Transforming one-electron integrals...
+	One-pdm and lagrangian written to file76.
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:21 2002
+
+user time   =       0.18 seconds
+system time =       0.13 seconds
+total time  =          2 seconds
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:22 2002
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O                                                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -CCSD forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000    -0.025009871566
+       2        0.000000000000    -0.013278353615     0.012504935783
+       3        0.000000000000     0.013278353615     0.012504935783
+
+******************************************************************************
+tstop called on aurelius.chemistry.gatech.edu
+Mon Sep 30 14:43:22 2002
+
+user time   =       0.15 seconds
+system time =       0.01 seconds
+total time  =          0 seconds
+	________________________________________________________
+	|                                                      |
+	| OPTKING: For internal coordinate optimizations and   |
+	| and vibrational frequencies, Rollin King, 1999, 2002 |
+	|______________________________________________________|
+
+Iteration: 1     
+
+Cartesian geometry and gradient (if available) in a.u. with masses
+  8.0    15.99491500   0.0000000000   0.0000000000   0.1199874081
+  1.0     1.00782500   0.0000000000   1.4234363648  -0.9521436730
+  1.0     1.00782500   0.0000000000  -1.4234363648  -0.9521436730
+                       0.0000000000   0.0000000000  -0.0250098716
+                       0.0000000000  -0.0132783536   0.0125049358
+                       0.0000000000   0.0132783536   0.0125049358
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94301051)
+    (2 1 3) (0.94301051)
+Bends
+    (3 2 1 3) (106.02594251)
+Saving gradient and energy.
+
+******** OPTKING execution completed ********
+
+	________________________________________________________
+	|                                                      |
+	| OPTKING: For internal coordinate optimizations and   |
+	| and vibrational frequencies, Rollin King, 1999, 2002 |
+	|______________________________________________________|
+
+Iteration: 1     
+
+Cartesian geometry and gradient (if available) in a.u. with masses
+  8.0    15.99491500   0.0000000000   0.0000000000   0.1199874081
+  1.0     1.00782500   0.0000000000   1.4234363648  -0.9521436730
+  1.0     1.00782500   0.0000000000  -1.4234363648  -0.9521436730
+                       0.0000000000   0.0000000000  -0.0250098716
+                       0.0000000000  -0.0132783536   0.0125049358
+                       0.0000000000   0.0132783536   0.0125049358
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94301051)
+    (2 1 3) (0.94301051)
+Bends
+    (3 2 1 3) (106.02594251)
+
+ ** Calculating frequencies from gradients. **
+
+  SYMM = (
+    ("A1 " (1 2 3)
+     (-0.71 -0.71 -0.07))
+    ("A1 " (1 2 3)
+     (-0.05 -0.05  1.00))
+  )
+BuB^t Determinant: 2.489316e+00
+BuB^t Determinant: 2.496777e+00
+BuB^t Determinant: 2.492798e+00
+BuB^t Determinant: 2.493286e+00
+
+Force Constants
+
+           1           2
+
+    1   9.7537244   0.1950687
+    2   0.1950687   0.7263202
+
+Harmonic Vibrational Frequencies
+	 1                1720.5
+	 2                4134.9
+
+******** OPTKING execution completed ********
+

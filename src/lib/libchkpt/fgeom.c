@@ -21,13 +21,16 @@ double **chkpt_rd_fgeom(void)
 {
   int nallatom;
   double **fgeom;
+  char keyword[PSIO_KEYLEN];
 
   nallatom = chkpt_rd_nallatom();
 
   fgeom = block_matrix(nallatom,3);
 
-  psio_read_entry(PSIF_CHKPT, "::Full cartesian geometry", (char *) fgeom[0], 
-		  (int) 3*nallatom*sizeof(double));
+  /* build keyword string */
+  sprintf(keyword, ":%s:%s", chkpt_prefix, "Full cartesian geometry");
+
+  psio_read_entry(PSIF_CHKPT, keyword, (char *) fgeom[0], (int) 3*nallatom*sizeof(double));
 
   return  fgeom;
 }
@@ -45,9 +48,11 @@ double **chkpt_rd_fgeom(void)
 void chkpt_wt_fgeom(double **fgeom)
 {
   int nallatom;
+  char keyword[PSIO_KEYLEN];
 
   nallatom = chkpt_rd_nallatom();
 
-  psio_write_entry(PSIF_CHKPT, "::Full cartesian geometry", (char *) fgeom[0], 
-		  (int) 3*nallatom*sizeof(double));
+  sprintf(keyword, ":%s:%s", chkpt_prefix, "Full cartesian geometry");
+
+  psio_write_entry(PSIF_CHKPT, keyword, (char *) fgeom[0], (int) 3*nallatom*sizeof(double));
 }

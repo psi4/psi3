@@ -13,7 +13,7 @@ void WabefDD(int i, int C_irr) {
   char CMNEF_lbl[32], Cmnef_lbl[32], CMnEf_lbl[32];
   char SIJAB_lbl[32], Sijab_lbl[32], SIjAb_lbl[32], SIA_lbl[32], Sia_lbl[32];
 
-  if (params.eom_ref == 0) { // RHF
+  if (params.eom_ref == 0) { /* RHF */
     /* SIjAb += WAbEf*CIjEf */
     sprintf(SIjAb_lbl, "%s %d", "SIjAb", i);
     sprintf(CMnEf_lbl, "%s %d", "CMnEf", i);
@@ -52,10 +52,10 @@ void WabefDD(int i, int C_irr) {
 
     dpd_buf4_init(&Z, EOM_TMP, C_irr, 0, 5, 0, 5, 0, "WabefDD Z(Ij,Ab)");
     dpd_file2_init(&tIA, CC_OEI, H_IRR, 0, 1, "tIA");
-//fprintf(outfile,"\n begin contract244 in WabefDD\n");
+    /* fprintf(outfile,"\n begin contract244 in WabefDD\n"); */
     dpd_contract244(&tIA, &X, &Z, 0, 2, 1, 1.0, 0.0);
     dpd_file2_close(&tIA);
-//dpd_buf4_print(&Z,outfile,1);
+    /* dpd_buf4_print(&Z,outfile,1); */
     dpd_buf4_close(&X);
 
     dpd_buf4_sort(&Z, EOM_TMP, qpsr, 0, 5, "WabefDD Z(jI,bA)");
@@ -79,7 +79,7 @@ void WabefDD(int i, int C_irr) {
     dpd_buf4_close(&SIjAb);
   }
 
-  else { // ROHF
+  else { /* ROHF */
     sprintf(CMNEF_lbl, "%s %d", "CMNEF", i);
     sprintf(Cmnef_lbl, "%s %d", "Cmnef", i);
     sprintf(SIJAB_lbl, "%s %d", "SIJAB", i);

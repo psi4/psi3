@@ -40,6 +40,7 @@ psio_tocentry *psio_toclast(ULI unit);
 ULI psio_toclen(ULI unit);
 int psio_tocdel(ULI unit, char *key);
 int psio_tocclean(ULI unit, char *key);
+void psio_tocrename(ULI unit, char *key, char *newkey);
 
 int psio_write(ULI unit, char *key, char *buffer, ULI size,
 	       psio_address sadd, psio_address *eadd);

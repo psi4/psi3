@@ -14,21 +14,21 @@ void get_eom_params()
 
   eom_params.states_per_irrep = (int *) malloc(moinfo.nirreps * sizeof(int));
   if (ip_exist("STATES_PER_IRREP",0)) {
-     ip_count("STATES_PER_IRREP", &i, 0);
-     if (i != moinfo.nirreps) {
-        fprintf(outfile,"Dim. of states_per_irrep vector must be %d\n", moinfo.nirreps) ;
-        exit(0);
-     }
-     for (i=0;i<moinfo.nirreps;++i)
-        errcod = ip_data("STATES_PER_IRREP","%d",&(eom_params.states_per_irrep[i]),1,i);
+    ip_count("STATES_PER_IRREP", &i, 0);
+    if (i != moinfo.nirreps) {
+      fprintf(outfile,"Dim. of states_per_irrep vector must be %d\n", moinfo.nirreps) ;
+      exit(0);
+    }
+    for (i=0;i<moinfo.nirreps;++i)
+      errcod = ip_data("STATES_PER_IRREP","%d",&(eom_params.states_per_irrep[i]),1,i);
   }
   else { fprintf(outfile,"Must have states_per_irrep vector in input.\n"); exit(0); } 
 
   eom_params.cs_per_irrep = (int *) malloc(moinfo.nirreps * sizeof(int));
   for (state_irrep=0; state_irrep<moinfo.nirreps; ++state_irrep) {
     for (c_irrep=0;c_irrep<moinfo.nirreps;++c_irrep)
-       if ((moinfo.sym ^ c_irrep) == state_irrep) 
-           eom_params.cs_per_irrep[c_irrep] = eom_params.states_per_irrep[state_irrep];
+      if ((moinfo.sym ^ c_irrep) == state_irrep) 
+	eom_params.cs_per_irrep[c_irrep] = eom_params.states_per_irrep[state_irrep];
   }
 
   /* eom_params.prop_sym holds irrep of state used for properties */
@@ -51,6 +51,9 @@ void get_eom_params()
   else {
     eom_params.prop_root = eom_params.states_per_irrep[eom_params.prop_sym];
   }
+
+  eom_params.save_all = 0;
+  errcod = ip_data("SAVE_ALL","%d",&(eom_params.save_all),0);
 
   eom_params.excitation_range = 2;
   errcod = ip_data("EXCITATION_RANGE","%d",&(eom_params.excitation_range),0);
@@ -84,14 +87,26 @@ void get_eom_params()
   errcod = ip_data("SCHMIDT_ADD_RESIDUAL_TOL","%d",&(iconv),0);
   if(errcod == IPE_OK) eom_params.schmidt_add_residual_tol = 1.0*pow(10.0,(double) -iconv);
 
-  eom_params.max_iter_SS = 100;
+  eom_params.max_iter_SS = 500;
 
+  if(ip_exist("EOM_GUESS",0)) {
+    eom_params.guess = (char *) malloc(6 * sizeof(char));
+    sprintf(eom_params.guess, "%s", "INPUT");
+  }
+  else {
+    eom_params.guess = (char *) malloc(8 * sizeof(char));
+    sprintf(eom_params.guess, "%s", "SINGLES");
+  }
 
   fprintf(outfile, "\n\tCCEOM parameters:\n");
   fprintf(outfile, "\t-----------------\n");
   fprintf(outfile, "\tStates sought per irrep     =");
-  for (i=0;i<moinfo.nirreps;++i) fprintf(outfile, " %s %d,", moinfo.labels[i],
-      eom_params.states_per_irrep[i]);
+  if(strcmp(eom_params.guess,"INPUT")) {
+    for (i=0;i<moinfo.nirreps;++i) fprintf(outfile, " %s %d,", moinfo.labels[i],
+					   eom_params.states_per_irrep[i]);
+  }
+  else fprintf(outfile, " USER INPUT");
+
   fprintf(outfile,"\n");
   fprintf(outfile, "\tMax. number of iterations   = %5d\n", eom_params.max_iter);
   fprintf(outfile, "\tVectors stored per root     = %5d\n", eom_params.vectors_per_root);
@@ -101,8 +116,9 @@ void get_eom_params()
   fprintf(outfile, "\tResidual vector tolerance   = %5.1e\n", eom_params.residual_tol);
   fprintf(outfile, "\tComplex tolerance           = %5.1e\n", eom_params.complex_tol);
   fprintf(outfile, "\tRoot for properties         = %5d\n", eom_params.prop_root);
+  fprintf(outfile, "\tSave all R vectors          = %5d\n", eom_params.save_all);
   fprintf(outfile, "\tSym of state for properties = %6s\n", moinfo.labels[eom_params.prop_sym]);
+  fprintf(outfile, "\tGuess vectors taken from    = %s\n", eom_params.guess);
   fprintf(outfile, "\n\n");
-
 }
 

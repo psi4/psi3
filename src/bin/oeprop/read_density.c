@@ -59,17 +59,26 @@ void read_density()
       }
     }
     else {
+      errcod = ip_int_array("DOCC",docc,nirreps);
+      if (errcod != IPE_OK) {
+        free(docc);
+	docc = chkpt_rd_clsdpi();
+      }
+      errcod = ip_int_array("SOCC",socc,nirreps);
+      if (errcod != IPE_OK) {
+        free(socc);
+	socc = chkpt_rd_openpi();
+      }
+
       reorder_qt(docc, socc, frozen_docc, frozen_uocc,
                reorder, orbspi, nirreps);
     }
 
-    /*
     if (print_lvl >= PRINTOPDMLEVEL) {
       fprintf(outfile, "Reorder array:\n");
       for (i=0; i<nmo; i++) fprintf(outfile, "%d ", reorder[i]);
       fprintf(outfile, "\n");
     }
-    */
 
     populated_orbs = nmo;
     for (irrep=0; irrep<nirreps; irrep++)
@@ -84,6 +93,11 @@ void read_density()
 	     populated_orbs * sizeof(double), junk, &junk);
     }
 
+    if (print_lvl > 2) {
+      fprintf(outfile, "  Density matrix read in:\n");
+      print_mat(onepdm,populated_orbs,populated_orbs,outfile);
+      fprintf(outfile, "\n");
+    }
 
     mo_offset = 0;
     so_offset = 0;
@@ -103,7 +117,11 @@ void read_density()
                   orbspi[irrep]-frozen_uocc[irrep],outfile);
       }
 
+#if USE_LIBCHKPT
+      scfvec = chkpt_rd_scf_irrep(irrep);
+#else
       scfvec = file30_rd_blk_scf(irrep);
+#endif
       mmult(opdm_blk,0,scfvec,1,tmp_mat,0,orbspi[irrep]-frozen_uocc[irrep],
             orbspi[irrep]-frozen_uocc[irrep],sopi[irrep],0);
       mmult(scfvec,0,tmp_mat,0,opdm_blk,0,sopi[irrep],

@@ -57,17 +57,23 @@ void start_io()
   /*--- Initialize new IO system ---*/
   psio_init();
   /*--- Initialize libfile30 library ---*/
+#if !USE_LIBCHKPT
   file30_init();
+#else
   /*--- Initialize libchkpt library ---*/
-  chkpt_init();
+  chkpt_init(PSIO_OPEN_OLD);
+#endif
 
   return;
 }
 
 void stop_io()
 {
+#if USE_LIBCHKPT
   chkpt_close();
+#else
   file30_close();
+#endif
   if(UserOptions.print_lvl)
     tstop(outfile);
   psio_done();

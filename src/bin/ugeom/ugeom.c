@@ -1,6 +1,6 @@
 /*
 **
-**  UGEOM: Read a geometry from geom.dat and write it to file30
+**  UGEOM: Read a geometry from geom.dat and write it to checkpoint file
 **
 */
 
@@ -8,9 +8,12 @@
 #include <stdlib.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
-#include <libfile30/file30.h>
-#include <libpsio/psio.h>
+#if USE_LIBCHKPT
 #include <libchkpt/chkpt.h>
+#else
+#include <libfile30/file30.h>
+#endif
+#include <libpsio/psio.h>
 
 /* Function prototypes */
 void init_io(void);
@@ -30,15 +33,24 @@ int main(int argc, char *argv[])
 
   init_io();
 
-  /* Open file30 and grab some info */
+  /* Open checkpoint file and grab some info */
+#if USE_LIBCHKPT
+  chkpt_init(PSIO_OPEN_OLD);
+  natom = chkpt_rd_natom();
+  geom = chkpt_rd_geom();
+  zvals = chkpt_rd_zvals();
+  num = chkpt_rd_disp();
+  chkpt_close();  
+#else
   file30_init();
   natom = file30_rd_natom();
   geom = file30_rd_geom();
   zvals = file30_rd_zvals();
   num = file30_rd_disp();
   file30_close();
+#endif
 
-  fprintf(outfile, "Old Geometry in File30:\n");
+  fprintf(outfile, "Old Geometry in checkpoint file:\n");
   for(i=0; i < natom; i++) {
       fprintf(outfile, "\n %1.0f ", zvals[i]);
       for(j=0; j < 3; j++)
@@ -73,7 +85,7 @@ int main(int argc, char *argv[])
 
   ip_count(geom_string, &junk, 0);
   if(junk != natom) {
-     printf("Inconsistent atom numbers between geom.dat and file30!\n");
+     printf("Inconsistent atom numbers between geom.dat and checkpoint!\n");
      exit(2);
     }
   for(i=0; i < natom; i++) {
@@ -81,15 +93,18 @@ int main(int argc, char *argv[])
           ip_data(geom_string, "%lf", &(geom[i][j]), 2, i, j);
     }
 
-  /* Write the geometry to file30 and to output */
+  /* Write the geometry to checkpoint file and to output */
+#if USE_LIBCHKPT
+  chkpt_init(PSIO_OPEN_OLD);
+  chkpt_wt_geom(geom);
+  chkpt_wt_disp(num);
+  chkpt_close();
+#else
   file30_init();
   file30_wt_geom(geom);
   file30_wt_disp(++num);  /* Here we assume all is well! */
   file30_close();
-  chkpt_init();
-  chkpt_wt_geom(geom);
-  chkpt_wt_disp(num);
-  chkpt_close();
+#endif
   
   fprintf(outfile, "New Geometry from geom.dat:\n");
   for(i=0; i < natom; i++) {

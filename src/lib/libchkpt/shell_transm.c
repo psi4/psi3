@@ -26,15 +26,18 @@ int **chkpt_rd_shell_transm(void)
   int i, nshell, nirreps;
   int **shell_transm;
   psio_address ptr;
+  char *key;
 
   nshell = chkpt_rd_nshell();
   nirreps = chkpt_rd_nirreps();
 
   shell_transm = init_int_matrix(nshell,nirreps);
   ptr = PSIO_ZERO;
+  key = chkpt_build_keyword("Shell transmat");
   for(i=0; i < nshell; i++)
-    psio_read(PSIF_CHKPT, "::Shell transmat", (char *) shell_transm[i], 
-	      nirreps*sizeof(int), ptr, &ptr);
+    psio_read(PSIF_CHKPT, key, (char *) shell_transm[i], nirreps*sizeof(int), ptr, &ptr);
+
+  free(key);
 
   return shell_transm;
 }
@@ -55,13 +58,15 @@ void chkpt_wt_shell_transm(int **shell_transm)
 {
   int i, nshell, nirreps;
   psio_address ptr;
+  char *key;
 
   nshell = chkpt_rd_nshell();
   nirreps = chkpt_rd_nirreps();
 
+  key = chkpt_build_keyword("Shell transmat");
   ptr = PSIO_ZERO;
   for(i=0; i < nshell; i++) {
-    psio_write(PSIF_CHKPT, "::Shell transmat", (char *) shell_transm[i], 
-		nirreps*sizeof(int), ptr, &ptr);
+    psio_write(PSIF_CHKPT, key, (char *) shell_transm[i], nirreps*sizeof(int), ptr, &ptr);
   }
+  free(key);
 }

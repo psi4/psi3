@@ -31,7 +31,7 @@ int dpd_dot14(dpdfile2 *T, dpdbuf4 *I, dpdfile2 *Z,
   timer_on("dot14");
 #endif
 
-  // loop over irreps of buffer I; h = Gpq
+  /* loop over irreps of buffer I; h = Gpq */
   for(h=0; h < nirreps; h++) {
 
     dpd_buf4_mat_irrep_init(I, h);

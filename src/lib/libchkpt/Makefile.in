@@ -10,9 +10,9 @@ TARGET = $(top_objdir)/lib/libPSI_chkpt.a
 
 TRUESRC = \
 init.c \
+prefix.c \
 close.c \
 iopen.c \
-mxcoef.c \
 ncalcs.c \
 nmo.c \
 nsymhf.c \
@@ -68,14 +68,14 @@ evals.c \
 scf.c \
 lagr.c \
 ccvecs.c \
-schwartz.c \
 ecorr.c \
 eref.c \
 efzc.c \
 disp.c \
 cartrep.c \
 grad.c \
-atom_dummy.c
+atom_dummy.c \
+keyword.c 
 
 DEPENDINCLUDE = psio.h chkpt.h
 

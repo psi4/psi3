@@ -10,6 +10,10 @@
 #define MAXCONTRACTION 1500              /*Maximum number of primitives*/
 #define MAXBASISCOLUMNS 2               /*Number of columns in basis_set[][]. Used to be equal to MAXCONTRACTION*/
 #define ZERO (1.0E-11)                  /*Tolerance in the symmetry determination*/
+
+/*------------------------
+  Conditional compilation
+ ------------------------*/
 #define DEBUG 0
 
 

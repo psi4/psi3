@@ -5,13 +5,24 @@ class out_class {
     int C;
     int D;
     double value;
-    double s_A[3]; // The s vector for atom A
-    double s_B[3];
-    double s_C[3];
-    double s_D[3];
+    double *s_A; // The s vector for atom A
+    double *s_B;
+    double *s_C;
+    double *s_D;
   public:
-    out_class(){}
-    ~out_class(){}
+    out_class() {
+      s_A = new double [3];
+      s_B = new double [3];
+      s_C = new double [3];
+      s_D = new double [3];
+    }
+    ~out_class() {
+      // fprintf(stdout,"destructing out_class\n");
+      delete [] s_A;
+      delete [] s_B;
+      delete [] s_C;
+      delete [] s_D;
+    }
     void print(FILE *fp_out, int print_flag) {
       if (print_flag == 0) 
         fprintf(fp_out,"    (%d %d %d %d %d)\n", id,A+1,B+1,C+1,D+1);
@@ -68,8 +79,9 @@ class out_set {
      }
 
    ~out_set() {
-     delete[] out_array;
-     }
+     // fprintf(stdout,"destructing out_set\n");
+     delete [] out_array;
+    }
 
     void set_num(int i) { num = i;}
     int  get_num(void) { return num;}
@@ -112,14 +124,14 @@ class out_set {
       }
       return;
     }
-    void compute(int num_atoms, double *geom) {
+    void compute(int natom, double *geom) {
       int i,j,A,B,C,D;
       double rBA, rBC, rBD, phi_CBD = 0.0, dotprod = 0.0, angle = 0.0;
       double eBA[3], eBC[3], eBD[3], tmp[3];
       double *geom_ang;
     
-      geom_ang = init_array(num_atoms*3);
-      for (i=0;i<num_atoms*3;++i)
+      geom_ang = new double [3*natom];
+      for (i=0;i<natom*3;++i)
         geom_ang[i] = geom[i] * _bohr2angstroms;
     
       for (i=0;i<num;++i) {
@@ -161,16 +173,17 @@ class out_set {
     
         set_val(i,angle*180.0/_pi);
       }
+      delete [] geom_ang;
       return;
     }
-    void compute_s(int num_atoms, double *geom) {
+    void compute_s(int natom, double *geom) {
       int i,j,A,B,C,D;
       double rBA, rBC, rBD, phi_CBD = 0.0, val = 0.0;
       double eBA[3], eBC[3], eBD[3], tmp[3], tmp2[3], tmp3[3], temp;
       double *geom_ang;
     
-      geom_ang = init_array(num_atoms*3);
-      for (i=0;i<num_atoms*3;++i)
+      geom_ang = new double [3*natom];
+      for (i=0;i<natom*3;++i)
         geom_ang[i] = geom[i] * _bohr2angstroms;
     
       for (i=0;i<num;++i) {
@@ -249,6 +262,7 @@ class out_set {
         set_s_B(i,tmp[0],tmp[1],tmp[2]);
     
       }
+      delete [] geom_ang;
       return;
     }
     void print_s() {

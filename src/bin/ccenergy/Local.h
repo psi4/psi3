@@ -18,4 +18,6 @@ struct Local {
   char *method;
   char *weakp;
   double weak_pair_energy;
+  double **U;
+  double **WW;
 };

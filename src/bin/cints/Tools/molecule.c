@@ -2,8 +2,11 @@
 #include<math.h>
 #include<stdlib.h>
 #include<libciomr/libciomr.h>
-#include<libfile30/file30.h>
+#if USE_LIBCHKPT
 #include<libchkpt/chkpt.h>
+#else
+#include<libfile30/file30.h>
+#endif
 
 #include<libint/libint.h>
 #include"defines.h"
@@ -18,10 +21,16 @@ static void compute_enuc(void);
 
 void init_molecule()
 {
+#if USE_LIBCHKPT
+  Molecule.label = chkpt_rd_label();
+  Molecule.num_atoms = chkpt_rd_natom();
+  Molecule.Rref = chkpt_rd_rref();
+#else
   Molecule.label = file30_rd_label();
   Molecule.num_atoms = file30_rd_natom();
-/* Molecule.centers = */ get_geometry();
   Molecule.Rref = file30_rd_rref();
+#endif
+/* Molecule.centers = */ get_geometry();
 
   return;
 }

@@ -108,12 +108,12 @@ void precondition_RHF(dpdfile2 *RIA, dpdbuf4 *RIjAb, double eval)
 {
   dpdfile2 DIA;
   dpdbuf4 DIjAb;
-  int h, nirreps, i, j, a, b, ij, ab, C_irr;
+  int h, nirreps, i, j, a, b, ij, ab, ii, C_irr;
   double tval;
 
   /* Local correlation decs */
-  int nocc, nvir, natom, nao;
-  int **pairdomain;
+  int nso, nocc, nvir;
+  int *pairdom_len, *pairdom_nrlen, *weak_pairs;
   double ***V, ***W, *eps_occ, **eps_vir;
   double *T1tilde, *T1bar, **T2tilde, **T2bar, **X1, **X2;
 
@@ -122,20 +122,27 @@ void precondition_RHF(dpdfile2 *RIA, dpdbuf4 *RIjAb, double eval)
 
   if(params.local && !strcmp(local.method,"WERNER")) {
 
+    nso = local.nso;
     nocc = local.nocc;
     nvir = local.nvir;
-    natom = local.natom;
-    pairdomain = local.pairdomain;
-    pairdom_len = local.pairdom_len;
-    pairdom_nrlen = local.pairdom_nrlen;
+    V = local.V;
+    W = local.W;
     eps_occ = local.eps_occ;
     eps_vir = local.eps_vir;
+    pairdom_len = local.pairdom_len;
+    pairdom_nrlen = local.pairdom_nrlen;
+    weak_pairs = local.weak_pairs;
 
     dpd_file2_mat_init(RIA);
     dpd_file2_mat_rd(RIA);
 
     for(i=0; i < nocc; i++) {
       ii = i * nocc +i;
+
+      if(!pairdom_len[ii]) {
+	fprintf(outfile, "\n\tlocal_filter_T1: Pair ii = [%d] is zero-length, which makes no sense.\n");
+	exit(2);
+      }
 
       T1tilde = init_array(pairdom_len[ii]);
       T1bar = init_array(pairdom_nrlen[ii]);
@@ -148,8 +155,11 @@ void precondition_RHF(dpdfile2 *RIA, dpdbuf4 *RIjAb, double eval)
       C_DGEMV('t', pairdom_len[ii], pairdom_nrlen[ii], 1.0, &(W[ii][0][0]), pairdom_nrlen[ii], 
 	      &(T1tilde[0]), 1, 0.0, &(T1bar[0]), 1);
 
-      for(a=0; a < pairdom_nrlen[ii]; a++) 
-	T1bar[a] /= (eval + eps_occ[i] - eps_vir[ij][a]);
+      for(a=0; a < pairdom_nrlen[ii]; a++) {
+	tval = eval + eps_occ[i] - eps_vir[ii][a];
+	if(fabs(tval) > 0.0001) T1bar[a] /= tval;
+/*	else T1bar[a] = 0.0; */
+      }
 
       /* Transform the new T1's to the redundant projected virtual basis */
       C_DGEMV('n', pairdom_len[ii], pairdom_nrlen[ii], 1.0, &(W[ii][0][0]), pairdom_nrlen[ii],
@@ -169,44 +179,51 @@ void precondition_RHF(dpdfile2 *RIA, dpdbuf4 *RIjAb, double eval)
     dpd_buf4_mat_irrep_init(RIjAb, 0);
     dpd_buf4_mat_irrep_rd(RIjAb, 0);
 
-    X1 = block_matrix(nao,nvir);
-    X2 = block_matrix(nvir,nao);
+    X1 = block_matrix(nso,nvir);
+    X2 = block_matrix(nvir,nso);
 
-    T2tilde = block_matrix(nao,nao);
+    T2tilde = block_matrix(nso,nso);
     T2bar = block_matrix(nvir, nvir);
     for(i=0,ij=0; i < nocc; i++) {
       for(j=0; j < nocc; j++,ij++) {
 
-	/* Transform the virtuals to the redundant projected virtual basis */
-	C_DGEMM('t', 'n', pairdom_len[ij], nvir, nvir, 1.0, &(V[ij][0][0]), pairdom_len[ij],
-		&(RIjAb->matrix[0][ij][0]), nvir, 0.0, &(X1[0][0]), nvir);
-	C_DGEMM('n', 'n', pairdom_len[ij], pairdom_len[ij], nvir, 1.0, &(X1[0][0]), nvir,
-		&(V[ij][0][0]), pairdom_len[ij], 0.0, &(T2tilde[0][0]), nao);
+	if(!weak_pairs[ij]) {
 
-	/* Transform the virtuals to the non-redundant virtual basis */
-	C_DGEMM('t', 'n', pairdom_nrlen[ij], pairdom_len[ij], pairdom_len[ij], 1.0, 
-		&(W[ij][0][0]), pairdom_nrlen[ij], &(T2tilde[0][0]), nao, 0.0, &(X2[0][0]), nao);
-	C_DGEMM('n', 'n', pairdom_nrlen[ij], pairdom_nrlen[ij], pairdom_len[ij], 1.0, 
-		&(X2[0][0]), nao, &(W[ij][0][0]), pairdom_nrlen[ij], 0.0, &(T2bar[0][0]), nvir);
+	  /* Transform the virtuals to the redundant projected virtual basis */
+	  C_DGEMM('t', 'n', pairdom_len[ij], nvir, nvir, 1.0, &(V[ij][0][0]), pairdom_len[ij],
+		  &(RIjAb->matrix[0][ij][0]), nvir, 0.0, &(X1[0][0]), nvir);
+	  C_DGEMM('n', 'n', pairdom_len[ij], pairdom_len[ij], nvir, 1.0, &(X1[0][0]), nvir,
+		  &(V[ij][0][0]), pairdom_len[ij], 0.0, &(T2tilde[0][0]), nso);
 
-	/* Divide the new amplitudes by the denominators */
-	for(a=0; a < pairdom_nrlen[ij]; a++) {
-	  for(b=0; b < pairdom_nrlen[ij]; b++) {
-	    T2bar[a][b] /= (eval + eps_occ[i] + eps_occ[j] - eps_vir[ij][a] - eps_vir[ij][b]);
+	  /* Transform the virtuals to the non-redundant virtual basis */
+	  C_DGEMM('t', 'n', pairdom_nrlen[ij], pairdom_len[ij], pairdom_len[ij], 1.0, 
+		  &(W[ij][0][0]), pairdom_nrlen[ij], &(T2tilde[0][0]), nso, 0.0, &(X2[0][0]), nso);
+	  C_DGEMM('n', 'n', pairdom_nrlen[ij], pairdom_nrlen[ij], pairdom_len[ij], 1.0, 
+		  &(X2[0][0]), nso, &(W[ij][0][0]), pairdom_nrlen[ij], 0.0, &(T2bar[0][0]), nvir);
+
+	  /* Divide the new amplitudes by the denominators */
+	  for(a=0; a < pairdom_nrlen[ij]; a++) {
+	    for(b=0; b < pairdom_nrlen[ij]; b++) {
+	      tval = eval + eps_occ[i]+eps_occ[j]-eps_vir[ij][a]-eps_vir[ij][b];
+	      if(fabs(tval) > 0.0001) T2bar[a][b] /= tval;
+/*	      else T2bar[a][b] = 0.0; */
+	    }
 	  }
+
+	  /* Transform the new T2's to the redundant virtual basis */
+	  C_DGEMM('n', 'n', pairdom_len[ij], pairdom_nrlen[ij], pairdom_nrlen[ij], 1.0, 
+		  &(W[ij][0][0]), pairdom_nrlen[ij], &(T2bar[0][0]), nvir, 0.0, &(X1[0][0]), nvir);
+	  C_DGEMM('n','t', pairdom_len[ij], pairdom_len[ij], pairdom_nrlen[ij], 1.0, 
+		  &(X1[0][0]), nvir, &(W[ij][0][0]), pairdom_nrlen[ij], 0.0, &(T2tilde[0][0]), nso);
+
+	  /* Transform the new T2's to the MO basis */
+	  C_DGEMM('n', 'n', nvir, pairdom_len[ij], pairdom_len[ij], 1.0, 
+		  &(V[ij][0][0]), pairdom_len[ij], &(T2tilde[0][0]), nso, 0.0, &(X2[0][0]), nso);
+	  C_DGEMM('n', 't', nvir, nvir, pairdom_len[ij], 1.0, &(X2[0][0]), nso,
+		  &(V[ij][0][0]), pairdom_len[ij], 0.0, &(RIjAb->matrix[0][ij][0]), nvir);
 	}
-
-	/* Transform the new T2's to the redundant virtual basis */
-	C_DGEMM('n', 'n', pairdom_len[ij], pairdom_nrlen[ij], pairdom_nrlen[ij], 1.0, 
-		&(W[ij][0][0]), pairdom_nrlen[ij], &(T2bar[0][0]), nvir, 0.0, &(X1[0][0]), nvir);
-	C_DGEMM('n','t', pairdom_len[ij], pairdom_len[ij], pairdom_nrlen[ij], 1.0, 
-		&(X1[0][0]), nvir, &(W[ij][0][0]), pairdom_nrlen[ij], 0.0, &(T2tilde[0][0]), nao);
-
-	/* Transform the new T2's to the MO basis */
-	C_DGEMM('n', 'n', nvir, pairdom_len[ij], pairdom_len[ij], 1.0, 
-		&(V[ij][0][0]), pairdom_len[ij], &(T2tilde[0][0]), nao, 0.0, &(X2[0][0]), nao);
-	C_DGEMM('n', 't', nvir, nvir, pairdom_len[ij], 1.0, &(X2[0][0]), nao,
-		&(V[ij][0][0]), pairdom_len[ij], 0.0, &(RIjAb->matrix[0][ij][0]), nvir);
+	else  /* This must be a neglected weak pair; force it to zero */
+	  memset((void *) RIjAb->matrix[0][ij], 0, nvir*nvir*sizeof(double));
       }
     }
     free_block(T2tilde);
@@ -222,7 +239,7 @@ void precondition_RHF(dpdfile2 *RIA, dpdbuf4 *RIjAb, double eval)
 
     dpd_file2_mat_init(RIA);
     dpd_file2_mat_rd(RIA);
-    dpd_file2_init(&DIA, EOM_D, irrep, 0, 1, "DIA");
+    dpd_file2_init(&DIA, EOM_D, C_irr, 0, 1, "DIA");
     dpd_file2_mat_init(&DIA);
     dpd_file2_mat_rd(&DIA);
     for(h=0; h < nirreps; h++)
@@ -236,7 +253,7 @@ void precondition_RHF(dpdfile2 *RIA, dpdbuf4 *RIjAb, double eval)
     dpd_file2_mat_close(&DIA);
     dpd_file2_close(&DIA);
 
-    dpd_buf4_init(&DIjAb, EOM_D, irrep, 0, 5, 0, 5, 0, "DIjAb");
+    dpd_buf4_init(&DIjAb, EOM_D, C_irr, 0, 5, 0, 5, 0, "DIjAb");
     for(h=0; h < RIjAb->params->nirreps; h++) {
       dpd_buf4_mat_irrep_init(RIjAb, h);
       dpd_buf4_mat_irrep_init(&DIjAb, h);

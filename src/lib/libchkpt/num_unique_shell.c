@@ -3,6 +3,7 @@
   \ingroup (CHKPT)
 */
 
+#include <stdlib.h>
 #include "chkpt.h"
 #include <psifiles.h>
 #include <libpsio/psio.h>
@@ -18,9 +19,11 @@
 int chkpt_rd_num_unique_shell(void)
 {
   int nunique;
+  char *key;
 
-  psio_read_entry(PSIF_CHKPT, "::Num. unique shells", (char *) &nunique, 
-                  sizeof(int));
+  key = chkpt_build_keyword("Num. unique shells");
+  psio_read_entry(PSIF_CHKPT, key, (char *) &nunique, sizeof(int));
+  free(key);
   return nunique;
 }
 
@@ -37,6 +40,8 @@ int chkpt_rd_num_unique_shell(void)
 
 void chkpt_wt_num_unique_shell(int nunique)
 {
-  psio_write_entry(PSIF_CHKPT, "::Num. unique shells", (char *) &nunique, 
-                   sizeof(int));
+  char *key;
+  key = chkpt_build_keyword("Num. unique shells");
+  psio_write_entry(PSIF_CHKPT, key, (char *) &nunique, sizeof(int));
+  free(key);
 }

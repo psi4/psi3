@@ -32,8 +32,11 @@ extern "C" {
    #include <psifiles.h>
    #include <libqt/qt.h>
    #include <libciomr/libciomr.h>
-   #include <libfile30/file30.h>
+#if USE_LIBCHKPT
    #include <libchkpt/chkpt.h>
+#else
+   #include <libfile30/file30.h>
+#endif
    #include <libpsio/psio.h>
    #include <libqt/slaterd.h>
    #include "structs.h"
@@ -452,32 +455,33 @@ void diag_h(struct stringwr **alplist, struct stringwr **betlist)
       SlaterDetSet dets;
       SlaterDetVector vec;
 
-      stringset_init(&alphastrings,AlphaG->num_str);
+      stringset_init(&alphastrings,AlphaG->num_str,AlphaG->num_el,CalcInfo.num_fzc_orbs);
       int list_gr = 0;
-      for(int irrep=0; irrep<AlphaG->nirreps; irrep++) {
+      int irrep;
+      for(irrep=0; irrep<AlphaG->nirreps; irrep++) {
 	for(int gr=0; gr<AlphaG->subgr_per_irrep; gr++,list_gr++) {
 	  int nlists_per_gr = AlphaG->sg[irrep][gr].num_strings;
 	  int offset = AlphaG->sg[irrep][gr].offset;
 	  for(int l=0; l<nlists_per_gr; l++)
-	    stringset_add(&alphastrings,l+offset,AlphaG->num_el,alplist[list_gr][l].occs);
+	    stringset_add(&alphastrings,l+offset,alplist[list_gr][l].occs);
 	}
       }
 	
-      stringset_init(&betastrings,CalcInfo.num_bet_str);
+      stringset_init(&betastrings,BetaG->num_str,BetaG->num_el,CalcInfo.num_fzc_orbs);
       list_gr = 0;
-      for(int irrep=0; irrep<BetaG->nirreps; irrep++) {
+      for(irrep=0; irrep<BetaG->nirreps; irrep++) {
 	for(int gr=0; gr<BetaG->subgr_per_irrep; gr++,list_gr++) {
 	  int nlists_per_gr = BetaG->sg[irrep][gr].num_strings;
 	  int offset = BetaG->sg[irrep][gr].offset;
 	  for(int l=0; l<nlists_per_gr; l++)
-	    stringset_add(&betastrings,l+offset,BetaG->num_el,betlist[list_gr][l].occs);
+	    stringset_add(&betastrings,l+offset,betlist[list_gr][l].occs);
 	}
       }
 
       slaterdetset_init(&dets,size,&alphastrings,&betastrings);
       for (ii=0; ii<size; ii++) {
 	Cvec.det2strings(ii, &Ialist, &Iarel, &Iblist, &Ibrel);
-	int irrep = Ialist/AlphaG->subgr_per_irrep;
+	irrep = Ialist/AlphaG->subgr_per_irrep;
 	int gr = Ialist%AlphaG->subgr_per_irrep;
 	int Ia = Iarel + AlphaG->sg[irrep][gr].offset;
 	irrep = Iblist/BetaG->subgr_per_irrep;
@@ -756,7 +760,8 @@ void diag_h(struct stringwr **alplist, struct stringwr **betlist)
               H0block.betidx, H0block.H00, Parameters.neg_only);
          }
 
-      if (Parameters.hd_otf) rclose(Parameters.first_hd_tmp_unit,4);
+      //if (Parameters.hd_otf) rclose(Parameters.first_hd_tmp_unit,4);
+      if (Parameters.hd_otf) psio_close(Parameters.first_hd_tmp_unit,1);
 
       H0block_setup(CIblks.num_blocks, CIblks.Ia_code, CIblks.Ib_code);
       if (Parameters.hd_ave) {
@@ -874,14 +879,16 @@ void diag_h(struct stringwr **alplist, struct stringwr **betlist)
       } /* end the Davidson-Liu/Mitrushenkov-Olsen-Davidson section */
 
    /* write the CI energy to file30: later fix this to loop over roots */
+#if USE_LIBCHKPT
+   chkpt_init(PSIO_OPEN_OLD);
+   chkpt_wt_etot(evals[Parameters.root]+efzc+nucrep);
+   chkpt_close();
+#else
    file30_init();
    file30_wt_eref(0.0);
    file30_wt_ecorr(evals[Parameters.root]+efzc+nucrep);
    file30_close();
-
-   chkpt_init();
-   chkpt_wt_etot(evals[Parameters.root]+efzc+nucrep);
-   chkpt_close();
+#endif
 
 }
 
@@ -1072,7 +1079,7 @@ void H0block_coupling_calc(double E, struct stringwr **alplist, struct
         } /* end loop over i */
 
 
-     /* Construct delta_1 = (H_11)^-1 gamma_1 and delta_2 = (D_2-E)^-1 * gamma_2 */
+     /* Construct delta_1 = (H_11)^-1 gamma_1, delta_2 = (D_2-E)^-1 * gamma_2 */
      /* First delta_2 */
      for (i=size; i<size2; i++) {
         tval1 = H0block.H00[i] - E;
@@ -1109,7 +1116,7 @@ void H0block_coupling_calc(double E, struct stringwr **alplist, struct
 
      /*
        detH0 = invert_matrix(H0block.tmp1, H0block.H0b_inv, size, outfile);
-       mmult(H0block.H0b_inv, 0, &(gamma_1), 1, &(delta_1), 1, size, size, 1, 0);
+       mmult(H0block.H0b_inv,0,&(gamma_1),1,&(delta_1),1,size,size,1,0);
      */
 
     /*
@@ -1145,6 +1152,8 @@ void H0block_coupling_calc(double E, struct stringwr **alplist, struct
      */
 
 }
+
+
 /*
 ** mpn(): Function which sets up and generates the mpn series
 **
@@ -1181,7 +1190,7 @@ void mpn(struct stringwr **alplist, struct stringwr **betlist)
         fzc_orbs[irrep][i] = cnt++;
 
   /* Loop over alp occs */
-/*   CalcInfo.e0 = CalcInfo.efzc; */
+  //CalcInfo.e0 = CalcInfo.efzc; 
   CalcInfo.e0 = 0.0;
   CalcInfo.e0_fzc = 0.0;
   for (i=0; i<CalcInfo.num_fzc_orbs; i++) {

@@ -74,7 +74,7 @@ void rotate_orbs_irrep(int irrep, int dim, double **mo_coeffs,
   file30_wt_blk_scf(tmpmat, irrep);
   file30_close();
   */
-  chkpt_init();
+  chkpt_init(PSIO_OPEN_OLD);
   chkpt_wt_scf_irrep(tmpmat, irrep);
   chkpt_close();
 

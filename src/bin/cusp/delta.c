@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
-#include <libfile30/file30.h>
+#include <libchkpt/chkpt.h>
 #include <libqt/qt.h>
 
 void compute_phi(double *phi, double x, double y, double z);
@@ -61,16 +61,16 @@ void setup_delta(void)
 
   if(done) return;
 
-  file30_init();
-  nmo = file30_rd_nmo();
-  nao = file30_rd_nao();
-  nirreps = file30_rd_nirreps();
-  clsdpi = file30_rd_clsdpi();
-  openpi = file30_rd_openpi();
-  orbspi = file30_rd_orbspi();
-  scf_pitzer = file30_rd_scf();
-  u = file30_rd_usotao_new();
-  file30_close();
+  chkpt_init(PSIO_OPEN_OLD);
+  nmo = chkpt_rd_nmo();
+  nao = chkpt_rd_nao();
+  nirreps = chkpt_rd_nirreps();
+  clsdpi = chkpt_rd_clsdpi();
+  openpi = chkpt_rd_openpi();
+  orbspi = chkpt_rd_orbspi();
+  scf_pitzer = chkpt_rd_scf();
+  u = chkpt_rd_usotao_new();
+  chkpt_close();
 
   frdocc = init_int_array(nirreps);
   fruocc = init_int_array(nirreps);

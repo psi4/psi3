@@ -1,8 +1,20 @@
 /* $Id$ */
 /* $Log$
- * Revision 1.12  2002/04/03 02:06:01  janssen
- * Finish changes to use new include paths for libraries.
+ * Revision 1.13  2002/11/24 22:52:17  crawdad
+ * Merging the gbye-file30 branch into the main trunk.
+ * -TDC
  *
+/* Revision 1.12.2.2  2002/11/23 21:54:45  crawdad
+/* Removal of mxcoef stuff for chkpt runs.
+/* -TDC
+/*
+/* Revision 1.12.2.1  2002/11/23 21:15:16  crawdad
+/* Minor fixes related to libchkpt conversion.
+/* -TDC
+/*
+/* Revision 1.12  2002/04/03 02:06:01  janssen
+/* Finish changes to use new include paths for libraries.
+/*
 /* Revision 1.11  2002/03/25 02:51:57  janssen
 /* libciomr.h -> libciomr/libciomr.h
 /*
@@ -110,7 +122,11 @@
  * */
 
 #include <libciomr/libciomr.h>
+#if !USE_LIBCHKPT
 #include <libfile30/file30.h>
+#else
+#include <libchkpt/chkpt.h>
+#endif
 #include <libpsio/psio.h>
 
 #define MAX_BASIS 4096
@@ -181,7 +197,9 @@ EXTERN int n_open;              /* # open shells */
 EXTERN int a_elec;              /* # of alpha electrons */
 EXTERN int b_elec;              /* # of beta electrons */
 EXTERN int num_ir;              /* # of symmetry types */
+#if !USE_LIBCHKPT
 EXTERN int mxcoef;              /* sum of (# so's per irrep)**2 */
+#endif
 EXTERN int mxcoef2;             /* sum of ioff[# so's per irrep] */
 EXTERN int readflg;             /* 1 if using buffered io */
 EXTERN int maxbuf;              /* number of integrals per buffer */

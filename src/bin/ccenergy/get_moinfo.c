@@ -21,7 +21,7 @@ void get_moinfo(void)
   double ***C, ***Ca, ***Cb;
   psio_address next;
 
-  chkpt_init();
+  chkpt_init(PSIO_OPEN_OLD);
   moinfo.nirreps = chkpt_rd_nirreps();
   moinfo.nmo = chkpt_rd_nmo();
   moinfo.nso = chkpt_rd_nso();

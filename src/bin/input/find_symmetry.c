@@ -268,7 +268,10 @@ void find_symmetry()
 		break;
 	      }
       case 1: /*What subgroup???*/
-	      printf("  Subgroup specification doesn't comply with the actual symmetry.\n  The largest Abelian point group will be used.\n\n");
+  	      if (strcmp(subgroup,"C1")) {
+		printf("  Subgroup specification doesn't comply with the actual symmetry.\n");
+		printf("  The largest Abelian point group will be used.\n\n");
+	      }
 	      break;
     }
     if (print_lvl >= DEBUGPRINT) {

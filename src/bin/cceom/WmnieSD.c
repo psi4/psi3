@@ -12,23 +12,23 @@ void WmnieSD(int i, int C_irr) {
   dpdbuf4 WMNIE, Wmnie, WMnIe, WmNiE;
   char lbl[32];
 
-  if (params.eom_ref == 0) { // RHF
+  if (params.eom_ref == 0) { /* RHF */
     sprintf(lbl, "%s %d", "SIA", i);
     dpd_file2_init(&SIA, EOM_SIA, C_irr, 0, 1, lbl);
     sprintf(lbl, "%s %d", "CMnEf", i);
     dpd_buf4_init(&CMnEf, EOM_CMnEf, C_irr, 0, 5, 0, 5, 0, lbl);
     dpd_buf4_init(&WMnIe, CC_HBAR, H_IRR, 0, 11, 0, 11, 0, "WMnIe - 2WnMIe");
-//dpd_buf4_print(&WMnIe,outfile,1);
-//dpd_buf4_print(&CMnEf,outfile,1);
-//fprintf(stdout,"starting Wmnie*CMNEF ->SIA\n");
-//fprintf(outfile,"starting Wmnie*CMNEF ->SIA\n");
+    /* dpd_buf4_print(&WMnIe,outfile,1);
+       dpd_buf4_print(&CMnEf,outfile,1);
+       fprintf(stdout,"starting Wmnie*CMNEF ->SIA\n");
+       fprintf(outfile,"starting Wmnie*CMNEF ->SIA\n"); */
     dpd_contract442(&WMnIe, &CMnEf, &SIA, 3, 3, 1.0, 1.0);
     dpd_buf4_close(&CMnEf);
     dpd_buf4_close(&WMnIe);
     dpd_file2_close(&SIA);
   }
 
-  else { // ROHF
+  else { /* ROHF */
     sprintf(lbl, "%s %d", "SIA", i);
     dpd_file2_init(&SIA, EOM_SIA, C_irr, 0, 1, lbl);
     sprintf(lbl, "%s %d", "Sia", i);

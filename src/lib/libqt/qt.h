@@ -86,5 +86,13 @@ int C_DGEEV(int n, double **a, int lda,
 
 int C_DGESV(int n, int nrhs, double *a, int lda, int *ipiv, double *b, int ldb);
 int C_DGETRI(int n, double *a, int lda, int *ipiv, double *work, int lwork);
+int C_DGESVD(char jobu, char jobvt, int m, int n, double *A, int lda, double *s, int lds,
+	     double *u, int ldu, double *vt, int ldvt, double *work, int lwork);
+int C_DSYEV(char jobz, char uplo, int n, double *A, int lda, double *w, double *work, int lwork);
 
 void print_block(double *, int, int, FILE *);
+
+void sort(double *A, double **B, int n);
+
+int david(double **A, int N, int M, double *eps, double **v, double cutoff, 
+	  int print);

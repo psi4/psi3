@@ -5,7 +5,9 @@
 #define EXTERN
 #include "globals.h"
 
-void local_filter_T1(dpdfile2 *T1);
+void local_filter_T1(dpdfile2 *T1, int denom);
+void local_filter_T1_nodenom(dpdfile2 *T1);
+void local_filter_V1_nodenom(dpdfile2 *T1);
 
 void t1_build(void)
 {
@@ -70,13 +72,28 @@ void t1_build(void)
     dpd_buf4_close(&E);  
     dpd_buf4_close(&tIjAb);
 
-    if(params.local) local_filter_T1(&newtIA);
+    dpd_file2_copy(&newtIA, CC_OEI, "New tIA Increment");
+    dpd_file2_close(&newtIA);
+
+    dpd_file2_init(&newtIA, CC_OEI, 0, 0, 1, "New tIA Increment");
+    if(params.local) {
+      local_filter_T1(&newtIA, 1);
+    }
     else {
       dpd_file2_init(&dIA, CC_OEI, 0, 0, 1, "dIA");
       dpd_file2_dirprd(&dIA, &newtIA);
       dpd_file2_close(&dIA);
     }
+    dpd_file2_close(&newtIA);
 
+    /* Add the new increment to the old tIA to get the New tIA */
+    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+    dpd_file2_copy(&tIA, CC_OEI, "New tIA");
+    dpd_file2_close(&tIA);
+    dpd_file2_init(&newtIA, CC_OEI, 0, 0, 1, "New tIA");
+    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "New tIA Increment");
+    dpd_file2_axpy(&tIA, &newtIA, 1, 0);
+    dpd_file2_close(&tIA);
     dpd_file2_close(&newtIA);
   }
   else if(params.ref == 1) { /** ROHF **/

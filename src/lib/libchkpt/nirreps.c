@@ -3,6 +3,7 @@
   \ingroup (CHKPT)
 */
 
+#include <stdlib.h>
 #include "chkpt.h"
 #include <psifiles.h>
 #include <libpsio/psio.h>
@@ -19,8 +20,11 @@
 int chkpt_rd_nirreps(void)
 {
   int nirreps;
+  char *key;
 
-  psio_read_entry(PSIF_CHKPT, "::Num. irreps", (char *) &nirreps, sizeof(int));
+  key = chkpt_build_keyword("Num. irreps");
+  psio_read_entry(PSIF_CHKPT, key, (char *) &nirreps, sizeof(int));
+  free(key);
   return nirreps;
 }
 
@@ -38,5 +42,9 @@ int chkpt_rd_nirreps(void)
 
 void chkpt_wt_nirreps(int nirreps)
 {
-  psio_write_entry(PSIF_CHKPT, "::Num. irreps", (char *) &nirreps, sizeof(int));
+  char *key;
+
+  key = chkpt_build_keyword("Num. irreps");
+  psio_write_entry(PSIF_CHKPT, key, (char *) &nirreps, sizeof(int));
+  free(key);
 }

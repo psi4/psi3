@@ -2,7 +2,11 @@
 #include "includes.h"
 #include "common.h"
 #include <libipv1/ip_lib.h>
+#if USE_LIBCHKPT
+#include <libchkpt/chkpt.h>
+#else
 #include <libfile30/file30.h>
+#endif
 
 char *determine_functional(void){
     int errcod;

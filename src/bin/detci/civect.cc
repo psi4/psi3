@@ -30,6 +30,7 @@ extern "C" {
    #include <stdlib.h>
    #include <libciomr/libciomr.h>
    #include <libqt/qt.h>
+   #include <libpsio/psio.h>
    #include "structs.h"
    #include "globals.h"
    #include "ci_tol.h"
@@ -158,6 +159,7 @@ CIvect::CIvect() // Default constructor
    codes_per_irrep = 0;
    buf_per_vect = 0;
    buf_total = 0;
+   new_first_buf = 0;
    maxvect = 0;
    nvect = 0;
    nunits = 0;
@@ -186,6 +188,7 @@ CIvect::CIvect() // Default constructor
    cur_unit = 0;
    offsets_done = NULL;
    cur_size = 0;
+   first_unit = 0;
 }
 
 
@@ -273,6 +276,7 @@ void CIvect::set(unsigned long vl, int nb, int incor, int ms0, int *iac,
    nvect = 1;
    nunits = nu;
    if (nunits) units = init_int_array(nunits);
+   first_unit = fu;
    for (i=0; i<nunits; i++) units[i] = fu + i;
      
    Ia_code = init_int_array(nb);
@@ -478,7 +482,7 @@ void CIvect::set(unsigned long vl, int nb, int incor, int ms0, int *iac,
    for (i=0; i<buf_total; i++)
       fprintf(outfile,"file_offset[%d] = %lu\n ", i, file_offset[i]);
    for (i=0; i<maxvect; i++)
-      fprintf(outfile,"zero_block_offset[%d] = %lu\n ", i, zero_block_offset[i]);
+      fprintf(outfile,"zero_block_offset[%d] = %lu\n ", i,zero_block_offset[i]);
    for (i=0; i<buf_per_vect; i++) 
       fprintf(outfile,"buf_size[%d] = %lu\n ", i, buf_size[i]); 
 */
@@ -1778,8 +1782,11 @@ void CIvect::init_io_files(void)
    int i;
 
    for (i=0; i<nunits; i++) {
-      rfile(units[i]);
-      }
+     // rfile(units[i]);  // old style
+     if (!psio_open_check((ULI) units[i]))
+       psio_open((ULI) units[i], 1); //  0 is new file, 1 is reopen
+   }
+
 }
 
 
@@ -1797,8 +1804,9 @@ void CIvect::close_io_files(int keep)
    int i;
 
    for (i=0; i<nunits; i++) {
-      rclose(units[i], keep ? 3 : 4);
-      }
+     // rclose(units[i], keep ? 3 : 4); // old way 
+     psio_close(units[i], keep); // new way   
+   }
 }
 
 
@@ -1820,6 +1828,7 @@ int CIvect::read(int ivect, int ibuf)
    unsigned long int size;
    int blk, zero_block_unit; /* added by MLL 2-2-99 */
    PSI_FPTR offset, nxtword, offset2;
+   char key[20];
 
    detci_time.read_before_time = wall_time_new();
 
@@ -1836,21 +1845,29 @@ int CIvect::read(int ivect, int ibuf)
 
    if (icore == 1) ibuf = 0;
    buf = ivect * buf_per_vect + ibuf;
-   unit = file_number[buf];
+
    zero_block_unit = zero_block_file_number[ivect];
    offset = (PSI_FPTR) (file_offset[buf] * sizeof(double));
    size = buf_size[ibuf] * (unsigned long int) sizeof(double);   
+
+   /* translate buffer number in case we renumbered after collapse * */
+   buf += new_first_buf;
+   if (buf >= buf_total) buf -= buf_total;
+   sprintf(key, "buffer %d", buf);
+   unit = file_number[buf];
+
   /*
-    fprintf(outfile,"CIvect::read ivect = %d\n", ivect);
-     fprintf(outfile,"CIvect::read num_blocks = %d\n", num_blocks);
-     for (i=0; i<buf_total; i++)
-        fprintf(outfile,"CIvect::read file_offset[%d]*sizeof(double) = %lu\n ", 
-                i, file_offset[i]*sizeof(double));
-     for (i=0; i<maxvect; i++)
-        fprintf(outfile,"CIvect::read zero_block_offset[%d]*sizeof(double) = %lu\n ", 
-                i, zero_block_offset[i]*sizeof(double)); 
-     for (i=0; i<buf_per_vect; i++)
-        fprintf(outfile,"CIvect::read buf_size[%d] = %lu\n ", i, buf_size[i]);
+    fprintf(outfile,"CIvect::read\n");
+    fprintf(outfile,"ivect = %d\n", ivect);
+    fprintf(outfile,"num_blocks = %d\n", num_blocks);
+    for (i=0; i<buf_total; i++)
+      fprintf(outfile,"file_offset[%d]*sizeof(double) = %lu\n ", 
+              i, file_offset[i]*sizeof(double));
+    for (i=0; i<maxvect; i++)
+      fprintf(outfile,"zero_block_offset[%d]*sizeof(double) = %lu\n ", 
+              i, zero_block_offset[i]*sizeof(double)); 
+    for (i=0; i<buf_per_vect; i++)
+      fprintf(outfile,"buf_size[%d] = %lu\n ", i, buf_size[i]);
   */
 
    if (Parameters.zero_blocks && Parameters.mpn) {
@@ -1865,14 +1882,19 @@ int CIvect::read(int ivect, int ibuf)
        zero(); 
        }
      }
-   else 
-    wreadw(unit, (char *) buffer, (int) size, offset, &nxtword);
+   else {
+     // old way
+     // wreadw(unit, (char *) buffer, (int) size, offset, &nxtword);
+     // new way 
+     psio_read_entry((ULI) unit, key, (char *) buffer, size);  
+   }
 
    cur_vect = ivect;
    cur_buf = ibuf;
 
    detci_time.read_after_time = wall_time_new();
-   detci_time.read_total_time += detci_time.read_after_time - detci_time.read_before_time;
+   detci_time.read_total_time += detci_time.read_after_time - 
+     detci_time.read_before_time;
 
    return(1);
 }  
@@ -1895,6 +1917,7 @@ int CIvect::write(int ivect, int ibuf)
    unsigned long int size;
    PSI_FPTR offset, nxtword, offset2;
    int blk, zero_block_unit; /* MLL added 2-2-99 */
+   char key[20];
 
    detci_time.write_before_time = wall_time_new();
 
@@ -1913,23 +1936,29 @@ int CIvect::write(int ivect, int ibuf)
    if (icore == 1) ibuf = 0;
    if (Parameters.zero_blocks) offsets_otf(ivect, ibuf);
    buf = ivect * buf_per_vect + ibuf;
-   unit = file_number[buf];
    zero_block_unit = zero_block_file_number[ivect];
    offset = (PSI_FPTR) file_offset[buf] * (PSI_FPTR) sizeof(double);
    size = buf_size[ibuf] * (unsigned long int) sizeof(double);   
+
+   /* translate buffer number in case we renumbered after collapse * */
+   buf += new_first_buf;
+   if (buf >= buf_total) buf -= buf_total;
+   sprintf(key, "buffer %d", buf);
+   unit = file_number[buf];
   
   /*
    if (ibuf==(buf_per_vect-1)) {
-     fprintf(outfile,"CIvect::write ivect = %d\n", ivect);
-     fprintf(outfile,"CIvect::write num_blocks = %d\n", num_blocks);
+     fprintf(outfile, "CIvect::write\n");
+     fprintf(outfile,"ivect = %d\n", ivect);
+     fprintf(outfile,"num_blocks = %d\n", num_blocks);
      for (i=0; i<buf_total; i++)
-        fprintf(outfile,"CIvect::write file_offset[%d] * sizeof(double) = %lu\n ", 
-                i, file_offset[i]*sizeof(double));
+       fprintf(outfile,"file_offset[%d] * sizeof(double) = %lu\n ", 
+               i, file_offset[i]*sizeof(double));
      for (i=0; i<maxvect; i++)
-        fprintf(outfile,"CIvect::write zero_block_offset[%d] *sizeof(double) = %lu\n ", 
-                i, zero_block_offset[i]*sizeof(double));
+       fprintf(outfile,"zero_block_offset[%d] *sizeof(double) = %lu\n ", 
+               i, zero_block_offset[i]*sizeof(double));
      for (i=0; i<buf_per_vect; i++)
-        fprintf(outfile,"CIvect::write buf_size[%d] = %lu\n ", i, buf_size[i]);
+       fprintf(outfile,"buf_size[%d] = %lu\n ", i, buf_size[i]);
      fprintf(outfile,"num_block * sizeof(int) = %d\n",
              num_blocks*sizeof(int));
      fprintf(outfile, "offset2 = %lu\n", offset2);
@@ -1942,23 +1971,28 @@ int CIvect::write(int ivect, int ibuf)
      /* If we are at the beginning of a vector write out zero_block info */
      if (ibuf==(buf_per_vect-1)) {
        offset2 = (PSI_FPTR) (zero_block_offset[ivect] * sizeof(double)); 
-       wwritw(zero_block_unit, (char *)zero_blocks, (int)(num_blocks*sizeof(int)), 
+       wwritw(zero_block_unit,(char *)zero_blocks,(int)(num_blocks*sizeof(int)),
               offset2, &nxtword);
        }
      blk = buf2blk[ibuf];
      /* write buffer out if it is not a zero block */
      if (zero_blocks[blk]==0) 
        wwritw(unit, (char *) buffer, (int) size, offset, &nxtword);
-    } 
-   else
-     wwritw(unit, (char *) buffer, (int) size, offset, &nxtword);
-    
+   } 
+   else {
+     // old way
+     // wwritw(unit, (char *) buffer, (int) size, offset, &nxtword);
+     // new way
+     psio_write_entry((ULI) unit, key, (char *) buffer, size);
+   }
+
    if (ivect >= nvect) nvect = ivect + 1;
    cur_vect = ivect;
    cur_buf = ibuf;
    
    detci_time.write_after_time = wall_time_new();
-   detci_time.write_total_time += detci_time.write_after_time - detci_time.write_before_time;
+   detci_time.write_total_time += detci_time.write_after_time - 
+     detci_time.write_before_time;
 
    return(1);
 }  
@@ -2945,7 +2979,6 @@ void CIvect::gather(int ivec, int nvec, int nroot, double **alpha,
 }
 
 
-
 /*
 ** CIvect::restart_reord_fp()
 **
@@ -2960,6 +2993,10 @@ void CIvect::gather(int ivec, int nvec, int nroot, double **alpha,
 **
 ** Actually, it's slightly more complex.  For multiple restarts in a given
 ** calc, the 0 position rotates around.  This routine should still work.
+**
+** In the latest version, I am phasing out the "offset" array in favor
+** of a new_first_buf array which basically gives the buffer number of
+** the new "0" vector.  This is more natural for the libpsio implementation.
 */
 void CIvect::restart_reord_fp(int L)
 {
@@ -2967,27 +3004,33 @@ void CIvect::restart_reord_fp(int L)
    unsigned long *tmp_file_offset;
    int *tmp_file_number;
 
+   new_first_buf = L*buf_per_vect + new_first_buf;
+   if (new_first_buf >= buf_total) new_first_buf -= buf_total;
+
+   /*
    tmp_file_offset = (unsigned long *) malloc (buf_total * 
                       sizeof(unsigned long));
    tmp_file_number = init_int_array(buf_total);
 
+
    for (buf=L*buf_per_vect,newbuf=0; buf<buf_total; buf++,newbuf++) {
-      tmp_file_offset[newbuf] = file_offset[buf];
-      tmp_file_number[newbuf] = file_number[buf];
-      }
+     tmp_file_offset[newbuf] = file_offset[buf];
+     tmp_file_number[newbuf] = file_number[buf];
+   }
 
    for (buf=0; buf<L*buf_per_vect; buf++,newbuf++) { 
-      tmp_file_offset[newbuf] = file_offset[buf];
-      tmp_file_number[newbuf] = file_number[buf];
-      }
+     tmp_file_offset[newbuf] = file_offset[buf];
+     tmp_file_number[newbuf] = file_number[buf];
+   }
 
    for (buf=0; buf<buf_total; buf++) {
-      file_offset[buf] = tmp_file_offset[buf];
-      file_number[buf] = tmp_file_number[buf];
-      }
+     file_offset[buf] = tmp_file_offset[buf];
+     file_number[buf] = tmp_file_number[buf];
+   }
 
    free(tmp_file_offset);
    free(tmp_file_number);
+   */
 }
 
 
@@ -3963,8 +4006,7 @@ double CIvect::dcalc_evangelisti(int rootnum, int num_vecs, double lambda,
 
    for (buf=0; buf<buf_per_vect; buf++) {
       Hd.buf_unlock();
-    /*
-   */
+
       buf_unlock();
       zero_arr(buf1, buf_size[buf]);
       C.buf_lock(buf2);
@@ -3975,8 +4017,7 @@ double CIvect::dcalc_evangelisti(int rootnum, int num_vecs, double lambda,
       C.buf_unlock();
       buf_lock(buf2);
       read(rootnum, buf);
-   /*
-   */ 
+
       xexy(buf2, buf1, buf_size[buf]); /* r_I*c_I */
       xeax(buf2, -2.0, buf_size[buf]); /* -2*r_I*c_I */
       xexy(buf1, buf1, buf_size[buf]); /* c_I*c_I */
@@ -3989,19 +4030,127 @@ double CIvect::dcalc_evangelisti(int rootnum, int num_vecs, double lambda,
              CalcInfo.twoel_ints, CalcInfo.efzc, CalcInfo.num_alp_expl,
              CalcInfo.num_bet_expl, CalcInfo.nmo, buf, Parameters.hd_ave);
         }
-/*      
-*/
       xpey(buf2, buf1, buf_size[buf]); /* Hd -2*r_I*c_I + c_I*c_I */
       buf_lock(buf1);
       read(rootnum, buf);
       tval = calc_d2(buf1, lambda, buf2, buf_size[buf], precon);
-/*      
-*/
       if (buf_offdiag[buf]) tval *= 2.0;
       norm += tval;
       write(rootnum, buf);
       }
 
   return(norm);
+}
+
+/*
+** Write the number of the new first buffer to disk.
+** The new first buffer is the buffer which is renumbered as "zero" after
+** a collapse of the subspace.  The labels on disk are not actually 
+** changed so that it is a little easier to deal with two logical CIvectors
+** which point to the same physical CIvector (as happens if nodfile).
+*/
+void CIvect::write_new_first_buf(void)
+{
+  int unit;
+
+  unit = first_unit;
+  psio_write_entry((ULI) unit, "New First Buffer", (char *) &new_first_buf,
+    sizeof(int));
+}
+
+/*
+** Read the number of the new first buffer from disk.
+** The new first buffer is the buffer which is renumbered as "zero" after
+** a collapse of the subspace.  The labels on disk are not actually 
+** changed so that it is a little easier to deal with two logical CIvectors
+** which point to the same physical CIvector (as happens if nodfile).
+** Return -1 if "New First Buffer" is not stored in the file yet.
+*/
+int CIvect::read_new_first_buf(void)
+{
+  int unit;
+  int nfb;
+
+  unit = first_unit;
+  if (psio_tocscan((ULI) unit, "New First Buffer") == NULL) return(-1);
+  psio_read_entry((ULI) unit, "New First Buffer", (char *) &nfb, 
+    sizeof(int));
+  return(nfb);
+
+}
+
+/*
+** Set the number of the new first buffer.
+** The new first buffer is the buffer which is renumbered as "zero" after
+** a collapse of the subspace.  The labels on disk are not actually 
+** changed so that it is a little easier to deal with two logical CIvectors
+** which point to the same physical CIvector (as happens if nodfile).
+*/
+void CIvect::set_new_first_buf(int nfb)
+{
+  new_first_buf = nfb;
+}
+
+
+/*
+** Read the number of valid vectors in this object.  That will be stored
+** in the first unit.
+*/
+int CIvect::read_num_vecs(void)
+{
+  int unit;
+  int nv;
+
+  unit = first_unit;
+  if (psio_tocscan((ULI) unit, "Num Vectors") == NULL) return(-1);
+  psio_read_entry((ULI) unit, "Num Vectors", (char *) &nv, sizeof(int));
+  return(nv);
+}
+
+
+/*
+** Write the number of valid vectors in this object.  That will be stored
+** in the first unit.
+*/
+void CIvect::write_num_vecs(int nv)
+{
+  int unit;
+
+  unit = first_unit;
+  psio_write_entry((ULI) unit, "Num Vectors", (char *) &nv, sizeof(int));
+  write_toc();
+  //civect_psio_debug();
+}
+
+
+/*
+** Write the libpsio table of contents to disk in case we crash before
+** we're done.  The TOC is written to the end of the file.  If we aren't
+** done filling it up, it will be wiped out by the next write but written
+** again at the new end of file next time we call this function.
+*/
+void CIvect::write_toc(void)
+{
+  int i,unit;
+
+  for (i=0; i<nunits; i++) { 
+    psio_tocwrite(units[i]);
+  }
+
+}
+
+
+/*
+** Print libpsio debug info
+*/
+void CIvect::civect_psio_debug(void)
+{
+  int i, unit;
+
+  for (i=0; i<nunits; i++)
+    psio_tocprint(units[i], outfile);
+  fprintf(outfile, "Number of vectors = %d\n", read_num_vecs());
+  fprintf(outfile, "New first buffer = %d\n", read_new_first_buf());
+  fprintf(outfile, "Internal new first buffer = %d\n", new_first_buf);
 }
 

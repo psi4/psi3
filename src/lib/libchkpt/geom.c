@@ -21,7 +21,6 @@
 ** \ingroup (CHKPT)
 */
 
-
 double **chkpt_rd_geom(void)
 {
   double **geom, **full_geom;

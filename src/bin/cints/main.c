@@ -82,8 +82,11 @@ int main(int argc, char *argv[])
 #ifdef INCLUDE_Default_Ints
    if (UserOptions.make_oei) {
      /* Molecule.Enuc = */ compute_enuc();
+#if !USE_LIBCHKPT
      file30_wt_enuc(Molecule.Enuc); 
+#else
      chkpt_wt_enuc(Molecule.Enuc);
+#endif
      oe_ints();
    }
    if (UserOptions.make_eri)

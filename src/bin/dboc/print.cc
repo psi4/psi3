@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "params.h"
+#include "float.h"
 
 #define PRINT_INTRO 1
 #define PRINT_PARAMS 1
@@ -23,8 +24,10 @@ void print_params()
 {
   if (Params.print_lvl >= PrintLevels::print_params) {
     fprintf(outfile,"\n  -OPTIONS:\n");
+    fprintf(outfile,"    Label                       = %s\n",Params.label);
     fprintf(outfile,"    sizeof(double)              = %d\n",sizeof(double));
     fprintf(outfile,"    sizeof(long double)         = %d\n",sizeof(long double));
+    fprintf(outfile,"    sizeof(FLOAT)               = %d\n",sizeof(FLOAT));
     fprintf(outfile,"    Print level                 = %d\n",Params.print_lvl);
     fprintf(outfile,"    Displacement size           = %lf a.u.\n",Params.delta);
     if (strcmp(Params.wfn,"SCF"))
@@ -36,6 +39,32 @@ void print_params()
     else if (Params.reftype == Params_t::uhf)
       fprintf(outfile,"    Wave function               = UHF SCF\n");
     fprintf(outfile,"\n");
+    if (Params.coords) {
+      fprintf(outfile,"    User-specified displacements:\n");
+      for(int coord=0; coord<Params.ncoord; coord++) {
+	int atom = Params.coords[coord].index/3;
+	int xyz = Params.coords[coord].index%3;
+	char dir;
+	switch (xyz) {
+	  case 0:  dir = 'x'; break;
+	  case 1:  dir = 'y'; break;
+	  case 2:  dir = 'z'; break;
+	}
+	fprintf(outfile,"      atom %d  %c  degen %5.1lf\n",
+		atom, dir, Params.coords[coord].coeff);
+	fprintf(outfile,"\n");
+      }
+    }
+    else
+      fprintf(outfile,"    Makeing displacements along all cartesian degrees of freedom\n\n");
+    if (Params.isotopes) {
+      fprintf(outfile,"    User-specified isotope labels:\n");
+      for(int atom=0; atom<Params.nisotope; atom++)
+	fprintf(outfile,"      %s\n",Params.isotopes[atom]);
+      fprintf(outfile,"\n");
+    }
+    else
+      fprintf(outfile,"    By default, using the most abundant isotope for each element\n\n");
   }
 
   fflush(outfile);

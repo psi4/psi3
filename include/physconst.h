@@ -11,6 +11,8 @@
  * revised 4/28/02 to agree with NIST online database
  * updated au2amu, hartree2J, hartree2wavenumbers
  *
+ * revised 10/28/02 by TDC to include vacuum permittivity (_e0)
+ * Avagadro's number (_na).
  */
 
 #define _pi    3.14159265358979323846264338327950288
@@ -33,4 +35,5 @@
 #define _c_au 137.0359895
 #define _hartree2ev 27.211396
 #define _hartree2wavenumbers 219474.6313710
-
+#define _e0 8.854187816E-12  /* vacuum permittivity */
+#define _na 6.022136736E23 /* Avagadro's number */

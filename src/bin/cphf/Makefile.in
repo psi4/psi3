@@ -5,10 +5,18 @@ include ../MakeVars
 
 LDLIBS += $(LAPACK) $(BLAS)
 
-PSILIBS = -lPSI_qt -lPSI_file30 -lPSI_iwl -lPSI_ciomr -lPSI_psio -lPSI_ipv1
+PSILIBS = -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
 CSRC = \
-cphf.c
+cphf.c \
+setup.c \
+mohess.c \
+cphf_X.c \
+cphf_F.c \
+build_hessian.c \
+build_dipder.c \
+polarize.c \
+vibration.c \
 
 BINOBJ = $(CSRC:%.c=%.o)
 ALLOC = 

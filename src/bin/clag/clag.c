@@ -107,7 +107,7 @@ main(int argc, char **argv)
   file30_close();
   ***/
 
-  chkpt_init();
+  chkpt_init(PSIO_OPEN_OLD);
   nmo = chkpt_rd_nmo();
   enuc = chkpt_rd_enuc();
   eci_30 = chkpt_rd_etot(); 

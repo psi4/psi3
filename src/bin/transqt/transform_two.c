@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
-#include <libfile30/file30.h>
 #include <libchkpt/chkpt.h>
 #include <libqt/qt.h>
 #include <libiwl/iwl.h>
@@ -178,13 +177,10 @@ void transform_two(void)
     free(moinfo.fzc_density);
   }
 
-  /* Write efzc to file30 */
-  file30_init();
-  chkpt_init();
-  file30_wt_efzc(moinfo.efzc);
+  /* Write efzc to chkpt file */
+  chkpt_init(PSIO_OPEN_OLD);
   chkpt_wt_efzc(moinfo.efzc);
   chkpt_close();
-  file30_close();
 
   if (params.print_lvl) 
     fprintf(outfile, "\n\tFrozen core energy = %20.15lf\n", moinfo.efzc);

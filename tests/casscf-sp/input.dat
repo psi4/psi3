@@ -1,7 +1,7 @@
 % 6-31G** H2O Test CASSCF Energy Point
 
 psi: (
-  opt = false
+  jobtype = sp
   check = false
 )
 

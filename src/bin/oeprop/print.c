@@ -27,10 +27,10 @@ void print_tasks()
        fprintf(outfile,".\n");
 
      if (wrtnos)
-       fprintf(outfile,"    $Natural orbitals will be written to file30.\n");
+       fprintf(outfile,"    $Natural orbitals will be written to checkpoint.\n");
    }
    else
-     fprintf(outfile,"    $One-particle density will be computed from the eigenvector in file30.\n");
+     fprintf(outfile,"    $One-particle density will be computed from the eigenvector in checkpoint.\n");
 
    if (spin_prop)
      fprintf(outfile,"    $Spin properties will be evaluated.\n");
@@ -409,7 +409,7 @@ void print_misc()
     if (read_opdm) 
       fprintf(outfile,"of NOs contructed from onepdm in file%d ",opdm_file);
     else
-      fprintf(outfile,"of MOs in file30 ");
+      fprintf(outfile,"of MOs in checkpoint ");
     fprintf(outfile,"(a.u.) :\n\n");
     fprintf(outfile,"    MO #   Symm     <X^2>        <Y^2>        <Z^2>        <R^2>\n");
     fprintf(outfile,"   ------  ----  -----------  -----------  -----------  -----------\n");

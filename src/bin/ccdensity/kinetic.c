@@ -38,7 +38,7 @@ void kinetic(void)
              order, moinfo.orbspi, moinfo.nirreps);
 
   /*** Reorder the SCF eigenvectors to QT ordering */
-  chkpt_init();
+  chkpt_init(PSIO_OPEN_OLD);
   scf_pitzer = chkpt_rd_scf();
   chkpt_close();
 

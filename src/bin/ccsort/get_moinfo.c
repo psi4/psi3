@@ -40,7 +40,7 @@ void get_moinfo(void)
   int *pitz2qt_A, *qt2pitz_A, *pitz2qt_B, *qt2pitz_B;
   psio_address next;
   
-  chkpt_init();
+  chkpt_init(PSIO_OPEN_OLD);
   moinfo.nirreps = chkpt_rd_nirreps();
   moinfo.nmo = chkpt_rd_nmo();
   moinfo.iopen = chkpt_rd_iopen();
@@ -87,7 +87,7 @@ void get_moinfo(void)
   }
 
   if(moinfo.nfzc) {
-    chkpt_init();
+    chkpt_init(PSIO_OPEN_OLD);
     moinfo.efzc = chkpt_rd_efzc();
     chkpt_close();
   }
@@ -978,7 +978,7 @@ void get_moinfo(void)
       pitz_offset[h] = pitz_offset[h-1] + moinfo.orbspi[h-1];
     }
 
-    chkpt_init();
+    chkpt_init(PSIO_OPEN_OLD);
 
     evects_A = (double ***) malloc(moinfo.nirreps * sizeof(double **));
     scf_vector_A = (double ***) malloc(moinfo.nirreps * sizeof(double **));
@@ -1057,7 +1057,7 @@ void get_moinfo(void)
       pitz_offset[h] = pitz_offset[h-1] + moinfo.orbspi[h-1];
     }
   
-    chkpt_init();
+    chkpt_init(PSIO_OPEN_OLD);
     evects = (double ***) malloc(moinfo.nirreps * sizeof(double **));
     scf_vector = (double ***) malloc(moinfo.nirreps * sizeof(double **));
 

@@ -4,6 +4,7 @@
 */
 
 #include <stdlib.h>
+#include "chkpt.h"
 #include <psifiles.h>
 #include <libpsio/psio.h>
 
@@ -20,11 +21,14 @@
 char *chkpt_rd_sym_label(void)
 {
   char *sym_label;
+  char *key;
 
   sym_label = (char *) malloc(4*sizeof(char));
 
-  psio_read_entry(PSIF_CHKPT, "::Symmetry label", (char *) sym_label, 
-                  4*sizeof(char));
+  key = chkpt_build_keyword("Symmetry label");
+  psio_read_entry(PSIF_CHKPT, key, (char *) sym_label, 4*sizeof(char));
+  sym_label[3] = '\0';
+  free(key);
 
   return sym_label;  
 }
@@ -42,7 +46,10 @@ char *chkpt_rd_sym_label(void)
 
 void chkpt_wt_sym_label(char *sym_label)
 {
+  char *key;
+  key = chkpt_build_keyword("Symmetry label");
   psio_write_entry(PSIF_CHKPT, "::Symmetry label", (char *) sym_label, 
                    4*sizeof(char));
+  free(key);
 }
 

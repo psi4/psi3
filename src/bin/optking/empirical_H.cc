@@ -1,13 +1,12 @@
 // This function generates an empirical guess Hessian from a given set of
 //   salcs according to Schlegel, Theor. Chim. Acta, 66, 333 (1984).
 
-#include <math.h>
-
 extern "C" {
   #include <stdio.h>
   #include <libchkpt/chkpt.h>
   #include <stdlib.h>
   #include <string.h>
+  #include <math.h>
   #include <libciomr/libciomr.h>
   #include <physconst.h>
   #include <libipv1/ip_lib.h>
@@ -18,6 +17,7 @@ extern "C" {
 
 #define EXTERN
 #include "opt.h"
+#undef EXTERN
 #include "cartesians.h"
 #include "internals.h"
 #include "salc.h"
@@ -148,6 +148,7 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
                       -r1[1]*r2[0]*r3[2] ) / (norm_r1*norm_r2*norm_r3)));
       f[++count] = _hartree2J*1.0E18 * (A * val * val * val * val);
    }
+   free(coord);
 
   // Now transform into delocalized coordinates U^t H U
    double **intcos;

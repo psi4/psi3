@@ -1,8 +1,27 @@
 /* $Log$
- * Revision 1.18  2002/05/30 20:16:49  crawdad
- * Accidentally left dmalloc calls in place.  Fixed.
+ * Revision 1.19  2002/11/24 22:52:17  crawdad
+ * Merging the gbye-file30 branch into the main trunk.
  * -TDC
  *
+/* Revision 1.18.2.4  2002/11/23 21:54:45  crawdad
+/* Removal of mxcoef stuff for chkpt runs.
+/* -TDC
+/*
+/* Revision 1.18.2.3  2002/11/23 19:35:14  sherrill
+/* re-institute writing scf vector to file30 if !USE_LIBCHKPT
+/*
+/* Revision 1.18.2.2  2002/10/01 22:16:28  sherrill
+/* Fix a few minor libchkpt/libfile30 things (one define condition was
+/* backwards), turn off libfile30 unless we're really using it, and
+/* clean up a stupid mistake for the orthog_only option ---CDS
+/*
+/* Revision 1.18.2.1  2002/07/29 23:08:30  evaleev
+/* A major set of changes designed to convert all psi modules to use libchkpt.
+/*
+/* Revision 1.18  2002/05/30 20:16:49  crawdad
+/* Accidentally left dmalloc calls in place.  Fixed.
+/* -TDC
+/*
 /* Revision 1.17  2002/05/30 12:57:08  crawdad
 /* Buf fix.  psio_done() was called before chkpt_close().
 /* -TDC
@@ -126,6 +145,12 @@ static char *rcsid = "$Id$";
 #include "includes.h"
 #include "common.h"
 #include <libipv1/ip_lib.h>
+#if USE_LIBCHKPT
+#  include <libchkpt/chkpt.h>
+#else
+#  include <libfile30/file30.h>
+#endif
+
 
 /* TDC(6/20/96) - Prototype for phase() */
 int phase(void);
@@ -208,7 +233,7 @@ void cleanup()
      correlated calcs */
   if(inflg==2) phase_check = 1;
 
-  /* update ncalcs in file30 */
+#if !USE_LIBCHKPT
   wreadw(itap30,(char *) i10,sizeof(int)*200,(PSI_FPTR) sizeof(int)*100,&junk);
 
   if(!i10[44]) i10[44]++;
@@ -218,32 +243,39 @@ void cleanup()
   mconst = i10[2];
   mcalcs = i10[3];
   nat = i10[18];
-  nx = nmo*(nmo+1)/2;
-  nbfao = i10[21];
   i10[40] = n_so_typs;
   i10[41] = mxcoef;
   i10[42] = ioff[n_open];
   if(twocon) i10[42] = -i10[42];
   i10[45] = nmo;
-
+#else
   /* psio_write calls for above */
-  chkpt_wt_mxcoef(mxcoef);
   chkpt_wt_nsymhf(n_so_typs);
   chkpt_wt_nmo(nmo);
 
   tmp_iopen = ioff[n_open];
   if(twocon) tmp_iopen = -tmp_iopen;
   chkpt_wt_iopen(tmp_iopen);
+#endif
+  nx = nmo*(nmo+1)/2;
    
   /* STB(10/28/99) - Flag to tell what reference is being used*/
+#if !USE_LIBCHKPT
   i10[46] = refnum;
+#else
   chkpt_wt_ref(refnum);
+#endif
    
   /* TDC(6/19/96) - Set the phase_check flag here */
+#if !USE_LIBCHKPT
   i10[50] = phase_check;
+#else
   chkpt_wt_phase_check(phase_check);
-  
+#endif
+
+#if !USE_LIBCHKPT
   wwritw(itap30,(char *) i10,sizeof(int)*200,(PSI_FPTR) sizeof(int)*100,&junk);
+#endif
 
   /* STB(10/28/99) - Changing the file30 structure to utilize the pointer
      space */
@@ -298,7 +330,8 @@ void cleanup()
   /* [10] = Alpha Lagrangian (the only one stored if not UHF)     */
   /* [11] = Beta  Lagrangian                                      */
   /*--------------------------------------------------------------*/
-  
+
+#if !USE_LIBCHKPT
   pointers = init_int_array(20);
    
   /* get pointers to calculations */
@@ -336,7 +369,9 @@ void cleanup()
   /* write new energy to file30 */
 
   wwritw(itap30,(char *) &etot,sizeof(double)*1,junk,&junk);
+#endif
 
+#if USE_LIBCHKPT
   /* write to new checkpoint file */
   chkpt_wt_etot(etot);
   chkpt_wt_escf(etot);
@@ -414,7 +449,7 @@ void cleanup()
     chkpt_wt_scf(scr1);
   }
   free_block(scr1);
-
+#else
   /* write new vector and eigenvalues to file30 and file49 */
   scr_arr = (double *) init_array(mxcoef);
 
@@ -513,9 +548,11 @@ void cleanup()
     wwritw(itap30,(char *) no,sizeof(int)*n_so_typs,locvec,&locvec);
     pointers[8] = locvec;
   }
+#endif
 
   /* write open-shell coupling coefficients */
   if(iopen){
+#if !USE_LIBCHKPT
     if(twocon) {
       double c1i = scf_info[opblk1].occ_num[opshl1];
       double c1ii = scf_info[opblk2].occ_num[opshl2];
@@ -531,7 +568,7 @@ void cleanup()
     pointers[9] = locvec;
     wwritw(itap30,(char *) beta,sizeof(double)*ioff[n_open],locvec,&locvec);
     pointers[10] = locvec;
-
+#else
     ccvecs = block_matrix(2,ioff[n_open]);
     for(i=0; i < ioff[n_open]; i++) {
       ccvecs[0][i] = alpha[i];
@@ -539,6 +576,7 @@ void cleanup()
     }
     chkpt_wt_ccvecs(ccvecs);
     free_block(ccvecs);
+#endif
   }
 
   /* calculate mo lagrangian and write to file30 */
@@ -572,11 +610,13 @@ void cleanup()
 	  ijk += num_mo;
 	}
       }
+#if !USE_LIBCHKPT
       wwritw(itap30,(char *) lagrangian,sizeof(double)*nx,locvec,&locvec); 
       pointers[m+11] = locvec; 
-
+#else
       if(m==0) chkpt_wt_alpha_lagr(lagr);
       else chkpt_wt_beta_lagr(lagr);
+#endif
     }
   }
   else{
@@ -657,14 +697,18 @@ void cleanup()
 	ijk += num_mo;
       }
     }
+#if !USE_LIBCHKPT
     wwritw(itap30,(char *) lagrangian,sizeof(double)*nx,locvec,&locvec);
     pointers[11]=0;
     pointers[12]=locvec;
+#else
     chkpt_wt_lagr(lagr);
+#endif
   }
   free(lagrangian);
   free_block(lagr);
 
+#if !USE_LIBCHKPT
   if(newvec) {
     iend = (int) locvec/sizeof(int)+1;
     wwritw(itap30,(char *) &iend,sizeof(int)*1,(PSI_FPTR) sizeof(int)*100,&locvec);
@@ -677,6 +721,7 @@ void cleanup()
       
   junk = loccal + 60*sizeof(int);
   wwritw(itap30,(char *) pointers,sizeof(int)*20,junk,&junk);
+#endif
       
   if(ci_calc && iopen && irot) {
     fprintf(outfile,
@@ -743,8 +788,12 @@ void cleanup()
     fprintf(outfile,  "  Proceed at your own risk!\n");
   }
       
-  file30_close();
+#if USE_LIBCHKPT
   chkpt_close();
+#else
+  file30_close();
+#endif
+
   if(!direct_scf){
     psio_close(Pmat.unit, 0);
     psio_close(PKmat.unit, 0);
@@ -1175,11 +1224,69 @@ void print_mo_eigvals(void)
 
 
 
+/*
+ * write_scf_matrices():
+ *
+ * Write the full C matrix (including zeroes).
+ *
+ * libchkpt version only!  libfile30 is dead.
+ *
+ * This is taken out of the cleanup() code above.  I need to call just
+ * this part when reorthogonalizing the C matrix.
+ *
+ * C. David Sherrill
+ * October 2002
+ */
 
+void write_scf_matrices(void)
+{
+  struct symm *s;
+  double **scr1;
+  int row, col;
+  int i, j, k, m;
 
-
-
-
+  scr1 = block_matrix(nbfso,nmo);
+  if(uhf) {
+    for(m=0; m < 2; m++) {
+      zero_mat(scr1, nbfso, nmo);
+      for(k=0,row=0,col=0; k < num_ir; k++) {
+	s=&scf_info[k];
+	for(i=0; i < s->num_so; i++) {
+	  for(j=0; j < s->num_mo; j++) {
+	    scr1[i+row][j+col] = spin_info[m].scf_spin[k].cmat[i][j];
+	  }
+	}
+	row += s->num_so;
+	col += s->num_mo;
+      }
+      #if USE_LIBCHKPT
+      if(m==0) chkpt_wt_alpha_scf(scr1);
+      else chkpt_wt_beta_scf(scr1);
+      #else
+      if(m==0) file30_wt_alpha_scf(scr1);
+      else file30_wt_beta_scf(scr1);
+      #endif
+    }
+  }
+  else {
+    for(k=0,row=0,col=0; k < num_ir; k++) {
+      s=&scf_info[k];
+      for(i=0; i < s->num_so; i++) {
+	for(j=0; j < s->num_mo; j++) {
+	  scr1[i+row][j+col] = s->cmat[i][j];
+	}
+      }
+      row += s->num_so;
+      col += s->num_mo;
+    }
+    #if USE_LIBCHKPT
+    chkpt_wt_scf(scr1);
+    #else
+    file30_wt_scf(scr1);
+    #endif
+  }
+  free_block(scr1);
+}
 
 
 

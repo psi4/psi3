@@ -169,8 +169,14 @@ static char *rcsid = "$Id$";
 #include "common.h"
 #include <libipv1/ip_lib.h>
 #include <libpsio/psio.h>
+#if USE_LIBCHKPT
+#  include <libchkpt/chkpt.h>
+#else
+#  include <libfile30/file30.h>
+#endif
 
 void print_initial_vec();
+extern void write_scf_matrices(void);
 
 int main(argc,argv)
    int argc;
@@ -181,7 +187,7 @@ int main(argc,argv)
   char *output="APPEND  ";
   struct symm *s;
   ip_value_t *ipvalue=NULL;
-  int errcod, orthog_only;
+  int errcod, orthog_only, mo_print;
   char *wfn;
  
   ffile(&infile,"input.dat",2);
@@ -264,8 +270,11 @@ int main(argc,argv)
   /* STB (6/30/99) - Function added because in order to initialize things
      one must know whether you are doing UHF or restricted */   
    
+#if USE_LIBCHKPT
+  chkpt_init(PSIO_OPEN_OLD);
+#else
   file30_init();
-  chkpt_init();
+#endif
 
   occ_init();
    
@@ -341,6 +350,10 @@ int main(argc,argv)
   /* if we are only orthogonalizing, then quit here */
   if (orthog_only) {
     fprintf(outfile, "Only orbital orthogonalization has been performed\n");
+    mo_print = 0;
+    errcod = ip_boolean("PRINT_MOS",&mo_print,0);
+    if (mo_print) print_mos();
+    write_scf_matrices();
     psio_done();
     tstop(outfile);
     ip_done();
@@ -387,8 +400,11 @@ int main(argc,argv)
       fprintf(outfile,"  remove 'direct_scf = true' from input\n");
       fprintf(stderr,"rohf open shell singlet doesn't work direct\n");
       fprintf(stderr,"remove 'direct_scf = true' from input\n");
-      file30_close();
+#if USE_LIBCHKPT
       chkpt_close();
+#else
+      file30_close();
+#endif
       psio_done();
       exit(1);
     }

@@ -22,6 +22,16 @@ void read_cart()
   else if (num_allatoms > MAXATOM)
     punt("There are more atoms than allowed!");
 
+  /* Figure out how many non-dummy atoms are there */
+  num_atoms = 0;
+  for(i=0;i<num_allatoms;i++){
+    errcod = ip_string("GEOMETRY",&atom_label,2,i,0);
+    if (errcod != IPE_OK)
+      punt("Problem reading GEOMETRY array.");
+    if (strcmp(atom_label,"X"))
+      ++num_atoms;
+  }
+
   /*-----------------------
     Allocate global arrays
    -----------------------*/
@@ -52,6 +62,7 @@ void read_cart()
        free(atom_label);
        atom_dummy[i] = 1;
      }
+
     for(j=0; j<3;j++){
       errcod = ip_data("GEOMETRY","%lf", &tmp,2,i,j+1);
       if (errcod != IPE_OK)

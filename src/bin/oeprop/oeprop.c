@@ -511,7 +511,7 @@ void compute_oeprops()
 		  
 
 		  /*-----------------------------------------------
-		    These are the <p|lx2|p> constributions only
+		    These are the <p|lx2|p> contributions only
 		    The rest (<p|lx|p><q|lx|q> - <p|lx|q><q|lx|p>)
 		    is computed later
 		   -----------------------------------------------*/

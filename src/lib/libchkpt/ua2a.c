@@ -3,6 +3,7 @@
   \ingroup (CHKPT)
 */
 
+#include <stdlib.h>
 #include "chkpt.h"
 #include <psifiles.h>
 #include <libpsio/psio.h>
@@ -22,13 +23,13 @@ int *chkpt_rd_ua2a(void)
 {
   int *ua2a;
   int num_unique_atoms;
+  char *key;
 
   num_unique_atoms = chkpt_rd_num_unique_atom();
   ua2a = init_int_array(num_unique_atoms);
-
-  psio_read_entry(PSIF_CHKPT, "::Unique atom -> full atom map", (char *) ua2a, 
-		  num_unique_atoms*sizeof(int));
-
+  key = chkpt_build_keyword("Unique atom -> full atom map");
+  psio_read_entry(PSIF_CHKPT, key, (char *) ua2a, num_unique_atoms*sizeof(int));
+  free(key);
   return ua2a;
 }
 
@@ -46,9 +47,11 @@ int *chkpt_rd_ua2a(void)
 void chkpt_wt_ua2a(int *ua2a)
 {
   int num_unique_atoms;
+  char *key;
 
   num_unique_atoms = chkpt_rd_num_unique_atom();
 
-  psio_write_entry(PSIF_CHKPT, "::Unique atom -> full atom map", (char *) ua2a, 
-		   num_unique_atoms*sizeof(int));
+  key = chkpt_build_keyword("Unique atom -> full atom map");
+  psio_write_entry(PSIF_CHKPT, key, (char *) ua2a, num_unique_atoms*sizeof(int));
+  free(key);
 }

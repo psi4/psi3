@@ -12,7 +12,7 @@ void compute_density()
   int *occ_a,*occ_b,*dummy; /* alpha and beta occupation strings */
   double *alpha;
   double *beta;
-  double **ccvecs;	/* vectors of coupling coeffs alpha and beta in packed form */
+  double **ccvecs;	/* vectors of coupling coeffs alpha and beta, packed */
   double occ_tcscf[2];	/* occupations for first and second 
   			   open-shell orbitals in a closed-shell TCSCF case */
   double tmp_a, tmp_b;
@@ -31,7 +31,11 @@ void compute_density()
 	/* Reading in coupling coefficients for TCSCF wavefunction */
 
   if (iopen < 0) {
+#if USE_LIBCHKPT
+    ccvecs = chkpt_rd_ccvecs();
+#else
     ccvecs = file30_rd_ccvecs();
+#endif
     alpha = ccvecs[0];
     beta = ccvecs[1];
     if (print_lvl >= PRINTCCOEFFLEVEL) {

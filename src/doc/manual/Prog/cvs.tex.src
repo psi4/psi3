@@ -3,8 +3,15 @@
 %
 % CVS Revision Control Section
 %
-% Daniel Crawford, 1 February, 1996
+% TDC, February, 1996
+% Modified by TDC, July 2002
 %
+
+This section describes how to (1) access and modify the \PSIthree\
+source code via the concurrent versions system (CVS) revision control
+system; (2)   For further information, please see the cvs(1) info page.
+
+
 There are two ways to start developing for \PSIthree:
 \begin{itemize}
 \item 
@@ -21,24 +28,19 @@ main repository.
 \end{itemize}
 The second method is preferred if you are to develop seriously for \PSIthree.
 
-This section describes how to access and modify \PSIthree\ code via
-the CVS version control system. For further information,
-please see the cvs(1) info page.
-
 \subsection{Introduction to \PSIthree\ repository}
-The main repository for the \PSIthree\ Source code is currently maintained 
-by Prof.~Daniel Crawford at Virginia Tech.  To check out the code, one
-must first gain permission to access the repository by emailing
-\htmladdnormallink{{\tt
+The main repository for the \PSIthree\ Source code is currently
+maintained by Prof.~Daniel Crawford at Virginia Tech.  To check out
+the code, one must first gain permission to access the repository by
+emailing \htmladdnormallink{{\tt
 mailto:psimaster@sirius.chem.vt.edu}}{mailto:psimaster@sirius.chem.vt.edu}.
 Once the account has been set up, set your {\tt CVSROOT} variable
-(conveniently defined in your shell dotfiles) to 
-{\tt setenv CVSROOT
+(conveniently defined in your shell dotfiles) to {\tt setenv CVSROOT
 :pserver:login@sirius.chem.vt.edu:/home/users/psi3/master}, where {\tt
-login} is your login name.  Next, do a cvs login to the pserver by 
-typing {\tt cvs login}.  This should ask for your password.  Once this is
-done, you should be able to make subsequent accesses to the repository
-without having to use your password.
+login} is your login name.  Next, login to the cvs pserver by typing
+{\tt cvs login}, which should ask for your password.  Once this is
+done, subsequent requests to the cvs repository may be made without
+using a password.
 
 Under the {\tt /home/users/psi3/master} repository at Virginia Tech, all 
 of the source code is maintained under CVS control.  In order to 
@@ -65,37 +67,60 @@ basic, independent compilation and testing:
 \begin{verbatim}
 setenv CVSROOT :pserver:login@sirius.chem.vt.edu:/home/users/psi3/master
 \end{verbatim}
-will set this correctly. This line should be placed in the user's shell
-resource file. 
+will set this correctly. This line should be placed in the user's
+shell resource file.
 \item In the desired location for the root of the local \PSIthree\ source 
-tree,
+tree, e.g. \shellvar{\$HOME}, run
 \begin{verbatim}
 cvs co psi3
 \end{verbatim}
 \end{enumerate}
-These two steps create a complete source code tree under \file{psi3}
-with all necessary content. Next, you might simply edit \file{PSI3Install} and
-run it as described in \PSIthree\ User's Manual, but let us instead compile
-and install \PSIthree\ manually. It is highly recommended that you keep
-the local source tree separate from the compilation tree, i.e. rename 
-\file{psi3} to something like \file{psi3\_dist}. This will allow you to
-wipe out products of compilation and installation processes at any point
-and start all over again. We will assume that user has a local
-source tree checked out to \shellvar{\$HOME}\file{/psi3\_dist}.
+These two steps create a complete source code tree under \file{psi3}.
 
-First, it is necessary to run the autoconf program, which will take the
-information in \file{psi3\_dist/configure.in} and generate a shell
-script named \file{configure} which will later be used to determine
-a large amount of architecture-dependent information needed for correct
-compilation. To do this, in the directory 
-\shellvar{\$HOME}\file{/psi3\_dist}, run
+To compile \PSIthree\, first generate the necessary configure script
+using the GNU autoconf program.  In the
+\shellvar{\$HOME}\file{/psi3}, run
 \begin{verbatim}
 autoconf 
 \end{verbatim}
 Notice that files named \file{Makefile.in}, \file{MakeVars.in}, etc.
 exist after the check out sequence above. These files are input for
-the newly-created \file{configure} script which will generate Makefiles from 
-them.
+the newly-created \file{configure} script which will generate
+Makefiles from them.
+
+%Next, you might simply edit \file{PSI3Install} and
+%run it as described in \PSIthree\ User's Manual, but let us instead compile
+%and install \PSIthree\ manually. It is highly recommended that you keep
+%the local source tree separate from the compilation tree, i.e. rename 
+%\file{psi3} to something like \file{psi3\_dist}. This will allow you to
+%wipe out products of compilation and installation processes at any point
+%and start all over again. We will assume that user has a local
+%source tree checked out to \shellvar{\$HOME}\file{/psi3\_dist}.
+
+We will use {\em srcdir} to refer to the top-level \PSIthree\ source
+directory (e.g., \shellvar{\$HOME}\file{/psi3}) and {\em objdir} to
+refer to the top-level build/object directory.  We highly recommend
+that \PSIthree\ be built in a separate directory than the sources,
+e.g. \shellvar{\$HOME}\file{/psi3-obj}.  If the \PSIthree\ code must
+be compiled for multiple architectures, the \file{host.sh} script in
+the \shellvar{\$HOME}\file{/psi3} directory will provide target
+strings for naming subdirectories appropriately.  Compilation using a
+subdirectory of the source tree or the source tree itself is not
+supported and may fail.
+
+
+  The following command sequence will prepare a
+compilation directory
+\begin{verbtaim}
+{\trt mkdir \$HOME/psi3-obj
+\end{verbtaim}
+
+
+which does not reside within the source
+tree. This is how we generally build GCC; building where srcdir ==
+objdir should still work, but doesn't get extensive testing; building
+where objdir is a subdirectory of srcdir is unsupported.  create an
+architecture-dependent compilation directory
 
 \subsection{Initial compilation of utilities, libraries, and binaries}
 Before one may compile any of the \PSIthree\ binaries (e.g., 

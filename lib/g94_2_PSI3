@@ -9,8 +9,8 @@
 #  Used to convert a basis set formatted according to Gaussian 94 rules to
 #  to the Psi 3 format. Reads g94 basis set from STDIN and prints out to STDOUT
 #
-#  Usage: perl g94_2_PSI3 < input_file_name > output_file_name
-#         perl g94_2_PSI3 STDIN STDOUT
+#  Usage: g94_2_PSI3 < input_file_name > output_file_name
+#         g94_2_PSI3 STDIN STDOUT
 #
 ##############################################################################
 

@@ -60,6 +60,10 @@ void mpn_generator(CIvect &Hd, struct stringwr **alplist,
      Parameters.num_c_tmp_units, Parameters.first_c_tmp_unit,
      CIblks.first_iablk, CIblks.last_iablk, CIblks.decode);
 
+  /* set up the vector pointers/info */
+  if (Cvec.read_new_first_buf() == -1) Cvec.write_new_first_buf();
+  if (Sigma.read_new_first_buf() == -1) Sigma.write_new_first_buf();
+
 
   Cvec.h0block_buf_init();
   buffer1 = *(Hd.blockptr(0));

@@ -34,6 +34,7 @@ class CIvect {
       int codes_per_irrep;       /* number of codes per irrep (for alpha) */
       int buf_per_vect;          /* number of buffers per CI vector */
       int buf_total;             /* number of total buffers (all vectors) */
+      int new_first_buf;         /* after collapse, buffs get renumbered */
       int maxvect;               /* max number of CI vectors */
       int nvect;                 /* number of CI vectors */
       int nunits;                /* number of units (physical disk files) */
@@ -69,7 +70,7 @@ class CIvect {
       int **offsets_done;        /* matrix elements of 1(0) if offsets set
                                     or not */ 
       int cur_size;              /* current size of buffer */
-      
+      int first_unit;            /* first file unit number (if > 1) */ 
 
    public:
       CIvect();
@@ -173,6 +174,13 @@ class CIvect {
         struct stringwr **alplist, struct stringwr **betlist, int i, 
         double *buf1, double *buf2);
       void offsets_otf(int ivect, int buf);
+      int read_new_first_buf(void);
+      void write_new_first_buf(void);
+      void set_new_first_buf(int nfb);
+      int read_num_vecs(void);
+      void write_num_vecs(int nv);
+      void write_toc(void);
+      void civect_psio_debug(void);
 
       friend void sigma_init(CIvect& C, CIvect &S, struct stringwr **alplist, 
          struct stringwr **betlist);

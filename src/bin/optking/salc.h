@@ -12,9 +12,10 @@ class salc_class {
       label = new char[MAX_LINELENGTH];
     }
     ~salc_class() {
-      delete(simple);
-      delete(coeff);
-      delete(label);
+      // fprintf(stdout, "destructing salc class\n");
+      delete [] simple;
+      delete [] coeff;
+      delete [] label;
     }
     void print() {
       int i, col = 0;
@@ -88,7 +89,11 @@ class salc_set {
   public:
     salc_set(char *keyword);
     salc_set();
-    ~salc_set() { delete[] salc_array; delete(name); }
+    ~salc_set() {
+      // fprintf(stdout,"destructing salc_set\n");
+      delete [] salc_array;
+      delete [] name ;
+    }
     void print() {
       int i;
       if (num > 0) {

@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
-#include <file30_params.h>
 #include "input.h"
 #include <physconst.h>
 #include "global.h"
@@ -172,7 +171,7 @@ void read_basis()
       fprintf(outfile,")\n"); 
 
       for(k=first_shell_unique_atom; k<=last_shell_unique_atom; k++)
-	max_angmom = (max_angmom > ang_mom[k]) ? max_angmom : ang_mom[k];
+	max_angmom = (max_angmom > ang_mom[k-1]) ? max_angmom : ang_mom[k-1];
       
       num_shells_per_unique[i] = last_shell_unique_atom - first_shell_unique_atom + 1;
       num_unique_shells += num_shells_per_unique[i];
@@ -461,7 +460,7 @@ void normalize(bs, fp, lp, am)
     if(fabs(norm-1.0)>ZERO) printf("Needed normalization: norm=%lf\n", norm);
   }
   if (normalize_contractions) {
-    printf("Normalizing current contraction:\n");
+    /* printf("Normalizing current contraction:\n"); */
     for(i=fp; i<=lp; i++){
       bs[i][1] = bs[i][1]*norm;
       if(shownorm){

@@ -454,14 +454,14 @@ void Wabei_ROHF(void)
   dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIAJB");
   dpd_buf4_init(&Z, CC_TMP1, 0, 10, 5, 10, 5, 0, "Z(IB,AE)");
   dpd_contract444(&T2, &F, &Z, 0, 1, 1.0, 0.0);
-  dpd_buf4_sort(&Z, CC_TMP0, psrq, 10, 5, "Z(IE,AB)");
+  dpd_buf4_sort(&Z, CC_TMP0, psrq, 10, 5, "Z(IE,AB)2");
   dpd_buf4_close(&Z);
   dpd_buf4_close(&T2);
   dpd_buf4_close(&F);
-  dpd_buf4_init(&Z, CC_TMP0, 0, 10, 5, 10, 5, 0, "Z(IE,AB)");
-  dpd_buf4_sort(&Z, CC_TMP1, qprs, 11, 5, "Z(EI,AB)");
+  dpd_buf4_init(&Z, CC_TMP0, 0, 10, 5, 10, 5, 0, "Z(IE,AB)2");
+  dpd_buf4_sort(&Z, CC_TMP1, qprs, 11, 5, "Z(EI,AB)2");
   dpd_buf4_close(&Z);
-  dpd_buf4_init(&Z1, CC_TMP1, 0, 11, 5, 11, 5, 0, "Z(EI,AB)");
+  dpd_buf4_init(&Z1, CC_TMP1, 0, 11, 5, 11, 5, 0, "Z(EI,AB)2");
   dpd_buf4_sort(&Z1, CC_TMP0, pqsr, 11, 5, "Z(EI,BA)");
   dpd_buf4_init(&Z2, CC_TMP0, 0, 11, 5, 11, 5, 0, "Z(EI,BA)");
   dpd_buf4_axpy(&Z2, &Z1, -1.0);
@@ -481,12 +481,12 @@ void Wabei_ROHF(void)
   dpd_contract444(&T2, &F, &Z, 0, 1, 1.0, 0.0);
   dpd_buf4_close(&T2);
   dpd_buf4_close(&F);
-  dpd_buf4_sort(&Z, CC_TMP0, psrq, 10, 5, "Z(IE,AB)");
+  dpd_buf4_sort(&Z, CC_TMP0, psrq, 10, 5, "Z(IE,AB)2");
   dpd_buf4_close(&Z);
-  dpd_buf4_init(&Z, CC_TMP0, 0, 10, 5, 10, 5, 0, "Z(IE,AB)");
-  dpd_buf4_sort(&Z, CC_TMP1, qprs, 11, 5, "Z(EI,AB)");
+  dpd_buf4_init(&Z, CC_TMP0, 0, 10, 5, 10, 5, 0, "Z(IE,AB)2");
+  dpd_buf4_sort(&Z, CC_TMP1, qprs, 11, 5, "Z(EI,AB)2");
   dpd_buf4_close(&Z);
-  dpd_buf4_init(&Z1, CC_TMP1, 0, 11, 5, 11, 5, 0, "Z(EI,AB)");
+  dpd_buf4_init(&Z1, CC_TMP1, 0, 11, 5, 11, 5, 0, "Z(EI,AB)2");
   dpd_buf4_sort(&Z1, CC_TMP0, pqsr, 11, 5, "Z(EI,BA)");
   dpd_buf4_init(&Z2, CC_TMP0, 0, 11, 5, 11, 5, 0, "Z(EI,BA)");
   dpd_buf4_axpy(&Z2, &Z1, -1.0);
@@ -504,14 +504,14 @@ void Wabei_ROHF(void)
   dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tiajb");
   dpd_buf4_init(&Z, CC_TMP1, 0, 10, 5, 10, 5, 0, "Z(ib,ae)");
   dpd_contract444(&T2, &F, &Z, 0, 1, 1.0, 0.0);
-  dpd_buf4_sort(&Z, CC_TMP0, psrq, 10, 5, "Z(ie,ab)");
+  dpd_buf4_sort(&Z, CC_TMP0, psrq, 10, 5, "Z(ie,ab)2");
   dpd_buf4_close(&Z);
   dpd_buf4_close(&T2);
   dpd_buf4_close(&F);
-  dpd_buf4_init(&Z, CC_TMP0, 0, 10, 5, 10, 5, 0, "Z(ie,ab)");
-  dpd_buf4_sort(&Z, CC_TMP1, qprs, 11, 5, "Z(ei,ab)");
+  dpd_buf4_init(&Z, CC_TMP0, 0, 10, 5, 10, 5, 0, "Z(ie,ab)2");
+  dpd_buf4_sort(&Z, CC_TMP1, qprs, 11, 5, "Z(ei,ab)2");
   dpd_buf4_close(&Z);
-  dpd_buf4_init(&Z1, CC_TMP1, 0, 11, 5, 11, 5, 0, "Z(ei,ab)");
+  dpd_buf4_init(&Z1, CC_TMP1, 0, 11, 5, 11, 5, 0, "Z(ei,ab)2");
   dpd_buf4_sort(&Z1, CC_TMP0, pqsr, 11, 5, "Z(ei,ba)");
   dpd_buf4_init(&Z2, CC_TMP0, 0, 11, 5, 11, 5, 0, "Z(ei,ba)");
   dpd_buf4_axpy(&Z2, &Z1, -1.0);
@@ -531,12 +531,12 @@ void Wabei_ROHF(void)
   dpd_contract444(&T2, &F, &Z, 0, 1, 1.0, 0.0);
   dpd_buf4_close(&T2);
   dpd_buf4_close(&F);
-  dpd_buf4_sort(&Z, CC_TMP0, psrq, 10, 5, "Z(ie,ab)");
+  dpd_buf4_sort(&Z, CC_TMP0, psrq, 10, 5, "Z(ie,ab)2");
   dpd_buf4_close(&Z);
-  dpd_buf4_init(&Z, CC_TMP0, 0, 10, 5, 10, 5, 0, "Z(ie,ab)");
-  dpd_buf4_sort(&Z, CC_TMP1, qprs, 11, 5, "Z(ei,ab)");
+  dpd_buf4_init(&Z, CC_TMP0, 0, 10, 5, 10, 5, 0, "Z(ie,ab)2");
+  dpd_buf4_sort(&Z, CC_TMP1, qprs, 11, 5, "Z(ei,ab)2");
   dpd_buf4_close(&Z);
-  dpd_buf4_init(&Z1, CC_TMP1, 0, 11, 5, 11, 5, 0, "Z(ei,ab)");
+  dpd_buf4_init(&Z1, CC_TMP1, 0, 11, 5, 11, 5, 0, "Z(ei,ab)2");
   dpd_buf4_sort(&Z1, CC_TMP0, pqsr, 11, 5, "Z(ei,ba)");
   dpd_buf4_init(&Z2, CC_TMP0, 0, 11, 5, 11, 5, 0, "Z(ei,ba)");
   dpd_buf4_axpy(&Z2, &Z1, -1.0);
@@ -677,14 +677,14 @@ void Wabei_ROHF(void)
   dpd_contract244(&T1, &Z1, &Z2, 0, 2, 1, 1.0, 0.0);
   dpd_file2_close(&T1);
   dpd_buf4_close(&Z1);
-  dpd_buf4_sort(&Z2, CC_TMP1, qprs, 11, 5, "Z(EI,AB)");
+  dpd_buf4_sort(&Z2, CC_TMP1, qprs, 11, 5, "Z(EI,AB)2");
   dpd_buf4_close(&Z2);
-  dpd_buf4_init(&Z, CC_TMP1, 0, 11, 5, 11, 5, 0, "Z(EI,AB)");
+  dpd_buf4_init(&Z, CC_TMP1, 0, 11, 5, 11, 5, 0, "Z(EI,AB)2");
   dpd_buf4_sort(&Z, CC_TMP0, pqsr, 11, 5, "Z(EI,BA)");
   dpd_buf4_close(&Z);
 
   /** Z1_EIAB - Z2_EIBA --> W_EIAB **/
-  dpd_buf4_init(&Z1, CC_TMP1, 0, 11, 5, 11, 5, 0, "Z(EI,AB)");
+  dpd_buf4_init(&Z1, CC_TMP1, 0, 11, 5, 11, 5, 0, "Z(EI,AB)2");
   dpd_buf4_init(&Z2, CC_TMP0, 0, 11, 5, 11, 5, 0, "Z(EI,BA)");
   dpd_buf4_axpy(&Z1, &Z2, -1.0);
   dpd_buf4_close(&Z1);
@@ -719,14 +719,14 @@ void Wabei_ROHF(void)
   dpd_contract244(&T1, &Z1, &Z2, 0, 2, 1, 1.0, 0.0);
   dpd_file2_close(&T1);
   dpd_buf4_close(&Z1);
-  dpd_buf4_sort(&Z2, CC_TMP1, qprs, 11, 5, "Z(ei,ab)");
+  dpd_buf4_sort(&Z2, CC_TMP1, qprs, 11, 5, "Z(ei,ab)2");
   dpd_buf4_close(&Z2);
-  dpd_buf4_init(&Z, CC_TMP1, 0, 11, 5, 11, 5, 0, "Z(ei,ab)");
+  dpd_buf4_init(&Z, CC_TMP1, 0, 11, 5, 11, 5, 0, "Z(ei,ab)2");
   dpd_buf4_sort(&Z, CC_TMP0, pqsr, 11, 5, "Z(ei,ba)");
   dpd_buf4_close(&Z);
 
   /** - Z1_eiab + Z2_eiba --> W_eiab **/
-  dpd_buf4_init(&Z1, CC_TMP1, 0, 11, 5, 11, 5, 0, "Z(ei,ab)");
+  dpd_buf4_init(&Z1, CC_TMP1, 0, 11, 5, 11, 5, 0, "Z(ei,ab)2");
   dpd_buf4_init(&Z2, CC_TMP0, 0, 11, 5, 11, 5, 0, "Z(ei,ba)");
   dpd_buf4_axpy(&Z1, &Z2, -1.0);
   dpd_buf4_close(&Z1);

@@ -1,0 +1,27 @@
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+include ../MakeVars
+
+ALLOC =
+
+PSILIBS = libPSI_io.a libPSI_ciomr.a libPSI_ipv1.a
+
+CINC += -DSHARE=\"$(prefix)/share/psi.dat\"
+
+TRUESRC = gprgid.c psi3.c parse_var.c runcmd.c
+
+BINOBJ = $(TRUESRC:%.F=%.o)
+BINOBJ := $(BINOBJ:%.c=%.o)
+
+include ../MakeRules
+
+ifneq ($(DODEPEND),no)
+include runcmd.d
+endif
+
+install_man:: psi.1
+	$(MKDIRS) $(mandir)/man1
+	cat $(top_srcdir)/lib/macro.psi $< | sed "s OS_NAME_HERE UNIX " > \
+            $(mandir)/man1/psi.1
+

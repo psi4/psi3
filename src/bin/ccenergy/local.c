@@ -19,6 +19,8 @@
 #define EXTERN
 #include "globals.h"
 
+double **symm_matrix_invert(double **A, int dim, int print_det, int redundant);
+
 /*! 
 ** local_init(): Set up parameters of local excitation domains.
 **
@@ -70,7 +72,12 @@ void local_init(void)
   int t1_length, t2_length, puream, weak;
   double norm;
 
-  chkpt_init();
+  int num_zero;
+  double **U, **Ui, **R, **WW, **RS;
+  double **evecs_u, **evecs_v, *work, *sigma;
+  int lwork, info;
+
+  chkpt_init(PSIO_OPEN_OLD);
   C = chkpt_rd_scf();
   natom = chkpt_rd_natom();
   nshell = chkpt_rd_nshell();
@@ -78,6 +85,8 @@ void local_init(void)
   stype = chkpt_rd_stype();
   snuc = chkpt_rd_snuc();
   chkpt_close();
+
+  timer_on("Local");
 
   /* C1 symmetry only */
   nirreps = moinfo.nirreps;
@@ -348,7 +357,7 @@ void local_init(void)
       for(k=0; k < natom; k++)
         if(domain[i][k] && domain[j][k]) weak = 0;
 
-      if(weak) {
+      if(weak && strcmp(local.weakp,"NONE")) {
 	weak_pairs[ij] = 1;
 
 	if(!strcmp(local.weakp,"MP2"))
@@ -361,9 +370,13 @@ void local_init(void)
     }
 
   /* Compute the total number of singles and doubles */
+/* replacement code from TDC on 11-5-02 */
   t1_length = t2_length = 0;
   for(i=0,ij=0; i < nocc; i++) {
-    t1_length += domain_len[i];
+    for(k=0; k < natom; k++) {
+      if(domain[i][k])
+        for(a=aostart[k]; a <= aostop[k]; a++) t1_length++;
+    }
     for(j=0; j < nocc; j++,ij++) {
       for(k=0; k < natom; k++) {
         for(l=0; l < natom; l++) {
@@ -376,6 +389,27 @@ void local_init(void)
       }
     }
   }
+
+/*
+  t1_length = t2_length = 0;
+  for(i=0,ij=0; i < nocc; i++) {
+    for(k=0; k < natom; k++) {
+      if(domain[i][k]) 
+	for(a=aostart[k]; a <= aostop[k]; a++) t1_length++;
+    }
+    for(j=0; j < nocc; j++,ij++) {
+      for(k=0; k < natom; k++) {
+        for(l=0; l < natom; l++) {
+          if(pairdomain[ij][k] && pairdomain[ij][l] && !weak_pairs[ij]) {
+            for(a=aostart[k]; a <= aostop[k]; a++)
+              for(b=aostart[l]; b <= aostop[l]; b++)
+                t2_length++;
+          }
+        }
+      }
+    }
+  }
+*/
 
   /* Print excitation space reduction info */
   fprintf(outfile, "\n\tT1 Length = %d (local), %d (canonical)\n",
@@ -430,12 +464,134 @@ void local_init(void)
     }
     norm = sqrt(norm);
     if(norm < 0.1) {
-      fprintf(outfile, "\tNorm of orbital %d = %20.12f...deleteing\n", i, norm);
-      for(j=0; j < nso; j++) Rt_full[j][i] = 0.0;
+      fprintf(outfile, "\tNorm of orbital %4d = %20.12f...deleteing\n", i, norm);
+      for(j=0; j < nso; j++) Rt_full[j][i] = 0.0; 
     }
   }
   fprintf(outfile, "\n");
   fflush(outfile);
+
+  R = block_matrix(nso,nvir);
+
+  for(a=0; a < nvir; a++)
+    for(m=0; m < nso; m++)
+      R[m][a] = C[m][a+nocc_all];
+
+  /* compute the full U */
+  U = block_matrix(nvir, nso);
+  C_DGEMM('t','n', nvir, nso, nso, 1.0, &(R[0][0]),nvir,
+	  &(S[0][0]),nso,0.0,&(X[0][0]), nso);
+  C_DGEMM('n','n', nvir, nso, nso, 1.0, &(X[0][0]), nso,
+	  &(Rt_full[0][0]), nso, 0.0, &(U[0][0]), nso);
+
+  /*
+  fprintf(outfile, "U-Matrix\n");
+  fprintf(outfile, "--------\n");
+  print_mat(U, nvir, nso, outfile);
+  */
+
+  /* Try SVD on U */
+  /*  fprintf(outfile, "nvir = %d\n", nvir); */
+  evecs_u = block_matrix(nso,nso);
+  evecs_v = block_matrix(nso,nso);
+  sigma = init_array(nso);
+  work = init_array(20*nso);
+  lwork = 20*nso;
+  info = C_DGESVD('A','A',nvir,nso,&(U[0][0]),nso,&(sigma[0]),nso,
+		  &(evecs_u[0][0]),nso,&(evecs_v[0][0]),nso,work,lwork);
+
+  /*  fprintf(outfile, "info from SVD = %d\n", info); */
+  for(i=0; i < nso; i++) {
+    /*    fprintf(outfile, "sigma[%d] = %20.14f\n", i, sigma[i]); */
+    for(j=0; j < nso; j++) {
+      X[i][j] = 0;
+    }
+    if(fabs(sigma[i]) > 1e-6) 
+      X[i][i] = 1.0/sigma[i];
+  }
+
+  /*
+  print_mat(evecs_u, nso,nso, outfile);
+  print_mat(evecs_v, nso,nso, outfile);
+  */
+
+  /* compute A = u s v^+ */
+  C_DGEMM('n','n',nvir,nso,nvir,1.0,&(evecs_v[0][0]),nso,&(X[0][0]),nso,
+	  0.0,&(Y[0][0]),nso);
+  C_DGEMM('n','n',nvir,nso,nso,1.0,&(Y[0][0]),nso,&(evecs_u[0][0]),nso,
+	  0.0, &(X[0][0]),nso);
+
+  /* transpose X into Ui */
+  Ui = block_matrix(nso,nvir);
+  for(i=0; i < nvir; i++)
+    for(j=0; j < nso; j++)
+      Ui[j][i] = X[i][j];
+
+  /*
+  fprintf(outfile, "Generalized U-inverse:\n");
+  fprintf(outfile, "----------------------\n");
+  print_mat(Ui, nso, nvir, outfile);
+  */
+
+  free_block(evecs_u);
+  free_block(evecs_v);
+  free(sigma);
+  free(work);
+
+  C_DGEMM('n','n',nvir,nvir,nso,1.0,&(U[0][0]),nso,&(Ui[0][0]),nvir,
+	  0.0,&(Y[0][0]),nso);
+
+  /*
+  fprintf(outfile, "U * U-inverse:\n");
+  fprintf(outfile, "--------------\n");
+  print_mat(Y, nvir, nvir, outfile);
+  */
+
+  C_DGEMM('n','n',nso,nso,nvir,1.0,&(Ui[0][0]),nvir,&(U[0][0]),nso,
+	  0.0,&(Y[0][0]),nso);
+  /*
+  fprintf(outfile, "U-inverse * U:\n");
+  fprintf(outfile, "--------------\n");
+  print_mat(Y, nso, nso, outfile);
+  */
+
+  free_block(Ui);
+
+  /*
+  fprintf(outfile, "\nU = R^+ S Rt\n");
+  fprintf(outfile, "\n============\n");
+  print_mat(U, nvir, nso, outfile);
+  */
+
+  /* Compute Stilde */
+  St = block_matrix(nso,nso);
+  C_DGEMM('t','n',nso,nso,nso,1.0,&(Rt_full[0][0]),nso,
+	  &(S[0][0]),nso,0.0,&(X[0][0]),nso);
+  C_DGEMM('n','n',nso,nso,nso,1.0,&(X[0][0]),nso,
+	  &(Rt_full[0][0]),nso,0.0,&(St[0][0]),nso);
+
+  /* Diagonalize St */
+  evecs = block_matrix(nso,nso);
+  evals = init_array(nso);
+  sq_rsp(nso,nso,St,evals,1,evecs,1e-12);
+  for(i=0,cnt=0; i < nso; i++) if(evals[i] < 1e-6) cnt++;
+
+  /*
+  fprintf(outfile, "Non-redundant space= %d; nvir = %d\n", nso-cnt, nvir);
+  if(nso-cnt != nvir) { fprintf(outfile, "nvir != nso-cnt!\n"); exit(2); }
+  */
+
+  Xt = block_matrix(nso,nvir);
+  for(i=0,I=0;i < nso; i++) {
+    if(evals[i] > 1e-6) {
+      for(j=0; j < nso; j++)
+	Xt[j][I] = evecs[j][i]/sqrt(evals[i]);
+      I++;
+    }
+  }
+
+  free(evals);
+  free_block(evecs);
 
   /* Grab the MO-basis Fock matrix */
   Fmo = block_matrix(nso, nso);
@@ -479,12 +635,82 @@ void local_init(void)
     print_mat(F, nso, nso, outfile);
   */
 
+  /* Build Ft */
+  Ft = block_matrix(nso, nso);
+  C_DGEMM('t','n',nso,nso,nso,1.0,&(Rt_full[0][0]),nso,
+	  &(F[0][0]),nso,0.0,&(X[0][0]),nso);
+  C_DGEMM('n','n',nso,nso,nso,1.0,&(X[0][0]),nso,
+	  &(Rt_full[0][0]),nso,0.0,&(Ft[0][0]),nso);
+
+  Fbar = block_matrix(nvir,nvir);
+  C_DGEMM('t','n',nvir,nso,nso,1.0,&(Xt[0][0]),nvir,
+	  &(Ft[0][0]),nso,0.0,&(Y[0][0]),nso);
+  C_DGEMM('n','n',nvir,nvir,nso,1.0,&(Y[0][0]),nso,
+	  &(Xt[0][0]),nvir,0.0,&(Fbar[0][0]),nvir);
+
+  evals = init_array(nvir);
+  evecs = block_matrix(nvir,nvir);
+
+  /* Diagonalize Fbar */
+  sq_rsp(nvir,nvir,Fbar,evals,1,evecs,1e-12);
+
+  /* Build the W transformation matrix */
+  WW = block_matrix(nso,nvir);
+  C_DGEMM('n','n',nso,nvir,nvir,1.0,&(Xt[0][0]),nvir,&(evecs[0][0]),nvir,
+	  0.0,&(WW[0][0]),nvir);
+
+  /* Build U W product */
+  C_DGEMM('n','n',nvir,nvir,nso,1.0,&(U[0][0]),nso,&(WW[0][0]),nvir,
+	  0.0,&(X[0][0]),nso);
+
+  /*
+  fprintf(outfile, "\tU * W = 1\n");
+  fprintf(outfile, "\tU========\n");
+  print_mat(X, nvir, nvir, outfile);
+  */
+
+  /* correct phases on W columns */
+  for(i=0; i < nvir; i++) {
+    if(X[i][i] < 0) for(j=0; j < nso; j++) WW[j][i] *= -1;
+  }
+
+  /*
+  fprintf(outfile, "W matrix:\n");
+  fprintf(outfile, "---------\n");
+  print_mat(WW, nso, nvir, outfile);
+  */
+
+  /* Build U W product again */
+  C_DGEMM('n','n',nvir,nvir,nso,1.0,&(U[0][0]),nso,&(WW[0][0]),nvir,
+	  0.0,&(X[0][0]),nso);
+
+  free(evals);
+  free_block(evecs);
+
+  free_block(R);
+  free_block(St);
+  free_block(Ft);
+  free_block(Fbar);
+  free_block(Xt);
+
+  local.U = U;
+  local.WW = WW;
+
+  /* Compute R^+ S for virtual orbitals */
+  RS = block_matrix(nvir,nso);
+  for(a=0; a < nvir; a++)
+    for(i=0; i < nso; i++)
+      X[i][a] = C[i][a+nocc_all];
+  C_DGEMM('t','n',nvir,nso,nso,1.0,&(X[0][0]),nso,&(S[0][0]),nso,0.0,&(RS[0][0]),nso);
+
   /* Build the virtual metric and W transforms for each pair domain */
   Rt = block_matrix(nso, nso);
   W = (double ***) malloc(nocc * nocc * sizeof(double **));
   V = (double ***) malloc(nocc * nocc * sizeof(double **));
   eps_vir = (double **) malloc(nocc * nocc * sizeof(double *));
   pairdom_nrlen = init_int_array(nocc * nocc); /* dimension of non-redundant basis */
+  num_zero = 0;
+
   for(ij=0; ij < nocc * nocc; ij++) {
 
     if(pairdom_len[ij]) {
@@ -504,13 +730,14 @@ void local_init(void)
 
       /* Compute the MO -> projected virtual transformation matrix */
       V[ij] = block_matrix(nvir,pairdom_len[ij]);
-      for(a=0; a < nvir; a++) 
-	for(r=0; r < pairdom_len[ij]; r++) {
-	  V[ij][a][r] = 0.0;
-	  for(i=0; i < nso; i++)
-	    for(j=0; j < nso; j++)
-	      V[ij][a][r] += C[i][a+nocc_all] * S[i][j] * Rt[j][r];
-	}
+      C_DGEMM('n','n',nvir,pairdom_len[ij],nso,1.0,&(RS[0][0]),nso,&(Rt[0][0]),nso,0.0,
+	      &(V[ij][0][0]),pairdom_len[ij]);
+
+      /*
+      fprintf(outfile, "\nV[%d]:\n", ij);
+      fprintf(outfile,   "======\n");
+      print_mat(V[ij], nvir, pairdom_len[ij], outfile);
+      */
 
       /* Virtual space metric */
       St = block_matrix(pairdom_len[ij],pairdom_len[ij]);
@@ -550,7 +777,9 @@ void local_init(void)
 	    Xt[j][I] = evecs[j][i]/sqrt(evals[i]);
 	  I++;
 	}
+	else num_zero++;
       }
+
 
       /*
 	fprintf(outfile, "\n\tTransform to non-redundant, projected virtuals (X-tilde) for ij = %d:\n", ij);
@@ -624,6 +853,7 @@ void local_init(void)
 
   } /* ij loop */
 
+  free_block(RS);
   free_block(F);
   free_block(Fmo);
   free_block(S);
@@ -644,6 +874,9 @@ void local_init(void)
   local.weak_pair_energy = 0.0;
 
   fprintf(outfile, "\tLocalization parameters ready.\n\n");
+  fflush(outfile);
+
+  timer_off("Local");
 }
 
 /*
@@ -653,6 +886,9 @@ void local_init(void)
 void local_done(void)
 {
   int i;
+
+  free_block(local.U);
+  free_block(local.WW);
 
   free(local.eps_occ);
   for(i=0; i < local.nocc*local.nocc; i++) {
@@ -678,7 +914,7 @@ void local_done(void)
   fprintf(outfile, "\tLocal parameters free.\n");
 }
 
-void local_filter_T1(dpdfile2 *T1)
+void local_filter_T1(dpdfile2 *T1, int denom)
 {
   int i, a, ii;
   int nocc, nvir;
@@ -697,7 +933,6 @@ void local_filter_T1(dpdfile2 *T1)
 
   dpd_file2_mat_init(T1);
   dpd_file2_mat_rd(T1);
-
 
   for(i=0; i < nocc; i++) {
     ii = i * nocc + i;  /* diagonal element of pair matrices */
@@ -718,9 +953,11 @@ void local_filter_T1(dpdfile2 *T1)
     C_DGEMV('t', pairdom_len[ii], pairdom_nrlen[ii], 1.0, &(W[ii][0][0]), pairdom_nrlen[ii], 
 	    &(T1tilde[0]), 1, 0.0, &(T1bar[0]), 1);
 
-    /* Apply the denominators */
-    for(a=0; a < pairdom_nrlen[ii]; a++)
-      T1bar[a] /= (eps_occ[i] - eps_vir[ii][a]);
+    if(denom) {
+      /* Apply the denominators */
+      for(a=0; a < pairdom_nrlen[ii]; a++)
+        T1bar[a] /= (eps_occ[i] - eps_vir[ii][a]);
+    }
 
     /* Transform the new T1's to the redundant projected virtual basis */
     C_DGEMV('n', pairdom_len[ii], pairdom_nrlen[ii], 1.0, &(W[ii][0][0]), pairdom_nrlen[ii],
@@ -740,7 +977,104 @@ void local_filter_T1(dpdfile2 *T1)
   dpd_file2_mat_close(T1);
 }
 
-void local_filter_T2(dpdbuf4 *T2)
+
+void local_filter_T1_nodenom(dpdfile2 *T1)
+{
+  int i, k, ii, a;
+  int nocc, nvir, nso, natom;
+  int **domain, *aostart, *aostop;
+  double **U, **WW;
+  double *T1tilde;
+
+  nvir = local.nvir;
+  nocc = local.nocc;
+  nso = local.nso;
+  natom = local.natom;
+  U = local.U;
+  WW = local.WW;
+  domain = local.domain;
+  aostart = local.aostart;
+  aostop = local.aostop;
+
+  dpd_file2_mat_init(T1);
+  dpd_file2_mat_rd(T1);
+
+  T1tilde = init_array(nso);
+
+  for(i=0; i < nocc; i++) {
+    ii = i * nocc + i;
+
+    /* Transform the T1 virtuals to the redundant projected virtual basis */
+    C_DGEMV('n', nso, nvir, 1.0, &(WW[0][0]), nvir, 
+	    &(T1->matrix[0][i][0]), 1, 0.0, &(T1tilde[0]), 1);
+
+    for(k=0; k < natom; k++) {
+      if(!domain[i][k]) {
+	for(a=aostart[k]; a <= aostop[k]; a++) T1tilde[a] = 0.0;
+      }
+    }
+
+    /* Transform them back */
+    C_DGEMV('n', nvir, nso, 1.0, &(U[0][0]), nso,
+	    &(T1tilde[0]), 1, 0.0, &(T1->matrix[0][i][0]), 1);
+  }
+
+  free(T1tilde);
+
+  dpd_file2_mat_wrt(T1);
+  dpd_file2_mat_close(T1);
+}
+
+void local_filter_V1_nodenom(dpdfile2 *T1)
+{
+  int i, k, ii, a;
+  int nocc, nvir, nso, natom;
+  int **domain, *aostart, *aostop;
+  double **U, **WW;
+  double *T1tilde;
+
+  nvir = local.nvir;
+  nocc = local.nocc;
+  nso = local.nso;
+  natom = local.natom;
+  U = local.U;
+  WW = local.WW;
+  domain = local.domain;
+  aostart = local.aostart;
+  aostop = local.aostop;
+
+  dpd_file2_mat_init(T1);
+  dpd_file2_mat_rd(T1);
+
+  T1tilde = init_array(nso);
+
+  for(i=0; i < nocc; i++) {
+    ii = i * nocc + i;
+
+    /* Transform the T1 virtuals to the redundant projected virtual basis */
+    C_DGEMV('t', nvir, nso, 1.0, &(U[0][0]), nso,
+            &(T1->matrix[0][i][0]), 1, 0.0, &(T1tilde[0]), 1);
+
+    for(k=0; k < natom; k++) {
+      if(!domain[i][k]) {
+        for(a=aostart[k]; a <= aostop[k]; a++) T1tilde[a] = 0.0;
+      }
+    }
+
+    /* Transform them back */
+    C_DGEMV('t', nso, nvir, 1.0, &(WW[0][0]), nvir,
+            &(T1tilde[0]), 1, 0.0, &(T1->matrix[0][i][0]), 1);
+  }
+
+  free(T1tilde);
+
+  dpd_file2_mat_wrt(T1);
+  dpd_file2_mat_close(T1);
+}
+
+
+
+void local_filter_T2(dpdbuf4 *T2, int denom)
 {
   int ij, i, j, a, b, ab;
   int nso, nocc, nvir;
@@ -784,11 +1118,13 @@ void local_filter_T2(dpdbuf4 *T2)
 	C_DGEMM('n', 'n', pairdom_nrlen[ij], pairdom_nrlen[ij], pairdom_len[ij], 1.0, 
 		&(X2[0][0]), nso, &(W[ij][0][0]), pairdom_nrlen[ij], 0.0, &(T2bar[0][0]), nvir);
 
-	/* Divide the new amplitudes by the denominators */
-	for(a=0; a < pairdom_nrlen[ij]; a++) {
-	  for(b=0; b < pairdom_nrlen[ij]; b++) {
-	    T2bar[a][b] /= (eps_occ[i] + eps_occ[j] - eps_vir[ij][a] - eps_vir[ij][b]);
-	  }
+	if(denom) {
+  	  /* Divide the new amplitudes by the denominators */
+	  for(a=0; a < pairdom_nrlen[ij]; a++) {
+	    for(b=0; b < pairdom_nrlen[ij]; b++) {
+	      T2bar[a][b] /= (eps_occ[i] + eps_occ[j] - eps_vir[ij][a] - eps_vir[ij][b]);
+	    }
+  	  }
 	}
 
 	/* Transform the new T2's to the redundant virtual basis */
@@ -817,6 +1153,131 @@ void local_filter_T2(dpdbuf4 *T2)
   dpd_buf4_mat_irrep_wrt(T2, 0);
   dpd_buf4_mat_irrep_close(T2, 0);
 }
+
+void local_filter_T2_nodenom(dpdbuf4 *T2)
+{
+  int ij, i, j, k, l, a, b;
+  int nso, nocc, nvir, natom;
+  int **pairdomain, *aostart, *aostop;
+  double **U, **WW;
+  double **X1, **X2, **T2tilde;
+
+  nso = local.nso;
+  nocc = local.nocc;
+  nvir = local.nvir;
+  natom = local.natom;
+  U = local.U;
+  WW = local.WW;
+  pairdomain = local.pairdomain;
+  aostart = local.aostart;
+  aostop = local.aostop;
+
+  /* Grab the MO-basis T2's */
+  dpd_buf4_mat_irrep_init(T2, 0);
+  dpd_buf4_mat_irrep_rd(T2, 0);
+
+  X1 = block_matrix(nso,nvir);
+  X2 = block_matrix(nvir,nso);
+  T2tilde = block_matrix(nso,nso);
+  for(i=0,ij=0; i < nocc; i++) {
+    for(j=0; j < nocc; j++,ij++) {
+
+        /* Transform the virtuals to the redundant projected virtual basis */
+	C_DGEMM('n', 'n', nso,nvir,nvir, 1.0, &(WW[0][0]), nvir,
+		&(T2->matrix[0][ij][0]), nvir, 0.0, &(X1[0][0]), nvir);
+	C_DGEMM('n', 't', nso,nso,nvir, 1.0, &(X1[0][0]), nvir,
+		&(WW[0][0]), nvir, 0.0, &(T2tilde[0][0]), nso);
+
+	for(k=0; k < natom; k++) {
+	  for(l=0; l < natom; l++) {
+	    if(!pairdomain[ij][k] || !pairdomain[ij][l]) {
+	      for(a=aostart[k]; a <= aostop[k]; a++)
+	        for(b=aostart[l]; b <= aostop[l]; b++)
+	  	  T2tilde[a][b] = 0.0;
+	    }
+	  }
+	}
+
+	/* Transform them back */
+	C_DGEMM('n', 'n', nvir,nso,nso, 1.0, &(U[0][0]),nso,
+		&(T2tilde[0][0]), nso, 0.0, &(X2[0][0]), nso);
+	C_DGEMM('n', 't', nvir,nvir,nso, 1.0, &(X2[0][0]), nso,
+	        &(U[0][0]), nso, 0.0, &(T2->matrix[0][ij][0]), nvir);
+
+    }
+  }
+  free_block(X1);
+  free_block(X2);
+  free_block(T2tilde);
+
+  /* Write the updated MO-basis T2's to disk */
+  dpd_buf4_mat_irrep_wrt(T2, 0);
+  dpd_buf4_mat_irrep_close(T2, 0);
+}
+
+void local_filter_V2_nodenom(dpdbuf4 *T2)
+{
+  int ij, i, j, k, l, a, b;
+  int nso, nocc, nvir, natom;
+  int **pairdomain, *aostart, *aostop;
+  double **U, **WW;
+  double **X1, **X2, **T2tilde;
+
+  nso = local.nso;
+  nocc = local.nocc;
+  nvir = local.nvir;
+  natom = local.natom;
+  U = local.U;
+  WW = local.WW;
+  pairdomain = local.pairdomain;
+  aostart = local.aostart;
+  aostop = local.aostop;
+
+  /* Grab the MO-basis T2's */
+  dpd_buf4_mat_irrep_init(T2, 0);
+  dpd_buf4_mat_irrep_rd(T2, 0);
+
+  X1 = block_matrix(nso,nvir);
+  X2 = block_matrix(nvir,nso);
+  T2tilde = block_matrix(nso,nso);
+  for(i=0,ij=0; i < nocc; i++) {
+    for(j=0; j < nocc; j++,ij++) {
+
+      /* Transform the virtuals to the redundant projected virtual basis */
+      C_DGEMM('t', 'n', nso,nvir,nvir, 1.0, &(U[0][0]), nso,
+	      &(T2->matrix[0][ij][0]), nvir, 0.0, &(X1[0][0]), nvir);
+      C_DGEMM('n', 'n', nso,nso,nvir, 1.0, &(X1[0][0]), nvir,
+	      &(U[0][0]), nso, 0.0, &(T2tilde[0][0]), nso);
+
+      for(k=0; k < natom; k++) {
+	for(l=0; l < natom; l++) {
+	  if(!pairdomain[ij][k] || !pairdomain[ij][l]) {
+	    for(a=aostart[k]; a <= aostop[k]; a++)
+	      for(b=aostart[l]; b <= aostop[l]; b++)
+		T2tilde[a][b] = 0.0;
+	  }
+	}
+      }
+
+      /* Transform them back */
+      C_DGEMM('t', 'n', nvir,nso,nso, 1.0, &(WW[0][0]),nvir,
+	      &(T2tilde[0][0]), nso, 0.0, &(X2[0][0]), nso);
+      C_DGEMM('n', 'n', nvir,nvir,nso, 1.0, &(X2[0][0]), nso,
+	      &(WW[0][0]), nvir, 0.0, &(T2->matrix[0][ij][0]), nvir);
+
+    }
+  }
+  free_block(X1);
+  free_block(X2);
+  free_block(T2tilde);
+
+  /* Write the updated MO-basis T2's to disk */
+  dpd_buf4_mat_irrep_wrt(T2, 0);
+  dpd_buf4_mat_irrep_close(T2, 0);
+}
+
+
+
 
 #define STACK_LENGTH 25
 

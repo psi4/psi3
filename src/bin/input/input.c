@@ -4,7 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#if !USE_LIBCHKPT
 #include <file30_params.h>
+#endif
 #include "input.h"
 #include <physconst.h>
 #include "global.h"
@@ -120,7 +122,7 @@ int main(int argc, char *argv[])
        unless read geometry from chkpt file
       ---------------------------------------*/
      if (keep_ref_frame == 0)
-	 canon_eq_ref_frame();
+       canon_eq_ref_frame();
      
      /*---------------------
        Parse basis set data

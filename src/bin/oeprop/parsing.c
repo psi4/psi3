@@ -16,6 +16,8 @@ void parsing()
 
   if (errcod == IPE_OK) {
           /* wfn = one of CC types */
+    /* this seems to not work, at least for NO's ---CDS 10/30/02 */
+    /*
     if ( (strcmp(wfn, "CCSD")==0) ) {
       read_opdm = 1;
       opdm_file = PSIF_AO_OPDM;
@@ -25,6 +27,7 @@ void parsing()
       opdm_format = (char *) malloc(7*sizeof(char));
       strcpy(opdm_format,"TRIANG");
     }
+    */
           /* wfn = ooccd, detci, detcas */
     /*
     if (strcmp(wfn, "CI")==0 || strcmp(wfn, "OOCCD")==0 ||
@@ -38,7 +41,8 @@ void parsing()
       strcpy(opdm_format,"TRIANG");
     }
     */
-    if (strcmp(wfn, "CI")==0 || strcmp(wfn, "DETCI")==0) {
+    if (strcmp(wfn, "CI")==0 || strcmp(wfn, "DETCI")==0 ||
+        strcmp(wfn, "CCSD")==0)  {
       read_opdm = 1;
       opdm_file = PSIF_MO_OPDM;
       corr = 0;
@@ -87,6 +91,7 @@ void parsing()
   errcod = ip_data("PRINT","%d",&print_lvl,0);
   if (print_lvl < 0)
     print_lvl = 1;
+  errcod = ip_boolean("PRINT_NOS",&print_nos,0);
 
   errcod = ip_boolean("CORREL_CORR",&corr,0);
   /*--- corr should be zero since we are not using Psi2 any longer ---*/

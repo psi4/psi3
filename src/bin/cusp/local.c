@@ -2,7 +2,7 @@
 #include <math.h>
 #include <libciomr/libciomr.h>
 #include <libint/libint.h>
-#include <libfile30/file30.h>
+#include <libchkpt/chkpt.h>
 #include <libiwl/iwl.h>
 #include <psifiles.h>
 #include <libqt/qt.h>
@@ -29,22 +29,22 @@ void local(void)
   double fR, cutoff, det;
   double **TMP, **MuX, **MuY, **MuZ, *scratch;
 
-  file30_init();
-  nao = file30_rd_nao();
-  nmo = file30_rd_nmo();
+  chkpt_init(PSIO_OPEN_OLD);
+  nao = chkpt_rd_nao();
+  nmo = chkpt_rd_nmo();
   nso = nmo;
-  natom = file30_rd_natom();
-  nshell = file30_rd_nshell();
-  stype = file30_rd_stype();
-  snuc = file30_rd_snuc();
-  u = file30_rd_usotao_new();
-  nirreps = file30_rd_nirreps();
-  clsdpi = file30_rd_clsdpi();
-  openpi = file30_rd_openpi();
-  orbspi = file30_rd_orbspi();
-  scf = file30_rd_scf();
-  evals_tmp = file30_rd_evals();
-  file30_close();
+  natom = chkpt_rd_natom();
+  nshell = chkpt_rd_nshell();
+  stype = chkpt_rd_stype();
+  snuc = chkpt_rd_snuc();
+  u = chkpt_rd_usotao_new();
+  nirreps = chkpt_rd_nirreps();
+  clsdpi = chkpt_rd_clsdpi();
+  openpi = chkpt_rd_openpi();
+  orbspi = chkpt_rd_orbspi();
+  scf = chkpt_rd_scf();
+  evals_tmp = chkpt_rd_evals();
+  chkpt_close();
 
   /* Compute the length of each AM block */
   junk = LIBINT_MAX_AM;

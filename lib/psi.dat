@@ -14,8 +14,10 @@ psi: (
   scfdone    = ()
   ints       = "cints"
   scf        = "cscf"
+  localize   = "localize"
   deriv      = "cints --deriv1"
   deriv2     = "cints --deriv2"
+  propint    = "cints --oeprop"
   transqt    = "transqt"
   backtransqt = "transqt -backtr"
   dipder      = "dipder"
@@ -25,11 +27,15 @@ psi: (
   optking     = "optking"
   ugeom       = "ugeom"
   rgeom       = ()
-  findif_disp = "optking --disp_all"
-  findif_calc = "optking --freq_grad"
-  findif_next = "optking --disp_load"
-  findif_grad = "optking --grad_save"
-  geomupdate  = ($optking)
+  findif_disp        = "optking --disp_all"
+  findif_disp_symm   = "optking --disp_symm"
+  findif_freq_grad   = "optking --freq_grad"
+  findif_freq_grad_symm   = "optking --freq_grad_symm"
+  findif_next        = "optking --disp_load"
+  findif_energy      = "optking --energy_save"
+  findif_grad        = "optking --grad_save"
+  findif_grad_energy = "optking --grad_energy"
+  geomupdate  = ("optking --opt_step")
 
   % CASSCF specific programs
   casscf     = "detcas"
@@ -78,7 +84,7 @@ psi: (
   SCFTwoConFirst = $SCFFirst
 
   % Procedures for the SCF Second Derivatives
-  SCFSecond = ($ints $scf $transqt $deriv2 $cphf $done)
+  SCFSecond = ($ints $scf $transqt $deriv2 $propint $cphf $done)
   SCFRHFSecond = $SCFSecond
   SCFROHFSecond = ERROR
   SCFUHFSecond = ERROR
@@ -92,7 +98,9 @@ psi: (
   SCFTwoConFirstOpt  = $SCFFirstOpt
 
   % Procedures for optimizing geometries with SCF energies
-  SCFEnergyOpt = (repeat $nopt $SCFEnergy $optking end $done)
+  SCFEnergyOpt = (repeat $nopt $SCFEnergy $findif_disp_symm 
+    repeat NUM_DISP $findif_next $SCFEnergy $findif_energy end
+    $findif_grad_energy $geomupdate end $done)
   SCFRHFEnergyOpt = $SCFEnergyOpt
   SCFROHFEnergyOpt = $SCFEnergyOpt
   SCFUHFEnergyOpt = $SCFEnergyOpt
@@ -106,6 +114,26 @@ psi: (
   SCFROHFFirstDisp  = $SCFFirstDisp
   SCFUHFFirstDisp  = $SCFFirstDisp
   SCFTwoConFirstDisp  = $SCFFirstDisp
+
+  % Procedures for symm freqs via differences of analytic gradients
+  SCFFirstSymm_Freq  = 
+    ($input $SCFEnergy $findif_disp_symm repeat NUM_DISP 
+     $findif_next $SCFFirst $findif_grad end 
+     $findif_freq_grad_symm $done)
+  SCFRHFFirstSymm_Freq  = $SCFFirstSymm_Freq
+  SCFROHFFirstSymm_Freq  = $SCFFirstSymm_Freq
+  SCFUHFFirstSymm_Freq  = $SCFFirstSymm_Freq
+  SCFTwoConFirstSymm_Freq  = $SCFFirstSymm_Freq
+
+  % Procedures for freqs via differences of analytic gradients
+  SCFFirstFreq  = 
+    ($input $SCFEnergy $findif_disp repeat NUM_DISP 
+     $findif_next $uinput $SCFFirst $findif_grad end 
+     $findif_freq_grad $done)
+  SCFRHFFirstFreq  = $SCFFirstFreq
+  SCFROHFFirstFreq  = $SCFFirstFreq
+  SCFUHFFirstFreq  = $SCFFirstFreq
+  SCFTwoConFirstFreq  = $SCFFirstFreq
 
   % Testing procedure for optimizing geometries with SCF finite displacements
   SCFROHFEnergyDisp =
@@ -121,7 +149,7 @@ psi: (
 
   % Procedures for the CCSD gradient
   CCSeq = ($ccsort $ccenergy $cchbar $cclambda $ccdensity)
-  CCSDFirst = ($SCFEnergy $transqt $CCSeq $backtransqt $deriv $done)
+  CCSDFirst = ($SCFEnergy $transqt $CCSeq $backtransqt $deriv)
   CCSDRHFFirst = $CCSDFirst
   CCSDROHFFirst = $CCSDFirst
   CCSDUHFFirst = ERROR
@@ -132,7 +160,9 @@ psi: (
     (repeat $ndisp $ugeom $uinput $CCSDROHFEnergy $rgeom end $done)
 
   % Procedures for optimization via energy points
-  CCSDEnergyOpt = (repeat $nopt $CCSDEnergy $optking end $done)
+  CCSDEnergyOpt = (repeat $nopt $CCSDEnergy $findif_disp_symm 
+    repeat NUM_DISP $findif_next $CCSDEnergy $findif_energy end
+    $findif_grad_energy $geomupdate end $done)
   CCSDRHFEnergyOpt = $CCSDEnergyOpt
   CCSDROHFEnergyOpt = $CCSDEnergyOpt
   CCSDUHFEnergyOpt = ERROR
@@ -153,6 +183,27 @@ psi: (
   CCSDUHFFirstDisp  = ERROR
   CCSDTwoConFirstDisp  = ERROR
 
+  % Procedures for symmetric frequencies via finite differences of gradients
+  CCSDFirstSymm_Freq  = 
+    ($input $CCSDEnergy $findif_disp_symm repeat NUM_DISP 
+     $findif_next $CCSDFirst $findif_grad end 
+     $findif_freq_grad_symm $done)
+  CCSDRHFFirstSymm_Freq  = $CCSDFirstSymm_Freq
+  CCSDROHFFirstSymm_Freq  = $CCSDFirstSymm_Freq
+  CCSDUHFFirstSymm_Freq  = $CCSDFirstSymm_Freq
+  CCSDTwoConFirstSymm_Freq  = $CCSDFirstSymm_Freq
+
+  % Procedures for freqs via differences of analytic gradients
+  CCSDFirstFreq  = 
+    ($input $CCSDEnergy $findif_disp repeat NUM_DISP 
+     $findif_next $uinput $CCSDFirst $findif_grad end 
+     $findif_freq_grad $done)
+  CCSDRHFFirstFreq  = $CCSDFirstFreq
+  CCSDROHFFirstFreq  = $CCSDFirstFreq
+  CCSDUHFFirstFreq  = $CCSDFirstFreq
+  CCSDTwoConFirstFreq  = $CCSDFirstFreq
+
+
   % -------------------------------- CCSD(T) Procedures
   % Procedures for the CCSD(T) energy
   CCSD_TEnergy = ($ints $scf $transqt $ccsort $ccenergy $cctriples)
@@ -169,7 +220,9 @@ psi: (
   CCSD_TTwoConFirst = ERROR
 
   % Procedures for optimization via energy points
-  CCSD_TEnergyOpt = (repeat $nopt $CCSD_TEnergy $optking end $done)
+  CCSD_TEnergyOpt = (repeat $nopt $CCSD_TEnergy $findif_disp_symm 
+    repeat NUM_DISP $findif_next $CCSD_TEnergy $findif_energy end
+    $findif_grad_energy $geomupdate end $done)
   CCSD_TRHFEnergyOpt = $CCSD_TEnergyOpt
   CCSD_TROHFEnergyOpt = $CCSD_TEnergyOpt
   CCSD_TUHFEnergyOpt = ERROR
@@ -194,6 +247,13 @@ psi: (
   EOM_CCSDUHFEnergy = ERROR
   EOM_CCSDTwoConEnergy = ERROR
 
+  % Procedure for the LEOM_CCSD energy
+  LEOM_CCSDEnergy =($ints $scf $localize $transqt $ccsort $ccenergy
+                    $cchbar $cceom )
+  LEOM_CCSDRHFEnergy = ($LEOM_CCSDEnergy $done)
+  LEOM_CCSDROHFEnergy = ($LEOM_CCSDEnergy $done) 
+  LEOM_CCSDUHFEnergy = ERROR
+  LEOM_CCSDTwoConEnergy = ERROR
 
   % -------------------------------- OOCCD Procedures
   % Procedures for the OOCCD energy
@@ -263,7 +323,9 @@ psi: (
   DETCITwoConEnergyDisp = ERROR
 
   % Procedures for optimization via energy points
-  DETCIEnergyOpt = (repeat $nopt $DETCIEnergy $optking end $done)
+  DETCIEnergyOpt = (repeat $nopt $DETCIEnergy $findif_disp_symm 
+    repeat NUM_DISP $findif_next $DETCIEnergy $findif_energy end
+    $findif_grad_energy $geomupdate end $done)
   DETCIRHFEnergyOpt = $DETCIEnergyOpt 
   DETCIROHFEnergyOpt = $DETCIEnergyOpt 
   DETCIUHFEnergyOpt = ERROR
@@ -301,11 +363,34 @@ psi: (
   DETCASTwoConFirstDisp  = ERROR
 
   % Procedures for optimization via DETCAS energy points
-  DETCASEnergyOpt = (repeat $nopt $DETCASEnergy $optking end $done)
+  DETCASEnergyOpt = (repeat $nopt $DETCASEnergy $findif_disp_symm 
+    repeat NUM_DISP $findif_next $DETCASEnergy $findif_energy end
+    $findif_grad_energy $geomupdate end $done)
   DETCASRHFEnergyOpt = $DETCASEnergyOpt
   DETCASROHFEnergyOpt = $DETCASEnergyOpt
   DETCASUHFEnergyOpt = ERROR
   DETCASTwoConEnergyOpt = $DETCASEnergyOpt
+
+  % Procedures for symmetric frequencies via finite differences of gradients
+  DETCASFirstSymm_Freq  = 
+    ($input $DETCASEnergy $findif_disp_symm repeat NUM_DISP 
+     $findif_next $DETCASFirst $findif_grad end 
+     $findif_freq_grad_symm $done)
+  DETCASRHFFirstSymm_Freq  = $DETCASFirstSymm_Freq
+  DETCASROHFFirstSymm_Freq  = $DETCASFirstSymm_Freq
+  DETCASUHFFirstSymm_Freq  = $DETCASFirstSymm_Freq
+  DETCASTwoConFirstSymm_Freq  = $DETCASFirstSymm_Freq
+
+  % Procedures for frequencies via finite differences of gradients
+  DETCASFirstFreq  = 
+    ($input $DETCASEnergy $findif_disp repeat NUM_DISP 
+     $findif_next $DETCASFirst $findif_grad end 
+     $findif_freq_grad $done)
+  DETCASRHFFirstFreq  = $DETCASFirstFreq
+  DETCASROHFFirstFreq  = $DETCASFirstFreq
+  DETCASUHFFirstFreq  = $DETCASFirstFreq
+  DETCASTwoConFirstFreq  = $DETCASFirstFreq
+
 
   % Procedures for the direct MP2 energy
   MP2Energy = ($ints $scf $mp2_direct)
@@ -315,7 +400,9 @@ psi: (
   MP2TwoConEnergy = ERROR
 
   % Procedures for optimization via MP2 energy points
-  MP2EnergyOpt = (repeat $nopt $MP2Energy $optking end $done)
+  MP2EnergyOpt = (repeat $nopt $MP2Energy $findif_disp_symm 
+    repeat $ndisp $findif_next $MP2Energy $findif_energy end
+    $findif_grad_energy $geomupdate end $done)
   MP2RHFEnergyOpt = $MP2EnergyOpt
   MP2ROHFEnergyOpt = ERROR
   MP2UHFEnergyOpt = ERROR

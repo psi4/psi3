@@ -10,8 +10,11 @@ extern "C" {
    /* may no longer need #include <libc.h> */
    #include <libciomr/libciomr.h>
    #include <libqt/qt.h>
-   #include <libfile30/file30.h>
+#if USE_LIBCHKPT
    #include <libchkpt/chkpt.h>
+#else
+   #include <libfile30/file30.h>
+#endif
    #include <libiwl/iwl.h>
    #include <psifiles.h>
    #include "structs.h"
@@ -72,8 +75,11 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
 
   if (Parameters.opdm_diag) rfile(Parameters.opdm_orbsfile);
 
-  // file30_init();
-  chkpt_init();
+#if USE_LIBCHKPT
+  chkpt_init(PSIO_OPEN_OLD);
+#else
+  file30_init();
+#endif
 
   populated_orbs = CalcInfo.num_ci_orbs + CalcInfo.num_fzc_orbs;
   for (irrep=0; irrep<CalcInfo.nirreps; irrep++) {
@@ -425,7 +431,9 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
   /* get CI Natural Orbitals */
   if (Parameters.opdm_diag) {
 
-  /*   file30_init(); */
+#if !USE_LIBCHKPT
+  file30_init();
+#endif
 
     /* reorder opdm from ci to pitzer and diagonalize each 
     ** symmetry blk
@@ -472,8 +480,11 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
  
         if (k==0 || Parameters.opdm_ave) {
           /* Writting SCF vector to orbsfile for safe keeping */
-          // scfvec30 = file30_rd_blk_scf(irrep);
+#if USE_LIBCHKPT
           scfvec30 = chkpt_rd_scf_irrep(irrep);
+#else
+          scfvec30 = file30_rd_blk_scf(irrep);
+#endif
             #ifdef DEBUG
             fprintf(outfile,"Cvec for k==0, read in from file30 original\n");
             fprintf(outfile," %s Block \n", CalcInfo.labels[irrep]);
@@ -573,8 +584,11 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
                           irrep, opdm_blk); 
           print_mat(opdm_blk, CalcInfo.so_per_irr[irrep],
                     CalcInfo.orbs_per_irr[irrep], outfile);
-          //file30_wt_blk_scf(opdm_blk, irrep);
+#if USE_LIBCHKPT
           chkpt_wt_scf_irrep(opdm_blk, irrep);
+#else
+          file30_wt_blk_scf(opdm_blk, irrep);
+#endif
           fprintf(outfile, "\n Warning: Natural Orbitals for the Averaged ");
           fprintf(outfile, "OPDM Have Been Written to file30!\n\n"); 
         }
@@ -591,8 +605,11 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
             print_mat(opdm_blk, CalcInfo.orbs_per_irr[irrep],
                       CalcInfo.orbs_per_irr[irrep], outfile);
             if (k==Parameters.opdm_orbs_root) { 
-              //file30_wt_blk_scf(opdm_blk, irrep);
+#if USE_LIBCHKPT
               chkpt_wt_scf_irrep(opdm_blk, irrep);
+#else
+              file30_wt_blk_scf(opdm_blk, irrep);
+#endif
               fprintf(outfile,"\n Warning: Natural Orbitals Have Been "
                     "Written to file30!\n\n"); 
             }
@@ -603,8 +620,11 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
   } 
   /* CINOS completed */
  
-  //file30_close();
+#if USE_LIBCHKPT
   chkpt_close();
+#else
+  file30_close();
+#endif
 
   fflush(outfile);
   if (Parameters.opdm_diag) {
@@ -879,8 +899,11 @@ void opdm_ke(double **onepdm)
               CalcInfo.so_per_irr[irrep],outfile);
 
     /* transform back to SO basis */
-    //scfmat = file30_rd_blk_scf(irrep);    
+#if USE_LIBCHKPT
     scfmat = chkpt_rd_scf_irrep(irrep);
+#else
+    scfmat = file30_rd_blk_scf(irrep);    
+#endif
     mmult(opdm_blk,0,scfmat,1,tmp_mat,0,CalcInfo.orbs_per_irr[irrep],
           CalcInfo.orbs_per_irr[irrep],CalcInfo.so_per_irr[irrep],0);
     mmult(scfmat,0,tmp_mat,0,opdm_blk,0,CalcInfo.so_per_irr[irrep],

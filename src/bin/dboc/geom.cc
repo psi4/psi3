@@ -16,7 +16,7 @@ void setup_geoms()
   const int disp_per_coord = Params.disp_per_coord;
   const double delta = Params.delta;
   int d;
-  int disp, atom, xyz;
+  int coord, disp, atom, xyz;
   FILE *geometry;
 
   /*--- Open geom.dat for writing ---*/
@@ -29,14 +29,28 @@ void setup_geoms()
     for(xyz=0; xyz<3; xyz++)
       geom_copy[atom][xyz] = Molecule.geom[atom][xyz];
 
-  
-  for(atom=0,disp=1; atom<Molecule.natom; atom++)
-    for(xyz=0; xyz<3; xyz++)
-      for(d=-1; d<=1; d+=2,disp++) {
-	geom_copy[atom][xyz] += d*delta;
-	append_geom(geometry,geom_copy,disp);
-	geom_copy[atom][xyz] -= d*delta;
-      }
+  //
+  // Setup Params.coords if user didn't specify displacements
+  //
+  if (Params.coords == NULL) {
+    Params.ncoord = Molecule.natom * 3;
+    Params.coords = new Params_t::Coord_t[Params.ncoord];
+    for(int coord=0; coord<Params.ncoord; coord++) {
+      Params.coords[coord].index = coord;
+      Params.coords[coord].coeff = 1.0;
+    }
+  }
+
+  for(coord=0,disp=1; coord<Params.ncoord; coord++) {
+    Params_t::Coord_t* c = &(Params.coords[coord]);
+    int atom = c->index/3;
+    int xyz = c->index%3;
+    for(d=-1; d<=1; d+=2,disp++) {
+      geom_copy[atom][xyz] += d*delta;
+      append_geom(geometry,geom_copy,disp);
+      geom_copy[atom][xyz] -= d*delta;
+    }
+  }
   
   free_block(geom_copy);
   fprintf(geometry,")\n");

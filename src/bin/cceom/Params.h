@@ -18,6 +18,7 @@ struct Eom_params {
   double residual_tol;
   int prop_root;
   int prop_sym;
+  int save_all;
   int print_singles;
   double complex_tol;
   double schmidt_add_residual_tol;
@@ -25,5 +26,7 @@ struct Eom_params {
   int vectors_per_root_SS;
   int excitation_range;
   double residual_tol_SS;
+  char *guess;
+  int dot_with_Lg; // check orthogonality with Lg (must run cclambda first)
 };
 

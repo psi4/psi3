@@ -22,22 +22,23 @@ programs.  Figure \ref{fig:Essential_C_Program} presents the minimal
 
                 FILE *infile, *outfile;
 
-                void main()
+                int main(void)
                 {
+                  extern char *gprgid(void);
 
                   ffile(&infile,"input.dat",2);
                   ffile(&outfile,"output.dat",1);
                   ip_set_uppercase(1);
                   ip_initialize(infile,outfile);
                   ip_cwk_add(":DEFAULT");
-                  ip_cwk_add(prgid);
+                  ip_cwk_add(gprgid());
                   psio_init();
 
-                  /* to start timing, tstart(outfile) */
+                  /* to start timing, tstart(outfile); */
                 
                   /* Insert code here */
 
-                  /* to end timing, tstop(outfile) */
+                  /* to end timing, tstop(outfile); */
 
                   psio_done();
                   fclose(infile);
@@ -45,9 +46,9 @@ programs.  Figure \ref{fig:Essential_C_Program} presents the minimal
                   ip_done();
                 }
 
-                char *gprgid()
+                char *gprgid(void)
                 {
-                   char *prgid = "CODE_NAME";
+                   char *prgid = ":CODE_NAME";
                    return(prgid);
                 }               
 \end{verbatim}
@@ -56,7 +57,7 @@ programs.  Figure \ref{fig:Essential_C_Program} presents the minimal
 \end{figure}
 
 The required include files are \file{libipv1/ip\_lib.h},
-\file{libciomr/libciomr.h}, \file{psio.h}, and of course
+\file{libciomr/libciomr.h}, \file{libpsio/psio.h}, and of course
 \file{stdio.h}.  The first of these is for the Input Parser Library,
 Version 1 (\file{libipv1.a}), which is described in section
 \ref{C_IP}.  The second file contains function prototypes for the C

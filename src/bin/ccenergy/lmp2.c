@@ -3,7 +3,8 @@
 #define EXTERN
 #include "globals.h"
 
-void local_filter_T2(dpdbuf4 *T2);
+void local_filter_T2(dpdbuf4 *T2, int);
+void local_filter_T2_nodenom(dpdbuf4 *T2);
 
 /* lmp2(): Computes the local-MP2 energy and the local-MP2 weak-pair energy.
 ** 
@@ -61,7 +62,14 @@ void lmp2(void)
   dpd_buf4_close(&D);
 
   dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "LMP2 tIjAb");
-  local_filter_T2(&T2);
+  if(params.local) {
+    local_filter_T2(&T2, 1);
+  }
+  else {
+    dpd_buf4_init(&D, CC_DENOM, 0, 0, 5, 0, 5, 0, "dIjAb");
+    dpd_buf4_dirprd(&D, &T2);
+    dpd_buf4_close(&D);
+  }
   dpd_buf4_close(&T2);
 
   /* Compute the LMP2 energy */
@@ -76,22 +84,42 @@ void lmp2(void)
   fprintf(outfile, "\titer = %d    LMP2 Energy = %20.14f\n", 0, energy);
 
   conv = 0;
-  for(iter=1; iter < params.maxiter; iter++) {
+  for(iter=1; iter < 10000; iter++) {
 
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
-    dpd_buf4_copy(&D, CC_TAMPS, "New LMP2 tIjAb");
+    dpd_buf4_copy(&D, CC_TAMPS, "New LMP2 tIjAb Increment");
     dpd_buf4_close(&D);
 
-    dpd_buf4_init(&newT2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New LMP2 tIjAb");
-
+    dpd_buf4_init(&newT2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New LMP2 tIjAb Increment");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "LMP2 tIjAb");
-    dpd_file2_init(&fij, CC_OEI, 0, 0, 0, "fIJ (non-diagonal)");
+
+    dpd_file2_init(&fij, CC_OEI, 0, 0, 0, "fIJ");
     dpd_contract424(&T2, &fij, &newT2, 1, 0, 1, -1, 1);
     dpd_contract244(&fij, &T2, &newT2, 0, 0, 0, -1, 1);
     dpd_file2_close(&fij);
+
+    dpd_file2_init(&fab, CC_OEI, 0, 1, 1, "fAB");
+    dpd_contract244(&fab, &T2, &newT2, 1, 2, 1, 1, 1);
+    dpd_contract424(&T2, &fab, &newT2, 3, 1, 0, 1, 1);
+    dpd_file2_close(&fab);
+
+    dpd_buf4_copy(&T2, CC_TAMPS, "New LMP2 tIjAb");
     dpd_buf4_close(&T2);
 
-    local_filter_T2(&newT2);
+    if(params.local) {
+      local_filter_T2(&newT2, 1);
+    }
+    else {
+      dpd_buf4_init(&D, CC_DENOM, 0, 0, 5, 0, 5, 0, "dIjAb");
+      dpd_buf4_dirprd(&D, &newT2);
+      dpd_buf4_close(&D);
+    }
+    dpd_buf4_close(&newT2);
+
+    dpd_buf4_init(&newT2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New LMP2 tIjAb");
+    dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New LMP2 tIjAb Increment");
+    dpd_buf4_axpy(&T2, &newT2, 1);
+    dpd_buf4_close(&T2);
 
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D 2<ij|ab> - <ij|ba>");
     energy = dpd_buf4_dot(&D, &newT2);
@@ -172,9 +200,9 @@ void lmp2(void)
   dpd_buf4_mat_irrep_close(&D, 0);
   dpd_buf4_close(&D);
 
-  fprintf(outfile, "\n\tLMP2 Weak Pair Energy   = %20.14f\n\n", weak_pair_energy);
-  fprintf(outfile, "\n\tLMP2 Correlation Energy = %20.14f\n\n", energy);
-  fprintf(outfile, "\n\tLMP2 Total Energy       = %20.14f\n\n", energy+moinfo.eref);
+  fprintf(outfile, "\n\tLMP2 Weak Pair Energy   = %20.14f\n", weak_pair_energy);
+  fprintf(outfile, "\tLMP2 Correlation Energy = %20.14f\n", energy);
+  fprintf(outfile, "\tLMP2 Total Energy       = %20.14f\n\n", energy+moinfo.eref);
 
   local.weak_pair_energy = weak_pair_energy;
 

@@ -85,10 +85,8 @@ void lag(void)
   /* Now go through all terms involving open-shell orbitals and force
      the appropriate spin cases to zero. */
   nirreps = moinfo.nirreps;
-  occpi = frozen.occpi; virtpi = frozen.virtpi; openpi = moinfo.openpi;
+  occpi = moinfo.occpi; virtpi = moinfo.virtpi; openpi = moinfo.openpi;
 
-  dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'IJ");
-  dpd_file2_close(&I);
 
   dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'ij");
   dpd_file2_mat_init(&I);

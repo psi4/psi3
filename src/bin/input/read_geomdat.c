@@ -21,20 +21,23 @@ void read_geomdat()
     fclose(geomdat);
   }
 
-  num_atoms = 0;
+  num_allatoms = 0;
   sprintf(entry_name,"GEOMETRY%d",geomdat_entry);
-  ip_count(entry_name,&num_atoms,0);
-  if (num_atoms == 0)
+  ip_count(entry_name,&num_allatoms,0);
+  if (num_allatoms == 0)
     punt("The entry in geom.dat is empty or missing!");
-  else if (num_atoms > MAXATOM)
+  else if (num_allatoms > MAXATOM)
     punt("There are more atoms than allowed!");
+  num_atoms = num_allatoms;
 
   /*-----------------------
     Allocate global arrays
    -----------------------*/
-  geometry = block_matrix(num_atoms,3);
+  full_geom = block_matrix(num_allatoms,3);
+  geometry = (double **) malloc(num_atoms*sizeof(double *));
+  atom_dummy = (int *) malloc(sizeof(int)*num_allatoms);
   element = (char **) malloc(sizeof(char *)*num_atoms);
-  full_element = (char **) malloc(sizeof(char *)*num_atoms);
+  full_element = (char **) malloc(sizeof(char *)*num_allatoms);
   elemsymb_charges = init_array(num_atoms);
 
   for(i=0;i<num_atoms;i++){
@@ -49,8 +52,10 @@ void read_geomdat()
       if (errcod != IPE_OK)
 	punt("Problem with the geom.dat entry.");
       else
-	geometry[i][j] = tmp;
+	full_geom[i][j] = tmp;
     }
+    geometry[i] = full_geom[i];
+    atom_dummy[i] = 0;
   }
 
   read_charges();

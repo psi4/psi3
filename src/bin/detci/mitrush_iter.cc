@@ -78,7 +78,6 @@ void mitrush_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
    int diag_method;
    CIvect Cvec;
    CIvect Sigma;
-   /* CIvect Cvec2; */
 
    Cvec.set(CIblks.vectlen, CIblks.num_blocks, Parameters.icore, Parameters.Ms0,
       CIblks.Ia_code, CIblks.Ib_code, CIblks.Ia_size, CIblks.Ib_size,
@@ -86,20 +85,18 @@ void mitrush_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
       CalcInfo.nirreps, AlphaG->subgr_per_irrep, maxnvect,
       Parameters.num_c_tmp_units, Parameters.first_c_tmp_unit,
       CIblks.first_iablk, CIblks.last_iablk, CIblks.decode);
-/*   Cvec2.set(CIblks.vectlen, CIblks.num_blocks, Parameters.icore, Parameters.Ms0,
-      CIblks.Ia_code, CIblks.Ib_code, CIblks.Ia_size, CIblks.Ib_size,
-      CIblks.offset, CIblks.num_alp_codes, CIblks.num_bet_codes,
-      CalcInfo.nirreps, AlphaG->subgr_per_irrep, maxnvect,
-      Parameters.num_c_tmp_units, Parameters.first_c_tmp_unit,
-      CIblks.first_iablk, CIblks.last_iablk, CIblks.decode);
-*/
-   Sigma.set(CIblks.vectlen, CIblks.num_blocks, Parameters.icore, Parameters.Ms0,
+   Sigma.set(CIblks.vectlen, CIblks.num_blocks, Parameters.icore,Parameters.Ms0,
       CIblks.Ia_code, CIblks.Ib_code, CIblks.Ia_size, CIblks.Ib_size,
       CIblks.offset, CIblks.num_alp_codes, CIblks.num_bet_codes,
       CalcInfo.nirreps, AlphaG->subgr_per_irrep, maxnvect,
       Parameters.num_s_tmp_units, Parameters.first_s_tmp_unit,
       CIblks.first_iablk, CIblks.last_iablk, CIblks.decode);
 
+   /* set up the vector pointers/info */
+   if (Cvec.read_new_first_buf() == -1) Cvec.write_new_first_buf();
+   if (Sigma.read_new_first_buf() == -1) Sigma.write_new_first_buf();
+   if (Cvec.read_num_vecs() == -1) Cvec.write_num_vecs(0);
+   if (Sigma.read_num_vecs() == -1) Sigma.write_num_vecs(0);
 
    Cvec.h0block_buf_init();
 
@@ -142,6 +139,10 @@ void mitrush_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
 
    if (Parameters.restart) {
      fprintf(outfile,"\nAttempting Restart with 1 vector\n");
+     if ((i=Cvec.read_num_vecs())< 1) {
+       fprintf(outfile, "CI vector file contains %d vectors, need 1.\n", i);
+       exit(0);
+     }
      fflush(outfile);
      Cvec.buf_lock(buffer1);
      Cvec.read(0, 0);
@@ -155,7 +156,9 @@ void mitrush_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
       tval = 1.0;
       Cvec.buf_lock(buffer1);
       Cvec.init_vals(0, 1, &(CalcInfo.ref_alp_list), &(CalcInfo.ref_alp_rel),
-         &(CalcInfo.ref_bet_list), &(CalcInfo.ref_bet_rel), H0block.blknum, &tval);
+                     &(CalcInfo.ref_bet_list), &(CalcInfo.ref_bet_rel), 
+                     H0block.blknum, &tval);
+      Cvec.write_num_vecs(1);
       k = 1;
       Cvec.read(0, 0);
       Cvec.symnorm(1.0,CI_VEC,TRUE);
@@ -188,7 +191,7 @@ void mitrush_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
 
          Cvec.init_vals(k, L, H0block.alplist, H0block.alpidx,
             H0block.betlist, H0block.betidx, H0block.blknum, sm_evals);
-
+         Cvec.write_num_vecs(1);
          k++;
          /* MLL added 6-15-98 */
          Cvec.read(0, 0);
@@ -207,6 +210,7 @@ void mitrush_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
    Sigma.buf_lock(buffer2);
    Cvec.read(0, 0);
    sigma(alplist, betlist, Cvec, Sigma, oei, tei, Parameters.fci, 0);
+   Sigma.write_num_vecs(1);
 
    Cvec.copy_zero_blocks(Sigma);
 
@@ -231,7 +235,8 @@ void mitrush_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
     * and x = C(0) * (Hd - E)^-1 * C(0)
     * Mental note: x and y are doubles not vectors
     */
-   olsen_iter_xy(Cvec,Sigma,Hd,&x,&y,buffer1,buffer2,E,curr,1,alpha,alplist,betlist);
+   olsen_iter_xy(Cvec,Sigma,Hd,&x,&y,buffer1,buffer2,E,curr,1,alpha,alplist,
+                 betlist);
 
    if (Parameters.print_lvl > 3) {
      fprintf(outfile, "Straight x = %12.6lf\n", x);
@@ -293,8 +298,8 @@ void mitrush_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
 
    /* S is the overlap of the C_(i-1) and C_i */
 
-   fprintf(outfile, "Iter  0  ROOT 1 ECI = %14.9lf", enuc + E);
-   fprintf(outfile, "    Delta_E %10.3E   Delta_C %10.3E\n", E - E_last, c1norm);
+   fprintf(outfile,"Iter  0  ROOT 1 ECI = %14.9lf", enuc + E);
+   fprintf(outfile,"    Delta_E %10.3E   Delta_C %10.3E\n", E - E_last, c1norm);
    fflush(outfile);
 
    iter = 1;
@@ -323,7 +328,7 @@ void mitrush_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
       Cvec.copy_zero_blocks(Sigma);
       Cvec.read(curr,0);
       if (print_lvl > 4) {
-         fprintf(outfile, "\nC(%2d) vector (symm'd norm'd) second time\n", iter) ;
+         fprintf(outfile,"\nC(%2d) vector (symm'd norm'd) second time\n",iter);
          Cvec.print(outfile);
          fflush(outfile);
          }
@@ -399,7 +404,8 @@ void mitrush_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
       else {
          Cvec.buf_unlock();
          Sigma.buf_unlock();
-         if (Parameters.diag_method==METHOD_MITRUSHENKOV && diag_method==METHOD_MITRUSHENKOV)
+         if (Parameters.diag_method==METHOD_MITRUSHENKOV && 
+             diag_method==METHOD_MITRUSHENKOV)
            { 
             diag_method = METHOD_OLSEN;
             last = curr; 
@@ -410,7 +416,8 @@ void mitrush_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
       ** get y = C(0) * (Hd - E)^-1 * sigma(0)
       ** and x = C(0) * (Hd - E)^-1 * C(0)
       */
-      olsen_iter_xy(Cvec,Sigma,Hd,&x,&y,buffer1,buffer2,E,curr,1,alpha, alplist, betlist);
+      olsen_iter_xy(Cvec,Sigma,Hd,&x,&y,buffer1,buffer2,E,curr,1,alpha, 
+                    alplist, betlist);
 
       if (Parameters.print_lvl > 3) {
         fprintf(outfile, "Straight x = %12.6lf\n", x);
@@ -493,8 +500,8 @@ void mitrush_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
 
       Cvec.buf_unlock();
       Sigma.buf_unlock();
-      fprintf(outfile, "Iter %2d  ROOT 1 ECI = %14.9lf", iter, enuc+E);
-      fprintf(outfile, "    Delta_E %10.3E   Delta_C %10.3E\n", E-E_last, c1norm);
+      fprintf(outfile,"Iter %2d  ROOT 1 ECI = %14.9lf", iter, enuc+E);
+      fprintf(outfile,"    Delta_E %10.3E   Delta_C %10.3E\n",E-E_last,c1norm);
       fflush(outfile);
       iter++;
       E_last = E;

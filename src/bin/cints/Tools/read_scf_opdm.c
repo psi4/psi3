@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <math.h>
 #include <libciomr/libciomr.h>
-#include <libfile30/file30.h>
 #include <libpsio/psio.h>
 #include <libint/libint.h>
 

@@ -46,13 +46,14 @@ void get_mp2nos(void)
   double *Iaaaa, *Ibbbb, **Iaabb;
   double *taaaa, *tbbbb, *taabb;
   double **Paa, **Pbb;
-  double **P_so_aa, **P_so_bb, **P_so_tot, **P_mo_tot, **tmat, **scfvec;
-  double *P_eigvals, **P_eigvecs, *Stri, **Smat;
-  double energy, tval;
+  double **P_so_aa, **P_so_bb, **P_so_tot, **P_mo_tot, **tmat;
+  double *P_eigvals, **P_eigvecs, **P_mo_block, **P_so_block, *Stri, **Smat;
+  double **scfvec, **scfvec_irrep;
+  double energy, E_scf, tval;
 
-  int nmo, occ, vir, ntri;
+  int nmo, occ, vir, ntri, irrep, nirreps, irrep_dim;
   int printflg = 0, errcod;
-  int i,j;
+  int i,j,i_ci,j_ci,mo_offset;
 
   double *evals_unsrt;
   struct iwlbuf Buf;  
@@ -73,12 +74,14 @@ void get_mp2nos(void)
   /* read the eigenvalues */
   evals_alpha = init_array(nmo); 
   evals_beta = init_array(nmo); 
+  chkpt_init(PSIO_OPEN_OLD);
+  E_scf = chkpt_rd_escf();
+  evals_unsrt = chkpt_rd_alpha_evals();
+
   /*
   file30_init();
   evals_unsrt = file30_rd_alpha_evals();
   */
-  chkpt_init();
-  evals_unsrt = chkpt_rd_alpha_evals();
 
   /* we'll need "restricted" eigenvalues in the checkpoint file later on.
    * let's just put in the alpha ones, we don't use them in DETCI for
@@ -128,7 +131,9 @@ void get_mp2nos(void)
 
   /* test the amplitudes by computing the energy */
   energy = compute_energy(taaaa, tbbbb, taabb, Iaaaa, Ibbbb, Iaabb);
-  fprintf(outfile, "Total Correlation energy: %12.6lf\n", energy);
+  fprintf(outfile, "SCF energy              : %14.9lf\n", E_scf);
+  fprintf(outfile, "Total Correlation energy: %14.9lf\n", energy);
+  fprintf(outfile, "MP2 energy              : %14.9lf\n", energy+E_scf);
 
   /* allocate memory for opdms */
   Paa = block_matrix(nmo,nmo);
@@ -192,42 +197,85 @@ void get_mp2nos(void)
     print_mat(P_mo_tot, nmo, nmo, outfile); 
   }
 
+  /* I believe the total density matrix is correctly symmetry-blocked
+   * (Pitzer order) at this stage.  However, if we diagonalize it as
+   * one giant block, the orbitals will rearrange and we will lose the
+   * symmetry blocking.  Therefore, we need to diagonalize a symmetry 
+   * block at a time.  CDS 11/02.
+   */
+
+  /* this will be bigger than we need */
   P_eigvals = init_array(nmo);
   P_eigvecs = block_matrix(nmo,nmo);
+  P_mo_block = block_matrix(nmo,nmo);
+  P_so_block = block_matrix(nmo,nmo);
+  nirreps = moinfo.nirreps;
 
-  /* Diagonalize the OPDM in SO basis */
-  sq_rsp(nmo, nmo, P_mo_tot, P_eigvals, 3, P_eigvecs, TOL);
+  /* zero out the MO coefficient file.  block_matrix zeroes the matrix */
+  chkpt_wt_scf(P_mo_block);
 
-  /* Print the orbitals */
-  if (params.print_lvl > 2) {
-    fprintf(outfile, "MP2 Natural Orbitals in terms of molecular orbitals\n");
-    eigout(P_eigvecs, P_eigvals, P_eigvals, nmo, nmo, outfile);
+  for (irrep=0,mo_offset=0; irrep<nirreps; irrep++) {
+    irrep_dim = moinfo.orbspi[irrep];
+    if (irrep_dim==0) continue;
+    scfvec_irrep = chkpt_rd_alpha_scf_irrep(irrep);
+    for (i=0; i<irrep_dim; i++) {
+      for (j=0; j<irrep_dim; j++) {
+        /* seems already in right order */      
+        /*
+        i_ci = moinfo.order[i+mo_offset];
+	j_ci = moinfo.order[j+mo_offset];
+	*/
+        i_ci = i+mo_offset;
+	j_ci = j+mo_offset;
+	P_mo_block[i][j] = P_mo_tot[i_ci][j_ci];
+      }
+    }
+    
+    /* Print the onepdm block */
+    if (params.print_lvl > 2) {
+      fprintf(outfile, "%3s block of one-particle density matrix\n",
+              moinfo.labels[irrep]);
+      print_mat(P_mo_block, irrep_dim, irrep_dim, outfile);
+      fprintf(outfile, "\n");
+    }
+
+    /* Diagonalize the OPDM in MO basis */
+    sq_rsp(irrep_dim, irrep_dim, P_mo_block, P_eigvals, 3, P_eigvecs, TOL);
+
+    /* Print the orbitals */
+    if (params.print_lvl > 2) {
+      fprintf(outfile, "%3s MP2 NOs in terms of molecular orbitals\n",
+              moinfo.labels[irrep]);
+      eivout(P_eigvecs, P_eigvals, irrep_dim, irrep_dim, outfile);
+    }
+
+    /* Now we have to transform from MO's to SO's */
+    mmult(scfvec_irrep, 0, P_eigvecs, 0, P_so_block, 0, irrep_dim, 
+          irrep_dim, irrep_dim, 0);
+
+    /* Print the orbitals */
+    if (params.print_lvl > 2) {
+      fprintf(outfile, "%3s MP2 NOs in terms of symmetry orbitals\n",
+              moinfo.labels[irrep]);
+      eivout(P_so_block, P_eigvals, irrep_dim, irrep_dim, outfile);
+    }
+
+    /* Write Natural Orbitals to file30 */
+    chkpt_wt_scf_irrep(P_so_block,irrep);
+    free_block(scfvec_irrep);
+    mo_offset += moinfo.orbspi[irrep];
   }
 
-  /* Now we have to transform from MO's to SO's */
-  mmult(scfvec, 0, P_eigvecs, 0, P_so_tot, 0, nmo, nmo, nmo, 0);
-
-  /* Print the orbitals */
-  if (params.print_lvl > 2) {
-    fprintf(outfile, "MP2 Natural Orbitals in terms of symmetry orbitals\n");
-    eigout(P_so_tot, P_eigvals, P_eigvals, nmo, nmo, outfile);
-  }
-
-  /* Write Natural Orbitals to file30 */
-  /*
-  file30_wt_scf(P_so_tot);
-  fprintf(outfile, "UMP2 Natural Orbitals have been written to file30\n\n");
-  file30_close();
-  */
-  chkpt_wt_scf(P_so_tot);
-  fprintf(outfile, "UMP2 Natural Orbitals written to checkpoint file\n\n");
+  fprintf(outfile, "UMP2 NOs written to checkpoint file\n\n");
   chkpt_close();
 
   free_block(tmat);
   free_block(Smat);
   free_block(scfvec);
   free_block(P_mo_tot);
+  free_block(P_mo_block);
   free_block(P_so_tot);
+  free_block(P_so_block);
   free_block(P_eigvecs);
   free(P_eigvals);
 }

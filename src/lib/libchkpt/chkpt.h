@@ -1,32 +1,47 @@
+
+#ifndef _psi3_libchkpt_chkpt_h_
+#define _psi3_libchkpt_chkpt_h_
+
+#include <libpsio/psio.h>
 #include <chkpt_params.h>
 
 #define MAX_ELEMNAME 13
 
-/* Uncomment after removal of old file30 */
-/*structure to hold z-matrix info*/
-/*  struct z_entry { */
-/*    int bond_atom;   */         /*first reference atom (bond)*/
-/*    int angle_atom;    */       /*second reference atom (angle)*/
-/*    int tors_atom;    */        /*third reference atom (torsion)*/
-/*    int bond_opt;    */         /*flags indicating to optimize values*/
-/*    int angle_opt; */
-/*    int tors_opt; */
-/*    double bond_val; */          /*coordinate values*/
-/*    double angle_val; */
-/*    double tors_val; */
-/*    char bond_label[20]; */     /*variable labels, if any*/
-/*    char angle_label[20]; */
-/*    char tors_label[20]; */
-/*    }; */
+#define CHKPT_PREFIX_LEN 32
+extern char chkpt_prefix[CHKPT_PREFIX_LEN];
+
+/*--- Z-matrix entry type ---*/
+struct z_entry {
+  int bond_atom;            /* first reference atom (bond) */
+  int angle_atom;           /* second reference atom (angle) */
+  int tors_atom;            /* third reference atom (torsion) */
+  int bond_opt;             /* flags indicating to optimize values */
+  int angle_opt; 
+  int tors_opt; 
+  double bond_val;          /* coordinate values */
+  double angle_val; 
+  double tors_val; 
+  char bond_label[20];      /* variable labels, if any */
+  char angle_label[20]; 
+  char tors_label[20]; 
+};
 
 /*--- Types of reference determinants ---*/
-/* Uncomment after removal of old file30 */
-/* typedef enum {ref_rhf = 0, ref_uhf = 1, ref_rohf = 2, ref_tcscf = 3,
-   ref_rks = 4, ref_uks = 5} reftype; */
+typedef enum {ref_rhf = 0, ref_uhf = 1, ref_rohf = 2, ref_tcscf = 3,
+	      ref_rks = 4, ref_uks = 5} reftype;
 
 
-int chkpt_init(void);
+int chkpt_init(int status);
 int chkpt_close(void);
+
+char *chkpt_rd_prefix(void);
+void chkpt_wt_prefix(char *prefix);
+void chkpt_set_prefix(char *prefix);
+void chkpt_commit_prefix(void);
+void chkpt_reset_prefix(void);
+char *chkpt_get_prefix(void);
+
+char *chkpt_build_keyword(char *);
 
 int chkpt_rd_ncalcs(void);
 
@@ -53,9 +68,6 @@ void chkpt_wt_nmo(int);
 
 int chkpt_rd_nsymhf(void);
 void chkpt_wt_nsymhf(int);
-
-int chkpt_rd_mxcoef(void);
-void chkpt_wt_mxcoef(int);
 
 int *chkpt_rd_atom_position(void);
 void chkpt_wt_atom_position(int *);
@@ -223,9 +235,6 @@ void chkpt_wt_beta_lagr(double **);
 double **chkpt_rd_ccvecs(void);
 void chkpt_wt_ccvecs(double **);
 
-double **chkpt_rd_schwartz(void);
-void chkpt_wt_schwartz(double **);
-
 double chkpt_rd_ecorr(void);
 void chkpt_wt_ecorr(double);
 
@@ -240,3 +249,5 @@ void chkpt_wt_disp(int);
 
 int* chkpt_rd_atom_dummy(void);
 void chkpt_wt_atom_dummy(int *);
+
+#endif

@@ -5,12 +5,12 @@
 %
 
 The PSI suite of {\em ab initio} quantum chemistry programs is the
-result of an ongoing attempt by a cadre of graduate students and
-postdoctoral associates to produce efficient and fast computer code.
-Perhaps the first contribution to what is now referred to as ``PSI''
-was written in 1976 by Robert Lucchese, who was an undergraduate in
-the Schaefer group at the University of California,
-Berkeley. Unfortunately, the direct configuration interaction code he
+result of an ongoing attempt by a cadre of graduate students,
+postdoctoral associates, and professors to produce efficient and fast
+computer code.  Perhaps the first contribution to what is now referred
+to as ``PSI'' was written in 1976 by Robert Lucchese, who was an
+undergraduate in the Schaefer group at the University of California,
+Berkeley, though the direct configuration interaction code he
 constructed no longer exists.  The first piece of code which could
 still be found in the second version of the package (\PSItwo) was
 written by Bernie Brooks in 1977-78; this is the well-known
@@ -19,24 +19,25 @@ after Prof.~Russ Pitzer provided the integrals program (which
 eventually became the old \module{intsth} module), the package became
 known as the BERKELEY suite.  In 1987, after the Schaefer research
 group moved to the Center for Computational Quantum Chemistry at the
-University of Georgia, the code was renamed PSI. In 1999, the
-extensive effort of many has come to its conclusion in what we now
-call \PSIthree\ -- a PSI suite with a completely new face. \PSIthree\
-is fundamentally superior to older incarnations of PSI, it has lost
-many limitations of \PSItwo, but much work is still needed to make
-\PSIthree\ a mainstream research tool.  Today the package has the
-capability to determine wavefunctions, energies, analytic gradients,
-and various molecular properties based on a variety of theories,
-including spin-restricted, spin-unrestricted, and restricted
-open-shell Hartree-Fock (RHF, UHF, and ROHF); configuration
-interaction (CI) (including a variety of multireference CI's and full
-CI); coupled-cluster (CC) including CC with variationaly optimized
+University of Georgia, the code was renamed PSI.  
+
+In 1999, the extensive effort of many resulted in what we now call
+\PSIthree\ -- a PSI suite with a completely new face. \PSIthree\ has
+shed many of he limitations of previous versions and has many new
+capabilities, but much work is still needed to make \PSIthree\ a
+mainstream research tool.  Today the package has the capability to
+determine wavefunctions, energies, analytic gradients, and various
+molecular properties based on a variety of theories, including
+spin-restricted, spin-unrestricted, and restricted open-shell
+Hartree-Fock (RHF, UHF, and ROHF); configuration interaction (CI)
+(including a variety of multireference CI's and full CI);
+coupled-cluster (CC) including CC with variationaly optimized
 orbitals; second-order M{\o}ller-Plesset perturbation theory (MPPT)
 including explicitly correlated second-order M{\o}ller-Plesset energy
 (MP2-R12); and complete-active-space self-consistent field (CASSCF)
 theory. The work in progress includes Kohn-Sham Density Function
-Theory (DFT) energy and gradients, efficient automated geometry
-optimization and frequency analysis by finite differences,
-parallelization of some portions of the code for execution on shared-
-and distributed-memory parallel machines, and many other exciting
-projects.
+Theory (DFT) energy and gradients, local correlation methods including
+local-CC, efficient automated geometry optimization and frequency
+analysis by finite differences, parallelization of some portions of
+the code for execution on shared- and distributed-memory parallel
+machines, and many other exciting projects.

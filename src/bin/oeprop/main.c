@@ -42,17 +42,45 @@ int main(int argc, char* argv) {
  ip_cwk_add(":OEPROP");
  tstart(outfile);
  psio_init();
+#if USE_LIBCHKPT
+ chkpt_init(PSIO_OPEN_OLD);
+#else
  file30_init();
+#endif
  print_intro();
 
 
 /*************************** Main Code *******************************/
 
 	/* Reading in basic information from file30 */
- 
+
+#if USE_LIBCHKPT
+ title = chkpt_rd_label();
+ natom = chkpt_rd_natom();
+ natom3 = natom * 3;
+ nmo = chkpt_rd_nmo();
+ nbfso = chkpt_rd_nso();
+ nbfao = chkpt_rd_nao();
+ natri = nbfao * (nbfao+1)/2;
+ nstri = nbfso * (nbfso+1)/2;
+ nshell = chkpt_rd_nshell();
+ nprim = chkpt_rd_nprim();
+ iopen = chkpt_rd_iopen();
+ nirreps = chkpt_rd_nirreps(); 
+ nsym = chkpt_rd_nsymhf();
+ orbspi = chkpt_rd_orbspi();
+ sopi = chkpt_rd_sopi();
+ clsdpi = chkpt_rd_clsdpi();    
+ openpi = chkpt_rd_openpi();
+ irr_labs = chkpt_rd_irr_labs();
+ geom = chkpt_rd_geom();
+ zvals = chkpt_rd_zvals();
+ scf_evec_so = chkpt_rd_scf();
+ usotao = chkpt_rd_usotao();
+#else
  title = file30_rd_label();
  natom = file30_rd_natom();
- natom3 = natom * 3;	/* wrong if the space is other than 3-dimensional */
+ natom3 = natom * 3;
  nmo = file30_rd_nmo();
  nbfso = file30_rd_nso();
  nbfao = file30_rd_nao();
@@ -72,6 +100,7 @@ int main(int argc, char* argv) {
  zvals = file30_rd_zvals();
  scf_evec_so = file30_rd_scf();
  usotao = file30_rd_usotao_new();
+#endif
  scf_evec_ao = init_matrix(nbfao,nmo);
  mmult(usotao,1,scf_evec_so,0,scf_evec_ao,0,nbfao,nbfso,nmo,0);
     
@@ -134,24 +163,24 @@ int main(int argc, char* argv) {
  else
    compute_density();
 
+	/* Computing overlap matrix */
+
+ compute_overlap();
 
 	/* Obtain natural orbitals */
-/*
- if (read_opdm) 
+ if (read_opdm && wrtnos) 
    get_nmo(); 
-*/
 
+#if USE_LIBCHKPT
+ chkpt_close();
+#else
  file30_close();
+#endif
 
 	/* Reading in Z-vector if neccessary */
 
  if (corr)
    read_zvec();
-
-
-	/* Computing overlap matrix */
-
- compute_overlap();
 
 
 	/* Mulliken population analysis */

@@ -22,7 +22,7 @@ void get_params()
     exit(2); 
   }
 
-  if (params.ref == 0) { // for RHF refs, allow CCEOM to do RHF, ROHF, UHF modes
+  if (params.ref == 0) { /* for RHF refs, allow CCEOM to do RHF, ROHF, UHF modes b*/
     errcod = ip_string("EOM_REFERENCE", &(read_eom_ref),0);
     if (errcod == IPE_OK) {
       if(!strcmp(read_eom_ref, "RHF")) params.eom_ref = 0;
@@ -37,10 +37,10 @@ void get_params()
     else {
       params.eom_ref = 0;
       read_eom_ref = (char *) malloc(10*sizeof(char));
-      sprintf(read_eom_ref,"%s","RHF"); // just for printing below
+      sprintf(read_eom_ref,"%s","RHF"); /* just for printing below */
     }
   }
-  else if (params.ref == 1) { // for ROHF refs, allow CCEOM to do ROHF & UHF modes
+  else if (params.ref == 1) { /* for ROHF refs, allow CCEOM to do ROHF & UHF modes */
     errcod = ip_string("EOM_REFERENCE", &(read_eom_ref),0);
     if (errcod == IPE_OK) {
       if(!strcmp(read_eom_ref, "ROHF")) params.eom_ref = 1;
@@ -54,25 +54,16 @@ void get_params()
     else {
       params.eom_ref = 1;
       read_eom_ref = (char *) malloc(10*sizeof(char));
-      sprintf(read_eom_ref,"%s","ROHF"); // just for printing below
+      sprintf(read_eom_ref,"%s","ROHF"); /* just for printing below */
     }
   }
-  else { // run in UHF mode - ignore EOM_REFERENCE
+  else { /* run in UHF mode - ignore EOM_REFERENCE */
     params.eom_ref = 2;
     read_eom_ref = (char *) malloc(10*sizeof(char));
-    sprintf(read_eom_ref,"%s","UHF"); // just for printing below
+    sprintf(read_eom_ref,"%s","UHF"); /* just for printing below */
   }
 
-  if (params.eom_ref == 2) {
-    fprintf(outfile, "\nCCEOM not yet UHF capable\n");
-    exit(2); 
-  }
-
-  /* if(params.ref != ref) {
-     fprintf(outfile,
-     "\nValue of REFERENCE from input.dat (%1d) and CC_INFO (%1d) do not match!\n", 
-     ref, params.ref);
-     } */
+  /*  fprintf(outfile, "\nCCEOM not yet UHF capable\n"); */
 
   fndcor(&(params.memory),infile,outfile);
 
@@ -103,9 +94,8 @@ void get_params()
   params.local = 0;
   errcod = ip_boolean("LOCAL", &(params.local),0);
 
-  local.cutoff = 1e-2;
-  errcod = ip_data("LOCAL_CUTOFF", "%d", &(iconv), 0);
-  if(errcod == IPE_OK) local.cutoff = 1.0 * pow(10.0, (double) -iconv);
+  local.cutoff = 0.02;
+  errcod = ip_data("LOCAL_CUTOFF", "%lf", &(local.cutoff), 0);
 
   if(ip_exist("LOCAL_METHOD",0)) {
     errcod = ip_string("LOCAL_METHOD", &(local.method), 0);
@@ -118,6 +108,37 @@ void get_params()
     local.method = (char *) malloc(7 * sizeof(char));
     sprintf(local.method, "%s", "WERNER");
   }
+
+  if(ip_exist("LOCAL_WEAKP",0)) {
+    errcod = ip_string("LOCAL_WEAKP", &(local.weakp), 0);
+    if(strcmp(local.weakp,"MP2") && strcmp(local.weakp,"NEGLECT") && strcmp(local.weakp,"NONE")) {
+      fprintf(outfile, "Invalid method for treating local pairs: %s\n", local.weakp);
+      exit(2);
+    }
+  }
+  else if(params.local) {
+    local.weakp = (char *) malloc(5 * sizeof(char));
+    sprintf(local.weakp, "%s", "NONE");
+  }
+
+  if(ip_exist("LOCAL_PRECONDITIONER",0) && params.local) {
+    errcod = ip_string("LOCAL_PRECONDITIONER", &(local.precon), 0);
+    if(strcmp(local.precon,"FOCK") && strcmp(local.precon,"HBAR")) {
+      fprintf(outfile, "Invalid choice of local-pair preconditioner: %s\n", local.precon);
+      exit(2);
+    }
+  }
+  else if(params.local){
+    local.precon = (char *) malloc(5 * sizeof(char));
+    sprintf(local.precon, "%s", "HBAR");
+  }
+
+  local.ghost = -1;
+  if(ip_exist("LOCAL_GHOST",0))
+    errcod = ip_data("LOCAL_GHOST", "%d", &(local.ghost), 0);
+
+  local.do_singles = 1;
+  errcod = ip_boolean("LOCAL_SINGLES", &(local.do_singles), 0);
 
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
@@ -134,6 +155,11 @@ void get_params()
   if(params.local) {
     fprintf(outfile, "\tLocal Cutoff    = %3.1e\n", local.cutoff);
     fprintf(outfile, "\tLocal Method    =    %s\n", local.method);
+    fprintf(outfile, "\tWeak pairs      =    %s\n", local.weakp);
+    fprintf(outfile, "\tLocal precon.   =    %s\n", local.precon);
+    fprintf(outfile, "\tGhost atom      =    %d\n", local.ghost);
+    fprintf(outfile, "\tLocal guess     =    %s\n", 
+	    local.do_singles ? "HBAR_SS" : "UNIT VECTORS" );
   }
   fprintf(outfile, "\n");
 

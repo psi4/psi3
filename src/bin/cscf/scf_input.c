@@ -1,7 +1,18 @@
 /* $Log$
- * Revision 1.14  2002/04/03 02:06:01  janssen
- * Finish changes to use new include paths for libraries.
+ * Revision 1.15  2002/11/24 22:52:17  crawdad
+ * Merging the gbye-file30 branch into the main trunk.
+ * -TDC
  *
+/* Revision 1.14.2.2  2002/11/23 21:54:45  crawdad
+/* Removal of mxcoef stuff for chkpt runs.
+/* -TDC
+/*
+/* Revision 1.14.2.1  2002/07/29 23:08:30  evaleev
+/* A major set of changes designed to convert all psi modules to use libchkpt.
+/*
+/* Revision 1.14  2002/04/03 02:06:01  janssen
+/* Finish changes to use new include paths for libraries.
+/*
 /* Revision 1.13  2002/03/25 02:17:36  janssen
 /* Get rid of tmpl.  Use new naming scheme for libipv1 includes.
 /*
@@ -116,7 +127,11 @@ static char *rcsid = "$Id$";
 #include "includes.h"
 #include "common.h"
 #include <libipv1/ip_lib.h>
-#include <libfile30/file30.h>
+#if USE_LIBCHKPT
+#  include <libchkpt/chkpt.h>
+#else
+#  include <libfile30/file30.h>
+#endif
 
 void scf_input(ipvalue)
    ip_value_t *ipvalue;
@@ -129,7 +144,7 @@ void scf_input(ipvalue)
    char cjunk[80];
    int norder,*iorder,reordr;
    int nc,no,nh,nn,num_mo;
-   int mpoint,mconst,mcalcs,ncalcs;
+   int ncalcs;
    PSI_FPTR junk,locvec,loccal;
    int optri,ierr,nat;
    int io_locate();
@@ -279,11 +294,13 @@ void scf_input(ipvalue)
    fprintf (outfile,"\n  nuclear repulsion energy %22.13f\n",repnuc);
    fflush(outfile);
 
-   mpoint = MPOINT;
-   mconst = MCONST;
-   mcalcs = MCALCS;
+#if USE_LIBCHKPT
+   nat    = chkpt_rd_natom();
+   ncalcs = chkpt_rd_ncalcs();
+#else
    nat    = file30_rd_natom();
    ncalcs = file30_rd_ncalcs();
+#endif
 
 /* if inflg is 0 and this isn't the first calc, then get the old vector */
 /* from file30.  if inflg is 2, just use core hamiltonian guess */
@@ -292,22 +309,35 @@ void scf_input(ipvalue)
    if ((inflg==0 && ncalcs) || inflg == 1) {
        
        inflg = 1;
+#if USE_LIBCHKPT
+       optri = abs(chkpt_rd_iopen());
+       reftmp = chkpt_rd_ref();
+#else
        mxcoef = file30_rd_mxcoef();
        optri = abs(file30_rd_iopen());
        reftmp = file30_rd_ref();
+#endif
        
        fprintf(outfile,"\n  using old vector from file30 as initial guess\n");
        
 /* get old energy from file30 */
        
+#if USE_LIBCHKPT
+       elast = chkpt_rd_escf();
+#else
        elast = file30_rd_escf();
+#endif
        fprintf(outfile,"  energy from old vector: %14.8f\n",elast);
        
        so_offset = 0;
        mo_offset = 0;
 
        /* Add MO's per/irrep for scf_info */
+#if USE_LIBCHKPT
+       mopi = chkpt_rd_orbspi();
+#else
        mopi = file30_rd_orbspi();
+#endif
        for(k=0; k < num_ir; k++) scf_info[k].num_mo = mopi[k];
        free(mopi);
 
@@ -321,8 +351,27 @@ void scf_input(ipvalue)
 	   
 	   /* if the reference is not UHF, then just read in the vector for the 
 	      restricted calculation into both */
+#if USE_LIBCHKPT
 	   if(reftmp != ref_uhf && reftmp != ref_uks){
-	       
+	       for(k=0; k < num_ir ; k++) {
+		   s = &scf_info[k];
+		   if(nn=s->num_so) {
+		       spin_info[0].scf_spin[k].cmat = chkpt_rd_scf_irrep(k);
+		       spin_info[1].scf_spin[k].cmat = chkpt_rd_scf_irrep(k);
+		   }
+	       }
+	   }
+	   else{
+	       for(k=0; k < num_ir ; k++) {
+		   s = &scf_info[k];
+		   if(nn=s->num_so) {
+		       spin_info[0].scf_spin[k].cmat = chkpt_rd_alpha_scf_irrep(k);
+		       spin_info[1].scf_spin[k].cmat = chkpt_rd_beta_scf_irrep(k);
+		   }
+	       }
+	   }
+#else
+	   if(reftmp != ref_uhf && reftmp != ref_uks){
 	       for(k=0; k < num_ir ; k++) {
 		   s = &scf_info[k];
 		   if(nn=s->num_so) {
@@ -340,6 +389,7 @@ void scf_input(ipvalue)
 		   }
 	       }
 	   }
+#endif
 	   
 	   for(m=0;m<2;m++){
 	       for(k=0; k < num_ir; k++) {
@@ -398,7 +448,11 @@ void scf_input(ipvalue)
 	   for(k=0; k < num_ir ; k++) {
 	       s = &scf_info[k];
 	       if(nn=s->num_so) {
+#if USE_LIBCHKPT
+		   s->cmat = chkpt_rd_scf_irrep(k);
+#else
 		   s->cmat = file30_rd_blk_scf(k);
+#endif
 	       }
 	   }
 

@@ -29,12 +29,14 @@
 int *chkpt_rd_atom_position(void)
 {
   int *atom_position, natom;
+  char *key;
 
   natom = chkpt_rd_natom();
   atom_position = init_int_array(natom);
 
-  psio_read_entry(PSIF_CHKPT, "::Atomic symm positions", 
-                  (char *) atom_position, natom*sizeof(int));
+  key = chkpt_build_keyword("Atomic symm positions");
+  psio_read_entry(PSIF_CHKPT, key, (char *) atom_position, natom*sizeof(int));
+  free(key);
 
   return atom_position;
 }
@@ -64,9 +66,11 @@ int *chkpt_rd_atom_position(void)
 void chkpt_wt_atom_position(int *atom_position)
 {
   int natom;
+  char *key;
 
   natom = chkpt_rd_natom();
 
-  psio_write_entry(PSIF_CHKPT, "::Atomic symm positions", 
-                   (char *) atom_position, natom*sizeof(int));
+  key = chkpt_build_keyword("Atomic symm positions");
+  psio_write_entry(PSIF_CHKPT, key, (char *) atom_position, natom*sizeof(int));
+  free(key);
 }

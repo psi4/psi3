@@ -6,7 +6,6 @@
 #include<libipv1/ip_lib.h>
 #include<libciomr/libciomr.h>
 #include<libpsio/psio.h>
-#include<libfile30/file30.h>
 
 #include<libint/libint.h>
 #include"defines.h"
@@ -79,17 +78,7 @@ void schwartz_eri()
   double max_elem;
   
 
-  /*-------------------------------------------------------------------------
-    See if the table fo Schwartz integrals has been written to file30 before
-   -------------------------------------------------------------------------*/
-  file30_init();
-  BasisSet.schwartz_eri = file30_rd_schwartz();
-  if (BasisSet.schwartz_eri != NULL) {
-    file30_close();
-    return;
-  }
-  else
-    BasisSet.schwartz_eri = block_matrix(BasisSet.num_shells,BasisSet.num_shells);
+  BasisSet.schwartz_eri = block_matrix(BasisSet.num_shells,BasisSet.num_shells);
   
   /*---------------
     Initialization
@@ -228,7 +217,6 @@ void schwartz_eri()
 
     } /* end getting shell combination */
 
-/*  file30_wt_schwartz(BasisSet.schwartz_eri);*/
   
   /*---------
     Clean-up

@@ -6,6 +6,7 @@ struct MOInfo {
   int phase;             /* Boolean for consistency of orbital phases */
   int aobasis;
   int *orbspi;           /* no. of MOs per irrep */
+  int *orbsym;           /* orbital symmetry (Pitzer/SO) */
   int *clsdpi;           /* no. of closed-shells per irrep excl. frdocc */
   int *openpi;           /* no. of open-shells per irrep */
   int *uoccpi;           /* no. of unoccupied orbitals per irr. ex. fruocc */
@@ -25,6 +26,13 @@ struct MOInfo {
   int *avir_sym;         /* relative alpha virtual index symmetry */
   int *bvir_sym;         /* relative beta virtual index symmetry */
   int iter;              /* Current CCSD iteration */
+  int sym;            /* symmetry of converged CCSD state */
+  int *occ_off;       /* occupied orbital offsets within each irrep */
+  int *aocc_off;      /* alpha occupied orbital offsets within each irrep */
+  int *bocc_off;      /* beta occupied orbital offsets within each irrep */
+  int *vir_off;       /* virtual orbital offsets within each irrep */
+  int *avir_off;      /* alpha virtual orbital offsets within each irrep */
+  int *bvir_off;      /* beta virtual orbital offsets within each irrep */
   double conv;           /* Current convergence level */
   double enuc;           /* Nuclear repulsion energy */
   double escf;           /* SCF energy (from file30) */
@@ -32,8 +40,7 @@ struct MOInfo {
   double ecc;            /* Current coupled cluster energy */
   double t1diag;         /* Standard open- or closed-shell T1 diagnostic */
   double d1diag;         /* Janssen and Nielsen's D1 Diagnostic */
-  int sym;
-  int *occ_off;
-  int *vir_off;
+  double ***C;           /* Virtual orbital transformation matrix (for AO-basis B terms) */
+  double ***Ca;          /* UHF alpha virtual orbital transformation matrix (for AO-basis B terms) */
+  double ***Cb;          /* UHF beta virtual orbital transformation matrix (for AO-basis B terms) */
 };
-

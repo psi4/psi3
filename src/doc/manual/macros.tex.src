@@ -1,6 +1,6 @@
 
-\newcommand{\PSItwo}{{\tt Psi 2}}
-\newcommand{\PSIthree}{{\tt Psi 3}}
+\newcommand{\PSItwo}{{\tt PSI2}}
+\newcommand{\PSIthree}{{\tt PSI3}}
 
 %
 % Psi Modules

@@ -4,7 +4,11 @@
 #include <string.h>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
-#include <libfile30/file30.h>
+#if USE_LIBCHKPT
+#  include <libchkpt/chkpt.h>
+#else
+#  include <libfile30/file30.h>
+#endif
 #include <libqt/qt.h>
 #include <libpsio/psio.h>
 #include "MOInfo.h"
@@ -53,7 +57,11 @@ void init_io(void)
   ip_cwk_add(":MP2");
   
   psio_init();
+#if USE_LIBCHKPT
+  chkpt_init(PSIO_OPEN_OLD);
+#else
   file30_init();
+#endif
 }
 
 void title(void)
@@ -85,10 +93,14 @@ void init_ioff(void)
 
 void exit_io(void)
 {
+#if USE_LIBCHKPT
+  chkpt_close();
+#else
+  file30_close();
+#endif
+  psio_done();
   tstop(outfile);
   ip_done();
-  psio_done();
-  file30_close();
 }
 
 void get_parameters(void)
@@ -138,6 +150,18 @@ void get_moinfo(void)
           errcod = ip_data("FROZEN_UOCC","%d",(&(moinfo.fruocc)[i]),1,i);
     }
   
+#if USE_LIBCHKPT
+  moinfo.nmo = chkpt_rd_nmo();
+  moinfo.nirreps = chkpt_rd_nirreps();
+  moinfo.iopen = chkpt_rd_iopen();
+  moinfo.labels = chkpt_rd_irr_labs();
+  moinfo.orbspi = chkpt_rd_orbspi();
+  moinfo.clsdpi = chkpt_rd_clsdpi();
+  moinfo.openpi = chkpt_rd_openpi();
+  moinfo.enuc = chkpt_rd_enuc();
+  moinfo.escf = chkpt_rd_escf();
+  moinfo.evals = chkpt_rd_evals();
+#else
   moinfo.nmo = file30_rd_nmo();
   moinfo.nirreps = file30_rd_nirreps();
   moinfo.iopen = file30_rd_iopen();
@@ -148,7 +172,7 @@ void get_moinfo(void)
   moinfo.enuc = file30_rd_enuc();
   moinfo.escf = file30_rd_escf();
   moinfo.evals = file30_rd_evals();
-
+#endif
   
   moinfo.virtpi = init_int_array(moinfo.nirreps);
   for(i=0; i < moinfo.nirreps; i++) {

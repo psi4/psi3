@@ -40,8 +40,8 @@ double **chkpt_rd_ccvecs(void)
   int nmo, ccvec_length;
   double **ccvecs;
   
-  nmo = file30_rd_nmo();
-  ccvec_length = abs(file30_rd_iopen());
+  nmo = chkpt_rd_nmo();
+  ccvec_length = abs(chkpt_rd_iopen());
   
   if (ccvec_length > 0) {
     ccvecs = block_matrix(2,ccvec_length);
@@ -69,8 +69,8 @@ void chkpt_wt_ccvecs(double **ccvecs)
 {
   int nmo, ccvec_length;
   
-  nmo = file30_rd_nmo();
-  ccvec_length = abs(file30_rd_iopen());
+  nmo = chkpt_rd_nmo();
+  ccvec_length = abs(chkpt_rd_iopen());
   
   if (ccvec_length > 0) {
     psio_write_entry(PSIF_CHKPT, "::SCF coupling coefficients", 

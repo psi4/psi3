@@ -3,8 +3,11 @@
  ***************************/
 
 /*need this for z_entry structure*/
-/* #include <libchkpt/chkpt.h> */
+#if USE_LIBCHKPT
+#include <libchkpt/chkpt.h>
+#else
 #include<libfile30/file30.h>
+#endif
 
 #ifdef EXTERN
 # undef EXTERN
@@ -28,7 +31,7 @@ struct coordinates{
 /*Super-global stuff - the same no matter what calculation is running */
 EXTERN FILE *infile, *outfile;
 EXTERN int *ioff;
-EXTERN int *df;                     /*df[i] = (i-1)!!*/
+EXTERN double *df;                  /*df[i] = (i-1)!!*/
 EXTERN char **elem_name;            /*Element names*/
 
 /*Calculation options*/
@@ -48,9 +51,12 @@ EXTERN int read_chkpt;              /*Read old checkpoint file?*/
 EXTERN int chkpt_geom;              /*Read geometry from checkpoint file?*/
 EXTERN int geomdat_geom;            /*Read geometry from geom.dat?*/
 EXTERN int geomdat_entry;           /*Which entry to read from geom.dat?*/
-EXTERN int chkpt_mos;               /*Project old SCF evector?*/
+EXTERN int chkpt_mos;               /*Put old SCF evector into chkpt file?*/
+EXTERN int dont_project_mos;        /*Don't project MOs but simply keep them*/
 EXTERN int save_oldcalc;            /*Save old calculation and old/new basis overlap?*/
 EXTERN int overwrite_output;        /*Overwrite output.dat?*/
+EXTERN int expert;                  /*If expert is true - safety checks are off - 
+				      no guarantee of correctness */
 
 /*Labels*/
 EXTERN char *label;                 /*Label*/

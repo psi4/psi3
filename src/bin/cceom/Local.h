@@ -1,19 +1,26 @@
 struct Local {
   int natom;
-  int nao;
+  int nso;
   int nocc;
   int nvir;
   int *aostart;
   int *aostop;
+  int **domain;
   int **pairdomain;
   int *pairdom_len;
   int *pairdom_nrlen;
+  int *weak_pairs;
+  int ghost;
+  int do_singles;
   double ***V;
   double ***W;
   double *eps_occ;
   double **eps_vir;
   double cutoff;
   char *method;
-  double **C;         /* canonical virtual --> AO transformation matrix */
-  double **Cbar;      /* AO --> canonical virtual transformation matrix */
+  char *weakp;
+  char *precon;
+  double weak_pair_energy;
+  double **U;
+  double **WW;
 };

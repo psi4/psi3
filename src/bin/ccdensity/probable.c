@@ -8,7 +8,7 @@ void probable(void)
 {
   double *exps;
   
-  chkpt_init();
+  chkpt_init(PSIO_OPEN_OLD);
   chkpt_rd_exps();
   chkpt_close();
 

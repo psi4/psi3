@@ -19,7 +19,7 @@ void get_moinfo(void)
   int i, j, h, errcod;
   int nactive;
 
-  chkpt_init();
+  chkpt_init(PSIO_OPEN_OLD);
   moinfo.nirreps = chkpt_rd_nirreps();
   moinfo.nmo = chkpt_rd_nmo();
   moinfo.iopen = chkpt_rd_iopen();

@@ -4,11 +4,18 @@ class stretch_class {
     int A;
     int B;
     double value; /* length of bond */
-    double s_A[3];  /* The s vector for atom A (Xa-Xb) */
-    double s_B[3];  /* The s vector for atom B (Xb-Xa) */
+    double *s_A;  /* The s vector for atom A (Xa-Xb) */
+    double *s_B;  /* The s vector for atom B (Xb-Xa) */
   public:
-    stretch_class(){}
-    ~stretch_class(){}
+    stretch_class(){
+      s_A = new double[3];
+      s_B = new double[3];
+    }
+    ~stretch_class() {
+      // fprintf(stdout,"destructing stretch class\n");
+      delete [] s_A ;
+      delete [] s_B ;
+    }
     void print(FILE *fp_out, int print_flag) {
       if (print_flag == 0)
         fprintf(fp_out,"    (%d %d %d)\n", id, A+1, B+1);
@@ -34,11 +41,7 @@ class stretch_class {
 
 
 
-/*--------------------------------------------------------------------------
-  STRETCH_SET class declaration
-
-  an object of this class is a set of stretch_class objects
-  -------------------------------------------------------------------------*/
+/*** STRETCH_SET class declaration ***/ 
 
 class stretch_set {
 
@@ -54,7 +57,11 @@ class stretch_set {
 	else { fprintf(outfile,"\nWARNING: bad number of stretches\n"); }
       }
 
-   ~stretch_set(){delete[] stre_array;}
+   ~stretch_set() {
+     // ~stretch_class is called automatically
+     // fprintf(stdout,"destructing stretch_set\n");
+     delete [] stre_array;
+   }
 
    void print(FILE *fp_out, int print_flag) {
       int i;
@@ -81,7 +88,7 @@ class stretch_set {
       }
       return;
     }
-    void compute(int num_atoms, double *geom) {
+    void compute(int natom, double *geom) {
       int i,A,B;
       double tmp;
       for (i=0; i< num ; ++i) {
@@ -95,7 +102,7 @@ class stretch_set {
       }
       return;
     }
-    void compute_s(int num_atoms, double *geom) {
+    void compute_s(int natom, double *geom) {
       int i,j,A,B;
       double eBA[3], norm;
       for (i=0;i<num;++i) {

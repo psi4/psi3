@@ -2,8 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <libciomr/libciomr.h>
-#include <libfile30/file30.h>
+#if USE_LIBCHKPT
 #include <libchkpt/chkpt.h>
+#else
+#include <libfile30/file30.h>
+#endif
 #include <libint/libint.h>
 
 #include "defines.h"
@@ -18,19 +21,6 @@ void file11()
   double Etot;
   FILE *fp11;
 
-  /*--- Ok, have to be sure we get these energies, reload if necessary ---*/
-  /*--- should have Escf around at least ---*/
-
-  /* Ack, remove this old stuff and just get the total energy!  CDS */  
-  /*
-  if (strcmp(UserOptions.wfn,"SCF")==0) {
-    MOInfo.Eref = MOInfo.Escf;
-  }
-  else {
-    MOInfo.Eref = file30_rd_eref();
-    MOInfo.Ecorr = file30_rd_ecorr();
-  }
-  */
   Etot = chkpt_rd_etot();
 
   /*--- Geometry in the canonical frame ---*/
@@ -59,7 +49,6 @@ void file11()
   if (strcmp(UserOptions.wfn,"SCF") == 0)
     fprintf(fp11,"%20.10lf\n",MOInfo.Escf);
   else
-    /* fprintf(fp11,"%20.10lf\n",MOInfo.Eref+MOInfo.Ecorr); */
     fprintf(fp11,"%20.10lf\n",Etot); 
   
   for(i=0;i<Molecule.num_atoms;i++)

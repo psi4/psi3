@@ -36,12 +36,16 @@ double **chkpt_rd_scf(void)
   double **scf;
   int nmo, nso;
 
-  nmo = chkpt_rd_nmo();
-  nso = chkpt_rd_nso();
-
-  scf = block_matrix(nso,nmo);
-  psio_read_entry(PSIF_CHKPT, "::MO coefficients", (char *) scf[0], 
-                  nso*nmo*sizeof(double));
+  if (psio_tocscan(PSIF_CHKPT,"::MO coefficients") != NULL) {
+    nmo = chkpt_rd_nmo();
+    nso = chkpt_rd_nso();
+    
+    scf = block_matrix(nso,nmo);
+    psio_read_entry(PSIF_CHKPT, "::MO coefficients", (char *) scf[0], 
+		    nso*nmo*sizeof(double));
+  }
+  else
+    scf = NULL;
 
   return scf;
 }
@@ -74,12 +78,16 @@ double **chkpt_rd_alpha_scf(void)
   double **scf;
   int nmo, nso;
 
-  nmo = chkpt_rd_nmo();
-  nso = chkpt_rd_nso();
-
-  scf = block_matrix(nso,nmo);
-  psio_read_entry(PSIF_CHKPT, "::Alpha MO coefficients", (char *) scf[0], 
-                  nso*nmo*sizeof(double));
+  if (psio_tocscan(PSIF_CHKPT,"::Alpha MO coefficients") != NULL) {
+    nmo = chkpt_rd_nmo();
+    nso = chkpt_rd_nso();
+    
+    scf = block_matrix(nso,nmo);
+    psio_read_entry(PSIF_CHKPT, "::Alpha MO coefficients", (char *) scf[0], 
+		    nso*nmo*sizeof(double));
+  }
+  else
+    scf = NULL;
 
   return scf;
 }
@@ -112,12 +120,16 @@ double **chkpt_rd_beta_scf(void)
   double **scf;
   int nmo, nso;
 
-  nmo = chkpt_rd_nmo();
-  nso = chkpt_rd_nso();
-
-  scf = block_matrix(nso,nmo);
-  psio_read_entry(PSIF_CHKPT, "::Beta MO coefficients", (char *) scf[0], 
-                  nso*nmo*sizeof(double));
+  if (psio_tocscan(PSIF_CHKPT,"::Beta MO coefficients") != NULL) {
+    nmo = chkpt_rd_nmo();
+    nso = chkpt_rd_nso();
+    
+    scf = block_matrix(nso,nmo);
+    psio_read_entry(PSIF_CHKPT, "::Beta MO coefficients", (char *) scf[0], 
+		    nso*nmo*sizeof(double));
+  }
+  else
+    scf = NULL;
 
   return scf;
 }
@@ -263,6 +275,12 @@ double **chkpt_rd_scf_irrep(int irrep)
 
   scf = block_matrix(sopi[irrep],mopi[irrep]);
   scf_full = chkpt_rd_scf();
+  if (scf_full == NULL) {
+    free_block(scf);
+    free(sopi);
+    free(mopi);
+    return NULL;
+  }
 
   /* compute row and column offsets */
   for(i=0,row=0,col=0; i < irrep; i++) {
@@ -283,7 +301,7 @@ double **chkpt_rd_scf_irrep(int irrep)
 
 
 /*!
-** chkpt_rd_scf_alpha_irrep(): Reads a single irrep of the alpha SCF 
+** chkpt_rd_alpha_scf_irrep(): Reads a single irrep of the alpha SCF 
 ** eigenvectors for UHF.
 **
 ** \param irrep = The desired irreducible representation.
@@ -307,6 +325,12 @@ double **chkpt_rd_alpha_scf_irrep(int irrep)
 
   scf = block_matrix(sopi[irrep],mopi[irrep]);
   scf_full = chkpt_rd_alpha_scf();
+  if (scf_full == NULL) {
+    free_block(scf);
+    free(sopi);
+    free(mopi);
+    return NULL;
+  }
 
   /* compute row and column offsets */
   for(i=0,row=0,col=0; i < irrep; i++) {
@@ -327,7 +351,7 @@ double **chkpt_rd_alpha_scf_irrep(int irrep)
 
 
 /*!
-** chkpt_rd_scf_beta_irrep(): Reads a single irrep of the beta SCF 
+** chkpt_rd_beta_scf_irrep(): Reads a single irrep of the beta SCF 
 ** eigenvectors for UHF.
 **
 ** \param irrep = The desired irreducible representation.
@@ -352,6 +376,12 @@ double **chkpt_rd_beta_scf_irrep(int irrep)
 
   scf = block_matrix(sopi[irrep],mopi[irrep]);
   scf_full = chkpt_rd_beta_scf();
+  if (scf_full == NULL) {
+    free_block(scf);
+    free(sopi);
+    free(mopi);
+    return NULL;
+  }
 
   /* compute row and column offsets */
   for(i=0,row=0,col=0; i < irrep; i++) {

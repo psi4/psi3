@@ -1,10 +1,4 @@
-/******************************************************************************
-
-	INTERNALS.H
-
-        class declaration for internals
-******************************************************************************/
-
+/*** INTERNALS.H class declaration for internals ***/
 
 #include "stretch.h"
 #include "bend.h"
@@ -21,13 +15,12 @@ class internals {
    bend_set bend;
    torsion_set tors;
    out_set out;
-
   
     int stretch_count;
     void set_stretch_count(int i) { stretch_count = i;}
     int get_stretch_count() { return stretch_count; }
-    void compute_internals(int num_atoms, double *geom);
-    void compute_s(int num_atoms, double *geom);
+    void compute_internals(int natom, double *geom);
+    void compute_s(int natom, double *geom);
     void print_s();
     int get_num() { return num; }
     void set_num(int new_num) { num = new_num; }
@@ -45,22 +38,4 @@ class internals {
     int index_to_id(int index);
     int id_to_index(int id);
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

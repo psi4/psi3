@@ -6,10 +6,11 @@ include ../MakeVars
 LD = $(CXX)
 LDLIBS += $(LAPACK) $(BLAS)
 
-PSILIBS = -lPSI_file30 -lPSI_qt -lPSI_ciomr -lPSI_psio -lPSI_ipv1
+PSILIBS = -lPSI_file30 -lPSI_chkpt -lPSI_qt -lPSI_ciomr -lPSI_psio -lPSI_ipv1
 
-CXXSRC = dboc.cc geom.cc print.cc overlap.cc mo_overlap.cc rhf.cc rohf.cc uhf.cc \
-	rccsd.cc rci.cc
+CXXSRC = dboc.cc geom.cc print.cc overlap.cc mo_overlap.cc linalg.cc rhf.cc \
+	rohf.cc uhf.cc rci.cc roci.cc
+#	rccsd.cc
 
 BINOBJ = $(CXXSRC:%.cc=%.o)
 ALLOC = 

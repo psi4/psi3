@@ -5,12 +5,21 @@ class bend_class {
     int B;
     int C;
     double value;
-    double s_A[3]; // The s vector for atom A
-    double s_B[3];
-    double s_C[3];
+    double *s_A; // The s vector for atom A
+    double *s_B;
+    double *s_C;
   public:
-    bend_class() {}
-    ~bend_class() {}
+    bend_class() {
+      s_A = new double[3];
+      s_B = new double[3];
+      s_C = new double[3];
+    }
+    ~bend_class() {
+    //  fprintf(stdout,"destructing bend class\n");
+      delete [] s_A;
+      delete [] s_B;
+      delete [] s_C;
+    }
     void print(FILE *fp_out, int print_flag) {
       if (print_flag == 0)
         fprintf(fp_out,"    (%d %d %d %d)\n", id,A+1,B+1,C+1);
@@ -54,8 +63,9 @@ class bend_set {
      }
 
    ~bend_set() {
-     delete[] bend_array;
-     }
+     // fprintf(stdout,"destructing bend_set\n");
+     delete [] bend_array;
+   }
 
    void print(FILE *fp_out, int print_flag) {
       int i;
@@ -106,7 +116,7 @@ class bend_set {
     void set_s_C(int index, double s_C0, double s_C1, double s_C2) {
                  bend_array[index].set_s_C(s_C0,s_C1,s_C2); }
     double get_s_C(int index, int i) { return bend_array[index].get_s_C(i); }
-    void compute(int num_atoms, double *geom) {
+    void compute(int natom, double *geom) {
       int i,j,A,B,C;
       double rBA,rBC,eBA[3],eBC[3],tmp[3],dotprod,angle;
     
@@ -136,14 +146,14 @@ class bend_set {
       }
       return;
     }
-    void compute_s(int num_atoms, double *geom) {
+    void compute_s(int natom, double *geom) {
       int i,j,A,B,C;
       double val,rBA,rBC;
       double eBA[3], eBC[3], tmp[3];
       double *geom_ang;
     
-      geom_ang = init_array(num_atoms*3);
-      for (i=0;i<num_atoms*3;++i)
+      geom_ang  = new double[3*natom];
+      for (i=0;i<natom*3;++i)
         geom_ang[i] = geom[i] * _bohr2angstroms;
     
       for (i=0;i<num;++i) {
@@ -181,6 +191,7 @@ class bend_set {
         }
         set_s_C(i,tmp[0],tmp[1],tmp[2]);
       }
+      delete [] geom_ang;
       return;
     }
     int get_id_from_atoms(int a, int b, int c) {

@@ -9,27 +9,98 @@ void get_nmo()
   double *evals, *evals_symbl;
   double **nmo_mo, **nmo_symbl;
   double **b, **binv;		/* (C+)*C */
+  double **cinv;                /* C_{AO}^-1 = C_{AO}^T S_{AO,AO} */
+  double **tmat, **Smat;
   double **psq_ao, **p_symbl;
   
   nmo_ao = init_matrix(nbfao,nmo);
-  nmo_so = init_matrix(nbfso,nmo);
+  nmo_so = block_matrix(nbfso,nmo); /* need block matrix for chkpt_wt_scf() */
   evals = init_array(nmo);
   nmo_mo = init_matrix(nmo,nmo);
   psq_ao = init_matrix(nbfao,nbfao);
 
   tri_to_sq(Ptot,psq_ao,nbfao);
+
+  /*
+  fprintf(outfile,"Full P_AO matrix before transformation\n");
+  print_mat(psq_ao,nbfao,nbfao,outfile);
+  fprintf(outfile,"\n");
+  */
+
+  /*
+  fprintf(outfile,"SCF_EVEC_AO matrix\n");
+  print_mat(scf_evec_ao,nbfao,nmo,outfile);
+  fprintf(outfile,"\n");
+
   mmult(psq_ao,0,scf_evec_ao,0,nmo_ao,0,nbfao,nbfao,nmo,0);
   free_matrix(psq_ao,nbfao);
+
+  fprintf(outfile,"Half-transformed P_AO matrix\n");
+  print_mat(nmo_ao,nbfao,nmo,outfile);
+  fprintf(outfile,"\n");
+
   mmult(scf_evec_ao,1,nmo_ao,0,nmo_mo,0,nmo,nbfao,nmo,0);
+  
+  fprintf(outfile,"Full NMO_MO matrix before diagonalization\n");
+  print_mat(nmo_mo,nmo,nmo,outfile);
+  fprintf(outfile,"\n");
 
   b = init_matrix(nmo,nmo);
   binv = init_matrix(nmo,nmo);
+
   mmult(scf_evec_so,1,scf_evec_so,0,b,0,nmo,nbfso,nmo,0);
+  fprintf(outfile,"initial b matrix\n");
+  print_mat(b,nmo,nmo,outfile);
+  fprintf(outfile,"\n");
+
   invert_matrix(b,binv,nmo);
 
+  fprintf(outfile,"b inverse\n");
+  print_mat(binv,nmo,nmo,outfile);
+  fprintf(outfile,"\n");
+
+  fprintf(outfile,"nmo_so before transform\n");
+  print_mat(nmo_so,nmo,nmo,outfile);
+  fprintf(outfile,"\n");
+
   mmult(binv,0,nmo_mo,0,nmo_so,0,nmo,nmo,nmo,0);
+
+  fprintf(outfile,"nmo_so after transform\n");
+  print_mat(nmo_so,nmo,nmo,outfile);
+  fprintf(outfile,"\n");
+
   mmult(nmo_so,0,binv,0,b,0,nmo,nmo,nmo,0);
-  
+
+  */
+
+ 
+  /* new try at the matrix */
+  b = init_matrix(nmo,nmo);
+  cinv = init_matrix(nmo, nbfao);
+  tmat = init_matrix(nmo,nbfao);
+  Smat = init_matrix(nbfao,nbfao);
+  tri_to_sq(S,Smat,nbfao);
+
+  /*
+  fprintf(outfile,"S matrix\n");
+  print_mat(Smat,nbfao,nbfao,outfile);
+  fprintf(outfile,"\n");
+  */
+
+  mmult(scf_evec_ao,1,Smat,0,cinv,0,nmo,nbfao,nbfao,0);
+
+  mmult(cinv,0,psq_ao,0,tmat,0,nmo,nbfao,nbfao,0);
+  mmult(tmat,0,cinv,1,b,0,nmo,nbfao,nmo,0);
+  free_matrix(cinv,nmo);
+  free_matrix(tmat,nmo);
+  free_matrix(Smat,nbfao);
+
+  /*
+  fprintf(outfile,"final b matrix\n");
+  print_mat(b,nmo,nmo,outfile);
+  fprintf(outfile,"\n");
+  */
+
   count = 0;
   for(i=0;i<nirreps;i++) {
     dim_i = orbspi[i];
@@ -37,14 +108,30 @@ void get_nmo()
       p_symbl = init_matrix(dim_i,dim_i);
       evals_symbl = init_array(dim_i);
       nmo_symbl = init_matrix(dim_i,dim_i);
-      for(k=0;k<dim_i;k++)
-        for(l=0;l<=k;l++)
+      for(k=0;k<dim_i;k++) {
+        for(l=0;l<=k;l++) {
           p_symbl[k][l] = p_symbl[l][k] = b[count+k][count+l];
+        }
+      }
+
+      if (print_lvl >= PRINTNMOLEVEL) {
+        fprintf(outfile, "  Density matrix for symmetry block %d\n",i);
+        print_mat(p_symbl,dim_i,dim_i,outfile);
+        fprintf(outfile,"\n");
+      }
+
       sq_rsp(dim_i,dim_i,p_symbl,evals_symbl,3,nmo_symbl,1.0E-14);
+
       for(k=0;k<dim_i;k++) {
         evals[count+k] = evals_symbl[k];
         for(l=0;l<dim_i;l++)
           nmo_mo[count+k][count+l] = nmo_symbl[k][l];
+      }
+
+      if (print_lvl >= PRINTNMOLEVEL || print_nos) {
+        fprintf(outfile, "  Natural orbitals for symmetry block %d\n",i);
+        eivout(nmo_symbl,evals_symbl,dim_i,dim_i,outfile);
+	fprintf(outfile,"\n");
       }
       free_matrix(p_symbl,dim_i);
       free_matrix(nmo_symbl,dim_i);
@@ -57,8 +144,9 @@ void get_nmo()
   mmult(scf_evec_so,0,nmo_mo,0,nmo_so,0,nbfso,nmo,nmo,0);
 
 
-  if (print_lvl >= PRINTNMOLEVEL) {
-    fprintf(outfile,"  Natural orbitals in SO basis computed from density in file%d :\n",
+  if (print_lvl >= PRINTNMOLEVEL || print_nos) {
+    fprintf(outfile,
+            "  Natural orbitals in SO basis computed from density in file%d:\n",
             opdm_file);
     eivout(nmo_so,evals,nbfso,nmo,outfile);
     fprintf(outfile,"\n\n");
@@ -66,15 +154,18 @@ void get_nmo()
   
 
   if (wrtnos) {
+    #if USE_LIBCHKPT
+    chkpt_wt_scf(nmo_so);
+    #else
     file30_wt_scf(nmo_so);
+    #endif
     if (print_lvl >= 1)
       fprintf(outfile,"  Natural orbitals has just been written to file30\n\n");
   }
 
   free(evals);
   free_matrix(b,nmo);
-  free_matrix(binv,nmo);
   free_matrix(nmo_mo,nmo);
-  free_matrix(nmo_so,nbfso);
+  free_block(nmo_so);
   
 }

@@ -43,7 +43,7 @@ void get_mo_info(void)
    file30_close();
    ***/
 
-   chkpt_init();
+   chkpt_init(PSIO_OPEN_OLD);
    CalcInfo.nirreps = chkpt_rd_nirreps();
    CalcInfo.nbfso = chkpt_rd_nmo();
    CalcInfo.labels = chkpt_rd_irr_labs();
@@ -61,7 +61,7 @@ void get_mo_info(void)
    CalcInfo.pitz2ci = init_int_array(CalcInfo.nbfso);
    CalcInfo.ras_opi = init_int_matrix(MAX_RAS_SPACES,CalcInfo.nirreps);
       
-   if (!ras_set2(CalcInfo.nirreps, CalcInfo.nbfso, 1, 
+   if (!ras_set2(CalcInfo.nirreps, CalcInfo.nbfso, 1, 0,
                 CalcInfo.orbs_per_irr, CalcInfo.docc, CalcInfo.socc, 
                 CalcInfo.frozen_docc, CalcInfo.frozen_uocc, 
                 CalcInfo.rstr_docc, CalcInfo.rstr_uocc,
@@ -328,7 +328,7 @@ void read_cur_orbs(void)
   nirreps = CalcInfo.nirreps;
 
   /* file30_init(); */
-  chkpt_init();
+  chkpt_init(PSIO_OPEN_OLD);
   for (h=0; h<nirreps; h++) {
     dim = CalcInfo.orbs_per_irr[h];
     if (dim==0) continue;

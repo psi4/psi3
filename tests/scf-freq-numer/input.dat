@@ -1,9 +1,8 @@
 % 6-31G** H2O Test SCF hessian
 
 psi: (
-  check = true
-  disp = true
-  ndisp = 5
+  check = false
+  jobtype = freq
 )
 
 default: (

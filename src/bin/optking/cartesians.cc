@@ -1,143 +1,230 @@
-/******************************************************************************
-
-       cartesians.cc
-
-       this file contains member functions for cartesian not included
-       in the declaration (cartesians.h)
-
-******************************************************************************/ 
-
-
-#include <math.h>
+/*** cartesians.cc : contains member functions for cartesian class ***/
 
 extern "C" {
-  #include <stdio.h>
-  #include <stdlib.h>
-  #include <string.h>
-  #include <libciomr/libciomr.h>
-  #include <libipv1/ip_lib.h>
-  #include <libchkpt/chkpt.h>
-  #include <physconst.h>
-  #include <masses.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include <libciomr/libciomr.h>
+#include <libipv1/ip_lib.h>
+#include <libchkpt/chkpt.h>
+#include <physconst.h>
+#include <masses.h>
 }
 
 #define EXTERN
 #include "opt.h"
 #include "cartesians.h"
+#undef EXTERN
 
 
-
-
-
-/*-----------------------------------------------------------------------------
-       FORCES
-
-       This function returns the forces in cartesian coordinates in aJ/Ang
-
------------------------------------------------------------------------------*/ 
-
-double *cartesians:: forces() {
+/*** FORCES returns forces in cartesian coordinates in aJ/Ang ***/ 
+double *cartesians:: get_forces() {
   int i;
   double *f;
-  f = init_array(3*num_atoms);
-
-  for (i=0;i<3*num_atoms;++i)
+  f = init_array(3*natom);
+  for (i=0;i<3*natom;++i)
     f[i] = -1.0 * grad[i] * _hartree2J * 1.0E18 / _bohr2angstroms;
   return f;
 }
 
+double *cartesians:: get_fforces() {
+  int i;
+  double *f;
+  f = init_array(3*nallatom);
+  for (i=0; i<3*nallatom; ++i) {
+    f[i] = -1.0 * fgrad[i] * _hartree2J * 1.0E18 / _bohr2angstroms;
+  }
+  return f;
+}
 
 
-
-
-/*-----------------------------------------------------------------------------
-       CARTESIANS this is the class constructor for cartesian
-----------------------------------------------------------------------------*/
+/*** CARTESIANS this is the class constructor for cartesian ***/ 
 cartesians::cartesians() {
-  int i, j, a, count, isotopes_given = 0, masses_given = 0;
+  int i, j, a, read_grad = 1, count, isotopes_given = 0, masses_given = 0;
   char label[MAX_LINELENGTH], line1[MAX_LINELENGTH];
   FILE *fp_11;
-  double an,x,y,z,tval;
-  double **geom, *zvals;
+  double an,x,y,z,tval,tval1,tval2,tval3,tval4;
+  double **geom, **fgeom, *zvals;
+  // MODE                  
+  // opt_with_gradients     file11
+  // opt_with_energies      chkpt
+  // freq_with_gradients    file11
+  // freq_with_energies     chkpt
+  // displacements          chkpt
+  if (optinfo.mode == MODE_GRAD_ENERGY || optinfo.mode == MODE_DISP_SYMM ||
+      optinfo.mode == MODE_DISP_ALL || optinfo.mode == MODE_DISP_LOAD ||
+      optinfo.mode == MODE_DISP_USER || optinfo.mode == MODE_ENERGY_SAVE )
+    read_grad = 0;
 
-  if (   ((fp_11 = fopen("file11.dat","r")) == NULL)
-	 || (optinfo.numerical_dertype > 0) ) {
-    /* Read geometry and energy data only from chkpt */
-    chkpt_init();
-    geom = chkpt_rd_geom();
-    num_atoms = chkpt_rd_natom();
-    zvals = chkpt_rd_zvals();
-    //    energy = chkpt_rd_escf();
-    energy = chkpt_rd_etot();
-    chkpt_close();
+  natom = optinfo.natom;
+  nallatom = optinfo.nallatom;
 
-    coord = new double[3*num_atoms];
-    grad = new double[3*num_atoms];
-    atomic_num = new double[num_atoms];
-    mass = new double[3*num_atoms];
-    for(i=0, count=-1; i < num_atoms; i++) {
-      atomic_num[i] = zvals[i];
-      for(j=0; j < 3; j++) {
-	coord[++count] = geom[i][j];
+  /* Read data only from chkpt */
+  chkpt_init(PSIO_OPEN_OLD);
+  geom = chkpt_rd_geom();
+  fgeom = chkpt_rd_fgeom();
+  energy = chkpt_rd_etot();
+  zvals = chkpt_rd_zvals();
+  if (read_grad) grad = chkpt_rd_grad();
+  else grad = init_array(3*natom);
+  chkpt_close();
+
+
+  coord = new double[3*natom];
+  atomic_num = new double[natom];
+  mass = new double[3*natom];
+
+  fcoord = new double[3*nallatom];
+  fgrad = new double[3*nallatom];
+  fatomic_num = new double[nallatom];
+  fmass = new double[3*nallatom];
+
+  count = -1;
+  for(i=0; i < natom; i++) {
+    atomic_num[i] = zvals[i];
+    for(j=0; j < 3; j++) {
+      coord[++count] = geom[i][j];
+    }
+  }
+  free_block(geom);
+
+  zero_arr(fatomic_num,nallatom);
+  for(i=0; i<natom; i++)
+    fatomic_num[optinfo.to_dummy[i]] = zvals[i];
+
+  count = -1;
+  for(i=0; i<nallatom; i++)
+    for(j=0; j<3; j++)
+      fcoord[++count] = fgeom[i][j];
+
+  free(zvals);
+  free_block(fgeom);
+
+  // now read gradient from chkpt
+  zero_arr(fgrad, 3*nallatom);
+  count = -1;
+  for(i=0; i < natom; i++)
+    for(j=0; j < 3; j++)
+      fgrad[3*optinfo.to_dummy[i]+j]  = grad[3*i+j];
+
+  /* read in only the gradient from file11
+  fp_11 = fopen("file11.dat","r");
+  rewind(fp_11) ;
+
+  while (fgets(label, MAX_LINELENGTH, fp_11) != NULL) {
+    fgets(line1, MAX_LINELENGTH, fp_11) ;
+    if (sscanf(line1, "%d %lf", &i, &tval) != 2) {
+      fprintf(outfile,
+     "(cartesians()): Trouble reading natom and energy from file11.dat\n");
+       exit(0);
+    }
+    count = -1;
+    for (i=0; i<natom ; i++) {
+    if (fscanf(fp_11, "%lf %lf %lf %lf", &tval1, &tval2, &tval3, &tval4) != 4) {
+      fprintf(outfile,
+      "(cartesians()): Trouble reading coordinates from file11.dat\n");
+       exit(0);
       }
     }
-    free(zvals);
-    free_block(geom);
+    count = -1;
+    for (i=0; i<natom ; i++) {
+      if (fscanf(fp_11, "%lf %lf %lf", &x, &y, &z) != 3) {
+        fprintf(outfile,
+        "(cartesians()): Trouble reading gradients from file11.dat\n");
+         exit(0);
+      }
+      grad[++count] = x; grad[++count] = y; grad[++count] = z;
+    }
+    fgets(line1, MAX_LINELENGTH, fp_11);
+  } 
+  fclose(fp_11) ;
+  */
+
+/*
+  fprintf(outfile,"geomtry without dummy atoms\n");
+  for (i=0; i<natom; ++i)
+    fprintf(outfile,"%15.10lf%15.10lf%15.10lf%15.10lf\n",
+        atomic_num[i], coord[3*i],coord[3*i+1],coord[3*i+2]);
+
+  fprintf(outfile,"\n");
+  for (i=0; i<natom; ++i)
+    fprintf(outfile,"%15.10lf%15.10lf%15.10lf%15.10lf\n",
+      atomic_num[i], grad[3*i],grad[3*i+1],grad[3*i+2]);
+
+  fprintf(outfile,"\ngeomtry with dummy atoms\n");
+  for (i=0; i<nallatom; ++i)
+    fprintf(outfile,"%15.10lf%15.10lf%15.10lf%15.10lf\n",
+        fatomic_num[i], fcoord[3*i+0],fcoord[3*i+1],fcoord[3*i+2]);
+
+  fprintf(outfile,"\n");
+  for (i=0; i<nallatom; ++i)
+    fprintf(outfile,"%15.10lf%15.10lf%15.10lf%15.10lf\n",
+      fatomic_num[i], fgrad[3*i+0],fgrad[3*i+1],fgrad[3*i+2]);
+ */
+
+    /*
   }
-  else {  /* Get what you need from file11 */
+  else {  // Get what you need from file11
+
+    chkpt_init(PSIO_OPEN_OLD);
+    nallatom = chkpt_rd_nallatom();
+    natom = chkpt_rd_natom();
+    chkpt_close();
 
     if (fgets(label, MAX_LINELENGTH, fp_11) == NULL) {
       fprintf(outfile, "Trouble reading first line of file11.dat\n");
       exit(0);
     }
 
-    /* now read the number of atoms and the energy */
+    // now read the number of atoms and the energy
     fgets(line1, MAX_LINELENGTH, fp_11);
-    if (sscanf(line1, "%d %lf", &num_atoms, &energy) != 2) {
+    if (sscanf(line1, "%d %lf", &natom, &energy) != 2) {
       fprintf(outfile,
-	      "Trouble reading natoms and energy from second line of file11.dat\n");
+          "Trouble reading natom and energy from second line of file11.dat\n");
       exit(0);
     }
 
-    coord = new double[3*num_atoms];
-    grad = new double[3*num_atoms];
-    mass = new double[3*num_atoms];
-    atomic_num = new double[num_atoms];
+    coord = new double[3*natom];
+    grad = new double[3*natom];
+    mass = new double[3*natom];
+    atomic_num = new double[natom];
 
-    /* now rewind file11 */
+    // now rewind file11
     rewind(fp_11) ;
 
-    /* read in one chunk at a time */
+    // read in one chunk at a time
     while (fgets(label, MAX_LINELENGTH, fp_11) != NULL) {
       fgets(line1, MAX_LINELENGTH, fp_11) ;
-      if (sscanf(line1, "%d %lf", &num_atoms, &energy) != 2) {
-	fprintf(outfile,
-		"(cartesians()): Trouble reading natoms and energy from file11.dat\n");
-	exit(0);
+      if (sscanf(line1, "%d %lf", &natom, &energy) != 2) {
+        fprintf(outfile,
+            "(cartesians()): Trouble reading natom and energy from file11.dat\n");
+        exit(0);
       }
       count = -1;
-      for (i=0; i<num_atoms ; i++) {
-	if (fscanf(fp_11, "%lf %lf %lf %lf", &an, &x, &y, &z) != 4) {
-	  fprintf(outfile,
-		  "(cartesians()): Trouble reading coordinates from file11.dat\n");
-	  exit(0);
-	}
-	atomic_num[i]=an; coord[++count]=x; coord[++count]=y; coord[++count]=z;
+      for (i=0; i<natom ; i++) {
+        if (fscanf(fp_11, "%lf %lf %lf %lf", &an, &x, &y, &z) != 4) {
+          fprintf(outfile,
+              "(cartesians()): Trouble reading coordinates from file11.dat\n");
+          exit(0);
+        }
+        atomic_num[i]=an; coord[++count]=x; coord[++count]=y; coord[++count]=z;
       }
       count = -1;
-      for (i=0; i<num_atoms ; i++) {
-	if (fscanf(fp_11, "%lf %lf %lf", &x, &y, &z) != 3) {
-	  fprintf(outfile,
-		  "(cartesians()): Trouble reading gradients from file11.dat\n");
-	  exit(0);
-	}
-	grad[++count] = x; grad[++count] = y; grad[++count] = z;
+      for (i=0; i<natom ; i++) {
+        if (fscanf(fp_11, "%lf %lf %lf", &x, &y, &z) != 3) {
+          fprintf(outfile,
+              "(cartesians()): Trouble reading gradients from file11.dat\n");
+          exit(0);
+        }
+        grad[++count] = x; grad[++count] = y; grad[++count] = z;
       }
       fgets(line1, MAX_LINELENGTH, fp_11);
     } 
     fclose(fp_11) ;
 
-  } /* else */
+  }
+  */
 
   /* read masses from input.dat or use default masses */
   count = -1;
@@ -146,11 +233,11 @@ cartesians::cartesians() {
     isotopes_given = 1;
     a = 0;
     ip_count("ISOTOPES", &a, 0);
-    if (a != num_atoms) {
+    if (a != natom) {
       fprintf(outfile,"ISOTOPES array has wrong dimension.\n");
       exit(2);
     }
-    for (i=0;i<num_atoms;++i) {
+    for (i=0;i<natom;++i) {
       ip_data("ISOTOPES","%s", line1,1,i);
       for (j=0;j<138;j++) {
 	if (strcmp(line1, mass_labels[j]) == 0) {
@@ -173,21 +260,21 @@ cartesians::cartesians() {
       fprintf(outfile,"Ignoring ISOTOPES keyword, using given MASSES.\n");
     a = 0;
     ip_count("MASSES",&a,0);
-    if (a != num_atoms) {
+    if (a != natom) {
       fprintf(outfile,"MASSES array has wrong dimension\n");
       exit(2);
     }
     else {
-      for(i=0;i<num_atoms;++i) {
-	ip_data("MASSES","%lf",&tval,1,i);
-	mass[++count] = tval;
-	mass[++count] = tval;
-	mass[++count] = tval;
+      for(i=0;i<natom;++i) {
+        ip_data("MASSES","%lf",&tval,1,i);
+        mass[++count] = tval;
+        mass[++count] = tval;
+        mass[++count] = tval;
       }
     }
   }
   if ((isotopes_given == 0) && (masses_given == 0)) {
-    for(i=0;i<num_atoms;++i) {
+    for(i=0;i<natom;++i) {
       a = (int) get_atomic_num(i); // casting to an int for index
       mass[++count] = an2masses[a];
       mass[++count] = an2masses[a];
@@ -195,113 +282,160 @@ cartesians::cartesians() {
     }
   }
 
+  zero_arr(fmass, 3*nallatom);
+  for (i=0; i<natom; ++i) {
+    j = optinfo.to_dummy[i];
+    fmass[3*j+0] = fmass[3*j+1] = fmass[3*j+2] = mass[3*i];
+  }
+
+/*
+  fprintf(outfile,"masses without dummy atoms\n");
+  for (i=0; i<nallatom; ++i)
+    fprintf(outfile,"%15.10lf%15.10lf%15.10lf\n",
+        fmass[3*i],fmass[3*i+1],fmass[3*i+2]);
+     */
+
   return;
 }
 
+/*** CARTESIANS::PRINT
+ * print_flag                                         to
+ *    0        fcoord                                fp_out
+ *    1        fatomic_num, fcoord                   fp_out
+ *    2        fatomic_num, fmass, fcoord            fp_out
+ *    3        fatomic_num, fmass, fcoord, fgrad     fp_out
+ *    4        coord                                 fp_out
+ *    5        atomic_num, coord                     fp_out
+ *    6        atomic_num, mass, coord               fp_out
+ *    7        atomic_num, mass, coord, grad         fp_out
+ *   10        coord                                 geom.dat
+ *   11        coord, grad                           file11.dat
+ *   32        fcoord (implicitly coord)             chkpt
+ * disp_label is only used for geom.dat writing ***/
 
-
-
-
-/*-----------------------------------------------------------------------------
-
-       PRINT
-
-       flag = 0 print geometry to fp_out
-       flag = 1 print Z, geom to fp_out
-       flag = 2 print geom and grad with masses
-       flag = 4 print geometry to geom.dat
-       flag = 11 print data in file11 format
-       flag = 30 print geometry to chkpt
-disp_label is only used for geom.dat writing
------------------------------------------------------------------------------*/
-
-void cartesians :: print(int flag, FILE *fp_out, int new_geom_file,
+void cartesians :: print(int print_flag, FILE *fp_out, int new_geom_file,
 			 char *disp_label, int disp_num) {
-  int i;
+  int i,j;
   double x,y,z;
-  int count = -1;
+  int cnt = -1;
 
-  if (flag == 0) {
-    for (i = 0; i < num_atoms; ++i) {
-      x = coord[++count]; y = coord[++count]; z = coord[++count];
+  if (print_flag == 0) {
+    for (i = 0; i < nallatom; ++i) {
+      x = fcoord[++cnt]; y = fcoord[++cnt]; z = fcoord[++cnt];
       fprintf(fp_out,"%20.10f%20.10f%20.10f\n",x,y,z);
     }
   }
-  if (flag == 1) {
-    for (i = 0; i < num_atoms; ++i) {
-      x = coord[++count]; y = coord[++count]; z = coord[++count];
-      fprintf(fp_out,"%5.1lf%15.10f%15.10f%15.10f\n",atomic_num[i],x,y,z);
+  else if (print_flag == 1) {
+    for (i = 0; i < nallatom; ++i) {
+      x = fcoord[++cnt]; y = fcoord[++cnt]; z = fcoord[++cnt];
+      fprintf(fp_out,"%5.1lf%15.10f%15.10f%15.10f\n",fatomic_num[i],x,y,z);
     }
   }
-  if (flag == 2) {
-    count = -1;
-    for (i = 0; i < num_atoms; ++i) {
-      x = coord[++count]; y = coord[++count]; z = coord[++count];
+  else if (print_flag == 2) {
+    cnt = -1;
+    for (i = 0; i < nallatom; ++i) {
+      x = fcoord[++cnt]; y = fcoord[++cnt]; z = fcoord[++cnt];
       fprintf(fp_out,
-	      "%5.1lf%15.8lf%15.10f%15.10f%15.10f\n",atomic_num[i],mass[3*i],x,y,z);
+          "%5.1lf%15.8lf%15.10f%15.10f%15.10f\n",fatomic_num[i],fmass[3*i],x,y,z);
     }
   }
-  if (flag == 3) {
-    count = -1;
-    for (i = 0; i < num_atoms; ++i) {
-      x = coord[++count]; y = coord[++count]; z = coord[++count];
+  else if (print_flag == 3) {
+    cnt = -1;
+    for (i = 0; i < nallatom; ++i) {
+      x = fcoord[++cnt]; y = fcoord[++cnt]; z = fcoord[++cnt];
       fprintf(fp_out,
-	      "%5.1lf%15.8lf%15.10f%15.10f%15.10f\n",atomic_num[i],mass[3*i],x,y,z);
+          "%5.1lf%15.8lf%15.10f%15.10f%15.10f\n",fatomic_num[i],fmass[3*i],x,y,z);
     }
-    count = -1;
-    for (i = 0; i < num_atoms; ++i) {
-      x = grad[++count]; y = grad[++count]; z = grad[++count];
+    cnt = -1;
+    for (i = 0; i < nallatom; ++i) {
+      x = fgrad[++cnt]; y = fgrad[++cnt]; z = fgrad[++cnt];
       fprintf(fp_out,
 	      "%35.10lf%15.10f%15.10f\n",x,y,z);
     }
   }
-  if (flag == 4) {
-    double *geom_out;
-    if (new_geom_file) fprintf(fp_out,"%%%%\n");
-    fprintf(fp_out,"%% %s\n",disp_label);
-    geom_out = get_coord();
-    fprintf(fp_out,"geometry%1d = (\n", disp_num);
-    for (i=0;i<num_atoms;++i)
-      fprintf(fp_out,"(%20.10f%20.10f%20.10f)\n",geom_out[3*i],
-	      geom_out[3*i+1],geom_out[3*i+2] );
-    fprintf(fp_out," )\n");
-    free(geom_out);
+  if (print_flag == 4) {
+    for (i = 0; i < nallatom; ++i) {
+      x = coord[++cnt]; y = coord[++cnt]; z = coord[++cnt];
+      fprintf(fp_out,"%20.10f%20.10f%20.10f\n",x,y,z);
+    }
+  } 
+  else if (print_flag == 5) {
+    for (i = 0; i < natom; ++i) {
+      x = coord[++cnt]; y = coord[++cnt]; z = coord[++cnt];
+      fprintf(fp_out,"%5.1lf%15.10f%15.10f%15.10f\n",atomic_num[i],x,y,z);
+    }
   }
-  if (flag == 11) {
+  else if (print_flag == 6) {
+    cnt = -1;
+    for (i = 0; i < natom; ++i) {
+      x = coord[++cnt]; y = coord[++cnt]; z = coord[++cnt];
+      fprintf(fp_out,
+          "%5.1lf%15.8lf%15.10f%15.10f%15.10f\n",atomic_num[i],mass[3*i],x,y,z);
+    }
+  }
+  else if (print_flag == 7) {
+    cnt = -1;
+    for (i = 0; i < natom; ++i) {
+      x = coord[++cnt]; y = coord[++cnt]; z = coord[++cnt];
+      fprintf(fp_out,
+          "%5.1lf%15.8lf%15.10f%15.10f%15.10f\n",atomic_num[i],mass[3*i],x,y,z);
+    }
+    cnt = -1;
+    for (i = 0; i < natom; ++i) {
+      x = grad[++cnt]; y = grad[++cnt]; z = grad[++cnt];
+      fprintf(fp_out,
+              "%35.10lf%15.10f%15.10f\n",x,y,z);
+    }
+  }
+  else if (print_flag == 10) {
+    //if (new_geom_file) fprintf(fp_out,"%%%%\n");
+    fprintf(fp_out,"%% %s\n",disp_label);
+    fprintf(fp_out,"geometry%1d = (\n", disp_num);
+    cnt = -1;
+    for (i=0; i<natom; ++i) {
+      x = coord[++cnt]; y = coord[++cnt]; z = coord[++cnt];
+      fprintf(fp_out,"(%20.10f%20.10f%20.10f)\n",x,y,z);
+    }
+    fprintf(fp_out," )\n");
+  }
+  else if (print_flag == 11) {
     fprintf(fp_out,"%s\n",disp_label);
-    fprintf(fp_out,"%5d%20.10lf\n",num_atoms,energy);
-    count = -1;
-    for (i = 0; i < num_atoms; ++i) {
-      x = coord[++count]; y = coord[++count]; z = coord[++count];
+    fprintf(fp_out,"%5d%20.10lf\n",natom,energy);
+    cnt = -1;
+    for (i = 0; i < natom; ++i) {
+      x = coord[++cnt]; y = coord[++cnt]; z = coord[++cnt];
       fprintf(fp_out,
 	      "%20.10lf%20.10lf%20.10lf%20.10lf\n",atomic_num[i],x,y,z);
     }
-    count = -1;
-    for (i = 0; i < num_atoms; ++i) {
-      x = grad[++count]; y = grad[++count]; z = grad[++count];
+    cnt = -1;
+    for (i = 0; i < natom; ++i) {
+      x = grad[++cnt]; y = grad[++cnt]; z = grad[++cnt];
       fprintf(fp_out,"%40.10lf%20.10lf%20.10lf\n",x,y,z);
     }
   }
-  if (flag == 30) {
+  else if (print_flag == 32) {
 
     fprintf(outfile,"\nGeometry written to chkpt\n");
-    fflush(outfile);
-
-    chkpt_init();
-
-    int j;
-    double **geom;
-    geom = block_matrix(num_atoms,3);
-    for (i=0; i<num_atoms; ++i) {
-      for (j=0; j<3; ++j)
-	geom[i][j] = coord[3*i+j];
-    }
-    chkpt_wt_geom(geom);
+    chkpt_init(PSIO_OPEN_OLD);
+    chkpt_wt_fgeom(&fcoord);
     chkpt_close();
-
+/*
+    double **geom;
+    geom = block_matrix(optinfo.natom,3);
+    for (i=0; i<optinfo.natom; ++i)
+      for (j=0; j<3; ++j)
+        geom[i][j] = coord[3*i+j];
+    chkpt_wt_geom(geom);
     free_block(geom);
-  }
 
+    geom = block_matrix(optinfo.nallatom,3);
+    for (i=0; i<optinfo.nallatom; ++i)
+      for (j=0; j<3; ++j)
+        geom[i][j] = fcoord[3*i+j];
+    chkpt_wt_fgeom(geom);
+    free_block(geom);
+*/
+  }
   return;
 }
 

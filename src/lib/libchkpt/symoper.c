@@ -3,6 +3,7 @@
   \ingroup (CHKPT)
 */
 
+#include <stdlib.h>
 #include "chkpt.h"
 #include <psifiles.h>
 #include <libpsio/psio.h>
@@ -22,12 +23,13 @@ int *chkpt_rd_symoper(void)
 {
   int *symoper;
   int nirreps;
+  char *key;
 
   nirreps = chkpt_rd_nirreps();
   symoper = init_int_array(nirreps);
-
-  psio_read_entry(PSIF_CHKPT, "::Cotton -> local map", (char *) symoper, 
-                  nirreps*sizeof(int));
+  key = chkpt_build_keyword("Cotton -> local map");
+  psio_read_entry(PSIF_CHKPT, key, (char *) symoper, nirreps*sizeof(int));
+  free(key);
 
   return symoper;
 }
@@ -48,9 +50,11 @@ int *chkpt_rd_symoper(void)
 void chkpt_wt_symoper(int *symoper)
 {
   int nirreps;
+  char *key;
 
   nirreps = chkpt_rd_nirreps();
 
-  psio_write_entry(PSIF_CHKPT, "::Cotton -> local map", (char *) symoper, 
-                   nirreps*sizeof(int));
+  key = chkpt_build_keyword("Cotton -> local map");
+  psio_write_entry(PSIF_CHKPT, key, (char *) symoper, nirreps*sizeof(int));
+  free(key);
 }

@@ -28,12 +28,15 @@
 
 double **chkpt_rd_rref(void)
 {
+  char *key;
   double **Rref;
 
   Rref = block_matrix(3,3);
 
-  psio_read_entry(PSIF_CHKPT, "::Transmat to reference frame", 
-                  (char *) Rref[0], sizeof(double)*9);
+  key = chkpt_build_keyword("Transmat to reference frame");
+
+  psio_read_entry(PSIF_CHKPT, key, (char *) Rref[0], sizeof(double)*9);
+  free(key);
 
   return Rref;
 }
@@ -58,6 +61,8 @@ double **chkpt_rd_rref(void)
 
 void chkpt_wt_rref(double **Rref)
 {
-  psio_write_entry(PSIF_CHKPT, "::Transmat to reference frame", 
-                   (char *) Rref[0], sizeof(double)*9);
+  char *key;
+  key = chkpt_build_keyword("Transmat to reference frame");
+  psio_write_entry(PSIF_CHKPT, key, (char *) Rref[0], sizeof(double)*9);
+  free(key);
 }

@@ -16,8 +16,10 @@
 extern "C" {
    #include <stdlib.h>
    #include <stdio.h>
+   #include <psifiles.h>
    #include <libciomr/libciomr.h>
    #include <libqt/qt.h>
+   #include <libqt/slaterd.h>
    #include <physconst.h>
    #include "structs.h"
    #include "ci_tol.h"
@@ -58,7 +60,6 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
    int *lse_do_arr, lse_do = 0, collapse_num = 0, iter_tmp = 0;
    int form_M = 0, tmpval;
    int last_lse_collapse_num = -Parameters.lse_collapse;
-   int restart_index = 0;
    double *x, *y, tmpx, tmpy;
    double lse_tolerance, *renorm_c, *E_est, ovlpmax=0.0;
    double cknorm, tvalmatt=0.0, tmp; /* Add by CDS for debugging purposes */
@@ -125,8 +126,17 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
         CIblks.first_iablk, CIblks.last_iablk, CIblks.decode);
      }
 
- /* write offset arrays off to disk */
+   /* set up the vector pointers/info */
+   if (Cvec.read_new_first_buf() == -1) Cvec.write_new_first_buf();
+   if (Sigma.read_new_first_buf() == -1) Sigma.write_new_first_buf();
+   /* should not need to have first_buf info in D file, it never changes
+    * unless it is only a logical D file, which isn't controlled here
+    * anyway. */
+   if (Cvec.read_num_vecs() == -1) Cvec.write_num_vecs(0);
+   if (Sigma.read_num_vecs() == -1) Sigma.write_num_vecs(0);
+   if (Dvec.read_num_vecs() == -1) Dvec.write_num_vecs(0);
 
+   /* allocate memory */
    Dvec.h0block_buf_init();
    buffer1 = *(Hd.blockptr(0)); 
    buffer2 = Hd.buf_malloc();
@@ -191,8 +201,9 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
 
    if (Parameters.nodfile == FALSE) {
      if (Parameters.guess_vector == PARM_GUESS_VEC_DFILE && 
-         (flen(Parameters.first_d_tmp_unit) == 0)) {
-       fprintf(outfile, "Zero-length d file.  Attempting ");
+         (i = Dvec.read_num_vecs()) != nroots) {
+       fprintf(outfile, "D file contains %d not %d vectors.  Attempting ",
+               i, nroots);
        if (Parameters.h0blocksize == 0) {
          Parameters.guess_vector == PARM_GUESS_VEC_UNIT;
          fprintf(outfile, "unit vector guess.\n");
@@ -205,28 +216,59 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
    }
 
    if (Parameters.restart) {  /* restart option! */
-      L = Parameters.restart_vecs;
+      // L = Parameters.restart_vecs;
+      L = Cvec.read_num_vecs();
+      i = Sigma.read_num_vecs();
+      if (i != L) {
+        fprintf(outfile, "%d C vectors and %d Sigma vectors.\n", i, L);
+	if (i < L) {
+          L = i;
+	  Cvec.write_num_vecs(L);
+        }
+	fprintf(outfile, "Using %d vectors \n", L);
+      }
+      if (L < nroots) {
+        fprintf(outfile, "\nRestart failed... %d vectors for %d roots\n", 
+                L, nroots);
+        exit(0);
+      }
+        
       fprintf(outfile, "\nAttempting Restart with %d vectors\n", L);
 
    /* open detci.dat and write file_offset and file_number array out to 
       detci.dat */
 
-     /*
-     */
-      Cvec.reset_detfile(CI_VEC);
-      Cvec2.reset_detfile(CI_VEC);
-      Sigma.reset_detfile(SIGMA_VEC);
-      Sigma2.reset_detfile(SIGMA_VEC); 
+      //Cvec.reset_detfile(CI_VEC);
+      //Cvec2.reset_detfile(CI_VEC);
+      i = Cvec.read_new_first_buf();
+      Cvec.set_new_first_buf(i);
+      Cvec2.set_new_first_buf(i);
+      //Sigma.reset_detfile(SIGMA_VEC);
+      //Sigma2.reset_detfile(SIGMA_VEC); 
+      j = Sigma.read_new_first_buf();
+      Sigma.set_new_first_buf(j);
+      Sigma2.set_new_first_buf(j);
+      /* the first buffer of D file should not change unless there
+       * is only a logical D file not a physical D file */
       if (Parameters.nodfile) {
-        Dvec.reset_detfile(CI_VEC);
-        Dvec2.reset_detfile(SIGMA_VEC);
-      /*
+        //Dvec.reset_detfile(CI_VEC);
+	Dvec.set_new_first_buf(i);
+        //Dvec2.reset_detfile(SIGMA_VEC);
+        Dvec2.set_new_first_buf(j);
+	/* I hope I don't double-reset anything w/ next 2 lines */
         Dvec.restart_reord_fp(maxnvect-1);
         Dvec2.restart_reord_fp(maxnvect-1);
-      */
         }
+
+      // Temporary 
+      Cvec.civect_psio_debug();
+      Sigma.civect_psio_debug();
+      Dvec.civect_psio_debug();
+      fflush(outfile);
+
       Cvec.buf_lock(buffer1);
       Sigma.buf_lock(buffer2);    
+
       for (i=0; i<L; i++) {
          Sigma.read(i, 0);
          if (print_lvl > 4) { 
@@ -263,6 +305,7 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
          exit(0);
          }
       
+
       /* gather C and Sigma */
       Cvec.buf_lock(buffer1);
       Dvec.buf_lock(buffer2);
@@ -307,26 +350,34 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
      fprintf(outfile, "Attempting to use %d previous converged vectors\n", 
         nroots);
      if (Parameters.nodfile) {
-       Cvec.reset_detfile(CI_VEC);
-       Cvec2.reset_detfile(CI_VEC);
-       Sigma.reset_detfile(SIGMA_VEC);
-       Sigma2.reset_detfile(SIGMA_VEC);
-       Dvec.reset_detfile(CI_VEC);
-       Dvec2.reset_detfile(SIGMA_VEC);
-     /*
+       i = Cvec.read_new_first_buf();
+       Cvec.set_new_first_buf(i);
+       Cvec2.set_new_first_buf(i);
+       j = Sigma.read_new_first_buf();
+       Sigma.set_new_first_buf(j);
+       Sigma2.set_new_first_buf(j);
+       /* the first buffer of D file should not change unless there
+        * is only a logical D file not a physical D file */
+       Dvec.set_new_first_buf(i);
+       Dvec2.set_new_first_buf(j);
        Dvec.restart_reord_fp(maxnvect-1);
        Dvec2.restart_reord_fp(maxnvect-1);
-     */
+     }
+     Cvec.buf_lock(buffer1);
+     Dvec.buf_lock(buffer2);
+     if ((i = Dvec.read_num_vecs()) < nroots) {
+       fprintf(outfile, "Only %d vectors available in D file for %d roots!\n",
+               i, nroots); 
+       exit(0);
+     }
+     
+
+     for (i=0; i<nroots; i++) {
+       Cvec.copy(Dvec, i, i);
        }
-     else {
-       Cvec.buf_lock(buffer1);
-       Dvec.buf_lock(buffer2);
-       for (i=0; i<nroots; i++) {
-         Cvec.copy(Dvec, i, i);
-         }
-       Cvec.buf_unlock();
-       Dvec.buf_unlock();
-       }
+     Cvec.buf_unlock();
+     Dvec.buf_unlock();
+
      k = nroots;
    }
 
@@ -338,6 +389,7 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
          &(CalcInfo.ref_bet_list), &(CalcInfo.ref_bet_rel), H0block.blknum, 
          &tval);
       Cvec.buf_unlock();
+      Cvec.write_num_vecs(1);
       Sigma.set_zero_blocks_all();
       k = 1;
       } 
@@ -386,6 +438,7 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
          k++;
          }
       Cvec.buf_unlock();
+      Cvec.write_num_vecs(k);
       Sigma.set_zero_blocks_all();
 
       free(sm_evals);
@@ -400,8 +453,8 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
    Cvec.buf_unlock();
  
    /* write file_offset and file_number array out to detci.dat */
-   Cvec.write_detfile(CI_VEC);
-   Sigma.write_detfile(SIGMA_VEC);
+   //Cvec.write_detfile(CI_VEC);
+   //Sigma.write_detfile(SIGMA_VEC);
    if (Parameters.print_lvl > 1) 
      fprintf(outfile,"Restart info written.\n");
    fflush(outfile);
@@ -451,20 +504,19 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
            Sigma.buf_lock(buffer2);
            Sigma.read(i,0);
            }
-        /*
-         */
 
          if (print_lvl > 3) { /* and this as well */
             fprintf(outfile, "H * b[%d] = \n", i);
             Sigma.print(outfile);
             }
 
-           for (j=0; j<L; j++) {
-              Cvec.read(j, 0);
-              G[j][i] = G[i][j] = Cvec * Sigma;
-              /* MLL */
-              } 
-           }
+         for (j=0; j<L; j++) {
+            Cvec.read(j, 0);
+            G[j][i] = G[i][j] = Cvec * Sigma;
+            } 
+
+         }
+       Sigma.write_num_vecs(L);
        Llast = L;
           
 
@@ -685,12 +737,17 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
 
         Cvec.restart_reord_fp(maxnvect-L2);
         Cvec2.restart_reord_fp(maxnvect-L2);
+
+	Cvec.write_new_first_buf();
         Sigma.restart_reord_fp(maxnvect-L3);
         Sigma2.restart_reord_fp(maxnvect-L3); 
+	Sigma.write_new_first_buf();
         Cvec.set_nvect(L2);
         Cvec2.set_nvect(L2);
         Sigma.set_nvect(L3);
         Sigma2.set_nvect(L3); 
+	Cvec.write_num_vecs(L2);
+	Sigma.write_num_vecs(L3);
         L = L2;
         Llast = L;
         iter2 = 0;  Lvec[0] = L;
@@ -699,17 +756,19 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
         #endif
 
         /* write file_offset and file_number array out to detci.dat */
+	/*
         Cvec.write_detfile(CI_VEC);
         Sigma.write_detfile(SIGMA_VEC);
         if (Parameters.print_lvl > 1) 
           fprintf(outfile,"Restart info written.\n");
         fflush(outfile);
+	*/
 
         if (Parameters.nodfile) {
           Dvec.set_nvect(L2);
           Dvec2.set_nvect(L3); 
-          Dvec.reset_detfile(CI_VEC);
-          Dvec2.reset_detfile(SIGMA_VEC);
+          //Dvec.reset_detfile(CI_VEC);
+          //Dvec2.reset_detfile(SIGMA_VEC);
           Dvec.restart_reord_fp(maxnvect-1);
           Dvec2.restart_reord_fp(maxnvect-1);
           }
@@ -870,7 +929,7 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
          fflush(outfile);
          Cvec.buf_lock(buffer1);
          Dvec.buf_lock(buffer2);
-         if (Parameters.nodfile) Dvec.reset_detfile(CI_VEC);
+         //if (Parameters.nodfile) Dvec.reset_detfile(CI_VEC);
          for (i=0; i<nroots; i++) {
             evals[i] = lambda[iter2][i];
             tval = alpha[iter2][0][i];
@@ -898,6 +957,7 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
                   mi_coeff, AlphaG, BetaG, alplist, betlist, outfile);
                fprintf(outfile, "\n");
                }
+            Dvec.write_num_vecs(i+1);  // only if nodfile ?
             }      
          Cvec.buf_unlock();
          Dvec.buf_unlock();
@@ -973,6 +1033,7 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
          } /* end loop over roots for new expansion vectors */
 
         Dvec.buf_unlock();
+	Cvec.write_num_vecs(L);
 
         /* MLL Debug 1-8-98 If CI vector is converged too tight the
         ** norm of the correction vector i.e. the residual vector 
@@ -1017,11 +1078,74 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
         iter2++;
       } /* end iteration */
 
+   /* Dump the vector to a PSIO file
+      Added by Edward valeev (August 2002) */
+   StringSet alphastrings, betastrings;
+   SlaterDetSet dets;
+   SlaterDetVector vec;
+
+   stringset_init(&alphastrings,AlphaG->num_str,AlphaG->num_el,CalcInfo.num_fzc_orbs);
+   int list_gr = 0;
+   int irrep;
+   for(irrep=0; irrep<AlphaG->nirreps; irrep++) {
+     for(int gr=0; gr<AlphaG->subgr_per_irrep; gr++,list_gr++) {
+       int nlists_per_gr = AlphaG->sg[irrep][gr].num_strings;
+       int offset = AlphaG->sg[irrep][gr].offset;
+       for(int l=0; l<nlists_per_gr; l++)
+	 stringset_add(&alphastrings,l+offset,alplist[list_gr][l].occs);
+     }
+   }
+   
+   stringset_init(&betastrings,BetaG->num_str,BetaG->num_el,CalcInfo.num_fzc_orbs);
+   list_gr = 0;
+   for(irrep=0; irrep<BetaG->nirreps; irrep++) {
+     for(int gr=0; gr<BetaG->subgr_per_irrep; gr++,list_gr++) {
+       int nlists_per_gr = BetaG->sg[irrep][gr].num_strings;
+       int offset = BetaG->sg[irrep][gr].offset;
+       for(int l=0; l<nlists_per_gr; l++)
+	 stringset_add(&betastrings,l+offset,betlist[list_gr][l].occs);
+     }
+   }
+   
+   int ii;
+   int size = CIblks.vectlen;
+   int Iarel, Ialist, Ibrel, Iblist;
+   slaterdetset_init(&dets,size,&alphastrings,&betastrings);
+   for (ii=0; ii<size; ii++) {
+     Dvec.det2strings(ii, &Ialist, &Iarel, &Iblist, &Ibrel);
+     irrep = Ialist/AlphaG->subgr_per_irrep;
+     int gr = Ialist%AlphaG->subgr_per_irrep;
+     int Ia = Iarel + AlphaG->sg[irrep][gr].offset;
+     irrep = Iblist/BetaG->subgr_per_irrep;
+     gr = Iblist%BetaG->subgr_per_irrep;
+     int Ib = Ibrel + BetaG->sg[irrep][gr].offset;
+     slaterdetset_add(&dets, ii, Ia, Ib);
+   }
+
+   Dvec.buf_lock(buffer1);
+   for(ii=0; ii<size; ii++)
+     buffer1[ii] = 0.0;
+   Dvec.read(0,0);
+   slaterdetvector_init(&vec, &dets);
+   slaterdetvector_set(&vec, buffer1);
+   slaterdetvector_write(PSIF_CIVECT,"CI vector",&vec);
+   Dvec.buf_unlock();
+   
+   slaterdetvector_delete(&vec);
+   slaterdetset_delete(&dets);
+   stringset_delete(&alphastrings);
+   stringset_delete(&betastrings);
+
+
    /* Compute S^2 */
    if (Parameters.calc_ssq && Parameters.icore==1) {
      for (k=0; k<nroots; k++) 
        Dvec.calc_ssq(buffer1, buffer2, alplist, betlist, k); 
    }
+
+   Cvec.close_io_files(1);
+   Sigma.close_io_files(1);
+   if (Parameters.nodfile == FALSE) Dvec.close_io_files(1);
 
    free(mi_iac); free(mi_ibc); free(mi_iaidx); free(mi_ibidx); free(mi_coeff);
    free(dvecnorm);  free(lastroot);  free(root_converged);

@@ -1,6 +1,6 @@
 ******************************************************************************
-tstart called on tool.chemistry.gatech.edu
-Mon Jun 10 11:42:55 2002
+tstart called on arcturus.chem.vt.edu
+Sun Nov 24 12:00:24 2002
 
                                 --------------
                                   WELCOME TO
@@ -68,8 +68,6 @@ Mon Jun 10 11:42:55 2002
        )
 
 
-    Wrote 10864 bytes to FILE30
-
   -BASIS SET INFORMATION:
     Total number of shells = 12
     Number of primitives   = 20
@@ -129,15 +127,15 @@ Mon Jun 10 11:42:55 2002
 
 
 ******************************************************************************
-tstop called on tool.chemistry.gatech.edu
-Mon Jun 10 11:42:56 2002
+tstop called on arcturus.chem.vt.edu
+Sun Nov 24 12:00:24 2002
 
-user time   =       0.13 seconds
-system time =       0.03 seconds
-total time  =          1 seconds
+user time   =       0.15 seconds
+system time =       0.04 seconds
+total time  =          0 seconds
 ******************************************************************************
-tstart called on tool.chemistry.gatech.edu
-Mon Jun 10 11:42:58 2002
+tstart called on arcturus.chem.vt.edu
+Sun Nov 24 12:00:26 2002
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -165,15 +163,15 @@ Mon Jun 10 11:42:58 2002
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on tool.chemistry.gatech.edu
-Mon Jun 10 11:42:58 2002
+tstop called on arcturus.chem.vt.edu
+Sun Nov 24 12:00:26 2002
 
-user time   =       0.06 seconds
+user time   =       0.08 seconds
 system time =       0.00 seconds
 total time  =          0 seconds
 ******************************************************************************
-tstart called on tool.chemistry.gatech.edu
-Mon Jun 10 11:42:59 2002
+tstart called on arcturus.chem.vt.edu
+Sun Nov 24 12:00:26 2002
 
 
              ------------------------------------------
@@ -228,17 +226,17 @@ Mon Jun 10 11:42:59 2002
     5       -76.0233222761    2.951459e-02    2.254976e-03    1.178402e-01
     6       -76.0235937028    2.714267e-04    2.542805e-04    8.060517e-03
     7       -76.0236147069    2.100411e-05    8.005625e-05    2.772339e-03
-    8       -76.0236149937    2.867866e-07    1.160884e-05    1.849207e-04
-    9       -76.0236150182    2.450265e-08    3.904615e-06    6.507607e-05
-   10       -76.0236150193    1.044896e-09    7.691761e-07    1.458648e-05
-   11       -76.0236150193    2.373213e-11    7.100890e-08    2.131783e-06
-   12       -76.0236150193    8.540724e-12    7.536086e-08    1.062463e-06
-   13       -76.0236150193    2.700062e-13    1.604488e-08    1.710866e-07
+    8       -76.0236149937    2.867865e-07    1.160884e-05    1.849207e-04
+    9       -76.0236150182    2.450268e-08    3.904615e-06    6.507607e-05
+   10       -76.0236150193    1.044853e-09    7.691761e-07    1.458648e-05
+   11       -76.0236150193    2.374634e-11    7.100890e-08    2.131783e-06
+   12       -76.0236150193    8.498091e-12    7.536086e-08    1.062463e-06
+   13       -76.0236150193    3.410605e-13    1.604488e-08    1.710866e-07
    14       -76.0236150193    0.000000e+00    1.133042e-09    1.910489e-08
-   15       -76.0236150193    0.000000e+00    1.661233e-10    2.120220e-09
-   16       -76.0236150193   -1.421085e-14    1.119058e-11    3.516197e-10
-   17       -76.0236150193    0.000000e+00    2.160111e-12    5.140885e-11
-   18       -76.0236150193    2.842171e-14    6.694720e-13    1.585954e-11
+   15       -76.0236150193   -7.105427e-14    1.661229e-10    2.120217e-09
+   16       -76.0236150193    5.684342e-14    1.119060e-11    3.516189e-10
+   17       -76.0236150193   -2.842171e-14    2.159994e-12    5.140945e-11
+   18       -76.0236150193    2.842171e-14    6.696436e-13    1.585734e-11
 
 Orbital energies (a.u.):
 
@@ -261,19 +259,113 @@ Orbital energies (a.u.):
         kinetic energy     =      75.864589306057
         nuc. attr. energy  =    -199.203693733306
         elec. rep. energy  =      47.315489407938
-        potential energy   =    -151.888204325369
+        potential energy   =    -151.888204325368
         virial theorem     =       1.997908206375
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on tool.chemistry.gatech.edu
-Mon Jun 10 11:42:59 2002
+tstop called on arcturus.chem.vt.edu
+Sun Nov 24 12:00:26 2002
 
-user time   =       0.01 seconds
-system time =       0.01 seconds
+user time   =       0.04 seconds
+system time =       0.00 seconds
 total time  =          0 seconds
 ******************************************************************************
-tstart called on tool.chemistry.gatech.edu
-Mon Jun 10 11:43:04 2002
+tstart called on arcturus.chem.vt.edu
+Sun Nov 24 12:00:26 2002
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  SCF
+	Reference orbitals     =  RHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            = Yes
+	Delete Restricted Docc =  No
+	Do All TEI             = No
+	Memory (Mbytes)        =   20.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  Yes
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 25
+	Number of MOs    = 25
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   12	   12	    0	    3	    0	    9	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    1	    0	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         9.3294555421
+	Total SCF Energy            =       -76.0236150193
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on arcturus.chem.vt.edu
+Sun Nov 24 12:00:26 2002
+
+user time   =       0.08 seconds
+system time =       0.25 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on arcturus.chem.vt.edu
+Sun Nov 24 12:00:26 2002
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -314,143 +406,106 @@ Mon Jun 10 11:43:04 2002
     9   0.0000000  -0.1125535  -0.1645418   0.0000000  -0.0521726   0.0304693   0.0000000   0.1647260   0.1340725
 
 ******************************************************************************
-tstop called on tool.chemistry.gatech.edu
-Mon Jun 10 11:43:06 2002
+tstop called on arcturus.chem.vt.edu
+Sun Nov 24 12:00:30 2002
 
-user time   =       2.28 seconds
-system time =       0.01 seconds
-total time  =          2 seconds
+user time   =       3.09 seconds
+system time =       0.06 seconds
+total time  =          4 seconds
 ******************************************************************************
-tstart called on tool.chemistry.gatech.edu
-Mon Jun 10 11:43:07 2002
+tstart called on arcturus.chem.vt.edu
+Sun Nov 24 12:00:30 2002
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
 
 
-	**************************************************
-	* TRANSQT:  Program to transform integrals from  *
-	*           the SO basis to the MO basis.        *
-	*                                                *
-	*            Daniel, David, & Justin             *
-	*                   Sept  1995                   *
-	**************************************************
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
 
-	Input Parameters:
-	-----------------
-	Wavefunction           =  SCF
-	Reference orbitals     =  RHF
-	Backtrans              =  No
-	Print MOs              =  No
-	Freeze Core            = Yes
-	Do All TEI             = No
-	Memory (Mbytes)        =   20.0
-	Max Buckets            =  199
-	First Tmp File         =  150
-	Presort File           =  41
-	Source TEI File        =  33
-	Opdm In File           =  73
-	Opdm Out File          =  76
-	Lag In File            =  75
-	Keep Presort           =  No
-	J File                 =  91
-	Keep J                 =  No
-	M File                 =  72
-	Bare OEI file          =  35
-	Frozen Core OEI file   =  35
-	Sorted TEI file        =  72
-	Delete TEI source file =  Yes
-	Add TPDM Ref Part      =  No
-	Do Bare OEI tranform   =  Yes
-	Do FZC  OEI tranform   =  Yes
-	Tolerance              =  1.0e-14
-	Print Level            =  1
-	Print TE Ints          =  No
-	Print OE Ints          =  No
-	Print Sorted TE Ints   =  No
-	Print Sorted OE Ints   =  No
-	Reorder MOs            =  No
-	Check C Orthonormality =  No
-	QRHF orbitals          =  No
-	IVO orbitals           =  No
-	Pitzer                 =  Yes
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O                                                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
 
-	File30 Parameters:
-	------------------
-	Number of irreps = 4
-	Number of SOs    = 25
-	Number of MOs    = 25
-
-	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
-	-----	-----	-----	------	------	------	------	------
-	 A1 	   12	   12	    0	    3	    0	    9	    0
-	 A2 	   2	   2	    0	    0	    0	    2	    0
-	 B1 	   4	   4	    0	    1	    0	    3	    0
-	 B2 	   7	   7	    0	    1	    0	    6	    0
-
-	Nuclear Repulsion Energy    =         9.3294555421
-	Total SCF Energy            =       -76.0236150193
-
-	Reading one-electron integrals...done.
-
-	Pre-sorting two-electron ints...
-
-
-	Frozen core energy =    0.000000000000000
-	Transforming two-electron ints...
-
-	Sorting half-transformed integrals...
-	Finished half-transform...
-	Working on second half...
-
-	Transformation finished.
-	Two-electron integrals written to file72.
-
-	Transforming one-electron integrals...
-	One-electron integrals written to file 35.
-	Frozen-core operator written to file 35.
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
 ******************************************************************************
-tstop called on tool.chemistry.gatech.edu
-Mon Jun 10 11:43:07 2002
+tstop called on arcturus.chem.vt.edu
+Sun Nov 24 12:00:30 2002
 
 user time   =       0.08 seconds
-system time =       0.22 seconds
+system time =       0.04 seconds
 total time  =          0 seconds
 ******************************************************************************
-tstart called on tool.chemistry.gatech.edu
-Mon Jun 10 11:43:11 2002
+tstart called on arcturus.chem.vt.edu
+Sun Nov 24 12:00:30 2002
 
 			**************************
 			*                        *
 			*          CPHF          *
 			*                        *
 			**************************
-SCF Molecular Hessian:
+
+	Hartree-Fock Electric Dipole Moments:
+	------------------------------------
+	mu[0] =   0.000000 (e a0) =   0.000000 (debye)
+	mu[1] =  -0.000000 (e a0) =  -0.000000 (debye)
+	mu[2] =  -0.844926 (e a0) =  -2.147591 (debye)
+
+	Total dipole moment (debye) =         2.1475914820
+
+	Hartree-Fock Electric Polarizability Tensor [(e^2 a0^2)/E_h]:
+	---------------------------------------------------------------
+
+           1           2           3
+
+    1   2.9314408   0.0000000   0.0000000
+    2   0.0000000   6.7675386  -0.0000000
+    3   0.0000000  -0.0000000   4.9028411
+
+	Dipole Derivatives W.R.T. Cartesian Coordinates (debye/A):
 
            1           2           3           4           5           6           7           8           9
 
-    1  -0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000
-    2   0.0000000   0.8186878  -0.0000000   0.0000000  -0.4093439   0.3086377   0.0000000  -0.4093439  -0.3086377
-    3   0.0000000  -0.0000000   0.5336871   0.0000000   0.2391116  -0.2668435   0.0000000  -0.2391116  -0.2668435
-    4   0.0000000   0.0000000   0.0000000  -0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000
-    5   0.0000000  -0.4093439   0.2391116   0.0000000   0.4422013  -0.2738747   0.0000000  -0.0328573   0.0347631
-    6   0.0000000   0.3086377  -0.2668435   0.0000000  -0.2738747   0.2497753   0.0000000  -0.0347631   0.0170682
-    7   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000  -0.0000000   0.0000000   0.0000000
-    8   0.0000000  -0.4093439  -0.2391116   0.0000000  -0.0328573  -0.0347631   0.0000000   0.4422013   0.2738747
-    9   0.0000000  -0.3086377  -0.2668435   0.0000000   0.0347631   0.0170682   0.0000000   0.2738747   0.2497753
+    1  -3.7826298   0.0000000   0.0000000   1.8913149   0.0000000   0.0000000   1.8913149   0.0000000   0.0000000
+    2   0.0000000  -2.5456390  -0.0000000   0.0000000   1.2728195   0.4663341   0.0000000   1.2728195  -0.4663341
+    3   0.0000000   0.0000000  -2.1960298   0.0000000   0.2898626   1.0980149   0.0000000  -0.2898626   1.0980149
 
-	Harmonic Vibrational Frequencies (cm-1):
-	----------------------------------------
-	    8            4264.592
-	    7            4147.574
-	    6            1769.626
-	    5               0.001
-	    4               0.001
-	    3               0.001i
-	    2               0.307i
-	    1               0.406i
-	    0               0.448i
+	Dipole Derivatives W.R.T Normal Coordinates (debye/A-amu+1/2):
+
+           1           2           3           4           5           6           7           8           9
+
+    1  -0.0000015   0.0000000   2.8272160   0.0000145  -0.0000000   0.0000000  -0.0000000  -0.0000000   0.0000000
+    2  -0.0000000   1.6375632  -0.0000000  -0.0000000  -0.0000018  -0.0000003  -0.0000000  -0.0000000   1.1705010
+    3  -0.0000000   0.0000000  -0.0000000   0.0000000   0.0000000  -0.0000000   1.5732960   0.6209125   0.0000000
+
+	        Harmonic Frequency   Infrared Intensity
+	              (cm-1)               (km/mol)    
+	-----------------------------------------------
+	    8            4264.590           57.8938
+	    7            4147.572           16.2910
+	    6            1769.625          104.5946
+	    5               0.001i           0.0000
+	    4               0.001i           0.0000
+	    3               0.001i           0.0000
+	    2               0.307i         337.7584
+	    1               0.406i         113.3142
+	    0               0.448i           0.0000
+	-----------------------------------------------
 ******************************************************************************
-tstop called on tool.chemistry.gatech.edu
-Mon Jun 10 11:43:11 2002
+tstop called on arcturus.chem.vt.edu
+Sun Nov 24 12:00:30 2002
 
-user time   =       0.13 seconds
-system time =       0.02 seconds
+user time   =       0.17 seconds
+system time =       0.05 seconds
 total time  =          0 seconds

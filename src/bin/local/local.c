@@ -3,7 +3,6 @@
 #include <libciomr/libciomr.h>
 #include <libint/libint.h>
 #include <libchkpt/chkpt.h>
-#include <libfile30/file30.h>
 #include <libiwl/iwl.h>
 #include <psifiles.h>
 #include <libqt/qt.h>
@@ -33,7 +32,7 @@ int main(int argc, char *argv[])
   init_io();
   title();
 
-  chkpt_init();
+  chkpt_init(PSIO_OPEN_OLD);
   nao = chkpt_rd_nao();
   nmo = chkpt_rd_nmo();
   nso = chkpt_rd_nso();
@@ -291,13 +290,9 @@ int main(int argc, char *argv[])
   */
 
   /* Write the new MO's to chkpt */
-  chkpt_init();
+  chkpt_init(PSIO_OPEN_OLD);
   chkpt_wt_scf(C);
   chkpt_close();
-
-  file30_init();
-  file30_wt_scf(C);
-  file30_close();
 
   free_block(C);
   free(evals);

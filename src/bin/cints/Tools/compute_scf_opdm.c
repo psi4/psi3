@@ -1,7 +1,11 @@
 #include<stdio.h>
 #include<string.h>
 #include<libciomr/libciomr.h>
+#if USE_LIBCHKPT
+#include<libchkpt/chkpt.h>
+#else
 #include<libfile30/file30.h>
+#endif
 #include<math.h>
 #include<libint/libint.h>
 
@@ -213,7 +217,11 @@ void compute_scf_opdm()
   }
   else if (UserOptions.reftype == rohf || UserOptions.reftype == twocon) {
     /*--- In a restricted open-shell case just transform the lagrangian to AO basis ---*/
+#if USE_LIBCHKPT
+    mo_lagr = chkpt_rd_lagr();
+#else
     mo_lagr = file30_rd_lagr();
+#endif
     for(i=0;i<BasisSet.num_ao;i++)
       for(j=0;j<=i;j++) {
 	tmp = 0.0;

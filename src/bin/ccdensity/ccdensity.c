@@ -56,10 +56,12 @@ int main(int argc, char *argv[])
   get_frozen();
   get_params();
 
+  /*
   if(moinfo.nfzc || moinfo.nfzv) {
     fprintf(outfile, "\n\tGradients involving frozen orbitals not yet available.\n");
     exit(2);
   }
+  */
 
   cachefiles = init_int_array(PSIO_MAXUNIT);
 

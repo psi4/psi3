@@ -54,6 +54,9 @@ Revised for \PSIthree\ by Edward F. Valeev \\
 \input{history}
 \input{Prog/introduction}
 
+\section{Compilation and Installation of \PSIthree}\label{installation}
+\input{Prog/install}
+
 \section{Fundamental \PSIthree\ Functions}\label{Fundamental_PSI}
 \input{Prog/fundamental_psi}
 
@@ -62,9 +65,6 @@ Revised for \PSIthree\ by Edward F. Valeev \\
 
 \section{\PSIthree\ Fortran Code}\label{PSI_Fortran}
 \input{Prog/fortran}
-
-\section{CVS Revision Control and \PSIthree\ Compilation}\label{CVS}
-\input{Prog/cvs}
 
 \section{Programming Style}\label{Style}
 \input{Prog/style}

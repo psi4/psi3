@@ -1,33 +1,32 @@
-/*
-** This file contains functions which provide information
+/*** This file contains functions which provide information
 **  from the group character tables as given in Cotton 
-**             Rollin King       1996
 */
 
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h>
-#define FIRST_C_FILE 1
-#define EXTERN
-#include "opt_c.h"
 
+#define EXTERN
+#define C_CODE
+#define C_EXTERN
+#include "opt.h"
+#undef C_EXTERN
+#undef C_CODE
+#undef EXTERN
 
 int **get_char_table(char *ptgrp);    /* returns the character table */
-int get_num_irreps(char *ptgrp);      /* "     " number of irreps */
+int get_nirreps(char *ptgrp);      /* "     " number of irreps */
 char **get_irrep_labels(char *ptgrp); /* "     " number of symmetry operations */
 char **get_symm_ops(char *ptgrp);     /* "     " symm operation labels */
 int *get_ops_coeffs(char *ptgrp);     /* "     " coefficients of the symmetry operations */
 int get_num_ops(char *ptgrp);         /* "     " number of operations */
 int get_num_classes(char *ptgrp);     /* "     " number of classes of operations */
-int *get_ops_in_class(char *ptgrp);
-
-
-
+int *get_ops_in_class(char *ptgrp, int nirreps);
 
 int **get_char_table(char *ptgrp) {
 
-   int num_irreps,i,j;
+   int nirreps,i,j;
    int **table;
    int count;
 
@@ -128,11 +127,11 @@ int **get_char_table(char *ptgrp) {
                            2, 1,-1,-2, 0, 0,-2,-1, 1, 2, 0, 0,
                            2,-1,-1, 2, 0, 0,-2, 1, 1,-2, 0, 0};
 
-   num_irreps = get_num_irreps(ptgrp);
+   nirreps = get_nirreps(ptgrp);
 
-   table = (int **) malloc(num_irreps*sizeof(int *));
-   for (i=0;i<num_irreps;++i)
-      table[i] = (int *) malloc(num_irreps*sizeof(int));
+   table = (int **) malloc(nirreps*sizeof(int *));
+   for (i=0;i<nirreps;++i)
+      table[i] = (int *) malloc(nirreps*sizeof(int));
 
    count = 0;
 
@@ -140,63 +139,63 @@ if (strcmp(ptgrp,"C1 ") == 0)
    table[0][0] = 1;
 
 else if ((strcmp(ptgrp,"CS ") == 0) || (strcmp(ptgrp,"CI ") == 0) || (strcmp(ptgrp,"C2 ") == 0)) {
-   for (i=0;i<num_irreps;++i)
-      for (j=0;j<num_irreps;++j)
+   for (i=0;i<nirreps;++i)
+      for (j=0;j<nirreps;++j)
          table[i][j] = CS[count++];
    }
 else if ((strcmp(ptgrp,"D2 ") == 0) || (strcmp(ptgrp,"C2V") == 0)) {
-   for (i=0;i<num_irreps;++i)
-      for (j=0;j<num_irreps;++j)
+   for (i=0;i<nirreps;++i)
+      for (j=0;j<nirreps;++j)
          table[i][j] = D2[count++];
    }
 else if (strcmp(ptgrp,"C2H") == 0) {
-   for (i=0;i<num_irreps;++i)
-      for (j=0;j<num_irreps;++j)
+   for (i=0;i<nirreps;++i)
+      for (j=0;j<nirreps;++j)
          table[i][j] = C2H[count++];
    }
 else if ((strcmp(ptgrp,"C3V") == 0) || (strcmp(ptgrp,"D3 ") == 0)) {
-   for (i=0;i<num_irreps;++i)
-      for (j=0;j<num_irreps;++j)
+   for (i=0;i<nirreps;++i)
+      for (j=0;j<nirreps;++j)
          table[i][j] = D3[count++];
    }
 else if ((strcmp(ptgrp,"C4V") == 0) || (strcmp(ptgrp,"D2D") == 0) || (strcmp(ptgrp,"D4 ") == 0)) {
-   for (i=0;i<num_irreps;++i)
-      for (j=0;j<num_irreps;++j)
+   for (i=0;i<nirreps;++i)
+      for (j=0;j<nirreps;++j)
          table[i][j] = D4[count++];
    }
 else if ((strcmp(ptgrp,"O  ") == 0) || (strcmp(ptgrp,"TD ") == 0)) {
-   for (i=0;i<num_irreps;++i)
-      for (j=0;j<num_irreps;++j)
+   for (i=0;i<nirreps;++i)
+      for (j=0;j<nirreps;++j)
          table[i][j] = TD[count++];
    }
 else if ((strcmp(ptgrp,"C6V") == 0) || (strcmp(ptgrp,"D6 ") == 0)) {
-   for (i=0;i<num_irreps;++i)
-      for (j=0;j<num_irreps;++j)
+   for (i=0;i<nirreps;++i)
+      for (j=0;j<nirreps;++j)
          table[i][j] = D6[count++];
    }
 else if ((strcmp(ptgrp,"D3D") == 0) || (strcmp(ptgrp,"D3H") == 0)) {
-   for (i=0;i<num_irreps;++i)
-      for (j=0;j<num_irreps;++j)
+   for (i=0;i<nirreps;++i)
+      for (j=0;j<nirreps;++j)
          table[i][j] = D3D[count++];
    }
 else if (strcmp(ptgrp,"D2H") == 0) {
-   for (i=0;i<num_irreps;++i)
-      for (j=0;j<num_irreps;++j)
+   for (i=0;i<nirreps;++i)
+      for (j=0;j<nirreps;++j)
          table[i][j] = D2H[count++];
    }
 else if (strcmp(ptgrp,"D4H") == 0) {
-   for (i=0;i<num_irreps;++i)
-      for (j=0;j<num_irreps;++j)
+   for (i=0;i<nirreps;++i)
+      for (j=0;j<nirreps;++j)
          table[i][j] = D4H[count++];
    }
 else if (strcmp(ptgrp,"OH ") == 0) {
-   for (i=0;i<num_irreps;++i)
-      for (j=0;j<num_irreps;++j)
+   for (i=0;i<nirreps;++i)
+      for (j=0;j<nirreps;++j)
          table[i][j] = OH[count++];
    }
 else if (strcmp(ptgrp,"D6H") == 0) {
-   for (i=0;i<num_irreps;++i)
-      for (j=0;j<num_irreps;++j)
+   for (i=0;i<nirreps;++i)
+      for (j=0;j<nirreps;++j)
          table[i][j] = D6H[count++];
    }
 else
@@ -210,7 +209,7 @@ else
 
 
 
-int get_num_irreps(char *ptgrp) {
+int get_nirreps(char *ptgrp) {
 
 if (strcmp(ptgrp,"C1 ") == 0)
    return 1;
@@ -252,7 +251,7 @@ else
 
 char **get_symm_ops(char *ptgrp) {
 
-   int i,j,num_irreps;
+   int i,j,nirreps;
    char **irreps;
 
    static char *C1[] =  {"E"};
@@ -331,7 +330,7 @@ else
 
 char **get_irrep_labels(char *ptgrp) {
 
-   int i,j,num_irreps;
+   int i,j,nirreps;
    char **irreps;
 
    static char *C1[] = {"A"};
@@ -588,26 +587,12 @@ else
 }
 
 
+/*** GET_OPS_IN_CLASS : finds numbers of operations in the classes
+ * of the molecular point group. nirreps is for checking */
 
+int *get_ops_in_class(char *ptgrp, int nirreps) {
 
-/*----------------------------------------------------------------------------
-	GET_OPS_IN_CLASS
-
-	finds numbers of operations in the classes of the molecular point
-	group.  this is used only to find the irreps spanned by an 
-	eigenvector of G matrix 
-
-	arguments: *ptgrp = char string indicating point group
-
-        returns: pointer to 'num_ops' vector
-								JPK 6-11-00
-----------------------------------------------------------------------------*/
-
-int *get_ops_in_class(char *ptgrp) {
-
-  int num_class,
-      *num_ops,
-      error_var = 0; 
+  int num_class, *num_ops, error_var = 0; 
 
   static int class_C1[] = {1},
              num_class_C1 = 1,
@@ -653,86 +638,79 @@ int *get_ops_in_class(char *ptgrp) {
              num_class_D6H = 12;
 
 
-  if(strcmp(ptgrp,"C1 ") == 0) {
-    if(num_irreps == num_class_C1)
+  if (strcmp(ptgrp,"C1 ") == 0) {
+    if(nirreps == num_class_C1)
       num_ops = class_C1;
     else error_var = 1;
-  }    
-
-  else if(strcmp(ptgrp,"CS ")==0 || strcmp(ptgrp,"CI ")==0 ||
-          strcmp(ptgrp,"C2 ")==0){
-    if(num_irreps == num_class_CS)
+  }
+  else if (strcmp(ptgrp,"CS ")==0 || strcmp(ptgrp,"CI ")==0 ||
+          strcmp(ptgrp,"C2 ")==0) {
+    if(nirreps == num_class_CS)
       num_ops = class_CS;
     else error_var = 1;
   }
-
-
-
   else if (strcmp (ptgrp, "C2V")==0 || strcmp (ptgrp, "D2 ")==0 ||
           strcmp(ptgrp,"C2H")==0) {
-    if(num_irreps == num_class_D2)
+    if(nirreps == num_class_D2)
       num_ops = class_D2;
     else error_var = 1;
-  }  
-
+  }
   else if(strcmp(ptgrp,"C3V")==0 || strcmp(ptgrp,"D3 ")==0) {
-    if(num_irreps == num_class_D3)
+    if(nirreps == num_class_D3)
       num_ops = class_D3;
     else error_var = 1;
   }  
 
   else if(strcmp(ptgrp,"C4V")==0 || strcmp(ptgrp,"D2D")==0 || 
           strcmp(ptgrp,"D4 ")==0) {
-    if(num_irreps == num_class_D4)
+    if(nirreps == num_class_D4)
       num_ops = class_D4;
     else error_var = 1;
   }
 
   else if(strcmp(ptgrp,"O  ")==0 || strcmp(ptgrp,"TD ")==0) { 
-    if(num_irreps == num_class_TD)
+    if(nirreps == num_class_TD)
       num_ops = class_TD;
     else error_var = 1;
   }
 
   else if(strcmp(ptgrp,"C6V")==0 || strcmp(ptgrp,"D6 ")==0) {
-    if(num_irreps == num_class_D6)
+    if(nirreps == num_class_D6)
       num_ops = class_D6;
     else error_var = 1;
   }  
 
   else if(strcmp(ptgrp,"D3D")==0 || strcmp(ptgrp,"D3H")==0) {
-    if(num_irreps == num_class_D3D)
+    if(nirreps == num_class_D3D)
       num_ops = class_D3D;
     else error_var = 1;
   }
 
   else if(strcmp(ptgrp,"D2H")==0) {
-    if(num_irreps == num_class_D2H)
+    if(nirreps == num_class_D2H)
       num_ops = class_D2H;
     else error_var = 1;
   }
 
   else if(strcmp(ptgrp,"D4H")==0) {
-    if(num_irreps == num_class_D4H)
+    if(nirreps == num_class_D4H)
       num_ops = class_D4H;
     else error_var = 1;
   }
 
   else if(strcmp(ptgrp,"OH ")==0) {
-    if(num_irreps == num_class_OH)
+    if(nirreps == num_class_OH)
       num_ops = class_OH;
     else error_var = 1;
   }
 
   else if(strcmp(ptgrp,"D6H")==0) {
-    if(num_irreps == num_class_D6H)
+    if(nirreps == num_class_D6H)
       num_ops = class_D6H;
     else error_var = 1;
   }
 
- 
   else if (num_ops[0] == 0) error_var = 1;
-
 
   if(error_var != 0) {
     punt("problem assigning number of operations per class");

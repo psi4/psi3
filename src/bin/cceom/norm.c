@@ -59,6 +59,14 @@ void scm_C(dpdfile2 *CME, dpdfile2 *Cme, dpdbuf4 *CMNEF,
   return;
 }
 
+void scm_C2(dpdbuf4 *CMNEF, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, double a)
+{
+  dpd_buf4_scm(CMNEF,a);
+  dpd_buf4_scm(Cmnef,a);
+  dpd_buf4_scm(CMnEf,a);
+  return;
+}
+
 void scm_C1(dpdfile2 *CME, dpdfile2 *Cme, double a)
 {
   dpd_file2_scm(CME,a);

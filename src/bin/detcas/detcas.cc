@@ -518,7 +518,7 @@ void rotate_orbs(void)
       file30_wt_blk_scf(CalcInfo.mo_coeffs[h], h);
       file30_close();
       ***/
-      chkpt_init();
+      chkpt_init(PSIO_OPEN_OLD);
       chkpt_wt_scf_irrep(CalcInfo.mo_coeffs[h], h);
       chkpt_close();
       delete [] ir_theta;
@@ -574,7 +574,7 @@ int check_conv(void)
   file30_close();
   */
 
-  chkpt_init();
+  chkpt_init(PSIO_OPEN_OLD);
   energy = chkpt_rd_etot();
   chkpt_close();
 

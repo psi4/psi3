@@ -9,17 +9,17 @@
 
 /*!
 ** int chkpt_rd_ncalcs()  
-** Reads in the total number of calculations.
+** Reads in the total number of HF wave functions.
 **
-** returns: ncalcs = total number of calculations in checkpoint
+** returns: ncalcs = total number of HF wave functions in checkpoint
 ** \ingroup (CHKPT)
 */
 
 int chkpt_rd_ncalcs(void)
 {
-  int ncalcs;
-
-  psio_read_entry(PSIF_CHKPT, "::Num calcs", (char *) &ncalcs, 
-                  sizeof(int) );
-  return ncalcs;
+  if (psio_tocscan(PSIF_CHKPT,"::MO coefficients") == NULL &&
+      psio_tocscan(PSIF_CHKPT,"::Alpha MO coefficients") == NULL)
+    return 0;
+  else
+    return 1;
 }
