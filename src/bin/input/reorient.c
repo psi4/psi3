@@ -16,6 +16,8 @@ void reorient()
   int deg_IM1, deg_IM2;
   int nspher_set;
   int prox_i, prox_j;
+  int axis, axis1, axis2, xyz;
+  int nshould, nmust, nzero, must_invert[3], should_invert[3];
   double Xcm = 0.0;
   double Ycm = 0.0;
   double Zcm = 0.0;
@@ -24,6 +26,7 @@ void reorient()
   double Zmax, r, min_ij;
   double **IT, *IM, **ITAxes;
   double *v1, *v2, *v3, **R;
+  double vabs, maxproj[3];
   double **sset_geom, *sset_dist;
   double origin[] = {0.0, 0.0, 0.0};
 
@@ -116,12 +119,149 @@ void reorient()
       ITAxes[1][0] = v3[1];
       ITAxes[2][0] = v3[2];
 
+      /*--------------------------------------------------------
+	Check if the original frame is "sufficiently close"
+	to the principal frame. If true, then try to minimize
+	the necessary reorientation using heuristic rules:
+	1. If an axis V has 2 zero cartesian projections
+	   and the sign of the other projection is negative
+	   the axis needs to be inverted
+	2. In an axis V has 1 zero cartesian projection
+	   and the largest (in absolute magnitude) of non-zero
+	   projections is negative then the axis may need to
+	   be inverted
+	3. If an axis V has no zero cartesian projections
+	   and the largest (in absolute magnitude) of non-zero
+	   projections is negative then the axis may beed to
+	   be inverted
+	This procedure is needed to ensure that in
+	finite difference calculation there's not too much
+	reorientation (this is a hack and may need to be
+	rethought later).
+	-EFV
+       -------------------------------------------------------*/
+      nmust = 0;
+      nshould = 0;
+      for(axis=0; axis<3; axis++) {
+
+	must_invert[axis] = 0;
+	should_invert[axis] = 0;
+	nzero = 0;
+	maxproj[axis] = 0.0;
+
+	for(xyz=0; xyz<3; xyz++) {
+
+	  v1[xyz] = ITAxes[xyz][axis];
+	  vabs = fabs(v1[xyz]);
+
+	  if (vabs < ZERO)
+	    nzero++;
+
+	  if (vabs > fabs(maxproj[axis])) {
+	    maxproj[axis] = v1[xyz];
+	  }
+
+	}
+
+	if (nzero == 2) {
+	  if (maxproj[axis] < 0.0) {
+	    must_invert[axis] = 1;
+	    nmust++;
+	  }
+	  else
+	    must_invert[axis] = 0;
+	}
+	else if (nzero < 2) {
+	  if (maxproj[axis] < 0.0) {
+	    should_invert[axis] = 1;
+	    nshould++;
+	  }
+	  else
+	    should_invert[axis] = 0;
+	}
+	
+      }
+
+      R = block_matrix(3,3);
+      if (nmust == 2) {
+	for(axis=0; axis<3; axis++) {
+	  if (must_invert[axis])
+	    R[axis][axis] = -1.0;
+	  else
+	    R[axis][axis] = 1.0;
+	}
+      }
+      else if (nmust == 1 && nshould > 0) {
+	if (nshould == 2) {
+	  for(axis=0; axis<3; axis++)
+	    if (should_invert[axis]) {
+	      axis1 = axis;
+	      axis++;
+	      break;
+	    }
+	  for(; axis<3; axis++)
+	    if (should_invert[axis]) {
+	      axis2 = axis;
+	      break;
+	    }
+	  if (fabs(maxproj[axis1]) > fabs(maxproj[axis2])) {
+	    nshould = 1;
+	    should_invert[axis2] = 0;
+	  }
+	  else {
+	    nshould = 1;
+	    should_invert[axis1] = 0;
+	  }
+	}
+
+	for(axis=0; axis<3; axis++) {
+	  if (must_invert[axis])
+	    R[axis][axis] = -1.0;
+	  else if (should_invert[axis])
+	    R[axis][axis] = -1.0;
+	  else
+	    R[axis][axis] = 1.0;
+	}
+      }
+      else if (nmust == 3) {
+	R[0][0] = -1.0;
+	R[1][1] = -1.0;
+	R[2][2] = 1.0;
+      }
+      else if (nmust == 0 && nshould > 1) {
+	if (nshould == 3) {
+	  tmp = fabs(maxproj[0]);
+	  i = 0;
+	  for(axis=1; axis<3; axis++) {
+	    if (fabs(maxproj[axis]) < fabs(tmp)) {
+	      i = axis;
+	      tmp = fabs(maxproj[axis]);
+	    }
+	  }
+	  should_invert[i] = 0;
+	  nshould = 2;
+	}
+	for(axis=0; axis<3; axis++) {
+	  if (should_invert[axis])
+	    R[axis][axis] = -1.0;
+	  else
+	    R[axis][axis] = 1.0;
+	}
+      }
+      else {
+	R[0][0] = 1.0;
+	R[1][1] = 1.0;
+	R[2][2] = 1.0;
+      }
+
       /*Reorient if degen == 0 (asymmetric top case).
 	Otherwise hope user knows what he/she's doing and leave it as it is.*/
       if (degen == 0 && !no_reorient) {
 	rotate_full_geom(ITAxes);
+       	rotate_full_geom(R);
       }
-
+      free_block(R);
+      
       /*-------------------------------------------------------------
 	For linear or symmetric tops need to rotate so that
 	the nondegenerate moment of inertia is along z:
