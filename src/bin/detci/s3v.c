@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <libciomr.h>
 #include <qt.h>
 #include "structs.h"
@@ -18,8 +19,8 @@ int form_ilist(struct stringwr *alplist, int Ja_list, int nas, int kl,
    int *L, int *R, double *Sgn);
 int form_ilist_rotf(int *Cnt, int **Ridx, signed char **Sn, int **Ij,
    int nas, int kl, int *L, int *R, double *Sgn);
-void *s3_block_vdiag_pthread(void *threadarg);
-void *s3_block_v_pthread(void *threadarg);
+void s3_block_vdiag_pthread(void *threadarg);
+void s3_block_v_pthread(void *threadarg);
 
 
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
@@ -55,12 +56,9 @@ void s3_block_vdiag(struct stringwr *alplist, struct stringwr *betlist,
 
   thread = (pthread_t *) malloc(sizeof(pthread_t)*Parameters.nthreads);
 
-  /*
-    thread_info = (struct pthreads_s3diag *)
-    malloc(sizeof(struct pthreads_s3diag));
-  */
   thread_info = (struct pthreads_s3diag **)
                 malloc(sizeof(struct pthreads_s3diag *) * nas);
+
   for (i=0; i<nas; i++) {
       thread_info[i] = (struct pthreads_s3diag *)
                        malloc(sizeof(struct pthreads_s3diag));
@@ -106,7 +104,7 @@ void s3_block_vdiag(struct stringwr *alplist, struct stringwr *betlist,
                   thread_info[Ia_idx]->R = R;
                   thread_info[Ia_idx]->Ia_local = Ia;
                   thread_info[Ia_idx]->Ia_idx_local = Ia_idx;
-                  tpool_add_work(thread_pool ,(void *) s3_block_vdiag_pthread, (void *) thread_info[Ia_idx]); 
+                  tpool_add_work(thread_pool , s3_block_vdiag_pthread, (void *) thread_info[Ia_idx]); 
                 }
               tpool_queue_close(thread_pool, 1);
             }
@@ -175,7 +173,7 @@ void s3_block_vdiag(struct stringwr *alplist, struct stringwr *betlist,
 ** currently assumes that (ij|ij)'s have not been halved
 ** Try to get the Olsen vector version working....again!!!!
 */
-void *s3_block_vdiag_pthread(void *threadarg)
+void s3_block_vdiag_pthread(void *threadarg)
 {
 
   struct stringwr *Ia_local;
@@ -244,7 +242,7 @@ void *s3_block_vdiag_pthread(void *threadarg)
     }
 
   free(V);
-  return 0;
+  /* return 0; */
   
 }              
 
@@ -320,7 +318,7 @@ void s3_block_v(struct stringwr *alplist, struct stringwr *betlist,
                thread_info[Ia_idx]->R = R;
                thread_info[Ia_idx]->Ia_local = Ia;
                thread_info[Ia_idx]->Ia_idx_local = Ia_idx;
-               tpool_add_work(thread_pool, (void *) s3_block_v_pthread, (void *) thread_info[Ia_idx]);
+               tpool_add_work(thread_pool, s3_block_v_pthread, (void *) thread_info[Ia_idx]);
              }
            tpool_queue_close(thread_pool, 1);
          }
@@ -379,7 +377,7 @@ void s3_block_v(struct stringwr *alplist, struct stringwr *betlist,
 ** Olsen, Roos, et al.  For non-diagonal blocks of s3
 **
 */
-void *s3_block_v_pthread(void *threadarg)
+void s3_block_v_pthread(void *threadarg)
 {
 
   struct stringwr *Ia_local;
@@ -447,7 +445,7 @@ void *s3_block_v_pthread(void *threadarg)
     }
 
   free(V);
-  return 0;
+  /* return 0; */
   
 }
 

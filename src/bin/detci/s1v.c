@@ -11,6 +11,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <libciomr.h>
 #include <qt.h>
 #include "structs.h"
@@ -24,8 +25,8 @@ extern unsigned char ***Occs;
 extern void b2brepl(unsigned char **occs, int *Jcnt, int **Jij, int **Joij, 
       int **Jridx, signed char **Jsgn, struct olsen_graph *Graph,
       int Ilist, int Jlist, int len);
-void *s1_block_vfci_pthread(void *threadarg);
-void *s1_block_vras_pthread(void *threadarg);
+void s1_block_vfci_pthread(void *threadarg);
+void s1_block_vras_pthread(void *threadarg);
 
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
 
@@ -193,7 +194,7 @@ void s1_block_vfci_thread(struct stringwr **alplist, struct stringwr **betlist,
       thread_info[Ib_idx]->Jb_list_nbs=Jb_list_nbs;
       thread_info[Ib_idx]->Ib=Ib;
       thread_info[Ib_idx]->Ib_idx=Ib_idx;
-      tpool_add_work(thread_pool, (void *) s1_block_vfci_pthread, (void *) thread_info[Ib_idx]);
+      tpool_add_work(thread_pool, s1_block_vfci_pthread, (void *) thread_info[Ib_idx]);
     } /* end loop over Ib */
   tpool_queue_close(thread_pool, 1);
 
@@ -221,7 +222,7 @@ void s1_block_vfci_thread(struct stringwr **alplist, struct stringwr **betlist,
 ** Modified 6/21/95 for use in new RAS program
 ** Modified 5/10/96 for new sparse-F method
 */
-void *s1_block_vfci_pthread(void *threadarg)
+void s1_block_vfci_pthread(void *threadarg)
 {
   struct stringwr *Ib, *Kb, **alplist, **betlist;
   unsigned int Ia_idx, Ib_idx, Kb_idx, Jb_idx;
@@ -482,7 +483,7 @@ void s1_block_vras_thread(struct stringwr **alplist, struct stringwr **betlist,
       thread_info[Ib_idx]->Jb_list_nbs=Jb_list_nbs;
       thread_info[Ib_idx]->Ib=Ib;
       thread_info[Ib_idx]->Ib_idx=Ib_idx;
-      tpool_add_work(thread_pool, (void *) s1_block_vras_pthread, (void *) thread_info[Ib_idx]);
+      tpool_add_work(thread_pool, s1_block_vras_pthread, (void *) thread_info[Ib_idx]);
     } /* end loop over Ib */
   tpool_queue_close(thread_pool, 1);
 
@@ -510,7 +511,7 @@ void s1_block_vras_thread(struct stringwr **alplist, struct stringwr **betlist,
 ** Modified 8/2/95 to make RAS again
 ** Modified 5/10/96 for new sparse-F method
 */
-void *s1_block_vras_pthread(void *threadarg)
+void s1_block_vras_pthread(void *threadarg)
 {
   struct stringwr *Ib, *Kb, **alplist, **betlist;
   unsigned int Ia_idx, Ib_idx, Kb_idx, Jb_idx;

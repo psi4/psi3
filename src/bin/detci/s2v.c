@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <libciomr.h>
 #include <qt.h>
 #include "structs.h"
@@ -12,8 +13,8 @@ extern unsigned char ***Occs;
 extern void b2brepl(unsigned char **occs, int *Jcnt, int **Jij, int **Joij, 
       int **Jridx, signed char **Jsgn, struct olsen_graph *Graph,
       int Ilist, int Jlist, int len);
-void *s2_block_vfci_pthread(void *threadarg);
-void *s2_block_vras_pthread(void *threadarg);
+void s2_block_vfci_pthread(void *threadarg);
+void s2_block_vras_pthread(void *threadarg);
 
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
 
@@ -169,7 +170,7 @@ void s2_block_vfci_thread(struct stringwr **alplist, struct stringwr **betlist,
       thread_info[Ia_idx]->Ja_list_nas=Ja_list_nas;
       thread_info[Ia_idx]->Ia=Ia;
       thread_info[Ia_idx]->Ia_idx=Ia_idx;
-      tpool_add_work(thread_pool, (void *) s2_block_vfci_pthread, (void *) thread_info[Ia_idx]);
+      tpool_add_work(thread_pool, s2_block_vfci_pthread, (void *) thread_info[Ia_idx]);
     } /* end loop over Ia */
   tpool_queue_close(thread_pool, 1);
 
@@ -190,7 +191,7 @@ void s2_block_vfci_thread(struct stringwr **alplist, struct stringwr **betlist,
 ** David Sherrill, 18 April 1996
 ** Based on many previous versions by David Sherrill 1994-5
 */
-void *s2_block_vfci_pthread(void *threadarg)
+void s2_block_vfci_pthread(void *threadarg)
 {
   struct stringwr *Ia, *Ka, **alplist, **betlist;
   unsigned int Ia_idx, Ib_idx, Ka_idx, Ja_idx;
@@ -447,7 +448,7 @@ void s2_block_vras_thread(struct stringwr **alplist, struct stringwr **betlist,
       thread_info[Ia_idx]->Ja_list_nas=Ja_list_nas;
       thread_info[Ia_idx]->Ia=Ia;
       thread_info[Ia_idx]->Ia_idx=Ia_idx;
-      tpool_add_work(thread_pool, (void *) s2_block_vras_pthread, (void *) thread_info[Ia_idx]);
+      tpool_add_work(thread_pool, s2_block_vras_pthread, (void *) thread_info[Ia_idx]);
     } /* end loop over Ia */
 
   tpool_queue_close(thread_pool, 1);
@@ -476,7 +477,7 @@ void s2_block_vras_thread(struct stringwr **alplist, struct stringwr **betlist,
 ** Obtained 7/22/95 from s1 routine by changing a's to b's and vice versa
 ** Modified 5/10/96 for more vectorized approach
 */
-void *s2_block_vras_pthread(void *threadarg)
+void s2_block_vras_pthread(void *threadarg)
 {
   struct stringwr *Ia, *Ka, **alplist, **betlist;
   unsigned int Ia_idx, Ib_idx, Ka_idx, Ja_idx;
