@@ -149,10 +149,10 @@ psi: (
 
   % -------------------------------- CCSD(T) Procedures
   % Procedures for the CCSD(T) energy
-  CCSD_TEnergy = ($ints $scf $transqt $ccsort $ccenergy $cctriples $done)
-  CCSD_TRHFEnergy = $CCSD_TEnergy
+  CCSD_TEnergy = ($ints $scf $transqt $ccsort $ccenergy $cctriples)
+  CCSD_TRHFEnergy = ($CCSD_TEnergy $done)
   CCSD_TROHFEnergy = ERROR
-  CCSD_TUHFEnergy = $CCSD_TEnergy
+  CCSD_TUHFEnergy = ($CCSD_TEnergy $done)
   CCSD_TTwoConEnergy = ERROR
 
   % Procedures for the CCSD(T) gradient
@@ -162,16 +162,20 @@ psi: (
   CCSD_TUHFFirst = ERROR
   CCSD_TTwoConFirst = ERROR
 
-  % Testing procedure for optimizing geometries with CCSD finite displacements
-  CCSD_TROHFEnergyDisp = ERROR
+  % Procedures for optimization via energy points
+  CCSD_TEnergyOpt = (repeat $nopt $CCSD_TEnergy $optking end $done)
+  CCSD_TRHFEnergyOpt = $CCSD_TEnergyOpt
+  CCSD_TROHFEnergyOpt = $CCSD_TEnergyOpt
+  CCSD_TUHFEnergyOpt = ERROR
+  CCSD_TTwoConEnergyOpt = ERROR
 
-  % Procedures for the optimizing geomtries with CCSD gradients
+  % Procedures for the optimizing geomtries with CCSD(T) gradients
   CCSD_TRHFFirstOpt = ERROR
   CCSD_TROHFFirstOpt = ERROR
   CCSD_TUHFFirstOpt  = ERROR
   CCSD_TTwoConFirstOpt  = ERROR
 
-  % Procedures for the finite displacements of CCSD gradients
+  % Procedures for the finite displacements of CCSD(T) gradients
   CCSD_TRHFFirstDisp = ERROR
   CCSD_TROHFFirstDisp = ERROR
   CCSD_TUHFFirstDisp  = ERROR
@@ -253,9 +257,9 @@ psi: (
 
   % -------------------------------- DETCAS Procedures
   % Procedures for the DETCAS energy
-  DETCASEnergy = ($ints $scf $detcasman $done)
-  DETCASRHFEnergy = $DETCASEnergy
-  DETCASROHFEnergy = $DETCASEnergy
+  DETCASEnergy = ($ints $scf $detcasman)
+  DETCASRHFEnergy = ($DETCASEnergy $done)
+  DETCASROHFEnergy = ($DETCASEnergy $done)
   DETCASUHFEnergy = ERROR
   DETCASTwoConEnergy = ERROR
 
@@ -282,11 +286,25 @@ psi: (
   DETCASUHFFirstDisp  = ERROR
   DETCASTwoConFirstDisp  = ERROR
 
+  % Procedures for optimization via DETCAS energy points
+  DETCASEnergyOpt = (repeat $nopt $DETCASEnergy $optking end $done)
+  DETCASRHFEnergyOpt = $DETCASEnergyOpt
+  DETCASROHFEnergyOpt = $DETCASEnergyOpt
+  DETCASUHFEnergyOpt = ERROR
+  DETCASTwoConEnergyOpt = $DETCASEnergyOpt
+
   % Procedures for the direct MP2 energy
-  MP2Energy = ($ints $scf $mp2_direct $done)
-  MP2RHFEnergy = $MP2Energy
+  MP2Energy = ($ints $scf $mp2_direct)
+  MP2RHFEnergy = ($MP2Energy $done)
   MP2ROHFEnergy = ERROR
   MP2UHFEnergy = ERROR
   MP2TwoConEnergy = ERROR
 
+  % Procedures for optimization via MP2 energy points
+  MP2EnergyOpt = (repeat $nopt $MP2Energy $optking end $done)
+  MP2RHFEnergyOpt = $MP2EnergyOpt
+  MP2ROHFEnergyOpt = ERROR
+  MP2UHFEnergyOpt = ERROR
+  MP2TwoConEnergyOpt = ERROR
 ) 
+
