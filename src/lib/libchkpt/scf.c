@@ -252,6 +252,8 @@ double **chkpt_rd_scf_irrep(int irrep)
       scf[i][j] = scf_full[i+row][j+col];
 
   free_block(scf_full);
+  free(sopi);
+  free(mopi);
 
   return scf;
 }
@@ -292,6 +294,8 @@ double **chkpt_rd_alpha_scf_irrep(int irrep)
       scf[i][j] = scf_full[i+row][j+col];
 
   free_block(scf_full);
+  free(sopi);
+  free(mopi);
 
   return scf;
 }
@@ -332,6 +336,130 @@ double **chkpt_rd_beta_scf_irrep(int irrep)
       scf[i][j] = scf_full[i+row][j+col];
 
   free_block(scf_full);
+  free(sopi);
+  free(mopi);
 
   return scf;
 }
+
+/*!
+** chkpt_wt_scf_irrep(): Writes a single irrep of the SCF eigenvectors for RHF/ROHF.
+**
+** arguments:
+**  \param int irrep  The desired irreducible representation.
+**
+** returns: double **scf   A rectangualr sopi[irrep] by orbspi[irrep] matrix.
+*/
+
+void chkpt_wt_scf_irrep(double **scf, int irrep)
+{
+  int i, j, row, col;
+  int nirreps, nso, nmo;
+  int *sopi, *mopi;
+  double **scf_full;
+
+  nirreps = chkpt_rd_nirreps();
+  sopi = chkpt_rd_sopi();
+  mopi = chkpt_rd_orbspi();
+  nso = chkpt_rd_nso();
+  nmo = chkpt_rd_nmo();
+
+  scf_full = chkpt_rd_scf();
+
+  /* compute row and column offsets */
+  for(i=0,row=0,col=0; i < irrep; i++) {
+    row += sopi[i];
+    col += mopi[i];
+  }
+
+  for(i=0; i < sopi[irrep]; i++)
+    for(j=0; j < mopi[irrep]; j++)
+      scf_full[i+row][j+col] = scf[i][j];
+
+  chkpt_wt_scf(scf_full);
+  free_block(scf_full);
+  free(sopi);
+  free(mopi);
+}
+
+/*!
+** chkpt_wt_alpha_scf_irrep(): Writes a single irrep of the alpha SCF 
+**                             eigenvectors for RHF/ROHF.
+**
+** arguments:
+**  \param int irrep  The desired irreducible representation.
+**
+** returns: double **scf   A rectangualr sopi[irrep] by orbspi[irrep] matrix.
+*/
+void chkpt_wt_alpha_scf_irrep(double **scf, int irrep)
+{
+  int i, j, row, col;
+  int nirreps, nso, nmo;
+  int *sopi, *mopi;
+  double **scf_full;
+
+  nirreps = chkpt_rd_nirreps();
+  sopi = chkpt_rd_sopi();
+  mopi = chkpt_rd_orbspi();
+  nso = chkpt_rd_nso();
+  nmo = chkpt_rd_nmo();
+
+  scf_full = chkpt_rd_alpha_scf();
+
+  /* compute row and column offsets */
+  for(i=0,row=0,col=0; i < irrep; i++) {
+    row += sopi[i];
+    col += mopi[i];
+  }
+
+  for(i=0; i < sopi[irrep]; i++)
+    for(j=0; j < mopi[irrep]; j++)
+      scf_full[i+row][j+col] = scf[i][j];
+
+  chkpt_wt_alpha_scf(scf_full);
+  free_block(scf_full);
+  free(sopi);
+  free(mopi);
+}
+
+/*!
+** chkpt_wt_beta_scf_irrep(): Writes a single irrep of the beta SCF 
+**                             eigenvectors for RHF/ROHF.
+**
+** arguments:
+**  \param int irrep  The desired irreducible representation.
+**
+** returns: double **scf   A rectangualr sopi[irrep] by orbspi[irrep] matrix.
+*/
+void chkpt_wt_beta_scf_irrep(double **scf, int irrep)
+{
+  int i, j, row, col;
+  int nirreps, nso, nmo;
+  int *sopi, *mopi;
+  double **scf_full;
+
+  nirreps = chkpt_rd_nirreps();
+  sopi = chkpt_rd_sopi();
+  mopi = chkpt_rd_orbspi();
+  nso = chkpt_rd_nso();
+  nmo = chkpt_rd_nmo();
+
+  scf_full = chkpt_rd_beta_scf();
+
+  /* compute row and column offsets */
+  for(i=0,row=0,col=0; i < irrep; i++) {
+    row += sopi[i];
+    col += mopi[i];
+  }
+
+  for(i=0; i < sopi[irrep]; i++)
+    for(j=0; j < mopi[irrep]; j++)
+      scf_full[i+row][j+col] = scf[i][j];
+
+  chkpt_wt_beta_scf(scf_full);
+  free_block(scf_full);
+  free(sopi);
+  free(mopi);
+}
+
+

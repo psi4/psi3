@@ -68,6 +68,11 @@ evals.c \
 scf.c \
 lagr.c \
 ccvecs.c \
+schwartz.c \
+ecorr.c \
+eref.c \
+efzc.c \
+disp.c
 
 DEPENDINCLUDE = psio.h chkpt.h
 

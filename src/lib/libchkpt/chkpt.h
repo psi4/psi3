@@ -173,6 +173,9 @@ void chkpt_wt_beta_scf(double **);
 double **chkpt_rd_scf_irrep(int);
 double **chkpt_rd_alpha_scf_irrep(int);
 double **chkpt_rd_beta_scf_irrep(int);
+void chkpt_wt_scf_irrep(double **, int);
+void chkpt_wt_alpha_scf_irrep(double **, int);
+void chkpt_wt_beta_scf_irrep(double **, int);
 
 double **chkpt_rd_lagr(void);
 double **chkpt_rd_alpha_lagr(void);
@@ -183,3 +186,18 @@ void chkpt_wt_beta_lagr(double **);
 
 double **chkpt_rd_ccvecs(void);
 void chkpt_wt_ccvecs(double **);
+
+double **chkpt_rd_schwartz(void);
+void chkpt_wt_schwartz(double **);
+
+double chkpt_rd_ecorr(void);
+void chkpt_wt_ecorr(double);
+
+double chkpt_rd_eref(void);
+void chkpt_wt_eref(double);
+
+double chkpt_rd_efzc(void);
+void chkpt_wt_efzc(double);
+
+int chkpt_rd_disp(void);
+void chkpt_wt_disp(int);
