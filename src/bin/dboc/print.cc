@@ -23,6 +23,8 @@ void print_params()
 {
   if (Params.print_lvl >= PrintLevels::print_params) {
     fprintf(outfile,"\n  -OPTIONS:\n");
+    fprintf(outfile,"    sizeof(double)              = %d\n",sizeof(double));
+    fprintf(outfile,"    sizeof(long double)         = %d\n",sizeof(long double));
     fprintf(outfile,"    Print level                 = %d\n",Params.print_lvl);
     fprintf(outfile,"    Displacement size           = %lf a.u.\n",Params.delta);
     if (strcmp(Params.wfn,"SCF"))
