@@ -195,6 +195,16 @@ folded into the one-electron integrals and into the "frozen
 core energy" computed by the transformation program.   The default
 is true.
 
+.IP "\fBEXPORT_VECTOR =\fP \fIboolean\fP"
+This specifies whether to store converged vector(s) at the end of the run.
+The vector(s) is(are) stored in a transparent format such that other programs
+can use it easily. The format is specified in \fBsrc/lib/libqt/slaterdset.h\fP.
+The default is false.
+
+.IP "\fBNUM_EXPORT =\fP \fIinteger\fP"
+If \fBEXPORT_VECTOR\fP is set to true, the this determines the number of vectors
+that need to be exported at the end of the run. The default is 1.
+
 .IP "\fBGUESS_VECTOR =\fP \fIstring\fP"
 This specifies which type of guess vector to use in the CI iteration.
 Currently only used by the SEM iteration method.  Accepted values
