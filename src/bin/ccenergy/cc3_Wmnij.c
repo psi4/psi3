@@ -2,8 +2,9 @@
 #define EXTERN
 #include "globals.h"
 
-/* cc3_Wmnij(): Compute the Wmnij matrix from CC3 theory, which is
-** given in spin-orbitals as:
+/* cc3_Wmnij(): Compute the Wmnij components of the
+** T1-similarity-transformed Hamiltonian matrix, which is given in
+** spin-orbitals as:
 **
 ** Wmnij = <mn||ij> + P(ij) t_j^e <mn||ie> + t_i^e t_j^f <mn||ef>
 **

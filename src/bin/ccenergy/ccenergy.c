@@ -359,7 +359,7 @@ int main(int argc, char *argv[])
   }
 
   if( ((!strcmp(params.wfn,"CC3")) || (!strcmp(params.wfn,"EOM_CC3")))
-      && params.dertype == 3 && params.ref == 0) {
+      && (params.dertype == 1 || params.dertype == 3) && params.ref == 0) {
     params.ref = 1;
     /* generate the ROHF versions of the He^T1 intermediates */
     cc3_Wmnij(); 
