@@ -13,7 +13,9 @@ LIBOBJ = $(CSRC:%.c=%.o) $(FSRC:%.F=%.o)
 
 include ../MakeRules
 
-default:: allocate.o
+default:: $(top_objdir)/lib/allocate.o
+
+$(top_objdir)/lib/allocate.o: allocate.o
 	$(INSTALL) $< $(top_objdir)/lib
 
 install_target:: allocate.o
