@@ -1,6 +1,6 @@
 ******************************************************************************
 tstart called on boromir.chem
-Tue May 20 11:33:43 2003
+Tue May 20 12:09:05 2003
 
                                 --------------
                                   WELCOME TO
@@ -139,14 +139,14 @@ Tue May 20 11:33:43 2003
 
 ******************************************************************************
 tstop called on boromir.chem
-Tue May 20 11:33:43 2003
+Tue May 20 12:09:05 2003
 
-user time   =       0.07 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.06 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 tstart called on boromir.chem
-Tue May 20 11:33:44 2003
+Tue May 20 12:09:05 2003
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -175,14 +175,14 @@ Tue May 20 11:33:44 2003
 
 ******************************************************************************
 tstop called on boromir.chem
-Tue May 20 11:33:45 2003
+Tue May 20 12:09:05 2003
 
-user time   =       0.12 seconds =       0.00 minutes
+user time   =       0.13 seconds =       0.00 minutes
 system time =       0.03 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 tstart called on boromir.chem
-Tue May 20 11:33:45 2003
+Tue May 20 12:09:05 2003
 
 
              ------------------------------------------
@@ -279,14 +279,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 tstop called on boromir.chem
-Tue May 20 11:33:45 2003
+Tue May 20 12:09:05 2003
 
 user time   =       0.01 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 tstart called on boromir.chem
-Tue May 20 11:33:45 2003
+Tue May 20 12:09:05 2003
 
 
 	**************************************************
@@ -373,14 +373,14 @@ Tue May 20 11:33:45 2003
 	Frozen-core operator written to file 35.
 ******************************************************************************
 tstop called on boromir.chem
-Tue May 20 11:33:45 2003
+Tue May 20 12:09:05 2003
 
-user time   =       0.07 seconds =       0.00 minutes
-system time =       0.18 seconds =       0.00 minutes
+user time   =       0.06 seconds =       0.00 minutes
+system time =       0.19 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 tstart called on boromir.chem
-Tue May 20 11:33:45 2003
+Tue May 20 12:09:05 2003
 
 
 			**************************
@@ -429,14 +429,14 @@ Tue May 20 11:33:45 2003
 	Reference energy             =    -76.02170971655126
 ******************************************************************************
 tstop called on boromir.chem
-Tue May 20 11:33:45 2003
+Tue May 20 12:09:05 2003
 
-user time   =       0.06 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.04 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 tstart called on boromir.chem
-Tue May 20 11:33:45 2003
+Tue May 20 12:09:05 2003
 
 			**************************
 			*                        *
@@ -527,14 +527,14 @@ Tue May 20 11:33:45 2003
 
 ******************************************************************************
 tstop called on boromir.chem
-Tue May 20 11:33:46 2003
+Tue May 20 12:09:06 2003
 
-user time   =       0.67 seconds =       0.01 minutes
-system time =       0.39 seconds =       0.01 minutes
+user time   =       0.60 seconds =       0.01 minutes
+system time =       0.46 seconds =       0.01 minutes
 total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
 tstart called on boromir.chem
-Tue May 20 11:33:46 2003
+Tue May 20 12:09:06 2003
 
 
 			**************************
@@ -545,14 +545,14 @@ Tue May 20 11:33:46 2003
 
 ******************************************************************************
 tstop called on boromir.chem
-Tue May 20 11:33:46 2003
+Tue May 20 12:09:07 2003
 
-user time   =       0.21 seconds =       0.00 minutes
-system time =       0.16 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.13 seconds =       0.00 minutes
+system time =       0.23 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
 tstart called on boromir.chem
-Tue May 20 11:33:46 2003
+Tue May 20 12:09:07 2003
 
 
 	**********************************************************
@@ -660,9 +660,9 @@ Collapsing to only 2 vectors.
 Procedure converged for 2 roots.
 
 Final Energetic Summary for Converged Roots of Irrep A1 
-                  Excitation Energy           Total Energy
-             (eV)     (cm^-1)     (au)             (au)
-State 1     11.334    91417.7   0.4165298336   -75.6051798830
+                     Excitation Energy           Total Energy
+                (eV)     (cm^-1)     (au)             (au)
+EOM State 1     11.334    91417.7   0.4165298336   -75.6051798830
 
 Largest components of excited wave function #0:
 	          2   0         0.6856889881
@@ -676,7 +676,7 @@ Largest components of excited wave function #0:
 	  2   4   0  13         0.0494870814
 	  4   2  13   0         0.0494870814
 
-State 2     18.831   151882.9   0.6920295618   -75.3296801547
+EOM State 2     18.831   151882.9   0.6920295618   -75.3296801547
 
 Largest components of excited wave function #1:
 	          4  13        -0.6818568746
@@ -766,9 +766,9 @@ Collapsing to only 2 vectors.
 Procedure converged for 2 roots.
 
 Final Energetic Summary for Converged Roots of Irrep A2 
-                  Excitation Energy           Total Energy
-             (eV)     (cm^-1)     (au)             (au)
-State 1     10.863    87612.0   0.3991896272   -75.6225200894
+                     Excitation Energy           Total Energy
+                (eV)     (cm^-1)     (au)             (au)
+EOM State 1     10.863    87612.0   0.3991896272   -75.6225200894
 
 Largest components of excited wave function #0:
 	          3  10        -0.6829187104
@@ -782,7 +782,7 @@ Largest components of excited wave function #0:
 	  3   3  13  10        -0.0535993507
 	  2   3   2  13        -0.0332500013
 
-State 2     22.717   183223.4   0.8348273780   -75.1868823386
+EOM State 2     22.717   183223.4   0.8348273780   -75.1868823386
 
 Largest components of excited wave function #1:
 	          3  11         0.6819980824
@@ -869,9 +869,9 @@ Collapsing to only 2 vectors.
 Procedure converged for 2 roots.
 
 Final Energetic Summary for Converged Roots of Irrep B1 
-                  Excitation Energy           Total Energy
-             (eV)     (cm^-1)     (au)             (au)
-State 1      8.741    70499.3   0.3212184521   -75.7004912645
+                     Excitation Energy           Total Energy
+                (eV)     (cm^-1)     (au)             (au)
+EOM State 1      8.741    70499.3   0.3212184521   -75.7004912645
 
 Largest components of excited wave function #0:
 	          3  10         0.6870151963
@@ -885,7 +885,7 @@ Largest components of excited wave function #0:
 	  4   3  13   0         0.0509886911
 	  1   3   0   0         0.0414754659
 
-State 2     25.026   201845.9   0.9196777993   -75.1020319173
+EOM State 2     25.026   201845.9   0.9196777993   -75.1020319173
 
 Largest components of excited wave function #1:
 	          3  11        -0.6800713650
@@ -958,9 +958,9 @@ Copying C for root 2 to CC_RAMPS
 Procedure converged for 2 roots.
 
 Final Energetic Summary for Converged Roots of Irrep B2 
-                  Excitation Energy           Total Energy
-             (eV)     (cm^-1)     (au)             (au)
-State 1     13.521   109053.5   0.4968843117   -75.5248254048
+                     Excitation Energy           Total Energy
+                (eV)     (cm^-1)     (au)             (au)
+EOM State 1     13.521   109053.5   0.4968843117   -75.5248254048
 
 Largest components of excited wave function #0:
 	          2   0        -0.6850724059
@@ -974,7 +974,7 @@ Largest components of excited wave function #0:
 	  2   2  13   0        -0.0440195684
 	  2   2   2  13        -0.0429862504
 
-State 2     15.818   127580.5   0.5812995907   -75.4404101258
+EOM State 2     15.818   127580.5   0.5812995907   -75.4404101258
 
 Largest components of excited wave function #1:
 	          4  13        -0.6899805613
@@ -997,8 +997,8 @@ R0 of normalized R   =    0.0000000000
 check of <R|R> norm  =    1.0000000000
 ******************************************************************************
 tstop called on boromir.chem
-Tue May 20 11:34:01 2003
+Tue May 20 12:09:21 2003
 
-user time   =       7.52 seconds =       0.13 minutes
-system time =       6.52 seconds =       0.11 minutes
-total time  =         15 seconds =       0.25 minutes
+user time   =       7.29 seconds =       0.12 minutes
+system time =       6.71 seconds =       0.11 minutes
+total time  =         14 seconds =       0.23 minutes
