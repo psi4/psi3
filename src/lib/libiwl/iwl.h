@@ -39,6 +39,8 @@ extern void iwl_buf_fetch(struct iwlbuf *Buf);
 extern int iwl_rdone(int itap, double *ints, double *e_fzc, int *ioff,
               int norbs, int nfzc, int nfzv, int erase,
               int printflg, FILE *outfile);
+extern int iwl_rdone_all(int itap, int nbstri, double *onel_ints,
+              double *efzc, int erase);
 /*
 extern void iwl_rdone(int itap, int nbstri, double *onel_ints, double *efzc,
       int erase);
