@@ -63,9 +63,14 @@
 #define EOM_SIJAB      148
 #define EOM_Sijab      149
 #define EOM_SIjAb      150
-#define EOM_TMP        151
-#define EOM_R          152
+#define EOM_R          151 /* holds residual */
+#define CC_GLG         152 /* left-hand psi for g.s. parts of cc-density */
+#define CC_GL          153 /* left-hand psi for e.s. parts of cc-density */
+#define CC_GR          154 /* right-hand eigenvector for cc-density */
+#define EOM_TMP1       155 /* intermediates just for single contractions */
+#define EOM_TMP0       156 /* temporary copies of density */
+#define EOM_TMP        157 /* intermediates used more than once */
 
 /* Markers for the first and last file numbers */
 #define CC_MIN  CC_INFO
-#define CC_MAX  EOM_R
+#define CC_MAX  EOM_TMP
