@@ -1,7 +1,7 @@
 
 .PHONY:	default all install depend clean targetclean
 
-subdirs = util lib bin util/tocprint doc
+subdirs = lib bin util doc
 
 default: all
 
