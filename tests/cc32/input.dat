@@ -1,6 +1,6 @@
 psi: (
-  label = "CC3 H2O Test"
-  wfn = cc3
+  label = "CC2 H2O Test"
+  wfn = cc2
   reference = rhf
   multp = 1
   basis = "cc-pVDZ"
