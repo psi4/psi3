@@ -13,55 +13,59 @@
 /* Two-electron amplitudes, intermediates, and densities */
 #define CC_DENOM       108
 #define CC_TAMPS       109
-#define CC_LAMPS       110
-#define CC_HBAR        111
-#define CC_GAMMA       112
-#define CC_MISC        113
+#define CC_GAMMA       110
+#define CC_MISC        111
+#define CC_HBAR        112
 
-/* Some temporary files for short-lived intermediates --- I'll eventually
-   pare this down to only one or two */
-#define CC_TMP         114
-#define CC_TMP0        115
-#define CC_TMP1        116
-#define CC_TMP2        117
-#define CC_TMP3        118
-#define CC_TMP4        119
-#define CC_TMP5        120
-#define CC_TMP6        121
-#define CC_TMP7        122
-#define CC_TMP8        123
-#define CC_TMP9        124
-#define CC_TMP10       125
-#define CC_TMP11       126
-#define CC_OEI_NEW     127
-#define CC_GAMMA_NEW   128
-#define CC_AINTS_NEW   129
-#define CC_BINTS_NEW   130
-#define CC_CINTS_NEW   131
-#define CC_DINTS_NEW   132
-#define CC_EINTS_NEW   133
-#define CC_FINTS_NEW   134
+#define CC_OEI_NEW     113
+#define CC_GAMMA_NEW   114
+#define CC_AINTS_NEW   115
+#define CC_BINTS_NEW   116
+#define CC_CINTS_NEW   117
+#define CC_DINTS_NEW   118
+#define CC_EINTS_NEW   119
+#define CC_FINTS_NEW   120
 
-#define EOM_D          135
-#define EOM_CME        136
-#define EOM_Cme        137
-#define EOM_CMNEF      138
-#define EOM_Cmnef      139
-#define EOM_CMnEf      140
-#define EOM_SIA        141
-#define EOM_Sia        142
-#define EOM_SIJAB      143
-#define EOM_Sijab      144
-#define EOM_SIjAb      145
-#define EOM_TMP        146
-#define CC_RAMPS       147 /* final right eigenvector */
-#define EOM_R          148
+/* ground state lambda and intermediates for excited states */
+#define CC_LAMBDA      121
 
-#define CC_LR          149
+/* converged eigenvectors of hbar */
+#define CC_RAMPS       122
+#define CC_LAMPS       123
 
-#define CC_DIIS_ERR    150
-#define CC_DIIS_AMP    151
+#define CC_LR          124
+
+#define CC_DIIS_ERR    125
+#define CC_DIIS_AMP    126
+
+#define CC_TMP         127
+#define CC_TMP0        128
+#define CC_TMP1        129
+#define CC_TMP2        130
+#define CC_TMP3        131
+#define CC_TMP4        132
+#define CC_TMP5        133
+#define CC_TMP6        134
+#define CC_TMP7        135
+#define CC_TMP8        135
+#define CC_TMP9        137
+#define CC_TMP10       138
+#define CC_TMP11       139
+/* temporary files for CCEOM and CCLAMBDA */
+#define EOM_D          140
+#define EOM_CME        141
+#define EOM_Cme        142
+#define EOM_CMNEF      143
+#define EOM_Cmnef      144
+#define EOM_CMnEf      145
+#define EOM_SIA        146
+#define EOM_Sia        147
+#define EOM_SIJAB      148
+#define EOM_Sijab      149
+#define EOM_SIjAb      150
+#define EOM_TMP        151
+#define EOM_R          152
 
 /* Markers for the first and last file numbers */
 #define CC_MIN  CC_INFO
-#define CC_MAX  CC_DIIS_AMP
+#define CC_MAX  EOM_R
