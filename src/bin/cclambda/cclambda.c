@@ -77,6 +77,8 @@ int main(int argc, char *argv[])
     }
   }
 
+  if(params.local) local_init();
+
   init_amps();
   fprintf(outfile, "\t          Solving Lambda Equations\n");
   fprintf(outfile, "\t          ------------------------\n");
@@ -123,6 +125,9 @@ int main(int argc, char *argv[])
   }
   if (params.ground) overlap();
   if (!params.ground) Lnorm();
+
+  if(params.local) local_done();
+
   dpd_close(0);
 
   psio_write_entry(CC_INFO,"EOM L0",(char *) &params.L0, sizeof(double));
@@ -160,6 +165,7 @@ void init_io(int argc, char *argv[])
   }
 
   psi_start(num_unparsed, argv_unparsed, 0);
+  ip_cwk_add(":INPUT");
   ip_cwk_add(progid);
   free(progid);
   tstart(outfile);

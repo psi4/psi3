@@ -56,8 +56,8 @@ void L1_build(void) {
     dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "LIA");
     dpd_file2_init(&Lia, CC_OEI, L_irr, 0, 1, "Lia");
 
-    dpd_file2_init(&LFAEt2, CC_OEI, 0, 1, 1, "FAEt");
-    dpd_file2_init(&LFaet2, CC_OEI, 0, 1, 1, "Faet");
+    dpd_file2_init(&LFAEt2, CC_OEI, 0, 1, 1, "FAE");
+    dpd_file2_init(&LFaet2, CC_OEI, 0, 1, 1, "Fae");
     dpd_contract222(&Lia,&LFaet2,&newLia, 0, 1, 1.0, 1.0);
     dpd_contract222(&LIA,&LFAEt2,&newLIA, 0, 1, 1.0, 1.0);
     dpd_file2_close(&LFaet2);
@@ -65,8 +65,8 @@ void L1_build(void) {
 
 
     /* L1 RHS += -Lma*Fim */
-    dpd_file2_init(&LFMIt2,CC_OEI, 0, 0, 0, "FMIt");
-    dpd_file2_init(&LFmit2,CC_OEI, 0, 0, 0, "Fmit");
+    dpd_file2_init(&LFMIt2,CC_OEI, 0, 0, 0, "FMI");
+    dpd_file2_init(&LFmit2,CC_OEI, 0, 0, 0, "Fmi");
     dpd_contract222(&LFmit2,&Lia,&newLia, 0, 1, -1.0, 1.0);
     dpd_contract222(&LFMIt2,&LIA,&newLIA, 0, 1, -1.0, 1.0);
     dpd_file2_close(&LFmit2);
@@ -345,31 +345,91 @@ void L1_build(void) {
     dpd_file2_close(&GMI);
   }
 
+  dpd_file2_close(&newLIA);
+  dpd_file2_close(&newLia);
+
 
   /* newLia * Dia */
-  if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
+  if(params.ref == 0) { /** RHF **/
 
+    dpd_file2_init(&newLIA, CC_OEI, L_irr, 0, 1, "New LIA");
+    dpd_file2_copy(&newLIA, CC_OEI, "New LIA Increment");
+    dpd_file2_close(&newLIA);
+
+    dpd_file2_init(&newLIA, CC_OEI, L_irr, 0, 1, "New LIA Increment");
+    if(params.local && local.filter_singles) local_filter_T1(&newLIA);
+    else {
+      dpd_file2_init(&dIA, CC_OEI, L_irr, 0, 1, "dIA");
+      dpd_file2_dirprd(&dIA, &newLIA);
+      dpd_file2_close(&dIA);
+    }
+    dpd_file2_close(&newLIA);
+
+    dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "LIA");
+    dpd_file2_copy(&LIA, CC_OEI, "New LIA");
+    dpd_file2_close(&LIA);
+    dpd_file2_init(&newLIA, CC_OEI, L_irr, 0, 1, "New LIA");
+    dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "New LIA Increment");
+    dpd_file2_axpy(&LIA, &newLIA, 1, 0);
+    dpd_file2_close(&LIA);
+
+    dpd_file2_copy(&newLIA, CC_OEI, "New Lia");  /* spin-adaptation for RHF */
+    dpd_file2_close(&newLIA);
+  }
+  else if(params.ref == 1) { /** ROHF **/
+
+    dpd_file2_init(&newLIA, CC_OEI, L_irr, 0, 1, "New LIA");
+    dpd_file2_copy(&newLIA, CC_OEI, "New LIA Increment");
+    dpd_file2_close(&newLIA);
+
+    dpd_file2_init(&newLIA, CC_OEI, L_irr, 0, 1, "New LIA Increment");
     dpd_file2_init(&dIA, CC_OEI, L_irr, 0, 1, "dIA");
     dpd_file2_dirprd(&dIA, &newLIA);
     dpd_file2_close(&dIA);
+    dpd_file2_close(&newLIA);
 
+    dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "LIA");
+    dpd_file2_copy(&LIA, CC_OEI, "New LIA");
+    dpd_file2_close(&LIA);
+    dpd_file2_init(&newLIA, CC_OEI, L_irr, 0, 1, "New LIA");
+    dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "New LIA Increment");
+    dpd_file2_axpy(&LIA, &newLIA, 1, 0);
+    dpd_file2_close(&LIA);
+    dpd_file2_close(&newLIA);
+
+    dpd_file2_init(&newLia, CC_OEI, L_irr, 0, 1, "New Lia");
+    dpd_file2_copy(&newLia, CC_OEI, "New Lia Increment");
+    dpd_file2_close(&newLia);
+
+    dpd_file2_init(&newLia, CC_OEI, L_irr, 0, 1, "New Lia Increment");
     dpd_file2_init(&dia, CC_OEI, L_irr, 0, 1, "dia");
     dpd_file2_dirprd(&dia, &newLia);
     dpd_file2_close(&dia);
+    dpd_file2_close(&newLia);
+
+    dpd_file2_init(&Lia, CC_OEI, L_irr, 0, 1, "Lia");
+    dpd_file2_copy(&Lia, CC_OEI, "New Lia");
+    dpd_file2_close(&Lia);
+    dpd_file2_init(&newLia, CC_OEI, L_irr, 0, 1, "New Lia");
+    dpd_file2_init(&Lia, CC_OEI, L_irr, 0, 1, "New Lia Increment");
+    dpd_file2_axpy(&Lia, &newLia, 1, 0);
+    dpd_file2_close(&Lia);
+    dpd_file2_close(&newLia);
   }
   else if(params.ref == 2) { /** UHF **/
 
+    dpd_file2_init(&newLIA, CC_OEI, L_irr, 0, 1, "New LIA");
     dpd_file2_init(&dIA, CC_OEI, L_irr, 0, 1, "dIA");
     dpd_file2_dirprd(&dIA, &newLIA);
     dpd_file2_close(&dIA);
+    dpd_file2_close(&newLIA);
 
+    dpd_file2_init(&newLia, CC_OEI, L_irr, 2, 3, "New Lia");
     dpd_file2_init(&dia, CC_OEI, L_irr, 2, 3, "dia");
     dpd_file2_dirprd(&dia, &newLia);
     dpd_file2_close(&dia);
+    dpd_file2_close(&newLia);
   }
-
-  dpd_file2_close(&newLIA);
-  dpd_file2_close(&newLia);
 
   return;
 }

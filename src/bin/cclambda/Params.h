@@ -11,5 +11,6 @@ struct Params {
   double L0; /* 1 for ground states, 0 for excited states */
   double R0; /* only matters for excited states - read from CC_INFO */
   double cceom_energy; /* only matters for excited states - read from CC_INFO */
+  int local;  /* boolean for using simulated local-CC framework */
 };
 

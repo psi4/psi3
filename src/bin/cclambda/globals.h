@@ -2,6 +2,7 @@
 #include <libdpd/dpd.h>
 #include "MOInfo.h"
 #include "Params.h"
+#include "Local.h"
 
 /* Global variables */
 #ifdef EXTERN
@@ -15,5 +16,6 @@ EXTERN FILE *infile, *outfile;
 EXTERN char *psi_file_prefix;
 EXTERN struct MOInfo moinfo;
 EXTERN struct Params params;
+EXTERN struct Local local;
 EXTERN int L_irr;
 EXTERN int R_irr;

@@ -15,8 +15,8 @@ void FmiL2(void)
   /* RHS -= P(ij)*Limab*Fjm */
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
-    dpd_file2_init(&LFMIt2, CC_OEI, 0, 0, 0, "FMIt");
-    dpd_file2_init(&LFmit2, CC_OEI, 0, 0, 0, "Fmit");
+    dpd_file2_init(&LFMIt2, CC_OEI, 0, 0, 0, "FMI");
+    dpd_file2_init(&LFmit2, CC_OEI, 0, 0, 0, "Fmi");
 
     dpd_buf4_init(&LIJAB, CC_LAMPS, L_irr, 0, 7, 2, 7, 0, "LIJAB");
     dpd_buf4_init(&X1, CC_TMP1, L_irr, 0, 7, 0, 7, 0, "X(0,7) 1");

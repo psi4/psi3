@@ -17,8 +17,8 @@ void FaeL2(void)
 
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
-    dpd_file2_init(&LFAEt2, CC_OEI, 0, 1, 1, "FAEt");
-    dpd_file2_init(&LFaet2, CC_OEI, 0, 1, 1, "Faet");
+    dpd_file2_init(&LFAEt2, CC_OEI, 0, 1, 1, "FAE");
+    dpd_file2_init(&LFaet2, CC_OEI, 0, 1, 1, "Fae");
 
     dpd_buf4_init(&LIJAB, CC_LAMPS, L_irr, 2, 5, 2, 7, 0, "LIJAB");
     dpd_buf4_init(&X1, CC_TMP1, L_irr, 2, 5, 2, 5, 0, "X(2,5) 1");
