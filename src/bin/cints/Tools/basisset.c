@@ -87,19 +87,17 @@ void get_shell_info()
    /*--- retrieve shell tranformation table ---*/
    shell_trans_table = file30_rd_shell_transm();
 
+   /*--- retrieve maximum am ---*/
+   BasisSet.max_am = file30_rd_max_am() + 1;
+   if (BasisSet.max_am > CINTS_MAX_AM)
+     punt("Angular momentum limit of CINTS exceeded, reconfigure and recompile");
    
    BasisSet.shells = (struct shell_def *) malloc(sizeof(struct shell_def)*
 						 BasisSet.num_shells);
-   BasisSet.max_am = 0;
    BasisSet.max_num_prims = 0;
    for (i=0; i<BasisSet.num_shells; i++){
       BasisSet.shells[i].center = shell_center[i];
-      if ((l = shell_type[i]) <= CINTS_MAX_AM)
-	BasisSet.shells[i].am = l;
-      else
-	punt("Angular momentum limit of CINTS exceeded, reconfigure and recompile");
-      if (l > BasisSet.max_am)
-        BasisSet.max_am = l;
+      BasisSet.shells[i].am = shell_type[i];
       BasisSet.shells[i].n_prims = shell_num_prims[i];
       if (shell_num_prims[i] > BasisSet.max_num_prims)
         BasisSet.max_num_prims = shell_num_prims[i];
