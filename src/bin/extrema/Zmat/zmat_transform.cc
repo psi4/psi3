@@ -55,13 +55,13 @@ void zmat::compute_B() {
   /*form u*/
   int k=0;
   for(j=0;j<num_entries;++j) {
-      if(strncmp(felement[j],"X   ",2)) {
+      if(strncmp(felement[j],"X\0",2)) {
 	 u[3*j][3*j] = 1.0 / masses[k]; 
 	 u[3*j+1][3*j+1] = 1.0 /masses[k];
 	 u[3*j+2][3*j+2] = 1.0 / masses[k];
 	 ++k;
        }
-       else if (!strncmp(felement[j],"X  ",2)) {
+       else if (!strncmp(felement[j],"X\0",2)) {
 	  u[3*j][3*j] = u[3*j+1][3*j+1] = u[3*j+2][3*j+2]= 1.0;
 	  }
   }

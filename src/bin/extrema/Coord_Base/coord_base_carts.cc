@@ -17,7 +17,8 @@
 
 coord_base_carts :: coord_base_carts() {
 
-    int i, p;
+    int i, num, p;
+    char **temp_names;
 
     /* if dummy atoms are present derived classes will reset num_entries */
     num_atoms = num_entries = file30_rd_natom();
@@ -25,6 +26,17 @@ coord_base_carts :: coord_base_carts() {
     carts = init_array(3*num_atoms);
     c_grads = init_array(3*num_atoms);
     masses = init_array(num_atoms);
+    e_names = (char**) malloc(num_atoms * sizeof(char*) );
+
+    temp_names = file30_rd_felement();
+    num = file30_rd_nentry();
+    p=-1;
+    for(i=0;i<num;++i) {
+	if(strncmp(temp_names[i],"X\0",2))
+	   e_names[++p] = temp_names[i];
+	else
+	   free( temp_names[i] );
+    }
 
     double** t_carts;
     t_carts = file30_rd_geom();
@@ -155,8 +167,8 @@ void coord_base_carts :: print_carts(double conv) {
     fprintf(outfile,"                --------------- --------------- ");
     fprintf(outfile,"---------------\n");
     for(i=0;i<num_entries;++i)
-	fprintf(outfile,"  %.2lf  %25.20lf %25.20lf %25.20lf\n",
-		masses[i], temp[i][0], temp[i][1], temp[i][2]);
+	fprintf(outfile,"  %12s  %15.10lf %15.10lf %15.10lf\n",
+		e_names[i], temp[i][0], temp[i][1], temp[i][2]);
     free_matrix(temp,num_entries);
 
     return;
@@ -185,8 +197,8 @@ void coord_base_carts :: print_c_grads() {
     fprintf(outfile,"                --------------- --------------- ");
     fprintf(outfile,"---------------\n");
     for(i=0;i<num_entries;++i)
-	fprintf(outfile,"  %.2lf  %15.10lf %15.10lf %15.10lf\n",
-		masses[i], cgtemp[i][0], cgtemp[i][1], cgtemp[i][2]);
+	fprintf(outfile,"  %12s  %15.10lf %15.10lf %15.10lf\n",
+		e_names[i], cgtemp[i][0], cgtemp[i][1], cgtemp[i][2]);
     free_matrix(cgtemp,num_entries);
     
     return;

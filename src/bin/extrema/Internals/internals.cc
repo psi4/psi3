@@ -116,14 +116,11 @@ void internals :: back_transform(double *c_new, double *c_old ) {
       for(i=0;i<fnum_coords;++i) {
 	  dq[i] = c_new[i] - c_old[i];
       }
-
-      if(print_lvl > RIDICULOUS_PRINT) {
-	  print_carts(1.0);
-	  for(i=0;i<fnum_coords;++i) 
-	      fprintf(outfile,
-		      "\n dq[%d] %.20lf = c_new[%d] %.20lf - c_old[%d] %.20lf",
-		      i,dq[i],i,c_new[i],i,c_old[i]);
+      if(print_lvl >= RIDICULOUS_PRINT) {
+          for(i=0;i<fnum_coords;++i)
+              fprintf(outfile,"\n dq[%d]=%.20lf",i+1,dq[i]);
       }
+
 
       /*compute dx = A dq */
       for(i=0;i<3*num_entries;++i) 
@@ -147,11 +144,11 @@ void internals :: back_transform(double *c_new, double *c_old ) {
       }
       dx_sum /= (3*num_entries);
       if(hack)
-	  if(print_lvl>NORMAL_PRINT)
+	  if(print_lvl >= RIDICULOUS_PRINT)
 	      fprintf(outfile,
 		      "\n  WARNING: Using hack to keep proper orientation"); 
 
-      if(print_lvl > RIDICULOUS_PRINT) {
+      if(print_lvl >= RIDICULOUS_PRINT) {
 	  for(i=0;i<3*num_entries;++i) 
 	      fprintf(outfile,"\n dx[%d]=%.20lf",i+1,dx[i]);
       }

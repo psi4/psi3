@@ -163,6 +163,7 @@ void coord_base :: H_test() {
 
     free(evals);
     free_matrix(evecs, num_coords);
+    free_matrix(H, num_coords);
 
     return;
 }

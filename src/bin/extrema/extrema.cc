@@ -69,12 +69,15 @@ int get_coord_type() {
   
   if(ip_exist("COORDINATES",0)) {
       errcod = ip_string("COORDINATES", &buffer,0);
-      if( !strcmp(buffer,"CARTESIANS") ) {
-	  fprintf(outfile,"\n  Using cartesian coordinates\n");
-	  coord_type = CART_TYPE; }
+      if( !strcmp(buffer,"CARTESIANS") ) 
+	  punt("Cartesians not available");
       else if( !strcmp(buffer,"ZMATRIX") ) {
-	  fprintf(outfile,"\n  Using z-matrix coordinates\n");
-	  coord_type = ZMAT_TYPE; }
+	  if( ip_exist("ZMAT",0) ) {
+	      fprintf(outfile,"\n  Using z-matrix coordinates\n");
+	      coord_type = ZMAT_TYPE; }
+	  else
+	      punt("Can't find z-matrix");
+      }
       else if( !strcmp(buffer,"DELOCALIZED") ) {
 	  fprintf(outfile,"\n Using delocalized internal coordinates\n");
 	  coord_type = DELOC_TYPE; }
@@ -83,8 +86,14 @@ int get_coord_type() {
       free(buffer);
   }    
   else {
-      fprintf(outfile,"\n  Defaulting to z-matrix coordinates\n");
-      coord_type = 2;
+      if( ip_exist("ZMAT",0) ) {
+        fprintf(outfile,"\n  Defaulting to z-matrix coordinates\n");
+        coord_type = ZMAT_TYPE; }
+      else if( ip_exist("GEOMETRY",0) ) {
+        fprintf(outfile,"\n  Defaulting to delocalized internal coordinates\n");
+        coord_type = DELOC_TYPE; }
+      else 
+	punt("Problem determining coordinate type");
   }
 
   return coord_type;
@@ -116,6 +125,7 @@ void start_io() {
   
     ip_cwk_add(":EXTREMA");
     ip_cwk_add(":DEFAULT");
+    ip_cwk_add(":INPUT");
 
     file30_init();
 

@@ -4,65 +4,21 @@
 
 including code from <b>OPTKING</b>, Rollin King
 
-<b>Design Overview</b>
-
-<b>EXTREMA</b> is intended to eventually encompass all necessary coordinate
-manipulations for the <b>PSI 3.0</b> quantum chemistry package.  This includes 
-geometry optimizations and transition state searches as well as automation of
-numerical differentiation.
-
-The code is implemented in C++ and has a class hierarchy which should make
-code development relatively painless.  The lowest level routines are members
-of the <b>math_tools</b> class.  These are basic mathematical algorithms and 
-for future portability, they are implemented with no dependence on higher level classes.  
-A series of classes derive from this class, each containing member data and
-functions common to specific coordinate types.  For instance, all coordinate
-manipulations will involve cartesian coordinates, thus cartesian coordinate
-manipulations reside in the <b>coord_base</b> class which all coordinate types 
-derive from.  Top-level classes encompass all necessary functions for 
-coordinate manipulations.  These classes provide the only public functions;
-coordinate object initializers and method drivers.  The <b>main</b> function
-simply determines the coordinate type and method desired by the user, 
-initializes an object of the desired top-level coordinate class, and calls
-the appropriate public driver function to accomplish the task.
-
-This design based on derived classes simplifies the implementation
-of coordinate types; the top level class includes those lower-level classes
-which fit with the coordinate definition.  These top-level classes, however,
-need to perform many manipulations of data from the abstract classes.
-Thus, data protection seems more inconvenient and inefficient than helpful with the current design. 
-The full use of C++'s capabilities is not made; 
-the class structure simplifies coordinate implementation, but no real data protection is present.
+<b>EXTREMA</b> provides stable optimization code for stand-alone use of the <b>PSI 3.0</b> quantum chemistry package.
 
 <b>Current State</b>
 
-z-matrix optimizations are stable for all cases tested thus far, though
-possible failure conditions are known.
-Delocalized internal coordinate optimizations have been added recently.
-This code appears stable for most test cases, while failure conditions are
-known and understood as noted below.  
-A long list of bells and whistles is planned to increase
-the efficiency and reliablility of the code.  
-The design of the code is now fairly established and assistance from other developers 
-would be very useful.  
-I do ask, however, that new developers keep in communication with me in order to maintain
-consitent coding and design style.
+z-matrix optimizations appear stable.
+Delocalized internal coordinate capability has been added.
+This code appears stable for systems which do not include linear or near-linear valence angles.  
 
-Short term goals include:
+Goals for stable PSI 3.1 release:
 <ul>
 <li> starting from a calculated Hessian
 <li> a trust radius method
+<li> gdiis convergence acceleration
 <li> capability for transition state searches
-<li> solution of the linear fragment problem in delocalized internals
-<li> automated numerical differentiation for both delocalized and z-matrix coordinates
 </ul> 
-
-Other possible projects:
-<ul>
-<li> adding full point group capability to input
-<li> modifying input to perform reorientation only, 
-this would allow avoidance of cartesian back transformation problems
-</ul>
 
 <b>References:</b>
 <ul>
@@ -74,40 +30,12 @@ Optimization, J. Baker, A. Kessi, and B. Delley, J. Chem. Phys. <b>105</b>,
 
 <b>Linear Fragments:</b>
 
-While delocalized internals with linear fragments may work by coincidence, the current
-implementation does not handle them properly.  
 z-matrix coordinates using dummy atoms to avoid 180.0 degree valence angles should be 
-used for any molecule with linear or near linear fragments.  
+used for any molecule with linear or near linear fragments.
+Delocalized coordinate code will abort if near linear angles are detected.  
 Both coordinate types will fail if angles near 180 are optimized.
 
-<b>Known problems</b>
-<ul>
-<li> Still problems with reorienting dummy atoms in input, only for sperical tops, that I know of.
-<li> The code doesn't include a great deal of checks for improper usage.
-Attempts have been made, however, to point out probable causes and solutions for common failures.
-This area should be improved in the future.
-<li> The iterative back transformation is a common source of failure.  Using input's code to reorient
-after every step would avoid this problem entirely for z-matrix coordinates
-<li> z-matrix
-  <ul> 
-  <li> A lack of consistent positioning of dummy atoms after cartesian reorientation (provided by input)
-       can cause problems with maintaning proper orientation during back transformation.
-       A quick and dirty solution has been implemented where cartesian coordinates near zero are not modified
-       during the back transformation.  While thus far this approach has proven successful, it does slow convergence
-       and it is concievable that it could possibly cause convergence failures.
-  </ul>
-<li> delocalized internals
-  <ul>
-  <li> There is currently no way to avoid 180 or near 180 degree angles during simple internal generation. 
-       This causes havoc for near 180 degree angles and results in improper numbers of coordinates for molecules
-       with linear fragments.  D2h triatomics work by accident, all other linear molecules (except diatomics) fail
-       and the code will exit upon detection.  The solution will probably involve automatic insertion of dummy atoms
-       (?).  At that point, the code should somehow project out any displacements involving the dummy atoms.  Otherwise,
-       extra degrees of freedom would be introduced.  
-  </ul>
-</ul>
-
-<b>Important notes for developers:</b>
+<b>Notes</b>
 
 <ul>
 <li>Matrix naming convention

@@ -161,7 +161,7 @@ void internals :: compute_G() {
 
     free_matrix(temp1,fnum_coords);
 
-    if(print_lvl >= RIDICULOUS_PRINT) {
+    if(print_lvl > RIDICULOUS_PRINT) {
 	fprintf(outfile,"\n  G matrix:\n");
 	print_mat(G,fnum_coords,fnum_coords,outfile);
     }
@@ -189,7 +189,7 @@ void internals :: compute_A() {
     free_matrix(temp1,fnum_coords);
     free_matrix(temp2,3*num_entries);
 
-    if(print_lvl >= RIDICULOUS_PRINT) {
+    if(print_lvl > RIDICULOUS_PRINT) {
 	fprintf(outfile,"\n  A matrix:\n");
 	print_mat(A,3*num_entries,fnum_coords,outfile);
     }

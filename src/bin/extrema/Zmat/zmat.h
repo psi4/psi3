@@ -63,6 +63,7 @@ class zmat : protected internals {
 	free(z_geom); 
 	free(simples);
 	free(first_unique);
+	free(pos_neg_pairs);
 	return; }
     void optimize();
 
@@ -72,3 +73,6 @@ class zmat : protected internals {
   \brief zmat destructor 
 
   Frees allocated memory.*/
+
+
+

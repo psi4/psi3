@@ -22,6 +22,8 @@
 #define TORS_TYPE 2 /*!< simple tors type id */
 #define IRREP_TOL 0.05 /*!< smallest valid irrep coefficient */
 #define ALMOST_ZERO 1.0e-14 /*!< used when computing norms */
+#define NEAR_180 179.0 /*!< valence angle near 180? */
+#define NOT_180 (180.0 - 1e-5) /*!< greater than this is 180 */
 
 #define CART_TYPE 1 /*!< cartesian coordinate id */
 #define ZMAT_TYPE 2 /*!< zmat coordinate id */ 

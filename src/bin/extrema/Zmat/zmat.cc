@@ -39,12 +39,9 @@ zmat :: zmat() : internals()
 
   dummy=0;
   for(i=0;i<num_entries;++i) 
-      if(!strncmp(felement[i],"X ",2) )
+      if(!strncmp(felement[i],"X\0",2) )
 	  dummy=1;
   if(dummy) {
-
-      fprintf(outfile,"\n  Beware: imput can't handle dummy atoms for");
-      fprintf(outfile," all symmetries at this time");
 
       free(carts);
       double** cart_temp;
@@ -63,7 +60,7 @@ zmat :: zmat() : internals()
       c_grads = init_array(3*num_entries);
       pos=0;
       for(i=0;i<num_entries;++i) {
-	  if(strncmp(felement[i],"X ",2) ) {
+	  if(strncmp(felement[i],"X\0",2) ) {
 	      c_grads[3*i] = ctemp[3*pos];
 	      c_grads[3*i+1] = ctemp[3*pos+1];
 	      c_grads[3*i+2] = ctemp[3*pos+2];
@@ -110,34 +107,25 @@ zmat :: zmat() : internals()
 	}
   }
 
-  char** labels;
-  labels = (char**) malloc( fnum_coords*sizeof(char*));
-  for(i=0;i<fnum_coords;++i) labels[i] = (char*) malloc(20*sizeof(char));
   int p=0;
   for(i=1;i<num_entries;++i) {
       if(i==1) {
-	  strcpy( labels[p], z_geom[1].bond_label );
 	  simples[p].set_label(z_geom[1].bond_label);
 	  ++p;
       }
       else if( i==2) {
-	  strcpy(labels[p], z_geom[2].bond_label );
           simples[p].set_label(z_geom[2].bond_label);
-	  strcpy(labels[p+1], z_geom[2].angle_label );
           simples[p+1].set_label(z_geom[2].angle_label );
 	  p+=2;
       }
       else if (i>2) {
-	  strcpy(labels[p], z_geom[i].bond_label );
           simples[p].set_label(z_geom[i].bond_label);
-	  strcpy(labels[p+1],z_geom[i].angle_label);
           simples[p+1].set_label(z_geom[i].angle_label);
-	  strcpy(labels[p+2],z_geom[i].tors_label);
           simples[p+2].set_label(z_geom[i].tors_label);
 	  p+=3;
       }
   }
-
+  
   /*find first instance of each unique coordinate*/
   int there;
   first_unique = (int *) malloc(fnum_coords*sizeof(int));
@@ -178,7 +166,7 @@ zmat :: zmat() : internals()
   p=0;
   for(i=0;i<fnum_coords;++i) {
       if(simples[i].get_opt() && first_unique[i]) {
-	  if(simples[i].get_type()==2) 
+	  if(simples[i].get_type()==TORS_TYPE) 
 	      is_torsion[p] = 1;
 	  else is_torsion[p] = 0;
 	  ++p;
@@ -200,7 +188,20 @@ zmat :: zmat() : internals()
   }
   
   free(is_torsion);
-			 
+	
+  /* test for near 180.0 angles, abort if present */
+  if(linear_abort)
+      for(i=0;i<fnum_coords;++i) {
+	  if( simples[i].get_type() == ANGLE_TYPE ) {
+	      if( fabs(simples[i].get_val()) > NEAR_180*_pi/180.0 ) 
+		  punt("Simple valence angle near 180 degrees");
+	  }
+	  else if (simples[i].get_type() == TORS_TYPE) 
+	      if( (fabs(simples[i].get_val()) > NEAR_180*_pi/180.0 ) &&
+		  (fabs(simples[i].get_val()) < NOT_180*_pi/180.0) )
+		  punt("Simple torsion near 180 degrees");
+      }
+  
   return;
 }
 
@@ -299,21 +300,21 @@ void zmat :: print_internals() {
   for(i=-1;i<(num_entries-1);++i) {
     switch(i) {
       case -1:
-	  fprintf(outfile,"%10s\n",felement[0]);
+	  fprintf(outfile,"  %12s\n",felement[0]);
 	  break;
       case 0: 
-	  fprintf(outfile,"%10s %4d %14.12lf\n",
+	  fprintf(outfile,"  %12s %4d %15.10lf\n",
 		  felement[i+1], simples[i].get_bond(), 
 		  simples[i].get_val()*_bohr2angstroms);
 	  break;
       case 1: 
-	  fprintf(outfile,"%10s %4d %14.12lf %4d %14.12lf\n",
+	  fprintf(outfile,"  %12s %4d %15.10lf %4d %15.10lf\n",
 		  felement[i+1], simples[i].get_bond(), 
 		  simples[i].get_val()*_bohr2angstroms,
 		  simples[i+1].get_angle(), simples[i+1].get_val()*180.0/_pi); 
 	  break;
       default:
-	  fprintf(outfile,"%10s %4d %14.12lf %4d %14.12lf %4d %14.12lf\n",
+	  fprintf(outfile,"  %12s %4d %15.10lf %4d %15.10lf %4d %15.10lf\n",
 		  felement[i+1], simples[(i-1)*3].get_bond(), 
 		  simples[(i-1)*3].get_val()*_bohr2angstroms,
 		  simples[(i-1)*3+1].get_angle(), 
@@ -352,7 +353,7 @@ void zmat :: write_file30() {
   int row=0;
   pos = 0;
   for(i=0;i<num_entries;++i) { 
-      if(strncmp(felement[i],"X  ",2)) {
+      if(strncmp(felement[i],"X\0",2)) {
 	  for(j=0;j<3;++j) {
 	      cart_matrix[row][j] = carts[pos];
 	      ++pos;
@@ -555,7 +556,7 @@ void zmat :: print_carts(double conv) {
     fprintf(outfile,"                --------------- --------------- ");
     fprintf(outfile,"---------------\n");
     for(i=0;i<num_entries;++i)
-	fprintf(outfile,"  %8s  %15.10lf %15.10lf %15.10lf\n",
+	fprintf(outfile,"  %12s  %15.10lf %15.10lf %15.10lf\n",
 		felement[i], temp[i][0], temp[i][1], temp[i][2]);
     free_matrix(temp,num_entries);
 
@@ -585,7 +586,7 @@ void zmat :: print_c_grads() {
     fprintf(outfile,"                --------------- --------------- ");
     fprintf(outfile,"---------------\n");
     for(i=0;i<num_entries;++i)
-	fprintf(outfile,"  %8s  %15.10lf %15.10lf %15.10lf\n",
+	fprintf(outfile,"  %12s  %15.10lf %15.10lf %15.10lf\n",
 		felement[i], cgtemp[i][0], cgtemp[i][1], cgtemp[i][2]);
     free_matrix(cgtemp,num_entries);
     

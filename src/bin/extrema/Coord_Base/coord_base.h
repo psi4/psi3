@@ -28,6 +28,7 @@ class coord_base_carts {
 		   but it's read in with cartesian info */
 
     char *symmetry; /*!< symmetry from input.dat or file30 */
+    char **e_names;  /*!< element names (no dummy atoms) */
 	
     virtual void print_carts(double conv);
     virtual void print_c_grads();
@@ -38,9 +39,13 @@ class coord_base_carts {
 
     coord_base_carts();
     ~coord_base_carts(){
+	int i;
 	free(carts);
 	free(c_grads);
 	free(masses);
+	for(i=0;i<num_atoms;++i)
+	    free(e_names[i]);
+	free(e_names);
 	return;
     }
 };
@@ -74,7 +79,8 @@ class coord_base : protected coord_base_carts,  protected math_tools {
 	grad_max, /*!< max allowable gradient is 10^-(grad_max) */
 	print_lvl, /*!< print level */
     	do_deriv, /*!< are we doing derivatives */
-	do_opt;   /*!< are we doing optimization */
+	do_opt,   /*!< are we doing optimization */
+	linear_abort; /*!< die if valence angle near 180? */
 
     double *coords, /*!< generic coordinate array */ 
 	*grads, /*!< generic gradient array */

@@ -122,21 +122,7 @@ deloc :: deloc() : internals() {
       rotor_type = file30_rd_rottype();
       switch (rotor_type) {
       case 3:
-	  if(num_atoms==3) {
-	      /* for now use 3N-7, need dummy atoms for 3N-5 */
-	      if(!strncmp(point_group,"D2h",3)) {
-	      fprintf(outfile,"\n  WARNING: Due to algorithm limitations,");
-	      fprintf(outfile," using 3N-7 degrees of freedom\n");
-	      degrees_of_freedom = 3 * num_atoms - 7; 
-	      }
-	      if(!strncmp(point_group,"C2v",3)) {
-		  fprintf(outfile,
-			  "\n  delocalized: Can't handle C2V linear case,");
-		  fprintf(outfile,"  use z-matrix\n");
-		  punt("Use z-matrix for C2V linear case");
-	      }
-	  }
-	  else if(num_atoms==2)
+	  if(num_atoms==2)
 	      degrees_of_freedom = 3*num_atoms -5;
 	  else punt("Use z-matrix for linear molecules");
 	  break;
@@ -508,6 +494,19 @@ void deloc::init_simples() {
 				simples[++pos].set_simple(2,internal_val,
 							  i,j,k,l,-1);
 			    }
+
+    /* test for near 180.0 angles, abort if present */
+    if(linear_abort)
+	for(i=0;i<num_simples;++i) {
+	    if( simples[i].get_type() == ANGLE_TYPE ) {
+		if( fabs(simples[i].get_val()) > NEAR_180*_pi/180.0 ) 
+		    punt("Simple valence angle near 180 degrees");
+	    }
+	    else if (simples[i].get_type() == TORS_TYPE) 
+		if( (fabs(simples[i].get_val()) > NEAR_180*_pi/180.0 ) &&
+		    (fabs(simples[i].get_val()) < NOT_180*_pi/180.0) )
+		    punt("Simple torsion near 180 degrees");
+	}
  
     return;
 }
