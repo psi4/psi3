@@ -847,6 +847,7 @@ AC_OUTPUT(include/psiconfig.h
           src/bin/cusp/Makefile
           src/bin/mocube/Makefile
           src/bin/localize/Makefile
+          src/bin/stable/Makefile
 
           src/doc/MakeVars src/doc/MakeRules src/doc/Makefile
           src/doc/install/Makefile
