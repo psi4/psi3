@@ -38,7 +38,7 @@ void get_parameters(void)
   }
 
   if (strcmp(Params.dertype, "NONE")==0) {
-    Params.rms_grad_convergence = 5;
+    Params.rms_grad_convergence = 4;
     Params.energy_convergence = 7;
   }
   else {
