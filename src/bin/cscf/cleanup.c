@@ -1,7 +1,15 @@
 /* $Log$
- * Revision 1.3  2000/10/13 19:51:19  evaleev
- * Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
+ * Revision 1.4  2001/04/11 19:31:46  sherrill
+ * I removed printing all MO's by default, since this gets pretty big
+ * and useless for many of the molecules of interest today.  I added
+ * a nice subroutine to print out orbital eigenvalues.  It seems
+ * to work for RHF/ROHF/UHF but is probably broken for TCSCF, which
+ * I'll try to check later.
  *
+/* Revision 1.3  2000/10/13 19:51:19  evaleev
+/* Cleaned up a lot of stuff in order to get CSCF working with the new 
+/* "Mo-projection-capable" INPUT.
+/*
 /* Revision 1.2  2000/08/23 17:15:15  sbrown
 /* Added portions to separate out the correlation and exchange energy at the
 /* end the calculation as well as do the consistency check on the integrated
@@ -46,9 +54,10 @@
 /* orthogonalization. Now, if near-linear dependencies in the basis are found,
 /* eigenvectors of the overlap matrix with eigenvalues less than 1E-6 will be
 /* left out. This will lead to num_mo != num_so, i.e. SCF eigenvector is no
-/* longer a square matrix. Had to rework some routines in libfile30, and add some.
-/* The progrem prints out a warning if near-linear dependencies are found. TRANSQT
-/* and a whole bunch of other codes has to be fixed to work with such basis sets.
+/* longer a square matrix. Had to rework some routines in libfile30, and add 
+/* some.  The progrem prints out a warning if near-linear dependencies are 
+/* found. TRANSQT and a whole bunch of other codes has to be fixed to 
+/* work with such basis sets.
 /*
 /* Revision 1.1.1.1  1999/04/12 16:59:25  evaleev
 /* Added a version of CSCF that can work with CINTS.
@@ -77,6 +86,7 @@ void cleanup()
    int nat,iend,ierr,ci_calc,irot,nbfao;
    int numso;
    int n_there[20],nc[10],no[10];
+   int mo_print;
    int errcod;
    char *ci_type="SCF";
    char *der_type="FIRST";
@@ -89,7 +99,8 @@ void cleanup()
    struct symm *s;
    int *pointers;  /* Array to hold pointers to the scf info */
    char **labs;
-   
+   void print_mo_eigvals(void);
+ 
    ip_cwk_clear();
    ip_cwk_add(":DEFAULT");
    ip_cwk_add(":SCF");
@@ -103,6 +114,8 @@ void cleanup()
    if(strcmp(der_type,"FIRST") && strcmp(der_type,"NONE")) irot=0;
 
    errcod = ip_boolean("ROTATE",&irot,0);
+   mo_print = 0;
+   errcod = ip_boolean("PRINT_MOS",&mo_print,0);
 
  /* TDC(6/19/96) - If we're not rotating, check the phases on the MOs,
    and correct them, if possible. */
@@ -113,10 +126,12 @@ void cleanup()
    
 /* first print mo's, then rotate if this is a ci */
 
-   if(uhf)
+   if (mo_print) {
+     if(uhf)
        print_mos_uhf();
-   else
+     else
        print_mos(); 
+   }
 
    if(irot) rotate_vector();
    else 
@@ -493,7 +508,7 @@ void cleanup()
       if(ci_calc && iopen && irot) {
 	  fprintf(outfile,
 		  "\n ci_typ is %s so mo vector will be rotated\n",ci_type);
-	  print_mos();
+          if (mo_print) print_mos();
       }
       num_elec = ekin = enpot = ovlp = 0.0;
       for (i=0; i < num_ir ; i++) {
@@ -521,8 +536,10 @@ void cleanup()
       
       if(uhf)
 	  s2 = ssquare();
-/* Print MOs in a special format */
-      
+
+      /* Print just the orbital eigenvalues --- CDS 4/01 */
+      print_mo_eigvals();
+
       /*if(print & 1){
 	print_mos_new();
 	}*/
@@ -698,7 +715,259 @@ double ssquare(void){
 }
 
 
+/*
+** print_mo_eigvals()
+**
+** Print out the MO eigenvalues, both RHF and UHF case
+** C. David Sherrill
+** April 2001
+*/
+void print_mo_eigvals(void)
+{
+  int i,irrep,done,lowest_irrep,printctr=0;
+  int num_closed, num_open, num_mo, num_virt, intocc;
+  int *counter;
+  int *sorted_counter, **sorted_irreps, **sorted_index;
+  double **sorted_evals;
+  double tval,lowest,occup;
+  double OCCTOL;
 
+  OCCTOL = 1.0E-6;
+
+  num_closed = num_open = num_mo = num_virt = 0;
+  counter = init_int_array(num_ir);
+
+  fprintf(outfile, "\nOrbital energies (a.u.):\n");
+
+  /* RHF/ROHF case */
+  if (!uhf) {
+
+    /* Need to count up how many there are of each type */
+    /* I'm not sure what the nopen/nhalf distinction is ... */
+    for (irrep=0; irrep < num_ir; irrep++) {
+      num_closed += scf_info[irrep].nclosed;    
+      num_open += scf_info[irrep].nopen + scf_info[irrep].nhalf;
+      num_mo += scf_info[irrep].num_mo;
+    }
+
+    num_virt = num_mo - num_closed - num_open;
+
+    sorted_counter = init_int_array(3);
+    sorted_index = init_int_matrix(3,num_mo);
+    sorted_irreps = init_int_matrix(3,num_mo);
+    sorted_evals = init_matrix(3,num_mo);
+
+    /* Ok, just go through and pick out the lowest one each time */
+    done = 0;
+    while (!done) {
+      lowest = 1E9; lowest_irrep = 0;
+      for (irrep=0; irrep < num_ir; irrep++) {
+        done = 1;
+        if (counter[irrep] == scf_info[irrep].num_mo) continue;
+        done = 0;
+        if ((tval = scf_info[irrep].fock_evals[counter[irrep]]) < lowest) {
+          lowest = tval;
+          lowest_irrep = irrep;
+          /* now figure out where to store it */
+          occup = scf_info[lowest_irrep].occ_num[counter[lowest_irrep]];
+        }
+      }
+      if (!done) {
+        if (fabs(occup - 2.0) < OCCTOL) intocc = 2;
+        else if (fabs(occup - 1.0) < OCCTOL) intocc = 1;
+        else if (fabs(occup - 0.0) < OCCTOL) intocc = 0;
+        else {
+          fprintf(outfile, 
+            "(print_mo_eigvals): I found an orbital with %f electrons...\n",
+             occup);
+          return;
+        }
+        sorted_irreps[intocc][sorted_counter[intocc]] = lowest_irrep;
+        sorted_evals[intocc][sorted_counter[intocc]] = lowest;
+        sorted_index[intocc][sorted_counter[intocc]] = counter[lowest_irrep]; 
+        counter[lowest_irrep]++;
+        sorted_counter[intocc]++;
+      }
+    }
+
+    fprintf(outfile, "\n  Doubly occupied orbitals\n");
+     for (i=0,printctr=1; i<num_closed; i++,printctr++) {
+       fprintf(outfile, " %3d%3s %12.6lf  ", 
+             sorted_index[2][i]+1, scf_info[sorted_irreps[2][i]].irrep_label,
+             sorted_evals[2][i]);
+       if ((printctr % 3) == 0) fprintf(outfile, "\n");
+     } 
+     if ((printctr-1) % 3) fprintf(outfile, "\n");
+
+     if (num_open > 0) {
+       fprintf(outfile, "\n  Singly occupied orbitals\n");
+       for (i=0,printctr=1; i<num_open; i++,printctr++) {
+         fprintf(outfile, " %3d%3s %12.6lf  ", 
+               sorted_index[1][i]+1, scf_info[sorted_irreps[1][i]].irrep_label,
+               sorted_evals[1][i]);
+         if ((printctr % 3) == 0) fprintf(outfile, "\n");
+       } 
+     }
+     if ((printctr-1) % 3) fprintf(outfile, "\n");
+   
+     fprintf(outfile, "\n  Unoccupied orbitals\n");
+     for (i=0,printctr=1; i<num_virt; i++,printctr++) {
+       fprintf(outfile, " %3d%3s %12.6lf  ", 
+             sorted_index[0][i]+1, scf_info[sorted_irreps[0][i]].irrep_label,
+             sorted_evals[0][i]);
+       if ((printctr % 3) == 0) fprintf(outfile, "\n");
+     } 
+     if ((printctr-1) % 3) fprintf(outfile, "\n");
+
+    free(sorted_counter);
+    free_int_matrix(sorted_index,3);
+    free_int_matrix(sorted_irreps,3);
+    free_matrix(sorted_evals,3);
+  }
+
+  /* UHF case */
+  else {
+
+    /* I'm not sure what the nopen/nhalf distinction is ... */
+    for (irrep=0; irrep < num_ir; irrep++) {
+      num_closed += scf_info[irrep].nclosed;    
+      num_open += scf_info[irrep].nopen + scf_info[irrep].nhalf;
+      num_mo += scf_info[irrep].num_mo;
+    }
+
+    num_virt = num_mo - num_closed - num_open;
+
+    sorted_counter = init_int_array(2);
+    sorted_index = init_int_matrix(2,num_mo);
+    sorted_irreps = init_int_matrix(2,num_mo);
+    sorted_evals = init_matrix(2,num_mo);
+
+    /* do alpha */
+
+    /* Ok, just go through and pick out the lowest one each time */
+    done = 0;
+    while (!done) {
+      lowest = 1E9; lowest_irrep = 0;
+      for (irrep=0; irrep < num_ir; irrep++) {
+        done = 1;
+        if (counter[irrep] == scf_info[irrep].num_mo) continue;
+        done = 0;
+        if ((tval = spin_info[0].scf_spin[irrep].fock_evals[counter[irrep]]) 
+            < lowest) {
+          lowest = tval;
+          lowest_irrep = irrep;
+          /* now figure out where to store it */
+    occup = spin_info[0].scf_spin[lowest_irrep].occ_num[counter[lowest_irrep]];
+        }
+      }
+      if (!done) {
+        if (fabs(occup - 1.0) < OCCTOL) intocc = 1;
+        else if (fabs(occup - 0.0) < OCCTOL) intocc = 0;
+        else {
+          fprintf(outfile, 
+            "(print_mo_eigvals): I found an orbital with %f electrons...\n",
+             occup);
+          return;
+        }
+        sorted_irreps[intocc][sorted_counter[intocc]] = lowest_irrep;
+        sorted_evals[intocc][sorted_counter[intocc]] = lowest;
+        sorted_index[intocc][sorted_counter[intocc]] = counter[lowest_irrep]; 
+        counter[lowest_irrep]++;
+        sorted_counter[intocc]++;
+      }
+    }
+
+    fprintf(outfile, "\n  Alpha Occupied orbitals\n");
+     for (i=0,printctr=1; i<sorted_counter[1]; i++,printctr++) {
+       fprintf(outfile, " %3d%3s %12.6lf  ", 
+             sorted_index[1][i]+1, scf_info[sorted_irreps[1][i]].irrep_label,
+             sorted_evals[1][i]);
+       if ((printctr % 3) == 0) fprintf(outfile, "\n");
+     } 
+     if ((printctr-1) % 3) fprintf(outfile, "\n");
+
+     fprintf(outfile, "\n  Alpha Unoccupied orbitals\n");
+     for (i=0,printctr=1; i<sorted_counter[0]; i++,printctr++) {
+       fprintf(outfile, " %3d%3s %12.6lf  ", 
+             sorted_index[0][i]+1, scf_info[sorted_irreps[0][i]].irrep_label,
+             sorted_evals[0][i]);
+       if ((printctr % 3) == 0) fprintf(outfile, "\n");
+     } 
+     if ((printctr-1) % 3) fprintf(outfile, "\n");
+
+
+
+    /* do beta */
+    zero_int_array(counter,num_ir);
+    zero_int_array(sorted_counter,2);
+    zero_int_matrix(sorted_index,2,num_mo);
+    zero_int_matrix(sorted_irreps,2,num_mo);
+
+    /* Ok, just go through and pick out the lowest one each time */
+    done = 0;
+    while (!done) {
+      lowest = 1E9; lowest_irrep = 0;
+      for (irrep=0; irrep < num_ir; irrep++) {
+        done = 1;
+        if (counter[irrep] == scf_info[irrep].num_mo) continue;
+        done = 0;
+        if ((tval = spin_info[1].scf_spin[irrep].fock_evals[counter[irrep]]) 
+            < lowest) {
+          lowest = tval;
+          lowest_irrep = irrep;
+          /* now figure out where to store it */
+    occup = spin_info[1].scf_spin[lowest_irrep].occ_num[counter[lowest_irrep]];
+        }
+      }
+      if (!done) {
+        if (fabs(occup - 1.0) < OCCTOL) intocc = 1;
+        else if (fabs(occup - 0.0) < OCCTOL) intocc = 0;
+        else {
+          fprintf(outfile, 
+            "(print_mo_eigvals): I found an orbital with %f electrons...\n",
+             occup);
+          return;
+        }
+        sorted_irreps[intocc][sorted_counter[intocc]] = lowest_irrep;
+        sorted_evals[intocc][sorted_counter[intocc]] = lowest;
+        sorted_index[intocc][sorted_counter[intocc]] = counter[lowest_irrep]; 
+        counter[lowest_irrep]++;
+        sorted_counter[intocc]++;
+      }
+    }
+
+    fprintf(outfile, "\n  Beta Occupied orbitals\n");
+     for (i=0,printctr=1; i<sorted_counter[1]; i++,printctr++) {
+       fprintf(outfile, " %3d%3s %12.6lf  ", 
+             sorted_index[1][i]+1, scf_info[sorted_irreps[1][i]].irrep_label,
+             sorted_evals[1][i]);
+       if ((printctr % 3) == 0) fprintf(outfile, "\n");
+     } 
+     if ((printctr-1) % 3) fprintf(outfile, "\n");
+
+     fprintf(outfile, "\n  Beta Unoccupied orbitals\n");
+     for (i=0,printctr=1; i<sorted_counter[0]; i++,printctr++) {
+       fprintf(outfile, " %3d%3s %12.6lf  ", 
+             sorted_index[0][i]+1, scf_info[sorted_irreps[0][i]].irrep_label,
+             sorted_evals[0][i]);
+       if ((printctr % 3) == 0) fprintf(outfile, "\n");
+     } 
+     if ((printctr-1) % 3) fprintf(outfile, "\n");
+
+
+
+
+    free(sorted_counter);
+    free_int_matrix(sorted_index,2);
+    free_int_matrix(sorted_irreps,2);
+    free_matrix(sorted_evals,2);
+  }
+
+  fprintf(outfile, "\n");
+
+  free(counter);
+
+}
 
 
 
