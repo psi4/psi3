@@ -1,107 +1,59 @@
 #!/usr/bin/perl  
 
-$TOL = 10**-10;
-$HTOL = 10**-1;
-$REF_FILE = "output.ref";
-$TEST_FILE = "output.dat";
+require("../psitest.pl");
+
+$TOL = 10**-8;
+$GTOL = 10**-8;
+$HTOL = 10**-2;
+$REF_FILE = "file11.ref";
+$TEST_FILE = "psi.file11.dat";
+$REF_OUT = "output.ref";
+$TEST_OUT = "output.dat";
 $RESULT = "scf-freq-symm-numer.test";
-$NDOF = 2;
 
 system ("input");
 system ("psi3");
 
-extract_data($REF_FILE,$Enuc_ref,$Ehf_ref);
-extract_data($TEST_FILE,$Enuc_test,$Ehf_test);
+$natom = seek_natom_file11($REF_FILE,"SCF");
 
-compare_data();
+open(RE, ">$RESULT") || die "cannot open $RESULT $!"; 
+select (RE);
+printf "\nSCF-FREQ-SYMM-NUMER:\n";
 
-###############################################################################
-sub extract_data
-{
-  open(OUT, "$_[0]") || die "cannot open $_[0]: $!";
-  
-  @infile = <OUT>;
-
-  seek(OUT,0,0);
-  while (<OUT>) {
-    if (/Nuclear Repulsion Energy    =/) {
-      @data1 = split(/ +/, $_);
-      $_[2] = $data1[4];
-    }
-  }
-
-  seek(OUT,0,0);
-  while (<OUT>) {
-    if (/total energy       =/) {
-      @data2 = split(/ +/, $_);
-      $_[3] = $data2[4];
-    }
-  }
-  
-  close(OUT);
-
-  $j=0;
-  $linenum=0;
-  foreach $line (@infile) {
-    $linenum++;
-    if ($line =~ m/Harmonic Vibrational Frequencies/) {
-      while ($j<$NDOF) {
-        @test = split (/ +/,$infile[$linenum+$j]);
-        if ($_[0] eq $REF_FILE) {
-          $hvf_ref[$j] = $test[2];
-        }
-        elsif ($_[0] eq $TEST_FILE) {
-          $hvf_test[$j] = $test[2];
-        }
-        $j++;
-      }
-    }
-  }
-
+if(abs(seek_energy_file11($REF_FILE,"SCF") - seek_energy_file11($TEST_FILE,"SCF")) > $TOL) {
+  fail_test("SCF energy");
 }
-###############################################################################
-sub compare_data
-{
-  open (RE, ">$RESULT") || die "cannot open $RESULT: $!";
-
-  select (RE);
-
-  printf "\nSCF-FREQ-SYMM-NUMER:\n";
-
-  $diff_nuc = abs ($Enuc_ref - $Enuc_test);
-  if ($diff_nuc > $TOL) {
-    printf "\nNuclear Repulsion Energy               ... FAILED\n";
-  }
-  else {
-    printf "\nNuclear Repulsion Energy               ... PASSED\n";
-  }
-
-  $diff_hf = abs ($Ehf_ref - $Ehf_test);
-  if ($diff_hf > $TOL) {
-    printf "\nRHF Energy                             ... FAILED\n";
-  }
-  else {
-    printf "\nRHF Energy                             ... PASSED\n";
-  }
-
-  for ($i=0; $i<$NDOF; $i++) {
-    $diff_hvf[$i] = abs ($hvf_ref[$i] - $hvf_test[$i]);
-    $diff_int[$i] = abs ($int_ref[$i] - $int_test[$i]);
-  }
-
-  for ($i=0; $i<$NDOF; $i++) {
-    if ($diff_hvf[$i] > $HTOL) {
-      $hout = "FAIL";
-    }
-  }
-  
-  if ($hout eq "FAIL") {
-    printf "\nHarmonic Vibrational Frequencies       ... FAILED\n\n";
-  }
-  else {
-    printf "\nHarmonic Vibrational Frequencies       ... PASSED\n\n";
-  } 
-
-  close (RE);
+else {
+  pass_test("SCF energy");
 }
-###############################################################################
+
+@geom_ref = seek_geom_file11($REF_FILE, "SCF");
+@geom_test = seek_geom_file11($TEST_FILE, "SCF");
+if(!compare_arrays(\@geom_ref, \@geom_test, $natom, 3, $GTOL)) {
+  fail_test("SCF Geometry");
+}
+else {
+  pass_test("SCF Geometry");
+}
+
+@grad_ref = seek_grad_file11($REF_FILE, "SCF");
+@grad_test = seek_grad_file11($TEST_FILE, "SCF");
+
+if(!compare_arrays(\@grad_ref, \@grad_test, $natom, 3, $GTOL)) {
+  fail_test("SCF Gradient");
+}
+else {
+  pass_test("SCF Gradient");
+}
+
+@freq_ref = seek_freq($REF_OUT,"Harmonic Frequency",$NDOF);
+@freq_test = seek_freq($TEST_OUT,"Harmonic Frequency",$NDOF);
+
+if(!compare_arrays(\@freq_ref, \@freq_test, $NDOF, 1, $HTOL)) {
+  fail_test("SCF Frequencies");
+}
+else {
+  pass_test("SCF Frequencies");
+}    
+
+close (RE);
