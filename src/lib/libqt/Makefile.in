@@ -11,8 +11,8 @@ TARGET = $(top_objdir)/lib/libPSI_qt.a
 CSRC = \
 blas_intfc.c       invert.c     ras_set.c       schmidt.c \
 dirprd_block.c     mat_in.c     newmm_rking.c  reorder_qt.c    schmidt_add.c \
-dot_block.c        mat_print.c  normalize.c    reorder_ras.c   sem.c \
-eri.c              newmm.c      pople.c        reorder_ras2.c  solve_pep.c \
+dot_block.c        mat_print.c  normalize.c    \
+eri.c              newmm.c      pople.c        solve_pep.c \
 fill_sym_matrix.c  newmm2.c     probabil.c     rootfind.c      timer.c \
 filter.c           lapack_intfc.c
 
