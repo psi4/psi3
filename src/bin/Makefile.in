@@ -2,9 +2,10 @@
 .PHONY:	default all install depend clean targetclean
 
 subdirs = \
-input cints cscf transqt ccsort ccenergy cctriples cchbar cclambda ccdensity cceom \
-clag cphf detcas detcasman detci extrema geom mp2 mp2r12 oeprop optking psi3 psiclean \
-mocube localize stable response\
+psi3 input cints cscf transqt optking \
+ccsort ccenergy cctriples cchbar cclambda ccdensity cceom ccresponse \
+clag cphf detcas detcasman detci extrema geom mp2 mp2r12 oeprop psiclean \
+mocube localize stable response \
 
 all: default
 
