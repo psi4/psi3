@@ -3,7 +3,7 @@
 
 /* dpd_buf4_symm2(): Symmetrizes two dpdbuf4's by
 ** taking, I'(pq,rs) = 1/2 [I1(pq,rs) + I2(pq,rs)] (note the
-** indices!).  Users should keep in mind that the second buffer will
+** indices!).  Users should keep in mind that the first! buffer will
 ** be overwritten when this function is called.  Also note that this
 ** routine will NOT check to see if the row and column dimensions of
 ** the input buffers are identical, which is necessary for this to

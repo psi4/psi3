@@ -39,7 +39,7 @@ int dpd_file2_axpy(dpdfile2 *FileA, dpdfile2 *FileB, double alpha,
     else {
       for(row=0; row < FileB->params->rowtot[h]; row++)
         for(col=0; col < FileB->params->coltot[h^my_irrep]; col++)
-          FileB->matrix[h][row][col] += alpha*FileA->matrix[h][col][row];
+          FileB->matrix[h][row][col] += alpha*FileA->matrix[h^my_irrep][col][row];
     }
   }
 

@@ -19,6 +19,11 @@ extern FILE *outfile;
  **              0, 1, 2, or 3).
  **   double alpha: A prefactor for the product alpha * X * Y.
  **   double beta: A prefactor for the target beta * Z.
+ **
+ ** applicability update by RAK, 2-04
+ ** this function does not work for dots that require a 13 _and_ a 31 shift
+ ** So currently we are using dots (0,0) (1,1) (2,2) (3,3) and (0,2);
+ ** but (3,2) and (0,3) will not work unless C1 symmetry
  */
 
 int dpd_contract442(dpdbuf4 *X, dpdbuf4 *Y, dpdfile2 *Z, int target_X,
@@ -195,8 +200,16 @@ int dpd_contract442(dpdbuf4 *X, dpdbuf4 *Y, dpdfile2 *Z, int target_X,
         else if ( (Xtrans) && (!Ytrans)) { Hy = Hx;       Hz = Hx^GX; }
         else /* ( (Xtrans) && (Ytrans))*/{ Hy = Hx^GY;    Hz = Hx^GX; }
 
-	/* fprintf(stdout,"rows %d links %d cols %d\n",
-	   Z->params->rowtot[Hz], numlinks[Hx], Z->params->coltot[Hz]); */
+        /*
+        if (!Xtrans && !Ytrans) {
+	fprintf(outfile,"rows[%d]=%d links[%d]=%d cols[%d]=%d\n",
+	   Hz, Z->params->rowtot[Hz], Hx, numlinks[Hx], Hz^GZ,
+       Z->params->coltot[Hz^GZ]); 
+    fflush(outfile);
+    print_mat(Ymat[Hy], numlinks[Hx], Z->params->coltot[Hz^GZ], outfile);
+    fflush(outfile);
+        }
+        */
 
         newmm_rking(Xmat[Hx], Xtrans, Ymat[Hy], Ytrans,
             Z->matrix[Hz], Z->params->rowtot[Hz],
