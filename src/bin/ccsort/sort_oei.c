@@ -50,7 +50,7 @@ void sort_oei(void)
 
 void sort_oei_uhf(void)
 {
-  int h, nirreps, nmo, nactive, ntri_all, ntri_act;
+  int nirreps, nmo, nactive, ntri_all, ntri_act;
   int p, q, pq, pnew, qnew, psym, qsym;
   int *aocc, *bocc, *aocc_off, *bocc_off, *aocc_sym, *bocc_sym;
   int *avir, *bvir, *avir_off, *bvir_off, *avir_sym, *bvir_sym;
@@ -172,7 +172,7 @@ void sort_oei_uhf(void)
 
 void sort_oei_rhf(void)
 {
-  int h, nirreps, nactive, nmo, ntri_all, ntri_act;
+  int nirreps, nactive, nmo, ntri_all, ntri_act;
   int p, q, pq, pnew, qnew, psym, qsym;
   int *occ, *vir;
   int *cc_occ, *cc_vir;

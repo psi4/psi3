@@ -26,14 +26,12 @@
 
 void get_moinfo(void)
 {
-  int i, j, h, count, ocount, vcount, errcod, col;
+  int i, j, h, count, ocount, vcount;
   int active_count, all_count;
   int active_a_count, active_b_count, all_a_count, all_b_count;
-  int warning, *docc, *socc;
   int fc_offset, offset, cl_offset, op_offset, vr_offset, fv_offset;
   int nfzc, nuocc, nopen, nclsd;
-  int *orbsym;
-  double enuc, escf;
+  double escf;
   double ***evects, ***scf_vector;
   double ***evects_A, ***scf_vector_A;
   double ***evects_B, ***scf_vector_B;

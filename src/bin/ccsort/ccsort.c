@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <libdpd/dpd.h>
@@ -47,7 +48,7 @@ int main(int argc, char *argv[])
 {
   int i;
   int **cachelist, *cachefiles;
-  int ia_size, ab_size, ij_size, f_size, t2_size, b_size;
+  unsigned long int ia_size, ab_size, ij_size, f_size, t2_size, b_size;
 
   init_io(argc,argv);
   init_ioff();
@@ -94,19 +95,19 @@ int main(int argc, char *argv[])
   t2_size = ij_size * ab_size;
 
   if(params.ref == 0 || params.ref == 1) {
-    fprintf(outfile, "\n\tSize of <ab|cd> integrals: %9.3f (MW) / %9.3f (MB)\n",
+    fprintf(outfile, "\n\tSize of <ab|cd> integrals: %9.3lf (MW) / %9.3lf (MB)\n",
       b_size/1e6, (b_size/1e6)*sizeof(double));
-    fprintf(outfile, "\tSize of <ia|bc> integrals: %9.3f (MW) / %9.3f (MB)\n",
+    fprintf(outfile, "\tSize of <ia|bc> integrals: %9.3lf (MW) / %9.3lf (MB)\n",
       f_size/1e6, (f_size/1e6)*sizeof(double));
-    fprintf(outfile, "\tSize of Tijab amplitudes:  %9.3f (MW) / %9.3f (MB)\n",
+    fprintf(outfile, "\tSize of Tijab amplitudes:  %9.3lf (MW) / %9.3lf (MB)\n",
       t2_size/1e6, (t2_size/1e6)*sizeof(double));
   }
   else if(params.ref == 2) {
-    fprintf(outfile, "\n\tSize of <Ab|Cd> integrals: %9.3f (MW) / %9.3f (MB)\n",
+    fprintf(outfile, "\n\tSize of <Ab|Cd> integrals: %9.3lf (MW) / %9.3lf (MB)\n",
       b_size/1e6, (b_size/1e6)*sizeof(double));
-    fprintf(outfile, "\tSize of <Ia|Bc> integrals: %9.3f (MW) / %9.3f (MB)\n",
+    fprintf(outfile, "\tSize of <Ia|Bc> integrals: %9.3lf (MW) / %9.3lf (MB)\n",
       f_size/1e6, (f_size/1e6)*sizeof(double));
-    fprintf(outfile, "\tSize of TIjAb amplitudes:  %9.3f (MW) / %9.3f (MB)\n",
+    fprintf(outfile, "\tSize of TIjAb amplitudes:  %9.3lf (MW) / %9.3lf (MB)\n",
       t2_size/1e6, (t2_size/1e6)*sizeof(double));
   }
   fprintf(outfile, "\n");
@@ -206,7 +207,6 @@ void init_ioff(void)
 void cleanup(void)
 {
   int i;
-  PSI_FPTR next;
 
   psio_write_entry(CC_INFO, "Reference Energy", (char *) &(moinfo.eref),
 		   sizeof(double));

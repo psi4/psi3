@@ -12,7 +12,7 @@
 
 void get_params()
 {
-  int i, errcod, tol;
+  int errcod, tol;
   char *junk;
   
   errcod = ip_string("WFN", &(params.wfn), 0);

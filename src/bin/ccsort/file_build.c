@@ -26,7 +26,7 @@ int file_build(dpdfile4 *File, int inputfile, double tolerance,
   Label *lblptr;
   int idx, p, q, r, s;
   double value;
-  struct iwlbuf *SortBuf, *OutBuf;
+  struct iwlbuf *SortBuf;
   psio_address next;
 
   nirreps = File->params->nirreps;
