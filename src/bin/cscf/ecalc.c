@@ -1,9 +1,12 @@
 /* $Log$
- * Revision 1.5  2000/08/23 17:15:16  sbrown
- * Added portions to separate out the correlation and exchange energy at the
- * end the calculation as well as do the consistency check on the integrated
- * density.
+ * Revision 1.6  2000/09/02 20:48:51  evaleev
+ * Print out one- and two-electron energies every iteration if iprint&2 .
  *
+/* Revision 1.5  2000/08/23 17:15:16  sbrown
+/* Added portions to separate out the correlation and exchange energy at the
+/* end the calculation as well as do the consistency check on the integrated
+/* density.
+/*
 /* Revision 1.4  2000/06/26 19:04:09  sbrown
 /* Added DFT capapbilities to interface with cints using direct scf
 /*
@@ -75,34 +78,33 @@ int ecalc(incr)
    double edif;
    double plimit = pow(10.0,(double) -iconv);
    double neelec = 0.0;
-   double ir_energy, dtmp, dtmp1;
+   double oe_energy, te_energy, dtmp, dtmp1;
    double cinext;
    struct symm *s;
 
    delta=0.0;
+   oe_energy = te_energy = 0.0;
    for (k=0; k < num_ir ; k++) {
       s = &scf_info[k];
       if (nn=s->num_so) {
-         ir_energy = 0.0;
          for (i=ij=0; i < nn ; i++) {
             for (j = 0 ; j <= i ; j++,ij++) {
+	       oe_energy += 0.5*s->pmat[ij]*s->hmat[ij];
                if(uhf) {
-		    ir_energy += 0.5*((s->pmat[ij]*s->hmat[ij])
-				      +(spin_info[0].scf_spin[k].pmat[ij]
-					*spin_info[0].scf_spin[k].fock_pac[ij])
-				      +(spin_info[1].scf_spin[k].pmat[ij]
-					*spin_info[1].scf_spin[k].fock_pac[ij]));
+		   te_energy += 0.5*((spin_info[0].scf_spin[k].pmat[ij]
+				      *spin_info[0].scf_spin[k].fock_pac[ij])
+				     +(spin_info[1].scf_spin[k].pmat[ij]
+				       *spin_info[1].scf_spin[k].fock_pac[ij]));
 	       }
 	       else if(!iopen) {
-		   ir_energy += 0.5*s->pmat[ij]*(s->hmat[ij]+s->fock_pac[ij]);
+		   te_energy += 0.5*s->pmat[ij]*s->fock_pac[ij];
 	       }
 	       else {
-		   ir_energy += 0.5*s->pmat[ij]*(s->hmat[ij]+s->fock_pac[ij])
+		   te_energy += 0.5*s->pmat[ij]*s->fock_pac[ij]
 		       - 0.5*s->pmato[ij]*s->gmato[ij];
 	       }
 	    }
 	 }
-         neelec += ir_energy;
          if (iter) {
 	     if(uhf){
 		 for (i = 0; i < ioff[nn] ; i++) {
@@ -121,6 +123,7 @@ int ecalc(incr)
 	 }
       }
    }
+   neelec = oe_energy + te_energy;
  
    /*JPK(6/1/00) dynamic integral accuracy modifications*/
    dconv = sqrt(delta)/mxcoef2;
@@ -143,6 +146,11 @@ int ecalc(incr)
    if (!iter) fprintf(outfile,"\n  iter       total energy        delta E         delta P          diiser\n");
    fprintf(outfile, "%5d %20.10f %15.6e %15.6e %15.6e\n", 
                                     ++iter, etot, edif, dconv, diiser);
+   if (print & 2) {
+     fprintf(outfile, "one-electron energy = %25.15f\n", oe_energy);
+     fprintf(outfile, "two-electron energy = %25.15f\n", te_energy);
+     fprintf(outfile, "total energy        = %25.15f\n", etot);
+   }
    fflush(outfile);
    diiser=0.0;
 
