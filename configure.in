@@ -848,6 +848,8 @@ AC_OUTPUT(include/psiconfig.h
           tests/cisd-sp/Makefile
           tests/cisd-opt-numer/Makefile
           tests/casscf-sp/Makefile
+          tests/mp2-sp/Makefile
+          tests/mp2-direct-sp/Makefile
           tests/cc1/Makefile
           tests/cc2/Makefile
           tests/cc3/Makefile
@@ -872,6 +874,8 @@ AC_OUTPUT(include/psiconfig.h
           tests/dboc-uhf1/Makefile
           tests/dboc-rcisd1/Makefile
           tests/dboc-rocisd1/Makefile
+          tests/extrema-zmat/Makefile
+          tests/extrema-deloc/Makefile
 
           src/doc/MakeVars src/doc/MakeRules src/doc/Makefile
           src/doc/install/Makefile
