@@ -319,6 +319,12 @@ struct dpd_file4_cache_entry *dpd_file4_cache_find_lru(void)
 
   if(this_entry == NULL) return(NULL);
 
+  /* find the first unlocked entry */
+  while(this_entry != NULL) {
+    if(this_entry->lock) this_entry = this_entry->next;
+    else break; /* Is this right? */
+  }
+
   while(dpd_main.file4_cache_least_recent <= dpd_main.file4_cache_most_recent) {
     while(this_entry !=NULL) {
       if(this_entry->access <= dpd_main.file4_cache_least_recent && !this_entry->lock) 
@@ -329,9 +335,12 @@ struct dpd_file4_cache_entry *dpd_file4_cache_find_lru(void)
     this_entry = dpd_main.file4_cache;
   }
 
+  /*
   dpd_file4_cache_print(stderr);
   fprintf(stderr, "Possibly out of memory!\n");
   dpd_error("Error locating file4_cache LRU!", stderr);
+  */
+  return(NULL);
 }
 
 int dpd_file4_cache_del_lru(void)

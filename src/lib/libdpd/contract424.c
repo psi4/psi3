@@ -292,7 +292,7 @@ int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
           colz = Z->params->spi[Gs];
 
           if(rowx && colx && colz) {
-	    C_DGEMM('n',Ytrans?'y':'n',rowx,colz,colx,alpha,
+	    C_DGEMM('n',Ytrans?'t':'n',rowx,colz,colx,alpha,
 		&(X->matrix[hxbuf][0][xcount]),colx,
 		&(Y->matrix[Gs][0][0]),Ytrans?colx:colz,1.0,
 		&(Z->matrix[hzbuf][0][zcount]),colz);
