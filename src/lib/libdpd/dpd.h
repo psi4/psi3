@@ -166,7 +166,7 @@ enum indices {pqrs, pqsr, prqs, prsq, psqr, psrq,
 	      rqps, rqsp, rpqs, rpsq, rsqp, rspq,
 	      sqrp, sqpr, srqp, srpq, spqr, sprq};
 
-int dpd_init(int dpd_num, int nirreps, int memory, int cachetype,
+int dpd_init(int dpd_num, int nirreps, long int memory, int cachetype,
              int *cachefiles, int **cachelist, 
              struct dpd_file4_cache_entry *priority, int num_subspaces, ...);
 int dpd_close(int dpd_num);
