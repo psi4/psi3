@@ -7,8 +7,6 @@
 #include <psifiles.h>
 #include <qt.h>
 
-#include <dmalloc.h>
-
 FILE *infile, *outfile;
 
 void init_io(void);
