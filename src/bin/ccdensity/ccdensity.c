@@ -59,7 +59,7 @@ void x_Gijkl(void);
 void x_Gabcd(void);
 void x_Gibja(void);
 void x_Gijka(void);
-void x_Gijab_ROHF(void);
+void x_Gijab(void);
 void x_Gciab(void);
 void V_build_x(void);
 void x_xi1(void);
@@ -167,7 +167,7 @@ int main(int argc, char *argv[])
     x_Gibja();
     x_Gijka();
     x_Gciab();
-    x_Gijab_ROHF();
+    x_Gijab();
   }
   //fprintf(outfile,"After excited state parts\n");
   //G_norm();

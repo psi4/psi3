@@ -200,10 +200,12 @@ void Gijab_UHF(void)
   dpd_buf4_copy(&L, CC_GAMMA, "GIJAB");
   dpd_buf4_close(&L);
   dpd_buf4_init(&G, CC_GAMMA, 0, 2, 7, 2, 7, 0, "GIJAB");
-  /* Tau(IJ,AB) */
-  dpd_buf4_init(&T, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauIJAB");
-  dpd_buf4_axpy(&T, &G, 1.0);
-  dpd_buf4_close(&T);
+  /* Tau(IJ,AB) * (L0*R0 = 1, ground or 0, excited */
+  if (params.ground) {
+    dpd_buf4_init(&T, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauIJAB");
+    dpd_buf4_axpy(&T, &G, 1.0);
+    dpd_buf4_close(&T);
+  }
   /* V(IJ,MN) Tau(MN,AB) */
   dpd_buf4_init(&T, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauIJAB");
   dpd_buf4_init(&V, CC_MISC, 0, 2, 2, 2, 2, 0, "VMNIJ");
@@ -437,10 +439,12 @@ void Gijab_UHF(void)
   dpd_buf4_copy(&L, CC_GAMMA, "Gijab");
   dpd_buf4_close(&L);
   dpd_buf4_init(&G, CC_GAMMA, 0, 12, 17, 12, 17, 0, "Gijab");
-  /* Tau(ij,ab) */
-  dpd_buf4_init(&T, CC_TAMPS, 0, 12, 17, 12, 17, 0, "tauijab");
-  dpd_buf4_axpy(&T, &G, 1.0);
-  dpd_buf4_close(&T);
+  /* Tau(ij,ab) * (L0*R0 = 1, ground or 0, excited */
+  if (params.ground) {
+    dpd_buf4_init(&T, CC_TAMPS, 0, 12, 17, 12, 17, 0, "tauijab");
+    dpd_buf4_axpy(&T, &G, 1.0);
+    dpd_buf4_close(&T);
+  }
   /* V(ij,mn) Tau(mn,ab) */
   dpd_buf4_init(&T, CC_TAMPS, 0, 12, 17, 12, 17, 0, "tauijab");
   dpd_buf4_init(&V, CC_MISC, 0, 12, 12, 12, 12, 0, "Vmnij");
@@ -674,10 +678,12 @@ void Gijab_UHF(void)
   dpd_buf4_copy(&L, CC_GAMMA, "GIjAb");
   dpd_buf4_close(&L);
   dpd_buf4_init(&G, CC_GAMMA, 0, 22, 28, 22, 28, 0, "GIjAb");
-  /* Tau(Ij,Ab) */
-  dpd_buf4_init(&T, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tauIjAb");
-  dpd_buf4_axpy(&T, &G, 1.0);
-  dpd_buf4_close(&T);
+  /* Tau(Ij,Ab) * (L0*R0 = 1, ground or 0, excited */
+  if (params.ground) {
+    dpd_buf4_init(&T, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tauIjAb");
+    dpd_buf4_axpy(&T, &G, 1.0);
+    dpd_buf4_close(&T);
+  }
   /* V(Ij,Mn) Tau(Mn,Ab) */
   dpd_buf4_init(&T, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tauIjAb");
   dpd_buf4_init(&V, CC_MISC, 0, 22, 22, 22, 22, 0, "VMnIj");

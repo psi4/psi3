@@ -187,7 +187,6 @@ void setup_LR(void)
         dpd_buf4_scm(&L2, 0.0);
         dpd_buf4_close(&L2);
       }
-
       if (params.use_zeta) {
         dpd_file2_init(&Z1, CC_LAMPS, G_irr, 0, 1, "ZIA");
         dpd_file2_init(&L1, CC_GLG, G_irr, 0, 1, "LIA");
@@ -234,7 +233,50 @@ void setup_LR(void)
         dpd_buf4_scm(&L2, params.R0);
         dpd_buf4_close(&L2);
       }
-      /* add zeta */
+      else {
+        dpd_file2_init(&L1, CC_GLG, G_irr, 0, 1, "LIA");
+        dpd_file2_scm(&L1, 0.0);
+        dpd_file2_close(&L1);
+        dpd_file2_init(&L1, CC_GLG, G_irr, 2, 3, "Lia");
+        dpd_file2_scm(&L1, 0.0);
+        dpd_file2_close(&L1);
+        dpd_buf4_init(&L2, CC_GLG, G_irr, 2, 7, 2, 7, 0, "LIJAB");
+        dpd_buf4_scm(&L2, 0.0);
+        dpd_buf4_close(&L2);
+        dpd_buf4_init(&L2, CC_GLG, G_irr, 12, 17, 12, 17, 0, "Lijab");
+        dpd_buf4_scm(&L2, 0.0);
+        dpd_buf4_close(&L2);
+        dpd_buf4_init(&L2, CC_GLG, G_irr, 22, 28, 22, 28, 0, "LIjAb");
+        dpd_buf4_scm(&L2, 0.0);
+        dpd_buf4_close(&L2);
+      }
+      if (params.use_zeta) {
+        dpd_file2_init(&Z1, CC_LAMPS, G_irr, 0, 1, "ZIA");
+        dpd_file2_init(&L1, CC_GLG, G_irr, 0, 1, "LIA");
+        dpd_file2_axpy(&Z1, &L1, 1.0, 0);
+        dpd_file2_close(&L1);
+        dpd_file2_close(&Z1);
+        dpd_file2_init(&Z1, CC_LAMPS, G_irr, 2, 3, "Zia");
+        dpd_file2_init(&L1, CC_GLG, G_irr, 2, 3, "Lia");
+        dpd_file2_axpy(&Z1, &L1, 1.0, 0);
+        dpd_file2_close(&L1);
+        dpd_file2_close(&Z1);
+        dpd_buf4_init(&Z2, CC_LAMPS, G_irr, 2, 7, 2, 7, 0, "ZIJAB");
+        dpd_buf4_init(&L2, CC_GLG, G_irr, 2, 7, 2, 7, 0, "LIJAB");
+        dpd_buf4_axpy(&Z2, &L2, 1.0);
+        dpd_buf4_close(&L2);
+        dpd_buf4_close(&Z2);
+        dpd_buf4_init(&Z2, CC_LAMPS, G_irr, 12, 17, 12, 17, 0, "Zijab");
+        dpd_buf4_init(&L2, CC_GLG, G_irr, 12, 17, 12, 17, 0, "Lijab");
+        dpd_buf4_axpy(&Z2, &L2, 1.0);
+        dpd_buf4_close(&L2);
+        dpd_buf4_close(&Z2);
+        dpd_buf4_init(&Z2, CC_LAMPS, G_irr, 22, 28, 22, 28, 0, "ZIjAb");
+        dpd_buf4_init(&L2, CC_GLG, G_irr, 22, 28, 22, 28, 0, "LIjAb");
+        dpd_buf4_axpy(&Z2, &L2, 1.0);
+        dpd_buf4_close(&L2);
+        dpd_buf4_close(&Z2);
+      }
     }
   }
 
@@ -330,6 +372,8 @@ void setup_LR(void)
   
       dpd_buf4_init(&L2, CC_GL, L_irr, 22, 28, 22, 28, 0, "LIjAb");
       dpd_buf4_sort(&L2, CC_GL, qpsr, 23, 29, "LiJaB");
+      dpd_buf4_sort(&L2, CC_GL, pqsr, 22, 29, "LIjaB");
+      dpd_buf4_sort(&L2, CC_GL, qprs, 23, 28, "LiJAb");
       dpd_buf4_close(&L2);
   
       dpd_buf4_init(&L2, CC_GL, L_irr, 0, 5, 2, 7, 0, "LIJAB");
@@ -388,7 +432,7 @@ void setup_LR(void)
       dpd_file2_init(&R1, CC_RAMPS, R_irr, 0, 1, R1A_lbl);
       dpd_file2_copy(&R1, CC_GR, "RIA");
       dpd_file2_close(&R1);
-      dpd_file2_init(&R1, CC_RAMPS, R_irr, 2, 3, "Ria");
+      dpd_file2_init(&R1, CC_RAMPS, R_irr, 2, 3, R1B_lbl);
       dpd_file2_copy(&R1, CC_GR, "Ria");
       dpd_file2_close(&R1);
       dpd_buf4_init(&R2, CC_RAMPS, R_irr, 2, 7, 2, 7, 0, R2AA_lbl);
@@ -435,6 +479,8 @@ void setup_LR(void)
   
       dpd_buf4_init(&R2, CC_GR, R_irr, 22, 28, 22, 28, 0, "RIjAb");
       dpd_buf4_sort(&R2, CC_GR, qpsr, 23, 29, "RiJaB");
+      dpd_buf4_sort(&R2, CC_GR, pqsr, 22, 29, "RIjaB");
+      dpd_buf4_sort(&R2, CC_GR, qprs, 23, 28, "RiJAb");
       dpd_buf4_close(&R2);
   
       dpd_buf4_init(&R2, CC_GR, R_irr, 0, 5, 2, 7, 0, "RIJAB");
@@ -460,33 +506,5 @@ void setup_LR(void)
     }
   }
 
-  if (params.use_zeta) {
-      dpd_file2_init(&Z1, CC_LAMPS, L_irr, 0, 1, "ZIA");
-      dpd_file2_init(&R1, CC_GR, R_irr, 0, 1, "RIA");
-      tval = dpd_file2_dot(&Z1, &R1);
-      dpd_file2_close(&R1);
-      dpd_file2_close(&Z1);
-      dpd_file2_init(&Z1, CC_LAMPS, L_irr, 0, 1, "Zia");
-      dpd_file2_init(&R1, CC_GR, R_irr, 0, 1, "Ria");
-      tval += dpd_file2_dot(&Z1, &R1);
-      dpd_file2_close(&R1);
-      dpd_file2_close(&Z1);
-      dpd_buf4_init(&Z2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "ZIJAB");
-      dpd_buf4_init(&R2, CC_GR, R_irr, 2, 7, 2, 7, 0, "RIJAB");
-      tval += dpd_buf4_dot(&Z2, &R2);
-      dpd_buf4_close(&R2);
-      dpd_buf4_close(&Z2);
-      dpd_buf4_init(&Z2, CC_LAMPS, L_irr, 2, 7, 2, 7, 0, "Zijab");
-      dpd_buf4_init(&R2, CC_GR, R_irr, 2, 7, 2, 7, 0, "Rijab");
-      tval += dpd_buf4_dot(&Z2, &R2);
-      dpd_buf4_close(&R2);
-      dpd_buf4_close(&Z2);
-      dpd_buf4_init(&Z2, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "ZIjAb");
-      dpd_buf4_init(&R2, CC_GR, R_irr, 0, 5, 0, 5, 0, "RIjAb");
-      tval += dpd_buf4_dot(&Z2, &R2);
-      dpd_buf4_close(&R2);
-      dpd_buf4_close(&Z2);
-      params.RZ_overlap = tval;
-      fprintf(outfile,"<R|Zeta> = %15.10lf\n", tval);
-  }
+  return;
 }

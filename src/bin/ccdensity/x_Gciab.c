@@ -3,14 +3,22 @@
 #define EXTERN
 #include "globals.h"
 
-/* This function computes the non-R0 parts of the 2pdm density matrix
-   Gciab = 0.5 *(rho_abci + rho_ciab) */
-
+void x_Gciab_rohf(void);
 void x_Gciab_6(void);
 void x_Gciab_7(void);
-void x_Gciab_8(void);
+void x_Gciab_8_rohf(void);
+extern void x_Gciab_uhf(void);
 
-void x_Gciab(void) { 
+/* This function computes the non-R0 parts of the 2pdm density matrix
+   Gciab = 0.5 *(rho_abci + rho_ciab) */
+void x_Gciab(void) {
+  if (params.ref == 0 || params.ref == 1)
+    x_Gciab_rohf();
+  else
+    x_Gciab_uhf();
+}
+
+void x_Gciab_rohf(void) { 
   int h, nirreps, i, j, k, a, I, J, K, A, Isym, Jsym, Ksym, Asym, row, col;
   int II,JJ,IIsym,JJsym;
   int L_irr, R_irr, G_irr;
@@ -43,17 +51,18 @@ void x_Gciab(void) {
 
   /* term 2, rho_ciab += Rmiab * Lmc */
   dpd_buf4_init(&Z, EOM_TMP, G_irr, 7, 11, 7, 11, 0, "R2L1_VVOV(pqsr)");
-  dpd_buf4_sort(&Z, EOM_TMP1, rspq, 11, 7, "GCIAB");
+  dpd_buf4_sort_axpy(&Z, EOM_TMP0, rspq, 11, 7, "GCIAB",-1.0);
   dpd_buf4_close(&Z);
   dpd_buf4_init(&Z, EOM_TMP, G_irr, 7, 11, 7, 11, 0, "R2L1_vvov(pqsr)");
-  dpd_buf4_sort(&Z, EOM_TMP1, rspq, 11, 7, "Gciab");
+  dpd_buf4_sort_axpy(&Z, EOM_TMP0, rspq, 11, 7, "Gciab",-1.0);
   dpd_buf4_close(&Z);
   dpd_buf4_init(&Z, EOM_TMP, G_irr, 5, 11, 5, 11, 0, "R2L1_VvoV(pqsr)");
-  dpd_buf4_sort(&Z, EOM_TMP1, rspq, 11, 5, "GCiAb");
+  dpd_buf4_sort_axpy(&Z, EOM_TMP0, rspq, 11, 5, "GCiAb", 1.0);
   dpd_buf4_close(&Z);
   dpd_buf4_init(&Z, EOM_TMP, G_irr, 5, 11, 5, 11, 0, "R2L1_VvOv(pqsr)");
-  dpd_buf4_sort(&Z, EOM_TMP1, rsqp, 11, 5, "GcIaB");
+  dpd_buf4_sort_axpy(&Z, EOM_TMP0, rsqp, 11, 5, "GcIaB", 1.0);
   dpd_buf4_close(&Z);
+  /* same in two-steps, perhaps suggestive of future out-of-core approach
   dpd_buf4_init(&G, EOM_TMP0, G_irr, 11, 7, 11, 7, 0, "GCIAB");
   dpd_buf4_init(&Z, EOM_TMP1, G_irr, 11, 7, 11, 7, 0, "GCIAB");
   dpd_buf4_axpy(&Z, &G, -1.0);
@@ -76,6 +85,7 @@ void x_Gciab(void) {
   dpd_buf4_close(&G);
   psio_close(EOM_TMP1,0);
   psio_open(EOM_TMP1, PSIO_OPEN_NEW);
+  */
 
   /* term 3, rho_CIAB -= 0.5 LMNCE RMNAB tIE */
   dpd_buf4_init(&Z, EOM_TMP1, L_irr, 11, 2, 11, 2, 0, "Z(CI,MN)");
@@ -226,7 +236,7 @@ void x_Gciab(void) {
 
   /* -P(ab) Lmnce Rinae Tmb, term 8 */
   /* -P(ab) Lmnce Tinae Rmb, term 9 */
-  x_Gciab_8();
+  x_Gciab_8_rohf();
 
   psio_close(EOM_TMP1,0);
   psio_open(EOM_TMP1, PSIO_OPEN_NEW);
@@ -432,16 +442,25 @@ void x_Gciab_6(void) {
 
   /* open one-electron files for the nasty terms */
   dpd_file2_init(&LR1A, EOM_TMP, G_irr, 1, 1, "LR_VV");
-  dpd_file2_init(&LR1B, EOM_TMP, G_irr, 1, 1, "LR_vv");
   dpd_file2_init(&T1A, CC_OEI, 0, 0, 1, "tIA");
-  dpd_file2_init(&T1B, CC_OEI, 0, 0, 1, "tia");
+  if (params.ref == 0 || params.ref == 1) {
+    dpd_file2_init(&LR1B, EOM_TMP, G_irr, 1, 1, "LR_vv");
+    dpd_file2_init(&T1B, CC_OEI, 0, 0, 1, "tia");
+  }
+  else {
+    dpd_file2_init(&LR1B, EOM_TMP, G_irr, 3, 3, "LR_vv");
+    dpd_file2_init(&T1B, CC_OEI, 0, 2, 3, "tia");
+  }
   dpd_file2_mat_init(&T1A);   dpd_file2_mat_init(&T1B);
   dpd_file2_mat_init(&LR1A);   dpd_file2_mat_init(&LR1B);
   dpd_file2_mat_rd(&T1A);     dpd_file2_mat_rd(&T1B);
   dpd_file2_mat_rd(&LR1A);     dpd_file2_mat_rd(&LR1B);
 
   /* rho_CIAB += LR1_VV(C,A) T(I,B) - LR1_VV(C,B) T(I,A) */
-  dpd_buf4_init(&G, EOM_TMP0, G_irr, 11, 5, 11, 7, 0, "GCIAB");
+  if (params.ref == 0 || params.ref == 1)
+    dpd_buf4_init(&G, EOM_TMP0, G_irr, 11, 5, 11, 7, 0, "GCIAB");
+  else
+    dpd_buf4_init(&G, EOM_TMP0, G_irr, 21, 5, 21, 7, 0, "GCIAB");
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_init(&G, h);
     dpd_buf4_mat_irrep_rd(&G, h);
@@ -470,7 +489,10 @@ void x_Gciab_6(void) {
   }
   dpd_buf4_close(&G);
   /* rho_ciab += LR1_vv(c,a) T(i,b) - LR1_vv(c,b) T(i,a) */
-  dpd_buf4_init(&G, EOM_TMP0, G_irr, 11, 5, 11, 7, 0, "Gciab");
+  if (params.ref == 0 || params.ref == 1)
+    dpd_buf4_init(&G, EOM_TMP0, G_irr, 11, 5, 11, 7, 0, "Gciab");
+  else
+    dpd_buf4_init(&G, EOM_TMP0, G_irr, 31, 15, 31, 17, 0, "Gciab");
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_init(&G, h);
     dpd_buf4_mat_irrep_rd(&G, h);
@@ -499,7 +521,10 @@ void x_Gciab_6(void) {
   }
   dpd_buf4_close(&G);
   /* rho_CiAb += LR1_VV(C,A) T(i,b) */
-  dpd_buf4_init(&G, EOM_TMP0, G_irr, 11, 5, 11, 5, 0, "GCiAb");
+  if (params.ref == 0 || params.ref == 1)
+    dpd_buf4_init(&G, EOM_TMP0, G_irr, 11, 5, 11, 5, 0, "GCiAb");
+  else
+    dpd_buf4_init(&G, EOM_TMP0, G_irr, 26, 28, 26, 28, 0, "GCiAb");
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_init(&G, h);
     dpd_buf4_mat_irrep_rd(&G, h);
@@ -523,7 +548,10 @@ void x_Gciab_6(void) {
   }
   dpd_buf4_close(&G);
   /* rho_cIaB += LR1_vv(c,a) T(I,B) */
-  dpd_buf4_init(&G, EOM_TMP0, G_irr, 11, 5, 11, 5, 0, "GcIaB");
+  if (params.ref == 0 || params.ref == 1)
+    dpd_buf4_init(&G, EOM_TMP0, G_irr, 11, 5, 11, 5, 0, "GcIaB");
+  else
+    dpd_buf4_init(&G, EOM_TMP0, G_irr, 25, 29, 25, 29, 0, "GcIaB");
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_init(&G, h);
     dpd_buf4_mat_irrep_rd(&G, h);
@@ -578,16 +606,25 @@ void x_Gciab_7(void) {
 
   /* open one-electron files for the nasty terms */
   dpd_file2_init(&LT1A, EOM_TMP, L_irr, 1, 1, "LT_VV");
-  dpd_file2_init(&LT1B, EOM_TMP, L_irr, 1, 1, "LT_vv");
   dpd_file2_init(&R1A, CC_GR, R_irr, 0, 1, "RIA");
-  dpd_file2_init(&R1B, CC_GR, R_irr, 0, 1, "Ria");
+  if (params.ref == 0 || params.ref == 1) {
+    dpd_file2_init(&LT1B, EOM_TMP, L_irr, 1, 1, "LT_vv");
+    dpd_file2_init(&R1B, CC_GR, R_irr, 0, 1, "Ria");
+  }
+  else {
+    dpd_file2_init(&LT1B, EOM_TMP, L_irr, 3, 3, "LT_vv");
+    dpd_file2_init(&R1B, CC_GR, R_irr, 2, 3, "Ria");
+  }
   dpd_file2_mat_init(&R1A);   dpd_file2_mat_init(&R1B);
   dpd_file2_mat_init(&LT1A);   dpd_file2_mat_init(&LT1B);
   dpd_file2_mat_rd(&R1A);     dpd_file2_mat_rd(&R1B);
   dpd_file2_mat_rd(&LT1A);     dpd_file2_mat_rd(&LT1B);
 
   /* rho_CIAB += LT_VV(C,A) R(I,B) - LT_VV(C,B) R(I,A) */
-  dpd_buf4_init(&G, EOM_TMP0, G_irr, 11, 5, 11, 7, 0, "GCIAB");
+  if (params.ref == 0 || params.ref == 1)
+    dpd_buf4_init(&G, EOM_TMP0, G_irr, 11, 5, 11, 7, 0, "GCIAB");
+  else
+    dpd_buf4_init(&G, EOM_TMP0, G_irr, 21, 5, 21, 7, 0, "GCIAB");
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_init(&G, h);
     dpd_buf4_mat_irrep_rd(&G, h);
@@ -616,7 +653,10 @@ void x_Gciab_7(void) {
   }
   dpd_buf4_close(&G);
   /* rho_ciab += LT_vv(c,a) R(i,b) - LT_vv(c,b) R(i,a) */
-  dpd_buf4_init(&G, EOM_TMP0, G_irr, 11, 5, 11, 7, 0, "Gciab");
+  if (params.ref == 0 || params.ref == 1)
+    dpd_buf4_init(&G, EOM_TMP0, G_irr, 11, 5, 11, 7, 0, "Gciab");
+  else
+    dpd_buf4_init(&G, EOM_TMP0, G_irr, 31, 15, 31, 17, 0, "Gciab");
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_init(&G, h);
     dpd_buf4_mat_irrep_rd(&G, h);
@@ -645,7 +685,10 @@ void x_Gciab_7(void) {
   }
   dpd_buf4_close(&G);
   /* rho_CiAb += LT_VV(C,A) R(i,b) */
-  dpd_buf4_init(&G, EOM_TMP0, G_irr, 11, 5, 11, 5, 0, "GCiAb");
+  if (params.ref == 0 || params.ref == 1)
+    dpd_buf4_init(&G, EOM_TMP0, G_irr, 11, 5, 11, 5, 0, "GCiAb");
+  else
+    dpd_buf4_init(&G, EOM_TMP0, G_irr, 26, 28, 26, 28, 0, "GCiAb");
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_init(&G, h);
     dpd_buf4_mat_irrep_rd(&G, h);
@@ -669,7 +712,10 @@ void x_Gciab_7(void) {
   }
   dpd_buf4_close(&G);
   /* rho_cIaB += LT_vv(c,a) R(I,B) */
-  dpd_buf4_init(&G, EOM_TMP0, G_irr, 11, 5, 11, 5, 0, "GcIaB");
+  if (params.ref == 0 || params.ref == 1)
+    dpd_buf4_init(&G, EOM_TMP0, G_irr, 11, 5, 11, 5, 0, "GcIaB");
+  else
+    dpd_buf4_init(&G, EOM_TMP0, G_irr, 25, 29, 25, 29, 0, "GcIaB");
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_init(&G, h);
     dpd_buf4_mat_irrep_rd(&G, h);
@@ -713,7 +759,7 @@ void x_Gciab_7(void) {
    term 9, +P(AB) LMNCE TINAE RMB
 */
 
-void x_Gciab_8(void) { 
+void x_Gciab_8_rohf(void) { 
   int h, nirreps, i, j, k, a, I, J, K, A, Isym, Jsym, Ksym, Asym, row, col;
   int II,JJ,IIsym,JJsym;
   int L_irr, R_irr, G_irr;

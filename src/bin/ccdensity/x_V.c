@@ -14,32 +14,6 @@ void V_build_x(void)
 
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
-    /*
-    dpd_buf4_init(&V, EOM_TMP, L_irr, 2, 2, 2, 2, 0, "VMNIJ");
-    dpd_buf4_init(&T, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauIJAB");
-    dpd_buf4_init(&L, CC_GL, L_irr, 2, 7, 2, 7, 0, "LIJAB");
-    dpd_contract444(&T, &L, &V, 0, 0, 1.0, 0.0);
-    dpd_buf4_close(&L);
-    dpd_buf4_close(&T);
-    dpd_buf4_close(&V);
-
-    dpd_buf4_init(&V, EOM_TMP, L_irr, 2, 2, 2, 2, 0, "Vmnij");
-    dpd_buf4_init(&T, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauijab");
-    dpd_buf4_init(&L, CC_GL, L_irr, 2, 7, 2, 7, 0, "Lijab");
-    dpd_contract444(&T, &L, &V, 0, 0, 1.0, 0.0);
-    dpd_buf4_close(&L);
-    dpd_buf4_close(&T);
-    dpd_buf4_close(&V);
-
-    dpd_buf4_init(&V, EOM_TMP, L_irr, 0, 0, 0, 0, 0, "VMnIj");
-    dpd_buf4_init(&T, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
-    dpd_buf4_init(&L, CC_GL, L_irr, 0, 5, 0, 5, 0, "LIjAb");
-    dpd_contract444(&T, &L, &V, 0, 0, 1.0, 0.0);
-    dpd_buf4_close(&L);
-    dpd_buf4_close(&T);
-    dpd_buf4_close(&V);
-    */
-
     dpd_buf4_init(&V, EOM_TMP, L_irr, 10, 10, 10, 10, 0, "VIAJB");
     dpd_buf4_init(&T, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIAJB");
     dpd_buf4_init(&L, CC_GL, L_irr, 10, 10, 10, 10, 0, "LIAJB");
@@ -109,31 +83,6 @@ void V_build_x(void)
     dpd_buf4_close(&V);
   }
   else if(params.ref == 2) { /** UHF **/
-    /*
-    dpd_buf4_init(&V, EOM_TMP, L_irr, 2, 2, 2, 2, 0, "VMNIJ");
-    dpd_buf4_init(&T, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauIJAB");
-    dpd_buf4_init(&L, CC_GL, L_irr, 2, 7, 2, 7, 0, "LIJAB");
-    dpd_contract444(&T, &L, &V, 0, 0, 1.0, 0.0);
-    dpd_buf4_close(&L);
-    dpd_buf4_close(&T);
-    dpd_buf4_close(&V);
-
-    dpd_buf4_init(&V, EOM_TMP, L_irr, 12, 12, 12, 12, 0, "Vmnij");
-    dpd_buf4_init(&T, CC_TAMPS, 0, 12, 17, 12, 17, 0, "tauijab");
-    dpd_buf4_init(&L, CC_GL, L_irr, 12, 17, 12, 17, 0, "Lijab");
-    dpd_contract444(&T, &L, &V, 0, 0, 1.0, 0.0);
-    dpd_buf4_close(&L);
-    dpd_buf4_close(&T);
-    dpd_buf4_close(&V);
-
-    dpd_buf4_init(&V, EOM_TMP, L_irr, 22, 22, 22, 22, 0, "VMnIj");
-    dpd_buf4_init(&T, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tauIjAb");
-    dpd_buf4_init(&L, CC_GL, L_irr, 22, 28, 22, 28, 0, "LIjAb");
-    dpd_contract444(&T, &L, &V, 0, 0, 1.0, 0.0);
-    dpd_buf4_close(&L);
-    dpd_buf4_close(&T);
-    dpd_buf4_close(&V);
-    */
 
     dpd_buf4_init(&V, EOM_TMP, L_irr, 20, 20, 20, 20, 0, "VIAJB");
     dpd_buf4_init(&T, CC_TAMPS, 0, 20, 20, 20, 20, 0, "tIAJB");
