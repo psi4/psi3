@@ -75,8 +75,8 @@ void sortbuf(struct iwlbuf *Inbuf, struct iwlbuf *Outbuf,
    Label *lblptr;              /* array of integral labels */
    int idx;                    /* index for curr integral (0..ints_per_buf) */
    int lastbuf;                /* last buffer flag */
-   int p, q, qmax, qmin, r, rmin, rmax, s, smin, smax, pq, rs, pqrs;
-   int offset;
+   int p, q, qmax, qmin, r, rmin, rmax, s, smin, smax, pq, rs;
+   long int pqrs, offset;
    int first_p, first_q, first_pq, last_p, last_q;
    int nbstri;
 
@@ -155,7 +155,11 @@ void sortbuf(struct iwlbuf *Inbuf, struct iwlbuf *Outbuf,
 	    pqrs += MIN0(pq,rs);
 	  }
 	}
-	else pqrs = (pq - first_pq) * nbstri + rs;
+	else {
+	  pqrs = (pq - first_pq);
+          pqrs *= nbstri;
+          pqrs += rs;
+	}
 	
         if (printflg && ints[pqrs-offset] != 0.0) 
 	   fprintf(outfile, "Adding %10.6lf to el %d %d %d %d = %10.6lf\n", 
@@ -218,7 +222,11 @@ void sortbuf(struct iwlbuf *Inbuf, struct iwlbuf *Outbuf,
 	   
 	   /* Again, this should be fine with MP2 */
 	   if (elbert) pqrs = ioff2[pq] + rs ;
-	   else if (intermediate) pqrs = (pq - first_pq) * nbstri + rs;
+	   else if (intermediate) {
+	     pqrs = (pq - first_pq);
+	     pqrs *= nbstri;
+	     pqrs += rs;
+	   }
 	   else pqrs = ioff[pq] + rs ;
 	   
 	   if (fabs(ints[pqrs-offset]) > Outbuf->cutoff) {

@@ -5,7 +5,7 @@
 
 #define MIN0(a,b) (((a)<(b)) ? (a) : (b))
 #define MAX0(a,b) (((a)>(b)) ? (a) : (b))
-#define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
+#define INDEX(i,j) ((i>j) ? (((i)*((i)+1))/2+(j)) : (((j)*((j)+1))/2+(i)))
 
 
 /*
@@ -40,7 +40,8 @@ int iwl_buf_rd_all_mp2r12a(struct iwlbuf *Buf, double *ints,
   int lastbuf;
   Label *lblptr;
   Value *valptr;
-  int idx, p, q, r, s, pq, rs, pqrs;
+  int idx, p, q, r, s;
+  long int pq, rs, pqrs;
   
   lblptr = Buf->labels;
   valptr = Buf->values;
