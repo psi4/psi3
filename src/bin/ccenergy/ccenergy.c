@@ -220,6 +220,11 @@ int main(int argc, char *argv[])
     timer_off("spinad Amps");
   }
 
+  if(params.local) {
+    local_print_T1_norm();
+    local_done();
+  }
+  
   if(params.aobasis) dpd_close(1);
   dpd_close(0);
 
@@ -227,8 +232,6 @@ int main(int argc, char *argv[])
   else cachedone_rhf(cachelist);
   free(cachefiles);
 
-  if(params.local) local_done();
-  
   cleanup();
 
   timer_off("CCEnergy");

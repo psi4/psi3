@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <ip_libv1.h>
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
 #include <libiwl/iwl.h>
@@ -22,7 +23,7 @@
 
 void local_init(void)
 {
-  int i, j, k, ij, stat, a, r, l, I, L;
+  int i, j, k, ij, stat, a, b, r, l, I, L;
   int nmo, nao, nocc, nocc_all, nvir, noei, nirreps, nfzc;
   double **C;  /* AO -> localized MO transformation matrix */
   double **Ci; /* localized MO -> AO transformation matrix */
@@ -51,6 +52,9 @@ void local_init(void)
   int *stype, *snuc;
   int **domain, *domain_len, **pairdomain, *pairdom_len, *pairdom_nrlen;
   double *fR, cutoff, *charge, *SR, *Z, tmp;
+
+  int print_test, num_entries, entry_len, orbital;
+  int t1_length, t2_length;
 
   file30_init();
   C = file30_rd_scf();
@@ -253,6 +257,25 @@ void local_init(void)
 
   } /* i */
 
+  /* Allow user input of selected domains */
+  if(ip_exist("DOMAINS",0)) {
+    ip_count("DOMAINS", &num_entries,0);
+    for(i=0; i < num_entries; i++) {
+      ip_count("DOMAINS", &entry_len, 1, i);
+      ip_data("DOMAINS", "%d", &orbital, 2, i, 0);
+
+      /* Clear out the current domain for this orbital */
+      for(j=0; j < natom; j++) domain[orbital][j] = 0;
+      domain_len[orbital] = 0;
+
+      for(j=1; j < entry_len; j++) {
+        errcod = ip_data("DOMAINS","%d", &atom,2,i,j);
+        domain[orbital][atom] = 1;
+        domain_len[orbital]++;
+      }
+    }
+  }
+
   /* Print the orbital domains */
   max = 0;
   for(i=0; i < nocc; i++) 
@@ -267,7 +290,7 @@ void local_init(void)
   fprintf(outfile, "  ------------\n");
   for(i=0; i < nocc; i++) {
     fprintf(outfile, "      %2d    ",i);
-    for(j=0,cnt=0; j < natom; j++) if(domain[i][j]) { fprintf(outfile, " %2d", j+1); cnt++; }
+    for(j=0,cnt=0; j < natom; j++) if(domain[i][j]) { fprintf(outfile, " %2d", j); cnt++; }
     if(cnt < max) for(; cnt < max; cnt++) fprintf(outfile, "   ");
     fprintf(outfile, "     %7.5f\n", fR[i]);
   }
@@ -285,6 +308,29 @@ void local_init(void)
 	}
       }
 
+  /* Compute the total number of singles and doubles */
+  t1_length = t2_length = 0;
+  for(i=0,ij=0; i < nocc; i++) {
+    t1_length += domain_len[i];
+    for(j=0; j < nocc; j++,ij++) {
+      for(k=0; k < natom; k++) {
+        for(l=0; l < natom; l++) {
+          if(pairdomain[ij][k] && pairdomain[ij][l]) {
+            for(a=aostart[k]; a <= aostop[k]; a++)
+              for(b=aostart[l]; b <= aostop[l]; b++)
+                t2_length++;
+          }
+        }
+      }
+    }
+  }
+
+  /* Print excitation space reduction info */
+  fprintf(outfile, "\n\tT1 Length = %d (local), %d (canonical)\n",
+          t1_length, nocc*nvir);
+  fprintf(outfile, "\tT2 Length = %d (local), %d (canonical)\n\n",
+          t2_length, nocc*nocc*nvir*nvir);
+
   local.pairdomain = pairdomain;
   local.pairdom_len = pairdom_len;
   local.aostart = aostart;
@@ -300,6 +346,13 @@ void local_init(void)
   free(ipiv);
   free(fR);
   free_int_matrix(domain, nocc);
+
+  print_test = 0;
+  ip_boolean("DOMAIN_PRINT",&(print_test),0);
+  if(print_test) {
+    fprintf(outfile, "Printing of orbital domains requested...exiting.\n\n");
+    exit(2);
+  }
 
   /************* Orbital Domains Complete ***************/
 
@@ -674,3 +727,153 @@ void local_filter_T2(dpdbuf4 *T2)
   /*  dpd_buf4_print(T2, outfile, 1); */
 }
 
+#define STACK_LENGTH 25
+
+struct onestack {
+    double value;
+    int i;
+    int a;
+};
+
+void local_print_T1_norm()
+{
+  int i, a, ii, k;
+  int nocc, nvir, natom, nao;
+  int **pairdomain, *aostart, *aostop;
+  int *pairdom_len, *pairdom_nrlen;
+  int vector;
+  double ***V;
+  double **C;
+  double *T1tilde, **T1AO;
+  dpdfile2 T1;
+  dpdbuf4 T2;
+  char lbl[32];
+  double this_t1;
+  struct onestack t1stack[STACK_LENGTH];
+  void onestack_check(struct onestack stack[], double, int, int);
+
+  nocc = local.nocc;
+  nvir = local.nvir;
+  natom = local.natom;
+  nao = local.nao;
+  pairdom_len = local.pairdom_len;
+  pairdomain = local.pairdomain;
+  aostart = local.aostart;
+  aostop = local.aostop;
+
+  V = local.V;
+  pairdom_nrlen = local.pairdom_nrlen;
+
+  dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
+
+  dpd_file2_mat_init(&T1);
+  dpd_file2_mat_rd(&T1);
+
+  fprintf(outfile, "\n\tLargest T1 Amplitudes for Vector %d:\n", vector);
+  fprintf(outfile,   "\t--------------------------------------\n");
+
+  for(i=0; i < STACK_LENGTH; i++) {
+    t1stack[i].value = 0;
+    t1stack[i].i = 0;
+    t1stack[i].a = 0;
+  }
+
+  for(i=0; i < nocc; i++) {
+    ii = i * nocc + i;  /* diagonal element of pair matrices */
+
+    T1tilde = init_array(pairdom_len[ii]);
+
+    /* Transform the virtuals to the redundant projected virtual basis */
+    C_DGEMV('t', nvir, pairdom_len[ii], 1.0, &(V[ii][0][0]), pairdom_len[ii], 
+	    &(T1.matrix[0][i][0]), 1, 0.0, &(T1tilde[0]), 1);
+
+    for(k=0; k < natom; k++) {
+      if(pairdomain[ii][k]) {
+	for(a=aostart[k]; a <= aostart[k]; a++) {
+	  onestack_check(t1stack, T1tilde[a], i, a);
+	}
+      }
+    }
+
+    free(T1tilde);
+  }
+
+  for(i=0; i < STACK_LENGTH; i++) {
+    if(fabs(t1stack[i].value) > 1e-20)
+      fprintf(outfile, "\t%2d %20.10f %3d %3d\n", i, t1stack[i].value,
+	      t1stack[i].i, t1stack[i].a);
+  }
+
+  fprintf(outfile, "\n\tSingles Norm:\n");
+  fprintf(outfile,   "\t---------------\n");
+
+  for(i=0; i < nocc; i++) {
+    ii = i * nocc + i;  /* diagonal element of pair matrices */
+
+    fprintf(outfile, "\tOccupied orbital: %d\n", i);
+
+    T1tilde = init_array(pairdom_len[ii]);
+
+    /* Transform the virtuals to the redundant projected virtual basis */
+    C_DGEMV('t', nvir, pairdom_len[ii], 1.0, &(V[ii][0][0]), pairdom_len[ii], 
+	    &(T1.matrix[0][i][0]), 1, 0.0, &(T1tilde[0]), 1);
+
+    for(k=0; k < natom; k++) {
+      if(pairdomain[ii][k]) {
+	for(a=aostart[k],this_t1=0.0; a <= aostop[k]; a++) 
+	  this_t1 += T1tilde[a]*T1tilde[a];
+
+	fprintf(outfile, "Atom: %d  T1 Norm: %20.10f\n", k+1, this_t1);
+      }
+    }
+
+    free(T1tilde);
+  }
+
+  dpd_file2_mat_close(&T1);
+  dpd_file2_close(&T1);
+}
+
+void onestack_check(struct onestack stack[], double value,
+		    int i, int a)
+{
+  int l;
+  void onestack_insert(struct onestack stack[], double, int, int, int);
+
+  for(l=0; l < STACK_LENGTH; l++)
+      if((fabs(value) - fabs(stack[l].value)) > 1e-12) {
+	  onestack_insert(stack, value, i, a, l);
+	  break;
+	}
+}
+
+void onestack_insert(struct onestack stack[], double value,
+		     int i, int a, int level)
+{
+  int l;
+  struct onestack temp;
+
+  temp = stack[level];
+
+  stack[level].value = value;
+  stack[level].i = i;
+  stack[level].a = a;
+
+  value = temp.value;
+  i = temp.i;
+  a = temp.a;
+
+  for(l=level; l < STACK_LENGTH-1; l++) {
+
+      temp = stack[l+1];
+      
+      stack[l+1].value = value;
+      stack[l+1].i = i;
+      stack[l+1].a = a;
+
+      value = temp.value;
+      i = temp.i;
+      a = temp.a;
+
+    }
+}
