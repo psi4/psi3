@@ -86,6 +86,26 @@ else {
   pass_test("Gross atomic poplulations and net charges");
 }
 
+@dipole_ref = seek_dipole($REF_FILE);
+@dipole_test = seek_dipole($TEST_FILE);
+
+if (!compare_arrays(\@dipole_ref,\@dipole_test,4,4,$MTOL)) {
+  fail_test("Electric dipole moment"); $FAIL = 1;
+}
+else { 
+  pass_test("Electric dipole moment");
+}
+
+@angmom_ref = seek_angmom($REF_FILE);
+@angmom_test = seek_angmom($TEST_FILE);
+
+if (!compare_arrays(\@angmom_ref,\@angmom_test,3,3,$MTOL)) {
+  fail_test("Electronic angular momentum"); $FAIL = 1;
+}
+else { 
+  pass_test("Electronic angular momentum");
+}
+
 close (RE);
 
 system("cat $RESULT");

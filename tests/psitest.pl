@@ -753,6 +753,63 @@ sub seek_mulliken_apnc
   exit 1;
 }
 
+sub seek_dipole
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  @datafile = <OUT>;
+  close (OUT);
+
+  $linenum=0;
+  $start = 0;
+  foreach $line (@datafile) {
+    if ($line =~ m/-Electric dipole moment/) {
+      $start = $linenum;
+    }
+    $linenum++;
+  }
+
+  for($i=0; $i<4; $i++) {
+    @line = split(/ +/, $datafile[$start+2+$i]);
+    $dipole[$i] = $line[3];
+    print "$dipole[$i]\n";
+  }
+  
+  if($start != 0) {
+    return @dipole;
+  }
+  
+  printf "Error: Could not find Electronic dipole moment in $_[0].\n";
+  exit 1;
+}
+
+sub seek_angmom
+{   
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  @datafile = <OUT>;
+  close (OUT);
+
+  $linenum=0;
+  $start = 0;
+  foreach $line (@datafile) {
+    if ($line =~ m/-Electronic angular momentum/) {
+      $start = $linenum;
+    }
+    $linenum++;
+  }
+
+  for($i=0; $i<3; $i++) {
+    @line = split(/ +/, $datafile[$start+2+$i]);
+    $angmom[$i] = $line[3];
+  }
+  
+  if($start != 0) {
+    return @angmom;
+  }
+  
+  printf "Error: Could not find Gross atomic populations in $_[0].\n";
+  exit 1;
+}
+
 sub compare_arrays
 {
   $A = $_[0];
