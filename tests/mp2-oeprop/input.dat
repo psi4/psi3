@@ -5,6 +5,7 @@ psi: (
   reference = rhf
   dertype = none
   docc = (3 0 0 0)
+  basis = "cc-pVDZ"
   geometry = (
     b      0.0000        0.0000        0.0000
     h      0.0000        0.0000        1.0000
