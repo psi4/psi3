@@ -25,6 +25,7 @@ typedef enum {ref_rhf = 0, ref_uhf = 1, ref_rohf = 2, ref_tcscf = 3,
 
 int file30_init(void);
 int file30_close(void);
+double **file30_rd_rref(void);
 double **file30_rd_schwartz(void);
 double **file30_rd_alpha_lagr(void);
 double **file30_rd_beta_lagr(void);
