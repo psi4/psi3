@@ -1270,6 +1270,8 @@ sub seek_energy_file11
   @datafile = <OUT>;
   close(OUT);
 
+  printf "Entering seek_energy_file11.\n";
+
   $match = "$_[1]";
   $linenum = 0;
   $lasiter = 0;
@@ -1283,6 +1285,7 @@ sub seek_energy_file11
 
   @line = split(/ +/, $datafile[$lastiter+1]);
   $energy = $line[2];
+  printf $energy;
 
   if($energy != 0.0) {
     return $energy;
@@ -1326,13 +1329,18 @@ sub seek_geom_file11
   @datafile = <OUT>;
   close(OUT);
 
+  printf "Entering seek_geom_file11.\n";
+
   $match = "$_[1]";
   $linenum = 0;
   $lasiter = 0;
+  $foundit = 0;
 
   foreach $line (@datafile) {
     if($line =~ m/$match/) {
+      $foundit = 1;
       $lastiter = $linenum;
+      printf $line;
     }
     $linenum++;
   }
@@ -1347,7 +1355,7 @@ sub seek_geom_file11
     $geom[3*$i+2] = $line[4];
   }
 
-  if($lastiter != 0) {
+  if($foundit != 0) {
     return @geom;
   }
 
@@ -1364,9 +1372,11 @@ sub seek_grad_file11
   $match = "$_[1]";
   $linenum = 0;
   $lasiter = 0;
+  $foundit = 0;
 
   foreach $line (@datafile) {
     if($line =~ m/$match/) {
+      $foundit = 1;
       $lastiter = $linenum;
     }
     $linenum++;
@@ -1382,7 +1392,7 @@ sub seek_grad_file11
     $grad[3*$i+2] = $line[3];
   }
 
-  if($lastiter != 0) {
+  if($foundit != 0) {
     return @grad;
   }
 
