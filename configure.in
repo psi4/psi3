@@ -765,6 +765,7 @@ AC_OUTPUT(include/psiconfig.h include/cfuncs.h include/ffuncs.h
           src/bin/cclambda/Makefile
           src/bin/ccsort/Makefile
           src/bin/cctriples/Makefile
+          src/bin/cceom/Makefile
           src/bin/cints/Makefile
           src/bin/cscf/Makefile
           src/bin/detci/Makefile

@@ -28,4 +28,5 @@
 #define _dipmom_debye2si 3.33564E-30
 #define _c_au 137.0359895
 #define _hartree2ev 27.211396
+#define _hartree2wavenumbers (_hartree2J / (_h * _c * 100.0))
 

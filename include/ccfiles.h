@@ -42,6 +42,20 @@
 #define CC_EINTS_NEW   133
 #define CC_FINTS_NEW   134
 
+#define EOM_D          135
+#define EOM_CME        136
+#define EOM_Cme        137
+#define EOM_CMNEF      138
+#define EOM_Cmnef      139
+#define EOM_CMnEf      140
+#define EOM_SIA        141
+#define EOM_Sia        142
+#define EOM_SIJAB      143
+#define EOM_Sijab      144
+#define EOM_SIjAb      145
+#define EOM_TMP        146
+#define CC_RAMPS       147 /* final right eigenvector */
+#define EOM_R          148
 /* Markers for the first and last file numbers */
 #define CC_MIN  CC_INFO
-#define CC_MAX  CC_FINTS_NEW
+#define CC_MAX  EOM_R
