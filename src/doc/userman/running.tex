@@ -160,9 +160,12 @@ defined in \pbasisdat.
 \begin{table}[tbp]
 %\special{landscape}
 \caption{~~~Basis sets available in PSI 3.2}
-\label{table:basisset}
+
+%\vspace{0.015in}
 \begin{center}
 \begin{tabular}{|l|l|l|}
+\hline
+\hline
 \hline
 Basis Set 		&Atoms   	&Aliases\\ 
 \hline
@@ -188,15 +191,18 @@ Basis Set 		&Atoms   	&Aliases\\
 \hline
 	STO-3G			& H-Ar			&\\
 	3-21G			& H-Ar			&\\
-	6-31G			& H-Ar, Cu			&\\
-        6-31G*                  & H-Ar                  &6-31G(d)\\
+	6-31G			& H-Ar, K, Ca, Cu	&\\
+        6-31G*                  & H-Ar, K, Ca, Cu       &6-31G(d)\\
         6-31+G*                 & H-Ar                  &6-31+G(d)\\
-        6-31G**                 & H-Ar, Cu              &6-31G(d,p)\\
+        6-31G**                 & H-Ar, K, Ca, Cu       &6-31G(d,p)\\
 	6-311G			& H-Ar			&\\
 	6-311G*                 & H-Ar                  &6-311G(d)\\
         6-311+G*                & H-Ne                  &6-311+G(d)\\
 	6-311G**                & H-Ar                  &6-311G(d,p)\\
+        6-311G(2df,2pd)         & H-Ne                  &\\
 	6-311++G**		& H, B-Ar		&6-311++G(d,p)\\
+        6-311++G(2d,2p)         & H-Ar                  &\\
+        6-311++G(3df,3pd)       & H-Ar                  &\\
 \hline
 \hline
 \textbf{Triple-Zeta} 			&				&\\	
@@ -218,11 +224,13 @@ Basis Set 		&Atoms   	&Aliases\\
         CC-PCVNZ                & B-Ne                  &cc-pCVNZ\\
 	AUG-CC-PVNZ		& H-He, B-Ne, Al-Ar	&aug-cc-pVNZ\\
 	AUG-CC-PV(N+D)Z		& Al-Ar			&aug-cc-pCV(N+d)Z\\
-	AUG-CC-PCVNZ (N$<$6)	& B-F			&aug-cc-pCVNZ\\
+	AUG-CC-PCVNZ (N${<}$6)	& B-F			&aug-cc-pCVNZ\\
 	D-AUG-CC-PVNZ		& H			&\\
 	PV7Z			& H, C, N, O, F, S	&pV7Z\\
 	AUG-PV7Z		& H, C, N, O, F, S	&aug-pV7Z\\
 	AUG-CC-PV7Z             & H, N, O, F            &aug-cc-pV7Z\\
+\hline
+\hline
 \hline
 \end{tabular}
 \end{center}
