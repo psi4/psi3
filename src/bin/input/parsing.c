@@ -76,9 +76,13 @@ void parsing()
 	 else
 	     punt("Unrecognized UNITS");
 	 
-	 /*No reorientation?*/
+	 /*No reorientation into the principal frame?*/
 	 no_reorient = 0;
 	 errcod = ip_boolean("NO_REORIENT",&no_reorient,0);
+
+	 /*Set reference frame to be the frame of the input geometry*/
+	 keep_ref_frame = 0;
+	 errcod = ip_boolean("KEEP_REF_FRAME",&keep_ref_frame,0);
      }
 
      return;

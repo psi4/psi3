@@ -263,6 +263,29 @@ basis set information. Either an absolute path to the file or a path relative to
 directory can be used. If the string is terminated by "/" (only directory is specified) then the 
 default file name "basis.dat" will be appended. 
 
+.IP "\fBNO_REORIENT =\fP \fIboolean\fP"
+This keyword is a hack to give user more control in certain situations
+when reorientation into the principal frame leaves some symmetry elements
+undetected. When set to \fBTRUE\fP, the program will skip this reorientation
+step. The user then becomes responsible for providing an initial orientation
+that is oriented properly for all symmetry elements to be detected. This
+can be tricky with Z-matrices, hence only experts should use this keyword.
+
+.IP "\fBKEEP_REF_FRAME =\fP \fIboolean\fP"
+When this keyword is set to true Psi will keep track of the original
+coordinate frame, i.e. the coordinate frame right after the center of mass shift
+and before the reorientation into the principal frame. That frame is called reference
+frame and, in general, is different from the canonical coordinate frame adopted at the end of
+input run and used for computations by all Psi modules programs henceforth.
+The information about the reference frame thus need to be stored in
+the checkpoint file if Psi modules (such as \fBCINTS\fP) need to transform
+their frame-dependent results (such as forces on the nuclei)
+into the original reference frame for external programs to use.
+This keyword becomes useful in finite difference computations
+where changes in point group may cause the molecule to reorient -
+when \fBKEEP_REF_FRAME\fP is set to \fBTRUE\fP all gradients in \fBFILE11\fP
+will be printed in the same coordinate frame. 
+
 .IP "\fBPRINT =\fP \fIinteger\fP"
 This controls the amount of information to be printed out. The greater the number - the more 
 information gets printed. Default (\fBPRINT =\fP 1) should be enough for routine use.

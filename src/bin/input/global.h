@@ -38,6 +38,10 @@ EXTERN int normalize_contractions;  /*Re-normalize contractions or leave as is*/
 EXTERN char *units;
 EXTERN int print_lvl;               /*Printing level*/
 EXTERN int no_reorient;             /*No reorientation?*/
+EXTERN int keep_ref_frame;          /*Use the input geometry frame as the reference frame
+				      rather than the canonical frame - later cints and others
+				      will use that to rotate gradients, etc. into the
+				      reference frame*/
 EXTERN int read_chkpt;              /*Read old data from checkpoint file?*/
 EXTERN int chkpt_geom;              /*Read geometry from checkpoint file?*/
 EXTERN int chkpt_mos;               /*Project old SCF evector?*/

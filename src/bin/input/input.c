@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
        Canonical frame is the reference frame
        unless read geometry from chkpt file
       ---------------------------------------*/
-     if (chkpt_geom == 0)
+     if (keep_ref_frame == 0)
 	 canon_eq_ref_frame();
      
      /*---------------------
