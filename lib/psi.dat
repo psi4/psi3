@@ -254,7 +254,7 @@ psi: (
   EOM_CCSDEnergy = ($ints $scf $transqt $ccsort $ccenergy $cchbar $cceom)
   EOM_CCSDRHFEnergy = ($EOM_CCSDEnergy $done)
   EOM_CCSDROHFEnergy = ($EOM_CCSDEnergy $done) 
-  EOM_CCSDUHFEnergy = ERROR
+  EOM_CCSDUHFEnergy = ($EOM_CCSDEnergy $done) 
   EOM_CCSDTwoConEnergy = ERROR
 
   % Procedure for the LEOM_CCSD energy
