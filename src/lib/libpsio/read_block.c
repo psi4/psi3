@@ -1,5 +1,6 @@
 /*!
-** \file read_block.c
+   \file read_block.c
+   \ingroup (PSIO)
 */
 
 #include <unistd.h>
@@ -15,6 +16,8 @@
 ** \param blksiz    = ??
 ** \param start_blk = ??
 ** \param end_blk   = ??
+**
+** \ingroup (PSIO)
 */
 int psio_read_block(ULI unit, char *key, char *buffer, ULI blksiz,
 	            ULI start_blk, ULI end_blk)

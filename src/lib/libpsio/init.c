@@ -1,5 +1,6 @@
 /*!
-** \file init.c
+   \file init.c
+   \ingroup (PSIO)
 */
 
 #include <stdio.h>
@@ -21,6 +22,8 @@ ULI *psio_writlen;
 ** PSIO_INIT(): Allocates global memory needed by the I/O routines.
 **
 ** No arguments.
+**
+** \ingroup (PSIO)
 */
 
 int psio_init(void)

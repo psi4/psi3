@@ -1,5 +1,6 @@
 /*!
 ** \file error.c
+** \ingroup (PSIO)
 */
 
 #include <stdio.h>
@@ -7,6 +8,8 @@
 #include "psio.h"
 
 /*!
+** \ingroup (PSIO)
+**
 ** PSIO_ERROR(): Print out an error message for libpsio.
 **
 ** \param unit   = file number

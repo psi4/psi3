@@ -1,5 +1,6 @@
 /*!
-** \file tocdel.c
+   \file tocdel.c
+   \ingroup (PSIO)
 */
 
 #include <stdlib.h>
@@ -10,6 +11,8 @@
 ** 
 ** \param unit = file number
 ** \param key = entry to delete from TOC
+**
+** \ingroup (PSIO)
 */
 
 int psio_tocdel(ULI unit, char *key)

@@ -1,5 +1,6 @@
 /*!
-** \file write_block.c
+   \file write_block.c
+   \ingroup (PSIO)
 */
  
 #include <stdlib.h>
@@ -7,6 +8,8 @@
 
 /*!
 ** PSIO_WRITE_BLOCK(): 
+**
+** \ingroup (PSIO)
 */
 
 int psio_write_block(ULI unit, char *key, char *buffer, ULI blksiz,

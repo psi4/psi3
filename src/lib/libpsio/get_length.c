@@ -1,5 +1,6 @@
 /*!
-** \file get_length.c
+   \file get_length.c
+   \ingroup (PSIO)
 */
 
 #include "psio.h"
@@ -8,6 +9,8 @@
 ** PSIO_GET_LENGTH(): Given a start page and offset for two data sets,
 ** compute the number of bytes between them.  Note that eadd denotes the
 ** beginning of the next entry and not the end of the current entry.
+**
+** \ingroup (PSIO)
 */
 
 ULI psio_get_length(psio_address sadd, psio_address eadd)

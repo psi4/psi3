@@ -1,11 +1,14 @@
 /*!
-** \file toclen.c
+   \file toclen.c
+   \ingroup (PSIO)
 */
 
 #include "psio.h"
 
 /*!
 ** PSIO_TOCLEN(): Compute the length of the TOC for a given unit.
+**
+** \ingroup (PSIO)
 */
 
 ULI psio_toclen(ULI unit)

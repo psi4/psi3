@@ -1,5 +1,6 @@
 /*!
-** \file open.c
+   \file open.c
+   \ingroup (PSIO)
 */
 
 #include <sys/types.h>
@@ -17,6 +18,8 @@
 **                  read and write functions.
 **  \param status = Indicates if the file is old (PSIO_OPEN_OLD) or new
 **                  (PSIO_OPEN_NEW). 
+**
+** \ingroup (PSIO)
 */
 
 int psio_open(ULI unit, int status)

@@ -1,5 +1,6 @@
 /*!
-** \file open_check.c
+   \file open_check.c
+   \ingroup (PSIO)
 */
 
 #include "psio.h"
@@ -9,6 +10,8 @@
 ** is already open.
 **
 ** \param unit = the PSI unit number.
+**
+** \ingroup (PSIO)
 */
 
 int psio_open_check(ULI unit)

@@ -1,5 +1,8 @@
+/*! \defgroup PSIO libpsio: The PSI I/O Library */
+
 /*!
 ** \file close.c
+** \ingroup (PSIO)
 */
 
 #include <unistd.h>
@@ -7,6 +10,7 @@
 #include "psio.h"
 
 /*!
+** \ingroup (PSIO)
 ** PSIO_CLOSE(): Closes a multivolume PSI direct access file.
 **
 **  \param unit = The PSI unit number used to identify the file to all read

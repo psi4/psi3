@@ -1,5 +1,6 @@
 /*!
-** \file tocwrite.c
+   \file tocwrite.c
+   \ingroup (PSIO)
 */
 
 #include <unistd.h>
@@ -7,6 +8,8 @@
 
 /*!
 ** PSIO_TOCWRITE(): Write the table of contents for file number 'unit'.
+**
+** \ingroup (PSIO)
 */
 int psio_tocwrite(ULI unit)
 {

@@ -1,5 +1,6 @@
 /*!
-** \file get_filename.c
+   \file get_filename.c
+   \ingroup (PSIO)
 */
 
 #include <stdio.h>
@@ -8,6 +9,8 @@
 
 /*!
 ** PSIO_GET_FILENAME(): Get the filename for filenumber 'unit'
+**
+** \ingroup (PSIO)
 */
 int psio_get_filename(ULI unit, char *name)
 {

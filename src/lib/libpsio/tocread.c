@@ -1,5 +1,6 @@
 /*!
-** \file tocread.c
+   \file tocread.c
+   \ingroup (PSIO)
 */
 
 #include <unistd.h>
@@ -8,6 +9,8 @@
 
 /*!
 ** PSIO_TOCREAD(): Read the table of contents for file number 'unit'.
+** 
+** \ingroup (PSIO)
 */
 int psio_tocread(ULI unit)
 {

@@ -1,5 +1,6 @@
 /*!
 ** \file done.c
+** \ingroup (PSIO)
 */
 
 #include <stdlib.h>
@@ -10,6 +11,8 @@
 #endif
 
 /*!
+** \ingroup (PSIO)
+**
 ** PSIO_DONE(): Frees global data used by the I/O routines.
 **
 ** No arguments.

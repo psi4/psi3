@@ -1,5 +1,6 @@
 /*!
-** \file write.c
+   \file write.c
+   \ingroup (PSIO)
 */
 
 #include <stdlib.h>
@@ -16,6 +17,8 @@
 **  \param sadd   = The entry-relative starting page/offset to write the data.
 **  \param eadd   = A pointer to the entry-relative page/offset for the next
 **                  byte after the end of the write request.
+**
+** \ingroup (PSIO)
 */
 
 int psio_write(ULI unit, char *key, char *buffer, ULI size,

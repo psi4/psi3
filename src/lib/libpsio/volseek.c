@@ -1,5 +1,6 @@
 /*!
-** \file volseek.c
+   \file volseek.c
+   \ingroup (PSIO)
 */
 
 #include <unistd.h>
@@ -10,6 +11,8 @@
 
 /*!
 ** PSIO_VOLSEEK()
+**
+** \ingroup (PSIO)
 */
 int psio_volseek(psio_vol *vol, ULI page, ULI offset, ULI numvols)
 {

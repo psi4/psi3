@@ -1,11 +1,14 @@
 /*!
-** \file toclast.c
+   \file toclast.c
+   \ingroup (PSIO)
 */
 
 #include "psio.h"
 
 /*!
 ** PSIO_TOCLAST(): Returns the last TOC entry.
+**
+** \ingroup (PSIO)
 */
 
 psio_tocentry *psio_toclast(ULI unit)

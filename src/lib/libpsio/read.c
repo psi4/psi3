@@ -1,5 +1,6 @@
 /*!
-** \file read.c
+   \file read.c
+   \ingroup (PSIO)
 */
  
 #include <unistd.h>
@@ -17,6 +18,8 @@
 **  \param sadd   = The entry-relative starting page/offset of the desired data.
 **  \param eadd   = A pointer to the entry-relative page/offset for the next
 **                  byte after the end of the read request.
+** 
+** \ingroup (PSIO)
 */
 
 int psio_read(ULI unit, char *key, char *buffer, ULI size,

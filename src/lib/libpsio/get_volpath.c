@@ -1,5 +1,6 @@
 /*!
-** \file get_volpath.c
+   \file get_volpath.c
+   \ingroup (PSIO)
 */
 
 #include <stdio.h>
@@ -9,6 +10,8 @@
 /*
 ** PSIO_GET_VOLPATH(): Get the path to a given volume for file number
 ** 'unit'.
+**
+** \ingroup (PSIO)
 */
 int psio_get_volpath(ULI unit, ULI volume, char *path)
 {
@@ -39,6 +42,8 @@ int psio_get_volpath(ULI unit, ULI volume, char *path)
 /*
 ** PSIO_GET_VOLPATH_DEFAULT(): Get the default path for the nth volume
 ** of any file.
+**
+** \ingroup (PSIO)
 */
 int psio_get_volpath_default(ULI volume, char *path)
 {

@@ -1,5 +1,6 @@
 /*!
-** \file get_numvols.c
+   \file get_numvols.c
+   \ingroup (PSIO)
 */
  
 #include <stdio.h>
@@ -12,6 +13,8 @@ int psio_get_tempinfo(ULI *num_temp_vols);
 /*!
 ** PSIO_GET_NUMVOLS(): Get the number of volumes that file number 'unit'
 ** is split across.
+**
+** \ingroup (PSIO)
 */
 ULI psio_get_numvols(ULI unit)
 {
@@ -45,6 +48,8 @@ ULI psio_get_numvols(ULI unit)
 /*!
 ** PSIO_GET_NUMVOLS_DEFAULT(): Get the number of volumes that file 
 ** number 'unit' is split across.
+**
+** \ingroup (PSIO)
 */
 ULI psio_get_numvols_default(void)
 {
@@ -63,6 +68,7 @@ ULI psio_get_numvols_default(void)
 
 
 
+#define HOSTNAME_MAX 26
 /*!
 ** PSIO_GET_TEMPINFO : David Sherrill, April 1993
 **
@@ -74,16 +80,15 @@ ULI psio_get_numvols_default(void)
 ** \param num_temp_vols = ptr to number of temp vols to use
 **  
 ** Returns: 1 for success, 0 otherwise
+**
+** \ingroup (PSIO)
 */
-
-#define HOSTNAME_MAX 26
-
 int psio_get_tempinfo(ULI *num_temp_vols)
 {
    FILE *fpi ;                        /* for reading in the host table data */
    char hostname[HOSTNAME_MAX] ;      /* name of machine we're running on */
    char *hostfile;                    /* filename containing tmp disk info */
-   char line[PSIO_MAXSTR] ;         /* hold line from hostfile */
+   char line[PSIO_MAXSTR] ;           /* hold line from hostfile */
    int found = 0 ;                    /* is host found in data file ? */
    char *sptr ;                       /* keep place in input string */
    int i, data_in ;

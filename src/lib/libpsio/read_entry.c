@@ -1,5 +1,6 @@
 /*!
-** \file read_entry.c
+   \file read_entry.c
+   \ingroup (PSIO)
 */
 
 #include "psio.h"
@@ -16,6 +17,8 @@
 ** Note that the value of size is not directly compared to the actual
 ** size of the entry, but care is taken to ensure that the end of the
 ** entry is not surpassed.
+**
+** \ingroup (PSIO)
 */
 
 int psio_read_entry(ULI unit, char *key, char *buffer, ULI size)

@@ -1,5 +1,6 @@
 /*!
-** \file rw.c
+   \file rw.c
+   \ingroup (PSIO)
 */
 
 #include <stdio.h>
@@ -8,6 +9,8 @@
 
 /*!
 ** PSIO_RW()
+**
+** \ingroup (PSIO)
 */
 int psio_rw(ULI unit, char *buffer, psio_address address, ULI size, int wrt)
 {

@@ -1,5 +1,6 @@
 /*!
 ** \file get_entry_end.c
+** \ingroup (PSIO)
 */
 
 #include "psio.h"
@@ -7,6 +8,7 @@
 /*!
 ** PSIO_GET_ENTRY(): Returns the ending relative address of the tocentry
 ** for the given keyword.
+** \ingroup (PSIO)
 */
 
 psio_address psio_get_entry_end(ULI unit, char *key)

@@ -1,5 +1,6 @@
 /*!
-** \file get_global_address.c
+   \file get_global_address.c
+   \ingroup (PSIO)
 */
 
 #include "psio.h"
@@ -8,6 +9,8 @@
 ** PSIO_GET_GLOBAL_ADDRESS(): Given the global starting address for a
 ** TOC entry and a relative offset within the entry, compute the global
 ** address for the offset.
+** 
+** \ingroup (PSIO)
 */
 
 psio_address psio_get_global_address(psio_address entry_start,

@@ -1,5 +1,6 @@
 /*!
-** \file tocclean.c
+   \file tocclean.c
+   \ingroup (PSIO)
 */
 
 #include "psio.h"
@@ -7,6 +8,8 @@
 /*!
 ** PSIO_TOCCLEAN(): Delete all TOC entries after the given key.
 ** If a blank key is given, the entire TOC will be wiped.
+**
+** \ingroup (PSIO)
 */
 
 int psio_tocclean(ULI unit, char *key)
