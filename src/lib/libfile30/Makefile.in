@@ -11,6 +11,9 @@ TARGET = $(top_objdir)/lib/libfile30.a
 TRUESRC = \
 init.c \
 close.c \
+rd_max_am.c \
+rd_shells_per_am.c \
+rd_am2canon_shell_order.c \
 rd_ua2a.c \
 rd_rottype.c \
 rd_eref.c \
