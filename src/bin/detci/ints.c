@@ -28,7 +28,7 @@
 void read_integrals()
 {
    int i, j, ij, k, l, kl, ijkl, ijij;
-   int nbstri;
+   int nbstri, nbstri_full;
    double value;
    extern void check_energy(double *H, double *twoel_ints, int *docc, 
       int *frozen_docc, int fzc_flag, double escf, double enuc, double efzc, 
@@ -37,6 +37,7 @@ void read_integrals()
    double *tmp_onel_ints;
 
    /* allocate memory for one and two electron integrals */
+   nbstri_full = (CalcInfo.nbfso * (CalcInfo.nbfso + 1)) / 2;
    nbstri = (CalcInfo.num_ci_orbs * (CalcInfo.num_ci_orbs + 1)) / 2 ;
    CalcInfo.onel_ints = (double *) init_array(nbstri) ;
    CalcInfo.twoel_ints = (double *) init_array(nbstri * (nbstri + 1) / 2);
@@ -51,8 +52,8 @@ void read_integrals()
    /* iwl_rdone(Parameters.oei_file, nbstri, CalcInfo.onel_ints, 
                 &(CalcInfo.efzc), Parameters.oei_erase); */
 
-   tmp_onel_ints = init_array(nbstri);
-   iwl_rdone(Parameters.oei_file, PSIF_MO_FZC, tmp_onel_ints, nbstri,
+   tmp_onel_ints = init_array(nbstri_full);
+   iwl_rdone(Parameters.oei_file, PSIF_MO_FZC, tmp_onel_ints, nbstri_full,
              Parameters.oei_erase, (Parameters.print_lvl>4), outfile);
    filter(tmp_onel_ints, CalcInfo.onel_ints, ioff, CalcInfo.nbfso, 
 	  CalcInfo.num_fzc_orbs, CalcInfo.num_fzv_orbs);
