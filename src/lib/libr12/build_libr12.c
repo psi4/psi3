@@ -62,6 +62,7 @@ int main()
   new_am = (MAX_AM - 1 - DERIV_LVL)*2;
 
   /* Setting up init_libr12.c, header.h */
+  fprintf(init_code,"#include <libint.h>\n");
   fprintf(init_code,"#include \"libr12.h\"\n");
   fprintf(init_code,"#include \"r12_hrr_header.h\"\n\n");
   fprintf(init_code,"/* This function initializes a matrix of pointers to routines */\n");

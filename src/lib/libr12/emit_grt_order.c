@@ -110,6 +110,7 @@ int emit_grt_order(int old_am, int new_am)
 	Write the overhead to the HRR code
        -----------------------------------*/
       fprintf(hrr_code,"#include <stdio.h>\n");
+      fprintf(hrr_code,"#include <libint.h>\n");
       fprintf(hrr_code,"#include \"libr12.h\"\n");
       fprintf(hrr_code,"#include <hrr_header.h>\n\n");
       fprintf(hrr_code,"#include \"r12_hrr_header.h\"\n\n");
@@ -128,6 +129,7 @@ int emit_grt_order(int old_am, int new_am)
 	Write the overhead to the VRR code
        -----------------------------------*/
       fprintf(vrr_code,"#include <stdio.h>\n");
+      fprintf(vrr_code,"#include <libint.h>\n");
       fprintf(vrr_code,"#include \"libr12.h\"\n");
       fprintf(vrr_code,"#include <vrr_header.h>\n");
       fprintf(vrr_code,"#include \"r12_vrr_header.h\"\n\n");

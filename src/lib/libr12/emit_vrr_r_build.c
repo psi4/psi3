@@ -129,6 +129,7 @@ int emit_vrr_r_build(int old_am, int new_am, int max_class_size)
 	}
       }
 
+      fprintf(code,"#include <libint.h>\n");
       fprintf(code,"#include \"libr12.h\"\n\n");
       if (split == 1) {
 	curr_subfunction = 0;
