@@ -5,9 +5,9 @@
 #	atomic calculations on the H-Ar specifiying the proper 
 #	multiplicity, occupation, reference ... etc for H-Ar.
 #
-#	Options - 0 - will perform test on ~40 basis sets given below
+#	Options - 0 - will perform test on ~4o basis sets given below
 #		    ( the starting input.dat should be identical to the
-#		    file named standard.input )
+#		    file named standart.input )
 #		- 1 - will perform test on basis set given in input.dat
 #		    ( input file must start with hydrogen )
 #
@@ -16,8 +16,8 @@
 #	It writes the atomic energies into a file named 
 #	<reference>.<basis set>.Energies 
 #
-#       Berhane Temelso
-#       Georgia Tech
+#
+#
 #	Dec. 2002
 ########################################################################
 
@@ -74,14 +74,17 @@
 # ARRAY OF BASIS SETS
 
 @Basis= ("DZ", "DZP", "DZ-DIF", "DZP-DIF",
-        "WACHTERS", "WACHTERS-F",
         "STO-3G", "3-21G", "6-31G","6-311G",
         "TZ2P", "TZ2PF", "TZ-DIF", "TZ2P-DIF", "TZ2PF-DIF",
         "CC-PVDZ", "CC-PVTZ", "CC-PVQZ", "CC-PV5Z", "CC-PV6Z",
         "CC-PCVDZ", "CC-PCVTZ", "CC-PCVQZ", "CC-PCV5Z", "CC-PCV6Z",
         "AUG-CC-PVDZ", "AUG-CC-PVTZ", "AUG-CC-PVQZ", "AUG-CC-PV5Z", "AUG-CC-PV6Z",
         "AUG-CC-PCVDZ", "AUG-CC-PCVTZ", "AUG-CC-PCVQZ", "AUG-CC-PCV5Z", "AUG-CC-PCV6Z",
-        "PV7Z", "AUG-PV7Z", "AUG-CC-PV7Z");
+        "PV7Z", "AUG-PV7Z", "AUG-CC-PV7Z",
+	"cc-pVDZ", "cc-pVTZ", "cc-pVQZ", "cc-pV5Z", "cc-pV6Z",
+	"cc-pCVDZ", "cc-pCVTZ", "cc-pCVQZ", "cc-pCV5Z", "cc-pCV6Z",
+	"aug-cc-pVDZ", "aug-cc-pVTZ", "aug-cc-pVQZ", "aug-cc-pV5Z", "aug-cc-pV6Z",
+	"aug-cc-pCVDZ", "aug-cc-pCVTZ", "aug-cc-pCVQZ", "aug-cc-pCV5Z", "aug-cc-pCV6Z");
 
 # CHOOSE BETWEEN A SINGLE BASIS SET AND ALL BASIS SETS
 
@@ -91,7 +94,7 @@ $choice = <STDIN>;
 
 # LOOP OVER BASIS SETS AND ELEMENTS
 
-for($bas=0; $bas<40; $bas++){
+for($bas=0; $bas<55; $bas++){
   for($i=0;$i<19;$i++)
   {
      $energy[$i]=0;
@@ -101,7 +104,7 @@ for($bas=0; $bas<40; $bas++){
      $energy[$i]=0;
      energy($energy[$i]); 
      print "Energy = $energy[$i]\n"; 
-     system("mv output.dat $elemArray[$i].out"); 
+     system("mv output.dat junk/$elemArray[$i].out"); 
      system("psiclean"); 
   }
   print_data();
@@ -111,7 +114,7 @@ for($bas=0; $bas<40; $bas++){
 
 # TRUNCATION
   if(($choice==1) || ($Basis[$bas]=/AUG-CC-PV7Z/))
-	{$bas=55;}
+	{$bas=58;}
 }
 ###############################################################
 
@@ -140,22 +143,22 @@ sub Read_input
     }	
 
     # MODIFY REFERENCE TYPE
-    if($input[$count]=~/reference/)
-    {
-	if($elemult{$elemArray[$i]} == 1)
-	{
-        $tmp = $input[$count];
-        @tmp2 = split(/ +/, $tmp);
-        chomp($tmp2[3]);
-	$input[$count] =~ s/$tmp2[3]/rhf/;
-       $reference = "rhf";
-	}
-	elsif($elemult{$elemArray[$i]}!=1)
-       {
-        $tmp = $input[$count];
-        @tmp2 = split(/ +/, $tmp);
-        chomp($tmp2[3]);
-	$input[$count] =~ s/$tmp2[3]/rohf/;
+     if($input[$count]=~/reference/)
+     {
+ 	if($elemult{$elemArray[$i]} == 1)
+ 	{
+         $tmp = $input[$count];
+         @tmp2 = split(/ +/, $tmp);
+         chomp($tmp2[3]);
+ 	$input[$count] =~ s/$tmp2[3]/rhf/;
+        $reference = "rhf";
+ 	}
+ 	elsif($elemult{$elemArray[$i]}!=1)
+        {
+         $tmp = $input[$count];
+         @tmp2 = split(/ +/, $tmp);
+         chomp($tmp2[3]);
+ 	$input[$count] =~ s/$tmp2[3]/rohf/;
        $reference = "uhf";
         }
 
