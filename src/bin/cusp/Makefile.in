@@ -3,7 +3,9 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-PSILIBS = -ldpd -lqt -lfile30 -liwl -lpsio -lciomr -lipv1
+LDLIBS += $(BLAS)
+
+PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_file30 -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
 CSRC = \
 cusp.c phi.c delta.c cache.c local.c
