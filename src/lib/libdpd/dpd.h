@@ -259,6 +259,7 @@ int dpd_buf4_close(dpdbuf4 *Buf);
 int dpd_buf4_mat_irrep_init(dpdbuf4 *Buf, int irrep);
 int dpd_buf4_mat_irrep_close(dpdbuf4 *Buf, int irrep);
 int dpd_buf4_mat_irrep_rd(dpdbuf4 *Buf, int irrep);
+int dpd_buf4_mat_irrep_wrt(dpdbuf4 *Buf, int irrep);
 int dpd_buf4_print(dpdbuf4 *Buf, FILE *outfile, int print_data);
 int dpd_buf4_copy(dpdbuf4 *InBuf, int outfilenum, char *label);
 int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
