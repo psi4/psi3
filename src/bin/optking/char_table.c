@@ -7,6 +7,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h>
+#include "opt.h"
 
 int **get_char_table(char *ptgrp); /* returns the character table      */
 int get_num_irreps(char *ptgrp);      /* " " number of irreps */
@@ -15,6 +16,7 @@ char **get_symm_ops(char *ptgrp);     /* " " symm operation labels */
 int *get_ops_coeffs(char *ptgrp);     /* " " coefficients of the symmetry operations */
 int get_num_ops(char *ptgrp);         /* " " number of operations */
 int get_num_classes(char *ptgrp);     /* " " number of classes of operations */
+int *get_ops_in_class(char *ptgrp);
 
 /*
 void main (void) {
@@ -38,6 +40,8 @@ void main (void) {
      ops_coeffs = get_ops_coeffs(ptgrp[k]);
      num_ops = get_num_ops(ptgrp[k]);
      num_classes = get_num_classes(ptgrp[k]);
+
+fprintf(outfile,"MAIN #2 BEING EXECUTED");
 
      fprintf(outfile,"\nPoint Group: %s\n",ptgrp[k]);
      fprintf(outfile,"Number of irreps: %d\n",num_irreps);
@@ -607,3 +611,187 @@ else if (strcmp(ptgrp,"D6H") == 0)
 else
    return 1;
 }
+
+
+
+/*----------------------------------------------------------------------------
+	GET_OPS_IN_CLASS
+
+	finds numbers of operations in the classes of the molecular point
+	group.  this is used only to find the irreps spanned by an 
+	eigenvector of G matrix 
+
+	arguments: *ptgrp = char string indicating point group
+
+        returns: pointer to 'num_ops' vector
+								JPK 6-11-00
+----------------------------------------------------------------------------*/
+
+int *get_ops_in_class(char *ptgrp) {
+
+  int num_class,
+      *num_ops,
+      error_var = 0; 
+
+  static int class_C1[] = {1},
+             num_class_C1 = 1,
+
+             /* for CS,CI,C2 */
+             class_CS[] = {1,1},
+             num_class_CS = 2,
+
+             /* for C2V,D2,C2h */
+             class_D2[] = {1,1,1,1},
+             num_class_D2 = 4,
+
+             /* for C3V,D3 */
+             class_D3[] = {1,2,3},
+             num_class_D3 = 3,
+
+             /* for C4V,D2D,D4 */
+             class_D4[] = {1,2,1,2,2},
+             num_class_D4 = 5,
+
+             /* for O,TD */
+             class_TD[] = {1,8,3,6,6},
+             num_class_TD = 5,
+
+             /* for C6V,D6 */
+             class_D6[] = {1,2,2,1,3,3},
+             num_class_D6 = 6,
+
+             /*for D3D,D3H */
+             class_D3D[] = {1,2,3,1,2,3},
+             num_class_D3D = 6,
+
+             class_D2H[] = {1,1,1,1,1,1,1,1},
+             num_class_D2H = 8,
+
+             class_D4H[] = {1,2,1,2,2,1,2,1,2,2},
+             num_class_D4H = 10,
+
+             class_OH[] = {1,8,6,6,3,1,6,8,3,6},
+             num_class_OH = 10,
+
+             class_D6H[] = {1,2,2,1,3,3,1,2,2,1,3,3},
+             num_class_D6H = 12;
+
+
+  if(strcmp(ptgrp,"C1 ") == 0) {
+    if(num_irreps == num_class_C1)
+      num_ops = class_C1;
+    else error_var = 1;
+  }    
+
+  else if(strcmp(ptgrp,"CS ")==0 || strcmp(ptgrp,"CI ")==0 ||
+          strcmp(ptgrp,"C2 ")==0){
+    if(num_irreps == num_class_CS)
+      num_ops = class_CS;
+    else error_var = 1;
+  }
+
+
+
+  else if (strcmp (ptgrp, "C2V")==0 || strcmp (ptgrp, "D2 ")==0 ||
+          strcmp(ptgrp,"C2H")==0) {
+    if(num_irreps == num_class_D2)
+      num_ops = class_D2;
+    else error_var = 1;
+  }  
+
+  else if(strcmp(ptgrp,"C3V")==0 || strcmp(ptgrp,"D3 ")==0) {
+    if(num_irreps == num_class_D3)
+      num_ops = class_D3;
+    else error_var = 1;
+  }  
+
+  else if(strcmp(ptgrp,"C4V")==0 || strcmp(ptgrp,"D2D")==0 || 
+          strcmp(ptgrp,"D4 ")==0) {
+    if(num_irreps == num_class_D4)
+      num_ops = class_D4;
+    else error_var = 1;
+  }
+
+  else if(strcmp(ptgrp,"O  ")==0 || strcmp(ptgrp,"TD ")==0) { 
+    if(num_irreps == num_class_TD)
+      num_ops = class_TD;
+    else error_var = 1;
+  }
+
+  else if(strcmp(ptgrp,"C6V")==0 || strcmp(ptgrp,"D6 ")==0) {
+    if(num_irreps == num_class_D6)
+      num_ops = class_D6;
+    else error_var = 1;
+  }  
+
+  else if(strcmp(ptgrp,"D3D")==0 || strcmp(ptgrp,"D3H")==0) {
+    if(num_irreps == num_class_D3D)
+      num_ops = class_D3D;
+    else error_var = 1;
+  }
+
+  else if(strcmp(ptgrp,"D2H")==0) {
+    if(num_irreps == num_class_D2H)
+      num_ops = class_D2H;
+    else error_var = 1;
+  }
+
+  else if(strcmp(ptgrp,"D4H")==0) {
+    if(num_irreps == num_class_D4H)
+      num_ops = class_D4H;
+    else error_var = 1;
+  }
+
+  else if(strcmp(ptgrp,"OH ")==0) {
+    if(num_irreps == num_class_OH)
+      num_ops = class_OH;
+    else error_var = 1;
+  }
+
+  else if(strcmp(ptgrp,"D6H")==0) {
+    if(num_irreps == num_class_D6H)
+      num_ops = class_D6H;
+    else error_var = 1;
+  }
+
+ 
+  else if (num_ops[0] == 0) error_var = 1;
+
+
+  if(error_var != 0) {
+    fprintf(outfile,"\nerror -- problem assigning number of operations per class");
+    fprintf(outfile,"\n      ** stopping execution **\n");
+    printf("\nerror -- problem assigning number of operations per
+class");
+    printf("\n      ** stopping execution **\n");       
+    exit(1);
+  } 
+
+return num_ops;
+
+}      
+               
+             
+      
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

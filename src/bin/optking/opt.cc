@@ -1,4 +1,12 @@
+/*****************************************************************************
 
+     OPT.CC
+        written by Rollin King, 1999
+
+     main and input functions as well as several math functions for optking
+
+
+*****************************************************************************/
 extern "C" {
   #include <stdio.h>
   #include <file30.h>
@@ -11,6 +19,7 @@ extern "C" {
   #include <physconst.h>
   int **get_char_table(char *symmetry);
   char **get_symm_ops(char *symmetry);
+  int *get_ops_in_class(char *ptgrp);
 }
 
 #include "opt.h"
@@ -104,6 +113,7 @@ int main(void)
         if (err == NULL) break;
         ++count;
       }
+
      //fflush(fp_intco);
       rewind(fp_intco);
       for(j=0;j<(count-1);++j)
@@ -342,6 +352,16 @@ int div_int(int big, int little) {
 }
 
 
+
+
+
+/*----------------------------------------------------------------------------
+       PRINT_MAT2
+
+       prints a matrix to output file
+
+----------------------------------------------------------------------------*/
+
 void print_mat2(double **matrix, int rows, int cols, FILE *of) {
   int i,j,col;
   for (i=0;i<rows;++i) {
@@ -360,6 +380,16 @@ void print_mat2(double **matrix, int rows, int cols, FILE *of) {
 }
 
 
+
+
+
+/*-----------------------------------------------------------------------------
+
+	CROSS_PRODUCT
+
+        computes cross product of two vectors
+-----------------------------------------------------------------------------*/
+
 void cross_product(double *u,double *v,double *out)
 {
   out[0] = u[1]*v[2]-u[2]*v[1];
@@ -369,6 +399,17 @@ void cross_product(double *u,double *v,double *out)
 }
 
 
+
+
+
+/*----------------------------------------------------------------------------
+
+       SCALAR_MULT
+
+       performs scalar multiplication of a vector
+
+----------------------------------------------------------------------------*/
+
 void scalar_mult(double a, double *vect, int dim) {
   int i;
   for (i=0;i<dim;++i)
@@ -377,6 +418,17 @@ void scalar_mult(double a, double *vect, int dim) {
 }
 
 
+
+
+
+/*----------------------------------------------------------------------------
+
+       SCALAR_DIV
+
+       performs scalar division of a vector
+
+-----------------------------------------------------------------------------*/
+
 void scalar_div(double a, double *vect) {
   int i;
   for (i=0;i<3;++i)
@@ -384,6 +436,17 @@ void scalar_div(double a, double *vect) {
   return;
 }
 
+
+
+
+
+/*----------------------------------------------------------------------------
+
+       INTRO
+
+       prints into
+
+-----------------------------------------------------------------------------*/
 
 void intro() {
 fprintf(outfile,"\t_____________________________________________________\n");
@@ -394,8 +457,26 @@ fprintf(outfile,"\t|___________________________________________________|\n");
 }
 
 
-// This function inverts a matrix by diagonalization.
-// If redundant==1, then zero eigenvalues are allowed
+
+
+
+/*----------------------------------------------------------------------------
+
+       **SYM_MATRIX_INVERT
+
+       inverts a matrix by diagonalization
+
+       parameters:
+             **A = matrix to be inverted
+             dim = dimension of A
+             print_det = print determinant if 1, nothing if 0
+             redundant = zero eigenvalues allowed if 1
+
+       returns:
+             **inv_A = inverse of A
+
+----------------------------------------------------------------------------*/
+
 double **symm_matrix_invert(double **A, int dim, int print_det, int redundant) {
   int i;
   double **A_inv, **A_vects, *A_vals, **A_temp, det=1.0;
@@ -447,7 +528,16 @@ double **symm_matrix_invert(double **A, int dim, int print_det, int redundant) {
 }
 
 
-/* This function reads parameters from input.dat */
+
+
+
+/*----------------------------------------------------------------------------
+
+	GET_OPTINFO
+
+	reads optimization parameters from input.dat
+-----------------------------------------------------------------------------*/
+                                                                              
 void get_optinfo() {
   int a;
 
@@ -532,10 +622,19 @@ void get_optinfo() {
 }
 
 
+
+
+
+/*------------------------------------------------------------------------------
+
+       GET_SYMINFO
+
+       gets symmetry info
+-----------------------------------------------------------------------------*/ 
+
 void get_syminfo(internals &simples) {
-  int a, b, c, d, aa, bb, cc, dd, i, j, sign, num_irreps;
+  int a, b, c, d, aa, bb, cc, dd, i, j, sign;
   int id, intco_type, sub_index, ops, num_atoms;
-  char ptgrp[4];
 
   rewind(fp_input);
   ip_set_uppercase(1);
@@ -561,8 +660,8 @@ void get_syminfo(internals &simples) {
   for ( ;j<3;++j)
     ptgrp[j] = ' ';
   ptgrp[3] = '\0';
-  for (i=0;i<3;++i)
-    ptgrp[i] = toupper(ptgrp[i]);
+  for (i=0;i<3;++i) 
+      ptgrp[i] = toupper(ptgrp[i]);
 
   syminfo.clean_irrep_lbls = new char*[num_irreps];
   for (i=0;i<num_irreps;++i) {
@@ -573,13 +672,14 @@ void get_syminfo(internals &simples) {
          syminfo.clean_irrep_lbls[i][j] = 'P' ;
       if (syminfo.clean_irrep_lbls[i][j] == '\'')
          syminfo.clean_irrep_lbls[i][j] = 'p' ;
+      }
     }
-  }
-
   syminfo.ct = get_char_table(ptgrp);
   syminfo.op_lbls = get_symm_ops(ptgrp);
   syminfo.ict_ops = init_int_matrix(simples.get_num(),num_irreps);
   syminfo.ict_ops_sign = init_int_matrix(simples.get_num(),num_irreps);
+  ops_in_class = init_int_array(num_irreps);
+  ops_in_class = get_ops_in_class(ptgrp);
 
   for (i=0;i<simples.get_num();++i)
     for (j=0;j<num_irreps;++j)
@@ -695,6 +795,16 @@ void get_syminfo(internals &simples) {
 }
 
 
+
+
+
+/*------------------------------------------------------------------------------
+
+       POWER
+
+       raises number to a power
+------------------------------------------------------------------------------*/
+
 double power(double x, int y) {
   double tval = 1.0;
   int invert = 0;
@@ -709,6 +819,17 @@ double power(double x, int y) {
   return tval;
 }
 
+
+
+
+
+/*------------------------------------------------------------------------------
+
+       SWAP_TORS
+
+       swaps a and d, b and c ... something about torsional angles??
+------------------------------------------------------------------------------*/
+
 void swap_tors(int *a, int *b, int *c, int *d) {
   int p;
   if (*a > *d) {
@@ -720,6 +841,18 @@ void swap_tors(int *a, int *b, int *c, int *d) {
     *c = p;
   }
 }
+
+
+
+
+
+
+/*------------------------------------------------------------------------------
+
+       SWAP
+
+       swaps a <-> b
+-----------------------------------------------------------------------------*/
 
 void swap(int *a, int *b) {
   int c;

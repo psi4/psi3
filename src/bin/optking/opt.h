@@ -30,7 +30,7 @@
 // #define IRREP_TOL (1.0E-8)
 #define LABEL_LENGTH (4) // for point group and irrep labels
 
-extern "C" char *gprgid();
+EXTERN char *gprgid();
 EXTERN FILE *fp_input, *fp_intco, *outfile, *fp_fconst, *fp_opt_aux;
 EXTERN void cross_product(double *u,double *v,double *out);
 EXTERN void scalar_mult(double a, double *vect, int dim);
@@ -39,6 +39,10 @@ EXTERN double **symm_matrix_invert(double **A, int rows, int cols, int redundant
 EXTERN char *gprgid();
 EXTERN int div_int(int big, int little);
 EXTERN void print_mat2(double **matrix, int rows, int cols, FILE *of);
+EXTERN int *ops_in_class;
+EXTERN int num_irreps, *irr;
+EXTERN int num_nonzero;      /* number of non-redundant di coordinates (eigenvectors of G with nonzero eigenvalues) */
+EXTERN char ptgrp[4];        /*molecular point group*/
 
 struct OPTInfo {
   double *masses;

@@ -1,3 +1,11 @@
+/*****************************************************************************
+
+	INTERNALS.CC
+
+	member functions for internals class
+******************************************************************************/
+
+
 extern "C" {
   #include <stdio.h>
   #include <stdlib.h>
@@ -18,7 +26,15 @@ extern "C" {
 extern void swap_tors(int *a, int *b, int *c, int *d);
 extern void swap(int *a, int *b);
 
-/* Converts the absolute optking index into the user-assigned id number */
+
+
+/*-----------------------------------------------------------------------------
+
+	INTERNALS::INDEX_TO_ID
+
+	Converts the absolute optking index into the user-assigned id number 
+-----------------------------------------------------------------------------*/
+
 int internals :: index_to_id(int index) {
    int i, count = -1, id = -1;
    for (i=0;i<stre.get_num();++i)
@@ -33,7 +49,15 @@ int internals :: index_to_id(int index) {
    return id;
 }
 
-/*  Converts the user-assigned id number into an absolute optking index */
+
+
+/*-----------------------------------------------------------------------------
+
+	INTERNALS::ID_TO_INDEX
+
+	Converts the user-assigned id number into an absolute optking index 
+-----------------------------------------------------------------------------*/
+
 int internals :: id_to_index(int id) {
    int i, count = 0, index = -1, found = 0;
    for (i=0;i<stre.get_num();++i,++count)
@@ -56,8 +80,16 @@ int internals :: id_to_index(int id) {
    return index;
 }
 
-/* Given the user-assigned id number, returns the type of internal
-   and the subindex within that type */
+
+
+/*----------------------------------------------------------------------------
+
+	INTERNALS::LOCATE_ID
+
+	Given the user-assigned id number, returns the type of internal
+	and the subindex within that type 
+----------------------------------------------------------------------------*/
+
 void internals :: locate_id(int id, int *intco_type, int *sub_index) {
    int i, found = 0;
 // fprintf(outfile,"locating id %d\n",id);
@@ -89,6 +121,11 @@ void internals :: locate_id(int id, int *intco_type, int *sub_index) {
    return;
 }
 
+
+
+
+/*??????????*/
+
 internals :: ~internals() {
   fprintf(outfile,"destructor for internals called\n");
   fflush(outfile);
@@ -99,6 +136,16 @@ internals :: ~internals() {
 //  out.~out_set();
 }
 
+
+
+
+
+/*-----------------------------------------------------------------------------
+
+	INTERNALS::INTERNALS
+
+	class constructor for internals
+-----------------------------------------------------------------------------*/
 
 internals :: internals(cartesians& carts, int user_intcos)
 {
@@ -365,6 +412,17 @@ rewind(fp_input);
 }
 
 
+
+
+
+/*-----------------------------------------------------------------------------
+
+	INTERNALS::PRINT
+
+        Print out internal coordinates to a file in intco.dat format
+	(print_flag == 0) or with values (print_flag == 1) 
+----------------------------------------------------------------------------*/
+
 /* Print out internal coordinates to a file in
    intco.dat format (print_flag == 0) or
    with values (print_flag == 1) */
@@ -378,6 +436,13 @@ void internals :: print(FILE *fp_out, int print_flag) {
   return;
 }
 
+
+
+/*----------------------------------------------------------------------------
+
+	INTERNALS::COMPUTE
+----------------------------------------------------------------------------*/
+
 void internals :: compute_internals(int num_atoms, double *geom) {
   stre.compute(num_atoms, geom);
   bend.compute(num_atoms, geom);
@@ -386,6 +451,13 @@ void internals :: compute_internals(int num_atoms, double *geom) {
   return;
 }
 
+
+
+/*-----------------------------------------------------------------------------
+
+	INTERNALS::COMPUTE_S
+-----------------------------------------------------------------------------*/
+
 void internals :: compute_s(int num_atoms, double *geom) {
   stre.compute_s(num_atoms, geom);
   bend.compute_s(num_atoms, geom);
@@ -393,6 +465,13 @@ void internals :: compute_s(int num_atoms, double *geom) {
   out.compute_s(num_atoms, geom);
   return;
 }
+
+
+
+/*----------------------------------------------------------------------------
+
+	INTERNALS::PRINT_S
+----------------------------------------------------------------------------*/
 
 void internals :: print_s() {
   stre.print_s();

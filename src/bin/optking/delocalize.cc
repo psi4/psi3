@@ -21,7 +21,7 @@ extern "C" {
 #include "internals.h"
 #include "salc.h"
 
-extern int irrep(internals &simples, double *salc);
+extern double **irrep(internals &simples, double **salc);
 
 void delocalize(int num_atoms,internals &simples) {
   int error,i,j,k,a,b,c,d,id,count,intco_type,sub_index,row[4],dim[4];
@@ -77,7 +77,6 @@ void delocalize(int num_atoms,internals &simples) {
       B[count][3*d+k] += simples.out.get_s_D(i,k);
     }
   }
-  //  print_mat2(B,simples.get_num(),num_atoms*3,outfile);
 
  // Form BBt matrix
   BBt = init_matrix(simples.get_num(),simples.get_num());
@@ -105,8 +104,6 @@ void delocalize(int num_atoms,internals &simples) {
     }
     free(ptr);
   }
-  //  fprintf(outfile,"The BB^t Matrix:\n");
-  //  print_mat2(BBt,simples.get_num(),simples.get_num(),outfile);
 
  // Diagonalize BBt
   evals = init_array(simples.get_num());
@@ -131,16 +128,27 @@ void delocalize(int num_atoms,internals &simples) {
   }
   
   double **evectst;
-  evectst = init_matrix(simples.get_num(),simples.get_num());
   char buffer[MAX_LINELENGTH], *err;
-  int h, *irr;
+  int h;
   irr = init_int_array(simples.get_num());
 
-  /* transpose evects matrix */
+  /* transpose evects matrix also throw out redundant coordinates
+     (eigenvectors corresponding to zero eigenvalues*/
+
+  
+  num_nonzero = simples.get_num();
   for (i=0;i<simples.get_num();++i)
-    for (j=0;j<simples.get_num();++j)
-      evectst[i][j] = evects[j][i];
-  free_matrix(evects,simples.get_num());
+    if( evals[i] < 1.0E-14 )
+	--num_nonzero;
+  
+  evectst = init_matrix(num_nonzero,simples.get_num());
+  
+  for (i=0;i<simples.get_num();++i) {
+      for (j=simples.get_num()-num_nonzero;j<simples.get_num();++j) {
+	  evectst[j-simples.get_num()+num_nonzero][i] = evects[i][j];
+	}
+    }
+   free_matrix(evects,simples.get_num());
 
   fp_intco = fopen("intco.dat", "r+");
   count = 0;
@@ -154,19 +162,14 @@ void delocalize(int num_atoms,internals &simples) {
     err = fgets(buffer, MAX_LINELENGTH, fp_intco);
   fflush(fp_intco);
 
- // record irrep of each coordinate;
-  for (i=0;i<simples.get_num();++i) {
-    if (fabs(evals[i]) < EVAL_TOL) 
-      irr[i] = 9999;
-    else
-      irr[i] = irrep(simples, evectst[i]);
-  }
+ // send evectst to irrep.cc to be properly symmetrized
+    evectst = irrep(simples, evectst);
 
  // Print out coordinates to intco.dat
   int col;
-  for (h=0;h<syminfo.num_irreps;++h) {
+  for (h=0;h<num_nonzero;++h) {
     if (h==0) fprintf(fp_intco,"  symm = ( \n");
-    for (i=0;i<simples.get_num();++i) {
+    for (i=0;i<num_nonzero;++i) {
       if (h == irr[i]) {
         fprintf(fp_intco,"    (");
         fprintf(fp_intco,"\"%s\"",syminfo.clean_irrep_lbls[irr[i]]);
@@ -193,14 +196,17 @@ void delocalize(int num_atoms,internals &simples) {
     if (h==0) fprintf(fp_intco, "  )\n  asymm = (\n");
   }
 
+  fflush(fp_intco);
+
   free_matrix(B,simples.get_num());
   free_matrix(BBt,simples.get_num());
   free(evals);
-  free_matrix(evectst,simples.get_num());
+  free_matrix(evectst,num_nonzero); 
 
   fprintf(fp_intco,"  )\n)\n"); 
   fflush(fp_intco);
   fclose(fp_intco);
+                          
   return;
 }
 

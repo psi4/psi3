@@ -1,3 +1,13 @@
+/******************************************************************************
+
+       cartesians.cc
+
+       this file contains member functions for cartesian not included
+       in the declaration (cartesians.h)
+
+******************************************************************************/ 
+
+
 extern "C" {
   #include <stdio.h>
   #include <stdlib.h>
@@ -14,7 +24,17 @@ extern "C" {
 #include "opt.h"
 #include "cartesians.h"
 
-// This function returns the forces in cartesian coordinates in aJ/Ang
+
+
+
+
+/*-----------------------------------------------------------------------------
+       FORCES
+
+       This function returns the forces in cartesian coordinates in aJ/Ang
+
+-----------------------------------------------------------------------------*/ 
+
 double *cartesians:: forces() {
   int i;
   double *f;
@@ -24,6 +44,17 @@ double *cartesians:: forces() {
     f[i] = -1.0 * grad[i] * _hartree2J * 1.0E18 / _bohr2angstroms;
   return f;
 }
+
+
+
+
+
+/*-----------------------------------------------------------------------------
+       CARTESIANS
+
+       this is the class constructor for cartesian
+
+----------------------------------------------------------------------------*/
 
 cartesians::cartesians() {
   int i, j, a, count, isotopes_given = 0, masses_given = 0;
@@ -150,11 +181,20 @@ cartesians::cartesians() {
 }
 
 
-// flag = 0 print geometry to output.dat
-// flag = 1 print geom to output.dat
-// flag = 2 print geom and grad with masses
-// flag = 4 print geometry to geom.dat
-// flag = 30 print geometry to file30
+
+
+
+/*-----------------------------------------------------------------------------
+
+       PRINT
+
+       flag = 0 print geometry to output.dat
+       flag = 1 print geom to output.dat
+       flag = 2 print geom and grad with masses
+       flag = 4 print geometry to geom.dat
+       flag = 30 print geometry to file30
+-----------------------------------------------------------------------------*/
+
 void cartesians :: print(int flag, FILE *fp_out, int new_geom_file,
 char *disp_label) {
   int i;
