@@ -3,6 +3,7 @@
   \ingroup (CHKPT)
 */
 
+#include <stdlib.h>
 #include <string.h>
 #include "chkpt.h"
 #include <psifiles.h>
