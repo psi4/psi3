@@ -5,7 +5,7 @@
 #include <ccfiles.h>
 #include <dpd.h>
 
-#define NUM_ENTRIES 108
+#define NUM_ENTRIES 113
 struct dpd_file4_cache_entry list[NUM_ENTRIES];
 
 struct dpd_file4_cache_entry *priority_list(void)
@@ -19,7 +19,7 @@ struct dpd_file4_cache_entry *priority_list(void)
   list[  0].rsnum =  7;
   list[  0].priority = 231;
   list[  0].next = &(list[  0+1]);
-  list[  0].last = &(list[  0-1]);
+  list[  0].last = NULL;
 
   strcpy(list[  1].label, "tIJAB");
   list[  1].filenum = 109;
@@ -983,6 +983,53 @@ struct dpd_file4_cache_entry *priority_list(void)
   list[107].priority = 73;
   list[107].next = &(list[107+1]);
   list[107].last = &(list[107-1]);
+
+  /* Hand-coded entries follow */
+
+  strcpy(list[108].label, "X(5,0)");
+  list[108].filenum = 115;
+  list[108].irrep = 0;
+  list[108].pqnum =  5;
+  list[108].rsnum =  0;
+  list[108].priority = 99999;
+  list[108].next = &(list[109]);
+  list[108].last = &(list[107]);
+
+  strcpy(list[109].label, "X(0,5) 1");
+  list[109].filenum = 115;
+  list[109].irrep = 0;
+  list[109].pqnum =  0;
+  list[109].rsnum =  5;
+  list[109].priority = 99999;
+  list[109].next = &(list[110]);
+  list[109].last = &(list[108]);
+
+  strcpy(list[110].label, "X(0,5) 2");
+  list[110].filenum = 115;
+  list[110].irrep = 0;
+  list[110].pqnum =  0;
+  list[110].rsnum =  5;
+  list[110].priority = 99999;
+  list[110].next = &(list[111]);
+  list[110].last = &(list[109]);
+
+  strcpy(list[111].label, "X(0,5) 3");
+  list[111].filenum = 115;
+  list[111].irrep = 0;
+  list[111].pqnum =  0;
+  list[111].rsnum =  5;
+  list[111].priority = 99999;
+  list[111].next = &(list[112]);
+  list[111].last = &(list[110]);
+
+  strcpy(list[112].label, "X(0,5) 4");
+  list[112].filenum = 115;
+  list[112].irrep = 0;
+  list[112].pqnum =  0;
+  list[112].rsnum =  5;
+  list[112].priority = 99999;
+  list[112].next = NULL;
+  list[112].last = &(list[111]);
 
   return(&(list[0]));
 }

@@ -63,23 +63,23 @@ void WmbejT2(void)
   dpd_buf4_close(&T2);
 
   /* T2(IA,JB) --> T2(IJ,AB) */
-  dpd_buf4_sort(&T2new, CC_TMP0, prqs, 0, 5, "T2 (IJ,AB)");
+  dpd_buf4_sort(&T2new, CC_TMP0, prqs, 0, 5, "X(0,5) 1");
   dpd_buf4_close(&T2new);
   
   /* P(IJ) P(AB) T2(IA,JB) */
-  dpd_buf4_init(&T2new, CC_TMP0, 0, 0, 5, 0, 5, 0, "T2 (IJ,AB)");
-  dpd_buf4_sort(&T2new, CC_TMP0, qprs, 0, 5, "T2 (JI,AB)");
-  dpd_buf4_sort(&T2new, CC_TMP0, pqsr, 0, 5, "T2 (IJ,BA)");
-  dpd_buf4_sort(&T2new, CC_TMP0, qpsr, 0, 5, "T2 (JI,BA)");
+  dpd_buf4_init(&T2new, CC_TMP0, 0, 0, 5, 0, 5, 0, "X(0,5) 1");
+  dpd_buf4_sort(&T2new, CC_TMP0, qprs, 0, 5, "X(0,5) 2");
+  dpd_buf4_sort(&T2new, CC_TMP0, pqsr, 0, 5, "X(0,5) 3");
+  dpd_buf4_sort(&T2new, CC_TMP0, qpsr, 0, 5, "X(0,5) 4");
 
   /* T2(IA,JB) - T2(JA,IB) - T2(IB,JA) + T2(JB,IA) --> T2(IA,JB) */
-  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "T2 (JI,AB)");
+  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "X(0,5) 2");
   dpd_buf4_axpy(&T2, &T2new, -1);
   dpd_buf4_close(&T2);
-  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "T2 (IJ,BA)");
+  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "X(0,5) 3");
   dpd_buf4_axpy(&T2, &T2new, -1);
   dpd_buf4_close(&T2);
-  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "T2 (JI,BA)");
+  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "X(0,5) 4");
   dpd_buf4_axpy(&T2, &T2new, +1);
   dpd_buf4_close(&T2);
 
@@ -112,23 +112,23 @@ void WmbejT2(void)
   dpd_buf4_close(&T2);
 
   /* T2(ia,jb) --> T2(ij,ab) */
-  dpd_buf4_sort(&T2new, CC_TMP0, prqs, 0, 5, "T2 (ij,ab)");
+  dpd_buf4_sort(&T2new, CC_TMP0, prqs, 0, 5, "X(0,5) 1");
   dpd_buf4_close(&T2new);
   
   /* P(ij) P(ab) T2(ia,jb) */
-  dpd_buf4_init(&T2new, CC_TMP0, 0, 0, 5, 0, 5, 0, "T2 (ij,ab)");
-  dpd_buf4_sort(&T2new, CC_TMP0, qprs, 0, 5, "T2 (ji,ab)");
-  dpd_buf4_sort(&T2new, CC_TMP0, pqsr, 0, 5, "T2 (ij,ba)");
-  dpd_buf4_sort(&T2new, CC_TMP0, qpsr, 0, 5, "T2 (ji,ba)");
+  dpd_buf4_init(&T2new, CC_TMP0, 0, 0, 5, 0, 5, 0, "X(0,5) 1");
+  dpd_buf4_sort(&T2new, CC_TMP0, qprs, 0, 5, "X(0,5) 2");
+  dpd_buf4_sort(&T2new, CC_TMP0, pqsr, 0, 5, "X(0,5) 3");
+  dpd_buf4_sort(&T2new, CC_TMP0, qpsr, 0, 5, "X(0,5) 4");
 
   /* T2(ij,ab) - T2(ji,ab) - T2(ij,ba) + T2(ji,ba) --> T2(ij,ab) */
-  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "T2 (ji,ab)");
+  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "X(0,5) 2");
   dpd_buf4_axpy(&T2, &T2new, -1);
   dpd_buf4_close(&T2);
-  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "T2 (ij,ba)");
+  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "X(0,5) 3");
   dpd_buf4_axpy(&T2, &T2new, -1);
   dpd_buf4_close(&T2);
-  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "T2 (ji,ba)");
+  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "X(0,5) 4");
   dpd_buf4_axpy(&T2, &T2new, +1);
   dpd_buf4_close(&T2);
   

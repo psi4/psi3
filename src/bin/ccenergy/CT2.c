@@ -55,27 +55,28 @@ void CT2(void)
   dpd_buf4_close(&C);
 
   /* T(M,A) * Y(MB,JI) --> T(AB,JI) */
-  dpd_buf4_init(&T2new, CC_TMP0, 0, 5, 0, 5, 0, 0, "T2 (AB,JI)");
+  dpd_buf4_init(&T2new, CC_TMP0, 0, 5, 0, 5, 0, 0, "X(5,0)");
   dpd_contract244(&tIA, &Y, &T2new, 0, 0, 0, 1, 0);
   dpd_buf4_close(&Y);
 
   /* T(AB,JI) --> T(IJ,AB) */
-  dpd_buf4_sort(&T2new, CC_TMP0, srpq, 0, 5, "T2 (IJ,AB)");
+  dpd_buf4_sort(&T2new, CC_TMP0, srpq, 0, 5, "X(0,5) 1");
+  dpd_buf4_close(&T2new);
 
   /* P(IJ) P(AB) T2(IJ,AB) */
-  dpd_buf4_init(&T2new, CC_TMP0, 0, 0, 5, 0, 5, 0, "T2 (IJ,AB)");
-  dpd_buf4_sort(&T2new, CC_TMP0, qprs, 0, 5, "T2 (JI,AB)");
-  dpd_buf4_sort(&T2new, CC_TMP0, pqsr, 0, 5, "T2 (IJ,BA)");
-  dpd_buf4_sort(&T2new, CC_TMP0, qpsr, 0, 5, "T2 (JI,BA)");
+  dpd_buf4_init(&T2new, CC_TMP0, 0, 0, 5, 0, 5, 0, "X(0,5) 1");
+  dpd_buf4_sort(&T2new, CC_TMP0, qprs, 0, 5, "X(0,5) 2");
+  dpd_buf4_sort(&T2new, CC_TMP0, pqsr, 0, 5, "X(0,5) 3");
+  dpd_buf4_sort(&T2new, CC_TMP0, qpsr, 0, 5, "X(0,5) 4");
   
   /* T2(IJ,AB) - T2(JI,AB) - T2(IJ,BA) - T2(JI,BA) */
-  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "T2 (JI,AB)");
+  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "X(0,5) 2");
   dpd_buf4_axpy(&T2, &T2new, -1);
   dpd_buf4_close(&T2);
-  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "T2 (IJ,BA)");
+  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "X(0,5) 3");
   dpd_buf4_axpy(&T2, &T2new, -1);
   dpd_buf4_close(&T2);
-  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "T2 (JI,BA)");
+  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "X(0,5) 4");
   dpd_buf4_axpy(&T2, &T2new, 1);
   dpd_buf4_close(&T2);
 
@@ -95,27 +96,28 @@ void CT2(void)
   dpd_buf4_close(&C);
 
   /* T(m,a) * Y(mb,ji) --> T(ab,ji) */
-  dpd_buf4_init(&T2new, CC_TMP0, 0, 5, 0, 5, 0, 0, "T2 (AB,JI)");
+  dpd_buf4_init(&T2new, CC_TMP0, 0, 5, 0, 5, 0, 0, "X(5,0)");
   dpd_contract244(&tia, &Y, &T2new, 0, 0, 0, 1, 0);
   dpd_buf4_close(&Y);
 
   /* T(ab,ji) --> T(ij,ab) */
-  dpd_buf4_sort(&T2new, CC_TMP0, srpq, 0, 5, "T2 (IJ,AB)");
+  dpd_buf4_sort(&T2new, CC_TMP0, srpq, 0, 5, "X(0,5) 1");
+  dpd_buf4_close(&T2new);
 
   /* P(ij) P(ab) T2(ij,ab) */
-  dpd_buf4_init(&T2new, CC_TMP0, 0, 0, 5, 0, 5, 0, "T2 (IJ,AB)");
-  dpd_buf4_sort(&T2new, CC_TMP0, qprs, 0, 5, "T2 (JI,AB)");
-  dpd_buf4_sort(&T2new, CC_TMP0, pqsr, 0, 5, "T2 (IJ,BA)");
-  dpd_buf4_sort(&T2new, CC_TMP0, qpsr, 0, 5, "T2 (JI,BA)");
+  dpd_buf4_init(&T2new, CC_TMP0, 0, 0, 5, 0, 5, 0, "X(0,5) 1");
+  dpd_buf4_sort(&T2new, CC_TMP0, qprs, 0, 5, "X(0,5) 2");
+  dpd_buf4_sort(&T2new, CC_TMP0, pqsr, 0, 5, "X(0,5) 3");
+  dpd_buf4_sort(&T2new, CC_TMP0, qpsr, 0, 5, "X(0,5) 4");
  
   /* T2(ij,ab) - T2(ji,ab) - T2(ij,ba) - T2(ji,ba) */
-  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "T2 (JI,AB)");
+  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "X(0,5) 2");
   dpd_buf4_axpy(&T2, &T2new, -1);
   dpd_buf4_close(&T2);
-  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "T2 (IJ,BA)");
+  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "X(0,5) 3");
   dpd_buf4_axpy(&T2, &T2new, -1);
   dpd_buf4_close(&T2);
-  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "T2 (JI,BA)");
+  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "X(0,5) 4");
   dpd_buf4_axpy(&T2, &T2new, 1);
   dpd_buf4_close(&T2);
 
@@ -135,14 +137,14 @@ void CT2(void)
   dpd_buf4_close(&C);
 
   /* T(m,b) * Y(mA,jI) --> T2(bA,jI) */
-  dpd_buf4_init(&T2new, CC_TMP0, 0, 5, 0, 5, 0, 0, "T2 (bA,jI)");
+  dpd_buf4_init(&T2new, CC_TMP0, 0, 5, 0, 5, 0, 0, "X(5,0)");
   dpd_contract244(&tia, &Y, &T2new, 0, 0, 0, 1, 0);
   dpd_buf4_close(&Y);
 
   /* T(bA,jI) --> Tnew(Ij,Ab) */
-  dpd_buf4_sort(&T2new, CC_TMP0, srqp, 0, 5, "T2 (Ij,Ab)");
+  dpd_buf4_sort(&T2new, CC_TMP0, srqp, 0, 5, "X(0,5) 1");
   dpd_buf4_close(&T2new);
-  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "T2 (Ij,Ab)");
+  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "X(0,5) 1");
   dpd_buf4_init(&T2new, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb");
   dpd_buf4_axpy(&T2, &T2new, -1);
   dpd_buf4_close(&T2);
@@ -156,14 +158,14 @@ void CT2(void)
   dpd_buf4_close(&C);
 
   /* T(M,A) * Y(Mb,Ij) --> T2(Ab,Ij) */
-  dpd_buf4_init(&T2new, CC_TMP0, 0, 5, 0, 5, 0, 0, "T2 (Ab,Ij)");
+  dpd_buf4_init(&T2new, CC_TMP0, 0, 5, 0, 5, 0, 0, "X(5,0)");
   dpd_contract244(&tIA, &Y, &T2new, 0, 0, 0, 1, 0);
   dpd_buf4_close(&Y);
 
   /* T(Ab,Ij) --> Tnew(Ij,Ab) */
-  dpd_buf4_sort(&T2new, CC_TMP0, rspq, 0, 5, "T2 (Ij,Ab)");
+  dpd_buf4_sort(&T2new, CC_TMP0, rspq, 0, 5, "X(0,5) 1");
   dpd_buf4_close(&T2new);
-  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "T2 (Ij,Ab)");
+  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "X(0,5) 1");
   dpd_buf4_init(&T2new, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb");
   dpd_buf4_axpy(&T2, &T2new, -1);
   dpd_buf4_close(&T2);
@@ -177,14 +179,14 @@ void CT2(void)
   dpd_buf4_close(&D);
 
   /* T(M,A) * Y(Mb,jI) --> T2(Ab,jI) */
-  dpd_buf4_init(&T2new, CC_TMP0, 0, 5, 0, 5, 0, 0, "T2 (Ab,jI)");
+  dpd_buf4_init(&T2new, CC_TMP0, 0, 5, 0, 5, 0, 0, "X(5,0)");
   dpd_contract244(&tIA, &Y, &T2new, 0, 0, 0, 1, 0);
   dpd_buf4_close(&Y);
   
   /* T2(Ab,jI) --> Tnew(Ij,Ab) */
-  dpd_buf4_sort(&T2new, CC_TMP0, srpq, 0, 5, "T2 (Ij,Ab)");
+  dpd_buf4_sort(&T2new, CC_TMP0, srpq, 0, 5, "X(0,5) 1");
   dpd_buf4_close(&T2new);
-  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "T2 (Ij,Ab)");
+  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "X(0,5) 1");
   dpd_buf4_init(&T2new, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb");
   dpd_buf4_axpy(&T2, &T2new, -1);
   dpd_buf4_close(&T2);
@@ -198,14 +200,14 @@ void CT2(void)
   dpd_buf4_close(&D);
  
   /* T(m,b) * Y(mA,Ij) --> T2(bA,Ij) */
-  dpd_buf4_init(&T2new, CC_TMP0, 0, 5, 0, 5, 0, 0, "T2 (bA,Ij)");
+  dpd_buf4_init(&T2new, CC_TMP0, 0, 5, 0, 5, 0, 0, "X(5,0)");
   dpd_contract244(&tia, &Y, &T2new, 0, 0, 0, 1, 0);
   dpd_buf4_close(&Y);
   
   /* T2(bA,Ij) --> Tnew(Ij,Ab) */
-  dpd_buf4_sort(&T2new, CC_TMP0, rsqp, 0, 5, "T2 (Ij,Ab)");
+  dpd_buf4_sort(&T2new, CC_TMP0, rsqp, 0, 5, "X(0,5) 1");
   dpd_buf4_close(&T2new);
-  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "T2 (Ij,Ab)");
+  dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "X(0,5) 1");
   dpd_buf4_init(&T2new, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb");
   dpd_buf4_axpy(&T2, &T2new, -1);
   dpd_buf4_close(&T2);
