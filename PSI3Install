@@ -37,5 +37,7 @@ cd ../lib
 make install
 cd ../bin
 make install
+cd ../doc
+make install
 
 echo ... PSI3.0 installation complete ...

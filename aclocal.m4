@@ -240,3 +240,29 @@ $CC conftest.c -o conftest
 rm -f conftest*
 AC_MSG_RESULT("$bitwidth64")]
 )dnl
+
+dnl
+dnl Check for LaTeX
+dnl
+define(AC_PROG_LATEX,
+[AC_PROVIDE([$0])
+AC_CHECK_PROG(LATEX, latex, latex)]
+)dnl
+
+dnl
+dnl Check for dvips
+dnl
+define(AC_PROG_DVIPS,
+[AC_PROVIDE([$0])
+AC_CHECK_PROG(DVIPS, dvips, dvips)]
+)dnl
+
+
+dnl
+dnl Check for LaTeX2HTML
+dnl
+define(AC_PROG_LATEX2HTML,
+[AC_PROVIDE([$0])
+AC_CHECK_PROG(LATEX2HTML, latex2html, latex2html)]
+)dnl
+

@@ -1,0 +1,12 @@
+To install PSI 3 edit and run script 'PSI3Install' located in this
+directory.
+
+
+*** SPECIAL NOTE for LaTeX2HTML users *** EFV 6/15/00
+At least the latest version of LaTeX2HTML translator (v0.99_1) has a bug in
+it which prevents The Psi 3 User's and Programmer's manuals from being
+converted into HTML form. Included is a patch file which should be applied
+directly to the latex2html script (type 'which latex2html' to find its precise
+location on your system). To apply the patch just type
+'patch latex2html latex2html.v0.99_1.patch'. You might need
+superuser priviledges to do that.

@@ -16,6 +16,7 @@ test -z "$docdir" && docdir='$(prefix)/doc'
 mandir='$(docdir)/man'
 txtdir='$(docdir)/txt'
 htmldir='$(docdir)/html'
+dvidir='$(docdir)/dvi'
 test -z "$datadir" && datadir='$(prefix)/lib'
 test -z "$incdir" && incdir='$(prefix)/include'
 
@@ -32,6 +33,7 @@ AC_SUBST(libdir)
 AC_SUBST(docdir)
 AC_SUBST(mandir)
 AC_SUBST(htmldir)
+AC_SUBST(dvidir)
 AC_SUBST(txtdir)
 AC_SUBST(datadir)
 AC_SUBST(incdir)
@@ -386,22 +388,19 @@ fi
 # try -fno-automatic option to turn off automatic variables (GNU F77)
 if test -z "$FSTATIC"; then
   AC_FC_COMPILE_CHECK(-fno-automatic,,-fno-automatic,
-                      FSTATIC="-fno-automatic";
-                      AC_MSG_RESULT(using -fno-automatic))
+                      FSTATIC="-fno-automatic")
 fi
 
 # as a last resort try -static (hopefully this doesn't just link
 # libraries statically)
 if test -z "$FSTATIC"; then
   AC_FC_COMPILE_CHECK(-static,,-static,
-                      FSTATIC="$FSTATIC -static"; AC_MSG_RESULT(using
--static))
+                      FSTATIC="$FSTATIC -static")
 fi
 
 # check for an option that zeros local variables (GNU F77)
 AC_FC_COMPILE_CHECK(-finit-local-zero,,-finit-local-zero,
-                    FSTATIC="$FSTATIC -finit-local-zero";
-                    AC_MSG_RESULT(using -finit-local-zero))
+                    FSTATIC="$FSTATIC -finit-local-zero")
 
 # check to see what main is called, as well as how to call fortran from
 # C and vice versa
@@ -455,18 +454,18 @@ fi
 # See if the fortran compiler takes '-Olimit 3000'.  If so then
 # use it.
 AC_FC_COMPILE_CHECK(-Olimit 3000,,-Olimit 3000,
-                    FOPT="$FOPT -Olimit 3000" AC_MSG_RESULT(using -Olimit 3000))
+                    FOPT="$FOPT -Olimit 3000")
 
 # The sgi f77 compiler needs to have the number of labels allowed
 # in a computed goto increased.  See if the compiler takes
 # the -Nl option.
 AC_FC_COMPILE_CHECK(-Nl1000,,-Nl1000,
-                    FOPT="$FOPT -Nl1000" AC_MSG_RESULT(using -Nl1000))
+                    FOPT="$FOPT -Nl1000")
 
 # The sgi f77 compiler needs to have the number of names allowed
 # increased.  See if the compiler takes the -Nn option.
 AC_FC_COMPILE_CHECK(-Nn10000,,-Nn10000,
-                    FOPT="$FOPT -Nn10000" AC_MSG_RESULT(using -Nn10000))
+                    FOPT="$FOPT -Nn10000")
 
 AC_CHECKING(machine specfic optimization flags)
 changequote(,)
@@ -681,6 +680,13 @@ FDEF="$FDEF $fextra"
 CDEF="$CDEF $cextra"
 CXXDEF="$CXXDEF $cxxextra"
 
+#
+# Check for LaTeX, DVIPS, and LaTeX2HTML
+#
+AC_PROG_LATEX()
+AC_PROG_DVIPS()
+AC_PROG_LATEX2HTML()
+
 AC_OUTPUT(include/psiconfig.h include/cfuncs.h include/ffuncs.h
           include/sizeof.h include/file30_params.h include/Makefile
           Makefile lib/Makefile src/Makefile
@@ -752,6 +758,9 @@ AC_OUTPUT(include/psiconfig.h include/cfuncs.h include/ffuncs.h
           src/bin/optking/Makefile
           src/bin/psiclean/Makefile
           src/bin/transqt/Makefile
+
+          src/doc/MakeVars src/doc/MakeRules src/doc/Makefile
+          src/doc/manual/Makefile
           )
 # The following should be added to config_files/ac_output for 
 # libmathtools/ooccman
