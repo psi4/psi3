@@ -140,7 +140,6 @@ void cleanup(void)
   int i;
 
   free(moinfo.orbspi);
-  free(moinfo.orbsym);
   free(moinfo.clsdpi);
   free(moinfo.openpi);
   free(moinfo.uoccpi);
