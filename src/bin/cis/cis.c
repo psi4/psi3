@@ -249,7 +249,6 @@ void init_io(int argc, char *argv[])
   sprintf(progid, ":%s",gprgid());
 
   psi_start(argc-1,argv+1,0);
-  ip_cwk_add(":INPUT");
   ip_cwk_add(progid);
   free(progid);
   tstart(outfile);
