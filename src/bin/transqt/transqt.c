@@ -929,7 +929,7 @@ void get_moinfo(void)
 					       moinfo.first_so, moinfo.last_so,
 					       moinfo.first, moinfo.last, 
 					       moinfo.fstact, moinfo.lstact, params.print_mos);
-	moinfo.evects_beta = construct_evects("alpha", moinfo.nirreps, moinfo.active,
+	moinfo.evects_beta = construct_evects("beta", moinfo.nirreps, moinfo.active,
 					      moinfo.sopi, moinfo.orbspi,
 					      moinfo.first_so, moinfo.last_so,
 					      moinfo.first, moinfo.last, 

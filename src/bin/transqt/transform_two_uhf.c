@@ -48,8 +48,6 @@ void transform_two_uhf(void)
   tolerance = params.tolerance;
   print_lvl = params.print_lvl;
 
-  fzc_offset = 0;
-
   nirreps = moinfo.nirreps;
   reorder_alpha = moinfo.order_alpha;
   reorder_beta = moinfo.order_beta;
@@ -61,13 +59,15 @@ void transform_two_uhf(void)
   src_orbs = moinfo.nso;
   src_ntri = src_orbs * (src_orbs+1)/2;
 
-  dst_first = moinfo.first;
-  dst_last = moinfo.last;
-  dst_orbspi = moinfo.orbspi;
+  dst_first = (params.fzc && !params.do_all_tei) ? moinfo.fstact : moinfo.first;
+  dst_last = (!params.do_all_tei) ? moinfo.lstact : moinfo.last;
+  dst_orbspi = (!params.do_all_tei) ? moinfo.active : moinfo.orbspi;
   dst_orbsym = moinfo.orbsym;
-  dst_orbs = moinfo.nmo;
+  dst_orbs = (!params.do_all_tei) ? (moinfo.nmo - moinfo.nfzv - moinfo.nfzc) : moinfo.nmo;
   dst_ntri = moinfo.nmo * (moinfo.nmo+1)/2;
   C_colspi = dst_orbspi;
+
+  fzc_offset = (params.fzc && !params.do_all_tei) ? moinfo.nfzc : 0;
 
   /** Presort the two-electron integrals **/
 
@@ -214,7 +214,7 @@ void transform_two_uhf(void)
 	      }
 
 	      yosh_wrt_arr(&YBuffJ, p, q, pq, pqsym, J_block,
-			   dst_orbs, ioff, dst_orbsym, dst_first, dst_last, 
+			   moinfo.nmo, ioff, dst_orbsym, dst_first, dst_last, 
 			   1, (print_lvl > 4), outfile);
 
 	    }
@@ -479,7 +479,7 @@ void transform_two_uhf(void)
 	      }
 
 	      yosh_wrt_arr(&YBuffJ, p, q, pq, pqsym, J_block,
-			   dst_orbs, ioff, dst_orbsym, dst_first, dst_last, 
+			   moinfo.nmo, ioff, dst_orbsym, dst_first, dst_last, 
 			   1, (print_lvl > 4), outfile);
 
 	    }
