@@ -6,6 +6,7 @@ psi: (
   wfn = ccsd
   reference = rhf
   dertype = first
+  delocalize = true
   basis = "6-31G**"
   zmat = (
     o
