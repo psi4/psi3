@@ -9,7 +9,7 @@ CDEF += -DBUFF=0 -DSITEDIR=\"$(datadir)\"
 TARGET = $(top_objdir)/lib/libpsio.a
 
 TRUESRC = \
-close.c          get_global_address.c  psiotest.c    tocdel.c    tocwrite.c \
+close.c          get_global_address.c  tocdel.c    tocwrite.c \
 done.c           get_length.c          read.c        toclast.c   volseek.c \
 error.c          get_numvols.c         read_block.c  toclen.c    write.c \
 get_address.c    get_volpath.c         read_entry.c  tocprint.c \
