@@ -47,7 +47,7 @@ extern "C" {
                              int dst_offset, int *dst2src);
    extern void calc_dE_dT(int n, double **dEU, int npairs, int *ppair, 
                           int *qpair, double *theta, double *dET);
-   extern form_diag_mo_hess(int npairs, int *ppair, int *qpair, double *F_core,
+   extern void form_diag_mo_hess(int npairs, int *ppair, int *qpair, double *F_core,
                             double *tei, double **opdm, double *tpdm,
                             double *F_act, int firstact, int lastact, 
                             double *hess);
