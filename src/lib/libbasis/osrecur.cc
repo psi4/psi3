@@ -10,9 +10,10 @@ OI_OSRecursor::OI_OSRecursor(int maxam1, int maxam2) :
   maxam1_(maxam1), maxam2_(maxam2)
 {
   if (maxam1 < 0)
-    throw runtime_error("ERROR: OI_OSRecursor::OI_OSRecursor -- maxam1 must be nonnegative");
+    throw std::runtime_error("ERROR: OI_OSRecursor::OI_OSRecursor -- maxam1 must be nonnegative");
   if (maxam2 < 0)
-    throw runtime_error("ERROR: OI_OSRecursor::OI_OSRecursor -- maxam2 must be nonnegative");
+    throw std::runtime_error("ERROR: OI_OSRecursor::OI_OSRecursor -- maxam2 must be nonnegative");
+
   OIX_ = block_matrix(maxam1_+1,maxam2_+1);
   OIY_ = block_matrix(maxam1_+1,maxam2_+1);
   OIZ_ = block_matrix(maxam1_+1,maxam2_+1);
@@ -28,9 +29,9 @@ OI_OSRecursor::~OI_OSRecursor()
 void OI_OSRecursor::compute(PSI_FLOAT PA[3], PSI_FLOAT PB[3], PSI_FLOAT gamma, int am1, int am2)
 {
   if (am1 < 0 || am1 > maxam1_)
-    throw runtime_error("ERROR: OI_OSRecursor::compute -- am1 out of bounds");
+    throw std::runtime_error("ERROR: OI_OSRecursor::compute -- am1 out of bounds");
   if (am2 < 0 || am2 > maxam2_)
-    throw runtime_error("ERROR: OI_OSRecursor::compute -- am2 out of bounds");
+    throw std::runtime_error("ERROR: OI_OSRecursor::compute -- am2 out of bounds");
 
   int i,j,k;
   PSI_FLOAT pp = 1/(2*gamma);
