@@ -1,0 +1,560 @@
+******************************************************************************
+tstart called on Edward-Valeevs-Computer.local.
+Mon Jan  3 16:39:40 2005
+
+                                --------------
+                                  WELCOME TO
+                                    PSI  3
+                                --------------
+
+  LABEL       =	RHF MP2 and CCSD pair energies
+  SHOWNORM    =	0
+  PUREAM      =	0
+  PRINT_LVL   =	1
+
+  Parsed basis sets from /Users/evaleev/Development/QuantumChemistry/psi3/stable/psi3/share/pbasis.dat
+
+  -Geometry before Center-of-Mass shift (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.000000000000
+        HYDROGEN      0.000000000000     0.000000000000     1.808692648463
+        HYDROGEN      1.753234916141     0.000000000000    -0.444450700783
+
+
+  -Rotational constants (cm-1) :
+    A =   27.25827  B =   14.65735  C =    9.53187
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN     -0.000000000000    -0.124308519936    -0.000000000000
+        HYDROGEN      1.427452943482     0.986433210056     0.000000000000
+        HYDROGEN     -1.427452943482     0.986433210056     0.000000000000
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S ( 11720.00000000     0.00071000)
+           (  1759.00000000     0.00547000)
+           (   400.80000000     0.02783700)
+           (   113.70000000     0.10480000)
+           (    37.03000000     0.28306200)
+           (    13.27000000     0.44871900)
+           (     5.02500000     0.27095200)
+           (     1.01300000     0.01545800)
+           (     0.30230000    -0.00258500) )
+        (S ( 11720.00000000    -0.00016000)
+           (  1759.00000000    -0.00126300)
+           (   400.80000000    -0.00626700)
+           (   113.70000000    -0.02571600)
+           (    37.03000000    -0.07092400)
+           (    13.27000000    -0.16541100)
+           (     5.02500000    -0.11695500)
+           (     1.01300000     0.55736800)
+           (     0.30230000     0.57275900) )
+        (S (     0.30230000     1.00000000) )
+        (P (    17.70000000     0.04301800)
+           (     3.85400000     0.22891300)
+           (     1.04600000     0.50872800)
+           (     0.27530000     0.46053100) )
+        (P (     0.27530000     1.00000000) )
+        (D (     1.18500000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    13.01000000     0.01968500)
+           (     1.96200000     0.13797700)
+           (     0.44460000     0.47814800)
+           (     0.12200000     0.50124000) )
+        (S (     0.12200000     1.00000000) )
+        (P (     0.72700000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 12
+    Number of primitives   = 31
+    Number of AO           = 25
+    Number of SO           = 24
+
+    Irrep    Number of SO
+    -----    ------------
+      1           11
+      2            2
+      3            4
+      4            7
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN     -0.000000000000    -0.000000000000    -0.124308519936
+        HYDROGEN      0.000000000000     1.427452943482     0.986433210056
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN     -0.000000000000    -0.000000000000    -0.124308519936
+        HYDROGEN      0.000000000000     1.427452943482     0.986433210056
+        HYDROGEN      0.000000000000    -1.427452943482     0.986433210056
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN     -0.000000000000    -0.000000000000    -0.065781240607
+        HYDROGEN      0.000000000000     0.755375621709     0.521998012420
+        HYDROGEN      0.000000000000    -0.755375621709     0.521998012420
+
+
+  -Geometry in the reference coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN     -0.000000000000    -0.000000000000    -0.124308519936
+        HYDROGEN      0.000000000000     1.427452943482     0.986433210056
+        HYDROGEN      0.000000000000    -1.427452943482     0.986433210056
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       9.196442780600
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   0.9571190   0.0000000
+    3   0.9571190   1.5107512   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+tstop called on Edward-Valeevs-Computer.local.
+Mon Jan  3 16:39:40 2005
+
+user time   =       0.43 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on Edward-Valeevs-Computer.local.
+Mon Jan  3 16:39:40 2005
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = RHF MP2 and CCSD pair energies
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 24
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 11412 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on Edward-Valeevs-Computer.local.
+Mon Jan  3 16:39:40 2005
+
+user time   =       0.40 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on Edward-Valeevs-Computer.local.
+Mon Jan  3 16:39:40 2005
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
+
+  label        = RHF MP2 and CCSD pair energies
+  wfn          = CCSD
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = NONE
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        9.1964427805996
+  first run, so defaulting to core-hamiltonian guess
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 92528 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 1.999060e-02
+
+  Using core guess to determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 5210 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -68.8723129234    7.806876e+01    0.000000e+00    0.000000e+00
+    2       -71.2952363076    2.422923e+00    2.008218e-01    9.333046e-01
+    3       -76.0031156500    4.707879e+00    7.783063e-02    9.961579e-01
+    4       -76.0253791516    2.226350e-02    4.578763e-03    6.025476e-02
+    5       -76.0267283996    1.349248e-03    1.249151e-03    1.815735e-02
+    6       -76.0268039961    7.559649e-05    3.101190e-04    3.653202e-03
+    7       -76.0268047109    7.147939e-07    3.443409e-05    4.348232e-04
+    8       -76.0268047985    8.756975e-08    8.875022e-06    2.024337e-04
+    9       -76.0268048153    1.685802e-08    5.092018e-06    8.312248e-05
+   10       -76.0268048154    1.229523e-10    3.313708e-07    3.836288e-06
+   11       -76.0268048155    1.854517e-11    1.406506e-07    1.311962e-06
+   12       -76.0268048155    5.258016e-13    2.338527e-08    2.760316e-07
+   13       -76.0268048155    7.105427e-14    3.598712e-09    4.321011e-08
+   14       -76.0268048155   -2.842171e-14    5.968266e-10    5.895687e-09
+   15       -76.0268048155    0.000000e+00    1.101146e-10    7.375423e-10
+   16       -76.0268048155    1.421085e-14    9.476175e-12    1.227640e-10
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.550562     2A1     -1.336987     1B2     -0.698818  
+   3A1     -0.567189     1B1     -0.493261  
+
+
+  Unoccupied orbitals
+   4A1      0.185532     2B2      0.256307     3B2      0.788420  
+   5A1      0.855768     6A1      1.163725     2B1      1.200311  
+   4B2      1.253594     7A1      1.441933     1A2      1.477245  
+   3B1      1.673091     8A1      1.866636     5B2      1.936761  
+   6B2      2.452425     9A1      2.491283     4B1      3.287309  
+   2A2      3.337953    10A1      3.512015    11A1      3.863769  
+   7B2      4.149338  
+
+
+        SCF total energy   =     -76.026804815459
+        kinetic energy     =      75.989659010147
+        nuc. attr. energy  =    -199.142522091696
+        elec. rep. energy  =      47.126058266090
+        potential energy   =    -152.016463825606
+        virial theorem     =       1.999511411726
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on Edward-Valeevs-Computer.local.
+Mon Jan  3 16:39:40 2005
+
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on Edward-Valeevs-Computer.local.
+Mon Jan  3 16:39:40 2005
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CCSD
+	Reference orbitals     =  RHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            =  Yes
+	Delete Restricted Docc =  No
+	Do All TEI             =  No
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Semicanonical orbitals =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 24
+	Number of MOs    = 24
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   11	   11	    1	    3	    0	    8	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    1	    0	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         9.1964427806
+	Total SCF Energy            =       -76.0268048155
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =  -61.316598826521151
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on Edward-Valeevs-Computer.local.
+Mon Jan  3 16:39:43 2005
+
+user time   =       3.08 seconds =       0.05 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          3 seconds =       0.05 minutes
+******************************************************************************
+tstart called on Edward-Valeevs-Computer.local.
+Mon Jan  3 16:39:43 2005
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	CCSD
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Local CC        =     No
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 24
+	Number of active MOs = 23
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   11	    1	    2	    0	    8	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.19644278059961
+	SCF energy          (chkpt) =    -76.02680481545859
+
+	Size of <ab|cd> integrals:     0.013 (MW) /     0.102 (MB)
+	Size of <ia|bc> integrals:     0.003 (MW) /     0.023 (MB)
+	Size of Tijab amplitudes:      0.001 (MW) /     0.005 (MB)
+
+	One-electron energy          =    -41.62079003141372
+	Two-electron (AA) energy     =      6.88161653652519
+	Two-electron (BB) energy     =      6.88161653652519
+	Two-electron (AB) energy     =     10.83252472535149
+	Two-electron energy          =     17.71414126187668
+	Frozen-core energy (transqt) =    -61.31659882652115
+	Reference energy             =    -76.02680481545859
+******************************************************************************
+tstop called on Edward-Valeevs-Computer.local.
+Mon Jan  3 16:39:43 2005
+
+user time   =       0.33 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on Edward-Valeevs-Computer.local.
+Mon Jan  3 16:39:43 2005
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    9.196442780599606
+	SCF energy          (chkpt)   =  -76.026804815458590
+	Reference energy    (file100) =  -76.026804815458590
+
+	Input parameters:
+	-----------------
+	Wave function   =      CCSD
+	Reference wfn   =      RHF
+	Memory (Mbytes) =  256.0
+	Maxiter         =     50
+	Convergence     = 1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	Local CC        =     No
+	AO Basis        =     NONE
+	Cache Level     =    2
+	Cache Type      =     LOW
+	Print Level     =    0
+	# Amps to Print =    10
+	Print MP2 Amps? =    No
+	Analyze T2 Amps =    No
+	Print Pair Ener =    Yes
+	Spinadapt Ener. =    Yes
+
+	            Solving CC Amplitude Equations
+	            ------------------------------
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.201645050890902    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.206836942866171    2.658e-02    0.004491    0.008605    0.008605
+     2        -0.210781121050049    9.357e-03    0.005320    0.009910    0.009910
+     3        -0.211188389641210    2.416e-03    0.005797    0.010711    0.010711
+     4        -0.211199629573203    5.559e-04    0.005843    0.010928    0.010928
+     5        -0.211210632590097    1.646e-04    0.005869    0.011038    0.011038
+     6        -0.211208797299675    5.463e-05    0.005878    0.011083    0.011083
+     7        -0.211208574544236    1.476e-05    0.005881    0.011097    0.011097
+     8        -0.211208450668226    2.550e-06    0.005882    0.011099    0.011099
+     9        -0.211208404906862    6.129e-07    0.005882    0.011099    0.011099
+    10        -0.211208419069418    1.239e-07    0.005882    0.011099    0.011099
+    11        -0.211208417847319    2.638e-08    0.005882    0.011099    0.011099
+
+	Iterations converged.
+
+
+	Largest TIA Amplitudes:
+	          1   0         0.0074294747
+	          3  17        -0.0073229119
+	          3  13        -0.0059853306
+	          1   5         0.0049810563
+	          3  15         0.0045372464
+	          0   2         0.0042045391
+	          0   0        -0.0038074429
+	          2  11         0.0032788565
+	          2  10         0.0030289137
+	          1   1         0.0029930215
+
+	Largest TIjAb Amplitudes:
+	  2   2  10  10        -0.0514005086
+	  3   3  14  14        -0.0361095425
+	  1   1   2   2        -0.0353039399
+	  3   3  13  13        -0.0292732787
+	  1   2   2  10        -0.0285597322
+	  2   1  10   2        -0.0285597322
+	  3   3   1   1        -0.0282565442
+	  1   1  14  14        -0.0256830907
+	  2   3  10  15         0.0228210020
+	  3   2  15  10         0.0228210020
+
+	SCF energy       (chkpt)   =  -76.026804815458590
+	Reference energy (file100) =  -76.026804815458590
+	MP2 correlation energy     =   -0.201645050890902
+	Total MP2 energy           =  -76.228449866349493
+	CCSD correlation energy    =   -0.211208417847319
+	Total CCSD energy          =  -76.238013233305907
+
+	Singlet pair energies
+	    i       j         MP2             CCSD
+	  -----   -----   ------------   ------------
+	    1       1     -0.008981594   -0.010060049
+	    2       1     -0.009382403   -0.011432242
+	    2       2     -0.017430799   -0.019331898
+	    3       1     -0.009038788   -0.010841286
+	    3       2     -0.009981198   -0.011031465
+	    3       3     -0.016907536   -0.018624210
+	    4       1     -0.012254221   -0.015032544
+	    4       2     -0.012881962   -0.014926781
+	    4       3     -0.009006136   -0.009865346
+	    4       4     -0.019705585   -0.022097223
+	  -------------   ------------   ------------
+	      Total       -0.125570221   -0.143243044
+
+	Triplet pair energies
+	    i       j         MP2             CCSD
+	  -----   -----   ------------   ------------
+	    2       1     -0.005593894   -0.004829244
+	    3       1     -0.005876787   -0.005029730
+	    3       2     -0.019823538   -0.018091068
+	    4       1     -0.005982082   -0.005022623
+	    4       2     -0.018914790   -0.016980275
+	    4       3     -0.019883738   -0.018012434
+	  -------------   ------------   ------------
+	      Total       -0.076074830   -0.067965374
+
+******************************************************************************
+tstop called on Edward-Valeevs-Computer.local.
+Mon Jan  3 16:39:45 2005
+
+user time   =       2.37 seconds =       0.04 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          2 seconds =       0.03 minutes

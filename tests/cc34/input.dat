@@ -1,0 +1,24 @@
+% RHF MP2 and CCSD cc-pVDZ pair energies for the ground state of H2O
+default: (
+   label = "RHF MP2 and CCSD pair energies"
+   wfn = ccsd
+   reference = rhf
+   jobtype = sp
+   dertype = none
+   freeze_core = true
+)
+
+input: (
+ basis = "cc-pVDZ"
+ zmat = (
+   o
+   h 1 0.957119
+   h 1 0.957119 2 104.225
+  )
+)
+
+ccenergy: (
+ print_pair_energies = true
+ spinadapt_energies = true
+)
+

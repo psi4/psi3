@@ -958,6 +958,26 @@ sub compare_findif_symm_freq
   return $fail;
 }
 
+sub compare_pair_energies
+{
+  my $wfn = $_[0];
+  my $spincase = $_[1];
+  my $fail = 0;
+  my $REF_FILE = "$SRC_PATH/output.ref";
+  my $TEST_FILE = "output.dat";
+
+  my @epair_s_ref = seek_pair_energies($REF_FILE, $wfn, $spincase);
+  my @epair_s_test = seek_pair_energies($TEST_FILE, $wfn, $spincase);  
+  if(!compare_arrays(\@epair_s_ref, \@epair_s_test, ($#epair_s_ref+1), $PSITEST_ETOL)) {
+    fail_test("$wfn $spincase Pair Energies"); $fail = 1;
+  }
+  else {
+    pass_test("$wfn $spincase Pair Energies");
+  }
+    
+  return $fail;
+}
+
 sub seek_nirreps
 {
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";
@@ -1920,6 +1940,55 @@ sub seek_mvd
 
   printf "Error: Could not find Relativistic MVD one-electron\n";
   printf "       corrections in $_[0].\n";
+  exit 1;
+}
+
+sub seek_pair_energies
+{
+  my $filename = $_[0];
+  my $wfn = $_[1];
+  my $spincase = $_[2];
+  my @pair_energies;
+
+  # This is the position of the desired pair energies
+  my $pos;
+  if ($wfn eq "MP2") {
+    $pos = 3;
+  }
+  elsif ($wfn eq "CC") {
+    $pos = 4;
+  }
+  else {
+    return @pair_energies;
+  }
+
+  open(OUT, "$filename") || die "cannot open $filename $!";
+  my @datafile = <OUT>;
+  close(OUT);
+
+  my $linenum=0;
+  my $start = 0;
+  my $end = 0;
+  foreach $line (@datafile) {
+    if ($line =~ m/$spincase pair energies/) {
+      $start = $linenum+3;
+    }
+    if ($start != 0 && $start <= $linenum && $end == 0 && $line =~ m/-------------/) {
+      $end = $linenum;
+    }
+    $linenum++;
+  }
+
+  for(my $i=$start; $i < $end; $i++) {
+    @line = split(/ +/, $datafile[$i]);
+    $pair_energies[$i-$start] = $line[$pos];
+  }
+
+  if($start != 0) {
+    return @pair_energies;
+  }
+
+  printf "Error: Could not find $wfn $spincase pair energies in $filename.\n";
   exit 1;
 }
 
