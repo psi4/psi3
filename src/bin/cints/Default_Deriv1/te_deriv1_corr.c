@@ -369,9 +369,9 @@ void te_deriv1_corr()
 	      dddz += Libderiv.ABCD[11][k]*FourInd[k];
 	    grad_te_local[center_l][2] += dddz;
 
-	    grad_te_local[center_k][0] -= ddax + ddcx + dddx;
-	    grad_te_local[center_k][1] -= dday + ddcy + dddy;
-	    grad_te_local[center_k][2] -= ddaz + ddcz + dddz;
+	    grad_te_local[center_j][0] -= ddax + ddcx + dddx;
+	    grad_te_local[center_j][1] -= dday + ddcy + dddy;
+	    grad_te_local[center_j][2] -= ddaz + ddcz + dddz;
 	}
 
   if (UserOptions.print_lvl >= PRINT_TEDERIV)
