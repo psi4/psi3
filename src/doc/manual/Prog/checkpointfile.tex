@@ -502,3 +502,18 @@ a matrix \celem{nshell} by \celem{nshell} otherwise.} \\
 {Reads in a basis function to SO transformation matrix.}
 {takes no arguments.}
 {a \celem{nso} by \celem{nso} matrix of doubles.}
+
+\begin{center}
+Functions that return \celem{struct} \celem{*z\_entry}
+\end{center}
+{The z-matrix is read from \FILE{30} as an array of \celem{z\_entry} structs
+which are declared in \FILE{30.h}.  This structure contains the reference atom,
+an optimization flag, the coordinate value, and any label used for each internal 
+coordinate.  When not applicable (such as the first few lines of a z-matrix) 
+\celem{atom} variables are given values of -1,
+\celem{opt} variables are given values of -1, \celem{val} variables are
+given values of -999.9, and \celem{label} strings are left empty.} \\
+\funcdesc{file30\_rd\_zmat()}
+{Reads in the z-matrix}
+{takes no arguments.}
+{\celem{struct} \celem{*z\_entry} natom long.} 
