@@ -67,8 +67,6 @@ int main(int argc, char *argv[])
 
   if(params.local) local_init();
 
-  // cc3_HET1(); /* compute Wmbej <- [H,e^T1] */
-
   diag();
   /* sort_amps(); */
 
