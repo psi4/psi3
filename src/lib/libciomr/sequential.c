@@ -1,8 +1,11 @@
 
 /* $Log$
- * Revision 1.2  2002/04/19 21:48:06  sherrill
- * Remove some unused functions and do doxygen markup of libciomr.
+ * Revision 1.3  2003/04/22 14:59:26  crinders
+ * Corrected error in sequential.c with an incorrect fprintf on line 476 ud->unit and caller were switched.
  *
+/* Revision 1.2  2002/04/19 21:48:06  sherrill
+/* Remove some unused functions and do doxygen markup of libciomr.
+/*
 /* Revision 1.1.1.1  2000/02/04 22:53:23  evaleev
 /* Started PSI 3 repository
 /*
@@ -473,7 +476,7 @@ PSI_FPTR first;
 #else
       if (read(ud->v[i].stream,&buffer[ibuf],len)<1) {
         fprintf(stderr,"%s: unit = %ld, len = %ld, volume = %ld\n",
-                ud->unit,caller,len,i);
+                caller, ud->unit,len,i);
         fread_error(caller);
         }
 #endif
