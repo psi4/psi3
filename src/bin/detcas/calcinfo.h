@@ -30,6 +30,8 @@ struct calcinfo {
   int *socc;             /* singly occupied orbitals per irrep */
   int *frozen_docc;      /* frozen doubly occupied orbs per irrep */
   int *frozen_uocc;      /* frozen virtual orbs per irrep */
+  int *rstr_docc;        /* restricted doubly occupied orbs per irrep */
+  int *rstr_uocc;        /* restricted virtual orbs per irrep */
   int *orbsym;           /* irrep for each orbital */
   int *pitz2ci;          /* map Pitzer-ordered orbitals to our ordering */
   int *ci2pitz;          /* map our ordering back to Pitzer ordering */

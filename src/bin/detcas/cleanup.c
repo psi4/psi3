@@ -21,6 +21,8 @@ void cleanup(void)
   free(CalcInfo.socc);
   free(CalcInfo.frozen_docc);
   free(CalcInfo.frozen_uocc);
+  free(CalcInfo.rstr_docc);
+  free(CalcInfo.rstr_uocc);
   free(CalcInfo.orbsym);
   free(CalcInfo.pitz2ci);
   free(CalcInfo.ci2pitz);

@@ -50,18 +50,21 @@ void get_mo_info(void)
    CalcInfo.orbs_per_irr = chkpt_rd_orbspi();
    CalcInfo.enuc = chkpt_rd_enuc();
    CalcInfo.efzc = chkpt_rd_efzc();
+   CalcInfo.docc = chkpt_rd_clsdpi();
+   CalcInfo.socc = chkpt_rd_openpi();
    chkpt_close();
  
-   CalcInfo.docc = init_int_array(CalcInfo.nirreps);
-   CalcInfo.socc = init_int_array(CalcInfo.nirreps);
    CalcInfo.frozen_docc = init_int_array(CalcInfo.nirreps);
    CalcInfo.frozen_uocc = init_int_array(CalcInfo.nirreps);
+   CalcInfo.rstr_docc = init_int_array(CalcInfo.nirreps);
+   CalcInfo.rstr_uocc = init_int_array(CalcInfo.nirreps);
    CalcInfo.pitz2ci = init_int_array(CalcInfo.nbfso);
    CalcInfo.ras_opi = init_int_matrix(MAX_RAS_SPACES,CalcInfo.nirreps);
       
-   if (!ras_set(CalcInfo.nirreps, CalcInfo.nbfso, 1, 
+   if (!ras_set2(CalcInfo.nirreps, CalcInfo.nbfso, 1, 
                 CalcInfo.orbs_per_irr, CalcInfo.docc, CalcInfo.socc, 
                 CalcInfo.frozen_docc, CalcInfo.frozen_uocc, 
+                CalcInfo.rstr_docc, CalcInfo.rstr_uocc,
                 CalcInfo.ras_opi, CalcInfo.pitz2ci, 1)) 
    { 
      fprintf(outfile, "Error in ras_set().  Aborting.\n");
@@ -196,6 +199,10 @@ void get_mo_info(void)
     for (i=0; i<CalcInfo.nirreps; i++) {
       fprintf(outfile, "%2d ", CalcInfo.frozen_docc[i]);
     }
+    fprintf(outfile, "\n   RESTR_DOCC   = ");
+    for (i=0; i<CalcInfo.nirreps; i++) {
+      fprintf(outfile, "%2d ", CalcInfo.rstr_docc[i]);
+    }
     fprintf(outfile, "\n   DOCC          = ");
     for (i=0; i<CalcInfo.nirreps; i++) {
       fprintf(outfile, "%2d ", CalcInfo.docc[i]);
@@ -203,6 +210,10 @@ void get_mo_info(void)
     fprintf(outfile, "\n   SOCC          = ");
     for (i=0; i<CalcInfo.nirreps; i++) {
       fprintf(outfile, "%2d ", CalcInfo.socc[i]);
+    }
+    fprintf(outfile, "\n   RESTR_UOCC   = ");
+    for (i=0; i<CalcInfo.nirreps; i++) {
+      fprintf(outfile, "%2d ", CalcInfo.rstr_uocc[i]);
     }
     fprintf(outfile, "\n   FROZEN_UOCC   = ");
     for (i=0; i<CalcInfo.nirreps; i++) {
