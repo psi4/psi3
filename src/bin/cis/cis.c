@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
   int **cachelist, *cachefiles, *ao2atom;
   int h, i, j, jj, k, nroot, a, max_j, max_a;
   double *evals, *dcorr, *weakp, value, d_value, **B_PAO;
-  double *Bt, max_val, test_val;
+  double *Bt, max_val, test_val, sum_val;
   int *spin, *symm, count, ivalue;
   dpdfile2 B;
 
@@ -113,6 +113,7 @@ int main(int argc, char *argv[])
   
           // print_mat(B_PAO, local.nocc, local.nso, outfile);
           fprintf(outfile,"\t       occ  vir  atom        amplitude\n");
+          sum_val = 0.0;
           for (jj=0; jj< local.nocc*local.nso; ++jj) {
             max_val = 0.0;
             for (j=0; j<local.nocc; ++j) {
@@ -125,9 +126,10 @@ int main(int argc, char *argv[])
                 }
               }
             }
-            if (max_val > local.amp_print_cutoff) {
+            if (sum_val < local.amp_print_cutoff) {
               fprintf(outfile,"\t      %3d  %3d %4d %20.10f\n",
-                      max_j, max_a, ao2atom[max_a], B_PAO[max_j][max_a]);
+                max_j, max_a, ao2atom[max_a], B_PAO[max_j][max_a]);
+              sum_val += fabs(B_PAO[max_j][max_a]);
               B_PAO[max_j][max_a] = 0.0;
             }
 	        }
@@ -170,6 +172,7 @@ int main(int argc, char *argv[])
   
           // print_mat(B_PAO, local.nocc, local.nso, outfile);
           fprintf(outfile,"\t       occ  vir  atom        amplitude\n");
+          sum_val = 0.0;
           for (jj=0; jj< local.nocc*local.nso; ++jj) {
             max_val = 0.0;
             for (j=0; j<local.nocc; ++j) {
@@ -182,10 +185,11 @@ int main(int argc, char *argv[])
                 }
               }
             }
-            if (max_val > local.amp_print_cutoff) {
+            if (sum_val < local.amp_print_cutoff) {
               fprintf(outfile,"\t      %3d  %3d %4d %20.10f\n",
-              max_j, max_a, ao2atom[max_a], B_PAO[max_j][max_a]);
-                            B_PAO[max_j][max_a] = 0.0;
+                max_j, max_a, ao2atom[max_a], B_PAO[max_j][max_a]);
+              sum_val += fabs(B_PAO[max_j][max_a]);
+              B_PAO[max_j][max_a] = 0.0;
             }
           }
           free_block(B_PAO);

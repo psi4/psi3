@@ -43,7 +43,7 @@ void get_params()
     exit(2);
   }
 
-  local.amp_print_cutoff = 0.1;
+  local.amp_print_cutoff = 0.60;
   errcod = ip_data("LOCAL_AMP_PRINT_CUTOFF","%lf",&(local.amp_print_cutoff),0);
 
   params.print = 0;
