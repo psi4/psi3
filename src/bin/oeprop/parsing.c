@@ -133,6 +133,24 @@ void parsing()
       mp_ref = 1;
   }
 
+  if (ip_exist("LM_REF_XYZ",0)) {
+    ip_count("LM_REF_XYZ",&i,0);
+    if (i != 3) {
+      fprintf(outfile,"LM_REF_XYZ must have 3 components. Abort.\n\n");
+      exit(2);
+    }
+    for (i=0;i<3;i++) {
+      errcod = ip_data("LM_REF_XYZ","%lf",&Lm_ref_xyz[i],1,i);
+      if (errcod != IPE_OK) {
+        fprintf(outfile,"  Error in the definition of LM_REF_XYZ. Abort.\n\n");
+        exit(2);
+      }
+    }
+  }
+  else {
+    Lm_ref_xyz[0] = Lm_ref_xyz[1] = Lm_ref_xyz[2] = 0.0;
+  }
+
   errcod = ip_boolean("NUC_ESP",&nuc_esp,0);
   if (spin_prop)
     nuc_esp = 1;
