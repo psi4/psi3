@@ -1,0 +1,45 @@
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+include ../MakeVars
+
+CDBG = -g
+COPT = 
+
+LDLIBS += $(LAPACK) $(BLAS)
+
+PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
+
+CSRC = \
+ccresponse.c \
+get_moinfo.c \
+get_params.c \
+cache.c \
+transmu.c \
+sortmu.c \
+mubar.c \
+hbar_extra.c \
+init_X.c \
+denom.c \
+sort_X.c \
+X1.c \
+X2.c \
+compute_X.c \
+save_X.c \
+update_X.c \
+diis.c \
+converged.c \
+pseudopolar.c \
+LCX.c \
+print_X.c \
+
+BINOBJ = $(CSRC:%.c=%.o)
+ALLOC = 
+
+include ../MakeRules
+
+ifneq ($(DODEPEND),no)
+$(BINOBJ:%.o=%.d): $(DEPENDINCLUDE)
+include $(BINOBJ:%.o=%.d)
+endif
+
