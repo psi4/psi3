@@ -18,7 +18,6 @@
 double **file30_rd_geom(void)
 {
   double **geom;
-  double *temp_geom;
   int natom, i;
   PSI_FPTR junk;
   PSI_FPTR geom_ptr;
@@ -26,19 +25,10 @@ double **file30_rd_geom(void)
   natom = file30_rd_natom();
   geom_ptr = (PSI_FPTR) (info30_.mcalcs[0] + 60 + 20 -1)*sizeof(int);
 
-  temp_geom = init_array(3*natom);
-  geom = init_matrix(natom, 3);
+  geom = block_matrix(natom, 3);
 
-  wreadw(info30_.filenum, (char *) temp_geom, (int) 3*natom*sizeof(double),
+  wreadw(info30_.filenum, (char *) geom[0], (int) 3*natom*sizeof(double),
 	 geom_ptr, &junk);
-
-  for(i=0; i < natom; i++) {
-      geom[i][0] = temp_geom[3*i];
-      geom[i][1] = temp_geom[3*i+1];
-      geom[i][2] = temp_geom[3*i+2];
-    }
-
-  free(temp_geom);
 
   return geom;
 }

@@ -31,7 +31,7 @@ double **file30_z_to_cart( struct z_entry *z_geom, int num_atoms ) {
          **geom, *eAB, *ez, *ey, *ex,
 	 cos_ABC, sin_ABC, cos_BCD, sin_BCD, cos_ABCD, sin_ABCD;
 
-  geom = init_matrix(num_atoms,3);
+  geom = block_matrix(num_atoms,3);
 
   for(i=0;i<num_atoms;++i) {
 
