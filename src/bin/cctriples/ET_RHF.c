@@ -23,7 +23,6 @@ double ET_RHF(void)
   int i, j, k, a, b, c, d, l;
   int ij, ji, ik, ki, jk, kj;
   int *occpi, *virtpi, *occ_off, *vir_off;
-  int **F_row_start, **T2_col_start, **E_col_start, **T2_row_start, offset;
   double t_ia, t_jb, t_kc, D_jkbc, D_ikac, D_ijab;
   double f_ia, f_jb, f_kc, t_jkbc, t_ikac, t_ijab;
   double dijk, value1, value2, value3, value4, value5, value6, denom, ET;
@@ -39,64 +38,6 @@ double ET_RHF(void)
   occpi = moinfo.occpi; virtpi = moinfo.virtpi;
   occ_off = moinfo.occ_off;
   vir_off = moinfo.vir_off;
-
-  /* Compute starting row for index p in submatrix h */
-  for(h=0,nump=0; h < nirreps; h++) nump += occpi[h];
-  F_row_start = init_int_matrix(nirreps, nump);
-  for(h=0; h < nirreps; h++) {
-
-    /* Initialize the array for error checking */
-    for(p=0; p < nump; p++) F_row_start[h][p] = -1;
-
-    nrows = 0;
-    for(Gp=0; Gp < nirreps; Gp++) {
-      for(p=0; p < occpi[Gp]; p++) {
-
-	if(virtpi[Gp^h]) 
-	  F_row_start[h][occ_off[Gp] + p] = nrows;
-
-	nrows += virtpi[Gp^h];
-      }
-    }
-  }
-
-  /* Compute starting row for index p in submatrix h */
-  for(h=0,nump=0; h < nirreps; h++) nump += occpi[h];
-  T2_row_start = init_int_matrix(nirreps, nump);
-  for(h=0; h < nirreps; h++) {
-
-    /* Initialize the array for error checking */
-    for(p=0; p < nump; p++) T2_row_start[h][p] = -1;
-
-    nrows = 0;
-    for(Gp=0; Gp < nirreps; Gp++) {
-      for(p=0; p < occpi[Gp]; p++) {
-
-	if(occpi[Gp^h]) 
-	  T2_row_start[h][occ_off[Gp] + p] = nrows;
-
-	nrows += occpi[Gp^h];
-      }
-    }
-  }
-
-  T2_col_start = init_int_matrix(nirreps, nirreps);
-  for(h=0; h < nirreps; h++) {
-    for(Gd = 0,offset=0; Gd < nirreps; Gd++) {
-      Gc = Gd ^ h;
-      T2_col_start[h][Gd] = offset;
-      offset += virtpi[Gd] * virtpi[Gc];
-    }
-  }
-
-  E_col_start = init_int_matrix(nirreps, nirreps);
-  for(h=0; h < nirreps; h++) {
-    for(Gl = 0,offset=0; Gl < nirreps; Gl++) {
-      Gc = Gl ^ h;
-      E_col_start[h][Gl] = offset;
-      offset += occpi[Gl] * virtpi[Gc];
-    }
-  }
 
   dpd_file2_init(&fIJ, CC_OEI, 0, 0, 0, "fIJ");
   dpd_file2_init(&fAB, CC_OEI, 0, 1, 1, "fAB");
@@ -217,10 +158,10 @@ double ET_RHF(void)
 
 		  /* Set up F integrals */
 		  Fints.matrix[Gid] = dpd_block_matrix(virtpi[Gd], Fints.params->coltot[Gid]);
-		  dpd_buf4_mat_irrep_rd_block(&Fints, Gid, F_row_start[Gid][I], virtpi[Gd]);
+		  dpd_buf4_mat_irrep_rd_block(&Fints, Gid, Fints.row_offset[Gid][I], virtpi[Gd]);
 
 		  /* Set up T2 amplitudes */
-		  cd = T2_col_start[Gkj][Gc];
+		  cd = T2.col_offset[Gkj][Gc];
 
 		  /* Set up multiplication parameters */
 		  nrows = Fints.params->coltot[Gid];
@@ -243,10 +184,10 @@ double ET_RHF(void)
 		  Gc = Gjk ^ Gl;
 
 		  /* Set up E integrals */
-		  lc = E_col_start[Gjk][Gl];
+		  lc = Eints.col_offset[Gjk][Gl];
 
 		  /* Set up T2 amplitudes */
-		  il = T2_row_start[Gil][I];
+		  il = T2.row_offset[Gil][I];
 
 		  /* Set up multiplication parameters */
 		  nrows = T2.params->coltot[Gil];
@@ -272,9 +213,9 @@ double ET_RHF(void)
 		  Gb = Gjk ^ Gd;
 
 		  Fints.matrix[Gid] = dpd_block_matrix(virtpi[Gd], Fints.params->coltot[Gid]);
-		  dpd_buf4_mat_irrep_rd_block(&Fints, Gid, F_row_start[Gid][I], virtpi[Gd]);
+		  dpd_buf4_mat_irrep_rd_block(&Fints, Gid, Fints.row_offset[Gid][I], virtpi[Gd]);
 
-		  bd = T2_col_start[Gjk][Gb];
+		  bd = T2.col_offset[Gjk][Gb];
 
 		  nrows = Fints.params->coltot[Gid];
 		  ncols = virtpi[Gb];
@@ -295,9 +236,9 @@ double ET_RHF(void)
 		  Gac = Gil = Gi ^ Gl;
 		  Gb = Gkj ^ Gl;
 
-		  lb = E_col_start[Gkj][Gl];
+		  lb = Eints.col_offset[Gkj][Gl];
 
-		  il = T2_row_start[Gil][I];
+		  il = T2.row_offset[Gil][I];
 
 		  nrows = T2.params->coltot[Gil];
 		  ncols = virtpi[Gb];
@@ -322,9 +263,9 @@ double ET_RHF(void)
 		  Gb = Gji ^ Gd;
 
 		  Fints.matrix[Gkd] = dpd_block_matrix(virtpi[Gd], Fints.params->coltot[Gkd]);
-		  dpd_buf4_mat_irrep_rd_block(&Fints, Gkd, F_row_start[Gkd][K], virtpi[Gd]);
+		  dpd_buf4_mat_irrep_rd_block(&Fints, Gkd, Fints.row_offset[Gkd][K], virtpi[Gd]);
 
-		  bd = T2_col_start[Gji][Gb];
+		  bd = T2.col_offset[Gji][Gb];
 
 		  nrows = Fints.params->coltot[Gkd];
 		  ncols = virtpi[Gb];
@@ -345,9 +286,9 @@ double ET_RHF(void)
 		  Gca = Gkl = Gk ^ Gl;
 		  Gb = Gij ^ Gl;
 
-		  lb = E_col_start[Gij][Gl];
+		  lb = Eints.col_offset[Gij][Gl];
 
-		  kl = T2_row_start[Gkl][K];
+		  kl = T2.row_offset[Gkl][K];
 
 		  nrows = T2.params->coltot[Gkl];
 		  ncols = virtpi[Gb];
@@ -372,9 +313,9 @@ double ET_RHF(void)
 		  Ga = Gij ^ Gd;
 
 		  Fints.matrix[Gkd] = dpd_block_matrix(virtpi[Gd], Fints.params->coltot[Gkd]);
-		  dpd_buf4_mat_irrep_rd_block(&Fints, Gkd, F_row_start[Gkd][K], virtpi[Gd]);
+		  dpd_buf4_mat_irrep_rd_block(&Fints, Gkd, Fints.row_offset[Gkd][K], virtpi[Gd]);
 
-		  ad = T2_col_start[Gij][Ga];
+		  ad = T2.col_offset[Gij][Ga];
 
 		  nrows = Fints.params->coltot[Gkd];
 		  ncols = virtpi[Ga];
@@ -395,9 +336,9 @@ double ET_RHF(void)
 		  Gcb = Gkl = Gk ^ Gl;
 		  Ga = Gji ^ Gl;
 
-		  la = E_col_start[Gji][Gl];
+		  la = Eints.col_offset[Gji][Gl];
 
-		  kl = T2_row_start[Gkl][K];
+		  kl = T2.row_offset[Gkl][K];
 
 		  nrows = T2.params->coltot[Gkl];
 		  ncols = virtpi[Ga];
@@ -422,9 +363,9 @@ double ET_RHF(void)
 		  Ga = Gik ^ Gd;
 
 		  Fints.matrix[Gjd] = dpd_block_matrix(virtpi[Gd], Fints.params->coltot[Gjd]);
-		  dpd_buf4_mat_irrep_rd_block(&Fints, Gjd, F_row_start[Gjd][J], virtpi[Gd]);
+		  dpd_buf4_mat_irrep_rd_block(&Fints, Gjd, Fints.row_offset[Gjd][J], virtpi[Gd]);
 
-		  ad = T2_col_start[Gik][Ga];
+		  ad = T2.col_offset[Gik][Ga];
 
 		  nrows = Fints.params->coltot[Gjd];
 		  ncols = virtpi[Ga];
@@ -445,9 +386,9 @@ double ET_RHF(void)
 		  Gbc = Gjl = Gj ^ Gl;
 		  Ga = Gki ^ Gl;
 
-		  la = E_col_start[Gki][Gl];
+		  la = Eints.col_offset[Gki][Gl];
 
-		  jl = T2_row_start[Gjl][J];
+		  jl = T2.row_offset[Gjl][J];
 
 		  nrows = T2.params->coltot[Gjl];
 		  ncols = virtpi[Ga];
@@ -472,9 +413,9 @@ double ET_RHF(void)
 		  Gc = Gki ^ Gd;
 
 		  Fints.matrix[Gjd] = dpd_block_matrix(virtpi[Gd], Fints.params->coltot[Gjd]);
-		  dpd_buf4_mat_irrep_rd_block(&Fints, Gjd, F_row_start[Gjd][J], virtpi[Gd]);
+		  dpd_buf4_mat_irrep_rd_block(&Fints, Gjd, Fints.row_offset[Gjd][J], virtpi[Gd]);
 
-		  cd = T2_col_start[Gki][Gc];
+		  cd = T2.col_offset[Gki][Gc];
 
 		  nrows = Fints.params->coltot[Gjd];
 		  ncols = virtpi[Gc];
@@ -495,9 +436,9 @@ double ET_RHF(void)
 		  Gba = Gjl = Gj ^ Gl;
 		  Gc = Gik ^ Gl;
 
-		  lc = E_col_start[Gik][Gl];
+		  lc = Eints.col_offset[Gik][Gl];
 
-		  jl = T2_row_start[Gjl][J];
+		  jl = T2.row_offset[Gjl][J];
 
 		  nrows = T2.params->coltot[Gjl];
 		  ncols = virtpi[Gc];

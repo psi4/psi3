@@ -1,4 +1,4 @@
-#include <stdio.h>
+ #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <libdpd/dpd.h>
@@ -26,7 +26,6 @@ double ET_UHF_ABB(void)
   int *aoccpi, *avirtpi, *aocc_off, *avir_off;
   int *boccpi, *bvirtpi, *bocc_off, *bvir_off;
   double value_c, value_d, dijk, denom, ET_ABB;
-  int numpA, numpB, p, Gp, offset;
   int nrows, ncols, nlinks;
   double t_ia, t_jb, t_jc, t_kb, t_kc;
   double f_ia, f_jb, f_jc, f_kb, f_kc;
@@ -36,10 +35,6 @@ double ET_UHF_ABB(void)
   dpdbuf4 FBBints, FABints, FBAints;
   dpdbuf4 EBBints, EABints, EBAints;
   dpdbuf4 DBBints, DABints;
-  int **T2AB_row_start, **T2BA_row_start, **T2BB_row_start;
-  int **T2AB_col_start, **T2BB_col_start;
-  int **FAB_row_start, **FBA_row_start, **FBB_row_start;
-  int **EAB_col_start, **EBA_col_start, **EBB_col_start;
   dpdfile2 T1A, T1B, fIJ, fij, fAB, fab, fIA, fia;
   double ***WAbc, ***VAbc, ***WAcb, ***WbAc, ***WcAb, ***WbcA;
   int nijk, mijk;
@@ -54,153 +49,6 @@ double ET_UHF_ABB(void)
   bvirtpi = moinfo.bvirtpi;
   bocc_off = moinfo.bocc_off;
   bvir_off = moinfo.bvir_off;
-
-  for(h=0,numpA=0; h < nirreps; h++) numpA += aoccpi[h];
-  for(h=0,numpB=0; h < nirreps; h++) numpB += boccpi[h];
-
-  /* Build F integral row offsets */
-  FBB_row_start = init_int_matrix(nirreps, numpB);
-  FAB_row_start = init_int_matrix(nirreps, numpA);
-  FBA_row_start = init_int_matrix(nirreps, numpB);
-
-  for(h=0; h < nirreps; h++) {
-
-    for(p=0; p < numpA; p++) FAB_row_start[h][p] = -1;
-    for(p=0; p < numpB; p++) FBB_row_start[h][p] = -1;
-    for(p=0; p < numpB; p++) FBA_row_start[h][p] = -1;
-
-    nrows = 0;
-    for(Gp=0; Gp < nirreps; Gp++) {
-      for(p=0; p < aoccpi[Gp]; p++) {
-
-	if(bvirtpi[Gp^h]) 
-	  FAB_row_start[h][aocc_off[Gp] + p] = nrows;
-
-	nrows += bvirtpi[Gp^h];
-      }
-    }
-
-    nrows = 0;
-    for(Gp=0; Gp < nirreps; Gp++) {
-      for(p=0; p < boccpi[Gp]; p++) {
-
-	if(bvirtpi[Gp^h]) 
-	  FBB_row_start[h][bocc_off[Gp] + p] = nrows;
-
-	nrows += bvirtpi[Gp^h];
-      }
-    }
-
-    nrows = 0;
-    for(Gp=0; Gp < nirreps; Gp++) {
-      for(p=0; p < boccpi[Gp]; p++) {
-
-	if(avirtpi[Gp^h]) 
-	  FBA_row_start[h][bocc_off[Gp] + p] = nrows;
-
-	nrows += avirtpi[Gp^h];
-      }
-    }
-  }
-
-  /* Build T2 amplitude row offsets */
-  T2BB_row_start = init_int_matrix(nirreps, numpB);
-  T2AB_row_start = init_int_matrix(nirreps, numpA);
-  T2BA_row_start = init_int_matrix(nirreps, numpB);
-
-  for(h=0; h < nirreps; h++) {
-
-    for(p=0; p < numpA; p++) {
-      T2AB_row_start[h][p] = -1;
-    }
-
-    for(p=0; p < numpB; p++) {
-      T2BB_row_start[h][p] = -1;
-      T2BA_row_start[h][p] = -1;
-    }
-
-    nrows = 0;
-    for(Gp=0; Gp < nirreps; Gp++) {
-      for(p=0; p < aoccpi[Gp]; p++) {
-
-	if(boccpi[Gp^h]) 
-	  T2AB_row_start[h][aocc_off[Gp] + p] = nrows;
-
-	nrows += boccpi[Gp^h];
-      }
-    }
-
-    nrows = 0;
-    for(Gp=0; Gp < nirreps; Gp++) {
-      for(p=0; p < boccpi[Gp]; p++) {
-
-	if(aoccpi[Gp^h]) 
-	  T2BA_row_start[h][bocc_off[Gp] + p] = nrows;
-
-	nrows += aoccpi[Gp^h];
-      }
-    }
-
-    nrows = 0;
-    for(Gp=0; Gp < nirreps; Gp++) {
-      for(p=0; p < boccpi[Gp]; p++) {
-
-	if(boccpi[Gp^h]) 
-	  T2BB_row_start[h][bocc_off[Gp] + p] = nrows;
-
-	nrows += boccpi[Gp^h];
-      }
-    }
-  }
-
-  /* Build T2 amplitude column offsets */
-  T2BB_col_start = init_int_matrix(nirreps, nirreps);
-  T2AB_col_start = init_int_matrix(nirreps, nirreps);
-
-  for(h=0; h < nirreps; h++) {
-    for(Gd = 0,offset=0; Gd < nirreps; Gd++) {
-      Gc = Gd ^ h;
-      T2BB_col_start[h][Gd] = offset;
-      offset += bvirtpi[Gd] * bvirtpi[Gc];
-    }
-  }
-
-  for(h=0; h < nirreps; h++) {
-    for(Gd = 0,offset=0; Gd < nirreps; Gd++) {
-      Gc = Gd ^ h;
-      T2AB_col_start[h][Gd] = offset;
-      offset += avirtpi[Gd] * bvirtpi[Gc];
-    }
-  }
-
-  /* Build E integral column offsets */
-  EBB_col_start = init_int_matrix(nirreps, nirreps);
-  EAB_col_start = init_int_matrix(nirreps, nirreps);
-  EBA_col_start = init_int_matrix(nirreps, nirreps);
-
-  for(h=0; h < nirreps; h++) {
-    for(Gl = 0,offset=0; Gl < nirreps; Gl++) {
-      Gc = Gl ^ h;
-      EBB_col_start[h][Gl] = offset;
-      offset += boccpi[Gl] * bvirtpi[Gc];
-    }
-  }
-
-  for(h=0; h < nirreps; h++) {
-    for(Gl = 0,offset=0; Gl < nirreps; Gl++) {
-      Gc = Gl ^ h;
-      EAB_col_start[h][Gl] = offset;
-      offset += aoccpi[Gl] * bvirtpi[Gc];
-    }
-  }
-
-  for(h=0; h < nirreps; h++) {
-    for(Gl = 0,offset=0; Gl < nirreps; Gl++) {
-      Gc = Gl ^ h;
-      EBA_col_start[h][Gl] = offset;
-      offset += boccpi[Gl] * avirtpi[Gc];
-    }
-  }
 
   dpd_file2_init(&fIJ, CC_OEI, 0, 0, 0, "fIJ");
   dpd_file2_init(&fij, CC_OEI, 0, 2, 2, "fij");
@@ -352,8 +200,8 @@ double ET_UHF_ABB(void)
 		  Gab = Gid = Gi ^ Gd;
 		  Gc = Gjk ^ Gd;
 
-		  cd = T2BB_col_start[Gjk][Gc];
-		  id = FAB_row_start[Gid][I];
+		  cd = T2BB.col_offset[Gjk][Gc];
+		  id = FABints.row_offset[Gid][I];
 
 		  FABints.matrix[Gid] = dpd_block_matrix(bvirtpi[Gd], FABints.params->coltot[Gid]);
 		  dpd_buf4_mat_irrep_rd_block(&FABints, Gid, id, bvirtpi[Gd]);
@@ -377,8 +225,8 @@ double ET_UHF_ABB(void)
 		  Gab = Gil = Gi ^ Gl;
 		  Gc = Gjk ^ Gl;
 
-		  lc = EBB_col_start[Gjk][Gl];
-		  il = T2AB_row_start[Gil][I];
+		  lc = EBBints.col_offset[Gjk][Gl];
+		  il = T2AB.row_offset[Gil][I];
 
 		  nrows = T2AB.params->coltot[Gil];
 		  ncols = bvirtpi[Gc];
@@ -402,8 +250,8 @@ double ET_UHF_ABB(void)
 		  Gac = Gid = Gi ^ Gd;
 		  Gb = Gjk ^ Gd;
 
-		  bd = T2BB_col_start[Gjk][Gb];
-		  id = FAB_row_start[Gid][I];
+		  bd = T2BB.col_offset[Gjk][Gb];
+		  id = FABints.row_offset[Gid][I];
 
 		  FABints.matrix[Gid] = dpd_block_matrix(bvirtpi[Gd], FABints.params->coltot[Gid]);
 		  dpd_buf4_mat_irrep_rd_block(&FABints, Gid, id, bvirtpi[Gd]);
@@ -427,8 +275,8 @@ double ET_UHF_ABB(void)
 		  Gac = Gil = Gi ^ Gl;
 		  Gb = Gjk ^ Gl;
 
-		  lb = EBB_col_start[Gjk][Gl];
-		  il = T2AB_row_start[Gil][I];
+		  lb = EBBints.col_offset[Gjk][Gl];
+		  il = T2AB.row_offset[Gil][I];
 
 		  nrows = T2AB.params->coltot[Gil];
 		  ncols = bvirtpi[Gb];
@@ -458,8 +306,8 @@ double ET_UHF_ABB(void)
 		  Gbc = Gjd = Gj ^ Gd;
 		  Ga = Gik ^ Gd;
 
-		  ad = T2AB_col_start[Gik][Ga];
-		  jd = FBB_row_start[Gjd][J];
+		  ad = T2AB.col_offset[Gik][Ga];
+		  jd = FBBints.row_offset[Gjd][J];
 
 		  FBBints.matrix[Gjd] = dpd_block_matrix(bvirtpi[Gd], FBBints.params->coltot[Gjd]);
 		  dpd_buf4_mat_irrep_rd_block(&FBBints, Gjd, jd, bvirtpi[Gd]);
@@ -480,8 +328,8 @@ double ET_UHF_ABB(void)
 		  Gbc = Gkd = Gk ^ Gd;
 		  Ga = Gij ^ Gd;
 
-		  ad = T2AB_col_start[Gij][Ga];
-		  kd = FBB_row_start[Gkd][K];
+		  ad = T2AB.col_offset[Gij][Ga];
+		  kd = FBBints.row_offset[Gkd][K];
 
 		  FBBints.matrix[Gkd] = dpd_block_matrix(bvirtpi[Gd], FBBints.params->coltot[Gkd]);
 		  dpd_buf4_mat_irrep_rd_block(&FBBints, Gkd, kd, bvirtpi[Gd]);
@@ -505,8 +353,8 @@ double ET_UHF_ABB(void)
 		  Gbc = Gjl = Gj ^ Gl;
 		  Ga = Gki ^ Gl;
 
-		  la = EBA_col_start[Gki][Gl];
-		  jl = T2BB_row_start[Gjl][J];
+		  la = EBAints.col_offset[Gki][Gl];
+		  jl = T2BB.row_offset[Gjl][J];
 
 		  nrows = T2BB.params->coltot[Gjl];
 		  ncols = avirtpi[Ga];
@@ -522,8 +370,8 @@ double ET_UHF_ABB(void)
 		  Gbc = Gkl = Gk ^ Gl;
 		  Ga = Gji ^ Gl;
 
-		  la = EBA_col_start[Gji][Gl];
-		  kl = T2BB_row_start[Gkl][K];
+		  la = EBAints.col_offset[Gji][Gl];
+		  kl = T2BB.row_offset[Gkl][K];
 
 		  nrows = T2BB.params->coltot[Gkl];
 		  ncols = avirtpi[Ga];
@@ -553,8 +401,8 @@ double ET_UHF_ABB(void)
 		  Gca = Gjd = Gj ^ Gd;
 		  Gb = Gik ^ Gd;
 
-		  db = T2AB_col_start[Gik][Gd];
-		  jd = FBA_row_start[Gjd][J];
+		  db = T2AB.col_offset[Gik][Gd];
+		  jd = FBAints.row_offset[Gjd][J];
 
 		  FBAints.matrix[Gjd] = dpd_block_matrix(avirtpi[Gd], FBAints.params->coltot[Gjd]);
 		  dpd_buf4_mat_irrep_rd_block(&FBAints, Gjd, jd, avirtpi[Gd]);
@@ -575,8 +423,8 @@ double ET_UHF_ABB(void)
 		  Gca = Gkd = Gk ^ Gd;
 		  Gb = Gij ^ Gd;
 
-		  db = T2AB_col_start[Gij][Gd];
-		  kd = FBA_row_start[Gkd][K];
+		  db = T2AB.col_offset[Gij][Gd];
+		  kd = FBAints.row_offset[Gkd][K];
 
 		  FBAints.matrix[Gkd] = dpd_block_matrix(avirtpi[Gd], FBAints.params->coltot[Gkd]);
 		  dpd_buf4_mat_irrep_rd_block(&FBAints, Gkd, kd, avirtpi[Gd]);
@@ -600,8 +448,8 @@ double ET_UHF_ABB(void)
 		  Gca = Gjl = Gj ^ Gl;
 		  Gb = Gik ^ Gl;
 
-		  lb = EAB_col_start[Gik][Gl];
-		  jl = T2BA_row_start[Gjl][J];
+		  lb = EABints.col_offset[Gik][Gl];
+		  jl = T2BA.row_offset[Gjl][J];
 
 		  nrows = T2BA.params->coltot[Gjl];
 		  ncols = bvirtpi[Gb];
@@ -617,8 +465,8 @@ double ET_UHF_ABB(void)
 		  Gca = Gkl = Gk ^ Gl;
 		  Gb = Gij ^ Gl;
 
-		  lb = EAB_col_start[Gij][Gl];
-		  kl = T2BA_row_start[Gkl][K];
+		  lb = EABints.col_offset[Gij][Gl];
+		  kl = T2BA.row_offset[Gkl][K];
 
 		  nrows = T2BA.params->coltot[Gkl];
 		  ncols = bvirtpi[Gb];
@@ -648,8 +496,8 @@ double ET_UHF_ABB(void)
 		  Gba = Gjd = Gj ^ Gd;
 		  Gc = Gik ^ Gd;
 
-		  dc = T2AB_col_start[Gik][Gd];
-		  jd = FBA_row_start[Gjd][J];
+		  dc = T2AB.col_offset[Gik][Gd];
+		  jd = FBAints.row_offset[Gjd][J];
 
 		  FBAints.matrix[Gjd] = dpd_block_matrix(avirtpi[Gd], FBAints.params->coltot[Gjd]);
 		  dpd_buf4_mat_irrep_rd_block(&FBAints, Gjd, jd, avirtpi[Gd]);
@@ -670,8 +518,8 @@ double ET_UHF_ABB(void)
 		  Gba = Gkd = Gk ^ Gd;
 		  Gc = Gij ^ Gd;
 
-		  dc = T2AB_col_start[Gij][Gd];
-		  kd = FBA_row_start[Gkd][K];
+		  dc = T2AB.col_offset[Gij][Gd];
+		  kd = FBAints.row_offset[Gkd][K];
 
 		  FBAints.matrix[Gkd] = dpd_block_matrix(avirtpi[Gd], FBAints.params->coltot[Gkd]);
 		  dpd_buf4_mat_irrep_rd_block(&FBAints, Gkd, kd, avirtpi[Gd]);
@@ -695,8 +543,8 @@ double ET_UHF_ABB(void)
 		  Gba = Gjl = Gj ^ Gl;
 		  Gc = Gik ^ Gl;
 
-		  lc = EAB_col_start[Gik][Gl];
-		  jl = T2BA_row_start[Gjl][J];
+		  lc = EABints.col_offset[Gik][Gl];
+		  jl = T2BA.row_offset[Gjl][J];
 
 		  nrows = T2BA.params->coltot[Gjl];
 		  ncols = bvirtpi[Gc];
@@ -712,8 +560,8 @@ double ET_UHF_ABB(void)
 		  Gba = Gkl = Gk ^ Gl;
 		  Gc = Gij ^ Gl;
 
-		  lc = EAB_col_start[Gij][Gl];
-		  kl = T2BA_row_start[Gkl][K];
+		  lc = EABints.col_offset[Gij][Gl];
+		  kl = T2BA.row_offset[Gkl][K];
 
 		  nrows = T2BA.params->coltot[Gkl];
 		  ncols = bvirtpi[Gc];
@@ -929,19 +777,6 @@ double ET_UHF_ABB(void)
   dpd_file2_close(&fab);
   dpd_file2_close(&fIA);
   dpd_file2_close(&fia);
-
-  free_int_matrix(FBB_row_start, nirreps);
-  free_int_matrix(FAB_row_start, nirreps);
-  free_int_matrix(FBA_row_start, nirreps);
-  free_int_matrix(T2BB_row_start, nirreps);
-  free_int_matrix(T2AB_row_start, nirreps);
-  free_int_matrix(T2BA_row_start, nirreps);
-
-  free_int_matrix(T2BB_col_start, nirreps);
-  free_int_matrix(T2AB_col_start, nirreps);
-  free_int_matrix(EBB_col_start, nirreps);
-  free_int_matrix(EAB_col_start, nirreps);
-  free_int_matrix(EBA_col_start, nirreps);
 
   return ET_ABB;
 }
