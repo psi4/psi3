@@ -17,7 +17,7 @@
 
 int dpd_buf4_mat_irrep_close(dpdbuf4 *Buf, int irrep)
 {
-  int h, nirreps, my_irrep, rowtot, coltot;
+  int h, nirreps, rowtot, coltot, my_irrep;
 
   my_irrep = Buf->file.my_irrep;
   rowtot = Buf->params->rowtot[irrep];

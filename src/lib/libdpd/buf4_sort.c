@@ -57,30 +57,27 @@
 int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 		  int pqnum, int rsnum, char *label)
 {
-  int h,nirreps, row, col, my_irrep, r_irrep;
+  int h,nirreps, row, col, all_buf_irrep, r_irrep;
   int p, q, r, s, P, Q, R, S, pq, rs, sr, pr, qs, qp, rq, qr, ps, sp, rp, sq;
   int Gp, Gq, Gr, Gs, Gpq, Grs, Gpr, Gqs, Grq, Gqr, Gps, Gsp, Grp, Gsq;
   dpdbuf4 OutBuf;
 
   nirreps = InBuf->params->nirreps;
-  my_irrep = InBuf->file.my_irrep;
+  all_buf_irrep = InBuf->file.my_irrep;
 
 #ifdef DPD_TIMER
   timer_on("buf4_sort");
 #endif
 
-  dpd_buf4_init(&OutBuf, outfilenum, my_irrep, pqnum, rsnum,
+  dpd_buf4_init(&OutBuf, outfilenum, all_buf_irrep, pqnum, rsnum,
 		pqnum, rsnum, 0, label);
 
   /* Init input and output buffers and read in all blocks of the input */
   for(h=0; h < nirreps; h++) {
-
     dpd_buf4_mat_irrep_init(&OutBuf, h);
-
     dpd_buf4_mat_irrep_init(InBuf, h);
     dpd_buf4_mat_irrep_rd(InBuf, h);
   }
-
 
   switch(index) {
   case pqrs:
@@ -95,7 +92,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 #endif
 
     for(h=0; h < nirreps; h++) {
-      r_irrep = h^my_irrep;
+      r_irrep = h^all_buf_irrep;
 
       /* p->p; q->q; s->r; r->s = pqsr */
       
@@ -130,7 +127,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
     /* p->p; r->q; q->r; s->s = prqs */
 
     for(h=0; h < nirreps; h++) {
-      r_irrep = h^my_irrep;
+      r_irrep = h^all_buf_irrep;
 
       for(Gp=0; Gp < nirreps; Gp++) {
 	Gq = Gp^h;
@@ -180,7 +177,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
     /* p->p; r->q; s->r; q->s = psqr */
 
     for(h=0; h < nirreps; h++) {
-      r_irrep = h^my_irrep;
+      r_irrep = h^all_buf_irrep;
 
       for(Gp=0; Gp < nirreps; Gp++) {
 	Gq = Gp^h;
@@ -228,7 +225,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
     /* p->p; s->q; q->r; r->s = prsq */
 
     for(h=0; h < nirreps; h++) {
-      r_irrep = h^my_irrep;
+      r_irrep = h^all_buf_irrep;
 	     
       for(Gp=0; Gp < nirreps; Gp++) {
 	Gq = Gp^h;
@@ -276,7 +273,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
     /* p->p; s->q; r->r; q->s = psrq */
 
     for(h=0; h < nirreps; h++) {
-      r_irrep = h^my_irrep;
+      r_irrep = h^all_buf_irrep;
 	  
       for(Gp=0; Gp < nirreps; Gp++) {
 	Gq = Gp^h;
@@ -324,7 +321,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
     /* q->p; p->q; r->r; s->s = qprs */
 
     for(h=0; h < nirreps; h++) {
-      r_irrep = h^my_irrep;
+      r_irrep = h^all_buf_irrep;
 
       for(pq=0; pq < OutBuf.params->rowtot[h]; pq++) {
 	p = OutBuf.params->roworb[h][pq][0];
@@ -357,7 +354,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
     /* q->p; p->q; s->r; r->s = qpsr */
 
     for(h=0; h < nirreps; h++) {
-      r_irrep = h^my_irrep;
+      r_irrep = h^all_buf_irrep;
 
       for(pq=0; pq < OutBuf.params->rowtot[h]; pq++) {
 	p = OutBuf.params->roworb[h][pq][0];
@@ -388,7 +385,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
     /* q->p; r->q; p->r; s->s = rpqs */
 
     for(h=0; h < nirreps; h++) {
-      r_irrep = h^my_irrep;
+      r_irrep = h^all_buf_irrep;
 	  
       for(Gp=0; Gp < nirreps; Gp++) {
 	Gq = Gp^h;
@@ -435,7 +432,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
     /* q->p; r->q; s->r; p->s = spqr */
 
     for(h=0; h < nirreps; h++) {
-      r_irrep = h^my_irrep;
+      r_irrep = h^all_buf_irrep;
 	  
       for(Gp=0; Gp < nirreps; Gp++) {
 	Gq = Gp^h;
@@ -492,7 +489,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
     /* r->p; q->q; p->r; s->s = rqps */
 
     for(h=0; h < nirreps; h++) {
-      r_irrep = h^my_irrep;
+      r_irrep = h^all_buf_irrep;
 	  
       for(Gp=0; Gp < nirreps; Gp++) {
 	Gq = Gp^h;
@@ -539,7 +536,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
     /* r->p; q->q; s->r; p->s = sqpr */
 
     for(h=0; h < nirreps; h++) {
-      r_irrep = h^my_irrep;
+      r_irrep = h^all_buf_irrep;
 	  
       for(Gp=0; Gp < nirreps; Gp++) {
 	Gq = Gp^h;
@@ -587,7 +584,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
     /* r->p; p->q; q->r; s->s = qrps */
 
     for(h=0; h < nirreps; h++) {
-      r_irrep = h^my_irrep;
+      r_irrep = h^all_buf_irrep;
 	  
       for(Gp=0; Gp < nirreps; Gp++) {
 	Gq = Gp^h;
@@ -635,7 +632,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
     /* r->p; p->q; s->r; q->s = qspr */
 
     for(h=0; h < nirreps; h++) {
-      r_irrep = h^my_irrep;
+      r_irrep = h^all_buf_irrep;
 	  
       for(Gp=0; Gp < nirreps; Gp++) {
 	Gq = Gp^h;
@@ -683,7 +680,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
     /* r->p; s->q; q->r; p->s = srpq */
 
     for(h=0; h < nirreps; h++) {
-      r_irrep = h^my_irrep;
+      r_irrep = h^all_buf_irrep;
 	  
       for(pq=0; pq < OutBuf.params->rowtot[h]; pq++) {
 	p = OutBuf.params->roworb[h][pq][0];
@@ -717,7 +714,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
     /* r->p; s->q; p->r; q->s = rspq */
 
     for(h=0; h < nirreps; h++) {
-      r_irrep = h^my_irrep;
+      r_irrep = h^all_buf_irrep;
 	  
       for(pq=0; pq < OutBuf.params->rowtot[h]; pq++) {
 	p = OutBuf.params->roworb[h][pq][0];
@@ -731,7 +728,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 
 	  row = InBuf->params->rowidx[r][s];
 		  
-	  OutBuf.matrix[h][pq][rs] = InBuf->matrix[h][row][col];
+	  OutBuf.matrix[h][pq][rs] = InBuf->matrix[r_irrep][row][col];
 
 	}
       }
@@ -751,7 +748,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
     /* s->p; q->q; r->r; p->s = sqrp */
 
     for(h=0; h < nirreps; h++) {
-      r_irrep = h^my_irrep;
+      r_irrep = h^all_buf_irrep;
 	  
       for(Gp=0; Gp < nirreps; Gp++) {
 	Gq = Gp^h;
@@ -803,7 +800,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
     /* s->p; r->q; q->r; p->s = srqp */
 
     for(h=0; h < nirreps; h++) {
-      r_irrep = h^my_irrep;
+      r_irrep = h^all_buf_irrep;
 	  
       for(pq=0; pq < OutBuf.params->rowtot[h]; pq++) {
 	p = OutBuf.params->roworb[h][pq][0];
@@ -836,7 +833,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
     /* s->p; r->q; p->r; q->s = rsqp */
 
     for(h=0; h < nirreps; h++) {
-      r_irrep = h^my_irrep;
+      r_irrep = h^all_buf_irrep;
 
       for(pq=0; pq < OutBuf.params->rowtot[h]; pq++) {
 	p = OutBuf.params->roworb[h][pq][0];
@@ -870,7 +867,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
     /* s->p; p->q; q->r; r->s = qrsp */
 
     for(h=0; h < nirreps; h++) {
-      r_irrep = h^my_irrep;
+      r_irrep = h^all_buf_irrep;
 	  
       for(Gp=0; Gp < nirreps; Gp++) {
 	Gq = Gp^h;
@@ -917,7 +914,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
     /* s->p; p->q; r->r; q->s = qsrp */
 
     for(h=0; h < nirreps; h++) {
-      r_irrep = h^my_irrep;
+      r_irrep = h^all_buf_irrep;
 	  
       for(Gp=0; Gp < nirreps; Gp++) {
 	Gq = Gp^h;

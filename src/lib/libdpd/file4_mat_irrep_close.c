@@ -17,6 +17,7 @@ int dpd_file4_mat_irrep_close(dpdfile4 *File, int irrep)
   int my_irrep, rowtot, coltot;
 
   my_irrep = File->my_irrep;
+
   rowtot = File->params->rowtot[irrep];
   coltot = File->params->coltot[irrep^my_irrep];
 

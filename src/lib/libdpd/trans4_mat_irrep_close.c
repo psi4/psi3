@@ -7,10 +7,11 @@
 
 int dpd_trans4_mat_irrep_close(dpdtrans4 *Trans, int irrep)
 {
-  int h, nirreps, rowtot, coltot;
+  int h, nirreps, rowtot, coltot, all_buf_irrep;
 
+  all_buf_irrep = Trans->buf.file.my_irrep;
   nirreps = Trans->buf.params->nirreps;
-  rowtot = Trans->buf.params->coltot[irrep];
+  rowtot = Trans->buf.params->coltot[irrep^all_buf_irrep];
   coltot = Trans->buf.params->rowtot[irrep];
 
   /* Free the shift structure for this irrep if used */

@@ -3,7 +3,7 @@
 #include "dpd.h"
 
 int dpd_4mat_irrep_print(double **matrix, dpdparams4 *Params,
-			 int irrep, int my_irrep, FILE *outfile)
+			 int block, int my_irrep, FILE *outfile)
 {
   div_t fraction;
   int i,j,r_irrep;
@@ -11,9 +11,9 @@ int dpd_4mat_irrep_print(double **matrix, dpdparams4 *Params,
 
   cols_per_page = 5;
 
-  r_irrep = irrep^my_irrep;
+  r_irrep = block^my_irrep;
 
-  rows = Params->rowtot[irrep];
+  rows = Params->rowtot[block];
   cols = Params->coltot[r_irrep];
 
   /* Determine the number of cols_per_page groups */
@@ -37,7 +37,7 @@ int dpd_4mat_irrep_print(double **matrix, dpdparams4 *Params,
       fprintf (outfile,"\n");
       for(i=0; i < rows; i++) {
           fprintf(outfile,"\n%5d  (%3d,%3d)",i,
-                  Params->roworb[irrep][i][0], Params->roworb[irrep][i][1]);
+                  Params->roworb[block][i][0], Params->roworb[block][i][1]);
 
           for(j=first_col; j < first_col+cols_per_page; j++)        
               fprintf (outfile,"%19.15f",matrix[i][j]);
@@ -62,7 +62,7 @@ int dpd_4mat_irrep_print(double **matrix, dpdparams4 *Params,
       fprintf (outfile,"\n");
       for(i=0; i < rows; i++) {
 	  fprintf(outfile,"\n%5d  (%3d,%3d)",i,
-		  Params->roworb[irrep][i][0], Params->roworb[irrep][i][1]);
+		  Params->roworb[block][i][0], Params->roworb[block][i][1]);
 
 	  for(j=first_col; j < first_col+last_page; j++)
 	      fprintf (outfile,"%19.15f",matrix[i][j]);

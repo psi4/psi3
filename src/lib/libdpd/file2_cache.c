@@ -106,7 +106,7 @@ int dpd_file2_cache_add(dpdfile2 *File)
     this_entry->size = 0;
     for(h=0; h < File->params->nirreps; h++)
       this_entry->size += 
-	File->params->rowtot[h] * File->params->coltot[h];
+	File->params->rowtot[h] * File->params->coltot[h^File->my_irrep];
 
     /* Read all data into core */
     dpd_file2_mat_init(File);

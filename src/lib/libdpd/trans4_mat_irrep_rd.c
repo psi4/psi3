@@ -4,12 +4,13 @@
 
 int dpd_trans4_mat_irrep_rd(dpdtrans4 *Trans, int irrep)
 {
-  int pq, rs;
+  int pq, rs, all_buf_irrep;
   int rows, cols;
   dpdbuf4 *Buf;
   double *A, *B;
 
   Buf = &(Trans->buf);
+  all_buf_irrep = Buf->file.my_irrep;
 
 #ifdef DPD_TIMER
   timer_on("trans4_rw");
@@ -25,7 +26,8 @@ int dpd_trans4_mat_irrep_rd(dpdtrans4 *Trans, int irrep)
 */
   /* Transpose using BLAS DCOPY */
   rows = Buf->params->rowtot[irrep];
-  cols = Buf->params->coltot[irrep];
+  cols = Buf->params->coltot[irrep^all_buf_irrep];
+
   if(rows && cols) {
       for(rs=0; rs < cols; rs++) {
           A = &(Buf->matrix[irrep][0][rs]);

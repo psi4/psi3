@@ -5,7 +5,7 @@
 
 double dpd_buf4_dot(dpdbuf4 *BufA, dpdbuf4 *BufB)
 {
-  int h, nirreps, my_irrep, n;
+  int h, nirreps, n, my_irrep;
   double dot;
   int memoryd, incore, core, rows_per_bucket, nbuckets, rows_left;
 
@@ -18,12 +18,12 @@ double dpd_buf4_dot(dpdbuf4 *BufA, dpdbuf4 *BufB)
 
     memoryd = dpd_memfree();
 
-    if(BufA->params->rowtot[h] && BufA->params->coltot[h]) {
+    if(BufA->params->rowtot[h] && BufA->params->coltot[h^my_irrep]) {
 
       /* Compute the memory for one row of A/B */
-      if(BufA->params->coltot[h])
+      if(BufA->params->coltot[h^my_irrep])
 	/* NB: we need at least one row of both A and B */
-	rows_per_bucket = memoryd/(2 * BufA->params->coltot[h]);
+	rows_per_bucket = memoryd/(2 * BufA->params->coltot[h^my_irrep]);
       else rows_per_bucket = -1;
 
       if(rows_per_bucket > BufA->params->rowtot[h])

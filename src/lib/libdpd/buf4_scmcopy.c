@@ -19,12 +19,12 @@
 
 int dpd_buf4_scmcopy(dpdbuf4 *InBuf, int outfilenum, char *label, double alpha)
 {
-  int h, row, col, my_irrep, rowtot, coltot;
+  int h, row, col, rowtot, coltot, all_buf_irrep;
   int memoryd, rows_per_bucket, nbuckets, rows_left, incore, n;
   dpdbuf4 OutBuf;
   double *X;
 
-  my_irrep = InBuf->file.my_irrep;
+  all_buf_irrep = InBuf->file.my_irrep;
 
   dpd_buf4_init(&OutBuf, outfilenum, InBuf->file.my_irrep, InBuf->params->pqnum,
 		InBuf->params->rsnum, InBuf->params->pqnum, 
@@ -34,9 +34,9 @@ int dpd_buf4_scmcopy(dpdbuf4 *InBuf, int outfilenum, char *label, double alpha)
 
     /* select in-core or out-of-core algorithm */
     memoryd = dpd_memfree()/2; /* use half the memory for each buf4 */
-    if(InBuf->params->rowtot[h] && InBuf->params->coltot[h]) {
+    if(InBuf->params->rowtot[h] && InBuf->params->coltot[h^all_buf_irrep]) {
 
-      rows_per_bucket = memoryd/InBuf->params->coltot[h];
+      rows_per_bucket = memoryd/InBuf->params->coltot[h^all_buf_irrep];
 
       /* enough memory for the whole matrix? */
       if(rows_per_bucket > InBuf->params->rowtot[h]) 
@@ -71,7 +71,7 @@ int dpd_buf4_scmcopy(dpdbuf4 *InBuf, int outfilenum, char *label, double alpha)
       dpd_buf4_mat_irrep_init(&OutBuf, h);
 
       rowtot = InBuf->params->rowtot[h];
-      coltot = InBuf->params->coltot[h^my_irrep];
+      coltot = InBuf->params->coltot[h^all_buf_irrep];
 
       if(rowtot && coltot) {
 	memcpy((void *) &(OutBuf.matrix[h][0][0]),
@@ -90,7 +90,7 @@ int dpd_buf4_scmcopy(dpdbuf4 *InBuf, int outfilenum, char *label, double alpha)
       dpd_buf4_mat_irrep_init_block(InBuf, h, rows_per_bucket);
       dpd_buf4_mat_irrep_init_block(&OutBuf, h, rows_per_bucket);
 
-      coltot = InBuf->params->coltot[h^my_irrep];
+      coltot = InBuf->params->coltot[h^all_buf_irrep];
 
       for(n=0; n < (rows_left ? nbuckets-1 : nbuckets); n++) {
 

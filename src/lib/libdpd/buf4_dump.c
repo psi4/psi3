@@ -5,9 +5,11 @@ int dpd_buf4_dump(dpdbuf4 *DPDBuf, struct iwlbuf *IWLBuf,
  		  int *prel, int *qrel, int *rrel, int *srel, 
 		  int bk_pack, int swap23)
 {
-  int h, row, col, p, q, r, s, P, Q, R, S;
+  int h, row, col, p, q, r, s, P, Q, R, S, my_irrep;
   int soccs;
   double value;
+
+  my_irrep = DPDBuf->file.my_irrep;
 
   for(h=0; h < DPDBuf->params->nirreps; h++) {
       dpd_buf4_mat_irrep_init(DPDBuf, h);
@@ -17,8 +19,8 @@ int dpd_buf4_dump(dpdbuf4 *DPDBuf, struct iwlbuf *IWLBuf,
 	  q = DPDBuf->params->roworb[h][row][1]; Q = qrel[q];
 	  if(bk_pack) {
 	      for(col=0; col <= row; col++) {
-		  r = DPDBuf->params->colorb[h][col][0]; R = rrel[r];
-		  s = DPDBuf->params->colorb[h][col][1]; S = srel[s];
+		  r = DPDBuf->params->colorb[h^my_irrep][col][0]; R = rrel[r];
+		  s = DPDBuf->params->colorb[h^my_irrep][col][1]; S = srel[s];
 		  
 		  value = DPDBuf->matrix[h][row][col];
 
@@ -31,9 +33,9 @@ int dpd_buf4_dump(dpdbuf4 *DPDBuf, struct iwlbuf *IWLBuf,
 		}
 	    }
 	  else {
-	      for(col=0; col < DPDBuf->params->coltot[h]; col++) {
-		  r = DPDBuf->params->colorb[h][col][0]; R = rrel[r];
-		  s = DPDBuf->params->colorb[h][col][1]; S = srel[s];
+	      for(col=0; col < DPDBuf->params->coltot[h^my_irrep]; col++) {
+		  r = DPDBuf->params->colorb[h^my_irrep][col][0]; R = rrel[r];
+		  s = DPDBuf->params->colorb[h^my_irrep][col][1]; S = srel[s];
 
 		  value = DPDBuf->matrix[h][row][col];
 

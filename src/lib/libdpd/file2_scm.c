@@ -4,12 +4,12 @@
 
 int dpd_file2_scm(dpdfile2 *InFile, double alpha)
 {
-  int h, nirreps, new_file2;
+  int h, nirreps, new_file2, my_irrep;
   int row, col, length;
   double *X;
 
   nirreps = InFile->params->nirreps;
-
+  my_irrep = InFile->my_irrep;
   dpd_file2_mat_init(InFile);
 
   /* Look first for the TOC entry on disk */
@@ -21,7 +21,7 @@ int dpd_file2_scm(dpdfile2 *InFile, double alpha)
 
   for(h=0; h < nirreps; h++) {
 
-      length = InFile->params->rowtot[h] * InFile->params->coltot[h];
+      length = InFile->params->rowtot[h] * InFile->params->coltot[h^my_irrep];
       if(length) { 
          X = &(InFile->matrix[h][0][0]);
          C_DSCAL(length, alpha, X, 1);

@@ -14,15 +14,17 @@
 
 int dpd_buf4_symm(dpdbuf4 *Buf)
 {
-  int h, row, col;
+  int h, row, col, all_buf_irrep;
   double value;
+
+  all_buf_irrep = Buf->file.my_irrep;
 
   for(h=0; h < Buf->params->nirreps; h++) {
       dpd_buf4_mat_irrep_init(Buf, h);
       dpd_buf4_mat_irrep_rd(Buf, h);
 
       for(row=0; row < Buf->params->rowtot[h]; row++)
-          for(col=0; col < Buf->params->coltot[h]; col++) {
+          for(col=0; col < Buf->params->coltot[h^all_buf_irrep]; col++) {
               value =
 0.5*(Buf->matrix[h][row][col]+Buf->matrix[h][col][row]);
               Buf->matrix[h][row][col] = Buf->matrix[h][col][row] = value;

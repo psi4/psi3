@@ -4,12 +4,12 @@
 #include <libqt/qt.h>
 #include "dpd.h"
 
-int dpd_trans4_mat_irrep_shift31(dpdtrans4 *Trans, int irrep)
+int dpd_trans4_mat_irrep_shift31(dpdtrans4 *Trans, int buf_block)
 {
-  int h, pq, Gr, Gs, r, nirreps;
+  int h, h_rsp, h_pqr, pq, Gr, Gs, r, nirreps, cnt, all_buf_irrep;
   int rowtot, coltot;
   int *count;
-  int *tempoff, *rowoff;
+  int *blocklen, *rowoff;
   double *data;
 
 #ifdef DPD_TIMER
@@ -23,62 +23,66 @@ int dpd_trans4_mat_irrep_shift31(dpdtrans4 *Trans, int irrep)
   else Trans->shift.shift_type = 31;
 
   nirreps = Trans->buf.params->nirreps;
-  rowtot = Trans->buf.params->coltot[irrep];
-  coltot = Trans->buf.params->rowtot[irrep];
+  all_buf_irrep = Trans->buf.file.my_irrep;
+  rowtot = Trans->buf.params->coltot[buf_block^all_buf_irrep];
+  coltot = Trans->buf.params->rowtot[buf_block];
   if (rowtot == 0 || coltot == 0) data = 0;
-  else data = Trans->matrix[irrep][0];
+  else data = Trans->matrix[buf_block][0];
 
   /* Calculate row and column dimensions of each new sub-block */
-  for(h=0; h < nirreps; h++) {
-      Trans->shift.coltot[irrep][h] = Trans->buf.params->qpi[h];
-      Trans->shift.rowtot[irrep][h] = rowtot * Trans->buf.params->ppi[h^irrep];
+  for(h_rsp=0; h_rsp < nirreps; h_rsp++) {
+      Trans->shift.coltot[buf_block][h_rsp] = Trans->buf.params->qpi[h_rsp^all_buf_irrep];
+      Trans->shift.rowtot[buf_block][h_rsp] = rowtot
+                * Trans->buf.params->ppi[h_rsp^all_buf_irrep^buf_block];
     }
 
   /* Malloc the pointers to the rows for the shifted access matrix */
-  Trans->shift.matrix[irrep] = (double ***) malloc(nirreps*sizeof(double **));
+  Trans->shift.matrix[buf_block] = (double ***) malloc(nirreps*sizeof(double **));
   for(h=0; h < nirreps; h++) 
-      Trans->shift.matrix[irrep][h] =
-	  ((!Trans->shift.rowtot[irrep][h]) ? NULL :
-	   (double **) malloc(Trans->shift.rowtot[irrep][h] * sizeof(double *)));
+      Trans->shift.matrix[buf_block][h] =
+	  ((!Trans->shift.rowtot[buf_block][h]) ? NULL :
+	   (double **) malloc(Trans->shift.rowtot[buf_block][h] * sizeof(double *)));
 
   /* Calculate the row offsets */
-  tempoff = init_int_array(nirreps);
-  tempoff[0] = 0;
-  for(h=1; h < nirreps; h++)
-      tempoff[h] = tempoff[h-1] +
-		   Trans->buf.params->ppi[h-1] *
-		   Trans->buf.params->qpi[irrep^(h-1)];
+  blocklen = init_int_array(nirreps);
+  for(h_rsp=0; h_rsp < nirreps; h_rsp++)
+      blocklen[h_rsp] = Trans->buf.params->ppi[h_rsp^all_buf_irrep^buf_block] *
+                        Trans->buf.params->qpi[h_rsp^all_buf_irrep];
+
   rowoff = init_int_array(nirreps);
-  for(h=0; h < nirreps; h++)
-      rowoff[h] = tempoff[h^irrep];
-  free(tempoff);
+  cnt = 0;
+  for (h=0;h<nirreps;++h) {  // loop over Gp
+    h_rsp = h^buf_block^all_buf_irrep;
+    rowoff[h_rsp] = cnt;
+    cnt += blocklen[h_rsp];
+  }
   
   /* The row counter for each sub-block */
   count = init_int_array(nirreps);
 
   /* Loop over rows of original DPD matrix */
-  for(pq=0; pq < Trans->buf.params->coltot[irrep]; pq++) {
+  for(pq=0; pq < Trans->buf.params->coltot[buf_block^all_buf_irrep]; pq++) {
 
       /* Loop over irreps of s */
-      for(Gs=0; Gs < nirreps; Gs++) {
-	  Gr = irrep^Gs;
+      for(h_pqr=0; h_pqr < nirreps; h_pqr++) { // loop over rsp of original dpd
+          Gs = h_pqr^all_buf_irrep;            // Gq of original dpd
+	  Gr = h_pqr^buf_block^all_buf_irrep;  // Gp of original dpd
 
 	  /* Loop over orbitals in Gr */
 	  for(r=0; (r < Trans->buf.params->ppi[Gr]) &&
 		Trans->buf.params->qpi[Gs]; r++) {
 
 	      /* Re-assign the row pointer */
-              Trans->shift.matrix[irrep][Gs][count[Gs]] =
-                &(data[pq*coltot + rowoff[Gs] +
+              Trans->shift.matrix[buf_block][h_pqr][count[h_pqr]] =
+                &(data[pq*coltot + rowoff[h_pqr] +
 		      (r * Trans->buf.params->qpi[Gs])]);
-
-	      count[Gs]++;
+              count[h_pqr]++;
 
 	    }
 	}
     }
 
-  free(count); free(rowoff);
+  free(count); free(rowoff); free (blocklen);
 
 #ifdef DPD_TIMER
   timer_off("shift");

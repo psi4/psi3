@@ -18,9 +18,10 @@
 
 int dpd_buf4_mat_irrep_close_block(dpdbuf4 *Buf, int irrep, int num_pq)
 {
-  int h, nirreps;
+  int h, nirreps, all_buf_irrep;
 
   nirreps = Buf->params->nirreps;
+  all_buf_irrep = Buf->file.my_irrep;
 
   /* Free the shift structure for this irrep if used */
   if(Buf->shift.shift_type) {
@@ -31,8 +32,8 @@ int dpd_buf4_mat_irrep_close_block(dpdbuf4 *Buf, int irrep, int num_pq)
       Buf->shift.shift_type = 0;
     }
 
-  if(num_pq && Buf->params->coltot[irrep])
-    dpd_free_block(Buf->matrix[irrep], num_pq, Buf->params->coltot[irrep]);
+  if(num_pq && Buf->params->coltot[irrep^all_buf_irrep])
+    dpd_free_block(Buf->matrix[irrep], num_pq, Buf->params->coltot[irrep^all_buf_irrep]);
 
   return 0;
 }

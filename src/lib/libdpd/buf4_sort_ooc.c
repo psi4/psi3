@@ -18,25 +18,25 @@
 int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
     		      int pqnum, int rsnum, char *label)
 {
-  int h,nirreps, row, col, my_irrep, r_irrep;
+  int h,nirreps, row, col, all_buf_irrep, r_irrep;
   int p, q, r, s, P, Q, R, S, pq, rs, sr, pr, qs, qp, rq, qr, ps, sp, rp, sq;
   int Gp, Gq, Gr, Gs, Gpq, Grs, Gpr, Gqs, Grq, Gqr, Gps, Gsp, Grp, Gsq;
   int memoryd, rows_per_bucket, nbuckets, rows_left, incore, n;
   dpdbuf4 OutBuf;
 
   nirreps = InBuf->params->nirreps;
-  my_irrep = InBuf->file.my_irrep;
+  all_buf_irrep = InBuf->file.my_irrep;
 
 #ifdef DPD_TIMER
   timer_on("buf4_sort");
 #endif
 
-  dpd_buf4_init(&OutBuf, outfilenum, my_irrep, pqnum, rsnum,
+  dpd_buf4_init(&OutBuf, outfilenum, all_buf_irrep, pqnum, rsnum,
 		pqnum, rsnum, 0, label);
 
   for(h=0; h < nirreps; h++) {
 
-    r_irrep = h^my_irrep;
+    r_irrep = h^all_buf_irrep;
 
     switch(index) {
     case pqrs:
@@ -54,9 +54,9 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 
       /* select algorithm for certain simple cases */
       memoryd = dpd_memfree()/2; /* use half the memory for each buf4 in the sort */
-      if(InBuf->params->rowtot[h] && InBuf->params->coltot[h]) {
+      if(InBuf->params->rowtot[h] && InBuf->params->coltot[h^all_buf_irrep]) {
 
-	rows_per_bucket = memoryd/InBuf->params->coltot[h];
+	rows_per_bucket = memoryd/InBuf->params->coltot[h^all_buf_irrep];
 
 	/* enough memory for the whole matrix? */
 	if(rows_per_bucket > InBuf->params->rowtot[h]) 

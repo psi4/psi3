@@ -6,9 +6,11 @@
 
 int dpd_trans4_mat_irrep_init(dpdtrans4 *Trans, int irrep)
 {
-  int rowtot, coltot;
+  int rowtot, coltot, all_buf_irrep;
 
-  rowtot = Trans->buf.params->coltot[irrep];
+  all_buf_irrep = Trans->buf.file.my_irrep;
+
+  rowtot = Trans->buf.params->coltot[irrep^all_buf_irrep];
   coltot = Trans->buf.params->rowtot[irrep];
 
   if(rowtot * coltot) Trans->matrix[irrep] = dpd_block_matrix(rowtot,coltot);

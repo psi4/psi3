@@ -132,7 +132,7 @@ int dpd_file4_cache_add(dpdfile4 *File, unsigned int priority)
       this_entry->size = 0;
       for(h=0; h < File->params->nirreps; h++) {
           this_entry->size +=
-              File->params->rowtot[h] * File->params->coltot[h];
+              File->params->rowtot[h] * File->params->coltot[h^(File->my_irrep)];
           dpd_file4_mat_irrep_init(File, h);
           dpd_file4_mat_irrep_rd(File, h);
         }
@@ -511,7 +511,7 @@ void dpd_file4_cache_lock(dpdfile4 *File)
 
     /* Increment the locked cache memory counter */
     for(h=0; h < File->params->nirreps; h++) {
-      dpd_main.memlocked += File->params->rowtot[h] * File->params->coltot[h];
+      dpd_main.memlocked += File->params->rowtot[h] * File->params->coltot[h^(File->my_irrep)];
     }
 
     this_entry->lock = 1;
@@ -533,7 +533,7 @@ void dpd_file4_cache_unlock(dpdfile4 *File)
 
     /* Decrement the locked cache memory counter */
     for(h=0; h < File->params->nirreps; h++) {
-      dpd_main.memlocked -= File->params->rowtot[h] * File->params->coltot[h];
+      dpd_main.memlocked -= File->params->rowtot[h] * File->params->coltot[h^(File->my_irrep)];
     }
 
   }

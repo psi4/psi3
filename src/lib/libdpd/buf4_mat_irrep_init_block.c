@@ -17,7 +17,10 @@
 
 int dpd_buf4_mat_irrep_init_block(dpdbuf4 *Buf, int irrep, int num_pq)
 {
-  Buf->matrix[irrep] = dpd_block_matrix(num_pq,Buf->params->coltot[irrep]);
+  int all_buf_irrep;
+  all_buf_irrep = Buf->file.my_irrep; 
+
+  Buf->matrix[irrep] = dpd_block_matrix(num_pq,Buf->params->coltot[irrep^all_buf_irrep]);
 
   return 0;
 

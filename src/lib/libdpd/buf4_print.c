@@ -12,10 +12,10 @@
 
 int dpd_buf4_print(dpdbuf4 *Buf, FILE *outfile, int print_data)
 {
-  int h, i, my_irrep;
+  int h, i, all_buf_irrep;
   dpdparams4 *Params;
 
-  my_irrep = Buf->file.my_irrep;
+  all_buf_irrep = Buf->file.my_irrep;
   Params = Buf->params;
 
   fprintf(outfile, "\n\tDPD Buf4 for file4: %s\n", Buf->file.label);
@@ -27,7 +27,7 @@ int dpd_buf4_print(dpdbuf4 *Buf, FILE *outfile, int print_data)
   fprintf(outfile, "\t   ----------------------------------------\n");
   for(i=0; i < Params->nirreps; i++)
     fprintf(outfile,   "\t   Irrep: %1d row = %5d\tcol = %5d\n", i,
-	    Params->rowtot[i], Params->coltot[i^my_irrep]);
+	    Params->rowtot[i], Params->coltot[i^all_buf_irrep]);
   fflush(outfile);
 
   if(print_data) {
@@ -38,7 +38,7 @@ int dpd_buf4_print(dpdbuf4 *Buf, FILE *outfile, int print_data)
       fprintf(outfile,   "\t----------------------------------------\n");
       dpd_buf4_mat_irrep_init(Buf, h);
       dpd_buf4_mat_irrep_rd(Buf, h);
-      dpd_4mat_irrep_print(Buf->matrix[h], Buf->params, h, my_irrep, outfile);
+      dpd_4mat_irrep_print(Buf->matrix[h], Buf->params, h, all_buf_irrep, outfile);
       dpd_buf4_mat_irrep_close(Buf, h);
     }
   }

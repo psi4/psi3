@@ -47,11 +47,12 @@ int dpd_file4_init(dpdfile4 *File, int filenum, int irrep, int pqnum,
   File->lfiles = (psio_address *) malloc(File->params->nirreps *
 					 sizeof(psio_address));
   File->lfiles[0] = PSIO_ZERO;
-  for(i=1; i < File->params->nirreps; i++)
+  for(i=1; i < File->params->nirreps; i++) {
     File->lfiles[i] = psio_get_address(File->lfiles[i-1],
 				       (File->params->rowtot[i-1] *
 					File->params->coltot[(i-1)^irrep] *
 					sizeof(double)));
+  }
 
   /* Put this file4 into cache if requested */
   if(dpd_main.cachefiles[filenum] && dpd_main.cachelist[pqnum][rsnum]) 

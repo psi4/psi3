@@ -4,9 +4,11 @@
 #include <libqt/qt.h>
 #include "dpd.h"
 
-int dpd_trans4_mat_irrep_shift13(dpdtrans4 *Trans, int irrep)
+/* buf_block is the block of buffer to shift (also the row-irrep) */
+
+int dpd_trans4_mat_irrep_shift13(dpdtrans4 *Trans, int buf_block)
 {
-  int h, i, nirreps;
+  int h, i, nirreps, all_buf_irrep;
   int *count, *dataoff;
   int rowtot, coltot;
   double *data;
@@ -14,6 +16,8 @@ int dpd_trans4_mat_irrep_shift13(dpdtrans4 *Trans, int irrep)
 #ifdef DPD_TIMER
   timer_on("shift");
 #endif
+
+  all_buf_irrep = Trans->buf.file.my_irrep;
 
   if(Trans->shift.shift_type) {
       fprintf(stderr, "\n\tShift is already on! %d\n",
@@ -23,31 +27,32 @@ int dpd_trans4_mat_irrep_shift13(dpdtrans4 *Trans, int irrep)
   else Trans->shift.shift_type = 13;
 
   nirreps = Trans->buf.params->nirreps;
-  rowtot = Trans->buf.params->coltot[irrep];
-  coltot = Trans->buf.params->rowtot[irrep];
+  rowtot = Trans->buf.params->coltot[buf_block^all_buf_irrep];
+  coltot = Trans->buf.params->rowtot[buf_block];
   if (rowtot == 0 || coltot == 0) data = 0;
-  else data = Trans->matrix[irrep][0];
+  else data = Trans->matrix[buf_block][0];
 
   /* Calculate row and column dimensions of each new sub-block */
   for(h=0; h < nirreps; h++) {
-      Trans->shift.rowtot[irrep][h] = Trans->buf.params->rpi[h];
-      Trans->shift.coltot[irrep][h] = coltot * Trans->buf.params->spi[h^irrep];
+      Trans->shift.rowtot[buf_block][h] = Trans->buf.params->rpi[h];
+      Trans->shift.coltot[buf_block][h] =
+        coltot * Trans->buf.params->spi[h^buf_block^all_buf_irrep];
     }
 
   /* Malloc the pointers to the rows for the shifted access matrix */
-  Trans->shift.matrix[irrep] = (double ***) malloc(nirreps * sizeof(double **));
+  Trans->shift.matrix[buf_block] = (double ***) malloc(nirreps * sizeof(double **));
   for(h=0; h < nirreps; h++)
-      Trans->shift.matrix[irrep][h] =
-	   ((!Trans->shift.rowtot[irrep][h]) ? NULL :
-	    (double **) malloc(Trans->shift.rowtot[irrep][h] * sizeof(double *)));
+      Trans->shift.matrix[buf_block][h] =
+	   ((!Trans->shift.rowtot[buf_block][h]) ? NULL :
+	    (double **) malloc(Trans->shift.rowtot[buf_block][h] * sizeof(double *)));
 
   /* Calculate the data offset */
   dataoff = init_int_array(nirreps);
   dataoff[0] = 0;
   for(h=1; h < nirreps; h++)
       dataoff[h] = dataoff[h-1] +
-		   Trans->shift.rowtot[irrep][h-1] *
-		   Trans->shift.coltot[irrep][h-1];
+		   Trans->shift.rowtot[buf_block][h-1] *
+		   Trans->shift.coltot[buf_block][h-1];
 		     
 
   /* The row counter for each sub-block */
@@ -55,10 +60,10 @@ int dpd_trans4_mat_irrep_shift13(dpdtrans4 *Trans, int irrep)
 
   /* Loop over irreps of isolated index */
   for(h=0; h < nirreps; h++) {
-      for(i=0; (i < Trans->shift.rowtot[irrep][h]) &&
-	    Trans->shift.coltot[irrep][h]; i++,count[h]++) {
-          Trans->shift.matrix[irrep][h][count[h]] =
-		    &(data[dataoff[h]+(Trans->shift.coltot[irrep][h])*i]);
+      for(i=0; (i < Trans->shift.rowtot[buf_block][h]) &&
+	    Trans->shift.coltot[buf_block][h]; i++,count[h]++) {
+          Trans->shift.matrix[buf_block][h][count[h]] =
+		    &(data[dataoff[h]+(Trans->shift.coltot[buf_block][h])*i]);
         }
     }
 

@@ -15,11 +15,11 @@
 
 int dpd_buf4_mat_irrep_init(dpdbuf4 *Buf, int irrep)
 {
-  int my_irrep, rowtot, coltot;
+  int rowtot, coltot, all_buf_irrep;
 
-  my_irrep = Buf->file.my_irrep;
+  all_buf_irrep = Buf->file.my_irrep;
   rowtot = Buf->params->rowtot[irrep];
-  coltot = Buf->params->coltot[irrep^my_irrep];
+  coltot = Buf->params->coltot[irrep^all_buf_irrep];
 
 #ifdef DPD_TIMER
   timer_on("buf4_init");

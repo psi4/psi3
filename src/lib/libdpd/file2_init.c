@@ -24,15 +24,17 @@
 int dpd_file2_init(dpdfile2 *File, int filenum, int irrep, int pnum,
 		   int qnum, char *label)
 {
-  int i;
+  int i, q, rs, nirreps;
   struct dpd_file2_cache_entry *this_entry;
+  int *coltot, *colidx, **colorb, *qpi, *qoff, *qsym;
 
   File->dpdnum = dpd_default;
   File->params = &(dpd_list[dpd_default].params2[pnum][qnum]);
-
   strcpy(File->label,label);
   File->filenum = filenum;
   File->my_irrep = irrep;
+
+  nirreps = File->params->nirreps;
 
   this_entry = dpd_file2_cache_scan(filenum, irrep, pnum, qnum, label, dpd_default);
   if(this_entry != NULL) {

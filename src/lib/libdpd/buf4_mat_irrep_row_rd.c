@@ -3,7 +3,7 @@
 
 int dpd_buf4_mat_irrep_row_rd(dpdbuf4 *Buf, int irrep, int pq)
 {
-  int method, filerow;
+  int method, filerow, all_buf_irrep;
   int rs;  /* dpdbuf row and column indices */
   int p, q, r, s;  /* orbital indices */
   int filepq, filers, filesr;  /* Input dpdfile row and column indices */
@@ -13,8 +13,9 @@ int dpd_buf4_mat_irrep_row_rd(dpdbuf4 *Buf, int irrep, int pq)
   int pq_permute, permute;
   double value; 
 
+  all_buf_irrep = Buf->file.my_irrep;
   rowtot = Buf->params->rowtot[irrep];
-  coltot = Buf->params->coltot[irrep];
+  coltot = Buf->params->coltot[irrep^all_buf_irrep];
 
   b_perm_pq = Buf->params->perm_pq; b_perm_rs = Buf->params->perm_rs;
   f_perm_pq = Buf->file.params->perm_pq; f_perm_rs = Buf->file.params->perm_rs;
@@ -115,8 +116,8 @@ int dpd_buf4_mat_irrep_row_rd(dpdbuf4 *Buf, int irrep, int pq)
 
       /* Loop over the columns in the dpdbuf */
       for(rs=0; rs < coltot; rs++) {
-	  r = Buf->params->colorb[irrep][rs][0];
-	  s = Buf->params->colorb[irrep][rs][1];
+	  r = Buf->params->colorb[irrep^all_buf_irrep][rs][0];
+	  s = Buf->params->colorb[irrep^all_buf_irrep][rs][1];
 
 	  /* Column indices in the dpdfile */
 	  filers = rs;
@@ -193,8 +194,8 @@ int dpd_buf4_mat_irrep_row_rd(dpdbuf4 *Buf, int irrep, int pq)
 
       /* Loop over the columns in the dpdbuf */
       for(rs=0; rs < coltot; rs++) {
-	  r = Buf->params->colorb[irrep][rs][0];
-	  s = Buf->params->colorb[irrep][rs][1];
+	  r = Buf->params->colorb[irrep^all_buf_irrep][rs][0];
+	  s = Buf->params->colorb[irrep^all_buf_irrep][rs][1];
 
 	  /* Column indices in the dpdfile */
 	  filers = rs;
@@ -251,8 +252,8 @@ int dpd_buf4_mat_irrep_row_rd(dpdbuf4 *Buf, int irrep, int pq)
 
 	  /* Loop over the columns in the dpdbuf */
 	  for(rs=0; rs < coltot; rs++) {
-	      r = Buf->params->colorb[irrep][rs][0];
-	      s = Buf->params->colorb[irrep][rs][1];
+	      r = Buf->params->colorb[irrep^all_buf_irrep][rs][0];
+	      s = Buf->params->colorb[irrep^all_buf_irrep][rs][1];
 	      filers = Buf->file.params->colidx[r][s];
 
 	      /* rs permutation operator */
@@ -283,8 +284,8 @@ int dpd_buf4_mat_irrep_row_rd(dpdbuf4 *Buf, int irrep, int pq)
 
 	  /* Loop over the columns in the dpdbuf */
 	  for(rs=0; rs < coltot; rs++) {
-	      r = Buf->params->colorb[irrep][rs][0];
-	      s = Buf->params->colorb[irrep][rs][1];
+	      r = Buf->params->colorb[irrep^all_buf_irrep][rs][0];
+	      s = Buf->params->colorb[irrep^all_buf_irrep][rs][1];
 
 	      /* Column indices in the dpdfile */
 	      filers = Buf->file.params->colidx[r][s];
@@ -313,8 +314,8 @@ int dpd_buf4_mat_irrep_row_rd(dpdbuf4 *Buf, int irrep, int pq)
 
 	  /* Loop over the columns in the dpdbuf */
 	  for(rs=0; rs < coltot; rs++) {
-	      r = Buf->params->colorb[irrep][rs][0];
-	      s = Buf->params->colorb[irrep][rs][1];
+	      r = Buf->params->colorb[irrep^all_buf_irrep][rs][0];
+	      s = Buf->params->colorb[irrep^all_buf_irrep][rs][1];
 	      filers = Buf->file.params->colidx[r][s];
 
 	      value = Buf->file.matrix[irrep][filerow][filers];
@@ -348,8 +349,8 @@ int dpd_buf4_mat_irrep_row_rd(dpdbuf4 *Buf, int irrep, int pq)
 
 	  /* Loop over the columns in the dpdbuf */
 	  for(rs=0; rs < coltot; rs++) {
-	      r = Buf->params->colorb[irrep][rs][0];
-	      s = Buf->params->colorb[irrep][rs][1];
+	      r = Buf->params->colorb[irrep^all_buf_irrep][rs][0];
+	      s = Buf->params->colorb[irrep^all_buf_irrep][rs][1];
 	      filers = Buf->file.params->colidx[r][s];
 
 	      /* Set the value of the pqrs permutation operator */
@@ -393,8 +394,8 @@ int dpd_buf4_mat_irrep_row_rd(dpdbuf4 *Buf, int irrep, int pq)
 
 	  /* Loop over the columns in the dpdbuf */
 	  for(rs=0; rs < coltot; rs++) {
-	      r = Buf->params->colorb[irrep][rs][0];
-	      s = Buf->params->colorb[irrep][rs][1];
+	      r = Buf->params->colorb[irrep^all_buf_irrep][rs][0];
+	      s = Buf->params->colorb[irrep^all_buf_irrep][rs][1];
 
 	      /* Column indices in the dpdfile */
 	      filers = Buf->file.params->colidx[r][s];
@@ -425,8 +426,8 @@ int dpd_buf4_mat_irrep_row_rd(dpdbuf4 *Buf, int irrep, int pq)
 
 	  /* Loop over the columns in the dpdbuf */
 	  for(rs=0; rs < coltot; rs++) {
-	      r = Buf->params->colorb[irrep][rs][0];
-	      s = Buf->params->colorb[irrep][rs][1];
+	      r = Buf->params->colorb[irrep^all_buf_irrep][rs][0];
+	      s = Buf->params->colorb[irrep^all_buf_irrep][rs][1];
 	      filers = Buf->file.params->colidx[r][s];
 
 	      if(filers < 0) {

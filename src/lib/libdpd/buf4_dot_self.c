@@ -10,11 +10,12 @@
 
 double dpd_buf4_dot_self(dpdbuf4 *BufX)
 {
-  int h, nirreps;
+  int h, nirreps, my_irrep;
   int row, col;
   double alpha=0.0;
 
   nirreps = BufX->params->nirreps;
+  my_irrep = BufX->file.my_irrep;
 
   for(h=0; h < nirreps; h++) {
 
@@ -22,7 +23,7 @@ double dpd_buf4_dot_self(dpdbuf4 *BufX)
       dpd_buf4_mat_irrep_rd(BufX, h);
 
       for(row=0; row < BufX->params->rowtot[h]; row++)
-          for(col=0; col < BufX->params->coltot[h]; col++)
+          for(col=0; col < BufX->params->coltot[h^my_irrep]; col++)
               alpha += BufX->matrix[h][row][col] * BufX->matrix[h][row][col];
 
       dpd_buf4_mat_irrep_close(BufX, h);

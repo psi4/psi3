@@ -23,7 +23,7 @@
 int dpd_contract422(dpdbuf4 *X, dpdfile2 *Y, dpdfile2 *Z, int trans_Y,
 		    int trans_Z, double alpha, double beta)
 {
-  int nirreps;
+  int nirreps, GX, GY, GZ, hx, hy, hz, hxbuf;
   int row,p,q,r,s, psym, qsym, Gr, Gs, P, Q, R, S, col;
   double **TMP;
   double value;
@@ -32,6 +32,9 @@ int dpd_contract422(dpdbuf4 *X, dpdfile2 *Y, dpdfile2 *Z, int trans_Y,
 #endif
 
   nirreps = X->params->nirreps;
+  GX = X->file.my_irrep;
+  GY = Y->my_irrep;
+  GZ = Z->my_irrep;
 
   dpd_file2_mat_init(Y);
   dpd_file2_mat_rd(Y);
@@ -52,23 +55,25 @@ int dpd_contract422(dpdbuf4 *X, dpdfile2 *Y, dpdfile2 *Z, int trans_Y,
   }
 #endif
 
-  dpd_buf4_mat_irrep_init(X, 0);
-  dpd_buf4_mat_irrep_rd(X, 0);
+  // read in block of X whose row irrep is same as target Gpq=GZ
+  hxbuf = GZ;
+  dpd_buf4_mat_irrep_init(X, hxbuf);
+  dpd_buf4_mat_irrep_rd(X, hxbuf);
 
-  for(row=0; row < X->params->rowtot[0]; row++) {
-    p = X->params->roworb[0][row][0];
+  for(row=0; row < X->params->rowtot[hxbuf]; row++) {
+    p = X->params->roworb[hxbuf][row][0];
     psym = X->params->psym[p];
     P = p - X->params->poff[psym];
-    q = X->params->roworb[0][row][1];
+    q = X->params->roworb[hxbuf][row][1];
     qsym = X->params->qsym[q];
     Q = q - X->params->qoff[qsym];
 
     value = 0.0;
 
     for(Gr=0; Gr < nirreps; Gr++) {
-      Gs = Gr;
+      Gs = Gr^GY;
 
-      if(X->params->spi[Gs] && X->params->rpi[Gr]) {
+      if(X->params->rpi[Gr] && X->params->spi[Gs]) {
 	if(trans_Y) {
 	  TMP = dpd_block_matrix(X->params->spi[Gs],X->params->rpi[Gr]);
 	}
@@ -85,9 +90,9 @@ int dpd_contract422(dpdbuf4 *X, dpdfile2 *Y, dpdfile2 *Z, int trans_Y,
 	  col = X->params->colidx[R][S];
 
 	  if(trans_Y) 
-	    TMP[s][r] = X->matrix[0][row][col];
+	    TMP[s][r] = X->matrix[GZ][row][col];
 	  else
-	    TMP[r][s] = X->matrix[0][row][col];
+	    TMP[r][s] = X->matrix[GZ][row][col];
 	}
       }
 
@@ -111,9 +116,10 @@ int dpd_contract422(dpdbuf4 *X, dpdfile2 *Y, dpdfile2 *Z, int trans_Y,
       Z->matrix[qsym][Q][P] = beta*Z->matrix[qsym][Q][P] + value;
     else 
       Z->matrix[psym][P][Q] = beta*Z->matrix[psym][P][Q] + value;
+
   }
 
-  dpd_buf4_mat_irrep_close(X, 0);
+  dpd_buf4_mat_irrep_close(X, GZ);
 
   dpd_file2_mat_close(Y);
   dpd_file2_mat_wrt(Z);

@@ -4,79 +4,86 @@
 #include <libqt/qt.h>
 #include "dpd.h"
 
-int dpd_buf4_mat_irrep_shift31(dpdbuf4 *Buf, int irrep)
+int dpd_buf4_mat_irrep_shift31(dpdbuf4 *Buf, int buf_block)
 {
-  int h, pq, Gr, Gs, r, nirreps;
-  int rowtot, coltot;
+  int h, pq, Gr, Gs, r, nirreps, all_buf_irrep, h_pqr;
+  int rowtot, coltot,cnt;
   int *count;
-  int *tempoff, *rowoff;
+  int *blocklen, *rowoff;
   double *data;
 
 #ifdef DPD_TIMER
   timer_on("shift");
 #endif
 
+  all_buf_irrep = Buf->file.my_irrep;
+
   if(Buf->shift.shift_type) {
-      fprintf(stderr, "\n\tShift is already on! %d\n",
-	      Buf->shift.shift_type);
-      exit(Buf->shift.shift_type);
-    }
+    fprintf(stderr, "\n\tShift is already on! %d\n",
+        Buf->shift.shift_type);
+    exit(Buf->shift.shift_type);
+  }
   else Buf->shift.shift_type = 31;
 
   nirreps = Buf->params->nirreps;
-  rowtot = Buf->params->rowtot[irrep];
-  coltot = Buf->params->coltot[irrep];
+  rowtot = Buf->params->rowtot[buf_block];
+  coltot = Buf->params->coltot[buf_block^all_buf_irrep];
   if (rowtot == 0 || coltot == 0) data = 0;
-  else data = Buf->matrix[irrep][0];
+  else data = Buf->matrix[buf_block][0];
 
   /* Calculate row and column dimensions of each new sub-block */
-  for(h=0; h < nirreps; h++) {
-      Buf->shift.coltot[irrep][h] = Buf->params->spi[h];
-      Buf->shift.rowtot[irrep][h] = rowtot * Buf->params->rpi[h^irrep];
-    }
+  // loop over h_pqr
+  for(h_pqr=0; h_pqr < nirreps; h_pqr++) {
+    Buf->shift.rowtot[buf_block][h_pqr] = rowtot * Buf->params->rpi[h_pqr^buf_block];
+    Buf->shift.coltot[buf_block][h_pqr] = Buf->params->spi[h_pqr^all_buf_irrep];
+  }
 
   /* Malloc the pointers to the rows for the shifted access matrix */
-  Buf->shift.matrix[irrep] = (double ***) malloc(nirreps*sizeof(double **));
-  for(h=0; h < nirreps; h++) 
-      Buf->shift.matrix[irrep][h] =
-	   ((!Buf->shift.rowtot[irrep][h]) ? NULL :
-	    (double **) malloc(Buf->shift.rowtot[irrep][h] * sizeof(double *)));
+  Buf->shift.matrix[buf_block] = (double ***) malloc(nirreps*sizeof(double **));
+  for(h_pqr=0; h_pqr < nirreps; h_pqr++) 
+    Buf->shift.matrix[buf_block][h_pqr] =
+      ((!Buf->shift.rowtot[buf_block][h_pqr]) ? NULL :
+       (double **) malloc(Buf->shift.rowtot[buf_block][h_pqr] * sizeof(double *)));
 
   /* Calculate the row offsets */
-  tempoff = init_int_array(nirreps);
-  tempoff[0] = 0;
-  for(h=1; h < nirreps; h++)
-      tempoff[h] = tempoff[h-1] +
-		     Buf->params->rpi[h-1] * Buf->params->spi[irrep^(h-1)];
+  blocklen = init_int_array(nirreps);
+  for(h_pqr=0; h_pqr < nirreps; h_pqr++)
+      blocklen[h_pqr] = Buf->params->rpi[h_pqr^buf_block] *
+                        Buf->params->spi[h_pqr^all_buf_irrep];
+
   rowoff = init_int_array(nirreps);
-  for(h=0; h < nirreps; h++)
-      rowoff[h] = tempoff[h^irrep];
-  free(tempoff);
-  
+  cnt = 0;
+  for (h=0;h<nirreps;++h) {  // loop over Gr
+    h_pqr = buf_block^h;
+    rowoff[h_pqr] = cnt;
+    cnt += blocklen[h_pqr];
+  }
+
   /* The row counter for each sub-block */
   count = init_int_array(nirreps);
 
   /* Loop over rows of original DPD matrix */
-  for(pq=0; pq < Buf->params->rowtot[irrep]; pq++) {
+  for(pq=0; pq < Buf->params->rowtot[buf_block]; pq++) {
 
-      /* Loop over irreps of s */
-      for(Gs=0; Gs < nirreps; Gs++) {
-	  Gr = irrep^Gs;
+    /* Loop over irreps of pqr */
+    for(h_pqr=0; h_pqr < nirreps; h_pqr++) {
+      Gr = h_pqr^buf_block;
+      Gs = h_pqr^all_buf_irrep;
 
-	  /* Loop over orbitals in Gr */
-	  for(r=0; (r < Buf->params->rpi[Gr]) && Buf->params->spi[Gs]; r++) {
+      /* Loop over orbitals in Gr */
+      for(r=0; (r < Buf->params->rpi[Gr]) && Buf->params->spi[Gs]; r++) {
 
-	      /* Re-assign the row pointer */
-              Buf->shift.matrix[irrep][Gs][count[Gs]] =
-                &(data[pq*coltot + rowoff[Gs] + (r * Buf->params->spi[Gs])]);
+        /* Re-assign the row pointer */
+        Buf->shift.matrix[buf_block][h_pqr][count[h_pqr]] =
+          &(data[pq*coltot + rowoff[h_pqr] + (r * Buf->params->spi[Gs])]);
 
-	      count[Gs]++;
+        count[h_pqr]++;
 
-	    }
-	}
+      }
     }
+  }
 
-  free(count); free(rowoff);
+  free(count); free(rowoff); free(blocklen);
 
 #ifdef DPD_TIMER
   timer_off("shift");

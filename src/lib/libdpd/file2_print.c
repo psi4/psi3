@@ -19,7 +19,8 @@ int dpd_file2_print(dpdfile2 *File, FILE *outfile)
   fprintf(outfile, "\n\tDPD File2: %s\n", File->label);
   fprintf(outfile,   "\tDPD Parameters:\n");
   fprintf(outfile,   "\t------------------\n");
-  fprintf(outfile,   "\tpnum = %d   qnum = %d\n",Params->pnum, Params->qnum);
+  fprintf(outfile,   "\tpnum = %d   qnum = %d   irrep = %d \n",
+      Params->pnum, Params->qnum, File->my_irrep);
   fprintf(outfile,   "\tIrreps = %1d\n\n", Params->nirreps);
   fprintf(outfile, "\t   Row and column dimensions for DPD Block:\n");
   fprintf(outfile, "\t   ----------------------------------------\n");
