@@ -18,7 +18,7 @@ INSTALL = @INSTALL@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 
 COPT = @COPT@
-CINC = @CINC@
+CINC = @CPPFLAGS@
 CDBG = @CDBG@
 COTH = @COTH@
 CDEF = @CDEF@
@@ -33,7 +33,7 @@ MKDIRS = @MKDIRS@
 BINOBJ = tocprint.o cc2unit.o
 
 vpath %.a $(top_objdir)/lib:$(libdir)
-PSILIBS = -lpsio -lciomr -lipv1
+PSILIBS = -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
 .PHONY:	all default install install_target install_man clean oclean dclean targetclean
 
