@@ -120,6 +120,7 @@ int main(int argc, char *argv[])
   }
 
   init_amps();
+  if(params.print_mp2_amps) amp_write();
   tau_build();
   taut_build();
   fprintf(outfile, "\t                     Solving CCSD Equations\n");
