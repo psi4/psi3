@@ -155,14 +155,14 @@ double calc_ci_conv(double scale_conv, double *energy_last)
   sumfile = fopen(sumfile_name, "r");
 
   if (sumfile == NULL) {
-    return(1.0E-3);
+    return(scale_conv * 0.1);
   }
 
   if (fscanf(sumfile, "%d", &entries) != 1) {
     fprintf(outfile,"detcasman: Trouble reading num entries in file %s\n",
             sumfile_name);
     fclose(sumfile);
-    return(1.0E-3);
+    return(scale_conv * 0.1);
   }
 
   for (i=0; i<entries; i++) {
