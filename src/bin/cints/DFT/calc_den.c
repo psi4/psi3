@@ -72,7 +72,13 @@ struct den_info_s calc_density(struct coordinates geom){
 	    coeff = BasisSet.cgtos[j].ccoeff[shell_type-1];
 	    bastmp += coeff*exp(expon*rr);
 	}
-	
+
+	/*----------------------------------
+	  Compute values of basis functions
+
+	  NOTE: using Psi 3 ordering of
+	        functions within shells
+	 ----------------------------------*/
 	switch (shell_type) {
 	    
 	case 1:
@@ -94,29 +100,23 @@ struct den_info_s calc_density(struct coordinates geom){
 	    DFT_options.basis[k] = bastmp*xa*xa;
 	    k++;
 	    
-	    DFT_options.basis[k] = bastmp*ya*ya;
-	    k++;
-	    
-	    DFT_options.basis[k] = bastmp*za*za;
-	    k++;
-	    
 	    DFT_options.basis[k] = bastmp*xa*ya;
 	    k++;
 	    
 	    DFT_options.basis[k] = bastmp*xa*za;
 	    k++;
 	    
+	    DFT_options.basis[k] = bastmp*ya*ya;
+	    k++;
+	    
 	    DFT_options.basis[k] = bastmp*ya*za;
+	    k++;
+	    
+	    DFT_options.basis[k] = bastmp*za*za;
 	    k++;
 	    break;
 	case 4:
 	    DFT_options.basis[k] = bastmp*xa*xa*xa;
-	    k++;
-	    
-	    DFT_options.basis[k] = bastmp*ya*ya*ya;
-	    k++;
-	    
-	    DFT_options.basis[k] = bastmp*za*za*za;
 	    k++;
 	    
 	    DFT_options.basis[k] = bastmp*xa*xa*ya;
@@ -124,30 +124,30 @@ struct den_info_s calc_density(struct coordinates geom){
 	    
 	    DFT_options.basis[k] = bastmp*xa*xa*za;
 	    k++;
-
+	    
 	    DFT_options.basis[k] = bastmp*xa*ya*ya;
+	    k++;
+	    
+	    DFT_options.basis[k] = bastmp*xa*ya*za;
+	    k++;
+
+	    DFT_options.basis[k] = bastmp*xa*za*za;
+	    k++;
+	    
+	    DFT_options.basis[k] = bastmp*ya*ya*ya;
 	    k++;
 	    
 	    DFT_options.basis[k] = bastmp*ya*ya*za;
 	    k++;
 	    
-	    DFT_options.basis[k] = bastmp*xa*za*za;
-	    k++;
-	    
 	    DFT_options.basis[k] = bastmp*ya*za*za;
 	    k++;
 	    
-	    DFT_options.basis[k] = bastmp*xa*ya*za;
+	    DFT_options.basis[k] = bastmp*za*za*za;
 	    k++;
 	    break;
 	case 5:
 	    DFT_options.basis[k] = bastmp*xa*xa*xa*xa;
-	    k++;
-	    
-	    DFT_options.basis[k] = bastmp*ya*ya*ya*ya;
-	    k++;
-	    
-	    DFT_options.basis[k] = bastmp*za*za*za*za;
 	    k++;
 	    
 	    DFT_options.basis[k] = bastmp*xa*xa*xa*ya;
@@ -156,28 +156,16 @@ struct den_info_s calc_density(struct coordinates geom){
 	    DFT_options.basis[k] = bastmp*xa*xa*xa*za;
 	    k++;
 	    
-	    DFT_options.basis[k] = bastmp*xa*ya*ya*ya;
-	    k++;
-	    
-	    DFT_options.basis[k] = bastmp*ya*ya*ya*za;
-	    k++;
-	    
-	    DFT_options.basis[k] = bastmp*xa*za*za*za;
-	    k++;
-	    
-	    DFT_options.basis[k] = bastmp*ya*za*za*za;
-	    k++;
-
 	    DFT_options.basis[k] = bastmp*xa*xa*ya*ya;
+	    k++;
+	    
+	    DFT_options.basis[k] = bastmp*xa*xa*ya*za;
 	    k++;
 	    
 	    DFT_options.basis[k] = bastmp*xa*xa*za*za;
 	    k++;
 	    
-	    DFT_options.basis[k] = bastmp*ya*ya*za*za;
-	    k++;
-	    
-	    DFT_options.basis[k] = bastmp*xa*xa*ya*za;
+	    DFT_options.basis[k] = bastmp*xa*ya*ya*ya;
 	    k++;
 	    
 	    DFT_options.basis[k] = bastmp*xa*ya*ya*za;
@@ -185,10 +173,29 @@ struct den_info_s calc_density(struct coordinates geom){
 	    
 	    DFT_options.basis[k] = bastmp*xa*ya*za*za;
 	    k++;
+
+	    DFT_options.basis[k] = bastmp*xa*za*za*za;
+	    k++;
+	    
+	    DFT_options.basis[k] = bastmp*ya*ya*ya*ya;
+	    k++;
+	    
+	    DFT_options.basis[k] = bastmp*ya*ya*ya*za;
+	    k++;
+	    
+	    DFT_options.basis[k] = bastmp*ya*ya*za*za;
+	    k++;
+	    
+	    DFT_options.basis[k] = bastmp*ya*za*za*za;
+	    k++;
+	    
+	    DFT_options.basis[k] = bastmp*za*za*za*za;
+	    k++;
 	    break;
 	default:
-	    fprintf(outfile,"\nBasis Functions of Angular Momentum %d not implemented in get_density function\n",shell_type);
-	      exit(1);
+	    fprintf(stderr,"Basis Functions of Angular Momentum %d not implemented in get_density function",shell_type);
+	    fprintf(outfile,"Basis Functions of Angular Momentum %d not implemented in get_density function",shell_type);
+	    punt("");
 	}
     }
     
