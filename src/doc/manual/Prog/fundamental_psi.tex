@@ -1,0 +1,36 @@
+%
+% PSI Programmer's Manual
+%
+% Fundamental PSI Functions Intro.
+%
+% Daniel Crawford, 26 January, 1996
+%
+
+Every \PSIthree\ module (e.g. \PSIcscf) must perform two specific tasks,
+regardless of the individual module's specific purpose(s).  These are: (1)
+obtaining user input options, and (2) writing to and reading from binary
+files (e.g. \FILE{30}).  \PSIthree\ programs written in the C programming
+language make use of three libraries which provide all the tools necessary to
+carry out these functions efficiently :
+\begin{itemize}
+\item \library{libipv1.a} (version 1 of the \PSIthree\ input parser);
+\item \library{libciomr.a} (the \PSIthree\ old-style C-language I/O and math
+routine library);
+\item \library{libpsio.a} (the \PSIthree\ new table-of-content-based
+C-language I/O library).
+\end{itemize}
+In the next two sections we will describe these libraries and some of
+their most important functions.  We will then discuss
+the most basic components of a \PSIthree\ C-language program.
+
+\subsection{The Input Parser}\label{C_IP}
+\input{Prog/ip}
+
+\subsection{The New Binary Input and Output System}\label{C_IO_New}
+\input{Prog/io_new}
+
+\subsection{The Old Binary Input and Output System}\label{C_IO}
+\input{Prog/io}
+
+\subsection{The Structure of a \PSIthree\ C Program}\label{C_Program}
+\input{Prog/c_program}

@@ -1,0 +1,30 @@
+%
+% PSI Programmer's Manual
+%
+% Introduction
+%
+% Daniel Crawford, 24 January, 1996
+%
+
+
+The purpose of this manual is to provide a reasonably detailed overview of
+the source code and programming philosophy of \PSIthree, such that programmers
+interested in contributing to the code will have an easier task.  In
+section \ref{Fundamental_PSI}, the essential elements of a C-language \PSIthree\ 
+program are discussed, with emphasis on the input parsing and I/O
+functions.  Section \ref{Other_Libs} provides documentation of a number of
+other important libraries, including the library of functions for reading from the
+checkpoint file, \library{libfile30.a}, the Quantum Trio function library,
+\library{libqt.a}, and the ``integrals with labels'' function library,
+\library{libiwl.a}.  Section \ref{PSI_Fortran} is an overview of the structure
+of the few remaining Fortran-based \PSIthree\ modules (e.g. \module{intder95}),
+including details of the memory allocation procedures.  Section \ref{CVS} gives an
+introduction to the source control system used to maintain the code at the
+CCQC, section \ref{Style} offers advice on appropriate programming style for
+\PSIthree\ code, and section \ref{Debugging} gives some suggestions on interactive
+debugging PSI C and Fortran code. The appendices contain
+important reference material, including the currently accepted \PSIthree\ 
+citation, format information for some of the most important text files used
+by \PSIthree\ modules, advice on Makefile construction for both developmental and
+production-level \PSIthree\ code, and complete type declarations for functions in
+each supported library.

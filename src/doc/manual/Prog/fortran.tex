@@ -1,0 +1,74 @@
+%
+% PSI Programmer's Manual
+%
+% PSI Fortran Code Section
+%
+% Daniel Crawford, 31 January, 1996
+%
+Most of the code in PSI is in the Fortran 77 programming language.  While we
+expect that all of the new code added to the package will be written
+in C or C++, the older modules must be maintained.  Therefore, it is
+appropriate to provide a discussion of the structure of the PSI Fortran
+modules.
+
+All Fortran 77 programs use static allocation for memory management.  This
+means that the memory requirements of the program must be established when
+the program is compiled.  While this allows Fortran programs to avoid
+complicated and time-consuming memory manipulation calls, it also may
+significantly reduce the applicability of the program to computations of
+widely varying size.  That is, if a calculation requires a large amount of
+memory, the program may have to be re-compiled before the calculation can
+be run; or, if only a small amount of memory if required, but the program
+has been compiled to allocate huge amounts of static memory, most of the
+memory will be wasted.
+
+PSI avoids this problem to a certain extent by first allocating the memory
+using C function calls, and then passing a pointer to this memory to the
+Fortran program.  This means that the routine called ``\celem{main}'' (which
+must exist in every program, regardless of programming language) is
+provided by a C program, and that the Fortran code is treadted as a
+subroutine called immediately after the C routine has finished the memory
+allocation.  The Fortran subroutine is always called \felem{fentry()}, and it
+requires a pointer to the beginning of the available memory and the size of
+the memory in double precision floating point words as arguments.  This
+procedure also allows the user to specify the amount of available memory in
+input.  The \library{alloc.a} library provides the code necessary for this
+technique.
+
+The Fortran modules also require an input parsing library separate from
+that of the C modules, since the C/Fortran interface is not standardized.
+This library, \library{libparse.a}, has numerous similarities with its C
+counterpart, \library{libipv1.a} (see section \ref{C_IP}), and its syntax is
+relatively intuitive.  Finally, I/O in the Fortran modules is handled very
+similarly to the old-style I/O in the C modules.  In fact, only the most high-level
+calls, such as \felem{wreadw()} and \felem{rfile()} are actually written in
+Fortran.  The low-level routines are C functions which are constructed very
+similarly to those in \library{libciomr.a} (see section \ref{C_IO}).  All of
+the I/O routines required by the Fortran modules may be found in \library{
+io.a}.\footnote{The I/O routines to be found \library{iomr.a} and \library{
+iomrth.a} are obsolete and should never be used.  In fact, someone should
+really take the time to remove them one day.}
+
+\subsection{The Psi Preprocessor}\label{psipp}
+Many of the existing Fortran codes in the PSI package make calls to the
+Fortran input parsing routines in \library{libparse.a}.  These routines return
+to the caller special error codes which tell the program what problems (if
+any) were encountered in searching the input for a special keyword or piece
+of data.  Therefore, all the Fortran codes need to know how to interpret
+these codes.  In C, one would normally simply \celem{\#include} a header file
+containing the code definitions.  However, the \felem{include} statement is
+not part of the Fortran 77 standard.  So, to get around this, and still
+maintain portable code, the PSI preprocessor, \module{psipp} exists.
+
+All Fortran codes in \PSIthree\ are stored in \file{.F} files, rather than the
+usual \file{.f}.  Each \file{.F} file is examined by \module{psipp} for lines
+such as
+\begin{verbatim} 
+#include <error.h>
+\end{verbatim}
+Such lines are interpreted by the preprocessor, and the correct header file
+(in this case, \file{error.h}) is included (literally inserted) into the new
+file, with the \file{.f} suffix.  \module{psipp} can understand a number of
+directives, including \felem{\#if}, \felem{\#ifdef}, \felem{\#elif}, \felem{\#else},
+\felem{\#endif}, \felem{\#define}, and \felem{\#undef}.
+

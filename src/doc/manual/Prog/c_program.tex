@@ -1,0 +1,98 @@
+%
+% PSI Programmer's Manual
+%
+% Essentials of a C Program
+%
+% David Sherrill, 31 January 1996
+%
+
+To function as part of the PSI package, a program must incorporate
+certain required elements.  This section will discuss the header
+files, global variables, and functions 
+required to integrate a C program into \PSIthree; analogous elements are required
+for Fortran programs.  Figure \ref{fig:Essential_C_Program}
+presents the minimal \PSIthree\ program written in C.
+
+\begin{figure}
+\begin{verbatim}
+                #include <stdio.h>
+                #include <ip_libv1.h>
+                #include <psio.h>
+                #include <libciomr.h>
+
+
+                void main()
+                {
+                  FILE *infile, *outfile;
+
+                  ffile(&infile,"input.dat",2);
+                  ffile(&outfile,"output.dat",1);
+                  ip_set_uppercase(1);
+                  ip_initialize(infile,outfile);
+                  ip_cwk_add(":DEFAULT");
+                  ip_cwk_add(prgid);
+                  psio_init();
+
+                  /* to start timing, tstart(outfile) */
+                
+                  /* Insert code here */
+
+                  /* to end timing, tstop(outfile) */
+
+                  psio_done();
+                  fclose(infile);
+                  fclose(outfile);
+                  ip_done();
+                }
+
+                char *gprgid()
+                {
+                   char *prgid = "CODE_NAME";
+                   return(prgid);
+                }               
+\end{verbatim}
+\caption{The essential elements of a \PSIthree\ C-language program.}
+\label{fig:Essential_C_Program}
+\end{figure}
+
+The required include files are \file{ip\_libv1.h}, \file{libciomr.h}, \file{psio.h},
+and of course \file{stdio.h}.  The first of these is for the Input Parser Library,
+Version 1 (\file{libipv1.a}), which is described in section \ref{C_IP}.  The
+second file contains function prototypes for the C Math Routines and old-style I/O
+library, \file{libciomr.a}, described in section \ref{C_IO}.  The header
+\file{libciomr.h} was added to \PSItwo\ sometime in 1994, and older C programs
+may not include this file; however, it is recommended for all new programs
+in order to provide type checking for functions and function arguments.
+The third file analogously provides clean interface to functions of the new C I/O system
+described in section \ref{C_IO_New}.
+Formerly, PSI programs required the file pointers \celem{infile} and \celem{outfile}
+to be global variables.  However, it seems that this is no longer necessary.
+
+The functions in \celem{main()} are required to set up and shut down the
+input parser, and they have already been described in detail in section
+\ref{C_IP}.  Even if the program will not do any input parsing, it may be
+necessary to include these statements, because some of the functionality of
+the input parser is assumed by \library{libciomr.a} and \library{libpsio.a}.
+For instance, opening a binary file via \celem{psio\_open()} requires
+parsing the \keyword{files} section of
+\inputdat\ so that a unit number (e.g.~52) can be translated into a
+filename (e.g. \file{h2o.52}).  Timing information (when the program starts 
+and stops, and how much user, system,
+and total time it requires) can be printed to the output file by adding
+calls to \celem{tstart()} and \celem{tstop()} as indicated in the figure.
+
+The sole purpose of the simple function \celem{gprgid()} is to provide the
+input parser a means to determine the name of the current program.  This is
+necessary so that the input parser can add the name of the program to the
+input parsing keyword tree.  This function seems to be used in
+the \celem{get\_file\_info()} function of \library{libciomr.a} and a few functions of
+\library{libpsio.a}, which allow for
+a \keyword{files} section within a section of input dedicated to a specific
+program, such as \PSIcscf.  This feature of \PSIthree\ does not seem to be
+commonly used.
+
+{\em One note on choice of the I/O system to use. It is mandatory that
+every new \PSIthree\ program uses only the new binary I/O system described in
+section \ref{C_IO_New}. However, you are encouraged to use some non-binary
+I/O functions in \library{libciomr.a}, like \celem{ffile()}, which provide
+a solid interface to standard C I/O functions.}

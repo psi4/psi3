@@ -1,0 +1,65 @@
+%
+% PSI Programmer's Manual
+%
+% PSI Debugging Section
+%
+% Daniel Crawford, 8 February, 1996
+%
+Debugging \PSIthree\ code using an interactive debugger, such as \file{gdb}
+or \file{dbx} can be difficult at times because of the complicated organization of
+this large program package.  This section discusses some strategies and
+technical details of using such debuggers with the \PSIthree\ code.
+
+\subsection{Code Re-compilation}
+Any section of \PSIthree\ code that needs to be debugged must first be re-compiled
+with the ``-g'' flag turned on.  This flag is set in the \file{MakeVars}
+file in the directory above each module or library's source code directory.
+For example, to debug the \PSIcscf\ program, one would first clean the
+existing object code out of the \file{~/psi3\_dist/src/\$ARCH/src/bin/cscf}
+directory (using \file{make clean}).  Then edit the \file{MakeVars} file
+above the \PSIcscf\ source code: set \file{COPT = -g}.  Then re-compile the
+module.  If debugging information is needed for a library routine as well,
+then follow this same procedure for the library in question.  Technically
+only the routines of interest need to be re-compiled, though it is
+frequently more convenient to simply re-compile the entire library or
+module.
+
+\subsection{Multiple Source Code Directories}
+The most difficult problem of debugging \PSIthree\ code is that object code and
+source code generally reside in separate directories.  This allows one to
+maintain objects for several achitectures simultaneously.  In addition,
+library codes are kept separate from binary (module) codes.  Most
+interactive debuggers allow the programmer to specify multiple source code
+search directories using simple command-line options.  For example, if one
+were debugging the \PSIcscf\ program, and needed access to the
+\library{libciomr.a} library source code in addition to that of \PSIcscf, one
+could use \file{gdb}'s ``dir'' command to search several source code
+directories:
+\begin{verbatim}
+dir ~/psi3_dist/src/bin/cscf ~/psi3_dist/src/lib/libciomr
+\end{verbatim}
+Additionally, such commands can be placed in the user's \file{.gdbinit}
+file.  In \file{dbx} the ``use'' command specifies multiple source directories.
+More recent versions of the \file{gdb} debugger can determine the full path
+name of each source file compiled with a \file{-g} flag.  This is very
+convenient and {\em makes \file{gdb} the preferred debugger in general}.
+
+\PSIthree\ Fortran modules can be significantly more difficult to debug.  This is
+because the Fortran source code (\file{.F} suffix) must be preprocessed by
+\module{psipp} before it is passed to the compiler (see section \ref{psipp}).
+Additionally, the preprocessed files (\file{.f} suffix) are usually
+automatically deleted when the compilation stops due to the \file{make}
+program's defaults (all such intermediate files are deleted).  So, if the
+programmer tries to use the unprocessed code with the debugger, line
+numbers won't match and basically he or she will be wasting his or her
+time!  To keep the preprocessed source files, {tt make} must be told that
+they are important; add the following line to the \file{Makefile} in the
+Fortran module's object code directory:
+\begin{verbatim}
+.PRECIOUS: %.f
+\end{verbatim}
+This is a GNU \file{make} directive which prevents deletion of all
+intermediate \file{.f} files when the compilation stops.  Then add the
+current directory to the debugger's source directory search path, and plow
+ahead.  Note, however, that any changes made to \file{.f} files must be
+duplicated the corresponding unprocessed source file to be permanent.

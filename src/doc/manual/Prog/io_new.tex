@@ -1,0 +1,235 @@
+% PSI3 Programmer's Manual
+%
+% Binary I/O --- libpsio
+%
+% T. Daniel Crawford, June 2000
+%
+
+\subsubsection{The structure and philosophy of the library}
+
+Almost all \PSIthree\ modules must exchange data with raw binary (also
+called ``direct-access'') files.  However, rather than using low-level
+C or Fortran functions such as \celem{read()} or \celem{write()},
+\PSIthree\ uses a flexible, but fast I/O system that gives the
+programmer and user control over the organization and storage of data.
+Some of the features of the PSI I/O system, libpsio, include:
+\begin{itemize}
+\item A user-defined disk striping system in which a single binary
+file may be split across several physical or logical disks.
+\item A file-specific table of contents (TOC) which contains
+file-global starting and ending addresses for each data item.
+\item An entry-relative page/offset addressing scheme which avoids
+file-global file pointers which can limit file sizes.
+\end{itemize}
+
+The TOC structure of PSI binary files provdes several advantages over
+older I/O systems.  For example, data items in the TOC are identified
+by keyword strings (e.g., \celem{"Nuclear Repulsion Energy"}) and the
+{\em global} address of an entry is known only to the TOC itself,
+never to the programmer. Hence, if the programmer wishes to read or
+write an entire TOC entry, he/she is required to provide only the TOC
+keyword and the entry size (in bytes) to obtain the data.
+Furthermore, the TOC makes it possible to read only pieces of TOC
+entries (say a single buffer of a large list of two-electron
+integrals) by providing the appropriate TOC keyword, a size, and a
+starting address relative to the beginning of the TOC entry. In short,
+the TOC design hides all information about the global structure of the
+direct access file from the programmer and allows him/her to be
+concerned only with the structure of individual entries. The current
+TOC is written to the end of the file when it is closed.
+
+Thus the direct-access file itself is viewed as a series of pages,
+each of which contains an identical number of bytes. The global
+address of the beginning of a given entry is stored on the TOC as a
+page/offset pair comprised of the starting page and byte-offset on
+that page where the data reside. The entry-relative page/offset
+addresses which the programmer must provide work in exactly the same
+manner, but the 0/0 position is taken to be the beginning of the TOC
+entry rather than the beginning of the file.
+
+\subsubsection{The user interface}
+All of the functions needed to carry out basic I/O are described in
+this subsection. Proper declarations of these routines are provided by
+the header file \file{psio.h}. Note that before any open/close
+functions may be called, the input parsing library, libipv1 must be
+initialized so that the necessary file striping information may be
+read from user input, but this is hidden from the programmer in
+lower-level functions.  NB, \celem{ULI} is used as an abbreviation for
+\celem{unsigned long int} in the remainder of this manual.
+
+\celem{int psio\_init(void)}: Before any files may be opened or the
+basic read/write functions of libpsio may be used, the global data
+needed by the library functions must be initialized using this
+function.
+
+\celem{int psio\_done(void)}: When all interaction with the
+direct-access files is complete, this function is used to free the
+library's global memory.
+
+\celem{int psio\_open(ULI unit, int status)}: Opens the direct access
+file identified by \celem{unit}. The \celem{status} flag is a boolean
+used to indicate if the file is new (0) or if it already exists and is
+being re-opened (1). If specified in the user input file, the file
+will be automatically opened as a multivolume (striped) file, and each
+page of data will be read from or written to each volume in
+succession.
+
+\celem{int psio\_close(ULI unit, int keep)}: Closes a direct access
+file identified by unit. The keep flag is a boolean used to indicate
+if the file's volumes should be deleted (0) or retained (1) after
+being closed.
+
+\celem{int psio\_read\_entry(ULI unit, char *key, char *buffer, ULI
+size)}: Used to read an entire TOC entry identified by the string
+\celem{key} from \celem{unit} into the array \celem{buffer}. The
+number of bytes to be read is given by \celem{size}, but this value is
+only used to ensure that the read request does not exceed the end of
+the entry. If the entry does not exist, an error is printed to stderr
+and the program will exit.
+
+\celem{int psio\_write\_entry(ULI unit, char *key, char *buffer, ULI
+size)}: Used to write an entire TOC entry idenitified by the string
+\celem{key} to \celem{unit} into the array \celem{buffer}. The number
+of bytes to be written is given by \celem{size}. If the entry already
+exists and its data is being overwritten, the value of size is used to
+ensure that the write request does not exceed the end of the entry.
+
+\celem{int psio\_read(ULI unit, char *key, char *buffer, ULI size,
+psio\_address sadd, psio\_address *eadd)}: Used to read a fragment of
+\celem{size} bytes of a given TOC entry identified by \celem{key} from
+\celem{unit} into the array \celem{buffer}. The starting address is
+given by the \celem{sadd} and the ending address (that is, the
+entry-relative address of the next byte in the file) is returned in
+\celem{*eadd}.
+
+\celem{int psio\_write(ULI unit, char *key, char *buffer, ULI size,
+psio\_address sadd, psio\_address *eadd)}: Used to write a fragment of
+\celem{size} bytes of a given TOC entry identified by \celem{key} to
+\celem{unit} into the array \celem{buffer}. The starting address is
+given by the \celem{sadd} and the ending address (that is, the
+entry-relative address of the next byte in the file) is returned in
+\celem{*eadd}.
+
+The page/offset address pairs required by the preceeding read and
+write functions are supplied via variables of the data type
+\celem{psio\_address}, defined by:
+\begin{verbatim}
+  typedef struct {
+    ULI page;
+    ULI offset;
+  } psio_address;
+\end{verbatim}
+The \celem{PSIO\_ZERO} defined in a macro provides a convenient input
+for the 0/0 page/offset.
+
+\subsubsection{Manipulating the table of contents}
+In addition, to the basic open/close/read/write functions described above,
+the programmer also has a limited ability to directly manipulate or examine
+the data in the TOC itself.
+
+\celem{int psio\_tocprint(ULI unit, FILE *outfile)}: Prints the TOC of
+\celem{unit} in a readable form to \celem{outfile}, including entry
+keywords and global starting/ending addresses.  (\celem{tocprint} is
+also the name of a \PSIthree\ utility module which prints a file's TOC to
+stdout.)
+
+\celem{int psio\_toclen(ULI unit, FILE *outfile)}: Returns the number
+of entries in the TOC of \celem{unit}.
+
+\celem{int psio\_tocdel(ULI unit, char *key)}: Deletes the TOC entry
+corresponding to \celem{key}. NB that this function only deletes the
+entry's reference from the TOC itself and does not remove the
+corresponding data from the file. Hence, it is possible to introduce
+data "holes" into the file.
+
+\celem{int psio\_tocclean(ULI unit, char *key)}: Deletes the TOC entry
+corresponding to \celem{key} and all subsequent entries. As with
+\celem{psio\_tocdel()}, this function only deletes the entry
+references from the TOC itself and does not remove the corresponding
+data from the file. This function is still under construction.
+
+\subsubsection{Using \library{libpsio.a}}
+The following code illustrates the basic use of the library, as well
+as when/how the \celem{psio\_init()} and \celem{psio\_done()}
+functions should be called in relation to initialization of
+\library{libipv1}.
+\begin{verbatim}
+#include <stdio.h>
+#include <ip_libv1.h>
+#include <psio.h>
+#include <libciomr.h>
+
+FILE *infile, *outfile;
+
+int main()
+{
+  int i, M, N;
+  double enuc, *some_data;
+  psio_address next;  /* Special page/offset structure */
+
+  ffile(&infile,"input.dat",2);
+  ffile(&outfile,"output.dat",1);
+  ip_set_uppercase(1);
+  ip_initialize(infile,outfile);
+  ip_cwk_add(":DEFAULT");
+  ip_cwk_add(progid);
+
+  /* Initialize the I/O system */
+  psio_init();
+
+  /* Open the file and write an energy */
+  psio_open(31, PSIO_OPEN_NEW);
+  enuc = 12.3456789;
+  psio_write_entry(31, "Nuclear Repulsion Energy", (char *) &enuc,
+                   sizeof(double));
+  psio_close(31,1);
+
+  /* Read M rows of an MxN matrix from a file */
+  some_data = init_matrix(M,N);
+
+  psio_open(91, PSIO_OPEN_OLD);
+  next = PSIO_ZERO;/* Note use of the special macro */
+  for(i=0; i < M; i++)
+      psio_read(91, "Some Coefficients", (char *) (some_data + i*N),
+                N*sizeof(double), next, &next);
+  psio_close(91,0);
+
+  /* Close the I/O system */
+  psio_done();
+
+  ip_done();
+}
+
+char *gprgid()
+{
+   char *prgid = "CODE_NAME";
+   return(prgid);
+}
+\end{verbatim}
+
+The interface to the \PSIthree\ I/O system has been designed to mimic
+that of the old \celem{wreadw()} and \celem{wwritw()} routines of
+\library{libciomr} (see the next section of this manual).  The table
+of contents system introduces a few complications that users of the
+library should be aware of:
+\begin{itemize}
+\item As pointed out earlier, deletion of TOC entries is allowed using
+\celem{psio\_tocdel()} and \celem{psio\_tocclean()}. However, since
+only the TOC reference is removed from the file and the corresponding
+data is not, a data hole will be left in the file if the deleted entry
+was not the last one in the TOC. A utility function designed to
+"defrag" a PSI file may become necessary if such holes ever present a
+problem.
+\item One may append data to an existing TOC entry by simply writing
+beyond the entry's current boundary; the ending address data in the
+TOC will be updated automatically. However, no safety measures have
+been implemented to prevent one from overwriting data in a subsequent
+entry thereby corrupting the TOC. This feature/bug remains because (1)
+it is possible that such error checking functions may slow the I/O
+codes significantly; (2) it may be occasionally desirable to overwrite
+exiting data, regardless of its effect on the TOC. Eventually a
+utility function which checks the validity of the TOC may be needed if
+this becomes a problem, particularly for debugging purposes.
+\end{itemize}
+
+

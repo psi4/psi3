@@ -1,0 +1,38 @@
+%
+% PSI Programmer's Manual
+%
+% Other PSI C Libraries
+%
+% David Sherrill, 1 February 1996
+%
+There are several other PSI C libraries besides the previously-mentioned
+\library{libipv1.a}, \library{libpsio.a}, and \library{libciomr.a}.
+The following is a brief description of each:
+
+??Another important library is {\tt libmalloc.a}, which provides improved memory allocation
+routines. During our development of the two-electron integral
+transformation program {\tt transqt}, we discovered that without
+linking the library {\tt libmalloc.a}, the regular {\tt malloc()}
+function allocated memory which was {\em not really} freed up when
+a {\tt free()} was issued.??
+
+\begin{description}
+\item\library{libfile30.a} This library provides many routines for reading 
+from and writing to the ``checkpoint'' file, \FILE{30}.  There is
+generally a different function associated with each quantity in \FILE{30}
+(such as the SCF energy, nuclear repulsion energy, geometry,
+basis set information, etc).
+
+\item\library{libiwl.a} The new format for storing two-electron integrals is
+IWL, or ``integrals with labels.''  The library \library{libiwl.a} provides functions for
+reading and writing files in the IWL format.  The code was written with 
+the goal that it could be easily modified to allow for more than 256
+basis functions. Its current limit is 32768 basis functions.
+
+\item\library{libqt.a} This is the ``Quantum Trio'' library, which contains a number
+of very experimental functions or functions which don't otherwise
+fit anywhere else.
+\end{description}
+
+Further documentation for these libraries can be found in the \file{docs}
+directory of \PSIthree\ installation.
