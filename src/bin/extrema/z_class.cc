@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
 extern "C" {
   #include <libciomr.h>
@@ -30,11 +31,23 @@ z_class :: z_class()
 
   /*read z_mat from file30*/
   file30_init();
-  z_geom = file30_rd_zmat();
+  z_geom = file30_rd_zmat(); 
+  num_atoms = num_entries;
+//  full_geom = file30_rd_fgeom();
+//  felement = file30_rd_felement();
+
+//  fprintf(outfile,"\n\nFull Geometry:");
+//  print_mat(full_geom,num_entries,3,outfile);
+
+//  fprintf(outfile,"\n\nElement Identities:");
+//  for(i=0;i<num_entries;++i) {
+//	fprintf(outfile,"\n %8s", felement[i]);
+//	fflush(outfile);
+//  }
 
   /*print z-mat to output*/
   fprintf(outfile,"\nz-matrix:\n");
-  for(i=0;i<num_atoms;++i) {
+  for(i=0;i<num_entries;++i) {
     if( i==0 ) 
       fprintf(outfile,"1\n");
     else if( i==1) 
@@ -50,7 +63,7 @@ z_class :: z_class()
 
   /*print opt flags*/
   fprintf(outfile,"\nopt flags:\n");
-  for(i=1;i<num_atoms;++i) {
+  for(i=1;i<num_entries;++i) {
     if( i==1) 
       fprintf(outfile,"%i\n",z_geom[i].bond_opt);
     else if( i==2 ) 
@@ -60,7 +73,7 @@ z_class :: z_class()
     }
 
   /*write z_mat to the array of simple_internal objects in coord_base class*/
-  for(i=1;i<num_atoms;++i) {
+  for(i=1;i<num_entries;++i) {
       if( i==1 ) {
 	  simple_arr[0].set_simple(0,z_geom[1].bond_val,2,z_geom[1].bond_atom,-1,-1);
 	}
@@ -76,6 +89,62 @@ z_class :: z_class()
 	  j+=3;
 	}
     }
+
+  /*deal with symmetrically equivalent coordinates*/
+  char** labels;
+  labels = (char**) malloc( num_coords*sizeof(char*));
+  for(i=0;i<num_coords;++i) labels[i] = (char*) malloc(20*sizeof(char));
+  int p=0;
+  for(i=1;i<num_entries;++i) {
+      if(i==1) {
+	  strcpy( labels[p], z_geom[1].bond_label );
+	  ++p;
+      }
+      else if( i==2) {
+	  strcpy(labels[p], z_geom[2].bond_label );
+	  strcpy(labels[p+1], z_geom[2].angle_label );
+	  p+=2;
+      }
+      else if (i>2) {
+	  strcpy(labels[p], z_geom[i].bond_label );
+	  strcpy(labels[p+1],z_geom[i].angle_label);
+	  strcpy(labels[p+2],z_geom[i].tors_label);
+	  p+=3;
+      }
+  }
+  for(i=0;i<num_coords;++i) 
+      fprintf(outfile,"\nlabels[%d]: %s",i,labels[i]);
+
+  p=0;
+  int is_set;
+  for (i=0;i<num_coords;++i) {
+      is_set=0;
+      if( labels[i][0] != '\0' ) {
+	  if(p==0) {
+	      simple_arr[i].set_equiv_grp(0);
+	      is_set=1; ++p;
+	  }
+	  for(j=0;j<i;++j) {
+	      if ( !strcmp(labels[i],labels[j])) {
+		  is_set = 1;
+		  fprintf(outfile,"\ni:%d j:%d strings match!",i,j);
+		  fprintf(outfile,"\n %d", simple_arr[j].get_equiv_grp() );
+		  simple_arr[i].set_equiv_grp( simple_arr[j].get_equiv_grp() );
+	      }
+	  }
+	  if(!is_set) {
+	      simple_arr[i].set_equiv_grp( p );
+	      ++p;
+	  }
+      }
+      else if( labels[i][0] == '\0' )
+	  simple_arr[i].set_equiv_grp(-1);
+  }
+
+  for(i=0;i<num_coords;++i) 
+      fprintf(outfile,"\nequiv %d: %d",i,simple_arr[i].get_equiv_grp());
+		  
+      
 
   /*PRINT LEVEL?  check internals array*/
   fprintf(outfile,"\ninternal coordinate info:\n");
@@ -108,7 +177,7 @@ void z_class::compute_B() {
     B_row1 = init_array(3*num_atoms);
     B_row2 = init_array(3*num_atoms);
 
-  for(i=1;i<num_atoms;++i) {
+  for(i=1;i<num_entries;++i) {
       if(i==1) {
 	  B_row0 = B_row_bond(carts, i, simple_arr[pos].get_bond()-1);
 	  B[pos] = B_row0;
@@ -136,11 +205,19 @@ void z_class::compute_B() {
     }
 
   /*form u*/
-  for(j=0;j<num_atoms;++j) {
-      fprintf(outfile,"\nMASS: %lf",masses[j]);
-      u[3*j][3*j] = 1.0 / masses[j]; 
-      u[3*j+1][3*j+1] = 1.0 /masses[j];
-      u[3*j+2][3*j+2] = 1.0 / masses[j];
+  for(j=0;j<num_entries;++j) {
+      //if(strcmp(felement[j],"X")) {
+	 fprintf(outfile,"\nMASS: %lf",masses[j]);
+	 u[3*j][3*j] = 1.0 / masses[j]; 
+	 u[3*j+1][3*j+1] = 1.0 /masses[j];
+	 u[3*j+2][3*j+2] = 1.0 / masses[j];
+	 //}
+	 //else if (!strcmp(felement[j],"X")) {
+	 // fprintf(outfile,"\nMASS of X: 1.0");
+	 // u[3*j][3*j] = u[3*j+1][3*j+1] = u[3*j+2][3*j+2]= 1.0;
+	 // }
+
+
   }
 
   return;

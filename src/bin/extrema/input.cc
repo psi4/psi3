@@ -36,7 +36,10 @@ void input() {
   /*read stuff from file30*/
   file30_init();
   num_atoms = file30_rd_natom();
+  num_entries = file30_rd_nentry();
   file30_close();
+
+  fprintf(outfile,"\nNUMBER OF ZMAT ENTRIES: %d\n",num_entries);
 
   ip_cwk_add(":INPUT");
   if(ip_exist("ZMAT",0)) { 

@@ -7,6 +7,7 @@
 class z_class : public coord_base {
 
     struct z_entry* z_geom;
+    double **full_geom;
 
   public:
     z_class();
@@ -159,6 +160,91 @@ class z_class : public coord_base {
 
         file30_wt_zmat(z_geom,num_atoms);
     }
+
+    void opt_step() {
+
+	int i, j;
+	double *s;
+	
+	s = init_array(num_coords);
+ 
+        for(i=0;i<num_coords;++i) {
+	    s[i] = 0.0;
+	}
+  
+	for(i=0;i<num_coords;++i)
+	    for(j=0;j<num_coords;++j)
+		s[i] += -H[i][j] * grad_arr[j];
+
+	for(i=0;i<num_coords;++i) {
+	    if( (fabs(s[i]) > 0.1) && (s[i] > 0.0) )
+		s[i]=0.1;
+	    if( (fabs(s[i]) > 0.1) && (s[i] < 0.0) )
+		s[i]=-0.1;
+	}
+
+	for(i=0;i<num_coords;++i) {
+	    fprintf(outfile,"\nequiv grp %d: %d",i, simple_arr[i].get_equiv_grp());
+	    for(j=0;j<i;++j) {
+		if((simple_arr[i].get_equiv_grp() == simple_arr[j].get_equiv_grp())) {
+		    fprintf(outfile,"\n setting s[%d](%.20lf)=s[%d](%.20lf)",i,s[i],j,s[j]);
+		    s[i] = s[j];
+		}
+	    }
+	}
+
+	fprintf(outfile,"\ns vector:\n");
+	for(i=0;i<num_coords;++i) 
+	    fprintf(outfile,"\n%.20lf",s[i]);
+	
+/*  	fprintf(outfile,"\nNew coordinate vector:\n"); */
+/*  	for(i=0;i<num_coords;++i) { */
+/*  	    coord_write[i] = coord_arr[i]; */
+/*  	    coord_arr[i] += s[i]; */
+/*  	    fprintf(outfile,"%lf\n",coord_arr[i]); */
+/*  	} */
+
+	fprintf(outfile,"\nNew coordinate vector:\n");
+	for(i=0;i<num_coords;++i) 
+            coord_write[i] = coord_arr[i];	    
+	for(i=1;i<num_atoms;++i) {
+	    if( (i==1) && z_geom[0].bond_opt)
+		coord_arr[0] += s[0];
+	    else if(i==2) {
+		if(z_geom[1].bond_opt)
+		    coord_arr[1] += s[1];
+		//if(z_geom[1].angle_opt)
+		    //coord_arr[2] += s[2];
+	    }
+	    else if(i>2) {
+		if(z_geom[i].bond_opt) {
+		    coord_arr[(i-2)*3] += s[(i-2)*3];
+		    fprintf(outfile,"\ncoord %d opt",(i-2)*3);
+		}
+		else
+		    fprintf(outfile,"\ncoord %d no opt",(i-2)*3);
+		if(z_geom[i].angle_opt) {
+		    coord_arr[(i-2)*3+1] += s[(i-2)*3+1];
+		    fprintf(outfile,"\ncoord %d opt",(i-2)*3+1);
+		}
+	        else
+		    fprintf(outfile,"\ncoord %d no opt",(i-2)*3+1);
+		if(z_geom[i].tors_opt){
+		    coord_arr[(i-2)*3+2] += s[(i-2)*3+2];
+		    fprintf(outfile,"\ncoord %d opt",(i-2)*3+2);
+		}
+		else
+		    fprintf(outfile,"\ncoord %d no opt",(i-2)*3+2);
+	    }
+	}
+
+	for(i=0;i<num_coords;++i)
+	    fprintf(outfile,"%.20lf\n",coord_arr[i]);
+	
+	free(s);
+	return;
+    }
+
 };
 
 

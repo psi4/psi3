@@ -11,7 +11,7 @@
   ################################################################################*/
 
 class simple {
-    int type;
+    int type, equiv_grp;
     double val;
     int atom, bond, angle, tors;
   public:
@@ -19,6 +19,8 @@ class simple {
 	 type=ty; val=value; atom=at; bond=bd; angle=an; tors=tr;
 	return;
     }    
+    void set_equiv_grp(int grp_num) { equiv_grp = grp_num; return; }
+    int get_equiv_grp() {return equiv_grp;}
     void set_val(double value) { val = value; return; }
     double get_val() { return val; }
     int get_type() { return type; }

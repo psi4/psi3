@@ -40,23 +40,27 @@ void z_class::back_transform() {
   dq = init_array(num_coords);
   dx = init_array(3*num_atoms);         
 
-  while(conv>0.0000000000001) {
+  int loop=0;
+  int converged=0;
+  double criteria = 0.000000000001;
+  double dx_sum; 
+  while((!converged) && (loop<500) ) {
   
-      fprintf(outfile,"\nbt iteration");
+      fprintf(outfile,"\nbt iteration %d\n", loop+1);
       
       /*compute A*/
-      print_B();
-      compute_G(); print_G();
-      compute_A(); print_A();
+      //print_B();
+      compute_G(); //print_G();
+      compute_A(); //print_A();
 
       for(i=0;i<num_coords;++i) {
-          fprintf(outfile,"%lf-%lf\n",coord_arr[i],coord_temp[i]);
+	  fprintf(outfile,"%lf-%lf\n",coord_arr[i],coord_temp[i]);
 	  dq[i] = coord_arr[i] - coord_temp[i];
       }
-      fprintf(outfile,"\nchanges in internals\n");
-      for(i=0;i<num_coords;++i){
-	  fprintf(outfile,"%lf\n",dq[i]);
-      }
+      //fprintf(outfile,"\nchanges in internals\n");
+      //for(i=0;i<num_coords;++i){
+//	  fprintf(outfile,"%lf\n",dq[i]);
+//      }
 
       /*compute dx = A dq */
       for(i=0;i<3*num_atoms;++i) 
@@ -68,13 +72,16 @@ void z_class::back_transform() {
       }
       fprintf(outfile,"\nchanges in cartesians\n");
       for(i=0;i<3*num_atoms;++i){
-	  fprintf(outfile,"%lf\n",dx[i]);
-      }  
+           fprintf(outfile,"%.20lf\n",dx[i]);
+           }  
 
       pos=0;
+      dx_sum = 0.0;
       for(i=0;i<3*num_atoms;++i) {
 	  carts[i] += dx[i];
+          dx_sum += sqrt(dx[i]*dx[i]);
       }
+      dx_sum /= (3*num_atoms);
       
       fprintf(outfile,"\nintermediate cartesian coodinates\n"); print_carts();
 
@@ -86,15 +93,23 @@ void z_class::back_transform() {
       }
 
       compute_B();
-      fprintf(outfile,"\nintermediate B matrix:\n"); print_B();
+      //fprintf(outfile,"\nintermediate B matrix:\n"); print_B();
     
       conv=0;
       for(i=0;i<num_coords;++i) {
-	  conv += (coord_arr[i] - coord_temp[i])*(coord_arr[i] - coord_temp[i]);
+	  conv += sqrt((coord_arr[i] - coord_temp[i])*(coord_arr[i] -coord_temp[i]));
       }
+      fprintf(outfile,"\nConvergence = %.20lf\n",conv);
+      fprintf(outfile,"\ndx_conv = %.20lf\n",dx_sum);
+      if((conv<criteria)&&(dx_sum<criteria))
+	  converged = 1;
+      ++loop;
   }
   
-  fprintf(outfile,"\nBack transformation to cartesians completed\n");
+  if(!converged) 
+      punt("Back transformation to cartesians has failed");
+  else
+      fprintf(outfile,"\nBack transformation to cartesians completed\n");
   return;
 
 }

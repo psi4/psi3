@@ -20,7 +20,7 @@ class coord_base {
 	try {simple_arr = new simple[num_simples];} 
 	catch(bad_alloc) { punt("malloc error: no memory left"); }
 	B = init_matrix(num_coords,3*num_atoms);
-	G = init_matrix(num_coords,num_coords);
+        G = init_matrix(num_coords,num_coords);
 	A = init_matrix(3*num_atoms,num_coords);
 	u = init_matrix(3*num_atoms,3*num_atoms);
         H = init_matrix(num_coords,num_coords);
@@ -80,6 +80,20 @@ class coord_base {
         return;
     }
 
+    void carts_to_angs() {
+	int i;
+	for(i=0;i<3*num_atoms;++i)
+	    carts[i] = carts[i]*_bohr2angstroms;
+	return;
+    }
+
+    void carts_to_bohr() {
+	int i;
+	for(i=0;i<3*num_atoms;++i)
+	    carts[i] = carts[i]/_bohr2angstroms;
+	return;
+    }
+
     void compute_G() {
 	double **temp1;
 	temp1 = init_matrix(num_coords,3*num_atoms);
@@ -114,34 +128,7 @@ class coord_base {
         return;
     }
 
-    void opt_step() {
 
-	int i, j;
-	double *s;
-	
-	s = init_array(num_coords);
-  
-	for(i=0;i<num_coords;++i) 
-	    for(j=0;j<num_coords;++j) 
-		s[i] += -H[i][j] * grad_arr[j];
-
-	for(i=0;i<num_coords;++i) {
-	    if( (fabs(s[i]) > 0.1) && (s[i] > 0.0) )
-		s[i]=0.1;
-	    if( (fabs(s[i]) > 0.1) && (s[i] < 0.0) )
-		s[i]=-0.1;
-	}
-	
-	fprintf(outfile,"\nNew coordinate vector:\n");
-	for(i=0;i<num_coords;++i) {
-            coord_write[i] = coord_arr[i];
-	    coord_arr[i] += s[i];
-	    fprintf(outfile,"%lf\n",coord_arr[i]);
-	}
-	
-	free(s);
-	return;
-    }
  
     void print_u() {
 	fprintf(outfile,"\nu matrix:\n");
@@ -262,7 +249,7 @@ class coord_base {
 		place = 0;
 		fprintf(opt_ptr,"\n            ");
 	    }
-	    fprintf(opt_ptr,"%lf  ",grad_arr[i]);
+	    fprintf(opt_ptr,"%.20lf  ",grad_arr[i]);
 	    ++place;
 	}
 	fprintf(opt_ptr,")\n\n");
@@ -290,6 +277,14 @@ class coord_base {
 	
 	fclose(opt_ptr);
 	ip_done();
+	return;
+    }
+
+    void print_grad() {
+	int i;
+	fprintf(outfile,"\nGradients:\n");
+	for(i=0;i<num_coords;++i) 
+	    fprintf(outfile,"Coord %d: %lf\n",i,grad_arr[i]);
 	return;
     }
 };

@@ -39,12 +39,20 @@ void main() {
   coord_set.print_carts();
   coord_set.print_c_grads();
 
+  /*compute B in BMAT units*/
+  fprintf(outfile,"\nB in BMAT units\n");
+  coord_set.carts_to_angs();
+  coord_set.compute_B();
+  coord_set.print_B();
+  coord_set.carts_to_bohr();
+
   /*compute B*/
   coord_set.compute_B();
   coord_set.print_B();
 
   /*transform gradients from cartesian to internal coordinates*/
   coord_set.grad_trans();
+  coord_set.print_grad();
 
   /*form or update H*/
   coord_set.update_H();

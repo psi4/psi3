@@ -69,14 +69,21 @@ void read_file11(coord_base* coord) {
 	  (*coord).set_cart(3*i+2,z );
 	}
   
-      for (i=0; i<num_atoms ; i++) {
-	  if(fscanf(fp_11, "%lf %lf %lf", &x, &y, &z) != 3) {
-	      punt("Trouble reading gradients from file11.dat");
-	    }
-	  (*coord).set_c_grad(3*i,x);
-	  (*coord).set_c_grad(3*i+1,y);
-	  (*coord).set_c_grad(3*i+2,z);
-	}
+      for (i=0; i<num_entries; i++) {
+	  // if(strcmp(felement[i],"X")) {
+	      if(fscanf(fp_11, "%lf %lf %lf", &x, &y, &z) != 3) {
+		  punt("Trouble reading gradients from file11.dat");
+	      }
+	      (*coord).set_c_grad(3*i,x);
+	      (*coord).set_c_grad(3*i+1,y);
+	      (*coord).set_c_grad(3*i+2,z);
+	  }
+	  //  else if (!strcmp(felement[i],"X")) {
+	  //    (*coord).set_c_grad(3*i,0.0);
+	  //    (*coord).set_c_grad(3*i+1,0.0);
+          //    (*coord).set_c_grad(3*i+2,0.0);
+	  //}
+      // }
 
        fgets(line1, MAX_LINELENGTH, fp_11);
 

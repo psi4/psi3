@@ -10,6 +10,7 @@ int MAX_LINELENGTH = 133;
 EXTERN int num_atoms;
 EXTERN int num_simples;
 EXTERN int num_coords;
+EXTERN int num_entries;
 
 EXTERN FILE *infile, *outfile;
 
@@ -26,6 +27,8 @@ EXTERN double *old_coord_vec;
 EXTERN double *coord_old;                          /*coordinate vector that is being optimized from last iteration*/
 EXTERN double *atomic_nums;                        /*atomic numbers*/
 EXTERN double **B_mat;
+
+EXTERN char **felement;
  
 EXTERN void punt(char *mess);
 EXTERN void read_file11();

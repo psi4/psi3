@@ -28,61 +28,67 @@ inline double *cross_pdt( double* vec1, double* vec2 );
 double* z_class::cart_to_z() {
 
     int i, j,pos=0;
-    double *z_val, *temp1, *temp2, temp_num, div;
+    double *z_val, *temp1, *temp2, temp_num, div, n1, n2;
+    double tnum;
 
     z_val = init_array(num_coords);
     temp1 = init_array(3);
     temp2 = init_array(3);
 
+    fprintf(outfile,"\n\n acos(1.0) = %.20lf\n\n",acos(1.0));
+
     for(i=1;i<num_atoms;++i) {
 
 
 	if(i==1) {
-	    
 	    z_val[pos] = norm(carts, i ,simple_arr[pos].get_bond()-1);
-	    
 	    ++pos ;
 	}
 
 
 	if(i==2){
 
-	    z_val[pos] = norm( carts, i, simple_arr[pos].get_bond()-1);
-
-            temp_num = dot_pdt( unit_vec(carts, simple_arr[pos+1].get_bond()-1, i ), 
-                                unit_vec(carts, simple_arr[pos+1].get_bond()-1, simple_arr[pos+1].get_angle()-1 ) );
-	    
-	    z_val[pos+1] = acos( temp_num );
-            
+		z_val[pos] = norm( carts, i, simple_arr[pos].get_bond()-1);
+		temp_num = dot_pdt( unit_vec(carts, simple_arr[pos+1].get_bond()-1, i ), 
+				    unit_vec(carts, simple_arr[pos+1].get_bond()-1, simple_arr[pos+1].get_angle()-1 ) );
+		z_val[pos+1] = acos( temp_num );
 	    pos += 2;
 	}
 
 
 	if(i>2) {
 	    
-	    z_val[pos] = norm( carts, i, simple_arr[pos].get_bond()-1);
-	    
-	    z_val[pos+1] = acos( dot_pdt( unit_vec( carts, simple_arr[pos+1].get_bond()-1, i ), 
-                                          unit_vec( carts, simple_arr[pos+1].get_bond()-1, simple_arr[pos+1].get_angle()-1 ) ) );
-	    
-	    temp1 = cross_pdt( unit_vec( carts, simple_arr[pos+2].get_tors()-1, simple_arr[pos+2].get_angle()-1 ), 
-                               unit_vec( carts, simple_arr[pos+2].get_angle()-1, simple_arr[pos+2].get_bond()-1 ) );
-	    
-	    temp2 = cross_pdt( unit_vec( carts, simple_arr[pos+2].get_angle()-1, simple_arr[pos+2].get_bond()-1 ),
-                               unit_vec( carts, simple_arr[pos+2].get_bond()-1, i ) );
-	    
-	    temp_num=dot_pdt( temp1, temp2 );
-            
-	    div=sin( acos( dot_pdt( unit_vec( carts, simple_arr[pos+2].get_bond()-1, i ),
-                                    unit_vec( carts, simple_arr[pos+2].get_bond()-1, simple_arr[pos+2].get_angle()-1 ) ) ) )
-		*sin( acos( dot_pdt( unit_vec( carts, simple_arr[pos+2].get_angle()-1, simple_arr[pos+2].get_bond()-1 ),
-				     unit_vec( carts, simple_arr[pos+2].get_angle()-1, simple_arr[pos+2].get_tors()-1 ) ) ) );
-	    
-	    z_val[pos+2] = acos( temp_num / div );
-	    
-	    pos += 3;
+		z_val[pos] = norm( carts, i, simple_arr[pos].get_bond()-1);
+		z_val[pos+1] = acos( dot_pdt( unit_vec( carts, simple_arr[pos+1].get_bond()-1, i ), 
+					      unit_vec( carts, simple_arr[pos+1].get_bond()-1, simple_arr[pos+1].get_angle()-1 ) ) );
+
+		temp1 = cross_pdt( unit_vec( carts, simple_arr[pos+2].get_angle()-1, simple_arr[pos+2].get_tors()-1 ), 
+				   unit_vec( carts, simple_arr[pos+2].get_angle()-1, simple_arr[pos+2].get_bond()-1 ) );
+		
+		temp2 = cross_pdt( unit_vec( carts, simple_arr[pos+2].get_bond()-1, simple_arr[pos+2].get_angle()-1 ),
+				   unit_vec( carts,simple_arr[pos+2].get_bond()-1,i ) );
+
+		n1 = sqrt(dot_pdt(temp1,temp1));
+		n2 = sqrt(dot_pdt(temp2,temp2));
+
+		for(j=0;j<3;++j) {
+		    temp1[j] /= n1;
+		    temp2[j] /= n2;
+		}
+
+		temp_num = dot_pdt(temp1,temp2);
+
+		if(temp_num>0.999999999999999)
+		    z_val[pos+2] = 0.0;
+		else if(temp_num<-0.999999999999999)
+		    z_val[pos+2] = _pi;
+		else 
+		    z_val[pos+2] = acos(temp_num);
+		pos += 3;
 	}
+		
     }
+
    
     fprintf(outfile,"\nnew z-mat\n");
     for(i=0;i<num_coords;++i) {
@@ -114,7 +120,7 @@ inline double norm(double* carts, int atom1, int atom2 ) {
 
   norm = sqrt(norm);
 
-  fprintf(outfile,"\nnorm: %lf\n",norm);
+//  fprintf(outfile,"\nnorm: %lf\n",norm);
   
   return norm;
 }
