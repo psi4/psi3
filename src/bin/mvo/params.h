@@ -21,5 +21,14 @@ struct Params {
    int oei_erase;           /* if 1, erase the frozen core operator file    */
    int fzc;                 /* do an implicit frozen core                   */
    int ras_type;            /* define ras I to include 0 or excluded 1 socc */
+   /* the next two entries allow for mixing the frozen core fock matrix 
+      with the regular fock matrix.  I assume that the regular fock matrix
+      is diagonal and given by the orbital eigenvalues; this makes it a 
+      lot easier for me to test right now!  I envision setting 
+      fzc_fock_coeff and fock_coeff to numbers between 0 and 1 and having
+      their sum equal 1.
+   */
+   double fzc_fock_coeff;   /* coefficient for the frozen core fock matrix  */
+   double fock_coeff;       /* coefficient of the regular fock matrix       */
   };
 

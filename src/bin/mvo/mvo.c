@@ -201,6 +201,12 @@ void get_parameters(void)
     params.ras_type = 0;
     }
 
+  params.fzc_fock_coeff = 1.0;
+  errcod = ip_data("FZC_FOCK_COEFF", "%lf", &(params.fzc_fock_coeff),0);
+
+  params.fock_coeff = 0.0;
+  errcod = ip_data("FOCK_COEFF", "%lf", &(params.fock_coeff),0);
+
   return;
 
 }
@@ -221,6 +227,10 @@ void print_parameters(void)
                                   (params.fzc ? "Yes": "No"));
       fprintf(outfile,"\tFrozen Core OEI file   =  %d\n", 
                                   params.h_fzc_file);
+      fprintf(outfile,"\tfzc_fock_coeff         =  %lf\n", 
+                                  params.fzc_fock_coeff);
+      fprintf(outfile,"\tfock_coeff             =  %lf\n", 
+                                  params.fock_coeff);
       fprintf(outfile,"\tPrint Level            =  %d\n", params.print_lvl);
     }
   
@@ -497,10 +507,13 @@ void get_mvos(void)
   int h, nirreps, nvir, ntri, offset, row, col;
   int i, j, ij, iabs, jabs, icorr, jcorr, ijcorr, nocc;
   double *FCvv, *FC, **evecs, *evals, **Cvv, **Cvvp, **Cnew;
+  double *eig_unsrt;
 
   FC = moinfo.fzc_operator;
   nirreps = moinfo.nirreps;
-
+  file30_init();
+  eig_unsrt = file30_rd_evals();
+  file30_close();
 
   /* form the vv block of FC for each irrep h */
   for (h=0,offset=0; h < nirreps; h++) {
@@ -531,7 +544,8 @@ void get_mvos(void)
         jabs = j + nocc + offset;
         jcorr = moinfo.order[jabs];  
         ijcorr = INDEX(icorr,jcorr);
-        FCvv[ij] = FC[ijcorr];
+        FCvv[ij] = params.fzc_fock_coeff * FC[ijcorr] ;
+        if (i==j) FCvv[ij] += params.fock_coeff * eig_unsrt[iabs];
       }
     }
       
