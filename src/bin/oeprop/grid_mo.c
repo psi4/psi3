@@ -11,21 +11,19 @@ void compute_grid_mos()
   int ixm, iym, izm, iind;
   int ix, iy, iz;
   int lx, ly, lz;
+  int mo, mo_num;
   double ax, ay, az, xa, ya, za, ra2;
   double ai, norm_pf, ang_pf, exponent;
   double x,y,z;
   double r,r2,tmp;
   double *bf_values, *values;
-  double *evec;
 
 
   /* Initialize some intermediates */
-  grid3d_pts = init_box(nix+1,niy+1,niz+1);
+  grid3d_pts = (double****) malloc(num_mos_to_plot*sizeof(double***));
+  for(mo=0;mo<num_mos_to_plot;mo++)
+    grid3d_pts[mo] = init_box(nix+1,niy+1,niz+1);
   bf_values = init_array(nbfao);
-  evec = init_array(nbfao);
-
-  for(i=0;i<nbfao;i++)
-    evec[i] = scf_evec_ao[i][mo_to_plot];
 
   for(ix=0;ix<=nix;ix++) {
       for(iy=0;iy<=niy;iy++) {
@@ -132,11 +130,13 @@ void compute_grid_mos()
 		  *values = norm_pf * ang_pf * exponent;
 	      }
 	  } /*--- end of shell loop ---*/
-	  tmp = 0;
-	  for(i=0;i<nbfao;i++)
-	      tmp += bf_values[i]*evec[i];
-	  grid3d_pts[ix][iy][iz] = tmp;
-	  
+	  for(mo=0;mo<num_mos_to_plot;mo++) {
+	    tmp = 0;
+	    mo_num = mos_to_plot[mo];
+	    for(i=0;i<nbfao;i++)
+	      tmp += bf_values[i]*scf_evec_ao[i][mo_num];
+	    grid3d_pts[mo][ix][iy][iz] = tmp;
+	  }
           x += grid_step_z[0];
 	  y += grid_step_z[1];
 	  z += grid_step_z[2];

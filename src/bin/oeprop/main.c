@@ -39,9 +39,8 @@ int main(int argc, char* argv[]) {
 
 /*************************** Main Code *******************************/
 
-	/* Reading in basic information from file30 */
+	/* Reading in basic information from checkpoint file */
 
-#if USE_LIBCHKPT
  title = chkpt_rd_label();
  natom = chkpt_rd_natom();
  natom3 = natom * 3;
@@ -63,43 +62,14 @@ int main(int argc, char* argv[]) {
  geom = chkpt_rd_geom();
  zvals = chkpt_rd_zvals();
  scf_evec_so = chkpt_rd_scf();
+ scf_evals = chkpt_rd_evals();
  usotao = chkpt_rd_usotao();
-#else
- title = file30_rd_label();
- natom = file30_rd_natom();
- natom3 = natom * 3;
- nmo = file30_rd_nmo();
- nbfso = file30_rd_nso();
- nbfao = file30_rd_nao();
- natri = nbfao * (nbfao+1)/2;
- nstri = nbfso * (nbfso+1)/2;
- nshell = file30_rd_nshell();
- nprim = file30_rd_nprim();
- iopen = file30_rd_iopen();
- nirreps = file30_rd_nirreps(); 
- nsym = file30_rd_nsymhf();
- orbspi = file30_rd_orbspi();
- sopi = file30_rd_sopi();
- clsdpi = file30_rd_clsdpi();    
- openpi = file30_rd_openpi();
- irr_labs = file30_rd_irr_labs();
- geom = file30_rd_geom();
- zvals = file30_rd_zvals();
- scf_evec_so = file30_rd_scf();
- usotao = file30_rd_usotao_new();
-#endif
  scf_evec_ao = init_matrix(nbfao,nmo);
  mmult(usotao,1,scf_evec_so,0,scf_evec_ao,0,nbfao,nbfso,nmo,0);
     
 	/* Parsing */
 
  parsing();
-
-
-        /* Computing unit vectors for the 2D grid if neccessary */
-
- if (grid)
-   grid_unitvec();
 
 
 	/* Computing total charge of the system */
@@ -158,11 +128,7 @@ int main(int argc, char* argv[]) {
  if (read_opdm && wrtnos) 
    get_nmo(); 
 
-#if USE_LIBCHKPT
  chkpt_close();
-#else
- file30_close();
-#endif
 
 	/* Reading in Z-vector if neccessary */
 

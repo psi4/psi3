@@ -401,9 +401,19 @@ void compute_oeprops()
                   mxyzcc += zvec_pf * tmp;
               }
 
-	      /*---------------------------------------
+	      /*---------------------------------------------------------------
 		Compute electronic angular momentum Lm
-	       ---------------------------------------*/
+
+		This section doesn't work at the moment
+		1) usual density matrix always gives 0 expectation
+		   value since it corresponds to a real wave function
+		   and Li is antihermitian
+		2) need to transform the wave function into
+		   complex spherical harmonics and then compute
+		   transition density matrix between real and imaginary parts
+		   of the wave function.
+	       ---------------------------------------------------------------*/
+#if 0
 	      delx = -2.0*bj*MIX[lx1][lx2+1][0];
 	      if (lx2 > 0)
 		delx += (lx2)*MIX[lx1][lx2-1][0];
@@ -523,9 +533,9 @@ void compute_oeprops()
 		  tmp = z0 * (-2.0*xl2*ty - 2.0*yl2*tx - xdely_ydelx - ydelx_xdely) * over_pf * norm_pf;
 		  Lz2 -= dens_pf * tmp;
 	      }
+#endif	  
             }
           }
-	  
 	  
 	  
 	  /********************************************************
@@ -769,6 +779,7 @@ void compute_oeprops()
 
 
   /*--- Compute the rest of L^2 ---*/
+#if 0
   for(i=0;i<nbfao;i++)
     for(j=0;j<nbfao;j++) {
       ij = (i > j) ? ioff[i] + j : ioff[j] + i;
@@ -784,6 +795,7 @@ void compute_oeprops()
 	  Lz2 -= Lz_ao[ij]*Lz_ao[kl]*(Ptot[ij]*Ptot[kl]-Ptot[il]*Ptot[kj]);
 	}
     }
+#endif
   free(Lx_ao);
   free(Ly_ao);
   free(Lz_ao);

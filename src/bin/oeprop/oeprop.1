@@ -92,6 +92,8 @@ CRC Handbook of chemistry and physics. Edited by D. R. Lide. 73rd edition
     sdlapl.dat       \-   Laplacian of the spin density on a 2D grid
     mo.dat           \-   Molecular orbital/Density values on a 3D grid
     mo.pov           \-   MegaPov input file for rendering an image of mo.dat
+    mo.cube          \-   Molecular orbital(s) on a 3D grid in Gaussian94 Cube format 
+    dens.cube        \-   Electron/spin density(s) on a 3D grid in Gaussian94 Cube format 
 .fi
 
 .SH INPUT FORMAT
@@ -240,54 +242,69 @@ used in the field, what actually gets plotted are the Laplacians taken with nega
 \fBGRID = \fP6 - values of the electron density (spin density gradient if \fBSPIN_PROP\fP
 is set to true) on a three-dimensional grid.
 
-.IP "\fBMO_TO_PLOT =\fP \fIinteger\fP"
-Specifies the index of the molecular orbital to be plotted. It in Pitzer ordering
-(ordered accoring to irreps, not eigenvalues). Ranges from 1 to the number of MOs.
-Default is 1.
+.IP "\fBGRID_FORMAT =\fP \fIstring\fP"
+Specifies in which format the grid output will be produced.
+Currently, \fBPLOTMTV\fP (default for 2-d grids), \fBMEGAPOVPLUS\fP (available for 3-d grids),
+and \fBGAUSSCUBE\fP(default for 3-d grids) are supported.
+
+.IP "\fBMO_TO_PLOT =\fP \fIvector\fP"
+Specifies indices of the molecular orbitals to be computed on the 3-d grid. Indices can be specified
+as:
+
+unsigned integer - index in Pitzer ordering (ordered accoring to irreps, not eigenvalues).
+Ranges from 1 to the number of MOs.
+
+signed integer - index with respect to Fermi level. +1 means LUMO, +2 means
+second lowest virtual orbital, -1 means HOMO, etc.
+
+All indices have to be either unsigned or signed, you can't mix and match,
+or you will get unpredictable results.
+Default is to compute HOMO and LUMO.
 
 .IP "\fBGRID_ORIGIN =\fP \fIreal_vector\fP"
-Specifies origin of the coordinate system associated with the grid. 
-There is no default.
+Specifies the origin of the grid. A rectangular grid box which envelops the entire molecule
+will be computed automatically if \fBGRID_ORIGIN\fP is missing, however,
+there is no default for 2-d grids.
 
 .IP "\fBGRID_UNIT_X =\fP \fIreal_vector\fP"
-This vector specifies the direction of the x-axis of the coordinate system associated with the grid 
-in terms of the unit vectors of the reference three-dimensional coordinate system.
-If it is not normalized - it will be normalized by the program. There is no default.
+This vector specifies the direction of the first (x) side of the grid.
+It doesn't have have to be orthonormal.
+There is no default for 2-d grids.
 
 .IP "\fBGRID_UNIT_Y =\fP \fIreal_vector\fP"
-The same for the y-axis. It does not have to be neither normalized nor 
-orthogonal to GRID_UNITX - it will be orthonormalized automatically.
-There is no default.
+The same for the second (y) side. It doesn't have to be orthonormal
+or even orthogonal to \fBGRID_UNIT_X\fP.
+There is no default for 2-d grids.
 
 .IP "\fBGRID_XY0 =\fP \fIreal_2d_vector\fP"
 Specifies the coordinates of the lower left corner of the grid rectangle in 
-the 2D coordinate system defined by GRID_UNIT_X and GRID_UNIT_Y. 
+the 2D coordinate system defined by GRID_ORIGIN, GRID_UNIT_X, and GRID_UNIT_Y. 
 There is no default.
 
 .IP "\fBGRID_XY1 =\fP \fIreal_2d_vector\fP"
 Specifies the coordinates of the upper right corner of the grid rectangle in 
-the 2D coordinate system defined by GRID_UNIT_X and GRID_UNIT_Y. 
+the 2D coordinate system defined by GRID_ORIGIN, GRID_UNIT_X, and GRID_UNIT_Y. 
 There is no default.
 
 .IP "\fBGRID_XYZ0 =\fP \fIreal_3d_vector\fP"
 Specifies the coordinates of the far lower left corner of the grid box in 
-the 3D coordinate system defined by orthonormalized GRID_UNIT_X, GRID_UNIT_Y, and their cross-product.
-There is no default.
+the 3D coordinate system defined by GRID_ORIGIN, GRID_UNIT_X, GRID_UNIT_Y, and the cross-product of
+the latter two. There is no default.
 
 .IP "\fBGRID_XYZ1 =\fP \fIreal_3d_vector\fP"
 Specifies the coordinates of the near upper right corner of the grid box in 
-the 3D coordinate system defined by orthonormalized GRID_UNIT_X, GRID_UNIT_Y, and their cross-product.
-There is no default.
+the 3D coordinate system defined by GRID_ORIGIN, GRID_UNIT_X, GRID_UNIT_Y, and the cross-product of
+the latter two. There is no default.
 
 .IP "\fBNIX =\fP \fIinteger\fP"
-Number of intervals the grid box to be divided along x-coordinate. This parameter 
-has to be greater than 0. Default is 10.
+The number of grid point along x direction. This parameter has to be greater
+than 1. Default is 20.
 
 .IP "\fBNIY =\fP \fIinteger\fP"
-See \fBNIX\fP. Default is 10.
+The same as \fBNIX\fP for y direction. Default is 20.
 
 .IP "\fBNIZ =\fP \fIinteger\fP"
-See \fBNIX\fP. Default is 10.
+The same as \fBNIX\fP for z direction. Default is 20.
 
 .IP "\fBGRID_ZMIN =\fP \fIdouble\fP"
 Lower limit on displayed z-values for contour plots of electron density and 

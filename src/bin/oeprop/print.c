@@ -120,15 +120,25 @@ void print_params()
    fprintf(outfile,"    # of unique shells         =\t%d\n",nshell);
    fprintf(outfile,"    # of primitives            =\t%d\n",nprim);
    fprintf(outfile,"    Print level                =\t%d\n",print_lvl);
-   if (grid) {
+   if (grid3d == 0) {
      fprintf(outfile,"\n  List of GRID PARAMETERS :\n");
      fprintf(outfile,"    GRID_ORIGIN                =\t( %8.5lf %8.5lf %8.5lf )\n",grid_origin[0],grid_origin[1],grid_origin[2]);
-     fprintf(outfile,"    GRID_XY0                   =\t( %8.5lf %8.5lf )\n",grid_xy0[0],grid_xy0[1]);
-     fprintf(outfile,"    GRID_XY1                   =\t( %8.5lf %8.5lf )\n",grid_xy1[0],grid_xy1[1]);
-     fprintf(outfile,"    GRID_UNIT_X                =\t( %8.5lf %8.5lf %8.5lf )\n",grid_unit_x[0],grid_unit_x[1],grid_unit_x[2]);
-     fprintf(outfile,"    GRID_UNIT_Y                =\t( %8.5lf %8.5lf %8.5lf )\n",grid_unit_y[0],grid_unit_y[1],grid_unit_y[2]);
+     fprintf(outfile,"    GRID_STEP_X                =\t( %8.5lf %8.5lf %8.5lf )\n",grid_step_x[0],grid_step_x[1],grid_step_x[2]);
+     fprintf(outfile,"    GRID_STEP_Y                =\t( %8.5lf %8.5lf %8.5lf )\n",grid_step_y[0],grid_step_y[1],grid_step_y[2]);
+     fprintf(outfile,"    NIX                        =\t  %d\n",nix+1);
+     fprintf(outfile,"    NIY                        =\t  %d\n",niy+1);
      fprintf(outfile,"    GRID_ZMIN                  =\t  %8.5lf\n",grid_zmin);
      fprintf(outfile,"    GRID_ZMAX                  =\t  %8.5lf\n",grid_zmax);
+   }
+   else if (grid3d) {
+     fprintf(outfile,"\n  List of GRID PARAMETERS :\n");
+     fprintf(outfile,"    GRID_ORIGIN                =\t( %8.5lf %8.5lf %8.5lf )\n",grid_origin[0],grid_origin[1],grid_origin[2]);
+     fprintf(outfile,"    GRID_STEP_X                =\t( %8.5lf %8.5lf %8.5lf )\n",grid_step_x[0],grid_step_x[1],grid_step_x[2]);
+     fprintf(outfile,"    GRID_STEP_Y                =\t( %8.5lf %8.5lf %8.5lf )\n",grid_step_y[0],grid_step_y[1],grid_step_y[2]);
+     fprintf(outfile,"    GRID_STEP_Z                =\t( %8.5lf %8.5lf %8.5lf )\n",grid_step_z[0],grid_step_z[1],grid_step_z[2]);
+     fprintf(outfile,"    NIX                        =\t  %d\n",nix+1);
+     fprintf(outfile,"    NIY                        =\t  %d\n",niy+1);
+     fprintf(outfile,"    NIZ                        =\t  %d\n",niz+1);
    }
    fprintf(outfile,"\n");
 }

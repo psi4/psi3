@@ -57,6 +57,7 @@ EXTERN double **geom;		/* Cartesian geometry */
 EXTERN double *zvals, *exps;	/* Nuclear charges and exponents */
 EXTERN double *contr;		/* Contraction coefficients */
 EXTERN double **scf_evec_so, **scf_evec_ao;	/* SCF eigenvector in two forms */
+EXTERN double *scf_evals;	/* SCF eigenvalues */
 EXTERN double **usotao;				/* SO to AO transformation matrix */
 
 
@@ -97,10 +98,14 @@ EXTERN int grid;		/* 0 = compute nothing
 				   2 = compute electron density on a 2d grid
 				   3 = compute electron density gradient on a 2d grid
 				   4 = compute Laplacian of the electron density on a 2d grid
-				   5 = evaluate an mo on a 3d grid */
-EXTERN int mo_to_plot;          /* index of the MO to plot */
-EXTERN int grid3d;              /* flag if this is a 3d grid */
-EXTERN double grid_origin[3];   /* Origin of the grid rectangle/box in the reference system */
+				   5 = evaluate MOs on a 3d grid
+				   6 = evaluate density on a 3d grid */
+EXTERN int num_mos_to_plot;     /* total number of MOs to plot */
+EXTERN int *mos_to_plot;        /* index of the MOs to plot (in Pitzer order) */
+EXTERN int grid3d;              /* 1 if this is a 3d grid, 0 otherwise */
+EXTERN char *grid_format;       /* output format for the grid data */
+EXTERN double grid_origin[3];   /* Origin of the grid coordinate system as specified by user, then
+				   the origin of the grid rectangle/box in the reference system */
 EXTERN double grid_unit_x[3];   /* Unit vectors of an intermediate coordinate system in which the grid
 				   rectangle/box will be defined (expressed in the reference system) */
 EXTERN double grid_unit_y[3];
@@ -114,7 +119,7 @@ EXTERN double grid_step_x[3];   /* Unit grid step along the x axis of the grid r
 EXTERN double grid_step_y[3];
 EXTERN double grid_step_z[3];   /* Only used if a 3d grid is specified */
 EXTERN double grid_zmin;	/* Lower limit on displayed values of a scalar property on a 2d grid */
-EXTERN double grid_zmax;	/* Higher limit on displayed values of a scalar property on a 3d grid */
+EXTERN double grid_zmax;	/* Upper limit on displayed values of a scalar property on a 2d grid */
 EXTERN int edgrad_logscale;     /* If non-zero then to use logarithmic scaling of the electron density gradient */
 EXTERN int zvec_file;		/* Z-vector file number */
 EXTERN int delete_zvec;		/* Whether to delete the Z-vector file */
@@ -186,9 +191,12 @@ EXTERN double *edens, *sdens;   /* Electron and spin densities at the nuclei */
 EXTERN double massveloc, darw;  /* First-order relativistic corrections to the energy */
 EXTERN double **grid_pts;	/* Scalar property (electrostatic potential, electron density, density gradient magnitude, Laplacian)
 				   values on a 2d grid */
-EXTERN double ***grid3d_pts;	/* Scalar property values on a 3d grid */
 EXTERN double **grid_vecX, **grid_vecY, **grid_vecZ;    /* Components of vector properties (density gradient,
 							      principal values of the Hessian) on the grid */
+EXTERN double ****grid3d_pts;	/* Values of properties on a 3d grid:
+				 -first dimension runs over each property (MOs in MO case, density,
+				  density gradient components, etc.)
+				 -second, third, and fourth dimensions run over x, y, and z indices of grid points */
 EXTERN double **nmo_so;		/* Natural orbitals in the SO basis */
 EXTERN double **nmo_ao;		/* Natural orbitals in the AO basis */
 

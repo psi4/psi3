@@ -31,11 +31,7 @@ void compute_density()
 	/* Reading in coupling coefficients for TCSCF wavefunction */
 
   if (iopen < 0) {
-#if USE_LIBCHKPT
     ccvecs = chkpt_rd_ccvecs();
-#else
-    ccvecs = file30_rd_ccvecs();
-#endif
     alpha = ccvecs[0];
     beta = ccvecs[1];
     if (print_lvl >= PRINTCCOEFFLEVEL) {

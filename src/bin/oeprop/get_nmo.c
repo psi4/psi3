@@ -154,11 +154,7 @@ void get_nmo()
   
 
   if (wrtnos) {
-    #if USE_LIBCHKPT
     chkpt_wt_scf(nmo_so);
-    #else
-    file30_wt_scf(nmo_so);
-    #endif
     if (print_lvl >= 1)
       fprintf(outfile,"  Natural orbitals has just been written to file30\n\n");
   }

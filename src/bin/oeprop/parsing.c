@@ -106,7 +106,7 @@ void parsing()
   if (mpmax < 1)
     mpmax = 1;
   else if (mpmax > 3)
-         mpmax = 3;
+    mpmax = 3;
 
 
   if (ip_exist("MP_REF_XYZ",0)) {
@@ -144,136 +144,8 @@ void parsing()
   if (spin_prop)
     nuc_esp = 1;
 
-  errcod = ip_data("GRID","%d",&grid,0);
-  if (grid < 0)
-    punt("GRID type must be positive");
-  if (grid == 5 || grid == 6)
-    grid3d = 1;
-  if (grid == 5) {
-    mo_to_plot = 1;
-    read_opdm = 0;
-    errcod = ip_data("MO_TO_PLOT","%d",&mo_to_plot,0);
-    if (mo_to_plot <= 0 || mo_to_plot > nmo)
-      punt("MO_TO_PLOT out of range");
-    mo_to_plot--;
-  }
-  
-  if (grid !=0) {
-    if (ip_exist("GRID_ORIGIN",0)) {
-      ip_count("GRID_ORIGIN",&i,0);
-      if (i != 3)
-        punt("GRID_ORIGIN must have 3 components");
-      for (i=0;i<3;i++) {
-        errcod = ip_data("GRID_ORIGIN","%lf",&grid_origin[i],1,i);
-        if (errcod != IPE_OK)
-          punt("Error in the definition of GRID_ORIGIN");
-      }
-    }
-    else
-      punt("GRID_ORIGIN is not defined");
-    if (ip_exist("GRID_UNIT_X",0)) {
-      ip_count("GRID_UNIT_X",&i,0);
-      if (i != 3)
-        punt("GRID_UNIT_X must have 3 components");
-      for (i=0;i<3;i++) {
-        errcod = ip_data("GRID_UNIT_X","%lf",&grid_unit_x[i],1,i);
-        if (errcod != IPE_OK)
-          punt("Error in the definition of GRID_UNIT_X");
-      }
-    }
-    else
-      punt("GRID_UNIT_X is not defined");
-    if (ip_exist("GRID_UNIT_Y",0)) {
-      ip_count("GRID_UNIT_Y",&i,0);
-      if (i != 3)
-        punt("GRID_UNIT_Y must have 3 components");
-      for (i=0;i<3;i++) {
-        errcod = ip_data("GRID_UNIT_Y","%lf",&grid_unit_y[i],1,i);
-        if (errcod != IPE_OK)
-          punt("Error in the definition of GRID_UNIT_Y");
-      }
-    }
-    else
-      punt("GRID_UNIT_Y is not defined");
-    
-    if (grid3d == 0) {
-      if (ip_exist("GRID_XY0",0)) {
-	ip_count("GRID_XY0",&i,0);
-	if (i != 2)
-	  punt("GRID_XY0 must have 2 components");
-	for (i=0;i<2;i++) {
-	  errcod = ip_data("GRID_XY0","%lf",&grid_xy0[i],1,i);
-	  if (errcod != IPE_OK)
-	    punt("Error in the definition of GRID_XY0");
-	}
-      }
-      else
-	punt("GRID_XY0 is not defined");
-    
-      if (ip_exist("GRID_XY1",0)) {
-	ip_count("GRID_XY1",&i,0);
-	if (i != 2)
-	  punt("GRID_XY1 must have 2 components");
-	for (i=0;i<2;i++) {
-	  errcod = ip_data("GRID_XY1","%lf",&grid_xy1[i],1,i);
-	  if (errcod != IPE_OK)
-	    punt("Error in the definition of GRID_XY1");
-	  else if (grid_xy1[i] <= grid_xy0[i])
-	    punt("GRID_XY1 must point to the upper right corner of the grid");
-	}
-      }
-      else
-	punt("GRID_XY1 is not defined");
-    }
-    else {
-      if (ip_exist("GRID_XYZ0",0)) {
-	ip_count("GRID_XYZ0",&i,0);
-	if (i != 3)
-	  punt("GRID_XYZ0 must have 3 components");
-	for (i=0;i<3;i++) {
-	  errcod = ip_data("GRID_XYZ0","%lf",&grid_xyz0[i],1,i);
-	  if (errcod != IPE_OK)
-	    punt("Error in the definition of GRID_XYZ0");
-	}
-      }
-      else
-	punt("GRID_XYZ0 is not defined");
-    
-      if (ip_exist("GRID_XYZ1",0)) {
-	ip_count("GRID_XYZ1",&i,0);
-	if (i != 3)
-	  punt("GRID_XYZ1 must have 3 components");
-	for (i=0;i<3;i++) {
-	  errcod = ip_data("GRID_XYZ1","%lf",&grid_xyz1[i],1,i);
-	  if (errcod != IPE_OK)
-	    punt("Error in the definition of GRID_XYZ1");
-	  else if (grid_xyz1[i] <= grid_xyz0[i])
-	    punt("GRID_XYZ1 must point to the upper right corner of the grid parallelepiped");
-	}
-      }
-      else
-	punt("GRID_XYZ1 is not defined");
-    }
-
-    errcod = ip_data("NIX","%d",&nix,0);
-    if (nix <= 0)
-      punt("NIX must be positive integer");
-    errcod = ip_data("NIY","%d",&niy,0);
-    if (niy <= 0)
-      punt("NIY must be positive integer");
-    if (grid3d) {
-      errcod = ip_data("NIZ","%d",&niz,0);
-      if (niz <= 0)
-	punt("NIZ must be positive integer");
-    }
-
-    if (grid3d == 0) {
-	errcod = ip_data("GRID_ZMIN","%lf",&grid_zmin,0);
-	errcod = ip_data("GRID_ZMAX","%lf",&grid_zmax,0);
-	if (grid_zmin >= grid_zmax)
-	  punt("GRID_ZMIN must be less than GRID_ZMAX");
-	errcod = ip_data("EDGRAD_LOGSCALE","%d",&edgrad_logscale,0);
-    }
-  }
+  /* parse the grid information */
+  if (ip_exist("GRID",0))
+    grid_parse();
 
 }

@@ -7,7 +7,6 @@ void read_basset_info()
 {
   int i;
 
-#if USE_LIBCHKPT
   exps  = chkpt_rd_exps();
   contr = chkpt_rd_contr();
   sprim = chkpt_rd_sprim();
@@ -15,15 +14,6 @@ void read_basset_info()
   stype = chkpt_rd_stype();
   snumg = chkpt_rd_snumg();
   sloc  = chkpt_rd_sloc();
-#else
-  exps  = file30_rd_exps();
-  contr = file30_rd_contr();
-  sprim = file30_rd_sprim();
-  snuc  = file30_rd_snuc();
-  stype = file30_rd_stype();
-  snumg = file30_rd_snumg();
-  sloc  = file30_rd_sloc();
-#endif
   
   lmax = 0;
   for(i=0;i<nshell;i++)

@@ -24,7 +24,8 @@ void compute_grid_dens_3d()
     Density = Ptot;
 
   /* Initialize some intermediates */
-  grid3d_pts = init_box(nix+1,niy+1,niz+1);
+  grid3d_pts = (double****) malloc(1*sizeof(double***));
+  grid3d_pts[0] = init_box(nix+1,niy+1,niz+1);
   bf_values = init_array(nbfao);
 
   for(ix=0;ix<=nix;ix++) {
@@ -136,7 +137,7 @@ void compute_grid_dens_3d()
 	  for(i=0;i<nbfao;i++)
 	    for(j=0;j<=i;j++)
 	      tmp += bf_values[i] * Density[ioff[i]+j] * bf_values[j] * (i!=j ? 2.0 : 1.0);
-	  grid3d_pts[ix][iy][iz] = tmp;
+	  grid3d_pts[0][ix][iy][iz] = tmp;
 	  
           x += grid_step_z[0];
 	  y += grid_step_z[1];
