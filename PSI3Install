@@ -19,7 +19,7 @@ set distdir = `pwd`
 set prefix = /usr/local/psi3-bin
 
 # machine architecture
-set arch=`./host.sh`
+set arch=`./bin/host.sh`
 
 # compilation directory
 set compdir = `pwd`/$arch
