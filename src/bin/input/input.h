@@ -165,10 +165,10 @@ void stop_io();
 void init_oldcalc();
 void cleanup_oldcalc();
 void oldcalc_projection();
+void store_oldcalc();
 
 void init_gto(int);
 void cleanup_gto(int);
-void save_oldmos();
 
 double **overlap_new_old();
 double **overlap();

@@ -45,7 +45,7 @@ EXTERN int keep_ref_frame;          /*Use the input geometry frame as the refere
 EXTERN int read_chkpt;              /*Read old data from checkpoint file?*/
 EXTERN int chkpt_geom;              /*Read geometry from checkpoint file?*/
 EXTERN int chkpt_mos;               /*Project old SCF evector?*/
-EXTERN int save_mos;                /*Save old SCF evector and old/new basis overlap?*/
+EXTERN int save_oldcalc;            /*Save old calculation and old/new basis overlap?*/
 EXTERN int overwrite_output;        /*Overwrite output.dat?*/
 
 /*Labels*/

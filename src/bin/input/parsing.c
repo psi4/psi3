@@ -96,7 +96,7 @@ void parsing_cmdline(int argc, char *argv[])
    read_chkpt = 0;
    chkpt_mos = 0;
    chkpt_geom = 0;
-   save_mos = 0;
+   save_oldcalc = 0;
    overwrite_output = 1;
    
    for (i=1; i<argc; i++) {
@@ -110,7 +110,7 @@ void parsing_cmdline(int argc, char *argv[])
        /*--- read MOs and project onto new basis? ---*/
        if (strcmp(argv[i], "--savemos") == 0) {
 	 read_chkpt = 1;
-	 save_mos = 1;
+	 save_oldcalc = 1;
        }
 
        /*--- read geometry from file30? (in findif calculations) ---*/

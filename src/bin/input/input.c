@@ -81,13 +81,13 @@ int main(int argc, char *argv[])
        Read in geometry
       -----------------*/
      if (chkpt_geom == 0) { /* read geometry from input.dat */
-	 if (cartOn)
-	     read_cart();
-	 else
-	     read_zmat();
+       if (cartOn)
+	 read_cart();
+       else
+	 read_zmat();
      }
      else { /* else read the next molecular geometry from checkpoint file */
-	 read_chkpt_geom();
+       read_chkpt_geom();
      }
 
      repulsion = 0.0;
@@ -161,8 +161,8 @@ int main(int argc, char *argv[])
      /*-------------------------------------------------
        Write old MOs and old/new basis overlap info out
       -------------------------------------------------*/
-     if (save_mos) {
-       save_oldmos();
+     if (save_oldcalc) {
+       store_oldcalc();
      }
 
      /*------------------------------
