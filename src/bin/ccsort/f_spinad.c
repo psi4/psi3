@@ -14,7 +14,7 @@ void f_spinad(void)
   if(params.ref == 0) { /*** RHF ***/
     dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
     dpd_buf4_scmcopy(&F, CC_FINTS, "F 2<ia|bc> - <ia|cb>", 2);
-    dpd_buf4_sort(&F, CC_TMP0, pqsr, 10, 5, "F <ia|cb>");
+    dpd_buf4_sort_ooc(&F, CC_TMP0, pqsr, 10, 5, "F <ia|cb>");
     dpd_buf4_close(&F);
 
     dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0, "F 2<ia|bc> - <ia|cb>");

@@ -133,50 +133,50 @@ void classify(int p, int q, int r, int s, double value,
     if((occ[p] && vir[q] && vir[r] && vir[s])) {
       iwl_buf_wrt_val(F1Buf, cc_occ[p], cc_vir[q], cc_vir[r], cc_vir[s],
 		      value, 0, outfile, dirac);
-      iwl_buf_wrt_val(F2Buf, cc_vir[q], cc_occ[p], cc_vir[r], cc_vir[s],
+      iwl_buf_wrt_val(F2Buf, cc_vir[r], cc_vir[s], cc_occ[p], cc_vir[q],
 		      value, 0, outfile, dirac);
     }
     if((occ[q] && vir[p] && vir[r] && vir[s])) {
       iwl_buf_wrt_val(F1Buf, cc_occ[q], cc_vir[p], cc_vir[r], cc_vir[s],
 		      value, 0, outfile, dirac);
-      iwl_buf_wrt_val(F2Buf, cc_vir[p], cc_occ[q], cc_vir[r], cc_vir[s],
+      iwl_buf_wrt_val(F2Buf, cc_vir[r], cc_vir[s], cc_occ[q], cc_vir[p],
 		      value, 0, outfile, dirac);
     }
     if((occ[r] && vir[s] && vir[p] && vir[q])) {
       iwl_buf_wrt_val(F1Buf, cc_occ[r], cc_vir[s], cc_vir[p], cc_vir[q],
 		      value, 0, outfile, dirac);
-      iwl_buf_wrt_val(F2Buf, cc_vir[s], cc_occ[r], cc_vir[p], cc_vir[q],
+      iwl_buf_wrt_val(F2Buf, cc_vir[p], cc_vir[q], cc_occ[r], cc_vir[s],
 		      value, 0, outfile, dirac);
     }
     if((occ[s] && vir[r] && vir[p] && vir[q])) {
       iwl_buf_wrt_val(F1Buf, cc_occ[s], cc_vir[r], cc_vir[p], cc_vir[q],
 		      value, 0, outfile, dirac);
-      iwl_buf_wrt_val(F2Buf, cc_vir[r], cc_occ[s], cc_vir[p], cc_vir[q],
+      iwl_buf_wrt_val(F2Buf, cc_vir[p], cc_vir[q], cc_occ[s], cc_vir[r],
 		      value, 0, outfile, dirac);
     }
   }
   else if((occ[p] && vir[q] && vir[r] && vir[s])) {
     iwl_buf_wrt_val(F1Buf, cc_occ[p], cc_vir[q], cc_vir[r], cc_vir[s],
 		    value, 0, outfile, dirac);
-    iwl_buf_wrt_val(F2Buf, cc_vir[q], cc_occ[p], cc_vir[r], cc_vir[s],
+    iwl_buf_wrt_val(F2Buf, cc_vir[r], cc_vir[s], cc_occ[p], cc_vir[q],
 		    value, 0, outfile, dirac);
   }
   else if((occ[q] && vir[p] && vir[r] && vir[s])) {
     iwl_buf_wrt_val(F1Buf, cc_occ[q], cc_vir[p], cc_vir[r], cc_vir[s],
 		    value, 0, outfile, dirac);
-    iwl_buf_wrt_val(F2Buf, cc_vir[p], cc_occ[q], cc_vir[r], cc_vir[s],
+    iwl_buf_wrt_val(F2Buf, cc_vir[r], cc_vir[s], cc_occ[q], cc_vir[p],
 		    value, 0, outfile, dirac);
   }
   else if((occ[r] && vir[s] && vir[p] && vir[q])) {
     iwl_buf_wrt_val(F1Buf, cc_occ[r], cc_vir[s], cc_vir[p], cc_vir[q],
 		    value, 0, outfile, dirac);
-    iwl_buf_wrt_val(F2Buf, cc_vir[s], cc_occ[r], cc_vir[p], cc_vir[q],
+    iwl_buf_wrt_val(F2Buf, cc_vir[p], cc_vir[q], cc_occ[r], cc_vir[s],
 		    value, 0, outfile, dirac);
   }
   else if((occ[s] && vir[r] && vir[p] && vir[q])) {
     iwl_buf_wrt_val(F1Buf, cc_occ[s], cc_vir[r], cc_vir[p], cc_vir[q],
 		    value, 0, outfile, dirac);
-    iwl_buf_wrt_val(F2Buf, cc_vir[r], cc_occ[s], cc_vir[p], cc_vir[q],
+    iwl_buf_wrt_val(F2Buf, cc_vir[p], cc_vir[q], cc_occ[s], cc_vir[r],
 		    value, 0, outfile, dirac);
   }
 }
