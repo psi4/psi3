@@ -21,8 +21,8 @@ C**********************************************************************
       integer errcod
       integer ijnk1(1),ijnk2(2),ijnk3
       logical oldinp
-      REAL*8 Z(300000)
-      INTEGER IZ(5000)
+      REAL*8 Z(10000000)
+      INTEGER IZ(50000)
       CHARACTER LABEL*10
       COMMON/IO/IIN,IOUT,I12,I16,I21,IDER,ISCR1,ISCR2
     1 FORMAT(A10)
