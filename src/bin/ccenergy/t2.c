@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <dpd.h>
 #define EXTERN
 #include "globals.h"
 
@@ -9,6 +10,7 @@ void status(char *, FILE *);
 
 void t2_build(void)
 {
+
   DT2();
   if(params.print & 2) status("<ij||ab> -> T2", outfile);
 

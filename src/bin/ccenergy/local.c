@@ -309,8 +309,10 @@ void local_init(void)
   C_DGEMM('n','n',nao,nao,nao,-1.0,&(D[0][0]),nao,&(S[0][0]),nao,
 	  1.0,&(Rt_full[0][0]),nao);
 
+  /*
   fprintf(outfile, "\n\tVirtual-Space Projector (R-tilde):\n");
   print_mat(Rt_full, nao, nao, outfile);
+  */
 
   /* Grab the MO-basis Fock matrix */
   Fmo = block_matrix(nao, nao);
@@ -374,8 +376,6 @@ void local_init(void)
 	}
       }
     }
-
-    if(!ij) print_mat(Rt, nao, pairdom_len[ij], outfile);
 
     /* Compute the MO -> projected virtual transformation matrix */
     V[ij] = block_matrix(nvir,pairdom_len[ij]);
@@ -573,12 +573,11 @@ void local_filter_T1(dpdfile2 *T1)
     T1bar = init_array(pairdom_nrlen[ii]);
 
     /* Transform the virtuals to the redundant projected virtual basis */
-    C_DGEMV('t', pairdom_len[ii], nvir, 1.0, &(V[ii][0][0]), pairdom_len[ii], 
+    C_DGEMV('t', nvir, pairdom_len[ii], 1.0, &(V[ii][0][0]), pairdom_len[ii], 
 	    &(T1->matrix[0][i][0]), 1, 0.0, &(T1tilde[0]), 1);
 
-
     /* Transform the virtuals to the non-redundant virtual basis */
-    C_DGEMV('t', pairdom_nrlen[ii], pairdom_len[ii], 1.0, &(W[ii][0][0]), pairdom_nrlen[ii], 
+    C_DGEMV('t', pairdom_len[ii], pairdom_nrlen[ii], 1.0, &(W[ii][0][0]), pairdom_nrlen[ii], 
 	    &(T1tilde[0]), 1, 0.0, &(T1bar[0]), 1);
 
     /* Apply the denominators */

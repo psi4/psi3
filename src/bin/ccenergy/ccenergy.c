@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
 
   }
 
-  if(params.local) local_init();
+  if(params.local) local_init(); 
  
   init_amps();
   tau_build();
