@@ -53,60 +53,63 @@ void WejabL2(int L_irr)
     dpd_buf4_close(&Z);
   }
   else if(params.ref == 1) { /** ROHF **/
-
+    
     dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
     dpd_file2_init(&Lia, CC_LAMBDA, L_irr, 0, 1, "Lia");
 
-    dpd_buf4_init(&WAMEF, CC_HBAR, 0, 10, 7, 10, 7, 0, "WAMEF");
-    dpd_buf4_init(&X1, CC_TMP1, L_irr, 0, 7, 0, 7, 0, "X(0,7) 1");
-    dpd_contract424(&WAMEF, &LIA, &X1, 1, 1, 1, -1.0, 0.0);
-    dpd_buf4_close(&WAMEF);
-    dpd_buf4_sort(&X1, CC_TMP1, qprs, 0, 7, "X(0,7) 2");
-    dpd_buf4_init(&X2, CC_TMP1, L_irr, 0, 7, 0, 7, 0, "X(0,7) 2");
-    dpd_buf4_axpy(&X2, &X1, -1.0);
-    dpd_buf4_close(&X2);
-    dpd_buf4_init(&newLIJAB, CC_LAMBDA, L_irr, 0, 7, 2, 7, 0, "New LIJAB");
-    dpd_buf4_axpy(&X1, &newLIJAB, 1.0);
-    dpd_buf4_close(&X1);
-    dpd_buf4_close(&newLIJAB);
+    /** Z(IJ,AB) = L(I,E) W(EJ,AB) **/
+    dpd_buf4_init(&Z1, CC_TMP1, L_irr, 0, 7, 0, 7, 0, "Z(IJ,A>B)");
+    dpd_buf4_init(&W, CC_HBAR, 0, 11, 7, 11, 7, 0, "WAMEF");
+    dpd_contract244(&LIA, &W, &Z1, 1, 0, 0, 1, 0);
+    dpd_buf4_close(&W);
+    /** Z(IJ,AB) --> Z(JI,AB) **/
+    dpd_buf4_sort(&Z1, CC_TMP1, qprs, 0, 7, "Z(JI,A>B)");
+    /** Z(IJ,AB) = Z(IJ,AB) - Z(JI,AB) **/
+    dpd_buf4_init(&Z2, CC_TMP1, L_irr, 0, 7, 0, 7, 0, "Z(JI,A>B)");
+    dpd_buf4_axpy(&Z2, &Z1, -1);
+    dpd_buf4_close(&Z2);
+    /** Z(IJ,AB) --> New L(IJ,AB) **/
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 7, 2, 7, 0, "New LIJAB");
+    dpd_buf4_axpy(&Z1, &L2, 1);
+    dpd_buf4_close(&L2);
+    dpd_buf4_close(&Z1);
 
-    dpd_buf4_init(&Wamef, CC_HBAR, 0, 10, 7, 10, 7, 0, "Wamef");
-    dpd_buf4_init(&X1, CC_TMP1, L_irr, 0, 7, 0, 7, 0, "X(0,7) 1");
-    dpd_contract424(&Wamef, &Lia, &X1, 1, 1, 1, -1.0, 0.0);
-    dpd_buf4_close(&Wamef);
-    dpd_buf4_sort(&X1, CC_TMP1, qprs, 0, 7, "X(0,7) 2");
-    dpd_buf4_init(&X2, CC_TMP1, L_irr, 0, 7, 0, 7, 0, "X(0,7) 2");
-    dpd_buf4_axpy(&X2, &X1, -1.0);
-    dpd_buf4_close(&X2);
-    dpd_buf4_init(&newLijab, CC_LAMBDA, L_irr, 0, 7, 2, 7, 0, "New Lijab");
-    dpd_buf4_axpy(&X1, &newLijab, 1.0);
-    dpd_buf4_close(&X1);
-    dpd_buf4_close(&newLijab);
+    /** Z(ij,ab) = L(i,e) W(ej,ab) **/
+    dpd_buf4_init(&Z1, CC_TMP1, L_irr, 0, 7, 0, 7, 0, "Z(ij,a>b)");
+    dpd_buf4_init(&W, CC_HBAR, 0, 11, 7, 11, 7, 0, "Wamef");
+    dpd_contract244(&Lia, &W, &Z1, 1, 0, 0, 1, 0);
+    dpd_buf4_close(&W);
+    /** Z(ij,ab) --> Z(ji,ab) **/
+    dpd_buf4_sort(&Z1, CC_TMP1, qprs, 0, 7, "Z(ji,a>b)");
+    /** Z(ij,ab) = Z(ij,ab) - Z(ji,ab) **/
+    dpd_buf4_init(&Z2, CC_TMP1, L_irr, 0, 7, 0, 7, 0, "Z(ji,a>b)");
+    dpd_buf4_axpy(&Z2, &Z1, -1);
+    dpd_buf4_close(&Z2);
+    /** Z(ij,ab) --> New L(ij,ab) **/
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 7, 2, 7, 0, "New Lijab");
+    dpd_buf4_axpy(&Z1, &L2, 1);
+    dpd_buf4_close(&L2);
+    dpd_buf4_close(&Z1);
 
-    dpd_buf4_init(&newLIjAb, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
+    /** New L(Ij,Ab) <-- L(I,E) W(Ej,Ab) **/
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
+    dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");
+    dpd_contract244(&LIA, &W, &L2, 1, 0, 0, 1, 1);
+    dpd_buf4_close(&W);
+    dpd_buf4_close(&L2);
 
-    dpd_buf4_init(&WaMeF, CC_HBAR, 0, 10, 5, 10, 5, 0, "WaMeF");
-    dpd_buf4_sort(&WaMeF, CC_TMP0, pqsr, 10, 5, "WaMeF (Ma,Fe)");
-    dpd_buf4_close(&WaMeF);
+    /** Z(jI,bA) = -L(j,e) W(eI,bA) **/
+    dpd_buf4_init(&Z, CC_TMP1, L_irr, 0, 5, 0, 5, 0, "Z(jI,bA)");
+    dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WaMeF");
+    dpd_contract244(&Lia, &W, &Z, 1, 0, 0, 1, 0);
+    dpd_buf4_close(&W);
+    /** Z(jI,bA) --> New L(Ij,Ab) **/
+    dpd_buf4_sort_axpy(&Z, CC_LAMBDA, qpsr, 0, 5, "New LIjAb", 1);
+    dpd_buf4_close(&Z);
 
-    dpd_buf4_init(&WaMeF, CC_TMP0, 0, 10, 5, 10, 5, 0, "WaMeF (Ma,Fe)");
-    dpd_contract424(&WaMeF, &Lia, &newLIjAb, 1, 1, 1, 1.0, 1.0);
-    dpd_buf4_close(&WaMeF);
-
-    dpd_buf4_init(&WAmEf, CC_HBAR, 0, 10, 5, 10, 5, 0, "WAmEf");
-    dpd_buf4_init(&Ltmp, CC_TMP0, L_irr, 0, 5, 0, 5, 0, "Ltmp (ji,ab)");
-    dpd_contract424(&WAmEf, &LIA, &Ltmp, 1, 1, 1, 1.0, 0.0);
-    dpd_buf4_sort(&Ltmp, CC_TMP1, qprs, 0, 5, "Lijab (ij,ab)");
-    dpd_buf4_close(&Ltmp);
-    dpd_buf4_close(&WAmEf);
-
-    dpd_buf4_init(&Ltmp, CC_TMP1, L_irr, 0, 5, 0, 5, 0, "Lijab (ij,ab)");
-    dpd_buf4_axpy(&Ltmp, &newLIjAb, 1.0);
-    dpd_buf4_close(&Ltmp);
-
-    dpd_buf4_close(&newLIjAb);
     dpd_file2_close(&Lia);
     dpd_file2_close(&LIA);
+
   }
   else if(params.ref == 2) { /** UHF **/
 

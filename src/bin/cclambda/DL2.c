@@ -43,7 +43,14 @@ void DL2(struct L_Params L_params)
   }
   /* excited state - no inhomogeneous term, first term is E*L */
   else if (!params.zeta) {
-    if (params.ref == 0 || params.ref == 1 ) { /** RHF/ROHF **/
+    if (params.ref == 0) { /* RHF */
+      dpd_buf4_init(&D, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
+      dpd_buf4_init(&Dold, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "LIjAb");
+      dpd_buf4_axpy(&Dold, &D, -1.0 * L_params.cceom_energy);
+      dpd_buf4_close(&Dold);
+      dpd_buf4_close(&D);
+    }
+    else if (params.ref == 1 ) { /* ROHF */
       dpd_buf4_init(&D, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "New LIJAB");
       dpd_buf4_init(&Dold, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "LIJAB");
       dpd_buf4_axpy(&Dold, &D, -1.0 * L_params.cceom_energy);
@@ -66,7 +73,12 @@ void DL2(struct L_Params L_params)
   }
   /* solving zeta equations, homogeneous term is Xi, zero out files */
   else {
-    if (params.ref == 0 || params.ref == 1 ) { /** RHF/ROHF **/
+    if (params.ref == 0) { /* RHF */
+      dpd_buf4_init(&X2, EOM_XI, L_irr, 0, 5, 0, 5, 0, "XIjAb");
+      dpd_buf4_copy(&X2, CC_LAMBDA, "New LIjAb");
+      dpd_buf4_close(&X2);
+    }
+    else if (params.ref == 1 ) { /* ROHF */
       dpd_buf4_init(&X2, EOM_XI, L_irr, 2, 7, 2, 7, 0, "XIJAB");
       dpd_buf4_copy(&X2, CC_LAMBDA, "New LIJAB");
       dpd_buf4_close(&X2);

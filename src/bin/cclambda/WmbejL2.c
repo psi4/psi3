@@ -70,7 +70,7 @@ void WmbejL2(int L_irr)
     dpd_buf4_init(&Z, CC_TMP0, L_irr, 10, 10, 10, 10, 0, "Z(IA,jb) I");
 
     dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "2 W(ME,jb) + W(Me,Jb)");
-    dpd_buf4_init(&L2, CC_LAMBDA, 0, 10, 10, 10, 10, 0, "2 LIAjb - LIbjA");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 10, 10, 10, 10, 0, "2 LIAjb - LIbjA");
     dpd_contract444(&W, &L2, &Z, 0, 1, 0.5, 0);
     dpd_buf4_close(&L2);
     dpd_buf4_close(&W);

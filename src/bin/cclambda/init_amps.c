@@ -18,11 +18,28 @@ void init_amps(struct L_Params L_params)
      && flen(CC_Lijab) && flen(CC_LIjAb)) return;
   */
 
-  /* if solving zeta equations, initial guess for zeta=0 */
-  /* change later to zeta = Xi * denom for efficiency */
+  /* if solving zeta equations, initial guess is Xi * denom */
   if (params.zeta) {
-    /* begin paste */
-    if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
+    if (params.ref == 0) { /* RHF */
+      dpd_file2_init(&XIA, EOM_XI, L_irr, 0, 1, "XIA");
+      dpd_file2_copy(&XIA, CC_LAMBDA, "LIA");
+      dpd_file2_close(&XIA);
+      dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
+      dpd_file2_init(&dIA, CC_DENOM, L_irr, 0, 1, "dIA");
+      dpd_file2_dirprd(&dIA, &LIA);
+      dpd_file2_close(&dIA);
+      dpd_file2_close(&LIA);
+
+      dpd_buf4_init(&XIjAb, EOM_XI, L_irr, 0, 5, 0, 5, 0, "XIjAb");
+      dpd_buf4_copy(&XIjAb, CC_LAMBDA, "LIjAb");
+      dpd_buf4_close(&XIjAb);
+      dpd_buf4_init(&LIjAb, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "LIjAb");
+      dpd_buf4_init(&dIjAb, CC_DENOM, L_irr, 0, 5, 0, 5, 0, "dIjAb");
+      dpd_buf4_dirprd(&dIjAb, &LIjAb);
+      dpd_buf4_close(&dIjAb);
+      dpd_buf4_close(&LIjAb);
+    }
+    else if (params.ref == 1) { /* ROHF */
       dpd_file2_init(&XIA, EOM_XI, L_irr, 0, 1, "XIA");
       dpd_file2_copy(&XIA, CC_LAMBDA, "LIA");
       dpd_file2_close(&XIA);

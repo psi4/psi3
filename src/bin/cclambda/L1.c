@@ -61,7 +61,12 @@ void L1_build(struct L_Params L_params) {
   }
   /* solving zeta equations; inhomogeneous term is Xi */
   else {
-    if(params.ref == 0 || params.ref == 1) {
+    if (params.ref == 0) {
+      dpd_file2_init(&XIA, EOM_XI, 0, 0, 1, "XIA");
+      dpd_file2_copy(&XIA, CC_LAMBDA, "New LIA");
+      dpd_file2_close(&XIA);
+    }
+    else if (params.ref == 1) {
       dpd_file2_init(&XIA, EOM_XI, 0, 0, 1, "XIA");
       dpd_file2_init(&Xia, EOM_XI, 0, 0, 1, "Xia");
       dpd_file2_copy(&XIA, CC_LAMBDA, "New LIA");
@@ -329,21 +334,36 @@ void L1_build(struct L_Params L_params) {
     dpd_file2_init(&GAE, CC_LAMBDA, L_irr, 1, 1, "GAE");
     dpd_file2_init(&Gae, CC_LAMBDA, L_irr, 1, 1, "Gae");
 
+    dpd_buf4_init(&WAMEF, CC_HBAR, 0, 11, 5, 11, 7, 0, "WAMEF");
+    dpd_dot13(&GAE,&WAMEF,&newLIA, 0, 0, -1.0, 1.0);
+    dpd_buf4_close(&WAMEF);
+
+    dpd_buf4_init(&WaMeF, CC_HBAR, 0, 11, 5, 11, 5, 0, "WaMeF");
+    dpd_dot13(&Gae,&WaMeF,&newLIA, 0, 0, -1.0, 1.0);
+    dpd_buf4_close(&WaMeF);
+
+    dpd_buf4_init(&Wamef, CC_HBAR, 0, 11, 5, 11, 7, 0, "Wamef");
+    dpd_dot13(&Gae,&Wamef,&newLia, 0, 0, -1.0, 1.0);
+    dpd_buf4_close(&Wamef);
+
+    dpd_buf4_init(&WAmEf, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");
+    dpd_dot13(&GAE,&WAmEf,&newLia, 0, 0, -1.0, 1.0);
+    dpd_buf4_close(&WAmEf);
+
+    /*
     dpd_buf4_init(&WAMEF, CC_HBAR, 0, 10, 5, 10, 7, 0, "WAMEF");
     dpd_dot23(&GAE,&WAMEF,&newLIA, 0, 0, -1.0, 1.0);
     dpd_buf4_close(&WAMEF);
-
     dpd_buf4_init(&WaMeF, CC_HBAR, 0, 10, 5, 10, 5, 0, "WaMeF");
     dpd_dot23(&Gae,&WaMeF,&newLIA, 0, 0, -1.0, 1.0);
     dpd_buf4_close(&WaMeF);
-
     dpd_buf4_init(&Wamef, CC_HBAR, 0, 10, 5, 10, 7, 0, "Wamef");
     dpd_dot23(&Gae,&Wamef,&newLia, 0, 0, -1.0, 1.0);
     dpd_buf4_close(&Wamef);
-
     dpd_buf4_init(&WAmEf, CC_HBAR, 0, 10, 5, 10, 5, 0, "WAmEf");
     dpd_dot23(&GAE,&WAmEf,&newLia, 0, 0, -1.0, 1.0);
     dpd_buf4_close(&WAmEf);
+    */
 
     dpd_file2_close(&Gae);
     dpd_file2_close(&GAE);
@@ -378,7 +398,7 @@ void L1_build(struct L_Params L_params) {
   if(params.ref == 0) {
     dpd_file2_init(&GMI, CC_LAMBDA, L_irr, 0, 0, "GMI");
 
-    dpd_buf4_init(&WmNiE, CC_HBAR, 0, 0, 11, 0, 11, 0, "2WMnIe - WnMIe");
+    dpd_buf4_init(&WmNiE, CC_HBAR, 0, 0, 11, 0, 11, 0, "2WMnIe - WnMIe (Mn,eI)");
     dpd_dot14(&GMI, &WmNiE, &newLIA, 0, 0, -1.0, 1.0);
     dpd_buf4_close(&WmNiE);
 
@@ -389,19 +409,19 @@ void L1_build(struct L_Params L_params) {
     dpd_file2_init(&GMI, CC_LAMBDA, L_irr, 0, 0, "GMI");
     dpd_file2_init(&Gmi, CC_LAMBDA, L_irr, 0, 0, "Gmi");
 
-    dpd_buf4_init(&WMNIE, CC_HBAR, 0, 0, 11, 2, 11, 0, "WMNIE");
+    dpd_buf4_init(&WMNIE, CC_HBAR, 0, 0, 11, 2, 11, 0, "WMNIE (M>N,EI)");
     dpd_dot14(&GMI, &WMNIE, &newLIA, 0, 0, -1.0, 1.0); 
     dpd_buf4_close(&WMNIE);
 
-    dpd_buf4_init(&WmNiE, CC_HBAR, 0, 0, 11, 0, 11, 0, "WmNiE");
+    dpd_buf4_init(&WmNiE, CC_HBAR, 0, 0, 11, 0, 11, 0, "WmNiE (mN,Ei)");
     dpd_dot14(&Gmi, &WmNiE, &newLIA, 0, 0, -1.0, 1.0);
     dpd_buf4_close(&WmNiE);
 
-    dpd_buf4_init(&Wmnie, CC_HBAR, 0, 0, 11, 2, 11, 0, "Wmnie");
+    dpd_buf4_init(&Wmnie, CC_HBAR, 0, 0, 11, 2, 11, 0, "Wmnie (m>n,ei)");
     dpd_dot14(&Gmi, &Wmnie, &newLia, 0, 0, -1.0, 1.0);
     dpd_buf4_close(&Wmnie);
 
-    dpd_buf4_init(&WMnIe, CC_HBAR, 0, 0, 11, 0, 11, 0, "WMnIe");
+    dpd_buf4_init(&WMnIe, CC_HBAR, 0, 0, 11, 0, 11, 0, "WMnIe (Mn,eI)");
     dpd_dot14(&GMI, &WMnIe, &newLia, 0, 0, -1.0, 1.0);
     dpd_buf4_close(&WMnIe);
 
@@ -414,19 +434,19 @@ void L1_build(struct L_Params L_params) {
     dpd_file2_init(&GMI, CC_LAMBDA, L_irr, 0, 0, "GMI");
     dpd_file2_init(&Gmi, CC_LAMBDA, L_irr, 2, 2, "Gmi");
 
-    dpd_buf4_init(&W, CC_HBAR, 0, 0, 21, 2, 21, 0, "WMNIE");
+    dpd_buf4_init(&W, CC_HBAR, 0, 0, 21, 2, 21, 0, "WMNIE (M>N,EI)");
     dpd_dot14(&GMI, &W, &newLIA, 0, 0, -1, 1); 
     dpd_buf4_close(&W);
 
-    dpd_buf4_init(&W, CC_HBAR, 0, 23, 26, 23, 26, 0, "WmNiE");
+    dpd_buf4_init(&W, CC_HBAR, 0, 23, 26, 23, 26, 0, "WmNiE (mN,Ei)");
     dpd_dot14(&Gmi, &W, &newLIA, 0, 0, -1, 1);
     dpd_buf4_close(&W);
 
-    dpd_buf4_init(&W, CC_HBAR, 0, 10, 31, 12, 31, 0, "Wmnie");
+    dpd_buf4_init(&W, CC_HBAR, 0, 10, 31, 12, 31, 0, "Wmnie (m>n,ei)");
     dpd_dot14(&Gmi, &W, &newLia, 0, 0, -1, 1);
     dpd_buf4_close(&W);
 
-    dpd_buf4_init(&W, CC_HBAR, 0, 22, 25, 22, 25, 0, "WMnIe");
+    dpd_buf4_init(&W, CC_HBAR, 0, 22, 25, 22, 25, 0, "WMnIe (Mn,eI)");
     dpd_dot14(&GMI, &W, &newLia, 0, 0, -1, 1);
     dpd_buf4_close(&W);
 
