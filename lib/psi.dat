@@ -38,7 +38,7 @@ psi: (
   cclambda   = "cclambda"
   ccdensity  = "ccdensity"
   cceom      = "cceom"
-  ooccman    = "ooccman"
+  ooccman    = "ccman"
 
   % Determinant CI specific programs
   detci    = "detci"
