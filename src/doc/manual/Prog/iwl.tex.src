@@ -1,4 +1,3 @@
-\begin{verbatim}
 The library LIBIWL contains functions for reading and writing to files
 with the "Integrals With Labels" (IWL) format created by David
 Sherrill in 1994, modeled after the format of FILE34.  Most functions
@@ -21,132 +20,11 @@ making the files somewhat larger than strictly necessary.  However,
 this avoids confusing bit-packing schemes, and instantly allows us to
 have up to something like 65,536 basis functions addressable.
 
-Only the most useful few functions are documented at this time.  Other
-functions are still experimental and/or of limited use to most PSI
-programmers.
+The functions previously documented in this manual have been removed
+because that documentation is now out of date.  Documentation of the
+library is now created directly from the source code using the 
+{\tt doxygen} program and is available at
+\htmladdnormallink{
+{\tt http://vergil.chemistry.gatech.edu/psi/devel/libs/doxygen/html}}
+{http://vergil.chemistry.gatech.edu/psi/devel/libs/doxygen/html}.
 
-=====================================================================
-IWL_BUF_INIT
-
-   This function prepares a PSI Buffer according to the IWL format
-for reading or writing.  Important to set readflag=1 if opening for 
-reading, since other IWL buffer read routines anticipate that there
-is already data in the buffer.
-
-void iwl_buf_init(struct iwlbuf *Buf, int intape, double cutoff,
-      int readflag)
-
-Parameters:
-   Buf      = pointer to IWL buffer
-   intape   = file number of binary file to open
-   cutoff   = ignore integrals with values below this number
-   readflag = set to 1 for reading, and the buffer in memory will  
-              be filled with the first buffer of the data in the 
-              disk file
-
-Returns:
-   none
-
-
-=====================================================================
-IWL_RDONE
-
-   Read one electron ints from the given file.  Assumes that all 
-one-electron integrals will fit in core.  The arguments nfzc and nfzv
-allow the filtering out of frozen core or frozen virtual orbitals
-which will be on disk but may not be desired in core.
-
-void iwl_rdone(int itap, int nbstri, double *onel_ints, double *e_fzc,
-      int erase)
-
-Parameters:
-   itap       = tape to read ints from
-   ints       = buffer (already allocated) to store the integrals
-   e_fzc      = pointer to hold the frozen core energy
-   ioff       = standard offset array
-   norbs      = number of molecular orbitals
-   nfzc       = number of frozen core orbs...set to 0 if all ints desired
-   nfzv       = number of frozen virt orbs...set to 0 if all ints desired
-   erase      = erase itap (1=yes, 0=no)
-   printflg   = printing flag.  Set to 1 to print ints; otherwise, set to 0
-   outfile    = file pointer for output of ints or error messages
-
-Returns:
-   1 if reading was successful, 0 otherwise
-
-Notes: This function takes care of opening and closing the file 
-'itap'.  It is not necessary to call iwl_buf_init() etc.
-
-
-=====================================================================
-IWL_RDTWO
-
-   Read two electron ints from the given file.  Assumes that all 
-two-electron integrals will fit in core.  The arguments nfzc and nfzv
-allow the filtering out of frozen core or frozen virtual orbitals
-which may be on disk but are not desired in core.  This is useful
-for gradient or MCSCF calculations, where all some frozen orbital 
-integrals are required to form the Lagrangian.
-
-void iwl_rdtwo(int itap, double *ints, int *ioff, 
-      int norbs, int nfzc, int nfzv, int printflg, FILE *outfile)
-
-Arguments:
-   itap     = unit to write to
-   ints     = two electron integrals (already allocated)
-   ioff     = the old ioff array for lexical ordering
-   norbs    = total number of molecular orbitals
-   nfzc     = number of frozen core orbitals to be filtered out when reading
-   nfzv     = number of frozen virtual orbs to be filtered out when reading
-   printflg = print integrals as they're read
-   outfile  = output file pointer
-
-Returns:
-   none
-
-Notes: This function takes care of opening and closing the file 
-'itap'.  It is not necessary to call iwl_buf_init() etc.
-
-
-=====================================================================
-
-IWL_BUF_CLOSE
-
-   Close an IWL buffer previously opened with iwl_buf_init.
-   
-void iwl_buf_close(struct iwlbuf *Buf, int keep)
-
-Arguments:
-   Buf      = pointer to IWL buffer
-   keep     = keep the file?
-
-Returns:
-   none
-
-
-=====================================================================
-
-IWL_BUF_RD
-
-   Read from an IWL buffer.
-
-int iwl_buf_rd(struct iwlbuf *Buf, int target_pq, double *ints,
-      int *ioff_lt, int *ioff_rt, int mp2, int printflg, FILE *outfile)
-
-Arguments:
-   Buf       = pointer to IWL buffer
-   target_pq = the target bra-canonical index desired
-   ints      = the destination array for data read
-   ioff_lt   = the offset array for the bra indices
-   ioff_rt   = the offset array for the ket indices
-   mp2       = flag for mp2 calculations only
-   printflg  = print the read data with indices
-   outfile   = the output text file
-
-Returns:
-   0         = all is well
-   1         = all is probably not well
-
-
-=====================================================================
-\end{verbatim}
