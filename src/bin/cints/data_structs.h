@@ -269,13 +269,8 @@ struct den_info_s{
     double dpdx;               /* value of gradient at a point */
     double dpdx_o;
     double dtdx;                /* gradient of the kinetic energy */
-    double *basis;
 };
 
-struct basis_point_s{
-    double *basis_arr;          /* array to hold the basis functions
-				   at a grid points */
-};
 typedef struct{
     int prtflag;                /* dft printing flag */
     int grid_dim;               /* How many leb grids are there? */

@@ -12,6 +12,7 @@
 #include"functional.h"
 #include"calc_den.h"
 #include"lebedev_init.h"
+#include"lebedev_init_new.h"
 
 void dft_init(void){
     
@@ -30,8 +31,6 @@ void dft_init(void){
     char *funcstring;
     double tmpa, tmpb;
     struct shell_pair *sp;
-    
-    ip_cwk_add(":DFT");
     
     /* DFT input parsing */
     elem_in_func = 0;
