@@ -7,6 +7,11 @@ LEXLIB = @LEXLIB@
 
 include ../MakeVars
 
+# The Portland Group compilers don't accept K&R arguments by default
+ifneq (,$(findstring pgcc,$(CC)))
+CFLAGS += -Xs
+endif
+
 CINC += -I$(srcdir)
 
 TARGET = $(top_objdir)/lib/libipv1.a
