@@ -21,6 +21,7 @@
 #define PSIF_OEI            35
 #define PSIF_SO_R12         38
 #define PSIF_SO_R12T1       39
+#define PSIF_SO_PRESORT     41
 #define PSIF_MO_R12         79
 #define PSIF_MO_R12T1       80
 #define PSIF_SO_PKSUPER1    92
