@@ -49,6 +49,45 @@ int C_DGEEV(int n, double **a, int lda,
   return info;
 }
 
+/*!
+** C_DGESV()
+**
+** This function solves a system of linear equations A * X = B, where
+** A is an n x n matrix and X and B are n x nrhs matrices.
+**
+** Arguments:
+** \param int n: The number of linear equations, i.e., the order of
+** the matrix A.  n >= 0.
+**
+** \param int nrhs: The number of right hand sides, i.e., the number
+** of columns of the matrix B.  nrhs >= 0.
+**
+** \param double *A: On entry, the n-by-n coefficient matrix A.  On
+** exit, the factors L and U from the factorization A = P*L*U; the
+** unit diagonal elements of L are not stored.
+**
+** \params int lda: The leading dimension of the array A. lda >=
+** max(1,n).
+**
+** \param int *ipiv: An integer array of length n.  The pivot indices
+** that define the permutation matrix P; row i of the matrix was
+** interchanged with row ipiv(i).
+**
+** \param double *B: On entry, the n-by-nrhs matrix of right hand side
+** matrix B.  On exit, if info = 0, the n-by-nrhs solution matrix X.
+**
+** \param int ldb: The leading dimension of the array B.  ldb >=
+** max(1,n).
+**
+** Returns:
+** 
+** \param int info: = 0: successful exit < 0: if info = -i, the i-th
+** argument had an illegal value > 0: if info = i, U(i,i) is exactly
+** zero.  The factorization has been completed, but the factor U is
+** exactly singular, so the solution could not be computed.
+**
+** \ingroup (QT)
+*/
 int C_DGESV(int n, int nrhs, double *a, int lda, int *ipiv, double *b, int ldb)
 {
   int info;
