@@ -234,6 +234,19 @@ case "$cpu:$vendor:$os" in
     AC_HAVE_FC_LIBRARY(-lessl,BLAS="-lessl")
     ;;
 esac
+AC_ARG_WITH(blas,--with-blas                which blas library to use,[
+case $withval in
+  yes)
+    BLAS='-lblas'
+    ;;
+  no)
+    BLAS=''
+    ;;
+  *)
+    BLAS=$withval
+    ;;
+esac
+])
 if test "X$BLAS" = X; then
  AC_HAVE_FC_LIBRARY(-lblas,BLAS="-lblas")
 fi
@@ -751,6 +764,7 @@ AC_OUTPUT(include/psiconfig.h include/cfuncs.h include/ffuncs.h
           src/bin/cchbar/Makefile
           src/bin/cclambda/Makefile
           src/bin/ccsort/Makefile
+          src/bin/cctriples/Makefile
           src/bin/cints/Makefile
           src/bin/cscf/Makefile
           src/bin/detci/Makefile
