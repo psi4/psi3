@@ -374,6 +374,7 @@ struct den_info_s{
     double den;
     double dena;
     double denb;
+    double eval_temp;
 };
 
 

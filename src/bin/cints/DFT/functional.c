@@ -14,6 +14,7 @@
 #include<psio.h>
 #include<libint.h>
 #include<pthread.h>
+#include<qt.h>
 
 #include"defines.h"
 #define EXTERN
@@ -24,9 +25,9 @@ double slater(struct den_info_s den_info){
     double Cx;
     double a=(2.0/3.0);
     
-    Cx = -(9.0/4.0)*a*2.0*pow(3.0/(4.0*_pi),(1.0/3.0));
+    Cx = -(9.0/4.0)*a*pow(3.0/(4.0*_pi),(1.0/3.0));
     
-    return Cx*pow(den_info.den,4.0/3.0);
+    return 2.0*Cx*pow(den_info.den,4.0/3.0);
 }
 
 
@@ -50,16 +51,17 @@ double no_funct(struct den_info_s den_info){
 /* Implementation of the VWN functionals -- Can J. Phys., 58, 1980
    pp. 1200 */
 
-double Pade_int(double p, double x0, double b, double c, double A){
+double Pade_int(double p, double x0, double b, double c, double A, double Q){
 
-    double x,Q,X,X0,invQ;
+    double x,X,X0,invQ;
+    double txpb,Qd2xpb;
     double term1,term2,mult1,term3,term4;
     double temp1,temp2,temp3,temp4,temp5,temp6,temp7;
     double ec;
-
-    temp7 = 3.0/(4.0*_pi*2.0*p);
-    x = pow(temp7,0.166666666667);
-    Q = sqrt(4.0*c-b*b);
+  
+    x = sqrt(p);
+    txpb = 2.0*x+b;
+    Qd2xpb = Q/txpb;
     invQ = 1.0/Q;
     X = 1.0/(x*x+b*x+c);
     X0 = 1.0/(x0*x0+b*x0+c);
@@ -67,8 +69,7 @@ double Pade_int(double p, double x0, double b, double c, double A){
     temp1 = x*x*X;
     term1 = log(temp1);
 
-    temp2 = Q/(2.0*x+b);
-    temp3 = atan(temp2);
+    temp3 = atan(Qd2xpb);
     term2 = 2.0*b*invQ*temp3;
 
     mult1 = b*x0*X0;
@@ -77,36 +78,36 @@ double Pade_int(double p, double x0, double b, double c, double A){
     term3 = log(temp4);
 
     temp5 = 2.0*(2.0*x0+b)*invQ;
-    temp6 = Q/(2.0*x+b);
-    term4 = temp5*atan(temp6);
+    term4 = temp5*atan(Qd2xpb);
 
     ec = A*(term1+term2-mult1*(term3+term4));
-
     return ec;
 
 }
-double d_Pade_int(double p, double x0, double b, double c, double A){
+
+double d_Pade_int(double p, double x0, double b, double c, double A, double Q){
     
-    double x,Q,X,X0,invQ;
+    double x,Q2,X,X0,invQ;
+    double txpb;
+    double Qsptxpbs;
     double term1,term2,term3,term4,term5,term6;
     double mult1;
     double temp1,temp2,temp3,temp4,temp5;
     double dec;
 
-    temp5 = 3.0/(4.0*_pi*2.0*p);
-    x = pow(temp5,0.166666666667);
-    Q = sqrt(4*c-b*b);
-    invQ = 1.0/Q;
+    x=sqrt(p);
+    A=A/(2*x);
+    Q2 = Q*Q;
+    txpb = 2.0*x+b;
+    Qsptxpbs = txpb*txpb+Q2;
     X = 1.0/(x*x+b*x+c);
     X0 = 1.0/(x0*x0+b*x0+c);
-
+    
     term1 = 2.0/x;
+   
+    term2 = -txpb*X;
 
-    temp1 = -2.0*x+b;
-    term2 = temp1*X;
-
-    temp2 = (2.0*x+b)*(2.0*x+b)+Q*Q;
-    term3 = -4.0*b/temp2;
+    term3 = -4.0*b/Qsptxpbs;
 
     mult1 = -b*x0*X0;
 
@@ -114,81 +115,95 @@ double d_Pade_int(double p, double x0, double b, double c, double A){
     term4 = 2.0/temp3;
 
     temp4 = 2.0*x0+b;
-    term5 = -4.0*temp4/temp2;
+    term5 = -4.0*temp4/Qsptxpbs;
 
     dec = A*(term1+term2+term3+mult1*(term4+term2+term5));
-
     return dec;
 }                                            
 
 double VWN5_r(struct den_info_s den_info){
-    double A = 0.06218414;
+    double A = 0.0621814/2.0;
     double x0 = -0.10498;
     double b = 3.72744;
     double c = 12.9352;
-
+    double Q = 6.1519908198;
+    double p;
     double ec;
+    double x;
+    double temp;
 
-    ec = Pade_int(den_info.den,x0,b,c,A);
-
-    return den_info.den*ec;
+    p = 2.0*den_info.den;
+    temp = 3.0/(4.0*_pi*p);
+    x = pow(temp,0.3333333333333);
+    ec = Pade_int(x,x0,b,c,A,Q);
+    return p*ec;
 }
+
 
 double d_VWN5_r(struct den_info_s den_info){
 
-    double A = 0.06218414;
+    double A = 0.0621814/2.0;
     double x0 = -0.10498;
     double b = 3.72744;
     double c = 12.9352;
+    double Q = 6.1519908198;
     double x, temp1;
+    double dxdp;
     double ec,dec;
+    double ec_sum,dec_sum;
     double p;
 
-    p = den_info.den;
+    p = 2.0*den_info.den;
 
-    temp1 = 3.0/(4.0*_pi*2.0*p);
-    x = pow(temp1,0.166666666667);
-
-    ec = Pade_int(den_info.den,x0,b,c,A);
-    dec = Pade_int(den_info.den,x0,b,c,A);
-
-    temp1 = -x/6.0;
-
-    return ec+temp1*dec;
+    temp1 = 3.0/(4.0*_pi*p);
+    x = pow(temp1,0.3333333333);
+    dxdp = -x/(3.0*p);
+    ec = Pade_int(x,x0,b,c,A,Q);
+    dec = d_Pade_int(x,x0,b,c,A,Q);
+    return ec+p*dxdp*dec;
 }   
 
+/* This is the functional in which Gaussian uses */
+
  double VWN4_r(struct den_info_s den_info){
-    double A = 0.06218414;
+    double A = 0.0621814/2.0;
     double x0 = -0.409286;
     double b = 13.0720;
     double c = 42.7198;
-
+    double Q = 0.04489988864;
+    double p;
     double ec;
+    double x;
+    double temp;
 
-    ec = Pade_int(den_info.den,x0,b,c,A);
-
-    return den_info.den*ec;
+    p = 2.0*den_info.den;
+    temp = 3.0/(4.0*_pi*p);
+    x = pow(temp,0.3333333333333);
+    ec = Pade_int(x,x0,b,c,A,Q);
+    return p*ec;
 }
 
 double d_VWN4_r(struct den_info_s den_info){
 
-    double A = 0.06218414;
+    double A = 0.0621814/2.0;
     double x0 = -0.409286;
     double b = 13.0720;
     double c = 42.7198;
+    double Q = 0.04489988864;
     double x, temp1;
     double ec,dec;
     double p;
+    double dxdp;
 
-    p = den_info.den;
-
+    p = 2.0*den_info.den;
+    
     temp1 = 3.0/(4.0*_pi*p);
-    x = pow(temp1,0.166666666667);
-
-    ec = Pade_int(den_info.den,x0,b,c,A);
-    dec = Pade_int(den_info.den,x0,b,c,A);
-
-    temp1 = -x/6.0;
-
-    return ec+temp1*dec;
+    x = pow(temp1,0.3333333333);
+    dxdp = -x/(3.0*p);
+    ec = Pade_int(x,x0,b,c,A,Q);
+    dec = d_Pade_int(x,x0,b,c,A,Q);
+    
+    return ec+p*dxdp*dec;
 }                              
+
+
