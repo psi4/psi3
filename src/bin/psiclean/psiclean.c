@@ -43,10 +43,14 @@ int main(int argc, char *argv[])
   for (i=0; i<nvol; i++) {
     errcod = psio_get_volpath_default(i, vpath);
 
+    /* errcod == 1 now means that the default of /tmp/ is used for volpath 
+    **  -TDC, 8/03 */
+    /*
     if (errcod) {
       fprintf(outfile, "psiclean: Trouble reading volume path %d\n", nvol);
       exit_bad();
     }
+    */
 
     sprintf(fileslist,"%s%s.*",vpath,basename);
     sprintf(cmdstring,"echo Removing files %s%s",vpath,basename);
