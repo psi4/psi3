@@ -229,6 +229,7 @@ void init_io(int argc, char *argv[])
             fprintf(stderr, "detci: trouble reading argument to -c flag\n");
             exit(1);
          }
+      i++;
       }
       else {
         argv_unparsed[num_unparsed++] = argv[i];
