@@ -5,6 +5,7 @@ struct Local {
   int nvir;
   int *aostart;
   int *aostop;
+  int **domain;
   int **pairdomain;
   int *pairdom_len;
   int *pairdom_nrlen;
@@ -16,4 +17,5 @@ struct Local {
   double cutoff;
   char *method;
   char *weakp;
+  double weak_pair_energy;
 };

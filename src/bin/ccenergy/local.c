@@ -1,3 +1,8 @@
+/*!
+  \file local.c
+  \ingroup (CCENERGY)
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,12 +19,18 @@
 #define EXTERN
 #include "globals.h"
 
-/* 
+/*! 
 ** local_init(): Set up parameters of local excitation domains.
 **
-** Primary parameters include the transformation matrix between the 
-** local (projected) virtual space and the orthonormal MO space (V
-** matrix), the orbital domain lists, .
+** The orbital domains constructed here are based on those described
+** in Broughton and Pulay, J. Comp. Chem. 14, 736-740 (1993).  The
+** localization of the occupied orbitals is done elsewhere (see the
+** program "local").  Pair domains are defined as the union of pairs
+** of single occupied orbital domains.  "Weak pairs", which are
+** defined as pair domains whose individual occupied orbital domains
+** have no atoms in common, are identified (cf. int *weak_pairs).
+** 
+** TDC, Jan-June 2002
 */
 
 void local_init(void)
@@ -338,14 +349,11 @@ void local_init(void)
         if(domain[i][k] && domain[j][k]) weak = 0;
 
       if(weak) {
-	if(!strcmp(local.weakp,"MP2")) {
-	  weak_pairs[ij] = 1;
+	weak_pairs[ij] = 1;
+
+	if(!strcmp(local.weakp,"MP2"))
 	  fprintf(outfile, "\tPair %d %d [%d] is weak and will be treated with MP2.\n", i, j, ij);
-	}
 	else if(!strcmp(local.weakp,"NEGLECT")) {
-	  weak_pairs[ij] = 1;
-	  for(k=0; k < natom; k++) pairdomain[ij][k] = 0;
-	  pairdom_len[ij] = 0;
 	  fprintf(outfile, "\tPair %d %d = [%d] is weak and will be deleted.\n", i, j, ij);
 	}
       }
@@ -359,7 +367,7 @@ void local_init(void)
     for(j=0; j < nocc; j++,ij++) {
       for(k=0; k < natom; k++) {
         for(l=0; l < natom; l++) {
-          if(pairdomain[ij][k] && pairdomain[ij][l]) {
+          if(pairdomain[ij][k] && pairdomain[ij][l] && !weak_pairs[ij]) {
             for(a=aostart[k]; a <= aostop[k]; a++)
               for(b=aostart[l]; b <= aostop[l]; b++)
                 t2_length++;
@@ -376,6 +384,7 @@ void local_init(void)
           t2_length, nocc*nocc*nvir*nvir);
   fflush(outfile);
 
+  local.domain = domain;
   local.pairdomain = pairdomain;
   local.pairdom_len = pairdom_len;
   local.weak_pairs = weak_pairs;
@@ -391,7 +400,6 @@ void local_init(void)
   free(Z);
   free(ipiv);
   free(fR);
-  free_int_matrix(domain, nocc);
 
   print_test = 0;
   ip_boolean("DOMAIN_PRINT",&(print_test),0);
@@ -633,6 +641,8 @@ void local_init(void)
   local.eps_vir = eps_vir;
   local.pairdom_nrlen = pairdom_nrlen;
 
+  local.weak_pair_energy = 0.0;
+
   fprintf(outfile, "\tLocalization parameters ready.\n\n");
 }
 
@@ -660,6 +670,7 @@ void local_done(void)
   free(local.aostop);
 
   free_int_matrix(local.pairdomain, local.nocc*local.nocc);
+  free_int_matrix(local.domain, local.nocc);
   free(local.pairdom_len);
   free(local.pairdom_nrlen);
   free(local.weak_pairs);
@@ -736,8 +747,6 @@ void local_filter_T2(dpdbuf4 *T2)
   int *pairdom_len, *pairdom_nrlen, *weak_pairs;
   double ***V, ***W, *eps_occ, **eps_vir;
   double **X1, **X2, **T2tilde, **T2bar;
-  dpdbuf4 D, newT2_weak, T2_weak;
-  dpdfile2 fij, fab;
 
   nso = local.nso;
   nocc = local.nocc;
@@ -750,11 +759,6 @@ void local_filter_T2(dpdbuf4 *T2)
   pairdom_nrlen = local.pairdom_nrlen;
   weak_pairs = local.weak_pairs;
 
-  /* Grab the weak-pair T2's */
-  dpd_buf4_init(&T2_weak, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New LMP2 tIjAb");
-  dpd_buf4_mat_irrep_init(&T2_weak, 0);
-  dpd_buf4_mat_irrep_rd(&T2_weak, 0);
-
   /* Grab the MO-basis T2's */
   dpd_buf4_mat_irrep_init(T2, 0);
   dpd_buf4_mat_irrep_rd(T2, 0);
@@ -766,7 +770,7 @@ void local_filter_T2(dpdbuf4 *T2)
   for(i=0,ij=0; i < nocc; i++) {
     for(j=0; j < nocc; j++,ij++) {
 
-      if(pairdom_len[ij]) {
+      if(!weak_pairs[ij]) {
 
 	/* Transform the virtuals to the redundant projected virtual basis */
 	C_DGEMM('t', 'n', pairdom_len[ij], nvir, nvir, 1.0, &(V[ij][0][0]), pairdom_len[ij],
@@ -802,11 +806,6 @@ void local_filter_T2(dpdbuf4 *T2)
       else  /* This must be a neglected weak pair; force it to zero */
 	memset((void *) T2->matrix[0][ij], 0, nvir*nvir*sizeof(double));
 
-      /* Copy LMP2 weak pair contributions into this pair */
-      if(!strcmp(local.weakp,"MP2") && weak_pairs[ij]) { 
-	for(ab=0; ab < nvir*nvir; ab++) 
-	  T2->matrix[0][ij][ab] = T2_weak.matrix[0][ij][ab];
-      }
     }
   }
   free_block(X1);
@@ -817,9 +816,6 @@ void local_filter_T2(dpdbuf4 *T2)
   /* Write the updated MO-basis T2's to disk */
   dpd_buf4_mat_irrep_wrt(T2, 0);
   dpd_buf4_mat_irrep_close(T2, 0);
-
-  dpd_buf4_mat_irrep_close(&T2_weak, 0);
-  dpd_buf4_close(&T2_weak);
 }
 
 #define STACK_LENGTH 25

@@ -196,6 +196,9 @@ int main(int argc, char *argv[])
   fprintf(outfile, "\tCCSD correlation energy    = %20.15f\n", moinfo.ecc);
   fprintf(outfile, "\tTotal CCSD energy          = %20.15f\n", 
           moinfo.eref + moinfo.ecc);
+  if(params.local && !strcmp(local.weakp,"MP2")) 
+  fprintf(outfile, "\tTotal LCCSD energy         = %20.15f\n", 
+          moinfo.eref + moinfo.ecc + local.weak_pair_energy);
   fprintf(outfile, "\n");
 
   /* Write total energy to the checkpoint file */
