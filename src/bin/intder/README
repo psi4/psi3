@@ -186,7 +186,6 @@ Finds second/3rd derivative elements and Transforms them
         MACHY -> ThirdDerivative::i_to_c() CODED 
 BROW
 page 46-47
-Don't know
 creates displaced BMatrix rows for numerical testing
         BROW -> Transform::BRow DONE
 
