@@ -12,6 +12,8 @@ TEMP_DIR = ${SCRATCH}/libr12
 
 install: $(TARGET)
 
+top_objdir_path=$(PWD)/$(top_objdir)
+
 $(TARGET): $(BUILD_SRC) $(LIB_SRC) input.dat Makefile.libr12
 	if \
 ! [ -e $(SCRATCH) ]; \
@@ -28,16 +30,15 @@ else \
  mkdir $(TEMP_DIR); \
 fi; \
 cp Makefile.compiler $(TEMP_DIR); \
-$(MAKE); \
 cp Makefile.libr12 $(TEMP_DIR); \
 cp input.dat $(TEMP_DIR); \
 cd $(TEMP_DIR); \
 cp Makefile.compiler Makefile; \
-$(MAKE); \
+$(MAKE) top_objdir=$(top_objdir_path); \
 rm -f Makefile; \
 ./$(BUILD_BINARY); \
 cp Makefile.libr12 Makefile; \
-${MAKE} install; \
+${MAKE} top_objdir=$(top_objdir_path) install; \
 cd ..; \
 rm -fR $(TEMP_DIR)
 

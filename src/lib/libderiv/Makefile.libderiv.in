@@ -1,5 +1,5 @@
-include @top_objdir@/src/lib/MakeVars
-include @top_objdir@/src/lib/libderiv/MakeVars
+include $(top_objdir)/src/lib/MakeVars
+include $(top_objdir)/src/lib/libderiv/MakeVars
 
 TARGET = $(top_objdir)/lib/libPSI_deriv.a
 HEADERS = libderiv.h

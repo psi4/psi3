@@ -1,5 +1,5 @@
-include @top_objdir@/src/lib/MakeVars
-include @top_objdir@/src/lib/libderiv/MakeVars
+include $(top_objdir)/src/lib/MakeVars
+include $(top_objdir)/src/lib/libderiv/MakeVars
 
 LD = $(CC)
 PSILIBS = libPSI_ipv1.a

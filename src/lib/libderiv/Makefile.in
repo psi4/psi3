@@ -12,6 +12,8 @@ TEMP_DIR = ${SCRATCH}/libderiv
 
 install: $(TARGET)
 
+top_objdir_path=$(PWD)/$(top_objdir)
+
 $(TARGET): $(BUILD_SRC) Makefile.libderiv input.dat
 	if \
 ! [ -e $(SCRATCH) ]; \
@@ -28,16 +30,15 @@ else \
  mkdir $(TEMP_DIR); \
 fi; \
 cp Makefile.compiler $(TEMP_DIR); \
-$(MAKE); \
 cp input.dat $(TEMP_DIR); \
 cp Makefile.libderiv $(TEMP_DIR); \
 cd $(TEMP_DIR); \
 cp Makefile.compiler Makefile; \
-$(MAKE); \
+$(MAKE) top_objdir=$(top_objdir_path); \
 rm -f Makefile; \
 ./$(BUILD_BINARY); \
 cp Makefile.libderiv Makefile; \
-${MAKE} install; \
+${MAKE} top_objdir=$(top_objdir_path) install; \
 cd ..; \
 rm -fR $(TEMP_DIR) 
 
