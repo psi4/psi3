@@ -238,7 +238,7 @@ foreach $name (@DIR_NAMES) {
     unlink <psi.*>;
     unlink <*.test>;
     unlink <timer.dat>;
-    unlink <dboc.findif.out>
+    unlink <dboc.findif.out>;
     chdir ("$pwd");
   }
   else {
