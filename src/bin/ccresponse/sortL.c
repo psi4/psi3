@@ -30,9 +30,9 @@ void sortL(void)
     Gq = irrep ^ Gp;
 
     for(p=0; p < moinfo.occpi[Gp]; p++) {
-      P = moinfo.qt2pitzer[moinfo.qt_occ[p]+moinfo.occ_off[Gp]];
+      P = moinfo.qt2pitzer[moinfo.qt_occ[p]+moinfo.occ_off[Gp]]-moinfo.nfzc;
       for(q=0; q < moinfo.occpi[Gq]; q++) {
-	Q = moinfo.qt2pitzer[moinfo.qt_occ[q]+moinfo.occ_off[Gq]];
+	Q = moinfo.qt2pitzer[moinfo.qt_occ[q]+moinfo.occ_off[Gq]]-moinfo.nfzc;
 	l.matrix[Gp][p][q] = L[P][Q];
       }
     }
@@ -47,9 +47,9 @@ void sortL(void)
     Gq = irrep ^ Gp;
 
     for(p=0; p < moinfo.virtpi[Gp]; p++) {
-      P = moinfo.qt2pitzer[moinfo.qt_vir[p]+moinfo.vir_off[Gp]];
+      P = moinfo.qt2pitzer[moinfo.qt_vir[p]+moinfo.vir_off[Gp]]-moinfo.nfzc;
       for(q=0; q < moinfo.virtpi[Gq]; q++) {
-	Q = moinfo.qt2pitzer[moinfo.qt_vir[q]+moinfo.vir_off[Gq]];
+	Q = moinfo.qt2pitzer[moinfo.qt_vir[q]+moinfo.vir_off[Gq]]-moinfo.nfzc;
 	l.matrix[Gp][p][q] = L[P][Q];
       }
     }
@@ -64,9 +64,9 @@ void sortL(void)
     Gq = irrep ^ Gp;
 
     for(p=0; p < moinfo.occpi[Gp]; p++) {
-      P = moinfo.qt2pitzer[moinfo.qt_occ[p]+moinfo.occ_off[Gp]];
+      P = moinfo.qt2pitzer[moinfo.qt_occ[p]+moinfo.occ_off[Gp]]-moinfo.nfzc;
       for(q=0; q < moinfo.virtpi[Gq]; q++) {
-	Q = moinfo.qt2pitzer[moinfo.qt_vir[q]+moinfo.vir_off[Gq]];
+	Q = moinfo.qt2pitzer[moinfo.qt_vir[q]+moinfo.vir_off[Gq]]-moinfo.nfzc;
 	l.matrix[Gp][p][q] = L[P][Q];
       }
     }
@@ -85,9 +85,9 @@ void sortL(void)
     Gq = irrep ^ Gp;
 
     for(p=0; p < moinfo.occpi[Gp]; p++) {
-      P = moinfo.qt2pitzer[moinfo.qt_occ[p]+moinfo.occ_off[Gp]];
+      P = moinfo.qt2pitzer[moinfo.qt_occ[p]+moinfo.occ_off[Gp]]-moinfo.nfzc;
       for(q=0; q < moinfo.occpi[Gq]; q++) {
-	Q = moinfo.qt2pitzer[moinfo.qt_occ[q]+moinfo.occ_off[Gq]];
+	Q = moinfo.qt2pitzer[moinfo.qt_occ[q]+moinfo.occ_off[Gq]]-moinfo.nfzc;
 	l.matrix[Gp][p][q] = L[P][Q];
       }
     }
@@ -102,9 +102,9 @@ void sortL(void)
     Gq = irrep ^ Gp;
 
     for(p=0; p < moinfo.virtpi[Gp]; p++) {
-      P = moinfo.qt2pitzer[moinfo.qt_vir[p]+moinfo.vir_off[Gp]];
+      P = moinfo.qt2pitzer[moinfo.qt_vir[p]+moinfo.vir_off[Gp]]-moinfo.nfzc;
       for(q=0; q < moinfo.virtpi[Gq]; q++) {
-	Q = moinfo.qt2pitzer[moinfo.qt_vir[q]+moinfo.vir_off[Gq]];
+	Q = moinfo.qt2pitzer[moinfo.qt_vir[q]+moinfo.vir_off[Gq]]-moinfo.nfzc;
 	l.matrix[Gp][p][q] = L[P][Q];
       }
     }
@@ -119,9 +119,9 @@ void sortL(void)
     Gq = irrep ^ Gp;
 
     for(p=0; p < moinfo.occpi[Gp]; p++) {
-      P = moinfo.qt2pitzer[moinfo.qt_occ[p]+moinfo.occ_off[Gp]];
+      P = moinfo.qt2pitzer[moinfo.qt_occ[p]+moinfo.occ_off[Gp]]-moinfo.nfzc;
       for(q=0; q < moinfo.virtpi[Gq]; q++) {
-	Q = moinfo.qt2pitzer[moinfo.qt_vir[q]+moinfo.vir_off[Gq]];
+	Q = moinfo.qt2pitzer[moinfo.qt_vir[q]+moinfo.vir_off[Gq]]-moinfo.nfzc;
 	l.matrix[Gp][p][q] = L[P][Q];
       }
     }
@@ -140,9 +140,9 @@ void sortL(void)
     Gq = irrep ^ Gp;
 
     for(p=0; p < moinfo.occpi[Gp]; p++) {
-      P = moinfo.qt2pitzer[moinfo.qt_occ[p]+moinfo.occ_off[Gp]];
+      P = moinfo.qt2pitzer[moinfo.qt_occ[p]+moinfo.occ_off[Gp]]-moinfo.nfzc;
       for(q=0; q < moinfo.occpi[Gq]; q++) {
-	Q = moinfo.qt2pitzer[moinfo.qt_occ[q]+moinfo.occ_off[Gq]];
+	Q = moinfo.qt2pitzer[moinfo.qt_occ[q]+moinfo.occ_off[Gq]]-moinfo.nfzc;
 	l.matrix[Gp][p][q] = L[P][Q];
       }
     }
@@ -157,9 +157,9 @@ void sortL(void)
     Gq = irrep ^ Gp;
 
     for(p=0; p < moinfo.virtpi[Gp]; p++) {
-      P = moinfo.qt2pitzer[moinfo.qt_vir[p]+moinfo.vir_off[Gp]];
+      P = moinfo.qt2pitzer[moinfo.qt_vir[p]+moinfo.vir_off[Gp]]-moinfo.nfzc;
       for(q=0; q < moinfo.virtpi[Gq]; q++) {
-	Q = moinfo.qt2pitzer[moinfo.qt_vir[q]+moinfo.vir_off[Gq]];
+	Q = moinfo.qt2pitzer[moinfo.qt_vir[q]+moinfo.vir_off[Gq]]-moinfo.nfzc;
 	l.matrix[Gp][p][q] = L[P][Q];
       }
     }
@@ -174,9 +174,9 @@ void sortL(void)
     Gq = irrep ^ Gp;
 
     for(p=0; p < moinfo.occpi[Gp]; p++) {
-      P = moinfo.qt2pitzer[moinfo.qt_occ[p]+moinfo.occ_off[Gp]];
+      P = moinfo.qt2pitzer[moinfo.qt_occ[p]+moinfo.occ_off[Gp]]-moinfo.nfzc;
       for(q=0; q < moinfo.virtpi[Gq]; q++) {
-	Q = moinfo.qt2pitzer[moinfo.qt_vir[q]+moinfo.vir_off[Gq]];
+	Q = moinfo.qt2pitzer[moinfo.qt_vir[q]+moinfo.vir_off[Gq]]-moinfo.nfzc;
 	l.matrix[Gp][p][q] = L[P][Q];
       }
     }
