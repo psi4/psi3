@@ -808,6 +808,8 @@ AC_OUTPUT(include/psiconfig.h
           doc/macros.tex
           doc/installation/Makefile
           doc/progman/Makefile doc/userman/Makefile
+          
+          src/bin/giao/Makefile
           )
 # The following should be added to config_files/ac_output for 
 # libmathtools/ccman.  You have to move those lines up above this
