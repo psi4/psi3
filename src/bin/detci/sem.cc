@@ -1201,7 +1201,8 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
        }
      }
      free(newocc);
-     free(fzc_occ);
+     if (CalcInfo.num_fzc_orbs > 0)
+       free(fzc_occ);
 
      int ii;
      int size = CIblks.vectlen;
