@@ -7,8 +7,6 @@ typedef struct {
   int num_mo;
   int ndocc;
   int nsocc;
-  int nalpha;
-  int nbeta;
 } MOInfo_t;
 
 #endif

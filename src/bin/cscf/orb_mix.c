@@ -140,7 +140,7 @@ void orb_mix(void)
     errcod = ip_data("MIXING_FRACTION","%lf",&mixing_fraction,0);
     c1 = cos(mixing_fraction*PI/2.0);
     c2 = sin(mixing_fraction*PI/2.0);
-    fprintf(outfile, "        Mixing HOMO and LUMO by %d percent\n", 
+    fprintf(outfile, "        Mixing HOMO and LUMO by %d\%\n", 
             (int) (mixing_fraction * 100.0));
     fprintf(outfile, "        Mixing coefficients are %lf and %lf\n", c1, c2);
     

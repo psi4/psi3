@@ -401,9 +401,6 @@ void write_to_file30(double repulsion)
   wwritw(CHECKPOINTFILE,(char *) scf_pointers, 20*sizeof(int),ptr,&ptr);
   free(scf_pointers);
 
-  /* Extra space that used to be taken by geometry */
-  ptr += num_atoms*3*sizeof(double);
-
   /* Write out energies */
   arr_double = init_array(5);
   arr_double[0] = repulsion;

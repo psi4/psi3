@@ -32645,8 +32645,6 @@ HYDROGEN:DAUGCCPV6Z = (
 % Diffuse k exponents optimized at the CCSD(FC) level
 % To be published
 %  -EV 04/05/2001
-% S basis added (constructed the same way)
-%  -EFV 09/27/2002
   HYDROGEN:augccpv7z = (
     (GET augpv7z)
   )
@@ -32664,11 +32662,6 @@ HYDROGEN:DAUGCCPV6Z = (
     (GET augpv7z)
     (K    (         4.2520000000            1.0000000000))
     (K    (         1.5970000000            1.0000000000))
-  )
-  SULFUR:augccpv7z = (
-    (GET augpv7z)
-    (K    (         1.2090000000            1.0000000000))
-    (K    (         0.5750000000            1.0000000000))
   )
 )
 %

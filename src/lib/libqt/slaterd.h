@@ -14,22 +14,21 @@
 */
 typedef struct {
   int index;
-  short int *occ;     /* Orbital indices in QT order */
+  int nelec;
+  short int *occ;
 } String;
 
 /*!
   StringSet is a set of strings
 */
 typedef struct {
-  String *strings;
   int size;
-  int nelec;
-  int nfzc;
+  String *strings;
 } StringSet;
 
-void stringset_init(StringSet *stringset, int size, int nelec, int nfzc);
+void stringset_init(StringSet *stringset, int size);
 void stringset_delete(StringSet *stringset);
-void stringset_add(StringSet *stringset, int index, unsigned char *Occ);
+void stringset_add(StringSet *stringset, int index, int nelec, unsigned char *Occ);
 void stringset_write(ULI unit, char *prefix, StringSet *sset);
 void stringset_read(ULI unit, char *prefix, StringSet **sset);
 
@@ -100,8 +99,6 @@ void slaterdetvector_write(ULI unit, char *prefix, SlaterDetVector *vector);
 void slaterdetvector_read(ULI unit, char *prefix, SlaterDetVector **vector);
 
 #define STRINGSET_KEY_SIZE "StringSet Size"
-#define STRINGSET_KEY_NELEC "StringSet Num. of Electrons"
-#define STRINGSET_KEY_NFZC "StringSet Num. of Frozen DOCCs"
 #define STRINGSET_KEY_STRINGS "StringSet Strings"
 #define SDSET_KEY_SIZE "SlaterDetSet Size"
 #define SDSET_KEY_DETERMINANTS "SlaterDetSet Determinants"

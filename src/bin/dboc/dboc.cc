@@ -10,7 +10,7 @@
 extern "C" {
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+#include <libfile30/file30.h>
 #include <libpsio/psio.h>
 #include <libqt/slaterd.h>
 #include <psifiles.h>
@@ -69,12 +69,6 @@ void parsing()
 {
   int errcod;
   
-  errcod = ip_string("LABEL",&Params.label,0);
-  if (errcod != IPE_OK) {
-    Params.label = new char[1];
-    Params.label[0] = '\0';
-  }
-
   errcod = ip_string("WFN",&Params.wfn,0);
   if (errcod != IPE_OK)
     done("Keyword WFN is not found");
@@ -99,52 +93,14 @@ void parsing()
   Params.print_lvl = 1;
   errcod = ip_data("PRINT","%d",&Params.print_lvl,0);
 
-  int coords_given = ip_exist(":DBOC:COORDS",0);
-  if (coords_given) {
-    Params.ncoord = 0;
-    ip_count(":DBOC:COORDS",&Params.ncoord,0);
-    if (Params.ncoord == 0)
-      done("Keyword COORDS should be a vector of 2-element vectors");
-    Params.coords = new Params_t::Coord_t[Params.ncoord];
-    for(int coord=0; coord<Params.ncoord; coord++) {
-      int nelem = 0;
-      ip_count(":DBOC:COORDS",&nelem,1,coord);
-      if (nelem != 2)
-	done("Keyword COORDS should be a vector of 2-element vectors");
-      errcod = ip_data(":DBOC:COORDS","%d",&Params.coords[coord].index,2,coord,0);
-      errcod = ip_data(":DBOC:COORDS","%lf",&Params.coords[coord].coeff,2,coord,1);
-    }
-  }
-  else {
-    Params.ncoord = 0;
-    Params.coords = NULL;
-  }
-
-  int isotopes_given = ip_exist(":DBOC:ISOTOPES",0);
-  if (isotopes_given) {
-    Params.nisotope = 0;
-    ip_count(":DBOC:ISOTOPES",&Params.nisotope,0);
-    if (Params.nisotope == 0)
-      done("Keyword ISOTOPES should be a vector of num_atoms elements");
-    Params.isotopes = new char*[Params.nisotope];
-    for(int atom=0; atom<Params.nisotope; atom++) {
-      ip_string(":DBOC:ISOTOPES",&(Params.isotopes[atom]),1,atom);
-    }
-  }
-  else {
-    Params.nisotope = 0;
-    Params.isotopes = NULL;
-  }
-
   Params.disp_per_coord = 2;
 }
 
 /*--- Open file30 and grab molecule info ---*/
 void read_chkpt()
 {
-  chkpt_init();
+  file30_init();
 
-#if 0
   Molecule.natom = file30_rd_natom();
   Molecule.geom = file30_rd_geom();
   Molecule.zvals = file30_rd_zvals();
@@ -160,29 +116,8 @@ void read_chkpt()
   int *openpi = file30_rd_openpi();
   MOInfo.nsocc = openpi[0];
   delete[] openpi;
-  MOInfo.nalpha = MOInfo.ndocc + MOInfo.nsocc;
-  MOInfo.nbeta = MOInfo.ndocc;
-#else
-  Molecule.natom = chkpt_rd_natom();
-  Molecule.geom = chkpt_rd_geom();
-  Molecule.zvals = chkpt_rd_zvals();
-  int nirreps = chkpt_rd_nirreps();
-  if (nirreps != 1)
-    done("DBOC computations currently possible only in C1 symmetry");
 
-  MOInfo.num_so = chkpt_rd_nso();
-  MOInfo.num_mo = chkpt_rd_nmo();
-  int *clsdpi = chkpt_rd_clsdpi();
-  MOInfo.ndocc = clsdpi[0];
-  delete[] clsdpi;
-  int *openpi = chkpt_rd_openpi();
-  MOInfo.nsocc = openpi[0];
-  delete[] openpi;
-  MOInfo.nalpha = MOInfo.ndocc + MOInfo.nsocc;
-  MOInfo.nbeta = MOInfo.ndocc;
-#endif
-
-  chkpt_close();
+  file30_close();
 
   fprintf(outfile, "  -Reference Geometry:\n");
   for(int i=0; i < Molecule.natom; i++) {
@@ -195,47 +130,12 @@ void read_chkpt()
 
 double eval_dboc()
 {
-  double* atomic_mass;
-
-  //
-  // Convert isotope labels into atomic masses (in a.m.u.)
-  //
-  // Check number of atoms vs. number of isotope labels given in input
-  if (Params.isotopes) {
-    if (Molecule.natom != Params.nisotope)
-      done("Number of atoms in molecule does not match the number of isotope labels in input.dat");
-    else {
-      atomic_mass = new double[Molecule.natom];
-      for(int atom=0; atom<Molecule.natom; atom++) {
-	char* isotope_label = Params.isotopes[atom];
-	int label;
-	for(label=0; label<=LAST_MASS_INDEX; label++) {
-	  if (!strcmp(mass_labels[label],isotope_label))
-	    break;
-	}
-	atomic_mass[atom] = atomic_masses[label];
-      }
-    }
-  }
-  else {
-    atomic_mass = new double[Molecule.natom];
-    for(int atom=0; atom<Molecule.natom; atom++)
-      atomic_mass[atom] = an2masses[(int)Molecule.zvals[atom]];
-  }
-  
-  //
-  // Convert atomic masses to a.u.
-  //
-  for(int atom=0; atom<Molecule.natom; atom++)
-    atomic_mass[atom] /= _au2amu;
-
-  const int ndisp = Params.disp_per_coord * Params.ncoord;
+  const int ndisp = Params.disp_per_coord * Molecule.natom * 3;
   double E_dboc = 0.0;
 
   for(int disp=1; disp<=ndisp; disp++) {
     char *inputcmd = new char[80];
-    Params_t::Coord_t* coord = &(Params.coords[(disp-1)/2]);
-    int atom = coord->index/3;
+    int atom = (disp-1)/6;
     sprintf(inputcmd,"input --geomdat %d --noreorient --nocomshift",disp);
     int errcod = system(inputcmd);
     if (errcod) {
@@ -253,6 +153,10 @@ double eval_dboc()
       slaterdetvector_read(PSIF_CIVECT,"CI vector",&vec);
       slaterdetvector_write(PSIF_CIVECT,"Old CI vector",vec);
       slaterdetvector_delete_full(vec);
+      /*      stringset_delete(vec->sdset->alphastrings);
+      stringset_delete(vec->sdset->betastrings);
+      slaterdetset_delete(vec->sdset);
+      slaterdetvector_delete(vec);*/
     }
 
     sprintf(inputcmd,"input --savemos --geomdat %d --noreorient --nocomshift",disp);
@@ -267,18 +171,11 @@ double eval_dboc()
     delete[] inputcmd;
 
     double S = eval_derwfn_overlap();
-    double del2 = (S-1.0)/(2.0*Params.delta*Params.delta);
-    int Z = (int)Molecule.zvals[atom];
-    // mass of nucleus = atomic mass - mass of electrons
-    double nuclear_mass = atomic_mass[atom]  - Z;
-    double E_i = -del2/(2.0*nuclear_mass);
-    // multiply by the degeneracy factor
-    E_i *= coord->coeff;
+    double del2 = (1.0-S)/(2.0*Params.delta*Params.delta);
+    double E_i = del2*_au2amu/(2.0*an2masses[(int)Molecule.zvals[atom]]);
     if (Params.print_lvl > PrintLevels::print_intro) {
-      fprintf(outfile,"  +- wave function overlap = %25.15lf\n",S);
-      fprintf(outfile,"  <d2/dx2>                 = %25.15lf\n",del2);
-      fprintf(outfile,"  DBOC contribution from cartesian degree of freedom %d = %20.10lf a.u.\n\n",
-	      coord->index+1,E_i);
+      fprintf(outfile,"  DBOC contribution from cartesian degree of freedom %d = %lf a.u.\n",
+	      (disp-1)/2+1,E_i);
       fflush(outfile);
     }
     E_dboc += E_i;

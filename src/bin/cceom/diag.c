@@ -53,13 +53,13 @@ void diag(void) {
   double *lambda, *lambda_old;
   int num_vecs;
 
-  hbar_extra(); /* sort hbar matrix elements for sigma equations */
+  hbar_extra(); // sort hbar matrix elements for sigma equations
 #ifdef EOM_DEBUG
   hbar_norms();
 #endif
 
   fprintf(outfile,"Symmetry of ground state: %s\n", moinfo.labels[moinfo.sym]);
-  /* loop over symmetry of C's */
+  // loop over symmetry of C's
   for (C_irr=0; C_irr<moinfo.nirreps; ++C_irr) {
     already_sigma = 0;
     iter = 0;
@@ -109,7 +109,7 @@ void diag(void) {
     lambda_old = init_array(eom_params.cs_per_irrep[C_irr]);
     L = eom_params.cs_per_irrep[C_irr];
 
-    /* For local correlation, filter and renorthonormalize the C vectors */
+    // For local correlation, filter and renorthonormalize the C vectors
     if(params.local) {
       for(i=0; i < L; i++) {
         sprintf(lbl, "%s %d", "CME", i);
@@ -123,7 +123,7 @@ void diag(void) {
         dpd_buf4_close(&CMnEf);
       }
 
-      /* Normalize the first C vector */
+      // Normalize the first C vector
       sprintf(lbl, "%s %d", "CME", 0);
       dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
       norm = 2.0 * dpd_file2_dot_self(&CME);
@@ -144,7 +144,7 @@ void diag(void) {
 
       num_vecs = 1;
 
-      /* Orthonormalize each remaining vector */
+      // Orthonormalize each remaining vector
       for(i=1; i < L; i++) {
         sprintf(lbl, "%s %d", "CME", i);
         dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
@@ -173,14 +173,14 @@ void diag(void) {
       num_converged = 0;
 
       for (i=already_sigma;i<L;++i) {
-        /* Form a zeroed S vector for each C vector
-	   SIA and Sia do get overwritten by sigmaSS
-	   so this may only be necessary for debugging */
+        // Form a zeroed S vector for each C vector
+        // SIA and Sia do get overwritten by sigmaSS
+        // so this may only be necessary for debugging
         init_S1(i, C_irr);
         init_S2(i, C_irr);
 
-        /* Make copies of current C vectors
-	   Copy used in WmbejDD */
+        // Make copies of current C vectors
+        // Copy used in WmbejDD 
         if (params.eom_ref > 0) {
           sprintf(lbl, "%s %d", "CMNEF", i);
           dpd_buf4_init(&CMNEF, EOM_CMNEF, C_irr, 0, 5, 2, 7, 0, lbl);
@@ -194,13 +194,13 @@ void diag(void) {
         sprintf(lbl, "%s %d", "CMnEf", i);
         dpd_buf4_init(&CMnEf, EOM_CMnEf, C_irr, 0, 5, 0, 5, 0, lbl);
         dpd_buf4_sort(&CMnEf, EOM_TMP, prqs, 10, 10, "CMEnf");
-        /* Copy used in WmnieSD */
+        // Copy used in WmnieSD 
         dpd_buf4_sort(&CMnEf, EOM_TMP, qprs, 0, 5, "CnMEf");
-        /* Copy of current C vector used in WmnieSD and WabefDD */
+        // Copy of current C vector used in WmnieSD and WabefDD
         dpd_buf4_sort(&CMnEf, EOM_TMP, pqsr, 0, 5, "CMnfE");
         dpd_buf4_close(&CMnEf);
 
-        /* Copy used in WmbejDD */
+        // Copy used in WmbejDD
         dpd_buf4_init(&CMnEf, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "CMEnf");
         dpd_buf4_sort(&CMnEf, EOM_TMP, psrq, 10, 10, "CMfnE");
         dpd_buf4_close(&CMnEf);
@@ -208,11 +208,11 @@ void diag(void) {
         dpd_buf4_init(&CMnEf, EOM_TMP, C_irr, 0, 5, 0, 5, 0, "CnMEf");
         dpd_buf4_sort(&CMnEf, EOM_TMP, prqs, 10, 10, "CnEMf");
         dpd_buf4_close(&CMnEf);
-        /* Copy used in FDD, FSD, WamefSD, WmnefDD, WmnieSD */
+        // Copy used in FDD, FSD, WamefSD, WmnefDD, WmnieSD
         dpd_buf4_init(&CMnEf, EOM_TMP, C_irr, 0, 5, 0, 5, 0, "CnMEf");
         dpd_buf4_sort(&CMnEf, EOM_TMP, pqsr, 0, 5, "CmNeF");
         dpd_buf4_close(&CMnEf);
-        /* Copy used in WmbejDD */
+        // Copy used in WmbejDD
         dpd_buf4_init(&CMnEf, EOM_TMP, C_irr, 0, 5, 0, 5, 0, "CmNeF");
         dpd_buf4_sort(&CMnEf, EOM_TMP, prqs, 10, 10, "CmeNF");
         dpd_buf4_close(&CMnEf);
@@ -241,7 +241,7 @@ void diag(void) {
           dpd_buf4_close(&CMnEf);
         }
 
-        /* Computing sigma vectors */
+        // Computing sigma vectors
 #ifdef TIME_CCEOM
         timer_on("sigma all");
         timer_on("sigmaSS"); sigmaSS(i,C_irr); timer_off("sigmaSS");
@@ -256,7 +256,7 @@ void diag(void) {
         sigmaDD(i,C_irr);
 #endif
 
-        /* Cleaning out sigma vectors */
+        // Cleaning out sigma vectors 
         sprintf(lbl, "%s %d", "SIA", i);
         dpd_file2_init(&SIA, EOM_SIA, C_irr, 0, 1, lbl);
         sprintf(lbl, "%s %d", "Sia", i);
@@ -281,8 +281,8 @@ void diag(void) {
         check_sum(lbl, i, C_irr);
 #endif
 
-        /* For local correlation, filter this sigma vector 
-	   Is renormalization necessary here -- don't think so */
+        // For local correlation, filter this sigma vector 
+        // Is renormalization necessary here -- don't think so 
         if(params.local) {
           local_filter_T1(&SIA);
           local_filter_T2(&SIjAb);
@@ -299,19 +299,19 @@ void diag(void) {
 
       already_sigma = L;
 
-      /* Form G = C'*S matrix */
+      // Form G = C'*S matrix
       G = block_matrix(L,L);
       for (i=0;i<L;++i) {
 
         if(params.eom_ref == 0) {
-          /* Spin-adapt C */
+          // Spin-adapt C
           sprintf(lbl, "%s %d", "CME", i);
           dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
-          /* dpd_file2_copy(&CME, EOM_TMP, "CME");
-	     dpd_file2_close(&CME);
-	     dpd_file2_init(&CME, EOM_TMP, C_irr, 0, 1, "CME");
-	     dpd_file2_scm(&CME, 2.0);
-	     dpd_file2_close(&CME); */
+          //dpd_file2_copy(&CME, EOM_TMP, "CME");
+          //dpd_file2_close(&CME);
+          //dpd_file2_init(&CME, EOM_TMP, C_irr, 0, 1, "CME");
+          //dpd_file2_scm(&CME, 2.0);
+          //dpd_file2_close(&CME);
 
           sprintf(lbl, "%s %d", "CMnEf", i);
           dpd_buf4_init(&CMnEf, EOM_CMnEf, C_irr, 0, 5, 0, 5, 0, lbl);
@@ -326,7 +326,7 @@ void diag(void) {
           dpd_buf4_close(&CMnfE1);
           dpd_buf4_close(&CMnEf1);
 
-          /* dpd_file2_init(&CME, EOM_TMP, C_irr, 0, 1, "CME");*/
+          //    dpd_file2_init(&CME, EOM_TMP, C_irr, 0, 1, "CME");
           dpd_buf4_init(&CMnEf, EOM_TMP, C_irr, 0, 5, 0, 5, 0, "CMnEf");
         }
         else {
@@ -389,20 +389,21 @@ void diag(void) {
           dpd_buf4_close(&CMNEF);
           dpd_buf4_close(&Cmnef);
         }
-      } /* end build of G */
-      /* mat_print(G, L, L, outfile); */
-      /* Diagonalize G Matrix */ 
-      lambda = init_array(L);        /* holds real part of eigenvalues of G */
-      alpha = block_matrix(L,L);     /* will hold eigenvectors of G */
+      } // end build of G
+      //  mat_print(G, L, L, outfile);
+      //
+      // Diagonalize G Matrix 
+      lambda = init_array(L);        // holds real part of eigenvalues of G 
+      alpha = block_matrix(L,L);     // will hold eigenvectors of G 
       dgeev_eom(L, G, lambda, alpha);
 
       eigsort(lambda, alpha, L);
 
-      /* eivout(alpha, lambda, L, L, outfile);*/
+      //      eivout(alpha, lambda, L, L, outfile);
 
       free_block(G);
 
-      /* Compute Residual vectors */
+      // Compute Residual vectors
       dpd_file2_init(&RIA, EOM_R, C_irr, 0, 1, "RIA");
       dpd_buf4_init(&RIjAb, EOM_R, C_irr, 0, 5, 0, 5, 0, "RIjAb");
       if (params.eom_ref > 0) {
@@ -412,7 +413,7 @@ void diag(void) {
       }
       fprintf(outfile,"  Root    EOM Energy     Delta E   Res. Norm    Conv?\n");
       for (k=0;k<eom_params.cs_per_irrep[C_irr];++k) {
-        /* rezero residual vector for each root */
+        // rezero residual vector for each root
         dpd_file2_scm(&RIA, 0.0);
         dpd_buf4_scm(&RIjAb, 0.0);
         if (params.eom_ref > 0) {
@@ -478,8 +479,8 @@ void diag(void) {
 #ifdef EOM_DEBUG
         fprintf(outfile,"Norm of residual vector %d  bf clean %18.13lf\n",k,norm);
 #endif
-        /* necessary? c_clean(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb); 
-	   norm = norm_C(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb); */
+        // necessary? c_clean(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb); 
+        //	norm = norm_C(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb);
 #ifdef EOM_DEBUG
         fprintf(outfile,"Norm of residual vector %d af clean %18.13lf\n",k,norm);
 #endif
@@ -487,7 +488,7 @@ void diag(void) {
         fprintf(outfile,"%22d%15.10lf%11.2e%12.2e",k+1,lambda[k],
             lambda[k]-lambda_old[k], norm);
 
-        /* Check for convergence and add new vector if not converged */
+        // Check for convergence and add new vector if not converged
         if ( (norm > eom_params.residual_tol) ||
             (fabs(lambda[k]-lambda_old[k]) > eom_params.eval_tol) ) {
           fprintf(outfile,"%7s\n","N");
@@ -540,16 +541,16 @@ void diag(void) {
       for (i=0;i<eom_params.cs_per_irrep[C_irr];++i) lambda_old[i] = lambda[i];
       free(lambda);
 
-      /* restart with new B vectors if there are too many */
+      // restart with new B vectors if there are too many
       if (L > eom_params.vectors_per_root * eom_params.cs_per_irrep[C_irr]) {
         restart(alpha, L, eom_params.cs_per_irrep[C_irr], C_irr, 1);
         L = eom_params.cs_per_irrep[C_irr];
         keep_going = 1;
-        /* already_sigma = 0; */
+        // already_sigma = 0;
         already_sigma = L;
       }
       else {
-        /* If any new vectors were added, then continue */
+        // If any new vectors were added, then continue
         if (numCs > L) {
           keep_going = 1;
           L = numCs;
@@ -557,20 +558,22 @@ void diag(void) {
       }
 
       ++iter;
-      /* If we're all done then collapse to one vector per root */
+      // If we're all done then collapse to one vector per root
       if ( (keep_going == 0) && (iter < eom_params.max_iter) ) {
         fprintf(outfile,"Collapsing to only %d vectors.\n", eom_params.cs_per_irrep[C_irr]);
         restart(alpha, L, eom_params.cs_per_irrep[C_irr], C_irr, 0);
 
-        /* Print out the largest elements of the C1 vectors in the local basis
-           if(params.local)
-           local_print_T1_norm(eom_params.cs_per_irrep[C_irr]); */
+        // Print out the largest elements of the C1 vectors in the local basis
+        //   if(params.local)
+        //   local_print_T1_norm(eom_params.cs_per_irrep[C_irr]);
+        //
+
       }
       free_block(alpha);
     }
 
     if (C_irr == eom_params.prop_sym^moinfo.sym) {
-      /* Copy desired root to CC_RAMPS file */
+      // Copy desired root to CC_RAMPS file
       fprintf(outfile,"Copying C for root %d to CC_RAMPS\n",eom_params.prop_root);
       sprintf(lbl, "%s %d", "CME", eom_params.prop_root-1);
       dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
@@ -597,7 +600,7 @@ void diag(void) {
       }
     }
 
-    /* Print out results */
+    // Print out results
     fprintf(outfile,"\nProcedure converged for %d roots.\n",num_converged);
 
     if (num_converged == eom_params.cs_per_irrep[C_irr]) { }
@@ -628,12 +631,12 @@ void diag(void) {
       i = moinfo.sym ^ C_irr;
       psio_write_entry(CC_INFO, "CCEOM State Irrep", (char *) &i, sizeof(int));
 
-      /*      fprintf(outfile,"\nCCEOM energy %.10lf and state irrep %d written to CC_INFO.\n",
-	      lambda_old[eom_params.prop_root-1], i); */
+      //      fprintf(outfile,"\nCCEOM energy %.10lf and state irrep %d written to CC_INFO.\n",
+      //          lambda_old[eom_params.prop_root-1], i);
     }
     fprintf(outfile,"\n");
 
-    /* remove all temporary files */
+  // remove all temporary files
   free(lambda_old);
   free(converged);
     for(i=CC_TMP; i<CC_RAMPS; i++) psio_close(i,0);

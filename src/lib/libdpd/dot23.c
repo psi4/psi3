@@ -57,7 +57,7 @@ int dpd_dot23(dpdfile2 *T, dpdbuf4 *I, dpdfile2 *Z,
   timer_on("dot23");
 #endif
 
-  /* loop over row irreps of buf I(pq,rs); h = Gpq = Grs^GI */
+  // loop over row irreps of buf I(pq,rs); h = Gpq = Grs^GI
   for(h=0; h < nirreps; h++) {
 
     dpd_buf4_mat_irrep_init(I, h);
@@ -65,7 +65,7 @@ int dpd_dot23(dpdfile2 *T, dpdbuf4 *I, dpdfile2 *Z,
 
     /* Loop over irreps of the target Z; GZ = Gps */
     for(Gp=0; Gp < nirreps; Gp++) {
-      /* Gs = Gp;  Gq = Gr = h^Gp; */
+      // Gs = Gp;  Gq = Gr = h^Gp;
       Gq = h^Gp; Gr = h^Gp^GT; Gs = Gp^GZ;
       if (!transt) Tblock = Gq; else Tblock = Gr;
       if (!transz) Zblock = Gp; else Zblock = Gs;

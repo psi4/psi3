@@ -38,11 +38,8 @@ void moment_ints()
    double ab2, oog, gam;
    double x0, y0, z0;
    double x1, y1, z1;
-   double nx, ny, nz;
-   double **stemp, **mxtemp, **mytemp, **mztemp,
-     **nxtemp, **nytemp, **nztemp,
-     **temp, **tmp_dptr;
-   double *S, *MX, *MY, *MZ, *NX, *NY, *NZ;
+   double **stemp, **mxtemp, **mytemp, **mztemp, **temp, **tmp_dptr;
+   double *S, *MX, *MY, *MZ;
    double inorm, jnorm, over_pf;
    double *ptr1, *ptr2, norm1, norm12;
    double **OIX, **OIY, **OIZ;
@@ -54,9 +51,6 @@ void moment_ints()
   MX = init_array(dimension);
   MY = init_array(dimension);
   MZ = init_array(dimension);
-  NX = init_array(dimension);
-  NY = init_array(dimension);
-  NZ = init_array(dimension);
 
   /*--- allocate storage for shell blocks of one electron integrals ---*/
   dimension = ioff[BasisSet.max_am];
@@ -64,9 +58,6 @@ void moment_ints()
   mxtemp = block_matrix(dimension,dimension);
   mytemp = block_matrix(dimension,dimension);
   mztemp = block_matrix(dimension,dimension);
-  nxtemp = block_matrix(dimension,dimension);
-  nytemp = block_matrix(dimension,dimension);
-  nztemp = block_matrix(dimension,dimension);
 
   OIX = block_matrix(BasisSet.max_am+1,BasisSet.max_am+1);
   OIY = block_matrix(BasisSet.max_am+1,BasisSet.max_am+1);
@@ -96,9 +87,6 @@ void moment_ints()
       memset(mxtemp[0],0,sizeof(double)*dimension*dimension);
       memset(mytemp[0],0,sizeof(double)*dimension*dimension);
       memset(mztemp[0],0,sizeof(double)*dimension*dimension);
-      memset(nxtemp[0],0,sizeof(double)*dimension*dimension);
-      memset(nytemp[0],0,sizeof(double)*dimension*dimension);
-      memset(nztemp[0],0,sizeof(double)*dimension*dimension);
       
       /*--- contract by primitives here ---*/
       for (i = 0; i < BasisSet.shells[si].n_prims; i++) {
@@ -141,19 +129,6 @@ void moment_ints()
 		  mxtemp[ai][aj] -= over_pf*(x1+x0*B.x)*y0*z0;
 		  mytemp[ai][aj] -= over_pf*x0*(y1+y0*B.y)*z0;
 		  mztemp[ai][aj] -= over_pf*x0*y0*(z1+z0*B.z);
-
-		  nx = -2.0*a2*OIX[l1][l2+1];
-		  if (l2 >= 1)
-		    nx += l2*OIX[l1][l2-1];
-		  nxtemp[ai][aj] += nx*y0*z0*over_pf;
-		  ny = -2.0*a2*OIY[m1][m2+1];
-		  if (m2 >= 1)
-		    ny += m2*OIY[m1][m2-1];
-		  nytemp[ai][aj] += x0*ny*z0*over_pf;
-		  nz = -2.0*a2*OIZ[n1][n2+1];
-		  if (n2 >= 1)
-		    nz += n2*OIZ[n1][n2-1];
-		  nztemp[ai][aj] += x0*y0*nz*over_pf;
 		  
 		  aj++;
 		}
@@ -175,9 +150,6 @@ void moment_ints()
 	  mxtemp[i][j] *= norm12;
 	  mytemp[i][j] *= norm12;
 	  mztemp[i][j] *= norm12;
-	  nxtemp[i][j] *= norm12;
-	  nytemp[i][j] *= norm12;
-	  nztemp[i][j] *= norm12;
 	}
       }
 
@@ -188,9 +160,6 @@ void moment_ints()
 	  MX[ij] = mxtemp[i][j];
 	  MY[ij] = mytemp[i][j];
 	  MZ[ij] = mztemp[i][j];
-	  NX[ij] = nxtemp[i][j];
-	  NY[ij] = nytemp[i][j];
-	  NZ[ij] = nztemp[i][j];
 	}
     }
   }  /*--- This shell pair is done ---*/
@@ -205,9 +174,6 @@ void moment_ints()
   iwl_wrtone(IOUnits.itapMX_AO,PSIF_AO_MX,dimension,MX);
   iwl_wrtone(IOUnits.itapMY_AO,PSIF_AO_MY,dimension,MY);
   iwl_wrtone(IOUnits.itapMX_AO,PSIF_AO_MZ,dimension,MZ);
-  iwl_wrtone(IOUnits.itapMX_AO,PSIF_AO_NablaX,dimension,NX);
-  iwl_wrtone(IOUnits.itapMY_AO,PSIF_AO_NablaY,dimension,NY);
-  iwl_wrtone(IOUnits.itapMX_AO,PSIF_AO_NablaZ,dimension,NZ);
   if (UserOptions.print_lvl >= PRINT_OEI) {
     fprintf(outfile,"  -Overlap AO integrals:\n\n");
     print_array(S,BasisSet.num_ao,outfile);
@@ -217,30 +183,13 @@ void moment_ints()
     print_array(MY,BasisSet.num_ao,outfile);
     fprintf(outfile,"  -mu(z) AO integrals:\n\n");
     print_array(MZ,BasisSet.num_ao,outfile);
-    fprintf(outfile,"  -Nabla_x AO integrals:\n\n");
-    print_array(NX,BasisSet.num_ao,outfile);
-    fprintf(outfile,"  -Nabla_y AO integrals:\n\n");
-    print_array(NY,BasisSet.num_ao,outfile);
-    fprintf(outfile,"  -Nabla_z AO integrals:\n\n");
-    print_array(NZ,BasisSet.num_ao,outfile);
     fprintf(outfile,"\n");
   }
-
-  free_block(stemp);
-  free_block(mxtemp);
-  free_block(mytemp);
-  free_block(mztemp);
-  free_block(nxtemp);
-  free_block(nytemp);
-  free_block(nztemp);
 
   free(S);
   free(MX);
   free(MY);
   free(MZ);
-  free(NX);
-  free(NY);
-  free(NZ);
 
   return;
 }   

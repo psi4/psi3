@@ -7,11 +7,7 @@ int dpd_contract222(dpdfile2 *X, dpdfile2 *Y, dpdfile2 *Z, int target_X,
     int target_Y, double alpha, double beta)
 {
   int h, nirreps, Xtrans, Ytrans, *numlinks;
-  int GX, GY, GZ;
-  int Hx, Hy, Hz;
-  int symlink;
-
-
+  int GX, GY, GZ, hx, hy, hz, symlink;
 #ifdef DPD_DEBUG
   int *xrow, *xcol, *yrow, *ycol, *zrow, *zcol;
 #endif
@@ -56,15 +52,15 @@ int dpd_contract222(dpdfile2 *X, dpdfile2 *Y, dpdfile2 *Z, int target_X,
   }
 #endif  
 
-  /* loop over row irreps of X */
-  for(Hx=0; Hx < nirreps; Hx++) {
-    if      ((!Xtrans)&&(!Ytrans)) {Hy = Hx^GX;    Hz = Hx;    }
-    else if ((!Xtrans)&&( Ytrans)) {Hy = Hx^GX^GY; Hz = Hx;    } 
-    else if (( Xtrans)&&(!Ytrans)) {Hy = Hx;       Hz = Hx^GX; }
-    else /*(( Xtrans)&&( Ytrans))*/{Hy = Hx^GY;    Hz = Hx^GX; }
+  // loop over row irreps of X
+  for(hx=0; hx < nirreps; hx++) {
+    if      ((!Xtrans)&&(!Ytrans)) {hy = hx^GX;    hz = hx;    }
+    else if ((!Xtrans)&&( Ytrans)) {hy = hx^GX^GY; hz = hx;    } 
+    else if (( Xtrans)&&(!Ytrans)) {hy = hx;       hz = hx^GX; }
+    else /*(( Xtrans)&&( Ytrans))*/{hy = hx^GY;    hz = hx^GX; }
 
-    newmm(X->matrix[Hx], Xtrans, Y->matrix[Hy], Ytrans, Z->matrix[Hz],
-        Z->params->rowtot[Hz], numlinks[Hx^symlink], Z->params->coltot[Hz^GZ],
+    newmm(X->matrix[hx], Xtrans, Y->matrix[hy], Ytrans, Z->matrix[hz],
+        Z->params->rowtot[hz], numlinks[hx^symlink], Z->params->coltot[hz^GZ],
         alpha, beta);
   }
 

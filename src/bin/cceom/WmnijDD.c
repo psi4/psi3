@@ -13,7 +13,7 @@ void WmnijDD(int i, int C_irr) {
   char CMNEF_lbl[32], Cmnef_lbl[32], CMnEf_lbl[32];
   char SIJAB_lbl[32], Sijab_lbl[32], SIjAb_lbl[32];
 
-  if (params.eom_ref == 0) { /* RHF */
+  if (params.eom_ref == 0) { // RHF
     sprintf(CMnEf_lbl, "%s %d", "CMnEf", i);
     sprintf(SIjAb_lbl, "%s %d", "SIjAb", i);
 
@@ -27,7 +27,7 @@ void WmnijDD(int i, int C_irr) {
     dpd_buf4_close(&CMnEf);
   }
 
-  else { /* ROHF */
+  else { // ROHF
     sprintf(CMNEF_lbl, "%s %d", "CMNEF", i);
     sprintf(Cmnef_lbl, "%s %d", "Cmnef", i);
     sprintf(CMnEf_lbl, "%s %d", "CMnEf", i);

@@ -39,6 +39,10 @@ void read_charges()
       element[i] = elem_name[(int)elemsymb_charges[i]];
     }
   }
+  for(j=0 ; j<num_atoms ; j++) {
+    printf("%10.2lf%10.2lf\n", elemsymb_charges[j], nuclear_charges[j] ) ;
+  }
+
 }
 
 

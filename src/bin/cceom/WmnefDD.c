@@ -19,7 +19,7 @@ void WmnefDD(int i, int C_irr) {
   nC_irrs = moinfo.nirreps;
   occpi = moinfo.occpi; virtpi = moinfo.virtpi; openpi = moinfo.openpi;
 
-  if (params.eom_ref == 0) { /* RHF */
+  if (params.eom_ref == 0) { // RHF
     sprintf(CMnEf_lbl, "%s %d", "CMnEf", i);
     sprintf(SIjAb_lbl, "%s %d", "SIjAb", i);
     /* XAF = CMNAE * WMNFE + CMnAe * WMnFe */
@@ -75,7 +75,7 @@ void WmnefDD(int i, int C_irr) {
     dpd_buf4_close(&SIjAb);
   }
 
-  else { /* ROHF */
+  else { // ROHF
     sprintf(CMNEF_lbl, "%s %d", "CMNEF", i);
     sprintf(Cmnef_lbl, "%s %d", "Cmnef", i);
     sprintf(CMnEf_lbl, "%s %d", "CMnEf", i);

@@ -51,7 +51,7 @@ int dpd_trans4_mat_irrep_shift31(dpdtrans4 *Trans, int buf_block)
 
   rowoff = init_int_array(nirreps);
   cnt = 0;
-  for (h=0;h<nirreps;++h) {  /* loop over Gp */
+  for (h=0;h<nirreps;++h) {  // loop over Gp
     h_rsp = h^buf_block^all_buf_irrep;
     rowoff[h_rsp] = cnt;
     cnt += blocklen[h_rsp];
@@ -64,9 +64,9 @@ int dpd_trans4_mat_irrep_shift31(dpdtrans4 *Trans, int buf_block)
   for(pq=0; pq < Trans->buf.params->coltot[buf_block^all_buf_irrep]; pq++) {
 
       /* Loop over irreps of s */
-    for(h_pqr=0; h_pqr < nirreps; h_pqr++) { /* loop over rsp of original dpd*/
-      Gs = h_pqr^all_buf_irrep;            /* Gq of original dpd */
-      Gr = h_pqr^buf_block^all_buf_irrep;  /* Gp of original dpd */
+      for(h_pqr=0; h_pqr < nirreps; h_pqr++) { // loop over rsp of original dpd
+          Gs = h_pqr^all_buf_irrep;            // Gq of original dpd
+	  Gr = h_pqr^buf_block^all_buf_irrep;  // Gp of original dpd
 
 	  /* Loop over orbitals in Gr */
 	  for(r=0; (r < Trans->buf.params->ppi[Gr]) &&

@@ -18,12 +18,12 @@
 	to compute ERIs only. Subdirectory Default_Ints had to be compiled
 	in (it is by default).</P>
 	<LI><P><B>--oeprop</B> will cause <FONT COLOR="#ff0000">CINTS</FONT>
-	to compute one-electron property integrals (overlap, dipole
-	moment, and integrals over electronic nabla operator) <EM>in AO basis</EM>.
-	Subdirectory OEProp_Ints had to be compiled in (it if by default).</P>
+	to compute one-electron property integrals (overlap and dipole
+	moment) <EM>in AO basis</EM>. Subdirectory OEProp_Ints had to be
+	compiled in (it if by default).</P>
 	<LI><P><B>--fock</B> is used by <FONT COLOR="#ff0000">CSCF</FONT> to
 	cause <FONT COLOR="#ff0000">CINTS</FONT> to form the Fock matrices
-	directly. Subdirectory HF_Fock and DFT had to be compiled in (it is by
+	directly. Subdirectory HF_Fock had to be compiled in (it is by
 	default). Do not use this option to run <FONT COLOR="#ff0000">CINTS</FONT>
 	standalone, as it will try to read an intermediate file produced by
 	<FONT COLOR="#ff0000">CSCF</FONT>.</P>
@@ -33,10 +33,6 @@
 	<LI><P><B>--deriv1</B> will cause <FONT COLOR="#ff0000">CINTS</FONT>
 	to compute first-order energy derivatives. Subdirectory
 	Default_Deriv1 had to be compiled in (it is by default).</P>
-	<LI><P><B>--deriv2</B> will cause <FONT COLOR="#ff0000">CINTS</FONT>
-	to compute second-order energy derivative components and first-order
-	derivative Fock and overlap matrices for solving first-order CPHF equations.
-	Subdirectory Default_Deriv2 had to be compiled in (it is by default).</P>
 	<LI><P><B>--mp2r12</B> will cause <FONT COLOR="#ff0000">CINTS</FONT>
 	to compute non-standard MO integrals necessary to evaluate MP2-R12
 	energy with program MP2R12. Subdirectory MP2R12 had to be compiled

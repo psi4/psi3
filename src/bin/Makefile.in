@@ -2,8 +2,7 @@
 .PHONY:	default all install depend clean targetclean
 
 subdirs = \
-ccdensity ccenergy cchbar cclambda cceom ccsort cctriples cints \
-clag contour contour3d \
+ccdensity ccenergy cchbar cclambda cceom ccsort cctriples cints contour contour3d \
 cphf cscf detcas detcasman detci extrema geom input intder95 intdif makepk \
 mp2 mp2r12 muder normco oeprop optking psi psiclean rgeom transqt ugeom \
 intder \

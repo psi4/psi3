@@ -165,8 +165,6 @@ void init_gto(int);
 void cleanup_gto(int);
 
 double **overlap_new_old();
-#include "float.h"
-FLOAT** overlap_new_old_float();
 double **overlap();
 void write_scf_to_file30();
 

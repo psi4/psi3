@@ -298,16 +298,12 @@ HD_AVE = EVANGELISTI (new default) for aurelius, KD_AVE for dido
 E = -76.1564081972099 C0=-0.976353 C1=0.056881
 
 aurelius (2GB RAM, RedHat Linux 7.3, Dual Athlon MP 2000+, 2 RAID0 OS
-          striped 36GB U160 10k SCSI HDD)
-
-(new) plato (4GB RAM, RedHat Linux 7.3, Dual P4-Xeon 2.4GHz, 2 RAID0 OS
-          striped 36GB U160 10k SCSI HDD)
+          striped 36GB U160 SCSI HDD)
 
 10 (11) iters as usual (iters start from 0 so really 11).
 
-dido (375MHz PowerIII-2) :  89u, 29s, 132t 
 aurelius                 : 109u, 19s, 130t
-plato                    :  59u, 13s,  73t
+dido (375MHz PowerIII-2) :  89u, 29s, 132t 
 
 Threaded code as of 6/24/02; 2 threads, was less efficient for 
 aurelius, didn't seem to take for dido (maybe wasn't compiled right?).
@@ -317,24 +313,13 @@ aurelius, didn't seem to take for dido (maybe wasn't compiled right?).
 Ne custom DZP basis FCI 0fzc
 file ne.dz-fci.input
 
-16,919,232 determinants
+16919232 determinants
 h0_blocksize = 400 convergence = 6
 10 (11) iterations
 
 E = -128.7629007841444 C0=-0.984931 C1=0.037659
 
-dido      : 2899u, 540s, 3820t
 aurelius  : 2396u, 433s, 3147t
-plato     : 1164u, 226s, 1468t
+dido      : 2899u, 540s, 3820t
 
 ======================================================================
-
-BH cc-pVQZ FCI 1fzc
-3,068,596 determinants
-convergence = 6
-8 (9) iterations
-
-E = -25.2351554791625 for R(BH)=1.2
-
-SP2 node (PowerIII-2 375MHz) : 1905u, 60s, 1978t
-

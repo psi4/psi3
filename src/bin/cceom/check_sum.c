@@ -23,8 +23,8 @@ void check_sum(char *term_lbl, int index, int irrep) {
   	return;
   }
 
-  /* save_params_ref = params.ref;
-     params.ref = 0; */
+  //save_params_ref = params.ref;
+  //params.ref = 0;
 
   if (params.eom_ref == 0) {
     sprintf(lbl, "%s %d", "SIA", index);
@@ -65,7 +65,7 @@ void check_sum(char *term_lbl, int index, int irrep) {
   fflush(outfile);
   old_norm = norm;
 
-  /* params.ref = save_params_ref; */
+  //params.ref = save_params_ref;
 
   return;
 }

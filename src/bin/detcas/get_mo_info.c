@@ -61,7 +61,7 @@ void get_mo_info(void)
    CalcInfo.pitz2ci = init_int_array(CalcInfo.nbfso);
    CalcInfo.ras_opi = init_int_matrix(MAX_RAS_SPACES,CalcInfo.nirreps);
       
-   if (!ras_set2(CalcInfo.nirreps, CalcInfo.nbfso, 1, 0,
+   if (!ras_set2(CalcInfo.nirreps, CalcInfo.nbfso, 1, 
                 CalcInfo.orbs_per_irr, CalcInfo.docc, CalcInfo.socc, 
                 CalcInfo.frozen_docc, CalcInfo.frozen_uocc, 
                 CalcInfo.rstr_docc, CalcInfo.rstr_uocc,

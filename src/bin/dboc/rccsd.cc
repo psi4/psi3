@@ -9,8 +9,6 @@ extern "C" {
 }
 #include "moinfo.h"
 #include "mo_overlap.h"
-#include "float.h"
-#include "linalg.h"
 
 using namespace std;
 
@@ -29,13 +27,13 @@ double eval_rccsd_derwfn_overlap()
 {
   int ndocc = MOInfo.ndocc;
   int nvirt = MOInfo.num_mo - MOInfo.ndocc;
-  FLOAT **CSC_full = eval_S_alpha();
-  FLOAT **CSC = create_matrix(ndocc,ndocc);
+  double **CSC_full = eval_S_alpha();
+  double **CSC = block_matrix(ndocc,ndocc);
   int *tmpintvec = new int[ndocc];
 
-  FLOAT **RmSp = create_matrix(ndocc,nvirt);
-  FLOAT **RmDp = create_matrix(INDEX2_ORD(ndocc,0),INDEX2_ORD(nvirt,0));
-  FLOAT **RmTp = create_matrix(INDEX3_ORD(ndocc,0,0),INDEX3_ORD(nvirt,0,0));
+  double **RmSp = block_matrix(ndocc,nvirt);
+  double **RmDp = block_matrix(INDEX2_ORD(ndocc,0),INDEX2_ORD(nvirt,0));
+  double **RmTp = block_matrix(INDEX3_ORD(ndocc,0,0),INDEX3_ORD(nvirt,0,0));
 
   //
   // Evaluate reference-reference overlap <Ref(-)|Ref(+)>
@@ -43,10 +41,8 @@ double eval_rccsd_derwfn_overlap()
   for(int i=0;i<ndocc;i++)
     for(int j=0;j<ndocc;j++)
       CSC[i][j] = CSC_full[i][j];
-  //  C_DGETRF(ndocc,ndocc,&(CSC[0][0]),ndocc,tmpintvec);
-  FLOAT sign;
-  lu_decom(CSC, ndocc, tmpintvec, &sign);
-  FLOAT deter_ref = 1.0;
+  C_DGETRF(ndocc,ndocc,&(CSC[0][0]),ndocc,tmpintvec);
+  double deter_ref = 1.0;
   for(int i=0;i<ndocc;i++)
     deter_ref *= CSC[i][i];
 
@@ -67,9 +63,8 @@ double eval_rccsd_derwfn_overlap()
 	CSC[p][mo_i] = CSC_full[p][mo_a];
 
       // Compute the determinant
-      //      C_DGETRF(ndocc,ndocc,&(CSC[0][0]),ndocc,tmpintvec);
-      lu_decom(CSC, ndocc, tmpintvec, &sign);
-      FLOAT deter1 = 1.0;
+      C_DGETRF(ndocc,ndocc,&(CSC[0][0]),ndocc,tmpintvec);
+      double deter1 = 1.0;
       for(int i=0;i<ndocc;i++)
 	deter1 *= CSC[i][i];
 
@@ -101,9 +96,8 @@ double eval_rccsd_derwfn_overlap()
 	    CSC[p][mo_j] = CSC_full[p][mo_b];
 	  
 	  // Compute the determinant
-	  //	  C_DGETRF(ndocc,ndocc,&(CSC[0][0]),ndocc,tmpintvec);
-	  lu_decom(CSC, ndocc, tmpintvec, &sign);
-	  FLOAT deter1 = 1.0;
+	  C_DGETRF(ndocc,ndocc,&(CSC[0][0]),ndocc,tmpintvec);
+	  double deter1 = 1.0;
 	  for(int i=0;i<ndocc;i++)
 	    deter1 *= CSC[i][i];
 	  
@@ -144,9 +138,8 @@ double eval_rccsd_derwfn_overlap()
 		CSC[p][mo_k] = CSC_full[p][mo_c];
 	  
 	      // Compute the determinant
-	      // C_DGETRF(ndocc,ndocc,&(CSC[0][0]),ndocc,tmpintvec);
-	      lu_decom(CSC, ndocc, tmpintvec, &sign);
-	      FLOAT deter1 = 1.0;
+	      C_DGETRF(ndocc,ndocc,&(CSC[0][0]),ndocc,tmpintvec);
+	      double deter1 = 1.0;
 	      for(int i=0;i<ndocc;i++)
 		deter1 *= CSC[i][i];
 	      
@@ -163,11 +156,11 @@ double eval_rccsd_derwfn_overlap()
   }
 
   delete[] tmpintvec;
-  delete_matrix(CSC);
-  delete_matrix(CSC_full);
-  delete_matrix(RmTp);
-  delete_matrix(RmDp);
-  delete_matrix(RmSp);
-  return (double)deter_ref*deter_ref;
+  free_block(CSC);
+  free_block(CSC_full);
+  free_block(RmTp);
+  free_block(RmDp);
+  free_block(RmSp);
+  return deter_ref*deter_ref;
 }
 

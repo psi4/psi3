@@ -11,7 +11,7 @@
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
 #include <libiwl/iwl.h>
-#include <libchkpt/chkpt.h>
+#include <libfile30/file30.h>
 #include <libqt/qt.h>
 #include <psifiles.h>
 #include <masses.h>
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
   timer_init();
   timer_on("CPHF Main");
 
-  /*file30_init();
+  file30_init();
   natom = file30_rd_natom();
   nmo = file30_rd_nmo();
   nso = file30_rd_nso();
@@ -71,19 +71,8 @@ int main(int argc, char *argv[])
   orbspi = file30_rd_orbspi();
   clsdpi = file30_rd_clsdpi();
   zvals = file30_rd_zvals();
-  file30_close();*/
+  file30_close();
 
-  chkpt_init();
-  natom = chkpt_rd_natom();
-  nmo = chkpt_rd_nmo();
-  nso = chkpt_rd_nso();
-  evals = chkpt_rd_evals();
-  nirreps = chkpt_rd_nirreps();
-  orbspi = chkpt_rd_orbspi();
-  clsdpi = chkpt_rd_clsdpi();
-  zvals = chkpt_rd_zvals();
-  chkpt_close();
-  
   /*
   fprintf(outfile, "Orbital Eigenvalues:\n");
   for(i=0; i < nmo; i++) fprintf(outfile, "%d %20.12f\n", i, evals[i]);
@@ -163,10 +152,10 @@ int main(int argc, char *argv[])
       for(j=0; j <= i; j++, ij++)
 	F[coord][i][j] = F[coord][j][i] = inbuf[ij];
 
-    /*
+/*
     fprintf(outfile, "F[%d] Deriv (MO):\n", coord);
     print_mat(F[coord], nmo, nmo, outfile);
-    */
+*/
   }
 
   for(coord=0; coord < natom*3; coord++) {
@@ -178,10 +167,10 @@ int main(int argc, char *argv[])
       for(j=0; j <= i; j++, ij++)
 	S[coord][i][j] = S[coord][j][i] = inbuf[ij];
 
-    /*
+/*
     fprintf(outfile, "S[%d] Deriv (MO):\n", coord);
     print_mat(S[coord], nmo, nmo, outfile);
-    */
+*/
   }
   free(inbuf);
   free(label);
@@ -348,8 +337,10 @@ int main(int argc, char *argv[])
       Acopy[AI][BJ] = A[AI][BJ];
 
 
+/*
   fprintf(outfile, "\nMO Hessian:\n");
   print_mat(A, num_ai, num_ai, outfile);
+*/
 
   /* Build the Mixed Hessian (dependent x independent) */
   AA = block_matrix(num_ij, num_ai);
@@ -463,13 +454,6 @@ int main(int argc, char *argv[])
     }
   }
 
-  /*
-  for(coord=0; coord < natom*3; coord++) {
-    fprintf(outfile, "\nU[%d] Matrix (MO):\n", coord);
-    print_mat(U[coord], nmo, nmo, outfile);
-  }
-  */
-
   /* Add the dependent pairs on the lower triangle */
   for(isym=0,IJ=0; isym < nirreps; isym++) {
     ifirst = ofirst[isym];
@@ -561,10 +545,13 @@ int main(int argc, char *argv[])
     }
   }
 
+  /* Print the Ua matrices */
+/*
   for(coord=0; coord < natom*3; coord++) {
     fprintf(outfile, "\nU[%d] Matrix (MO):\n", coord);
     print_mat(U[coord], nmo, nmo, outfile);
   }
+*/
 
   /*** Compute the SCF second derivative ***/
   hessian = block_matrix(natom*3, natom*3);
