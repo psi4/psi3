@@ -4,6 +4,7 @@
 .  \"
 .  \"   man page created by David Sherrill, 8 May 1998
 .  \"   streamlined by CDS, updated        20 Jul 1998
+.  \"   updated with new keywords by JSS   20 Jun 2004
 .  \"
 .  \"
 .SH NAME
@@ -178,5 +179,39 @@ Scale factor for the orbital rotation step.  Default is 1.0.
 .IP "\fBTPDM_FILE =\fP \fIinteger\fP"
 File (unit number) for reading the two-particle density matrix.
 The default value is currently 74.
+
+.IP "\fBLEVEL_SHIFT =\fP \fIboolean\fP"
+Tells whether to allow for level shifting of the hessian matrix.  This can
+be used to ensure that the hessian is positive definite for the beginning
+iterations.  If the hessian is not positive definite near convergence, then
+this may be a sign of numerical instabilities in the MCSCF.  The default
+is TRUE.
+
+.IP "\fBSHIFT =\fP \fIreal\fP"
+Tells how much the diagonal elements of the hessian should be shifted for
+level shifting.  Default is 0.01.
+
+.IP "\fBDETERM_MIN =\fP \fIreal\fP"
+Minimum allowed valued for the determinant of the hessian matrix if
+level shifting is on.  This is not used if LEVEL_SHIFT=FALSE.  
+Default is 0.00001.
+
+.IP "\fBSTEP_MAX =\fP \fIreal\fP"
+This is the maximum allowed single orbital rotation.  Default is 0.30.
+
+.IP "\fBFORCE_STEP =\fP \fIboolean\fP"
+This allows the user to overide the calculated step and to force a step
+in a particular direction.  This can be usefull if trying to force the 
+calculation away from a saddle point.  The default is FALSE.
+
+.IP "\fBFORCE_PAIR =\fP \fIinteger\fP"
+This is the index for the independent pair which is to be rotated if 
+FORCE_STEP=TRUE.  This is ignored otherwise.  There is no default.  
+
+.IP "\fBFORCE_VALUE =\fP \fIreal\fP"
+This is the orbital rotation value for rotating the orbitals specified
+by FORCE_PAIR.  This is only used if FORCE_STEP is set to TRUE.  The 
+default value is 0.0.
+
 
 
