@@ -337,7 +337,7 @@ psi: (
   CCSDTwoConResponse = ERROR
 
   % Procedure for an CCSD one-electron property computation
-  CCSDFirstOEPROP = ($CCSDEnergy $cchbar $cclambda $ccdensity $backtransqt $oeprop $done)
+  CCSDFirstOEPROP = ($CCSDEnergy $cchbar $cclambda $ccdensity $oeprop $done)
   CCSDRHFFirstOEPROP = $CCSDFirstOEPROP
   CCSDUHFFirstOEPROP = ERROR
   CCSDROHFFirstOEPROP = ERROR
