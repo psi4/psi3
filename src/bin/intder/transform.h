@@ -16,7 +16,7 @@ class Transform
 
 public:
 
-  void linear_transform(int, int, double **);
+  void der_transform(int, int, double **);
 
 /* Numerical testing stuff
   double *BMatrow;

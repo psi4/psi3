@@ -83,7 +83,7 @@ Transform::~Transform()
  * transformMatrix = AMatrix                                                        *
  * transformType < 0 is not yet implemented!                                        */
 
-void Transform::linear_transform(int coord1, int coord2, double **transformMatrix)
+void Transform::der_transform(int coord1, int coord2, double **transformMatrix)
 {
   int i,j,m;
   double cf1, cf2, cf3, cf4; //conversion factors, which will be appropriate cf's or equal to 1
