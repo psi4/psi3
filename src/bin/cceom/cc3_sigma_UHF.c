@@ -7,28 +7,24 @@
 #define EXTERN
 #include "globals.h"
 
-void cc3_sigma_UHF_AAA(int term, dpdbuf4 *CMNEF, dpdfile2 *SIA, dpdbuf4 *SIJAB, double omega)
+/* computes < S | (Dints)           <T| (Wmbij,Wabei) CMNEF |0> |T> / (w-wt) */
+/* computes < D | (Fme,Wamef,Wmnie) <T| (Wmbij,Wabei) CMNEF |0> |T> / (w-wt) */
+
+void cc3_sigma_UHF_AAA(dpdbuf4 *CMNEF, dpdbuf4 *WABEI, dpdbuf4 *WMBIJ,
+    int do_singles, dpdbuf4 *Dints_anti, dpdfile2 *SIA, int do_doubles, dpdfile2 *FME,
+    dpdbuf4 *WMAFE, dpdbuf4 *WMNIE, dpdbuf4 *SIJAB, double energy)
 {
   int h, nirreps;
-  int *occ_off, *occpi;
-  int *vir_off, *virtpi;
-  int Gi, Gj, Gk, Gijk;
-  int Ga, Gb, Gc;
+  int *occ_off, *occpi, *vir_off, *virtpi;
+  int Gi, Gj, Gk, Gijk, Ga, Gb, Gc;
   int i, j, k, I, J, K;
   int a, b, c, A, B, C;
   int Gij, ij, Gab, ab, Gjk, jk;
-  double ***W1;
-  dpdbuf4 T2, E, F;
+  double ***W1, **Z;
   dpdfile2 fIJ, fAB;
-  dpdfile2 t1new, t1, d1;
-  dpdbuf4 D;
   int nrows, ncols, nlinks;
-  dpdbuf4 D2;
-  dpdfile2 Fme;
-  dpdbuf4 WMAFE, WMNIE;
   int Gd, d, cd, dc, Gid, id, DD;
-  int Gm, m, Gmi, mi, im, mc, M, do_singles = 1, do_doubles = 1;
-  double **Z;
+  int Gm, m, Gmi, mi, im, mc, M;
 
   nirreps = moinfo.nirreps;
   occpi = moinfo.aoccpi;
@@ -39,124 +35,28 @@ void cc3_sigma_UHF_AAA(int term, dpdbuf4 *CMNEF, dpdfile2 *SIA, dpdbuf4 *SIJAB, 
   dpd_file2_init(&fIJ, CC_OEI, 0, 0, 0, "fIJ");
   dpd_file2_init(&fAB, CC_OEI, 0, 1, 1, "fAB");
 
-  if (term == 0) {
-
+  if (do_singles) {
     dpd_file2_mat_init(SIA);
     dpd_file2_mat_rd(SIA);
 
-    dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <IJ||AB>");
     for(h=0; h < nirreps; h++) {
-      dpd_buf4_mat_irrep_init(&D, h);
-      dpd_buf4_mat_irrep_rd(&D, h);
+      dpd_buf4_mat_irrep_init(Dints_anti, h);
+      dpd_buf4_mat_irrep_rd(Dints_anti, h);
     }
-
-    dpd_file2_init(&Fme, CC_OEI, 0, 0, 1, "FME");
-    dpd_file2_mat_init(&Fme);
-    dpd_file2_mat_rd(&Fme);
-
-    for(h=0; h < nirreps; h++) {
-      dpd_buf4_mat_irrep_init(SIJAB, h);
-      dpd_buf4_mat_irrep_rd(SIJAB, h);
-    }
-
-    dpd_buf4_init(&WMAFE, CC3_HET1, 0, 20, 5, 20, 7, 0, "CC3 WAMEF (MA,F>E)");
-    dpd_buf4_init(&WMNIE, CC3_HET1, 0, 0, 20, 2, 20, 0, "CC3 WMNIE (M>N,IE)");
-    for(h=0; h < nirreps; h++) {
-      dpd_buf4_mat_irrep_init(&WMNIE, h);
-      dpd_buf4_mat_irrep_rd(&WMNIE, h);
-    }
-
-    dpd_buf4_init(&F, CC3_HET1, 0, 20, 5, 20, 7, 0, "CC3 WABEI (IE,B>A)");
-    dpd_buf4_init(&E, CC3_HET1, 0, 0, 20, 2, 20, 0, "CC3 WMBIJ (I>J,MB)");
   }
 
-  else if (term == 1) {
-    dpd_file2_mat_init(SIA);
-    dpd_file2_mat_rd(SIA);
-
-    dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <IJ||AB>");
-    for(h=0; h < nirreps; h++) {
-      dpd_buf4_mat_irrep_init(&D, h);
-      dpd_buf4_mat_irrep_rd(&D, h);
-    }
-
-    dpd_file2_init(&Fme, CC_OEI, 0, 0, 1, "FME");
-    dpd_file2_mat_init(&Fme);
-    dpd_file2_mat_rd(&Fme);
+  if (do_doubles) {
+    dpd_file2_mat_init(FME);
+    dpd_file2_mat_rd(FME);
 
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_init(SIJAB, h);
       dpd_buf4_mat_irrep_rd(SIJAB, h);
     }
-
-    dpd_buf4_init(&WMAFE, CC3_HET1, 0, 20, 5, 20, 7, 0, "CC3 WAMEF (MA,F>E)");
-    dpd_buf4_init(&WMNIE, CC3_HET1, 0, 0, 20, 2, 20, 0, "CC3 WMNIE (M>N,IE)");
     for(h=0; h < nirreps; h++) {
-      dpd_buf4_mat_irrep_init(&WMNIE, h);
-      dpd_buf4_mat_irrep_rd(&WMNIE, h);
+      dpd_buf4_mat_irrep_init(WMNIE, h);
+      dpd_buf4_mat_irrep_rd(WMNIE, h);
     }
-
-    dpd_buf4_init(&F, CC3_HET1, 0, 20, 5, 20, 7, 0, "CC3 WABEI (IE,B>A)");
-    dpd_buf4_init(&E, CC3_HET1, 0, 0, 20, 2, 20, 0, "CC3 WMBIJ (I>J,MB)");
-  }
-
-  else if (term == 2) {
-    dpd_file2_mat_init(SIA);
-    dpd_file2_mat_rd(SIA);
-
-    dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <IJ||AB>");
-    for(h=0; h < nirreps; h++) {
-      dpd_buf4_mat_irrep_init(&D, h);
-      dpd_buf4_mat_irrep_rd(&D, h);
-    }
-
-    dpd_file2_init(&Fme, CC_OEI, 0, 0, 1, "FME");
-    dpd_file2_mat_init(&Fme);
-    dpd_file2_mat_rd(&Fme);
-
-    for(h=0; h < nirreps; h++) {
-      dpd_buf4_mat_irrep_init(SIJAB, h);
-      dpd_buf4_mat_irrep_rd(SIJAB, h);
-    }
-
-    dpd_buf4_init(&WMAFE, CC3_HET1, 0, 20, 5, 20, 7, 0, "CC3 WAMEF (MA,F>E)");
-    dpd_buf4_init(&WMNIE, CC3_HET1, 0, 0, 20, 2, 20, 0, "CC3 WMNIE (M>N,IE)");
-    for(h=0; h < nirreps; h++) {
-      dpd_buf4_mat_irrep_init(&WMNIE, h);
-      dpd_buf4_mat_irrep_rd(&WMNIE, h);
-    }
-
-    dpd_buf4_init(&F, CC3_HC1ET1, 0, 20, 5, 20, 7, 0, "Ht_WABEI (IE,B>A)");
-    dpd_buf4_init(&E, CC3_HC1ET1, 0, 0, 20, 2, 20, 0, "Ht_WMBIJ (I>J,MB)");
-  }
-  else if (term == 3) {
-    dpd_file2_mat_init(SIA);
-    dpd_file2_mat_rd(SIA);
-
-    dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <IJ||AB>");
-    for(h=0; h < nirreps; h++) {
-      dpd_buf4_mat_irrep_init(&D, h);
-      dpd_buf4_mat_irrep_rd(&D, h);
-    }
-
-    dpd_file2_init(&Fme, CC_OEI, 0, 0, 1, "FME");
-    dpd_file2_mat_init(&Fme);
-    dpd_file2_mat_rd(&Fme);
-
-    for(h=0; h < nirreps; h++) {
-      dpd_buf4_mat_irrep_init(SIJAB, h);
-      dpd_buf4_mat_irrep_rd(SIJAB, h);
-    }
-
-    dpd_buf4_init(&WMAFE, CC3_HET1, 0, 20, 5, 20, 7, 0, "CC3 WAMEF (MA,F>E)");
-    dpd_buf4_init(&WMNIE, CC3_HET1, 0, 0, 20, 2, 20, 0, "CC3 WMNIE (M>N,IE)");
-    for(h=0; h < nirreps; h++) {
-      dpd_buf4_mat_irrep_init(&WMNIE, h);
-      dpd_buf4_mat_irrep_rd(&WMNIE, h);
-    }
-
-    dpd_buf4_init(&F, CC3_HC1ET1, 0, 20, 5, 20, 7, 0, "Ht_WABEI (IE,B>A)");
-    dpd_buf4_init(&E, CC3_HC1ET1, 0, 0, 20, 2, 20, 0, "Ht_WMBIJ (I>J,MB)");
   }
 
   /* target T3 amplitudes go in here */
@@ -172,7 +72,7 @@ void cc3_sigma_UHF_AAA(int term, dpdbuf4 *CMNEF, dpdfile2 *SIA, dpdbuf4 *SIJAB, 
 	for(Gab=0; Gab < nirreps; Gab++) {
 	  /* This will need to change for non-totally-symmetric cases */
 	  Gc = Gab ^ Gijk;
-	  W1[Gab] = dpd_block_matrix(F.params->coltot[Gab], virtpi[Gc]);
+	  W1[Gab] = dpd_block_matrix(WABEI->params->coltot[Gab], virtpi[Gc]);
 	}
 
 	for(i=0; i < occpi[Gi]; i++) {
@@ -182,23 +82,26 @@ void cc3_sigma_UHF_AAA(int term, dpdbuf4 *CMNEF, dpdfile2 *SIA, dpdbuf4 *SIJAB, 
 	    for(k=0; k < occpi[Gk]; k++) {
 	      K = occ_off[Gk] + k;
 
-	      T3_AAA(W1, nirreps, I, Gi, J, Gj, K, Gk, CMNEF, &F, &E, &fIJ, &fAB, 
-		     occpi, occ_off, virtpi, vir_off);
+	      T3_AAA(W1, nirreps, I, Gi, J, Gj, K, Gk, CMNEF, WABEI, WMBIJ, &fIJ, &fAB, 
+		     occpi, occ_off, virtpi, vir_off, energy);
 
+          if (do_singles) {
 	      /* t_KC <-- 1/4 t_IJKABC <IJ||AB> */
 
 	      Gc = Gk;    /* assumes T1 is totally symmetric */
 	      Gab = Gij;  /* assumes <ij||ab> is totally symmetric */
 
-	      ij = D.params->rowidx[I][J];
+	      ij = Dints_anti->params->rowidx[I][J];
 
-	      nrows = D.params->coltot[Gij];
+	      nrows = Dints_anti->params->coltot[Gij];
 	      ncols = virtpi[Gc];
 
 	      if(nrows && ncols)
-		C_DGEMV('t', nrows, ncols, 0.25, W1[Gab][0], ncols, D.matrix[Gij][ij], 1,
+		C_DGEMV('t', nrows, ncols, 0.25, W1[Gab][0], ncols, Dints_anti->matrix[Gij][ij], 1,
 			1.0, SIA->matrix[Gk][k], 1);
+          }
 
+          if (do_doubles) {
 	      /* t_IJAB <-- t_IJKABC F_KC */
 	      Gc = Gk;    /* assumes Fme is totally symmetric */
 	      Gab = Gij;  /* Assumes tIJAB is totally symmetric */
@@ -208,7 +111,7 @@ void cc3_sigma_UHF_AAA(int term, dpdbuf4 *CMNEF, dpdfile2 *SIA, dpdbuf4 *SIJAB, 
 	      ij = SIJAB->params->rowidx[I][J];
 
 	      if(nrows && ncols)
-		C_DGEMV('n', nrows, ncols, 1.0, W1[Gab][0], ncols, Fme.matrix[Gk][k], 1,
+		C_DGEMV('n', nrows, ncols, 1.0, W1[Gab][0], ncols, FME->matrix[Gk][k], 1,
 			1.0, SIJAB->matrix[Gij][ij], 1);
 
 	      /* t_JKDC <-- +1/2 t_IJKABC W_IDAB */
@@ -218,19 +121,19 @@ void cc3_sigma_UHF_AAA(int term, dpdbuf4 *CMNEF, dpdfile2 *SIA, dpdbuf4 *SIJAB, 
 		Gab = Gid = Gi ^ Gd;  /* assumes Wieab is totally symmetric */
 		Gc = Gab ^ Gijk;  /* assumes T3 is totally symmetric */
 
-		id = WMAFE.row_offset[Gid][I];
+		id = WMAFE->row_offset[Gid][I];
 
 		Z = block_matrix(virtpi[Gc],virtpi[Gd]);
-		WMAFE.matrix[Gid] = dpd_block_matrix(virtpi[Gd], WMAFE.params->coltot[Gid]);
-		dpd_buf4_mat_irrep_rd_block(&WMAFE, Gid, id, virtpi[Gd]);
+		WMAFE->matrix[Gid] = dpd_block_matrix(virtpi[Gd], WMAFE->params->coltot[Gid]);
+		dpd_buf4_mat_irrep_rd_block(WMAFE, Gid, id, virtpi[Gd]);
 
 		nrows = virtpi[Gc];
 		ncols = virtpi[Gd];
-		nlinks = WMAFE.params->coltot[Gid];
+		nlinks = WMAFE->params->coltot[Gid];
 
 		if(nrows && ncols && nlinks)
 		  C_DGEMM('t', 't', nrows, ncols, nlinks, 0.5, W1[Gab][0], nrows, 
-			  WMAFE.matrix[Gid][0], nlinks, 0.0, Z[0], ncols);
+			  WMAFE->matrix[Gid][0], nlinks, 0.0, Z[0], ncols);
 
 		for(c=0; c < virtpi[Gc]; c++) {
 		  C = vir_off[Gc] + c;
@@ -242,20 +145,20 @@ void cc3_sigma_UHF_AAA(int term, dpdbuf4 *CMNEF, dpdfile2 *SIA, dpdbuf4 *SIJAB, 
 		    SIJAB->matrix[Gjk][jk][cd] += -Z[c][d];
 		  }
 		}
-		dpd_free_block(WMAFE.matrix[Gid], virtpi[Gd], WMAFE.params->coltot[Gid]);
+		dpd_free_block(WMAFE->matrix[Gid], virtpi[Gd], WMAFE->params->coltot[Gid]);
 		free_block(Z);
 	      }
 
 	      /* t_MIAB <-- +1/2 t_IJKABC W_JKMC */
 	      /* t_IMAB <-- -1/2 t_IJKABC W_JKMC */
-	      jk = WMNIE.params->rowidx[J][K];
+	      jk = WMNIE->params->rowidx[J][K];
 	      for(Gm=0; Gm < nirreps; Gm++) {
 		Gab = Gmi = Gm ^ Gi;  /* assumes totally symmetric */
 		Gc = Gab ^ Gijk;      /* assumes totally symmetric */
 
-		mc = WMNIE.col_offset[Gjk][Gm];
+		mc = WMNIE->col_offset[Gjk][Gm];
 
-		nrows = F.params->coltot[Gab];
+		nrows = WABEI->params->coltot[Gab];
 		ncols = occpi[Gm];
 		nlinks = virtpi[Gc];
 
@@ -263,7 +166,7 @@ void cc3_sigma_UHF_AAA(int term, dpdbuf4 *CMNEF, dpdfile2 *SIA, dpdbuf4 *SIJAB, 
 
 		if(nrows && ncols && nlinks) 
 		  C_DGEMM('n', 't', nrows, ncols, nlinks, 0.5, W1[Gab][0], nlinks,
-			  &(WMNIE.matrix[Gjk][jk][mc]), nlinks, 0.0, Z[0], ncols);
+			  &(WMNIE->matrix[Gjk][jk][mc]), nlinks, 0.0, Z[0], ncols);
 
 		for(m=0; m < ncols; m++) {
 		  M = occ_off[Gm] + m;
@@ -277,6 +180,7 @@ void cc3_sigma_UHF_AAA(int term, dpdbuf4 *CMNEF, dpdfile2 *SIA, dpdbuf4 *SIJAB, 
 
 		dpd_free_block(Z, nrows, ncols);
 	      }
+          } /* end do_doubles */
 
 	    } /* k */
 	  } /* j */
@@ -285,7 +189,7 @@ void cc3_sigma_UHF_AAA(int term, dpdbuf4 *CMNEF, dpdfile2 *SIA, dpdbuf4 *SIJAB, 
 	for(Gab=0; Gab < nirreps; Gab++) {
 	  /* This will need to change for non-totally-symmetric cases */
 	  Gc = Gab ^ Gijk;
-	  dpd_free_block(W1[Gab], F.params->coltot[Gab], virtpi[Gc]);
+	  dpd_free_block(W1[Gab], WABEI->params->coltot[Gab], virtpi[Gc]);
 	}
 
       } /* Gk */
@@ -294,55 +198,47 @@ void cc3_sigma_UHF_AAA(int term, dpdbuf4 *CMNEF, dpdfile2 *SIA, dpdbuf4 *SIJAB, 
 
   free(W1);
 
-  dpd_buf4_close(&E);
-  dpd_buf4_close(&F);
   dpd_file2_close(&fIJ);
   dpd_file2_close(&fAB);
 
-  dpd_file2_mat_wrt(SIA);
-  dpd_file2_mat_close(SIA);
+  if (do_singles) {
 
-  for(h=0; h < nirreps; h++) {
-    dpd_buf4_mat_irrep_close(&D, h);
+    dpd_file2_mat_wrt(SIA);
+    dpd_file2_mat_close(SIA);
+
+    for(h=0; h < nirreps; h++)
+      dpd_buf4_mat_irrep_close(Dints_anti, h);
   }
-  dpd_buf4_close(&D);
 
-  dpd_file2_mat_close(&Fme);
-  dpd_file2_close(&Fme);
+  if (do_doubles) {
 
-  dpd_buf4_close(&WMAFE);
-  for(h=0; h < nirreps; h++)
-    dpd_buf4_mat_irrep_close(&WMNIE, h);
-  dpd_buf4_close(&WMNIE);
+    dpd_file2_mat_close(FME);
 
-  for(h=0; h < nirreps; h++) {
-    dpd_buf4_mat_irrep_wrt(SIJAB, h);
-    dpd_buf4_mat_irrep_close(SIJAB, h);
+    for(h=0; h < nirreps; h++)
+      dpd_buf4_mat_irrep_close(WMNIE, h);
+
+    for(h=0; h < nirreps; h++) {
+      dpd_buf4_mat_irrep_wrt(SIJAB, h);
+      dpd_buf4_mat_irrep_close(SIJAB, h);
+    }
   }
 }
 
-void cc3_sigma_UHF_BBB(int term, dpdbuf4 *Cmnef, dpdfile2 *Sia, dpdbuf4 *Sijab, double omega)
+void cc3_sigma_UHF_BBB(dpdbuf4 *Cmnef, dpdbuf4 *Wabei, dpdbuf4 *Wmbij,
+     int do_singles, dpdbuf4 *Dijab_anti, dpdfile2 *Sia, int do_doubles, dpdfile2 *Fme,
+     dpdbuf4 *Wmafe, dpdbuf4 *Wmnie, dpdbuf4 *Sijab, double energy)
 {
   int h, nirreps;
-  int *occ_off, *occpi;
-  int *vir_off, *virtpi;
-  int Gi, Gj, Gk, Gijk;
-  int Ga, Gb, Gc;
+  int *occ_off, *occpi, *vir_off, *virtpi;
+  int Gi, Gj, Gk, Gijk, Ga, Gb, Gc;
   int i, j, k, I, J, K;
   int a, b, c, A, B, C;
   int Gij, ij, Gab, ab, Gjk, jk;
-  double ***W1;
-  dpdbuf4 T2, E, F;
+  double ***W1, **Z;
   dpdfile2 fIJ, fAB;
-  dpdfile2 t1new,  d1;
-  dpdbuf4 D;
   int nrows, ncols, nlinks;
-  dpdbuf4 D2;
-  dpdfile2 Fme;
-  dpdbuf4 WMAFE, WMNIE;
   int Gd, d, cd, dc, Gid, id, DD;
   int Gm, m, Gmi, mi, im, mc, M;
-  double **Z;
 
   nirreps = moinfo.nirreps;
   occpi = moinfo.boccpi;
@@ -353,36 +249,31 @@ void cc3_sigma_UHF_BBB(int term, dpdbuf4 *Cmnef, dpdfile2 *Sia, dpdbuf4 *Sijab, 
   dpd_file2_init(&fIJ, CC_OEI, 0, 2, 2, "fij");
   dpd_file2_init(&fAB, CC_OEI, 0, 3, 3, "fab");
 
-  if (term == 0) {
+  if (do_singles) {
 
     dpd_file2_mat_init(Sia);
     dpd_file2_mat_rd(Sia);
   
-    dpd_buf4_init(&D, CC_DINTS, 0, 10, 15, 10, 15, 0, "D <ij||ab>");
     for(h=0; h < nirreps; h++) {
-      dpd_buf4_mat_irrep_init(&D, h);
-      dpd_buf4_mat_irrep_rd(&D, h);
+      dpd_buf4_mat_irrep_init(Dijab_anti, h);
+      dpd_buf4_mat_irrep_rd(Dijab_anti, h);
     }
+  }
 
-    dpd_file2_init(&Fme, CC_OEI, 0, 2, 3, "Fme");
-    dpd_file2_mat_init(&Fme);
-    dpd_file2_mat_rd(&Fme);
+  if (do_doubles) {
+
+    dpd_file2_mat_init(Fme);
+    dpd_file2_mat_rd(Fme);
 
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_init(Sijab, h);
       dpd_buf4_mat_irrep_rd(Sijab, h);
     }
 
-    dpd_buf4_init(&WMAFE, CC3_HET1, 0, 30, 15, 30, 17, 0, "CC3 Wamef (ma,f>e)");
-    dpd_buf4_init(&WMNIE, CC3_HET1, 0, 10, 30, 12, 30, 0, "CC3 Wmnie (m>n,ie)");
     for(h=0; h < nirreps; h++) {
-      dpd_buf4_mat_irrep_init(&WMNIE, h);
-      dpd_buf4_mat_irrep_rd(&WMNIE, h);
+      dpd_buf4_mat_irrep_init(Wmnie, h);
+      dpd_buf4_mat_irrep_rd(Wmnie, h);
     }
-
-    dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 15, 12, 17, 0, "tijab");
-    dpd_buf4_init(&F, CC3_HET1, 0, 30, 15, 30, 17, 0, "CC3 Wabei (ie,b>a)");
-    dpd_buf4_init(&E, CC3_HET1, 0, 10, 30, 12, 30, 0, "CC3 Wmbij (i>j,mb)");
   }
 
   /* target T3 amplitudes go in here */
@@ -398,7 +289,7 @@ void cc3_sigma_UHF_BBB(int term, dpdbuf4 *Cmnef, dpdfile2 *Sia, dpdbuf4 *Sijab, 
 	for(Gab=0; Gab < nirreps; Gab++) {
 	  /* This will need to change for non-totally-symmetric cases */
 	  Gc = Gab ^ Gijk;
-	  W1[Gab] = dpd_block_matrix(F.params->coltot[Gab], virtpi[Gc]);
+	  W1[Gab] = dpd_block_matrix(Wabei->params->coltot[Gab], virtpi[Gc]);
 	}
 
 	for(i=0; i < occpi[Gi]; i++) {
@@ -408,23 +299,26 @@ void cc3_sigma_UHF_BBB(int term, dpdbuf4 *Cmnef, dpdfile2 *Sia, dpdbuf4 *Sijab, 
 	    for(k=0; k < occpi[Gk]; k++) {
 	      K = occ_off[Gk] + k;
 
-	      T3_AAA(W1, nirreps, I, Gi, J, Gj, K, Gk, &T2, &F, &E, &fIJ, &fAB, 
-		     occpi, occ_off, virtpi, vir_off);
+	      T3_AAA(W1, nirreps, I, Gi, J, Gj, K, Gk, Cmnef, Wabei, Wmbij, &fIJ, &fAB, 
+		     occpi, occ_off, virtpi, vir_off, energy);
 
+          if (do_singles) {
 	      /* t_kc <-- 1/4 t_ijkabc <ij||ab> */
 
 	      Gc = Gk;    /* assumes T1 is totally symmetric */
 	      Gab = Gij;  /* assumes <ij||ab> is totally symmetric */
 
-	      ij = D.params->rowidx[I][J];
+	      ij = Dijab_anti->params->rowidx[I][J];
 
-	      nrows = D.params->coltot[Gij];
+	      nrows = Dijab_anti->params->coltot[Gij];
 	      ncols = virtpi[Gc];
 
 	      if(nrows && ncols)
-		C_DGEMV('t', nrows, ncols, 0.25, W1[Gab][0], ncols, D.matrix[Gij][ij], 1,
+		C_DGEMV('t', nrows, ncols, 0.25, W1[Gab][0], ncols, Dijab_anti->matrix[Gij][ij], 1,
 			1.0, Sia->matrix[Gk][k], 1);
+          }
 
+          if (do_doubles) {
 	      /* t_ijab <-- t_ijkabc F_kc */
 	      Gc = Gk;    /* assumes Fme is totally symmetric */
 	      Gab = Gij;  /* Assumes tijab is totally symmetric */
@@ -434,7 +328,7 @@ void cc3_sigma_UHF_BBB(int term, dpdbuf4 *Cmnef, dpdfile2 *Sia, dpdbuf4 *Sijab, 
 	      ij = Sijab->params->rowidx[I][J];
 
 	      if(nrows && ncols)
-		C_DGEMV('n', nrows, ncols, 1.0, W1[Gab][0], ncols, Fme.matrix[Gk][k], 1,
+		C_DGEMV('n', nrows, ncols, 1.0, W1[Gab][0], ncols, Fme->matrix[Gk][k], 1,
 			1.0, Sijab->matrix[Gij][ij], 1);
 
 	      /* t_jkdc <-- 1/2 t_ijkabc W_idab */
@@ -444,19 +338,19 @@ void cc3_sigma_UHF_BBB(int term, dpdbuf4 *Cmnef, dpdfile2 *Sia, dpdbuf4 *Sijab, 
 		Gab = Gid = Gi ^ Gd;  /* assumes Wieab is totally symmetric */
 		Gc = Gab ^ Gijk;  /* assumes T3 is totally symmetric */
 
-		id = WMAFE.row_offset[Gid][I];
+		id = Wmafe->row_offset[Gid][I];
 
 		Z = block_matrix(virtpi[Gc],virtpi[Gd]);
-		WMAFE.matrix[Gid] = dpd_block_matrix(virtpi[Gd], WMAFE.params->coltot[Gid]);
-		dpd_buf4_mat_irrep_rd_block(&WMAFE, Gid, id, virtpi[Gd]);
+		Wmafe->matrix[Gid] = dpd_block_matrix(virtpi[Gd], Wmafe->params->coltot[Gid]);
+		dpd_buf4_mat_irrep_rd_block(Wmafe, Gid, id, virtpi[Gd]);
 
 		nrows = virtpi[Gc];
 		ncols = virtpi[Gd];
-		nlinks = WMAFE.params->coltot[Gid];
+		nlinks = Wmafe->params->coltot[Gid];
 
 		if(nrows && ncols && nlinks)
 		  C_DGEMM('t', 't', nrows, ncols, nlinks, 0.5, W1[Gab][0], nrows, 
-			  WMAFE.matrix[Gid][0], nlinks, 0.0, Z[0], ncols);
+			  Wmafe->matrix[Gid][0], nlinks, 0.0, Z[0], ncols);
 
 		for(c=0; c < virtpi[Gc]; c++) {
 		  C = vir_off[Gc] + c;
@@ -468,20 +362,20 @@ void cc3_sigma_UHF_BBB(int term, dpdbuf4 *Cmnef, dpdfile2 *Sia, dpdbuf4 *Sijab, 
 		    Sijab->matrix[Gjk][jk][cd] += -Z[c][d];
 		  }
 		}
-		dpd_free_block(WMAFE.matrix[Gid], virtpi[Gd], WMAFE.params->coltot[Gid]);
+		dpd_free_block(Wmafe->matrix[Gid], virtpi[Gd], Wmafe->params->coltot[Gid]);
 		free_block(Z);
 	      }
 
 	      /* t_miab <-- +1/2 t_ijkabc W_jkmc */
 	      /* t_imab <-- -1/2 t_ijkabc W_jkmc */
-	      jk = WMNIE.params->rowidx[J][K];
+	      jk = Wmnie->params->rowidx[J][K];
 	      for(Gm=0; Gm < nirreps; Gm++) {
 		Gab = Gmi = Gm ^ Gi;  /* assumes totally symmetric */
 		Gc = Gab ^ Gijk;      /* assumes totally symmetric */
 
-		mc = WMNIE.col_offset[Gjk][Gm];
+		mc = Wmnie->col_offset[Gjk][Gm];
 
-		nrows = F.params->coltot[Gab];
+		nrows = Wabei->params->coltot[Gab];
 		ncols = occpi[Gm];
 		nlinks = virtpi[Gc];
 
@@ -489,7 +383,7 @@ void cc3_sigma_UHF_BBB(int term, dpdbuf4 *Cmnef, dpdfile2 *Sia, dpdbuf4 *Sijab, 
 
 		if(nrows && ncols && nlinks) 
 		  C_DGEMM('n', 't', nrows, ncols, nlinks, 0.5, W1[Gab][0], nlinks,
-			  &(WMNIE.matrix[Gjk][jk][mc]), nlinks, 0.0, Z[0], ncols);
+			  &(Wmnie->matrix[Gjk][jk][mc]), nlinks, 0.0, Z[0], ncols);
 
 		for(m=0; m < ncols; m++) {
 		  M = occ_off[Gm] + m;
@@ -503,6 +397,7 @@ void cc3_sigma_UHF_BBB(int term, dpdbuf4 *Cmnef, dpdfile2 *Sia, dpdbuf4 *Sijab, 
 
 		dpd_free_block(Z, nrows, ncols);
 	      }
+          } /* end do_doubles */
 
 	    } /* k */
 	  } /* j */
@@ -511,7 +406,7 @@ void cc3_sigma_UHF_BBB(int term, dpdbuf4 *Cmnef, dpdfile2 *Sia, dpdbuf4 *Sijab, 
 	for(Gab=0; Gab < nirreps; Gab++) {
 	  /* This will need to change for non-totally-symmetric cases */
 	  Gc = Gab ^ Gijk;
-	  dpd_free_block(W1[Gab], F.params->coltot[Gab], virtpi[Gc]);
+	  dpd_free_block(W1[Gab], Wabei->params->coltot[Gab], virtpi[Gc]);
 	}
 
       } /* Gk */
@@ -520,42 +415,44 @@ void cc3_sigma_UHF_BBB(int term, dpdbuf4 *Cmnef, dpdfile2 *Sia, dpdbuf4 *Sijab, 
 
   free(W1);
 
-  dpd_buf4_close(&E);
-  dpd_buf4_close(&F);
-  dpd_buf4_close(&T2);
   dpd_file2_close(&fIJ);
   dpd_file2_close(&fAB);
 
-  dpd_file2_mat_wrt(Sia);
-  dpd_file2_mat_close(Sia);
+  if (do_singles) {
 
-  for(h=0; h < nirreps; h++) {
-    dpd_buf4_mat_irrep_close(&D, h);
+    dpd_file2_mat_wrt(Sia);
+    dpd_file2_mat_close(Sia);
+
+    for(h=0; h < nirreps; h++)
+      dpd_buf4_mat_irrep_close(Dijab_anti, h);
   }
-  dpd_buf4_close(&D);
 
-  dpd_file2_mat_close(&Fme);
-  dpd_file2_close(&Fme);
+  if (do_doubles) {
 
-  dpd_buf4_close(&WMAFE);
-  for(h=0; h < nirreps; h++)
-    dpd_buf4_mat_irrep_close(&WMNIE, h);
-  dpd_buf4_close(&WMNIE);
+    dpd_file2_mat_close(Fme);
 
-  for(h=0; h < nirreps; h++) {
-    dpd_buf4_mat_irrep_wrt(Sijab, h);
-    dpd_buf4_mat_irrep_close(Sijab, h);
+    for(h=0; h < nirreps; h++)
+      dpd_buf4_mat_irrep_close(Wmnie, h);
+
+    for(h=0; h < nirreps; h++) {
+      dpd_buf4_mat_irrep_wrt(Sijab, h);
+      dpd_buf4_mat_irrep_close(Sijab, h);
+    }
   }
 }
 
-void cc3_sigma_UHF_AAB(int term, dpdbuf4 *CMNEF, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
-    dpdfile2 *SIA, dpdfile2 *Sia, dpdbuf4 *SIJAB, dpdbuf4 *SIjAb)
+void cc3_sigma_UHF_AAB(dpdbuf4 *C2AA, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
+    dpdbuf4 *FAA, dpdbuf4 *FAB, dpdbuf4 *FBA,
+    dpdbuf4 *EAA, dpdbuf4 *EAB, dpdbuf4 *EBA, 
+    int do_singles, dpdbuf4 *DAA, dpdbuf4 *DAB, dpdfile2 *SIA, dpdfile2 *Sia,
+    int do_doubles, dpdfile2 *FME, dpdfile2 *Fme,
+    dpdbuf4 *WMAFE, dpdbuf4 *WMaFe, dpdbuf4 *WmAfE,
+    dpdbuf4 *WMNIE, dpdbuf4 *WMnIe, dpdbuf4 *WmNiE,
+    dpdbuf4 *SIJAB, dpdbuf4 *SIjAb, double energy)
 {
   int h, nirreps;
-  int *aocc_off, *aoccpi;
-  int *avir_off, *avirtpi;
-  int *bocc_off, *boccpi;
-  int *bvir_off, *bvirtpi;
+  int *aocc_off, *aoccpi, *avir_off, *avirtpi;
+  int *bocc_off, *boccpi, *bvir_off, *bvirtpi;
   int Gi, Gj, Gk, Gijk;
   int Ga, Gb, Gc, Gab;
   int Gij, ij, ji, Gjk, jk, Gbc, bc, Gcb, cb;
@@ -564,29 +461,17 @@ void cc3_sigma_UHF_AAB(int term, dpdbuf4 *CMNEF, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
   int a, b, c, A, B, C;
   int ab;
   double ***W1, ***W2, ***W3;
-  dpdbuf4 T2AA, T2AB, T2BA, EAA, EAB, EBA, FAA, FAB, FBA;
   dpdfile2 fIJ, fAB, fij, fab;
-  dpdfile2  d1;
-  dpdbuf4 DAA, DAB;
   int nrows, ncols, nlinks;
   int **W_offset, offset;
-  dpdfile2 FME, Fme;
-  dpdbuf4 D2, T2;
-  dpdbuf4 WmAfE, WMAFE, WMaFe;
   double **Z;
-  dpdbuf4 WMnIe, WMNIE, WmNiE;
   int Gm, m, Gmi, mi, im, mc, M;
   int Gmk, mk, ma, kj, Gim;
 
   nirreps = moinfo.nirreps;
-  aoccpi = moinfo.aoccpi;
-  aocc_off = moinfo.aocc_off;
-  boccpi = moinfo.boccpi;
-  bocc_off = moinfo.bocc_off;
-  avirtpi = moinfo.avirtpi;
-  avir_off = moinfo.avir_off;
-  bvirtpi = moinfo.bvirtpi;
-  bvir_off = moinfo.bvir_off;
+  aoccpi = moinfo.aoccpi; aocc_off = moinfo.aocc_off; avirtpi = moinfo.avirtpi;
+  boccpi = moinfo.boccpi; bocc_off = moinfo.bocc_off; bvirtpi = moinfo.bvirtpi;
+  avir_off = moinfo.avir_off; bvir_off = moinfo.bvir_off;
 
   W_offset = init_int_matrix(nirreps, nirreps);
   for(Gab=0; Gab < nirreps; Gab++) {
@@ -597,54 +482,51 @@ void cc3_sigma_UHF_AAB(int term, dpdbuf4 *CMNEF, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
     }
   }
 
-  dpd_file2_mat_init(SIA);
-  dpd_file2_mat_rd(SIA);
-  dpd_file2_mat_init(Sia);
-  dpd_file2_mat_rd(Sia);
+  if (do_singles) {
+    dpd_file2_mat_init(SIA);
+    dpd_file2_mat_rd(SIA);
+    dpd_file2_mat_init(Sia);
+    dpd_file2_mat_rd(Sia);
  
-  dpd_buf4_init(&DAA, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <IJ||AB>");
-  dpd_buf4_init(&DAB, CC_DINTS, 0, 22, 28, 22, 28, 0, "D <Ij|Ab>");
-  for(h=0; h < nirreps; h++) {
-    dpd_buf4_mat_irrep_init(&DAA, h);
-    dpd_buf4_mat_irrep_rd(&DAA, h);
-    dpd_buf4_mat_irrep_init(&DAB, h);
-    dpd_buf4_mat_irrep_rd(&DAB, h);
+    /* dpd_buf4_init(&DAA, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <IJ||AB>");
+    dpd_buf4_init(&DAB, CC_DINTS, 0, 22, 28, 22, 28, 0, "D <Ij|Ab>"); */
+    for(h=0; h < nirreps; h++) {
+      dpd_buf4_mat_irrep_init(DAA, h);
+      dpd_buf4_mat_irrep_rd(DAA, h);
+      dpd_buf4_mat_irrep_init(DAB, h);
+      dpd_buf4_mat_irrep_rd(DAB, h);
+    }
   }
 
-  dpd_file2_init(&FME, CC_OEI, 0, 0, 1, "FME");
-  dpd_file2_mat_init(&FME);
-  dpd_file2_mat_rd(&FME);
+  if (do_doubles) {
+    dpd_file2_mat_init(FME);
+    dpd_file2_mat_rd(FME);
+    dpd_file2_mat_init(Fme);
+    dpd_file2_mat_rd(Fme);
+    //dpd_buf4_init(&WmAfE, CC3_HET1, 0, 27, 29, 27, 29, 0, "CC3 WAmEf (mA,fE)");
+    //dpd_buf4_init(&WMAFE, CC3_HET1, 0, 20, 5, 20, 7, 0, "CC3 WAMEF (MA,F>E)");
+    //dpd_buf4_init(&WMaFe, CC3_HET1, 0, 24, 28, 24, 28, 0, "CC3 WaMeF (Ma,Fe)");
+    //dpd_buf4_init(&WMNIE, CC3_HET1, 0, 0, 20, 2, 20, 0, "CC3 WMNIE (M>N,IE)");
+    //dpd_buf4_init(&WMnIe, CC3_HET1, 0, 22, 24, 22, 24, 0, "CC3 WMnIe (Mn,Ie)");
+    //dpd_buf4_init(&WmNiE, CC3_HET1, 0, 23, 27, 23, 27, 0, "CC3 WmNiE (mN,iE)");
+    for(h=0; h < nirreps; h++) {
+      dpd_buf4_mat_irrep_init(WMnIe, h);
+      dpd_buf4_mat_irrep_rd(WMnIe, h);
 
-  dpd_file2_init(&Fme, CC_OEI, 0, 2, 3, "Fme");
-  dpd_file2_mat_init(&Fme);
-  dpd_file2_mat_rd(&Fme);
+      dpd_buf4_mat_irrep_init(WMNIE, h);
+      dpd_buf4_mat_irrep_rd(WMNIE, h);
 
-  dpd_buf4_init(&WmAfE, CC3_HET1, 0, 27, 29, 27, 29, 0, "CC3 WAmEf (mA,fE)");
-  dpd_buf4_init(&WMAFE, CC3_HET1, 0, 20, 5, 20, 7, 0, "CC3 WAMEF (MA,F>E)");
-  dpd_buf4_init(&WMaFe, CC3_HET1, 0, 24, 28, 24, 28, 0, "CC3 WaMeF (Ma,Fe)");
-
-  dpd_buf4_init(&WMNIE, CC3_HET1, 0, 0, 20, 2, 20, 0, "CC3 WMNIE (M>N,IE)");
-  dpd_buf4_init(&WMnIe, CC3_HET1, 0, 22, 24, 22, 24, 0, "CC3 WMnIe (Mn,Ie)");
-  dpd_buf4_init(&WmNiE, CC3_HET1, 0, 23, 27, 23, 27, 0, "CC3 WmNiE (mN,iE)");
-  for(h=0; h < nirreps; h++) {
-    dpd_buf4_mat_irrep_init(&WMnIe, h);
-    dpd_buf4_mat_irrep_rd(&WMnIe, h);
-
-    dpd_buf4_mat_irrep_init(&WMNIE, h);
-    dpd_buf4_mat_irrep_rd(&WMNIE, h);
-
-    dpd_buf4_mat_irrep_init(&WmNiE, h);
-    dpd_buf4_mat_irrep_rd(&WmNiE, h);
-  }
-
-  for(h=0; h < nirreps; h++) {
-    dpd_buf4_mat_irrep_init(SIJAB, h);
-    dpd_buf4_mat_irrep_rd(SIJAB, h);
-  }
-
-  for(h=0; h < nirreps; h++) {
-    dpd_buf4_mat_irrep_init(SIjAb, h);
-    dpd_buf4_mat_irrep_rd(SIjAb, h);
+      dpd_buf4_mat_irrep_init(WmNiE, h);
+      dpd_buf4_mat_irrep_rd(WmNiE, h);
+    }
+    for(h=0; h < nirreps; h++) {
+      dpd_buf4_mat_irrep_init(SIJAB, h);
+      dpd_buf4_mat_irrep_rd(SIJAB, h);
+    }
+    for(h=0; h < nirreps; h++) {
+      dpd_buf4_mat_irrep_init(SIjAb, h);
+      dpd_buf4_mat_irrep_rd(SIjAb, h);
+    }
   }
 
   dpd_file2_init(&fIJ, CC_OEI, 0, 0, 0, "fIJ");
@@ -652,15 +534,17 @@ void cc3_sigma_UHF_AAB(int term, dpdbuf4 *CMNEF, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
   dpd_file2_init(&fij, CC_OEI, 0, 2, 2, "fij");
   dpd_file2_init(&fab, CC_OEI, 0, 3, 3, "fab");
 
-  dpd_buf4_init(&T2AA, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tIJAB");
-  dpd_buf4_init(&T2AB, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tIjAb");
-  dpd_buf4_init(&T2BA, CC_TAMPS, 0, 23, 29, 23, 29, 0, "tiJaB");
+  /*
+  dpd_buf4_init(&C2AA, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tIJAB");
+  dpd_buf4_init(&C2AB, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tIjAb");
+  dpd_buf4_init(&C2BA, CC_TAMPS, 0, 23, 29, 23, 29, 0, "tiJaB");
   dpd_buf4_init(&FAA, CC3_HET1, 0, 20, 5, 20, 7, 0, "CC3 WABEI (IE,B>A)");
   dpd_buf4_init(&FAB, CC3_HET1, 0, 24, 28, 24, 28, 0, "CC3 WaBeI (Ie,Ba)");
   dpd_buf4_init(&FBA, CC3_HET1, 0, 27, 29, 27, 29, 0, "CC3 WAbEi (iE,bA)");
   dpd_buf4_init(&EAA, CC3_HET1, 0, 0, 20, 2, 20, 0, "CC3 WMBIJ (I>J,MB)");
   dpd_buf4_init(&EAB, CC3_HET1, 0, 22, 24, 22, 24, 0, "CC3 WMbIj (Ij,Mb)");
   dpd_buf4_init(&EBA, CC3_HET1, 0, 23, 27, 23, 27, 0, "CC3 WmBiJ (iJ,mB)");
+  */
 
   /* target T3 amplitudes go in here */
   W1 = (double ***) malloc(nirreps * sizeof(double **));
@@ -676,15 +560,15 @@ void cc3_sigma_UHF_AAB(int term, dpdbuf4 *CMNEF, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 
 	for(Gab=0; Gab < nirreps; Gab++) {
 	  Gc = Gab ^ Gijk; /* assumes totally symmetric */
-	  W1[Gab] = dpd_block_matrix(FAA.params->coltot[Gab], bvirtpi[Gc]);
+	  W1[Gab] = dpd_block_matrix(FAA->params->coltot[Gab], bvirtpi[Gc]);
 	}
 	for(Ga=0; Ga < nirreps; Ga++) {
 	  Gcb = Ga ^ Gijk; /* assumes totally symmetric */
-	  W2[Ga] = dpd_block_matrix(avirtpi[Ga], WmAfE.params->coltot[Gcb]);  /* alpha-beta-alpha */
+	  W2[Ga] = dpd_block_matrix(avirtpi[Ga], WmAfE->params->coltot[Gcb]);  /* alpha-beta-alpha */
 	}
 	for(Gb=0; Gb < nirreps; Gb++) {
 	  Gac = Gb ^ Gijk; /* assumes totally symmetric */
-	  W3[Gb] = dpd_block_matrix(avirtpi[Gb], WMaFe.params->coltot[Gac]);  /* alpha-alpha-beta */
+	  W3[Gb] = dpd_block_matrix(avirtpi[Gb], WMaFe->params->coltot[Gac]);  /* alpha-alpha-beta */
 	}
 
 	for(i=0; i < aoccpi[Gi]; i++) {
@@ -694,22 +578,24 @@ void cc3_sigma_UHF_AAB(int term, dpdbuf4 *CMNEF, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 	    for(k=0; k < boccpi[Gk]; k++) {
 	      K = bocc_off[Gk] + k;
 
-	      T3_AAB(W1, nirreps, I, Gi, J, Gj, K, Gk, &T2AA, &T2AB, &T2BA, 
-		     &FAA, &FAB, &FBA, &EAA, &EAB, &EBA, &fIJ, &fij, &fAB, &fab,
-		     aoccpi, aocc_off, boccpi, bocc_off, avirtpi, avir_off, bvirtpi, bvir_off);
+	      T3_AAB(W1, nirreps, I, Gi, J, Gj, K, Gk, C2AA, C2AB, C2BA, 
+		     FAA, FAB, FBA, EAA, EAB, EBA, &fIJ, &fij, &fAB, &fab,
+		     aoccpi, aocc_off, boccpi, bocc_off, avirtpi, avir_off, bvirtpi, bvir_off, energy);
+
+          if (do_singles) {
 
 	      /* t_kc <-- 1/4 t_IJkABc <IJ||AB> */
 
 	      Gc = Gk;   /* assumes T1 is totally symmetric */
 	      Gab = Gij; /* assumes <ij||ab> is totally symmetric */
 
-	      ij = DAA.params->rowidx[I][J];
+	      ij = DAA->params->rowidx[I][J];
 
-	      nrows = DAA.params->coltot[Gij];
+	      nrows = DAA->params->coltot[Gij];
 	      ncols = bvirtpi[Gc];
 
 	      if(nrows && ncols)
-		C_DGEMV('t', nrows, ncols, 0.25, W1[Gab][0], ncols, DAA.matrix[Gij][ij], 1,
+		C_DGEMV('t', nrows, ncols, 0.25, W1[Gab][0], ncols, DAA->matrix[Gij][ij], 1,
 			1.0, Sia->matrix[Gk][k], 1);
 
 	      /* t_IA <-- t_IJkABc <Jk|Bc> */
@@ -717,23 +603,25 @@ void cc3_sigma_UHF_AAB(int term, dpdbuf4 *CMNEF, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 	      Ga = Gi;   /* assumes T1 is totally symmetric */
 	      Gbc = Gjk; /* assumes <jk|bc> is totally symmetric */
 
-	      jk = DAB.params->rowidx[J][K];
+	      jk = DAB->params->rowidx[J][K];
 
 	      for(Gab=0; Gab < nirreps; Gab++) {
 		Gb = Ga ^ Gab;
 		Gc = Gb ^ Gbc;
 
 		ab = W_offset[Gab][Ga];
-		bc = DAB.col_offset[Gjk][Gb];
+		bc = DAB->col_offset[Gjk][Gb];
 
 		nrows = avirtpi[Ga];
 		ncols = avirtpi[Gb] * bvirtpi[Gc];
 
 		if(nrows && ncols)
-		  C_DGEMV('n', nrows, ncols, 1.0, W1[Gab][ab], ncols, &(DAB.matrix[Gjk][jk][bc]), 1,
+		  C_DGEMV('n', nrows, ncols, 1.0, W1[Gab][ab], ncols, &(DAB->matrix[Gjk][jk][bc]), 1,
 			  1.0, SIA->matrix[Gi][i], 1);
 	      }
+          }
 
+          if (do_doubles) {
 	      /* t_IJAB <-- t_IJkABc F_kc */
 	      Gc = Gk;    /* assumes Fme is totally symmetric */
 	      Gab = Gij;  /* Assumes tIJAB is totally symmetric */
@@ -743,14 +631,14 @@ void cc3_sigma_UHF_AAB(int term, dpdbuf4 *CMNEF, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 	      ij = SIJAB->params->rowidx[I][J];
  
 	      if(nrows && ncols)
-		C_DGEMV('n', nrows, ncols, 1.0, W1[Gab][0], ncols, Fme.matrix[Gk][k], 1,
+		C_DGEMV('n', nrows, ncols, 1.0, W1[Gab][0], ncols, Fme->matrix[Gk][k], 1,
 			1.0, SIJAB->matrix[Gij][ij], 1);
 
 	      /* t_JkBc <-- t_IJkABc F_IA */
 	      Ga = Gi;   /* assumes Fia is totally symmetric */
 	      Gbc = Gjk; /* assumes t_jKbC is totally symmetric */
 
-	      jk = T2AB.params->rowidx[J][K];
+	      jk = C2AB->params->rowidx[J][K];
 
 	      for(Gab=0; Gab < nirreps; Gab++) {
 		Gb = Ga ^ Gab;
@@ -763,7 +651,7 @@ void cc3_sigma_UHF_AAB(int term, dpdbuf4 *CMNEF, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 		ncols = avirtpi[Gb] * bvirtpi[Gc];
 
 		if(nrows && ncols)
-		  C_DGEMV('t', nrows, ncols, 1.0, W1[Gab][ab], ncols, FME.matrix[Gi][i], 1,
+		  C_DGEMV('t', nrows, ncols, 1.0, W1[Gab][ab], ncols, FME->matrix[Gi][i], 1,
 			  1.0, &(SIjAb->matrix[Gjk][jk][bc]), 1);
 	      }
 
@@ -771,14 +659,14 @@ void cc3_sigma_UHF_AAB(int term, dpdbuf4 *CMNEF, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 	      /* sort W1(AB,c) to W2(A,cB) */
 	      for(Gab=0; Gab < nirreps; Gab++) {
 		Gc = Gab ^ Gijk;
-		for(ab=0; ab < FAA.params->coltot[Gab]; ab++) {
-		  A = FAA.params->colorb[Gab][ab][0];
-		  B = FAA.params->colorb[Gab][ab][1];
-		  Ga = FAA.params->rsym[A];
+		for(ab=0; ab < FAA->params->coltot[Gab]; ab++) {
+		  A = FAA->params->colorb[Gab][ab][0];
+		  B = FAA->params->colorb[Gab][ab][1];
+		  Ga = FAA->params->rsym[A];
 		  a = A - avir_off[Ga];
 		  for(c=0; c < bvirtpi[Gc]; c++) {
 		    C = bvir_off[Gc] + c;
-		    cb = WmAfE.params->colidx[C][B];
+		    cb = WmAfE->params->colidx[C][B];
 		    W2[Ga][a][cb] = W1[Gab][ab][c];
 		  }
 		}
@@ -790,18 +678,18 @@ void cc3_sigma_UHF_AAB(int term, dpdbuf4 *CMNEF, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 		Gcb = Gkd = Gk ^ Gd; /* assumes totally symmetric */
 		Ga = Gd ^ Gij;       /* assumes totally symmetric */
 
-		kd = WmAfE.row_offset[Gkd][K];
-		WmAfE.matrix[Gkd] = dpd_block_matrix(avirtpi[Gd], WmAfE.params->coltot[Gkd]);
-		dpd_buf4_mat_irrep_rd_block(&WmAfE, Gkd, kd, avirtpi[Gd]);
+		kd = WmAfE->row_offset[Gkd][K];
+		WmAfE->matrix[Gkd] = dpd_block_matrix(avirtpi[Gd], WmAfE->params->coltot[Gkd]);
+		dpd_buf4_mat_irrep_rd_block(WmAfE, Gkd, kd, avirtpi[Gd]);
 		Z = block_matrix(avirtpi[Ga], avirtpi[Gd]);
 
 		nrows = avirtpi[Ga];
 		ncols = avirtpi[Gd];
-		nlinks = WmAfE.params->coltot[Gkd];
+		nlinks = WmAfE->params->coltot[Gkd];
 
 		if(nrows && ncols && nlinks)
 		  C_DGEMM('n', 't', nrows, ncols, nlinks, 1.0, W2[Ga][0], nlinks, 
-			  WmAfE.matrix[Gkd][0], nlinks, 0.0, Z[0], ncols);
+			  WmAfE->matrix[Gkd][0], nlinks, 0.0, Z[0], ncols);
 
 		for(a=0; a < avirtpi[Ga]; a++) {
 		  A = avir_off[Ga] + a;
@@ -814,7 +702,7 @@ void cc3_sigma_UHF_AAB(int term, dpdbuf4 *CMNEF, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 		  }
 		}
 
-		dpd_free_block(WmAfE.matrix[Gkd], avirtpi[Gd], WmAfE.params->coltot[Gkd]);
+		dpd_free_block(WmAfE->matrix[Gkd], avirtpi[Gd], WmAfE->params->coltot[Gkd]);
 		free_block(Z);
 	      }
 
@@ -826,18 +714,18 @@ void cc3_sigma_UHF_AAB(int term, dpdbuf4 *CMNEF, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 		Gab = Gid = Gi ^ Gd; /* assumes totally symmetric */
 		Gc = Gab ^ Gijk;     /* assumes totally symmetric */
 
-		id = WMAFE.row_offset[Gid][I];
-		WMAFE.matrix[Gid] = dpd_block_matrix(avirtpi[Gd], WMAFE.params->coltot[Gid]);
-		dpd_buf4_mat_irrep_rd_block(&WMAFE, Gid, id, avirtpi[Gd]);
+		id = WMAFE->row_offset[Gid][I];
+		WMAFE->matrix[Gid] = dpd_block_matrix(avirtpi[Gd], WMAFE->params->coltot[Gid]);
+		dpd_buf4_mat_irrep_rd_block(WMAFE, Gid, id, avirtpi[Gd]);
 		Z = block_matrix(bvirtpi[Gc], avirtpi[Gd]);
 
 		nrows = bvirtpi[Gc];
 		ncols = avirtpi[Gd];
-		nlinks = WMAFE.params->coltot[Gid];
+		nlinks = WMAFE->params->coltot[Gid];
 
 		if(nrows && ncols && nlinks)
 		  C_DGEMM('t', 't', nrows, ncols, nlinks, 0.5, W1[Gab][0], nrows,
-			  WMAFE.matrix[Gid][0], nlinks, 0.0, Z[0], ncols);
+			  WMAFE->matrix[Gid][0], nlinks, 0.0, Z[0], ncols);
 
 		for(c=0; c < bvirtpi[Gc]; c++) {
 		  C = bvir_off[Gc] + c;
@@ -849,21 +737,21 @@ void cc3_sigma_UHF_AAB(int term, dpdbuf4 *CMNEF, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 		}
 
 		free_block(Z);
-		dpd_free_block(WMAFE.matrix[Gid], avirtpi[Gd], WMAFE.params->coltot[Gid]);
+		dpd_free_block(WMAFE->matrix[Gid], avirtpi[Gd], WMAFE->params->coltot[Gid]);
 	      }
 
 	      /* t_JkBd <-- t_IJkABc W_IdAc */
 	      /* sort W1(AB,c) to W3(B,Ac) */
 	      for(Gab=0; Gab < nirreps; Gab++) {
 		Gc = Gab ^ Gijk;
-		for(ab=0; ab < FAA.params->coltot[Gab]; ab++) {
-		  A = FAA.params->colorb[Gab][ab][0];
-		  B = FAA.params->colorb[Gab][ab][1];
-		  Gb = FAA.params->ssym[B];
+		for(ab=0; ab < FAA->params->coltot[Gab]; ab++) {
+		  A = FAA->params->colorb[Gab][ab][0];
+		  B = FAA->params->colorb[Gab][ab][1];
+		  Gb = FAA->params->ssym[B];
 		  b = B - avir_off[Gb];
 		  for(c=0; c < bvirtpi[Gc]; c++) {
 		    C = bvir_off[Gc] + c;
-		    ac = WMaFe.params->colidx[A][C];
+		    ac = WMaFe->params->colidx[A][C];
 		    W3[Gb][b][ac] = W1[Gab][ab][c];
 		  }
 		}
@@ -875,18 +763,18 @@ void cc3_sigma_UHF_AAB(int term, dpdbuf4 *CMNEF, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 		Gac = Gid = Gi ^ Gd; /* assumes totally symmetric */
 		Gb = Gac ^ Gijk;     /* assumes totally symmetric */
 
-		id = WMaFe.row_offset[Gid][I]; 
-		WMaFe.matrix[Gid] = dpd_block_matrix(bvirtpi[Gd], WMaFe.params->coltot[Gid]);
-		dpd_buf4_mat_irrep_rd_block(&WMaFe, Gid, id, bvirtpi[Gd]);
+		id = WMaFe->row_offset[Gid][I]; 
+		WMaFe->matrix[Gid] = dpd_block_matrix(bvirtpi[Gd], WMaFe->params->coltot[Gid]);
+		dpd_buf4_mat_irrep_rd_block(WMaFe, Gid, id, bvirtpi[Gd]);
 		Z = block_matrix(avirtpi[Gb], bvirtpi[Gd]);
 
 		nrows = avirtpi[Gb];
 		ncols = bvirtpi[Gd];
-		nlinks = WMaFe.params->coltot[Gid];
+		nlinks = WMaFe->params->coltot[Gid];
 
 		if(nrows && ncols && nlinks)
 		  C_DGEMM('n', 't', nrows, ncols, nlinks, 1.0, W3[Gb][0], nlinks,
-			  WMaFe.matrix[Gid][0], nlinks, 0.0, Z[0], ncols);
+			  WMaFe->matrix[Gid][0], nlinks, 0.0, Z[0], ncols);
 
 		for(b=0; b < avirtpi[Gb]; b++) {
 		  B = avir_off[Gb] + b;
@@ -897,22 +785,22 @@ void cc3_sigma_UHF_AAB(int term, dpdbuf4 *CMNEF, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 		  }
 		}
 
-		dpd_free_block(WMaFe.matrix[Gid], bvirtpi[Gd], WMaFe.params->coltot[Gid]);
+		dpd_free_block(WMaFe->matrix[Gid], bvirtpi[Gd], WMaFe->params->coltot[Gid]);
 		free_block(Z);
 	      }
 
 	      /* t_MIAB <--- +t_IJkABc W_JkMc */
 	      /* t_IMAB <--- -t_IJkABc W_JkMc */
 
-	      jk = WMnIe.params->rowidx[J][K];
+	      jk = WMnIe->params->rowidx[J][K];
 
 	      for(Gm=0; Gm < nirreps; Gm++) {
 		Gab = Gmi = Gm ^ Gi;  /* assumes totally symmetric */
 		Gc = Gab ^ Gijk;      /* assumes totally symmetric */
 
-		mc = WMnIe.col_offset[Gjk][Gm];
+		mc = WMnIe->col_offset[Gjk][Gm];
 
-		nrows = FAA.params->coltot[Gab];
+		nrows = FAA->params->coltot[Gab];
 		ncols = aoccpi[Gm];
 		nlinks = bvirtpi[Gc];
 
@@ -920,7 +808,7 @@ void cc3_sigma_UHF_AAB(int term, dpdbuf4 *CMNEF, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 
 		if(nrows && ncols && nlinks)
 		  C_DGEMM('n', 't', nrows, ncols, nlinks, 1.0, W1[Gab][0], nlinks,
-			  &(WMnIe.matrix[Gjk][jk][mc]), nlinks, 0.0, Z[0], ncols);
+			  &(WMnIe->matrix[Gjk][jk][mc]), nlinks, 0.0, Z[0], ncols);
 
 		for(m=0; m < ncols; m++) {
 		  M = aocc_off[Gm] + m;
@@ -939,10 +827,10 @@ void cc3_sigma_UHF_AAB(int term, dpdbuf4 *CMNEF, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 	      /* sort W(AB,c) to W(A,Bc) */
 	      for(Gab=0; Gab < nirreps; Gab++) {
 		Gc = Gab ^ Gijk;  /* assumes totally symmetric */
-		for(ab=0; ab < FAA.params->coltot[Gab]; ab++ ){
-		  A = FAA.params->colorb[Gab][ab][0];
-		  B = FAA.params->colorb[Gab][ab][1];
-		  Ga = FAA.params->rsym[A];
+		for(ab=0; ab < FAA->params->coltot[Gab]; ab++ ){
+		  A = FAA->params->colorb[Gab][ab][0];
+		  B = FAA->params->colorb[Gab][ab][1];
+		  Ga = FAA->params->rsym[A];
 		  a = A - avir_off[Ga];
 		  for(c=0; c < bvirtpi[Gc]; c++) {
 		    C = bvir_off[Gc] + c;
@@ -952,13 +840,13 @@ void cc3_sigma_UHF_AAB(int term, dpdbuf4 *CMNEF, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 		}
 	      }
 
-	      ij = WMNIE.params->rowidx[I][J];
+	      ij = WMNIE->params->rowidx[I][J];
 
 	      for(Gm=0; Gm < nirreps; Gm++) {
 		Gbc = Gmk = Gm ^ Gk;  /* assumes totally symmetric */
 		Ga = Gbc ^ Gijk;      /* assumes totally symmetric */
 
-		ma = WMNIE.col_offset[Gij][Gm];
+		ma = WMNIE->col_offset[Gij][Gm];
 
 		nrows = SIjAb->params->coltot[Gmk];
 		ncols = aoccpi[Gm];
@@ -968,7 +856,7 @@ void cc3_sigma_UHF_AAB(int term, dpdbuf4 *CMNEF, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 
 		if(nrows && ncols && nlinks)
 		  C_DGEMM('t', 't', nrows, ncols, nlinks, 0.5, W3[Ga][0], nrows,
-			  &(WMNIE.matrix[Gij][ij][ma]), nlinks, 0.0, Z[0], ncols);
+			  &(WMNIE->matrix[Gij][ij][ma]), nlinks, 0.0, Z[0], ncols);
 
 		for(m=0; m < aoccpi[Gm]; m++) {
 		  M = aocc_off[Gm] + m;
@@ -985,10 +873,10 @@ void cc3_sigma_UHF_AAB(int term, dpdbuf4 *CMNEF, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 	      /* sort W(AB,c) to W(A,Bc) */
 	      for(Gab=0; Gab < nirreps; Gab++) {
 		Gc = Gab ^ Gijk;  /* assumes totally symmetric */
-		for(ab=0; ab < FAA.params->coltot[Gab]; ab++ ){
-		  A = FAA.params->colorb[Gab][ab][0];
-		  B = FAA.params->colorb[Gab][ab][1];
-		  Ga = FAA.params->rsym[A];
+		for(ab=0; ab < FAA->params->coltot[Gab]; ab++ ){
+		  A = FAA->params->colorb[Gab][ab][0];
+		  B = FAA->params->colorb[Gab][ab][1];
+		  Ga = FAA->params->rsym[A];
 		  a = A - avir_off[Ga];
 		  for(c=0; c < bvirtpi[Gc]; c++) {
 		    C = bvir_off[Gc] + c;
@@ -998,13 +886,13 @@ void cc3_sigma_UHF_AAB(int term, dpdbuf4 *CMNEF, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 		}
 	      }
 
-	      kj = WmNiE.params->rowidx[K][J];
+	      kj = WmNiE->params->rowidx[K][J];
 
 	      for(Gm=0; Gm < nirreps; Gm++) {
 		Gbc = Gim = Gi ^ Gm;  /* assumes totally symmetric */
 		Ga = Gbc ^ Gijk;      /* assumes totally symmetric */
 
-		ma = WmNiE.col_offset[Gjk][Gm];
+		ma = WmNiE->col_offset[Gjk][Gm];
 
 		nrows = SIjAb->params->coltot[Gim];
 		ncols = boccpi[Gm];
@@ -1014,7 +902,7 @@ void cc3_sigma_UHF_AAB(int term, dpdbuf4 *CMNEF, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 
 		if(nrows && ncols && nlinks)
 		  C_DGEMM('t', 't', nrows, ncols, nlinks, 1.0, W3[Ga][0], nrows,
-			  &(WmNiE.matrix[Gjk][kj][ma]), nlinks, 0.0, Z[0], ncols);
+			  &(WmNiE->matrix[Gjk][kj][ma]), nlinks, 0.0, Z[0], ncols);
 
 		for(m=0; m < boccpi[Gm]; m++) {
 		  M = bocc_off[Gm] + m;
@@ -1026,6 +914,7 @@ void cc3_sigma_UHF_AAB(int term, dpdbuf4 *CMNEF, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 
 		dpd_free_block(Z, nrows, ncols);
 	      }
+          }
 
 	    } /* k */
 	  } /* j */
@@ -1034,15 +923,15 @@ void cc3_sigma_UHF_AAB(int term, dpdbuf4 *CMNEF, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 	for(Gab=0; Gab < nirreps; Gab++) {
 	  /* This will need to change for non-totally-symmetric cases */
 	  Gc = Gab ^ Gijk;
-	  dpd_free_block(W1[Gab], FAA.params->coltot[Gab], bvirtpi[Gc]);
+	  dpd_free_block(W1[Gab], FAA->params->coltot[Gab], bvirtpi[Gc]);
 	}
 	for(Ga=0; Ga < nirreps; Ga++) {
 	  Gcb = Ga ^ Gijk; /* assumes totally symmetric */
-	  dpd_free_block(W2[Ga], avirtpi[Ga], WmAfE.params->coltot[Gcb]);
+	  dpd_free_block(W2[Ga], avirtpi[Ga], WmAfE->params->coltot[Gcb]);
 	}
 	for(Gb=0; Gb < nirreps; Gb++) {
 	  Gac = Gb ^ Gijk; /* assumes totally symmetric */
-	  dpd_free_block(W3[Gb], avirtpi[Gb], WMaFe.params->coltot[Gac]);
+	  dpd_free_block(W3[Gb], avirtpi[Gb], WMaFe->params->coltot[Gac]);
 	}
 
       } /* Gk */
@@ -1052,73 +941,59 @@ void cc3_sigma_UHF_AAB(int term, dpdbuf4 *CMNEF, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
   free(W1);
   free(W2);
   free(W3);
+  free_int_matrix(W_offset, nirreps);
 
-  dpd_buf4_close(&EAA);
-  dpd_buf4_close(&EAB);
-  dpd_buf4_close(&EBA);
-  dpd_buf4_close(&FAA);
-  dpd_buf4_close(&FAB);
-  dpd_buf4_close(&FBA);
-  dpd_buf4_close(&T2AA);
-  dpd_buf4_close(&T2AB);
-  dpd_buf4_close(&T2BA);
   dpd_file2_close(&fIJ);
   dpd_file2_close(&fAB);
   dpd_file2_close(&fij);
   dpd_file2_close(&fab);
 
-  dpd_file2_mat_wrt(SIA);
-  dpd_file2_mat_close(SIA);
-  dpd_file2_mat_wrt(Sia);
-  dpd_file2_mat_close(Sia);
+  if (do_singles) {
 
-  for(h=0; h < nirreps; h++) {
-    dpd_buf4_mat_irrep_close(&DAA, h);
-    dpd_buf4_mat_irrep_close(&DAB, h);
-  }
-  dpd_buf4_close(&DAA);
-  dpd_buf4_close(&DAB);
+    dpd_file2_mat_wrt(SIA);
+    dpd_file2_mat_close(SIA);
+    dpd_file2_mat_wrt(Sia);
+    dpd_file2_mat_close(Sia);
 
-  free_int_matrix(W_offset, nirreps);
-
-  dpd_file2_mat_close(&FME);
-  dpd_file2_close(&FME);
-
-  dpd_file2_mat_close(&Fme);
-  dpd_file2_close(&Fme);
-
-  dpd_buf4_close(&WmAfE);
-  dpd_buf4_close(&WMAFE);
-  dpd_buf4_close(&WMaFe);
-
-  for(h=0; h < nirreps; h++) {
-    dpd_buf4_mat_irrep_close(&WMnIe, h);
-    dpd_buf4_mat_irrep_close(&WMNIE, h);
-    dpd_buf4_mat_irrep_close(&WmNiE, h);
-  }
-  dpd_buf4_close(&WMnIe);
-  dpd_buf4_close(&WMNIE);
-  dpd_buf4_close(&WmNiE);
-
-  for(h=0; h < nirreps; h++) {
-    dpd_buf4_mat_irrep_wrt(SIJAB, h);
-    dpd_buf4_mat_irrep_close(SIJAB, h);
+    for(h=0; h < nirreps; h++) {
+      dpd_buf4_mat_irrep_close(DAA, h);
+      dpd_buf4_mat_irrep_close(DAB, h);
+    }
   }
 
-  for(h=0; h < nirreps; h++) {
-    dpd_buf4_mat_irrep_wrt(SIjAb, h);
-    dpd_buf4_mat_irrep_close(SIjAb, h);
+  if (do_doubles) {
+
+    dpd_file2_mat_close(FME);
+    dpd_file2_mat_close(Fme);
+
+    for(h=0; h < nirreps; h++) {
+      dpd_buf4_mat_irrep_close(WMNIE, h);
+      dpd_buf4_mat_irrep_close(WMnIe, h);
+      dpd_buf4_mat_irrep_close(WmNiE, h);
+    }
+    for(h=0; h < nirreps; h++) {
+      dpd_buf4_mat_irrep_wrt(SIJAB, h);
+      dpd_buf4_mat_irrep_close(SIJAB, h);
+    }
+    for(h=0; h < nirreps; h++) {
+      dpd_buf4_mat_irrep_wrt(SIjAb, h);
+      dpd_buf4_mat_irrep_close(SIjAb, h);
+    }
   }
 }
 
-void cc3_sigma_UHF_BBA(int term, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
-       dpdfile2 *SIA, dpdfile2 *Sia, dpdbuf4 *Sijab, dpdbuf4 *SIjAb)
+void cc3_sigma_UHF_BBA(dpdbuf4 *C2BB, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
+    dpdbuf4 *FBB, dpdbuf4 *FAB, dpdbuf4 *FBA,  
+    dpdbuf4 *EBB, dpdbuf4 *EAB, dpdbuf4 *EBA,
+    int do_singles, dpdbuf4 *DBB, dpdbuf4 *DBA, dpdfile2 *SIA, dpdfile2 *Sia,
+    int do_doubles, dpdfile2 *FME, dpdfile2 *Fme,
+    dpdbuf4 *Wmafe, dpdbuf4 *WMaFe, dpdbuf4 *WmAfE,
+    dpdbuf4 *Wmnie, dpdbuf4 *WMnIe, dpdbuf4 *WmNiE,
+    dpdbuf4 *Sijab, dpdbuf4 *SIjAb, double energy)
 {
-  int h, nirreps;
-  int *aocc_off, *aoccpi;
-  int *avir_off, *avirtpi;
-  int *bocc_off, *boccpi;
-  int *bvir_off, *bvirtpi;
+  int h, nirreps, S_irr;
+  int *aocc_off, *aoccpi, *avir_off, *avirtpi;
+  int *bocc_off, *boccpi, *bvir_off, *bvirtpi;
   int Gi, Gj, Gk, Gijk;
   int Ga, Gb, Gc, Gab;
   int Gij, ij, ji, Gjk, jk, Gbc, bc, Gcb, cb;
@@ -1127,30 +1002,18 @@ void cc3_sigma_UHF_BBA(int term, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
   int a, b, c, A, B, C;
   int ab;
   double ***W1, ***W2, ***W3;
-  dpdbuf4 T2BB, T2AB, T2BA, EBB, EAB, EBA, FBB, FAB, FBA;
   dpdfile2 fIJ, fAB, fij, fab;
-  dpdfile2 d1;
-  dpdbuf4 DBB, DBA;
   int nrows, ncols, nlinks;
   int **W_offset, offset;
-  dpdfile2 FME, Fme;
-  dpdbuf4 D2, T2;
   dpdbuf4 SiJaB;
-  dpdbuf4 WMaFe, Wmafe, WmAfE;
   double **Z;
-  dpdbuf4 WmNiE, Wmnie, WMnIe;
   int Gm, m, Gmi, mi, im, mc, M;
   int Gmk, mk, ma, kj, Gim;
 
   nirreps = moinfo.nirreps;
-  aoccpi = moinfo.aoccpi;
-  aocc_off = moinfo.aocc_off;
-  boccpi = moinfo.boccpi;
-  bocc_off = moinfo.bocc_off;
-  avirtpi = moinfo.avirtpi;
-  avir_off = moinfo.avir_off;
-  bvirtpi = moinfo.bvirtpi;
-  bvir_off = moinfo.bvir_off;
+  aoccpi = moinfo.aoccpi; aocc_off = moinfo.aocc_off; avirtpi = moinfo.avirtpi;
+  boccpi = moinfo.boccpi; bocc_off = moinfo.bocc_off; bvirtpi = moinfo.bvirtpi;
+  avir_off = moinfo.avir_off; bvir_off = moinfo.bvir_off;
 
   W_offset = init_int_matrix(nirreps, nirreps);
   for(Gab=0; Gab < nirreps; Gab++) {
@@ -1161,54 +1024,55 @@ void cc3_sigma_UHF_BBA(int term, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
     }
   }
 
-  dpd_file2_mat_init(SIA);
-  dpd_file2_mat_rd(SIA);
-  dpd_file2_mat_init(Sia);
-  dpd_file2_mat_rd(Sia);
+  if (do_singles) {
 
-  dpd_buf4_init(&DBB, CC_DINTS, 0, 10, 15, 10, 15, 0, "D <ij||ab>");
-  dpd_buf4_init(&DBA, CC_DINTS, 0, 23, 29, 23, 29, 0, "D <iJ|aB>");
-  for(h=0; h < nirreps; h++) {
-    dpd_buf4_mat_irrep_init(&DBB, h);
-    dpd_buf4_mat_irrep_rd(&DBB, h);
-    dpd_buf4_mat_irrep_init(&DBA, h);
-    dpd_buf4_mat_irrep_rd(&DBA, h);
+    dpd_file2_mat_init(SIA);
+    dpd_file2_mat_rd(SIA);
+    dpd_file2_mat_init(Sia);
+    dpd_file2_mat_rd(Sia);
+
+    for(h=0; h < nirreps; h++) {
+      dpd_buf4_mat_irrep_init(DBB, h);
+      dpd_buf4_mat_irrep_rd(DBB, h);
+      dpd_buf4_mat_irrep_init(DBA, h);
+      dpd_buf4_mat_irrep_rd(DBA, h);
+    }
   }
 
-  dpd_file2_init(&FME, CC_OEI, 0, 0, 1, "FME");
-  dpd_file2_mat_init(&FME);
-  dpd_file2_mat_rd(&FME);
+  if (do_doubles) {
 
-  dpd_file2_init(&Fme, CC_OEI, 0, 2, 3, "Fme");
-  dpd_file2_mat_init(&Fme);
-  dpd_file2_mat_rd(&Fme);
+    dpd_file2_mat_init(FME);
+    dpd_file2_mat_rd(FME);
+    dpd_file2_mat_init(Fme);
+    dpd_file2_mat_rd(Fme);
 
-  dpd_buf4_init(&WMaFe, CC3_HET1, 0, 24, 28, 24, 28, 0, "CC3 WaMeF (Ma,Fe)");
-  dpd_buf4_init(&Wmafe, CC3_HET1, 0, 30, 15, 30, 17, 0, "CC3 Wamef (ma,f>e)");
-  dpd_buf4_init(&WmAfE, CC3_HET1, 0, 27, 29, 27, 29, 0, "CC3 WAmEf (mA,fE)");
+    //dpd_buf4_init(&WMaFe, CC3_HET1, 0, 24, 28, 24, 28, 0, "CC3 WaMeF (Ma,Fe)");
+    //dpd_buf4_init(&Wmafe, CC3_HET1, 0, 30, 15, 30, 17, 0, "CC3 Wamef (ma,f>e)");
+    //dpd_buf4_init(&WmAfE, CC3_HET1, 0, 27, 29, 27, 29, 0, "CC3 WAmEf (mA,fE)");
+    //dpd_buf4_init(&Wmnie, CC3_HET1, 0, 10, 30, 12, 30, 0, "CC3 Wmnie (m>n,ie)");
+    //dpd_buf4_init(&WmNiE, CC3_HET1, 0, 23, 27, 23, 27, 0, "CC3 WmNiE (mN,iE)");
+    //dpd_buf4_init(&WMnIe, CC3_HET1, 0, 22, 24, 22, 24, 0, "CC3 WMnIe (Mn,Ie)");
+    for(h=0; h < nirreps; h++) {
+      dpd_buf4_mat_irrep_init(WmNiE, h);
+      dpd_buf4_mat_irrep_rd(WmNiE, h);
+  
+      dpd_buf4_mat_irrep_init(Wmnie, h);
+      dpd_buf4_mat_irrep_rd(Wmnie, h);
+  
+      dpd_buf4_mat_irrep_init(WMnIe, h);
+      dpd_buf4_mat_irrep_rd(WMnIe, h);
+    }
+    for(h=0; h < nirreps; h++) {
+      dpd_buf4_mat_irrep_init(Sijab, h);
+      dpd_buf4_mat_irrep_rd(Sijab, h);
+    }
 
-  dpd_buf4_init(&Wmnie, CC3_HET1, 0, 10, 30, 12, 30, 0, "CC3 Wmnie (m>n,ie)");
-  dpd_buf4_init(&WmNiE, CC3_HET1, 0, 23, 27, 23, 27, 0, "CC3 WmNiE (mN,iE)");
-  dpd_buf4_init(&WMnIe, CC3_HET1, 0, 22, 24, 22, 24, 0, "CC3 WMnIe (Mn,Ie)");
-  for(h=0; h < nirreps; h++) {
-    dpd_buf4_mat_irrep_init(&WmNiE, h);
-    dpd_buf4_mat_irrep_rd(&WmNiE, h);
-
-    dpd_buf4_mat_irrep_init(&Wmnie, h);
-    dpd_buf4_mat_irrep_rd(&Wmnie, h);
-
-    dpd_buf4_mat_irrep_init(&WMnIe, h);
-    dpd_buf4_mat_irrep_rd(&WMnIe, h);
-  }
-
-  for(h=0; h < nirreps; h++) {
-    dpd_buf4_mat_irrep_init(Sijab, h);
-    dpd_buf4_mat_irrep_rd(Sijab, h);
-  }
-
-  dpd_buf4_init(&SiJaB, CC_MISC, 0, 23, 29, 23, 29, 0, "CC3 tiJaB");
-  for(h=0; h < nirreps; h++) {
-    dpd_buf4_mat_irrep_init(&SiJaB, h);
+    /* put result here until end of function */
+    S_irr = SIjAb->file.my_irrep;
+    dpd_buf4_init(&SiJaB, CC_TMP0, S_irr, 23, 29, 23, 29, 0, "CC3 SiJaB");
+    for(h=0; h < nirreps; h++) {
+      dpd_buf4_mat_irrep_init(&SiJaB, h);
+    }
   }
 
   dpd_file2_init(&fIJ, CC_OEI, 0, 0, 0, "fIJ");
@@ -1216,15 +1080,15 @@ void cc3_sigma_UHF_BBA(int term, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
   dpd_file2_init(&fij, CC_OEI, 0, 2, 2, "fij");
   dpd_file2_init(&fab, CC_OEI, 0, 3, 3, "fab");
 
-  dpd_buf4_init(&T2BB, CC_TAMPS, 0, 10, 15, 12, 17, 0, "tijab");
-  dpd_buf4_init(&T2AB, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tIjAb");
-  dpd_buf4_init(&T2BA, CC_TAMPS, 0, 23, 29, 23, 29, 0, "tiJaB");
-  dpd_buf4_init(&FBB, CC3_HET1, 0, 30, 15, 30, 17, 0, "CC3 Wabei (ie,b>a)");
-  dpd_buf4_init(&FAB, CC3_HET1, 0, 24, 28, 24, 28, 0, "CC3 WaBeI (Ie,Ba)");
-  dpd_buf4_init(&FBA, CC3_HET1, 0, 27, 29, 27, 29, 0, "CC3 WAbEi (iE,bA)");
-  dpd_buf4_init(&EBB, CC3_HET1, 0, 10, 30, 12, 30, 0, "CC3 Wmbij (i>j,mb)");
-  dpd_buf4_init(&EAB, CC3_HET1, 0, 22, 24, 22, 24, 0, "CC3 WMbIj (Ij,Mb)");
-  dpd_buf4_init(&EBA, CC3_HET1, 0, 23, 27, 23, 27, 0, "CC3 WmBiJ (iJ,mB)");
+  //dpd_buf4_init(&C2BB, CC_TAMPS, 0, 10, 15, 12, 17, 0, "tijab");
+  //dpd_buf4_init(&C2AB, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tIjAb");
+  //dpd_buf4_init(&C2BA, CC_TAMPS, 0, 23, 29, 23, 29, 0, "tiJaB");
+  //dpd_buf4_init(&FBB, CC3_HET1, 0, 30, 15, 30, 17, 0, "CC3 Wabei (ie,b>a)");
+  //dpd_buf4_init(&FAB, CC3_HET1, 0, 24, 28, 24, 28, 0, "CC3 WaBeI (Ie,Ba)");
+  //dpd_buf4_init(&FBA, CC3_HET1, 0, 27, 29, 27, 29, 0, "CC3 WAbEi (iE,bA)");
+  //dpd_buf4_init(&EBB, CC3_HET1, 0, 10, 30, 12, 30, 0, "CC3 Wmbij (i>j,mb)");
+  //dpd_buf4_init(&EAB, CC3_HET1, 0, 22, 24, 22, 24, 0, "CC3 WMbIj (Ij,Mb)");
+  //dpd_buf4_init(&EBA, CC3_HET1, 0, 23, 27, 23, 27, 0, "CC3 WmBiJ (iJ,mB)");
 
   /* target T3 amplitudes go in here */
   W1 = (double ***) malloc(nirreps * sizeof(double **));
@@ -1241,15 +1105,15 @@ void cc3_sigma_UHF_BBA(int term, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 	for(Gab=0; Gab < nirreps; Gab++) {
 	  /* This will need to change for non-totally-symmetric cases */
 	  Gc = Gab ^ Gijk;
-	  W1[Gab] = dpd_block_matrix(FBB.params->coltot[Gab], avirtpi[Gc]);
+	  W1[Gab] = dpd_block_matrix(FBB->params->coltot[Gab], avirtpi[Gc]);
 	}
 	for(Ga=0; Ga < nirreps; Ga++) {
 	  Gcb = Ga ^ Gijk;
-	  W2[Ga] = dpd_block_matrix(bvirtpi[Ga], WMaFe.params->coltot[Gcb]);
+	  W2[Ga] = dpd_block_matrix(bvirtpi[Ga], WMaFe->params->coltot[Gcb]);
 	}
 	for(Gb=0; Gb < nirreps; Gb++) {
 	  Gac = Gb ^ Gijk; /* assumes totally symmetric */
-	  W3[Gb] = dpd_block_matrix(bvirtpi[Gb], WmAfE.params->coltot[Gac]);
+	  W3[Gb] = dpd_block_matrix(bvirtpi[Gb], WmAfE->params->coltot[Gac]);
 	}
 
 	for(i=0; i < boccpi[Gi]; i++) {
@@ -1259,22 +1123,23 @@ void cc3_sigma_UHF_BBA(int term, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 	    for(k=0; k < aoccpi[Gk]; k++) {
 	      K = aocc_off[Gk] + k;
 
-	      T3_AAB(W1, nirreps, I, Gi, J, Gj, K, Gk, &T2BB, &T2BA, &T2AB, 
-		     &FBB, &FBA, &FAB, &EBB, &EBA, &EAB, &fij, &fIJ, &fab, &fAB,
-		     boccpi, bocc_off, aoccpi, aocc_off, bvirtpi, bvir_off, avirtpi, avir_off);
+	      T3_AAB(W1, nirreps, I, Gi, J, Gj, K, Gk, C2BB, C2BA, C2AB, 
+		     FBB, FBA, FAB, EBB, EBA, EAB, &fij, &fIJ, &fab, &fAB,
+		     boccpi, bocc_off, aoccpi, aocc_off, bvirtpi, bvir_off, avirtpi, avir_off, energy);
 
+          if (do_singles) {
 	      /* t_KC <-- 1/4 t_ijKabC <ij||ab> */
 
 	      Gc = Gk;  /* assumes T1 is totally symmetric */
 	      Gab = Gij; /* assumes <ij||ab> is totally symmetric */
 
-	      ij = DBB.params->rowidx[I][J];
+	      ij = DBB->params->rowidx[I][J];
 
-	      nrows = DBB.params->coltot[Gij];
+	      nrows = DBB->params->coltot[Gij];
 	      ncols = avirtpi[Gc];
 
 	      if(nrows && ncols)
-		C_DGEMV('t', nrows, ncols, 0.25, W1[Gab][0], ncols, DBB.matrix[Gij][ij], 1,
+		C_DGEMV('t', nrows, ncols, 0.25, W1[Gab][0], ncols, DBB->matrix[Gij][ij], 1,
 			1.0, SIA->matrix[Gk][k], 1);
 
 	      /* t_ia <-- t_ijKabC <jK|bC> */
@@ -1282,23 +1147,25 @@ void cc3_sigma_UHF_BBA(int term, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 	      Ga = Gi;   /* assumes T1 is totally symmetric */
 	      Gbc = Gjk; /* assumes <jk|bc> is totally symmetric */
 
-	      jk = DBA.params->rowidx[J][K];
+	      jk = DBA->params->rowidx[J][K];
 
 	      for(Gab=0; Gab < nirreps; Gab++) {
 		Gb = Ga ^ Gab;
 		Gc = Gb ^ Gbc;
 
 		ab = W_offset[Gab][Ga];
-		bc = DBA.col_offset[Gjk][Gb];
+		bc = DBA->col_offset[Gjk][Gb];
 
 		nrows = bvirtpi[Ga];
 		ncols = bvirtpi[Gb] * avirtpi[Gc];
 
 		if(nrows && ncols)
-		  C_DGEMV('n', nrows, ncols, 1.0, W1[Gab][ab], ncols, &(DBA.matrix[Gjk][jk][bc]), 1,
+		  C_DGEMV('n', nrows, ncols, 1.0, W1[Gab][ab], ncols, &(DBA->matrix[Gjk][jk][bc]), 1,
 			  1.0, Sia->matrix[Gi][i], 1);
 	      }
+          } /* end do_singles */
 
+          if (do_doubles ) {
 	      /* t_ijab <-- t_ijKabC F_KC */
 	      Gc = Gk;    /* assumes Fme is totally symmetric */
 	      Gab = Gij;  /* Assumes tIJAB is totally symmetric */
@@ -1308,14 +1175,14 @@ void cc3_sigma_UHF_BBA(int term, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 	      ij = Sijab->params->rowidx[I][J];
  
 	      if(nrows && ncols)
-		C_DGEMV('n', nrows, ncols, 1.0, W1[Gab][0], ncols, FME.matrix[Gk][k], 1,
+		C_DGEMV('n', nrows, ncols, 1.0, W1[Gab][0], ncols, FME->matrix[Gk][k], 1,
 			1.0, Sijab->matrix[Gij][ij], 1);
 
 	      /* t_jKbC <-- t_ijKabC F_ia */
 	      Ga = Gi;   /* assumes Fia is totally symmetric */
 	      Gbc = Gjk; /* assumes t_jKbC is totally symmetric */
 
-	      jk = T2BA.params->rowidx[J][K];
+	      jk = C2BA->params->rowidx[J][K];
 
 	      for(Gab=0; Gab < nirreps; Gab++) {
 		Gb = Ga ^ Gab;
@@ -1328,7 +1195,7 @@ void cc3_sigma_UHF_BBA(int term, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 		ncols = bvirtpi[Gb] * avirtpi[Gc];
 
 		if(nrows && ncols)
-		  C_DGEMV('t', nrows, ncols, 1.0, W1[Gab][ab], ncols, Fme.matrix[Gi][i], 1,
+		  C_DGEMV('t', nrows, ncols, 1.0, W1[Gab][ab], ncols, Fme->matrix[Gi][i], 1,
 			  1.0, &(SiJaB.matrix[Gjk][jk][bc]), 1);
 	      }
 
@@ -1336,14 +1203,14 @@ void cc3_sigma_UHF_BBA(int term, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 	      /* sort W1(ab,C) to W2(a,Cb) */
 	      for(Gab=0; Gab < nirreps; Gab++) {
 		Gc = Gab ^ Gijk;
-		for(ab=0; ab < FBB.params->coltot[Gab]; ab++) {
-		  A = FBB.params->colorb[Gab][ab][0];
-		  B = FBB.params->colorb[Gab][ab][1];
-		  Ga = FBB.params->rsym[A];
+		for(ab=0; ab < FBB->params->coltot[Gab]; ab++) {
+		  A = FBB->params->colorb[Gab][ab][0];
+		  B = FBB->params->colorb[Gab][ab][1];
+		  Ga = FBB->params->rsym[A];
 		  a = A - bvir_off[Ga];
 		  for(c=0; c < avirtpi[Gc]; c++) {
 		    C = avir_off[Gc] + c;
-		    cb = WMaFe.params->colidx[C][B];
+		    cb = WMaFe->params->colidx[C][B];
 		    W2[Ga][a][cb] = W1[Gab][ab][c];
 		  }
 		}
@@ -1355,18 +1222,18 @@ void cc3_sigma_UHF_BBA(int term, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 		Gcb = Gkd = Gk ^ Gd; /* assumes totally symmetric */
 		Ga = Gd ^ Gij;       /* assumes totally symmetric */
 
-		kd = WMaFe.row_offset[Gkd][K];
-		WMaFe.matrix[Gkd] = dpd_block_matrix(bvirtpi[Gd], WMaFe.params->coltot[Gkd]);
-		dpd_buf4_mat_irrep_rd_block(&WMaFe, Gkd, kd, bvirtpi[Gd]);
+		kd = WMaFe->row_offset[Gkd][K];
+		WMaFe->matrix[Gkd] = dpd_block_matrix(bvirtpi[Gd], WMaFe->params->coltot[Gkd]);
+		dpd_buf4_mat_irrep_rd_block(WMaFe, Gkd, kd, bvirtpi[Gd]);
 		Z = block_matrix(bvirtpi[Ga], bvirtpi[Gd]);
 
 		nrows = bvirtpi[Ga];
 		ncols = bvirtpi[Gd];
-		nlinks = WMaFe.params->coltot[Gkd];
+		nlinks = WMaFe->params->coltot[Gkd];
 
 		if(nrows && ncols && nlinks)
 		  C_DGEMM('n', 't', nrows, ncols, nlinks, 1.0, W2[Ga][0], nlinks, 
-			  WMaFe.matrix[Gkd][0], nlinks, 0.0, Z[0], ncols);
+			  WMaFe->matrix[Gkd][0], nlinks, 0.0, Z[0], ncols);
 
 		for(a=0; a < bvirtpi[Ga]; a++) {
 		  A = bvir_off[Ga] + a;
@@ -1379,7 +1246,7 @@ void cc3_sigma_UHF_BBA(int term, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 		  }
 		}
 
-		dpd_free_block(WMaFe.matrix[Gkd], bvirtpi[Gd], WMaFe.params->coltot[Gkd]);
+		dpd_free_block(WMaFe->matrix[Gkd], bvirtpi[Gd], WMaFe->params->coltot[Gkd]);
 		free_block(Z);
 	      }
 
@@ -1391,18 +1258,18 @@ void cc3_sigma_UHF_BBA(int term, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 		Gab = Gid = Gi ^ Gd; /* assumes totally symmetric */
 		Gc = Gab ^ Gijk;     /* assumes totally symmetric */
 
-		id = Wmafe.row_offset[Gid][I];
-		Wmafe.matrix[Gid] = dpd_block_matrix(bvirtpi[Gd], Wmafe.params->coltot[Gid]);
-		dpd_buf4_mat_irrep_rd_block(&Wmafe, Gid, id, bvirtpi[Gd]);
+		id = Wmafe->row_offset[Gid][I];
+		Wmafe->matrix[Gid] = dpd_block_matrix(bvirtpi[Gd], Wmafe->params->coltot[Gid]);
+		dpd_buf4_mat_irrep_rd_block(Wmafe, Gid, id, bvirtpi[Gd]);
 		Z = block_matrix(avirtpi[Gc], bvirtpi[Gd]);
 
 		nrows = avirtpi[Gc];
 		ncols = bvirtpi[Gd];
-		nlinks = Wmafe.params->coltot[Gid];
+		nlinks = Wmafe->params->coltot[Gid];
 
 		if(nrows && ncols && nlinks)
 		  C_DGEMM('t', 't', nrows, ncols, nlinks, 0.5, W1[Gab][0], nrows,
-			  Wmafe.matrix[Gid][0], nlinks, 0.0, Z[0], ncols);
+			  Wmafe->matrix[Gid][0], nlinks, 0.0, Z[0], ncols);
 
 		for(c=0; c < avirtpi[Gc]; c++) {
 		  C = avir_off[Gc] + c;
@@ -1414,21 +1281,21 @@ void cc3_sigma_UHF_BBA(int term, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 		}
 
 		free_block(Z);
-		dpd_free_block(Wmafe.matrix[Gid], bvirtpi[Gd], Wmafe.params->coltot[Gid]);
+		dpd_free_block(Wmafe->matrix[Gid], bvirtpi[Gd], Wmafe->params->coltot[Gid]);
 	      }
 
 	      /* t_jKbD <-- t_ijKabC W_iDaC */
 	      /* sort W1(ab,C) to W3(b,aC) */
 	      for(Gab=0; Gab < nirreps; Gab++) {
 		Gc = Gab ^ Gijk;
-		for(ab=0; ab < FBB.params->coltot[Gab]; ab++) {
-		  A = FBB.params->colorb[Gab][ab][0];
-		  B = FBB.params->colorb[Gab][ab][1];
-		  Gb = FBB.params->ssym[B];
+		for(ab=0; ab < FBB->params->coltot[Gab]; ab++) {
+		  A = FBB->params->colorb[Gab][ab][0];
+		  B = FBB->params->colorb[Gab][ab][1];
+		  Gb = FBB->params->ssym[B];
 		  b = B - bvir_off[Gb];
 		  for(c=0; c < avirtpi[Gc]; c++) {
 		    C = avir_off[Gc] + c;
-		    ac = WmAfE.params->colidx[A][C];
+		    ac = WmAfE->params->colidx[A][C];
 		    W3[Gb][b][ac] = W1[Gab][ab][c];
 		  }
 		}
@@ -1440,18 +1307,18 @@ void cc3_sigma_UHF_BBA(int term, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 		Gac = Gid = Gi ^ Gd; /* assumes totally symmetric */
 		Gb = Gac ^ Gijk;     /* assumes totally symmetric */
 
-		id = WmAfE.row_offset[Gid][I]; 
-		WmAfE.matrix[Gid] = dpd_block_matrix(avirtpi[Gd], WmAfE.params->coltot[Gid]);
-		dpd_buf4_mat_irrep_rd_block(&WmAfE, Gid, id, avirtpi[Gd]);
+		id = WmAfE->row_offset[Gid][I]; 
+		WmAfE->matrix[Gid] = dpd_block_matrix(avirtpi[Gd], WmAfE->params->coltot[Gid]);
+		dpd_buf4_mat_irrep_rd_block(WmAfE, Gid, id, avirtpi[Gd]);
 		Z = block_matrix(bvirtpi[Gb], avirtpi[Gd]);
 
 		nrows = bvirtpi[Gb];
 		ncols = avirtpi[Gd];
-		nlinks = WmAfE.params->coltot[Gid];
+		nlinks = WmAfE->params->coltot[Gid];
 
 		if(nrows && ncols && nlinks)
 		  C_DGEMM('n', 't', nrows, ncols, nlinks, 1.0, W3[Gb][0], nlinks,
-			  WmAfE.matrix[Gid][0], nlinks, 0.0, Z[0], ncols);
+			  WmAfE->matrix[Gid][0], nlinks, 0.0, Z[0], ncols);
 
 		for(b=0; b < bvirtpi[Gb]; b++) {
 		  B = bvir_off[Gb] + b;
@@ -1462,22 +1329,22 @@ void cc3_sigma_UHF_BBA(int term, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 		  }
 		}
 
-		dpd_free_block(WmAfE.matrix[Gid], avirtpi[Gd], WmAfE.params->coltot[Gid]);
+		dpd_free_block(WmAfE->matrix[Gid], avirtpi[Gd], WmAfE->params->coltot[Gid]);
 		free_block(Z);
 	      }
 
 	      /* t_miab <--- +t_ijKabC W_jKmC */
 	      /* t_imab <--- -t_ijKabC W_jKmC */
 
-	      jk = WmNiE.params->rowidx[J][K];
+	      jk = WmNiE->params->rowidx[J][K];
 
 	      for(Gm=0; Gm < nirreps; Gm++) {
 		Gab = Gmi = Gm ^ Gi;  /* assumes totally symmetric */
 		Gc = Gab ^ Gijk;      /* assumes totally symmetric */
 
-		mc = WmNiE.col_offset[Gjk][Gm];
+		mc = WmNiE->col_offset[Gjk][Gm];
 
-		nrows = FBB.params->coltot[Gab];
+		nrows = FBB->params->coltot[Gab];
 		ncols = boccpi[Gm];
 		nlinks = avirtpi[Gc];
 
@@ -1485,7 +1352,7 @@ void cc3_sigma_UHF_BBA(int term, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 
 		if(nrows && ncols && nlinks)
 		  C_DGEMM('n', 't', nrows, ncols, nlinks, 1.0, W1[Gab][0], nlinks,
-			  &(WmNiE.matrix[Gjk][jk][mc]), nlinks, 0.0, Z[0], ncols);
+			  &(WmNiE->matrix[Gjk][jk][mc]), nlinks, 0.0, Z[0], ncols);
 
 		for(m=0; m < ncols; m++) {
 		  M = bocc_off[Gm] + m;
@@ -1504,10 +1371,10 @@ void cc3_sigma_UHF_BBA(int term, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 	      /* sort W(ab,C) to W(a,bC) */
 	      for(Gab=0; Gab < nirreps; Gab++) {
 		Gc = Gab ^ Gijk;  /* assumes totally symmetric */
-		for(ab=0; ab < FBB.params->coltot[Gab]; ab++ ){
-		  A = FBB.params->colorb[Gab][ab][0];
-		  B = FBB.params->colorb[Gab][ab][1];
-		  Ga = FBB.params->rsym[A];
+		for(ab=0; ab < FBB->params->coltot[Gab]; ab++ ){
+		  A = FBB->params->colorb[Gab][ab][0];
+		  B = FBB->params->colorb[Gab][ab][1];
+		  Ga = FBB->params->rsym[A];
 		  a = A - bvir_off[Ga];
 		  for(c=0; c < avirtpi[Gc]; c++) {
 		    C = avir_off[Gc] + c;
@@ -1517,13 +1384,13 @@ void cc3_sigma_UHF_BBA(int term, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 		}
 	      }
 
-	      ij = Wmnie.params->rowidx[I][J];
+	      ij = Wmnie->params->rowidx[I][J];
 
 	      for(Gm=0; Gm < nirreps; Gm++) {
 		Gbc = Gmk = Gm ^ Gk;  /* assumes totally symmetric */
 		Ga = Gbc ^ Gijk;      /* assumes totally symmetric */
 
-		ma = Wmnie.col_offset[Gij][Gm];
+		ma = Wmnie->col_offset[Gij][Gm];
 
 		nrows = SiJaB.params->coltot[Gmk];
 		ncols = boccpi[Gm];
@@ -1533,7 +1400,7 @@ void cc3_sigma_UHF_BBA(int term, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 
 		if(nrows && ncols && nlinks)
 		  C_DGEMM('t', 't', nrows, ncols, nlinks, 0.5, W3[Ga][0], nrows,
-			  &(Wmnie.matrix[Gij][ij][ma]), nlinks, 0.0, Z[0], ncols);
+			  &(Wmnie->matrix[Gij][ij][ma]), nlinks, 0.0, Z[0], ncols);
 
 		for(m=0; m < boccpi[Gm]; m++) {
 		  M = bocc_off[Gm] + m;
@@ -1550,10 +1417,10 @@ void cc3_sigma_UHF_BBA(int term, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 	      /* sort W(ab,C) to W(a,bC) */
 	      for(Gab=0; Gab < nirreps; Gab++) {
 		Gc = Gab ^ Gijk;  /* assumes totally symmetric */
-		for(ab=0; ab < FBB.params->coltot[Gab]; ab++ ){
-		  A = FBB.params->colorb[Gab][ab][0];
-		  B = FBB.params->colorb[Gab][ab][1];
-		  Ga = FBB.params->rsym[A];
+		for(ab=0; ab < FBB->params->coltot[Gab]; ab++ ){
+		  A = FBB->params->colorb[Gab][ab][0];
+		  B = FBB->params->colorb[Gab][ab][1];
+		  Ga = FBB->params->rsym[A];
 		  a = A - bvir_off[Ga];
 		  for(c=0; c < avirtpi[Gc]; c++) {
 		    C = avir_off[Gc] + c;
@@ -1563,13 +1430,13 @@ void cc3_sigma_UHF_BBA(int term, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 		}
 	      }
 
-	      kj = WMnIe.params->rowidx[K][J];
+	      kj = WMnIe->params->rowidx[K][J];
 
 	      for(Gm=0; Gm < nirreps; Gm++) {
 		Gbc = Gim = Gi ^ Gm;  /* assumes totally symmetric */
 		Ga = Gbc ^ Gijk;      /* assumes totally symmetric */
 
-		ma = WMnIe.col_offset[Gjk][Gm];
+		ma = WMnIe->col_offset[Gjk][Gm];
 
 		nrows = SiJaB.params->coltot[Gim];
 		ncols = aoccpi[Gm];
@@ -1579,7 +1446,7 @@ void cc3_sigma_UHF_BBA(int term, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 
 		if(nrows && ncols && nlinks)
 		  C_DGEMM('t', 't', nrows, ncols, nlinks, 1.0, W3[Ga][0], nrows,
-			  &(WMnIe.matrix[Gjk][kj][ma]), nlinks, 0.0, Z[0], ncols);
+			  &(WMnIe->matrix[Gjk][kj][ma]), nlinks, 0.0, Z[0], ncols);
 
 		for(m=0; m < aoccpi[Gm]; m++) {
 		  M = aocc_off[Gm] + m;
@@ -1591,6 +1458,7 @@ void cc3_sigma_UHF_BBA(int term, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 
 		dpd_free_block(Z, nrows, ncols);
 	      }
+          } /* end do_doubles */
 
 	    } /* k */
 	  } /* j */
@@ -1599,15 +1467,15 @@ void cc3_sigma_UHF_BBA(int term, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
 	for(Gab=0; Gab < nirreps; Gab++) {
 	  /* This will need to change for non-totally-symmetric cases */
 	  Gc = Gab ^ Gijk;
-	  dpd_free_block(W1[Gab], FBB.params->coltot[Gab], avirtpi[Gc]);
+	  dpd_free_block(W1[Gab], FBB->params->coltot[Gab], avirtpi[Gc]);
 	}
 	for(Ga=0; Ga < nirreps; Ga++) {
 	  Gcb = Ga ^ Gijk; /* assumes totally symmetric */
-	  dpd_free_block(W2[Ga], bvirtpi[Ga], WMaFe.params->coltot[Gcb]);
+	  dpd_free_block(W2[Ga], bvirtpi[Ga], WMaFe->params->coltot[Gcb]);
 	}
 	for(Gb=0; Gb < nirreps; Gb++) {
 	  Gac = Gb ^ Gijk; /* assumes totally symmetric */
-	  dpd_free_block(W3[Gb], bvirtpi[Gb], WmAfE.params->coltot[Gac]);
+	  dpd_free_block(W3[Gb], bvirtpi[Gb], WmAfE->params->coltot[Gac]);
 	}
 
       } /* Gk */
@@ -1617,66 +1485,50 @@ void cc3_sigma_UHF_BBA(int term, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, dpdbuf4 *CmNeF,
   free(W1);
   free(W2);
   free(W3);
+  free_int_matrix(W_offset, nirreps);
 
-  dpd_buf4_close(&EBB);
-  dpd_buf4_close(&EAB);
-  dpd_buf4_close(&EBA);
-  dpd_buf4_close(&FBB);
-  dpd_buf4_close(&FAB);
-  dpd_buf4_close(&FBA);
-  dpd_buf4_close(&T2BB);
-  dpd_buf4_close(&T2AB);
-  dpd_buf4_close(&T2BA);
   dpd_file2_close(&fIJ);
   dpd_file2_close(&fAB);
   dpd_file2_close(&fij);
   dpd_file2_close(&fab);
 
-  dpd_file2_mat_wrt(SIA);
-  dpd_file2_mat_close(SIA);
-  dpd_file2_mat_wrt(Sia);
-  dpd_file2_mat_close(Sia);
+  if (do_singles) {
 
-  for(h=0; h < nirreps; h++) {
-    dpd_buf4_mat_irrep_close(&DBB, h);
-    dpd_buf4_mat_irrep_close(&DBA, h);
-  }
-  dpd_buf4_close(&DBB);
-  dpd_buf4_close(&DBA);
+    dpd_file2_mat_wrt(SIA);
+    dpd_file2_mat_close(SIA);
+    dpd_file2_mat_wrt(Sia);
+    dpd_file2_mat_close(Sia);
 
-  free_int_matrix(W_offset, nirreps);
-
-  dpd_file2_mat_close(&FME);
-  dpd_file2_close(&FME);
-
-  dpd_file2_mat_close(&Fme);
-  dpd_file2_close(&Fme);
-
-  dpd_buf4_close(&WMaFe);
-  dpd_buf4_close(&Wmafe);
-  dpd_buf4_close(&WmAfE);
-
-  for(h=0; h < nirreps; h++) {
-    dpd_buf4_mat_irrep_close(&WmNiE, h);
-    dpd_buf4_mat_irrep_close(&Wmnie, h);
-    dpd_buf4_mat_irrep_close(&WMnIe, h);
-  }
-  dpd_buf4_close(&WmNiE);
-  dpd_buf4_close(&Wmnie);
-  dpd_buf4_close(&WMnIe);
-
-  for(h=0; h < nirreps; h++) {
-    dpd_buf4_mat_irrep_wrt(Sijab, h);
-    dpd_buf4_mat_irrep_close(Sijab, h);
+    for(h=0; h < nirreps; h++) {
+      dpd_buf4_mat_irrep_close(DBB, h);
+      dpd_buf4_mat_irrep_close(DBA, h);
+    }
   }
 
-  for(h=0; h < nirreps; h++) {
-    dpd_buf4_mat_irrep_wrt(&SiJaB, h);
-    dpd_buf4_mat_irrep_close(&SiJaB, h);
+  if (do_doubles) {
+
+    dpd_file2_mat_close(FME);
+    dpd_file2_mat_close(Fme);
+
+    for(h=0; h < nirreps; h++) {
+      dpd_buf4_mat_irrep_close(WmNiE, h);
+      dpd_buf4_mat_irrep_close(Wmnie, h);
+      dpd_buf4_mat_irrep_close(WMnIe, h);
+    }
+
+    for(h=0; h < nirreps; h++) {
+      dpd_buf4_mat_irrep_wrt(Sijab, h);
+      dpd_buf4_mat_irrep_close(Sijab, h);
+    }
+    for(h=0; h < nirreps; h++) {
+      dpd_buf4_mat_irrep_wrt(&SiJaB, h);
+      dpd_buf4_mat_irrep_close(&SiJaB, h);
+    }
+    dpd_buf4_sort(&SiJaB, CC_TMP0, qpsr, 22, 28, "CC3 SIjAb");
+    dpd_buf4_close(&SiJaB);
+    dpd_buf4_init(&SiJaB, CC_TMP0, S_irr, 22, 28, 22, 28, 0, "CC3 SIjAb");
+    dpd_buf4_axpy(&SiJaB, SIjAb, 1.0);
+    dpd_buf4_close(&SiJaB);
   }
-  dpd_buf4_sort(&SiJaB, CC_MISC, qpsr, 22, 28, "CC3 tIjAb");
-  dpd_buf4_close(&SiJaB);
-  dpd_buf4_init(&SiJaB, CC_MISC, 0, 22, 28, 22, 28, 0, "CC3 tIjAb");
-  dpd_buf4_axpy(&SiJaB, SIjAb, 1);
-  dpd_buf4_close(&SiJaB);
+
 }

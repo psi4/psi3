@@ -55,6 +55,11 @@ void get_eom_params()
   eom_params.save_all = 0;
   errcod = ip_data("SAVE_ALL","%d",&(eom_params.save_all),0);
 
+  eom_params.mult = 1;
+  eom_params.rhf_triplets = 0;
+  errcod = ip_data("RHF_TRIPLETS","%d",&(eom_params.rhf_triplets),0);
+  if (eom_params.rhf_triplets != 0) eom_params.mult = 3;
+
   eom_params.excitation_range = 2;
   errcod = ip_data("EXCITATION_RANGE","%d",&(eom_params.excitation_range),0);
 

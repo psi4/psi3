@@ -203,6 +203,22 @@ void HC1_Wamef(int i, int C_irr) {
     dpd_buf4_close(&D);
     dpd_buf4_close(&WaMeF);
 
+    dpd_buf4_init(&WAMEF, CC3_HC1, 0, 21, 7, 21, 7, 0, "HC1 WAMEF (AM,E>F)");
+    dpd_buf4_sort(&WAMEF, CC3_HC1, qpsr, 20, 7, "HC1 WAMEF (MA,F>E)");
+    dpd_buf4_close(&WAMEF);  
+
+    dpd_buf4_init(&Wamef, CC3_HC1, 0, 31, 17, 31, 17, 0, "HC1 Wamef (am,e>f)");
+    dpd_buf4_sort(&Wamef, CC3_HC1, qpsr, 30, 17, "HC1 Wamef (ma,f>e)");
+    dpd_buf4_close(&Wamef); 
+
+    dpd_buf4_init(&WAmEf, CC3_HC1, 0, 26, 28, 26, 28, 0, "HC1 WAmEf (Am,Ef)");
+    dpd_buf4_sort(&WAmEf, CC3_HC1, qpsr, 27, 29, "HC1 WAmEf (mA,fE)");
+    dpd_buf4_close(&WAmEf);
+
+    dpd_buf4_init(&WaMeF, CC3_HC1, 0, 25, 29, 25, 29, 0, "HC1 WaMeF (aM,eF)");
+    dpd_buf4_sort(&WaMeF, CC3_HC1, qpsr, 24, 28, "HC1 WaMeF (Ma,Fe)");
+    dpd_buf4_close(&WaMeF);
+
     dpd_file2_close(&CME);
     dpd_file2_close(&Cme);
   } /** UHF **/

@@ -92,6 +92,8 @@ void diag(void) {
     if (eom_params.cs_per_irrep[C_irr] == 0) continue;
     fprintf(outfile,"Symmetry of excited state: %s\n", moinfo.labels[moinfo.sym ^ C_irr]);
     fprintf(outfile,"Symmetry of right eigenvector: %s\n",moinfo.labels[C_irr]);
+    if (params.eom_ref == 0)
+      fprintf(outfile,"Seeking states with multiplicity of %d\n", eom_params.mult);
 
     /* zero out files between irreps */
     for (i=EOM_D; i<=EOM_R; ++i) {
@@ -360,16 +362,18 @@ void diag(void) {
             dpd_file2_close(&Sia);
             sprintf(lbl, "%s %d", "SIJAB", j);
             dpd_buf4_init(&SIJAB, EOM_SIJAB, C_irr, 2, 7, 2, 7, 0, lbl);
-            tval += dpd_buf4_dot(&CMNEF, &SIJAB);
+            tval += r2aa = dpd_buf4_dot(&CMNEF, &SIJAB);
             dpd_buf4_close(&SIJAB);
             sprintf(lbl, "%s %d", "Sijab", j);
             dpd_buf4_init(&Sijab, EOM_Sijab, C_irr, 2, 7, 2, 7, 0, lbl);
-            tval += dpd_buf4_dot(&Cmnef, &Sijab);
+            tval += r2bb = dpd_buf4_dot(&Cmnef, &Sijab);
             dpd_buf4_close(&Sijab);
             sprintf(lbl, "%s %d", "SIjAb", j);
             dpd_buf4_init(&SIjAb, EOM_SIjAb, C_irr, 0, 5, 0, 5, 0, lbl);
-            tval += dpd_buf4_dot(&CMnEf, &SIjAb);
+            tval += r2ab = dpd_buf4_dot(&CMnEf, &SIjAb);
             dpd_buf4_close(&SIjAb);
+
+            fprintf(outfile,"r2aa %12.7lf r2bb %12.7lf r2ab %12.7lf\n", r2aa, r2bb, r2ab);
           }
           else if (params.eom_ref == 2) {
             sprintf(lbl, "%s %d", "SIA", j);
@@ -701,7 +705,7 @@ void diag(void) {
     if (num_converged > 0) {
       fprintf(outfile,"\nFinal Energetic Summary for Converged Roots of Irrep %s\n",
 	      moinfo.labels[moinfo.sym^C_irr]);
-      fprintf(outfile,"                     Excitation Energy           Total Energy\n");
+      fprintf(outfile,"                     Excitation Energy              Total Energy\n");
       fprintf(outfile,"                (eV)     (cm^-1)     (au)             (au)\n");
       for (i=0;i<eom_params.cs_per_irrep[C_irr];++i) {
         if (converged[i] == 1) {
@@ -737,6 +741,21 @@ void diag(void) {
 	        dpd_file2_init(&Cme, EOM_Cme, C_irr, 0, 1, lbl);
 	        amp_write_T1(&Cme, 5, outfile);
 	        dpd_file2_close(&Cme);
+            fprintf(outfile,"\tRIJAB alpha\n");
+	        sprintf(lbl, "%s %d", "CMNEF", i);
+	        dpd_buf4_init(&CMNEF, EOM_CMNEF, C_irr, 0, 5, 2, 7, 0, lbl);
+	        amp_write_T2(&CMNEF, 5, outfile);
+	        dpd_buf4_close(&CMNEF);
+            fprintf(outfile,"\tRijab beta\n");
+	        sprintf(lbl, "%s %d", "Cmnef", i);
+	        dpd_buf4_init(&Cmnef, EOM_Cmnef, C_irr, 2, 7, 2, 7, 0, lbl);
+	        amp_write_T2(&Cmnef, 5, outfile);
+	        dpd_buf4_close(&Cmnef);
+            fprintf(outfile,"\tRIjAb alpha,beta\n");
+	        sprintf(lbl, "%s %d", "CMnEf", i);
+	        dpd_buf4_init(&CMnEf, EOM_CMnEf, C_irr, 0, 5, 0, 5, 0, lbl);
+	        amp_write_T2(&CMnEf, 5, outfile);
+	        dpd_buf4_close(&CMnEf);
           }
         }
         

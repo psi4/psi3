@@ -171,6 +171,7 @@ void HC1ET1_Wmbij(int i, int C_irr)
 
     /************ TEST *************/
 
+    /*
     dpd_buf4_init(&W, CC3_HC1ET1, 0, 0, 20, 2, 20, 0, "Ht_WMBIJ (I>J,MB)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
@@ -190,6 +191,7 @@ void HC1ET1_Wmbij(int i, int C_irr)
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
     fprintf(outfile,"\t<WmBiJ (iJ,mB)|WmBiJ> = %15.10lf\n", dot);
+    */
 
     dpd_file2_close(&CME);
     dpd_file2_close(&Cme);
@@ -516,7 +518,7 @@ void HC1ET1_Wabei(int i, int C_irr)
 
 
     /************ TEST *************/
-
+    /*
     dpd_buf4_init(&W, CC3_HC1ET1, 0, 20, 5, 20, 7, 0, "Ht_WABEI (IE,B>A)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
@@ -536,6 +538,7 @@ void HC1ET1_Wabei(int i, int C_irr)
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
     fprintf(outfile,"\t<WaBeI (Ie,Ba)|WaBeI> = %15.10lf\n", dot);
+    */
 
   }
 

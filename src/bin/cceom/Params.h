@@ -28,6 +28,8 @@ struct Eom_params {
   int excitation_range;
   double residual_tol_SS;
   char *guess;
+  int rhf_triplets;
+  int mult;
 
   /* compute overlap of normalized R with L (must run cclambda first) */
   int dot_with_L;
