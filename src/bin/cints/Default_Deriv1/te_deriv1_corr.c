@@ -79,6 +79,15 @@ void te_deriv1_corr()
   double ddax, dday, ddaz, ddbx, ddby, ddbz,
          ddcx, ddcy, ddcz, dddx, dddy, dddz;
 
+#ifdef PRINT_DERIV1
+  FILE **eri;
+  char lbl[20];
+  eri = (FILE **) malloc(Molecule.num_atoms*3*sizeof(FILE *));
+  for(i=0; i < Molecule.num_atoms*3; i++) {
+    sprintf(lbl, "eri%d.dat", i);
+    ffile(&eri[i], lbl, 0);
+  }
+#endif
 
   /*---------------
     Initialization
@@ -396,6 +405,13 @@ void te_deriv1_corr()
   free_fjt();
 #endif
   iwl_buf_close(&TPDM,1);
+
+#ifdef PRINT_DERIV1
+  for(i=0; i < Molecule.num_atoms*3; i++) {
+    fclose(eri[i]);
+  }
+  free(eri);
+#endif
 
   return;
 }

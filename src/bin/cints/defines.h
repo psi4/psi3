@@ -11,6 +11,7 @@
   Flags for conditional compilation
  ----------------------------------*/
 #define PRINT 0          /* Print two-electron integrals out? */
+#define PRINT_DERIV1 0   /* Print derivative integrals? */
 #define USE_MM 1         /* Use matrix multiplies rather than just nested loops
                             in cart->puream transformation and normalization (should always be
 			    set to 1 except for testing purposes)*/

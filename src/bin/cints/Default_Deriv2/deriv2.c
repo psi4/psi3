@@ -80,6 +80,11 @@ void deriv2(void)
 	}
       }
     }
+
+    fprintf(outfile, "AO-basis Overlap Derivs (%d)", coord);
+    if (UserOptions.print_lvl >= PRINT_OEDERIV) {
+      print_mat(S[coord],BasisSet.num_ao,BasisSet.num_ao,outfile);
+    }
   }
 
   /* Transform Fock and Overlap derivatives to the MO basis */
