@@ -34,7 +34,8 @@ void *te_deriv1_scf_thread(void *tnum_ptr)
 #ifndef USE_TAYLOR_FM
   double_array_t fjt_table;               /* table of auxiliary function F_m(u) for each primitive combination */
 #endif
-  
+
+  long int quartet_index;
   int ij, kl, ik, jl, ijkl;
   int ioffset, joffset, koffset, loffset;
   int count ;
@@ -108,12 +109,12 @@ void *te_deriv1_scf_thread(void *tnum_ptr)
   for (sii=0; sii<BasisSet.num_shells; sii++)
     for (sjj=0; sjj<=sii; sjj++)
       for (skk=0; skk<=sii; skk++)
-	for (sll=0; sll<= ((sii == skk) ? sjj : skk); sll++){
+	for (sll=0; sll<= ((sii == skk) ? sjj : skk); sll++, quartet_index++){
 
 	    si = sii; sj = sjj; sk = skk; sl = sll;
 
 	    /*--- Decide if this thread will do this ---*/
-	    if (INDEX(INDEX(si,sj),INDEX(sk,sl))%UserOptions.num_threads != thread_num)
+	    if ( quartet_index%UserOptions.num_threads != thread_num )
 	      continue;
 
 	    /*--- Skip this quartet if all four centers are the same ---*/

@@ -2,6 +2,7 @@
   Customizable values
  ---------------------*/
 #define CINTS_MAX_AM 8             /* Max ang. mom. + 1 */
+#define MAX_NUM_AO                 /* Maximum number of AOs */
 #define CUTOFF 15                  /* Default cutoff on the integrals */
 #define ROT_INV_TOLER 1E-4         /* Tolerance on the "rotational variance" */
 #define MAX_NUM_DOUBLES 2500000    /* Default number of double words to use in MP2 */
@@ -52,7 +53,7 @@
  -------------------------*/
 #define MAXFACT 100
 #define MAXNIRREPS 8
-#define IOFFMAX 512000 
+#define IOFFMAX MAX_NUM_AO
 
 /*----------------
   Macro functions

@@ -87,8 +87,9 @@ void *hf_fock_thread(void *tnum_ptr)
   int irrep, npi_ij, npi_kl, npi_ik, npi_jl, ind_offset;
 
   int num_prim_comb, p;
-  int key, key1, key2, key3, new_quartet, htable_ptr;
-  int nstri;
+  long int key, key1, key2, key3;
+  int new_quartet, htable_ptr, nstri;
+  long int quartet_index;
 
   double so_int;
   double lambda_T = 0.5/Symmetry.nirreps;
@@ -154,13 +155,14 @@ void *hf_fock_thread(void *tnum_ptr)
   generate all unique shell quartets with ordering
   suitable for building the PK-matrix
  -------------------------------------------------*/
+  quartet_index = 0;
   for (usii=0; usii<Symmetry.num_unique_shells; usii++)
     for (usjj=0; usjj<=usii; usjj++)
       for (uskk=0; uskk<=usjj; uskk++)
-	for (usll=0; usll<=uskk; usll++){
+	for (usll=0; usll<=uskk; usll++, quartet_index++){
 
 	  /*--- Decide if this thread will do this ---*/
-	  if (INDEX(INDEX(usii,usjj),INDEX(uskk,usll))%UserOptions.num_threads != thread_num)
+	  if ( quartet_index%UserOptions.num_threads != thread_num )
 	    continue;
 	    
   /*--- Decide what unique shell quartets out of (ij|kl), (ik|jl), and (il|jk) are unique
@@ -296,7 +298,8 @@ void *hf_fock_thread(void *tnum_ptr)
 	    }
 	  }
 	  num_unique_quartets = count;
-	  
+	  if (count > 3*max_num_unique_quartets)
+	      punt("Problem with hashing?");
 
 	    /*----------------------------------
 	      Compute the nonredundant quartets
@@ -307,13 +310,13 @@ void *hf_fock_thread(void *tnum_ptr)
 		sj = sj_arr[plquartet];
 		sk = sk_arr[plquartet];
 		sl = sl_arr[plquartet];
-/*		dmax = MAX(BasisSet.shell_pairs[si][sj].Dmax, BasisSet.shell_pairs[sk][sl].Dmax);
+		dmax = MAX(BasisSet.shell_pairs[si][sj].Dmax, BasisSet.shell_pairs[sk][sl].Dmax);
 		dmax = MAX(dmax, 0.25*BasisSet.shell_pairs[si][sk].Dmax);
 		dmax = MAX(dmax, 0.25*BasisSet.shell_pairs[si][sl].Dmax);
 		dmax = MAX(dmax, 0.25*BasisSet.shell_pairs[sj][sk].Dmax);
 		dmax = MAX(dmax, 0.25*BasisSet.shell_pairs[sj][sl].Dmax);
 		if (BasisSet.schwartz_eri[si][sj]*BasisSet.schwartz_eri[sk][sl]*dmax < UserOptions.cutoff)
-		  continue;*/
+		  continue;
 		
 		fac1 = fac2 = fac3 = 1.0;
 		if (si != sj)
@@ -337,18 +340,20 @@ void *hf_fock_thread(void *tnum_ptr)
 	      }
 	      else {
 		htable_ptr = key_arr[plquartet];
+		if (htable_ptr >= htable.size || htable_ptr < 0)
+		    punt("Problem with hashing?");
 		htable.table[htable_ptr].key = EMPTY_KEY;
 		si = htable.table[htable_ptr].si;
 		sj = htable.table[htable_ptr].sj;
 		sk = htable.table[htable_ptr].sk;
 		sl = htable.table[htable_ptr].sl;
-/*		dmax = MAX(BasisSet.shell_pairs[si][sj].Dmax, BasisSet.shell_pairs[sk][sl].Dmax);
+		dmax = MAX(BasisSet.shell_pairs[si][sj].Dmax, BasisSet.shell_pairs[sk][sl].Dmax);
 		dmax = MAX(dmax, 0.25*BasisSet.shell_pairs[si][sk].Dmax);
 		dmax = MAX(dmax, 0.25*BasisSet.shell_pairs[si][sl].Dmax);
 		dmax = MAX(dmax, 0.25*BasisSet.shell_pairs[sj][sk].Dmax);
 		dmax = MAX(dmax, 0.25*BasisSet.shell_pairs[sj][sl].Dmax);
 		if (BasisSet.schwartz_eri[si][sj]*BasisSet.schwartz_eri[sk][sl]*dmax < UserOptions.cutoff)
-		  continue;*/
+		  continue;
 
 		fac1 = htable.table[htable_ptr].q4ijkl;
 		fac2 = htable.table[htable_ptr].q4ikjl;
@@ -369,6 +374,16 @@ void *hf_fock_thread(void *tnum_ptr)
 		  fac3 = fac2 = (fac3 + fac2);
 		}
 	      }
+
+	      if (si < 0 || si >= BasisSet.num_shells)
+		  punt("Problem with shell indices");
+	      if (sj < 0 || sj >= BasisSet.num_shells)
+		  punt("Problem with shell indices");
+	      if (sk < 0 || sk >= BasisSet.num_shells)
+		  punt("Problem with shell indices");
+	      if (sl < 0 || sl >= BasisSet.num_shells)
+		  punt("Problem with shell indices");
+	      
 	      sum1 += fac1;
 	      sum2 += fac2;
 	      sum3 += fac3;
