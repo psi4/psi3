@@ -13,6 +13,7 @@
 #include"free_grid_structs.h"
 #include"bragg.h"
 #include"SG1.h"
+#include"physconst.h"
 
 void grid_init(){
     int errcod,i,j;

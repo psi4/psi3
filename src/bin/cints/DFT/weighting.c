@@ -51,6 +51,7 @@ double weight_calc(int atomn,struct coordinates  geom,int k_order){
 	for(j=0;j<natoms;j++){
 	    if(i!=j){
 		utemp = u_calc(i,j,geom);
+		vtemp = v_calc(i,j,utemp);
 		ftemp = f_u(utemp);
 		for(k=1;k<k_order;k++){
 		    ftemp = f_u(ftemp);
@@ -104,6 +105,24 @@ double s_u(double f){
     return 0.5*(1.0-f);
 }
     
+double v_calc(int atomi, int atomj,double uij){
     
+    double aij;
+    double utmp;
+    double rattmp;
+    double tmp1,tmp2,tmp3;
+
+    rattmp = DFT_options.grid.atomic_grid[atomi].Bragg_radii/
+	DFT_options.grid.atomic_grid[atomj].Bragg_radii;
+    utmp = (rattmp-1)/(rattmp+1);
+    aij=utmp/((utmp*utmp)-1);
+    if(aij>0.5) aij = 0.5;
+    if(aij<-0.5) aij = -0.5;
+    tmp1 = uij*uij;
+    tmp2 = aij*(1-tmp1);
+    tmp3 = uij+tmp2;
+
+    return uij+tmp2;
+}               
 
 

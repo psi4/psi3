@@ -25,7 +25,6 @@
 #include"init_close_shell_info.h"
 #include"calc_close_basis.h"
 
- 
 void xc_fock(void){
   int i,j,k,l,m,n,q,s,t,u;
   int ua, atom, ua_deg;
@@ -48,7 +47,7 @@ void xc_fock(void){
   double temp;
   double *temp_arr;
   double **tmpmat1;
-  double *Gtri, *Gtri_o;  /* Total and open-shell 
+  double *Gtri;  /* Total and open-shell 
 			     G matrices and lower 
 			     triagonal form in SO basis */  
   double r;
@@ -63,10 +62,6 @@ void xc_fock(void){
   double Becke_weight;
   double ang_quad;
   double four_pi_div_by_rps;
-  double exch_vfunc_val=0.0;
-  double exch_efunc_val=0.0;
-  double corr_vfunc_val=0.0;
-  double corr_efunc_val=0.0;
   double den_val=0.0;
   double exch_vval=0.0;
   double corr_vval=0.0;
@@ -80,6 +75,7 @@ void xc_fock(void){
   
   struct coordinates geom;
   struct den_info_s den_info;
+  struct xc_info_s xc_info;
   
   struct atomic_grid_s *atm_grd;
   struct leb_chunk_s *chnk;
@@ -87,13 +83,11 @@ void xc_fock(void){
   leb_point_t *pnt;
   
   
-  /*fprintf(outfile,"\nPade_int = %10.10lf\n",Pade_int(0.5,-0.10498,3.72744,12.9352,0.0621814,6.1519908198));*/
   num_ao = BasisSet.num_ao;
   DFT_options.basis = (double *)malloc(sizeof(double)*num_ao);
   
-  G = init_matrix(num_ao,num_ao);
-  if(UserOptions.reftype == uhf)
-      Go = block_matrix(num_ao,num_ao);
+  if(UserOptions.reftype == rhf)
+      G = init_matrix(num_ao,num_ao);
   
   /* ----Initialize Close shell data structure ---- */
   
@@ -130,7 +124,9 @@ void xc_fock(void){
       for(j=0;j<atm_grd->chunk_num;j++){
 	  chnk = &(atm_grd->leb_chunk[j]);
 	  timer_on("close basis");
+	  
 	  calc_close_basis(ua,j);
+	  
 	  close_shells = DFT_options.close_shell_info.num_close_shells;
 	  close_aos = DFT_options.close_shell_info.num_close_aos;
 	  timer_off("close basis");
@@ -139,8 +135,11 @@ void xc_fock(void){
 	      sphr = &(chnk->spheres[k]);
 	      
 	      r = sphr->r*bragg;
-	      drdq = sphr->drdq*bragg*bragg*bragg;
+	      /*r = 0.87895;*/
 	      
+	      
+	      drdq = sphr->drdq*bragg*bragg*bragg;
+	      fprintf(outfile,"\nr = %e drdq = %e ang = %d",r,drdq,sphr->n_ang_points);
 	      for(l=0;l<sphr->n_ang_points;l++){
 		  pnt = &(sphr->points[l]);
 		  /* ----------------------------------
@@ -150,11 +149,12 @@ void xc_fock(void){
       		  geom.x = bragg*pnt->p_cart.x+xa;
 		  geom.y = bragg*pnt->p_cart.y+ya;
 		  geom.z = bragg*pnt->p_cart.z+za;
-	      
+		  
 		  /*-----------------------------------
 		    Calculate the weighting funtion 
 		    ----------------------------------*/
 		  Becke_weight = weight_calc(atom,geom,3);
+		  
 		  if(Becke_weight> WEIGHT_CUTOFF){
 		      /*-----------------------------------
 			Get the density information for this 
@@ -162,6 +162,7 @@ void xc_fock(void){
 			----------------------------------*/
 		      timer_on("DEN1");
 		      den_info = DFT_options.den_calc(geom,ua);
+		      
 		      timer_off("DEN1");
 		      
 		      if(den_info.den > DEN_CUTOFF){
@@ -169,7 +170,7 @@ void xc_fock(void){
 			    Weight from Lebedev
 			    -----------------------------------*/
 		      
-			  ang_quad = pnt->ang_weight;
+			  ang_quad = 4.0*_pi*pnt->ang_weight;
 		      
 			  /*------------------------------------
 			    Calculate the potential functional
@@ -180,36 +181,26 @@ void xc_fock(void){
 			  den_val += 2.0*ua_deg_d*drdq*ang_quad
 			      *Becke_weight*den_info.den;
 			  
-			  exch_vfunc_val = DFT_options.
-			      exchange_V_function(den_info);
+			  xc_info.exch_info = DFT_options.
+			      exchange_func(den_info);
 			  
-			  /*fprintf(outfile,"\nexch_vfunc_val = %10.10lf"
-				  ,exch_vfunc_val);*/
-
-			  corr_vfunc_val = DFT_options.
-			      correlation_V_function(den_info);
-		      
-			  exch_efunc_val = DFT_options.
-			      exchange_function(den_info);
+			  xc_info.corr_info = DFT_options.
+			      correlation_func(den_info);
 			  
-			  corr_efunc_val = DFT_options.
-			      correlation_function(den_info);
-		      
 			  exch_vval = ua_deg_d*drdq*ang_quad
-			      *Becke_weight*exch_vfunc_val;
+			      *Becke_weight*xc_info.exch_info.dval;
 			  corr_vval = ua_deg_d*drdq*ang_quad
-			      *Becke_weight*corr_vfunc_val;
+			      *Becke_weight*xc_info.corr_info.dval;
+			  
 			  vval = exch_vval+corr_vval;
 			  
 			  exch_eval += ua_deg_d*drdq*ang_quad
-			      *Becke_weight*exch_efunc_val;
+			      *Becke_weight*xc_info.exch_info.eval;
 			  corr_eval += ua_deg_d*drdq*ang_quad
-			      *Becke_weight*corr_efunc_val;
+			      *Becke_weight*xc_info.corr_info.eval;
 			  eval += ua_deg_d*drdq*ang_quad
-			      *Becke_weight*(exch_efunc_val
-					     +corr_efunc_val);
-			  
-			 
+			      *Becke_weight*(xc_info.exch_info.eval+
+					     xc_info.corr_info.eval);
 			  
 			  /*------------------------------------
 			    Update the G matrix
@@ -233,11 +224,12 @@ void xc_fock(void){
 			  }
 			  timer_off("FOCK");
 		      }
-
+		      
 		  }
 	      }
 	  }
       }
+      
   }
 
   
@@ -279,10 +271,11 @@ void xc_fock(void){
   Gtri = init_array(nstri);
   sq_to_tri(G,Gtri,Symmetry.num_so);
   free_block(G);
-  /*fprintf(outfile,"\nDFT_energy = %10.10lf",eval);
+  fprintf(outfile,"\nDFT_energy = %10.10lf",eval);
   fprintf(outfile,"\nX-Energy = %10.10lf",exch_eval);
   fprintf(outfile,"\nC-Energy = %10.10lf",corr_eval);
-  fprintf(outfile,"\ntrace of density = %10.10lf\n",den_val);*/
+  fprintf(outfile,"\ntrace of density = %10.10lf\n",den_val);
+  
   psio_open(IOUnits.itapDSCF, PSIO_OPEN_OLD);
   psio_write_entry(IOUnits.itapDSCF,"DFT X-energy",
 		   (char *) &(exch_eval), sizeof(double));
@@ -292,40 +285,11 @@ void xc_fock(void){
 		   (char *) &(eval), sizeof(double));
   psio_write_entry(IOUnits.itapDSCF,"DFT Den",
 		   (char *) &(den_val), sizeof(double));
-  switch (UserOptions.reftype) {
-  case rohf:
-      Gtri_o = init_array(nstri);
-      sq_to_tri(Go,Gtri_o,Symmetry.num_so);
-      free_block(Go);
-      psio_write_entry(IOUnits.itapDSCF, "Open-shell XC G-matrix"
-		       , (char *) Gtri_o, sizeof(double)*nstri);
-      free(Gtri_o);
-  case rhf:
-      psio_write_entry(IOUnits.itapDSCF, "Total XC G-matrix"
-		       , (char *) Gtri, sizeof(double)*nstri);
-      free(Gtri);
-      break;
-      
-  case uhf:
-      Gtri_o = init_array(nstri);
-      sq_to_tri(Go,Gtri_o,Symmetry.num_so);
-      free_block(Go);
-      /*--- Form alpha and beta Fock matrices first
-	and then write them out ---*/      
-      
-      for(i=0;i<nstri;i++) {
-	  temp = Gtri[i] + Gtri_o[i];
-	  Gtri[i] = Gtri[i] - Gtri_o[i];
-	  Gtri_o[i] = temp;
-      }
-      psio_write_entry(IOUnits.itapDSCF, "Alpha XC G-matrix"
-		       , (char *) Gtri, sizeof(double)*nstri);
-      psio_write_entry(IOUnits.itapDSCF, "Beta XC G-matrix"
-		       , (char *) Gtri_o, sizeof(double)*nstri);
-      free(Gtri);
-      free(Gtri_o);
-      break;
-  }
+  
+  psio_write_entry(IOUnits.itapDSCF, "Total XC G-matrix"
+		   , (char *) Gtri, sizeof(double)*nstri);
+  free(Gtri);
+ 
   /*-- Cleanup the DFT stuff and close files --*/
   cleanup_grid_type(DFT_options.grid);
   psio_close(IOUnits.itapDSCF, 1);

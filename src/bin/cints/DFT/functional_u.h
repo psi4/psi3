@@ -1,7 +1,8 @@
 #include "data_structs.h"
-
-double slater_u(struct den_info_s den_info);
-double d_slater_a(struct den_info_s den_info);
-double d_slater_b(struct den_info_s den_info);
-double density_a(struct den_info_s den_info);
-double density_b(struct den_info_s den_info);
+struct fun_info_s slater_u_e(struct den_info_s den_info);
+struct fun_info_s slater_u_ed(struct den_info_s den_info);
+struct fun_info_s no_funct_u(struct den_info_s den_info);
+struct fun_info_s VWN5_u_e(struct den_info_s den_info);
+struct fun_info_s VWN5_u_ed(struct den_info_s den_info);
+struct fun_info_s VWN4_u_e(struct den_info_s den_info);
+struct fun_info_s VWN4_u_ed(struct den_info_s den_info);

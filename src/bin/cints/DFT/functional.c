@@ -2,6 +2,14 @@
    
    functionals go here
 
+   The way the nomenclature workes is
+
+   name_e just computes the energy
+   name_ed computes both the energy and the potential
+   name_ed2 includes second derivatives of the functional
+   
+   this is done for efficiency
+
    ----------------------------------------- */ 
 
 #include <math.h>
@@ -9,202 +17,274 @@
 #include <string.h>
 #include <memory.h>
 #include <stdlib.h>
-#include<ip_libv1.h>
-#include<libciomr.h>
-#include<psio.h>
-#include<libint.h>
-#include<pthread.h>
-#include<qt.h>
 
 #include"defines.h"
 #define EXTERN
 #include"global.h"
 #include"physconst.h"
+#include"pade.h"
 
-double slater(struct den_info_s den_info){
-    double Cx;
+struct fun_info_s slater_e(struct den_info_s den_info){
+    double Cx; /*= -0.930525736349100;*/
+    struct fun_info_s exch_info;
     
-    /*Cx = -(9.0/4.0)*a*pow(3.0/(4.0*_pi),(1.0/3.0));*/    
-    Cx = -0.930525736349100;
-    return 2.0*Cx*pow(den_info.den,4.0/3.0);
+    /***************************************************/
+    Cx = -(9.0/4.0)*(2.0/3.0)*pow(3.0/(4.0*_pi),(1.0/3.0));
+    /***************************************************/
+
+    exch_info.eval = 2.0*Cx*pow(den_info.den,4.0/3.0);
+    return exch_info;
 }
 
 
-double d_slater(struct den_info_s den_info){
-    double dCx;
-    double a=(2.0/3.0);
- 
-    /*dCx = -3.0*a*pow(3.0/(4.0*_pi),(1.0/3.0));*/
-
-    dCx = -1.240700981798800;
-   
-    return dCx*pow(den_info.den,1.0/3.0);
+struct fun_info_s slater_ed(struct den_info_s den_info){
+    double Cx /*= -0.930525736349100*/;
+    double dCx /*= -1.240700981798800*/;
+    struct fun_info_s exch_info;
+    
+    /**********************************************/
+    Cx = -(9.0/4.0)*(2.0/3.0)*pow(3.0/(4.0*_pi),(1.0/3.0));
+    dCx = -3.0*(2.0/3.0)*pow(3.0/(4.0*_pi),(1.0/3.0));
+    /**********************************************/
+    
+    exch_info.eval = 2.0*Cx*pow(den_info.den,4.0/3.0);
+    exch_info.dpval = dCx*pow(den_info.den,1.0/3.0);
+    
+    return exch_info;
 }
 
-double density(struct den_info_s den_info){
+
+/*struct density(struct den_info_s den_info){
     return den_info.den;
 }
+*/
 
-double no_funct(struct den_info_s den_info){
-    return 0.0;
+struct fun_info_s no_funct(struct den_info_s den_info){
+    struct fun_info_s fun_info;
+    
+    fun_info.eval = 0.0;
+    fun_info.dval = 0.0;
+    fun_info.dpval = 0.0;
+    fun_info.dgval = 0.0;
+    
+    return fun_info;
 }
 
-/* Implementation of the VWN functionals -- Can J. Phys., 58, 1980
-   pp. 1200 */
 
-double Pade_int(double p, double x0, double b, double c, double A, double Q){
-
-    double x,X,X0,invQ;
-    double txpb,Qd2xpb;
-    double term1,term2,mult1,term3,term4;
-    double temp1,temp2,temp3,temp4,temp5,temp6,temp7;
-    double ec;
-  
-    x = sqrt(p);
-    txpb = 2.0*x+b;
-    Qd2xpb = Q/txpb;
-    invQ = 1.0/Q;
-    X = 1.0/(x*x+b*x+c);
-    X0 = 1.0/(x0*x0+b*x0+c);
-
-    temp1 = x*x*X;
-    term1 = log(temp1);
-
-    temp3 = atan(Qd2xpb);
-    term2 = 2.0*b*invQ*temp3;
-
-    mult1 = b*x0*X0;
-
-    temp4 = (x-x0)*(x-x0)*X;
-    term3 = log(temp4);
-
-    temp5 = 2.0*(2.0*x0+b)*invQ;
-    term4 = temp5*atan(Qd2xpb);
-
-    ec = A*(term1+term2-mult1*(term3+term4));
-    return ec;
-
-}
-
-double d_Pade_int(double p, double x0, double b, double c, double A, double Q){
-    
-    double x,Q2,X,X0,invQ;
-    double txpb;
-    double Qsptxpbs;
-    double term1,term2,term3,term4,term5,term6;
-    double mult1;
-    double temp1,temp2,temp3,temp4,temp5;
-    double dec;
-
-    x=sqrt(p);
-    A=A/(2*x);
-    Q2 = Q*Q;
-    txpb = 2.0*x+b;
-    Qsptxpbs = txpb*txpb+Q2;
-    X = 1.0/(x*x+b*x+c);
-    X0 = 1.0/(x0*x0+b*x0+c);
-    
-    term1 = 2.0/x;
-   
-    term2 = -txpb*X;
-
-    term3 = -4.0*b/Qsptxpbs;
-
-    mult1 = -b*x0*X0;
-
-    temp3 = x-x0;
-    term4 = 2.0/temp3;
-
-    temp4 = 2.0*x0+b;
-    term5 = -4.0*temp4/Qsptxpbs;
-
-    dec = A*(term1+term2+term3+mult1*(term4+term2+term5));
-    return dec;
-}                                            
-
-double VWN5_r(struct den_info_s den_info){
+struct fun_info_s VWN5_e(struct den_info_s den_info){
     double A = 0.0621814/2.0;
     double x0 = -0.10498;
     double b = 3.72744;
     double c = 12.9352;
     double Q = 6.1519908198;
+    double threed4pi = 0.2387324146;
+    
     double p;
     double ec;
     double x;
     double temp;
+    
+    struct fun_info_s corr_info;
 
     p = 2.0*den_info.den;
-    temp = 3.0/(4.0*_pi*p);
+    temp = threed4pi/p;
     x = pow(temp,0.3333333333333);
+
     ec = Pade_int(x,x0,b,c,A,Q);
-    return p*ec;
+
+    corr_info.eval = p*ec;
+    
+    return corr_info;
 }
 
 
-double d_VWN5_r(struct den_info_s den_info){
+struct fun_info_s VWN5_ed(struct den_info_s den_info){
 
     double A = 0.0621814/2.0;
     double x0 = -0.10498;
     double b = 3.72744;
     double c = 12.9352;
     double Q = 6.1519908198;
+    double threed4pi = 0.2387324146;
     double x, temp1;
     double dxdp;
     double ec,dec;
     double ec_sum,dec_sum;
     double p;
+    
+    struct fun_info_s corr_info;
 
     p = 2.0*den_info.den;
 
-    temp1 = 3.0/(4.0*_pi*p);
+    temp1 = threed4pi/p;
     x = pow(temp1,0.3333333333);
     dxdp = -x/(3.0*p);
-    ec = Pade_int(x,x0,b,c,A,Q);
+    ec = Pade_int(x,x0,b,c,A,Q);;
     dec = d_Pade_int(x,x0,b,c,A,Q);
-    return ec+p*dxdp*dec;
+    
+    corr_info.eval = p*ec;
+    corr_info.dpval = ec+p*dxdp*dec;
+    
+   return corr_info;
 }   
 
 /* This is the functional in which Gaussian uses */
 
- double VWN4_r(struct den_info_s den_info){
+struct fun_info_s VWN4_e(struct den_info_s den_info){
     double A = 0.0621814/2.0;
     double x0 = -0.409286;
     double b = 13.0720;
     double c = 42.7198;
     double Q = 0.04489988864;
+    double threed4pi = 0.2387324146;
+    
     double p;
     double ec;
     double x;
     double temp;
+    
+    struct fun_info_s corr_info;
 
     p = 2.0*den_info.den;
-    temp = 3.0/(4.0*_pi*p);
+    temp = threed4pi/p;
     x = pow(temp,0.3333333333333);
+
     ec = Pade_int(x,x0,b,c,A,Q);
-    return p*ec;
+
+    corr_info.eval = p*ec;
+    
+    return corr_info;
 }
 
-double d_VWN4_r(struct den_info_s den_info){
+struct fun_info_s VWN4_ed(struct den_info_s den_info){
 
     double A = 0.0621814/2.0;
     double x0 = -0.409286;
     double b = 13.0720;
     double c = 42.7198;
     double Q = 0.04489988864;
+    double threed4pi = 0.2387324146;
     double x, temp1;
-    double ec,dec;
-    double p;
     double dxdp;
+    double ec,dec;
+    double ec_sum,dec_sum;
+    double p;
+    
+    struct fun_info_s corr_info;
 
     p = 2.0*den_info.den;
-    
-    temp1 = 3.0/(4.0*_pi*p);
+
+    temp1 = threed4pi/p;
     x = pow(temp1,0.3333333333);
     dxdp = -x/(3.0*p);
-    ec = Pade_int(x,x0,b,c,A,Q);
+    ec = Pade_int(x,x0,b,c,A,Q);;
     dec = d_Pade_int(x,x0,b,c,A,Q);
     
-    return ec+p*dxdp*dec;
-}                              
+    corr_info.eval = p*ec;
+    corr_info.dpval = ec+p*dxdp*dec;
+    
+    return corr_info;
+}   
 
+struct fun_info_s Becke88_e(struct den_info_s den_info){
 
+    double b = 0.0042;
+    double gamma;
+    double x;
+    double p,p43;
+    double fourthirds = 4.0/3.0;
+    double threehalves = 3.0/2.0;
+    double threefourthspi = 3.0/(4.0*_pi);
+    double onethirds = 1.0/3.0;
+    double sxp1;
+    double xpsxp1;
+    double grad;
+    double gx;
+    double Cx;
+    double arcsinhx;
+    
+    struct fun_info_s exch_info;
+
+    p = den_info.den;
+    grad = sqrt(den_info.gamma);
+    
+    Cx = -threehalves*pow(threefourthspi,onethirds);
+    /*fprintf(outfile,"\nCx = %10.15lf",Cx);*/
+    p43 = pow(p,fourthirds);
+    /*fprintf(outfile,"\np43 = %10.15lf",p43);
+    fprintf(outfile,"\ngrad = %10.10lf",grad);*/
+    x = grad/p43;
+    
+    sxp1 = sqrt(x*x+1.0);
+    xpsxp1 = x+sxp1;
+    arcsinhx = log(xpsxp1);
+    
+    /*fprintf(outfile,"\nx = %10.15lf arcsinhx = %10.15lf",x,arcsinhx);*/
+    gx = Cx - (b*x*x)/(1.0+6.0*b*x*arcsinhx);
+    
+    exch_info.eval = 2.0*p43*gx;
+    
+    return exch_info;
+    
+}
+ struct fun_info_s Becke88_ed(struct den_info_s den_info){
+
+    double b = 0.0042;
+    double gamma;
+    double x,x2;
+    double p,p13,p43;
+    double fourthirds = 4.0/3.0;
+    double threehalves = 3.0/2.0;
+    double threefourthspi = 3.0/(4.0*_pi);
+    double onethirds = 1.0/3.0;
+    double sxp1;
+    double xpsxp1;
+    double xdsxp1;
+    double bx,bbxx6;
+    double bx6arcsin;
+    double onepbx6arcsin;
+    double grad;
+    double gx,gpx;
+    double Cx;
+    double arcsinhx;
+    
+    struct fun_info_s exch_info;
+
+    p = den_info.den;
+    grad = sqrt(den_info.gamma);
+    
+    Cx = -threehalves*pow(threefourthspi,onethirds);
+    /*fprintf(outfile,"\nCx = %10.15lf",Cx);*/
+    p13 = pow(p,onethirds);
+    p43 = p13*p;
+    /*fprintf(outfile,"\np43 = %10.15lf",p43);
+    fprintf(outfile,"\ngrad = %10.10lf",grad);*/
+    x = grad/p43;
+    bx = b*x;
+    x2 = x*x;
+    bbxx6 = bx*bx*6.0;
+    sxp1 = sqrt(x2+1.0);
+    xpsxp1 = x+sxp1;
+    xdsxp1 = x/sxp1;
+    arcsinhx = log(xpsxp1);
+    bx6arcsin = 6.0*bx*arcsinhx;
+    onepbx6arcsin = 1.0+bx6arcsin;
+    
+    /*fprintf(outfile,"\nx = %10.15lf arcsinhx = %10.15lf",x,arcsinhx);*/
+    gx = Cx - (b*x2)/onepbx6arcsin;
+    gpx = (bbxx6*(xdsxp1-arcsinhx)-2.0*bx)/(onepbx6arcsin*onepbx6arcsin);
+    /*fprintf(outfile,"\ngpx = %10.10lf",gpx);*/
+    exch_info.eval = 2.0*p43*gx;
+    exch_info.dpval = fourthirds*p13*(gx-x*gpx);
+    exch_info.dgval = 0.5*gpx/grad;
+    fprintf(outfile,"\ndgval = %10.10lf",exch_info.dgval);
+    return exch_info;
+    
+}   
+    
+    
+    
+    
+    
+    
+    

@@ -92,8 +92,8 @@ prim_atomic_grid_t init_uniform_prim_atomic_grid(int n_rpoints,int n_angpoints,i
 	    r = rind*rind/((n_rpoints_d  - rind)
 			   *(n_rpoints_d  - rind));
 	    
-	    drdq = four_pi_div_by_rps*r*r*2.0*qr/((1-qr)*(1-qr)*(1-qr));
-	    
+	    /*drdq = four_pi_div_by_rps*r*r*2.0*qr/((1-qr)*(1-qr)*(1-qr));*/
+	    drdq = 2.0*pow(rind,5)*(n_rpoints_d)*pow(n_rpoints_d-rind,-7.0);
 	    sph->points = (leb_point_t *)malloc(sizeof(leb_point_t)*n_angpoints);
 	    
 	    for(k=0;k<n_angpoints;k++){

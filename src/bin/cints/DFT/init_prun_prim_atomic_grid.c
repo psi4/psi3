@@ -31,7 +31,7 @@ prim_atomic_grid_t *init_pruned_prim_atomic_grid(int n_rpoints, int num_chunk, s
     
     /* Constants */
     
-    n_rpoints_d = (double) n_rpoints;
+    n_rpoints_d = (double) n_rpoints+1.0;
     four_pi_div_by_rps = 4.0*_pi/n_rpoints_d;
        
     /*-------------------------
@@ -101,8 +101,11 @@ prim_atomic_grid_t *init_pruned_prim_atomic_grid(int n_rpoints, int num_chunk, s
 		   for mr = 2 
 		   ----------------------------------*/
 		
-		r = rind*rind/((n_rpoints_d - rind)
-			       *(n_rpoints_d - rind));
+		
+		r = rind*rind/((n_rpoints_d  - rind)
+			       *(n_rpoints_d  - rind));
+		
+		/*drdq = four_pi_div_by_rps*r*r*2.0*qr/((1-qr)*(1-qr)*(1-qr));*/
 		
 		/* ---------------------------------
 		   If I have moved into another 
@@ -116,8 +119,8 @@ prim_atomic_grid_t *init_pruned_prim_atomic_grid(int n_rpoints, int num_chunk, s
 		
 		angpoints = pruned_info.param_set[i].angpoints[cutoff_index];
 		
-		drdq = four_pi_div_by_rps*r*r*2.0*qr/((1-qr)*(1-qr)*(1-qr));
 		
+		drdq = 2.0*pow(rind,5)*(n_rpoints_d)*pow(n_rpoints_d-rind,-7.0);
 		sph->points = (leb_point_t *)malloc(sizeof(leb_point_t)*angpoints);
 		
 		for(l=0;l<angpoints;l++){

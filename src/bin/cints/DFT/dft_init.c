@@ -13,6 +13,9 @@
 #include"functional_u.h"
 #include"calc_den_fast.h"
 #include"calc_den_u.h"
+#include"calc_grad_fast.h"
+#include"calc_close_basis.h"
+#include"calc_close_basis_u.h"
 #include"lebedev_init.h"
 #include"grid_init.h"
 
@@ -32,7 +35,6 @@ void dft_init(void){
     char *gridstring;
     char *funcstring;
     double tmpa, tmpb;
-    struct shell_pair *sp;
     
     /* DFT input parsing */
     elem_in_func = 0;
@@ -43,20 +45,14 @@ void dft_init(void){
 	    if(!strcmp(funcstring,"XALPHA")){
 		UserOptions.hf_exch = 0.0;
 		if(UserOptions.reftype == rhf){
-		DFT_options.exchange_function = slater;
-		DFT_options.exchange_V_function = d_slater;
+		DFT_options.exchange_func = slater_ed;
 		DFT_options.den_calc = calc_density_fast;
-		DFT_options.correlation_function = no_funct;
-		DFT_options.correlation_V_function = no_funct;
+		DFT_options.correlation_func = no_funct;
 		}
 		else{
-		    DFT_options.exchange_function = slater_u;
-		    DFT_options.exchange_V_function_a = d_slater_a;
-		    DFT_options.exchange_V_function_b = d_slater_b;
+		    DFT_options.exchange_func = slater_ed;
 		    DFT_options.den_calc = calc_density_u;
-		    DFT_options.correlation_function = no_funct;
-		    DFT_options.correlation_V_function_a = no_funct;
-		    DFT_options.correlation_V_function_b = no_funct;
+		    DFT_options.correlation_func = no_funct;
 		}
 	    }
 	    else
@@ -69,50 +65,41 @@ void dft_init(void){
     else if(elem_in_func == 2){
 	errcod = ip_string("FUNCTIONAL",&exchstring,1,0);
 	
-        if(!strcmp(exchstring,"SLATER")){
+        if(!strcmp(exchstring,"SLATER")||!strcmp(exchstring,"S")){
 	    UserOptions.hf_exch = 0.0;
 	    if(UserOptions.reftype == rhf){
-		DFT_options.exchange_function = slater;
-		DFT_options.exchange_V_function = d_slater;
+		DFT_options.exchange_func = slater_ed;
 		DFT_options.den_calc = calc_density_fast;
 	    }
 	    else{
-	      DFT_options.exchange_function = slater_u;
-	      DFT_options.exchange_V_function_a = d_slater_a;
-	      DFT_options.exchange_V_function_b = d_slater_b;
+	      DFT_options.exchange_func = slater_u_ed;     
 	      DFT_options.den_calc = calc_density_u;
+	    }
+	}
+	else if(!strcmp(exchstring,"B88")||!strcmp(exchstring,"B")){
+	    UserOptions.hf_exch = 0.0;
+	    if(UserOptions.reftype == rhf){
+		DFT_options.exchange_func = Becke88_ed;
+		DFT_options.den_calc = calc_grad_fast;
+		exchstring[0] = '\0';
+	    }
+	    else{
+		punt("UHF functional not implemented");
 	    }
 	}
 	else if(!strcmp(exchstring,"NONE")){
 	    UserOptions.hf_exch = 0.0;
 	    if(UserOptions.reftype == rhf){
-		DFT_options.exchange_function = no_funct;
-		DFT_options.exchange_V_function = no_funct;
+		DFT_options.exchange_func = no_funct;
 		DFT_options.den_calc = calc_density_fast;
 		exchstring[0] = '\0';
 	    }
 	    else{
-		DFT_options.exchange_function = no_funct;
-		DFT_options.exchange_V_function_a = no_funct;
-		DFT_options.exchange_V_function_b = no_funct;
+		DFT_options.exchange_func = no_funct_u;
 		DFT_options.den_calc = calc_density_u;
 		exchstring[0] = '\0';
 	    }
 	}
-	else if(!strcmp(exchstring,"DENSITY")){
-	    if(UserOptions.reftype == rhf){
-		DFT_options.exchange_function = density;
-		DFT_options.exchange_V_function = density;
-		DFT_options.den_calc = calc_density_fast;
-	    }
-	    
-	    else{
-		DFT_options.exchange_function = density;
-		DFT_options.exchange_V_function_a = density_a;
-		DFT_options.exchange_V_function_b = density_b;
-		DFT_options.den_calc = calc_density_u;
-	    }
-        }
 	else
 	    punt("Unrecognized or nonimplemented exchange functional specified");
 	
@@ -121,34 +108,29 @@ void dft_init(void){
 	if(!strcmp(corrstring,"NONE")){
 	    UserOptions.hf_exch = 0.0;
 	    if(UserOptions.reftype == rhf){
-		DFT_options.correlation_function = no_funct;
-		DFT_options.correlation_V_function = no_funct;
+		DFT_options.correlation_func = no_funct;	
 		corrstring[0] = '\0';
 	    }
 	    else{
-		DFT_options.correlation_function = no_funct;
-		DFT_options.correlation_V_function_a = no_funct;
-		DFT_options.correlation_V_function_b = no_funct;
+		DFT_options.correlation_func = no_funct_u;		
 		corrstring[0] = '\0';
 	    }
 	}
         else if(!strcmp(corrstring,"VWN5")){
 	    if(UserOptions.reftype == rhf){
-		DFT_options.correlation_function = VWN5_r;
-		DFT_options.correlation_V_function = d_VWN5_r;
+		DFT_options.correlation_func = VWN5_ed;
 	    }
-	    else
-		punt("\nUHF for Correlation functionals not implemented yet");
-        }           
-
+	    else{
+		DFT_options.correlation_func = VWN5_u_ed;
+	    }
+	}           
 	else if(!strcmp(corrstring,"VWN4")){
 	    if(UserOptions.reftype == rhf){
-		DFT_options.correlation_function = VWN4_r;
-		DFT_options.correlation_V_function = d_VWN4_r;
+		DFT_options.correlation_func = VWN4_ed;
 	    }
 	    else
-		punt("\nUHF for Correlation functionals not implemented yet");
-        }           
+		DFT_options.correlation_func = VWN4_u_ed;      
+        }        
 	else
 	    punt("Unrecognized or nonimplemented correlation fuctional specified");
 
