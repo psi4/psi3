@@ -139,7 +139,6 @@ EXTERN int *first_basisfn_shell;      /*Number of the first basis function from 
 EXTERN int *first_ao_type_shell;      /*Type(xx,yy,etc.) of the first AO from a shell*/
 EXTERN int *last_ao_type_shell;       /*Type(xx,yy,etc.) of the last AO from a shell */
 EXTERN double ***ao_type_transmat;    /*Transformation matrices for AO types*/
-EXTERN int *pureang_so_l;             /*Angular momentum number of a pure angular momentum type SO*/
 EXTERN int *pureang_so_m;             /*Modulus of m of a pure angular momentum type SO*/
 
 EXTERN int *shells_per_am;            /*Number of shells in each angmom block */

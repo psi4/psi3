@@ -10,7 +10,6 @@
 #include "global.h"
 #include "defines.h"
 
-
 void print_intro();
 void print_options();
 void print_geometry(double);
@@ -446,7 +445,6 @@ void cleanup()
     free_matrix(ao_type_transmat[i],nirreps);
   free(ao_type_transmat);
   if (puream) {
-    free(pureang_so_l);
     free(pureang_so_m);
     for(i=0;i<=max_angmom;i++)
       free_matrix(cart2pureang[i],2*i+1);
