@@ -43,7 +43,8 @@ z_class :: z_class(int num_coord)
 
   int i, j, pos;            /*counter variables, pos is position of next row of B matrix*/
   double *B_row0, *B_row1,  /*arrays to rows of the B matrix*/ 
-         *B_row2;
+         *B_row2,
+         *cgrad_vec;
   z_entry *z_geom;          /*array to hold z-matrix*/
 
   /*read z_mat from file30*/
@@ -142,11 +143,40 @@ fflush(outfile);
 
   /*print B_mat*/
   print_mat(B_mat, num_coord, num_atoms*3, outfile);
-  
  
+  /*transform gradients to internal coordinates*/
+  cgrad_vec = init_array(3*num_atoms);
+ 
+  pos=0;
+  for (i=0;i<num_atoms;++i) {
+      for(j=0;j<3;++j) {
+          cgrad_vec[pos] = cart_grad[i][j];
+          ++pos;
+        }
+    }
+ 
+  for (i=0;i<num_coords;++i) {
+      for (j=0;j<(3*num_atoms);++j) {
+          grad_vec[i] += B_mat[i][j]*cgrad_vec[j];
+        }
+    }
+ 
+  fprintf(outfile,"\ngradient vector in cartesian coordinates:\n");
+  for (i=0;i<3*num_atoms;++i) {
+      fprintf(outfile,"%lf\n",cgrad_vec[i]);
+    }
+ 
+  fprintf(outfile,"\ngradient vector in internal coordinates:\n");
+  for (i=0;i<num_coords;++i) {
+      fprintf(outfile,"%lf\n",grad_vec[i]);
+    }
+
+  free(cgrad_vec);
   free(z_geom);
   return;
  }
+
+
 
 
 

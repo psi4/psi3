@@ -60,7 +60,17 @@ void global_free() {
 }           
                     
 
+double dot_pdt(double *vec1, double *vec2, int num) {
 
+  int i;
+  double result=0;
+
+  for(i=0;i<num;++i) {
+      result += vec1[i] * vec2[i];
+    }
+
+  return result;
+}
 
 
 

@@ -22,6 +22,7 @@ extern "C" {
 void main() {
 
   int i;
+  FILE *temp;
 
   /*set up i/o stuff*/
   ffile(&infile,"input.dat",2);
@@ -31,7 +32,7 @@ void main() {
   ip_initialize(infile,outfile);
   ip_cwk_clear();
   ip_cwk_add(":INPUT");
-
+  
   /*read in cartesian coordinates and gradients from file11*/
   read_file11();
 
@@ -42,37 +43,45 @@ void main() {
 	num_coords = 1;
     else if( num_atoms>2 )
 	num_coords = 3*num_atoms - 6;
-    else punt("Bad number of atoms or trouble reading from file30"); 
+    else punt("Bad number of atoms or trouble reading from input.dat"); 
 
     /*allocate memory*/
     global_allocate();
 
-    fprintf(outfile,"\nH: %d", H);
-    fprintf(outfile,"\nH[0]: %d", H[0]);
-    fprintf(outfile,"\n&H[0][1]: %d", &H[0][1]);
-    
     z_class z_coord(num_coords);
     ip_done();
 
-    int iteration;
     iteration = read_opt();
 
+    fprintf(outfile,"\niteration: %d\n",iteration);
+    
       if(iteration == 1) {
  
-       for(i=0;i<num_coords;++i) {
-           if( z_coord.coord_arr[i].get_type() == 0 )
-               H[i][i] = 1.00;
-           if( z_coord.coord_arr[i].get_type() == 1 || z_coord.coord_arr[i].get_type() == 2 )
-               H[i][i] = 0.25;
-         }
+           for(i=0;i<num_coords;++i) {
+               if( z_coord.coord_arr[i].get_type() == 0 )
+                   H[i][i] = 1.00;
+               if( z_coord.coord_arr[i].get_type() == 1 || z_coord.coord_arr[i].get_type() == 2 )
+                   H[i][i] = 0.25;
+               coord_vec[i] = z_coord.coord_arr[i].get_val();
+	     }
  
-       fprintf(outfile,"\nForming empirical Hessian:\n");
-       print_mat(H,num_coords,num_coords,outfile);
-         }
+           fprintf(outfile,"\nForming empirical Hessian:\n");
+           print_mat(H,num_coords,num_coords,outfile);
+       }
 
-      }
+      else {
+          for(i=0;i<num_coords;++i) {
+             coord_vec[i] = z_coord.coord_arr[i].get_val();
+           }
+          update_H();
+	}
+      
+      write_opt();
+      
+    }
   else punt("z-matrix not found in input ... can't do whatever it is you want to do yet");
-  
+
+  global_free();
   printf("\nNormal termination\n");
   exit(0);
   
