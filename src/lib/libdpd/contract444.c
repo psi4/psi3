@@ -101,7 +101,7 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
 #ifdef DPD_DEBUG
     fprintf(stderr, "Contract444: memory information.\n");
     fprintf(stderr, "Contract444: h = %d, row = %d, col = %d, tot = %d\n", 
-            h, X->params->rowtot[Hx], X->params->coltot[Hx^GX],
+            Hx, X->params->rowtot[Hx], X->params->coltot[Hx^GX],
             X->params->rowtot[Hx] * X->params->coltot[Hx^GX]);
     if(!incore) {
       fprintf(stderr, "Contract444: nbuckets = %d\n", nbuckets);
