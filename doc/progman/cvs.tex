@@ -97,7 +97,7 @@ $\bullet$ To checkout a working copy of the head of the main trunk:
 $\bullet$ To check out a working copy of the head of a specific release branch,
 e.g., the branch labelled {\tt psi-3-2}:
 
-{\tt cvs co -r psi-3-2}
+{\tt cvs co -r psi-3-2 psi3}
 
 \noindent Note that this sets a ``sticky'' branch tag, i.e. subsequent
 {\tt cvs update} commands will provide updates only on the chosen branch.
@@ -106,22 +106,26 @@ you must run the {\tt autoconf} command to generate a {\tt configure} script
 for building the code.  (See the installation manual for configuration,
 compilation, and testing instructions.)
 
+\noindent The working copy of your code will be placed in the directory
+\file{psi3}, regardless of your choice of branch.  In this manual, we will
+refer to this directory from now on as {\tt \$PSI3}.  Subsequent CVS
+commands are usually run within this top-level directory.
+
 \noindent
 $\bullet$ To update your current working copy to include the latest revisions:
 
 {\tt cvs update -dP}
 
 \noindent
-Notes: (a) This command should be run in the top-level of your working-copy's
-source tree; (b) This will update only the revisions on your current branch;
-(c) the {\tt -d} flag tells CVS to grab any new directories that have
+Notes: (a) This will update only the revisions on your current branch;
+(b) the {\tt -d} flag tells CVS to grab any new directories that have
 appeared in the repository on this branch; (c) the {\tt -P} option tells
 CVS to remove (prune) any empty directories from your working copy.
 
 \noindent
 $\bullet$ To convert your working copy to the head of a specific branch:
 
-{\tt cvs update -r psi-3-2 psi3}
+{\tt cvs update -r psi-3-2}
 
 \noindent
 $\bullet$ To convert your working copy to the head of the main trunk:
@@ -144,12 +148,6 @@ top-level \PSIthree\ source directory:
 This will list all tags and branch tags available for the file (which
 should a correct list for the whole \PSIthree\ repository) and it will
 indicate whether your working copy is on a particular branch or not.
-
-\noindent
-The working copy of your code will be placed in the directory \file{psi3},
-regardless of your choice of branch.  In this manual, we will refer to
-this directory from now on as {\tt \$PSI3}.  
-
 
 \noindent
 Some words of advice:
