@@ -13,11 +13,7 @@
 **
 ** Daniel Crawford, 1996
 **
-** Since the full spin-orbital Fock matrices are also built using an
-** out-of-core algorithm in fock_build() [part of the two-electron
-** integral sort in sort_tei()], this code is actually redundant.
-** However, I'm leaving it in place since it already produces the DPD
-** blocks of Fock matrix elements needed by CCENERGY.
+** An alternative but currently unused algorithm may be found in fock_build.c
 ** */
 
 void fock(void)
@@ -31,8 +27,8 @@ void fock(void)
   int *occ_off, *vir_off;
   int *occ_sym, *vir_sym;
   int *openpi;
-  struct oe_dpdfile fIJ, fij, fAB, fab, fIA, fia;
-  struct dpdbuf AInts_anti, AInts, CInts, CInts_anti, EInts_anti, EInts;
+  dpdfile2 fIJ, fij, fAB, fab, fIA, fia, Hoo, Hvv, Hov;
+  dpdbuf4 AInts_anti, AInts, CInts, CInts_anti, EInts_anti, EInts;
 
   nirreps = moinfo.nirreps;
   occpi = moinfo.occpi; virtpi = moinfo.virtpi;
@@ -40,34 +36,44 @@ void fock(void)
   occ_sym = moinfo.occ_sym; vir_sym = moinfo.vir_sym;
   openpi = moinfo.openpi;
 
+  dpd_file2_init(&Hoo, CC_OEI, 0, 0, 0, "h(i,j)");
+  dpd_file2_init(&Hvv, CC_OEI, 0, 1, 1, "h(a,b)");
+  dpd_file2_init(&Hov, CC_OEI, 0, 0, 1, "h(i,a)");
+  dpd_file2_mat_init(&Hoo);
+  dpd_file2_mat_init(&Hvv);
+  dpd_file2_mat_init(&Hov);
+  dpd_file2_mat_rd(&Hoo);
+  dpd_file2_mat_rd(&Hvv);
+  dpd_file2_mat_rd(&Hov);
+  
   /* Prepare the alpha and beta occ-occ Fock matrix files */
-  dpd_oe_file_init(&fIJ, CC_OEI, 0, 0, "fIJ", 0, outfile);
-  dpd_oe_file_init(&fij, CC_OEI, 0, 0, "fij", 0, outfile);
-  dpd_oe_file_mat_init(&fIJ);
-  dpd_oe_file_mat_init(&fij);
+  dpd_file2_init(&fIJ, CC_OEI, 0, 0, 0, "fIJ");
+  dpd_file2_init(&fij, CC_OEI, 0, 0, 0, "fij");
+  dpd_file2_mat_init(&fIJ);
+  dpd_file2_mat_init(&fij);
 
   /* One-electron (frozen-core) contributions */
   for(h=0; h < nirreps; h++) {
 
       for(i=0; i < occpi[h]; i++) 
           for(j=0; j < occpi[h]; j++) 
-              fIJ.matrix[h][i][j] = hoo[h][i][j];   
+              fIJ.matrix[h][i][j] = Hoo.matrix[h][i][j];   
 
       for(i=0; i < (occpi[h]-openpi[h]); i++) 
           for(j=0; j < (occpi[h]-openpi[h]); j++) 
-              fij.matrix[h][i][j] = hoo[h][i][j];   
+              fij.matrix[h][i][j] = Hoo.matrix[h][i][j];   
     }
 
   /* Two-electron contributions */
 
   /* Prepare the A integral buffers */
-  dpd_buf_init(&AInts_anti, CC_AINTS, 0, 0, 0, 0, 1, "A <ij|kl>", 0, outfile);
-  dpd_buf_init(&AInts, CC_AINTS, 0, 0, 0, 0, 0, "A <ij|kl>", 0, outfile);
+  dpd_buf4_init(&AInts_anti, CC_AINTS, 0, 0, 0, 0, 0, 1, "A <ij|kl>");
+  dpd_buf4_init(&AInts, CC_AINTS, 0, 0, 0, 0, 0, 0, "A <ij|kl>");
 
   for(h=0; h < nirreps; h++) {
 
-      dpd_buf_mat_irrep_init(&AInts_anti, h);
-      dpd_buf_mat_irrep_rd(&AInts_anti, h, 0, outfile);
+      dpd_buf4_mat_irrep_init(&AInts_anti, h);
+      dpd_buf4_mat_irrep_rd(&AInts_anti, h);
 
       /* Loop over irreps of the target */
       for(Gi=0; Gi < nirreps; Gi++) {
@@ -109,10 +115,10 @@ void fock(void)
 
         }
       
-      dpd_buf_mat_irrep_close(&AInts_anti, h);
+      dpd_buf4_mat_irrep_close(&AInts_anti, h);
 
-      dpd_buf_mat_irrep_init(&AInts, h);
-      dpd_buf_mat_irrep_rd(&AInts, h, 0, outfile);
+      dpd_buf4_mat_irrep_init(&AInts, h);
+      dpd_buf4_mat_irrep_rd(&AInts, h);
 
       /* Loop over irreps of the target */
       for(Gi=0; Gi < nirreps; Gi++) {
@@ -154,51 +160,50 @@ void fock(void)
 
         }
       
-      dpd_buf_mat_irrep_close(&AInts, h);
+      dpd_buf4_mat_irrep_close(&AInts, h);
 
     }
 
   /* Close the A Integral buffers */
-  dpd_buf_close(&AInts_anti);
-  dpd_buf_close(&AInts);
+  dpd_buf4_close(&AInts_anti);
+  dpd_buf4_close(&AInts);
   
   /* Close the alpha and beta occ-occ Fock matrix files */
-  dpd_oe_file_mat_wrt(&fIJ, 0, outfile);
-  dpd_oe_file_mat_wrt(&fij, 0, outfile);
-  dpd_oe_file_mat_close(&fIJ);
-  dpd_oe_file_mat_close(&fij);
-  dpd_oe_file_close(&fIJ);
-  dpd_oe_file_close(&fij);
+  dpd_file2_mat_wrt(&fIJ);
+  dpd_file2_mat_wrt(&fij);
+  dpd_file2_mat_close(&fIJ);
+  dpd_file2_mat_close(&fij);
+  dpd_file2_close(&fIJ);
+  dpd_file2_close(&fij);
 
   /* Prepare the alpha and beta vir-vir Fock matrix files */
-  dpd_oe_file_init(&fAB, CC_OEI, 1, 1, "fAB", 0, outfile);
-  dpd_oe_file_init(&fab, CC_OEI, 1, 1, "fab", 0, outfile);
-  dpd_oe_file_mat_init(&fAB);
-  dpd_oe_file_mat_init(&fab);
+  dpd_file2_init(&fAB, CC_OEI, 0, 1, 1, "fAB");
+  dpd_file2_init(&fab, CC_OEI, 0, 1, 1, "fab");
+  dpd_file2_mat_init(&fAB);
+  dpd_file2_mat_init(&fab);
 
   /* One-electron (frozen-core) contributions */
   for(h=0; h < nirreps; h++) {
 
       for(a=0; a < (virtpi[h] - openpi[h]); a++) 
           for(b=0; b < (virtpi[h] - openpi[h]); b++) 
-              fAB.matrix[h][a][b] = hvv[h][a][b];   
+              fAB.matrix[h][a][b] = Hvv.matrix[h][a][b];   
 
       for(a=0; a < virtpi[h]; a++) 
           for(b=0; b < virtpi[h]; b++) 
-              fab.matrix[h][a][b] = hvv[h][a][b];   
+              fab.matrix[h][a][b] = Hvv.matrix[h][a][b];   
     }
 
   /* Two-electron contributions */
 
   /* Prepare the C integral buffers */
-  dpd_buf_init(&CInts_anti, CC_CINTS, 10, 10, 10, 10, 0, 
-               "C <ia||jb>", 0, outfile);
-  dpd_buf_init(&CInts, CC_CINTS, 10, 10, 10, 10, 0, "C <ia|jb>", 0, outfile);
+  dpd_buf4_init(&CInts_anti, CC_CINTS, 0, 10, 10, 10, 10, 0, "C <ia||jb>");
+  dpd_buf4_init(&CInts, CC_CINTS, 0, 10, 10, 10, 10, 0, "C <ia|jb>");
 
   for(h=0; h < nirreps; h++) {
 
-      dpd_buf_mat_irrep_init(&CInts_anti, h);
-      dpd_buf_mat_irrep_rd(&CInts_anti, h, 0, outfile);
+      dpd_buf4_mat_irrep_init(&CInts_anti, h);
+      dpd_buf4_mat_irrep_rd(&CInts_anti, h);
 
       /* Loop over irreps of the target */
       for(Ga=0; Ga < nirreps; Ga++) {
@@ -240,10 +245,10 @@ void fock(void)
 	    }
 	}
 
-      dpd_buf_mat_irrep_close(&CInts_anti, h);
+      dpd_buf4_mat_irrep_close(&CInts_anti, h);
 
-      dpd_buf_mat_irrep_init(&CInts, h);
-      dpd_buf_mat_irrep_rd(&CInts, h, 0, outfile);
+      dpd_buf4_mat_irrep_init(&CInts, h);
+      dpd_buf4_mat_irrep_rd(&CInts, h);
 
       /* Loop over irreps of the target */
       for(Ga=0; Ga < nirreps; Ga++) {
@@ -285,50 +290,49 @@ void fock(void)
 	    }
 	}
 
-      dpd_buf_mat_irrep_close(&CInts, h);
+      dpd_buf4_mat_irrep_close(&CInts, h);
     }
 
   /* Close the C integral buffers */
-  dpd_buf_close(&CInts_anti);
-  dpd_buf_close(&CInts);
+  dpd_buf4_close(&CInts_anti);
+  dpd_buf4_close(&CInts);
 
   /* Close the alpha and beta vir-vir Fock matrix files */
-  dpd_oe_file_mat_wrt(&fAB, 0, outfile);
-  dpd_oe_file_mat_wrt(&fab, 0, outfile);
-  dpd_oe_file_mat_close(&fAB);
-  dpd_oe_file_mat_close(&fab);
-  dpd_oe_file_close(&fAB);
-  dpd_oe_file_close(&fab);
+  dpd_file2_mat_wrt(&fAB);
+  dpd_file2_mat_wrt(&fab);
+  dpd_file2_mat_close(&fAB);
+  dpd_file2_mat_close(&fab);
+  dpd_file2_close(&fAB);
+  dpd_file2_close(&fab);
 
   /* Prepare the alpha and beta occ-vir Fock matrix files */
-  dpd_oe_file_init(&fIA, CC_OEI, 0, 1, "fIA", 0, outfile);
-  dpd_oe_file_init(&fia, CC_OEI, 0, 1, "fia", 0, outfile);
-  dpd_oe_file_mat_init(&fIA);
-  dpd_oe_file_mat_init(&fia);
+  dpd_file2_init(&fIA, CC_OEI, 0, 0, 1, "fIA");
+  dpd_file2_init(&fia, CC_OEI, 0, 0, 1, "fia");
+  dpd_file2_mat_init(&fIA);
+  dpd_file2_mat_init(&fia);
 
   /* One-electron (frozen-core) contributions */
   for(h=0; h < nirreps; h++) {
 
       for(i=0; i < occpi[h]; i++) 
           for(a=0; a < (virtpi[h] - openpi[h]); a++) 
-              fIA.matrix[h][i][a] = hov[h][i][a];   
+              fIA.matrix[h][i][a] = Hov.matrix[h][i][a];   
 
       for(i=0; i < (occpi[h] - openpi[h]); i++) 
           for(a=0; a < virtpi[h]; a++) 
-              fia.matrix[h][i][a] = hov[h][i][a];   
+              fia.matrix[h][i][a] = Hov.matrix[h][i][a];   
     }
 
   /* Two-electron contributions */
 
   /* Prepare the E integral buffers */
-  dpd_buf_init(&EInts_anti, CC_EINTS, 11, 0, 11, 0, 1,
-	       "E <ai|jk>", 0, outfile);
-  dpd_buf_init(&EInts, CC_EINTS, 11, 0, 11, 0, 0, "E <ai|jk>", 0, outfile);
+  dpd_buf4_init(&EInts_anti, CC_EINTS, 0, 11, 0, 11, 0, 1, "E <ai|jk>");
+  dpd_buf4_init(&EInts, CC_EINTS, 0, 11, 0, 11, 0, 0, "E <ai|jk>");
 
   for(h=0; h < nirreps; h++) {
 
-      dpd_buf_mat_irrep_init(&EInts_anti, h);
-      dpd_buf_mat_irrep_rd(&EInts_anti, h, 0, outfile);
+      dpd_buf4_mat_irrep_init(&EInts_anti, h);
+      dpd_buf4_mat_irrep_rd(&EInts_anti, h);
 
       /* Loop over irreps of the target */
       for(Gi=0; Gi < nirreps; Gi++) {
@@ -371,10 +375,10 @@ void fock(void)
 	    }
 	}
 
-      dpd_buf_mat_irrep_close(&EInts_anti, h);
+      dpd_buf4_mat_irrep_close(&EInts_anti, h);
 
-      dpd_buf_mat_irrep_init(&EInts, h);
-      dpd_buf_mat_irrep_rd(&EInts, h, 0, outfile);
+      dpd_buf4_mat_irrep_init(&EInts, h);
+      dpd_buf4_mat_irrep_rd(&EInts, h);
 
       /* Loop over irreps of the target */
       for(Gi=0; Gi < nirreps; Gi++) {
@@ -417,19 +421,26 @@ void fock(void)
 	    }
 	}
 
-      dpd_buf_mat_irrep_close(&EInts, h);
+      dpd_buf4_mat_irrep_close(&EInts, h);
 
     }
 
   /* Close the E integral buffers */
-  dpd_buf_close(&EInts_anti);
-  dpd_buf_close(&EInts);
+  dpd_buf4_close(&EInts_anti);
+  dpd_buf4_close(&EInts);
 
   /* Close the alpha and beta occ-vir Fock matrix files */
-  dpd_oe_file_mat_wrt(&fIA, 0, outfile);
-  dpd_oe_file_mat_wrt(&fia, 0, outfile);
-  dpd_oe_file_mat_close(&fIA);
-  dpd_oe_file_mat_close(&fia);
-  dpd_oe_file_close(&fIA);
-  dpd_oe_file_close(&fia);
+  dpd_file2_mat_wrt(&fIA);
+  dpd_file2_mat_wrt(&fia);
+  dpd_file2_mat_close(&fIA);
+  dpd_file2_mat_close(&fia);
+  dpd_file2_close(&fIA);
+  dpd_file2_close(&fia);
+
+  dpd_file2_mat_close(&Hoo);
+  dpd_file2_mat_close(&Hvv);
+  dpd_file2_mat_close(&Hov);
+  dpd_file2_close(&Hoo);
+  dpd_file2_close(&Hvv);
+  dpd_file2_close(&Hov);
 }

@@ -15,7 +15,8 @@ void scf_check(void)
   int *occ_off, *vir_off;
   int *occ_sym, *vir_sym;
   int *openpi;
-  struct dpdbuf AInts_anti, AInts;
+  dpdbuf4 AInts_anti, AInts;
+  dpdfile2 Hoo;
   double E1A, E1B, E2AA, E2BB, E2AB;
 
   nirreps = moinfo.nirreps;
@@ -25,27 +26,34 @@ void scf_check(void)
   openpi = moinfo.openpi;
 
   /* One-electron (frozen-core) contributions */
+  dpd_file2_init(&Hoo, CC_OEI, 0, 0, 0, "h(i,j)");
+  dpd_file2_mat_init(&Hoo);
+  dpd_file2_mat_rd(&Hoo);
+
   E1A = E1B = 0.0;
   for(h=0; h < nirreps; h++) {
 
       for(i=0; i < occpi[h]; i++) 
-              E1A += hoo[h][i][i];   
+              E1A += Hoo.matrix[h][i][i];   
 
       for(i=0; i < (occpi[h]-openpi[h]); i++) 
-              E1B += hoo[h][i][i];   
+              E1B += Hoo.matrix[h][i][i];   
     }
+
+  dpd_file2_mat_close(&Hoo);
+  dpd_file2_close(&Hoo);
 
   /* Two-electron contributions */
 
   /* Prepare the A integral buffers */
-  dpd_buf_init(&AInts_anti, CC_AINTS, 0, 0, 0, 0, 1, "A <ij|kl>", 0, outfile);
-  dpd_buf_init(&AInts, CC_AINTS, 0, 0, 0, 0, 0, "A <ij|kl>", 0, outfile);
+  dpd_buf4_init(&AInts_anti, CC_AINTS, 0, 0, 0, 0, 0, 1, "A <ij|kl>");
+  dpd_buf4_init(&AInts, CC_AINTS, 0, 0, 0, 0, 0, 0, "A <ij|kl>");
 
   E2AA = E2BB = E2AB = 0.0;
   for(h=0; h < nirreps; h++) {
 
-      dpd_buf_mat_irrep_init(&AInts_anti, h);
-      dpd_buf_mat_irrep_rd(&AInts_anti, h, 0, outfile);
+      dpd_buf4_mat_irrep_init(&AInts_anti, h);
+      dpd_buf4_mat_irrep_rd(&AInts_anti, h);
 
       /* Loop over irreps of the target */
       for(Gi=0; Gi < nirreps; Gi++) {
@@ -78,10 +86,10 @@ void scf_check(void)
 
         }
       
-      dpd_buf_mat_irrep_close(&AInts_anti, h);
+      dpd_buf4_mat_irrep_close(&AInts_anti, h);
 
-      dpd_buf_mat_irrep_init(&AInts, h);
-      dpd_buf_mat_irrep_rd(&AInts, h, 0, outfile);
+      dpd_buf4_mat_irrep_init(&AInts, h);
+      dpd_buf4_mat_irrep_rd(&AInts, h);
 
       /* Loop over irreps of the target */
       for(Gi=0; Gi < nirreps; Gi++) {
@@ -101,13 +109,13 @@ void scf_check(void)
 
         }
       
-      dpd_buf_mat_irrep_close(&AInts, h);
+      dpd_buf4_mat_irrep_close(&AInts, h);
 
     }
 
   /* Close the A Integral buffers */
-  dpd_buf_close(&AInts_anti);
-  dpd_buf_close(&AInts);
+  dpd_buf4_close(&AInts_anti);
+  dpd_buf4_close(&AInts);
 
   /*
   fprintf(outfile, "\n\tEFZC = %20.15f\n", moinfo.efzc);

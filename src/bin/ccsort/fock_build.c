@@ -11,6 +11,8 @@
 ** transqt [see transform_two()] in the final call to libiwl's
 ** iwl_buf_wrt_mat().
 **
+** This algorithm is not currently used.  See fock.c.
+**
 ** T. Daniel Crawford, February, 1999.  */
 
 void fock_build(int p, int q, int r, int s, double value)

@@ -30,5 +30,8 @@ void get_params()
   if(errcod == IPE_OK) params.tolerance = 1.0*pow(10.0,(double) -tol);
 
   fndcor(&(params.memory), infile, outfile);
+
+  params.cachelev = 2;
+  errcod = ip_data("CACHELEV", "%d", &(params.cachelev),0);
 }
 

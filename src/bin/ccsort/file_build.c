@@ -4,18 +4,17 @@
 #include <psio.h>
 #include <iwl.h>
 #include <ccfiles.h>
-#include "dpd.h"
+#include <dpd.h>
 #define EXTERN
 #include "globals.h"
 
-void idx_permute(struct dpdfile *File, struct iwlbuf *OutBuf,
+void idx_permute(dpdfile4 *File, struct iwlbuf *OutBuf,
 		 int **bucket_map, int p, int q, int r, int s,
 		 int perm_pr, int perm_qs, int perm_prqs,
 		 double value, FILE *outfile);
 
-int file_build(struct dpdfile *File, int inputfile, double tolerance,
-	       int perm_pr, int perm_qs, int perm_prqs,
-	       int keep, int print_flag, FILE *outfile)
+int file_build(dpdfile4 *File, int inputfile, double tolerance,
+	       int perm_pr, int perm_qs, int perm_prqs, int keep)
 {
   struct iwlbuf InBuf;
   int lastbuf;
@@ -52,7 +51,7 @@ int file_build(struct dpdfile *File, int inputfile, double tolerance,
   /* Figure out how many buckets we need and where each p,q goes */
   for(h=0,core_left=memoryd,nbuckets=1; h < nirreps; h++) {
 
-      row_length = File->params->coltot[h];
+      row_length = File->params->coltot[h^(File->my_irrep)];
 	       
       for(row=0; row < File->params->rowtot[h]; row++) {
 
@@ -88,9 +87,8 @@ int file_build(struct dpdfile *File, int inputfile, double tolerance,
 	}
     }
 
-  if(print_flag)
-      fprintf(outfile, "\tSorting File: %s nbuckets = %d\n",
-	      File->label, nbuckets);
+  fprintf(outfile, "\tSorting File: %s nbuckets = %d\n",
+	  File->label, nbuckets);
 
   /* Set up IWL buffers for sorting */
   SortBuf = (struct iwlbuf *) malloc(nbuckets * sizeof(struct iwlbuf));

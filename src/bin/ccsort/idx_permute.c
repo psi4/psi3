@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <iwl.h>
-#include "dpd.h"
+#include <dpd.h>
 
 void idx_error(char *message, int p, int q, int r, int s, int pq, int rs,
-	       int pq_sym, FILE *outfile);
+	       int pq_sym, int rs_sym, FILE *outfile);
 
-void idx_permute(struct dpdfile *File, struct iwlbuf *OutBuf,
+void idx_permute(dpdfile4 *File, struct iwlbuf *OutBuf,
 		 int **bucket_map, int p, int q, int r, int s,
 		 int perm_pr, int perm_qs, int perm_prqs,
 		 double value, FILE *outfile)
@@ -14,7 +14,7 @@ void idx_permute(struct dpdfile *File, struct iwlbuf *OutBuf,
   int pq_sym, rs_sym, rq_sym, ps_sym, qp_sym, sp_sym, sr_sym, qr_sym;
   int pq, rs, rq, ps, qp, sr, qr, sp;
   int perm_pq, perm_rs;
-  struct dpdparams *Params;
+  dpdparams4 *Params;
   int this_bucket;
 
   Params = File->params;
@@ -27,30 +27,26 @@ void idx_permute(struct dpdfile *File, struct iwlbuf *OutBuf,
 
   /* Go through the allowed permutations --- NB these are Dirac permutations */
 
-  /* Get the main symmetry block */
+  /* Get the left and right symmetry blocks */
   pq_sym = p_sym^q_sym;
+  rs_sym = r_sym^s_sym;
 
   /* Get the row and column indices and assign the value */
   pq = Params->rowidx[p][q];
   rs = Params->colidx[r][s];
-  if((pq >= Params->rowtot[pq_sym]) || (rs >= Params->coltot[pq_sym]))
-      idx_error("Params_make: pq, rs", p,q,r,s,pq,rs,pq_sym,outfile);
-  /*
-  File->matrix[pq_sym][pq][rs] = value;
-  */
+  if((pq >= Params->rowtot[pq_sym]) || (rs >= Params->coltot[rs_sym]))
+      idx_error("Params_make: pq, rs", p,q,r,s,pq,rs,pq_sym,rs_sym,outfile);
 
   this_bucket = bucket_map[p][q];
   iwl_buf_wrt_val(&OutBuf[this_bucket], p, q, r, s, value, 0, outfile, 0);
 
   if(perm_pr) {
       rq_sym = r_sym^q_sym;
+      ps_sym = p_sym^s_sym;
       rq = Params->rowidx[r][q];
       ps = Params->colidx[p][s];
-      if((rq >= Params->rowtot[rq_sym]) || (ps >= Params->coltot[rq_sym]))
-	  idx_error("Params_make: rq, ps", p,q,r,s,rq,ps,rq_sym,outfile);
-      /*
-      File->matrix[rq_sym][rq][ps] = value;
-      */
+      if((rq >= Params->rowtot[rq_sym]) || (ps >= Params->coltot[ps_sym]))
+	  idx_error("Params_make: rq, ps", p,q,r,s,rq,ps,rq_sym,ps_sym,outfile);
 
       this_bucket = bucket_map[r][q];
       iwl_buf_wrt_val(&OutBuf[this_bucket], r, q, p, s, value, 0, outfile, 0);
@@ -58,13 +54,11 @@ void idx_permute(struct dpdfile *File, struct iwlbuf *OutBuf,
 
   if(perm_qs) {
       ps_sym = p_sym^s_sym;
+      rq_sym = r_sym^q_sym;
       ps = Params->rowidx[p][s];
       rq = Params->colidx[r][q];
-      if((ps >= Params->rowtot[ps_sym]) || (rq >= Params->coltot[ps_sym]))
-	  idx_error("Params_make: ps, rq", p,q,r,s,ps,rq,ps_sym,outfile);
-      /*
-      File->matrix[ps_sym][ps][rq] = value;
-      */
+      if((ps >= Params->rowtot[ps_sym]) || (rq >= Params->coltot[rq_sym]))
+	  idx_error("Params_make: ps, rq", p,q,r,s,ps,rq,ps_sym,rq_sym,outfile);
 
       this_bucket = bucket_map[p][s];
       iwl_buf_wrt_val(&OutBuf[this_bucket], p, s, r, q, value, 0, outfile, 0);
@@ -72,13 +66,11 @@ void idx_permute(struct dpdfile *File, struct iwlbuf *OutBuf,
 
   if(perm_pr && perm_qs) {
       rs_sym = r_sym^s_sym;
+      pq_sym = p_sym^q_sym;
       rs = Params->rowidx[r][s];
       pq = Params->colidx[p][q];
-      if((rs >= Params->rowtot[rs_sym]) || (pq >= Params->coltot[rs_sym]))
-	  idx_error("Params_make: rs, pq", p,q,r,s,rs,pq,rs_sym,outfile);
-      /*
-      File->matrix[rs_sym][rs][pq] = value;
-      */
+      if((rs >= Params->rowtot[rs_sym]) || (pq >= Params->coltot[pq_sym]))
+	  idx_error("Params_make: rs, pq", p,q,r,s,rs,pq,rs_sym,pq_sym,outfile);
 
       this_bucket = bucket_map[r][s];
       iwl_buf_wrt_val(&OutBuf[this_bucket], r, s, p, q, value, 0, outfile, 0);
@@ -86,13 +78,11 @@ void idx_permute(struct dpdfile *File, struct iwlbuf *OutBuf,
 
   if(perm_prqs) {
       qp_sym = q_sym^p_sym;
+      sr_sym = s_sym^r_sym;
       qp = Params->rowidx[q][p];
       sr = Params->colidx[s][r];
-      if((qp >= Params->rowtot[qp_sym]) || (sr >= Params->coltot[qp_sym]))
-	  idx_error("Params_make: qp, sr", p,q,r,s,qp,sr,qp_sym,outfile);
-      /*
-      File->matrix[qp_sym][qp][sr] = value;
-      */
+      if((qp >= Params->rowtot[qp_sym]) || (sr >= Params->coltot[sr_sym]))
+	  idx_error("Params_make: qp, sr", p,q,r,s,qp,sr,qp_sym,sr_sym,outfile);
 
       this_bucket = bucket_map[q][p];
       iwl_buf_wrt_val(&OutBuf[this_bucket], q, p, s, r, value, 0, outfile, 0);
@@ -100,14 +90,12 @@ void idx_permute(struct dpdfile *File, struct iwlbuf *OutBuf,
 
       if(perm_pr) {
 	  qr_sym = q_sym^r_sym;
+	  sp_sym = s_sym^p_sym;
 	  qr = Params->rowidx[q][r];
 	  sp = Params->colidx[s][p];
-	  if((qr >= Params->rowtot[qr_sym])||(sp >= Params->coltot[qr_sym]))
-	      idx_error("Params_make: qr, sp", p,q,r,s,qr,sp,qr_sym,
+	  if((qr >= Params->rowtot[qr_sym])||(sp >= Params->coltot[sp_sym]))
+	      idx_error("Params_make: qr, sp", p,q,r,s,qr,sp,qr_sym,sp_sym,
 			       outfile);
-	  /*
-	  File->matrix[qr_sym][qr][sp] = value;
-	  */
 
 	  this_bucket = bucket_map[q][r];
 	  iwl_buf_wrt_val(&OutBuf[this_bucket], q, r, s, p, value, 0, outfile, 0);
@@ -115,14 +103,12 @@ void idx_permute(struct dpdfile *File, struct iwlbuf *OutBuf,
 
       if(perm_qs) {
 	  sp_sym = s_sym^p_sym;
+	  qr_sym = q_sym^r_sym;
 	  sp = Params->rowidx[s][p];
 	  qr = Params->colidx[q][r];
-	  if((sp >= Params->rowtot[sp_sym])||(qr >= Params->coltot[sp_sym]))
-	      idx_error("Params_make: sp, qr", p,q,r,s,sp,qr,sp_sym,
+	  if((sp >= Params->rowtot[sp_sym])||(qr >= Params->coltot[qr_sym]))
+	      idx_error("Params_make: sp, qr", p,q,r,s,sp,qr,sp_sym,qr_sym,
 			       outfile);
-	  /*
-	  File->matrix[sp_sym][sp][qr] = value;
-	  */
 
 	  this_bucket = bucket_map[s][p];
 	  iwl_buf_wrt_val(&OutBuf[this_bucket], s, p, q, r, value, 0, outfile, 0);
@@ -130,14 +116,12 @@ void idx_permute(struct dpdfile *File, struct iwlbuf *OutBuf,
       
       if(perm_pr && perm_qs) {
 	  sr_sym = s_sym^r_sym;
+	  qp_sym = q_sym^p_sym;
 	  sr = Params->rowidx[s][r];
 	  qp = Params->colidx[q][p];
-	  if((sr >= Params->rowtot[sr_sym])||(qp >= Params->coltot[sr_sym]))
-	      idx_error("Params_make: sr, qp", p,q,r,s,sr,qp,qp_sym,
+	  if((sr >= Params->rowtot[sr_sym])||(qp >= Params->coltot[qp_sym]))
+	      idx_error("Params_make: sr, qp", p,q,r,s,sr,qp,sr_sym,qp_sym,
 			       outfile);
-	  /*
-	  File->matrix[sr_sym][sr][qp] = value;
-	  */
 
 	  this_bucket = bucket_map[s][r];
 	  iwl_buf_wrt_val(&OutBuf[this_bucket], s, r, q, p, value, 0, outfile, 0);

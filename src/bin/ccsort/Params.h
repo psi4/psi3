@@ -7,4 +7,5 @@ struct Params {
     int FZCFile;           /* Unit no. for input frozen core operator */
     double tolerance;      /* Cutoff value for integrals in IWL Buffers */
     int memory;            /* Memory available (in bytes) */
+    int cachelev;
 };

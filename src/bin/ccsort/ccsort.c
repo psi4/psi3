@@ -8,6 +8,7 @@
 #include <libciomr.h>
 #include <dpd.h>
 #include <psio.h>
+#include <qt.h>
 #include "MOInfo.h"
 #include "Params.h"
 #include "globals.h"
@@ -26,31 +27,40 @@ void sort_tei(void);
 void c_sort(void);
 void d_sort(void);
 void e_sort(void);
+void f_sort(void);
 void scf_check(void);
 void fock(void);
 void denom(void);
 void exit_io(void);
 void cleanup(void);
+int **cacheprep(int level, int *cachefiles);
 
 int main(int argc, char *argv[])
 {
+  int **cachelist, *cachefiles;
+
   init_io();
   init_ioff();
   title();
+  timer_init();
   get_moinfo();
   get_params();
+  cachefiles = init_int_array(PSIO_MAXUNIT);
+  cachelist = cacheprep(params.cachelev, cachefiles);
+  dpd_init(0, moinfo.nirreps, params.memory, cachefiles, cachelist, 
+           2, moinfo.occpi, moinfo.occ_sym, moinfo.virtpi, moinfo.vir_sym);
   sort_oei();
-  dpd_init(moinfo.nirreps, params.memory, 2, moinfo.occpi, moinfo.occ_sym,
-	   moinfo.virtpi, moinfo.vir_sym);
   sort_tei();
   c_sort();
   d_sort();
   e_sort();
+  f_sort();
   scf_check();
   fock();
   denom();
-  dpd_close();
+  dpd_close(0);
   cleanup();
+  timer_done();
   exit_io();
   exit(0);
 }
@@ -162,12 +172,5 @@ void cleanup(void)
   free(moinfo.all_virtpi);
 
   free(ioff);
-
-  for(i=0; i < moinfo.nirreps; i++) {
-      free_block(hoo[i]); 
-      free_block(hvv[i]);
-      free_block(hov[i]);
-    }
-  free(hoo); free(hvv); free(hov);
 
 }

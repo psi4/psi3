@@ -44,6 +44,7 @@ void get_moinfo(void)
   file30_close();
 
   /* get docc and socc arrays from input */
+  /*
   docc = init_int_array(moinfo.nirreps);
   socc = init_int_array(moinfo.nirreps);
   errcod = ip_int_array("DOCC", docc, moinfo.nirreps);
@@ -59,6 +60,7 @@ void get_moinfo(void)
     }
   if(warning) fprintf(outfile, "\n\tNB: Using occupations from input.\n");
   free(docc); free(socc);
+  */
 
   moinfo.frdocc = init_int_array(moinfo.nirreps);
   moinfo.fruocc = init_int_array(moinfo.nirreps);
@@ -230,6 +232,12 @@ void get_moinfo(void)
 
      Note that I also compute the CC->QT versions of the cc_occ and
      cc_vir arrays (qt_occ and qt_vir, respectively) simultaneously.
+     Hence, if one has an array in CC ordering without frozen orbitals, 
+     and needs to convert the array to CC ordering WITH frozen orbitals
+     (i.e. add zeroes in all the right places), then one could loop 
+     over the CC active orbitals, compute the QT index for the current
+     orbital (using qt_occ or qt_vir), and finally compute the index 
+     for the full CC list (using cc_allocc or cc_allvir).
      
      */
 
@@ -424,6 +432,8 @@ void get_moinfo(void)
 
   /* Lastly, build the active virtual orbital SCF eigenvector array for
      the AO-basis code (see CCENERGY) */
+
+/*** Still working on this part---currently unused, TDC, 3/13/00 ***/
 
   /*
   reorder_qt(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc,

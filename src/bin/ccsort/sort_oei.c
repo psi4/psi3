@@ -3,6 +3,7 @@
 #include <psio.h>
 #include <libciomr.h>
 #include <iwl.h>
+#include <dpd.h>
 #include "MOInfo.h"
 #include "Params.h"
 #define EXTERN
@@ -24,7 +25,7 @@ void sort_oei(void)
   int *occ_off, *vir_off;
   int docc;
   double *oei;
-  psio_address next_hij, next_hab, next_hia;
+  dpdfile2 Hoo, Hov, Hvv;
 
   nirreps = moinfo.nirreps;
   occ = moinfo.occ; vir = moinfo.vir;
@@ -44,14 +45,13 @@ void sort_oei(void)
       print_array(oei, moinfo.nactive, outfile);
     }
 
-  hoo = (double ***) malloc(nirreps * sizeof(double **));
-  hvv = (double ***) malloc(nirreps * sizeof(double **));
-  hov = (double ***) malloc(nirreps * sizeof(double **));
-  for(h=0; h < nirreps; h++) {
-      hoo[h] = block_matrix(occpi[h],occpi[h]);
-      hvv[h] = block_matrix(virtpi[h],virtpi[h]);
-      hov[h] = block_matrix(occpi[h],virtpi[h]);
-    }
+  dpd_file2_init(&Hoo, CC_OEI, 0, 0, 0, "h(i,j)");
+  dpd_file2_init(&Hvv, CC_OEI, 0, 1, 1, "h(a,b)");
+  dpd_file2_init(&Hov, CC_OEI, 0, 0, 1, "h(i,a)");
+
+  dpd_file2_mat_init(&Hoo);
+  dpd_file2_mat_init(&Hvv);
+  dpd_file2_mat_init(&Hov);
 
   /* Filter out the frozen orbitals to generate the DPD-blocked
      one-electron integral lists */
@@ -68,7 +68,9 @@ void sort_oei(void)
 	      /* Shift symmetry-relative indices */
 	      pnew -= occ_off[psym]; qnew -= occ_off[qsym];
 	      /* Check orbital symmetry and put integral in place */
-	      if(psym == qsym) hoo[psym][pnew][qnew] = oei[pq];
+	      if(psym == qsym) {
+		  Hoo.matrix[psym][pnew][qnew] = oei[pq];
+		}
 	    }
 
 	  /* Check vir-vir class */
@@ -80,7 +82,9 @@ void sort_oei(void)
 	      /* Shift symmetry-relative indices */
 	      pnew -= vir_off[psym]; qnew -= vir_off[qsym];
 	      /* Check orbital symmetry and put integral in place */
-	      if(psym == qsym) hvv[psym][pnew][qnew] = oei[pq];
+	      if(psym == qsym) {
+		  Hvv.matrix[psym][pnew][qnew] = oei[pq];
+		}
 	    }
 
 	  /* Check occ-vir class */
@@ -92,47 +96,24 @@ void sort_oei(void)
 	      /* Shift symmetry-relative indices */
 	      pnew -= occ_off[psym]; qnew -= vir_off[qsym];
 	      /* Check orbital symmetry and put integral in place */
-	      if(psym == qsym) hov[psym][pnew][qnew] = oei[pq];
+	      if(psym == qsym) {
+		  Hov.matrix[psym][pnew][qnew] = oei[pq];
+		}
 	    }
 	}
     }
 
-  if(params.print_lvl > 2) {
-      fprintf(outfile, "\n\thoo Matrix:\n");
-      fprintf(outfile,   "\t-----------\n");
-      for(h=0; h < nirreps; h++)
-          print_mat(hoo[h], occpi[h], occpi[h], outfile);
+  dpd_file2_mat_wrt(&Hoo);
+  dpd_file2_mat_wrt(&Hvv);
+  dpd_file2_mat_wrt(&Hov);
 
-      fprintf(outfile, "\n\thvv Matrix:\n");
-      fprintf(outfile,   "\t-----------\n");
-      for(h=0; h < nirreps; h++)
-          print_mat(hvv[h], virtpi[h], virtpi[h], outfile);
+  dpd_file2_mat_close(&Hoo);
+  dpd_file2_mat_close(&Hvv);
+  dpd_file2_mat_close(&Hov);
 
-      fprintf(outfile, "\n\thov Matrix:\n");
-      fprintf(outfile,   "\t-----------\n");
-      for(h=0; h < nirreps; h++)
-          print_mat(hov[h], occpi[h], virtpi[h], outfile);
-    }
-
-  /* Dumping one-electron integrals in DPD format for use in ccdensity */
-  next_hij = PSIO_ZERO;
-  for(h=0; h < nirreps; h++) 
-      if(occpi[h])
-	  psio_write(CC_OEI, "h(i,j)", (char *) hoo[h][0],
-		     occpi[h]*occpi[h]*sizeof(double), next_hij, &next_hij);
-
-  next_hab = PSIO_ZERO;
-  for(h=0; h < nirreps; h++) 
-      if(virtpi[h])
-	  psio_write(CC_OEI, "h(a,b)", (char *) hvv[h][0],
-		     virtpi[h]*virtpi[h]*sizeof(double), next_hab, &next_hab);
-
-  next_hia = PSIO_ZERO;
-  for(h=0; h < nirreps; h++) 
-      if(occpi[h] && virtpi[h])
-	  psio_write(CC_OEI, "h(i,a)", (char *) hov[h][0],
-		     occpi[h]*virtpi[h]*sizeof(double), next_hia,
-		     &next_hia);
+  dpd_file2_close(&Hoo);
+  dpd_file2_close(&Hvv);
+  dpd_file2_close(&Hov);
 
   free(oei);
 }

@@ -7,40 +7,56 @@
 
 void d_sort(void)
 {
-  struct dpdbuf D;
+  dpdbuf4 D;
 
-  dpd_buf_init(&D, CC_DINTS, 2, 7, 0, 5, 1, "D <ij|ab>", 0, outfile);
-  dpd_copy(&D, CC_DINTS, "D <ij||ab> (i>j,a>b)", 0, outfile);
-  dpd_buf_close(&D);
+  dpd_buf4_init(&D, CC_DINTS, 0, 2, 7, 0, 5, 1, "D <ij|ab>");
+  dpd_buf4_copy(&D, CC_DINTS, "D <ij||ab> (i>j,a>b)");
+  dpd_buf4_close(&D);
 
-  dpd_buf_init(&D, CC_DINTS, 2, 5, 0, 5, 1, "D <ij|ab>", 0, outfile);
-  dpd_copy(&D, CC_DINTS, "D <ij||ab> (i>j,ab)", 0, outfile);
-  dpd_buf_close(&D);
+  dpd_buf4_init(&D, CC_DINTS, 0, 2, 5, 0, 5, 1, "D <ij|ab>");
+  dpd_buf4_copy(&D, CC_DINTS, "D <ij||ab> (i>j,ab)");
+  dpd_buf4_close(&D);
 
-  dpd_buf_init(&D, CC_DINTS, 0, 7, 0, 5, 1, "D <ij|ab>", 0, outfile);
-  dpd_copy(&D, CC_DINTS, "D <ij||ab> (ij,a>b)", 0, outfile);
-  dpd_buf_close(&D);
+  dpd_buf4_init(&D, CC_DINTS, 0, 0, 7, 0, 5, 1, "D <ij|ab>");
+  dpd_buf4_copy(&D, CC_DINTS, "D <ij||ab> (ij,a>b)");
+  dpd_buf4_close(&D);
 
-  dpd_buf_init(&D, CC_DINTS, 0, 5, 0, 5, 1, "D <ij|ab>", 0, outfile);
-  dpd_copy(&D, CC_DINTS, "D <ij||ab>", 0, outfile);
-  dpd_buf_close(&D);
+  dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 1, "D <ij|ab>");
+  dpd_buf4_copy(&D, CC_DINTS, "D <ij||ab>");
+  dpd_buf4_close(&D);
 
+  /* <ij|ab> (ia,jb) */
+  dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
+  dpd_buf4_sort(&D, CC_DINTS, prqs, 10, 10, "D <ij|ab> (ia,jb)");
+  dpd_buf4_close(&D);
 
-  dpd_buf_init(&D, CC_DINTS, 0, 5, 0, 5, 0, "D <ij|ab>", 0, outfile);
-  dpd_swap23(&D, CC_DINTS, 10, 10, "D <ij|ab> (ia,jb)", 0, outfile);
-  dpd_buf_close(&D);
+  /* <ij|ab> (ai,jb) */
+  dpd_buf4_init(&D, CC_DINTS, 0, 10, 10, 10, 10, 0, "D <ij|ab> (ia,jb)");
+  dpd_buf4_sort(&D, CC_DINTS, qprs, 11, 10, "D <ij|ab> (ai,jb)");
+  dpd_buf4_close(&D);
 
-  dpd_buf_init(&D, CC_DINTS, 10, 10, 10, 10, 0, "D <ij|ab> (ia,jb)",
-	       0, outfile);
-  dpd_swap12(&D, CC_DINTS, 11, 10, "D <ij|ab> (ai,jb)", 0, outfile);
-  dpd_buf_close(&D);
-
-  dpd_buf_init(&D, CC_DINTS, 0, 5, 0, 5, 0, "D <ij||ab>", 0, outfile);
-  dpd_swap23(&D, CC_DINTS, 10, 10, "D <ij||ab> (ia,jb)", 0, outfile);
-  dpd_buf_close(&D);
+  /* <ij||ab> (ia,jb) */
+  dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij||ab>");
+  dpd_buf4_sort(&D, CC_DINTS, prqs, 10, 10, "D <ij||ab> (ia,jb)");
+  dpd_buf4_close(&D);
   
-  dpd_buf_init(&D, CC_DINTS, 10, 10, 10, 10, 0, "D <ij|ab> (ia,jb)",
-	       0, outfile);
-  dpd_swap24(&D, CC_DINTS, 10, 10, "D <ij|ab> (ib,ja)",  0, outfile);
-  dpd_buf_close(&D);
+  /* <ij|ab> (ib,ja) */
+  dpd_buf4_init(&D, CC_DINTS, 0, 10, 10, 10, 10, 0, "D <ij|ab> (ia,jb)");
+  dpd_buf4_sort(&D, CC_DINTS, psrq, 10, 10, "D <ij|ab> (ib,ja)");
+  dpd_buf4_close(&D);
+
+  /* <ij|ab> (ib,aj) */
+  dpd_buf4_init(&D, CC_DINTS, 0, 10, 10, 10, 10, 0, "D <ij|ab> (ib,ja)");
+  dpd_buf4_sort(&D, CC_DINTS, pqsr, 10, 11, "D <ij|ab> (ib,aj)");
+  dpd_buf4_close(&D);
+
+  /* <ij|ab> (ia,bj) */
+  dpd_buf4_init(&D, CC_DINTS, 0, 10, 10, 10, 10, 0, "D <ij|ab> (ia,jb)");
+  dpd_buf4_sort(&D, CC_DINTS, pqsr, 10, 11, "D <ij|ab> (ia,bj)");
+  dpd_buf4_close(&D);
+
+  /* <ij||ab> (ia,bj) */
+  dpd_buf4_init(&D, CC_DINTS, 0, 10, 10, 10, 10, 0, "D <ij||ab> (ia,jb)");
+  dpd_buf4_sort(&D, CC_DINTS, pqsr, 10, 11, "D <ij||ab> (ia,bj)");
+  dpd_buf4_close(&D);
 }

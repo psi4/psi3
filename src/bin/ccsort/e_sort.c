@@ -7,31 +7,30 @@
 
 void e_sort(void)
 {
-  struct dpdbuf E;
+  dpdbuf4 E;
 
-  dpd_buf_init(&E, CC_EINTS, 11, 0, 11, 0, 0, "E <ai|jk>", 0, outfile);
-  dpd_swap13(&E, CC_TMP0, 0, 11, "E <ai|jk> (ji,ak)", 0, outfile);
-  dpd_buf_close(&E);
-  dpd_buf_init(&E, CC_TMP0, 0, 11, 0, 11, 0, "E <ai|jk> (ji,ak)", 0, outfile);
-  dpd_swap24(&E, CC_TMP1, 0, 11, "E <ai|jk> (jk,ai)", 0, outfile);
-  dpd_buf_close(&E);
-  dpd_buf_init(&E, CC_TMP1, 0, 11, 0, 11, 0, "E <ai|jk> (jk,ai)", 0, outfile);
-  dpd_swap12(&E, CC_TMP0, 0, 11, "E <ai|jk> (kj,ai)", 0, outfile);
-  dpd_buf_close(&E);
-  dpd_buf_init(&E, CC_TMP0, 0, 11, 0, 11, 0, "E <ai|jk> (kj,ai)", 0, outfile);
-  dpd_swap34(&E, CC_EINTS, 0, 10, "E <ij|ka>", 0, outfile);
-  dpd_buf_close(&E);
+  /* <ij|ka> */
+  dpd_buf4_init(&E, CC_EINTS, 0, 11, 0, 11, 0, 0, "E <ai|jk>");
+  dpd_buf4_sort(&E, CC_EINTS, srqp, 0, 10, "E <ij|ka>");
+  dpd_buf4_close(&E);
 
-  dpd_buf_init(&E, CC_EINTS, 11, 0, 11, 0, 1, "E <ai|jk>", 0, outfile);
-  dpd_swap13(&E, CC_TMP0, 0, 11, "E <ai||jk> (ji,ak)", 0, outfile);
-  dpd_buf_close(&E);
-  dpd_buf_init(&E, CC_TMP0, 0, 11, 0, 11, 0, "E <ai||jk> (ji,ak)", 0, outfile);
-  dpd_swap24(&E, CC_TMP1, 0, 11, "E <ai||jk> (jk,ai)", 0, outfile);
-  dpd_buf_close(&E);
-  dpd_buf_init(&E, CC_TMP1, 0, 11, 0, 11, 0, "E <ai||jk> (jk,ai)", 0, outfile);
-  dpd_swap12(&E, CC_TMP0, 0, 11, "E <ai||jk> (kj,ai)", 0, outfile);
-  dpd_buf_close(&E);
-  dpd_buf_init(&E, CC_TMP0, 0, 11, 0, 11, 0, "E <ai||jk> (kj,ai)", 0, outfile);
-  dpd_swap34(&E, CC_EINTS, 2, 10, "E <ij||ka> (i>j,ka)", 0, outfile);
-  dpd_buf_close(&E);
+  /* <ij||ka> (i>j,ka) */
+  dpd_buf4_init(&E, CC_EINTS, 0, 11, 0, 11, 0, 1, "E <ai|jk>");
+  dpd_buf4_sort(&E, CC_EINTS, srqp, 2, 10, "E <ij||ka> (i>j,ka)");
+  dpd_buf4_close(&E);
+
+  /* <ij|ka> (ij,ak) */
+  dpd_buf4_init(&E, CC_EINTS, 0, 0, 10, 0, 10, 0, "E <ij|ka>");
+  dpd_buf4_sort(&E, CC_EINTS, pqsr, 0, 11, "E <ij|ka> (ij,ak)");
+  dpd_buf4_close(&E);
+
+  /* <ij||ka> (ij,ak) */
+  dpd_buf4_init(&E, CC_EINTS, 0, 0, 10, 2, 10, 0, "E <ij||ka> (i>j,ka)");
+  dpd_buf4_sort(&E, CC_EINTS, pqsr, 2, 11, "E <ij||ka> (i>j,ak)");
+  dpd_buf4_close(&E);
+
+  /* <ia|jk> */
+  dpd_buf4_init(&E, CC_EINTS, 0, 11, 0, 11, 0, 0, "E <ai|jk>");
+  dpd_buf4_sort(&E, CC_EINTS, qpsr, 10, 0, "E <ia|jk>");
+  dpd_buf4_close(&E);
 }
