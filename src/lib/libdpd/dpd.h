@@ -213,10 +213,13 @@ int dpd_file2_copy(dpdfile2 *InFile, int outfilenum, char *label);
 int dpd_file2_dirprd(dpdfile2 *FileA, dpdfile2 *FileB);
 double dpd_file2_dot(dpdfile2 *FileA, dpdfile2 *FileB);
 int dpd_file2_scm(dpdfile2 *InFile, double alpha);
-double dpd_file2_norm(dpdfile2 *BufX);
+double dpd_file2_dot_self(dpdfile2 *BufX);
 double dpd_file2_trace(dpdfile2 *InFile);
 int dpd_file2_axpy(dpdfile2 *FileA, dpdfile2 *FileB,
                    double alpha, int transA);
+int dpd_file2_axpbycz(dpdfile2 *FileA, dpdfile2 *FileB, dpdfile2 *FileC,
+  double a, double b, double c);
+
 
 int dpd_file4_init(dpdfile4 *File, int filenum, int irrep, int pqnum,
 		   int rsnum,  char *label);
@@ -251,9 +254,11 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 		      int pqnum, int rsnum, char *label);
 int dpd_buf4_axpy(dpdbuf4 *BufX, dpdbuf4 *BufY, double alpha);
+int dpd_buf4_axpbycz(dpdbuf4 *FileA, dpdbuf4 *FileB, dpdbuf4 *FileC,
+  double a, double b, double c);
 int dpd_buf4_dirprd(dpdbuf4 *BufA, dpdbuf4 *BufB);
 double dpd_buf4_dot(dpdbuf4 *BufA, dpdbuf4 *BufB);
-double dpd_buf4_norm(dpdbuf4 *BufX);
+double dpd_buf4_dot_self(dpdbuf4 *BufX);
 int dpd_buf4_scm(dpdbuf4 *InBuf, double alpha);
 int dpd_buf4_scmcopy(dpdbuf4 *InBuf, int outfilenum, char *label, 
                      double alpha);

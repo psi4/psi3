@@ -33,10 +33,12 @@ buf4_mat_irrep_shift13.c     file2_init.c      trans4_init.c                \
 buf4_mat_irrep_shift31.c     file2_mat_close.c trans4_mat_irrep_close.c     \
 buf4_mat_irrep_wrt.c         file2_mat_init.c  trans4_mat_irrep_init.c      \
 buf4_mat_irrep_wrt_block.c   file2_mat_print.c trans4_mat_irrep_rd.c        \
-buf4_norm.c                  file2_mat_rd.c    trans4_mat_irrep_shift13.c   \
+buf4_dot_self.c              file2_mat_rd.c    trans4_mat_irrep_shift13.c   \
 buf4_print.c                 file2_mat_wrt.c   trans4_mat_irrep_shift31.c   \
-buf4_scm.c                   file2_norm.c      trans4_mat_irrep_wrt.c       \
+buf4_scm.c                   file2_dot_self.c  trans4_mat_irrep_wrt.c       \
 buf4_sort.c                  file2_print.c     set_default.c                \
+                             file2_axpbycz.c      \
+buf4_axpbycz.c                \
 buf4_symm.c                  buf4_scmcopy.c    file2_scm.c                  \
 buf4_sort_ooc.c              block_matrix.c    memfree.c                    \
 

@@ -1,14 +1,14 @@
 #include <stdio.h>
 #include "dpd.h"
 
-/* dpd_buf4_norm(): Evaluates the sum of the squares of the elements of a
+/* dpd_buf4_dot_self(): Evaluates the sum of the squares of the elements of a
 ** given dpdbuf4.
 **
 ** Arguments:
 **   dpdbuf4 *BufX: A pointer to the dpdbuf4.
 */
 
-double dpd_buf4_norm(dpdbuf4 *BufX)
+double dpd_buf4_dot_self(dpdbuf4 *BufX)
 {
   int h, nirreps;
   int row, col;

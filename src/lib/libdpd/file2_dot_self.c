@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include "dpd.h"
 
-/* dpd_file2_norm(): Evaluates the sum of the squares of the elements of a
+/* dpd_file2_dot_self(): Evaluates the sum of the squares of the elements of a
 ** given dpdfile2.
 */
 
-double dpd_file2_norm(dpdfile2 *BufX)
+double dpd_file2_dot_self(dpdfile2 *BufX)
 {
   int h, nirreps;
   int row, col;
