@@ -1,7 +1,7 @@
 #ifndef PSIO_GBL
 #define PSIO_GBL
 
-#define PSIO_KEYLEN 32
+#define PSIO_KEYLEN 80
 #define PSIO_MAXVOL 8
 #define PSIO_MAXUNIT 300
 #define PSIO_MAXSTR 512
