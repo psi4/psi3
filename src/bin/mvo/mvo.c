@@ -479,7 +479,6 @@ void get_reorder_array(void)
   /* the following will only be set nonzero if it is a CI related WFN */
   moinfo.ras_opi = init_int_matrix(4,moinfo.nirreps);
 
-  /* for backtransforms, no reorder array...map Pitzer to Pitzer */
   if (strcmp(params.wfn, "CI") == 0 || strcmp(params.wfn, "DETCI") == 0
        || strcmp(params.wfn, "QDPT") == 0 
        || strcmp(params.wfn, "OOCCD") == 0 
