@@ -730,6 +730,7 @@ AC_OUTPUT(include/sizeof.h include/Makefile
           src/bin/extrema/Makefile
           src/bin/geom/Makefile
           src/bin/input/Makefile
+          src/bin/intder/Makefile
           src/bin/mp2/Makefile
           src/bin/mp2r12/Makefile
           src/bin/oeprop/Makefile
@@ -743,7 +744,7 @@ AC_OUTPUT(include/sizeof.h include/Makefile
           src/bin/localize/Makefile
           src/bin/stable/Makefile
           src/bin/response/Makefile
-
+          src/bin/mp2-dpd/Makefile
           tests/Makefile
           tests/MakeVars
           tests/MakeRules
