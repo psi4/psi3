@@ -39,6 +39,7 @@ void local_init(void)
 {
   int i, j, k, ij, stat, a, b, r, l, I, L;
   int nmo, nso, nocc, nocc_all, nvir, noei, nirreps, nfzc;
+  double domain_tot, domain_ave;
   double **C;  /* AO -> localized MO transformation matrix */
   double **Ci; /* localized MO -> AO transformation matrix */
   double **D;  /* 1/2 SCF closed-shell density matrix (AO) */
@@ -304,6 +305,11 @@ void local_init(void)
     if(cnt < max) for(; cnt < max; cnt++) fprintf(outfile, "   ");
     fprintf(outfile, "     %7.5f\n", fR[i]);
   }
+  domain_tot = 0;
+  for(i=0; i < nocc; i++)
+    domain_tot += domain_len[i];
+  domain_ave = domain_tot/nocc;
+  fprintf(outfile, "\n   The average domain length is %4.2lf\n", domain_ave);
   fflush(outfile);
 
   /* Identify and/or remove weak pairs -- using Bougton-Pulay domains */
@@ -330,7 +336,8 @@ void local_init(void)
   }
 
   /* If this is a response calculation, augment domains using polarized orbitals */
-  if(params.dertype == 3) local_response(domain, domain_len, natom, aostart, aostop);
+  if((params.dertype == 3) && (!strcmp(local.pairdef,"RESPONSE")))
+    local_response(domain, domain_len, natom, aostart, aostop);
 
   /* Allow user input of selected domains */
   if(ip_exist("DOMAINS",0)) {
@@ -369,6 +376,11 @@ void local_init(void)
     if(cnt < max) for(; cnt < max; cnt++) fprintf(outfile, "   ");
     fprintf(outfile, "     %7.5f\n", fR[i]);
   }
+  domain_tot = 0;
+  for(i=0; i < nocc; i++)
+    domain_tot += domain_len[i];
+  domain_ave = domain_tot/nocc;
+  fprintf(outfile, "\n   The average domain length is %4.2lf\n", domain_ave);
   fflush(outfile);
 
   /* Build the pair domains */
