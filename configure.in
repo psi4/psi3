@@ -799,6 +799,11 @@ AC_OUTPUT(include/sizeof.h include/Makefile
           tests/cc19/Makefile
           tests/cc21/Makefile
           tests/cc22/Makefile
+          tests/cc23/Makefile
+          tests/cc24/Makefile
+          tests/cc25/Makefile
+          tests/cc26/Makefile
+          tests/cc27/Makefile
           tests/dboc-rhf1/Makefile
           tests/dboc-rohf1/Makefile
           tests/dboc-uhf1/Makefile
