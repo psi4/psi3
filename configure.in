@@ -1,4 +1,4 @@
-AC_REVISION([$Id$])
+
 AC_INIT(aclocal.m4)
 
 # Make srcdir an absolute path
