@@ -869,7 +869,8 @@ AC_OUTPUT(include/psiconfig.h
           src/doc/manual/Prog/Makefile src/doc/manual/User/Makefile
           )
 # The following should be added to config_files/ac_output for 
-# libmathtools/ooccman
+# libmathtools/ccman.  You have to move those lines up above this
+# comment.
 #         src/lib/libmathtools/Makefile
 #         src/lib/libmathtools/containers/templates/Makefile
 #         src/lib/libmathtools/solvers/templates/Makefile
