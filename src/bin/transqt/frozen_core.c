@@ -8,6 +8,8 @@
 **
 */
 
+#include <stdio.h>
+extern FILE *outfile;
 
 /*
 ** FZC_DENSITY(): Form the frozen core density matrix, i.e. the density
@@ -52,6 +54,97 @@ void fzc_density(int nirreps, int *docc, double *Pc, double **C,
       } /* end loop over irreps */
 
 }
+
+
+/*
+** IVO_DENSITY(): This is an attempt to form a N-1 electron density to 
+**    be used to make an effective N-1 electron Fock matrix, using the
+**    normal frozen core operator subroutine found in yosh_rdwto().
+**    We take the modified density as the core density (formed by 
+**    fzc_density()) and add the valence density, but scaled by a
+**    factor of (N-1)/N.  I'm not sure about open-shells.
+**
+**       P[mu][nu] = SUM_{i}^{n_core} C[mu][i] * C[nu][i]
+**                 + (N-1)/N * SUM_{i}^{valence} C[mu][i] * C[nu][i]
+**
+** Arguments:
+**    nirreps =  number of irreducible representations
+**    fzdocc  =  number of frozen core doubly occupied orbitals per irrep
+**    docc    =  array of number of doubly occupied orbitals per irrep
+**    socc    =  array of number of singly occupied orbitals per irrep
+**    P       =  our special density matrix (lower triangle)
+**    C       =  SCF eigenvector matrix
+**    first   =  first molecular orbital for each irrep
+**    first_so = first SO index for each irrep
+**    last_so =  last SO index for each irrep
+**    ioff    =  the standard offset array
+**
+** Returns: none
+**
+** Notes: The routine assumes P has been allocated already.
+*/
+void ivo_density(int nirreps, int *fzdocc, int *docc, int *socc, 
+                 double *P, double **C, int *first, int *first_so, 
+                 int *last_so, int *ioff)
+{
+   int p, q, pq;
+   int ir, i, it, j;
+   double N;
+   double tval;
+
+   N = 0.0;
+   for (ir=0; ir<nirreps; ir++) {
+     N += 2.0 * (double) (docc[ir] - fzdocc[ir]);
+     N += (double) socc[ir];
+   }
+
+
+   fprintf(outfile, "%f valence electrons", N);
+
+   for (ir=0; ir<nirreps; ir++) {  /* loop over irreps */
+      for (i=0,it=first[ir]; i<fzdocc[ir]; i++,it++) { /* loop over fzc */
+        for (p=first_so[ir]; p <= last_so[ir]; p++) {
+           pq = ioff[p] + first_so[ir];
+           for (q=first_so[ir]; q <= p; q++,pq++) {
+              P[pq] += C[p][it] * C[q][it];
+              }
+           }   
+        } /* end loop over fzc */
+
+      /* loop over docc */
+      for (i=0,it=first[ir]+fzdocc[ir]; i<docc[ir]-fzdocc[ir]; i++,it++) { 
+        fprintf(outfile, "Doing docc orbital ir=%d, orb=%d\n", ir, i);
+        for (p=first_so[ir]; p <= last_so[ir]; p++) {
+           pq = ioff[p] + first_so[ir];
+           for (q=first_so[ir]; q <= p; q++,pq++) {
+              tval = (N-1)/N * C[p][it] * C[q][it];
+              fprintf(outfile, "%lf\n", tval);
+              P[pq] += (N-1)/N * C[p][it] * C[q][it];
+              }
+           }     
+        } /* end loop over docc */
+
+      /* I am very confused about socc, maybe this works? 
+       * I suspect that the construction of the frozen core 
+       * operator ONLY works correctly for closed shells (which
+       * a frozen core always is closed shell...).
+       * Hence, it is pretty much irrelevant to trying to 
+       * get this density right, but here's something anyway --CDS
+       */   
+      for (i=0,it=first[ir]+docc[ir]; i<socc[ir]; i++,it++) { 
+        fprintf(outfile, "Doing socc orbital ir=%d, orb=%d\n", ir, i);
+        for (p=first_so[ir]; p <= last_so[ir]; p++) {
+           pq = ioff[p] + first_so[ir];
+           for (q=first_so[ir]; q <= p; q++,pq++) {
+              P[pq] += 0.5 * (N-1)/N * C[p][it] * C[q][it];
+              }
+           }
+        } /* end loop over socc */
+
+      } /* end loop over irreps */
+
+}
+
 
 
 /*

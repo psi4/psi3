@@ -153,11 +153,15 @@ void transform_two();
 void cleanup();
 void exit_io();
 void get_reorder_array(void);
-void fzc_density(int nirreps, int *docc, double *Pc, double **C,
-      int *first, int *first_so, int *last_so, int *ioff);
-double *** construct_evects(char *spin, int nirreps, int *active, int *sopi, int *orbspi,
-                            int *first_so, int *last_so, int *first, int *last,
-			    int *fstact, int *lstact, int printflag);
+void fzc_density(int nirreps, int *frdocc, double *Pc, double **C,
+                 int *first, int *first_so, int *last_so, int *ioff);
+void ivo_density(int nirreps, int *frdocc, int *docc, int *socc, double *P, 
+                 double **C, int *first, int *first_so, int *last_so, 
+                 int *ioff);
+double *** construct_evects(char *spin, int nirreps, int *active, int *sopi, 
+                            int *orbspi, int *first_so, int *last_so, 
+                            int *first, int *last, int *fstact, int *lstact, 
+                            int printflag);
 int check_C(int nso, int nmo, double **Cmat, double *S);
 
 
@@ -534,6 +538,9 @@ void get_parameters(void)
   params.qrhf = 0;
   errcod = ip_boolean("QRHF", &(params.qrhf), 0);
 
+  params.ivo = 0;
+  errcod = ip_boolean("IVO", &(params.ivo), 0);
+
   return;
 
 }
@@ -599,6 +606,8 @@ void print_parameters(void)
                                   (params.check_C_orthonorm ? "Yes" : "No"));
       fprintf(outfile,"\tQRHF orbitals          =  %s\n", 
                                   (params.qrhf ? "Yes" : "No"));
+      fprintf(outfile,"\tIVO orbitals           =  %s\n", 
+                                  (params.ivo ? "Yes" : "No"));
     }
   
   return;
@@ -1241,8 +1250,15 @@ void get_one_electron_integrals()
     }
     else {
       moinfo.fzc_density = init_array(moinfo.noeints);
-      fzc_density(moinfo.nirreps, moinfo.frdocc, moinfo.fzc_density,
-		  moinfo.scf_vector, moinfo.first, moinfo.first_so, moinfo.last_so, ioff);
+      if (params.ivo)
+        ivo_density(moinfo.nirreps, moinfo.frdocc, moinfo.clsdpi,
+                    moinfo.openpi, moinfo.fzc_density, moinfo.scf_vector, 
+                    moinfo.first, moinfo.first_so, moinfo.last_so, ioff);
+      else 
+        fzc_density(moinfo.nirreps, moinfo.frdocc, moinfo.fzc_density,
+                    moinfo.scf_vector, moinfo.first, moinfo.first_so, 
+                    moinfo.last_so, ioff);
+      
       if (params.print_lvl > 2) {
 	fprintf(outfile, "\nFrozen core density matrix:\n");
 	print_array(moinfo.fzc_density, moinfo.nso, outfile);
@@ -1263,9 +1279,10 @@ void get_one_electron_integrals()
 ** may be deleted if desired.
 **
 */
-double *** construct_evects(char *spin, int nirreps, int *active, int *sopi, int *orbspi,
-                            int *first_so, int *last_so, int *first, int *last,
-			    int *fstact, int *lstact, int printflag)
+double *** construct_evects(char *spin, int nirreps, int *active, int *sopi, 
+                            int *orbspi, int *first_so, int *last_so, 
+                            int *first, int *last, int *fstact, int *lstact, 
+                            int printflag)
 {
 
   int h, row, col, p, q;
