@@ -26,6 +26,8 @@ extern "C" {
    extern void set_ciblks(struct olsen_graph *AG, struct olsen_graph *BG);
    extern void print_ci_space(struct stringwr *strlist, int num_strings,
       int nirreps, int strtypes, int nel, FILE *outfile);
+   extern void str_abs2rel(int absidx, int *relidx, int *listnum,
+      struct olsen_graph *Graph);
 } ;
 
 #include <iostream.h>
@@ -143,6 +145,21 @@ void form_strings(void)
    /* get number of alpha/beta strings, ref symmetry, etc */
    set_ciblks(AlphaG, BetaG) ;
 
+   /* if the user wants to filter out some initial guesses based on
+      phases of two determinants, we need to convert their absolute
+      string numbers into string lists (subgraphs) and relative 
+      addresses 
+    */
+   if (Parameters.filter_guess) {
+     str_abs2rel(Parameters.filter_guess_Ia, &Parameters.filter_guess_Iaridx, 
+                 &Parameters.filter_guess_Iac, AlphaG);
+     str_abs2rel(Parameters.filter_guess_Ib, &Parameters.filter_guess_Ibridx, 
+                 &Parameters.filter_guess_Ibc, BetaG);
+     str_abs2rel(Parameters.filter_guess_Ja, &Parameters.filter_guess_Jaridx, 
+                 &Parameters.filter_guess_Jac, AlphaG);
+     str_abs2rel(Parameters.filter_guess_Jb, &Parameters.filter_guess_Jbridx, 
+                 &Parameters.filter_guess_Jbc, BetaG);
+   }
 }
 
 

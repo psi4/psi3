@@ -82,6 +82,7 @@ extern "C" {
    extern void H0block_setup(int num_blocks, int *Ia_code, int *Ib_code);
    extern void H0block_pairup(int guess);
    extern void H0block_spin_cpl_chk(void);
+   extern void H0block_filter_setup(void);
    extern void sem_test(double **A, int N, int M, int L, double **evecs,
       double *evals, double **b, double conv_e, double conv_rms, 
       int maxiter, double offst, int *vu, int maxnvect, FILE *outfile);
@@ -799,6 +800,7 @@ void diag_h(struct stringwr **alplist, struct stringwr **betlist)
       if (Parameters.hd_otf) psio_close(Parameters.first_hd_tmp_unit,1);
 
       H0block_setup(CIblks.num_blocks, CIblks.Ia_code, CIblks.Ib_code);
+      if (Parameters.filter_guess) H0block_filter_setup();
       if (Parameters.hd_ave) {
         H0block_spin_cpl_chk();
          if ((H0block.osize - H0block.size) && Parameters.print_lvl > 1) {

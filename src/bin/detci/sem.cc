@@ -420,7 +420,7 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
                }
             tval = H0block.H0b_diag[l][i];
             if (Parameters.S % 2) tval = -tval;
-            if (H0block.H0b_diag[j][i] - tval > 1.0E-8) {
+            if (fabs(H0block.H0b_diag[j][i] - tval) > 1.0E-8) {
               tmpi = 1;
               fprintf(outfile,"(sem_iter): H0block.H0b_diag[%d][%d]" 
                       " - H0block.H0b_diag[%d][%d] = %lf - %lf = %lf"
@@ -428,6 +428,24 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
                      tval, (H0block.H0b_diag[j][i] - tval));
               }
             }
+
+         /* also check that it satisfies any user-specified properties */
+         if (!tmpi && Parameters.filter_guess) {
+	   j = Parameters.filter_guess_H0_det1;
+	   l = Parameters.filter_guess_H0_det2;
+           tval = H0block.H0b_diag[l][i];  
+	   if (Parameters.filter_guess_sign == -1) tval = -tval;
+	   if (fabs(H0block.H0b_diag[j][i] - tval) > 1.0E-8) {
+	     tmpi = 1;
+	     fprintf(outfile, "(sem_iter): Guess vector failed user-specified"
+	                      " criterion.\n");
+	     fprintf(outfile, "(sem_iter): H0block.H0b_diag[%d][%d]"
+	             " - H0block.H0b_diag[%d][%d] = %lf - %lf = %lf"
+		     " > 1.0E-8\n", j, i, l, i, H0block.H0b_diag[j][i],
+		     tval, (H0block.H0b_diag[j][i] - tval));
+	   }
+	 }
+
          if (tmpi) continue;
 
          for (j=0; j<L; j++) sm_evals[j] = H0block.H0b_diag[j][i];

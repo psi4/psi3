@@ -570,3 +570,71 @@ void H0block_spin_cpl_chk(void)
 
 }
 
+/*
+** H0block_filter_setup()
+**
+** This function takes a pair of user-specified
+** determinants and adds them to the most H0block space (at the expense
+** of two previously determined determinants, if they aren't already 
+** present) and stores which H0block determinant numbers they are.
+**
+** C. David Sherrill, July 2003
+*/
+void H0block_filter_setup(void)
+{
+  int Iac, Ibc, Iaridx, Ibridx;
+  int Jac, Jbc, Jaridx, Jbridx;
+  int i, found1, found2, replace;
+
+  Iac = Parameters.filter_guess_Iac;
+  Ibc = Parameters.filter_guess_Ibc;
+  Iaridx = Parameters.filter_guess_Iaridx;
+  Ibridx = Parameters.filter_guess_Ibridx;
+  Jac = Parameters.filter_guess_Jac;
+  Jbc = Parameters.filter_guess_Jbc;
+  Jaridx = Parameters.filter_guess_Jaridx;
+  Jbridx = Parameters.filter_guess_Jbridx;
+
+  /* figure out if these determinants are in the list already */
+  found1 = 0;
+  for (i=0; i<H0block.size && !found1; i++) {
+    if (H0block.alplist[i] == Iac && H0block.alpidx[i] == Iaridx &&
+        H0block.betlist[i] == Ibc && H0block.betidx[i] == Ibridx) {
+      found1 = 1;
+      Parameters.filter_guess_H0_det1 = i;
+    }
+  }
+
+  found2 = 0;
+  for (i=0; i<H0block.size && !found2; i++) {
+    if (H0block.alplist[i] == Jac && H0block.alpidx[i] == Jaridx &&
+        H0block.betlist[i] == Jbc && H0block.betidx[i] == Jbridx) {
+      found2 = 1;
+      Parameters.filter_guess_H0_det2 = i;
+    }
+  }
+
+  /* if not in the H0block list, we need to force it there.  remove the
+     last one in the list and replace it with the determinant I
+   */
+  if (!found1) {
+    replace = H0block.size-1;
+    H0block.alplist[replace] = Iac;
+    H0block.alpidx[replace] = Iaridx;
+    H0block.betlist[replace] = Ibc;
+    H0block.betidx[replace] = Ibridx;
+    Parameters.filter_guess_H0_det1 = replace;
+  }
+  if (!found2) {
+    if (found1) replace = H0block.size-1;
+    else replace = H0block.size-2;
+    H0block.alplist[replace] = Jac;
+    H0block.alpidx[replace] = Jaridx;
+    H0block.betlist[replace] = Jbc;
+    H0block.betidx[replace] = Jbridx;
+    Parameters.filter_guess_H0_det2 = replace;
+  }
+
+}
+
+

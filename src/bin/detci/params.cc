@@ -547,6 +547,52 @@ void get_parameters(void)
 
    errcod = ip_boolean("SF_RESTRICT",&(Parameters.sf_restrict),0);
 
+   /* The filter_guess options are used to filter out some trial
+      vectors which may not have the appropriate phase convention
+      between two determinants.  This is useful to remove, e.g.,
+      delta states when a sigma state is desired.  The user
+      inputs two determinants (by giving the absolute alpha string
+      number and beta string number for each), and also the
+      desired phase between these two determinants for guesses
+      which are to be kept.
+    */
+   Parameters.filter_guess = 0;
+   errcod = ip_boolean("FILTER_GUESS",&(Parameters.filter_guess),0);
+   if (errcod == IPE_OK && Parameters.filter_guess == 1) {
+     Parameters.filter_guess_sign = 1;
+     errcod = ip_data("FILTER_GUESS_SIGN","%d",
+                      &(Parameters.filter_guess_sign),0);
+     if (errcod != IPE_OK || (Parameters.filter_guess_sign != 1 &&
+         Parameters.filter_guess_sign != -1)) {
+       fprintf(outfile, "FILTER_GUESS_SIGN should be 1 or -1 !\n");
+       abort();
+     }
+     errcod = ip_count("FILTER_GUESS_DET1",&i,0); 
+     if (errcod != IPE_OK || i != 2) {
+       fprintf(outfile, "Need to specify FILTER_GUESS_DET1 = "
+                        "(alphastr betastr)\n");
+       abort();
+     }
+     else {
+       errcod = ip_data("FILTER_GUESS_DET1","%d",
+                        &(Parameters.filter_guess_Ia),1,0);
+       errcod = ip_data("FILTER_GUESS_DET1","%d",
+                        &(Parameters.filter_guess_Ib),1,1);
+     }
+
+     errcod = ip_count("FILTER_GUESS_DET2",&i,0); 
+     if (errcod != IPE_OK || i != 2) {
+       fprintf(outfile, "Need to specify FILTER_GUESS_DET2 = "
+                        "(alphastr betastr)\n");
+       abort();
+     }
+     else {
+       errcod = ip_data("FILTER_GUESS_DET2","%d",
+                        &(Parameters.filter_guess_Ja),1,0);
+       errcod = ip_data("FILTER_GUESS_DET2","%d",
+                        &(Parameters.filter_guess_Jb),1,1);
+     }
+   } /* end the filter_guess stuff */
 }
 
 
@@ -732,6 +778,8 @@ void print_parameters(void)
    fprintf(outfile, "   EXPORT_CI_VECTOR =   %3s      SF_RESTRICT =   %3s\n",
            Parameters.export_ci_vector ? "yes":"no",
 	   Parameters.sf_restrict ? "yes":"no");
+   fprintf(outfile, "   FILTER_GUESS  =   %6s \n",Parameters.filter_guess ? 
+           "yes" : "no");
    fprintf(outfile, "\n   FILES         =     %3d %3d %3d %3d\n",
       Parameters.first_hd_tmp_unit, Parameters.first_c_tmp_unit,
       Parameters.first_s_tmp_unit, Parameters.first_d_tmp_unit);

@@ -434,7 +434,24 @@ struct params {
                               do only determinants (or their
                               spin-complements) in RASCI versions of
                               Krylov's SF CI */
-
+   int filter_guess;       /* 1 if we want to filter out some of our guess
+                              vectors by checking the phase of a pair of
+			      determinants */
+   int filter_guess_sign;  /* the desired phase between dets 1 and 2 */
+   int filter_guess_Ia;    /* absolute alpha string addr for determinant 1 */
+   int filter_guess_Ib;    /* absolute beta string addr for determinant 1 */
+   int filter_guess_Ja;    /* absolute alpha string addr for determinant 2 */
+   int filter_guess_Jb;    /* absolute beta string addr for determinant 2 */
+   int filter_guess_Iaridx;/* relative alpha string addr for det 1 */
+   int filter_guess_Ibridx;/* relative beta string addr for det 1 */
+   int filter_guess_Jaridx;/* relative alpha string addr for det 2 */
+   int filter_guess_Jbridx;/* relative beta string addr for det 2 */
+   int filter_guess_Iac;   /* string list number for alpha of det 1 */
+   int filter_guess_Ibc;   /* string list number for beta of det 1 */
+   int filter_guess_Jac;   /* string list number for alpha of det 2 */
+   int filter_guess_Jbc;   /* string list number for beta of det 2 */
+   int filter_guess_H0_det1; /* H0block determinant number for det 1 */
+   int filter_guess_H0_det2; /* H0block determinant number for det 2 */
 };
 
 
