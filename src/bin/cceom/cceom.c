@@ -21,7 +21,6 @@ int **cacheprep_uhf(int level, int *cachefiles);
 int **cacheprep_rhf(int level, int *cachefiles);
 void sort_amps(void);
 void hbar_norms(void);
-void cc3_HETI(void);
 
 /* local correlation functions */
 void local_init(void);

@@ -148,7 +148,7 @@ void rzero(int C_irr, int *converged) {
     norm += rzero * rzero;
     fprintf(outfile,"<R|R> = %20.16lf\n",norm);
 
-/* just for debugging cc3 put normalized vector back into C as well */
+/* just debugging with converged solutions - also my need a sort_C() */
 dpd_file2_copy(&RIA, EOM_CME, "CME 0");
 dpd_file2_copy(&Ria, EOM_Cme, "Cme 0");
 dpd_buf4_copy(&fRIJAB, EOM_CMNEF, "CMNEF 0");

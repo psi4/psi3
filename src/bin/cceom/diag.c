@@ -244,16 +244,43 @@ void diag(void) {
         /* assuming we want only one and lowest state - otherwise 
          * things get more complicated */
         if ( (!strcmp(params.wfn,"EOM_CC3")) && !doing_cc3_prep) {
-          cc3_HC1ET1(i,C_irr);
           cc3_HC1(i,C_irr);
+          cc3_HC1ET1(i,C_irr);
           sigmaCC3(i,C_irr,lambda_old[0]);
+
+#ifdef EOM_DEBUG
+          check_sum("D(norm triples)", i, C_irr);
+#endif
         }
 #endif
 
 #ifdef EOM_DEBUG
         check_sum("reset",0,0);
-        sprintf(lbl, "Total sigma %d norm", i);
-        check_sum(lbl, i, C_irr);
+//        sprintf(lbl, "Total sigma %d norm", i);
+//        check_sum(lbl, i, C_irr);
+
+        /*
+          sprintf(lbl, "%s %d", "SIA", i);
+          dpd_file2_init(&SIA, EOM_SIA, C_irr, 0, 1, lbl);
+          sprintf(lbl, "%s %d", "Sia", i);
+          dpd_file2_init(&Sia, EOM_Sia, C_irr, 0, 1, lbl);
+          sprintf(lbl, "%s %d", "SIJAB", i);
+          dpd_buf4_init(&SIJAB, EOM_SIJAB, C_irr, 2, 7, 2, 7, 0, lbl);
+          sprintf(lbl, "%s %d", "Sijab", i);
+          dpd_buf4_init(&Sijab, EOM_Sijab, C_irr, 2, 7, 2, 7, 0, lbl);
+          sprintf(lbl, "%s %d", "SIjAb", i);
+          dpd_buf4_init(&SIjAb, EOM_SIjAb, C_irr, 0, 5, 0, 5, 0, lbl);
+
+          tval = norm_C(&SIA, &Sia, &SIJAB, &Sijab, &SIjAb);
+          fprintf(outfile,"Total norm of S %15.10lf\n", tval);
+
+          dpd_file2_close(&SIA);
+          dpd_file2_close(&Sia);
+          dpd_buf4_close(&SIJAB);
+          dpd_buf4_close(&Sijab);
+          dpd_buf4_close(&SIjAb);
+          */
+
 #endif
 
         /* Cleaning out sigma vectors for open-shell cases  */
@@ -653,8 +680,9 @@ void diag(void) {
 
         L = eom_params.cs_per_irrep[C_irr];
         keep_going = 1;
-        /* already_sigma = 0; */
-        already_sigma = L;
+        if (!strcmp(params.wfn,"EOM_CC3"))
+            already_sigma = 0;
+        else already_sigma = L;
       }
       else {
         /* If any new vectors were added, then continue */
@@ -669,6 +697,32 @@ void diag(void) {
       if ( (keep_going == 0) && (iter < eom_params.max_iter) ) {
         fprintf(outfile,"Collapsing to only %d vectors.\n", eom_params.cs_per_irrep[C_irr]);
         restart(alpha, L, eom_params.cs_per_irrep[C_irr], C_irr, 0);
+
+/* debugging grab C[1] */
+        /*
+  dpd_file2_init(&SIA, EOM_CME, C_irr, 0, 1, "CME 1");
+  dpd_file2_copy(&SIA, EOM_CME, "CME 0");
+  dpd_file2_close(&SIA);
+
+  dpd_file2_init(&Sia, EOM_Cme, C_irr, 2, 3, "Cme 1");
+  dpd_file2_copy(&Sia, EOM_Cme, "Cme 0");
+  dpd_file2_close(&Sia);
+
+  dpd_buf4_init(&SIJAB, EOM_CMNEF, C_irr, 2, 7, 2, 7, 0, "CMNEF 1");
+  dpd_buf4_copy(&SIJAB, EOM_CMNEF, "CMNEF 0");
+  dpd_buf4_close(&SIJAB);
+
+  dpd_buf4_init(&Sijab, EOM_Cmnef, C_irr, 12, 17, 12, 17, 0, "Cmnef 1");
+  dpd_buf4_copy(&Sijab, EOM_Cmnef, "Cmnef 0");
+  dpd_buf4_close(&Sijab);
+
+  dpd_buf4_init(&SIjAb, EOM_CMnEf, C_irr, 22, 28, 22, 28, 0, "CMnEf 1");
+  dpd_buf4_copy(&SIjAb, EOM_CMnEf, "CMnEf 0");
+  dpd_buf4_close(&SIjAb);
+
+  eom_params.cs_per_irrep[0] = 1;
+  */
+
 
         if ( (!strcmp(params.wfn,"EOM_CC3")) && doing_cc3_prep ) {
           /* done with EOM CCSD - now do EOM CC3 */
@@ -758,11 +812,54 @@ void diag(void) {
 	        dpd_buf4_close(&CMnEf);
           }
         }
+
+
+
         
-        /* to test functions on final normalized vector:
-          cc3_HC1(i, C_irr);
-          norm_HC1(i, C_irr);
-        */
+        /* for CC3 debugging  */
+        /*
+         sort_C(0, C_irr);
+         init_S1(0, C_irr);
+         init_S2(0, C_irr);
+
+         sigmaSS(0, C_irr);
+         sigmaSD(0, C_irr);
+         sigmaDS(0, C_irr);
+         sigmaDD(0, C_irr);
+
+         cc3_HC1(0, C_irr);
+         norm_HC1(0, C_irr);
+         cc3_HC1ET1(0, C_irr);
+
+         dpd_file2_init(&SIA, EOM_SIA, C_irr, 0, 1, "SIA 0");
+         dpd_file2_init(&Sia, EOM_Sia, C_irr, 2, 3, "Sia 0");
+         dpd_buf4_init(&SIJAB, EOM_SIJAB, C_irr, 2, 7, 2, 7, 0, "SIJAB 0");
+         dpd_buf4_init(&Sijab, EOM_Sijab, C_irr, 12, 17, 12, 17, 0, "Sijab 0");
+         dpd_buf4_init(&SIjAb, EOM_SIjAb, C_irr, 22, 28, 22, 28, 0, "SIjAb 0");
+         norm = norm_C(&SIA, &Sia, &SIJAB, &Sijab, &SIjAb);
+         fprintf(outfile,"<Sigma(H CCSD)|Sigma(H CCSD)> = %15.10lf\n", norm*norm);
+         dpd_file2_close(&SIA);
+         dpd_file2_close(&Sia);
+         dpd_buf4_close(&SIJAB);
+         dpd_buf4_close(&Sijab);
+         dpd_buf4_close(&SIjAb);
+
+         sigmaCC3(0, C_irr,lambda_old[0]);
+
+         dpd_file2_init(&SIA, EOM_SIA, C_irr, 0, 1, "SIA 0");
+         dpd_file2_init(&Sia, EOM_Sia, C_irr, 2, 3, "Sia 0");
+         dpd_buf4_init(&SIJAB, EOM_SIJAB, C_irr, 2, 7, 2, 7, 0, "SIJAB 0");
+         dpd_buf4_init(&Sijab, EOM_Sijab, C_irr, 12, 17, 12, 17, 0, "Sijab 0");
+         dpd_buf4_init(&SIjAb, EOM_SIjAb, C_irr, 22, 28, 22, 28, 0, "SIjAb 0");
+         norm = norm_C(&SIA, &Sia, &SIJAB, &Sijab, &SIjAb);
+         fprintf(outfile,"<Sigma(H CC3)|Sigma(H CC3)>   = %15.10lf\n", norm*norm);
+         dpd_file2_close(&SIA);
+         dpd_file2_close(&Sia);
+         dpd_buf4_close(&SIJAB);
+         dpd_buf4_close(&Sijab);
+         dpd_buf4_close(&SIjAb);
+         */
+
       }
       /*
       psio_write_entry(CC_INFO, "CCEOM Energy",

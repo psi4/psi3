@@ -155,8 +155,6 @@ void norm_HC1(int i, int C_irr) {
     fprintf(outfile,"\t<WmNiE(mN,Ei)|WmNiE(mN,Ei)> = %15.10lf\n", dot); 
 
     /** WMNIJ **/
-    fprintf(outfile,"Doing Wmnij terms.\n");
-
     dpd_buf4_init(&W, CC3_HC1, 0, 0, 0, 2, 2, 0, "HC1 WMNIJ (M>N,I>J)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
@@ -172,7 +170,6 @@ void norm_HC1(int i, int C_irr) {
     dpd_buf4_close(&W);
     fprintf(outfile,"\t<WMnIj (Mn,Ij)|WMnIj> = %15.10lf\n", dot); 
 
-    fprintf(outfile,"Doing Wmbij terms.\n");
     /** WMBIJ **/
 
     dpd_buf4_init(&W, CC3_HC1, 0, 10, 0, 10, 2, 0, "HC1 WMBIJ (MB,I>J)");
@@ -212,7 +209,6 @@ void norm_HC1(int i, int C_irr) {
     fprintf(outfile,"\t<WmBiJ (iJ,mB)|WmBiJ> = %15.10lf\n", dot);
 
     /** WMBEJ **/
-    fprintf(outfile,"Doing Wmbej terms.\n");
 
     dpd_buf4_init(&W, CC3_HC1, 0, 10, 10, 10, 10, 0, "HC1 WMBEJ (ME,JB)");
     dot = dpd_buf4_dot_self(&W);
@@ -246,8 +242,6 @@ void norm_HC1(int i, int C_irr) {
 
     /** WABEI **/
 
-    fprintf(outfile,"Doing Weiab terms.\n");
-
     dpd_buf4_init(&W, CC3_HC1, 0, 10, 5, 10, 7, 0, "HC1 WABEI (IE,A>B)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
@@ -269,6 +263,8 @@ void norm_HC1(int i, int C_irr) {
     fprintf(outfile,"\t<WaBeI (Ie,aB)|WaBeI> = %15.10lf\n", dot);
   }
   else { /* UHF */
+
+    fprintf(outfile,"***** Norms of HC1 *****\n");
     /** FME **/
     dpd_file2_init(&F, CC3_HC1, 0, 0, 1, "HC1 FME");
     dot = dpd_file2_dot_self(&F);
@@ -283,28 +279,28 @@ void norm_HC1(int i, int C_irr) {
 
     fprintf(outfile,"Wamef terms\n");
     /** WAMEF **/
-    dpd_buf4_init(&W, CC3_HC1, 0, 21, 5, 21, 7, 0, "HC1 WAMEF (AM,E>F)");
+    dpd_buf4_init(&W, CC3_HC1, 0, 20, 5, 20, 7, 0, "HC1 WAMEF (MA,F>E)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
-    fprintf(outfile,"\t<WAMEF (AM,E>F)|WAMEF> = %15.10lf\n", dot); 
+    fprintf(outfile,"\t<WAMEF (MA,F>E)|WAMEF> = %15.10lf\n", dot); 
 
     /** Wamef **/
-    dpd_buf4_init(&W, CC3_HC1, 0, 31, 15, 31, 17, 0, "HC1 Wamef (am,e>f)");
+    dpd_buf4_init(&W, CC3_HC1, 0, 30, 15, 30, 17, 0, "HC1 Wamef (ma,f>e)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
-    fprintf(outfile,"\t<Wamef (am,e>f)|Wamef> = %15.10lf\n", dot); 
+    fprintf(outfile,"\t<Wamef (ma,f>e)|Wamef> = %15.10lf\n", dot); 
 
     /** WAmEf **/
-    dpd_buf4_init(&W, CC3_HC1, 0, 26, 28, 26, 28, 0, "HC1 WAmEf (Am,Ef)");
+    dpd_buf4_init(&W, CC3_HC1, 0, 27, 29, 27, 28, 0, "HC1 WAmEf (mA,fE)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
-    fprintf(outfile,"\t<WAmEf (Am,Ef)|WAmEf> = %15.10lf\n", dot); 
+    fprintf(outfile,"\t<WAmEf (mA,fE)|WAmEf> = %15.10lf\n", dot); 
 
     /** WaMeF **/
-    dpd_buf4_init(&W, CC3_HC1, 0, 25, 29, 25, 29, 0, "HC1 WaMeF (aM,eF)");
+    dpd_buf4_init(&W, CC3_HC1, 0, 24, 28, 24, 28, 0, "HC1 WaMeF (Ma,Fe)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
-    fprintf(outfile,"\t<WaMeF (aM,eF)|WaMeF> = %15.10lf\n", dot); 
+    fprintf(outfile,"\t<WaMeF (Ma,Fe)|WaMeF> = %15.10lf\n", dot); 
 
     /** WMNIE **/
     fprintf(outfile,"Wmnie terms\n");
@@ -329,6 +325,7 @@ void norm_HC1(int i, int C_irr) {
     dpd_buf4_close(&W);
     fprintf(outfile,"\t<WmNiE (mN,iE)|WmNiE> = %15.10lf\n", dot); 
 
+    /*
     dpd_buf4_init(&W, CC3_HC1, 0, 0, 21, 2, 21, 0, "HC1 WMNIE (M>N,EI)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
@@ -348,10 +345,9 @@ void norm_HC1(int i, int C_irr) {
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
     fprintf(outfile,"\t<WmNiE(mN,Ei)|WmNiE(mN,Ei)> = %15.10lf\n", dot); 
+    */
 
     /** WMNIJ **/
-    fprintf(outfile,"Doing Wmnij terms.\n");
-
     dpd_buf4_init(&W, CC3_HC1, 0, 0, 0, 2, 2, 0, "HC1 WMNIJ (M>N,I>J)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
@@ -367,48 +363,48 @@ void norm_HC1(int i, int C_irr) {
     dpd_buf4_close(&W);
     fprintf(outfile,"\t<WMnIj (Mn,Ij)|WMnIj> = %15.10lf\n", dot); 
 
-    fprintf(outfile,"Doing Wmbij terms.\n");
     /** WMBIJ **/
 
+    /*
     dpd_buf4_init(&W, CC3_HC1, 0, 20, 0, 20, 2, 0, "HC1 WMBIJ (MB,I>J)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
     fprintf(outfile,"\t<WMBIJ (MB,I>J)|WMBIJ> = %15.10lf\n", dot);
+    dpd_buf4_init(&W, CC3_HC1, 0, 30, 10, 30, 12, 0, "HC1 Wmbij (mb,i>j)");
+    dot = dpd_buf4_dot_self(&W);
+    dpd_buf4_close(&W);
+    fprintf(outfile,"\t<Wmbij (mb,i>j)|Wmbij> = %15.10lf\n", dot);
+    dpd_buf4_init(&W, CC3_HC1, 0, 24, 22, 24, 22, 0, "HC1 WMbIj (Mb,Ij)");
+    dot = dpd_buf4_dot_self(&W);
+    dpd_buf4_close(&W);
+    fprintf(outfile,"\t<WMbIj (Mb,Ij)|WMbIj> = %15.10lf\n", dot);
+    dpd_buf4_init(&W, CC3_HC1, 0, 27, 23, 27, 23, 0, "HC1 WmBiJ (mB,iJ)");
+    dot = dpd_buf4_dot_self(&W);
+    dpd_buf4_close(&W);
+    fprintf(outfile,"\t<WmBiJ (mB,iJ)|WmBiJ> = %15.10lf\n", dot);
+    */
+
     dpd_buf4_init(&W, CC3_HC1, 0, 0, 20, 2, 20, 0, "HC1 WMBIJ (I>J,MB)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
     fprintf(outfile,"\t<WMBIJ (I>J,MB)|WMBIJ> = %15.10lf\n", dot);
 
-    dpd_buf4_init(&W, CC3_HC1, 0, 30, 10, 30, 12, 0, "HC1 Wmbij (mb,i>j)");
-    dot = dpd_buf4_dot_self(&W);
-    dpd_buf4_close(&W);
-    fprintf(outfile,"\t<Wmbij (mb,i>j)|Wmbij> = %15.10lf\n", dot);
     dpd_buf4_init(&W, CC3_HC1, 0, 10, 30, 12, 30, 0, "HC1 Wmbij (i>j,mb)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
     fprintf(outfile,"\t<Wmbij (i>j,mb)|Wmbij> = %15.10lf\n", dot);
 
-    dpd_buf4_init(&W, CC3_HC1, 0, 24, 22, 24, 22, 0, "HC1 WMbIj (Mb,Ij)");
-    dot = dpd_buf4_dot_self(&W);
-    dpd_buf4_close(&W);
-    fprintf(outfile,"\t<WMbIj (Mb,Ij)|WMbIj> = %15.10lf\n", dot);
     dpd_buf4_init(&W, CC3_HC1, 0, 22, 24, 22, 24, 0, "HC1 WMbIj (Ij,Mb)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
     fprintf(outfile,"\t<WMbIj (Ij,Mb)|WMbIj> = %15.10lf\n", dot);
 
-    dpd_buf4_init(&W, CC3_HC1, 0, 27, 23, 27, 23, 0, "HC1 WmBiJ (mB,iJ)");
-    dot = dpd_buf4_dot_self(&W);
-    dpd_buf4_close(&W);
-    fprintf(outfile,"\t<WmBiJ (mB,iJ)|WmBiJ> = %15.10lf\n", dot);
     dpd_buf4_init(&W, CC3_HC1, 0, 23, 27, 23, 27, 0, "HC1 WmBiJ (iJ,mB)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
     fprintf(outfile,"\t<WmBiJ (iJ,mB)|WmBiJ> = %15.10lf\n", dot);
 
     /** WMBEJ **/
-    fprintf(outfile,"Doing Wmbej terms.\n");
-
     dpd_buf4_init(&W, CC3_HC1, 0, 20, 20, 20, 20, 0, "HC1 WMBEJ (ME,JB)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
@@ -441,24 +437,22 @@ void norm_HC1(int i, int C_irr) {
 
     /** WABEI **/
 
-    fprintf(outfile,"Doing Wabei terms.\n");
-
-    dpd_buf4_init(&W, CC3_HC1, 0, 20, 5, 20, 7, 0, "HC1 WABEI (IE,A>B)");
+    dpd_buf4_init(&W, CC3_HC1, 0, 20, 5, 20, 7, 0, "HC1 WABEI (IE,B>A)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
     fprintf(outfile,"\t<WABEI (IE,A>B)|WABEI> = %15.10lf\n", dot);
 
-    dpd_buf4_init(&W, CC3_HC1, 0, 30, 15, 30, 17, 0, "HC1 Wabei (ie,a>b)");
+    dpd_buf4_init(&W, CC3_HC1, 0, 30, 15, 30, 17, 0, "HC1 Wabei (ie,b>a)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
     fprintf(outfile,"\t<Wabei (ie,a>b)|Wabei> = %15.10lf\n", dot);
 
-    dpd_buf4_init(&W, CC3_HC1, 0, 27, 28, 27, 28, 0, "HC1 WAbEi (iE,Ab)");
+    dpd_buf4_init(&W, CC3_HC1, 0, 27, 29, 27, 29, 0, "HC1 WAbEi (iE,bA)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
     fprintf(outfile,"\t<WAbEi (iE,Ab)|WAbEi> = %15.10lf\n", dot);
 
-    dpd_buf4_init(&W, CC3_HC1, 0, 24, 29, 24, 29, 0, "HC1 WaBeI (Ie,aB)");
+    dpd_buf4_init(&W, CC3_HC1, 0, 24, 28, 24, 28, 0, "HC1 WaBeI (Ie,Ba)");
     dot = dpd_buf4_dot_self(&W);
     dpd_buf4_close(&W);
     fprintf(outfile,"\t<WaBeI (Ie,aB)|WaBeI> = %15.10lf\n", dot);

@@ -55,7 +55,7 @@ void sigmaCC3(int i, int C_irr, double omega) {
   dpdbuf4 WaMeF, WmNiE, WaBeI, WmBiJ, DiJaB, TiJaB;
   char lbl[32];
 
-  fprintf(outfile,"Running CC3, eval=%15.10lf\n",omega);
+/*  fprintf(outfile,"Running CC3, eval=%15.10lf\n",omega); */
 
   if (params.eom_ref == 0) { /* RHF */
   }
@@ -144,6 +144,8 @@ void sigmaCC3(int i, int C_irr, double omega) {
     dpd_file2_close(&FME);
     dpd_buf4_close(&WAMEF);
     dpd_buf4_close(&WMNIE);
+
+
 
     /* beta-beta-beta term 1 */
 

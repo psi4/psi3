@@ -259,7 +259,7 @@ void HC1ET1_Wabei(int i, int C_irr)
     /***** Ht_WAbEi <--- -CMA * WMbEi *****/
     dpd_buf4_init(&Ht, CC_TMP0, 0, 28, 26, 28, 26, 0, "Ht_WAbEi (Ab,Ei)");
     dpd_buf4_init(&W, CC3_HET1, 0, 24, 26, 24, 26, 0, "CC3 WMbEj (Mb,Ej)");
-    dpd_contract244(&CME, &W, &Ht, 0, 0, 0, -1.0, 1.0);
+    dpd_contract244(&CME, &W, &Ht, 0, 0, 0, -1.0, 0.0);
     dpd_buf4_close(&W);
     dpd_buf4_close(&Ht);
 
@@ -273,7 +273,7 @@ void HC1ET1_Wabei(int i, int C_irr)
     /***** Ht_WaBeI <--- -Cma * WmBeI *****/
     dpd_buf4_init(&Ht, CC_TMP0, 0, 29, 25, 29, 25, 0, "Ht_WaBeI (aB,eI)");
     dpd_buf4_init(&W, CC3_HET1, 0, 27, 25, 27, 25, 0, "CC3 WmBeJ (mB,eJ)");
-    dpd_contract244(&Cme, &W, &Ht, 0, 0, 0, -1.0, 1.0);
+    dpd_contract244(&Cme, &W, &Ht, 0, 0, 0, -1.0, 0.0);
     dpd_buf4_close(&W);
     dpd_buf4_close(&Ht);
 

@@ -69,7 +69,7 @@ void get_eom_params()
   eom_params.vectors_per_root_SS = 5;
   errcod = ip_data("VECTORS_PER_ROOT_SS","%d",&(eom_params.vectors_per_root_SS),0);
 
-  eom_params.vectors_per_root = 6;
+  eom_params.vectors_per_root = 8;
   errcod = ip_data("VECTORS_PER_ROOT","%d",&(eom_params.vectors_per_root),0);
 
   eom_params.complex_tol = 1E-12;

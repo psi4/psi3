@@ -149,6 +149,7 @@ void cc3_sigma_UHF_AAA(dpdbuf4 *CMNEF, dpdbuf4 *WABEI, dpdbuf4 *WMBIJ,
 		free_block(Z);
 	      }
 
+
 	      /* t_MIAB <-- +1/2 t_IJKABC W_JKMC */
 	      /* t_IMAB <-- -1/2 t_IJKABC W_JKMC */
 	      jk = WMNIE->params->rowidx[J][K];
@@ -180,7 +181,7 @@ void cc3_sigma_UHF_AAA(dpdbuf4 *CMNEF, dpdbuf4 *WABEI, dpdbuf4 *WMBIJ,
 
 		dpd_free_block(Z, nrows, ncols);
 	      }
-          } /* end do_doubles */
+            } /* end do_doubles */
 
 	    } /* k */
 	  } /* j */
@@ -319,6 +320,7 @@ void cc3_sigma_UHF_BBB(dpdbuf4 *Cmnef, dpdbuf4 *Wabei, dpdbuf4 *Wmbij,
           }
 
           if (do_doubles) {
+
 	      /* t_ijab <-- t_ijkabc F_kc */
 	      Gc = Gk;    /* assumes Fme is totally symmetric */
 	      Gab = Gij;  /* Assumes tijab is totally symmetric */

@@ -228,9 +228,9 @@ void diagSS(int C_irr) {
       dpd_file2_close(&Cme);
     }
   }
+  */
 
   fflush(outfile);
-  */
 
   /* Setup residual vector file */
   dpd_file2_init(&RIA, EOM_R, C_irr, 0, 1, "RIA");
