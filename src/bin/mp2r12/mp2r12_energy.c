@@ -347,7 +347,14 @@ void mp2r12_energy(void)
       print_mat(V[spin],ntri_docc_act,ntri_docc_act,outfile);
       fprintf(outfile,"\n");
       
-      fprintf(outfile," %s B-matrix (the difference between the unit matrix and its\n ???? representation in this basis)::\n",
+      if (ndocc == ndocc_act) {
+	fprintf(outfile," %s T-matrix:\n",
+		(spin == 0) ? "Singlet" : "Triplet");
+	print_mat(T_full[spin],ntri_docc_act,ntri_docc_act,outfile);
+	fprintf(outfile,"\n");
+	fflush(outfile);
+      }
+      fprintf(outfile," %s B-matrix (the difference between the unit matrix and its\n ???? representation in this basis):\n",
 	      (spin == 0) ? "Singlet" : "Triplet");
       print_mat(B[spin],ntri_docc_act,ntri_docc_act,outfile);
       fprintf(outfile,"\n");
