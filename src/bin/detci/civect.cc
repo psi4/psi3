@@ -540,7 +540,7 @@ void CIvect::set(unsigned long vl, int nb, int incor, int ms0, int *iac,
    // MLL 5/7/98: Want to know the subblock length of a vector //
    if (first) {
      if (Parameters.print_lvl) {
-        fprintf(outfile,"\n CI vector/subblock length = %d\n", buffer_size);
+        fprintf(outfile,"\n CI vector/subblock length = %ld\n", buffer_size);
         fflush(outfile);
         }
      first=0;
