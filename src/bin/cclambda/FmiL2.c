@@ -101,8 +101,8 @@ void FmiL2(void)
     dpd_buf4_close(&newLIJAB);
 
     /** L(Ij,Ab) <-- L(Im,Ab) F(j,m) - F(I,M) L(Mj,Ab) **/
-    dpd_buf4_init(&LIjAb, CC_LAMPS, 0, 0, 5, 0, 5, 0, "LIjAb");
-    dpd_buf4_init(&newLIjAb, CC_LAMPS, 0, 0, 5, 0, 5, 0, "New LIjAb");
+    dpd_buf4_init(&LIjAb, CC_LAMPS, 0, 22, 28, 22, 28, 0, "LIjAb");
+    dpd_buf4_init(&newLIjAb, CC_LAMPS, 0, 22, 28, 22, 28, 0, "New LIjAb");
     dpd_contract424(&LIjAb, &LFmit2, &newLIjAb, 1, 1, 1, -1, 1);
     dpd_contract244(&LFMIt2, &LIjAb, &newLIjAb, 1, 0, 0, -1, 1);
     dpd_buf4_close(&LIjAb);

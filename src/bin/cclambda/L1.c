@@ -271,20 +271,20 @@ void L1_build(void) {
     dpd_file2_init(&GAE, CC_OEI, 0, 1, 1, "GAE");
     dpd_file2_init(&Gae, CC_OEI, 0, 3, 3, "Gae");
 
-    dpd_buf4_init(&WAMEF, CC_HBAR, 0, 20, 5, 20, 7, 0, "WAMEF");
-    dpd_dot23(&GAE,&WAMEF,&newLIA, 0, 0, -1, 1);
+    dpd_buf4_init(&WAMEF, CC_HBAR, 0, 21, 5, 21, 7, 0, "WAMEF");
+    dpd_dot13(&GAE,&WAMEF,&newLIA, 0, 0, -1, 1);
     dpd_buf4_close(&WAMEF);
 
-    dpd_buf4_init(&WaMeF, CC_HBAR, 0, 24, 29, 24, 29, 0, "WaMeF");
-    dpd_dot23(&Gae,&WaMeF,&newLIA, 0, 0, -1, 1);
+    dpd_buf4_init(&WaMeF, CC_HBAR, 0, 25, 29, 25, 29, 0, "WaMeF");
+    dpd_dot13(&Gae,&WaMeF,&newLIA, 0, 0, -1, 1);
     dpd_buf4_close(&WaMeF);
 
-    dpd_buf4_init(&Wamef, CC_HBAR, 0, 30, 15, 30, 17, 0, "Wamef");
-    dpd_dot23(&Gae,&Wamef,&newLia, 0, 0, -1, 1);
+    dpd_buf4_init(&Wamef, CC_HBAR, 0, 31, 15, 31, 17, 0, "Wamef");
+    dpd_dot13(&Gae,&Wamef,&newLia, 0, 0, -1, 1);
     dpd_buf4_close(&Wamef);
 
-    dpd_buf4_init(&WAmEf, CC_HBAR, 0, 27, 28, 27, 28, 0, "WAmEf");
-    dpd_dot23(&GAE,&WAmEf,&newLia, 0, 0, -1.0, 1.0);
+    dpd_buf4_init(&WAmEf, CC_HBAR, 0, 26, 28, 26, 28, 0, "WAmEf");
+    dpd_dot13(&GAE,&WAmEf,&newLia, 0, 0, -1.0, 1.0);
     dpd_buf4_close(&WAmEf);
 
     dpd_file2_close(&Gae);

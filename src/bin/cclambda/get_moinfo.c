@@ -74,10 +74,10 @@ void get_moinfo(void)
   }
   else if(params.ref == 2) { /** UHF **/
 
-    moinfo.aoccpi = init_int_array(nirreps);
-    moinfo.boccpi = init_int_array(nirreps);
-    moinfo.avirtpi = init_int_array(nirreps);
-    moinfo.bvirtpi = init_int_array(nirreps);
+    moinfo.aoccpi = init_int_array(moinfo.nirreps);
+    moinfo.boccpi = init_int_array(moinfo.nirreps);
+    moinfo.avirtpi = init_int_array(moinfo.nirreps);
+    moinfo.bvirtpi = init_int_array(moinfo.nirreps);
 
     psio_read_entry(CC_INFO, "Active Alpha Occ Orbs Per Irrep",
 		    (char *) moinfo.aoccpi, sizeof(int)*moinfo.nirreps);
@@ -137,9 +137,9 @@ void get_moinfo(void)
   }
   else if(params.ref == 2) { /** UHF **/
 
-    Ca = (double ***) malloc(nirreps * sizeof(double **));
+    Ca = (double ***) malloc(moinfo.nirreps * sizeof(double **));
     next = PSIO_ZERO;
-    for(h=0; h < nirreps; h++) {
+    for(h=0; h < moinfo.nirreps; h++) {
       if(moinfo.orbspi[h] && moinfo.avirtpi[h]) {
         Ca[h] = block_matrix(moinfo.orbspi[h],moinfo.avirtpi[h]);
         psio_read(CC_INFO, "UHF Active Alpha Virtual Orbs", (char *) Ca[h][0],
@@ -149,9 +149,9 @@ void get_moinfo(void)
     moinfo.Ca = Ca;
 
 
-    Cb = (double ***) malloc(nirreps * sizeof(double **));
+    Cb = (double ***) malloc(moinfo.nirreps * sizeof(double **));
     next = PSIO_ZERO;
-    for(h=0; h < nirreps; h++) {
+    for(h=0; h < moinfo.nirreps; h++) {
       if(moinfo.orbspi[h] && moinfo.bvirtpi[h]) {
         Cb[h] = block_matrix(moinfo.orbspi[h],moinfo.bvirtpi[h]);
         psio_read(CC_INFO, "UHF Active Beta Virtual Orbs", (char *) Cb[h][0],

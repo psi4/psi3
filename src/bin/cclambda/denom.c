@@ -21,6 +21,16 @@ void denom_uhf(void)
   dpdfile4 dIJAB, dijab, dIjAb;
   double Fii, Fjj, Faa, Fbb;
 
+  nirreps = moinfo.nirreps;
+  aoccpi = moinfo.aoccpi; 
+  boccpi = moinfo.boccpi; 
+  avirtpi = moinfo.avirtpi;
+  bvirtpi = moinfo.bvirtpi;
+  aocc_off = moinfo.aocc_off;
+  bocc_off = moinfo.bocc_off;
+  avir_off = moinfo.avir_off;
+  bvir_off = moinfo.bvir_off;
+
   dpd_file2_init(&LFMIt, CC_OEI, 0, 0, 0, "FMI");
   dpd_file2_mat_init(&LFMIt);
   dpd_file2_mat_rd(&LFMIt);
