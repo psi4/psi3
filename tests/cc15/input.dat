@@ -7,7 +7,7 @@ default: (
   wfn = bccd_t
   reference = rhf
   dertype = none
-  frozen_docc = (1 0 0 0)
+  freeze_core = true
 )
 
 input: (
