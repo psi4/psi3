@@ -3,6 +3,7 @@
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
 #include <libfile30/file30.h>
+#include <libchkpt/chkpt.h>
 #include <psifiles.h>
 
 #include "input.h"
@@ -10,11 +11,14 @@
 #define EXTERN
 #include "global.h"
 
+#include "float.h"
+#include "linalg.h"
 
 void init_oldcalc()
 {
   int s, ncalcs;
-  
+
+#if 0
   /*--- initialize the old checkpoint file ---*/
   file30_init();
 
@@ -107,6 +111,88 @@ void init_oldcalc()
 
   /*--- Done with the checkpoint file ---*/
   file30_close();
+#else
+  /*--- initialize the old checkpoint file ---*/
+  chkpt_init();
+
+  /*--- check if the symmetry is the same ---*/
+  Oldcalc.symmetry = chkpt_rd_sym_label();
+  if (strncmp(Oldcalc.symmetry,symmetry,3)) {
+      fprintf(outfile,"  Old file30 uses different point group from the current one\n");
+      fprintf(outfile,"  Will continue without the MO projection\n");
+      fprintf(stderr,"  Old file30 uses different point group from the current one\n");
+      fprintf(stderr,"  Will continue without the MO projection\n");
+      chkpt_mos = 0;
+      chkpt_close();
+      return;
+  }
+  Oldcalc.nirreps = chkpt_rd_nirreps();
+
+  /*--- read the old geometry ---*/
+  Oldcalc.natom = chkpt_rd_natom();
+  Oldcalc.geometry = chkpt_rd_geom();
+
+  /*--- read the old basis ---*/
+  Oldcalc.num_ao = chkpt_rd_nao();
+  Oldcalc.num_so = chkpt_rd_nso();
+  Oldcalc.sopi = chkpt_rd_sopi();
+  Oldcalc.num_shells = chkpt_rd_nshell();
+  Oldcalc.num_prims = chkpt_rd_nprim();
+  Oldcalc.exponents = chkpt_rd_exps();
+  Oldcalc.contr_coeff = chkpt_rd_contr_full();
+  Oldcalc.shell_nucleus = chkpt_rd_snuc();
+  Oldcalc.first_prim_shell = chkpt_rd_sprim();
+  Oldcalc.shell_ang_mom = chkpt_rd_stype();
+  Oldcalc.nprim_in_shell = chkpt_rd_snumg();
+  Oldcalc.first_ao_shell = chkpt_rd_sloc();
+  Oldcalc.usotao = chkpt_rd_usotao();
+
+  /*--- Convert to C-numbering ---*/
+  Oldcalc.max_angmom = 0;
+  for(s=0;s<Oldcalc.num_shells;s++) {
+      Oldcalc.shell_nucleus[s]--;
+      Oldcalc.shell_ang_mom[s]--;
+      Oldcalc.first_ao_shell[s]--;
+      Oldcalc.first_prim_shell[s]--;
+      if (Oldcalc.shell_ang_mom[s] > Oldcalc.max_angmom)
+	  Oldcalc.max_angmom = Oldcalc.shell_ang_mom[s];
+  }
+
+  /*--- read the old SCF eigenvector, RHF case so far ---*/
+  Oldcalc.ref = chkpt_rd_ref();
+  if (Oldcalc.ref == ref_rhf   ||
+      Oldcalc.ref == ref_rohf  ||
+      Oldcalc.ref == ref_tcscf ||
+      Oldcalc.ref == ref_rks)
+      Oldcalc.spinrestr_ref = 1;
+  else if (Oldcalc.ref == ref_uhf   ||
+	   Oldcalc.ref == ref_uks)
+      Oldcalc.spinrestr_ref = 0;
+  else {
+      fprintf(outfile,"  Input is not aware of reference type %d\n",Oldcalc.ref);
+      fprintf(outfile,"  Will continue without the MO projection\n");
+      chkpt_mos = 0;
+      chkpt_close();
+      return;
+  }
+
+  Oldcalc.iopen = chkpt_rd_iopen();
+  Oldcalc.num_mo = chkpt_rd_nmo();
+  Oldcalc.orbspi = chkpt_rd_orbspi();
+  Oldcalc.clsdpi = chkpt_rd_clsdpi();
+  Oldcalc.openpi = chkpt_rd_openpi();
+  Oldcalc.escf = chkpt_rd_escf();
+  if (Oldcalc.spinrestr_ref) { /* Spin-restricted case */
+      Oldcalc.scf_evect_so = chkpt_rd_scf();
+  }
+  else { /* Spin-unrestricted case */
+      Oldcalc.scf_evect_so_alpha = chkpt_rd_alpha_scf();
+      Oldcalc.scf_evect_so_beta = chkpt_rd_beta_scf();
+  }
+
+  /*--- Done with the checkpoint file ---*/
+  chkpt_close();
+#endif
   
   return;
 }
@@ -140,14 +226,14 @@ void cleanup_oldcalc()
 
 void store_oldcalc()
 {
-  double **S12;
+  FLOAT **S12;
 
   if (max_angmom > Oldcalc.max_angmom)
     init_gto(max_angmom);
   else
     init_gto(Oldcalc.max_angmom);
 
-  S12 = overlap_new_old();
+  S12 = overlap_new_old_float();
   
   /*--- write things out ---*/
   psio_open(PSIF_OLD_CHKPT, PSIO_OPEN_NEW);
@@ -182,8 +268,8 @@ void store_oldcalc()
 	       Oldcalc.num_so*Oldcalc.num_mo*sizeof(double));
   }
   psio_write_entry(PSIF_OLD_CHKPT, ":PrevCalc:New-Old basis overlap", (char*) S12[0],
-	     num_so*Oldcalc.num_so*sizeof(double));
+	     num_so*Oldcalc.num_so*sizeof(FLOAT));
   psio_close(PSIF_OLD_CHKPT, 1);
 
-  free_block(S12);
+  delete_matrix(S12);
 }

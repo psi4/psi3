@@ -22,6 +22,15 @@ void read_cart()
   else if (num_allatoms > MAXATOM)
     punt("There are more atoms than allowed!");
 
+  num_atoms = 0;
+  for(i=0;i<num_allatoms;i++){
+    errcod = ip_string("GEOMETRY",&atom_label,2,i,0);
+    if (errcod != IPE_OK)
+      punt("Problem with the GEOMETRY array.");
+    if (strcmp(atom_label,"X"))
+      ++num_atoms;
+  }
+
   /*-----------------------
     Allocate global arrays
    -----------------------*/
