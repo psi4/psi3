@@ -42,6 +42,7 @@ void WmnefDD(int i, int C_irr) {
     dpd_buf4_close(&Z);
     dpd_buf4_init(&Z, EOM_TMP, C_irr, 0, 5, 0, 5, 0, "WmnefDD Z(jI,bA)");
     dpd_buf4_axpy(&Z, &SIjAb, -1.0);
+    dpd_buf4_close(&Z);
     dpd_buf4_close(&SIjAb);
 
 #ifdef EOM_DEBUG
