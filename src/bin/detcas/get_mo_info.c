@@ -32,9 +32,15 @@ void get_mo_info(void)
    int size;
    double *eig_unsrt;
 
+   /* set these to NULL so we'll know which one(s) to free in cleanup */
+   CalcInfo.mo_hess = NULL;
+   CalcInfo.mo_hess_diag = NULL;
+
+   /* information from checkpoint file */
    chkpt_init(PSIO_OPEN_OLD);
    CalcInfo.nirreps = chkpt_rd_nirreps();
-   CalcInfo.nbfso = chkpt_rd_nmo();
+   CalcInfo.nmo = chkpt_rd_nmo();
+   CalcInfo.nbfso = chkpt_rd_nmo(); /* change to nbfso after conversion */
    CalcInfo.labels = chkpt_rd_irr_labs();
    CalcInfo.orbs_per_irr = chkpt_rd_orbspi();
    CalcInfo.enuc = chkpt_rd_enuc();
@@ -188,7 +194,7 @@ void get_mo_info(void)
     for (i=0; i<CalcInfo.nirreps; i++) {
       fprintf(outfile, "%2d ", CalcInfo.frozen_docc[i]);
     }
-    fprintf(outfile, "\n   RESTR_DOCC   = ");
+    fprintf(outfile, "\n   RESTR_DOCC    = ");
     for (i=0; i<CalcInfo.nirreps; i++) {
       fprintf(outfile, "%2d ", CalcInfo.rstr_docc[i]);
     }
@@ -200,7 +206,7 @@ void get_mo_info(void)
     for (i=0; i<CalcInfo.nirreps; i++) {
       fprintf(outfile, "%2d ", CalcInfo.socc[i]);
     }
-    fprintf(outfile, "\n   RESTR_UOCC   = ");
+    fprintf(outfile, "\n   RESTR_UOCC    = ");
     for (i=0; i<CalcInfo.nirreps; i++) {
       fprintf(outfile, "%2d ", CalcInfo.rstr_uocc[i]);
     }

@@ -47,15 +47,23 @@ extern "C" {
                              int dst_offset, int *dst2src);
    extern void calc_dE_dT(int n, double **dEU, int npairs, int *ppair, 
                           int *qpair, double *theta, double *dET);
+   extern void form_appx_diag_mo_hess(int npairs, int *ppair, int *qpair, 
+                                 double *F_core, double *tei, double **opdm, 
+                                 double *tpdm, double *F_act, int firstact, 
+                                 int lastact, double *hess);
    extern void form_diag_mo_hess(int npairs, int *ppair, int *qpair, 
                                  double *F_core, double *tei, double **opdm, 
                                  double *tpdm, double *F_act, int firstact, 
                                  int lastact, double *hess);
-   extern void form_diag_mo_hess2(int npairs, int *ppair, int *qpair, 
-                                 double *F_core, double *tei, double **opdm, 
-                                 double *tpdm, double *F_act, int firstact, 
-                                 int lastact, double *hess);
+   extern void form_full_mo_hess(int npairs, int *ppair, int *qpair, 
+                            double *oei, double *tei, double **opdm, 
+                            double *tpdm, double **lag, double **hess);
+   extern void form_diag_mo_hess_yy(int npairs, int *ppair, int *qpair, 
+                            double *oei, double *tei, double **opdm, 
+                            double *tpdm, double **lag, double *hess);
    extern void calc_orb_step(int npairs, double *grad, double *hess_diag, 
+                             double *theta);
+   extern void calc_orb_step_full(int npairs, double *grad, double **hess, 
                              double *theta);
    extern int print_step(int npairs, int steptype);
    extern void postmult_by_U(int irrep, int dim, double **mo_coeffs,
@@ -64,6 +72,9 @@ extern "C" {
    extern void premult_by_U(int irrep, int dim, double **mo_coeffs,
                             int npairs, int *p_arr, int *q_arr, 
                             double *theta_arr);
+   extern void postmult_by_exp_R(int irrep, int dim, double **mat,
+                                 int npairs, int *p_arr, int *q_arr, 
+                                 double *theta_arr);
    extern void cleanup(void);
 }
 
@@ -136,9 +147,9 @@ int main(int argc, char *argv[])
   }
 
   form_F_act();
-  calc_hessian();
   calc_gradient();
   converged = check_conv();
+  calc_hessian();
   scale_gradient();
 
   if (!converged) {
@@ -228,6 +239,7 @@ void calc_gradient(void)
   int pair, npair, h, ir_npairs, ir_norbs, offset;
   double *ir_mo_grad, **ir_lag, *ir_theta_cur, value, rms;
   int *parr, *qarr, *ir_ppair, *ir_qpair;
+  int p, q;
 
   npair = IndPairs.get_num_pairs();
   parr  = IndPairs.get_p_ptr();
@@ -274,18 +286,28 @@ void calc_gradient(void)
       print_mat(ir_lag, ir_norbs, ir_norbs, outfile);
     }
 
-    // Calc dEdU
-    premult_by_U(h, CalcInfo.orbs_per_irr[h], ir_lag, ir_npairs,
-                 ir_ppair, ir_qpair, ir_theta_cur);
+    if (Params.use_thetas) {
+      // Calc dEdU
+      premult_by_U(h, CalcInfo.orbs_per_irr[h], ir_lag, ir_npairs,
+                   ir_ppair, ir_qpair, ir_theta_cur);
 
-    if (Params.print_lvl > 3) {
-      fprintf(outfile, "dE/dU:\n", h);
-      print_mat(ir_lag, ir_norbs, ir_norbs, outfile);
+      if (Params.print_lvl > 3) {
+        fprintf(outfile, "dE/dU:\n", h);
+        print_mat(ir_lag, ir_norbs, ir_norbs, outfile);
+      }
+
+      // Calculate dEdTheta
+      calc_dE_dT(CalcInfo.orbs_per_irr[h], ir_lag, ir_npairs,
+                 ir_ppair, ir_qpair, ir_theta_cur, ir_mo_grad);
     }
 
-    // Calculate dEdTheta
-    calc_dE_dT(CalcInfo.orbs_per_irr[h], ir_lag, ir_npairs,
-               ir_ppair, ir_qpair, ir_theta_cur, ir_mo_grad);
+    /* non-theta version */
+    else {
+      for (pair=0; pair<ir_npairs; pair++) {
+        p = ir_ppair[pair];  q = ir_qpair[pair];
+        ir_mo_grad[pair] = ir_lag[p][q] - ir_lag[q][p];
+      }
+    }
 
     // Put dEdTheta into the large gradient array
     IndPairs.put_irrep_vec(h, ir_mo_grad, CalcInfo.mo_grad);
@@ -329,32 +351,51 @@ void calc_hessian(void)
   ppair = IndPairs.get_p_ptr();
   qpair = IndPairs.get_q_ptr();
 
-  /* allocate space for diagonal elements of MO Hessian */
-  CalcInfo.mo_hess_diag = init_array(npairs);
-
   /* Now calculate the approximate diagonal MO Hessian */
   ncore = CalcInfo.num_fzc_orbs + CalcInfo.num_cor_orbs;
 
   if (strcmp(Params.hessian, "DIAG") == 0) {
-    form_diag_mo_hess2(npairs, ppair, qpair, CalcInfo.onel_ints, 
-                      CalcInfo.twoel_ints, CalcInfo.opdm, CalcInfo.tpdm, 
-                      CalcInfo.F_act, ncore, CalcInfo.npop, 
-                      CalcInfo.mo_hess_diag);
-    }
-  else if (strcmp(Params.hessian, "APPROX_DIAG") == 0) {
-    form_diag_mo_hess(npairs, ppair, qpair, CalcInfo.onel_ints, 
-                      CalcInfo.twoel_ints, CalcInfo.opdm, CalcInfo.tpdm, 
-                      CalcInfo.F_act, ncore, CalcInfo.npop, 
-                      CalcInfo.mo_hess_diag);
-    }
-  else {
-    fprintf(outfile, "(detcas): Unrecognized Hessian option %s\n", Params.hessian);
-    }
- 
+    CalcInfo.mo_hess_diag = init_array(npairs);
+    
+    if (Params.use_fzc_h == 1) 
+      form_diag_mo_hess(npairs, ppair, qpair, CalcInfo.onel_ints, 
+        CalcInfo.twoel_ints, CalcInfo.opdm, CalcInfo.tpdm, CalcInfo.F_act, 
+        ncore, CalcInfo.npop, CalcInfo.mo_hess_diag);
+    else
+      form_diag_mo_hess_yy(npairs, ppair, qpair, CalcInfo.onel_ints, 
+        CalcInfo.twoel_ints, CalcInfo.opdm, CalcInfo.tpdm, CalcInfo.lag,
+        CalcInfo.mo_hess_diag);
 
-  if (Params.print_lvl > 3)
-    IndPairs.print_vec(CalcInfo.mo_hess_diag, 
-                       "\n\tApproximate Diagonal MO Hessian:", outfile);
+    if (Params.print_lvl > 3)  
+      IndPairs.print_vec(CalcInfo.mo_hess_diag,"\n\tDiagonal MO Hessian:", 
+        outfile);
+  }
+  else if (strcmp(Params.hessian, "APPROX_DIAG") == 0) {
+    CalcInfo.mo_hess_diag = init_array(npairs);
+    form_appx_diag_mo_hess(npairs, ppair, qpair, CalcInfo.onel_ints, 
+                      CalcInfo.twoel_ints, CalcInfo.opdm, CalcInfo.tpdm, 
+                      CalcInfo.F_act, ncore, CalcInfo.npop, 
+                      CalcInfo.mo_hess_diag);
+    if (Params.print_lvl > 3)  
+      IndPairs.print_vec(CalcInfo.mo_hess_diag,"\n\tAppx Diagonal MO Hessian:", 
+        outfile);
+  }
+  else if (strcmp(Params.hessian, "FULL") == 0) {
+    CalcInfo.mo_hess = block_matrix(npairs,npairs);
+    form_full_mo_hess(npairs, ppair, qpair, CalcInfo.onel_ints, 
+      CalcInfo.twoel_ints, CalcInfo.opdm, CalcInfo.tpdm, CalcInfo.lag,
+      CalcInfo.mo_hess);
+    if (Params.print_lvl > 3) {
+      fprintf(outfile, "\nMO Hessian:\n");
+      print_mat(CalcInfo.mo_hess,npairs,npairs,outfile);
+      fprintf(outfile, "\n");
+    }
+  }
+  else {
+    fprintf(outfile, "(detcas): Unrecognized Hessian option %s\n", 
+      Params.hessian);
+  }
+ 
 
 }
 
@@ -375,9 +416,19 @@ void scale_gradient(void)
   CalcInfo.theta_step = init_array(npairs);
 
   // All this actually does is scale the gradient by the Hessian
-  if (Params.scale_grad)
+  // If we have a diagonal (exact or approximate) Hessian
+  if (Params.scale_grad && 
+      (strcmp(Params.hessian,"DIAG")==0 || 
+       strcmp(Params.hessian,"APPROX_DIAG")==0)) {
     calc_orb_step(npairs, CalcInfo.mo_grad, CalcInfo.mo_hess_diag,
-                  CalcInfo.theta_step);
+      CalcInfo.theta_step);
+  }
+  // If we have the full Hessian
+  else if (Params.scale_grad && strcmp(Params.hessian,"FULL")==0) {
+    calc_orb_step_full(npairs, CalcInfo.mo_grad, CalcInfo.mo_hess,
+      CalcInfo.theta_step);
+  }
+  // No Hessian available: take unit step down gradient direction
   else {
     for (pair=0; pair<npairs; pair++) 
       CalcInfo.theta_step[pair] = CalcInfo.mo_grad[pair];
@@ -419,6 +470,14 @@ int take_step(void)
   int npairs, pair, took_diis;
   
   npairs = IndPairs.get_num_pairs();
+
+  /* for debugging purposes */
+  if (Params.force_step) {
+    CalcInfo.theta_cur[Params.force_pair] = Params.force_value;
+    fprintf(outfile, "Forcing step for pair %d of size %8.3E\n",
+      Params.force_pair, Params.force_value);
+    return(1);
+  }
 
   for (pair=0; pair<npairs; pair++) 
     CalcInfo.theta_cur[pair] += CalcInfo.theta_step[pair];
@@ -476,8 +535,12 @@ void rotate_orbs(void)
         print_mat(CalcInfo.mo_coeffs[h], ir_norbs, ir_norbs, outfile);
       }
 
-      postmult_by_U(h, ir_norbs, CalcInfo.mo_coeffs[h], ir_npairs, 
-                    ir_ppair, ir_qpair, ir_theta);
+      if (Params.use_thetas)
+        postmult_by_U(h, ir_norbs, CalcInfo.mo_coeffs[h], ir_npairs, 
+          ir_ppair, ir_qpair, ir_theta);
+      else
+        postmult_by_exp_R(h, ir_norbs, CalcInfo.mo_coeffs[h], ir_npairs,
+          ir_ppair, ir_qpair, ir_theta);
 
       /* print new coefficients */
       if (Params.print_mos) {

@@ -315,7 +315,7 @@ void IndepPairs::print_vec(double *arr, char *label, FILE *outfile)
 
   fprintf(outfile, "%s\n", label);
   for (pair=0; pair<npairs; pair++) {
-    fprintf(outfile, "Pair (%2d,%2d) = %12.6lf\n",
+    fprintf(outfile, "Pair (%2d,%2d) = %12.7lf\n",
             p[pair], q[pair], arr[pair]);
   }
   fprintf(outfile, "\n");

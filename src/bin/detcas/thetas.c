@@ -38,7 +38,64 @@ void postmult_by_U(int irrep, int dim, double **mat,
     sintheta = sin(theta);
     C_DROT(dim,&(mat[0][q]),dim,&(mat[0][p]),dim,costheta,sintheta);
   }
+}
 
+
+/*
+** postmult_by_exp_R()
+** 
+** Postmultiply a block matrix (must be contiguous memory!) by a
+**  unitary matrix U parameterized as e^R with R an antisymmetric
+**  matrix (based on formalism of notes by Yukio Yamaguchi)
+**
+*/
+void postmult_by_exp_R(int irrep, int dim, double **mat,
+  int npairs, int *p_arr, int *q_arr, double *theta_arr)
+{
+
+  int p, q, pair;
+  double **R, **U, **C0, tval;
+
+  U = block_matrix(dim,dim);
+  R = block_matrix(dim,dim);
+  C0= block_matrix(dim,dim);
+
+  /* hm, warning, can't handle nbfso != nmo */
+  for (p=0; p<dim; p++) {
+    for (q=0; q<dim; q++) {
+      C0[p][q] = mat[p][q];
+    }
+  }
+
+  for (pair=0; pair<npairs; pair++) {
+    p = *p_arr++; 
+    q = *q_arr++;
+    tval = *theta_arr++;
+    R[p][q] = tval;
+    U[p][q] = tval;
+    R[q][p] = -tval;
+    U[q][p] = -tval;
+  }
+
+  /* U = U + 1/2 R*R */
+  /* can you pass the same matrix twice to DGEMM?? */
+  C_DGEMM('n','n',dim,dim,dim,0.5,&(R[0][0]),dim,&(R[0][0]),dim,1.0,
+          &(U[0][0]),dim);
+
+  /* U += I */
+  for (p=0; p<dim; p++) {
+    U[p][p] += 1.0;
+  }
+
+  schmidt(U,dim,dim,outfile);
+
+  /* C = C0 * U */
+  C_DGEMM('n','n',dim,dim,dim,1.0,&(C0[0][0]),dim,&(U[0][0]),dim,0.0,
+          &(mat[0][0]),dim);  
+  
+  free_block(C0);
+  free_block(U);
+  free_block(R);
 }
 
 

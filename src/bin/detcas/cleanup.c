@@ -54,7 +54,8 @@ void cleanup(void)
   free_block(CalcInfo.lag);
   free(CalcInfo.F_act);
   free(CalcInfo.mo_grad);
-  free(CalcInfo.mo_hess_diag);
+  if (CalcInfo.mo_hess_diag != NULL) free(CalcInfo.mo_hess_diag);
+  if (CalcInfo.mo_hess != NULL) free_block(CalcInfo.mo_hess);
   free(CalcInfo.theta_cur);
   free(CalcInfo.theta_step);
   free(CalcInfo.orbs_per_irr);

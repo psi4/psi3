@@ -14,6 +14,9 @@
 */
 struct calcinfo {
   int iter;              /* iteration number */
+  int nmo;               /* number of molecular orbitals... the code often
+                            uses nbfso instead but it shouldn't in case
+                            of linear dependencies */
   int nbfso;             /* number of basis functions in symmetry orbitals */
   int nbstri;            /* num elements in lwr diag matrix nbfso big */
   int nbfao;             /* number of basis functions in atomic orbitals */
@@ -62,6 +65,7 @@ struct calcinfo {
   double mo_grad_rms;    /* the RMS of the MO gradient */
   double scaled_mo_grad_rms; 
   double *mo_hess_diag;  /* the MO Hessian, diagonal elements only         */
+  double **mo_hess;      /* full MO Hessian */
   double *theta_cur;     /* current orbital rotation angles */
   double *theta_step;    /* step in orbital rotation angles */
   };

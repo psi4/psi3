@@ -6,7 +6,6 @@
 ** 1998
 */
 
-
 /*
 ** parameters structure: holds user-specified parameters
 */
@@ -26,7 +25,7 @@ struct params {
    int tpdm_erase;          /* erase twopdm after reading?                  */
    int lag_file;            /* file number for lagrangian                   */
    int lag_erase;           /* erase lagrangian after reading?              */
-   int fci;                 /* do a FULL ci calc?  (affects independent prs */
+   int fci;                 /* do a FULL ci calc? (affects independent prs) */
    int fzc;                 /* do implicit frozen core (remove those orbs)? */
                             /* the alternative is a "restricted core" calc  */
    int filter_ints;         /* filter out the frozen orbital integrals?     */
@@ -37,6 +36,20 @@ struct params {
    int diis_max_vecs;       /* how many vectors maximum to hold?            */
    double scale_step;       /* stepsize scaling factor                      */
    char *hessian;           /* string describing type of MO Hessian         */
-                            /* DIAG, APPROX_DIAG, or FULL (FULL not yet in) */
+                            /* DIAG, APPROX_DIAG, or FULL                   */
+   int use_fzc_h;           /* Use frozen-core operator h?(1) Or bare h?(0) */
+                            /* this determines which onel ints are read     */ 
+   int level_shift;         /* Allow for level shifting of the hessian?     */
+   double shift;            /* How much do I level shift the hessian        */
+   double determ_min;       /* Min det of MO Hessian before levelshift      */
+   double step_max;         /* Biggest single allowed theta step            */
+   int invert_hessian;      /* If=1, directly invert the Hessian, 
+                               if=0, solve linear equations H delta = -g    */
+   int use_thetas;          /* If=1, use Givens matrix formalism,
+                               if=0, use YY 2nd-order expansion U=e^R       */
+   int force_step;          /* Ignore usual updating and force a user
+                               specified step?  (For debugging)             */
+   int force_pair;          /* If force_step=1, which indep pair to step?   */
+   double force_value;      /* If force_step=1, how far to step?            */
   };
 

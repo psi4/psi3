@@ -62,6 +62,17 @@ void get_parameters(void)
   Params.diis_min_vecs = 2;
   Params.diis_max_vecs = 8;
   Params.scale_step = 1.0;
+  Params.use_fzc_h = 1;
+  Params.level_shift = 1;      /* levelshift by default */
+  Params.shift = 0.01;         /* default shift value if level_shift=1 */
+  Params.determ_min = 0.00001; /* lowest allowed MO Hess before levelshift */
+  Params.step_max = 0.30;      /* max allowed theta step */
+  Params.invert_hessian = 1;   /* directly invert MO Hessian instead
+                                  of solving system of linear equations for
+                                  orbital step if full Hessian available */
+  Params.force_step = 0;       /* ignore usual step and force user-given */
+  Params.force_pair = 0;       /* which pair to force a step along */
+  Params.force_value = 0.0;    /* how far to step along forced direction */
 
   errcod = ip_data("PRINT","%d",&(Params.print_lvl),0);
   errcod = ip_boolean("PRINT_MOS",&(Params.print_mos),0);
@@ -84,20 +95,30 @@ void get_parameters(void)
   errcod = ip_data("DIIS_MIN_VECS","%d",&(Params.diis_min_vecs),0);
   errcod = ip_data("DIIS_MAX_VECS","%d",&(Params.diis_max_vecs),0);
   errcod = ip_data("SCALE_STEP","%lf",&(Params.scale_step),0);
+  errcod = ip_boolean("USE_FZC_H",&(Params.use_fzc_h),0);
+  errcod = ip_boolean("INVERT_HESSIAN",&(Params.invert_hessian),0);
   errcod = ip_string("HESSIAN",&(Params.hessian),0);
   if (errcod == IPE_KEY_NOT_FOUND) {
     Params.hessian = (char *) malloc(sizeof(char)*12);
     strcpy(Params.hessian, "APPROX_DIAG");
   }
-  if (strcmp(Params.hessian, "FULL")==0) {
-    strcpy(Params.hessian, "APPROX_DIAG");
-    fprintf(outfile, "(detcas): FULL Hessian not yet available\n");
-  } 
-  if ((strcmp(Params.hessian, "FULL")!=0) && (strcmp(Params.hessian, "DIAG")!=0) &&
+  if ((strcmp(Params.hessian, "FULL")!=0) && 
+      (strcmp(Params.hessian, "DIAG")!=0) &&
       (strcmp(Params.hessian, "APPROX_DIAG")!=0)) {
-    fprintf(outfile, "(detcas): Unrecognized Hessian option %s\n", Params.hessian);
+    fprintf(outfile, "(detcas): Unrecognized Hessian option %s\n", 
+      Params.hessian);
     exit(0);
   }
+
+  errcod = ip_boolean("LEVEL_SHIFT",&(Params.level_shift),0);
+  errcod = ip_data("SHIFT","%lf",&(Params.shift),0);
+  errcod = ip_data("DETERM_MIN","%lf",&(Params.determ_min),0);
+  errcod = ip_data("MAX_STEP","%lf",&(Params.step_max),0);
+  errcod = ip_boolean("USE_THETAS",&(Params.use_thetas),0);
+  errcod = ip_boolean("FORCE_STEP",&(Params.force_step),0);
+  errcod = ip_data("FORCE_PAIR","%d",&(Params.force_pair),0);
+  errcod = ip_data("FORCE_VALUE","%lf",&(Params.force_value),0);
+
 }
 
 
@@ -129,8 +150,12 @@ void print_parameters(void)
       Params.diis_start, Params.diis_freq);
   fprintf(outfile, "   DIIS MIN VECS =   %6d      DIIS MAX VECS =   %6d\n", 
       Params.diis_min_vecs, Params.diis_max_vecs);
-  fprintf(outfile, "   SCALE STEP    =   %6.2E    HESSIAN       =   %-12s\n",
-      Params.scale_step, Params.hessian);
+  fprintf(outfile, "   SCALE STEP    =   %6.2E    MAX STEP      =   %6.2lf\n",
+      Params.scale_step, Params.step_max);
+  fprintf(outfile, "   LEVEL SHIFT   =   %6s      SHIFT         =   %6.2lf\n",
+      Params.level_shift ? "yes" : "no", Params.shift);
+  fprintf(outfile, "   USE FZC H     =   %6s      HESSIAN       = %-12s\n",
+      Params.use_fzc_h ? "yes" : "no", Params.hessian);
   fprintf(outfile, "\n") ;
   fflush(outfile) ;
 }
