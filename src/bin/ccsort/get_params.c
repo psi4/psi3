@@ -58,11 +58,13 @@ void get_params()
   }
   else params.aobasis = strdup("NONE");
 
-  params.make_abcd = 1;
-  if(!strcmp(params.wfn,"MP2") && !strcmp(params.aobasis,"NONE")) {
+  if(strcmp(params.wfn,"MP2") || !strcmp(params.aobasis,"NONE")) {
     params.make_abcd = 0;
   }
-
+  else {
+    params.make_abcd = 1;
+  }
+  
   params.print_lvl = 1;
   errcod = ip_data("PRINT_LVL","%d",&(params.print_lvl),0);
 
@@ -83,16 +85,16 @@ void get_params()
 
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
-  fprintf(outfile, "\tWave function   =    %6s\n", params.wfn);
-  fprintf(outfile, "\tReference wfn   =    %5s\n", 
+  fprintf(outfile, "\tWave function   =\t%s\n", params.wfn);
+  fprintf(outfile, "\tReference wfn   =\t%s\n", 
       (params.ref == 0) ? "RHF" : ((params.ref == 1) ? "ROHF" : "UHF"));
-  fprintf(outfile, "\tDerivative      =    %7s\n", 
+  fprintf(outfile, "\tDerivative      =\t%s\n", 
       (params.dertype == 0) ? "None" : "First");
-  fprintf(outfile, "\tMemory (Mbytes) =    %7.1f\n", params.memory/1e6);
-  fprintf(outfile, "\tAO Basis        =    %6s\n", params.aobasis);
-  fprintf(outfile, "\tMake (ab|cd)    =    %6s\n", 
+  fprintf(outfile, "\tMemory (Mbytes) =\t%.1f\n", params.memory/1e6);
+  fprintf(outfile, "\tAO Basis        =\t%s\n", params.aobasis);
+  fprintf(outfile, "\tMake (ab|cd)    =\t%s\n", 
       (params.make_abcd == 1) ? "True" : "False");
-  fprintf(outfile, "\tCache Level     =    %3d\n", params.cachelev);
-  fprintf(outfile, "\tCache Type      =    %5s\n", "LRU");
+  fprintf(outfile, "\tCache Level     =\t%d\n", params.cachelev);
+  fprintf(outfile, "\tCache Type      =\t%s\n", "LRU");
   fprintf(outfile, "\n");
 }

@@ -35,7 +35,7 @@ void sort_tei(void)
     file_build(&A, FIRST_TMP, tolerance, 1, 1, 1, 0);
     dpd_file4_close(&A);
 
-    if(!strcmp(params.aobasis,"NONE")) {
+    if(params.make_abcd) {
       dpd_file4_init_nocache(&B, CC_BINTS, 0, 5, 5, "B <AB|CD>");
       file_build(&B, FIRST_TMP+1, tolerance, 1, 1, 1, 0);
       dpd_file4_close(&B);
@@ -67,7 +67,7 @@ void sort_tei(void)
     file_build(&A, FIRST_TMP, tolerance, 1, 1, 1, 0);
     dpd_file4_close(&A);
 
-    if(!strcmp(params.aobasis,"NONE")) {
+    if(params.make_abcd) {
       dpd_file4_init_nocache(&B, CC_BINTS, 0, 15, 15, "B <ab|cd>");
       file_build(&B, FIRST_TMP+1, tolerance, 1, 1, 1, 0);
       dpd_file4_close(&B);
@@ -99,7 +99,7 @@ void sort_tei(void)
     file_build(&A, FIRST_TMP, tolerance, 1, 1, 0, 0);
     dpd_file4_close(&A);
 
-    if(!strcmp(params.aobasis,"NONE")) {
+    if(params.make_abcd) {
       dpd_file4_init_nocache(&B, CC_BINTS, 0, 28, 28, "B <Ab|Cd>");
       file_build(&B, FIRST_TMP+1, tolerance, 1, 1, 0, 0);
       dpd_file4_close(&B);
@@ -149,7 +149,7 @@ void sort_tei(void)
     file_build(&A, FIRST_TMP, tolerance, 1, 1, 1, 0);
     dpd_file4_close(&A);
 
-    if(!strcmp(params.aobasis,"NONE")) {
+    if(params.make_abcd) {
       dpd_file4_init_nocache(&B, CC_BINTS, 0, 5, 5, "B <ab|cd>");
       file_build(&B, FIRST_TMP+1, tolerance, 1, 1, 1, 0);
       dpd_file4_close(&B);

@@ -51,7 +51,7 @@ void classify(int p, int q, int r, int s, double value,
 		    value, 0, outfile, dirac);
 
   /* B (vv|vv) integrals */
-  if(!strcmp(params.aobasis,"NONE")) {
+  if(params.make_abcd) {
     if((vir[p] && vir[q] && vir[r] && vir[s]))
       iwl_buf_wrt_val(BBuf, cc_vir[p], cc_vir[q], cc_vir[r], cc_vir[s],
 		      value, 0, outfile, dirac);
@@ -239,7 +239,7 @@ void classify_uhf(int p, int q, int r, int s, double value, char *spin,
   }
 
   /* B (vv|vv) integrals */
-  if(!strcmp(params.aobasis,"NONE")) {
+  if(params.make_abcd) {
     if(vir1[p] && vir1[q] && vir2[r] && vir2[s])
       iwl_buf_wrt_val(BBuf1, cc_vir1[p], cc_vir1[q], cc_vir2[r], cc_vir2[s],
 		      value, 0, outfile, dirac);
