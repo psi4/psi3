@@ -1,0 +1,33 @@
+#!/bin/csh
+
+# 
+# This script automatically makes all necessary target directories,
+# configures, compiles, and installs the complete PSI3.0 package.
+#
+# Change the variable 'prefix' below to your desired installation
+# directory.
+#
+
+echo ... Beginning PSI3.0 installation ...
+
+autoconf
+
+# source distribution directory
+set distdir = `pwd`
+
+# installation directory
+set prefix = /usr/local/psi3-bin
+
+# machine architecture
+set arch=`./host.sh`
+
+# compilation directory
+set compdir = `pwd`/$arch
+
+mkdir $compdir
+cd $compdir
+$distdir/configure --prefix=$prefix --verbose
+make
+make install
+
+echo ... PSI3.0 installation complete ...
