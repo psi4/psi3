@@ -390,8 +390,8 @@ void zeta_norm(struct L_Params L_params) {
   int Z_irr, i;
   dpdfile2 ZIA, Zia;
   dpdbuf4 ZIJAB, Zijab, ZIjAb;
-  Z_irr = L_params.irrep;
   double tval;
+  Z_irr = L_params.irrep;
 
   dpd_file2_init(&ZIA, CC_LAMPS, Z_irr, 0, 1, "ZIA");
   tval = dpd_file2_dot_self(&ZIA);

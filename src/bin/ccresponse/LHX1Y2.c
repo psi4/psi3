@@ -65,7 +65,7 @@ double LHX1Y2(char *pert_x, char *cart_x, int irrep_x, double omega_x,
   dpd_file2_close(&z);
 
   dpd_file2_init(&z, CC_TMP0, 0, 0, 1, "Z(I,A) Final");
-  dpd_file2_init(&l1, CC_OEI, 0, 0, 1, "LIA");
+  dpd_file2_init(&l1, CC_LAMPS, 0, 0, 1, "LIA 0 -1");
   polar = 2.0 * dpd_file2_dot(&z, &l1);
   dpd_file2_close(&l1);
   dpd_file2_close(&z);

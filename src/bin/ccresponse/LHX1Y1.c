@@ -72,7 +72,7 @@ double LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
   dpd_file2_close(&X1);
 
   /* Final contraction of ZIA intermediate with LIA */
-  dpd_file2_init(&L1, CC_OEI, 0, 0, 1, "LIA");
+  dpd_file2_init(&L1, CC_LAMPS, 0, 0, 1, "LIA 0 -1");
   polar = 2.0 * dpd_file2_dot(&ZIA, &L1);
   dpd_file2_close(&L1);
   dpd_file2_close(&ZIA);
