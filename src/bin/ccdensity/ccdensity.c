@@ -14,7 +14,7 @@
 #include "globals.h"
 
 /* Function prototypes */
-void init_io(void);
+void init_io(int argc, char *argv[]);
 void title(void);
 void get_moinfo(void);
 void get_frozen(void);
@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
   int **cachelist, *cachefiles;
   struct iwlbuf OutBuf;
   
-  init_io();
+  init_io(argc,argv);
   title();
   get_moinfo();
   get_frozen();
@@ -134,7 +134,7 @@ int main(int argc, char *argv[])
   exit(0);
 }
 
-void init_io(void)
+void init_io(int argc, char *argv[])
 {
   int i;
   char *gprgid();
@@ -143,8 +143,7 @@ void init_io(void)
   progid = (char *) malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s",gprgid());
 
-  ffile(&infile,"input.dat",2);
-  ffile(&outfile,"output.dat",1);
+  init_in_out(argc-1,argv+1);
   tstart(outfile);
   ip_set_uppercase(1);
   ip_initialize(infile,outfile);

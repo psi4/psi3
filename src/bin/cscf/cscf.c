@@ -174,6 +174,7 @@ static char *rcsid = "$Id$";
 #else
 #  include <libfile30/file30.h>
 #endif
+#include <libqt/qt.h>
 
 void print_initial_vec();
 extern void write_scf_matrices(void);
@@ -190,12 +191,7 @@ int main(argc,argv)
   int errcod, orthog_only, mo_print;
   char *wfn;
  
-  ffile(&infile,"input.dat",2);
-  ffile(&outfile,"output.dat",1);
-  /*ffile(&JK,"jandk.dat",0);
-    ffile(&gmat,"gmat.dat",0);
-    ffile(&diis_out,"diis_out.dat",0);*/
-
+  init_in_out(argc-1, argv+1);
   ip_set_uppercase(1);
   ip_initialize(infile,outfile);
 

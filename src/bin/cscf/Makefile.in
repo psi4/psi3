@@ -3,7 +3,7 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-PSILIBS = -lPSI_file30 -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
+PSILIBS = -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
 TRUESRC = \
 cscf.c cleanup.c dft_inputs.c diis.c dmat.c \
