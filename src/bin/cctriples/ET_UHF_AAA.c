@@ -6,12 +6,6 @@
 #define EXTERN
 #include "globals.h"
 
-enum pattern {abc, acb, cab, cba, bca, bac};
-
-void W_sort(double ***Win, double ***Wout, int nirreps, int h, int *coltot, int **colidx, 
-	    int ***colorb, int *asym, int *bsym, int *aoff, int *boff,
-	    int *cpi, int *coff, int **colidx_out, enum pattern index, int sum);
-
 double ET_UHF_AAA(void)
 {
   int cnt;
@@ -458,7 +452,7 @@ double ET_UHF_AAA(void)
 			    &(WBCA[Gbc][0][0]), ncols);
 		}
 
-		W_sort(WBCA, WABC, nirreps, Gijk, Fints.params->coltot, Fints.params->colidx,
+		dpd_3d_sort(WBCA, WABC, nirreps, Gijk, Fints.params->coltot, Fints.params->colidx,
 		       Fints.params->colorb, Fints.params->rsym, Fints.params->ssym,
 		       vir_off, vir_off, virtpi, vir_off, Fints.params->colidx, cab, 1);
 
@@ -592,7 +586,7 @@ double ET_UHF_AAA(void)
 			    &(WACB[Gac][0][0]), ncols);
 		}
 
-		W_sort(WACB, WABC, nirreps, Gijk, Fints.params->coltot, Fints.params->colidx,
+		dpd_3d_sort(WACB, WABC, nirreps, Gijk, Fints.params->coltot, Fints.params->colidx,
 		       Fints.params->colorb, Fints.params->rsym, Fints.params->ssym,
 		       vir_off, vir_off, virtpi, vir_off, Fints.params->colidx, acb, 1);
 

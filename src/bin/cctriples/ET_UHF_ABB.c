@@ -6,12 +6,6 @@
 #define EXTERN
 #include "globals.h"
 
-enum pattern {abc, acb, cab, cba, bca, bac};
-
-void W_sort(double ***Win, double ***Wout, int nirreps, int h, int *coltot, int **colidx, 
-	    int ***colorb, int *asym, int *bsym, int *aoff, int *boff,
-	    int *cpi, int *coff, int **colidx_out, enum pattern index, int sum);
-
 double ET_UHF_ABB(void)
 {
   int cnt;
@@ -447,7 +441,7 @@ double ET_UHF_ABB(void)
 			    &(WAcb[Gac][0][0]), ncols);
 		}
 
-		W_sort(WAcb, WAbc, nirreps, Gijk, FABints.params->coltot, FABints.params->colidx,
+		dpd_3d_sort(WAcb, WAbc, nirreps, Gijk, FABints.params->coltot, FABints.params->colidx,
 		       FABints.params->colorb, FABints.params->rsym, FABints.params->ssym,
 		       avir_off, bvir_off, bvirtpi, bvir_off, FABints.params->colidx, acb, 1);
 
@@ -542,7 +536,7 @@ double ET_UHF_ABB(void)
 			    &(WbcA[Gbc][0][0]), ncols);
 		}
 
-		W_sort(WbcA, WAbc, nirreps, Gijk, FBBints.params->coltot, FBBints.params->colidx,
+		dpd_3d_sort(WbcA, WAbc, nirreps, Gijk, FBBints.params->coltot, FBBints.params->colidx,
 		       FBBints.params->colorb, FBBints.params->rsym, FBBints.params->ssym,
 		       bvir_off, bvir_off, avirtpi, avir_off, FABints.params->colidx, cab, 1);
 
@@ -637,7 +631,7 @@ double ET_UHF_ABB(void)
 			    &(WcAb[Gca][0][0]), ncols);
 		}
 
-		W_sort(WcAb, WAbc, nirreps, Gijk, FBAints.params->coltot, FBAints.params->colidx,
+		dpd_3d_sort(WcAb, WAbc, nirreps, Gijk, FBAints.params->coltot, FBAints.params->colidx,
 		       FBAints.params->colorb, FBAints.params->rsym, FBAints.params->ssym,
 		       bvir_off, avir_off, bvirtpi, bvir_off, FABints.params->colidx, bca, 1);
 
@@ -732,7 +726,7 @@ double ET_UHF_ABB(void)
 			    &(WbAc[Gba][0][0]), ncols);
 		}
 
-		W_sort(WbAc, WAbc, nirreps, Gijk, FBAints.params->coltot, FBAints.params->colidx,
+		dpd_3d_sort(WbAc, WAbc, nirreps, Gijk, FBAints.params->coltot, FBAints.params->colidx,
 		       FBAints.params->colorb, FBAints.params->rsym, FBAints.params->ssym,
 		       bvir_off, avir_off, bvirtpi, bvir_off, FABints.params->colidx, bac, 1);
 

@@ -7,12 +7,6 @@
 #define EXTERN
 #include "globals.h"
 
-enum pattern {abc, acb, cab, cba, bca, bac};
-
-void W_sort(double ***Win, double ***Wout, int nirreps, int h, int *coltot, int **colidx, 
-	    int ***colorb, int *asym, int *bsym, int *aoff, int *boff,
-	    int *cpi, int *coff, int **colidx_out, enum pattern index, int sum);
-
 double ET_UHF_AAB(void)
 {
   int cnt;
@@ -529,7 +523,7 @@ double ET_UHF_AAB(void)
 
 		}
 
-		W_sort(WBcA, WABc, nirreps, Gijk, FABints.params->coltot, FABints.params->colidx,
+		dpd_3d_sort(WBcA, WABc, nirreps, Gijk, FABints.params->coltot, FABints.params->colidx,
 		       FABints.params->colorb, FABints.params->rsym, FABints.params->ssym,
 		       avir_off, bvir_off, avirtpi, avir_off, FAAints.params->colidx, cab, 1);
 
@@ -628,7 +622,7 @@ double ET_UHF_AAB(void)
 			    &(WAcB[Gac][0][0]), ncols);
 		}
 
-		W_sort(WAcB, WABc, nirreps, Gijk, FABints.params->coltot, FABints.params->colidx,
+		dpd_3d_sort(WAcB, WABc, nirreps, Gijk, FABints.params->coltot, FABints.params->colidx,
 		       FABints.params->colorb, FABints.params->rsym, FABints.params->ssym,
 		       avir_off, bvir_off, avirtpi, avir_off, FAAints.params->colidx, acb, 1);
 
@@ -685,7 +679,7 @@ double ET_UHF_AAB(void)
 			    &(WcBA[Gcb][0][0]), ncols);
 		}
 
-		W_sort(WcBA, WABc, nirreps, Gijk, FBAints.params->coltot, FBAints.params->colidx,
+		dpd_3d_sort(WcBA, WABc, nirreps, Gijk, FBAints.params->coltot, FBAints.params->colidx,
 		       FBAints.params->colorb, FBAints.params->rsym, FBAints.params->ssym,
 		       bvir_off, avir_off, avirtpi, avir_off, FAAints.params->colidx, cba, 1);
 
@@ -742,7 +736,7 @@ double ET_UHF_AAB(void)
 			    &(WcAB[Gca][0][0]), ncols);
 		}
 
-		W_sort(WcAB, WABc, nirreps, Gijk, FBAints.params->coltot, FBAints.params->colidx,
+		dpd_3d_sort(WcAB, WABc, nirreps, Gijk, FBAints.params->coltot, FBAints.params->colidx,
 		       FBAints.params->colorb, FBAints.params->rsym, FBAints.params->ssym,
 		       bvir_off, avir_off, avirtpi, avir_off, FAAints.params->colidx, bca, 1);
 

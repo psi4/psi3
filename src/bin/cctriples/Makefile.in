@@ -12,7 +12,7 @@ triples.c get_moinfo.c cache.c \
 init_3d_array.c \
 ET_RHF.c ET_AAA.c ET_AAB.c ET_ABB.c ET_BBB.c \
 ET_UHF_AAA.c ET_UHF_BBB.c ET_UHF_AAB.c ET_UHF_ABB.c \
-W_sort.c count_ijk.c
+count_ijk.c
 
 BINOBJ = $(CSRC:%.c=%.o)
 
