@@ -15,14 +15,20 @@ void get_params()
   char *junk;
 
   errcod = ip_string("REFERENCE", &(junk),0);
-  if(!strcmp(junk, "RHF")) params.ref = 0;
-  else if(!strcmp(junk, "ROHF")) params.ref = 1;
-  else if(!strcmp(junk, "UHF")) params.ref = 2;
-  else { 
-    printf("Invalid value of input keyword REFERENCE: %s\n", junk);
-    exit(2); 
+  if (errcod != IPE_OK) {
+    // if no reference is given, assume rhf
+    params.ref = 0;
   }
-  free(junk);
+  else {
+    if(!strcmp(junk, "RHF")) params.ref = 0;
+    else if(!strcmp(junk, "ROHF")) params.ref = 1;
+    else if(!strcmp(junk, "UHF")) params.ref = 2;
+    else { 
+      printf("Invalid value of input keyword REFERENCE: %s\n", junk);
+      exit(2); 
+    }
+    free(junk);
+  }
 
   params.dertype = 0;
   if(ip_exist("DERTYPE",0)) {
@@ -61,9 +67,9 @@ void get_params()
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
   fprintf(outfile, "\tReference wfn   =    %5s\n", 
-	  (params.ref == 0) ? "RHF" : ((params.ref == 1) ? "ROHF" : "UHF"));
+      (params.ref == 0) ? "RHF" : ((params.ref == 1) ? "ROHF" : "UHF"));
   fprintf(outfile, "\tDerivative      =    %5s\n", 
-	  (params.dertype == 0) ? "None" : "First");
+      (params.dertype == 0) ? "None" : "First");
   fprintf(outfile, "\tMemory (Mbytes) =    %5.1f\n", params.memory/1e6);
   fprintf(outfile, "\tAO Basis        =    %5s\n", params.aobasis ? "Yes" : "No");
   fprintf(outfile, "\tCache Level     =    %5d\n", params.cachelev);
