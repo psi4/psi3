@@ -14,6 +14,9 @@ void parsing()
    int errcod;
    char *guess;
 
+     /* Same as --noreorient */
+     errcod = ip_boolean("NOREORIENT",&no_reorient,0);
+
      errcod = ip_string("LABEL", &label,0);
      if(errcod != IPE_OK)
        punt("Where is the label?");
@@ -84,8 +87,6 @@ void parsing()
 	   /*Set reference frame to be the frame of the input geometry*/
 	   keep_ref_frame = 0;
 	   errcod = ip_boolean("KEEP_REF_FRAME",&keep_ref_frame,0);
-	   /* Same as --noreorient */
-	   errcod = ip_boolean("NOREORIENT",&no_reorient,0);
 	 }
      }
 
