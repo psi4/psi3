@@ -10,11 +10,7 @@
 extern "C" {
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
-#if USE_LIBCHKPT
-#  include <libchkpt/chkpt.h>
-#else
-#  include <libfile30/file30.h>
-#endif
+#include <libchkpt/chkpt.h>
 #include <libpsio/psio.h>
 #include <libqt/slaterd.h>
 #include <psifiles.h>
@@ -23,11 +19,10 @@ extern "C" {
 #include <physconst.h>
 #include "molecule.h"
 #include "moinfo.h"
-#include "types.h"
 #include "params.h"
 
 /* Function prototypes */
-static void init_io();
+static void init_io(int argc, char *argv[]);
 static void exit_io();
 void done(const char * message);
 static void parsing();
@@ -41,6 +36,7 @@ extern double eval_derwfn_overlap();
 
 /*--- Global structures ---*/
 FILE *infile, *outfile;
+char *psi_file_prefix;
 Molecule_t Molecule;
 MOInfo_t MOInfo;
 Params_t Params;
@@ -55,7 +51,7 @@ int main(int argc, char *argv[])
   char *geom_string;
   FILE *geometry;
 
-  init_io();
+  init_io(argc,argv);
   parsing();
   print_intro();
   print_params();
@@ -144,7 +140,7 @@ void parsing()
   Params.disp_per_coord = 2;
 }
 
-/*--- Open file30 and grab molecule info ---*/
+/*--- Open chkpt file and grab molecule info ---*/
 void read_chkpt()
 {
   chkpt_init(PSIO_OPEN_OLD);
@@ -225,9 +221,9 @@ double eval_dboc()
     if (errcod) {
       done("input failed");
     }
-    errcod = system("psi");
+    errcod = system("psi3");
     if (errcod) {
-      done("psi failed");
+      done("psi3 failed");
     }
     disp++;
 
@@ -244,9 +240,9 @@ double eval_dboc()
     if (errcod) {
       done("input failed");
     }
-    errcod = system("psi");
+    errcod = system("psi3");
     if (errcod) {
-      done("psi failed");
+      done("psi3 failed");
     }
     delete[] inputcmd;
 
@@ -271,7 +267,9 @@ double eval_dboc()
   return E_dboc;
 }
 
-void init_io(void)
+static char *orig_psi_output_env;
+
+void init_io(int argc, char *argv[])
 {
   int i;
   char *progid;
@@ -279,14 +277,18 @@ void init_io(void)
   progid = (char *) malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s",gprgid());
 
-  ffile(&infile,"input.dat",2);
-  ffile(&outfile,"dboc.out",1);
-  tstart(outfile);
-  ip_set_uppercase(1);
-  ip_initialize(infile,outfile);
+  int errcod = psi_start(argc-1,argv+1,0);
+  if (errcod != PSI_RETURN_SUCCESS)
+    exit(PSI_RETURN_FAILURE);
   ip_cwk_add(":DEFAULT");
   ip_cwk_add(progid);
+  tstart(outfile);
   psio_init();
+
+  // Psi modules called by dboc should write to a different output file
+  // reset the value of PSI_OUTPUT for the duration of this run
+  orig_psi_output_env = getenv("PSI_OUTPUT");
+  setenv("PSI_OUTPUT","dboc.findif.out",1);
 
   free(progid);
 }
@@ -295,11 +297,14 @@ void exit_io()
 {
   int i;
 
+  if (orig_psi_output_env != NULL)
+    setenv("PSI_OUTPUT",orig_psi_output_env,1);
+  else
+    unsetenv("PSI_OUTPUT");
+
   psio_done();
-  ip_done();
   tstop(outfile);
-  fclose(infile);
-  fclose(outfile);
+  psi_stop();
 }
 
 void done(const char *message)

@@ -2,7 +2,6 @@
 #include <stdlib.h>
 extern "C" {
 #include <libciomr/libciomr.h>
-#include <libfile30/file30.h>
 #include <libchkpt/chkpt.h>
 #include <libpsio/psio.h>
 #include <psifiles.h>
@@ -20,15 +19,9 @@ FLOAT **eval_S_alpha()
   int num_mo = MOInfo.num_mo;
   int num_so = MOInfo.num_so;
 
-#if 0
-  file30_init();
-  double **rhf_evec_p = file30_rd_alpha_scf();
-  file30_close();
-#else
-  chkpt_init();
+  chkpt_init(PSIO_OPEN_OLD);
   double **rhf_evec_p = chkpt_rd_scf();
   chkpt_close();
-#endif
     
   psio_open(PSIF_OLD_CHKPT, PSIO_OPEN_OLD);
   double **rhf_evec_m = block_matrix(num_so,num_mo);
@@ -78,9 +71,9 @@ FLOAT **eval_S_beta()
   int num_mo = MOInfo.num_mo;
   int num_so = MOInfo.num_so;
   
-  file30_init();
-  double **rhf_evec_p = file30_rd_beta_scf();
-  file30_close();
+  chkpt_init(PSIO_OPEN_OLD);
+  double **rhf_evec_p = chkpt_rd_beta_scf();
+  chkpt_close();
     
   psio_open(PSIF_OLD_CHKPT, PSIO_OPEN_OLD);
   double **rhf_evec_m = block_matrix(num_so,num_mo);
