@@ -102,9 +102,6 @@ void *hf_fock_thread(void *tnum_ptr)
   double q4ijkl;
   double fac1, fac2, fac3;
   double ffac1, ffac2, ffac3;
-  double sum1 = 0.0;
-  double sum2 = 0.0;
-  double sum3 = 0.0;
   double c1, c2, c3, c4;
   double dmax;
   double ****G, ****G_o;       /* Shell-blocked skeleton G matrices from this thread */
@@ -301,7 +298,7 @@ void *hf_fock_thread(void *tnum_ptr)
 	  }
 	  num_unique_quartets = count;
 	  if (count > 3*max_num_unique_quartets)
-	      punt("Problem with hashing?");
+	    punt("Problem with hashing?");
 
 	    /*----------------------------------
 	      Compute the nonredundant quartets
@@ -377,6 +374,7 @@ void *hf_fock_thread(void *tnum_ptr)
 		}
 	      }
 
+#if DEBUG
 	      if (si < 0 || si >= BasisSet.num_shells)
 		  punt("Problem with shell indices");
 	      if (sj < 0 || sj >= BasisSet.num_shells)
@@ -385,10 +383,8 @@ void *hf_fock_thread(void *tnum_ptr)
 		  punt("Problem with shell indices");
 	      if (sl < 0 || sl >= BasisSet.num_shells)
 		  punt("Problem with shell indices");
+#endif
 	      
-	      sum1 += fac1;
-	      sum2 += fac2;
-	      sum3 += fac3;
 	      /* place in "ascending" angular mom-
 	       my simple way of optimizing PHG recursion (VRR) */
 	      /* these first two are good for the HRR */
@@ -426,7 +422,6 @@ void *hf_fock_thread(void *tnum_ptr)
 	      nj = ioff[BasisSet.shells[sj].am];
 	      nk = ioff[BasisSet.shells[sk].am];
 	      nl = ioff[BasisSet.shells[sl].am];
-	      class_size = ni*nj*nk*nl;
 	      np_i = BasisSet.shells[si].n_prims;
 	      np_j = BasisSet.shells[sj].n_prims;
 	      np_k = BasisSet.shells[sk].n_prims;
