@@ -3,7 +3,6 @@ include $(top_objdir)/src/lib/libr12/MakeVars
 
 VPATH = .:$(top_srcdir)/src/lib/libr12
 TARGET = $(top_objdir)/lib/libPSI_r12.a
-HEADERS = libr12.h
 
 #
 # List all generated routines. Do it a safe way in case the list is too long
@@ -26,7 +25,7 @@ LIBOBJ7 = $(TRUESRC7:%.cc=%.o)
 LIBOBJ8 = $(TRUESRC8:%.c=%.o)
 LIBOBJ = $(LIBOBJ1) $(LIBOBJ2) $(LIBOBJ3) $(LIBOBJ4) $(LIBOBJ5) $(LIBOBJ6) $(LIBOBJ7) $(LIBOBJ8)
 
-default:: $(TARGET)
+default:: $(TARGET) $(TARGET_HEADERS)
 
 %.$(OBJSUF): %.c
 	$(CC) $(CFLAGS) -c $< $(OUTPUT_OPTION)
@@ -37,10 +36,6 @@ default:: $(TARGET)
 #
 # do installations
 #
-
-install:: install_inc install_target install_man
-
-install_inc::
 
 $(TARGET): $(LIBOBJ)
 	$(MKDIRS) `dirname $(TARGET)`
@@ -55,13 +50,9 @@ $(TARGET): $(LIBOBJ)
 	$(AR) $(ARFLAGS) $(TARGET) $(LIBOBJ8)
 	$(RANLIB) $(TARGET)
 
-install_target:: $(TARGET)
-
-install_man::
-
-install_inc:: $(HEADERS)
-	$(MKDIRS) $(objincdir)
-	$(INSTALL_INCLUDE) $^ $(objincdir)
+$(top_objdir)/include/libr12/%.h: %.h
+	$(MKDIRS) `dirname $@`
+	$(INSTALL_INCLUDE) $^ $@
 
 #
 # clean up

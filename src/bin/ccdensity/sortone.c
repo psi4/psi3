@@ -1,9 +1,9 @@
 #include <stdio.h>
-#include <dpd.h>
+#include <libdpd/dpd.h>
 #include <math.h>
 #include <libciomr/libciomr.h>
-#include <psio.h>
-#include <iwl.h>
+#include <libpsio/psio.h>
+#include <libiwl/iwl.h>
 #define EXTERN
 #include "globals.h"
 #include <psifiles.h>

@@ -10,3 +10,6 @@ emit_hrr_t_build.c mem_man.c emit_grt_order.c
 
 LIB_SRC = r_vrr_build.c t1_vrr_build.c \
 t2_vrr_build.c
+
+HEADERS = libr12.h
+TARGET_HEADERS = $(HEADERS:%=$(top_objdir)/include/libr12/%)

@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<libint.h>
+#include<libint/libint.h>
 #include<psifiles.h>
 #include"defines.h"
 #define EXTERN

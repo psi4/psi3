@@ -12,7 +12,7 @@
 
 #include <stdio.h>
 #include <libipv1/ip_lib.h>
-#include <psio.h>
+#include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
 
 

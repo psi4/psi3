@@ -10,7 +10,7 @@ static char *rcsid = "$Id$";
 #define EXTERN
 #include "includes.h"
 #include "common.h"
-#include <file30.h>
+#include <libfile30/file30.h>
 
 void init_uhf()
 {

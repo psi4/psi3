@@ -10,7 +10,7 @@ calculations */
 #include <physconst.h>
 #include "global.h"
 #include "defines.h"
-#include <qt.h>
+#include <libqt/qt.h>
 
 /*
    strange, but necessary, gprgid function

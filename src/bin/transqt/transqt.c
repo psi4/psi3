@@ -119,10 +119,10 @@
 #include <math.h>
 #include <string.h>
 #include <libipv1/ip_lib.h>
-#include <psio.h>
+#include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
-#include <file30.h>
-#include <qt.h>
+#include <libfile30/file30.h>
+#include <libqt/qt.h>
 #include <psifiles.h>
 #include "MOInfo.h"
 #include "Params.h"

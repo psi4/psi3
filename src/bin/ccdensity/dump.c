@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <libciomr/libciomr.h>
-#include <iwl.h>
-#include <dpd.h>
+#include <libiwl/iwl.h>
+#include <libdpd/dpd.h>
 #include <psifiles.h>
 #define EXTERN
 #include "globals.h"

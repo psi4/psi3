@@ -3,7 +3,7 @@
 #include<string.h>
 #include<memory.h>
 #include<stdlib.h>
-#include<libint.h>
+#include<libint/libint.h>
 #include<libr12.h>
 
 #include"defines.h"

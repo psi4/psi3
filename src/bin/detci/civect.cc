@@ -29,7 +29,7 @@ extern "C" {
    #include <stdio.h>
    #include <stdlib.h>
    #include <libciomr/libciomr.h>
-   #include <qt.h>
+   #include <libqt/qt.h>
    #include "structs.h"
    #include "globals.h"
    #include "ci_tol.h"

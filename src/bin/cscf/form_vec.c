@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.7  2002/03/25 02:51:57  janssen
- * libciomr.h -> libciomr/libciomr.h
+ * Revision 1.8  2002/04/03 02:06:01  janssen
+ * Finish changes to use new include paths for libraries.
  *
+/* Revision 1.7  2002/03/25 02:51:57  janssen
+/* libciomr.h -> libciomr/libciomr.h
+/*
 /* Revision 1.6  2000/10/13 19:51:20  evaleev
 /* Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
 /*
@@ -41,8 +44,8 @@ static char *rcsid = "$Id$";
 #define EXTERN
 #include "includes.h"
 #include "common.h"
-#include "libciomr/libciomr.h"
-#include "psio.h"
+#include <libciomr/libciomr.h>
+#include <libpsio/psio.h>
 
 void form_vec()
 {

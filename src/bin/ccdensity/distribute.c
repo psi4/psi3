@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <iwl.h>
+#include <libiwl/iwl.h>
 #include <psifiles.h>
 #define EXTERN
 #include "globals.h"

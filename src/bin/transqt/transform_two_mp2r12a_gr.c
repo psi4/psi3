@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <libciomr/libciomr.h>
-#include <qt.h>
-#include <iwl.h>
+#include <libqt/qt.h>
+#include <libiwl/iwl.h>
 #include "MOInfo.h"
 #include "Params.h"
 #include "globals.h"

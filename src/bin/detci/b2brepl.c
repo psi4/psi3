@@ -1,6 +1,6 @@
 #define EXTERN
 #include <stdio.h>
-#include <qt.h>
+#include <libqt/qt.h>
 #include "structs.h"
 #include "globals.h"
 

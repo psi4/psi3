@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <iwl.h>
+#include <libiwl/iwl.h>
 #include <psifiles.h>
 #include "Params.h"
 #include "MOInfo.h"

@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <libciomr/libciomr.h>
-#include <iwl.h>
-#include <file30.h>
-#include <dpd.h>
-#include <qt.h>
+#include <libiwl/iwl.h>
+#include <libfile30/file30.h>
+#include <libdpd/dpd.h>
+#include <libqt/qt.h>
 #include <psifiles.h>
 #define EXTERN
 #include "globals.h"

@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <iwl.h>
+#include <libiwl/iwl.h>
 #include "dpd.h"
 
 int dpd_buf4_dump(dpdbuf4 *DPDBuf, struct iwlbuf *IWLBuf,

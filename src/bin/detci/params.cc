@@ -18,8 +18,8 @@ extern "C" {
 #include <libipv1/ip_lib.h>
 #include <libipv1/ip_data.gbl>
 #include <libciomr/libciomr.h>
-#include <qt.h>
-#include <file30.h>
+#include <libqt/qt.h>
+#include <libfile30/file30.h>
 #include <psifiles.h>
 #include "structs.h"
 #include "globals.h"

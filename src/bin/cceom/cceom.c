@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
-#include <qt.h>
+#include <libqt/qt.h>
 #include "globals.h"
 
 void init_io(void);

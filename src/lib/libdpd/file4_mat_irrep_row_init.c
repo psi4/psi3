@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <libciomr/libciomr.h>
-#include <qt.h>
+#include <libqt/qt.h>
 #include "dpd.h"
 
 int dpd_file4_mat_irrep_row_init(dpdfile4 *File, int irrep)

@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
-#include <file30.h>
-#include <qt.h>
+#include <libfile30/file30.h>
+#include <libqt/qt.h>
 #include "structs.h"
 #define EXTERN
 #include "globals.h"

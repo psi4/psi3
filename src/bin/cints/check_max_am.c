@@ -1,8 +1,8 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<libint.h>
+#include<libint/libint.h>
 #ifdef INCLUDE_Default_Deriv1
- #include<libderiv.h>
+ #include<libderiv/libderiv.h>
 #endif
 #ifdef INCLUDE_MP2R12
  #include<libr12.h>

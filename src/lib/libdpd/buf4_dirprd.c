@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <qt.h>
+#include <libqt/qt.h>
 #include "dpd.h"
 
 /* dpd_buf4_dirprd(): Computes the direct product between two dpd four-index

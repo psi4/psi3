@@ -6,12 +6,12 @@
 
 #include <stdio.h>
 #include <libciomr/libciomr.h>
-#include <qt.h>
-#include <iwl.h>
+#include <libqt/qt.h>
+#include <libiwl/iwl.h>
 #include <libipv1/ip_lib.h>
-#include <file30.h>
+#include <libfile30/file30.h>
 #include <psifiles.h>
-#include <psio.h>
+#include <libpsio/psio.h>
 #include <math.h>
 #include "clag.h"
 #define INDEX(i,j) ( (i>j) ? (ioff[(i)] + (j)): (ioff[(j)] + (i)) )

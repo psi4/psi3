@@ -25,9 +25,9 @@ extern "C" {
    #include <stdlib.h>
    #include <stdio.h>
    #include <libipv1/ip_lib.h>
-   #include <qt.h>
+   #include <libqt/qt.h>
    #include <libciomr/libciomr.h>
-   #include <file30.h>
+   #include <libfile30/file30.h>
    #include "structs.h"
    #include "globals.h"
    #include "genci.h"

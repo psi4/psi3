@@ -3,7 +3,7 @@
 #include <string.h>
 #include <libciomr/libciomr.h>
 #include <ccfiles.h>
-#include <dpd.h>
+#include <libdpd/dpd.h>
 
 #define NUM_ENTRIES 113
 struct dpd_file4_cache_entry list[NUM_ENTRIES];

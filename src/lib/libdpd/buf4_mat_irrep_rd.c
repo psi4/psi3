@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <qt.h>
+#include <libqt/qt.h>
 #include "dpd.h"
 
 /* dpd_buf4_mat_irrep_rd(): Reads an entire irrep from disk into a dpd

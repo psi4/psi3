@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <qt.h>
+#include <libqt/qt.h>
 #include "dpd.h"
 
 /*

@@ -2,7 +2,7 @@
   \file buf_put.c
 */
 #include <stdio.h>
-#include <psio.h>
+#include <libpsio/psio.h>
 #include "iwl.h"
 
 /*!

@@ -16,7 +16,7 @@ extern "C" {
    #include <stdlib.h>
    #include <stdio.h>
    #include <libciomr/libciomr.h>
-   #include <qt.h>
+   #include <libqt/qt.h>
    #include "structs.h"
    #include "globals.h"
    extern struct stringwr **alplist;  

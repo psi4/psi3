@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <qt.h>
+#include <libqt/qt.h>
 #include "dpd.h"
 
 /* buf4_axpbycz(): Evaluates the standard operation aX + bY -> cZ for

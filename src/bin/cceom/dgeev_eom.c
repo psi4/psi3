@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <libciomr/libciomr.h>
-#include <qt.h>
+#include <libqt/qt.h>
 #define EXTERN
 #include "globals.h"
 

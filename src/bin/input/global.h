@@ -3,7 +3,7 @@
  ***************************/
 
 /*need this for z_entry structure*/
-#include<file30.h>
+#include<libfile30/file30.h>
 
 #ifdef EXTERN
 # undef EXTERN

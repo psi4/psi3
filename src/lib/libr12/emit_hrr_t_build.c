@@ -84,7 +84,7 @@ int emit_hrr_t_build()
 
       fprintf(code,"  /* This machine-generated function computes a quartet of [r12,T2]|%c%c) integrals */\n\n",
 	      am_letter[am_in[0]],am_letter[am_in[1]]);
-      fprintf(code,"#include<libint.h>\n\n");
+      fprintf(code,"#include<libint/libint.h>\n\n");
       if (split) {
 	for(i=0;i<num_subfunctions;i++) {
 	  fprintf(code,"REALTYPE *%s(REALTYPE *, REALTYPE *, REALTYPE *, const REALTYPE *, const REALTYPE *, ",
@@ -254,7 +254,7 @@ int emit_hrr_t_build()
       
       fprintf(code,"  /* This machine-generated function computes a quartet of (%c%c|[r12,T1] integrals */\n\n",
 	      am_letter[am_in[0]],am_letter[am_in[1]]);
-      fprintf(code,"#include<libint.h>\n\n");
+      fprintf(code,"#include<libint/libint.h>\n\n");
       
       if (split) {
 	for(i=0;i<num_subfunctions;i++) {

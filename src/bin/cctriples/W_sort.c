@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <qt.h>
+#include <libqt/qt.h>
 
 enum pattern {abc, acb, cab, cba, bca, bac};
 

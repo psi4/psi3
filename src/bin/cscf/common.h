@@ -1,8 +1,11 @@
 /* $Id$ */
 /* $Log$
- * Revision 1.11  2002/03/25 02:51:57  janssen
- * libciomr.h -> libciomr/libciomr.h
+ * Revision 1.12  2002/04/03 02:06:01  janssen
+ * Finish changes to use new include paths for libraries.
  *
+/* Revision 1.11  2002/03/25 02:51:57  janssen
+/* libciomr.h -> libciomr/libciomr.h
+/*
 /* Revision 1.10  2001/06/29 20:39:27  evaleev
 /* Modified cscf to use libpsio to store supermatrix files.
 /*
@@ -107,8 +110,8 @@
  * */
 
 #include <libciomr/libciomr.h>
-#include <file30.h>
-#include <psio.h>
+#include <libfile30/file30.h>
+#include <libpsio/psio.h>
 
 #define MAX_BASIS 4096
 #define MAXIOFF 4096

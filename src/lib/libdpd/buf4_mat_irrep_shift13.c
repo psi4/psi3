@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <libciomr/libciomr.h>
-#include <qt.h>
+#include <libqt/qt.h>
 #include "dpd.h"
 
 int dpd_buf4_mat_irrep_shift13(dpdbuf4 *Buf, int irrep)

@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <qt.h>
+#include <libqt/qt.h>
 #include "dpd.h"
 
 /* file2_axpy(): Evaluates the standard operation a * X + Y -> Y for

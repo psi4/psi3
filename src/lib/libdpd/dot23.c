@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <qt.h>
+#include <libqt/qt.h>
 #include "dpd.h"
 
 /* dpd_dot23(): Contracts a two-index-electron dpd with a four-index dpd

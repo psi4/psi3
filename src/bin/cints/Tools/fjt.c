@@ -1,6 +1,6 @@
 #include<math.h>
 #include<stdio.h>
-#include<libint.h>
+#include<libint/libint.h>
 
 #include"defines.h"
 #define EXTERN

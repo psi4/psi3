@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include <iwl.h>
-#include <dpd.h>
+#include <libiwl/iwl.h>
+#include <libdpd/dpd.h>
 
 void idx_error(char *message, int p, int q, int r, int s, int pq, int rs,
 	       int pq_sym, int rs_sym, FILE *outfile);

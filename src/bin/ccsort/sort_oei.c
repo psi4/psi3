@@ -26,12 +26,12 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <psio.h>
+#include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
-#include <iwl.h>
-#include <dpd.h>
+#include <libiwl/iwl.h>
+#include <libdpd/dpd.h>
 #include <psifiles.h>
-#include <qt.h>
+#include <libqt/qt.h>
 #include "MOInfo.h"
 #include "Params.h"
 #define EXTERN

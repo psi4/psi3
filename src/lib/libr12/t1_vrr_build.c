@@ -1,7 +1,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <libint.h>
+#include <libint/libint.h>
 #include "libr12.h"
 
 extern void punt(char *);

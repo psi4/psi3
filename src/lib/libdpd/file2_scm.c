@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "dpd.h"
-#include <qt.h>
+#include <libqt/qt.h>
 
 int dpd_file2_scm(dpdfile2 *InFile, double alpha)
 {

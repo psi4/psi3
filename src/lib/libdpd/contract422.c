@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <math.h>
-#include <qt.h>
+#include <libqt/qt.h>
 #include "dpd.h"
 
 /* dpd_contract422(): Contracts a four-index dpd with a two-index

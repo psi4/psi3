@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <qt.h>
+#include <libqt/qt.h>
 #include "dpd.h"
 
 int dpd_trans4_mat_irrep_rd(dpdtrans4 *Trans, int irrep)

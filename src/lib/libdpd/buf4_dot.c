@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <math.h>
-#include <qt.h>
+#include <libqt/qt.h>
 #include "dpd.h"
 
 double dpd_buf4_dot(dpdbuf4 *BufA, dpdbuf4 *BufB)

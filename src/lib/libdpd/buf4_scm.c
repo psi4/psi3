@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "dpd.h"
-#include <qt.h>
+#include <libqt/qt.h>
 
 /* dpd_buf4_scm(): Multiplies every element of a four-index dpdbuf by a scalar.
 **

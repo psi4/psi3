@@ -3,9 +3,9 @@
 #include<string.h>
 #include<memory.h>
 #include<stdlib.h>
-#include<iwl.h>
+#include<libiwl/iwl.h>
 #include<libciomr/libciomr.h>
-#include<libint.h>
+#include<libint/libint.h>
 #include<libr12.h>
 
 #include"defines.h"

@@ -1,8 +1,11 @@
 /* $Log$
- * Revision 1.4  2002/03/06 22:44:41  sherrill
- * Add new keyword orthog_only = true to just orthogonalize orbitals and do
- * nothing else.
+ * Revision 1.5  2002/04/03 02:06:01  janssen
+ * Finish changes to use new include paths for libraries.
  *
+/* Revision 1.4  2002/03/06 22:44:41  sherrill
+/* Add new keyword orthog_only = true to just orthogonalize orbitals and do
+/* nothing else.
+/*
 /* Revision 1.3  2001/06/21 21:00:37  crawdad
 /* I have simplified the libiwl functions iwl_rdone() and iwl_wrtone() to only
 /* read and write one-electron quantities and to more explicitly use the libpsio
@@ -41,7 +44,7 @@ static char *rcsid = "$Id$";
 #define EXTERN
 #include "includes.h"
 #include "common.h"
-#include <iwl.h>
+#include <libiwl/iwl.h>
 
 void rdone_iwl()
 {

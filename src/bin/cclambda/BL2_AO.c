@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <math.h>
 #include <libciomr/libciomr.h>
-#include <psio.h>
-#include <iwl.h>
-#include <dpd.h>
-#include <qt.h>
+#include <libpsio/psio.h>
+#include <libiwl/iwl.h>
+#include <libdpd/dpd.h>
+#include <libqt/qt.h>
 #include <psifiles.h>
 #define EXTERN
 #include "globals.h"

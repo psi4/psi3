@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <psifiles.h>
 #include <libciomr/libciomr.h>
-#include <iwl.h>
+#include <libiwl/iwl.h>
 #include "MOInfo.h"
 #include "Params.h"
 #include "globals.h"

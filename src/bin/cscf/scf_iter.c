@@ -1,8 +1,11 @@
 /* $Log$
- * Revision 1.8  2000/07/10 18:03:34  sbrown
- * Enabling cscf to send over just the occupied SCF eigenvector for DFT
- * calculations.  Only done for the RHF case.
+ * Revision 1.9  2002/04/03 02:06:01  janssen
+ * Finish changes to use new include paths for libraries.
  *
+/* Revision 1.8  2000/07/10 18:03:34  sbrown
+/* Enabling cscf to send over just the occupied SCF eigenvector for DFT
+/* calculations.  Only done for the RHF case.
+/*
 /* Revision 1.7  2000/07/06 20:04:02  sbrown
 /* Added capabilities to send the eigenvector to cints for DFT
 /* calculations.
@@ -75,7 +78,7 @@ static char *rcsid = "$Id$";
 #define EXTERN
 #include "includes.h"
 #include "common.h"
-#include "psio.h"
+#include <libpsio/psio.h>
 
 void scf_iter()
 

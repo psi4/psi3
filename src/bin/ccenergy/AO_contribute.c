@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <math.h>
 #include <libciomr/libciomr.h>
-#include <iwl.h>
-#include <qt.h>
-#include <dpd.h>
+#include <libiwl/iwl.h>
+#include <libqt/qt.h>
+#include <libdpd/dpd.h>
 
 int AO_contribute(struct iwlbuf *InBuf, dpdbuf4 *tau1_AO, dpdbuf4 *tau2_AO)
 {

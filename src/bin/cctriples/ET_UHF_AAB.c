@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <math.h>
 #include <libciomr/libciomr.h>
-#include <qt.h>
-#include <dpd.h>
+#include <libqt/qt.h>
+#include <libdpd/dpd.h>
 #define EXTERN
 #include "globals.h"
 

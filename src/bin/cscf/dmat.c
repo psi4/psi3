@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.7  2000/12/05 19:40:03  sbrown
- * Added Unrestricted Kohn-Sham DFT.
+ * Revision 1.8  2002/04/03 02:06:01  janssen
+ * Finish changes to use new include paths for libraries.
  *
+/* Revision 1.7  2000/12/05 19:40:03  sbrown
+/* Added Unrestricted Kohn-Sham DFT.
+/*
 /* Revision 1.6  2000/07/10 18:03:30  sbrown
 /* Enabling cscf to send over just the occupied SCF eigenvector for DFT
 /* calculations.  Only done for the RHF case.
@@ -62,7 +65,7 @@
 static char *rcsid = "$Id$";
 
 #define EXTERN
-#include <psio.h>
+#include <libpsio/psio.h>
 #include "includes.h"
 #include "common.h"
 

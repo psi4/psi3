@@ -3,7 +3,7 @@
 */
 #include <stdio.h>
 #include <math.h>
-#include <psio.h>
+#include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
 #include "iwl.h"
 

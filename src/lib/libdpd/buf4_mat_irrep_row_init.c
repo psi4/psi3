@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <qt.h>
+#include <libqt/qt.h>
 #include <libciomr/libciomr.h>
 #include "dpd.h"
 

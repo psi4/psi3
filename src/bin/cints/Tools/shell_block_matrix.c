@@ -1,7 +1,7 @@
 #include<stdlib.h>
 #include<stdio.h>
 #include<libciomr/libciomr.h>
-#include<libint.h>
+#include<libint/libint.h>
 
 #include"defines.h"
 #define EXTERN

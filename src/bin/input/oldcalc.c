@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <psio.h>
+#include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
-#include <file30.h>
+#include <libfile30/file30.h>
 #include <psifiles.h>
 
 #include "input.h"

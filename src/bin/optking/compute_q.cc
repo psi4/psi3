@@ -2,7 +2,7 @@
 
 extern "C" {
   #include <stdio.h>
-  #include <file30.h>
+  #include <libfile30/file30.h>
   #include <stdlib.h>
   #include <string.h>
   #include <libciomr/libciomr.h>

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <math.h>
-#include <dpd.h>
+#include <libdpd/dpd.h>
 #define EXTERN
 #include "globals.h"
 

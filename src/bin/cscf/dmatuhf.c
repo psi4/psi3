@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.4  2000/12/05 19:40:03  sbrown
- * Added Unrestricted Kohn-Sham DFT.
+ * Revision 1.5  2002/04/03 02:06:01  janssen
+ * Finish changes to use new include paths for libraries.
  *
+/* Revision 1.4  2000/12/05 19:40:03  sbrown
+/* Added Unrestricted Kohn-Sham DFT.
+/*
 /* Revision 1.3  2000/06/22 22:15:00  evaleev
 /* Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
 /*
@@ -52,7 +55,7 @@
 static char *rcsid = "$Id$";
 
 #define EXTERN
-#include <psio.h>
+#include <libpsio/psio.h>
 #include "includes.h"
 #include "common.h"
 

@@ -2,7 +2,7 @@
 #include <libipv1/ip_lib.h>
 #include <math.h>
 #include <masses.h>
-#include <libint.h>
+#include <libint/libint.h>
 
 #include "defines.h"
 #define EXTERN

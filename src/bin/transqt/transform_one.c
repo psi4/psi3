@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
-#include <qt.h>
-#include <iwl.h>
-#include <file30.h>
+#include <libqt/qt.h>
+#include <libiwl/iwl.h>
+#include <libfile30/file30.h>
 #include <psifiles.h>
 #include "MOInfo.h"
 #include "Params.h"

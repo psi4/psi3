@@ -1,7 +1,7 @@
 static char *rcsid = "$Id$";
 
 #define EXTERN
-#include <psio.h>
+#include <libpsio/psio.h>
 #include "includes.h"
 #include "common.h"
 

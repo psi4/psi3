@@ -15,8 +15,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include <libciomr/libciomr.h>
-#include <qt.h>
-#include <iwl.h>
+#include <libqt/qt.h>
+#include <libiwl/iwl.h>
 #define YEXTERN
 #include "yoshimine.h"
 #include "MOInfo.h"

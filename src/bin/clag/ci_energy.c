@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <libciomr/libciomr.h>
-#include <qt.h>
+#include <libqt/qt.h>
 #define INDEX(x,y) ((x>y) ? ioff[x] + y : ioff[y] + x)
 #define CI_DIFF 1.0E-10
 

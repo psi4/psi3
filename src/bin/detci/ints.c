@@ -13,9 +13,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <iwl.h>
+#include <libiwl/iwl.h>
 #include <libciomr/libciomr.h>
-#include <qt.h>
+#include <libqt/qt.h>
 #include <psifiles.h>
 #include "structs.h"
 #define EXTERN

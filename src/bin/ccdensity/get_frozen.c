@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <libciomr/libciomr.h>
-#include <psio.h>
+#include <libpsio/psio.h>
 #define EXTERN
 #include "globals.h"
 

@@ -135,7 +135,7 @@ int emit_vrr_r_build()
 	}
       }
 
-      fprintf(code,"#include <libint.h>\n");
+      fprintf(code,"#include <libint/libint.h>\n");
       fprintf(code,"#include \"libr12.h\"\n\n");
       if (split == 1) {
 	curr_subfunction = 0;

@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
-#include <libint.h>
+#include <libint/libint.h>
 
 #include"defines.h"
 #define EXTERN

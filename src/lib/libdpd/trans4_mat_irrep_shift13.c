@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <libciomr/libciomr.h>
-#include <qt.h>
+#include <libqt/qt.h>
 #include "dpd.h"
 
 int dpd_trans4_mat_irrep_shift13(dpdtrans4 *Trans, int irrep)

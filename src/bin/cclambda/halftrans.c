@@ -1,5 +1,5 @@
-#include <dpd.h>
-#include <qt.h>
+#include <libdpd/dpd.h>
+#include <libqt/qt.h>
 
 /* halftrans(): Routine to transform the last two indices of a dpdbuf4
 ** between the MO and SO bases.

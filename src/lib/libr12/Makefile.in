@@ -46,7 +46,7 @@ if ! ./$(BUILD_BINARY); then \
  cd ..; rm -fR $(TEMP_DIR); exit 1; \
 fi; \
 cp Makefile.libr12 Makefile; \
-${MAKE} top_objdir=$(top_objdir_path) install; \
+${MAKE} top_objdir=$(top_objdir_path); \
 cd ..; \
 rm -fR $(TEMP_DIR)
 
@@ -66,6 +66,8 @@ install: $(TARGET)
 	$(MKDIRS) $(libdir)
 	$(INSTALL_DATA) $< $(libdir)
 	$(RANLIB) $(libdir)/`basename $(TARGET)`
+	$(MKDIRS) $(incdir)/libr12
+	$(INSTALL_INCLUDE) $(TARGET_HEADERS) $(incdir)/libr12
 
 #
 # keep the configuration information and makefiles up-to-date

@@ -17,7 +17,7 @@ extern "C" {
    #include <stdlib.h>
    #include <stdio.h>
    #include <libciomr/libciomr.h>
-   #include <qt.h>
+   #include <libqt/qt.h>
    #include <physconst.h>
    #include "structs.h"
    #include "ci_tol.h"

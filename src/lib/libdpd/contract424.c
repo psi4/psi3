@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <math.h>
-#include <qt.h>
+#include <libqt/qt.h>
 #include "dpd.h"
 #define EXTERN
 #include "dpd.gbl"

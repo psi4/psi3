@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <dpd.h>
+#include <libdpd/dpd.h>
 #include <psifiles.h>
 #include "MOInfo.h"
 #include "Params.h"

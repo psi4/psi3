@@ -21,7 +21,7 @@ extern "C" {
    #include <stdlib.h>
    /* may no longer need #include <libc.h> */
    #include <libciomr/libciomr.h>
-   #include <qt.h>
+   #include <libqt/qt.h>
    #include "structs.h"
    #include "globals.h"
    extern void transp_sigma(double **a, int rows, int cols, int phase);

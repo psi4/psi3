@@ -14,7 +14,7 @@ default: $(TARGET)
 
 top_objdir_path=$(PWD)/$(top_objdir)
 
-$(TARGET) $(top_objdir)/libderiv.h: $(BUILD_SRC) Makefile.libderiv input.dat
+$(TARGET): $(BUILD_SRC) Makefile.libderiv input.dat
 	if \
 ! [ -e $(SCRATCH) ]; \
  then \
@@ -46,7 +46,7 @@ if ! ./$(BUILD_BINARY); then \
  cd ..; rm -fR $(TEMP_DIR); exit 1; \
 fi; \
 cp Makefile.libderiv Makefile; \
-${MAKE} top_objdir=$(top_objdir_path) install; \
+${MAKE} top_objdir=$(top_objdir_path); \
 cd ..; \
 rm -fR $(TEMP_DIR) 
 
@@ -64,10 +64,12 @@ dclean:
 
 targetclean:
 
-install: $(TARGET)
+install: $(TARGET) $(TARGET_HEADERS)
 	$(MKDIRS) $(libdir)
 	$(INSTALL_DATA) $< $(libdir)
 	$(RANLIB) $(libdir)/`basename $(TARGET)`
+	$(MKDIRS) $(incdir)/libderiv
+	$(INSTALL_INCLUDE) $(TARGET_HEADERS) $(incdir)/libderiv
 
 #
 # keep the configuration information and makefiles up-to-date

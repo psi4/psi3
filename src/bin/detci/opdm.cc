@@ -9,9 +9,9 @@ extern "C" {
    #include <stdlib.h>
    /* may no longer need #include <libc.h> */
    #include <libciomr/libciomr.h>
-   #include <qt.h>
-   #include <file30.h>
-   #include <iwl.h>
+   #include <libqt/qt.h>
+   #include <libfile30/file30.h>
+   #include <libiwl/iwl.h>
    #include <psifiles.h>
    #include "structs.h"
    #include "globals.h"

@@ -20,7 +20,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <libciomr/libciomr.h>
-#include <qt.h>
+#include <libqt/qt.h>
 #include "structs.h"
 #include "globals.h"
 

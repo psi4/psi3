@@ -4,9 +4,9 @@
 #include<memory.h>
 #include<stdlib.h>
 #include<libciomr/libciomr.h>
-#include<qt.h>
-#include<iwl.h>
-#include<libint.h>
+#include<libqt/qt.h>
+#include<libiwl/iwl.h>
+#include<libint/libint.h>
 #include<libr12.h>
 #include<pthread.h>
 

@@ -3,7 +3,7 @@
 #include<math.h>
 #include<libciomr/libciomr.h>
 #include<libipv1/ip_lib.h>
-#include<libint.h>
+#include<libint/libint.h>
 
 #include"defines.h"
 #define EXTERN

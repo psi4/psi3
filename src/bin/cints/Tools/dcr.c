@@ -3,7 +3,7 @@
 #include<stdlib.h>
 #include<libciomr/libciomr.h>
 #include<symmetry.h>
-#include<libint.h>
+#include<libint/libint.h>
 
 #include"defines.h"
 #define EXTERN

@@ -34,11 +34,11 @@ again within the code.
 
 \begin{verbatim}
 #include <stdio.h>
-#include <file30.h>
+#include <libfile30/file30.h>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
 /*--- To future-proof the code initialize libpsio.a as well ---*/
-#include <psio.h>
+#include <libpsio/psio.h>
 
 FILE *infile, *outfile;
 

@@ -4,12 +4,12 @@
 #include <memory.h>
 #include <stdlib.h>
 #include <libipv1/ip_lib.h>
-#include <iwl.h>
+#include <libiwl/iwl.h>
 #include <libciomr/libciomr.h>
-#include <libint.h>
-#include <libderiv.h>
-#include <file30.h>
-#include <qt.h>
+#include <libint/libint.h>
+#include <libderiv/libderiv.h>
+#include <libfile30/file30.h>
+#include <libqt/qt.h>
 #include "defines.h"
 #define EXTERN
 #include "global.h"

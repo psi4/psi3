@@ -4,7 +4,7 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <libint.h>
+#include <libint/libint.h>
 #include "mem_man.h"
 #include "build_libr12.h"
 #define MAXNODE 3000
@@ -123,9 +123,9 @@ int emit_grt_order()
        -----------------------------------*/
       fprintf(hrr_code,"#include <stdio.h>\n");
       fprintf(hrr_code,"#include <string.h>\n");
-      fprintf(hrr_code,"#include <libint.h>\n");
+      fprintf(hrr_code,"#include <libint/libint.h>\n");
       fprintf(hrr_code,"#include \"libr12.h\"\n");
-      fprintf(hrr_code,"#include <hrr_header.h>\n\n");
+      fprintf(hrr_code,"#include <libint/hrr_header.h>\n\n");
       fprintf(hrr_code,"#include \"r12_hrr_header.h\"\n\n");
       fprintf(hrr_code,"extern void %s(Libr12_t *, prim_data *);\n\n",vrr_function_name);
       fprintf(hrr_code,"  /* Computes (%c%c|%c%c) integrals for linear R12-methods */\n\n",
@@ -145,9 +145,9 @@ int emit_grt_order()
 	Write the overhead to the VRR code
        -----------------------------------*/
       fprintf(vrr_code,"#include <stdio.h>\n");
-      fprintf(vrr_code,"#include <libint.h>\n");
+      fprintf(vrr_code,"#include <libint/libint.h>\n");
       fprintf(vrr_code,"#include \"libr12.h\"\n");
-      fprintf(vrr_code,"#include <vrr_header.h>\n");
+      fprintf(vrr_code,"#include <libint/vrr_header.h>\n");
       fprintf(vrr_code,"#include \"r12_vrr_header.h\"\n\n");
       fprintf(vrr_code,"void %s(Libr12_t *Libr12, prim_data *Data)\n{\n",vrr_function_name);
 

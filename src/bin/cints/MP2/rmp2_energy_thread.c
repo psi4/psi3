@@ -4,8 +4,8 @@
 #include<memory.h>
 #include<stdlib.h>
 #include<libciomr/libciomr.h>
-#include<qt.h>
-#include<libint.h>
+#include<libqt/qt.h>
+#include<libint/libint.h>
 #include<pthread.h>
 
 #include"defines.h"

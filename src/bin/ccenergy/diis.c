@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <math.h>
 #include <libciomr/libciomr.h>
-#include <psio.h>
-#include <dpd.h>
-#include <qt.h>
+#include <libpsio/psio.h>
+#include <libdpd/dpd.h>
+#include <libqt/qt.h>
 #define EXTERN
 #include "globals.h"
 

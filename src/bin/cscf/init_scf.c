@@ -1,8 +1,11 @@
 /* $Log$
- * Revision 1.6  2002/03/24 18:31:19  crawdad
- * NOW it works.
- * -TDC
+ * Revision 1.7  2002/04/03 02:06:01  janssen
+ * Finish changes to use new include paths for libraries.
  *
+/* Revision 1.6  2002/03/24 18:31:19  crawdad
+/* NOW it works.
+/* -TDC
+/*
 /* Revision 1.5  2002/03/24 18:30:08  crawdad
 /* Beginning mods for libpsio-based file30.  Current version works.
 /* -TDC
@@ -54,7 +57,7 @@ static char *rcsid = "$Id$";
 #define EXTERN
 #include "includes.h"
 #include "common.h"
-#include <file30.h>
+#include <libfile30/file30.h>
 
 init_scf()
 {

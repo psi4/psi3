@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <qt.h>
+#include <libqt/qt.h>
 #include "dpd.h"
 
 /* dpd_trace42_13(): Take a "trace" of the specified indices of a buf4 and put the

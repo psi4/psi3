@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include <dpd.h>
-#include <qt.h>
+#include <libdpd/dpd.h>
+#include <libqt/qt.h>
 #define EXTERN
 #include "globals.h"
 

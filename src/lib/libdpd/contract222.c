@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <math.h>
-#include <qt.h>
+#include <libqt/qt.h>
 #include "dpd.h"
 
 int dpd_contract222(dpdfile2 *X, dpdfile2 *Y, dpdfile2 *Z, int target_X,

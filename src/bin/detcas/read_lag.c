@@ -11,7 +11,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <iwl.h>
+#include <libiwl/iwl.h>
 #include <libciomr/libciomr.h>
 #include "globaldefs.h"
 #include "globals.h"

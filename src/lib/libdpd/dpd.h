@@ -2,9 +2,9 @@
 #define DPD_H
 
 #include <stdio.h>
-#include <psio.h>
+#include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
-#include <iwl.h>
+#include <libiwl/iwl.h>
 
 #ifdef USE_DMALLOC
 #include <dmalloc.h>

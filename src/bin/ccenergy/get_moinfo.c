@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
-#include <file30.h>
-#include <psio.h>
+#include <libfile30/file30.h>
+#include <libpsio/psio.h>
 #define EXTERN
 #include "globals.h"
 

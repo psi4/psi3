@@ -2,7 +2,7 @@
   \file buf_close.c
 */
 #include <stdio.h>
-#include <psio.h>
+#include <libpsio/psio.h>
 #include "iwl.h"
 
 /*!

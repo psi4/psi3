@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <psio.h>
+#include <libpsio/psio.h>
 #include "dpd.h"
 
 #define DPD_BIGNUM 2147000000  /* A number just below the four-byte signed int limit */

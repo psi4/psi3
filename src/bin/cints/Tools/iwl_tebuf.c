@@ -1,6 +1,6 @@
 #include<math.h>
-#include<iwl.h>
-#include<libint.h>
+#include<libiwl/iwl.h>
+#include<libint/libint.h>
 #include"defines.h"
 #include"data_structs.h"
 

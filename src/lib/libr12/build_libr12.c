@@ -21,7 +21,7 @@
 #include <stdio.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
-#include <libint.h>
+#include <libint/libint.h>
 #include "build_libr12.h"
 
 FILE *infile, *outfile, *vrr_header, *hrr_header, *libr12_header, *init_code;
@@ -96,7 +96,7 @@ int main()
 
   /* Setting up init_libr12.c, header.h */
   fprintf(init_code,"#include <stdlib.h>\n");
-  fprintf(init_code,"#include <libint.h>\n");
+  fprintf(init_code,"#include <libint/libint.h>\n");
   fprintf(init_code,"#include \"libr12.h\"\n");
   fprintf(init_code,"#include \"r12_hrr_header.h\"\n\n");
   fprintf(init_code,"extern \"C\" {\n");
@@ -163,7 +163,7 @@ int main()
     /* Setting up libr12.h */
   fprintf(libr12_header,"#ifndef _psi3_libr12_h\n");
   fprintf(libr12_header,"#define _psi3_libr12_h\n\n");
-  fprintf(libr12_header,"#include \"libint.h\"\n");
+  fprintf(libr12_header,"#include <libint/libint.h>\n");
   fprintf(libr12_header,"/* Maximum angular momentum of functions in a basis set plus 1 */\n");
   fprintf(libr12_header,"#define LIBR12_MAX_AM %d\n",1+new_am/2);
   fprintf(libr12_header,"#define LIBR12_OPT_AM %d\n",1+opt_am/2);

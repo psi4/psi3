@@ -4,7 +4,7 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <libint.h>
+#include <libint/libint.h>
 #include "mem_man.h"
 #include "build_libderiv.h"
 #define MAXNODE 10000
@@ -157,7 +157,7 @@ void emit_deriv12_managers()
        -----------------------------------*/
       fprintf(hrr_code,"#include <stdio.h>\n");
       fprintf(hrr_code,"#include <string.h>\n");
-      fprintf(hrr_code,"#include <libint.h>\n");
+      fprintf(hrr_code,"#include <libint/libint.h>\n");
       fprintf(hrr_code,"#include \"libderiv.h\"\n");
       if (to_inline_hrr)
 	fprintf(hrr_code,"#define INLINE_HRR_WORKER\n");
@@ -165,7 +165,7 @@ void emit_deriv12_managers()
 	fprintf(hrr_code,"#define INLINE_D1HRR_WORKER\n");
       if (to_inline_hrr || to_inline_d1hrr)
 	fprintf(hrr_code,"#include \"%s\"\n",inline_hrr_list_name);
-      fprintf(hrr_code,"#include <hrr_header.h>\n\n");
+      fprintf(hrr_code,"#include <libint/hrr_header.h>\n\n");
       fprintf(hrr_code,"#include \"d1hrr_header.h\"\n\n");
       if (to_inline_into_hrr)
 	fprintf(hrr_code,"#include \"%s\"\n",vrr_code_name);
@@ -189,7 +189,7 @@ void emit_deriv12_managers()
 	Write the overhead to the VRR code
        -----------------------------------*/
       fprintf(vrr_code,"#include <stdio.h>\n");
-      fprintf(vrr_code,"#include <libint.h>\n");
+      fprintf(vrr_code,"#include <libint/libint.h>\n");
       fprintf(vrr_code,"#include \"libderiv.h\"\n");
       if (to_inline_vrr)
 	fprintf(vrr_code,"#define INLINE_VRR_WORKER\n");
@@ -199,8 +199,8 @@ void emit_deriv12_managers()
 	fprintf(vrr_code,"#define INLINE_HRR_WORKER\n");
       if (to_inline_vrr || to_inline_deriv || to_inline_hrr)
 	fprintf(vrr_code,"#include \"%s\"\n",inline_vrr_list_name);
-      fprintf(vrr_code,"#include <vrr_header.h>\n");
-      fprintf(vrr_code,"#include <hrr_header.h>\n");
+      fprintf(vrr_code,"#include <libint/vrr_header.h>\n");
+      fprintf(vrr_code,"#include <libint/hrr_header.h>\n");
       fprintf(vrr_code,"#include \"deriv_header.h\"\n\n");
       fprintf(vrr_code,"  /* Computes quartets necessary to compute derivatives of (%c%c|%c%c) integrals */\n\n",
 	      am_letter[la-lb],am_letter[lb],am_letter[lc-ld],am_letter[ld]);

@@ -120,8 +120,8 @@ include $(LIBOBJ:%.o=%.d)
 endif
 
 install_inc:: file30.h
-	$(MKDIRS) $(objincdir)
-	$(INSTALL_INCLUDE) $^ $(objincdir)
+	$(MKDIRS) $(incdir)/libfile30
+	$(INSTALL_INCLUDE) $^ $(incdir)/libfile30
 
 install_man:: libfile30.txt
 	$(MKDIRS) $(txtdir)

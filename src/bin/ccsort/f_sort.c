@@ -1,4 +1,4 @@
-#include <dpd.h>
+#include <libdpd/dpd.h>
 #include "Params.h"
 #include "MOInfo.h"
 #define EXTERN

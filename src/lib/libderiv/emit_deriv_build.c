@@ -66,7 +66,7 @@ int emit_deriv_build()
 	if (to_inline)
 	  fprintf(deriv_header,"#endif\n");
 	
-        fprintf(code,"#include <libint.h>\n");
+        fprintf(code,"#include <libint/libint.h>\n");
 	fprintf(code,"#include \"libderiv.h\"\n\n");
 	fprintf(code,"void %s(prim_data *Data, const int bcd_num, double *vp, const double *I0, const double *I1)\n{\n",function_name);
 	fprintf(code,"  const double twotzeta = Data->twozeta_a;\n");
@@ -171,7 +171,7 @@ int emit_deriv_build()
 	if (to_inline)
 	  fprintf(deriv_header,"#endif\n");
 
-	fprintf(code,"#include <libint.h>\n");
+	fprintf(code,"#include <libint/libint.h>\n");
 	fprintf(code,"#include \"libderiv.h\"\n\n");
 	fprintf(code,"void %s(prim_data *Data, const int a_num, const int cd_num, double *vp, const double *I0, const double *I1)\n{\n",
 		function_name);
@@ -278,7 +278,7 @@ int emit_deriv_build()
 	if (to_inline)
 	  fprintf(deriv_header,"#endif\n");
 
-	fprintf(code,"#include <libint.h>\n");
+	fprintf(code,"#include <libint/libint.h>\n");
 	fprintf(code,"#include \"libderiv.h\"\n\n");
 	fprintf(code,"void %s(prim_data *Data, const int ab_num, const int d_num, double *vp, const double *I0, const double *I1)\n{\n",
 		function_name);
@@ -384,7 +384,7 @@ int emit_deriv_build()
 	if (to_inline)
 	  fprintf(deriv_header,"#endif\n");
 
-	fprintf(code,"#include <libint.h>\n");
+	fprintf(code,"#include <libint/libint.h>\n");
 	fprintf(code,"#include \"libderiv.h\"\n\n");
 	fprintf(code,"void %s(prim_data *Data, const int abc_num, double *vp, const double *I0, const double *I1)\n{\n",
 		function_name);

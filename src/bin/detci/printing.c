@@ -16,7 +16,7 @@
 #include <math.h>
 #include <string.h>
 #include <libciomr/libciomr.h>
-#include <qt.h>
+#include <libqt/qt.h>
 #include "structs.h"
 #define EXTERN
 #include "globals.h"

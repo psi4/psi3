@@ -2,8 +2,8 @@
 #include<stdlib.h>
 #include<math.h>
 #include<libciomr/libciomr.h>
-#include<file30.h>
-#include<libint.h>
+#include<libfile30/file30.h>
+#include<libint/libint.h>
 
 #include"defines.h"
 #define EXTERN

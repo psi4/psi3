@@ -6,9 +6,9 @@
 #include <stdlib.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
-#include <dpd.h>
-#include <psio.h>
-#include <qt.h>
+#include <libdpd/dpd.h>
+#include <libpsio/psio.h>
+#include <libqt/qt.h>
 #include "MOInfo.h"
 #include "Params.h"
 #include "globals.h"

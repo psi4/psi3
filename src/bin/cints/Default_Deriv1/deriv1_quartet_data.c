@@ -3,8 +3,8 @@
 #include<string.h>
 #include<memory.h>
 #include<stdlib.h>
-#include<libint.h>
-#include<libderiv.h>
+#include<libint/libint.h>
+#include<libderiv/libderiv.h>
 
 #include"defines.h"
 #define EXTERN

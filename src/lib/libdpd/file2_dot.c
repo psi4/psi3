@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <qt.h>
+#include <libqt/qt.h>
 #include "dpd.h"
 
 double dpd_file2_dot(dpdfile2 *FileA, dpdfile2 *FileB)

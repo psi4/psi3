@@ -322,7 +322,7 @@ AC_SUBST(LAPACK)
 # CXXOTH Other C++ flags.
 # CXXINC C++ include directories (with -I in front).
 
-CPPFLAGS='-I. -I$(objincdir) -I$(top_srcdir)/include -I$(top_srcdir)/src/lib -I$(top_objdir)/src/lib -I$(top_srcdir)/src/lib/libderiv -I$(top_srcdir)/src/lib/libdpd -I$(top_srcdir)/src/lib/libfile30 -I$(top_srcdir)/src/lib/libint -I$(top_srcdir)/src/lib/libiwl -I$(top_srcdir)/src/lib/libpsio  -I$(top_srcdir)/src/lib/libqt  -I$(top_srcdir)/src/lib/libr12'
+CPPFLAGS='-I. -I$(objincdir) -I$(top_srcdir)/include -I$(top_srcdir)/src/lib -I$(top_objdir)/src/lib'
 FDBG='-g' AC_SUBST(FDBG)
 FOPT='-O' AC_SUBST(FOPT)
 FDEF='' AC_SUBST(FDEF)
@@ -783,7 +783,7 @@ AC_SUBST(CXXDEPENDSUF)
 AC_SUBST(CCDEPENDFLAGS)
 AC_SUBST(CXXDEPENDFLAGS)
 
-AC_OUTPUT(include/psiconfig.h include/cfuncs.h include/ffuncs.h
+AC_OUTPUT(include/psiconfig.h
           include/sizeof.h include/file30_params.h include/Makefile
           Makefile lib/Makefile src/Makefile
           src/lib/Makefile src/lib/MakeRules src/lib/MakeVars

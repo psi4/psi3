@@ -7,3 +7,5 @@ BUILD_SRC = build_libderiv.c mem_man.c \
 emit_deriv1_managers.c emit_deriv12_managers.c  emit_deriv_build.c emit_d1hrr_build.c \
 emit_deriv_build_macro.c emit_d1hrr_build_macro.c
 
+HEADERS = libderiv.h
+TARGET_HEADERS = $(HEADERS:%=$(top_objdir)/include/libderiv/%)

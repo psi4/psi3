@@ -2,7 +2,6 @@ include $(top_objdir)/src/lib/MakeVars
 include $(top_objdir)/src/lib/libderiv/MakeVars
 
 TARGET = $(top_objdir)/lib/libPSI_deriv.a
-HEADERS = libderiv.h
 
 TRUESRC_C = $(shell echo `ls *.c`)
 TRUESRC_CXX = $(shell echo `ls *.cc`)
@@ -10,7 +9,7 @@ LIBOBJ_C = $(TRUESRC_C:%.c=%.o)
 LIBOBJ_CXX = $(TRUESRC_CXX:%.cc=%.o)
 LIBOBJ = $(LIBOBJ_C) $(LIBOBJ_CXX)
 
-default:: install
+default:: $(TARGET) $(TARGET_HEADERS)
 
 %.$(OBJSUF): %.c
 	$(CC) $(CFLAGS) -c $< $(OUTPUT_OPTION)
@@ -22,26 +21,15 @@ default:: install
 # do installations
 #
 
-install:: install_inc install_target install_man
-
-install_inc::
-
 $(TARGET): $(LIBOBJ)
 	$(MKDIRS) `dirname $(TARGET)`
 	rm -f $(TARGET)
 	$(AR) $(ARFLAGS) $(TARGET) $^
 	$(RANLIB) $(TARGET)
 
-install_target:: $(TARGET)
-	$(MKDIRS) $(libdir)
-	$(INSTALL_DATA) $< $(libdir)
-	$(RANLIB) $(libdir)/`basename $(TARGET)`
-
-install_man::
-
-install_inc:: $(HEADERS)
-	$(MKDIRS) $(objincdir)
-	$(INSTALL_INCLUDE) $^ $(objincdir)
+$(top_objdir)/include/libderiv/%.h: %.h
+	$(MKDIRS) `dirname $@`
+	$(INSTALL_INCLUDE) $^ $@
 
 #
 # clean up

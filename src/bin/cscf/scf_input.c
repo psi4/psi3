@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.13  2002/03/25 02:17:36  janssen
- * Get rid of tmpl.  Use new naming scheme for libipv1 includes.
+ * Revision 1.14  2002/04/03 02:06:01  janssen
+ * Finish changes to use new include paths for libraries.
  *
+/* Revision 1.13  2002/03/25 02:17:36  janssen
+/* Get rid of tmpl.  Use new naming scheme for libipv1 includes.
+/*
 /* Revision 1.12  2002/01/04 17:05:04  crawdad
 /* Added read of number of MO's per irrep for non-guess=core cases.  This
 /* allows proper correction of MO phases.
@@ -113,7 +116,7 @@ static char *rcsid = "$Id$";
 #include "includes.h"
 #include "common.h"
 #include <libipv1/ip_lib.h>
-#include <file30.h>
+#include <libfile30/file30.h>
 
 void scf_input(ipvalue)
    ip_value_t *ipvalue;

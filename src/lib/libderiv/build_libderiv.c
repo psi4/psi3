@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
-#include <libint.h>
+#include <libint/libint.h>
 #include "build_libderiv.h"
 
 FILE *infile, *outfile, *d1hrr_header,
@@ -80,7 +80,7 @@ int main()
   /* Setting up init_libderiv.c, header.h */
   fprintf(init_code,"#include <stdlib.h>\n");
   fprintf(init_code,"#include <strings.h>\n");
-  fprintf(init_code,"#include <libint.h>\n");
+  fprintf(init_code,"#include <libint/libint.h>\n");
   fprintf(init_code,"#include \"libderiv.h\"\n");
   fprintf(init_code,"#include \"d1hrr_header.h\"\n\n");
   fprintf(init_code,"extern \"C\" {\n");
@@ -153,7 +153,7 @@ int main()
     /* Setting up libderiv.h */
   fprintf(libderiv_header,"#ifndef _psi3_libderiv_h\n");
   fprintf(libderiv_header,"#define _psi3_libderiv_h\n\n");
-  fprintf(libderiv_header,"#include <libint.h>\n\n");
+  fprintf(libderiv_header,"#include <libint/libint.h>\n\n");
   fprintf(libderiv_header,"/* Maximum angular momentum of functions in a basis set plus 1 */\n");
   fprintf(libderiv_header,"#define LIBDERIV_MAX_AM %d\n",1+new_am/2);
   fprintf(libderiv_header,"#ifdef DERIV_LVL\n");

@@ -10,7 +10,7 @@ TEMP_DIR = ${SCRATCH}/libint
 .PHONY: default install all
 .PHONY: clean oclean iclean dclean target_clean
 
-default:: $(TARGET)
+default:: $(TARGET) $(TARGET_HEADERS)
 
 top_objdir_path=$(PWD)/$(top_objdir)
 
@@ -46,11 +46,9 @@ if ! ./$(BUILD_BINARY); then \
  cd ..; rm -fR $(TEMP_DIR); exit 1; \
 fi; \
 cp Makefile.libint Makefile; \
-${MAKE} top_objdir=$(top_objdir_path) install; \
+${MAKE} top_objdir=$(top_objdir_path); \
 cd ..; \
 rm -fR $(TEMP_DIR)
-
-all: install
 
 clean::
 
@@ -62,10 +60,12 @@ dclean:
 
 targetclean:
 
-install: $(TARGET)
+install: $(TARGET) $(TARGET_HEADERS)
 	$(MKDIRS) $(libdir)
 	$(INSTALL_DATA) $< $(libdir)
 	$(RANLIB) $(libdir)/`basename $(TARGET)`
+	$(MKDIRS) $(incdir)/libint
+	$(INSTALL_INCLUDE) $(TARGET_HEADERS) $(incdir)/libint
 
 #
 # keep the configuration information and makefiles up-to-date

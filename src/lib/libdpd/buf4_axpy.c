@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include "dpd.h"
-#include <qt.h>
+#include <libqt/qt.h>
 
 /* dpd_buf4_axpy(): Evaluates the standard operation a * X + Y -> Y for dpd
 ** four-index buffers.

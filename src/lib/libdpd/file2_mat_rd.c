@@ -1,4 +1,4 @@
-#include <psio.h>
+#include <libpsio/psio.h>
 #include "dpd.h"
 
 int dpd_file2_mat_rd(dpdfile2 *File)

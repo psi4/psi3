@@ -4,10 +4,10 @@
 #include<stdlib.h>
 #include<libipv1/ip_lib.h>
 #include<libciomr/libciomr.h>
-#include<psio.h>
-#include<libint.h>
+#include<libpsio/psio.h>
+#include<libint/libint.h>
 #include<pthread.h>
-#include<qt.h>
+#include<libqt/qt.h>
 
 #include"defines.h"
 #define EXTERN

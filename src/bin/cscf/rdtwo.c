@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.2  2002/03/25 02:17:36  janssen
- * Get rid of tmpl.  Use new naming scheme for libipv1 includes.
+ * Revision 1.3  2002/04/03 02:06:01  janssen
+ * Finish changes to use new include paths for libraries.
  *
+/* Revision 1.2  2002/03/25 02:17:36  janssen
+/* Get rid of tmpl.  Use new naming scheme for libipv1 includes.
+/*
 /* Revision 1.1.1.1  2000/02/04 22:52:29  evaleev
 /* Started PSI 3 repository
 /*
@@ -55,7 +58,7 @@ static char *rcsid = "$Id$";
 #include "includes.h"
 #include "common.h"
 #include <libipv1/ip_lib.h>
-#include <iwl.h>
+#include <libiwl/iwl.h>
 
 double *pa, *pb;
 int *inext;

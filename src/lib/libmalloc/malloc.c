@@ -184,8 +184,8 @@ char *p;
 #ifdef debug
 	else
 		abort();
-#endif debug
-#endif	MALLOCTRACE
+#endif /* debug */
+#endif /* MALLOCTRACE */
 }
 
 #ifndef vax

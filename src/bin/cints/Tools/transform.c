@@ -1,8 +1,8 @@
 #include<stdio.h>
 #include<memory.h>
 #include<libciomr/libciomr.h>
-#include<qt.h>
-#include<libint.h>
+#include<libqt/qt.h>
+#include<libint/libint.h>
 
 #include"defines.h"
 #define EXTERN

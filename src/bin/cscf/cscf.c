@@ -168,7 +168,7 @@ static char *rcsid = "$Id$";
 #include "includes.h"
 #include "common.h"
 #include <libipv1/ip_lib.h>
-#include <psio.h>
+#include <libpsio/psio.h>
 
 void print_initial_vec();
 

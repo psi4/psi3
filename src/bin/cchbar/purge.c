@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <dpd.h>
+#include <libdpd/dpd.h>
 #include <math.h>
 #define EXTERN
 #include "globals.h"

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <libciomr/libciomr.h>
-#include <iwl.h>
+#include <libiwl/iwl.h>
 #define EXTERN
 #include "globals.h"
 

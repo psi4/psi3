@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <libciomr/libciomr.h>
-#include <file30.h>
+#include <libfile30/file30.h>
 
 #include "input.h"
 #include "defines.h"

@@ -28,8 +28,8 @@ include $(LIBOBJ:%.o=%.d)
 endif
 
 install_inc:: psio.h psio.gbl
-	$(MKDIRS) $(incdir)
-	$(INSTALL_INCLUDE) $^ $(incdir)
+	$(MKDIRS) $(incdir)/libpsio
+	$(INSTALL_INCLUDE) $^ $(incdir)/libpsio
 
 install_man:: libpsio.html
 	$(MKDIRS) $(htmldir)

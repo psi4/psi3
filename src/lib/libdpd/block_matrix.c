@@ -25,7 +25,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-#include <qt.h>
+#include <libqt/qt.h>
 #include "dpd.h"
 #define EXTERN
 #include "dpd.gbl"

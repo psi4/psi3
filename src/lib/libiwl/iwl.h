@@ -2,7 +2,7 @@
 #define IWL_H
 
 #include <stdio.h>
-#include <psio.h>
+#include <libpsio/psio.h>
 
 /*
 ** IWL.H

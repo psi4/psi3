@@ -7,8 +7,8 @@ extern "C" {
    #include <stdlib.h>
    /* may no longer need #include <libc.h> */
    #include <libciomr/libciomr.h>
-   #include <qt.h>
-   #include <iwl.h>
+   #include <libqt/qt.h>
+   #include <libiwl/iwl.h>
    #include "structs.h"
    #include "globals.h"
 }

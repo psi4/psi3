@@ -2,11 +2,11 @@
 #include<libipv1/ip_lib.h>
 #include<math.h>
 #include<libciomr/libciomr.h>
-#include<psio.h>
-#include<libint.h>
-#include<iwl.h>
+#include<libpsio/psio.h>
+#include<libint/libint.h>
+#include<libiwl/iwl.h>
 #include<psifiles.h>
-#include <file30.h>
+#include <libfile30/file30.h>
 
 #include"defines.h"
 #define EXTERN

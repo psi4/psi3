@@ -3,9 +3,9 @@
 #include<stdlib.h>
 #include<string.h>
 #include<libipv1/ip_lib.h>
-#include<iwl.h>
+#include<libiwl/iwl.h>
 #include<libciomr/libciomr.h>
-#include<libint.h>
+#include<libint/libint.h>
 #include<psifiles.h>
 
 #include"defines.h"

@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <libciomr/libciomr.h>
-#include <libint.h>
-#include <libderiv.h>
+#include <libint/libint.h>
+#include <libderiv/libderiv.h>
 
 #include "defines.h"
 #define EXTERN

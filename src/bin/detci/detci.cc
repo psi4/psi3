@@ -29,10 +29,10 @@ extern "C" {
    #include <libipv1/ip_lib.h>
    /* seem to need string.h in RedHat 7.1 */
    #include <string.h>
-   #include <qt.h>
+   #include <libqt/qt.h>
    #include <libciomr/libciomr.h>
-   #include <file30.h>
-   #include <psio.h>
+   #include <libfile30/file30.h>
+   #include <libpsio/psio.h>
    #include "structs.h"
    #include "globals.h"
    #include "ci_tol.h"

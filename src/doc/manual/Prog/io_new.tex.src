@@ -156,7 +156,7 @@ functions should be called in relation to initialization of
 \begin{verbatim}
 #include <stdio.h>
 #include <libipv1/ip_lib.h>
-#include <psio.h>
+#include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
 
 FILE *infile, *outfile;
