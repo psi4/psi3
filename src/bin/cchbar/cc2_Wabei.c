@@ -83,7 +83,7 @@ void cc2_Wabei_build(void)
     dpd_file2_init(&t1, CC_OEI, 0, 0, 1, "tIA");
 
     /* WEbEi <-- <Ab|Ef> * t(i,f) */
-    dpd_buf4_init(&W, CC_HBAR, 0, 5, 11, 5, 11, 0, "CC2 WAbEi");
+    dpd_buf4_init(&W, CC2_HET1, 0, 5, 11, 5, 11, 0, "CC2 WAbEi");
     dpd_buf4_init(&B, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>");
     dpd_contract424(&B, &t1, &W, 3, 1, 0, 1, 0);
     dpd_buf4_close(&B);
@@ -185,7 +185,7 @@ void cc2_Wabei_build(void)
 
     /** AAA ***/
     dpd_buf4_init(&Z1, CC_TMP0, 0, 5, 21, 5, 21, 0, "CC2 ZABEI (AB,EI)");
-    dpd_buf4_init(&Z, CC_HBAR, 0, 20, 21, 20, 21, 0, "CC2 ZMBEJ");
+    dpd_buf4_init(&Z, CC_TMP0, 0, 20, 21, 20, 21, 0, "CC2 ZMBEJ");
     dpd_contract244(&tIA, &Z, &Z1, 0, 0, 0, -1, 0);
     dpd_buf4_close(&Z);
    
@@ -200,13 +200,13 @@ void cc2_Wabei_build(void)
 
     /** ABAB **/
     dpd_buf4_init(&Z1, CC_TMP0, 0, 28, 26, 28, 26, 0, "CC2 ZAbEi (Ab,Ei)");
-    dpd_buf4_init(&Z, CC_HBAR, 0, 24, 26, 24, 26, 0, "CC2 ZMbEj");
+    dpd_buf4_init(&Z, CC_TMP0, 0, 24, 26, 24, 26, 0, "CC2 ZMbEj");
     dpd_contract244(&tIA, &Z, &Z1, 0, 0, 0, -1, 0);
     dpd_buf4_close(&Z);
     dpd_buf4_close(&Z1);
 
     dpd_buf4_init(&Z1, CC_TMP0, 0, 29, 26, 29, 26, 0, "CC2 ZAbEi (bA,Ei)");
-    dpd_buf4_init(&Z, CC_HBAR, 0, 27, 26, 27, 26, 0, "CC2 ZmBEj");
+    dpd_buf4_init(&Z, CC_TMP0, 0, 27, 26, 27, 26, 0, "CC2 ZmBEj");
     dpd_contract244(&tia, &Z, &Z1, 0, 0, 0, -1, 0);
     dpd_buf4_close(&Z);
     dpd_buf4_sort_axpy(&Z1, CC_TMP0, qprs, 28, 26, "CC2 ZAbEi (Ab,Ei)", 1);
@@ -220,13 +220,13 @@ void cc2_Wabei_build(void)
 
     /** BABA **/
     dpd_buf4_init(&Z1, CC_TMP0, 0, 29, 25, 29, 25, 0, "CC2 ZaBeI (aB,eI)");
-    dpd_buf4_init(&Z, CC_HBAR, 0, 27, 25, 27, 25, 0, "CC2 ZmBeJ");
+    dpd_buf4_init(&Z, CC_TMP0, 0, 27, 25, 27, 25, 0, "CC2 ZmBeJ");
     dpd_contract244(&tia, &Z, &Z1, 0, 0, 0, -1, 0);
     dpd_buf4_close(&Z);
     dpd_buf4_close(&Z1);
 
     dpd_buf4_init(&Z1, CC_TMP0, 0, 28, 25, 28, 25, 0, "CC2 ZaBeI (Ba,eI)");
-    dpd_buf4_init(&Z, CC_HBAR, 0, 24, 25, 24, 25, 0, "CC2 ZMbeJ");
+    dpd_buf4_init(&Z, CC_TMP0, 0, 24, 25, 24, 25, 0, "CC2 ZMbeJ");
     dpd_contract244(&tIA, &Z, &Z1, 0, 0, 0, -1, 0);
     dpd_buf4_close(&Z);
     dpd_buf4_sort_axpy(&Z1, CC_TMP0, qprs, 29, 25, "CC2 ZaBeI (aB,eI)", 1);
@@ -240,7 +240,7 @@ void cc2_Wabei_build(void)
 
     /** BBBB **/
     dpd_buf4_init(&Z1, CC_TMP0, 0, 15, 31, 15, 31, 0, "CC2 Zabei (ab,ei)");
-    dpd_buf4_init(&Z, CC_HBAR, 0, 30, 31, 30, 31, 0, "CC2 Zmbej");
+    dpd_buf4_init(&Z, CC_TMP0, 0, 30, 31, 30, 31, 0, "CC2 Zmbej");
     dpd_contract244(&tia, &Z, &Z1, 0, 0, 0, -1, 0);
     dpd_buf4_close(&Z);
     dpd_buf4_sort(&Z1, CC_TMP0, qprs, 15, 31, "CC2 Zabei (ba,ei)");
@@ -260,7 +260,7 @@ void cc2_Wabei_build(void)
   if (params.ref == 0) { /* RHF */
 
     dpd_buf4_init(&W, CC_TMP0, 0, 11, 5, 11, 5, 0, "CC2 WAbEi (Ei,Ab)");
-    dpd_buf4_sort_axpy(&W, CC_HBAR, rspq, 5, 11, "CC2 WAbEi", 1);
+    dpd_buf4_sort_axpy(&W, CC2_HET1, rspq, 5, 11, "CC2 WAbEi", 1);
     dpd_buf4_close(&W);
 
   }
@@ -268,16 +268,16 @@ void cc2_Wabei_build(void)
 
     /* sort to Wabei (ei,ab) */
     dpd_buf4_init(&W, CC_TMP2, 0, 7, 11, 7, 11, 0, "CC2 WABEI (A>B,EI)");
-    dpd_buf4_sort(&W, CC_HBAR, rspq, 11, 7, "CC2 WABEI (EI,A>B)");
+    dpd_buf4_sort(&W, CC2_HET1, rspq, 11, 7, "CC2 WABEI (EI,A>B)");
     dpd_buf4_close(&W);
     dpd_buf4_init(&W, CC_TMP2, 0, 7, 11, 7, 11, 0, "CC2 Wabei (a>b,ei)");
-    dpd_buf4_sort(&W, CC_HBAR, rspq, 11, 7, "CC2 Wabei (ei,a>b)");
+    dpd_buf4_sort(&W, CC2_HET1, rspq, 11, 7, "CC2 Wabei (ei,a>b)");
     dpd_buf4_close(&W);
     dpd_buf4_init(&W, CC_TMP2, 0, 5, 11, 5, 11, 0, "CC2 WAbEi (Ab,Ei)");
-    dpd_buf4_sort(&W, CC_HBAR, rspq, 11, 5, "CC2 WAbEi (Ei,Ab)");
+    dpd_buf4_sort(&W, CC2_HET1, rspq, 11, 5, "CC2 WAbEi (Ei,Ab)");
     dpd_buf4_close(&W);
     dpd_buf4_init(&W, CC_TMP2, 0, 5, 11, 5, 11, 0, "CC2 WaBeI (aB,eI)");
-    dpd_buf4_sort(&W, CC_HBAR, rspq, 11, 5, "CC2 WaBeI (eI,aB)");
+    dpd_buf4_sort(&W, CC2_HET1, rspq, 11, 5, "CC2 WaBeI (eI,aB)");
     dpd_buf4_close(&W);
 
     /* purge before final sort */
@@ -288,16 +288,16 @@ void cc2_Wabei_build(void)
 
     /* sort to Wabei (ei,ab) */
     dpd_buf4_init(&W, CC_TMP0, 0, 7, 21, 7, 21, 0, "CC2 WABEI (A>B,EI)");
-    dpd_buf4_sort(&W, CC_HBAR, rspq, 21, 7, "CC2 WABEI (EI,A>B)");
+    dpd_buf4_sort(&W, CC2_HET1, rspq, 21, 7, "CC2 WABEI (EI,A>B)");
     dpd_buf4_close(&W);
     dpd_buf4_init(&W, CC_TMP0, 0, 17, 31, 17, 31, 0, "CC2 Wabei (a>b,ei)");
-    dpd_buf4_sort(&W, CC_HBAR, rspq, 31, 17, "CC2 Wabei (ei,a>b)");
+    dpd_buf4_sort(&W, CC2_HET1, rspq, 31, 17, "CC2 Wabei (ei,a>b)");
     dpd_buf4_close(&W);
     dpd_buf4_init(&W, CC_TMP0, 0, 28, 26, 28, 26, 0, "CC2 WAbEi (Ab,Ei)");
-    dpd_buf4_sort(&W, CC_HBAR, rspq, 26, 28, "CC2 WAbEi (Ei,Ab)");
+    dpd_buf4_sort(&W, CC2_HET1, rspq, 26, 28, "CC2 WAbEi (Ei,Ab)");
     dpd_buf4_close(&W);
     dpd_buf4_init(&W, CC_TMP0, 0, 29, 25, 29, 25, 0, "CC2 WaBeI (aB,eI)");
-    dpd_buf4_sort(&W, CC_HBAR, rspq, 25, 29, "CC2 WaBeI (eI,aB)");
+    dpd_buf4_sort(&W, CC2_HET1, rspq, 25, 29, "CC2 WaBeI (eI,aB)");
     dpd_buf4_close(&W);
   }
   timer_off("Wabei_sort");
