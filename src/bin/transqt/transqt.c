@@ -133,9 +133,7 @@ struct Params params;
 #define IOFF_MAX 32641
 
 /* Function prototypes */
-void check_quiet_mode(int argc, char *argv[]);
-void parse_cmdline(int argc, char *argv[]);
-void init_io(void);
+void init_io(int argc, char *argv[]);
 void title(void);
 void init_ioff(void);
 void get_parameters(void);
@@ -162,11 +160,9 @@ int check_C(int nso, int nmo, double **Cmat, double *S);
 main(int argc, char *argv[])
 {
   params.print_lvl = 1;
-  check_quiet_mode(argc,argv);
-  init_io();
+  init_io(argc,argv);
   title();
   get_parameters();
-  parse_cmdline(argc,argv);  /*--- Command-line args override input.dat ---*/
   print_parameters();
   get_moinfo();
   get_reorder_array();
@@ -202,47 +198,25 @@ main(int argc, char *argv[])
 }
 
 
-/*
-** check_quiet_mode()
-**
-** See if the user has requested "quiet" mode.  If so, print *nothing*.
-** We have to do this very early in the program, obviously.
-** We'll check for -quiet again later in parse_cmdline() to make sure
-** the printing value wasn't changed by input.
-*/
-void check_quiet_mode(int argc, char *argv[])
-{
-
-   int i;
-
-   for (i=1; i<argc; i++) {
-       if (strcmp(argv[i], "-quiet") == 0) {
-           params.print_lvl = 0;
-         }
-   }
-}
-
-
-void parse_cmdline(int argc, char *argv[])
+void init_io(int argc, char *argv[])
 {
    int i;
+   int parsed=1;
+
+   params.runmode = MODE_NORMAL;
 
    for (i=1; i<argc; i++) {
        
        /*--- "Quiet" option ---*/
        if (strcmp(argv[i], "-quiet") == 0) {
            params.print_lvl = 0;
+           parsed++;
          }
 
        /*--- do backtransformation ---*/
        if (strcmp(argv[i], "-backtr") == 0) {
 	   params.backtr = 1;
-	   params.src_tei_file = PSIF_MO_TPDM;
-	   params.mfile = PSIF_AO_TPDM;
-	   params.delete_src_tei = 0;
-	   params.do_h_bare = 0; 
-	   params.do_h_fzc = 0;
-	   params.fzc = 0;
+	   parsed++;
          }
 
        /*--- transform integrals for MP2R12A ---*/
@@ -252,43 +226,25 @@ void parse_cmdline(int argc, char *argv[])
 	     of integrals to transform
 	    ---*/
 	   i++;
-	   params.tei_trans_type = MAKE_OGOG;
-	   params.do_all_tei = 1;
+	   parsed += 2;
 	   switch (atoi(argv[i])) {
 	   case 0: /*--- transform ERIs ---*/
-	       params.tei_type = ERI;
-	       params.src_tei_file = PSIF_SO_TEI;
-	       params.mfile = PSIF_MO_TEI;
-	       /* UHF additions, -TDC, 6/01 */
-	       params.aa_mfile = PSIF_MO_AA_TEI;
-	       params.bb_mfile = PSIF_MO_BB_TEI;
-	       params.ab_mfile = PSIF_MO_AB_TEI;
-	       params.do_oei = 1;
+               params.runmode = MODE_MP2R12AERI;
 	       break;
 
 	   case 1: /*--- transform ints of r12 ---*/
-	       params.tei_type = R12;
-	       params.src_tei_file = PSIF_SO_R12;
-	       params.mfile = PSIF_MO_R12;
-	       params.do_oei = 0;
+               params.runmode = MODE_MP2R12AR12;
 	       break;
 
 	   case 2: /*--- transform ints of [r12,T1] ---*/
-	       params.tei_type = R12T1;
-	       params.src_tei_file = PSIF_SO_R12T1;
-	       params.mfile = PSIF_MO_R12T1;
-	       params.do_oei = 0;
+               params.runmode = MODE_MP2R12AR12T1;
 	       break;
 	   }
        }
    }
-}
 
+  init_in_out(argc-parsed,argv+parsed);
 
-void init_io(void)
-{
-  ffile(&infile,"input.dat",2);
-  ffile(&outfile,"output.dat",1);
   if (params.print_lvl) tstart(outfile);
   ip_set_uppercase(1);
   ip_initialize(infile,outfile);
@@ -346,16 +302,49 @@ void get_parameters(void)
   int errcod;
   int tol, i;
 
-  /*--- What kind of transformation to do ---*/
-  params.tei_trans_type = MAKE_GGGG;
-  
   errcod = ip_string("WFN", &(params.wfn),0);
   if(errcod == IPE_KEY_NOT_FOUND) {
     params.wfn = (char *) malloc(sizeof(char)*5);
     strcpy(params.wfn, "CCSD");
   }
-  if (strcmp(params.wfn, "MP2") == 0)
+
+  /* The defaults below depend on what run mode we are in */
+  if (params.runmode == MODE_NORMAL) {
+    if (strcmp(params.wfn, "MP2") == 0)
       params.tei_trans_type = MAKE_OVOV;
+    else
+      params.tei_trans_type = MAKE_GGGG;
+    params.tei_type = ERI;
+    params.src_tei_file = PSIF_SO_TEI;
+    params.mfile = PSIF_MO_TEI;
+    params.do_oei = 1;
+  }
+  else if (params.runmode == MODE_MP2R12AERI) {
+    params.tei_trans_type = MAKE_OGOG;
+    params.tei_type = ERI;
+    params.src_tei_file = PSIF_SO_TEI;
+    params.mfile = PSIF_MO_TEI;
+    params.do_oei = 1;
+  }
+  else if (params.runmode == MODE_MP2R12AR12) {
+    params.tei_trans_type = MAKE_OGOG;
+    params.tei_type = ERI;
+    params.src_tei_file = PSIF_SO_R12;
+    params.mfile = PSIF_MO_R12;
+    params.do_oei = 0;
+  }
+  else if (params.runmode == MODE_MP2R12AR12T1) {
+    params.tei_trans_type = MAKE_OGOG;
+    params.tei_type = R12T1;
+    params.src_tei_file = PSIF_SO_R12T1;
+    params.mfile = PSIF_MO_R12T1;
+    params.do_oei = 0;
+  }
+  else {
+    fprintf(outfile, "transqt: Unrecognized runmode %d\n", params.runmode);
+    exit(PSI_RETURN_FAILURE);
+  }
+  
 
   /* Adding for UHF capabilities -- TDC, 06/14/01 */
   errcod = ip_string("REFERENCE", &(params.ref), 0);
@@ -364,6 +353,7 @@ void get_parameters(void)
     strcpy(params.ref, "RHF");
   }
 
+  /* the default to this was already set by command line parsing */
   errcod = ip_boolean("BACKTRANS", &(params.backtr), 0);
 
   params.tolerance = 1e-14;
@@ -391,7 +381,6 @@ void get_parameters(void)
   params.sorted_tei_file = PSIF_MO_TEI;
   errcod = ip_data("SORTED_TEI_FILE","%d",&(params.sorted_tei_file),0);
 
-
   if (params.backtr) {
     params.src_tei_file = PSIF_MO_TPDM;
     errcod = ip_data("TPDM_FILE","%d",&(params.src_tei_file),0);
@@ -403,12 +392,8 @@ void get_parameters(void)
     errcod = ip_data("SO_T_FILE","%d",&(params.src_T_file),0);
     params.src_V_file = PSIF_OEI;
     errcod = ip_data("SO_V_FILE","%d",&(params.src_V_file),0);
-    params.src_tei_file = PSIF_SO_TEI;
     errcod = ip_data("SO_TEI_FILE","%d",&(params.src_tei_file),0);
   }
-
-  /*--- By default - tranform one-electron integrals ---*/
-  params.do_oei = 1;
 
   params.first_tmp_file = 150;
   errcod = ip_data("FIRST_TMP_FILE", "%d", &(params.first_tmp_file),0);
@@ -428,7 +413,6 @@ void get_parameters(void)
   errcod = ip_data("J_FILE","%d", &(params.jfile),0);
   params.keep_half_tf = 0;
   errcod = ip_boolean("KEEP_J", &(params.keep_half_tf),0);
-  params.mfile = PSIF_MO_TEI;
   if (params.backtr) params.mfile = PSIF_AO_TPDM;
   errcod = ip_data("M_FILE","%d", &(params.mfile),0);
 
@@ -498,6 +482,9 @@ void get_parameters(void)
        || strcmp(params.wfn, "DETCAS")==0) && !params.backtr) 
     params.do_all_tei = 1;
   else params.do_all_tei = 0;
+  if (params.runmode == MODE_MP2R12AERI || params.runmode == MODE_MP2R12AR12 ||
+      params.runmode == MODE_MP2R12AR12T1)
+  params.do_all_tei = 1;
   errcod = ip_boolean("DO_ALL_TEI", &(params.do_all_tei), 0);
 
   params.do_h_bare = 1;  params.do_h_fzc = 1;

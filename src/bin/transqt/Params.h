@@ -1,6 +1,8 @@
 /* Struct for input parameters */
 
 struct Params {
+  int runmode;                  /* which mode we are running in, defined
+                                   in globals.h                           */
   int do_all_tei;               /* for two-elec ints, include fzc/fzv?    */
   int do_h_bare;                /* for fwd tf's, write bare h ints?       */
   int do_h_fzc;                 /* for fwd tf's, write dressed h fzc oper?*/
