@@ -34,8 +34,6 @@ static double ke_int(double a1, int l1, int m1, int n1, double norm1,
 		     struct coordinates PB);
 static double f_n(int k, int l1, int l2, double A, double B);
 static double int_pow(double a, int p);
-static double ***init_box(int a, int b, int c);
-static void free_box(double ***box, int a, int b);
 
 /*-------------------------------------------------------------
   This function computes derivatives of one-electron integrals
@@ -653,40 +651,3 @@ double int_pow(double a, int p)
   for(i=0; i<p; i++) b = b*a;
   return b;
 }
-
-
-double ***init_box(int a, int b, int c)
-{
-  int i,j,k;
-  double ***box;
-
-  box = (double ***) malloc(sizeof(double **)*a);
-  for(i=0;i<a;i++)
-    box[i] = (double **) malloc(sizeof(double *)*b);
-  for(i=0;i<a;i++)
-    for(j=0;j<b;j++) {
-	box[i][j] = (double *) malloc(sizeof(double)*c);
-	bzero((char *) box[i][j],sizeof(double)*c);
-    }
-
-  return box;
-
-}
-
-
-void free_box(double ***box, int a, int b)
-{
-  int i,j;
-
-  for(i=0;i<a;i++)
-    for(j=0;j<b;j++)
-      free(box[i][j]);
-
-  for(i=0;i<a;i++)
-    free(box[i]); 
-
-  free(box);
-
-  return;
-}
-
