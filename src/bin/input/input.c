@@ -409,6 +409,7 @@ void cleanup()
   free_int_matrix(ao_type_irr,MAX(max_angmom+1,MAXANGMOM));
   free(ioff);
   free(df);
+  free(z_geom);
   
   return;
 }

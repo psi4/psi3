@@ -9,7 +9,7 @@
 #include "global.h"
 #include "defines.h"
 
-/*this is used to hold ZVALS info*/
+/*this is used to hold ZVARS info*/
 struct definition{
       char* variable;
       double value;
@@ -20,7 +20,7 @@ void parse_zmat(int i, int position, double *value,struct definition *array, int
 
 void read_zmat()
 {
-  int i, j, k, m, a, b, c, errcod, value_set, zval_exist;
+  int i, j, k, m, a, b, c, errcod, value_set, zvar_exist;
   char *buffer, *temp_string, *temp_string2, *dollar;
   int num_entries, num_vals, entry_length, atomcount;
   int A, B, C, D;
@@ -39,8 +39,8 @@ void read_zmat()
   /* array to store variable definitions */
   struct definition *def_arr;
   
-  /*need this to avoid seg fault if character string used but no zval given*/
-  zval_exist = ip_exist("ZVALS",0);    
+  /*need this to avoid seg fault if character string used but no zvar given*/
+  zvar_exist = ip_exist("ZVARS",0);    
 
   /* Read number of lines and count atoms in ZMAT */
   num_atoms = num_entries = 0;
@@ -65,7 +65,7 @@ void read_zmat()
     Allocate global arrays
    -----------------------*/
   geometry = init_matrix(num_atoms,3);
-  /* see global.h for info about z_entry structure */
+  /* see file30.h for info about z_entry structure */
   z_geom = (struct z_entry *) malloc(sizeof(struct z_entry)*num_entries); 
   element = (char **) malloc(sizeof(char *)*num_atoms);
   nuclear_charges = init_array(num_atoms);
@@ -73,17 +73,17 @@ void read_zmat()
   full_geom = init_matrix(num_entries,3);
   atomcount = 0;
 
-  /* read in zvals */
+  /* read in zvars */
   errcod = 0;
-  if( ip_exist("ZVALS",0) ) {
-      errcod += ip_count("ZVALS",&num_vals,0);
+  if( ip_exist("ZVARS",0) ) {
+      errcod += ip_count("ZVARS",&num_vals,0);
       def_arr = (struct definition *) malloc( num_vals * sizeof(struct definition) );
       for(i=0;i<num_vals;++i) {
-	  errcod += ip_string("ZVALS",&def_arr[i].variable,2,i,0);
-          errcod += ip_data("ZVALS","%lf",&def_arr[i].value,2,i,1);
+	  errcod += ip_string("ZVARS",&def_arr[i].variable,2,i,0);
+          errcod += ip_data("ZVARS","%lf",&def_arr[i].value,2,i,1);
 	}
       if(errcod > 0)
-	  punt("Problem parsing ZVALS");
+	  punt("Problem parsing ZVARS");
     }
 
   for (i=0;i<num_entries;++i) {
@@ -112,7 +112,7 @@ void read_zmat()
      else if (i == 1) {					/*	2nd atom */
 
 	ip_data("ZMAT","%d",&a,2,i,1);
-	parse_zmat(i,bond,&rAB,def_arr,num_vals,zval_exist);
+	parse_zmat(i,bond,&rAB,def_arr,num_vals,zvar_exist);
 	
         z_geom[1].bond_atom = a;
         z_geom[1].angle_atom = z_geom[1].tors_atom = -1;
@@ -133,14 +133,14 @@ void read_zmat()
         if ( ((a == 2) && (b == 1)) ||
              ((a == 1) && (b == 2)) ) {
 
-           parse_zmat(i,bond,&rBC,def_arr,num_vals,zval_exist);
+           parse_zmat(i,bond,&rBC,def_arr,num_vals,zvar_exist);
 	    
            if (rBC <= ZERO_BOND_DISTANCE) {
               fprintf(outfile,"  Invalid bond length in line 3.\n");
               punt("Invalid ZMAT");
            }
 
-	   parse_zmat(i,angle,&thetaABC,def_arr,num_vals,zval_exist);
+	   parse_zmat(i,angle,&thetaABC,def_arr,num_vals,zvar_exist);
 	
            if (thetaABC <= ZERO_BOND_ANGLE) {
               fprintf(outfile,"  Invalid bond angle in line 3.\n");
@@ -184,21 +184,21 @@ void read_zmat()
            fprintf(outfile,"  Problem in line %d of zmat.\n",i);
            punt("Invalid ZMAT");
         }
-        parse_zmat(i,bond,&rCD,def_arr,num_vals,zval_exist);
+        parse_zmat(i,bond,&rCD,def_arr,num_vals,zvar_exist);
 	
 	if (rCD <= ZERO_BOND_DISTANCE) {
 	   fprintf(outfile,"  Invalid bond length in line %d.\n",i+1);
 	   punt("Invalid ZMAT");
 	}
 
-	parse_zmat(i,angle,&thetaBCD,def_arr,num_vals,zval_exist);
+	parse_zmat(i,angle,&thetaBCD,def_arr,num_vals,zvar_exist);
 	
 	if (thetaBCD <= ZERO_BOND_ANGLE) {
 	   fprintf(outfile,"  Invalid bond angle in line %d.\n",i+1);
 	   punt("Invalid ZMAT");
 	}
 
-        parse_zmat(i,tors,&phiABCD,def_arr,num_vals,zval_exist);
+        parse_zmat(i,tors,&phiABCD,def_arr,num_vals,zvar_exist);
 	   
         z_geom[i].bond_atom = c+1;
         z_geom[i].angle_atom = b+1;
@@ -298,7 +298,7 @@ void read_zmat()
   ******************************************************************************************************************/
 
 void parse_zmat(int i, int position, double *value, struct definition
-*array, int num_vals, int zval_exist) {
+*array, int num_vals, int zvar_exist) {
 
    int j, a, value_set;
    double r;
@@ -331,7 +331,7 @@ void parse_zmat(int i, int position, double *value, struct definition
        *value = atof( temp_string );
        ++value_set;
      }
-   if( isalpha( temp_string[0] ) && zval_exist ) {
+   if( isalpha( temp_string[0] ) && zvar_exist ) {
        for(j=0;j<num_vals;++j) 
       	   if( !strcmp(temp_string,array[j].variable) ) {
 	       *value = array[j].value;
