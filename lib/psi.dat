@@ -15,6 +15,7 @@ psi: (
   ints       = "cints"
   scf        = "cscf"
   deriv      = "cints --deriv1"
+  deriv2     = "cints --deriv2"
   transqt    = "transqt"
   backtransqt = "transqt -backtr"
   dipder     = "dipder"
@@ -71,11 +72,11 @@ psi: (
   SCFTwoConFirst = $SCFFirst
 
   % Procedures for the SCF Second Derivatives
-  SCFSecond = ERROR
+  SCFSecond = ($ints $scf $transqt $deriv2 $cphf $done)
   SCFRHFSecond = $SCFSecond
-  SCFROHFSecond = $SCFSecond
-  SCFUHFSecond = $SCFSecond
-  SCFTwoConSecond = $SCFSecond
+  SCFROHFSecond = ERROR
+  SCFUHFSecond = ERROR
+  SCFTwoConSecond = ERROR
 
   % Procedures for the optimizing geometries with SCF gradients
   SCFFirstOpt = (repeat $nopt $SCFFirst $geomupdate end $done)
