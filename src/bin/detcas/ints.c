@@ -23,7 +23,6 @@ void read_integrals()
   int i, j, ij, k, l, kl, ijkl;
   int nbstri;
   double value;
-  double *tmp_onel_ints;
 
   /* allocate memory for one and two electron integrals */
   nbstri = CalcInfo.nbstri;
@@ -34,12 +33,8 @@ void read_integrals()
   if (Params.print_lvl > 3) 
     fprintf(outfile, "\n\tOne-electron integrals (frozen core operator):\n");
 
-  tmp_onel_ints = init_array(nbstri);
-  iwl_rdone(Params.oei_file, PSIF_MO_FZC, tmp_onel_ints, nbstri, Params.oei_erase, 
-     (Params.print_lvl>3), outfile);
-  filter(tmp_onel_ints, CalcInfo.onel_ints, ioff, nbstri, 
-	 CalcInfo.num_fzc_orbs, CalcInfo.num_fzv_orbs);
-  free(tmp_onel_ints);
+  iwl_rdone(Params.oei_file, PSIF_MO_FZC, CalcInfo.onel_ints, nbstri, 
+            Params.oei_erase, (Params.print_lvl>3), outfile);
 
   if (Params.print_lvl > 4) 
     fprintf(outfile, "\n\tTwo-electron integrals:\n");
