@@ -1,0 +1,47 @@
+
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+include ../MakeVars
+
+CDEF += -DBUFF=0 -DSITEDIR=\"$(datadir)\"
+
+TARGET = $(top_objdir)/lib/libPSI_chkpt.a
+
+TRUESRC = \
+rd_iopen.c \
+rd_max_am.c \
+rd_mxcoef.c \
+rd_nao.c \
+rd_natom.c \
+rd_ncalcs.c \
+rd_nirreps.c \
+rd_nmo.c \
+rd_nprim.c \
+rd_nshell.c \
+rd_nso.c \
+rd_nsymhf.c \
+rd_num_unique_atom.c \
+rd_num_unique_shell.c \
+rd_phase_check.c \
+rd_ref.c \
+rd_rottype.c \
+
+DEPENDINCLUDE = psio.h chkpt.h
+
+LIBOBJ = $(TRUESRC:%.c=%.o)
+
+include ../MakeRules
+
+ifneq ($(DODEPEND),no)
+include $(LIBOBJ:%.o=%.d)
+endif
+
+install_inc:: file30.h
+        $(MKDIRS) $(objincdir)
+        $(INSTALL_INCLUDE) $^ $(objincdir)
+
+install_man:: libfile30.txt
+        $(MKDIRS) $(txtdir)
+        $(INSTALL_INCLUDE) $^ $(txtdir)
+
