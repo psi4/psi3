@@ -42,6 +42,7 @@ double ***unit_vectors(double **Geom, double **Distances)
 {	
   int i, j;
   double ***E;
+  double distance;
   
   E = (double ***)malloc(num_atoms*sizeof(double **));
   for(i=0; i<num_atoms; i++) {
@@ -54,9 +55,12 @@ double ***unit_vectors(double **Geom, double **Distances)
   for(i=0; i<num_atoms; i++) {
     for(j=0; j<num_atoms; j++) {
       if(i != j) {
-        E[i][j][0] = -(Geom[i][0] - Geom[j][0]) / (Distances[i][j]);
-        E[i][j][1] = -(Geom[i][1] - Geom[j][1]) / (Distances[i][j]);
-        E[i][j][2] = -(Geom[i][2] - Geom[j][2]) / (Distances[i][j]);
+        distance = sqrt((Geom[i][0] - Geom[j][0]) * (Geom[i][0] - Geom[j][0])
+                      + (Geom[i][1] - Geom[j][1]) * (Geom[i][1] - Geom[j][1])
+                      + (Geom[i][2] - Geom[j][2]) * (Geom[i][2] - Geom[j][2]));
+        E[i][j][0] = -(Geom[i][0] - Geom[j][0]) / distance;
+        E[i][j][1] = -(Geom[i][1] - Geom[j][1]) / distance;
+        E[i][j][2] = -(Geom[i][2] - Geom[j][2]) / distance;
       }
       else {
         E[i][j][0] = 0.0;
