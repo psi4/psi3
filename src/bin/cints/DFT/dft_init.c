@@ -58,6 +58,7 @@ void dft_init(void){
 	errcod = ip_string("FUNCTIONAL",&exchstring,1,0);
 
         if(!strcmp(exchstring,"SLATER")){
+	    UserOptions.hf_exch = 0.0;
 	    DFT_options.exchange_function = slater;
 	    DFT_options.exchange_V_function = d_slater;
 	    DFT_options.den_calc = calc_density;
