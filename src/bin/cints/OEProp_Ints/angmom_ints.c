@@ -67,7 +67,7 @@ void angmom_ints(void)
     ay = ax + 1;
     az = ax + 2;
 
-    for (sj=0; sj<=si; sj++){
+    for (sj=0; sj<BasisSet.num_shells; sj++){
       nj = ioff[BasisSet.shells[sj].am];
       am_j = BasisSet.shells[sj].am-1;
       B = Molecule.centers[BasisSet.shells[sj].center-1];
