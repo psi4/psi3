@@ -36,11 +36,11 @@ void deriv2(void)
   /* Derivative Fock and overlap matrices */
   F = (double ***) malloc(Molecule.num_atoms * 3 * sizeof(double **));
   S = (double ***) malloc(Molecule.num_atoms * 3 * sizeof(double **));
-  Half_Deriv_S = (double ***) malloc(Molecule.num_atoms * 3 * sizeof(double **));
+  HDS = (double ***) malloc(Molecule.num_atoms * 3 * sizeof(double **));
   for(i=0; i < Molecule.num_atoms*3; i++) {
     F[i] = block_matrix(BasisSet.num_ao, BasisSet.num_ao);
     S[i] = block_matrix(BasisSet.num_ao, BasisSet.num_ao);
-    Half_Deriv_S[i] = block_matrix(BasisSet.num_ao, BasisSet.num_ao);
+    HDS[i] = block_matrix(BasisSet.num_ao, BasisSet.num_ao);
   }
 
   init_moinfo();
@@ -76,6 +76,11 @@ void deriv2(void)
 
   /* symmetrize the F's and S's */
   for(coord=0; coord < Molecule.num_atoms*3; coord++) {
+    fprintf(outfile, "AO-basis Overlap Derivs (Pre-Symm) (%d)", coord);
+    if (UserOptions.print_lvl >= PRINT_OEDERIV) {
+      print_mat(S[coord],BasisSet.num_ao,BasisSet.num_ao,outfile);
+    }
+
     for(i=0; i < BasisSet.num_ao; i++) {
       for(j=0; j <= i; j++) {
 	if(i!=j) {
@@ -153,11 +158,11 @@ void deriv2(void)
 
     sprintf(label, "AO-basis Half-Diff Overlap (%d)", coord);
     psio_open(PSIF_OEI, PSIO_OPEN_OLD);
-    psio_write_entry(PSIF_OEI, label, (char *) Half_Deriv_S[coord][0], size*sizeof(double));
+    psio_write_entry(PSIF_OEI, label, (char *) HDS[coord][0], size*sizeof(double));
     psio_close(PSIF_OEI, 1);
     if (UserOptions.print_lvl >= PRINT_OEDERIV) {
       fprintf(outfile,"  -%s\n",label);
-      print_mat(Half_Deriv_S[coord],BasisSet.num_ao,BasisSet.num_ao,outfile);
+      print_mat(HDS[coord],BasisSet.num_ao,BasisSet.num_ao,outfile);
     }
     for(i=0; i < PSIO_KEYLEN; i++) label[i] = '\0';
   }
@@ -173,9 +178,9 @@ void deriv2(void)
   for(i=0; i < Molecule.num_atoms*3; i++) {
     free_block(F[i]);
     free_block(S[i]);
-    free_block(Half_Deriv_S[i]);
+    free_block(HDS[i]);
   }
-  free(F);  free(S);  free(Half_Deriv_S);
+  free(F);  free(S);  free(HDS);
   free_block(Hess);
   cleanup_moinfo();
 

@@ -211,6 +211,59 @@ void oe_deriv2()
 		      wdens_pf *= 0.5;
 
 		    /*----------------------------------
+		      Half-derivative overap integrals
+		     ----------------------------------*/
+		    /*--- d/dAx ---*/
+		    tmp = 2.0*a1*overlap_int(a1, l1+1, m1, n1, inorm, a2, l2, m2, 
+					     n2, jnorm, AB, PA, PB);
+		    if (l1)
+		      tmp -= l1*overlap_int(a1, l1-1, m1, n1, inorm, a2, l2, m2, 
+					    n2, jnorm, AB, PA, PB);
+		    HDS[coord_ax][I][J] += tmp*norm_pf;
+
+		    /*--- d/dAy ---*/
+		    tmp = 2.0*a1*overlap_int(a1, l1, m1+1, n1, inorm, a2, l2, m2, 
+					     n2, jnorm, AB, PA, PB);
+		    if (m1)
+		      tmp -= m1*overlap_int(a1, l1, m1-1, n1, inorm, a2, l2, m2, 
+					    n2, jnorm, AB, PA, PB);
+		    HDS[coord_ay][I][J] += tmp*norm_pf;
+
+		    /*--- d/dAz ---*/
+		    tmp = 2.0*a1*overlap_int(a1, l1, m1, n1+1, inorm, a2, l2, m2, 
+					     n2, jnorm, AB, PA, PB);
+		    if (n1)
+		      tmp -= n1*overlap_int(a1, l1, m1, n1-1, inorm, a2, l2, m2, 
+					    n2, jnorm, AB, PA, PB);
+		    HDS[coord_az][I][J] += tmp*norm_pf;
+
+		    if(I != J) {
+                      /*--- d/dAx ---*/
+                      tmp = 2.0*a2*overlap_int(a2, l2+1, m2, n2, jnorm, a1, l1, m1,
+                                               n1, inorm, AB, PB, PA);
+                      if (l2)
+                        tmp -= l2*overlap_int(a2, l2-1, m2, n2, jnorm, a1, l1, m1,
+                                              n1, inorm, AB, PB, PA);
+                      HDS[coord_bx][J][I] += tmp*norm_pf;
+  
+                      /*--- d/dAy ---*/
+                      tmp = 2.0*a2*overlap_int(a2, l2, m2+1, n2, jnorm, a1, l1, m1,
+                                               n1, inorm, AB, PB, PA);
+                      if (m2)
+                        tmp -= m2*overlap_int(a2, l2, m2-1, n2, jnorm, a1, l1, m1,
+                                              n1, inorm, AB, PB, PA);
+                      HDS[coord_by][J][I] += tmp*norm_pf;
+  
+                      /*--- d/dAz ---*/
+                      tmp = 2.0*a2*overlap_int(a2, l2, m2, n2+1, jnorm, a1, l1, m1,
+                                               n1, inorm, AB, PB, PA);
+                      if (n2)
+                        tmp -= n2*overlap_int(a2, l2, m2, n2-1, jnorm, a1, l1, m1,
+                                              n1, inorm, AB, PB, PA);
+                      HDS[coord_bz][J][I] += tmp*norm_pf;
+		    }
+
+		    /*----------------------------------
 		      First derivative overap integrals
 		     ----------------------------------*/
 		    /*--- d/dAx ---*/
@@ -220,7 +273,6 @@ void oe_deriv2()
 		      tmp -= l1*overlap_int(a1, l1-1, m1, n1, inorm, a2, l2, m2, 
 					    n2, jnorm, AB, PA, PB);
 		    S[coord_ax][I][J] += tmp*norm_pf;
-		    Half_Deriv_S[coord_ax][I][J] += tmp*norm_pf;
 
 		    /*--- d/dAy ---*/
 		    tmp = 2.0*a1*overlap_int(a1, l1, m1+1, n1, inorm, a2, l2, m2, 
@@ -229,7 +281,6 @@ void oe_deriv2()
 		      tmp -= m1*overlap_int(a1, l1, m1-1, n1, inorm, a2, l2, m2, 
 					    n2, jnorm, AB, PA, PB);
 		    S[coord_ay][I][J] += tmp*norm_pf;
-		    Half_Deriv_S[coord_ay][I][J] += tmp*norm_pf;
 
 		    /*--- d/dAz ---*/
 		    tmp = 2.0*a1*overlap_int(a1, l1, m1, n1+1, inorm, a2, l2, m2, 
@@ -238,7 +289,6 @@ void oe_deriv2()
 		      tmp -= n1*overlap_int(a1, l1, m1, n1-1, inorm, a2, l2, m2, 
 					    n2, jnorm, AB, PA, PB);
 		    S[coord_az][I][J] += tmp*norm_pf;
-		    Half_Deriv_S[coord_az][I][J] += tmp*norm_pf;
 
 		    /*--- d/dBx ---*/
 		    tmp = 2.0*a2*overlap_int(a1, l1, m1, n1, inorm, a2, l2+1, m2, 
