@@ -191,7 +191,7 @@ psi: (
   DETCITwoConFirstDisp  = ERROR
 
   % Procedures for displacements of energies
-  DETCIEnergyDisp = (repeat $ndisp $ugeom $DETCIEnergy $rgeom end $done)
+  DETCIEnergyDisp = (repeat $ndisp $ugeom $uinput $DETCIEnergy $rgeom end $done)
   DETCIRHFEnergyDisp = $DETCIEnergyDisp
   DETCIROHFEnergyDisp = $DETCIEnergyDisp
   DETCIUHFEnergyDisp = ERROR
