@@ -7,19 +7,17 @@
   where the current program is intended to run: input.dat and Makefile.libint (all included with the source).
   input.dat contains set of input data necessary for building the library.
   LIBINT section of input.dat must contain the following keywords:
-  OLD_AM - the maximum angular momentum of functions in (a0|b0) classes handled by the existing LIBINT
-  library (set to 0 if library to be built for the first time);
-  NEW_AM - the desired maximum angular momentum;
+  NEW_AM - twice the desired maximum angular momentum (default is 8);
+  OPT_AM - twice the angular momentum up to which VRR Level 0 routines are machine generated.
+  A generic VRR Level 0 function is used past this value. OPT_AM=8 should be enough for almost anyone.
   MAX_CLASS_SIZE - maximum length of _build_a0b0 (if (a0|b0) class is longer than MAX_CLASS_SIZE, the routine is
   going to be split into several smaller ones. This is done to prevent compiler from exhausting system resources.
   Defaults to 785).
 
   *EXAMPLE*: if one wants LIBINT work for up to (gg|gg) integrals (the current PSI limit), NEW_AM has to be set
   to 8 (g corresponds to l=4, (gg|gg) class will require at most the (l0|l0) class). The intended angular
-  momentum limit for PSI 3.0 is k (l=7), therefore up to (t0|t0) classes are required. NEW_AM must be set to 14.
+  momentum limit for PSI 3 is i (l=6), therefore up to (q0|q0) classes are required. NEW_AM must be set to 12.
 
-
-  
   Accessing functions in LIBINT is very simple - the program has to call init_libint() just once before it
   starts computing integrals. After that all top_build_... functions (****BUT**** top_build_0000, which should
   never be neccessary, since (ss|ss) class is easily computed from the auxiliary function) will be arranged
@@ -36,7 +34,7 @@ FILE *infile, *outfile, *vrr_header, *hrr_header, *libint_header, *init_code;
 
 void punt();
 int emit_vrr_build(int,int,int);
-int emit_vrr_order(int,int);
+int emit_vrr_order(int,int,int);
 int emit_hrr_build(int,int);
 
 int main()
@@ -44,10 +42,11 @@ int main()
   int i,j,k,l,f;
   int j_min, j_max, k_min, k_max, l_min, l_max;
   int errcod;
-  int new_am, old_am;
+  int old_am = 0;
+  int new_am, opt_am;
   int class_size;
   int num_subfunctions;
-  int max_class_size = 785;
+  int max_class_size = DEFAULT_MAX_CLASS_SIZE;
   int stack_size;
   const int io[] = {0,1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153};
   const char am_letter[] = "0pdfghiklmnoqrtuvwxyz";
@@ -71,20 +70,19 @@ int main()
   /*------------------
     Parsing the input
    ------------------*/
-  errcod = ip_data("OLD_AM","%d",&old_am,0);
-  if (errcod != IPE_OK)
-    punt("  OLD_AM left unspecified.");
-  if (old_am < 0)
-    punt("  OLD_AM must be positive.");
   errcod = ip_data("NEW_AM","%d",&new_am,0);
   if (errcod != IPE_OK)
-    punt("  NEW_AM left unspecified.");
-  if (new_am < 0)
+    new_am = DEFAULT_NEW_AM;
+  if (new_am <= 0)
     punt("  NEW_AM must be positive.");
-  if (old_am >= new_am)
-    punt("  NEW_AM must be greater than OLD_AM.");
   if (new_am > MAX_AM)
     punt("  Maximum NEW_AM exceeded. Contact the program author.");
+
+  errcod = ip_data("OPT_AM","%d",&opt_am,0);
+  if (errcod != IPE_OK || opt_am < 2)
+    opt_am = DEFAULT_OPT_AM;
+  if (opt_am > new_am) opt_am = new_am;
+
   errcod = ip_data("MAX_CLASS_SIZE","%d",&max_class_size,0);
   if (max_class_size < 10)
     punt("  MAX_CLASS_SIZE cannot be smaller than 10.");
@@ -100,8 +98,12 @@ int main()
   fprintf(init_code,"double *(*build_eri[%d][%d][%d][%d])(Libint_t *, int);\n",new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
   fprintf(init_code,"void init_libint_base()\n{\n");
 
-  stack_size = emit_order(old_am,new_am);
-  emit_vrr_build(old_am, new_am, max_class_size);
+  /* Declare generic build routines */
+  fprintf(vrr_header,"double *vrr_build_xxxx(int am[2], prim_data *, double *,const double *, const double *, const double *,
+const double *, const double *);\n");
+
+  stack_size = emit_order(old_am,new_am,opt_am);
+  emit_vrr_build(old_am, opt_am, max_class_size);
   emit_hrr_build(old_am, new_am);
   
   fprintf(init_code,"}\n");
@@ -130,7 +132,8 @@ int main()
   
     /* Setting up libint.h */
   fprintf(libint_header,"/* Maximum angular momentum of functions in a basis set plus 1 */\n");
-  fprintf(libint_header,"#define MAX_AM %d\n",1+new_am/2);
+  fprintf(libint_header,"#define LIBINT_MAX_AM %d\n",1+new_am/2);
+  fprintf(libint_header,"#define LIBINT_OPT_AM %d\n",1+opt_am/2);
   fprintf(libint_header,"#define STACK_SIZE %d\n\n",stack_size);
   fprintf(libint_header,"typedef struct pdata{\n");
   fprintf(libint_header,"  double F[%d];\n",2*new_am+1);

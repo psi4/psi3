@@ -12,7 +12,7 @@ TEMP_DIR = ${SCRATCH}/libint
 
 install: $(TARGET)
 
-$(TARGET): $(CSRC) input.dat Makefile.libint
+$(TARGET): $(BUILD_SRC) $(LIB_SRC) input.dat Makefile.libint
 	if \
 ! [ -e $(SCRATCH) ]; \
  then \

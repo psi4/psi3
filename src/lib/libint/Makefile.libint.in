@@ -1,9 +1,11 @@
 include @top_objdir@/src/lib/MakeVars
+include @top_objdir@/src/lib/libint/MakeVars
 
+VPATH = .:$(top_srcdir)/src/lib/libint
 TARGET = $(top_objdir)/lib/libint.a
 HEADERS = libint.h vrr_header.h hrr_header.h
 
-TRUESRC = $(shell echo `ls *.c`)
+TRUESRC = $(shell echo `ls *.c`) $(LIB_SRC)
 LIBOBJ = $(TRUESRC:%.c=%.o)
 
 default:: install

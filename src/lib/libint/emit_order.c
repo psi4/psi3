@@ -53,7 +53,7 @@ static int first_vrr_to_compute = 0; /* Number of the first class to be computed
 static int hrr_hash_table[MAX_AM+1][MAX_AM+1][MAX_AM+1][MAX_AM+1];
 static int vrr_hash_table[MAX_AM+1][MAX_AM+1][2*MAX_AM+1];
 
-int emit_order(int old_am, int new_am)
+int emit_order(int old_am, int new_am, int opt_am)
 {
 
   int i, j, k, l;
@@ -281,11 +281,16 @@ int emit_order(int old_am, int new_am)
       if (max_stack_size < vrr_mem)
 	max_stack_size = vrr_mem;
       fprintf(vrr_code," double *vrr_stack = Libint->vrr_stack;\n");
-      fprintf(vrr_code," double *tmp, *target_ptr;\n int i;\n");
+      fprintf(vrr_code," double *tmp, *target_ptr;\n int i, am[2];\n");
       
       j = first_vrr_to_compute;
       do {
-	fprintf(vrr_code, " _BUILD_%c0%c0(Data,", am_letter[vrr_nodes[j].A], am_letter[vrr_nodes[j].C]);
+	if (vrr_nodes[j].A <= opt_am && vrr_nodes[j].C <= opt_am)
+	  fprintf(vrr_code, " _BUILD_%c0%c0(Data,", am_letter[vrr_nodes[j].A], am_letter[vrr_nodes[j].C]);
+	else {
+	  fprintf(vrr_code, " am[0] = %d;  am[1] = %d;\n", vrr_nodes[j].A, vrr_nodes[j].C);
+	  fprintf(vrr_code, " vrr_build_xxxx(am,Data,");
+	}
 	fprintf(vrr_code, "vrr_stack+%d", vrr_nodes[j].pointer);
 	for(k=0; k<5; k++){
 	  if(vrr_nodes[j].children[k] > 0)

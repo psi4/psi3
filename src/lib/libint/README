@@ -8,14 +8,11 @@ disk space.
 
 2) Edit input.dat and modify input parameters. The following parameters are
 valid:
-  OLD_AM - the maximum angular momentum of functions handled by 
- the existing LIBINT times 2 (set to 0 if the library to be built 
- for the first time; if $(HOME)/psi/devel/$(ARCH)/lib/libint.a 
- already exists - check hopefully corresponding
- $(HOME)/psi/devel/include/libint.h for the value of MAX_AM, subtract one
- and double that);
   NEW_AM - the desired maximum angular momentum times 2 (see an example
  below);
+  OPT_AM - the desired maximum angular momentum of highly optimized
+ machine generated routines times 2. Past this AM level a (slower)
+ generic is used. 8 is a very reasonable value.
   MAX_CLASS_SIZE - maximum length of Level 0 functions (if an integral class 
  contains more than MAX_CLASS_SIZE, the corresponding routine will
  be split into several smaller ones. This is done to prevent
@@ -26,8 +23,8 @@ valid:
  current PSI 2.0 limit), NEW_AM has to be set
  to 8 (g corresponds to l=4, (gg|gg) class will require at most the (l0|l0)
  class to be computed using Level 0 VRR routines). 
- The intended angular momentum limit for PSI 3.0 is i (l=6), 
- therefore up to (t0|t0) classes are required. NEW_AM must be set to 14.
+ The intended angular momentum limit for PSI 3 is i (l=6), 
+ therefore up to (q0|q0) classes are required. NEW_AM must be set to 12.
 
 3) Type 'make' to begin compilation.  This might take awhile. Get a
 cup of tea, or go get some sun.
