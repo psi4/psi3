@@ -109,6 +109,23 @@ sub seek_bccd
   exit 1;
 }
 
+sub seek_lambda
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  seek(OUT,0,0);
+  while(<OUT>) {
+    if (/Overlap <L|e^T> =/) {
+      @data = split(/ +/, $_);
+      $lambda = $data[3];
+      return $lambda;
+    }
+  }
+  close(OUT);
+
+  printf "Error: Could not find CCSD Lambda Overlap in $_[0].\n";
+  exit 1;
+}
+
 sub seek_casscf
 {
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";
@@ -472,6 +489,36 @@ sub seek_scf_polar
     return @polar;
   }
 
+  printf "Error: Could not find SCF polarizability tensor in $_[0].\n";
+  exit 1;
+}
+
+sub seek_ccsd_polar
+{   
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  @datafile = <OUT>;
+  close(OUT);
+  
+  $linenum=0;
+  $start = 0;
+  foreach $line (@datafile) {
+    if ($line =~ m/CCSD Dipole Polarizability/) {
+      $start = $linenum;
+    }
+    $linenum++;
+  }
+
+  for($i=0; $i < 3; $i++) {
+    @line = split(/ +/, $datafile[$start+7+$i]);
+    for($j=0; $j < 3; $j++) {
+      $polar[3*$i+$j] = $line[$j+2];
+    }
+  }
+    
+  if($start != 0) {
+    return @polar;
+  }
+  
   printf "Error: Could not find SCF polarizability tensor in $_[0].\n";
   exit 1;
 }
