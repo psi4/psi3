@@ -159,8 +159,19 @@ int main(int argc, char *argv[])
   fprintf(outfile, "  ----     ---------------------    ---------   ----------  ----------  ----------\n");
   moinfo.ecc = energy();
   pair_energies(&emp2_aa, &emp2_ab);
+
   /* hang on to the MP2 energy if applicable */
-  if(params.ref == 0 || params.ref == 2) moinfo.emp2 = moinfo.ecc;
+  if(params.ref == 0 || params.ref == 2) {
+    if(!params.restart || !psio_tocscan(CC_INFO, "MP2 Energy")) {
+      moinfo.emp2 = moinfo.ecc;
+      psio_write_entry(CC_INFO, "MP2 Energy", (char *) &(moinfo.ecc),
+                  sizeof(double));
+      }
+    else
+      psio_read_entry(CC_INFO, "MP2 Energy", (char *) &(moinfo.emp2),
+                  sizeof(double));  
+  }
+
   moinfo.t1diag = diagnostic();
   moinfo.d1diag = d1diag();
   moinfo.new_d1diag = new_d1diag();
