@@ -103,7 +103,7 @@ int dpd_init(int dpd_num, int nirreps, long int memory, int cachetype,
   /* Build the row/column dimension arrays */
   pairtot = init_int_matrix(num_pairs, nirreps);
   this_dpd->pairtot = pairtot;
-  /* Loop over the groups of three "diagonal" pairs */
+   /* Loop over the groups of five "diagonal" pairs */
   for(i=0; i < num_subspaces; i++) {
 
       pairs[5*i].left_orbspi = orbspi[i];
@@ -229,7 +229,7 @@ int dpd_init(int dpd_num, int nirreps, long int memory, int cachetype,
   this_dpd->pairidx = pairidx;
   this_dpd->pairorb = pairorb;
   count = init_int_array(nirreps);
-  /* Loop over the groups of three "diagonal" pairs */
+  /* Loop over the groups of five "diagonal" pairs */
   for(i=0; i < num_subspaces; i++) {
 
       for(l=0; l < 5; l++) {
