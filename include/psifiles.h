@@ -14,6 +14,8 @@
 ** Created by C. David Sherrill on 29 April 1998
 */
 
+#define PSI_DEFAULT_FILE_PREFIX "psi"
+
 #define PSIF_CHKPT          32 /* new libpsio checkpoint file number */
 
 #define PSIF_OPTKING        1
