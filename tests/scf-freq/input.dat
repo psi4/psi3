@@ -2,6 +2,7 @@
 
 psi: (
   check = false
+  jobtype = freq
 )
 
 default: (
