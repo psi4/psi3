@@ -43,7 +43,7 @@ buf4_axpbycz.c                \
 buf4_symm.c                  buf4_scmcopy.c    file2_scm.c                  \
 buf4_sort_ooc.c              block_matrix.c    memfree.c                    \
 trace42_13.c                 buf4_sort_axpy.c  3d_sort.c \
-T3_AAA.c                     T3_AAB.c \
+T3_AAA.c                     T3_AAB.c          T3_RHF.c \
 
 DEPENDINCLUDE = dpd.h dpd.gbl
 
