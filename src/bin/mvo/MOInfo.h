@@ -35,7 +35,6 @@ struct MOInfo {
 
     char **labels;         /* labels of the irreps                           */
 
-    double efzc;           /* Frozen core energy                             */
     double ***evects;      /* SCF eigenvector matrix for each irrep          */
     double **scf_vector;   /* Full SCF eigenvector matrix                    */
     double *fzc_operator;  /* AO frozen core operator (lwr triangle)         */

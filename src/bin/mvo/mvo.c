@@ -178,7 +178,7 @@ void get_parameters(void)
     strcpy(params.wfn, "CCSD");
   }
 
-  params.h_fzc_file = PSIF_MO_FZC;
+  params.h_fzc_file = PSIF_OEI;
   errcod = ip_data("FZC_FILE","%d",&(params.h_fzc_file),0);
 
   params.print_mos = 0;
@@ -246,10 +246,15 @@ void get_fzc_operator(void)
 {
 
   moinfo.fzc_operator = (double *) init_array(moinfo.fzc_op_size);
+  /*
   iwl_rdone(params.h_fzc_file, moinfo.fzc_operator, &(moinfo.efzc),
             ioff, moinfo.nmo, 0, 0, params.oei_erase,
             (params.print_lvl>4), outfile);
-
+  */
+  iwl_rdone(params.h_fzc_file, PSIF_MO_FZC, moinfo.fzc_operator, 
+            moinfo.fzc_op_size, params.oei_erase,
+            (params.print_lvl>4), outfile);
+  
 }
 
 
