@@ -107,9 +107,9 @@ psi: (
 
   % -------------------------------- CCSD Procedures
   % Procedures for the CCSD energy
-  CCSDEnergy = ($ints $scf $transqt $ccsort $ccenergy $done)
-  CCSDRHFEnergy = $CCSDEnergy
-  CCSDROHFEnergy = $CCSDEnergy
+  CCSDEnergy = ($ints $scf $transqt $ccsort $ccenergy)
+  CCSDRHFEnergy = ($CCSDEnergy $done)
+  CCSDROHFEnergy = ($CCSDEnergy $done)
   CCSDUHFEnergy = ERROR
   CCSDTwoConEnergy = ERROR
 
@@ -124,6 +124,13 @@ psi: (
   % Testing procedure for optimizing geometries with CCSD finite displacements
   CCSDROHFEnergyDisp = 
     (repeat $ndisp $ugeom $uinput $CCSDROHFEnergy $rgeom end $done)
+
+  % Procedures for optimization via energy points
+  CCSDEnergyOpt = (repeat $nopt $CCSDEnergy $optking end $done)
+  CCSDRHFEnergyOpt = $CCSDEnergyOpt
+  CCSDROHFEnergyOpt = $CCSDEnergyOpt
+  CCSDUHFEnergyOpt = ERROR
+  CCSDTwoConEnergyOpt = ERROR
 
   % Procedures for the optimizing geomtries with CCSD gradients
   CCSDRHFFirstOpt =
