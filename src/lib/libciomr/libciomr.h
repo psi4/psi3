@@ -34,6 +34,7 @@ void dot_mat(double **a,double **b,int n,double *value);
 void eigout(double **a,double *b,double *c,int m,int n,FILE *out);
 void eigsort(double *d,double **v,int n);
 void eivout(double **a, double *b, int m, int n, FILE *out) ;
+void mosort(double *d, double **v, int *sym, int nso, int nmo);
 
 /* Functions under errors.c */
 void no_path_given(char *name);
