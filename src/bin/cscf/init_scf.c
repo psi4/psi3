@@ -1,8 +1,12 @@
 /* $Log$
- * Revision 1.5  2002/03/24 18:30:08  crawdad
- * Beginning mods for libpsio-based file30.  Current version works.
+ * Revision 1.6  2002/03/24 18:31:19  crawdad
+ * NOW it works.
  * -TDC
  *
+/* Revision 1.5  2002/03/24 18:30:08  crawdad
+/* Beginning mods for libpsio-based file30.  Current version works.
+/* -TDC
+/*
 /* Revision 1.4  2002/03/24 17:28:14  crawdad
 /* Minor modifications in preparation for conversion to libpsio-based file30.
 /* -TDC
@@ -57,6 +61,7 @@ init_scf()
    int i,jj;
    int nn,isadr;
    int nkind,junk;
+   PSI_FPTR next;
    int degen[20],*num_so;
    char char_dum[80];
    char **irr_labs;
