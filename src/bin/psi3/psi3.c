@@ -366,36 +366,91 @@ int execut(char **exec, int nexec, int depth)
   return(i);
 }
 
-
-void parse_cmdline(int argc, char *argv[])
+/* this code is essentially the same as in the psi_start() lib funct */
+int parse_cmdline(int argc, char *argv[])
 {
-  int c;
+  int i;
+  int found_if_np = 0;          /* found input file name without -i */
+  int found_of_np = 0;          /* found output file name without -o */
+  int found_fp_np = 0;          /* found file prefix name without -p */
+  int found_if_p = 0;           /* found input file name with -i */
+  int found_of_p = 0;           /* found output file name with -o */
+  int found_fp_p = 0;           /* found file prefix name with -p */
+  char *ifname, *ofname, *fprefix, *arg;
 
-  if (argc < 2) {
-    ffile(&infile,"input.dat",2);
-    outfile = stdout;
-    setenv("PSI_INPUT","input.dat",1);
-    setenv("PSI_OUTPUT","output.dat",1);
-  } 
-  else if (argc == 2) {
-    ffile(&infile,argv[1],2);
-    outfile = stdout;
-    setenv("PSI_INPUT",argv[1],1);
-    setenv("PSI_OUTPUT","output.dat",1);
+  /* process command-line arguments in sequence */
+  for(i=0; i<argc; i++) {
+    arg = argv[i];
+    if (!strcmp(arg,"-f") && !found_if_p) {
+      ifname = argv[++i];
+      found_if_p = 1;
+    }
+    else if (!strcmp(arg,"-o") && !found_of_p) {
+      ofname = argv[++i];
+      found_of_p = 1;
+    }
+    else if (!strcmp(arg,"-p") && !found_fp_p) {
+      fprefix = argv[++i];
+      found_fp_p = 1;
+    }
+    else if (arg[0] == '-') {
+      fprintf(stderr, "Error: unrecognized command-line argument %s\n", arg);
+      return(0);
+    }
+    else if (!found_if_np) {
+      ifname = arg;
+      found_if_np = 1;
+    }
+    else if (!found_of_np) {
+      ofname = arg;
+      found_of_np = 1;
+    }
+    else if (!found_fp_np) {
+      fprefix = arg;
+      found_fp_np = 1;
+    }
+    else {
+      fprintf(stderr, "Error: too many command-line arguments given\n");
+      return(0);
+    }
   }
-  else if (argc == 3) {
-    ffile(&infile,argv[1],2);
-    outfile = stdout;
-    setenv("PSI_INPUT",argv[1],1);
-    setenv("PSI_OUTPUT",argv[2],1);
+  
+
+  /* check if some arguments were specified in both prefixed and nonprefixed 
+   * form */
+  if (found_if_p && found_if_np) {
+    fprintf(stderr, 
+            "Error: input file name specified both with and without -f\n");
+    fprintf(stderr, 
+            "Usage: (module) [options] -f input -o output [-p prefix]  OR\n");
+    fprintf(stderr, "       (module) [options] input output [prefix]\n");
+    return(0);
   }
-  else {
-    ffile(&infile,argv[1],2);
-    outfile = stdout;
-    setenv("PSI_INPUT",argv[1],1);
-    setenv("PSI_OUTPUT",argv[2],1);
-    setenv("PSI_SCRATCH",argv[3],1);
-  } 
+  if (found_of_p && found_of_np) {
+    fprintf(stderr, 
+            "Error: output file name specified both with and without -o\n");
+    fprintf(stderr, 
+            "Usage: (module) [options] -f input -o output [-p prefix]  OR\n");
+    fprintf(stderr, "       (module) [options] input output [prefix]\n");
+    return(0);
+  }
+  if (found_fp_p && found_fp_np) {
+    fprintf(stderr, 
+            "Error: file prefix specified both with and without -p\n");
+    fprintf(stderr, 
+            "Usage: (module) [options] -f input -o output -p prefix  OR\n");
+    fprintf(stderr, "       (module) [options] input output prefix\n");
+    return(0);
+  }
+
+ 
+  /* set the environmental variables the modules will look for */ 
+  if (ifname != NULL)
+    setenv("PSI_INPUT",ifname);
+  if (ofname != NULL)
+    setenv("PSI_OUTPUT",ofname);
+  if (fpname != NULL)
+    setenv("PSI_PREFIX",fpname);
 
 }
 
