@@ -137,11 +137,11 @@ int main(int argc, char *argv[])
      build_so_classes();
      build_usotao();
 
-     /*-------------
-       Read old MOs
-      -------------*/
-     if (chkpt_mos) {
-	 init_oldcalc();
+     /*---------------------
+       Read old calculation
+      ---------------------*/
+     if (read_chkpt) {
+       init_oldcalc();
      }
 
      /*-------------------------------------------------
@@ -155,6 +155,19 @@ int main(int argc, char *argv[])
      if (chkpt_mos) {
        oldcalc_projection();
        write_scf_to_file30();
+     }
+
+     /*-------------------------------------------------
+       Write old MOs and old/new basis overlap info out
+      -------------------------------------------------*/
+     if (save_mos) {
+       save_oldmos();
+     }
+
+     /*------------------------------
+       Done with the old calculation
+      ------------------------------*/
+     if (read_chkpt) {
        cleanup_oldcalc();
      }
      

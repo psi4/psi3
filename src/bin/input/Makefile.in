@@ -5,7 +5,7 @@ include ../MakeVars
 
 LD = $(CC)
 
-PSILIBS = -lqt -lfile30 -lciomr -liwl -lpsio -lipv1 -lmalloc
+PSILIBS = -lqt -lfile30 -lciomr -liwl -lpsio -lipv1
 
 CINC += -DSHARE=\"$(prefix)/share/pbasis.dat\"
 

@@ -89,23 +89,33 @@ void parsing_cmdline(int argc, char *argv[])
 {
    int i;
 
+   read_chkpt = 0;
    chkpt_mos = 0;
    chkpt_geom = 0;
+   save_mos = 0;
    overwrite_output = 1;
    
    for (i=1; i<argc; i++) {
        
        /*--- read MOs and project onto new basis? ---*/
        if (strcmp(argv[i], "--getmos") == 0) {
-	   chkpt_mos = 1;
+	 read_chkpt = 1;
+	 chkpt_mos = 1;
+       }
+
+       /*--- read MOs and project onto new basis? ---*/
+       if (strcmp(argv[i], "--savemos") == 0) {
+	 read_chkpt = 1;
+	 save_mos = 1;
        }
 
        /*--- read geometry from file30? (in findif calculations) ---*/
        if (strcmp(argv[i], "--getgeom") == 0) {
-	   chkpt_geom = 1;
-	   print_lvl = 0;
-	   cartOn = 1;
-	   overwrite_output = 0;
+	 read_chkpt = 1;
+	 chkpt_geom = 1;
+	 print_lvl = 0;
+	 cartOn = 1;
+	 overwrite_output = 0;
        }
 
    }

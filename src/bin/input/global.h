@@ -38,8 +38,10 @@ EXTERN int normalize_contractions;  /*Re-normalize contractions or leave as is*/
 EXTERN char *units;
 EXTERN int print_lvl;               /*Printing level*/
 EXTERN int no_reorient;             /*No reorientation?*/
-EXTERN int chkpt_geom;              /*Read geometry from chekpoint file?*/
-EXTERN int chkpt_mos;               /*Read old SCF evector?*/
+EXTERN int read_chkpt;              /*Read old data from checkpoint file?*/
+EXTERN int chkpt_geom;              /*Read geometry from checkpoint file?*/
+EXTERN int chkpt_mos;               /*Project old SCF evector?*/
+EXTERN int save_mos;                /*Save old SCF evector and old/new basis overlap?*/
 EXTERN int overwrite_output;        /*Overwrite output.dat?*/
 
 /*Labels*/
@@ -197,7 +199,9 @@ EXTERN int mxcoef;
 
 typedef struct {
     char *symmetry;
+    int nirreps;
 
+    int natom;
     double **geometry;
     
     int num_ao;
@@ -205,6 +209,7 @@ typedef struct {
     int num_shells;
     int num_prims;
     int max_angmom;                /*Max angmom (not +1)*/
+    int *sopi;
     int *shell_nucleus;            /*Number of the nucleus a shell belongs to*/
     int *first_prim_shell;         /*Number of the first primitive for a shell*/
     int *shell_ang_mom;            /*Angular momentum of a shell*/

@@ -26,6 +26,9 @@ void init_globals()
   Rref = block_matrix(3,3);
   canon_eq_ref_frame();
 
+  /*GTO data has not been initialized yes */
+  GTOs.max_angmom = 0;
+
   return;
 }
 

@@ -168,6 +168,7 @@ void oldcalc_projection();
 
 void init_gto(int);
 void cleanup_gto(int);
+void save_oldmos();
 
 double **overlap_new_old();
 double **overlap();

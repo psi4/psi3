@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <psio.h>
 #include <libciomr.h>
 #include <file30.h>
+#include <psifiles.h>
 
 #include "input.h"
 #include "defines.h"
@@ -39,13 +41,16 @@ void init_oldcalc()
       file30_close();
       return;
   }
+  Oldcalc.nirreps = file30_rd_nirreps();
 
   /*--- read the old geometry ---*/
+  Oldcalc.natom = file30_rd_natom();
   Oldcalc.geometry = file30_rd_geom();
-  
+
   /*--- read the old basis ---*/
   Oldcalc.num_ao = file30_rd_nao();
   Oldcalc.num_so = file30_rd_nso();
+  Oldcalc.sopi = file30_rd_sopi();
   Oldcalc.num_shells = file30_rd_nshell();
   Oldcalc.num_prims = file30_rd_nprim();
   Oldcalc.exponents = file30_rd_exps();
@@ -130,4 +135,55 @@ void cleanup_oldcalc()
   }
 
   return;
+}
+
+
+void save_oldmos()
+{
+  double **S12;
+
+  if (max_angmom > Oldcalc.max_angmom)
+    init_gto(max_angmom);
+  else
+    init_gto(Oldcalc.max_angmom);
+
+  S12 = overlap_new_old();
+  
+  /*--- write things out ---*/
+  psio_open(PSIF_OLD_CHKPT, PSIO_OPEN_NEW);
+  psio_write_entry(PSIF_OLD_CHKPT, "Old number of atoms", (char*) &Oldcalc.natom,
+	     sizeof(int));
+  psio_write_entry(PSIF_OLD_CHKPT, "Old geometry", (char*) Oldcalc.geometry[0],
+	     Oldcalc.natom*3*sizeof(double));
+  psio_write_entry(PSIF_OLD_CHKPT, "Old number of irreps", (char*) &Oldcalc.nirreps,
+	     sizeof(int));
+  psio_write_entry(PSIF_OLD_CHKPT, "Old sopi", (char*) Oldcalc.sopi,
+	     Oldcalc.nirreps*sizeof(int));
+  psio_write_entry(PSIF_OLD_CHKPT, "Old reference type", (char*) &Oldcalc.ref,
+	     sizeof(reftype));
+  psio_write_entry(PSIF_OLD_CHKPT, "Old num_so", (char*) &Oldcalc.num_so,
+	     sizeof(int));
+  psio_write_entry(PSIF_OLD_CHKPT, "Old num_mo", (char*) &Oldcalc.num_mo,
+	     sizeof(int));
+  psio_write_entry(PSIF_OLD_CHKPT, "Old orbspi", (char*) Oldcalc.orbspi,
+	     Oldcalc.nirreps*sizeof(int));
+  psio_write_entry(PSIF_OLD_CHKPT, "Old clsdpi", (char*) Oldcalc.clsdpi,
+	     Oldcalc.nirreps*sizeof(int));
+  psio_write_entry(PSIF_OLD_CHKPT, "Old openpi", (char*) Oldcalc.openpi,
+	     Oldcalc.nirreps*sizeof(int));
+  if (Oldcalc.spinrestr_ref) { /* Spin-restricted case */
+    psio_write_entry(PSIF_OLD_CHKPT, "Old MOs", (char*) Oldcalc.scf_evect_so[0],
+	       Oldcalc.num_so*Oldcalc.num_mo*sizeof(double));
+  }
+  else { /* Spin-unrestricted case */
+    psio_write_entry(PSIF_OLD_CHKPT, "Old alpha MOs", (char*) Oldcalc.scf_evect_so_alpha[0],
+	       Oldcalc.num_so*Oldcalc.num_mo*sizeof(double));
+    psio_write_entry(PSIF_OLD_CHKPT, "Old beta MOs", (char*) Oldcalc.scf_evect_so_alpha[0],
+	       Oldcalc.num_so*Oldcalc.num_mo*sizeof(double));
+  }
+  psio_write_entry(PSIF_OLD_CHKPT, "New-Old overlap", (char*) S12[0],
+	     num_so*Oldcalc.num_so*sizeof(double));
+  psio_close(PSIF_OLD_CHKPT, 1);
+
+  free_block(S12);
 }

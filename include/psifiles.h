@@ -23,6 +23,7 @@
 #define PSIF_SO_R12T1       39
 #define PSIF_DERINFO        40
 #define PSIF_SO_PRESORT     41
+#define PSIF_OLD_CHKPT      42             /* Until we have flexible PSIF_CHKPT this will store previous calculation info */
 #define PSIF_MO_R12         79
 #define PSIF_MO_R12T1       80
 #define PSIF_SO_PKSUPER1    92
@@ -66,6 +67,10 @@
 #define PSIF_MO_FZC         "MO-basis Frozen-Core Operator"
 #define PSIF_MO_A_FZC       "MO-basis Alpha Frozen-Core Oper"
 #define PSIF_MO_B_FZC       "MO-basis Beta Frozen-Core Oper"
+
+/* More macros */
+#define PSIF_AO_OPDM_TRIANG "AO-basis OPDM triang"
+#define PSIF_AO_LAG_TRIANG  "AO-basis Lagrangian triang"
 
 /*
 #define PSIF_SO_S           35
