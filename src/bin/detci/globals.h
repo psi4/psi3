@@ -11,6 +11,7 @@ EXTERN struct calcinfo CalcInfo;
 EXTERN struct params Parameters;
 EXTERN int *ioff;
 EXTERN FILE *infile, *outfile;
+EXTERN char *psi_file_prefix;
 EXTERN struct ci_blks CIblks;
 EXTERN struct olsen_graph *AlphaG;
 EXTERN struct olsen_graph *BetaG;

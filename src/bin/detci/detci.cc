@@ -207,18 +207,17 @@ main(int argc, char *argv[])
 */
 void init_io(int argc, char *argv[])
 {
-   int i;
-   int parsed=1; /* account for program name */
+   int i, num_unparsed;
+   char *argv_unparsed[100]; 
+
    Parameters.write_energy = 0;
 
-   for (i=1; i<argc; i++) {
+   for (i=1,num_unparsed=0; i<argc; i++) {
       if (strcmp(argv[i], "-quiet") == 0) {
          Parameters.print_lvl = 0;
-         parsed++;
       }
       else if (strcmp(argv[i], "-we") == 0) {
          Parameters.write_energy = 1;
-         parsed++;
       }
       else if (strcmp(argv[i], "-c") == 0) {
          Parameters.have_special_conv = 1;
@@ -230,7 +229,9 @@ void init_io(int argc, char *argv[])
             fprintf(stderr, "detci: trouble reading argument to -c flag\n");
             exit(1);
          }
-         parsed += 2;
+      }
+      else {
+        argv_unparsed[num_unparsed++] = argv[i];
       }
    }
 
@@ -238,16 +239,19 @@ void init_io(int argc, char *argv[])
     * of arguments starting after the last one we have parsed, so
     * we do pointer arithmetic on argv
     */
-   init_in_out(argc-parsed,argv+parsed);
+   /* init_in_out(argc-parsed,argv+parsed); */
+   errcod = psi_start(num_unparsed,argv_unparsed,0);
 
    if (Parameters.print_lvl) tstart(outfile);
 
+   /*
+    * this stuff is now inside psi_start
    ip_set_uppercase(1);
    ip_initialize(infile, outfile);
    ip_cwk_clear();
    ip_cwk_add(":DEFAULT");
+   */
    ip_cwk_add(":DETCI");
-
    psio_init();
    
 }

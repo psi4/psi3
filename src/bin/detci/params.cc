@@ -224,9 +224,10 @@ void get_parameters(void)
       } 
    else { /* no opentype keyword, as appropriate for PSI3 */
      errcod = ip_data("REFERENCE","%s",line1,0);
-     fprintf(outfile, "line1 = ");     
+     /* fprintf(outfile, "line1 = "); 
      for (int ij = 0; ij<3; ij++) fprintf(outfile, "%1c", line1[ij]); 
      fprintf(outfile,"\n");
+     */
      if (errcod == IPE_OK) {
        if (strcmp(line1, "RHF")==0) {
          Parameters.opentype = PARM_OPENTYPE_NONE;
