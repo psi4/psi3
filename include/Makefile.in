@@ -20,7 +20,7 @@ MKDIRS = @MKDIRS@
 INSTALL = @INSTALL@
 INSTALL_INCLUDE = @INSTALL_INCLUDE@
 
-HEADERS = ccfiles.h masses.h physconst.h psifiles.h symmetry.h
+HEADERS = ccfiles.h masses.h physconst.h psifiles.h symmetry.h rgb.h vdw_radii.h
 
 install: install_inc
 
