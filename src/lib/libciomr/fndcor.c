@@ -32,7 +32,7 @@ void fndcor(long int *maxcrb, FILE *infile, FILE *outfile)
   int count ;
   long int maxcrr ;           /* maxcor in real words */
   char *maxcrr_str;           /* string representation of maxcrr */
-  long double size ;
+  double size ;
   int errcod ;
 
    maxcrr = DEF_MAXCRR ;  /* set maxcor to default first */
@@ -51,7 +51,7 @@ void fndcor(long int *maxcrb, FILE *infile, FILE *outfile)
       maxcrr = atol(maxcrr_str);
    }
    else if (count == 2) {
-      errcod = ip_data("MEMORY", "%f", &size, 1, 0) ;
+      errcod = ip_data("MEMORY", "%lf", &size, 1, 0) ;
       if (errcod != IPE_OK) fndcor_abort(infile, outfile) ;
       errcod = ip_data("MEMORY", "%s", type, 1, 1) ;
       if (errcod != IPE_OK) fndcor_abort(infile, outfile) ;
