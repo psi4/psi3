@@ -41,7 +41,6 @@ void get_params()
     }
     free(junk);
   }
-
   if ( (!strcmp(params.wfn,"EOM_CCSD")) && (params.dertype == 0) )
     params.connect_xi = 0;
   else
