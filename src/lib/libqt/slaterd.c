@@ -4,6 +4,9 @@
   Edward Valeev, June 2002
 */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
 #include "slaterd.h"
