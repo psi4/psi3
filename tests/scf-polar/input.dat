@@ -1,0 +1,61 @@
+% DZ/SCF dynamic polarizability test calculations
+%
+% Designed to match results published in:
+%
+% Kobayashi, Koch, and Jorgensen, Chem. Phys. Lett. 219, 30 (1994).
+% Table 1, p.33
+%
+% DZ Basis Set: (10s/4s)/[4s/2s]  (no p-functions)
+% T.H. Dunning, J. Chem. Phys. 55, 716 (1971).
+%
+% TDC, April 2003
+%
+
+psi: (
+  check = false
+  exec = ($ints $scf $transqt $ccsort "cints --oeprop" "response" $done)
+  jobtype = sp
+)
+
+default: (
+  label = "DZ/SCF H2O"
+  memory = (20.0 MB)
+
+  wfn = ccsd
+  reference = rhf
+  multp = 1
+  dertype = first
+
+  omega = 0.1
+)
+
+input: (
+  basis = "DZ"
+  units = bohr
+  zmat = (
+    (li)
+    (h 1 4.0)
+  )
+)
+
+basis: (
+   lithium: "DZ" = (
+        (S (  1783.00000000     0.00082400)
+           (   267.10000000     0.00640300)
+           (    60.07000000     0.03323900)
+           (    16.78300000     0.12662100)
+           (     5.40300000     0.33774900)
+           (     1.90600000     0.57566900)
+           (     0.26340000     0.06231100) )
+        (S (     0.71790000     1.00000000) )
+        (S (     0.07716000     1.00000000) )
+        (S (     0.02854000     1.00000000) )
+       )
+
+    hydrogen: "DZ" = (
+        (S (    19.24060000     0.03282800)
+           (     2.89920000     0.23120800)
+           (     0.65340000     0.81723800) )
+        (S (     0.17760000     1.00000000) )
+       )
+)

@@ -1,0 +1,456 @@
+******************************************************************************
+tstart called on orion.chem.vt.edu
+Wed Apr 16 19:34:07 2003
+
+                                --------------
+                                  WELCOME TO
+                                    PSI  3
+                                --------------
+
+  LABEL       =	DZ/SCF H2O
+  SHOWNORM    =	0
+  PUREAM      =	0
+  PRINT_LVL   =	1
+
+  -Geometry before Center-of-Mass shift (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+         LITHIUM      0.000000000000     0.000000000000     0.000000000000
+        HYDROGEN      0.000000000000     0.000000000000     4.000000000000
+
+
+  -Rotational constants (cm-1) :
+    A = **********  B =    4.35877  C =    4.35877
+    It is a linear molecule.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+         LITHIUM      0.000000000000     0.000000000000     0.574018277195
+        HYDROGEN      0.000000000000     0.000000000000    -3.425981722805
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 2
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S (  1783.00000000     0.00082400)
+           (   267.10000000     0.00640300)
+           (    60.07000000     0.03323900)
+           (    16.78300000     0.12662100)
+           (     5.40300000     0.33774900)
+           (     1.90600000     0.57566900)
+           (     0.26340000     0.06231100) )
+        (S (     0.71790000     1.00000000) )
+        (S (     0.07716000     1.00000000) )
+        (S (     0.02854000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    19.24060000     0.03282800)
+           (     2.89920000     0.23120800)
+           (     0.65340000     0.81723800) )
+        (S (     0.17760000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 6
+    Number of primitives   = 14
+    Number of AO           = 6
+    Number of SO           = 6
+
+    Irrep    Number of SO
+    -----    ------------
+      1            6
+      2            0
+      3            0
+      4            0
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+         LITHIUM      0.000000000000     0.000000000000     0.574018277195
+        HYDROGEN      0.000000000000     0.000000000000    -3.425981722805
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+         LITHIUM      0.000000000000     0.000000000000     0.574018277195
+        HYDROGEN      0.000000000000     0.000000000000    -3.425981722805
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+         LITHIUM      0.000000000000     0.000000000000     0.303757412802
+        HYDROGEN      0.000000000000     0.000000000000    -1.812951583198
+
+
+  -Geometry in the reference coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+         LITHIUM      0.000000000000     0.000000000000     0.574018277195
+        HYDROGEN      0.000000000000     0.000000000000    -3.425981722805
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       0.750000000000
+
+  -The Interatomic Distances in angstroms:
+
+           1           2
+
+    1   0.0000000
+    2   2.1167090   0.0000000
+
+
+******************************************************************************
+tstop called on orion.chem.vt.edu
+Wed Apr 16 19:34:07 2003
+
+user time   =       0.10 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on orion.chem.vt.edu
+Wed Apr 16 19:34:08 2003
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = DZ/SCF H2O                                                                      
+    Number of atoms             = 2
+    Number of atomic orbitals   = 6
+    Number of symmetry orbitals = 6
+    Maximum AM in the basis     = 0
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+    Wrote 231 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on orion.chem.vt.edu
+Wed Apr 16 19:34:08 2003
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on orion.chem.vt.edu
+Wed Apr 16 19:34:08 2003
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+
+  label       = DZ/SCF H2O
+  wfn          = CCSD
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct SCF   = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        0.7500000000000
+  first run, so defaulting to core-hamiltonian guess
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 3776 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 1.158710e-01
+
+  Using core guess to determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              2     0     0     0   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 231 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1        -7.5604675894    8.310468e+00    0.000000e+00    0.000000e+00
+    2        -7.9353412017    3.748736e-01    1.236568e-01    4.484390e-01
+    3        -7.9443627548    9.021553e-03    2.584657e-02    4.006057e-02
+    4        -7.9450243683    6.616135e-04    9.000669e-03    9.091404e-03
+    5        -7.9450838277    5.945943e-05    3.564778e-03    2.695904e-03
+    6        -7.9450838657    3.800379e-08    8.162902e-05    6.689981e-05
+    7        -7.9450838659    1.506582e-10    4.360436e-06    4.731480e-06
+    8        -7.9450838659    1.413980e-12    2.310501e-07    7.215728e-07
+    9        -7.9450838659    0.000000e+00    8.377626e-09    2.529343e-08
+   10        -7.9450838659    1.776357e-15    5.702638e-10    5.313492e-10
+   11        -7.9450838659   -1.776357e-15    4.694896e-11    5.688079e-11
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1     -2.497678     2A1     -0.265838  
+
+
+  Unoccupied orbitals
+   3A1      0.037616     4A1      0.156362     5A1      1.246184  
+   6A1      2.928632  
+
+
+        total energy       =      -7.945083865890
+        kinetic energy     =       7.891929647786
+        nuc. attr. energy  =     -19.755065159337
+        elec. rep. energy  =       3.918051645661
+        potential energy   =     -15.837013513675
+        virial theorem     =       1.993309797731
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on orion.chem.vt.edu
+Wed Apr 16 19:34:08 2003
+
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on orion.chem.vt.edu
+Wed Apr 16 19:34:08 2003
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CCSD
+	Reference orbitals     =  RHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            = Yes
+	Delete Restricted Docc =  No
+	Do All TEI             = Yes
+	Memory (Mbytes)        =   20.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 6
+	Number of MOs    = 6
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   6	   6	    0	    2	    0	    4	    0
+	 A2 	   0	   0	    0	    0	    0	    0	    0
+	 B1 	   0	   0	    0	    0	    0	    0	    0
+	 B2 	   0	   0	    0	    0	    0	    0	    0
+
+	Nuclear Repulsion Energy    =         0.7500000000
+	Total SCF Energy            =        -7.9450838659
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on orion.chem.vt.edu
+Wed Apr 16 19:34:08 2003
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.14 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on orion.chem.vt.edu
+Wed Apr 16 19:34:08 2003
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Reference wfn   =      RHF
+	Derivative      =    First
+	Memory (Mbytes) =     20.0
+	AO Basis        =      NONE
+	Cache Level     =        2
+	Cache Type      =      LRU
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 6
+	Number of active MOs = 6
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   6	    0	    2	    0	    4	    0
+	 A2 	   0	    0	    0	    0	    0	    0
+	 B1 	   0	    0	    0	    0	    0	    0
+	 B2 	   0	    0	    0	    0	    0	    0
+
+	Nuclear Rep. energy (chkpt) =      0.75000000000000
+	SCF energy          (chkpt) =     -7.94508386588956
+
+	Size of <ab|cd> integrals:     0.000 (MW) /     0.002 (MB)
+	Size of <ia|bc> integrals:     0.000 (MW) /     0.001 (MB)
+	Size of Tijab amplitudes:      0.000 (MW) /     0.001 (MB)
+
+	One-electron energy          =    -11.86313551155097
+	Two-electron (AA) energy     =      0.54013771396977
+	Two-electron (BB) energy     =      0.54013771396977
+	Two-electron (AB) energy     =      2.62791393169164
+	Two-electron energy          =      3.16805164566141
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =     -7.94508386588956
+******************************************************************************
+tstop called on orion.chem.vt.edu
+Wed Apr 16 19:34:08 2003
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on orion.chem.vt.edu
+Wed Apr 16 19:34:08 2003
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = DZ/SCF H2O                                                                      
+    Number of atoms             = 2
+    Number of atomic orbitals   = 6
+    Number of symmetry orbitals = 6
+    Maximum AM in the basis     = 0
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+******************************************************************************
+tstop called on orion.chem.vt.edu
+Wed Apr 16 19:34:09 2003
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on orion.chem.vt.edu
+Wed Apr 16 19:34:09 2003
+
+
+	Input parameters:
+	-----------------
+	Reference wfn   =      RHF
+	Memory (Mbytes) =   20.0
+	Cache Level     =    0
+	Print Level     =    1
+	Applied field   =    0.100 E_h
+
+	Hartree-Fock Electric Polarizability Tensor  [(e^2 a0^2)/E_h]:
+	---------------------------------------------------------------
+
+           1           2           3
+
+    1   0.0000000   0.0000000   0.0000000
+    2   0.0000000   0.0000000   0.0000000
+    3   0.0000000   0.0000000  65.1836990
+******************************************************************************
+tstop called on orion.chem.vt.edu
+Wed Apr 16 19:34:09 2003
+
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
