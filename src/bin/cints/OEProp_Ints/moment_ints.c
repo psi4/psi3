@@ -12,16 +12,6 @@
 #include"global.h"
 #include"oe_osrr.h"
 
-/*-------------------------------
-  Explicit function declarations
- -------------------------------*/
-static double ***init_box(int, int, int);
-static void free_box(double ***, int, int);
-
-
-/*--- These frequently used numbers are to avoid costs of passing parameters ---*/
-static double oo2g, oog, gam;
-
 /*-----------------------------------------------------------------------------------
   This function computes AO overlap and moment integrals and writes them out to disk
  -----------------------------------------------------------------------------------*/
@@ -44,7 +34,7 @@ void moment_ints()
    int ni,nj,ai,aj;
    int am_i, am_j;
    double a1, a2;
-   double ab2;
+   double ab2, oog, gam;
    double x0, y0, z0;
    double x1, y1, z1;
    double **stemp, **mxtemp, **mytemp, **mztemp, **temp, **tmp_dptr;
@@ -202,38 +192,4 @@ void moment_ints()
 
   return;
 }   
-
-double ***init_box(int a, int b, int c)
-{
-  int i,j,k;
-  double ***box;
-
-  box = (double ***) malloc(sizeof(double **)*a);
-  for(i=0;i<a;i++)
-    box[i] = (double **) malloc(sizeof(double *)*b);
-  for(i=0;i<a;i++)
-    for(j=0;j<b;j++) {
-	box[i][j] = (double *) malloc(sizeof(double)*c);
-	bzero((char *) box[i][j],sizeof(double)*c);
-    }
-
-  return box;
-
-}
-
-
-void free_box(double ***box, int a, int b)
-{
-  int i,j;
-
-  for(i=0;i<a;i++)
-    for(j=0;j<b;j++)
-      free(box[i][j]);
-
-  for(i=0;i<a;i++)
-    free(box[i]); 
-
-  free(box);
-
-}
 

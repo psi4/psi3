@@ -19,7 +19,7 @@ void init_rad_extent(double thresh)
   int i;
   int iter;
   int shell, prim, first_prim, last_prim, am;
-  const double r0 = 4.0;        /* Start at 20.0 bohr ---*/
+  const double r0 = 4.0;        /* Start at 4.0 bohr ---*/
   double func, dfuncdr, sum, dsumdr;
   double r, r_new, tmp;
 

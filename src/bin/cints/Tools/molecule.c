@@ -20,6 +20,7 @@ void init_molecule()
   Molecule.label = file30_rd_label();
   Molecule.num_atoms = file30_rd_natom();
 /* Molecule.centers = */ get_geometry();
+  Molecule.Rref = file30_rd_rref();
 
   return;
 }
@@ -28,7 +29,8 @@ void init_molecule()
 void cleanup_molecule()
 {
   free(Molecule.centers);
-
+  free(Molecule.Rref);
+  
   return;
 }
 
