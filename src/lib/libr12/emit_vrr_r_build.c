@@ -81,7 +81,7 @@ int emit_vrr_r_build(int old_am, int new_am, int max_class_size)
 
       class_size = ((am_in[dec_C]+1)*(am_in[dec_C]+2)*(am_in[dec_C^1]+1)*(am_in[dec_C^1]+2))/4;
 
-      fprintf(vrr_header,"#define _R_BUILD_%c0%c0(vp,i0,i1,i2,i3,i4,i5) {",am_letter[la],am_letter[lc]);
+      fprintf(vrr_header,"#define _R_BUILD_%c0%c0(Data,vp,i0,i1,i2,i3,i4,i5) {",am_letter[la],am_letter[lc]);
       fprintf(outfile,"  # of integrals in the (%cs|%cs) class - %d\n",am_letter[la],am_letter[lc],class_size);
       /* Decide if the routine has to be split into several routines producing "subbatches" */
       if (class_size > max_class_size) {
@@ -89,20 +89,20 @@ int emit_vrr_r_build(int old_am, int new_am, int max_class_size)
 	num_subfunctions = ceil((double)class_size/max_class_size);
 	subbatch_length = 1 + class_size/num_subfunctions;
 	fprintf(outfile,"  Each function for this quartet split into %d sub_functions\n\n",num_subfunctions);
-	fprintf(vrr_header," tmp = _r_build_%c0%c0_0(vp,i0,i1,i2,i3,i4,i5); \\\n",am_letter[la],am_letter[lc]);
+	fprintf(vrr_header," tmp = _r_build_%c0%c0_0(Data,vp,i0,i1,i2,i3,i4,i5); \\\n",am_letter[la],am_letter[lc]);
 	for(f=1;f<num_subfunctions;f++)
-	  fprintf(vrr_header," tmp = _r_build_%c0%c0_%d(tmp,i0,i1,i2,i3,i4,i5); \\\n",am_letter[la],am_letter[lc],f);
+	  fprintf(vrr_header," tmp = _r_build_%c0%c0_%d(Data,tmp,i0,i1,i2,i3,i4,i5); \\\n",am_letter[la],am_letter[lc],f);
 	fprintf(vrr_header,"}\n");
 	for(f=0;f<num_subfunctions;f++)
 	  fprintf(vrr_header, 
-	  "double *_r_build_%c0%c0_%d(double *, const double *, const double *, const double *, const double *, const double *, const double *);\n",
+	  "double *_r_build_%c0%c0_%d(prim_data *, double *, const double *, const double *, const double *, const double *, const double *, const double *);\n",
 		  am_letter[la],am_letter[lc],f);
       }
       else {
 	split = 0;
-	fprintf(vrr_header," _r_build_%c0%c0(vp,i0,i1,i2,i3,i4,i5);}\n",am_letter[la],am_letter[lc]);
+	fprintf(vrr_header," _r_build_%c0%c0(Data,vp,i0,i1,i2,i3,i4,i5);}\n",am_letter[la],am_letter[lc]);
 	fprintf(vrr_header,
-	"void _r_build_%c0%c0(double *, const double *, const double *, const double *, const double *, const double *, const double *);\n",
+	"void _r_build_%c0%c0(prim_data *, double *, const double *, const double *, const double *, const double *, const double *, const double *);\n",
 		am_letter[la],am_letter[lc]);
       }
 
@@ -135,12 +135,12 @@ int emit_vrr_r_build(int old_am, int new_am, int max_class_size)
 	curr_subfunction = 0;
 	curr_count = 0;
 	fprintf(code,
-	"double *%s(double *vp, const double *I0, const double *I1, const double *I2, const double *I3, const double *I4, const double *I5)\n{\n",
+	"double *%s(prim_data *Data, double *vp, const double *I0, const double *I1, const double *I2, const double *I3, const double *I4, const double *I5)\n{\n",
 		subfunction_name[0]);
       }
       else
 	fprintf(code,
-	"void _%s(double *vp, const double *I0, const double *I1, const double *I2, const double *I3, const double *I4, const double *I5)\n{\n",function_name);
+	"void _%s(prim_data *Data, double *vp, const double *I0, const double *I1, const double *I2, const double *I3, const double *I4, const double *I5)\n{\n",function_name);
       declare_localv(dec_C,k1max,k2max,k3max,code);
       define_localv(dec_C,k1max,k2max,k3max,code);
       fprintf(code,"\n");
@@ -211,7 +211,7 @@ int emit_vrr_r_build(int old_am, int new_am, int max_class_size)
 		curr_subfunction++;
 		fprintf(code,"return vp;\n}\n\n");
 		fprintf(code,
-		"double *%s(double *vp, const double *I0, const double *I1, const double *I2, const double *I3, const double *I4, const double *I5)\n{\n",
+		"double *%s(prim_data *Data, double *vp, const double *I0, const double *I1, const double *I2, const double *I3, const double *I4, const double *I5)\n{\n",
 			subfunction_name[curr_subfunction]);
 		declare_localv(dec_C,k1max,k2max,k3max,code);
 		define_localv(dec_C,k1max,k2max,k3max,code);
@@ -270,7 +270,6 @@ void declare_localv(int dec_C, int k1max, int k2max, int k3max, FILE *code)
 {
   int i;
 
-  fprintf(code,"  extern prim_data *Data;\n");
   fprintf(code,"  double U00, U01, U02, U10, U11, U12, U20, U21, U22;\n");
   fprintf(code,"  double U30, U31, U32, U40, U41, U42, U50, U51, U52;\n");
   fprintf(code,"  double loo2p = Data->oo2p;\n");

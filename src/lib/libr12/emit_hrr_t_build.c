@@ -53,16 +53,15 @@ int emit_hrr_t_build(int old_am, int new_am)
       code = fopen(code_name,"w");
 
       /* include the function into the hrr_header.h */
-      fprintf(hrr_header,"void %s(double *, const double *, const double *, const double *, const double *, const double *, int, int);\n",
+      fprintf(hrr_header,"void %s(double *, double *, double *, const double *, const double *, const double *, const double *, const double *, int, int);\n",
 	      function_name);
 
       fprintf(code,"  /* This machine-generated function computes a quartet of [r12,T2]|%c%c) integrals */\n\n",
 	      am_letter[am_in[0]],am_letter[am_in[1]]);
 
-      fprintf(code,"void %s(double *vp, const double *I0, const double *I1, const double *I2, const double *I3, const double *I4, int la, int lb)\n{\n",function_name);
+      fprintf(code,"void %s(double *CD, double *AC, double *vp, const double *I0, const double *I1, const double *I2, const double *I3, const double *I4, int la, int lb)\n{\n",function_name);
       fprintf(code,"  int ab, ab_num, a_num, ap1_num, b_num;\n");
       fprintf(code,"  int pa, qa, b, ind_a, ind_ap1b;\n");
-      fprintf(code,"  extern double CD[3], AC[3];\n");
       fprintf(code,"  const double CD0 = CD[0];\n");
       fprintf(code,"  const double CD1 = CD[1];\n");
       fprintf(code,"  const double CD2 = CD[2];\n");
@@ -142,7 +141,7 @@ int emit_hrr_t_build(int old_am, int new_am)
       am_in[1] = lb;
 
       /* include the function into the hrr_header.h */
-      fprintf(hrr_header,"void %s(double *, const double *, const double *, const double *, const double *, const double *, int, int);\n", function_name);
+      fprintf(hrr_header,"void %s(double *, double *, double *, const double *, const double *, const double *, const double *, const double *, int, int);\n", function_name);
       
       sprintf(function_name,"t1hrr1_build_%c%c",am_letter[am_in[0]],am_letter[am_in[1]]);
       sprintf(code_name,"t1hrr1_build_%c%c.c",am_letter[am_in[0]],am_letter[am_in[1]]);
@@ -151,11 +150,10 @@ int emit_hrr_t_build(int old_am, int new_am)
       fprintf(code,"  /* This machine-generated function computes a quartet of (%c%c|[r12,T1] integrals */\n\n",
 	      am_letter[am_in[0]],am_letter[am_in[1]]);
 
-      fprintf(code,"void %s(double *vp, const double *I0, const double *I1, const double *I2, const double *I3, const double *I4, int lc, int ld)\n{\n",function_name);
+      fprintf(code,"void %s(double *AB, double *AC, double *vp, const double *I0, const double *I1, const double *I2, const double *I3, const double *I4, int lc, int ld)\n{\n",function_name);
       fprintf(code,"  int cd, cd_num, c_num, cp1_num, d_num;\n");
       fprintf(code,"  int pc, qc, d, ind_c, ind_cp1d;\n");
       fprintf(code,"  const double *i0, *i1, *i2, *i3, *i4;\n");
-      fprintf(code,"  extern double AB[3], AC[3];\n");
       fprintf(code,"  const double AB0 = AB[0];\n");
       fprintf(code,"  const double AB1 = AB[1];\n");
       fprintf(code,"  const double AB2 = AB[2];\n");

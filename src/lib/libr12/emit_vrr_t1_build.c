@@ -62,7 +62,7 @@ int emit_vrr_t1_build(int old_am, int new_am, int max_class_size)
 
       class_size = ((am_in[0]+1)*(am_in[0]+2)*(am_in[1]+1)*(am_in[1]+2))/4;
 
-      fprintf(vrr_header,"#define _T1_BUILD_%c0%c0(vp,i0,i1,i2,i3,i4) {",am_letter[la],am_letter[lc]);
+      fprintf(vrr_header,"#define _T1_BUILD_%c0%c0(Data,ShellData,vp,i0,i1,i2,i3,i4) {",am_letter[la],am_letter[lc]);
       fprintf(outfile,"  # of integrals in the (%cs|%cs) class - %d\n",am_letter[la],am_letter[lc],class_size);
       /* Decide if the routine has to be split into several routines producing "subbatches" */
       if (class_size > max_class_size) {
@@ -70,18 +70,18 @@ int emit_vrr_t1_build(int old_am, int new_am, int max_class_size)
 	num_subfunctions = ceil((double)class_size/max_class_size);
 	subbatch_length = 1 + class_size/num_subfunctions;
 	fprintf(outfile,"  Each function for this quartet split into %d sub_functions\n\n",num_subfunctions);
-	fprintf(vrr_header," tmp = _t1_build_%c0%c0_0(vp,i0,i1,i2,i3,i4); \\\n",am_letter[la],am_letter[lc]);
+	fprintf(vrr_header," tmp = _t1_build_%c0%c0_0(Data,ShellData,vp,i0,i1,i2,i3,i4); \\\n",am_letter[la],am_letter[lc]);
 	for(f=1;f<num_subfunctions;f++)
-	  fprintf(vrr_header," tmp = _t1_build_%c0%c0_%d(tmp,i0,i1,i2,i3,i4); \\\n",am_letter[la],am_letter[lc],f);
+	  fprintf(vrr_header," tmp = _t1_build_%c0%c0_%d(Data,ShellData,tmp,i0,i1,i2,i3,i4); \\\n",am_letter[la],am_letter[lc],f);
 	fprintf(vrr_header,"}\n");
 	for(f=0;f<num_subfunctions;f++)
-	  fprintf(vrr_header, "double *_t1_build_%c0%c0_%d(double *, const double *, const double *, const double *, const double *, const double *);\n",
+	  fprintf(vrr_header, "double *_t1_build_%c0%c0_%d(prim_data *, contr_data *, double *, const double *, const double *, const double *, const double *, const double *);\n",
 		  am_letter[la],am_letter[lc],f);
       }
       else {
 	split = 0;
-	fprintf(vrr_header," _t1_build_%c0%c0(vp,i0,i1,i2,i3,i4);}\n",am_letter[la],am_letter[lc]);
-	fprintf(vrr_header,"void _t1_build_%c0%c0(double *, const double *, const double *, const double *, const double *, const double *);\n",
+	fprintf(vrr_header," _t1_build_%c0%c0(Data,ShellData,vp,i0,i1,i2,i3,i4);}\n",am_letter[la],am_letter[lc]);
+	fprintf(vrr_header,"void _t1_build_%c0%c0(prim_data *, contr_data *, double *, const double *, const double *, const double *, const double *, const double *);\n",
 		am_letter[la],am_letter[lc]);
       }
 
@@ -114,11 +114,11 @@ int emit_vrr_t1_build(int old_am, int new_am, int max_class_size)
       if (split == 1) {
 	curr_subfunction = 0;
 	curr_count = 0;
-	fprintf(code,"double *%s(double *vp, const double *I0, const double *I1, const double *I2, const double *I3, const double *I4)\n{\n",
+	fprintf(code,"double *%s(prim_data *Data, contr_data *ShellData, double *vp, const double *I0, const double *I1, const double *I2, const double *I3, const double *I4)\n{\n",
 		subfunction_name[0]);
       }
       else
-	fprintf(code,"void _%s(double *vp, const double *I0, const double *I1, const double *I2, const double *I3, const double *I4)\n{\n",function_name);
+	fprintf(code,"void _%s(prim_data *Data, contr_data *ShellData, double *vp, const double *I0, const double *I1, const double *I2, const double *I3, const double *I4)\n{\n",function_name);
       declare_localv(la,code);
       define_localv(la,code);
       fprintf(code,"\n");
@@ -187,7 +187,7 @@ int emit_vrr_t1_build(int old_am, int new_am, int max_class_size)
 		curr_count = 0;
 		curr_subfunction++;
 		fprintf(code,"return vp;\n}\n\n");
-		fprintf(code,"double *%s(double *vp, const double *I0, const double *I1, const double *I2, const double *I3, const double *I4)\n{\n",
+		fprintf(code,"double *%s(prim_data *Data, contr_data *ShellData, double *vp, const double *I0, const double *I1, const double *I2, const double *I3, const double *I4)\n{\n",
 			subfunction_name[curr_subfunction]);
 		declare_localv(la,code);
 		define_localv(la,code);
@@ -246,8 +246,6 @@ void declare_localv(int la, FILE *code)
 {
   int i;
 
-  fprintf(code,"  extern prim_data *Data;\n");
-  fprintf(code,"  extern double AC[3], AB[3], ABdotAC;\n");
   fprintf(code,"  double U0, U10, U11, U12;\n");
   fprintf(code,"  double AC0, AC1, AC2;\n");
   for(i=0;i<la;i++)
@@ -261,15 +259,15 @@ void define_localv(int la, FILE *code)
 {
   int i;
 
-  fprintf(code,"  AC0 = AC[0];\n");
-  fprintf(code,"  AC1 = AC[1];\n");
-  fprintf(code,"  AC2 = AC[2];\n");
+  fprintf(code,"  AC0 = ShellData->AC[0];\n");
+  fprintf(code,"  AC1 = ShellData->AC[1];\n");
+  fprintf(code,"  AC2 = ShellData->AC[2];\n");
   for(i=0;i<la;i++)
     fprintf(code,"  %s = %.1lf*(Data->twozeta_b*Data->oo2z);\n",k1[i],(double)(i+1));
-  fprintf(code,"  U10 = AB[0]*(Data->twozeta_a*Data->twozeta_b*Data->oo2z);\n");
-  fprintf(code,"  U11 = AB[1]*(Data->twozeta_a*Data->twozeta_b*Data->oo2z);\n");
-  fprintf(code,"  U12 = AB[2]*(Data->twozeta_a*Data->twozeta_b*Data->oo2z);\n");
-  fprintf(code,"  U0  = (Data->twozeta_a - Data->twozeta_b*(Data->twozeta_a*ABdotAC + %lf))*Data->oo2z;\n",(double)(la+1));
+  fprintf(code,"  U10 = ShellData->AB[0]*(Data->twozeta_a*Data->twozeta_b*Data->oo2z);\n");
+  fprintf(code,"  U11 = ShellData->AB[1]*(Data->twozeta_a*Data->twozeta_b*Data->oo2z);\n");
+  fprintf(code,"  U12 = ShellData->AB[2]*(Data->twozeta_a*Data->twozeta_b*Data->oo2z);\n");
+  fprintf(code,"  U0  = (Data->twozeta_a - Data->twozeta_b*(Data->twozeta_a*ShellData->ABdotAC + %lf))*Data->oo2z;\n",(double)(la+1));
 
   return;
 }

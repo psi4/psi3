@@ -62,21 +62,16 @@ int main()
   new_am = (MAX_AM - 1 - DERIV_LVL)*2;
 
   /* Setting up init_libr12.c, header.h */
+  fprintf(init_code,"#include <stdlib.h>\n");
   fprintf(init_code,"#include <libint.h>\n");
   fprintf(init_code,"#include \"libr12.h\"\n");
   fprintf(init_code,"#include \"r12_hrr_header.h\"\n\n");
   fprintf(init_code,"/* This function initializes a matrix of pointers to routines */\n");
   fprintf(init_code,"/* for computing integral classes up to (%c%c|%c%c) */\n\n",
 	  am_letter[new_am],am_letter[new_am],am_letter[new_am],am_letter[new_am]);
-  fprintf(init_code,"void (*build_gr_abcd[%d][%d][%d][%d])();\n",new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
-  fprintf(init_code,"void (*build_grt_abcd[%d][%d][%d][%d])();\n",new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
-  fprintf(init_code,"prim_data *Data;\n");
-  fprintf(init_code,"double *t1vrr_classes[%d][%d];\n",1+new_am,1+new_am);
-  fprintf(init_code,"double *t2vrr_classes[%d][%d];\n",1+new_am,1+new_am);
-  fprintf(init_code,"double *rvrr_classes[%d][%d];\n",1+new_am,1+new_am);
-  fprintf(init_code,"double *gvrr_classes[%d][%d];\n",1+new_am,1+new_am);
-  fprintf(init_code,"double *r12vrr_stack;\n\n");
-  fprintf(init_code,"void init_libr12()\n{\n");
+  fprintf(init_code,"void (*build_r12_gr[%d][%d][%d][%d])(Libr12_t *, int);\n",new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
+  fprintf(init_code,"void (*build_r12_grt[%d][%d][%d][%d])(Libr12_t *, int);\n",new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
+  fprintf(init_code,"void init_libr12_base()\n{\n");
 
 /*  emit_gr_order(0,new_am); */
   stack_size = emit_grt_order(0,new_am);
@@ -84,8 +79,27 @@ int main()
   emit_vrr_r_build(0,new_am,max_class_size);
   emit_vrr_t1_build(0,new_am,max_class_size);
   emit_vrr_t2_build(0,new_am,max_class_size);
-  
-  fprintf(init_code,"}\n");
+
+  fprintf(init_code,"}\n\n");
+  fprintf(init_code,"/* These functions initialize library objects */\n");
+  fprintf(init_code,"/* Library objects operate independently of each other */\n");
+  fprintf(init_code,"int init_libr12(Libr12_t *libr12, int num_prim_quartets)\n{\n");
+  fprintf(init_code,"  int memory = 0;\n\n");
+  fprintf(init_code,"  libr12->int_stack = (double *) malloc(STACK_SIZE*sizeof(double));\n");
+  fprintf(init_code,"  memory += STACK_SIZE;\n");
+  fprintf(init_code,"  libr12->PrimQuartet = (prim_data *) malloc(num_prim_quartets*sizeof(prim_data));\n");
+  fprintf(init_code,"  memory += num_prim_quartets*sizeof(prim_data)/sizeof(double);\n");
+  fprintf(init_code,"  return memory;\n}\n\n");
+  fprintf(init_code,"void free_libr12(Libr12_t *libr12)\n{\n");
+  fprintf(init_code,"  if (libr12->int_stack != NULL) {\n");
+  fprintf(init_code,"    free(libr12->int_stack);\n");
+  fprintf(init_code,"    libr12->int_stack = NULL;\n");
+  fprintf(init_code,"  }\n");
+  fprintf(init_code,"  if (libr12->PrimQuartet != NULL) {\n");
+  fprintf(init_code,"    free(libr12->PrimQuartet);\n");
+  fprintf(init_code,"    libr12->PrimQuartet = NULL;\n");
+  fprintf(init_code,"  }\n\n");
+  fprintf(init_code,"  return;\n}\n");
   fclose(init_code);
   fclose(hrr_header);
   fclose(vrr_header);
@@ -99,10 +113,30 @@ int main()
   fprintf(libr12_header,"#ifdef STACK_SIZE\n");
   fprintf(libr12_header," #undef STACK_SIZE\n");
   fprintf(libr12_header,"#endif\n");
-  fprintf(libr12_header,"#define STACK_SIZE %d\n\n",stack_size);
-  fprintf(libr12_header,"extern void (*build_gr_abcd[%d][%d][%d][%d])();\n",new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
-  fprintf(libr12_header,"extern void (*build_grt_abcd[%d][%d][%d][%d])();\n",new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
-  fprintf(libr12_header,"void init_libr12();\n\n");
+  fprintf(libr12_header,"#define STACK_SIZE %d\n",stack_size);
+  fprintf(libr12_header,"#define NUM_TE_TYPES 4\n\n");
+  fprintf(libr12_header,"typedef struct {\n");
+  fprintf(libr12_header,"  double AB[3];\n");
+  fprintf(libr12_header,"  double CD[3];\n");
+  fprintf(libr12_header,"  double AC[3];\n");
+  fprintf(libr12_header,"  double ABdotAC, CDdotCA;\n");
+  fprintf(libr12_header,"  } contr_data;\n\n");
+  fprintf(libr12_header,"typedef struct {\n");
+  fprintf(libr12_header,"  double *int_stack;\n"); 
+  fprintf(libr12_header,"  prim_data *PrimQuartet;\n");
+  fprintf(libr12_header,"  contr_data ShellQuartet;\n");
+  fprintf(libr12_header,"  double *te_ptr[NUM_TE_TYPES];\n");
+  fprintf(libr12_header,"  double *t1vrr_classes[%d][%d];\n",1+new_am,1+new_am);
+  fprintf(libr12_header,"  double *t2vrr_classes[%d][%d];\n",1+new_am,1+new_am);
+  fprintf(libr12_header,"  double *rvrr_classes[%d][%d];\n",1+new_am,1+new_am);
+  fprintf(libr12_header,"  double *gvrr_classes[%d][%d];\n",2+new_am,2+new_am);
+  fprintf(libr12_header,"  double *r12vrr_stack;\n\n");
+  fprintf(libr12_header,"  } Libr12_t;\n\n");
+  fprintf(libr12_header,"extern void (*build_r12_gr[%d][%d][%d][%d])(Libr12_t *, int);\n",new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
+  fprintf(libr12_header,"extern void (*build_r12_grt[%d][%d][%d][%d])(Libr12_t *, int);\n",new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
+  fprintf(libr12_header,"void init_libr12_base();\n\n");
+  fprintf(libr12_header,"int  init_libr12(Libr12_t *, int);\n");
+  fprintf(libr12_header,"void free_libr12(Libr12_t *);\n\n");
   fclose(libr12_header);
   fclose(outfile);
   exit(0);
