@@ -1,0 +1,1619 @@
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:06:40 2001
+
+                                --------------
+                                  WELCOME TO
+                                    PSI  3
+                                --------------
+
+  LABEL       =	6-31G** SCF H2O
+  SHOWNORM    =	0
+  PUREAM      =	0
+  PRINT_LVL   =	1
+
+  -Geometry before Center-of-Mass shift (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.000000000000
+        HYDROGEN      0.000000000000     0.000000000000     1.889725988579
+        HYDROGEN      1.840547697619     0.000000000000    -0.428308866009
+
+
+  -Rotational constants (cm-1) :
+    A =   24.35463  B =   13.63610  C =    8.74166
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.131510158619     0.000000000000
+        HYDROGEN      1.479940996653    -1.043580883955     0.000000000000
+        HYDROGEN     -1.479940996653    -1.043580883955     0.000000000000
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S (  5484.67166000     0.00183107)
+           (   825.23494600     0.01395017)
+           (   188.04695800     0.06844508)
+           (    52.96450000     0.23271434)
+           (    16.89757040     0.47019290)
+           (     5.79963534     0.35852085) )
+        (S (    15.53961625    -0.11077755)
+           (     3.59993359    -0.14802626)
+           (     1.01376175     1.13076701) )
+        (S (     0.27000582     1.00000000) )
+        (P (    15.53961625     0.07087427)
+           (     3.59993359     0.33975284)
+           (     1.01376175     0.72715858) )
+        (P (     0.27000582     1.00000000) )
+        (D (     0.80000000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    18.73113696     0.03349460)
+           (     2.82539437     0.23472695)
+           (     0.64012169     0.81375733) )
+        (S (     0.16127776     1.00000000) )
+        (P (     1.10000000     1.00000000) )
+       )
+
+
+    Wrote 10864 bytes to FILE30
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 12
+    Number of primitives   = 20
+    Number of AO           = 25
+    Number of SO           = 25
+
+    Irrep    Number of SO
+    -----    ------------
+      1           12
+      2            2
+      3            4
+      4            7
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.131510158619
+        HYDROGEN      0.000000000000     1.479940996653    -1.043580883955
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.131510158619
+        HYDROGEN      0.000000000000     1.479940996653    -1.043580883955
+        HYDROGEN      0.000000000000    -1.479940996653    -1.043580883955
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.069592183953
+        HYDROGEN      0.000000000000     0.783151105291    -0.552239261280
+        HYDROGEN      0.000000000000    -0.783151105291    -0.552239261280
+
+
+  -Geometry in the reference coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.131510158619
+        HYDROGEN      0.000000000000     1.479940996653    -1.043580883955
+        HYDROGEN      0.000000000000    -1.479940996653    -1.043580883955
+
+
+  -Full geometry in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.131510158619
+        HYDROGEN      0.000000000000     1.479940996653    -1.043580883955
+        HYDROGEN      0.000000000000    -1.479940996653    -1.043580883955
+
+
+    Nuclear Repulsion Energy (a.u.) =       8.804687290999
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   1.0000000   0.0000000
+    3   1.0000000   1.5663022   0.0000000
+
+
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:06:41 2001
+
+user time   =       0.39 seconds
+system time =       0.10 seconds
+total time  =          1 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:02 2001
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O                                                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+    Wrote 11721 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:03 2001
+
+user time   =       0.97 seconds
+system time =       0.02 seconds
+total time  =          1 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:03 2001
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+
+  label       = 6-31G** SCF H2O
+  wfn          = SCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct SCF   = false
+  dertype      = FIRST
+  convergence  = 12
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy        8.8046872909987
+  first run, so defaulting to core-hamiltonian guess
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.424690e-02
+
+
+  Using DOCC and SOCC to 
+  determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 6516 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -68.3548843162    7.715957e+01    0.000000e+00    0.000000e+00
+    2       -71.3777628421    3.022879e+00    1.130296e-01    1.175783e+00
+    3       -75.8581629361    4.480400e+00    1.037941e-01    8.860959e-01
+    4       -75.9956701999    1.375073e-01    5.906119e-03    2.044394e-01
+    5       -76.0169750721    2.130487e-02    1.931266e-03    1.024212e-01
+    6       -76.0172760736    3.010015e-04    2.842273e-04    9.429688e-03
+    7       -76.0172962933    2.021965e-05    7.939114e-05    2.474006e-03
+    8       -76.0172965444    2.510913e-07    9.894937e-06    1.856559e-04
+    9       -76.0172965714    2.696443e-08    3.411769e-06    8.255086e-05
+   10       -76.0172965718    4.839364e-10    3.849065e-07    1.190427e-05
+   11       -76.0172965718    5.925926e-12    4.827812e-08    9.566678e-07
+   12       -76.0172965718    1.179501e-12    2.072293e-08    4.967965e-07
+   13       -76.0172965718    8.526513e-14    8.347551e-09    1.108182e-07
+   14       -76.0172965718    1.421085e-14    9.128164e-10    1.405965e-08
+   15       -76.0172965718    0.000000e+00    9.820056e-11    1.587011e-09
+   16       -76.0172965718   -1.421085e-14    2.195792e-11    4.951098e-10
+   17       -76.0172965718    0.000000e+00    9.820427e-13    3.173119e-11
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.568999     2A1     -1.320609     1B2     -0.678724  
+   3A1     -0.563930     1B1     -0.495004  
+
+
+  Unoccupied orbitals
+   4A1      0.202466     2B2      0.292719     3B2      0.981164  
+   5A1      1.056318     6A1      1.129179     2B1      1.168639  
+   4B2      1.294985     7A1      1.413596     1A2      1.802875  
+   8A1      1.806916     3B1      1.918871     9A1      2.513249  
+   5B2      2.537822     6B2      2.713577     2A2      2.921065  
+   4B1      2.947486    10A1      3.291755    11A1      3.620730  
+   7B2      3.874917    12A1      4.077741  
+
+
+        total energy       =     -76.017296571842
+        kinetic energy     =      75.657182103462
+        nuc. attr. energy  =    -198.046615212948
+        elec. rep. energy  =      46.372136537644
+        potential energy   =    -151.674478675304
+        virial theorem     =       1.995262729870
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:04 2001
+
+user time   =       0.03 seconds
+system time =       0.02 seconds
+total time  =          1 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:04 2001
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O                                                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -SCF forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000     0.069917654324
+       2        0.000000000000     0.041734158613    -0.034958827162
+       3        0.000000000000    -0.041734158614    -0.034958827162
+
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:05 2001
+
+user time   =       1.68 seconds
+system time =       0.02 seconds
+total time  =          1 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:05 2001
+
+	_____________________________________________________
+	|                                                   |
+	|   OPTKING:  The Geometry Optimization Program     |
+	|              By Rollin King, 1999                 |
+	|___________________________________________________|
+
+Geometry and gradient from file11.dat in a.u. with masses
+  8.0    15.99491500   0.0000000000   0.0000000000   0.1315101586
+  1.0     1.00782500   0.0000000000   1.4799409967  -1.0435808840
+  1.0     1.00782500   0.0000000000  -1.4799409967  -1.0435808840
+                       0.0000000000   0.0000000000   0.0699176543
+                       0.0000000000   0.0417341586  -0.0349588272
+                       0.0000000000  -0.0417341586  -0.0349588272
+
+generating internals
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (1.00000000)
+    (2 1 3) (1.00000000)
+Bends
+    (3 2 1 3) (103.10000000)
+
+Forming delocalized internal coordinates.
+
+  SYMM = (
+    ("A1 " (1 2 3)
+     (-0.65 -0.65 -0.39))
+    ("A1 " (1 2 3)
+     (-0.28 -0.28  0.92))
+  )
+
+BuB^t Determinant: 2.217201e+00
+
+Generating empirical Hessian.
+
+No BFGS update performed.
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+         Value          Force          Displacement   New Value
+ 1      -2.002852       0.579571       0.072123      -1.930729
+ 2       1.107497       0.257513       0.048746       1.156242
+   MAX force:    0.5795710833   RMS force:    0.4484504585
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    1  0.027155133643  0.061554254427
+    2  0.061275103873  0.175435784059
+    3  0.000226430148  0.000000140969
+    4  0.000000061944  0.000000000000
+    5  0.000000000000  0.000000000000
+
+Convergence to displaced geometry took 5 iterations.
+
+New Cartesian Geometry in a.u.
+  8.0   0.0000000000  -0.0000000000   0.1222529220
+  1.0   0.0000000000   1.3998176802  -0.9701213482
+  1.0   0.0000000000  -1.3998176802  -0.9701213482
+
+Geometry written to file30
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:06 2001
+
+user time   =       0.02 seconds
+system time =       0.05 seconds
+total time  =          1 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:06 2001
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O                                                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+    Wrote 11721 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:07 2001
+
+user time   =       0.97 seconds
+system time =       0.01 seconds
+total time  =          1 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:07 2001
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+
+  label       = 6-31G** SCF H2O
+  wfn          = SCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct SCF   = false
+  dertype      = FIRST
+  convergence  = 12
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy        9.3682054250069
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.01729657
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.211861e-02
+
+
+  Using DOCC and SOCC to 
+  determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 6516 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -76.0211052347    8.538931e+01    0.000000e+00    0.000000e+00
+    2       -76.0232231148    2.117880e-03    7.085486e-04    1.783035e-02
+    3       -76.0234305828    2.074680e-04    2.330718e-04    8.746186e-03
+    4       -76.0234702247    3.964189e-05    9.910820e-05    2.553819e-03
+    5       -76.0234748263    4.601519e-06    4.777824e-05    8.970246e-04
+    6       -76.0234749891    1.628207e-07    1.017601e-05    1.557046e-04
+    7       -76.0234749984    9.359965e-09    2.641360e-06    3.114773e-05
+    8       -76.0234749986    1.319478e-10    2.208751e-07    4.349246e-06
+    9       -76.0234749986    6.011192e-12    3.866225e-08    8.722900e-07
+   10       -76.0234749986    1.421085e-13    9.827907e-09    1.280024e-07
+   11       -76.0234749986    1.421085e-14    1.578421e-09    2.218148e-08
+   12       -76.0234749986    1.421085e-14    2.883842e-10    3.658850e-09
+   13       -76.0234749986   -1.421085e-14    9.593097e-12    2.310056e-10
+   14       -76.0234749986    0.000000e+00    3.507435e-12    4.966735e-11
+   15       -76.0234749986   -1.421085e-14    7.629993e-13    1.467203e-11
+
+ No phase correction possible.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.557720     2A1     -1.350031     1B2     -0.712174  
+   3A1     -0.572838     1B1     -0.498636  
+
+
+  Unoccupied orbitals
+   4A1      0.215703     2B2      0.309253     3B2      1.010844  
+   5A1      1.099576     6A1      1.137889     2B1      1.168359  
+   4B2      1.295615     7A1      1.418975     1A2      1.807217  
+   8A1      1.814834     3B1      1.925188     9A1      2.595322  
+   5B2      2.601197     6B2      2.845036     2A2      2.998477  
+   4B1      3.015456    10A1      3.410756    11A1      3.751272  
+   7B2      3.958703    12A1      4.121177  
+
+
+        total energy       =     -76.023474998574
+        kinetic energy     =      75.882182652430
+        nuc. attr. energy  =    -199.282743933053
+        elec. rep. energy  =      47.377086282049
+        potential energy   =    -151.905657651003
+        virial theorem     =       1.998141464250
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:07 2001
+
+user time   =       0.03 seconds
+system time =       0.01 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:07 2001
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O                                                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -SCF forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000    -0.000673154397
+       2        0.000000000000    -0.006325851585     0.000336577198
+       3        0.000000000000     0.006325851585     0.000336577198
+
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:08 2001
+
+user time   =       1.67 seconds
+system time =       0.01 seconds
+total time  =          1 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:09 2001
+
+	_____________________________________________________
+	|                                                   |
+	|   OPTKING:  The Geometry Optimization Program     |
+	|              By Rollin King, 1999                 |
+	|___________________________________________________|
+
+Geometry and gradient from file11.dat in a.u. with masses
+  8.0    15.99491500   0.0000000000  -0.0000000000   0.1222529220
+  1.0     1.00782500   0.0000000000   1.3998176802  -0.9701213482
+  1.0     1.00782500   0.0000000000  -1.3998176802  -0.9701213482
+                       0.0000000000   0.0000000000  -0.0006731544
+                       0.0000000000  -0.0063258516   0.0003365772
+                       0.0000000000   0.0063258516   0.0003365772
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.93960947)
+    (2 1 3) (0.93960947)
+Bends
+    (3 2 1 3) (104.06525600)
+
+  SYMM = (
+    ("A1 " (1 2 3)
+     (-0.65 -0.65 -0.39))
+    ("A1 " (1 2 3)
+     (-0.28 -0.28  0.92))
+  )
+
+BuB^t Determinant: 2.511368e+00
+
+Performing BFGS Hessian update.
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+         Value          Force          Displacement   New Value
+ 1      -1.930729      -0.066672      -0.019955      -1.950683
+ 2       1.156242       0.002317       0.032132       1.188374
+   MAX force:    0.0666721866   RMS force:    0.0471728206
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    1  0.008155977749  0.026745404409
+    2  0.031188775592  0.115640577312
+    3  0.000078366782  0.000000020935
+    4  0.000000006409  0.000000000000
+    5  0.000000000000  0.000000000000
+
+Convergence to displaced geometry took 5 iterations.
+
+New Cartesian Geometry in a.u.
+  8.0   0.0000000000   0.0000000000   0.1198331888
+  1.0   0.0000000000   1.4262654715  -0.9509198862
+  1.0   0.0000000000  -1.4262654715  -0.9509198862
+
+Geometry written to file30
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:09 2001
+
+user time   =       0.01 seconds
+system time =       0.06 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:09 2001
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O                                                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+    Wrote 11721 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:10 2001
+
+user time   =       0.96 seconds
+system time =       0.03 seconds
+total time  =          1 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:10 2001
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+
+  label       = 6-31G** SCF H2O
+  wfn          = SCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct SCF   = false
+  dertype      = FIRST
+  convergence  = 12
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy        9.3218690326220
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.02347500
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.231398e-02
+
+
+  Using DOCC and SOCC to 
+  determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 6516 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -76.0235565832    8.534543e+01    0.000000e+00    0.000000e+00
+    2       -76.0236098676    5.328436e-05    1.247134e-04    3.237786e-03
+    3       -76.0236118447    1.977129e-06    2.554086e-05    7.287009e-04
+    4       -76.0236120037    1.590236e-07    4.866537e-06    2.379184e-04
+    5       -76.0236120123    8.640896e-09    1.601196e-06    4.523730e-05
+    6       -76.0236120128    4.889529e-10    4.161279e-07    9.185226e-06
+    7       -76.0236120129    3.829825e-11    1.706317e-07    2.327497e-06
+    8       -76.0236120129    6.394885e-13    1.902143e-08    2.564934e-07
+    9       -76.0236120129    2.842171e-14    3.774482e-09    7.897218e-08
+   10       -76.0236120129    1.421085e-14    5.160540e-10    8.844270e-09
+   11       -76.0236120129   -1.421085e-14    7.329710e-11    1.178841e-09
+   12       -76.0236120129    1.421085e-14    2.560504e-11    3.064105e-10
+   13       -76.0236120129    0.000000e+00    1.370199e-12    4.113820e-11
+   14       -76.0236120129    0.000000e+00    4.598917e-13    5.791653e-12
+
+ No phase correction possible.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.557258     2A1     -1.345876     1B2     -0.713939  
+   3A1     -0.567667     1B1     -0.497455  
+
+
+  Unoccupied orbitals
+   4A1      0.215218     2B2      0.308267     3B2      1.017542  
+   5A1      1.091773     6A1      1.134299     2B1      1.169072  
+   4B2      1.295516     7A1      1.410753     1A2      1.801930  
+   8A1      1.831289     3B1      1.932233     5B2      2.579926  
+   9A1      2.587637     6B2      2.840869     4B1      2.994926  
+   2A2      3.007032    10A1      3.405207    11A1      3.744418  
+   7B2      3.943031    12A1      4.129175  
+
+
+        total energy       =     -76.023612012871
+        kinetic energy     =      75.861248912124
+        nuc. attr. energy  =    -199.187818362701
+        elec. rep. energy  =      47.302957437705
+        potential energy   =    -151.884860924996
+        virial theorem     =       1.997864306938
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:10 2001
+
+user time   =       0.02 seconds
+system time =       0.03 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:10 2001
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O                                                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -SCF forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000    -0.000000000000     0.000430993800
+       2        0.000000000000     0.001052531741    -0.000215496900
+       3        0.000000000000    -0.001052531741    -0.000215496900
+
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:12 2001
+
+user time   =       1.65 seconds
+system time =       0.04 seconds
+total time  =          2 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:12 2001
+
+	_____________________________________________________
+	|                                                   |
+	|   OPTKING:  The Geometry Optimization Program     |
+	|              By Rollin King, 1999                 |
+	|___________________________________________________|
+
+Geometry and gradient from file11.dat in a.u. with masses
+  8.0    15.99491500   0.0000000000   0.0000000000   0.1198331888
+  1.0     1.00782500   0.0000000000   1.4262654715  -0.9509198862
+  1.0     1.00782500   0.0000000000  -1.4262654715  -0.9509198862
+                       0.0000000000  -0.0000000000   0.0004309938
+                       0.0000000000   0.0010525317  -0.0002154969
+                       0.0000000000  -0.0010525317  -0.0002154969
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94376880)
+    (2 1 3) (0.94376880)
+Bends
+    (3 2 1 3) (106.20602870)
+
+  SYMM = (
+    ("A1 " (1 2 3)
+     (-0.65 -0.65 -0.39))
+    ("A1 " (1 2 3)
+     (-0.28 -0.28  0.92))
+  )
+
+BuB^t Determinant: 2.489281e+00
+
+Performing BFGS Hessian update.
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+         Value          Force          Displacement   New Value
+ 1      -1.950683       0.011814       0.002499      -1.948184
+ 2       1.188374       0.001110      -0.003234       1.185140
+   MAX force:    0.0118135311   RMS force:    0.0083902136
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    1  0.000918640691  0.002890288447
+    2  0.010144707417  0.038015052698
+    3  0.000000995754  0.000000000004
+    4  0.000000000001  0.000000000000
+
+Convergence to displaced geometry took 4 iterations.
+
+New Cartesian Geometry in a.u.
+  8.0   0.0000000000  -0.0000000000   0.1200543499
+  1.0   0.0000000000   1.4230327308  -0.9526748800
+  1.0   0.0000000000  -1.4230327308  -0.9526748800
+
+Geometry written to file30
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:12 2001
+
+user time   =       0.01 seconds
+system time =       0.06 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:12 2001
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O                                                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+    Wrote 11721 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:13 2001
+
+user time   =       0.99 seconds
+system time =       0.00 seconds
+total time  =          1 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:13 2001
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+
+  label       = 6-31G** SCF H2O
+  wfn          = SCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct SCF   = false
+  dertype      = FIRST
+  convergence  = 12
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy        9.3296899329797
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.02361201
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.228235e-02
+
+
+  Using DOCC and SOCC to 
+  determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 6516 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -76.0236142211    8.535330e+01    0.000000e+00    0.000000e+00
+    2       -76.0236149812    7.601617e-07    1.398197e-05    3.316729e-04
+    3       -76.0236150101    2.882837e-08    3.142695e-06    9.514397e-05
+    4       -76.0236150150    4.970474e-09    8.642830e-07    3.682788e-05
+    5       -76.0236150151    9.595169e-11    1.442445e-07    4.223966e-06
+    6       -76.0236150151    4.533263e-12    4.246858e-08    7.968164e-07
+    7       -76.0236150151    2.557954e-13    1.164248e-08    1.722434e-07
+    8       -76.0236150151    1.421085e-14    2.465976e-09    3.611409e-08
+    9       -76.0236150151    1.421085e-14    4.863310e-10    5.780794e-09
+   10       -76.0236150151    0.000000e+00    5.321127e-11    7.302140e-10
+   11       -76.0236150151    0.000000e+00    1.254689e-11    1.496637e-10
+   12       -76.0236150151   -1.421085e-14    1.067086e-12    2.621727e-11
+   13       -76.0236150151    0.000000e+00    1.647568e-13    3.941744e-12
+
+ No phase correction possible.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.557257     2A1     -1.346471     1B2     -0.713928  
+   3A1     -0.568266     1B1     -0.497604  
+
+
+  Unoccupied orbitals
+   4A1      0.215339     2B2      0.308444     3B2      1.016960  
+   5A1      1.093003     6A1      1.134577     2B1      1.168987  
+   4B2      1.295526     7A1      1.411646     1A2      1.802522  
+   8A1      1.829596     3B1      1.931514     5B2      2.582609  
+   9A1      2.588865     6B2      2.841761     4B1      2.997488  
+   2A2      3.006471    10A1      3.406614    11A1      3.745790  
+   7B2      3.945224    12A1      4.128547  
+
+
+        total energy       =     -76.023615015146
+        kinetic energy     =      75.864677933315
+        nuc. attr. energy  =    -199.204234533930
+        elec. rep. energy  =      47.315941585469
+        potential energy   =    -151.888292948461
+        virial theorem     =       1.997909372215
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:13 2001
+
+user time   =       0.03 seconds
+system time =       0.02 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:13 2001
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O                                                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -SCF forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000    -0.000000000000    -0.000058146744
+       2        0.000000000000    -0.000009926423     0.000029073372
+       3        0.000000000000     0.000009926423     0.000029073372
+
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:15 2001
+
+user time   =       1.69 seconds
+system time =       0.02 seconds
+total time  =          2 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:15 2001
+
+	_____________________________________________________
+	|                                                   |
+	|   OPTKING:  The Geometry Optimization Program     |
+	|              By Rollin King, 1999                 |
+	|___________________________________________________|
+
+Geometry and gradient from file11.dat in a.u. with masses
+  8.0    15.99491500   0.0000000000  -0.0000000000   0.1200543499
+  1.0     1.00782500   0.0000000000   1.4230327308  -0.9526748800
+  1.0     1.00782500   0.0000000000  -1.4230327308  -0.9526748800
+                       0.0000000000  -0.0000000000  -0.0000581467
+                       0.0000000000  -0.0000099264   0.0000290734
+                       0.0000000000   0.0000099264   0.0000290734
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94303041)
+    (2 1 3) (0.94303041)
+Bends
+    (3 2 1 3) (105.97960453)
+
+  SYMM = (
+    ("A1 " (1 2 3)
+     (-0.65 -0.65 -0.39))
+    ("A1 " (1 2 3)
+     (-0.28 -0.28  0.92))
+  )
+
+BuB^t Determinant: 2.493181e+00
+
+Performing BFGS Hessian update.
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+         Value          Force          Displacement   New Value
+ 1      -1.948184      -0.000221       0.000043      -1.948141
+ 2       1.185140      -0.000239      -0.000217       1.184923
+   MAX force:    0.0002386544   RMS force:    0.0002299069
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    1  0.000045536357  0.000156142748
+    2  0.002249815289  0.008835800705
+    3  0.000000003061  0.000000000000
+    4  0.000000000000  0.000000000000
+
+Convergence to displaced geometry took 4 iterations.
+
+New Cartesian Geometry in a.u.
+  8.0   0.0000000000   0.0000000000   0.1200756219
+  1.0   0.0000000000   1.4229648858  -0.9528436811
+  1.0   0.0000000000  -1.4229648858  -0.9528436811
+
+Geometry written to file30
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:15 2001
+
+user time   =       0.02 seconds
+system time =       0.06 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:15 2001
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O                                                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+    Wrote 11721 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:16 2001
+
+user time   =       1.00 seconds
+system time =       0.01 seconds
+total time  =          1 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:16 2001
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+
+  label       = 6-31G** SCF H2O
+  wfn          = SCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct SCF   = false
+  dertype      = FIRST
+  convergence  = 12
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy        9.3294031466982
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.02361502
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.228319e-02
+
+
+  Using DOCC and SOCC to 
+  determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 6516 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -76.0236150165    8.535302e+01    0.000000e+00    0.000000e+00
+    2       -76.0236150190    2.447806e-09    9.066252e-07    1.875683e-05
+    3       -76.0236150192    1.996767e-10    2.647493e-07    7.256275e-06
+    4       -76.0236150192    3.501555e-11    8.722599e-08    2.671830e-06
+    5       -76.0236150192    4.774847e-12    5.194391e-08    8.637502e-07
+    6       -76.0236150192    8.526513e-14    8.657470e-09    1.131196e-07
+    7       -76.0236150192    1.421085e-14    1.354460e-09    1.554925e-08
+    8       -76.0236150192    1.421085e-14    1.807121e-10    4.239030e-09
+    9       -76.0236150192   -2.842171e-14    4.049779e-11    7.788467e-10
+   10       -76.0236150192    1.421085e-14    8.597101e-12    1.104431e-10
+   11       -76.0236150192    0.000000e+00    1.777522e-12    2.554835e-11
+   12       -76.0236150192   -1.421085e-14    2.830449e-13    4.238107e-12
+
+ No phase correction possible.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.557270     2A1     -1.346465     1B2     -0.713887  
+   3A1     -0.568286     1B1     -0.497607  
+
+
+  Unoccupied orbitals
+   4A1      0.215331     2B2      0.308436     3B2      1.016892  
+   5A1      1.093015     6A1      1.134579     2B1      1.168985  
+   4B2      1.295523     7A1      1.411681     1A2      1.802544  
+   8A1      1.829499     3B1      1.931469     5B2      2.582668  
+   9A1      2.588834     6B2      2.841658     4B1      2.997539  
+   2A2      3.006352    10A1      3.406548    11A1      3.745692  
+   7B2      3.945215    12A1      4.128446  
+
+
+        total energy       =     -76.023615019192
+        kinetic energy     =      75.864568793634
+        nuc. attr. energy  =    -199.203575262070
+        elec. rep. energy  =      47.315391449244
+        potential energy   =    -151.888183812826
+        virial theorem     =       1.997907936560
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:16 2001
+
+user time   =       0.01 seconds
+system time =       0.02 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:16 2001
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O                                                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -SCF forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000    -0.000000000000     0.000010843146
+       2        0.000000000000     0.000003292954    -0.000005421573
+       3        0.000000000000    -0.000003292954    -0.000005421573
+
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:18 2001
+
+user time   =       1.69 seconds
+system time =       0.02 seconds
+total time  =          2 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:18 2001
+
+	_____________________________________________________
+	|                                                   |
+	|   OPTKING:  The Geometry Optimization Program     |
+	|              By Rollin King, 1999                 |
+	|___________________________________________________|
+
+Geometry and gradient from file11.dat in a.u. with masses
+  8.0    15.99491500   0.0000000000   0.0000000000   0.1200756219
+  1.0     1.00782500   0.0000000000   1.4229648858  -0.9528436811
+  1.0     1.00782500   0.0000000000  -1.4229648858  -0.9528436811
+                       0.0000000000  -0.0000000000   0.0000108431
+                       0.0000000000   0.0000032930  -0.0000054216
+                       0.0000000000  -0.0000032930  -0.0000054216
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94306229)
+    (2 1 3) (0.94306229)
+Bends
+    (3 2 1 3) (105.96721909)
+
+  SYMM = (
+    ("A1 " (1 2 3)
+     (-0.65 -0.65 -0.39))
+    ("A1 " (1 2 3)
+     (-0.28 -0.28  0.92))
+  )
+
+BuB^t Determinant: 2.493012e+00
+
+Performing BFGS Hessian update.
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+         Value          Force          Displacement   New Value
+ 1      -1.948141       0.000056      -0.000003      -1.948144
+ 2       1.184923       0.000044       0.000028       1.184951
+   MAX force:    0.0000561638   RMS force:    0.0000502361
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    1  0.000005903110  0.000019944803
+    2  0.000809898707  0.003157910927
+    3  0.000000000054  0.000000000000
+    4  0.000000000000  0.000000000000
+
+Convergence to displaced geometry took 4 iterations.
+
+New Cartesian Geometry in a.u.
+  8.0   0.0000000000  -0.0000000000   0.1200727476
+  1.0   0.0000000000   1.4229708549  -0.9528208729
+  1.0   0.0000000000  -1.4229708549  -0.9528208729
+
+Geometry written to file30
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:18 2001
+
+user time   =       0.01 seconds
+system time =       0.06 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:18 2001
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O                                                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+    Wrote 11721 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:19 2001
+
+user time   =       0.98 seconds
+system time =       0.02 seconds
+total time  =          1 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:19 2001
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+
+  label       = 6-31G** SCF H2O
+  wfn          = SCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct SCF   = false
+  dertype      = FIRST
+  convergence  = 12
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy        9.3294555562010
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.02361502
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.228303e-02
+
+
+  Using DOCC and SOCC to 
+  determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 6516 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -76.0236150193    8.535307e+01    0.000000e+00    0.000000e+00
+    2       -76.0236150193    4.966694e-11    1.267644e-07    2.695331e-06
+    3       -76.0236150193    4.405365e-12    3.829230e-08    1.051979e-06
+    4       -76.0236150193    8.384404e-13    1.389813e-08    4.141686e-07
+    5       -76.0236150193    9.947598e-14    7.824906e-09    1.307023e-07
+    6       -76.0236150193    1.421085e-14    1.242055e-09    1.738955e-08
+    7       -76.0236150193    0.000000e+00    2.835504e-10    3.104650e-09
+    8       -76.0236150193    0.000000e+00    2.943437e-11    6.729852e-10
+    9       -76.0236150193    0.000000e+00    6.969637e-12    1.331848e-10
+   10       -76.0236150193    0.000000e+00    1.368121e-12    1.711589e-11
+   11       -76.0236150193    0.000000e+00    2.444142e-13    3.486800e-12
+
+ No phase correction possible.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.557268     2A1     -1.346467     1B2     -0.713893  
+   3A1     -0.568284     1B1     -0.497607  
+
+
+  Unoccupied orbitals
+   4A1      0.215332     2B2      0.308437     3B2      1.016902  
+   5A1      1.093015     6A1      1.134579     2B1      1.168985  
+   4B2      1.295523     7A1      1.411677     1A2      1.802541  
+   8A1      1.829512     3B1      1.931474     5B2      2.582662  
+   9A1      2.588840     6B2      2.841674     4B1      2.997535  
+   2A2      3.006369    10A1      3.406560    11A1      3.745709  
+   7B2      3.945219    12A1      4.128460  
+
+
+        total energy       =     -76.023615019312
+        kinetic energy     =      75.864589311904
+        nuc. attr. energy  =    -199.203693764069
+        elec. rep. energy  =      47.315489432853
+        potential energy   =    -151.888204331216
+        virial theorem     =       1.997908206452
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:19 2001
+
+user time   =       0.01 seconds
+system time =       0.02 seconds
+total time  =          0 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:19 2001
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** SCF H2O                                                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -SCF forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000    -0.000000008782
+       2        0.000000000000    -0.000000012294     0.000000004391
+       3        0.000000000000     0.000000012294     0.000000004391
+
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:21 2001
+
+user time   =       1.68 seconds
+system time =       0.03 seconds
+total time  =          2 seconds
+******************************************************************************
+tstart called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:21 2001
+
+	_____________________________________________________
+	|                                                   |
+	|   OPTKING:  The Geometry Optimization Program     |
+	|              By Rollin King, 1999                 |
+	|___________________________________________________|
+
+Geometry and gradient from file11.dat in a.u. with masses
+  8.0    15.99491500   0.0000000000  -0.0000000000   0.1200727476
+  1.0     1.00782500   0.0000000000   1.4229708549  -0.9528208729
+  1.0     1.00782500   0.0000000000  -1.4229708549  -0.9528208729
+                       0.0000000000   0.0000000000  -0.0000000088
+                       0.0000000000  -0.0000000123   0.0000000044
+                       0.0000000000   0.0000000123   0.0000000044
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94305663)
+    (2 1 3) (0.94305663)
+Bends
+    (3 2 1 3) (105.96876875)
+
+  SYMM = (
+    ("A1 " (1 2 3)
+     (-0.65 -0.65 -0.39))
+    ("A1 " (1 2 3)
+     (-0.28 -0.28  0.92))
+  )
+
+BuB^t Determinant: 2.493042e+00
+
+Performing BFGS Hessian update.
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+         Value          Force          Displacement   New Value
+ 1      -1.948144      -0.000000      -0.000000      -1.948144
+ 2       1.184951      -0.000000       0.000000       1.184951
+   MAX force:    0.0000001456   RMS force:    0.0000001049
+
+MAX force is < 1.0e-05.  Optimization is complete.
+******************************************************************************
+tstop called on cicero.chemistry.gatech.edu
+Wed Nov 21 13:07:21 2001
+
+user time   =       0.00 seconds
+system time =       0.06 seconds
+total time  =          0 seconds
