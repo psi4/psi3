@@ -24,8 +24,8 @@ void GaeL2(int L_irr)
   /* RHS += P(ab)<ij||ae>Gbe */
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
-    dpd_file2_init(&GAE, CC_OEI, L_irr, 1, 1, "GAE");
-    dpd_file2_init(&Gae, CC_OEI, L_irr, 1, 1, "Gae");
+    dpd_file2_init(&GAE, CC_LAMBDA, L_irr, 1, 1, "GAE");
+    dpd_file2_init(&Gae, CC_LAMBDA, L_irr, 1, 1, "Gae");
 
     dpd_buf4_init(&D, CC_DINTS, 0, 2, 5, 2, 5, 0, "D <ij||ab> (i>j,ab)");
     dpd_buf4_init(&X1, CC_TMP1, L_irr, 2, 5, 2, 5, 0, "X(2,5) 1");
@@ -67,8 +67,8 @@ void GaeL2(int L_irr)
   }
   else if(params.ref == 2) { /** UHF **/
 
-    dpd_file2_init(&GAE, CC_OEI, L_irr, 1, 1, "GAE");
-    dpd_file2_init(&Gae, CC_OEI, L_irr, 3, 3, "Gae");
+    dpd_file2_init(&GAE, CC_LAMBDA, L_irr, 1, 1, "GAE");
+    dpd_file2_init(&Gae, CC_LAMBDA, L_irr, 3, 3, "Gae");
 
     /** X(IJ,AB) = <IJ||AE> G(B,E) **/
     dpd_buf4_init(&X1, CC_TMP2, L_irr, 2, 5, 2, 5, 0, "X(IJ,AB)");
@@ -140,8 +140,8 @@ void GmiL2(int L_irr)
   /* RHS -= P(ij) * <im||ab> * Gmj */
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
-    dpd_file2_init(&GMI, CC_OEI, L_irr, 0, 0, "GMI");
-    dpd_file2_init(&Gmi, CC_OEI, L_irr, 0, 0, "Gmi");
+    dpd_file2_init(&GMI, CC_LAMBDA, L_irr, 0, 0, "GMI");
+    dpd_file2_init(&Gmi, CC_LAMBDA, L_irr, 0, 0, "Gmi");
 
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 7, 0, 7, 0, "D <ij||ab> (ij,a>b)");
     dpd_buf4_init(&X1, CC_TMP2, L_irr, 0, 7, 0, 7, 0, "X(0,7) 1");
@@ -182,8 +182,8 @@ void GmiL2(int L_irr)
   }
   else if(params.ref == 2) { /** UHF **/
 
-    dpd_file2_init(&GMI, CC_OEI, L_irr, 0, 0, "GMI");
-    dpd_file2_init(&Gmi, CC_OEI, L_irr, 2, 2, "Gmi");
+    dpd_file2_init(&GMI, CC_LAMBDA, L_irr, 0, 0, "GMI");
+    dpd_file2_init(&Gmi, CC_LAMBDA, L_irr, 2, 2, "Gmi");
 
     /** X(IJ,AB) = - G(M,I) <MJ||AB> **/
     dpd_buf4_init(&X1, CC_TMP2, L_irr, 0, 7, 0, 7, 0, "X(IJ,AB) C");

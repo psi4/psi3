@@ -3,7 +3,7 @@
 #define EXTERN
 #include "globals.h"
 
-extern double pseudoenergy(int L_irr);
+extern double pseudoenergy(struct L_Params L_params);
 
 void Lnorm(struct L_Params L_params)
 {
@@ -28,8 +28,8 @@ void Lnorm(struct L_Params L_params)
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
     overlap0 = L0 * L_params.R0;
-    dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "LIA");
-    dpd_file2_init(&Lia, CC_OEI, L_irr, 0, 1, "Lia");
+    dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
+    dpd_file2_init(&Lia, CC_LAMBDA, L_irr, 0, 1, "Lia");
     dpd_buf4_init(&LIJAB, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "LIJAB");
     dpd_buf4_init(&Lijab, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "Lijab");
     dpd_buf4_init(&LIjAb, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "LIjAb");
@@ -73,8 +73,8 @@ void Lnorm(struct L_Params L_params)
     dpd_buf4_close(&LIjAb);
   }
 
-  tval = pseudoenergy(L_irr);
-  fprintf(outfile,"\tPseudoenergy w/normed L = %15.10lf\n",tval);
+  tval = pseudoenergy(L_params);
+  fprintf(outfile,"\tPseudoenergy/Norm w/normed L = %20.15lf\n",tval);
 
   return;
 }

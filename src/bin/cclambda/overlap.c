@@ -15,18 +15,18 @@ void overlap(int L_irr)
 
   nirreps = moinfo.nirreps;
 
-  dpd_file2_init(&L1, CC_OEI, L_irr, 0, 1, "LIA");
+  dpd_file2_init(&L1, CC_LAMBDA, L_irr, 0, 1, "LIA");
   dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
   ST1A = dpd_file2_dot(&T1, &L1);
   dpd_file2_close(&L1);
   dpd_file2_close(&T1);
 
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
-    dpd_file2_init(&L1, CC_OEI, L_irr, 0, 1, "Lia");
+    dpd_file2_init(&L1, CC_LAMBDA, L_irr, 0, 1, "Lia");
     dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tia");
   }
   else if(params.ref == 2) { /** UHF **/
-    dpd_file2_init(&L1, CC_OEI, L_irr, 2, 3, "Lia");
+    dpd_file2_init(&L1, CC_LAMBDA, L_irr, 2, 3, "Lia");
     dpd_file2_init(&T1, CC_OEI, 0, 2, 3, "tia");
   }
   ST1B = dpd_file2_dot(&T1, &L1);

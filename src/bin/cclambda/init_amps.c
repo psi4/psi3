@@ -6,12 +6,11 @@
 void init_amps(struct L_Params L_params)
 {
   double norm;
-  dpdfile2 T1, R1, LIA, Lia;
-  dpdbuf4 T2, R2, LIJAB, Lijab, LIjAb;
+  dpdfile2 T1, R1, LIA, Lia, dIA, dia, XIA, Xia;
+  dpdbuf4 T2, R2, LIJAB, Lijab, LIjAb, dIJAB, dijab, dIjAb, XIJAB, Xijab, XIjAb;
   char R1A_lbl[32], R1B_lbl[32], R2AA_lbl[32], R2BB_lbl[32], R2AB_lbl[32];
   int L_irr;
   L_irr = L_params.irrep;
-
 
   /* Restart from previous amplitudes if we can/should */
   /* Need to adjust this for new I/O
@@ -19,16 +18,71 @@ void init_amps(struct L_Params L_params)
      && flen(CC_Lijab) && flen(CC_LIjAb)) return;
   */
 
+  /* if solving zeta equations, initial guess for zeta=0 */
+  /* change later to zeta = Xi * denom for efficiency */
+  if (params.zeta) {
+    /* begin paste */
+    if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
+      dpd_file2_init(&XIA, EOM_XI, L_irr, 0, 1, "XIA");
+      dpd_file2_copy(&XIA, CC_LAMBDA, "LIA");
+      dpd_file2_close(&XIA);
+      dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
+      dpd_file2_init(&dIA, CC_DENOM, L_irr, 0, 1, "dIA");
+      dpd_file2_dirprd(&dIA, &LIA);
+      dpd_file2_close(&dIA);
+      dpd_file2_close(&LIA);
+
+      dpd_file2_init(&Xia, EOM_XI, L_irr, 0, 1, "Xia");
+      dpd_file2_copy(&Xia, CC_LAMBDA, "Lia");
+      dpd_file2_close(&Xia);
+      dpd_file2_init(&Lia, CC_LAMBDA, L_irr, 0, 1, "Lia");
+      dpd_file2_init(&dia, CC_DENOM, L_irr, 0, 1, "dia");
+      dpd_file2_dirprd(&dia, &Lia);
+      dpd_file2_close(&dia);
+      dpd_file2_close(&Lia);
+
+      dpd_buf4_init(&XIJAB, EOM_XI, L_irr, 2, 7, 2, 7, 0, "XIJAB");
+      dpd_buf4_copy(&XIJAB, CC_LAMBDA, "LIJAB");
+      dpd_buf4_close(&XIJAB);
+      dpd_buf4_init(&LIJAB, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "LIJAB");
+      dpd_buf4_init(&dIJAB, CC_DENOM, L_irr, 2, 7, 2, 7, 0, "dIJAB");
+      dpd_buf4_dirprd(&dIJAB, &LIJAB);
+      dpd_buf4_close(&dIJAB);
+      dpd_buf4_close(&LIJAB);
+
+      dpd_buf4_init(&Xijab, EOM_XI, L_irr, 2, 7, 2, 7, 0, "Xijab");
+      dpd_buf4_copy(&Xijab, CC_LAMBDA, "Lijab");
+      dpd_buf4_close(&Xijab);
+      dpd_buf4_init(&Lijab, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "Lijab");
+      dpd_buf4_init(&dijab, CC_DENOM, L_irr, 2, 7, 2, 7, 0, "dijab");
+      dpd_buf4_dirprd(&dijab, &Lijab);
+      dpd_buf4_close(&dijab);
+      dpd_buf4_close(&Lijab);
+
+      dpd_buf4_init(&XIjAb, EOM_XI, L_irr, 0, 5, 0, 5, 0, "XIjAb");
+      dpd_buf4_copy(&XIjAb, CC_LAMBDA, "LIjAb");
+      dpd_buf4_close(&XIjAb);
+      dpd_buf4_init(&LIjAb, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "LIjAb");
+      dpd_buf4_init(&dIjAb, CC_DENOM, L_irr, 0, 5, 0, 5, 0, "dIjAb");
+      dpd_buf4_dirprd(&dIjAb, &LIjAb);
+      dpd_buf4_close(&dIjAb);
+      dpd_buf4_close(&LIjAb);
+    }
+    else if(params.ref == 2) { /** UHF **/
+    }
+    return;
+  }
+
   /* ground state guess L <= T */
   /* excited state guess L <= R0 * T + R */
   if (L_params.ground || L_params.irrep == 0) {
     if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
       dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
-      dpd_file2_copy(&T1, CC_OEI, "LIA");
+      dpd_file2_copy(&T1, CC_LAMBDA, "LIA");
       dpd_file2_close(&T1);
   
       dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tia");
-      dpd_file2_copy(&T1, CC_OEI, "Lia");
+      dpd_file2_copy(&T1, CC_LAMBDA, "Lia");
       dpd_file2_close(&T1);
   
       dpd_buf4_init(&T2, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tIJAB");
@@ -45,11 +99,11 @@ void init_amps(struct L_Params L_params)
     }
     else if(params.ref == 2) { /** UHF **/
       dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
-      dpd_file2_copy(&T1, CC_OEI, "LIA");
+      dpd_file2_copy(&T1, CC_LAMBDA, "LIA");
       dpd_file2_close(&T1);
   
       dpd_file2_init(&T1, CC_OEI, 0, 2, 3, "tia");
-      dpd_file2_copy(&T1, CC_OEI, "Lia");
+      dpd_file2_copy(&T1, CC_LAMBDA, "Lia");
       dpd_file2_close(&T1);
   
       dpd_buf4_init(&T2, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tIJAB");
@@ -74,15 +128,15 @@ void init_amps(struct L_Params L_params)
     sprintf(R2AB_lbl, "RIjAb %d %d", L_params.irrep, L_params.root);
 
     /* multiply by R0 and create nonsymmetric L files */
-    dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "LIA");
+    dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
     dpd_buf4_init(&LIJAB, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "LIJAB");
     if (params.ref <= 1) {
-      dpd_file2_init(&Lia, CC_OEI, L_irr, 0, 1, "Lia");
+      dpd_file2_init(&Lia, CC_LAMBDA, L_irr, 0, 1, "Lia");
       dpd_buf4_init(&Lijab, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "Lijab");
       dpd_buf4_init(&LIjAb, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "LIjAb");
     }
     else {
-      dpd_file2_init(&Lia, CC_OEI, L_irr, 2, 3, "Lia");
+      dpd_file2_init(&Lia, CC_LAMBDA, L_irr, 2, 3, "Lia");
       dpd_buf4_init(&Lijab, CC_LAMBDA, L_irr, 12, 17, 12, 17, 0, "Lijab");
       dpd_buf4_init(&LIjAb, CC_LAMBDA, L_irr, 22, 28, 22, 28, 0, "LIjAb");
     }
@@ -202,7 +256,7 @@ void init_amps(struct L_Params L_params)
 
 #ifdef EOM_DEBUG
   fprintf(outfile,"initial guess\n");
-  dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "LIA");
+  dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
   dpd_file2_print(&LIA,outfile);
   dpd_file2_close(&LIA);
 #endif

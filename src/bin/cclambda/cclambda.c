@@ -38,11 +38,11 @@ void denom(struct L_Params);
 void overlap(int L_irr);
 void overlap_LAMPS(struct L_Params L_params);
 void Lsave_index(struct L_Params L_params);
-void L_to_LAMPS(int L_irr);
 extern void check_ortho(struct L_Params *pL_params);
 void L_zero(int irrep);
 extern void c_clean(dpdfile2 *LIA, dpdfile2 *Lia, dpdbuf4 *LIJAB, dpdbuf4 *Lijab, dpdbuf4 *LIjAb);
 void L_clean(struct L_Params pL_params);
+void zeta_norm(struct L_Params pL_params);
 
 int main(int argc, char *argv[])
 {
@@ -95,18 +95,17 @@ int main(int argc, char *argv[])
     psio_close(CC_TMP,0); psio_close(CC_TMP1,0); psio_close(CC_TMP2,0); psio_close(CC_LAMBDA,0);
     psio_open(CC_TMP,0); psio_open(CC_TMP1,0); psio_open(CC_TMP2,0); psio_open(CC_LAMBDA,0);
 
-    fprintf(outfile,"\tSymmetry of excited state: %s\n",
+    fprintf(outfile,"\tSymmetry of left-hand state: %s\n",
         moinfo.labels[ moinfo.sym^(pL_params[i].irrep) ]);
-    fprintf(outfile,"\tSymmetry of right eigenvector: %s\n",moinfo.labels[(pL_params[i].irrep)]);
+    fprintf(outfile,"\tSymmetry of left-hand eigenvector: %s\n",moinfo.labels[(pL_params[i].irrep)]);
 
-    init_amps(pL_params[i]);
+    denom(pL_params[i]);     /* uses L_params.cceom_energy for excited states */
+    init_amps(pL_params[i]); /* uses denominators for initial zeta guess */
 
     fprintf(outfile, "\n\t          Solving Lambda Equations\n");
     fprintf(outfile, "\t          ------------------------\n");
     fprintf(outfile, "\tIter     PseudoEnergy or Norm         RMS  \n");
     fprintf(outfile, "\t----     ---------------------     --------\n");
-
-    denom(pL_params[i]);
 
     moinfo.lcc = pseudoenergy(pL_params[i]);
     update();
@@ -126,16 +125,11 @@ int main(int argc, char *argv[])
         Lsave(pL_params[i].irrep); /* copy "New L" to "L" */
         moinfo.lcc = pseudoenergy(pL_params[i]);
         update();
-        if (!pL_params[i].ground) {
+        if (!pL_params[i].ground && !params.zeta) {
           Lnorm(pL_params[i]); /* normalize against R */
           // Lsave_index(pL_params[i].irrep, root_L_irr); /* put Ls in unique location */
         }
         Lsave_index(pL_params[i]); /* save Ls with indices in LAMPS */
-        /*
-        else {
-          L_to_LAMPS(pL_params[i].irrep);
-        }
-        */
        /* sort_amps(); to be done by later functions */
         fprintf(outfile, "\n\tIterations converged.\n");
         fflush(outfile);
@@ -157,15 +151,15 @@ int main(int argc, char *argv[])
       exit_io();
       exit(PSI_RETURN_FAILURE);
     }
-    if (params.ground) {
+    if (params.ground)
       overlap(pL_params[i].irrep);
-      overlap_LAMPS(pL_params[i]);
-    }
+      // Why? overlap_LAMPS(pL_params[i]);
   }
 
   if(params.local) local_done();
 
-  if (!params.ground) check_ortho(pL_params);
+  if (!params.ground && !params.zeta) check_ortho(pL_params);
+  else zeta_norm(pL_params[0]);
 
   dpd_close(0);
 
@@ -190,6 +184,7 @@ void init_io(int argc, char *argv[])
 
   params.all=0;    /* do all Ls including ground state */
   params.ground=1; /* only do ground-state L */
+  params.zeta=0; /* only do ground-state L */
   for (i=1, num_unparsed=0; i<argc; ++i) {
     if (!strcmp(argv[i],"--all")) {
       params.all = 1;
@@ -198,6 +193,10 @@ void init_io(int argc, char *argv[])
     else if (!strcmp(argv[i],"--excited")) {
       params.all = 0;
       params.ground = 0;
+    }
+    else if (!strcmp(argv[i],"--zeta")) {
+      params.ground = 0;
+      params.zeta = 1;
     }
     else {
       argv_unparsed[num_unparsed++] = argv[i];
@@ -215,6 +214,10 @@ void init_io(int argc, char *argv[])
   psio_init();
 
   for(i=CC_MIN; i <= CC_MAX; i++) psio_open(i,1);
+
+  /* throw any existing CC_LAMBDA, CC_DENOM away */
+  psio_close(CC_LAMBDA,0);
+  psio_open(CC_LAMBDA,PSIO_OPEN_NEW);
 }
 
 void title(void)
@@ -229,6 +232,13 @@ void title(void)
 void exit_io(void)
 {
   int i;
+
+  for(i=CC_TMP; i <= CC_TMP11; i++) {
+    psio_close(i,0);
+    psio_open(i,PSIO_OPEN_NEW);
+  }
+  psio_close(CC_DENOM,0);
+  psio_open(CC_DENOM,PSIO_OPEN_NEW);
  
   /* Close all dpd data files here */
   for(i=CC_MIN; i <= CC_MAX; i++) psio_close(i,1);
@@ -260,11 +270,11 @@ void Lsave_index(struct L_Params L_params) {
   L_irr = L_params.irrep;
 
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
-    dpd_file2_init(&L1, CC_OEI, L_irr, 0, 1, "LIA");
-    dpd_file2_copy(&L1, CC_OEI, L1A_lbl);
+    dpd_file2_init(&L1, CC_LAMBDA, L_irr, 0, 1, "LIA");
+    dpd_file2_copy(&L1, CC_LAMPS, L1A_lbl);
     dpd_file2_close(&L1);
-    dpd_file2_init(&L1, CC_OEI, L_irr, 0, 1, "Lia");
-    dpd_file2_copy(&L1, CC_OEI, L1B_lbl);
+    dpd_file2_init(&L1, CC_LAMBDA, L_irr, 0, 1, "Lia");
+    dpd_file2_copy(&L1, CC_LAMPS, L1B_lbl);
     dpd_file2_close(&L1);
     dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "LIJAB");
     dpd_buf4_copy(&L2, CC_LAMPS, L2AA_lbl);
@@ -277,11 +287,11 @@ void Lsave_index(struct L_Params L_params) {
     dpd_buf4_close(&L2);
   }
   else if(params.ref == 2) { /** UHF **/
-    dpd_file2_init(&L1, CC_OEI, L_irr, 0, 1, "LIA");
-    dpd_file2_copy(&L1, CC_OEI, L1A_lbl);
+    dpd_file2_init(&L1, CC_LAMBDA, L_irr, 0, 1, "LIA");
+    dpd_file2_copy(&L1, CC_LAMPS, L1A_lbl);
     dpd_file2_close(&L1);
-    dpd_file2_init(&L1, CC_OEI, L_irr, 2, 3, "Lia");
-    dpd_file2_copy(&L1, CC_OEI, L1B_lbl);
+    dpd_file2_init(&L1, CC_LAMBDA, L_irr, 2, 3, "Lia");
+    dpd_file2_copy(&L1, CC_LAMPS, L1B_lbl);
     dpd_file2_close(&L1);
     dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "LIJAB");
     dpd_buf4_copy(&L2, CC_LAMPS, L2AA_lbl);
@@ -307,85 +317,6 @@ void Lsave_index(struct L_Params L_params) {
     dpd_buf4_close(&LIjbA);
     dpd_buf4_close(&LIjAb);
   }
-
-/* also put copy of L1 in LAMPS - RAK thinks this is better organization */
-  if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
-    dpd_file2_init(&L1, CC_OEI, L_irr, 0, 1, "LIA");
-    dpd_file2_copy(&L1, CC_LAMPS, L1A_lbl); 
-    dpd_file2_close(&L1);
-    dpd_file2_init(&L1, CC_OEI, L_irr, 0, 1, "Lia");
-    dpd_file2_copy(&L1, CC_LAMPS, L1B_lbl);
-    dpd_file2_close(&L1);
-  }
-  else if(params.ref == 2) { /** UHF **/
-    dpd_file2_init(&L1, CC_OEI, L_irr, 0, 1, "LIA");
-    dpd_file2_copy(&L1, CC_LAMPS, L1A_lbl);
-    dpd_file2_close(&L1);
-    dpd_file2_init(&L1, CC_OEI, L_irr, 2, 3, "Lia");
-    dpd_file2_copy(&L1, CC_LAMPS, L1B_lbl);
-    dpd_file2_close(&L1);
-  }
-  return;
-}
-
-/* once used for ground state - now obviated */
-void L_to_LAMPS(int L_irr) {
-  dpdfile2 L1;
-  dpdbuf4 L2, LIjAb, LIjbA;
-
-  if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
-    dpd_file2_init(&L1, CC_OEI, L_irr, 0, 1, "LIA");
-    dpd_file2_copy(&L1, CC_LAMPS, "LIA");
-    dpd_file2_close(&L1);
-    dpd_file2_init(&L1, CC_OEI, L_irr, 0, 1, "Lia");
-    dpd_file2_copy(&L1, CC_LAMPS, "Lia");
-    dpd_file2_close(&L1);
-    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "LIJAB");
-    dpd_buf4_copy(&L2, CC_LAMPS, "LIJAB");
-    dpd_buf4_close(&L2);
-    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "Lijab");
-    dpd_buf4_copy(&L2, CC_LAMPS, "Lijab");
-    dpd_buf4_close(&L2);
-    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "LIjAb");
-    dpd_buf4_copy(&L2, CC_LAMPS, "LIjAb");
-    dpd_buf4_close(&L2);
-  }
-  else if(params.ref == 2) { /** UHF **/
-    dpd_file2_init(&L1, CC_OEI, L_irr, 0, 1, "LIA");
-    dpd_file2_copy(&L1, CC_OEI, "LIA");
-    dpd_file2_close(&L1);
-    dpd_file2_init(&L1, CC_OEI, L_irr, 2, 3, "Lia");
-    dpd_file2_copy(&L1, CC_OEI, "Lia");
-    dpd_file2_close(&L1);
-    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "LIJAB");
-    dpd_buf4_copy(&L2, CC_LAMPS, "LIJAB");
-    dpd_buf4_close(&L2);
-    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 12, 17, 12, 17, 0, "Lijab");
-    dpd_buf4_copy(&L2, CC_LAMPS, "Lijab");
-    dpd_buf4_close(&L2);
-    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 22, 28, 22, 28, 0, "LIjAb");
-    dpd_buf4_copy(&L2, CC_LAMPS, "LIjAb");
-    dpd_buf4_close(&L2);
-  }
-  if (params.ref == 0) { /** RHF for those codes that can use them **/
-    dpd_buf4_init(&L2, CC_LAMPS, 0, 0, 5, 0, 5, 0, "LIjAb");
-    dpd_buf4_scmcopy(&L2, CC_LAMPS, "2 LIjAb - LIjBa", 2);
-    dpd_buf4_sort_axpy(&L2, CC_LAMPS, pqsr, 0, 5, "2 LIjAb - LIjBa", -1);
-    dpd_buf4_close(&L2);
-
-    /*
-    dpd_buf4_init(&LIjAb, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "LIjAb");
-    dpd_buf4_sort(&LIjAb, CC_TMP, pqsr, 0, 5, "LIjbA");
-    dpd_buf4_copy(&LIjAb, CC_LAMPS, "2LIjAb - LIjbA");
-    dpd_buf4_close(&LIjAb);
-    dpd_buf4_init(&LIjAb, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, "2LIjAb - LIjbA");
-    dpd_buf4_scm(&LIjAb, 2.0);
-    dpd_buf4_init(&LIjbA, CC_TMP, L_irr, 0, 5, 0, 5, 0, "LIjbA");
-    dpd_buf4_axpy(&LIjbA, &LIjAb, -1.0);
-    dpd_buf4_close(&LIjbA);
-    dpd_buf4_close(&LIjAb);
-    */
-  }
   return;
 }
 
@@ -394,12 +325,12 @@ void L_zero(int L_irr) {
   dpdbuf4 LIJAB, Lijab, LIjAb;
 
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
-    dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "New LIA");
-    dpd_file2_init(&Lia, CC_OEI, L_irr, 0, 1, "New Lia");
+    dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "New LIA");
+    dpd_file2_init(&Lia, CC_LAMBDA, L_irr, 0, 1, "New Lia");
   }
   else if(params.ref == 2) { /** UHF **/
-    dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "New LIA");
-    dpd_file2_init(&Lia, CC_OEI, L_irr, 2, 3, "New Lia");
+    dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "New LIA");
+    dpd_file2_init(&Lia, CC_LAMBDA, L_irr, 2, 3, "New Lia");
   }
   dpd_file2_scm(&LIA, 0.0);
   dpd_file2_scm(&Lia, 0.0);
@@ -440,8 +371,8 @@ void L_clean(struct L_Params L_params) {
 
   L_irr = L_params.irrep;
 
-  dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "New LIA");
-  dpd_file2_init(&Lia, CC_OEI, L_irr, 0, 1, "New Lia");
+  dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "New LIA");
+  dpd_file2_init(&Lia, CC_LAMBDA, L_irr, 0, 1, "New Lia");
   dpd_buf4_init(&LIJAB, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "New LIJAB");
   dpd_buf4_init(&Lijab, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "New Lijab");
   dpd_buf4_init(&LIjAb, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
@@ -455,3 +386,28 @@ void L_clean(struct L_Params L_params) {
   dpd_buf4_close(&LIjAb);
 }
 
+void zeta_norm(struct L_Params L_params) {
+  int Z_irr, i;
+  dpdfile2 ZIA, Zia;
+  dpdbuf4 ZIJAB, Zijab, ZIjAb;
+  Z_irr = L_params.irrep;
+  double tval;
+
+  dpd_file2_init(&ZIA, CC_LAMPS, Z_irr, 0, 1, "ZIA");
+  tval = dpd_file2_dot_self(&ZIA);
+  dpd_file2_close(&ZIA);
+  dpd_file2_init(&Zia, CC_LAMPS, Z_irr, 0, 1, "Zia");
+  tval += dpd_file2_dot_self(&Zia);
+  dpd_file2_close(&Zia);
+  dpd_buf4_init(&ZIJAB, CC_LAMPS, Z_irr, 2, 7, 2, 7, 0, "ZIJAB");
+  tval += dpd_buf4_dot_self(&ZIJAB);
+  dpd_buf4_close(&ZIJAB);
+  dpd_buf4_init(&Zijab, CC_LAMPS, Z_irr, 2, 7, 2, 7, 0, "Zijab");
+  tval += dpd_buf4_dot_self(&Zijab);
+  dpd_buf4_close(&Zijab);
+  dpd_buf4_init(&ZIjAb, CC_LAMPS, Z_irr, 0, 5, 0, 5, 0, "ZIjAb");
+  tval += dpd_buf4_dot_self(&ZIjAb);
+  dpd_buf4_close(&ZIjAb);
+  fprintf(outfile,"Norm of Zeta: %20.15lf\n", sqrt(tval) );
+  return;
+}

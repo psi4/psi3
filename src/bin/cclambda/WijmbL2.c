@@ -37,8 +37,8 @@ void WijmbL2(int L_irr)
   /* RHS += -P(ab) Lma * Wijmb */
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
-    dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "LIA");
-    dpd_file2_init(&Lia, CC_OEI, L_irr, 0, 1, "Lia");
+    dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
+    dpd_file2_init(&Lia, CC_LAMBDA, L_irr, 0, 1, "Lia");
 
     dpd_buf4_init(&WMNIE, CC_HBAR, 0, 2, 11, 2, 11, 0, "WMNIE");
     dpd_buf4_init(&X1, CC_TMP1, L_irr, 2, 5, 2, 5, 0, "X(2,5) 1");
@@ -91,8 +91,8 @@ void WijmbL2(int L_irr)
   }
   else if(params.ref == 2) { /** UHF **/
 
-    dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "LIA");
-    dpd_file2_init(&Lia, CC_OEI, L_irr, 2, 3, "Lia");
+    dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
+    dpd_file2_init(&Lia, CC_LAMBDA, L_irr, 2, 3, "Lia");
 
     /** W(IJ,AM) L(M,B) --> Z(IJ,AB) **/
     dpd_buf4_init(&Z, CC_TMP2, L_irr, 2, 5, 2, 5, 0, "Z'(IJ,AB)");

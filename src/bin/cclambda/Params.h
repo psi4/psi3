@@ -11,6 +11,7 @@ struct Params {
   int nstates; /* total number of L vectors to compute */
   int all; /* find Ls for all excited states plus ground state */
   int ground; /* find L for only ground state */
+  int zeta; /* boolean for solving zeta equations - implies excited state*/
 };
 
 struct L_Params {

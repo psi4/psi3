@@ -10,8 +10,8 @@ void G_build(int L_irr) {
 
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
-    dpd_file2_init(&GMI, CC_OEI, L_irr, 0, 0, "GMI");
-    dpd_file2_init(&Gmi, CC_OEI, L_irr, 0, 0, "Gmi");
+    dpd_file2_init(&GMI, CC_LAMBDA, L_irr, 0, 0, "GMI");
+    dpd_file2_init(&Gmi, CC_LAMBDA, L_irr, 0, 0, "Gmi");
 
     /* T2(MJ,AB) * L2(IJ,AB) --> G(M,I) */
     dpd_buf4_init(&tIJAB, CC_TAMPS, 0, 0, 7, 2, 7, 0, "tIJAB");
@@ -46,8 +46,8 @@ void G_build(int L_irr) {
 
 
   
-    dpd_file2_init(&GAE, CC_OEI, L_irr, 1, 1, "GAE");
-    dpd_file2_init(&Gae, CC_OEI, L_irr, 1, 1, "Gae");
+    dpd_file2_init(&GAE, CC_LAMBDA, L_irr, 1, 1, "GAE");
+    dpd_file2_init(&Gae, CC_LAMBDA, L_irr, 1, 1, "Gae");
 
     /* T2(IJ,AB) * L2(IJ,EB) --> G(A,E) */
     dpd_buf4_init(&tIJAB, CC_TAMPS, 0, 2, 5, 2, 7, 0, "tIJAB");
@@ -82,8 +82,8 @@ void G_build(int L_irr) {
   }
   else if(params.ref == 2) { /** UHF **/
 
-    dpd_file2_init(&GMI, CC_OEI, L_irr, 0, 0, "GMI");
-    dpd_file2_init(&Gmi, CC_OEI, L_irr, 2, 2, "Gmi");
+    dpd_file2_init(&GMI, CC_LAMBDA, L_irr, 0, 0, "GMI");
+    dpd_file2_init(&Gmi, CC_LAMBDA, L_irr, 2, 2, "Gmi");
 
     /* T2(MJ,AB) * L2(IJ,AB) --> G(M,I) */
     dpd_buf4_init(&tIJAB, CC_TAMPS, 0, 0, 7, 2, 7, 0, "tIJAB");
@@ -118,8 +118,8 @@ void G_build(int L_irr) {
 
 
   
-    dpd_file2_init(&GAE, CC_OEI, L_irr, 1, 1, "GAE");
-    dpd_file2_init(&Gae, CC_OEI, L_irr, 3, 3, "Gae");
+    dpd_file2_init(&GAE, CC_LAMBDA, L_irr, 1, 1, "GAE");
+    dpd_file2_init(&Gae, CC_LAMBDA, L_irr, 3, 3, "Gae");
 
     /* T2(JI,BA) * L2(JI,BE) --> G(A,E) */
     dpd_buf4_init(&tIJAB, CC_TAMPS, 0, 2, 5, 2, 7, 0, "tIJAB");

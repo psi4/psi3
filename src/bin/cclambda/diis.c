@@ -42,7 +42,7 @@ void diis(int iter, int L_irr)
 
   if(params.ref == 0) { /** RHF **/
     /* Compute the length of a single error vector */
-    dpd_file2_init(&L1, CC_OEI, L_irr, 0, 1, "LIA");
+    dpd_file2_init(&L1, CC_LAMBDA, L_irr, 0, 1, "LIA");
     dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "LIjAb");
     for(h=0; h < nirreps; h++) {
       vector_length += L1.params->rowtot[h] * L1.params->coltot[h^L_irr];
@@ -58,10 +58,10 @@ void diis(int iter, int L_irr)
     error = dpd_block_matrix(1,vector_length);
 
     word=0;
-    dpd_file2_init(&L1a, CC_OEI, L_irr, 0, 1, "New LIA");
+    dpd_file2_init(&L1a, CC_LAMBDA, L_irr, 0, 1, "New LIA");
     dpd_file2_mat_init(&L1a);
     dpd_file2_mat_rd(&L1a);
-    dpd_file2_init(&L1b, CC_OEI, L_irr, 0, 1, "LIA");
+    dpd_file2_init(&L1b, CC_LAMBDA, L_irr, 0, 1, "LIA");
     dpd_file2_mat_init(&L1b);
     dpd_file2_mat_rd(&L1b);
     for(h=0; h < nirreps; h++)
@@ -102,7 +102,7 @@ void diis(int iter, int L_irr)
     /* Store the current amplitude vector on disk */
     word=0;
 
-    dpd_file2_init(&L1a, CC_OEI, L_irr, 0, 1, "New LIA");
+    dpd_file2_init(&L1a, CC_LAMBDA, L_irr, 0, 1, "New LIA");
     dpd_file2_mat_init(&L1a);
     dpd_file2_mat_rd(&L1a);
     for(h=0; h < nirreps; h++)
@@ -218,7 +218,7 @@ print_mat(B,nvector,nvector,outfile);
 
     /* Now place these elements into the DPD amplitude arrays */
     word=0;
-    dpd_file2_init(&L1a, CC_OEI, L_irr, 0, 1, "New LIA");
+    dpd_file2_init(&L1a, CC_LAMBDA, L_irr, 0, 1, "New LIA");
     dpd_file2_mat_init(&L1a);
     for(h=0; h < nirreps; h++)
       for(row=0; row < L1a.params->rowtot[h]; row++)
@@ -226,7 +226,7 @@ print_mat(B,nvector,nvector,outfile);
 	  L1a.matrix[h][row][col] = error[0][word++];
     dpd_file2_mat_wrt(&L1a);
     dpd_file2_mat_close(&L1a);
-    dpd_file2_copy(&L1a, CC_OEI, "New Lia"); /* to be removed after spin-adaptation */
+    dpd_file2_copy(&L1a, CC_LAMBDA, "New Lia"); /* to be removed after spin-adaptation */
     dpd_file2_close(&L1a);
 
     dpd_buf4_init(&L2a, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
@@ -257,7 +257,7 @@ print_mat(B,nvector,nvector,outfile);
   
     /* Compute the length of a single error vector */
     /* RAK changed file nums here from CC_TMP0 */
-    dpd_file2_init(&L1, CC_OEI, L_irr, 0, 1, "LIA");
+    dpd_file2_init(&L1, CC_LAMBDA, L_irr, 0, 1, "LIA");
     dpd_buf4_init(&L2a, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "LIJAB");
     dpd_buf4_init(&L2b, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "LIjAb");
     for(h=0; h < nirreps; h++) {
@@ -275,10 +275,10 @@ print_mat(B,nvector,nvector,outfile);
     /* Build the current error vector and dump it to disk */
     error = dpd_block_matrix(1,vector_length);
     word=0;
-    dpd_file2_init(&L1a, CC_OEI, L_irr, 0, 1, "New LIA");
+    dpd_file2_init(&L1a, CC_LAMBDA, L_irr, 0, 1, "New LIA");
     dpd_file2_mat_init(&L1a);
     dpd_file2_mat_rd(&L1a);
-    dpd_file2_init(&L1b, CC_OEI, L_irr, 0, 1, "LIA");
+    dpd_file2_init(&L1b, CC_LAMBDA, L_irr, 0, 1, "LIA");
     dpd_file2_mat_init(&L1b);
     dpd_file2_mat_rd(&L1b);
     for(h=0; h < nirreps; h++)
@@ -290,10 +290,10 @@ print_mat(B,nvector,nvector,outfile);
     dpd_file2_mat_close(&L1b);
     dpd_file2_close(&L1b);
 
-    dpd_file2_init(&L1a, CC_OEI, L_irr, 0, 1, "New Lia");
+    dpd_file2_init(&L1a, CC_LAMBDA, L_irr, 0, 1, "New Lia");
     dpd_file2_mat_init(&L1a);
     dpd_file2_mat_rd(&L1a);
-    dpd_file2_init(&L1b, CC_OEI, L_irr, 0, 1, "Lia");
+    dpd_file2_init(&L1b, CC_LAMBDA, L_irr, 0, 1, "Lia");
     dpd_file2_mat_init(&L1b);
     dpd_file2_mat_rd(&L1b);
     for(h=0; h < nirreps; h++)
@@ -359,7 +359,7 @@ print_mat(B,nvector,nvector,outfile);
 
     /* Store the current amplitude vector on disk */
     word=0;
-    dpd_file2_init(&L1a, CC_OEI, L_irr, 0, 1, "New LIA");
+    dpd_file2_init(&L1a, CC_LAMBDA, L_irr, 0, 1, "New LIA");
     dpd_file2_mat_init(&L1a);
     dpd_file2_mat_rd(&L1a);
     for(h=0; h < nirreps; h++)
@@ -369,7 +369,7 @@ print_mat(B,nvector,nvector,outfile);
     dpd_file2_mat_close(&L1a);
     dpd_file2_close(&L1a);
 
-    dpd_file2_init(&L1a, CC_OEI, L_irr, 0, 1, "New Lia");
+    dpd_file2_init(&L1a, CC_LAMBDA, L_irr, 0, 1, "New Lia");
     dpd_file2_mat_init(&L1a);
     dpd_file2_mat_rd(&L1a);
     for(h=0; h < nirreps; h++)
@@ -481,7 +481,7 @@ print_mat(B,nvector,nvector,outfile);
 
     /* Now place these elements into the DPD amplitude arrays */
     word=0;
-    dpd_file2_init(&L1a, CC_OEI, L_irr, 0, 1, "New LIA");
+    dpd_file2_init(&L1a, CC_LAMBDA, L_irr, 0, 1, "New LIA");
     dpd_file2_mat_init(&L1a);
     for(h=0; h < nirreps; h++)
       for(row=0; row < L1a.params->rowtot[h]; row++)
@@ -491,7 +491,7 @@ print_mat(B,nvector,nvector,outfile);
     dpd_file2_mat_close(&L1a);
     dpd_file2_close(&L1a);
 
-    dpd_file2_init(&L1a, CC_OEI, L_irr, 0, 1, "New Lia");
+    dpd_file2_init(&L1a, CC_LAMBDA, L_irr, 0, 1, "New Lia");
     dpd_file2_mat_init(&L1a);
     for(h=0; h < nirreps; h++)
       for(row=0; row < L1a.params->rowtot[h]; row++)
@@ -567,10 +567,10 @@ print_mat(B,nvector,nvector,outfile);
     /* Build the current error vector and dump it to disk */
     error = dpd_block_matrix(1,vector_length);
     word=0;
-    dpd_file2_init(&L1a, CC_OEI, L_irr, 0, 1, "New LIA");
+    dpd_file2_init(&L1a, CC_LAMBDA, L_irr, 0, 1, "New LIA");
     dpd_file2_mat_init(&L1a);
     dpd_file2_mat_rd(&L1a);
-    dpd_file2_init(&L1b, CC_OEI, L_irr, 0, 1, "LIA");
+    dpd_file2_init(&L1b, CC_LAMBDA, L_irr, 0, 1, "LIA");
     dpd_file2_mat_init(&L1b);
     dpd_file2_mat_rd(&L1b);
     for(h=0; h < nirreps; h++)
@@ -582,10 +582,10 @@ print_mat(B,nvector,nvector,outfile);
     dpd_file2_mat_close(&L1b);
     dpd_file2_close(&L1b);
 
-    dpd_file2_init(&L1a, CC_OEI, L_irr, 2, 3, "New Lia");
+    dpd_file2_init(&L1a, CC_LAMBDA, L_irr, 2, 3, "New Lia");
     dpd_file2_mat_init(&L1a);
     dpd_file2_mat_rd(&L1a);
-    dpd_file2_init(&L1b, CC_OEI, L_irr, 2, 3, "Lia");
+    dpd_file2_init(&L1b, CC_LAMBDA, L_irr, 2, 3, "Lia");
     dpd_file2_mat_init(&L1b);
     dpd_file2_mat_rd(&L1b);
     for(h=0; h < nirreps; h++)
@@ -651,7 +651,7 @@ print_mat(B,nvector,nvector,outfile);
 
     /* Store the current amplitude vector on disk */
     word=0;
-    dpd_file2_init(&L1a, CC_OEI, L_irr, 0, 1, "New LIA");
+    dpd_file2_init(&L1a, CC_LAMBDA, L_irr, 0, 1, "New LIA");
     dpd_file2_mat_init(&L1a);
     dpd_file2_mat_rd(&L1a);
     for(h=0; h < nirreps; h++)
@@ -661,7 +661,7 @@ print_mat(B,nvector,nvector,outfile);
     dpd_file2_mat_close(&L1a);
     dpd_file2_close(&L1a);
 
-    dpd_file2_init(&L1a, CC_OEI, L_irr, 2, 3, "New Lia");
+    dpd_file2_init(&L1a, CC_LAMBDA, L_irr, 2, 3, "New Lia");
     dpd_file2_mat_init(&L1a);
     dpd_file2_mat_rd(&L1a);
     for(h=0; h < nirreps; h++)
@@ -773,7 +773,7 @@ print_mat(B,nvector,nvector,outfile);
 
     /* Now place these elements into the DPD amplitude arrays */
     word=0;
-    dpd_file2_init(&L1a, CC_OEI, L_irr, 0, 1, "New LIA");
+    dpd_file2_init(&L1a, CC_LAMBDA, L_irr, 0, 1, "New LIA");
     dpd_file2_mat_init(&L1a);
     for(h=0; h < nirreps; h++)
       for(row=0; row < L1a.params->rowtot[h]; row++)
@@ -783,7 +783,7 @@ print_mat(B,nvector,nvector,outfile);
     dpd_file2_mat_close(&L1a);
     dpd_file2_close(&L1a);
 
-    dpd_file2_init(&L1a, CC_OEI, L_irr, 2, 3, "New Lia");
+    dpd_file2_init(&L1a, CC_LAMBDA, L_irr, 2, 3, "New Lia");
     dpd_file2_mat_init(&L1a);
     for(h=0; h < nirreps; h++)
       for(row=0; row < L1a.params->rowtot[h]; row++)

@@ -32,11 +32,15 @@ void get_params(void)
 
   /* Here is the current overall logic:
      if --all, do all states included ground state
-     else if --excited {
+     else if (params.ground), do just ground state
+     else if --zeta {
+       L_irr from CC_INFO (A1 for gradients)
+       labels for zeta
+     }
+     else {
        if prop_sym is in input use prop_sym and prop_root
        else compute L for last state requested in input
      }
-     else do just ground state
   */
 
   /* count number of states to converge */
@@ -95,6 +99,23 @@ void get_params(void)
         }
       }
     }
+  }
+  else if (params.zeta) {
+      psio_read_entry(CC_INFO, "XI Irrep", (char *) &i,sizeof(int));
+      fprintf(outfile,"\tIrrep of Zeta       (CC_INFO) = %d\n", i);
+      prop_root = 0;
+      prop_sym = i;
+      pL_params[0].irrep = prop_sym;
+      pL_params[0].root = prop_root;
+      pL_params[0].ground = 0;
+      pL_params[0].cceom_energy = 0.0; /* don't want energy in denominator */
+      pL_params[0].R0 = 0.0; /* <Zeta0|R0> = 0, since zeta_0 = 0 */
+      sprintf(pL_params[0].L1A_lbl,"ZIA");
+      sprintf(pL_params[0].L1B_lbl,"Zia");
+      sprintf(pL_params[0].L2AA_lbl,"ZIJAB");
+      sprintf(pL_params[0].L2BB_lbl,"Zijab");
+      sprintf(pL_params[0].L2AB_lbl,"ZIjAb");
+      sprintf(pL_params[0].L2RHF_lbl,"2ZIjAb - ZIjbA");
   }
   else if (params.ground) {
     pL_params[0].irrep = 0;
@@ -189,13 +210,13 @@ void get_params(void)
 
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
-  fprintf(outfile, "\tMaxiter     =    %4d\n", params.maxiter);
-  fprintf(outfile, "\tConvergence = %3.1e\n", params.convergence);
-  fprintf(outfile, "\tRestart     =     %s\n", params.restart ? "Yes" : "No");
-  fprintf(outfile, "\tCache Level =     %1d\n", params.cachelev);
-  fprintf(outfile, "\tAO Basis        =     %s\n", 
+  fprintf(outfile, "\tMaxiter       =    %4d\n", params.maxiter);
+  fprintf(outfile, "\tConvergence   = %3.1e\n", params.convergence);
+  fprintf(outfile, "\tRestart       =     %s\n", params.restart ? "Yes" : "No");
+  fprintf(outfile, "\tCache Level   =     %1d\n", params.cachelev);
+  fprintf(outfile, "\tAO Basis      =     %s\n", 
           params.aobasis ? "Yes" : "No");
-  fprintf(outfile, "\tExcited State Computation =     %s\n", 
+  fprintf(outfile, "\tExcited State  =     %s\n", 
           params.ground ? "No" : "Yes");
   if(params.local) {
     fprintf(outfile, "\tLocal Cutoff    = %3.1e\n", local.cutoff);
@@ -205,15 +226,15 @@ void get_params(void)
   }
   fprintf(outfile, "\tLocal CC        =     %s\n", params.local ? "Yes" : "No");
 
-  fprintf(outfile,"Paramaters for left-handed eigenvectors\n");
-  fprintf(outfile,"Irr Root Ground-State?    EOM energy        R0\n");
+  fprintf(outfile,"\tParamaters for left-handed eigenvectors:\n");
+  fprintf(outfile,"\tIrr   Root  Ground-State?    EOM energy        R0\n");
   for (i=0; i<params.nstates; ++i) {
-    fprintf(outfile,"%3d %5d %13s %14.10lf %14.10lf\n", pL_params[i].irrep, pL_params[i].root,
+    fprintf(outfile,"\t%3d %5d %13s %14.10lf %14.10lf\n", pL_params[i].irrep, pL_params[i].root,
         (pL_params[i].ground ? "Yes":"No"), pL_params[i].cceom_energy, pL_params[i].R0);
   }
 
   for (i=0; i<params.nstates; ++i) {
-    fprintf(outfile,"Labels for state %d:\n %s, %s, %s, %s, %s, %s\n",
+    fprintf(outfile,"\tLabels for state %d:\n\t%s, %s, %s, %s, %s, %s\n",
         i,pL_params[i].L1A_lbl,pL_params[i].L1B_lbl,pL_params[i].L2AA_lbl,pL_params[i].L2BB_lbl,
         pL_params[i].L2AB_lbl, pL_params[i].L2RHF_lbl);
   }

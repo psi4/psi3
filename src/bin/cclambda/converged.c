@@ -15,10 +15,10 @@ int converged(int L_irr)
 
   nirreps = moinfo.nirreps;
 
-  dpd_file2_init(&L1, CC_OEI, L_irr, 0, 1, "New LIA");
+  dpd_file2_init(&L1, CC_LAMBDA, L_irr, 0, 1, "New LIA");
   dpd_file2_mat_init(&L1);
   dpd_file2_mat_rd(&L1);
-  dpd_file2_init(&L1old, CC_OEI, L_irr, 0, 1, "LIA");
+  dpd_file2_init(&L1old, CC_LAMBDA, L_irr, 0, 1, "LIA");
   dpd_file2_mat_init(&L1old);
   dpd_file2_mat_rd(&L1old);
 
@@ -35,20 +35,20 @@ int converged(int L_irr)
 
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
-    dpd_file2_init(&L1, CC_OEI, L_irr, 0, 1, "New Lia");
+    dpd_file2_init(&L1, CC_LAMBDA, L_irr, 0, 1, "New Lia");
     dpd_file2_mat_init(&L1);
     dpd_file2_mat_rd(&L1);
-    dpd_file2_init(&L1old, CC_OEI, L_irr, 0, 1, "Lia");
+    dpd_file2_init(&L1old, CC_LAMBDA, L_irr, 0, 1, "Lia");
     dpd_file2_mat_init(&L1old);
     dpd_file2_mat_rd(&L1old);
 
   }
   else if(params.ref == 2) { /** UHF **/
 
-    dpd_file2_init(&L1, CC_OEI, L_irr, 2, 3, "New Lia");
+    dpd_file2_init(&L1, CC_LAMBDA, L_irr, 2, 3, "New Lia");
     dpd_file2_mat_init(&L1);
     dpd_file2_mat_rd(&L1);
-    dpd_file2_init(&L1old, CC_OEI, L_irr, 2, 3, "Lia");
+    dpd_file2_init(&L1old, CC_LAMBDA, L_irr, 2, 3, "Lia");
     dpd_file2_mat_init(&L1old);
     dpd_file2_mat_rd(&L1old);
 

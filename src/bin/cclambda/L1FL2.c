@@ -26,10 +26,10 @@ void L1FL2(int L_irr)
 
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
-    dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "LIA");
+    dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
     dpd_file2_mat_init(&LIA);
     dpd_file2_mat_rd(&LIA);
-    dpd_file2_init(&Lia, CC_OEI, L_irr, 0, 1, "Lia");
+    dpd_file2_init(&Lia, CC_LAMBDA, L_irr, 0, 1, "Lia");
     dpd_file2_mat_init(&Lia);
     dpd_file2_mat_rd(&Lia);
     dpd_file2_init(&FJB, CC_OEI, 0, 0, 1, "FME");
@@ -41,10 +41,10 @@ void L1FL2(int L_irr)
   }
   else if(params.ref == 2) { /** UHF **/
 
-    dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "LIA");
+    dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
     dpd_file2_mat_init(&LIA);
     dpd_file2_mat_rd(&LIA);
-    dpd_file2_init(&Lia, CC_OEI, L_irr, 2, 3, "Lia");
+    dpd_file2_init(&Lia, CC_LAMBDA, L_irr, 2, 3, "Lia");
     dpd_file2_mat_init(&Lia);
     dpd_file2_mat_rd(&Lia);
     dpd_file2_init(&FJB, CC_OEI, 0, 0, 1, "FME");

@@ -48,7 +48,7 @@ void denom_uhf(struct L_Params L_params)
   dpd_file2_mat_init(&LFAEt);
   dpd_file2_mat_rd(&LFAEt);
 
-  dpd_file2_init(&dIA, CC_OEI, L_irr, 0, 1, "dIA");
+  dpd_file2_init(&dIA, CC_DENOM, L_irr, 0, 1, "dIA");
   dpd_file2_mat_init(&dIA);
   for(h=0; h < nirreps; h++) {
     for(i=0; i < aoccpi[h]; i++) {
@@ -63,7 +63,7 @@ void denom_uhf(struct L_Params L_params)
   dpd_file2_mat_close(&dIA);
   dpd_file2_close(&dIA);
 
-  dpd_file2_init(&dia, CC_OEI, L_irr, 2, 3, "dia");
+  dpd_file2_init(&dia, CC_DENOM, L_irr, 2, 3, "dia");
   dpd_file2_mat_init(&dia);
   for(h=0; h < nirreps; h++) {
     for(i=0; i < boccpi[h]; i++) {
@@ -227,7 +227,7 @@ void denom_rohf(struct L_Params L_params)
   dpd_file2_mat_rd(&LFAEt);
 
   /* Alpha one-electron denominator */
-  dpd_file2_init(&dIA, CC_OEI, L_irr, 0, 1, "dIA");
+  dpd_file2_init(&dIA, CC_DENOM, L_irr, 0, 1, "dIA");
   dpd_file2_mat_init(&dIA);
   for(h=0; h < nirreps; h++) { /* irreps of dIA and Fii */
     for(i=0; i < occpi[h]; i++) {
@@ -243,7 +243,7 @@ void denom_rohf(struct L_Params L_params)
   dpd_file2_close(&dIA);
 
   /* Beta one-electron denominator */
-  dpd_file2_init(&dia, CC_OEI, L_irr, 0, 1, "dia");
+  dpd_file2_init(&dia, CC_DENOM, L_irr, 0, 1, "dia");
   dpd_file2_mat_init(&dia);
   for(h=0; h < nirreps; h++) {
     for(i=0; i < (occpi[h] - openpi[h]); i++) {

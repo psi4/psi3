@@ -38,8 +38,8 @@ void WejabL2(int L_irr)
   /* RHS += P(ij) Lie * Wejab */
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
-    dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "LIA");
-    dpd_file2_init(&Lia, CC_OEI, L_irr, 0, 1, "Lia");
+    dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
+    dpd_file2_init(&Lia, CC_LAMBDA, L_irr, 0, 1, "Lia");
 
     dpd_buf4_init(&WAMEF, CC_HBAR, 0, 10, 7, 10, 7, 0, "WAMEF");
     dpd_buf4_init(&X1, CC_TMP1, L_irr, 0, 7, 0, 7, 0, "X(0,7) 1");
@@ -126,8 +126,8 @@ void WejabL2(int L_irr)
   }
   else if(params.ref == 2) { /** UHF **/
 
-    dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "LIA");
-    dpd_file2_init(&Lia, CC_OEI, L_irr, 2, 3, "Lia");
+    dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
+    dpd_file2_init(&Lia, CC_LAMBDA, L_irr, 2, 3, "Lia");
 
     /** Z(IJ,AB) = L(I,E) W(EJ,AB) **/
     dpd_buf4_init(&Z, CC_TMP1, L_irr, 0, 7, 0, 7, 0, "Z(IJ,AB)");

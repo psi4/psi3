@@ -17,8 +17,8 @@ double pseudoenergy(struct L_Params L_params)
     if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
       dpd_file2_init(&Fme, CC_OEI, 0, 0, 1, "Fme");
       dpd_file2_init(&FME, CC_OEI, 0, 0, 1, "FME");
-      dpd_file2_init(&Lia, CC_OEI, L_irr, 0, 1, "Lia");
-      dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "LIA");
+      dpd_file2_init(&Lia, CC_LAMBDA, L_irr, 0, 1, "Lia");
+      dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
   
       LIA_energy = dpd_file2_dot(&FME,&LIA);
       Lia_energy = dpd_file2_dot(&Fme,&Lia);
@@ -47,8 +47,8 @@ double pseudoenergy(struct L_Params L_params)
   
       dpd_file2_init(&Fme, CC_OEI, 0, 2, 3, "Fme");
       dpd_file2_init(&FME, CC_OEI, 0, 0, 1, "FME");
-      dpd_file2_init(&Lia, CC_OEI, L_irr, 2, 3, "Lia");
-      dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "LIA");
+      dpd_file2_init(&Lia, CC_LAMBDA, L_irr, 2, 3, "Lia");
+      dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
   
       LIA_energy = dpd_file2_dot(&FME,&LIA);
       Lia_energy = dpd_file2_dot(&Fme,&Lia);
@@ -87,8 +87,8 @@ double pseudoenergy(struct L_Params L_params)
   }
   else { /* since pseudoenergy is 0 lets compute norm instead */
     if (params.ref <= 1) { /* RHF or ROHF */
-      dpd_file2_init(&Lia, CC_OEI, L_irr, 0, 1, "Lia");
-      dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "LIA");
+      dpd_file2_init(&Lia, CC_LAMBDA, L_irr, 0, 1, "Lia");
+      dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
       LIA_energy = dpd_file2_dot_self(&LIA);
       Lia_energy = dpd_file2_dot_self(&Lia);
       dpd_file2_close(&Lia);
@@ -107,8 +107,8 @@ double pseudoenergy(struct L_Params L_params)
       return tval;
     }
     else if (params.ref == 2) { /* UHF */
-      dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "LIA");
-      dpd_file2_init(&Lia, CC_OEI, L_irr, 2, 3, "Lia");
+      dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
+      dpd_file2_init(&Lia, CC_LAMBDA, L_irr, 2, 3, "Lia");
       LIA_energy = dpd_file2_dot_self(&LIA);
       Lia_energy = dpd_file2_dot_self(&Lia);
       dpd_file2_close(&Lia);
