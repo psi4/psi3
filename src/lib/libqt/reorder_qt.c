@@ -135,6 +135,8 @@ void reorder_qt(int *docc_in, int *socc_in, int *frozen_docc_in,
 
 /*!
 ** reorder_qt_uhf()
+**
+** Generalization of reorder_qt() for UHF case
 */
 void reorder_qt_uhf(int *docc, int *socc, int *frozen_docc, 
 		    int *frozen_uocc, int *order_alpha, int *order_beta,
