@@ -32,6 +32,11 @@ void reorder_ras2(int *docc_in, int *socc_in, int *frozen_docc_in,
 int ras_set(int nirreps, int nbfso, int freeze_core, int *orbspi,
       int *docc, int *socc, int *frdocc, int *fruocc,
       int **ras_opi, int *order, int ras_type);
+int ras_set2(int nirreps, int nbfso, int delete_fzdocc,
+      int delete_restrdocc, int *orbspi,
+      int *docc, int *socc, int *frdocc, int *fruocc,
+      int *restrdocc, int *restruocc, int **ras_opi, int *order,
+      int ras_type);
 void newmm(double **A, int transa, double **B, int transb, double **C,
            int num_rows, int num_links, int num_cols, 
            double alpha, double beta);
