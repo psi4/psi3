@@ -64,7 +64,9 @@ As you can see, the input is made up of \keyword{keyword = value} pairs.
 Values can be strings (like \keyword{"cc-pVDZ"}), booleans 
 (\keyword{true/false, 1/0, yes/no}), integers, or real numbers.  One can 
 also have arrays of data (as in the the \keyword{zmat} entry).  Generally
-speaking, input is not case-sensitive. 
+speaking, input is not case-sensitive.  Anything following a percent sign
+is treated as a comment, and white space of more than a single space is
+ignored.  
 
 The above input is for a Hartree-Fock SCF (\keyword{wfn = scf})
 calculation of water using a cc-pVDZ basis set 
@@ -92,10 +94,12 @@ program defaults to \keyword{puream = false} unless told otherwise.
 Why are some strings in quotation marks (e.g., \keyword{label = "cc-pVDZ
 SCF H2O"}), while others are not (e.g., \keyword{wfn = scf})?  Any
 string containing spaces or other special characters like asterisks
-must be placed in double quotes.  Since basis sets often contain special
-characters, it is a good idea to specify the basis in quotes always.
-For values which don't have to be put in double quotes, it never hurts
-to put them in quotes anyway.
+must be placed in double quotes.  Anything between double quotes is 
+considered one token; there is no change of case, and special characters 
+and white space are maintained as part of the token but otherwise ignored.
+Since basis sets often contain special characters, it is a good idea to 
+specify the basis in quotes always.  For values which don't have to be put 
+in double quotes, it never hurts to put them in quotes anyway.
 
 Let's run this calculation.  Assuming the input is given in a file
 \file{sp.in}, we can run \PSIthree\ as:
@@ -160,385 +164,238 @@ Tue Aug 26 17:35:10 2003
 ...
 \end{verbatim}
 
-THIS JUNK BELOW IS THE OLD STUFF, KEEPING IT IN TEMPORARILY TO PLUCK
-BITS OUT OF IT. ---CDS
-
-This will run \PSIthree\, which will read the input from 
-will get the online manual page for the \PSIdriver\ master program.
-Other man pages for the \PSIdriver\ code can be retrieved likewise.
-
-The only required file is to run \PSIthree\ is \inputdat. 
-Unfortunately, no good and simple description of this
-file exists. It is rather simple though, and essentially
-free format. Examples can be found in
-almost every man page. It should be fairly easy to
-understand all the examples using common sense. 
-
-\subsection{Format of \inputdat}
-Some keys to remember are the following: 
-\begin{itemize}
-\item Input parsing is case insensitive; once parsed, everything is treated as upper case. 
-\item Anything following a percent mark, i.e. \%, is commented out up until the next carriage return. 
-\item White space of more than a single space is ignored. 
-\item Anything between double quotes, e.g. "/usr/c4/sw/psi", 
-is considered one token; there is no change of case, and special 
-characters and white space are maintained as part of the token 
-but  otherwise ignored. 
-\item The old (Fortran) input parser does not like the TAB character.
-Please avoid using Tabs until this goes away.  There does not appear
-to be a problem with the C library (libipv1).
-\end{itemize}
-Input data types are the following: 
-\begin{itemize}
-\item String : a character sequence 
-\item Integer : a \celem{sizeof(integer)} byte integer datum 
-\item Real : a \celem{sizeof(double)} byte real datum 
-\item Boolean : \keyword{yes}, \keyword{true}, \keyword{1} -- these three values are equivalent;
-\keyword{no}, \keyword{false}, \keyword{0} -- these three values are equivalent 
-\end{itemize}
-Input parameters come in only a few flavors: 
-\begin{itemize}
-\item \keyword{Keywords = value}, e.g. \keyword{convergence = 12} 
-\item \keyword{Vectors = (value1 value2 ... valuen)}, e.g. \keyword{docc = (2 0 1 1)}
-\item \keyword{Arrays = ((i1 i2 ... in) (j1 j2 ... jn) ... (n1 n2 ... nn))}
-Note the proper number of opening and closing parentheses. Arrays can 
-conceptually be any depth/dimension but in practice never go
-much beyond level 2. The elements of vectors and arrays 
-need not be of the same data type. 
-\end{itemize}
-
-Segmented Keywords are joined by a colon, i.e. ":". 
+This first section corresponds to the output from the \PSIinput\ program,
+which translates the basis set and geometry information from the user's
+input file.  At the beginning of each module, timing information is
+printed which gives the time and date the module is started and the name
+of the computer running the computation.  After parsing the geometry, the
+program shifts the molecule so that the origin is at the center of mass,
+and it may also rotate the molecule so that any spatial symmetry in the 
+molecule may be easier to detect.  The program then prints out the 
+detected point group of the molecule, which in this case is C2v:
 \begin{verbatim}
-  scf:convergence = 12
-  gugaci:convergence = 8
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
 \end{verbatim}
-Segmented keywords with common initial segments can be joined in vectors. 
+You should double-check that the program correctly identifies the symmetry
+of your molecule; the \PSIthree\ program is not tolerant of any rounding 
+errors in the user input of geometry.
+
+Next, the basis set information is printed out explicitly in a format
+identical to that used for customized input of basis sets, as described
+in section \ref{custom-basis}.  After this, the program prints a summary
+of the basis set information, including the number of basis functions
+in atomic orbitals (AO's) and symmetry-adapted orbitals (SO's), and
+the number of SO's per irredicible representation (irrep) of the point group:
 \begin{verbatim}
-  scf:(convergence = 12
-       docc = (2 0 1 1))
+  -BASIS SET INFORMATION:
+    Total number of shells = 12
+    Number of primitives   = 31
+    Number of AO           = 25
+    Number of SO           = 24
+                                                                                
+    Irrep    Number of SO
+    -----    ------------
+      1           11
+      2            2
+      3            4
+      4            7
 \end{verbatim}
-Note the equivalence of the following three examples with the preceding one. 
+The number of SO's is very useful to check to verify that the pure
+angular momentum setting is correct; for example, using 
+6 Cartesian d functions (\keyword{puream=false}) or 5 pure 
+angular momentum d functions (\keyword{puream=true}) will 
+give the same number of AO's, but a different number of SO's.
+
+After some additional geometry information, the \PSIinput\ program
+prints the nuclear repulsion energy and then a list of internuclear
+distances:
 \begin{verbatim}
-  scf:(convergence = 12 docc = (2 0 1 1)
-  scf:( convergence=12  docc=(2 0 1 1))
-  scf: (
-     convergence = 12 
-     docc = (2 0 1 1)
-  )
+    Nuclear Repulsion Energy (a.u.) =       9.196934380445
+                                                                                
+  -The Interatomic Distances in angstroms:
+                                                                                
+           1           2           3
+                                                                                
+    1   0.0000000
+    2   0.9570000   0.0000000
+    3   0.9570000   1.5133798   0.0000000
 \end{verbatim}
 
-A "default" token can be used as a wild card, to fill any initial 
-token field. However, explicit tokens will always override default
-tokens if both are present. For instance, a typical keyword search
-priority would be: First 
-\begin{verbatim}
-  module_id:parameter
-\end{verbatim}
-and then 
-\begin{verbatim}
-  default:parameter
-\end{verbatim}
-Thus the two following examples will achieve the same effect when
-the module \PSItransqt\ is run, but not when \PSIcscf\ is run. 
-\begin{verbatim}
-  default: (
-    convergence = 8
-    docc = (2 0 1 1)
-  )
-  scf: (
-    convergence = 12
-  )
+The nuclear repulsion energy is another very useful diagnostic; when
+comparing the results of two different calculations, if the calculations
+are really performed at the same geometry, the nuclear repulsion energies
+should match.
 
-  default: (
-    convergence = 8
-    docc = (2 0 1 1)
-  )
-  scf: (
-    convergence = 10
-  )
-\end{verbatim}
+Once the \PSIinput\ program completes, a file ending in \file{.32} should
+be created.  This is the ``checkpoint file'' which is used to communicate
+basic information (the basis set, the geometry, etc) between modules
+in \PSIthree.  By default, this file will be placed in the current working
+directory when the program is run.  The name and location of the file can
+be modified by the user as described later in sections \ref{scratchfiles}
+and \ref{psirc}.
 
-Ok, enough of all that, you've got the basics down,
-the rest can be learned by doing. The smallest \inputdat\
-file you would probably ever want to use, and this only as
-a learing experience, is: 
+Now that \PSIthree\ knows about the molecule and basis set, the next
+module to execute is the \PSIcints\ module.  
 \begin{verbatim}
-  % file input.dat
-  psi: (
-    check = true
-    )
-  % end file input.dat
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+                                                                                
+                                                                                
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+...
 \end{verbatim}
-If we run psi now, what happens? 
+This program computes
+integrals over symmetry orbitals.  By default, these integrals are
+written to disk unless the user has specified an integrals-direct
+computation.  The integrals file can be very large, and its size grows
+rapidly with the size of the molecule and basis set.  When \PSIcints\ 
+is finished, it prints the number of two-electron integrals:
 \begin{verbatim}
-  c4-20:> psi
-                      The Psi Execution Driver
-   ERROR: a problem arose while reading the required string valued keyword 'WFN'
-  c4-20:>
-\end{verbatim}
-Obviously we need to add a \keyword{WFN}. So 
-\begin{verbatim}
-  % file input.dat
-  psi: (
-    check = true
-    wfn = scf          % for instance
-    )
-  % end file input.dat
-
-  c4-20:> psi
-                      The Psi Execution Driver
-   WFN       = SCF
-   DERTYPE   = NONE
-   REFERENCE = RHF
-   CHECK     = YES
-   
-   'CHECK' is YES, so nothing will be executed.
-   The following programs would otherwise be executed:
-   cints
-   cscf
-  c4-20:>
-\end{verbatim}
-As you can see, some defaults are chosen. We are now doing a
-RHF SCF Energy Point. First the module (or program) \PSIcints\ will
-run to calculate the integrals, then \PSIcscf\ will run to calculate the
-RHF SCF energy. 
-
-Should we run this, just for the learning experience? Sure,
-but first we need to do a couple things. Like find out what
-files and input parameters are needed by \PSIcints\ and \PSIcscf. 
-\begin{verbatim}
-  c4-20:> man cints
-  c4-20:> man cscf
-\end{verbatim}
-\PSIcints\ needs \inputdat\ and \FILE30\ and will generate \FILE33,
-\FILE35, \FILE36, and \FILE37. It requires only 2 input parameters
-and the defaults look ok. \PSIcscf\ needs \inputdat, \FILE30, \FILE33,
-\FILE35, \FILE36, and \FILE37 and
-a few input parameters which we will come back to. 
-
-So what's this \FILE30? It is the basic binary working file for the \PSIthree\
-quantum chemistry package. It contains all the juicy details of your job,
-such as geometry, basis set, occupation scheme, etc.
-Since no one likes to write binary files,
-we will create \FILE30 with the program \PSIinput.
-For more information on this program 
-\begin{verbatim}
-  c4-20:> man input
+    Wrote 11412 two-electron integrals to IWL file 33
 \end{verbatim}
 
-
-\subsection{Setting up a Calculation}
-I've decided that we'll start with STO water for our example, and
-after reading the man pages described above I come up with the following: 
+Once the integrals have been written, it is time to perform the 
+Hartree-Fock SCF computation using the \PSIcscf\ module.  
 \begin{verbatim}
-  % file input.dat
-  default: (
+             ------------------------------------------
+                                                                                
+                CSCF3.0: An SCF program written in C
+                                                                                
+              Written by too many people to mention here
+                                                                                
+             ------------------------------------------
+                                                                                
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
+                                                                                
+  label       = cc-pVDZ SCF H2O
+  wfn          = SCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = NONE
+  convergence  = 7
+  maxiter      = 40
+  guess        = AUTO
+                                                                                
+  nuclear repulsion energy        9.1969343804448
+  first run, so defaulting to core-hamiltonian guess
 
-    label = "water STO HF energy point"
-    memory = (8.0 Mbytes)
-    wfn = scf
-    reference = rhf
-
-    files: (
-      default: (
-        name = "h2osto"
-        nvolume = 4
-        volume1 = "/tmp1/psiuser/"
-        volume2 = "/tmp2/psiuser/"
-        volume3 = "/tmp2/psiuser/"
-        volume4 = "/tmp2/psiuser/"
-        )
-      file30: (
-        nvolume = 1
-        volume1 = "./"
-        )
-      )
-    )
-
-  psi: (
-    check = true
-    )
-
-  input: (
-  %    note that all atoms are specified now,
-  %    not only the symmetry unique portion
-    basis = sto-3g
-    units = angstrom
-    zmat = (
-      (o)
-      (h 1 0.9600)
-      (h 1 0.9600 2 104.5)
-      )
-    )
-  % end file input.dat
-\end{verbatim}
-You may wonder about the memory flag I've tucked in the default. As far
-as I know, it's undocumented, but can be set for some PSI modules.
-Acceptable units are REAL, INTEGER, BYTES,
-KBYTES, or MBYTES. Generally it is a good practice to keep
-\keyword{default:memory} small, and 
-increase \keyword{program\_id:memory} as necessary. 
-
-The \keyword{default:files} section tells \PSIthree\ where to
-store temporary (scratch) files.  Here, a user is telling \PSIthree\ to 
-write the scratch files to four different directories (where in this
-case ``psiuser'' is used as the user's username).
-The file-handling capability of \PSIthree\
-is very flexible --- it is possible, for example, to tell each module to
-place files in different locations (although this would rarely ever be
-useful).  By placing a \keyword{files} section in the \keyword{default}
-area, \PSIthree\ will use this information by default for all of its
-modules unless overridden by a \keyword{files} section inside a particular
-module (like \PSIcscf, for example).  Specifying four volumes, such as in
-this example, tells \PSIthree\ to stripe (split the files) over four 
-different directories.  This can be useful if there are four hard disks, all
-used for scratch data.  However, modern operating systems allow different
-physical hard drives to be striped automatically by the operating system
-into a single directory, so having \keyword{nvolume} more than 1 is pretty
-unusual nowadays.  
-
-One downside to listing these specific scratch directories is that, if you
-send your \PSIthree\ input file to a co-worker, he or she will have to
-modify the file to use their scratch directories instead of yours (assuming
-you don't all write to the same directory, like \file{/tmp}).  This problem
-is solved by the \file{.psirc} file.  If this file exists
-in the user's home directory, then it will override the \keyword{file}
-information in \file{input.dat}.  For example, with a \file{.psirc} file 
-containing the following information,
-
-\begin{verbatim}
-default: (
-    files: (
-      default: (
-        nvolume = 4
-        volume1 = "/tmp1/psiuser/"
-        volume2 = "/tmp2/psiuser/"
-        volume3 = "/tmp2/psiuser/"
-        volume4 = "/tmp2/psiuser/"
-      )
-      file30: (
-        nvolume = 1
-        volume1 = "./"
-      )
-    )
-)
-\end{verbatim}
-then the relevant section in \file{input.dat} can be vastly simplified
-to just
-\begin{verbatim}
-  files: (
-    default: ( name = "h2o" )
-    )
+...
 \end{verbatim}
 
-Once you have a \file{input.dat} file prepared, the first thing to do is
-to create the checkpoint file, the previously mentioned \FILE30.  You
-can do this by running the program
+The first few lines print out information about the spin multiplicity
+specified by the user, the convergence level, maximum number of iterations,
+etc.  After this, the program attempts to figure out the symmetries
+of the occupied orbitals using a core Hamiltonian guess.  The \PSIcscf\
+program sometimes guesses occupations wrong, especially for highly strained
+molecules, radicals, unusual bonding situations, or large basis sets
+(particularly with diffuse functions).  Unfortunately, this is a common 
+problem with programs which have point-group symmetry built in throughout the 
+program; however, the user can override the guess by specifying these
+occupations explicitly using the \keyword{docc} and \keyword{socc} keywords.
+In this case, the program determines these occupations correctly, as
+below.
 \begin{verbatim}
-  c4-20:> input
+  Using core guess to determine occupations
+                                                                                
+                                                                                
+  Symmetry block:   A1    A2    B1    B2
+  DOCC:              3     0     1     1
+  SOCC:              0     0     0     0
 \end{verbatim}
-You should now have two new files \outputdat\ and \keyword{h2osto.30}.
-The latter file is a binary file, it cannot be directly examined.  The first
-file should contain text giving the program output.  Take a look at this
-file and see what kind of information it gives.
-
-Going on, 
+The \keyword{DOCC} array lists number of doubly-occupied orbitals per
+irrep, and the \keyword{SOCC} array lists the number of singly-occupied
+orbitals per irrep (unnecessary for closed-shell molecules).  These
+occupations could have been specified explicitly in user input as:
 \begin{verbatim}
-  c4-20:> psi
+docc = (3 0 1 1)
+socc = (0 0 0 0)
 \end{verbatim}
-reminds us that we will be running \PSIcints\ and \PSIcscf. We have everything
-we need for the first, but how about the second. 
+
+Once the occupations are available, the self-consistent-field procedure
+begins to solve the Hatree-Fock equations.  
 \begin{verbatim}
-  c4-20:> man cscf
+  iter       total energy        delta E         delta P          diiser
+    1       -68.8728484552    7.806978e+01    0.000000e+00    0.000000e+00
+    2       -71.2986301202    2.425782e+00    2.008202e-01    9.307684e-01
+    3       -73.8237872940    2.525157e+00    1.056816e-01    9.960987e-01
+    4       -75.8742610925    2.050474e+00    5.205943e-02    7.105479e-01
+    5       -76.0217491034    1.474880e-01    1.313776e-02    1.898892e-01
+    6       -76.0263470429    4.597939e-03    1.920732e-03    5.155862e-02
+    7       -76.0267968846    4.498417e-04    8.594423e-04    1.595832e-02
+    8       -76.0268077609    1.087637e-05    1.063540e-04    1.111887e-03
+    9       -76.0268081461    3.851364e-07    1.914348e-05    2.419943e-04
+   10       -76.0268081747    2.867948e-08    4.819477e-06    6.654983e-05
+   11       -76.0268081769    2.160775e-09    1.655548e-06    1.348540e-05
+   12       -76.0268081769    1.818989e-11    1.534696e-07    1.509549e-06
+   13       -76.0268081769    1.264766e-12    4.735582e-08    4.720895e-07
 \end{verbatim}
-Well, there are alot of possibilities, but the defaults are generally
-sound, so we really only need to add in our occupation scheme for
-the doubly-occupied orbitals. Or do we? The fact is
-\PSIcscf\ can guess occupations for you using
-core Hamiltonian orbital eigenvalues, but, as with any computer
-program, you have to be cautious. Let us be adventurous here and
-let the program guess.
-In general, always make sure you are computing the state you
-want to and not the state that the program chose. 
+For each iteration, the program lists the total electronic energy, the
+change in energy from the previous iteration, the RMS change in the
+density matrix, and the maximum element in the DIIS error array.  Once
+the delta P has dropped below $10^{-n}$, where $n$ is the number specified
+as the convergence criterion (by default, 7), the self-consistent-field
+procedure is considered complete.  
 
-Notice at this point that I am leaving out the
-majority of the file \inputdat. It is getting a little big
-to repetitiously include it within this document. 
-
-\subsection{Carrying Out a Calculation}
-Assuming you have done everything detailed in the previous
-section, we can run an actual job and get a number out. 
+At the end of the computation, the orbital energies are reported (in 
+Hartrees), along with their symmetry labels:
 \begin{verbatim}
-  c4-20:> psi
-\end{verbatim}
-Ahhhh. We forgot to change the \keyword{psi:check=true} flag,
-so nothing was really run. Change it to \keyword{psi:check=false},
-or simply comment it out (since the default value is false) by inserting a "\keyword{ \%}" at
-the start of that line, and run psi again. Take a look at the file \outputdat\
-and become familiar with it. 
+ 
+Orbital energies (a.u.):
+                                                                                
+  Doubly occupied orbitals
+   1A1    -20.550390     2A1     -1.336826     1B2     -0.699406
+   3A1     -0.566646     1B1     -0.493169
+                                                                                
+                                                                                
+  Unoccupied orbitals
+   4A1      0.185609     2B2      0.256291     3B2      0.789452
+   5A1      0.854627     6A1      1.163500     2B1      1.200384
+   4B2      1.253301     7A1      1.444438     1A2      1.476370
+   3B1      1.674656     8A1      1.867219     5B2      1.935269
+   6B2      2.453470     9A1      2.491061     4B1      3.285961
+   2A2      3.339124    10A1      3.510949    11A1      3.866084
+   7B2      4.147878
 
-We now have the basic \inputdat\ file. Only minor modifications will allow
-it to be used to run a great variety of jobs. First
-of all let's move on to another basis set. The only thing that needs to be
-changed is the parameter \keyword{input:basis=sto-3g} to,
-for instance, \keyword{input:basis=dz}. But for consistency,
-why not change \keyword{default:label} and \keyword{default:files:default:name}? 
+\end{verbatim}
+For typical closed-shell molecules, the occupied orbitals should have
+negative energies, and the unoccupied orbitals should have positive
+energies, as in this case.  The highest occupied orbital (HOMO) is
+a 1B1 orbital with an energy of -0.493169 Hartree, and the lowest
+unoccupied orbital (LUMO) is the 4A1 orbital with energy 0.185609 Hartree.
+
+Frequently, more specialized input will be required.  For example,
+maybe you wish to compute the energy of a radical anion using a large,
+diffuse basis set.  It may be difficult to converge the Hatree-Fock 
+wavefuction for a case like this, and it might require a different
+initial guess, more iterations, etc.  Special keywords for accomplishing
+such tasks are described later in this user's manual.  It is also
+possible to find this information through the use of \PSIthree\'s 
+manual pages and the {\tt man} command.  For the man pages to be accessible,
+the user must add them to their {\tt MANPATH} environmental variable (as
+described in the installation manual).  For C shell, this can be 
+accomplished using
 \begin{verbatim}
-  c4-20:> input
-  c4-20:> psi
+setenv MANPATH $psipath/doc/man:$MANPATH
 \end{verbatim}
-Whenever you change the basis parameter, you must run input so that
-the change in basis is included into \FILE30. Very important.
-Changing \keyword{default:files:default:name} every time you
-change the basis parameter is a good habit, as it will
-insure that you run \PSIinput. Do you see why? 
+where {\tt psipath} is the path to your installed version of 
+\PSIthree (e.g., \file{/usr/local/psi3}).  The manual for the \PSIcscf\
+module can then be accessed simply by typing
+\begin{verbatim}
+man cscf
+\end{verbatim}
+which will display a summary of the module and a list of user options.
 
-An aside about \PSIcscf\ and guess wavefunctions: when you run \PSIcscf,
-it (by default, but can be overridden) automatically checks
-to see if there is an old wavefunction in \FILE30\ which can be used
-as a guess wavefunction, and if so, it uses it.
-Each time \PSIcscf\ completes, (converged or not) it writes
-the final wavefunction to \FILE30. Each time \PSIinput\ is run, it overwrites
-\FILE30\ and any wavefunction that might have been in there is
-lost. Nothing tricky about any of this, but just something to
-keep in mind.  If you want to re-use MO's from a previous calculation as a
-guess, you can run \PSIinput\ with the {\tt --chkptmos} option.  This will
-work even if the previous calculation used a different basis set, but the
-geometry and point group symmetry should be the same.  Another useful
-flag is {\tt --noreorient}, which prevents the molecule from reorienting
-after shifting the origin to the center-of-mass.
-
-Well, energy points are well and good, but without optimizations,
-we are not going to get very far. So, we need \keyword{psi:dertype=first},
-\keyword{psi:opt=true}, and \keyword{psi:nopt=7} to run up to 7 cycles of geometry
-optimization (Or we could set \keyword{default:dertype=first}
-and \keyword{default:opt=true}, or even mix and match). Set \keyword{psi:check=true}
-and run \PSIdriver\ to see what modules will be run. Then check the man
-pages for each module and see what you need for it to run. For instance,
-in this case we see that \PSIcderiv\ will be run. {\tt man \PSIcints}
-shows that us that everything is set OK. \PSIoptking\ is the
-last program to be run in each optimization cycle. \PSItwo\
-users will appreciate the ease with which it can optimize molecules
-as it can generate internal coordinates for you as well as guess a
-force constant matrix. Hence defaults are sufficient to run this program.
-
-OK! Go ahead and run \PSIdriver. In the 5th cycle \PSIoptking\ 
-should return a non-zero value and \PSIdriver\ will stop the
-procedure. It will indicate that the optimization is
-over. Let's up the ante and go for an optimization with a DZP basis set.
-
-You know the procedure for improving the basis set.
-Just switch the label, the files name and the basis parameter.
-Oh, before I forgot, you have to remove file named \optaux. Then run \PSIinput\ 
-and \PSIdriver. The job runs fine. Go ahead and look at \outputdat.
-You may also wish to look at \FILE{11.dat}. \fconstdat\ contains now
-an improved force constant matrix. \PSIoptking\ will automatically
-use this improved FC matrix if it is present.
-
-OK, the calculation did converge in 4 steps. What if it didn't?
-Just increasing the number of optimization steps might just
-do that but might not. In general, 10 optimization steps should be enough
-for anyone. If it doesn't converge by then,
-your initial guess geometry or initial FC matrix
-or both were bad. Rethink your situation.
-Oops, this is supposed to be a howto-psi, not a QC-theology. 
