@@ -673,18 +673,15 @@ void cc3_Wabei(void)
 
     /** W(Ab,Ei) <--- -<Am|Ef>*t1[i][f]*t1[m][b] **/
 
-    dpd_buf4_init(&Z, CC_TMP0, 0, 28, 28, 28, 28, 0, "Z(Ef,Ab)");
+    dpd_buf4_init(&Z, CC_TMP0, 0, 26, 26, 26, 26, 0, "Z(Am,Ei)");
     dpd_buf4_init(&F, CC_FINTS, 0, 26, 28, 26, 28, 0, "F <Ai|Bc>");
-    dpd_contract424(&F, &tia, &Z, 1, 0, 0, 1, 0);
+    dpd_contract424(&F, &tia, &Z, 3, 1, 0, 1, 0);
     dpd_buf4_close(&F);
 
-    dpd_buf4_init(&Z1, CC_TMP0, 0, 28, 26, 28, 26, 0, "Z1(Ab,Ei)");
-    dpd_contract424(&Z, &tia, &Z1, 1, 1, 0, 1, 0);
+    dpd_buf4_init(&Z1, CC_TMP0, 0, 26, 28, 26, 28, 0, "Z1(Ei,Ab)");
+    dpd_contract424(&Z, &tia, &Z1, 1, 0, 0, 1, 0);
     dpd_buf4_close(&Z);
-
-    dpd_buf4_init(&W, CC_TMP0, 0, 28, 26, 28, 26, 0, "CC3 WAbEi (Ab,Ei)");
-    dpd_buf4_axpy(&Z1, &W, -1);
-    dpd_buf4_close(&W);
+    dpd_buf4_sort_axpy(&Z1, CC_TMP0, rspq, 28, 26, "CC3 WAbEi (Ab,Ei)", -1);
     dpd_buf4_close(&Z1);
 
     /** W(aB,eI) <--- -<Bm|Fe>*t1[I][F]*t1[m][a] **/
