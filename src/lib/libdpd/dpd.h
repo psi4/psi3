@@ -108,6 +108,8 @@ struct dpd_file4_cache_entry {
     int size;                           /* size of entry in double words */
     unsigned int access;                /* access time */
     unsigned int usage;                 /* number of accesses */
+    unsigned int priority;              /* priority level */
+    int lock;                           /* auto-deletion allowed? */
     int clean;                          /* has this file4 changed? */
     struct dpd_file4_cache_entry *next; /* pointer to next cache entry */
     struct dpd_file4_cache_entry *last; /* pointer to previous cache entry */
@@ -148,8 +150,12 @@ typedef struct {
     struct dpd_file4_cache_entry *file4_cache;
     unsigned int file4_cache_most_recent;
     unsigned int file4_cache_least_recent;
+    unsigned int file4_cache_lru_del;
+    unsigned int file4_cache_low_del;
+    int cachetype;
     int *cachefiles;
     int **cachelist;
+    struct dpd_file4_cache_entry *file4_cache_priority;
 } dpd_data;
 
 /* Useful for the generalized 4-index sorting function */
@@ -158,8 +164,9 @@ enum indices {pqrs, pqsr, prqs, prsq, psqr, psrq,
 	      rqps, rqsp, rpqs, rpsq, rsqp, rspq,
 	      sqrp, sqpr, srqp, srpq, spqr, sprq};
 
-int dpd_init(int dpd_num, int nirreps, int memory, int *cachefiles,
-             int **cachelist, int num_subspaces, ...);
+int dpd_init(int dpd_num, int nirreps, int memory, int cachetype,
+             int *cachefiles, int **cachelist, 
+             struct dpd_file4_cache_entry *priority, int num_subspaces, ...);
 int dpd_close(int dpd_num);
 int dpd_set_default(int dpd_num);
 
@@ -293,11 +300,14 @@ void dpd_file4_cache_print(FILE *outfile);
 struct dpd_file4_cache_entry
  *dpd_file4_cache_scan(int filenum, int irrep, int pqnum, int rsnum, char *label);
 struct dpd_file4_cache_entry *dpd_file4_cache_last(void);
-int dpd_file4_cache_add(dpdfile4 *File);
+int dpd_file4_cache_add(dpdfile4 *File, unsigned int priority);
 int dpd_file4_cache_del(dpdfile4 *File);
 struct dpd_file4_cache_entry *dpd_file4_cache_find_lru(void);
 int dpd_file4_cache_del_lru(void);
 void dpd_file4_cache_dirty(dpdfile4 *File);
+void dpd_file4_cache_lock(dpdfile4 *File);
+void dpd_file4_cache_unlock(dpdfile4 *File);
+
 
 #endif /* DPD_H */
 

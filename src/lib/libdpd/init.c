@@ -15,8 +15,9 @@ typedef struct {
     int ler;
 } dpdpair;
 
-int dpd_init(int dpd_num, int nirreps, int memory, int *cachefiles,
-             int **cachelist, int num_subspaces, ...)
+int dpd_init(int dpd_num, int nirreps, int memory, int cachetype,
+             int *cachefiles, int **cachelist, 
+             struct dpd_file4_cache_entry *priority, int num_subspaces, ...)
 {
   int h,h0,h1,cnt,***dp,l_irrep,r_irrep,p,q;
   int i,j,k,l,*count,offset1,offset2;
@@ -33,8 +34,12 @@ int dpd_init(int dpd_num, int nirreps, int memory, int *cachefiles,
   this_dpd->nirreps = nirreps;
   this_dpd->memory = memory/sizeof(double);  /* Available memory in doubles */
   this_dpd->memfree = this_dpd->memory;  /* At first... */
+
+  this_dpd->cachetype = cachetype;
   this_dpd->cachelist = cachelist;
   this_dpd->cachefiles = cachefiles;
+  this_dpd->file4_cache_priority = priority;
+
   this_dpd->num_subspaces = num_subspaces;
 
   /* Construct binary direct product array */

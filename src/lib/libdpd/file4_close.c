@@ -10,6 +10,7 @@
 
 int dpd_file4_close(dpdfile4 *File)
 {
+  dpd_file4_cache_unlock(File);
 
   free(File->lfiles);
 

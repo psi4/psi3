@@ -10,6 +10,8 @@ void dpd_file4_cache_init(void)
   dpd_default->file4_cache = NULL;
   dpd_default->file4_cache_most_recent = 0;
   dpd_default->file4_cache_least_recent = 1;
+  dpd_default->file4_cache_lru_del = 0;
+  dpd_default->file4_cache_low_del = 0;
 }
 
 void dpd_file4_cache_close(void)
@@ -87,7 +89,7 @@ struct dpd_file4_cache_entry *dpd_file4_cache_last(void)
   return(NULL);
 }
 
-int dpd_file4_cache_add(dpdfile4 *File)
+int dpd_file4_cache_add(dpdfile4 *File, unsigned int priority)
 {
   int h;
   struct dpd_file4_cache_entry *this_entry;
@@ -102,11 +104,25 @@ int dpd_file4_cache_add(dpdfile4 *File)
 	 or incore is set and the file4 isn't in the cache */
       dpd_error("File4 cache add error!", stderr);
     }
-  else if(this_entry != NULL && File->incore) 
-      return 0; /* We already have this one in cache */
+  else if(this_entry != NULL && File->incore) {
+      /* We already have this one in cache, but change its priority level */
+      this_entry->priority = priority; 
+      return 0;
+    }
   else if(this_entry == NULL && !(File->incore)) { /* New cache entry */
+
       this_entry = (struct dpd_file4_cache_entry *) 
                        malloc(sizeof(struct dpd_file4_cache_entry));
+
+      /* Read all data into core */
+      this_entry->size = 0;
+      for(h=0; h < File->params->nirreps; h++) {
+          this_entry->size +=
+              File->params->rowtot[h] * File->params->coltot[h];
+          dpd_file4_mat_irrep_init(File, h);
+          dpd_file4_mat_irrep_rd(File, h);
+        }
+
       this_entry->filenum = File->filenum;
       this_entry->irrep = File->my_irrep;
       this_entry->pqnum = File->params->pqnum;
@@ -127,16 +143,10 @@ int dpd_file4_cache_add(dpdfile4 *File)
 
       /* Set the clean flag */
       this_entry->clean = 1;
-	      
-      /* Read all data into core */
-      this_entry->size = 0;
-      for(h=0; h < File->params->nirreps; h++) {
-	  this_entry->size += 
-	      File->params->rowtot[h] * File->params->coltot[h];
-	  dpd_file4_mat_irrep_init(File, h);
-	  dpd_file4_mat_irrep_rd(File, h);
-	}
 
+      /* Set the priority level */
+      this_entry->priority = priority;
+	      
       this_entry->matrix = File->matrix;
 
       File->incore = 1;
@@ -197,15 +207,15 @@ void dpd_file4_cache_print(FILE *outfile)
 
   fprintf(outfile, "\n\tDPD File4 Cache Listing:\n\n");
   fprintf(outfile,
-"Cache Label              File symm  pq  rs  access  usage  clean  size(kB)\n");
+"Cache Label           File symm  pq  rs  usage  clean  priority  size(kB)\n");
   fprintf(outfile,
-"--------------------------------------------------------------------------\n");
+"-------------------------------------------------------------------------\n");
   while(this_entry != NULL) {
       fprintf(outfile,
-      "%-25s %3d    %1d  %2d  %2d  %6d  %5d      %1d  %8.1f\n",
+      "%-22s %3d    %1d  %2d  %2d  %6d  %5d      %1d    %6d  %8.1f\n",
 	      this_entry->label, this_entry->filenum, this_entry->irrep,
-	      this_entry->pqnum, this_entry->rsnum, this_entry->access,
-	      this_entry->usage,this_entry->clean, 
+	      this_entry->pqnum, this_entry->rsnum, this_entry->usage,
+              this_entry->clean, this_entry->priority,
               (this_entry->size)*sizeof(double)/1e3);
       total_size += this_entry->size;
       this_entry = this_entry->next;
@@ -213,8 +223,10 @@ void dpd_file4_cache_print(FILE *outfile)
   fprintf(outfile,
 "--------------------------------------------------------------------------\n");
   fprintf(outfile, "Total cached: %8.1f kB; MRU = %6d; LRU = %6d\n",
-	  (total_size*sizeof(double))/1e3, dpd_default->file4_cache_most_recent,
+	  (total_size*sizeof(double))/1e3,dpd_default->file4_cache_most_recent,
 	  dpd_default->file4_cache_least_recent);
+  fprintf(outfile, "#LRU deletions = %6d; #Low-priority deletions = %6d\n", 
+          dpd_default->file4_cache_lru_del,dpd_default->file4_cache_low_del);
 }
 
 struct dpd_file4_cache_entry *dpd_file4_cache_find_lru(void)
@@ -257,13 +269,16 @@ int dpd_file4_cache_del_lru(void)
       return 1; /* there is no cache */
     }
   else { /* we found the LRU so delete it */
-/*
-      printf("Deleteing LRU: %-24s %3d %2d %2d %6d %6d %1d %8.1f\n", 
+#ifdef DPD_DEBUG
+      printf("Deleteing LRU: %-22s %3d %2d %2d %6d %1d %6d %8.1f\n", 
              this_entry->label,
 	     this_entry->filenum, this_entry->pqnum, this_entry->rsnum,
-	     this_entry->access,this_entry->usage,this_entry->clean,
+	     this_entry->usage,this_entry->clean,this_entry->priority,
              (this_entry->size*sizeof(double))/1e3);
-*/
+#endif
+
+      /* increment the global LRU deletion counter */
+      dpd_default->file4_cache_lru_del++;
       
       dpd_file4_init(&File, this_entry->filenum, this_entry->irrep,
 		     this_entry->pqnum, this_entry->rsnum, this_entry->label);
@@ -295,3 +310,113 @@ void dpd_file4_cache_dirty(dpdfile4 *File)
      this_entry->clean = 0;
     }
 }
+
+int dpd_file4_cache_get_priority(dpdfile4 *File)
+{
+  struct dpd_file4_cache_entry *this_entry;
+  
+  this_entry = dpd_default->file4_cache_priority;
+
+  while(this_entry != NULL) {
+      if(this_entry->filenum == File->filenum     &&
+         this_entry->irrep == File->my_irrep      &&
+         this_entry->pqnum == File->params->pqnum &&
+         this_entry->rsnum == File->params->rsnum &&
+         !strcmp(this_entry->label,File->label)) 
+              return(this_entry->priority);
+
+      this_entry = this_entry->next;
+    }
+
+  return(0);
+}
+
+struct dpd_file4_cache_entry *dpd_file4_cache_find_low(void)
+{
+  struct dpd_file4_cache_entry *this_entry, *low_entry;
+
+  this_entry = dpd_default->file4_cache;
+
+  if(this_entry == NULL) return(NULL);
+
+  /* find the first unlocked entry */
+  while(this_entry->lock && this_entry != NULL) 
+      this_entry = this_entry->next;
+
+  /* Now search for the lowest priority entry */
+  low_entry = this_entry;
+  while(this_entry != NULL) {
+      if((this_entry->priority < low_entry->priority) && !this_entry->lock)
+          low_entry = this_entry;
+      this_entry = this_entry->next;
+    }
+  
+  return low_entry;
+}
+
+int dpd_file4_cache_del_low(void)
+{
+  dpdfile4 File;
+  struct dpd_file4_cache_entry *this_entry;
+
+#ifdef DPD_TIMER
+  timer_on("cache_low");
+#endif
+
+  this_entry = dpd_file4_cache_find_low();
+
+  if(this_entry == NULL) {
+#ifdef DPD_TIMER
+      timer_off("cache_low");
+#endif
+      return 1; /* there is no cache */
+    }
+  else { /* we found the LOW so delete it */
+#ifdef DPD_DEBUG
+      printf("Delete LOW: %-22s %3d %2d %2d %6d %1d %6d %8.1f\n",
+             this_entry->label,
+             this_entry->filenum, this_entry->pqnum, this_entry->rsnum,
+             this_entry->usage,this_entry->clean,this_entry->priority,
+             (this_entry->size*sizeof(double))/1e3);
+#endif
+
+      /* increment the global LOW deletion counter */
+      dpd_default->file4_cache_low_del++;
+
+      dpd_file4_init(&File, this_entry->filenum, this_entry->irrep,
+                     this_entry->pqnum, this_entry->rsnum,
+this_entry->label);
+
+      dpd_file4_cache_del(&File);
+      dpd_file4_close(&File);
+
+#ifdef DPD_TIMER
+  timer_off("cache_low");
+#endif
+
+      return 0;
+    }
+}
+
+void dpd_file4_cache_lock(dpdfile4 *File)
+{
+  struct dpd_file4_cache_entry *this_entry;
+
+  this_entry = dpd_file4_cache_scan(File->filenum, File->my_irrep,
+                                    File->params->pqnum, File->params->rsnum,
+                                    File->label);
+
+  if(this_entry != NULL) this_entry->lock = 1;
+}
+
+void dpd_file4_cache_unlock(dpdfile4 *File)
+{ 
+  struct dpd_file4_cache_entry *this_entry;
+  
+  this_entry = dpd_file4_cache_scan(File->filenum, File->my_irrep,
+                                    File->params->pqnum, File->params->rsnum,
+                                    File->label);
+  
+  if(this_entry != NULL) this_entry->lock = 0;
+}
+

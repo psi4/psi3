@@ -23,6 +23,7 @@ int dpd_file4_init(dpdfile4 *File, int filenum, int irrep, int pqnum,
 		   int rsnum,  char *label)
 {
   int i;
+  unsigned int priority;
   struct dpd_file4_cache_entry *this_entry;
   
   strcpy(File->label,label);
@@ -52,7 +53,17 @@ int dpd_file4_init(dpdfile4 *File, int filenum, int irrep, int pqnum,
 
   /* Put this file4 into cache if requested */
   if(dpd_default->cachefiles[filenum] && dpd_default->cachelist[pqnum][rsnum]) 
-      dpd_file4_cache_add(File); 
+      {
+      /* Get the file4's cache priority */
+      if(dpd_default->cachetype == 1)
+          priority = dpd_file4_cache_get_priority(File);
+      else priority = 0;
+
+      dpd_file4_cache_add(File, priority); 
+
+      /* Make sure this cache entry can't be deleted until we're done */
+      dpd_file4_cache_lock(File);
+    }
 
   return 0;
 }
