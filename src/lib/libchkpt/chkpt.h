@@ -69,6 +69,9 @@ void chkpt_wt_nmo(int);
 int chkpt_rd_nfzc(void);
 void chkpt_wt_nfzc(int);
 
+int chkpt_rd_nfzv(void);
+void chkpt_wt_nfzv(int);
+
 int chkpt_rd_nsymhf(void);
 void chkpt_wt_nsymhf(int);
 
@@ -98,6 +101,9 @@ void chkpt_wt_openpi(int *);
 
 int *chkpt_rd_frzcpi(void);
 void chkpt_wt_frzcpi(int *);
+
+int *chkpt_rd_frzvpi(void);
+void chkpt_wt_frzvpi(int *);
 
 int *chkpt_rd_sopi(void);
 void chkpt_wt_sopi(int *);
