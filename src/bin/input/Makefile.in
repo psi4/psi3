@@ -24,7 +24,7 @@ $(BINOBJ:%.o=%.d): $(DEPENDINCLUDE)
 include $(BINOBJ:%.o=%.d)
 endif
 
-install_man:: $(TARGET).1
+install_man:: input.1
 	$(MKDIRS) $(mandir)/man1
 	$(INSTALL_INCLUDE) $^ $(mandir)/man1
 
