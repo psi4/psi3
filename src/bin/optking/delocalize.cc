@@ -8,7 +8,7 @@
 
 extern "C" {
   #include <stdio.h>
-  #include <libfile30/file30.h>
+  #include <libchkpt/chkpt.h>
   #include <stdlib.h>
   #include <string.h>
   #include <physconst.h>
@@ -147,9 +147,9 @@ void delocalize(int num_atoms,internals &simples) {
   ip_cwk_clear();
   ip_cwk_add(":DEFAULT");
   ip_cwk_add(":OPTKING");
-  file30_init();
-  rotor_type = file30_rd_rottype();
-  file30_close();
+  chkpt_init();
+  rotor_type = chkpt_rd_rottype();
+  chkpt_close();
   ip_done();
   switch (rotor_type) {
   case 3:

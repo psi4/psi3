@@ -10,7 +10,7 @@
 
 extern "C" {
   #include <stdio.h>
-  #include <libfile30/file30.h>
+  #include <libchkpt/chkpt.h>
   #include <stdlib.h>
   #include <string.h>
   #include <ctype.h>
@@ -68,7 +68,7 @@ int main(void)
   psio_init();
   get_optinfo();
 
-  /* loads up and prints cartesian info from file11.dat, file30, input */
+  /* loads up and prints cartesian info from file11.dat, chkpt, input */
   cartesians carts;
   dim_carts = carts.get_num_atoms()*3;
   djunk = new double[dim_carts];
@@ -198,7 +198,7 @@ int main(void)
     }
     if (optinfo.micro_iteration > 0) {
       energies = new double[num_disps];
-      energy = energy30();
+      energy = energy_chkpt();
       open_PSIF();
         if (psio_tocscan(PSIF_OPTKING, "Energy of Displacements") != NULL)
             psio_read_entry(PSIF_OPTKING, "Energy of Displacements",
@@ -211,7 +211,7 @@ int main(void)
     }
     if (optinfo.micro_iteration < num_disps) {
     /*** if it is NOT time to take a step, load next micro_iteration ***
-     *** geometry into file30  ***/
+     *** geometry into chkpt  ***/
       micro_geoms = block_matrix(num_disps, dim_carts);
       open_PSIF();
         psio_read_entry(PSIF_OPTKING, "Micro_iteration cart geoms",
@@ -224,15 +224,15 @@ int main(void)
       ip_cwk_clear();
       ip_cwk_add(":DEFAULT");
       ip_cwk_add(":OPTKING");
-      file30_init();
+      chkpt_init();
       geom2D = block_matrix(carts.get_num_atoms(),3);
       for (i=0; i<carts.get_num_atoms(); ++i)
         for (j=0; j<3; ++j)
           geom2D[i][j] = micro_geoms[optinfo.micro_iteration][3*i+j];
-     file30_wt_geom(geom2D);
-     file30_close();
+     chkpt_wt_geom(geom2D);
+     chkpt_close();
      ip_done();
-     fprintf(outfile, "\nGeometry for displacement %d sent to file30.\n",optinfo.micro_iteration+1);
+     fprintf(outfile, "\nGeometry for displacement %d sent to chkpt.\n",optinfo.micro_iteration+1);
      free_block(micro_geoms);
      free_block(geom2D);
      open_PSIF();
@@ -854,18 +854,18 @@ void get_syminfo(internals &simples) {
   ip_cwk_clear();
   ip_cwk_add(":DEFAULT");
   ip_cwk_add(":OPTKING");
-  file30_init();
+  chkpt_init();
 
   if (ip_exist("SYMMETRY",0))
     ip_string("SYMMETRY",&syminfo.symmetry,0);
   else {
-    syminfo.symmetry = file30_rd_sym_label();
+    syminfo.symmetry = chkpt_rd_sym_label();
   }
-  num_irreps = syminfo.num_irreps = file30_rd_nirreps();
-  syminfo.ict = file30_rd_ict();
-  syminfo.irrep_lbls = file30_rd_irr_labs();
-  num_atoms = file30_rd_natom();
-  file30_close();
+  num_irreps = syminfo.num_irreps = chkpt_rd_nirreps();
+  syminfo.ict = chkpt_rd_ict();
+  syminfo.irrep_lbls = chkpt_rd_irr_labs();
+  num_atoms = chkpt_rd_natom();
+  chkpt_close();
   ip_done();
 
   j = strlen(syminfo.symmetry);
@@ -962,7 +962,7 @@ void get_syminfo(internals &simples) {
 
   if (optinfo.print_symmetry) {
     fprintf(outfile,"\n+++ Symmetry Information +++\n");
-    fprintf(outfile,"The ICT table from file30:\n");
+    fprintf(outfile,"The ICT table from chkpt:\n");
     for(i=0;i<num_irreps;++i) {
        for(j=0;j<num_atoms;++j)
           fprintf(outfile,"%3d",syminfo.ict[i][j]);
@@ -1311,7 +1311,7 @@ void close_PSIF(void) {
   return;
 }
 
-double energy30(void) {
+double energy_chkpt(void) {
   double energy;
   rewind(fp_input);
   ip_set_uppercase(1);
@@ -1319,9 +1319,10 @@ double energy30(void) {
   ip_cwk_clear();
   ip_cwk_add(":DEFAULT");
   ip_cwk_add(":OPTKING");
-  file30_init();
-  energy = file30_rd_escf();
-  file30_close();
+  chkpt_init();
+//  energy = chkpt_rd_escf();
+  energy = chkpt_rd_etot();
+  chkpt_close();
   ip_done();
   return energy;
 }

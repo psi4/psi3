@@ -6,7 +6,7 @@
 
 extern "C" {
   #include <stdio.h>
-  #include <libfile30/file30.h>
+  #include <libchkpt/chkpt.h>
   #include <stdlib.h>
   #include <string.h>
   #include <libciomr/libciomr.h>
@@ -149,7 +149,7 @@ void new_geom(cartesians &carts, internals &simples, salc_set &symm,
   for (i=0;i<dim_carts;++i)
     return_geom[i] = x[i]/_bohr2angstroms;
 
-// write geometry to file30 or geom.dat
+// write geometry to chkpt or geom.dat
   if (print == PRINT_TO_GEOM) {
      FILE *fp_geom;
      if (restart_geom_file) {

@@ -16,7 +16,7 @@ extern "C" {
   #include <string.h>
   #include <libciomr/libciomr.h>
   #include <libipv1/ip_lib.h>
-  #include <libfile30/file30.h>
+  #include <libchkpt/chkpt.h>
   #include <physconst.h>
   #include <masses.h>
 }
@@ -62,7 +62,7 @@ cartesians::cartesians() {
 
   if (   ((fp_11 = fopen("file11.dat","r")) == NULL)
       || (optinfo.numerical_dertype > 0) ) {
-     /* Read geometry and energy data only from file30 */
+     /* Read geometry and energy data only from chkpt */
     rewind(fp_input);
     ip_set_uppercase(1);
     ip_initialize(fp_input,outfile);
@@ -70,13 +70,13 @@ cartesians::cartesians() {
     ip_cwk_add(":DEFAULT");
     ip_cwk_add(":OPTKING");
 
-    file30_init();
-    geom = file30_rd_geom();
-    num_atoms = file30_rd_natom();
-    zvals = file30_rd_zvals();
-/*** FIX ***/
-    energy = file30_rd_escf();
-    file30_close();
+    chkpt_init();
+    geom = chkpt_rd_geom();
+    num_atoms = chkpt_rd_natom();
+    zvals = chkpt_rd_zvals();
+//    energy = chkpt_rd_escf();
+    energy = chkpt_rd_etot();
+    chkpt_close();
     ip_done();
 
      coord = new double[3*num_atoms];
@@ -224,7 +224,7 @@ cartesians::cartesians() {
        flag = 2 print geom and grad with masses
        flag = 4 print geometry to geom.dat
        flag = 11 print data in file11 format
-       flag = 30 print geometry to file30
+       flag = 30 print geometry to chkpt
 disp_label is only used for geom.dat writing
 -----------------------------------------------------------------------------*/
 
@@ -297,7 +297,7 @@ char *disp_label, int disp_num) {
   }
   if (flag == 30) {
 
-     fprintf(outfile,"\nGeometry written to file30\n");
+     fprintf(outfile,"\nGeometry written to chkpt\n");
     fflush(outfile);
     rewind(fp_input);
     ip_set_uppercase(1);
@@ -305,20 +305,19 @@ char *disp_label, int disp_num) {
     ip_cwk_clear();
     ip_cwk_add(":DEFAULT");
     ip_cwk_add(":OPTKING");
-    file30_init();
+    chkpt_init();
 
      int j;
      double **geom;
-     geom = init_matrix(num_atoms,3);
+     geom = block_matrix(num_atoms,3);
      for (i=0; i<num_atoms; ++i) {
         for (j=0; j<3; ++j)
            geom[i][j] = coord[3*i+j];
      }
-     file30_wt_geom(geom);
-     file30_close();
+     chkpt_wt_geom(geom);
+     chkpt_close();
      ip_done();
-
-     free_matrix(geom,num_atoms);
+     free_block(geom);
   }
 
   return;

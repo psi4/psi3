@@ -44,7 +44,7 @@ EXTERN char ptgrp[4];        /*molecular point group*/
 EXTERN int *number_internals;
 EXTERN void open_PSIF(void);
 EXTERN void close_PSIF(void);
-EXTERN double energy30(void);
+EXTERN double energy_chkpt(void);
 
 /* C functions we may want to use (or need to keep as C functions so they can be called from C code) */
 extern "C" void punt(char *message);
