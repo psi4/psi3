@@ -103,21 +103,22 @@ the {\tt configure} script:
   install the \PSIthree\ package somewhere other than the default
   directory, {\tt /usr/local/psi}.
 \item {\tt --with-cc=compiler} --- Use this option to specify a C
-  compiler.  The default search order for compilers is: {\tt gcc},
-  {\tt cc}, {\tt ccc}.  (NB: On AIX systems, the search order is {\tt
-  cc\_r}, {\tt cc}, {\tt gcc}, {\tt xlc}. When compiling in 64-bit
-  mode on AIX, you must manually specify {\tt cc\_r} as the C compiler
-  of choice.)
+  compiler.  One should use compilers that generate reentrant code,
+  if possible. The default search order for compilers is: {\tt gcc},
+  {\tt cc}.  (NB: On AIX systems, the search order is {\tt
+  cc\_r}, {\tt gcc}.)
 \item {\tt --with-cxx=compiler} --- Use this option to specify a C++
-  compiler.  The default search order for compilers is: {\tt g++},
+  compiler.  One should use compilers that generate reentrant code,
+  if possible. The default search order for compilers is: {\tt g++},
   {\tt c++}, {\tt cxx}.  (NB: On AIX systems, the search order is {\tt
-  xlC\_r}, {\tt xlC}, {\tt c++}, {\tt g++}.)
+  xlC\_r}, {\tt c++}, {\tt g++}.)
 \item {\tt --with-fc=compiler} --- Use this option to specify a
-  Fortran-77 compiler.  The default search order for compilers is:
+  Fortran-77 compiler.  One should use compilers that generate reentrant code,
+  if possible. The default search order for compilers is:
   {\tt g77}, {\tt f77}, {\tt fc}, {\tt f2c}.  (NB: On AIX systems, the
-  search order is {\tt xlf\_r}, {\tt xlf}, {\tt g77}, {\tt f77}, {\tt
+  search order is {\tt xlf\_r}, {\tt g77}, {\tt f77}, {\tt
   fc}, {\tt f2c}.)
-\item {\tt --with-ar=compiler} --- Use this option to specify an
+\item {\tt --with-ar=archiver} --- Use this option to specify an
   archiver.  The default is {\tt ar}.
 \item {\tt --with-blas=library} --- Use this option to specify a BLAS
   library.  If your BLAS library has multiple components, enclose the
@@ -262,6 +263,30 @@ setenv MANPATH $PSI/doc/man:$MANPATH
 The final line will enable the use of the PSI3 man pages.
 \begin{verbatim}
 \end{verbatim}
+
+
+\section{Architecture-specific issues}
+\begin{itemize}
+\item Reentrant versions of C, C++, and Fortran
+compilers should be used whenever possible.
+\item AIX 4.3/5.x in 64-bit environment:
+AIX {\tt lex} should be used instead of {\tt GNU flex}.
+This can be achieved with the following configure options:
+{\tt --with-lex=/bin/lex --with-lexlib=/usr/lib/libl.a}
+\item AIX 4.3/5.x in 64-bit environment:
+if IBM VisualAge C++ and IBM XL Fortran are used,
+one has to manually specify
+the {\tt -q64} compiler flag
+that enables production of 64-bit executables.
+The following configure options should be used:
+{\tt --with-cc='cc\_r -q64' --with-cxx='xlC\_r -q64'
+ --with-fc='xlf\_r -q64'}. Note that
+the reentrant versions of the compilers
+are used. Also, we haven't had much luck
+using {\tt xlc\_r} because of its
+handling of functions with variable argument lists,
+use {\tt cc\_r} instead.
+\end{itemize}
 
 
 \end{document}

@@ -104,15 +104,15 @@ AC_SUBST(LIBR12_OPT_AM)
 
 # potential names of compilers
 FC_LIST="g77 f77 fc f2c"
-CC_LIST="gcc cc ccc"
+CC_LIST="gcc cc"
 CXX_LIST="g++ c++ cxx"
 
 # set up os specific options
 case $os in
   aix*)
-    FC_LIST="xlf_r xlf $FC_LIST"
-    CC_LIST="cc_r cc gcc xlc"
-    CXX_LIST="xlC_r xlC c++ g++"
+    FC_LIST="xlf_r $FC_LIST"
+    CC_LIST="cc_r gcc"
+    CXX_LIST="xlC_r c++ g++"
     ;;
 esac
 
@@ -691,6 +691,12 @@ AR="ar"
 AC_ARG_WITH(ar,--with-ar		which library archiver to use,[AR=$withval])
 AC_SUBST(AR)
 ARFLAGS="rv"
+# set up os specific archiver options
+case $os in
+  aix*)
+    ARFLAGS="-X32_64 $ARFLAGS"
+    ;;
+esac
 AC_SUBST(ARFLAGS)
 AC_SUBST(LDFLAGS)
 
