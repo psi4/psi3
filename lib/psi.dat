@@ -21,8 +21,8 @@ psi: (
   propint    = "cints --oeprop"
   transqt    = "transqt"
   backtransqt = "transqt --backtr"
-  dipder      = "dipder"
   cphf        = "cphf"
+  response    = "response"
   normco      = "normco"
   oeprop      = "oeprop"
   optking     = "optking"
@@ -51,6 +51,7 @@ psi: (
   cclambda   = "cclambda"
   ccdensity  = "ccdensity"
   cceom      = "cceom"
+  ccresponse = "ccresponse"
   ooccman    = "ccman"
 
   % Determinant CI specific programs
@@ -149,6 +150,13 @@ psi: (
   SCFROHFEnergyDisp =
     (repeat $ndisp $ugeom $uinput $SCFROHFEnergy $rgeom end $done)
 
+  % Procedure for an SCF linear response calculation
+  SCFResponse = ($input $SCFEnergy $transqt $ccsort $propint $response $done)
+  SCFRHFResponse = $SCFResponse
+  SCFUHFResponse = ERROR
+  SCFROHFResponse = ERROR
+  SCFTwoConResponse = ERROR
+
   % -------------------------------- CCSD Procedures
   % Procedures for the CCSD energy
   CCSDEnergy = ($ints $scf $transqt $ccsort $ccenergy)
@@ -221,6 +229,12 @@ psi: (
   CCSDUHFFirstFreq  = $CCSDFirstFreq
   CCSDTwoConFirstFreq  = $CCSDFirstFreq
 
+  % Procedure for an SCF linear response calculation
+  CCSDResponse = ($input $CCSDEnergy $cchbar $cclambda $propint $ccresponse $done)
+  CCSDRHFResponse = $CCSDResponse
+  CCSDUHFResponse = ERROR
+  CCSDROHFResponse = ERROR
+  CCSDTwoConResponse = ERROR
 
   % -------------------------------- CCSD(T) Procedures
   % Procedures for the CCSD(T) energy
