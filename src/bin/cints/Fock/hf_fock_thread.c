@@ -690,8 +690,8 @@ void *hf_fock_thread(void *tnum_ptr)
 		      ii == kk && ii == ll) {
 		      G[si][sj][i][j] += sp_kl->dmat[k][l]*(c1*ffac1);
 		      G[sk][sl][k][l] += sp_ij->dmat[i][j]*(c1*ffac1);
-		      G_o[si][sj][i][j] += sp_kl->dmato[k][l]*(c1*ffac1);
-		      G_o[sk][sl][k][l] += sp_ij->dmato[i][j]*(c1*ffac1);
+		      G_o[si][sj][i][j] -= sp_kl->dmato[k][l]*(c3*ffac1);
+		      G_o[sk][sl][k][l] -= sp_ij->dmato[i][j]*(c3*ffac1);
 		  }
 		  else if (ii == kk || jj == ll) {
 		      G[si][sj][i][j] += sp_kl->dmat[k][l]*(c2*ffac1);
