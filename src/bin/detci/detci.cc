@@ -478,41 +478,69 @@ void diag_h(struct stringwr **alplist, struct stringwr **betlist)
 
       /* Dump the vector to a PSIO file
 	 Added by Edward valeev (June 2002) */
-      /*
       if (Parameters.export_ci_vector) {
         StringSet alphastrings, betastrings;
         SlaterDetSet dets;
         SlaterDetVector vec;
+	short int *fzc_occ;
+	unsigned char *newocc;
+
+	if (CalcInfo.num_fzc_orbs > 0) {
+	  fzc_occ = (short int *) malloc(CalcInfo.num_fzc_orbs*sizeof(short int));
+	  for (int l=0; l<CalcInfo.num_fzc_orbs; l++) {
+	    fzc_occ[l] = CalcInfo.order[l]; /* put it in Pitzer order */
+	  }
+	}
+
+	newocc = (unsigned char *) malloc(((AlphaG->num_el > BetaG->num_el) ? 
+					   AlphaG->num_el : BetaG->num_el)*sizeof(unsigned char));
 
         stringset_init(&alphastrings,AlphaG->num_str,AlphaG->num_el,
-                       CalcInfo.num_fzc_orbs);
+                       CalcInfo.num_fzc_orbs, fzc_occ);
         int list_gr = 0;
 	int offset = 0;
         for(int irrep=0; irrep<AlphaG->nirreps; irrep++) {
   	  for(int gr=0; gr<AlphaG->subgr_per_irrep; gr++,list_gr++) {
   	    int nlists_per_gr = AlphaG->sg[irrep][gr].num_strings;
-  	    for(int l=0; l<nlists_per_gr; l++)
-	      stringset_add(&alphastrings,l+offset,alplist[list_gr][l].occs);
+  	    for(int l=0; l<nlists_per_gr; l++) {
+	      /* convert occs to Pitzer order */
+	      for (int n=0; n<AlphaG->num_el; n++) {
+		newocc[n] = (unsigned char) 
+		  CalcInfo.order[alplist[list_gr][l].occs[n] + 
+				CalcInfo.num_fzc_orbs];
+	      }
+	      stringset_add(&alphastrings,l+offset,newocc);
+	    }
 	    offset += nlists_per_gr;
       	  }
         }
   	
         stringset_init(&betastrings,BetaG->num_str,BetaG->num_el,
-                       CalcInfo.num_fzc_orbs);
+                       CalcInfo.num_fzc_orbs, fzc_occ);
         list_gr = 0;
 	offset = 0;
         for(int irrep=0; irrep<BetaG->nirreps; irrep++) {
           for(int gr=0; gr<BetaG->subgr_per_irrep; gr++,list_gr++) {
 	    int nlists_per_gr = BetaG->sg[irrep][gr].num_strings;
-	    for(int l=0; l<nlists_per_gr; l++)
-	      stringset_add(&betastrings,l+offset,betlist[list_gr][l].occs);
+	    for(int l=0; l<nlists_per_gr; l++) {
+	      /* convert occs to Pitzer order */
+	      for (int n=0; n<BetaG->num_el; n++) {
+		newocc[n] = (unsigned char) 
+		  CalcInfo.order[betlist[list_gr][l].occs[n] +
+				CalcInfo.num_fzc_orbs];
+	      }
+	      stringset_add(&betastrings,l+offset,newocc);
+	    }
 	    offset += nlists_per_gr;
 	  }
         }
+	free(newocc);
+	if (CalcInfo.num_fzc_orbs > 0)
+	  free(fzc_occ);
 
 	int Iarel, Ialist, Ibrel, Iblist;
         slaterdetset_init(&dets,size,&alphastrings,&betastrings);
-        for (ii=0; ii<size; ii++) {
+        for (int ii=0; ii<size; ii++) {
           Cvec.det2strings(ii, &Ialist, &Iarel, &Iblist, &Ibrel);
 	  int irrep = Ialist/AlphaG->subgr_per_irrep;
 	  int gr = Ialist%AlphaG->subgr_per_irrep;
@@ -532,7 +560,6 @@ void diag_h(struct stringwr **alplist, struct stringwr **betlist)
         stringset_delete(&alphastrings);
         stringset_delete(&betastrings);
       }
-      */
     } /* end RSP section */
 
    /* RSP test of Davidson/Liu (SEM) diagonalization routine */
