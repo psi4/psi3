@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <libdpd/dpd.h>
+#include <libpsio/psio.h>
 #define EXTERN
 #include "globals.h"
 
@@ -18,7 +19,7 @@ void d_corr(void)
   int h, root, errcod, ij, ab;
   char lbl[32];
   double e1, e2_AA, e2_BB, e2_AB, e2;
-  double **singlet_d, **singlet_weakp, **triplet_d, **uhf_d;
+  double **singlet_d, **singlet_weakp, **triplet_d, **uhf_d, *pair_energy;
   dpdfile2 F, B, B_A, B_B, V, V_A, V_B;
   dpdbuf4 D, U, Z;
 
@@ -40,6 +41,7 @@ void d_corr(void)
       for(h=0; h < moinfo.nirreps; h++)
 	singlet_weakp[h] = init_array(params.rpi[h]);
       moinfo.singlet_weakp = singlet_weakp;
+      pair_energy = init_array(local.nocc*local.nocc);
     }
 
     triplet_d = (double **) malloc(moinfo.nirreps * sizeof(double *));
@@ -114,15 +116,22 @@ void d_corr(void)
 	    singlet_weakp[h][root] = 0.0;
 	    for(ij=0; ij < local.nocc*local.nocc; ij++) {
 	      if(local.weak_pairs[ij]) {
-		for(ab=0; ab < local.nvir*local.nvir; ab++)
+		for(ab=0; ab < local.nvir*local.nvir; ab++) {
 		  singlet_weakp[h][root] += Z.matrix[0][ij][ab] * U.matrix[0][ij][ab];
+		}
 	      }
+	      pair_energy[ij] = 0.0;
+	      for(ab=0; ab < local.nvir*local.nvir; ab++)
+		pair_energy[ij] += Z.matrix[0][ij][ab] * U.matrix[0][ij][ab];
 	    }
 
 	    dpd_buf4_mat_irrep_close(&Z, 0);
 	    dpd_buf4_mat_irrep_close(&U, 0);
 	    dpd_buf4_close(&Z);
 	    dpd_buf4_close(&U);
+
+	    sprintf(lbl, "CIS(D) Pair Energies (%d)", root);
+	    psio_write_entry(CC_INFO, lbl, (char *) pair_energy, local.nocc*local.nocc*sizeof(double));
 	  }
 	}
 	else singlet_d[h][root] = 0.0;
@@ -241,4 +250,6 @@ void d_corr(void)
       }
     }
   }
+
+  if(params.local) free(pair_energy);
 }

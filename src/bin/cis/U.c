@@ -2,7 +2,7 @@
 #define EXTERN
 #include "globals.h"
 
-void local_filter_U2(dpdbuf4 *T2, int denom, double lambda);
+void local_filter_U2(dpdbuf4 *T2, double lambda);
 
 int U_build(int irrep, int root, double lambda, enum Spin spin)
 {
@@ -27,7 +27,7 @@ int U_build(int irrep, int root, double lambda, enum Spin spin)
 
     sprintf(lbl, "UIjAb[%d]", irrep);
     dpd_buf4_init(&U, CC_MISC, irrep, 0, 5, 0, 5, 0, lbl);
-    if(params.local) local_filter_U2(&U, 1, lambda);
+    if(params.local) local_filter_U2(&U, lambda);
     else {
       sprintf(lbl, "dIjAb[%d]", irrep);
       dpd_buf4_init(&D, CC_MISC, irrep, 0, 5, 0, 5, 0, lbl);
@@ -72,7 +72,7 @@ int U_build(int irrep, int root, double lambda, enum Spin spin)
 
       dpd_buf4_close(&U);
 
-      if(params.local) local_filter_U2(&Unew, 1, lambda);
+      if(params.local) local_filter_U2(&Unew, lambda);
       else {
 	sprintf(lbl, "dIjAb[%d]", irrep);
 	dpd_buf4_init(&D, CC_MISC, irrep, 0, 5, 0, 5, 0, lbl);

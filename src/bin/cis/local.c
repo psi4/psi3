@@ -1,6 +1,6 @@
 /*!
   \file local.c
-  \ingroup (CCENERGY)
+  \ingroup (CIS)
 */
 
 #include <stdio.h>
@@ -18,8 +18,6 @@
 #include <psifiles.h>
 #define EXTERN
 #include "globals.h"
-
-double **symm_matrix_invert(double **A, int dim, int print_det, int redundant);
 
 /*! 
 ** local_init(): Set up parameters of local excitation domains.
@@ -447,49 +445,6 @@ void local_init(void)
   fprintf(outfile, "\n");
   fflush(outfile);
 
-  R = block_matrix(nso,nvir);
-
-  for(a=0; a < nvir; a++)
-    for(m=0; m < nso; m++)
-      R[m][a] = C[m][a+nocc_all];
-
-  /* compute the full U */
-  U = block_matrix(nvir, nso);
-  C_DGEMM('t','n', nvir, nso, nso, 1.0, &(R[0][0]),nvir,
-	  &(S[0][0]),nso,0.0,&(X[0][0]), nso);
-  C_DGEMM('n','n', nvir, nso, nso, 1.0, &(X[0][0]), nso,
-	  &(Rt_full[0][0]), nso, 0.0, &(U[0][0]), nso);
-
-  /* Compute Stilde */
-  St = block_matrix(nso,nso);
-  C_DGEMM('t','n',nso,nso,nso,1.0,&(Rt_full[0][0]),nso,
-	  &(S[0][0]),nso,0.0,&(X[0][0]),nso);
-  C_DGEMM('n','n',nso,nso,nso,1.0,&(X[0][0]),nso,
-	  &(Rt_full[0][0]),nso,0.0,&(St[0][0]),nso);
-
-  /* Diagonalize St */
-  evecs = block_matrix(nso,nso);
-  evals = init_array(nso);
-  sq_rsp(nso,nso,St,evals,1,evecs,1e-12);
-  for(i=0,cnt=0; i < nso; i++) if(evals[i] < 1e-6) cnt++;
-
-  /*
-    fprintf(outfile, "Non-redundant space= %d; nvir = %d\n", nso-cnt, nvir);
-    if(nso-cnt != nvir) { fprintf(outfile, "nvir != nso-cnt!\n"); exit(PSI_RETURN_FAILURE); }
-  */
-
-  Xt = block_matrix(nso,nvir);
-  for(i=0,I=0;i < nso; i++) {
-    if(evals[i] > 1e-6) {
-      for(j=0; j < nso; j++)
-	Xt[j][I] = evecs[j][i]/sqrt(evals[i]);
-      I++;
-    }
-  }
-
-  free(evals);
-  free_block(evecs);
-
   /* Grab the MO-basis Fock matrix */
   Fmo = block_matrix(nso, nso);
   for(i=0; i < nfzc; i++) Fmo[i][i] = eps_all[i];
@@ -531,61 +486,6 @@ void local_init(void)
     fprintf(outfile, "\n\tAO-Basis Fock Matrix:\n");
     print_mat(F, nso, nso, outfile);
   */
-
-  /* Build Ft */
-  Ft = block_matrix(nso, nso);
-  C_DGEMM('t','n',nso,nso,nso,1.0,&(Rt_full[0][0]),nso,
-	  &(F[0][0]),nso,0.0,&(X[0][0]),nso);
-  C_DGEMM('n','n',nso,nso,nso,1.0,&(X[0][0]),nso,
-	  &(Rt_full[0][0]),nso,0.0,&(Ft[0][0]),nso);
-
-  Fbar = block_matrix(nvir,nvir);
-  C_DGEMM('t','n',nvir,nso,nso,1.0,&(Xt[0][0]),nvir,
-	  &(Ft[0][0]),nso,0.0,&(Y[0][0]),nso);
-  C_DGEMM('n','n',nvir,nvir,nso,1.0,&(Y[0][0]),nso,
-	  &(Xt[0][0]),nvir,0.0,&(Fbar[0][0]),nvir);
-
-  evals = init_array(nvir);
-  evecs = block_matrix(nvir,nvir);
-
-  /* Diagonalize Fbar */
-  sq_rsp(nvir,nvir,Fbar,evals,1,evecs,1e-12);
-
-  /* Build the W transformation matrix */
-  WW = block_matrix(nso,nvir);
-  C_DGEMM('n','n',nso,nvir,nvir,1.0,&(Xt[0][0]),nvir,&(evecs[0][0]),nvir,
-	  0.0,&(WW[0][0]),nvir);
-
-  /* Build U W product */
-  C_DGEMM('n','n',nvir,nvir,nso,1.0,&(U[0][0]),nso,&(WW[0][0]),nvir,
-	  0.0,&(X[0][0]),nso);
-
-  /* correct phases on W columns */
-  for(i=0; i < nvir; i++) {
-    if(X[i][i] < 0) for(j=0; j < nso; j++) WW[j][i] *= -1;
-  }
-
-  /* Build U W product again */
-  C_DGEMM('n','n',nvir,nvir,nso,1.0,&(U[0][0]),nso,&(WW[0][0]),nvir,
-	  0.0,&(X[0][0]),nso);
-
-  /*
-    fprintf(outfile, "\tU * W = 1\n");
-    fprintf(outfile, "\t=========\n");
-    print_mat(X, nvir, nvir, outfile);
-  */
-
-  free(evals);
-  free_block(evecs);
-
-  free_block(R);
-  free_block(St);
-  free_block(Ft);
-  free_block(Fbar);
-  free_block(Xt);
-
-  local.U = U;
-  local.WW = WW;
 
   /* Compute R^+ S for virtual orbitals */
   RS = block_matrix(nvir,nso);
@@ -772,9 +672,6 @@ void local_done(void)
 {
   int i;
 
-  free_block(local.U);
-  free_block(local.WW);
-
   free(local.eps_occ);
   for(i=0; i < local.nocc*local.nocc; i++) {
     if(local.pairdom_len[i]) {
@@ -799,248 +696,7 @@ void local_done(void)
   fprintf(outfile, "\tLocal parameters free.\n");
 }
 
-void local_filter_T1(dpdfile2 *T1, int denom)
-{
-  int i, a, ii;
-  int nocc, nvir;
-  int *pairdom_len, *pairdom_nrlen;
-  double ***V, ***W, *eps_occ, **eps_vir;
-  double *T1tilde, *T1bar;
-
-  nocc = local.nocc;
-  nvir = local.nvir;
-  V = local.V;
-  W = local.W;
-  eps_occ = local.eps_occ;
-  eps_vir = local.eps_vir;
-  pairdom_len = local.pairdom_len;
-  pairdom_nrlen = local.pairdom_nrlen;
-
-  dpd_file2_mat_init(T1);
-  dpd_file2_mat_rd(T1);
-
-
-  for(i=0; i < nocc; i++) {
-    ii = i * nocc + i;  /* diagonal element of pair matrices */
-
-    if(!pairdom_len[ii]) {
-      fprintf(outfile, "\n\tlocal_filter_T1: Pair ii = [%d] is zero-length, which makes no sense.\n",ii);
-      exit(PSI_RETURN_FAILURE);
-    }
-
-    T1tilde = init_array(pairdom_len[ii]);
-    T1bar = init_array(pairdom_nrlen[ii]);
-
-    /* Transform the virtuals to the redundant projected virtual basis */
-    C_DGEMV('t', nvir, pairdom_len[ii], 1.0, &(V[ii][0][0]), pairdom_len[ii], 
-	    &(T1->matrix[0][i][0]), 1, 0.0, &(T1tilde[0]), 1);
-
-    /* Transform the virtuals to the non-redundant virtual basis */
-    C_DGEMV('t', pairdom_len[ii], pairdom_nrlen[ii], 1.0, &(W[ii][0][0]), pairdom_nrlen[ii], 
-	    &(T1tilde[0]), 1, 0.0, &(T1bar[0]), 1);
-
-    if(denom) {
-      /* Apply the denominators */
-      for(a=0; a < pairdom_nrlen[ii]; a++)
-        T1bar[a] /= (eps_occ[i] - eps_vir[ii][a]);
-    }
-
-    /* Transform the new T1's to the redundant projected virtual basis */
-    C_DGEMV('n', pairdom_len[ii], pairdom_nrlen[ii], 1.0, &(W[ii][0][0]), pairdom_nrlen[ii],
-	    &(T1bar[0]), 1, 0.0, &(T1tilde[0]), 1);
-
-
-    /* Transform the new T1's to the MO basis */
-    C_DGEMV('n', nvir, pairdom_len[ii], 1.0, &(V[ii][0][0]), pairdom_len[ii], 
-	    &(T1tilde[0]), 1, 0.0, &(T1->matrix[0][i][0]), 1);
-
-    free(T1bar);
-    free(T1tilde);
-
-  }
-
-  dpd_file2_mat_wrt(T1);
-  dpd_file2_mat_close(T1);
-}
-
-
-void local_filter_T1_nodenom(dpdfile2 *T1)
-{
-  int i, k, ii, a;
-  int nocc, nvir, nso, natom;
-  int **domain, *aostart, *aostop;
-  double **U, **WW;
-  double *T1tilde;
-
-  nvir = local.nvir;
-  nocc = local.nocc;
-  nso = local.nso;
-  natom = local.natom;
-  U = local.U;
-  WW = local.WW;
-  domain = local.domain;
-  aostart = local.aostart;
-  aostop = local.aostop;
-
-  dpd_file2_mat_init(T1);
-  dpd_file2_mat_rd(T1);
-
-  T1tilde = init_array(nso);
-
-  for(i=0; i < nocc; i++) {
-    ii = i * nocc + i;
-
-    /* Transform the T1 virtuals to the redundant projected virtual basis */
-    C_DGEMV('n', nso, nvir, 1.0, &(WW[0][0]), nvir, 
-	    &(T1->matrix[0][i][0]), 1, 0.0, &(T1tilde[0]), 1);
-
-    for(k=0; k < natom; k++) {
-      if(!domain[i][k]) {
-	for(a=aostart[k]; a <= aostop[k]; a++) T1tilde[a] = 0.0;
-      }
-    }
-
-    /* Transform them back */
-    C_DGEMV('n', nvir, nso, 1.0, &(U[0][0]), nso,
-	    &(T1tilde[0]), 1, 0.0, &(T1->matrix[0][i][0]), 1);
-  }
-
-  free(T1tilde);
-
-  dpd_file2_mat_wrt(T1);
-  dpd_file2_mat_close(T1);
-}
-
-void local_filter_V1_nodenom(dpdfile2 *T1)
-{
-  int i, k, ii, a;
-  int nocc, nvir, nso, natom;
-  int **domain, *aostart, *aostop;
-  double **U, **WW;
-  double *T1tilde;
-
-  nvir = local.nvir;
-  nocc = local.nocc;
-  nso = local.nso;
-  natom = local.natom;
-  U = local.U;
-  WW = local.WW;
-  domain = local.domain;
-  aostart = local.aostart;
-  aostop = local.aostop;
-
-  dpd_file2_mat_init(T1);
-  dpd_file2_mat_rd(T1);
-
-  T1tilde = init_array(nso);
-
-  for(i=0; i < nocc; i++) {
-    ii = i * nocc + i;
-
-    /* Transform the T1 virtuals to the redundant projected virtual basis */
-    C_DGEMV('t', nvir, nso, 1.0, &(U[0][0]), nso,
-            &(T1->matrix[0][i][0]), 1, 0.0, &(T1tilde[0]), 1);
-
-    for(k=0; k < natom; k++) {
-      if(!domain[i][k]) {
-        for(a=aostart[k]; a <= aostop[k]; a++) T1tilde[a] = 0.0;
-      }
-    }
-
-    /* Transform them back */
-    C_DGEMV('t', nso, nvir, 1.0, &(WW[0][0]), nvir,
-            &(T1tilde[0]), 1, 0.0, &(T1->matrix[0][i][0]), 1);
-  }
-
-  free(T1tilde);
-
-  dpd_file2_mat_wrt(T1);
-  dpd_file2_mat_close(T1);
-}
-
-
-
-void local_filter_T2(dpdbuf4 *T2, int denom)
-{
-  int ij, i, j, a, b, ab;
-  int nso, nocc, nvir;
-  int *pairdom_len, *pairdom_nrlen, *weak_pairs;
-  double ***V, ***W, *eps_occ, **eps_vir;
-  double **X1, **X2, **T2tilde, **T2bar;
-
-  nso = local.nso;
-  nocc = local.nocc;
-  nvir = local.nvir;
-  V = local.V;
-  W = local.W;
-  eps_occ = local.eps_occ;
-  eps_vir = local.eps_vir;
-  pairdom_len = local.pairdom_len;
-  pairdom_nrlen = local.pairdom_nrlen;
-  weak_pairs = local.weak_pairs;
-
-  /* Grab the MO-basis T2's */
-  dpd_buf4_mat_irrep_init(T2, 0);
-  dpd_buf4_mat_irrep_rd(T2, 0);
-
-  X1 = block_matrix(nso,nvir);
-  X2 = block_matrix(nvir,nso);
-  T2tilde = block_matrix(nso,nso);
-  T2bar = block_matrix(nvir, nvir);
-  for(i=0,ij=0; i < nocc; i++) {
-    for(j=0; j < nocc; j++,ij++) {
-
-      if(!weak_pairs[ij]) {
-
-	/* Transform the virtuals to the redundant projected virtual basis */
-	C_DGEMM('t', 'n', pairdom_len[ij], nvir, nvir, 1.0, &(V[ij][0][0]), pairdom_len[ij],
-		&(T2->matrix[0][ij][0]), nvir, 0.0, &(X1[0][0]), nvir);
-	C_DGEMM('n', 'n', pairdom_len[ij], pairdom_len[ij], nvir, 1.0, &(X1[0][0]), nvir,
-		&(V[ij][0][0]), pairdom_len[ij], 0.0, &(T2tilde[0][0]), nso);
-
-	/* Transform the virtuals to the non-redundant virtual basis */
-	C_DGEMM('t', 'n', pairdom_nrlen[ij], pairdom_len[ij], pairdom_len[ij], 1.0, 
-		&(W[ij][0][0]), pairdom_nrlen[ij], &(T2tilde[0][0]), nso, 0.0, &(X2[0][0]), nso);
-	C_DGEMM('n', 'n', pairdom_nrlen[ij], pairdom_nrlen[ij], pairdom_len[ij], 1.0, 
-		&(X2[0][0]), nso, &(W[ij][0][0]), pairdom_nrlen[ij], 0.0, &(T2bar[0][0]), nvir);
-
-	if(denom) {
-  	  /* Divide the new amplitudes by the denominators */
-	  for(a=0; a < pairdom_nrlen[ij]; a++) {
-	    for(b=0; b < pairdom_nrlen[ij]; b++) {
-	      T2bar[a][b] /= (eps_occ[i] + eps_occ[j] - eps_vir[ij][a] - eps_vir[ij][b]);
-	    }
-  	  }
-	}
-
-	/* Transform the new T2's to the redundant virtual basis */
-	C_DGEMM('n', 'n', pairdom_len[ij], pairdom_nrlen[ij], pairdom_nrlen[ij], 1.0, 
-		&(W[ij][0][0]), pairdom_nrlen[ij], &(T2bar[0][0]), nvir, 0.0, &(X1[0][0]), nvir);
-	C_DGEMM('n','t', pairdom_len[ij], pairdom_len[ij], pairdom_nrlen[ij], 1.0, 
-		&(X1[0][0]), nvir, &(W[ij][0][0]), pairdom_nrlen[ij], 0.0, &(T2tilde[0][0]), nso);
-
-	/* Transform the new T2's to the MO basis */
-	C_DGEMM('n', 'n', nvir, pairdom_len[ij], pairdom_len[ij], 1.0, 
-		&(V[ij][0][0]), pairdom_len[ij], &(T2tilde[0][0]), nso, 0.0, &(X2[0][0]), nso);
-	C_DGEMM('n', 't', nvir, nvir, pairdom_len[ij], 1.0, &(X2[0][0]), nso,
-		&(V[ij][0][0]), pairdom_len[ij], 0.0, &(T2->matrix[0][ij][0]), nvir);
-      }
-      else  /* This must be a neglected weak pair; force it to zero */
-	memset((void *) T2->matrix[0][ij], 0, nvir*nvir*sizeof(double));
-
-    }
-  }
-  free_block(X1);
-  free_block(X2);
-  free_block(T2tilde);
-  free_block(T2bar);
-
-  /* Write the updated MO-basis T2's to disk */
-  dpd_buf4_mat_irrep_wrt(T2, 0);
-  dpd_buf4_mat_irrep_close(T2, 0);
-}
-
-void local_filter_U2(dpdbuf4 *T2, int denom, double lambda)
+void local_filter_T2(dpdbuf4 *T2)
 {
   int ij, i, j, a, b, ab;
   int nso, nocc, nvir;
@@ -1082,12 +738,84 @@ void local_filter_U2(dpdbuf4 *T2, int denom, double lambda)
       C_DGEMM('n', 'n', pairdom_nrlen[ij], pairdom_nrlen[ij], pairdom_len[ij], 1.0, 
 	      &(X2[0][0]), nso, &(W[ij][0][0]), pairdom_nrlen[ij], 0.0, &(T2bar[0][0]), nvir);
 
-      if(denom) {
-	/* Divide the new amplitudes by the denominators */
-	for(a=0; a < pairdom_nrlen[ij]; a++) {
-	  for(b=0; b < pairdom_nrlen[ij]; b++) {
-	    T2bar[a][b] /= (eps_occ[i] + eps_occ[j] - eps_vir[ij][a] - eps_vir[ij][b] + lambda);
-	  }
+      /* Divide the new amplitudes by the denominators */
+      for(a=0; a < pairdom_nrlen[ij]; a++) {
+	for(b=0; b < pairdom_nrlen[ij]; b++) {
+	  T2bar[a][b] /= (eps_occ[i] + eps_occ[j] - eps_vir[ij][a] - eps_vir[ij][b]);
+	}
+      }
+
+      /* Transform the new T2's to the redundant virtual basis */
+      C_DGEMM('n', 'n', pairdom_len[ij], pairdom_nrlen[ij], pairdom_nrlen[ij], 1.0, 
+	      &(W[ij][0][0]), pairdom_nrlen[ij], &(T2bar[0][0]), nvir, 0.0, &(X1[0][0]), nvir);
+      C_DGEMM('n','t', pairdom_len[ij], pairdom_len[ij], pairdom_nrlen[ij], 1.0, 
+	      &(X1[0][0]), nvir, &(W[ij][0][0]), pairdom_nrlen[ij], 0.0, &(T2tilde[0][0]), nso);
+
+      /* Transform the new T2's to the MO basis */
+      C_DGEMM('n', 'n', nvir, pairdom_len[ij], pairdom_len[ij], 1.0, 
+	      &(V[ij][0][0]), pairdom_len[ij], &(T2tilde[0][0]), nso, 0.0, &(X2[0][0]), nso);
+      C_DGEMM('n', 't', nvir, nvir, pairdom_len[ij], 1.0, &(X2[0][0]), nso,
+	      &(V[ij][0][0]), pairdom_len[ij], 0.0, &(T2->matrix[0][ij][0]), nvir);
+    }
+
+  }
+
+  free_block(X1);
+  free_block(X2);
+  free_block(T2tilde);
+  free_block(T2bar);
+
+  /* Write the updated MO-basis T2's to disk */
+  dpd_buf4_mat_irrep_wrt(T2, 0);
+  dpd_buf4_mat_irrep_close(T2, 0);
+}
+
+void local_filter_U2(dpdbuf4 *T2, double lambda)
+{
+  int ij, i, j, a, b, ab;
+  int nso, nocc, nvir;
+  int *pairdom_len, *pairdom_nrlen, *weak_pairs;
+  double ***V, ***W, *eps_occ, **eps_vir;
+  double **X1, **X2, **T2tilde, **T2bar;
+
+  nso = local.nso;
+  nocc = local.nocc;
+  nvir = local.nvir;
+  V = local.V;
+  W = local.W;
+  eps_occ = local.eps_occ;
+  eps_vir = local.eps_vir;
+  pairdom_len = local.pairdom_len;
+  pairdom_nrlen = local.pairdom_nrlen;
+  weak_pairs = local.weak_pairs;
+
+  /* Grab the MO-basis T2's */
+  dpd_buf4_mat_irrep_init(T2, 0);
+  dpd_buf4_mat_irrep_rd(T2, 0);
+
+  X1 = block_matrix(nso,nvir);
+  X2 = block_matrix(nvir,nso);
+  T2tilde = block_matrix(nso,nso);
+  T2bar = block_matrix(nvir, nvir);
+  for(i=0,ij=0; i < nocc; i++) {
+    for(j=0; j < nocc; j++,ij++) {
+
+      /* Transform the virtuals to the redundant projected virtual basis */
+      C_DGEMM('t', 'n', pairdom_len[ij], nvir, nvir, 1.0, &(V[ij][0][0]), pairdom_len[ij],
+	      &(T2->matrix[0][ij][0]), nvir, 0.0, &(X1[0][0]), nvir);
+      C_DGEMM('n', 'n', pairdom_len[ij], pairdom_len[ij], nvir, 1.0, &(X1[0][0]), nvir,
+	      &(V[ij][0][0]), pairdom_len[ij], 0.0, &(T2tilde[0][0]), nso);
+
+      /* Transform the virtuals to the non-redundant virtual basis */
+      C_DGEMM('t', 'n', pairdom_nrlen[ij], pairdom_len[ij], pairdom_len[ij], 1.0, 
+	      &(W[ij][0][0]), pairdom_nrlen[ij], &(T2tilde[0][0]), nso, 0.0, &(X2[0][0]), nso);
+      C_DGEMM('n', 'n', pairdom_nrlen[ij], pairdom_nrlen[ij], pairdom_len[ij], 1.0, 
+	      &(X2[0][0]), nso, &(W[ij][0][0]), pairdom_nrlen[ij], 0.0, &(T2bar[0][0]), nvir);
+
+      /* Divide the new amplitudes by the denominators */
+      for(a=0; a < pairdom_nrlen[ij]; a++) {
+	for(b=0; b < pairdom_nrlen[ij]; b++) {
+	  T2bar[a][b] /= (eps_occ[i] + eps_occ[j] - eps_vir[ij][a] - eps_vir[ij][b] + lambda);
 	}
       }
 

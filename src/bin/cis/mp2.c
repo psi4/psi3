@@ -20,9 +20,12 @@ void mp2(void)
     dpd_buf4_close(&D);
 
     dpd_buf4_init(&T2, CC_MISC, 0, 0, 5, 0, 5, 0, "MP2 tIjAb");
-    dpd_buf4_init(&D, CC_DENOM, 0, 0, 5, 0, 5, 0, "dIjAb");
-    dpd_buf4_dirprd(&D, &T2);
-    dpd_buf4_close(&D);
+    if(params.local) local_filter_T2(&T2);
+    else {
+      dpd_buf4_init(&D, CC_DENOM, 0, 0, 5, 0, 5, 0, "dIjAb");
+      dpd_buf4_dirprd(&D, &T2);
+      dpd_buf4_close(&D);
+    }
 
     dpd_buf4_copy(&T2, CC_MISC, "New MP2 tIjAb");
     dpd_buf4_close(&T2);
@@ -33,9 +36,16 @@ void mp2(void)
     dpd_buf4_close(&T2);
     dpd_buf4_close(&D);
 
-    fprintf(outfile, "\n\tSolving for MP2 wave function:\n");
-    fprintf(outfile,   "\t------------------------------\n");
-    fprintf(outfile, "\titer = %d  MP2 Energy = %20.14f\n", 0, energy);
+    if(params.local) {
+      fprintf(outfile, "\n\tSolving for LMP2 wave function:\n");
+      fprintf(outfile,   "\t-------------------------------\n");
+      fprintf(outfile, "\titer = %d  LMP2 Energy = %20.14f\n", 0, energy);
+    }
+    else {
+      fprintf(outfile, "\n\tSolving for MP2 wave function:\n");
+      fprintf(outfile,   "\t-------------------------------\n");
+      fprintf(outfile, "\titer = %d  MP2 Energy = %20.14f\n", 0, energy);
+    }
 
     conv = 0;
     for(iter=1; iter < params.maxiter; iter++) {
@@ -59,9 +69,14 @@ void mp2(void)
 
       dpd_buf4_close(&T2);
 
-      dpd_buf4_init(&D, CC_DENOM, 0, 0, 5, 0, 5, 0, "dIjAb");
-      dpd_buf4_dirprd(&D, &newT2);
-      dpd_buf4_close(&D);
+      if(params.local) {
+	local_filter_T2(&newT2);
+      }
+      else {
+	dpd_buf4_init(&D, CC_DENOM, 0, 0, 5, 0, 5, 0, "dIjAb");
+	dpd_buf4_dirprd(&D, &newT2);
+	dpd_buf4_close(&D);
+      }
 
       dpd_buf4_close(&newT2);
 
@@ -97,7 +112,12 @@ void mp2(void)
       dpd_buf4_close(&newT2);
       rms = sqrt(rms);
 
-      fprintf(outfile, "\titer = %d   MP2 Energy = %20.14f   RMS = %4.3e\n", iter, energy, rms);
+      if(params.local) {
+	fprintf(outfile, "\titer = %d   LMP2 Energy = %20.14f   RMS = %4.3e\n", iter, energy, rms);
+      }
+      else {
+	fprintf(outfile, "\titer = %d   MP2 Energy = %20.14f   RMS = %4.3e\n", iter, energy, rms);
+      }
 
       if(rms < params.convergence) {
 	conv = 1;

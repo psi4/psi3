@@ -68,16 +68,6 @@ int main(int argc, char *argv[])
   /* moved up with impunity??? */
   if(params.local) local_init();
 
-  if(params.local) {
-    ao2atom = init_int_array(local.nso);
-    for(i=0; i < local.natom; i++)
-      for(j=local.aostart[i]; j <= local.aostop[i]; j++) ao2atom[j] = i;
-
-  /*  for(i=0; i < local.nso; i++)
-      fprintf(outfile,"ao2atom[%d] = %d\n", i, ao2atom[i]);
-      */
-  }
-
   /* print eigenvalues and largest components of eigenvectors in ascending order */
   if(params.ref == 0) {
 
@@ -98,45 +88,7 @@ int main(int argc, char *argv[])
         dpd_file2_init(&B, CC_OEI, h, 0, 1, lbl);
         amp_write_T1(&B, 5, outfile);
         dpd_file2_close(&B);
-        
-        fprintf(outfile,"\nLargest components in projected AO virtual basis\n");
-        if (params.local) {
-          /* Transform the virtuals to the redundant projected virtual basis */
-          sprintf(lbl, "BIA(%d)[%d] singlet", i, h);
-          dpd_file2_init(&B, CC_OEI, h, 0, 1, lbl);
-          dpd_file2_mat_init(&B);
-          dpd_file2_mat_rd(&B);
-          B_PAO = block_matrix(local.nocc, local.nso);
-          C_DGEMM('n','n', local.nocc, local.nso, local.nvir, 1.0, &(B.matrix[0][0][0]),
-              local.nvir, &(local.U[0][0]), local.nso, 0.0, &(B_PAO[0][0]), local.nso);
-          dpd_file2_mat_close(&B);
-          dpd_file2_close(&B);
-  
-          // print_mat(B_PAO, local.nocc, local.nso, outfile);
-          fprintf(outfile,"\t       occ  vir  atom        amplitude\n");
-          sum_val = 0.0;
-          for (jj=0; jj< local.nocc*local.nso; ++jj) {
-            max_val = 0.0;
-            for (j=0; j<local.nocc; ++j) {
-              for (a=0; a<local.nso; ++a) {
-                test_val = fabs(B_PAO[j][a]);
-                if (test_val > max_val) {
-	                max_j = j;
-	                max_a = a;
-	                max_val = test_val;
-                }
-              }
-            }
-            if (sum_val < local.amp_print_cutoff) {
-              fprintf(outfile,"\t      %3d  %3d %4d %20.10f\n",
-                max_j, max_a, ao2atom[max_a], B_PAO[max_j][max_a]);
-              sum_val += fabs(B_PAO[max_j][max_a]);
-              B_PAO[max_j][max_a] = 0.0;
-            }
-	        }
-          free_block(B_PAO);
-          fprintf(outfile, "\n");
-        }
+
       }
     }
     fprintf(outfile, "\n");
@@ -159,49 +111,11 @@ int main(int argc, char *argv[])
         dpd_file2_close(&B);
         fprintf(outfile, "\n");
 
-        if (params.local) {
-          /* Transform the virtuals to the redundant projected virtual basis */
-          sprintf(lbl, "BIA(%d)[%d] triplet", i, h);
-          dpd_file2_init(&B, CC_OEI, h, 0, 1, lbl);
-          dpd_file2_mat_init(&B);
-          dpd_file2_mat_rd(&B);
-          B_PAO = block_matrix(local.nocc, local.nso);
-          C_DGEMM('n','n', local.nocc, local.nso, local.nvir, 1.0, &(B.matrix[0][0][0]),
-              local.nvir, &(local.U[0][0]), local.nso, 0.0, &(B_PAO[0][0]), local.nso);
-          dpd_file2_mat_close(&B);
-          dpd_file2_close(&B);
-  
-          // print_mat(B_PAO, local.nocc, local.nso, outfile);
-          fprintf(outfile,"\t       occ  vir  atom        amplitude\n");
-          sum_val = 0.0;
-          for (jj=0; jj< local.nocc*local.nso; ++jj) {
-            max_val = 0.0;
-            for (j=0; j<local.nocc; ++j) {
-              for (a=0; a<local.nso; ++a) {
-                test_val = fabs(B_PAO[j][a]);
-                if (test_val > max_val) {
-                  max_j = j;
-                  max_a = a;
-                  max_val = test_val;
-                }
-              }
-            }
-            if (sum_val < local.amp_print_cutoff) {
-              fprintf(outfile,"\t      %3d  %3d %4d %20.10f\n",
-                max_j, max_a, ao2atom[max_a], B_PAO[max_j][max_a]);
-              sum_val += fabs(B_PAO[max_j][max_a]);
-              B_PAO[max_j][max_a] = 0.0;
-            }
-          }
-          free_block(B_PAO);
-          fprintf(outfile, "\n");
-        }
       }
     }
     fprintf(outfile, "\n");
 
   }
-  free(ao2atom);
 
   fflush(outfile);
 
