@@ -247,8 +247,13 @@ void read_density()
         sq_to_tri(psq_ao,Ptot,nbfao);
       free_matrix(psq_ao,nbfao);
     }
-    else
-      wreadw(opdm_file,(char *) Ptot, sizeof(double)*natri, 0, &junk);
+    else {
+      /* wreadw(opdm_file,(char *) Ptot, sizeof(double)*natri, 0, &junk); */
+      psio_open(opdm_file, PSIO_OPEN_OLD);
+      psio_read_entry(opdm_file, "AO-basis OPDM", (char *) Ptot,
+	  natri*sizeof(double));
+      psio_close(opdm_file, 1);
+    }
   }
 
   /* rclose(opdm_file,3); */
