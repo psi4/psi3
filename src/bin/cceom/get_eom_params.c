@@ -48,7 +48,7 @@ void get_eom_params()
     }
   }
   else {
-    eom_params.prop_root = eom_params.states_per_irrep[eom_params.prop_sym];
+    eom_params.prop_root = eom_params.states_per_irrep[eom_params.prop_sym^moinfo.sym];
   }
   --eom_params.prop_root;
 
@@ -71,7 +71,7 @@ void get_eom_params()
   errcod = ip_data("COMPLEX_TOL","%d",&(iconv),0);
   if(errcod == IPE_OK) eom_params.complex_tol = 1.0*pow(10.0,(double) -iconv);
 
-  eom_params.residual_tol = 1E-4;
+  eom_params.residual_tol = 1E-7;
   errcod = ip_data("RESIDUAL_TOL","%d",&(iconv),0);
   if(errcod == IPE_OK) eom_params.residual_tol = 1.0*pow(10.0,(double) -iconv);
 

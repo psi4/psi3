@@ -18,6 +18,19 @@ double norm_C(dpdfile2 *CME, dpdfile2 *Cme,
   return norm;
 }
 
+double dot_C(dpdfile2 *CME, dpdfile2 *Cme,
+    dpdbuf4 *CMNEF, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf)
+{
+  double norm = 0.0;
+  norm += dpd_file2_dot_self(CME);
+  norm += dpd_file2_dot_self(Cme);
+  norm += dpd_buf4_dot_self(CMNEF);
+  norm += dpd_buf4_dot_self(Cmnef);
+  norm += dpd_buf4_dot_self(CMnEf);
+  return norm;
+}
+
+
 double norm_C_rhf(dpdfile2 *CME, dpdbuf4 *CMnEf, dpdbuf4 *CMnfE) {
   double norm = 0.0;
   norm = 2.0 * dpd_file2_dot_self(CME);

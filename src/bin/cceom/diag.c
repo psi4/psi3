@@ -700,6 +700,20 @@ void diag(void) {
 	        dpd_buf4_close(&CMnEf);
 	        fprintf(outfile, "\n");
 	      }
+          else if (params.eom_ref == 1) {
+	        fprintf(outfile, "\nLargest components of excited wave function #%d:\n",
+                num_converged_index);
+            fprintf(outfile,"\tRIA alpha\n");
+	        sprintf(lbl, "%s %d", "CME", i);
+	        dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
+	        amp_write_T1(&CME, 5, outfile);
+	        dpd_file2_close(&CME);
+            fprintf(outfile,"\tRia beta\n");
+	        sprintf(lbl, "%s %d", "Cme", i);
+	        dpd_file2_init(&Cme, EOM_Cme, C_irr, 0, 1, lbl);
+	        amp_write_T1(&Cme, 5, outfile);
+	        dpd_file2_close(&Cme);
+          }
         }
       }
       /*

@@ -6,6 +6,8 @@
 
 extern double norm_C(dpdfile2 *CME, dpdfile2 *Cme,
             dpdbuf4 *CMNEF, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf);
+extern double dot_C(dpdfile2 *CME, dpdfile2 *Cme,
+            dpdbuf4 *CMNEF, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf);
 extern double norm_C_rhf(dpdfile2 *CME, dpdbuf4 *CMnEf, dpdbuf4 *CMnfE);
 extern void scm_C(dpdfile2 *CME, dpdfile2 *Cme, dpdbuf4 *CMNEF,
             dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, double a);
@@ -132,19 +134,19 @@ void rzero(int C_irr, int *converged) {
     }
     */
 
+    /*
     norm = norm_C(&RIA, &Ria, &fRIJAB, &fRijab, &fRIjAb);
     norm *= norm;
+    */
+    norm = dot_C(&RIA, &Ria, &fRIJAB, &fRijab, &fRIjAb);
     norm += rzero * rzero;
     norm = sqrt(norm);
     rzero = rzero / norm;
     scm_C(&RIA, &Ria, &fRIJAB, &fRijab, &fRIjAb, 1.0/norm);
 
-/*
-dpd_file2_print(&RIA, outfile);
-dpd_buf4_print(&fRIJAB, outfile, 1);
-dpd_buf4_print(&fRijab, outfile, 1);
-dpd_buf4_print(&fRIjAb, outfile, 1);
-*/
+    norm = dot_C(&RIA, &Ria, &fRIJAB, &fRijab, &fRIjAb);
+    norm += rzero * rzero;
+    fprintf(outfile,"<R|R> = %20.16lf\n",norm);
 
     dpd_file2_close(&RIA);
     dpd_file2_close(&Ria);
@@ -152,7 +154,7 @@ dpd_buf4_print(&fRIjAb, outfile, 1);
     dpd_buf4_close(&fRijab);
     dpd_buf4_close(&fRIjAb);
 
-    fprintf(outfile,"EOM CCSD R0 for root %d = %15.10lf\n", R_index, rzero);
+    fprintf(outfile,"EOM CCSD R0 for root %d = %15.11lf\n", R_index, rzero);
     sprintf(lbl, "EOM CCSD R0 for root %d %d", C_irr, R_index);
     psio_write_entry(CC_INFO, lbl, (char *) &rzero, sizeof(double));
 
