@@ -577,7 +577,7 @@ Orbital energies (a.u.):
  110A1     19.067054  
 
 
-        total energy       =    -208.215979350220
+        SCF total energy   =    -208.215979350220
         kinetic energy     =     207.555596980875
         nuc. attr. energy  =    -763.065546822567
         elec. rep. energy  =     347.293970491471

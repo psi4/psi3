@@ -329,7 +329,7 @@ Orbital energies (a.u.):
    6B1      2.677031     6B2      2.677031    14A1      3.095851  
 
 
-        total energy       =     -92.195556621382
+        SCF total energy   =     -92.195556621382
         kinetic energy     =      91.922587813434
         nuc. attr. energy  =    -253.718623722145
         elec. rep. energy  =      69.600479287329

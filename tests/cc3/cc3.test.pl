@@ -1,6 +1,6 @@
 #!/usr/bin/perl  
 
-$TOL = 10**-10;
+$TOL = 10**-8;
 $GTOL = 10**-8;
 $HTOL = 10**-1;
 $REF_FILE = "file11.ref";

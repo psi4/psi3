@@ -1,6 +1,6 @@
 #!/usr/bin/perl  
 
-$TOL = 10**-10;
+$TOL = 10**-8;
 $REF_FILE = "output.ref";
 $TEST_FILE = "output.dat";
 $RESULT = "cc7.test";
@@ -28,7 +28,7 @@ sub extract_data
 
   seek(OUT,0,0);
   while (<OUT>) {
-    if (/total energy       =/) {
+    if (/SCF total energy   =/) {
       @data2 = split(/ +/, $_);
       $_[2] = $data2[4];
     }

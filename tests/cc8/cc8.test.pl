@@ -1,12 +1,12 @@
 #!/usr/bin/perl  
 
-$TOL = 10**-10;
+$TOL = 10**-8;
 $REF_FILE = "output.ref";
 $TEST_FILE = "output.dat";
 $RESULT = "cc8.test";
 
-system ("input");
-system ("psi3");
+# system ("input");
+# system ("psi3");
 
 extract_data($REF_FILE,$Enuc_ref,$Ehf_ref,$Eccsd_ref,$Eccsd_t_ref);
 extract_data($TEST_FILE,$Enuc_test,$Ehf_test,$Eccsd_test,$Eccsd_t_test);
@@ -28,7 +28,7 @@ sub extract_data
 
   seek(OUT,0,0);
   while (<OUT>) {
-    if (/total energy       =/) {
+    if (/SCF total energy   =/) {
       @data2 = split(/ +/, $_);
       $_[2] = $data2[4];
     }

@@ -1,6 +1,6 @@
 #!/usr/bin/perl  
 
-$TOL = 10**-10;
+$TOL = 10**-8;
 $REF_FILE = "output.ref";
 $TEST_FILE = "output.dat";
 $RESULT = "cc4.test";

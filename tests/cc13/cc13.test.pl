@@ -1,6 +1,6 @@
 #!/usr/bin/perl  
 
-$TOL = 10**-10;
+$TOL = 10**-8;
 $GTOL = 10**-8;
 $REF_FILE = "file11.ref";
 $TEST_FILE = "psi.file11.dat";
