@@ -136,9 +136,9 @@ void internals :: back_transform(double *c_new, double *c_old ) {
       int hack=0;
       for(i=0;i<3*num_entries;++i) {
 	  /* hack to keep proper orientation */
-	  if(fabs(carts[i])>ALMOST_ZERO) 
+	  if(fabs(carts[i])>ANOTHER_ZERO) 
 	      carts[i] += dx[i];
-	  else if(fabs(dx[i])>ALMOST_ZERO)
+	  else if(fabs(dx[i])>ANOTHER_ZERO)
 	      hack = 1;
           dx_sum += sqrt(dx[i]*dx[i]);
       }
