@@ -181,6 +181,19 @@ void Wmnie_build(void) {
     dpd_file2_close(&tIA);
     dpd_file2_close(&tia);
 
+    /* also put "normal" sorted versions in CC_HBAR */
+    dpd_buf4_init(&WMNIE, CC_HBAR, 0, 2, 21, 2, 21, 0, "WMNIE");
+    dpd_buf4_sort(&WMNIE, CC_HBAR, pqsr, 2, 20, "WMNIE (M>N,IE)");
+    dpd_buf4_close(&WMNIE);
+    dpd_buf4_init(&Wmnie, CC_HBAR, 0, 12, 31, 12, 31, 0, "Wmnie");
+    dpd_buf4_sort(&Wmnie, CC_HBAR, pqsr, 12, 30, "Wmnie (m>n,ie)");
+    dpd_buf4_close(&Wmnie);
+    dpd_buf4_init(&WMnIe, CC_HBAR, 0, 22, 25, 22, 25, 0, "WMnIe");
+    dpd_buf4_sort(&WMnIe, CC_HBAR, pqsr, 22, 24, "WMnIe (Mn,Ie)");
+    dpd_buf4_close(&WMnIe);
+    dpd_buf4_init(&WmNiE, CC_HBAR, 0, 23, 26, 23, 26, 0, "WmNiE");
+    dpd_buf4_sort(&WmNiE, CC_HBAR, pqsr, 23, 27, "WmNiE (mN,iE)");
+    dpd_buf4_close(&WmNiE);
   }
 
   return;
