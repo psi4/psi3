@@ -27,6 +27,8 @@ int main(int argc, char *argv[])
   double Uss, Utt, Ust, Uts, Cks, Ckt, **U, **V, **VV, **F;
   double cos4a, alpha, alphamax, alphalast, conv, norm;
 
+  alphalast = 1.0;
+
   init_io();
   title();
 
