@@ -102,8 +102,8 @@ void xc_fock(void){
       ya = atm_grd->atom_center.y;
       za = atm_grd->atom_center.z;
       
-      bragg = atm_grd->Bragg_radii/*1.8897269*/;
-      fprintf(outfile,"Bragg = %10.10lf",bragg);
+      bragg = atm_grd->Bragg_radii;
+      
       for(j=0;j<atm_grd->chunk_num;j++){
 	  chnk = &(atm_grd->leb_chunk[j]);
 	  

@@ -219,7 +219,7 @@ timer_off("exponent");
     
    if(UserOptions.reftype == rhf){
        den_sum = 0.0;
-#ifdef USE_BLAS
+#if USE_BLAS
        C_DGEMV('t',num_ao,ndocc,1.0,Cocc[0],ndocc,
 	       DFT_options.basis,1,0.0,temp_arr,1);
        den_sum = C_DDOT(ndocc,temp_arr,1,temp_arr,1);
