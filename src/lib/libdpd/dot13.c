@@ -38,7 +38,7 @@ int dpd_dot13(dpdfile2 *T, dpdbuf4 *I, dpdfile2 *Z,
 
 	  /* Allocate space for the X buffer */
 	  if(T->params->ppi[Gp] && T->params->qpi[Gr])
-	      X = block_matrix(T->params->ppi[Gp],T->params->qpi[Gr]);
+	      X = dpd_block_matrix(T->params->ppi[Gp],T->params->qpi[Gr]);
 
 	  /* Loop over orbitals of the target */
 	  for(q=0; q < Z->params->ppi[Gq]; q++) {
@@ -83,7 +83,7 @@ int dpd_dot13(dpdfile2 *T, dpdbuf4 *I, dpdfile2 *Z,
 		}
 	    }
 	  if(T->params->ppi[Gp] && T->params->qpi[Gr])
-	      free_block(X);
+	      dpd_free_block(X, T->params->ppi[Gp],T->params->qpi[Gr]);
 	}
       dpd_buf4_mat_irrep_close(I, h);
     }

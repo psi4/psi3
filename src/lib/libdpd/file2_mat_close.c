@@ -10,7 +10,7 @@ int dpd_file2_mat_close(dpdfile2 *File)
 
   for(h=0; h < File->params->nirreps; h++)
       if(File->params->rowtot[h] && File->params->coltot[h^my_irrep])
-	  free_block(File->matrix[h]);
+	  dpd_free_block(File->matrix[h], File->params->rowtot[h], File->params->coltot[h^my_irrep]);
 
 
   return 0;

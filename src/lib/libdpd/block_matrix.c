@@ -36,54 +36,72 @@ double **dpd_block_matrix(int n, int m)
   double **A, *B;
 
 #ifdef DPD_TIMER
-timer_on("block_mat");
+  timer_on("block_mat");
 #endif
 
   A = NULL;  B = NULL;
 
   while((dpd_main.memory - dpd_main.memused - n*m) < 0) {
-      /* Delete cache entries until there's enough memory or no more cache */
+    /* Delete cache entries until there's enough memory or no more cache */
 
-      /* Priority-based cache */
-      if(dpd_main.cachetype == 1) {
-          if(dpd_file4_cache_del_low()) {
-              dpd_file4_cache_print(stderr);
-              fprintf(stderr, "dpd_block_matrix: n = %d  m = %d\n", n, m);
-	      dpd_error("dpd_block_matrix: No memory left.", stderr);
-            }
-	}
-
-      /* Least-recently-used cache */
-      else if(dpd_main.cachetype == 0) {
-          if(dpd_file4_cache_del_lru()) {
-              dpd_file4_cache_print(stderr);
-              fprintf(stderr, "dpd_block_matrix: n = %d  m = %d\n", n, m);
-	      dpd_error("dpd_block_matrix: No memory left.", stderr);
-            }
-	}
-
-      else dpd_error("LIBDPD Error: invalid cachetype.", stderr);
+    /* Priority-based cache */
+    if(dpd_main.cachetype == 1) {
+      if(dpd_file4_cache_del_low()) {
+	dpd_file4_cache_print(stderr);
+	fprintf(stderr, "dpd_block_matrix: n = %d  m = %d\n", n, m);
+	dpd_error("dpd_block_matrix: No memory left.", stderr);
+      }
     }
+
+    /* Least-recently-used cache */
+    else if(dpd_main.cachetype == 0) {
+      if(dpd_file4_cache_del_lru()) {
+	dpd_file4_cache_print(stderr);
+	fprintf(stderr, "dpd_block_matrix: n = %d  m = %d\n", n, m);
+	dpd_error("dpd_block_matrix: No memory left.", stderr);
+      }
+    }
+
+    else dpd_error("LIBDPD Error: invalid cachetype.", stderr);
+  }
 
   if(!m || !n) {
 #ifdef DPD_TIMER
-     timer_off("block_mat");
+    timer_off("block_mat");
 #endif
-     return(NULL);
-    }
+    return(NULL);
+  }
   
   if((A = (double **) malloc(n * sizeof(double *)))==NULL) {
     fprintf(stderr,"dpd_block_matrix: trouble allocating memory \n");
     fprintf(stderr,"n = %d  m = %d\n",n, m);
     exit(1);
+  }
+
+  /* Allocate the main block here */
+  /* NB: If we delete the entire cache and STILL get NULL from malloc(), */
+  /* we're either out of real memory or the heap is seriously fragmented */
+  while((B = (double *) malloc(m*n * sizeof(double))) == NULL) {
+    /* Priority-based cache */
+    if(dpd_main.cachetype == 1) {
+      if(dpd_file4_cache_del_low()) {
+	dpd_file4_cache_print(stderr);
+	fprintf(stderr, "dpd_block_matrix: n = %d  m = %d\n", n, m);
+	dpd_error("dpd_block_matrix: No memory left.", stderr);
+      }
     }
 
-  if((B = (double *) malloc(m*n * sizeof(double)))==NULL) {
-    fprintf(stderr,"dpd_block_matrix: trouble allocating memory \n");
-    fprintf(stderr,"n = %d  m = %d\n",n, m);
-    exit(1);
+    /* Least-recently-used cache */
+    else if(dpd_main.cachetype == 0) {
+      if(dpd_file4_cache_del_lru()) {
+	dpd_file4_cache_print(stderr);
+	fprintf(stderr, "dpd_block_matrix: n = %d  m = %d\n", n, m);
+	dpd_error("dpd_block_matrix: No memory left.", stderr);
+      }
     }
+  }
 
+  /*  memset((void *) B, 0, m*n*sizeof(double)); */
   bzero(B, m*n*sizeof(double));
 
   for (i = 0; i < n; i++) A[i] = &(B[i*m]);
@@ -92,7 +110,7 @@ timer_on("block_mat");
   dpd_main.memused += n*m;
 
 #ifdef DPD_TIMER
-timer_off("block_mat");
+  timer_off("block_mat");
 #endif
 
   return(A);

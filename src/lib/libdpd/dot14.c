@@ -82,7 +82,7 @@ int dpd_dot14(dpdfile2 *T, dpdbuf4 *I, dpdfile2 *Z,
 		}
 	    }
 	  if(T->params->ppi[Gp] && T->params->qpi[Gs])
-	      free_block(X);
+	      dpd_free_block(X,T->params->ppi[Gp],T->params->qpi[Gs]);
 	}
       dpd_buf4_mat_irrep_close(I, h);
     }

@@ -109,7 +109,7 @@ int dpd_dot23(dpdfile2 *T, dpdbuf4 *I, dpdfile2 *Z,
 		}
 	    }
 	  if(T->params->ppi[Gq] && T->params->qpi[Gr])
-	      free_block(X);
+	      dpd_free_block(X, T->params->ppi[Gq],T->params->qpi[Gr]);
 	}
       dpd_buf4_mat_irrep_close(I, h);
     }

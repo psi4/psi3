@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include <qt.h>
 #include "dpd.h"
 
@@ -20,6 +21,7 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
   int h,nirreps, row, col, my_irrep, r_irrep;
   int p, q, r, s, P, Q, R, S, pq, rs, sr, pr, qs, qp, rq, qr, ps, sp, rp, sq;
   int Gp, Gq, Gr, Gs, Gpq, Grs, Gpr, Gqs, Grq, Gqr, Gps, Gsp, Grp, Gsq;
+  int memoryd, rows_per_bucket, nbuckets, rows_left, incore, n;
   dpdbuf4 OutBuf;
 
   nirreps = InBuf->params->nirreps;
@@ -33,8 +35,6 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 		pqnum, rsnum, 0, label);
 
   for(h=0; h < nirreps; h++) {
-
-    dpd_buf4_mat_irrep_init(&OutBuf, h);
 
     r_irrep = h^my_irrep;
 
@@ -51,26 +51,112 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 #endif
 
       /* p->p; q->q; s->r; r->s = pqsr */
-      
-      dpd_buf4_mat_irrep_init(InBuf, h);
-      dpd_buf4_mat_irrep_rd(InBuf, h);
-      
-      for(pq=0; pq < OutBuf.params->rowtot[h]; pq++) {
-	p = OutBuf.params->roworb[h][pq][0];
-	q = OutBuf.params->roworb[h][pq][1];
 
-	row = InBuf->params->rowidx[p][q];
-	      
-	for(rs=0; rs < OutBuf.params->coltot[r_irrep]; rs++) {
-	  r = OutBuf.params->colorb[r_irrep][rs][0];
-	  s = OutBuf.params->colorb[r_irrep][rs][1];
+      /* select algorithm for certain simple cases */
+      memoryd = dpd_memfree()/2; /* use half the memory for each buf4 in the sort */
+      if(InBuf->params->rowtot[h] && InBuf->params->coltot[h]) {
 
-	  sr = InBuf->params->colidx[s][r];
-	      
-	  OutBuf.matrix[h][pq][rs] = InBuf->matrix[h][row][sr];
+	rows_per_bucket = memoryd/InBuf->params->coltot[h];
+
+	/* enough memory for the whole matrix? */
+	if(rows_per_bucket > InBuf->params->rowtot[h]) 
+	  rows_per_bucket = InBuf->params->rowtot[h]; 
+
+	if(!rows_per_bucket) dpd_error("buf4_sort_pqsr: Not enough memory for one row!", stderr);
+
+	nbuckets = ceil(((double) InBuf->params->rowtot[h])/((double) rows_per_bucket));
+
+	rows_left = InBuf->params->rowtot[h] % rows_per_bucket;
+
+	incore = 1;
+	if(nbuckets > 1) {
+	  incore = 0;
+#if 1
+	  fprintf(stderr, "buf4_sort_pqsr: memory information.\n");
+	  fprintf(stderr, "buf4_sort_pqsr: rowtot[%d] = %d\n", h, InBuf->params->rowtot[h]);
+	  fprintf(stderr, "buf4_sort_pqsr: nbuckets = %d\n", nbuckets);
+	  fprintf(stderr, "buf4_sort_pqsr: rows_per_bucket = %d\n", rows_per_bucket);
+	  fprintf(stderr, "buf4_sort_pqsr: rows_left = %d\n", rows_left);
+	  fprintf(stderr, "buf4_sort_pqsr: out-of-core algorithm used\n");
+#endif
 	}
+
       }
-      dpd_buf4_mat_irrep_close(InBuf, h);
+      else incore = 1;
+
+      if(incore) {
+
+	dpd_buf4_mat_irrep_init(&OutBuf, h);
+      
+	dpd_buf4_mat_irrep_init(InBuf, h);
+	dpd_buf4_mat_irrep_rd(InBuf, h);
+      
+	for(pq=0; pq < OutBuf.params->rowtot[h]; pq++) {
+	  p = OutBuf.params->roworb[h][pq][0];
+	  q = OutBuf.params->roworb[h][pq][1];
+
+	  row = InBuf->params->rowidx[p][q];
+	      
+	  for(rs=0; rs < OutBuf.params->coltot[r_irrep]; rs++) {
+	    r = OutBuf.params->colorb[r_irrep][rs][0];
+	    s = OutBuf.params->colorb[r_irrep][rs][1];
+
+	    sr = InBuf->params->colidx[s][r];
+	      
+	    OutBuf.matrix[h][pq][rs] = InBuf->matrix[h][row][sr];
+	  }
+	}
+
+	dpd_buf4_mat_irrep_close(InBuf, h);
+	dpd_buf4_mat_irrep_wrt(&OutBuf, h);
+
+	dpd_buf4_mat_irrep_close(&OutBuf, h);
+      }
+      else {  /* out-of-core sort option */
+
+	dpd_buf4_mat_irrep_init_block(InBuf, h, rows_per_bucket);
+	dpd_buf4_mat_irrep_init_block(&OutBuf, h, rows_per_bucket);
+
+	for(n=0; n < (rows_left ? nbuckets-1 : nbuckets); n++) {
+
+	  dpd_buf4_mat_irrep_rd_block(InBuf, h, n*rows_per_bucket, rows_per_bucket);
+
+	  for(pq=0; pq < rows_per_bucket; pq++) {
+	    for(rs=0; rs < OutBuf.params->coltot[r_irrep]; rs++) {
+	      r = OutBuf.params->colorb[r_irrep][rs][0];
+	      s = OutBuf.params->colorb[r_irrep][rs][1];
+
+	      sr = InBuf->params->colidx[s][r];
+	      
+	      OutBuf.matrix[h][pq][rs] = InBuf->matrix[h][pq][sr];
+	    }
+	  }
+
+	  dpd_buf4_mat_irrep_wrt_block(&OutBuf, h, n*rows_per_bucket, rows_per_bucket);
+	}
+	if(rows_left) {
+
+	  dpd_buf4_mat_irrep_rd_block(InBuf, h, n*rows_per_bucket, rows_left);
+
+	  for(pq=0; pq < rows_left; pq++) {
+	    for(rs=0; rs < OutBuf.params->coltot[r_irrep]; rs++) {
+	      r = OutBuf.params->colorb[r_irrep][rs][0];
+	      s = OutBuf.params->colorb[r_irrep][rs][1];
+
+	      sr = InBuf->params->colidx[s][r];
+	      
+	      OutBuf.matrix[h][pq][rs] = InBuf->matrix[h][pq][sr];
+	    }
+	  }
+
+	  dpd_buf4_mat_irrep_wrt_block(&OutBuf, h, n*rows_per_bucket, rows_left);
+	}
+
+	dpd_buf4_mat_irrep_close_block(InBuf, h, rows_per_bucket);
+	dpd_buf4_mat_irrep_close_block(&OutBuf, h, rows_per_bucket);
+
+      }
+
 #ifdef DPD_TIMER
       timer_off("pqsr");
 #endif
@@ -83,6 +169,7 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 #endif
 
       /* p->p; r->q; q->r; s->s = prqs */
+      dpd_buf4_mat_irrep_init(&OutBuf, h);
 
       for(Gp=0; Gp < nirreps; Gp++) {
 	Gq = Gp^h;
@@ -121,6 +208,9 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 	}
       }
 
+      dpd_buf4_mat_irrep_wrt(&OutBuf, h);
+      dpd_buf4_mat_irrep_close(&OutBuf, h);
+
 #ifdef DPD_TIMER
       timer_off("prqs");
 #endif
@@ -134,6 +224,7 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 #endif
 
       /* p->p; r->q; s->r; q->s = psqr */
+      dpd_buf4_mat_irrep_init(&OutBuf, h);
 
       for(Gp=0; Gp < nirreps; Gp++) {
 	Gq = Gp^h;
@@ -171,6 +262,9 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 	}
       }
 
+      dpd_buf4_mat_irrep_wrt(&OutBuf, h);
+      dpd_buf4_mat_irrep_close(&OutBuf, h);
+
 #ifdef DPD_TIMER
       timer_off("prsq");
 #endif
@@ -184,7 +278,8 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 #endif
 
       /* p->p; s->q; q->r; r->s = prsq */
-	     
+      dpd_buf4_mat_irrep_init(&OutBuf, h);
+
       for(Gp=0; Gp < nirreps; Gp++) {
 	Gq = Gp^h;
 	for(Gr=0; Gr < nirreps; Gr++) {
@@ -220,6 +315,9 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 	  dpd_buf4_mat_irrep_close(InBuf, Gpr);
 	}
       }
+      dpd_buf4_mat_irrep_wrt(&OutBuf, h);
+      dpd_buf4_mat_irrep_close(&OutBuf, h);
+
 #ifdef DPD_TIMER
       timer_off("psqr");
 #endif
@@ -232,6 +330,7 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 #endif
 
       /* p->p; s->q; r->r; q->s = psrq */
+      dpd_buf4_mat_irrep_init(&OutBuf, h);
 	     
       for(Gp=0; Gp < nirreps; Gp++) {
 	Gq = Gp^h;
@@ -268,6 +367,9 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 	  dpd_buf4_mat_irrep_close(InBuf, Gps);
 	}
       }
+      dpd_buf4_mat_irrep_wrt(&OutBuf, h);
+      dpd_buf4_mat_irrep_close(&OutBuf, h);
+
 #ifdef DPD_TIMER
       timer_off("psrq");
 #endif
@@ -280,6 +382,7 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 #endif
 
       /* q->p; p->q; r->r; s->s = qprs */
+      dpd_buf4_mat_irrep_init(&OutBuf, h);
 
       dpd_buf4_mat_irrep_init(InBuf, h);
       dpd_buf4_mat_irrep_rd(InBuf, h);
@@ -300,6 +403,9 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
       }
 
       dpd_buf4_mat_irrep_close(InBuf, h);
+      dpd_buf4_mat_irrep_wrt(&OutBuf, h);
+      dpd_buf4_mat_irrep_close(&OutBuf, h);
+
 #ifdef DPD_TIMER
       timer_off("qprs");
 #endif
@@ -312,6 +418,7 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 #endif
 
       /* q->p; p->q; s->r; r->s = qpsr */
+      dpd_buf4_mat_irrep_init(&OutBuf, h);
 
       dpd_buf4_mat_irrep_init(InBuf, h);
       dpd_buf4_mat_irrep_rd(InBuf, h);
@@ -331,6 +438,9 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
       }
 
       dpd_buf4_mat_irrep_close(InBuf, h);
+      dpd_buf4_mat_irrep_wrt(&OutBuf, h);
+      dpd_buf4_mat_irrep_close(&OutBuf, h);
+
 #ifdef DPD_TIMER
       timer_off("qpsr");
 #endif
@@ -348,6 +458,7 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 #endif
 
       /* q->p; r->q; s->r; p->s = spqr */
+      dpd_buf4_mat_irrep_init(&OutBuf, h);
 
       for(Gp=0; Gp < nirreps; Gp++) {
 	Gq = Gp^h;
@@ -380,6 +491,9 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 	}
       }
 
+      dpd_buf4_mat_irrep_wrt(&OutBuf, h);
+      dpd_buf4_mat_irrep_close(&OutBuf, h);
+
 #ifdef DPD_TIMER
       timer_off("qrsp");
 #endif
@@ -402,6 +516,7 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 #endif
 
       /* r->p; q->q; p->r; s->s = rqps */
+      dpd_buf4_mat_irrep_init(&OutBuf, h);
 	  
       for(Gp=0; Gp < nirreps; Gp++) {
 	Gq = Gp^h;
@@ -438,6 +553,9 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 	  dpd_buf4_mat_irrep_close(InBuf, Grq);
 	}
       }
+      dpd_buf4_mat_irrep_wrt(&OutBuf, h);
+      dpd_buf4_mat_irrep_close(&OutBuf, h);
+
 #ifdef DPD_TIMER
       timer_off("rqps");
 #endif
@@ -450,6 +568,7 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 #endif
 
       /* r->p; q->q; s->r; p->s = sqpr */
+      dpd_buf4_mat_irrep_init(&OutBuf, h);
 	  
       for(Gp=0; Gp < nirreps; Gp++) {
 	Gq = Gp^h;
@@ -487,6 +606,9 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 	}
       }
 
+      dpd_buf4_mat_irrep_wrt(&OutBuf, h);
+      dpd_buf4_mat_irrep_close(&OutBuf, h);
+
 #ifdef DPD_TIMER
       timer_off("rqsp");
 #endif
@@ -500,6 +622,7 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 #endif
 
       /* r->p; p->q; q->r; s->s = qrps */
+      dpd_buf4_mat_irrep_init(&OutBuf, h);
 	  
       for(Gp=0; Gp < nirreps; Gp++) {
 	Gq = Gp^h;
@@ -537,6 +660,9 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 	}
       }
 
+      dpd_buf4_mat_irrep_wrt(&OutBuf, h);
+      dpd_buf4_mat_irrep_close(&OutBuf, h);
+
 #ifdef DPD_TIMER
       timer_off("rpqs");
 #endif
@@ -550,6 +676,7 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 #endif
 
       /* r->p; p->q; s->r; q->s = qspr */
+      dpd_buf4_mat_irrep_init(&OutBuf, h);
 	  
       for(Gp=0; Gp < nirreps; Gp++) {
 	Gq = Gp^h;
@@ -587,6 +714,9 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 	}
       }
 
+      dpd_buf4_mat_irrep_wrt(&OutBuf, h);
+      dpd_buf4_mat_irrep_close(&OutBuf, h);
+
 #ifdef DPD_TIMER
       timer_off("rpsq");
 #endif
@@ -600,6 +730,7 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 #endif
 
       /* r->p; s->q; q->r; p->s = srpq */
+      dpd_buf4_mat_irrep_init(&OutBuf, h);
 	  
       dpd_buf4_mat_irrep_init(InBuf, h);
       dpd_buf4_mat_irrep_rd(InBuf, h);
@@ -623,6 +754,9 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 
       dpd_buf4_mat_irrep_close(InBuf, h);
 
+      dpd_buf4_mat_irrep_wrt(&OutBuf, h);
+      dpd_buf4_mat_irrep_close(&OutBuf, h);
+
 #ifdef DPD_TIMER
       timer_off("rsqp");
 #endif
@@ -636,6 +770,7 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 #endif
 
       /* r->p; s->q; p->r; q->s = rspq */
+      dpd_buf4_mat_irrep_init(&OutBuf, h);
 	  
       dpd_buf4_mat_irrep_init(InBuf, h);
       dpd_buf4_mat_irrep_rd(InBuf, h);
@@ -659,6 +794,9 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 
       dpd_buf4_mat_irrep_close(InBuf, h);
 
+      dpd_buf4_mat_irrep_wrt(&OutBuf, h);
+      dpd_buf4_mat_irrep_close(&OutBuf, h);
+
 #ifdef DPD_TIMER
       timer_off("rspq");
 #endif
@@ -672,6 +810,7 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 #endif
 
       /* s->p; q->q; r->r; p->s = sqrp */
+      dpd_buf4_mat_irrep_init(&OutBuf, h);
 	  
       for(Gp=0; Gp < nirreps; Gp++) {
 	Gq = Gp^h;
@@ -707,6 +846,9 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 	  dpd_buf4_mat_irrep_close(InBuf, Gsq);
 	}
       }
+      dpd_buf4_mat_irrep_wrt(&OutBuf, h);
+      dpd_buf4_mat_irrep_close(&OutBuf, h);
+
 #ifdef DPD_TIMER
       timer_off("sqrp");
 #endif
@@ -724,6 +866,7 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 #endif
 
       /* s->p; r->q; q->r; p->s = srqp */
+      dpd_buf4_mat_irrep_init(&OutBuf, h);
 	  
       dpd_buf4_mat_irrep_init(InBuf, h);
       dpd_buf4_mat_irrep_rd(InBuf, h);
@@ -747,6 +890,9 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 
       dpd_buf4_mat_irrep_close(InBuf, h);
 
+      dpd_buf4_mat_irrep_wrt(&OutBuf, h);
+      dpd_buf4_mat_irrep_close(&OutBuf, h);
+
 #ifdef DPD_TIMER
       timer_off("srqp");
 #endif
@@ -758,6 +904,7 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 #endif
 
       /* s->p; r->q; p->r; q->s = rsqp */
+      dpd_buf4_mat_irrep_init(&OutBuf, h);
 
       dpd_buf4_mat_irrep_init(InBuf, h);
       dpd_buf4_mat_irrep_rd(InBuf, h);
@@ -781,6 +928,9 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 
       dpd_buf4_mat_irrep_close(InBuf, h);
 
+      dpd_buf4_mat_irrep_wrt(&OutBuf, h);
+      dpd_buf4_mat_irrep_close(&OutBuf, h);
+
 #ifdef DPD_TIMER
       timer_off("srpq");
 #endif
@@ -794,6 +944,7 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 #endif
 
       /* s->p; p->q; q->r; r->s = qrsp */
+      dpd_buf4_mat_irrep_init(&OutBuf, h);
 	  
       for(Gp=0; Gp < nirreps; Gp++) {
 	Gq = Gp^h;
@@ -829,6 +980,9 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 	  dpd_buf4_mat_irrep_close(InBuf, Gqr);
 	}
       }
+      dpd_buf4_mat_irrep_wrt(&OutBuf, h);
+      dpd_buf4_mat_irrep_close(&OutBuf, h);
+
 #ifdef DPD_TIMER
       timer_off("spqr");
 #endif
@@ -841,7 +995,8 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 #endif
 
       /* s->p; p->q; r->r; q->s = qsrp */
-	  
+      dpd_buf4_mat_irrep_init(&OutBuf, h);
+
       for(Gp=0; Gp < nirreps; Gp++) {
 	Gq = Gp^h;
 	for(Gr=0; Gr < nirreps; Gr++) {
@@ -877,14 +1032,15 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 	}
       }
 
+      dpd_buf4_mat_irrep_wrt(&OutBuf, h);
+      dpd_buf4_mat_irrep_close(&OutBuf, h);
+
 #ifdef DPD_TIMER
       timer_off("sprq");
 #endif
       break;
     }
       
-    dpd_buf4_mat_irrep_wrt(&OutBuf, h);
-    dpd_buf4_mat_irrep_close(&OutBuf, h);
   }
 
   dpd_buf4_close(&OutBuf);

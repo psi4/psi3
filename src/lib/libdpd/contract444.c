@@ -30,7 +30,7 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
   int incore, memoryd, core, rows_per_bucket, nbuckets, rows_left, memtotal;
 #ifdef DPD_DEBUG
   int *xrow, *xcol, *yrow, *ycol, *zrow, *zcol;
-  double byteconv;
+  double byte_conv;
 #endif
 
   nirreps = X->params->nirreps;
@@ -68,11 +68,10 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
 	
     memoryd = dpd_memfree();
 
-    core = 0;
     if(X->params->rowtot[h] && X->params->coltot[h]) {
 
       if(X->params->coltot[h])
-	rows_per_bucket = (memoryd-core)/X->params->coltot[h];
+	rows_per_bucket = memoryd/X->params->coltot[h];
       else rows_per_bucket = -1;
 
       if(rows_per_bucket > X->params->rowtot[h])
@@ -101,7 +100,7 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
       fprintf(stderr, "Contract444: rows_per_bucket = %d\n",rows_per_bucket);
       fprintf(stderr, "Contract444: rows_left = %d\n",rows_left);
       memtotal = X->params->rowtot[h] * X->params->coltot[h];
-      byte_conv = (double) sizeof(double))/1e6;
+      byte_conv = ((double) sizeof(double))/1e6;
       fprintf(stderr, "Contract444: out of core algorithm used.\n");
       fprintf(stderr, "Contract444: memtotal = %d.\n", memtotal);
       fprintf(stderr, "Contract444: Need %5.2f MB to run in memory.\n",
@@ -143,8 +142,7 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
 
       for(n=0; n < (rows_left ? nbuckets-1 : nbuckets); n++) {
 
-	dpd_buf4_mat_irrep_rd_block(X, h, n*rows_per_bucket,
-				    rows_per_bucket);
+	dpd_buf4_mat_irrep_rd_block(X, h, n*rows_per_bucket, rows_per_bucket);
 
 	C_DGEMM('n', 't', rows_per_bucket, Z->params->coltot[h],
 		numlinks[h], alpha, &(X->matrix[h][0][0]), numlinks[h],

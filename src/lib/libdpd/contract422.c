@@ -47,66 +47,71 @@ int dpd_contract422(dpdbuf4 *X, dpdfile2 *Y, dpdfile2 *Z, int trans_Y,
 
   if((zrow != X->params->ppi) || (zcol != X->params->qpi) ||
      (yrow != X->params->rpi) || (ycol != X->params->spi)) {
-      fprintf(stderr, "** Alignment error in contract422 **\n");
-      dpd_error("dpd_contract422", stderr);
-    }
+    fprintf(stderr, "** Alignment error in contract422 **\n");
+    dpd_error("dpd_contract422", stderr);
+  }
 #endif
 
   dpd_buf4_mat_irrep_init(X, 0);
   dpd_buf4_mat_irrep_rd(X, 0);
 
   for(row=0; row < X->params->rowtot[0]; row++) {
-      p = X->params->roworb[0][row][0];
-      psym = X->params->psym[p];
-      P = p - X->params->poff[psym];
-      q = X->params->roworb[0][row][1];
-      qsym = X->params->qsym[q];
-      Q = q - X->params->qoff[qsym];
+    p = X->params->roworb[0][row][0];
+    psym = X->params->psym[p];
+    P = p - X->params->poff[psym];
+    q = X->params->roworb[0][row][1];
+    qsym = X->params->qsym[q];
+    Q = q - X->params->qoff[qsym];
 
-      value = 0.0;
+    value = 0.0;
 
-      for(Gr=0; Gr < nirreps; Gr++) {
-	  Gs = Gr;
+    for(Gr=0; Gr < nirreps; Gr++) {
+      Gs = Gr;
 
-	  if(X->params->spi[Gs] && X->params->rpi[Gr]) {
-	      if(trans_Y) {
-		  TMP = block_matrix(X->params->spi[Gs],X->params->rpi[Gr]);
-		}
-	      else {
-		  TMP = block_matrix(X->params->rpi[Gr],X->params->spi[Gs]);
-		}
-	    }
+      if(X->params->spi[Gs] && X->params->rpi[Gr]) {
+	if(trans_Y) {
+	  TMP = dpd_block_matrix(X->params->spi[Gs],X->params->rpi[Gr]);
+	}
+	else {
+	  TMP = dpd_block_matrix(X->params->rpi[Gr],X->params->spi[Gs]);
+	}
+      }
 
-	  for(r=0; r < X->params->rpi[Gr]; r++) {
-	      R = X->params->roff[Gr] + r;
-	      for(s=0; s < X->params->spi[Gs]; s++) {
-		  S = X->params->soff[Gs] + s;
+      for(r=0; r < X->params->rpi[Gr]; r++) {
+	R = X->params->roff[Gr] + r;
+	for(s=0; s < X->params->spi[Gs]; s++) {
+	  S = X->params->soff[Gs] + s;
 
-		  col = X->params->colidx[R][S];
-
-		  if(trans_Y) 
-		      TMP[s][r] = X->matrix[0][row][col];
-		  else
-		      TMP[r][s] = X->matrix[0][row][col];
-		}
-	    }
+	  col = X->params->colidx[R][S];
 
 	  if(trans_Y) 
-	      value += dot_block(TMP, Y->matrix[Gs], X->params->spi[Gs],
-				 X->params->rpi[Gr], alpha);
+	    TMP[s][r] = X->matrix[0][row][col];
 	  else
-	      value += dot_block(TMP, Y->matrix[Gr], X->params->rpi[Gr],
-				 X->params->spi[Gs], alpha);
+	    TMP[r][s] = X->matrix[0][row][col];
+	}
+      }
 
-	  if(X->params->rpi[Gr] && X->params->spi[Gs])
-	      free_block(TMP);
-	    }
+      if(trans_Y) 
+	value += dot_block(TMP, Y->matrix[Gs], X->params->spi[Gs],
+			   X->params->rpi[Gr], alpha);
+      else
+	value += dot_block(TMP, Y->matrix[Gr], X->params->rpi[Gr],
+			   X->params->spi[Gs], alpha);
 
-      if(trans_Z) 
-	  Z->matrix[qsym][Q][P] = beta*Z->matrix[qsym][Q][P] + value;
-      else 
-	  Z->matrix[psym][P][Q] = beta*Z->matrix[psym][P][Q] + value;
+      if(X->params->rpi[Gr] && X->params->spi[Gs])
+	if(trans_Y) {
+	  dpd_free_block(TMP, X->params->spi[Gs], X->params->rpi[Gr]);
+	}
+	else {
+	  dpd_free_block(TMP,X->params->rpi[Gr],X->params->spi[Gs]);
+	}
     }
+
+    if(trans_Z) 
+      Z->matrix[qsym][Q][P] = beta*Z->matrix[qsym][Q][P] + value;
+    else 
+      Z->matrix[psym][P][Q] = beta*Z->matrix[psym][P][Q] + value;
+  }
 
   dpd_buf4_mat_irrep_close(X, 0);
 
