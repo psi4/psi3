@@ -797,7 +797,6 @@ AC_OUTPUT(include/psiconfig.h include/cfuncs.h include/ffuncs.h
           src/lib/io/Makefile
           src/lib/io/param.h
           src/lib/iomr/Makefile
-          src/lib/iomrth/Makefile
           src/lib/libciomr/Makefile
           src/lib/libciomr/iomrparam.h
           src/lib/libcoallc/Makefile
