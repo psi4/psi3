@@ -18,6 +18,7 @@
 #define F_DROT drot_
 #define F_DSCAL dscal_
 #define F_DGEMV dgemv_
+#define F_DDOT  ddot_
 #elif FCLINK==2
 #define F_DAXPY daxpy
 #define F_DCOPY dcopy
@@ -25,6 +26,7 @@
 #define F_DROT drot
 #define F_DSCAL dscal
 #define F_DGEMV dgemv
+#define F_DDOT  ddot
 #else
 #define F_DAXPY DAXPY
 #define F_DCOPY DCOPY
@@ -32,6 +34,7 @@
 #define F_DROT DROT
 #define F_DSCAL DSCAL
 #define F_DGEMV DGEMV
+#define F_DDOT  DDOT
 #endif
 
 extern void F_DAXPY(int *length, double *a, double *x, int *inc_x, 
@@ -47,7 +50,7 @@ extern void F_DSCAL(int *n, double *alpha, double *vec, int *inc);
 extern void F_DGEMV(char *transa, int *m, int *n, double *alpha, double *A, 
                     int *lda, double *X, int *inc_x, double *beta, 
                     double *Y, int *inc_y);
-
+extern double F_DDOT(int *n, double *x, int *incx, double *y, int *incy);
 
 /*
 ** C_DAXPY()
@@ -229,3 +232,34 @@ void C_DGEMV(char transa, int m, int n, double alpha, double *A,
 
   F_DGEMV(&transa,&n,&m,&alpha,A,&nca,X,&inc_x,&beta,Y,&inc_y);
 }
+/*
+** void C_DDOT(int n, double *X, int inc_x, double *Y, int inc_y) 
+**            
+**
+** This function returns the dot product of two vectors, X and Y.
+**
+*****
+**
+** int n:             Number of elements in X and Y.
+** 
+** double *X:         A pointer to the beginning of the data in X.
+**                    Must be of at least length (1+(N-1)*abs(inc_x).
+**
+** int inc_x:         The desired stride of X. Useful for skipping
+**                    around to certain data stored in X.
+**
+** double *Y:         A pointer to the beginning of the data in Y.
+** 
+** int inc_y:         The desired stride for Y.
+**
+** Interface written by ST Brown.
+** July 2000
+*/
+
+double C_DDOT(int n, double *X, int inc_x, double *Y, int inc_y)
+{
+   if(n == 0) return 0.0;
+
+   return F_DDOT(&n,X,&inc_x,Y,&inc_y);
+}
+
