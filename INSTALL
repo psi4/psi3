@@ -126,7 +126,14 @@ Running "make" (which must be GNU's 'make' utility) in $objdir will compile
 the PSI3 libraries, followed by the executable modules, and finally
 documentation (if LaTeX is available).
 
-III.C. Step 3: Testing
+III.C. Step 3: Installation
+
+Once testing is complete, installation into $prefix is accomplished by
+running "make install" in $objdir.   Executable modules are installed in
+$prefix/bin, libraries in $prefix/lib, basis set data and other control
+strctures $prefix/share, and documentation in $prefix/doc.
+
+III.D. Step 4: Testing
 
 An ever-growing number of test cases is available in $PSI3/tests.
 Eventually, an automated system will be included in the package to
@@ -134,13 +141,6 @@ execute each test and compre the results to reference data.  For now ,
 however, the user must run each case manually.  The PSI3 User's Manual
 provides detailed instructions for running calculations.  Report bugs to
 psimaster@sirius.chem.vt.edu.
-
-III.D. Step 4: Installation
-
-Once testing is complete, installation into $prefix is accomplished by
-running "make install" in $objdir.   Executable modules are installed in
-$prefix/bin, libraries in $prefix/lib, basis set data and other control
-strctures $prefix/share, and documentation in $prefix/doc.
 
 III.E. Step 5: Cleaning
 
