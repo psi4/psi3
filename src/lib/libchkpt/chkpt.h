@@ -18,6 +18,9 @@ struct z_entry {
 typedef enum {ref_rhf = 0, ref_uhf = 1, ref_rohf = 2, ref_tcscf = 3,
       ref_rks = 4, ref_uks = 5} reftype;
 
+int chkpt_init(void);
+int chkpt_close(void);
+
 int chkpt_rd_iopen(void);
 int chkpt_rd_max_am(void);
 int chkpt_rd_mxcoef(void);

@@ -9,6 +9,8 @@ CDEF += -DBUFF=0 -DSITEDIR=\"$(datadir)\"
 TARGET = $(top_objdir)/lib/libPSI_chkpt.a
 
 TRUESRC = \
+init.c \
+close.c \
 rd_iopen.c \
 rd_max_am.c \
 rd_mxcoef.c \
