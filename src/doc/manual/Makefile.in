@@ -46,7 +46,10 @@ Prog/documentation.tex \
 Prog/io.tex \
 Prog/style.tex \
 Prog/files.tex \
-Prog/io_new.tex
+Prog/io_new.tex \
+Prog/checkpointfile.tex \
+Prog/iwl.tex \
+Prog/qt.tex
 
 include ../MakeRules
 
