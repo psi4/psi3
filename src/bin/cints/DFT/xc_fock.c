@@ -87,7 +87,7 @@ void xc_fock(void){
   leb_point_t *pnt;
   
   
-  
+  fprintf(outfile,"\nPade_int = %10.10lf\n",Pade_int(0.5,-0.10498,3.72744,12.9352,0.06218414));
   num_ao = BasisSet.num_ao;
   DFT_options.basis = (double *)malloc(sizeof(double)*num_ao);
   
@@ -278,6 +278,8 @@ void xc_fock(void){
   sq_to_tri(G,Gtri,Symmetry.num_so);
   free_block(G);
   fprintf(outfile,"\nDFT_energy = %10.10lf",eval);
+  fprintf(outfile,"\nX-Energy = %10.10lf",exch_eval);
+  fprintf(outfile,"\nC-Energy = %10.10lf",corr_eval);
   fprintf(outfile,"\ntrace of density = %10.10lf",den_val);
   psio_open(IOUnits.itapDSCF, PSIO_OPEN_OLD);
   psio_write_entry(IOUnits.itapDSCF,"DFT X-energy",

@@ -77,6 +77,14 @@ void dft_init(void){
 	    DFT_options.correlation_V_function = no_funct;
 	    corrstring[0] = '\0';
 	}
+        else if(!strcmp(corrstring,"VWN5")){
+            DFT_options.correlation_function = VWN5_r;
+            DFT_options.correlation_V_function = d_VWN5_r;
+        }           
+	else if(!strcmp(corrstring,"VWN4")){
+            DFT_options.correlation_function = VWN4_r;
+            DFT_options.correlation_V_function = d_VWN4_r;
+        }           
 	else
 	    punt("Unrecognized or nonimplemented correlation fuctional specified");
 
