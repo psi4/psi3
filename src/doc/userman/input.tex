@@ -1,0 +1,45 @@
+\PSIthree\ input files are case-insensitive and free-format, with
+a grammar designed for maximum flexibility and relative simplicity.
+Input values are assigned using the structure:
+\begin{verbatim}
+keyword = value
+\end{verbatim}
+where {\tt keyword} is the parameter chosen (e.g., {\tt convergence})
+and {\tt value} has one of the following data types:
+\begin{itemize}
+\item string: A character sequence surrounded by double-quotes.
+  Example: {\tt basis = "cc-pVDZ"}
+\item integer: Any positive or negative number (or zero) with no
+  decimal point.  Example: {\tt maxiter = 100}
+\item real: Any floating-point number.  Example: {\tt omega = 0.077357}
+\item boolean: {\tt true}, {\tt false}, {\tt yes}, {\tt no}, {\tt 1},
+  {\tt 0}.
+\item array: a parenthetical list of values of the above data types.
+  Example: {\tt docc = (3 0 1 1)}.  
+\end{itemize}
+Note that the input parsing system is general enough to allow
+multidimensional arrays, with elements of more than one data type.  A
+good example is the z-matrix keyword:
+\begin{verbatim}
+zmat = (
+  (o)
+  (h 1 r)
+  (h 1 r 2 a)
+)
+\end{verbatim}
+
+Keywords are generally grouped together in common segments, the most
+important of which is the {\tt psi:} segment.  For example, a simple
+\PSIthree\ input file for a single-point 
+
+grouped together under a single 
+
+
+Some additional aspects of the \PSIthree\ grammar to keep in mind:
+\begin{itemize}
+\item The ``\%'' character denotes a comment line, i.e. any
+  information following the ``\%'' up to the next linebreak is ignored
+  by the program.
+\item Anything in between double quotes (i.e. strings) is case-sensitive.
+\item Multiple spaces are treated as a single space.
+\end{itemize}
