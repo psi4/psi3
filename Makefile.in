@@ -1,5 +1,5 @@
 
-.PHONY:	default all install install_man install_inc install_host depend clean targetclean tests
+.PHONY:	default all install install_man install_inc install_host depend clean targetclean tests doc
 
 default: all
 
@@ -47,19 +47,22 @@ depend:
           done
 
 clean:
-	for dir in $(subdirs) tests; \
+	for dir in $(subdirs) tests doc; \
           do \
             (cd $${dir}; echo Making clean in $${dir}; $(MAKE) clean) || exit 1; \
           done
 
 targetclean:
-	for dir in $(subdirs) tests; \
+	for dir in $(subdirs) tests doc; \
           do \
             (cd $${dir}; echo Making clean in $${dir}; $(MAKE) targetclean) || exit 1; \
           done
 
 tests:
 	(cd tests; echo Running test suite...; $(MAKE)) || exit 1;
+
+doc:
+	(cd doc; echo Building documentation...; $(MAKE)) || exit 1;
 
 $(top_srcdir)/configure: $(top_srcdir)/configure.in $(top_srcdir)/aclocal.m4
 	cd $(top_srcdir) && autoconf
