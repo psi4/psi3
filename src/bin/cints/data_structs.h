@@ -124,6 +124,8 @@ typedef struct {
     int make_r12ints;                  /* Compute integrals for linear R12 methods */
     int make_mp2r12;                   /* Flag to compute MP2-R12 energy directly */
     int make_cc_bt2;                   /* Flag to compute CC four-virtuals T2 term directly */
+    int make_giao_deriv;               /* Flag to compute derivative integrals WRT B and E fields over
+                                          GIAO Gaussians */
     int symm_ints;                     /* This flag should be set whe individual integrals over SO need to be computed */
     int scf_only;                      /* Means that ERIs will be used only in SCF calculations
 					  (may save some space) */

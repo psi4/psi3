@@ -64,6 +64,7 @@ void start_io(int argc, char *argv[])
 	 strcmp(argv[i], "--mp2") &&
 	 strcmp(argv[i], "--r12ints") &&
 	 strcmp(argv[i], "--cc_bt2") &&
+	 strcmp(argv[i], "--giao_deriv") &&
 	 strcmp(argv[i], "--mp2r12") )
       extra_args[num_extra_args++] = argv[i];
   }

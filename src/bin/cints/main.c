@@ -48,6 +48,9 @@ void deriv1_fock(void);
 #ifdef INCLUDE_CC
  #include"cc.h"
 #endif
+#ifdef INCLUDE_GIAO_Deriv
+ #include"giao_deriv.h"
+#endif
 
 /*-------------------------------
   External functions declaration
@@ -126,6 +129,10 @@ int main(int argc, char *argv[])
 #ifdef INCLUDE_CC
    if (UserOptions.make_cc_bt2)
      direct_cc();
+#endif
+#ifdef INCLUDE_GIAO_Deriv
+   if (UserOptions.make_giao_deriv)
+     giao_deriv();
 #endif
    
    /*--- Cleanup ---*/

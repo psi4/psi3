@@ -194,11 +194,15 @@ void parsing_cmdline(int argc, char *argv[])
 
        /*--- compute 2nd derivatives ---*/
        if(!strcmp(argv[i], "--deriv2")) {
+#ifdef INCLUDE_Default_Deriv2
 	 UserOptions.make_oei = 0;
 	 UserOptions.make_eri = 0;
 	 UserOptions.make_fock = 0;
 	 UserOptions.symm_ints = 0;
 	 UserOptions.make_deriv2 = 1;
+#else
+         punt("--deriv2 option is not supported by your CINTS executable.\nRecompile the code including files in Default_Deriv2 subdirectory.");
+#endif
 	 return;
        }
 
@@ -315,6 +319,20 @@ void parsing_cmdline(int argc, char *argv[])
 	   punt("--cc_bt2 option is not supported by your CINTS executable.\nRecompile the code including files in CC subdirectory.");
 #endif
 	   return;
+       }
+
+       /*--- compute derivatives integrals over GIAOs ---*/
+       if(!strcmp(argv[i], "--giao_deriv")) {
+#ifdef INCLUDE_GIAO_Deriv
+	 UserOptions.make_oei = 0;
+	 UserOptions.make_eri = 0;
+	 UserOptions.make_fock = 0;
+	 UserOptions.symm_ints = 0;
+	 UserOptions.make_giao_deriv = 1;
+#else
+         punt("--giao_deriv option is not supported by your CINTS executable.\nRecompile the code including files in GIAO_Deriv subdirectory.");
+#endif
+	 return;
        }
 
    }
