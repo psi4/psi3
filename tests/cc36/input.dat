@@ -1,0 +1,17 @@
+psi: (
+  label = "CC2 H2O Test"
+  wfn = cc2
+  reference = rhf
+  multp = 1
+  basis = "cc-pVDZ"
+
+  units = bohr
+  % H2O Re geom from Olsen et al., JCP 104, 8007 (1996)
+  geometry = (
+    O 0.0  0.00000000 -0.00900000
+    H 0.0 -1.51526300 -1.05889800
+    H 0.0  1.51526300 -1.05889800
+  )
+)
+
+

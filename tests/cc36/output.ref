@@ -1,0 +1,529 @@
+******************************************************************************
+tstart called on lynx.chem.vt.edu
+Tue Mar  8 09:58:51 2005
+
+                                --------------
+                                  WELCOME TO
+                                    PSI  3
+                                --------------
+
+  LABEL       =	CC2 H2O Test
+  SHOWNORM    =	0
+  PUREAM      =	0
+  PRINT_LVL   =	1
+
+  Parsed basis sets from /usr/local/psi3/lynx/share/pbasis.dat
+
+  -Geometry before Center-of-Mass shift (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.009000000000
+        HYDROGEN      0.000000000000    -1.515263000000    -1.058898000000
+        HYDROGEN      0.000000000000     1.515263000000    -1.058898000000
+
+
+  -Rotational constants (cm-1) :
+    A =   30.50916  B =   13.00778  C =    9.11958
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.117499201605     0.000000000000
+        HYDROGEN     -1.515263000000    -0.932398798395     0.000000000000
+        HYDROGEN      1.515263000000    -0.932398798395     0.000000000000
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S ( 11720.00000000     0.00071000)
+           (  1759.00000000     0.00547000)
+           (   400.80000000     0.02783700)
+           (   113.70000000     0.10480000)
+           (    37.03000000     0.28306200)
+           (    13.27000000     0.44871900)
+           (     5.02500000     0.27095200)
+           (     1.01300000     0.01545800)
+           (     0.30230000    -0.00258500) )
+        (S ( 11720.00000000    -0.00016000)
+           (  1759.00000000    -0.00126300)
+           (   400.80000000    -0.00626700)
+           (   113.70000000    -0.02571600)
+           (    37.03000000    -0.07092400)
+           (    13.27000000    -0.16541100)
+           (     5.02500000    -0.11695500)
+           (     1.01300000     0.55736800)
+           (     0.30230000     0.57275900) )
+        (S (     0.30230000     1.00000000) )
+        (P (    17.70000000     0.04301800)
+           (     3.85400000     0.22891300)
+           (     1.04600000     0.50872800)
+           (     0.27530000     0.46053100) )
+        (P (     0.27530000     1.00000000) )
+        (D (     1.18500000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    13.01000000     0.01968500)
+           (     1.96200000     0.13797700)
+           (     0.44460000     0.47814800)
+           (     0.12200000     0.50124000) )
+        (S (     0.12200000     1.00000000) )
+        (P (     0.72700000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 12
+    Number of primitives   = 31
+    Number of AO           = 25
+    Number of SO           = 24
+
+    Irrep    Number of SO
+    -----    ------------
+      1           11
+      2            2
+      3            4
+      4            7
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.117499201605
+        HYDROGEN      0.000000000000     1.515263000000    -0.932398798395
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.117499201605
+        HYDROGEN      0.000000000000    -1.515263000000    -0.932398798395
+        HYDROGEN      0.000000000000     1.515263000000    -0.932398798395
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.062177904265
+        HYDROGEN      0.000000000000    -0.801842705851    -0.493404231105
+        HYDROGEN      0.000000000000     0.801842705851    -0.493404231105
+
+
+  -Geometry in the reference coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.117499201605
+        HYDROGEN      0.000000000000    -1.515263000000    -0.932398798395
+        HYDROGEN      0.000000000000     1.515263000000    -0.932398798395
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       9.009354229663
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   0.9755118   0.0000000
+    3   0.9755118   1.6036854   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+tstop called on lynx.chem.vt.edu
+Tue Mar  8 09:58:52 2005
+
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on lynx.chem.vt.edu
+Tue Mar  8 09:58:52 2005
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = CC2 H2O Test
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 24
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 11412 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on lynx.chem.vt.edu
+Tue Mar  8 09:58:52 2005
+
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on lynx.chem.vt.edu
+Tue Mar  8 09:58:52 2005
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+  label        = CC2 H2O Test
+  wfn          = CC2
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = NONE
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        9.0093542296627
+  first run, so defaulting to core-hamiltonian guess
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 92528 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.076066e-02
+
+  Using core guess to determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 5210 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -68.9118103504    7.792116e+01    0.000000e+00    0.000000e+00
+    2       -71.3792328433    2.467422e+00    1.997309e-01    8.548966e-01
+    3       -76.0045717592    4.625339e+00    7.712048e-02    9.864816e-01
+    4       -76.0227902527    1.821849e-02    4.426421e-03    5.170175e-02
+    5       -76.0239378765    1.147624e-03    1.189224e-03    1.514444e-02
+    6       -76.0240334344    9.555784e-05    3.429742e-04    3.895688e-03
+    7       -76.0240384139    4.979483e-06    7.594723e-05    9.911724e-04
+    8       -76.0240384904    7.654180e-08    1.028407e-05    1.377556e-04
+    9       -76.0240385110    2.064395e-08    4.648086e-06    4.643816e-05
+   10       -76.0240385115    4.543494e-10    7.194098e-07    5.884072e-06
+   11       -76.0240385115    1.857359e-11    1.722826e-07    2.037699e-06
+   12       -76.0240385115    6.963319e-13    3.188073e-08    2.840313e-07
+   13       -76.0240385115   -1.421085e-14    4.703867e-09    5.048888e-08
+   14       -76.0240385115   -1.421085e-14    5.949949e-10    5.096651e-09
+   15       -76.0240385115    1.421085e-14    1.118589e-10    8.155663e-10
+   16       -76.0240385115    2.842171e-14    1.347577e-11    1.359682e-10
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.549977     2A1     -1.322974     1B2     -0.700162  
+   3A1     -0.550962     1B1     -0.489509  
+
+
+  Unoccupied orbitals
+   4A1      0.183200     2B2      0.252970     3B2      0.798319  
+   5A1      0.809777     6A1      1.162582     2B1      1.201770  
+   4B2      1.247938     1A2      1.453909     7A1      1.498062  
+   3B1      1.702166     5B2      1.882574     8A1      1.885220  
+   6B2      2.429776     9A1      2.436671     4B1      3.238117  
+   2A2      3.343815    10A1      3.442925    11A1      3.904617  
+   7B2      4.089524  
+
+
+        SCF total energy   =     -76.024038511513
+        kinetic energy     =      75.911628750104
+        nuc. attr. energy  =    -198.751247114041
+        elec. rep. energy  =      46.815579852424
+        potential energy   =    -151.935667261617
+        virial theorem     =       1.998521391870
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on lynx.chem.vt.edu
+Tue Mar  8 09:58:52 2005
+
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on lynx.chem.vt.edu
+Tue Mar  8 09:58:52 2005
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CC2
+	Reference orbitals     =  RHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            =  Yes
+	Delete Restricted Docc =  No
+	Do All TEI             =  No
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Semicanonical orbitals =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 24
+	Number of MOs    = 24
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   11	   11	    0	    3	    0	    8	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    1	    0	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         9.0093542297
+	Total SCF Energy            =       -76.0240385115
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on lynx.chem.vt.edu
+Tue Mar  8 09:58:54 2005
+
+user time   =       0.15 seconds =       0.00 minutes
+system time =       0.90 seconds =       0.02 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on lynx.chem.vt.edu
+Tue Mar  8 09:58:54 2005
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	CC2
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Local CC        =     No
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 24
+	Number of active MOs = 24
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   11	    0	    3	    0	    8	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.00935422966267
+	SCF energy          (chkpt) =    -76.02403851151263
+
+	Size of <ab|cd> integrals:     0.013 (MW) /     0.102 (MB)
+	No. of <vv|vv> allowed in memory:      2506 
+	Size of <ia|bc> integrals:     0.004 (MW) /     0.030 (MB)
+	No. of <ov|vv> allowed in memory:      8581 
+	Size of Tijab amplitudes:      0.001 (MW) /     0.010 (MB)
+	A cachelevel of 4 is suggested.
+
+	One-electron energy          =   -122.83961836393642
+	Two-electron (AA) energy     =     14.42439697027549
+	Two-electron (BB) energy     =     14.42439697027549
+	Two-electron (AB) energy     =     23.38182865248564
+	Two-electron energy          =     37.80622562276113
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.02403851151263
+******************************************************************************
+tstop called on lynx.chem.vt.edu
+Tue Mar  8 09:58:54 2005
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on lynx.chem.vt.edu
+Tue Mar  8 09:58:54 2005
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    9.009354229662666
+	SCF energy          (chkpt)   =  -76.024038511512629
+	Reference energy    (file100) =  -76.024038511512629
+
+	Input parameters:
+	-----------------
+	Wave function   =       CC2
+	Reference wfn   =      RHF
+	Memory (Mbytes) =  256.0
+	Maxiter         =     50
+	Convergence     = 1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	Local CC        =     No
+	AO Basis        =     NONE
+	Cache Level     =    2
+	Cache Type      =     LOW
+	Print Level     =    0
+	# Amps to Print =    10
+	Print MP2 Amps? =    No
+	Analyze T2 Amps =    No
+	Print Pair Ener =    No
+
+	            Solving CC Amplitude Equations
+	            ------------------------------
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.204690005384254    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.204682498798850    1.296e-02    0.004097    0.008642    0.008642
+     2        -0.205493344486315    3.455e-03    0.004956    0.010294    0.010294
+     3        -0.205580695460363    1.234e-03    0.005350    0.011148    0.011148
+     4        -0.205565233261032    4.154e-04    0.005428    0.011556    0.011556
+     5        -0.205566618446339    1.359e-04    0.005463    0.011732    0.011732
+     6        -0.205567276277400    1.878e-05    0.005463    0.011739    0.011739
+     7        -0.205567277263237    3.378e-06    0.005463    0.011740    0.011740
+     8        -0.205567278582523    6.837e-07    0.005463    0.011740    0.011740
+     9        -0.205567280139561    1.343e-07    0.005463    0.011740    0.011740
+    10        -0.205567280635605    2.703e-08    0.005463    0.011740    0.011740
+
+	Iterations converged.
+
+
+	Largest TIA Amplitudes:
+	          2   0        -0.0089629780
+	          4  17         0.0074420164
+	          4  13        -0.0059592668
+	          2   5        -0.0050496339
+	          4  15         0.0047108597
+	          1   2         0.0041382128
+	          3  10        -0.0035794540
+	          3  11         0.0032944679
+	          1   0         0.0032147063
+	          2   3         0.0028168813
+
+	Largest TIjAb Amplitudes:
+	  3   3  10  10        -0.0473652111
+	  2   2   2   2        -0.0350775971
+	  2   3   2  10         0.0306163633
+	  3   2  10   2         0.0306163633
+	  4   4  14  14        -0.0302856571
+	  4   4  13  13        -0.0276354775
+	  4   4   1   1        -0.0258309011
+	  3   4  10  13        -0.0236598399
+	  4   3  13  10        -0.0236598399
+	  3   4  10  15        -0.0225643753
+
+	SCF energy       (chkpt)   =  -76.024038511512629
+	Reference energy (file100) =  -76.024038511512629
+	MP2 correlation energy     =   -0.204690005384254
+	Total MP2 energy           =  -76.228728516896879
+	CC2 correlation energy     =   -0.205567280635605
+	Total CC2 energy           =  -76.229605792148234
+
+******************************************************************************
+tstop called on lynx.chem.vt.edu
+Tue Mar  8 09:58:55 2005
+
+user time   =       0.26 seconds =       0.00 minutes
+system time =       0.25 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
