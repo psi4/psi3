@@ -146,6 +146,8 @@ zmat :: zmat() : internals()
 	  ++num_coords;
       }
   }
+  if(!num_coords)
+      punt("No coordinates to optimize");
 
   /*allocate memory now that optimized coordinate number is known*/
   internals::mem_alloc();
