@@ -4,9 +4,12 @@
 */
 
 /* $Log$
- * Revision 1.3  2002/06/01 18:23:54  sherrill
- * Upgrade doxygen documentation
+ * Revision 1.4  2003/11/25 21:45:18  sherrill
+ * Clarified comment
  *
+/* Revision 1.3  2002/06/01 18:23:54  sherrill
+/* Upgrade doxygen documentation
+/*
 /* Revision 1.2  2002/04/19 21:48:06  sherrill
 /* Remove some unused functions and do doxygen markup of libciomr.
 /*
@@ -22,7 +25,8 @@ static char *rcsid = "$Id$";
 #include "includes.h"
 
 /*!
-** print_array: Prints a linear array a of length m to file pointer out.
+** print_array: Prints a lower-triangle of a symmetric matrix packed as
+**  an array of doubles.
 **
 ** \ingroup (CIOMR)
 */
