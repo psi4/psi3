@@ -176,28 +176,25 @@ void BMat::invert_BMat()
   int i,j,k;
   int ntri = (gParams.nintco * (gParams.nintco + 1)) / 2;
   
-  double tol_check;
+  double tol_check = 0.0;
 
   double **BuBT;   //We're calling BuBT the equivalent of D in intder2000.f
   double **invBuBT;
   double *BuBTevals;
   double **BuBTevects;
   double **tol_matrix;
-  double determinant = 0.0;
+  double determinant;
   double *Barray;
-  double *Bevals;
 
-  BuBT = init_matrix(gParams.nintco,gParams.nintco);
-  invBuBT = init_matrix(gParams.nintco, gParams.nintco);
+  BuBT = block_matrix(gParams.nintco,gParams.nintco);
+  invBuBT = block_matrix(gParams.nintco, gParams.nintco);
   BuBTevals = new double[gParams.nintco];
-  BuBTevects = init_matrix(gParams.nintco,gParams.nintco);
-  tol_matrix = init_matrix(gParams.nintco,gParams.nintco);
+  BuBTevects = block_matrix(gParams.nintco,gParams.nintco);
+  tol_matrix = block_matrix(gParams.nintco,gParams.nintco);
   Barray = init_array(ntri);
-  Bevals = init_array(gParams.nintco);
    
-  //It would be smart to make sure the masses match up with the right atom label/number eh?
   for(k = 0; k < gParams.ncartesians; k++) 
-    fprintf(outfile, "\nChecking for correct mass of atom %i = %lf", k,gParams.mass_array[k / 3]);
+    fprintf(outfile, "\nChecking for correct mass of atom %i = %lf", (k / 3) + 1, gParams.mass_array[k / 3]);
   
   for(j = 0; j < gParams.nintco; j++) {
     for(i = 0; i < gParams.nintco; i++) {
@@ -207,7 +204,7 @@ void BMat::invert_BMat()
     }
   }
 
-  fprintf(outfile, "\nB*BT Matrix for Internal Coordinates\n");
+  fprintf(outfile, "\n\nB*BT Matrix for Internal Coordinates\n");
   print_mat(BuBT, gParams.nintco, gParams.nintco, outfile);
 
   //Here, INTDER2000.f makes the second half of the BuBT matrix a unit symmetric matrix, and passes both to FLIN
@@ -217,7 +214,7 @@ void BMat::invert_BMat()
   
   fprintf(outfile, "\nPrinting inverse of BuBt:\n");
   print_mat(invBuBT, gParams.nintco, gParams.nintco, outfile);
-  
+
   for(j = 0; j < gParams.nintco; j++) {
     for(i = 0; i < gParams.ncartesians; i++) {
       for(k = 0; k < gParams.nintco; k++) {
@@ -231,76 +228,77 @@ void BMat::invert_BMat()
     print_mat(AMatrix,  gParams.ncartesians, gParams.nintco, outfile);
   }
   
-  if(gParams.numtest == 0)
-    return;
-  
-  else if(gParams.numtest > 0) {
+  if(gParams.matrixTest == 0)
+    return; //Memory leak here
+  else if(gParams.matrixTest == 1) {
     for(j = 0; j < gParams.nintco; j++) {
       for(i = 0; i < gParams.nintco; i++) {
-	for(k = 0; k < gParams.ncartesians * 3; k++) {
+	for(k = 0; k < gParams.ncartesians; k++) {
 	  tol_check += BMatrix[i][k] * AMatrix[k][j];
-	  tol_matrix[i][j] == tol_check;
-	  if(i == j)
-	    tol_check = tol_check - 1.0;
-	  if(fabs(tol_check) > gParams.invtol) {
-	    fprintf(outfile, "\nB Matrix inversion for given tolerance was unsuccessful!\n");
-	    print_mat(BuBT, gParams.nintco, gParams.nintco, outfile);
-	    exit(2); 
-	  }
+	}
+	tol_matrix[i][j] == tol_check;
+	if(i == j)
+	  tol_check--;
+	if(fabs(tol_check) > gParams.invtol) {
+	  fprintf(outfile, "\n\nB Matrix inversion for given tolerance was unsuccessful!\n");
+	  print_mat(BuBT, gParams.nintco, gParams.nintco, outfile);
+	  exit(2); 
 	}
       }
     }
   }
-  
-  else if(gParams.numtest > 1) {
-    for(j = 0; j < gParams.nintco; j++)
-      for(i = 0; i < gParams.nintco; i++)
-	for(k = 0; k < gParams.ncartesians; k++) 
-	  BuBT[i][j] = (BMatrix[i][k] * BMatrix[j][k] * gParams.mass_array[k / 3]);
-  }
-  
-  for(i = 0; i < gParams.nintco; i++)
-    for(j = 0; j < gParams.nintco; j++) 
-      if(i != j)
-	BuBT[i][j] /= (sqrt(BuBT[i][i] * BuBT[j][j]));
-  
-  for(i = 0; i < gParams.nintco; i++)
-    BuBT[i][i] = 1.0;
-  
-  fprintf(outfile, "Normalized overlap matrix for internal coordinates\n");
-  print_mat(BMatrix, gParams.nintco, gParams.nintco, outfile);
-  
-  k = 0;
-  for(i = 0; i < gParams.nintco; i++)
-    for(j = 0; j < i; j++) {
-      Barray[k] = BuBT[i][j];
-      k++;
+  else if(gParams.matrixTest > 1) {
+
+    for(j = 0; j < gParams.nintco; j++) {
+      for(i = 0; i < gParams.nintco; i++) {
+	for(k = 0; k < gParams.ncartesians; k++) {
+	  tol_matrix[i][j] += BMatrix[i][k]*BMatrix[j][k] / gParams.mass_array[k / 3];
+	}
+      }
     }
   
-  rsp(gParams.ncartesians, gParams.nintco, ntri, Barray, Bevals, 1, BuBT, 1.0E-10);
-  
-  fprintf(outfile, "Eigenvectors and eigenvalues of normalized overlap matrix\n");
-  
-  //intder2000.f uses TABLE5 function, which doesn't seem to have much of a point to me yet?
-
-  print_mat(BuBT, gParams.nintco, gParams.nintco, outfile);
-  
-  determinant = 1.0;
-  fprintf(outfile, "\n\n");
-  for(i = 0; i < gParams.nintco; i++) {
-    fprintf(outfile, "%lf\t", Bevals[i]);
-    determinant *= Bevals[i];
-  }
-
-  fprintf(outfile, "\nDeterminant of overlap matrix = %lf\n", determinant);
+    fprintf(outfile, "\n\ntol_matrix debug for internal coordinates\n");
+    print_mat(tol_matrix, gParams.nintco, gParams.nintco, outfile);
     
-  free_matrix(BuBT, gParams.nintco);
-  free_matrix(invBuBT, gParams.nintco);
-  free_matrix(BuBTevects, gParams.nintco);
-  free_matrix(tol_matrix, gParams.nintco);
+    for(i = 0; i < gParams.nintco; i++)
+      for(j = 0; j < gParams.nintco; j++) 
+	if(i != j)
+	  tol_matrix[i][j] /= (sqrt(tol_matrix[i][i] * tol_matrix[j][j]));
+    
+    for(i = 0; i < gParams.nintco; i++)
+      tol_matrix[i][i] = 1.0;
+    
+    fprintf(outfile, "\n\nNormalized overlap matrix for internal coordinates\n");
+    print_mat(tol_matrix, gParams.nintco, gParams.nintco, outfile);
+    
+    k = 0;
+    for(i = 0; i < gParams.nintco; i++)
+      for(j = 0; j < i; j++) {
+	Barray[k] = tol_matrix[i][j];
+	k++;
+      }
+    
+    rsp(gParams.nintco, gParams.nintco, ntri, Barray, BuBTevals, 1, BuBTevects, 1.0E-10);
+    
+    fprintf(outfile, "\n\nEigenvectors and eigenvalues of normalized overlap matrix\n");
+    
+    print_mat(BuBTevects, gParams.nintco, gParams.nintco, outfile);
+    
+    determinant = 1.0;
+    fprintf(outfile, "\n\n");
+    for(i = 0; i < gParams.nintco; i++) {
+      fprintf(outfile, "%lf\t", BuBTevals[i]);
+      determinant *= BuBTevals[i];
+    }
+    
+    fprintf(outfile, "\nDeterminant of overlap matrix = %lf\n", determinant);
+  }
+  
+  free_block(BuBT);
+  free_block(invBuBT);
+  free_block(BuBTevects);
+  free_block(tol_matrix);
   delete[] BuBTevals;
-  delete[] Bevals;
-  delete[] Barray;
 }
 
 void BMat::print_BMat()
@@ -310,11 +308,13 @@ void BMat::print_BMat()
   fprintf(outfile, "\nValues of simple internal coordinates (ANG. OR DEG.): \n");
   for(x = 0; x < gParams.nintco; x++)
     if(gIntCo.vectorInternals[x]->getType() == STRE) 
-      fprintf(outfile, "\n%i = %10.7lf", x, SVectArray[x]);
-    else
-      fprintf(outfile, "\n%i = %10.7lf", x, (SVectArray[x] * 180 / _pi));
+      fprintf(outfile, "\n%i = %10.7lf", x, gParams.UGF[x][0]);
+    else {
+      gParams.UGF[x][0] = (gParams.UGF[x][0] * 180.0 / _pi);
+      fprintf(outfile, "\n%i = %10.7lf", x, gParams.UGF[x][0]);
+    }
   
-  fprintf(outfile, "\nB Matrix for Internal Coordinates:\n");
-  print_mat(BMatrix, gParams.nintco,  gParams.ncartesians, outfile) ;
+  fprintf(outfile, "\n\nB Matrix for Internal Coordinates:\n");
+  print_mat(BMatSave, gParams.nintco,  gParams.ncartesians, outfile) ;
 }
 
