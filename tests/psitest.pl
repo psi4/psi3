@@ -805,7 +805,7 @@ sub seek_angmom
     return @angmom;
   }
   
-  printf "Error: Could not find Gross atomic populations in $_[0].\n";
+  printf "Error: Could not find Electronic angular momentum in $_[0].\n";
   exit 1;
 }
 
@@ -847,6 +847,62 @@ sub seek_epef
   
   printf "Error: Could not find Electrostatic potential\n";
   printf "       and electric field in $_[0].\n";
+  exit 1;
+}
+
+sub seek_edensity
+{   
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  seek(OUT,0,0);
+  while(<OUT>) {
+    if (/# of atoms/) {
+      @data = split(/ +/, $_);
+      $noa = $data[5];
+    }
+  }
+  close (OUT);
+
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  @datafile = <OUT>;
+  close (OUT);
+
+  $linenum=0;
+  $start = 0;
+  foreach $line (@datafile) {
+    if ($line =~ m/-Electron density/) {
+      $start = $linenum;
+    }
+    $linenum++;
+  }
+
+  for($i=0; $i<$noa; $i++) {
+    @line = split(/ +/, $datafile[$start+4+$i]);
+    $edensity[$i] = $line[2];
+  }
+    
+  if($start != 0) {
+    return @edensity;
+  }
+  
+  printf "Error: Could not find Electron density in $_[0].\n";
+  exit 1;
+}
+
+sub seek_mvd
+{   
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  seek(OUT,0,0);
+  while(<OUT>) {
+    if (/Total one-electron MVD terms/) {
+      @data = split(/ +/, $_);
+      $mvd = $data[6];
+      return $mvd;
+    }
+  }
+  close(OUT);
+
+  printf "Error: Could not find Relativistic MVD one-electron\n";
+  printf "       corrections in $_[0].\n";
   exit 1;
 }
 

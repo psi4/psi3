@@ -116,6 +116,23 @@ else {
   pass_test("Electrostatic potential and electric field");
 }
 
+@edensity_ref = seek_edensity($REF_FILE);
+@edensity_test = seek_edensity($TEST_FILE);
+
+if (!compare_arrays(\@edensity_ref,\@edensity_test,2,2,$MTOL)) {
+  fail_test("Electron density"); $FAIL = 1;
+}
+else { 
+  pass_test("Electron density");
+}
+
+if (abs(seek_mvd($REF_FILE) - seek_mvd($TEST_FILE)) > $TOL) {
+  fail_test("Total one-electron MVD terms"); $FAIL = 1;
+}
+else { 
+  pass_test("Total one-electron MVD terms");
+}
+
 close (RE);
 
 system("cat $RESULT");
