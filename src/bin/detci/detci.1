@@ -341,6 +341,12 @@ If TRUE, calculate the expectation value of the S^2 operator for the
 final CI wavefunction for each root.  In principle, DETCI should yield
 S^2 eigenfunctions.  The default is FALSE.
 
+.IP "\fBCOLLAPSE_SIZE \fP \fIinteger\fP"
+Gives the number of vectors to retain when the Davidson subspace is
+collapsed (see \fBMAXNVECT\fP below).  If greater than one, the
+collapsed subspace retains the best estimate of the CI vector for
+the previous n iterations.   Defaults to 1.
+
 .IP "\fBFIRST_TMP_UNIT =\fP \fIinteger\fP"
 Gives the file (unit) number associated with the first scratch file
 used by DETCI.  Other scratch files are numbered consecutively from
@@ -385,8 +391,8 @@ be held on disk for the CI coefficient and sigma vectors.  (There
 is one H(diag) vector and the number of D vectors is equal to the
 number of roots).  When the number of vectors on disk reaches
 the value of \fBMAXNVECT\fP, the Davidson subspace will be 
-collapsed to one vector for each root.  This is very helpful for
-saving disk space.  Defaults to \fBMAXITER\fP * \fBNUM_ROOTS\fP
+collapsed to \fBCOLLAPSE_SIZE\fP vectors for each root.  This is very 
+helpful for saving disk space.  Defaults to \fBMAXITER\fP * \fBNUM_ROOTS\fP
 + \fBNUM_INIT_VECS\fP.
 
 .IP "\fBMIXED =\fP \fIboolean\fP"
