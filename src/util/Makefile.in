@@ -49,7 +49,7 @@ targetclean:
 
 top_srcdir = @top_srcdir@
 srcdir = @srcdir@
-top_objdir = @top_objdir@
+top_objdir = ../..
 
 $(top_srcdir)/configure: $(top_srcdir)/configure.in $(top_srcdir)/aclocal.m4
 	cd $(top_srcdir) && autoconf

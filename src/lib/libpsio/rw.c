@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <unistd.h>
-#include <qt.h>
 #include "psio.h"
 
 int psio_rw(ULI unit, char *buffer, psio_address address, ULI size, int wrt)

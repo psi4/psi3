@@ -19,7 +19,8 @@ htmldir = @htmldir@
 txtdir = @txtdir@
 datadir = @datadir@
 top_srcdir = @top_srcdir@
-top_objdir = @top_objdir@
+# this file is used by the subdirectories, so top_objdir is relative to those
+top_objdir = ../../..
 objincdir = @objincdir@
 
 RANLIB = @RANLIB@
@@ -38,6 +39,8 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 PSIPP = @PSIPP@
 TMPL = @TMPL@
 MKDIRS = @MKDIRS@
+
+CPPFLAGS = @CPPFLAGS@
 
 CDEF = @CDEF@ @DEFS@
 COPT = @COPT@

@@ -25,15 +25,7 @@ test -z "$incdir" && incdir='$(prefix)/include'
 # will be put into an objincdir and the utilities will be accessed
 # from src/util in the object directory.
 
-# Allow environmental variable to override default behaviour for top_objdir
-# Useful for NFS volumes and symlinks.
-# 11/14/01
-if test -z "$TOP_OBJDIR"; then
-  top_objdir=`pwd`
-else
-  top_objdir=$TOP_OBJDIR
-fi
-objincdir=$top_objdir/include
+objincdir='$(top_objdir)/include'
 AC_SUBST(objincdir)
 
 AC_SUBST(bindir)
@@ -192,8 +184,8 @@ esac
 
 AC_SET_MAKE
 
-TMPL=$top_objdir/src/util/tmpl/tmpl AC_SUBST(TMPL)
-PSIPP=$top_objdir/src/util/psipp/psipp AC_SUBST(PSIPP)
+TMPL='$(top_objdir)/src/util/tmpl/tmpl' AC_SUBST(TMPL)
+PSIPP='$(top_objdir)/src/util/psipp/psipp' AC_SUBST(PSIPP)
 
 # Figure out the suffix used for fortran for files (as $(FC) needs
 # them--not F since that is psipp's input suffix).
@@ -279,24 +271,23 @@ AC_SUBST(BLAS)
 # CXXOTH Other C++ flags.
 # CXXINC C++ include directories (with -I in front).
 
-
+CPPFLAGS='-I. -I$(objincdir) -I$(top_srcdir)/include -I$(top_srcdir)/src/lib/libciomr -I$(top_srcdir)/src/lib/libderiv -I$(top_srcdir)/src/lib/libdpd -I$(top_srcdir)/src/lib/libfile30 -I$(top_srcdir)/src/lib/libint -I$(top_srcdir)/src/lib/libipv1 -I$(top_srcdir)/src/lib/libiwl -I$(top_srcdir)/src/lib/libpsio  -I$(top_srcdir)/src/lib/libqt  -I$(top_srcdir)/src/lib/libr12'
 FDBG='-g' AC_SUBST(FDBG)
 FOPT='-O' AC_SUBST(FOPT)
 FDEF='' AC_SUBST(FDEF)
 FOTH='' AC_SUBST(FOTH)
 FSTATIC='' AC_SUBST(FSTATIC)
-FINC='-I. -I$(objincdir) -I$(incdir)' AC_SUBST(FINC)
+FINC='$(CPPFLAGS)' AC_SUBST(FINC)
 CDBG='-g' AC_SUBST(CDBG)
 COPT='-O2' AC_SUBST(COPT)
 CDEF='' AC_SUBST(CDEF)
 COTH='' AC_SUBST(COTH)
-CINC='-I. -I$(objincdir) -I$(incdir)' AC_SUBST(CINC)
+CINC='$(CPPFLAGS)' AC_SUBST(CINC)
 CXXDBG='-g' AC_SUBST(CXXDBG)
 CXXOPT='-O2' AC_SUBST(CXXOPT)
 CXXDEF='' AC_SUBST(CXXDEF)
 CXXOTH='' AC_SUBST(CXXOTH)
-CXXINC='-I. -I$(objincdir) -I$(incdir)' AC_SUBST(CXXINC)
-
+CXXINC='$(CPPFLAGS)' AC_SUBST(CXXINC)
 
 #check for const
 AC_C_CONST()
@@ -438,7 +429,7 @@ elif test "$ac_sizeof_long" = "$ac_sizeof_integer" ; then
 elif test "$ac_sizeof_long_long" = "$ac_sizeof_integer" ; then
   INT_TYPE="long long"
 else
-  echo "cannot determine INT_TYPE"
+  AC_MSG_ERROR("cannot determine INT_TYPE")
 fi
 AC_SUBST(INT_TYPE)
 
@@ -447,7 +438,7 @@ if test "$ac_sizeof_double" = "$ac_sizeof_real" ; then
 elif test "$ac_sizeof_long_double" = "$ac_sizeof_real" ; then
   REAL_TYPE="long double"
 else
-  echo "cannot determine REAL_TYPE"
+  AC_MSG_ERROR("cannot determine REAL_TYPE")
 fi
 AC_SUBST(REAL_TYPE)
 
@@ -710,6 +701,40 @@ AC_PROG_LATEX()
 AC_PROG_DVIPS()
 AC_PROG_LATEX2HTML()
 
+#
+# Support for dependency rules
+#
+
+# The GNU compilers work with:
+CCDEPENDSUF=none
+CXXDEPENDSUF=none
+CCDEPENDFLAGS=-M
+CXXDEPENDFLAGS=-M
+
+/bin/rm -f depcheck.u depcheck.c depcheck.o
+
+# Check for an IBM visual age C compiler
+echo "#include <stdio.h>" > depcheck.c
+$CC $CPPFLAGS $CFLAGS -M depcheck.c > /dev/null 2>&1
+if test -f depcheck.u; then
+  CCDEPENDSUF=u
+fi
+/bin/rm -f depcheck.u depcheck.c depcheck.o
+
+# Check for an IBM visual age C++ compiler
+echo "#include <iostream>" > depcheck.cc
+$CXX $CPPFLAGS $CXXFLAGS -M -E depcheck.cc > /dev/null 2>&1
+if test -f depcheck.u; then
+  CXXDEPENDSUF=u
+  CXXDEPENDFLAGS="-M -E"
+fi
+/bin/rm -f depcheck.u depcheck.c depcheck.o
+
+AC_SUBST(CCDEPENDSUF)
+AC_SUBST(CXXDEPENDSUF)
+AC_SUBST(CCDEPENDFLAGS)
+AC_SUBST(CXXDEPENDFLAGS)
+
 AC_OUTPUT(include/psiconfig.h include/cfuncs.h include/ffuncs.h
           include/sizeof.h include/file30_params.h include/Makefile
           Makefile lib/Makefile src/Makefile
@@ -788,7 +813,6 @@ AC_OUTPUT(include/psiconfig.h include/cfuncs.h include/ffuncs.h
           src/bin/oeprop/Makefile
           src/bin/optking/Makefile
           src/bin/psiclean/Makefile
-          src/bin/stable/Makefile
           src/bin/transqt/Makefile
           src/bin/mvo/Makefile
 

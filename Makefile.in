@@ -8,7 +8,7 @@ subdirs = lib include src
 top_srcdir = @top_srcdir@
 srcdir = @srcdir@
 VPATH = @srcdir@
-top_objdir = @top_objdir@
+top_objdir = .
 
 prefix = @prefix@
 scriptdir = $(prefix)/bin
