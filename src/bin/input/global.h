@@ -2,6 +2,9 @@
     Global variables
  ***************************/
 
+/*need this for z_entry structure*/
+#include<file30.h>
+
 #ifdef EXTERN
 # undef EXTERN
 # define EXTERN extern
@@ -148,21 +151,5 @@ EXTERN int **ao_type_irr;        /*Irreducible representation an AO of a given t
 /* Arrays of x, y, and z exponents in cartesian Gaussians (AOs)*/
 EXTERN int **xexp_ao, **yexp_ao, **zexp_ao;
 
-/*struct and array of structures for z-mat entry*/
-/*IMPORTANT: this structure is used to write AND READ zmat in file30,
-  other modules (currently only extrema) have exact copies of this
-  structure so that they can interact with file30 properly, if you change
-  anything here you MUST change it EVERYWHERE else */
-struct z_entry {
-  int bond_atom;                    /*first reference atom (bond)*/
-  int angle_atom;                   /*second reference atom (angle)*/
-  int tors_atom;                    /*third reference atom (torsion)*/
-  int bond_opt;                     /*flag indicating to optimize variable
-(default=false)*/
-  int angle_opt;
-  int tors_opt;
-  double bond_val;                  /*coordinate values*/
-  double angle_val;
-  double tors_val;
-  };
+/*array of structures for z-mat entry*/
 struct z_entry* z_geom;          
