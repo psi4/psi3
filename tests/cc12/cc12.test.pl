@@ -3,7 +3,7 @@
 require("../psitest.pl");
 
 $TOL = 10**-8;
-$EVAL_TOL = 10**-5;
+$EVAL_TOL = 10**-9;
 $REF_FILE = "output.ref";
 $TEST_FILE = "output.dat";
 $RESULT = "cc12.test";
