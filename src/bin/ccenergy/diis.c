@@ -191,7 +191,10 @@ void diis(int iter)
   /* If we haven't run through enough iterations, set the correct dimensions
      for the extrapolation */
   if(!(iter >= (nvector))) {
-      if(iter < 2) return; /* Leave if we can't extrapolate at all */
+      if(iter < 2) { /* Leave if we can't extrapolate at all */
+          free(error);
+          return; 
+        }
       nvector = iter;
     }
 

@@ -10,6 +10,10 @@
 #define EXTERN
 #endif
 
+#ifdef DMALLOC
+#include <dmalloc.h>
+#endif
+
 EXTERN FILE *infile, *outfile;
 EXTERN struct MOInfo moinfo;
 EXTERN struct Params params;
