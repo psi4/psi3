@@ -43,23 +43,131 @@ export CVSROOT
 to the CVS server by typing {\tt cvs login}.  (Subsequent requests to the
 repository will not require you to re-login.)
 
-\subsection{\PSIthree\ Branch Policies: Which Branch Should I Use?}
+\subsection{\PSIthree\ CVS Policies: Which Branch Should I Use?}
+\label{section:branches}
 
 The \PSIthree\ repository is comprised of a main trunk and several
 release branches.  Which you should use depends on the development
-work you plan for the codes.  The following diagram gives an overview
-of the CVS revision-control structure:
+work you plan for the codes:
+\begin{enumerate}
+\item The main trunk is reserved for development of new functionality.
+\item Bug fixes, defined as anything that doesn't add functionality
+(including documentation updates) should be made {\em only} on the most
+recent stable release branch.
+\end{enumerate}
+
+\noindent Fig.~\ref{Fig:cvs} provides a schematic of the CVS revision-control
+structure and branch labelling.  Two release branches are shown, the current
+stable branch, named {\tt psi-3-2}, and a planned future release, to be
+named {\tt psi-3-3}.  The tags on the branches indicate release points,
+where bugs have been fixed and the code has been or will be exported for
+public distribution.  As soon as a release branch is created, a tag will
+be generated so that updates may be made to that version of the code.
+We have adopted the convention that the first tag on a new release branch
+will be given the suffix, {\tt -rc-1}, for ``release candidate 1'' (i.e.,
+a numbered beta release).  Subsequent tags for new released on the same
+branch will be updated with {\tt -rc-2}, {\tt -rc-3}, etc.  Once the
+code is appropriately stable to be beyond beta status, release tags will
+be given the suffic, {\tt -0}, {\tt -1}, etc., indicating patch levels.
+The dotted lines in the figure indicate merge points: before each public
+release, changes made to the code on the stable release branch will be
+merged into the main trunk (and {\em vice versa}).
+
+\begin{figure}[h]
 \begin{center}
-\epsfig{file=cvs.ps}
+\epsfig{file=cvs.ps,height=3.5cm}
 \end{center}
+\caption{\PSIthree\ CVS branch structure with examples of branch- and
+release-tag labelling.}
+\label{Fig:cvs}
+\end{figure}
+
+\noindent
+The following are some of the most commonly used CVS commands for checking
+out and updating working copies of the \PSIthree\ source code are.
+
+\noindent
+$\bullet$ To checkout a working copy of the head of the main trunk:
+
+{\tt cvs co psi3} 
+
+\noindent
+$\bullet$ To check out a working copy of the head of a specific release branch,
+e.g., the branch labelled {\tt psi-3-2}:
+
+{\tt cvs co -r psi-3-2}
+
+\noindent Note that this sets a ``sticky'' branch tag, i.e. subsequent
+{\tt cvs update} commands will provide updates only on the chosen branch.
+Note also that after you have checked out a fresh working copy of the code
+you must run the {\tt autoconf} command to generate a {\tt configure} script
+for building the code.  (See the installation manual for configuration,
+compilation, and testing instructions.)
+
+\noindent
+$\bullet$ To update your current working copy to include the latest revisions:
+
+{\tt cvs update -dP}
+
+\noindent
+Notes: (a) This command should be run in the top-level of your working-copy's
+source tree; (b) This will update only the revisions on your current branch;
+(c) the {\tt -d} flag tells CVS to grab any new directories that have
+appeared in the repository on this branch; (c) the {\tt -P} option tells
+CVS to remove (prune) any empty directories from your working copy.
+
+\noindent
+$\bullet$ To convert your working copy to the head of a specific branch:
+
+{\tt cvs update -r psi-3-2 psi3}
+
+\noindent
+$\bullet$ To convert your working copy to the head of the main trunk:
+
+{\tt cvs update -A}
+
+\noindent
+{\bf Warning:} The previous two {\tt update} commands should be used {\sc
+with caution}.  If you have made changes to your working copy but have
+not yet checked them into the repository, the update to another branch
+will often (always?) delete your changes!
+
+\noindent
+$\bullet$ To find out what branch your working copy is on, run this in your
+top-level \PSIthree\ source directory:
+
+{\tt cvs status -v configure.in}
+
+\noindent
+This will list all tags and branch tags available for the file (which
+should a correct list for the whole \PSIthree\ repository) and it will
+indicate whether your working copy is on a particular branch or not.
+
+\noindent
+The working copy of your code will be placed in the directory \file{psi3},
+regardless of your choice of branch.  In this manual, we will refer to
+this directory from now on as {\tt \$PSI3}.  
 
 
-\noindent Check out a complete \PSIthree\ source copy by running
-\begin{verbatim}
-cvs co psi3
-\end{verbatim}
-The working copy will be placed in the directory \file{psi3}.  We will
-refer to this directory from now on as {\tt \$PSI3}.
+\noindent
+Some words of advice:
+\begin{enumerate}
+\item Be careful!  If you aren't sure if you should run the CVS command
+you're about to try, perhaps you should first make a backup of of your
+working copy of the code.
+\item Read the CVS manual.  Seriously.
+\begin{center}
+\htmladdnormallink{{\tt
+http://www.loria.fr/\~{}molli/cvs/doc/cvs\_toc.html}}{http://www.loria.fr/~molli/cvs/doc/cvs\_toc.html}
+\end{center}
+\item If you're about to start some significant development or bug-fixes,
+first update your working copy to the latest version on your branch.
+In addition, if you do development over a long period of time (say weeks to
+months) on a specific module or modules, be sure to run a {\tt cvs update}
+occasionally. In can be {\em very} frustrating to try to check in lots
+of changes, only to find out that the \PSIthree\ has changed dramatically
+since your last update.
+\end{enumerate}
 
 \subsection{Checking in altered \PSIthree\ binaries or libraries}
 
@@ -105,6 +213,9 @@ If the programmer is adding a new executable module or library to the
 \PSIthree\ repository, a number of important conventions should be followed:
 
 \begin{enumerate}
+\item Since such changes almost always involve additional functionality,
+new modules or libraries should be added only on the main CVS trunk.
+See section \ref{section:branches} for additional information.
 
 \item The directory containing the new code should be given a name
 which matches the name of the installed code (e.g. if the code
