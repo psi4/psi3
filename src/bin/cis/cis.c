@@ -29,8 +29,9 @@ int main(int argc, char *argv[])
 {
   char lbl[32];
   int **cachelist, *cachefiles, *ao2atom;
-  int h, i, j, jj, k, nroot, a;
-  double *evals, *dcorr, *weakp, value, d_value, **B_PAO, *Bt;
+  int h, i, j, jj, k, nroot, a, max_j, max_a;
+  double *evals, *dcorr, *weakp, value, d_value, **B_PAO;
+  double *Bt, max_val, test_val;
   int *spin, *symm, count, ivalue;
   dpdfile2 B;
 
@@ -112,12 +113,24 @@ int main(int argc, char *argv[])
   
           // print_mat(B_PAO, local.nocc, local.nso, outfile);
           fprintf(outfile,"\t       occ  vir  atom        amplitude\n");
-          for (j=0; j<local.nocc; ++j) {
-            for (a=0; a<local.nso; ++a)
-              if (fabs(B_PAO[j][a]) > local.amp_print_cutoff)
-                fprintf(outfile,"\t      %3d  %3d %4d %20.10f\n",
-                    j, a, ao2atom[a], B_PAO[j][a]);
-          }
+          for (jj=0; jj< local.nocc*local.nso; ++jj) {
+            max_val = 0.0;
+            for (j=0; j<local.nocc; ++j) {
+              for (a=0; a<local.nso; ++a) {
+                test_val = fabs(B_PAO[j][a]);
+                if (test_val > max_val) {
+	                max_j = j;
+	                max_a = a;
+	                max_val = test_val;
+                }
+              }
+            }
+            if (max_val > local.amp_print_cutoff) {
+              fprintf(outfile,"\t      %3d  %3d %4d %20.10f\n",
+                      max_j, max_a, ao2atom[max_a], B_PAO[max_j][max_a]);
+              B_PAO[max_j][max_a] = 0.0;
+            }
+	        }
           free_block(B_PAO);
           fprintf(outfile, "\n");
         }
@@ -157,11 +170,23 @@ int main(int argc, char *argv[])
   
           // print_mat(B_PAO, local.nocc, local.nso, outfile);
           fprintf(outfile,"\t       occ  vir  atom        amplitude\n");
-          for (j=0; j<local.nocc; ++j) {
-            for (a=0; a<local.nso; ++a)
-              if (fabs(B_PAO[j][a]) > local.amp_print_cutoff)
-                fprintf(outfile,"\t      %3d  %3d %4d %20.10f\n",
-                    j, a, ao2atom[a], B_PAO[j][a]);
+          for (jj=0; jj< local.nocc*local.nso; ++jj) {
+            max_val = 0.0;
+            for (j=0; j<local.nocc; ++j) {
+              for (a=0; a<local.nso; ++a) {
+                test_val = fabs(B_PAO[j][a]);
+                if (test_val > max_val) {
+                  max_j = j;
+                  max_a = a;
+                  max_val = test_val;
+                }
+              }
+            }
+            if (max_val > local.amp_print_cutoff) {
+              fprintf(outfile,"\t      %3d  %3d %4d %20.10f\n",
+              max_j, max_a, ao2atom[max_a], B_PAO[max_j][max_a]);
+                            B_PAO[max_j][max_a] = 0.0;
+            }
           }
           free_block(B_PAO);
           fprintf(outfile, "\n");
