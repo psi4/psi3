@@ -100,10 +100,10 @@ CXXINC = -I$(srcdir) $(DIRS:%=-I$(srcdir)/%)  -I$(objincdir) -I$(incdir) $(CPPFL
 CXXDEF += $(OPTIONS)
 
 LD = $(CXX)
-LDLIBS += $(BLAS)
+LDLIBS += $(BLAS) -lpthread
 ALLOC =
 PSILIBS = -lPSI_qt -lPSI_chkpt -lPSI_file30 $(INTLIBS) -lPSI_iwl \
-          -lPSI_psio -lPSI_ciomr -lPSI_ipv1 -lpthread
+          -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 ifeq ($(findstring CC,$(SUBDIRS)),CC)
   ifneq ($(findstring -lPSI_dpd,$(PSILIBS)),-lPSI_dpd)
     PSILIBS := -lPSI_dpd $(PSILIBS)
