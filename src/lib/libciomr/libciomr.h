@@ -9,6 +9,7 @@
 #ifndef LIBCIOMR_H
 #define LIBCIOMR_H
 
+#include <stdio.h>
 #include <libciomr/iomrparam.h>
 
 int psi_start(int argc, char *argv[], int overwrite_output);
