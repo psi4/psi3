@@ -281,21 +281,34 @@ int ras_set(int nirreps, int nbfso, int freeze_core, int *orbspi,
 **  \param ras_type    =  if 1, put docc and socc together in same RAS space 
 **                        (RAS I), as appropriate for DETCI.  If 0, put socc
 **                        in its own RAS space (RAS II), as appropriate for CC.
+**  \param hoffmann    =  if > 0, order orbitals according to Mark Hoffmann.
+**                        hoffmann==1:
+**                        ras1, ras2, ..., rasn, COR, FZC, VIR, FZV. 
+**                        hoffmann==2:
+**                        VIR, ras1, ras2, ..., rasn, COR, FZC, FZV.
+**                        Note odd placement of FZC in middle!
 **
 ** Returns: 1 for success, 0 otherwise
 ** \ingroup (QT)
 */
 int ras_set2(int nirreps, int nbfso, int delete_fzdocc, 
-            int delete_restrdocc, int *orbspi,
-            int *docc, int *socc, int *frdocc, int *fruocc, 
-            int *restrdocc, int *restruocc, int **ras_opi, int *order, 
-            int ras_type)
+             int delete_restrdocc, int *orbspi,
+             int *docc, int *socc, int *frdocc, int *fruocc, 
+             int *restrdocc, int *restruocc, int **ras_opi, int *order, 
+             int ras_type, int hoffmann)
 {
   int i, irrep, point, tmpi, cnt=0;
   int errcod, errbad, parsed_ras1=0, parsed_ras2=0, do_ras4;
   int parsed_restr_uocc=0;
   int *used, *offset, **tras;
   int *tmp_frdocc, *tmp_fruocc;
+
+  /* Hoffmann's code never wants FZC or COR lumped in with RAS I,
+     even if those orbitals need to be transformed also */
+  if (hoffmann > 0) {
+    delete_fzdocc = 1;
+    delete_restrdocc = 1;
+  }
 
   used = init_int_array(nirreps);
   offset = init_int_array(nirreps);
@@ -306,7 +319,7 @@ int ras_set2(int nirreps, int nbfso, int delete_fzdocc,
   zero_int_array(restrdocc, nirreps);
   zero_int_array(restruocc, nirreps);
 
-  for (i=0; i<4; i++) {
+  for (i=0; i<MAX_RAS_SPACES; i++) {
     zero_int_array(ras_opi[i], nirreps);
   }
   zero_int_array(order, nbfso);
@@ -334,20 +347,10 @@ int ras_set2(int nirreps, int nbfso, int delete_fzdocc,
   errbad=0; do_ras4=1;
   errcod = ip_int_array("RAS1", ras_opi[0], nirreps);
   if (errcod == IPE_OK) parsed_ras1 = 1;
-  else if (errcod == IPE_KEY_NOT_FOUND) {
-    errcod = ip_int_array("ACTIVE_CORE", ras_opi[0], nirreps);
-    if (errcod == IPE_OK) parsed_ras1 = 1;
-    else if (errcod != IPE_KEY_NOT_FOUND) errbad = 1;
-  }
-  else errbad = 1;
+  else if (errcod != IPE_KEY_NOT_FOUND) errbad = 1;
   errcod = ip_int_array("RAS2", ras_opi[1], nirreps);
   if (errcod == IPE_OK) parsed_ras2 = 1;
-  else if (errcod == IPE_KEY_NOT_FOUND) {
-    errcod = ip_int_array("MODEL_SPACE", ras_opi[1], nirreps);
-    if (errcod == IPE_OK) parsed_ras2 = 1;
-    else if (errcod != IPE_KEY_NOT_FOUND) errbad = 1;
-  }
-  else errbad = 1;
+  else if (errcod != IPE_KEY_NOT_FOUND) errbad = 1;
   errcod = ip_int_array("RAS3", ras_opi[2], nirreps);
   if (errcod != IPE_OK && errcod != IPE_KEY_NOT_FOUND) errbad=1;
   if (errcod == IPE_KEY_NOT_FOUND) do_ras4=0;
@@ -423,19 +426,51 @@ int ras_set2(int nirreps, int nbfso, int delete_fzdocc,
   
   /* copy everything to the temporary RAS arrays: */
   /* add subspaces for frozen orbitals            */
-  tras = init_int_matrix(8, nirreps);
-  for (irrep=0; irrep<nirreps; irrep++) {
-    tras[0][irrep] = frdocc[irrep];
-    tras[1][irrep] = restrdocc[irrep];
-    tras[6][irrep] = restruocc[irrep];
-    tras[7][irrep] = fruocc[irrep];
-  }
-  for (i=0; i<4; i++) {
+  tras = init_int_matrix(MAX_RAS_SPACES+4, nirreps);
+
+  /* for usual DETCI, DETCAS, etc */
+  if (hoffmann==0) {
     for (irrep=0; irrep<nirreps; irrep++) {
-      tras[i+2][irrep] = ras_opi[i][irrep];
+      tras[0][irrep] = frdocc[irrep];
+      tras[1][irrep] = restrdocc[irrep];
+      tras[MAX_RAS_SPACES+2][irrep] = restruocc[irrep];
+      tras[MAX_RAS_SPACES+3][irrep] = fruocc[irrep];
+    }
+    for (i=0; i<MAX_RAS_SPACES; i++) {
+      for (irrep=0; irrep<nirreps; irrep++) {
+        tras[i+2][irrep] = ras_opi[i][irrep];
+      }
     }
   }
- 
+  /* for Mark Hoffmann's UND order for GVVPT2, etc. */
+  else if (hoffmann == 1) {
+    for (i=0; i<MAX_RAS_SPACES; i++) {
+      for (irrep=0; irrep<nirreps; irrep++) {
+        tras[i][irrep] = ras_opi[i][irrep];
+      }
+    }
+    for (irrep=0; irrep<nirreps; irrep++) {
+      tras[0+MAX_RAS_SPACES][irrep] = restrdocc[irrep];
+      tras[1+MAX_RAS_SPACES][irrep] = frdocc[irrep];
+      tras[MAX_RAS_SPACES+2][irrep] = restruocc[irrep];
+      tras[MAX_RAS_SPACES+3][irrep] = fruocc[irrep];
+    }
+  }
+  /* for Mark Hoffmann's UND GUGA code */
+  else if (hoffmann == 2) {
+    for (i=0; i<MAX_RAS_SPACES; i++) {
+      for (irrep=0; irrep<nirreps; irrep++) {
+        tras[i+1][irrep] = ras_opi[i][irrep];
+      }
+    }
+    for (irrep=0; irrep<nirreps; irrep++) {
+      tras[0][irrep] = restruocc[irrep];
+      tras[1+MAX_RAS_SPACES][irrep] = restrdocc[irrep];
+      tras[2+MAX_RAS_SPACES][irrep] = frdocc[irrep];
+      tras[MAX_RAS_SPACES+3][irrep] = fruocc[irrep];
+    }
+  }
+   
   /* construct the offset array */
   offset[0] = 0;
   for (irrep=1; irrep<nirreps; irrep++) {
@@ -448,7 +483,7 @@ int ras_set2(int nirreps, int nbfso, int delete_fzdocc,
 	point = used[irrep] + offset[irrep];
 	if (point < 0 || point >= nbfso) {
 	  fprintf(stderr, "(ras_set): Invalid point value\n");
-	  exit(PSI_RETURN_FAILURE);
+	  abort();
 	}
 	order[point] = cnt++;
 	used[irrep]++;
@@ -481,7 +516,7 @@ int ras_set2(int nirreps, int nbfso, int delete_fzdocc,
   }
   
   free(used);  free(offset);
-  free_int_matrix(tras, 8);
+  free_int_matrix(tras, MAX_RAS_SPACES+4);
 
   return(!errbad);
 
