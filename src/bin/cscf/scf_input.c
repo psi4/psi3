@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.4  2000/06/26 19:04:11  sbrown
- * Added DFT capapbilities to interface with cints using direct scf
+ * Revision 1.5  2000/06/27 21:08:10  evaleev
+ * Fixed a minor string manipulation problem in scf_input.c
  *
+/* Revision 1.4  2000/06/26 19:04:11  sbrown
+/* Added DFT capapbilities to interface with cints using direct scf
+/*
 /* Revision 1.3  2000/06/22 22:15:02  evaleev
 /* Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
 /*
@@ -88,7 +91,7 @@ void scf_input(ipvalue)
    double elast;     
    double **scr_mat;
    char *alabel,*bool="YES",*optyp,*wfn,*dertype;
-   char *extmp,*cortmp;
+   char *exch_str,*corr_str;
    char cjunk[80];
    int norder,*iorder,reordr;
    int nc,no,nh,nn,num_mo;
@@ -198,14 +201,34 @@ void scf_input(ipvalue)
        if(depth == 0){
 	   errcod = ip_string("FUNCTIONAL",&functional,0);
 	   if(errcod != IPE_OK){
-	       fprintf(outfile,"\nMust specify a functional when using ks-dft");
+	       fprintf(outfile," Must specify a functional when using ks-dft\n");
 	       exit(1);
 	   }
        }
        else if(depth == 2){
-	   errcod = ip_string("FUNCTIONAL",&extmp,1,0);
-	   errcod = ip_string("FUNCTIONAL",&cortmp,1,1);
-	   functional = strcat(extmp,cortmp);
+	   errcod = ip_string("FUNCTIONAL",&exch_str,1,0);
+	   if(errcod != IPE_OK){
+	       fprintf(outfile," Exchange functional specification is invalid or missing.\n");
+	       exit(1);
+	   }
+	   errcod = ip_string("FUNCTIONAL",&corr_str,1,1);
+	   if(errcod != IPE_OK){
+	       fprintf(outfile," Correlation functional specification is invalid or missing.\n");
+	       exit(1);
+	   }
+	   if (!strcmp(exch_str,"NONE"))
+	     exch_str[0] = '\0';
+	   if (!strcmp(corr_str,"NONE"))
+	     corr_str[0] = '\0';
+
+	   i = strlen(exch_str) + strlen(corr_str);
+	   if (i == 0)
+	     functional = strdup("NONE");
+	   else {
+	     functional = (char *) malloc(sizeof(char)* (i + 1));
+	     sprintf(functional,"%s%s",exch_str,corr_str);
+	   }
+	   free(exch_str); free(corr_str);
        }
        else{
 	   fprintf(outfile,"\nwrong number of records in FUNCTIONAL keyword");

@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.3  2000/06/26 19:04:12  sbrown
- * Added DFT capapbilities to interface with cints using direct scf
+ * Revision 1.4  2000/06/27 21:08:11  evaleev
+ * Fixed a minor string manipulation problem in scf_input.c
  *
+/* Revision 1.3  2000/06/26 19:04:12  sbrown
+/* Added DFT capapbilities to interface with cints using direct scf
+/*
 /* Revision 1.2  2000/06/22 22:15:02  evaleev
 /* Modifications for KS DFT. Reading in XC Fock matrices and XC energy in formg_direct need to be uncommented (at present those are not produced by CINTS yet).
 /*
@@ -157,12 +160,14 @@ void scf_iter()
 	/* it should be alright to use fock_pac as 2 arguments */
 	for (m=0; m < num_ir ; m++) {
 	  s = &scf_info[m];
-	  if (nn=s->num_so)
+	  if (nn=s->num_so) {
 	    add_arr(s->fock_pac,s->xcmat,s->fock_pac,ioff[nn]);
+	    if(print & 4) {
+	      fprintf(outfile,"\n J+X+C gmat for irrep %d",s->irrep_label);
+	      print_array(s->fock_pac,nn,outfile);
+	    }
 	}
       }
-      fprintf(outfile,"\n full XCJ FOCK");
-      print_array(s->fock_pac,nn,outfile);
    /* create new fock matrix in fock_pac or fock_eff */
       if(!diisflg) diis(scr,fock_c,fock_ct,c1,c2,cimax,newci);
 

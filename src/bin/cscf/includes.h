@@ -9,8 +9,3 @@
 #define MIN0(a,b) ((a)<(b)) ? (a) : (b)
 #define MAX0(a,b) ((a)>(b)) ? (a) : (b)
 
-#ifdef AIXV3
-# define MALLOC malloc
-#else
-# define MALLOC malloc
-#endif
