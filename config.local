@@ -1,0 +1,34 @@
+#!/bin/sh
+#
+# This script does some additional tests on system after config.guess
+# usage: config.local [target_type]
+#
+# This script should be used if:
+#  1) config.guess produces non-satisfactory results 
+#     (e.g. if it's not able to distinguish certain architecture types)
+#  2) config.guess fails
+#
+# Feel free to modify this script but do not check-in changes without
+# psiadm's permission!!!
+#
+# Center for Computational Quantum Chemistry,
+# University of Georgia,
+# Athens, GA
+# February 2000
+
+target=$1
+# Analyze the $target and modify it in any way you like
+
+#
+# Always make sure that there're at least 3 components to any target
+# To do that convert target into a cpu, vendor, and os.
+# If any part is missing, then fill it in with unknown. 
+cpu=`echo $target | sed 's/\([^-]*\)-\([^-]*\)-\([^-]*\)-*.*/\1/'`
+vendor=`echo $target | sed 's/\([^-]*\)-\([^-]*\)-\([^-]*\)-*.*/\2/'`
+os=`echo $target | sed 's/\([^-]*\)-\([^-]*\)-\([^-]*\)-*.*/\3/'`
+if [ -z "$cpu" ]; then cpu=unknown; fi
+if [ -z "$vendor" ]; then vendor=unknown; fi
+if [ -z "$os" ]; then os=unknown; fi
+
+
+echo $target

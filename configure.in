@@ -42,23 +42,28 @@ changequote(,)
 # If target wasn't given, then examine the current host and try
 # to make it the target.
 if [ -z "$target" ] || [ "$target" = NONE ]; then
-  target=`$srcdir/host.sh`
+  if [ -x $srcdir/config.guess ]; then
+    target=`$srcdir/config.guess`
+  fi
+  if [ -x $srcdir/config.local ]; then
+    test -z "$target" && target=`$srcdir/config.local $target`
+  fi
 fi
 
-# Convert target into a arch, vendor, and os.
-arch=`echo $target | sed 's/\([^-]*\)-\([^-]*\)-\([^-]*\)-*.*/\1/'`
+# Convert target into a cpu, vendor, and os.
+# Leave out everything else
+cpu=`echo $target | sed 's/\([^-]*\)-\([^-]*\)-\([^-]*\)-*.*/\1/'`
 vendor=`echo $target | sed 's/\([^-]*\)-\([^-]*\)-\([^-]*\)-*.*/\2/'`
 os=`echo $target | sed 's/\([^-]*\)-\([^-]*\)-\([^-]*\)-*.*/\3/'`
-if [ "$arch" = NONE ]; then arch=''; fi
+if [ "$cpu" = NONE ]; then cpu=''; fi
 
-# If anything is missing, then fill it in with unknown.
-if [ -z "$arch" ]; then arch=unknown; fi
+# If cpu, vendor, or os is missing, then fill it in with unknown.
+if [ -z "$cpu" ]; then cpu=unknown; fi
 if [ -z "$vendor" ]; then vendor=unknown; fi
 if [ -z "$os" ]; then os=unknown; fi
 
 changequote([,])
 
-target=$arch-$vendor-$os
 echo using machine type $target
 AC_SUBST(target)
 
@@ -440,49 +445,33 @@ AC_FC_COMPILE_CHECK(-Nn10000,,-Nn10000,
 
 AC_CHECKING(machine specfic optimization flags)
 changequote(,)
-# set up arch specific flags
-case $arch in
-  power)
-    # should give -qarch=pwr -qtune=pwr, but i'm not sure if the older
-    # compilers take these
+# set up cpu specific flags
+case $cpu in
+  rs6000)
     if [ "$FC" = xlf ]; then
-      FOPT="-O -qxflag=xalias -qdpc -qfold -qmaf"
+      FOPT="-O2 -qarch=com -qxflag=xalias -qdpc -qfloat=fold -qfloat=maf"
       AC_MSG_RESULT(fortran flags: $FOPT)
     fi
     if [ "$CC" = xlc ] || [ "$CC" = cc ]; then
-      COPT="-O2 -qarch=pwr -qmaf"
+      COPT="-O2 -qarch=com -qfloat=maf -qfloat=fold"
       AC_MSG_RESULT(c flags: $COPT)
     fi
     if [ "$CXX" = xlC ] || [ "$CXX" = c++ ]; then
-      CXXOPT="-O2 -qarch=pwr -qmaf"
+      CXXOPT="-O2 -qarch=com -qfloat=maf -qfloat=fold"
       AC_MSG_RESULT(c++ flags: $CXXOPT)
     fi
     ;;
-  power2)
+  powerpc)
     if [ "$FC" = xlf ]; then
-      FOPT="-O2 -qxflag=xalias -qdpc"
+      FOPT="-O2 -q64 -qarch=ppc -qxflag=xalias -qdpc -qfloat=fold -qfloat=maf"
       AC_MSG_RESULT(fortran flags: $FOPT)
     fi
     if [ "$CC" = xlc ] || [ "$CC" = cc ]; then
-      COPT="-O2 -qarch=pwr2 -qtune=pwr2 -qfloat=maf -qfloat=fold"
+      COPT="-O2 -q64 -qarch=ppc -qfloat=maf -qfloat=fold"
       AC_MSG_RESULT(c flags: $COPT)
     fi
     if [ "$CXX" = xlC ] || [ "$CXX" = c++ ]; then
-      CXXOPT="-O2 -qarch=pwr2 -qtune=pwr2 -qfloat=maf -qfloat=fold"
-      AC_MSG_RESULT(c++ flags: $CXXOPT)
-    fi
-    ;;
-  power3)
-    if [ "$FC" = xlf ]; then
-      FOPT="-O2 -qxflag=xalias"
-      AC_MSG_RESULT(fortran flags: $FOPT)
-    fi
-    if [ "$CC" = xlc ] || [ "$CC" = cc ]; then
-      COPT="-O2 -qarch=pwr3 -qtune=pwr3 -qcache=auto -qfloat=maf -qfloat=fold"
-      AC_MSG_RESULT(c flags: $COPT)
-    fi
-    if [ "$CXX" = xlC ] || [ "$CXX" = c++ ]; then
-      CXXOPT="-O2 -qarch=pwr3 -qtune=pwr3 -qcache=auto -qfloat=maf -qfloat=fold"
+      CXXOPT="-O2 -q64 -qarch=ppc -qfloat=maf -qfloat=fold"
       AC_MSG_RESULT(c++ flags: $CXXOPT)
     fi
     ;;

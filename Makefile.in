@@ -28,9 +28,9 @@ install: install_host
             (cd $${dir}; echo ... Making install in $${dir} ...; $(MAKE) install); \
           done
 
-install_host: host.sh
+install_host: host.sh config.guess config.local
 	$(MKDIRS) $(scriptdir)
-	$(INSTALL_PROGRAM) $< $(scriptdir)
+	$(INSTALL_PROGRAM) $^ $(scriptdir)
 
 install_inc:
 	for dir in $(subdirs); \
