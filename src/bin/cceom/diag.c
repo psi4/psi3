@@ -700,23 +700,23 @@ void diag(void) {
 
 /* debugging grab C[1] */
         /*
-  dpd_file2_init(&SIA, EOM_CME, C_irr, 0, 1, "CME 1");
+  dpd_file2_init(&SIA, EOM_CME, C_irr, 0, 1, "CME 3");
   dpd_file2_copy(&SIA, EOM_CME, "CME 0");
   dpd_file2_close(&SIA);
 
-  dpd_file2_init(&Sia, EOM_Cme, C_irr, 2, 3, "Cme 1");
+  dpd_file2_init(&Sia, EOM_Cme, C_irr, 2, 3, "Cme 3");
   dpd_file2_copy(&Sia, EOM_Cme, "Cme 0");
   dpd_file2_close(&Sia);
 
-  dpd_buf4_init(&SIJAB, EOM_CMNEF, C_irr, 2, 7, 2, 7, 0, "CMNEF 1");
+  dpd_buf4_init(&SIJAB, EOM_CMNEF, C_irr, 2, 7, 2, 7, 0, "CMNEF 3");
   dpd_buf4_copy(&SIJAB, EOM_CMNEF, "CMNEF 0");
   dpd_buf4_close(&SIJAB);
 
-  dpd_buf4_init(&Sijab, EOM_Cmnef, C_irr, 12, 17, 12, 17, 0, "Cmnef 1");
+  dpd_buf4_init(&Sijab, EOM_Cmnef, C_irr, 12, 17, 12, 17, 0, "Cmnef 3");
   dpd_buf4_copy(&Sijab, EOM_Cmnef, "Cmnef 0");
   dpd_buf4_close(&Sijab);
 
-  dpd_buf4_init(&SIjAb, EOM_CMnEf, C_irr, 22, 28, 22, 28, 0, "CMnEf 1");
+  dpd_buf4_init(&SIjAb, EOM_CMnEf, C_irr, 22, 28, 22, 28, 0, "CMnEf 3");
   dpd_buf4_copy(&SIjAb, EOM_CMnEf, "CMnEf 0");
   dpd_buf4_close(&SIjAb);
 

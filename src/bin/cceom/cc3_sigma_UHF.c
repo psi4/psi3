@@ -25,6 +25,20 @@ void cc3_sigma_UHF_AAA(dpdbuf4 *CMNEF, dpdbuf4 *WABEI, dpdbuf4 *WMBIJ,
   int nrows, ncols, nlinks;
   int Gd, d, cd, dc, Gid, id, DD;
   int Gm, m, Gmi, mi, im, mc, M;
+  int GS, GH, GU, GC, GX3;
+
+  GC = CMNEF->file.my_irrep;
+
+  GU = WMBIJ->file.my_irrep;
+
+  if (do_singles)
+    GH = Dints_anti->file.my_irrep;
+  else if (do_doubles)
+    GH = WMAFE->file.my_irrep;
+
+  GS = SIJAB->file.my_irrep;
+
+  GX3 = GU^GC;
 
   nirreps = moinfo.nirreps;
   occpi = moinfo.aoccpi;
@@ -70,8 +84,8 @@ void cc3_sigma_UHF_AAA(dpdbuf4 *CMNEF, dpdbuf4 *WABEI, dpdbuf4 *WMBIJ,
 	Gjk = Gj ^ Gk;
 
 	for(Gab=0; Gab < nirreps; Gab++) {
-	  /* This will need to change for non-totally-symmetric cases */
-	  Gc = Gab ^ Gijk;
+	  /* changed */
+	  Gc = Gab ^ Gijk ^ GX3;
 	  W1[Gab] = dpd_block_matrix(WABEI->params->coltot[Gab], virtpi[Gc]);
 	}
 
@@ -88,12 +102,12 @@ void cc3_sigma_UHF_AAA(dpdbuf4 *CMNEF, dpdbuf4 *WABEI, dpdbuf4 *WMBIJ,
           if (do_singles) {
 	      /* t_KC <-- 1/4 t_IJKABC <IJ||AB> */
 
-	      Gc = Gk;    /* assumes T1 is totally symmetric */
-	      Gab = Gij;  /* assumes <ij||ab> is totally symmetric */
+	      Gc = Gk ^ GS;  /* changed */
+	      Gab = Gij ^ GH ;  /* changed */
 
 	      ij = Dints_anti->params->rowidx[I][J];
 
-	      nrows = Dints_anti->params->coltot[Gij];
+	      nrows = Dints_anti->params->coltot[Gij^GH]; /* changed */
 	      ncols = virtpi[Gc];
 
 	      if(nrows && ncols)
@@ -103,10 +117,10 @@ void cc3_sigma_UHF_AAA(dpdbuf4 *CMNEF, dpdbuf4 *WABEI, dpdbuf4 *WMBIJ,
 
           if (do_doubles) {
 	      /* t_IJAB <-- t_IJKABC F_KC */
-	      Gc = Gk;    /* assumes Fme is totally symmetric */
-	      Gab = Gij;  /* Assumes tIJAB is totally symmetric */
+	      Gc = Gk ^ GH;    
+	      Gab = Gij ^ GS; 
 
-	      nrows = SIJAB->params->coltot[Gij];
+	      nrows = SIJAB->params->coltot[Gij^GS];
 	      ncols = virtpi[Gc];
 	      ij = SIJAB->params->rowidx[I][J];
 
@@ -118,18 +132,19 @@ void cc3_sigma_UHF_AAA(dpdbuf4 *CMNEF, dpdbuf4 *WABEI, dpdbuf4 *WMBIJ,
 	      /* t_JKCD <-- -1/2 t_IJKABC W_IDAB */
 	      jk = SIJAB->params->rowidx[J][K];
 	      for(Gd=0; Gd < nirreps; Gd++) {
-		Gab = Gid = Gi ^ Gd;  /* assumes Wieab is totally symmetric */
-		Gc = Gab ^ Gijk;  /* assumes T3 is totally symmetric */
+		Gid = Gi ^ Gd;  
+		Gab = Gid ^ GH;
+		Gc = Gab ^ Gijk ^ GX3; 
 
 		id = WMAFE->row_offset[Gid][I];
 
 		Z = block_matrix(virtpi[Gc],virtpi[Gd]);
-		WMAFE->matrix[Gid] = dpd_block_matrix(virtpi[Gd], WMAFE->params->coltot[Gid]);
+		WMAFE->matrix[Gid] = dpd_block_matrix(virtpi[Gd], WMAFE->params->coltot[Gid^GH]);
 		dpd_buf4_mat_irrep_rd_block(WMAFE, Gid, id, virtpi[Gd]);
 
 		nrows = virtpi[Gc];
 		ncols = virtpi[Gd];
-		nlinks = WMAFE->params->coltot[Gid];
+		nlinks = WMAFE->params->coltot[Gid^GH];
 
 		if(nrows && ncols && nlinks)
 		  C_DGEMM('t', 't', nrows, ncols, nlinks, 0.5, W1[Gab][0], nrows, 
@@ -145,17 +160,18 @@ void cc3_sigma_UHF_AAA(dpdbuf4 *CMNEF, dpdbuf4 *WABEI, dpdbuf4 *WMBIJ,
 		    SIJAB->matrix[Gjk][jk][cd] += -Z[c][d];
 		  }
 		}
-		dpd_free_block(WMAFE->matrix[Gid], virtpi[Gd], WMAFE->params->coltot[Gid]);
+		dpd_free_block(WMAFE->matrix[Gid], virtpi[Gd], WMAFE->params->coltot[Gid^GH]);
 		free_block(Z);
 	      }
 
 
-	      /* t_MIAB <-- +1/2 t_IJKABC W_JKMC */
-	      /* t_IMAB <-- -1/2 t_IJKABC W_JKMC */
+	      /* S_MIAB <-- +1/2 t_IJKABC W_JKMC */
+	      /* S_IMAB <-- -1/2 t_IJKABC W_JKMC */
 	      jk = WMNIE->params->rowidx[J][K];
 	      for(Gm=0; Gm < nirreps; Gm++) {
-		Gab = Gmi = Gm ^ Gi;  /* assumes totally symmetric */
-		Gc = Gab ^ Gijk;      /* assumes totally symmetric */
+		Gmi = Gm ^ Gi;
+		Gab = Gmi ^ GS;
+		Gc = Gab ^ Gijk ^ GX3;   
 
 		mc = WMNIE->col_offset[Gjk][Gm];
 
@@ -240,6 +256,18 @@ void cc3_sigma_UHF_BBB(dpdbuf4 *Cmnef, dpdbuf4 *Wabei, dpdbuf4 *Wmbij,
   int nrows, ncols, nlinks;
   int Gd, d, cd, dc, Gid, id, DD;
   int Gm, m, Gmi, mi, im, mc, M;
+  int GS, GH, GU, GC, GX3;
+  
+  GC = Cmnef->file.my_irrep;
+  GU = Wmbij->file.my_irrep; 
+
+  if (do_singles)
+    GH = Dijab_anti->file.my_irrep;
+  else if (do_doubles)
+    GH = Wmafe->file.my_irrep;
+
+  GS = Sijab->file.my_irrep;
+  GX3 = GU^GC;
 
   nirreps = moinfo.nirreps;
   occpi = moinfo.boccpi;
@@ -288,8 +316,7 @@ void cc3_sigma_UHF_BBB(dpdbuf4 *Cmnef, dpdbuf4 *Wabei, dpdbuf4 *Wmbij,
 	Gjk = Gj ^ Gk;
 
 	for(Gab=0; Gab < nirreps; Gab++) {
-	  /* This will need to change for non-totally-symmetric cases */
-	  Gc = Gab ^ Gijk;
+	  Gc = Gab ^ Gijk ^ GX3;
 	  W1[Gab] = dpd_block_matrix(Wabei->params->coltot[Gab], virtpi[Gc]);
 	}
 
@@ -304,14 +331,14 @@ void cc3_sigma_UHF_BBB(dpdbuf4 *Cmnef, dpdbuf4 *Wabei, dpdbuf4 *Wmbij,
 		     occpi, occ_off, virtpi, vir_off, energy);
 
           if (do_singles) {
-	      /* t_kc <-- 1/4 t_ijkabc <ij||ab> */
 
-	      Gc = Gk;    /* assumes T1 is totally symmetric */
-	      Gab = Gij;  /* assumes <ij||ab> is totally symmetric */
+	      /* S_kc <-- 1/4 t_ijkabc <ij||ab> */
+	      Gc = Gk ^ GS;   
+	      Gab = Gij ^ GH;
 
 	      ij = Dijab_anti->params->rowidx[I][J];
 
-	      nrows = Dijab_anti->params->coltot[Gij];
+	      nrows = Dijab_anti->params->coltot[Gij^GH];
 	      ncols = virtpi[Gc];
 
 	      if(nrows && ncols)
@@ -321,11 +348,11 @@ void cc3_sigma_UHF_BBB(dpdbuf4 *Cmnef, dpdbuf4 *Wabei, dpdbuf4 *Wmbij,
 
           if (do_doubles) {
 
-	      /* t_ijab <-- t_ijkabc F_kc */
-	      Gc = Gk;    /* assumes Fme is totally symmetric */
-	      Gab = Gij;  /* Assumes tijab is totally symmetric */
+	      /* S_ijab <-- t_ijkabc F_kc */
+	      Gc = Gk ^ GH;   
+	      Gab = Gij ^ GS;
 
-	      nrows = Sijab->params->coltot[Gij];
+	      nrows = Sijab->params->coltot[Gij^GS];
 	      ncols = virtpi[Gc];
 	      ij = Sijab->params->rowidx[I][J];
 
@@ -333,22 +360,24 @@ void cc3_sigma_UHF_BBB(dpdbuf4 *Cmnef, dpdbuf4 *Wabei, dpdbuf4 *Wmbij,
 		C_DGEMV('n', nrows, ncols, 1.0, W1[Gab][0], ncols, Fme->matrix[Gk][k], 1,
 			1.0, Sijab->matrix[Gij][ij], 1);
 
-	      /* t_jkdc <-- 1/2 t_ijkabc W_idab */
-	      /* t_jkcd <-- -1/2 t_ijkabc W_idab */
+	      /* S_jkdc <-- 1/2 t_ijkabc W_idab */
+	      /* S_jkcd <-- -1/2 t_ijkabc W_idab */
 	      jk = Sijab->params->rowidx[J][K];
 	      for(Gd=0; Gd < nirreps; Gd++) {
-		Gab = Gid = Gi ^ Gd;  /* assumes Wieab is totally symmetric */
-		Gc = Gab ^ Gijk;  /* assumes T3 is totally symmetric */
+
+		Gid = Gi ^ Gd; 
+		Gab = Gid ^ GH; 
+		Gc = Gab ^ Gijk ^ GX3; 
 
 		id = Wmafe->row_offset[Gid][I];
 
 		Z = block_matrix(virtpi[Gc],virtpi[Gd]);
-		Wmafe->matrix[Gid] = dpd_block_matrix(virtpi[Gd], Wmafe->params->coltot[Gid]);
+		Wmafe->matrix[Gid] = dpd_block_matrix(virtpi[Gd], Wmafe->params->coltot[Gid^GH]);
 		dpd_buf4_mat_irrep_rd_block(Wmafe, Gid, id, virtpi[Gd]);
 
 		nrows = virtpi[Gc];
 		ncols = virtpi[Gd];
-		nlinks = Wmafe->params->coltot[Gid];
+		nlinks = Wmafe->params->coltot[Gid^GH];
 
 		if(nrows && ncols && nlinks)
 		  C_DGEMM('t', 't', nrows, ncols, nlinks, 0.5, W1[Gab][0], nrows, 
@@ -364,16 +393,17 @@ void cc3_sigma_UHF_BBB(dpdbuf4 *Cmnef, dpdbuf4 *Wabei, dpdbuf4 *Wmbij,
 		    Sijab->matrix[Gjk][jk][cd] += -Z[c][d];
 		  }
 		}
-		dpd_free_block(Wmafe->matrix[Gid], virtpi[Gd], Wmafe->params->coltot[Gid]);
+		dpd_free_block(Wmafe->matrix[Gid], virtpi[Gd], Wmafe->params->coltot[Gid^GH]);
 		free_block(Z);
 	      }
 
-	      /* t_miab <-- +1/2 t_ijkabc W_jkmc */
-	      /* t_imab <-- -1/2 t_ijkabc W_jkmc */
+	      /* S_miab <-- +1/2 t_ijkabc W_jkmc */
+	      /* S_imab <-- -1/2 t_ijkabc W_jkmc */
 	      jk = Wmnie->params->rowidx[J][K];
 	      for(Gm=0; Gm < nirreps; Gm++) {
-		Gab = Gmi = Gm ^ Gi;  /* assumes totally symmetric */
-		Gc = Gab ^ Gijk;      /* assumes totally symmetric */
+		Gmi = Gm ^ Gi; 
+		Gab = Gmi ^ GS; 
+		Gc = Gab ^ Gijk ^ GX3;    
 
 		mc = Wmnie->col_offset[Gjk][Gm];
 
@@ -469,6 +499,18 @@ void cc3_sigma_UHF_AAB(dpdbuf4 *C2AA, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
   double **Z;
   int Gm, m, Gmi, mi, im, mc, M;
   int Gmk, mk, ma, kj, Gim;
+  int GS, GH, GU, GC, GX3;
+
+  GC = C2AA->file.my_irrep;
+  GU = EAA->file.my_irrep;
+
+  if (do_singles)
+    GH = DAA->file.my_irrep;
+  else if (do_doubles)
+    GH = WMAFE->file.my_irrep;
+
+  GS = SIJAB->file.my_irrep;
+  GX3 = GU^GC;
 
   nirreps = moinfo.nirreps;
   aoccpi = moinfo.aoccpi; aocc_off = moinfo.aocc_off; avirtpi = moinfo.avirtpi;
@@ -490,8 +532,6 @@ void cc3_sigma_UHF_AAB(dpdbuf4 *C2AA, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
     dpd_file2_mat_init(Sia);
     dpd_file2_mat_rd(Sia);
  
-    /* dpd_buf4_init(&DAA, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <IJ||AB>");
-    dpd_buf4_init(&DAB, CC_DINTS, 0, 22, 28, 22, 28, 0, "D <Ij|Ab>"); */
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_init(DAA, h);
       dpd_buf4_mat_irrep_rd(DAA, h);
@@ -505,12 +545,7 @@ void cc3_sigma_UHF_AAB(dpdbuf4 *C2AA, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
     dpd_file2_mat_rd(FME);
     dpd_file2_mat_init(Fme);
     dpd_file2_mat_rd(Fme);
-    //dpd_buf4_init(&WmAfE, CC3_HET1, 0, 27, 29, 27, 29, 0, "CC3 WAmEf (mA,fE)");
-    //dpd_buf4_init(&WMAFE, CC3_HET1, 0, 20, 5, 20, 7, 0, "CC3 WAMEF (MA,F>E)");
-    //dpd_buf4_init(&WMaFe, CC3_HET1, 0, 24, 28, 24, 28, 0, "CC3 WaMeF (Ma,Fe)");
-    //dpd_buf4_init(&WMNIE, CC3_HET1, 0, 0, 20, 2, 20, 0, "CC3 WMNIE (M>N,IE)");
-    //dpd_buf4_init(&WMnIe, CC3_HET1, 0, 22, 24, 22, 24, 0, "CC3 WMnIe (Mn,Ie)");
-    //dpd_buf4_init(&WmNiE, CC3_HET1, 0, 23, 27, 23, 27, 0, "CC3 WmNiE (mN,iE)");
+
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_init(WMnIe, h);
       dpd_buf4_mat_irrep_rd(WMnIe, h);
@@ -536,18 +571,6 @@ void cc3_sigma_UHF_AAB(dpdbuf4 *C2AA, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
   dpd_file2_init(&fij, CC_OEI, 0, 2, 2, "fij");
   dpd_file2_init(&fab, CC_OEI, 0, 3, 3, "fab");
 
-  /*
-  dpd_buf4_init(&C2AA, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tIJAB");
-  dpd_buf4_init(&C2AB, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tIjAb");
-  dpd_buf4_init(&C2BA, CC_TAMPS, 0, 23, 29, 23, 29, 0, "tiJaB");
-  dpd_buf4_init(&FAA, CC3_HET1, 0, 20, 5, 20, 7, 0, "CC3 WABEI (IE,B>A)");
-  dpd_buf4_init(&FAB, CC3_HET1, 0, 24, 28, 24, 28, 0, "CC3 WaBeI (Ie,Ba)");
-  dpd_buf4_init(&FBA, CC3_HET1, 0, 27, 29, 27, 29, 0, "CC3 WAbEi (iE,bA)");
-  dpd_buf4_init(&EAA, CC3_HET1, 0, 0, 20, 2, 20, 0, "CC3 WMBIJ (I>J,MB)");
-  dpd_buf4_init(&EAB, CC3_HET1, 0, 22, 24, 22, 24, 0, "CC3 WMbIj (Ij,Mb)");
-  dpd_buf4_init(&EBA, CC3_HET1, 0, 23, 27, 23, 27, 0, "CC3 WmBiJ (iJ,mB)");
-  */
-
   /* target T3 amplitudes go in here */
   W1 = (double ***) malloc(nirreps * sizeof(double **));
   W2 = (double ***) malloc(nirreps * sizeof(double **));
@@ -561,15 +584,15 @@ void cc3_sigma_UHF_AAB(dpdbuf4 *C2AA, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 	Gjk = Gj ^ Gk;
 
 	for(Gab=0; Gab < nirreps; Gab++) {
-	  Gc = Gab ^ Gijk; /* assumes totally symmetric */
+	  Gc = Gab ^ Gijk ^ GX3;
 	  W1[Gab] = dpd_block_matrix(FAA->params->coltot[Gab], bvirtpi[Gc]);
 	}
 	for(Ga=0; Ga < nirreps; Ga++) {
-	  Gcb = Ga ^ Gijk; /* assumes totally symmetric */
+	  Gcb = Ga ^ Gijk ^ GX3;
 	  W2[Ga] = dpd_block_matrix(avirtpi[Ga], WmAfE->params->coltot[Gcb]);  /* alpha-beta-alpha */
 	}
 	for(Gb=0; Gb < nirreps; Gb++) {
-	  Gac = Gb ^ Gijk; /* assumes totally symmetric */
+	  Gac = Gb ^ Gijk ^ GX3;
 	  W3[Gb] = dpd_block_matrix(avirtpi[Gb], WMaFe->params->coltot[Gac]);  /* alpha-alpha-beta */
 	}
 
@@ -586,24 +609,24 @@ void cc3_sigma_UHF_AAB(dpdbuf4 *C2AA, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 
           if (do_singles) {
 
-	      /* t_kc <-- 1/4 t_IJkABc <IJ||AB> */
+	      /* S_kc <-- 1/4 t_IJkABc <IJ||AB> */
 
-	      Gc = Gk;   /* assumes T1 is totally symmetric */
-	      Gab = Gij; /* assumes <ij||ab> is totally symmetric */
+	      Gc = Gk ^ GS;  
+	      Gab = Gij ^ GH;
 
 	      ij = DAA->params->rowidx[I][J];
 
-	      nrows = DAA->params->coltot[Gij];
+	      nrows = DAA->params->coltot[Gij^GH];
 	      ncols = bvirtpi[Gc];
 
 	      if(nrows && ncols)
 		C_DGEMV('t', nrows, ncols, 0.25, W1[Gab][0], ncols, DAA->matrix[Gij][ij], 1,
 			1.0, Sia->matrix[Gk][k], 1);
 
-	      /* t_IA <-- t_IJkABc <Jk|Bc> */
+	      /* S_IA <-- t_IJkABc <Jk|Bc> */
 
-	      Ga = Gi;   /* assumes T1 is totally symmetric */
-	      Gbc = Gjk; /* assumes <jk|bc> is totally symmetric */
+	      Ga = Gi ^ GS;   
+	      Gbc = Gjk ^ GH;
 
 	      jk = DAB->params->rowidx[J][K];
 
@@ -624,11 +647,11 @@ void cc3_sigma_UHF_AAB(dpdbuf4 *C2AA, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
           }
 
           if (do_doubles) {
-	      /* t_IJAB <-- t_IJkABc F_kc */
-	      Gc = Gk;    /* assumes Fme is totally symmetric */
-	      Gab = Gij;  /* Assumes tIJAB is totally symmetric */
+	      /* S_IJAB <-- t_IJkABc F_kc */
+	      Gc = Gk ^ GH;   
+	      Gab = Gij ^ GS;
 
-	      nrows = SIJAB->params->coltot[Gij];
+	      nrows = SIJAB->params->coltot[Gij^GS];
 	      ncols = bvirtpi[Gc];
 	      ij = SIJAB->params->rowidx[I][J];
  
@@ -636,9 +659,9 @@ void cc3_sigma_UHF_AAB(dpdbuf4 *C2AA, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 		C_DGEMV('n', nrows, ncols, 1.0, W1[Gab][0], ncols, Fme->matrix[Gk][k], 1,
 			1.0, SIJAB->matrix[Gij][ij], 1);
 
-	      /* t_JkBc <-- t_IJkABc F_IA */
-	      Ga = Gi;   /* assumes Fia is totally symmetric */
-	      Gbc = Gjk; /* assumes t_jKbC is totally symmetric */
+	      /* S_JkBc <-- t_IJkABc F_IA */
+	      Ga = Gi ^ GH;   
+	      Gbc = Gjk ^ GS;
 
 	      jk = C2AB->params->rowidx[J][K];
 
@@ -657,10 +680,10 @@ void cc3_sigma_UHF_AAB(dpdbuf4 *C2AA, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 			  1.0, &(SIjAb->matrix[Gjk][jk][bc]), 1);
 	      }
 
-	      /* t_JIDA <-- t_IJkABc W_kDcB */
+	      /* S_JIDA <-- t_IJkABc W_kDcB */
 	      /* sort W1(AB,c) to W2(A,cB) */
 	      for(Gab=0; Gab < nirreps; Gab++) {
-		Gc = Gab ^ Gijk;
+		Gc = Gab ^ Gijk ^ GX3;
 		for(ab=0; ab < FAA->params->coltot[Gab]; ab++) {
 		  A = FAA->params->colorb[Gab][ab][0];
 		  B = FAA->params->colorb[Gab][ab][1];
@@ -677,17 +700,18 @@ void cc3_sigma_UHF_AAB(dpdbuf4 *C2AA, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 	      ji = SIJAB->params->rowidx[J][I];
 
 	      for(Gd=0; Gd < nirreps; Gd++) {
-		Gcb = Gkd = Gk ^ Gd; /* assumes totally symmetric */
-		Ga = Gd ^ Gij;       /* assumes totally symmetric */
+		Gkd = Gk ^ Gd; 
+		Gcb = Gkd ^ GH; 
+		Ga = Gd ^ Gij ^ GS;      
 
 		kd = WmAfE->row_offset[Gkd][K];
-		WmAfE->matrix[Gkd] = dpd_block_matrix(avirtpi[Gd], WmAfE->params->coltot[Gkd]);
+		WmAfE->matrix[Gkd] = dpd_block_matrix(avirtpi[Gd], WmAfE->params->coltot[Gkd^GH]);
 		dpd_buf4_mat_irrep_rd_block(WmAfE, Gkd, kd, avirtpi[Gd]);
 		Z = block_matrix(avirtpi[Ga], avirtpi[Gd]);
 
 		nrows = avirtpi[Ga];
 		ncols = avirtpi[Gd];
-		nlinks = WmAfE->params->coltot[Gkd];
+		nlinks = WmAfE->params->coltot[Gkd^GH];
 
 		if(nrows && ncols && nlinks)
 		  C_DGEMM('n', 't', nrows, ncols, nlinks, 1.0, W2[Ga][0], nlinks, 
@@ -704,26 +728,27 @@ void cc3_sigma_UHF_AAB(dpdbuf4 *C2AA, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 		  }
 		}
 
-		dpd_free_block(WmAfE->matrix[Gkd], avirtpi[Gd], WmAfE->params->coltot[Gkd]);
+		dpd_free_block(WmAfE->matrix[Gkd], avirtpi[Gd], WmAfE->params->coltot[Gkd^GH]);
 		free_block(Z);
 	      }
 
-	      /* t_JkDc <-- 1/2 t_IJkABc W_IDAB */
+	      /* S_JkDc <-- 1/2 t_IJkABc W_IDAB */
 
 	      jk = SIjAb->params->rowidx[J][K];
 
 	      for(Gd=0; Gd < nirreps; Gd++) {
-		Gab = Gid = Gi ^ Gd; /* assumes totally symmetric */
-		Gc = Gab ^ Gijk;     /* assumes totally symmetric */
+		Gid = Gi ^ Gd; 
+		Gab = Gid ^ GH; 
+		Gc = Gab ^ Gijk ^ GX3;    
 
 		id = WMAFE->row_offset[Gid][I];
-		WMAFE->matrix[Gid] = dpd_block_matrix(avirtpi[Gd], WMAFE->params->coltot[Gid]);
+		WMAFE->matrix[Gid] = dpd_block_matrix(avirtpi[Gd], WMAFE->params->coltot[Gid^GH]);
 		dpd_buf4_mat_irrep_rd_block(WMAFE, Gid, id, avirtpi[Gd]);
 		Z = block_matrix(bvirtpi[Gc], avirtpi[Gd]);
 
 		nrows = bvirtpi[Gc];
 		ncols = avirtpi[Gd];
-		nlinks = WMAFE->params->coltot[Gid];
+		nlinks = WMAFE->params->coltot[Gid^GH];
 
 		if(nrows && ncols && nlinks)
 		  C_DGEMM('t', 't', nrows, ncols, nlinks, 0.5, W1[Gab][0], nrows,
@@ -739,13 +764,13 @@ void cc3_sigma_UHF_AAB(dpdbuf4 *C2AA, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 		}
 
 		free_block(Z);
-		dpd_free_block(WMAFE->matrix[Gid], avirtpi[Gd], WMAFE->params->coltot[Gid]);
+		dpd_free_block(WMAFE->matrix[Gid], avirtpi[Gd], WMAFE->params->coltot[Gid^GH]);
 	      }
 
 	      /* t_JkBd <-- t_IJkABc W_IdAc */
 	      /* sort W1(AB,c) to W3(B,Ac) */
 	      for(Gab=0; Gab < nirreps; Gab++) {
-		Gc = Gab ^ Gijk;
+		Gc = Gab ^ Gijk ^ GX3;
 		for(ab=0; ab < FAA->params->coltot[Gab]; ab++) {
 		  A = FAA->params->colorb[Gab][ab][0];
 		  B = FAA->params->colorb[Gab][ab][1];
@@ -762,17 +787,18 @@ void cc3_sigma_UHF_AAB(dpdbuf4 *C2AA, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 	      jk = SIjAb->params->rowidx[J][K];
 
 	      for(Gd=0; Gd < nirreps; Gd++) {
-		Gac = Gid = Gi ^ Gd; /* assumes totally symmetric */
-		Gb = Gac ^ Gijk;     /* assumes totally symmetric */
+		Gid = Gi ^ Gd; 
+		Gac = Gid ^ GH; 
+		Gb = Gac ^ Gijk ^ GX3;    
 
 		id = WMaFe->row_offset[Gid][I]; 
-		WMaFe->matrix[Gid] = dpd_block_matrix(bvirtpi[Gd], WMaFe->params->coltot[Gid]);
+		WMaFe->matrix[Gid] = dpd_block_matrix(bvirtpi[Gd], WMaFe->params->coltot[Gid^GH]);
 		dpd_buf4_mat_irrep_rd_block(WMaFe, Gid, id, bvirtpi[Gd]);
 		Z = block_matrix(avirtpi[Gb], bvirtpi[Gd]);
 
 		nrows = avirtpi[Gb];
 		ncols = bvirtpi[Gd];
-		nlinks = WMaFe->params->coltot[Gid];
+		nlinks = WMaFe->params->coltot[Gid^GH];
 
 		if(nrows && ncols && nlinks)
 		  C_DGEMM('n', 't', nrows, ncols, nlinks, 1.0, W3[Gb][0], nlinks,
@@ -787,18 +813,19 @@ void cc3_sigma_UHF_AAB(dpdbuf4 *C2AA, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 		  }
 		}
 
-		dpd_free_block(WMaFe->matrix[Gid], bvirtpi[Gd], WMaFe->params->coltot[Gid]);
+		dpd_free_block(WMaFe->matrix[Gid], bvirtpi[Gd], WMaFe->params->coltot[Gid^GH]);
 		free_block(Z);
 	      }
 
-	      /* t_MIAB <--- +t_IJkABc W_JkMc */
-	      /* t_IMAB <--- -t_IJkABc W_JkMc */
+	      /* S_MIAB <--- +t_IJkABc W_JkMc */
+	      /* S_IMAB <--- -t_IJkABc W_JkMc */
 
 	      jk = WMnIe->params->rowidx[J][K];
 
 	      for(Gm=0; Gm < nirreps; Gm++) {
-		Gab = Gmi = Gm ^ Gi;  /* assumes totally symmetric */
-		Gc = Gab ^ Gijk;      /* assumes totally symmetric */
+		Gmi = Gm ^ Gi;  
+		Gab = Gmi ^ GS;  
+		Gc = Gab ^ Gijk ^ GX3;     
 
 		mc = WMnIe->col_offset[Gjk][Gm];
 
@@ -828,7 +855,7 @@ void cc3_sigma_UHF_AAB(dpdbuf4 *C2AA, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 	      /* t_MkBc <-- 1/2 t_IJkABc W_IJMA */
 	      /* sort W(AB,c) to W(A,Bc) */
 	      for(Gab=0; Gab < nirreps; Gab++) {
-		Gc = Gab ^ Gijk;  /* assumes totally symmetric */
+		Gc = Gab ^ Gijk ^ GX3;  
 		for(ab=0; ab < FAA->params->coltot[Gab]; ab++ ){
 		  A = FAA->params->colorb[Gab][ab][0];
 		  B = FAA->params->colorb[Gab][ab][1];
@@ -845,12 +872,13 @@ void cc3_sigma_UHF_AAB(dpdbuf4 *C2AA, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 	      ij = WMNIE->params->rowidx[I][J];
 
 	      for(Gm=0; Gm < nirreps; Gm++) {
-		Gbc = Gmk = Gm ^ Gk;  /* assumes totally symmetric */
-		Ga = Gbc ^ Gijk;      /* assumes totally symmetric */
+		Gmk = Gm ^ Gk; 
+		Gbc = Gmk ^ GS; 
+		Ga = Gbc ^ Gijk ^ GX3;    
 
 		ma = WMNIE->col_offset[Gij][Gm];
 
-		nrows = SIjAb->params->coltot[Gmk];
+		nrows = SIjAb->params->coltot[Gmk^GS];
 		ncols = aoccpi[Gm];
 		nlinks = avirtpi[Ga];
 
@@ -871,10 +899,10 @@ void cc3_sigma_UHF_AAB(dpdbuf4 *C2AA, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 		dpd_free_block(Z, nrows, ncols);
 	      }
 
-	      /* t_ImBc <-- t_IJkABc W_kJmA */
+	      /* S_ImBc <-- t_IJkABc W_kJmA */
 	      /* sort W(AB,c) to W(A,Bc) */
 	      for(Gab=0; Gab < nirreps; Gab++) {
-		Gc = Gab ^ Gijk;  /* assumes totally symmetric */
+		Gc = Gab ^ Gijk ^ GX3;  /* assumes totally symmetric */
 		for(ab=0; ab < FAA->params->coltot[Gab]; ab++ ){
 		  A = FAA->params->colorb[Gab][ab][0];
 		  B = FAA->params->colorb[Gab][ab][1];
@@ -891,12 +919,13 @@ void cc3_sigma_UHF_AAB(dpdbuf4 *C2AA, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 	      kj = WmNiE->params->rowidx[K][J];
 
 	      for(Gm=0; Gm < nirreps; Gm++) {
-		Gbc = Gim = Gi ^ Gm;  /* assumes totally symmetric */
-		Ga = Gbc ^ Gijk;      /* assumes totally symmetric */
+		Gim = Gi ^ Gm; 
+		Gbc = Gim ^ GS; 
+		Ga = Gbc ^ Gijk ^ GX3;    
 
 		ma = WmNiE->col_offset[Gjk][Gm];
 
-		nrows = SIjAb->params->coltot[Gim];
+		nrows = SIjAb->params->coltot[Gim^GS];
 		ncols = boccpi[Gm];
 		nlinks = avirtpi[Ga];
 
@@ -924,15 +953,15 @@ void cc3_sigma_UHF_AAB(dpdbuf4 *C2AA, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 
 	for(Gab=0; Gab < nirreps; Gab++) {
 	  /* This will need to change for non-totally-symmetric cases */
-	  Gc = Gab ^ Gijk;
+	  Gc = Gab ^ Gijk ^ GX3;
 	  dpd_free_block(W1[Gab], FAA->params->coltot[Gab], bvirtpi[Gc]);
 	}
 	for(Ga=0; Ga < nirreps; Ga++) {
-	  Gcb = Ga ^ Gijk; /* assumes totally symmetric */
+	  Gcb = Ga ^ Gijk ^ GX3; /* assumes totally symmetric */
 	  dpd_free_block(W2[Ga], avirtpi[Ga], WmAfE->params->coltot[Gcb]);
 	}
 	for(Gb=0; Gb < nirreps; Gb++) {
-	  Gac = Gb ^ Gijk; /* assumes totally symmetric */
+	  Gac = Gb ^ Gijk ^ GX3; /* assumes totally symmetric */
 	  dpd_free_block(W3[Gb], avirtpi[Gb], WMaFe->params->coltot[Gac]);
 	}
 
@@ -1011,6 +1040,18 @@ void cc3_sigma_UHF_BBA(dpdbuf4 *C2BB, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
   double **Z;
   int Gm, m, Gmi, mi, im, mc, M;
   int Gmk, mk, ma, kj, Gim;
+  int GS, GH, GU, GC, GX3;
+    
+  GC = C2BB->file.my_irrep;
+  GU = EBB->file.my_irrep;
+    
+  if (do_singles)
+    GH = DBB->file.my_irrep;
+  else if (do_doubles)
+    GH = Wmafe->file.my_irrep;
+  
+  GS = Sijab->file.my_irrep;
+  GX3 = GU^GC;
 
   nirreps = moinfo.nirreps;
   aoccpi = moinfo.aoccpi; aocc_off = moinfo.aocc_off; avirtpi = moinfo.avirtpi;
@@ -1048,12 +1089,6 @@ void cc3_sigma_UHF_BBA(dpdbuf4 *C2BB, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
     dpd_file2_mat_init(Fme);
     dpd_file2_mat_rd(Fme);
 
-    //dpd_buf4_init(&WMaFe, CC3_HET1, 0, 24, 28, 24, 28, 0, "CC3 WaMeF (Ma,Fe)");
-    //dpd_buf4_init(&Wmafe, CC3_HET1, 0, 30, 15, 30, 17, 0, "CC3 Wamef (ma,f>e)");
-    //dpd_buf4_init(&WmAfE, CC3_HET1, 0, 27, 29, 27, 29, 0, "CC3 WAmEf (mA,fE)");
-    //dpd_buf4_init(&Wmnie, CC3_HET1, 0, 10, 30, 12, 30, 0, "CC3 Wmnie (m>n,ie)");
-    //dpd_buf4_init(&WmNiE, CC3_HET1, 0, 23, 27, 23, 27, 0, "CC3 WmNiE (mN,iE)");
-    //dpd_buf4_init(&WMnIe, CC3_HET1, 0, 22, 24, 22, 24, 0, "CC3 WMnIe (Mn,Ie)");
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_init(WmNiE, h);
       dpd_buf4_mat_irrep_rd(WmNiE, h);
@@ -1082,16 +1117,6 @@ void cc3_sigma_UHF_BBA(dpdbuf4 *C2BB, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
   dpd_file2_init(&fij, CC_OEI, 0, 2, 2, "fij");
   dpd_file2_init(&fab, CC_OEI, 0, 3, 3, "fab");
 
-  //dpd_buf4_init(&C2BB, CC_TAMPS, 0, 10, 15, 12, 17, 0, "tijab");
-  //dpd_buf4_init(&C2AB, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tIjAb");
-  //dpd_buf4_init(&C2BA, CC_TAMPS, 0, 23, 29, 23, 29, 0, "tiJaB");
-  //dpd_buf4_init(&FBB, CC3_HET1, 0, 30, 15, 30, 17, 0, "CC3 Wabei (ie,b>a)");
-  //dpd_buf4_init(&FAB, CC3_HET1, 0, 24, 28, 24, 28, 0, "CC3 WaBeI (Ie,Ba)");
-  //dpd_buf4_init(&FBA, CC3_HET1, 0, 27, 29, 27, 29, 0, "CC3 WAbEi (iE,bA)");
-  //dpd_buf4_init(&EBB, CC3_HET1, 0, 10, 30, 12, 30, 0, "CC3 Wmbij (i>j,mb)");
-  //dpd_buf4_init(&EAB, CC3_HET1, 0, 22, 24, 22, 24, 0, "CC3 WMbIj (Ij,Mb)");
-  //dpd_buf4_init(&EBA, CC3_HET1, 0, 23, 27, 23, 27, 0, "CC3 WmBiJ (iJ,mB)");
-
   /* target T3 amplitudes go in here */
   W1 = (double ***) malloc(nirreps * sizeof(double **));
   W2 = (double ***) malloc(nirreps * sizeof(double **));
@@ -1105,16 +1130,15 @@ void cc3_sigma_UHF_BBA(dpdbuf4 *C2BB, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 	Gjk = Gj ^ Gk;
 
 	for(Gab=0; Gab < nirreps; Gab++) {
-	  /* This will need to change for non-totally-symmetric cases */
-	  Gc = Gab ^ Gijk;
+	  Gc = Gab ^ Gijk ^ GX3;
 	  W1[Gab] = dpd_block_matrix(FBB->params->coltot[Gab], avirtpi[Gc]);
 	}
 	for(Ga=0; Ga < nirreps; Ga++) {
-	  Gcb = Ga ^ Gijk;
+	  Gcb = Ga ^ Gijk ^ GX3;
 	  W2[Ga] = dpd_block_matrix(bvirtpi[Ga], WMaFe->params->coltot[Gcb]);
 	}
 	for(Gb=0; Gb < nirreps; Gb++) {
-	  Gac = Gb ^ Gijk; /* assumes totally symmetric */
+	  Gac = Gb ^ Gijk ^ GX3; 
 	  W3[Gb] = dpd_block_matrix(bvirtpi[Gb], WmAfE->params->coltot[Gac]);
 	}
 
@@ -1130,24 +1154,24 @@ void cc3_sigma_UHF_BBA(dpdbuf4 *C2BB, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 		     boccpi, bocc_off, aoccpi, aocc_off, bvirtpi, bvir_off, avirtpi, avir_off, energy);
 
           if (do_singles) {
-	      /* t_KC <-- 1/4 t_ijKabC <ij||ab> */
+	      /* S_KC <-- 1/4 t_ijKabC <ij||ab> */
 
-	      Gc = Gk;  /* assumes T1 is totally symmetric */
-	      Gab = Gij; /* assumes <ij||ab> is totally symmetric */
+	      Gc = Gk ^ GS; 
+	      Gab = Gij ^ GH;
 
 	      ij = DBB->params->rowidx[I][J];
 
-	      nrows = DBB->params->coltot[Gij];
+	      nrows = DBB->params->coltot[Gij^GH];
 	      ncols = avirtpi[Gc];
 
 	      if(nrows && ncols)
 		C_DGEMV('t', nrows, ncols, 0.25, W1[Gab][0], ncols, DBB->matrix[Gij][ij], 1,
 			1.0, SIA->matrix[Gk][k], 1);
 
-	      /* t_ia <-- t_ijKabC <jK|bC> */
+	      /* S_ia <-- t_ijKabC <jK|bC> */
 
-	      Ga = Gi;   /* assumes T1 is totally symmetric */
-	      Gbc = Gjk; /* assumes <jk|bc> is totally symmetric */
+	      Ga = Gi ^ GS;  
+	      Gbc = Gjk ^ GH;
 
 	      jk = DBA->params->rowidx[J][K];
 
@@ -1168,11 +1192,11 @@ void cc3_sigma_UHF_BBA(dpdbuf4 *C2BB, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
           } /* end do_singles */
 
           if (do_doubles ) {
-	      /* t_ijab <-- t_ijKabC F_KC */
-	      Gc = Gk;    /* assumes Fme is totally symmetric */
-	      Gab = Gij;  /* Assumes tIJAB is totally symmetric */
+	      /* S_ijab <-- t_ijKabC F_KC */
+	      Gc = Gk ^ GH;  
+	      Gab = Gij ^ GS;
 
-	      nrows = Sijab->params->coltot[Gij];
+	      nrows = Sijab->params->coltot[Gij^GS];
 	      ncols = avirtpi[Gc];
 	      ij = Sijab->params->rowidx[I][J];
  
@@ -1180,9 +1204,9 @@ void cc3_sigma_UHF_BBA(dpdbuf4 *C2BB, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 		C_DGEMV('n', nrows, ncols, 1.0, W1[Gab][0], ncols, FME->matrix[Gk][k], 1,
 			1.0, Sijab->matrix[Gij][ij], 1);
 
-	      /* t_jKbC <-- t_ijKabC F_ia */
-	      Ga = Gi;   /* assumes Fia is totally symmetric */
-	      Gbc = Gjk; /* assumes t_jKbC is totally symmetric */
+	      /* S_jKbC <-- t_ijKabC F_ia */
+	      Ga = Gi ^ GH;
+	      Gbc = Gjk ^ GS;
 
 	      jk = C2BA->params->rowidx[J][K];
 
@@ -1201,10 +1225,10 @@ void cc3_sigma_UHF_BBA(dpdbuf4 *C2BB, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 			  1.0, &(SiJaB.matrix[Gjk][jk][bc]), 1);
 	      }
 
-	      /* t_jida <-- t_ijKabC W_KdCb */
+	      /* S_jida <-- t_ijKabC W_KdCb */
 	      /* sort W1(ab,C) to W2(a,Cb) */
 	      for(Gab=0; Gab < nirreps; Gab++) {
-		Gc = Gab ^ Gijk;
+		Gc = Gab ^ Gijk ^ GX3;
 		for(ab=0; ab < FBB->params->coltot[Gab]; ab++) {
 		  A = FBB->params->colorb[Gab][ab][0];
 		  B = FBB->params->colorb[Gab][ab][1];
@@ -1221,17 +1245,18 @@ void cc3_sigma_UHF_BBA(dpdbuf4 *C2BB, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 	      ji = Sijab->params->rowidx[J][I];
 
 	      for(Gd=0; Gd < nirreps; Gd++) {
-		Gcb = Gkd = Gk ^ Gd; /* assumes totally symmetric */
-		Ga = Gd ^ Gij;       /* assumes totally symmetric */
+		Gkd = Gk ^ Gd; 
+		Gcb = Gkd ^ GH; 
+		Ga = Gd ^ Gij ^ GS;      
 
 		kd = WMaFe->row_offset[Gkd][K];
-		WMaFe->matrix[Gkd] = dpd_block_matrix(bvirtpi[Gd], WMaFe->params->coltot[Gkd]);
+		WMaFe->matrix[Gkd] = dpd_block_matrix(bvirtpi[Gd], WMaFe->params->coltot[Gkd^GH]);
 		dpd_buf4_mat_irrep_rd_block(WMaFe, Gkd, kd, bvirtpi[Gd]);
 		Z = block_matrix(bvirtpi[Ga], bvirtpi[Gd]);
 
 		nrows = bvirtpi[Ga];
 		ncols = bvirtpi[Gd];
-		nlinks = WMaFe->params->coltot[Gkd];
+		nlinks = WMaFe->params->coltot[Gkd^GH];
 
 		if(nrows && ncols && nlinks)
 		  C_DGEMM('n', 't', nrows, ncols, nlinks, 1.0, W2[Ga][0], nlinks, 
@@ -1248,7 +1273,7 @@ void cc3_sigma_UHF_BBA(dpdbuf4 *C2BB, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 		  }
 		}
 
-		dpd_free_block(WMaFe->matrix[Gkd], bvirtpi[Gd], WMaFe->params->coltot[Gkd]);
+		dpd_free_block(WMaFe->matrix[Gkd], bvirtpi[Gd], WMaFe->params->coltot[Gkd^GH]);
 		free_block(Z);
 	      }
 
@@ -1257,17 +1282,18 @@ void cc3_sigma_UHF_BBA(dpdbuf4 *C2BB, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 	      jk = SiJaB.params->rowidx[J][K];
 
 	      for(Gd=0; Gd < nirreps; Gd++) {
-		Gab = Gid = Gi ^ Gd; /* assumes totally symmetric */
-		Gc = Gab ^ Gijk;     /* assumes totally symmetric */
+		Gid = Gi ^ Gd;
+		Gab = Gid ^ GH;
+		Gc = Gab ^ Gijk ^ GX3;   
 
 		id = Wmafe->row_offset[Gid][I];
-		Wmafe->matrix[Gid] = dpd_block_matrix(bvirtpi[Gd], Wmafe->params->coltot[Gid]);
+		Wmafe->matrix[Gid] = dpd_block_matrix(bvirtpi[Gd], Wmafe->params->coltot[Gid^GH]);
 		dpd_buf4_mat_irrep_rd_block(Wmafe, Gid, id, bvirtpi[Gd]);
 		Z = block_matrix(avirtpi[Gc], bvirtpi[Gd]);
 
 		nrows = avirtpi[Gc];
 		ncols = bvirtpi[Gd];
-		nlinks = Wmafe->params->coltot[Gid];
+		nlinks = Wmafe->params->coltot[Gid^GH];
 
 		if(nrows && ncols && nlinks)
 		  C_DGEMM('t', 't', nrows, ncols, nlinks, 0.5, W1[Gab][0], nrows,
@@ -1283,13 +1309,13 @@ void cc3_sigma_UHF_BBA(dpdbuf4 *C2BB, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 		}
 
 		free_block(Z);
-		dpd_free_block(Wmafe->matrix[Gid], bvirtpi[Gd], Wmafe->params->coltot[Gid]);
+		dpd_free_block(Wmafe->matrix[Gid], bvirtpi[Gd], Wmafe->params->coltot[Gid^GH]);
 	      }
 
 	      /* t_jKbD <-- t_ijKabC W_iDaC */
 	      /* sort W1(ab,C) to W3(b,aC) */
 	      for(Gab=0; Gab < nirreps; Gab++) {
-		Gc = Gab ^ Gijk;
+		Gc = Gab ^ Gijk ^ GX3;
 		for(ab=0; ab < FBB->params->coltot[Gab]; ab++) {
 		  A = FBB->params->colorb[Gab][ab][0];
 		  B = FBB->params->colorb[Gab][ab][1];
@@ -1306,17 +1332,18 @@ void cc3_sigma_UHF_BBA(dpdbuf4 *C2BB, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 	      jk = SiJaB.params->rowidx[J][K];
 
 	      for(Gd=0; Gd < nirreps; Gd++) {
-		Gac = Gid = Gi ^ Gd; /* assumes totally symmetric */
-		Gb = Gac ^ Gijk;     /* assumes totally symmetric */
+		Gid = Gi ^ Gd;
+		Gac = Gid ^ GH;
+		Gb = Gac ^ Gijk ^ GX3;   
 
 		id = WmAfE->row_offset[Gid][I]; 
-		WmAfE->matrix[Gid] = dpd_block_matrix(avirtpi[Gd], WmAfE->params->coltot[Gid]);
+		WmAfE->matrix[Gid] = dpd_block_matrix(avirtpi[Gd], WmAfE->params->coltot[Gid^GH]);
 		dpd_buf4_mat_irrep_rd_block(WmAfE, Gid, id, avirtpi[Gd]);
 		Z = block_matrix(bvirtpi[Gb], avirtpi[Gd]);
 
 		nrows = bvirtpi[Gb];
 		ncols = avirtpi[Gd];
-		nlinks = WmAfE->params->coltot[Gid];
+		nlinks = WmAfE->params->coltot[Gid^GH];
 
 		if(nrows && ncols && nlinks)
 		  C_DGEMM('n', 't', nrows, ncols, nlinks, 1.0, W3[Gb][0], nlinks,
@@ -1331,22 +1358,23 @@ void cc3_sigma_UHF_BBA(dpdbuf4 *C2BB, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 		  }
 		}
 
-		dpd_free_block(WmAfE->matrix[Gid], avirtpi[Gd], WmAfE->params->coltot[Gid]);
+		dpd_free_block(WmAfE->matrix[Gid], avirtpi[Gd], WmAfE->params->coltot[Gid^GH]);
 		free_block(Z);
 	      }
 
-	      /* t_miab <--- +t_ijKabC W_jKmC */
-	      /* t_imab <--- -t_ijKabC W_jKmC */
+	      /* S_miab <--- +t_ijKabC W_jKmC */
+	      /* S_imab <--- -t_ijKabC W_jKmC */
 
 	      jk = WmNiE->params->rowidx[J][K];
 
 	      for(Gm=0; Gm < nirreps; Gm++) {
-		Gab = Gmi = Gm ^ Gi;  /* assumes totally symmetric */
-		Gc = Gab ^ Gijk;      /* assumes totally symmetric */
+		Gmi = Gm ^ Gi; 
+		Gab = Gmi ^ GS; 
+		Gc = Gab ^ Gijk ^ GX3;    
 
 		mc = WmNiE->col_offset[Gjk][Gm];
 
-		nrows = FBB->params->coltot[Gab];
+		nrows = Sijab->params->coltot[Gab];
 		ncols = boccpi[Gm];
 		nlinks = avirtpi[Gc];
 
@@ -1372,7 +1400,7 @@ void cc3_sigma_UHF_BBA(dpdbuf4 *C2BB, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 	      /* t_mKbC <-- 1/2 t_ijKabC W_ijma */
 	      /* sort W(ab,C) to W(a,bC) */
 	      for(Gab=0; Gab < nirreps; Gab++) {
-		Gc = Gab ^ Gijk;  /* assumes totally symmetric */
+		Gc = Gab ^ Gijk ^ GX3; 
 		for(ab=0; ab < FBB->params->coltot[Gab]; ab++ ){
 		  A = FBB->params->colorb[Gab][ab][0];
 		  B = FBB->params->colorb[Gab][ab][1];
@@ -1389,12 +1417,13 @@ void cc3_sigma_UHF_BBA(dpdbuf4 *C2BB, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 	      ij = Wmnie->params->rowidx[I][J];
 
 	      for(Gm=0; Gm < nirreps; Gm++) {
-		Gbc = Gmk = Gm ^ Gk;  /* assumes totally symmetric */
-		Ga = Gbc ^ Gijk;      /* assumes totally symmetric */
+		Gmk = Gm ^ Gk;
+		Gbc = Gmk ^ GS;
+		Ga = Gbc ^ Gijk ^ GX3;   
 
 		ma = Wmnie->col_offset[Gij][Gm];
 
-		nrows = SiJaB.params->coltot[Gmk];
+		nrows = SiJaB.params->coltot[Gmk^GS];
 		ncols = boccpi[Gm];
 		nlinks = bvirtpi[Ga];
 
@@ -1415,10 +1444,10 @@ void cc3_sigma_UHF_BBA(dpdbuf4 *C2BB, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 		dpd_free_block(Z, nrows, ncols);
 	      }
 
-	      /* t_iMbC <-- t_ijKabC W_KjMa */
+	      /* S_iMbC <-- t_ijKabC W_KjMa */
 	      /* sort W(ab,C) to W(a,bC) */
 	      for(Gab=0; Gab < nirreps; Gab++) {
-		Gc = Gab ^ Gijk;  /* assumes totally symmetric */
+		Gc = Gab ^ Gijk ^ GX3; 
 		for(ab=0; ab < FBB->params->coltot[Gab]; ab++ ){
 		  A = FBB->params->colorb[Gab][ab][0];
 		  B = FBB->params->colorb[Gab][ab][1];
@@ -1435,12 +1464,13 @@ void cc3_sigma_UHF_BBA(dpdbuf4 *C2BB, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 	      kj = WMnIe->params->rowidx[K][J];
 
 	      for(Gm=0; Gm < nirreps; Gm++) {
-		Gbc = Gim = Gi ^ Gm;  /* assumes totally symmetric */
-		Ga = Gbc ^ Gijk;      /* assumes totally symmetric */
+		Gim = Gi ^ Gm; 
+		Gbc = Gim ^ GS; 
+		Ga = Gbc ^ Gijk ^ GX3;    
 
 		ma = WMnIe->col_offset[Gjk][Gm];
 
-		nrows = SiJaB.params->coltot[Gim];
+		nrows = SiJaB.params->coltot[Gim^GS];
 		ncols = aoccpi[Gm];
 		nlinks = bvirtpi[Ga];
 
@@ -1467,19 +1497,17 @@ void cc3_sigma_UHF_BBA(dpdbuf4 *C2BB, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
 	} /* i */
 
 	for(Gab=0; Gab < nirreps; Gab++) {
-	  /* This will need to change for non-totally-symmetric cases */
-	  Gc = Gab ^ Gijk;
+	  Gc = Gab ^ Gijk ^ GX3;
 	  dpd_free_block(W1[Gab], FBB->params->coltot[Gab], avirtpi[Gc]);
 	}
 	for(Ga=0; Ga < nirreps; Ga++) {
-	  Gcb = Ga ^ Gijk; /* assumes totally symmetric */
+	  Gcb = Ga ^ Gijk ^ GX3; 
 	  dpd_free_block(W2[Ga], bvirtpi[Ga], WMaFe->params->coltot[Gcb]);
 	}
 	for(Gb=0; Gb < nirreps; Gb++) {
-	  Gac = Gb ^ Gijk; /* assumes totally symmetric */
+	  Gac = Gb ^ Gijk ^ GX3;
 	  dpd_free_block(W3[Gb], bvirtpi[Gb], WmAfE->params->coltot[Gac]);
 	}
-
       } /* Gk */
     } /* Gj */
   } /* Gi */
