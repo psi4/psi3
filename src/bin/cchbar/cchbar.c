@@ -31,15 +31,22 @@ void Wamef_build(void);
 void Wabei_build(void);
 void purge(void);
 void cleanup(void);
+int **cacheprep(int level, int *cachefiles);
 
 int main(int argc, char *argv[])
 {
+  int **cachelist, *cachefiles;
+
   init_io();
   title();
   get_moinfo();
   get_params();
-  dpd_init(moinfo.nirreps, params.memory, 2, moinfo.occpi, moinfo.occ_sym,
-	   moinfo.virtpi, moinfo.vir_sym);
+
+  cachefiles = init_int_array(PSIO_MAXUNIT);
+  cachelist = cacheprep(params.cachelev, cachefiles);
+
+  dpd_init(0, moinfo.nirreps, params.memory, cachefiles, cachelist,
+           2, moinfo.occpi, moinfo.occ_sym, moinfo.virtpi, moinfo.vir_sym);
 
   if(!REDO) F_build();
   if(!REDO) Wmbej_build();
@@ -49,7 +56,7 @@ int main(int argc, char *argv[])
   Wabei_build();
 
   purge();
-  dpd_close();
+  dpd_close(0);
   cleanup(); 
   exit_io();
   exit(0);

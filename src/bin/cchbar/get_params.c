@@ -8,5 +8,8 @@
 void get_params()
 {
   fndcor(&(params.memory),infile,outfile);
+
+  params.cachelev = 2;
+  errcod = ip_data("CACHELEV", "%d", &(params.cachelev),0);
 }
 
