@@ -201,8 +201,8 @@ void rmp2_energy()
   pthread_mutex_init(&rmp2_energy_mutex,NULL);
   pthread_cond_init(&rmp2_energy_cond,NULL);
 #if LOCK_RS_SHELL
-  rmp2_sindex_mutex = (pthread_mutex_t *) malloc(ioff[Symmetry.num_unique_shells]*sizeof(pthread_mutex_t));
-  for(i=0;i<ioff[Symmetry.num_unique_shells];i++)
+  rmp2_sindex_mutex = (pthread_mutex_t *) malloc(ioff[BasisSet.num_shells]*sizeof(pthread_mutex_t));
+  for(i=0;i<ioff[BasisSet.num_shells];i++)
 #else
   rmp2_sindex_mutex = (pthread_mutex_t *) malloc(BasisSet.num_ao*sizeof(pthread_mutex_t));
   for(i=0;i<BasisSet.num_ao;i++)
@@ -217,7 +217,7 @@ void rmp2_energy()
   free(thread_id);
   pthread_mutex_destroy(&rmp2_energy_mutex);
 #if LOCK_RS_SHELL
-  for(i=0;i<ioff[Symmetry.num_unique_shells];i++)
+  for(i=0;i<ioff[BasisSet.num_shells];i++)
 #else
   for(i=0;i<BasisSet.num_ao;i++)
 #endif
