@@ -214,6 +214,7 @@ void diis(int iter)
 	  L1a.matrix[h][row][col] = error[0][word++];
     dpd_file2_mat_wrt(&L1a);
     dpd_file2_mat_close(&L1a);
+    dpd_file2_copy(&L1a, CC_OEI, "New Lia"); /* to be removed after spin-adaptation */
     dpd_file2_close(&L1a);
 
     dpd_buf4_init(&L2a, CC_LAMPS, 0, 0, 5, 0, 5, 0, "New LIjAb");
@@ -225,6 +226,12 @@ void diis(int iter)
       dpd_buf4_mat_irrep_wrt(&L2a, h);
       dpd_buf4_mat_irrep_close(&L2a, h);
     }
+    dpd_buf4_close(&L2a);
+
+    /* to be removed after spin-adaptation */
+    dpd_buf4_init(&L2a, CC_LAMPS, 0, 2, 7, 0, 5, 1, "New LIjAb");
+    dpd_buf4_copy(&L2a, CC_LAMPS, "New LIJAB");
+    dpd_buf4_copy(&L2a, CC_LAMPS, "New Lijab");
     dpd_buf4_close(&L2a);
 
     /* Release memory and return */
