@@ -8,11 +8,22 @@
 #include"defines.h"
 #define EXTERN
 #include"global.h"
+#include"small_fns.h"
 
 /*-------------------------------
   Explicit function delcarations
  -------------------------------*/
 static double s_ovlp(double, double, double, double, double);
+static long int memory_to_store_shell_pairs();
+
+/*----------------------------------------------------
+  shell_pair includes pointers to dynamically
+  allocated data. To minimize overhead and to be able
+  to predict how much memory is needed I create a
+  locally visible stack that's used to distribute
+  memory chunks
+  ----------------------------------------------------*/
+static double *stack;
 
 void init_shell_pairs()
 {
@@ -21,12 +32,26 @@ void init_shell_pairs()
   struct coordinates *atom_i, *atom_j;
   int i, j;
   int si, sj, np_i, np_j;
+  long int memd;
   double a1, a2, ab2, gam, inorm, jnorm;
+  double *curr_stack_ptr;
+
+  /*---
+    estimate storage requirement for the dynamically
+    allocated parts of shell_pair structure 
+   ---*/
+  memd = memory_to_store_shell_pairs();
+  if (memd > UserOptions.memory)
+    punt("Not enough memory to store shell pair data. Need more memory.");
+  UserOptions.memory -= memd;
+  stack = (double *) malloc(sizeof(double)*memd);
+  curr_stack_ptr = stack;
 
   /*--- allocate room for the shell pairs ---*/
   pairs = (struct shell_pair **)malloc(sizeof(struct shell_pair *)*BasisSet.num_shells);
   for(i=0; i<BasisSet.num_shells; i++)
     pairs[i] = (struct shell_pair *)malloc(sizeof(struct shell_pair)*BasisSet.num_shells);
+  /*  UserOptions.memory -= BasisSet.num_shells*BasisSet.num_shells*sizeof(struct shell_pair)/sizeof(double);*/
 
   /*--- loop over all shell pairs si, sj and create primitive pairs pairs ---*/
   for (si=0; si<BasisSet.num_shells; si++){
@@ -46,19 +71,35 @@ void init_shell_pairs()
       sp->AB[2] = AB.z;
       np_i = BasisSet.shells[si].n_prims;
       np_j = BasisSet.shells[sj].n_prims;
-      sp->a1 = init_array(np_i);
-      sp->a2 = init_array(np_j);
-      sp->gamma = block_matrix(np_i,np_j);
-      sp->inorm = init_array(np_i);
-      sp->jnorm = init_array(np_j);
-      sp->Sovlp = block_matrix(np_i,np_j);
+
+      sp->a1 = curr_stack_ptr; curr_stack_ptr += np_i;
+      sp->a2 = curr_stack_ptr; curr_stack_ptr += np_j;
+
+      sp->gamma = (double **) malloc(np_i*sizeof(double *));
+      for(i=0;i<np_i;i++) {
+	sp->gamma[i] = curr_stack_ptr; curr_stack_ptr += np_j;
+      }
+      
+      sp->inorm = curr_stack_ptr; curr_stack_ptr += np_i;
+      sp->jnorm = curr_stack_ptr; curr_stack_ptr += np_j;
+      
+      sp->Sovlp = (double **) malloc(np_i*sizeof(double *));
+      for(i=0;i<np_i;i++) {
+	sp->Sovlp[i] = curr_stack_ptr; curr_stack_ptr += np_j;
+      }
+
       sp->P  = (double ***) malloc(np_i*sizeof(double **));
       sp->PA = (double ***) malloc(np_i*sizeof(double **));
       sp->PB = (double ***) malloc(np_i*sizeof(double **));
       for(i=0;i<np_i;i++) {
-	sp->P[i]  = block_matrix(np_j,3);
-	sp->PA[i] = block_matrix(np_j,3);
-	sp->PB[i] = block_matrix(np_j,3);
+	sp->P[i]  = (double **) malloc(np_j*sizeof(double *));
+	sp->PA[i]  = (double **) malloc(np_j*sizeof(double *));
+	sp->PB[i]  = (double **) malloc(np_j*sizeof(double *));
+	for(j=0;j<np_j;j++) {
+	  sp->P[i][j]  = curr_stack_ptr; curr_stack_ptr += 3;
+	  sp->PA[i][j]  = curr_stack_ptr; curr_stack_ptr += 3;
+	  sp->PB[i][j]  = curr_stack_ptr; curr_stack_ptr += 3;
+	}
       }
 
       /*--- loop over primitives here ---*/
@@ -231,23 +272,10 @@ void dealloc_pairs(void)
   int i, j, k, l, si, sj;
   struct shell_pair *sp;
 
+  free(stack);
   for(si=0;si<BasisSet.num_shells;si++)
     for(sj=0;sj<BasisSet.num_shells;sj++) {
       sp = &(BasisSet.shell_pairs[si][sj]);
-      free(sp->a1);
-      free(sp->a2);
-      free_block(sp->gamma);
-      free(sp->inorm);
-      free(sp->jnorm);
-      free_block(sp->Sovlp);
-      for(i=0;i<BasisSet.shells[si].n_prims;i++) {
-	free_block(sp->P[i]);
-	free_block(sp->PA[i]);
-	free_block(sp->PB[i]);
-      }
-      free(sp->P);
-      free(sp->PA);
-      free(sp->PB);
       if (sp->dmato != NULL)
 	free_block(sp->dmat);
       if (sp->dmat != NULL)
@@ -297,4 +325,25 @@ double s_ovlp(double a1, double a2, double norm1, double norm2, double ab2)
   zeta = -a1*a2/gamma;
 
   return t*sqrt(t)*exp(zeta*ab2)*norm1*norm2;
+}
+
+/*----------------------------------------------------
+  This evaluates how much memory (in double words) is
+  needed to store basic (i.e. without dmat or lagr)
+  shell pair data
+  ---------------------------------------------------*/
+long int memory_to_store_shell_pairs()
+{
+  int i, j, np_i, np_j;
+  long int memd = 0;
+
+  for(i=0;i<BasisSet.num_shells;i++) {
+    np_i = BasisSet.shells[i].n_prims;
+    for(j=0;j<BasisSet.num_shells;j++) {
+      np_j = BasisSet.shells[j].n_prims;
+      memd += (2*(np_i + np_j) + 11*np_i*np_j);
+    }
+  }
+    
+  return memd;
 }
