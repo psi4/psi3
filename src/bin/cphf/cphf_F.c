@@ -69,8 +69,14 @@ void cphf_F(double **Aaibj, double ***U)
 
   C_DGEMM('n','t',nao,nso,nao,1,&(TMP[0][0]),nao,&(usotao[0][0]),nao,
 	  0,&(X[0][0]),nao);
+  zero_mat(TMP, nao, nao);
   C_DGEMM('n','n',nso,nso,nao,1,&(usotao[0][0]),nao,&(X[0][0]),nao,
 	  0,&(TMP[0][0]),nao);
+
+  /*
+  fprintf(outfile, "\tSO-basis MuX Integrals:\n");
+  print_mat(TMP, nso, nso, outfile);
+  */
 
   C_DGEMM('n','n',nso,nmo,nso,1,&(TMP[0][0]),nao,&(scf[0][0]),nmo,
 	  0,&(X[0][0]),nao);
@@ -84,6 +90,7 @@ void cphf_F(double **Aaibj, double ***U)
 
   zero_arr(scratch,noei_ao);
   stat = iwl_rdone(PSIF_OEI, PSIF_AO_MY, scratch, noei_ao, 0, 0, outfile);
+  zero_mat(TMP, nao, nao);
   for(i=0,ij=0; i < nao; i++)
     for(j=0; j <= i; j++,ij++) {
       TMP[i][j] = TMP[j][i] = scratch[ij];
@@ -96,8 +103,13 @@ void cphf_F(double **Aaibj, double ***U)
 
   C_DGEMM('n','t',nao,nso,nao,1,&(TMP[0][0]),nao,&(usotao[0][0]),nao,
 	  0,&(X[0][0]),nao);
-  C_DGEMM('n','n',nso,nso,nao,1,&(usotao[0][0]),nao,&(X[0][0]),nso,
+  C_DGEMM('n','n',nso,nso,nao,1,&(usotao[0][0]),nao,&(X[0][0]),nao,
 	  0,&(TMP[0][0]),nao);
+
+  /*
+  fprintf(outfile, "\tSO-basis MuY Integrals:\n");
+  print_mat(TMP, nso, nso, outfile);
+  */
 
   C_DGEMM('n','n',nso,nmo,nso,1,&(TMP[0][0]),nao,&(scf[0][0]),nmo,
 	  0,&(X[0][0]),nao);
@@ -123,8 +135,13 @@ void cphf_F(double **Aaibj, double ***U)
 
   C_DGEMM('n','t',nao,nso,nao,1,&(TMP[0][0]),nao,&(usotao[0][0]),nao,
 	  0,&(X[0][0]),nao);
-  C_DGEMM('n','n',nso,nso,nao,1,&(usotao[0][0]),nao,&(X[0][0]),nso,
+  C_DGEMM('n','n',nso,nso,nao,1,&(usotao[0][0]),nao,&(X[0][0]),nao,
 	  0,&(TMP[0][0]),nao);
+
+  /*
+  fprintf(outfile, "\tSO-basis MuZ Integrals:\n");
+  print_mat(TMP, nso, nso, outfile);
+  */
 
   C_DGEMM('n','n',nso,nmo,nso,1,&(TMP[0][0]),nao,&(scf[0][0]),nmo,
 	  0,&(X[0][0]),nao);
