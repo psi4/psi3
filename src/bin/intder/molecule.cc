@@ -1,3 +1,16 @@
+/********************************************************************
+
+molecule.cc
+
+This is where I get a bit muddled with the object-oriented approach.
+molecule->atom->cartesian
+
+Is this any more intuitive and flexible than the approach that is used
+in optking using a class of "cartesians" and a class of "internals"
+to keep track of everything? Any opinions on scrapping these extra
+layers of C++? NJD
+*********************************************************************/
+
 #include "atom.h"
 #include "molecule.h"
 #include "params.h"
