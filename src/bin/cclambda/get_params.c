@@ -55,6 +55,9 @@ void get_params(void)
     free(junk);
   }
 
+  params.diis = 1;
+  errcod = ip_boolean("DIIS", &params.diis, 0);
+
   params.aobasis = 0;
   errcod = ip_boolean("AO_BASIS", &(params.aobasis),0);
   params.aobasis = 0;  /* AO basis code not yet working for lambda */
@@ -260,6 +263,7 @@ void get_params(void)
   fprintf(outfile, "\tConvergence   = %3.1e\n", params.convergence);
   fprintf(outfile, "\tRestart       =     %s\n", params.restart ? "Yes" : "No");
   fprintf(outfile, "\tCache Level   =     %1d\n", params.cachelev);
+  fprintf(outfile, "\tDIIS          =     %s\n", params.diis ? "Yes" : "No");
   fprintf(outfile, "\tAO Basis      =     %s\n", 
           params.aobasis ? "Yes" : "No");
   fprintf(outfile, "\tExcited State  =     %s\n", 

@@ -14,6 +14,7 @@ void L1_build(struct L_Params L_params) {
   dpdbuf4 LIJAB, Lijab, LIjAb, LiJaB, L2;
   dpdbuf4 WMNIE, Wmnie, WMnIe, WmNiE;
   dpdbuf4 WAMEF, Wamef, WAmEf, WaMeF, W;
+  dpdbuf4 Z;
   int L_irr;
   L_irr = L_params.irrep;
 
@@ -452,6 +453,35 @@ void L1_build(struct L_Params L_params) {
 
     dpd_file2_close(&Gmi);
     dpd_file2_close(&GMI);
+  }
+
+  /* CC3 T3->L1 */
+  if(!strcmp(params.wfn, "CC3")) {
+    if(params.ref == 0) { 
+      dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 2, 7, 0, "LIJAB");
+      dpd_buf4_init(&Z, CC3_MISC, 0, 10, 0, 10, 0, 0, "CC3 ZIFLN");
+      dpd_contract442(&Z, &L2, &newLIA, 0, 2, -0.5, 1);
+      dpd_buf4_close(&Z);
+      dpd_buf4_close(&L2);
+
+      dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "LIjAb");
+      dpd_buf4_init(&Z, CC3_MISC, 0, 10, 0, 10, 0, 0, "CC3 ZIfLn");
+      dpd_contract442(&Z, &L2, &newLIA, 0, 2, -1, 1);
+      dpd_buf4_close(&Z);
+      dpd_buf4_close(&L2);
+
+      dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 2, 7, 0, "LIJAB");
+      dpd_buf4_init(&Z, CC3_MISC, 0, 11, 5, 11, 5, 0, "CC3 ZDFAN (AN,DF)");
+      dpd_contract442(&L2, &Z, &newLIA, 0, 0, 0.5, 1);
+      dpd_buf4_close(&Z);
+      dpd_buf4_close(&L2);
+
+      dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "LIjAb");
+      dpd_buf4_init(&Z, CC3_MISC, 0, 11, 5, 11, 5, 0, "CC3 ZDfAn (An,Df)");
+      dpd_contract442(&L2, &Z, &newLIA, 0, 0, 1.0, 1);
+      dpd_buf4_close(&Z);
+      dpd_buf4_close(&L2);
+    }
   }
 
   dpd_file2_close(&newLIA);

@@ -47,6 +47,7 @@ void spinad_amps(void);
 void status(char *, FILE *);
 
 void cc3_t3z(void);
+void cc3_t3x(void);
 
 int main(int argc, char *argv[])
 {
@@ -132,7 +133,9 @@ int main(int argc, char *argv[])
 
       if (params.ref == 1) L_clean(pL_params[i]);
 
-      /* CC3: X-build */
+      if(!strcmp(params.wfn,"CC3")) {
+	cc3_t3x();
+      }
       /* CC3: L3-build */
   
       if(converged(pL_params[i].irrep)) {
@@ -150,7 +153,7 @@ int main(int argc, char *argv[])
         break;
       }
   
-      diis(moinfo.iter, pL_params[i].irrep);
+      if(params.diis) diis(moinfo.iter, pL_params[i].irrep);
       Lsave(pL_params[i].irrep);
       moinfo.lcc = pseudoenergy(pL_params[i]);
       update();

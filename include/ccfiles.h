@@ -75,7 +75,8 @@
 #define CC3_HET1       160 /* [H,e^T1] */
 #define CC3_HC1        161 /* [H,C1] */
 #define CC3_HC1ET1     162 /* [[H,e^T1],C1] */
+#define CC3_MISC       163 /* various intermediates needed in CC3 codes */
 
 /* Markers for the first and last file numbers */
 #define CC_MIN  CC_INFO
-#define CC_MAX  CC3_HC1ET1
+#define CC_MAX  CC3_MISC

@@ -15,6 +15,7 @@ struct Params {
   int zeta; /* boolean for solving zeta equations - implies excited state*/
   int print;
   int dertype;
+  int diis;
 };
 
 struct L_Params {
