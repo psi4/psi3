@@ -449,9 +449,11 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
           orbsfile_wt_blk(Parameters.opdm_orbsfile, Parameters.num_roots, 
                           irrep, scfvec30);
         }
-        sq_rsp(CalcInfo.orbs_per_irr[irrep]-CalcInfo.frozen_uocc[irrep],
-               CalcInfo.orbs_per_irr[irrep]-CalcInfo.frozen_uocc[irrep],
-               opdm_blk, opdm_eigval, 1, opdm_eigvec, TOL); 
+        if (CalcInfo.orbs_per_irr[irrep]-CalcInfo.frozen_uocc[irrep] > 0) {
+          sq_rsp(CalcInfo.orbs_per_irr[irrep]-CalcInfo.frozen_uocc[irrep],
+                 CalcInfo.orbs_per_irr[irrep]-CalcInfo.frozen_uocc[irrep],
+                 opdm_blk, opdm_eigval, 1, opdm_eigvec, TOL); 
+          }
         for (i=CalcInfo.orbs_per_irr[irrep]-CalcInfo.frozen_uocc[irrep]; 
              i<CalcInfo.orbs_per_irr[irrep]; i++) {
            opdm_eigvec[i][i] = 1.0;
