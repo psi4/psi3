@@ -1,10 +1,14 @@
 
 /* $Log$
- * Revision 1.2  2003/08/21 19:03:36  evaleev
- * Fixed ip_cwk_add to add the keyword to the current keyword tree list even if
- * no parsed input contains entries under the keyword. Subsequent ip_append is
- * thus guaranteed to set the current keyword list properly.
+ * Revision 1.3  2003/08/26 19:16:06  evaleev
+ * Set sub_tree to NULL before doing ip_push_keyword. so that keywords are added
+ * at the top.
  *
+/* Revision 1.2  2003/08/21 19:03:36  evaleev
+/* Fixed ip_cwk_add to add the keyword to the current keyword tree list even if
+/* no parsed input contains entries under the keyword. Subsequent ip_append is
+/* thus guaranteed to set the current keyword list properly.
+/*
 /* Revision 1.1.1.1  2000/02/04 22:53:26  evaleev
 /* Started PSI 3 repository
 /*
@@ -93,11 +97,15 @@ char *keyword;
       }
     /* Add the keyword into the keyword list. */
     kt = ip_descend_tree(ip_tree,&(keyword[1]));
-    /* If the tree is not found -- create it in case future ip_appends will
-       use need it (EFV 08/15/2003) */
+    /* If the tree is not found -- create it starting on the top of ip_tree
+       in case future ip_appends will use need it (EFV 08/15/2003) */
     if (kt)
       ip_cwk = splice_keyword_tree_list(kt->down,ip_cwk);
     else {
+      /* I use ip_push_keyword here to create entries since there's no
+	 other function in LIBIPV1 to do that -- hence  this is a hack */
+      /* start at the top of ip_tree every time, hence set sub_tree to NULL */
+      sub_tree = NULL;
       /* Need to create an empty subtree DEFAULT so that this tree can
          be descended into (EFV 08/15/2003) */
       ip_push_keyword(strdup(&(keyword[1])));
