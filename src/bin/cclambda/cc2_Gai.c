@@ -9,7 +9,7 @@ void cc2_Gai_build(int L_irr) {
   dpdbuf4 LIJAB, Lijab, LIjAb, LiJaB;
 
     if(params.ref == 0) {
-      dpd_file2_init(&G, CC_LAMBDA, L_irr, 1, 0, "CC2 GAI");
+      dpd_file2_init(&G, CC_TMP0, L_irr, 1, 0, "CC2 GAI");
 
       dpd_file2_init(&L1, CC_LAMBDA, L_irr, 0, 1, "LIA");
       dpd_buf4_init(&t2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "2 tIAjb - tIBja");
@@ -22,8 +22,8 @@ void cc2_Gai_build(int L_irr) {
 
     else if(params.ref == 1) { /** ROHF **/
 
-      dpd_file2_init(&G, CC_LAMBDA, L_irr, 1, 0, "GAI");
-      dpd_file2_init(&G, CC_LAMBDA, L_irr, 4, 3, "Gai");
+      dpd_file2_init(&G, CC_TMP0, L_irr, 1, 0, "GAI");
+      dpd_file2_init(&G, CC_TMP0, L_irr, 4, 3, "Gai");
 
       /* T2(MJ,AB) * L2(IJ,AB) --> G(M,I) */
       dpd_buf4_init(&tIJAB, CC_TAMPS, 0, 0, 7, 2, 7, 0, "tIJAB");
@@ -59,8 +59,8 @@ void cc2_Gai_build(int L_irr) {
 
     else if(params.ref == 2) { /** UHF **/
 
-      dpd_file2_init(&GAI, CC_LAMBDA, L_irr, 1, 0, "CC2 GAI");
-      dpd_file2_init(&Gai, CC_LAMBDA, L_irr, 3, 2, "CC2 Gai");
+      dpd_file2_init(&GAI, CC_TMP0, L_irr, 1, 0, "CC2 GAI");
+      dpd_file2_init(&Gai, CC_TMP0, L_irr, 3, 2, "CC2 Gai");
 
       /** AA **/
       dpd_buf4_init(&tIJAB, CC_TAMPS, 0, 20, 20, 20, 20, 0, "tIAJB");
