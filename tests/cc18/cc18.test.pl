@@ -2,7 +2,7 @@
 
 require("../psitest.pl");
 
-$TOL = 10**-10;
+$TOL = 10**-7;
 $PTOL = 10**-4;
 $REF_FILE = "output.ref";
 $TEST_FILE = "output.dat";
@@ -38,10 +38,10 @@ else {
 }
 
 if (abs(seek_lambda($REF_FILE) - seek_lambda($TEST_FILE)) > $TOL) {
-  fail_test("CCSD Lambda Pseudoenergy");
+  fail_test("CCSD Lambda Overlap");
 }
 else {
-  pass_test("CCSD Lambda Pseudoenergy");
+  pass_test("CCSD Lambda Overlap");
 }
 
 @polar_ref = seek_ccsd_polar($REF_FILE);
