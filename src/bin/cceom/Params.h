@@ -7,6 +7,7 @@ struct Params {
   int ref;
   int eom_ref;
   int local;
+  char *wfn;
 };
 
 struct Eom_params {

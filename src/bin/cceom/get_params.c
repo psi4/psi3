@@ -12,6 +12,8 @@ void get_params()
   char *cachetype = NULL;
   char *read_ref, *read_eom_ref;
 
+  errcod = ip_string("WFN", &(params.wfn), 0);
+
   errcod = ip_string("REFERENCE", &(read_ref),0);
   if(!strcmp(read_ref, "RHF")) params.ref = 0;
   else if(!strcmp(read_ref, "ROHF")) params.ref = 1;

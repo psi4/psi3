@@ -39,6 +39,7 @@ void sigmaSS(int index, int irrep);
 void sigmaSD(int index, int irrep);
 void sigmaDS(int index, int irrep);
 void sigmaDD(int index, int irrep);
+void sigmaCC3(int i, int C_irr, double omega);
 void diagSS(int irrep);
 void hbar_extra(void);
 void hbar_norms(void);
@@ -52,10 +53,8 @@ void local_filter_T2_nodenom(dpdbuf4 *);
 void read_guess(int);
 void read_guess_init(void);
 extern double norm_C1_rhf(dpdfile2 *C1A);
-int sigmaCC3(int i, int C_irr);
 void cc3_HC1(int i, int C_irr); /* compute [H,C1] */
 void norm_HC1(int i, int C_irr); /* compute norms for [H,C1] */
-void norm_HET1(void); /* compute norms for [H,e^T1] */
 
 void diag(void) {
   dpdfile2 CME, CME2, Cme, SIA, Sia, RIA, Ria, DIA, Dia, tIA, tia, LIA, Lia;
@@ -63,7 +62,7 @@ void diag(void) {
   dpdbuf4 CMnEf1, CMnfE1, CMnfE, CMneF, C2;
   char lbl[32];
   int num_converged, num_converged_index=0, *converged, keep_going, already_sigma;
-  int irrep, numCs, iter, lwork, info;
+  int irrep, numCs, iter, lwork, info, doing_cc3_prep=0;
   int get_right_ev = 1, get_left_ev = 0;
   int L,h,i,j,k,a,nirreps,errcod,C_irr;
   double norm, tval, **G, *work, *evals_complex, **alpha, **evectors_left;
@@ -78,6 +77,9 @@ void diag(void) {
 
   if(!strcmp(eom_params.guess,"INPUT"))
     read_guess_init();
+
+  if (!strcmp(params.wfn,"EOM_CC3"))
+    doing_cc3_prep = 1; /* boolean tells code to converge EOM_CCSD first for initial guess */
 
   fprintf(outfile,"Symmetry of ground state: %s\n", moinfo.labels[moinfo.sym]);
   /* loop over symmetry of C's */
@@ -236,9 +238,14 @@ void diag(void) {
         sigmaSD(i,C_irr);
         sigmaDS(i,C_irr);
         sigmaDD(i,C_irr);
-   //     if (!strcmp(params.wfn,"EOM_CC3"))
-   //       sigmaCC3(i,C_irr);
 
+        /* assuming we want only one and lowest state - otherwise 
+         * things get more complicated */
+        if ( (!strcmp(params.wfn,"EOM_CC3")) && !doing_cc3_prep) {
+          cc3_HC1ET1(i,C_irr);
+          cc3_HC1(i,C_irr);
+          sigmaCC3(i,C_irr,lambda_old[0]);
+        }
 #endif
 
 #ifdef EOM_DEBUG
@@ -658,6 +665,16 @@ void diag(void) {
       if ( (keep_going == 0) && (iter < eom_params.max_iter) ) {
         fprintf(outfile,"Collapsing to only %d vectors.\n", eom_params.cs_per_irrep[C_irr]);
         restart(alpha, L, eom_params.cs_per_irrep[C_irr], C_irr, 0);
+
+        if ( (!strcmp(params.wfn,"EOM_CC3")) && doing_cc3_prep ) {
+          /* done with EOM CCSD - now do EOM CC3 */
+          fprintf(outfile, "Completed EOM_CCSD\n");
+          doing_cc3_prep = 0;
+          keep_going = 1;
+          already_sigma = 0; /* should be recomputed for CC3 sigmas */
+          L = 1 ; /* must also = 1 for now */
+          iter = 0;
+        }
       }
       free_block(alpha);
     }
@@ -723,25 +740,23 @@ void diag(void) {
           }
         }
         
-        cc3_HC1(i, C_irr);
-        norm_HC1(i, C_irr);
-        cc3_HET1();
-        norm_HET1();
+        /* to test functions on final normalized vector:
+          cc3_HC1(i, C_irr);
+          norm_HC1(i, C_irr);
+        */
       }
       /*
       psio_write_entry(CC_INFO, "CCEOM Energy",
 		       (char *) &(lambda_old[eom_params.prop_root-1]), sizeof(double));
-
       i = moinfo.sym ^ C_irr;
       psio_write_entry(CC_INFO, "CCEOM State Irrep", (char *) &i, sizeof(int));
-      */
 
-      /*      fprintf(outfile,"\nCCEOM energy %.10lf and state irrep %d written to CC_INFO.\n",
-	      lambda_old[eom_params.prop_root-1], i); */
+      fprintf(outfile,"\nCCEOM energy %.10lf and state irrep %d written to CC_INFO.\n",
+      lambda_old[eom_params.prop_root-1], i);
+       */
     }
     fprintf(outfile,"\n");
 
-    /* remove all temporary files */
     free(lambda_old);
     free(converged);
     /* I don't want to do this for local CC calculations -TDC */
@@ -751,18 +766,7 @@ void diag(void) {
       for(i=CC_TMP; i<CC_RAMPS; i++) psio_open(i,0);
     }
       */
-
   }
-/*
-  if (params.eom_ref == 0) rzero_rhf(eom_params.prop_sym^moinfo.sym);
-  else rzero(eom_params.prop_sym^moinfo.sym);
-  */
-  /*
-  if (params.eom_ref == 0)
-    rzero_rhf();
-  else
-    rzero;
-    */
 
   return;
 }
