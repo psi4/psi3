@@ -51,6 +51,8 @@ EXTERN int geomdat_entry;           /*Which entry to read from geom.dat?*/
 EXTERN int chkpt_mos;               /*Project old SCF evector?*/
 EXTERN int save_oldcalc;            /*Save old calculation and old/new basis overlap?*/
 EXTERN int overwrite_output;        /*Overwrite output.dat?*/
+EXTERN int expert;                  /*If expert is true - safety checks are off - 
+				      no guarantee of correctness */
 
 /*Labels*/
 EXTERN char *label;                 /*Label*/

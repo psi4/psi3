@@ -31,6 +31,10 @@ void parsing()
      /*Default = false*/
      puream = 0;
      errcod = ip_boolean("PUREAM",&puream,0);
+
+     /* Safe behavior is on by default */
+     expert = 0;
+     errcod = ip_boolean("EXPERT",&expert,0);
 	 
      /*------------------------------------------
        Parse Some boolean information from input
