@@ -298,10 +298,8 @@ void AI_OSrecurs(double pax, double pay, double paz,
           }
         }
       }
-      else {
-        fprintf(outfile,"  There's some error in the AI_OSrecurs algorithm\n\n");
-        exit(2);
-      }
+      else /* This should and will never happen */
+        punt("There's some error in the AI_OSrecurs algorithm");
     }
  
 
@@ -576,10 +574,8 @@ void AI_OSrecurs(double pax, double pay, double paz,
             }
           }
         }
-        else {
-          fprintf(outfile,"  There's some error in the AI_OSrecurs algorithm\n\n");
-          exit(2);
-        }
+        else /* This should and will never happen */
+          punt("There's some error in the AI_OSrecurs algorithm");
       }
     }
   free(F);

@@ -3,7 +3,7 @@
 #include "globals.h"
 
 
-int main(int argc, char* argv) {
+int main(int argc, char* argv[]) {
 
  int i,j,k,l,count;
  char buffer[80];	/* buffer string */
@@ -33,20 +33,7 @@ int main(int argc, char* argv) {
  
 
 	/* Initialization and printing intro */
- 
- ffile(&infile,"input.dat",2);
- ffile(&outfile,"output.dat",1);
- ip_set_uppercase(1);
- ip_initialize(infile,outfile);
- ip_cwk_add(":DEFAULT");
- ip_cwk_add(":OEPROP");
- tstart(outfile);
- psio_init();
-#if USE_LIBCHKPT
- chkpt_init(PSIO_OPEN_OLD);
-#else
- file30_init();
-#endif
+ start_io(argc,argv);
  print_intro();
 
 
@@ -261,10 +248,8 @@ int main(int argc, char* argv) {
    free(ahfsyz);
  }
  free(S);
- tstop(outfile);
- psio_done();
- ip_done();
- exit(0);
+ stop_io();
+ exit(PSI_RETURN_SUCCESS);
  
 }
 

@@ -99,12 +99,9 @@ void compute_density()
           if ((int)beta[ioff[count]] == 3)
             occ_b[i] += openpi[i];
           else if ((int)beta[ioff[count]] == -1)
-                 occ_a[i] += openpi[i];
-               else {
-                 fprintf(outfile,"Can't assign alpha and beta occupation vectors!\n");
-                 fprintf(outfile,"Possibly, you provided erroneous BETA string\n");
-                 exit(1);
-               }
+	    occ_a[i] += openpi[i];
+	  else
+	    punt("Can't assign alpha and beta occupation vectors!\nPossibly, you provided erroneous BETA string");
           count++;
         }
     }

@@ -1,3 +1,6 @@
+void start_io(int argc, char *argv[]);
+void stop_io();
+void punt(char *);
 void parsing();
 void grid_unitvec();
 void compute_density();

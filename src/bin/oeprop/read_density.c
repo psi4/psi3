@@ -25,10 +25,8 @@ void read_density()
   if (!strcmp(opdm_basis,"MO")) {     
 
     errcod = ip_string("REFERENCE", &ref, 0);
-    if (errcod == IPE_OK && !strcmp(ref, "UHF")) {
-      fprintf(outfile, "(oeprop): Can't read MO OPDM for UHF yet\n");
-      exit(0);
-    }
+    if (errcod == IPE_OK && !strcmp(ref, "UHF"))
+      punt("Can't read MO OPDM for UHF yet");
           
     psq_so = block_matrix(nbfso,nbfso);
 
@@ -50,13 +48,9 @@ void read_density()
  
     if (strcmp(wfn, "CI") == 0 || strcmp(wfn, "DETCI") == 0
       || strcmp(wfn, "DETCAS") == 0) {
-
       if (!ras_set(nirreps, nmo, fzc, orbspi, docc, socc,
-  		 frozen_docc, frozen_uocc, ras_opi, reorder, 1))
-      {
-        fprintf(outfile, "Error in ras_set().  Aborting.\n");
-        exit(1);
-      }
+		   frozen_docc, frozen_uocc, ras_opi, reorder, 1) )
+        punt("Error in ras_set()");
     }
     else {
       errcod = ip_int_array("DOCC",docc,nirreps);

@@ -22,18 +22,16 @@ void grid_unitvec()
 
   /* Checking if vectors are parallel */
   dot_arr(grid_unit_x,grid_unit_y,3,&dot);
-  if (1.0 - fabs(dot) < ADOTB_ORTHOGONAL) { /* Vectors are parallel - aborting */
-    fprintf(outfile,"Vectors GRID_UNIT_X and GRID_UNIT_Y are parallel. Aborting.\n\n");
-    exit(2);
-  }
+  if (1.0 - fabs(dot) < ADOTB_ORTHOGONAL) /* Vectors are parallel - abort */
+    punt("Vectors GRID_UNIT_X and GRID_UNIT_Y are parallel");
   else if (fabs(dot) > ADOTB_ORTHOGONAL) {  /* Vectors are not orthogonal - orthonormalizing */
-         for(i=0;i<3;i++)
-	   grid_unit_y[i] -= dot*grid_unit_x[i];
-         dot_arr(grid_unit_y,grid_unit_y,3,&sum1);
-	 sum1 = sqrt(sum1);
-	 for(i=0;i<3;i++)
-	   grid_unit_y[i] /= sum1;
-       }
+    for(i=0;i<3;i++)
+      grid_unit_y[i] -= dot*grid_unit_x[i];
+    dot_arr(grid_unit_y,grid_unit_y,3,&sum1);
+    sum1 = sqrt(sum1);
+    for(i=0;i<3;i++)
+      grid_unit_y[i] /= sum1;
+  }
 
   /* Get grid_unit_z as a vector product */
   if (grid3d) {

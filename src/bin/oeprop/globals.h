@@ -36,6 +36,7 @@
 
 
 EXTERN FILE *infile,*outfile;
+EXTERN char *psi_file_prefix;
 EXTERN int *ioff;
 EXTERN double df[MAXFACT*2];
 
