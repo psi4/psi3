@@ -1,3 +1,8 @@
+07/09/04: Added UHF-based CC3 energy code, plus a test case (cc33).  This
+code uses DGEMM calls, but is slow in part because it fails to limit IJK
+combinations in the triples code to unique T3's.  I'll add this later, but
+for now, the current version works.  -TDC
+
 06/10/04: Added CC3 energy code to ccenergy plus a test case (cc32).  This
 code stills needs conversion to a DGEMM-based version for greater
 efficiency.  -TDC
