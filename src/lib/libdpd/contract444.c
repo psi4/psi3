@@ -68,20 +68,27 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
     memoryd = dpd_memfree();
 
     core = 0;
-    if(!X->params->rowtot[h]) rows_per_bucket = 0;
-    else rows_per_bucket = (memoryd-core)/X->params->rowtot[h];
-    if(rows_per_bucket > X->params->rowtot[h])
-      rows_per_bucket = X->params->rowtot[h];
+    if(X->params->rowtot[h] && X->params->coltot[h]) {
 
-    if(!rows_per_bucket) nbuckets = 1;
-    else
-      nbuckets = 
-	ceil((double) X->params->rowtot[h]/(double) rows_per_bucket);
-    if(!rows_per_bucket) rows_left = 0;
-    else rows_left = X->params->rowtot[h] % rows_per_bucket;
+      if(X->params->coltot[h])
+	rows_per_bucket = (memoryd-core)/X->params->coltot[h];
+      else rows_per_bucket = -1;
+
+      if(rows_per_bucket > X->params->rowtot[h])
+	rows_per_bucket = X->params->rowtot[h];
+
+      if(!rows_per_bucket)
+	dpd_error("contract444: Not enough memory for one row", stderr);
+
+      nbuckets = ceil((double) X->params->rowtot[h]/
+		      (double) rows_per_bucket);
+
+      rows_left = X->params->rowtot[h] % rows_per_bucket;
       
-    incore = 1;
-    if(nbuckets > 1) incore = 0;
+      incore = 1;
+      if(nbuckets > 1) incore = 0;
+    }
+    else incore = 1;
 
 #ifdef DPD_DEBUG
     if(!incore) {

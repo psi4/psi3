@@ -13,7 +13,8 @@
 **               FileA
 */
 
-int dpd_file2_axpy(dpdfile2 *FileA, dpdfile2 *FileB, double alpha, int transA)
+int dpd_file2_axpy(dpdfile2 *FileA, dpdfile2 *FileB, double alpha, 
+                   int transA)
 {
   int h, nirreps;
   int row, col;
