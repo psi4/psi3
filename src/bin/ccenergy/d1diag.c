@@ -33,30 +33,32 @@ double d1diag_t1_rhf(void)
   dpd_file2_mat_rd(&T1);
 
   for(h=0; h < nirreps; h++) {
-      if(T1.params->rowtot[h]) {
-         T = block_matrix(T1.params->rowtot[h], T1.params->rowtot[h]);
+    if(T1.params->rowtot[h]) {
+      T = block_matrix(T1.params->rowtot[h], T1.params->rowtot[h]);
 
-	 C_DGEMM('n','t',T1.params->rowtot[h],T1.params->rowtot[h],
-	     T1.params->coltot[h],1.0,T1.matrix[h][0],T1.params->coltot[h],
-	     T1.matrix[h][0],T1.params->coltot[h], 0.0,
-	     T[0], T1.params->rowtot[h]);
-	 /*
-         newmm(T1.matrix[h], 0, T1.matrix[h], 1, T, T1.params->rowtot[h],
-   	       T1.params->coltot[h], T1.params->rowtot[h], 1.0, 0.0);
-	       */
+      if(T1.params->rowtot[h] && T1.params->coltot[h]) {
+	C_DGEMM('n','t',T1.params->rowtot[h],T1.params->rowtot[h],
+		T1.params->coltot[h],1.0,T1.matrix[h][0],T1.params->coltot[h],
+		T1.matrix[h][0],T1.params->coltot[h], 0.0,
+		T[0], T1.params->rowtot[h]);
+      }
+      /*
+	newmm(T1.matrix[h], 0, T1.matrix[h], 1, T, T1.params->rowtot[h],
+	T1.params->coltot[h], T1.params->rowtot[h], 1.0, 0.0);
+      */
 
-         E = init_array(T1.params->rowtot[h]);
-         C = block_matrix(T1.params->rowtot[h], T1.params->rowtot[h]);
-         sq_rsp(T1.params->rowtot[h], T1.params->rowtot[h], T, E, 0, C, 1e-12);
+      E = init_array(T1.params->rowtot[h]);
+      C = block_matrix(T1.params->rowtot[h], T1.params->rowtot[h]);
+      sq_rsp(T1.params->rowtot[h], T1.params->rowtot[h], T, E, 0, C, 1e-12);
 
-         /* Find maximum eigenvalue of T */
-         for(i=0; i < T1.params->rowtot[h]; i++) if(E[i] > max) max = E[i];
+      /* Find maximum eigenvalue of T */
+      for(i=0; i < T1.params->rowtot[h]; i++) if(E[i] > max) max = E[i];
 	     
-         free_block(T);
-         free_block(C);
-         free(E);
-       }
+      free_block(T);
+      free_block(C);
+      free(E);
     }
+  }
 
   dpd_file2_mat_close(&T1);
   dpd_file2_close(&T1);
