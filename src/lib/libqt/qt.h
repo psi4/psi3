@@ -73,3 +73,8 @@ void timer_on(char *key);
 void timer_off(char *key);
 
 void filter(double *input, double *output, int *ioff, int norbs, int nfzc, int nfzv);
+
+int C_DGEEV(int n, double **a, int lda,
+  double *wr, double *wi, double **vl, int ldvl, double **vr,
+  int ldvr, double *work, int lwork, int info);
+
