@@ -13,7 +13,7 @@ I. Compilation Prerequisites:
       ** flex
       ** bison
       ** autoconf
-      ** install (from fileutils package)
+      ** fileutils (esp. install)
    * For documentation:
       ** latex
       ** latex2html (v0.99_1 or 1.62, including the patch supplied in
@@ -21,10 +21,13 @@ I. Compilation Prerequisites:
 
 II. Basic Code Configuration, Compilation, and Installation
 
-(Note: Due to a bug in dvips, the documentation will not compile
-if the PSI3 source directory has any periods in the path, e.g.,
-/usr/local/psi3.2 will cause the documentation compilation to fail.)
- 
+A good directory for the PSI3 source code is /usr/local/src/psi3.
+The directory should NOT be named /usr/local/psi, as that is the default
+installation directory unless changed by the --prefix directive (see below).
+It should also not have any periods in the path, e.g., /usr/local/psi3.2,
+because of a bug in dvips which will cause the compilation of documentation
+to fail.
+
 The following series of steps will configure and build the PSI3
 package and install the executables in /usr/local/psi/bin:
 
@@ -98,8 +101,8 @@ III.A. Step 1: Configuration
 
 First, we recommend that you choose for the top-level $PSI3 source
 directory something other than /usr/local/psi; your $HOME directory or
-/usr/local/src are convenient choices.  Next, in the top-level $PSI3 source
-directory you've chosen, first run autoconf to generate the configure
+/usr/local/src/psi3 are convenient choices.  Next, in the top-level $PSI3
+source directory you've chosen, first run autoconf to generate the configure
 script from configure.in.  It is best to keep the source code separate
 from the compilation area, so you must first choose a subdirectory for
 compilation of the codes.  A simple option is $PSI3/objdir, which should
@@ -136,11 +139,12 @@ strctures $prefix/share, and documentation in $prefix/doc.
 III.D. Step 4: Testing
 
 An ever-growing number of test cases is available in $PSI3/tests.
-Eventually, an automated system will be included in the package to
-execute each test and compre the results to reference data.  For now ,
-however, the user must run each case manually.  The PSI3 User's Manual
-provides detailed instructions for running calculations.  Report bugs to
-psimaster@sirius.chem.vt.edu.
+A simple automated system is now available to execute all the current test
+cases and compare to the available reference data. Simply run the
+executable perl script, driver.test.pl, and the result of each test
+case will be printed in the text file, test-case-results}. The PSI3
+User's Manual provides detailed instructions for running calculations.
+Report bugs to psimaster@sirius.chem.vt.edu.
 
 III.E. Step 5: Cleaning
 

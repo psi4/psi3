@@ -75,18 +75,15 @@ psi3/misc)
 
 \section{Basic Configuration and Installation}
 
+A good directory for the PSI3 source code is /usr/local/src/psi3.
+The directory should {\em not} be named {\tt /usr/local/psi}, as that is
+the default installation directory unless changed by the {\tt --prefix}
+directive (see below).  It should also not have any periods in the path,
+e.g., {\tt /usr/local/psi3.2}, because of a bug in {\tt dvips} which will
+cause the compilation of documentation to fail.
+
 The following series of steps will configure and build the \PSIthree\
-package and install the executables in.
-
-Renaming your \PSIthree\ source directory: the \PSIthree\ source
-will usually go into a place like {\tt /usr/local/psi3}.  It should not 
-be named {\tt /usr/local/psi}, because that is the default installation
-directory unless changed by the {\tt --prefix} directive (see below).
-It should also not have any periods in the path, e.g., 
-{\tt /usr/local/psi3.2}, because there is a bug in dvips which will 
-cause the compilation of documentation to fail if any periods appear
-in the source path.
-
+package and install the executables in /usr/local/psi/bin:
 
 \begin{enumerate}
 \item {\tt cd \$PSI3} (your top-level \PSIthree\ source directory)
@@ -159,9 +156,9 @@ installing the \PSIthree\ package.
 
 \subsection{Step 1: Configuration}
 
-First, we recommend that you choose for the top-level {\tt \$PSI3}
-source directory something other than {\tt /usr/local/psi}; your {\tt
-\$HOME} directory or {\tt /usr/local/src} are convenient choices.  Next,
+First, we recommend that you choose for the top-level {\tt \$PSI3} source
+directory something other than {\tt /usr/local/psi}; your {\tt \$HOME}
+directory or {\tt /usr/local/src/psi3} are convenient choices.  Next,
 in the top-level {\tt \$PSI3} source directory you've chosen, first run
 {\tt autoconf} to generate the configure script from {\tt configure.in}.
 It is best to keep the source code separate from the compilation area,
