@@ -68,13 +68,13 @@ timer_on("block_mat");
   
   if((A = (double **) malloc(n * sizeof(double *)))==NULL) {
     fprintf(stderr,"dpd_block_matrix: trouble allocating memory \n");
-    fprintf(stderr,"n = %d\n",n);
+    fprintf(stderr,"n = %d  m = %d\n",n, m);
     exit(1);
     }
 
   if((B = (double *) malloc(m*n * sizeof(double)))==NULL) {
     fprintf(stderr,"dpd_block_matrix: trouble allocating memory \n");
-    fprintf(stderr,"m = %d\n",m);
+    fprintf(stderr,"n = %d  m = %d\n",n, m);
     exit(1);
     }
 
