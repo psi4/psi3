@@ -111,15 +111,15 @@ void print_params()
 
    fprintf(outfile,"\n  Title : '%s'\n",title);
    fprintf(outfile,"\n  List of PARAMETERS :\n");
-   fprintf(outfile,"    # of atoms                 =\t%d\n",natom);
-   fprintf(outfile,"    # of molecular orbitals    =\t%d\n",nmo);
-   fprintf(outfile,"    # of basis functions       =\t%d\n",nbfso);
-   fprintf(outfile,"    # of atomic orbitals       =\t%d\n",nbfao);
-   fprintf(outfile,"    # of irreps                =\t%d\n",nirreps);
-   fprintf(outfile,"    Total charge               =\t%d\n",charge);
-   fprintf(outfile,"    # of unique shells         =\t%d\n",nshell);
-   fprintf(outfile,"    # of primitives            =\t%d\n",nprim);
-   fprintf(outfile,"    Print level                =\t%d\n",print_lvl);
+   fprintf(outfile,"    # of atoms                 = %6d\n",natom);
+   fprintf(outfile,"    # of molecular orbitals    = %6d\n",nmo);
+   fprintf(outfile,"    # of basis functions       = %6d\n",nbfso);
+   fprintf(outfile,"    # of atomic orbitals       = %6d\n",nbfao);
+   fprintf(outfile,"    # of irreps                = %6d\n",nirreps);
+   fprintf(outfile,"    Total charge               = %6d\n",charge);
+   fprintf(outfile,"    # of unique shells         = %6d\n",nshell);
+   fprintf(outfile,"    # of primitives            = %6d\n",nprim);
+   fprintf(outfile,"    Print level                = %6d\n",print_lvl);
    if (grid3d == 0) {
      fprintf(outfile,"\n  List of GRID PARAMETERS :\n");
      fprintf(outfile,"    GRID_ORIGIN                =\t( %8.5lf %8.5lf %8.5lf )\n",grid_origin[0],grid_origin[1],grid_origin[2]);
