@@ -18,11 +18,15 @@ htable_entry *htable;
 void init_htable(int nirreps)
 {
   int i;
-  
+
+  /*------------------------------------------------------------------------
+    maximum number of symmetry-unique quartets in a PK-block is 3*nirreps^4
+    multiply by 2 and find next prime number.
+   ------------------------------------------------------------------------*/
   switch(nirreps) {
   case 1:
-      fprintf(stderr," init_htable: nirreps = 1\n");
-      exit(1);
+      htable_size = 7;
+      break;
   case 2:
       htable_size = 97;
       break;
