@@ -109,6 +109,44 @@ sub seek_bccd
   exit 1;
 }
 
+sub seek_casscf
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  @datafile = <OUT>;
+  close(OUT);
+
+  @line1 = split(/ +/, $datafile[0]);
+  $niter = $line1[1];
+  @line2 = split(/ +/, $datafile[$niter]);
+  $casscf = $line2[5];
+
+  if($casscf != 0.0) {
+    return $casscf;
+  }
+
+  printf "Error: Could not find CASSCF energy in $_[0].\n";
+  exit 1;
+}
+  
+sub seek_ci
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  seek(OUT,0,0);
+  while (<OUT>) {
+    if (/ROOT 1/) {
+    @data = split(/ +/, $_);
+    $ci = $data[4];
+    }
+  }
+
+  if($ci != 0.0) {
+    return $ci;
+  }
+
+  printf "Error: Could not find CI energy in $_[0].\n";
+  exit 1;
+}
+			  
 sub seek_energy_file11
 {
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";
@@ -232,6 +270,64 @@ sub seek_grad_file11
   }
 
   printf "Error: Could not find $_[1] grad in $_[0].\n";
+  exit 1;
+}
+
+sub seek_freq
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  @datafile = <OUT>;
+  close(OUT);
+
+  $match = "$_[1]";
+  $ndof = "$_[2]";
+  $j=0;
+  $linenum=0;
+  foreach $line (@datafile) {
+    $linenum++;
+    if ($line =~ m/$match/) {
+      while ($j<$ndof) {
+        @test = split (/ +/,$datafile[$linenum+2+$j]);
+        $freq[$j] = $test[2];
+        $j++;
+      }
+    }
+  }
+  
+  if($freq >= 0 && $freq < 6000) {
+    return @freq;
+  }
+
+  printf "Error: Check $_[1] in $_[0].\n";
+  exit 1;
+}
+
+sub seek_int
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  @datafile = <OUT>;
+  close(OUT);
+
+  $match = "$_[1]";
+  $ndof = "$_[2]";
+  $j=0;
+  $linenum=0;
+  foreach $line (@datafile) {
+    $linenum++;
+    if ($line =~ m/$match/) {
+      while ($j<$ndof) {
+        @test = split (/ +/,$datafile[$linenum+2+$j]);
+        $int[$j] = $test[3];
+        $j++;
+      }
+    }
+  }
+  
+  if($int >= 0) {
+    return @int;
+  }
+
+  printf "Error: Check $_[1] in $_[0].\n";
   exit 1;
 }
 
