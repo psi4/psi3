@@ -98,7 +98,7 @@ AC_SUBST(LIBR12_OPT_AM)
 # potential names of compilers
 FC_LIST="g77 f77 fc f2c"
 CC_LIST="gcc cc ccc"
-CXX_LIST="g++ c++"
+CXX_LIST="g++ c++ cxx"
 
 # set up os specific options
 case $os in
