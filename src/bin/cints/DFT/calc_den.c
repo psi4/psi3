@@ -11,7 +11,6 @@
   --------------------------------------------------*/
 #include <math.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <ip_libv1.h>
 #include <libciomr.h>
 #include <qt.h>
@@ -25,8 +24,8 @@ struct den_info_s calc_density(struct coordinates geom){
     
     int i,j,k;
     int shell_type;
-    int  shell_start;
-    int  shell_end;
+    int shell_start;
+    int shell_end;
     int n_shells;
     int num_ao,ndocc;
     int shell_center;
@@ -52,6 +51,7 @@ struct den_info_s calc_density(struct coordinates geom){
     
     num_ao = BasisSet.num_ao;
     ndocc = MOInfo.ndocc;
+    temp_arr = init_array(ndocc);
     dist_atom = init_array(Molecule.num_atoms);
     dist_coord = (struct coordinates *)malloc(sizeof(struct coordinates)*Molecule.num_atoms);
     timer_on("distance");
@@ -218,13 +218,24 @@ timer_off("exponent");
    timer_on("density"); 
     
    if(UserOptions.reftype == rhf){
-	den_sum = 0.0;
-	temp_arr = init_array(ndocc);
-	C_DGEMV('t',num_ao,ndocc,1.0,Cocc[0],ndocc,DFT_options.basis,1,0.0,temp_arr,1);
-	dot_arr(temp_arr,temp_arr,MOInfo.ndocc,&den_sum);
-	den_info.den = den_sum;
+       den_sum = 0.0;
+#ifdef USE_BLAS
+       C_DGEMV('t',num_ao,ndocc,1.0,Cocc[0],ndocc,
+	       DFT_options.basis,1,0.0,temp_arr,1);
+       den_sum = C_DDOT(ndocc,temp_arr,1,temp_arr,1);
+#else
+       for(i=0;i<ndocc;i++){
+	   for(j=0;j<num_ao;j++){
+	       temp_arr[i] += Cocc[j][i]*DFT_options.basis[j];
+	   }
+       }
+       dot_arr(temp_arr,temp_arr,MOInfo.ndocc,&den_sum);
+#endif
+       den_info.den = den_sum;
+        
     }
-   timer_off("density"); 
+   free(temp_arr);
+   timer_off("density");
    free(dist_coord);
    free(dist_atom);
    return den_info;

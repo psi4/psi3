@@ -31,6 +31,7 @@ void xc_fock(void){
   
   int nstri;
   double temp;
+  double *temp_arr;
   double **tmpmat1;
   double *Gtri, *Gtri_o;  /* Total and open-shell 
 			     G matrices and lower 
@@ -42,7 +43,6 @@ void xc_fock(void){
   double qr;
   double drdq;
   double jacobian;
-  struct coordinates geom;
   double xa,ya,za;
   double Becke_weight;
   double ang_quad;
@@ -52,8 +52,8 @@ void xc_fock(void){
   double vval;
   double eval = 0.0;
   double bas1,bas2;
-  int point_count =0;
-    
+  
+  struct coordinates geom;
   struct den_info_s den_info;
 
   natoms = Molecule.num_atoms;
@@ -114,15 +114,14 @@ void xc_fock(void){
 		Calculate the weighting funtion 
 		----------------------------------*/
 	      Becke_weight = weight_calc(i,geom,3);
-	      if(Becke_weight > 10E-10){
+	      if(Becke_weight > WEIGHT_CUTOFF){
 	      /*-----------------------------------
 		Get the density information for this 
 		point
 		----------------------------------*/
 		  
 		  den_info = calc_density(geom);
-		  if(den_info.den > 1.0E-10){
-		      point_count++;
+		  if(den_info.den > DEN_CUTOFF){
 		      /*-------------------------------------
 			Weight from Lebedev
 			-----------------------------------*/
@@ -147,7 +146,6 @@ void xc_fock(void){
 		      /* ------------------------------------
 			 Update the G matrix
 			 -----------------------------------*/
-		      
 		      for(m=0;m<num_ao;m++){
 			  bas1 = DFT_options.basis[m];
 			  for(n=0;n<num_ao;n++){
@@ -223,7 +221,6 @@ void xc_fock(void){
   }
   free(DFT_options.basis);
   psio_close(IOUnits.itapDSCF, 1);
-  /*printf("\npoint_count = %d",point_count);*/
   return;
 }
 
