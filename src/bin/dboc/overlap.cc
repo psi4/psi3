@@ -44,7 +44,7 @@ double eval_derwfn_overlap()
     else
       done("CCSD method with this reference is not supported at the moment");
   }
-  else if (!strcmp(Params.wfn,"DETCI")) {
+  else if (!strcmp(Params.wfn,"DETCI") || !strcmp(Params.wfn,"DETCAS")) {
     if (Params.reftype == Params_t::rhf) {
       S = eval_rci_derwfn_overlap();
     }

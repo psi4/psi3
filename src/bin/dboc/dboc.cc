@@ -228,7 +228,7 @@ double eval_dboc()
     disp++;
 
     // For CI method rename the saved wave function
-    if (!strcmp(Params.wfn,"DETCI")) {
+    if (!strcmp(Params.wfn,"DETCI") || !strcmp(Params.wfn,"DETCAS")) {
       SlaterDetVector *vec;
       slaterdetvector_read(PSIF_CIVECT,"CI vector",&vec);
       slaterdetvector_write(PSIF_CIVECT,"Old CI vector",vec);
