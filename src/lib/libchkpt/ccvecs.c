@@ -24,7 +24,7 @@
 **
 **			The relationship between Pitzer's and Yamaguchi's 
 **			conventions are follows :
-**			ALPHA = 1-2*a , BETA = 1+4*b , where a and b are 
+**			ALPHA = 1-2*a , BETA = -1-4*b , where a and b are 
 **			alpha's and beta's for open shells defined on pp. 69-70 
 **			of Dr. Yamaguchi's book.
 **

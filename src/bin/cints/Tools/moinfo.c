@@ -122,7 +122,7 @@ void init_moinfo()
 	for(i=0;i<MOInfo.num_openmoshells;i++)
 	  for(j=0;j<=i;j++) {
 	    MOInfo.Alpha[i+1][j+1] = MOInfo.Alpha[j+1][i+1] = (1.0 - alpha[ioff[i]+j]) * 0.5;
-	    MOInfo.Beta[i+1][j+1] = MOInfo.Beta[j+1][i+1] = (beta[ioff[i]+j] - 1.0) * 0.25;
+	    MOInfo.Beta[i+1][j+1] = MOInfo.Beta[j+1][i+1] = (beta[ioff[i]+j] + 1.0) * -0.25;
 	  }
       }
       else if (UserOptions.reftype == twocon) {      /*--- TCSCF ---*/
