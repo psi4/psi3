@@ -247,7 +247,7 @@ void build_dipder(double ***UX, double **dipder)
   print_mat(dipder, 3, natom*3, outfile);
 
   /* write the dipole derivatives to file17 in the PSI2 standard format */
-  file17 = fopen("file17.dat", "w");
+  ffile(&file17, "file17.dat", 0);
   fprintf(file17, "%5d%5d\n", natom, natom*3);
   for(i=0; i < 3; i++) {
     for(j=0; j < natom; j++) {

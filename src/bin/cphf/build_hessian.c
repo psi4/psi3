@@ -188,7 +188,7 @@ void build_hessian(double ***U, double **hessian)
   */
 
   /* write the hessian to file15 in the PSI2 standard format */
-  file15 = fopen("file15.dat", "w");
+  ffile(&file15, "file15.dat", 0);
   fprintf(file15, "%5d%5d\n", natom, natom*6);
   for(i=0; i < natom*3; i++) {
     for(j=0; j < natom; j++) {
