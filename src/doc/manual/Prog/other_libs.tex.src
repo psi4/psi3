@@ -8,11 +8,14 @@
 There are several other PSI C libraries besides the previously-mentioned
 \library{libipv1.a}, \library{libpsio.a}, and \library{libciomr.a}:
 \begin{description}
-\item\library{libfile30.a} This library provides many routines for reading 
+\item\library{libchkpt.a} This library provides many routines for reading 
 from and writing to the ``checkpoint'' file, \FILE{30}.  There is
 generally a different function associated with each quantity in \FILE{30}
 (such as the SCF energy, nuclear repulsion energy, geometry,
-basis set information, etc).
+basis set information, etc).  This library uses the \library{libpsio.a}
+library to do its input and output.  It replaces an older library 
+\library{libfile30.a} which served the same purpose but which used the
+old I/O from \library{libciomr.a}.
 \item\library{libiwl.a} The new format for storing two-electron integrals is
 IWL, or ``integrals with labels.''  The library \library{libiwl.a} provides functions for
 reading and writing files in the IWL format.  The code was written with 

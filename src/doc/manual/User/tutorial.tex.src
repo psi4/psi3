@@ -28,6 +28,9 @@ Some keys to remember are the following:
 is considered one token; there is no change of case, and special 
 characters and white space are maintained as part of the token 
 but  otherwise ignored. 
+\item The old (Fortran) input parser does not like the TAB character.
+Please avoid using Tabs until this goes away.  There does not appear
+to be a problem with the C library (libipv1).
 \end{itemize}
 Input data types are the following: 
 \begin{itemize}

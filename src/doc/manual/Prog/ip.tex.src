@@ -100,17 +100,33 @@ into 1 or 0 returned in \celem{bool}.
 \file{int ip\_exist(char *kwd, int n);} \\
 Returns 1 if n'th element of \celem{kwd} exists.  Unfortunately, n must be 0.
 
-\file{int ip\_data(char *kwd, char *conv, void *value, int n);} \\
-Parses n'th element of \celem{kwd}, converts in according to \celem{conv}, and
-stores the result in \celem{value}.  It is the programmers responsibility to
-have \celem{value} be a pointer to correct type.  Deep in here, it does a \\
+\file{int ip\_data(char *kwd, char *conv, void *value, int n 
+      [, int o1, ..., int on]);} \\
+Looks for keyword \celem{kwd}, finds the value associated with it, converts
+it according to the format specification given in \celem{conv}, and stores
+the result in \celem{value}.  Note that \celem{value} is a \celem{void *} so
+this routine can handle any data type, but it is the programmer's
+responsibility to ensure that the pointer passed to this routine is of the
+appropriate pointer type for the data.  The value found by the input parser
+depends on the value of \celem{n} and any optional additional arguments.
+\celem{n} is the number of additional arguments.  If \celem{n} is 0, then
+there are no additional arguments, and the keyword has only one value
+associated with it.  If the keyword has an array associated with it, then
+\celem{n} is 1 and the one additional argument is which element of the array
+to pick.  If \celem{kwd} specifies an array of arrays, then \celem{n} is 2,
+the first additional argument is the number of the first array, and the
+second argument is the number of the element within that array, etc.
+Deep in here, the code calls a
 \celem{sscanf(read, conv, value);}, so that's the real meaning of variables.
 
-\celem{int ip\_string(char *kwd, char **value, int n);} \\
-Parses string which is n'th element of \celem{kwd} stores it in \celem{value}.
+\celem{int ip\_string(char *kwd, char **value, int n, [int o1, ..., int on]);}\\
+Parses string associated with \celem{kwd} stores it in \celem{value}.
+The role of \celem{n} and optional arguments is the same as that described
+above for \celem{ip\_data()}.
 
 \celem{int ip\_value(char *kwd, ip\_value\_t **ip\_val, int n);} \\
-Grabs the section of keyword tree at \celem{kwd} and stores it in \celem{ip\_val}
+Grabs the section of keyword tree at \celem{kwd} and stores it in 
+\celem{ip\_val}
 for the programmer's use - this is usually not used, since you need to 
 understand the structure of \celem{ip\_value\_t}.
 
@@ -128,8 +144,9 @@ Calls \celem{yyparse();} followed by \celem{ip\_cwk\_clear();} followed by
 and stores it into the keyword tree for access later.
 
 \celem{void ip\_append(FILE *in, FILE *out);} \\
-Same thing as \celem{ip\_initialize();}, except this dosn't clear the \celem{cwk}
-first.  Used for parsing another input file, such as \celem{intco.dat}.
+Same thing as \celem{ip\_initialize();}, except this dosn't clear the 
+\celem{cwk} first.  Used for parsing another input file, such 
+as \celem{intco.dat}.
 
 \celem{void ip\_done();} \\
 Frees up the keyword tree.
@@ -195,3 +212,4 @@ From \file{scf\_input.c}:
          exit(1);
          }
 \end{verbatim}
+
