@@ -130,7 +130,9 @@ void calc_distance(double **geom, double *A, int num)
          temp2  = (geom[i][1]-geom[j][1])*(geom[i][1]-geom[j][1]); 
          temp3  = (geom[i][2]-geom[j][2])*(geom[i][2]-geom[j][2]); 
          dist = sqrt(temp1 + temp2 + temp3);
-	 if (dist < ZERO_BOND_DISTANCE) {
+	 if (dist < ZERO_BOND_DISTANCE &&
+	     nuclear_charges[i] != 0.0 &&
+	     nuclear_charges[j] != 0.0 ) {
 	   printf("  Atoms %d and %d are separated by only %lf!\n",i+1,j+1,dist);
 	   punt("Invalid geometry");
 	 }
@@ -152,7 +154,8 @@ void Nuc_repulsion(double *Distance, double *repulsion)
 
    for(i=1;i<num_atoms;i++)
       for(j=0;j<i;j++)
-         *repulsion += nuclear_charges[i]*nuclear_charges[j]/Distance[ioff[i]+j] ;
+        if (nuclear_charges[i] != 0.0 && nuclear_charges[j] != 0.0)
+          *repulsion += nuclear_charges[i]*nuclear_charges[j]/Distance[ioff[i]+j] ;
    return;
 }
 
