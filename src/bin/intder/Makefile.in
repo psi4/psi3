@@ -8,11 +8,11 @@ LDLIBS += $(LAPACK) $(BLAS)
 PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
 
-CSRC = \
+XXSRC = \
 intder.cc cartesian.cc atom.cc molecule.cc displacements.cc         \
 params.cc intco.cc misc.cc 3dmatrix.cc read_geom.cc h_compute.cc    
 
-BINOBJ = $(CSRC:%.c=%.o)
+BINOBJ = $(CSRC:%.c=%.o) $(CXXSRC:%.cc=%.o)
 
 include ../MakeRules
 
@@ -24,5 +24,4 @@ endif
 install_man:: intder.1
 	$(MKDIRS) $(mandir)/man1
 	$(INSTALL_INCLUDE) $^ $(mandir)/man1
-
 
