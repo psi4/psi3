@@ -5056,12 +5056,6 @@ CALCIUM:"631GD" = (
     (GET "631GP")
     (GET "STAR1")
   )
-  COPPER:"6-31G(d)" = (
-    (GET "631GS")
-    (GET "631GP")
-    (GET "631GD")
-    (GET "STAR1")
-  )
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -5399,12 +5393,6 @@ CALCIUM:"631GD" = (
   ARGON:"6-31G(d,p)" = (
     (GET "631GS")
     (GET "631GP")
-    (GET "STAR1")
-  )
-  COPPER:"6-31G(d,p)" = (
-    (GET "631GS")
-    (GET "631GP")
-    (GET "631GD")
     (GET "STAR1")
   )
 
