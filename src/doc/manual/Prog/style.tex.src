@@ -285,3 +285,53 @@ Having said this, we will argue against excessive commenting:
 don't add a comment every time you do \celem{i++}!
 It will actually make your code harder to read.
 Be sensible.
+
+As of spring 2002, we have adopted the {\tt doxygen} program to
+automatically generate source code documentation.  This program scans
+the source code and looks for special codes which tell it to add the 
+given comment block to the documentation list.  The program is very
+fancy and can generate documentation in man, html, latex, and rtf formats.
+The file \file{psi3.dox} is the {\tt doxygen} configuration file.  The
+source code should be commented in the following way to work with
+{\tt doxygen}.
+
+The first file of each library defines a ``module'' via a special
+comment line:
+\begin{verbatim}
+/*! \defgroup PSIO libpsio: The PSI I/O Library */
+\end{verbatim}
+Note the exclamation mark above --- it is required by {\tt doxygen}.
+The line above defines the {\tt PSIO} key and associates it with the title
+``The PSI I/O Library.'' Each file belonging to this group will have
+a special comment of the following form:
+\begin{verbatim}
+/*!
+** \file close.c
+** \ingroup (PSIO)
+*/
+\end{verbatim}
+This tells {\tt doxygen} that file \file{close.c} should be documented,
+it should be added to the list of documented files, and it belongs to the 
+{\tt PSIO} group.
+
+All functions should be commented as in the following:
+\begin{verbatim}
+/*!
+** PSIO_CLOSE(): Closes a multivolume PSI direct access file.
+**
+**  \param unit = The PSI unit number used to identify the file to all read
+**                and write functions.
+**  \param keep = Boolean to indicate if the file should be deleted (0) or
+**                retained (1).
+**
+** Returns: always returns 0
+**
+** \ingroup (PSIO)
+*/
+
+int psio_close(ULI unit, int keep)
+...
+\end{verbatim}
+This will add the function {\tt psio\_close} to the list, associate it with
+the {\tt PSIO} module, and define the various arguments.
+
