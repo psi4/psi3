@@ -775,6 +775,7 @@ AC_OUTPUT(include/psiconfig.h include/cfuncs.h include/ffuncs.h
           src/bin/cctriples/Makefile
           src/bin/cceom/Makefile
           src/bin/cints/Makefile
+          src/bin/clag/Makefile
           src/bin/cscf/Makefile
           src/bin/detci/Makefile
           src/bin/detcas/Makefile
@@ -789,9 +790,11 @@ AC_OUTPUT(include/psiconfig.h include/cfuncs.h include/ffuncs.h
           src/bin/psiclean/Makefile
           src/bin/stable/Makefile
           src/bin/transqt/Makefile
+          src/bin/mvo/Makefile
 
           src/doc/MakeVars src/doc/MakeRules src/doc/Makefile
           src/doc/manual/Makefile
+          src/doc/manual/Prog/Makefile src/doc/manual/User/Makefile
           )
 # The following should be added to config_files/ac_output for 
 # libmathtools/ooccman
