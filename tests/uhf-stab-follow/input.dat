@@ -1,0 +1,22 @@
+psi: (
+  exec = ($input $ints $scf $transqt $ccsort $stable 
+          $ints $scf $done)
+  label = "HF"
+  wfn = ccsd 
+  reference = uhf
+  multi = 1
+  charge = 0 
+  docc = (3 0 1 1)
+  basis = "6-31G**"
+  puream = false
+  units = angstrom
+  zmat = (
+    H 
+    F 1 2.40
+  )
+)
+
+stable: (
+  follow = true
+)
+
