@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include <iwl.h>
 #include <libciomr.h>
+#include <qt.h>
 #include <psifiles.h>
 #include "structs.h"
 #define EXTERN
@@ -33,6 +34,7 @@ void read_integrals()
       int *frozen_docc, int fzc_flag, double escf, double enuc, double efzc, 
       int nirreps, int *reorder, int *opi, FILE *outfile);
    int junk;
+   double *tmp_onel_ints;
 
    /* allocate memory for one and two electron integrals */
    nbstri = (CalcInfo.num_ci_orbs * (CalcInfo.num_ci_orbs + 1)) / 2 ;
@@ -49,8 +51,12 @@ void read_integrals()
    /* iwl_rdone(Parameters.oei_file, nbstri, CalcInfo.onel_ints, 
                 &(CalcInfo.efzc), Parameters.oei_erase); */
 
-   iwl_rdone(Parameters.oei_file, PSIF_MO_FZC, CalcInfo.onel_ints, nbstri,
+   tmp_onel_ints = init_array(nbstri);
+   iwl_rdone(Parameters.oei_file, PSIF_MO_FZC, tmp_onel_ints, nbstri,
              Parameters.oei_erase, (Parameters.print_lvl>4), outfile);
+   filter(tmp_onel_ints, CalcInfo.onel_ints, ioff, nbstri, 
+	  CalcInfo.num_fzc_orbs, CalcInfo.num_fzv_orbs);
+   free(tmp_onel_ints);
 
    iwl_rdtwo(Parameters.tei_file, CalcInfo.twoel_ints, ioff, CalcInfo.nbfso, 
              Parameters.filter_ints ? CalcInfo.num_fzc_orbs : 0, 
