@@ -27,7 +27,6 @@ void get_params()
   params.print = 0;
   errcod = ip_data("PRINT", "%d", &(params.print),0);
   
-  params.opdm = 0;
   errcod = ip_boolean("OPDM", &(params.opdm),0);
   
   if (params.opdm) {

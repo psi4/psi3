@@ -70,14 +70,35 @@ int main(int argc, char *argv[])
 
 void init_io(int argc, char *argv[])
 {
-  int i;
+  int i=0;
+  int num_extra_args=0;
+  char **extra_args;
   extern char *gprgid();
   char *progid;
 
+  extra_args = (char **)malloc(argc*sizeof(char *));
   progid = (char *)malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s",gprgid());
+ 
+  /* 
+     Initialize OPDM flag the read the OPDM option 
+     from the commandline so one-electron properties
+     can be computed without changing the input
+     file 
+  */
+  
+  params.opdm = 0;
 
-  psi_start(argc-1,argv+1,0);
+  for(i=1; i<argc; i++) {
+    if(strcmp(argv[i], "--opdm") == 0) {
+      params.opdm = 1;
+    }
+    else {
+      extra_args[num_extra_args++] = argv[i];
+    }
+  }
+  
+  psi_start(num_extra_args,extra_args,0);
   ip_cwk_add(progid);
   free(progid);
   tstart(outfile);
@@ -85,6 +106,8 @@ void init_io(int argc, char *argv[])
   psio_init();
   for(i=CC_MIN; i <= CC_MAX; i++) 
     psio_open(i,1);
+
+  free(extra_args);
 }
 
 void title(void)
