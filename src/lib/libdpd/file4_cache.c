@@ -130,6 +130,8 @@ int dpd_file4_cache_add(dpdfile4 *File, unsigned int priority)
       strcpy(this_entry->label,File->label);
       this_entry->next = NULL;
       this_entry->last = dpd_file4_cache_last();
+
+      this_entry->lock = 0;
       
       if(this_entry->last != NULL) this_entry->last->next = this_entry;
       else dpd_default->file4_cache = this_entry;
@@ -151,6 +153,9 @@ int dpd_file4_cache_add(dpdfile4 *File, unsigned int priority)
 
       File->incore = 1;
 
+      /* Adjust the global cache size value */
+      dpd_default->memcache += this_entry->size;
+
       return 0;
   }
 
@@ -168,34 +173,77 @@ int dpd_file4_cache_del(dpdfile4 *File)
 
   if((this_entry == NULL && File->incore) ||
      (this_entry != NULL && !(File->incore)) ||
-      (this_entry == NULL && !(File->incore))) {
-      dpd_error("File4 cache delete error!", stderr);
-    }
+     (this_entry == NULL && !(File->incore))) {
+    dpd_error("File4 cache delete error!", stderr);
+  }
   else {
-      File->incore = 0;
 
-      /* Write all the data to disk and free the memory */
-      for(h=0; h < File->params->nirreps; h++) {
-          if(!(this_entry->clean)) dpd_file4_mat_irrep_wrt(File, h);
-	  dpd_file4_mat_irrep_close(File, h);
-	}
+    /* Unlock the entry first */
+    dpd_file4_cache_unlock(File);
 
-      next_entry = this_entry->next;
-      last_entry = this_entry->last;
+    File->incore = 0;
 
-      /* Are we deleting the top of the tree? */
-      if(this_entry == dpd_default->file4_cache) 
-	  dpd_default->file4_cache = next_entry;
-
-      free(this_entry);
-
-      /* Reassign pointers for adjacent entries in the list */
-      if(next_entry != NULL) next_entry->last = last_entry;
-      if(last_entry != NULL) last_entry->next = next_entry;
-
+    /* Write all the data to disk and free the memory */
+    for(h=0; h < File->params->nirreps; h++) {
+      if(!(this_entry->clean)) dpd_file4_mat_irrep_wrt(File, h);
+      dpd_file4_mat_irrep_close(File, h);
     }
+
+    next_entry = this_entry->next;
+    last_entry = this_entry->last;
+
+    /* Adjust the global cache size value */
+    dpd_default->memcache -= this_entry->size;
+
+    /* Are we deleting the top of the tree? */
+    if(this_entry == dpd_default->file4_cache) 
+      dpd_default->file4_cache = next_entry;
+
+    free(this_entry);
+
+    /* Reassign pointers for adjacent entries in the list */
+    if(next_entry != NULL) next_entry->last = last_entry;
+    if(last_entry != NULL) last_entry->next = next_entry;
+
+  }
 
   return 0;
+}
+
+void dpd_file4_cache_print_screen(void)
+{
+  int total_size=0;
+  struct dpd_file4_cache_entry *this_entry;
+
+  this_entry = dpd_default->file4_cache;
+
+  fprintf(stdout, "\n\tDPD File4 Cache Listing:\n\n");
+  fprintf(stdout,
+"Cache Label           File symm  pq  rs  usage  clean  priority  lock size(kB)\n");
+  fprintf(stdout,
+"------------------------------------------------------------------------------\n");
+  while(this_entry != NULL) {
+      fprintf(stdout,
+      "%-22s %3d    %1d  %2d  %2d %6d      %1d    %6d    %1d  %8.1f\n",
+	      this_entry->label, this_entry->filenum, this_entry->irrep,
+	      this_entry->pqnum, this_entry->rsnum, this_entry->usage,
+              this_entry->clean, this_entry->priority,this_entry->lock,
+              (this_entry->size)*sizeof(double)/1e3);
+      total_size += this_entry->size;
+      this_entry = this_entry->next;
+    }
+  fprintf(stdout,
+"------------------------------------------------------------------------------\n");
+  fprintf(stdout, "Total cached: %9.1f kB; MRU = %6d; LRU = %6d\n",
+	  (total_size*sizeof(double))/1e3,dpd_default->file4_cache_most_recent,
+	  dpd_default->file4_cache_least_recent);
+  fprintf(stdout, "#LRU deletions = %6d; #Low-priority deletions = %6d\n", 
+          dpd_default->file4_cache_lru_del,dpd_default->file4_cache_low_del);
+  fprintf(stdout, "Core max size:  %9.1f kB\n", (dpd_default->memory)*sizeof(double)/1e3);
+  fprintf(stdout, "Core used:      %9.1f kB\n", (dpd_default->memused)*sizeof(double)/1e3);
+  fprintf(stdout, "Core available: %9.1f kB\n", dpd_memfree()*sizeof(double)/1e3);
+  fprintf(stdout, "Core cached:    %9.1f kB\n", (dpd_default->memcache)*sizeof(double)/1e3);
+  fprintf(stdout, "Locked cached:  %9.1f kB\n", (dpd_default->memlocked)*sizeof(double)/1e3);
 }
 
 void dpd_file4_cache_print(FILE *outfile)
@@ -207,26 +255,31 @@ void dpd_file4_cache_print(FILE *outfile)
 
   fprintf(outfile, "\n\tDPD File4 Cache Listing:\n\n");
   fprintf(outfile,
-"Cache Label           File symm  pq  rs  usage  clean  priority  size(kB)\n");
+"Cache Label           File symm  pq  rs  usage  clean  priority  lock size(kB)\n");
   fprintf(outfile,
-"-------------------------------------------------------------------------\n");
+"------------------------------------------------------------------------------\n");
   while(this_entry != NULL) {
       fprintf(outfile,
-      "%-22s %3d    %1d  %2d  %2d %6d      %1d    %6d  %8.1f\n",
+      "%-22s %3d    %1d  %2d  %2d %6d      %1d    %6d    %1d  %8.1f\n",
 	      this_entry->label, this_entry->filenum, this_entry->irrep,
 	      this_entry->pqnum, this_entry->rsnum, this_entry->usage,
-              this_entry->clean, this_entry->priority,
+              this_entry->clean, this_entry->priority, this_entry->lock,
               (this_entry->size)*sizeof(double)/1e3);
       total_size += this_entry->size;
       this_entry = this_entry->next;
     }
   fprintf(outfile,
-"--------------------------------------------------------------------------\n");
+"------------------------------------------------------------------------------\n");
   fprintf(outfile, "Total cached: %8.1f kB; MRU = %6d; LRU = %6d\n",
 	  (total_size*sizeof(double))/1e3,dpd_default->file4_cache_most_recent,
 	  dpd_default->file4_cache_least_recent);
   fprintf(outfile, "#LRU deletions = %6d; #Low-priority deletions = %6d\n", 
           dpd_default->file4_cache_lru_del,dpd_default->file4_cache_low_del);
+  fprintf(outfile, "Core max size:  %9.1f kB\n", (dpd_default->memory)*sizeof(double)/1e3);
+  fprintf(outfile, "Core used:      %9.1f kB\n", (dpd_default->memused)*sizeof(double)/1e3);
+  fprintf(outfile, "Core available: %9.1f kB\n", dpd_memfree()*sizeof(double)/1e3);
+  fprintf(outfile, "Core cached:    %9.1f kB\n", (dpd_default->memcache)*sizeof(double)/1e3);
+  fprintf(outfile, "Locked cached:  %9.1f kB\n", (dpd_default->memlocked)*sizeof(double)/1e3);
 }
 
 struct dpd_file4_cache_entry *dpd_file4_cache_find_lru(void)
@@ -340,17 +393,19 @@ struct dpd_file4_cache_entry *dpd_file4_cache_find_low(void)
   if(this_entry == NULL) return(NULL);
 
   /* find the first unlocked entry */
-  while(this_entry->lock && this_entry != NULL) 
-      this_entry = this_entry->next;
+  while(this_entry != NULL) {
+    if(this_entry->lock) this_entry = this_entry->next;
+    else break; /* Is this right? */
+  }
 
   /* Now search for the lowest priority entry */
   low_entry = this_entry;
-  while(this_entry != NULL) {
-      if((this_entry->priority < low_entry->priority) && !this_entry->lock)
-          low_entry = this_entry;
-      this_entry = this_entry->next;
-    }
-  
+  while(this_entry != NULL && low_entry != NULL) {
+    if((this_entry->priority < low_entry->priority) && !this_entry->lock)
+      low_entry = this_entry;
+    this_entry = this_entry->next;
+  }
+
   return low_entry;
 }
 
@@ -369,7 +424,7 @@ int dpd_file4_cache_del_low(void)
 #ifdef DPD_TIMER
       timer_off("cache_low");
 #endif
-      return 1; /* there is no cache */
+      return 1; /* there is no cache or everything is locked */
     }
   else { /* we found the LOW so delete it */
 #ifdef DPD_DEBUG
@@ -384,9 +439,7 @@ int dpd_file4_cache_del_low(void)
       dpd_default->file4_cache_low_del++;
 
       dpd_file4_init(&File, this_entry->filenum, this_entry->irrep,
-                     this_entry->pqnum, this_entry->rsnum,
-this_entry->label);
-
+                     this_entry->pqnum, this_entry->rsnum, this_entry->label);
       dpd_file4_cache_del(&File);
       dpd_file4_close(&File);
 
@@ -400,23 +453,42 @@ this_entry->label);
 
 void dpd_file4_cache_lock(dpdfile4 *File)
 {
+  int h;
   struct dpd_file4_cache_entry *this_entry;
 
   this_entry = dpd_file4_cache_scan(File->filenum, File->my_irrep,
                                     File->params->pqnum, File->params->rsnum,
                                     File->label);
 
-  if(this_entry != NULL) this_entry->lock = 1;
+  if(this_entry != NULL && !this_entry->lock) {
+
+    /* Increment the locked cache memory counter */
+    for(h=0; h < File->params->nirreps; h++) {
+      dpd_default->memlocked += File->params->rowtot[h] * File->params->coltot[h];
+    }
+
+    this_entry->lock = 1;
+  }
 }
 
 void dpd_file4_cache_unlock(dpdfile4 *File)
 { 
+  int h;
   struct dpd_file4_cache_entry *this_entry;
   
   this_entry = dpd_file4_cache_scan(File->filenum, File->my_irrep,
                                     File->params->pqnum, File->params->rsnum,
                                     File->label);
   
-  if(this_entry != NULL) this_entry->lock = 0;
+  if(this_entry != NULL && this_entry->lock) {
+
+    this_entry->lock = 0;
+
+    /* Decrement the locked cache memory counter */
+    for(h=0; h < File->params->nirreps; h++) {
+      dpd_default->memlocked -= File->params->rowtot[h] * File->params->coltot[h];
+    }
+
+  }
 }
 

@@ -41,7 +41,7 @@ timer_on("block_mat");
 
   A = NULL;  B = NULL;
 
-  while((dpd_default->memfree - n*m) < 0) {
+  while((dpd_default->memory - dpd_default->memused - n*m) < 0) {
       /* Delete cache entries until there's enough memory or no more cache */
 
       /* Priority-based cache */
@@ -60,7 +60,9 @@ timer_on("block_mat");
     }
 
   if(!m || !n) {
+#ifdef DPD_TIMER
      timer_off("block_mat");
+#endif
      return(NULL);
     }
   
@@ -80,8 +82,8 @@ timer_on("block_mat");
 
   for (i = 0; i < n; i++) A[i] = &(B[i*m]);
 
-  /* Decrement the global memory counter */
-  dpd_default->memfree -= n*m;
+  /* Increment the global memory counter */
+  dpd_default->memused += n*m;
 
 #ifdef DPD_TIMER
 timer_off("block_mat");
@@ -95,5 +97,6 @@ void dpd_free_block(double **array, int n, int m)
   if(array == NULL) return;
   free(array[0]);
   free(array);
-  dpd_default->memfree += n*m;
+  /* Decrement the global memory counter */
+  dpd_default->memused -= n*m;
 }

@@ -130,32 +130,34 @@ struct dpd_file2_cache_entry {
 
 /* DPD global parameter set */
 typedef struct {
-    int nirreps;
-    int memory;
-    int memfree;
-    int num_subspaces;
-    int num_pairs;
-    int *numorbs;
-    int **orboff;
-    int **pairtot;
-    int **orbspi;
-    int **orbsym;
-    int **orbidx2;
-    int ***pairidx;
-    int ***orbs2;
-    int ****pairorb;
-    dpdparams2 **params2;
-    dpdparams4 **params4;
-    struct dpd_file2_cache_entry *file2_cache;
-    struct dpd_file4_cache_entry *file4_cache;
-    unsigned int file4_cache_most_recent;
-    unsigned int file4_cache_least_recent;
-    unsigned int file4_cache_lru_del;
-    unsigned int file4_cache_low_del;
-    int cachetype;
-    int *cachefiles;
-    int **cachelist;
-    struct dpd_file4_cache_entry *file4_cache_priority;
+  int nirreps;
+  int memory;        /* Total memory requested by the user */
+  int memused;       /* Total memory used (cache + other) */
+  int memcache;      /* Total memory in cache (locked and unlocked) */
+  int memlocked;     /* Total memory locked in the cache */
+  int num_subspaces;
+  int num_pairs;
+  int *numorbs;
+  int **orboff;
+  int **pairtot;
+  int **orbspi;
+  int **orbsym;
+  int **orbidx2;
+  int ***pairidx;
+  int ***orbs2;
+  int ****pairorb;
+  dpdparams2 **params2;
+  dpdparams4 **params4;
+  struct dpd_file2_cache_entry *file2_cache;
+  struct dpd_file4_cache_entry *file4_cache;
+  unsigned int file4_cache_most_recent;
+  unsigned int file4_cache_least_recent;
+  unsigned int file4_cache_lru_del;
+  unsigned int file4_cache_low_del;
+  int cachetype;
+  int *cachefiles;
+  int **cachelist;
+  struct dpd_file4_cache_entry *file4_cache_priority;
 } dpd_data;
 
 /* Useful for the generalized 4-index sorting function */
@@ -174,6 +176,7 @@ void dpd_error(char *caller, FILE *outfile);
 
 double **dpd_block_matrix(int n, int m);
 void dpd_free_block(double **array, int n, int m);
+int dpd_memfree(void);
 
 int dpd_contract222(dpdfile2 *X, dpdfile2 *Y, dpdfile2 *Z, int target_X,
 		    int target_Y, double alpha, double beta);
@@ -241,7 +244,7 @@ int dpd_buf4_close(dpdbuf4 *Buf);
 int dpd_buf4_mat_irrep_init(dpdbuf4 *Buf, int irrep);
 int dpd_buf4_mat_irrep_close(dpdbuf4 *Buf, int irrep);
 int dpd_buf4_mat_irrep_rd(dpdbuf4 *Buf, int irrep);
-int dpd_buf4_print(dpdbuf4 *Buf, FILE *outfile);
+int dpd_buf4_print(dpdbuf4 *Buf, FILE *outfile, int print_data);
 int dpd_buf4_copy(dpdbuf4 *InBuf, int outfilenum, char *label);
 int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 		  int pqnum, int rsnum, char *label);
@@ -297,6 +300,7 @@ int dpd_file2_cache_del(dpdfile2 *File);
 void dpd_file4_cache_init(void);
 void dpd_file4_cache_close(void);
 void dpd_file4_cache_print(FILE *outfile);
+void dpd_file4_cache_print_screen(void);
 struct dpd_file4_cache_entry
  *dpd_file4_cache_scan(int filenum, int irrep, int pqnum, int rsnum, char *label);
 struct dpd_file4_cache_entry *dpd_file4_cache_last(void);

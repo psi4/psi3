@@ -7,9 +7,10 @@
 ** Arguments:
 **   dpdbuf4 *Buf: A pointer to the dpdbuf to be printed.
 **   FILE *outfile: The formatted output file stream.
+**   int print_data: 0 = print buf4 parameters only; 1 = print matrices
 */
 
-int dpd_buf4_print(dpdbuf4 *Buf, FILE *outfile)
+int dpd_buf4_print(dpdbuf4 *Buf, FILE *outfile, int print_data)
 {
   int h, i, my_irrep;
   dpdparams4 *Params;
@@ -25,11 +26,12 @@ int dpd_buf4_print(dpdbuf4 *Buf, FILE *outfile)
   fprintf(outfile, "\t   Row and column dimensions for DPD Block:\n");
   fprintf(outfile, "\t   ----------------------------------------\n");
   for(i=0; i < Params->nirreps; i++)
-      fprintf(outfile,   "\t   Irrep: %1d row = %5d\tcol = %5d\n", i,
-	      Params->rowtot[i], Params->coltot[i^my_irrep]);
+    fprintf(outfile,   "\t   Irrep: %1d row = %5d\tcol = %5d\n", i,
+	    Params->rowtot[i], Params->coltot[i^my_irrep]);
   fflush(outfile);
 
-  for(h=0; h < Buf->params->nirreps; h++) {
+  if(print_data) {
+    for(h=0; h < Buf->params->nirreps; h++) {
       fprintf(outfile, "\n\tFile %3d DPD Buf4: %s\n", Buf->file.filenum,
 	      Buf->file.label);
       fprintf(outfile,   "\tMatrix for Irrep %1d\n", h);
@@ -39,6 +41,7 @@ int dpd_buf4_print(dpdbuf4 *Buf, FILE *outfile)
       dpd_4mat_irrep_print(Buf->matrix[h], Buf->params, h, my_irrep, outfile);
       dpd_buf4_mat_irrep_close(Buf, h);
     }
+  }
 
   return 0;
 

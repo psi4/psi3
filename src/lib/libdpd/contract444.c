@@ -50,118 +50,105 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
   zrow = Z->params->rowtot; zcol = Z->params->coltot;
   
   if((zrow != xrow) || (zcol != ycol) || (xcol != yrow)) {
-      fprintf(stderr, "** Alignment error in contract444 **\n");
-      dpd_error("dpd_contract444",stderr);
-    }
+    fprintf(stderr, "** Alignment error in contract444 **\n");
+    dpd_error("dpd_contract444",stderr);
+  }
 
 #endif
   
-  memoryd = dpd_default->memory;
 
   for(h=0; h < nirreps; h++) {
 
-      /* Compute the memory requirements for the Z and Y */
-      core = Z->params->rowtot[h] * Z->params->coltot[h] +
-	     Y->params->rowtot[h] * Y->params->coltot[h];
+    dpd_buf4_mat_irrep_init(Y, h);
+    dpd_buf4_mat_irrep_rd(Y, h);
+    dpd_buf4_mat_irrep_init(Z, h);
+    if(fabs(beta) > 0.0) 
+      dpd_buf4_mat_irrep_rd(Z, h);
+	
+    memoryd = dpd_memfree();
 
-      if(!X->params->rowtot[h]) rows_per_bucket = 0;
-      else rows_per_bucket = (memoryd-core)/X->params->rowtot[h];
-      if(rows_per_bucket > X->params->rowtot[h])
-	  rows_per_bucket = X->params->rowtot[h];
+    core = 0;
+    if(!X->params->rowtot[h]) rows_per_bucket = 0;
+    else rows_per_bucket = (memoryd-core)/X->params->rowtot[h];
+    if(rows_per_bucket > X->params->rowtot[h])
+      rows_per_bucket = X->params->rowtot[h];
 
-      if(!rows_per_bucket) nbuckets = 1;
-      else
-        nbuckets = 
-           ceil((double) X->params->rowtot[h]/(double) rows_per_bucket);
-      if(!rows_per_bucket) rows_left = 0;
-      else rows_left = X->params->rowtot[h] % rows_per_bucket;
+    if(!rows_per_bucket) nbuckets = 1;
+    else
+      nbuckets = 
+	ceil((double) X->params->rowtot[h]/(double) rows_per_bucket);
+    if(!rows_per_bucket) rows_left = 0;
+    else rows_left = X->params->rowtot[h] % rows_per_bucket;
       
-      incore = 1;
-      if(nbuckets > 1) incore = 0;
+    incore = 1;
+    if(nbuckets > 1) incore = 0;
 
 #ifdef DPD_DEBUG
-      if(!incore) {
-	  memtotal = core + X->params->rowtot[h] * X->params->coltot[h];
-	  memtotal *= sizeof(double);
-	  fprintf(stderr, "Contract444: out of core algorithm used.\n");
-	  fprintf(stderr, "Need %5.2f MB to run in memory.\n",
-		  ((double) memtotal)/1e6);
-	}
+    if(!incore) {
+      memtotal = core + X->params->rowtot[h] * X->params->coltot[h];
+      memtotal *= sizeof(double);
+      fprintf(stderr, "Contract444: out of core algorithm used.\n");
+      fprintf(stderr, "Need %5.2f MB to run in memory.\n",
+	      ((double) memtotal)/1e6);
+    }
 #endif
 
-      if(!incore && Xtrans) {
-	dpd_file4_cache_print(stderr);
-	dpd_error("out-of-core contract444 Xtrans=1 not coded", stderr);
-	}
-
-      dpd_buf4_mat_irrep_init(Y, h);
-      dpd_buf4_mat_irrep_rd(Y, h);
-
-	
-      if(incore) {
-
-	  dpd_buf4_mat_irrep_init(Z, h);
-	  
-	  if(fabs(beta) > 0.0) dpd_buf4_mat_irrep_rd(Z, h);
-	  
-	  dpd_buf4_mat_irrep_init(X, h);
-	  dpd_buf4_mat_irrep_rd(X, h);
-
-	  newmm(X->matrix[h], Xtrans, Y->matrix[h], Ytrans,
-		Z->matrix[h], Z->params->rowtot[h], numlinks[h],
-		Z->params->coltot[h], alpha, beta);
-
-	  dpd_buf4_mat_irrep_close(X, h);
-
-	  dpd_buf4_mat_irrep_wrt(Z, h);
-	  dpd_buf4_mat_irrep_close(Z, h);
-
-	}
-      else {
-
-	  dpd_buf4_mat_irrep_init_block(X, h, rows_per_bucket);
-	  dpd_buf4_mat_irrep_init_block(Z, h, rows_per_bucket);
-
-	  for(n=0; n < (rows_left ? nbuckets-1 : nbuckets); n++) {
-	      
-	      dpd_buf4_mat_irrep_rd_block(X, h, n*rows_per_bucket,
-					 rows_per_bucket);
-
-	      if(fabs(beta) > 0.0)
-		  dpd_buf4_mat_irrep_rd_block(Z, h, n*rows_per_bucket,
-					     rows_per_bucket);
-	      
-	      C_DGEMM('n', 't', rows_per_bucket, Z->params->coltot[h],
-		      numlinks[h], alpha, &(X->matrix[h][0][0]), numlinks[h],
-		      &(Y->matrix[h][0][0]), numlinks[h], beta,
-		      &(Z->matrix[h][0][0]), Z->params->coltot[h]);
-
-	      dpd_buf4_mat_irrep_wrt_block(Z, h, n*rows_per_bucket,
-					  rows_per_bucket);
-	    }
-
-	if(rows_left) {
-
-	    dpd_buf4_mat_irrep_rd_block(X, h, n*rows_per_bucket, rows_left);
-
-	    if(fabs(beta) > 0.0)
-		dpd_buf4_mat_irrep_rd_block(Z, h, n*rows_per_bucket, rows_left);
-	      
-	    C_DGEMM('n', 't', rows_left, Z->params->coltot[h],
-		    numlinks[h], alpha, &(X->matrix[h][0][0]), numlinks[h],
-		    &(Y->matrix[h][0][0]), numlinks[h], beta,
-		    &(Z->matrix[h][0][0]), Z->params->coltot[h]);
-
-	    dpd_buf4_mat_irrep_wrt_block(Z, h, n*rows_per_bucket, rows_left);
-	  }
-	      
-	dpd_buf4_mat_irrep_close_block(X, h, rows_per_bucket);
-	dpd_buf4_mat_irrep_close_block(Z, h, rows_per_bucket);
-
-	}
-
-      dpd_buf4_mat_irrep_close(Y, h);
+    if(!incore && Xtrans) {
+      dpd_file4_cache_print(stderr);
+      dpd_error("out-of-core contract444 Xtrans=1 not coded", stderr);
     }
+
+    if(incore) {
+
+      if(fabs(beta) > 0.0) dpd_buf4_mat_irrep_rd(Z, h);
+	  
+      dpd_buf4_mat_irrep_init(X, h);
+      dpd_buf4_mat_irrep_rd(X, h);
+
+      newmm(X->matrix[h], Xtrans, Y->matrix[h], Ytrans,
+	    Z->matrix[h], Z->params->rowtot[h], numlinks[h],
+	    Z->params->coltot[h], alpha, beta);
+
+      dpd_buf4_mat_irrep_close(X, h);
+
+      dpd_buf4_mat_irrep_wrt(Z, h);
+
+    }
+    else {
+
+      dpd_buf4_mat_irrep_init_block(X, h, rows_per_bucket);
+
+      for(n=0; n < (rows_left ? nbuckets-1 : nbuckets); n++) {
+	      
+	dpd_buf4_mat_irrep_rd_block(X, h, n*rows_per_bucket,
+				    rows_per_bucket);
+
+	C_DGEMM('n', 't', rows_per_bucket, Z->params->coltot[h],
+		numlinks[h], alpha, &(X->matrix[h][0][0]), numlinks[h],
+		&(Y->matrix[h][0][0]), numlinks[h], beta,
+		&(Z->matrix[h][n*rows_per_bucket][0]), Z->params->coltot[h]);
+
+      }
+
+      if(rows_left) {
+
+	dpd_buf4_mat_irrep_rd_block(X, h, n*rows_per_bucket, rows_left);
+
+	C_DGEMM('n', 't', rows_left, Z->params->coltot[h],
+		numlinks[h], alpha, &(X->matrix[h][0][0]), numlinks[h],
+		&(Y->matrix[h][0][0]), numlinks[h], beta,
+		&(Z->matrix[h][n*rows_per_bucket][0]), Z->params->coltot[h]);
+
+      }
+	      
+      dpd_buf4_mat_irrep_close_block(X, h, rows_per_bucket);
+
+    }
+
+    dpd_buf4_mat_irrep_close(Y, h);
+    dpd_buf4_mat_irrep_wrt(Z, h);
+    dpd_buf4_mat_irrep_close(Z, h);
+  }
 
   return 0;
 }

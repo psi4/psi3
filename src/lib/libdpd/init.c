@@ -34,7 +34,9 @@ int dpd_init(int dpd_num, int nirreps, int memory, int cachetype,
 
   this_dpd->nirreps = nirreps;
   this_dpd->memory = memory/sizeof(double);  /* Available memory in doubles */
-  this_dpd->memfree = this_dpd->memory;  /* At first... */
+  this_dpd->memused = 0; /* At first... */
+  this_dpd->memcache = 0; /* At first... */
+  this_dpd->memlocked = 0; /* At first... */
 
   this_dpd->cachetype = cachetype;
   this_dpd->cachelist = cachelist;
