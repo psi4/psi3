@@ -56,6 +56,7 @@ void cc3_Wmbij(void)
     dpd_buf4_init(&Z, CC_TMP0, 0, 10, 11, 10, 11, 0, "CC3 ZMbEj (Mb,Ej)");
     dpd_contract244(&t1, &Z, &W, 1, 2, 1, 1, 1);
     dpd_buf4_close(&Z);
+    dpd_buf4_sort(&W, CC_MISC, rspq, 0, 10, "CC3 WMbIj (Ij,Mb)");
     dpd_buf4_close(&W);
 
     dpd_file2_close(&t1);
