@@ -31,9 +31,6 @@ void get_mo_info(void)
 
    CalcInfo.maxKlist = 0.0; 
 
-   CalcInfo.docc = init_int_array(CalcInfo.nirreps);
-   CalcInfo.socc = init_int_array(CalcInfo.nirreps);
-   
    chkpt_init(PSIO_OPEN_OLD);
    CalcInfo.nirreps = chkpt_rd_nirreps();
    CalcInfo.nso = chkpt_rd_nmo();
