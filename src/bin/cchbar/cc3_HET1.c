@@ -12,12 +12,15 @@
 
 void HET1_Wmbej(void);
 void purge_HET1_Wmbej(void);
+void HET1_Wabef(void);
 
 void cc3_HET1(void) {
 
   HET1_Wmbej();
 
   if (params.ref == 1) purge_HET1_Wmbej();
+
+  HET1_Wabef();
 
   return;
 }
