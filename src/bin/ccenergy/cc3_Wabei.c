@@ -891,14 +891,14 @@ void cc3_Wabei(void)
     dpd_buf4_init(&W, CC_TMP2, 0, 21, 7, 21, 7, 0, "CC3 WABEI (EI,A>B)");
     dpd_buf4_sort(&W, CC3_HET1, qprs, 20, 7, "CC3 WABEI (IE,B>A)");
     dpd_buf4_close(&W);
-    dpd_buf4_init(&W, CC_TMP2, 0, 20, 7, 20, 7, 0, "CC3 WABEI (IE,B>A)");
+    dpd_buf4_init(&W, CC3_HET1, 0, 20, 7, 20, 7, 0, "CC3 WABEI (IE,B>A)");
     dpd_buf4_scm(&W, -1.0);
     dpd_buf4_close(&W);
 
     dpd_buf4_init(&W, CC_TMP2, 0, 31, 17, 31, 17, 0, "CC3 Wabei (ei,a>b)");
     dpd_buf4_sort(&W, CC3_HET1, qprs, 30, 17, "CC3 Wabei (ie,b>a)");
     dpd_buf4_close(&W);
-    dpd_buf4_init(&W, CC_TMP2, 0, 30, 17, 30, 17, 0, "CC3 Wabei (ie,b>a)");
+    dpd_buf4_init(&W, CC3_HET1, 0, 30, 17, 30, 17, 0, "CC3 Wabei (ie,b>a)");
     dpd_buf4_scm(&W, -1.0);
     dpd_buf4_close(&W);
 
