@@ -227,6 +227,8 @@ double **chkpt_rd_beta_scf(void);
 void chkpt_wt_scf(double **);
 void chkpt_wt_alpha_scf(double **);
 void chkpt_wt_beta_scf(double **);
+double **chkpt_rd_local_scf(void);
+void chkpt_wt_local_scf(double **);
 
 double **chkpt_rd_scf_irrep(int);
 double **chkpt_rd_alpha_scf_irrep(int);
