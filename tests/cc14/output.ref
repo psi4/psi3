@@ -1,0 +1,4972 @@
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:12 2003
+
+                                --------------
+                                  WELCOME TO
+                                    PSI  3
+                                --------------
+
+  LABEL       =	3B1 CH2 cc-pVDZ/ROHF-CCSD Geometry Optimization
+  SHOWNORM    =	0
+  PUREAM      =	1
+  PRINT_LVL   =	1
+
+  -Geometry before Center-of-Mass shift (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          CARBON      0.000000000000     0.000000000000     0.000000000000
+        HYDROGEN      0.000000000000     0.000000000000     2.078698587437
+        HYDROGEN      1.965448127494     0.000000000000    -0.676758062785
+
+
+  -Rotational constants (cm-1) :
+    A =   23.93977  B =   10.42855  C =    7.26416
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          CARBON     -0.000000000000     0.173599091675     0.000000000000
+        HYDROGEN      1.692300778018    -1.033507322081     0.000000000000
+        HYDROGEN     -1.692300778018    -1.033507322081     0.000000000000
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S (  6665.00000000     0.00069200)
+           (  1000.00000000     0.00532900)
+           (   228.00000000     0.02707700)
+           (    64.71000000     0.10171800)
+           (    21.06000000     0.27474000)
+           (     7.49500000     0.44856400)
+           (     2.79700000     0.28507400)
+           (     0.52150000     0.01520400)
+           (     0.15960000    -0.00319100) )
+        (S (  6665.00000000    -0.00014600)
+           (  1000.00000000    -0.00115400)
+           (   228.00000000    -0.00572500)
+           (    64.71000000    -0.02331200)
+           (    21.06000000    -0.06395500)
+           (     7.49500000    -0.14998100)
+           (     2.79700000    -0.12726200)
+           (     0.52150000     0.54452900)
+           (     0.15960000     0.58049600) )
+        (S (     0.15960000     1.00000000) )
+        (P (     9.43900000     0.03810900)
+           (     2.00200000     0.20948000)
+           (     0.54560000     0.50855700)
+           (     0.15170000     0.46884200) )
+        (P (     0.15170000     1.00000000) )
+        (D (     0.55000000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    13.01000000     0.01968500)
+           (     1.96200000     0.13797700)
+           (     0.44460000     0.47814800)
+           (     0.12200000     0.50124000) )
+        (S (     0.12200000     1.00000000) )
+        (P (     0.72700000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 12
+    Number of primitives   = 31
+    Number of AO           = 25
+    Number of SO           = 24
+
+    Irrep    Number of SO
+    -----    ------------
+      1           11
+      2            2
+      3            4
+      4            7
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          CARBON      0.000000000000    -0.000000000000     0.173599091675
+        HYDROGEN      0.000000000000     1.692300778018    -1.033507322081
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          CARBON      0.000000000000    -0.000000000000     0.173599091675
+        HYDROGEN      0.000000000000     1.692300778018    -1.033507322081
+        HYDROGEN      0.000000000000    -1.692300778018    -1.033507322081
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          CARBON      0.000000000000    -0.000000000000     0.091864689762
+        HYDROGEN      0.000000000000     0.895527070192    -0.546908561520
+        HYDROGEN      0.000000000000    -0.895527070192    -0.546908561520
+
+
+  -Geometry in the reference coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          CARBON      0.000000000000    -0.000000000000     0.173599091675
+        HYDROGEN      0.000000000000     1.692300778018    -1.033507322081
+        HYDROGEN      0.000000000000    -1.692300778018    -1.033507322081
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       6.068298468967
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   1.1000000   0.0000000
+    3   1.1000000   1.7910541   0.0000000
+
+
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:12 2003
+
+user time   =       0.04 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:17 2003
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 3B1 CH2 cc-pVDZ/ROHF-CCSD Geometry Optimization                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 24
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+    Wrote 11412 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:17 2003
+
+user time   =       0.11 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:17 2003
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+
+  label       = 3B1 CH2 cc-pVDZ/ROHF-CCSD Geometry Optimization
+  wfn          = CCSD
+  reference    = ROHF
+  multiplicity = 3
+  charge       = 0
+  direct SCF   = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        6.0682984689667
+  first run, so defaulting to core-hamiltonian guess
+
+  level shift                      = 1.000000
+  diis scale factor                = 1.020000
+  iterations before extrapolation  = 0
+  4 error matrices will be kept
+
+  keeping integrals in 138792 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 1.701359e-02
+
+  Using core guess to determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              2     0     0     1   
+  SOCC:              1     0     1     0   
+
+
+  open-shell energy coeffs
+  open shell pair    alpha         beta
+        1  1       0.000000     -1.000000
+        2  1       0.000000     -1.000000
+        2  2       0.000000     -1.000000
+  reading integrals in the IWL format from files 33,35,36,37
+
+      2548 integrals written to file92 in   1 buffers
+      2662 integrals written to file93 in   1 buffers
+  wrote 0 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -35.1222670659    4.119057e+01    0.000000e+00    0.000000e+00
+    2       -38.4844865833    3.362220e+00    1.901176e-01    6.741513e-01
+    3       -38.7008496082    2.163630e-01    2.927048e-02    1.440851e-01
+    4       -38.8284925039    1.276429e-01    1.741086e-02    1.000266e-01
+    5       -38.8890792149    6.058671e-02    9.231169e-03    6.286526e-02
+    6       -38.9073471651    1.826795e-02    4.275880e-03    3.652318e-02
+    7       -38.9120527379    4.705573e-03    2.102934e-03    2.471086e-02
+    8       -38.9129765813    9.238435e-04    8.523345e-04    1.630069e-02
+    9       -38.9132312124    2.546311e-04    3.669041e-04    1.046305e-02
+   10       -38.9133478553    1.166428e-04    2.983588e-04    6.783307e-03
+   11       -38.9133938781    4.602277e-05    1.964892e-04    4.231444e-03
+   12       -38.9134087297    1.485164e-05    1.085587e-04    2.516631e-03
+   13       -38.9134141317    5.402011e-06    7.103227e-05    1.482453e-03
+   14       -38.9134159462    1.814478e-06    4.436878e-05    8.452695e-04
+   15       -38.9134164982    5.519762e-07    2.636203e-05    4.714649e-04
+   16       -38.9134166494    1.511969e-07    1.449438e-05    2.554952e-04
+   17       -38.9134166917    4.235427e-08    7.800962e-06    1.369128e-04
+   18       -38.9134167056    1.384652e-08    4.276453e-06    7.415019e-05
+   19       -38.9134167103    4.707388e-09    2.417925e-06    4.108713e-05
+   20       -38.9134167117    1.454055e-09    1.339250e-06    2.296685e-05
+   21       -38.9134167121    4.239666e-10    7.232293e-07    1.295235e-05
+   22       -38.9134167123    1.293827e-10    3.919148e-07    7.425753e-06
+   23       -38.9134167123    4.573053e-11    2.279869e-07    4.338529e-06
+   24       -38.9134167123    1.618616e-11    1.355400e-07    2.538375e-06
+   25       -38.9134167123    5.194067e-12    7.497781e-08    1.457024e-06
+   26       -38.9134167123    1.769251e-12    4.418613e-08    8.353092e-07
+   27       -38.9134167123    5.471179e-13    2.527770e-08    4.791099e-07
+   28       -38.9134167123    1.776357e-13    1.396751e-08    2.789767e-07
+   29       -38.9134167123    7.815970e-14    8.313928e-09    1.646142e-07
+   30       -38.9134167123    2.131628e-14    5.117550e-09    9.696745e-08
+   31       -38.9134167123    0.000000e+00    2.977344e-09    5.700673e-08
+   32       -38.9134167123    7.105427e-15    1.687829e-09    3.334582e-08
+   33       -38.9134167123    0.000000e+00    9.565723e-10    1.969572e-08
+   34       -38.9134167123    0.000000e+00    5.952846e-10    1.176790e-08
+   35       -38.9134167123    0.000000e+00    3.588812e-10    6.909565e-09
+   36       -38.9134167123    7.105427e-15    2.101140e-10    3.917253e-09
+   37       -38.9134167123    0.000000e+00    1.299811e-10    2.184313e-09
+   38       -38.9134167123   -1.421085e-14    6.952468e-11    1.211596e-09
+
+ ci_typ is CCSD so mo vector will be rotated
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -11.257005     2A1     -0.851944     1B2     -0.554736  
+
+  Singly occupied orbitals
+   3A1     -0.184961     1B1     -0.105630  
+
+  Unoccupied orbitals
+   4A1      0.209540     2B2      0.270548     3B2      0.603731  
+   5A1      0.679389     2B1      0.715406     6A1      0.774250  
+   4B2      0.879515     7A1      1.032183     1A2      1.220500  
+   8A1      1.246508     3B1      1.312932     5B2      1.729503  
+   9A1      1.762980     6B2      1.957601     4B1      2.017391  
+   2A2      2.061326    10A1      2.332336    11A1      2.708686  
+   7B2      2.755914  
+
+
+        total energy       =     -38.913416712342
+        kinetic energy     =      38.844464744229
+        nuc. attr. energy  =    -102.555787425107
+        elec. rep. energy  =      24.797905968535
+        potential energy   =     -77.757881456572
+        virial theorem     =       1.998228066977
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:17 2003
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:17 2003
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CCSD
+	Reference orbitals     =  ROHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            = Yes
+	Delete Restricted Docc =  No
+	Do All TEI             = Yes
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 24
+	Number of MOs    = 24
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   11	   11	    0	    2	    1	    8	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    0	    1	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         6.0682984690
+	Total SCF Energy            =       -38.9134167123
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:18 2003
+
+user time   =       0.21 seconds =       0.00 minutes
+system time =       1.09 seconds =       0.02 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:18 2003
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Reference wfn   =     ROHF
+	Derivative      =    First
+	Memory (Mbytes) =    256.0
+	AO Basis        =      NONE
+	Cache Level     =        2
+	Cache Type      =      LRU
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 24
+	Number of active MOs = 24
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   11	    0	    2	    1	    8	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    0	    1	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      6.06829846896672
+	SCF energy          (chkpt) =    -38.91341671234242
+
+	Size of <ab|cd> integrals:     0.019 (MW) /     0.150 (MB)
+	Size of <ia|bc> integrals:     0.005 (MW) /     0.041 (MB)
+	Size of Tijab amplitudes:      0.002 (MW) /     0.012 (MB)
+
+	One-electron energy          =    -63.71132268087776
+	Two-electron (AA) energy     =     10.60310923689430
+	Two-electron (BB) energy     =      3.36788479485930
+	Two-electron (AB) energy     =     11.74411048369180
+	Two-electron energy          =     18.72960749956860
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -38.91341671234244
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:18 2003
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.07 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:18 2003
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    6.068298468966723
+	SCF energy          (chkpt)   =  -38.913416712342418
+	Reference energy    (file100) =  -38.913416712342439
+
+	Input parameters:
+	-----------------
+	Wave function   =      CCSD
+	Reference wfn   =     ROHF
+	Memory (Mbytes) =  256.0
+	Maxiter         =     50
+	Convergence     = 1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	Local CC        =     No
+	AO Basis        =     NONE
+	Cache Level     =    2
+	Cache Type      =     LOW
+	Print Level     =    0
+	# Amps to Print =    10
+	Print MP2 Amps? =    No
+
+	                     Solving CCSD Equations
+	                     ----------------------
+	Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+	----     ---------------------    ---------   ----------  ----------  ----------
+	   0        -0.098257946139902    0.000e+00    0.000214    0.000590    0.000590
+	   1        -0.114024710171133    3.944e-02    0.003449    0.005288    0.005948
+	   2        -0.119008875982162    1.436e-02    0.005585    0.007649    0.010307
+	   3        -0.119291852964648    4.345e-03    0.006429    0.008895    0.012579
+	   4        -0.119304337841344    1.314e-03    0.006632    0.009334    0.013201
+	   5        -0.119303532166141    4.159e-04    0.006670    0.009408    0.013304
+	   6        -0.119307728754425    1.281e-04    0.006669    0.009396    0.013288
+	   7        -0.119308655320715    4.079e-05    0.006665    0.009384    0.013270
+	   8        -0.119308549719105    1.334e-05    0.006663    0.009377    0.013262
+	   9        -0.119308698149697    4.250e-06    0.006662    0.009375    0.013258
+	  10        -0.119308697902777    1.151e-06    0.006662    0.009374    0.013257
+	  11        -0.119308685180404    3.037e-07    0.006662    0.009374    0.013257
+	  12        -0.119308681286335    8.688e-08    0.006662    0.009374    0.013257
+
+	Iterations converged.
+
+
+	Largest TIA Amplitudes:
+	-----------------------
+	          4  15        -0.0215826249
+	          1   1         0.0176848440
+	          4  17        -0.0170452412
+	          1   0        -0.0144242144
+	          1   2         0.0128468359
+	          1   5         0.0124387967
+	          4  19        -0.0090214247
+	          2   1         0.0070930435
+	          2   0        -0.0067849472
+	          2   2         0.0059597268
+
+	Largest Tia Amplitudes:
+	-----------------------
+	          4  15         0.0197721940
+	          1   8        -0.0187474879
+	          1   0         0.0176376947
+	          1   1        -0.0167801900
+	          1   2        -0.0125077033
+	          4  17         0.0076182672
+	          4  16         0.0072511942
+	          1   5        -0.0059931001
+	          4  18         0.0053449400
+	          1   4         0.0024958392
+
+	Largest TIJAB Amplitudes:
+	-------------------------
+	  3   2  11   1        -0.0266418233
+	  3   2  11   2         0.0225700857
+	  4   3   9   2         0.0211489806
+	  4   3  17  11        -0.0210422670
+	  3   2  12   4        -0.0204593507
+	  4   3  15  11        -0.0203552664
+	  4   2  17   1        -0.0197228699
+	  4   2  15   1        -0.0194374059
+	  3   1  11   0        -0.0160979354
+	  3   1  11   3         0.0151387978
+
+	Largest Tijab Amplitudes:
+	-------------------------
+	  4   1  14   9        -0.0110929746
+	  4   1  16   8        -0.0087907274
+	  4   1  16   0         0.0072706762
+	  4   1  15   0        -0.0071858764
+	  4   1  15   8        -0.0066460482
+	  4   1  16   2        -0.0063930346
+	  4   1  17   8        -0.0062934357
+	  4   1  15   3         0.0061492175
+	  4   1  17   3         0.0060763611
+	  4   1  16   4         0.0051237923
+
+	Largest TIjAb Amplitudes:
+	-------------------------
+	  4   4  17  17        -0.0340152519
+	  4   4  15  15        -0.0327014395
+	  4   4   2   2        -0.0299396766
+	  3   1   2  14        -0.0298317072
+	  4   4  16  16        -0.0280469711
+	  4   4  17  15        -0.0279374999
+	  4   4  15  17        -0.0275682266
+	  3   1  12   8         0.0268619833
+	  3   1   0  14         0.0264800400
+	  3   4  11  15        -0.0257934161
+
+	SCF energy       (chkpt)   =  -38.913416712342418
+	Reference energy (file100) =  -38.913416712342439
+	CCSD correlation energy    =   -0.119308681286335
+	Total CCSD energy          =  -39.032725393628773
+
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:20 2003
+
+user time   =       0.92 seconds =       0.02 minutes
+system time =       0.63 seconds =       0.01 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:20 2003
+
+
+			**************************
+			*                        *
+			*         CCHBAR         *
+			*                        *
+			**************************
+
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:20 2003
+
+user time   =       0.18 seconds =       0.00 minutes
+system time =       0.18 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:20 2003
+
+
+			**************************
+			*                        *
+			*        CCLAMBDA        *
+			*                        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    6.068298468966723
+	SCF energy          (chkpt)   =  -38.913416712342418
+	Reference energy    (file100) =  -38.913416712342439
+	CCSD energy         (file100) =   -0.119308681286335
+	Total CCSD energy   (file100) =  -39.032725393628773
+
+	Input parameters:
+	-----------------
+	Maxiter     =      50
+	Convergence = 1.0e-12
+	Restart     =     Yes
+	Cache Level =     2
+	AO Basis        =     No
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter         PseudoEnergy             RMS  
+	----     ---------------------     --------
+	   0        -0.116290929366549    0.000e+00
+	   1        -0.113876426094607    6.153e-03
+	   2        -0.113325646430066    1.605e-03
+	   3        -0.113258052027723    5.524e-04
+	   4        -0.113260318001155    1.850e-04
+	   5        -0.113258724519634    6.339e-05
+	   6        -0.113258002545421    1.836e-05
+	   7        -0.113257892616197    6.586e-06
+	   8        -0.113257839161488    2.186e-06
+	   9        -0.113257822297124    6.585e-07
+	  10        -0.113257821580496    1.888e-07
+	  11        -0.113257822090670    6.133e-08
+	  12        -0.113257822038485    1.701e-08
+	  13        -0.113257822004519    4.866e-09
+	  14        -0.113257821983007    1.475e-09
+	  15        -0.113257821967613    5.242e-10
+	  16        -0.113257821961101    1.721e-10
+	  17        -0.113257821959678    6.178e-11
+	  18        -0.113257821959098    2.293e-11
+	  19        -0.113257821958830    7.077e-12
+	  20        -0.113257821958750    2.306e-12
+	  21        -0.113257821958758    6.913e-13
+
+	Iterations converged.
+
+	Overlap =    0.946999366116083
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:22 2003
+
+user time   =       0.95 seconds =       0.02 minutes
+system time =       0.85 seconds =       0.01 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:22 2003
+
+
+			**************************
+			*                        *
+			*        CCDENSITY       *
+			*                        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    6.068298468966723
+	SCF energy          (chkpt)   =  -38.913416712342418
+	Reference energy    (file100) =  -38.913416712342439
+	CCSD energy         (file100) =   -0.119308681286335
+	Total CCSD energy   (file100) =  -39.032725393628773
+
+	Input parameters:
+	-----------------
+	Tolerance    = 1.0e-14
+	Cache Level  =    2
+	AO Basis        =     No
+
+
+	Trace of onepdm =    0.000000000000000
+
+	Energies re-computed from CC density:
+	-------------------------------------
+	One-electron energy        =    0.138509285469201
+	IJKL energy                =    0.027930563290613
+	IJKA energy                =   -0.000112175848235
+	IJAB energy                =   -0.226586171380376
+	IBJA energy                =   -0.091417127912260
+	CIAB energy                =   -0.000164047983230
+	ABCD energy                =    0.032530995543650
+	Total two-electron energy  =   -0.257817964289838
+	CCSD correlation energy    =   -0.119308678820637
+	Total CCSD energy          =  -39.032725391163076
+
+	Virial Theorem Data:
+	--------------------
+	Kinetic energy (ref)   =   38.844464744229121
+	Kinetic energy (corr)  =    0.105983040182591
+	Kinetic energy (total) =   38.950447784411715
+	-V/T (ref)             =    2.001775078343011
+	-V/T (corr)            =    2.125733712495755
+	-V/T (total)           =    2.002112366195954
+
+	Energies re-computed from Fock-adjusted CC density:
+	---------------------------------------------------
+	One-electron energy        =    0.083771444436543
+	IJKL energy                =   -0.350145155650537
+	IJKA energy                =    0.012489291853925
+	IJAB energy                =   -0.226586171380376
+	IBJA energy                =    0.328794964358905
+	CIAB energy                =   -0.000164047983230
+	ABCD energy                =    0.032530995543650
+	Total two-electron energy  =   -0.203080123257662
+	CCSD correlation energy    =   -0.119308678821118
+	Total CCSD energy          =  -39.032725391163559
+
+	Energies re-computed from Mulliken density:
+	-------------------------------------------
+	One-electron energy        =    0.083771444436543
+	IJKL energy                =   -0.350145155650537
+	IJKA energy                =    0.012489291853925
+	IJAB energy                =   -0.219748747370477
+	IBJA energy                =    0.321957540349007
+	CIAB energy                =   -0.000164047983230
+	ABCD energy                =    0.032530995543650
+	Total two-electron energy  =   -0.203080123257662
+	CCSD correlation energy    =   -0.119308678821119
+	Total CCSD energy          =  -39.032725391163559
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:23 2003
+
+user time   =       0.14 seconds =       0.00 minutes
+system time =       0.44 seconds =       0.01 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:23 2003
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CCSD
+	Reference orbitals     =  ROHF
+	Backtrans              =  Yes
+	Print MOs              =  No
+	Freeze Core            = No
+	Delete Restricted Docc =  No
+	Do All TEI             = No
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  74
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  77
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  No
+	Do FZC  OEI tranform   =  No
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 24
+	Number of MOs    = 24
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   11	   11	    0	    2	    1	    8	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    0	    1	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         6.0682984690
+	Total SCF Energy            =       -38.9134167123
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file77.
+
+	Transforming one-electron integrals...
+	One-pdm and lagrangian written to file76.
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:24 2003
+
+user time   =       0.16 seconds =       0.00 minutes
+system time =       1.21 seconds =       0.02 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:24 2003
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 3B1 CH2 cc-pVDZ/ROHF-CCSD Geometry Optimization                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 24
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -CCSD forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000     0.035829586382
+       2        0.000000000000    -0.015388365431    -0.017914793191
+       3        0.000000000000     0.015388365431    -0.017914793191
+
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:24 2003
+
+user time   =       0.47 seconds =       0.01 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+
+	------------------------------------------------------
+	 OPTKING: For internal coordinate optimizations and   
+	 and vibrational frequencies, Rollin King, 1999, 2002 
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  6.0    12.00000000   0.0000000000  -0.0000000000   0.1735990917
+  1.0     1.00782503   0.0000000000   1.6923007780  -1.0335073221
+  1.0     1.00782503   0.0000000000  -1.6923007780  -1.0335073221
+                       0.0000000000   0.0000000000   0.0358295864
+                       0.0000000000  -0.0153883654  -0.0179147932
+                       0.0000000000   0.0153883654  -0.0179147932
+
+Generating internals
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (1.10000000)
+    (2 1 3) (1.10000000)
+Bends
+    (3 2 1 3) (109.00000000)
+
+Forming delocalized internal coordinates.
+
+Good: # of delocalized coordinates = # of degrees of freedom.
+ 
+ ** Taking normal optimization step. **
+
+  SYMM = (
+    ("A1 " (1 2 3)
+     (-0.70 -0.70 -0.13))
+    ("A1 " (1 2 3)
+     (-0.09 -0.09  0.99))
+  )
+
+Current CCSD energy before step       -39.0327253936
+
+Taking geometry step number 1
+
+BuB^t Determinant: 1.900668e+00
+
+Generating empirical Hessian.
+
+Force Constants read from PSIF_OPTKING
+   5.1698928124   0.5754895019
+   0.5754895019   0.7716116174
+
+No BFGS update performed.
+
+Scaling displacements by 0.558162
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+         Value          Force          Displacement   New Value
+ 1  -1.7857094791  -0.0517580331  -0.0243815512  -1.8100910303
+ 2   1.6883132525   0.2082566541   0.1688313252   1.8571445777
+   MAX force:    0.2082566541   RMS force:    0.1517394608
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    1  0.040412013209  0.120620223062
+    2  0.040412013209  0.004016554746
+    3  0.001801540808  0.000001786859
+    4  0.000000594984  0.000000000001
+    5  0.000000000000  0.000000000000
+Convergence to displaced geometry took 5 iterations.
+
+New Cartesian Geometry in a.u.
+  6.0   0.0000000000  -0.0000000000   0.1524957280
+  1.0   0.0000000000   1.7919995190  -0.9078702542
+  1.0   0.0000000000  -1.7919995190  -0.9078702542
+
+Geometry written to chkpt
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:24 2003
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 3B1 CH2 cc-pVDZ/ROHF-CCSD Geometry Optimization                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 24
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+    Wrote 11412 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:25 2003
+
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:25 2003
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+
+  label       = 3B1 CH2 cc-pVDZ/ROHF-CCSD Geometry Optimization
+  wfn          = CCSD
+  reference    = ROHF
+  multiplicity = 3
+  charge       = 0
+  direct SCF   = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        6.0420989421508
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -38.91341671
+
+  level shift                      = 1.000000
+  diis scale factor                = 1.020000
+  iterations before extrapolation  = 0
+  4 error matrices will be kept
+
+  keeping integrals in 138792 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 1.786664e-02
+
+
+  Reading Occupations from file30
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              2     0     0     1   
+  SOCC:              1     0     1     0   
+
+
+  open-shell energy coeffs
+  open shell pair    alpha         beta
+        1  1       0.000000     -1.000000
+        2  1       0.000000     -1.000000
+        2  2       0.000000     -1.000000
+  reading integrals in the IWL format from files 33,35,36,37
+
+      2548 integrals written to file92 in   1 buffers
+      2662 integrals written to file93 in   1 buffers
+  wrote 0 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -38.9187069963    4.496081e+01    0.000000e+00    0.000000e+00
+    2       -38.9191949786    4.879823e-04    6.342957e-04    7.315435e-03
+    3       -38.9193324360    1.374574e-04    3.566509e-04    4.169672e-03
+    4       -38.9193664780    3.404207e-05    1.786297e-04    2.327305e-03
+    5       -38.9193743214    7.843341e-06    9.761963e-05    1.227432e-03
+    6       -38.9193758936    1.572224e-06    4.656445e-05    6.070466e-04
+    7       -38.9193764698    5.762106e-07    2.426470e-05    3.786142e-04
+    8       -38.9193767385    2.686836e-07    1.389202e-05    2.309081e-04
+    9       -38.9193768251    8.657991e-08    7.790513e-06    1.383614e-04
+   10       -38.9193768480    2.295457e-08    4.509439e-06    8.324913e-05
+   11       -38.9193768539    5.879265e-09    2.556696e-06    5.030309e-05
+   12       -38.9193768563    2.427470e-09    1.519406e-06    3.043075e-05
+   13       -38.9193768575    1.213742e-09    9.948884e-07    1.827054e-05
+   14       -38.9193768580    4.214229e-10    6.153664e-07    1.072573e-05
+   15       -38.9193768581    1.117826e-10    3.412614e-07    6.153490e-06
+   16       -38.9193768581    2.848566e-11    1.882135e-07    3.512139e-06
+   17       -38.9193768581    9.045209e-12    1.075045e-07    2.030854e-06
+   18       -38.9193768581    3.680611e-12    6.478513e-08    1.176099e-06
+   19       -38.9193768581    1.399769e-12    3.818423e-08    6.654207e-07
+   20       -38.9193768581    4.760636e-13    2.253454e-08    3.713959e-07
+   21       -38.9193768581    1.207923e-13    1.243509e-08    2.083172e-07
+   22       -38.9193768581    2.131628e-14    6.468812e-09    1.196331e-07
+   23       -38.9193768581    2.131628e-14    3.657942e-09    7.083819e-08
+   24       -38.9193768581    7.105427e-15    2.292814e-09    4.266744e-08
+   25       -38.9193768581    0.000000e+00    1.388067e-09    2.567788e-08
+   26       -38.9193768581    0.000000e+00    8.097065e-10    1.531549e-08
+   27       -38.9193768581    7.105427e-15    4.704674e-10    9.088448e-09
+   28       -38.9193768581    7.105427e-15    2.807672e-10    5.353738e-09
+   29       -38.9193768581   -7.105427e-15    1.698965e-10    3.102361e-09
+   30       -38.9193768581    7.105427e-15    1.035195e-10    1.775177e-09
+   31       -38.9193768581    0.000000e+00    5.889610e-11    1.013394e-09
+
+ Correcting phases of orbitals.
+
+ ci_typ is CCSD so mo vector will be rotated
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -11.254846     2A1     -0.846767     1B2     -0.570685  
+
+  Singly occupied orbitals
+   3A1     -0.169421     1B1     -0.104777  
+
+  Unoccupied orbitals
+   4A1      0.209243     2B2      0.268429     3B2      0.631714  
+   5A1      0.659146     2B1      0.717077     6A1      0.745236  
+   4B2      0.888525     7A1      1.025327     1A2      1.206419  
+   8A1      1.291757     3B1      1.334032     5B2      1.653235  
+   9A1      1.753990     4B1      1.961394     6B2      2.000199  
+   2A2      2.108101    10A1      2.309778     7B2      2.736684  
+  11A1      2.746869  
+
+
+        total energy       =     -38.919376858120
+        kinetic energy     =      38.834705132816
+        nuc. attr. energy  =    -102.511430941838
+        elec. rep. energy  =      24.757348950902
+        potential energy   =     -77.754081990936
+        virial theorem     =       1.997824432657
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:25 2003
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:25 2003
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CCSD
+	Reference orbitals     =  ROHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            = Yes
+	Delete Restricted Docc =  No
+	Do All TEI             = Yes
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 24
+	Number of MOs    = 24
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   11	   11	    0	    2	    1	    8	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    0	    1	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         6.0420989422
+	Total SCF Energy            =       -38.9193768581
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:26 2003
+
+user time   =       0.14 seconds =       0.00 minutes
+system time =       1.15 seconds =       0.02 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:26 2003
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Reference wfn   =     ROHF
+	Derivative      =    First
+	Memory (Mbytes) =    256.0
+	AO Basis        =      NONE
+	Cache Level     =        2
+	Cache Type      =      LRU
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 24
+	Number of active MOs = 24
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   11	    0	    2	    1	    8	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    0	    1	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      6.04209894215078
+	SCF energy          (chkpt) =    -38.91937685812026
+
+	Size of <ab|cd> integrals:     0.019 (MW) /     0.150 (MB)
+	Size of <ia|bc> integrals:     0.005 (MW) /     0.041 (MB)
+	Size of Tijab amplitudes:      0.002 (MW) /     0.012 (MB)
+
+	One-electron energy          =    -63.67672580902231
+	Two-electron (AA) energy     =     10.59273126757599
+	Two-electron (BB) energy     =      3.36055465079991
+	Two-electron (AB) energy     =     11.73860704956333
+	Two-electron energy          =     18.71525000875128
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -38.91937685812025
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:26 2003
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.08 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:26 2003
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    6.042098942150775
+	SCF energy          (chkpt)   =  -38.919376858120259
+	Reference energy    (file100) =  -38.919376858120252
+
+	Input parameters:
+	-----------------
+	Wave function   =      CCSD
+	Reference wfn   =     ROHF
+	Memory (Mbytes) =  256.0
+	Maxiter         =     50
+	Convergence     = 1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	Local CC        =     No
+	AO Basis        =     NONE
+	Cache Level     =    2
+	Cache Type      =     LOW
+	Print Level     =    0
+	# Amps to Print =    10
+	Print MP2 Amps? =    No
+
+	                     Solving CCSD Equations
+	                     ----------------------
+	Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+	----     ---------------------    ---------   ----------  ----------  ----------
+	   0        -0.098558890839697    0.000e+00    0.000283    0.000788    0.000788
+	   1        -0.114361355465049    3.943e-02    0.003460    0.004880    0.005964
+	   2        -0.119336850888290    1.438e-02    0.005682    0.007312    0.010341
+	   3        -0.119622875942807    4.454e-03    0.006647    0.008952    0.012660
+	   4        -0.119636274630614    1.361e-03    0.006919    0.009414    0.013313
+	   5        -0.119633818824227    4.078e-04    0.006973    0.009481    0.013408
+	   6        -0.119637719655564    1.256e-04    0.006978    0.009470    0.013393
+	   7        -0.119638623416491    3.887e-05    0.006975    0.009458    0.013376
+	   8        -0.119638493299002    1.253e-05    0.006973    0.009452    0.013368
+	   9        -0.119638649405903    3.968e-06    0.006972    0.009450    0.013364
+	  10        -0.119638651486012    1.009e-06    0.006972    0.009450    0.013364
+	  11        -0.119638639466303    2.408e-07    0.006972    0.009449    0.013364
+	  12        -0.119638635627365    6.234e-08    0.006972    0.009449    0.013364
+
+	Iterations converged.
+
+
+	Largest TIA Amplitudes:
+	-----------------------
+	          1   1         0.0221268690
+	          4  15        -0.0189016431
+	          1   0        -0.0173967942
+	          4  17        -0.0157778366
+	          1   5         0.0126227978
+	          2   1         0.0098492889
+	          2   0        -0.0097501615
+	          4  19        -0.0085597561
+	          1   2         0.0080684282
+	          1   3         0.0067083987
+
+	Largest Tia Amplitudes:
+	-----------------------
+	          1   1        -0.0216883392
+	          1   0         0.0204815283
+	          1   8        -0.0188981029
+	          4  15         0.0184440618
+	          4  17         0.0081968144
+	          1   2        -0.0075116492
+	          4  16         0.0070521475
+	          4  18         0.0066897242
+	          1   5        -0.0062349020
+	          1   3        -0.0024027190
+
+	Largest TIJAB Amplitudes:
+	-------------------------
+	  3   2  11   2         0.0305687190
+	  3   2  12   4        -0.0217869352
+	  4   3  17  11        -0.0208779997
+	  4   3  15  11        -0.0204168514
+	  4   3   9   1         0.0191534548
+	  4   2  15   1        -0.0187271291
+	  3   2  11   1        -0.0184787051
+	  4   2  17   1        -0.0184731559
+	  4   3   9   2         0.0161770155
+	  3   1  11   0        -0.0161015468
+
+	Largest Tijab Amplitudes:
+	-------------------------
+	  4   1  14   9        -0.0110372890
+	  4   1  16   8        -0.0084372791
+	  4   1  15   0        -0.0073203309
+	  4   1  16   0         0.0068365234
+	  4   1  17   8        -0.0062451141
+	  4   1  15   3         0.0061968439
+	  4   1  15   8        -0.0060981273
+	  4   1  17   3         0.0060447481
+	  4   1  16   2        -0.0049850540
+	  4   1  17   0        -0.0040805918
+
+	Largest TIjAb Amplitudes:
+	-------------------------
+	  4   4  17  17        -0.0342012254
+	  4   4  15  15        -0.0300156749
+	  3   1   0  14         0.0285610206
+	  3   1   1  14        -0.0278079382
+	  3   1  12   8         0.0273904612
+	  2   1   4   8         0.0265637227
+	  4   4  17  15        -0.0262269773
+	  4   4  15  17        -0.0259544043
+	  4   4  16  16        -0.0259273980
+	  4   1   9  14         0.0258989234
+
+	SCF energy       (chkpt)   =  -38.919376858120259
+	Reference energy (file100) =  -38.919376858120252
+	CCSD correlation energy    =   -0.119638635627365
+	Total CCSD energy          =  -39.039015493747620
+
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:28 2003
+
+user time   =       0.84 seconds =       0.01 minutes
+system time =       0.70 seconds =       0.01 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:28 2003
+
+
+			**************************
+			*                        *
+			*         CCHBAR         *
+			*                        *
+			**************************
+
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:28 2003
+
+user time   =       0.10 seconds =       0.00 minutes
+system time =       0.26 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:28 2003
+
+
+			**************************
+			*                        *
+			*        CCLAMBDA        *
+			*                        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    6.042098942150775
+	SCF energy          (chkpt)   =  -38.919376858120259
+	Reference energy    (file100) =  -38.919376858120252
+	CCSD energy         (file100) =   -0.119638635627365
+	Total CCSD energy   (file100) =  -39.039015493747620
+
+	Input parameters:
+	-----------------
+	Maxiter     =      50
+	Convergence = 1.0e-12
+	Restart     =     Yes
+	Cache Level =     2
+	AO Basis        =     No
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter         PseudoEnergy             RMS  
+	----     ---------------------     --------
+	   0        -0.116360773605826    0.000e+00
+	   1        -0.113948075130760    5.994e-03
+	   2        -0.113401040991888    1.603e-03
+	   3        -0.113335522306864    5.536e-04
+	   4        -0.113338212466069    1.766e-04
+	   5        -0.113336797792008    6.020e-05
+	   6        -0.113335932574980    1.813e-05
+	   7        -0.113335764213695    6.380e-06
+	   8        -0.113335724533070    2.054e-06
+	   9        -0.113335715557382    6.146e-07
+	  10        -0.113335715878425    1.723e-07
+	  11        -0.113335716616823    5.238e-08
+	  12        -0.113335716560330    1.450e-08
+	  13        -0.113335716505059    4.225e-09
+	  14        -0.113335716490446    1.245e-09
+	  15        -0.113335716480749    4.086e-10
+	  16        -0.113335716473749    1.375e-10
+	  17        -0.113335716471889    4.613e-11
+	  18        -0.113335716471462    1.600e-11
+	  19        -0.113335716471364    4.056e-12
+	  20        -0.113335716471313    1.167e-12
+	  21        -0.113335716471312    2.818e-13
+
+	Iterations converged.
+
+	Overlap =    0.946768543818722
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:30 2003
+
+user time   =       0.94 seconds =       0.02 minutes
+system time =       0.87 seconds =       0.01 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:30 2003
+
+
+			**************************
+			*                        *
+			*        CCDENSITY       *
+			*                        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    6.042098942150775
+	SCF energy          (chkpt)   =  -38.919376858120259
+	Reference energy    (file100) =  -38.919376858120252
+	CCSD energy         (file100) =   -0.119638635627365
+	Total CCSD energy   (file100) =  -39.039015493747620
+
+	Input parameters:
+	-----------------
+	Tolerance    = 1.0e-14
+	Cache Level  =    2
+	AO Basis        =     No
+
+
+	Trace of onepdm =   -0.000000000000000
+
+	Energies re-computed from CC density:
+	-------------------------------------
+	One-electron energy        =    0.138474663875053
+	IJKL energy                =    0.027888061688429
+	IJKA energy                =   -0.000079628278736
+	IJAB energy                =   -0.226739659390455
+	IBJA energy                =   -0.091613614833767
+	CIAB energy                =   -0.000055757048810
+	ABCD energy                =    0.032487300572862
+	Total two-electron energy  =   -0.258113297290476
+	CCSD correlation energy    =   -0.119638633415423
+	Total CCSD energy          =  -39.039015491535672
+
+	Virial Theorem Data:
+	--------------------
+	Kinetic energy (ref)   =   38.834705132815678
+	Kinetic energy (corr)  =    0.105482884847927
+	Kinetic energy (total) =   38.940188017663608
+	-V/T (ref)             =    2.002180310755933
+	-V/T (corr)            =    2.134199503548341
+	-V/T (total)           =    2.002537930120912
+
+	Energies re-computed from Fock-adjusted CC density:
+	---------------------------------------------------
+	One-electron energy        =    0.083611439605540
+	IJKL energy                =   -0.350453017661605
+	IJKA energy                =    0.012824928711630
+	IJAB energy                =   -0.226739659390455
+	IBJA energy                =    0.328686131795744
+	CIAB energy                =   -0.000055757048810
+	ABCD energy                =    0.032487300572862
+	Total two-electron energy  =   -0.203250073020633
+	CCSD correlation energy    =   -0.119638633415093
+	Total CCSD energy          =  -39.039015491535345
+
+	Energies re-computed from Mulliken density:
+	-------------------------------------------
+	One-electron energy        =    0.083611439605540
+	IJKL energy                =   -0.350453017661605
+	IJKA energy                =    0.012824928711630
+	IJAB energy                =   -0.220052264139851
+	IBJA energy                =    0.321998736545140
+	CIAB energy                =   -0.000055757048810
+	ABCD energy                =    0.032487300572862
+	Total two-electron energy  =   -0.203250073020633
+	CCSD correlation energy    =   -0.119638633415093
+	Total CCSD energy          =  -39.039015491535345
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:30 2003
+
+user time   =       0.25 seconds =       0.00 minutes
+system time =       0.30 seconds =       0.01 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:30 2003
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CCSD
+	Reference orbitals     =  ROHF
+	Backtrans              =  Yes
+	Print MOs              =  No
+	Freeze Core            = No
+	Delete Restricted Docc =  No
+	Do All TEI             = No
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  74
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  77
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  No
+	Do FZC  OEI tranform   =  No
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 24
+	Number of MOs    = 24
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   11	   11	    0	    2	    1	    8	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    0	    1	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         6.0420989422
+	Total SCF Energy            =       -38.9193768581
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file77.
+
+	Transforming one-electron integrals...
+	One-pdm and lagrangian written to file76.
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:32 2003
+
+user time   =       0.19 seconds =       0.00 minutes
+system time =       1.19 seconds =       0.02 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:32 2003
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 3B1 CH2 cc-pVDZ/ROHF-CCSD Geometry Optimization                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 24
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -CCSD forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000     0.023190718477
+       2        0.000000000000    -0.004397181827    -0.011595359238
+       3        0.000000000000     0.004397181827    -0.011595359238
+
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:32 2003
+
+user time   =       0.48 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+
+	------------------------------------------------------
+	 OPTKING: For internal coordinate optimizations and   
+	 and vibrational frequencies, Rollin King, 1999, 2002 
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  6.0    12.00000000   0.0000000000  -0.0000000000   0.1524957280
+  1.0     1.00782503   0.0000000000   1.7919995190  -0.9078702542
+  1.0     1.00782503   0.0000000000  -1.7919995190  -0.9078702542
+                       0.0000000000   0.0000000000   0.0231907185
+                       0.0000000000  -0.0043971818  -0.0115953592
+                       0.0000000000   0.0043971818  -0.0115953592
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (1.10186322)
+    (2 1 3) (1.10186322)
+Bends
+    (3 2 1 3) (118.77250573)
+ 
+ ** Taking normal optimization step. **
+
+  SYMM = (
+    ("A1 " (1 2 3)
+     (-0.70 -0.70 -0.13))
+    ("A1 " (1 2 3)
+     (-0.09 -0.09  0.99))
+  )
+
+Current CCSD energy before step       -39.0390154937
+
+Taking geometry step number 2
+
+BuB^t Determinant: 1.894246e+00
+
+Force Constants read from PSIF_OPTKING
+   5.1698928124   0.5754895019
+   0.5754895019   0.7716116174
+
+Performing BFGS Hessian update.
+
+Scaling displacements by 0.976742
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+         Value          Force          Displacement   New Value
+ 1  -1.8100910303   0.0103498323  -0.0121559203  -1.8222469506
+ 2   1.8571445777   0.1131647370   0.1857144578   2.0428590355
+   MAX force:    0.1131647370   RMS force:    0.0803535212
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    1  0.043090766977  0.131600961669
+    2  0.043090766977  0.004815531374
+    3  0.002229867142  0.000002643646
+    4  0.000000852026  0.000000000002
+    5  0.000000000001  0.000000000000
+Convergence to displaced geometry took 5 iterations.
+
+New Cartesian Geometry in a.u.
+  6.0   0.0000000000  -0.0000000000   0.1269818813
+  1.0   0.0000000000   1.8685457950  -0.7559757535
+  1.0   0.0000000000  -1.8685457950  -0.7559757535
+
+Geometry written to chkpt
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:32 2003
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 3B1 CH2 cc-pVDZ/ROHF-CCSD Geometry Optimization                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 24
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+    Wrote 11412 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:32 2003
+
+user time   =       0.09 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:32 2003
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+
+  label       = 3B1 CH2 cc-pVDZ/ROHF-CCSD Geometry Optimization
+  wfn          = CCSD
+  reference    = ROHF
+  multiplicity = 3
+  charge       = 0
+  direct SCF   = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        6.0740621786539
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -38.91937686
+
+  level shift                      = 1.000000
+  diis scale factor                = 1.020000
+  iterations before extrapolation  = 0
+  4 error matrices will be kept
+
+  keeping integrals in 138792 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 1.856722e-02
+
+
+  Reading Occupations from file30
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              2     0     0     1   
+  SOCC:              1     0     1     0   
+
+
+  open-shell energy coeffs
+  open shell pair    alpha         beta
+        1  1       0.000000     -1.000000
+        2  1       0.000000     -1.000000
+        2  2       0.000000     -1.000000
+  reading integrals in the IWL format from files 33,35,36,37
+
+      2548 integrals written to file92 in   1 buffers
+      2662 integrals written to file93 in   1 buffers
+  wrote 0 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -38.9207462096    4.499481e+01    0.000000e+00    0.000000e+00
+    2       -38.9213633885    6.171789e-04    7.244730e-04    7.411253e-03
+    3       -38.9215414304    1.780419e-04    3.898879e-04    4.443149e-03
+    4       -38.9215885302    4.709984e-05    1.969248e-04    2.390731e-03
+    5       -38.9216001323    1.160208e-05    1.113708e-04    1.239363e-03
+    6       -38.9216024120    2.279709e-06    5.378340e-05    7.826502e-04
+    7       -38.9216031572    7.451270e-07    2.841626e-05    4.821530e-04
+    8       -38.9216035118    3.546829e-07    1.678645e-05    2.902028e-04
+    9       -38.9216036363    1.244504e-07    9.720605e-06    1.709195e-04
+   10       -38.9216036693    3.305310e-08    5.584103e-06    1.004566e-04
+   11       -38.9216036770    7.687298e-09    3.103822e-06    5.930766e-05
+   12       -38.9216036799    2.914533e-09    1.788664e-06    3.516505e-05
+   13       -38.9216036815    1.605343e-09    1.146139e-06    2.080473e-05
+   14       -38.9216036822    6.235084e-10    7.236266e-07    1.210100e-05
+   15       -38.9216036823    1.666862e-10    4.054541e-07    6.873753e-06
+   16       -38.9216036824    3.911538e-11    2.234526e-07    3.862326e-06
+   17       -38.9216036824    9.855228e-12    1.231868e-07    2.187620e-06
+   18       -38.9216036824    4.192202e-12    7.290437e-08    1.246893e-06
+   19       -38.9216036824    1.854517e-12    4.340267e-08    6.979807e-07
+   20       -38.9216036824    6.750156e-13    2.505124e-08    3.830156e-07
+   21       -38.9216036824    1.847411e-13    1.412155e-08    2.105397e-07
+   22       -38.9216036824    4.263256e-14    7.238416e-09    1.186248e-07
+   23       -38.9216036824    7.105427e-15    3.794145e-09    6.954160e-08
+   24       -38.9216036824    7.105427e-15    2.311815e-09    4.188457e-08
+   25       -38.9216036824   -7.105427e-15    1.427324e-09    2.526655e-08
+   26       -38.9216036824    7.105427e-15    8.387385e-10    1.506109e-08
+   27       -38.9216036824    0.000000e+00    4.957880e-10    8.894192e-09
+   28       -38.9216036824    0.000000e+00    2.918886e-10    5.212913e-09
+   29       -38.9216036824    7.105427e-15    1.716671e-10    3.010285e-09
+   30       -38.9216036824   -1.421085e-14    1.042099e-10    1.714552e-09
+   31       -38.9216036824    7.105427e-15    6.082503e-11    9.703548e-10
+
+ Correcting phases of orbitals.
+
+ ci_typ is CCSD so mo vector will be rotated
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -11.250505     2A1     -0.845863     1B2     -0.588422  
+
+  Singly occupied orbitals
+   3A1     -0.152342     1B1     -0.103901  
+
+  Unoccupied orbitals
+   4A1      0.208524     2B2      0.266046     5A1      0.626574  
+   3B2      0.673009     2B1      0.718848     6A1      0.734107  
+   4B2      0.905792     7A1      1.019431     1A2      1.195532  
+   8A1      1.334429     3B1      1.357901     5B2      1.579579  
+   9A1      1.750511     4B1      1.905380     6B2      2.072765  
+   2A2      2.170827    10A1      2.255845     7B2      2.742699  
+  11A1      2.857554  
+
+
+        total energy       =     -38.921603682395
+        kinetic energy     =      38.849390731812
+        nuc. attr. energy  =    -102.595304576619
+        elec. rep. energy  =      24.824310162412
+        potential energy   =     -77.770994414207
+        virial theorem     =       1.998144656341
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:32 2003
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:32 2003
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CCSD
+	Reference orbitals     =  ROHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            = Yes
+	Delete Restricted Docc =  No
+	Do All TEI             = Yes
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 24
+	Number of MOs    = 24
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   11	   11	    0	    2	    1	    8	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    0	    1	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         6.0740621787
+	Total SCF Energy            =       -38.9216036824
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:34 2003
+
+user time   =       0.07 seconds =       0.00 minutes
+system time =       1.22 seconds =       0.02 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:34 2003
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Reference wfn   =     ROHF
+	Derivative      =    First
+	Memory (Mbytes) =    256.0
+	AO Basis        =      NONE
+	Cache Level     =        2
+	Cache Type      =      LRU
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 24
+	Number of active MOs = 24
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   11	    0	    2	    1	    8	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    0	    1	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      6.07406217865394
+	SCF energy          (chkpt) =    -38.92160368239516
+
+	Size of <ab|cd> integrals:     0.019 (MW) /     0.150 (MB)
+	Size of <ia|bc> integrals:     0.005 (MW) /     0.041 (MB)
+	Size of Tijab amplitudes:      0.002 (MW) /     0.012 (MB)
+
+	One-electron energy          =    -63.74591384480696
+	Two-electron (AA) energy     =     10.61011527227571
+	Two-electron (BB) energy     =      3.36852260046593
+	Two-electron (AB) energy     =     11.76092904738704
+	Two-electron energy          =     18.75024798375786
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -38.92160368239515
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:34 2003
+
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:34 2003
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    6.074062178653943
+	SCF energy          (chkpt)   =  -38.921603682395158
+	Reference energy    (file100) =  -38.921603682395151
+
+	Input parameters:
+	-----------------
+	Wave function   =      CCSD
+	Reference wfn   =     ROHF
+	Memory (Mbytes) =  256.0
+	Maxiter         =     50
+	Convergence     = 1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	Local CC        =     No
+	AO Basis        =     NONE
+	Cache Level     =    2
+	Cache Type      =     LOW
+	Print Level     =    0
+	# Amps to Print =    10
+	Print MP2 Amps? =    No
+
+	                     Solving CCSD Equations
+	                     ----------------------
+	Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+	----     ---------------------    ---------   ----------  ----------  ----------
+	   0        -0.099133390780350    0.000e+00    0.000367    0.001030    0.001030
+	   1        -0.114916754536506    3.933e-02    0.003480    0.004438    0.005836
+	   2        -0.119854327883763    1.448e-02    0.005840    0.007177    0.010150
+	   3        -0.120145644639227    4.680e-03    0.006993    0.008841    0.012503
+	   4        -0.120160853848077    1.473e-03    0.007373    0.009590    0.013562
+	   5        -0.120156939801308    4.168e-04    0.007449    0.009778    0.013829
+	   6        -0.120160675029323    1.270e-04    0.007460    0.009824    0.013893
+	   7        -0.120161550808051    3.670e-05    0.007459    0.009830    0.013902
+	   8        -0.120161359285204    1.122e-05    0.007458    0.009831    0.013904
+	   9        -0.120161515495195    3.544e-06    0.007457    0.009831    0.013904
+	  10        -0.120161519182338    8.971e-07    0.007457    0.009831    0.013904
+	  11        -0.120161508482104    2.041e-07    0.007457    0.009831    0.013904
+	  12        -0.120161504831590    5.315e-08    0.007457    0.009831    0.013904
+
+	Iterations converged.
+
+
+	Largest TIA Amplitudes:
+	-----------------------
+	          1   1         0.0254566309
+	          1   0        -0.0210001664
+	          4  15        -0.0162676385
+	          4  17        -0.0146377466
+	          2   0        -0.0134864617
+	          2   1         0.0124953835
+	          1   5         0.0121472257
+	          1   3         0.0087350437
+	          4  19        -0.0075878684
+	          1   6         0.0056626910
+
+	Largest Tia Amplitudes:
+	-----------------------
+	          1   1        -0.0252302084
+	          1   0         0.0243761529
+	          1   8        -0.0186887204
+	          4  15         0.0174648678
+	          4  17         0.0093094665
+	          4  18         0.0078191693
+	          4  16         0.0068677732
+	          1   5        -0.0062741129
+	          1   3        -0.0040372384
+	          1   2        -0.0031954438
+
+	Largest TIJAB Amplitudes:
+	-------------------------
+	  3   2  11   2         0.0348741645
+	  3   2  12   4        -0.0231331848
+	  4   3   9   1         0.0228622912
+	  4   3  17  11        -0.0205740971
+	  4   3  15  11        -0.0202445296
+	  4   2  17   1        -0.0167671919
+	  4   2  15   1        -0.0161724143
+	  3   1  11   0        -0.0158791520
+	  3   1  11   3         0.0152646029
+	  4   2  16   2        -0.0146575343
+
+	Largest Tijab Amplitudes:
+	-------------------------
+	  4   1  14   9        -0.0109578090
+	  4   1  16   8        -0.0080188226
+	  4   1  15   0        -0.0074502532
+	  4   1  17   8        -0.0062592576
+	  4   1  16   0         0.0062116487
+	  4   1  15   3         0.0061670774
+	  4   1  17   3         0.0059753191
+	  4   1  15   8        -0.0052944252
+	  4   1  17   0        -0.0041338053
+	  4   1  18   8         0.0040819935
+
+	Largest TIjAb Amplitudes:
+	-------------------------
+	  4   4  17  17        -0.0345836947
+	  4   4   1   1        -0.0337552262
+	  3   1   1  14        -0.0317280584
+	  3   1   0  14         0.0306191510
+	  3   1  12   8         0.0279202998
+	  2   1   4   8         0.0275418068
+	  4   4  15  15        -0.0270399604
+	  2   1  12  14         0.0263547029
+	  4   1   9  14         0.0261041725
+	  3   1  11   0        -0.0260317386
+
+	SCF energy       (chkpt)   =  -38.921603682395158
+	Reference energy (file100) =  -38.921603682395151
+	CCSD correlation energy    =   -0.120161504831590
+	Total CCSD energy          =  -39.041765187226744
+
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:35 2003
+
+user time   =       0.77 seconds =       0.01 minutes
+system time =       0.78 seconds =       0.01 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:35 2003
+
+
+			**************************
+			*                        *
+			*         CCHBAR         *
+			*                        *
+			**************************
+
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:36 2003
+
+user time   =       0.17 seconds =       0.00 minutes
+system time =       0.17 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:36 2003
+
+
+			**************************
+			*                        *
+			*        CCLAMBDA        *
+			*                        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    6.074062178653943
+	SCF energy          (chkpt)   =  -38.921603682395158
+	Reference energy    (file100) =  -38.921603682395151
+	CCSD energy         (file100) =   -0.120161504831590
+	Total CCSD energy   (file100) =  -39.041765187226744
+
+	Input parameters:
+	-----------------
+	Maxiter     =      50
+	Convergence = 1.0e-12
+	Restart     =     Yes
+	Cache Level =     2
+	AO Basis        =     No
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter         PseudoEnergy             RMS  
+	----     ---------------------     --------
+	   0        -0.116423621142428    0.000e+00
+	   1        -0.114018967893697    5.841e-03
+	   2        -0.113478780237417    1.639e-03
+	   3        -0.113416342090934    5.770e-04
+	   4        -0.113419788114488    1.713e-04
+	   5        -0.113418271310847    5.767e-05
+	   6        -0.113417187039711    1.824e-05
+	   7        -0.113416951829766    6.213e-06
+	   8        -0.113416925585208    1.944e-06
+	   9        -0.113416924270714    5.864e-07
+	  10        -0.113416926075420    1.632e-07
+	  11        -0.113416926988366    4.528e-08
+	  12        -0.113416926848474    1.214e-08
+	  13        -0.113416926742550    3.723e-09
+	  14        -0.113416926725304    1.091e-09
+	  15        -0.113416926718882    3.386e-10
+	  16        -0.113416926712426    1.125e-10
+	  17        -0.113416926710388    3.602e-11
+	  18        -0.113416926710004    1.125e-11
+	  19        -0.113416926709970    2.717e-12
+	  20        -0.113416926709955    7.231e-13
+
+	Iterations converged.
+
+	Overlap =    0.946448400452036
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:37 2003
+
+user time   =       0.88 seconds =       0.01 minutes
+system time =       0.85 seconds =       0.01 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:37 2003
+
+
+			**************************
+			*                        *
+			*        CCDENSITY       *
+			*                        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    6.074062178653943
+	SCF energy          (chkpt)   =  -38.921603682395158
+	Reference energy    (file100) =  -38.921603682395151
+	CCSD energy         (file100) =   -0.120161504831590
+	Total CCSD energy   (file100) =  -39.041765187226744
+
+	Input parameters:
+	-----------------
+	Tolerance    = 1.0e-14
+	Cache Level  =    2
+	AO Basis        =     No
+
+
+	Trace of onepdm =    0.000000000000000
+
+	Energies re-computed from CC density:
+	-------------------------------------
+	One-electron energy        =    0.138243926154533
+	IJKL energy                =    0.027808666148992
+	IJKA energy                =   -0.000021850260756
+	IJAB energy                =   -0.226900504981356
+	IBJA energy                =   -0.091706365230153
+	CIAB energy                =    0.000118860026647
+	ABCD energy                =    0.032295765052398
+	Total two-electron energy  =   -0.258405429244228
+	CCSD correlation energy    =   -0.120161503089695
+	Total CCSD energy          =  -39.041765185484849
+
+	Virial Theorem Data:
+	--------------------
+	Kinetic energy (ref)   =   38.849390731811646
+	Kinetic energy (corr)  =    0.103799363440480
+	Kinetic energy (total) =   38.953190095252126
+	-V/T (ref)             =    2.001858792357440
+	-V/T (corr)            =    2.157632386642647
+	-V/T (total)           =    2.002273885444505
+
+	Energies re-computed from Fock-adjusted CC density:
+	---------------------------------------------------
+	One-electron energy        =    0.084503359641850
+	IJKL energy                =   -0.351923935100388
+	IJKA energy                =    0.012743107404530
+	IJAB energy                =   -0.226900504981356
+	IBJA energy                =    0.329001844866632
+	CIAB energy                =    0.000118860026647
+	ABCD energy                =    0.032295765052398
+	Total two-electron energy  =   -0.204664862731537
+	CCSD correlation energy    =   -0.120161503089687
+	Total CCSD energy          =  -39.041765185484842
+
+	Energies re-computed from Mulliken density:
+	-------------------------------------------
+	One-electron energy        =    0.084503359641850
+	IJKL energy                =   -0.351923935100388
+	IJKA energy                =    0.012743107404530
+	IJAB energy                =   -0.220387873956207
+	IBJA energy                =    0.322489213841484
+	CIAB energy                =    0.000118860026647
+	ABCD energy                =    0.032295765052398
+	Total two-electron energy  =   -0.204664862731537
+	CCSD correlation energy    =   -0.120161503089687
+	Total CCSD energy          =  -39.041765185484842
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:38 2003
+
+user time   =       0.23 seconds =       0.00 minutes
+system time =       0.34 seconds =       0.01 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:38 2003
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CCSD
+	Reference orbitals     =  ROHF
+	Backtrans              =  Yes
+	Print MOs              =  No
+	Freeze Core            = No
+	Delete Restricted Docc =  No
+	Do All TEI             = No
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  74
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  77
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  No
+	Do FZC  OEI tranform   =  No
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 24
+	Number of MOs    = 24
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   11	   11	    0	    2	    1	    8	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    0	    1	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         6.0740621787
+	Total SCF Energy            =       -38.9216036824
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file77.
+
+	Transforming one-electron integrals...
+	One-pdm and lagrangian written to file76.
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:39 2003
+
+user time   =       0.20 seconds =       0.00 minutes
+system time =       1.17 seconds =       0.02 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:39 2003
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 3B1 CH2 cc-pVDZ/ROHF-CCSD Geometry Optimization                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 24
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -CCSD forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000     0.003441562737
+       2        0.000000000000    -0.001700871268    -0.001720781368
+       3        0.000000000000     0.001700871268    -0.001720781368
+
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:40 2003
+
+user time   =       0.46 seconds =       0.01 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+
+	------------------------------------------------------
+	 OPTKING: For internal coordinate optimizations and   
+	 and vibrational frequencies, Rollin King, 1999, 2002 
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  6.0    12.00000000   0.0000000000  -0.0000000000   0.1269818813
+  1.0     1.00782503   0.0000000000   1.8685457950  -0.7559757535
+  1.0     1.00782503   0.0000000000  -1.8685457950  -0.7559757535
+                       0.0000000000   0.0000000000   0.0034415627
+                       0.0000000000  -0.0017008713  -0.0017207814
+                       0.0000000000   0.0017008713  -0.0017207814
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (1.09362869)
+    (2 1 3) (1.09362869)
+Bends
+    (3 2 1 3) (129.41503459)
+ 
+ ** Taking normal optimization step. **
+
+  SYMM = (
+    ("A1 " (1 2 3)
+     (-0.70 -0.70 -0.13))
+    ("A1 " (1 2 3)
+     (-0.09 -0.09  0.99))
+  )
+
+Current CCSD energy before step       -39.0417651872
+
+Taking geometry step number 3
+
+BuB^t Determinant: 1.922879e+00
+
+Force Constants read from PSIF_OPTKING
+   5.3483985507   0.4045125368
+   0.4045125368   0.6216533575
+
+Performing BFGS Hessian update.
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+         Value          Force          Displacement   New Value
+ 1  -1.8222469506  -0.0119000034  -0.0058016993  -1.8280486499
+ 2   2.0428590355   0.0192038891   0.0408700250   2.0837290605
+   MAX force:    0.0192038891   RMS force:    0.0159749716
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    1  0.009479873256  0.029189198812
+    2  0.009479873256  0.000233238324
+    3  0.000106956624  0.000000003042
+    4  0.000000000987  0.000000000000
+    5  0.000000000000  0.000000000000
+Convergence to displaced geometry took 5 iterations.
+
+New Cartesian Geometry in a.u.
+  6.0   0.0000000000  -0.0000000000   0.1214515322
+  1.0   0.0000000000   1.8870255931  -0.7230512935
+  1.0   0.0000000000  -1.8870255931  -0.7230512935
+
+Geometry written to chkpt
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:40 2003
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 3B1 CH2 cc-pVDZ/ROHF-CCSD Geometry Optimization                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 24
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+    Wrote 11412 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:40 2003
+
+user time   =       0.10 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:40 2003
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+
+  label       = 3B1 CH2 cc-pVDZ/ROHF-CCSD Geometry Optimization
+  wfn          = CCSD
+  reference    = ROHF
+  multiplicity = 3
+  charge       = 0
+  direct SCF   = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        6.0694218204030
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -38.92160368
+
+  level shift                      = 1.000000
+  diis scale factor                = 1.020000
+  iterations before extrapolation  = 0
+  4 error matrices will be kept
+
+  keeping integrals in 138792 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 1.876632e-02
+
+
+  Reading Occupations from file30
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              2     0     0     1   
+  SOCC:              1     0     1     0   
+
+
+  open-shell energy coeffs
+  open shell pair    alpha         beta
+        1  1       0.000000     -1.000000
+        2  1       0.000000     -1.000000
+        2  2       0.000000     -1.000000
+  reading integrals in the IWL format from files 33,35,36,37
+
+      2548 integrals written to file92 in   1 buffers
+      2662 integrals written to file93 in   1 buffers
+  wrote 0 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -38.9213921719    4.499081e+01    0.000000e+00    0.000000e+00
+    2       -38.9214242614    3.208949e-05    1.601539e-04    1.587690e-03
+    3       -38.9214332880    9.026648e-06    8.422929e-05    7.735736e-04
+    4       -38.9214356038    2.315732e-06    4.201429e-05    3.679389e-04
+    5       -38.9214360990    4.951997e-07    2.214660e-05    1.901575e-04
+    6       -38.9214361720    7.306201e-08    1.018086e-05    1.223475e-04
+    7       -38.9214361916    1.952174e-08    5.136795e-06    7.649360e-05
+    8       -38.9214362019    1.032466e-08    2.838173e-06    4.645047e-05
+    9       -38.9214362059    4.026418e-09    1.642552e-06    2.772619e-05
+   10       -38.9214362070    1.132399e-09    9.656256e-07    1.658114e-05
+   11       -38.9214362073    2.442491e-10    5.371748e-07    9.938424e-06
+   12       -38.9214362074    8.313350e-11    3.047723e-07    5.985203e-06
+   13       -38.9214362074    4.786926e-11    1.945599e-07    3.602190e-06
+   14       -38.9214362074    2.020073e-11    1.263701e-07    2.128762e-06
+   15       -38.9214362074    5.847767e-12    7.290458e-08    1.227938e-06
+   16       -38.9214362074    1.485034e-12    4.167838e-08    6.998578e-07
+   17       -38.9214362074    3.694822e-13    2.383769e-08    4.005354e-07
+   18       -38.9214362074    1.136868e-13    1.372889e-08    2.290561e-07
+   19       -38.9214362074    6.394885e-14    8.141098e-09    1.287209e-07
+   20       -38.9214362074    2.131628e-14    4.810368e-09    7.148408e-08
+   21       -38.9214362074    1.421085e-14    2.680796e-09    3.995750e-08
+   22       -38.9214362074    0.000000e+00    1.421136e-09    2.292573e-08
+   23       -38.9214362074    7.105427e-15    7.599922e-10    1.358332e-08
+   24       -38.9214362074   -7.105427e-15    4.475902e-10    8.201647e-09
+   25       -38.9214362074    7.105427e-15    2.756525e-10    4.929965e-09
+   26       -38.9214362074   -7.105427e-15    1.651701e-10    2.911466e-09
+   27       -38.9214362074    0.000000e+00    9.979242e-11    1.696931e-09
+
+ Correcting phases of orbitals.
+
+ ci_typ is CCSD so mo vector will be rotated
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -11.249995     2A1     -0.845034     1B2     -0.591199  
+
+  Singly occupied orbitals
+   3A1     -0.148701     1B1     -0.103727  
+
+  Unoccupied orbitals
+   4A1      0.207816     2B2      0.265161     5A1      0.618730  
+   3B2      0.684163     2B1      0.719220     6A1      0.732597  
+   4B2      0.908529     7A1      1.017188     1A2      1.193117  
+   8A1      1.342648     3B1      1.362910     5B2      1.561784  
+   9A1      1.748291     4B1      1.891722     6B2      2.088049  
+   2A2      2.183042    10A1      2.237931     7B2      2.739788  
+  11A1      2.881937  
+
+
+        total energy       =     -38.921436207442
+        kinetic energy     =      38.846140363581
+        nuc. attr. energy  =    -102.585302436961
+        elec. rep. energy  =      24.817725865938
+        potential energy   =     -77.767576571023
+        virial theorem     =       1.998065440251
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:40 2003
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:40 2003
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CCSD
+	Reference orbitals     =  ROHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            = Yes
+	Delete Restricted Docc =  No
+	Do All TEI             = Yes
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 24
+	Number of MOs    = 24
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   11	   11	    0	    2	    1	    8	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    0	    1	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         6.0694218204
+	Total SCF Energy            =       -38.9214362074
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:41 2003
+
+user time   =       0.11 seconds =       0.00 minutes
+system time =       1.18 seconds =       0.02 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:41 2003
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Reference wfn   =     ROHF
+	Derivative      =    First
+	Memory (Mbytes) =    256.0
+	AO Basis        =      NONE
+	Cache Level     =        2
+	Cache Type      =      LRU
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 24
+	Number of active MOs = 24
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   11	    0	    2	    1	    8	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    0	    1	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      6.06942182040303
+	SCF energy          (chkpt) =    -38.92143620744191
+
+	Size of <ab|cd> integrals:     0.019 (MW) /     0.150 (MB)
+	Size of <ia|bc> integrals:     0.005 (MW) /     0.041 (MB)
+	Size of Tijab amplitudes:      0.002 (MW) /     0.012 (MB)
+
+	One-electron energy          =    -63.73916207338023
+	Two-electron (AA) energy     =     10.60885164530074
+	Two-electron (BB) energy     =      3.36748484837033
+	Two-electron (AB) energy     =     11.76013579869976
+	Two-electron energy          =     18.74830404553529
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -38.92143620744190
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:41 2003
+
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.08 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:41 2003
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    6.069421820403031
+	SCF energy          (chkpt)   =  -38.921436207441914
+	Reference energy    (file100) =  -38.921436207441900
+
+	Input parameters:
+	-----------------
+	Wave function   =      CCSD
+	Reference wfn   =     ROHF
+	Memory (Mbytes) =  256.0
+	Maxiter         =     50
+	Convergence     = 1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	Local CC        =     No
+	AO Basis        =     NONE
+	Cache Level     =    2
+	Cache Type      =     LOW
+	Print Level     =    0
+	# Amps to Print =    10
+	Print MP2 Amps? =    No
+
+	                     Solving CCSD Equations
+	                     ----------------------
+	Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+	----     ---------------------    ---------   ----------  ----------  ----------
+	   0        -0.099378908251839    0.000e+00    0.000387    0.001087    0.001087
+	   1        -0.115177278989190    3.944e-02    0.003499    0.004385    0.005800
+	   2        -0.120127059861534    1.460e-02    0.005905    0.007266    0.010275
+	   3        -0.120423651955725    4.774e-03    0.007113    0.009257    0.013091
+	   4        -0.120439714702878    1.519e-03    0.007525    0.010084    0.014261
+	   5        -0.120435488326561    4.266e-04    0.007608    0.010290    0.014552
+	   6        -0.120439253663461    1.298e-04    0.007621    0.010340    0.014623
+	   7        -0.120440134397100    3.689e-05    0.007620    0.010348    0.014634
+	   8        -0.120439923527577    1.108e-05    0.007619    0.010349    0.014636
+	   9        -0.120440079599432    3.500e-06    0.007618    0.010349    0.014636
+	  10        -0.120440083445253    8.940e-07    0.007618    0.010349    0.014636
+	  11        -0.120440072934476    2.035e-07    0.007618    0.010349    0.014636
+	  12        -0.120440069221152    5.408e-08    0.007618    0.010349    0.014636
+
+	Iterations converged.
+
+
+	Largest TIA Amplitudes:
+	-----------------------
+	          1   1         0.0260640912
+	          1   0        -0.0219883086
+	          4  15        -0.0158655076
+	          2   0        -0.0145145573
+	          4  17        -0.0144606926
+	          2   1         0.0130213234
+	          1   5         0.0120041901
+	          1   3         0.0091430111
+	          4  19        -0.0073929522
+	          1   6         0.0061183065
+
+	Largest Tia Amplitudes:
+	-----------------------
+	          1   1        -0.0259232852
+	          1   0         0.0254389813
+	          1   8        -0.0186291940
+	          4  15         0.0173506407
+	          4  17         0.0095832878
+	          4  18         0.0080641036
+	          4  16         0.0069041304
+	          1   5        -0.0062628845
+	          1   3        -0.0043256873
+	          1   2        -0.0024173877
+
+	Largest TIJAB Amplitudes:
+	-------------------------
+	  3   2  11   2         0.0354565148
+	  3   2  12   4        -0.0233899860
+	  4   3   9   1         0.0233328530
+	  4   3  17  11        -0.0205406902
+	  4   3  15  11        -0.0202298688
+	  4   2  17   1        -0.0163983241
+	  3   1  11   0        -0.0158406538
+	  4   2  15   1        -0.0155731323
+	  3   1  11   3         0.0152705043
+	  4   2  16   2        -0.0143286111
+
+	Largest Tijab Amplitudes:
+	-------------------------
+	  4   1  14   9        -0.0109361838
+	  4   1  16   8        -0.0079191577
+	  4   1  15   0        -0.0075097998
+	  4   1  17   8        -0.0062489508
+	  4   1  15   3         0.0061565258
+	  4   1  16   0         0.0060805376
+	  4   1  17   3         0.0059688859
+	  4   1  15   8        -0.0051558535
+	  4   1  18   8         0.0042317190
+	  4   1  17   0        -0.0041754497
+
+	Largest TIjAb Amplitudes:
+	-------------------------
+	  4   4   1   1        -0.0353970284
+	  4   4  17  17        -0.0346668965
+	  3   1   1  14        -0.0322019088
+	  3   1   0  14         0.0312807254
+	  3   1  12   8         0.0280436541
+	  2   1   4   8         0.0277478886
+	  4   4  15  15        -0.0266078126
+	  2   1  12  14         0.0265945422
+	  4   1   9  14         0.0261277136
+	  3   1  11   0        -0.0261161086
+
+	SCF energy       (chkpt)   =  -38.921436207441914
+	Reference energy (file100) =  -38.921436207441900
+	CCSD correlation energy    =   -0.120440069221152
+	Total CCSD energy          =  -39.041876276663054
+
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:43 2003
+
+user time   =       0.81 seconds =       0.01 minutes
+system time =       0.75 seconds =       0.01 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:43 2003
+
+
+			**************************
+			*                        *
+			*         CCHBAR         *
+			*                        *
+			**************************
+
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:43 2003
+
+user time   =       0.18 seconds =       0.00 minutes
+system time =       0.18 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:43 2003
+
+
+			**************************
+			*                        *
+			*        CCLAMBDA        *
+			*                        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    6.069421820403031
+	SCF energy          (chkpt)   =  -38.921436207441914
+	Reference energy    (file100) =  -38.921436207441900
+	CCSD energy         (file100) =   -0.120440069221152
+	Total CCSD energy   (file100) =  -39.041876276663054
+
+	Input parameters:
+	-----------------
+	Maxiter     =      50
+	Convergence = 1.0e-12
+	Restart     =     Yes
+	Cache Level =     2
+	AO Basis        =     No
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter         PseudoEnergy             RMS  
+	----     ---------------------     --------
+	   0        -0.116570620981527    0.000e+00
+	   1        -0.114155518522569    5.850e-03
+	   2        -0.113614007461347    1.662e-03
+	   3        -0.113551316228894    5.904e-04
+	   4        -0.113554945600975    1.728e-04
+	   5        -0.113553363034051    5.817e-05
+	   6        -0.113552212884287    1.857e-05
+	   7        -0.113551960437547    6.289e-06
+	   8        -0.113551935089709    1.968e-06
+	   9        -0.113551934900360    5.995e-07
+	  10        -0.113551937001218    1.685e-07
+	  11        -0.113551937963819    4.643e-08
+	  12        -0.113551937788643    1.261e-08
+	  13        -0.113551937663427    3.952e-09
+	  14        -0.113551937643150    1.164e-09
+	  15        -0.113551937636056    3.625e-10
+	  16        -0.113551937629015    1.204e-10
+	  17        -0.113551937626856    3.802e-11
+	  18        -0.113551937626470    1.159e-11
+	  19        -0.113551937626437    2.779e-12
+	  20        -0.113551937626422    7.347e-13
+
+	Iterations converged.
+
+	Overlap =    0.946143390386668
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:45 2003
+
+user time   =       0.97 seconds =       0.02 minutes
+system time =       0.75 seconds =       0.01 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:45 2003
+
+
+			**************************
+			*                        *
+			*        CCDENSITY       *
+			*                        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    6.069421820403031
+	SCF energy          (chkpt)   =  -38.921436207441914
+	Reference energy    (file100) =  -38.921436207441900
+	CCSD energy         (file100) =   -0.120440069221152
+	Total CCSD energy   (file100) =  -39.041876276663054
+
+	Input parameters:
+	-----------------
+	Tolerance    = 1.0e-14
+	Cache Level  =    2
+	AO Basis        =     No
+
+
+	Trace of onepdm =    0.000000000000000
+
+	Energies re-computed from CC density:
+	-------------------------------------
+	One-electron energy        =    0.138381111112193
+	IJKL energy                =    0.027866531004477
+	IJKA energy                =   -0.000002603359833
+	IJAB energy                =   -0.227170826230378
+	IBJA energy                =   -0.092030528096988
+	CIAB energy                =    0.000153604106010
+	ABCD energy                =    0.032362643958559
+	Total two-electron energy  =   -0.258821178618152
+	CCSD correlation energy    =   -0.120440067505959
+	Total CCSD energy          =  -39.041876274947860
+
+	Virial Theorem Data:
+	--------------------
+	Kinetic energy (ref)   =   38.846140363581121
+	Kinetic energy (corr)  =    0.104169626463969
+	Kinetic energy (total) =   38.950309990045092
+	-V/T (ref)             =    2.001938309524603
+	-V/T (corr)            =    2.156191812426343
+	-V/T (total)           =    2.002350848726014
+
+	Energies re-computed from Fock-adjusted CC density:
+	---------------------------------------------------
+	One-electron energy        =    0.084370100622119
+	IJKL energy                =   -0.353404028183847
+	IJKA energy                =    0.012986641461415
+	IJAB energy                =   -0.227170826230378
+	IBJA energy                =    0.330261796760042
+	CIAB energy                =    0.000153604106010
+	ABCD energy                =    0.032362643958559
+	Total two-electron energy  =   -0.204810168128198
+	CCSD correlation energy    =   -0.120440067506079
+	Total CCSD energy          =  -39.041876274947981
+
+	Energies re-computed from Mulliken density:
+	-------------------------------------------
+	One-electron energy        =    0.084370100622119
+	IJKL energy                =   -0.353404028183847
+	IJKA energy                =    0.012986641461415
+	IJAB energy                =   -0.220706451672089
+	IBJA energy                =    0.323797422201754
+	CIAB energy                =    0.000153604106010
+	ABCD energy                =    0.032362643958559
+	Total two-electron energy  =   -0.204810168128198
+	CCSD correlation energy    =   -0.120440067506079
+	Total CCSD energy          =  -39.041876274947981
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:46 2003
+
+user time   =       0.22 seconds =       0.00 minutes
+system time =       0.34 seconds =       0.01 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:46 2003
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CCSD
+	Reference orbitals     =  ROHF
+	Backtrans              =  Yes
+	Print MOs              =  No
+	Freeze Core            = No
+	Delete Restricted Docc =  No
+	Do All TEI             = No
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  74
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  77
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  No
+	Do FZC  OEI tranform   =  No
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 24
+	Number of MOs    = 24
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   11	   11	    0	    2	    1	    8	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    0	    1	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         6.0694218204
+	Total SCF Energy            =       -38.9214362074
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file77.
+
+	Transforming one-electron integrals...
+	One-pdm and lagrangian written to file76.
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:47 2003
+
+user time   =       0.16 seconds =       0.00 minutes
+system time =       1.21 seconds =       0.02 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:47 2003
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 3B1 CH2 cc-pVDZ/ROHF-CCSD Geometry Optimization                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 24
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -CCSD forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000     0.000627805780
+       2        0.000000000000    -0.000110018895    -0.000313902890
+       3        0.000000000000     0.000110018895    -0.000313902890
+
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:48 2003
+
+user time   =       0.47 seconds =       0.01 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+
+	------------------------------------------------------
+	 OPTKING: For internal coordinate optimizations and   
+	 and vibrational frequencies, Rollin King, 1999, 2002 
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  6.0    12.00000000   0.0000000000  -0.0000000000   0.1214515322
+  1.0     1.00782503   0.0000000000   1.8870255931  -0.7230512935
+  1.0     1.00782503   0.0000000000  -1.8870255931  -0.7230512935
+                       0.0000000000   0.0000000000   0.0006278058
+                       0.0000000000  -0.0001100189  -0.0003139029
+                       0.0000000000   0.0001100189  -0.0003139029
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (1.09400925)
+    (2 1 3) (1.09400925)
+Bends
+    (3 2 1 3) (131.77998961)
+ 
+ ** Taking normal optimization step. **
+
+  SYMM = (
+    ("A1 " (1 2 3)
+     (-0.70 -0.70 -0.13))
+    ("A1 " (1 2 3)
+     (-0.09 -0.09  0.99))
+  )
+
+Current CCSD energy before step       -39.0418762767
+
+Taking geometry step number 4
+
+BuB^t Determinant: 1.921541e+00
+
+Force Constants read from PSIF_OPTKING
+   5.3722069253   0.4714439368
+   0.4714439368   0.5368008719
+
+Performing BFGS Hessian update.
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+         Value          Force          Displacement   New Value
+ 1  -1.8280486499  -0.0000599698  -0.0006408802  -1.8286895301
+ 2   2.0837290605   0.0030044475   0.0071330686   2.0908621290
+   MAX force:    0.0030044475   RMS force:    0.0021248884
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    1  0.001628834074  0.005064158106
+    2  0.001628834074  0.000007059756
+    3  0.000003275099  0.000000000006
+    4  0.000000000002  0.000000000000
+Convergence to displaced geometry took 4 iterations.
+
+New Cartesian Geometry in a.u.
+  6.0   0.0000000000  -0.0000000000   0.1204582901
+  1.0   0.0000000000   1.8896997566  -0.7171381116
+  1.0   0.0000000000  -1.8896997566  -0.7171381116
+
+Geometry written to chkpt
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:48 2003
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 3B1 CH2 cc-pVDZ/ROHF-CCSD Geometry Optimization                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 24
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+    Wrote 11412 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:48 2003
+
+user time   =       0.11 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:48 2003
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+
+  label       = 3B1 CH2 cc-pVDZ/ROHF-CCSD Geometry Optimization
+  wfn          = CCSD
+  reference    = ROHF
+  multiplicity = 3
+  charge       = 0
+  direct SCF   = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        6.0700777095855
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -38.92143621
+
+  level shift                      = 1.000000
+  diis scale factor                = 1.020000
+  iterations before extrapolation  = 0
+  4 error matrices will be kept
+
+  keeping integrals in 138792 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 1.879398e-02
+
+
+  Reading Occupations from file30
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              2     0     0     1   
+  SOCC:              1     0     1     0   
+
+
+  open-shell energy coeffs
+  open shell pair    alpha         beta
+        1  1       0.000000     -1.000000
+        2  1       0.000000     -1.000000
+        2  2       0.000000     -1.000000
+  reading integrals in the IWL format from files 33,35,36,37
+
+      2548 integrals written to file92 in   1 buffers
+      2662 integrals written to file93 in   1 buffers
+  wrote 0 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -38.9213958155    4.499147e+01    0.000000e+00    0.000000e+00
+    2       -38.9213968202    1.004728e-06    2.849765e-05    2.851422e-04
+    3       -38.9213971091    2.888903e-07    1.502410e-05    1.382679e-04
+    4       -38.9213971848    7.572748e-08    7.473785e-06    7.159450e-05
+    5       -38.9213972022    1.737510e-08    4.081958e-06    3.901304e-05
+    6       -38.9213972050    2.844885e-09    1.932470e-06    2.496021e-05
+    7       -38.9213972058    7.693828e-10    9.947442e-07    1.553039e-05
+    8       -38.9213972062    3.917435e-10    5.632152e-07    9.401803e-06
+    9       -38.9213972064    1.540812e-10    3.295396e-07    5.578050e-06
+   10       -38.9213972064    4.258283e-11    1.912542e-07    3.302573e-06
+   11       -38.9213972064    9.130474e-12    1.054354e-07    1.961507e-06
+   12       -38.9213972064    3.076650e-12    5.968837e-08    1.172059e-06
+   13       -38.9213972064    1.797673e-12    3.794755e-08    7.004831e-07
+   14       -38.9213972064    7.531753e-13    2.463861e-08    4.118929e-07
+   15       -38.9213972064    2.202682e-13    1.416777e-08    2.364442e-07
+   16       -38.9213972064    6.394885e-14    7.984042e-09    1.339569e-07
+   17       -38.9213972064    7.105427e-15    4.464484e-09    7.617783e-08
+   18       -38.9213972064    0.000000e+00    2.591089e-09    4.343679e-08
+   19       -38.9213972064    0.000000e+00    1.540304e-09    2.434193e-08
+   20       -38.9213972064    0.000000e+00    9.039803e-10    1.339447e-08
+   21       -38.9213972064    7.105427e-15    5.111215e-10    7.385279e-09
+   22       -38.9213972064    0.000000e+00    2.667130e-10    4.177787e-09
+   23       -38.9213972064    0.000000e+00    1.389570e-10    2.455936e-09
+   24       -38.9213972064    0.000000e+00    8.185307e-11    1.482219e-09
+
+ Correcting phases of orbitals.
+
+ ci_typ is CCSD so mo vector will be rotated
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -11.249855     2A1     -0.844983     1B2     -0.591756  
+
+  Singly occupied orbitals
+   3A1     -0.148065     1B1     -0.103697  
+
+  Unoccupied orbitals
+   4A1      0.207725     2B2      0.265025     5A1      0.617434  
+   3B2      0.686148     2B1      0.719284     6A1      0.732395  
+   4B2      0.909173     7A1      1.016878     1A2      1.192752  
+   8A1      1.344074     3B1      1.363805     5B2      1.558852  
+   9A1      1.748084     4B1      1.889546     6B2      2.090998  
+   2A2      2.185377    10A1      2.235166     7B2      2.739865  
+  11A1      2.886977  
+
+
+        total energy       =     -38.921397206421
+        kinetic energy     =      38.846282563043
+        nuc. attr. energy  =    -102.586946347273
+        elec. rep. energy  =      24.819266577809
+        potential energy   =     -77.767679769464
+        virial theorem     =       1.998070093862
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:48 2003
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:48 2003
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CCSD
+	Reference orbitals     =  ROHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            = Yes
+	Delete Restricted Docc =  No
+	Do All TEI             = Yes
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 24
+	Number of MOs    = 24
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   11	   11	    0	    2	    1	    8	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    0	    1	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         6.0700777096
+	Total SCF Energy            =       -38.9213972064
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:49 2003
+
+user time   =       0.14 seconds =       0.00 minutes
+system time =       1.16 seconds =       0.02 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:49 2003
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Reference wfn   =     ROHF
+	Derivative      =    First
+	Memory (Mbytes) =    256.0
+	AO Basis        =      NONE
+	Cache Level     =        2
+	Cache Type      =      LRU
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 24
+	Number of active MOs = 24
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   11	    0	    2	    1	    8	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    0	    1	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      6.07007770958547
+	SCF energy          (chkpt) =    -38.92139720642089
+
+	Size of <ab|cd> integrals:     0.019 (MW) /     0.150 (MB)
+	Size of <ia|bc> integrals:     0.005 (MW) /     0.041 (MB)
+	Size of Tijab amplitudes:      0.002 (MW) /     0.012 (MB)
+
+	One-electron energy          =    -63.74066378422995
+	Two-electron (AA) energy     =     10.60930058191500
+	Two-electron (BB) energy     =      3.36767362140247
+	Two-electron (AB) energy     =     11.76070176656488
+	Two-electron energy          =     18.74918886822362
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -38.92139720642087
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:49 2003
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.09 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:49 2003
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    6.070077709585467
+	SCF energy          (chkpt)   =  -38.921397206420892
+	Reference energy    (file100) =  -38.921397206420870
+
+	Input parameters:
+	-----------------
+	Wave function   =      CCSD
+	Reference wfn   =     ROHF
+	Memory (Mbytes) =  256.0
+	Maxiter         =     50
+	Convergence     = 1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	Local CC        =     No
+	AO Basis        =     NONE
+	Cache Level     =    2
+	Cache Type      =     LOW
+	Print Level     =    0
+	# Amps to Print =    10
+	Print MP2 Amps? =    No
+
+	                     Solving CCSD Equations
+	                     ----------------------
+	Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+	----     ---------------------    ---------   ----------  ----------  ----------
+	   0        -0.099418020309394    0.000e+00    0.000391    0.001097    0.001097
+	   1        -0.115217471632551    3.945e-02    0.003502    0.004374    0.005793
+	   2        -0.120167831349695    1.461e-02    0.005915    0.007311    0.010340
+	   3        -0.120465132886174    4.790e-03    0.007132    0.009328    0.013191
+	   4        -0.120481321036791    1.526e-03    0.007550    0.010168    0.014380
+	   5        -0.120477044791033    4.280e-04    0.007634    0.010377    0.014675
+	   6        -0.120480812361495    1.301e-04    0.007648    0.010427    0.014746
+	   7        -0.120481692684810    3.687e-05    0.007647    0.010435    0.014757
+	   8        -0.120481478550145    1.104e-05    0.007646    0.010436    0.014759
+	   9        -0.120481634276558    3.487e-06    0.007645    0.010436    0.014759
+	  10        -0.120481638117276    8.920e-07    0.007645    0.010436    0.014759
+	  11        -0.120481627662068    2.030e-07    0.007645    0.010436    0.014759
+	  12        -0.120481623939616    5.412e-08    0.007645    0.010436    0.014759
+
+	Iterations converged.
+
+
+	Largest TIA Amplitudes:
+	-----------------------
+	          1   1         0.0261708429
+	          1   0        -0.0221529339
+	          4  15        -0.0157882087
+	          2   0        -0.0146850697
+	          4  17        -0.0144294333
+	          2   1         0.0131094610
+	          1   5         0.0119713548
+	          1   3         0.0092160085
+	          4  19        -0.0073553488
+	          1   6         0.0061970833
+
+	Largest Tia Amplitudes:
+	-----------------------
+	          1   1        -0.0260401235
+	          1   0         0.0256227922
+	          1   8        -0.0186162047
+	          4  15         0.0173304183
+	          4  17         0.0096348377
+	          4  18         0.0081051315
+	          4  16         0.0069038131
+	          1   5        -0.0062583167
+	          1   3        -0.0043834060
+	          1   2        -0.0023117483
+
+	Largest TIJAB Amplitudes:
+	-------------------------
+	  3   2  11   2         0.0355425841
+	  3   2  12   4        -0.0234375673
+	  4   3   9   1         0.0234038184
+	  4   3  17  11        -0.0205296275
+	  4   3  15  11        -0.0202230536
+	  4   2  17   1        -0.0163510764
+	  3   1  11   0        -0.0158302839
+	  4   2  15   1        -0.0154712841
+	  3   1  11   3         0.0152705546
+	  4   2  16   2        -0.0142872128
+
+	Largest Tijab Amplitudes:
+	-------------------------
+	  4   1  14   9        -0.0109325360
+	  4   1  16   8        -0.0079006336
+	  4   1  15   0        -0.0075177784
+	  4   1  17   8        -0.0062491524
+	  4   1  15   3         0.0061540914
+	  4   1  16   0         0.0060559394
+	  4   1  17   3         0.0059665906
+	  4   1  15   8        -0.0051267608
+	  4   1  18   8         0.0042577870
+	  4   1  17   0        -0.0041807200
+
+	Largest TIjAb Amplitudes:
+	-------------------------
+	  4   4   1   1        -0.0356383861
+	  4   4  17  17        -0.0346823313
+	  3   1   1  14        -0.0322682952
+	  3   1   0  14         0.0313789756
+	  3   1  12   8         0.0280652871
+	  2   1   4   8         0.0277832169
+	  2   1  12  14         0.0266368022
+	  4   4  15  15        -0.0265195468
+	  4   1   9  14         0.0261333361
+	  3   1  11   0        -0.0261264112
+
+	SCF energy       (chkpt)   =  -38.921397206420892
+	Reference energy (file100) =  -38.921397206420870
+	CCSD correlation energy    =   -0.120481623939616
+	Total CCSD energy          =  -39.041878830360488
+
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:51 2003
+
+user time   =       0.77 seconds =       0.01 minutes
+system time =       0.78 seconds =       0.01 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:51 2003
+
+
+			**************************
+			*                        *
+			*         CCHBAR         *
+			*                        *
+			**************************
+
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:51 2003
+
+user time   =       0.20 seconds =       0.00 minutes
+system time =       0.15 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:51 2003
+
+
+			**************************
+			*                        *
+			*        CCLAMBDA        *
+			*                        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    6.070077709585467
+	SCF energy          (chkpt)   =  -38.921397206420892
+	Reference energy    (file100) =  -38.921397206420870
+	CCSD energy         (file100) =   -0.120481623939616
+	Total CCSD energy   (file100) =  -39.041878830360488
+
+	Input parameters:
+	-----------------
+	Maxiter     =      50
+	Convergence = 1.0e-12
+	Restart     =     Yes
+	Cache Level =     2
+	AO Basis        =     No
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter         PseudoEnergy             RMS  
+	----     ---------------------     --------
+	   0        -0.116588115452317    0.000e+00
+	   1        -0.114171995802084    5.850e-03
+	   2        -0.113630441870058    1.666e-03
+	   3        -0.113567768571899    5.925e-04
+	   4        -0.113571430071792    1.729e-04
+	   5        -0.113569833333192    5.821e-05
+	   6        -0.113568671928574    1.861e-05
+	   7        -0.113568416921241    6.294e-06
+	   8        -0.113568391845511    1.970e-06
+	   9        -0.113568391855583    6.009e-07
+	  10        -0.113568394005144    1.692e-07
+	  11        -0.113568394970667    4.660e-08
+	  12        -0.113568394787092    1.269e-08
+	  13        -0.113568394658223    3.992e-09
+	  14        -0.113568394637516    1.175e-09
+	  15        -0.113568394630308    3.663e-10
+	  16        -0.113568394623164    1.217e-10
+	  17        -0.113568394620988    3.831e-11
+	  18        -0.113568394620602    1.164e-11
+	  19        -0.113568394620569    2.789e-12
+	  20        -0.113568394620553    7.379e-13
+
+	Iterations converged.
+
+	Overlap =    0.946102709314116
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:53 2003
+
+user time   =       0.77 seconds =       0.01 minutes
+system time =       0.95 seconds =       0.02 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:53 2003
+
+
+			**************************
+			*                        *
+			*        CCDENSITY       *
+			*                        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    6.070077709585467
+	SCF energy          (chkpt)   =  -38.921397206420892
+	Reference energy    (file100) =  -38.921397206420870
+	CCSD energy         (file100) =   -0.120481623939616
+	Total CCSD energy   (file100) =  -39.041878830360488
+
+	Input parameters:
+	-----------------
+	Tolerance    = 1.0e-14
+	Cache Level  =    2
+	AO Basis        =     No
+
+
+	Trace of onepdm =   -0.000000000000000
+
+	Energies re-computed from CC density:
+	-------------------------------------
+	One-electron energy        =    0.138390822058589
+	IJKL energy                =    0.027871710528570
+	IJKA energy                =    0.000000790489628
+	IJAB energy                =   -0.227203774821434
+	IBJA energy                =   -0.092067898073617
+	CIAB energy                =    0.000160795836520
+	ABCD energy                =    0.032365931753117
+	Total two-electron energy  =   -0.258872444287215
+	CCSD correlation energy    =   -0.120481622228627
+	Total CCSD energy          =  -39.041878828649494
+
+	Virial Theorem Data:
+	--------------------
+	Kinetic energy (ref)   =   38.846282563043310
+	Kinetic energy (corr)  =    0.104180500138320
+	Kinetic energy (total) =   38.950463063181630
+	-V/T (ref)             =    2.001933637877850
+	-V/T (corr)            =    2.156470009067469
+	-V/T (total)           =    2.002346975106061
+
+	Energies re-computed from Fock-adjusted CC density:
+	---------------------------------------------------
+	One-electron energy        =    0.084382477493441
+	IJKL energy                =   -0.353610128973801
+	IJKA energy                =    0.013005025379322
+	IJAB energy                =   -0.227203774821434
+	IBJA energy                =    0.330418051104951
+	CIAB energy                =    0.000160795836520
+	ABCD energy                =    0.032365931753117
+	Total two-electron energy  =   -0.204864099721325
+	CCSD correlation energy    =   -0.120481622227884
+	Total CCSD energy          =  -39.041878828648755
+
+	Energies re-computed from Mulliken density:
+	-------------------------------------------
+	One-electron energy        =    0.084382477493441
+	IJKL energy                =   -0.353610128973801
+	IJKA energy                =    0.013005025379322
+	IJAB energy                =   -0.220747716333940
+	IBJA energy                =    0.323961992617457
+	CIAB energy                =    0.000160795836520
+	ABCD energy                =    0.032365931753117
+	Total two-electron energy  =   -0.204864099721325
+	CCSD correlation energy    =   -0.120481622227884
+	Total CCSD energy          =  -39.041878828648755
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:53 2003
+
+user time   =       0.24 seconds =       0.00 minutes
+system time =       0.32 seconds =       0.01 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:53 2003
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CCSD
+	Reference orbitals     =  ROHF
+	Backtrans              =  Yes
+	Print MOs              =  No
+	Freeze Core            = No
+	Delete Restricted Docc =  No
+	Do All TEI             = No
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  74
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  77
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  No
+	Do FZC  OEI tranform   =  No
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 24
+	Number of MOs    = 24
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   11	   11	    0	    2	    1	    8	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    0	    1	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         6.0700777096
+	Total SCF Energy            =       -38.9213972064
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file77.
+
+	Transforming one-electron integrals...
+	One-pdm and lagrangian written to file76.
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:55 2003
+
+user time   =       0.16 seconds =       0.00 minutes
+system time =       1.21 seconds =       0.02 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:55 2003
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 3B1 CH2 cc-pVDZ/ROHF-CCSD Geometry Optimization                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 24
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -CCSD forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000     0.000015309054
+       2        0.000000000000    -0.000016409239    -0.000007654527
+       3        0.000000000000     0.000016409239    -0.000007654527
+
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:55 2003
+
+user time   =       0.47 seconds =       0.01 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+
+	------------------------------------------------------
+	 OPTKING: For internal coordinate optimizations and   
+	 and vibrational frequencies, Rollin King, 1999, 2002 
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  6.0    12.00000000   0.0000000000  -0.0000000000   0.1204582901
+  1.0     1.00782503   0.0000000000   1.8896997566  -0.7171381116
+  1.0     1.00782503   0.0000000000  -1.8896997566  -0.7171381116
+                       0.0000000000   0.0000000000   0.0000153091
+                       0.0000000000  -0.0000164092  -0.0000076545
+                       0.0000000000   0.0000164092  -0.0000076545
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (1.09381499)
+    (2 1 3) (1.09381499)
+Bends
+    (3 2 1 3) (132.19002858)
+ 
+ ** Taking normal optimization step. **
+
+  SYMM = (
+    ("A1 " (1 2 3)
+     (-0.70 -0.70 -0.13))
+    ("A1 " (1 2 3)
+     (-0.09 -0.09  0.99))
+  )
+
+Current CCSD energy before step       -39.0418788304
+
+Taking geometry step number 5
+
+BuB^t Determinant: 1.922224e+00
+
+Force Constants read from PSIF_OPTKING
+   5.3982038685   0.4766016583
+   0.4766016583   0.4640207853
+
+Performing BFGS Hessian update.
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+         Value          Force          Displacement   New Value
+ 1  -1.8286895301  -0.0001532111  -0.0000553342  -1.8287448643
+ 2   2.0908621290   0.0001042835   0.0002921251   2.0911542541
+   MAX force:    0.0001532111   RMS force:    0.0001310509
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    1  0.000068685588  0.000210236719
+    2  0.000068685588  0.000000012279
+    3  0.000000005526  0.000000000000
+    4  0.000000000000  0.000000000000
+Convergence to displaced geometry took 4 iterations.
+
+New Cartesian Geometry in a.u.
+  6.0   0.0000000000  -0.0000000000   0.1204193289
+  1.0   0.0000000000   1.8898455352  -0.7169061599
+  1.0   0.0000000000  -1.8898455352  -0.7169061599
+
+Geometry written to chkpt
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:55 2003
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 3B1 CH2 cc-pVDZ/ROHF-CCSD Geometry Optimization                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 24
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+    Wrote 11412 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:55 2003
+
+user time   =       0.09 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:55 2003
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+
+  label       = 3B1 CH2 cc-pVDZ/ROHF-CCSD Geometry Optimization
+  wfn          = CCSD
+  reference    = ROHF
+  multiplicity = 3
+  charge       = 0
+  direct SCF   = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        6.0699912505523
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -38.92139721
+
+  level shift                      = 1.000000
+  diis scale factor                = 1.020000
+  iterations before extrapolation  = 0
+  4 error matrices will be kept
+
+  keeping integrals in 138792 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 1.879563e-02
+
+
+  Reading Occupations from file30
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              2     0     0     1   
+  SOCC:              1     0     1     0   
+
+
+  open-shell energy coeffs
+  open shell pair    alpha         beta
+        1  1       0.000000     -1.000000
+        2  1       0.000000     -1.000000
+        2  2       0.000000     -1.000000
+  reading integrals in the IWL format from files 33,35,36,37
+
+      2548 integrals written to file92 in   1 buffers
+      2662 integrals written to file93 in   1 buffers
+  wrote 0 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -38.9213946988    4.499139e+01    0.000000e+00    0.000000e+00
+    2       -38.9213947005    1.722718e-09    1.163881e-06    1.164599e-05
+    3       -38.9213947010    4.785008e-10    6.092897e-07    6.219606e-06
+    4       -38.9213947011    1.197620e-10    3.005354e-07    3.235196e-06
+    5       -38.9213947011    2.428635e-11    1.530415e-07    1.549052e-06
+    6       -38.9213947011    3.112177e-12    6.832526e-08    6.902301e-07
+    7       -38.9213947011    7.105427e-13    3.320208e-08    4.358896e-07
+    8       -38.9213947011    3.836931e-13    1.747404e-08    2.662011e-07
+    9       -38.9213947011    1.563194e-13    9.928481e-09    1.599729e-07
+   10       -38.9213947011    4.263256e-14    5.893991e-09    9.658396e-08
+   11       -38.9213947011    1.421085e-14    3.268478e-09    5.841693e-08
+   12       -38.9213947011    0.000000e+00    1.824640e-09    3.552829e-08
+   13       -38.9213947011    0.000000e+00    1.157455e-09    2.162467e-08
+   14       -38.9213947011    7.105427e-15    7.579151e-10    1.289856e-08
+   15       -38.9213947011    0.000000e+00    4.431423e-10    7.498121e-09
+   16       -38.9213947011   -7.105427e-15    2.581265e-10    4.300029e-09
+   17       -38.9213947011    7.105427e-15    1.500225e-10    2.469252e-09
+   18       -38.9213947011    0.000000e+00    8.556674e-11    1.413089e-09
+
+ Correcting phases of orbitals.
+
+ ci_typ is CCSD so mo vector will be rotated
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -11.249853     2A1     -0.844974     1B2     -0.591772  
+
+  Singly occupied orbitals
+   3A1     -0.148040     1B1     -0.103696  
+
+  Unoccupied orbitals
+   4A1      0.207717     2B2      0.265018     5A1      0.617377  
+   3B2      0.686232     2B1      0.719287     6A1      0.732385  
+   4B2      0.909187     7A1      1.016859     1A2      1.192734  
+   8A1      1.344131     3B1      1.363840     5B2      1.558718  
+   9A1      1.748061     4B1      1.889442     6B2      2.091099  
+   2A2      2.185456    10A1      2.235021     7B2      2.739822  
+  11A1      2.887135  
+
+
+        total energy       =     -38.921394701118
+        kinetic energy     =      38.846231413177
+        nuc. attr. energy  =    -102.586748501053
+        elec. rep. energy  =      24.819122386758
+        potential energy   =     -77.767626114295
+        virial theorem     =       1.998068843922
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:55 2003
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:55 2003
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CCSD
+	Reference orbitals     =  ROHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            = Yes
+	Delete Restricted Docc =  No
+	Do All TEI             = Yes
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 24
+	Number of MOs    = 24
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   11	   11	    0	    2	    1	    8	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    0	    1	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         6.0699912506
+	Total SCF Energy            =       -38.9213947011
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:57 2003
+
+user time   =       0.15 seconds =       0.00 minutes
+system time =       1.14 seconds =       0.02 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:57 2003
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Reference wfn   =     ROHF
+	Derivative      =    First
+	Memory (Mbytes) =    256.0
+	AO Basis        =      NONE
+	Cache Level     =        2
+	Cache Type      =      LRU
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 24
+	Number of active MOs = 24
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   11	    0	    2	    1	    8	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    0	    1	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      6.06999125055229
+	SCF energy          (chkpt) =    -38.92139470111754
+
+	Size of <ab|cd> integrals:     0.019 (MW) /     0.150 (MB)
+	Size of <ia|bc> integrals:     0.005 (MW) /     0.041 (MB)
+	Size of Tijab amplitudes:      0.002 (MW) /     0.012 (MB)
+
+	One-electron energy          =    -63.74051708787590
+	Two-electron (AA) energy     =     10.60926808459218
+	Two-electron (BB) energy     =      3.36765324848070
+	Two-electron (AB) energy     =     11.76067046966965
+	Two-electron energy          =     18.74913113620608
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -38.92139470111753
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:57 2003
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.09 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:57 2003
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    6.069991250552289
+	SCF energy          (chkpt)   =  -38.921394701117542
+	Reference energy    (file100) =  -38.921394701117528
+
+	Input parameters:
+	-----------------
+	Wave function   =      CCSD
+	Reference wfn   =     ROHF
+	Memory (Mbytes) =  256.0
+	Maxiter         =     50
+	Convergence     = 1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	Local CC        =     No
+	AO Basis        =     NONE
+	Cache Level     =    2
+	Cache Type      =     LOW
+	Print Level     =    0
+	# Amps to Print =    10
+	Print MP2 Amps? =    No
+
+	                     Solving CCSD Equations
+	                     ----------------------
+	Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+	----     ---------------------    ---------   ----------  ----------  ----------
+	   0        -0.099420129290314    0.000e+00    0.000391    0.001097    0.001097
+	   1        -0.115219761742590    3.945e-02    0.003502    0.004373    0.005792
+	   2        -0.120170283909030    1.461e-02    0.005915    0.007313    0.010343
+	   3        -0.120467636792820    4.790e-03    0.007133    0.009331    0.013196
+	   4        -0.120483832805140    1.526e-03    0.007552    0.010172    0.014385
+	   5        -0.120479554208208    4.281e-04    0.007635    0.010380    0.014680
+	   6        -0.120483322203990    1.302e-04    0.007649    0.010431    0.014752
+	   7        -0.120484202603939    3.687e-05    0.007648    0.010439    0.014763
+	   8        -0.120483988310979    1.104e-05    0.007647    0.010440    0.014765
+	   9        -0.120484144039748    3.487e-06    0.007646    0.010440    0.014765
+	  10        -0.120484147880971    8.921e-07    0.007646    0.010440    0.014765
+	  11        -0.120484137426351    2.030e-07    0.007646    0.010440    0.014765
+	  12        -0.120484133703166    5.412e-08    0.007646    0.010440    0.014765
+
+	Iterations converged.
+
+
+	Largest TIA Amplitudes:
+	-----------------------
+	          1   1         0.0261749715
+	          1   0        -0.0221606702
+	          4  15        -0.0157858674
+	          2   0        -0.0146931317
+	          4  17        -0.0144283640
+	          2   1         0.0131131372
+	          1   5         0.0119703494
+	          1   3         0.0092188138
+	          4  19        -0.0073540613
+	          1   6         0.0062004145
+
+	Largest Tia Amplitudes:
+	-----------------------
+	          1   1        -0.0260450608
+	          1   0         0.0256310159
+	          1   8        -0.0186157656
+	          4  15         0.0173298618
+	          4  17         0.0096368443
+	          4  18         0.0081069208
+	          4  16         0.0069043784
+	          1   5        -0.0062582189
+	          1   3        -0.0043851914
+	          1   2        -0.0023061204
+
+	Largest TIJAB Amplitudes:
+	-------------------------
+	  3   2  11   2         0.0355464228
+	  3   2  12   4        -0.0234392837
+	  4   3   9   1         0.0234067393
+	  4   3  17  11        -0.0205295476
+	  4   3  15  11        -0.0202230806
+	  4   2  17   1        -0.0163481963
+	  3   1  11   0        -0.0158300937
+	  4   2  15   1        -0.0154669829
+	  3   1  11   3         0.0152706331
+	  4   2  16   2        -0.0142845550
+
+	Largest Tijab Amplitudes:
+	-------------------------
+	  4   1  14   9        -0.0109323697
+	  4   1  16   8        -0.0078999206
+	  4   1  15   0        -0.0075183330
+	  4   1  17   8        -0.0062490108
+	  4   1  15   3         0.0061540258
+	  4   1  16   0         0.0060550375
+	  4   1  17   3         0.0059665871
+	  4   1  15   8        -0.0051259278
+	  4   1  18   8         0.0042588827
+	  4   1  17   0        -0.0041811262
+
+	Largest TIjAb Amplitudes:
+	-------------------------
+	  4   4   1   1        -0.0356495629
+	  4   4  17  17        -0.0346829353
+	  3   1   1  14        -0.0322713095
+	  3   1   0  14         0.0313845248
+	  3   1  12   8         0.0280661814
+	  2   1   4   8         0.0277846742
+	  2   1  12  14         0.0266385085
+	  4   4  15  15        -0.0265171440
+	  4   1   9  14         0.0261334264
+	  3   1  11   0        -0.0261271769
+
+	SCF energy       (chkpt)   =  -38.921394701117542
+	Reference energy (file100) =  -38.921394701117528
+	CCSD correlation energy    =   -0.120484133703166
+	Total CCSD energy          =  -39.041878834820693
+
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:58 2003
+
+user time   =       0.90 seconds =       0.02 minutes
+system time =       0.64 seconds =       0.01 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:58 2003
+
+
+			**************************
+			*                        *
+			*         CCHBAR         *
+			*                        *
+			**************************
+
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:31:59 2003
+
+user time   =       0.19 seconds =       0.00 minutes
+system time =       0.17 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:31:59 2003
+
+
+			**************************
+			*                        *
+			*        CCLAMBDA        *
+			*                        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    6.069991250552289
+	SCF energy          (chkpt)   =  -38.921394701117542
+	Reference energy    (file100) =  -38.921394701117528
+	CCSD energy         (file100) =   -0.120484133703166
+	Total CCSD energy   (file100) =  -39.041878834820693
+
+	Input parameters:
+	-----------------
+	Maxiter     =      50
+	Convergence = 1.0e-12
+	Restart     =     Yes
+	Cache Level =     2
+	AO Basis        =     No
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter         PseudoEnergy             RMS  
+	----     ---------------------     --------
+	   0        -0.116589620321745    0.000e+00
+	   1        -0.114173382779198    5.850e-03
+	   2        -0.113631809412626    1.666e-03
+	   3        -0.113569130952903    5.926e-04
+	   4        -0.113572793811866    1.730e-04
+	   5        -0.113571196523729    5.822e-05
+	   6        -0.113570034589016    1.862e-05
+	   7        -0.113569779441472    6.295e-06
+	   8        -0.113569754365416    1.970e-06
+	   9        -0.113569754382319    6.010e-07
+	  10        -0.113569756534014    1.693e-07
+	  11        -0.113569757500006    4.661e-08
+	  12        -0.113569757316138    1.270e-08
+	  13        -0.113569757187106    3.995e-09
+	  14        -0.113569757166372    1.176e-09
+	  15        -0.113569757159157    3.665e-10
+	  16        -0.113569757152007    1.217e-10
+	  17        -0.113569757149830    3.834e-11
+	  18        -0.113569757149443    1.165e-11
+	  19        -0.113569757149410    2.790e-12
+	  20        -0.113569757149394    7.383e-13
+
+	Iterations converged.
+
+	Overlap =    0.946099737280379
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:32:00 2003
+
+user time   =       0.87 seconds =       0.01 minutes
+system time =       0.84 seconds =       0.01 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:32:00 2003
+
+
+			**************************
+			*                        *
+			*        CCDENSITY       *
+			*                        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    6.069991250552289
+	SCF energy          (chkpt)   =  -38.921394701117542
+	Reference energy    (file100) =  -38.921394701117528
+	CCSD energy         (file100) =   -0.120484133703166
+	Total CCSD energy   (file100) =  -39.041878834820693
+
+	Input parameters:
+	-----------------
+	Tolerance    = 1.0e-14
+	Cache Level  =    2
+	AO Basis        =     No
+
+
+	Trace of onepdm =   -0.000000000000000
+
+	Energies re-computed from CC density:
+	-------------------------------------
+	One-electron energy        =    0.138392486999075
+	IJKL energy                =    0.027872387633503
+	IJKA energy                =    0.000000944667540
+	IJAB energy                =   -0.227206503908169
+	IBJA energy                =   -0.092071279487445
+	CIAB energy                =    0.000161021327333
+	ABCD energy                =    0.032366810776026
+	Total two-electron energy  =   -0.258876618991212
+	CCSD correlation energy    =   -0.120484131992137
+	Total CCSD energy          =  -39.041878833109664
+
+	Virial Theorem Data:
+	--------------------
+	Kinetic energy (ref)   =   38.846231413177399
+	Kinetic energy (corr)  =    0.104185865240429
+	Kinetic energy (total) =   38.950417278417831
+	-V/T (ref)             =    2.001934892657686
+	-V/T (corr)            =    2.156434545368756
+	-V/T (total)           =    2.002348153442083
+
+	Energies re-computed from Fock-adjusted CC density:
+	---------------------------------------------------
+	One-electron energy        =    0.084380198527875
+	IJKL energy                =   -0.353624425811091
+	IJKA energy                =    0.013007756725708
+	IJAB energy                =   -0.227206503908169
+	IBJA energy                =    0.330431010369516
+	CIAB energy                =    0.000161021327333
+	ABCD energy                =    0.032366810776026
+	Total two-electron energy  =   -0.204864330520677
+	CCSD correlation energy    =   -0.120484131992802
+	Total CCSD energy          =  -39.041878833110331
+
+	Energies re-computed from Mulliken density:
+	-------------------------------------------
+	One-electron energy        =    0.084380198527875
+	IJKL energy                =   -0.353624425811090
+	IJKA energy                =    0.013007756725708
+	IJAB energy                =   -0.220750824526209
+	IBJA energy                =    0.323975330987556
+	CIAB energy                =    0.000161021327333
+	ABCD energy                =    0.032366810776026
+	Total two-electron energy  =   -0.204864330520677
+	CCSD correlation energy    =   -0.120484131992802
+	Total CCSD energy          =  -39.041878833110331
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:32:01 2003
+
+user time   =       0.20 seconds =       0.00 minutes
+system time =       0.37 seconds =       0.01 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:32:01 2003
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CCSD
+	Reference orbitals     =  ROHF
+	Backtrans              =  Yes
+	Print MOs              =  No
+	Freeze Core            = No
+	Delete Restricted Docc =  No
+	Do All TEI             = No
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  74
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  77
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  No
+	Do FZC  OEI tranform   =  No
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 24
+	Number of MOs    = 24
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   11	   11	    0	    2	    1	    8	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    0	    1	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         6.0699912506
+	Total SCF Energy            =       -38.9213947011
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file77.
+
+	Transforming one-electron integrals...
+	One-pdm and lagrangian written to file76.
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:32:02 2003
+
+user time   =       0.24 seconds =       0.00 minutes
+system time =       1.12 seconds =       0.02 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on pollux.giga.net
+Sat Apr 26 18:32:02 2003
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 3B1 CH2 cc-pVDZ/ROHF-CCSD Geometry Optimization                                 
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 24
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        =  C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -CCSD forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000     0.000000752666
+       2        0.000000000000     0.000000725752    -0.000000376333
+       3        0.000000000000    -0.000000725752    -0.000000376333
+
+******************************************************************************
+tstop called on pollux.giga.net
+Sat Apr 26 18:32:03 2003
+
+user time   =       0.49 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+
+	------------------------------------------------------
+	 OPTKING: For internal coordinate optimizations and   
+	 and vibrational frequencies, Rollin King, 1999, 2002 
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  6.0    12.00000000   0.0000000000  -0.0000000000   0.1204193289
+  1.0     1.00782503   0.0000000000   1.8898455352  -0.7169061599
+  1.0     1.00782503   0.0000000000  -1.8898455352  -0.7169061599
+                       0.0000000000   0.0000000000   0.0000007527
+                       0.0000000000   0.0000007258  -0.0000003763
+                       0.0000000000  -0.0000007258  -0.0000003763
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (1.09382744)
+    (2 1 3) (1.09382744)
+Bends
+    (3 2 1 3) (132.20703387)
+ 
+ ** Taking normal optimization step. **
+
+  SYMM = (
+    ("A1 " (1 2 3)
+     (-0.70 -0.70 -0.13))
+    ("A1 " (1 2 3)
+     (-0.09 -0.09  0.99))
+  )
+
+Current CCSD energy before step       -39.0418788348
+
+Taking geometry step number 6
+
+BuB^t Determinant: 1.922180e+00
+
+Force Constants read from PSIF_OPTKING
+   5.3984578337   0.4981034585
+   0.4981034585   0.4513329190
+
+Performing BFGS Hessian update.
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+         Value          Force          Displacement   New Value
+ 1  -1.8287448643   0.0000093720   0.0000015282  -1.8287433361
+ 2   2.0911542541   0.0000016610   0.0000020960   2.0911563501
+   MAX force:    0.0000093720   RMS force:    0.0000067303
+
+MAX force is < 1.0e-05.  Optimization is complete.
+Final CCSD energy is  -39.0418788348
+The Optimized geometry
+  (  C   0.0000000000  -0.0000000000   0.1204193289 )
+  (  H   0.0000000000   1.8898455352  -0.7169061599 )
+  (  H   0.0000000000  -1.8898455352  -0.7169061599 )
+
+******** OPTKING execution completed ********
+

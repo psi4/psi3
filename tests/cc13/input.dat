@@ -1,0 +1,23 @@
+default: (
+  label = "3B1 CH2 cc-pVDZ/UHF-CCSD Geometry Optimization"
+
+  jobtype = opt
+  wfn = ccsd
+  reference = uhf
+  dertype = first
+  multp = 3
+)
+
+input: (
+  basis = "cc-pVDZ"
+  puream = true
+  zmat = (
+    (c)
+    (h 1 r)
+    (h 1 r 2 a)
+  )
+  zvars = (
+    (r 1.1)
+    (a 109.0)
+  )
+)

@@ -32,7 +32,9 @@ elsif ($ARGV[0] eq "--cc") {
                  "cc9",
                  "cc10",
                  "cc11",
-                 "cc12"
+                 "cc12",
+                 "cc13",
+                 "cc14"
                );
 }
 elsif ($ARGV[0] eq "--scf") {
@@ -40,7 +42,11 @@ elsif ($ARGV[0] eq "--scf") {
                  "scf-opt-numer",
                  "scf-freq",
                  "scf-freq-numer",
-                 "scf-freq-symm-numer"
+                 "scf-freq-symm-numer",
+                 "scf-polar",
+                 "rhf-stab",
+                 "uhf-stab",
+                 "rohf-stab"
                );
 }
 elsif ($ARGV[0] eq "--small") {
@@ -49,6 +55,10 @@ elsif ($ARGV[0] eq "--small") {
                  "scf-freq",
                  "scf-freq-numer",
                  "scf-freq-symm-numer",
+                 "scf-polar",
+                 "rhf-stab",
+                 "uhf-stab",
+                 "rohf-stab",
                  "cisd-sp",
                  "cisd-opt-numer",
                  "casscf-sp",
@@ -59,7 +69,9 @@ elsif ($ARGV[0] eq "--small") {
                  "cc9",
                  "cc10",
                  "cc11",
-                 "cc12"
+                 "cc12",
+                 "cc13",
+                 "cc14"
                );
 }
 elsif ($ARGV[0] eq "--medium") {
@@ -78,6 +90,10 @@ elsif ($ARGV[0] eq "--standard") {
                  "scf-freq",
                  "scf-freq-numer",
                  "scf-freq-symm-numer",
+                 "scf-polar",
+                 "rhf-stab",
+                 "uhf-stab",
+                 "rohf-stab",
                  "cisd-sp",
                  "cisd-opt-numer",
                  "casscf-sp",
@@ -89,7 +105,9 @@ elsif ($ARGV[0] eq "--standard") {
                  "cc9",
                  "cc10",
                  "cc11",
-                 "cc12"
+                 "cc12",
+                 "cc13",
+                 "cc14"
                );
 }
 elsif ($ARGV[0] eq "--sp") {
@@ -110,7 +128,9 @@ elsif ($ARGV[0] eq "--geom") {
                  "scf-opt-numer",
                  "cisd-opt-numer",
                  "cc1",
-                 "cc2"
+                 "cc2",
+                 "cc13",
+                 "cc14"
                );
 }
 elsif ($ARGV[0] eq "--freq") {
@@ -130,6 +150,10 @@ else {
                  "scf-freq",
                  "scf-freq-numer",
                  "scf-freq-symm-numer",
+                 "scf-polar",
+                 "rhf-stab",
+                 "uhf-stab",
+                 "rohf-stab",
                  "cisd-sp",
                  "cisd-opt-numer",
                  "casscf-sp",
@@ -144,7 +168,9 @@ else {
                  "cc9",
                  "cc10",
                  "cc11",
-                 "cc12"
+                 "cc12",
+                 "cc13",
+                 "cc14"
 #                 "Basis_Tests"
                 );
 }
