@@ -41,6 +41,9 @@ double *compute_q(internals &simples,salc_set &symm) {
       else if (intco_type == OUT_TYPE) {
         q[i] += prefactor * coeff * simples.out.get_val(sub_index)*_pi/180.0;
       }
+      else if (intco_type == LIN_BEND_TYPE) {
+        q[i] += prefactor * coeff * simples.lin_bend.get_val(sub_index)*_pi/180.0;
+      }
     }
   }
 

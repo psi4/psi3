@@ -24,7 +24,7 @@ extern "C" {
 #include "bond_lengths.h"
 
 
-extern void new_geom(cartesians &carts, internals &simples, salc_set &all_salcs, 
+extern int new_geom(cartesians &carts, internals &simples, salc_set &all_salcs, 
     double *dq, int print_to_geom_file, int restart_geom_file,
     char *disp_label, int disp_num, int last_disp, double *return_geom);
 
@@ -40,7 +40,7 @@ int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs,
   char *disp_label, **disp_irrep_lbls, *salc_lbl;
 
   disp_label = new char[MAX_LINELENGTH];
-  dim_carts = 3*carts.get_nallatom();
+  dim_carts = 3*carts.get_natom();
   irrep_salcs = new int[all_salcs.get_num()];
   irrep = optinfo.irrep;
 
@@ -64,7 +64,7 @@ int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs,
   }
 
   // write reference geometry (the one being replaced to PSIF)
-  fgeom = carts.get_fcoord();
+  fgeom = carts.get_coord();
   energy = carts.get_energy();
   open_PSIF();
   psio_write_entry(PSIF_OPTKING, "OPT: Reference geometry",
@@ -166,7 +166,7 @@ int make_disp_nosymm(cartesians &carts, internals &simples,
   char *disp_label, **disp_irrep_lbls;
 
   disp_label = new char[MAX_LINELENGTH];
-  dim_carts = 3*carts.get_nallatom();
+  dim_carts = 3*carts.get_natom();
 
   nsalcs = all_salcs.get_num();
   /* only 3-pt formula for now */
@@ -176,7 +176,7 @@ int make_disp_nosymm(cartesians &carts, internals &simples,
     punt("There are no appropriate SALCs present to displace along.\n");
 
   // write reference geometry (the one being replaced to PSIF)
-  fgeom = carts.get_fcoord();
+  fgeom = carts.get_coord();
   energy = carts.get_energy();
   open_PSIF();
   psio_write_entry(PSIF_OPTKING, "OPT: Reference geometry",

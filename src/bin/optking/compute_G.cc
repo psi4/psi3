@@ -18,11 +18,11 @@ double **compute_G(double **B, int num_intcos, cartesians &carts) {
   double **u, **G, **temp_mat, *masses;
   int i, dim_carts;
 
-  // dim_carts = 3*carts.get_natom();
-  dim_carts = 3*optinfo.nallatom;
+  dim_carts = 3*carts.get_natom();
   masses = carts.get_fmass();
   u = mass_mat(masses);
   free(masses);
+//  u = unit_mat(dim_carts);
 
   G = block_matrix(num_intcos,num_intcos);
   temp_mat = block_matrix(dim_carts,num_intcos);

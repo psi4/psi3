@@ -18,10 +18,10 @@ extern "C" {
 #include "salc.h"
 
 double **compute_B(internals &simples,salc_set &symm) {
-  int i,j,k,a,b,c,d, simple, intco_type, sub_index,nallatom;
+  int i,j,k,a,b,c,d, simple, intco_type, sub_index;
   double **B, coeff, prefactor;
 
-  B = block_matrix(symm.get_num(),3*optinfo.nallatom);
+  B = block_matrix(symm.get_num(),3*optinfo.natom);
 
   for (i=0;i<symm.get_num();++i) {
     prefactor = symm.get_prefactor(i);
@@ -69,6 +69,16 @@ double **compute_B(internals &simples,salc_set &symm) {
           B[i][3*b+k] += prefactor * coeff * simples.out.get_s_B(sub_index,k);
           B[i][3*c+k] += prefactor * coeff * simples.out.get_s_C(sub_index,k);
           B[i][3*d+k] += prefactor * coeff * simples.out.get_s_D(sub_index,k);
+        }
+      }
+      else if (intco_type == LIN_BEND_TYPE) {
+        a = simples.lin_bend.get_A(sub_index);
+        b = simples.lin_bend.get_B(sub_index);
+        c = simples.lin_bend.get_C(sub_index);
+        for (k=0;k<3;++k) {
+          B[i][3*a+k] += prefactor * coeff * simples.lin_bend.get_s_A(sub_index,k);
+          B[i][3*b+k] += prefactor * coeff * simples.lin_bend.get_s_B(sub_index,k);
+          B[i][3*c+k] += prefactor * coeff * simples.lin_bend.get_s_C(sub_index,k);
         }
       }
     }

@@ -27,16 +27,15 @@ void rm_rotations(internals &simples, cartesians &carts, int &num_nonzero, doubl
 
 void delocalize(internals &simples, cartesians &carts) {
   int error,i,j,k,a,b,c,d,id,count,intco_type,sub_index,row[4],dim[4];
-  int rotor_type, degrees_of_freedom, col, natom, nallatom;
+  int rotor_type, degrees_of_freedom, col, natom;
   double **stre_mat, **bend_mat, **tors_mat, **out_mat;
   double **evectst, **evectst_symm, **coord_symm, *fmass;
   double *evals, **evects, **B, **uBt, **BBt, **u, **temp_mat;
 
   natom = optinfo.natom;
-  nallatom = optinfo.nallatom;
 
   // Build B matrix for simples
-  B = block_matrix(simples.get_num(),nallatom*3);
+  B = block_matrix(simples.get_num(),natom*3);
   count = -1;
   for (i=0;i<simples.stre.get_num();++i) {
     a = simples.stre.get_A(i);
@@ -84,9 +83,9 @@ void delocalize(internals &simples, cartesians &carts) {
       B[count][3*d+k] += simples.out.get_s_D(i,k);
     }
   }
-  //  print_mat2(B,simples.get_num(),nallatom*3,outfile);
+  //  print_mat2(B,simples.get_num(),natom*3,outfile);
 
-  uBt = block_matrix(3*nallatom, simples.get_num());
+  uBt = block_matrix(3*natom, simples.get_num());
   fmass = carts.get_fmass();
   u = mass_mat(fmass);
   free(fmass);
@@ -94,11 +93,11 @@ void delocalize(internals &simples, cartesians &carts) {
   // Form BBt matrix
   BBt = block_matrix(simples.get_num(),simples.get_num());
   if (optinfo.mix_types) {
-    mmult(u,0,B,1,uBt,0,3*nallatom,3*nallatom,simples.get_num(),0);
+    mmult(u,0,B,1,uBt,0,3*natom,3*natom,simples.get_num(),0);
 
-    mmult(B,0,uBt,0,BBt,0,simples.get_num(),3*nallatom,simples.get_num(),0);
+    mmult(B,0,uBt,0,BBt,0,simples.get_num(),3*natom,simples.get_num(),0);
 
-    // mmult(B,0,B,1,BBt,0,simples.get_num(),nallatom*3,simples.get_num(),0);
+    // mmult(B,0,B,1,BBt,0,simples.get_num(),natom*3,simples.get_num(),0);
   }
   else {
     // Make BBt block diagonal by multiplying only stre*stre, etc.
@@ -118,10 +117,10 @@ void delocalize(internals &simples, cartesians &carts) {
       }
       if (dim[i] != 0)
 
-        mmult(u,0,&(B[row[i]]),1,uBt,0,3*nallatom,3*nallatom,dim[i],0);
-      mmult(&(B[row[i]]),0,uBt,0,ptr,0,dim[i],3*nallatom,dim[i],0);
+        mmult(u,0,&(B[row[i]]),1,uBt,0,3*natom,3*natom,dim[i],0);
+      mmult(&(B[row[i]]),0,uBt,0,ptr,0,dim[i],3*natom,dim[i],0);
 
-      //  mmult(&(B[row[i]]),0,&(B[row[i]]),1,ptr,0,dim[i],nallatom*3,dim[i],0);
+      //  mmult(&(B[row[i]]),0,&(B[row[i]]),1,ptr,0,dim[i],natom*3,dim[i],0);
     }
     free(ptr);
   }
@@ -300,22 +299,22 @@ void rm_rotations(internals &simples, cartesians &carts, int &num_nonzero,
     double **evects) {
 
   int i, j, k, a, b, c, d, ivect, cnt;
-  double *disp_fcoord, scale=0.001, *fatomic_num, energy, disp_energy;
-  double *fcoord, rot_tol = 1.0E-10;
+  double *disp_coord, scale=0.001, *fatomic_num, energy, disp_energy;
+  double *coord, rot_tol = 1.0E-10;
 
-  fatomic_num = new double[optinfo.nallatom];
-  for (i=0;i<optinfo.nallatom;++i)
+  fatomic_num = new double[optinfo.natom];
+  for (i=0;i<optinfo.natom;++i)
     fatomic_num[i] = carts.get_fatomic_num(i);
 
-  fcoord = carts.get_fcoord();
+  coord = carts.get_coord();
 
-  energy = repulsion(fatomic_num,fcoord);
+  energy = repulsion(fatomic_num,coord);
 
-  disp_fcoord = new double [3*optinfo.nallatom];
+  disp_coord = new double [3*optinfo.natom];
   for (ivect=0; ivect<num_nonzero; ++ivect) {
 
-    for (i=0;i<(3*optinfo.nallatom);++i)
-      disp_fcoord[i] = fcoord[i];
+    for (i=0;i<(3*optinfo.natom);++i)
+      disp_coord[i] = coord[i];
 
     cnt = -1;
     for (i=0;i<simples.stre.get_num();++i) {
@@ -323,8 +322,8 @@ void rm_rotations(internals &simples, cartesians &carts, int &num_nonzero,
       b = simples.stre.get_B(i);
       ++cnt;
       for (k=0;k<3;++k) {
-        disp_fcoord[3*a+k] += scale * evects[cnt][ivect] * simples.stre.get_s_A(i,k);
-        disp_fcoord[3*b+k] += scale * evects[cnt][ivect] * simples.stre.get_s_B(i,k);
+        disp_coord[3*a+k] += scale * evects[cnt][ivect] * simples.stre.get_s_A(i,k);
+        disp_coord[3*b+k] += scale * evects[cnt][ivect] * simples.stre.get_s_B(i,k);
       }
     }
     for (i=0;i<simples.bend.get_num();++i) {
@@ -333,9 +332,9 @@ void rm_rotations(internals &simples, cartesians &carts, int &num_nonzero,
       c = simples.bend.get_C(i);
       ++cnt;
       for (k=0;k<3;++k) {
-        disp_fcoord[3*a+k] += scale * evects[cnt][ivect] * simples.bend.get_s_A(i,k);
-        disp_fcoord[3*b+k] += scale * evects[cnt][ivect] * simples.bend.get_s_B(i,k);
-        disp_fcoord[3*c+k] += scale * evects[cnt][ivect] * simples.bend.get_s_C(i,k);
+        disp_coord[3*a+k] += scale * evects[cnt][ivect] * simples.bend.get_s_A(i,k);
+        disp_coord[3*b+k] += scale * evects[cnt][ivect] * simples.bend.get_s_B(i,k);
+        disp_coord[3*c+k] += scale * evects[cnt][ivect] * simples.bend.get_s_C(i,k);
       }
     }
     for (i=0;i<simples.tors.get_num();++i) {
@@ -345,10 +344,10 @@ void rm_rotations(internals &simples, cartesians &carts, int &num_nonzero,
       d = simples.tors.get_D(i);
       ++cnt;
       for (k=0;k<3;++k) {
-        disp_fcoord[3*a+k] += scale * evects[cnt][ivect] * simples.tors.get_s_A(i,k);
-        disp_fcoord[3*b+k] += scale * evects[cnt][ivect] * simples.tors.get_s_B(i,k);
-        disp_fcoord[3*c+k] += scale * evects[cnt][ivect] * simples.tors.get_s_C(i,k);
-        disp_fcoord[3*d+k] += scale * evects[cnt][ivect] * simples.tors.get_s_D(i,k);
+        disp_coord[3*a+k] += scale * evects[cnt][ivect] * simples.tors.get_s_A(i,k);
+        disp_coord[3*b+k] += scale * evects[cnt][ivect] * simples.tors.get_s_B(i,k);
+        disp_coord[3*c+k] += scale * evects[cnt][ivect] * simples.tors.get_s_C(i,k);
+        disp_coord[3*d+k] += scale * evects[cnt][ivect] * simples.tors.get_s_D(i,k);
       }
     }
     for (i=0;i<simples.out.get_num();++i) {
@@ -358,13 +357,13 @@ void rm_rotations(internals &simples, cartesians &carts, int &num_nonzero,
       d = simples.out.get_D(i);
       ++cnt;
       for (k=0;k<3;++k) {
-        disp_fcoord[3*a+k] += scale * evects[cnt][ivect] * simples.out.get_A(i);
-        disp_fcoord[3*b+k] += scale * evects[cnt][ivect] * simples.out.get_B(i);
-        disp_fcoord[3*c+k] += scale * evects[cnt][ivect] * simples.out.get_C(i);
-        disp_fcoord[3*d+k] += scale * evects[cnt][ivect] * simples.out.get_D(i);
+        disp_coord[3*a+k] += scale * evects[cnt][ivect] * simples.out.get_A(i);
+        disp_coord[3*b+k] += scale * evects[cnt][ivect] * simples.out.get_B(i);
+        disp_coord[3*c+k] += scale * evects[cnt][ivect] * simples.out.get_C(i);
+        disp_coord[3*d+k] += scale * evects[cnt][ivect] * simples.out.get_D(i);
       }
     }
-    disp_energy = repulsion(fatomic_num, disp_fcoord);
+    disp_energy = repulsion(fatomic_num, disp_coord);
     // fprintf(outfile,"dispenergy - energy: %16.12lf\n",disp_energy - energy);
     if (fabs(disp_energy - energy) < rot_tol) {
       fprintf(outfile,"rotational coordinate eliminated");
@@ -376,22 +375,22 @@ void rm_rotations(internals &simples, cartesians &carts, int &num_nonzero,
       --num_nonzero;
     }
   }
-  free(fcoord);
-  delete [] disp_fcoord;
+  free(coord);
+  delete [] disp_coord;
   return;
 }
 
-double repulsion(double *fatomic_num, double *fcoord) {
+double repulsion(double *fatomic_num, double *coord) {
   int i, j, dim;
   double dist, tval = 0.0;
 
-  dim = optinfo.nallatom;
+  dim = optinfo.natom;
   for (i=0; i<dim; ++i)
     for (j=0; j<i; ++j) {
       dist = sqrt(
-          SQR(fcoord[3*i+0]-fcoord[3*j+0])
-          + SQR(fcoord[3*i+1]-fcoord[3*j+1])
-          + SQR(fcoord[3*i+2]-fcoord[3*j+2]) );
+          SQR(coord[3*i+0]-coord[3*j+0])
+          + SQR(coord[3*i+1]-coord[3*j+1])
+          + SQR(coord[3*i+2]-coord[3*j+2]) );
 
       tval += fatomic_num[i]*fatomic_num[j] / dist;
     }

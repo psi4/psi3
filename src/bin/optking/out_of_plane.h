@@ -71,12 +71,20 @@ class out_set {
   public:
  
    out_set(int size) {
-       if (0 <= size < 10000) {
-	   out_array = new out_class[size];
-	 }
-       else{ fprintf(outfile,"\nWARNING: bad number of out of plane angles\n");
-	 }
-     }
+     if (0 <= size < 10000)
+       out_array = new out_class[size];
+     else 
+       fprintf(outfile,"\nWARNING: bad number of out of plane angles\n");
+   }
+
+   out_set(void) { } /* don't allocate memory yet */
+
+   void allocate(int size) {
+     if (0 <= size < 10000)
+       out_array = new out_class[size];
+     else 
+       fprintf(outfile,"\nWARNING: bad number of out of plane angles\n");
+   }
 
    ~out_set() {
      // fprintf(stdout,"destructing out_set\n");

@@ -25,7 +25,7 @@ extern "C" {
 #include "bond_lengths.h"
 
 double **compute_B(internals &simples, salc_set &symm);
-void new_geom(cartesians &carts, internals &simples, salc_set &symm, double *dq,
+int new_geom(cartesians &carts, internals &simples, salc_set &symm, double *dq,
     int print_to_geom_file, int restart_geom_file, 
     char *disp_label, int disp_num, int last_disp, double *return_geom);
 

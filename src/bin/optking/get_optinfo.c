@@ -46,6 +46,8 @@ void get_optinfo() {
   ip_boolean("PRINT_DELOCALIZE", &(optinfo.print_delocalize),0);
   optinfo.print_symmetry = 0;
   ip_boolean("PRINT_SYMMETRY", &(optinfo.print_symmetry),0);
+  optinfo.print_hessian = 0;
+  ip_boolean("PRINT_HESSIAN", &(optinfo.print_hessian),0);
 
   /* optimization parameters */
   optinfo.optimize = 1;
@@ -55,19 +57,23 @@ void get_optinfo() {
     optinfo.optimize = 0;
   }
 
-  optinfo.redundant = 0;
-  ip_boolean("REDUNDANT", &(optinfo.redundant),0);
   optinfo.bfgs = 1;
   ip_boolean("BFGS",&(optinfo.bfgs),0);
+  optinfo.bfgs_use_last = 6;
+  ip_data("BFGS_USE_LAST","%d",&(optinfo.bfgs_use_last),0);
   optinfo.mix_types = 1;
   ip_boolean("MIX_TYPES",&(optinfo.mix_types),0);
-  optinfo.delocalize = 1;
-  ip_boolean("DELOCALIZE",&(optinfo.delocalize),0);
+
+  optinfo.redundant = 1;
+  optinfo.delocalize = 0;
+  ip_boolean("DELOCALIZE", &(optinfo.delocalize),0);
+  if (optinfo.delocalize)
+    optinfo.redundant = 0;
 
   optinfo.zmat = 0;
   if (ip_exist("ZMAT",0)) optinfo.zmat = 1;
 
-  optinfo.zmat_simples = 1;
+  optinfo.zmat_simples = 0;
   ip_boolean("ZMAT_SIMPLES",&(optinfo.zmat_simples),0);
 
   a = 5;
@@ -85,12 +91,12 @@ void get_optinfo() {
   ip_data("EDISP","%lf",&(optinfo.disp_size),0);
 
   /* back-transformation parameters */
-  optinfo.bt_max_iter = 100;
+  optinfo.bt_max_iter = 60;
   ip_data("BT_MAX_ITER","%d",&(optinfo.bt_max_iter),0);
-  a = 11;
+  a = 2; /* some minimal level of this seems necessary for butane */
   ip_data("BT_DQ_CONV","%d",&a,0);
   optinfo.bt_dq_conv  = power(10.0, -1*a);
-  a = 11;
+  a = 7;
   ip_data("BT_DX_CONV","%d",&a,0);
   optinfo.bt_dx_conv  = power(10.0, -1*a);
 
@@ -148,8 +154,10 @@ void get_optinfo() {
     fprintf(outfile,"print_symmetry %d\n",optinfo.print_symmetry);
     fprintf(outfile,"optimize:      %d\n",optinfo.optimize);
     fprintf(outfile,"zmat:          %d\n",optinfo.zmat);
+    fprintf(outfile,"zmat_simples:  %d\n",optinfo.zmat_simples);
     fprintf(outfile,"redundant:     %d\n",optinfo.redundant);
     fprintf(outfile,"bfgs:          %d\n",optinfo.bfgs);
+    fprintf(outfile,"bfgs_use_last: %d\n",optinfo.bfgs_use_last);
     fprintf(outfile,"mix_types:     %d\n",optinfo.mix_types);
     fprintf(outfile,"delocalize:    %d\n",optinfo.delocalize);
     fprintf(outfile,"conv:          %.1e\n",optinfo.conv);

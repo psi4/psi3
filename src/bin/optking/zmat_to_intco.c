@@ -27,7 +27,6 @@ void zmat_to_intco() {
   nallatom = optinfo.nallatom;
   natom = optinfo.natom;
 
-  if ( !(optinfo.simples_present) && (optinfo.zmat_simples) ) {
     chkpt_init(PSIO_OPEN_OLD);
     zmat = chkpt_rd_zmat();
     chkpt_close();
@@ -40,7 +39,7 @@ void zmat_to_intco() {
       a = i+1;
       b = zmat[i].bond_atom;
       swap(&a, &b);
-      if (zmat[i].bond_opt)
+      if (zmat[i].bond_opt == 1)
         fprintf(fp_intco, "    (%d %d %d)\n",++cnt, a, b);
     }
     fprintf(fp_intco,"  )\n");
@@ -51,8 +50,7 @@ void zmat_to_intco() {
       b = zmat[i].bond_atom;
       c = zmat[i].angle_atom;
       swap(&a, &c);
-      if (zmat[i].angle_opt) {
-      fprintf(fp_intco,"angle_opt %d\n",zmat[i].angle_opt);
+      if (zmat[i].angle_opt == 1) {
         fprintf(fp_intco, "    (%d %d %d %d)\n",++cnt, a, b, c);
         }
     }
@@ -65,14 +63,13 @@ void zmat_to_intco() {
       c = zmat[i].angle_atom;
       d = zmat[i].tors_atom;
       swap_tors(&a, &b, &c, &d);
-      if (zmat[i].tors_opt)
+      if (zmat[i].tors_opt == 1)
         fprintf(fp_intco, "    (%d %d %d %d %d)\n",++cnt, a, b, c, d);
     }
     fprintf(fp_intco,"  )\n");
   
     fprintf(fp_intco,")");
     fclose(fp_intco);
-  }
 
   return;
 }

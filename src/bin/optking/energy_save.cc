@@ -25,7 +25,7 @@ void energy_save(cartesians &carts) {
   int i,j,dim_carts,total_num_disps;
   double energy, *micro_e, *micro_grad, *grad;
 
-  dim_carts = 3*optinfo.nallatom;
+  dim_carts = 3*optinfo.natom;
   fprintf(outfile,"Saving energy.\n");
 
   open_PSIF();

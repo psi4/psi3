@@ -57,6 +57,14 @@ class stretch_set {
 	else { fprintf(outfile,"\nWARNING: bad number of stretches\n"); }
       }
 
+   stretch_set(void) { } /* don't allocate memory yet */
+   void allocate(int size) {
+	 if (0 <= size <10000)
+	   stre_array = new stretch_class[size];
+	 else 
+       fprintf(outfile,"\nWARNING: bad number of stretches\n");
+   }
+
    ~stretch_set() {
      // ~stretch_class is called automatically
      // fprintf(stdout,"destructing stretch_set\n");

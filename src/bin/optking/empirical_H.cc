@@ -148,6 +148,13 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
                       -r1[1]*r2[0]*r3[2] ) / (norm_r1*norm_r2*norm_r3)));
       f[++count] = _hartree2J*1.0E18 * (A * val * val * val * val);
    }
+   for (i=0;i<simples.lin_bend.get_num();++i) {
+      atomA = simples.lin_bend.get_A(i);
+      atomB = simples.lin_bend.get_B(i);
+      atomC = simples.lin_bend.get_C(i);
+      val = 0.10;
+      f[++count] = val * _hartree2J*1.0E18;
+   }
    free(coord);
 
   // Now transform into delocalized coordinates U^t H U

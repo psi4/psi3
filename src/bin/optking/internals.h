@@ -4,6 +4,7 @@
 #include "bend.h"
 #include "torsion.h"
 #include "out_of_plane.h"
+#include "lin_bend.h"
 
 class internals {
 
@@ -15,6 +16,7 @@ class internals {
    bend_set bend;
    torsion_set tors;
    out_set out;
+   lin_bend_set lin_bend;
   
     int stretch_count;
     void set_stretch_count(int i) { stretch_count = i;}
@@ -28,7 +30,7 @@ class internals {
 
    // user_intcos = 1; read in internals
    //               0; generate internals
-    internals(cartesians& carts, int user_intcos, int *num_arr);
+    internals(cartesians& carts, int user_intcos);
     internals(int *num_arr);
 
    // print_flag: 0   print to a file in intco.dat format

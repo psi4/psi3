@@ -78,11 +78,19 @@ class torsion_set {
   public:
 
    torsion_set(int size){
-       if(0 <= size < 10000) {
+     if(0 <= size < 10000)
 	   tors_array = new torsion_class[size];
-	 }
-       else { fprintf(outfile,"\nWARNING: bad number of torsions\n");
-       }
+     else 
+       fprintf(outfile,"\nWARNING: bad number of torsions\n");
+   }
+
+   torsion_set(void){ } /* don't allocate memory yet */
+
+   void allocate(int size) {
+     if(0 <= size < 10000)
+       tors_array = new torsion_class[size];
+     else
+       fprintf(outfile,"\nWARNING: bad number of torsions\n");
    }
 
    ~torsion_set() {
@@ -240,10 +248,16 @@ class torsion_set {
 
         // extend domain of torsions so delta(values) can be calculated
         angle = sign * angle * 180.0 / _pi;
-        if ((get_near_lin(i) == -1) && (angle > 160.0))
+        if ((get_near_lin(i) == -1) && (angle > 160.0)) {
+// fprintf(outfile,"get_near_lin(%d)=%d angle %15.10lf angle %15.10lf\n",
+    // i, get_near_lin(i), angle, -180.0 - (180.0 - angle) );
           angle = -180.0 - (180.0 - angle);
-        else if ((get_near_lin(i) == +1) && (angle < -160.0))
+        }
+        else if ((get_near_lin(i) == +1) && (angle < -160.0)) {
+// fprintf(outfile,"get_near_lin(%d)=%d angle %15.10lf angle %15.10lf\n",
+    // i, get_near_lin(i), angle, +180.0 + (180.0 + angle) );
           angle = +180.0 + (180.0 + angle);
+        }
 
         set_val(i,angle);
       }
@@ -253,10 +267,12 @@ class torsion_set {
     void fix_near_lin(void) {
       int i, lin;
       for (i=0;i<num;++i) {
-        if ( get_val(i) > 160.0)
+        if ( get_val(i) > 160.0) {
           lin = +1;
-        else if ( get_val(i) < -160.0)
+        }
+        else if ( get_val(i) < -160.0) {
           lin = -1;
+        }
         else
           lin = 0;
         set_near_lin(i,lin);
@@ -337,7 +353,8 @@ class torsion_set {
              return get_id(i);
        }
 
-       fprintf(outfile,"assuming torsion has no symmetry partners\n");
+       if (optinfo.delocalize)
+         fprintf(outfile,"assuming torsion has no symmetry partners\n");
        for (i=0;i<num;++i) {
          if ( (a == get_A(i)) && (c == get_B(i))
            && (b == get_C(i)) && (d == get_D(i)))

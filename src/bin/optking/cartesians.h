@@ -58,6 +58,16 @@ class cartesians {
         copy[i] = coord[i];
       return copy;
     }
+    double **get_coord_2d() {
+      int i,j,cnt;
+      double **copy;
+      copy = block_matrix(natom,3);
+      cnt=0;
+      for (i=0; i<natom; ++i)
+        for (j=0; j<3; ++j)
+          copy[i][j] = coord[cnt++];
+      return copy;
+    }
     double *get_fcoord() {
       int i;
       double *copy;

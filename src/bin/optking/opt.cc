@@ -1,4 +1,4 @@
-/*** OPT.CC Rollin King, 1999, 2002 ***/
+/*** OPT.CC Rollin King, begun 1999 ***/
 
 /*
 command-line      internal specifier   what it does
@@ -67,9 +67,8 @@ extern int opt_step(cartesians &carts, internals &simples, salc_set &symm_salcs)
 int main(int argc, char **argv) {
 
     int i,j,a,b,dim,count,dim_carts,user_intcos;
-    int parsed=1;
-    int num_disps, disp_length, *number_internals;
-    double *fcoord, *f;
+    int parsed=1, num_disps, disp_length;
+    double *f, *coord; 
     char *disp_label, *buffer, *err;
 
     // Set defaults & read command-line arguments
@@ -143,8 +142,6 @@ int main(int argc, char **argv) {
         exit(1);
       }
     }
-    // printf("optinfo.mode %d\n",optinfo.mode);
-    // printf("optinfo.points %d\n",optinfo.points);
 
     psi_start(argc-parsed,argv+parsed,0);
     /* init_in_out() sets the value of "infile", so we need to save it */
@@ -174,13 +171,19 @@ int main(int argc, char **argv) {
     psio_init();
     get_optinfo();
 
-    // generate simples from zmat if optinfo.z_matrix == 1
-    if (optinfo.zmat) zmat_to_intco();
+    // generate simples from zmat
+    if ( optinfo.zmat_simples && !(optinfo.simples_present)) {
+      zmat_to_intco();
+      optinfo.simples_present = 1;
+      ffile(&fp_intco, "intco.dat", 2);
+      ip_append(fp_intco, outfile) ;
+      ip_cwk_add(":INTCO");
+    }
 
     disp_label = new char[MAX_LINELENGTH];
     /* loads up geometry, (possibly gradient and energy) from chkpt */
     cartesians carts;
-    dim_carts = carts.get_nallatom()*3;
+    dim_carts = carts.get_natom()*3;
     if ((optinfo.mode == MODE_OPT_STEP) || (optinfo.mode == MODE_GRAD_SAVE)) {
       fprintf(outfile,
       "\nCartesian geometry and possibly gradient in a.u. with masses\n");
@@ -195,19 +198,12 @@ int main(int argc, char **argv) {
     delete [] disp_label;
     fflush(outfile);
 
-    /* the following function and constructor have a lot of identical code */
-    number_internals = count_internals(carts, optinfo.simples_present); 
-    //  fprintf(outfile,"stre: %d bend: %d tors: %d oop: %d\n",
-    //          number_internals[0], number_internals[1], number_internals[2], 
-    //          number_internals[3]);
-    internals simples(carts, optinfo.simples_present,number_internals);
-    // simples.compute_internals(carts.get_natom(),carts.get_coord());
-    fcoord = carts.get_fcoord();
-    simples.compute_internals(carts.get_nallatom(), fcoord);
-    //simples.compute_s(carts.get_natom(),carts.get_coord() );
-    simples.compute_s(carts.get_nallatom(), fcoord);
-    //simples.print_s();
-    free(fcoord);
+    internals simples(carts, optinfo.simples_present);
+    coord = carts.get_coord();
+    simples.compute_internals(carts.get_natom(), coord);
+    simples.compute_s(carts.get_natom(), coord);
+    // simples.print_s();
+    free(coord);
     if ( (optinfo.mode != MODE_DISP_LOAD) && (optinfo.mode != MODE_LOAD_REF)) {
       fprintf(outfile,"\nSimple Internal Coordinates and Values\n");
       simples.print(outfile,1);
@@ -227,8 +223,7 @@ int main(int argc, char **argv) {
         delocalize(simples, carts);
       }
       else {
-        fprintf(outfile,"\nUsing simple, possibly redundant, internal \
-            coordinates.\n");
+        fprintf(outfile,"\nUsing simple, possibly redundant, internal coordinates.\n");
         ffile(&fp_intco, "intco.dat", 2);
         count = 0;
         for( ; ; ) {
@@ -265,7 +260,8 @@ int main(int argc, char **argv) {
     if (optinfo.mode == MODE_OPT_STEP) {
       fprintf(outfile," \n ** Taking normal optimization step. **\n");
       salc_set symm_salcs("SYMM");
-      symm_salcs.print();
+      if (!optinfo.redundant)
+        symm_salcs.print();
       a = opt_step(carts, simples, symm_salcs);
       free_info(simples.get_num());
       exit_io();
@@ -297,9 +293,7 @@ int main(int argc, char **argv) {
       }
       free_info(simples.get_num());
       exit_io();
-/* Must be allowed to return a positive number */
-       return(num_disps);
-     //  return 0;
+      return(num_disps);
     }
 
     if (optinfo.mode == MODE_LOAD_REF) {
@@ -309,33 +303,6 @@ int main(int argc, char **argv) {
       exit_io();
       return 0;
     }
-
-    /*
-    if (optinfo.mode == MODE_DISP_SYMM) {
-      fprintf(outfile,
-              " \n ** Displacing symmetric modes for 3-point formula\n");
-      salc_set symm("SYMM");
-      symm.print();
-      // disp_all is therefore misnamed
-      num_disps = disp_all(carts, simples, symm, optinfo.points);
-      free_info(simples.get_num());
-      exit_io();
-      return(num_disps);
-    }
-
-    if (optinfo.mode == MODE_DISP_ALL) {
-      fprintf(outfile,"\n ** Displacing all modes for 3-point formula\n");
-      salc_set all_salcs;
-      salc_set symm;
-      all_salcs.print();
-      num_disps = disp_all(carts, simples, all_salcs, symm, optinfo.points);
-      free_info(simples.get_num());
-      exit_io();
-      return(num_disps);
-    }
-    */
-
-    int total_num_disps;
 
     // save the gradient and increment disp_num
     if (optinfo.mode == MODE_GRAD_SAVE) {
@@ -353,6 +320,8 @@ int main(int argc, char **argv) {
       return 0;
     }
 
+    int total_num_disps;
+
     if (optinfo.mode == MODE_DISP_LOAD) {
       double **micro_geoms, **geom2D;
 
@@ -368,13 +337,13 @@ int main(int argc, char **argv) {
           sizeof(double));
       close_PSIF();
 
-      geom2D = block_matrix(carts.get_nallatom(),3);
-      for (i=0; i<carts.get_nallatom(); ++i)
+      geom2D = block_matrix(carts.get_natom(),3);
+      for (i=0; i<carts.get_natom(); ++i)
         for (j=0; j<3; ++j)
           geom2D[i][j] = micro_geoms[optinfo.disp_num][3*i+j];
 
       chkpt_init(PSIO_OPEN_OLD);
-      chkpt_wt_fgeom(geom2D);
+      chkpt_wt_geom(geom2D);
       chkpt_close();
       fprintf(outfile,"\n ** Geometry for displacement %d sent to chkpt. **\n", 
               optinfo.disp_num+1);
@@ -416,32 +385,6 @@ int main(int argc, char **argv) {
       return(0);
     }
 
-    /*
-    if (optinfo.mode == MODE_FREQ_GRAD) {
-      fprintf(outfile,"\n ** Calculating frequencies from gradients. **\n");
-      salc_set all_salcs;
-      all_salcs.print();
-      freq_grad(carts, simples, all_salcs);
-      free_info(simples.get_num());
-      exit_io();
-      return(0);
-    }
-
-    if (optinfo.mode == MODE_FREQ_GRAD_SYMM) {
-      fprintf(outfile,"\n ** Calculating frequencies from gradients. **\n");
-      salc_set symm_salcs("SYMM");
-      symm_salcs.print();
-      freq_grad(carts, simples, symm_salcs);
-      free_info(simples.get_num());
-      exit_io();
-      return 0;
-    }
-    */
-
-    free(number_internals);
-    return(0);
-
-    free(number_internals);
     return(0);
   }
 
@@ -452,11 +395,9 @@ void intro(int argc, char **argv) {
     fprintf(outfile,
             "\n\t------------------------------------------------------\n");
     fprintf(outfile,
-            "\t OPTKING: For internal coordinate optimizations and   \n");
+              "\t    OPTKING: for internal coordinate optimizations    \n");
     fprintf(outfile,
-            "\t and vibrational frequencies, Rollin King, 1999, 2002 \n");
-    fprintf(outfile,
-            "\t------------------------------------------------------\n");
+              "\t------------------------------------------------------\n");
   }
   else {
     fprintf(outfile,"\n******* OPTKING: ");
@@ -466,157 +407,11 @@ void intro(int argc, char **argv) {
   }
 }
 
-  /*** COUNT_INTERNALS : counts the simple internals present in intco or
-   * that will be generated - code reproduces lots of stuff done in the
-   * internals constructor ***/
-
-  int *count_internals(cartesians &cart_geom, int intco_given) {
-
-    int i,j,k,l,a,b, natom, num, count, Zmax,Zmin;
-    int *ioff, *count_array, **bonds;            
-    double *coord, *distance;     
-
-    count_array = init_int_array(4);
-
-    if (intco_given) {
-      num=0;
-      if (ip_exist("STRE",0)) ip_count("STRE",&num,0);
-      count_array[0]=num;
-
-      num=0;
-      if (ip_exist("BEND",0)) ip_count("BEND",&num,0);
-      count_array[1]=num;
-
-      num=0;
-      if (ip_exist("TORS",0)) ip_count("TORS",&num,0);
-      count_array[2]=num;
-
-      num=0;
-      if (ip_exist("OUT",0)) ip_count("OUT",&num,0);
-      count_array[3]=num;
-    }
-    else {
-      natom = cart_geom.get_natom();
-      coord = cart_geom.get_coord();
-
-      ioff = (int *) malloc (32641 * sizeof(int));
-      ioff[0]=0;
-      for (i=1;i<32641;++i)
-        ioff[i] = ioff[i-1] + i;
-
-      /* compute distances */
-      distance = init_array( ((natom+1)*natom)/2 );
-      count = -1;
-      for(i=0;i<natom;++i) {
-        for(j=0;j<=i;++j) {
-          distance[++count] = sqrt(SQR(coord[3*i+0]-coord[3*j+0]) +
-              SQR(coord[3*i+1]-coord[3*j+1]) +
-              SQR(coord[3*i+2]-coord[3*j+2]));
-        }
-      }
-
-      /* determine bonds */
-      bonds = init_int_matrix(natom,natom);
-      for (i=0;i<natom;++i) {
-        for(j=0;j<i;++j) {
-          Zmax = MAX((int)cart_geom.get_atomic_num(i),(int)cart_geom.get_atomic_num(j));
-          Zmin = MIN((int)cart_geom.get_atomic_num(i),(int)cart_geom.get_atomic_num(j));
-          a = ioff[Zmax-1] + (Zmin-1);
-          if (bondl[a] != 0.0) {
-            if (distance[ioff[i]+j]<(optinfo.scale_connectivity * bondl[a])) {
-              bonds[i][j] = 1;
-              bonds[j][i] = 1;
-            }
-          }
-          else {
-            fprintf(outfile,"WARNING! Optking does not know what bond lengths");
-            fprintf(outfile,"to expect for all the atoms.\n");
-            fprintf(outfile,"You may have to specify connectivity in input.");
-          }
-        }
-      }
-
-      /* check input for user specified bonds or nobonds */
-      if (ip_exist("BONDS",0)) {
-        ip_count("BONDS",&num,0);
-        for(i=0;i<num;++i) {
-          ip_data("BONDS","%d",&a,2,i,0);
-          ip_data("BONDS","%d",&b,2,i,0);
-          a -= 1;  b -= 1;
-          bonds[a][b] = 1;
-          bonds[b][a] = 1;
-        }
-      }
-
-      if (ip_exist("NOBONDS",0)) {
-        ip_count("NOBONDS",&num,0);
-        for(i=0;i<num;++i) {
-          ip_data("NOBONDS","%d",&a,2,i,0);
-          ip_data("NOBONDS","%d",&b,2,i,0);
-          a -= 1;  b -= 1;
-          bonds[a][b] = 0;
-          bonds[b][a] = 0;
-        }
-      }
-
-      /* count number of bonds */
-      num=0;
-      for(i=0; i<natom; ++i)
-        for(j=i+1; j<natom; ++j)
-          if(bonds[i][j] == 1) ++num;
-      count_array[0]=num;
-
-      /* count number of bends */
-      num=0;
-      for(i=0;i<natom;++i) {
-        for(j=0;j<natom;++j) {
-          if(i!=j) {
-            for(k=i+1; k<natom; ++k) {
-              if(j!=k) {
-                if (bonds[i][j] && bonds[j][k]) ++num;
-              }
-            }
-          }
-        }
-      }
-      count_array[1]=num;
-
-      /* count number of torsions */
-      num=0;
-      for(i=0;i<natom;++i) {
-        for(j=0;j<natom;++j) {
-          if(i!=j) {
-            for(k=0; k<natom; ++k) {
-              if((i != k) && (j != k)) {
-                for(l=i+1; l<natom; ++l) {
-                  if((l != j) && (l != k) && bonds[i][j] && bonds[j][k] && 
-                     bonds[k][l]) {
-                    ++num;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-      count_array[2]=num;
-      count_array[3]=0; // no out of planes
-
-      free(ioff);
-      free(distance);
-      free(coord);
-      free_int_matrix(bonds,natom);
-    }
-    return count_array;
-  }
-
-
 void free_info(int nsimples) {
-  int i,j,nallatom,natom;
-  nallatom = optinfo.nallatom;
+  int i,j,natom;
   natom = optinfo.natom;
 
-  // free syminfo
+ // free syminfo
   free(syminfo.symmetry);
   for (i=0; i<syminfo.nirreps; ++i) {
     free(syminfo.ct[i]);
@@ -647,32 +442,32 @@ void free_info(int nsimples) {
 
 void load_ref(cartesians &carts) {
   int i,j,cnt;
-  double *fgeom, **fgeom2D,*grad, energy;
+  double *geom, **geom2D,*grad, energy;
 
-  fgeom = init_array(carts.get_nallatom() * 3);
+  geom = init_array(carts.get_natom() * 3);
   open_PSIF();
   psio_read_entry(PSIF_OPTKING, "OPT: Reference geometry",
-           (char *) &(fgeom[0]), (int) 3*carts.get_nallatom()*sizeof(double));
+           (char *) &(geom[0]), (int) 3*carts.get_natom()*sizeof(double));
   psio_read_entry(PSIF_OPTKING, "OPT: Reference energy",
                 (char *) &(energy), sizeof(double));
   // reference gradient assumed 0
-  grad = init_array(3*carts.get_nallatom());
+  grad = init_array(3*carts.get_natom());
   close_PSIF();
 
   cnt = 0;
-  fgeom2D = block_matrix(carts.get_nallatom(), 3);
-  for (i=0;i<carts.get_nallatom();++i)
+  geom2D = block_matrix(carts.get_natom(), 3);
+  for (i=0;i<carts.get_natom();++i)
     for (j=0;j<3;++j)
-      fgeom2D[i][j] = fgeom[cnt++];
+      geom2D[i][j] = geom[cnt++];
 
   /*
-  for (i=0;i<carts.get_nallatom();++i)
+  for (i=0;i<carts.get_natom();++i)
     for (j=0;j<3;++j)
-      fprintf(outfile,"%15.10lf\n", fgeom2D[i][j]);
+      fprintf(outfile,"%15.10lf\n", geom2D[i][j]);
       */
 
   chkpt_init(PSIO_OPEN_OLD);
-  chkpt_wt_fgeom(fgeom2D);
+  chkpt_wt_geom(geom2D);
   chkpt_wt_grad(grad);
   chkpt_wt_etot(energy);
 //  fprintf(outfile,"%15.10lf\n",energy);

@@ -19,6 +19,7 @@
 #define BEND_TYPE (1)
 #define TORS_TYPE (2)
 #define OUT_TYPE (3)
+#define LIN_BEND_TYPE (4)
 #define NUM_INTCO_TYPES (4)
 #define PRINT_TO_GEOM (113)
 #define PRINT_TO_30 (114)
@@ -31,12 +32,13 @@
 #define MAX(I,J) ((I>J) ? I : J)
 #define MIN(I,J) ((I>J) ? J : I)
 #define EVAL_TOL (1.0E-14)                                     /* tolerance for eigenvalues (used in sq_rsp() and irrep() ) */
-#define REDUNDANT_EVAL_TOL (1.0E-7)
+#define REDUNDANT_EVAL_TOL (1.0E-10)
 #define SPANNED_IRREP_TOL (0.05)                               /* if character greater than this, irrep projected and kept */
 #define LABEL_LENGTH (4) // for point group and irrep labels
 /* step size limits */
-#define STEP_LIMIT (0.1)                                       /* max step size if di coord has small value */
-#define STEP_PERCENT (0.1)                                     /* if di coord large valued, max percentage allowed for step */
+#define STEP_LIMIT (0.1)     /* max step size if coord has small value */
+#define STEP_PERCENT (0.3)   /* if coord large valued, max percentage allowed for step */
+#define NONLINEAR_DIST (4.0E-3)
 
 EXTERN FILE *infile, *outfile;
 EXTERN char *psi_file_prefix;
@@ -63,6 +65,7 @@ C_EXTERN double **symm_matrix_invert(double **A, int dim, int print_det, int red
 C_EXTERN double energy_chkpt(void);
 C_EXTERN void dgeev_optking(int L, double **G, double *lambda, double **alpha);
 C_EXTERN double **mass_mat(double *masses);
+C_EXTERN double **unit_mat(int dim);
 C_EXTERN void swap(int *a, int *b);
 C_EXTERN void swap_tors(int *a, int *b, int *c, int *d);
 C_EXTERN void zval_to_symbol(double zval, char *sym);
@@ -86,6 +89,7 @@ extern "C" double **symm_matrix_invert(double **A, int dim, int print_det, int r
 extern "C" double energy_chkpt(void);
 extern "C" void dgeev_optking(int L, double **G, double *lambda, double **alpha);
 extern "C" double **mass_mat(double *masses);
+extern "C" double **unit_mat(int dim);
 extern "C" void swap(int *a, int *b);
 extern "C" void swap_tors(int *a, int *b, int *c, int *d);
 extern "C" void zval_to_symbol(double zval, char *sym);
@@ -121,6 +125,7 @@ struct OPTInfo {
   int print_params;
   int print_delocalize;
   int print_symmetry;
+  int print_hessian;
 
 /* optimization parameters */
   int optimize;
@@ -130,6 +135,7 @@ struct OPTInfo {
   int zmat;
   int zmat_simples;
   int bfgs;
+  int bfgs_use_last;
   int dertype;
   int numerical_dertype;
   int iteration;

@@ -42,7 +42,7 @@ void print_mat2(double **matrix, int rows, int cols, FILE *of) {
         fprintf(outfile,"\n");
         col = 0;
       }
-      fprintf(of,"%20.12f",matrix[i][j]);
+      fprintf(of,"%15.10lf",matrix[i][j]);
       ++col;
     }
     fprintf(outfile,"\n");
@@ -56,7 +56,7 @@ void print_mat5(double **matrix, int rows, int cols, FILE *of) {
   for (i=0;i<rows;++i) {
     col = 0;
     for (j=0;j<cols;++j) {
-      if (col == 9) {
+      if (col == 14) {
         fprintf(outfile,"\n");
         col = 0;
       }
@@ -196,6 +196,8 @@ double **symm_matrix_invert(double **A, int dim, int print_det, int redundant) {
       det *= A_vals[i];
       if (fabs(A_vals[i]) > REDUNDANT_EVAL_TOL)
         A_inv[i][i] = 1.0/A_vals[i];
+      else
+        A_inv[i][i] = 0.0;
     }
     if (print_det)
       fprintf(outfile,"Determinant: %10.6e\n",det);
@@ -262,7 +264,7 @@ double **mass_mat(double *masses) {
     int i, dim;
     double **u;
 
-    dim = 3*optinfo.nallatom;
+    dim = 3*optinfo.natom;
     u = block_matrix(dim,dim);
 
     for (i=0; i<dim; ++i) {
@@ -271,5 +273,16 @@ double **mass_mat(double *masses) {
       else
         u[i][i] = 1.0/masses[i];
     }
+    return u;
+}
+
+double **unit_mat(int dim) {
+    int i;
+    double **u;
+    u = block_matrix(dim,dim);
+
+    for (i=0; i<dim; ++i)
+        u[i][i] = 1.0;
+
     return u;
 }

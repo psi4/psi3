@@ -198,41 +198,41 @@ void cartesians :: print(int print_flag, FILE *fp_out, int new_geom_file,
   char sym[3];
 
   if (print_flag == 0) {
-    for (i = 0; i < nallatom; ++i) {
-      x = fcoord[++cnt]; y = fcoord[++cnt]; z = fcoord[++cnt];
+    for (i = 0; i < natom; ++i) {
+      x = coord[++cnt]; y = coord[++cnt]; z = coord[++cnt];
       fprintf(fp_out,"%20.10f%20.10f%20.10f\n",x,y,z);
     }
   }
   else if (print_flag == 1) {
-    for (i = 0; i < nallatom; ++i) {
-      x = fcoord[++cnt]; y = fcoord[++cnt]; z = fcoord[++cnt];
-      fprintf(fp_out,"%5.1lf%15.10f%15.10f%15.10f\n",fatomic_num[i],x,y,z);
+    for (i = 0; i < natom; ++i) {
+      x = coord[++cnt]; y = coord[++cnt]; z = coord[++cnt];
+      fprintf(fp_out,"%5.1lf%15.10f%15.10f%15.10f\n",atomic_num[i],x,y,z);
     }
   }
   else if (print_flag == 2) {
     cnt = -1;
-    for (i = 0; i < nallatom; ++i) {
-      x = fcoord[++cnt]; y = fcoord[++cnt]; z = fcoord[++cnt];
+    for (i = 0; i < natom; ++i) {
+      x = coord[++cnt]; y = coord[++cnt]; z = coord[++cnt];
       fprintf(fp_out,
-          "%5.1lf%15.8lf%15.10f%15.10f%15.10f\n",fatomic_num[i],fmass[3*i],x,y,z);
+          "%5.1lf%15.8lf%15.10f%15.10f%15.10f\n",atomic_num[i],mass[3*i],x,y,z);
     }
   }
   else if (print_flag == 3) {
     cnt = -1;
-    for (i = 0; i < nallatom; ++i) {
-      x = fcoord[++cnt]; y = fcoord[++cnt]; z = fcoord[++cnt];
+    for (i = 0; i < natom; ++i) {
+      x = coord[++cnt]; y = coord[++cnt]; z = coord[++cnt];
       fprintf(fp_out,
-          "%5.1lf%15.8lf%15.10f%15.10f%15.10f\n",fatomic_num[i],fmass[3*i],x,y,z);
+          "%5.1lf%15.8lf%15.10f%15.10f%15.10f\n",atomic_num[i],mass[3*i],x,y,z);
     }
     cnt = -1;
-    for (i = 0; i < nallatom; ++i) {
-      x = fgrad[++cnt]; y = fgrad[++cnt]; z = fgrad[++cnt];
+    for (i = 0; i < natom; ++i) {
+      x = grad[++cnt]; y = grad[++cnt]; z = grad[++cnt];
       fprintf(fp_out,
 	      "%35.10lf%15.10f%15.10f\n",x,y,z);
     }
   }
   if (print_flag == 4) {
-    for (i = 0; i < nallatom; ++i) {
+    for (i = 0; i < natom; ++i) {
       x = coord[++cnt]; y = coord[++cnt]; z = coord[++cnt];
       fprintf(fp_out,"%20.10f%20.10f%20.10f\n",x,y,z);
     }
@@ -294,30 +294,33 @@ void cartesians :: print(int print_flag, FILE *fp_out, int new_geom_file,
   else if (print_flag == 32) {
 
     fprintf(outfile,"\nGeometry written to chkpt\n");
-    chkpt_init(PSIO_OPEN_OLD);
-    chkpt_wt_fgeom(&fcoord);
-    chkpt_close();
-/*
+
     double **geom;
-    geom = block_matrix(optinfo.natom,3);
-    for (i=0; i<optinfo.natom; ++i)
+    geom = block_matrix(nallatom,3);
+    for (i=0; i<nallatom; ++i)
       for (j=0; j<3; ++j)
-        geom[i][j] = coord[3*i+j];
-    chkpt_wt_geom(geom);
+        geom[optinfo.to_dummy[i]][j] = coord[3*i+j];
+    chkpt_init(PSIO_OPEN_OLD);
+    chkpt_wt_fgeom(geom);
+    chkpt_close();
     free_block(geom);
 
-    geom = block_matrix(optinfo.nallatom,3);
-    for (i=0; i<optinfo.nallatom; ++i)
+    /*
+    double **tmp2d;
+    chkpt_init(PSIO_OPEN_OLD);
+    tmp2d = chkpt_rd_fgeom();
+    chkpt_close();
+    for (i=0; i<nallatom; ++i)
       for (j=0; j<3; ++j)
-        geom[i][j] = fcoord[3*i+j];
-    chkpt_wt_fgeom(geom);
-    free_block(geom);
-*/
+        fprintf(outfile,"%15.10lf\n", tmp2d[i][j]);
+    free_block(tmp2d);
+    */
+
   }
   else if (print_flag == 12) { 
-    for (i = 0; i < nallatom; ++i) {
-      x = fcoord[++cnt]; y = fcoord[++cnt]; z = fcoord[++cnt];
-      zval_to_symbol(fatomic_num[i],sym);
+    for (i = 0; i < natom; ++i) {
+      x = coord[++cnt]; y = coord[++cnt]; z = coord[++cnt];
+      zval_to_symbol(atomic_num[i],sym);
       fprintf(fp_out,"  (%3s%15.10f%15.10f%15.10f )\n",sym,x,y,z);
     }
   }

@@ -42,7 +42,7 @@ void freq_grad_irrep(cartesians &carts, internals &simples, salc_set &all_salcs,
   double *micro_e, *micro_geom, *micro_grad, *grad, tmp;
   char *salc_lbl;
 
-  dim_carts = 3*carts.get_nallatom();
+  dim_carts = 3*carts.get_natom();
   irrep_salcs = new int[all_salcs.get_num()];
   irrep = optinfo.irrep;
   nsalcs = all_salcs.get_num();
@@ -78,7 +78,7 @@ fprintf(outfile,"Found %d salcs of this irrep\n",nirr_salcs);
 
   micro_geom = new double [ndisps*3*carts.get_natom()];
   psio_read_entry(PSIF_OPTKING, "OPT: Displaced geometries",
-      (char *) &(micro_geom[0]), ndisps*3*carts.get_nallatom()*sizeof(double));
+      (char *) &(micro_geom[0]), ndisps*3*carts.get_natom()*sizeof(double));
 
   close_PSIF();
 
@@ -91,8 +91,8 @@ fprintf(outfile,"Found %d salcs of this irrep\n",nirr_salcs);
   u = mass_mat(masses);
   for (i=0; i<ndisps; ++i) {
 
-    simples.compute_internals(carts.get_nallatom(), &(micro_geom[i*dim_carts]));
-    simples.compute_s(carts.get_nallatom(), &(micro_geom[i*dim_carts]));
+    simples.compute_internals(carts.get_natom(), &(micro_geom[i*dim_carts]));
+    simples.compute_s(carts.get_natom(), &(micro_geom[i*dim_carts]));
     q = compute_q(simples, all_salcs);
 
     /* fprintf(outfile,"Values of internal coordinates, displacement %d\n",i);
@@ -239,7 +239,7 @@ void freq_grad_nosymm(cartesians &carts, internals &simples,
   double **evects, *evals, **FG, tmp;
   double *micro_e, *micro_geom, *micro_grad, *grad;
 
-  dim_carts = 3*carts.get_nallatom();
+  dim_carts = 3*carts.get_natom();
   nsalcs = all_salcs.get_num();
 
   open_PSIF();
@@ -259,7 +259,7 @@ void freq_grad_nosymm(cartesians &carts, internals &simples,
 
   micro_geom = new double [ndisps*3*carts.get_natom()];
   psio_read_entry(PSIF_OPTKING, "OPT: Displaced geometries",
-      (char *) &(micro_geom[0]), ndisps*3*carts.get_nallatom()*sizeof(double));
+      (char *) &(micro_geom[0]), ndisps*3*carts.get_natom()*sizeof(double));
 
   close_PSIF();
 
@@ -269,8 +269,8 @@ void freq_grad_nosymm(cartesians &carts, internals &simples,
 
   // compute forces in internal coordinates, f_q = G_inv B u f
   for (i=0; i<ndisps; ++i) {
-    simples.compute_internals(carts.get_nallatom(), &(micro_geom[i*dim_carts]));
-    simples.compute_s(carts.get_nallatom(), &(micro_geom[i*dim_carts]));
+    simples.compute_internals(carts.get_natom(), &(micro_geom[i*dim_carts]));
+    simples.compute_s(carts.get_natom(), &(micro_geom[i*dim_carts]));
 
     all_q[i] = compute_q(simples, all_salcs);
     B = compute_B(simples,all_salcs);

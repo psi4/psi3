@@ -1,6 +1,7 @@
-// This function reads in hessian (H) from fconst.dat, inverts
-// it to H_inv, and then BFGS updates it.  It writes the new
-// Hessian to fconst.dat and returns H_inv
+// This function reads in 
+// Force Constants H from PSIF_OPTKING (in redundant internal coodinates)
+// does a BFGS update on H
+// inverts H to form H_inv and returns H_inv
 
 #include <cmath>
 extern "C" {
@@ -22,169 +23,169 @@ extern "C" {
 #include "internals.h"
 #include "salc.h"
 
-double **compute_H(salc_set &symm, double *q, double *f_intcos, double **P) {
-  double **F, **H, **H_inv, **H_inv_new, **H_new, **temp_mat, **temp_mat2;
-  double a, b;
-  int i,j,error1,error2,col,count,dim,update;
+void bfgs(double **H, internals &simples, salc_set &symm, cartesians &carts);
+extern double *compute_q(internals &simples, salc_set &symm);
+
+double **compute_H(internals &simples, salc_set &symm, double **P, cartesians &carts) {
+  double **H, **H_inv, **H_inv_new, **H_new, **temp_mat;
+  int i,j,dim, nbfgs;
   char buffer[MAX_LINELENGTH];
 
   dim = symm.get_num();
-  F = block_matrix(dim,dim);
+  H = block_matrix(dim,dim);
 
   /*** Read in force constants from PSIF_OPTKING ***/
   open_PSIF();
   psio_read_entry(PSIF_OPTKING, "Force Constants",
-      (char *) &(F[0][0]),dim*dim*sizeof(double));
+      (char *) &(H[0][0]),dim*dim*sizeof(double));
+  close_PSIF();
+  fprintf(outfile,"\nForce Constants read from PSIF_OPTKING\n");
+
+  // Do BFGS update on H if desired and possible
+  nbfgs = 0;
+  open_PSIF();
+  if ( psio_tocscan(PSIF_OPTKING, "Num. of BFGS Entries") != NULL)
+    psio_read_entry(PSIF_OPTKING, "Num. of BFGS Entries", (char *) &nbfgs, sizeof(int));
   close_PSIF();
 
-  fprintf(outfile,"\nForce Constants read from PSIF_OPTKING\n");
-  for (i=0;i<dim;++i) {
-    for (j=0;j<dim;++j)
-      fprintf(outfile,"%15.10lf",F[i][j]); 
-    fprintf(outfile,"\n");
-  }
-
-  /*
-     ffile(&fp_fconst,"fconst.dat",2);
-     for (i=0;i<dim;++i) {
-     fgets(buffer,MAX_LINELENGTH,fp_fconst);
-     count = 0;
-     for (j=0;j<=i;++j) {
-     if ( div_int(j,8) ) {
-     fgets(buffer,MAX_LINELENGTH,fp_fconst);
-     count = 0;
-     }
-     if (sscanf(buffer+count,"%lf",&(F[i][j])) != 1) {
-     fprintf(outfile,"\nProblem reading force constants.\n");
-     exit(2);
-     }
-     count += 10;
-     }
-     }
-     fclose(fp_fconst);
-     for (i=0;i<dim;++i)
-     for (j=0;j<i;++j)
-     F[j][i] = F[i][j];
-   */
-
-  // Form H_inv = P((PFP)^-1)P
-  // H_inv is same as regular inverse if nonredundant coordinates are used
-  temp_mat = block_matrix(dim,dim);
-  temp_mat2 = block_matrix(dim,dim);
-  H_inv     = block_matrix(dim,dim);
-
-  mmult(F,0,P,0,temp_mat,0,dim,dim,dim,0);
-  mmult(P,0,temp_mat,0,temp_mat2,0,dim,dim,dim,0);
-  temp_mat = symm_matrix_invert(temp_mat2,dim,0,optinfo.redundant);
-  mmult(temp_mat,0,P,0,temp_mat2,0,dim,dim,dim,0);
-  mmult(P,0,temp_mat2,0,H_inv,0,dim,dim,dim,0);
-  free_block(F);
-
-  update = optinfo.bfgs;
-  if (update) {
-    /*** Check if old Forces are available for BFGS update ***/
-    open_PSIF();
-    if ( psio_tocscan(PSIF_OPTKING, "Previous Internal Forces") == NULL)
-      update = 0;
-    close_PSIF();
-  }
-  if (!update) {
+  if (optinfo.bfgs && (nbfgs > 1) )
+    bfgs(H, simples, symm, carts);
+  else
     fprintf(outfile,"\nNo BFGS update performed.\n");
-    free_block(temp_mat);
-    free_block(temp_mat2);
-    return H_inv;
+
+  if (optinfo.print_hessian) {
+    fprintf(outfile,"The Hessian (Second Derivative) Matrix\n");
+    print_mat5(H,dim,dim,outfile);
   }
 
-  // The BFGS update is performed on H_inv
-  fprintf(outfile,"\nPerforming BFGS Hessian update.\n");
-  double *q_old, *f_old, *dq, *df;
-  q_old = init_array(dim);
+  // Project redundancies out of H according to Peng JCC 1996
+  // and produce invertible Hessian
+  // Form H <= PHP + 1000 (1-P)
+  if (optinfo.redundant) {
+    temp_mat = block_matrix(dim,dim);
+    mmult(P,0,H,0,temp_mat,0,dim,dim,dim,0);
+    mmult(temp_mat,0,P,0,H,0,dim,dim,dim,0);
+    free(temp_mat);
+
+    temp_mat = unit_mat(dim);
+    for (i=0;i<dim;++i)
+      for (j=0;j<dim;++j) {
+        H[i][j] += 1000 * (temp_mat[i][j] - P[i][j]);
+      }
+    free(temp_mat);
+  }
+
+  H_inv = symm_matrix_invert(H,dim,0,0);
+
+  /*** write new force constants H to PSIF_OPTKING ***/
+  open_PSIF();
+  psio_write_entry(PSIF_OPTKING, "Force Constants",
+      (char *) &(H[0][0]),dim*dim*sizeof(double));
+  close_PSIF();
+  free_block(H);
+  return H_inv;
+}
+
+/* This functions performs a BFGS update on H_inv */
+void bfgs(double **H, internals &simples, salc_set &symm, cartesians &carts) {
+  int i,j,dim,nbfgs,i_bfgs, natom, bfgs_start;
+  double a, *q, *f, *q_old, *f_old;
+  double *dq, *df, **X, **temp_mat, tval, *x, *x_old;
+  char force_string[30], x_string[30];
+
+  fprintf(outfile,"\nPerforming BFGS Hessian update");
+  natom = carts.get_natom();
+
+  dim = symm.get_num();
+  f = init_array(dim);
   f_old = init_array(dim);
   dq    = init_array(dim);
   df    = init_array(dim);
+  x = init_array(3*natom);
+  x_old = init_array(3*natom);
 
   /*** read old internals and forces from PSIF_OPTKING ***/
   open_PSIF();
-  psio_read_entry(PSIF_OPTKING, "Previous Internal Values",
-      (char *) &(q_old[0]), dim * sizeof(double));
-  psio_read_entry(PSIF_OPTKING, "Previous Internal Forces",
-      (char *) &(f_old[0]), dim * sizeof(double));
+  psio_read_entry(PSIF_OPTKING, "Num. of BFGS Entries", (char *) &nbfgs, sizeof(int));
   close_PSIF();
 
-  for (i=0;i<dim;++i) {
-    dq[i] = q[i] - q_old[i];
-    df[i] = (-1.0) * (f_intcos[i] - f_old[i]); // gradients -- not forces!
-  }
-  free(q_old);
-  free(f_old);
-
-  H_inv_new = block_matrix(dim,dim);
-  mmult(&df,0,H_inv,0,temp_mat,0,1,dim,dim,0);
-  dot_arr(temp_mat[0],df,dim,&b);
-  dot_arr(dq,df,dim,&a);
-  mmult(&dq,1,&dq,0,temp_mat,0,dim,1,dim,0);
-  for (i=0;i<dim;++i)
-    for (j=0;j<dim;++j)
-      H_inv_new[i][j] = H_inv[i][j] + ((a + b)/(a*a)) * temp_mat[i][j]; 
-
-  mmult(&df,0,H_inv,0,temp_mat,0,1,dim,dim,0);
-  mmult(&dq,1,temp_mat,0,temp_mat2,0,dim,1,dim,0);
-  for (i=0;i<dim;++i)
-    for (j=0;j<dim;++j)
-      H_inv_new[i][j] -= temp_mat2[i][j]/a; 
-
-  mmult(&df,1,&dq,0,temp_mat,0,dim,1,dim,0);
-  mmult(H_inv,0,temp_mat,0,temp_mat2,0,dim,dim,dim,0);
-  for (i=0;i<dim;++i)
-    for (j=0;j<dim;++j)
-      H_inv_new[i][j] -= temp_mat2[i][j]/a; 
-
-  // Is is necessary to project Hessian after update?
-  // mmult(H_inv_new,0,P,0,temp_mat,0,dim,dim,dim,0);
-  // mmult(P,0,temp_mat,0,H_inv_new,0,dim,dim,dim,0);
-
-  free(dq);
-  free(df);
-
-  // I think you should do this inversion the same way as above
-  H_new = block_matrix(dim,dim);
-  mmult(H_inv_new,0,P,0,temp_mat,0,dim,dim,dim,0);
-  mmult(P,0,temp_mat,0,temp_mat2,0,dim,dim,dim,0);
-  temp_mat = symm_matrix_invert(temp_mat2,dim,0,optinfo.redundant);
-  mmult(temp_mat,0,P,0,temp_mat2,0,dim,dim,dim,0);
-  mmult(P,0,temp_mat2,0,H_new,0,dim,dim,dim,0);
-
-  //fprintf(outfile,"\nThe Updated Hession Matrix:\n");
-  //print_mat2(H_new,dim,dim,outfile);
-
-  /*** write new force constants to PSIF_OPTKING ***/
+  sprintf(force_string,"BFGS Internal Forces %d", nbfgs-1);
+  sprintf(x_string,"BFGS Cartesian Values %d", nbfgs-1);
   open_PSIF();
-  psio_write_entry(PSIF_OPTKING, "Force Constants",
-      (char *) &(H_new[0][0]),dim*dim*sizeof(double));
+  psio_read_entry(PSIF_OPTKING, force_string, (char *) &(f[0]), dim * sizeof(double));
+  psio_read_entry(PSIF_OPTKING, x_string, (char *) &(x[0]), 3*natom*sizeof(double));
   close_PSIF();
 
   /*
-     Writing new force constants to fconst.dat
-     fp_fconst = fopen("fconst.dat","w");
-     for (i=0;i<symm.get_num();++i) {
-     col = 0;
-     for (j=0; j<=i ; ++j) {
-     if (col == 8) {
-     fprintf(fp_fconst,"\n");
-     col = 0;
-     }
-     fprintf(fp_fconst,"%10.6f",H_new[i][j]);
-     ++col;
-     }
-     fprintf(fp_fconst,"\n");
-     }
-     fclose(fp_fconst);
-   */
+  fprintf(outfile,"bfgs internal forces\n");
+  for (i=0;i<dim;++i)
+    fprintf(outfile,"%15.10lf\n",f[i]);
+  fprintf(outfile,"bfgs cartesian values\n");
+  for (i=0;i<3*natom;++i)
+    fprintf(outfile,"%15.10lf\n",x[i]);
+    */
 
-  free_block(H_inv);
-  free_block(H_new);
-  free_block(temp_mat);
-  free_block(temp_mat2);
-  return H_inv_new;
+  simples.compute_internals(natom,x);
+  simples.fix_near_lin(); // fix configuration for torsions
+  q = compute_q(simples, symm);
+
+  if (optinfo.bfgs_use_last == 0) { /* include all available gradients */
+    bfgs_start = 0;
+  }
+  else {
+    bfgs_start = nbfgs - optinfo.bfgs_use_last - 1;
+    if (bfgs_start < 0)
+      bfgs_start = 0;
+  }
+
+  fprintf(outfile," with previous %d gradient(s).\n", nbfgs-1-bfgs_start);
+
+  for (i_bfgs=bfgs_start; i_bfgs<(nbfgs-1); ++i_bfgs) {
+    sprintf(force_string,"BFGS Internal Forces %d", i_bfgs);
+    sprintf(x_string,"BFGS Cartesian Values %d", i_bfgs);
+    open_PSIF();
+    psio_read_entry(PSIF_OPTKING, force_string, (char *) &(f_old[0]), dim * sizeof(double));
+    psio_read_entry(PSIF_OPTKING, x_string, (char *) &(x_old[0]), 3*natom*sizeof(double));
+    close_PSIF();
+
+    simples.compute_internals(natom, x_old);
+    q_old = compute_q(simples, symm);
+
+    for (i=0;i<dim;++i) {
+      dq[i] = q[i] - q_old[i];
+      df[i] = (-1.0) * (f[i] - f_old[i]); // gradients -- not forces!
+    }
+
+    // Let a = DQT.DG
+    // Let X = (I - DQ*DGT/a)
+    // Then Hk = X * H_(k-1) * XT + DQ*DQT/a
+    // Schlegel 1987 Ab Initio Methods in Quantum Chemistry 
+    // as noted in article, to make formula work for Hessian (Schlegel's B)
+    // you have to switch DQ and DG in the equation
+
+    dot_arr(dq,df,dim,&a);
+    X = unit_mat(dim);
+    for (i=0;i<dim;++i)
+      for (j=0;j<dim;++j)
+        X[i][j] -= (df[i] * dq[j]) / a ; 
+
+    temp_mat = block_matrix(dim,dim);
+    mmult(X,0,H,0,temp_mat,0,dim,dim,dim,0);
+    mmult(temp_mat,0,X,1,H,0,dim,dim,dim,0);
+    free_block(temp_mat);
+    free_block(X);
+  
+    for (i=0;i<dim;++i)
+      for (j=0;j<dim;++j)
+        H[i][j] += (df[i] * df[j]) / a ; 
+  }
+  free(q);
+  free(f);
+  free(q_old);
+  free(f_old);
+  free(dq);
+  free(df);
+  free(x);
+  free(x_old);
+  return;
 }
-

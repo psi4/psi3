@@ -26,10 +26,9 @@ extern "C" int *get_ops_in_class(char *ptgrp, int nirreps);
 //extern "C" void swap_tors(int *a, int *b, int *c, int *d);
 
 void get_syminfo(internals &simples) {
-  int a, b, c, d, aa, bb, cc, dd, i, j, sign, nallatom, natom;
-  int id, intco_type, sub_index, ops;
+  int a, b, c, d, aa, bb, cc, dd, i, j, sign, natom;
+  int id, intco_type, sub_index, ops,linval;
 
-  nallatom = optinfo.nallatom;
   natom = optinfo.natom;
 
   chkpt_init(PSIO_OPEN_OLD);
@@ -73,9 +72,9 @@ void get_syminfo(internals &simples) {
   ops_in_class = get_ops_in_class(ptgrp, syminfo.nirreps);
 
   // make dummy atoms transform into themselves
-  syminfo.fict = init_int_matrix(syminfo.nirreps, optinfo.nallatom);
+  syminfo.fict = init_int_matrix(syminfo.nirreps, optinfo.natom);
   for (i=0; i<syminfo.nirreps; ++i) 
-    for (j=0; j<optinfo.nallatom; ++j) 
+    for (j=0; j<optinfo.natom; ++j) 
       syminfo.fict[i][j] = j;
 
   for (i=0; i<syminfo.nirreps; ++i) 
@@ -85,7 +84,7 @@ void get_syminfo(internals &simples) {
     }
   // for consistency with ict, start atom numbering at 1
   for (i=0; i<syminfo.nirreps; ++i) 
-    for (j=0; j<optinfo.nallatom; ++j) 
+    for (j=0; j<optinfo.natom; ++j) 
       syminfo.fict[i][j] += 1;
 
 
@@ -154,7 +153,22 @@ void get_syminfo(internals &simples) {
         syminfo.ict_ops_sign[i][ops] = sign;
       }
     }
+    // this probably don't work anyway but here it is
+    if (intco_type == LIN_BEND_TYPE) {
+      a = simples.lin_bend.get_A(sub_index);
+      b = simples.lin_bend.get_B(sub_index);
+      c = simples.lin_bend.get_C(sub_index);
+      linval = simples.lin_bend.get_linval(sub_index);
+      for (ops=0;ops < syminfo.nirreps;++ops) {
+        aa = syminfo.fict[ops][a]-1;
+        bb = syminfo.fict[ops][b]-1;
+        cc = syminfo.fict[ops][c]-1;
+        swap(&aa,&cc);
+        syminfo.ict_ops[i][ops] = simples.lin_bend.get_id_from_atoms(aa,bb,cc,linval);
+      }
+    }
   }
+
 
   if (optinfo.print_symmetry) {
     fprintf(outfile,"\n+++ Symmetry Information +++\n");
@@ -167,7 +181,7 @@ void get_syminfo(internals &simples) {
 
     fprintf(outfile,"The FICT table from chkpt:\n");
     for(i=0;i<syminfo.nirreps;++i) {
-      for(j=0;j<nallatom;++j)
+      for(j=0;j<natom;++j)
         fprintf(outfile,"%3d",syminfo.fict[i][j]);
       fprintf(outfile,"\n");
     }

@@ -62,6 +62,15 @@ class bend_set {
        else { fprintf(outfile,"\nWARNING: bad number of bends\n");}
      }
 
+   bend_set(void) { } /* don't allocate memory yet */
+   void allocate(int size) {
+     if (0 <= size <10000)
+       bend_array = new bend_class[size];
+     else
+       fprintf(outfile,"\nWARNING: bad number of bends\n");
+   }
+
+
    ~bend_set() {
      /* fprintf(stdout,"destructing bend_set\n"); */
      delete [] bend_array;

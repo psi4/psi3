@@ -25,26 +25,24 @@ extern "C" {
 extern double *compute_q(internals &simples, salc_set &symm);
 extern double **compute_B(internals &simples, salc_set &symm);
 extern double **compute_G(double **B, int num_intcos, cartesians &carts);
-extern void new_geom(cartesians &carts, internals &simples, salc_set &symm, double *dq,
+extern int new_geom(cartesians &carts, internals &simples, salc_set &symm, double *dq,
     int print_to_geom_file, int restart_geom_file, 
     char *disp_label, int disp_num, int last_disp, double *return_geom);
 extern void empirical_H(internals &simples, salc_set &symm, cartesians &carts);
-extern double **compute_H(salc_set &symm,double *q, double *f_q, double **P);
 void fconst_init(cartesians &carts, internals &simples, salc_set &symm);
 extern void compute_zmat(cartesians &carts, int *unique_zvars);
 extern void print_zmat(FILE *outfile, int *unique_zvars);
+extern double **compute_H(internals &simples, salc_set &symm, double **P, cartesians &carts);
 
 int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
 
-  int i,j,a,b, dim, nallatom, dim_carts;
+  int i,j,a,b, dim, dim_carts, success,nbfgs;
   double **B, **G, **G2, **G_inv, **H_inv, **temp_mat, **u, **P;
   double *temp_arr2, *temp_arr, *masses, *geom, *forces;
-  double *f, *f_q, *dq, *q, tval, tval2, scale, temp, *djunk;
-  char *disp_label, *wfn;
+  double *f, *f_q, *dq, *dq_to_new_geom, *q, tval, tval2, scale, temp, *djunk;
+  char *disp_label, *wfn, value_string[30], force_string[30];
 
-  // dim_carts = carts.get_natom()*3;
-  nallatom = optinfo.nallatom;
-  dim_carts = 3*nallatom;
+  dim_carts = carts.get_natom()*3;
   djunk = new double[dim_carts];
   disp_label = new char[MAX_LINELENGTH];
 
@@ -62,6 +60,8 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
 
   // build G = BuB^t
   B = compute_B(simples,symm);
+  // fprintf(outfile,"B Matrix\n");
+  // print_mat(B, symm.get_num(), dim_carts, outfile );
   G = compute_G(B,symm.get_num(),carts);
 
   // compute G_inv
@@ -72,12 +72,13 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
   masses = carts.get_fmass();
   u = mass_mat(masses);
   free(masses);
+//  u = unit_mat(dim_carts);
 
   // get forces array in cartesian coordinates, f, (in aJ/Ang)
   f = carts.get_fforces();
 
-  //    fprintf(outfile,"cartesian forces in aJ/Ang");
-  //    print_mat2(&f, 1, 3*carts.get_natom(), outfile);
+  // fprintf(outfile,"cartesian forces in aJ/Ang\n");
+  // print_mat2(&f, 1, 3*carts.get_natom(), outfile);
 
   // compute forces in internal coordinates, f_q = G_inv B u f
   f_q = init_array(symm.get_num());
@@ -88,11 +89,16 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
   mmult(B,0,&temp_arr2,1,&temp_arr,1,symm.get_num(),dim_carts,1,0);
   mmult(G_inv,0,&temp_arr,1,&f_q,1,symm.get_num(),symm.get_num(),1,0);
 
-  //fprintf(outfile,"internal forces in aJ/A");
-  //print_mat2(&f_q, 1, symm.get_num(), outfile);
-  // for (i=0;i<1;++i)
-  //    f_q[i] = f_q[i] * sqrt(2) * _hartree2J * 1.0E18 / _bohr2angstroms;
-  //    f_q[1] = f_q[1] * (_hartree2J * 1.0E18);
+  // fprintf(outfile,"internal forces (G_inv B u f) in aJ/A\n");
+  // print_mat2(&f_q, 1, symm.get_num(), outfile);
+  // for (i=0;i<symm.get_num();++i)
+  //   f_q[i] = f_q[i] * sqrt(2) * _hartree2J * 1.0E18 / _bohr2angstroms;
+  // fprintf(outfile, "%d %15.10lf\n", i, f_q[i] * _hartree2J / _bohr2angstroms * 1.0E18) ;
+
+  // test by transforming f_q back to cartesian forces and compare
+  // fprintf(outfile,"computed forces in cartesian coordinates aJ/Ang\n");
+  // mmult(B,1,&f_q,1,&temp_arr2,1,dim_carts,symm.get_num(),1,0);
+  // print_mat2(&temp_arr2, 1, dim_carts, outfile);
 
   free(f);
   free(temp_arr);
@@ -106,22 +112,47 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
   free_block(G);
   free_block(G_inv);
 
-  // make sure some force constant are in PSIF
-  fconst_init(carts, simples, symm);
-
-  // Read in Hessian and update it if necessary from opt.aux
-  H_inv = compute_H(symm,q,f_q,P);
-  free_block(P);
+  // test - see if projector changes the forces
+  // temp_arr = init_array(symm.get_num());
+  // mmult(P,0,&f_q,1,&temp_arr,1,symm.get_num(), symm.get_num(),1,0);
+  // fprintf(outfile,"P*f_q\n");
+  // print_mat2(&temp_arr, 1, symm.get_num(), outfile);
+  // free(temp_arr);
 
   // Write Values and Forces of internals to opt.aux for later
   if (optinfo.bfgs) {
     open_PSIF();
-    psio_write_entry(PSIF_OPTKING, "Previous Internal Values",
-        (char *) &(q[0]), symm.get_num()* sizeof(double));
-    psio_write_entry(PSIF_OPTKING, "Previous Internal Forces",
-        (char *) &(f_q[0]), symm.get_num()* sizeof(double));
+    nbfgs = 0;
+    if (psio_tocscan(PSIF_OPTKING, "Num. of BFGS Entries") != NULL)
+      psio_read_entry(PSIF_OPTKING, "Num. of BFGS Entries", (char *) &nbfgs, sizeof(int));
+
+    sprintf(value_string,"BFGS Internal Values %d", nbfgs);
+    sprintf(force_string,"BFGS Internal Forces %d", nbfgs);
+         
+    psio_write_entry(PSIF_OPTKING, value_string, (char *) &(q[0]),
+        symm.get_num()* sizeof(double));
+    psio_write_entry(PSIF_OPTKING, force_string, (char *) &(f_q[0]),
+        symm.get_num()* sizeof(double));
+
+    double *coord;
+    coord = carts.get_coord();
+
+    sprintf(value_string,"BFGS Cartesian Values %d", nbfgs);
+    psio_write_entry(PSIF_OPTKING, value_string,
+        (char *) &(coord[0]), 3*carts.get_natom()*sizeof(double));
+    free(coord);
+
+    ++nbfgs;
+    psio_write_entry(PSIF_OPTKING, "Num. of BFGS Entries", (char *) &nbfgs, sizeof(int));
     close_PSIF();
   }
+
+  // make sure some force constant are in PSIF
+  fconst_init(carts, simples, symm);
+
+  // Read in Hessian and update it if necessary from opt.aux
+  H_inv = compute_H(simples,symm,P,carts);
+  free_block(P);
 
   // Computing internal coordinate displacements H_inv f = dq, and new q
   mmult(H_inv,0,&f_q,1,&dq,1,symm.get_num(),symm.get_num(),1,0);
@@ -129,22 +160,24 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
 
   /* determine scale factor needed to keep step less than 10% of q if q big
      or less than 0.1 if q not so big, hopefully better solution coming soon */
-  scale = 1;
-  temp = 1;
-  double cut = STEP_LIMIT / STEP_PERCENT;
+  // double cut = STEP_LIMIT / STEP_PERCENT;
+  scale = 1.0;
   for (i=0;i<symm.get_num();++i) {
-    if (fabs(dq[i]) > STEP_LIMIT) {
-      if (fabs(dq[i]) > STEP_PERCENT*fabs(q[i]) && fabs(q[i]) > cut) { 
+    if (fabs(q[i]) > STEP_LIMIT) { /* intco is not very small */
+      if (fabs(dq[i]) > STEP_PERCENT*fabs(q[i])) { /* step is too large */ 
         temp = STEP_PERCENT*fabs(q[i])/fabs(dq[i]);
       }
-      else if (fabs(q[i]) < fabs(dq[i]) || fabs(dq[i]) < cut) {
-        temp = STEP_LIMIT / fabs(dq[i]);
-      }
+      else 
+        temp = 1;
+    }
+    else { /* intco is very small */
+      temp = STEP_LIMIT / fabs(dq[i]);
     }
     if (temp < scale){
       scale = temp;
     }
   }
+  // scale = 1.0;
   fprintf(outfile,"\nScaling displacements by %lf\n",scale); 
   for (i=0;i<symm.get_num();++i) {
     dq[i] = dq[i] * scale;   
@@ -155,7 +188,7 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
   fprintf(outfile,
       "\nInternal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad\n");
   fprintf(outfile,
-      "         Value          Force          Displacement   New Value\n");
+      "         Value          Force        Displacement   New Value\n");
   for (i=0;i<symm.get_num();++i)
 //    fprintf(outfile,"%2d%15.6lf%15.6lf%15.6lf%15.6lf\n",
     fprintf(outfile,"%2d%15.10lf%15.10lf%15.10lf%15.10lf\n",
@@ -177,6 +210,10 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
     fprintf(outfile,"Final %s energy is %15.10lf\n", wfn, carts.get_energy());
     fprintf(stderr,"\n  OPTKING:  optimization is complete\n");
     fprintf(outfile,"The Optimized geometry in a.u.\n");
+    carts.print(12,outfile,0,disp_label,0);
+    fflush(outfile);
+
+    /* not quite working yet - sometimes gives odd abort error
     if (optinfo.zmat) {
       int *unique_zvars;
       unique_zvars = (int *) malloc(MAX_ZVARS*sizeof(int));
@@ -185,15 +222,36 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
       free(unique_zvars);
       fprintf(outfile,"\n");
     }
-    carts.print(12,outfile,0,disp_label,0);
-    // fprintf(stderr,"\n  Returning code %d\n", PSI_RETURN_ENDLOOP);
+    */
+
+    fflush(outfile);
+    fprintf(stderr,"\n  Returning code %d\n", PSI_RETURN_ENDLOOP);
     return(PSI_RETURN_ENDLOOP);
   }
   free(wfn);
   free(f_q);
 
+  /* new_geom will overwrite dq so send a copy */
+  dq_to_new_geom = init_array(symm.get_num());
+  for (i=0;i<symm.get_num();++i)
+    dq_to_new_geom[i] = dq[i];
+
   strcpy(disp_label,"New Cartesian Geometry in a.u.");
-  new_geom(carts,simples,symm,dq,32,0,disp_label,0,0,djunk);
+  success = new_geom(carts,simples,symm,dq_to_new_geom,32,0,disp_label,0,0,djunk);
+
+  if (!success) {
+    int retry = 1;
+    for (retry=1; retry<5; ++retry) {
+      fprintf(outfile,"Scaling back displacements by half\n");
+      for (i=0;i<symm.get_num();++i) {
+        dq[i] = dq[i] / 2.0;
+        dq_to_new_geom[i] = dq[i];
+      }
+      success = new_geom(carts,simples,symm,dq_to_new_geom,32,0,disp_label,0,0,djunk);
+      if (success) break;
+    }
+  }
+
   free(q); free(dq);
   free_block(B);
   optinfo.iteration += 1;
@@ -215,6 +273,7 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
 void fconst_init(cartesians &carts, internals &simples, salc_set &symm) {
   int i, j, dim, count, constants_in_PSIF;
   char *buffer;
+  double **F;
   buffer = new char[MAX_LINELENGTH];
 
   open_PSIF();
@@ -227,10 +286,20 @@ void fconst_init(cartesians &carts, internals &simples, salc_set &symm) {
     if (fp_fconst == NULL) {
       fprintf(outfile, "\nGenerating empirical Hessian.\n");
       empirical_H(simples,symm,carts);
+      /*
+      fprintf(outfile, "\nUsing unit Hessian.\n");
+      F = unit_mat(symm.get_num());
+      open_PSIF();
+      psio_write_entry(PSIF_OPTKING, "Force Constants",
+        (char *) &(F[0][0]),symm.get_num()*symm.get_num()*sizeof(double));
+      close_PSIF();
+      free_block(F);
+      */
     }
     else {
       /*** transfer force constants from fconst.dat to PSIF_OPTKING ***/
       double **temp_mat;
+      fprintf(outfile,"Reading force constants from fconst.dat\n");
       dim = symm.get_num();
       temp_mat = block_matrix(dim,dim);
       for (i=0;i<dim;++i) {
