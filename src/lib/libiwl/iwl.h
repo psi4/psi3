@@ -35,6 +35,7 @@ struct iwlbuf {
 #define IWL_INTS_PER_BUF 2980
 
 extern void iwl_buf_fetch(struct iwlbuf *Buf);
+extern void iwl_buf_put(struct iwlbuf *Buf);
 
 extern int iwl_rdone(int itap, char *label, double *ints, int ntri, int erase,
               int printflg, FILE *outfile);
