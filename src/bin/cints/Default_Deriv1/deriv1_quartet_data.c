@@ -31,7 +31,7 @@ void deriv1_quartet_data(prim_data *Data, double_array_t *fjt_table, double AB2,
    ----------------*/
   struct coordinates PQ, W;
 #ifdef USE_TAYLOR_FM
-  static double F[2*CINTS_MAX_AM+1];
+  double F[2*CINTS_MAX_AM+1];
 #endif
   int i;
   double small_T = UserOptions.cutoff;       /*--- Use only one term in Taylor expansion of Fj(T) if T < small_T ---*/
