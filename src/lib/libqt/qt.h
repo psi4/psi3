@@ -68,6 +68,9 @@ extern void C_DSCAL(int len, double alpha, double *vec, int inc);
 extern void C_DGEMV(char transa, int m, int n, double alpha, double *A, 
 		    int nca, double *X, int inc_x, double beta, double *Y,
 		    int inc_y);
+extern void C_DSPMV(char uplo, int n, double alpha, double *A,
+                    double *X, int inc_x, double beta, double *Y,
+                    int inc_y);
 extern double C_DDOT(int n, double *X, int inc_x, double *Y, int inc_y);
 extern int C_DGETRF(int nrow, int ncol, double *a, int lda, int *ipiv);
 void timer_init(void);

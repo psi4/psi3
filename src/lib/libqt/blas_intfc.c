@@ -23,6 +23,7 @@
 #define F_DROT drot_
 #define F_DSCAL dscal_
 #define F_DGEMV dgemv_
+#define F_DSPMV dspmv_
 #define F_DDOT  ddot_
 #elif FCLINK==2
 #define F_DAXPY daxpy
@@ -31,6 +32,7 @@
 #define F_DROT drot
 #define F_DSCAL dscal
 #define F_DGEMV dgemv
+#define F_DSPMV dspmv
 #define F_DDOT  ddot
 #else
 #define F_DAXPY DAXPY
@@ -39,6 +41,7 @@
 #define F_DROT DROT
 #define F_DSCAL DSCAL
 #define F_DGEMV DGEMV
+#define F_DSPMV DSPMV
 #define F_DDOT  DDOT
 #endif
 
@@ -244,6 +247,46 @@ void C_DGEMV(char transa, int m, int n, double alpha, double *A,
   F_DGEMV(&transa,&n,&m,&alpha,A,&nca,X,&inc_x,&beta,Y,&inc_y);
 
 }
+
+
+/*!
+**  C_DSPMV()
+**  This function calculates the matrix-vector product:
+**
+**  Y = alpha * A * X + beta * Y
+**
+** where X and Y are vectors, A is a matrix, and alpha and beta are
+** constants. 
+**
+** \param char uplo:       Indicates whether the matrix A is packed in
+**                         upper ('U' or 'u') or lower ('L' or 'l')
+**                         triangular form
+** \param int n:           The order of the matrix A (number of rows/columns)
+** \param double alpha:    The scalar alpha.
+** \param double* A:       A pointer to the beginning of the data in A.
+** \param double* X:       A pointer to the beginning of the data in X.
+** \param int inc_x:       The desired stride for X.  Useful for skipping
+**                         sections of data to treat only one column of a
+**                         complete matrix.  Usually 1, though.
+** \param double beta:     The scalar beta.
+** \param double* Y:       A pointer to the beginning of the data in Y.
+** \param int inc_y:       The desired stride for Y.
+** 
+** Interface written by CD Sherrill
+** July 2003
+** \ingroup (QT)
+*/
+
+void C_DSPMV(char uplo, int n, double alpha, double *A, 
+             double *X, int inc_x, double beta, double *Y,
+             int inc_y)
+{
+  if (n == 0) return;
+
+  F_DSPMV(&uplo,&n,&alpha,A,X,&inc_x,&beta,Y,&inc_y);
+
+}
+
 
 
 /*!
