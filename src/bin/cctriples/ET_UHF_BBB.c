@@ -564,7 +564,7 @@ double ET_UHF_BBB(void)
 
 		      /* +t_ia * D_jkbc + f_ia * t_jkbc */
 		      if(Gi == Ga && Gjk == Gbc) {
-			t_ia = D_jkbc = 0.0;
+			t_ia = D_jkbc = f_ia = t_jkbc = 0.0;
 
 			if(T1.params->rowtot[Gi] && T1.params->coltot[Gi]) {
 			  t_ia = T1.matrix[Gi][i][a];
@@ -581,7 +581,7 @@ double ET_UHF_BBB(void)
 
 		      /* -t_ib * D_jkac - f_ib * t_jkac */
 		      if(Gi == Gb && Gjk == Gac) {
-			t_ib = D_jkac = 0.0;
+			t_ib = D_jkac = f_ib = t_jkac = 0.0;
 
 			if(T1.params->rowtot[Gi] && T1.params->coltot[Gi]) {
 			  t_ib = T1.matrix[Gi][i][b];
@@ -598,7 +598,7 @@ double ET_UHF_BBB(void)
 
 		      /* +t_ic * D_jkab + f_ic * t_jkba */
 		      if(Gi == Gc && Gjk == Gab) {
-			t_ic = D_jkba = 0.0;
+			t_ic = D_jkba = f_ic = t_jkba = 0.0;
 
 			if(T1.params->rowtot[Gi] && T1.params->coltot[Gi]) {
 			  t_ic = T1.matrix[Gi][i][c];
@@ -615,7 +615,7 @@ double ET_UHF_BBB(void)
 
 		      /* -t_ja * D_ikbc - f_ja * t_ikbc*/
 		      if(Gj == Ga && Gik == Gbc) {
-			t_ja = D_ikbc = 0.0;
+			t_ja = D_ikbc = f_ja = t_ikbc = 0.0;
 
 			if(T1.params->rowtot[Gj] && T1.params->coltot[Gj]) {
 			  t_ja = T1.matrix[Gj][j][a];
@@ -632,7 +632,7 @@ double ET_UHF_BBB(void)
 
 		      /* +t_jb * D_ikac + f_jb * t_ikac */
 		      if(Gj == Gb && Gik == Gac) {
-			t_jb = D_ikac = 0.0;
+			t_jb = D_ikac = f_jb = t_ikac = 0.0;
 
 			if(T1.params->rowtot[Gj] && T1.params->coltot[Gj]) {
 			  t_jb = T1.matrix[Gj][j][b];
@@ -649,7 +649,7 @@ double ET_UHF_BBB(void)
 
 		      /* -t_jc * D_ikba - f_jc * t_ikba */
 		      if(Gj == Gc && Gik == Gab) {
-			t_jc = D_ikba = 0.0;
+			t_jc = D_ikba = f_jc = t_ikba = 0.0;
 
 			if(T1.params->rowtot[Gj] && T1.params->coltot[Gj]) {
 			  t_jc = T1.matrix[Gj][j][c];
@@ -666,7 +666,7 @@ double ET_UHF_BBB(void)
 
 		      /* -t_ka * D_jibc - f_ka * t_jibc */
 		      if(Gk == Ga && Gji == Gbc) {
-			t_ka = D_jibc = 0.0;
+			t_ka = D_jibc = f_ka = t_jibc = 0.0;
 
 			if(T1.params->rowtot[Gk] && T1.params->coltot[Gk]) {
 			  t_ka = T1.matrix[Gk][k][a];
@@ -683,7 +683,7 @@ double ET_UHF_BBB(void)
 
 		      /* +t_kb * D_jiac + f_kb * t_jiac */
 		      if(Gk == Gb && Gji == Gac) {
-			t_kb = D_jiac = 0.0;
+			t_kb = D_jiac = f_kb = t_jiac = 0.0;
 
 			if(T1.params->rowtot[Gk] && T1.params->coltot[Gk]) {
 			  t_kb = T1.matrix[Gk][k][b];
@@ -700,7 +700,7 @@ double ET_UHF_BBB(void)
 
 		      /* -t_kc * D_jiab - f_kc * t_jiba*/
 		      if(Gk == Gc && Gji == Gab) {
-			t_kc = D_jiba = 0.0;
+			t_kc = D_jiba = f_kc = t_jiba = 0.0;
 
 			if(T1.params->rowtot[Gk] && T1.params->coltot[Gk]) {
 			  t_kc = T1.matrix[Gk][k][c];
