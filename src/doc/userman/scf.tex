@@ -58,8 +58,12 @@ criterion is 10**(-integer).  The default is 7 if both DERTYPE
 \item[LEVELSHIFT = real]\mbox{}\\
 This specifies the level shift.  The default is 1.
 \item[DIRECT = boolean]\mbox{}\\
-Specifies whether to do the SCF calculation with an integral direct
+Specifies whether to do the SCF calculation with an integral-direct
 technique.  The default is false.
+\item[NUM\_THREADS = integer]\mbox{}\\
+Specified the number of threads to be used in the integral-direct
+computation (only valid if {\tt DIRECT} is set to {\tt true}).
+Default is 1.
 \item[PRINT\_MOS = boolean]\mbox{}\\
 Specifies whether to print the molecular orbitals or not.  The default
 is false.
