@@ -1,9 +1,14 @@
 /* $Log$
- * Revision 1.16  2002/12/06 15:50:32  crawdad
- * Changed all exit values to PSI_RETURN_SUCCESS or PSI_RETURN_FAILURE as
- * necessary.  This is new for the PSI3 execution driver.
- * -TDC
+ * Revision 1.17  2003/06/27 22:10:06  sherrill
+ * Change keyword from direct_scf to direct.  This can be used also
+ * for MP2 and can be picked up by the psi3 driver to know which programs
+ * to run.
  *
+/* Revision 1.16  2002/12/06 15:50:32  crawdad
+/* Changed all exit values to PSI_RETURN_SUCCESS or PSI_RETURN_FAILURE as
+/* necessary.  This is new for the PSI3 execution driver.
+/* -TDC
+/*
 /* Revision 1.15  2002/11/24 22:52:17  crawdad
 /* Merging the gbye-file30 branch into the main trunk.
 /* -TDC
@@ -110,7 +115,7 @@
 /* Direct SCF improved
 /*
 /* Revision 1.3  1999/10/22 19:47:19  evaleev
-/* A direct SCF-enabled version (set DIRECT_SCF=TRUE in input.dat).
+/* A direct SCF-enabled version (set DIRECT=TRUE in input.dat).
 /*
 /* Revision 1.2  1999/08/17 19:04:17  evaleev
 /* Changed the default symmetric orthogonalization to the canonical
@@ -172,7 +177,7 @@ void scf_input(ipvalue)
    if(errcod == IPE_OK) fprintf(outfile,"  label       = %s\n",alabel);
 
    direct_scf = 0;
-   errcod = ip_boolean("DIRECT_SCF",&direct_scf,0);
+   errcod = ip_boolean("DIRECT",&direct_scf,0);
    /* Can do KS DFT direct only */
    if (ksdft) direct_scf=1;
 
@@ -277,7 +282,7 @@ void scf_input(ipvalue)
    }
    fprintf(outfile,"  multiplicity = %d\n",multp);
    fprintf(outfile,"  charge       = %d\n",charge);
-   fprintf(outfile,"  direct SCF   = %s\n",(direct_scf) ? "true" : "false");
+   fprintf(outfile,"  direct       = %s\n",(direct_scf) ? "true" : "false");
    if(direct_scf)
    fprintf(outfile,"  dyn_acc      = %s\n",(dyn_acc) ? "true" : "false");
    fprintf(outfile,"  dertype      = %s\n",dertype);
