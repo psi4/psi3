@@ -3,7 +3,7 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-LDLIBS += $(BLAS)
+LDLIBS += $(LAPACK) $(BLAS)
 CDEF += -DUSE_BLAS
 
 PSILIBS = -lPSI_iwl -lPSI_qt -lPSI_chkpt -lPSI_psio -lPSI_ciomr -lPSI_ipv1
@@ -11,6 +11,7 @@ PSILIBS = -lPSI_iwl -lPSI_qt -lPSI_chkpt -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 CSRC = \
 gprgid.c \
 transqt.c \
+semicanonical.c \
 transform_one.c \
 transform_two.c \
 transform_two_mp2.c \

@@ -63,6 +63,7 @@ struct Params {
   int check_C_orthonorm;        /* check orthonormality of C matrix?      */
   int qrhf;                     /* boolean for QRHF reference             */
   int ivo;                      /* boolean for test IVO's                 */
+  int semicanonical;            /* boolean for Semicanonical orbitals     */
 
   char *aobasis;                /* string for AO-Basis CC algorithms     */
 

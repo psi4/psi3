@@ -143,6 +143,7 @@ void init_ioff(void);
 void get_parameters(void);
 void print_parameters(void);
 void get_moinfo(void);
+void semicanonical_fock(void);
 void get_one_electron_integrals(void);
 void transform_one(void);
 void transform_two(void);
@@ -166,11 +167,11 @@ main(int argc, char *argv[])
   params.print_lvl = 1;
   init_io(argc,argv);
   title();
+  init_ioff();
   get_parameters();
   print_parameters();
   get_moinfo();
   get_reorder_array();
-  init_ioff();
 
   get_one_electron_integrals();
 
@@ -361,6 +362,13 @@ void get_parameters(void)
     params.ref = (char *) malloc(sizeof(char)*4);
     strcpy(params.ref, "RHF");
   }
+  
+  params.semicanonical = 0;
+  /* Semicanonical orbitals for perturbation theory */
+  if(!strcmp(params.ref, "ROHF") && (!strcmp(params.wfn, "CCSD_T") || !strcmp(params.wfn, "MP2"))) {
+    strcpy(params.ref, "UHF");
+    params.semicanonical = 1;
+  }  
 
   /* the default to this was already set by command line parsing */
   errcod = ip_boolean("BACKTRANS", &(params.backtr), 0);
@@ -571,16 +579,21 @@ void print_parameters(void)
       fprintf(outfile,"\tInput Parameters:\n");
       fprintf(outfile,"\t-----------------\n");
       fprintf(outfile,"\tWavefunction           =  %s\n", params.wfn);
+      if(params.semicanonical) {
+      fprintf(outfile,"\tReference orbitals     =  ROHF changed to UHF for Semicanonical Orbitals\n");
+      }
+      else {
       fprintf(outfile,"\tReference orbitals     =  %s\n", params.ref);
+      }	      
       fprintf(outfile,"\tBacktrans              =  %s\n", 
 	                           params.backtr ? "Yes" : "No");
       fprintf(outfile,"\tPrint MOs              =  %s\n", 
                                   (params.print_mos ? "Yes": "No"));
-      fprintf(outfile,"\tFreeze Core            = %s\n", 
+      fprintf(outfile,"\tFreeze Core            =  %s\n", 
                                   (params.fzc ? "Yes" : "No"));
       fprintf(outfile,"\tDelete Restricted Docc =  %s\n", 
 		                  (params.del_restr_docc ? "Yes" : "No"));
-      fprintf(outfile,"\tDo All TEI             = %s\n", 
+      fprintf(outfile,"\tDo All TEI             =  %s\n", 
                                   (params.do_all_tei ? "Yes" : "No"));
       fprintf(outfile,"\tMemory (Mbytes)        =  %5.1f\n",params.maxcor/1e6);
       fprintf(outfile,"\tMax Buckets            =  %d\n",params.max_buckets);
@@ -629,6 +642,8 @@ void print_parameters(void)
                                   (params.qrhf ? "Yes" : "No"));
       fprintf(outfile,"\tIVO orbitals           =  %s\n", 
                                   (params.ivo ? "Yes" : "No"));
+      fprintf(outfile,"\tSemicanonical orbitals =  %s\n", 
+                                  (params.semicanonical ? "Yes" : "No"));
       fprintf(outfile,"\tPitzer                 =  %s\n", 
                                   (params.pitzer ? "Yes" : "No"));
     }
@@ -655,15 +670,6 @@ void get_moinfo(void)
   moinfo.openpi = chkpt_rd_openpi();
   moinfo.enuc = chkpt_rd_enuc();
   moinfo.escf = chkpt_rd_escf();
-  if(!strcmp(params.ref, "UHF")) {
-    /* moinfo.evals = chkpt_rd_alpha_evals(); */
-    moinfo.scf_vector_alpha = chkpt_rd_alpha_scf();
-    moinfo.scf_vector_beta = chkpt_rd_beta_scf();
-  }
-  else {
-    /* moinfo.evals = chkpt_rd_evals(); */
-    moinfo.scf_vector = chkpt_rd_scf();
-  }
   moinfo.nshell = chkpt_rd_nshell();
   moinfo.sloc = chkpt_rd_sloc();
   moinfo.snuc = chkpt_rd_snuc();
@@ -671,10 +677,22 @@ void get_moinfo(void)
   moinfo.rstrdocc = init_int_array(moinfo.nirreps);
   moinfo.rstruocc = init_int_array(moinfo.nirreps);
   
+  /* Needed for MO  reordering */
+  if(!strcmp(params.ref, "UHF") && params.semicanonical == 0) {
+    moinfo.scf_vector_alpha = chkpt_rd_alpha_scf();
+    moinfo.scf_vector_beta = chkpt_rd_beta_scf();
+  }
+  else if(!strcmp(params.ref, "UHF") && params.semicanonical == 1){
+    moinfo.scf_vector = chkpt_rd_scf();
+  }
+  else {
+    moinfo.scf_vector = chkpt_rd_scf();
+  }
+
   /* reorder the MOs if the user has requested it */
   if (params.reorder) {
 
-    if(!strcmp(params.ref, "UHF")) {
+    if(!strcmp(params.ref, "UHF") && params.semicanonical == 0) {
       fprintf(stderr, "ERROR: MO reordering not allowed for UHF references.\n");
       abort();
     }
@@ -709,13 +727,6 @@ void get_moinfo(void)
       for (i=0; i<moinfo.nso; i++) 
 	for (j=0; j<moinfo.nmo; j++) 
 	  moinfo.scf_vector[i][j] = tmpmat[i][params.moorder[j]];
-
-      /*
-      for (i=0; i<moinfo.nmo; i++)
-	tmpmat[0][i] = moinfo.evals[i];
-      for (i=0; i<moinfo.nmo; i++) 
-	moinfo.evals[i] = tmpmat[0][params.moorder[i]];
-      */
 
       free_matrix(tmpmat, moinfo.nso);        
     }
@@ -791,7 +802,7 @@ void get_moinfo(void)
   for(i=0; i < moinfo.nirreps; i++) {
     moinfo.virtpi[i] = moinfo.orbspi[i]-moinfo.clsdpi[i]-moinfo.openpi[i];
   }
-
+  
   if (params.print_lvl) {
     fprintf(outfile,"\n\tChkpt File Parameters:\n");
     fprintf(outfile,"\t------------------\n");
@@ -819,7 +830,12 @@ void get_moinfo(void)
   moinfo.noeints = moinfo.nso*(moinfo.nso+1)/2;
   moinfo.nteints = moinfo.noeints*(moinfo.noeints+1)/2;
 
-
+  if(params.semicanonical) {
+    semicanonical_fock();
+    moinfo.scf_vector_alpha = chkpt_rd_alpha_scf();
+    moinfo.scf_vector_beta = chkpt_rd_beta_scf();
+  }
+  
   /*
     Construct first and last index arrays for SOs: this defines the first
     absolute orbital index and last absolute orbital
