@@ -82,14 +82,14 @@ psi: (
 
   % Procedures for the SCF gradients
   SCFFirst = ($ints $scf $deriv)
-  SCFRHFFirst = $SCFFirst
-  SCFROHFFirst = $SCFFirst
-  SCFUHFFirst = $SCFFirst
-  SCFTwoConFirst = $SCFFirst
+  SCFRHFFirst = ($SCFFirst $done)
+  SCFROHFFirst = ($SCFFirst $done)
+  SCFUHFFirst = ($SCFFirst $done)
+  SCFTwoConFirst = ($SCFFirst $done)
 
   % Procedures for the SCF Second Derivatives
-  SCFSecond = ($ints $scf $transqt $deriv2 $propint $cphf $done)
-  SCFRHFSecond = $SCFSecond
+  SCFSecond = ($ints $scf $transqt $deriv2 $propint $cphf)
+  SCFRHFSecond = ($SCFSecond $done)
   SCFROHFSecond = ERROR
   SCFUHFSecond = ERROR
   SCFTwoConSecond = ERROR
@@ -120,8 +120,8 @@ psi: (
   SCFTwoConFirstDisp  = $SCFFirstDisp
 
   % Procedures for the SCF Second Derivatives
-  SCFSecondFreq = ($ints $scf $transqt $deriv2 $propint $cphf $done)
-  SCFRHFSecondFreq = $SCFSecondFreq
+  SCFSecondFreq = ($ints $scf $transqt $deriv2 $propint $cphf)
+  SCFRHFSecondFreq = ($SCFSecondFreq $done)
   SCFROHFSecondFreq = ERROR
   SCFUHFSecondFreq = ERROR
   SCFTwoConSecondFreq = ERROR
@@ -156,6 +156,93 @@ psi: (
   SCFUHFResponse = ERROR
   SCFROHFResponse = ERROR
   SCFTwoConResponse = ERROR
+
+  % -------------------------------- Direct SCF Procedures
+  % Procedures for the Direct SCF energy
+  DirectSCFEnergy = ($scf)
+  DirectSCFRHFEnergy = ($DirectSCFEnergy $done)
+  DirectSCFROHFEnergy = ($DirectSCFEnergy $done)
+  DirectSCFUHFEnergy = ($DirectSCFEnergy $done)
+  DirectSCFTwoConEnergy = ($DirectSCFEnergy $done)
+
+  % Procedures for the Direct SCF gradients
+  DirectSCFFirst = ($scf $deriv)
+  DirectSCFRHFFirst = ($DirectSCFFirst $done)
+  DirectSCFROHFFirst = ($DirectSCFFirst $done)
+  DirectSCFUHFFirst = ($DirectSCFFirst $done)
+  DirectSCFTwoConFirst = ($DirectSCFFirst $done)
+
+  % Procedures for the Direct SCF Second Derivatives
+  DirectSCFSecond = ($scf $transqt $deriv2 $propint $cphf $done)
+  DirectSCFRHFSecond = $DirectSCFSecond
+  DirectSCFROHFSecond = ERROR
+  DirectSCFUHFSecond = ERROR
+  DirectSCFTwoConSecond = ERROR
+
+  % Procedures for the optimizing geometries with Direct SCF gradients
+  DirectSCFFirstOpt = (repeat $nopt $DirectSCFFirst $geomupdate end $done)
+  DirectSCFRHFFirstOpt  = $DirectSCFFirstOpt
+  DirectSCFROHFFirstOpt  = $DirectSCFFirstOpt
+  DirectSCFUHFFirstOpt  = $DirectSCFFirstOpt
+  DirectSCFTwoConFirstOpt  = $DirectSCFFirstOpt
+
+  % Procedures for optimizing geometries with SCF energies
+  DirectSCFEnergyOpt = (repeat $nopt $DirectSCFEnergy $findif_disp_symm 
+    repeat NUM_DISP $findif_next $DirectSCFEnergy $findif_energy end
+    $findif_grad_energy $geomupdate end $done)
+  DirectSCFRHFEnergyOpt = $DirectSCFEnergyOpt
+  DirectSCFROHFEnergyOpt = $DirectSCFEnergyOpt
+  DirectSCFUHFEnergyOpt = $DirectSCFEnergyOpt
+  DirectSCFTwoConEnergyOpt = $DirectSCFEnergyOpt
+
+  % Procedures for the finite displacements of SCF gradients
+  DirectSCFFirstDisp  = 
+    ($input $findif_disp repeat $ndisp 
+     $findif_next $uinput $DirectSCFFirst $findif_grad end $findif_calc $done)
+  DirectSCFRHFFirstDisp  = $DirectSCFFirstDisp
+  DirectSCFROHFFirstDisp  = $DirectSCFFirstDisp
+  DirectSCFUHFFirstDisp  = $DirectSCFFirstDisp
+  DirectSCFTwoConFirstDisp  = $DirectSCFFirstDisp
+
+  % Procedures for the SCF Second Derivatives
+  DirectSCFSecondFreq = ($scf $transqt $deriv2 $propint $cphf $done)
+  DirectSCFRHFSecondFreq = $DirectSCFSecondFreq
+  DirectSCFROHFSecondFreq = ERROR
+  DirectSCFUHFSecondFreq = ERROR
+  DirectSCFTwoConSecondFreq = ERROR
+
+  % Procedures for symm freqs via differences of analytic gradients
+  DirectSCFFirstSymm_Freq  = 
+    ($input $DirectSCFEnergy $findif_disp_symm repeat NUM_DISP 
+     $findif_next $DirectSCFFirst $findif_grad end 
+     $findif_freq_grad_symm $done)
+  DirectSCFRHFFirstSymm_Freq  = $DirectSCFFirstSymm_Freq
+  DirectSCFROHFFirstSymm_Freq  = $DirectSCFFirstSymm_Freq
+  DirectSCFUHFFirstSymm_Freq  = $DirectSCFFirstSymm_Freq
+  DirectSCFTwoConFirstSymm_Freq  = $DirectSCFFirstSymm_Freq
+
+  % Procedures for freqs via differences of analytic gradients
+  DirectSCFFirstFreq  = 
+    ($input $DirectSCFEnergy $findif_disp repeat NUM_DISP 
+     $findif_next $uinput $DirectSCFFirst $findif_grad end 
+     $findif_freq_grad $done)
+  DirectSCFRHFFirstFreq  = $DirectSCFFirstFreq
+  DirectSCFROHFFirstFreq  = $DirectSCFFirstFreq
+  DirectSCFUHFFirstFreq  = $DirectSCFFirstFreq
+  DirectSCFTwoConFirstFreq  = $DirectSCFFirstFreq
+
+  % Testing procedure for optimizing geometries with SCF finite displacements
+  DirectSCFROHFEnergyDisp =
+    (repeat $ndisp $ugeom $uinput $DirectSCFROHFEnergy $rgeom end $done)
+
+  % Procedure for an SCF linear response calculation
+  DirectSCFResponse = 
+    ($input $DirectSCFEnergy $transqt $ccsort $propint $response $done)
+  DirectSCFRHFResponse = $DirectSCFResponse
+  DirectSCFUHFResponse = ERROR
+  DirectSCFROHFResponse = ERROR
+  DirectSCFTwoConResponse = ERROR
+
 
   % -------------------------------- CCSD Procedures
   % Procedures for the CCSD energy
