@@ -27,7 +27,7 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
 		    double beta)
 {
   int n, Hx, Hy, Hz, GX, GY, GZ, nirreps, Xtrans, Ytrans, *numlinks, symlink;
-  long int size_Y, size_Z;
+  long int size_Y, size_Z, size_file_X_row;;
   int incore, nbuckets;
   long int memoryd, core, rows_per_bucket, rows_left, memtotal;
 #ifdef DPD_DEBUG
@@ -72,8 +72,9 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
 
     size_Y = ((long) Y->params->rowtot[Hy]) * ((long) Y->params->coltot[Hy^GY]);
     size_Z = ((long) Z->params->rowtot[Hz]) * ((long) Z->params->coltot[Hz^GZ]);
+    size_file_X_row = ((long) X->file.params->coltot[0]); /* need room for a row of the X->file */
 	
-    memoryd = dpd_memfree() - (size_Y + size_Z);
+    memoryd = dpd_memfree() - (size_Y + size_Z + size_file_X_row);
 
     if(X->params->rowtot[Hx] && X->params->coltot[Hx^GX]) {
 

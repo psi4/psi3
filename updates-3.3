@@ -1,3 +1,8 @@
+1/26/04: Fixed a bug in src/lib/libdpd/contract444.c for out-of-core cases.
+I was not including the size of a single file4 row on the X component of
+the X*Y-->Z contraction, which is necessary for some <ab|cd> cases in
+cclambda.  This fix also appears on the psi-3-2 branch. -TDC
+
 1/16/04: Added documentation for new MP2 features to the user's manual
 and the man pages. -MLA
 
