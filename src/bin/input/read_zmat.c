@@ -60,7 +60,7 @@ void read_zmat()
 
   char *name;
 
-  int zmat_len, simple_zmat;
+  int zmat_len, simple_zmat, simple_zvars;
 
   /*these are passed to parsing function to tell it what position in the row to look at*/
   int bond=2, angle=4, tors=6;
@@ -150,14 +150,37 @@ void read_zmat()
   errcod = 0;
   if( ip_exist("ZVARS",0) ) {
     errcod += ip_count("ZVARS",&num_vals,0);
-    def_arr = (struct definition *) malloc( num_vals * sizeof(struct definition) );
-    for(i=0;i<num_vals;++i) {
-      errcod += ip_string("ZVARS",&def_arr[i].variable,2,i,0);
-      errcod += ip_data("ZVARS","%lf",&def_arr[i].value,2,i,1);
+
+    simple_zvars = 1;
+    for(i=0; i < num_vals; i++) {
+      ip_count("ZVARS", &entry_length,1,i);
+      if(entry_length > 1) simple_zvars = 0;
     }
+
+    if(simple_zvars) {
+      /* there must be an even number of entries */
+      if(num_vals%2) punt("Problem with number of simple ZVARS entries.");
+      num_vals /= 2;
+      def_arr = (struct definition *) malloc( num_vals * sizeof(struct definition) );
+
+      for(i=0; i < num_vals; i++) {
+	errcod += ip_string("ZVARS", &def_arr[i].variable, 1, 2*i);
+	errcod += ip_data("ZVARS", "%lf", &def_arr[i].value, 1, 2*i+1);
+      }
+    }
+    else {
+      def_arr = (struct definition *) malloc( num_vals * sizeof(struct definition) );
+      for(i=0;i<num_vals;++i) {
+        errcod += ip_string("ZVARS",&def_arr[i].variable,2,i,0);
+        errcod += ip_data("ZVARS","%lf",&def_arr[i].value,2,i,1);
+      }
+    }
+
     if(errcod > 0)
       punt("Problem parsing ZVARS");
   }
+
+/*   if(simple_zvars) exit(1); */
 
   for (i=0;i<num_allatoms;++i) {
 

@@ -14,9 +14,27 @@ void read_cart()
   double Z = 0.0;
   double tmp = 0.0;
   char *atom_label;
+  int simple_geom, num_elem, entry_length;
 
-  num_allatoms = 0;
-  ip_count("GEOMETRY",&num_allatoms,0);
+  ip_count("GEOMETRY", &num_elem, 0);
+  simple_geom = 1;
+  entry_length = 0;
+  for(i=0; i < num_elem; i++) {
+    ip_count("GEOMETRY", &entry_length, 1, i);
+    if(entry_length > 1) simple_geom = 0;
+  }
+
+  if(simple_geom && num_elem%4) 
+    punt("Problem with number of elements in GEOMETRY.");
+
+  if(simple_geom) {
+    num_allatoms = num_elem/4;
+  }
+  else {
+    num_allatoms = 0;
+    ip_count("GEOMETRY",&num_allatoms,0);
+  }
+
   if (num_allatoms == 0)
     punt("GEOMETRY is empty!");
   else if (num_allatoms > MAXATOM)
@@ -25,7 +43,10 @@ void read_cart()
   /* Figure out how many non-dummy atoms are there */
   num_atoms = 0;
   for(i=0;i<num_allatoms;i++){
-    errcod = ip_string("GEOMETRY",&atom_label,2,i,0);
+    if(simple_geom) 
+      errcod = ip_string("GEOMETRY", &atom_label, 1, i*4);
+    else
+      errcod = ip_string("GEOMETRY",&atom_label,2,i,0);
     if (errcod != IPE_OK)
       punt("Problem reading GEOMETRY array.");
     if (strcmp(atom_label,"X"))
@@ -44,7 +65,10 @@ void read_cart()
 
   atomcount = 0;
   for(i=0;i<num_allatoms;i++){
-    errcod = ip_string("GEOMETRY",&atom_label,2,i,0);
+    if(simple_geom) 
+      errcod = ip_string("GEOMETRY",&atom_label,1,4*i);
+    else
+      errcod = ip_string("GEOMETRY",&atom_label,2,i,0);
     if (errcod != IPE_OK)
       punt("Problem with the GEOMETRY array.");
     if (strcmp(atom_label,"X")) {
@@ -64,7 +88,10 @@ void read_cart()
      }
 
     for(j=0; j<3;j++){
-      errcod = ip_data("GEOMETRY","%lf", &tmp,2,i,j+1);
+      if(simple_geom) 
+        errcod = ip_data("GEOMETRY","%lf", &tmp,1,4*i+j+1);
+      else
+        errcod = ip_data("GEOMETRY","%lf", &tmp,2,i,j+1);
       if (errcod != IPE_OK)
 	punt("Problem with the GEOMETRY array.");
       else
