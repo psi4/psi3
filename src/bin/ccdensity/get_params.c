@@ -17,11 +17,15 @@ void get_params()
   if(errcod == IPE_OK) params.tolerance = 1.0*pow(10.0,(double) -tol);
 
   fndcor(&(params.memory),infile,outfile);
+
+  params.cachelev = 2;
+  errcod = ip_data("CACHELEV", "%d", &(params.cachelev),0);
   
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
   fprintf(outfile, "\tTwo-pdm file =    %4d\n", params.tpdmfile);
   fprintf(outfile, "\tTolerance    = %3.1e\n", params.tolerance);
+  fprintf(outfile, "\tCache Level  =    %1d\n", params.cachelev);
   fprintf(outfile, "\n");
 }
 

@@ -1,6 +1,7 @@
 struct MOInfo {
     int nirreps;        /* no. of irreducible representations */
     int nmo;            /* no. of molecular orbitals */
+    int nactive;        /* no. of active orbitals */
     int iopen;          /* 0=closed shell; >0=open shell */
     int *orbspi;        /* no. of MOs per irrep */
     int *clsdpi;        /* no. of closed-shells per irrep excl. frdocc */
@@ -20,6 +21,8 @@ struct MOInfo {
     int *virtpi;        /* no. of active virt. orbs. (incl. open) per irrep */
     int *occ_off;       /* occupied orbital offsets within each irrep */
     int *vir_off;       /* virtual orbital offsets within each irrep */
+    int *cc_occ;        /* QT->CC active occupied reordering array */
+    int *cc_vir;        /* QT->CC active virtiual reordering array */
     int *qt_occ;        /* CC->QT active occupied reordering array */
     int *qt_vir;        /* CC->QT active virtiual reordering array */
     double enuc;        /* Nuclear repulsion energy */

@@ -16,8 +16,8 @@
 
 void build_Z(void)
 {
-  struct dpdbuf A;
-  struct oe_dpdfile X1, D;
+  dpdbuf4 A;
+  dpdfile2 X1, D;
   double **X, **T, **Y, **Z;
   int num_ai, h, nirreps, a, i, count, lastcol, rank;
   int *virtpi, *occpi, *openpi;
@@ -64,13 +64,17 @@ void build_Z(void)
 		}
 	    }
 
+  print_mat(T, num_ai, num_ai, outfile);
+
+  return 0;
+
   /*** Finished building the transformation matrix ***/
 
   /* Place all the elements of the orbital rotation gradient, X into a
      linear array, Z */
-  dpd_oe_file_init(&X1, CC_MISC, 1, 0, "X(A,I)", 0, outfile);
-  dpd_oe_file_mat_init(&X1);
-  dpd_oe_file_mat_rd(&X1, 0, outfile);
+  dpd_file2_init(&X1, CC_MISC, 0, 1, 0, "X(A,I)");
+  dpd_file2_mat_init(&X1);
+  dpd_file2_mat_rd(&X1);
   num_ai = 0;
   for(h=0; h < nirreps; h++)
       num_ai += X1.params->rowtot[h]*X1.params->coltot[h];
@@ -81,17 +85,17 @@ void build_Z(void)
 	  for(i=0; i < X1.params->coltot[h]; i++)
 	      Z[0][count++] = -X1.matrix[h][a][i];
 
-  dpd_oe_file_mat_close(&X1);
-  dpd_oe_file_close(&X1);
+  dpd_file2_mat_close(&X1);
+  dpd_file2_close(&X1);
 
   /* Push the zero elements of X to the end of the vector */
   X = block_matrix(1,num_ai);
   newmm(T,0,Z,0,X,num_ai,num_ai,1,1.0,0.0);
 
   /* Now, grab only irrep 0 of the orbital Hessian */
-  dpd_buf_init(&A, CC_MISC, 11, 11, 11, 11, 0, "A(EM,AI)", 0, outfile);
-  dpd_buf_mat_irrep_init(&A, 0);
-  dpd_buf_mat_irrep_rd(&A, 0, 0, outfile);
+  dpd_buf4_init(&A, CC_MISC, 0, 11, 11, 11, 11, 0, "A(EM,AI)");
+  dpd_buf4_mat_irrep_init(&A, 0); 0,
+  dpd_buf4_mat_irrep_rd(&A, 0);
 
   /* Move the zero rows and columns of the Hessian to the bottom.
      Note that as long as we won't be writing A back to disk, it's OK
@@ -104,8 +108,8 @@ void build_Z(void)
   /* Trying out Matt's Pople code --- way to go, Matt! */
   pople(A.matrix[0], X[0], rank, 1, 1e-12, outfile, 0);
 
-  dpd_buf_mat_irrep_close(&A, 0);
-  dpd_buf_close(&A);
+  dpd_buf4_mat_irrep_close(&A, 0);
+  dpd_buf4_close(&A);
 
   /* Now re-order the elements of X back to the DPD format */
   newmm(T,0,X,0,Z,num_ai,num_ai,1,1.0,0.0);
@@ -116,8 +120,8 @@ void build_Z(void)
 
   /* Build the orbital component of Dai --- we'll build these as separate
      spin cases for future simplicity (e.g., UHF-based codes)*/
-  dpd_oe_file_init(&D, CC_OEI, 1, 0, "D(orb)(A,I)", 0, outfile);
-  dpd_oe_file_mat_init(&D);
+  dpd_file2_init(&D, CC_OEI, 0, 1, 0, "D(orb)(A,I)");
+  dpd_file2_mat_init(&D);
   for(h=0,count=0; h < nirreps; h++)
       for(a=0; a < D.params->rowtot[h]; a++)
 	  for(i=0; i < D.params->coltot[h]; i++) {
@@ -125,12 +129,12 @@ void build_Z(void)
 
 	      if(a >= (virtpi[h] - openpi[h])) D.matrix[h][a][i] = 0.0;
 	    }
-  dpd_oe_file_mat_wrt(&D, 0, outfile);
-  dpd_oe_file_mat_close(&D);
-  dpd_oe_file_close(&D);
+  dpd_file2_mat_wrt(&D);
+  dpd_file2_mat_close(&D);
+  dpd_file2_close(&D);
 
-  dpd_oe_file_init(&D, CC_OEI, 1, 0, "D(orb)(a,i)", 0, outfile);
-  dpd_oe_file_mat_init(&D);
+  dpd_file2_init(&D, CC_OEI, 0, 1, 0, "D(orb)(a,i)");
+  dpd_file2_mat_init(&D);
   for(h=0,count=0; h < nirreps; h++)
       for(a=0; a < D.params->rowtot[h]; a++) 
 	  for(i=0; i < D.params->coltot[h]; i++) {
@@ -138,9 +142,9 @@ void build_Z(void)
 	      
 	      if(i >= (occpi[h] - openpi[h])) D.matrix[h][a][i] = 0.0;
 	    }
-  dpd_oe_file_mat_wrt(&D, 0, outfile);
-  dpd_oe_file_mat_close(&D);
-  dpd_oe_file_close(&D);
+  dpd_file2_mat_wrt(&D);
+  dpd_file2_mat_close(&D);
+  dpd_file2_close(&D);
 
   /* We're done with Z */
   free_block(Z);

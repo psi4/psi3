@@ -18,6 +18,7 @@
 void init_io(void);
 void title(void);
 void get_moinfo(void);
+void get_frozen(void);
 void get_params(void);
 void exit_io(void);
 void onepdm(void);
@@ -38,33 +39,57 @@ void deanti(void);
 void add_ref(struct iwlbuf *OutBuf);
 void add_core(struct iwlbuf *OutBuf);
 void dump(struct iwlbuf *OutBuf);
+void kinetic(void);
+void probable(void);
+int **cacheprep(int level, int *cachefiles);
 
 int main(int argc, char *argv[])
 {
+  int **cachelist, *cachefiles;
   struct iwlbuf OutBuf;
   
   init_io();
   title();
   get_moinfo();
+  get_frozen();
   get_params();
-  dpd_init(moinfo.nirreps, params.memory, 2, moinfo.occpi, moinfo.occ_sym,
-	   moinfo.virtpi, moinfo.vir_sym);
+
+  cachefiles = init_int_array(PSIO_MAXUNIT);
+  cachelist = cacheprep(params.cachelev, cachefiles);
+
+  dpd_init(0, moinfo.nirreps, params.memory, cachefiles, cachelist,
+           2, moinfo.occpi, moinfo.occ_sym, moinfo.virtpi, moinfo.vir_sym);
 
   onepdm();
   twopdm();
   energy();
+  sortone();
+  kinetic();
 
   /*
-  dpd_init(moinfo.nirreps, 2, frozen.occpi, frozen.occ_sym,
-	   frozen.virtpi, frozen.vir_sym);
-  resort_tei();
-  dpd_close();
-  */
 
+  dpd_init(1, moinfo.nirreps, params.memory, 2, frozen.occpi, frozen.occ_sym,
+	   frozen.virtpi, frozen.vir_sym);
+	   */
+
+/*  if(moinfo.nfzc || moinfo.nfzv) {
+      resort_gamma();
+      resort_tei();
+    } */
+
+      /*
   lag();
   build_X();
+  
   build_A();
   build_Z();
+  
+  dpd_close(0);
+  dpd_close(1);
+  */
+
+
+/*
   relax_I();
   relax_D();
   sortone();
@@ -81,6 +106,7 @@ int main(int argc, char *argv[])
   iwl_buf_close(&OutBuf, 1);
 
   dpd_close();
+*/
   cleanup(); 
   exit_io();
   exit(0);

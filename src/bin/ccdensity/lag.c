@@ -40,11 +40,13 @@ void Iab(void);
 void Iai(void);
 void Iia(void);
 
+#define CC_OEI CC_OEI_NEW
+
 void lag(void)
 {
   int h, nirreps, i, j, a, b;
   int *occpi, *virtpi, *openpi;
-  struct oe_dpdfile I;
+  dpdfile2 I;
   
   Iij();
   Iab();
@@ -53,42 +55,50 @@ void lag(void)
 
   /* Multiply all I'pq components by -1/2 for compatibility with the
      final gradient expression */
-  dpd_oe_file_init(&I, CC_OEI, 0, 0, "I'IJ", 0, outfile);
-  dpd_oe_scm(&I, -0.5, 0, outfile);
-  dpd_oe_file_close(&I);
-  dpd_oe_file_init(&I, CC_OEI, 0, 0, "I'ij", 0, outfile);
-  dpd_oe_scm(&I, -0.5, 0, outfile);
-  dpd_oe_file_close(&I);
-  dpd_oe_file_init(&I, CC_OEI, 1, 1, "I'AB", 0, outfile);
-  dpd_oe_scm(&I, -0.5, 0, outfile);
-  dpd_oe_file_close(&I);
-  dpd_oe_file_init(&I, CC_OEI, 1, 1, "I'ab", 0, outfile);
-  dpd_oe_scm(&I, -0.5, 0, outfile);
-  dpd_oe_file_close(&I);
-  dpd_oe_file_init(&I, CC_OEI, 0, 1, "I'IA", 0, outfile);
-  dpd_oe_scm(&I, -0.5, 0, outfile);
-  dpd_oe_file_close(&I);
-  dpd_oe_file_init(&I, CC_OEI, 0, 1, "I'ia", 0, outfile);
-  dpd_oe_scm(&I, -0.5, 0, outfile);
-  dpd_oe_file_close(&I);
-  dpd_oe_file_init(&I, CC_OEI, 1, 0, "I'AI", 0, outfile);
-  dpd_oe_scm(&I, -0.5, 0, outfile);
-  dpd_oe_file_close(&I);
-  dpd_oe_file_init(&I, CC_OEI, 1, 0, "I'ai", 0, outfile);
-  dpd_oe_scm(&I, -0.5, 0, outfile);
-  dpd_oe_file_close(&I);
+  dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'IJ");
+  dpd_file2_scm(&I, -0.5);
+  dpd_file2_print(&I, outfile);
+  dpd_file2_close(&I);
+  dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'ij");
+  dpd_file2_scm(&I, -0.5);
+  dpd_file2_print(&I, outfile);
+  dpd_file2_close(&I);
+  dpd_file2_init(&I, CC_OEI, 0, 1, 1, "I'AB");
+  dpd_file2_scm(&I, -0.5);
+  dpd_file2_print(&I, outfile);
+  dpd_file2_close(&I);
+  dpd_file2_init(&I, CC_OEI, 0, 1, 1, "I'ab");
+  dpd_file2_scm(&I, -0.5);
+  dpd_file2_print(&I, outfile);
+  dpd_file2_close(&I);
+  dpd_file2_init(&I, CC_OEI, 0, 0, 1, "I'IA");
+  dpd_file2_scm(&I, -0.5);
+  dpd_file2_print(&I, outfile);
+  dpd_file2_close(&I);
+  dpd_file2_init(&I, CC_OEI, 0, 0, 1, "I'ia");
+  dpd_file2_scm(&I, -0.5);
+  dpd_file2_print(&I, outfile);
+  dpd_file2_close(&I);
+  dpd_file2_init(&I, CC_OEI, 0, 1, 0, "I'AI");
+  dpd_file2_scm(&I, -0.5);
+  dpd_file2_print(&I, outfile);
+  dpd_file2_close(&I);
+  dpd_file2_init(&I, CC_OEI, 0, 1, 0, "I'ai");
+  dpd_file2_scm(&I, -0.5);
+  dpd_file2_print(&I, outfile);
+  dpd_file2_close(&I);
 
   /* Now go through all terms involving open-shell orbitals and force
      the appropriate spin cases to zero. */
   nirreps = moinfo.nirreps;
-  occpi = moinfo.occpi; virtpi = moinfo.virtpi; openpi = moinfo.openpi;
+  occpi = frozen.occpi; virtpi = frozen.virtpi; openpi = moinfo.openpi;
 
-  dpd_oe_file_init(&I, CC_OEI, 0, 0, "I'IJ", 0, outfile);
-  dpd_oe_file_close(&I);
+  dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'IJ");
+  dpd_file2_close(&I);
 
-  dpd_oe_file_init(&I, CC_OEI, 0, 0, "I'ij", 0, outfile);
-  dpd_oe_file_mat_init(&I);
-  dpd_oe_file_mat_rd(&I, 0, outfile);
+  dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'ij");
+  dpd_file2_mat_init(&I);
+  dpd_file2_mat_rd(&I);
   for(h=0; h < nirreps; h++) {
       for(i=(occpi[h]-openpi[h]); i < occpi[h]; i++) {
 	  for(j=(occpi[h]-openpi[h]); j < occpi[h]; j++) {
@@ -106,13 +116,13 @@ void lag(void)
 	    }
 	}
     }
-  dpd_oe_file_mat_wrt(&I, 0, outfile);
-  dpd_oe_file_mat_close(&I);
-  dpd_oe_file_close(&I);
+  dpd_file2_mat_wrt(&I);
+  dpd_file2_mat_close(&I);
+  dpd_file2_close(&I);
 
-  dpd_oe_file_init(&I, CC_OEI, 1, 1, "I'AB", 0, outfile);
-  dpd_oe_file_mat_init(&I);
-  dpd_oe_file_mat_rd(&I, 0, outfile);
+  dpd_file2_init(&I, CC_OEI, 0, 1, 1, "I'AB");
+  dpd_file2_mat_init(&I);
+  dpd_file2_mat_rd(&I);
   for(h=0; h < nirreps; h++) {
       for(a=(virtpi[h]-openpi[h]); a < virtpi[h]; a++) {
 	  for(b=(virtpi[h]-openpi[h]); b < virtpi[h]; b++) {
@@ -130,16 +140,16 @@ void lag(void)
 	    }
 	}
     }
-  dpd_oe_file_mat_wrt(&I, 0, outfile);
-  dpd_oe_file_mat_close(&I);
-  dpd_oe_file_close(&I);
+  dpd_file2_mat_wrt(&I);
+  dpd_file2_mat_close(&I);
+  dpd_file2_close(&I);
 
-  dpd_oe_file_init(&I, CC_OEI, 1, 1, "I'ab", 0, outfile);
-  dpd_oe_file_close(&I);
+  dpd_file2_init(&I, CC_OEI, 0, 1, 1, "I'ab");
+  dpd_file2_close(&I);
 
-  dpd_oe_file_init(&I, CC_OEI, 1, 0, "I'AI", 0, outfile);
-  dpd_oe_file_mat_init(&I);
-  dpd_oe_file_mat_rd(&I, 0, outfile);
+  dpd_file2_init(&I, CC_OEI, 0, 1, 0, "I'AI");
+  dpd_file2_mat_init(&I);
+  dpd_file2_mat_rd(&I);
   for(h=0; h < nirreps; h++) {
       for(a=(virtpi[h]-openpi[h]); a < virtpi[h]; a++) {
 	  for(i=0; i < occpi[h]; i++) {
@@ -147,13 +157,13 @@ void lag(void)
 	    }
 	}
     }
-  dpd_oe_file_mat_wrt(&I, 0, outfile);
-  dpd_oe_file_mat_close(&I);
-  dpd_oe_file_close(&I);
+  dpd_file2_mat_wrt(&I);
+  dpd_file2_mat_close(&I);
+  dpd_file2_close(&I);
 
-  dpd_oe_file_init(&I, CC_OEI, 1, 0, "I'ai", 0, outfile);
-  dpd_oe_file_mat_init(&I);
-  dpd_oe_file_mat_rd(&I, 0, outfile);
+  dpd_file2_init(&I, CC_OEI, 0, 1, 0, "I'ai");
+  dpd_file2_mat_init(&I);
+  dpd_file2_mat_rd(&I);
   for(h=0; h < nirreps; h++) {
       for(a=0; a < virtpi[h]; a++) {
 	  for(i=(occpi[h] - openpi[h]); i < occpi[h]; i++) {
@@ -161,13 +171,13 @@ void lag(void)
 	    }
 	}
     }
-  dpd_oe_file_mat_wrt(&I, 0, outfile);
-  dpd_oe_file_mat_close(&I);
-  dpd_oe_file_close(&I);
+  dpd_file2_mat_wrt(&I);
+  dpd_file2_mat_close(&I);
+  dpd_file2_close(&I);
 
-  dpd_oe_file_init(&I, CC_OEI, 0, 1, "I'IA", 0, outfile);
-  dpd_oe_file_mat_init(&I);
-  dpd_oe_file_mat_rd(&I, 0, outfile);
+  dpd_file2_init(&I, CC_OEI, 0, 0, 1, "I'IA");
+  dpd_file2_mat_init(&I);
+  dpd_file2_mat_rd(&I);
   for(h=0; h < nirreps; h++) {
       for(i=0; i < occpi[h]; i++) {
 	  for(a=(virtpi[h] - openpi[h]); a < virtpi[h]; a++) {
@@ -175,13 +185,13 @@ void lag(void)
 	    }
 	}
     }
-  dpd_oe_file_mat_wrt(&I, 0, outfile);
-  dpd_oe_file_mat_close(&I);
-  dpd_oe_file_close(&I);
+  dpd_file2_mat_wrt(&I);
+  dpd_file2_mat_close(&I);
+  dpd_file2_close(&I);
 
-  dpd_oe_file_init(&I, CC_OEI, 0, 1, "I'ia", 0, outfile);
-  dpd_oe_file_mat_init(&I);
-  dpd_oe_file_mat_rd(&I, 0, outfile);
+  dpd_file2_init(&I, CC_OEI, 0, 0, 1, "I'ia");
+  dpd_file2_mat_init(&I);
+  dpd_file2_mat_rd(&I);
   for(h=0; h < nirreps; h++) {
       for(i=(occpi[h] - openpi[h]); i < occpi[h]; i++) {
 	  for(a=0; a < virtpi[h]; a++) {
@@ -189,7 +199,7 @@ void lag(void)
 	    }
 	}
     }
-  dpd_oe_file_mat_wrt(&I, 0, outfile);
-  dpd_oe_file_mat_close(&I);
-  dpd_oe_file_close(&I);
+  dpd_file2_mat_wrt(&I);
+  dpd_file2_mat_close(&I);
+  dpd_file2_close(&I);
 }

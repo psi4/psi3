@@ -4,5 +4,6 @@ struct Params {
     double tolerance;
     int tpdmfile;
     int memory;
+    int cachelev;
 };
 

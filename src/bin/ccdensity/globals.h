@@ -1,6 +1,7 @@
 #include <ccfiles.h>
 #include <dpd.h>
 #include "MOInfo.h"
+#include "Frozen.h"
 #include "Params.h"
 
 /* Global variables */
@@ -13,4 +14,5 @@
 
 EXTERN FILE *infile, *outfile;
 EXTERN struct MOInfo moinfo;
+EXTERN struct Frozen frozen;
 EXTERN struct Params params;

@@ -47,7 +47,8 @@ void get_moinfo(void)
 		  (char *) moinfo.virtpi, sizeof(int)*moinfo.nirreps);
 
   psio_read_entry(CC_INFO, "No. of Active Orbitals", (char *) &(nactive),
-		  sizeof(int)); 
+		  sizeof(int));
+  moinfo.nactive = nactive;
 
   moinfo.occ_sym = init_int_array(nactive);
   moinfo.vir_sym = init_int_array(nactive);
@@ -82,13 +83,19 @@ void get_moinfo(void)
       moinfo.nuocc += moinfo.uoccpi[h];
     }
 
-  /* Get CC->QT active occupied and virtual reordering arrays */
+  /* Get CC->QT and QT->CC active occupied and virtual reordering arrays */
   moinfo.qt_occ = init_int_array(nactive);
   moinfo.qt_vir = init_int_array(nactive);
+  moinfo.cc_occ = init_int_array(nactive);
+  moinfo.cc_vir = init_int_array(nactive);
   psio_read_entry(CC_INFO, "CC->QT Active Occ Order",
 		   (char *) moinfo.qt_occ, sizeof(int)*nactive);
   psio_read_entry(CC_INFO, "CC->QT Active Virt Order",
 		   (char *) moinfo.qt_vir, sizeof(int)*nactive);
+  psio_read_entry(CC_INFO, "QT->CC Active Occ Order",
+		   (char *) moinfo.cc_occ, sizeof(int)*nactive);
+  psio_read_entry(CC_INFO, "QT->CC Active Virt Order",
+		   (char *) moinfo.cc_vir, sizeof(int)*nactive);
 
   psio_read_entry(CC_INFO, "Reference Energy", (char *) &(moinfo.eref),
 		  sizeof(double));

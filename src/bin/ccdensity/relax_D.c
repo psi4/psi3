@@ -13,29 +13,29 @@
 
 void relax_D(void)
 {
-  struct oe_dpdfile D1, D2;
+  dpdfile2 D1, D2;
   
-  dpd_oe_file_init(&D1, CC_OEI, 0, 1, "DAI", 0, outfile);
-  dpd_oe_file_init(&D2, CC_OEI, 1, 0, "D(orb)(A,I)", 0 , outfile);
-  dpd_oe_axpy(&D2, &D1, 1.0, 1, 0, outfile);
-  dpd_oe_file_close(&D2);
-  dpd_oe_file_close(&D1);
+  dpd_file2_init(&D1, CC_OEI, 0, 0, 1, "DAI");
+  dpd_file2_init(&D2, CC_OEI, 0, 1, 0, "D(orb)(A,I)");
+  dpd_file2_axpy(&D2, &D1, 1.0, 1);
+  dpd_file2_close(&D2);
+  dpd_file2_close(&D1);
 
-  dpd_oe_file_init(&D1, CC_OEI, 0, 1, "DIA", 0, outfile);
-  dpd_oe_file_init(&D2, CC_OEI, 1, 0, "D(orb)(A,I)", 0 , outfile);
-  dpd_oe_axpy(&D2, &D1, 1.0, 1, 0, outfile);
-  dpd_oe_file_close(&D2);
-  dpd_oe_file_close(&D1);
+  dpd_file2_init(&D1, CC_OEI, 0, 0, 1, "DIA");
+  dpd_file2_init(&D2, CC_OEI, 0, 1, 0, "D(orb)(A,I)");
+  dpd_file2_axpy(&D2, &D1, 1.0, 1);
+  dpd_file2_close(&D2);
+  dpd_file2_close(&D1);
 
-  dpd_oe_file_init(&D1, CC_OEI, 0, 1, "Dai", 0, outfile);
-  dpd_oe_file_init(&D2, CC_OEI, 1, 0, "D(orb)(a,i)", 0 , outfile);
-  dpd_oe_axpy(&D2, &D1, 1.0, 1, 0, outfile);
-  dpd_oe_file_close(&D2);
-  dpd_oe_file_close(&D1);
+  dpd_file2_init(&D1, CC_OEI, 0, 0, 1, "Dai");
+  dpd_file2_init(&D2, CC_OEI, 0, 1, 0, "D(orb)(a,i)");
+  dpd_file2_axpy(&D2, &D1, 1.0, 1);
+  dpd_file2_close(&D2);
+  dpd_file2_close(&D1);
 
-  dpd_oe_file_init(&D1, CC_OEI, 0, 1, "Dia", 0, outfile);
-  dpd_oe_file_init(&D2, CC_OEI, 1, 0, "D(orb)(a,i)", 0 , outfile);
-  dpd_oe_axpy(&D2, &D1, 1.0, 1, 0, outfile);
-  dpd_oe_file_close(&D2);
-  dpd_oe_file_close(&D1);
+  dpd_file2_init(&D1, CC_OEI, 0, 0, 1, "Dia");
+  dpd_file2_init(&D2, CC_OEI, 0, 1, 0, "D(orb)(a,i)");
+  dpd_file2_axpy(&D2, &D1, 1.0, 1);
+  dpd_file2_close(&D2);
+  dpd_file2_close(&D1);
 }

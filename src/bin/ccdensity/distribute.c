@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <iwl.h>
-#include "Params.h"
-#include "MOInfo.h"
+#include <psifiles.h>
 #define EXTERN
 #include "globals.h"
 
@@ -47,7 +46,7 @@ void distribute(void)
     /* Check integral into each class */
     classify(p,q,r,s,value,&ABuf,&BBuf,&CBuf,&DBuf,&EBuf,&FBuf);
 
-/*    fprintf(outfile, "(%d %d|%d %d) = %20.10lf\n", p, q, r, s, value); */
+/*    fprintf(outfile, "(%d %d|%d %d) = %20.10lf\n", p, q, r, s, value);  */
 
     } /* end loop through current buffer */
 
@@ -67,13 +66,13 @@ void distribute(void)
       /* Check integral into each class */
       classify(p,q,r,s,value,&ABuf,&BBuf,&CBuf,&DBuf,&EBuf,&FBuf);
 
-/*      fprintf(outfile, "(%d %d|%d %d) = %20.10lf\n", p, q, r, s, value);   */
+/*      fprintf(outfile, "(%d %d|%d %d) = %20.10lf\n", p, q, r, s, value); */
 
       } /* end loop through current buffer */
     } /* end loop over reading buffers */
 
 
-  iwl_buf_close(&InBuf, params.keep_TEIFile);
+  iwl_buf_close(&InBuf, 1);
   iwl_buf_flush(&ABuf, 1);
   iwl_buf_flush(&BBuf, 1);
   iwl_buf_flush(&CBuf, 1);

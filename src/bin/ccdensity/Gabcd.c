@@ -5,32 +5,32 @@
 
 void Gabcd(void)
 {
-  struct dpdbuf G, L, T;
+  dpdbuf4 G, L, T;
 
-  dpd_buf_init(&G, CC_GAMMA, 7, 7, 7, 7, 0, "GABCD", 0, outfile);
-  dpd_buf_init(&L, CC_LAMPS, 2, 7, 2, 7, 0, "LIJAB", 0, outfile);
-  dpd_buf_init(&T, CC_TAMPS, 2, 7, 2, 7, 0, "tauIJAB", 0, outfile);
-  dpd_contract222(&L, &T, &G, 1, 1, 1.0, 0.0, 0, outfile);
-  dpd_buf_close(&T);
-  dpd_buf_close(&L);
-  dpd_buf_symm(&G);
-  dpd_buf_close(&G);
+  dpd_buf4_init(&G, CC_GAMMA, 0, 7, 7, 7, 7, 0, "GABCD");
+  dpd_buf4_init(&L, CC_LAMPS, 0, 2, 7, 2, 7, 0, "LIJAB");
+  dpd_buf4_init(&T, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauIJAB");
+  dpd_contract444(&L, &T, &G, 1, 1, 1.0, 0.0);
+  dpd_buf4_close(&T);
+  dpd_buf4_close(&L);
+  dpd_buf4_symm(&G);
+  dpd_buf4_close(&G);
 
-  dpd_buf_init(&G, CC_GAMMA, 7, 7, 7, 7, 0, "Gabcd", 0, outfile);
-  dpd_buf_init(&L, CC_LAMPS, 2, 7, 2, 7, 0, "Lijab", 0, outfile);
-  dpd_buf_init(&T, CC_TAMPS, 2, 7, 2, 7, 0, "tauijab", 0, outfile);
-  dpd_contract222(&L, &T, &G, 1, 1, 1.0, 0.0, 0, outfile);
-  dpd_buf_close(&T);
-  dpd_buf_close(&L);
-  dpd_buf_symm(&G);
-  dpd_buf_close(&G);
+  dpd_buf4_init(&G, CC_GAMMA, 0, 7, 7, 7, 7, 0, "Gabcd");
+  dpd_buf4_init(&L, CC_LAMPS, 0, 2, 7, 2, 7, 0, "Lijab");
+  dpd_buf4_init(&T, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauijab");
+  dpd_contract444(&L, &T, &G, 1, 1, 1.0, 0.0);
+  dpd_buf4_close(&T);
+  dpd_buf4_close(&L);
+  dpd_buf4_symm(&G);
+  dpd_buf4_close(&G);
 
-  dpd_buf_init(&G, CC_GAMMA, 5, 5, 5, 5, 0, "GAbCd", 0, outfile);
-  dpd_buf_init(&L, CC_LAMPS, 0, 5, 0, 5, 0, "LIjAb", 0, outfile);
-  dpd_buf_init(&T, CC_TAMPS, 0, 5, 0, 5, 0, "tauIjAb", 0, outfile);
-  dpd_contract222(&L, &T, &G, 1, 1, 1.0, 0.0, 0, outfile);
-  dpd_buf_close(&T);
-  dpd_buf_close(&L);
-  dpd_buf_symm(&G);
-  dpd_buf_close(&G);
+  dpd_buf4_init(&G, CC_GAMMA, 0, 5, 5, 5, 5, 0, "GAbCd");
+  dpd_buf4_init(&L, CC_LAMPS, 0, 0, 5, 0, 5, 0, "LIjAb");
+  dpd_buf4_init(&T, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
+  dpd_contract444(&L, &T, &G, 1, 1, 1.0, 0.0);
+  dpd_buf4_close(&T);
+  dpd_buf4_close(&L);
+  dpd_buf4_symm(&G);
+  dpd_buf4_close(&G);
 }

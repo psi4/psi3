@@ -23,7 +23,7 @@ void sortone(void)
   int *occ_sym, *vir_sym, *openpi;
   int *qt_occ, *qt_vir;
   double **O, chksum, value;
-  struct oe_dpdfile D;
+  dpdfile2 D;
   PSI_FPTR next;
 
   nmo = moinfo.nmo;
@@ -41,9 +41,9 @@ void sortone(void)
   O = init_matrix(nmo-nfzv,nmo-nfzv);
 
   /* Sort A components first */
-  dpd_oe_file_init(&D, CC_OEI, 0, 0, "DIJ", 0, outfile);
-  dpd_oe_file_mat_init(&D);
-  dpd_oe_file_mat_rd(&D, 0, outfile);
+  dpd_file2_init(&D, CC_OEI, 0, 0, 0, "DIJ");
+  dpd_file2_mat_init(&D);
+  dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
       for(i=0; i < occpi[h]; i++) {
           I = qt_occ[occ_off[h] + i];
@@ -53,12 +53,12 @@ void sortone(void)
             }
         }
     }
-  dpd_oe_file_mat_close(&D);
-  dpd_oe_file_close(&D);
+  dpd_file2_mat_close(&D);
+  dpd_file2_close(&D);
 
-  dpd_oe_file_init(&D, CC_OEI, 1, 1, "DAB", 0, outfile);
-  dpd_oe_file_mat_init(&D);
-  dpd_oe_file_mat_rd(&D, 0, outfile);
+  dpd_file2_init(&D, CC_OEI, 0, 1, 1, "DAB");
+  dpd_file2_mat_init(&D);
+  dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
       for(a=0; a < (virtpi[h] - openpi[h]); a++) {
           A = qt_vir[vir_off[h] + a];
@@ -69,13 +69,13 @@ void sortone(void)
             }
         }
     }
-  dpd_oe_file_mat_close(&D);
-  dpd_oe_file_close(&D);
+  dpd_file2_mat_close(&D);
+  dpd_file2_close(&D);
 
   /* Note that this component of the density is stored occ-vir */
-  dpd_oe_file_init(&D, CC_OEI, 0, 1, "DAI", 0, outfile);
-  dpd_oe_file_mat_init(&D);
-  dpd_oe_file_mat_rd(&D, 0, outfile);
+  dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DAI");
+  dpd_file2_mat_init(&D);
+  dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
       for(i=0; i < occpi[h]; i++) {
           I = qt_occ[occ_off[h] + i];
@@ -86,12 +86,12 @@ void sortone(void)
             }
         }
     }
-  dpd_oe_file_mat_close(&D);
-  dpd_oe_file_close(&D);
+  dpd_file2_mat_close(&D);
+  dpd_file2_close(&D);
 
-  dpd_oe_file_init(&D, CC_OEI, 0, 1, "DIA", 0, outfile);
-  dpd_oe_file_mat_init(&D);
-  dpd_oe_file_mat_rd(&D, 0, outfile);
+  dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DIA");
+  dpd_file2_mat_init(&D);
+  dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
       for(i=0; i < occpi[h]; i++) {
           I = qt_occ[occ_off[h] + i];
@@ -102,13 +102,13 @@ void sortone(void)
             }
         }
     }
-  dpd_oe_file_mat_close(&D);
-  dpd_oe_file_close(&D);
+  dpd_file2_mat_close(&D);
+  dpd_file2_close(&D);
 
   /* Sort B components */
-  dpd_oe_file_init(&D, CC_OEI, 0, 0, "Dij", 0, outfile);
-  dpd_oe_file_mat_init(&D); 
-  dpd_oe_file_mat_rd(&D, 0, outfile);
+  dpd_file2_init(&D, CC_OEI, 0, 0, 0, "Dij");
+  dpd_file2_mat_init(&D); 
+  dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
       for(i=0; i < (occpi[h] - openpi[h]); i++) { 
           I = qt_occ[occ_off[h] + i];
@@ -118,12 +118,12 @@ void sortone(void)
             }
         }
     }
-  dpd_oe_file_mat_close(&D);
-  dpd_oe_file_close(&D);
+  dpd_file2_mat_close(&D);
+  dpd_file2_close(&D);
 
-  dpd_oe_file_init(&D, CC_OEI, 1, 1, "Dab", 0, outfile);
-  dpd_oe_file_mat_init(&D);
-  dpd_oe_file_mat_rd(&D, 0, outfile);
+  dpd_file2_init(&D, CC_OEI, 0, 1, 1, "Dab");
+  dpd_file2_mat_init(&D);
+  dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
       for(a=0; a < virtpi[h]; a++) {
           A = qt_vir[vir_off[h] + a];
@@ -134,13 +134,13 @@ void sortone(void)
             }
         }
     }
-  dpd_oe_file_mat_close(&D);
-  dpd_oe_file_close(&D);
+  dpd_file2_mat_close(&D);
+  dpd_file2_close(&D);
 
   /* Note that this component of the density is stored occ-vir */
-  dpd_oe_file_init(&D, CC_OEI, 0, 1, "Dai", 0, outfile);
-  dpd_oe_file_mat_init(&D);
-  dpd_oe_file_mat_rd(&D, 0, outfile);
+  dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dai");
+  dpd_file2_mat_init(&D);
+  dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
       for(i=0; i < (occpi[h] - openpi[h]); i++) {
           I = qt_occ[occ_off[h] + i];
@@ -151,12 +151,12 @@ void sortone(void)
             }
         }
     }
-  dpd_oe_file_mat_close(&D);
-  dpd_oe_file_close(&D);
+  dpd_file2_mat_close(&D);
+  dpd_file2_close(&D);
 
-  dpd_oe_file_init(&D, CC_OEI, 0, 1, "Dia", 0, outfile);
-  dpd_oe_file_mat_init(&D);
-  dpd_oe_file_mat_rd(&D, 0, outfile);
+  dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dia");
+  dpd_file2_mat_init(&D);
+  dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
       for(i=0; i < (occpi[h] - openpi[h]); i++) {
           I = qt_occ[occ_off[h] + i];
@@ -167,8 +167,8 @@ void sortone(void)
             }
         }
     }
-  dpd_oe_file_mat_close(&D);
-  dpd_oe_file_close(&D);
+  dpd_file2_mat_close(&D);
+  dpd_file2_close(&D);
 
   /* Symmetrize the onepdm */
   for(p=0; p < (nmo-nfzv); p++) {

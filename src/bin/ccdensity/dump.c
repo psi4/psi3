@@ -34,7 +34,7 @@ void dump(struct iwlbuf *OutBuf)
   int *qt_occ, *qt_vir;
   int h, row, col, p, q, r, s;
   PSI_FPTR next;
-  struct dpdbuf G;
+  dpdbuf4 G;
 
   qt_occ = moinfo.qt_occ;  qt_vir = moinfo.qt_vir;
   nirreps = moinfo.nirreps;
@@ -58,21 +58,21 @@ void dump(struct iwlbuf *OutBuf)
     }
 
 
-  dpd_buf_init(&G, CC_GAMMA, 0, 0, 0, 0, 0, "GIjKl", 0, outfile);
-  dpd_buf_sort(&G, CC_TMP0, prqs, 0, 0, "G(IK,JL)", 0, outfile);
-  dpd_buf_close(&G);
-  dpd_buf_init(&G, CC_TMP0, 0, 0, 0, 0, 0, "G(IK,JL)", 0, outfile);
-  dpd_buf_dump(&G, OutBuf, qt_occ, qt_occ, qt_occ, qt_occ, 1, 0, 0, outfile);
-  dpd_buf_close(&G);
+  dpd_buf4_init(&G, CC_GAMMA, 0, 0, 0, 0, 0, 0, "GIjKl");
+  dpd_buf4_sort(&G, CC_TMP0, prqs, 0, 0, "G(IK,JL)");
+  dpd_buf4_close(&G);
+  dpd_buf4_init(&G, CC_TMP0, 0, 0, 0, 0, 0, 0, "G(IK,JL)");
+  dpd_buf4_dump(&G, OutBuf, qt_occ, qt_occ, qt_occ, qt_occ, 1, 0);
+  dpd_buf4_close(&G);
 
-  dpd_buf_init(&G, CC_GAMMA, 0, 10, 0, 10, 0, "GIjKa", 0, outfile);
-  dpd_buf_sort(&G, CC_TMP0, prqs, 0, 10, "G(IK,JA)", 0, outfile);
-  dpd_buf_close(&G);
-  dpd_buf_init(&G, CC_TMP0, 0, 10, 0, 10, 0, "G(IK,JA)", 0, outfile);
+  dpd_buf4_init(&G, CC_GAMMA, 0, 0, 10, 0, 10, 0, "GIjKa");
+  dpd_buf4_sort(&G, CC_TMP0, prqs, 0, 10, "G(IK,JA)");
+  dpd_buf4_close(&G);
+  dpd_buf4_init(&G, CC_TMP0, 0, 0, 10, 0, 10, 0, "G(IK,JA)");
   
   for(h=0; h < nirreps; h++) {
-      dpd_buf_mat_irrep_init(&G, h);
-      dpd_buf_mat_irrep_rd(&G, h, 0, outfile);
+  dpd_buf4_mat_irrep_init(&G, h); 0,
+      dpd_buf4_mat_irrep_rd(&G, h);
 
       for(row=0; row < G.params->rowtot[h]; row++) {
 	  p = G.params->roworb[h][row][0];
@@ -86,30 +86,30 @@ void dump(struct iwlbuf *OutBuf)
 	    }
 	}
 
-      dpd_buf_mat_irrep_wrt(&G, h, 0, outfile);
-      dpd_buf_mat_irrep_close(&G, h);
+      dpd_buf4_mat_irrep_wrt(&G, h);
+      dpd_buf4_mat_irrep_close(&G, h);
     }
 
-  dpd_buf_dump(&G, OutBuf, qt_occ, qt_occ, qt_occ, qt_vir, 0, 0, 0, outfile);
-  dpd_buf_close(&G);
+  dpd_buf4_dump(&G, OutBuf, qt_occ, qt_occ, qt_occ, qt_vir, 0, 0);
+  dpd_buf4_close(&G);
 
-  dpd_buf_init(&G, CC_GAMMA, 0, 5, 0, 5, 0, "GIjAb", 0, outfile);
-  dpd_buf_sort(&G, CC_TMP9, prqs, 10, 10, "G(IA,JB)", 0, outfile);
-  dpd_buf_close(&G);
-  dpd_buf_init(&G, CC_TMP9, 10, 10, 10, 10, 0, "G(IA,JB)", 0, outfile);
-  dpd_buf_symm(&G);
-  dpd_buf_dump(&G, OutBuf, qt_occ, qt_vir, qt_occ, qt_vir, 1, 0, 0, outfile);
-  dpd_buf_close(&G);
+  dpd_buf4_init(&G, CC_GAMMA, 0, 0, 5, 0, 5, 0, "GIjAb");
+  dpd_buf4_sort(&G, CC_TMP9, prqs, 10, 10, "G(IA,JB)");
+  dpd_buf4_close(&G);
+  dpd_buf4_init(&G, CC_TMP9, 0, 10, 10, 10, 10, 0, "G(IA,JB)");
+  dpd_buf4_symm(&G);
+  dpd_buf4_dump(&G, OutBuf, qt_occ, qt_vir, qt_occ, qt_vir, 1, 0);
+  dpd_buf4_close(&G);
 
-  dpd_buf_init(&G, CC_GAMMA, 10, 10, 10, 10, 0, "GIBJA", 0, outfile);
-  dpd_buf_sort(&G, CC_TMP0, prqs, 0, 5, "G(IJ,AB)", 0, outfile);
-  dpd_buf_close(&G);
-  dpd_buf_init(&G, CC_TMP0, 0, 5, 0, 5, 0, "G(IJ,AB)", 0, outfile);
-  dpd_scm(&G, 0.5, 0, outfile);
+  dpd_buf4_init(&G, CC_GAMMA, 0, 10, 10, 10, 10, 0, "GIBJA");
+  dpd_buf4_sort(&G, CC_TMP0, prqs, 0, 5, "G(IJ,AB)");
+  dpd_buf4_close(&G);
+  dpd_buf4_init(&G, CC_TMP0, 0, 0, 5, 0, 5, 0, "G(IJ,AB)");
+  dpd_buf4_scm(&G, 0.5);
 
   for(h=0; h < nirreps; h++) {
-      dpd_buf_mat_irrep_init(&G, h);
-      dpd_buf_mat_irrep_rd(&G, h, 0, outfile);
+  dpd_buf4_mat_irrep_init(&G, h); 0,
+      dpd_buf4_mat_irrep_rd(&G, h);
 
       for(row=0; row < G.params->rowtot[h]; row++) {
 	  p = G.params->roworb[h][row][0];
@@ -123,21 +123,21 @@ void dump(struct iwlbuf *OutBuf)
 	    }
 	}
 
-      dpd_buf_mat_irrep_wrt(&G, h, 0, outfile);
-      dpd_buf_mat_irrep_close(&G, h);
+      dpd_buf4_mat_irrep_wrt(&G, h);
+      dpd_buf4_mat_irrep_close(&G, h);
     }
   
-  dpd_buf_dump(&G, OutBuf, qt_occ, qt_occ, qt_vir, qt_vir, 0, 0, 0, outfile);
-  dpd_buf_close(&G);
+  dpd_buf4_dump(&G, OutBuf, qt_occ, qt_occ, qt_vir, qt_vir, 0, 0);
+  dpd_buf4_close(&G);
 
-  dpd_buf_init(&G, CC_GAMMA, 11, 5, 11, 5, 0, "GCiAb", 0, outfile); 
-  dpd_buf_sort(&G, CC_TMP0, prqs, 5, 10, "G(ca,IB)", 0, outfile);
-  dpd_buf_close(&G);
-  dpd_buf_init(&G, CC_TMP0, 5, 10, 5, 10, 0, "G(ca,IB)", 0, outfile);
+  dpd_buf4_init(&G, CC_GAMMA, 0, 11, 5, 11, 5, 0, "GCiAb");
+  dpd_buf4_sort(&G, CC_TMP0, prqs, 5, 10, "G(ca,IB)");
+  dpd_buf4_close(&G);
+  dpd_buf4_init(&G, CC_TMP0, 0, 5, 10, 5, 10, 0, "G(ca,IB)");
 
   for(h=0; h < nirreps; h++) {
-      dpd_buf_mat_irrep_init(&G, h);
-      dpd_buf_mat_irrep_rd(&G, h, 0, outfile);
+  dpd_buf4_mat_irrep_init(&G, h); 0,
+      dpd_buf4_mat_irrep_rd(&G, h);
 
       for(row=0; row < G.params->rowtot[h]; row++) {
 	  p = G.params->roworb[h][row][0];
@@ -151,17 +151,17 @@ void dump(struct iwlbuf *OutBuf)
 	    }
 	}
 
-      dpd_buf_mat_irrep_wrt(&G, h, 0, outfile);
-      dpd_buf_mat_irrep_close(&G, h);
+      dpd_buf4_mat_irrep_wrt(&G, h);
+      dpd_buf4_mat_irrep_close(&G, h);
     }
 
-  dpd_buf_dump(&G, OutBuf, qt_vir, qt_vir, qt_occ, qt_vir, 0, 0, 0, outfile);
-  dpd_buf_close(&G);
+  dpd_buf4_dump(&G, OutBuf, qt_vir, qt_vir, qt_occ, qt_vir, 0, 0);
+  dpd_buf4_close(&G);
 
-  dpd_buf_init(&G, CC_GAMMA, 5, 5, 5, 5, 0, "GAbCd", 0, outfile);
-  dpd_buf_sort(&G, CC_TMP0, prqs, 5, 5, "G(AC,BD)", 0, outfile);
-  dpd_buf_close(&G);
-  dpd_buf_init(&G, CC_TMP0, 5, 5, 5, 5, 0, "G(AC,BD)", 0, outfile);
-  dpd_buf_dump(&G, OutBuf, qt_vir, qt_vir, qt_vir, qt_vir, 1, 0, 0, outfile);
-  dpd_buf_close(&G);
+  dpd_buf4_init(&G, CC_GAMMA, 0, 5, 5, 5, 5, 0, "GAbCd");
+  dpd_buf4_sort(&G, CC_TMP0, prqs, 5, 5, "G(AC,BD)");
+  dpd_buf4_close(&G);
+  dpd_buf4_init(&G, CC_TMP0, 0, 5, 5, 5, 5, 0, "G(AC,BD)");
+  dpd_buf4_dump(&G, OutBuf, qt_vir, qt_vir, qt_vir, qt_vir, 1, 0);
+  dpd_buf4_close(&G);
 }
