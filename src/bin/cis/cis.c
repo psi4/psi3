@@ -117,11 +117,11 @@ int main(int argc, char *argv[])
 
   }
 
+  if (params.local) free(ao2atom);
+
   fflush(outfile);
 
   /* compute the (D) correction to each CIS singlet excitation energy */
-  // move up with impunity???  if(params.local) local_init();
-
   d_corr();
 
   fprintf(outfile, "\n");
