@@ -252,6 +252,62 @@ that subsequent updates of the current code will use the same date you
 give with the \file{-D} option.  (See the CVS documentation about so-called
 ``sticky tags''.)
 
+\subsection{Examining the revision history}
+It can be very useful to use cvs to see what recent changes have been made to 
+the code.  Anytime one checks in a new version of a file, CVS opens an
+editor and requests a comment describing what changes have been made.
+These comments go into a log file which may be easily
+accessed through CVS.  To see what changes have been made recently
+to the file \file{detci.cc}, one would go into the \file{detci} source
+directory and type
+\begin{verbatim}
+cvs log detci.cc
+\end{verbatim}
+
+Then some summary information (such as the tags applied to the code)
+is printed, and finally a list will be produced of all the versions of
+the code, along with the checkin comments, in reverse chronological
+order.  For example,
+\begin{verbatim}
+sherrill@vergil(detci)% cvs log detci.cc
+
+RCS file: /home/users/psi3/master/psi3/src/bin/detci/detci.cc,v
+Working file: detci.cc
+head: 1.26
+branch:
+locks: strict
+access list:
+symbolic names:
+        psi-3-2-f77-delete: 1.22
+        psi-3-2-branch: 1.20.0.2
+        psi-3-2-release: 1.20
+        crazy-russian-tag: 1.18
+        gbye-file30-branch-tag: 1.16
+        gbye-file30-merge: 1.16.2.2
+        gbye-file30: 1.16.0.2
+        release-3-1-branch: 1.10.0.2
+        rel-3-0-2dir: 1.7.0.2
+        PSI_3_0_0: 1.1.1.1
+        CCQC_UGA: 1.1.1
+keyword substitution: kv
+total revisions: 30;    selected revisions: 30
+description:
+description:
+----------------------------
+revision 1.26
+date: 2002/12/24 18:54:51;  author: sherrill;  state: Exp;  lines: +1 -0
+Correct a mistake in input parsing so that the argument counter is
+incremented *twice* for -c [num].
+----------------------------
+revision 1.25
+date: 2002/12/23 22:39:10;  author: sherrill;  state: Exp;  lines: +2 -2
+Convert -we to -e and -quiet to --quiet
+...
+\end{verbatim}
+
+Checking the log files is a very useful way to see what recent changes might 
+be causing new problems with the code.
+
 \subsection{The structure of the \PSIthree\ Source Tree}
 \label{psitree} 
 
