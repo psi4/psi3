@@ -36,11 +36,49 @@
 **
 ** For RHF orbitals:
 ** -----------------
+** For RHF orbitals, we have two convenient identities:
 **
+** T(IJ,AB) = T(ij,ab) = T(Ij,Ab) - T(Ij,Ba)
+**
+** and
+**
+** W(MB,EJ) = W(mb,ej) = W(Mb,Ej) + W(Mb,eJ)
+**
+** so that only the AB T2's and the ABAB and ABBA W intermediates are
+** necessary.
+**
+** Therefore, only the AB spin case from above is required for RHF
+** orbtials.
+**
+** + T(IA,ME) W(ME,jb) + T(IA,me) W(me,jb)              I
+** + T(MA,je) W(Me,Ib) + T(IE,mb) W(mE,jA)         II   +   III
+** + T(jb,ME) W(ME,IA) + T(jb,me) W(me,IA)              IV
+**
+** The AB T2 term labelled I above may be rewritten as:
+**
+** 1/2 [ (2 T(IA,me) - T(Ia,mE)) (2 W(ME,jb) + W(Me,Jb))] + 1/2 T(Ia,mE) W(Me,Jb)
+**
+** Term III from the AB case above is actually the same as the last
+** term in the expression above, apart from the 1/2 and swapping of a
+** and b indices.  So, for RHF orbitals, we need only evaluate the two
+** contractions:
+**
+**   X(IA,jb) = 1/2 [ (2 T(IA,me) - T(Ia,mE)) (2 W(ME,jb) + W(Me,Jb))]
+**
+** and
+**
+**   Z(Ia,Jb) = T(Ia,mE) W(Me,Jb)
+**
+** Then, I = X(IA,jb) + 1/2 Z(Ia,Jb)
+** and   III = Z(Ib,Ja) (i.e., we have to sort Z to get III)
+** 
+** Finally, we obtain II + IV by summing I and III and swapping I<-->j
+** and A<-->b.
 **
 ** TDC
 ** May 2000
 ** Revised August 2001
+** Last revised October 2001
 */
 
 void WmbejT2(void)
