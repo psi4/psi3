@@ -23,6 +23,7 @@ top_srcdir = @top_srcdir@
 top_objdir = ../../..
 objincdir = @objincdir@
 
+PWD = $(shell pwd)
 RANLIB = @RANLIB@
 YACC = @YACC@
 CC = @CC@
