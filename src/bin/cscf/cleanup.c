@@ -1,10 +1,14 @@
 /* $Log$
- * Revision 1.15  2002/04/28 04:34:10  crawdad
- * Finshed initial additions for mirroring old file30 with new PSIF_CHKPT.  I
- * believe that everything cscf wrote to file30 is also written to PSIF_CHKPT.
- * Now ready to start converting other codes to libchkpt.
- * -TDC
+ * Revision 1.16  2002/05/07 22:40:56  sherrill
+ * Fix missing s=&scf_info[k] in UHF case for evals, fix missing bracket
+ * in RHF case.
  *
+/* Revision 1.15  2002/04/28 04:34:10  crawdad
+/* Finshed initial additions for mirroring old file30 with new PSIF_CHKPT.  I
+/* believe that everything cscf wrote to file30 is also written to PSIF_CHKPT.
+/* Now ready to start converting other codes to libchkpt.
+/* -TDC
+/*
 /* Revision 1.14  2002/04/27 22:28:48  crawdad
 /* More changes to cleanup in preparation for libchkpt conversion.
 /* -TDC
@@ -346,20 +350,23 @@ void cleanup()
 
   if(uhf) { 
     for(m=0; m<2; m++) {
-      for(k=0,i=0; k < num_ir; k++)
+      for(k=0,i=0; k < num_ir; k++) {
+        s=&scf_info[k];
 	for(j=0; j < s->num_mo; j++,i++) 
 	  scr_arr[i] = spin_info[m].scf_spin[k].fock_evals[j];
-
+      }
       if(m==0) chkpt_wt_alpha_evals(scr_arr);
       else chkpt_wt_beta_evals(scr_arr);
 
     }
   }
   else {
-    for(k=0,i=0; k < num_ir; k++)
+    for(k=0,i=0; k < num_ir; k++) {
       s=&scf_info[k];
-      for(j=0; j < s->num_mo; j++,i++) 
+      for(j=0; j < s->num_mo; j++,i++) {
 	scr_arr[i] = s->fock_evals[j];
+      }
+    }
 
     chkpt_wt_evals(scr_arr);
 
