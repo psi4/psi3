@@ -15,7 +15,7 @@ ET2.c  Fmi.c     WmnijT2.c  ccenergy.c   dijabT2.c     sort_amps.c   tsave.c  \
 FT2.c  FmitT2.c             converged.c  energy.c      t1.c          update.c \
 cache.c priority.c spinad_amps.c BT2_AO.c halftrans.c  AO_contribute.c status.c \
 local.c lmp2.c new_d1diag.c amp_write.c rotate.c fock_build.c \
-diis_RHF.c diis_UHF.c diis_ROHF.c \
+diis_RHF.c diis_UHF.c diis_ROHF.c analyze.c \
 
 BINOBJ = $(CSRC:%.c=%.o)
 ALLOC = 

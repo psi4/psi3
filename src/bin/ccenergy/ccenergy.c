@@ -4,11 +4,13 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <libdpd/dpd.h>
 #include <libchkpt/chkpt.h>
 #include <libqt/qt.h>
+#include <libint/libint.h>
 #include <sys/types.h>
 #include <psifiles.h>
 #include "globals.h"
@@ -135,8 +137,8 @@ int main(int argc, char *argv[])
   taut_build();
   fprintf(outfile, "\t                     Solving CCSD Equations\n");
   fprintf(outfile, "\t                     ----------------------\n");
-  fprintf(outfile, "\tIter             Energy              RMS        T1Diag      D1Diag    New D1Diag\n");
-  fprintf(outfile, "\t----     ---------------------    ---------   ----------  ----------  ----------\n");
+  fprintf(outfile, "  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag\n");
+  fprintf(outfile, "  ----     ---------------------    ---------   ----------  ----------  ----------\n");
   moinfo.ecc = energy();
   /* hang on to the MP2 energy if applicable */
   if(params.ref == 0 || params.ref == 2) moinfo.emp2 = moinfo.ecc;
@@ -272,6 +274,8 @@ int main(int argc, char *argv[])
     local_done();
   }
 
+  if(params.analyze) analyze();
+
   if(params.brueckner) brueckner_done = rotate();
   
   if(strcmp(params.aobasis,"NONE")) dpd_close(1);
@@ -309,10 +313,6 @@ void init_io(int argc, char *argv[])
 
   psio_init();
   for(i=CC_MIN; i <= CC_MAX; i++) psio_open(i,1);
-  /*
-  for(i=CC_MIN; i <= CC_FINTS; i++) psio_open(i,1);
-  for(i=CC_DENOM; i <= CC_MAX; i++) psio_open(i,0);
-  */
 }
 
 void title(void)

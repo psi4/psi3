@@ -16,5 +16,6 @@ struct Params {
   int print_mp2_amps;
   int brueckner;
   double bconv;
+  int analyze;
 };
 

@@ -144,6 +144,9 @@ void get_params()
   params.print_mp2_amps = 0;
   errcod = ip_boolean("PRINT_MP2_AMPS", &(params.print_mp2_amps), 0);
 
+  params.analyze = 0;
+  errcod = ip_boolean("ANALYZE", &(params.analyze), 0);
+
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
   fprintf(outfile, "\tWave function   =    %6s\n", params.wfn);
@@ -172,6 +175,7 @@ void get_params()
   fprintf(outfile, "\t# Amps to Print =    %1d\n",  params.num_amps);
   fprintf(outfile, "\tPrint MP2 Amps? =    %s\n",  params.print_mp2_amps ?
       "Yes" : "No" );
+  fprintf(outfile, "\tAnalyze T2 Amps =    %s\n",  params.analyze ? "Yes" : "No" );
   fprintf(outfile, "\n");
 
 }
