@@ -5,7 +5,7 @@ include ../MakeVars
 
 CDEF += -DTIME=0
 
-PSILIBS = libPSI_ipv1.a libPSI_ciomr.a
+PSILIBS = libPSI_qt.a libPSI_ipv1.a libPSI_ciomr.a
 
 
 ifneq (,$(findstring ibm-aix,$(target)))

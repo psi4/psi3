@@ -10,16 +10,39 @@
 
 #include <stdio.h>
 #include <libciomr/libciomr.h>
+#include <libqt/qt.h>
+#include <psifiles.h>
 #include "globals.h"
 
 /*
 ** init_io(): Function opens input and output files
 */
-void init_io(void)
+void init_io(int argc, char *argv[])
 {
-   ffile(&infile,"input.dat",2) ;
-   ffile(&outfile,"output.dat",1);
-   tstart(outfile);
+  int i;
+  int parsed=1;
+  
+  for (i=0; i<ncasiter && !converged; i++) {
+    ci_conv = calc_ci_conv(scale_conv);
+    if (ci_conv > 1.0E-7) {
+      sprintf(detci_string, "detci -quiet -c %12.9lf\n", ci_conv);
+      parsed+=2;
+    }
+    else {
+      sprintf(detci_string, "detci -quiet\n");
+      parsed++;
+    }
+  }
+  
+  init_in_out(argc-parsed, argv+parsed);
+
+  ip_set_uppercase(1);
+  ip_initialize(infile, outfile);
+  ip_cwk_clear();
+  ip_cwk_add(":DEFAULT");
+  ip_cwk_add(":DETCASMAN");
+  ip_cwk_add(":DETCAS"); 
+  tstart(outfile);
 }
 
 

@@ -25,7 +25,7 @@ struct Params params;
 #define IOFF 32641
 
 /* Function Prototypes */
-void init_io();
+void init_io(int argc, char *argv[]);
 void title();
 void init_ioff();
 void get_parameters();
@@ -33,9 +33,9 @@ void get_moinfo();
 void energy();
 void exit_io();
 
-int main()
+int main(int argc, char *argv[])
 {
-  init_io();
+  init_io(argc, argv);
   title();
   get_parameters();
   get_moinfo();
@@ -45,10 +45,9 @@ int main()
   exit(0);
 }
 
-void init_io(void)
+void init_io(int argc, char *argv[])
 {
-  ffile(&infile,"input.dat",2);
-  ffile(&outfile,"output.dat",1);
+  init_in_out(argc-1,argv+1);
   tstart(outfile);
   ip_set_uppercase(1);
   ip_initialize(infile,outfile);

@@ -11,4 +11,10 @@
 */
 
 extern FILE *infile, *outfile;
-
+extern int converged; 
+extern int ncasiter;          /* max cas iterations */
+extern char detci_string[80]; /* string containing system call for DETCI  */
+extern double ci_conv;        /* desired CI convergence 
+                                 (changes dynamically during CAS opt)     */
+extern double scale_conv;     /* CI convergence threshold = 
+                                 orbital gradient * scale_conv            */

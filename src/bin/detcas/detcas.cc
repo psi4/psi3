@@ -76,7 +76,6 @@ extern "C" {
 
 /* C++ FUNCTION PROTOTYPES */
 
-void parse_cmdline(int argc, char *argv[]);
 void title(void);
 void quote(void);
 void init_ioff(void);
@@ -109,8 +108,7 @@ int main(int argc, char *argv[])
 
   Params.print_lvl = 1;
 
-  parse_cmdline(argc, argv);   /* check for any command-line arguments     */
-  init_io();                   /* open input and output files              */
+  init_io(argc,argv);          /* open input and output files              */
   get_parameters();            /* get running params (convergence, etc)    */
   init_ioff();                 /* set up the ioff array                    */
   title();                     /* print program identification             */
@@ -157,30 +155,6 @@ int main(int argc, char *argv[])
   close_io();
   return(converged);
 }
-
-
-/*
-** parse_cmdline(): Figure out what the command-line arguments are.
-**
-*/
-void parse_cmdline(int argc, char *argv[])
-{
-  int i;
-
-  strcpy(Params.ofname, "output.dat");
-  for (i=1; i<argc; i++) {
-    if (strcmp(argv[i], "-quiet") == 0) Params.print_lvl = 0;
-    else if (strcmp(argv[i], "-o") == 0) {
-      if (strlen(argv[i+1]) < PARM_OUTFILE_MAX)
-        strcpy(Params.ofname, argv[i+1]);
-      else {
-        fprintf(stderr, "detcas: output file name too long!\n");
-      }
-    }
-  }
-
-}
-
 
 /*
 ** init_ioff(): Set up the ioff array for quick indexing

@@ -84,75 +84,11 @@ void parsing()
 	   /*Set reference frame to be the frame of the input geometry*/
 	   keep_ref_frame = 0;
 	   errcod = ip_boolean("KEEP_REF_FRAME",&keep_ref_frame,0);
+	   /* Same as --noreorient */
+	   errcod = ip_boolean("NOREORIENT",&no_reorient,0);
 	 }
      }
 
      return;
 }
 
-     
-void parsing_cmdline(int argc, char *argv[])
-{
-   int i;
-
-   keep_chkpt = 0;
-   read_chkpt = 0;
-   chkpt_mos = 0;
-   chkpt_geom = 0;
-   dont_project_mos = 0;
-   geomdat_geom = 0;
-   save_oldcalc = 0;
-   overwrite_output = 1;
-   no_comshift = 0;
-   no_reorient = 0;
-
-   for (i=1; i<argc; i++) {
-       
-       /*--- read MOs from checkpoint file and project onto new basis ---*/
-       if (strcmp(argv[i], "--chkptmos") == 0) {
-	 read_chkpt = 1;
-	 chkpt_mos = 1;
-       }
-
-       /*--- read MOs from checkpoint file and save to a separate file ---*/
-       if (strcmp(argv[i], "--savemos") == 0) {
-	 read_chkpt = 1;
-	 save_oldcalc = 1;
-       }
-
-       /*--- don't project MOs but simply keep them ---*/
-       if (strcmp(argv[i], "--noproject") == 0) {
-	 dont_project_mos = 1;
-       }
-
-       /*--- read geometry from checkpoint file (in findif calculations) ---*/
-       if (strcmp(argv[i], "--chkptgeom") == 0) {
-	 keep_chkpt = 1;
-	 read_chkpt = 0;
-	 chkpt_geom = 1;
-	 keep_ref_frame = 1;     /* preserve the information about the original reference frame so that properties
-				    can be rotated back later by other codes */
-	 print_lvl = 0;
-	 cartOn = 1;
-	 overwrite_output = 0;
-       }
-
-       /*--- read geometry from geom.dat file (in findif calculations) ---*/
-       if (strcmp(argv[i], "--geomdat") == 0) {
-	 geomdat_geom = 1;
-	 geomdat_entry = atoi(argv[i+1]);  i++;
-	 keep_ref_frame = 1;     /* preserve the information about the original reference frame so that properties
-				    can be rotated back later by other codes */
-	 cartOn = 1;
-	 overwrite_output = 0;
-       }
-
-       if (strcmp(argv[i], "--nocomshift") == 0)
-	 no_comshift = 1;
-       if (strcmp(argv[i], "--noreorient") == 0)
-	 no_reorient = 1;
-
-   }
-
-   return;
-}

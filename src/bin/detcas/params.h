@@ -7,13 +7,10 @@
 */
 
 
-#define PARM_OUTFILE_MAX           132
-
 /*
 ** parameters structure: holds user-specified parameters
 */
 struct params {
-   char ofname[PARM_OUTFILE_MAX+1]; /* output file name                     */
    char *dertype;           /* derivative level: none, first, etc.          */
    int print_lvl;           /* print verbosity level                        */ 
    int print_mos;           /* print the molecular orbitals ?               */

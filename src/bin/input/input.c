@@ -42,8 +42,7 @@ int main(int argc, char *argv[])
      /*-------------------------------------
        Initialize files and parsing library
       -------------------------------------*/
-     parsing_cmdline(argc,argv);
-     start_io();
+     start_io(argc, argv);
      pbasis = fopen(SHARE, "r");
      errcod = ip_string("BASIS_FILE",&user_basis_file,0);
      if (errcod == IPE_OK && strlen(user_basis_file) != 0) {

@@ -13,22 +13,33 @@
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
 #include <libpsio/psio.h>
+#include <libqt/qt.h>
 #include "globals.h"
 
 /*
 ** init_io(): Function opens input and output files
 */
-void init_io(void)
+void init_io(int argc, char *argv[])
 {
-   ffile(&infile,"input.dat",2) ;
-   ffile(&outfile,Params.ofname,1);
-   if (Params.print_lvl) tstart(outfile);
-   ip_set_uppercase(1);
-   ip_initialize(infile, outfile);
-   ip_cwk_clear();
-   ip_cwk_add(":DEFAULT");
-   ip_cwk_add(":DETCAS");
-   psio_init();
+  int i;
+  int parsed=1;
+  
+  for (i=1; i<argc; i++) {
+    if (strcmp(argv[i], "-quiet") == 0) {
+      Params.print_lvl = 0;
+      parsed++;
+    }
+  }
+ 
+  init_in_out(argc-parsed,argv+parsed);
+  
+  if (Params.print_lvl) tstart(outfile);
+  ip_set_uppercase(1);
+  ip_initialize(infile, outfile);
+  ip_cwk_clear();
+  ip_cwk_add(":DEFAULT");
+  ip_cwk_add(":DETCAS");
+  psio_init();
 }
 
 

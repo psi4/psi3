@@ -39,7 +39,7 @@
 #include <psifiles.h>
 #include "globals.h"
 
-void init_io(void);
+void init_io(int argc, char *argv[]);
 void exit_io(void);
 void title(void);
 void init_ioff(void);
@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
   int coord, errcod;
   double **A, ***UX, ***UF, **hessian, **dipder;
 
-  init_io();
+  init_io(argc, argv);
   title();
   init_ioff();
 
@@ -128,7 +128,7 @@ int main(int argc, char *argv[])
   exit(0);
 }
 
-void init_io(void)
+void init_io(int argc, char *argv[])
 {
   int i;
   char *gprgid(void);
@@ -137,8 +137,7 @@ void init_io(void)
   progid = (char *) malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s",gprgid());
 
-  ffile(&infile,"input.dat",2);
-  ffile(&outfile,"output.dat",1);
+  init_in_out(argc-1, argv+1);
   tstart(outfile);
   ip_set_uppercase(1);
   ip_initialize(infile,outfile);

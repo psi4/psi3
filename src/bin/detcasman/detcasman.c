@@ -36,54 +36,34 @@ void title(void);
 void quote(void);
 double calc_ci_conv(double);
 
+int converged;
+int ncasiter;
+char detci_string[80];
+double ci_conv;
+double scale_conv;
 
 FILE *infile, *outfile;
-
-
 
 /* MAIN ROUTINE */
 
 main(int argc, char *argv[])
 {
-  int converged = 0;
-  int i, errcod = 0;
-  int ncasiter = 0;            /* max cas iterations */
-  char detci_string[80];       /* string containing system call for DETCI  */
-  double ci_conv;              /* desired CI convergence 
-                                  (changes dynamically during CAS opt)     */
-  double scale_conv;           /* CI convergence threshold = 
-                                  orbital gradient * scale_conv            */
+  int errcod = 0;
+  
+  converged = 0;
 
-
-  init_io();                   /* open input and output files              */
-  title();                     /* print program identification             */
-
-  ip_set_uppercase(1);
-  ip_initialize(infile, outfile);
-  ip_cwk_clear();
-  ip_cwk_add(":DEFAULT");
-  ip_cwk_add(":DETCASMAN");
-  ip_cwk_add(":DETCAS");
+  init_io(argc,argv);         /* open input and output files  */
+  title();                    /* print program identification */
 
   ncasiter = 30;
   errcod = ip_data("NCASITER","%d",&ncasiter,0);
   scale_conv = 0.01;
   errcod = ip_data("SCALE_CONV","%lf",&scale_conv,0);
 
-  for (i=0; i<ncasiter && !converged; i++) {
-    ci_conv = calc_ci_conv(scale_conv);
-
-    if (ci_conv > 1.0E-7) {
-      sprintf(detci_string, "detci -quiet -c %12.9lf\n", ci_conv);
-    }
-    else 
-      sprintf(detci_string, "detci -quiet\n");
- 
-    check(!system("transqt -quiet"), "TRANSQT failed");
-    check(!system(detci_string), "DETCI failed");
-    check(!system("clag -quiet"), "CLAG failed");
-    converged = system("detcas -quiet");
-  }
+  check(!system("transqt -quiet"), "TRANSQT failed");
+  check(!system(detci_string), "DETCI failed");
+  check(!system("clag -quiet"), "CLAG failed");
+  converged = system("detcas -quiet"); 
 
   fprintf(outfile,"\n");
   fprintf(outfile,"*******************************************************\n");

@@ -1,8 +1,11 @@
 
 /* $Log$
- * Revision 1.2  2002/03/25 02:17:36  janssen
- * Get rid of tmpl.  Use new naming scheme for libipv1 includes.
+ * Revision 1.3  2002/12/17 20:29:28  mabrams
+ * Arbitrary input and output filenames
  *
+/* Revision 1.2  2002/03/25 02:17:36  janssen
+/* Get rid of tmpl.  Use new naming scheme for libipv1 includes.
+/*
 /* Revision 1.1.1.1  2000/02/04 22:51:32  evaleev
 /* Started PSI 3 repository
 /*
@@ -56,9 +59,10 @@ static char *rcsid = "$Id$";
 #include "includes.h"
 #include "common.h"
 #include <libipv1/ip_lib.h>
+#include <libqt/qt.h>
 
 
-void main()
+void main(int argc, char *argv[])
    {
       int i,isadr;
       int errcod;
@@ -75,10 +79,10 @@ void main()
       itap34 = 34;
       itap37 = 37;
       itap40 = 40;
-
-      ffile(&infile,"input.dat",2);
-      ffile(&outfile,"output.dat",1);
-
+      
+      /* Arbitrary input and output filenames */
+      init_in_out(argc-1,argv+1);
+      
       ip_set_uppercase(1);
       ip_initialize(infile,outfile);
 

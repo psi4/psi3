@@ -10,6 +10,7 @@
 #include <libfile30/file30.h>
 #endif
 #include <libciomr/libciomr.h>
+#include <libqt/qt.h>
 #include "mocube.h"
 #define DEFAULT_BORDER (4.0)
 #define DEFAULT_NGRID (80)
@@ -17,7 +18,7 @@
 #define MIN(I,J) ((I<J) ? I : J)
 
 char *progid;
-void init_io(void);
+void init_io(int argc, char *argv[]);
 void get_params(void);
 void setup_delta(double **scf, double **u);
 void compute_mos(double *movals, double x, double y, double z,
@@ -31,7 +32,7 @@ int main(int argc, char *argv[]) {
   double x, y, z, *movals, **scf, **u;
   char *filename;
 
-  init_io();
+  init_io(argc, argv);
   fprintf(outfile,"\n\t*****************************************************\n");
   fprintf(outfile,  "\t*  MOCUBE: Produces a Gaussian compatible .cub file *\n");
   fprintf(outfile,  "\t*****************************************************\n");
@@ -169,14 +170,13 @@ char *gprgid() {
   return (prgid);
 }
 
-void init_io(void) {
+void init_io(int argc, char *argv[]) {
   int i;
   char *gprgid();
   char *filename;
   progid = (char *) malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s",gprgid());
-  ffile(&infile,"input.dat",2);
-  ffile(&outfile,"output.dat",1);
+  init_in_out(argc-1,argv+1);
   tstart(outfile);
   ip_set_uppercase(1);
   ip_initialize(infile,outfile);

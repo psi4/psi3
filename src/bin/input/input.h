@@ -153,7 +153,7 @@ int *ang_mom);
 char *init_char_array(int B);
 char **init_char_matrix(int A, int B);
 
-void start_io();
+void start_io(int argc, char *argv[]);
 void stop_io();
 
 void init_oldcalc();
@@ -171,7 +171,6 @@ double **overlap();
 void write_scf_to_chkpt();
 
 void parsing();
-void parsing_cmdline(int argc, char *argv[]);
 
 /*
   Make canonical and reference frames equivalent
