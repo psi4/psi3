@@ -28,13 +28,14 @@ static void init_io(int argc, char *argv[]);
 static void exit_io();
 void done(const char * message);
 static void parsing();
-static void read_chkpt();
+static void read_molecule();
 static double eval_dboc();
 extern void print_intro();
 extern void print_params();
 extern "C" char *gprgid();
 extern void setup_geoms();
 extern double eval_derwfn_overlap();
+extern void read_moinfo();
 
 /*--- Global structures ---*/
 FILE *infile, *outfile;
@@ -60,7 +61,8 @@ int main(int argc, char *argv[])
   parsing();
   print_intro();
   print_params();
-  read_chkpt();
+  read_molecule();
+  read_moinfo();
   setup_geoms();
   double E_dboc = eval_dboc();
   fprintf(outfile,"  E(DBOC) = %25.15lf a.u.\n",E_dboc);
@@ -146,32 +148,13 @@ void parsing()
 }
 
 /*--- Open chkpt file and grab molecule info ---*/
-void read_chkpt()
+void read_molecule()
 {
   chkpt_init(PSIO_OPEN_OLD);
   RefBasis = new BasisSet(PSIF_CHKPT);
   Molecule.natom = chkpt_rd_natom();
   Molecule.geom = chkpt_rd_geom();
   Molecule.zvals = chkpt_rd_zvals();
-  int nirreps = chkpt_rd_nirreps();
-  //  if (nirreps != 1)
-  //    done("DBOC computations currently possible only in C1 symmetry");
-
-  MOInfo.num_so = chkpt_rd_nso();
-  MOInfo.num_mo = chkpt_rd_nmo();
-  int* clsdpi = chkpt_rd_clsdpi();
-  MOInfo.ndocc = 0;
-  for(int irrep=0; irrep<nirreps; irrep++)
-    MOInfo.ndocc += clsdpi[irrep];
-  delete[] clsdpi;
-  int* openpi = chkpt_rd_openpi();
-  MOInfo.nsocc = 0;
-  for(int irrep=0; irrep<nirreps; irrep++)
-    MOInfo.nsocc += openpi[irrep];
-  delete[] openpi;
-  MOInfo.nalpha = MOInfo.ndocc + MOInfo.nsocc;
-  MOInfo.nbeta = MOInfo.ndocc;
-
   chkpt_close();
 
   fprintf(outfile, "  -Reference Geometry:\n");
@@ -298,6 +281,13 @@ double eval_dboc()
       fflush(outfile);
     }
     E_dboc += E_i;
+
+    // For CI method purge the file with saved wave functions as the point group may change
+    if (!strcmp(Params.wfn,"DETCI") || !strcmp(Params.wfn,"DETCAS")) {
+      psio_open(PSIF_CIVECT,PSIO_OPEN_NEW);
+      psio_close(PSIF_CIVECT,0);
+    }
+
   }
 
   return E_dboc;

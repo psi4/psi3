@@ -9,6 +9,10 @@ typedef struct {
   int nsocc;
   int nalpha;
   int nbeta;
+  int nfzc;
+  int nfzv;
+  int nact;
+  short int* QTS_to_pitzer;
 } MOInfo_t;
 
 #define USE_INPUT_S 0

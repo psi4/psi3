@@ -25,6 +25,7 @@ using namespace std;
 extern MOInfo_t MOInfo;
 extern FILE *outfile;
 extern void done(const char *);
+extern void mo_maps(short int**, short int**);
 
 double eval_rci_derwfn_overlap()
 {
@@ -41,6 +42,10 @@ double eval_rci_derwfn_overlap()
   // Compute overlap between strings for alpha spin case (beta is the same)
   StringSet *ssetm;
   ssetm = vecm->sdset->alphastrings;
+  short int* act_qt2p_map;
+  short int* qt2p_map;
+  mo_maps(&qt2p_map, &act_qt2p_map);
+  stringset_reindex(ssetm,act_qt2p_map);
   int nstr_a = ssetm->size;
   int nfzc = ssetm->nfzc;
   int nact = ndocc - nfzc;
@@ -54,24 +59,28 @@ double eval_rci_derwfn_overlap()
 
       for(int j=0;j<nact;j++)
 	for(int i=0;i<nact;i++)
-	  CSC[j+nfzc][i+nfzc] = CSC_full[str_j->occ[j]+nfzc][str_i->occ[i]+nfzc];
+	  CSC[j+nfzc][i+nfzc] = CSC_full[str_j->occ[j]][str_i->occ[i]];
 
-      // all frozen orbitals come together first since it's a C1 case
-      for(int j=0; j<nact; j++)
-	for(int i=0; i<nfzc; i++)
-	  CSC[j+nfzc][i] = CSC_full[str_j->occ[j]+nfzc][i];
+      // frozen orbitals need to be mapped to pitzer order manually
+      for(int i=0; i<nfzc; i++) {
+	int ii = qt2p_map[i];
+	for(int j=0; j<nact; j++)
+	  CSC[j+nfzc][i] = CSC_full[str_j->occ[j]][ii];
+      }
 
-      for(int j=0; j<nfzc; j++)
+      for(int j=0; j<nfzc; j++) {
+	int jj = qt2p_map[j];
 	for(int i=0; i<nact; i++)
-	  CSC[j][i+nfzc] = CSC_full[j][str_i->occ[i]+nfzc];
+	  CSC[j][i+nfzc] = CSC_full[jj][str_i->occ[i]];
+      }
 
-      for(int i=0;i<nfzc;i++)
+      for(int i=0;i<nfzc;i++) {
+	int ii = qt2p_map[i];
 	for(int j=0;j<nfzc;j++)
-	  CSC[i][j] = CSC_full[i][j];
-
+	  CSC[i][j] = CSC_full[ii][qt2p_map[j]];
+      }
 
       // Compute the determinant
-      //      C_DGETRF(ndocc,ndocc,&(CSC[0][0]),ndocc,tmpintvec);
       FLOAT sign;
       lu_decom(CSC, ndocc, tmpintvec, &sign);
       FLOAT deter1 = 1.0;
@@ -115,6 +124,8 @@ double eval_rci_derwfn_overlap()
   slaterdetvector_delete_full(vecm);
   slaterdetvector_delete_full(vecp);
   delete[] tmpintvec;
+  delete[] qt2p_map;
+  delete[] act_qt2p_map;
   delete_matrix(CSC);
   delete_matrix(CSC_full);
   delete_matrix(S_a);

@@ -25,6 +25,7 @@ using namespace std;
 extern MOInfo_t MOInfo;
 extern FILE *outfile;
 extern void done(const char *);
+extern void mo_maps(short int**, short int**);
 
 double eval_roci_derwfn_overlap()
 {
@@ -47,6 +48,10 @@ double eval_roci_derwfn_overlap()
   // Compute overlap between strings for alpha spin case
   StringSet *ssetm;
   ssetm = vecm->sdset->alphastrings;
+  short int* act_qt2p_map;
+  short int* qt2p_map;
+  mo_maps(&qt2p_map, &act_qt2p_map);
+  stringset_reindex(ssetm,act_qt2p_map);
   int nstr_a = ssetm->size;
   FLOAT **S_a = create_matrix(nstr_a,nstr_a);
   // Assume the order of strings is the same for - and + displacements
@@ -57,20 +62,26 @@ double eval_roci_derwfn_overlap()
 
       for(int j=0;j<nact_a;j++)
 	for(int i=0;i<nact_a;i++)
-	  CSC_a[j+nfzc][i+nfzc] = CSC_full[str_j->occ[j]+nfzc][str_i->occ[i]+nfzc];
+	  CSC_a[j+nfzc][i+nfzc] = CSC_full[str_j->occ[j]][str_i->occ[i]];
 
-      // all frozen orbitals come together first since it's a C1 case
-      for(int j=0; j<nact_a; j++)
-	for(int i=0; i<nfzc; i++)
-	  CSC_a[j+nfzc][i] = CSC_full[str_j->occ[j]+nfzc][i];
+      // frozen orbitals need to be mapped to pitzer order manually
+      for(int i=0; i<nfzc; i++) {
+	int ii = qt2p_map[i];
+	for(int j=0; j<nact_a; j++)
+	  CSC_a[j+nfzc][i] = CSC_full[str_j->occ[j]][i];
+      }
 
-      for(int j=0; j<nfzc; j++)
+      for(int j=0; j<nfzc; j++) {
+	int jj = qt2p_map[j];
 	for(int i=0; i<nact_a; i++)
-	  CSC_a[j][i+nfzc] = CSC_full[j][str_i->occ[i]+nfzc];
+	  CSC_a[j][i+nfzc] = CSC_full[jj][str_i->occ[i]];
+      }
 
-      for(int i=0;i<nfzc;i++)
+      for(int i=0;i<nfzc;i++) {
+	int ii = qt2p_map[i];
 	for(int j=0;j<nfzc;j++)
-	  CSC_a[i][j] = CSC_full[i][j];
+	  CSC_a[i][j] = CSC_full[ii][qt2p_map[j]];
+      }
 
       FLOAT sign;
       lu_decom(CSC_a, nalpha, tmpintvec, &sign);
@@ -82,8 +93,9 @@ double eval_roci_derwfn_overlap()
     }
   }
 
-  // Compute overlap between strings for alpha spin case
+  // Compute overlap between strings for beta spin case
   ssetm = vecm->sdset->betastrings;
+  stringset_reindex(ssetm,act_qt2p_map);
   int nstr_b = ssetm->size;
   FLOAT **S_b = create_matrix(nstr_b,nstr_b);
   // Assume the order of strings is the same for - and + displacements
@@ -94,20 +106,26 @@ double eval_roci_derwfn_overlap()
 
       for(int j=0;j<nact_b;j++)
 	for(int i=0;i<nact_b;i++)
-	  CSC_b[j+nfzc][i+nfzc] = CSC_full[str_j->occ[j]+nfzc][str_i->occ[i]+nfzc];
+	  CSC_b[j+nfzc][i+nfzc] = CSC_full[str_j->occ[j]][str_i->occ[i]];
 
-      // all frozen orbitals come together first since it's a C1 case
-      for(int j=0; j<nact_b; j++)
-	for(int i=0; i<nfzc; i++)
-	  CSC_b[j+nfzc][i] = CSC_full[str_j->occ[j]+nfzc][i];
+      // frozen orbitals need to be mapped to pitzer order manually
+      for(int i=0; i<nfzc; i++) {
+	int ii = qt2p_map[i];
+	for(int j=0; j<nact_b; j++)
+	  CSC_b[j+nfzc][i] = CSC_full[str_j->occ[j]][ii];
+      }
 
-      for(int j=0; j<nfzc; j++)
+      for(int j=0; j<nfzc; j++) {
+	int jj = qt2p_map[j];
 	for(int i=0; i<nact_b; i++)
-	  CSC_b[j][i+nfzc] = CSC_full[j][str_i->occ[i]+nfzc];
+	  CSC_b[j][i+nfzc] = CSC_full[jj][str_i->occ[i]];
+      }
 
-      for(int i=0;i<nfzc;i++)
+      for(int i=0;i<nfzc;i++) {
+	int ii = qt2p_map[i];
 	for(int j=0;j<nfzc;j++)
-	  CSC_b[i][j] = CSC_full[i][j];
+	  CSC_b[i][j] = CSC_full[ii][qt2p_map[j]];
+      }
 
       FLOAT sign;
       lu_decom(CSC_b, nbeta, tmpintvec, &sign);
@@ -152,6 +170,8 @@ double eval_roci_derwfn_overlap()
   slaterdetvector_delete_full(vecm);
   slaterdetvector_delete_full(vecp);
   delete[] tmpintvec;
+  delete[] qt2p_map;
+  delete[] act_qt2p_map;
   delete_matrix(CSC_a);
   delete_matrix(CSC_full);
   delete_matrix(CSC_b);
