@@ -61,7 +61,7 @@ c	zpve was screwed up for a couple cases by the reordering
 c	of frequencies, so i bummed things around a bit in normco subr
 ***********************************************************************
       IMPLICIT REAL*8 (A-H,O-Z)
-#include <error.h>
+#include <libparse/error.h>
       integer errcod, fwkclr, fwkadd, fcnt, frdi
       integer nst,nbnd,ntor,nlin,nout,nspf
       integer coallc,isizof

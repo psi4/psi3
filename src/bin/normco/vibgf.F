@@ -1,7 +1,7 @@
       SUBROUTINE VIBGF(B,EX,EY,EZ,NXYZ,NNE,ISOMOL)
       IMPLICIT REAL*8 (A-H,O-Z)
 cets030991
-#include <error.h>
+#include <libparse/error.h>
       integer ip,prcntr
       DIMENSION B(NXYZ,NXYZ),EX(NNE,NNE),EY(NNE,NNE),EZ(NNE,NNE)
 C   THE NORMAL COORDINATE ANALYSIS BY GF MATRIX METHOD

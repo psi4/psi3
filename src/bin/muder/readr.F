@@ -23,7 +23,7 @@ c/////////////////////////////////////////////////////////////////////
       integer NCOOR(nblock),COUNT(ns),PAIRS(ns,2),SIC(ns)               
       real*8 MU(3,nblock),MUDER(3,ns),DER(nblock,ns),ENER(nblock)       
       dimension REFR(ns),RVAL(nblock,ns),DISP(nblock,ns)                
-#include <error.h>
+#include <libparse/error.h>
       integer errcod, frdc,frdi,fcnt,frdia1,frdi2,frdlpn,frdint
       integer prdup, prcntr, ip
       integer un12a

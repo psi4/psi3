@@ -14,7 +14,7 @@ c/////////////////////////////////////////////////////////////////////
       integer unit11,unit6,unit5,unit12,unit28,unit30,intco            
       integer unit18
       real*8 mu(3,nblock)                                               
-#include <error.h>
+#include <libparse/error.h>
       integer errcod, frdc, frdi, fcnt, frdia1
       integer prdup, prcntr, ip
       character*8 opentp, cityp

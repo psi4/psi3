@@ -3,7 +3,7 @@ c_*BEGIN_FILE vibfx.F
 C   THE NORMAL COORDINATE ANALYSIS FOR CARTESIAN COORDINATE SYSTEM
       IMPLICIT REAL*8 (A-H,O-Z)
 cets030991
-#include <error.h>
+#include <libparse/error.h>
       integer ip, prcntr
       CHARACTER*80 LABEL
       DIMENSION FX(NABC,NABC),ELX(NABC,NABC),ELXM(NABC,NABC)

@@ -2,7 +2,7 @@
      1                  VALU,ROOT,FV1,FV2,NXYZ,NPQR,NABC)
       IMPLICIT REAL*8 (A-H,O-Z)
 cets030991
-#include <error.h>
+#include <libparse/error.h>
       integer ip,prcntr
       DIMENSION F(NXYZ,NXYZ),G(NPQR),S(NPQR),WW(NABC,NABC),H(NABC,NABC)
       DIMENSION AA(NABC,NABC),Y(NABC,NABC),ELIN(NABC,NABC)

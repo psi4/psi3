@@ -3,7 +3,7 @@ clj for the MEMORY keyword.  This allows units to be specified with this
 clj keyword.
       subroutine fndcor(maxcrr,maxcri,sizerl)
       integer maxcrr,maxcri,sizerl
-#include <error.h>
+#include <libparse/error.h>
       character*10 type
       integer errcod,count
       integer defcri

@@ -11,7 +11,7 @@
       character*80 string,cnrep
       integer level
       integer i
-#include <error.h>
+#include <libparse/error.h>
 
       errcod = frdpos(name)
       if (errcod .ne. EOK) then
@@ -105,7 +105,7 @@ c is a variable.
       integer i,depth
       integer errcod, frdpos,frdchr,chrlen,fstck,npush(mdepth)
       save npush,depth
-#include <error.h>
+#include <libparse/error.h>
       data depth/0/
       if (task.eq.'GET') then
         depth = depth + 1

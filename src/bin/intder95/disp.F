@@ -4,7 +4,7 @@ C  NOTE THE OVERLAP IN MEMORY OF THE XR AND SRX ARRAYS.
      $        XA,XMASS,S,SS,B,BS,A,TYPE,U,IA,IU,
      $        XD,XE,SD,XR,SRX,XT,IFLAG)
       IMPLICIT REAL*8 (A-H,O-Z)
-#include <error.h>
+#include <libparse/error.h>
       integer fcnt, frdpos, frdlpn, frdint, frdflt
       integer errcod, mdisp, idispo, gmfile
       logical duminp,dumsqm

@@ -1,7 +1,7 @@
       SUBROUTINE SYMCO(U,B,BS,EE,NXYZ,ISOMOL)
       IMPLICIT REAL*8 (A-H,O-Z)
 cets030991
-#include <error.h>
+#include <libparse/error.h>
       integer ip,prcntr
       DIMENSION U(NXYZ,NXYZ),B(NXYZ,NXYZ),BS(NXYZ,NXYZ),EE(NXYZ,NXYZ)
       LOGICAL ISOMOL

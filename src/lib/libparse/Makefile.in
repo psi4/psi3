@@ -25,8 +25,8 @@ clean::
 	-/bin/rm -f *.i fio.f
 
 install_inc:: error.h misc.h
-	$(MKDIRS) $(incdir)
-	$(INSTALL_INCLUDE) $^ $(incdir)
+	$(MKDIRS) $(incdir)/libparse
+	$(INSTALL_INCLUDE) $^ $(incdir)/libparse
 
 install_man:: abort.5# print.5 print_control.5 read_char.5
 	$(MKDIRS) $(mandir)/man5

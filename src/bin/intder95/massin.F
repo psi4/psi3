@@ -1,7 +1,7 @@
 C//////////////////////////////////////////////////////////////////////
       SUBROUTINE MASSIN (XMASS,NA,IFLAG,n,maskey,flag)
       IMPLICIT REAL*8 (A-H,O-Z)
-#include <error.h>
+#include <libparse/error.h>
       CHARACTER A*12,B*72,junk*80
       character maslbl*12,maskey*8
       LOGICAL P,Q,flag

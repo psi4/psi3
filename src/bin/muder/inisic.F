@@ -15,7 +15,7 @@ c/////////////////////////////////////////////////////////////////////
       implicit real*8(a-h,o-z)                                          
       integer ns, SIC(ns),unit5,npar,unit6                              
       integer unit18,unit28,unit11,unit12,intco
-#include <error.h>
+#include <libparse/error.h>
       integer errcod, frdc, frdi, fcnt, frdia1, frdi2
       integer prdup, prcntr, ip
       character*8 opentp

@@ -4,7 +4,7 @@
       DIMENSION A(NAD,NBD),B(NBD)                                       
 c     The number of data per line
       integer ndpl
-#include <misc.h>
+#include <libparse/misc.h>
       DATA LINE / '------' /                                         
     1 FORMAT(2X,10(7X,I5))                                              
     2 FORMAT(6X,10(4X,F8.2))                                            

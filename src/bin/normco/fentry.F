@@ -61,7 +61,7 @@ C*  LAST UPDATED ON DECEMBER 28, 1987 BY YUKIO YAMAGUCHI              *
 C**********************************************************************
       IMPLICIT REAL*8 (A-H,O-Z)
 cets030991
-#include <error.h>
+#include <libparse/error.h>
       integer frdc, frdboo, frdi, frdfa2, fcnt, fcnt1
       integer prdup, prcntr
       integer ip, errcod, niso, nat

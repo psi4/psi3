@@ -1,6 +1,6 @@
       subroutine rdsymm(lbls,iu,u,ns,nsym)
       implicit integer(a-z)
-#include <error.h>
+#include <libparse/error.h>
       character*80 lbls(nsym)
       real*8 u(ns,100),cff
       real*8 norm

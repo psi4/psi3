@@ -96,7 +96,7 @@ c      parameter(maxcor=100000)
      & npar, pmu, pend, psym,unit18,icharg,unit30,unit28                       
       integer CSHELL(20),OSHELL(20),point,point2,pcshel,pdpar         
       character CHAR(maxchr)                                            
-#include <error.h>
+#include <libparse/error.h>
       integer errcod, frdc, frdi, fcnt, frdia1, fwkadd, fwkclr
       integer prdup, prcntr, ip, prup
       integer un12a

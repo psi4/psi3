@@ -1,6 +1,6 @@
       subroutine rdsimp(type,ia,s,ns,nst,nbnd,ntor,nlin,nout,nspf)
       implicit integer(a-z)
-#include <error.h>
+#include <libparse/error.h>
       character*5 type(ns)
       character*80 keywrd
       real*8 s(ns)

@@ -2,7 +2,7 @@
      1                 ISOMOL)
       IMPLICIT REAL*8 (A-H,O-Z)
 cets030991
-#include <error.h>
+#include <libparse/error.h>
       integer ip,prcntr
       LOGICAL ISOMOL
       DIMENSION FX(NABC,NABC),F(NABC,NABC),G(NPQR),B(NXYZ,NXYZ)

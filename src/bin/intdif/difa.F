@@ -3,7 +3,7 @@ C     //////////////////////////////////////////////////////////////////
      $ F1D,F1E,F2,F2A,F2B,F3,F3A,F3B,F4,F4A,F4B,IPAR,IPP,IPERM,IMORSE,
      + oldinp)
       IMPLICIT REAL*8 (A-H,O-Z)
-#include <error.h>
+#include <libparse/error.h>
       integer frdi, frdia1, frdi2, frdint, frdlpn
       integer errcod
       INTEGER IPERM(NS,0:NS),IPAR(NS,NS),IPP(NS,NS),IMORSE(NS)

@@ -1,7 +1,7 @@
       SUBROUTINE FCONST(FX,FP,FM,FF,AA,NABC,IFORCE)
       IMPLICIT REAL*8 (A-H,O-Z)
 cets030991
-#include <error.h>
+#include <libparse/error.h>
       integer ip, prcntr
       DIMENSION FX(NABC,NABC),FP(NABC,NABC),FM(NABC,NABC)
       DIMENSION FF(NABC,NABC),AA(NABC,NABC)

@@ -3,7 +3,7 @@ C     ////////////////////////////////////////////////////////////
      $        XA,XMASS,S,SS,B,BS,A,UGF,XS,XT,XKI,XAR,
      $        Z,TYPE,U,IA,IU,NCORE,IFLAG,lbls)
       IMPLICIT REAL*8 (A-H,O-Z)
-#include <error.h>
+#include <libparse/error.h>
       integer errcod, fwkclr, fwkadd, fcnt, frdi, dum1, dum2
       integer frdfa2
       integer nsyms, multi

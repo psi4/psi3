@@ -4,7 +4,7 @@
 #else
       implicit integer (a-z)
 #endif
-#include <error.h>
+#include <libparse/error.h>
       integer mxexec
       parameter (mxexec = 100)
       character*80 exec(mxexec)

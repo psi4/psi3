@@ -1,7 +1,7 @@
 C     //////////////////////////////////////////////////////////////////
       SUBROUTINE DIFB(NPOINT,NDER,NGUESS,S,E,oldinp)
       IMPLICIT REAL*8 (A-H,O-Z)
-#include <error.h>
+#include <libparse/error.h>
       integer frdf2,frdflt,frdpos,frdlpn
       integer errcod
       logical oldinp

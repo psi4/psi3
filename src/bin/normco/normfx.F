@@ -1,7 +1,7 @@
       SUBROUTINE NORMFX(ELXM,EE,VALU,FV1,FV2,FXM,NABC,NPQR)
       IMPLICIT REAL*8 (A-H,O-Z)
 cets030991
-#include <error.h>
+#include <libparse/error.h>
       integer ip, prcntr
       DIMENSION ELXM(NABC,NABC),EE(NABC,NABC)
       DIMENSION VALU(NABC),FV1(NABC),FV2(NABC),FXM(NPQR)

@@ -3,7 +3,7 @@ C//////////////////////////////////////////////////////////////////////
      $    GH,D,G,G0,F0,DF,HF,FA,W,S1,S2,S3,F,XR,XS,XT,XU,
      $    C,TA,JA,IFLAG)
       IMPLICIT REAL*8 (A-H,O-Z)
-#include <error.h>
+#include <libparse/error.h>
       REAL*8 JA
       LOGICAL ITEST
       logical duminp,dumsqm

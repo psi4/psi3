@@ -16,7 +16,7 @@ C*  DATE:  April  10,  1988                                           *
 C*  REASON: Migration to run in 7Mb on 9370                           *
 C**********************************************************************
       IMPLICIT INTEGER (A-Z)
-#include <error.h>
+#include <libparse/error.h>
       integer frdi,frdboo,fcnt
       integer errcod
       integer ijnk1(1),ijnk2(2),ijnk3

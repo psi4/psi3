@@ -1,7 +1,7 @@
 C//////////////////////////////////////////////////////////////////////
       integer function getmas (na,m,a,i,xmass)
       IMPLICIT REAL*8 (A-H,O-Z)
-#include <error.h>
+#include <libparse/error.h>
       character a*12
       integer na,m,i
       DIMENSION XMASS(NA)

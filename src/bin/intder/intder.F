@@ -2,7 +2,7 @@
      $ TYPE,U,IA,IU,IFLAG,nst,nbnd,ntor,nout,nlin,nspf,nsym,
      2 na,lbls,z,ncore)
       IMPLICIT REAL*8 (A-H,O-Z)
-#include <error.h>
+#include <libparse/error.h>
       integer errcod, frdi, frdfa1, frdfa2, fwkadd, frdboo
       integer frdc, fcnt
       CHARACTER LABEL*10,TYPE*5,NUMTST*5
