@@ -288,7 +288,7 @@ int main(int argc, char *argv[])
   free(reftyp);
   for (i=0; i<nexec; i++) free(exec[i]);
 
-  // Normal completion
+  /* Normal completion */
   exit(0);
 }
 
