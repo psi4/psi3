@@ -40,6 +40,11 @@ int execut(char **module_names, int num_modules, int depth);
 extern char **parse_var(int *nvars, int mxvars, char *name);
 extern void runcmd(int *errcod, char *cmd);
 int parse_cmdline(int argc, char *argv[]);
+
+/* boolean for automatically running input program first in all procedures */
+int auto_input;
+/* boolean for checking input w/o running any programs */
+int auto_check;
   
 
 int main(int argc, char *argv[])
@@ -47,10 +52,12 @@ int main(int argc, char *argv[])
   FILE *psidat;
   char *wfn, *dertyp, *reftyp, *calctyp, **exec, proced[132];
   char tmpstr[133];
-  int check;
+  int check=0;
   int i,j,nexec=0,rdepth=0;
   int direct=0;
   int errcod;
+  char **input_exec;
+  int nexec_input;
 
   enum CalcCode {
     SP,               /* single-point */
@@ -59,6 +66,7 @@ int main(int argc, char *argv[])
     FREQ,             /* frequencies */
     SYMM_FREQ         /* frequencies for symmetric modes */
   } JobType;
+
 
   if (!parse_cmdline(argc,argv))
     exit(1);
@@ -97,43 +105,45 @@ int main(int argc, char *argv[])
     strcpy(reftyp,"RHF");
   }
 
-  errcod = ip_boolean("CHECK",&check,0);
-  if (errcod == IPE_KEY_NOT_FOUND)
-    check = 0;
-  else if (errcod != IPE_OK) {
-    fprintf(outfile, 
-            "Error: A problem arose reading the optional keyword 'check'.\n");
-    psi3_abort();
+  if(!auto_check) {
+    errcod = ip_boolean("CHECK",&check,0);
+    if (errcod == IPE_KEY_NOT_FOUND)
+      check = 0;
+    else if (errcod != IPE_OK) {
+      fprintf(outfile, 
+              "Error: A problem arose reading the optional keyword 'check'.\n");
+      psi3_abort();
+    }
   }
 
   
   /* this is the old way to get the calculation type
-  errcod = ip_boolean("DISP",&disp,0);
-  if (errcod == IPE_KEY_NOT_FOUND)
-    disp = 0;
-  else if (errcod != IPE_OK) {
-    fprintf(outfile, 
-            "Error: A problem arose reading the optional keyword 'disp'.\n");
-    psi3_abort();
-  }
+     errcod = ip_boolean("DISP",&disp,0);
+     if (errcod == IPE_KEY_NOT_FOUND)
+     disp = 0;
+     else if (errcod != IPE_OK) {
+     fprintf(outfile, 
+     "Error: A problem arose reading the optional keyword 'disp'.\n");
+     psi3_abort();
+     }
 
-  errcod = ip_boolean("OPT",&opt,0);
-  if (errcod == IPE_KEY_NOT_FOUND)
-    opt = 0;
-  else if (errcod != IPE_OK) {
-    fprintf(outfile, 
-            "Error: A problem arose reading the optional keyword 'opt'.\n");
-    psi3_abort();
-  }
+     errcod = ip_boolean("OPT",&opt,0);
+     if (errcod == IPE_KEY_NOT_FOUND)
+     opt = 0;
+     else if (errcod != IPE_OK) {
+     fprintf(outfile, 
+     "Error: A problem arose reading the optional keyword 'opt'.\n");
+     psi3_abort();
+     }
 
-  errcod = ip_boolean("FREQ",&freq,0);
-  if (errcod == IPE_KEY_NOT_FOUND)
-    freq = 0;
-  else if (errcod != IPE_OK) {
-    fprintf(outfile, 
-            "Error: A problem arose reading the optional keyword 'freq'.\n");
-    psi3_abort();
-  }
+     errcod = ip_boolean("FREQ",&freq,0);
+     if (errcod == IPE_KEY_NOT_FOUND)
+     freq = 0;
+     else if (errcod != IPE_OK) {
+     fprintf(outfile, 
+     "Error: A problem arose reading the optional keyword 'freq'.\n");
+     psi3_abort();
+     }
   */
 
   /* get the calculation type */
@@ -183,19 +193,19 @@ int main(int argc, char *argv[])
   /* make some basic checks on the requested computation type */
   if ((strcmp(reftyp,"RHF")!=0) && (strcmp(reftyp,"ROHF")!=0) &&
       (strcmp(reftyp,"UHF")!=0) && (strcmp(reftyp,"TWOCON")!=0)) 
-  {
-    fprintf(outfile,"Error: bad 'reference'.\n");
-    fprintf(outfile,"Must be one of: RHF, ROHF, UHF, TWOCON\n");
-    psi3_abort();
-  }
+    {
+      fprintf(outfile,"Error: bad 'reference'.\n");
+      fprintf(outfile,"Must be one of: RHF, ROHF, UHF, TWOCON\n");
+      psi3_abort();
+    }
 
   if ((strcmp(dertyp,"NONE")!=0) && (strcmp(dertyp,"FIRST")!=0) &&
       (strcmp(dertyp,"SECOND")!=0) && (strcmp(dertyp,"RESPONSE")!=0))
-  {
-    fprintf(outfile,"Error: bad 'dertype'.\n");
-    fprintf(outfile,"Must be one of: NONE, FIRST, SECOND, or RESPONSE\n");
-    psi3_abort();
-  }
+    {
+      fprintf(outfile,"Error: bad 'dertype'.\n");
+      fprintf(outfile,"Must be one of: NONE, FIRST, SECOND, or RESPONSE\n");
+      psi3_abort();
+    }
 
   /* print out what type of calculation it is */
   fprintf(outfile, "\nPSI3 will perform a %s %s ", reftyp, wfn);
@@ -246,6 +256,8 @@ int main(int argc, char *argv[])
   if (ip_exist("EXEC",0)) { /* User-specified EXEC statement */
     fprintf(outfile,"Using the user provided execution list from 'exec'.\n"); 
     exec = parse_var(&nexec,MXEXEC,"EXEC");
+    /* turn off auto-run of $input command */
+    auto_input = 0;
   }
   else { /* Default sequence of modules from psi.dat */
     /* construct the name of the procedure from dertyp, reftyp, and wfn */
@@ -272,12 +284,19 @@ int main(int argc, char *argv[])
     /* fprintf(outfile, "nexec = %d\n", nexec); */
   }
 
-  if (check) {
+
+  if (check || auto_check) {
     fprintf(outfile,"\n'CHECK' is YES, so nothing will be executed.\n");
-    fprintf(outfile,"\nThe following programs would otherwise be executed:\n");
+    fprintf(outfile,"\nThe following programs would otherwise be executed:\n\n");
   }
   else
-    fprintf(outfile,"\nThe following programs will be executed:\n");
+    fprintf(outfile,"\nThe following programs will be executed:\n\n");
+
+  if(auto_input) {
+    /* set up the "input" program execution, which should occur before the rest of the procedure */
+    input_exec = parse_var(&nexec_input, MXEXEC, "INPUT");
+    fprintf(outfile, " %s\n", input_exec[0]);
+  }
 
   rdepth = 0;
   for (i=0; i<nexec; i++) {
@@ -293,7 +312,8 @@ int main(int argc, char *argv[])
   }
 
   fprintf(outfile,"\n");
-  if (!check) execut(exec,nexec,0); 
+  if(auto_input && !check && !auto_check) execut(input_exec,1,0);
+  if (!check && !auto_check) execut(exec,nexec,0); 
 
 
   /* clean up and free memory */
@@ -404,10 +424,21 @@ int parse_cmdline(int argc, char *argv[])
   int found_fp_p = 0;           /* found file prefix name with -p */
   char *ifname=NULL, *ofname=NULL, *fprefix=NULL, *arg;
 
+  /* defaults */
+  auto_input = 1;
+  auto_check = 0;
+
   /* process command-line arguments in sequence */
   for(i=1; i<argc; i++) {
     arg = argv[i];
-    if (!strcmp(arg,"-f") && !found_if_p) {
+
+    if(!strcmp(arg,"--noinput") || !strcmp(arg,"-n")) {
+      auto_input = 0;
+    }
+    else if(!strcmp(arg,"--check") || !strcmp(arg,"-c")) {
+      auto_check = 1;
+    }
+    else if ((!strcmp(arg,"-f") || !strcmp(arg,"-i")) && !found_if_p) {
       ifname = argv[++i];
       found_if_p = 1;
     }
