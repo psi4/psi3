@@ -52,7 +52,7 @@ int dpd_contract442(dpdbuf4 *X, dpdbuf4 *Y, dpdfile2 *Z, int target_X,
   zcol = Z->params->coltot;
 #endif
 
-  // loop over row buffer irreps of X
+  /* loop over row buffer irreps of X */
   for(hxbuf=0; hxbuf < nirreps; hxbuf++) {
     if(target_X == 0) {
       dpd_buf4_mat_irrep_init(X, hxbuf);
@@ -195,8 +195,8 @@ int dpd_contract442(dpdbuf4 *X, dpdbuf4 *Y, dpdfile2 *Z, int target_X,
         else if ( (Xtrans) && (!Ytrans)) { hy = hx;       hz = hx^GX; }
         else /* ( (Xtrans) && (Ytrans))*/{ hy = hx^GY;    hz = hx^GX; }
 
-       // fprintf(stdout,"rows %d links %d cols %d\n",
-       // Z->params->rowtot[hz], numlinks[hx], Z->params->coltot[hz]);
+	/* fprintf(stdout,"rows %d links %d cols %d\n",
+	   Z->params->rowtot[hz], numlinks[hx], Z->params->coltot[hz]); */
 
         newmm_rking(Xmat[hx], Xtrans, Ymat[hy], Ytrans,
             Z->matrix[hz], Z->params->rowtot[hz],
@@ -217,8 +217,8 @@ int dpd_contract442(dpdbuf4 *X, dpdbuf4 *Y, dpdfile2 *Z, int target_X,
         else if ((!Xtrans) && (Ytrans) ) { hy = hx^GX^GY; hz = hx;    }
         else if ( (Xtrans) && (!Ytrans)) { hy = hx;       hz = hx^GX; }
         else /* ( (Xtrans) && (Ytrans))*/{ hy = hx^GY;    hz = hx^GX; }
-       // fprintf(stdout,"rows %d links %d cols %d\n",
-       // Z->params->rowtot[hz], numlinks[hx], Z->params->coltot[hz]);
+	/* fprintf(stdout,"rows %d links %d cols %d\n",
+	   Z->params->rowtot[hz], numlinks[hx], Z->params->coltot[hz]); */
 
         newmm(Xmat[hx], Xtrans, Ymat[hy], Ytrans,
             Z->matrix[hz], Z->params->rowtot[hz],

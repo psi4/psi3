@@ -183,8 +183,8 @@ int dpd_contract244(dpdfile2 *X, dpdbuf4 *Y, dpdbuf4 *Z, int sum_X, int sum_Y,
           dpd_error("dpd_contract244", stderr);
         }
 #endif	      
-//fprintf(outfile,"hz %d, hx %d, hy %d, numrows %d, numlinks %d, numcols %d\n",
-//                 hz, hx, hy, numrows[hz],numlinks[hx],numcols[hz]);
+	/* fprintf(outfile,"hz %d, hx %d, hy %d, numrows %d, numlinks %d, numcols %d\n",
+	   hz, hx, hy, numrows[hz],numlinks[hx],numcols[hz]); */
 
         newmm(X->matrix[hx], Xtrans, Ymat[hy], Ytrans,
             Zmat[hz], numrows[hz], numlinks[hx^symlink],

@@ -52,7 +52,7 @@ int dpd_contract222(dpdfile2 *X, dpdfile2 *Y, dpdfile2 *Z, int target_X,
   }
 #endif  
 
-  // loop over row irreps of X
+  /* loop over row irreps of X */
   for(hx=0; hx < nirreps; hx++) {
     if      ((!Xtrans)&&(!Ytrans)) {hy = hx^GX;    hz = hx;    }
     else if ((!Xtrans)&&( Ytrans)) {hy = hx^GX^GY; hz = hx;    } 

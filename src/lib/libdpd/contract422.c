@@ -55,7 +55,7 @@ int dpd_contract422(dpdbuf4 *X, dpdfile2 *Y, dpdfile2 *Z, int trans_Y,
   }
 #endif
 
-  // read in block of X whose row irrep is same as target Gpq=GZ
+  /* read in block of X whose row irrep is same as target Gpq=GZ */
   hxbuf = GZ;
   dpd_buf4_mat_irrep_init(X, hxbuf);
   dpd_buf4_mat_irrep_rd(X, hxbuf);

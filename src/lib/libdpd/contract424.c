@@ -182,8 +182,8 @@ int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
             dpd_error("dpd_contract424", stderr);
           }
 #endif      
-// fprintf(outfile,"hx %d hy %d hz %d\n",hx,hy,hz);
-// fprintf(outfile,"numrows %d numlinks %d numcols %d\n",numrows[hz],numlinks[hy],numcols[hz]);
+	  /* fprintf(outfile,"hx %d hy %d hz %d\n",hx,hy,hz);
+	     fprintf(outfile,"numrows %d numlinks %d numcols %d\n",numrows[hz],numlinks[hy],numcols[hz]); */
           newmm_rking(Xmat[hx], Xtrans, Y->matrix[hy], Ytrans,
               Zmat[hz], numrows[hz], numlinks[hy^symlink],
               numcols[hz], alpha, 1.0);

@@ -31,7 +31,7 @@ int dpd_dot24(dpdfile2 *T, dpdbuf4 *I, dpdfile2 *Z,
   timer_on("dot24");
 #endif
 
-  // loop over row irreps of buf4, h = Gpq = Grs^GI (symm: Gpq = Grs)
+  /* loop over row irreps of buf4, h = Gpq = Grs^GI (symm: Gpq = Grs) */
   for(h=0; h < nirreps; h++) {
 
     dpd_buf4_mat_irrep_init(I, h);
