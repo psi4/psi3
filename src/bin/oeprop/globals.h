@@ -72,7 +72,7 @@ EXTERN int spin_prop;		/* Write dipole moment to ASCII file ? */
 EXTERN int corr;		/* Correlation correction to the first-order 
 				   properties flag */
 EXTERN int mpmax;		/* Compute up to electric mpmax-tuple moment */
-EXTERN double mp_ref_xyz[3];	/* Reference point coordinates for elec. mult. moment 
+EXTERN double mp_ref_xyz[3];	/* Coordinates of the reference point for elec. mult. moment 
 				   calculations */
 EXTERN int mp_ref;		/* Code of the reference point for elec. 
 				   multipole moment calculations :
@@ -84,6 +84,8 @@ EXTERN int mp_ref;		/* Code of the reference point for elec.
 				   5 = center of net charge 
 				   If MP_REF_XYZ is specified - MP_REF
 				   keyword is set to -1 */
+EXTERN double Lm_ref_xyz[3];	/* Coordiantes of the reference point for elec. angular momentum 
+				   calculations */
 EXTERN int wrt_dipmom;		/* Flag for writing dipole moments into dipmom.dat */
 EXTERN int nuc_esp;		/* Flag for computing electrostatic properties (such as 
 				   electrostatic potential, electric field, and 
@@ -171,6 +173,8 @@ EXTERN double oxxx,oyyy,ozzz,oxxy,oxxz,	/* Components of the octopole moment */
               oxyy,oyyz,oxzz,oyzz,oxyz;
 EXTERN double oxxxcc,oyyycc,ozzzcc,oxxycc,oxxzcc,	/* Corrections */
               oxyycc,oyyzcc,oxzzcc,oyzzcc,oxyzcc;
+EXTERN double Lx,Ly,Lz;	        /* Components of electronic angular momentum L */
+EXTERN double Lx2,Ly2,Lz2;      /* Components of square electronic angular momentum L^2 */
 EXTERN double *phi;		/* Electrostatic potential at the nuclei */
 EXTERN double *ex, *ey, *ez;	/* Components of electric field at the nuclei */
 EXTERN double *dexx, *deyy, *dezz, *dexy, *dexz, *deyz;	/* Gradients of E */

@@ -41,6 +41,7 @@ int main(int argc, char* argv) {
  ip_cwk_add(":DEFAULT");
  ip_cwk_add(":OEPROP");
  tstart(outfile);
+ psio_init();
  file30_init();
  print_intro();
 
@@ -173,6 +174,9 @@ int main(int argc, char* argv) {
    geom[i][0] -= mp_ref_xyz[0];
    geom[i][1] -= mp_ref_xyz[1];
    geom[i][2] -= mp_ref_xyz[2];
+   Lm_ref_xyz[0] -= mp_ref_xyz[0];
+   Lm_ref_xyz[1] -= mp_ref_xyz[1];
+   Lm_ref_xyz[2] -= mp_ref_xyz[2];
  }
  if (grid) {
    grid_origin[0] -= mp_ref_xyz[0];
@@ -193,6 +197,7 @@ int main(int argc, char* argv) {
      compute_grid();
 
  print_mp();
+ print_lm();
  if (nuc_esp)
    print_esp();
  if (grid) {
@@ -228,6 +233,7 @@ int main(int argc, char* argv) {
  }
  free(S);
  tstop(outfile);
+ psio_done();
  ip_done();
  exit(0);
  

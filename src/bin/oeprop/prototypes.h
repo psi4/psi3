@@ -21,6 +21,7 @@ void print_tasks();
 void print_params();
 void print_pop_header();
 void print_mp();
+void print_lm();
 void print_esp();
 void print_grid();
 void print_misc();

@@ -6,6 +6,7 @@
 void compute_oeprops()
 {
   int i,j,k,l,ig,jg,ibf,jbf,ib,jb,jlim,kk,ll;
+  int ij, kl, il, kj;
   int iatom, jatom, iang, jang, i_1stbf, j_1stbf, nbfi, nbfj;
   int igmin, igmax, jgmin, jgmax;
   int ixm, iym, izm, jxm, jym, jzm, iind, jind;
@@ -19,16 +20,20 @@ void compute_oeprops()
   double cbx_l, cbx_l_1, cbx_l_2, cby_l, cby_l_1, cby_l_2, cbz_l, cbz_l_1, cbz_l_2;
   int lx1, ly1, lz1, lx2, ly2, lz2;
   double x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3;
+  double xl1, yl1, zl1, xl2, yl2, zl2;
+  double plx, ply, plz;
+  double delx, dely, delz;
+  double xdely_ydelx, ydelx_xdely, xdelz_zdelx, zdelx_xdelz, ydelz_zdely, zdely_ydelz;
   double tx, ty, tz, t2x, t2y, t2z;
   double x,y,z;
   double r,r2;
   double tmp, sum1, sum2, sum3;
+  double pfac_ij, pfac_kl;
   PSI_FPTR junk;
   double *Density;
-  double *DX_ao, *DY_ao, *DZ_ao;
-  double *DX_so, *DY_so, *DZ_so;
   double **temp_mat;
   double *XX, *YY, *ZZ;
+  double *Lx_ao, *Ly_ao, *Lz_ao;
   double **evec;
   double mxx,mxy,mxz,myy,myz,mzz;  /* Components of the second moment */
   double mxxcc,myycc,mzzcc,
@@ -48,9 +53,9 @@ void compute_oeprops()
   MIY = init_box(lmax+3,lmax+3,MAXMP+1);
   MIZ = init_box(lmax+3,lmax+3,MAXMP+1);
   MIX[0][0][0] = MIY[0][0][0] = MIZ[0][0][0] = 1.0;
-  DX_ao = init_array(natri);
-  DY_ao = init_array(natri);
-  DZ_ao = init_array(natri);
+  Lx_ao = init_array(natri);
+  Ly_ao = init_array(natri);
+  Lz_ao = init_array(natri);
   if (mpmax >= 2) {
     XX = init_array(natri);
     YY = init_array(natri);
@@ -120,6 +125,7 @@ void compute_oeprops()
   oxxx = oyyy = ozzz = oxxy = oxxz = oxyy = oyyz = oxzz = oyzz = oxyz = 0.0;
   oxxxcc = oyyycc = ozzzcc = oxxycc = oxxzcc = 
   oxyycc = oyyzcc = oxzzcc = oyzzcc = oxyzcc = 0.0;
+  Lx = Ly = Lz = Lx2 = Ly2 = Lz2 = 0.0;
   darw = 0.0;
   massveloc = 0.0;
 
@@ -283,17 +289,14 @@ void compute_oeprops()
 
               tmp = (x1 + px*x0) * y0 * z0 * over_pf * norm_pf;
               dx -= dens_pf * tmp;
-              DX_ao[ioff[ib]+jb] -= tmp;
               if (corr)
                 dxcc += zvec_pf * tmp;
               tmp = x0 * (y1 + py*y0) * z0 * over_pf * norm_pf;
               dy -= dens_pf * tmp;
-              DY_ao[ioff[ib]+jb] -= tmp;
               if (corr)
                 dycc += zvec_pf * tmp;
               tmp = x0 * y0 * (z1 + pz*z0) * over_pf * norm_pf;
               dz -= dens_pf * tmp;
-              DZ_ao[ioff[ib]+jb] -= tmp;
               if (corr)
                 dzcc += zvec_pf * tmp;
               
@@ -397,6 +400,129 @@ void compute_oeprops()
                 if (corr)
                   mxyzcc += zvec_pf * tmp;
               }
+
+	      /*---------------------------------------
+		Compute electronic angular momentum Lm
+	       ---------------------------------------*/
+	      delx = -2.0*bj*MIX[lx1][lx2+1][0];
+	      if (lx2 > 0)
+		delx += (lx2)*MIX[lx1][lx2-1][0];
+	      dely = -2.0*bj*MIY[ly1][ly2+1][0];
+	      if (ly2 > 0)
+		dely += (ly2)*MIY[ly1][ly2-1][0];
+	      delz = -2.0*bj*MIZ[lz1][lz2+1][0];
+	      if (lz2 > 0)
+		delz += (lz2)*MIZ[lz1][lz2-1][0];
+	      plx = (px-Lm_ref_xyz[0]);
+	      ply = (py-Lm_ref_xyz[1]);
+	      plz = (pz-Lm_ref_xyz[2]);
+	      xl1 = x1 + plx*x0;
+	      yl1 = y1 + ply*y0;
+	      zl1 = z1 + plz*z0;
+              tmp = x0 * (yl1 * delz - zl1 * dely) * over_pf * norm_pf;
+              Lx -= dens_pf * tmp;
+	      Lx_ao[ioff[ib]+jb] -= tmp;
+	      tmp = y0 * (zl1 * delx - xl1 * delz) * over_pf * norm_pf;
+              Ly -= dens_pf * tmp;
+	      Ly_ao[ioff[ib]+jb] -= tmp;
+              tmp = z0 * (xl1 * dely - yl1 * delx) * over_pf * norm_pf;
+              Lz -= dens_pf * tmp;
+	      Lz_ao[ioff[ib]+jb] -= tmp;
+
+	      /*-----------------------------------------------
+		Compute electronic angular momentum square L^2
+	       -----------------------------------------------*/
+	      if (mpmax > 1) {
+		  xl2 = x2 + 2.0*plx*x1 + plx*plx*x0;
+		  yl2 = y2 + 2.0*ply*y1 + ply*ply*y0;
+		  zl2 = z2 + 2.0*plz*z1 + plz*plz*z0;
+		  
+		  xdely_ydelx = 4.0 * bj * bj *
+				 (MIX[lx1][lx2+1][1] + plx*MIX[lx1][lx2+1][0]) *
+				 (MIY[ly1][ly2+1][1] + ply*MIY[ly1][ly2+1][0]);
+		  if (lx2)
+		    xdely_ydelx += -2.0 * bj * lx2 *
+				   (MIX[lx1][lx2-1][1] + plx*MIX[lx1][lx2-1][0]) *
+				   (MIY[ly1][ly2+1][1] + ply*MIY[ly1][ly2+1][0]);
+		  if (ly2)
+		    xdely_ydelx += -2.0 * bj * ly2 *
+				   (MIX[lx1][lx2+1][1] + plx*MIX[lx1][lx2+1][0]) *
+				   (MIY[ly1][ly2-1][1] + ply*MIY[ly1][ly2-1][0]);
+		  if (lx2 && ly2)
+		    xdely_ydelx += lx2 * ly2 *
+				   (MIX[lx1][lx2-1][1] + plx*MIX[lx1][lx2-1][0]) *
+				   (MIY[ly1][ly2-1][1] + ply*MIY[ly1][ly2-1][0]);
+		  ydelx_xdely = xdely_ydelx;
+		  xdely_ydelx += -2.0 * bj * (MIX[lx1][lx2+1][1] + plx*MIX[lx1][lx2+1][0]) * y0;
+		  if (lx2)
+		    xdely_ydelx += lx2 * (MIX[lx1][lx2-1][1] + plx*MIX[lx1][lx2-1][0]) * y0;
+		  ydelx_xdely += -2.0 * bj * (MIY[ly1][ly2+1][1] + ply*MIY[ly1][ly2+1][0]) * x0;
+		  if (ly2)
+		    ydelx_xdely += ly2 * (MIY[ly1][ly2-1][1] + ply*MIY[ly1][ly2-1][0]) * x0;
+
+
+		  
+		  xdelz_zdelx = 4.0 * bj * bj *
+				 (MIX[lx1][lx2+1][1] + plx*MIX[lx1][lx2+1][0]) *
+				 (MIZ[lz1][lz2+1][1] + plz*MIZ[lz1][lz2+1][0]);
+		  if (lx2)
+		    xdelz_zdelx += -2.0 * bj * lx2 *
+				   (MIX[lx1][lx2-1][1] + plx*MIX[lx1][lx2-1][0]) *
+				   (MIZ[lz1][lz2+1][1] + plz*MIZ[lz1][lz2+1][0]);
+		  if (lz2)
+		    xdelz_zdelx += -2.0 * bj * lz2 *
+				   (MIX[lx1][lx2+1][1] + plx*MIX[lx1][lx2+1][0]) *
+				   (MIZ[lz1][lz2-1][1] + plz*MIZ[lz1][lz2-1][0]);
+		  if (lx2 && lz2)
+		    xdelz_zdelx += lx2 * lz2 *
+				   (MIX[lx1][lx2-1][1] + plx*MIX[lx1][lx2-1][0]) *
+				   (MIZ[lz1][lz2-1][1] + plz*MIZ[lz1][lz2-1][0]);
+		  zdelx_xdelz = xdelz_zdelx;
+		  xdelz_zdelx += -2.0 * bj * (MIX[lx1][lx2+1][1] + plx*MIX[lx1][lx2+1][0]) * z0;
+		  if (lx2)
+		    xdelz_zdelx += lx2 * (MIX[lx1][lx2-1][1] + plx*MIX[lx1][lx2-1][0]) * z0;
+		  zdelx_xdelz += -2.0 * bj * (MIZ[lz1][lz2+1][1] + plz*MIZ[lz1][lz2+1][0]) * x0;
+		  if (lz2)
+		    zdelx_xdelz += lz2 * (MIZ[lz1][lz2-1][1] + plz*MIZ[lz1][lz2-1][0]) * x0;
+
+		  
+		  ydelz_zdely = 4.0 * bj * bj *
+				 (MIY[ly1][ly2+1][1] + ply*MIY[ly1][ly2+1][0]) *
+				 (MIZ[lz1][lz2+1][1] + plz*MIZ[lz1][lz2+1][0]);
+		  if (ly2)
+		    ydelz_zdely += -2.0 * bj * ly2 *
+				   (MIY[ly1][ly2-1][1] + ply*MIY[ly1][ly2-1][0]) *
+				   (MIZ[lz1][lz2+1][1] + plz*MIZ[lz1][lz2+1][0]);
+		  if (lz2)
+		    ydelz_zdely += -2.0 * bj * lz2 *
+				   (MIY[ly1][ly2+1][1] + ply*MIY[ly1][ly2+1][0]) *
+				   (MIZ[lz1][lz2-1][1] + plz*MIZ[lz1][lz2-1][0]);
+		  if (ly2 && lz2)
+		    ydelz_zdely += ly2 * lz2 *
+				   (MIY[ly1][ly2-1][1] + ply*MIY[ly1][ly2-1][0]) *
+				   (MIZ[lz1][lz2-1][1] + plz*MIZ[lz1][lz2-1][0]);
+		  zdely_ydelz = ydelz_zdely;
+		  ydelz_zdely += -2.0 * bj * (MIY[ly1][ly2+1][1] + ply*MIY[ly1][ly2+1][0]) * z0;
+		  if (ly2)
+		    ydelz_zdely += ly2 * (MIY[ly1][ly2-1][1] + ply*MIY[ly1][ly2-1][0]) * z0;
+		  zdely_ydelz += -2.0 * bj * (MIZ[lz1][lz2+1][1] + plz*MIZ[lz1][lz2+1][0]) * y0;
+		  if (lz2)
+		    zdely_ydelz += lz2 * (MIZ[lz1][lz2-1][1] + plz*MIZ[lz1][lz2-1][0]) * y0;
+		  
+
+		  /*-----------------------------------------------
+		    These are the <p|lx2|p> constributions only
+		    The rest (<p|lx|p><q|lx|q> - <p|lx|q><q|lx|p>)
+		    is computed later
+		   -----------------------------------------------*/
+		  tmp = x0 * (-2.0*yl2*tz - 2.0*zl2*ty - ydelz_zdely - zdely_ydelz) * over_pf * norm_pf;
+		  /*--- "-" due to i^2 ---*/
+		  Lx2 -= dens_pf * tmp;
+		  tmp = y0 * (-2.0*zl2*tx - 2.0*xl2*tz - zdelx_xdelz - xdelz_zdelx) * over_pf * norm_pf;
+		  Ly2 -= dens_pf * tmp;
+		  tmp = z0 * (-2.0*xl2*ty - 2.0*yl2*tx - xdely_ydelx - ydelx_xdely) * over_pf * norm_pf;
+		  Lz2 -= dens_pf * tmp;
+	      }
             }
           }
 	  
@@ -482,22 +608,6 @@ void compute_oeprops()
     }
   }
 
-
-  
-  if (print_lvl >= PRINTDIPMLEVEL) {
-    fprintf(outfile,"\tmu(X) matrix in AO basis :\n");
-    print_array(DX_ao,nbfao,outfile);
-    fprintf(outfile,"\n\n");
-    fprintf(outfile,"\tmu(Y) matrix in AO basis :\n"); 
-    print_array(DY_ao,nbfao,outfile);
-    fprintf(outfile,"\n\n");
-    fprintf(outfile,"\tmu(Z) matrix in AO basis :\n"); 
-    print_array(DZ_ao,nbfao,outfile);
-    fprintf(outfile,"\n\n");
-  }
-  free(DX_ao);
-  free(DY_ao);
-  free(DZ_ao);
 
   /* Computing nuclear contribution to the dipole moment */
   dz_e = dx; dz_e = dx; dz_e = dz;
@@ -657,6 +767,26 @@ void compute_oeprops()
     darw += zvals[i]*edens[i];
   darw *= M_PI_2/(_c_au*_c_au); 
 
+
+  /*--- Compute the rest of L^2 ---*/
+  for(i=0;i<nbfao;i++)
+    for(j=0;j<nbfao;j++) {
+      ij = (i > j) ? ioff[i] + j : ioff[j] + i;
+      pfac_ij = (i == j) ? 1.0 : 2.0;
+      for(k=0;k<nbfao;k++)
+	for(l=0;l<nbfao;l++) {
+	  kl = (k > l) ? ioff[k] + l : ioff[l] + k;
+	  pfac_kl = (k == l) ? 1.0 : 2.0;
+	  il = (i > l) ? ioff[i]+l : ioff[l]+i;
+	  kj = (k > j) ? ioff[k]+j : ioff[j]+k;
+	  Lx2 -= Lx_ao[ij]*Lx_ao[kl]*(Ptot[ij]*Ptot[kl]-Ptot[il]*Ptot[kj]);
+	  Ly2 -= Ly_ao[ij]*Ly_ao[kl]*(Ptot[ij]*Ptot[kl]-Ptot[il]*Ptot[kj]);
+	  Lz2 -= Lz_ao[ij]*Lz_ao[kl]*(Ptot[ij]*Ptot[kl]-Ptot[il]*Ptot[kj]);
+	}
+    }
+  free(Lx_ao);
+  free(Ly_ao);
+  free(Lz_ao);
 
 
 	/* Cleaning up */
