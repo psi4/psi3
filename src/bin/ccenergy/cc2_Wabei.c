@@ -81,9 +81,9 @@ void cc2_Wabei_build(void)
     dpd_file2_init(&t1, CC_OEI, 0, 0, 1, "tIA");
 
     /* WEbEi <-- <Ab|Ef> * t(i,f) */
-    dpd_buf4_init(&W, CC2_HET1, 0, 11, 5, 11, 5, 0, "CC2 WAbEi (Ei,Ab)");
+    dpd_buf4_init(&W, CC_TMP0, 0, 5, 11, 5, 11, 0, "CC2 WAbEi");
     dpd_buf4_init(&B, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>");
-    dpd_contract424(&B, &t1, &W, 3, 1, 1, 0.5, 1);
+    dpd_contract424(&B, &t1, &W, 3, 1, 0, 0.5, 0);
     dpd_buf4_close(&B);
     dpd_buf4_close(&W);
 
@@ -160,6 +160,13 @@ void cc2_Wabei_build(void)
   timer_off("B->Wabei");
 
   timer_on("Wabei_sort");
+  if (params.ref == 0) { /* RHF */
+
+    dpd_buf4_init(&W, CC_TMP0, 0, 5, 11, 5, 11, 0, "CC2 WAbEi");
+    dpd_buf4_sort_axpy(&W, CC2_HET1, rspq, 11, 5, "CC2 WAbEi (Ei,Ab)", 1);
+    dpd_buf4_close(&W);
+
+  }
   if (params.ref == 1) { /* ROHF */
 
     /* sort to Wabei (ei,ab) */
@@ -178,7 +185,7 @@ void cc2_Wabei_build(void)
 
     /* purge before final sort */
 
-/*     purge_cc2_Wabei(); */
+    /*     purge_cc2_Wabei(); */
   }
   else if (params.ref == 2) { /* UHF */
 
