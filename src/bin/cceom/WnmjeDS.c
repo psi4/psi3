@@ -140,18 +140,17 @@ void WnmjeDS(int i, int C_irr) {
     dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, CME_lbl);
     dpd_buf4_init(&WMNIE, CC_HBAR, H_IRR, 0, 21, 2, 21, 0, "WMNIE");
     dpd_dot23(&CME, &WMNIE, &XNJ, 0, 0, 1.0, 1.0);
- dpd_buf4_print(&WMNIE,outfile,1);
     dpd_buf4_close(&WMNIE);
     dpd_file2_close(&CME);
     dpd_file2_init(&Cme, EOM_Cme, C_irr, 2, 3, Cme_lbl);
     dpd_buf4_init(&WMnIe, CC_HBAR, H_IRR, 22, 25, 22, 25, 0, "WMnIe");
     dpd_dot23(&Cme, &WMnIe, &XNJ, 0, 0, 1.0, 1.0);
- dpd_buf4_print(&WMnIe,outfile,1);
     dpd_buf4_close(&WMnIe);
     dpd_file2_close(&Cme);
-
+/*
     tval = dpd_file2_dot_self(&XNJ);
     fprintf(outfile,"XNJ self dot %15.10lf\n",tval);
+*/
     dpd_file2_close(&XNJ);
 
 
@@ -161,18 +160,18 @@ void WnmjeDS(int i, int C_irr) {
     dpd_file2_init(&Cme, EOM_Cme, C_irr, 2, 3, Cme_lbl);
     dpd_buf4_init(&Wmnie, CC_HBAR, H_IRR, 10, 31, 12, 31, 0, "Wmnie");
     dpd_dot23(&Cme, &Wmnie, &Xnj, 0, 0, 1.0, 1.0);
- dpd_buf4_print(&Wmnie,outfile,1);
     dpd_buf4_close(&Wmnie);
     dpd_file2_close(&Cme);
     dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, CME_lbl);
     dpd_buf4_init(&WmNiE, CC_HBAR, H_IRR, 23, 26, 23, 26, 0, "WmNiE");
- dpd_buf4_print(&WmNiE,outfile,1);
     dpd_dot23(&CME, &WmNiE, &Xnj, 0, 0, 1.0, 1.0);
     dpd_buf4_close(&WmNiE);
     dpd_file2_close(&CME);
 
+/*
     tval = dpd_file2_dot_self(&Xnj);
     fprintf(outfile,"Xnj self dot %15.10lf\n",tval);
+*/
     dpd_file2_close(&Xnj);
 
     /* SIJAB -= XNJ * TINAB + XNI * TJNAB */
@@ -191,8 +190,6 @@ void WnmjeDS(int i, int C_irr) {
     dpd_buf4_close(&WP);
     dpd_buf4_close(&SIJAB);
 
-  check_sum("WnmjeDS ijab alpha",i,C_irr);
-
     /* Sijab -= Xnj * Tinab + Xni * Tjnab */
     dpd_buf4_init(&WM, EOM_TMP, C_irr, 10, 17, 10, 17, 0, "WnmjeDS_MB");
     dpd_buf4_init(&Tijab, CC_TAMPS, H_IRR, 10, 17, 12, 17, 0, "tijab");
@@ -209,8 +206,6 @@ void WnmjeDS(int i, int C_irr) {
     dpd_buf4_close(&WP);
     dpd_buf4_close(&Sijab);
 
-  check_sum("WnmjeDS ijab beta",i,C_irr);
-
     /* SIjAb -= Xnj * tInAb + XNI * TjNAb */
     dpd_buf4_init(&SIjAb, EOM_SIjAb, C_irr, 22, 28, 22, 28, 0, SIjAb_lbl);
     dpd_buf4_init(&TIjAb, CC_TAMPS, H_IRR, 22, 28, 22, 28, 0, "tIjAb");
@@ -222,7 +217,6 @@ void WnmjeDS(int i, int C_irr) {
     dpd_file2_close(&XNJ);
     dpd_buf4_close(&TIjAb);
     dpd_buf4_close(&SIjAb);
-
   }
 
 #ifdef EOM_DEBUG

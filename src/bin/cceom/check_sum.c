@@ -13,7 +13,7 @@ void check_sum(char *term_lbl, int index, int irrep) {
   int save_params_ref;
   dpdfile2 Sia, SIA;
   dpdbuf4 SIJAB, Sijab, SIjAb, SIjbA;
-  static double old_norm=0, old_dotval=0;
+  static double old_norm=0;
   double norm,dotval;
   char lbl[80];
 

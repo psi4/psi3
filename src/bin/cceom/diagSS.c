@@ -60,148 +60,148 @@ void diagSS(int C_irr) {
       /* C_irr = irr_occ * irr_virt */
 
       if (params.eom_ref == 0)  { /* ref = RHF; eom_ref = RHF */
-	begin_occ = MAX(occpi[irr_occ]-range, 0);
-	end_virt = MIN(range, virtpi[irr_virt]);
-	for (i=begin_occ; i < occpi[irr_occ]; ++i)
-	  for (a=0; a < end_virt; ++a, ++C_index) {
-	    sprintf(lbl, "%s %d", "CME", C_index);
-	    dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
-	    dpd_file2_mat_init(&CME);
-	    CME.matrix[cnt][i][a] = 1.0/sqrt(2.0);
-	    dpd_file2_mat_wrt(&CME);
-	    dpd_file2_mat_close(&CME);
-	    dpd_file2_close(&CME);
-	  }
+        begin_occ = MAX(occpi[irr_occ]-range, 0);
+        end_virt = MIN(range, virtpi[irr_virt]);
+        for (i=begin_occ; i < occpi[irr_occ]; ++i)
+          for (a=0; a < end_virt; ++a, ++C_index) {
+            sprintf(lbl, "%s %d", "CME", C_index);
+            dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
+            dpd_file2_mat_init(&CME);
+            CME.matrix[cnt][i][a] = 1.0/sqrt(2.0);
+            dpd_file2_mat_wrt(&CME);
+            dpd_file2_mat_close(&CME);
+            dpd_file2_close(&CME);
+          }
       }
       /* eom_ref = ROHF, closed shell */
       else if ((params.eom_ref < 2) && (moinfo.iopen == 0)) {
-	begin_occ = MAX(occpi[irr_occ]-range, 0);
-	end_virt = MIN(range, virtpi[irr_virt]);
-	for (i=begin_occ; i < occpi[irr_occ]; ++i)
-	  for (a=0; a < end_virt; ++a, ++C_index) {
-	    sprintf(lbl, "%s %d", "CME", C_index);
-	    dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
-	    dpd_file2_mat_init(&CME);
-	    CME.matrix[cnt][i][a] = 1.0/sqrt(2.0);
-	    dpd_file2_mat_wrt(&CME);
-	    dpd_file2_mat_close(&CME);
-	    dpd_file2_close(&CME);
-	    sprintf(lbl, "%s %d", "Cme", C_index);
-	    dpd_file2_init(&Cme, EOM_Cme, C_irr, 0, 1, lbl);
-	    dpd_file2_mat_init(&Cme);
-	    Cme.matrix[cnt][i][a] = 1.0/sqrt(2.0);
-	    dpd_file2_mat_wrt(&Cme);
-	    dpd_file2_mat_close(&Cme);
-	    dpd_file2_close(&Cme);
-	    ++C_index;
-	    sprintf(lbl, "%s %d", "CME", C_index);
-	    dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
-	    dpd_file2_mat_init(&CME);
-	    CME.matrix[cnt][i][a] = 1.0/sqrt(2.0);
-	    dpd_file2_mat_wrt(&CME);
-	    dpd_file2_mat_close(&CME);
-	    dpd_file2_close(&CME);
-	    sprintf(lbl, "%s %d", "Cme", C_index);
-	    dpd_file2_init(&Cme, EOM_Cme, C_irr, 0, 1, lbl);
-	    dpd_file2_mat_init(&Cme);
-	    Cme.matrix[cnt][i][a] = -1.0/sqrt(2.0);
-	    dpd_file2_mat_wrt(&Cme);
-	    dpd_file2_mat_close(&Cme);
-	    dpd_file2_close(&Cme);
-	  }
+        begin_occ = MAX(occpi[irr_occ]-range, 0);
+        end_virt = MIN(range, virtpi[irr_virt]);
+        for (i=begin_occ; i < occpi[irr_occ]; ++i)
+          for (a=0; a < end_virt; ++a, ++C_index) {
+            sprintf(lbl, "%s %d", "CME", C_index);
+            dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
+            dpd_file2_mat_init(&CME);
+            CME.matrix[cnt][i][a] = 1.0/sqrt(2.0);
+            dpd_file2_mat_wrt(&CME);
+            dpd_file2_mat_close(&CME);
+            dpd_file2_close(&CME);
+            sprintf(lbl, "%s %d", "Cme", C_index);
+            dpd_file2_init(&Cme, EOM_Cme, C_irr, 0, 1, lbl);
+            dpd_file2_mat_init(&Cme);
+            Cme.matrix[cnt][i][a] = 1.0/sqrt(2.0);
+            dpd_file2_mat_wrt(&Cme);
+            dpd_file2_mat_close(&Cme);
+            dpd_file2_close(&Cme);
+            ++C_index;
+            sprintf(lbl, "%s %d", "CME", C_index);
+            dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
+            dpd_file2_mat_init(&CME);
+            CME.matrix[cnt][i][a] = 1.0/sqrt(2.0);
+            dpd_file2_mat_wrt(&CME);
+            dpd_file2_mat_close(&CME);
+            dpd_file2_close(&CME);
+            sprintf(lbl, "%s %d", "Cme", C_index);
+            dpd_file2_init(&Cme, EOM_Cme, C_irr, 0, 1, lbl);
+            dpd_file2_mat_init(&Cme);
+            Cme.matrix[cnt][i][a] = -1.0/sqrt(2.0);
+            dpd_file2_mat_wrt(&Cme);
+            dpd_file2_mat_close(&Cme);
+            dpd_file2_close(&Cme);
+         }
       }
       else if (params.eom_ref == 1) { /* open-shell ROHF */
-	/* alpha excitations */
-	begin_occ = MAX(occpi[irr_occ]-range, 0);
-	end_virt = MIN( virtpi[irr_virt]-openpi[irr_virt], range);
-	for (i=begin_occ; i < occpi[irr_occ] ; ++i)
-	  for (a=0; a<end_virt; ++a, ++C_index) {
-	    sprintf(lbl, "%s %d", "CME", C_index);
-	    dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
-	    dpd_file2_mat_init(&CME);
-	    CME.matrix[cnt][i][a] = 1.0;
-	    dpd_file2_mat_wrt(&CME);
-	    dpd_file2_close(&CME);
-	    sprintf(lbl, "%s %d", "Cme", C_index);
-	    dpd_file2_init(&Cme, EOM_Cme, C_irr, 0, 1, lbl);
-	    dpd_file2_mat_init(&Cme);
-	    dpd_file2_mat_wrt(&Cme);
-	    dpd_file2_close(&Cme);
-	  }
-	/* beta excitations into open shells */
-	begin_occ = MAX(occpi[irr_occ]-openpi[irr_occ]-range, 0);
-	begin_virt = virtpi[irr_virt] - openpi[irr_virt];
-	for (i=begin_occ; i < occpi[irr_occ]-openpi[irr_occ]; ++i)
-	  for (a=begin_virt; a < virtpi[irr_virt]; ++a, ++C_index) {
-	    sprintf(lbl, "%s %d", "Cme", C_index);
-	    dpd_file2_init(&Cme, EOM_Cme, C_irr, 0, 1, lbl);
-	    dpd_file2_mat_init(&Cme);
-	    Cme.matrix[cnt][i][a] = 1.0;
-	    dpd_file2_mat_wrt(&Cme);
-	    dpd_file2_close(&Cme);
-	    sprintf(lbl, "%s %d", "CME", C_index);
-	    dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
-	    dpd_file2_mat_init(&CME);
-	    dpd_file2_mat_wrt(&CME);
-	    dpd_file2_close(&CME);
-	  }
-	/* beta excitations into unoccupied orbitals */
-	begin_occ = MAX(occpi[irr_occ]-openpi[irr_occ]-range, 0);
-	end_virt = MIN(range - openpi[irr_virt], 0);
-	for (i=begin_occ; i < occpi[irr_occ]-openpi[irr_occ]; ++i)
-	  for (a=0; a < end_virt; ++a, ++C_index) {
-	    sprintf(lbl, "%s %d", "Cme", C_index);
-	    dpd_file2_init(&Cme, EOM_Cme, C_irr, 0, 1, lbl);
-	    dpd_file2_mat_init(&Cme);
-	    Cme.matrix[cnt][i][a] = 1.0;
-	    dpd_file2_mat_wrt(&Cme);
-	    dpd_file2_close(&Cme);
-	    sprintf(lbl, "%s %d", "CME", C_index);
-	    dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
-	    dpd_file2_mat_init(&CME);
-	    dpd_file2_mat_wrt(&CME);
-	    dpd_file2_close(&CME);
-	  }
+      /* alpha excitations */
+      begin_occ = MAX(occpi[irr_occ]-range, 0);
+      end_virt = MIN( virtpi[irr_virt]-openpi[irr_virt], range);
+      for (i=begin_occ; i < occpi[irr_occ] ; ++i)
+        for (a=0; a<end_virt; ++a, ++C_index) {
+          sprintf(lbl, "%s %d", "CME", C_index);
+          dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
+          dpd_file2_mat_init(&CME);
+          CME.matrix[cnt][i][a] = 1.0;
+          dpd_file2_mat_wrt(&CME);
+          dpd_file2_close(&CME);
+          sprintf(lbl, "%s %d", "Cme", C_index);
+          dpd_file2_init(&Cme, EOM_Cme, C_irr, 0, 1, lbl);
+          dpd_file2_mat_init(&Cme);
+          dpd_file2_mat_wrt(&Cme);
+          dpd_file2_close(&Cme);
+        }
+      /* beta excitations into open shells */
+      begin_occ = MAX(occpi[irr_occ]-openpi[irr_occ]-range, 0);
+      begin_virt = virtpi[irr_virt] - openpi[irr_virt];
+      for (i=begin_occ; i < occpi[irr_occ]-openpi[irr_occ]; ++i)
+        for (a=begin_virt; a < virtpi[irr_virt]; ++a, ++C_index) {
+          sprintf(lbl, "%s %d", "Cme", C_index);
+          dpd_file2_init(&Cme, EOM_Cme, C_irr, 0, 1, lbl);
+          dpd_file2_mat_init(&Cme);
+          Cme.matrix[cnt][i][a] = 1.0;
+          dpd_file2_mat_wrt(&Cme);
+          dpd_file2_close(&Cme);
+          sprintf(lbl, "%s %d", "CME", C_index);
+          dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
+          dpd_file2_mat_init(&CME);
+          dpd_file2_mat_wrt(&CME);
+          dpd_file2_close(&CME);
+        }
+      /* beta excitations into unoccupied orbitals */
+      begin_occ = MAX(occpi[irr_occ]-openpi[irr_occ]-range, 0);
+      end_virt = MIN(range - openpi[irr_virt], 0);
+      for (i=begin_occ; i < occpi[irr_occ]-openpi[irr_occ]; ++i)
+        for (a=0; a < end_virt; ++a, ++C_index) {
+          sprintf(lbl, "%s %d", "Cme", C_index);
+          dpd_file2_init(&Cme, EOM_Cme, C_irr, 0, 1, lbl);
+          dpd_file2_mat_init(&Cme);
+          Cme.matrix[cnt][i][a] = 1.0;
+          dpd_file2_mat_wrt(&Cme);
+          dpd_file2_close(&Cme);
+          sprintf(lbl, "%s %d", "CME", C_index);
+          dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
+          dpd_file2_mat_init(&CME);
+          dpd_file2_mat_wrt(&CME);
+          dpd_file2_close(&CME);
+        }
       }
       else { /* UHF */
-	/* alpha excitations */
-	begin_occ = MAX(aoccpi[irr_occ]-range, 0);
-	end_virt = MIN( avirtpi[irr_virt]-openpi[irr_virt], range);
-	for (i=begin_occ; i < aoccpi[irr_occ] ; ++i)
-	  for (a=0; a<end_virt; ++a, ++C_index) {
-	    sprintf(lbl, "%s %d", "CME", C_index);
-	    dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
-	    dpd_file2_mat_init(&CME);
-	    CME.matrix[cnt][i][a] = 1.0;
-	    dpd_file2_mat_wrt(&CME);
-	    dpd_file2_close(&CME);
-	    sprintf(lbl, "%s %d", "Cme", C_index);
-	    dpd_file2_init(&Cme, EOM_Cme, C_irr, 2, 3, lbl);
-	    dpd_file2_mat_init(&Cme);
-	    dpd_file2_mat_wrt(&Cme);
-	    dpd_file2_close(&Cme);
-	  }
-	begin_occ = MAX(boccpi[irr_occ]-range, 0);
-	end_virt = MIN(bvirtpi[irr_virt], range);
-	for (i=begin_occ; i < boccpi[irr_occ] ; ++i)
-	  for (a=0; a<end_virt; ++a, ++C_index) {
-	    sprintf(lbl, "%s %d", "CME", C_index);
-	    dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
-	    dpd_file2_mat_init(&CME);
-	    dpd_file2_mat_wrt(&CME);
-	    dpd_file2_close(&CME);
-	    sprintf(lbl, "%s %d", "Cme", C_index);
-	    dpd_file2_init(&Cme, EOM_Cme, C_irr, 2, 3, lbl);
-	    dpd_file2_mat_init(&Cme);
-	    Cme.matrix[cnt][i][a] = 1.0;
-	    dpd_file2_mat_wrt(&Cme);
-	    dpd_file2_close(&Cme);
-	  }
+        /* alpha excitations */
+        begin_occ = MAX(aoccpi[irr_occ]-range, 0);
+        end_virt = MIN(avirtpi[irr_virt], range);
+        for (i=begin_occ; i < aoccpi[irr_occ] ; ++i)
+          for (a=0; a<end_virt; ++a, ++C_index) {
+            sprintf(lbl, "%s %d", "CME", C_index);
+            dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
+            dpd_file2_mat_init(&CME);
+            CME.matrix[cnt][i][a] = 1.0;
+            dpd_file2_mat_wrt(&CME);
+            dpd_file2_close(&CME);
+            sprintf(lbl, "%s %d", "Cme", C_index);
+            dpd_file2_init(&Cme, EOM_Cme, C_irr, 2, 3, lbl);
+            dpd_file2_mat_init(&Cme);
+            dpd_file2_mat_wrt(&Cme);
+            dpd_file2_close(&Cme);
+          }
+        begin_occ = MAX(boccpi[irr_occ]-range, 0);
+        end_virt = MIN(bvirtpi[irr_virt], range);
+        for (i=begin_occ; i < boccpi[irr_occ] ; ++i)
+          for (a=0; a<end_virt; ++a, ++C_index) {
+            sprintf(lbl, "%s %d", "CME", C_index);
+            dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
+            dpd_file2_mat_init(&CME);
+            dpd_file2_mat_wrt(&CME);
+            dpd_file2_close(&CME);
+            sprintf(lbl, "%s %d", "Cme", C_index);
+            dpd_file2_init(&Cme, EOM_Cme, C_irr, 2, 3, lbl);
+            dpd_file2_mat_init(&Cme);
+            Cme.matrix[cnt][i][a] = 1.0;
+            dpd_file2_mat_wrt(&Cme);
+            dpd_file2_close(&Cme);
+          }
       }
     }
 
-    if (pf) fprintf(outfile,"%d initial single excitation guesses\n",C_index);
-    if (C_index == 0) {
+   if (pf) fprintf(outfile,"%d initial single excitation guesses\n",C_index);
+   if (C_index == 0) {
       fprintf(outfile, "No intial guesses obtained for %s state \n",
 	      moinfo.labels[moinfo.sym^C_irr]);
       exit(1);

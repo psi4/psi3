@@ -26,6 +26,13 @@ void hbar_extra(void) {
     dpd_buf4_init(&W, CC_HBAR, H_IRR, 27, 22, 27, 22, 0, "WmBiJ (mB,Ji)");
     dpd_buf4_sort(&W, CC_HBAR, qprs, 26, 22, "WmBiJ (Bm,Ji)");
     dpd_buf4_close(&W);
+
+    dpd_buf4_init(&W, CC_HBAR, H_IRR, 25, 29, 25, 29, 0, "WeIaB");
+    dpd_buf4_sort(&W, CC_HBAR, qprs, 24, 29, "WeIaB (Ie,aB)");
+    dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC_HBAR, H_IRR, 24, 29, 24, 29, 0, "WeIaB (Ie,aB)");
+    dpd_buf4_sort(&W, CC_HBAR, pqsr, 24, 28, "WeIaB (Ie,Ab)");
+    dpd_buf4_close(&W);
   }
 
   if ((params.eom_ref == 0) || (params.eom_ref == 1)) {

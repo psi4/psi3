@@ -13,13 +13,13 @@ void get_moinfo(void);
 void cleanup(void);
 void exit_io(void);
 void diag(void);
-void hbar_clean();
 void get_params(void);
 void get_eom_params(void);
 void form_dpd_dp(void);
 int **cacheprep_uhf(int level, int *cachefiles);
 int **cacheprep_rhf(int level, int *cachefiles);
 void sort_amps(void);
+void hbar_norms(void);
 
 /* local correlation functions */
 void local_init(void);
@@ -28,11 +28,6 @@ void local_done(void);
 int main(int argc, char *argv[])
 {
   int i, h, done=0, *cachefiles, **cachelist;
-  eom_params.dot_with_Lg = 0;
-  for (i=1; i<argc; ++i) {
-    if (!strcmp(argv[i],"--dot_with_Lg"))
-      eom_params.dot_with_Lg = 1;
-  }
   init_io(argc, argv);
   fprintf(outfile,"\n\t**********************************************************\n");
   fprintf(outfile,"\t*  CCEOM: An Equation of Motion Coupled Cluster Program  *\n");
@@ -86,14 +81,22 @@ int main(int argc, char *argv[])
 
 void init_io(int argc, char *argv[])
 {
-  int i;
+  int i, num_unparsed;
   extern char *gprgid();
-  char *progid;
+  char *progid, *argv_unparsed[100];
+
+  eom_params.dot_with_L = 0;
+  for (i=1, num_unparsed=0; i<argc; ++i) {
+    if (!strcmp(argv[i],"--dot_with_L"))
+      eom_params.dot_with_L = 1;
+    else
+      argv_unparsed[num_unparsed++] = argv[i];
+  }
 
   progid = (char *) malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s",gprgid());
 
-  psi_start(argc-1,argv+1,0);
+  psi_start(num_unparsed, argv_unparsed, 0);
   ip_cwk_add(":INPUT");
   ip_cwk_add(progid);
   free(progid);
@@ -101,6 +104,11 @@ void init_io(int argc, char *argv[])
   psio_init();
   for(i=CC_MIN; i <= CC_MISC; i++) psio_open(i,1);
   for(i=CC_TMP; i <= CC_MAX; i++) psio_open(i,0);
+
+  if (eom_params.dot_with_L) {
+    psio_read_entry(CC_INFO,"EOM L0",(char *) &eom_params.L0, sizeof(double));
+    psio_read_entry(CC_INFO,"EOM L Irrep",(char *) &eom_params.L_irr, sizeof(int));
+  }
 }
 
 void exit_io(void)

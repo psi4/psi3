@@ -13,6 +13,7 @@ extern double norm_C(dpdfile2 *CME, dpdfile2 *Cme,
 extern void scm_C(dpdfile2 *CME, dpdfile2 *Cme, dpdbuf4 *CMNEF,
   dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, double a);
 
+/* use for ROHF and UHF */
 void schmidt_add(dpdfile2 *RIA, dpdfile2 *Ria,
   dpdbuf4 *RIJAB, dpdbuf4 *Rijab, dpdbuf4 *RIjAb, int *numCs, int irrep)
 {
@@ -32,10 +33,17 @@ void schmidt_add(dpdfile2 *RIA, dpdfile2 *Ria,
     sprintf(CMnEf_lbl, "%s %d", "CMnEf", i);
 
     dpd_file2_init(&CME, EOM_CME, irrep, 0, 1, CME_lbl);
-    dpd_file2_init(&Cme, EOM_Cme, irrep, 0, 1, Cme_lbl);
     dpd_buf4_init(&CMNEF, EOM_CMNEF, irrep, 2, 7, 2, 7, 0, CMNEF_lbl);
-    dpd_buf4_init(&Cmnef, EOM_Cmnef, irrep, 2, 7, 2, 7, 0, Cmnef_lbl);
-    dpd_buf4_init(&CMnEf, EOM_CMnEf, irrep, 0, 5, 0, 5, 0, CMnEf_lbl);
+    if (params.eom_ref == 1) {
+      dpd_file2_init(&Cme, EOM_Cme, irrep, 0, 1, Cme_lbl);
+      dpd_buf4_init(&Cmnef, EOM_Cmnef, irrep, 2, 7, 2, 7, 0, Cmnef_lbl);
+      dpd_buf4_init(&CMnEf, EOM_CMnEf, irrep, 0, 5, 0, 5, 0, CMnEf_lbl);
+    }
+    else if (params.eom_ref == 2) {
+      dpd_file2_init(&Cme, EOM_Cme, irrep, 2, 3, Cme_lbl);
+      dpd_buf4_init(&Cmnef, EOM_Cmnef, irrep, 12, 17, 12, 17, 0, Cmnef_lbl);
+      dpd_buf4_init(&CMnEf, EOM_CMnEf, irrep, 22, 28, 22, 28, 0, CMnEf_lbl);
+    }
 
     dotval  = dpd_file2_dot(RIA, &CME);
     dotval += dpd_file2_dot(Ria, &Cme);

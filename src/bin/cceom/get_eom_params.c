@@ -26,9 +26,7 @@ void get_eom_params()
 
   eom_params.cs_per_irrep = (int *) malloc(moinfo.nirreps * sizeof(int));
   for (state_irrep=0; state_irrep<moinfo.nirreps; ++state_irrep) {
-    for (c_irrep=0;c_irrep<moinfo.nirreps;++c_irrep)
-      if ((moinfo.sym ^ c_irrep) == state_irrep) 
-	eom_params.cs_per_irrep[c_irrep] = eom_params.states_per_irrep[state_irrep];
+	eom_params.cs_per_irrep[state_irrep^moinfo.sym] = eom_params.states_per_irrep[state_irrep];
   }
 
   /* eom_params.prop_sym holds irrep of state used for properties */

@@ -111,17 +111,17 @@ void WabejDS(int i, int C_irr) {
     dpd_buf4_close(&SIJAB);
 
     /* Sijab += Wabej * Cie - Wabei * Cje */
-    dpd_buf4_init(&WP, EOM_TMP, C_irr, 10, 17, 10, 17, 0, "WabejDS_P");
+    dpd_buf4_init(&WP, EOM_TMP, C_irr, 10, 17, 10, 17, 0, "WabejDS_PB");
     dpd_buf4_init(&Wabei, CC_HBAR, H_IRR, 31, 17, 31, 17, 0, "Weiab");
     dpd_file2_init(&Cme, EOM_Cme, C_irr, 2, 3, Cme_lbl);
     dpd_contract244(&Cme, &Wabei, &WP, 1, 0, 0, 1.0, 0.0);
     dpd_file2_close(&Cme);
     dpd_buf4_close(&Wabei);
-    dpd_buf4_sort(&WP, EOM_TMP, qprs, 10, 17, "WabejDS_M");
+    dpd_buf4_sort(&WP, EOM_TMP, qprs, 10, 17, "WabejDS_MB");
     dpd_buf4_init(&Sijab, EOM_Sijab, C_irr, 10, 17, 12, 17, 0, Sijab_lbl);
     dpd_buf4_axpy(&WP, &Sijab, 1.0);
     dpd_buf4_close(&WP);
-    dpd_buf4_init(&WM, EOM_TMP, C_irr, 10, 17, 10, 17, 0, "WabejDS_M");
+    dpd_buf4_init(&WM, EOM_TMP, C_irr, 10, 17, 10, 17, 0, "WabejDS_MB");
     dpd_buf4_axpy(&WM, &Sijab, -1.0);
     dpd_buf4_close(&WM);
     dpd_buf4_close(&Sijab);

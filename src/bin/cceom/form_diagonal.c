@@ -17,7 +17,7 @@ void form_diagonal(int C_irr) {
   nirreps = moinfo.nirreps;
   openpi = moinfo.openpi;
 
-  if ((params.ref == 0) || (params.ref == 1)) { /* RHF or ROHF */
+  if ((params.eom_ref == 0) || (params.eom_ref == 1)) { /* RHF or ROHF */
     occpi = moinfo.occpi;
     virtpi = moinfo.virtpi;
     occ_off = moinfo.occ_off;
@@ -154,7 +154,7 @@ void form_diagonal(int C_irr) {
     dpd_file2_close(&FAE);
   }
 
-  else { /* UHF */
+  else if (params.eom_ref == 2) { /* UHF */
     aoccpi = moinfo.aoccpi;     boccpi = moinfo.boccpi;
     avirtpi = moinfo.avirtpi;   bvirtpi = moinfo.bvirtpi;
     aocc_off = moinfo.aocc_off; bocc_off = moinfo.bocc_off;
@@ -179,7 +179,7 @@ void form_diagonal(int C_irr) {
     dpd_file2_mat_init(&DIA);
     for(h=0; h < nirreps; h++) {
       for(i=0; i < aoccpi[h]; i++)
-        for(a=0; a < (avirtpi[h^C_irr]-openpi[h^C_irr]); a++)
+        for(a=0; a < avirtpi[h^C_irr]; a++)
           DIA.matrix[h][i][a] = FAE.matrix[h^C_irr][a][a] - FMI.matrix[h][i][i];
     }
     dpd_file2_mat_wrt(&DIA);
@@ -188,7 +188,7 @@ void form_diagonal(int C_irr) {
     dpd_file2_init(&Dia, EOM_D, C_irr, 2, 3, "Dia");
     dpd_file2_mat_init(&Dia);
     for(h=0; h < nirreps; h++) {
-      for(i=0; i < (boccpi[h]-openpi[h]); i++)
+      for(i=0; i < boccpi[h]; i++)
         for(a=0; a < bvirtpi[h^C_irr]; a++) 
           Dia.matrix[h][i][a] = Fae.matrix[h^C_irr][a][a] - Fmi.matrix[h][i][i];
     }
@@ -215,9 +215,7 @@ void form_diagonal(int C_irr) {
           tval = FAE.matrix[asym][A][A] + FAE.matrix[bsym][B][B]
             - FMI.matrix[isym][I][I] - FMI.matrix[jsym][J][J];
           DIJAB.matrix[h][ij][ab] =
-            ((A >= (avirtpi[asym] - openpi[asym])) ||
-             (B >= (avirtpi[bsym] - openpi[bsym])) ?
-             0.0 : tval);
+            (((A >= avirtpi[asym]) || (B >= avirtpi[bsym])) ? 0.0 : tval);
         }
       }
       dpd_buf4_mat_irrep_wrt(&DIJAB, h);
@@ -245,9 +243,7 @@ void form_diagonal(int C_irr) {
           tval = Fae.matrix[asym][A][A] + Fae.matrix[bsym][B][B]
             - Fmi.matrix[isym][I][I] - Fmi.matrix[jsym][J][J];
           Dijab.matrix[h][ij][ab] =
-            ((I >= (boccpi[isym] - openpi[isym])) ||
-             (J >= (boccpi[jsym] - openpi[jsym])) ?
-             0.0 : tval);
+            (((I >= boccpi[isym]) || (J >= boccpi[jsym])) ? 0.0 : tval);
         }
       }
       dpd_buf4_mat_irrep_wrt(&Dijab, h);
@@ -275,9 +271,7 @@ void form_diagonal(int C_irr) {
           tval = FAE.matrix[asym][A][A] + Fae.matrix[bsym][B][B]
             - FMI.matrix[isym][I][I] - Fmi.matrix[jsym][J][J];
           DIjAb.matrix[h][ij][ab] =
-            ((A >= (avirtpi[asym] - openpi[asym])) ||
-             (J >= (boccpi[jsym] - openpi[jsym])) ?
-             0.0 : tval);
+            (((A >= avirtpi[asym]) || (J >= boccpi[jsym])) ? 0.0 : tval);
         }
       }
       dpd_buf4_mat_irrep_wrt(&DIjAb, h);

@@ -11,7 +11,7 @@ CSRC = \
 cceom.c       diag.c                   diagSS.c       cache.c         hbar_extra.c \
 check_sum.c   form_diagonal.c          norm.c         get_moinfo.c    rzero.c \
 dgeev_eom.c   get_eom_params.c         schmidt_add.c  c_clean.c       cache.c \
-c_clean.c     precondition_local.c           hbar_norms.c   get_params.c     \
+c_clean.c     precondition.c           hbar_norms.c   get_params.c     \
 sigmaSS.c     sigmaSD.c    FSD.c       WmnieSD.c    WamefSD.c  \
 sigmaDS.c     WmaijDS.c    WabejDS.c   WnmjeDS.c    WbmfeDS.c  \
 sigmaDD.c     FDD.c        WmnijDD.c   WabefDD.c    WmbejDD.c  WmnefDD.c \

@@ -11,20 +11,24 @@ void sort_C(int C_index, int C_irr) {
   char lbl[32];
 
   /* Copy used in WmbejDD */
-  if (params.eom_ref > 0) {
+  if (params.eom_ref == 1) { /* ROHF */
     sprintf(lbl, "%s %d", "CMNEF", C_index);
     dpd_buf4_init(&CMNEF, EOM_CMNEF, C_irr, 0, 5, 2, 7, 0, lbl);
     dpd_buf4_sort(&CMNEF, EOM_TMP, prqs, 10, 10, "CMENF");
     dpd_buf4_close(&CMNEF);
     sprintf(lbl, "%s %d", "Cmnef", C_index);
-    if (params.eom_ref == 1) {
-      dpd_buf4_init(&Cmnef, EOM_Cmnef, C_irr, 0, 5, 2, 7, 0, lbl);
-      dpd_buf4_sort(&Cmnef, EOM_TMP, prqs, 10, 10, "Cmenf");
-    }
-    else if (params.eom_ref == 2) {
-      dpd_buf4_init(&Cmnef, EOM_Cmnef, C_irr, 10, 15, 12, 17, 0, lbl);
-      dpd_buf4_sort(&Cmnef, EOM_TMP, prqs, 30, 30, "Cmenf");
-    }
+    dpd_buf4_init(&Cmnef, EOM_Cmnef, C_irr, 0, 5, 2, 7, 0, lbl);
+    dpd_buf4_sort(&Cmnef, EOM_TMP, prqs, 10, 10, "Cmenf");
+    dpd_buf4_close(&Cmnef);
+  }
+  else if (params.eom_ref == 2) { /* UHF */
+    sprintf(lbl, "%s %d", "CMNEF", C_index);
+    dpd_buf4_init(&CMNEF, EOM_CMNEF, C_irr, 0, 5, 2, 7, 0, lbl);
+    dpd_buf4_sort(&CMNEF, EOM_TMP, prqs, 20, 20, "CMENF");
+    dpd_buf4_close(&CMNEF);
+    sprintf(lbl, "%s %d", "Cmnef", C_index);
+    dpd_buf4_init(&Cmnef, EOM_Cmnef, C_irr, 10, 15, 12, 17, 0, lbl);
+    dpd_buf4_sort(&Cmnef, EOM_TMP, prqs, 30, 30, "Cmenf");
     dpd_buf4_close(&Cmnef);
   }
 
