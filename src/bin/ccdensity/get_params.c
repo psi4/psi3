@@ -25,6 +25,7 @@ void get_params()
   params.aobasis = 0;
   errcod = ip_boolean("AO_BASIS", &(params.aobasis),0);
   
+  /* perhaps we should make this 0 by default if dertype = 0? */
   params.relax_opdm = 1;
   errcod = ip_boolean("RELAX_OPDM", &(params.relax_opdm),0);
 
