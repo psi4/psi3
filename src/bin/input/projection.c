@@ -154,9 +154,9 @@ void get_oeints()
 
 double **canon_orthog(double **S11)
 {
-  int so, so1, so2, oo;
+  int so, so1, so2, oo, mo;
   int irrep, so_offset, oo_offset, blksz;
-  int oostart;
+  int mostart;
   double **X;
   double **symblk, **transmat;
   double *evals, **evecs;
@@ -191,11 +191,11 @@ double **canon_orthog(double **S11)
 	  }
 	  
 	  /* construct the transformation matrix to the orthogonal basis */
-	  oostart = blksz-orbspi[irrep];
-	  for(oo=oostart;oo<blksz;oo++) {
-	      sahalf = 1.0/sqrt(evals[oo]);
+	  mostart = blksz-orbspi[irrep];
+	  for(oo=0,mo=mostart;mo<blksz;oo++,mo++) {
+	      sahalf = 1.0/sqrt(evals[mo]);
 	      for(so=0;so<blksz;so++) {
-		  transmat[so+so_offset][oo+oo_offset] = evecs[so][oo]*sahalf;
+		  transmat[so+so_offset][oo+oo_offset] = evecs[so][mo]*sahalf;
 	      }
 	  }
 	  so_offset += blksz;
