@@ -41,7 +41,7 @@ AC_SUBST(top_objdir)
 
 # If target wasn't given, then examine the current host and try
 # to make it the target.
-if test -z "$target" || test "$target"=NONE; then
+if test -z "$target" || test "$target" = NONE; then
   if test -x $srcdir/config.guess; then
     target=`$srcdir/config.guess`
   fi
