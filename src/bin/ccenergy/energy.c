@@ -21,7 +21,7 @@ double rhf_energy(void)
 {
   double tauIjAb_energy, tIA_energy;
   dpdfile2 fIA, tIA;
-  dpdbuf4 tauIjAb, D;
+  dpdbuf4 tauIjAb, D, E;
 
   dpd_file2_init(&fIA, CC_OEI, 0, 0, 1, "fIA");
   dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
@@ -35,7 +35,7 @@ double rhf_energy(void)
   tauIjAb_energy = dpd_buf4_dot(&D, &tauIjAb);
   dpd_buf4_close(&tauIjAb);
   dpd_buf4_close(&D);
-
+  
   /*
     fprintf(outfile, "Two AB Energy = %20.14f\n", tauIjAb_energy);
   */

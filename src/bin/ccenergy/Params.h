@@ -17,6 +17,8 @@ struct Params {
   int brueckner;
   double bconv;
   int analyze;
+  int print_pair_energies;
+  int spinadapt_energies;
   int semicanonical;
   int local_mos;
   int dertype;

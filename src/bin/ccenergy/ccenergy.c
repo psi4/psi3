@@ -88,6 +88,7 @@ int main(int argc, char *argv[])
   struct dpd_file4_cache_entry *priority;
   dpdfile2 t1;
   dpdbuf4 t2;
+  double *emp2_aa, *emp2_ab, *ecc_aa, *ecc_ab;
 
   moinfo.iter=0;
   
@@ -157,6 +158,7 @@ int main(int argc, char *argv[])
   fprintf(outfile, "  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag\n");
   fprintf(outfile, "  ----     ---------------------    ---------   ----------  ----------  ----------\n");
   moinfo.ecc = energy();
+  pair_energies(&emp2_aa, &emp2_ab);
   /* hang on to the MP2 energy if applicable */
   if(params.ref == 0 || params.ref == 2) moinfo.emp2 = moinfo.ecc;
   moinfo.t1diag = diagnostic();
@@ -337,6 +339,12 @@ int main(int argc, char *argv[])
     timer_on("spinad Amps");
     spinad_amps();
     timer_off("spinad Amps");
+  }
+
+  /* Compute pair energies */
+  if(params.print_pair_energies) {
+    pair_energies(&ecc_aa, &ecc_ab);
+    print_pair_energies(emp2_aa, emp2_ab, ecc_aa, ecc_ab);
   }
 
   if( ((!strcmp(params.wfn,"CC3")) || (!strcmp(params.wfn,"EOM_CC3")))

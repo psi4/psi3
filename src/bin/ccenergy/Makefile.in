@@ -20,6 +20,7 @@ cc3.c cc3_Wmnij.c cc3_Wmbij.c cc3_Wmnie.c cc3_Wamef.c cc3_Wabei.c \
 local_response.c FT2_cc2.c cc3_RHF.c cc3_UHF.c \
 cc2_t2.c cc2_Wabei.c cc2_Wmbij.c cc2_Wmnij.c \
 cc2_faeT2.c cc2_fmiT2.c cc2_WmbijT2.c cc2_WabeiT2.c \
+pair_energies.c
 
 BINOBJ = $(CSRC:%.c=%.o)
 
