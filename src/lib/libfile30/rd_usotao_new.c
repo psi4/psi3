@@ -1,9 +1,14 @@
+/*!
+  \file rd_usotao_new.c
+*/
+
 #include <stdio.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_usotao_new(): Read in an SO to AO transformation matrix 
+/*!
+** file30_rd_usotao_new(): Read in an SO to AO transformation matrix 
 **
 **  takes no arguments.
 **

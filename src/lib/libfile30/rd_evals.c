@@ -1,9 +1,14 @@
+/*!
+  \file rd_evals.c
+*/
+
 #include <stdio.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_evals():  Reads in the SCF eigenvalues: the SCF orbital energies.
+/*!
+** file30_rd_evals():  Reads in the SCF eigenvalues: the SCF orbital energies.
 **
 **  This is now a wrapper function due to the fact that we have a pointer 
 **  structure for the SCF data in file30 and possibility of UHF

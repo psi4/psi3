@@ -1,10 +1,15 @@
+/*!
+  \file rd_shell_per_am.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_shells_per_am(): Reads in the numbers of shells of each angular
+/*!
+** file30_rd_shells_per_am(): Reads in the numbers of shells of each angular
 **                            momentum.
 **
 **  takes no arguments.

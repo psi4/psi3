@@ -1,10 +1,15 @@
+/*!
+  \file rd_sopi.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_sopi():	
+/*!
+** file30_rd_sopi():	
 **
 **  takes no arguments.
 **

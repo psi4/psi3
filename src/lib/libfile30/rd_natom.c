@@ -1,7 +1,11 @@
+/*!
+  \file rd_natom.c
+*/
+
 #include "file30.h"
 #include "file30.gbl"
 
-/*
+/*!
 ** file30_rd_natom():  Reads in the total number of atoms.
 **
 **   takes no arguments.

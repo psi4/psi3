@@ -1,7 +1,11 @@
+/*!
+  \file rd_nprim.c
+*/
+
 #include "file30.h"
 #include "file30.gbl"
 
-/*
+/*!
 ** file30_rd_nprim():  Reads in the total number of primitive Gaussian 
 **                     functions (only primitives of symmetry independent 
 **                     atoms are taken into account!).

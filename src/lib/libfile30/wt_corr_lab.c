@@ -1,14 +1,20 @@
+/*!
+  \file wt_corr_lab.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_wt_corr_lab(): Writes a label into file30 which should describe the
+/*!
+** file30_wt_corr_lab(): Writes a label into file30 which should describe the
 **     wavefunction used to get the correlated energy to be stored in
 **     file30 (see wt_ecor() description).
 **
-**   arguments: char *corr_lab  which should be a string like "CISD", or
+**   arguments:
+** \param char *corr_lab  which should be a string like "CISD", or
 **        "MCSCF" or some such wavefunction designation. Up to 7 character
 **        + '\0'
 **

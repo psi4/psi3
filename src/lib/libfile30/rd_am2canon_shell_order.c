@@ -1,10 +1,15 @@
+/*!
+  \file rd_am2canon_shell_order.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_am2canon_shell_order(): Reads in the mapping array from the am-ordered
+/*!
+** file30_rd_am2canon_shell_order(): Reads in the mapping array from the am-ordered
 **                                   to the canonical (in the order of appearance)
 **                                   list of shells.
 **

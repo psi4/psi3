@@ -1,7 +1,11 @@
+/*!
+  \file rd_max_am.c
+*/
+
 #include "file30.h"
 #include "file30.gbl"
 
-/*
+/*!
 ** rd_max_am():  Reads in the maximum orbital quantum number of AOs in the basis.
 **
 **   takes no arguments.

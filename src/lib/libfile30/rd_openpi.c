@@ -1,10 +1,14 @@
+/*!
+  \file rd_openpi.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/*
+/*!
 ** file30_rd_openpi():  Reads in the number of open shells per irrep. 
 **
 **   takes no arguments.

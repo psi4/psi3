@@ -1,9 +1,14 @@
+/*!
+  \file rd_ua2a.c
+*/
+
 #include <stdio.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_ua2a(): Read in a mapping array from the symmetry-unique atom
+/*!
+** file30_rd_ua2a(): Read in a mapping array from the symmetry-unique atom
 **                   list to the full atom list
 **
 **  takes no arguments.

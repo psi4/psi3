@@ -1,4 +1,8 @@
-/*
+/*!
+  \file read30.c
+*/
+
+/*!
 ** READ30: A program to read data from PSI's file30.
 */
 

@@ -1,7 +1,11 @@
+/*!
+  \file rd_nentry.c
+*/
+
 #include "file30.h"
 #include "file30.gbl"
 
-/*
+/*!
 ** file30_rd_nentry():  If zmatrix, reads total number of entries (including dummy atoms)
 **
 **   takes no arguments.

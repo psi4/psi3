@@ -1,13 +1,19 @@
+/*!
+  \file wt_schwartz.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_wt_schwartz(): Write out the table of maxima of Schwartz integrals (ij|ij) for
+/*!
+** file30_wt_schwartz(): Write out the table of maxima of Schwartz integrals (ij|ij) for
 **                       each shell doublet;
 **
-**  takess: double** (num_shells by num_shells)
+**  takess:
+** \param double** (num_shells by num_shells)
 **
 **  returns: void
 */

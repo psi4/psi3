@@ -1,10 +1,15 @@
+/*!
+  \file rd_enuc.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_enuc(): Reads in the nuclear repulsion energy
+/*!
+** file30_rd_enuc(): Reads in the nuclear repulsion energy
 **
 **   takes no arguments.
 **

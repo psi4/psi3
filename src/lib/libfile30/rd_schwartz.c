@@ -1,10 +1,15 @@
+/*!
+  \file rd_schwartz.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_schwartz(): Read in the table of maxima of Schwartz integrals (ij|ij) for
+/*!
+** file30_rd_schwartz(): Read in the table of maxima of Schwartz integrals (ij|ij) for
 **                       each shell doublet;
 **
 **  takes no arguments.

@@ -1,10 +1,15 @@
+/*!
+  \file rd_ict.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_ict():  Reads the transformation properties of the nuclei
+/*!
+** file30_rd_ict():  Reads the transformation properties of the nuclei
 **     under the operations allowed for the particular symmetry point group 
 **     in which the molecule is considered.
 **

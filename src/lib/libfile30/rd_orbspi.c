@@ -1,10 +1,14 @@
+/*!
+  \file rd_orbspi.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/*
+/*!
 ** file30_rd_orbspi():  Reads in the number of molecular orbitals in each irrep.
 **
 **   takes no arguments.

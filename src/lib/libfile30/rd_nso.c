@@ -1,7 +1,11 @@
+/*!
+  \file rd_nso.c
+*/
+
 #include "file30.h"
 #include "file30.gbl"
 
-/*
+/*!
 ** rd_nso():  Reads in the total number of SOs.
 **
 **   takes no arguments.

@@ -1,3 +1,7 @@
+/*!
+  \file z_to_cart.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -6,12 +10,13 @@
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_z_to_cart(z_entry *z_geom, int num_atoms)
+/*!
+** file30_z_to_cart(z_entry *z_geom, int num_atoms)
 **  : return cartesian coordinates for given z-matrix
 **
 **  arguments:
-**    z_entry *z_geom -- array num_atoms long containing z-matrix info
-**    int num_atoms   -- number of atoms
+** \param z_entry *z_geom -- array num_atoms long containing z-matrix info
+** \param int num_atoms   -- number of atoms
 ** 
 **  returns: 
 **    double **cart_geom -- num_atoms x 3 matrix containing cartesian coords

@@ -1,10 +1,15 @@
+/*!
+  \file rd_hfsym_labs.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_hfsym_labs(): Read in the symmetry labels _only_ for those irreps 
+/*!
+** file30_rd_hfsym_labs(): Read in the symmetry labels _only_ for those irreps 
 **     which have basis functions.  
 **
 **   takes no arguments.

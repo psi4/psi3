@@ -1,10 +1,15 @@
+/*!
+  \file rd_contr_full.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_contr_full(): Reads in the normalized contraction coefficients.
+/*!
+** file30_rd_contr_full(): Reads in the normalized contraction coefficients.
 **
 **  takes no arguments.
 **

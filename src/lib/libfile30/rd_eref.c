@@ -1,10 +1,15 @@
+/*!
+  \file rd_eref.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_eref(): Reads in the reference energy (if different from SCF).
+/*!
+** file30_rd_eref(): Reads in the reference energy (if different from SCF).
 **
 **   takes no arguments.
 **

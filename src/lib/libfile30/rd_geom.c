@@ -1,3 +1,7 @@
+/*!
+  \file rd_geom.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"

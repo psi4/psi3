@@ -1,10 +1,15 @@
+/*!
+  \file rd_escf.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_escf(): Reads in the scf energy.
+/*!
+** file30_rd_escf(): Reads in the scf energy.
 **
 **   takes no arguments.
 **

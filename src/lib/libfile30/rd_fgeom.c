@@ -1,13 +1,17 @@
+/*!
+  \file rd_fgeom.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_fgeom():  Reads in full cartesian geometry including dummy atoms
+/*!
+** file30_rd_fgeom():  Reads in full cartesian geometry including dummy atoms
 **
 **   takes no arguments.
-
 **   returns: double **full_geom;
 **     
 */

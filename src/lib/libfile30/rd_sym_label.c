@@ -1,10 +1,14 @@
+/*!
+  \file rd_sym_label.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/*
+/*!
 ** rd_sym_label():  Reads in the symmetry label.
 **
 **   takes no arguments.

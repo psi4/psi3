@@ -1,10 +1,15 @@
+/*!
+  \file rd_corr_lab.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_corr_lab(): Reads in a label from file30 which should describe the
+/*!
+** file30_rd_corr_lab(): Reads in a label from file30 which should describe the
 **     wavefunction used to get the correlated energy which is stored in
 **     file30 (see rd_ecorr() description).
 **

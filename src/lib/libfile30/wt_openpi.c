@@ -1,14 +1,18 @@
+/*!
+  \file wt_openpi.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/*
+/*!
 ** file30_wt_openpi():  Writes out number of open shells per irrep.
 **
 **   arguments:
-**     int *openpi -- an array containing the number of open shells for
+** \param int *openpi -- an array containing the number of open shells for
 **    every irrep in the point group, not just those used in the HF procedure.
 **
 **   returns: nothing

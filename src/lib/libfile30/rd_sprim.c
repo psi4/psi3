@@ -1,10 +1,15 @@
+/*!
+  \file rd_sprim.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_sprim():	Reads in array of the numbers of first primitives 
+/*!
+** file30_rd_sprim():	Reads in array of the numbers of first primitives 
 **			from the shells.
 **
 **  takes no arguments.

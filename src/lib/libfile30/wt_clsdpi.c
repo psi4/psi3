@@ -1,14 +1,18 @@
+/*!
+  \file wt_clsdpi.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/*
+/*!
 ** file30_wt_clsdpi():  Writes out number of closed shells per irrep.
 **
 **   arguments:
-**     int *clsdpi -- an array containing the number of closed shells for
+** \param int *clsdpi -- an array containing the number of closed shells for
 **    every irrep in the point group, not just those used in the HF procedure.
 **
 **   returns: nothing

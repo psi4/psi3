@@ -1,10 +1,15 @@
+/*!
+  \file rd_zmat.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_zmat():  Reads in the z_matrix.
+/*!
+** file30_rd_zmat():  Reads in the z_matrix.
 **
 **   takes no arguments.
 

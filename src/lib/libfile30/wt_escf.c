@@ -1,12 +1,18 @@
+/*!
+  \file wt_escf.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_wt_escf(): Writes the scf energy to file30.
+/*!
+** file30_wt_escf(): Writes the scf energy to file30.
 **
-**   arguments: double escf  the scf energy.
+**   arguments:
+** \param double escf  the scf energy.
 **
 **   returns nothing.
 */

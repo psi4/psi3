@@ -1,10 +1,15 @@
+/*!
+  \file rd_symoper.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_symoper():	Read in the mapping array between "canonical" ordering of symmetry
+/*!
+** file30_rd_symoper():	Read in the mapping array between "canonical" ordering of symmetry
 **                      operations in the point group and the one defined in symmetry.h
 **
 **  takes no arguments.

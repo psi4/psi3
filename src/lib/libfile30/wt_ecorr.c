@@ -1,12 +1,18 @@
+/*!
+  \file wt_ecorr.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_wt_ecorr():  Writes the correlated energy to file30.
+/*!
+** file30_wt_ecorr():  Writes the correlated energy to file30.
 **
-**    arguments: double ecorr   the correlated energy.  To write some
+**    arguments:
+** \param double ecorr   the correlated energy.  To write some
 **        information (a label) on the type of correlated wavefunction
 **        used to get this energy, see wt_corr_lab().
 **

@@ -1,10 +1,15 @@
+/*!
+  \file rd_ecorr.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_ecorr():  Reads in the correlated energy stored in file30.
+/*!
+** file30_rd_ecorr():  Reads in the correlated energy stored in file30.
 **
 **    takes no arguments.
 **

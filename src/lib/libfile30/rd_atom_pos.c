@@ -1,9 +1,14 @@
+/*!
+  \file rd_atom_pos.c
+*/
+
 #include <stdio.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_atom_position(): Reads in symmetry positions of atoms:
+/*!
+** file30_rd_atom_position(): Reads in symmetry positions of atoms:
 **	Possible values are as follows:
 **	1   - atom in general position
 **      2   - atom on c2z axis

@@ -1,10 +1,15 @@
+/*!
+  \file close.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_close()  closes up file30, frees file30 struct.
+/*!
+**  file30_close()  closes up file30, frees file30 struct.
 ** 
 **  arguments: none, but file30_init must already have been called for 
 **    this to work.  

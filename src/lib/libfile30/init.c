@@ -1,9 +1,14 @@
+/*!
+  \file init.c
+*/
+
 #include <stdio.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_init()  Initializes the file30 struct to allow other file30_
+/*!
+**  file30_init()  Initializes the file30 struct to allow other file30_
 **    functions to perform their duties.
 **
 **  arguments: none, but it requires that the input parser be initialized
@@ -45,3 +50,11 @@ int file30_init(void)
 
   return 0;
 }
+
+
+
+
+
+
+
+

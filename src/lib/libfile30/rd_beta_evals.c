@@ -1,10 +1,15 @@
+/*!
+  \file rd_beta_evals.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_beta_evals():  Reads in the beta SCF eigenvalues: the beta SCF orbital energies.
+/*!
+** file30_rd_beta_evals():  Reads in the beta SCF eigenvalues: the beta SCF orbital energies.
 **
 **  takes no arguments.
 **

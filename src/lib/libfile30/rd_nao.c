@@ -1,7 +1,11 @@
+/*!
+  \file rd_nao.c
+*/
+
 #include "file30.h"
 #include "file30.gbl"
 
-/*
+/*!
 ** file30_rd_nao():  Reads in the total number of atomic orbitals.
 **
 **   takes no arguments.

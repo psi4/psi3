@@ -1,7 +1,12 @@
+/*!
+  \file rd_mxcoef.c
+*/
+
 #include "file30.h"
 #include "file30.gbl"
 
-/* file30_rd_mxcoef:  Reads the value of the constant mxcoef.
+/*!
+** file30_rd_mxcoef:  Reads the value of the constant mxcoef.
 **  
 **  takes no arguments.
 ** 

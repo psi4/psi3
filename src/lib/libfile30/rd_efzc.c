@@ -1,10 +1,15 @@
+/*!
+  \file rd_efzc.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_efzc(): Reads in the frozen-core energy.
+/*!
+** file30_rd_efzc(): Reads in the frozen-core energy.
 **
 **   takes no arguments.
 **

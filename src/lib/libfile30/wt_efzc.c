@@ -1,12 +1,18 @@
+/*!
+  \file wt_efzc.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_wt_efzc():  Writes the frozen-core energy to file30.
+/*!
+** file30_wt_efzc():  Writes the frozen-core energy to file30.
 **
-**    arguments: double efzc  the frozen-core energy.
+**    arguments:
+** \param double efzc  the frozen-core energy.
 **
 */
 

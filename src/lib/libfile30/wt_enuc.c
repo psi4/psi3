@@ -1,12 +1,18 @@
+/*!
+  \file wt_enuc.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_wt_enuc(): Writes the nuclear repulsion energy
+/*!
+** file30_wt_enuc(): Writes the nuclear repulsion energy
 **
-**   takes:   double enuc  the nuclear repulsion energy.
+**   takes:  
+** \param double enuc  the nuclear repulsion energy.
 **
 **   returns: none.
 */

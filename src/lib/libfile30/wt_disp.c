@@ -1,15 +1,19 @@
+/*!
+  \file wt_disp.c
+*/
+
 #include <stdio.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/*
+/*!
 ** file30_wt_disp():  Writes out the current displacement number.
 **
 ** This routine is called by ugeom to update the displacement number.
 **
 **   arguments:
-**    int disp: the current geometry displacement number.
+** \param int disp: the current geometry displacement number.
 **
 **   returns: nothing
 **

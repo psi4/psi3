@@ -1,7 +1,11 @@
+/*!
+  \file rd_nmo.c
+*/
+
 #include "file30.h"
 #include "file30.gbl"
 
-/*
+/*!
 ** rd_nmo():  Reads in the total number of molecular orbitals.
 **
 **   takes no arguments.

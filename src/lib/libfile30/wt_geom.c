@@ -1,12 +1,18 @@
+/*!
+  \file wt_geom.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_wt_geom(): Write in the cartesian geometry to file30
+/*!
+** file30_wt_geom(): Write in the cartesian geometry to file30
 **
-**  arguments: double **geom   The cartesian geometry is returned as a matrix
+**  arguments:
+** \param double **geom   The cartesian geometry is returned as a matrix
 **     of doubles.  The row index is the atomic index, and the column is the
 **     cartesian direction index (x=0, y=1, z=2).  Therefore, geom[2][0] 
 **     would be the x-coordinate of the third atom.

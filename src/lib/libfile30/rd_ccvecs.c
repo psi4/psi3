@@ -1,10 +1,14 @@
+/*!
+  \file rd_ccvecs.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/*
+/*!
 ** file30_rd_ccvecs():	Reads in a matrix, rows of which are ALPHA (ccvecs[0])
 **			and BETA (ccvecs[1]) matrices of coupling coefficients 
 **			for open shells stored in lower triangular form. 

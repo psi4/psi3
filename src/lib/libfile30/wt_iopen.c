@@ -1,13 +1,17 @@
+/*!
+  \file wt_iopen.c
+*/
+
 #include <stdio.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/*
+/*!
 ** file30_wt_iopen():  Writes out the total number of open shells.
 **
 **   arguments:
-**    int iopen: the total number of singly occupied orbitals in the SCF
+** \param int iopen: the total number of singly occupied orbitals in the SCF
 **     reference wavefunction.
 **
 **   returns: nothing

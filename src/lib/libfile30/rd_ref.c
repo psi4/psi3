@@ -1,7 +1,11 @@
+/*!
+  \file rd_ref.c
+*/
+
 #include "file30.h"
 #include "file30.gbl"
 
-/*
+/*!
 ** rd_ref():  Reads the reference type from the flag in file30.
 **   0 = RHF | 1 = UHF | 2 = ROHF | 3 = TCSCF 
 **

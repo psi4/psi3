@@ -1,9 +1,14 @@
+/*!
+  \file rd_us2c.c
+*/
+
 #include <stdio.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_us2s(): Read in a mapping array betwen unique shell and 
+/*!
+** file30_rd_us2s(): Read in a mapping array betwen unique shell and 
 **		     full shell lists
 **
 **  takes no arguments.

@@ -1,7 +1,11 @@
+/*!
+  \file rd_ncalcs.c
+*/
+
 #include "file30.h"
 #include "file30.gbl"
 
-/*
+/*!
 ** file30_rd_ncalcs():  Reads in the total number of calculations.
 **
 **   takes no arguments.

@@ -1,10 +1,15 @@
+/*!
+  \file rd_sloc.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_sloc():	Read in an array of the numbers of the first AO 
+/*!
+** file30_rd_sloc():	Read in an array of the numbers of the first AO 
 **			from the shells.
 **
 **  takes no arguments.

@@ -1,10 +1,15 @@
+/*!
+  \file rd_shell_transm.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_shell_transm():	Read in a matrix of nshell*nirreps integers 
+/*!
+** file30_rd_shell_transm():	Read in a matrix of nshell*nirreps integers 
 **			        that contains symmetry information.
 **
 **  takes no arguments.

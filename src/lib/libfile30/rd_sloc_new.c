@@ -1,10 +1,15 @@
+/*!
+  \file rd_sloc_new.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_sloc_new():	Read in an array of the numbers of the first basis 
+/*!
+** file30_rd_sloc_new():	Read in an array of the numbers of the first basis 
 **			functions (not AOs as rd_sloc does)  from the shells.
 **
 **  takes no arguments.

@@ -1,10 +1,15 @@
+/*!
+  \file rd_snumg.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_snumg():	Reads in array of the numbers of the primitive Gaussians
+/*!
+** file30_rd_snumg():	Reads in array of the numbers of the primitive Gaussians
 **			in shells.
 **
 **  takes no arguments.

@@ -1,13 +1,18 @@
+/*!
+  \file wt_zvals.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_wt_zvals():  Writes in an array of nuclear charges.
+/*!
+** file30_wt_zvals():  Writes in an array of nuclear charges.
 **
 **  arguments 
-**	double *zvals	An array of natom doubles which contains
+** \param double *zvals	An array of natom doubles which contains
 **			nuclear charges.
 **
 **   returns no arguments.

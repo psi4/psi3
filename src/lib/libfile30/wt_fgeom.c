@@ -1,14 +1,20 @@
+/*!
+  \file wt_fgeom.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
  
-/* file30_wt_fgeom(double **fgeom, int num_atoms)
+/*!
+** file30_wt_fgeom(double **fgeom, int num_atoms)
 **   : Write the full cartesian geometry including dummy atoms to file30
 **
-**  arguments: double **fgeom, the full geometry matrix 
-**             int num_atoms
+**  arguments:
+** \param double **fgeom, the full geometry matrix 
+** \param int num_atoms
 **
 **  returns: none
 */

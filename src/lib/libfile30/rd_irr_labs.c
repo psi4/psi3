@@ -1,10 +1,15 @@
+/*!
+  \file rd_irr_labs.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_irr_labs(): Read in the symmetry labels for all irreps in the 
+/*!
+** file30_rd_irr_labs(): Read in the symmetry labels for all irreps in the 
 **   point group in which the molecule is considered.
 **
 **   takes no arguments.

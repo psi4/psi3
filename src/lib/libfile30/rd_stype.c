@@ -1,10 +1,15 @@
+/*!
+  \file rd_stype.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_rd_stype(): 	Reads in an array of the angular momentum numbers of 
+/*!
+** file30_rd_stype(): 	Reads in an array of the angular momentum numbers of 
 **			the shells.
 **
 **  takes no arguments.

@@ -1,7 +1,11 @@
+/*!
+  \file rd_num_unique_shell.c
+*/
+
 #include "file30.h"
 #include "file30.gbl"
 
-/*
+/*!
 ** file30_rd_num_unique_shell():  Reads in the number of symmetry unique shells. 
 **
 **   takes no arguments.

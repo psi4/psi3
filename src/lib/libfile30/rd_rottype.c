@@ -1,7 +1,11 @@
+/*!
+  \file rd_rottype.c
+*/
+
 #include "file30.h"
 #include "file30.gbl"
 
-/*
+/*!
 ** rd_rottype():  Reads in type of the rigid rotor molecule represents.
 **
 **   takes no arguments.

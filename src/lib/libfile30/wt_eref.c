@@ -1,12 +1,18 @@
+/*!
+  \file wt_eref.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_wt_eref(): Writes the reference energy to file30.
+/*!
+** file30_wt_eref(): Writes the reference energy to file30.
 **
-**   arguments: double eref  the reference energy.
+**   arguments:
+** \param double eref  the reference energy.
 **
 **   returns nothing.
 */

@@ -1,15 +1,21 @@
+/*!
+  \file wt_zmat.c
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
 #include <libciomr.h>
  
-/* file30_wt_zmat(struct z_entry *z_geom, int num_atoms)
+/*!
+** file30_wt_zmat(struct z_entry *z_geom, int num_atoms)
 **   : Write the z-matrix geometry to file30
 **
-**  arguments: struct z_entry *z_geom -- the z-matrix as an array of z_entry
+**  arguments:
+** \param struct z_entry *z_geom -- the z-matrix as an array of z_entry
 **                                       structs
-**             int num_atoms          -- number of atoms
+** \param int num_atoms          -- number of atoms
 **
 **  returns: none
 */

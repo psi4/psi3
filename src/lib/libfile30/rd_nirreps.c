@@ -1,7 +1,11 @@
+/*!
+  \file rd_nirreps.c
+*/
+
 #include "file30.h"
 #include "file30.gbl"
 
-/*
+/*!
 ** rd_nirreps():  Reads in the total number of irreducible representations
 **   in the point group in which the molecule is being considered.
 **

@@ -1,7 +1,11 @@
+/*!
+  \file rd_disp.c
+*/
+
 #include "file30.h"
 #include "file30.gbl"
 
-/*
+/*!
 ** rd_disp():  Reads in the current geometry displacement number.
 **
 **   takes no arguments.
