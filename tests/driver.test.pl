@@ -5,8 +5,8 @@
 # Added different categories for test cases
 # --ci --cc --scf --small --medium --large
 # --standard --sp --geom --freq --excite
-# the default is no argument and all the
-# test cases will run
+# The default is no argument and all the
+# test cases will run except the "--large" ones.
 # The arguments --clean and --cleanall
 # were also added in case the test cases
 # need to be run more than once
@@ -96,7 +96,7 @@ elsif ($ARGV[0] eq "--large") {
                  "cc7"
                );
 }
-elsif ($ARGV[0] eq "--standard") {
+elsif ($ARGV[0] eq "--all") {
   @DIR_NAMES = ( "scf-opt",
                  "scf-opt-numer",
                  "scf-freq",
@@ -114,6 +114,9 @@ elsif ($ARGV[0] eq "--standard") {
                  "cc2",
                  "cc3",
                  "cc4",
+                 "cc5",
+                 "cc6",
+                 "cc7",
                  "cc8",
                  "cc9",
                  "cc10",
@@ -185,9 +188,6 @@ else {
                  "cc2",
                  "cc3",
                  "cc4",
-                 "cc5",
-                 "cc6",
-                 "cc7",
                  "cc8",
                  "cc9",
                  "cc10",
