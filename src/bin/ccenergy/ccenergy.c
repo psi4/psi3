@@ -248,8 +248,8 @@ int main(int argc, char *argv[])
 	    moinfo.eref + moinfo.emp2);
   }
   if(!strcmp(params.wfn,"CC3")) {
-    fprintf(outfile, "\tCC3 correlation energy    = %20.15f\n", moinfo.ecc);
-    fprintf(outfile, "\tTotal CC3 energy          = %20.15f\n", 
+    fprintf(outfile, "\tCC3 correlation energy     = %20.15f\n", moinfo.ecc);
+    fprintf(outfile, "\tTotal CC3 energy           = %20.15f\n", 
             moinfo.eref + moinfo.ecc);
   }
   else {
