@@ -11,7 +11,7 @@ static char *names[MAX_INCLUDE];
 static int lines[MAX_INCLUDE];
 static FILE *filep[MAX_INCLUDE];
 
-#define MAX_INC_DIR 16
+#define MAX_INC_DIR 32
 static int n_inc_dir=1;
 static char* inc_dir[MAX_INC_DIR];
 

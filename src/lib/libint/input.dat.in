@@ -1,6 +1,6 @@
 libint: (
-  new_am = 8
-  opt_am = 4
+  new_am = @LIBINT_NEW_AM@
+  opt_am = @LIBINT_OPT_AM@
   max_class_size = 785 
   long_double = false
 )
