@@ -50,7 +50,7 @@ void read_zmat()
 {
   int i, j, k, m, a, b, c, errcod, value_set, zvar_exist;
   char *buffer;
-  int num_vals, entry_length, atomcount, fatomcount;
+  int num_vals, entry_length=0, atomcount, fatomcount;
   int A, B, C, D;
   int linearOn = 1;	/* Flag indicating the code is working on the linear fragment in the begginning of the Z-matrix */
   double rAB, rBC, rCD, thetaABC, thetaBCD, phiABCD, val, norm1, norm2;
@@ -74,11 +74,13 @@ void read_zmat()
   /* must first determine "type" of z-matrix input: nested or simple */
   simple_zmat = 1;
   ip_count("ZMAT", &zmat_len,0);
-  for(i=0; i < zmat_len; i++) {  /* if any element of zmat array > 1, assume nested input */
+  for(i=0; i < zmat_len; i++) {  
     ip_count("ZMAT", &entry_length,1,i);
-    if(entry_length > 1) simple_zmat = 0;
+    if(entry_length > 1) {
+      simple_zmat = 0;
+    }
   }
-
+  
   /* Read number of lines and count atoms in ZMAT */
 
   num_atoms = num_allatoms = 0;
@@ -86,19 +88,19 @@ void read_zmat()
     if(zmat_len >= 1) {
       num_allatoms = 1;
       errcod = ip_string("ZMAT",&buffer,1,0);
-      if(errcod != IPE_OK) punt("Problem with the Z-matrix.");
+      if(errcod != IPE_OK) punt("Problem with the Z-matrix");
       if(strcmp(buffer,"X")) { free(buffer); num_atoms++; }
     }
     if(zmat_len >= 4) {
       num_allatoms = 2;
       errcod = ip_string("ZMAT",&buffer,1,1);
-      if(errcod != IPE_OK) punt("Problem with the Z-matrix.");
+      if(errcod != IPE_OK) punt("Problem with the Z-matrix");
       if(strcmp(buffer,"X")) { free(buffer); num_atoms++; }
     }
     if(zmat_len >= 9) {
       num_allatoms = 3;
       errcod = ip_string("ZMAT",&buffer,1,4);
-      if(errcod != IPE_OK) punt("Problem with the Z-matrix.");
+      if(errcod != IPE_OK) punt("Problem with the Z-matrix");
       if(strcmp(buffer,"X")) { free(buffer); num_atoms++; }
     }
     if(zmat_len > 9) { 
@@ -107,7 +109,7 @@ void read_zmat()
 
       for(i=0; i < num_allatoms-3; i++) {
 	errcod = ip_string("ZMAT",&buffer,1,9+(i*7));
-	if(errcod != IPE_OK) punt("Problem with the Z-matrix.");
+	if(errcod != IPE_OK) punt("Problem with the Z-matrix");
 	if(strcmp(buffer,"X")) { free(buffer); num_atoms++; }
       }
     }
@@ -119,7 +121,7 @@ void read_zmat()
     for(i=0;i<num_allatoms;i++){
       errcod = ip_string("ZMAT",&buffer,2,i,0);
       if (errcod != IPE_OK)
-	punt("Problem with the Z-matrix.");
+	punt("Problem with the Z-matrix");
       if (strcmp(buffer,"X")) {
 	free(buffer);
 	num_atoms++;
