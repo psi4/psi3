@@ -23,7 +23,7 @@ void coord_base :: parse_input() {
     errcod = ip_data("EXTREMA_PRINT","%d",&print_lvl,0);
     fprintf(outfile,"\n  PRINT:         %d",print_lvl);
    
-    grad_max = 6;
+    grad_max = 5;
     errcod = ip_data("GRAD_MAX","%d",&grad_max,0);
     fprintf(outfile,"\n  GRAD_MAX:      %d",grad_max);
 
@@ -40,7 +40,7 @@ void coord_base :: parse_input() {
     //	fprintf(outfile,"\n  SYMMETRY:        %s", symmetry);
     //   }
     //else
-    //	symmetry = file30_rd_sym_label();
+    //	symmetry = chkpt_rd_sym_label();
 
     /* do_deriv=1 here only means derivative is possibility
        must read opt.dat to see when it is time to do it for real */
@@ -74,7 +74,7 @@ void coord_base :: read_opt() {
 
 	int i, j, error;
 
-	opt_ptr = fopen("opt.dat","r");
+	ffile_noexit(&opt_ptr,"opt.dat",2);
 	if( opt_ptr != NULL ) {      
 	    
 	    ip_done();
@@ -89,9 +89,9 @@ void coord_base :: read_opt() {
 	    error = 0;
 	    error += !ip_exist("COORD",0);  
 	    ip_count("COORD",&num_coords,0);
-	    
+	  
 	    for (i=0;i<num_coords;++i) 
-		error += ip_data("COORD","%lf",&coords_old[i],1,i);
+	     	error += ip_data("COORD","%lf",&coords_old[i],1,i);
 		
 	    if(error != 0)
 		punt("Problem reading old coordinate values from opt.dat");
@@ -100,8 +100,8 @@ void coord_base :: read_opt() {
 	    error += !ip_exist("GRAD",0);
 
 	    for (i=0;i<num_coords;++i) {
-		error += ip_data("GRAD","%lf",&grads_old[i],1,i);
-	    }
+	        error += ip_data("GRAD","%lf",&grads_old[i],1,i);
+	    } 
 
 	    if(error != 0)
 		punt("Problem reading old gradient from opt.dat");
@@ -119,9 +119,9 @@ void coord_base :: read_opt() {
       
 	    if(error != 0)
 		punt("Problem reading old hessian from opt.dat");
-	}
-	else iteration=1;
-	
+        }
+        else iteration=1;
+
 	fprintf(outfile,"\n\n  Beginning iteration: %d\n",iteration);
 
 	return;

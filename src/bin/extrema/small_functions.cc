@@ -8,6 +8,8 @@
 #include<stdio.h>
 #include<math.h>
 
+#include <psifiles.h> 
+
 extern FILE *infile, *outfile;
 
 void stop_io();
@@ -39,7 +41,7 @@ void punt(char *mess)
   fprintf(outfile, "  error: %s\n", mess);
   fprintf(stderr, "  EXTREMA error: %s\n", mess);
   stop_io();
-  abort();
+  exit(PSI_RETURN_ENDLOOP);
 }
 
 

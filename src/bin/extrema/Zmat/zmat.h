@@ -18,7 +18,7 @@ class zmat : protected internals {
 
     struct z_entry *z_geom;
     /*!< an array of z_entry structs, defined in 
-	file30.h, a z-matrix is read/written to file30 as an array of z_entry 
+	chkpt.h, a z-matrix is read/written to chkpt as an array of z_entry 
 	structs */
     
     simple *simples;
@@ -49,7 +49,7 @@ class zmat : protected internals {
   void initial_Hi(void);
   void grad_trans();
   void parse_input();
-  void write_file30();
+  void write_chkpt();
   void newton_step();
   void back_transform();
   void print_carts(double);

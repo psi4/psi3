@@ -12,12 +12,13 @@ z-matrix optimizations appear stable.
 Delocalized internal coordinate capability has been added.
 This code appears stable for systems which do not include linear or near-linear valence angles.  
 
-Goals for stable PSI 3.1 release:
+Directions for future development:
 <ul>
 <li> starting from a calculated Hessian
 <li> a trust radius method
 <li> gdiis convergence acceleration
 <li> capability for transition state searches
+<li> libpsio-based checkpointing of optimization info
 </ul> 
 
 <b>References:</b>

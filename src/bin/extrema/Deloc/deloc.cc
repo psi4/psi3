@@ -25,11 +25,11 @@ deloc :: deloc() : internals() {
 
   deloc::parse_input();  
 
-  felement = file30_rd_felement();
-  point_group = file30_rd_sym_label();
+  felement = chkpt_rd_felement();
+  point_group = chkpt_rd_sym_label();
 
   FILE *opt_ptr;
-  opt_ptr = fopen("opt.dat","r");
+  ffile_noexit(&opt_ptr,"opt.dat",2);
   int form_deloc=0;
   if( opt_ptr == NULL ) {
       form_deloc=1;
@@ -119,7 +119,7 @@ deloc :: deloc() : internals() {
 
       /* check for proper number of non-redundant coordinates */
       int rotor_type;
-      rotor_type = file30_rd_rottype();
+      rotor_type = chkpt_rd_rottype();
       switch (rotor_type) {
       case 3:
 	  if(num_atoms==2)
@@ -278,7 +278,7 @@ void deloc :: optimize() {
     print_carts(_bohr2angstroms);
     // print_internals();
     write_opt();
-    write_file30();
+    write_chkpt();
     return;
 
     return;
@@ -832,7 +832,7 @@ void deloc :: read_opt() {
 	
 	int i, j, error=0, dim2;
 	
-	opt_ptr = fopen("opt.dat","r");
+	ffile(&opt_ptr,"opt.dat",2);
 	if( opt_ptr != NULL ) {      
 	    
 	    ip_done();
@@ -890,7 +890,7 @@ void deloc :: read_bonds() {
 	
 	int i, j, dim;
 	
-	opt_ptr = fopen("opt.dat","r");
+	ffile(&opt_ptr,"opt.dat",2);
 	if( opt_ptr != NULL ) {      
 	    
 	    ip_done();

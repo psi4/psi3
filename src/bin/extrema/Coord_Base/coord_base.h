@@ -7,7 +7,7 @@
   \brief Cartesian information needed for all coordinate representations.
 
   All coordinate representations are formed from the basic cartesian
-  coordinates and gradients read from file30 and file11.  This basic
+  coordinates and gradients read from chkpt and file11.  This basic
   information is read and stored in this class. */
 /*  						Joseph P. Kenny 12/08/01
   ###########################################################################*/
@@ -27,13 +27,13 @@ class coord_base_carts {
 	*masses; /*!< masses array, should be member of coord_base class,
 		   but it's read in with cartesian info */
 
-    char *symmetry; /*!< symmetry from input.dat or file30 */
+    char *symmetry; /*!< symmetry from input.dat or chkpt */
     char **e_names;  /*!< element names (no dummy atoms) */
 	
     virtual void print_carts(double conv);
     virtual void print_c_grads();
     void read_file11();
-    virtual void write_file30();   
+    virtual void write_chkpt();   
 
   public:
 
@@ -136,9 +136,9 @@ class coord_base : protected coord_base_carts,  protected math_tools {
 /*! \fn coord_base::initial_Hi()
   \brief Derived classes must provide a inverse Hessian guess function. */
 
-/*! \fn coord_base::write_file30()
+/*! \fn coord_base::write_chkpt()
   \brief Derived classes may override this function and write necessary 
-  information to file30 */
+  information to chkpt */
 
 
 

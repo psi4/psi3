@@ -7,6 +7,8 @@
 #define EXTERN
 #include "extrema.h"
 
+void stop_io();
+
 
 
 /*---------------------------------------------------------------------------*/
@@ -20,7 +22,7 @@ coord_base :: coord_base() : coord_base_carts(), math_tools() {
 
     coord_base::parse_input();
 
-    atomic_nums = file30_rd_zvals();
+    atomic_nums = chkpt_rd_zvals();
     
     return; 
 }
@@ -122,11 +124,11 @@ void coord_base :: grad_test() {
 	fprintf(outfile,"\n  All gradients below convergence criteria of");
 	fprintf(outfile," 10^-%d",grad_max);
 	fprintf(outfile,"\n  Optimization completed\n");
-	fprintf(stdout,"\n Optimization completed");  
-	tstop(outfile);
+	fprintf(stdout,"\n Optimization completed\n");  
+        stop_io();
 	fclose(infile);
 	fclose(outfile);
-	abort();
+	exit(PSI_RETURN_ENDLOOP);
     }
     
     return;

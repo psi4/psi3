@@ -21,15 +21,15 @@ coord_base_carts :: coord_base_carts() {
     char **temp_names;
 
     /* if dummy atoms are present derived classes will reset num_entries */
-    num_atoms = num_entries = file30_rd_natom();
+    num_atoms = num_entries = chkpt_rd_natom();
  
     carts = init_array(3*num_atoms);
     c_grads = init_array(3*num_atoms);
     masses = init_array(num_atoms);
     e_names = (char**) malloc(num_atoms * sizeof(char*) );
 
-    temp_names = file30_rd_felement();
-    num = file30_rd_nentry();
+    temp_names = chkpt_rd_felement();
+    num = chkpt_rd_nallatom();
     p=-1;
     for(i=0;i<num;++i) {
 	if(strncmp(temp_names[i],"X\0",2))
@@ -39,7 +39,7 @@ coord_base_carts :: coord_base_carts() {
     }
 
     double** t_carts;
-    t_carts = file30_rd_geom();
+    t_carts = chkpt_rd_geom();
     p=-1;
     for(i=0;i<(3*num_atoms);++i) {
 	++p;
@@ -67,7 +67,8 @@ void coord_base_carts :: read_file11() {
     FILE *fp_11;
     double an,x,y,z,energy;
     
-    if ((fp_11 = fopen("file11.dat","r")) == NULL) {
+    ffile(&fp_11,"file11.dat",2);
+    if (fp_11 == NULL) {
 	punt("Could not open file11.dat");
     }
     
@@ -83,7 +84,7 @@ void coord_base_carts :: read_file11() {
     }
     
     if(natom!=num_atoms)
-	punt("Numbers of atoms differ in file11 and file30");
+	punt("Numbers of atoms differ in file11 and chkpt");
     
     rewind(fp_11);
     
@@ -120,21 +121,21 @@ void coord_base_carts :: read_file11() {
 
 
 /*---------------------------------------------------------------------------*/
-/*! \fn coord_base_carts::write_file30()
+/*! \fn coord_base_carts::write_chkpt()
   \brief Writes cartesians to file 30. */
 /*---------------------------------------------------------------------------*/
 
-void coord_base_carts::write_file30() {
+void coord_base_carts::write_chkpt() {
     
     int i,j, pos=-1;
     double** cart_matrix;
-    cart_matrix = init_matrix(num_atoms,3);    
+    cart_matrix = block_matrix(num_atoms,3);    
 
     for(i=0;i<num_atoms;++i) 
 	for(j=0;j<3;++j) 
 	    cart_matrix[i][j] = carts[++pos];
 
-    file30_wt_geom(cart_matrix);
+    chkpt_wt_geom(cart_matrix);
 
     return;
 }

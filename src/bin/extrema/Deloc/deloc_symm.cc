@@ -42,7 +42,7 @@ void deloc::ir_project() {
     result = init_array(num_simples);
     reps = init_matrix(num_nonzero,ct.num_irreps);
 
-    nuclear_ict = file30_rd_ict();
+    nuclear_ict = chkpt_rd_ict();
 
     /* form simples transformation matrix */
     int atdex,bodex,andex,todex;

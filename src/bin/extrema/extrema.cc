@@ -119,8 +119,8 @@ void start_io(int argc, char *argv[]) {
     psi_start(argc-1,argv+1,0); 
     ip_cwk_add(":INPUT");
     ip_cwk_add(":EXTREMA");
-
-    file30_init();
+    psio_init();
+    chkpt_init(PSIO_OPEN_OLD);
 
     return;
 }
@@ -129,7 +129,7 @@ void start_io(int argc, char *argv[]) {
 
 void stop_io() {
 
-    file30_close();
+    chkpt_close();
     tstop(outfile);
     psi_stop();
  

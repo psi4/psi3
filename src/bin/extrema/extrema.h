@@ -17,9 +17,12 @@
 
 extern "C" {
 #include <ctype.h>
+#include <psifiles.h>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
-#include <libfile30/file30.h>
+#include <libchkpt/chkpt.h>
+#include <libpsio/psio.h>
+#include <libpsio/psio.gbl>
 #include <physconst.h>
 } 
 

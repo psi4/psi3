@@ -31,11 +31,11 @@ zmat :: zmat() : internals()
 
   zmat::parse_input();
 
-  /*read z_mat and cartesians from file30*/
-  num_entries = file30_rd_nentry();
-  z_geom = file30_rd_zmat();
+  /*read z_mat and cartesians from chkpt*/
+  num_entries = chkpt_rd_nallatom();
+  z_geom = chkpt_rd_zmat();
   char **temp_felement;
-  felement = file30_rd_felement();
+  felement = chkpt_rd_felement();
 
   dummy=0;
   for(i=0;i<num_entries;++i) 
@@ -46,9 +46,9 @@ zmat :: zmat() : internals()
       free(carts);
       double** cart_temp;
       carts = init_array(3*num_entries);
-      cart_temp = file30_rd_fgeom();
+      cart_temp = chkpt_rd_fgeom();
 
-      for(i=0;i<(3*num_entries);++i)
+      for(i=0;i<(3*num_entries);++i) 
 	  carts[i] = cart_temp[0][i];
       free_matrix(cart_temp,1);
 
@@ -233,7 +233,7 @@ void zmat :: optimize() {
     print_carts(_bohr2angstroms);
     print_internals();
     write_opt();
-    write_file30();
+    write_chkpt();
     return;
 }
 
@@ -329,18 +329,18 @@ void zmat :: print_internals() {
 
 
 /*--------------------------------------------------------------------------*/
-/*! \fn zmat::write_file30()
-  \brief Writes geometries to file30. */
+/*! \fn zmat::write_chkpt()
+  \brief Writes geometries to chkpt. */
 /*--------------------------------------------------------------------------*/
 
-void zmat :: write_file30() {
+void zmat :: write_chkpt() {
     
   double **cart_matrix, **fcart_matrix;
   int i,j;
 
-  cart_matrix = init_matrix(num_atoms,3);
-  fcart_matrix = init_matrix(num_entries,3);
-  
+  cart_matrix = block_matrix(num_atoms,3);
+  fcart_matrix = block_matrix(num_entries,3);
+
   int pos = 0;
   for(i=0;i<num_entries;++i) 
       for(j=0;j<3;++j) {
@@ -348,7 +348,7 @@ void zmat :: write_file30() {
 	  ++pos;
       }
 
-  file30_wt_fgeom(fcart_matrix);
+  chkpt_wt_fgeom(fcart_matrix);
   
   int row=0;
   pos = 0;
@@ -364,7 +364,7 @@ void zmat :: write_file30() {
 	  pos += 3;
   }
 
-  file30_wt_geom(cart_matrix);
+  chkpt_wt_geom(cart_matrix);
 
   pos = -1;
   for(i=1;i<num_entries;++i) {
@@ -384,7 +384,7 @@ void zmat :: write_file30() {
       }
   }
   
-  file30_wt_zmat(z_geom,num_entries);
+  chkpt_wt_zmat(z_geom);
 
   return;
 }
