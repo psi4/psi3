@@ -17,7 +17,7 @@ dot_block.c        mat_print.c  normalize.c    \
 eri.c              pople.c        solve_pep.c \
 fill_sym_matrix.c  probabil.c     rootfind.c      timer.c \
 filter.c           lapack_intfc.c  sort.c      slaterdset.c   david.c \
-get_frzpi.c
+get_frzpi.c 3d_array.c
 
 DEPENDINCLUDE = qt.h
 
