@@ -3,9 +3,6 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-CDBG = -g
-COPT =
-
 LD = $(FC)
 LDLIBS += $(BLAS)
 
@@ -15,7 +12,8 @@ CSRC = \
 triples.c get_moinfo.c cache.c \
 init_3d_array.c \
 ET_RHF.c ET_AAA.c ET_AAB.c ET_ABB.c ET_BBB.c \
-ET_RHF_noddy.c W_sort.c ET_RHF_allijk.c
+ET_RHF_noddy.c W_sort.c ET_RHF_allijk.c \
+ET_UHF_AAA.c ET_UHF_BBB.c ET_UHF_AAB.c ET_UHF_ABB.c
 
 BINOBJ = $(CSRC:%.c=%.o)
 ALLOC = 
