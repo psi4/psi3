@@ -34,7 +34,7 @@
 
 void title(void);
 void quote(void);
-double calc_ci_conv(double);
+double calc_ci_conv(double scale, double *energy);
 
 
 FILE *infile, *outfile;
@@ -54,7 +54,7 @@ main(int argc, char *argv[])
   double scale_conv;           /* CI convergence threshold = 
                                   orbital gradient * scale_conv            */
 
-
+  double energy_last;          /* last CI energy                           */
   init_io(argc,argv);          /* open input and output files              */
   title();                     /* print program identification             */
 
@@ -64,7 +64,7 @@ main(int argc, char *argv[])
   errcod = ip_data("SCALE_CONV","%lf",&scale_conv,0);
 
   for (i=0; i<ncasiter && !converged; i++) {
-    ci_conv = calc_ci_conv(scale_conv);
+    ci_conv = calc_ci_conv(scale_conv, &energy_last);
 
     if (ci_conv > 1.0E-7) {
       sprintf(detci_string, "detci --quiet -c %12.9lf\n", ci_conv);
@@ -81,8 +81,10 @@ main(int argc, char *argv[])
   fprintf(outfile,"\n");
   fprintf(outfile,"*******************************************************\n");
 
-  if (converged) 
+  if (converged) {
     fprintf(outfile,"                  ORBITALS CONVERGED\n");
+    fprintf(outfile,"\n  Final CASSCF Energy = %15.9lf\n", energy_last);
+  }
   else
     fprintf(outfile,"               ORBITALS DID NOT CONVERGE\n");
 
@@ -127,13 +129,13 @@ void quote(void)
 /*
 ** Read the current orbital convergence from file14
 */
-double calc_ci_conv(double scale_conv)
+double calc_ci_conv(double scale_conv, double *energy_last)
 {
   FILE *sumfile;
   char sumfile_name[] = "file14.dat";
   char comment[MAX_COMMENT];
   int i, entries, iter, nind;
-  double scaled_rmsgrad, rmsgrad, energy_last;
+  double scaled_rmsgrad, rmsgrad;
   double tval;
 
   sumfile = fopen(sumfile_name, "r");
@@ -151,7 +153,7 @@ double calc_ci_conv(double scale_conv)
 
   for (i=0; i<entries; i++) {
     fscanf(sumfile, "%d %d %lf %lf %lf %s", &iter, &nind, &scaled_rmsgrad,
-           &rmsgrad, &energy_last, comment);
+           &rmsgrad, energy_last, comment);
   }
   fclose(sumfile);
 
