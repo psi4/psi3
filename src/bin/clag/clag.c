@@ -58,12 +58,18 @@ main(int argc, char **argv)
   int opdm_file = PSIF_MO_OPDM;        /* file number for one-pdm         */ 
   int tpdm_file = PSIF_MO_TPDM;        /* file number for two-pdm         */ 
   int lag_file = PSIF_MO_LAG;          /* file number for largrangian     */
+
+  /* the following was for Yukio Yamaguchi's CAS code, I think 
+   * normally we would be using DETCAS now
+   */
+
   int cas_onel_file = 81;              /* CAS interface one-elec ints file*/ 
   int cas_twoel_file = 82;             /* CAS interface two-elec ints file*/
   int cas_opdm_file = 83;              /* CAS interface onepdm file       */
   int cas_tpdm_file = 84;              /* CAS interface twopdm file       */
   int cas_lag_file = 85;               /* CAS interface lagrangian file   */
   int write_cas_files = 0;             /* write out a files for CASSCF?   */
+
   double *onel_ints, *twoel_ints;      /* 1e and 2e ints                  */
   double enuc = 0.0;                   /* nuclear repulsion energy        */ 
   double eci_30;                       /* ci energy from file 30          */
