@@ -244,21 +244,21 @@ void dpd_file4_cache_print_screen(void)
 
   fprintf(stdout, "\n\tDPD File4 Cache Listing:\n\n");
   fprintf(stdout,
-	  "Cache Label            DPD File symm  pq  rs  use clean    pri lock  size(kB)\n");
+	  "Cache Label            DPD File symm  pq  rs  use acc clean    pri lock size(kB)\n");
   fprintf(stdout,
-	  "-----------------------------------------------------------------------------\n");
+	  "--------------------------------------------------------------------------------\n");
   while(this_entry != NULL) {
     fprintf(stdout,
-	    "%-22s  %1d   %3d   %1d   %2d  %2d  %3d    %1d  %6d   %1d  %8.1f\n",
+	    "%-22s  %1d   %3d   %1d   %2d  %2d  %3d %3d    %1d  %6d   %1d  %8.1f\n",
 	    this_entry->label, this_entry->dpdnum, this_entry->filenum, this_entry->irrep,
-	    this_entry->pqnum, this_entry->rsnum, this_entry->usage,
+	    this_entry->pqnum, this_entry->rsnum, this_entry->usage, this_entry->access,
 	    this_entry->clean, this_entry->priority,this_entry->lock,
 	    (this_entry->size)*sizeof(double)/1e3);
     total_size += this_entry->size;
     this_entry = this_entry->next;
   }
   fprintf(stdout,
-	  "-----------------------------------------------------------------------------\n");
+	  "--------------------------------------------------------------------------------\n");
   fprintf(stdout, "Total cached: %9.1f kB; MRU = %6d; LRU = %6d\n",
 	  (total_size*sizeof(double))/1e3,dpd_main.file4_cache_most_recent,
 	  dpd_main.file4_cache_least_recent);
@@ -269,6 +269,8 @@ void dpd_file4_cache_print_screen(void)
   fprintf(stdout, "Core available: %9.1f kB\n", dpd_memfree()*sizeof(double)/1e3);
   fprintf(stdout, "Core cached:    %9.1f kB\n", (dpd_main.memcache)*sizeof(double)/1e3);
   fprintf(stdout, "Locked cached:  %9.1f kB\n", (dpd_main.memlocked)*sizeof(double)/1e3);
+  fprintf(stdout, "Most recent entry  = %d\n", dpd_main.file4_cache_most_recent);
+  fprintf(stdout, "Least recent entry = %d\n", dpd_main.file4_cache_least_recent);
 }
 
 void dpd_file4_cache_print(FILE *outfile)
@@ -280,21 +282,21 @@ void dpd_file4_cache_print(FILE *outfile)
 
   fprintf(outfile, "\n\tDPD File4 Cache Listing:\n\n");
   fprintf(outfile,
-	  "Cache Label            DPD File symm  pq  rs  use clean    pri lock  size(kB)\n");
+	  "Cache Label            DPD File symm  pq  rs  use acc clean    pri lock size(kB)\n");
   fprintf(outfile,
-	  "-----------------------------------------------------------------------------\n");
+	  "--------------------------------------------------------------------------------\n");
   while(this_entry != NULL) {
     fprintf(outfile,
-	    "%-22s  %1d   %3d   %1d   %2d  %2d  %3d    %1d  %6d   %1d  %8.1f\n",
+	    "%-22s  %1d   %3d   %1d   %2d  %2d  %3d %3d    %1d  %6d   %1d  %8.1f\n",
 	    this_entry->label, this_entry->dpdnum, this_entry->filenum, this_entry->irrep,
-	    this_entry->pqnum, this_entry->rsnum, this_entry->usage,
+	    this_entry->pqnum, this_entry->rsnum, this_entry->usage, this_entry->access,
 	    this_entry->clean, this_entry->priority, this_entry->lock,
 	    (this_entry->size)*sizeof(double)/1e3);
     total_size += this_entry->size;
     this_entry = this_entry->next;
   }
   fprintf(outfile,
-	  "-----------------------------------------------------------------------------\n");
+	  "--------------------------------------------------------------------------------\n");
   fprintf(outfile, "Total cached: %8.1f kB; MRU = %6d; LRU = %6d\n",
 	  (total_size*sizeof(double))/1e3,dpd_main.file4_cache_most_recent,
 	  dpd_main.file4_cache_least_recent);
@@ -305,6 +307,8 @@ void dpd_file4_cache_print(FILE *outfile)
   fprintf(outfile, "Core available: %9.1f kB\n", dpd_memfree()*sizeof(double)/1e3);
   fprintf(outfile, "Core cached:    %9.1f kB\n", (dpd_main.memcache)*sizeof(double)/1e3);
   fprintf(outfile, "Locked cached:  %9.1f kB\n", (dpd_main.memlocked)*sizeof(double)/1e3);
+  fprintf(outfile, "Most recent entry  = %d\n", dpd_main.file4_cache_most_recent);
+  fprintf(outfile, "Least recent entry = %d\n", dpd_main.file4_cache_least_recent);
 }
 
 struct dpd_file4_cache_entry *dpd_file4_cache_find_lru(void)
@@ -315,17 +319,18 @@ struct dpd_file4_cache_entry *dpd_file4_cache_find_lru(void)
 
   if(this_entry == NULL) return(NULL);
 
-  while(dpd_main.file4_cache_least_recent <=
-	dpd_main.file4_cache_most_recent) {
-      while(this_entry !=NULL) {
-	  if(this_entry->access == dpd_main.file4_cache_least_recent)
-	      return(this_entry);
-	  this_entry = this_entry->next;
-	}
-      dpd_main.file4_cache_least_recent++;
-      this_entry = dpd_main.file4_cache;
+  while(dpd_main.file4_cache_least_recent <= dpd_main.file4_cache_most_recent) {
+    while(this_entry !=NULL) {
+      if(this_entry->access <= dpd_main.file4_cache_least_recent && !this_entry->lock) 
+	return(this_entry);
+      this_entry = this_entry->next;
     }
+    dpd_main.file4_cache_least_recent++;
+    this_entry = dpd_main.file4_cache;
+  }
 
+  dpd_file4_cache_print(stderr);
+  fprintf(stderr, "Possibly out of memory!\n");
   dpd_error("Error locating file4_cache LRU!", stderr);
 }
 
@@ -345,7 +350,7 @@ int dpd_file4_cache_del_lru(void)
 #ifdef DPD_TIMER
       timer_off("cache_lru");
 #endif
-      return 1; /* there is no cache */
+      return 1; /* there is no cache or all entries are locked */
     }
   else { /* we found the LRU so delete it */
 #ifdef DPD_DEBUG
