@@ -127,15 +127,14 @@ double norm, dot,                                      /* norm and dot product o
 	      irr[coord_num] = irrep; 
         symm_coord[coord_num] =  di_coord[coord_num];
     }
-    return symm_coord;
     free_matrix(irreps_spanned,num_nonzero);
     free(spanned_arr);
     free(symm_coord);
     /* and we're done, skip to the end */
-    }
-
-  /* if more than one irrep spanned per coordinate, we have to do more work */
+    return symm_coord;
+  }
   else if(num_spanned > num_nonzero) {
+      /* if more than one irrep spanned per coordinate, we have to do more work */
       evect_proj = init_array(simples.get_num());
       tmp_evect = init_array(simples.get_num());
       irr_tmp = init_int_array(num_spanned_big);
@@ -364,8 +363,15 @@ double norm, dot,                                      /* norm and dot product o
     fprintf(outfile,"\nSuccessful formation of symmetry adapted coordinates.\n");
     
     return symm_coord;
-   
-   }
+  }
+
+  /*-------------------------------------------------------
+    The only choice left is when num_spanned < num_nonzero
+    it shouldn't happen, hence die
+   -------------------------------------------------------*/
+  fprintf(outfile,"error -- num_spanned < num_nonzero, it should not happen\n");
+  fprintf(outfile,"      -- stopping execution\n");
+  exit(1);
 
 }
 
