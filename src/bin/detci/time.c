@@ -31,7 +31,7 @@ void
 print_time_new(struct detci_timings time)
 {
   fprintf(outfile,"\n");
-  fprintf(outfile,"        Total Time (s)     %Time 		%Relative\n");
+  fprintf(outfile,"        Total Time (s)     %%Time 		%%Relative\n");
   fprintf(outfile," -----------------------------------------------------\n");
   fprintf(outfile," Read      %lf\n", time.read_total_time);
   fprintf(outfile," Write     %lf\n", time.write_total_time);
