@@ -44,9 +44,9 @@ void fock_uhf(void)
   int m, M, Gm;
   int *aoccpi, *boccpi, *aocc_off, *bocc_off;
   int *avirtpi, *bvirtpi, *avir_off, *bvir_off;
-  dpdfile2 fIJ, fij, fAB, fab;
-  dpdfile2 hIJ, hij, hAB, hab;
-  dpdbuf4 A_AA, A_BB, A_AB, C_AA, C_BB, C_AB;
+  dpdfile2 fIJ, fij, fAB, fab, fIA, fia;
+  dpdfile2 hIJ, hij, hAB, hab, hIA, hia;
+  dpdbuf4 A_AA, A_BB, A_AB, C_AA, C_BB, C_AB, E_AA, E_BB, E_AB;
 
   nirreps = moinfo.nirreps;
   aoccpi = moinfo.aoccpi;
@@ -62,16 +62,22 @@ void fock_uhf(void)
   dpd_file2_init(&hij, CC_OEI, 0, 2, 2, "h(i,j)");
   dpd_file2_init(&hAB, CC_OEI, 0, 1, 1, "h(A,B)");
   dpd_file2_init(&hab, CC_OEI, 0, 3, 3, "h(a,b)");
+  dpd_file2_init(&hIA, CC_OEI, 0, 0, 1, "h(I,A)");
+  dpd_file2_init(&hia, CC_OEI, 0, 2, 3, "h(i,a)");
 
   dpd_file2_mat_init(&hIJ);
   dpd_file2_mat_init(&hij);
   dpd_file2_mat_init(&hAB);
   dpd_file2_mat_init(&hab);
+  dpd_file2_mat_init(&hIA);
+  dpd_file2_mat_init(&hia);
 
   dpd_file2_mat_rd(&hIJ);
   dpd_file2_mat_rd(&hij);
   dpd_file2_mat_rd(&hAB);
   dpd_file2_mat_rd(&hab);
+  dpd_file2_mat_rd(&hIA);
+  dpd_file2_mat_rd(&hia);
 
   dpd_file2_init(&fIJ, CC_OEI, 0, 0, 0, "fIJ");
   dpd_file2_init(&fij, CC_OEI, 0, 2, 2, "fij");
@@ -255,15 +261,167 @@ void fock_uhf(void)
   dpd_file2_close(&fAB);
   dpd_file2_close(&fab);
 
+  /* Prepare the alpha and beta occ-vir Fock matrix files */
+  dpd_file2_init(&fIA, CC_OEI, 0, 0, 1, "fIA");
+  dpd_file2_init(&fia, CC_OEI, 0, 2, 3, "fia");
+  dpd_file2_mat_init(&fIA);
+  dpd_file2_mat_init(&fia);
+
+  /* One-electron (frozen-core) contributions */
+  for(h=0; h < nirreps; h++) {
+
+    for(i=0; i < aoccpi[h]; i++) 
+      for(a=0; a < avirtpi[h]; a++) 
+	fIA.matrix[h][i][a] = hIA.matrix[h][i][a];   
+
+    for(i=0; i < boccpi[h]; i++) 
+      for(a=0; a < bvirtpi[h]; a++) 
+	fia.matrix[h][i][a] = hia.matrix[h][i][a];   
+  }
+
+  /* Two-electron contributions */
+
+  /* Prepare the E integral buffers */
+  dpd_buf4_init(&E_AA, CC_EINTS, 0, 21, 0, 21, 0, 1, "E <AI|JK>");
+  dpd_buf4_init(&E_AB, CC_EINTS, 0, 26, 22, 26, 22, 0, "E <Ai|Jk>");
+
+  for(h=0; h < nirreps; h++) {
+
+    dpd_buf4_mat_irrep_init(&E_AA, h);
+    dpd_buf4_mat_irrep_init(&E_AB, h);
+    dpd_buf4_mat_irrep_rd(&E_AA, h);
+    dpd_buf4_mat_irrep_rd(&E_AB, h);
+
+    /* Loop over irreps of the target */
+    for(Gi=0; Gi < nirreps; Gi++) {
+      Ga = Gi; Gm = h^Gi;
+
+      /* Loop over orbitals of the target */
+      for(i=0; i < aoccpi[Gi]; i++) {
+	I = aocc_off[Gi] + i;
+	for(a=0; a < avirtpi[Ga]; a++) {
+	  A = avir_off[Ga] + a;
+
+	  for(m=0; m < aoccpi[Gm]; m++) {
+	    M = aocc_off[Gm] + m;
+
+	    AM = E_AA.params->rowidx[A][M];
+	    IM = E_AA.params->colidx[I][M];
+
+	    fIA.matrix[Gi][i][a] += E_AA.matrix[h][AM][IM];
+
+	  }
+	}
+      }
+
+      /* Loop over orbitals of the target */
+      for(i=0; i < aoccpi[Gi]; i++) {
+	I = aocc_off[Gi] + i;
+	for(a=0; a < avirtpi[Ga]; a++) {
+	  A = avir_off[Ga] + a;
+
+	  for(m=0; m < boccpi[Gm]; m++) {
+	    M = bocc_off[Gm] + m;
+
+	    AM = E_AB.params->rowidx[A][M];
+	    IM = E_AB.params->colidx[I][M];
+
+	    fIA.matrix[Gi][i][a] += E_AB.matrix[h][AM][IM];
+
+	  }
+	}
+      }
+
+    }
+
+    dpd_buf4_mat_irrep_close(&E_AA, h);
+    dpd_buf4_mat_irrep_close(&E_AB, h);
+  }
+
+  dpd_buf4_close(&E_AA);
+  dpd_buf4_close(&E_AB);
+
+  dpd_buf4_init(&E_BB, CC_EINTS, 0, 31, 10, 31, 10, 1, "E <ai|jk>");
+  dpd_buf4_init(&E_AB, CC_EINTS, 0, 22, 24, 22, 24, 0, "E <Ij|Ka>");
+
+  for(h=0; h < nirreps; h++) {
+
+    dpd_buf4_mat_irrep_init(&E_BB, h);
+    dpd_buf4_mat_irrep_init(&E_AB, h);
+    dpd_buf4_mat_irrep_rd(&E_BB, h);
+    dpd_buf4_mat_irrep_rd(&E_AB, h);
+
+    /* Loop over irreps of the target */
+    for(Gi=0; Gi < nirreps; Gi++) {
+      Ga = Gi; Gm = h^Gi;
+
+      /* Loop over orbitals of the target */
+      for(i=0; i < boccpi[Gi]; i++) {
+	I = bocc_off[Gi] + i;
+	for(a=0; a < bvirtpi[Ga]; a++) {
+	  A = bvir_off[Ga] + a;
+
+	  for(m=0; m < boccpi[Gm]; m++) {
+	    M = bocc_off[Gm] + m;
+
+	    AM = E_BB.params->rowidx[A][M];
+	    IM = E_BB.params->colidx[I][M];
+
+	    fia.matrix[Gi][i][a] += E_BB.matrix[h][AM][IM];
+
+	  }
+	}
+      }
+   
+      /* Loop over orbitals of the target */
+      for(i=0; i < boccpi[Gi]; i++) {
+	I = bocc_off[Gi] + i;
+	for(a=0; a < bvirtpi[Ga]; a++) {
+	  A = bvir_off[Ga] + a;
+
+	  for(m=0; m < aoccpi[Gm]; m++) {
+	    M = aocc_off[Gm] + m;
+
+	    MI = E_AB.params->rowidx[M][I];
+	    MA = E_AB.params->colidx[M][A];
+
+	    fia.matrix[Gi][i][a] += E_AB.matrix[h][MI][MA];
+
+	  }
+	}
+      }
+    }
+
+    dpd_buf4_mat_irrep_close(&E_BB, h);
+    dpd_buf4_mat_irrep_close(&E_AB, h);
+
+  }
+
+  /* Close the E integral buffers */
+  dpd_buf4_close(&E_BB);
+  dpd_buf4_close(&E_AB);
+
+  /* Close the alpha and beta occ-vir Fock matrix files */
+  dpd_file2_mat_wrt(&fIA);
+  dpd_file2_mat_wrt(&fia);
+  dpd_file2_mat_close(&fIA);
+  dpd_file2_mat_close(&fia);
+  dpd_file2_close(&fIA);
+  dpd_file2_close(&fia);
+
   dpd_file2_mat_close(&hIJ);
   dpd_file2_mat_close(&hij);
   dpd_file2_mat_close(&hAB);
   dpd_file2_mat_close(&hab);
+  dpd_file2_mat_close(&hIA);
+  dpd_file2_mat_close(&hia);
 
   dpd_file2_close(&hIJ);
   dpd_file2_close(&hij);
   dpd_file2_close(&hAB);
   dpd_file2_close(&hab);
+  dpd_file2_close(&hIA);
+  dpd_file2_close(&hia);
 }
 
 void fock_rhf(void)
