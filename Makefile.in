@@ -47,13 +47,13 @@ depend:
           done
 
 clean:
-	for dir in $(subdirs); \
+	for dir in $(subdirs) tests; \
           do \
             (cd $${dir}; echo Making clean in $${dir}; $(MAKE) clean) || exit 1; \
           done
 
 targetclean:
-	for dir in $(subdirs); \
+	for dir in $(subdirs) tests; \
           do \
             (cd $${dir}; echo Making clean in $${dir}; $(MAKE) targetclean) || exit 1; \
           done
