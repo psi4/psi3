@@ -481,7 +481,10 @@ void calc_mass_analysis(int natom, double *M, double *X, double *Y,
   center_of_mass(natom, M, X, Y, Z, CM) ;
   fprintf(fpo,"\nCenter of Mass Coords (bohr):\n   %12.7lf %12.7lf %12.7lf\n",
 	  CM[0], CM[1], CM[2]);
-  fflush(fpo) ;
+  fprintf(fpo,
+        "\nCenter of Mass Coords (angstroms):\n   %12.7lf %12.7lf %12.7lf\n",
+	  CM[0]*_bohr2angstroms, CM[1]*_bohr2angstroms, CM[2]*_bohr2angstroms);
+  fflush(fpo);
   
   /* translate the atomic coords rel to center of mass */
   calc_relative_coords(natom, X, Y, Z, &XR, &YR, &ZR, CM) ;
