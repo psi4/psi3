@@ -45,7 +45,7 @@
 
 /* define's */
 #define MAX_LINE 132
-#define MAXATOM 60
+#define MAXATOM 100
 #define AN_TOL 0.0001
 #define ITOL 0.100
 #define MIN_I 0.00001
