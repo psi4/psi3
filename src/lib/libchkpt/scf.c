@@ -561,3 +561,48 @@ double **chkpt_set_mo_phases(double **coeff, int nrows, int ncols)
 
 }
 
+/*!
+** chkpt_rd_local_scf(): Reads the localized mo coefficents
+**
+** returns: double **scf = A rectangular nso by nmo matrix.
+** 
+** Nick J. Russ, December 2003
+*/
+
+double **chkpt_rd_local_scf(void)
+{
+  double **scf;
+  int nmo, nso;
+
+  if (psio_tocscan(PSIF_CHKPT,"::Local MO coefficients") != NULL) {
+    nmo = chkpt_rd_nmo();
+    nso = chkpt_rd_nso();
+    
+    scf = block_matrix(nso,nmo);
+    psio_read_entry(PSIF_CHKPT, "::Local MO coefficients", (char *) scf[0], 
+		    nso*nmo*sizeof(double));
+  }
+  else
+    scf = NULL;
+
+  return scf;
+}
+
+/*!
+** chkpt_wt_local_scf(): Writes the localized mo coefficents
+**
+** returns: none
+** 
+** Nick J. Russ, December 2003
+*/
+
+void chkpt_wt_local_scf(double **scf)
+{
+  int nmo, nso;
+
+  nmo = chkpt_rd_nmo();
+  nso = chkpt_rd_nso();
+
+  psio_write_entry(PSIF_CHKPT, "::Local MO coefficients", (char *) scf[0], 
+                   nso*nmo*sizeof(double));
+}
