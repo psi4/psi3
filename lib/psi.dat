@@ -733,7 +733,7 @@ psi: (
   MP2TwoConEnergyOEPROP = ERROR
 
   % Procedures for the direct MP2 energy
-  DirectMP2Energy = ($ints $scf $mp2_direct)
+  DirectMP2Energy = ($DirectSCFEnergy $mp2_direct)
   DirectMP2RHFEnergy = ($DirectMP2Energy $done)
   DirectMP2ROHFEnergy = ERROR
   DirectMP2UHFEnergy = ERROR
