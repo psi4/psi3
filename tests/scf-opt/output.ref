@@ -1,6 +1,6 @@
 ******************************************************************************
 tstart called on boromir.chem
-Tue Mar 16 14:44:03 2004
+Tue Mar 16 15:24:59 2004
 
                                 --------------
                                   WELCOME TO
@@ -133,14 +133,14 @@ Tue Mar 16 14:44:03 2004
 
 ******************************************************************************
 tstop called on boromir.chem
-Tue Mar 16 14:44:03 2004
+Tue Mar 16 15:24:59 2004
 
 user time   =       0.09 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 tstart called on boromir.chem
-Tue Mar 16 14:44:03 2004
+Tue Mar 16 15:24:59 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -170,14 +170,14 @@ Tue Mar 16 14:44:03 2004
 
 ******************************************************************************
 tstop called on boromir.chem
-Tue Mar 16 14:44:03 2004
+Tue Mar 16 15:24:59 2004
 
-user time   =       0.45 seconds =       0.01 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.43 seconds =       0.01 minutes
+system time =       0.03 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 tstart called on boromir.chem
-Tue Mar 16 14:44:03 2004
+Tue Mar 16 15:24:59 2004
 
 
              ------------------------------------------
@@ -263,14 +263,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 tstop called on boromir.chem
-Tue Mar 16 14:44:03 2004
+Tue Mar 16 15:24:59 2004
 
-user time   =       0.03 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 tstart called on boromir.chem
-Tue Mar 16 14:44:03 2004
+Tue Mar 16 15:24:59 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -309,10 +309,10 @@ Tue Mar 16 14:44:03 2004
 
 ******************************************************************************
 tstop called on boromir.chem
-Tue Mar 16 14:44:04 2004
+Tue Mar 16 15:25:00 2004
 
-user time   =       0.76 seconds =       0.01 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.73 seconds =       0.01 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
@@ -367,8 +367,7 @@ Back-transformation to cartesian coordinates...
     3  0.000226448202  0.000000115120
     4  0.000000061954  0.000000000000
 Convergence to displaced geometry took 4 iterations.
-   0.0000000000   0.0000000000  -0.1222527974   0.0000000000   1.3998180038   0.9701203058   0.0000000000  -1.3998180038   0.9701203058
-  -0.0000000000   0.0000000000  -0.1222527974  -0.0000000000   1.3998180038   0.9701203058   0.0000000000  -1.3998180038   0.9701203058
+
 New Cartesian Geometry in a.u.
   8.0  -0.0000000000   0.0000000000  -0.1222527974
   1.0  -0.0000000000   1.3998180038   0.9701203058
@@ -380,7 +379,7 @@ Geometry written to chkpt
 
 ******************************************************************************
 tstart called on boromir.chem
-Tue Mar 16 14:44:04 2004
+Tue Mar 16 15:25:00 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -410,14 +409,14 @@ Tue Mar 16 14:44:04 2004
 
 ******************************************************************************
 tstop called on boromir.chem
-Tue Mar 16 14:44:05 2004
+Tue Mar 16 15:25:00 2004
 
-user time   =       0.44 seconds =       0.01 minutes
+user time   =       0.45 seconds =       0.01 minutes
 system time =       0.01 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 tstart called on boromir.chem
-Tue Mar 16 14:44:05 2004
+Tue Mar 16 15:25:01 2004
 
 
              ------------------------------------------
@@ -505,14 +504,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 tstop called on boromir.chem
-Tue Mar 16 14:44:05 2004
+Tue Mar 16 15:25:01 2004
 
-user time   =       0.01 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 tstart called on boromir.chem
-Tue Mar 16 14:44:05 2004
+Tue Mar 16 15:25:01 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -551,10 +550,10 @@ Tue Mar 16 14:44:05 2004
 
 ******************************************************************************
 tstop called on boromir.chem
-Tue Mar 16 14:44:05 2004
+Tue Mar 16 15:25:01 2004
 
-user time   =       0.73 seconds =       0.01 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.74 seconds =       0.01 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
@@ -603,8 +602,7 @@ Back-transformation to cartesian coordinates...
     3  0.000075616296  0.000000016161
     4  0.000000006067  0.000000000000
 Convergence to displaced geometry took 4 iterations.
-   0.0000000000   0.0000000000  -0.1198922771   0.0000000000   1.4258975774   0.9513887206   0.0000000000  -1.4258975774   0.9513887206
-  -0.0000000000   0.0000000000  -0.1198922771  -0.0000000000   1.4258975774   0.9513887206   0.0000000000  -1.4258975774   0.9513887206
+
 New Cartesian Geometry in a.u.
   8.0  -0.0000000000   0.0000000000  -0.1198922771
   1.0  -0.0000000000   1.4258975774   0.9513887206
@@ -616,7 +614,7 @@ Geometry written to chkpt
 
 ******************************************************************************
 tstart called on boromir.chem
-Tue Mar 16 14:44:05 2004
+Tue Mar 16 15:25:01 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -646,14 +644,14 @@ Tue Mar 16 14:44:05 2004
 
 ******************************************************************************
 tstop called on boromir.chem
-Tue Mar 16 14:44:06 2004
+Tue Mar 16 15:25:02 2004
 
-user time   =       0.44 seconds =       0.01 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.45 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
 tstart called on boromir.chem
-Tue Mar 16 14:44:06 2004
+Tue Mar 16 15:25:02 2004
 
 
              ------------------------------------------
@@ -740,14 +738,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 tstop called on boromir.chem
-Tue Mar 16 14:44:06 2004
+Tue Mar 16 15:25:02 2004
 
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 tstart called on boromir.chem
-Tue Mar 16 14:44:06 2004
+Tue Mar 16 15:25:02 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -786,10 +784,10 @@ Tue Mar 16 14:44:06 2004
 
 ******************************************************************************
 tstop called on boromir.chem
-Tue Mar 16 14:44:07 2004
+Tue Mar 16 15:25:03 2004
 
-user time   =       0.74 seconds =       0.01 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.73 seconds =       0.01 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
@@ -838,8 +836,7 @@ Back-transformation to cartesian coordinates...
     3  0.000000725683  0.000000000002
     4  0.000000000001  0.000000000000
 Convergence to displaced geometry took 4 iterations.
-   0.0000000000   0.0000000000  -0.1200516476   0.0000000000   1.4230295443   0.9526533838   0.0000000000  -1.4230295443   0.9526533838
-  -0.0000000000   0.0000000000  -0.1200516476  -0.0000000000   1.4230295443   0.9526533838   0.0000000000  -1.4230295443   0.9526533838
+
 New Cartesian Geometry in a.u.
   8.0  -0.0000000000   0.0000000000  -0.1200516476
   1.0  -0.0000000000   1.4230295443   0.9526533838
@@ -851,7 +848,7 @@ Geometry written to chkpt
 
 ******************************************************************************
 tstart called on boromir.chem
-Tue Mar 16 14:44:07 2004
+Tue Mar 16 15:25:03 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -881,14 +878,14 @@ Tue Mar 16 14:44:07 2004
 
 ******************************************************************************
 tstop called on boromir.chem
-Tue Mar 16 14:44:07 2004
+Tue Mar 16 15:25:03 2004
 
-user time   =       0.45 seconds =       0.01 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.44 seconds =       0.01 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 tstart called on boromir.chem
-Tue Mar 16 14:44:07 2004
+Tue Mar 16 15:25:03 2004
 
 
              ------------------------------------------
@@ -973,14 +970,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 tstop called on boromir.chem
-Tue Mar 16 14:44:07 2004
+Tue Mar 16 15:25:03 2004
 
-user time   =       0.00 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 tstart called on boromir.chem
-Tue Mar 16 14:44:07 2004
+Tue Mar 16 15:25:03 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1019,10 +1016,10 @@ Tue Mar 16 14:44:07 2004
 
 ******************************************************************************
 tstop called on boromir.chem
-Tue Mar 16 14:44:08 2004
+Tue Mar 16 15:25:04 2004
 
-user time   =       0.74 seconds =       0.01 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.75 seconds =       0.01 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
@@ -1070,8 +1067,7 @@ Back-transformation to cartesian coordinates...
     2  0.000050715225  0.000000008028
     3  0.000000003881  0.000000000000
 Convergence to displaced geometry took 3 iterations.
-   0.0000000000   0.0000000000  -0.1200757508   0.0000000000   1.4229627584   0.9528446510   0.0000000000  -1.4229627584   0.9528446510
-  -0.0000000000   0.0000000000  -0.1200757508  -0.0000000000   1.4229627584   0.9528446510   0.0000000000  -1.4229627584   0.9528446510
+
 New Cartesian Geometry in a.u.
   8.0  -0.0000000000   0.0000000000  -0.1200757508
   1.0  -0.0000000000   1.4229627584   0.9528446510
@@ -1083,7 +1079,7 @@ Geometry written to chkpt
 
 ******************************************************************************
 tstart called on boromir.chem
-Tue Mar 16 14:44:08 2004
+Tue Mar 16 15:25:04 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1113,14 +1109,14 @@ Tue Mar 16 14:44:08 2004
 
 ******************************************************************************
 tstop called on boromir.chem
-Tue Mar 16 14:44:08 2004
+Tue Mar 16 15:25:04 2004
 
-user time   =       0.45 seconds =       0.01 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.44 seconds =       0.01 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 tstart called on boromir.chem
-Tue Mar 16 14:44:08 2004
+Tue Mar 16 15:25:04 2004
 
 
              ------------------------------------------
@@ -1204,14 +1200,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 tstop called on boromir.chem
-Tue Mar 16 14:44:08 2004
+Tue Mar 16 15:25:04 2004
 
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 tstart called on boromir.chem
-Tue Mar 16 14:44:08 2004
+Tue Mar 16 15:25:04 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1250,10 +1246,10 @@ Tue Mar 16 14:44:08 2004
 
 ******************************************************************************
 tstop called on boromir.chem
-Tue Mar 16 14:44:09 2004
+Tue Mar 16 15:25:05 2004
 
-user time   =       0.75 seconds =       0.01 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.74 seconds =       0.01 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
@@ -1301,8 +1297,7 @@ Back-transformation to cartesian coordinates...
     2  0.000006318168  0.000000000126
     3  0.000000000060  0.000000000000
 Convergence to displaced geometry took 3 iterations.
-   0.0000000000   0.0000000000  -0.1200727399   0.0000000000   1.4229708891   0.9528207586   0.0000000000  -1.4229708891   0.9528207586
-  -0.0000000000   0.0000000000  -0.1200727399  -0.0000000000   1.4229708891   0.9528207586   0.0000000000  -1.4229708891   0.9528207586
+
 New Cartesian Geometry in a.u.
   8.0  -0.0000000000   0.0000000000  -0.1200727399
   1.0  -0.0000000000   1.4229708891   0.9528207586
@@ -1314,7 +1309,7 @@ Geometry written to chkpt
 
 ******************************************************************************
 tstart called on boromir.chem
-Tue Mar 16 14:44:09 2004
+Tue Mar 16 15:25:05 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1344,14 +1339,14 @@ Tue Mar 16 14:44:09 2004
 
 ******************************************************************************
 tstop called on boromir.chem
-Tue Mar 16 14:44:10 2004
+Tue Mar 16 15:25:06 2004
 
-user time   =       0.43 seconds =       0.01 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.45 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
 tstart called on boromir.chem
-Tue Mar 16 14:44:10 2004
+Tue Mar 16 15:25:06 2004
 
 
              ------------------------------------------
@@ -1433,14 +1428,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 tstop called on boromir.chem
-Tue Mar 16 14:44:10 2004
+Tue Mar 16 15:25:06 2004
 
 user time   =       0.01 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 tstart called on boromir.chem
-Tue Mar 16 14:44:10 2004
+Tue Mar 16 15:25:06 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1479,10 +1474,10 @@ Tue Mar 16 14:44:10 2004
 
 ******************************************************************************
 tstop called on boromir.chem
-Tue Mar 16 14:44:10 2004
+Tue Mar 16 15:25:06 2004
 
-user time   =       0.74 seconds =       0.01 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.76 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
