@@ -53,6 +53,7 @@ int main(int argc, char *argv[])
   double **hessian, *eta, **Acopy;
   double **M, **evecs, *km, k_convert, cm_convert;
   double *zvals, **temp;
+  FILE *file15;
 
   init_io();
   title();
@@ -649,6 +650,17 @@ int main(int argc, char *argv[])
 
   fprintf(outfile, "SCF Molecular Hessian:\n");
   print_mat(hessian, natom*3, natom*3, outfile);
+
+  /* write the hessian to file15 in the PSI2 standard format */
+  file15 = fopen("file15.dat", "w");
+  fprintf(file15, "%5d%5d\n", natom, natom*6);
+  for(i=0; i < natom*3; i++) {
+    for(j=0; j < natom; j++) {
+      fprintf(file15, "%20.10f%20.10f%20.10f\n", 
+	      hessian[i][j*3], hessian[i][j*3+1], hessian[i][j*3+2]);
+    }
+  }
+  fclose(file15);
 
   /**** compute the vibrational frequencies ****/
 
