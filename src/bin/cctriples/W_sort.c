@@ -5,7 +5,7 @@ enum pattern {abc, acb, cab, cba, bca, bac};
 
 void W_sort(double ***Win, double ***Wout, int nirreps, int h, int *coltot, int **colidx, 
 	    int ***colorb, int *asym, int *bsym, int *aoff, int *boff,
-	    int *cpi, int *coff, enum pattern index)
+	    int *cpi, int *coff, int **colidx_out, enum pattern index, int sum)
 {
   int Ga, Gb, Gc;
   int Gab, Gac, Gca, Gcb, Gbc, Gba;
@@ -38,9 +38,10 @@ void W_sort(double ***Win, double ***Wout, int nirreps, int h, int *coltot, int 
 	for(c=0; c < cpi[Gc]; c++) {
 	  C = coff[Gc] + c;
 
-	  ac = colidx[A][C];
+	  ac = colidx_out[A][C];
 
-	  Wout[Gac][ac][b] = Win[Gab][ab][c];
+	  if(sum) Wout[Gac][ac][b] += Win[Gab][ab][c];
+	  else Wout[Gac][ac][b] = Win[Gab][ab][c];
 	}
       }
     }
@@ -64,9 +65,10 @@ void W_sort(double ***Win, double ***Wout, int nirreps, int h, int *coltot, int 
 	for(c=0; c < cpi[Gc]; c++) {
 	  C = coff[Gc] + c;
 
-	  ca = colidx[C][A];
+	  ca = colidx_out[C][A];
 
-	  Wout[Gca][ca][b] = Win[Gab][ab][c];
+	  if(sum) Wout[Gca][ca][b] += Win[Gab][ab][c];
+	  else Wout[Gca][ca][b] = Win[Gab][ab][c];
 	}
       }
     }
@@ -90,9 +92,10 @@ void W_sort(double ***Win, double ***Wout, int nirreps, int h, int *coltot, int 
 	for(c=0; c < cpi[Gc]; c++) {
 	  C = coff[Gc] + c;
 
-	  cb = colidx[C][B];
+	  cb = colidx_out[C][B];
 
-	  Wout[Gcb][cb][a] = Win[Gab][ab][c];
+	  if(sum) Wout[Gcb][cb][a] += Win[Gab][ab][c];
+	  else Wout[Gcb][cb][a] = Win[Gab][ab][c];
 	}
       }
     }
@@ -116,9 +119,10 @@ void W_sort(double ***Win, double ***Wout, int nirreps, int h, int *coltot, int 
 	for(c=0; c < cpi[Gc]; c++) {
 	  C = coff[Gc] + c;
 
-	  bc = colidx[B][C];
+	  bc = colidx_out[B][C];
 
-	  Wout[Gbc][bc][a] = Win[Gab][ab][c];
+	  if(sum) Wout[Gbc][bc][a] += Win[Gab][ab][c];
+	  else Wout[Gbc][bc][a] = Win[Gab][ab][c];
 	}
       }
     }
@@ -135,12 +139,13 @@ void W_sort(double ***Win, double ***Wout, int nirreps, int h, int *coltot, int 
 	A = colorb[Gab][ab][0];
 	B = colorb[Gab][ab][1];
 
-	ba = colidx[B][A];
+	ba = colidx_out[B][A];
 
 	for(c=0; c < cpi[Gc]; c++) {
 	  C = coff[Gc] + c;
 
-	  Wout[Gba][ba][c] = Win[Gab][ab][c];
+	  if(sum) Wout[Gba][ba][c] += Win[Gab][ab][c];
+	  else Wout[Gba][ba][c] = Win[Gab][ab][c];
 	}
       }
     }

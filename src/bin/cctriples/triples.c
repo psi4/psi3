@@ -22,6 +22,7 @@ double ET_BBB(void);
 double ET_UHF_AAA(void);
 double ET_UHF_BBB(void);
 double ET_UHF_AAB(void);
+double ET_UHF_AAB_noddy(void);
 double ET_UHF_ABB(void);
 void setup(void);
 int **cacheprep_rhf(int level, int *cachefiles);
@@ -91,6 +92,8 @@ int main(int argc, char *argv[])
     ETBBB = ET_UHF_BBB();
     fprintf(outfile, "\tBBB (T) energy                = %20.15f\n", ETBBB);
     ETAAB = ET_UHF_AAB();
+    fprintf(outfile, "\tAAB (T) energy                = %20.15f\n", ETAAB);
+    ETAAB = ET_UHF_AAB_noddy();
     fprintf(outfile, "\tAAB (T) energy                = %20.15f\n", ETAAB);
     ETABB = ET_UHF_ABB();
     fprintf(outfile, "\tABB (T) energy                = %20.15f\n", ETABB);

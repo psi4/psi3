@@ -10,7 +10,7 @@ enum pattern {abc, acb, cab, cba, bca, bac};
 
 void W_sort(double ***Win, double ***Wout, int nirreps, int h, int *coltot, int **colidx, 
 	    int ***colorb, int *asym, int *bsym, int *aoff, int *boff,
-	    int *cpi, int *coff, enum pattern index);
+	    int *cpi, int *coff, int **colidx_out, enum pattern index, int sum);
 
 double ET_RHF(void)
 {
@@ -268,7 +268,7 @@ double ET_RHF(void)
 		/* Sort W[ab][c] --> W[ac][b] */
 		W_sort(W0, W1, nirreps, Gijk, Fints.params->coltot, Fints.params->colidx, 
 		       Fints.params->colorb, Fints.params->rsym, Fints.params->ssym, 
-		       vir_off, vir_off, virtpi, vir_off, acb);
+		       vir_off, vir_off, virtpi, vir_off, Fints.params->colidx, acb, 0);
 
 		/* +F_idac * t_jkbd */
 		for(Gd=0; Gd < nirreps; Gd++) {
@@ -318,7 +318,7 @@ double ET_RHF(void)
 		/* Sort W[ac][b] --> W[ca][b] */
 		W_sort(W1, W0, nirreps, Gijk, Fints.params->coltot, Fints.params->colidx, 
 		       Fints.params->colorb, Fints.params->rsym, Fints.params->ssym, 
-		       vir_off, vir_off, virtpi, vir_off, bac);
+		       vir_off, vir_off, virtpi, vir_off, Fints.params->colidx, bac, 0);
 
 		/* +F_kdca * t_jibd */
 		for(Gd=0; Gd < nirreps; Gd++) {
@@ -368,7 +368,7 @@ double ET_RHF(void)
 		/* Sort W[ca][b] --> W[cb][a] */
 		W_sort(W0, W1, nirreps, Gijk, Fints.params->coltot, Fints.params->colidx, 
 		       Fints.params->colorb, Fints.params->rsym, Fints.params->ssym, 
-		       vir_off, vir_off, virtpi, vir_off, acb);
+		       vir_off, vir_off, virtpi, vir_off, Fints.params->colidx, acb, 0);
 
 		/* +F_kdcb * t_ijad */
 		for(Gd=0; Gd < nirreps; Gd++) {
@@ -418,7 +418,7 @@ double ET_RHF(void)
 		/* Sort W[cb][a] --> W[bc][a] */
 		W_sort(W1, W0, nirreps, Gijk, Fints.params->coltot, Fints.params->colidx, 
 		       Fints.params->colorb, Fints.params->rsym, Fints.params->ssym, 
-		       vir_off, vir_off, virtpi, vir_off, bac);
+		       vir_off, vir_off, virtpi, vir_off, Fints.params->colidx, bac, 0);
 
 		/* +F_jdbc * t_ikad */
 		for(Gd=0; Gd < nirreps; Gd++) {
@@ -468,7 +468,7 @@ double ET_RHF(void)
 		/* Sort W[bc][a] --> W[ba][c] */
 		W_sort(W0, W1, nirreps, Gijk, Fints.params->coltot, Fints.params->colidx, 
 		       Fints.params->colorb, Fints.params->rsym, Fints.params->ssym, 
-		       vir_off, vir_off, virtpi, vir_off, acb);
+		       vir_off, vir_off, virtpi, vir_off, Fints.params->colidx, acb, 0);
 
 		/* +F_jdba * t_kicd */
 		for(Gd=0; Gd < nirreps; Gd++) {
@@ -518,7 +518,7 @@ double ET_RHF(void)
 		/* Sort W[ba][c] --> W[ab][c] */
 		W_sort(W1, W0, nirreps, Gijk, Fints.params->coltot, Fints.params->colidx, 
 		       Fints.params->colorb, Fints.params->rsym, Fints.params->ssym, 
-		       vir_off, vir_off, virtpi, vir_off, bac);
+		       vir_off, vir_off, virtpi, vir_off, Fints.params->colidx, bac, 0);
 
 		timer_off("N7 Terms");
 

@@ -73,25 +73,25 @@ double ET_UHF_AAA(void)
 	Gjk = Gj ^ Gk;
 	Gik = Gi ^ Gk;
 
-	for(Ga=0; Ga < nirreps; Ga++) {
-	  for(Gb=0; Gb < nirreps; Gb++) {
-	    Gc = Gi ^ Gj ^ Gk ^ Ga ^ Gb;
+	for(i=0; i < occpi[Gi]; i++) {
+	  I = occ_off[Gi] + i;
+	  for(j=0; j < occpi[Gj]; j++) {
+	    J = occ_off[Gj] + j;
+	    for(k=0; k < occpi[Gk]; k++) {
+	      K = occ_off[Gk] + k;
 
-	    Gbc = Gb^Gc;
-	    Gac = Ga^Gc;
-	    Gba = Gb^Ga;
+	      ij = T2.params->rowidx[I][J];
+	      ji = T2.params->rowidx[J][I];
+	      jk = T2.params->rowidx[J][K];
+	      ik = T2.params->rowidx[I][K];
 
-	    for(i=0; i < occpi[Gi]; i++) {
-	      I = occ_off[Gi] + i;
-	      for(j=0; j < occpi[Gj]; j++) {
-		J = occ_off[Gj] + j;
-		for(k=0; k < occpi[Gk]; k++) {
-		  K = occ_off[Gk] + k;
+	      for(Ga=0; Ga < nirreps; Ga++) {
+		for(Gb=0; Gb < nirreps; Gb++) {
+		  Gc = Gi ^ Gj ^ Gk ^ Ga ^ Gb;
 
-		  ij = T2.params->rowidx[I][J];
-		  ji = T2.params->rowidx[J][I];
-		  jk = T2.params->rowidx[J][K];
-		  ik = T2.params->rowidx[I][K];
+		  Gbc = Gb^Gc;
+		  Gac = Ga^Gc;
+		  Gba = Gb^Ga;
 
 		  for(a=0; a < virtpi[Ga]; a++) {
 		    A = vir_off[Ga] + a;
@@ -574,10 +574,10 @@ double ET_UHF_AAA(void)
 			}
 
 			/*
-			if(fabs(value_d) > 1e-7) {
+			  if(fabs(value_d) > 1e-7) {
 			  cnt++;
 			  fprintf(outfile, "%d %d %d %d %d %d %20.14f\n", I, J, K, A, B, C, value_d);
-			}
+			  }
 			*/
 
 			/* Compute the Fock denominator */

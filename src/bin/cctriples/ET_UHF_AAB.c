@@ -1,35 +1,51 @@
 #include <stdio.h>
 #include <math.h>
+#include <libciomr.h>
+#include <qt.h>
 #include <dpd.h>
 #define EXTERN
 #include "globals.h"
+
+enum pattern {abc, acb, cab, cba, bca, bac};
+
+void W_sort(double ***Win, double ***Wout, int nirreps, int h, int *coltot, int **colidx, 
+	    int ***colorb, int *asym, int *bsym, int *aoff, int *boff,
+	    int *cpi, int *coff, int **colidx_out, enum pattern index, int sum);
 
 double ET_UHF_AAB(void)
 {
   int cnt;
   int h, nirreps;
-  int Gi, Gj, Gk, Ga, Gb, Gc, Ge, Gm;
-  int Gji, Gij, Gjk, Gik, Gbc, Gac, Gba;
-  int I, J, K, A, B, C, E, M;
-  int i, j, k, a, b, c, e, m;
+  int Gi, Gj, Gk, Ga, Gb, Gc, Gd, Gl;
+  int Gji, Gij, Gjk, Gkj, Gik, Gki, Gijk;
+  int Gab, Gbc, Gac, Gcb, Gca;
+  int Gid, Gjd, Gkd;
+  int Gil, Gjl, Gkl;
+  int I, J, K, A, B, C;
+  int i, j, k, a, b, c;
   int ij, ji, ik, ki, jk, kj;
   int ab, ba, ac, ca, bc, cb;
-  int ae, be, ec, ke, ie, je;
-  int im, jm, km, mk, ma, mb, mc;
+  int dc, ad, bd;
+  int lc, la, lb;
+  int id, jd, kd;
+  int il, jl, kl;
   int *aoccpi, *avirtpi, *aocc_off, *avir_off;
   int *boccpi, *bvirtpi, *bocc_off, *bvir_off;
-  double value_c, value_d, denom, ET_AAB;
-  double t_ijae, t_ijbe, t_jkae, t_jkbe, t_jkec, t_ikae, t_ikbe, t_ikec;
-  double F_kecb, F_keca, F_iebc, F_ieac, F_ieab, F_jebc, F_jeac, F_jeab;
-  double t_imbc, t_imac, t_imba, t_jmbc, t_jmac, t_jmba, t_mkbc, t_mkac;
-  double E_kjma, E_kjmb, E_jkmc, E_kima, E_kimb, E_ikmc, E_jima, E_jimb;
+  double value_c, value_d, dijk, denom, ET_AAB;
   double t_ia, t_ib, t_ja, t_jb, t_kc;
-  double D_jkbc, D_jkac, D_ikbc, D_ikac, D_jiba;
-  dpdbuf4 T2AB, T2AA;
+  double D_jkbc, D_jkac, D_ikbc, D_ikac, D_jiab;
+  int numpA, numpB, p, Gp,offset;
+  int nrows, ncols, nlinks;
+  dpdbuf4 T2AB, T2AA, T2BA;
   dpdbuf4 FAAints, FABints, FBAints;
   dpdbuf4 EAAints, EABints, EBAints;
   dpdbuf4 DAAints, DABints;
+  int **T2AB_row_start, **T2AA_row_start, **T2BA_row_start;
+  int **T2AB_col_start, **T2AA_col_start;
+  int **FAB_row_start, **FBA_row_start, **FAA_row_start;
+  int **EAB_col_start, **EBA_col_start, **EAA_col_start;
   dpdfile2 T1A, T1B, fIJ, fij, fAB, fab;
+  double ***WABc, ***WBcA, ***WAcB, ***WcAB, ***WcBA, ***VABc;
 
   nirreps = moinfo.nirreps;
   aoccpi = moinfo.aoccpi; 
@@ -40,6 +56,153 @@ double ET_UHF_AAB(void)
   bvirtpi = moinfo.bvirtpi;
   bocc_off = moinfo.bocc_off;
   bvir_off = moinfo.bvir_off;
+
+  for(h=0,numpA=0; h < nirreps; h++) numpA += aoccpi[h];
+  for(h=0,numpB=0; h < nirreps; h++) numpB += boccpi[h];
+
+  /* Build F integral row offsets */
+  FAA_row_start = init_int_matrix(nirreps, numpA);
+  FAB_row_start = init_int_matrix(nirreps, numpA);
+  FBA_row_start = init_int_matrix(nirreps, numpB);
+
+  for(h=0; h < nirreps; h++) {
+
+    for(p=0; p < numpA; p++) FAB_row_start[h][p] = -1;
+    for(p=0; p < numpA; p++) FAA_row_start[h][p] = -1;
+    for(p=0; p < numpB; p++) FBA_row_start[h][p] = -1;
+
+    nrows = 0;
+    for(Gp=0; Gp < nirreps; Gp++) {
+      for(p=0; p < aoccpi[Gp]; p++) {
+
+	if(bvirtpi[Gp^h]) 
+	  FAB_row_start[h][aocc_off[Gp] + p] = nrows;
+
+	nrows += bvirtpi[Gp^h];
+      }
+    }
+
+    nrows = 0;
+    for(Gp=0; Gp < nirreps; Gp++) {
+      for(p=0; p < aoccpi[Gp]; p++) {
+
+	if(avirtpi[Gp^h]) 
+	  FAA_row_start[h][aocc_off[Gp] + p] = nrows;
+
+	nrows += avirtpi[Gp^h];
+      }
+    }
+
+    nrows = 0;
+    for(Gp=0; Gp < nirreps; Gp++) {
+      for(p=0; p < boccpi[Gp]; p++) {
+
+	if(avirtpi[Gp^h]) 
+	  FBA_row_start[h][bocc_off[Gp] + p] = nrows;
+
+	nrows += avirtpi[Gp^h];
+      }
+    }
+  }
+
+  /* Build T2 amplitude row offsets */
+  T2AA_row_start = init_int_matrix(nirreps, numpA);
+  T2AB_row_start = init_int_matrix(nirreps, numpA);
+  T2BA_row_start = init_int_matrix(nirreps, numpB);
+
+  for(h=0; h < nirreps; h++) {
+
+    for(p=0; p < numpA; p++) {
+      T2AA_row_start[h][p] = -1;
+      T2AB_row_start[h][p] = -1;
+    }
+
+    for(p=0; p < numpB; p++) {
+      T2BA_row_start[h][p] = -1;
+    }
+
+    nrows = 0;
+    for(Gp=0; Gp < nirreps; Gp++) {
+      for(p=0; p < aoccpi[Gp]; p++) {
+
+	if(boccpi[Gp^h]) 
+	  T2AB_row_start[h][aocc_off[Gp] + p] = nrows;
+
+	nrows += boccpi[Gp^h];
+      }
+    }
+
+    nrows = 0;
+    for(Gp=0; Gp < nirreps; Gp++) {
+      for(p=0; p < boccpi[Gp]; p++) {
+
+	if(aoccpi[Gp^h]) 
+	  T2BA_row_start[h][bocc_off[Gp] + p] = nrows;
+
+	nrows += aoccpi[Gp^h];
+      }
+    }
+
+    nrows = 0;
+    for(Gp=0; Gp < nirreps; Gp++) {
+      for(p=0; p < aoccpi[Gp]; p++) {
+
+	if(aoccpi[Gp^h]) 
+	  T2AA_row_start[h][aocc_off[Gp] + p] = nrows;
+
+	nrows += aoccpi[Gp^h];
+      }
+    }
+  }
+
+  /* Build T2 amplitude column offsets */
+  T2AA_col_start = init_int_matrix(nirreps, nirreps);
+  T2AB_col_start = init_int_matrix(nirreps, nirreps);
+
+  for(h=0; h < nirreps; h++) {
+    for(Gd = 0,offset=0; Gd < nirreps; Gd++) {
+      Gc = Gd ^ h;
+      T2AA_col_start[h][Gd] = offset;
+      offset += avirtpi[Gd] * avirtpi[Gc];
+    }
+  }
+
+  for(h=0; h < nirreps; h++) {
+    for(Gd = 0,offset=0; Gd < nirreps; Gd++) {
+      Gc = Gd ^ h;
+      T2AB_col_start[h][Gd] = offset;
+      offset += avirtpi[Gd] * bvirtpi[Gc];
+    }
+  }
+
+  /* Build E integral column offsets */
+  EAA_col_start = init_int_matrix(nirreps, nirreps);
+  EAB_col_start = init_int_matrix(nirreps, nirreps);
+  EBA_col_start = init_int_matrix(nirreps, nirreps);
+
+  for(h=0; h < nirreps; h++) {
+    for(Gl = 0,offset=0; Gl < nirreps; Gl++) {
+      Gc = Gl ^ h;
+      EAA_col_start[h][Gl] = offset;
+      offset += aoccpi[Gl] * avirtpi[Gc];
+    }
+  }
+
+  for(h=0; h < nirreps; h++) {
+    for(Gl = 0,offset=0; Gl < nirreps; Gl++) {
+      Gc = Gl ^ h;
+      EAB_col_start[h][Gl] = offset;
+      offset += aoccpi[Gl] * bvirtpi[Gc];
+    }
+  }
+
+  for(h=0; h < nirreps; h++) {
+    for(Gl = 0,offset=0; Gl < nirreps; Gl++) {
+      Gc = Gl ^ h;
+      EBA_col_start[h][Gl] = offset;
+      offset += boccpi[Gl] * avirtpi[Gc];
+    }
+  }
 
   dpd_file2_init(&fIJ, CC_OEI, 0, 0, 0, "fIJ");
   dpd_file2_init(&fij, CC_OEI, 0, 2, 2, "fij");
@@ -63,6 +226,7 @@ double ET_UHF_AAB(void)
 
   dpd_buf4_init(&T2AA, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tIJAB");
   dpd_buf4_init(&T2AB, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tIjAb");
+  dpd_buf4_init(&T2BA, CC_TAMPS, 0, 23, 29, 23, 29, 0, "tiJaB");
 
   dpd_buf4_init(&FAAints, CC_FINTS, 0, 20, 5, 20, 5, 1, "F <IA|BC>");
   dpd_buf4_init(&FABints, CC_FINTS, 0, 24, 28, 24, 28, 0, "F <Ia|Bc>");
@@ -82,14 +246,8 @@ double ET_UHF_AAB(void)
     dpd_buf4_mat_irrep_init(&T2AB, h);
     dpd_buf4_mat_irrep_rd(&T2AB, h);
 
-    dpd_buf4_mat_irrep_init(&FAAints, h);
-    dpd_buf4_mat_irrep_rd(&FAAints, h);
-
-    dpd_buf4_mat_irrep_init(&FABints, h);
-    dpd_buf4_mat_irrep_rd(&FABints, h);
-
-    dpd_buf4_mat_irrep_init(&FBAints, h);
-    dpd_buf4_mat_irrep_rd(&FBAints, h);
+    dpd_buf4_mat_irrep_init(&T2BA, h);
+    dpd_buf4_mat_irrep_rd(&T2BA, h);
 
     dpd_buf4_mat_irrep_init(&EAAints, h);
     dpd_buf4_mat_irrep_rd(&EAAints, h);
@@ -110,478 +268,602 @@ double ET_UHF_AAB(void)
   cnt = 0;
   ET_AAB = 0.0;
 
+  WABc = (double ***) malloc(nirreps * sizeof(double **));
+  WBcA = (double ***) malloc(nirreps * sizeof(double **));
+  WAcB = (double ***) malloc(nirreps * sizeof(double **));
+  WcAB = (double ***) malloc(nirreps * sizeof(double **));
+  WcBA = (double ***) malloc(nirreps * sizeof(double **));
+  VABc = (double ***) malloc(nirreps * sizeof(double **));
+
   for(Gi=0; Gi < nirreps; Gi++) {
     for(Gj=0; Gj < nirreps; Gj++) {
       for(Gk=0; Gk < nirreps; Gk++) {
 
 	Gij = Gji = Gi ^ Gj;
-	Gjk = Gj ^ Gk;
-	Gik = Gi ^ Gk;
-
-	for(Ga=0; Ga < nirreps; Ga++) {
-	  for(Gb=0; Gb < nirreps; Gb++) {
-	    Gc = Gi ^ Gj ^ Gk ^ Ga ^ Gb;
-
-	    Gbc = Gb^Gc;
-	    Gac = Ga^Gc;
-	    Gba = Gb^Ga;
-
-	    for(i=0; i < aoccpi[Gi]; i++) {
-	      I = aocc_off[Gi] + i;
-	      for(j=0; j < aoccpi[Gj]; j++) {
-		J = aocc_off[Gj] + j;
-		for(k=0; k < boccpi[Gk]; k++) {
-		  K = bocc_off[Gk] + k;
-
-		  ij = EAAints.params->rowidx[I][J];
-		  ji = EAAints.params->rowidx[J][I];
-		  jk = EABints.params->rowidx[J][K];
-		  kj = EBAints.params->rowidx[K][J];
-		  ik = EABints.params->rowidx[I][K];
-		  ki = EBAints.params->rowidx[K][I];
-
-		  for(a=0; a < avirtpi[Ga]; a++) {
-		    A = avir_off[Ga] + a;
-		    for(b=0; b < avirtpi[Gb]; b++) {
-		      B = avir_off[Gb] + b;
-		      for(c=0; c < bvirtpi[Gc]; c++) {
-			C = bvir_off[Gc] + c;
-
-			ab = FAAints.params->colidx[A][B];
-			ba = FAAints.params->colidx[B][A];
-			bc = FABints.params->colidx[B][C];
-			cb = FBAints.params->colidx[C][B];
-			ac = FABints.params->colidx[A][C];
-			ca = FBAints.params->colidx[C][A];
-
-			value_c = 0.0;
-
-			/** <ov||vv> --> connected triples **/
-
-                        /* -t_JkAe * F_IeBc */
-                        Ge = Gj ^ Gk ^ Ga;
-                        for(e=0; e < bvirtpi[Ge]; e++) {
-                          E = bvir_off[Ge] + e;
-
-			  ae = T2AB.params->colidx[A][E];
-			  ie = FABints.params->rowidx[I][E];
-
-                          t_jkae = F_iebc = 0.0;
+	Gjk = Gkj = Gj ^ Gk;
+	Gik = Gki = Gi ^ Gk;
+
+	Gijk = Gi ^ Gj ^ Gk;
+
+	for(i=0; i < aoccpi[Gi]; i++) {
+	  I = aocc_off[Gi] + i;
+	  for(j=0; j < aoccpi[Gj]; j++) {
+	    J = aocc_off[Gj] + j;
+	    for(k=0; k < boccpi[Gk]; k++) {
+	      K = bocc_off[Gk] + k;
 
-                          if(T2AB.params->rowtot[Gjk] && T2AB.params->coltot[Gjk])
-                            t_jkae = T2AB.matrix[Gjk][jk][ae];
-
-                          if(FABints.params->rowtot[Gbc] && FABints.params->coltot[Gbc])
-			    F_iebc = FABints.matrix[Gbc][ie][bc];
- 
-                          value_c -= t_jkae * F_iebc;
-                        }
-
-                        /* +t_JkBe * F_IeAc */
-                        Ge = Gj ^ Gk ^ Gb;
-                        for(e=0; e < bvirtpi[Ge]; e++) {
-                          E = bvir_off[Ge] + e;
-
-			  be = T2AB.params->colidx[B][E];
-			  ie = FABints.params->rowidx[I][E];
-
-                          t_jkbe = F_ieac = 0.0;
+	      if(I >= J) {
+
+		ij = EAAints.params->rowidx[I][J];
+		ji = EAAints.params->rowidx[J][I];
+		jk = EABints.params->rowidx[J][K];
+		kj = EBAints.params->rowidx[K][J];
+		ik = EABints.params->rowidx[I][K];
+		ki = EBAints.params->rowidx[K][I];
 
-                          if(T2AB.params->rowtot[Gjk] && T2AB.params->coltot[Gjk])
-                            t_jkbe = T2AB.matrix[Gjk][jk][be];
-
-                          if(FABints.params->rowtot[Gac] && FABints.params->coltot[Gac])
-			    F_ieac = FABints.matrix[Gac][ie][ac];
- 
-                          value_c += t_jkbe * F_ieac;
-                        }
-
-                        /* +t_JkEc * F_IEAB */
-                        Ge = Gj ^ Gk ^ Gc;
-                        for(e=0; e < avirtpi[Ge]; e++) {
-                          E = avir_off[Ge] + e;
-
-			  ec = T2AB.params->colidx[E][C];
-			  ie = FAAints.params->rowidx[I][E];
+		dijk = 0.0;
+		if(fIJ.params->rowtot[Gi])
+		  dijk += fIJ.matrix[Gi][i][i];
+		if(fIJ.params->rowtot[Gj])
+		  dijk += fIJ.matrix[Gj][j][j];
+		if(fIJ.params->rowtot[Gk])
+		  dijk += fij.matrix[Gk][k][k];
 
-                          t_jkec = F_ieab = 0.0;
+		for(Gab=0; Gab < nirreps; Gab++) {
+		  Gc = Gab ^ Gijk;
 
-                          if(T2AB.params->rowtot[Gjk] && T2AB.params->coltot[Gjk])
-                            t_jkec = T2AB.matrix[Gjk][jk][ec];
-
-                          if(FAAints.params->rowtot[Gba] && FAAints.params->coltot[Gba])
-			    F_ieab = FAAints.matrix[Gba][ie][ab];
- 
-                          value_c += t_jkec * F_ieab;
-                        }
+		  WABc[Gab] = dpd_block_matrix(FAAints.params->coltot[Gab], bvirtpi[Gc]);
+		  WBcA[Gab] = dpd_block_matrix(FABints.params->coltot[Gab], avirtpi[Gc]);
+		  WAcB[Gab] = dpd_block_matrix(FABints.params->coltot[Gab], avirtpi[Gc]);
+		  WcBA[Gab] = dpd_block_matrix(FBAints.params->coltot[Gab], avirtpi[Gc]);
+		  WcAB[Gab] = dpd_block_matrix(FBAints.params->coltot[Gab], avirtpi[Gc]);
+		  VABc[Gab] = dpd_block_matrix(FAAints.params->coltot[Gab], bvirtpi[Gc]);
+		}
 
-                        /* +t_IkAe * F_JeBc */
-                        Ge = Gi ^ Gk ^ Ga;
-                        for(e=0; e < bvirtpi[Ge]; e++) {
-                          E = bvir_off[Ge] + e;
+		for(Gd=0; Gd < nirreps; Gd++) {
+		  /* +t_JkDc * F_IDAB */
+		  Gab = Gid = Gi ^ Gd;
+		  Gc = Gjk ^ Gd;
 
-			  ae = T2AB.params->colidx[A][E];
-			  je = FABints.params->rowidx[J][E];
+		  dc = T2AB_col_start[Gjk][Gd];
+		  id = FAA_row_start[Gid][I];
 
-                          t_ikae = F_jebc = 0.0;
+		  FAAints.matrix[Gid] = dpd_block_matrix(avirtpi[Gd], FAAints.params->coltot[Gid]);
+		  dpd_buf4_mat_irrep_rd_block(&FAAints, Gid, id, avirtpi[Gd]);
 
-                          if(T2AB.params->rowtot[Gik] && T2AB.params->coltot[Gik])
-                            t_ikae = T2AB.matrix[Gik][ik][ae];
+ 		  nrows = FAAints.params->coltot[Gid];
+		  ncols = bvirtpi[Gc];
+		  nlinks = avirtpi[Gd];
 
-                          if(FABints.params->rowtot[Gbc] && FABints.params->coltot[Gbc])
-			    F_jebc = FABints.matrix[Gbc][je][bc];
- 
-                          value_c += t_ikae * F_jebc;
-                        }
+		  if(nrows && ncols && nlinks)
+		    C_DGEMM('t', 'n', nrows, ncols, nlinks, 1.0,
+			    &(FAAints.matrix[Gid][0][0]), nrows,
+			    &(T2AB.matrix[Gjk][jk][dc]), ncols, 1.0,
+			    &(WABc[Gab][0][0]), ncols);
 
-                        /* -t_IkBe * F_JeAc */
-                        Ge = Gi ^ Gk ^ Gb;
-                        for(e=0; e < bvirtpi[Ge]; e++) {
-                          E = bvir_off[Ge] + e;
+		  dpd_free_block(FAAints.matrix[Gid], avirtpi[Gd], FAAints.params->coltot[Gid]);
 
-			  be = T2AB.params->colidx[B][E];
-			  je = FABints.params->rowidx[J][E];
 
-                          t_ikbe = F_jeac = 0.0;
+		  /* -t_IkDc * F_JDAB */
+		  Gab = Gjd = Gj ^ Gd;
+		  Gc = Gik ^ Gd;
 
-                          if(T2AB.params->rowtot[Gik] && T2AB.params->coltot[Gik])
-                            t_ikbe = T2AB.matrix[Gik][ik][be];
+		  dc = T2AB_col_start[Gik][Gd];
+		  jd = FAA_row_start[Gjd][J];
 
-                          if(FABints.params->rowtot[Gac] && FABints.params->coltot[Gac])
-			    F_jeac = FABints.matrix[Gac][je][ac];
- 
-                          value_c -= t_ikbe * F_jeac;
-                        }
+		  FAAints.matrix[Gjd] = dpd_block_matrix(avirtpi[Gd], FAAints.params->coltot[Gjd]);
+		  dpd_buf4_mat_irrep_rd_block(&FAAints, Gjd, jd, avirtpi[Gd]);
 
-                        /* -t_IkEc * F_JEAB */
-                        Ge = Gi ^ Gk ^ Gc;
-                        for(e=0; e < avirtpi[Ge]; e++) {
-                          E = avir_off[Ge] + e;
+ 		  nrows = FAAints.params->coltot[Gjd];
+		  ncols = bvirtpi[Gc];
+		  nlinks = avirtpi[Gd];
 
-			  ec = T2AB.params->colidx[E][C];
-			  je = FAAints.params->rowidx[J][E];
+		  if(nrows && ncols && nlinks)
+		    C_DGEMM('t', 'n', nrows, ncols, nlinks, -1.0,
+			    &(FAAints.matrix[Gjd][0][0]), nrows,
+			    &(T2AB.matrix[Gik][ik][dc]), ncols, 1.0,
+			    &(WABc[Gab][0][0]), ncols);
 
-                          t_ikec = F_jeab = 0.0;
+		  dpd_free_block(FAAints.matrix[Gjd], avirtpi[Gd], FAAints.params->coltot[Gjd]);
 
-                          if(T2AB.params->rowtot[Gik] && T2AB.params->coltot[Gik])
-                            t_ikec = T2AB.matrix[Gik][ik][ec];
+		}
 
-                          if(FAAints.params->rowtot[Gba] && FAAints.params->coltot[Gba])
-			    F_jeab = FAAints.matrix[Gba][je][ab];
- 
-                          value_c -= t_ikec * F_jeab;
-                        }
+		for(Gl=0; Gl < nirreps; Gl++) {
+		  /* -t_ILAB * E_JkLc */
+		  Gab = Gil = Gi ^ Gl;
+		  Gc = Gjk ^ Gl;
 
-                        /* +t_IJAE * F_kEcB */
-                        Ge = Gi ^ Gj ^ Ga;
-                        for(e=0; e < avirtpi[Ge]; e++) {
-                          E = avir_off[Ge] + e;
+		  lc = EAB_col_start[Gjk][Gl];
+		  il = T2AA_row_start[Gil][I];
 
-			  ae = T2AA.params->colidx[A][E];
-			  ke = FBAints.params->rowidx[K][E];
+		  nrows = T2AA.params->coltot[Gil];
+		  ncols = bvirtpi[Gc];
+		  nlinks = aoccpi[Gl];
 
-                          t_ijae = F_kecb = 0.0;
+		  if(nrows && ncols && nlinks)
+		    C_DGEMM('t', 'n', nrows, ncols, nlinks, -1.0,
+			    &(T2AA.matrix[Gil][il][0]), nrows,
+			    &(EABints.matrix[Gjk][jk][lc]), ncols, 1.0,
+			    &(WABc[Gab][0][0]), ncols);
 
-                          if(T2AA.params->rowtot[Gij] && T2AA.params->coltot[Gij])
-                            t_ijae = T2AA.matrix[Gij][ij][ae];
 
-                          if(FBAints.params->rowtot[Gbc] && FBAints.params->coltot[Gbc])
-			    F_kecb = FBAints.matrix[Gbc][ke][cb];
- 
-                          value_c += t_ijae * F_kecb;
-                        }
+		  /* +t_JLAB * E_IkLc */
+		  Gab = Gjl = Gj ^ Gl;
+		  Gc = Gik ^ Gl;
 
-                        /* -t_IJBE * F_kEcA */
-                        Ge = Gi ^ Gj ^ Gb;
-                        for(e=0; e < avirtpi[Ge]; e++) {
-                          E = avir_off[Ge] + e;
+		  lc = EAB_col_start[Gik][Gl];
+		  jl = T2AA_row_start[Gjl][J];
 
-			  be = T2AA.params->colidx[B][E];
-			  ke = FBAints.params->rowidx[K][E];
+		  nrows = T2AA.params->coltot[Gjl];
+		  ncols = bvirtpi[Gc];
+		  nlinks = aoccpi[Gl];
 
-                          t_ijbe = F_keca = 0.0;
+		  if(nrows && ncols && nlinks)
+		    C_DGEMM('t', 'n', nrows, ncols, nlinks, 1.0,
+			    &(T2AA.matrix[Gjl][jl][0]), nrows,
+			    &(EABints.matrix[Gik][ik][lc]), ncols, 1.0,
+			    &(WABc[Gab][0][0]), ncols);
+		}
 
-                          if(T2AA.params->rowtot[Gij] && T2AA.params->coltot[Gij])
-                            t_ijbe = T2AA.matrix[Gij][ij][be];
+		for(Gab=0; Gab < nirreps; Gab++) {
+		  Gc = Gab ^ Gijk;
 
-                          if(FBAints.params->rowtot[Gac] && FBAints.params->coltot[Gac])
-			    F_keca = FBAints.matrix[Gac][ke][ca];
- 
-                          value_c -= t_ijbe * F_keca;
-                        }
+		  WBcA[Gab] = dpd_block_matrix(FABints.params->coltot[Gab], avirtpi[Gc]);
+		}
 
-			/** <oo||ov> --> connected triples **/
+		for(Gd=0; Gd < nirreps; Gd++) {
 
-                        /* +t_ImBc * E_kJmA */
-			Gm = Gi ^ Gb ^ Gc;
-			for(m=0; m < boccpi[Gm]; m++) {
-                          M = bocc_off[Gm] + m;
+		  /* -t_JkAd * F_IdBc */
+		  Gbc = Gid = Gi ^ Gd;
+		  Ga = Gjk ^ Gd;
 
-                          im = T2AB.params->rowidx[I][M];
-                          ma = EBAints.params->colidx[M][A];
+		  ad = T2AB_col_start[Gjk][Ga];
+		  id = FAB_row_start[Gid][I];
 
-                          t_imbc = E_kjma = 0.0;
+		  FABints.matrix[Gid] = dpd_block_matrix(bvirtpi[Gd], FABints.params->coltot[Gid]);
+		  dpd_buf4_mat_irrep_rd_block(&FABints, Gid, id, bvirtpi[Gd]);
 
-                          if(T2AB.params->rowtot[Gbc] && T2AB.params->coltot[Gbc])
-			    t_imbc = T2AB.matrix[Gbc][im][bc];
+ 		  nrows = FABints.params->coltot[Gid];
+		  ncols = avirtpi[Ga];
+		  nlinks = bvirtpi[Gd];
 
-                          if(EBAints.params->rowtot[Gjk] && EBAints.params->coltot[Gjk])
-			    E_kjma = EBAints.matrix[Gjk][kj][ma];
+		  if(nrows && ncols && nlinks)
+		    C_DGEMM('t', 't', nrows, ncols, nlinks, -1.0,
+			    &(FABints.matrix[Gid][0][0]), nrows,
+			    &(T2AB.matrix[Gjk][jk][ad]), nlinks, 1.0,
+			    &(WBcA[Gbc][0][0]), ncols);
 
-                          value_c += t_imbc * E_kjma;
-			}
+		  dpd_free_block(FABints.matrix[Gid], bvirtpi[Gd], FABints.params->coltot[Gid]);
 
-                        /* -t_ImAc * E_kJmB */
-			Gm = Gi ^ Ga ^ Gc;
-			for(m=0; m < boccpi[Gm]; m++) {
-                          M = bocc_off[Gm] + m;
 
-                          im = T2AB.params->rowidx[I][M];
-                          mb = EBAints.params->colidx[M][B];
+		  /* +t_IkAd * F_JdBc */
+		  Gbc = Gjd = Gj ^ Gd;
+		  Ga = Gik ^ Gd;
 
-                          t_imac = E_kjmb = 0.0;
+		  ad = T2AB_col_start[Gik][Ga];
+		  jd = FAB_row_start[Gjd][J];
 
-                          if(T2AB.params->rowtot[Gac] && T2AB.params->coltot[Gac])
-			    t_imac = T2AB.matrix[Gac][im][ac];
+		  FABints.matrix[Gjd] = dpd_block_matrix(bvirtpi[Gd], FABints.params->coltot[Gjd]);
+		  dpd_buf4_mat_irrep_rd_block(&FABints, Gjd, jd, bvirtpi[Gd]);
 
-                          if(EBAints.params->rowtot[Gjk] && EBAints.params->coltot[Gjk])
-			    E_kjmb = EBAints.matrix[Gjk][kj][mb];
+ 		  nrows = FABints.params->coltot[Gjd];
+		  ncols = avirtpi[Ga];
+		  nlinks = bvirtpi[Gd];
 
-                          value_c -= t_imac * E_kjmb;
-			}
+		  if(nrows && ncols && nlinks)
+		    C_DGEMM('t', 't', nrows, ncols, nlinks, 1.0,
+			    &(FABints.matrix[Gjd][0][0]), nrows,
+			    &(T2AB.matrix[Gik][ik][ad]), nlinks, 1.0,
+			    &(WBcA[Gbc][0][0]), ncols);
 
-                        /* +t_IMBA * E_JkMc */
-			Gm = Gi ^ Gb ^ Ga;
-			for(m=0; m < aoccpi[Gm]; m++) {
-                          M = aocc_off[Gm] + m;
+		  dpd_free_block(FABints.matrix[Gjd], bvirtpi[Gd], FABints.params->coltot[Gjd]);
+		}
 
-                          im = T2AA.params->rowidx[I][M];
-                          mc = EABints.params->colidx[M][C];
+		for(Gl=0; Gl < nirreps; Gl++) {
 
-                          t_imba = E_jkmc = 0.0;
+		  /* +t_IlBc * E_kJlA */
+		  Gbc = Gil = Gi ^ Gl;
+		  Ga = Gkj ^ Gl;
 
-                          if(T2AA.params->rowtot[Gba] && T2AA.params->coltot[Gba])
-			    t_imba = T2AA.matrix[Gba][im][ba];
+		  la = EBA_col_start[Gkj][Gl];
+		  il = T2AB_row_start[Gil][I];
 
-                          if(EABints.params->rowtot[Gjk] && EABints.params->coltot[Gjk])
-			    E_jkmc = EABints.matrix[Gjk][jk][mc];
+		  nrows = T2AB.params->coltot[Gil];
+		  ncols = avirtpi[Ga];
+		  nlinks = boccpi[Gl];
 
-                          value_c += t_imba * E_jkmc;
-			}
+		  if(nrows && ncols && nlinks)
+		    C_DGEMM('t', 'n', nrows, ncols, nlinks, 1.0,
+			    &(T2AB.matrix[Gil][il][0]), nrows,
+			    &(EBAints.matrix[Gkj][kj][la]), ncols, 1.0,
+			    &(WBcA[Gbc][0][0]), ncols);
 
-                        /* -t_JmBc * E_kImA */
-			Gm = Gj ^ Gb ^ Gc;
-			for(m=0; m < boccpi[Gm]; m++) {
-                          M = bocc_off[Gm] + m;
 
-                          jm = T2AB.params->rowidx[J][M];
-                          ma = EBAints.params->colidx[M][A];
+		  /* -t_JlBc * E_kIlA */
+		  Gbc = Gjl = Gj ^ Gl;
+		  Ga = Gki ^ Gl;
 
-                          t_jmbc = E_kima = 0.0;
+		  la = EBA_col_start[Gki][Gl];
+		  jl = T2AB_row_start[Gjl][J];
 
-                          if(T2AB.params->rowtot[Gbc] && T2AB.params->coltot[Gbc])
-			    t_jmbc = T2AB.matrix[Gbc][jm][bc];
+		  nrows = T2AB.params->coltot[Gjl];
+		  ncols = avirtpi[Ga];
+		  nlinks = boccpi[Gl];
 
-                          if(EBAints.params->rowtot[Gik] && EBAints.params->coltot[Gik])
-			    E_kima = EBAints.matrix[Gik][ki][ma];
+		  if(nrows && ncols && nlinks)
+		    C_DGEMM('t', 'n', nrows, ncols, nlinks, -1.0,
+			    &(T2AB.matrix[Gjl][jl][0]), nrows,
+			    &(EBAints.matrix[Gki][ki][la]), ncols, 1.0,
+			    &(WBcA[Gbc][0][0]), ncols);
 
-                          value_c -= t_jmbc * E_kima;
-			}
+		}
 
-                        /* +t_JmAc * E_kImB */
-			Gm = Gj ^ Ga ^ Gc;
-			for(m=0; m < boccpi[Gm]; m++) {
-                          M = bocc_off[Gm] + m;
+		W_sort(WBcA, WABc, nirreps, Gijk, FABints.params->coltot, FABints.params->colidx,
+		       FABints.params->colorb, FABints.params->rsym, FABints.params->ssym,
+		       avir_off, bvir_off, avirtpi, avir_off, FAAints.params->colidx, cab, 1);
 
-                          jm = T2AB.params->rowidx[J][M];
-                          mb = EBAints.params->colidx[M][B];
+		for(Gab=0; Gab < nirreps; Gab++) {
+		  Gc = Gab ^ Gijk;
 
-                          t_jmac = E_kimb = 0.0;
+		  dpd_free_block(WBcA[Gab], FABints.params->coltot[Gab], avirtpi[Gc]);
 
-                          if(T2AB.params->rowtot[Gac] && T2AB.params->coltot[Gac])
-			    t_jmac = T2AB.matrix[Gac][jm][ac];
+		  WAcB[Gab] = dpd_block_matrix(FABints.params->coltot[Gab], avirtpi[Gc]);
+		}
 
-                          if(EBAints.params->rowtot[Gik] && EBAints.params->coltot[Gik])
-			    E_kimb = EBAints.matrix[Gik][ki][mb];
+		for(Gd=0; Gd < nirreps; Gd++) {
 
-                          value_c += t_jmac * E_kimb;
-			}
+		  /* +t_JkBd * F_IdAc */
+		  Gac = Gid = Gi ^ Gd;
+		  Gb = Gjk ^ Gd;
 
-                        /* -t_JMBA * E_IkMc */
-			Gm = Gj ^ Gb ^ Ga;
-			for(m=0; m < aoccpi[Gm]; m++) {
-                          M = aocc_off[Gm] + m;
+		  bd = T2AB_col_start[Gjk][Gb];
+		  id = FAB_row_start[Gid][I];
 
-                          jm = T2AA.params->rowidx[J][M];
-                          mc = EABints.params->colidx[M][C];
+		  FABints.matrix[Gid] = dpd_block_matrix(bvirtpi[Gd], FABints.params->coltot[Gid]);
+		  dpd_buf4_mat_irrep_rd_block(&FABints, Gid, id, bvirtpi[Gd]);
 
-                          t_jmba = E_ikmc = 0.0;
+ 		  nrows = FABints.params->coltot[Gid];
+		  ncols = avirtpi[Gb];
+		  nlinks = bvirtpi[Gd];
 
-                          if(T2AA.params->rowtot[Gba] && T2AA.params->coltot[Gba])
-			    t_jmba = T2AA.matrix[Gba][jm][ba];
+		  if(nrows && ncols && nlinks)
+		    C_DGEMM('t', 't', nrows, ncols, nlinks, 1.0,
+			    &(FABints.matrix[Gid][0][0]), nrows,
+			    &(T2AB.matrix[Gjk][jk][bd]), nlinks, 1.0,
+			    &(WAcB[Gac][0][0]), ncols);
 
-                          if(EABints.params->rowtot[Gik] && EABints.params->coltot[Gik])
-			    E_ikmc = EABints.matrix[Gik][ik][mc];
+		  dpd_free_block(FABints.matrix[Gid], bvirtpi[Gd], FABints.params->coltot[Gid]);
 
-                          value_c -= t_jmba * E_ikmc;
-			}
 
-                        /* -t_MkBc * E_JIMA */
-			Gm = Gk ^ Gb ^ Gc;
-			for(m=0; m < aoccpi[Gm]; m++) {
-                          M = aocc_off[Gm] + m;
+		  /* -t_IkBd * F_JdAc */
+		  Gac = Gjd = Gj ^ Gd;
+		  Gb = Gik ^ Gd;
 
-                          mk = T2AB.params->rowidx[M][K];
-                          ma = EAAints.params->colidx[M][A];
+		  bd = T2AB_col_start[Gik][Gb];
+		  jd = FAB_row_start[Gjd][J];
 
-                          t_mkbc = E_jima = 0.0;
+		  FABints.matrix[Gjd] = dpd_block_matrix(bvirtpi[Gd], FABints.params->coltot[Gjd]);
+		  dpd_buf4_mat_irrep_rd_block(&FABints, Gjd, jd, bvirtpi[Gd]);
 
-                          if(T2AB.params->rowtot[Gbc] && T2AB.params->coltot[Gbc])
-			    t_mkbc = T2AB.matrix[Gbc][mk][bc];
+ 		  nrows = FABints.params->coltot[Gjd];
+		  ncols = avirtpi[Gb];
+		  nlinks = bvirtpi[Gd];
 
-                          if(EAAints.params->rowtot[Gji] && EAAints.params->coltot[Gji])
-			    E_jima = EAAints.matrix[Gji][ji][ma];
+		  if(nrows && ncols && nlinks)
+		    C_DGEMM('t', 't', nrows, ncols, nlinks, -1.0,
+			    &(FABints.matrix[Gjd][0][0]), nrows,
+			    &(T2AB.matrix[Gik][ik][bd]), nlinks, 1.0,
+			    &(WAcB[Gac][0][0]), ncols);
 
-                          value_c -= t_mkbc * E_jima;
-			}
+		  dpd_free_block(FABints.matrix[Gjd], bvirtpi[Gd], FABints.params->coltot[Gjd]);
 
-                        /* +t_MkAc * E_JIMB */
-			Gm = Gk ^ Ga ^ Gc;
-			for(m=0; m < aoccpi[Gm]; m++) {
-                          M = aocc_off[Gm] + m;
+		}
 
-                          mk = T2AB.params->rowidx[M][K];
-                          mb = EAAints.params->colidx[M][B];
+		for(Gl=0; Gl < nirreps; Gl++) {
 
-                          t_mkac = E_jimb = 0.0;
+		  /* -t_IlAc * E_kJlB */
+		  Gac = Gil = Gi ^ Gl;
+		  Gb = Gkj ^ Gl;
 
-                          if(T2AB.params->rowtot[Gac] && T2AB.params->coltot[Gac])
-			    t_mkac = T2AB.matrix[Gac][mk][ac];
+		  lb = EBA_col_start[Gkj][Gl];
+		  il = T2AB_row_start[Gil][I];
 
-                          if(EAAints.params->rowtot[Gji] && EAAints.params->coltot[Gji])
-			    E_jimb = EAAints.matrix[Gji][ji][mb];
+		  nrows = T2AB.params->coltot[Gil];
+		  ncols = avirtpi[Gb];
+		  nlinks = boccpi[Gl];
 
-                          value_c += t_mkac * E_jimb;
-			}
+		  if(nrows && ncols && nlinks)
+		    C_DGEMM('t', 'n', nrows, ncols, nlinks, -1.0,
+			    &(T2AB.matrix[Gil][il][0]), nrows,
+			    &(EBAints.matrix[Gkj][kj][lb]), ncols, 1.0,
+			    &(WAcB[Gac][0][0]), ncols);
 
-			/** disconnected triples **/
 
-			value_d = 0.0;
+		  /* +t_JlAc * E_kIlB */
+		  Gac = Gjl = Gj ^ Gl;
+		  Gb = Gki ^ Gl;
 
-                        /* +t_IA * D_JkBc */
-			if(Gi == Ga && Gjk == Gbc) {
-			  t_ia = D_jkbc = 0.0;
+		  lb = EBA_col_start[Gki][Gl];
+		  jl = T2AB_row_start[Gjl][J];
 
-                          if(T1A.params->rowtot[Gi] && T1A.params->coltot[Gi])
-			    t_ia = T1A.matrix[Gi][i][a];
+		  nrows = T2AB.params->coltot[Gjl];
+		  ncols = avirtpi[Gb];
+		  nlinks = boccpi[Gl];
 
-                          if(DABints.params->rowtot[Gjk] && DABints.params->coltot[Gjk])
-			    D_jkbc = DABints.matrix[Gjk][jk][bc];
+		  if(nrows && ncols && nlinks)
+		    C_DGEMM('t', 'n', nrows, ncols, nlinks, 1.0,
+			    &(T2AB.matrix[Gjl][jl][0]), nrows,
+			    &(EBAints.matrix[Gki][ki][lb]), ncols, 1.0,
+			    &(WAcB[Gac][0][0]), ncols);
+		}
 
-                          value_d += t_ia * D_jkbc;
-			}
+		W_sort(WAcB, WABc, nirreps, Gijk, FABints.params->coltot, FABints.params->colidx,
+		       FABints.params->colorb, FABints.params->rsym, FABints.params->ssym,
+		       avir_off, bvir_off, avirtpi, avir_off, FAAints.params->colidx, acb, 1);
 
-			/* -t_IB * D_JkAc */
-			if(Gi == Gb && Gjk == Gac) {
-			  t_ib = D_jkac = 0.0;
+		for(Gab=0; Gab < nirreps; Gab++) {
+		  Gc = Gab ^ Gijk;
 
-                          if(T1A.params->rowtot[Gi] && T1A.params->coltot[Gi])
-			    t_ib = T1A.matrix[Gi][i][b];
+		  dpd_free_block(WAcB[Gab], FABints.params->coltot[Gab], avirtpi[Gc]);
 
-                          if(DABints.params->rowtot[Gjk] && DABints.params->coltot[Gjk])
-			    D_jkac = DABints.matrix[Gjk][jk][ac];
+		  WcBA[Gab] = dpd_block_matrix(FBAints.params->coltot[Gab], avirtpi[Gc]);
+		}
 
-                          value_d -= t_ib * D_jkac;
-			}
+		for(Gd=0; Gd < nirreps; Gd++) {
 
-                        /* -t_JA * D_IkBc */
-			if(Gj == Ga && Gik == Gbc) {
-			  t_ja = D_ikbc = 0.0;
+		  /* -t_JIAD * F_kDcB */
+		  Gcb = Gkd = Gk ^ Gd;
+		  Ga = Gji ^ Gd;
 
-                          if(T1A.params->rowtot[Gj] && T1A.params->coltot[Gj])
-			    t_ja = T1A.matrix[Gj][j][a];
+		  ad = T2AA_col_start[Gji][Ga];
+		  kd = FBA_row_start[Gkd][K];
 
-                          if(DABints.params->rowtot[Gik] && DABints.params->coltot[Gik])
-			    D_ikbc = DABints.matrix[Gik][ik][bc];
+		  FBAints.matrix[Gkd] = dpd_block_matrix(avirtpi[Gd], FBAints.params->coltot[Gkd]);
+		  dpd_buf4_mat_irrep_rd_block(&FBAints, Gkd, kd, avirtpi[Gd]);
 
-                          value_d -= t_ja * D_ikbc;
-			}
+ 		  nrows = FBAints.params->coltot[Gkd];
+		  ncols = avirtpi[Ga];
+		  nlinks = avirtpi[Gd];
 
-			/* +t_JB * D_IkAc */
-			if(Gj == Gb && Gik == Gac) {
-			  t_jb = D_ikac = 0.0;
+		  if(nrows && ncols && nlinks)
+		    C_DGEMM('t', 't', nrows, ncols, nlinks, -1.0,
+			    &(FBAints.matrix[Gkd][0][0]), nrows,
+			    &(T2AA.matrix[Gji][ji][ad]), nlinks, 1.0,
+			    &(WcBA[Gcb][0][0]), ncols);
 
-                          if(T1A.params->rowtot[Gj] && T1A.params->coltot[Gj])
-			    t_jb = T1A.matrix[Gj][j][b];
+		  dpd_free_block(FBAints.matrix[Gkd], avirtpi[Gd], FBAints.params->coltot[Gkd]);
+		}
 
-                          if(DABints.params->rowtot[Gik] && DABints.params->coltot[Gik])
-			    D_ikac = DABints.matrix[Gik][ik][ac];
+		for(Gl=0; Gl < nirreps; Gl++) {
 
-                          value_d += t_jb * D_ikac;
-			}
+		  /* -t_kLcB * E_JILA */
+		  Gcb = Gkl = Gk ^ Gl;
+		  Ga = Gji ^ Gl;
 
-			/* +t_kc * D_JIBA */
-			if(Gk == Gc && Gji == Gba) {
-			  t_kc = D_jiba = 0.0;
+		  la = EAA_col_start[Gji][Gl];
+		  kl = T2BA_row_start[Gkl][K];
 
-                          if(T1B.params->rowtot[Gk] && T1B.params->coltot[Gk])
-			    t_kc = T1B.matrix[Gk][k][c];
+		  nrows = T2BA.params->coltot[Gkl];
+		  ncols = avirtpi[Ga];
+		  nlinks = aoccpi[Gl];
 
-                          if(DAAints.params->rowtot[Gji] && DAAints.params->coltot[Gji])
-			    D_jiba = DAAints.matrix[Gji][ji][ba];
+		  if(nrows && ncols && nlinks)
+		    C_DGEMM('t', 'n', nrows, ncols, nlinks, -1.0,
+			    &(T2BA.matrix[Gkl][kl][0]), nrows,
+			    &(EAAints.matrix[Gji][ji][la]), ncols, 1.0,
+			    &(WcBA[Gcb][0][0]), ncols);
+		}
 
-                          value_d += t_kc * D_jiba;
-			}
+		W_sort(WcBA, WABc, nirreps, Gijk, FBAints.params->coltot, FBAints.params->colidx,
+		       FBAints.params->colorb, FBAints.params->rsym, FBAints.params->ssym,
+		       bvir_off, avir_off, avirtpi, avir_off, FAAints.params->colidx, cba, 1);
 
-			/*
-			  if(fabs(value_c) > 1e-7) {
-			  cnt++;
-			  fprintf(outfile, "%d %d %d %d %d %d %20.14f\n", I, J, K, A, B, C, value_c);
-			  }
-			*/
+		for(Gab=0; Gab < nirreps; Gab++) {
+		  Gc = Gab ^ Gijk;
 
-			/* Compute the Fock denominator */
-			denom = 0.0;
-			if(fIJ.params->rowtot[Gi])
-			  denom += fIJ.matrix[Gi][i][i];
-			if(fIJ.params->rowtot[Gj])
-			  denom += fIJ.matrix[Gj][j][j];
-			if(fij.params->rowtot[Gk])
-			  denom += fij.matrix[Gk][k][k];
-			if(fAB.params->rowtot[Ga])
-			  denom -= fAB.matrix[Ga][a][a];
-			if(fAB.params->rowtot[Gb])
-			  denom -= fAB.matrix[Gb][b][b];
-			if(fab.params->rowtot[Gc])
-			  denom -= fab.matrix[Gc][c][c];
+		  dpd_free_block(WcBA[Gab], FBAints.params->coltot[Gab], avirtpi[Gc]);
 
-			ET_AAB += (value_d + value_c) * value_c / denom;
+		  WcAB[Gab] = dpd_block_matrix(FBAints.params->coltot[Gab], avirtpi[Gc]);
+		}
 
-		      } /* c */
-		    } /* b */
-		  } /* a */
+		for(Gd=0; Gd < nirreps; Gd++) {
 
-		} /* k */
-	      } /* j */
-	    } /* i */
+		  /* +t_JIBD * F_kDcA */
+		  Gca = Gkd = Gk ^ Gd;
+		  Gb = Gji ^ Gd;
 
-	  } /* Gb */
-	} /* Ga */
+		  bd = T2AA_col_start[Gji][Gb];
+		  kd = FBA_row_start[Gkd][K];
+
+		  FBAints.matrix[Gkd] = dpd_block_matrix(avirtpi[Gd], FBAints.params->coltot[Gkd]);
+		  dpd_buf4_mat_irrep_rd_block(&FBAints, Gkd, kd, avirtpi[Gd]);
+
+ 		  nrows = FBAints.params->coltot[Gkd];
+		  ncols = avirtpi[Gb];
+		  nlinks = avirtpi[Gd];
+
+		  if(nrows && ncols && nlinks)
+		    C_DGEMM('t', 't', nrows, ncols, nlinks, 1.0,
+			    &(FBAints.matrix[Gkd][0][0]), nrows,
+			    &(T2AA.matrix[Gji][ji][bd]), nlinks, 1.0,
+			    &(WcAB[Gca][0][0]), ncols);
+
+		  dpd_free_block(FBAints.matrix[Gkd], avirtpi[Gd], FBAints.params->coltot[Gkd]);
+		}
+
+		for(Gl=0; Gl < nirreps; Gl++) {
+
+		  /* t_kLcA * E_JILB */
+		  Gca = Gkl = Gk ^ Gl;
+		  Gb = Gji ^ Gl;
+
+		  lb = EAA_col_start[Gji][Gl];
+		  kl = T2BA_row_start[Gkl][K];
+
+		  nrows = T2BA.params->coltot[Gkl];
+		  ncols = avirtpi[Gb];
+		  nlinks = aoccpi[Gl];
+
+		  if(nrows && ncols && nlinks)
+		    C_DGEMM('t', 'n', nrows, ncols, nlinks, 1.0,
+			    &(T2BA.matrix[Gkl][kl][0]), nrows,
+			    &(EAAints.matrix[Gji][ji][lb]), ncols, 1.0,
+			    &(WcAB[Gca][0][0]), ncols);
+		}
+
+		W_sort(WcAB, WABc, nirreps, Gijk, FBAints.params->coltot, FBAints.params->colidx,
+		       FBAints.params->colorb, FBAints.params->rsym, FBAints.params->ssym,
+		       bvir_off, avir_off, avirtpi, avir_off, FAAints.params->colidx, bca, 1);
+
+
+		for(Gab=0; Gab < nirreps; Gab++) {
+		  Gc = Gab ^ Gijk;
+
+		  dpd_free_block(WcAB[Gab], FBAints.params->coltot[Gab], avirtpi[Gc]);
+
+		  VABc[Gab] = dpd_block_matrix(FAAints.params->coltot[Gab], bvirtpi[Gc]);
+		}
+
+		/* Add disconnected triples and finish W and V arrays */
+		for(Gab=0; Gab < nirreps; Gab++) {
+		  Gc = Gab ^ Gijk;
+
+		  for(ab=0; ab < FAAints.params->coltot[Gab]; ab++) {
+		    A = FAAints.params->colorb[Gab][ab][0];
+		    Ga = FAAints.params->rsym[A];
+		    a = A - avir_off[Ga];
+		    B = FAAints.params->colorb[Gab][ab][1];
+		    Gb = FAAints.params->ssym[B];
+		    b = B - avir_off[Gb];
+
+		    Gbc = Gb ^ Gc;
+		    Gac = Ga ^ Gc;
+
+		    for(c=0; c < bvirtpi[Gc]; c++) {
+		      C = bvir_off[Gc] + c;
+
+		      bc = DABints.params->colidx[B][C];
+		      ac = DABints.params->colidx[A][C];
+
+		      /* +t_IA * D_JkBc */
+		      if(Gi == Ga && Gjk == Gbc) {
+			t_ia = D_jkbc = 0.0;
+
+			if(T1A.params->rowtot[Gi] && T1A.params->coltot[Gi])
+			  t_ia = T1A.matrix[Gi][i][a];
+
+			if(DABints.params->rowtot[Gjk] && DABints.params->coltot[Gjk])
+			  D_jkbc = DABints.matrix[Gjk][jk][bc];
+
+			VABc[Gab][ab][c] += t_ia * D_jkbc;
+		      }
+
+		      /* -t_IB * D_JkAc */
+		      if(Gi == Gb && Gjk == Gac) {
+			t_ib = D_jkac = 0.0;
+
+			if(T1A.params->rowtot[Gi] && T1A.params->coltot[Gi])
+			  t_ib = T1A.matrix[Gi][i][b];
+
+			if(DABints.params->rowtot[Gjk] && DABints.params->coltot[Gjk])
+			  D_jkac = DABints.matrix[Gjk][jk][ac];
+
+			VABc[Gab][ab][c] -= t_ib * D_jkac;
+		      }
+
+		      /* -t_JA * D_IkBc */
+		      if(Gj == Ga && Gik == Gbc) {
+			t_ja = D_ikbc = 0.0;
+
+			if(T1A.params->rowtot[Gj] && T1A.params->coltot[Gj])
+			  t_ja = T1A.matrix[Gj][j][a];
+
+			if(DABints.params->rowtot[Gik] && DABints.params->coltot[Gik])
+			  D_ikbc = DABints.matrix[Gik][ik][bc];
+
+			VABc[Gab][ab][c] -= t_ja * D_ikbc;
+		      }
+
+		      /* +t_JB * D_IkAc */
+		      if(Gj == Gb && Gik == Gac) {
+			t_jb = D_ikac = 0.0;
+
+			if(T1A.params->rowtot[Gj] && T1A.params->coltot[Gj])
+			  t_jb = T1A.matrix[Gj][j][b];
+
+			if(DABints.params->rowtot[Gik] && DABints.params->coltot[Gik])
+			  D_ikac = DABints.matrix[Gik][ik][ac];
+
+			VABc[Gab][ab][c] += t_jb * D_ikac;
+		      }
+
+		      /* -t_kc * D_JIAB */
+		      if(Gk == Gc && Gji == Gab) {
+			t_kc = D_jiab = 0.0;
+
+			if(T1B.params->rowtot[Gk] && T1B.params->coltot[Gk])
+			  t_kc = T1B.matrix[Gk][k][c];
+
+			if(DAAints.params->rowtot[Gji] && DAAints.params->coltot[Gji])
+			  D_jiab = DAAints.matrix[Gji][ji][ab];
+
+			VABc[Gab][ab][c] -= t_kc * D_jiab;
+		      }
+
+		      /* Sum V and W into V */
+		      VABc[Gab][ab][c] += WABc[Gab][ab][c];
+
+		      /* Build the rest of the denominator and divide it into W */
+		      denom = dijk;
+		      if(fAB.params->rowtot[Ga])
+			denom -= fAB.matrix[Ga][a][a];
+		      if(fAB.params->rowtot[Gb])
+			denom -= fAB.matrix[Gb][b][b];
+		      if(fab.params->rowtot[Gc])
+			denom -= fab.matrix[Gc][c][c];
+
+		      WABc[Gab][ab][c] /= denom;
+
+		    }
+		  }
+		}
+
+		/* 1/2 Dot product of final V and W is the energy for this ijk triple */
+		for(Gab=0; Gab < nirreps; Gab++) {
+		  Gc = Gab ^ Gijk;
+		  ET_AAB += dot_block(WABc[Gab], VABc[Gab], FAAints.params->coltot[Gab], bvirtpi[Gc], 0.5);
+		}
+
+		for(Gab=0; Gab < nirreps; Gab++) {
+		  Gc = Gab ^ Gijk;
+		  dpd_free_block(WABc[Gab], FAAints.params->coltot[Gab], bvirtpi[Gc]);
+		  dpd_free_block(VABc[Gab], FAAints.params->coltot[Gab], bvirtpi[Gc]);
+		}
+
+	      } /* I >= J */
+
+	    } /* k */
+	  } /* j */
+	} /* i */
 
       } /* Gk */
     } /* Gj */
   } /* Gi */
 
   /*  fprintf(outfile, "cnt = %d\n", cnt); */
-  ET_AAB /= 4.0;
   /*  fprintf(outfile, "ET_AAB = %20.14f\n", ET_AAB); */
+
+  free(WABc);
+  free(WBcA);
+  free(WAcB);
+  free(WcAB);
+  free(WcBA);
+  free(VABc);
 
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_close(&T2AA, h);
     dpd_buf4_mat_irrep_close(&T2AB, h);
-    dpd_buf4_mat_irrep_close(&FAAints, h);
-    dpd_buf4_mat_irrep_close(&FABints, h);
-    dpd_buf4_mat_irrep_close(&FBAints, h);
+    dpd_buf4_mat_irrep_close(&T2BA, h);
     dpd_buf4_mat_irrep_close(&EAAints, h);
     dpd_buf4_mat_irrep_close(&EABints, h);
     dpd_buf4_mat_irrep_close(&EBAints, h);
@@ -591,6 +873,7 @@ double ET_UHF_AAB(void)
 
   dpd_buf4_close(&T2AA);
   dpd_buf4_close(&T2AB);
+  dpd_buf4_close(&T2BA);
   dpd_buf4_close(&FAAints);
   dpd_buf4_close(&FABints);
   dpd_buf4_close(&FBAints);
@@ -613,6 +896,19 @@ double ET_UHF_AAB(void)
   dpd_file2_close(&fij);
   dpd_file2_close(&fAB);
   dpd_file2_close(&fab);
+
+  free_int_matrix(FAA_row_start, nirreps);
+  free_int_matrix(FAB_row_start, nirreps);
+  free_int_matrix(FBA_row_start, nirreps);
+  free_int_matrix(T2AA_row_start, nirreps);
+  free_int_matrix(T2AB_row_start, nirreps);
+  free_int_matrix(T2BA_row_start, nirreps);
+
+  free_int_matrix(T2AA_col_start, nirreps);
+  free_int_matrix(T2AB_col_start, nirreps);
+  free_int_matrix(EAA_col_start, nirreps);
+  free_int_matrix(EAB_col_start, nirreps);
+  free_int_matrix(EBA_col_start, nirreps);
 
   return ET_AAB;
 }

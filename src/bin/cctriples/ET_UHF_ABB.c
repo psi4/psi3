@@ -117,27 +117,27 @@ double ET_UHF_ABB(void)
 	Gjk = Gj ^ Gk;
 	Gik = Gi ^ Gk;
 
-	for(Ga=0; Ga < nirreps; Ga++) {
-	  for(Gb=0; Gb < nirreps; Gb++) {
-	    Gc = Gi ^ Gj ^ Gk ^ Ga ^ Gb;
+	for(i=0; i < aoccpi[Gi]; i++) {
+	  I = aocc_off[Gi] + i;
+	  for(j=0; j < boccpi[Gj]; j++) {
+	    J = bocc_off[Gj] + j;
+	    for(k=0; k < boccpi[Gk]; k++) {
+	      K = bocc_off[Gk] + k;
 
-	    Gbc = Gb^Gc;
-	    Gac = Ga^Gc;
-	    Gba = Gb^Ga;
+	      ij = EABints.params->rowidx[I][J];
+	      ji = EBAints.params->rowidx[J][I];
+	      jk = EBBints.params->rowidx[J][K];
+	      kj = EBBints.params->rowidx[K][J];
+	      ik = EABints.params->rowidx[I][K];
+	      ki = EBAints.params->rowidx[K][I];
 
-	    for(i=0; i < aoccpi[Gi]; i++) {
-	      I = aocc_off[Gi] + i;
-	      for(j=0; j < boccpi[Gj]; j++) {
-		J = bocc_off[Gj] + j;
-		for(k=0; k < boccpi[Gk]; k++) {
-		  K = bocc_off[Gk] + k;
+	      for(Ga=0; Ga < nirreps; Ga++) {
+		for(Gb=0; Gb < nirreps; Gb++) {
+		  Gc = Gi ^ Gj ^ Gk ^ Ga ^ Gb;
 
-		  ij = EABints.params->rowidx[I][J];
-		  ji = EBAints.params->rowidx[J][I];
-		  jk = EBBints.params->rowidx[J][K];
-		  kj = EBBints.params->rowidx[K][J];
-		  ik = EABints.params->rowidx[I][K];
-		  ki = EBAints.params->rowidx[K][I];
+		  Gbc = Gb^Gc;
+		  Gac = Ga^Gc;
+		  Gba = Gb^Ga;
 
 		  for(a=0; a < avirtpi[Ga]; a++) {
 		    A = avir_off[Ga] + a;
@@ -533,10 +533,10 @@ double ET_UHF_ABB(void)
 			}
 
 			/*
-			if(fabs(value_c) > 1e-7) {
+			  if(fabs(value_c) > 1e-7) {
 			  cnt++;
 			  fprintf(outfile, "%d %d %d %d %d %d %20.14f\n", I, J, K, A, B, C, value_c);
-			}
+			  }
 			*/
 
 			/* Compute the Fock denominator */
