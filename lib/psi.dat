@@ -23,7 +23,7 @@ psi: (
   oeprop     = "oeprop"
   optking    = "optking"
   ugeom      = "ugeom"
-  rgeom      = "rgeom"
+  rgeom      = ""
   geomupdate = ($optking)
 
   % CASSCF specific programs
