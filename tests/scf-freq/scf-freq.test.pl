@@ -33,9 +33,9 @@ sub extract_data
 
   seek(OUT,0,0);
   while (<OUT>) {
-    if (/total energy       =/) {
+    if (/SCF total energy/) {
       @data2 = split(/ +/, $_);
-      $_[2] = $data2[4];
+      $_[2] = $data2[5];
     }
   }
   
@@ -68,6 +68,9 @@ sub compare_data
   open (RE, ">$RESULT") || die "cannot open $RESULT: $!";
 
   select (RE);
+
+  printf "%20.12f %20.12f\n", $Enuc_ref, $Enuc_test;
+  printf "%20.12f %20.12f\n", $Ehf_ref, $Ehf_test;
 
   printf "\nSCF-FREQ:\n";
   $diff_nuc = abs ($Enuc_ref - $Enuc_test);

@@ -1,97 +1,45 @@
 #!/usr/bin/perl  
 
+require("../psitest.pl");
+
 $TOL = 10**-8;
 $REF_FILE = "output.ref";
 $TEST_FILE = "output.dat";
 $RESULT = "cc8.test";
 
-# system ("input");
-# system ("psi3");
+system ("input");
+system ("psi3");
 
-extract_data($REF_FILE,$Enuc_ref,$Ehf_ref,$Eccsd_ref,$Eccsd_t_ref);
-extract_data($TEST_FILE,$Enuc_test,$Ehf_test,$Eccsd_test,$Eccsd_t_test);
+open(RE, ">$RESULT") || die "cannot open $RESULT: $!";
+select (RE);
+printf "\nCC8:\n";
 
-compare_data();
-
-###############################################################################
-sub extract_data
-{
-  open(OUT, "$_[0]") || die "cannot open $_[0]: $!";
-
-  seek(OUT,0,0);
-  while (<OUT>) {
-    if (/Nuclear Repulsion Energy    =/) {
-      @data1 = split(/ +/, $_);
-      $_[1] = $data1[4];
-    }
-  }
-
-  seek(OUT,0,0);
-  while (<OUT>) {
-    if (/SCF total energy   =/) {
-      @data2 = split(/ +/, $_);
-      $_[2] = $data2[4];
-    }
-  }
-
-  seek(OUT,0,0);
-  while (<OUT>) {
-    if (/Total CCSD energy/) {
-      @data3 = split(/ +/, $_);
-      $_[3] = $data3[4];
-    }
-  }
-
-  seek(OUT,0,0);
-  while (<OUT>) {
-    if (/Total CCSD[\(]T[\)] energy/) {
-      @data4 = split(/ +/, $_);
-      $_[4] = $data4[4];
-    }
-  }
-
-  close(OUT);
+if (abs(seek_nuc($REF_FILE) - seek_nuc($TEST_FILE)) > $TOL) {
+  fail_test("Nuclear Repulsion Energy");
 }
-###############################################################################
-sub compare_data
-{
-  open(RE, ">$RESULT") || die "cannot open $RESULT: $!";
-
-  select (RE);
-
-  printf "\nCC8:\n";
-
-  $diff_nuc = abs ($Enuc_ref - $Enuc_test);
-  if ($diff_nuc > $TOL) {
-    printf "\nNuclear Repulsion Energy ... FAILED\n";
-  }
-  else {
-    printf "\nNuclear Repulsion Energy ... PASSED\n";
-  }
-
-  $diff_hf = abs ($Ehf_ref - $Ehf_test);
-  if ($diff_hf > $TOL) {
-    printf "\nUHF Energy               ... FAILED\n";
-  }
-  else {
-    printf "\nUHF Energy               ... PASSED\n";
-  }
-
-  $diff_ccsd = abs ($Eccsd_ref - $Eccsd_test);
-  if ($diff_ccsd > $TOL) {
-    printf "\nCCSD Energy              ... FAILED\n";
-  }
-  else {
-    printf "\nCCSD Energy              ... PASSED\n";
-  }
-
-  $diff_ccsd_t = abs ($Eccsd_t_ref - $Eccsd_t_test);
-  if ($diff_ccsd_t > $TOL) {
-    printf "\nCCSD(T) Energy           ... FAILED\n\n";
-  }
-  else {
-    printf "\nCCSD(T) Energy           ... PASSED\n\n";
-  }
-
-  close (RE);
+else {
+  pass_test("Nuclear Repulsion Energy");
 }
+
+if (abs(seek_scf($REF_FILE) - seek_scf($TEST_FILE)) > $TOL) {
+  fail_test("SCF Energy");
+}
+else { 
+  pass_test("SCF Energy");
+}
+
+if (abs(seek_ccsd($REF_FILE) - seek_ccsd($TEST_FILE)) > $TOL) {
+  fail_test("CCSD Energy");
+}
+else { 
+  pass_test("CCSD Energy");
+}
+
+if (abs(seek_ccsd_t($REF_FILE) - seek_ccsd_t($TEST_FILE)) > $TOL) {
+  fail_test("CCSD(T) Energy");
+}
+else {
+  pass_test("CCSD(T) Energy");
+}
+
+close (RE);
