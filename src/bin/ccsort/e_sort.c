@@ -90,5 +90,10 @@ void e_sort(void)
     dpd_buf4_init(&E, CC_EINTS, 0, 11, 0, 11, 0, 0, "E <ai|jk>");
     dpd_buf4_sort(&E, CC_EINTS, qpsr, 10, 0, "E <ia|jk>");
     dpd_buf4_close(&E);
+
+    /* <ij|ak> */
+    dpd_buf4_init(&E, CC_EINTS, 0, 11, 0, 11, 0, 0, "E <ai|jk>");
+    dpd_buf4_sort(&E, CC_EINTS, rspq, 0, 11, "E <ij|ak>");
+    dpd_buf4_close(&E);
   }
 }
