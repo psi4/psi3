@@ -87,6 +87,13 @@ psi: (
   SCFUHFFirstOpt  = $SCFFirstOpt
   SCFTwoConFirstOpt  = $SCFFirstOpt
 
+  % Procedures for optimizing geometries with SCF energies
+  SCFEnergyOpt = (repeat $nopt $SCFEnergy $optking end $done)
+  SCFRHFEnergyOpt = $SCFEnergyOpt
+  SCFROHFEnergyOpt = $SCFEnergyOpt
+  SCFUHFEnergyOpt = $SCFEnergyOpt
+  SCFTwoConEnergyOpt = $SCFEnergyOpt
+
   % Procedures for the finite displacements of SCF gradients
   SCFFirstDisp  = (repeat $ndisp $ugeom $uinput $SCFFirst $rgeom end $done)
   SCFRHFFirstDisp  = $SCFFirstDisp
@@ -229,6 +236,13 @@ psi: (
   DETCIROHFEnergyDisp = $DETCIEnergyDisp
   DETCIUHFEnergyDisp = ERROR
   DETCITwoConEnergyDisp = ERROR
+
+  % Procedures for optimization via energy points
+  DETCIEnergyOpt = (repeat $nopt $DETCIEnergy $optking end $done)
+  DETCIRHFEnergyOpt = $DETCIEnergyOpt 
+  DETCIROHFEnergyOpt = $DETCIEnergyOpt 
+  DETCIUHFEnergyOpt = ERROR
+  DETCITwoConEnergyOpt = $DETCIEnergyOpt
 
   % -------------------------------- DETCAS Procedures
   % Procedures for the DETCAS energy
