@@ -8,7 +8,6 @@
 #include"moinfo.h"
 #include"moinfo_corr.h"
 #include"rmp2_energy.h"
-#include"ump2_energy.h"
 
 void mp2()
 {
@@ -18,9 +17,6 @@ void mp2()
   switch(UserOptions.reftype) {
   case rhf:
       rmp2_energy();
-      break;
-  case uhf:
-/*      ump2_energy();*/
       break;
   default:
       punt("MP2 energy with specified REFERENCE not implemented");
