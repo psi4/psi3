@@ -123,6 +123,7 @@ typedef struct {
     int make_mp2;                      /* Flag to compute MP2 energy directly */
     int make_r12ints;                  /* Compute integrals for linear R12 methods */
     int make_mp2r12;                   /* Flag to compute MP2-R12 energy directly */
+    int make_cc_bt2;                   /* Flag to compute CC four-virtuals T2 term directly */
     int symm_ints;                     /* This flag should be set whe individual integrals over SO need to be computed */
     int scf_only;                      /* Means that ERIs will be used only in SCF calculations
 					  (may save some space) */
@@ -281,6 +282,10 @@ typedef struct {
     int beta_occ;             /* number of beta  occupied orbitals */
 } MOInfo_t;
 
+
+typedef struct {
+  double **T2_so;
+} CCInfo_t;
 
 /* -------------------------------------------------------
    

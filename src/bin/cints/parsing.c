@@ -223,6 +223,9 @@ void parsing_cmdline(int argc, char *argv[])
 	   UserOptions.make_fock = 0;
 	   UserOptions.make_deriv1 = 0;
 	   UserOptions.make_mp2 = 1;
+	   UserOptions.make_r12ints = 0;
+	   UserOptions.make_mp2r12 = 0;
+	   UserOptions.make_cc_bt2 = 0;
 	   UserOptions.symm_ints = 0;
 	   if (!strcmp("MP2",UserOptions.wfn)) {
 	     errcod = ip_string("REFERENCE",&refstring,0);
@@ -254,6 +257,8 @@ void parsing_cmdline(int argc, char *argv[])
 	   UserOptions.make_deriv1 = 0;
 	   UserOptions.make_mp2 = 0;
 	   UserOptions.make_r12ints = 1;
+	   UserOptions.make_mp2r12 = 0;
+	   UserOptions.make_cc_bt2 = 0;
 	   UserOptions.symm_ints = 1;
 	   UserOptions.num_threads = 1;
 #else
@@ -270,7 +275,9 @@ void parsing_cmdline(int argc, char *argv[])
 	   UserOptions.make_fock = 0;
 	   UserOptions.make_deriv1 = 0;
 	   UserOptions.make_mp2 = 0;
+	   UserOptions.make_r12ints = 0;
 	   UserOptions.make_mp2r12 = 1;
+	   UserOptions.make_cc_bt2 = 0;
 	   UserOptions.symm_ints = 0;
 	   if (!strcmp("MP2",UserOptions.wfn)) {
 	     errcod = ip_string("REFERENCE",&refstring,0);
@@ -288,6 +295,33 @@ void parsing_cmdline(int argc, char *argv[])
 #endif
 	   return;
        }
+
+       /*--- compute 4-virtuals T2 contribution to CC equations ---*/
+       if (strcmp(argv[i], "--cc_bt2") == 0) {
+#ifdef INCLUDE_CC
+           UserOptions.make_oei = 0;
+	   UserOptions.make_eri = 0;
+	   UserOptions.make_fock = 0;
+	   UserOptions.make_deriv1 = 0;
+	   UserOptions.make_mp2 = 0;
+	   UserOptions.make_mp2r12 = 0;
+	   UserOptions.make_cc_bt2 = 1;
+	   UserOptions.symm_ints = 0;
+	   UserOptions.print_lvl = 0;
+
+	   errcod = ip_string("REFERENCE",&refstring,0);
+	   if (errcod != IPE_OK)
+	     punt("REFERENCE keyword is missing");
+	   else if (!strcmp(refstring,"RHF") || !strcmp(refstring,""))
+	     UserOptions.reftype = rhf;
+	   else
+	     punt("Direct CC four-virtuals term computation with specified REFERENCE not implemented");
+#else
+	   punt("--cc_bt2 option is not supported by your CINTS executable.\nRecompile the code including files in CC subdirectory.");
+#endif
+	   return;
+       }
+
    }
 
    return;

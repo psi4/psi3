@@ -45,6 +45,9 @@ void deriv1_fock(void);
 #ifdef INCLUDE_MP2R12
  #include"mp2r12.h"
 #endif
+#ifdef INCLUDE_CC
+ #include"cc.h"
+#endif
 
 /*-------------------------------
   External functions declaration
@@ -123,6 +126,10 @@ int main(int argc, char *argv[])
 #ifdef INCLUDE_MP2R12
    if (UserOptions.make_mp2r12)
      mp2r12();
+#endif
+#ifdef INCLUDE_CC
+   if (UserOptions.make_cc_bt2)
+     direct_cc();
 #endif
    
    /*--- Cleanup ---*/

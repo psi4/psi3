@@ -14,7 +14,7 @@
 # 7. MP2R12
 # 8. R12_Ints
 #
-SUBDIRS = Default_Ints OEProp_Ints Fock MP2 Default_Deriv1 Default_Deriv2
+SUBDIRS = Default_Ints OEProp_Ints Fock MP2 Default_Deriv1 Default_Deriv2 CC
 
 #
 # Some subdirectories are not completely independent - need to perform
@@ -96,9 +96,14 @@ CINC = -I$(srcdir) $(DIRS:%=-I$(srcdir)/%)  -I$(objincdir) -I$(incdir) $(CPPFLAG
 CDEF += $(OPTIONS)
 
 LDLIBS += $(BLAS)
-ALLOC = 
+ALLOC =
 PSILIBS = -lPSI_chkpt -lPSI_file30 $(INTLIBS) -lPSI_qt -lPSI_iwl \
-          -lPSI_psio -lPSI_ciomr -lPSI_ipv1 -lpthread 
+          -lPSI_psio -lPSI_ciomr -lPSI_ipv1 -lpthread
+ifeq ($(findstring CC,$(SUBDIRS)),CC)
+  ifneq ($(findstring -lPSI_dpd,$(PSILIBS)),-lPSI_dpd)
+    PSILIBS := -lPSI_dpd $(PSILIBS)
+  endif
+endif
 
 CSRC = main.c parsing.c gprgid.c init_globals.c check_max_am.c $(DIRS:%=%/*.c)
 TRUESRC = $(notdir $(shell echo `ls $(CSRC:%=$(srcdir)/%)`))
