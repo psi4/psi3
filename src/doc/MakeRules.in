@@ -30,6 +30,12 @@ all: default
 	TEXINPUTS=$(srcdir):; export TEXINPUTS; \
 	$(LATEX2HTML) -tmp /tmp -dir $(currdir)/$(<F:%.tex=%) -mkdir -local_icons $<
 
+%.tex : %.tex.src
+	cp $< $@
+
+%.bib : %.bib.src
+	cp $< $@
+
 #
 # do installations
 #
