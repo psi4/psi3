@@ -19,12 +19,15 @@
 */
 void dirprd_block(double **A, double **B, int rows, int cols)
 {
-  register int i;
+  register long int i;
   double *a, *b;
+  long size;
 
-  if(!(rows*cols)) return;
+  size = ((long) rows) * ((long) cols);
+
+  if(!size) return;
 
   a = A[0]; b= B[0];
 
-  for(i=0; i < rows*cols; i++, a++, b++) (*b) = (*a) * (*b);
+  for(i=0; i < size; i++, a++, b++) (*b) = (*a) * (*b);
 }

@@ -68,7 +68,7 @@ extern void C_DGEMM(char transa, char transb, int m, int n, int k,
              double beta, double *C, int ncc);
 extern void C_DROT(int ntot, double *x, int incx, double *y, int incy,
              double costheta, double sintheta);
-extern void C_DSCAL(int len, double alpha, double *vec, int inc);
+extern void C_DSCAL(long int len, double alpha, double *vec, int inc);
 extern void C_DGEMV(char transa, int m, int n, double alpha, double *A, 
              int nca, double *X, int inc_x, double beta, double *Y,
              int inc_y);

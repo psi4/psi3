@@ -54,7 +54,7 @@ extern void F_DGEMM(char *transa, char *transb, int *m, int *n, int *k,
                     double *beta, double *C, int *ldc);
 extern void F_DROT(int *ntot,double *x, int *incx,double *y, int *incy,
                   double *cotheta,double *sintheta);
-extern void F_DSCAL(int *n, double *alpha, double *vec, int *inc);
+extern void F_DSCAL(long int *n, double *alpha, double *vec, int *inc);
 extern void F_DGEMV(char *transa, int *m, int *n, double *alpha, double *A, 
                     int *lda, double *X, int *inc_x, double *beta, 
                     double *Y, int *inc_y);
@@ -90,7 +90,7 @@ void C_DCOPY(int length, double *x, int inc_x,
 ** This function scales a vector by a real scalar.
 ** \ingroup (QT)
 */
-void C_DSCAL(int n, double alpha, double *vec, int inc)
+void C_DSCAL(long int n, double alpha, double *vec, int inc)
 {
   F_DSCAL(&n, &alpha, vec, &inc);
 }
