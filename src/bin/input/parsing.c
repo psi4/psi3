@@ -17,6 +17,10 @@ void parsing()
      /* Same as --noreorient */
      errcod = ip_boolean("NO_REORIENT",&no_reorient,0);
 
+     /* same as --chkptmos */
+     errcod = ip_boolean("CHKPT_MOS",&chkpt_mos,0);
+     if (chkpt_mos) read_chkpt = 1;
+
      errcod = ip_string("LABEL", &label,0);
      if(errcod != IPE_OK)
        punt("Where is the label?");
