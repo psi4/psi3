@@ -72,6 +72,7 @@ rd_corr_lab.c \
 rd_orbspi.c \
 rd_clsdpi.c \
 rd_openpi.c \
+rd_zmat.c \
 rd_zvals.c \
 rd_ict.c \
 wt_eref.c \
