@@ -198,7 +198,11 @@ sub do_tests
       }
      
       if ($jobtype eq "SP" && $dertype eq "RESPONSE") {
-        if ($wfn =~ "CC") {
+        if ($wfn eq "CC2") {
+          $fail |= compare_cclambda_overlap($wfn);
+          $fail |= compare_cc2_polar($wfn);
+        }
+        if ($wfn eq "CCSD") {
           $fail |= compare_cclambda_overlap($wfn);
           $fail |= compare_ccsd_polar($wfn);
         }
@@ -480,6 +484,26 @@ sub compare_scf_polar
   return $fail;
 }
 
+sub compare_cc2_polar
+{
+  my $wfn = $_[0];
+  my $fail = 0;
+  my $REF_FILE = "$SRC_PATH/output.ref";
+  my $TEST_FILE = "output.dat";
+                                                                                                              
+  @polar_ref = seek_cc2_polar($REF_FILE);
+  @polar_test = seek_cc2_polar($TEST_FILE);
+                                                                                                              
+  if(!compare_arrays(\@polar_ref,\@polar_test,($#polar_ref+1),$PSITEST_POLARTOL)) {
+    fail_test("$wfn Polarizability/Optical Rotation"); $fail = 1;
+  }
+  else {
+    pass_test("$wfn Polarizability/Optical Rotation");
+  }
+                                                                                                              
+  return $fail;
+}
+                                                                                                              
 sub compare_ccsd_polar
 {
   my $wfn = $_[0];
@@ -1684,6 +1708,36 @@ sub seek_scf_polar
   exit 1;
 }
 
+sub seek_cc2_polar
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  @datafile = <OUT>;
+  close(OUT);
+                                                                                                              
+  $linenum=0;
+  $start = 0;
+  foreach $line (@datafile) {
+    if (($line =~ m/CC2 Dipole Polarizability/) || ($line =~ m/CC2 Optical Rotation Tensor/)) {
+      $start = $linenum;
+    }
+    $linenum++;
+  }
+                                                                                                              
+  for($i=0; $i < 3; $i++) {
+    @line = split(/ +/, $datafile[$start+7+$i]);
+    for($j=0; $j < 3; $j++) {
+      $polar[3*$i+$j] = $line[$j+2];
+    }
+  }
+                                                                                                              
+  if($start != 0) {
+    return @polar;
+  }
+                                                                                                              
+  printf "Error: Could not find CC2 polarizability/optrot tensor in $_[0].\n";
+  exit 1;
+}
+                                                                                                              
 sub seek_ccsd_polar
 {   
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";
