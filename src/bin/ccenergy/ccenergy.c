@@ -101,8 +101,11 @@ int main(int argc, char *argv[])
   fprintf(outfile, "\tIter             Energy               RMS       T1Diag      D1Diag\n");
   fprintf(outfile, "\t----     ---------------------     --------   ----------  ----------\n");
   moinfo.ecc = energy();
+  /*
   moinfo.t1diag = diagnostic();
   moinfo.d1diag = d1diag();
+  */
+  moinfo.t1diag = moinfo.d1diag = 0;
   update();
   if(params.ref == 2) params.maxiter = 0;
   for(moinfo.iter=1; moinfo.iter <= params.maxiter; moinfo.iter++) {
@@ -132,7 +135,7 @@ int main(int argc, char *argv[])
     timer_off("T2 Build");
 
     timer_on("Spinad Amps");
-    spinad_amps();
+    /*    spinad_amps(); */
     timer_off("Spinad Amps");
 
     if(converged()) {
@@ -148,12 +151,12 @@ int main(int argc, char *argv[])
       fflush(outfile);
       break;
     }
-    diis(moinfo.iter); 
+    /*    diis(moinfo.iter); */
     tsave();
     tau_build(); taut_build();
     moinfo.ecc = energy();
     moinfo.t1diag = diagnostic();
-    moinfo.d1diag = d1diag();
+    /*	  moinfo.d1diag = d1diag(); */
     update();
   }
   fprintf(outfile, "\n");

@@ -4,8 +4,9 @@
 #define EXTERN
 #include "globals.h"
 
-/* spinad_amps(): For RHF references, build the AA and BB amplitudes from 
-** the AB amplitudes.
+/* spinad_amps(): For RHF references, build the T2 AA and BB amplitudes from 
+** the existing T2 AB amplitudes.  Also, copy the existing T1 A amplitudes 
+** into B.
 **
 ** T2(IJ,AB) = T2(ij,ab) = T2(Ij,Ab) - T2(Ij,Ba)
 */

@@ -93,18 +93,11 @@ void Fae_build(void)
     dpd_buf4_close(&F_anti);
     dpd_buf4_close(&F);
 
-    dpd_buf4_init(&D_anti, CC_DINTS, 0, 2, 5, 2, 5, 0, "D <ij||ab> (i>j,ab)");
-    dpd_buf4_init(&tautIJAB, CC_TAMPS, 0, 2, 5, 2, 7, 0, "tautIJAB");
-    dpd_contract442(&tautIJAB, &D_anti, &FAE, 2, 2, -1, 1);
-    dpd_buf4_close(&D_anti);
-    dpd_buf4_close(&tautIJAB);
-
-    dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
+    dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D 2<ij|ab> - <ij|ba>");
     dpd_buf4_init(&tautIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tautIjAb");
     dpd_contract442(&tautIjAb, &D, &FAE, 2, 2, -1, 1);
     dpd_buf4_close(&D);
     dpd_buf4_close(&tautIjAb);
-
 
     /* Build the tilde intermediates */
     dpd_file2_copy(&FAE, CC_OEI, "FAEt");

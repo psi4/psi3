@@ -3,10 +3,6 @@
 #define EXTERN
 #include "globals.h"
 
-/* Still need to spin-adapt the D-integral contributions to FMI 
-** -TDC, 8/19/01
-*/
-
 void Fmi_build(void)
 {
   int h,m,i;
@@ -91,13 +87,7 @@ void Fmi_build(void)
     dpd_buf4_close(&E_anti);
     dpd_buf4_close(&E);
 
-    dpd_buf4_init(&D_anti, CC_DINTS, 0, 0, 7, 0, 7, 0, "D <ij||ab> (ij,a>b)");
-    dpd_buf4_init(&tautIJAB, CC_TAMPS, 0, 0, 7, 2, 7, 0, "tautIJAB");
-    dpd_contract442(&D_anti, &tautIJAB, &FMI, 0, 0, 1, 1);
-    dpd_buf4_close(&tautIJAB);
-    dpd_buf4_close(&D_anti);
-
-    dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
+    dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D 2<ij|ab> - <ij|ba>");
     dpd_buf4_init(&tautIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tautIjAb");
     dpd_contract442(&D, &tautIjAb, &FMI, 0, 0, 1, 1);
     dpd_buf4_close(&tautIjAb);

@@ -33,20 +33,27 @@
 ** The current version of this code requires ten contractions (two each for
 ** AA and BB and six for AB), one complex sort each for AA and BB, two
 ** complex sorts for AB, and three simple sorts each for AA and BB.
+**
+** For RHF orbitals:
+** -----------------
+**
+**
 ** TDC
 ** May 2000
+** Revised August 2001
 */
 
 void WmbejT2(void)
 {
-  dpdbuf4 T2new, T2, W;
+  dpdbuf4 T2new, T2, W, T2B;
 
   if(params.ref == 0) { /** RHF **/
     /*** AB ***/
 
-    /* T2(IA,ME) * W(ME,jb) --> T2(IA,jb) */
     dpd_buf4_init(&T2new, CC_TMP0, 0, 10, 10, 10, 10, 0, "T2 (IA,jb)");
-    dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIAJB");
+
+    /* T2(IA,ME) * W(ME,jb) --> T2(IA,jb) */
+    dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "2 tIAjb - tIBja");
     dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMbEj");
     timer_on("WmbejT2 444");
     dpd_contract444(&T2, &W, &T2new, 0, 1, 1, 0);
@@ -54,73 +61,64 @@ void WmbejT2(void)
     dpd_buf4_close(&W);
     dpd_buf4_close(&T2);
 
-    /* T2(IA,me) * W(me,jb) --> T2(IA,jb) */
+    /* T2(IA,me) * W(Me,Jb) --> T2(IA,jb) */
     dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIAjb");
-    dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "Wmbej");
+    dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMbeJ");
     timer_on("WmbejT2 444");
     dpd_contract444(&T2, &W, &T2new, 0, 1, 1, 1);
     timer_off("WmbejT2 444");
     dpd_buf4_close(&W);
     dpd_buf4_close(&T2);
 
-    /* W(ME,IA) * T2(jb,ME) --> T2(IA,jb) */
-    dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tiaJB");
-    dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMBEJ");
-    timer_on("WmbejT2 444");
-    dpd_contract444(&W, &T2, &T2new, 1, 0, 1, 1);
-    timer_off("WmbejT2 444");
-    dpd_buf4_close(&W);
-    dpd_buf4_close(&T2);
-
-    /* W(me,IA) * T2(jb,me) --> T2(IA,jb) */
-    dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tiajb");
-    dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WmBeJ");
-    timer_on("WmbejT2 444");
-    dpd_contract444(&W, &T2, &T2new, 1, 0, 1, 1);
-    timer_off("WmbejT2 444");
-    dpd_buf4_close(&W);
-    dpd_buf4_close(&T2);
-
-    /* T2(IA,jb) --> T2(Ij,Ab) (part 1) */
+    /* T2(IA,jb) --> T2(Ij,Ab) (part I) */
     dpd_buf4_sort(&T2new, CC_TMP0, prqs, 0, 5, "T2 (Ij,Ab) 1");
     dpd_buf4_close(&T2new);
+
+    /* T2(Ij,Ab) (part I) --> T2(Ij,Ab) (part IV) */
+    dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "T2 (Ij,Ab) 1");
+    dpd_buf4_sort(&T2, CC_TMP0, qpsr, 0, 5, "T2 (Ij,Ab) 4");
+    dpd_buf4_close(&T2);
+
 
     /* T2(Ib,mE) * W(mE,jA) --> T2(Ib,jA) */
     dpd_buf4_init(&T2new, CC_TMP0, 0, 10, 10, 10, 10, 0, "T2 (Ib,jA)");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIbjA");
-    dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WmBEj");
+    dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMbeJ");
     timer_on("WmbejT2 444");
     dpd_contract444(&T2, &W, &T2new, 0, 1, 1, 0);
     timer_off("WmbejT2 444");
     dpd_buf4_close(&W);
     dpd_buf4_close(&T2);
 
-    /* W(Me,Ib) * T2(jA,Me) --> T2(Ib,jA) */
-    dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tjAIb");
-    dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMbeJ");
-    timer_on("WmbejT2 444");
-    dpd_contract444(&W, &T2, &T2new, 1, 0, 1, 1);
-    timer_off("WmbejT2 444");
-    dpd_buf4_close(&W);
-    dpd_buf4_close(&T2);
-
-    /* T2(Ib,jA) --> T2(Ij,Ab) (part 2) */
-    dpd_buf4_sort(&T2new, CC_TMP0, prsq, 0, 5, "T2 (Ij,Ab) 2");
+    /* T2(Ib,jA) --> T2(Ij,Ab) (part III) */
+    dpd_buf4_sort(&T2new, CC_TMP0, prsq, 0, 5, "T2 (Ij,Ab) 3");
     dpd_buf4_close(&T2new);
 
+    /* T2(Ij,Ab) (part III) --> T2(jI,bA) (part II) */
+    dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "T2 (Ij,Ab) 3");
+    dpd_buf4_sort(&T2, CC_TMP0, qpsr, 0, 5, "T2 (Ij,Ab) 2");
+    dpd_buf4_close(&T2);
 
-    /* T2(Ij,Ab) (part 1) + T2(Ij,Ab) (part 2) --> New T2(Ij,Ab) */
+    /* T2(Ij,Ab) <--- I + II + III + IV */
     dpd_buf4_init(&T2new, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb");
 
     dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "T2 (Ij,Ab) 1");
     dpd_buf4_axpy(&T2, &T2new, 1);
     dpd_buf4_close(&T2);
+
     dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "T2 (Ij,Ab) 2");
     dpd_buf4_axpy(&T2, &T2new, 1);
     dpd_buf4_close(&T2);
 
-    dpd_buf4_close(&T2new);
+    dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "T2 (Ij,Ab) 3");
+    dpd_buf4_axpy(&T2, &T2new, 1);
+    dpd_buf4_close(&T2);
 
+    dpd_buf4_init(&T2, CC_TMP0, 0, 0, 5, 0, 5, 0, "T2 (Ij,Ab) 4");
+    dpd_buf4_axpy(&T2, &T2new, 1);
+    dpd_buf4_close(&T2);
+
+    dpd_buf4_close(&T2new);
   }
   else if(params.ref == 1) { /** ROHF **/
 

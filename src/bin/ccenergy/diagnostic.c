@@ -18,7 +18,8 @@ double diagnostic(void)
   dpdfile2 T1A, T1B;
 
   nirreps = moinfo.nirreps;
-  clsdpi = moinfo.clsdpi; uoccpi = moinfo.uoccpi;
+  clsdpi = moinfo.clsdpi; 
+  uoccpi = moinfo.uoccpi;
   openpi = moinfo.openpi;
 
   if(params.ref != 2) {
@@ -33,31 +34,17 @@ double diagnostic(void)
   }
   num_elec = num_elec_a + num_elec_b;
 
-  /* Closed-shell diagnostic --- T1A should be equal to T1B */
-  if(params.ref == 0) {
+  if(params.ref == 0) { /** RHF **/
 
     dpd_file2_init(&T1A, CC_OEI, 0, 0, 1, "tIA");
-    dpd_file2_mat_init(&T1A);
-    dpd_file2_mat_rd(&T1A);
-    dpd_file2_init(&T1B, CC_OEI, 0, 0, 1, "tia");
-    dpd_file2_mat_init(&T1B);
-    dpd_file2_mat_rd(&T1B);
-
-    t1diag = 0.0;
-    for(h=0; h < nirreps; h++) {
-
-      for(row=0; row < T1A.params->rowtot[h]; row++) 
-	for(col=0; col < T1A.params->coltot[h]; col++) 
-	  t1diag += (T1A.matrix[h][row][col] * T1A.matrix[h][row][col]);
-    }
-
+    t1diag = dpd_file2_dot_self(&T1A);
+    dpd_file2_close(&T1A);
 
     t1diag /= num_elec;
     t1diag = sqrt(t1diag);
 
   }
-  /* ROHF diagnostic */
-  else if(params.ref == 1) {
+  else if(params.ref == 1) { /** ROHF **/
 
     dpd_file2_init(&T1A, CC_OEI, 0, 0, 1, "tIA");
     dpd_file2_mat_init(&T1A);
@@ -69,7 +56,6 @@ double diagnostic(void)
     t1diag = 0.0;
     for(h=0; h < nirreps; h++) {
 
-      /* Loop over docc-docc components */
       for(i=0; i < (occpi[h] - openpi[h]); i++) {
 	for(a=0; a < (virtpi[h] - openpi[h]); a++) {
 
@@ -78,7 +64,6 @@ double diagnostic(void)
 	}
       }
 
-      /* Loop over docc-socc components */
       for(i=0; i < (occpi[h] - openpi[h]); i++) {
 	for(a=0; a < openpi[h]; a++) {
 	  A = a + uoccpi[h];
@@ -87,7 +72,6 @@ double diagnostic(void)
 	}
       }
 
-      /* Loop over socc-docc components */
       for(i=0; i < openpi[h]; i++) {
 	I = i + clsdpi[h];
 	for(a=0; a < (virtpi[h] - openpi[h]); a++) {
@@ -100,8 +84,14 @@ double diagnostic(void)
     t1diag /= num_elec;
     t1diag = sqrt(t1diag);
     t1diag *= 0.5;
+
+    dpd_file2_mat_close(&T1A);
+    dpd_file2_close(&T1A);
+    dpd_file2_mat_close(&T1B);
+    dpd_file2_close(&T1B);
+
   }
-  else if(params.ref == 2) {
+  else if(params.ref == 2) { /** UHF **/
 
     dpd_file2_init(&T1A, CC_OEI, 0, 0, 1, "tIA");
     dpd_file2_mat_init(&T1A);
@@ -128,12 +118,12 @@ double diagnostic(void)
     t1diag_b /= num_elec_b;
     t1diag = sqrt(t1diag_a + t1diag_b);
 
+    dpd_file2_mat_close(&T1A);
+    dpd_file2_mat_close(&T1B);
+    dpd_file2_close(&T1A);
+    dpd_file2_close(&T1B);
+	      
   }
 
-  dpd_file2_mat_close(&T1A);
-  dpd_file2_mat_close(&T1B);
-  dpd_file2_close(&T1A);
-  dpd_file2_close(&T1B);
-	      
-  return t1diag;
+  return t1diag; 
 }
