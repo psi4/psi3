@@ -921,8 +921,6 @@ void get_moinfo(void)
   /* Lastly, build the active virtual orbital SCF eigenvector array for
      the AO-basis code (see CCENERGY) */
 
-  /*** Still working on this part --- currently unused, TDC, 3/13/00 ***/
-
   if(params.ref == 2) { /*** UHF references ***/
     fprintf(outfile, "No AO-Basis UHF algorithm yet!\n");
     exit(1);
