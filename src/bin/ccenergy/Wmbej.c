@@ -20,7 +20,7 @@
 void Wmbej_build(void)
 {
   dpdbuf4 WMBEJ, Wmbej, WMbEj, WmBeJ, WmBEj, WMbeJ, W; 
-  dpdbuf4 C, D, E, F, X, tIAjb, tiaJB, t2, Y;
+  dpdbuf4 C, D, E, F, X, tIAjb, tiaJB, t2, Y, Z;
   dpdfile2 tIA, tia;
 
   timer_on("C->Wmbej");
@@ -95,9 +95,19 @@ void Wmbej_build(void)
     dpd_contract424(&F, &tIA, &WMbEj, 3, 1, 0, 1, 1);
     dpd_buf4_close(&WMbEj);
 
+    dpd_buf4_close(&F);
+
+    dpd_buf4_init(&F, CC_FINTS, 0, 11, 5, 11, 5, 0, "F <ai|bc>");
+
+    dpd_buf4_init(&Z, CC_TMP0, 0, 11, 11, 11, 11, 0, "Z(bM,eJ)");
+    dpd_contract424(&F, &tIA, &Z, 3, 1, 0, -1, 0);
+    dpd_buf4_sort(&Z, CC_TMP0, qpsr, 10, 10, "Z(Mb,Je)");
+    dpd_buf4_close(&Z);
+    dpd_buf4_init(&Z, CC_TMP0, 0, 10, 10, 10, 10, 0, "Z(Mb,Je)");
     dpd_buf4_init(&WMbeJ, CC_TMP0, 0, 10, 10, 10, 10, 0, "WMbeJ");
-    dpd_contract244(&tIA, &F, &WMbeJ, 1, 2, 1, -1, 1);
+    dpd_buf4_axpy(&Z, &WMbeJ, 1.0);
     dpd_buf4_close(&WMbeJ);
+    dpd_buf4_close(&Z);
 
     dpd_buf4_close(&F);
 
