@@ -19,7 +19,7 @@ psi: (
   deriv2     = "cints --deriv2"
   propint    = "cints --oeprop"
   transqt    = "transqt"
-  backtransqt = "transqt -backtr"
+  backtransqt = "transqt --backtr"
   dipder      = "dipder"
   cphf        = "cphf"
   normco      = "normco"
