@@ -12,6 +12,7 @@ struct Params {
   int all; /* find Ls for all excited states plus ground state */
   int ground; /* find L for only ground state */
   int zeta; /* boolean for solving zeta equations - implies excited state*/
+  int print;
 };
 
 struct L_Params {

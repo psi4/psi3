@@ -44,6 +44,7 @@ extern void c_clean(dpdfile2 *LIA, dpdfile2 *Lia, dpdbuf4 *LIJAB, dpdbuf4 *Lijab
 void L_clean(struct L_Params pL_params);
 void zeta_norm(struct L_Params pL_params);
 void spinad_amps(void);
+void status(char *, FILE *);
 
 int main(int argc, char *argv[])
 {
@@ -120,6 +121,7 @@ int main(int argc, char *argv[])
       /* must zero New L before adding RHS */
       L_zero(pL_params[i].irrep);
       L1_build(pL_params[i]);
+      if(params.print & 2) status("L1 amplitudes", outfile);
       L2_build(pL_params[i]);
 
       if (params.ref == 1) L_clean(pL_params[i]);
@@ -243,7 +245,9 @@ void exit_io(void)
   psio_open(CC_DENOM,PSIO_OPEN_NEW);
  
   /* Close all dpd data files here */
-  for(i=CC_MIN; i <= CC_MAX; i++) psio_close(i,1);
+  for(i=CC_MIN; i < CC_TMP; i++) psio_close(i,1);
+  for(i=CC_TMP; i <= CC_TMP11; i++) psio_close(i,0); /* delete CC_TMP files */
+  for(i=CC_TMP11+1; i <= CC_MAX; i++) psio_close(i,1);
 
   psio_done();
   tstop(outfile);

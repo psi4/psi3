@@ -23,6 +23,9 @@ void get_params(void)
 
   fndcor(&(params.memory),infile,outfile);
 
+  params.print = 0;
+  errcod = ip_data("PRINT", "%d", &(params.print),0);
+
   params.cachelev = 2;
   errcod = ip_data("CACHELEV", "%d", &(params.cachelev),0);
 
