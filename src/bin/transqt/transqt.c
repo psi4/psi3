@@ -125,7 +125,7 @@
 
 /* First definitions of globals */
 FILE *infile, *outfile;
-char **psi_file_prefix;
+char *psi_file_prefix;
 int *ioff;
 struct MOInfo moinfo;
 struct Params params;
@@ -241,6 +241,7 @@ void init_io(int argc, char *argv[])
        }
        else {
 	 extra_args[num_extra_args++] = argv[i];
+	 printf("Extra arg[%d]: %s\n", num_extra_args-1, argv[i]);
        }
    }
 
