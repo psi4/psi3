@@ -20,8 +20,8 @@ ifneq ($(DODEPEND),no)
 include runcmd.d
 endif
 
-install_man:: psi.1
+install_man:: psi3.1
 	$(MKDIRS) $(mandir)/man1
 	cat $(top_srcdir)/lib/macro.psi $< | sed "s OS_NAME_HERE UNIX " > \
-            $(mandir)/man1/psi.1
+            $(mandir)/man1/psi3.1
 
