@@ -95,6 +95,7 @@ void parsing_cmdline(int argc, char *argv[])
 {
    int i;
 
+   keep_chkpt = 0;
    read_chkpt = 0;
    chkpt_mos = 0;
    chkpt_geom = 0;
@@ -126,6 +127,7 @@ void parsing_cmdline(int argc, char *argv[])
 
        /*--- read geometry from checkpoint file (in findif calculations) ---*/
        if (strcmp(argv[i], "--chkptgeom") == 0) {
+	 keep_chkpt = 1;
 	 read_chkpt = 0;
 	 chkpt_geom = 1;
 	 keep_ref_frame = 1;     /* preserve the information about the original reference frame so that properties

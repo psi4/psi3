@@ -3,11 +3,7 @@
  ***************************/
 
 /*need this for z_entry structure*/
-#if USE_LIBCHKPT
 #include <libchkpt/chkpt.h>
-#else
-#include<libfile30/file30.h>
-#endif
 
 #ifdef EXTERN
 # undef EXTERN
@@ -41,6 +37,7 @@ EXTERN int shownorm;		    /*Show normalized basis set*/
 EXTERN int normalize_contractions;  /*Re-normalize contractions or leave as is*/
 EXTERN char *units;
 EXTERN int print_lvl;               /*Printing level*/
+EXTERN int keep_chkpt;              /*Keep the content of checkpoint file(1) or start over with a new one(0)*/
 EXTERN int no_comshift;             /*No Center-of-Mass shift?*/
 EXTERN int no_reorient;             /*No reorientation into the principal system?*/
 EXTERN int keep_ref_frame;          /*Use the input geometry frame as the reference frame
@@ -73,7 +70,7 @@ EXTERN int *sym_oper;               /*Array that maps symmetry operation number 
 EXTERN double **Rref;               /*Matrix describing the rotation back to the reference frame,
 				      Reference frame is a coordinate system defined by the "raw"
 				      geometry specification (either Z-matrix or geometry array
-				      in input.dat or file30). Can be used to transform quantities
+				      in input.dat or chkpt file). Can be used to transform quantities
 				      corresponding to different but similar calculations
 				      (gradients at displaced geometries) to a common
 				      frame */
@@ -146,7 +143,7 @@ EXTERN int **num_cart_so;           /*Number of cartesian type SOs in each irrep
 EXTERN int **num_pureang_so;        /*Number of pure ang. momentum type SOs in each irrep for each angular momentum type*/
 EXTERN int **num_redun_so;          /*Difference between num_cart_so and num_pureang_so*/
 
-/*Basis set arrays - written to file30*/
+/*Basis set arrays - written to chkpt file*/
 EXTERN int *nshells_per_atom;         /*Number of shells per atom*/
 EXTERN int *first_shell_on_atom;      /*Number of the first shell from an atom*/
 EXTERN double *exponents;             /*Exponents*/

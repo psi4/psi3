@@ -2,11 +2,7 @@
 #include <stdlib.h>
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
-#if USE_LIBCHKPT
-#  include <libchkpt/chkpt.h>
-#else
-#  include <libfile30/file30.h>
-#endif
+#include <libchkpt/chkpt.h>
 #include <psifiles.h>
 
 #include "input.h"
@@ -27,9 +23,9 @@ void init_oldcalc()
   /*--- check if the symmetry is the same ---*/
   Oldcalc.symmetry = chkpt_rd_sym_label();
   if (strncmp(Oldcalc.symmetry,symmetry,3)) {
-      fprintf(outfile,"  Old file30 uses different point group from the current one\n");
+      fprintf(outfile,"  Old chkpt file uses different point group from the current one\n");
       fprintf(outfile,"  Will continue without the MO projection\n");
-      fprintf(stderr,"  Old file30 uses different point group from the current one\n");
+      fprintf(stderr,"  Old chkpt file uses different point group from the current one\n");
       fprintf(stderr,"  Will continue without the MO projection\n");
       chkpt_mos = 0;
       chkpt_close();

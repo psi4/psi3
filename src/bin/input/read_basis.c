@@ -46,7 +46,7 @@ void read_basis()
    char **ip_token1;			/*Contains base basis set id's*/
    char **ip_token2;			/*used to create other keywords*/
    int depth;
-   char *basis_type, *elem_label;
+   char *basis_type, *elem_label, *puntstr;
    double Z;
    int *ao_off;
    int *ang_mom;
@@ -155,7 +155,10 @@ void read_basis()
       /*Count number of levels,*/
       errcod = ip_exist(ip_token2[i], 0);
       if(errcod == 0){
-        punt("I can't find your basis set anywhere, check BASIS array and/or basis set.");
+	puntstr = (char *) malloc ((80+strlen(ip_token2[i]))*sizeof(char));
+	sprintf(puntstr,"Can't find basis %s. Check your basis file(s).",
+		ip_token2[i]);
+	punt(puntstr);
        }
 
       first_prim_unique_atom = last_prim_unique_atom+1;
@@ -321,6 +324,7 @@ int *ang_mom)
    char **temp;
    char *grep;
    char *next_key;
+   char *puntstr;
     
    next_key = init_char_array(50);
    temp = init_char_matrix(MAXATOM,50);
@@ -328,17 +332,31 @@ int *ang_mom)
 
    for(i=0;i<num_levels;i++){
       errcod = ip_string(ip_token2[atom_number], &grep,2,i,0);
+
+      /*----------------------
+	Handle GET statements
+       ----------------------*/
       if(!strcmp(grep,"GET")){
 
         /*Create new keyword from base and string after "GET"*/
         errcod = ip_string(ip_token2[atom_number], &next_key,2,i,1);
         sprintf(temp[atom_number],"%s:%s",ip_token1[atom_number],next_key);
+	
+	/*Check if the basis to be GET'ed exists*/
+	errcod = ip_exist(temp[atom_number],0);
+	if (errcod == 0) {
+	  puntstr = (char *) malloc ((80+strlen(temp[atom_number])+strlen(ip_token2[atom_number]))*sizeof(char));
+	  sprintf(puntstr,"Can't find basis %s requested by %s.",
+		  temp[atom_number],ip_token2[atom_number]);
+	  punt(puntstr);
+	}
+	  
         errcod = ip_count(temp[atom_number], &num_levels2,0);
         flag = 1;
 
         /*Call function again to get down through all "GET" levels*/
         recur(ip_token1, temp, num_levels2, atom_number, basis_set,
-        unique_shell_cnt, unique_prim_cnt, num_exponents, first_prim, last_prim, ang_mom);
+	      unique_shell_cnt, unique_prim_cnt, num_exponents, first_prim, last_prim, ang_mom);
        }
 
       /*if the flag == 1, that means that we have descended a GET level,
@@ -350,7 +368,10 @@ int *ang_mom)
 
       errcod = ip_count(ip_token2[atom_number],&num_exponents,1,i); 
       if(errcod != IPE_OK){
-        punt("I still can't find the basis set, something is wrong. Check BASIS array.");
+	puntstr = (char *) malloc ((80+strlen(ip_token2[atom_number]))*sizeof(char));
+	sprintf(puntstr,"Problem processing basis %s.",
+		ip_token2[atom_number]);
+	punt(puntstr);
        }
       ang_mom[*unique_shell_cnt] = parse_am(grep);
       first_prim[*unique_shell_cnt] = *unique_prim_cnt;
@@ -397,7 +418,10 @@ int *ang_mom)
             fprintf(outfile,"%15.8lf",basis_set[*unique_prim_cnt][k]);
          
             if(basis_set[*unique_prim_cnt][k] == 0.0){
-              punt("Zeros in the basis set!");
+	      puntstr = (char *) malloc ((80+strlen(ip_token2[atom_number]))*sizeof(char));
+	      sprintf(puntstr,"Zero exponents found in basis %s.",
+		      ip_token2[atom_number]);
+	      punt(puntstr);
              } 
            }
          if(j != (num_exponents-1) - 1){

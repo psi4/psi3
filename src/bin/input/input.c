@@ -1,12 +1,10 @@
 #include <stdio.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
+#include <chkpt_params.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#if !USE_LIBCHKPT
-#include <file30_params.h>
-#endif
 #include <psifiles.h>
 #include "input.h"
 #include <physconst.h>
@@ -154,14 +152,14 @@ int main(int argc, char *argv[])
      /*-------------------------------------------------
        Write the information out to the checkpoint file
       -------------------------------------------------*/
-     write_to_file30(repulsion);
+     write_to_chkpt(repulsion);
 
      /*-------------------------------------------------
        Project old MOs onto new basis and write 'em out
       -------------------------------------------------*/
      if (chkpt_mos) {
        oldcalc_projection();
-       write_scf_to_file30();
+       write_scf_to_chkpt();
      }
 
      /*-------------------------------------------------

@@ -168,7 +168,7 @@ double **overlap_new_old();
 #include "float.h"
 FLOAT** overlap_new_old_float();
 double **overlap();
-void write_scf_to_file30();
+void write_scf_to_chkpt();
 
 void parsing();
 void parsing_cmdline(int argc, char *argv[]);
