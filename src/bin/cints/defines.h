@@ -14,7 +14,7 @@
                             in cart->puream transformation and normalization (should always be
 			    set to 1 except for testing purposes)*/
 #define SPARSE_C2P 1     /* Use sparcity of cartesian to spherical harmonics transformation */
-#define USE_BLAS 0       /* Use routines from vendor-provided BLAS library for
+#define USE_BLAS 1       /* Use routines from vendor-provided BLAS library for
 			    4-index transformations such as cart->puream
 			    (only if SPARSE_C2P is set 0, otherwise sparse matrix
 			    multiplies will be used), AO->MO, etc.;
@@ -67,3 +67,17 @@
 			    2 - [r12,T1]
 			    3 - [r12,T2]
 			    */
+
+/*----------
+  DFT cutoffs
+  ----------*/
+
+#define WEIGHT_CUTOFF 1E-10  /* if the weighting function is lower
+				 than this, do not contract into the 
+				 Fock Matrix
+			      */
+
+#define DEN_CUTOFF 1E-10     /* If density at a point is less than
+				this, do not contract into the Fock
+				matrix 
+			     */
