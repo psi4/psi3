@@ -10,7 +10,16 @@ void WijmnL2(int L_irr)
   dpdbuf4 WMNIJ, Wmnij, WMnIj;
 
   /* RHS += Lmnab*Wijmn */
-  if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
+  if(params.ref == 0) { /** RHF **/
+    dpd_buf4_init(&LIjAb, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "LIjAb");
+    dpd_buf4_init(&newLIjAb, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
+    dpd_buf4_init(&WMnIj, CC_HBAR, 0, 0, 0, 0, 0, 0, "WMnIj");
+    dpd_contract444(&WMnIj, &LIjAb, &newLIjAb, 0, 1, 1.0, 1.0);
+    dpd_buf4_close(&WMnIj);
+    dpd_buf4_close(&LIjAb);
+    dpd_buf4_close(&newLIjAb);
+  }
+  else if(params.ref == 1) { /** ROHF **/
 
     dpd_buf4_init(&LIJAB, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "LIJAB");
     dpd_buf4_init(&newLIJAB, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "New LIJAB");

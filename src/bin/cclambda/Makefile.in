@@ -15,7 +15,7 @@ FmiL2.c  L2.c       WijmbL2.c  denom.c      init_amps.c                 \
 G.c      Lsave.c    WijmnL2.c  diis.c       overlap.c                   \
 GL2.c    WabeiL1.c  WmbejL2.c  dijabL2.c    pseudoenergy.c              \
 cache.c  BL2_AO.c   halftrans.c Lnorm.c Lmag.c check_sum.c \
-check_ortho.c overlap_LAMPS.c local.c c_clean.c
+check_ortho.c overlap_LAMPS.c local.c c_clean.c spinad_amps.c hbar_extra.c
 
 BINOBJ = $(CSRC:%.c=%.o)
 

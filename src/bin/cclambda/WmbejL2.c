@@ -31,6 +31,24 @@
 **    (all six contractions are unique for ROHF and UHF orbitals)
 **
 ** TDC, July 2002
+**
+** For RHF contractions, we evaluate the contractions as follows:
+**
+** + L(jb,ME) W(IA,ME) + L(jb,me) W(IA,me)                I
+** + L(jA,Me) W(Ib,Me) + L(Ib,mE) W(jA,mE)           II   +   III
+** + L(IA,ME) W(jb,ME) + L(IA,me) W(jb,me)               IV
+**
+** Similar to what we did in ccenergy/WmbejT2.c, the AB L2 terms labelled I and IV
+** above may be written as (apart from index swapping):
+**
+** 1/2 [2 L(jb,ME) - L(jB,Me)] [2 W(me,IA) + W(Me,Ia)] + 1/2 L(jB,Me) W(Me,Ia)
+**
+** Terms II and III are exactly the same as the last term above, apart from the
+** factor of 1/2 and index swapping.  So, for RHF orbitals, we need to evaluate two
+** contractions.
+**
+** TDC, March 2004
+** 
 */
 
 void WmbejL2(int L_irr)
@@ -38,7 +56,39 @@ void WmbejL2(int L_irr)
   dpdbuf4 newL2, L2, W, Z, Z2;
 
   /* RHS += P(ij)P(ab)Limae * Wjebm */
-  if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
+  if(params.ref == 0) { /** RHF **/
+
+    dpd_buf4_init(&Z, CC_TMP0, L_irr, 10, 10, 10, 10, 0, "Z(Ib,jA)");
+    dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMbeJ");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 10, 10, 10, 10, 0, "LIbjA");
+    dpd_contract444(&W, &L2, &Z, 0, 1, 1, 0);
+    dpd_buf4_close(&L2);
+    dpd_buf4_close(&W);
+    dpd_buf4_sort(&Z, CC_TMP0, psrq, 10, 10, "Z(IA,jb) III");
+    dpd_buf4_close(&Z);
+
+    dpd_buf4_init(&Z, CC_TMP0, L_irr, 10, 10, 10, 10, 0, "Z(IA,jb) I");
+
+    dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "2 W(ME,jb) + W(Me,Jb)");
+    dpd_buf4_init(&L2, CC_LAMBDA, 0, 10, 10, 10, 10, 0, "2 LIAjb - LIbjA");
+    dpd_contract444(&W, &L2, &Z, 0, 1, 0.5, 0);
+    dpd_buf4_close(&L2);
+    dpd_buf4_close(&W);
+
+    dpd_buf4_init(&Z2, CC_TMP0, L_irr, 10, 10, 10, 10, 0, "Z(Ib,jA)");
+    dpd_buf4_axpy(&Z2, &Z, 0.5);
+    dpd_buf4_close(&Z2);
+
+    dpd_buf4_init(&Z2, CC_TMP0, L_irr, 10, 10, 10, 10, 0, "Z(IA,jb) III");
+    dpd_buf4_axpy(&Z2, &Z, 1);
+    dpd_buf4_close(&Z2);
+
+    dpd_buf4_sort_axpy(&Z, CC_LAMBDA, prqs, 0, 5, "New LIjAb", 1);
+    dpd_buf4_sort_axpy(&Z, CC_LAMBDA, rpsq, 0, 5, "New LIjAb", 1);
+    dpd_buf4_close(&Z);
+
+  }
+  else if(params.ref == 1) { /** ROHF **/
 
     dpd_buf4_init(&Z, CC_TMP0, L_irr, 10, 10, 10, 10, 0, "Z(IA,JB)");
     dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 10, 10, 10, 10, 0, "LIAJB");

@@ -43,6 +43,7 @@ void L_zero(int irrep);
 extern void c_clean(dpdfile2 *LIA, dpdfile2 *Lia, dpdbuf4 *LIJAB, dpdbuf4 *Lijab, dpdbuf4 *LIjAb);
 void L_clean(struct L_Params pL_params);
 void zeta_norm(struct L_Params pL_params);
+void spinad_amps(void);
 
 int main(int argc, char *argv[])
 {
@@ -90,6 +91,8 @@ int main(int argc, char *argv[])
 
   if(params.local) local_init();
 
+  if(params.ref == 0) hbar_extra();
+
   for (i=0; i<params.nstates; ++i) {
     /* delete and reopen intermediate files */
     psio_close(CC_TMP,0); psio_close(CC_TMP1,0); psio_close(CC_TMP2,0); psio_close(CC_LAMBDA,0);
@@ -118,6 +121,7 @@ int main(int argc, char *argv[])
       L_zero(pL_params[i].irrep);
       L1_build(pL_params[i]);
       L2_build(pL_params[i]);
+
       if (params.ref == 1) L_clean(pL_params[i]);
   
       if(converged(pL_params[i].irrep)) {
@@ -127,7 +131,6 @@ int main(int argc, char *argv[])
         update();
         if (!pL_params[i].ground && !params.zeta) {
           Lnorm(pL_params[i]); /* normalize against R */
-          // Lsave_index(pL_params[i].irrep, root_L_irr); /* put Ls in unique location */
         }
         Lsave_index(pL_params[i]); /* save Ls with indices in LAMPS */
        /* sort_amps(); to be done by later functions */
@@ -153,7 +156,6 @@ int main(int argc, char *argv[])
     }
     if (params.ground)
       overlap(pL_params[i].irrep);
-      // Why? overlap_LAMPS(pL_params[i]);
   }
 
   if(params.local) local_done();
@@ -269,7 +271,7 @@ void Lsave_index(struct L_Params L_params) {
   L2RHF_lbl = L_params.L2RHF_lbl;
   L_irr = L_params.irrep;
 
-  if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
+  if(params.ref == 0 || params.ref == 1) { /** ROHF **/
     dpd_file2_init(&L1, CC_LAMBDA, L_irr, 0, 1, "LIA");
     dpd_file2_copy(&L1, CC_LAMPS, L1A_lbl);
     dpd_file2_close(&L1);
@@ -324,20 +326,34 @@ void L_zero(int L_irr) {
   dpdfile2 LIA, Lia;
   dpdbuf4 LIJAB, Lijab, LIjAb;
 
-  if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
+  if(params.ref == 0) { /** RHF **/
+    dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "New LIA");
+    dpd_file2_scm(&LIA, 0.0);
+    dpd_file2_close(&LIA);
+  }
+  else if(params.ref == 1) { /** RHF/ROHF **/
     dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "New LIA");
     dpd_file2_init(&Lia, CC_LAMBDA, L_irr, 0, 1, "New Lia");
+    dpd_file2_scm(&LIA, 0.0);
+    dpd_file2_scm(&Lia, 0.0);
+    dpd_file2_close(&LIA);
+    dpd_file2_close(&Lia);
   }
   else if(params.ref == 2) { /** UHF **/
     dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "New LIA");
     dpd_file2_init(&Lia, CC_LAMBDA, L_irr, 2, 3, "New Lia");
+    dpd_file2_scm(&LIA, 0.0);
+    dpd_file2_scm(&Lia, 0.0);
+    dpd_file2_close(&LIA);
+    dpd_file2_close(&Lia);
   }
-  dpd_file2_scm(&LIA, 0.0);
-  dpd_file2_scm(&Lia, 0.0);
-  dpd_file2_close(&LIA);
-  dpd_file2_close(&Lia);
 
-  if (params.ref == 0 || params.ref == 1 ) { /** RHF/ROHF **/
+  if(params.ref == 0) { /** RHF **/
+    dpd_buf4_init(&LIjAb, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
+    dpd_buf4_scm(&LIjAb, 0.0);
+    dpd_buf4_close(&LIjAb);
+  }
+  else if (params.ref == 1 ) { /** ROHF **/
     dpd_buf4_init(&LIJAB, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "New LIJAB");
     dpd_buf4_scm(&LIJAB, 0.0);
     dpd_buf4_close(&LIJAB);

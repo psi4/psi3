@@ -16,13 +16,28 @@
 
 void GaeL2(int L_irr)
 {
-  dpdbuf4 L2, newLijab, newLIJAB, newLIjAb;
-  dpdbuf4 D;
-  dpdfile2 GAE, Gae;
+  dpdbuf4 L2, newLijab, newLIJAB, newLIjAb, newL2;
+  dpdbuf4 D, Z;
+  dpdfile2 GAE, Gae, G;
   dpdbuf4 X1, X2;
 
   /* RHS += P(ab)<ij||ae>Gbe */
-  if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
+  if(params.ref == 0) { /** RHF **/
+    dpd_file2_init(&G, CC_LAMBDA, L_irr, 1, 1, "GAE");
+
+    dpd_buf4_init(&Z, CC_TMP0, L_irr, 0, 5, 0, 5, 0, "Z(Ij,Ab)");
+    dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
+    dpd_contract424(&D, &G, &Z, 3, 1, 0, 1, 0);
+    dpd_buf4_close(&D);
+    dpd_buf4_sort_axpy(&Z, CC_LAMBDA, qpsr, 0, 5, "New LIjAb", 1);
+    dpd_buf4_init(&newL2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
+    dpd_buf4_axpy(&Z, &newL2, 1);
+    dpd_buf4_close(&newL2);
+    dpd_buf4_close(&Z);
+
+    dpd_file2_close(&G);
+  }
+  else if(params.ref == 1) { /** ROHF **/
 
     dpd_file2_init(&GAE, CC_LAMBDA, L_irr, 1, 1, "GAE");
     dpd_file2_init(&Gae, CC_LAMBDA, L_irr, 1, 1, "Gae");
@@ -132,13 +147,29 @@ void GaeL2(int L_irr)
 void GmiL2(int L_irr)
 {
 
-  dpdbuf4 L2, newLijab, newLIJAB, newLIjAb;
-  dpdbuf4 D;
-  dpdfile2 GMI, Gmi;
+  dpdbuf4 L2, newLijab, newLIJAB, newLIjAb, newL2;
+  dpdbuf4 D, Z;
+  dpdfile2 GMI, Gmi, G;
   dpdbuf4 X1, X2;
 
   /* RHS -= P(ij) * <im||ab> * Gmj */
-  if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
+  if(params.ref == 0) { /** RHF **/
+
+    dpd_file2_init(&G, CC_LAMBDA, L_irr, 0, 0, "GMI");
+
+    dpd_buf4_init(&Z, CC_TMP0, L_irr, 0, 5, 0, 5, 0, "Z(Ij,Ab)");
+    dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
+    dpd_contract244(&G, &D, &Z, 0, 0, 0, -1, 0);
+    dpd_buf4_close(&D);
+    dpd_buf4_sort_axpy(&Z, CC_LAMBDA, qpsr, 0, 5, "New LIjAb", 1);
+    dpd_buf4_init(&newL2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
+    dpd_buf4_axpy(&Z, &newL2, 1);
+    dpd_buf4_close(&newL2);
+    dpd_buf4_close(&Z);
+
+    dpd_file2_close(&G);
+  }
+  else if(params.ref == 1) { /** ROHF **/
 
     dpd_file2_init(&GMI, CC_LAMBDA, L_irr, 0, 0, "GMI");
     dpd_file2_init(&Gmi, CC_LAMBDA, L_irr, 0, 0, "Gmi");

@@ -7,6 +7,23 @@ void sort_amps(int L_irr)
 {
   dpdbuf4 L2;
 
+  if(params.ref == 0) {
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "LIjAb");
+    dpd_buf4_scmcopy(&L2, CC_LAMBDA, "2 LIjAb - LIjBa", 2);
+    dpd_buf4_sort_axpy(&L2, CC_LAMBDA, pqsr, 0, 5, "2 LIjAb - LIjBa", -1);
+    dpd_buf4_close(&L2);
+
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "LIjAb");
+    dpd_buf4_sort(&L2, CC_LAMBDA, prqs, 10, 10, "LIAjb");
+    dpd_buf4_sort(&L2, CC_LAMBDA, psqr, 10, 10, "LIbjA");
+    dpd_buf4_close(&L2);
+
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 10, 10, 10, 10, 0, "LIAjb");
+    dpd_buf4_scmcopy(&L2, CC_LAMBDA, "2 LIAjb - LIbjA", 2);
+    dpd_buf4_sort_axpy(&L2, CC_LAMBDA, psrq, 10, 10, "2 LIAjb - LIbjA", -1);
+    dpd_buf4_close(&L2);
+  }
+  
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
     /* Build L2iJaB list */
     dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "LIjAb");

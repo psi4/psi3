@@ -29,12 +29,9 @@ void dijabL2(int L_irr)
     dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "New LIjAb Increment");
     dpd_buf4_axpy(&L2, &newLIjAb, 1);
     dpd_buf4_close(&L2);
-
-    dpd_buf4_copy(&newLIjAb, CC_TMP0, "LIjAb-LIjBa");
-    dpd_buf4_sort_axpy(&newLIjAb, CC_TMP0, pqsr, 0, 5, "LIjAb-LIjBa", -1);
     dpd_buf4_close(&newLIjAb);
 
-    dpd_buf4_init(&L2, CC_TMP0, L_irr, 2, 7, 0, 5, 0, "LIjAb-LIjBa");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 2, 7, 0, 5, 1, "New LIjAb");
     dpd_buf4_copy(&L2, CC_LAMBDA, "New LIJAB");
     dpd_buf4_copy(&L2, CC_LAMBDA, "New Lijab");
     dpd_buf4_close(&L2);

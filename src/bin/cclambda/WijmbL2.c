@@ -35,7 +35,21 @@ void WijmbL2(int L_irr)
   dpdbuf4 X1, X2, Z, Z1, Z2;
 
   /* RHS += -P(ab) Lma * Wijmb */
-  if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
+  if(params.ref == 0) { /** RHF **/
+
+    dpd_buf4_init(&Z, CC_TMP0, L_irr, 0, 5, 0, 5, 0, "Z(Ij,bA)");
+
+    dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
+    dpd_buf4_init(&W, CC_HBAR, 0, 0, 11, 0, 11, 0, "WMnIe");
+    dpd_contract424(&W, &LIA, &Z, 3, 0, 0, 1, 0);
+    dpd_buf4_close(&W);
+    dpd_file2_close(&LIA);
+
+    dpd_buf4_sort_axpy(&Z, CC_LAMBDA, pqsr, 0, 5, "New LIjAb", -1);
+    dpd_buf4_sort_axpy(&Z, CC_LAMBDA, qprs, 0, 5, "New LIjAb", -1);
+    dpd_buf4_close(&Z);
+  }
+  else if(params.ref == 1) { /** ROHF **/
 
     dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
     dpd_file2_init(&Lia, CC_LAMBDA, L_irr, 0, 1, "Lia");

@@ -11,7 +11,13 @@ void DL2(struct L_Params L_params)
 
   if (L_params.ground) {
     /* RHS = <ij||ab> */
-    if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
+
+    if(params.ref == 0) { /** RHF **/
+      dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
+      dpd_buf4_copy(&D, CC_LAMBDA, "New LIjAb");
+      dpd_buf4_close(&D);
+    }
+    else if(params.ref == 1) { /** ROHF **/
       dpd_buf4_init(&D, CC_DINTS, 0, 2, 7, 2, 7, 0, "D <ij||ab> (i>j,a>b)");
       dpd_buf4_copy(&D, CC_LAMBDA, "New LIJAB");
       dpd_buf4_copy(&D, CC_LAMBDA, "New Lijab");
@@ -35,7 +41,7 @@ void DL2(struct L_Params L_params)
       dpd_buf4_close(&D);
     }
   }
-  /* excited state - no homogeneous term, first term is E*L */
+  /* excited state - no inhomogeneous term, first term is E*L */
   else if (!params.zeta) {
     if (params.ref == 0 || params.ref == 1 ) { /** RHF/ROHF **/
       dpd_buf4_init(&D, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "New LIJAB");

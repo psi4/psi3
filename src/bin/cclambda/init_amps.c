@@ -76,7 +76,22 @@ void init_amps(struct L_Params L_params)
   /* ground state guess L <= T */
   /* excited state guess L <= R0 * T + R */
   if (L_params.ground || L_params.irrep == 0) {
-    if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
+    if(params.ref == 0) { /** RHF **/
+      dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
+      dpd_file2_copy(&T1, CC_LAMBDA, "LIA");
+      dpd_file2_copy(&T1, CC_LAMBDA, "Lia");
+      dpd_file2_close(&T1);
+
+      dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
+      dpd_buf4_copy(&T2, CC_LAMBDA, "LIjAb");
+      dpd_buf4_close(&T2);
+
+      dpd_buf4_init(&T2, CC_LAMBDA, 0, 2, 7, 0, 5, 1, "LIjAb");
+      dpd_buf4_copy(&T2, CC_LAMBDA, "LIJAB");
+      dpd_buf4_copy(&T2, CC_LAMBDA, "Lijab");
+      dpd_buf4_close(&T2);
+    }
+    else if(params.ref == 1) { /** ROHF **/
       dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
       dpd_file2_copy(&T1, CC_LAMBDA, "LIA");
       dpd_file2_close(&T1);

@@ -8,7 +8,30 @@ void G_build(int L_irr) {
   dpdbuf4 tIJAB, tijab, tiJaB, tIjAb, tijAB, tIJab;
   dpdfile2 GAE, Gae, GMI, Gmi;
 
-  if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
+  if(params.ref == 0) {
+    dpd_file2_init(&GMI, CC_LAMBDA, L_irr, 0, 0, "GMI");
+
+    /* T(Mj,Ab) * [ 2 L(Ij,Ab) - L(Ij,Ba) ] --> G(M,I) */
+    dpd_buf4_init(&tIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
+    dpd_buf4_init(&LIjAb, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "2 LIjAb - LIjBa");
+    dpd_contract442(&tIjAb, &LIjAb, &GMI, 0, 0, 1, 0);
+    dpd_buf4_close(&tIjAb);
+    dpd_buf4_close(&LIjAb);
+
+    dpd_file2_close(&GMI);
+
+    dpd_file2_init(&GAE, CC_LAMBDA, L_irr, 1, 1, "GAE");
+
+    /* T(Ij,Eb) * [ 2 L(Ij,Ab) - L(Ij,Ba) ] --> G(A,E) */
+    dpd_buf4_init(&tIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
+    dpd_buf4_init(&LIjAb, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "2 LIjAb - LIjBa");
+    dpd_contract442(&LIjAb, &tIjAb, &GAE, 2, 2, -1, 0);
+    dpd_buf4_close(&tIjAb);
+    dpd_buf4_close(&LIjAb);
+
+    dpd_file2_close(&GAE);
+  }
+  else if(params.ref == 1) { /** ROHF **/
 
     dpd_file2_init(&GMI, CC_LAMBDA, L_irr, 0, 0, "GMI");
     dpd_file2_init(&Gmi, CC_LAMBDA, L_irr, 0, 0, "Gmi");

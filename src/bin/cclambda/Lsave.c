@@ -8,7 +8,7 @@ void Lsave(int L_irr)
   dpdfile2 L1;
   dpdbuf4 L2;
 
-  if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
+  if(params.ref == 0 || params.ref == 1) { /** ROHF **/
 
     dpd_file2_init(&L1, CC_LAMBDA, L_irr, 0, 1, "New LIA");
     dpd_file2_copy(&L1, CC_LAMBDA, "LIA");

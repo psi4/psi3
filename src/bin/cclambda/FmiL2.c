@@ -9,11 +9,29 @@ void FmiL2(int L_irr)
 {
   dpdbuf4 Lijab, LIJAB, LIjAb;
   dpdbuf4 newLijab, newLIJAB, newLIjAb;
-  dpdfile2 LFmit2, LFMIt2;
+  dpdfile2 LFmit2, LFMIt2, F;
   dpdbuf4 X, X1, X2;
+  dpdbuf4 L2, newL2;
 
   /* RHS -= P(ij)*Limab*Fjm */
-  if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
+  if(params.ref == 0) { /** RHF **/
+
+    dpd_buf4_init(&X, CC_TMP0, L_irr, 0, 5, 0, 5, 0, "X(Ij,Ab)");
+
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "LIjAb");
+    dpd_file2_init(&F, CC_OEI, 0, 0, 0, "FMI");
+    dpd_contract244(&F, &L2, &X, 1, 0, 0, -1.0, 0);
+    dpd_file2_close(&F);
+    dpd_buf4_close(&L2);
+
+    dpd_buf4_sort_axpy(&X, CC_LAMBDA, qpsr, 0, 5, "New LIjAb", 1);
+    dpd_buf4_init(&newL2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
+    dpd_buf4_axpy(&X, &newL2, 1);
+    dpd_buf4_close(&newL2);
+
+    dpd_buf4_close(&X);
+  }
+  else if(params.ref == 1) { /** RHF/ROHF **/
 
     dpd_file2_init(&LFMIt2, CC_OEI, 0, 0, 0, "FMI");
     dpd_file2_init(&LFmit2, CC_OEI, 0, 0, 0, "Fmi");

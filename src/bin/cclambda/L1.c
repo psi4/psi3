@@ -17,9 +17,14 @@ void L1_build(struct L_Params L_params) {
   int L_irr;
   L_irr = L_params.irrep;
 
-  /* ground state homogeneous term is Fme */
+  /* ground state inhomogeneous term is Fme */
   if (L_params.ground) {
-    if(params.ref == 0 || params.ref == 1) {
+    if(params.ref == 0) {
+      dpd_file2_init(&FME,CC_OEI, 0, 0, 1, "FME");
+      dpd_file2_copy(&FME, CC_LAMBDA, "New LIA");
+      dpd_file2_close(&FME);
+    }
+    else if(params.ref == 1) {
       dpd_file2_init(&Fme,CC_OEI, 0, 0, 1, "Fme");
       dpd_file2_init(&FME,CC_OEI, 0, 0, 1, "FME");
       dpd_file2_copy(&Fme, CC_LAMBDA, "New Lia");
@@ -36,7 +41,7 @@ void L1_build(struct L_Params L_params) {
       dpd_file2_close(&FME);
     }
   }
-  /* excited state - no homogenous term, first term is -energy*L*/
+  /* excited state - no inhomogenous term, first term is -energy*L*/
   else if (!params.zeta) {
     dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
     dpd_file2_init(&newLIA, CC_LAMBDA, L_irr, 0, 1, "New LIA");
@@ -55,7 +60,7 @@ void L1_build(struct L_Params L_params) {
     dpd_file2_close(&Lia);
     dpd_file2_close(&newLia);
   }
-  /* solving zeta equations; homogeneous term is Xi */
+  /* solving zeta equations; inhomogeneous term is Xi */
   else {
     if(params.ref == 0 || params.ref == 1) {
       dpd_file2_init(&XIA, EOM_XI, 0, 0, 1, "XIA");
@@ -84,17 +89,27 @@ void L1_build(struct L_Params L_params) {
     dpd_file2_init(&newLia, CC_LAMBDA, L_irr, 2, 3, "New Lia");
   }
 
-  /* remove ? */
-  /* L0=0 for excited states, so no inhomogeneous Fia and Wijab terms */
-  /* make sure these are not nonzero from last iteration */
-  /*
-  if (!params.ground) {
-    dpd_file2_scm(&newLIA, 0.0);
-    dpd_file2_scm(&newLia, 0.0);
+  if(params.ref == 0) { /** RHF **/
+    dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
+
+    /* L1 RHS += Lie*Fea */
+    dpd_file2_init(&LFAEt2, CC_OEI, 0, 1, 1, "FAE");
+    dpd_contract222(&LIA,&LFAEt2,&newLIA, 0, 1, 1.0, 1.0);
+    dpd_file2_close(&LFAEt2);
+
+    /* L1 RHS += -Lma*Fim */
+    dpd_file2_init(&LFMIt2,CC_OEI, 0, 0, 0, "FMI");
+    dpd_contract222(&LFMIt2,&LIA,&newLIA, 0, 1, -1.0, 1.0);
+    dpd_file2_close(&LFMIt2);
+
+    /* L1 RHS += Lme*Wieam */
+    dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "2 W(ME,jb) + W(Me,Jb)");
+    dpd_contract422(&W, &LIA, &newLIA, 0, 0, 1.0, 1.0);
+    dpd_buf4_close(&W);
+
+    dpd_file2_close(&LIA);
   }
-  */
- 
-  if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
+  else if(params.ref == 1) { /** ROHF **/
 
     /* L1 RHS += Lie*Fea */
     dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
@@ -178,7 +193,16 @@ void L1_build(struct L_Params L_params) {
   }
 
   /* L1 RHS += 1/2 Limef*Wefam */
-  if(params.ref == 0 || params.ref == 1) {
+  if(params.ref == 0) { /** RHF **/
+
+    dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WEiAb");
+    dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "2 LIjAb - LIjBa");
+    dpd_contract442(&L2, &W, &newLIA, 0, 0, 1.0, 1.0);
+    dpd_buf4_close(&L2);
+    dpd_buf4_close(&W);
+
+  }
+  else if(params.ref == 1) { /** ROHF **/
 
     dpd_buf4_init(&W, CC_HBAR, 0, 11, 7, 11, 7, 0, "WEIAB");
     dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 7, 2, 7, 0, "LIJAB");
@@ -229,7 +253,14 @@ void L1_build(struct L_Params L_params) {
   }
 
   /* L1 RHS += -1/2 Lmnae*Wiemn */
-  if(params.ref == 0 || params.ref == 1) {
+  if(params.ref == 0) {
+    dpd_buf4_init(&WMbIj, CC_HBAR, 0, 10, 0, 10, 0, 0, "WMbIj");
+    dpd_buf4_init(&LIjAb, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "2 LIjAb - LIjBa");
+    dpd_contract442(&WMbIj, &LIjAb, &newLIA, 0, 2, -1.0, 1.0);
+    dpd_buf4_close(&LIjAb);
+    dpd_buf4_close(&WMbIj);
+  }
+  else if(params.ref == 1) {
 
     dpd_buf4_init(&WMBIJ, CC_HBAR, 0, 10, 2, 10, 2, 0, "WMBIJ");
     dpd_buf4_init(&LIJAB, CC_LAMBDA, L_irr, 2, 5, 2, 7, 0, "LIJAB");
@@ -284,7 +315,17 @@ void L1_build(struct L_Params L_params) {
 
 
   /* L1 RHS += -Gef*Weifa */
-  if(params.ref == 0 || params.ref == 1) {
+  if(params.ref == 0) {
+
+    dpd_file2_init(&GAE, CC_LAMBDA, L_irr, 1, 1, "GAE");
+
+    dpd_buf4_init(&WaMeF, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf 2(Am,Ef) - (Am,fE)");
+    dpd_dot13(&GAE,&WaMeF,&newLIA, 0, 0, -1.0, 1.0);
+    dpd_buf4_close(&WaMeF);
+
+    dpd_file2_close(&GAE);
+  }
+  else if(params.ref == 1) {
 
     dpd_file2_init(&GAE, CC_LAMBDA, L_irr, 1, 1, "GAE");
     dpd_file2_init(&Gae, CC_LAMBDA, L_irr, 1, 1, "Gae");
@@ -335,7 +376,16 @@ void L1_build(struct L_Params L_params) {
   }
 
   /* L1 RHS += -Gmn*Wmina */
-  if(params.ref == 0 || params.ref == 1) {
+  if(params.ref == 0) {
+    dpd_file2_init(&GMI, CC_LAMBDA, L_irr, 0, 0, "GMI");
+
+    dpd_buf4_init(&WmNiE, CC_HBAR, 0, 0, 11, 0, 11, 0, "2WMnIe - WnMIe");
+    dpd_dot14(&GMI, &WmNiE, &newLIA, 0, 0, -1.0, 1.0);
+    dpd_buf4_close(&WmNiE);
+
+    dpd_file2_close(&GMI);
+  }
+  else if(params.ref == 1) {
 
     dpd_file2_init(&GMI, CC_LAMBDA, L_irr, 0, 0, "GMI");
     dpd_file2_init(&Gmi, CC_LAMBDA, L_irr, 0, 0, "Gmi");
