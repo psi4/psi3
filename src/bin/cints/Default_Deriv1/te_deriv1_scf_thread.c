@@ -97,7 +97,7 @@ void *te_deriv1_scf_thread(void *tnum_ptr)
   max_class_size = max_cart_class_size;
   max_num_prim_comb = (BasisSet.max_num_prims*BasisSet.max_num_prims)*
 		      (BasisSet.max_num_prims*BasisSet.max_num_prims);
-  init_libderiv(&Libderiv,BasisSet.max_am-1,max_num_prim_comb,max_class_size);
+  init_libderiv1(&Libderiv,BasisSet.max_am-1,max_num_prim_comb,max_class_size);
   FourInd = init_array(max_cart_class_size);
 
   grad_te_local = block_matrix(Molecule.num_atoms,3);

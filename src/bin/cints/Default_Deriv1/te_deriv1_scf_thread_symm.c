@@ -109,7 +109,7 @@ void *te_deriv1_scf_thread_symm(void *tnum_ptr)
   max_class_size = max_cart_class_size;
   max_num_prim_comb = (BasisSet.max_num_prims*BasisSet.max_num_prims)*
 		      (BasisSet.max_num_prims*BasisSet.max_num_prims);
-  init_libderiv(&Libderiv,BasisSet.max_am-1,max_num_prim_comb,max_class_size);
+  init_libderiv1(&Libderiv,BasisSet.max_am-1,max_num_prim_comb,max_class_size);
   FourInd = init_array(max_cart_class_size);
   max_num_unique_quartets = Symmetry.max_stab_index*
                             Symmetry.max_stab_index*
@@ -120,10 +120,9 @@ void *te_deriv1_scf_thread_symm(void *tnum_ptr)
 
   grad_te_local = block_matrix(Molecule.num_atoms,3);
 
-/*-------------------------------------------------
-  generate all unique shell quartets with ordering
-  suitable for building the PK-matrix
- -------------------------------------------------*/
+  /*--------------------------------------------
+    generate all symmetry unique shell quartets
+   --------------------------------------------*/
   for (usii=0; usii<Symmetry.num_unique_shells; usii++)
     for (usjj=0; usjj<=usii; usjj++)
       for (uskk=0; uskk<=usii; uskk++)
@@ -460,7 +459,8 @@ void *te_deriv1_scf_thread_symm(void *tnum_ptr)
 	    grad_te_local[center_j][0] -= ddax + ddcx + dddx;
 	    grad_te_local[center_j][1] -= dday + ddcy + dddy;
 	    grad_te_local[center_j][2] -= ddaz + ddcz + dddz;
-	  }
+
+	  } /* end of loop over symmetry unique quartets */
 	} /* end of unique shell loops */
 
   pthread_mutex_lock(&deriv1_mutex);

@@ -23,22 +23,24 @@
 #endif
 #include "deriv1_quartet_data.h"
 #include "symmetrize.h"
+#include "hash.h"
 #include "small_fns.h"
 
-#define PK_ORDER 0
 #define INCLUDE_1ST 1
 #define INCLUDE_2ND 1
 
-void te_deriv2_scf(void)
+void te_deriv2_scf_symm(void)
 {
   /*--- Various data structures ---*/
   struct shell_pair *sp_ij, *sp_kl;
   Libderiv_t Libderiv;                /* Integrals library object */
+  htable_t htable;                    /* hashing table */
 #ifndef USE_TAYLOR_FM
   double_array_t fjt_table;               /* table of auxiliary function F_m(u) for each primitive combination */
 #endif
   double **hess_te;
 
+  long int quartet_index;
   int ij, kl, ik, jl, ijkl;
   int ioffset, joffset, koffset, loffset;
   int count ;
@@ -46,14 +48,32 @@ void te_deriv2_scf(void)
   int n, num;
   int total_am, am;
   int orig_am[4];
-  register int i, j, k, l, m, ii, jj, kk, ll;
-  register int si, sj, sk, sl ;
-  register int sii, sjj, skk, sll, slll;
-  register int pi, pj, pk, pl ;
+  int i, j, k, l, m, ii, jj, kk, ll;
+  int si, sj, sk, sl ;
+  int sii, sjj, skk, sll, slll;
+  int usi, usj, usk, usl;
+  int usii, usjj, uskk, usll, uslll;
+  int pi, pj, pk, pl ;
   int max_pj, max_pl;
-  register int pii, pjj, pkk, pll ;
+  int pii, pjj, pkk, pll ;
   int switch_ij, switch_kl, switch_ijkl;
   int center_i, center_j, center_k, center_l, center[4];
+
+  int *si_arr, *sj_arr, *sk_arr, *sl_arr, *key_arr;
+  int usi_arr[3], usj_arr[3], usk_arr[3], usl_arr[3];
+  int usi_eq_usj, usi_eq_usk, usi_eq_usl, usj_eq_usl, usk_eq_usj, usk_eq_usl;
+  int usij_eq_uskl, usik_eq_usjl, usil_eq_uskj;
+  int stab_i,stab_j,stab_k,stab_l,stab_ij,stab_kl;
+  int *R_list, *S_list, *T_list;
+  int R,S,T;
+  int dcr_ij, dcr_kl, dcr_ijkl;
+  double lambda_T = 0.5/Symmetry.nirreps;
+  int num_unique_quartets;
+  int max_num_unique_quartets;
+  int plquartet;
+  long int key, key1, key2, key3;
+  int new_quartet, htable_ptr, nstri;
+  double q4ijkl;
 
   int class_size;
   int max_class_size;
@@ -65,19 +85,20 @@ void te_deriv2_scf(void)
   int num_prim_comb, p, max_num_prim_comb;
   double AB2, CD2;
   double *FourInd;
-  int I, J, K, L, IJ, KL, this_quartet, num_unique_pk, unique;
+  int I, J, K, L, IJ, KL, this_quartet, upk, num_unique_pk, unique;
   int si_fao, sj_fao, sk_fao, sl_fao;
   int coord, coord1, coord2;
   int di, dj;
-  int si_arr[3], sj_arr[3], sk_arr[3], sl_arr[3];
   double *data, value[12], svalue;
   double fac1, fac2, fac3;
   double ffac1, ffac2, ffac3;
-  double d2acc[12][12], contr, pfac, perm_pf;
+  double d2acc[12][12], contr, pfac, perm_pf, temp;
 
   /*---------------
     Initialization
     ---------------*/
+  if (Symmetry.nirreps > 1)
+    init_htable( &htable, Symmetry.max_stab_index );
   hess_te = block_matrix(Molecule.num_atoms*3,Molecule.num_atoms*3);
 #ifdef USE_TAYLOR_FM
   init_Taylor_Fm_Eval(BasisSet.max_am*4-4+DERIV_LVL,UserOptions.cutoff);
@@ -86,7 +107,6 @@ void te_deriv2_scf(void)
   init_fjt_table(&fjt_table);
 #endif
   init_libderiv_base();
-  /*  init_libint_base(); */
 
   max_cart_class_size = ioff[BasisSet.max_am]*ioff[BasisSet.max_am]*ioff[BasisSet.max_am]*ioff[BasisSet.max_am];
   max_class_size = max_cart_class_size;
@@ -94,86 +114,252 @@ void te_deriv2_scf(void)
     (BasisSet.max_num_prims*BasisSet.max_num_prims);
   init_libderiv12(&Libderiv,BasisSet.max_am-1,max_num_prim_comb,max_cart_class_size);
   FourInd = init_array(max_cart_class_size);
-  /*  init_libint(&Libint,BasisSet.max_am-1,max_num_prim_comb); */
+  max_num_unique_quartets = Symmetry.max_stab_index*
+                            Symmetry.max_stab_index*
+                            Symmetry.max_stab_index;
+  if (Symmetry.nirreps == 1) {
+    si_arr = (int *)malloc(sizeof(int)*3*max_num_unique_quartets);
+    sj_arr = (int *)malloc(sizeof(int)*3*max_num_unique_quartets);
+    sk_arr = (int *)malloc(sizeof(int)*3*max_num_unique_quartets);
+    sl_arr = (int *)malloc(sizeof(int)*3*max_num_unique_quartets);
+  }
+  key_arr = (int *)malloc(sizeof(int)*3*max_num_unique_quartets);
 
-#if !PK_ORDER
-  for (sii=0; sii<BasisSet.num_shells; sii++)
-    for (sjj=0; sjj<=sii; sjj++)
-      for (skk=0; skk<=sii; skk++)
-	for (sll=0; sll<= ((sii == skk) ? sjj : skk); sll++){
-	  si = sii; sj = sjj; sk = skk; sl = sll;
-#endif
-#if PK_ORDER
-  for (sii=0; sii<BasisSet.num_shells; sii++)
-    for (sjj=0; sjj<=sii; sjj++)
-      for (skk=0; skk<=sjj; skk++)
-	for (sll=0; sll<= skk; sll++){
+  /*--------------------------------------------
+    generate all symmetry unique shell quartets
+    with ordering for building the PK-matrix
+   --------------------------------------------*/
+  quartet_index = 0;
+  for (usii=0; usii<Symmetry.num_unique_shells; usii++)
+    for (usjj=0; usjj<=usii; usjj++)
+      for (uskk=0; uskk<=usjj; uskk++)
+	for (usll=0; usll<=uskk; usll++, quartet_index++){
 
-	  si_arr[0] = sii; sj_arr[0] = sjj; sk_arr[0] = skk; sl_arr[0] = sll;
-	  if (sii == sjj && sii == skk || sjj == skk && sjj == sll)
+/*--- Decide what unique shell quartets out of (ij|kl), (ik|jl), and (il|jk) are unique
+        with respect to permutations ---*/
+	  usi_arr[0] = usii; usj_arr[0] = usjj; usk_arr[0] = uskk; usl_arr[0] = usll;
+	  if (usii == usjj && usii == uskk || usjj == uskk && usjj == usll)
 	    num_unique_pk = 1;
-	  else if (sii == skk || sjj == sll) {
+	  else if (usii == uskk || usjj == usll) {
 	    num_unique_pk = 2;
-	    si_arr[1] = sii; sj_arr[1] = skk; sk_arr[1] = sjj; sl_arr[1] = sll;
+	    usi_arr[1] = usii; usj_arr[1] = uskk; usk_arr[1] = usjj; usl_arr[1] = usll;
 	  }
-	  else if (sjj == skk) {
+	  else if (usjj == uskk) {
 	    num_unique_pk = 2;
-	    si_arr[1] = sii; sj_arr[1] = sll; sk_arr[1] = sjj; sl_arr[1] = skk;
+	    usi_arr[1] = usii; usj_arr[1] = usll; usk_arr[1] = usjj; usl_arr[1] = uskk;
 	  }
-	  else if (sii == sjj || skk == sll) {
+	  else if (usii == usjj || uskk == usll) {
 	    num_unique_pk = 2;
-	    si_arr[1] = sii; sj_arr[1] = skk; sk_arr[1] = sjj; sl_arr[1] = sll;
+	    usi_arr[1] = usii; usj_arr[1] = uskk; usk_arr[1] = usjj; usl_arr[1] = usll;
 	  }
 	  else {
 	    num_unique_pk = 3;
-	    si_arr[1] = sii; sj_arr[1] = skk; sk_arr[1] = sjj; sl_arr[1] = sll;
-	    si_arr[2] = sii; sj_arr[2] = sll; sk_arr[2] = sjj; sl_arr[2] = skk;
+	    usi_arr[1] = usii; usj_arr[1] = uskk; usk_arr[1] = usjj; usl_arr[1] = usll;
+	    usi_arr[2] = usii; usj_arr[2] = usll; usk_arr[2] = usjj; usl_arr[2] = uskk;
 	  }
 
-	  for(unique=0; unique < num_unique_pk; unique++) {
-	    si = si_arr[unique];
-	    sj = sj_arr[unique];
-	    sk = sk_arr[unique];
-	    sl = sl_arr[unique];
-#endif
+	  count = 0;
+	  for(upk=0;upk<num_unique_pk;upk++) {
+	    /*--- For each combination of unique shells generate "petit list" of shells ---*/
+	    usi = usi_arr[upk]; usj = usj_arr[upk]; usk = usk_arr[upk]; usl = usl_arr[upk];
 
-	    fac1 = fac2 = fac3 = 1.0;
-	    /* place in "ascending" angular mom-
+	    si = Symmetry.us2s[usi];
+	    sjj = Symmetry.us2s[usj];
+	    skk = Symmetry.us2s[usk];
+	    sll = Symmetry.us2s[usl];
+	    total_am = BasisSet.shells[si].am+BasisSet.shells[sjj].am+BasisSet.shells[skk].am+BasisSet.shells[sll].am;
+
+	    if (Symmetry.nirreps > 1) { /*--- Non-C1 symmetry case ---*/
+	      /*--- Generate the petite list of shell quadruplets using DCD approach of Davidson ---*/
+	      stab_i = Symmetry.atom_positions[BasisSet.shells[si].center-1];
+	      stab_j = Symmetry.atom_positions[BasisSet.shells[sjj].center-1];
+	      stab_k = Symmetry.atom_positions[BasisSet.shells[skk].center-1];
+	      stab_l = Symmetry.atom_positions[BasisSet.shells[sll].center-1];
+	      stab_ij = Symmetry.GnG[stab_i][stab_j];
+	      stab_kl = Symmetry.GnG[stab_k][stab_l];
+	      R_list = Symmetry.dcr[stab_i][stab_j];
+	      S_list = Symmetry.dcr[stab_k][stab_l];
+	      T_list = Symmetry.dcr[stab_ij][stab_kl];
+	      fac1 = Symmetry.nirreps/
+		     Symmetry.dcr_deg[Symmetry.GnG[stab_i][stab_j]][Symmetry.GnG[stab_k][stab_l]];
+	      usi_eq_usj = (usi == usj);
+	      usi_eq_usk = (usi == usk);
+	      usi_eq_usl = (usi == usl);
+	      usj_eq_usl = (usj == usl);
+	      usk_eq_usj = (usk == usj);
+	      usk_eq_usl = (usk == usl);
+	      usij_eq_uskl = (INDEX(usi,usj) == INDEX(usk,usl));
+	      usik_eq_usjl = (INDEX(usi,usk) == INDEX(usj,usl));
+	      usil_eq_uskj = (INDEX(usi,usl) == INDEX(usk,usj));
+	      if (!usi_eq_usj)
+		fac1 *= 2.0;
+	      if (!usk_eq_usl)
+		fac1 *= 2.0;
+	      if (usij_eq_uskl)
+		fac1 *= 0.5;
+		
+
+	      for(dcr_ij=0;dcr_ij<Symmetry.dcr_dim[stab_i][stab_j];dcr_ij++){
+		R = R_list[dcr_ij];
+		sj = BasisSet.shells[sjj].trans_vec[R]-1;
+		for(dcr_ijkl=0;dcr_ijkl<Symmetry.dcr_dim[stab_ij][stab_kl];dcr_ijkl++){
+		  T = T_list[dcr_ijkl];
+		  sk = BasisSet.shells[skk].trans_vec[T]-1;
+		  slll = BasisSet.shells[sll].trans_vec[T]-1;
+		  for(dcr_kl=0;dcr_kl<Symmetry.dcr_dim[stab_k][stab_l];dcr_kl++) {
+		    S = S_list[dcr_kl];
+		    sl = BasisSet.shells[slll].trans_vec[S]-1;
+
+		    q4ijkl = fac1;
+		    
+		    key1 = compute_key(si,sj,sk,sl);
+		    key2 = compute_key(si,sk,sj,sl);
+		    key3 = compute_key(si,sl,sk,sj);
+		    new_quartet = put_entry(&htable,key1,si,sj,sk,sl,q4ijkl,0,0);
+		    if (new_quartet > -1) {
+		      key_arr[count] = new_quartet;
+		      count++;
+		    }
+		    
+		    if ( (key1 == key3 && key3 != key2) ||
+			 (key2 == key3 && key3 != key1) ||
+			 (key2 != key3 && key1 != key3 && key2 != key1)) {
+		      new_quartet = put_entry(&htable,key2,si,sk,sj,sl,0,q4ijkl,0);
+		      if (new_quartet > -1) {
+			key_arr[count] = new_quartet;
+			count++;
+		      }
+		    }
+		    
+		    if ( (key1 == key2 && key3 != key1) ||
+			 (key2 != key3 && key1 != key3 && key1 != key2)) {
+		      new_quartet = put_entry(&htable,key3,si,sl,sk,sj,0,0,q4ijkl);
+		      if (new_quartet > -1) {
+			key_arr[count] = new_quartet;
+			count++;
+		      }
+		    }
+		  }
+		}
+	      } /* petite list is ready to be used */
+	    }
+	    else {
+	      si_arr[count] = si;
+	      sj_arr[count] = sjj;
+	      sk_arr[count] = skk;
+	      sl_arr[count] = sll;
+	      count++;
+	    }
+	  }
+	  num_unique_quartets = count;
+	  if (count > 3*max_num_unique_quartets)
+	    punt("Problem with hashing?");
+
+	    /*----------------------------------
+	      Compute the nonredundant quartets
+	     ----------------------------------*/
+	    for(plquartet=0;plquartet<num_unique_quartets;plquartet++) {
+	      if (Symmetry.nirreps == 1) {
+		si = si_arr[plquartet];
+		sj = sj_arr[plquartet];
+		sk = sk_arr[plquartet];
+		sl = sl_arr[plquartet];
+		
+		fac1 = fac2 = fac3 = 1.0;
+		if (si != sj)
+		  fac1 *= 2.0;
+		if (sk != sl)
+		  fac1 *= 2.0;
+		if (si != sk)
+		  fac2 *= 2.0;
+		if (sj != sl)
+		  fac2 *= 2.0;
+		if (si != sl)
+		  fac3 *= 2.0;
+		if (sj != sk)
+		  fac3 *= 2.0;
+		if (INDEX(si,sj) == INDEX(sk,sl))
+		  fac1 *= 0.5;
+		if (INDEX(si,sk) == INDEX(sj,sl))
+		  fac2 *= 0.5;
+		if (INDEX(si,sl) == INDEX(sj,sk))
+		  fac3 *= 0.5;
+	      }
+	      else {
+		htable_ptr = key_arr[plquartet];
+		if (htable_ptr >= htable.size || htable_ptr < 0)
+		    punt("Problem with hashing?");
+		htable.table[htable_ptr].key = EMPTY_KEY;
+		si = htable.table[htable_ptr].si;
+		sj = htable.table[htable_ptr].sj;
+		sk = htable.table[htable_ptr].sk;
+		sl = htable.table[htable_ptr].sl;
+
+		fac1 = htable.table[htable_ptr].q4ijkl;
+		fac2 = htable.table[htable_ptr].q4ikjl;
+		fac3 = htable.table[htable_ptr].q4ilkj;
+		if (si == sj && si == sk ||
+		    sj == sk && sj == sl ||
+		    si == sj && si == sl ||
+		    si == sk && si == sl) {
+		  fac2 = fac3 = fac1;
+		}
+		else if (si == sk || sj == sl) {
+		  fac1 = fac3 = (fac1 + fac3);
+		}
+		else if (sj == sk || si == sl) {
+		  fac1 = fac2 = (fac1 + fac2);
+		}
+		else if (si == sj || sk == sl) {
+		  fac3 = fac2 = (fac3 + fac2);
+		}
+	      }
+
+#if DEBUG
+	      if (si < 0 || si >= BasisSet.num_shells)
+		  punt("Problem with shell indices");
+	      if (sj < 0 || sj >= BasisSet.num_shells)
+		  punt("Problem with shell indices");
+	      if (sk < 0 || sk >= BasisSet.num_shells)
+		  punt("Problem with shell indices");
+	      if (sl < 0 || sl >= BasisSet.num_shells)
+		  punt("Problem with shell indices");
+#endif
+	      
+	      /* place in "ascending" angular mom-
 	       my simple way of optimizing PHG recursion (VRR) */
-	    /* these first two are good for the HRR */
-	    if(BasisSet.shells[si].am < BasisSet.shells[sj].am){
-	      dum = si;
-	      si = sj;
-	      sj = dum;
-	    }
-	    if(BasisSet.shells[sk].am < BasisSet.shells[sl].am){
-	      dum = sk;
-	      sk = sl;
-	      sl = dum;
-	    }
-	    /* this should be /good/ for the VRR */
-	    if(BasisSet.shells[si].am + BasisSet.shells[sj].am > BasisSet.shells[sk].am + BasisSet.shells[sl].am){
-	      dum = si;
-	      si = sk;
-	      sk = dum;
-	      dum = sj;
-	      sj = sl;
-	      sl = dum;
-	    }
+	      /* these first two are good for the HRR */
+	      if(BasisSet.shells[si].am < BasisSet.shells[sj].am){
+		dum = si;
+		si = sj;
+		sj = dum;
+		temp = fac2;
+		fac2 = fac3;
+		fac3 = temp;
+	      }
+	      if(BasisSet.shells[sk].am < BasisSet.shells[sl].am){
+		dum = sk;
+		sk = sl;
+		sl = dum;
+		temp = fac2;
+		fac2 = fac3;
+		fac3 = temp;
+	      }
+	      /* this should be /good/ for the VRR */
+	      if(BasisSet.shells[si].am + BasisSet.shells[sj].am >
+		 BasisSet.shells[sk].am + BasisSet.shells[sl].am){
+		dum = si;
+		si = sk;
+		sk = dum;
+		dum = sj;
+		sj = sl;
+		sl = dum;
+	      }
 
 	    center_i = BasisSet.shells[si].center-1;
 	    center_j = BasisSet.shells[sj].center-1;
 	    center_k = BasisSet.shells[sk].center-1;
 	    center_l = BasisSet.shells[sl].center-1;
-#if 0
-	    if (center_i == center_j ||
-		center_i == center_k ||
-		center_i == center_l ||
-		center_j == center_k ||
-		center_j == center_l ||
-		center_k == center_l)
-	      continue;
-#endif
 
 	    ni = ioff[BasisSet.shells[si].am];
 	    nj = ioff[BasisSet.shells[sj].am];
@@ -230,11 +416,11 @@ void te_deriv2_scf(void)
 #ifdef USE_TAYLOR_FM
 		    deriv1_quartet_data(&(Libderiv.PrimQuartet[num_prim_comb]),
 					NULL, AB2, CD2,
-					sp_ij, sp_kl, am, pi, pj, pk, pl, n);
+					sp_ij, sp_kl, am, pi, pj, pk, pl, n*lambda_T);
 #else
 		    deriv1_quartet_data(&(Libderiv.PrimQuartet[num_prim_comb]),
 					&fjt_table, AB2, CD2,
-					sp_ij, sp_kl, am, pi, pj, pk, pl, n);
+					sp_ij, sp_kl, am, pi, pj, pk, pl, n*lambda_T);
 #endif    
 		    num_prim_comb++;
 		    
@@ -292,9 +478,11 @@ void te_deriv2_scf(void)
 		    value[4] = - value[1] - value[7] - value[10];
 		    value[5] = - value[2] - value[8] - value[11];
 
-		    ffac1 = ffac2 = ffac3 = 1.0;
+		    ffac1 = fac1;
+		    ffac2 = fac2;
+		    ffac3 = fac3;
 
-		    if(I!=J) ffac1 *= 2.0;
+		    /*		    if(I!=J) ffac1 *= 2.0;
 		    if(K!=L) ffac1 *= 2.0;
 		    if(I!=K) ffac2 *= 2.0;
 		    if(J!=L) ffac2 *= 2.0;
@@ -302,7 +490,29 @@ void te_deriv2_scf(void)
 		    if(J!=K) ffac3 *= 2.0;
 		    if(INDEX(I,J) != INDEX(K,L)) ffac1 *= 2.0;
 		    if(INDEX(I,K) != INDEX(J,L)) ffac2 *= 2.0;
-		    if(INDEX(I,L) != INDEX(J,K)) ffac3 *= 2.0;
+		    if(INDEX(I,L) != INDEX(J,K)) ffac3 *= 2.0;*/
+		    if (I != J && si == sj)
+		      ffac1 *= 2.0;
+		    if (K != L && sk == sl)
+		      ffac1 *= 2.0;
+		    if (I != K && si == sk)
+		      ffac2 *= 2.0;
+		    if (J != L && sj == sl)
+		      ffac2 *= 2.0;
+		    if (I != L && si == sl)
+		      ffac3 *= 2.0;
+		    if (J != K && sj == sk)
+		      ffac3 *= 2.0;
+		    if (INDEX(I,J) != INDEX(K,L) &&
+			INDEX(si,sj) == INDEX(sk,sl))
+		      ffac1 *= 2.0;
+		    if (INDEX(I,K) != INDEX(J,L) &&
+			INDEX(si,sk) == INDEX(sj,sl))
+		      ffac2 *= 2.0;
+		    if (INDEX(I,L) != INDEX(J,K) &&
+			INDEX(si,sl) == INDEX(sj,sk))
+		      ffac3 *= 2.0;
+
 
 		    if((I==J && I==K) || (J==K && J==L) || (I==J && I==L) || (I==K && I==L)) {
 		      F[center_i*3][I][J] += Dens[K][L] * ffac1 * 0.5 * value[0];
@@ -623,11 +833,11 @@ void te_deriv2_scf(void)
 	      --------------------------------------*/
 	    /*--- Figure out the prefactor ---*/
 	    pfac = 1.0;
-	    if (si == sj)
+	    if (usi == usj)
 	      pfac *= 0.5;
-	    if (sk == sl)
+	    if (usk == usl)
 	      pfac *= 0.5;
-	    if (si == sk && sj == sl || si == sl && sj == sk)
+	    if (usi == usk && usj == usl || usi == usl && usj == usk)
 	      pfac *= 0.5;
 
 #if INCLUDE_2ND
@@ -733,12 +943,8 @@ void te_deriv2_scf(void)
 	      }
 	    }
 #endif
-
-#if PK_ORDER
-	  } /* unique */
-#endif
-	} /* sll */
-
+	    } /* end of loop over symmetry unique quartets */
+	} /* end of loop over unique shells */
 
   /*--- symmetrize and print out Hessian */
   symmetrize_hessian(hess_te);

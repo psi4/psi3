@@ -14,7 +14,7 @@
 #include"moinfo.h"
 #include"compute_scf_opdm.h"
 #include"read_gen_opdm.h"
-/*#include"enuc_deriv2.h"*/
+#include"enuc_deriv2.h"
 #include"oe_deriv2.h"
 #include"te_deriv2_scf.h"
 #include"file11.h"
@@ -60,6 +60,7 @@ void deriv2(void)
 
 #if DO_TE
   te_deriv2_scf();
+  //te_deriv2_scf_symm();
 #endif
 
   /* divide the whole thing by 2 */
@@ -115,6 +116,10 @@ void deriv2(void)
 
     sprintf(label, "MO-basis Fock Derivs (%d)", coord);
     iwl_wrtone(PSIF_OEI, label, ntri, outbuf);
+    if (UserOptions.print_lvl >= PRINT_OEDERIV) {
+      fprintf(outfile,"  -%s\n",label);
+      print_mat(F[coord],MOInfo.num_mo,MOInfo.num_mo,outfile);
+    }
     for(i=0; i < PSIO_KEYLEN; i++) label[i] = '\0';
   }
   for(coord=0; coord < Molecule.num_atoms*3; coord++) {
@@ -127,6 +132,10 @@ void deriv2(void)
 
     sprintf(label, "MO-basis Overlap Derivs (%d)", coord);
     iwl_wrtone(PSIF_OEI, label, ntri, outbuf);
+    if (UserOptions.print_lvl >= PRINT_OEDERIV) {
+      fprintf(outfile,"  -%s\n",label);
+      print_mat(S[coord],MOInfo.num_mo,MOInfo.num_mo,outfile);
+    }
     for(i=0; i < PSIO_KEYLEN; i++) label[i] = '\0';
   }
   free(outbuf);
