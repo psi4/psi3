@@ -36,8 +36,14 @@ double d1diag_t1_rhf(void)
       if(T1.params->rowtot[h]) {
          T = block_matrix(T1.params->rowtot[h], T1.params->rowtot[h]);
 
+	 C_DGEMM('n','t',T1.params->rowtot[h],T1.params->rowtot[h],
+	     T1.params->coltot[h],1.0,T1.matrix[h][0],T1.params->coltot[h],
+	     T1.matrix[h][0],T1.params->coltot[h], 0.0,
+	     T[0], T1.params->rowtot[h]);
+	 /*
          newmm(T1.matrix[h], 0, T1.matrix[h], 1, T, T1.params->rowtot[h],
    	       T1.params->coltot[h], T1.params->rowtot[h], 1.0, 0.0);
+	       */
 
          E = init_array(T1.params->rowtot[h]);
          C = block_matrix(T1.params->rowtot[h], T1.params->rowtot[h]);
@@ -81,7 +87,9 @@ d1diag_subblock(double **Tave, int row0, int rown, int col0, int coln)
             }
         }
 
-      newmm(Tsub, 0, Tsub, 1, Tsq, nrow, ncol, nrow, 1.0, 0.0);
+      C_DGEMM('n','t',nrow,nrow,ncol,1.0,Tsub[0],ncol,Tsub[0],ncol,
+	  0.0,Tsq[0],nrow);
+      /* newmm(Tsub, 0, Tsub, 1, Tsq, nrow, ncol, nrow, 1.0, 0.0); */
 
       E = init_array(nrow);
       C = block_matrix(nrow, nrow);

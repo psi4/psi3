@@ -92,7 +92,8 @@ void build_Z(void)
 
   /* Push the zero elements of X to the end of the vector */
   X = block_matrix(1,num_ai);
-  newmm(T,0,Z,0,X,num_ai,num_ai,1,1.0,0.0);
+  /*  newmm(T,0,Z,0,X,num_ai,num_ai,1,1.0,0.0); */
+  C_DGEMM('n','n',num_ai,1,num_ai,1.0,T[0],num_ai,Z[0],num_ai,0.0,X[0],num_ai);
 
   /* Now, grab only irrep 0 of the orbital Hessian */
   dpd_buf4_init(&A, CC_MISC, 0, 11, 11, 11, 11, 0, "A(EM,AI)");
@@ -103,8 +104,12 @@ void build_Z(void)
      Note that as long as we won't be writing A back to disk, it's OK
      to put the product back in A.matrix[0]. */
   Y = block_matrix(num_ai,num_ai);
-  newmm(A.matrix[0],0,T,0,Y,num_ai,num_ai,num_ai,1.0,0.0);
-  newmm(T,0,Y,0,A.matrix[0],num_ai,num_ai,num_ai,1.0,0.0);
+  /*  newmm(A.matrix[0],0,T,0,Y,num_ai,num_ai,num_ai,1.0,0.0); */
+  C_DGEMM('n','n',num_ai,num_ai,num_ai,1.0,A.matrix[0][0],num_ai,
+      T[0],num_ai,0.0,Y[0],num_ai);
+  /*  newmm(T,0,Y,0,A.matrix[0],num_ai,num_ai,num_ai,1.0,0.0); */
+  C_DGEMM('n','n',num_ai,num_ai,num_ai,1.0,T[0],num_ai,Y[0],num_ai,
+      0.0,A.matrix[0][0],num_ai);
   free_block(Y);
 
   /* Trying out Matt's Pople code --- way to go, Matt! */
@@ -114,7 +119,8 @@ void build_Z(void)
   dpd_buf4_close(&A);
 
   /* Now re-order the elements of X back to the DPD format */
-  newmm(T,0,X,0,Z,num_ai,num_ai,1,1.0,0.0);
+  /*  newmm(T,0,X,0,Z,num_ai,num_ai,1,1.0,0.0); */
+  C_DGEMM('n','n',num_ai,1,num_ai,1.0,T[0],num_ai,X[0],num_ai,0.0,Z[0],num_ai);
   free_block(X);
 
   /* We don't need the transformation matrix anymore */
