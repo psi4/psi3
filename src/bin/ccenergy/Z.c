@@ -82,7 +82,6 @@ void Z_build(void)
     dpd_buf4_init(&tauIJAB, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauIJAB");
     dpd_buf4_init(&tauijab, CC_TAMPS, 0, 12, 17, 12, 17, 0, "tauijab");
     dpd_buf4_init(&tauIjAb, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tauIjAb");
-    dpd_buf4_init(&tauIjbA, CC_TAMPS, 0, 22, 29, 22, 29, 0, "tauIjbA");
 
     dpd_buf4_init(&F, CC_FINTS, 0, 20, 7, 20, 5, 1, "F <IA|BC>");
     dpd_contract444(&tauIJAB, &F, &ZIJMA, 0, 0, 1, 0);
@@ -103,7 +102,6 @@ void Z_build(void)
     dpd_buf4_close(&tauIJAB); 
     dpd_buf4_close(&tauijab); 
     dpd_buf4_close(&tauIjAb);
-    dpd_buf4_close(&tauIjbA);
 
     dpd_buf4_sort(&ZIJMA, CC_MISC, pqsr, 2, 21, "ZIJAM");
     dpd_buf4_sort(&Zijma, CC_MISC, pqsr, 12, 31, "Zijam");

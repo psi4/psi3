@@ -1,4 +1,4 @@
-/* Input parameters for ccenergy */
+/* Input parameters */
 struct Params {
   int maxiter;
   double convergence;
