@@ -23,6 +23,12 @@ class cartesians {
         coord[i] = geom[i];
       return;
     }
+    void set_grad(double *gradient) {
+      int i;
+      for (i=0;i<num_atoms*3;++i)
+        grad[i] = gradient[i];
+      return;
+    }
     double *get_coord() {
       int i;
       double *copy;
@@ -51,7 +57,7 @@ class cartesians {
     int get_num_atoms() {return num_atoms; }
     void set_num_atoms(int new_num) {num_atoms = new_num;}
     void set_energy(double new_energy) {energy = new_energy;}
-    double get_energy();
+    double get_energy() {return energy;} 
     double get_atomic_num(int i) { return atomic_num[i]; }
     cartesians();
 };

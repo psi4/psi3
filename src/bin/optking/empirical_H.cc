@@ -10,6 +10,10 @@ extern "C" {
   #include <string.h>
   #include <libciomr/libciomr.h>
   #include <physconst.h>
+  #include <libipv1/ip_lib.h>
+  #include <physconst.h>
+  #include <libpsio/psio.h>
+  #include <psifiles.h>
 }
 
 #define EXTERN
@@ -149,7 +153,7 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
    double **intcos;
    double **f_new;
 
-   intcos = init_matrix(symm.get_num(),simples.get_num());
+   intcos = block_matrix(symm.get_num(),simples.get_num());
    int id, index;
 
    for (i=0;i<symm.get_num();++i) {
@@ -160,12 +164,29 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
      }
    }
 
-   f_new = init_matrix(symm.get_num(),symm.get_num());
+   f_new = block_matrix(symm.get_num(),symm.get_num());
    for (i=0;i<symm.get_num();++i)
      for (j=0;j<symm.get_num();++j)
        for (k=0;k<simples.get_num();++k)
          f_new[i][j] += intcos[i][k] * f[k] * intcos[j][k]; 
 
+/*
+   fprintf(outfile,"\nempirical force constants made\n");
+   for (i=0;i<symm.get_num();++i) {
+     for (j=0;j<symm.get_num();++j)
+        fprintf(outfile,"%15.8lf",f_new[i][j]);
+     fprintf(outfile,"\n");
+   }
+*/
+
+
+  /*** write to PSIF_OPTKING ***/
+   open_PSIF();
+   psio_write_entry(PSIF_OPTKING, "Force Constants",
+       (char *) &(f_new[0][0]),symm.get_num()*symm.get_num()*sizeof(double));
+   close_PSIF();
+
+/*
   // Print out forces constants to fconst.dat 
    fp_fconst = fopen("fconst.dat","w");
    for (i=0;i<symm.get_num();++i) {
@@ -181,9 +202,10 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
      fprintf(fp_fconst,"\n");
    }
    fclose(fp_fconst);
+*/
    free(f);
-   free_matrix(f_new,symm.get_num());
-   free_matrix(intcos,symm.get_num());
+   free_block(f_new);
+   free_block(intcos);
    return;
 }
 

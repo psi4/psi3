@@ -142,7 +142,11 @@ void delocalize(int num_atoms,internals &simples) {
     if( evals[i] > optinfo.ev_tol ) ++num_nonzero;
 
   rewind(fp_input);
+  ip_set_uppercase(1);
   ip_initialize(fp_input,outfile);
+  ip_cwk_clear();
+  ip_cwk_add(":DEFAULT");
+  ip_cwk_add(":OPTKING");
   file30_init();
   rotor_type = file30_rd_rottype();
   file30_close();

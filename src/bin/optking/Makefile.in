@@ -5,7 +5,7 @@ include ../MakeVars
 
 LD = $(CXX)
 
-PSILIBS = -lPSI_file30 -lPSI_ciomr -lPSI_ipv1 
+PSILIBS = -lPSI_file30 -lPSI_ciomr -lPSI_ipv1 -lPSI_psio
 
 CSRC = gprgid.c char_table.c
 

@@ -21,7 +21,7 @@ double **compute_B(int num_atoms,internals &simples,salc_set &symm) {
   int i,j,k,a,b,c,d, simple, intco_type, sub_index;
   double **B, coeff, prefactor;
 
-  B = init_matrix(symm.get_num(),num_atoms*3);
+  B = block_matrix(symm.get_num(),num_atoms*3);
 
   for (i=0;i<symm.get_num();++i) {
      prefactor = symm.get_prefactor(i);

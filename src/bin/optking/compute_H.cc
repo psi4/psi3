@@ -11,6 +11,9 @@ extern "C" {
   #include <string.h>
   #include <libciomr/libciomr.h>
   #include <physconst.h>
+  #include <libipv1/ip_lib.h>
+  #include <psifiles.h>
+  #include <libpsio/psio.h>
 }
 
 #define EXTERN
@@ -22,12 +25,26 @@ extern "C" {
 double **compute_H(salc_set &symm, double *q, double *f_intcos, double **P) {
   double **F, **H, **H_inv, **H_inv_new, **H_new, **temp_mat, **temp_mat2;
   double a, b;
-  int i,j,col,count,dim,update;
+  int i,j,error1,error2,col,count,dim,update;
   char buffer[MAX_LINELENGTH];
 
   dim = symm.get_num();
-  F = init_matrix(dim,dim);
+  F = block_matrix(dim,dim);
 
+  /*** Read in force constants from PSIF_OPTKING ***/
+  open_PSIF();
+  psio_read_entry(PSIF_OPTKING, "Force Constants",
+      (char *) &(F[0][0]),dim*dim*sizeof(double));
+  close_PSIF();
+
+  fprintf(outfile,"\nForce Constants read from PSIF_OPTKING\n");
+  for (i=0;i<dim;++i) {
+    for (j=0;j<dim;++j)
+       fprintf(outfile,"%15.10lf",F[i][j]); 
+    fprintf(outfile,"\n");
+  }
+
+/*
   ffile(&fp_fconst,"fconst.dat",2);
   for (i=0;i<dim;++i) {
     fgets(buffer,MAX_LINELENGTH,fp_fconst);
@@ -48,35 +65,33 @@ double **compute_H(salc_set &symm, double *q, double *f_intcos, double **P) {
   for (i=0;i<dim;++i)
     for (j=0;j<i;++j)
       F[j][i] = F[i][j];
+*/
 
  // Form H_inv = P((PFP)^-1)P
  // H_inv is same as regular inverse if nonredundant coordinates are used
-  temp_mat  = init_matrix(dim,dim);
-  temp_mat2 = init_matrix(dim,dim);
-  H_inv     = init_matrix(dim,dim);
+  temp_mat  = block_matrix(dim,dim);
+  temp_mat2 = block_matrix(dim,dim);
+  H_inv     = block_matrix(dim,dim);
    
   mmult(F,0,P,0,temp_mat,0,dim,dim,dim,0);
   mmult(P,0,temp_mat,0,temp_mat2,0,dim,dim,dim,0);
   temp_mat = symm_matrix_invert(temp_mat2,dim,0,optinfo.redundant);
   mmult(temp_mat,0,P,0,temp_mat2,0,dim,dim,dim,0);
   mmult(P,0,temp_mat2,0,H_inv,0,dim,dim,dim,0);
-  free_matrix(F,dim);
+  free_block(F);
 
   update = optinfo.bfgs;
   if (update) {
-    fp_opt_aux = fopen("opt.aux","r");
-    if (fp_opt_aux == NULL) update = 0;
-  }
-  if (update) {
-     if (fgets(buffer,MAX_LINELENGTH,fp_opt_aux) == NULL) {
-       update = 0;
-       fclose(fp_opt_aux);
-     }
+    /*** Check if old Forces are available for BFGS update ***/
+    open_PSIF();
+    if ( psio_tocscan(PSIF_OPTKING, "Previous Internal Forces") == NULL)
+         update = 0;
+    close_PSIF();
   }
   if (!update) {
     fprintf(outfile,"\nNo BFGS update performed.\n");
-    free_matrix(temp_mat,dim);
-    free_matrix(temp_mat2,dim);
+    free_block(temp_mat);
+    free_block(temp_mat2);
     return H_inv;
   }
 
@@ -88,12 +103,13 @@ double **compute_H(salc_set &symm, double *q, double *f_intcos, double **P) {
   dq    = init_array(dim);
   df    = init_array(dim);
 
-  for (i=0;i<dim;++i)
-    if (fgets(buffer,MAX_LINELENGTH,fp_opt_aux) != NULL)
-      if (sscanf(buffer, "%lf %lf", &(q_old[i]), &(f_old[i])) != 2) {
-        fprintf(outfile,"compute_H: Trouble reading opt.aux\n") ;
-        exit(0);
-      }
+  /*** read old internals and forces from PSIF_OPTKING ***/
+  open_PSIF();
+  psio_read_entry(PSIF_OPTKING, "Previous Internal Values",
+     (char *) &(q_old[0]), dim * sizeof(double));
+  psio_read_entry(PSIF_OPTKING, "Previous Internal Forces",
+     (char *) &(f_old[0]), dim * sizeof(double));
+  close_PSIF();
 
   for (i=0;i<dim;++i) {
     dq[i] = q[i] - q_old[i];
@@ -102,7 +118,7 @@ double **compute_H(salc_set &symm, double *q, double *f_intcos, double **P) {
   free(q_old);
   free(f_old);
 
-  H_inv_new = init_matrix(dim,dim);
+  H_inv_new = block_matrix(dim,dim);
   mmult(&df,0,H_inv,0,temp_mat,0,1,dim,dim,0);
   dot_arr(temp_mat[0],df,dim,&b);
   dot_arr(dq,df,dim,&a);
@@ -131,17 +147,24 @@ double **compute_H(salc_set &symm, double *q, double *f_intcos, double **P) {
   free(df);
 
  // I think you should do this inversion the same way as above
-  H_new = init_matrix(dim,dim);
+  H_new = block_matrix(dim,dim);
   mmult(H_inv_new,0,P,0,temp_mat,0,dim,dim,dim,0);
   mmult(P,0,temp_mat,0,temp_mat2,0,dim,dim,dim,0);
   temp_mat = symm_matrix_invert(temp_mat2,dim,0,optinfo.redundant);
   mmult(temp_mat,0,P,0,temp_mat2,0,dim,dim,dim,0);
   mmult(P,0,temp_mat2,0,H_new,0,dim,dim,dim,0);
 
- //fprintf(outfile,"The Updated Hession Matrix:\n");
- //print_mat2(H_new,dim,dim,outfile);
+//fprintf(outfile,"\nThe Updated Hession Matrix:\n");
+//print_mat2(H_new,dim,dim,outfile);
 
- // Writing new force constants to fconst.dat
+ /*** write new force constants to PSIF_OPTKING ***/
+  open_PSIF();
+  psio_write_entry(PSIF_OPTKING, "Force Constants",
+      (char *) &(H_new[0][0]),dim*dim*sizeof(double));
+  close_PSIF();
+
+/*
+Writing new force constants to fconst.dat
   fp_fconst = fopen("fconst.dat","w");
   for (i=0;i<symm.get_num();++i) {
     col = 0;
@@ -156,11 +179,12 @@ double **compute_H(salc_set &symm, double *q, double *f_intcos, double **P) {
     fprintf(fp_fconst,"\n");
   }
   fclose(fp_fconst);
+*/
 
-  free_matrix(H_inv,dim);
-  free_matrix(H_new,dim);
-  free_matrix(temp_mat,dim);
-  free_matrix(temp_mat2,dim);
+  free_block(H_inv);
+  free_block(H_new);
+  free_block(temp_mat);
+  free_block(temp_mat2);
   return H_inv_new;
 }
 

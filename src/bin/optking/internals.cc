@@ -310,7 +310,8 @@ internals :: internals(cartesians& carts, int user_intcos, int *size_arr)
   rewind(fp_input);
   ip_set_uppercase(1);
   ip_initialize(fp_input,outfile);
-// ip_cwk_clear();
+  ip_cwk_clear();
+  ip_cwk_add(":DEFAULT");
   ip_cwk_add(":OPTKING");
   if (!ip_exist("BONDS",0))
      num_bonds = 0;

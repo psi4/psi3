@@ -24,8 +24,8 @@ double **compute_B(int num_atoms, internals &simples, salc_set &symm);
 double **compute_G(double **B, int num_intcos, cartesians &carts);
 
 void new_geom(cartesians &carts, internals &simples, salc_set &symm,
-       double *dq, int print_to_geom_file, int restart_geom_file,
-       char *disp_label, int disp_num, int last_disp) {
+       double *dq, int print, int restart_geom_file,
+       char *disp_label, int disp_num, int last_disp, double *return_geom) {
   
   int bmat_iter_done,count,i,j,dim_carts,num_atoms;
   double **A, **G, **G_inv, **B, **u, **temp_mat;
@@ -41,11 +41,11 @@ void new_geom(cartesians &carts, internals &simples, salc_set &symm,
   masses = init_array(3*num_atoms);
   masses = carts.get_mass();
 
-  A = init_matrix(dim_carts,symm.get_num());
-  G = init_matrix(symm.get_num(),symm.get_num());
-  G_inv = init_matrix(symm.get_num(),symm.get_num());
-  temp_mat = init_matrix(dim_carts,symm.get_num());
-  u = init_matrix(dim_carts,dim_carts);
+  A = block_matrix(dim_carts,symm.get_num());
+  G = block_matrix(symm.get_num(),symm.get_num());
+  G_inv = block_matrix(symm.get_num(),symm.get_num());
+  temp_mat = block_matrix(dim_carts,symm.get_num());
+  u = block_matrix(dim_carts,dim_carts);
   for (i=0;i<3*num_atoms;++i)
     u[i][i] = 1.0/masses[i];
 
@@ -68,7 +68,7 @@ void new_geom(cartesians &carts, internals &simples, salc_set &symm,
   bmat_iter_done = 0;
   count = 1;
   do {
-    free_matrix(G,symm.get_num());
+    free_block(G);
     G = compute_G(B,symm.get_num(),carts);
     G_inv = symm_matrix_invert(G,symm.get_num(),0,optinfo.redundant);
 
@@ -103,7 +103,7 @@ void new_geom(cartesians &carts, internals &simples, salc_set &symm,
        new_x[i] = (x[i] + dx[i]) / _bohr2angstroms;
     simples.compute_internals(num_atoms,new_x);
     simples.compute_s(num_atoms,new_x);
-    free_matrix(B,symm.get_num());
+    free_block(B);
     B = compute_B(num_atoms,simples,symm);
 
     free(new_q);
@@ -137,18 +137,20 @@ void new_geom(cartesians &carts, internals &simples, salc_set &symm,
   }
   else
     fprintf(outfile,
-      "\nConvergence to displaced geometry took %d iterations.\n",count);
+      "Convergence to displaced geometry took %d iterations.\n",count);
 
-// write geometry to output.dat
+// write geometry to output.dat and return it
   cartesians cart_temp;
   cart_temp.set_coord(x);
   cart_temp.mult(1.0/_bohr2angstroms);
   fprintf(outfile,"\n%s\n",disp_label);
   cart_temp.print(1,outfile,0,disp_label,0);
 
+  for (i=0;i<dim_carts;++i)
+    return_geom[i] = x[i]/_bohr2angstroms;
 
 // write geometry to file30 or geom.dat
-  if (print_to_geom_file == 1) {
+  if (print == PRINT_TO_GEOM) {
      FILE *fp_geom;
      if (restart_geom_file) {
         ffile(&fp_geom, "geom.dat",0);
@@ -161,18 +163,18 @@ void new_geom(cartesians &carts, internals &simples, salc_set &symm,
      fclose(fp_geom);
      fflush(outfile);
   }
-  else {
+  if (print == PRINT_TO_30) {
      cart_temp.print(30,outfile,0,disp_label,disp_num);
   }
 
   free(masses);
   free(q); free(new_q);
   free(x); free(dx); free(new_x);
-  free_matrix(A,dim_carts);
-  free_matrix(G,symm.get_num());
-  free_matrix(G_inv,symm.get_num());
-  free_matrix(u,dim_carts);
-  free_matrix(temp_mat,dim_carts);
+  free_block(A);
+  free_block(G);
+  free_block(G_inv);
+  free_block(u);
+  free_block(temp_mat);
   return;
 }
 

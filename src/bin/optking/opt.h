@@ -13,6 +13,8 @@
 #define TORS_TYPE (2)
 #define OUT_TYPE (3)
 #define NUM_INTCO_TYPES (4)
+#define PRINT_TO_GEOM (113)
+#define PRINT_TO_30 (114)
 /* Limits to hard-wired arrays */
 #define MAX_SALCS (1000)
 #define MAX_ATOMS (300)
@@ -40,6 +42,9 @@ EXTERN int num_irreps, *irr;
 EXTERN int num_nonzero;      /* number of non-redundant di coordinates (eigenvectors of G with nonzero eigenvalues) */
 EXTERN char ptgrp[4];        /*molecular point group*/
 EXTERN int *number_internals;
+EXTERN void open_PSIF(void);
+EXTERN void close_PSIF(void);
+EXTERN double energy30(void);
 
 /* C functions we may want to use (or need to keep as C functions so they can be called from C code) */
 extern "C" void punt(char *message);
@@ -59,9 +64,14 @@ struct OPTInfo {
   int redundant;
   int delocalize;
   int bfgs;
+  int dertype;
+  int numerical_dertype;
+  int iteration;
+  int micro_iteration;
   double conv; /* MAX force */
   double ev_tol;
   double scale_connectivity;
+  double edisp;
   int mix_types;
 
 /* Back-transformation parameters */

@@ -51,12 +51,8 @@ double *cartesians:: forces() {
 
 
 /*-----------------------------------------------------------------------------
-       CARTESIANS
-
-       this is the class constructor for cartesian
-
+       CARTESIANS this is the class constructor for cartesian
 ----------------------------------------------------------------------------*/
-
 cartesians::cartesians() {
   int i, j, a, count, isotopes_given = 0, masses_given = 0;
   char label[MAX_LINELENGTH], line1[MAX_LINELENGTH];
@@ -64,13 +60,24 @@ cartesians::cartesians() {
   double an,x,y,z,tval;
   double **geom, *zvals;
 
-  if ((fp_11 = fopen("file11.dat","r")) == NULL) {
-     /* Read geometry data only from file30 */
-     file30_init();
-     geom = file30_rd_geom();
-     num_atoms = file30_rd_natom();
-     zvals = file30_rd_zvals();
-     file30_close();
+  if (   ((fp_11 = fopen("file11.dat","r")) == NULL)
+      || (optinfo.numerical_dertype > 0) ) {
+     /* Read geometry and energy data only from file30 */
+    rewind(fp_input);
+    ip_set_uppercase(1);
+    ip_initialize(fp_input,outfile);
+    ip_cwk_clear();
+    ip_cwk_add(":DEFAULT");
+    ip_cwk_add(":OPTKING");
+
+    file30_init();
+    geom = file30_rd_geom();
+    num_atoms = file30_rd_natom();
+    zvals = file30_rd_zvals();
+/*** FIX ***/
+    energy = file30_rd_escf();
+    file30_close();
+    ip_done();
 
      coord = new double[3*num_atoms];
      grad = new double[3*num_atoms];
@@ -143,8 +150,10 @@ cartesians::cartesians() {
   /* read masses from input.dat or use default masses */
    count = -1;
    rewind(fp_input);
-   ip_initialize(fp_input,outfile);
    ip_set_uppercase(1);
+   ip_initialize(fp_input,outfile);
+   ip_cwk_clear();
+   ip_cwk_add(":DEFAULT");
    ip_cwk_add(":OPTKING");
    if (ip_exist("ISOTOPES",0)) {
       isotopes_given = 1;
@@ -210,11 +219,13 @@ cartesians::cartesians() {
 
        PRINT
 
-       flag = 0 print geometry to output.dat
-       flag = 1 print geom to output.dat
+       flag = 0 print geometry to fp_out
+       flag = 1 print Z, geom to fp_out
        flag = 2 print geom and grad with masses
        flag = 4 print geometry to geom.dat
+       flag = 11 print data in file11 format
        flag = 30 print geometry to file30
+disp_label is only used for geom.dat writing
 -----------------------------------------------------------------------------*/
 
 void cartesians :: print(int flag, FILE *fp_out, int new_geom_file,
@@ -223,7 +234,6 @@ char *disp_label, int disp_num) {
   double x,y,z;
   int count = -1;
 
-//  fprintf(fp_out,"\nGeometry and Gradient read from file11.dat\n");
   if (flag == 0) {
     for (i = 0; i < num_atoms; ++i) {
        x = coord[++count]; y = coord[++count]; z = coord[++count];
@@ -243,10 +253,19 @@ char *disp_label, int disp_num) {
        fprintf(fp_out,
          "%5.1lf%15.8lf%15.10f%15.10f%15.10f\n",atomic_num[i],mass[3*i],x,y,z);
      }
+  }
+  if (flag == 3) {
+     count = -1;
+     for (i = 0; i < num_atoms; ++i) {
+       x = coord[++count]; y = coord[++count]; z = coord[++count];
+       fprintf(fp_out,
+         "%5.1lf%15.8lf%15.10f%15.10f%15.10f\n",atomic_num[i],mass[3*i],x,y,z);
+     }
      count = -1;
      for (i = 0; i < num_atoms; ++i) {
        x = grad[++count]; y = grad[++count]; z = grad[++count];
-       fprintf(fp_out,"%35.10f%15.10f%15.10f\n",x,y,z);
+       fprintf(fp_out,
+         "%35.10lf%15.10f%15.10f\n",x,y,z);
      }
   }
   if (flag == 4) {
@@ -261,15 +280,32 @@ char *disp_label, int disp_num) {
      fprintf(fp_out," )\n");
      free(geom_out);
   }
+  if (flag == 11) {
+     fprintf(fp_out,"%s\n",disp_label);
+     fprintf(fp_out,"%5d%20.10lf\n",num_atoms,energy);
+     count = -1;
+     for (i = 0; i < num_atoms; ++i) {
+       x = coord[++count]; y = coord[++count]; z = coord[++count];
+       fprintf(fp_out,
+         "%20.10lf%20.10lf%20.10lf%20.10lf\n",atomic_num[i],x,y,z);
+     }
+     count = -1;
+     for (i = 0; i < num_atoms; ++i) {
+       x = grad[++count]; y = grad[++count]; z = grad[++count];
+       fprintf(fp_out,"%40.10lf%20.10lf%20.10lf\n",x,y,z);
+     }
+  }
   if (flag == 30) {
 
      fprintf(outfile,"\nGeometry written to file30\n");
     fflush(outfile);
     rewind(fp_input);
+    ip_set_uppercase(1);
     ip_initialize(fp_input,outfile);
-//    ip_set_uppercase(1);
-//    ip_cwk_add(":DEFAULT");
-     file30_init();
+    ip_cwk_clear();
+    ip_cwk_add(":DEFAULT");
+    ip_cwk_add(":OPTKING");
+    file30_init();
 
      int j;
      double **geom;
