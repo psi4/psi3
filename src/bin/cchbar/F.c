@@ -22,7 +22,7 @@
 */
 
 void F_build(void) {
-  int h,i,e,a;
+  int h,i,e,a,m;
   dpdfile2 Faet, FAEt, Fmit, FMIt;
   dpdfile2 Fae, FAE, FMI, Fmi;
   dpdfile2 fab, fAB, fij, fIJ;
@@ -418,6 +418,31 @@ void F_build(void) {
     dpd_file2_copy(&fab, CC_OEI, "Fae");
     dpd_file2_close(&fab);
 
+    if((!strcmp(params.wfn,"CC2")) || (!strcmp(params.wfn,"EOM_CC2"))) {
+      dpd_file2_init(&FAE, CC_OEI, 0, 1, 1, "FAE");
+      dpd_file2_init(&Fae, CC_OEI, 0, 3, 3, "Fae");
+
+      dpd_file2_mat_init(&FAE);
+      dpd_file2_mat_rd(&FAE);
+      dpd_file2_mat_init(&Fae);
+      dpd_file2_mat_rd(&Fae);
+  
+      for(h=0; h < moinfo.nirreps; h++) {
+	for(e=0; e < FAE.params->coltot[h]; e++)
+	  FAE.matrix[h][e][e] = 0;
+	for(e=0; e < Fae.params->coltot[h]; e++)
+	  Fae.matrix[h][e][e] = 0;
+      }
+
+      dpd_file2_mat_wrt(&FAE);
+      dpd_file2_mat_close(&FAE);
+      dpd_file2_mat_wrt(&Fae);
+      dpd_file2_mat_close(&Fae);
+
+      dpd_file2_close(&FAE);
+      dpd_file2_close(&Fae);
+    }
+
     dpd_file2_init(&FAE, CC_OEI, 0, 1, 1, "FAE");
     dpd_file2_init(&Fae, CC_OEI, 0, 3, 3, "Fae");
 
@@ -507,6 +532,31 @@ void F_build(void) {
     dpd_file2_copy(&fij, CC_OEI, "Fmi");
     dpd_file2_close(&fij);
 
+    if((!strcmp(params.wfn,"CC2")) || (!strcmp(params.wfn,"EOM_CC2"))) {
+      dpd_file2_init(&FMI, CC_OEI, 0, 0, 0, "FMI");
+      dpd_file2_init(&Fmi, CC_OEI, 0, 2, 2, "Fmi");
+
+      dpd_file2_mat_init(&FMI);
+      dpd_file2_mat_rd(&FMI);
+      dpd_file2_mat_init(&Fmi);
+      dpd_file2_mat_rd(&Fmi);
+
+      for(h=0; h < moinfo.nirreps; h++) {
+	for(m=0; m < FMI.params->rowtot[h]; m++)
+	  FMI.matrix[h][m][m] = 0;
+	for(m=0; m < Fmi.params->rowtot[h]; m++)
+	  Fmi.matrix[h][m][m] = 0;
+      }
+
+      dpd_file2_mat_wrt(&FMI);
+      dpd_file2_mat_close(&FMI);
+      dpd_file2_mat_wrt(&Fmi);
+      dpd_file2_mat_close(&Fmi);
+
+      dpd_file2_close(&FMI);
+      dpd_file2_close(&Fmi);
+    }
+
     dpd_file2_init(&FMI, CC_OEI, 0, 0, 0, "FMI");
     dpd_file2_init(&Fmi, CC_OEI, 0, 2, 2, "Fmi");
 
@@ -588,7 +638,6 @@ void F_build(void) {
 
     dpd_file2_close(&FMI);
     dpd_file2_close(&Fmi);
-
 
     /* remove diagonal elements from Ft's */
     dpd_file2_init(&Faet, CC_OEI, 0, 3, 3, "Faet");
