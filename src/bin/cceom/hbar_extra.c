@@ -50,19 +50,6 @@ void hbar_extra(void) {
     dpd_buf4_sort(&W, CC_HBAR, rspq, 10, 10, "WMbEj (jb,ME)");
     dpd_buf4_close(&W);
 
-    dpd_buf4_init(&W, CC_HBAR, H_IRR, 10, 7, 10, 7, 0, "WAMEF");
-    dpd_buf4_sort(&W, CC_HBAR, qprs, 11, 7, "WAMEF (AM,E>F)");
-    dpd_buf4_close(&W);
-    dpd_buf4_init(&W, CC_HBAR, H_IRR, 10, 7, 10, 7, 0, "Wamef");
-    dpd_buf4_sort(&W, CC_HBAR, qprs, 11, 7, "Wamef (am,e>f)");
-    dpd_buf4_close(&W);
-    dpd_buf4_init(&W, CC_HBAR, H_IRR, 10, 5, 10, 5, 0, "WAmEf");
-    dpd_buf4_sort(&W, CC_HBAR, qprs, 11, 5, "WAmEf (Am,Ef)");
-    dpd_buf4_close(&W);
-    dpd_buf4_init(&W, CC_HBAR, H_IRR, 10, 5, 10, 5, 0, "WaMeF");
-    dpd_buf4_sort(&W, CC_HBAR, qprs, 11, 5, "WaMeF (aM,eF)");
-    dpd_buf4_close(&W);
-
   }
 
   if ((params.eom_ref == 0) || (params.eom_ref == 1)) {
@@ -94,34 +81,11 @@ void hbar_extra(void) {
     dpd_buf4_sort(&W1, CC_HBAR, rspq, 10, 10, "2 W(jb,ME) + W(Jb,Me)");
     dpd_buf4_close(&W1);
 
-    /* used in RHF WmnieSD */
-    dpd_buf4_init(&WMnIe, CC_HBAR, H_IRR, 0, 11, 0, 11, 0, "WMnIe");
-    dpd_buf4_sort(&WMnIe, CC_HBAR, qprs, 0, 11, "WMnIe - 2WnMIe");
-    dpd_buf4_close(&WMnIe);
-    dpd_buf4_init(&W, CC_HBAR, H_IRR, 0, 11, 0, 11, 0, "WMnIe - 2WnMIe");
-    dpd_buf4_scm(&W, -2.0);
-    dpd_buf4_init(&WMnIe, CC_HBAR, H_IRR, 0, 11, 0, 11, 0, "WMnIe");
-    dpd_buf4_axpy(&WMnIe, &W, 1.0);
-    dpd_buf4_close(&WMnIe);
-    dpd_buf4_close(&W);
-
-    /* used in RHF WnmjeDS */
-    dpd_buf4_init(&W, CC_HBAR, H_IRR, 0, 11, 0, 11, 0, "WMnIe");
-    dpd_buf4_sort(&W, CC_HBAR, qprs, 0, 11, "2WMnIe - WnMIe");
-    dpd_buf4_close(&W);
-    dpd_buf4_init(&W, CC_HBAR, H_IRR, 0, 11, 0, 11, 0, "2WMnIe - WnMIe");
-    dpd_buf4_scm(&W, -1.0);
-    dpd_buf4_init(&WMnIe, CC_HBAR, H_IRR, 0, 11, 0, 11, 0, "WMnIe");
-    dpd_buf4_axpy(&WMnIe, &W, 2.0);
-    dpd_buf4_close(&WMnIe);
-    dpd_buf4_close(&W);
-
     /* used in WamefSD */
     dpd_buf4_init(&W, CC_HBAR, H_IRR, 11, 5, 11, 5, 0, "WAmEf");
     dpd_buf4_scmcopy(&W, CC_HBAR, "WAmEf 2(Am,Ef) - (Am,fE)", 2);
     dpd_buf4_sort_axpy(&W, CC_HBAR, pqsr, 11, 5, "WAmEf 2(Am,Ef) - (Am,fE)", -1);
     dpd_buf4_close(&W);
-
   }
 
   return;

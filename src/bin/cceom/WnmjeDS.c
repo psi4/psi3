@@ -20,7 +20,7 @@ void WnmjeDS(int i, int C_irr) {
 
     /* Form XNJ intermediates */
     dpd_file2_init(&XNJ, EOM_TMP, C_irr, 0, 0, "XNJ");
-    dpd_buf4_init(&W, CC_HBAR, H_IRR, 0, 11, 0, 11, 0, "2WMnIe - WnMIe");
+    dpd_buf4_init(&W, CC_HBAR, H_IRR, 0, 11, 0, 11, 0, "2WMnIe - WnMIe (Mn,eI)");
     dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, CME_lbl);
     dpd_dot23(&CME, &W, &XNJ, 0, 0, 1.0, 0.0);
     dpd_file2_close(&CME);
@@ -54,12 +54,12 @@ void WnmjeDS(int i, int C_irr) {
     dpd_file2_init(&XNJ, EOM_TMP, C_irr, 0, 0, "XNJ");
     dpd_file2_scm(&XNJ, 0.0);
     dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, CME_lbl);
-    dpd_buf4_init(&WMNIE, CC_HBAR, H_IRR, 0, 11, 2, 11, 0, "WMNIE");
+    dpd_buf4_init(&WMNIE, CC_HBAR, H_IRR, 0, 11, 2, 11, 0, "WMNIE (M>N,EI)");
     dpd_dot23(&CME, &WMNIE, &XNJ, 0, 0, 1.0, 1.0);
     dpd_buf4_close(&WMNIE);
     dpd_file2_close(&CME);
     dpd_file2_init(&Cme, EOM_Cme, C_irr, 0, 1, Cme_lbl);
-    dpd_buf4_init(&WMnIe, CC_HBAR, H_IRR, 0, 11, 0, 11, 0, "WMnIe");
+    dpd_buf4_init(&WMnIe, CC_HBAR, H_IRR, 0, 11, 0, 11, 0, "WMnIe (Mn,eI)");
     dpd_dot23(&Cme, &WMnIe, &XNJ, 0, 0, 1.0, 1.0);
     dpd_buf4_close(&WMnIe);
     dpd_file2_close(&Cme);
@@ -70,12 +70,12 @@ void WnmjeDS(int i, int C_irr) {
     dpd_file2_init(&Xnj, EOM_TMP, C_irr, 0, 0, "Xnj");
     dpd_file2_scm(&Xnj, 0.0);
     dpd_file2_init(&Cme, EOM_Cme, C_irr, 0, 1, Cme_lbl);
-    dpd_buf4_init(&Wmnie, CC_HBAR, H_IRR, 0, 11, 2, 11, 0, "Wmnie");
+    dpd_buf4_init(&Wmnie, CC_HBAR, H_IRR, 0, 11, 2, 11, 0, "Wmnie (m>n,ei)");
     dpd_dot23(&Cme, &Wmnie, &Xnj, 0, 0, 1.0, 1.0);
     dpd_buf4_close(&Wmnie);
     dpd_file2_close(&Cme);
     dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, CME_lbl);
-    dpd_buf4_init(&WmNiE, CC_HBAR, H_IRR, 0, 11, 0, 11, 0, "WmNiE");
+    dpd_buf4_init(&WmNiE, CC_HBAR, H_IRR, 0, 11, 0, 11, 0, "WmNiE (mN,Ei)");
     dpd_dot23(&CME, &WmNiE, &Xnj, 0, 0, 1.0, 1.0);
     dpd_buf4_close(&WmNiE);
     dpd_file2_close(&CME);
@@ -138,12 +138,12 @@ void WnmjeDS(int i, int C_irr) {
     dpd_file2_init(&XNJ, EOM_TMP, C_irr, 0, 0, "XNJ");
     dpd_file2_scm(&XNJ, 0.0);
     dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, CME_lbl);
-    dpd_buf4_init(&WMNIE, CC_HBAR, H_IRR, 0, 21, 2, 21, 0, "WMNIE");
+    dpd_buf4_init(&WMNIE, CC_HBAR, H_IRR, 0, 21, 2, 21, 0, "WMNIE (M>N,EI)");
     dpd_dot23(&CME, &WMNIE, &XNJ, 0, 0, 1.0, 1.0);
     dpd_buf4_close(&WMNIE);
     dpd_file2_close(&CME);
     dpd_file2_init(&Cme, EOM_Cme, C_irr, 2, 3, Cme_lbl);
-    dpd_buf4_init(&WMnIe, CC_HBAR, H_IRR, 22, 25, 22, 25, 0, "WMnIe");
+    dpd_buf4_init(&WMnIe, CC_HBAR, H_IRR, 22, 25, 22, 25, 0, "WMnIe (Mn,eI)");
     dpd_dot23(&Cme, &WMnIe, &XNJ, 0, 0, 1.0, 1.0);
     dpd_buf4_close(&WMnIe);
     dpd_file2_close(&Cme);
@@ -158,12 +158,12 @@ void WnmjeDS(int i, int C_irr) {
     dpd_file2_init(&Xnj, EOM_TMP, C_irr, 2, 2, "Xnj");
     dpd_file2_scm(&Xnj, 0.0);
     dpd_file2_init(&Cme, EOM_Cme, C_irr, 2, 3, Cme_lbl);
-    dpd_buf4_init(&Wmnie, CC_HBAR, H_IRR, 10, 31, 12, 31, 0, "Wmnie");
+    dpd_buf4_init(&Wmnie, CC_HBAR, H_IRR, 10, 31, 12, 31, 0, "Wmnie (m>n,ei)");
     dpd_dot23(&Cme, &Wmnie, &Xnj, 0, 0, 1.0, 1.0);
     dpd_buf4_close(&Wmnie);
     dpd_file2_close(&Cme);
     dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, CME_lbl);
-    dpd_buf4_init(&WmNiE, CC_HBAR, H_IRR, 23, 26, 23, 26, 0, "WmNiE");
+    dpd_buf4_init(&WmNiE, CC_HBAR, H_IRR, 23, 26, 23, 26, 0, "WmNiE (mN,Ei)");
     dpd_dot23(&CME, &WmNiE, &Xnj, 0, 0, 1.0, 1.0);
     dpd_buf4_close(&WmNiE);
     dpd_file2_close(&CME);
