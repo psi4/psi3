@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 extern "C" {
 #include <libciomr.h>
@@ -35,7 +36,7 @@ void input() {
   /*read stuff from file30*/
   file30_init();
   num_atoms = file30_rd_natom();
-  file30_close;
+  file30_close();
 
   ip_cwk_add(":INPUT");
   if(ip_exist("ZMAT",0)) { 
