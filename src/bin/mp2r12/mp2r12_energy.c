@@ -163,9 +163,11 @@ void mp2r12_energy(void)
 		blast = MIN(lvract[bsym],a);
 		for(b=bfirst; b <= blast; b++) {
 		  ab = INDEX(vir_Q2P[a],vir_Q2P[b]);
+#if 1
 		  pair_energy[spin][ij] += spin_pfac*K_ij[ab]*K_ij[ab]/
 		    (evals_docc[i] + evals_docc[j] -
 		     evals_virt[a] - evals_virt[b]);
+#endif
 		}
 	      }
 	    }
@@ -381,6 +383,13 @@ void mp2r12_energy(void)
       tmp1[i][i] = 1.0/tmp_ptr[i];
     mmult(tmp1,0,evecs,1,tmp2,0,ntri_docc_act,ntri_docc_act,ntri_docc_act,0);  
     mmult(evecs,0,tmp2,0,Binv[spin],0,ntri_docc_act,ntri_docc_act,ntri_docc_act,0);
+    if (print_lvl > 3) {
+      fprintf(outfile," Inverse of %s B-matrix (the difference between the unit matrix and its\n ???? representation in this basis):\n",
+	      (spin == 0) ? "Singlet" : "Triplet");
+      print_mat(Binv[spin],ntri_docc_act,ntri_docc_act,outfile);
+      fprintf(outfile,"\n");
+      fflush(outfile);
+    }
 
     /*-------------------------------------------------
       Compute MP2-R12/A contributions to pair energies
