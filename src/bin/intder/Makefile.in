@@ -1,0 +1,31 @@
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+include ../MakeVars
+
+PSILIBS = alloc.a io.a libparse.a iomr.a libcoallc.a
+
+TRUESRC = \
+ahx2.F    fill4a.F  hijs6.F   machx.F       readsymm.F  vect1.F  xrow.F  \
+ahx3.F    gfmat.F   inpfkm.F  machy.F       scapro.F    vect2.F  yf2.F   \
+ahx4.F    gprgid.F  intder.F  machz.F       srtst1.F    vect3.F  yin.F   \
+binvrt.F  hijks1.F  lintr.F   mat1.F        srtst2.F    vect4.F  yout.F  \
+bottom.F  hijks2.F  lprt.F    mat2.F        table1.F    vect5.F  yrow.F  \
+brow.F    hijks3.F  machb.F   normco.F      table2.F    vect6.F  zin.F   \
+fcout.F   hijks6.F  machb2.F  numx.F        table3.F    xf2.F    zout.F  \
+fentry.F  hijs1.F   machf2.F  numy.F        vcder1.F    xf3.F            \
+fill3a.F  hijs2.F   machf3.F  numz.F        vcxki.F     xin.F            \
+fill3b.F  hijs3.F   machf4.F  readsimple.F  vecpro.F    xout.F           \
+
+BINOBJ = $(TRUESRC:%.F=%.o)
+
+# Need this since we keeping the hardwired core size.
+ALLOC = allocate.o
+
+include ../MakeRules
+
+# install_man:: intder95.1
+# 	$(MKDIRS) $(mandir)/man1
+# 	cat $(top_srcdir)/lib/macro.psi $< | sed "s OS_NAME_HERE UNIX " > \
+#            $(mandir)/man1/intder95.1
+
