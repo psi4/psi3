@@ -11,7 +11,7 @@ default: (
   frozen_docc = (4 1)
 
   print = 2
-  ao_basis = true
+  ao_basis = disk
   cachelev = 0
 )
 

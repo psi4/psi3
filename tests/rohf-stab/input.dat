@@ -1,19 +1,22 @@
-default: (
-  label = "ROHF-CCSD/cc-pVDZ 2Sigma+ CN"
+% cc-pVDZ CN ROHF stability analysis
 
+psi: (
+  check = false
   jobtype = sp
+  exec = ($input $ints $scf $transqt $ccsort $stable $done)
+)
+
+default: (
+  label = "cc-pVDZ ROHF CN"
+
   wfn = ccsd
   reference = rohf
   multi = 2
   dertype = none
+  maxiter = 100
 
   docc = (4 0 1 1)
   socc = (1 0 0 0)
-  frozen_docc = (2 0 0 0)
-  maxiter = 100
-
-  print = 2
-  ao_basis = disk
 )
 
 input: (

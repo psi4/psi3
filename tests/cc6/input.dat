@@ -9,7 +9,7 @@ default: (
   print = 2
   docc = (10 1 4 3)
   frozen_docc = (4 0 1 0)
-  ao_basis = true
+  ao_basis = disk
 )
 
 input: (

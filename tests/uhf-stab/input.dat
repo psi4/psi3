@@ -1,18 +1,21 @@
-default: (
-  label = "UHF-CCSD(T)/cc-pVDZ 2Sigma+ CN"
+% cc-pVDZ UHF CN stability analysis
 
+psi: (
+  check = false
   jobtype = sp
-  wfn = ccsd_t
+  exec = ($input $ints $scf $transqt $ccsort $stable $done)
+)
+
+default: (
+  label = "cc-pVDZ UHF CN"
+
+  wfn = ccsd
   reference = uhf
   multi = 2
   dertype = none
 
   docc = (4 0 1 1)
   socc = (1 0 0 0)
-  frozen_docc = (2 0 0 0)
-
-  ao_basis = disk
-  print = 2
 )
 
 input: (
