@@ -534,4 +534,14 @@ void T3_AAB(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
   dpd_file2_mat_close(fAB);
   dpd_file2_mat_close(fij);
   dpd_file2_mat_close(fab);
+
+  for(h=0; h < nirreps; h++) {
+    dpd_buf4_mat_irrep_close(T2AA, h);
+    dpd_buf4_mat_irrep_close(T2AB, h);
+    dpd_buf4_mat_irrep_close(T2BA, h);
+
+    dpd_buf4_mat_irrep_close(EAA, h);
+    dpd_buf4_mat_irrep_close(EAB, h);
+    dpd_buf4_mat_irrep_close(EBA, h);
+  }
 }
