@@ -1,0 +1,51 @@
+.TH dboc 1 " 30 August, 2003" "" ""
+
+.SH NAME
+dboc \- Diagonal Born-Oppenheimer Correction using HF and CI wave functions.
+
+.SH DESCRIPTION
+.LP
+The program
+.B dboc
+computes Diagonal Born-Oppenheimer Correction (DBOC) using HF and CI wave functions.
+
+.SH REFERENCES
+.LP
+"Cartesian" DBOC formula (aka Born-Handy-Pulay formula):
+.IP "1."
+N. C. Handy, J. Yamaguchi, and H. F. Schaefer, J. Chem. Phys. 84, 4481 (1986).
+.LP
+Justification for the "Cartesian" DBOC formula:
+.IP "1."
+W. Kutzelnigg, Mol. Phys. 90, 909 (1997).
+.LP
+Finite-difference formulation of DBOC at CI level
+.IP "1."
+E. F. Valeev and C. D. Sherrill, J. Chem. Phys. 118, 3921 (2003).
+
+.SH INPUT FORMAT
+.LP
+The following
+keywords are valid:
+
+.IP "\fBWFN =\fP \fIstring\fP"
+Specifies the type of wave function desired. The only valid entries
+at the present are \fISCF\fP and \fIDETCI\fP. There is no default.
+
+.IP "\fBREFERENCE =\fP \fIstring\fP"
+Specifies the type of orbitals used for the single-determinant
+reference function. Valid choices are \fIRHF\fP, \fIROHF\fP, and \fIUHF\fP.
+There is no default.
+
+.IP "\fBPRINT =\fP \fIinteger\fP"
+Determines the verbosity of the output.  A value of 0 (the default)
+specifies minimal printing.
+
+.IP "\fB:DBOC:DISPLACEMENT =\fP \fIreal\fP"
+Determines the finite difference step (in a.u.). The default is 0.0005 a.u.
+
+.IP "\fB:DBOC:ISOTOPES =\fP \fIstring_vector\fP"
+Specifies which isotope to use for each atom. Each string should specify
+an isotope label as defined in \fBinclude/masses.h\fP. By default,
+most abundant isotopes are used for each element.
+
