@@ -27,9 +27,11 @@ void sort_tei(void);
 void b_sort(void);
 void c_sort(void);
 void d_sort(void);
-void d_spinad(void);
 void e_sort(void);
 void f_sort(void);
+void d_spinad(void);
+void e_spinad(void);
+void f_spinad(void);
 void scf_check(void);
 void fock(void);
 void denom(void);
@@ -71,9 +73,13 @@ int main(int argc, char *argv[])
 /*  b_sort(); */
   c_sort();
   d_sort();
-  d_spinad();
   e_sort();
   f_sort(); 
+  if(params.ref == 0) {
+    d_spinad();
+    e_spinad();
+    f_spinad();
+  }
   scf_check();
   fock();
   denom();

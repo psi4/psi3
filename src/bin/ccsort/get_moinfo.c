@@ -926,7 +926,7 @@ void get_moinfo(void)
   }
 
   fprintf(outfile,"\n\tFile30 Parameters:\n");
-  fprintf(outfile,"\t------------------\n");
+  fprintf(outfile,"\t--------------------\n");
   fprintf(outfile,"\tNumber of irreps     = %d\n",moinfo.nirreps);
   fprintf(outfile,"\tNumber of MOs        = %d\n",moinfo.nmo);
   fprintf(outfile,"\tNumber of active MOs = %d\n\n",moinfo.nactive);
