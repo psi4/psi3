@@ -474,21 +474,21 @@ changequote(,)
 case $cpu in
   rs6000)
     if [ "$FC" = xlf ]; then
-      FOPT="-O2 -qarch=com -qxflag=xalias -qdpc -qfloat=fold -qfloat=maf"
+      FOPT="-O2 -qarch=com -qxflag=xalias -qdpc -qfloat=fold -qfloat=maf -qmaxmem=-1"
       if test "$bitwidth64" = yes; then
         FOPT="$FOPT -q64"
       fi
       AC_MSG_RESULT(fortran flags: $FOPT)
     fi
     if [ "$CC" = xlc ] || [ "$CC" = cc ]; then
-      COPT="-O2 -qarch=com -qfloat=maf -qfloat=fold -D_LARGE_FILES"
+      COPT="-O2 -qarch=com -qfloat=maf -qfloat=fold -qmaxmem=-1 -D_LARGE_FILES"
       if test "$bitwidth64" = yes; then
         COPT="$COPT -q64"
       fi
       AC_MSG_RESULT(c flags: $COPT)
     fi
     if [ "$CXX" = xlC ] || [ "$CXX" = c++ ]; then
-      CXXOPT="-O2 -qarch=com -qfloat=maf -qfloat=fold -D_LARGE_FILES"
+      CXXOPT="-O2 -qarch=com -qfloat=maf -qfloat=fold -qmaxmem=-1 -D_LARGE_FILES"
       if test "$bitwidth64" = yes; then
         CXXOPT="$CXXOPT -q64"
       fi
@@ -497,21 +497,21 @@ case $cpu in
     ;;
   powerpc)
     if [ "$FC" = xlf ]; then
-      FOPT="-O2 -qarch=ppc -qxflag=xalias -qdpc -qfloat=fold -qfloat=maf"
+      FOPT="-O2 -qarch=ppc -qxflag=xalias -qdpc -qfloat=fold -qmaxmem=-1 -qfloat=maf"
       if test "$bitwidth64" = yes; then
         FOPT="$FOPT -q64"
       fi
       AC_MSG_RESULT(fortran flags: $FOPT)
     fi
     if [ "$CC" = xlc ] || [ "$CC" = cc ]; then
-      COPT="-O2 -qarch=ppc -qfloat=maf -qfloat=fold -D_LARGE_FILES"
+      COPT="-O2 -qarch=ppc -qfloat=maf -qfloat=fold -qmaxmem=-1 -D_LARGE_FILES"
       if test "$bitwidth64" = yes; then
         COPT="$COPT -q64"
       fi
       AC_MSG_RESULT(c flags: $COPT)
     fi
     if [ "$CXX" = xlC ] || [ "$CXX" = c++ ]; then
-      CXXOPT="-O2 -qarch=ppc -qfloat=maf -qfloat=fold -D_LARGE_FILES"
+      CXXOPT="-O2 -qarch=ppc -qfloat=maf -qfloat=fold -qmaxmem=-1 -D_LARGE_FILES"
       if test "$bitwidth64" = yes; then
         CXXOPT="$CXXOPT -q64"
       fi
