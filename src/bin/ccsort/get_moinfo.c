@@ -28,6 +28,7 @@ void get_moinfo(void)
   int warning, *docc, *socc;
   int fc_offset, offset, cl_offset, op_offset, vr_offset, fv_offset;
   int nfzc, nuocc, nopen, nclsd;
+  int *orbsym;
   double enuc, escf;
   double ***evects, ***scf_vector;
   psio_address next;
@@ -272,18 +273,21 @@ void get_moinfo(void)
     moinfo.all_vir = init_int_array(moinfo.nmo);
     moinfo.all_socc = init_int_array(moinfo.nmo);
     moinfo.frozen = init_int_array(moinfo.nmo);
+    moinfo.orbsym = init_int_array(moinfo.nmo);
 
     active_count = all_count = 0;
     for(i=0; i < moinfo.nirreps; i++) {
       for(j=0; j < moinfo.frdocc[i]; j++, all_count++) {
 	moinfo.all_occ[all_count] = 1;
 	moinfo.frozen[all_count] = 1;
+	moinfo.orbsym[all_count] = i;
       }
     }
     for(i=0; i < moinfo.nirreps; i++) {
       for(j=0; j < moinfo.clsdpi[i]; j++, active_count++, all_count++) {
 	moinfo.occ[active_count] = 1;
 	moinfo.all_occ[all_count] = 1;
+	moinfo.orbsym[all_count] = i;
       }
     }
     for(i=0; i < moinfo.nirreps; i++) {
@@ -294,18 +298,21 @@ void get_moinfo(void)
 	moinfo.all_occ[all_count] = 1;
 	moinfo.all_vir[all_count] = 1;
 	moinfo.all_socc[all_count] = 1;
+	moinfo.orbsym[all_count] = i;
       }
     }
     for(i=0; i < moinfo.nirreps; i++) {
       for(j=0; j < moinfo.uoccpi[i]; j++, active_count++, all_count++) {
 	moinfo.vir[active_count] = 1;
 	moinfo.all_vir[all_count] = 1;
+	moinfo.orbsym[all_count] = i;
       }
     }
     for(i=0; i < moinfo.nirreps; i++) {
       for(j=0; j < moinfo.fruocc[i]; j++, all_count++) {
 	moinfo.all_vir[all_count] = 1;
 	moinfo.frozen[all_count] = 1;
+	moinfo.orbsym[all_count] = i;
       }
     }
 

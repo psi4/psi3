@@ -228,6 +228,7 @@ void cleanup(void)
     free(moinfo.virtpi);
     free(moinfo.all_occpi);
     free(moinfo.all_virtpi);
+    free(moinfo.orbsym);
 
     free(moinfo.cc_occ);
     free(moinfo.cc_vir);
