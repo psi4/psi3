@@ -19,10 +19,13 @@ void get_params()
   if(strcmp(params.wfn, "MP2") && strcmp(params.wfn, "CCSD") && 
      strcmp(params.wfn, "CCSD_T") && strcmp(params.wfn, "EOM_CCSD") && 
      strcmp(params.wfn, "LEOM_CCSD") && strcmp(params.wfn, "BCCD") && 
-     strcmp(params.wfn,"BCCD_T")) {
+     strcmp(params.wfn,"BCCD_T") && strcmp(params.wfn, "SCF")) {
     fprintf(outfile, "Invalid value of input keyword WFN: %s\n", params.wfn);
     exit(PSI_RETURN_FAILURE);
   }
+
+  /* NB: SCF wfns are allowed because, at present, ccsort is needed for 
+     RPA calculations */
   
   errcod = ip_string("REFERENCE", &(junk),0);
   if (errcod != IPE_OK) {
@@ -35,7 +38,7 @@ void get_params()
     else if(!strcmp(junk, "UHF")) params.ref = 2;
     else { 
       printf("Invalid value of input keyword REFERENCE: %s\n", junk);
-      exit(2); 
+      exit(PSI_RETURN_FAILURE); 
     }
     free(junk);
   }
@@ -46,9 +49,10 @@ void get_params()
     if(errcod != IPE_OK) params.dertype = 0;
     else if(!strcmp(junk,"NONE")) params.dertype = 0;
     else if(!strcmp(junk,"FIRST")) params.dertype = 1;
+    else if(!strcmp(junk,"RESPONSE")) params.dertype = 3; /* linear response */
     else {
       printf("Invalid value of input keyword DERTYPE: %s\n", junk);
-      exit(2); 
+      exit(PSI_RETURN_FAILURE); 
     }
     free(junk);
   }
@@ -59,7 +63,7 @@ void get_params()
   else params.aobasis = strdup("NONE");
 
   if(!strcmp(params.wfn,"MP2") || !strcmp(params.aobasis,"DISK") ||
-      !strcmp(params.aobasis,"DIRECT")) {
+     !strcmp(params.aobasis,"DIRECT")) {
     params.make_abcd = 0;
   }
   else {
@@ -88,13 +92,14 @@ void get_params()
   fprintf(outfile, "\t-----------------\n");
   fprintf(outfile, "\tWave function   =\t%s\n", params.wfn);
   fprintf(outfile, "\tReference wfn   =\t%s\n", 
-      (params.ref == 0) ? "RHF" : ((params.ref == 1) ? "ROHF" : "UHF"));
-  fprintf(outfile, "\tDerivative      =\t%s\n", 
-      (params.dertype == 0) ? "None" : "First");
+	  (params.ref == 0) ? "RHF" : ((params.ref == 1) ? "ROHF" : "UHF"));
+  if(params.dertype == 0) fprintf(outfile, "\tDerivative      =\t None\n");
+  else if(params.dertype == 1) fprintf(outfile, "\tDerivative      =\t First\n");
+  else if(params.dertype == 3) fprintf(outfile, "\tDerivative      =\t Response\n");
   fprintf(outfile, "\tMemory (Mbytes) =\t%.1f\n", params.memory/1e6);
   fprintf(outfile, "\tAO Basis        =\t%s\n", params.aobasis);
   fprintf(outfile, "\tMake (ab|cd)    =\t%s\n", 
-      (params.make_abcd == 1) ? "True" : "False");
+	  (params.make_abcd == 1) ? "True" : "False");
   fprintf(outfile, "\tCache Level     =\t%d\n", params.cachelev);
   fprintf(outfile, "\tCache Type      =\t%s\n", "LRU");
   fprintf(outfile, "\n");
