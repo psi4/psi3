@@ -1,13 +1,169 @@
-\subsection{Running \PSIthree}
+\section{A \PSIthree\ Tutorial} \label{tutorial}
+
+Before going into all the details of the \PSIthree\ input format, 
+we will begin with a tutorial on how to run some very simple 
+computations.
+
+The first thing to point out is that electronic structure programs
+like \PSIthree\ make significant use of disk drives.  Therefore, 
+for any but the smallest calculations, {\em it is very important for the user 
+to be sure that \PSIthree\ is writing its temporary files to a 
+disk drive physically attached to the computer running the computation}.
+If a user's directory is remotely mounted by NFS, and if \PSIthree\
+tries to write its temporary files to this directory, it will slow 
+the program and the network down dramatically.  To avoid this
+situation, by default \PSIthree\ will write temporary files to 
+\file{/tmp}.  This will work for the small examples in this tutorial,
+but for real computations you will want to set up a default scratch
+file path as described in sections \ref{scratchfile} and \ref{psirc},
+since your \file{/tmp} directory may not be large enough.
+
 The \PSIthree\ suite of codes is built around a modular design which 
 allows it great power and flexibility. Any module can be run 
 independently (provided suitable datafiles, of course). There also exists a
 master program, appropriately called \PSIdriver, which will parse 
 an input file, recognize the overall calculation desired, 
-and run all the necessary modules in the correct order. To begin with 
+and run all the necessary modules in the correct order.  As we will
+see later, it is possible to define entirely new calculation types simply 
+by editing a text file.
+
+By default, the \PSIdriver\ program reads its input from a text file
+called \inputdat, and output from \PSIthree\ is written to 
+\outputdat.  However, it is also possible to specify different input
+and output filenames by adding these to the command line, like this:
 \begin{verbatim}
-  c4-20:> man psi
+  psi3 input-name output-name
 \end{verbatim}
+
+What does a \PSIthree\ input file look like?  First of all, due to
+the modular nature of the program, the input may be split into different
+sections, each beginning with a keyword and enclosed in parentheses.
+For now, we will ignore this flexibility and simply put all of the 
+input into a default area called \keyword{psi}:
+
+\begin{verbatim}
+% This is a sample PSI3 input file.
+% Anything after a percent sign is treated as a comment.
+
+psi: (
+  label = "cc-pVDZ SCF H2O"
+  jobtype = sp
+  wfn = scf
+  reference = rhf
+  basis = "cc-pVDZ"
+  puream = true
+  zmat = (
+    o
+    h 1 0.957
+    h 1 0.957 2 104.5
+  )
+)
+\end{verbatim}
+
+As you can see, the input is made up of \keyword{keyword = value} pairs.  
+Values can be strings (like \keyword{"cc-pVDZ"}), booleans 
+(\keyword{true/false, 1/0, yes/no}), integers, or real numbers.  One can 
+also have arrays of data (as in the the \keyword{zmat} entry).  Generally
+speaking, input is not case-sensitive. 
+
+The above input is for a Hartree-Fock SCF (\keyword{wfn = scf})
+calculation of water using a cc-pVDZ basis set 
+(\keyword{basis = "cc-pVDZ"}).  This is a 
+single-point calculation (\keyword{jobtype = sp}) at the experimental 
+geometry.  Since the ground state of water is closed shell, restricted 
+Hatree-Fock (RHF) orbitals are used (\keyword{reference = rhf}).  
+The geometry is specified in the \keyword{zmat} array using the
+standard quantum chemistry Z-matrix input format (for beginners, a short
+tutorial on Z-matrix inputs is available at
+\htmladdnormallink{{\tt www-rcf.usc.edu/$\sim$krylov/AbInitioCourse/zmat.html}}{
+http://www-rcf.usc.edu/~krylov/AbInitioCourse/zmat.html}).  Geometries
+may also be input in Cartesian coordinates, as we will see later.
+
+The final keyword, \keyword{puream}, tells the program whether or not
+to use Cartesian basis functions, or basis functions derived from the
+pure angular momentum functions.  For $d$ orbitals, for example, 
+there are 6 Cartesian $d$ functions, but only 5 pure angular 
+momentum $d$ functions.  Dunning's correlation consistent basis sets
+(cc-pVXZ, etc.) were designed to use pure angular momentum functions
+(\keyword{puream=true}), and other basis sets may have different 
+``standard choices'' for using pure or Cartesian functions.  The \PSIthree\ 
+program defaults to \keyword{puream = false} unless told otherwise.
+
+Why are some strings in quotation marks (e.g., \keyword{label = "cc-pVDZ
+SCF H2O"}), while others are not (e.g., \keyword{wfn = scf})?  Any
+string containing spaces or other special characters like asterisks
+must be placed in double quotes.  Since basis sets often contain special
+characters, it is a good idea to specify the basis in quotes always.
+For values which don't have to be put in double quotes, it never hurts
+to put them in quotes anyway.
+
+Let's run this calculation.  Assuming the input is given in a file
+\file{sp.in}, we can run \PSIthree\ as:
+\begin{verbatim}
+psi3 sp.in sp.out
+\end{verbatim}
+
+This will run the driver program \PSIdriver\, which will read the
+input from \file{sp.in} and write the output to \file{sp.out}.  
+The driver program will print something like this:
+\begin{verbatim}
+ The PSI3 Execution Driver
+ 
+PSI3 will perform a RHF SCF energy computation.
+ 
+The following programs will be executed:
+ 
+ input
+ cints
+ cscf
+ 
+input
+cints
+cscf
+\end{verbatim}
+The \PSIdriver\ program figures out what type of calculation it is
+(a restricted Hartree-Fock self-consistent-field energy computation)
+and it runs the appropriate \PSIthree\ modules, which are 
+\PSIinput, \PSIcints, and \PSIcscf.  The \PSIinput\ program reads
+the geometry and basis set information from the input file and
+places this information in a ``checkpoint file'' (with a filename
+ending in \file {.32}) which is used
+during the calculation.  The \PSIcints\ module computes the one- and
+two-electron integrals, and the \PSIcscf\ module computes the 
+SCF energy.  Since this is all we requested, the program stops here.
+
+What does the output of the program look like?  There is quite a lot
+in the output, so we will focus only on the most pertinent portions.
+The first part should look something like this:
+\begin{verbatim}
+******************************************************************************
+tstart called on aurelius.chemistry.gatech.edu
+Tue Aug 26 17:35:10 2003
+                                                                                
+                                --------------
+                                  WELCOME TO
+                                    PSI  3
+                                --------------
+                                                                                
+  LABEL       = cc-pVDZ SCF H2O
+  SHOWNORM    = 0
+  PUREAM      = 1
+  PRINT_LVL   = 1
+                                                                                
+  -Geometry before Center-of-Mass shift (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.000000000000
+        HYDROGEN      0.000000000000     0.000000000000     1.808467771070
+        HYDROGEN      1.750863805261     0.000000000000    -0.452804167853
+                                                                                
+...
+\end{verbatim}
+
+THIS JUNK BELOW IS THE OLD STUFF, KEEPING IT IN TEMPORARILY TO PLUCK
+BITS OUT OF IT. ---CDS
+
+This will run \PSIthree\, which will read the input from 
 will get the online manual page for the \PSIdriver\ master program.
 Other man pages for the \PSIdriver\ code can be retrieved likewise.
 
