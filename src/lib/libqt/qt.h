@@ -90,5 +90,4 @@ void sort(double *A, double **B, int n);
 
 int david(double **A, int N, int M, double *eps, double **v, double cutoff, 
 	  int print);
-void init_in_out(int nstrings, char *fnames[]);
 
