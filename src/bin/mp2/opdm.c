@@ -8,11 +8,12 @@
 
 /* onepdm(): Computes the one-particle density matrix for MP2 wave functions.
 **
-** The spin-adapted expressions for the onepdm components are:
+** The spin-orbital expression for the OPDM:
 **
 ** docc-docc   D_ij = -1/2 T_ik^ab T_jk^ab
 **
 ** virt-virt   D_ab =  1/2 T_ij^ac T_ij^bc
+**
 */
 
 void opdm(void)
@@ -25,7 +26,7 @@ void opdm(void)
   double **OPDM;
   
   /*
-  ** D_IJ = -2*SUM(k,a,b)T_ik^ab*T_jk^ab + SUM(k,a,b)T_ik^ab*T_jk^ba 
+  ** D_IJ = -2 * SUM(k,a,b) T_ik^ab * T_jk^ab + SUM(k,a,b) T_ik^ab * T_jk^ba 
   */
   
   /* Form tIjAb and tIjBa */
