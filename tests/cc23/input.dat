@@ -1,0 +1,25 @@
+% EOM CCSD/DZ Molecular gradient of lowest B1 state of H2O+
+default: (
+   label = "DZ EOM CCSD H2O+ gradient"
+   symmetry = c2v
+   wfn = eom_ccsd
+   docc = (3 0 0 1)
+   socc = (0 0 1 0)
+   states_per_irrep = (0 0 1 0)
+   charge = 1
+   reference = rohf
+   jobtype = sp
+   opentype = highspin
+   multi = 2
+   dertype = first
+)
+
+input: (
+ basis = dz
+ units = bohr
+ geometry = (
+  (H -0.107055195862289   0.000000000000000  -1.832806614599657)
+  (O -0.107055195862289   0.000000000000000   0.094714436481352)
+  (H  1.806098405595803   0.000000000000000   0.329620161376194)
+ )
+)
