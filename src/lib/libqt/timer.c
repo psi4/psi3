@@ -34,6 +34,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <string.h>
 #include <time.h>
 #include <sys/param.h>
@@ -72,14 +73,20 @@ void timer_init(void)
 void timer_done(void)
 {
   FILE *timer_out;
+  char *host;
   extern time_t timer_start, timer_end;
   struct timer *this_timer, *next_timer;
   extern struct timer *global_timer;
 
   timer_end = time(NULL);
 
+  host = (char *) malloc(40 * sizeof(char));
+  gethostname(host, 40);
+
   /* Dump the timing data to timer.dat and free the timers */
   timer_out = fopen("timer.dat", "a+");
+  fprintf(timer_out, "\n");
+  fprintf(timer_out, "Host: %s\n", host);
   fprintf(timer_out, "\n");
   fprintf(timer_out, "Timers On : %s", ctime(&timer_start));
   fprintf(timer_out, "Timers Off: %s", ctime(&timer_end));
@@ -104,6 +111,8 @@ void timer_done(void)
   fprintf(timer_out, 
           "\n***********************************************************\n");
   fclose(timer_out);
+
+  free(host);
 }
 
 struct timer *timer_scan(char *key)

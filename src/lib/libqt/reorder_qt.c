@@ -145,7 +145,7 @@ void reorder_qt_inverse(int *docc, int *socc, int *frozen_docc, int *frozen_uocc
   nmo = 0;
   for(irrep=0; irrep < nirreps; irrep++) {
     nmo += orbspi[irrep];
-    tmpi = frozen_uocc[irrep] + docc[irrep] + socc[irrep];
+    tmpi = frozen_uocc[irrep] + frozen_docc[irrep] + docc[irrep] + socc[irrep];
     uocc[irrep] = orbspi[irrep] - tmpi;
   }
 
