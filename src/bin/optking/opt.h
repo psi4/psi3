@@ -38,6 +38,7 @@
 #define STEP_PERCENT (0.1)                                     /* if di coord large valued, max percentage allowed for step */
 
 EXTERN FILE *infile, *outfile;
+EXTERN char *psi_file_prefix;
 EXTERN FILE *fp_input, *fp_intco, *fp_fconst, *fp_opt_aux, *fp_11;
 EXTERN int *ops_in_class;
 EXTERN int nirreps, *irr;

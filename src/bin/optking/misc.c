@@ -105,10 +105,7 @@ void close_PSIF(void) {
 void exit_io(void) {
   fprintf(outfile,"\n******** OPTKING execution completed ********\n\n");
   psio_done();
-  ip_done();
-  /* tstop(outfile); */
-  fclose(fp_input);
-  fclose(outfile);
+  psi_stop();
 }
 
 /*** SWAP_TORS -- canonical torsion order is atom a < atom d ***/

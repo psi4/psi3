@@ -8,6 +8,7 @@
 #endif
 
 EXTERN FILE *infile, *outfile;
+EXTERN char *psi_file_prefix;
 EXTERN int *ioff;
 #define IOFF_MAX 32641
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))

@@ -8,8 +8,9 @@
 #include <libqt/qt.h>
 
 FILE *infile, *outfile;
+char *psi_file_prefix;
 
-void init_io(void);
+void init_io(int argc, char *argv[]);
 void exit_io(void);
 void title(void);
 
@@ -29,7 +30,7 @@ int main(int argc, char *argv[])
 
   alphalast = 1.0;
 
-  init_io();
+  init_io(argc, argv);
   title();
 
   chkpt_init(PSIO_OPEN_OLD);
@@ -303,24 +304,19 @@ int main(int argc, char *argv[])
   exit(0);
 }
 
-void init_io(void)
+void init_io(int argc, char * argv[])
 {
-  char *gprgid();
+  extern char *gprgid();
   char *progid;
 
   progid = (char *) malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s",gprgid());
 
-  ffile(&infile,"input.dat",2);
-  ffile(&outfile,"output.dat",1);
-  tstart(outfile);
-  ip_set_uppercase(1);
-  ip_initialize(infile,outfile);
+  psi_start(argc-1,argv+1,0);
   ip_cwk_add(":INPUT"); /* for checking puream keyword */
-  ip_cwk_add(":DEFAULT");
   ip_cwk_add(progid);
-
   free(progid);
+  tstart(outfile);
 
   psio_init();
 }
@@ -339,10 +335,8 @@ void title(void)
 void exit_io(void)
 {
   psio_done();
-  ip_done();
   tstop(outfile);
-  fclose(infile);
-  fclose(outfile);
+  psi_stop();
 }
 
 char *gprgid()

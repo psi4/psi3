@@ -284,7 +284,7 @@ double ET_UHF_AAB(void)
 	  }
 	}
 
-  ffile(&ijkfile, "ijk.dat", 0);
+  ffile(&ijkfile,"ijk.dat",0);
   fprintf(ijkfile, "Spin Case: AAB\n");
   fprintf(ijkfile, "Number of IJK combintions: %d\n", nijk);
   fprintf(ijkfile, "\nCurrent IJK Combination:\n");

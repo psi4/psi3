@@ -137,20 +137,16 @@ int main(int argc, char *argv[])
 void init_io(int argc, char *argv[])
 {
   int i;
-  char *gprgid();
+  extern char *gprgid();
   char *progid;
 
   progid = (char *) malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s",gprgid());
 
-  init_in_out(argc-1,argv+1);
-  tstart(outfile);
-  ip_set_uppercase(1);
-  ip_initialize(infile,outfile);
-  ip_cwk_add(":DEFAULT");
+  psi_start(argc-1,argv+1,0);
   ip_cwk_add(progid);
-
   free(progid);
+  tstart(outfile);
 
   psio_init();
 
@@ -177,10 +173,8 @@ void exit_io(void)
   for(i=CC_MIN; i <= CC_MAX; i++) psio_close(i,1);
 
   psio_done();
-  ip_done();
   tstop(outfile);
-  fclose(infile);
-  fclose(outfile);
+  psi_stop();
 }
 
 char *gprgid()

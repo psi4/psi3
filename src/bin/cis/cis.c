@@ -9,7 +9,7 @@
 #include <physconst.h>
 #include "globals.h"
 
-void init_io(void);
+void init_io(int argc, char *argv[]);
 void title(void);
 void exit_io(void);
 int **cacheprep_uhf(int level, int *cachefiles);
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   int *spin, *symm, count, ivalue;
   dpdfile2 B;
 
-  init_io();
+  init_io(argc, argv);
   title();
 
   get_moinfo();
@@ -298,22 +298,17 @@ int main(int argc, char *argv[])
 
 void init_io(void)
 {
-  char *gprgid();
+  extern char *gprgid();
   char *progid;
 
   progid = (char *) malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s",gprgid());
 
-  ffile(&infile,"input.dat",2);
-  ffile(&outfile,"output.dat",1);
-  tstart(outfile);
-  ip_set_uppercase(1);
-  ip_initialize(infile,outfile);
-  ip_cwk_add(":DEFAULT");
+  psi_start(argc-1,argv+1,0);
   ip_cwk_add(":INPUT");
   ip_cwk_add(progid);
-
   free(progid);
+  tstart(outfile);
 
   psio_init();
 
@@ -352,12 +347,8 @@ void exit_io(void)
   psio_close(CC_TMP1, 0);
 
   psio_done();
-
-  free_ptrs();
-  ip_done();
   tstop(outfile);
-  fclose(infile);
-  fclose(outfile);
+  psi_stop();
 }
 
 char *gprgid()

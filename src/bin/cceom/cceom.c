@@ -8,7 +8,7 @@
 #include <libqt/qt.h>
 #include "globals.h"
 
-void init_io(void);
+void init_io(int argc, char *argv[]);
 void get_moinfo(void);
 void cleanup(void);
 void exit_io(void);
@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     if (!strcmp(argv[i],"--dot_with_Lg"))
       eom_params.dot_with_Lg = 1;
   }
-  init_io();
+  init_io(argc, argv);
   fprintf(outfile,"\n\t**********************************************************\n");
   fprintf(outfile,"\t*  CCEOM: An Equation of Motion Coupled Cluster Program  *\n");
   fprintf(outfile,"\t**********************************************************\n");
@@ -84,21 +84,20 @@ int main(int argc, char *argv[])
   exit(0);
 }
 
-void init_io(void)
+void init_io(int argc, char *argv[])
 {
   int i;
-  char *gprgid();
+  extern char *gprgid();
+  char *progid;
+
   progid = (char *) malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s",gprgid());
-  ffile(&infile,"input.dat",2);
-  ffile(&outfile,"output.dat",1);
-  tstart(outfile);
-  ip_set_uppercase(1);
-  ip_initialize(infile,outfile);
-  ip_cwk_clear();
-  ip_cwk_add(":DEFAULT");
+
+  psi_start(argc-1,argv+1,0);
   ip_cwk_add(":INPUT");
   ip_cwk_add(progid);
+  free(progid);
+  tstart(outfile);
   psio_init();
   for(i=CC_MIN; i <= CC_MISC; i++) psio_open(i,1);
   for(i=CC_TMP; i <= CC_MAX; i++) psio_open(i,0);
@@ -111,7 +110,7 @@ void exit_io(void)
   for(i=CC_TMP; i <= CC_MAX; i++) psio_close(i,1);
   psio_done();
   tstop(outfile);
-  ip_done();
+  psi_stop();
 }
 
 char *gprgid()

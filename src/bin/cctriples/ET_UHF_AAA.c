@@ -145,7 +145,7 @@ double ET_UHF_AAA(void)
 	  }
 	}
 
-  ffile(&ijkfile, "ijk.dat", 0);
+  ffile(&ijkfile,"ijk.dat", 0);
   fprintf(ijkfile, "Spin Case: AAA\n");
   fprintf(ijkfile, "Number of IJK combintions: %d\n", nijk);
   fprintf(ijkfile, "\nCurrent IJK Combination:\n");

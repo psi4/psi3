@@ -18,8 +18,8 @@
 #define MAX(I,J) ((I>J) ? I : J)
 #define MIN(I,J) ((I<J) ? I : J)
 
-EXTERN char *progid;
 EXTERN FILE *infile, *outfile;
+EXTERN char *psi_file_pregfix;
 EXTERN struct MOInfo moinfo;
 EXTERN struct Params params;
 EXTERN struct Eom_params eom_params;

@@ -13,8 +13,9 @@
 #include <physconst.h>
 
 FILE *infile, *outfile;
+char *psi_file_prefix;
 
-void init_io(void);
+void init_io(int argc, char *argv[]);
 void exit_io(void);
 void compute_delta(double **delta, double x, double y, double z);
 int **cacheprep(int level, int *cachefiles);
@@ -44,7 +45,7 @@ int main(int argc, char *argv[])
   double two_energy;
   double **scf_local;
 
-  init_io();
+  init_io(argc, argv);
 
   chkpt_init(PSIO_OPEN_OLD);
   nmo = chkpt_rd_nmo();
@@ -376,24 +377,19 @@ int main(int argc, char *argv[])
   exit_io();
 }
 
-void init_io(void)
+void init_io(int argc, char *argv[])
 {
   int i;
-  char *gprgid();
+  extern char *gprgid();
   char *progid;
 
   progid = (char *) malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s",gprgid());
 
-  ffile(&infile,"input.dat",2);
-  ffile(&outfile,"output.dat",1);
-  tstart(outfile);
-  ip_set_uppercase(1);
-  ip_initialize(infile,outfile);
-  ip_cwk_add(":DEFAULT");
+  psi_start(argc-1,argv+1,0);
   ip_cwk_add(progid);
-
   free(progid);
+  tstart(outfile);
 
   psio_init();
 
@@ -404,16 +400,12 @@ void init_io(void)
 void exit_io(void)
 {
   int i;
-
   /* Close all dpd data files here */
   for(i=CC_MIN; i <= CC_MAX; i++) psio_close(i,1);
 
   psio_done();
-
-  ip_done();
   tstop(outfile);
-  fclose(infile);
-  fclose(outfile);
+  psi_stop();
 }
 
 char *gprgid()

@@ -56,7 +56,7 @@ command-line      internal specifier   what it does
   extern void energy_save(cartesians &carts);
   extern int opt_step(cartesians &carts, internals &simples, salc_set &symm);
 
-  int main(int argc, char **argv) {
+  int main(int argc, char *argv[]) {
 
     int i,j,a,b,dim,count,dim_carts,user_intcos;
     int parsed=1;
@@ -124,15 +124,12 @@ command-line      internal specifier   what it does
     // printf("optinfo.mode %d\n",optinfo.mode);
     // printf("optinfo.points %d\n",optinfo.points);
 
-    init_in_out(argc-parsed,argv+parsed);
+    psi_start(argc-parsed,argv+parsed,0);
     /* init_in_out() sets the value of "infile", so we need to save it */
     fp_input = infile;
     
     intro();
 
-    ip_set_uppercase(1);
-    ip_initialize(fp_input, outfile);
-    ip_cwk_add(":DEFAULT");
     ip_cwk_add(":OPTKING");
 
     // determine if simples and salcs are present in intco.dat 

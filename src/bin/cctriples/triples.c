@@ -8,7 +8,7 @@
 #include <libqt/qt.h>
 #include "globals.h"
 
-void init_io(void);
+void init_io(int argc, char *argv[]);
 void title(void);
 void get_moinfo(void);
 void exit_io(void);
@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
   FILE *efile;
   int i, errcod, natom;
   
-  init_io();
+  init_io(argc, argv);
   title();
 
   timer_init();
@@ -142,7 +142,7 @@ int main(int argc, char *argv[])
     geom = chkpt_rd_geom();
     zvals = chkpt_rd_zvals();
     chkpt_close();
-    ffile(&efile, "energy.dat",1);
+    ffile(&efile,"energy.dat",1);
     fprintf(efile, "*\n");
     for(i=0; i < natom; i++) 
       fprintf(efile, " %4d   %5.2f     %13.10f    %13.10f    %13.10f\n",
@@ -170,24 +170,19 @@ int main(int argc, char *argv[])
   exit(0);
 }
 
-void init_io(void)
+void init_io(int argc, char *argv[])
 {
   int i;
-  char *gprgid();
+  extern char *gprgid();
   char *progid;
 
   progid = (char *) malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s",gprgid());
 
-  ffile(&infile,"input.dat",2);
-  ffile(&outfile,"output.dat",1);
-  tstart(outfile);
-  ip_set_uppercase(1);
-  ip_initialize(infile,outfile);
-  ip_cwk_add(":DEFAULT");
+  psi_start(argc-1,argv+1,0);
   ip_cwk_add(progid);
-
   free(progid);
+  tstart(outfile);
 
   psio_init();
   for(i=CC_MIN; i <= CC_MAX; i++) psio_open(i,1);
@@ -207,10 +202,8 @@ void exit_io(void)
   int i;
   for(i=CC_MIN; i <= CC_MAX; i++) psio_close(i,1);
   psio_done();
-  ip_done();
   tstop(outfile);
-  fclose(infile);
-  fclose(outfile);
+  psi_stop();
 }
 
 char *gprgid()

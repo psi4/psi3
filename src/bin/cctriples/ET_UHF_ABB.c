@@ -283,7 +283,7 @@ double ET_UHF_ABB(void)
 	  }
 	}
 
-  ffile(&ijkfile, "ijk.dat", 0);
+  ffile(&ijkfile,"ijk.dat",0);
   fprintf(ijkfile, "Spin Case: ABB\n");
   fprintf(ijkfile, "Number of IJK combintions: %d\n", nijk);
   fprintf(ijkfile, "\nCurrent IJK Combination:\n");

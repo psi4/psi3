@@ -18,8 +18,8 @@
 
 
 FILE *infile, *outfile;
+char *psi_file_prefix;
 void exit_bad(void);
-
 
 int main(int argc, char *argv[])
 {
@@ -30,13 +30,8 @@ int main(int argc, char *argv[])
   char fileslist[MAX_STRING];
   char cmdstring[MAX_STRING];
 
-  init_in_out(argc-1,argv+1);
+  psi_start(argc-1,argv+1,0);
   
-  ip_set_uppercase(1);
-  ip_initialize(infile,outfile);
-  ip_cwk_add(":DEFAULT");
-
-
   /* Initialize the I/O system */
   psio_init();
 
@@ -64,6 +59,7 @@ int main(int argc, char *argv[])
 
   /* we're done, clean up */
   psio_done();
+  psi_stop();
   exit(0);
 }
 

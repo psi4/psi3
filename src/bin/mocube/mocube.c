@@ -26,6 +26,7 @@ void compute_mos(double *movals, double x, double y, double z,
 void wrt_cube(void);
 void exit_io(void);
 FILE *infile, *outfile, *cubfile;
+char *psi_file_prefix;
 
 int main(int argc, char *argv[]) {
   int i,j, nirreps, cnt_x, cnt_y, cnt_z;
@@ -171,22 +172,16 @@ char *gprgid() {
 }
 
 void init_io(int argc, char *argv[]) {
-  int i;
-  char *gprgid();
+  extern char *gprgid();
   char *filename;
   progid = (char *) malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s",gprgid());
-  init_in_out(argc-1,argv+1);
-  tstart(outfile);
-  ip_set_uppercase(1);
-  ip_initialize(infile,outfile);
-  ip_cwk_clear();
-  ip_cwk_add(":DEFAULT");
+
+  psi_start(argc-1,argv+1,0);
   ip_cwk_add(":INPUT");
   ip_cwk_add(progid);
   psio_init();
-  // psio_open(32,1);
-  
+  tstart(outfile);
 }
 
 void exit_io(void) {

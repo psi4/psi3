@@ -137,7 +137,7 @@ double ET_RHF_allijk(void)
 	  for(j=0; j < occpi[Gj]; j++)
 	    for(k=0; k < occpi[Gk]; k++) nijk++;
 
-  ffile(&ijkfile, "ijk.dat", 0);
+  ffile(&ijkfile,"ijk.dat",0);
   fprintf(ijkfile, "Number of IJK combintions: %d\n", nijk);
   fprintf(ijkfile, "\nCurrent IJK Combination\n");
 
