@@ -552,11 +552,11 @@ void cc3_Wabei(void)
     dpd_buf4_close(&W);
 
     /** W(aB,eI) <--- t1[I][F] * <aB|eF>  **/
-    dpd_buf4_init(&Z, CC_TMP0, 0, 28, 24, 28, 24, 0, "CC3 ZBaIe (Ba,Ie)");
+    dpd_buf4_init(&Z, CC_TMP0, 0, 24, 28, 24, 28, 0, "CC3 ZIeBa (Ie,Ba)");
     dpd_buf4_init(&B, CC_BINTS, 0, 28, 28, 28, 28, 0, "B <Ab|Cd>");
-    dpd_contract244(&tIA, &B, &Z, 1, 2, 1, 1, 0);
+    dpd_contract244(&tIA, &B, &Z, 1, 0, 0, 1, 0);
     dpd_buf4_close(&B);
-    dpd_buf4_sort_axpy(&Z, CC_TMP0, qpsr, 29, 25, "CC3 WaBeI (aB,eI)", 1);
+    dpd_buf4_sort_axpy(&Z, CC_TMP0, srqp, 29, 25, "CC3 WaBeI (aB,eI)", 1);
     dpd_buf4_close(&Z);
 
     /** term 3 **/
