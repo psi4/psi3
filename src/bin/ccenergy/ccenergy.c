@@ -58,21 +58,13 @@ int main(int argc, char *argv[])
   init_amps();
   tau_build();
   taut_build();
-  if(!moinfo.iopen) {
-      fprintf(outfile, "\t                     Solving CCSD Equations\n");
-      fprintf(outfile, "\t                     ----------------------\n");
-      fprintf(outfile, "\tIter             Energy               RMS       T1Diag      D1Diag\n");
-      fprintf(outfile, "\t----     ---------------------     --------   ----------  ----------\n");
-    }
-  else {
-      fprintf(outfile, "\t                Solving CCSD Equations\n");
-      fprintf(outfile, "\t                ----------------------\n");
-      fprintf(outfile, "\tIter             Energy               RMS       T1Diag\n");
-      fprintf(outfile, "\t----     ---------------------     --------   ----------\n");
-    }
+  fprintf(outfile, "\t                     Solving CCSD Equations\n");
+  fprintf(outfile, "\t                     ----------------------\n");
+  fprintf(outfile, "\tIter             Energy               RMS       T1Diag      D1Diag\n");
+  fprintf(outfile, "\t----     ---------------------     --------   ----------  ----------\n");
   moinfo.ecc = energy();
   moinfo.t1diag = diagnostic();
-  if(!moinfo.iopen) moinfo.d1diag = d1diag();
+  moinfo.d1diag = d1diag();
   update();
   for(moinfo.iter=1; moinfo.iter <= params.maxiter; moinfo.iter++) {
       sort_amps();
@@ -89,10 +81,12 @@ int main(int argc, char *argv[])
 	  tau_build(); taut_build();
 	  moinfo.ecc = energy();
 	  moinfo.t1diag = diagnostic();
-	  if(!moinfo.iopen) moinfo.d1diag = d1diag();
+	  moinfo.d1diag = d1diag();
 	  sort_amps();  /* For upcoming calculations */
 	  update();
 	  fprintf(outfile, "\n\tIterations converged.\n");
+          fprintf(outfile, "\n");
+          d1diag_print();
 	  fflush(outfile);
 	  break;
 	}
@@ -101,7 +95,7 @@ int main(int argc, char *argv[])
       tau_build(); taut_build();
       moinfo.ecc = energy();
       moinfo.t1diag = diagnostic();
-      if(!moinfo.iopen) moinfo.d1diag = d1diag();
+      moinfo.d1diag = d1diag();
       update();
     }
   fprintf(outfile, "\n");
@@ -121,6 +115,26 @@ int main(int argc, char *argv[])
   fprintf(outfile, "\tTotal CCSD energy          = %20.15f\n", 
           moinfo.eref + moinfo.ecc);
   fprintf(outfile, "\n");
+
+/*  Curt had these print statements in the code.  They are not
+**  necessary now, but I just comment them out for the time being. - MLL
+**  12-3-99
+    {
+    struct dpdbuf tIJAB, tijab, tIjAb;
+    dpd_buf_init(&tIJAB, CC_TAMPS, 2, 7, 2, 7, 0, "tIJAB", 0, outfile);
+    dpd_buf_print(&tIJAB, outfile);
+    dpd_buf_close(&tIJAB);
+    dpd_buf_init(&tijab, CC_TAMPS, 2, 7, 2, 7, 0, "tijab", 0, outfile);
+    dpd_buf_print(&tijab, outfile);
+    dpd_buf_close(&tijab);
+    dpd_buf_init(&tIjAb, CC_TAMPS, 2, 7, 2, 7, 0, "tIjAb", 0, outfile);
+    dpd_buf_print(&tIjAb, outfile);
+    dpd_buf_close(&tIjAb);
+  }
+*/
+/* Stop here */
+
+
 
   /* Write pertinent data to energy.dat for Dr. Yamaguchi */
   file30_init();
