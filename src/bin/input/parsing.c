@@ -72,7 +72,7 @@ void parsing()
 	     punt("Both ZMAT and GEOMETRY are missing!");
 	   
 	   /*Default = BOHR*/
-	   units = strdup("BOHR");
+	   units = strdup("ANGSTROMS");
 	   errcod = ip_string("UNITS",&units,0);
 	   if (!strcmp(units,"BOHR") || !strcmp(units,"AU"))
 	     conv_factor = 1.0;
