@@ -163,7 +163,7 @@ int main(int argc, char *argv[])
   if(params.local) local_done();
 
   if (!params.ground && !params.zeta) check_ortho(pL_params);
-  else zeta_norm(pL_params[0]);
+  else if (params.zeta) zeta_norm(pL_params[0]);
 
   dpd_close(0);
 
