@@ -1,10 +1,13 @@
 /* $Log$
- * Revision 1.7  2002/01/04 18:03:24  crawdad
- * Minor change to set phase_check flag to true when starting from a core
- * guess.  This is to allow correlated calculations that might have stopped
- * due to slow convergence to restart.
- * -TDC
+ * Revision 1.8  2002/03/25 00:02:00  sherrill
+ * Add libpsio
  *
+/* Revision 1.7  2002/01/04 18:03:24  crawdad
+/* Minor change to set phase_check flag to true when starting from a core
+/* guess.  This is to allow correlated calculations that might have stopped
+/* due to slow convergence to restart.
+/* -TDC
+/*
 /* Revision 1.6  2001/06/29 20:39:27  evaleev
 /* Modified cscf to use libpsio to store supermatrix files.
 /*
@@ -279,6 +282,12 @@ void cleanup()
 
    wwritw(itap30,(char *) &etot,sizeof(double)*1,junk,&junk);
 
+/* write to new checkpoint file */
+   psio_write_entry(PSIF_CHKPT, "::Total energy", (char *) &etot, 
+     sizeof(double));
+   psio_write_entry(PSIF_CHKPT, "::SCF energy", (char *) &etot, 
+     sizeof(double));
+
 /* write new vector and eigenvalues to file30 and file49 */
    scr_arr = (double *) init_array(mxcoef);
    scrtmp = (double *) init_array(mxcoef);
@@ -298,6 +307,12 @@ void cleanup()
 	   }
 	   wwritw(itap30,(char *) scr_arr,sizeof(double)*mxcoef,locvec,&locvec);
 	   pointers[m+1] = locvec;
+           if (m==0) 
+             psio_write_entry(PSIF_CHKPT, "::MOs alpha", 
+                              (char *) scr_arr, sizeof(double)*mxcoef);
+           else 
+             psio_write_entry(PSIF_CHKPT, "::MOs beta", 
+                              (char *) scr_arr, sizeof(double)*mxcoef);
        }
    }
    else{
@@ -312,6 +327,8 @@ void cleanup()
        }
        
        wwritw(itap30,(char *) scr_arr,sizeof(double)*mxcoef,locvec,&locvec);
+       psio_write_entry(PSIF_CHKPT, "::MOs alpha", 
+                        (char *) scr_arr, sizeof(double)*mxcoef);
        pointers[1] = 0;
        pointers[2] = locvec;
    }
@@ -329,6 +346,12 @@ void cleanup()
 	       }
 	   }
 	   wwritw(itap30,(char *) scr_arr,sizeof(double)*nmo,locvec,&locvec);
+           if (m==0) 
+             psio_write_entry(PSIF_CHKPT, "::Orbital energies alpha", 
+                              (char *) scr_arr, sizeof(double)*mxcoef);
+           else 
+             psio_write_entry(PSIF_CHKPT, "::Orbital energies beta", 
+                              (char *) scr_arr, sizeof(double)*mxcoef);
 	   pointers[m+3] = locvec;
        }  
    }
