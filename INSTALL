@@ -74,19 +74,20 @@ the configure script:
    with single right-quotes, e.g., --with-lapack='-llapack -lcblas -latlas'.
 
    * --with-max-am-eri=integer --- Specifies the maximum angular momentum
-   level for the primitive Gaussian basis functions when computing electron
-   repulsion integrals.  This is set to g-type functions (AM=5) by default.
+   level (+1) for the primitive Gaussian basis functions when computing
+   electron repulsion integrals.  This is set to g-type functions (AM=5)
+   by default.
 
-   * --with-max-am-deriv1=integer --- Specifies the maximum angular momentum
-   level for first derivatives of the primitive Gaussian basis functions.
-   This is set to f-type functions (AM=4) by default.
+   * --with-max-am-deriv1=integer --- Specifies the maximum angular
+   momentum level (+1) for first derivatives of the primitive Gaussian
+   basis functions.  This is set to f-type functions (AM=4) by default.
 
-   * --with-max-am-deriv2=integer --- Specifies the maximum angular momentum
-   level for second derivatives of the primitive Gaussian basis functions.
-   This is set to d-type functions (AM=3) by default.
+   * --with-max-am-deriv2=integer --- Specifies the maximum angular
+   momentum level (+1) for second derivatives of the primitive Gaussian
+   basis functions.  This is set to d-type functions (AM=3) by default.
 
    * --with-max-am-r12=integer --- Specifies the maximum angular momentum
-   level for primitive Gaussian basis functions used in r_12 explicitly
+   level (+1) for primitive Gaussian basis functions used in r_12 explicitly
    correlated methods.  This is set to f-type functions (AM=4) by default.
 
    * --with-debug=option --- This option turns on debugging options.
