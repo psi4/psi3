@@ -94,19 +94,19 @@ int main(int argc, char *argv[])
 
   if(params.ref == 0 || params.ref == 1) {
     fprintf(outfile, "\n\tSize of <ab|cd> integrals: %9.3f (MW) / %9.3f (MB)\n",
-      b_size/1e6, b_size*sizeof(double)/1e6);
+      b_size/1e6, (b_size/1e6)*sizeof(double));
     fprintf(outfile, "\tSize of <ia|bc> integrals: %9.3f (MW) / %9.3f (MB)\n",
-      f_size/1e6, f_size*sizeof(double)/1e6);
+      f_size/1e6, (f_size/1e6)*sizeof(double));
     fprintf(outfile, "\tSize of Tijab amplitudes:  %9.3f (MW) / %9.3f (MB)\n",
-      t2_size/1e6, t2_size*sizeof(double)/1e6);
+      t2_size/1e6, (t2_size/1e6)*sizeof(double));
   }
   else if(params.ref == 2) {
     fprintf(outfile, "\n\tSize of <Ab|Cd> integrals: %9.3f (MW) / %9.3f (MB)\n",
-      b_size/1e6, b_size*sizeof(double)/1e6);
+      b_size/1e6, (b_size/1e6)*sizeof(double));
     fprintf(outfile, "\tSize of <Ia|Bc> integrals: %9.3f (MW) / %9.3f (MB)\n",
-      f_size/1e6, f_size*sizeof(double)/1e6);
+      f_size/1e6, (f_size/1e6)*sizeof(double));
     fprintf(outfile, "\tSize of TIjAb amplitudes:  %9.3f (MW) / %9.3f (MB)\n",
-      t2_size/1e6, t2_size*sizeof(double)/1e6);
+      t2_size/1e6, (t2_size/1e6)*sizeof(double));
   }
   fprintf(outfile, "\n");
 
