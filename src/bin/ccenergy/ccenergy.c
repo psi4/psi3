@@ -175,7 +175,7 @@ int main(int argc, char *argv[])
   for(i=0; i < natom; i++) 
       fprintf(efile, " %4d   %5.2f     %13.10f    %13.10f    %13.10f\n",
 	      i+1, zvals[i], geom[i][0], geom[i][1], geom[i][2]);
-  free_matrix(geom, natom);  free(zvals);
+  free_block(geom);  free(zvals);
   fprintf(efile, "SCF(30)   %22.12f\n", moinfo.escf);
   fprintf(efile, "REF(100)  %22.12f\n", moinfo.eref);
   fprintf(efile, "CCSD      %22.12f\n", (moinfo.ecc+moinfo.eref));
