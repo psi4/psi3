@@ -19,7 +19,7 @@ double fzc_energy_uhf(int nbfso, int *sosym, double *Pa, double *Pb,
 void transform_two_uhf(void)
 {
   int nirreps;
-  int maxcor, maxcord;
+  long int maxcor, maxcord;
   int max_buckets, first_tmp_file;
   double tolerance;
   int print_lvl;

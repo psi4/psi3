@@ -50,7 +50,7 @@ void transform_two_mp2r12a_t(void)
   int *occ, *vir;
   int *ioff3;
   int print_integrals;
-  int maxcor, maxcord;
+  long int maxcor, maxcord;
   double **A, **B;
   double ***Cdocc, ***C;
   double *P_block;

@@ -53,7 +53,8 @@ void transform_two(void)
   struct iwlbuf PBuff;
   struct iwlbuf JBuff;
   struct iwlbuf MBuff;
-  int maxcor,maxcord, max_buckets, print_lvl, first_tmp_file, presort_file;
+  long int maxcor,maxcord;
+  int max_buckets, print_lvl, first_tmp_file, presort_file;
   int keep_presort, jfile, keep_half_tf, mfile;
   double tolerance;
   int A_cols, B_cols, *C_cols;

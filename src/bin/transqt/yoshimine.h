@@ -13,7 +13,7 @@
 /* need to include iwl.h before including this file */
 
 struct bucket {
-   int in_bucket;
+   long int in_bucket;
    struct iwlbuf IWLBuf;
    int *p;
    int *q;
@@ -28,7 +28,7 @@ struct yoshimine {
    int core_loads;
    int nbuckets;
    int *bucket_for_pq;
-   unsigned int bucketsize;
+   unsigned long int bucketsize;
    struct bucket *buckets;
    int first_tmp_file;
    int pq_per_bucket;
@@ -52,7 +52,7 @@ union psi_buffer {
 #endif
 
 YEXTERN void yosh_init(struct yoshimine *YBuff, unsigned bra_indices, 
-      unsigned ket_indices, unsigned maxcor, unsigned maxcord, int max_buckets,
+      unsigned ket_indices, unsigned long maxcor, unsigned long maxcord, int max_buckets,
       unsigned int first_tmp_file, double cutoff, FILE *outfile);
 YEXTERN void yosh_print(struct yoshimine *YBuff, FILE *outfile); 
 YEXTERN void yosh_init_buckets(struct yoshimine *YBuff);

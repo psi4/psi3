@@ -59,17 +59,19 @@ extern struct MOInfo moinfo;
 ** where nbfao != nbfmo.
 */
 void yosh_init(struct yoshimine *YBuff, unsigned bra_indices,
-               unsigned ket_indices, unsigned maxcor,
-               unsigned maxcord, int max_buckets,
+               unsigned ket_indices, unsigned long maxcor,
+               unsigned long maxcord, int max_buckets,
                unsigned int first_tmp_file, 
                double cutoff, FILE *outfile)
 {
-   unsigned int twoel_array_size, nbuckets;
+   unsigned long long int twoel_array_size;              /*--- Although on 32-bit systems one can only allocate 2GB arrays
+							   in 1 process space, one can store much bigger integrals files on disk ---*/
+   unsigned int nbuckets;
    int i, j, pq;
-   int bytes_per_bucket, free_bytes_per_bucket;
+   unsigned long int bytes_per_bucket, free_bytes_per_bucket;
 
    YBuff->first_tmp_file = first_tmp_file;
-   twoel_array_size = bra_indices * ket_indices;
+   twoel_array_size = bra_indices; twoel_array_size *= ket_indices;
    YBuff->core_loads = (twoel_array_size - 1) / maxcord + 1 ;
    nbuckets = YBuff->core_loads ;
    YBuff->nbuckets = nbuckets;
@@ -231,7 +233,8 @@ void yosh_rdtwo(struct yoshimine *YBuff, int itapERI, int del_tei_file, int *num
    double value;
    int *tmp;
    struct bucket *bptr ;
-   int tmpi, whichbucket, lastflag = 0, firstfile;
+   long int tmpi;
+   int whichbucket, lastflag = 0, firstfile;
    int *nsoff;
    int a,b,c,d,ab,cd,ad,bc,dum,found=0;
    int al[8], bl[8], cl[8], dl[8];
@@ -505,7 +508,8 @@ void yosh_rdtwo_uhf(struct yoshimine *YBuff, int itapERI, int del_tei_file, int 
   double value;
   int *tmp;
   struct bucket *bptr ;
-  int tmpi, whichbucket, lastflag = 0, firstfile;
+  long int tmpi;
+  int whichbucket, lastflag = 0, firstfile;
   int *nsoff;
   int a,b,c,d,ab,cd,ad,bc,dum,found=0;
   int al[8], bl[8], cl[8], dl[8];
@@ -829,7 +833,8 @@ void yosh_rdtwo_backtr(struct yoshimine *YBuff, int tei_file, int *ioff,
    int iabs, jabs, kabs, labs;
    double value;
    struct bucket *bptr;
-   int whichbucket, lastbuf, idx, tmpi;
+   int whichbucket, lastbuf, idx;
+   long int tmpi;
    struct iwlbuf Inbuf;
    Value *valptr;
    Label *lblptr;
@@ -1016,7 +1021,8 @@ void yosh_buff_put_val(struct yoshimine *YBuff, int *ioff, int pq,
                        FILE *outfile)
 {
    struct bucket *bptr;
-   int whichbucket, tmpi;
+   int whichbucket;
+   long int tmpi;
 
    whichbucket = YBuff->bucket_for_pq[pq];
    bptr = YBuff->buckets+whichbucket;
@@ -1199,7 +1205,8 @@ void yosh_wrt_arr(struct yoshimine *YBuff, int p, int q, int pq, int pqsym,
    int *lasti, int sortby_rs, int printflag, FILE *outfile)
 {
    int r, s, rs, rsym, ssym, smax;
-   int tmpi, whichbucket;
+   long int tmpi;
+   int whichbucket;
    int lastflag = 0, firstfile;
    struct bucket *bptr;
    double value;
@@ -1310,7 +1317,8 @@ void yosh_wrt_arr2(struct yoshimine *YBuff, int size, double *arr,
    int i1, j1, k1, l1, ij1, kl1;
    int ktmp, ltmp;
    int i2, j2, k2, l2, ij2, kl2;
-   int tmpi, whichbucket;
+   long int tmpi;
+   int whichbucket;
    int lastflag = 0, firstfile;
    struct bucket *bptr;
    double value;
@@ -1423,7 +1431,8 @@ void yosh_wrt_arr_mp2(struct yoshimine *YBuff, int p, int q, int pq,
    int r, s, rs, ssym;
    int rnew,snew;
    int R,S;
-   int tmpi, whichbucket;
+   long int tmpi;
+   int whichbucket;
    int lastflag = 0, firstfile;
    struct bucket *bptr;
    double value;
@@ -1531,7 +1540,8 @@ void yosh_wrt_arr_mp2r12a(struct yoshimine *YBuff, int p, int q, int pq,
    int r, s, rs, ssym;
    int rnew,snew;
    int R,S;
-   int tmpi, whichbucket;
+   long int tmpi;
+   int whichbucket;
    int lastflag = 0, firstfile;
    struct bucket *bptr;
    double value;

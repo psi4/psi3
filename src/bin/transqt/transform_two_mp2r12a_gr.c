@@ -51,7 +51,7 @@ void transform_two_mp2r12a_gr(void)
   int *occ, *vir;
   int *ioff3;
   int print_integrals;
-  int maxcor, maxcord;
+  long int maxcor, maxcord;
   double **A, **B;
   double ***Cdocc, ***C;
   double *P_block;
