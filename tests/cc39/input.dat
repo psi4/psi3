@@ -1,0 +1,21 @@
+% cc-pVDZ/CC2-LR dynamic dipole polarizabilities
+
+psi: (
+  label = "cc-pVDZ/CC2 HOF dynamic polarizabilities"
+
+  jobtype = sp
+  wfn = cc2
+  reference = rhf
+  dertype = response
+
+  omega = 0.1
+  mu_irreps = (0 0 1)
+
+  basis = "cc-pVDZ"
+  zmat = (
+    o
+    h 1 0.97
+    f 1 0.97 2 103.0
+  )
+)
+
