@@ -46,7 +46,7 @@ void read_scf_opdm()
       psio_read_entry(IOUnits.itapDSCF, "Difference Density", (char *) dens, sizeof(double)*nstri);
       if (UserOptions.reftype == rohf) {
 	  denso = init_array(nstri);
-	  psio_read_entry(IOUnits.itapDSCF, "Difference Open-shell Density", (char *) denso, sizeof(double)*nstri);
+	  psio_read_entry(IOUnits.itapDSCF, "Difference Open-Shell Density", (char *) denso, sizeof(double)*nstri);
       }
   }
   psio_close(IOUnits.itapDSCF, 1);
