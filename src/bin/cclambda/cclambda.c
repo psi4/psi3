@@ -434,10 +434,11 @@ void L_zero(int L_irr) {
 /* Cleaning out L vectors for open-shell cases  */
 void L_clean(struct L_Params L_params) {
   int L_irr, i;
-  L_irr = L_params.irrep;
   dpdfile2 LIA, Lia;
   dpdbuf4 LIJAB, Lijab, LIjAb;
   char lbl[80];
+
+  L_irr = L_params.irrep;
 
   dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "New LIA");
   dpd_file2_init(&Lia, CC_OEI, L_irr, 0, 1, "New Lia");
