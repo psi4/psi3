@@ -35,6 +35,7 @@ char **chkpt_rd_irr_labs(void)
     irr_labs[i] = (char *) malloc(4*sizeof(char));
     psio_read(PSIF_CHKPT, "::Irrep labels", (char *) irr_labs[i], 
 	      4*sizeof(char), ptr, &ptr);
+    irr_labs[i][3] = '\0';
   }
 
   return irr_labs;

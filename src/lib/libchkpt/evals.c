@@ -24,7 +24,7 @@ double *chkpt_rd_evals(void)
 {
   double *energies;
   
-  energies = init_array(file30_rd_nmo());
+  energies = init_array(chkpt_rd_nmo());
   psio_read_entry(PSIF_CHKPT, "::MO energies", (char *) energies, 
 		  chkpt_rd_nmo()*sizeof(double));
 
@@ -48,7 +48,7 @@ double *chkpt_rd_alpha_evals(void)
 {
   double *energies;
   
-  energies = init_array(file30_rd_nmo());
+  energies = init_array(chkpt_rd_nmo());
   psio_read_entry(PSIF_CHKPT, "::Alpha MO energies", (char *) energies, 
 		  chkpt_rd_nmo()*sizeof(double));
 
@@ -71,7 +71,7 @@ double *chkpt_rd_beta_evals(void)
 {
   double *energies;
   
-  energies = init_array(file30_rd_nmo());
+  energies = init_array(chkpt_rd_nmo());
   psio_read_entry(PSIF_CHKPT, "::Beta MO energies", (char *) energies, 
 		  chkpt_rd_nmo()*sizeof(double));
 
