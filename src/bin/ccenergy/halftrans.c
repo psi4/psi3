@@ -1,5 +1,7 @@
 #include <libdpd/dpd.h>
 #include <libqt/qt.h>
+#define EXTERN
+#include "globals.h"
 
 /* halftrans(): Routine to transform the last two indices of a dpdbuf4
 ** between the MO and SO bases.

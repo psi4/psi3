@@ -159,11 +159,9 @@ void BT2_AO(void)
       dpd_buf4_close(&tau2_AO);
 
       dpd_buf4_init(&tau2_AO, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjPq (2)");
-      dpd_buf4_print(&tau2_AO, outfile, 1);
     
       dpd_set_default(0);
       dpd_buf4_init(&t2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb");
-      dpd_buf4_scm(&t2, 0.0);
 
       halftrans(&t2, 0, &tau2_AO, 1, C, C, nirreps, T2_cd_row_start, T2_pq_row_start, 
 		virtpi, virtpi, orbspi, 1, 1.0, 1.0);
@@ -173,7 +171,6 @@ void BT2_AO(void)
 
     }
     else if(!strcmp(params.aobasis,"DIRECT")) {
-      dpd_file4_cache_print(stdout);
       dpd_file4_init(&T, CC_TAMPS, 0, 0, 5, "tauIjAb");
       dpd_file4_cache_del(&T);
       dpd_file4_close(&T);
