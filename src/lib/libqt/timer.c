@@ -47,7 +47,9 @@ struct timer {
     unsigned int calls;
     double utime;
     double stime;
+    double wtime;
     struct tms ontime;
+    time_t wall_start;
     struct timer *next;
     struct timer *last;
 };
@@ -85,13 +87,13 @@ void timer_done(void)
   this_timer = global_timer;
   while(this_timer != NULL) {
       if(this_timer->calls > 1) 
-	  fprintf(timer_out, "%-12s: %10.2fu %10.2fs %6d calls\n",
+	  fprintf(timer_out, "%-12s: %10.2fu %10.2fs %10.2fw %6d calls\n",
 		  this_timer->key, this_timer->utime, this_timer->stime,
-		  this_timer->calls);
+		  this_timer->wtime, this_timer->calls);
       else if(this_timer->calls == 1)
-	  fprintf(timer_out, "%-12s: %10.2fu %10.2fs %6d call\n",
+	  fprintf(timer_out, "%-12s: %10.2fu %10.2fs %10.2fw %6d call\n",
 		  this_timer->key, this_timer->utime, this_timer->stime,
-		  this_timer->calls);
+		  this_timer->wtime, this_timer->calls);
       next_timer = this_timer->next;
       free(this_timer);
       this_timer = next_timer;
@@ -143,6 +145,7 @@ void timer_on(char *key)
       this_timer->calls = 0;
       this_timer->utime = 0;
       this_timer->stime = 0;
+      this_timer->wtime = 0;
       this_timer->next = NULL;
       this_timer->last = timer_last();
       if(this_timer->last != NULL) this_timer->last->next = this_timer;
@@ -158,12 +161,14 @@ void timer_on(char *key)
   this_timer->calls++;
   
   times(&(this_timer->ontime));
+  this_timer->wall_start = time(NULL);
 }
 
 void timer_off(char *key)
 {
   struct tms ontime, offtime;
   struct timer *this_timer;
+  time_t wall_stop;
 
   this_timer = timer_scan(key);
 
@@ -183,6 +188,9 @@ void timer_off(char *key)
 
   this_timer->utime += ((double) (offtime.tms_utime-ontime.tms_utime))/CLK_TCK;
   this_timer->stime += ((double) (offtime.tms_stime-ontime.tms_stime))/CLK_TCK;
+
+  wall_stop = time(NULL);
+  this_timer->wtime += ((double) (wall_stop - this_timer->wall_start));
 
   this_timer->status = TIMER_OFF;
 }
