@@ -1,0 +1,333 @@
+\subsection{Running \PSIthree}
+The \PSIthree\ suite of codes is built around a modular design which 
+allows it great power and flexibility. Any module can be run 
+independently (provided suitable datafiles, of course). There also exists a
+master program, appropriately called \PSIdriver, which will parse 
+an input file, recognize the overall calculation desired, 
+and run all the necessary modules in the correct order. To begin with 
+\begin{verbatim}
+  c4-20:> man psi
+\end{verbatim}
+will get the online manual page for the \PSIdriver\ master program.
+Other man pages for the \PSIdriver\ code can be retrieved likewise.
+
+The only required file is to run \PSIthree\ is \inputdat. 
+Unfortunately, no good and simple description of this
+file exists. It is rather simple though, and essentially
+free format. Examples can be found in
+almost every man page. It should be fairly easy to
+understand all the examples using common sense. 
+
+\subsection{Format of \inputdat}
+Some keys to remember are the following: 
+\begin{itemize}
+\item Input parsing is case insensitive; once parsed, everything is treated as upper case. 
+\item Anything following a percent mark, i.e. \%, is commented out up until the next carriage return. 
+\item White space of more than a single space is ignored. 
+\item Anything between double quotes, e.g. "/usr/c4/sw/psi", 
+is considered one token; there is no change of case, and special 
+characters and white space are maintained as part of the token 
+but  otherwise ignored. 
+\end{itemize}
+Input data types are the following: 
+\begin{itemize}
+\item String : a character sequence 
+\item Integer : a \celem{sizeof(integer)} byte integer datum 
+\item Real : a \celem{sizeof(double)} byte real datum 
+\item Boolean : \keyword{yes}, \keyword{true}, \keyword{1} -- these three values are equivalent;
+\keyword{no}, \keyword{false}, \keyword{0} -- these three values are equivalent 
+\end{itemize}
+Input parameters come in only a few flavors: 
+\begin{itemize}
+\item \keyword{Keywords = value}, e.g. \keyword{convergence = 12} 
+\item \keyword{Vectors = (value1 value2 ... valuen)}, e.g. \keyword{docc = (2 0 1 1)}
+\item \keyword{Arrays = ((i1 i2 ... in) (j1 j2 ... jn) ... (n1 n2 ... nn))}
+Note the proper number of opening and closing parentheses. Arrays can 
+conceptually be any depth/dimension but in practice never go
+much beyond level 2. The elements of vectors and arrays 
+need not be of the same data type. 
+\end{itemize}
+
+Segmented Keywords are joined by a colon, i.e. ":". 
+\begin{verbatim}
+  scf:convergence = 12
+  gugaci:convergence = 8
+\end{verbatim}
+Segmented keywords with common initial segments can be joined in vectors. 
+\begin{verbatim}
+  scf:(convergence = 12
+       docc = (2 0 1 1))
+\end{verbatim}
+Note the equivalence of the following three examples with the preceding one. 
+\begin{verbatim}
+  scf:(convergence = 12 docc = (2 0 1 1)
+  scf:( convergence=12  docc=(2 0 1 1))
+  scf: (
+     convergence = 12 
+     docc = (2 0 1 1)
+  )
+\end{verbatim}
+
+A "default" token can be used as a wild card, to fill any initial 
+token field. However, explicit tokens will always override default
+tokens if both are present. For instance, a typical keyword search
+priority would be: First 
+\begin{verbatim}
+  module_id:parameter
+\end{verbatim}
+and then 
+\begin{verbatim}
+  default:parameter
+\end{verbatim}
+Thus the two following examples will achieve the same effect when
+the module \PSItransqt\ is run, but not when \PSIcscf\ is run. 
+\begin{verbatim}
+  default: (
+    convergence = 8
+    docc = (2 0 1 1)
+  )
+  scf: (
+    convergence = 12
+  )
+
+  default: (
+    convergence = 8
+    docc = (2 0 1 1)
+  )
+  scf: (
+    convergence = 10
+  )
+\end{verbatim}
+
+Ok, enough of all that, you've got the basics down,
+the rest can be learned by doing. The smallest \inputdat\
+file you would probably ever want to use, and this only as
+a learing experience, is: 
+\begin{verbatim}
+  % file input.dat
+  psi: (
+    check = true
+    )
+  % end file input.dat
+\end{verbatim}
+If we run psi now, what happens? 
+\begin{verbatim}
+  c4-20:> psi
+                      The Psi Execution Driver
+   ERROR: a problem arose while reading the required string valued keyword 'WFN'
+  c4-20:>
+\end{verbatim}
+Obviously we need to add a \keyword{WFN}. So 
+\begin{verbatim}
+  % file input.dat
+  psi: (
+    check = true
+    wfn = scf          % for instance
+    )
+  % end file input.dat
+
+  c4-20:> psi
+                      The Psi Execution Driver
+   WFN       = SCF
+   DERTYPE   = NONE
+   REFERENCE = RHF
+   CHECK     = YES
+   
+   'CHECK' is YES, so nothing will be executed.
+   The following programs would otherwise be executed:
+   cints
+   cscf
+  c4-20:>
+\end{verbatim}
+As you can see, some defaults are chosen. We are now doing a
+RHF SCF Energy Point. First the module (or program) \PSIcints\ will
+run to calculate the integrals, then \PSIcscf\ will run to calculate the
+RHF SCF energy. 
+
+Should we run this, just for the learning experience? Sure,
+but first we need to do a couple things. Like find out what
+files and input parameters are needed by \PSIcints\ and \PSIcscf. 
+\begin{verbatim}
+  c4-20:> man cints
+  c4-20:> man cscf
+\end{verbatim}
+\PSIcints\ needs \inputdat\ and \FILE30\ and will generate \FILE33,
+\FILE35, \FILE36, and \FILE37. It requires only 2 input parameters
+and the defaults look ok. \PSIcscf\ needs \inputdat, \FILE30, \FILE33,
+\FILE35, \FILE36, and \FILE37 and
+a few input parameters which we will come back to. 
+
+So what's this \FILE30? It is the basic binary working file for the \PSIthree\
+quantum chemistry package. It contains all the juicy details of your job,
+such as geometry, basis set, occupation scheme, etc.
+Since no one likes to write binary files,
+we will create \FILE30 with the program \PSIinput.
+For more information on this program 
+\begin{verbatim}
+  c4-20:> man input
+\end{verbatim}
+
+
+\subsection{Setting up a Calculation}
+I've decided that we'll start with STO water for our example, and
+after reading the man pages described above I come up with the following: 
+\begin{verbatim}
+  % file input.dat
+  default: (
+
+    label = "water STO HF energy point"
+    memory = (8.0 Mbytes)
+    wfn = scf
+    reference = rhf
+
+    files: (
+      default: (
+        name = "h2osto"
+        nvolume = 4
+        volume1 = "/tmp1/psiuser"
+        volume2 = "/tmp2/psiuser"
+        volume3 = "/tmp2/psiuser"
+        volume4 = "/tmp2/psiuser"
+        )
+      file30: (
+        nvolume = 1
+        volume1 = "./"
+        )
+      )
+    )
+
+  psi: (
+    check = true
+    )
+
+  input: (
+  %    note that all atoms are specified now,
+  %    not only the symmetry unique portion
+    basis = sto-3g
+    units = angstrom
+    zmat = (
+      (o)
+      (h 1 0.9600)
+      (h 1 0.9600 2 104.5)
+      )
+    )
+  % end file input.dat
+\end{verbatim}
+You may wonder about the memory flag I've tucked in the default. As far
+as I know, it's undocumented, but can be set for some PSI modules.
+Acceptable units are REAL, INTEGER, BYTES,
+KBYTES, or MBYTES. Generally it is a good practice to keep
+\keyword{default:memory} small, and increase \keyword{program\_id:memory} as necessary. 
+
+Also, the files section popped up out of nowhere. That just tells
+the Psi modules how to handle all the scratch files. It is properly documented by: 
+\begin{verbatim}
+  c4-20:> man files
+\end{verbatim}
+You will want to make sure that you have the directories specified by the \keyword{volume\#}
+parameter on the machine on which you are running. Oh, and use your own username
+not "\keyword{psiuser}" in the last field. 
+\begin{verbatim}
+  c4-20:> input
+\end{verbatim}
+You should now have two new files \outputdat\ and \keyword{h2osto.30}.
+Look at the first one, and it should make sense. The second
+is the previously mentioned \FILE30, but do not bother to look
+at it; it is binary. 
+
+Going on, 
+\begin{verbatim}
+  c4-20:> psi
+\end{verbatim}
+reminds us that we will be running \PSIcints\ and \PSIcscf. We have everything
+we need for the first, but how about the second. 
+\begin{verbatim}
+  c4-20:> man cscf
+\end{verbatim}
+Well, there are alot of possibilities, but the defaults are generally
+sound, so we really only need to add in our occupation scheme for
+the doubly-occupied orbitals. Or do we? The fact is
+\PSIcscf\ can guess occupations for you using
+core Hamiltonian orbital eigenvalues, but, as with any computer
+program, you have to be cautious. Let us be adventurous here and
+let the program guess.
+In general, always make sure you are computing the state you
+want to and not the state that the program chose. 
+
+Notice at this point that I am leaving out the
+majority of the file \inputdat. It is getting a little big
+to repetitiously include it within this document. 
+
+\subsection{Carrying Out a Calculation}
+Assuming you have done everything detailed in the previous
+section, we can run an actual job and get a number out. 
+\begin{verbatim}
+  c4-20:> psi
+\end{verbatim}
+Ahhhh. We forgot to change the \keyword{psi:check=true} flag,
+so nothing was really run. Change it to \keyword{psi:check=false},
+or simply comment it out (since the default value is false) by inserting a "\keyword{ \%}" at
+the start of that line, and run psi again. Take a look at the file \outputdat\
+and become familiar with it. 
+
+We now have the basic \inputdat\ file. Only minor modifications will allow
+it to be used to run a great variety of jobs. First
+of all let's move on to another basis set. The only thing that needs to be
+changed is the parameter \keyword{input:basis=sto-3g} to,
+for instance, \keyword{input:basis=dz}. But for consistency,
+why not change \keyword{default:label} and \keyword{default:files:default:name}? 
+\begin{verbatim}
+  c4-20:> input
+  c4-20:> psi
+\end{verbatim}
+Whenever you change the basis parameter, you must run input so that
+the change in basis is included into \FILE30. Very important.
+Changing \keyword{default:files:default:name} every time you
+change the basis parameter is a good habit, as it will
+insure that you run \PSIinput. Do you see why? 
+
+An aside about \PSIcscf\ and guess wavefunctions: when you run \PSIcscf,
+it (by default, but can be overridden) automatically checks
+to see if there is an old wavefunction in \FILE30\ which can be used
+as a guess wavefunction, and if so, it uses it.
+Each time \PSIcscf\ completes, (converged or not) it writes
+the final wavefunction to \FILE30. Each time \PSIinput\ is run, it overwrites
+\FILE30\ and any wavefunction that might have been in there is
+lost. Nothing tricky about any of this, but just something to
+keep in mind. Currently there is no wavefunction expander
+to make a guess wavefunction from that for a smaller basis set. 
+
+Well, energy points are well and good, but without optimizations,
+we are not going to get very far. So, we need \keyword{psi:dertype=first},
+\keyword{psi:opt=true}, and \keyword{psi:nopt=7} to run up to 7 cycles of geometry
+optimization (Or we could set \keyword{default:dertype=first}
+and \keyword{default:opt=true}, or even mix and match). Set \keyword{psi:check=true}
+and run \PSIdriver\ to see what modules will be run. Then check the man
+pages for each module and see what you need for it to run. For instance,
+in this case we see that \PSIcderiv\ will be run. {\tt man \PSIcints}
+shows that us that everything is set OK. \PSIoptking\ is the
+last program to be run in each optimization cycle. \PSItwo\
+users will appreciate the ease with which it can optimize molecules
+as it can generate internal coordinates for you as well as guess a
+force constant matrix. Hence defaults are sufficient to run this program.
+
+OK! Go ahead and run \PSIdriver. In the 5th cycle \PSIoptking\ 
+should return a non-zero value and \PSIdriver\ will stop the
+procedure. It will indicate that the optimization is
+over. Let's up the ante and go for an optimization with a DZP basis set.
+
+You know the procedure for improving the basis set.
+Just switch the label, the files name and the basis parameter.
+Oh, before I forgot, you have to remove file named \optaux. Then run \PSIinput\ 
+and \PSIdriver. The job runs fine. Go ahead and look at \outputdat.
+You may also wish to look at \FILE{11.dat}. \fconstdat\ contains now
+an improved force constant matrix. \PSIoptking\ will automatically
+use this improved FC matrix if it is present.
+
+OK, the calculation did converge in 4 steps. What if it didn't?
+Just increasing the number of optimization steps might just
+do that but might not. In general, 10 optimization steps should be enough
+for anyone. If it doesn't converge by then,
+your initial guess geometry or initial FC matrix
+or both were bad. Rethink your situation.
+Oops, this is supposed to be a howto-psi, not a QC-theology. 
