@@ -225,12 +225,17 @@ void C_DGEMV(char transa, int m, int n, double alpha, double *A,
              int nca, double *X, int inc_x, double beta, double *Y,
              int inc_y)
 {
-   if (m == 0 || n == 0) return;
+  if (m == 0 || n == 0) return;
 
-  if(transa == 'n') transa = 't';
-  else transa = 'n';
+  if(transa == 'n') { 
+    transa = 't';
+    F_DGEMV(&transa,&n,&m,&alpha,A,&nca,X,&inc_x,&beta,Y,&inc_y);
+  }
+  else { 
+    transa = 'n';
+    F_DGEMV(&transa,&m,&n,&alpha,A,&nca,X,&inc_x,&beta,Y,&inc_y);
+  }
 
-  F_DGEMV(&transa,&n,&m,&alpha,A,&nca,X,&inc_x,&beta,Y,&inc_y);
 }
 /*
 ** void C_DDOT(int n, double *X, int inc_x, double *Y, int inc_y) 
