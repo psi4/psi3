@@ -1,13 +1,10 @@
 #ifdef EXTERN
 # undef EXTERN
 # define EXTERN extern
-extern int MAX_LINELENGTH;
 #else 
 # define EXTERN
-int MAX_LINELENGTH = 133;
 #endif
 
-#include<new>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

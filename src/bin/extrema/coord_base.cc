@@ -7,6 +7,9 @@
 #define EXTERN
 #include"extrema.h"
 
+#define MAX_LINELENGTH 133
+int max_line = MAX_LINELENGTH;
+
 extern "C" {
     #include<masses.h>
 }
@@ -67,7 +70,7 @@ void coord_base :: read_carts() {
 
     int i; 
     double **temp;
-   
+
     switch(coord_type) {
       case 1: 
 	  temp = file30_rd_geom();
@@ -82,7 +85,7 @@ void coord_base :: read_carts() {
 	    fprintf(outfile,"\n  Beware: imput can't handle dummy atoms for");
 	    fprintf(outfile," all symmetries at this time");
 	}
-	else
+	else if(!dummy)
 	    temp = file30_rd_geom();
 	for(i=0;i<(3*num_entries);++i) {
 	    carts[i] = temp[0][i];
@@ -404,7 +407,7 @@ void coord_base :: update_bfgs() {
 void coord_base :: read_file11() {
 
     int i, natom, count = 1, continue_flag = 1;
-    char label[MAX_LINELENGTH], line1[MAX_LINELENGTH], *tmp_ptr;
+    char label[133]; char line1[133]; char *tmp_ptr;
     FILE *fp_11;
     double an,x,y,z,energy;
     

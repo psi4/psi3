@@ -20,17 +20,18 @@ zmat :: zmat()
 
   int i, j, pos;        
 
-  try {simples = new simple[num_coords]; }
-  catch(bad_alloc) { punt("error malloc'ing simples in zmat constructor"); }
-
+  simples = (simple*) malloc(num_coords*sizeof(simple)); 
+  
   /*read z_mat from file30*/
   z_geom = file30_rd_zmat(); 
   felement = file30_rd_felement();
 
-  int dummy=0;
+  dummy=0;
   for(i=0;i<num_entries;++i)
       if(!strcmp(felement[i],"X       "))
 	 dummy=1;
+  if(dummy)
+      coord_base::read_carts();
 
   /*write z_mat to the array of simple_internal*/
   for(i=1;i<num_entries;++i) {
@@ -97,8 +98,7 @@ zmat :: zmat()
 	      }
 	  }
 	  if(!is_set) {
-	      simples[i].set_equiv_grp( p );
-	      ++p;
+	      simples[i].set_equiv_grp(-1);
 	  }
       }
       else if( labels[i][0] == '\0' )
@@ -357,9 +357,9 @@ void zmat :: initial_H() {
     
     for(i=0;i<num_coords;++i) {
 	switch( simples[i].get_type() ) {
-	case 0: H[i][i] = 1.0; break;
-	case 1: H[i][i] = 4.0; break;
-	case 2: H[i][i] = 4.0; break;
+	case 0: H[i][i] = 5.0; break;
+	case 1: H[i][i] = 2.0; break;
+	case 2: H[i][i] = 1.0; break;
 	}
     }
 }
@@ -430,7 +430,8 @@ void zmat :: opt_step() {
 
     for(i=0;i<num_coords;++i) {
 	for(j=0;j<i;++j) {
-	    if((simples[i].get_equiv_grp() == simples[j].get_equiv_grp())) {
+	    if((simples[i].get_equiv_grp() == simples[j].get_equiv_grp()) 
+ 	        && (simples[i].get_equiv_grp() != (-1))) { 
 		s[i] = s[j];
 	    }
 	}

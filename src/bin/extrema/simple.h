@@ -27,17 +27,15 @@ class simple {
     int get_atom() { return atom; }
     int get_bond() { return bond; }
     int get_angle() { 
-	if(type>0)
-	    return angle;
-	else
+	if(type==0)
 	    punt("class simple error: non-existent angle reference atom asked for");
+	return angle;
     }
     int get_tors() {
-	if(type>1)
-	    return tors;
-	else
+	if(type<2)
 	    punt("class simple error: non-existent torsion reference atom asked for");
-	    }  
+	return tors;
+    }  
 };
 
  
