@@ -121,19 +121,24 @@ subgroup of $D_{\rm 2h}$ to be the computational point group:
 \end{verbatim}
 
 \subsection{Basis Sets}
-\PSIthree\ uses basis sets comprised of Cartesian (\keyword{puream = false}, default)
-or Spherical Harmonic (\keyword{puream = true}) Gaussian basis functions.
-An atomic basis set is normally identified by a string. Currently, there exist
-three ways to specify which basis sets to use for which atoms:
+\PSIthree\ uses basis sets comprised of Cartesian (\keyword{puream = false}, 
+default) or Spherical Harmonic (\keyword{puream = true}) Gaussian
+basis functions.  An atomic basis set is normally identified by a
+string. Currently, there exist three ways to specify which basis sets
+to use for which atoms:
 \begin{itemize}
-\item \keyword{basis = string} -- all atoms use basis set type
-\keyword{string};
-\item \keyword{basis = (string1 string2 string3 ... stringN)} -- \keyword{string$i$}
-specifies the basis set for atom $i$. Thus, the number of strings in the \keyword{basis}
-vector has to be the same as the number of atoms (including ghost atoms but excluding
-dummy atoms). Another restriction is that symmetry equivalent atoms should have
-same basis sets, otherwise \PSIinput\ will use the string provided for the so-called
-unique atom out of the set of symmetry equivalent ones.
+\item \keyword{basis = string} -- all atoms use basis set type.  If the
+basis string contains any ``special'' characters (e.g., parentheses, 
+asterisks) then the string must be enclosed in quotation marks, e.g.,
+"6-311++G(d,p)".
+\item \keyword{basis = (string1 string2 string3 ... stringN)} -- 
+\keyword{string {\em i}}
+specifies the basis set for atom {\em i}. Thus, the number of strings
+in the \keyword{basis} vector has to be the same as the number of
+atoms (including ghost atoms but excluding dummy atoms). Another
+restriction is that symmetry equivalent atoms should have same basis
+sets, otherwise \PSIinput\ will use the string provided for the
+so-called unique atom out of the set of symmetry equivalent ones.
 \item 
 \begin{verbatim}
   basis = (
@@ -143,31 +148,94 @@ unique atom out of the set of symmetry equivalent ones.
     (elementN stringN)
   )
 \end{verbatim}
-\keyword{string$i$} specifies the basis set for chemical element \keyword{element$i$}.
+\keyword{string {\em i}} specifies the basis set for chemical element 
+\keyword{element {\em i}}.
 \end{itemize}
 
 \subsubsection{Default Basis Sets}
 \PSIthree\ default basis sets are located in \pbasisdat\ which is located in
-{\tt \$psipath/share}. Table \ref{table:basisset} lists basis sets defined in \pbasisdat.
-\begin{table}
-\caption{Summary of basis sets defined in \PSIthree.}
+{\tt \$psipath/share}. Table \ref{table:basisset} lists basis sets
+defined in \pbasisdat.
+
+\begin{table}[tbp]
+%\special{landscape}
+\caption{~~~Basis sets available in PSI 3.2}
 \label{table:basisset}
 \begin{center}
-\begin{tabular}{lll} \hline\hline 
-Basis Sets & ID string & Elements \\ \hline
-cc-pVxZ & ccpvxz & H, Be-Ne \\
-\hline\hline
+\begin{tabular}{|l|l|l|}
+\hline
+Basis Set 		&Atoms   	&Aliases\\ 
+\hline
+\hline
+\textbf{Huzinaga-Dunning}		&				&\\
+\hline
+	(4S/2S)			& H				&\\
+	(9S5P/4S2P)		& B-F				&\\
+	(11S7P/6S4P)		& Al-Cl			&\\
+	DZ			& H, B-F, Al-Cl		&\\
+	DZP			& H, B-F, Al-Cl			&\\
+	DZ-DIF			& H, B-F, Al-Cl		&\\
+	DZP-DIF			& H, B-F, Al-Cl		&\\
+\hline
+\hline
+\textbf{Wachters}			&				&\\
+\hline
+	WACHTERS		& K, Sc-Cu			&\\
+	WACHTERS-F		& Sc-Cu			&\\
+\hline
+\hline
+\textbf{Pople-type}		&				&\\
+\hline
+	STO-3G			& H-Ar			&\\
+	3-21G			& H-Ar			&\\
+	6-31G			& H-Ar, Cu			&\\
+        6-31G*                  & H-Ar                  &6-31G(d)\\
+        6-31+G*                 & H-Ar                  &6-31+G(d)\\
+        6-31G**                 & H-Ar, Cu              &6-31G(d,p)\\
+	6-311G			& H-Ar			&\\
+	6-311G*                 & H-Ar                  &6-311G(d)\\
+        6-311+G*                & H-Ne                  &6-311+G(d)\\
+	6-311G**                & H-Ar                  &6-311G(d,p)\\
+	6-311++G**		& H, B-Ar		&6-311++G(d,p)\\
+\hline
+\hline
+\textbf{Triple-Zeta} 			&				&\\	
+\hline
+	TZ2P			& H, B-F, Al-Cl		&\\
+	TZ2PD			& H				&\\
+	TZ2PF			& H, B-F, Al-Cl		&\\
+	TZ-DIF			& H, B-F, Al-Cl		&\\ 	
+	TZ2P-DIF		& H, B-F, Al-Cl		&\\
+	TZ2PD-DIF		& H				&\\
+	TZ2PF-DIF		& H, B-F, Al-Cl		&\\		
+\hline
+\hline
+\textbf{Correlation Consistent}		&			&\\
+\textbf{ (N = D,T,Q,5,6)}	&			&	\\
+\hline
+	CC-PVNZ			& H-Ar			&cc-pVNZ\\
+	CC-PV(N+D)Z		& Al-Ar			&cc-pV(N+d)Z\\
+        CC-PCVNZ                & B-Ne                  &cc-pCVNZ\\
+	AUG-CC-PVNZ		& H-He, B-Ne, Al-Ar	&aug-cc-pVNZ\\
+	AUG-CC-PV(N+D)Z		& Al-Ar			&aug-cc-pCV(N+d)Z\\
+	AUG-CC-PCVNZ (N$<$6)	& B-F			&aug-cc-pCVNZ\\
+	D-AUG-CC-PVNZ		& H			&\\
+	PV7Z			& H, C, N, O, F, S	&pV7Z\\
+	AUG-PV7Z		& H, C, N, O, F, S	&aug-pV7Z\\
+	AUG-CC-PV7Z             & H, N, O, F            &aug-cc-pV7Z\\
+\hline
 \end{tabular}
 \end{center}
 \end{table}
 
 \subsubsection{Custom Basis Sets}
-To make a custom basis set, enter the information in either of the following four files:
+To make a custom basis set, enter the information in either of the
+following four files:
 \begin{itemize}
-\item \pbasisdat\ -- only if you think it should be added to \PSIthree. You also
-might want to check in your additions and changes so that everyone could
-benefit from them. Refer to the \PSIthree\ Programmer's Manual for information
-on how to access \PSIthree\ repository.
+\item \pbasisdat\ -- only if you think it should be added to \PSIthree. 
+You also might want to check in your additions and changes so that
+everyone could benefit from them. Refer to the \PSIthree\ Programmer's
+Manual for information on how to access \PSIthree\ repository.
 \item An arbitrary text file. To specify the file's location use keyword
 \keyword{basisfile}:
 \begin{verbatim}
@@ -214,7 +282,7 @@ in the specification of each contracted Gaussian function.  For
 example, to scale the S functions in a 6-31G** basis for hydrogen,
 one would use the following
 \begin{verbatim}
-  hydrogen:631Gss =
+  hydrogen:"6-31G**" =
       ( (S (    18.73113696     0.03349460)
            (     2.82539437     0.23472695)
            (     0.64012169     0.81375733) 1.2 )
