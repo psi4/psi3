@@ -1,7 +1,7 @@
 # Definitions
 #define([psi],[Psi])
-define([psi_mmm_version],[3.2.0])
-define([psi_buildid],[stable])
+define([psi_mmm_version],[3.3.0])
+define([psi_buildid],[alpha])
 define([psi_so_version],[1:0:0])
 define([psi_email],[psi3@psicode.org])
 
