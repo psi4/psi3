@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
-#include <libiwl/iwl.h>
+#include <libpsio/psio.h>
 #define EXTERN
 #include <psifiles.h>
 #include "globals.h"
@@ -27,16 +27,15 @@ void transL(double sign)
 
   TMP = block_matrix(nao, nao);
   X = block_matrix(nao, nao);
-  scratch = init_array(noei_ao);
 
   /* NB: (a|m|b) = -1/2 (a|L|b) */
   /* NB: The angular momentum integrals are antisymmetric! */
-  stat = iwl_rdone(PSIF_OEI, PSIF_AO_LX, scratch, noei_ao, 0, 0, outfile); /* read lower triangle */
-  for(i=0,ij=0; i < nao; i++)
-    for(j=0; j <= i; j++, ij++) {
-      TMP[i][j] =  0.5 * scratch[ij] * sign;
-      TMP[j][i] = -0.5 * scratch[ij] * sign;
-    }
+  psio_open(PSIF_OEI, PSIO_OPEN_OLD);
+  psio_read_entry(PSIF_OEI, PSIF_AO_LX, (char *) &(TMP[0][0]), nao*nao*sizeof(double));
+  psio_close(PSIF_OEI, 1);
+  for(i=0; i < nao; i++)
+    for(j=0; j < nao; j++)
+      TMP[i][j] *= 0.5 * sign;
 
   C_DGEMM('n','t',nao,nso,nao,1,&(TMP[0][0]),nao,&(moinfo.usotao[0][0]),nao,
 	  0,&(X[0][0]),nao);
@@ -48,14 +47,12 @@ void transL(double sign)
   C_DGEMM('t','n',nmo,nmo,nso,1,&(moinfo.scf[0][0]),nmo,&(X[0][0]),nao,
 	  0,&(LX[0][0]),nmo);
 
-  zero_arr(scratch,noei_ao);
-
-  stat = iwl_rdone(PSIF_OEI, PSIF_AO_LY, scratch, noei_ao, 0, 0, outfile);
-  for(i=0,ij=0; i < nao; i++)
-    for(j=0; j <= i; j++, ij++) {
-      TMP[i][j] =  0.5 * scratch[ij] * sign;
-      TMP[j][i] = -0.5 * scratch[ij] * sign;
-    }
+  psio_open(PSIF_OEI, PSIO_OPEN_OLD);
+  psio_read_entry(PSIF_OEI, PSIF_AO_LY, (char *) &(TMP[0][0]), nao*nao*sizeof(double));
+  psio_close(PSIF_OEI, 1);
+  for(i=0; i < nao; i++)
+    for(j=0; j < nao; j++)
+      TMP[i][j] *= 0.5 * sign;
 
   C_DGEMM('n','t',nao,nso,nao,1,&(TMP[0][0]),nao,&(moinfo.usotao[0][0]),nao,
 	  0,&(X[0][0]),nao);
@@ -67,14 +64,13 @@ void transL(double sign)
   C_DGEMM('t','n',nmo,nmo,nso,1,&(moinfo.scf[0][0]),nmo,&(X[0][0]),nao,
 	  0,&(LY[0][0]),nmo);
 
-  zero_arr(scratch,noei_ao);
+  psio_open(PSIF_OEI, PSIO_OPEN_OLD);
+  psio_read_entry(PSIF_OEI, PSIF_AO_LZ, (char *) &(TMP[0][0]), nao*nao*sizeof(double));
+  psio_close(PSIF_OEI, 1);
 
-  stat = iwl_rdone(PSIF_OEI, PSIF_AO_LZ, scratch, noei_ao, 0, 0, outfile);
-  for(i=0,ij=0; i < nao; i++)
-    for(j=0; j <= i; j++, ij++) {
-      TMP[i][j] =  0.5 * scratch[ij] * sign;
-      TMP[j][i] = -0.5 * scratch[ij] * sign;
-    }
+  for(i=0; i < nao; i++)
+    for(j=0; j < nao; j++)
+      TMP[i][j] *= 0.5 * sign;
 
   C_DGEMM('n','t',nao,nso,nao,1,&(TMP[0][0]),nao,&(moinfo.usotao[0][0]),nao,
 	  0,&(X[0][0]),nao);
@@ -88,7 +84,6 @@ void transL(double sign)
 
   free_block(TMP);
   free_block(X);
-  free(scratch);
 
   /*
   fprintf(outfile, "MO-Basis LX Integrals:\n");
