@@ -51,8 +51,10 @@ void zmat_to_intco() {
       b = zmat[i].bond_atom;
       c = zmat[i].angle_atom;
       swap(&a, &c);
-      if (zmat[i].angle_opt)
+      if (zmat[i].angle_opt) {
+      fprintf(fp_intco,"angle_opt %d\n",zmat[i].angle_opt);
         fprintf(fp_intco, "    (%d %d %d %d)\n",++cnt, a, b, c);
+        }
     }
     fprintf(fp_intco,"  )\n");
   

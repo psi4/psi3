@@ -29,6 +29,7 @@ class internals {
    // user_intcos = 1; read in internals
    //               0; generate internals
     internals(cartesians& carts, int user_intcos, int *num_arr);
+    internals(int *num_arr);
 
    // print_flag: 0   print to a file in intco.dat format
    //             1   print intcos and their values

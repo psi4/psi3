@@ -103,6 +103,11 @@ internals :: ~internals() {
   // Destructors for stre, bend, tors, out are called automatically
 }
 
+// minimal constructor
+internals :: internals(int *size_arr)
+  : stre(size_arr[0]), bend(size_arr[1]), tors(size_arr[2]), out(size_arr[3]) {
+}
+
 /*** INTERNALS::INTERNALS class constructor for internals ***/ 
 
 internals :: internals(cartesians& carts, int user_intcos, int *size_arr)

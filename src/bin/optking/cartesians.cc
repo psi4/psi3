@@ -187,6 +187,7 @@ cartesians::cartesians() {
  *   10        coord                                 geom.dat
  *   11        coord, grad                           file11.dat
  *   32        fcoord (implicitly coord)             chkpt
+ *   12        fatomic_symb, fcoord                  fp_out
  * disp_label is only used for geom.dat writing ***/
 
 void cartesians :: print(int print_flag, FILE *fp_out, int new_geom_file,
@@ -194,6 +195,7 @@ void cartesians :: print(int print_flag, FILE *fp_out, int new_geom_file,
   int i,j;
   double x,y,z;
   int cnt = -1;
+  char sym[3];
 
   if (print_flag == 0) {
     for (i = 0; i < nallatom; ++i) {
@@ -311,6 +313,13 @@ void cartesians :: print(int print_flag, FILE *fp_out, int new_geom_file,
     chkpt_wt_fgeom(geom);
     free_block(geom);
 */
+  }
+  else if (print_flag == 12) { 
+    for (i = 0; i < nallatom; ++i) {
+      x = fcoord[++cnt]; y = fcoord[++cnt]; z = fcoord[++cnt];
+      zval_to_symbol(fatomic_num[i],sym);
+      fprintf(fp_out,"  (%3s%15.10f%15.10f%15.10f )\n",sym,x,y,z);
+    }
   }
   return;
 }

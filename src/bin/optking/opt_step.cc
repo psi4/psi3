@@ -30,8 +30,9 @@ extern void new_geom(cartesians &carts, internals &simples, salc_set &symm, doub
     char *disp_label, int disp_num, int last_disp, double *return_geom);
 extern void empirical_H(internals &simples, salc_set &symm, cartesians &carts);
 extern double **compute_H(salc_set &symm,double *q, double *f_q, double **P);
-
 void fconst_init(cartesians &carts, internals &simples, salc_set &symm);
+extern void compute_zmat(cartesians &carts, int *unique_zvars);
+extern void print_zmat(FILE *outfile, int *unique_zvars);
 
 int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
 
@@ -175,6 +176,16 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
             optinfo.conv);
     fprintf(outfile,"Final %s energy is %15.10lf\n", wfn, carts.get_energy());
     fprintf(stderr,"\n  OPTKING:  optimization is complete\n");
+    fprintf(outfile,"The Optimized geometry\n");
+    if (optinfo.zmat) {
+      int *unique_zvars;
+      unique_zvars = (int *) malloc(MAX_ZVARS*sizeof(int));
+      compute_zmat(carts, unique_zvars);
+      print_zmat(outfile, unique_zvars);
+      free(unique_zvars);
+      fprintf(outfile,"\n");
+    }
+    carts.print(12,outfile,0,disp_label,0);
     // fprintf(stderr,"\n  Returning code %d\n", PSI_RETURN_ENDLOOP);
     return(PSI_RETURN_ENDLOOP);
   }

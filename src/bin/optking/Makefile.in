@@ -10,13 +10,15 @@ LDLIBS += $(LAPACK) $(BLAS)
 
 PSILIBS = -lPSI_qt -lPSI_chkpt -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
-CSRC = char_table.c get_optinfo.c misc.c zmat_to_intco.c
+CSRC = char_table.c get_optinfo.c misc.c zmat_to_intco.c \
+         zval_to_symbol.c
 
 CXXSRC = opt.cc compute_B.cc compute_G.cc compute_H.cc compute_q.cc \
          new_geom.cc empirical_H.cc salc.cc internals.cc cartesians.cc \
          delocalize.cc irrep.cc get_syminfo.cc \
          opt_step.cc disp_user.cc make_disp.cc \
-         grad_save.cc freq_grad.cc grad_energy.cc energy_save.cc
+         grad_save.cc freq_grad.cc grad_energy.cc energy_save.cc \
+         print_zmat.cc
 
 BINOBJ = $(CSRC:%.c=%.o) $(CXXSRC:%.cc=%.o)
 ALLOC = 

@@ -21,7 +21,7 @@
 double power(double x, int y);
 
 void get_optinfo() {
-  int a, i, cnt, cnt2, natom, nallatom, *atom_dummy;
+  int a, i, cnt, cnt2, natom, nallatom;
 
   optinfo.iteration = 0;
   optinfo.micro_iteration = 0;
@@ -109,7 +109,7 @@ void get_optinfo() {
   chkpt_init(PSIO_OPEN_OLD);
   optinfo.natom = natom = chkpt_rd_natom();
   optinfo.nallatom = nallatom = chkpt_rd_nallatom();
-  atom_dummy = chkpt_rd_atom_dummy();
+  optinfo.atom_dummy = chkpt_rd_atom_dummy();
   chkpt_close();
 
   optinfo.to_dummy = init_int_array(natom);
@@ -117,14 +117,16 @@ void get_optinfo() {
 
   cnt=0; cnt2=0;
   for (i=0; i<nallatom; ++i) {
-    if (atom_dummy[i]) continue;
+    if (optinfo.atom_dummy[i]) continue;
     else optinfo.to_dummy[cnt++] = i;
     
-    if (atom_dummy[i]) continue;
+    if (optinfo.atom_dummy[i]) continue;
     else optinfo.to_nodummy[i] = cnt2++;
   }
 
   if (optinfo.print_params) {
+    for (i=0;i<natom;++i)
+      fprintf(outfile,"atom_dummy[%d]: %d\n",i,optinfo.atom_dummy[i]);
     for (i=0;i<natom;++i)
       fprintf(outfile,"to_dummy[%d]: %d\n",i,optinfo.to_dummy[i]);
     for (i=0;i<nallatom;++i)

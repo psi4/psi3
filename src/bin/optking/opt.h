@@ -25,6 +25,7 @@
 /* Limits to hard-wired arrays */
 #define MAX_SALCS (500)
 #define MAX_ATOMS (300)
+#define MAX_ZVARS (500)
 #define MAX_LINELENGTH (133)
 #define MAX_SALC_LENGTH (1000)
 #define MAX(I,J) ((I>J) ? I : J)
@@ -64,6 +65,8 @@ C_EXTERN void dgeev_optking(int L, double **G, double *lambda, double **alpha);
 C_EXTERN double **mass_mat(double *masses);
 C_EXTERN void swap(int *a, int *b);
 C_EXTERN void swap_tors(int *a, int *b, int *c, int *d);
+C_EXTERN void zval_to_symbol(double zval, char *sym);
+
 /* C_EXTERN int **get_char_table(char *ptgrp); returns the character table 
    C_EXTERN char **get_symm_ops(char *ptgrp); "     " symm operation labels 
    C_EXTERN int *get_ops_in_class(char *ptgrp);
@@ -85,6 +88,7 @@ extern "C" void dgeev_optking(int L, double **G, double *lambda, double **alpha)
 extern "C" double **mass_mat(double *masses);
 extern "C" void swap(int *a, int *b);
 extern "C" void swap_tors(int *a, int *b, int *c, int *d);
+extern "C" void zval_to_symbol(double zval, char *sym);
 /* extern "C" int **get_char_table(char *ptgrp); returns the character table 
    extern "C"  char **get_symm_ops(char *ptgrp); "     " symm operation labels
    extern "C" { #include <dmalloc.h> } */
@@ -137,6 +141,7 @@ struct OPTInfo {
   int mix_types;
   int natom;
   int nallatom;
+  int *atom_dummy;
   int *to_dummy;
   int *to_nodummy;
 
