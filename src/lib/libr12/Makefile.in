@@ -3,10 +3,12 @@ srcdir = @srcdir@
 VPATH = @srcdir@
 TEMP_DIR = /tmp1/${USER}/libr12
 BUILD_BINARY = build_libr12
+@SET_MAKE@
 
 include ../MakeVars
 
 LD = $(CC)
+LDFLAGS += -lm
 vpath %.a $(top_objdir)/lib:$(libdir)
 
 CSRC = build_libr12.c emit_vrr_r_build.c \
@@ -33,7 +35,8 @@ cp Makefile.libr12 $(TEMP_DIR)/Makefile; \
 cp $(BUILD_BINARY) $(TEMP_DIR); \
 cd $(TEMP_DIR); \
 ./$(BUILD_BINARY); \
-make install; \
+${MAKE} install; \
+cd ..; \
 rm -rf $(TEMP_DIR)
 
 all: install

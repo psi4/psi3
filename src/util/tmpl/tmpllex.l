@@ -1,37 +1,5 @@
 %{
 
-/* $Log$
- * Revision 1.1  2000/02/04 22:50:42  evaleev
- * Initial revision
- *
-/* Revision 1.2  1994/08/09 21:30:00  dcrawfrd
-/* Added #define yywrap() 1 to tmpllex.l
-/*
- * Revision 1.1  1994/06/02  02:48:49  seidl
- * initial checkin to psi area
- *
- * Revision 1.1.1.1  1993/12/29  12:54:00  etseidl
- * SC source tree 0.1
- *
- * Revision 1.2  1992/03/30  23:13:09  seidl
- * merge in sandia changes
- *
- * Revision 1.4  1992/02/04  01:55:59  cljanss
- * changed NO_TEMPLATES to _STDC__
- *
- * Revision 1.3  1991/12/04  23:33:34  cljanss
- * removed stdio.h include to eliminate a makedepend error message
- *
- * Revision 1.2  1991/12/04  17:35:21  cljanss
- * cpp derivatives around function arg declarations are allowed in a
- * primitive way (to allow varargs to work with either ansi or nonansi
- * compilers)
- *
- * Revision 1.1  91/06/17  01:29:36  janssen
- * Initial revision
- *  */
-static char rcsid[] = "$Id$";
-
 #define yywrap() 1
 int ce_depth;
 int global,vargs;

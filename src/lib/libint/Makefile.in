@@ -3,10 +3,12 @@ srcdir = @srcdir@
 VPATH = @srcdir@
 TEMP_DIR = /tmp1/${USER}/libint
 BUILD_BINARY = build_libint
+@SET_MAKE@
 
 include ../MakeVars
 
 LD = $(CC)
+LDFLAGS += -lm
 PSILIBS = libipv1.a
 vpath %.a $(top_objdir)/lib:$(libdir)
 
@@ -33,8 +35,9 @@ cp Makefile.libint $(TEMP_DIR)/Makefile; \
 cp $(BUILD_BINARY) $(TEMP_DIR); \
 cd $(TEMP_DIR); \
 ./$(BUILD_BINARY); \
-make install; \
-rm -rf $(TEMP_DIR)
+${MAKE} install; \
+cd ..; \
+rm -fR $(TEMP_DIR)
 
 all: install
 

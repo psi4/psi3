@@ -3,6 +3,7 @@ srcdir = @srcdir@
 VPATH = @srcdir@
 TEMP_DIR = /tmp1/${USER}/libderiv
 BUILD_BINARY = build_libderiv
+@SET_MAKE@
 
 include ../MakeVars
 
@@ -31,7 +32,8 @@ cp Makefile.libderiv $(TEMP_DIR)/Makefile; \
 cp $(BUILD_BINARY) $(TEMP_DIR); \
 cd $(TEMP_DIR); \
 ./$(BUILD_BINARY); \
-make install; \
+${MAKE} install; \
+cd ..; \
 rm -rf $(TEMP_DIR)
 
 all: install

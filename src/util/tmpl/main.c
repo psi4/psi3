@@ -1,47 +1,4 @@
 
-/* $Log$
- * Revision 1.1  2000/02/04 22:50:42  evaleev
- * Initial revision
- *
-/* Revision 1.2  1994/06/02 21:10:12  janssen
-/* Replaced strdup with malloc and strcpy.
-/*
- * Revision 1.1  1994/06/02  02:48:46  seidl
- * initial checkin to psi area
- *
- * Revision 1.1.1.1  1993/12/29  12:54:00  etseidl
- * SC source tree 0.1
- *
- * Revision 1.3  1993/04/28  18:31:08  jannsen
- * generated files are placed in the current directory
- *
- * Revision 1.2  1992/06/17  23:11:00  jannsen
- * all tmpl generated includes now automatically include <tmpl.h> if
- * it hasn't been included already
- *
- * Revision 1.1.1.1  1992/03/17  18:09:52  seidl
- * template generator 2.0
- *
- * Revision 1.1  1992/03/17  18:09:51  seidl
- * Initial revision
- *
- * Revision 1.2  1992/01/15  12:30:31  seidl
- * add clj's patches
- *
- * Revision 1.4  1991/12/04  23:32:55  cljanss
- * moved includes from tmpl.h to main.c
- *
- * Revision 1.3  1991/12/02  17:41:03  cljanss
- * shortened name lengths
- *
- * Revision 1.2  91/08/29  16:06:36  cljanss
- * writes out the name of the source file
- * 
- * Revision 1.1  1991/06/17  01:29:36  janssen
- * Initial revision
- * */
-static char rcsid[] = "$Id$";
-
 #include <stdio.h>
 #include <ctype.h>
 #include <sys/types.h>

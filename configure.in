@@ -614,8 +614,8 @@ AC_CHECKING(os specific flags)
 case $os in
   aix*)
     fextra="-DAIX"
-    cextra="-DAIX -D_POSIX_SOURCE"
-    cxxextra="-DAIX -D_POSIX_SOURCE"
+    cextra="-DAIX"
+    cxxextra="-DAIX"
     AC_MSG_RESULT(fortran flags: $fextra)
     AC_MSG_RESULT(c flags: $cextra)
     AC_MSG_RESULT(c++ flags: $cxxextra)

@@ -1,25 +1,4 @@
 
-/* $Id$ */
-/* $Log$
- * Revision 1.1  2000/02/04 22:53:20  evaleev
- * Initial revision
- *
-/* Revision 2.2  1997/09/12 13:52:51  crawdad
-/* Changing marco name from ULL to PSI_FPTR.
-/*
-# Revision 2.1  1997/08/25  21:49:54  crawdad
-# Making changes for extension of PSI file size limit.
-#
- * Revision 2.1  1997/07/09  18:46:42  crawdad
- * Moved param.h to iomrparam.h to avoid name conflicts.
- *
- * Revision 2.2  1995/10/04  16:47:29  crawdad
- * Increased MAX_UNIT to 300
- *
- * Revision 2.1  1991/06/15  18:32:27  seidl
- * *** empty log message ***
- * */
-
 #ifndef IOMRPARAM_H
 #define IOMRPARAM_H
 
