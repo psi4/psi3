@@ -93,8 +93,8 @@ The following keywords are valid:
 
 .IP "\fBCONVERGENCE =\fP \fIinteger\fP"
 Convergence desired on the CI vector.  Convergence is achieved when the
-RMS of the error in the CI vector is less than 10**(-n).  The default is 6
-for energies and 8 for gradients. This is not the same CI vector 
+RMS of the error in the CI vector is less than 10**(-n).  The default is 4
+for energies and 7 for gradients. This is not the same CI vector 
 convergence criterion as found in GUGACI.
 
 .IP "\fBDOCC =\fP \fIinteger_array\fP"
@@ -158,7 +158,8 @@ Only possible if NUM_ROOTS = 1.  Uses the last vector space in the BVEC file
 to write scratch DVEC rather than using a separate DVEC file.  
 
 .IP "\fBENERGY_CONVERGENCE =\fP \fIinteger\fP"
-Convergence desired on the CI energy.  The default is 6.
+Convergence desired on the CI energy.  The default is 6 for single point
+energies and 8 for gradients or CASSCF.
 
 .IP "\fBEX_LVL =\fP \fIinteger\fP"
 Excitation level for excitations into virtual

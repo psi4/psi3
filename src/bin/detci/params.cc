@@ -155,8 +155,8 @@ void get_parameters(void)
 
    if (strcmp(Parameters.dertype, "FIRST")==0 ||
       strcmp(Parameters.wfn, "DETCAS")==0) {
-     Parameters.convergence = 8;
-     Parameters.energy_convergence = 9;
+     Parameters.convergence = 7;
+     Parameters.energy_convergence = 8;
      Parameters.opdm = 1;
      Parameters.opdm_write = 1;
      Parameters.tpdm = 1;
@@ -164,7 +164,7 @@ void get_parameters(void)
    }
 
    else {
-     Parameters.convergence = 6;
+     Parameters.convergence = 4;
      Parameters.energy_convergence = 6;
      Parameters.opdm = 0;
      Parameters.opdm_write = 0;
