@@ -27,6 +27,7 @@ int main(int argc, char *argv[])
   double P, PiiA, Pst, Pss, Ptt, Ast, Bst, AB;
   double Uss, Utt, Ust, Uts, Cks, Ckt, **U, **V, **VV, **F;
   double cos4a, alpha, alphamax, alphalast, conv, norm;
+  int print;
 
   alphalast = 1.0;
 
@@ -255,7 +256,7 @@ int main(int argc, char *argv[])
   for(i=0; i < nocc; i++) fprintf(outfile, "%d %d\n", i, orb_order[i]);
   */
 
-  /*
+ /*
   fprintf(outfile, "\n\tPipek-Mezey Localized MO's (before sort):\n");
   print_mat(C, nso, nmo, outfile);
   */
@@ -272,10 +273,12 @@ int main(int argc, char *argv[])
   }
   free_block(Ctmp);
 
-  /*
-  fprintf(outfile, "\n\tPipek-Mezey Localized MO's (after sort):\n");
-  print_mat(C, nao, nmo, outfile);
-  */
+  print = 0;
+  errcod = ip_boolean("PRINT_MOS", &(print), 0);
+  if(print) {
+    fprintf(outfile, "\n\tPipek-Mezey Localized MO's (after sort):\n");
+    print_mat(C, nao, nmo, outfile);
+  }
 
   /* Check MO normalization */
   /*
