@@ -25,6 +25,7 @@ extern void *te_deriv1_scf_thread(void *);
 extern void *te_deriv1_scf_thread_symm(void *);
 extern pthread_mutex_t deriv1_mutex;
 extern double **grad_te;
+extern void te_deriv1_print(void);
 
 void te_deriv1_scf()
 {
@@ -60,6 +61,11 @@ void te_deriv1_scf()
 		   te_deriv1_scf_thread,(void *)i);
   te_deriv1_scf_thread( (void *) (UserOptions.num_threads - 1) );
 #endif
+
+#if PRINT_DERIV1
+  te_deriv1_print();
+#endif
+
   for(i=0;i<UserOptions.num_threads-1;i++)
     pthread_join(thread_id[i], NULL);
   free(thread_id);
