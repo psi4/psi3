@@ -8,6 +8,7 @@
 #define EXTERN
 #include "globals.h"
 #include <physconst.h>
+#include <psifiles.h>
 
 extern void test_dpd();
 void rzero(int C_irr);
@@ -49,9 +50,10 @@ void local_filter_T2_nodenom(dpdbuf4 *);
 
 void read_guess(int);
 void read_guess_init(void);
+extern double norm_C1_rhf(dpdfile2 *C1A);
 
 void diag(void) {
-  dpdfile2 CME, Cme, SIA, Sia, RIA, Ria, DIA, Dia, tIA, tia, LIA, Lia;
+  dpdfile2 CME, CME2, Cme, SIA, Sia, RIA, Ria, DIA, Dia, tIA, tia, LIA, Lia;
   dpdbuf4 CMNEF, Cmnef, CMnEf, SIJAB, Sijab, SIjAb, RIJAB, Rijab, RIjAb, RIjbA;
   dpdbuf4 CMnEf1, CMnfE1, CMnfE, CMneF, C2;
   char lbl[32];
@@ -107,19 +109,47 @@ void diag(void) {
         read_guess(C_irr);
       }
       else if(!strcmp(eom_params.guess,"DISK") && params.ref == 0) {
-	fprintf(outfile, "Using C1 vectors on disk as initial guesses.\n");
-	/* renormalize the initial guesses */
-	for(i=0; i < eom_params.cs_per_irrep[C_irr]; i++) {
-	  sprintf(lbl, "%s %d", "CME", i);
-	  dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
-	  norm = norm_C1_rhf(&CME);
-	  dpd_file2_scm(&CME, 1.0/norm);
-	  dpd_file2_close(&CME);
-	}
+        fprintf(outfile, "Using C1 vectors on disk as initial guesses.\n");
+        /* normalize first guess */
+        sprintf(lbl, "%s %d", "CME", 0);
+        dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
+        norm = norm_C1_rhf(&CME);
+        dpd_file2_scm(&CME, 1.0/norm);
+        dpd_file2_close(&CME);
+        /* reorthoganalize and normalize other guesses */
+        for(i=1; i < eom_params.cs_per_irrep[C_irr]; i++) {
+          sprintf(lbl, "%s %d", "CME", i);
+          dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
+          for(j=0; j < i; j++) {
+            sprintf(lbl, "%s %d", "CME", j);
+            dpd_file2_init(&CME2, EOM_CME, C_irr, 0, 1, lbl);
+            norm = 2.0 * dpd_file2_dot(&CME, &CME2);
+            dpd_file2_axpy(&CME2, &CME, -1.0*norm, 0);
+            dpd_file2_close(&CME2);
+          }
+          norm = norm_C1_rhf(&CME);
+          dpd_file2_scm(&CME, 1.0/norm);
+          dpd_file2_close(&CME);
+        }
+#ifdef EOM_DEBUG
+        /* check initial guesses - overlap matrix */
+        fprintf(outfile,"Checking overlap of orthogonalized initial guesses\n");
+        for(i=0; i < eom_params.cs_per_irrep[C_irr]; i++) {
+          sprintf(lbl, "%s %d", "CME", i);
+          dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
+          for(j=0; j < eom_params.cs_per_irrep[C_irr]; j++) {
+            sprintf(lbl, "%s %d", "CME", j);
+            dpd_file2_init(&CME2, EOM_CME, C_irr, 0, 1, lbl);
+            fprintf(outfile,"C[%d][%d] = %15.10lf\n",i,j, 2.0 * dpd_file2_dot(&CME, &CME2));
+            dpd_file2_close(&CME2);
+          }
+          dpd_file2_close(&CME);
+        }
+#endif
       }
       else {
-	fprintf(outfile, "Invalid initial guess method.\n");
-	exit(PSI_RETURN_FAILURE);
+        fprintf(outfile, "Invalid initial guess method.\n");
+        exit(PSI_RETURN_FAILURE);
       }
     }
 
