@@ -28,17 +28,17 @@ double eval_derwfn_overlap()
       S = eval_rhf_derwfn_overlap();
     }
     else if (Params.reftype == Params_t::rohf) {
-      S = eval_rohf_derwfn_overlap();
+      //      S = eval_rohf_derwfn_overlap();
     }
     else if (Params.reftype == Params_t::uhf) {
-      S = eval_uhf_derwfn_overlap();
+      //      S = eval_uhf_derwfn_overlap();
     }
     else
       done("This HF SCF method is not supported at the moment");
   }
   else if (!strcmp(Params.wfn,"CCSD")) {
     if (Params.reftype == Params_t::rhf) {
-      S = eval_rccsd_derwfn_overlap();
+      //      S = eval_rccsd_derwfn_overlap();
     }
     else
       done("CCSD method with this reference is not supported at the moment");

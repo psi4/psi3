@@ -1,4 +1,6 @@
 
-double **eval_S_alpha();
-double **eval_S_beta();
+#include "float.h"
+
+FLOAT **eval_S_alpha();
+FLOAT **eval_S_beta();
 

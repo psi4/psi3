@@ -10,7 +10,7 @@
 extern "C" {
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
-#include <libfile30/file30.h>
+#include <libchkpt/chkpt.h>
 #include <libpsio/psio.h>
 #include <libqt/slaterd.h>
 #include <psifiles.h>
@@ -99,8 +99,9 @@ void parsing()
 /*--- Open file30 and grab molecule info ---*/
 void read_chkpt()
 {
-  file30_init();
+  chkpt_init();
 
+#if 0
   Molecule.natom = file30_rd_natom();
   Molecule.geom = file30_rd_geom();
   Molecule.zvals = file30_rd_zvals();
@@ -116,8 +117,25 @@ void read_chkpt()
   int *openpi = file30_rd_openpi();
   MOInfo.nsocc = openpi[0];
   delete[] openpi;
+#else
+  Molecule.natom = chkpt_rd_natom();
+  Molecule.geom = chkpt_rd_geom();
+  Molecule.zvals = chkpt_rd_zvals();
+  int nirreps = chkpt_rd_nirreps();
+  if (nirreps != 1)
+    done("DBOC computations currently possible only in C1 symmetry");
 
-  file30_close();
+  MOInfo.num_so = chkpt_rd_nso();
+  MOInfo.num_mo = chkpt_rd_nmo();
+  int *clsdpi = chkpt_rd_clsdpi();
+  MOInfo.ndocc = clsdpi[0];
+  delete[] clsdpi;
+  int *openpi = chkpt_rd_openpi();
+  MOInfo.nsocc = openpi[0];
+  delete[] openpi;
+#endif
+
+  chkpt_close();
 
   fprintf(outfile, "  -Reference Geometry:\n");
   for(int i=0; i < Molecule.natom; i++) {
