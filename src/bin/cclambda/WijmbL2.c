@@ -95,16 +95,16 @@ void WijmbL2(void)
     dpd_file2_init(&Lia, CC_OEI, 0, 2, 3, "Lia");
 
     /** W(IJ,AM) L(M,B) --> Z(IJ,AB) **/
-    dpd_buf4_init(&Z, CC_TMP2, 0, 2, 5, 2, 5, 0, "Z(IJ,AB)");
+    dpd_buf4_init(&Z, CC_TMP2, 0, 2, 5, 2, 5, 0, "Z'(IJ,AB)");
     dpd_buf4_init(&W, CC_HBAR, 0, 2, 21, 2, 21, 0, "WMNIE");
     dpd_contract424(&W, &LIA, &Z, 3, 0, 0, 1, 0);
     dpd_buf4_close(&W);
     /** Z(IJ,AB) --> Z(IJ,BA) **/
-    dpd_buf4_sort(&Z, CC_TMP2, pqsr, 2, 5, "Z(IJ,BA)");
+    dpd_buf4_sort(&Z, CC_TMP2, pqsr, 2, 5, "Z'(IJ,BA)");
     dpd_buf4_close(&Z);
     /** Z(IJ,AB) = Z(IJ,AB) - Z(IJ,BA) **/
-    dpd_buf4_init(&Z1, CC_TMP2, 0, 2, 5, 2, 5, 0, "Z(IJ,AB)");
-    dpd_buf4_init(&Z2, CC_TMP2, 0, 2, 5, 2, 5, 0, "Z(IJ,BA)");
+    dpd_buf4_init(&Z1, CC_TMP2, 0, 2, 5, 2, 5, 0, "Z'(IJ,AB)");
+    dpd_buf4_init(&Z2, CC_TMP2, 0, 2, 5, 2, 5, 0, "Z'(IJ,BA)");
     dpd_buf4_axpy(&Z2, &Z1, -1);
     dpd_buf4_close(&Z2);
     /** Z(IJ,AB) --> New L(IJ,AB) **/
@@ -115,16 +115,16 @@ void WijmbL2(void)
 
 
     /** W(ij,am) L(m,b) --> Z(ij,ab) **/
-    dpd_buf4_init(&Z, CC_TMP2, 0, 12, 15, 12, 15, 0, "Z(ij,ab)");
+    dpd_buf4_init(&Z, CC_TMP2, 0, 12, 15, 12, 15, 0, "Z'(ij,ab)");
     dpd_buf4_init(&W, CC_HBAR, 0, 12, 31, 12, 31, 0, "Wmnie");
     dpd_contract424(&W, &Lia, &Z, 3, 0, 0, 1, 0);
     dpd_buf4_close(&W);
     /** Z(ij,ab) --> Z(ij,ba) **/
-    dpd_buf4_sort(&Z, CC_TMP2, pqsr, 12, 15, "Z(ij,ba)");
+    dpd_buf4_sort(&Z, CC_TMP2, pqsr, 12, 15, "Z'(ij,ba)");
     dpd_buf4_close(&Z);
     /** Z(ij,ab) = Z(ij,ab) - Z(ij,ba) **/
-    dpd_buf4_init(&Z1, CC_TMP2, 0, 12, 15, 12, 15, 0, "Z(ij,ab)");
-    dpd_buf4_init(&Z2, CC_TMP2, 0, 12, 15, 12, 15, 0, "Z(ij,ba)");
+    dpd_buf4_init(&Z1, CC_TMP2, 0, 12, 15, 12, 15, 0, "Z'(ij,ab)");
+    dpd_buf4_init(&Z2, CC_TMP2, 0, 12, 15, 12, 15, 0, "Z'(ij,ba)");
     dpd_buf4_axpy(&Z2, &Z1, -1);
     dpd_buf4_close(&Z2);
     /** Z(ij,ab) --> New L(ij,ab) **/
