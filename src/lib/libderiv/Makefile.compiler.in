@@ -1,0 +1,14 @@
+include @top_objdir@/src/lib/MakeVars
+include @top_objdir@/src/lib/libderiv/MakeVars
+
+LD = $(CC)
+vpath %.a $(top_objdir)/lib:$(libdir)
+
+BINOBJ = $(CSRC:%.c=%.o)
+
+$(BUILD_BINARY): $(BINOBJ) $(PSILIBS) $(LDLIBS)
+	$(LD) $(LDFLAGS) -o $@ $^
+
+%.$(OBJSUF): %.c
+	$(CC) $(CFLAGS) -c $< $(OUTPUT_OPTION)
+

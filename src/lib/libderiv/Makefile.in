@@ -1,29 +1,20 @@
+include ../MakeVars
+include ./MakeVars
 
-srcdir = @srcdir@
-VPATH = @srcdir@
 ifndef SCRATCH
    SCRATCH = /tmp/${USER}
 endif
-TEMP_DIR = ${SCRATCH}/libint
-BUILD_BINARY = build_libderiv
+TEMP_DIR = ${SCRATCH}/libderiv
 @SET_MAKE@
-
-include ../MakeVars
-
-LD = $(CC)
-vpath %.a $(top_objdir)/lib:$(libdir)
-
-CSRC = build_libderiv.c mem_man.c \
-emit_order.c  emit_deriv_build.c emit_dhrr_build.c
-
-BINOBJ = $(CSRC:%.c=%.o)
 
 .PHONY: default install all
 .PHONY: clean oclean iclean dclean target_clean
 
-install: $(BUILD_BINARY) Makefile.libderiv
+install: $(TARGET)
+
+$(TARGET): $(CSRC) Makefile.libderiv
 	if \
- ! [ -e $(SCRATCH) ]; \
+! [ -e $(SCRATCH) ]; \
  then \
  mkdir $(SCRATCH); \
 fi; \
@@ -36,37 +27,32 @@ then \
 else \
  mkdir $(TEMP_DIR); \
 fi; \
-cp Makefile.libderiv $(TEMP_DIR)/Makefile; \
-cp $(BUILD_BINARY) $(TEMP_DIR); \
+cp Makefile.compiler $(TEMP_DIR); \
+$(MAKE); \
+cp Makefile.libderiv $(TEMP_DIR); \
 cd $(TEMP_DIR); \
+cp Makefile.compiler Makefile; \
+$(MAKE); \
+rm -f Makefile; \
 ./$(BUILD_BINARY); \
+cp Makefile.libderiv Makefile; \
 ${MAKE} install; \
 cd ..; \
-rm -rf $(TEMP_DIR)
+rm -fR $(TEMP_DIR)
 
 all: install
 
 default:
 
-$(BUILD_BINARY): $(BINOBJ) $(PSILIBS) $(LDLIBS)
-	$(LD) $(LDFLAGS) -o $@ $^
-
-%.$(OBJSUF): %.c
-	$(CC) $(CFLAGS) -c $< $(OUTPUT_OPTION)
-
-clean:: iclean oclean dclean targetclean
+clean::
 
 iclean:
-	-rm -f *.gbl *.lcl
 
 oclean:
-	-rm -f *.o
 
 dclean:
-	-rm -f *.d
 
 targetclean:
-	-rm -f `basename $(BUILD_BINARY)`
 
 #
 # keep the configuration information and makefiles up-to-date
@@ -84,5 +70,12 @@ Makefile: $(srcdir)/Makefile.in $(top_objdir)/config.status
 Makefile.libderiv: $(srcdir)/Makefile.libderiv.in $(top_objdir)/config.status
 	cd $(top_objdir) && CONFIG_FILES=src/lib/`basename $(srcdir)`/Makefile.libderiv ./config.status
 
+Makefile.compiler: $(srcdir)/Makefile.compiler.in $(top_objdir)/config.status
+	cd $(top_objdir) && CONFIG_FILES=src/lib/`basename $(srcdir)`/Makefile.compiler  ./config.status
+
 ../MakeVars: $(top_srcdir)/src/lib/MakeVars.in $(top_objdir)/config.status
 	cd $(top_objdir) && CONFIG_FILES=src/lib/MakeVars ./config.status
+
+./MakeVars: $(srcdir)/MakeVars.in $(top_objdir)/config.status
+	cd $(top_objdir) && CONFIG_FILES=src/lib/`basename $(srcdir)`/MakeVars ./config.status
+
