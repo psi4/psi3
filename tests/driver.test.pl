@@ -41,6 +41,13 @@ elsif ($ARGV[0] eq "--cc") {
                  "cc17",
                  "cc18",
                  "cc19"
+                 "cc21"
+                 "cc22"
+                 "cc23"
+                 "cc24"
+                 "cc25"
+                 "cc26"
+                 "cc27"
                );
 }
 elsif ($ARGV[0] eq "--scf") {
@@ -116,6 +123,13 @@ elsif ($ARGV[0] eq "--small") {
                  "cc17",
                  "cc18",
                  "cc19",
+                 "cc21",
+                 "cc22",
+                 "cc23",
+                 "cc24",
+                 "cc25",
+                 "cc26",
+                 "cc27",
                  "dboc-rhf1",
                  "dboc-rohf1",
                  "dboc-uhf1",
@@ -182,6 +196,13 @@ elsif ($ARGV[0] eq "--all") {
                  "cc17",
                  "cc18",
                  "cc19",
+                 "cc21",
+                 "cc22",
+                 "cc23",
+                 "cc24",
+                 "cc25",
+                 "cc26",
+                 "cc27",
                  "dboc-rhf1",
                  "dboc-rohf1",
                  "dboc-uhf1",
@@ -211,6 +232,13 @@ elsif ($ARGV[0] eq "--sp") {
                  "cc17",
                  "cc18",
                  "cc19",
+                 "cc21",
+                 "cc22",
+                 "cc23",
+                 "cc24",
+                 "cc25",
+                 "cc26",
+                 "cc27",
                  "dboc-rhf1",
                  "dboc-rohf1",
                  "dboc-uhf1",
@@ -296,6 +324,13 @@ else {
                  "cc17",
                  "cc18",
                  "cc19",
+                 "cc21",
+                 "cc22",
+                 "cc23",
+                 "cc24",
+                 "cc25",
+                 "cc26",
+                 "cc27",
                  "dboc-rhf1",
                  "dboc-rohf1",
                  "dboc-uhf1",
