@@ -7,5 +7,6 @@ typedef struct {
     int num_i_per_ibatch;
     int num_ibatch;
     int num_arrived;
-    double Emp2;
+    double Emp2_0, Emp2_1;
+    double *emp2_0, *emp2_1;
 } RMP2_Status_t;

@@ -28,6 +28,7 @@ void *rmp2_energy_thread(void *tnum_ptr)
 {
   int thread_num = (int) tnum_ptr;
   const double toler = UserOptions.cutoff;
+  const double m_sqrt1_2 = 1/sqrt(2.0);
 
   extern RMP2_Status_t RMP2_Status;
   extern pthread_mutex_t rmp2_energy_mutex;
@@ -82,11 +83,10 @@ void *rmp2_energy_thread(void *tnum_ptr)
   int num_ibatch, num_i_per_ibatch, ibatch, ibatch_length;
   int imin, imax, jmin;
   int max_bf_per_shell;
-  int mo_i, mo_j, mo_a, mo_b;
+  int mo_i, mo_j, mo_a, mo_b, mo_ij;
   int ia;
   int rs_offset, rsi_offset, rsp_offset;
 
-  double Emp2;
   double AB2, CD2;
 
   double *raw_data;             /* pointer to the unnormalized taregt quartet of integrals */
@@ -107,7 +107,7 @@ void *rmp2_energy_thread(void *tnum_ptr)
 				   i runs over I-batch, q runs over all AOs */
   double *jsi_row;
   double *jbi_row;
-  double iajb, ibja, pfac;
+  double iajb, ibja, pfac, k0ijab, k1ijab, eijab, e0, e1;
 
   double temp1,temp2,*iq_row,*ip_row;
   int rs,qrs;
@@ -731,30 +731,67 @@ void *rmp2_energy_thread(void *tnum_ptr)
 
     /*--- Compute a contribution to the MP2 energy from the current batch ---*/
 /*    timer_on("Energy");*/
-      Emp2 = 0.0;
       for(mo_i=0;mo_i<ibatch_length;mo_i++) {
 	for(mo_j=0;mo_j<=mo_i+imin-jmin;mo_j++) {
-	  for(mo_b=0;mo_b<MOInfo.nactuocc;mo_b++) {
-	    for(mo_a=0;mo_a<MOInfo.nactuocc;mo_a++) {
+	  /*--- Evaluate pair energies ---*/
+	  mo_ij = INDEX(mo_i + imin, mo_j + jmin);
+	  e0 = 0.0;
+	  e1 = 0.0;
+	  for(mo_a=0;mo_a<MOInfo.nactuocc;mo_a++) {
+	    for(mo_b=0;mo_b<=mo_a;mo_b++) {
 	      iajb = jbia_buf[((mo_j * MOInfo.nactuocc + mo_b) * ibatch_length + mo_i) * MOInfo.nactuocc + mo_a];
 	      ibja = jbia_buf[((mo_j * MOInfo.nactuocc + mo_a) * ibatch_length + mo_i) * MOInfo.nactuocc + mo_b];
-	      pfac = (mo_i + imin == mo_j + jmin) ? 1.0 : 2.0;
-	      Emp2 += iajb*(2.0*iajb - ibja)*pfac/
-		      (MOInfo.scf_evals_occ[0][mo_i+imin] +
+	      pfac = (mo_i + imin != mo_j + jmin) ? 1.0 : m_sqrt1_2;
+	      pfac *= (mo_a != mo_b) ? 1.0 : m_sqrt1_2;
+	      k0ijab = pfac * (iajb + ibja);
+	      eijab = (MOInfo.scf_evals_occ[0][mo_i+imin] +
 		       MOInfo.scf_evals_occ[0][mo_j+jmin] -
 		       MOInfo.scf_evals_uocc[0][mo_a] -
 		       MOInfo.scf_evals_uocc[0][mo_b]);
+	      e0 += k0ijab*k0ijab/eijab;
+	      if (mo_i + imin != mo_j + jmin) {
+		k1ijab = pfac * (iajb - ibja);
+		e1 += 3*k1ijab*k1ijab/eijab;
+	      }
 	    }
+	  }
+	  RMP2_Status.emp2_0[mo_ij] = e0;
+	  RMP2_Status.Emp2_0 += e0;
+	  if (mo_i + imin != mo_j + jmin) {
+	    RMP2_Status.emp2_1[mo_ij] = e1;
+	    RMP2_Status.Emp2_1 += e1;
 	  }
 	}
       }
-      RMP2_Status.Emp2 += Emp2;
 /*    timer_off("Energy");*/
       if (ibatch < num_ibatch-1) {
-	fprintf(outfile,"  Energy after Pass #%d = %20.10lf\n",ibatch,RMP2_Status.Emp2);
+	fprintf(outfile,"  Energy after Pass #%d = %20.10lf\n",ibatch,RMP2_Status.Emp2_0+RMP2_Status.Emp2_1);
+	fprintf(outfile,"  Singlet energy after Pass #%d = %20.10lf\n",ibatch,RMP2_Status.Emp2_0);
+	fprintf(outfile,"  Triplet energy after Pass #%d = %20.10lf\n",ibatch,RMP2_Status.Emp2_1);
 	fflush(outfile);
 	memset(jsia_buf,0,MOInfo.nactdocc*BasisSet.num_ao*ibatch_length*MOInfo.nactuocc*sizeof(double));
 	memset(jbia_buf,0,MOInfo.nactdocc*MOInfo.nactuocc*ibatch_length*MOInfo.nactuocc*sizeof(double));
+
+	fprintf(outfile,"\n");
+	fprintf(outfile,"  Singlet pair energies after Pass #%d:\n",ibatch);
+	fprintf(outfile,"    i       j         e(ij)\n");
+	fprintf(outfile,"  -----   -----   ------------\n");
+	for(mo_i=0;mo_i<ibatch_length;mo_i++)
+	  for(mo_j=0;mo_j<=mo_i+imin-jmin;mo_j++) {
+	    mo_ij = INDEX(mo_i + imin, mo_j + jmin);
+	    fprintf(outfile,"  %3d     %3d     %12.9lf\n",imin+mo_i+1,jmin+mo_j+1,RMP2_Status.emp2_0[mo_ij]);
+	  }
+	fprintf(outfile,"\n");
+	fprintf(outfile,"  Triplet pair energies after Pass #%d:\n",ibatch);
+	fprintf(outfile,"    i       j         e(ij)\n");
+	fprintf(outfile,"  -----   -----   ------------\n");
+	for(mo_i=0;mo_i<ibatch_length;mo_i++)
+	  for(mo_j=0;mo_j<mo_i+imin-jmin;mo_j++) {
+	    mo_ij = INDEX(mo_i + imin, mo_j + jmin);
+	    fprintf(outfile,"  %3d     %3d     %12.9lf\n",imin+mo_i+1,jmin+mo_j+1,RMP2_Status.emp2_1[mo_ij]);
+	  }
+	fprintf(outfile,"\n");
+	fflush(outfile);
       }
       /*--- Done with the non-threaded part - wake everybody up and prepare for the next ibatch ---*/
       RMP2_Status.num_arrived = 0;

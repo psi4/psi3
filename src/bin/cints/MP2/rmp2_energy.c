@@ -109,7 +109,7 @@ void rmp2_energy()
 
   int num_ibatch, num_i_per_ibatch, ibatch, ibatch_length;
   int imin, imax, jmin;
-  int mo_i, mo_j, mo_a, mo_b;
+  int mo_i, mo_j, mo_a, mo_b, mo_ij;
   int rs_offset, rsi_offset, rsp_offset;
 
   double AB2, CD2;
@@ -150,7 +150,8 @@ void rmp2_energy()
   schwartz_eri();
   timer_off("Schwartz");
   fprintf(outfile,"  Computing RHF MP2 energy via direct algorithm\n");
-  RMP2_Status.Emp2 = 0.0;
+  RMP2_Status.Emp2_0 = 0.0;
+  RMP2_Status.Emp2_1 = 0.0;
   RMP2_Status.num_arrived = 0;
 
   
@@ -185,6 +186,8 @@ void rmp2_energy()
   num_i_per_ibatch = (MOInfo.nactdocc + num_ibatch - 1) / num_ibatch;
   RMP2_Status.num_ibatch = num_ibatch;
   RMP2_Status.num_i_per_ibatch = num_i_per_ibatch;
+  RMP2_Status.emp2_0 = init_array(ioff[MOInfo.ndocc]);
+  RMP2_Status.emp2_1 = init_array(ioff[MOInfo.ndocc]);
   jsia_buf = init_array(MOInfo.nactdocc*BasisSet.num_ao*
 			num_i_per_ibatch*MOInfo.nactuocc);
   jbia_buf = init_array(MOInfo.nactdocc*MOInfo.nactuocc*
@@ -222,9 +225,32 @@ void rmp2_energy()
   for(i=0;i<BasisSet.num_ao;i++)
 #endif
       pthread_mutex_destroy(&(rmp2_sindex_mutex[i]));
-  
-  fprintf(outfile,"  MBPT[2] Energy = %20.10lf\n",RMP2_Status.Emp2);
-  fprintf(outfile,"  Total Energy   = %20.10lf\n\n",RMP2_Status.Emp2+MOInfo.Escf);
+
+  fprintf(outfile,"\n");
+  fprintf(outfile,"  Singlet pair energies:\n");
+  fprintf(outfile,"    i       j         e(ij)\n");
+  fprintf(outfile,"  -----   -----   ------------\n");
+  for(mo_i=MOInfo.nfrdocc;mo_i<MOInfo.ndocc;mo_i++)
+      for(mo_j=MOInfo.nfrdocc;mo_j<=mo_i;mo_j++) {
+	  mo_ij = INDEX(mo_i, mo_j);
+	    fprintf(outfile,"  %3d     %3d     %12.9lf\n",mo_i+1,mo_j+1,RMP2_Status.emp2_0[mo_ij]);
+      }
+  fprintf(outfile,"\n");
+  fprintf(outfile,"  Triplet pair energies:\n");
+  fprintf(outfile,"    i       j         e(ij)\n");
+  fprintf(outfile,"  -----   -----   ------------\n");
+  for(mo_i=MOInfo.nfrdocc;mo_i<MOInfo.ndocc;mo_i++)
+      for(mo_j=MOInfo.nfrdocc;mo_j<mo_i;mo_j++) {
+	  mo_ij = INDEX(mo_i, mo_j);
+	  fprintf(outfile,"  %3d     %3d     %12.9lf\n",mo_i+1,mo_j+1,RMP2_Status.emp2_1[mo_ij]);
+      }
+  fprintf(outfile,"\n");
+
+  fprintf(outfile,"  MBPT[2] Correlation Energy (singlet) = %20.10lf\n",RMP2_Status.Emp2_0);
+  fprintf(outfile,"  MBPT[2] Correlation Energy (triplet) = %20.10lf\n",RMP2_Status.Emp2_1);
+  fprintf(outfile,"  MBPT[2] Correlation Energy (total)   = %20.10lf\n",RMP2_Status.Emp2_0+RMP2_Status.Emp2_1);
+  fprintf(outfile,"  Total MBPT[2] Energy                 = %20.10lf\n\n",
+	  RMP2_Status.Emp2_0+RMP2_Status.Emp2_1+MOInfo.Escf);
   
   /*---------
     Clean-up
