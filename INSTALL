@@ -142,7 +142,7 @@ An ever-growing number of test cases is available in $PSI3/tests.
 A simple automated system is now available to execute all the current test
 cases and compare to the available reference data. Simply run the
 executable perl script, driver.test.pl, and the result of each test
-case will be printed in the text file, test-case-results}. The PSI3
+case will be printed in the text file, test-case-results.  The PSI3
 User's Manual provides detailed instructions for running calculations.
 Report bugs to psimaster@sirius.chem.vt.edu.
 
