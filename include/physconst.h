@@ -7,6 +7,10 @@
 /* revised 5/7/93 to agree w/ 1986 CODATA
  * recommended values J. Phys. Chem. Ref. Data 17, 1795 (1988)
  * all values revised
+ *
+ * revised 4/28/02 to agree with NIST online database
+ * updated au2amu, hartree2J, hartree2wavenumbers
+ *
  */
 
 #define _pi    3.14159265358979323846264338327950288
@@ -20,13 +24,13 @@
 #define _bohr2cm 0.529177249E-8
 #define _amu2g 1.6605402E-24
 #define _amu2kg 1.6605402E-27
-#define _au2amu 5.48579903E-4 
-#define _hartree2J 4.3597482E-18
+#define _au2amu 5.485799110E-4 
+#define _hartree2J 4.35974381-18
 #define _cal2J 4.184
 #define _dipmom_au2si    8.47835791E-30
 #define _dipmom_au2debye 2.54175
 #define _dipmom_debye2si 3.33564E-30
 #define _c_au 137.0359895
 #define _hartree2ev 27.211396
-#define _hartree2wavenumbers (_hartree2J / (_h * _c * 100.0))
+#define _hartree2wavenumbers 219474.6313710
 
