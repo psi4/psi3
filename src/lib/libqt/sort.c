@@ -4,7 +4,7 @@
 */
 
 /* sort(): Sorts eigenvalues and corresponding eigenvectors into
-** ascending order.
+** ascending order.  Based on eigsort.c in libciomr.
 **
 ** TDC, July 2002
 **
