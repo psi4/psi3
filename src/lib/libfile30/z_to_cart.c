@@ -19,9 +19,9 @@
 **  NOTE: this code assumes valid z-matrix is passed to it ... no error checking
 */
 
-inline double *cross_pdt(double *u, double *v);
-inline double *unit(double *u, double *v);
-inline double dot_pdt(double *u, double *v);
+double *cross_pdt(double *u, double *v);
+double *unit(double *u, double *v);
+double dot_pdt(double *u, double *v);
 
 double **file30_z_to_cart( struct z_entry *z_geom, int num_atoms ) {
 
@@ -109,7 +109,7 @@ double **file30_z_to_cart( struct z_entry *z_geom, int num_atoms ) {
 }
 	      
 		   
-inline double *cross_pdt(double *u,double *v) {
+double *cross_pdt(double *u,double *v) {
 
   double *out;
   out = init_array(3);
@@ -121,7 +121,7 @@ inline double *cross_pdt(double *u,double *v) {
   return out;
 }
 
-inline double *unit(double *u, double *v) {
+double *unit(double *u, double *v) {
 
   int i;
   double *out, norm=0;
@@ -140,7 +140,7 @@ inline double *unit(double *u, double *v) {
 }
 
 
-inline double dot_pdt(double *u, double *v) {
+double dot_pdt(double *u, double *v) {
 
   int i;
   double sum = 0;

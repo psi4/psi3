@@ -21,7 +21,7 @@ void file30_wt_zmat(struct z_entry *z_geom, int num_atoms) {
 
   z_ptr = (PSI_FPTR) (info30_.mpoint[46] - 1) * sizeof(int);
 
-  wwritw(info30_.filenum,(char *) z_geom, num_atoms*(sizeof(struct z_entry)), z_ptr, junk);
+  wwritw(info30_.filenum,(char *) z_geom, num_atoms*(sizeof(struct z_entry)), z_ptr, &junk);
 
   return;
 }
