@@ -1,11 +1,15 @@
 /*!
 ** \file wreadw.c
+** \ingroup (CIOMR)
 */
 
 /* $Log$
- * Revision 1.2  2002/04/19 21:48:06  sherrill
- * Remove some unused functions and do doxygen markup of libciomr.
+ * Revision 1.3  2002/06/01 18:23:54  sherrill
+ * Upgrade doxygen documentation
  *
+/* Revision 1.2  2002/04/19 21:48:06  sherrill
+/* Remove some unused functions and do doxygen markup of libciomr.
+/*
 /* Revision 1.1.1.1  2000/02/04 22:53:24  evaleev
 /* Started PSI 3 repository
 /*
@@ -37,7 +41,7 @@ static char *rcsid = "$Id$";
 extern void iordr_(int *, char *, PSI_FPTR *, int *);
 
 
-/*
+/*!
 ** wreadw: reads size bytes from tape into buffer starting at fword.
 ** nxtwrd is modified to give the new current pointer location after the
 ** read operation is completed.
@@ -47,6 +51,8 @@ extern void iordr_(int *, char *, PSI_FPTR *, int *);
 **   \param size   = number of bytes to be read
 **   \param fword  = first byte of buffer to be read
 **   \param nxtwrd = pointer to hold file pointer position after read
+**
+** \ingroup (CIOMR)
 */  
 void wreadw(int tape, char *buffer, int size, PSI_FPTR fword, PSI_FPTR *nxtwrd)
    {

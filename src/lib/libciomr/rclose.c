@@ -1,11 +1,15 @@
 /*!
 ** \file rclose.c
+** \ingroup (CIOMR)
 */
 
 /* $Log$
- * Revision 1.2  2002/04/19 21:48:06  sherrill
- * Remove some unused functions and do doxygen markup of libciomr.
+ * Revision 1.3  2002/06/01 18:23:54  sherrill
+ * Upgrade doxygen documentation
  *
+/* Revision 1.2  2002/04/19 21:48:06  sherrill
+/* Remove some unused functions and do doxygen markup of libciomr.
+/*
 /* Revision 1.1.1.1  2000/02/04 22:53:22  evaleev
 /* Started PSI 3 repository
 /*
@@ -34,6 +38,8 @@ extern void ioclos_(int *, int *);
 **
 ** \param unit = file number
 ** \param status = 3 to keep file, 4 to erase it
+**
+** \ingroup (CIOMR)
 */
 void rclose(int unit, int status)
 {

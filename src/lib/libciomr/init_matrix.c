@@ -1,11 +1,15 @@
 /*!
   \file init_matrix.c
+  \ingroup (CIOMR)
 */ 
 
 /* $Log$
- * Revision 1.4  2002/04/19 21:48:06  sherrill
- * Remove some unused functions and do doxygen markup of libciomr.
+ * Revision 1.5  2002/06/01 18:23:54  sherrill
+ * Upgrade doxygen documentation
  *
+/* Revision 1.4  2002/04/19 21:48:06  sherrill
+/* Remove some unused functions and do doxygen markup of libciomr.
+/*
 /* Revision 1.3  2002/04/04 22:24:38  evaleev
 /* Converted allocation functions (init_array, etc.) to take unsigned long ints
 /* to be able to allocate properly 2GB+ chunks). Some declarations cleaned up.
@@ -39,6 +43,7 @@ extern void resource_command(void);
 ** 
 ** \param n = number of rows
 ** \param m = number of columns
+** \ingroup (CIOMR)
 */
 
 double ** init_matrix(unsigned long int n, unsigned long int m)
@@ -72,6 +77,7 @@ double ** init_matrix(unsigned long int n, unsigned long int m)
 **
 ** \param array = matrix to free
 ** \param size = number of rows
+** \ingroup (CIOMR)
 */
 void free_matrix(double **array, unsigned long int size)
    {

@@ -1,12 +1,16 @@
 /*!
 ** \file tstart.c
 ** \brief Controls starting and stopping of timers
+** \ingroup (CIOMR)
 */
 
 /* $Log$
- * Revision 1.3  2002/04/19 21:48:06  sherrill
- * Remove some unused functions and do doxygen markup of libciomr.
+ * Revision 1.4  2002/06/01 18:23:54  sherrill
+ * Upgrade doxygen documentation
  *
+/* Revision 1.3  2002/04/19 21:48:06  sherrill
+/* Remove some unused functions and do doxygen markup of libciomr.
+/*
 /* Revision 1.2  2000/03/26 22:03:26  sherrill
 /* Added more characters to allow longer machine names in tstart.c.
 /* Added support for C++ libraries in src/lib/MakeRules and MakeVars.
@@ -70,6 +74,8 @@ static char *rcsid = "$Id$";
 ** tstart: Starts a timer.
 **
 ** \param outfile = output file pointer
+**
+** \ingroup (CIOMR)
 */
 void tstart(FILE *outfile)
    {
@@ -97,6 +103,8 @@ void tstart(FILE *outfile)
 ** tstop: Stop timer.
 **
 ** \param outfile = output file pointer.
+**
+** \ingroup (CIOMR)
 */ 
 void tstop(FILE *outfile)
 {

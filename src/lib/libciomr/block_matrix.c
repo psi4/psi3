@@ -1,5 +1,6 @@
 /*!
   \file block_matrix.c
+  \ingroup (CIOMR)
 */
 
 #include<stdio.h>
@@ -22,17 +23,8 @@ void bzero();
 ** Sometime in 1994
 **
 ** Based on init_matrix() from libciomr
-**
+** \ingroup (CIOMR)
 */
-
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-
-void bzero();
-
-/* allocates memory for an n x m matrix */
-/* returns pointer to pointer to 1st element */
 
 double ** block_matrix(unsigned long int n, unsigned long int m)
    {
@@ -65,6 +57,8 @@ double ** block_matrix(unsigned long int n, unsigned long int m)
 
 /*!
 ** free_block(): Free a block matrix
+**
+** \ingroup (CIOMR)
 */
 void free_block(double **array)
    {

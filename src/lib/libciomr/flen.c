@@ -1,5 +1,6 @@
 /*!
   \file flen.c
+  \ingroup (CIOMR)
 */
  
 #include "includes.h"
@@ -10,6 +11,7 @@ extern PSI_FPTR iosize_(int *);
 
 /*!
 ** flen(): Get the number of bytes for file number 'itape'.
+** \ingroup (CIOMR)
 */
 PSI_FPTR flen(int itape)
    {

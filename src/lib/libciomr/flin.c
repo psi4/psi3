@@ -7,6 +7,7 @@ extern void lubksb(double **, int, int *, double *);
 
 /*!
 ** \file flin.c
+** \ingroup (CIOMR)
 */ 
 
 /*
@@ -17,6 +18,7 @@ extern void lubksb(double **, int, int *, double *);
 ** \param in  = dimension of a(in*in)
 ** \param im  = number of b vectors
 ** \param det = pointer to hold determinant of matrix a
+** \ingroup (CIOMR)
 */
 
 void flin(double **a, double *b, int in, int im, double *det)

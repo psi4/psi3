@@ -1,11 +1,17 @@
+/*! \defgroup CIOMR libciomr: The Old PSI I/O and Math Library */
+
 /*!
   \file add_arr.c
+  \ingroup (CIOMR)
 */
 
 /* $Log$
- * Revision 1.2  2002/03/25 02:43:45  sherrill
- * Update documentation
+ * Revision 1.3  2002/06/01 18:23:54  sherrill
+ * Upgrade doxygen documentation
  *
+/* Revision 1.2  2002/03/25 02:43:45  sherrill
+/* Update documentation
+/*
 /* Revision 1.1.1.1  2000/02/04 22:53:17  evaleev
 /* Started PSI 3 repository
 /*
@@ -18,6 +24,7 @@ static char *rcsid = "$Id$";
 /*!
 ** add_arr: Add arrays a and b and put the result in array c.  Adds
 ** the first n elements
+** \ingroup (CIOMR)
 */
 void add_arr(double *a, double *b, double *c, int n)
    {

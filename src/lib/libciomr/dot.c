@@ -1,11 +1,15 @@
 /*!
  \file dot.c
+ \ingroup (CIOMR)
 */
 
 /* $Log$
- * Revision 1.3  2002/04/19 21:48:06  sherrill
- * Remove some unused functions and do doxygen markup of libciomr.
+ * Revision 1.4  2002/06/01 18:23:54  sherrill
+ * Upgrade doxygen documentation
  *
+/* Revision 1.3  2002/04/19 21:48:06  sherrill
+/* Remove some unused functions and do doxygen markup of libciomr.
+/*
 /* Revision 1.2  2002/03/25 02:43:45  sherrill
 /* Update documentation
 /*
@@ -30,6 +34,7 @@ static char *rcsid = "$Id$";
 ** dot_mat():
 ** Takes the dot product between two 2D matrices a and b with dimensions
 ** n x n and returns the value
+** \ingroup (CIOMR)
 */
 void dot_mat(double **a, double **b, int n, double *value)
    {
@@ -51,6 +56,7 @@ void dot_mat(double **a, double **b, int n, double *value)
 ** dot_arr():
 ** Take the dot product of the first n elements of two arrays a and b
 ** and put the result in variable value.
+** \ingroup (CIOMR)
 */
 void dot_arr(double *a, double *b, int n, double *value)
    {

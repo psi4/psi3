@@ -1,11 +1,15 @@
 /*!
   \file eivout.c
+  \ingroup (CIOMR)
 */
  
 /* $Log$
- * Revision 1.2  2002/04/19 21:48:06  sherrill
- * Remove some unused functions and do doxygen markup of libciomr.
+ * Revision 1.3  2002/06/01 18:23:54  sherrill
+ * Upgrade doxygen documentation
  *
+/* Revision 1.2  2002/04/19 21:48:06  sherrill
+/* Remove some unused functions and do doxygen markup of libciomr.
+/*
 /* Revision 1.1.1.1  2000/02/04 22:53:18  evaleev
 /* Started PSI 3 repository
 /*
@@ -28,6 +32,8 @@ static char *rcsid = "$Id$";
 ** \param m = rows of a
 ** \param n = columns of a
 ** \param out = output file pointer
+**
+** \ingroup (CIOMR)
 */
 void eivout(double **a, double *b, int m, int n, FILE *out)
    {

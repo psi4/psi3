@@ -1,11 +1,15 @@
 /*!
 ** \file rsp.c
+** \ingroup (CIOMR)
 */
 
 /* $Log$
- * Revision 1.4  2002/04/19 21:48:06  sherrill
- * Remove some unused functions and do doxygen markup of libciomr.
+ * Revision 1.5  2002/06/01 18:23:54  sherrill
+ * Upgrade doxygen documentation
  *
+/* Revision 1.4  2002/04/19 21:48:06  sherrill
+/* Remove some unused functions and do doxygen markup of libciomr.
+/*
 /* Revision 1.3  2002/04/04 22:24:38  evaleev
 /* Converted allocation functions (init_array, etc.) to take unsigned long ints
 /* to be able to allocate properly 2GB+ chunks). Some declarations cleaned up.
@@ -54,6 +58,8 @@ extern void eigsort(double *, double **, int);
 **                 = 3 (eigenvectors and eigenvalues in descending order)
 **   \param e_vecs = matrix of eigenvectors (one column for each eigvector)
 **   \param toler  = tolerance for eigenvalues?  Often 1.0E-14.
+**
+** \ingroup (CIOMR)
 */
 void rsp(int nm, int n,int nv,double *array, double *e_vals, int matz,
          double ** e_vecs, double toler)

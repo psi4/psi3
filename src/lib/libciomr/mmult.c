@@ -1,8 +1,11 @@
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:21  evaleev
- * Initial revision
+ * Revision 1.2  2002/06/01 18:23:54  sherrill
+ * Upgrade doxygen documentation
  *
+/* Revision 1.1.1.1  2000/02/04 22:53:21  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 2.3  1999/11/01 20:10:57  evaleev
 /* Added explicit extern declarations of functions within the library.
 /*
@@ -15,39 +18,46 @@
 
 static char *rcsid = "$Id$";
 
+/*!
+   \file mmult.c
+   \ingroup (CIOMR)
+*/
+
 #include <math.h>
 
 extern double **init_matrix(int, int);
 extern void free_matrix(double **, int);
-
-/***************************************************************/
-/*                                                             */
-/* a reasonably fast matrix multiply (at least on the DEC3100) */
-/* written by ETS                                              */
-/*                                                             */
-/* AF,BF,and CF are fortran arrays                             */
-/*                                                             */
-/* ta,tb and tc indicate whether the corresponding arrays are  */
-/*              to be converted to their transpose             */
-/*                                                             */
-/* nr,nl,nc are the number of rows,links,and columns in the    */
-/*          final matrices to be multiplied together           */
-/*          if ta=0 AF should have the dimensions nr x nl      */
-/*          if ta=1 AF should have the dimensions nl x nr      */
-/*          if tb=0 BF should have the dimensions nl x nc      */
-/*          if tb=1 BF should have the dimensions nc x nl      */
-/*          if tc=0 CF should have the dimensions nr x nc      */
-/*          if tc=1 CF should have the dimensions nc x nr      */
-/*                                                             */
-/* add is 1 if this matrix is to be added to the one passed    */
-/*        in as CF, 0 otherwise                                */
-/***************************************************************/
 
 static int keep_nr=0;
 static int keep_nl=0;
 static int keep_nc=0;
 static double **aa,**bb;
 
+/*!
+**                                                             
+** mmult():
+** a reasonably fast matrix multiply (at least on the DEC3100) 
+** written by ETS                                              
+**                                                             
+** AF,BF,and CF are fortran arrays                             
+**                                                             
+** ta,tb and tc indicate whether the corresponding arrays are  
+**              to be converted to their transpose             
+**                                                             
+** nr,nl,nc are the number of rows,links,and columns in the    
+**          final matrices to be multiplied together           
+**          if ta=0 AF should have the dimensions nr x nl      
+**          if ta=1 AF should have the dimensions nl x nr      
+**          if tb=0 BF should have the dimensions nl x nc      
+**          if tb=1 BF should have the dimensions nc x nl      
+**          if tc=0 CF should have the dimensions nr x nc      
+**          if tc=1 CF should have the dimensions nc x nr      
+**                                                             
+** add is 1 if this matrix is to be added to the one passed    
+**        in as CF, 0 otherwise                                
+**
+** \ingroup (CIOMR)
+*/
 void mmult(double **AF, int ta, double **BF, int tb, double **CF, int tc,
 	   int nr, int nl, int nc, int add)
 {

@@ -1,5 +1,6 @@
 /*!
 ** \file get_file_ptr.c
+** \ingroup (CIOMR)
 */
 
 #include "includes.h"
@@ -16,6 +17,7 @@
 **   bytewise file pointer
 **
 ** Daniel, January 1996
+** \ingroup (CIOMR)
 */
 PSI_FPTR get_file_ptr(int unit)
 {

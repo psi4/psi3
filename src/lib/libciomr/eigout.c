@@ -1,12 +1,16 @@
 /*!
   \file eigout.c
+  \ingroup (CIOMR)
 */
 
 /* $Log$
- * Revision 1.2  2002/04/18 21:47:35  sherrill
- * Here's some changes to document via doxygen and upgrade to ANSI C
- * instead of K&R declarations.
+ * Revision 1.3  2002/06/01 18:23:54  sherrill
+ * Upgrade doxygen documentation
  *
+/* Revision 1.2  2002/04/18 21:47:35  sherrill
+/* Here's some changes to document via doxygen and upgrade to ANSI C
+/* instead of K&R declarations.
+/*
 /* Revision 1.1.1.1  2000/02/04 22:53:18  evaleev
 /* Started PSI 3 repository
 /*
@@ -30,6 +34,8 @@ static char *rcsid = "$Id$";
 ** elements of two arrays, b and c, will also be printed.  This is
 ** useful for printing, for example, the SCF eigenvectors with their
 ** associated eigenvalues (orbital energies) and also the population.
+**
+** \ingroup (CIOMR)
 */
 void eigout(double **a, double *b, double *c, int m, int n, FILE *out)
    {

@@ -1,11 +1,15 @@
 /*
  \file init_array.c
+ \ingroup (CIOMR)
 */
 
 /* $Log$
- * Revision 1.4  2002/04/19 21:48:06  sherrill
- * Remove some unused functions and do doxygen markup of libciomr.
+ * Revision 1.5  2002/06/01 18:23:54  sherrill
+ * Upgrade doxygen documentation
  *
+/* Revision 1.4  2002/04/19 21:48:06  sherrill
+/* Remove some unused functions and do doxygen markup of libciomr.
+/*
 /* Revision 1.3  2002/04/04 22:24:38  evaleev
 /* Converted allocation functions (init_array, etc.) to take unsigned long ints
 /* to be able to allocate properly 2GB+ chunks). Some declarations cleaned up.
@@ -32,6 +36,7 @@ extern void resource_command(void);
 /*!
 ** init_array(): This function initializes an array of doubles of
 ** length 'size' and returns a pointer to the first element
+** \ingroup (CIOMR)
 */
 double * init_array(unsigned long int size)
    {

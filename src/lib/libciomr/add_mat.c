@@ -1,8 +1,11 @@
 
 /* $Log$
- * Revision 1.2  2002/03/25 02:43:45  sherrill
- * Update documentation
+ * Revision 1.3  2002/06/01 18:23:54  sherrill
+ * Upgrade doxygen documentation
  *
+/* Revision 1.2  2002/03/25 02:43:45  sherrill
+/* Update documentation
+/*
 /* Revision 1.1.1.1  2000/02/04 22:53:17  evaleev
 /* Started PSI 3 repository
 /*
@@ -12,10 +15,17 @@
 
 static char *rcsid = "$Id$";
 
+/*!
+** \file add_mat.c
+** \ingroup (CIOMR)
+*/
+
 #include "includes.h"
 
 /*!
 ** add_mat(): Add matrices a and b into c for n rows and m columns
+**
+** \ingroup (CIOMR)
 */
 void add_mat(double **a, double **b, double **c, int n, int m)
    {

@@ -1,5 +1,6 @@
 /*!
   \file fndcor.c
+  \ingroup (CIOMR)
 */
 
 #include <stdio.h>
@@ -27,6 +28,7 @@ static void fndcor_abort();
 ** David Sherrill, February 1994
 ** Revised to handle more than 2GB of memory by Ed Valeev, October 2000
 **
+** \ingroup (CIOMR)
 */
 
 void fndcor(long int *maxcrb, FILE *infile, FILE *outfile)
@@ -90,12 +92,12 @@ void fndcor(long int *maxcrb, FILE *infile, FILE *outfile)
 
 static void fndcor_abort(FILE *infile, FILE *outfile)
 {
-   fprintf(stderr, "Error: can't read MEMORY keyword!\n") ;
-   fprintf(outfile, "Error: can't read MEMORY keyword!\n") ;
-   ip_done() ;
-   fclose(infile) ;
-   fclose(outfile) ;
-   exit(0) ;
+   fprintf(stderr, "Error: can't read MEMORY keyword!\n");
+   fprintf(outfile, "Error: can't read MEMORY keyword!\n");
+   ip_done();
+   fclose(infile);
+   fclose(outfile);
+   exit(0);
 }
  
 

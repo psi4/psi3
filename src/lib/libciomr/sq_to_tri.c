@@ -1,11 +1,15 @@
 /*!
-**\file sq_to_tri.c
+   \file sq_to_tri.c
+   \ingroup (CIOMR)
 */
 
 /* $Log$
- * Revision 1.2  2002/04/19 21:48:06  sherrill
- * Remove some unused functions and do doxygen markup of libciomr.
+ * Revision 1.3  2002/06/01 18:23:54  sherrill
+ * Upgrade doxygen documentation
  *
+/* Revision 1.2  2002/04/19 21:48:06  sherrill
+/* Remove some unused functions and do doxygen markup of libciomr.
+/*
 /* Revision 1.1.1.1  2000/02/04 22:53:23  evaleev
 /* Started PSI 3 repository
 /*
@@ -23,6 +27,8 @@ static char *rcsid = "$Id$";
 ** \param bmat = matrix to convert
 ** \param amat = array to put lower triangle of bmat into
 ** \param size = number of rows/columns of bmat
+**
+** \ingroup (CIOMR)
 */ 
 void sq_to_tri(double **bmat, double *amat, int size)
      {

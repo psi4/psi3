@@ -1,5 +1,7 @@
 /*!
 ** \file int_array.c
+** \ingroup (CIOMR)
+**
 ** INT_ARRAY.C
 ** This file includes the integer versions of several psi routines
 ** for handling arrays and matrices of doubles 
@@ -25,6 +27,7 @@ extern int resource_command(void);
 ** \param size = length of array to allocate
 **
 ** Returns: pointer to new array
+** \ingroup (CIOMR)
 */
 int * init_int_array(int size)
 {
@@ -45,6 +48,7 @@ int * init_int_array(int size)
 ** zero_int_array()
 ** Zeroes out an array of integers 'size' integers long
 **
+** \ingroup (CIOMR)
 */
 void zero_int_array(int *a, int size)
 {
@@ -58,6 +62,7 @@ void zero_int_array(int *a, int size)
 ** dimensions 'rows' by 'cols' and returns a pointer to it (ptr to first 
 ** row ptr).
 **
+** \ingroup (CIOMR)
 */
 int **init_int_matrix(int rows, int cols)
 {
@@ -87,6 +92,7 @@ int **init_int_matrix(int rows, int cols)
 ** free_int_matrix():
 ** Free a matrix of integers.  Pass a pointer to the matrix and the
 ** number of rows.
+** \ingroup (CIOMR)
 */
 void free_int_matrix(int **array, int size)
 {
@@ -105,6 +111,7 @@ void free_int_matrix(int **array, int size)
 ** zero_int_matrix():
 ** Zero a matrix of integers.  Pass the matrix, the number of rows,
 ** and the number of columns.
+** \ingroup (CIOMR)
 */
 void zero_int_matrix(int **array, int rows, int cols)
 {
@@ -120,6 +127,7 @@ void zero_int_matrix(int **array, int rows, int cols)
 ** print_int_mat():
 ** Print a matrix of integers.  Pass the matrix, the number of rows and
 ** columns, and the output file pointer.
+** \ingroup (CIOMR)
 */
 void print_int_mat(int **a, int m, int n, FILE *out)
 {
