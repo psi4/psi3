@@ -133,14 +133,7 @@ is recommended that the programmer have one file for each subroutine,
 giving each file the name of the subroutine (abbreviated filenames may
 be specified if the function names are too long).  For larger
 programs, it may be helpful to group similar functions together into a
-single file.  Interestingly, there is a UNIX program called
-\file{fsplit} which splits gigantic Fortran files into smaller files,
-one file for each subroutine.\footnote{Often the aforementioned giant
-Fortran files also have line numbering information out past the 72nd
-column.  This can cause problems when compiling the programs as a part
-of \PSIthree.  Characteristically, Ed Seidl has written a program,
-called \module{fortran\_sux}, which deletes any characters after the
-72nd column and any trailing spaces.}
+single file.
 
 In C programs, we also consider it a good idea to place all the
 \celem{\#include} statements in a file such as \file{includes.h},
@@ -192,15 +185,13 @@ often require many nested loops.  The consequence of this is that
 lines can be quite long, due to all those spaces before each line in
 the innermost loops.  If the lines become longer than 80 characters,
 they are hard to read within a single window; please try to keep your
-lines to 80 characters or less!\footnote{Of course in Fortran, at
-least older Fortran, you need to keep lines less than 72 characters
-long.}  This means that you should use about 2-4 spaces per
-indentation level.  Anything more than this will cause problems!
+lines to 80 characters or less.  This means that you should use about
+2-4 spaces per indentation level.
 
 The matching of braces, and so forth, is more variable, and we
 recommend you follow the convention of {\em The C Programming
 Language}, by Kernighan and Ritchie, or perhaps the style found in
-\module{cscf}.
+other \PSIthree modules.
 
 \subsection{Naming of Variables}
 All non-trivial data must be given descriptive names, although
