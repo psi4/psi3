@@ -3,6 +3,7 @@
 #include <ip_libv1.h>
 #include <libciomr.h>
 #include <psio.h>
+#include <file30.h>
 #include <dpd.h>
 #include <qt.h>
 #include "globals.h"
@@ -38,6 +39,9 @@ int main(int argc, char *argv[])
   long int memory;
   int **cachelist, *cachefiles;
   dpdfile2 T1;
+  double **geom, *zvals, value;
+  FILE *efile;
+  int i, errcod, natom;
   
   init_io();
   title();
@@ -47,6 +51,12 @@ int main(int argc, char *argv[])
 
   get_moinfo();
   fndcor(&(memory),infile,outfile);
+
+  errcod = ip_string("WFN", &(params.wfn), 0);
+  if(strcmp(params.wfn, "CCSD") && strcmp(params.wfn, "CCSD_T")) {
+    fprintf(outfile, "Invalid value of input keyword WFN: %s\n", params.wfn);
+    exit(2);
+  }
 
   cachefiles = init_int_array(PSIO_MAXUNIT);
 
@@ -117,6 +127,26 @@ int main(int argc, char *argv[])
   }
 
   fprintf(outfile, "\n");
+
+  /* Write pertinent data to energy.dat */
+  if(!strcmp(params.wfn,"CCSD_T")) {
+    file30_init();
+    natom = file30_rd_natom();
+    geom = file30_rd_geom();
+    zvals = file30_rd_zvals();
+    file30_close();
+    ffile(&efile, "energy.dat",1);
+    fprintf(efile, "*\n");
+    for(i=0; i < natom; i++) 
+      fprintf(efile, " %4d   %5.2f     %13.10f    %13.10f    %13.10f\n",
+	      i+1, zvals[i], geom[i][0], geom[i][1], geom[i][2]);
+    free_block(geom);  free(zvals);
+    fprintf(efile, "SCF(30)   %22.12f\n", moinfo.escf);
+    fprintf(efile, "REF(100)  %22.12f\n", moinfo.eref);
+    fprintf(efile, "CCSD      %22.12f\n", (moinfo.ecc+moinfo.eref));
+    fprintf(efile, "CCSD(T)   %22.12f\n", (ET+ moinfo.ecc+moinfo.eref));
+    fclose(efile);
+  }
 
   dpd_close(0);
 

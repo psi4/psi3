@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include <ip_libv1.h>
 #include <libciomr.h>
 #include <psio.h>
@@ -84,6 +85,21 @@ void get_moinfo(void)
   for(i=0; i < moinfo.nirreps; i++) {
     moinfo.nfzc += moinfo.frdocc[i];
     moinfo.nfzv += moinfo.fruocc[i];
+  }
+  /* Calculation consistency check */
+  if(moinfo.nfzc && (fabs(moinfo.efzc) < 1e-7)) {
+    fprintf(outfile, "\tCCSORT Error: Orbitals are frozen in input,\n");
+    fprintf(outfile, "\tbut frozen core energy is small!\n");
+    fprintf(outfile, "\tCalculation will be aborted...\n");
+    fflush(outfile);
+    exit(2);
+  }
+  else if(!moinfo.nfzc && fabs(moinfo.efzc)) {
+    fprintf(outfile, "\tCCSORT Warning: No orbitals are frozen,\n");
+    fprintf(outfile, "\tbut the frozen-core energy in file30 is non-zero.\n");
+    fprintf(outfile, "\tCalculation will continue with zero efzc...\n");
+    fflush(outfile);
+    moinfo.efzc = 0.0;
   }
 
   /* Dump the frozen orbital arrays to CC_INFO */

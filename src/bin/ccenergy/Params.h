@@ -9,5 +9,6 @@ struct Params {
   int cachetype;
   int ref;
   int diis;
+  char *wfn;
 };
 

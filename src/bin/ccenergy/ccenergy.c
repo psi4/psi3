@@ -56,6 +56,7 @@ int main(int argc, char *argv[])
   FILE *efile;
   int **cachelist, *cachefiles;
   struct dpd_file4_cache_entry *priority;
+  dpdfile2 T1;
 
   moinfo.iter=0;
   
@@ -113,7 +114,6 @@ int main(int argc, char *argv[])
   moinfo.t1diag = diagnostic();
   moinfo.d1diag = d1diag();
   update();
-  /*  if(params.ref == 2) params.maxiter = 0; */
   for(moinfo.iter=1; moinfo.iter <= params.maxiter; moinfo.iter++) {
 
     timer_on("sort_amps");
@@ -182,21 +182,23 @@ int main(int argc, char *argv[])
   fprintf(outfile, "\n");
 
   /* Write pertinent data to energy.dat for Dr. Yamaguchi */
-  file30_init();
-  natom = file30_rd_natom();
-  geom = file30_rd_geom();
-  zvals = file30_rd_zvals();
-  file30_close();
-  ffile(&efile, "energy.dat",1);
-  fprintf(efile, "*\n");
-  for(i=0; i < natom; i++) 
-    fprintf(efile, " %4d   %5.2f     %13.10f    %13.10f    %13.10f\n",
-	    i+1, zvals[i], geom[i][0], geom[i][1], geom[i][2]);
-  free_block(geom);  free(zvals);
-  fprintf(efile, "SCF(30)   %22.12f\n", moinfo.escf);
-  fprintf(efile, "REF(100)  %22.12f\n", moinfo.eref);
-  fprintf(efile, "CCSD      %22.12f\n", (moinfo.ecc+moinfo.eref));
-  fclose(efile);
+  if(!strcmp(params.wfn,"CCSD")) {
+    file30_init();
+    natom = file30_rd_natom();
+    geom = file30_rd_geom();
+    zvals = file30_rd_zvals();
+    file30_close();
+    ffile(&efile, "energy.dat",1);
+    fprintf(efile, "*\n");
+    for(i=0; i < natom; i++) 
+      fprintf(efile, " %4d   %5.2f     %13.10f    %13.10f    %13.10f\n",
+	      i+1, zvals[i], geom[i][0], geom[i][1], geom[i][2]);
+    free_block(geom);  free(zvals);
+    fprintf(efile, "SCF(30)   %22.12f\n", moinfo.escf);
+    fprintf(efile, "REF(100)  %22.12f\n", moinfo.eref);
+    fprintf(efile, "CCSD      %22.12f\n", (moinfo.ecc+moinfo.eref));
+    fclose(efile);
+  }
 
   /* Generate the spin-adapted RHF amplitudes for later codes */
   if(params.ref == 0) {

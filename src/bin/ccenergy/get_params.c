@@ -12,6 +12,12 @@ void get_params()
   char *cachetype = NULL;
   char *junk;
 
+  errcod = ip_string("WFN", &(params.wfn), 0);
+  if(strcmp(params.wfn, "CCSD") && strcmp(params.wfn, "CCSD_T")) {
+    fprintf(outfile, "Invalid value of input keyword WFN: %s\n", params.wfn);
+    exit(2);
+  }
+
   errcod = ip_string("REFERENCE", &(junk),0);
   if(!strcmp(junk, "RHF")) ref = 0;
   else if(!strcmp(junk, "ROHF")) ref = 1;
@@ -66,6 +72,7 @@ void get_params()
 
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
+  fprintf(outfile, "\tWave function   =    %6s\n", params.wfn);
   fprintf(outfile, "\tReference wfn   =    %4s\n", junk);
   fprintf(outfile, "\tMemory (Mbytes) =  %5.1f\n",params.memory/1e6);
   fprintf(outfile, "\tMaxiter         =   %4d\n", params.maxiter);
