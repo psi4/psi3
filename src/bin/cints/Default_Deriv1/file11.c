@@ -3,6 +3,7 @@
 #include <string.h>
 #include <libciomr/libciomr.h>
 #include <libfile30/file30.h>
+#include <libchkpt/chkpt.h>
 #include <libint/libint.h>
 
 #include "defines.h"
@@ -14,10 +15,14 @@ void file11()
   int i;
   char wfnstring[80];
   double **Geom, **GradRef, **GeomRef;
+  double Etot;
   FILE *fp11;
 
   /*--- Ok, have to be sure we get these energies, reload if necessary ---*/
   /*--- should have Escf around at least ---*/
+
+  /* Ack, remove this old stuff and just get the total energy!  CDS */  
+  /*
   if (strcmp(UserOptions.wfn,"SCF")==0) {
     MOInfo.Eref = MOInfo.Escf;
   }
@@ -25,6 +30,8 @@ void file11()
     MOInfo.Eref = file30_rd_eref();
     MOInfo.Ecorr = file30_rd_ecorr();
   }
+  */
+  Etot = chkpt_rd_etot();
 
   /*--- Geometry in the canonical frame ---*/
   Geom = block_matrix(Molecule.num_atoms,3);
@@ -52,7 +59,8 @@ void file11()
   if (strcmp(UserOptions.wfn,"SCF") == 0)
     fprintf(fp11,"%20.10lf\n",MOInfo.Escf);
   else
-    fprintf(fp11,"%20.10lf\n",MOInfo.Eref+MOInfo.Ecorr);
+    /* fprintf(fp11,"%20.10lf\n",MOInfo.Eref+MOInfo.Ecorr); */
+    fprintf(fp11,"%20.10lf\n",Etot); 
   
   for(i=0;i<Molecule.num_atoms;i++)
     fprintf(fp11,"%20.10lf%20.10lf%20.10lf%20.10lf\n",
