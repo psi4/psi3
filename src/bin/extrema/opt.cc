@@ -51,7 +51,7 @@ void main() {
   else punt("z-matrix not found in input ... can't do whatever it is you want to do yet");
   
   printf("\nNormal termination\n");
-  return;
+  
 }
 
 

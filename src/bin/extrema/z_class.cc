@@ -24,20 +24,6 @@ extern double *B_row_bond( int atom1, int atom2 );
 extern double *B_row_angle( int atom1, int atom2, int atom3 );
 extern double *B_row_tors( int atom1, int atom2, int atom3, int atom4 );
 
-/*need to declare this structure so that we can read zmat from file30
-  (this is dictated by how file30 is written to, so don't change it)*/
-struct z_entry {
-  int bond_atom;                    /*first reference atom (bond)*/
-  int angle_atom;                   /*second reference atom (angle)*/
-  int tors_atom;                    /*third reference atom (torsion)*/
-  int bond_opt;                     /*flag indicating to optimize variable (default=false)*/
-  int angle_opt;
-  int tors_opt;
-  double bond_val;                  /*coordinate values*/
-  double angle_val;
-  double tors_val;
-  };
-            
 
 
 /***********************************************************************************
@@ -79,6 +65,19 @@ z_class :: z_class(int num_coord)
       fprintf(outfile,"%i  %i  %lf  %i  %lf  %i  %lf\n",i+1,z_geom[i].bond_atom,
               z_geom[i].bond_val,z_geom[i].angle_atom,z_geom[i].angle_val,
               z_geom[i].tors_atom,z_geom[i].tors_val);  
+    }
+
+  fprintf(outfile,"torsion string: %s\n",z_geom[3].tors_label);
+  
+  /*print opt flags*/
+  fprintf(outfile,"\nopt flags:\n");
+  for(i=1;i<num_atoms;++i) {
+    if( i==1) 
+      fprintf(outfile,"%i\n",z_geom[i].bond_opt);
+    else if( i==2 ) 
+      fprintf(outfile,"%i  %i\n",z_geom[i].bond_opt,z_geom[i].angle_opt); 
+    else 
+      fprintf(outfile,"%i  %i  %i\n",z_geom[i].bond_opt,z_geom[i].angle_opt,z_geom[i].tors_opt);
     }
 
   /*write z_mat to the array of simple_internal objects in coord_base class*/
