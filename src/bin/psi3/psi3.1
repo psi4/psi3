@@ -1,4 +1,4 @@
-.TH psi3 1 "2 December, 2002" "\*(]W" "\*(]D"
+.TH psi3 1 "25 August, 2003" "\*(]W" "\*(]D"
 .SH NAME
 psi3 \- master execution driver for the PSI programs
 
@@ -25,8 +25,72 @@ started.
 .pN psi.dat
 .eL "FILES REQUIRED"
 
+.SH COMMAND-LINE OPTIONS
+
+.LP
+The following command-line arguments are available:
+
+.IP "\fI-i\fP or \fI-f\fP"
+This flag is used to specify the input file name, e.g.
+.B psi3 -i h2o.in
+where
+.B h2o.in
+is the name of input file. By default,
+.B psi3
+and PSI modules that it calls will look for
+.B input.dat .
+
+.IP "\fI-o\fP"
+This flag is used to specify the output file name, e.g.
+.B psi3 -o h2o.out
+where
+.B h2o.in
+is the name of output file. By default,
+.B psi3
+and PSI modules that it calls will look for
+.B output.dat .
+
+.IP "\fI-p\fP"
+This flag is used to specify the PSI file prefix, e.g.
+.B psi3 -p h2o.dzp
+where
+.B h2o.dzp
+is the prefix that will be used for all PSI files. By default,
+.B psi3
+and PSI modules that it calls will use
+.B psi
+for the file prefix. Hence, the checkpoint
+file is by default called
+.B psi.32 .
+
+.IP "\fI--noinput\fP or \fI-n\fP"
+This tells
+.B psi3
+driver not to run
+.B input
+program. This flag is useful for scripting and debugging.
+
+.IP "\fI--check\fP or \fI-c\fP"
+This tells
+.B psi3
+driver to check the input and print out the list of programs
+which would be executed. Equivalent to setting
+.BR CHECK=TRUE
+in the input file.
+
+.IP "\fI--messy\fP or \fI-m\fP"
+This tells
+.B psi3
+driver not to run cleanup program
+.B psiclean .
+Usually, the cleanup program is invoked via the
+.B $done
+macro defined in
+.B psi.dat .
+This flag is useful for scripting and debugging.
+
 .SH INPUT FORMAT
-.\" ---------------------------------------- Commonly used input here:
+
 .LP
 The
 .B psi3
@@ -51,7 +115,9 @@ to run.  Acceptable choices are:
 .B SYMM_FREQ
 (for harmonic vibrational frequencies of symmetric modes only),
 .B DISP
-(for a series of single-points at different displaced geometries).
+(for a series of single-points at different displaced geometries),
+.B DBOC
+(to compute the Diagonal Born-Oppenheimer Correction [DBOC] to electronic energy).
 The default is 
 .BR SP .
 
