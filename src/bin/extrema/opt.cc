@@ -77,6 +77,8 @@ void main() {
           update_H();
 	}
 
+      write_opt();
+
       /*compute optimization step*/
       opt_step();
 
@@ -90,13 +92,13 @@ void main() {
       for(i=1;i<num_atoms;++i) {
 	  if(i==1) {
 	      z_coord.z_geom[i].bond_val = coord_vec[j];
-	      ++j; fprintf(outfile,"\nj: %d",j);
+	      ++j; 
 	    }
 	  if(i==2) {
 	      z_coord.z_geom[i].bond_val = coord_vec[j];
-	      ++j; fprintf(outfile,"\nj: %d",j);
+	      ++j; 
 	      z_coord.z_geom[i].angle_val = coord_vec[j];
-	      ++j; fprintf(outfile,"\nj: %d",j);
+	      ++j; 
 	    }
 	  else if(i>2) {
 	      z_coord.z_geom[i].bond_val = coord_vec[j];
@@ -115,8 +117,7 @@ void main() {
       fflush(outfile);
 
       file30_wt_geom(cart_geom);
-       
-      write_opt();
+      file30_wt_zmat(z_coord.z_geom,num_atoms);
       
     }
   else punt("z-matrix not found in input ... can't do whatever it is you want to do yet");
