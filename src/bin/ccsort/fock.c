@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <psio.h>
 #include <libciomr.h>
 #include <dpd.h>
