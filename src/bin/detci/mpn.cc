@@ -122,14 +122,12 @@ void mpn_generator(CIvect &Hd, struct stringwr **alplist,
   Sigma.buf_lock(buffer2);
   Cvec.read(0, 0);  /* Set Cvec up correctly ? */
   
-  // Commented 
-  fprintf(outfile,"Cvec zero_blocks:\n");
-  Cvec.print_zero_blocks(); 
+  //fprintf(outfile,"Cvec zero_blocks:\n");
+  //Cvec.print_zero_blocks(); 
   Sigma.set_zero_blocks_all();
   
-  // Commented
-  fprintf(outfile,"Sigma zero_blocks after set_zero_blocks_all.\n");
-  Sigma.print_zero_blocks(); 
+  //fprintf(outfile,"Sigma zero_blocks after set_zero_blocks_all.\n");
+  //Sigma.print_zero_blocks(); 
   
   sigma(alplist, betlist, Cvec, Sigma, oei, tei, Parameters.fci, 0); 
   if (Parameters.print_lvl >= 5) {
@@ -137,19 +135,17 @@ void mpn_generator(CIvect &Hd, struct stringwr **alplist,
     Sigma.read(0,0);
     Sigma.print(outfile);
     }
-  // Commented
-  fprintf(outfile,"Sigma zero_blocks after sigma call.\n");
-  Sigma.print_zero_blocks(); 
+  //fprintf(outfile,"Sigma zero_blocks after sigma call.\n");
+  //Sigma.print_zero_blocks(); 
 
   Cvec.read(0,0);  /* Set Cvec up correctly ? */
   Sigma.read(0,0); /* Set Sigma up correctly ? */
   tval = Cvec * Sigma;
 
-  // Commented
-  fprintf(outfile," CalcInfo.enuc = %25.15f\n", CalcInfo.enuc);
-  fprintf(outfile," <psi0|Hc|psi0> = %25.15f\n", tval);
-  fprintf(outfile," CalcInfo.efzc = %25.15f\n", CalcInfo.efzc);
-  fprintf(outfile," mpk_energy[0] = %25.15f\n", mpk_energy[0]);
+  //fprintf(outfile," CalcInfo.enuc = %25.15f\n", CalcInfo.enuc);
+  //fprintf(outfile," <psi0|Hc|psi0> = %25.15f\n", tval);
+  //fprintf(outfile," CalcInfo.efzc = %25.15f\n", CalcInfo.efzc);
+  //fprintf(outfile," mpk_energy[0] = %25.15f\n", mpk_energy[0]);
  
   tval += CalcInfo.efzc - mpk_energy[0]; 
  
@@ -196,21 +192,19 @@ void mpn_generator(CIvect &Hd, struct stringwr **alplist,
      Sigma.read(0, 0);
      Cvec.read((k-kvec_offset), 0);  /* Set Cvec up correctly ? */
      sigma(alplist, betlist, Cvec, Sigma, oei, tei, Parameters.fci, 0);
-     // Commented 
-     fprintf(outfile,"Sigma zero_blocks after sigma call.\n");
-     Sigma.print_zero_blocks(); 
+     //fprintf(outfile,"Sigma zero_blocks after sigma call.\n");
+     //Sigma.print_zero_blocks(); 
 
      /* Compute k+1, 2k, and 2k+1 th order energies from kth order wavefunction */ 
      Sigma.read(0,0); /* S_k is located in first Sigma space */
-     // Commented
-     Sigma.print(outfile);
+     //Sigma.print(outfile);
 
-     // #ifdef DEBUG
+     #ifdef DEBUG
        tval = Sigma * Sigma;
        fprintf(outfile," Sigma * Sigma = %20.10f\n", tval);
        tval = sqrt(tval);
        fprintf(outfile," norm of Sigma = %20.10f\n", tval);
-     // #endif
+     #endif
 
      if (CalcInfo.iopen) { 
        Cvec.read(0,0); /* E_k = C_0 x S_k */
@@ -291,9 +285,8 @@ void mpn_generator(CIvect &Hd, struct stringwr **alplist,
         buffer2, k+1, mpk_energy, cvec_coeff, cvec_norm);
      if (Parameters.zero_blocks) Cvec2.copy_offset_filenumber(Cvec);
      
-     // Commented
-     fprintf(outfile, "Cvec %d = \n", k+1);
-     Cvec.print(outfile);
+     // fprintf(outfile, "Cvec %d = \n", k+1);
+     // Cvec.print(outfile);
 
      if (Parameters.mpn_schmidt) {
        fprintf(outfile, "cvec_coeff = \n");
