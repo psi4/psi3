@@ -27,40 +27,61 @@
 zmat :: zmat() : internals()
    {
 
-  int i, j, z_natm, z_nent, z_ncor, z_nopt, pos, dummy;        
-  double **temp;
+  int i, j, pos, dummy;        
 
   zmat::parse_input();
 
   /*read z_mat and cartesians from file30*/
-  file30_init();
+  num_entries = file30_rd_nentry();
   z_geom = file30_rd_zmat();
   char **temp_felement;
-  temp_felement = file30_rd_felement();
-  z_natm = file30_rd_natom();
-  z_nent = file30_rd_nentry();
+  felement = file30_rd_felement();
 
   dummy=0;
-  for(i=0;i<z_nent;++i)
-      if(!strcmp(temp_felement[i],"X       "))
-	 dummy=1;
+  for(i=0;i<num_entries;++i) 
+      if(!strncmp(felement[i],"X ",2) )
+	  dummy=1;
   if(dummy) {
-      temp = file30_rd_fgeom();
+
       fprintf(outfile,"\n  Beware: imput can't handle dummy atoms for");
       fprintf(outfile," all symmetries at this time");
-  }
-  else if(!dummy)
-      temp = file30_rd_geom();
 
-  switch(z_nent) {
-    case 2: z_ncor = 1; break;
-    case 3: z_ncor = 3; break;
-    default: z_ncor =  (z_nent*3-6); break;
+      free(carts);
+      double** cart_temp;
+      carts = init_array(3*num_entries);
+      cart_temp = file30_rd_fgeom();
+
+      for(i=0;i<(3*num_entries);++i)
+	  carts[i] = cart_temp[0][i];
+      free_matrix(cart_temp,1);
+
+      double* ctemp;
+      ctemp = init_array(3*num_atoms);
+      for(i=0;i<3*num_atoms;++i)
+	      ctemp[i] = c_grads[i];
+      free(c_grads);
+      c_grads = init_array(3*num_entries);
+      pos=0;
+      for(i=0;i<num_entries;++i) {
+	  if(strncmp(felement[i],"X ",2) ) {
+	      c_grads[3*i] = ctemp[3*pos];
+	      c_grads[3*i+1] = ctemp[3*pos+1];
+	      c_grads[3*i+2] = ctemp[3*pos+2];
+	      ++pos;
+	  }
+      }	 
+      free(ctemp);
+  }
+
+  switch(num_entries) {
+    case 2: fnum_coords = 1; break;
+    case 3: fnum_coords = 3; break;
+    default: fnum_coords =  (num_entries*3-6); break;
   } 
 
   /*write z_mat to the array of simple_internal*/
-  simples = (simple*) malloc(z_ncor*sizeof(simple));  
-  for(i=1;i<z_nent;++i) {
+  simples = (simple*) malloc(fnum_coords*sizeof(simple));  
+  for(i=1;i<num_entries;++i) {
       if( i==1 ) {
 	  simples[0].set_simple(0,z_geom[1].bond_val,
 				2,z_geom[1].bond_atom,-1,-1,
@@ -90,10 +111,10 @@ zmat :: zmat() : internals()
   }
 
   char** labels;
-  labels = (char**) malloc( z_ncor*sizeof(char*));
-  for(i=0;i<z_ncor;++i) labels[i] = (char*) malloc(20*sizeof(char));
+  labels = (char**) malloc( fnum_coords*sizeof(char*));
+  for(i=0;i<fnum_coords;++i) labels[i] = (char*) malloc(20*sizeof(char));
   int p=0;
-  for(i=1;i<z_nent;++i) {
+  for(i=1;i<num_entries;++i) {
       if(i==1) {
 	  strcpy( labels[p], z_geom[1].bond_label );
 	  simples[p].set_label(z_geom[1].bond_label);
@@ -119,8 +140,8 @@ zmat :: zmat() : internals()
 
   /*find first instance of each unique coordinate*/
   int there;
-  first_unique = (int *) malloc(z_ncor*sizeof(int));
-  for(i=0;i<z_ncor;++i) {
+  first_unique = (int *) malloc(fnum_coords*sizeof(int));
+  for(i=0;i<fnum_coords;++i) {
       there=0;
       for(j=0;j<i;++j) 
 	  if( !strcmp( simples[i].get_label(), simples[j].get_label() )) {
@@ -131,24 +152,18 @@ zmat :: zmat() : internals()
 	  first_unique[i]=1;      
   }
 
-  z_nopt = 0;
-  for(i=0;i<z_ncor;++i) {
+  num_coords = 0;
+  for(i=0;i<fnum_coords;++i) {
       if(simples[i].get_opt() && first_unique[i]) {
-	  ++z_nopt;
+	  ++num_coords;
       }
   }
-      
-  /*call internals constructor now that we know how many coords to optimize*/
-  internals::construct_internals(z_natm, z_nent, z_ncor, z_nopt);
 
-  felement = temp_felement;
+  /*allocate memory now that optimized coordinate number is known*/
+  internals::mem_alloc();
 
   for(i=0;i<fnum_coords;++i)
       fcoords[i] = fcoords_old[i] = simples[i].get_val();
-
-  for(i=0;i<(3*z_nent);++i) 
-      carts[i] = temp[0][i];
-  free(temp);
 
   p=0;
   for(i=0;i<fnum_coords;++i) 
@@ -159,13 +174,13 @@ zmat :: zmat() : internals()
 	  
   /*find positive/negative torsion pairs*/
   int *is_torsion;
-  is_torsion = (int *) malloc(num_coords*sizeof(int));
+  is_torsion = init_int_array(num_coords);
   p=0;
   for(i=0;i<fnum_coords;++i) {
       if(simples[i].get_opt() && first_unique[i]) {
 	  if(simples[i].get_type()==2) 
 	      is_torsion[p] = 1;
-	  else is_torsion[i] = 0;
+	  else is_torsion[p] = 0;
 	  ++p;
       }
   }
@@ -198,7 +213,6 @@ zmat :: zmat() : internals()
 
 void zmat :: optimize() {
 
-    read_file11();
     read_opt();
     print_carts(_bohr2angstroms);
     print_c_grads();
@@ -338,7 +352,7 @@ void zmat :: write_file30() {
   int row=0;
   pos = 0;
   for(i=0;i<num_entries;++i) { 
-      if(strcmp(felement[i],"X       ")) {
+      if(strncmp(felement[i],"X  ",2)) {
 	  for(j=0;j<3;++j) {
 	      cart_matrix[row][j] = carts[pos];
 	      ++pos;
@@ -515,9 +529,68 @@ void zmat :: newton_step() {
 
 
 
+/*---------------------------------------------------------------------------*/
+/*! \fn zmat::print_carts(double)
+  \brief Prints cartesians.
+
+  \param conv conversion factor;
+  either <b>1.0</b> for bohr or <b>_bohr2angstroms</b> for angstroms */
+/*---------------------------------------------------------------------------*/
+
+void zmat :: print_carts(double conv) {
+ 
+    int i, j;
+    double **temp;
+
+    temp = init_matrix(num_entries,3);
+    for(i=0;i<num_entries;++i) 
+	for(j=0;j<3;++j) 
+	    temp[i][j] = carts[3*i+j]*conv;
+    if(conv==1.0)
+	fprintf(outfile,"\n  Cartesian Coordinates (bohr):\n");
+    else
+	fprintf(outfile,"\n  Cartesian Coordinates (angstroms):\n");
+     fprintf(outfile,"                       x              y         ");
+    fprintf(outfile,"       z\n");
+    fprintf(outfile,"                --------------- --------------- ");
+    fprintf(outfile,"---------------\n");
+    for(i=0;i<num_entries;++i)
+	fprintf(outfile,"  %8s  %15.10lf %15.10lf %15.10lf\n",
+		felement[i], temp[i][0], temp[i][1], temp[i][2]);
+    free_matrix(temp,num_entries);
+
+    return;
+}
 
 
 
+/*--------------------------------------------------------------------------*/
+/*! \fn zmat::print_c_grads()
+  \brief Prints cartesian gradients (Hartree/Bohr). */
+/*--------------------------------------------------------------------------*/
+
+void zmat :: print_c_grads() {
+	
+    int i, j;
+
+    double **cgtemp;
+    cgtemp = init_matrix(num_entries,3);
+	
+    for(i=0;i<num_entries;++i) 
+	for(j=0;j<3;++j) 
+	    cgtemp[i][j] = c_grads[3*i+j];
+    fprintf(outfile,"\n  Cartesian Gradients (a.u):\n");
+    fprintf(outfile,"                       x              y         ");
+    fprintf(outfile,"       z\n");
+    fprintf(outfile,"                --------------- --------------- ");
+    fprintf(outfile,"---------------\n");
+    for(i=0;i<num_entries;++i)
+	fprintf(outfile,"  %8s  %15.10lf %15.10lf %15.10lf\n",
+		felement[i], cgtemp[i][0], cgtemp[i][1], cgtemp[i][2]);
+    free_matrix(cgtemp,num_entries);
+    
+    return;
+}
 
 
 

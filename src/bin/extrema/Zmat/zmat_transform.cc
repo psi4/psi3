@@ -55,13 +55,13 @@ void zmat::compute_B() {
   /*form u*/
   int k=0;
   for(j=0;j<num_entries;++j) {
-      if(strcmp(felement[j],"X       ")) {
+      if(strncmp(felement[j],"X   ",2)) {
 	 u[3*j][3*j] = 1.0 / masses[k]; 
 	 u[3*j+1][3*j+1] = 1.0 /masses[k];
 	 u[3*j+2][3*j+2] = 1.0 / masses[k];
 	 ++k;
        }
-       else if (!strcmp(felement[j],"X       ")) {
+       else if (!strncmp(felement[j],"X  ",2)) {
 	  u[3*j][3*j] = u[3*j+1][3*j+1] = u[3*j+2][3*j+2]= 1.0;
 	  }
   }
@@ -146,7 +146,7 @@ void zmat::back_transform() {
     for(i=0;i<fnum_coords;++i) { 
 	fcoord_new[i] = simples[i].get_val();
     }
-    
+
     internals::back_transform(fcoord_new, fcoord_old);
 
     free(fcoord_old);
@@ -177,63 +177,34 @@ void zmat :: cart_to_internal(double** z_array) {
 
 
 	if(i==1) {
-	    (*z_array)[pos] = norm(carts, i ,simples[pos].get_bond()-1);
+	    (*z_array)[pos] = compute_bond(carts, i,simples[pos].get_bond()-1);
 	    ++pos ;
 	}
 
 
 	if(i==2){
 
-		(*z_array)[pos] = norm( carts, i, simples[pos].get_bond()-1);
-		temp_num = dot_pdt( unit_vec(carts, 
-					     simples[pos+1].get_bond()-1, i ), 
-				    unit_vec(carts, 
-					     simples[pos+1].get_bond()-1, 
-					     simples[pos+1].get_angle()-1 ) );
-		(*z_array)[pos+1] = acos( temp_num );
+		(*z_array)[pos] = 
+		    compute_bond( carts, i, simples[pos].get_bond()-1);
+		(*z_array)[pos+1] = 
+		    compute_angle( carts, i, simples[pos+1].get_bond()-1,
+				   simples[pos+1].get_angle()-1);
 	    pos += 2;
 	}
 
 
 	if(i>2) {
 	    
-	   (*z_array)[pos] = norm( carts, i, simples[pos].get_bond()-1);
-	   (*z_array)[pos+1] = acos( dot_pdt( 
-               unit_vec( carts, simples[pos+1].get_bond()-1, i ), 
-	       unit_vec( carts, simples[pos+1].get_bond()-1, 
-                         simples[pos+1].get_angle()-1 ) ) );
-
-	   temp1 = cross_pdt( unit_vec( carts, 
-					simples[pos+2].get_bond()-1, 
-					simples[pos+2].get_angle()-1 ),
-			      unit_vec( carts, 
-					simples[pos+2].get_angle()-1, 
-					simples[pos+2].get_tors()-1 ) );
-		
-	   temp2 = cross_pdt( unit_vec( carts,i,simples[pos+2].get_bond()-1), 
-			      unit_vec( carts, simples[pos+2].get_bond()-1, 
-					simples[pos+2].get_angle()-1 ) );
-
-		temp_num = dot_pdt(temp1,temp2);
-
-                temp_num /= sin( acos( dot_pdt(
-		                unit_vec( carts, simples[pos+2].get_angle()-1, 
-                                        simples[pos+2].get_tors()-1 ), 
-			        unit_vec( carts, simples[pos+2].get_angle()-1, 
-					  simples[pos+2].get_bond()-1 ) ) ) )
-		    * sin( acos( dot_pdt(
-                                unit_vec( carts, simples[pos+2].get_bond()-1, 
-                                        simples[pos+2].get_angle()-1 ),
-				unit_vec( carts,simples[pos+2].get_bond()-1,i )
-			) ) );
-
-		if(temp_num>(1-ALMOST_ONE))
-		    (*z_array)[pos+2] = 0.0;
-		else if(temp_num<(-1+ALMOST_ONE))
-		    (*z_array)[pos+2] = _pi;
-		else 
-		    (*z_array)[pos+2] = acos(temp_num);
-		pos += 3;
+	   (*z_array)[pos] = 
+	       compute_bond( carts, i, simples[pos].get_bond()-1);
+	   (*z_array)[pos+1] = 
+	       compute_angle( carts, i, simples[pos+1].get_bond()-1,
+			      simples[pos+1].get_angle()-1);
+	   (*z_array)[pos+2] = 
+	       compute_torsion( carts, i, simples[pos+2].get_bond()-1,
+				simples[pos+2].get_angle()-1,
+				simples[pos+2].get_tors()-1);
+	   pos += 3;
 	}
 		
     }

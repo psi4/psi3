@@ -155,11 +155,16 @@ void internals :: compute_G() {
 
     double **temp1;
     temp1 = init_matrix(fnum_coords,3*num_entries);
-    
+
     mmult(B, 0, u, 0, temp1, 0, fnum_coords, 3*num_entries, 3*num_entries, 0);
     mmult(temp1, 0, B, 1, G, 0, fnum_coords, 3*num_entries, fnum_coords, 0);
 
     free_matrix(temp1,fnum_coords);
+
+    if(print_lvl >= RIDICULOUS_PRINT) {
+	fprintf(outfile,"\n  G matrix:\n");
+	print_mat(G,fnum_coords,fnum_coords,outfile);
+    }
 
     return;
 }
@@ -184,6 +189,11 @@ void internals :: compute_A() {
     free_matrix(temp1,fnum_coords);
     free_matrix(temp2,3*num_entries);
 
+    if(print_lvl >= RIDICULOUS_PRINT) {
+	fprintf(outfile,"\n  A matrix:\n");
+	print_mat(A,3*num_entries,fnum_coords,outfile);
+    }
+
     return;
 }
 
@@ -202,3 +212,5 @@ void internals :: print_B() {
     }
     return;
 }
+
+

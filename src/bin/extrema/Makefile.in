@@ -3,7 +3,7 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-DIRS = Math_Tools Coord_Base Internals Zmat
+DIRS = Math_Tools Coord_Base Internals Zmat Deloc
 VPATH += $(DIRS:%=$(srcdir)/%)
 
 LD = $(CXX)

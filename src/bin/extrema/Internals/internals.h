@@ -18,11 +18,12 @@
 /*						Joseph P. Kenny 11/29/01
   ###########################################################################*/
 
-class internals : public coord_base {
+class internals : protected coord_base {
 
   protected:
 
-    int fnum_coords; /*!< full number of coordinates */
+    int fnum_coords, /*!< full number of coordinates */
+	B_dim; /*!< fnum_coords for zmat, num_coords for deloc */
     double **full_geom, /*!< full geometry (including dummy atoms) */
 	*fcoords, /*!< full set of internal coordinate values */
 	*fcoords_old, /*!< full set of previous internal coordinate values */
@@ -30,16 +31,18 @@ class internals : public coord_base {
 	**B,/*!< the B matrix */
 	**B_red, /*!< reduced dimension B matrix (no equivalent coords) */
 	**G, /*!< the G=B.B^t matrix */
-	**A; /*!< the A=u.B^t.G matrix */
+	**A, /*!< the A=u.B^t.G matrix */
+	**u; /*!< the u matrix (triplets of inverse atomic masses) */
 
     internals() { return; };
-    void construct_internals(int i_natm, int i_nent, int i_ncor, int i_nopt);
+    void mem_alloc();
     ~internals() {
 	free_matrix(full_geom,num_entries);
 	free_matrix(B_red,num_coords);
         free_matrix(B,fnum_coords);
 	free_matrix(G,fnum_coords);
 	free_matrix(A,3*num_entries);
+	free_matrix(u,3*num_entries);
 	return;
     }
     virtual void compute_B() = 0;

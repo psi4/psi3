@@ -12,38 +12,28 @@ double **symm_matrix_invert(double **A, int dim, int print_det, int redundant);
 
 
 /*--------------------------------------------------------------------------*/
-/*! \fn internals::construct_internals(int i_natm, int i_nent, int i_ncor,
-                                       int i_nopt)
-    \brief Actual constructor.
-    
-    This is the actual constructor.  The parameters may not be
-    known when a derived class is initialized and may be called later
-    during the derived class's constructor.  Obviously, this undermines
-    the idea of an automatic constructor and developers need to be 
-    careful to call this constructor at the proper time. 
-    \param i_natm number of atoms
-    \param i_nent number of entries (atoms + dummy atoms)
-    \param i_ncor total number of coordinates, inluding equivalent coordinates
-    \param i_nopt number of coordinates actually optimized */
+/*! \fn internals::mem_alloc()
+    \brief Allocates memory.
+
+    Must be called by top-level class once dimensions determined. */
 /*--------------------------------------------------------------------------*/
 
-void internals::construct_internals(int i_natm, int i_nent, int i_ncor, 
-				    int i_nopt) {
+void internals::mem_alloc() {
 
-	coord_base::construct_coord_base(i_natm, i_nent, i_nopt);
+    coord_base::mem_alloc();
 
-	fnum_coords = i_ncor;
-
-	full_geom = init_matrix(num_entries,3);
-	fgrads = init_array(fnum_coords);
-	fcoords = init_array(fnum_coords);
-	fcoords_old = init_array(fnum_coords);
-        B = (double**) malloc(fnum_coords*sizeof(double*));
-	B_red = init_matrix(num_coords,3*num_entries);
-	G = init_matrix(fnum_coords, fnum_coords);
-	A = init_matrix(3*num_entries, fnum_coords);
-	return;
-    }
+    full_geom = init_matrix(num_entries,3);
+    fgrads = init_array(fnum_coords);
+    fcoords = init_array(fnum_coords);
+    fcoords_old = init_array(fnum_coords);
+    B = (double**) malloc(fnum_coords*sizeof(double*));
+    B_red = init_matrix(num_coords,3*num_entries);
+    G = init_matrix(fnum_coords, fnum_coords);
+    A = init_matrix(3*num_entries, fnum_coords);
+    u = init_matrix(3*num_entries, 3*num_entries);
+    
+    return;
+}
 
 /*---------------------------------------------------------------------------*/
 /*! \fn internals::grad_trans()
@@ -114,14 +104,25 @@ void internals :: back_transform(double *c_new, double *c_old ) {
   }
   else fprintf(outfile,"\n");
 
+  if(print_lvl > RIDICULOUS_PRINT) 
+      print_carts(1.0);
+
   while((!converged) && (loop<BT_LOOP) ) {
   
       /*compute A*/
       compute_G(); 
       compute_A(); 
-
+      
       for(i=0;i<fnum_coords;++i) {
 	  dq[i] = c_new[i] - c_old[i];
+      }
+
+      if(print_lvl > RIDICULOUS_PRINT) {
+	  print_carts(1.0);
+	  for(i=0;i<fnum_coords;++i) 
+	      fprintf(outfile,
+		      "\n dq[%d] %.20lf = c_new[%d] %.20lf - c_old[%d] %.20lf",
+		      i,dq[i],i,c_new[i],i,c_old[i]);
       }
 
       /*compute dx = A dq */
@@ -135,17 +136,24 @@ void internals :: back_transform(double *c_new, double *c_old ) {
 
       pos=0;
       dx_sum = 0.0;
+      int hack=0;
       for(i=0;i<3*num_entries;++i) {
-	  carts[i] += dx[i];
+	  /* hack to keep proper orientation */
+	  if(fabs(carts[i])>ALMOST_ZERO) 
+	      carts[i] += dx[i];
+	  else if(fabs(dx[i])>ALMOST_ZERO)
+	      hack = 1;
           dx_sum += sqrt(dx[i]*dx[i]);
       }
       dx_sum /= (3*num_entries);
+      if(hack)
+	  if(print_lvl>NORMAL_PRINT)
+	      fprintf(outfile,
+		      "\n  WARNING: Using hack to keep proper orientation"); 
 
-      if(print_lvl >= RIDICULOUS_PRINT) {
-	  for(i=0;i<fnum_coords;++i) 
-	      fprintf(outfile,"\n dq[%d]=%lf",i+1,dq[i]);
+      if(print_lvl > RIDICULOUS_PRINT) {
 	  for(i=0;i<3*num_entries;++i) 
-	      fprintf(outfile,"\n dx[%d]=%lf",i+1,dx[i]);
+	      fprintf(outfile,"\n dx[%d]=%.20lf",i+1,dx[i]);
       }
       
       cart_to_internal(&c_old);
@@ -166,8 +174,14 @@ void internals :: back_transform(double *c_new, double *c_old ) {
       ++loop;
   }
   
-  if(!converged) 
+  if(!converged) { 
+      fprintf(outfile,
+	      "\n  Check for angles near 180.0 degrees, they're bad");
+      fprintf(outfile,
+	      "\n  You may need to use z-matrix coordinates avoiding 180.0");
+      fprintf(outfile," degree angles\n");
       punt("Back transformation to cartesians has failed");
+  }
   else
       if(print_lvl > NORMAL_PRINT)
 	  fprintf(outfile,"\n  Back transformation to cartesians completed\n");

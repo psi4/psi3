@@ -14,11 +14,16 @@
 #include "extrema.h"
 
 int get_coord_type();
+void print_intro();
+void start_io();
+void stop_io();
 
 
 
 void main() {
 
+    start_io();
+    print_intro();
     coord_type = get_coord_type();
 
     /*------------
@@ -42,9 +47,11 @@ void main() {
       DELOCALIZED
       -----------*/
     else if(coord_type==3) {
-	// deloc d_obj;
+	deloc d_obj;
+	d_obj.optimize();
     }
     
+    stop_io();
     exit(0);
 }
 
@@ -56,35 +63,21 @@ void main() {
   print intro and determine coordinate type
   ---------------------------------------------------------------------------*/
 
-void print_intro();
-
 int get_coord_type() {
 
   char *buffer;
-
-   /*set up i/o stuff*/
-  ffile(&infile,"input.dat",2);
-  ffile(&outfile,"output.dat",1);
-
-  print_intro();
- 
-  ip_set_uppercase(1);
-  ip_initialize(infile,outfile);
-  ip_cwk_clear();
-  
-  ip_cwk_add(":EXTREMA");
-  ip_cwk_add(":DEFAULT");
   
   if(ip_exist("COORDINATES",0)) {
       errcod = ip_string("COORDINATES", &buffer,0);
       if( !strcmp(buffer,"CARTESIANS") ) {
 	  fprintf(outfile,"\n  Using cartesian coordinates\n");
-	  coord_type = 1; }
+	  coord_type = CART_TYPE; }
       else if( !strcmp(buffer,"ZMATRIX") ) {
 	  fprintf(outfile,"\n  Using z-matrix coordinates\n");
-	  coord_type = 2; }
-      else if( !strcmp(buffer,"DELOCALIZED") ) 
-	  punt("Can't do delocalized internals yet");
+	  coord_type = ZMAT_TYPE; }
+      else if( !strcmp(buffer,"DELOCALIZED") ) {
+	  fprintf(outfile,"\n Using delocalized internal coordinates\n");
+	  coord_type = DELOC_TYPE; }
       else 
 	  punt("Problem determining coordinate type");
       free(buffer);
@@ -112,8 +105,32 @@ void print_intro() {
 
 
 
+void start_io() {
+    
+    ffile(&infile,"input.dat",2);
+    ffile(&outfile,"output.dat",1);
+        
+    ip_set_uppercase(1);
+    ip_initialize(infile,outfile);
+    ip_cwk_clear();
+  
+    ip_cwk_add(":EXTREMA");
+    ip_cwk_add(":DEFAULT");
+
+    file30_init();
+
+    return;
+}
 
 
 
+void stop_io() {
 
-
+    file30_close();
+    ip_done();
+    tstop(outfile);
+    fclose(infile);
+    fclose(outfile);    
+    
+    return;
+}

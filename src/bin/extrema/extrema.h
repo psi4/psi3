@@ -16,6 +16,7 @@
 #include <math.h>
 
 extern "C" {
+#include <ctype.h>
 #include <libciomr.h>
 #include <ip_libv1.h>
 #include <file30.h>
@@ -30,7 +31,7 @@ double **symm_matrix_invert(double**, int, int, int);
 EXTERN FILE *infile, *outfile;
 
 EXTERN int coord_type;
-EXTERN int errcod;
+EXTERN int errcod, error;
 
 /*this needs to be in C*/
 extern "C" {
@@ -42,5 +43,16 @@ extern "C" {
 #include "simple.h"
 #include "internals.h"
 #include "zmat.h"
+#include "deloc.h"
+
+/*inline function declarations*/
+inline double *unit_vec(double* cart_arr, int atom1, int atom2 );
+inline double vec_norm(double* cart_arr, int atom1, int atom2 );
+inline double dot_pdt( double* vec1, double* vec2 );
+inline double *cross_pdt( double* vec1, double* vec2 );
+inline double norm(double* cart_arr, int atom1, int atom2 );
+inline double compute_bond(double *car, int atm, int bnd);
+inline double compute_angle(double *car, int atm, int bnd, int ang);
+inline double compute_torsion(double *car, int atm, int bnd, int ang, int tor);
 
 

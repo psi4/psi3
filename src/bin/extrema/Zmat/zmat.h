@@ -12,7 +12,7 @@
 /*###########################################################################*/
 
 
-class zmat : public internals {
+class zmat : protected internals {
 
   protected:
 
@@ -52,6 +52,8 @@ class zmat : public internals {
   void write_file30();
   void newton_step();
   void back_transform();
+  void print_carts(double);
+  void print_c_grads();
 
   public:
 
