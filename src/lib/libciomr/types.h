@@ -1,38 +1,3 @@
-
-/* $Id$ */
-/* $Log$
- * Revision 1.2  2001/08/08 14:31:25  sherrill
- * removed some slashes in comments to make compiler shut up
- *
- * Revision 1.1.1.1  2000/02/04 22:53:24  evaleev
- * Started PSI 3 repository
- *
- * Revision 2.6  1997/09/14 03:28:55  sherrill
- * Added iosize_() to types.h so the function prototype could be passed to
- * flen.c, which was getting the wrong return type.  Also reformatted some
- * of my old code just a little to make it look a bit nicer.
- *
- * Revision 2.5  1997/09/12  13:53:07  crawdad
- * Changing marco name from ULL to PSI_FPTR.
- *
- * Revision 2.4  1997/08/25  21:50:12  crawdad
- * Making changes for extension of PSI file size limit.
- *
- * Revision 2.3  1996/06/18  20:47:48  sherrill
- * Add the whole set of int_array routines to int_array.c (replacing
- * init_int_array.c), add block_matrix.c, and add a new function flen
- * which gets the file size for unit number x.
- *
- * Revision 2.2  1995/04/01  20:53:10  fermann
- * changed bytewise file pointers such as first, last and length to long
- * unsigned ints in order to handle up to 4 gigabyte tmp files (striped into
- * individual pieces of less than 2 gigabytes).  added functions li2sec and
- * sec2li for where they are needed.
- *
- * Revision 2.1  1991/06/15  18:32:30  seidl
- * *** empty log message ***
- * */
-
 #ifndef TYPES_H
 #define TYPES_H
 

@@ -4,54 +4,6 @@
 ** \ingroup (CIOMR)
 */
 
-/* $Log$
- * Revision 1.6  2002/12/17 22:02:13  crawdad
- * Moving a number of files from the top-level psi3 src to appropriate
- * subdirectories to clean up.
- *
-/* Revision 1.5  2002/12/17 16:25:36  crawdad
-/* Modifying tstop output summary to include minutes.
-/* -TDC
-/*
-/* Revision 1.4  2002/06/01 18:23:54  sherrill
-/* Upgrade doxygen documentation
-/*
-/* Revision 1.3  2002/04/19 21:48:06  sherrill
-/* Remove some unused functions and do doxygen markup of libciomr.
-/*
-/* Revision 1.2  2000/03/26 22:03:26  sherrill
-/* Added more characters to allow longer machine names in tstart.c.
-/* Added support for C++ libraries in src/lib/MakeRules and MakeVars.
-/* CDS 3/26/00
-/*
- * Revision 1.1.1.1  2000/02/04  22:53:24  evaleev
- * Started PSI 3 repository
- *
-/* Revision 2.7  1996/07/03 11:26:39  psi
-/* Added free_ptrs() function in init_ptrs.c.  Added free() calls to tstart()
-/* and tstop().
-/*
- * Revision 2.6  1994/09/19 23:32:12  cljanss
- * Cleaned up allocation of globals.  Got rid of some globals and fixed a bug.
- *
- * Revision 2.5  1994/08/19  17:26:41  cljanss
- * Will now compile on IRIX 4.0.5F.
- *
- * Revision 2.4  1994/08/10  00:17:26  dcrawfrd
- * Added timing routines that are called by iomr and that give hostnames.
- *
- * Revision 2.3  1994/06/03  17:08:30  seidl
- * define ALLOC_GLOBALS before including pointers.h
- *
- * Revision 2.2  1994/06/02  02:27:10  seidl
- * no vtimes on SGI
- *
- * Revision 2.1  1991/06/15  18:30:16  seidl
- * *** empty log message ***
- * */
-
-static char *rcsid = "$Id$";
-
 #include "includes.h"
 #define ALLOC_GLOBALS
 #include "pointers.h"

@@ -3,32 +3,6 @@
    \ingroup (CIOMR)
 */ 
 
-/* $Log$
- * Revision 1.4  2003/05/22 06:20:07  crawdad
- * Corrected most of the libraries and modules to use proper PSI_RETURN_XX
- * values from psifiles.h.  Modified ccdensity, ccenergy, cchbar, cclambda,
- * ccsort, cctriples, cis, cphf, cusp, localize, stable, libchkpt, libciomr,
- * libdpd, libipv1, libpsio, libqt, and tocprint.
- * -TDC
- *
-/* Revision 1.3  2002/06/01 18:23:54  sherrill
-/* Upgrade doxygen documentation
-/*
-/* Revision 1.2  2002/04/19 21:48:06  sherrill
-/* Remove some unused functions and do doxygen markup of libciomr.
-/*
-/* Revision 1.1.1.1  2000/02/04 22:53:24  evaleev
-/* Started PSI 3 repository
-/*
-/* Revision 2.2  1991/07/30 04:13:57  seidl
-/* do not exit if 30 iterations exceeded
-/*
- * Revision 2.1  1991/06/15  18:30:12  seidl
- * *** empty log message ***
- * */
-
-static char *rcsid = "$Id$";
-
 #include <psifiles.h>
 # include "includes.h"
 

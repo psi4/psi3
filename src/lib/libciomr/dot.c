@@ -3,28 +3,6 @@
  \ingroup (CIOMR)
 */
 
-/* $Log$
- * Revision 1.4  2002/06/01 18:23:54  sherrill
- * Upgrade doxygen documentation
- *
-/* Revision 1.3  2002/04/19 21:48:06  sherrill
-/* Remove some unused functions and do doxygen markup of libciomr.
-/*
-/* Revision 1.2  2002/03/25 02:43:45  sherrill
-/* Update documentation
-/*
-/* Revision 1.1.1.1  2000/02/04 22:53:18  evaleev
-/* Started PSI 3 repository
-/*
-/* Revision 2.2  1994/06/02 02:28:51  seidl
-/* define ALLOC_GLOBALS
-/*
- * Revision 2.1  1991/06/15  18:28:45  seidl
- * *** empty log message ***
- * */
-
-static char *rcsid = "$Id$";
-
 #define ALLOC_GLOBALS
 #include "includes.h"
 #undef ALLOC_GLOBALS

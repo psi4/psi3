@@ -1,5 +1,3 @@
-static char *rcsid = "$Id$";
-
 #include "includes.h"
 
 extern void ludcmp(double **, int, int *, double *);

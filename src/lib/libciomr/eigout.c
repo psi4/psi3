@@ -3,29 +3,6 @@
   \ingroup (CIOMR)
 */
 
-/* $Log$
- * Revision 1.3  2002/06/01 18:23:54  sherrill
- * Upgrade doxygen documentation
- *
-/* Revision 1.2  2002/04/18 21:47:35  sherrill
-/* Here's some changes to document via doxygen and upgrade to ANSI C
-/* instead of K&R declarations.
-/*
-/* Revision 1.1.1.1  2000/02/04 22:53:18  evaleev
-/* Started PSI 3 repository
-/*
-/* Revision 2.3  1995/01/17 19:56:52  local
-/* Fixed undeclared variable bug.  Minor modification.
-/*
- * Revision 2.2  1995/01/16  22:48:32  cljanss
- * Minor changes to make the SGI compiler happy.
- *
- * Revision 2.1  1991/06/15  18:28:46  seidl
- * *** empty log message ***
- * */
-
-static char *rcsid = "$Id$";
-
 #include "includes.h"
 
 /*!

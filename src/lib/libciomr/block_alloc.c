@@ -1,30 +1,3 @@
-
-/* $Log$
- * Revision 1.2  2003/05/22 06:20:06  crawdad
- * Corrected most of the libraries and modules to use proper PSI_RETURN_XX
- * values from psifiles.h.  Modified ccdensity, ccenergy, cchbar, cclambda,
- * ccsort, cctriples, cis, cphf, cusp, localize, stable, libchkpt, libciomr,
- * libdpd, libipv1, libpsio, libqt, and tocprint.
- * -TDC
- *
-/* Revision 1.1.1.1  2000/02/04 22:53:17  evaleev
-/* Started PSI 3 repository
-/*
-/* Revision 2.3  1994/06/02 02:30:26  seidl
-/* add test for too many rows
-/*
- * Revision 1.1.1.1  1994/05/02  17:04:26  cljanss
- * The May 1, 1994 version of psi as on the CCQC machines.
- *
- * Revision 2.2  1991/06/15  18:53:37  seidl
- * remove include of common.h and definition of EXTERN
- *
- * Revision 2.1  1991/06/15  18:28:44  seidl
- * *** empty log message ***
- * */
-
-static char *rcsid = "$Id$";
-
 #include <psifiles.h>
 #include "includes.h"
 

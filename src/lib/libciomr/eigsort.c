@@ -3,30 +3,6 @@
   \ingroup (CIOMR)
 */
 
-/* $Log$
- * Revision 1.4  2003/06/30 15:10:21  crawdad
- * Added sorting function that includes symmetry labels.
- * -TDC
- *
-/* Revision 1.3  2002/06/01 18:23:54  sherrill
-/* Upgrade doxygen documentation
-/*
-/* Revision 1.2  2002/04/19 21:48:06  sherrill
-/* Remove some unused functions and do doxygen markup of libciomr.
-/*
-/* Revision 1.1.1.1  2000/02/04 22:53:18  evaleev
-/* Started PSI 3 repository
-/*
-/* Revision 2.2  1998/02/03 19:34:07  evaleev
-/* Modified eigsort(), rsp(), and sq_rsp() to sort eigenvalues and
-/* eigenvectors in either ascending OR descending order.
-/*
- * Revision 2.1  1991/06/15  18:28:47  seidl
- * *** empty log message ***
- * */
-
-static char *rcsid = "$Id$";
-
 #include "includes.h"
 
 /*!

@@ -1,23 +1,3 @@
-
-/* $Log$
- * Revision 1.2  2002/06/01 18:23:54  sherrill
- * Upgrade doxygen documentation
- *
-/* Revision 1.1.1.1  2000/02/04 22:53:21  evaleev
-/* Started PSI 3 repository
-/*
-/* Revision 2.3  1999/11/01 20:10:57  evaleev
-/* Added explicit extern declarations of functions within the library.
-/*
-/* Revision 2.2  1991/08/25 03:59:14  psi
-/* change 'else if (nr > keep_nr)' etc to 'if'
-/*
- * Revision 2.1  1991/06/15  18:29:29  seidl
- * *** empty log message ***
- * */
-
-static char *rcsid = "$Id$";
-
 /*!
    \file mmult.c
    \ingroup (CIOMR)

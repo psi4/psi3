@@ -1,33 +1,3 @@
-
-/* $Log$
- * Revision 1.2  2003/05/22 06:20:07  crawdad
- * Corrected most of the libraries and modules to use proper PSI_RETURN_XX
- * values from psifiles.h.  Modified ccdensity, ccenergy, cchbar, cclambda,
- * ccsort, cctriples, cis, cphf, cusp, localize, stable, libchkpt, libciomr,
- * libdpd, libipv1, libpsio, libqt, and tocprint.
- * -TDC
- *
-/* Revision 1.1.1.1  2000/02/04 22:53:22  evaleev
-/* Started PSI 3 repository
-/*
-/* Revision 2.4  1997/09/12 13:52:57  crawdad
-/* Changing marco name from ULL to PSI_FPTR.
-/*
- * Revision 2.3  1997/08/25  21:50:02  crawdad
- * Making changes for extension of PSI file size limit.
- *
- * Revision 2.2  1995/04/01  20:52:59  fermann
- * changed bytewise file pointers such as first, last and length to long
- * unsigned ints in order to handle up to 4 gigabyte tmp files (striped into
- * individual pieces of less than 2 gigabytes).  added functions li2sec and
- * sec2li for where they are needed.
- *
- * Revision 2.1  1991/06/15  18:29:53  seidl
- * *** empty log message ***
- * */
-
-static char *rcsid = "$Id$";
-
 #include <psifiles.h>
 #include "iomrparam.h"
 #include "includes.h"
