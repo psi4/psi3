@@ -70,7 +70,7 @@ void init_ccinfo()
 	   2, occpi, occ_sym, virtpi, vir_sym);
 
   /* Grab the MO-basis T2's provided by ccenergy */
-  T2_MO = block_matrix(nocc*nocc,nao*nao);
+  T2_MO = block_matrix(nocc*nocc,nvirt*nvirt);
   dpd_buf4_init(&tau, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
   row_offset = col_offset = 0;
   for(h=0,row=0,col=0; h < Symmetry.nirreps; h++) {
@@ -94,15 +94,18 @@ void init_ccinfo()
 
   /* half-transform the T2's */
   A = block_matrix(nvirt, nao);
-  T2_AO = T2_MO;
+  T2_AO = block_matrix(nocc*nocc, nao*nao);
   for(ij=0; ij < nocc*nocc; ij++) {
-    
-    C_DGEMM('n','n',nvirt,nao,nvirt,1.0,T2_MO[ij],nao,
-            MOInfo.scf_evec_uocc[0][0],nao,0.0,A[0],nao);
-    C_DGEMM('t','n',nao,nao,nvirt,1.0,MOInfo.scf_evec_uocc[0][0],nao,
-            A[0],nao,0.0,T2_AO[ij],nao);
+
+
+    C_DGEMM('n','n',nvirt,nao,nvirt,1.0,&(T2_MO[ij][0]),nvirt,
+            &(MOInfo.scf_evec_uocc[0][0][0]),nao,0.0,A[0],nao);
+
+    C_DGEMM('t','n',nao,nao,nvirt,1.0,&(MOInfo.scf_evec_uocc[0][0][0]),nao,
+            A[0],nao,0.0,&(T2_AO[ij][0]),nao);
   }
   free_block(A);
+  free_block(T2_MO);
 
   /* transpose T2 to AO*AO x MO*MO */
   T2 = block_matrix(nao*nao,nocc*nocc);
@@ -127,7 +130,7 @@ void cleanup_ccinfo()
 {
   int h, ij, ab, row, col, row_offset, col_offset;
   int nocc, nvirt, nao;
-  double **T2, **A;
+  double **T2, **A, **T2_MO;
   dpdbuf4 tau;
 
   nocc = CCInfo.nocc;
@@ -145,17 +148,17 @@ void cleanup_ccinfo()
   }
   free_block(CCInfo.T2_t);
 
-  print_mat(T2, nocc*nocc, nao*nao, outfile);
-
   /* transform T2 back to MO basis */
   A = block_matrix(nao,nvirt);
+  T2_MO = block_matrix(nocc*nocc,nvirt*nvirt);
   for(ij=0; ij < nocc*nocc; ij++) {
     C_DGEMM('n','t',nao,nvirt,nao,1.0,T2[ij],nao,
             MOInfo.scf_evec_uocc[0][0],nao,0.0,A[0],nvirt);
     C_DGEMM('n','n',nvirt,nvirt,nao,1.0,MOInfo.scf_evec_uocc[0][0],nao,
-            A[0],nvirt,0.0,T2[ij],nao);
+            A[0],nvirt,0.0,T2_MO[ij],nvirt);
   }
   free_block(A);
+  free_block(T2);
 
   /* Put T2 back into the DPD buffer */
   dpd_buf4_init(&tau, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb");
@@ -171,7 +174,7 @@ void cleanup_ccinfo()
 
     for(row=0; row < tau.params->rowtot[h]; row++) {
       for(col=0; col < tau.params->coltot[h]; col++) {
-         tau.matrix[h][row][col] = T2[row+row_offset][col+col_offset];
+         tau.matrix[h][row][col] += T2_MO[row+row_offset][col+col_offset];
       }
     }
     dpd_buf4_mat_irrep_wrt(&tau, h);
@@ -179,7 +182,7 @@ void cleanup_ccinfo()
   }
   dpd_buf4_close(&tau);
 
-  free_block(T2);
+  free_block(T2_MO);
 
   free_int_matrix(cachelist,12);
   free(cachefiles);

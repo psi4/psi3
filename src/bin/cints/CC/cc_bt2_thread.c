@@ -83,7 +83,7 @@ void *cc_bt2_thread(void *tnum_ptr)
   double *data;                 /* pointer to the transformed normalized target quartet of integrals */
 #ifdef NONDOUBLE_INTS
   REALTYPE *target_ints;            /* Pointer to the location of the target quartet on the stack of
-			 	    integrals quartets if libint.a is using other than regular doubles */
+				       integrals quartets if libint.a is using other than regular doubles */
 #endif
 
   double *rspq_ptr;
@@ -113,22 +113,22 @@ void *cc_bt2_thread(void *tnum_ptr)
 
   /*---------------
     Initialization
-   ---------------*/
+    ---------------*/
 #ifndef USE_TAYLOR_FM
   init_fjt_table(&fjt_table);
 #endif
   
   /*-------------------------
     Allocate data structures
-   -------------------------*/
+    -------------------------*/
   max_bf_per_shell = ioff[BasisSet.max_am];
   max_cart_class_size = (max_bf_per_shell)*
-                        (max_bf_per_shell)*
-                        (max_bf_per_shell)*
-                        (max_bf_per_shell);
+    (max_bf_per_shell)*
+    (max_bf_per_shell)*
+    (max_bf_per_shell);
   max_num_unique_quartets = Symmetry.max_stab_index*
-                            Symmetry.max_stab_index*
-                            Symmetry.max_stab_index;
+    Symmetry.max_stab_index*
+    Symmetry.max_stab_index;
   sj_arr = (int *)malloc(sizeof(int)*max_num_unique_quartets);
   sk_arr = (int *)malloc(sizeof(int)*max_num_unique_quartets);
   sl_arr = (int *)malloc(sizeof(int)*max_num_unique_quartets);
@@ -136,8 +136,8 @@ void *cc_bt2_thread(void *tnum_ptr)
     max_class_size = max_cart_class_size;
   max_num_prim_comb = (BasisSet.max_num_prims*
                        BasisSet.max_num_prims)*
-                      (BasisSet.max_num_prims*
-                       BasisSet.max_num_prims);
+    (BasisSet.max_num_prims*
+     BasisSet.max_num_prims);
   init_libint(&Libint, BasisSet.max_am-1, max_num_prim_comb);
 
 #ifdef NONDOUBLE_INTS
@@ -147,7 +147,7 @@ void *cc_bt2_thread(void *tnum_ptr)
   
   /*--------------------------------------------
     generate all symmetry unique shell quartets
-   --------------------------------------------*/
+    --------------------------------------------*/
   for (usii=0; usii<Symmetry.num_unique_shells; usii++)
     for (usjj=0; usjj<=usii; usjj++)
       for (uskk=0; uskk<=usii; uskk++)
@@ -168,72 +168,70 @@ void *cc_bt2_thread(void *tnum_ptr)
 	  sll = Symmetry.us2s[usll];
 
 	  if (Symmetry.nirreps > 1) { /*--- Non-C1 symmetry case ---*/
-	      /*--- Generate the petite list of shell quadruplets using DCD approach of Davidson ---*/
-	      stab_i = Symmetry.atom_positions[BasisSet.shells[si].center-1];
-	      stab_j = Symmetry.atom_positions[BasisSet.shells[sjj].center-1];
-	      stab_k = Symmetry.atom_positions[BasisSet.shells[skk].center-1];
-	      stab_l = Symmetry.atom_positions[BasisSet.shells[sll].center-1];
-	      stab_ij = Symmetry.GnG[stab_i][stab_j];
-	      stab_kl = Symmetry.GnG[stab_k][stab_l];
-	      R_list = Symmetry.dcr[stab_i][stab_j];
-	      S_list = Symmetry.dcr[stab_k][stab_l];
-	      T_list = Symmetry.dcr[stab_ij][stab_kl];
-	      lambda_T = Symmetry.nirreps/Symmetry.dcr_deg[stab_ij][stab_kl];
-	      ni = (BasisSet.puream ? 2*BasisSet.shells[si].am - 1 : ioff[BasisSet.shells[si].am]);
-	      nj = (BasisSet.puream ? 2*BasisSet.shells[sjj].am - 1 : ioff[BasisSet.shells[sjj].am]);
-	      nk = (BasisSet.puream ? 2*BasisSet.shells[skk].am - 1 : ioff[BasisSet.shells[skk].am]);
-	      nl = (BasisSet.puream ? 2*BasisSet.shells[sll].am - 1 : ioff[BasisSet.shells[sll].am]);
+	    /*--- Generate the petite list of shell quadruplets using DCD approach of Davidson ---*/
+	    stab_i = Symmetry.atom_positions[BasisSet.shells[si].center-1];
+	    stab_j = Symmetry.atom_positions[BasisSet.shells[sjj].center-1];
+	    stab_k = Symmetry.atom_positions[BasisSet.shells[skk].center-1];
+	    stab_l = Symmetry.atom_positions[BasisSet.shells[sll].center-1];
+	    stab_ij = Symmetry.GnG[stab_i][stab_j];
+	    stab_kl = Symmetry.GnG[stab_k][stab_l];
+	    R_list = Symmetry.dcr[stab_i][stab_j];
+	    S_list = Symmetry.dcr[stab_k][stab_l];
+	    T_list = Symmetry.dcr[stab_ij][stab_kl];
+	    lambda_T = Symmetry.nirreps/Symmetry.dcr_deg[stab_ij][stab_kl];
+	    ni = (BasisSet.puream ? 2*BasisSet.shells[si].am - 1 : ioff[BasisSet.shells[si].am]);
+	    nj = (BasisSet.puream ? 2*BasisSet.shells[sjj].am - 1 : ioff[BasisSet.shells[sjj].am]);
+	    nk = (BasisSet.puream ? 2*BasisSet.shells[skk].am - 1 : ioff[BasisSet.shells[skk].am]);
+	    nl = (BasisSet.puream ? 2*BasisSet.shells[sll].am - 1 : ioff[BasisSet.shells[sll].am]);
 
-	      memset(sj_arr,0,sizeof(int)*max_num_unique_quartets);
-	      memset(sk_arr,0,sizeof(int)*max_num_unique_quartets);
-	      memset(sl_arr,0,sizeof(int)*max_num_unique_quartets);
-	      count = 0;
-	      for(dcr_ij=0;dcr_ij<Symmetry.dcr_dim[stab_i][stab_j];dcr_ij++){
-		R = R_list[dcr_ij];
-		sj = BasisSet.shells[sjj].trans_vec[R]-1;
-		for(dcr_ijkl=0;dcr_ijkl<Symmetry.dcr_dim[stab_ij][stab_kl];dcr_ijkl++){
-		  T = T_list[dcr_ijkl];
-		  sk = BasisSet.shells[skk].trans_vec[T]-1;
-		  slll = BasisSet.shells[sll].trans_vec[T]-1;
-		  for(dcr_kl=0;dcr_kl<Symmetry.dcr_dim[stab_k][stab_l];dcr_kl++) {
-		    S = S_list[dcr_kl];
-		    sl = BasisSet.shells[slll].trans_vec[S]-1;
+	    memset(sj_arr,0,sizeof(int)*max_num_unique_quartets);
+	    memset(sk_arr,0,sizeof(int)*max_num_unique_quartets);
+	    memset(sl_arr,0,sizeof(int)*max_num_unique_quartets);
+	    count = 0;
+	    for(dcr_ij=0;dcr_ij<Symmetry.dcr_dim[stab_i][stab_j];dcr_ij++){
+	      R = R_list[dcr_ij];
+	      sj = BasisSet.shells[sjj].trans_vec[R]-1;
+	      for(dcr_ijkl=0;dcr_ijkl<Symmetry.dcr_dim[stab_ij][stab_kl];dcr_ijkl++){
+		T = T_list[dcr_ijkl];
+		sk = BasisSet.shells[skk].trans_vec[T]-1;
+		slll = BasisSet.shells[sll].trans_vec[T]-1;
+		for(dcr_kl=0;dcr_kl<Symmetry.dcr_dim[stab_k][stab_l];dcr_kl++) {
+		  S = S_list[dcr_kl];
+		  sl = BasisSet.shells[slll].trans_vec[S]-1;
 
-		    sj_arr[count] = sj;
-		    sk_arr[count] = sk;
-		    sl_arr[count] = sl;
-		    count++;
-		  }
+		  sj_arr[count] = sj;
+		  sk_arr[count] = sk;
+		  sl_arr[count] = sl;
+		  count++;
 		}
-	      } /* petite list is ready to be used */
-	      num_unique_quartets = count;
-	    }
-	    else { /*--- C1 symmetry case ---*/
-	      num_unique_quartets = 1;
-	      sj_arr[0] = usj;
-	      sk_arr[0] = usk;
-	      sl_arr[0] = usl;
-	    }
+	      }
+	    } /* petite list is ready to be used */
+	    num_unique_quartets = count;
+	  }
+	  else { /*--- C1 symmetry case ---*/
+	    num_unique_quartets = 1;
+	    sj_arr[0] = usj;
+	    sk_arr[0] = usk;
+	    sl_arr[0] = usl;
+	  }
 
 
 	  /*----------------------------------
 	    Compute the nonredundant quartets
-	   ----------------------------------*/
+	    ----------------------------------*/
 	  for(plquartet=0;plquartet<num_unique_quartets;plquartet++) {
 	    si = Symmetry.us2s[usii];
 	    sj = sj_arr[plquartet];
 	    sk = sk_arr[plquartet];
 	    sl = sl_arr[plquartet];
 
-	    total_am = BasisSet.shells[si].am +
-	      BasisSet.shells[sj].am +
-	      BasisSet.shells[sk].am +
-	      BasisSet.shells[sl].am;
+	    total_am = BasisSet.shells[si].am + BasisSet.shells[sj].am + 
+	      BasisSet.shells[sk].am + BasisSet.shells[sl].am;
 	    /* parity selection */
 	    if (total_am%2 &&
-		BasisSet.shells[si].center!=BasisSet.shells[sj].center &&
-		BasisSet.shells[sj].center!=BasisSet.shells[sk].center &&
-		BasisSet.shells[sk].center!=BasisSet.shells[sl].center)
+		BasisSet.shells[si].center==BasisSet.shells[sj].center &&
+		BasisSet.shells[sj].center==BasisSet.shells[sk].center &&
+		BasisSet.shells[sk].center==BasisSet.shells[sl].center)
 	      continue;
 
 	    switch_ij = 0;
@@ -318,120 +316,121 @@ void *cc_bt2_thread(void *tnum_ptr)
 	      }
 	    }
 
-	      /*--- Compute the integrals ---*/
-	      if (am) {
+	    /*--- Compute the integrals ---*/
+	    if (am) {
 #ifdef NONDOUBLE_INTS
-		size = ioff[BasisSet.shells[si].am]*ioff[BasisSet.shells[sj].am]*
-		  ioff[BasisSet.shells[sk].am]*ioff[BasisSet.shells[sl].am];
-		target_ints = build_eri[orig_am[0]][orig_am[1]][orig_am[2]][orig_am[3]](&Libint, num_prim_comb);
-		for(i=0;i<size;i++)
-		  raw_data[i] = (double) target_ints[i];
+	      size = ioff[BasisSet.shells[si].am]*ioff[BasisSet.shells[sj].am]*
+		ioff[BasisSet.shells[sk].am]*ioff[BasisSet.shells[sl].am];
+	      target_ints = build_eri[orig_am[0]][orig_am[1]][orig_am[2]][orig_am[3]](&Libint, num_prim_comb);
+	      for(i=0;i<size;i++)
+		raw_data[i] = (double) target_ints[i];
 #else
-		raw_data = build_eri[orig_am[0]][orig_am[1]][orig_am[2]][orig_am[3]](&Libint, num_prim_comb);
+	      raw_data = build_eri[orig_am[0]][orig_am[1]][orig_am[2]][orig_am[3]](&Libint, num_prim_comb);
 #endif
-		/* No need to transforms integrals to sph. harm. basis */
-		data = norm_quartet(raw_data, NULL, orig_am, 0);
-	      }
-	      else {
-		temp = 0.0;
-		for(p=0;p<num_prim_comb;p++)
-		  temp += (double) Libint.PrimQuartet[p].F[0];
+	      /* No need to transforms integrals to sph. harm. basis */
+	      data = norm_quartet(raw_data, NULL, orig_am, 0);
+	    }
+	    else {
+	      temp = 0.0;
+	      for(p=0;p<num_prim_comb;p++)
+		temp += (double) Libint.PrimQuartet[p].F[0];
 #ifdef NONDOUBLE_INTS
-		raw_data[0] = temp;
-		data = raw_data;
+	      raw_data[0] = temp;
+	      data = raw_data;
 #else
-		Libint.int_stack[0] = temp;
-		data = Libint.int_stack;
+	      Libint.int_stack[0] = temp;
+	      data = Libint.int_stack;
 #endif
-	      }
+	    }
 
-	      ijkl = 0;
-	      for(i=0;i<ni;i++) {
-                ii = i + si_fao; 
-		for(j=0;j<nj;j++) {
-                  jj = j + sj_fao; 
-                  IJ = INDEX(ii,jj);
-		  for(k=0;k<nk;k++) {
-                    kk = k + sk_fao; 
-		    for(l=0;l<nl;l++,ijkl++) {
-                      ll = l + sl_fao; 
-                      KL = INDEX(kk,ll);
+	    ijkl = 0;
+	    for(i=0;i<ni;i++) {
+	      ii = i + si_fao; 
+	      for(j=0;j<nj;j++) {
+		jj = j + sj_fao; 
+		IJ = INDEX(ii,jj);
+		for(k=0;k<nk;k++) {
+		  kk = k + sk_fao; 
+		  for(l=0;l<nl;l++,ijkl++) {
+		    ll = l + sl_fao; 
+		    KL = INDEX(kk,ll);
 
-                      if(si == sj && ii < jj) continue;
-                      if(sk == sl && kk < ll) continue;
-                      if(INDEX(si,sj) == INDEX(sk,sl) && IJ < KL)
-                        continue;     
+		    if(si == sj && ii < jj) continue;
+		    if(sk == sl && kk < ll) continue;
+		    if(INDEX(si,sj) == INDEX(sk,sl) && IJ < KL) continue;     
 
-		      value = data[ijkl];
+		    value = data[ijkl];
 
-                      if(fabs(value) > 1e-8)
-                          fprintf(outfile, "%d %d %d %d %20.14f\n", ii, jj, kk, ll, value);
+		    /*
+		    if(fabs(value) > 1e-8)
+		      fprintf(outfile, "%d %d %d %d %20.14f\n", ii+1, jj+1, kk+1, ll+1, value);
+		    */
 
-                      ij = ii*nao + jj; ji = jj*nao + ii;
-                      ik = ii*nao + kk; ki = kk*nao + ii;
-                      il = ii*nao + ll; li = ll*nao + ii;
-                      jk = jj*nao + kk; kj = kk*nao + jj;
-                      jl = jj*nao + ll; lj = ll*nao + jj;
-                      kl = kk*nao + ll; lk = ll*nao + kk;
+		    ij = ii*nao + jj; ji = jj*nao + ii;
+		    ik = ii*nao + kk; ki = kk*nao + ii;
+		    il = ii*nao + ll; li = ll*nao + ii;
+		    jk = jj*nao + kk; kj = kk*nao + jj;
+		    jl = jj*nao + ll; lj = ll*nao + jj;
+		    kl = kk*nao + ll; lk = ll*nao + kk;
 
-                      /* (ij|kl) */
-                      C_DAXPY(nocc*nocc, value, CCInfo.T2_s[jl], 1, CCInfo.T2_t[ik],1);
+		    /* (ij|kl) */
+		    C_DAXPY(nocc*nocc, value, CCInfo.T2_s[jl], 1, CCInfo.T2_t[ik],1);
 
-                      if(ii!=jj && kk!=ll && IJ!=KL) {
-                        /* (ij|lk) */
-                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[jk], 1, CCInfo.T2_t[il],1);
-                        /* (ji|kl) */
-                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[il], 1, CCInfo.T2_t[jk],1);
-                        /* (ji|lk) */
-                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[ik], 1, CCInfo.T2_t[jl],1);
-                        /* (kl|ij) */
-                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[lj], 1, CCInfo.T2_t[ki],1);
-                        /* (kl|ji) */
-                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[li], 1, CCInfo.T2_t[kj],1);
-                        /* (lk|ij) */
-                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[kj], 1, CCInfo.T2_t[li],1);
-                        /* (lk|ji) */
-                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[ki], 1, CCInfo.T2_t[lj],1);
-                      }
-                      else if(ii!=jj && kk!=ll && IJ==KL) {
-                        /* (ij|lk) */
-                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[jk], 1, CCInfo.T2_t[il],1);
-                        /* (ji|kl) */
-                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[il], 1, CCInfo.T2_t[jk],1);
-                        /* (ji|lk) */
-                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[ik], 1, CCInfo.T2_t[jl],1);
-                      }
-                      else if(ii!=jj && kk==ll) {
-                        /* (ji|kl) */
-                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[il], 1, CCInfo.T2_t[jk],1);
-                        /* (kl|ij) */
-                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[lj], 1, CCInfo.T2_t[ki],1);
-                        /* (kl|ji) */
-                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[li], 1, CCInfo.T2_t[kj],1);
-                      }
-                      else if(ii==jj && kk!=ll) {
-                        /* (ij|lk) */
-                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[jk], 1, CCInfo.T2_t[il],1);
-                        /* (kl|ij) */
-                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[lj], 1, CCInfo.T2_t[ki],1);
-                        /* (lk|ij) */
-                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[kj], 1, CCInfo.T2_t[li],1);
-                      }
-                      else if(ii==jj && kk==ll && IJ!=KL) {
-                        /* (kl|ij) */
-                        C_DAXPY(nocc*nocc, value, CCInfo.T2_s[lj], 1, CCInfo.T2_t[ki],1);
-                      }
+		    if(ii!=jj && kk!=ll && IJ!=KL) {
+		      /* (ij|lk) */
+		      C_DAXPY(nocc*nocc, value, CCInfo.T2_s[jk], 1, CCInfo.T2_t[il],1);
+		      /* (ji|kl) */
+		      C_DAXPY(nocc*nocc, value, CCInfo.T2_s[il], 1, CCInfo.T2_t[jk],1);
+		      /* (ji|lk) */
+		      C_DAXPY(nocc*nocc, value, CCInfo.T2_s[ik], 1, CCInfo.T2_t[jl],1);
+		      /* (kl|ij) */
+		      C_DAXPY(nocc*nocc, value, CCInfo.T2_s[lj], 1, CCInfo.T2_t[ki],1);
+		      /* (kl|ji) */
+		      C_DAXPY(nocc*nocc, value, CCInfo.T2_s[li], 1, CCInfo.T2_t[kj],1);
+		      /* (lk|ij) */
+		      C_DAXPY(nocc*nocc, value, CCInfo.T2_s[kj], 1, CCInfo.T2_t[li],1);
+		      /* (lk|ji) */
+		      C_DAXPY(nocc*nocc, value, CCInfo.T2_s[ki], 1, CCInfo.T2_t[lj],1);
 		    }
-                  }
-                }
-              }
+		    else if(ii!=jj && kk!=ll && IJ==KL) {
+		      /* (ij|lk) */
+		      C_DAXPY(nocc*nocc, value, CCInfo.T2_s[jk], 1, CCInfo.T2_t[il],1);
+		      /* (ji|kl) */
+		      C_DAXPY(nocc*nocc, value, CCInfo.T2_s[il], 1, CCInfo.T2_t[jk],1);
+		      /* (ji|lk) */
+		      C_DAXPY(nocc*nocc, value, CCInfo.T2_s[ik], 1, CCInfo.T2_t[jl],1);
+		    }
+		    else if(ii!=jj && kk==ll) {
+		      /* (ji|kl) */
+		      C_DAXPY(nocc*nocc, value, CCInfo.T2_s[il], 1, CCInfo.T2_t[jk],1);
+		      /* (kl|ij) */
+		      C_DAXPY(nocc*nocc, value, CCInfo.T2_s[lj], 1, CCInfo.T2_t[ki],1);
+		      /* (kl|ji) */
+		      C_DAXPY(nocc*nocc, value, CCInfo.T2_s[li], 1, CCInfo.T2_t[kj],1);
+		    }
+		    else if(ii==jj && kk!=ll) {
+		      /* (ij|lk) */
+		      C_DAXPY(nocc*nocc, value, CCInfo.T2_s[jk], 1, CCInfo.T2_t[il],1);
+		      /* (kl|ij) */
+		      C_DAXPY(nocc*nocc, value, CCInfo.T2_s[lj], 1, CCInfo.T2_t[ki],1);
+		      /* (lk|ij) */
+		      C_DAXPY(nocc*nocc, value, CCInfo.T2_s[kj], 1, CCInfo.T2_t[li],1);
+		    }
+		    else if(ii==jj && kk==ll && IJ!=KL) {
+		      /* (kl|ij) */
+		      C_DAXPY(nocc*nocc, value, CCInfo.T2_s[lj], 1, CCInfo.T2_t[ki],1);
+		    }
+		  }
+		}
+	      }
+	    }
 
 	  } /* end of RSPQ loop */
 	} /* end of "unique" RSQP loop */
 
   /*---------
     Clean-up
-   ---------*/
+    ---------*/
 #ifdef NONDOUBLE_INTS
   free(raw_data);
 #endif
