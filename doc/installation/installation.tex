@@ -242,16 +242,21 @@ psi3@psicode.org}.
 
 Once testing is complete, installation into \$prefix is accomplished by
 running {\tt make install} in {\tt \$objdir}.   Executable modules are
-installed in {\tt \$prefix/bin}, libraries in {\tt \$prefix/lib}, basis set
-data and other control strctures {\tt \$prefix/share}, and documentation
-in {\tt \$prefix/doc}.
+installed in {\tt \$prefix/bin}, libraries in {\tt \$prefix/lib} and basis 
+set data and other control strctures {\tt \$prefix/share}.
 
 \subsection{Step 5: Cleaning}
+
+If your system has the appropriate utilities, you may build the package
+documentation from the top-level {\tt \$objdir} by running {\tt make doc}.  
+The resulting files will appear in the {\tt \$prefix/doc} area.
+
+\subsection{Step 6: Cleaning}
 
 All compilation-area object files and libraries can be removed to save
 disk space by running {\tt make clean} in {\tt \$objdir}.
 
-\subsection{Step 6: User Configuration}
+\subsection{Step 7: User Configuration}
 
 After the PSI3 package has been successfullly installed, the user will
 need to add the installation directory into their path.  If the package

@@ -12,9 +12,7 @@
 # installing it.
 #
 
-default:: $(TARGET_DVI) $(TARGET_PS) $(TARGET_HTML)
-
-all: default install
+default:: install
 
 # Note that LaTeX should be run three times to resolve references
 $(TARGET_DVI): $(TEX) $(SUBTEX)
