@@ -133,11 +133,14 @@ typedef struct {
     int puream;                        /* pure angular momentum flag */
     int num_ao;                        /* number of AO's */
     int max_am;                        /* maximum angular momentum in the basis + 1 */
+    int *am2shell;                     /* Mapping array for am ordering to shell ordering */
+    int *shells_per_am;                /* Number of shells per am type */
     double **schwartz_eri;             /* the matrix num_shells by num_shells:
 					  [si][sj] = max(ij|ij) i in si, j in sj  */
     struct shell_def *shells;          /* shell info */
     struct gaussian_function *cgtos;   /* cartesian gaussian information */
     struct shell_pair **shell_pairs;   /* shell pair info */
+  
 } BasisSet_t;
 
 typedef struct {

@@ -134,6 +134,7 @@ void xc_fock(void){
 			point
 			----------------------------------*/
 		      den_info = calc_density(geom);
+		      fprintf(outfile,"\nden = %10.10lf",den_info.den);
 		      if(den_info.den > DEN_CUTOFF){
 			  /*-------------------------------------
 			    Weight from Lebedev

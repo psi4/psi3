@@ -21,9 +21,10 @@
 #define EXTERN
 #include"global.h"
 
-struct den_info_s calc_density(struct coordinates geom){
+struct den_info_s calc_density_new(struct coordinates geom){
     
     int i,j,k;
+    int am2shell;
     int shell_type;
     int shell_start;
     int shell_end;
@@ -68,17 +69,17 @@ struct den_info_s calc_density(struct coordinates geom){
 timer_off("distance");
 timer_on("basis");
     for(i=k=0;i<n_shells;i++){
-        
-	shell_type = BasisSet.shells[i].am;
-	shell_center = BasisSet.shells[i].center-1;
+        am2shell = BasisSet.am2shell[i];
+	shell_type = BasisSet.shells[am2shell].am;
+	shell_center = BasisSet.shells[am2shell].center-1;
 	xa = dist_coord[shell_center].x;
         ya = dist_coord[shell_center].y;
 	za = dist_coord[shell_center].z;
 	rr = dist_atom[shell_center];
 
 	
-	shell_start = BasisSet.shells[i].fprim-1;
-	shell_end = shell_start+BasisSet.shells[i].n_prims;
+	shell_start = BasisSet.shells[am2shell].fprim-1;
+	shell_end = shell_start+BasisSet.shells[am2shell].n_prims;
 	
 	norm_ptr = GTOs.bf_norm[shell_type-1];
 	timer_on("exponent");
@@ -214,9 +215,9 @@ timer_off("exponent");
 	    punt("");
 	}
     }
-    /*for(i=0;i<num_ao;i++){
+    for(i=0;i<num_ao;i++){
 	fprintf(outfile,"\nBasis[%d] = %10.10lf",i,DFT_options.basis[i]);
-	}*/
+    }
 	timer_off("basis"); 
     /* Now contract the basis functions with the AO density matrix elements */
    timer_on("density"); 

@@ -22,6 +22,9 @@ void init_basisset()
   BasisSet.num_shells = file30_rd_nshell();
   BasisSet.num_prims = file30_rd_nprim();
   BasisSet.num_ao = file30_rd_nao();
+  BasisSet.am2shell = file30_rd_am2canon_shell_order();
+  BasisSet.shells_per_am = file30_rd_shells_per_am();
+  BasisSet.max_am = file30_rd_max_am()+1;
   BasisSet.puream = (Symmetry.num_so != BasisSet.num_ao) ? 1 : 0;  /* need to transform to pure. ang. mom. basis? */
 /* BasisSet.cgtos = */ get_primitives();
 /* BasisSet.shells = */ get_shell_info();
@@ -88,7 +91,6 @@ void get_shell_info()
    shell_trans_table = file30_rd_shell_transm();
 
    /*--- retrieve maximum am ---*/
-   BasisSet.max_am = file30_rd_max_am() + 1;
    if (BasisSet.max_am > CINTS_MAX_AM)
      punt("Angular momentum limit of CINTS exceeded, reconfigure and recompile");
    
