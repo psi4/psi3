@@ -127,7 +127,9 @@ int main(int argc, char *argv[])
   build_Z();
 
   relax_I();
-  relax_D();
+  if(params.relax_opdm) {
+    relax_D();
+  }
   sortone();
 
   sortI();

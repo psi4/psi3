@@ -22,12 +22,17 @@ void get_params()
   params.aobasis = 0;
   errcod = ip_boolean("AO_BASIS", &(params.aobasis),0);
   
+  params.relax_opdm = 1;
+  errcod = ip_boolean("RELAX_OPDM", &(params.relax_opdm),0);
+  
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
   fprintf(outfile, "\tTolerance    = %3.1e\n", params.tolerance);
   fprintf(outfile, "\tCache Level  =    %1d\n", params.cachelev);
-  fprintf(outfile, "\tAO Basis        =     %s\n", 
+  fprintf(outfile, "\tAO Basis     =     %s\n", 
           params.aobasis ? "Yes" : "No");
+  fprintf(outfile, "\tRelax OPDM   =     %s\n", 
+          params.relax_opdm ? "Yes" : "No");
   fprintf(outfile, "\n");
 }
 
