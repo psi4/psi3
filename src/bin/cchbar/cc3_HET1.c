@@ -546,6 +546,15 @@ void HET1_Wmbej(void)
     dpd_buf4_sort(&W, CC3_HET1, psqr, 27, 26, "CC3 WmBEj (mB,Ej)");
     dpd_buf4_close(&W);
 
+    /* also make some Wmbej (bm,ej) */
+    dpd_buf4_init(&W, CC3_HET1, 0, 24, 25, 24, 25, "CC3 WMbeJ (Mb,eJ)");
+    dpd_buf4_sort(&W, CC3_HET1, qprs, 25, 25, "CC3 WMbeJ (bM,eJ)");
+    dpd_buf4_close(&W);
+
+    dpd_buf4_init(&W, CC3_HET1, 0, 27, 26, 27, 26, "CC3 WmBEj (mB,Ej)");
+    dpd_buf4_sort(&W, CC3_HET1, qprs, 26, 26, "CC3 WmBEj (Bm,Ej)");
+    dpd_buf4_close(&W);
+
   } /** UHF **/
   return;
 }
