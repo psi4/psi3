@@ -413,7 +413,7 @@ psi: (
     $cclambda_zeta $ccdensity_use_zeta $backtransqt $deriv)
   EOM_CCSDRHFFirst = $EOM_CCSDFirst
   EOM_CCSDROHFFirst = $EOM_CCSDFirst
-  EOM_CCSDUHFFirst = ERROR
+  EOM_CCSDUHFFirst = $EOM_CCSDFirst
   EOM_CCSDTwoConFirst = ERROR
 
   % Procedure for optimizing geometries with gradients
