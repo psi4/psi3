@@ -1,8 +1,14 @@
 /* $Log$
- * Revision 1.14  2002/04/27 22:28:48  crawdad
- * More changes to cleanup in preparation for libchkpt conversion.
+ * Revision 1.15  2002/04/28 04:34:10  crawdad
+ * Finshed initial additions for mirroring old file30 with new PSIF_CHKPT.  I
+ * believe that everything cscf wrote to file30 is also written to PSIF_CHKPT.
+ * Now ready to start converting other codes to libchkpt.
  * -TDC
  *
+/* Revision 1.14  2002/04/27 22:28:48  crawdad
+/* More changes to cleanup in preparation for libchkpt conversion.
+/* -TDC
+/*
 /* Revision 1.13  2002/04/27 18:33:20  crawdad
 /* Working on changes for new libchkpt code.  Current version does no reading
 /* from chkpt yet.
@@ -131,7 +137,7 @@ void cleanup()
   char *der_type="FIRST";
   double occj,occk;
   double ekin,epot,enpot,ovlp,virial,num_elec,s2;
-  double *scr_arr, *lagrangian;
+  double *scr_arr, *lagrangian, **lagr, **ccvecs;
   double **scr1, **scr2;
   double *temp;
   struct symm *s;
@@ -475,7 +481,6 @@ void cleanup()
     }
   }
    
-  chkptr = PSIO_ZERO;
   for (i=0 ; i < num_ir ; i++) 
     if (scf_info[i].num_so) {
       wwritw(itap30,(char *) scf_info[i].irrep_label,sizeof(char)*4,locvec,&locvec);
@@ -493,6 +498,8 @@ void cleanup()
     wwritw(itap30,(char *) no,sizeof(int)*n_so_typs,locvec,&locvec);
     pointers[8] = locvec;
   }
+
+  /* write open-shell coupling coefficients */
   if(iopen){
     if(twocon) {
       double c1i = scf_info[opblk1].occ_num[opshl1];
@@ -506,19 +513,24 @@ void cleanup()
     if(ci_calc && !twocon)
       for (i=0; i < ioff[n_open] ; i++) beta[i] = -beta[i];
     wwritw(itap30,(char *) alpha,sizeof(double)*ioff[n_open],locvec,&locvec);
-    psio_write_entry(PSIF_CHKPT, "::Alpha coupling coeffs", (char *) alpha,
-		     ioff[n_open]*sizeof(double));
     pointers[9] = locvec;
     wwritw(itap30,(char *) beta,sizeof(double)*ioff[n_open],locvec,&locvec);
-    psio_write_entry(PSIF_CHKPT, "::Beta coupling coeffs", (char *) beta,
-		     ioff[n_open]*sizeof(double));
     pointers[10] = locvec;
+
+    ccvecs = block_matrix(2,ioff[n_open]);
+    for(i=0; i < ioff[n_open]; i++) {
+      ccvecs[0][i] = alpha[i];
+      ccvecs[1][i] = beta[i];
+    }
+    chkpt_wt_ccvecs(ccvecs);
+    free_block(ccvecs);
   }
 
   /* calculate mo lagrangian and write to file30 */
   /* also write mo fock matrices to file49       */
       
   lagrangian = (double *) init_array(nx);
+  lagr = block_matrix(nmo,nmo);
   if(uhf){
     for(m=0;m<2;m++){
       for (i=0; i < num_ir ; i++) {
@@ -537,20 +549,19 @@ void cleanup()
 	if(nn=scf_info[k].num_so) {
 	  num_mo = scf_info[k].num_mo;
 	  for(i=0; i < num_mo ; i++)
-	    for(j=0; j <= i ; j++)
+	    for(j=0; j <= i ; j++) {
 	      lagrangian[ioff[i+ijk]+j+ijk] 
 		= spin_info[m].scf_spin[k].fock_pac[ioff[i]+j];
+	      lagr[i][j] = lagr[j][i] = spin_info[m].scf_spin[k].fock_pac[ioff[i]+j];
+	    }
 	  ijk += num_mo;
 	}
       }
       wwritw(itap30,(char *) lagrangian,sizeof(double)*nx,locvec,&locvec); 
-      if(m==0) 
-	psio_write_entry(PSIF_CHKPT, "::Alpha Lagrangian", (char *) lagrangian,
-			 nx*sizeof(double));
-      else
-	psio_write_entry(PSIF_CHKPT, "::Beta Lagrangian", (char *) lagrangian,
-			 nx*sizeof(double));
       pointers[m+11] = locvec; 
+
+      if(m==0) chkpt_wt_alpha_lagr(lagr);
+      else chkpt_wt_beta_lagr(lagr);
     }
   }
   else{
@@ -624,17 +635,20 @@ void cleanup()
       if(nn=scf_info[k].num_so) {
 	num_mo = scf_info[k].num_mo;
 	for(i=0; i < num_mo ; i++)
-	  for(j=0; j <= i ; j++)
+	  for(j=0; j <= i ; j++) {
 	    lagrangian[ioff[i+ijk]+j+ijk] = scf_info[k].fock_pac[ioff[i]+j];
+	    lagr[i][j] = lagr[j][i] = scf_info[k].fock_pac[ioff[i]+j];
+	  }
 	ijk += num_mo;
       }
     }
     wwritw(itap30,(char *) lagrangian,sizeof(double)*nx,locvec,&locvec);
-    psio_write_entry(PSIF_CHKPT, "::Alpha Lagrangian", (char *) lagrangian,
-		     nx*sizeof(double));
     pointers[11]=0;
     pointers[12]=locvec;
+    chkpt_wt_lagr(lagr);
   }
+  free(lagrangian);
+  free_block(lagr);
 
   if(newvec) {
     iend = (int) locvec/sizeof(int)+1;
