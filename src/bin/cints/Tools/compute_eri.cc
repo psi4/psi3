@@ -101,8 +101,10 @@ extern "C" int compute_eri(double* target,
 
   /*--- Compute data for primitive quartets here ---*/
   int num_prim_comb = 0;
-  bool si_eq_sj = (si == sj && am1 == am2);
-  bool sk_eq_sl = (sk == sl && am3 == am4);
+//  bool si_eq_sj = (si == sj && am1 == am2);
+//  bool sk_eq_sl = (sk == sl && am3 == am4);
+  bool si_eq_sj = false;
+  bool sk_eq_sl = false;
   for (int p1 = 0; p1 < np1; p1++) {
     int max_p2 = si_eq_sj ? p1+1 : np2;
     for (int p2 = 0; p2 < max_p2; p2++) {

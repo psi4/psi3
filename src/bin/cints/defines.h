@@ -32,7 +32,7 @@
 #define ZERO 1E-15                 /* Definition of a hard floating-point "zero" */
 #define EPS 1.0e-17                /* Another definition of floating-point "zero"
 				      used in computing auxiliary function */
-#undef USE_TAYLOR_FM              /* Use Taylor interpolation formula to compute Fm(T) */
+#define USE_TAYLOR_FM              /* Use Taylor interpolation formula to compute Fm(T) */
 #define TAYLOR_ORDER 6             /* Order of Taylor interpolation used to compute Fm(T) */
 
 /*----------------------------------

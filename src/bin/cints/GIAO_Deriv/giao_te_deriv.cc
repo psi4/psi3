@@ -33,7 +33,7 @@ extern "C" void giao_te_deriv(void)
 {
   /*--- Various data structures ---*/
   Libint_t Libint;                    /* Integrals library object */
-  struct iwlbuf DGDBX, DGDBY, DGDBZ;  // IWL buffers
+  struct iwlbuf G, DGDBX, DGDBY, DGDBZ;  // IWL buffers
 
   /*---------------
     Initialization
@@ -41,9 +41,9 @@ extern "C" void giao_te_deriv(void)
   // NOTE: we are computing GIAO derivative integrals via ERIs in which one of functions
   // has angular momentum incremented by 1
 #ifdef USE_TAYLOR_FM
-  init_Taylor_Fm_Eval(BasisSet.max_am*4,UserOptions.cutoff);
+  init_Taylor_Fm_Eval(BasisSet.max_am*4+1,UserOptions.cutoff);
 #else
-  init_fjt(BasisSet.max_am*4);
+  init_fjt(BasisSet.max_am*4+1);
 //  init_fjt_table(&fjt_table);
 #endif
   init_libint_base();
@@ -52,6 +52,7 @@ extern "C" void giao_te_deriv(void)
     (BasisSet.max_num_prims*BasisSet.max_num_prims);
   init_libint(&Libint,BasisSet.max_am,max_num_prim_comb);
 
+  iwl_buf_init(&G, 47, 0.0, 0, 0);
   iwl_buf_init(&DGDBX, IOUnits.itapdgdB[0], 0.0, 0, 0);
   iwl_buf_init(&DGDBY, IOUnits.itapdgdB[1], 0.0, 0, 0);
   iwl_buf_init(&DGDBZ, IOUnits.itapdgdB[2], 0.0, 0, 0);
@@ -61,6 +62,7 @@ extern "C" void giao_te_deriv(void)
   double* dgdBx_buf = new double[max_cart_size];
   double* dgdBy_buf = new double[max_cart_size];
   double* dgdBz_buf = new double[max_cart_size];
+  struct tebuf* g_tebuf = new struct tebuf[max_cart_size];
   struct tebuf* dgdBx_tebuf = new struct tebuf[max_cart_size];
   struct tebuf* dgdBy_tebuf = new struct tebuf[max_cart_size];
   struct tebuf* dgdBz_tebuf = new struct tebuf[max_cart_size];
@@ -79,12 +81,17 @@ extern "C" void giao_te_deriv(void)
           int sk = skk;
           int sl = sll;
 
+          if (si==0 && sj==4 && sk==8 && sl==9) {
+            int stop = 0;
+          }
+          
           // These are angular momenta of GIAO Gaussians
           int am[4];
           am[0] = BasisSet.shells[si].am-1;
           am[1] = BasisSet.shells[sj].am-1;
           am[2] = BasisSet.shells[sk].am-1;
           am[3] = BasisSet.shells[sl].am-1;
+          int total_am = am[0]+am[1]+am[2]+am[3];
 
           // If these shells are on the same origin -- GIAO derivatives will be 0 -- skip
           int center[4];
@@ -92,8 +99,8 @@ extern "C" void giao_te_deriv(void)
           center[1] = BasisSet.shells[sj].center-1;
           center[2] = BasisSet.shells[sk].center-1;
           center[3] = BasisSet.shells[sl].center-1;
-          if (center[0] == center[1] && center[0] == center[2] && center[0] == center[3])
-            continue;
+//          if (center[0] == center[1] && center[0] == center[2] && center[0] == center[3])
+//            continue;
             
           struct shell_pair* sp_ij = &(BasisSet.shell_pairs[si][sj]);
           struct shell_pair* sp_kl = &(BasisSet.shell_pairs[sk][sl]);
@@ -127,11 +134,19 @@ extern "C" void giao_te_deriv(void)
           nao[2] = ioff[gam[2]+1];
           nao[3] = ioff[gam[3]+1];
           int quartet_size = nao[0]*nao[1]*nao[2]*nao[3];
+          if (num_ints)
           for(int i=0; i<quartet_size; i++) {
             double value = abcd_buf[i];
             dgdBx_buf[i] = dgdB_pfac * ABxA_plus_CDxC.x * value;
             dgdBy_buf[i] = dgdB_pfac * ABxA_plus_CDxC.y * value;
             dgdBz_buf[i] = dgdB_pfac * ABxA_plus_CDxC.z * value;
+          }
+          else
+          for(int i=0; i<quartet_size; i++) {
+            abcd_buf[i] = 0.0;
+            dgdBx_buf[i] = 0.0;
+            dgdBy_buf[i] = 0.0;
+            dgdBz_buf[i] = 0.0;
           }
 
           //
@@ -271,16 +286,19 @@ extern "C" void giao_te_deriv(void)
           
 
           // Normalize integrals
+          double* g_target_buf;
           double* dgdBx_target_buf;
           double* dgdBy_target_buf;
           double* dgdBz_target_buf;
-          if (am) {
+          if (total_am) {
             // No transformation to spherical harmonics basis, only normalization
+            g_target_buf = norm_quartet(abcd_buf, NULL, am, 0);
             dgdBx_target_buf = norm_quartet(dgdBx_buf, NULL, am, 0);
             dgdBy_target_buf = norm_quartet(dgdBy_buf, NULL, am, 0);
             dgdBz_target_buf = norm_quartet(dgdBz_buf, NULL, am, 0);
           }
           else {
+            g_target_buf = abcd_buf;
             dgdBx_target_buf = dgdBx_buf;
             dgdBy_target_buf = dgdBy_buf;
             dgdBz_target_buf = dgdBz_buf;
@@ -298,7 +316,11 @@ extern "C" void giao_te_deriv(void)
                   for(int l=0; l<nao[3]; l++, ijkl++) {
                     int ll = l+BasisSet.shells[sl].fao-1;
 
-                    if (fabs(dgdBx_buf[ijkl]) > UserOptions.cutoff) {
+                    if (fabs(abcd_buf[ijkl]) > UserOptions.cutoff) {
+                      fprintf(stdout, "%5d%5d%5d%5d%20.10lf\n",
+                              ii, jj, kk, ll, abcd_buf[ijkl]);
+                    }
+/*                    if (fabs(dgdBx_buf[ijkl]) > UserOptions.cutoff) {
                       fprintf(stdout, "%5d%5d%5d%5d%20.10lf\n",
                               ii, jj, kk, ll, dgdBx_buf[ijkl]);
                     }
@@ -309,7 +331,7 @@ extern "C" void giao_te_deriv(void)
                     if (fabs(dgdBz_buf[ijkl]) > UserOptions.cutoff) {
                       fprintf(stdout, "%5d%5d%5d%5d%20.10lf\n",
                               ii, jj, kk, ll, dgdBz_buf[ijkl]);
-                    }
+                    }*/
                   }
                 }
 	      } 
@@ -332,18 +354,23 @@ extern "C" void giao_te_deriv(void)
                 for(int l=0; l<nao[3]; l++, ijkl++) {
                   int ll = l + fao[3];
                     
+                  g_tebuf[ijkl].i = ii;
                   dgdBx_tebuf[ijkl].i = ii;
                   dgdBy_tebuf[ijkl].i = ii;
                   dgdBz_tebuf[ijkl].i = ii;
+                  g_tebuf[ijkl].j = jj;
                   dgdBx_tebuf[ijkl].j = jj;
                   dgdBy_tebuf[ijkl].j = jj;
                   dgdBz_tebuf[ijkl].j = jj;
+                  g_tebuf[ijkl].k = kk;
                   dgdBx_tebuf[ijkl].k = kk;
                   dgdBy_tebuf[ijkl].k = kk;
                   dgdBz_tebuf[ijkl].k = kk;
+                  g_tebuf[ijkl].l = ll;
                   dgdBx_tebuf[ijkl].l = ll;
                   dgdBy_tebuf[ijkl].l = ll;
                   dgdBz_tebuf[ijkl].l = ll;
+                  g_tebuf[ijkl].val = g_target_buf[ijkl];
                   dgdBx_tebuf[ijkl].val = dgdBx_target_buf[ijkl];
                   dgdBy_tebuf[ijkl].val = dgdBy_target_buf[ijkl];
                   dgdBz_tebuf[ijkl].val = dgdBz_target_buf[ijkl];
@@ -351,6 +378,7 @@ extern "C" void giao_te_deriv(void)
               }
             }
           }
+          iwl_buf_wrt_struct(&G, g_tebuf, quartet_size, UserOptions.cutoff);
           iwl_buf_wrt_struct(&DGDBX, dgdBx_tebuf, quartet_size, UserOptions.cutoff);
           iwl_buf_wrt_struct(&DGDBY, dgdBy_tebuf, quartet_size, UserOptions.cutoff);
           iwl_buf_wrt_struct(&DGDBZ, dgdBz_tebuf, quartet_size, UserOptions.cutoff);
@@ -360,6 +388,7 @@ extern "C" void giao_te_deriv(void)
     } /* sjj */
   } /* sii */
 
+  iwl_buf_flush(&G, 1);  iwl_buf_close(&G, 1);
   iwl_buf_flush(&DGDBX, 1);  iwl_buf_close(&DGDBX, 1);
   iwl_buf_flush(&DGDBY, 1);  iwl_buf_close(&DGDBY, 1);
   iwl_buf_flush(&DGDBZ, 1);  iwl_buf_close(&DGDBZ, 1);

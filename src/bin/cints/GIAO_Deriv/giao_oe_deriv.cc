@@ -12,6 +12,7 @@ extern "C" {
 #include"defines.h"
 #define EXTERN
 #include"global.h"
+#include"taylor_fm_eval.h"
 #include"oe_osrr.h"
 #include"small_fns.h"
 }
@@ -31,6 +32,10 @@ extern "C" {
  -----------------------------------------------------------------------------------------*/
 extern "C" void giao_oe_deriv()
 {
+
+#ifdef USE_TAYLOR_FM
+  init_Taylor_Fm_Eval(BasisSet.max_am*4+1,UserOptions.cutoff);
+#endif  
 
   /*--- allocate room for the one-e matrices ---*/
   double** D2HDBXDEX = block_matrix(BasisSet.num_ao,BasisSet.num_ao);
@@ -190,6 +195,10 @@ extern "C" void giao_oe_deriv()
                   dSdBxtemp[ai][aj] += dSdB_pfac * (AB.y * z - AB.z * y);
                   dSdBytemp[ai][aj] += dSdB_pfac * (AB.z * x - AB.x * z);
                   dSdBztemp[ai][aj] += dSdB_pfac * (AB.x * y - AB.y * x);
+
+/*                  dSdBxtemp[ai][aj] += 2.0*dSdB_pfac * x;
+                  dSdBytemp[ai][aj] += 2.0*dSdB_pfac * y;
+                  dSdBztemp[ai][aj] += 2.0*dSdB_pfac * z;*/
                   
                   double d2BE_pfac = -0.5*over_pf;
                   double qxx = x2*y0*z0;
@@ -254,6 +263,9 @@ extern "C" void giao_oe_deriv()
                   dHdBxtemp[ai][aj] += dB_pfac * ( AB.y * zT - AB.z * yT);
                   dHdBytemp[ai][aj] += dB_pfac * ( AB.z * xT - AB.x * zT);
                   dHdBztemp[ai][aj] += dB_pfac * ( AB.x * yT - AB.y * xT);
+
+/*                  dHdBxtemp[ai][aj] += 2.0*dB_pfac * (tx00*y0*z0 + x0*ty00*z0+x0*y0*tz00);
+                  dHdBztemp[ai][aj] += 2.0*dB_pfac * (tx00*y0*z0 + x0*ty00*z0+x0*y0*tz00);*/
                   
                   /*double T = tx00*y0*z0 + x0*ty00*z0 + x0*y0*tz00;
                   dHdBytemp[ai][aj] += 2.0*dB_pfac*T;*/
@@ -294,17 +306,17 @@ extern "C" void giao_oe_deriv()
 
                     int jind = n2*jzm + m2*jym + l2*jxm;
 
-                    double xV = AI0[iind_100][jind][0] + A.x*AI0[iind_000][jind][0];
-                    double yV = AI0[iind_010][jind][0] + A.y*AI0[iind_000][jind][0];
-                    double zV = AI0[iind_001][jind][0] + A.z*AI0[iind_000][jind][0];
+                    double V = AI0[iind_000][jind][0];
+                    double xV = AI0[iind_100][jind][0] + A.x * V;
+                    double yV = AI0[iind_010][jind][0] + A.y * V;
+                    double zV = AI0[iind_001][jind][0] + A.z * V;
 
                     dHdBxtemp[ai][aj] += dB_pfac * ( AB.y * zV - AB.z * yV);
                     dHdBytemp[ai][aj] += dB_pfac * ( AB.z * xV - AB.x * zV);
                     dHdBztemp[ai][aj] += dB_pfac * ( AB.x * yV - AB.y * xV);
                     
-                    /*double V = AI0[iind_000][jind][0];
-                    
-                    dHdBxtemp[ai][aj] += 2.0*dB_pfac*V;*/
+/*                    dHdBytemp[ai][aj] += 2.0*dB_pfac * V;
+                    dHdBztemp[ai][aj] += 2.0*dB_pfac * V;*/
                   
                     aj++;
                   }
@@ -400,7 +412,7 @@ extern "C" void giao_oe_deriv()
     print_mat(DHDBY,BasisSet.num_ao,BasisSet.num_ao,outfile);
     fprintf(outfile,"  -dh/dB_z AO integrals:\n\n");
     print_mat(DHDBZ,BasisSet.num_ao,BasisSet.num_ao,outfile);
-    fprintf(outfile,"  -d2h/dB_x dE_x AO integrals:\n\n");
+/*    fprintf(outfile,"  -d2h/dB_x dE_x AO integrals:\n\n");
     print_mat(D2HDBXDEX,BasisSet.num_ao,BasisSet.num_ao,outfile);
     fprintf(outfile,"  -d2h/dB_x dE_y AO integrals:\n\n");
     print_mat(D2HDBXDEY,BasisSet.num_ao,BasisSet.num_ao,outfile);
@@ -417,7 +429,7 @@ extern "C" void giao_oe_deriv()
     fprintf(outfile,"  -d2h/dB_z dE_y AO integrals:\n\n");
     print_mat(D2HDBZDEY,BasisSet.num_ao,BasisSet.num_ao,outfile);
     fprintf(outfile,"  -d2h/dB_z dE_z AO integrals:\n\n");
-    print_mat(D2HDBZDEZ,BasisSet.num_ao,BasisSet.num_ao,outfile);
+    print_mat(D2HDBZDEZ,BasisSet.num_ao,BasisSet.num_ao,outfile);*/
     fprintf(outfile,"\n");
   }
 
@@ -452,6 +464,10 @@ extern "C" void giao_oe_deriv()
   free_block(DSDBX);
   free_block(DSDBY);
   free_block(DSDBZ);
+
+#ifdef USE_TAYLOR_FM
+  free_Taylor_Fm_Eval();
+#endif
 
   return;
 }   
