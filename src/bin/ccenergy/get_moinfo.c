@@ -21,6 +21,7 @@ void get_moinfo(void)
   file30_init();
   moinfo.nirreps = file30_rd_nirreps();
   moinfo.nmo = file30_rd_nmo();
+  moinfo.nso = file30_rd_nso();
   moinfo.iopen = file30_rd_iopen();
   moinfo.labels = file30_rd_irr_labs();
   moinfo.enuc = file30_rd_enuc();

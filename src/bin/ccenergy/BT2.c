@@ -12,7 +12,7 @@ void BT2(void)
   dpdbuf4 tauIJAB, tauijab, tauIjAb;
   dpdbuf4 Z1,Z2;
 
-/*  timer_on("BT2", outfile); */
+  /*  timer_on("BT2", outfile); */
 
   dpd_buf4_init(&newtIJAB, CC_TAMPS, 0, 2, 7, 2, 7, 0, "New tIJAB");
   dpd_buf4_init(&newtijab, CC_TAMPS, 0, 2, 7, 2, 7, 0, "New tijab");
@@ -27,11 +27,15 @@ void BT2(void)
 
   /* AA and BB terms */
   dpd_buf4_init(&Z1, CC_TMP0, 0, 7, 2, 7, 2, 0, "Z(ab,ij)");
-  dpd_contract444(&B_anti, &tauIJAB, &Z1, 0, 0, 1, 0);
-  dpd_buf4_sort(&Z1, CC_TMP0, rspq, 2, 7, "Z(ij,ab)");
-  dpd_buf4_init(&Z2, CC_TMP0, 0, 2, 7, 2, 7, 0, "Z(ij,ab)");
-  dpd_buf4_axpy(&Z2, &newtIJAB, 1);
-  dpd_buf4_close(&Z2);
+
+  if(!params.aobasis) {
+    dpd_contract444(&B_anti, &tauIJAB, &Z1, 0, 0, 1, 0);
+    dpd_buf4_sort(&Z1, CC_TMP0, rspq, 2, 7, "Z(ij,ab)");
+    dpd_buf4_init(&Z2, CC_TMP0, 0, 2, 7, 2, 7, 0, "Z(ij,ab)");
+    dpd_buf4_axpy(&Z2, &newtIJAB, 1);
+    dpd_buf4_close(&Z2);
+  }
+
   dpd_contract444(&B_anti, &tauijab, &Z1, 0, 0, 1, 0);
   dpd_buf4_sort(&Z1, CC_TMP0, rspq, 2, 7, "Z(ij,ab)");
   dpd_buf4_init(&Z2, CC_TMP0, 0, 2, 7, 2, 7, 0, "Z(ij,ab)");
@@ -59,5 +63,5 @@ void BT2(void)
   dpd_buf4_close(&newtijab);
   dpd_buf4_close(&newtIjAb);
 
-/*  timer_off("BT2", outfile); */
+  /*  timer_off("BT2", outfile); */
 }

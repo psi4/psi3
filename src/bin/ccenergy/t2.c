@@ -5,6 +5,8 @@
 void DT2(void), FaetT2(void), FmitT2(void), WmnijT2(void), WmbejT2(void);
 void BT2(void), ZT2(void), FT2(void), ET2(void), CT2(void), dijabT2(void);
 
+void BT_AO(void);
+
 void t2_build(void)
 {
   DT2();
@@ -14,6 +16,11 @@ void t2_build(void)
   WmnijT2();
   timer_off("WmnijT2", outfile);
   timer_on("BT2", outfile);
+  /*
+  if(params.aobasis) BT2_AO();
+  else BT2();
+  */
+  BT2_AO();
   BT2();
   timer_off("BT2", outfile);
   timer_on("ZT2", outfile);

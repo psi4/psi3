@@ -41,7 +41,7 @@ void get_params()
   fndcor(&(params.memory),infile,outfile);
 
   params.aobasis = 0;
-  errcod = ip_boolean("AOBASIS", &(params.aobasis),0);
+  errcod = ip_boolean("AO_BASIS", &(params.aobasis),0);
 
   params.cachelev = 2;
   errcod = ip_data("CACHELEV", "%d", &(params.cachelev),0);
