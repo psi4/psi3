@@ -10,6 +10,8 @@ void get_params()
 {
   int errcod, tol;
 
+  errcod = ip_string("WFN", &(params.wfn), 0);
+
   params.tolerance = 1e-14;
   errcod = ip_data("TOLERANCE","%d",&(tol),0);
   if(errcod == IPE_OK) params.tolerance = 1.0*pow(10.0,(double) -tol);
@@ -33,6 +35,8 @@ void get_params()
           params.aobasis ? "Yes" : "No");
   fprintf(outfile, "\tRelax OPDM   =     %s\n", 
           params.relax_opdm ? "Yes" : "No");
+  fprintf(outfile, "\tExcited State=     %s\n", 
+          (!params.ground) ? "Yes" : "No");
   fprintf(outfile, "\n");
 }
 

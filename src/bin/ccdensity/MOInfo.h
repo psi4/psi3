@@ -21,6 +21,7 @@ struct MOInfo {
     int *vir_sym;       /* active virtual index symmetry */
     int *avir_sym;      /* alpha active virtual index symmetry */
     int *bvir_sym;      /* beta active virtual index symmetry */
+    int sym;            /* symmetry of converged CCSD state */
     int *occpi;         /* no. of active occ. orbs. (incl. open) per irrep */
     int *aoccpi;        /* no. of alpha active occ. orbs. (incl. open) per irrep */
     int *boccpi;        /* no. of beta active occ. orbs. (incl. open) per irrep */

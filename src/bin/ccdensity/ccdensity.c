@@ -50,8 +50,18 @@ int **cacheprep_rhf(int level, int *cachefiles);
 int **cacheprep_uhf(int level, int *cachefiles);
 void cachedone_rhf(int **cachelist);
 void cachedone_uhf(int **cachelist);
-void add_eom_d(void);
-void sort_Ls(void);
+void setup_LR(void);
+void G_build(void);
+void x_oe_intermediates(void);
+void x_onepdm(void);
+void x_te_intermediates(void);
+void x_Gijkl(void);
+void x_Gabcd(void);
+void x_Gibja(void);
+void x_Gijka(void);
+void x_Gijab_ROHF(void);
+void x_Gciab(void);
+void V_build_x(void);
 
 int main(int argc, char *argv[])
 {
@@ -87,22 +97,44 @@ int main(int argc, char *argv[])
 	     moinfo.avir_sym, moinfo.boccpi, moinfo.bocc_sym, moinfo.bvirtpi, moinfo.bvir_sym);
   }
 
-  if (params.ground)
-    sort_Ls();
+  setup_LR();
 
-  onepdm();
+  onepdm(); /* compute ground state parts of onepdm */
 
   if (!params.ground) {
-    add_eom_d(); /* R0 * ground D + excited parts of onepdm */
-    fprintf(outfile,"\tStill using ground-state 2-pdm\n");
+    x_oe_intermediates();
+    x_onepdm();
   }
 
-
+  G_build(); /* copied from cclambda and now recomputed with GL */
   twopdm();
 
+  if (!params.ground) {
+    V_build_x();
+    x_te_intermediates();
+    x_Gijkl();
+    x_Gabcd();
+    x_Gibja();
+    x_Gijka();
+    x_Gciab();
+    x_Gijab_ROHF();
+  }
+
   if(!params.aobasis) energy();
+
+  /* just for RAK excited state debugging */
+  /*
+  dpd_close(0);
+  if(params.ref == 2) cachedone_uhf(cachelist);
+  else cachedone_rhf(cachelist);
+  free(cachefiles);
+  cleanup();
+  exit_io();
+  exit(PSI_RETURN_SUCCESS);
+  */
+
   sortone();
-  /* dipole(); */
+// dipole();
   kinetic();
 
   /*
@@ -202,8 +234,17 @@ void init_io(int argc, char *argv[])
   sprintf(progid, ":%s",gprgid());
 
   params.ground = 1;
+  params.user_transition = 0;
   for (i=1, num_unparsed=0; i<argc; ++i) {
     if (!strcmp(argv[i],"--excited")) {
+      params.ground = 0;
+    }
+    else if (!strcmp(argv[i],"--transition")) {
+      params.user_transition = 1;
+      sscanf(argv[++i], "%d",&(params.L_irr));
+      sscanf(argv[++i], "%d",&(params.L_root));
+      sscanf(argv[++i], "%d",&(params.R_root));
+      params.R_irr = params.L_irr; /* assume same for now */
       params.ground = 0;
     }
     else {
@@ -218,13 +259,16 @@ void init_io(int argc, char *argv[])
   psio_init();
 
   /* Open all dpd data files here */
-  for(i=CC_MIN; i <= CC_MAX; i++) psio_open(i,1);
-
-  if (!params.ground) {
-    /* assume symmetry of L is that of R */
-    psio_read_entry(CC_INFO,"EOM R0", (char *) &(params.R0),sizeof(double));
-    psio_read_entry(CC_INFO,"CCEOM Energy", (char *) &(params.cceom_energy),sizeof(double));
-  }
+  /* erase files for easy debugging */
+  for(i=CC_MIN; i <= CC_MAX; i++) psio_open(i,PSIO_OPEN_OLD);
+  psio_close(CC_GR,0);
+  psio_close(CC_GL,0);
+  psio_close(EOM_TMP,0);
+  psio_close(EOM_TMP0,0);
+  psio_open(CC_GR,PSIO_OPEN_NEW);
+  psio_open(CC_GL,PSIO_OPEN_NEW);
+  psio_open(EOM_TMP,PSIO_OPEN_NEW);
+  psio_open(EOM_TMP0,PSIO_OPEN_NEW);
 }
 
 void title(void)
@@ -257,67 +301,3 @@ char *gprgid()
    return(prgid);
 }
 
-/* R0 * ground D + excited parts of onepdm */
-void add_eom_d(void) {
-  dpdfile2 DG, DX;
-
-  fprintf(outfile,"Multiplying density by R0 and adding in excited parts of onepdm\n");
-
-  dpd_file2_init(&DG, CC_OEI, 0, 0, 0, "DIJ");
-  dpd_file2_scm(&DG, params.R0);
-  dpd_file2_init(&DX, EOM_D, 0, 0, 0, "DIJ");
-  dpd_file2_axpy(&DX, &DG, 1.0, 0);
-  dpd_file2_close(&DX);
-  dpd_file2_close(&DG);
-
-  dpd_file2_init(&DG, CC_OEI, 0, 0, 0, "Dij");
-  dpd_file2_scm(&DG, params.R0);
-  dpd_file2_init(&DX, EOM_D, 0, 0, 0, "Dij");
-  dpd_file2_axpy(&DX, &DG, 1.0, 0);
-  dpd_file2_close(&DX);
-  dpd_file2_close(&DG);
-
-  dpd_file2_init(&DG, CC_OEI, 0, 1, 1, "DAB");
-  dpd_file2_scm(&DG, params.R0);
-  dpd_file2_init(&DX, EOM_D, 0, 1, 1, "DAB");
-  dpd_file2_axpy(&DX, &DG, 1.0, 0);
-  dpd_file2_close(&DX);
-  dpd_file2_close(&DG);
-
-  dpd_file2_init(&DG, CC_OEI, 0, 1, 1, "Dab");
-  dpd_file2_scm(&DG, params.R0);
-  dpd_file2_init(&DX, EOM_D, 0, 1, 1, "Dab");
-  dpd_file2_axpy(&DX, &DG, 1.0, 0);
-  dpd_file2_close(&DX);
-  dpd_file2_close(&DG);
-
-  dpd_file2_init(&DG, CC_OEI, 0, 0, 1, "DIA");
-  dpd_file2_scm(&DG, params.R0);
-  dpd_file2_init(&DX, EOM_D, 0, 0, 1, "DIA");
-  dpd_file2_axpy(&DX, &DG, 1.0, 0);
-  dpd_file2_close(&DX);
-  dpd_file2_close(&DG);
-
-  dpd_file2_init(&DG, CC_OEI, 0, 0, 1, "Dia");
-  dpd_file2_scm(&DG, params.R0);
-  dpd_file2_init(&DX, EOM_D, 0, 0, 1, "Dia");
-  dpd_file2_axpy(&DX, &DG, 1.0, 0);
-  dpd_file2_close(&DX);
-  dpd_file2_close(&DG);
-
-  dpd_file2_init(&DG, CC_OEI, 0, 0, 1, "DAI");
-  dpd_file2_scm(&DG, params.R0);
-  dpd_file2_init(&DX, EOM_D, 0, 0, 1, "DAI");
-  dpd_file2_axpy(&DX, &DG, 1.0, 0);
-  dpd_file2_close(&DX);
-  dpd_file2_close(&DG);
-  
-  dpd_file2_init(&DG, CC_OEI, 0, 0, 1, "Dai");
-  dpd_file2_scm(&DG, params.R0);
-  dpd_file2_init(&DX, EOM_D, 0, 0, 1, "Dai");
-  dpd_file2_axpy(&DX, &DG, 1.0, 0);
-  dpd_file2_close(&DX);
-  dpd_file2_close(&DG);
-
-  return;
-}

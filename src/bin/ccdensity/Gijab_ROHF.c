@@ -14,11 +14,11 @@ void Gijab_ROHF(void)
   nirreps = moinfo.nirreps;
 
   /* ( g(I,M) + L(M,E) T(I,E) ) --> Z(I,M)(TMP0)  */
-  dpd_file2_init(&g, CC_OEI, 0, 0, 0, "GMI");
+  dpd_file2_init(&g, CC_GLG, 0, 0, 0, "GMI");
   dpd_file2_copy(&g, CC_TMP0, "Z(I,M)");
   dpd_file2_close(&g);
   dpd_file2_init(&ZZ, CC_TMP0, 0, 0, 0, "Z(I,M)");
-  dpd_file2_init(&L1, CC_OEI, 0, 0, 1, "LIA");
+  dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "LIA");
   dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
   dpd_contract222(&T1, &L1, &ZZ, 0, 0, 1.0, 1.0);
   dpd_file2_close(&T1);
@@ -26,11 +26,11 @@ void Gijab_ROHF(void)
   dpd_file2_close(&ZZ);
 
   /* ( g(i,m) + L(m,e) T(i,e) ) --> Z(i,m)(TMP1)  */
-  dpd_file2_init(&g, CC_OEI, 0, 0, 0, "Gmi");
+  dpd_file2_init(&g, CC_GLG, 0, 0, 0, "Gmi");
   dpd_file2_copy(&g, CC_TMP1, "Z(i,m)");
   dpd_file2_close(&g);
   dpd_file2_init(&ZZ, CC_TMP1, 0, 0, 0, "Z(i,m)");
-  dpd_file2_init(&L1, CC_OEI, 0, 0, 1, "Lia");
+  dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "Lia");
   dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tia");
   dpd_contract222(&T1, &L1, &ZZ, 0, 0, 1.0, 1.0);
   dpd_file2_close(&T1);
@@ -38,11 +38,11 @@ void Gijab_ROHF(void)
   dpd_file2_close(&ZZ);
 
   /* ( g(E,A) - L(M,E) T(M,A) ) --> Z(E,A)(TMP2) */
-  dpd_file2_init(&g, CC_OEI, 0, 1, 1, "GAE");
+  dpd_file2_init(&g, CC_GLG, 0, 1, 1, "GAE");
   dpd_file2_copy(&g, CC_TMP2, "Z(E,A)");
   dpd_file2_close(&g);
   dpd_file2_init(&ZZ, CC_TMP2, 0, 1, 1, "Z(E,A)");
-  dpd_file2_init(&L1, CC_OEI, 0, 0, 1, "LIA");
+  dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "LIA");
   dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
   dpd_contract222(&L1, &T1, &ZZ, 1, 1, -1.0, 1.0);
   dpd_file2_close(&T1);
@@ -50,11 +50,11 @@ void Gijab_ROHF(void)
   dpd_file2_close(&ZZ);
 
   /* ( g(e,a) - L(m,e) T(m,a) ) --> Z(e,a)(TMP3) */
-  dpd_file2_init(&g, CC_OEI, 0, 1, 1, "Gae");
+  dpd_file2_init(&g, CC_GLG, 0, 1, 1, "Gae");
   dpd_file2_copy(&g, CC_TMP3, "Z(e,a)");
   dpd_file2_close(&g);
   dpd_file2_init(&ZZ, CC_TMP3, 0, 1, 1, "Z(e,a)");
-  dpd_file2_init(&L1, CC_OEI, 0, 0, 1, "Lia");
+  dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "Lia");
   dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tia");
   dpd_contract222(&L1, &T1, &ZZ, 1, 1, -1.0, 1.0);
   dpd_file2_close(&T1);
@@ -196,13 +196,16 @@ void Gijab_ROHF(void)
   dpd_file2_close(&T1B);
 
   /* L(IJ,AB) */
-  dpd_buf4_init(&L, CC_LAMPS, 0, 2, 7, 2, 7, 0, "LIJAB");
+  dpd_buf4_init(&L, CC_GLG, 0, 2, 7, 2, 7, 0, "LIJAB");
   dpd_buf4_copy(&L, CC_GAMMA, "GIJAB");
   dpd_buf4_close(&L);
   dpd_buf4_init(&G, CC_GAMMA, 0, 2, 7, 2, 7, 0, "GIJAB");
-  /* Tau(IJ,AB) */
+  /* Tau(IJ,AB), for ex. states this term must be *R0 explicitly */
   dpd_buf4_init(&T, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauIJAB");
-  dpd_buf4_axpy(&T, &G, 1.0);
+  if (params.ground)
+    dpd_buf4_axpy(&T, &G, 1.0);
+  else
+    dpd_buf4_axpy(&T, &G, params.R0);
   dpd_buf4_close(&T);
   /* V(IJ,MN) Tau(MN,AB) */
   dpd_buf4_init(&T, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauIJAB");
@@ -275,12 +278,12 @@ void Gijab_ROHF(void)
   dpd_buf4_close(&G);
   /* T'(IA,ME) (TMP4) L(M,E) + T'(IA,me) (T2) L(m,e) --> ZZ(I,A) */
   dpd_file2_init(&ZZ, CC_TMP8, 0, 0, 1, "ZZ(I,A)");
-  dpd_file2_init(&L1, CC_OEI, 0, 0, 1, "LIA");
+  dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "LIA");
   dpd_buf4_init(&T, CC_TMP4, 0, 10, 10, 10, 10, 0, "Z(IA,ME)");
   dpd_contract422(&T, &L1, &ZZ, 0, 0, 1.0, 0.0);
   dpd_buf4_close(&T);
   dpd_file2_close(&L1);
-  dpd_file2_init(&L1, CC_OEI, 0, 0, 1, "Lia");
+  dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "Lia");
   dpd_buf4_init(&T, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIAjb");
   dpd_contract422(&T, &L1, &ZZ, 0, 0, -1.0, 1.0);
   dpd_buf4_close(&T);
@@ -353,7 +356,7 @@ void Gijab_ROHF(void)
   /* T(J,E) L(M,E) --> ZZ(J,M) */
   dpd_file2_init(&ZZ, CC_TMP8, 0, 0, 0, "Z(J,M)");
   dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
-  dpd_file2_init(&L1, CC_OEI, 0, 0, 1, "LIA");
+  dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "LIA");
   dpd_contract222(&T1, &L1, &ZZ, 0, 0, 1.0, 0.0);
   dpd_file2_close(&L1);
   dpd_file2_close(&T1);
@@ -433,13 +436,16 @@ void Gijab_ROHF(void)
 
 
   /* L(ij,ab) */
-  dpd_buf4_init(&L, CC_LAMPS, 0, 2, 7, 2, 7, 0, "Lijab");
+  dpd_buf4_init(&L, CC_GLG, 0, 2, 7, 2, 7, 0, "Lijab");
   dpd_buf4_copy(&L, CC_GAMMA, "Gijab");
   dpd_buf4_close(&L);
   dpd_buf4_init(&G, CC_GAMMA, 0, 2, 7, 2, 7, 0, "Gijab");
   /* Tau(ij,ab) */
   dpd_buf4_init(&T, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauijab");
-  dpd_buf4_axpy(&T, &G, 1.0);
+  if (params.ground) 
+    dpd_buf4_axpy(&T, &G, 1.0);
+  else
+    dpd_buf4_axpy(&T, &G, params.R0);
   dpd_buf4_close(&T);
   /* V(ij,mn) Tau(mn,ab) */
   dpd_buf4_init(&T, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tauijab");
@@ -512,12 +518,12 @@ void Gijab_ROHF(void)
   dpd_buf4_close(&G);
   /* T'(ia,me) (TMP5) L(m,e) + T'(ia,ME) (T2) L(M,E) --> ZZ(i,a) */
   dpd_file2_init(&ZZ, CC_TMP8, 0, 0, 1, "ZZ(i,a)");
-  dpd_file2_init(&L1, CC_OEI, 0, 0, 1, "Lia");
+  dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "Lia");
   dpd_buf4_init(&T, CC_TMP5, 0, 10, 10, 10, 10, 0, "Z(ia,me)");
   dpd_contract422(&T, &L1, &ZZ, 0, 0, 1.0, 0.0);
   dpd_buf4_close(&T);
   dpd_file2_close(&L1);
-  dpd_file2_init(&L1, CC_OEI, 0, 0, 1, "LIA");
+  dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "LIA");
   dpd_buf4_init(&T, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tiaJB");
   dpd_contract422(&T, &L1, &ZZ, 0, 0, -1.0, 1.0);
   dpd_buf4_close(&T);
@@ -590,7 +596,7 @@ void Gijab_ROHF(void)
   /* T(j,e) L(m,e) --> ZZ(j,m) */
   dpd_file2_init(&ZZ, CC_TMP8, 0, 0, 0, "Z(j,m)");
   dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tia");
-  dpd_file2_init(&L1, CC_OEI, 0, 0, 1, "Lia");
+  dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "Lia");
   dpd_contract222(&T1, &L1, &ZZ, 0, 0, 1.0, 0.0);
   dpd_file2_close(&L1);
   dpd_file2_close(&T1);
@@ -670,13 +676,16 @@ void Gijab_ROHF(void)
 
 
   /* L(Ij,Ab) */
-  dpd_buf4_init(&L, CC_LAMPS, 0, 0, 5, 0, 5, 0, "LIjAb");
+  dpd_buf4_init(&L, CC_GLG, 0, 0, 5, 0, 5, 0, "LIjAb");
   dpd_buf4_copy(&L, CC_GAMMA, "GIjAb");
   dpd_buf4_close(&L);
   dpd_buf4_init(&G, CC_GAMMA, 0, 0, 5, 0, 5, 0, "GIjAb");
   /* Tau(Ij,Ab) */
   dpd_buf4_init(&T, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
-  dpd_buf4_axpy(&T, &G, 1.0);
+  if (params.ground) 
+    dpd_buf4_axpy(&T, &G, 1.0);
+  else 
+    dpd_buf4_axpy(&T, &G, params.R0);
   dpd_buf4_close(&T);
   /* V(Ij,Mn) Tau(Mn,Ab) */
   dpd_buf4_init(&T, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
@@ -795,12 +804,12 @@ void Gijab_ROHF(void)
   dpd_buf4_close(&G);
   /* T'(IA,me) (T2) L(m,e) + T'(IA,ME) (TMP4) L(M,E) --> ZZ(I,A) */
   dpd_file2_init(&ZZ, CC_TMP8, 0, 0, 1, "ZZ(I,A)");
-  dpd_file2_init(&L1, CC_OEI, 0, 0, 1, "LIA");
+  dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "LIA");
   dpd_buf4_init(&T, CC_TMP4, 0, 10, 10, 10, 10, 0, "Z(IA,ME)");
   dpd_contract422(&T, &L1, &ZZ, 0, 0, 1.0, 0.0);
   dpd_buf4_close(&T);
   dpd_file2_close(&L1);
-  dpd_file2_init(&L1, CC_OEI, 0, 0, 1, "Lia");
+  dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "Lia");
   dpd_buf4_init(&T, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIAjb");
   dpd_contract422(&T, &L1, &ZZ, 0, 0, -1.0, 1.0);
   dpd_buf4_close(&T);
@@ -852,12 +861,12 @@ void Gijab_ROHF(void)
 
   /* T'(jb,ME) (T2) L(M,E) + T'(jb,me) (TMP5) L(m,e) --> ZZ(j,b) */
   dpd_file2_init(&ZZ, CC_TMP8, 0, 0, 1, "ZZ(j,b)");
-  dpd_file2_init(&L1, CC_OEI, 0, 0, 1, "LIA");
+  dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "LIA");
   dpd_buf4_init(&T, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tiaJB");
   dpd_contract422(&T, &L1, &ZZ, 0, 0, -1.0, 0.0);
   dpd_buf4_close(&T);
   dpd_file2_close(&L1);
-  dpd_file2_init(&L1, CC_OEI, 0, 0, 1, "Lia");
+  dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "Lia");
   dpd_buf4_init(&T, CC_TMP5, 0, 10, 10, 10, 10, 0, "Z(ia,me)");
   dpd_contract422(&T, &L1, &ZZ, 0, 0, 1.0, 1.0);
   dpd_buf4_close(&T);
@@ -910,7 +919,7 @@ void Gijab_ROHF(void)
   /* T(j,e) L(m,e) --> ZZ(j,m) */
   dpd_file2_init(&ZZ, CC_TMP8, 0, 0, 0, "Z(j,m)");
   dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tia");
-  dpd_file2_init(&L1, CC_OEI, 0, 0, 1, "Lia");
+  dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "Lia");
   dpd_contract222(&T1, &L1, &ZZ, 0, 0, 1.0, 0.0);
   dpd_file2_close(&L1);
   dpd_file2_close(&T1);
@@ -969,7 +978,7 @@ void Gijab_ROHF(void)
   /* T(I,E) L(M,E) --> ZZ(I,M) */
   dpd_file2_init(&ZZ, CC_TMP8, 0, 0, 0, "Z(I,M)");
   dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
-  dpd_file2_init(&L1, CC_OEI, 0, 0, 1, "LIA");
+  dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "LIA");
   dpd_contract222(&T1, &L1, &ZZ, 0, 0, 1.0, 0.0);
   dpd_file2_close(&L1);
   dpd_file2_close(&T1);

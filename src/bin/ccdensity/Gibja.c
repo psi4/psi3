@@ -63,7 +63,7 @@ void Gibja(void)
 
     /* G(IA,JB) <-- - L(IM,AE) T(J,E) T(M,B) */
     dpd_buf4_init(&Z, CC_TMP0, 0, 0, 11, 0, 11, 0, "Z(IM,AJ)");
-    dpd_buf4_init(&L, CC_LAMPS, 0, 0, 5, 2, 7, 0, "LIJAB");
+    dpd_buf4_init(&L, CC_GLG, 0, 0, 5, 2, 7, 0, "LIJAB");
     dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
     dpd_contract424(&L, &T1, &Z, 3, 1, 0, 1.0, 0.0);
     dpd_buf4_close(&L);
@@ -84,7 +84,7 @@ void Gibja(void)
 
     /* G(ia,jb) <-- - L(im,ae) T(j,e) T(m,b) */
     dpd_buf4_init(&Z, CC_TMP0, 0, 0, 11, 0, 11, 0, "Z(im,aj)");
-    dpd_buf4_init(&L, CC_LAMPS, 0, 0, 5, 2, 7, 0, "Lijab");
+    dpd_buf4_init(&L, CC_GLG, 0, 0, 5, 2, 7, 0, "Lijab");
     dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tia");
     dpd_contract424(&L, &T1, &Z, 3, 1, 0, 1.0, 0.0);
     dpd_buf4_close(&L);
@@ -105,7 +105,7 @@ void Gibja(void)
 
     /* G(IA,jb) <-- - L(Im,Ae) T(j,e) T(m,b) */
     dpd_buf4_init(&Z, CC_TMP0, 0, 0, 11, 0, 11, 0, "Z(Im,Aj)");
-    dpd_buf4_init(&L, CC_LAMPS, 0, 0, 5, 0, 5, 0, "LIjAb");
+    dpd_buf4_init(&L, CC_GLG, 0, 0, 5, 0, 5, 0, "LIjAb");
     dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tia");
     dpd_contract424(&L, &T1, &Z, 3, 1, 0, 1.0, 0.0);
     dpd_buf4_close(&L);
@@ -126,7 +126,7 @@ void Gibja(void)
 
     /* G(ia,JB) <-- - L(iM,aE) T(J,E) T(M,B) */
     dpd_buf4_init(&Z, CC_TMP0, 0, 0, 11, 0, 11, 0, "Z(iM,aJ)");
-    dpd_buf4_init(&L, CC_LAMPS, 0, 0, 5, 0, 5, 0, "LiJaB");
+    dpd_buf4_init(&L, CC_GLG, 0, 0, 5, 0, 5, 0, "LiJaB");
     dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
     dpd_contract424(&L, &T1, &Z, 3, 1, 0, 1.0, 0.0);
     dpd_buf4_close(&L);
@@ -147,7 +147,7 @@ void Gibja(void)
 
     /* G(Ia,Jb) <-- - L(Im,Ea) T(J,E) T(m,b) */
     dpd_buf4_init(&Z, CC_TMP0, 0, 0, 10, 0, 10, 0, "Z(Im,Ja)");
-    dpd_buf4_init(&L, CC_LAMPS, 0, 0, 5, 0, 5, 0, "LIjAb");
+    dpd_buf4_init(&L, CC_GLG, 0, 0, 5, 0, 5, 0, "LIjAb");
     dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
     dpd_contract244(&T1, &L, &Z, 1, 2, 1, 1.0, 0.0);
     dpd_buf4_close(&L);
@@ -168,7 +168,7 @@ void Gibja(void)
 
     /* G(iA,jB) <-- - L(iM,eA) T(j,e) T(M,B) */
     dpd_buf4_init(&Z, CC_TMP0, 0, 0, 10, 0, 10, 0, "Z(iM,jA)");
-    dpd_buf4_init(&L, CC_LAMPS, 0, 0, 5, 0, 5, 0, "LiJaB");
+    dpd_buf4_init(&L, CC_GLG, 0, 0, 5, 0, 5, 0, "LiJaB");
     dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tia");
     dpd_contract244(&T1, &L, &Z, 1, 2, 1, 1.0, 0.0);
     dpd_buf4_close(&L);
@@ -193,10 +193,10 @@ void Gibja(void)
     dpd_file2_init(&T1B, CC_OEI, 0, 0, 1, "tia");
     dpd_file2_mat_init(&T1B);
     dpd_file2_mat_rd(&T1B);
-    dpd_file2_init(&L1A, CC_OEI, 0, 0, 1, "LIA");
+    dpd_file2_init(&L1A, CC_GLG, 0, 0, 1, "LIA");
     dpd_file2_mat_init(&L1A);
     dpd_file2_mat_rd(&L1A);
-    dpd_file2_init(&L1B, CC_OEI, 0, 0, 1, "Lia");
+    dpd_file2_init(&L1B, CC_GLG, 0, 0, 1, "Lia");
     dpd_file2_mat_init(&L1B);
     dpd_file2_mat_rd(&L1B);
 
@@ -399,7 +399,7 @@ void Gibja(void)
 
     /* G(IA,JB) <-- - L(IM,AE) T(J,E) T(M,B) */
     dpd_buf4_init(&Z, CC_TMP0, 0, 0, 21, 0, 21, 0, "Z(IM,AJ)");
-    dpd_buf4_init(&L, CC_LAMPS, 0, 0, 5, 2, 7, 0, "LIJAB");
+    dpd_buf4_init(&L, CC_GLG, 0, 0, 5, 2, 7, 0, "LIJAB");
     dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
     dpd_contract424(&L, &T1, &Z, 3, 1, 0, 1.0, 0.0);
     dpd_buf4_close(&L);
@@ -420,7 +420,7 @@ void Gibja(void)
 
     /* G(ia,jb) <-- - L(im,ae) T(j,e) T(m,b) */
     dpd_buf4_init(&Z, CC_TMP0, 0, 10, 31, 10, 31, 0, "Z(im,aj)");
-    dpd_buf4_init(&L, CC_LAMPS, 0, 10, 15, 12, 17, 0, "Lijab");
+    dpd_buf4_init(&L, CC_GLG, 0, 10, 15, 12, 17, 0, "Lijab");
     dpd_file2_init(&T1, CC_OEI, 0, 2, 3, "tia");
     dpd_contract424(&L, &T1, &Z, 3, 1, 0, 1.0, 0.0);
     dpd_buf4_close(&L);
@@ -441,7 +441,7 @@ void Gibja(void)
 
     /* G(IA,jb) <-- - L(Im,Ae) T(j,e) T(m,b) */
     dpd_buf4_init(&Z, CC_TMP0, 0, 22, 26, 22, 26, 0, "Z(Im,Aj)");
-    dpd_buf4_init(&L, CC_LAMPS, 0, 22, 28, 22, 28, 0, "LIjAb");
+    dpd_buf4_init(&L, CC_GLG, 0, 22, 28, 22, 28, 0, "LIjAb");
     dpd_file2_init(&T1, CC_OEI, 0, 2, 3, "tia");
     dpd_contract424(&L, &T1, &Z, 3, 1, 0, 1.0, 0.0);
     dpd_buf4_close(&L);
@@ -462,7 +462,7 @@ void Gibja(void)
 
     /* G(ia,JB) <-- - L(iM,aE) T(J,E) T(M,B) */
     dpd_buf4_init(&Z, CC_TMP0, 0, 23, 25, 23, 25, 0, "Z(iM,aJ)");
-    dpd_buf4_init(&L, CC_LAMPS, 0, 23, 29, 23, 29, 0, "LiJaB");
+    dpd_buf4_init(&L, CC_GLG, 0, 23, 29, 23, 29, 0, "LiJaB");
     dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
     dpd_contract424(&L, &T1, &Z, 3, 1, 0, 1.0, 0.0);
     dpd_buf4_close(&L);
@@ -483,7 +483,7 @@ void Gibja(void)
 
     /* G(Ia,Jb) <-- - L(Im,Ea) T(J,E) T(m,b) */
     dpd_buf4_init(&Z, CC_TMP0, 0, 22, 24, 22, 24, 0, "Z(Im,Ja)");
-    dpd_buf4_init(&L, CC_LAMPS, 0, 22, 28, 22, 28, 0, "LIjAb");
+    dpd_buf4_init(&L, CC_GLG, 0, 22, 28, 22, 28, 0, "LIjAb");
     dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
     dpd_contract244(&T1, &L, &Z, 1, 2, 1, 1.0, 0.0);
     dpd_buf4_close(&L);
@@ -504,7 +504,7 @@ void Gibja(void)
 
     /* G(iA,jB) <-- - L(iM,eA) T(j,e) T(M,B) */
     dpd_buf4_init(&Z, CC_TMP0, 0, 23, 27, 23, 27, 0, "Z(iM,jA)");
-    dpd_buf4_init(&L, CC_LAMPS, 0, 23, 29, 23, 29, 0, "LiJaB");
+    dpd_buf4_init(&L, CC_GLG, 0, 23, 29, 23, 29, 0, "LiJaB");
     dpd_file2_init(&T1, CC_OEI, 0, 2, 3, "tia");
     dpd_contract244(&T1, &L, &Z, 1, 2, 1, 1.0, 0.0);
     dpd_buf4_close(&L);
@@ -529,10 +529,10 @@ void Gibja(void)
     dpd_file2_init(&T1B, CC_OEI, 0, 2, 3, "tia");
     dpd_file2_mat_init(&T1B);
     dpd_file2_mat_rd(&T1B);
-    dpd_file2_init(&L1A, CC_OEI, 0, 0, 1, "LIA");
+    dpd_file2_init(&L1A, CC_GLG, 0, 0, 1, "LIA");
     dpd_file2_mat_init(&L1A);
     dpd_file2_mat_rd(&L1A);
-    dpd_file2_init(&L1B, CC_OEI, 0, 2, 3, "Lia");
+    dpd_file2_init(&L1B, CC_GLG, 0, 2, 3, "Lia");
     dpd_file2_mat_init(&L1B);
     dpd_file2_mat_rd(&L1B);
 

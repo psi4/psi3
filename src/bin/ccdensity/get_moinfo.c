@@ -31,6 +31,11 @@ void get_moinfo(void)
   moinfo.openpi = chkpt_rd_openpi();
   chkpt_close();
 
+  moinfo.sym = 0;
+  for (i=0;i<moinfo.nirreps;++i)
+    for (j=0;j<moinfo.openpi[i];++j)
+      moinfo.sym = moinfo.sym ^ i;
+
   psio_read_entry(CC_INFO, "Reference Wavefunction", (char *) &(params.ref),
                   sizeof(int));
 

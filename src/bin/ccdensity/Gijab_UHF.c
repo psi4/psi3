@@ -196,7 +196,7 @@ void Gijab_UHF(void)
   dpd_file2_close(&T1B);
 
   /* L(IJ,AB) */
-  dpd_buf4_init(&L, CC_LAMPS, 0, 2, 7, 2, 7, 0, "LIJAB");
+  dpd_buf4_init(&L, CC_GLG, 0, 2, 7, 2, 7, 0, "LIJAB");
   dpd_buf4_copy(&L, CC_GAMMA, "GIJAB");
   dpd_buf4_close(&L);
   dpd_buf4_init(&G, CC_GAMMA, 0, 2, 7, 2, 7, 0, "GIJAB");
@@ -433,7 +433,7 @@ void Gijab_UHF(void)
 
 
   /* L(ij,ab) */
-  dpd_buf4_init(&L, CC_LAMPS, 0, 12, 17, 12, 17, 0, "Lijab");
+  dpd_buf4_init(&L, CC_GLG, 0, 12, 17, 12, 17, 0, "Lijab");
   dpd_buf4_copy(&L, CC_GAMMA, "Gijab");
   dpd_buf4_close(&L);
   dpd_buf4_init(&G, CC_GAMMA, 0, 12, 17, 12, 17, 0, "Gijab");
@@ -670,7 +670,7 @@ void Gijab_UHF(void)
 
 
   /* L(Ij,Ab) */
-  dpd_buf4_init(&L, CC_LAMPS, 0, 22, 28, 22, 28, 0, "LIjAb");
+  dpd_buf4_init(&L, CC_GLG, 0, 22, 28, 22, 28, 0, "LIjAb");
   dpd_buf4_copy(&L, CC_GAMMA, "GIjAb");
   dpd_buf4_close(&L);
   dpd_buf4_init(&G, CC_GAMMA, 0, 22, 28, 22, 28, 0, "GIjAb");
