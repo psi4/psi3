@@ -264,35 +264,21 @@ void angmom_ints(void)
     }
   } /* done with this shell pair */
 
+  if (UserOptions.print_lvl >= PRINT_OEI) {
+    fprintf(outfile, "  -AO-Basis LX AngMom Integrals:\n");
+    print_mat(Lx, BasisSet.num_ao, BasisSet.num_ao, outfile);
+    fprintf(outfile, "  -AO-Basis LY AngMom Integrals:\n");
+    print_mat(Ly, BasisSet.num_ao, BasisSet.num_ao, outfile);
+    fprintf(outfile, "  -AO-Basis LZ AngMom Integrals:\n");
+    print_mat(Lz, BasisSet.num_ao, BasisSet.num_ao, outfile);
+    fprintf(outfile,"\n");
+  }
+
   /* dump the integrals to disk here */
-  /*
-  fprintf(outfile, "AO-Basis LX AngMom Integrals\n");
-  print_mat(Lx, BasisSet.num_ao, BasisSet.num_ao, outfile);
-  fprintf(outfile, "AO-Basis LY AngMom Integrals\n");
-  print_mat(Ly, BasisSet.num_ao, BasisSet.num_ao, outfile);
-  fprintf(outfile, "AO-Basis LZ AngMom Integrals\n");
-  print_mat(Lz, BasisSet.num_ao, BasisSet.num_ao, outfile);
-  */
+  iwl_wrtone(IOUnits.itapOEInt_Misc, PSIF_AO_LX, BasisSet.num_ao*BasisSet.num_ao, Lx[0]);
+  iwl_wrtone(IOUnits.itapOEInt_Misc, PSIF_AO_LY, BasisSet.num_ao*BasisSet.num_ao, Ly[0]);
+  iwl_wrtone(IOUnits.itapOEInt_Misc, PSIF_AO_LZ, BasisSet.num_ao*BasisSet.num_ao, Lz[0]);
 
-  ntri = BasisSet.num_ao * (BasisSet.num_ao+1)/2;
-  scratch = init_array(ntri);
-
-  for(i=0,ij=0; i < BasisSet.num_ao; i++)
-    for(j=0; j <= i; j++,ij++)
-      scratch[ij] = Lx[i][j];
-  iwl_wrtone(PSIF_OEI, PSIF_AO_LX, ntri, scratch);
-
-  for(i=0,ij=0; i < BasisSet.num_ao; i++)
-    for(j=0; j <= i; j++,ij++)
-      scratch[ij] = Ly[i][j];
-  iwl_wrtone(PSIF_OEI, PSIF_AO_LY, ntri, scratch);
-
-  for(i=0,ij=0; i < BasisSet.num_ao; i++)
-    for(j=0; j <= i; j++,ij++)
-      scratch[ij] = Lz[i][j];
-  iwl_wrtone(PSIF_OEI, PSIF_AO_LZ, ntri, scratch);
-
-  free(scratch);
   free_block(Lx);
   free_block(Ly);
   free_block(Lz);

@@ -194,10 +194,20 @@ typedef struct {
     int itapS;                /* SO Overlap IWL file */
     int itapT;                /* SO Kinetic energy IWL file */
     int itapV;                /* SO Potential energy IWL file */
+    int itapOEInt_Misc;       /* File for all miscellaneous one-electron integrals */
     int itapS_AO;             /* AO Overlap IWL file */
     int itapMX_AO;            /* AO mu(x) IWL file */
     int itapMY_AO;            /* AO mu(y) IWL file */
     int itapMZ_AO;            /* AO mu(z) IWL file */
+    int itapQXX_AO;           /* AO q(xx) IWL file */
+    int itapQXY_AO;           /* AO q(xy) IWL file */
+    int itapQXZ_AO;           /* AO q(xz) IWL file */
+    int itapQYY_AO;           /* AO q(yy) IWL file */
+    int itapQYZ_AO;           /* AO q(yz) IWL file */
+    int itapQZZ_AO;           /* AO q(zz) IWL file */
+    int itapNablaX_AO;        /* AO nabla(x) IWL file */
+    int itapNablaY_AO;        /* AO nabla(y) IWL file */
+    int itapNablaZ_AO;        /* AO nabla(z) IWL file */
     int itapDSCF;             /* "Interface" file between DSCF and CINTS */
     int itapD;                /* Correlated AO OPDM and Lagrangian from transqt */
     int itapG;                /* Correlated AO TPDM from transqt */

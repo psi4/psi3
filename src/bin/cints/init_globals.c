@@ -27,15 +27,16 @@ void init_globals()
   IOUnits.itapMX_AO = PSIF_OEI;
   IOUnits.itapMY_AO = PSIF_OEI;
   IOUnits.itapMZ_AO = PSIF_OEI;
-  /*
-  IOUnits.itapS = PSIF_SO_S;
-  IOUnits.itapT = PSIF_SO_T;
-  IOUnits.itapV = PSIF_SO_V;
-  IOUnits.itapS_AO = PSIF_AO_S;
-  IOUnits.itapMX_AO = PSIF_AO_MX;
-  IOUnits.itapMY_AO = PSIF_AO_MY;
-  IOUnits.itapMZ_AO = PSIF_AO_MZ;
-  */
+  IOUnits.itapQXX_AO = PSIF_OEI;
+  IOUnits.itapQXY_AO = PSIF_OEI;
+  IOUnits.itapQXZ_AO = PSIF_OEI;
+  IOUnits.itapQYY_AO = PSIF_OEI;
+  IOUnits.itapQYZ_AO = PSIF_OEI;
+  IOUnits.itapQZZ_AO = PSIF_OEI;
+  IOUnits.itapNablaX_AO = PSIF_OEI;
+  IOUnits.itapNablaY_AO = PSIF_OEI;
+  IOUnits.itapNablaZ_AO = PSIF_OEI;
+  IOUnits.itapOEInt_Misc = PSIF_OEI;
 
   return;
 }

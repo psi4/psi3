@@ -12,16 +12,11 @@
 #define EXTERN
 #include"global.h"
 #include"oe_osrr.h"
+#include"small_fns.h"
 
 #ifdef USE_TAYLOR_FM
   #include"taylor_fm_eval.h"
 #endif
-
-/*-------------------------------
-  Explicit function declarations
- -------------------------------*/
-static double ***init_box(int, int, int);
-static void free_box(double ***, int, int);
 
 
 /*--- These frequently used numbers are to avoid costs of passing parameters ---*/
@@ -397,38 +392,4 @@ void oe_ints()
 
   return;
 }   
-
-double ***init_box(int a, int b, int c)
-{
-  int i,j,k;
-  double ***box;
-
-  box = (double ***) malloc(sizeof(double **)*a);
-  for(i=0;i<a;i++)
-    box[i] = (double **) malloc(sizeof(double *)*b);
-  for(i=0;i<a;i++)
-    for(j=0;j<b;j++) {
-	box[i][j] = (double *) malloc(sizeof(double)*c);
-	bzero((char *) box[i][j],sizeof(double)*c);
-    }
-
-  return box;
-
-}
-
-
-void free_box(double ***box, int a, int b)
-{
-  int i,j;
-
-  for(i=0;i<a;i++)
-    for(j=0;j<b;j++)
-      free(box[i][j]);
-
-  for(i=0;i<a;i++)
-    free(box[i]); 
-
-  free(box);
-
-}
 

@@ -102,3 +102,37 @@ double distance_calc(struct coordinates g1, struct coordinates g2)
 	      (g1.y-g2.y)*(g1.y-g2.y) +
 	      (g1.z-g2.z)*(g1.z-g2.z));
 }
+
+double ***init_box(int a, int b, int c)
+{
+  int i,j,k;
+  double ***box;
+
+  box = (double ***) malloc(sizeof(double **)*a);
+  for(i=0;i<a;i++)
+    box[i] = (double **) malloc(sizeof(double *)*b);
+  for(i=0;i<a;i++)
+    for(j=0;j<b;j++) {
+	box[i][j] = (double *) malloc(sizeof(double)*c);
+	bzero((char *) box[i][j],sizeof(double)*c);
+    }
+
+  return box;
+
+}
+
+
+void free_box(double ***box, int a, int b)
+{
+  int i,j;
+
+  for(i=0;i<a;i++)
+    for(j=0;j<b;j++)
+      free(box[i][j]);
+
+  for(i=0;i<a;i++)
+    free(box[i]); 
+
+  free(box);
+
+}
