@@ -12,6 +12,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <iwl.h>
 #include <libciomr.h>
 #include "structs.h"
