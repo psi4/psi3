@@ -218,11 +218,11 @@ int main(argc,argv)
    
    
    itap30 = 30;
-   itap33 = PSIF_AO_TEI;
+   itap33 = PSIF_SO_TEI;
    itap34 = PSIF_SO_INTS;
-   itapS  = PSIF_AO_S;
-   itapT  = PSIF_AO_T;
-   itapV  = PSIF_AO_V;
+   itapS  = PSIF_SO_S;
+   itapT  = PSIF_SO_T;
+   itapV  = PSIF_SO_V;
    itapDSCF = PSIF_DSCF;
    itap92 = 92;
    itap93 = 93;
