@@ -262,8 +262,8 @@ void write_to_file30(double repulsion)
   }
   free(atom_label);
 
-  tmp_atom_label = (char **) malloc(j*sizeof(char *));
-  for(atom=0; atom<j; atom++) {
+  tmp_atom_label = (char **) malloc(num_allatoms*sizeof(char *));
+  for(atom=0; atom<num_allatoms; atom++) {
     tmp_atom_label[atom] = init_char_array(MAX_ELEMNAME);
 
     if(strlen(full_element[atom]) > MAX_ELEMNAME)
@@ -273,7 +273,7 @@ void write_to_file30(double repulsion)
     tmp_atom_label[atom][strlen(full_element[atom])] = '\0';
   }
   chkpt_wt_felement(tmp_atom_label);
-  for(atom=0; atom<j; atom++) {
+  for(atom=0; atom<num_allatoms; atom++) {
     free(tmp_atom_label[atom]);
   }
   free(tmp_atom_label);
