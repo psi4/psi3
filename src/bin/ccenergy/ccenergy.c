@@ -9,10 +9,15 @@
 #include <libdpd/dpd.h>
 #include <libchkpt/chkpt.h>
 #include <libqt/qt.h>
+#include <psifiles.h>
 #include "globals.h"
+
+/* Max length of ioff array */
+#define IOFF_MAX 32641
 
 /* Function prototypes */
 void init_io(int argc, char *argv[]);
+void init_ioff(void);
 void title(void);
 void get_moinfo(void);
 void get_params(void);
@@ -53,6 +58,9 @@ void lmp2(void);
 void local_filter_T1_nodenom(dpdfile2 *);
 void local_filter_T2_nodenom(dpdbuf4 *);
 void amp_write(void);
+void amp_write(void);
+int rotate(void);
+double **fock_build(double **D);
 
 /* local correlation functions */
 void local_init(void);
@@ -60,7 +68,7 @@ void local_done(void);
 
 int main(int argc, char *argv[])
 {
-  int done=0;
+  int done=0, brueckner_done=0;
   int h, i, j, a, b, row, col, natom;
   double **geom, *zvals, value;
   FILE *efile;
@@ -72,6 +80,7 @@ int main(int argc, char *argv[])
   moinfo.iter=0;
   
   init_io(argc,argv);
+  init_ioff();
   title();
 
   timer_init();
@@ -203,7 +212,7 @@ int main(int argc, char *argv[])
     timer_off("CCEnergy");
     timer_done();
     exit_io();
-    exit(1);
+    exit(PSI_RETURN_FAILURE);
   }
 
   fprintf(outfile, "\tSCF energy       (chkpt)   = %20.15f\n", moinfo.escf);
@@ -258,6 +267,8 @@ int main(int argc, char *argv[])
     /*    local_print_T1_norm(); */
     local_done();
   }
+
+  if(params.brueckner) brueckner_done = rotate();
   
   if(strcmp(params.aobasis,"NONE")) dpd_close(1);
   dpd_close(0);
@@ -272,7 +283,8 @@ int main(int argc, char *argv[])
   timer_done();
   
   exit_io();
-  exit(0);
+  if(params.brueckner && brueckner_done) exit(PSI_RETURN_ENDLOOP);
+  else exit(PSI_RETURN_SUCCESS);
 }
 
 void init_io(int argc, char *argv[])
@@ -335,3 +347,12 @@ void memchk(void)
 
   system(comm);
 }
+
+void init_ioff(void)
+{
+  int i;
+  ioff = init_int_array(IOFF_MAX);
+  ioff[0] = 0;
+  for(i=1; i < IOFF_MAX; i++) ioff[i] = ioff[i-1] + i;
+}
+

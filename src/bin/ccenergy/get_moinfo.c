@@ -4,6 +4,7 @@
 #include <libciomr/libciomr.h>
 #include <libchkpt/chkpt.h>
 #include <libpsio/psio.h>
+#include <libqt/qt.h>
 #define EXTERN
 #include "globals.h"
 
@@ -17,7 +18,7 @@
 
 void get_moinfo(void)
 {
-  int i, h, p, q, errcod, nactive, nirreps;
+  int i, j, h, p, q, errcod, nactive, nirreps;
   double ***C, ***Ca, ***Cb;
   psio_address next;
 
@@ -81,6 +82,47 @@ void get_moinfo(void)
     psio_read_entry(CC_INFO, "Active Beta Virt Orb Symmetry",
 		    (char *) moinfo.bvir_sym, sizeof(int)*nactive);
 
+    moinfo.aocc_off = init_int_array(moinfo.nirreps);
+    moinfo.bocc_off = init_int_array(moinfo.nirreps);
+    moinfo.avir_off = init_int_array(moinfo.nirreps);
+    moinfo.bvir_off = init_int_array(moinfo.nirreps);
+    psio_read_entry(CC_INFO, "Active Alpha Occ Orb Offsets",
+		    (char *) moinfo.aocc_off, sizeof(int)*moinfo.nirreps);
+    psio_read_entry(CC_INFO, "Active Beta Occ Orb Offsets",
+		    (char *) moinfo.bocc_off, sizeof(int)*moinfo.nirreps);
+    psio_read_entry(CC_INFO, "Active Alpha Virt Orb Offsets",
+		    (char *) moinfo.avir_off, sizeof(int)*moinfo.nirreps);
+    psio_read_entry(CC_INFO, "Active Beta Virt Orb Offsets",
+		    (char *) moinfo.bvir_off, sizeof(int)*moinfo.nirreps);
+
+    /* Get CC->QT and QT->CC active occupied and virtual reordering arrays */
+    moinfo.qt_aocc = init_int_array(nactive);
+    moinfo.qt_bocc = init_int_array(nactive);
+    moinfo.qt_avir = init_int_array(nactive);
+    moinfo.qt_bvir = init_int_array(nactive);
+    moinfo.cc_aocc = init_int_array(nactive);
+    moinfo.cc_bocc = init_int_array(nactive);
+    moinfo.cc_avir = init_int_array(nactive);
+    moinfo.cc_bvir = init_int_array(nactive);
+
+    psio_read_entry(CC_INFO, "CC->QT Alpha Active Occ Order",
+		    (char *) moinfo.qt_aocc, sizeof(int)*nactive);
+    psio_read_entry(CC_INFO, "CC->QT Beta Active Occ Order",
+		    (char *) moinfo.qt_bocc, sizeof(int)*nactive);
+    psio_read_entry(CC_INFO, "CC->QT Alpha Active Virt Order",
+		    (char *) moinfo.qt_avir, sizeof(int)*nactive);
+    psio_read_entry(CC_INFO, "CC->QT Beta Active Virt Order",
+		    (char *) moinfo.qt_bvir, sizeof(int)*nactive);
+    psio_read_entry(CC_INFO, "QT->CC Alpha Active Occ Order",
+		    (char *) moinfo.cc_aocc, sizeof(int)*nactive);
+    psio_read_entry(CC_INFO, "QT->CC Beta Active Occ Order",
+		    (char *) moinfo.cc_bocc, sizeof(int)*nactive);
+    psio_read_entry(CC_INFO, "QT->CC Alpha Active Virt Order",
+		    (char *) moinfo.cc_avir, sizeof(int)*nactive);
+    psio_read_entry(CC_INFO, "QT->CC Beta Active Virt Order",
+		    (char *) moinfo.cc_bvir, sizeof(int)*nactive);
+
+
   }
   else { /** RHF or ROHF **/
 
@@ -97,6 +139,28 @@ void get_moinfo(void)
 		    (char *) moinfo.occ_sym, sizeof(int)*nactive);
     psio_read_entry(CC_INFO, "Active Virt Orb Symmetry",
 		    (char *) moinfo.vir_sym, sizeof(int)*nactive);
+
+    moinfo.occ_off = init_int_array(moinfo.nirreps);
+    moinfo.vir_off = init_int_array(moinfo.nirreps);
+    psio_read_entry(CC_INFO, "Active Occ Orb Offsets",
+		    (char *) moinfo.occ_off, sizeof(int)*moinfo.nirreps);
+    psio_read_entry(CC_INFO, "Active Virt Orb Offsets",
+		    (char *) moinfo.vir_off, sizeof(int)*moinfo.nirreps);
+
+    /* Get CC->QT and QT->CC active occupied and virtual reordering arrays */
+    moinfo.qt_occ = init_int_array(nactive);
+    moinfo.qt_vir = init_int_array(nactive);
+    moinfo.cc_occ = init_int_array(nactive);
+    moinfo.cc_vir = init_int_array(nactive);
+    psio_read_entry(CC_INFO, "CC->QT Active Occ Order",
+		    (char *) moinfo.qt_occ, sizeof(int)*nactive);
+    psio_read_entry(CC_INFO, "CC->QT Active Virt Order",
+		    (char *) moinfo.qt_vir, sizeof(int)*nactive);
+    psio_read_entry(CC_INFO, "QT->CC Active Occ Order",
+		    (char *) moinfo.cc_occ, sizeof(int)*nactive);
+    psio_read_entry(CC_INFO, "QT->CC Active Virt Order",
+		    (char *) moinfo.cc_vir, sizeof(int)*nactive);
+
   }
 
   /* Build orbsym array (for AO-basis BT2) */
@@ -143,6 +207,16 @@ void get_moinfo(void)
       }
     }
     moinfo.Cb = Cb;
+  }
+
+  /* Compute spatial-orbital reordering arrays */
+  moinfo.pitzer2qt = init_int_array(moinfo.nmo);
+  moinfo.qt2pitzer = init_int_array(moinfo.nmo);
+  reorder_qt(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc, 
+	     moinfo.pitzer2qt, moinfo.orbspi, moinfo.nirreps);
+  for(i=0; i < moinfo.nmo; i++) {
+    j = moinfo.pitzer2qt[i];
+    moinfo.qt2pitzer[j] = i;
   }
 
   /* Adjust clsdpi array for frozen orbitals */
@@ -204,12 +278,30 @@ void cleanup(void)
     free(moinfo.bocc_sym);
     free(moinfo.avir_sym);
     free(moinfo.bvir_sym);
+    free(moinfo.aocc_off);
+    free(moinfo.bocc_off);
+    free(moinfo.avir_off);
+    free(moinfo.bvir_off);
+    free(moinfo.qt_aocc);
+    free(moinfo.qt_bocc);
+    free(moinfo.qt_avir);
+    free(moinfo.qt_bvir);
+    free(moinfo.cc_aocc);
+    free(moinfo.cc_bocc);
+    free(moinfo.cc_avir);
+    free(moinfo.cc_bvir);
   }
   else {
     free(moinfo.occpi);
     free(moinfo.virtpi);
     free(moinfo.occ_sym);
     free(moinfo.vir_sym);
+    free(moinfo.occ_off);
+    free(moinfo.vir_off);
+    free(moinfo.qt_occ);
+    free(moinfo.qt_vir);
+    free(moinfo.cc_occ);
+    free(moinfo.cc_vir);
   }
 
 }

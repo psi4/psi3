@@ -17,6 +17,7 @@
 
 EXTERN FILE *infile, *outfile;
 EXTERN char *psi_file_prefix;
+EXTERN int *ioff;
 EXTERN struct MOInfo moinfo;
 EXTERN struct Params params;
 EXTERN struct Local local;

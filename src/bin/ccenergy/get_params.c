@@ -129,6 +129,13 @@ void get_params()
     errcod = ip_data("NUM_AMPS", "%d", &(params.num_amps), 0);
   }
 
+  params.brueckner = 0;
+  errcod = ip_boolean("BRUECKNER", &(params.brueckner), 0);
+
+  params.bconv = 1e-4;
+  errcod = ip_data("BCONV", "%d", &(iconv), 0);
+  if(errcod == IPE_OK) params.bconv = 1.0*pow(10.0,(double) -iconv);
+
   params.print_mp2_amps = 0;
   errcod = ip_boolean("PRINT_MP2_AMPS", &(params.print_mp2_amps), 0);
 
@@ -137,6 +144,9 @@ void get_params()
   fprintf(outfile, "\tWave function   =    %6s\n", params.wfn);
   fprintf(outfile, "\tReference wfn   =    %5s\n",
            (params.ref == 0) ? "RHF" : ((params.ref == 1) ? "ROHF" : "UHF"));
+  fprintf(outfile, "\tBrueckner       =    %s\n", params.brueckner ? "Yes" : "No");
+  if(params.brueckner) 
+    fprintf(outfile, "\tBrueckner conv. =    %3.1e\n", params.bconv);
   fprintf(outfile, "\tMemory (Mbytes) =  %5.1f\n",params.memory/1e6);
   fprintf(outfile, "\tMaxiter         =   %4d\n", params.maxiter);
   fprintf(outfile, "\tConvergence     = %3.1e\n", params.convergence);

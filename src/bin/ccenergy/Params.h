@@ -14,5 +14,7 @@ struct Params {
   int local;
   int num_amps;
   int print_mp2_amps;
+  int brueckner;
+  double bconv;
 };
 
