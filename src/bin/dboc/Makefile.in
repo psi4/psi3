@@ -1,0 +1,25 @@
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+include ../MakeVars
+
+LD = $(CC)
+
+PSILIBS = -lPSI_file30 -lPSI_ciomr -lPSI_psio -lPSI_ipv1
+
+CXXSRC = dboc.cc geom.cc rhf.cc
+
+BINOBJ = $(CXXSRC:%.cc=%.o)
+ALLOC = 
+
+include ../MakeRules
+
+ifneq ($(DODEPEND),no)
+$(BINOBJ:%.o=%.d): $(DEPENDINCLUDE)
+include $(BINOBJ:%.o=%.d)
+endif
+
+install_man:: $(TARGET).1
+	$(MKDIRS) $(mandir)/man1
+	$(INSTALL_INCLUDE) $^ $(mandir)/man1
+
