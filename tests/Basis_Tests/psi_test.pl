@@ -97,7 +97,7 @@ for($bas=0; $bas<40; $bas++){
      $energy[$i]=0;
      Read_input();
      system("input");
-     system("psi"); 
+     system("psi3"); 
      $energy[$i]=0;
      energy($energy[$i]); 
      print "Energy = $energy[$i]\n"; 
