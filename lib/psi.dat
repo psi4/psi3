@@ -69,11 +69,7 @@ psi: (
   mp2prop    = "mp2 --opdm"
   mp2_direct = "cints --mp2"
   mp2r12 = "mp2r12"
-  mp2r12_moints = "cints --mp2r12a"
-  mp2r12_aoints = "cints --r12ints"
-  mp2r12_trans_g = "transqt -mp2r12a 0"
-  mp2r12_trans_r = "transqt -mp2r12a 1"
-  mp2r12_trans_t = "transqt -mp2r12a 2"
+  mp2r12_moints = "cints --mp2r12"
 
   % -------------------------------- SCF Procedures
   % Procedures for the SCF energy
@@ -597,6 +593,39 @@ psi: (
   DirectMP2ROHFEnergyOpt = ERROR
   DirectMP2UHFEnergyOpt = ERROR
   DirectMP2TwoConEnergyOpt = ERROR
+
+
+  % Procedures for the MP2-R12 energy (MP2-R12 transformation is always direct)
+  MP2R12Energy = ($SCFEnergy $mp2r12_moints $mp2r12)
+  MP2R12RHFEnergy = ($MP2R12Energy $done)
+  MP2R12ROHFEnergy = ERROR
+  MP2R12UHFEnergy = ERROR
+  MP2R12TwoConEnergy = ERROR
+
+  % Procedures for the direct MP2-R12 energy
+  DirectMP2R12Energy = ($DirectSCFEnergy $mp2r12_moints $mp2r12)
+  DirectMP2R12RHFEnergy = ($DirectMP2R12Energy $done)
+  DirectMP2R12ROHFEnergy = ERROR
+  DirectMP2R12UHFEnergy = ERROR
+  DirectMP2R12TwoConEnergy = ERROR
+
+  % Procedures for optimization via MP2-R12 energy points
+  MP2R12EnergyOpt = (repeat $nopt $MP2R12Energy $findif_disp_symm 
+    repeat $ndisp $findif_next $MP2R12Energy $findif_energy end
+    $findif_grad_energy $geomupdate end $done)
+  MP2R12RHFEnergyOpt = $MP2R12EnergyOpt
+  MP2R12ROHFEnergyOpt = ERROR
+  MP2R12UHFEnergyOpt = ERROR
+  MP2R12TwoConEnergyOpt = ERROR
+
+  % Procedures for optimization via DirectMP2R12 energy points
+  DirectMP2R12EnergyOpt = (repeat $nopt $DirectMP2R12Energy $findif_disp_symm 
+    repeat $ndisp $findif_next $DirectMP2R12Energy $findif_energy end
+    $findif_grad_energy $geomupdate end $done)
+  DirectMP2R12RHFEnergyOpt = $DirectMP2R12EnergyOpt
+  DirectMP2R12ROHFEnergyOpt = ERROR
+  DirectMP2R12UHFEnergyOpt = ERROR
+  DirectMP2R12TwoConEnergyOpt = ERROR
 
   % Procedure for the CIS energy
   CISEnergy = ($ints $scf $transqt $ccsort $cis)
