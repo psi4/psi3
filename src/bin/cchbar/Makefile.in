@@ -3,10 +3,10 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-LD = $(FC)
+LD = $(CC)
 LDLIBS += $(BLAS)
 
-PSILIBS = -ldpd.v2 -lqt -lfile30 -liwl -lciomr -lpsio -lipv1 -lmalloc
+PSILIBS = -ldpd -lqt -lfile30 -liwl -lciomr -lpsio -lipv1 -lmalloc
 
 CSRC = \
 F.c      Wamef.c  Wmbij.c  cchbar.c      get_params.c \

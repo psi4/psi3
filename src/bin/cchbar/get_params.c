@@ -7,6 +7,8 @@
 
 void get_params()
 {
+  int errcod;
+
   fndcor(&(params.memory),infile,outfile);
 
   params.cachelev = 2;
