@@ -30,7 +30,7 @@ DODEPEND = @DODEPEND@
 
 MKDIRS = @MKDIRS@
 
-BINOBJ = tocprint.o
+BINOBJ = tocprint.o cc2unit.o
 
 vpath %.a $(top_objdir)/lib:$(libdir)
 PSILIBS = -lpsio -lciomr -lipv1
@@ -44,7 +44,7 @@ tocprint: $(BINOBJ) $(PSILIBS)
 	$(CC) $(CFLAGS) -o $@ $^
 
 install: install_target install_man
- 
+
 install_target: tocprint
 	$(MKDIRS) $(bindir)
 	$(INSTALL_PROGRAM) tocprint $(bindir)
@@ -54,7 +54,7 @@ install_man:: tocprint.1
 	$(INSTALL_PROGRAM) $(srcdir)/tocprint.1 $(mandir)/man1
 
 clean: oclean dclean targetclean
-	
+
 oclean:
 	rm -f *.o
 

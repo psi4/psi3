@@ -7,6 +7,7 @@
 /* Function prototypes */
 void init_io(void);
 void exit_io(void);
+int cc2unit(char *);
 
 FILE *infile, *outfile;
 
@@ -19,6 +20,10 @@ int main(int argc, char *argv[])
        i++;
        if(!strcmp(argv[i], "-unit") || !strcmp(argv[i], "-u")) {
            unit = atoi(argv[i+1]);
+           argc--;
+         }
+       else if(!strcmp(argv[i], "-cc")) {
+           unit = cc2unit(argv[i+1]);
            argc--;
          }
     }
