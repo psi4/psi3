@@ -186,19 +186,18 @@ int main(int argc, char *argv[])
      print_geometry(1.0);
      fprintf(outfile,"\n  -Geometry in the canonical coordinate system (Angstrom):\n");
      print_geometry(_bohr2angstroms);
-     rotate_geometry(geometry,Rref);
+     /* Print geometry including dummy atoms, if necessary */
+     is_dummy = 0;
+     for(i=0;i<num_allatoms;++i) 
+       if(!strncmp(full_element[i],"X\0",2) )
+	 is_dummy = 1;
+     if(is_dummy) {
+       fprintf(outfile,"\n  -Full geometry in the canonical coordinate system (a.u.):\n");
+       print_full_geometry(1.0);
+     }
+     rotate_full_geom(Rref);
      fprintf(outfile,"\n  -Geometry in the reference coordinate system (a.u.):\n");
      print_geometry(1.0);
-     if(!cartOn) {
-        is_dummy = 0;
-        for(i=0;i<num_entries;++i) 
-	   if(!strncmp(full_element[i],"X\0",2) )
-	      is_dummy = 1;  
-        if(is_dummy) {
-	   fprintf(outfile,"\n  -Full geometry in the canonical coordinate system (a.u.):\n");
-	   print_full_geometry(1.0);
-        }
-     }
      fprintf(outfile,"\n  --------------------------------------------------------------------------\n");
 
      if (num_atoms > 1) {
@@ -288,7 +287,7 @@ void print_full_geometry(double conv_factor)
   fprintf(outfile,"       Center              X                  Y                   Z\n");
   fprintf(outfile,"    ------------   -----------------  -----------------  -----------------\n");
 
-  for(i=0;i<num_entries;i++){
+  for(i=0;i<num_allatoms;i++){
     fprintf(outfile,"  %12s ",full_element[i], (int) nuclear_charges[i]); fflush(outfile);
     for(j=0;j<3;j++)
       fprintf(outfile,"  %17.12lf",full_geom[i][j]*conv_factor);
@@ -409,12 +408,12 @@ void cleanup()
 
 /*  free_char_matrix(elem_name,NUM_ELEMENTS);*/
   free(sym_oper);
-  free_block(geometry);
   free_block(full_geom);
+  free(geometry);
   free_block(Rref);
   free(nuclear_charges);
 /*  free_char_matrix(element,num_atoms);
-    free_char_matrix(full_element,num_entries);
+    free_char_matrix(full_element,num_allatoms);
   free_char_matrix(atom_basis,num_atoms);*/
   free_int_matrix(atom_orbit,num_atoms);
   free_int_matrix(class_orbit,num_classes);

@@ -42,11 +42,11 @@ void read_zmat()
   zvar_exist = ip_exist("ZVARS",0);    
 
   /* Read number of lines and count atoms in ZMAT */
-  num_atoms = num_entries = 0;
-  ip_count("ZMAT",&num_entries,0);
-  if (num_entries == 0)
+  num_atoms = num_allatoms = 0;
+  ip_count("ZMAT",&num_allatoms,0);
+  if (num_allatoms == 0)
     punt("Z-matrix is empty!");
-  for(i=0;i<num_entries;i++){
+  for(i=0;i<num_allatoms;i++){
     errcod = ip_string("ZMAT",&buffer,2,i,0);
     if (errcod != IPE_OK)
       punt("Problem with the Z-matrix.");
@@ -63,13 +63,14 @@ void read_zmat()
   /*-----------------------
     Allocate global arrays
    -----------------------*/
-  geometry = block_matrix(num_atoms,3);
+  full_geom = block_matrix(num_allatoms,3);
+  geometry = (double **) malloc(num_atoms*sizeof(double *));
+  atom_dummy = (int *) malloc(sizeof(int)*num_allatoms);
   /* see file30.h for info about z_entry structure */
-  z_geom = (struct z_entry *) malloc(sizeof(struct z_entry)*num_entries); 
+  z_geom = (struct z_entry *) malloc(sizeof(struct z_entry)*num_allatoms); 
   element = (char **) malloc(sizeof(char *)*num_atoms);
-  full_element = (char **) malloc(sizeof(char *)*num_entries);
+  full_element = (char **) malloc(sizeof(char *)*num_allatoms);
   elemsymb_charges = init_array(num_atoms);
-  full_geom = block_matrix(num_entries,3);
 
   atomcount = 0;
   fatomcount = 0;
@@ -87,7 +88,7 @@ void read_zmat()
 	  punt("Problem parsing ZVARS");
     }
 
-  for (i=0;i<num_entries;++i) {
+  for (i=0;i<num_allatoms;++i) {
      /* Process a line of ZMAT and write to z_geom array */
      ip_count("ZMAT",&entry_length,1,i);
      if ( ((i == 0) && (entry_length != 1)) ||
@@ -275,22 +276,22 @@ void read_zmat()
        elemsymb_charges[atomcount] = Z;
        element[atomcount] = elem_name[(int)Z];
        full_element[fatomcount] = elem_name[(int)Z];
-       geometry[atomcount][0] = full_geom[i][0]*conv_factor;
-       geometry[atomcount][1] = full_geom[i][1]*conv_factor;
-       geometry[atomcount][2] = full_geom[i][2]*conv_factor;
-       atomcount++;
+       geometry[atomcount] = full_geom[i];
+       atom_dummy[fatomcount] = 0;
+       ++atomcount;
      }
-     else if (!strcmp(buffer,"X")) { 
+     else {
        full_element[fatomcount] = "X";
-       free(buffer); 
+       free(buffer);
+       atom_dummy[fatomcount] = 1;
      }
      ++fatomcount;
   }
 
-  for(i=0;i<num_entries;++i) {
-	full_geom[i][0] *=conv_factor;
-	full_geom[i][1] *=conv_factor;
-	full_geom[i][2] *=conv_factor;
+  for(i=0;i<num_allatoms;++i) {
+    full_geom[i][0] *=conv_factor;
+    full_geom[i][1] *=conv_factor;
+    full_geom[i][2] *=conv_factor;
   }
 
   read_charges();

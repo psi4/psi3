@@ -104,16 +104,10 @@ void Nuc_repulsion(double *Distance, double *repulsion);
 void Rotate(double **Rotate_axis, double *old_coord);
 
 /*
-  Function rotates geometry[][] by new_coord[][]
+  Function rotates global **full_geom by new_coord[][]
 */
 
-void rotate_geometry(double **geom, double **new_coord);
-
-/*
-  Function rotates full_geom[][] by new_coord[][]
-*/
-
-void rotate_full_geom(double **geom, double **new_coord);
+void rotate_full_geom(double **new_coord);
 
 /*
   Function updates Rref to remember the effect of the rotation

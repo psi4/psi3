@@ -74,7 +74,7 @@ void write_to_file30(double repulsion)
   chkpt_wt_nirreps(nirreps);
   chkpt_wt_nprim(num_prims);
   chkpt_wt_natom(num_atoms);
-  chkpt_wt_nentry(num_entries);
+  chkpt_wt_nallatom(num_allatoms);
 
   /*------------------------------------------------------
     Zero arrays for constants, pointers, and calculations
@@ -253,12 +253,9 @@ void write_to_file30(double repulsion)
   free(atom_label);
 
   /* Labels of atoms including dummy atoms */
-  if(cartOn)
-    j = num_atoms;
-  else j = num_entries;
   pointers[28] = ptr/sizeof(int) + 1;
   atom_label = init_char_array(8);
-  for(atom=0;atom<j;atom++) {
+  for(atom=0;atom<num_allatoms;atom++) {
     strncpy(atom_label,full_element[atom],strlen(full_element[atom]));
     atom_label[strlen(full_element[atom])] = '\0';
     wwritw(CHECKPOINTFILE,(char *) atom_label, 8*(sizeof(char)),ptr,&ptr);
@@ -349,7 +346,7 @@ void write_to_file30(double repulsion)
   /* write z_mat if it exists, see global.h for info about z_entry structure */
   if(!cartOn) {
     pointers[46] = ptr/sizeof(int) + 1;
-    wwritw(CHECKPOINTFILE,(char *) z_geom, num_entries*(sizeof(struct z_entry)),ptr,&ptr);
+    wwritw(CHECKPOINTFILE,(char *) z_geom, num_allatoms*(sizeof(struct z_entry)),ptr,&ptr);
     chkpt_wt_zmat(z_geom);
   }
 
@@ -371,9 +368,14 @@ void write_to_file30(double repulsion)
 
   /* write full_geom, cartesian geometry with dummy atoms included */
   pointers[50] = ptr/sizeof(int) +1;
-  for(i=0;i<num_entries;++i)
+  for(i=0;i<num_allatoms;++i)
     wwritw(CHECKPOINTFILE,(char *) full_geom[i], 3*sizeof(double),ptr,&ptr);
-  if(full_geom != NULL) chkpt_wt_fgeom(full_geom); /* only available if zmat input */
+  chkpt_wt_fgeom(full_geom);
+
+  /* write array of flags that indicate whether atoms in full_geom are dummy or not */
+  pointers[51] = ptr/sizeof(int) +1;
+  wwritw(CHECKPOINTFILE,(char *) atom_dummy, num_allatoms*sizeof(int),ptr,&ptr);
+  chkpt_wt_atom_dummy(atom_dummy);
 
   
   /*---------------------------
@@ -399,11 +401,6 @@ void write_to_file30(double repulsion)
   wwritw(CHECKPOINTFILE,(char *) scf_pointers, 20*sizeof(int),ptr,&ptr);
   free(scf_pointers);
 
-  /* Write out geometry */
-  for(atom=0;atom<num_atoms;atom++)
-    wwritw(CHECKPOINTFILE,(char *) geometry[atom], 3*sizeof(double),ptr,&ptr);
-  chkpt_wt_geom(geometry);
-
   /* Write out energies */
   arr_double = init_array(5);
   arr_double[0] = repulsion;
@@ -428,10 +425,7 @@ void write_to_file30(double repulsion)
   constants[8] = max_angmom;
   constants[17] = num_so;
   constants[18] = num_atoms;
-  if(cartOn)
-    constants[19] = num_atoms;
-  else
-    constants[19] = num_entries;
+  constants[19] = num_allatoms;
   constants[21] = num_ao;
   constants[26] = num_shells;
   constants[27] = nirreps;

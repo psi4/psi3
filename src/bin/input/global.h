@@ -88,6 +88,8 @@ typedef enum {                      /*Type of the rigid rotor (3 + number of zer
 EXTERN rotortype rotor;             /*Type fo the rotor we are dealing with*/
 EXTERN int nirreps;                 /*Number of irreducible representations in the computational (largest Abelian)
 				      point group*/
+
+EXTERN int num_allatoms;            /*Total number of all atoms (including dummies)*/
 EXTERN int num_atoms;               /*Total number of atoms*/
 EXTERN int num_uniques;             /*Number of unique atoms*/
 EXTERN int num_shells;              /*Total number of shells*/
@@ -112,8 +114,11 @@ EXTERN int disp_num;                /*Number of the displacement corresponding t
 				      the geometry in checkpoint file */
 
 /*Calculation-dependent arrays*/
-EXTERN double **geometry;	    /*Cartesian coordinates (in a.u.) of atoms*/
-EXTERN double **full_geom;          /*carts including dummy atoms*/
+EXTERN double **full_geom;          /*Cartesian coordinates (in a.u.) of all atoms (including dummies) */
+EXTERN double **geometry;	    /*Cartesian coordinates (in a.u.) of "real" atoms. Implemented as array
+				      of pointers to rows in full_geom. Thus proper care should be taken in
+				      its allocation/deallocation. */
+EXTERN int *atom_dummy;             /*Array that tells whether an atom is a dummy (1) or not (0)*/
 EXTERN double *nuclear_charges;	    /*Nuclear charges*/
 EXTERN double *elemsymb_charges;    /*Nuclear charges derived from element names*/
 EXTERN char **element;       	    /*Atom names*/
@@ -185,8 +190,6 @@ EXTERN int **xexp_ao, **yexp_ao, **zexp_ao;
 
 /*array of structures for z-mat entry*/
 struct z_entry* z_geom;          
-
-EXTERN int num_entries;
 
 /*-----------------------------------------------
   Hack to allow MO projection onto the new basis
