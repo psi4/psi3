@@ -11,7 +11,8 @@ class InternalCoordinate
  protected:
   IntCoType type;
   int id;
-  
+  double value;
+
  public:
   IntCoType getType()
     { return type; }
@@ -20,6 +21,10 @@ class InternalCoordinate
     { id = i; }
   int getID()
     { return id; }
+  void setValue(double v) 
+    { value = v;}
+  double getValue()
+   { return value; }
   
   virtual void printInfo(); 
 };
@@ -90,7 +95,8 @@ public:
   // Conversion of Dr. Allen's VECT4 subroutine.
   // NOTE: The LIN2 of INTDER2004 is now considered LIN1
   //       The LIN1 of INTDER2004 is no longer supported.
-  static void Vect(int disp, int k1, int k2, int k3, int k4, double *s1, double *s2, double *s3, double *theta);
+  static void Vect(int disp, int k1, int k2, int k3, int k4, double *s1, double *s2, double *s3, 
+		   double *theta, int pflag = 0);
   static void Hijs(int disp, int k1, int k2, int k3, int k4, 
                    double **h11, double **h21, double **h31, 
                    double **h22, double **h32, double **h33);
@@ -113,7 +119,8 @@ public:
     { id = -1; atomA = -1; atomB = -1; atomC = -1; atomD = -1; type = OUT; }
 
   void printInfo();
-  static void Vect(int disp, int k1, int k2, int k3, int k4, double *s1, double *s2, double *s3, double *s4, double *theta);
+  static void Vect(int disp, int k1, int k2, int k3, int k4, double *s1, double *s2, double *s3, double *s4,
+		   double *theta,int pflag = 0);
   static void Hijs(int disp, int k1, int k2, int k3, int k4,
                    double **h11, double **h21, double **h31, double **h41,
                    double **h22, double **h32, double **h42, double **h33,
@@ -137,7 +144,8 @@ public:
 
   void printInfo();
 
-  static void Vect(int disp, int k1, int k2, int k3, int k4, double *s1, double *s2, double *s3, double *s4, double *theta);
+  static void Vect(int disp, int k1, int k2, int k3, int k4, double *s1, double *s2, double *s3, 
+		   double *s4, double *theta, int pflag = 0);
 	
 	static void Hijs(int disp, int k1, int k2, int k3, int k4, double **h11, 
                    double **h21, double **h31, double **h41, double **h22, 
@@ -177,7 +185,8 @@ public:
 
   void printInfo();
 	//VECT8
-  static void Vect(int disp, int k1, int k2, int k3, int k4, double *s1, double *s2, double *s3, double *s4, double *theta);
+  static void Vect(int disp, int k1, int k2, int k3, int k4, double *s1, double *s2, double *s3, 
+		   double *s4, double *theta,int pflag = 0);
 //HIJS8 from intder2000.f
 	static void Hijs(int disp, int k1, int k2, int k3, int k4, double **h11, double **h21,
                  double **h31, double **h41, double **h22, double **h32, double **h42,
@@ -204,7 +213,8 @@ public:
   void printInfo();
 
 //VECT9
-  static void Vect(int disp, int k1, int k2, int k3, int k4, double *s1, double *s2, double *s3, double *s4, double *theta);
+  static void Vect(int disp, int k1, int k2, int k3, int k4, double *s1, double *s2, double *s3, 
+		   double *s4, double *theta,int pflag = 0);
 //HIJS9 from intder2000.f
 	static void Hijs(int disp, int k1, int k2, int k3, int k4, double **h11, double **h21,
                    double **h31, double **h41, double **h22, double **h32, double **h42,
@@ -245,6 +255,7 @@ public:
   void loadInternalCoordinates();
   int InternalCoordinateSize();
   void printSingleIntCo(int);
+  int intcoSwitch(double, int, int*, int*, int*, int*, double*, double*, double*, double*, double*);
 };
 
 #endif

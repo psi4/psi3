@@ -2,7 +2,7 @@
 #include "params.h"
 #include "displacements.h"
 #include "atom.h"
-//#include "bmat.h"
+#include "bmat.h"
 #define EXTERN
 #include "globals.h"
 
@@ -23,7 +23,7 @@ extern "C" {
 extern InternalCoordinates gIntCo;
 extern Params gParams;
 extern Displacements gDisplacements;
-//extern BMat gBMat;
+extern BMat gBMat;
 
 void InternalCoordinate::printInfo()
 {
@@ -116,7 +116,7 @@ void Linear1::printInfo()
   fprintf(outfile, "\tID#%d LIN1 (%d %d %d %d)\n", id, atomA+1, atomB+1, atomC+1, atomD+1);
 }
 
-void Linear1::Vect(int disp, int k1, int k2, int k3, int k4, double *s1, double *s2, double *s3, double *theta)
+void Linear1::Vect(int disp, int k1, int k2, int k3, int k4, double *s1, double *s2, double *s3, double *theta, int pflag)
 {
   int i;
   double *e21;
@@ -159,7 +159,8 @@ void Linear1::Vect(int disp, int k1, int k2, int k3, int k4, double *s1, double 
     s2[i] = -(s1[i] + s3[i]);
   }
 
-  fprintf(outfile, "Linear1bend (%i, %i, %i) dummy = %i\t\tAngle (deg): %lf\n", k1, k2, k3, k4, *theta*180/_pi);
+  if(pflag)
+    fprintf(outfile, "Linear1bend (%i, %i, %i) dummy = %i\t\tAngle (deg): %lf\n", k1, k2, k3, k4, *theta*180/_pi);
 
   free(e2m);
   delete[] e21;
@@ -176,7 +177,7 @@ void OutOfPlane::printInfo()
 }
 
 //VECT5
-void OutOfPlane::Vect(int disp, int k1, int k2, int k3, int k4, double *s1, double *s2, double *s3, double *s4, double *theta)
+void OutOfPlane::Vect(int disp, int k1, int k2, int k3, int k4, double *s1, double *s2, double *s3, double *s4, double *theta, int pflag)
 {
   int i = 0;
   double c = 0.0;
@@ -224,7 +225,8 @@ void OutOfPlane::Vect(int disp, int k1, int k2, int k3, int k4, double *s1, doub
     s2[i] = -(s1[i] + s3[i] + s4[i]); 
   }
 
-  fprintf(outfile, "Out (%d, %d, %d, %d) S: [%10.7f %10.7f %10.7f]\tAngle (deg): %lf\n", k1, k2, k3, k4, s1[0], s1[1], s1[2], *theta*180/_pi);
+  if(pflag)
+    fprintf(outfile, "Out (%d, %d, %d, %d) S: [%10.7f %10.7f %10.7f]\tAngle (deg): %lf\n", k1, k2, k3, k4, s1[0], s1[1], s1[2], *theta*180/_pi);
 
   free(vprod2);
   free(vprod3);
@@ -241,7 +243,7 @@ void Torsion::printInfo()
   fprintf(outfile, "\tID#%d TORS (%d %d %d %d)\n", id, atomA+1, atomB+1, atomC+1, atomD+1);
 }
 
-void Torsion::Vect(int disp, int k1, int k2, int k3, int k4, double *s1, double *s2, double *s3, double *s4, double *theta)
+void Torsion::Vect(int disp, int k1, int k2, int k3, int k4, double *s1, double *s2, double *s3, double *s4, double *theta, int pflag)
 {
   double *e21, *e32, *e43;
   double *s5, *s6;
@@ -294,7 +296,9 @@ void Torsion::Vect(int disp, int k1, int k2, int k3, int k4, double *s1, double 
     s3[i] = w5*s6[i] + w6*s5[i];
   }
 
-  fprintf(outfile, "Torsional (%d %d %d %d)\t\tAngle (deg): %lf\n", k1, k2, k3, k4, *theta*180/_pi);
+  if(pflag)
+    fprintf(outfile, "Torsional (%d %d %d %d)\t\tAngle (deg): %lf\n", k1, k2, k3, k4, *theta*180/_pi);
+
   delete[] e21;
   delete[] e32;
   delete[] e43;
@@ -312,7 +316,7 @@ void LinearX::printInfo()
   fprintf(outfile, "\tID#%d LINX (%d %d %d %d)\n", id, atomA+1, atomB+1, atomC+1, atomD+1);
 }
 
-void LinearX::Vect(int disp, int k1, int k2, int k3, int k4, double *s1, double *s2, double *s3, double *s4, double *theta)
+void LinearX::Vect(int disp, int k1, int k2, int k3, int k4, double *s1, double *s2, double *s3, double *s4, double *theta, int pflag)
 {
   double *e1, *e2, *e3, *e4, *e32, *e34;
   double **h11, **h21, **h31, **h22, **h32, **h33;
@@ -360,7 +364,8 @@ void LinearX::Vect(int disp, int k1, int k2, int k3, int k4, double *s1, double 
     s3[i] = -s1[i] - s2[i] - s4[i];
   }
 
-  fprintf(outfile, "LinearX (%d %d %d %d)\t\tAngle (deg): %lf\n", k1, k2, k3, k4, *theta*180/_pi);
+  if(pflag)
+    fprintf(outfile, "LinearX (%d %d %d %d)\t\tAngle (deg): %lf\n", k1, k2, k3, k4, *theta*180/_pi);
 
   delete[] e1;
   delete[] e2;
@@ -382,7 +387,7 @@ void LinearY::printInfo()
   fprintf(outfile, "\tID#%d LINY (%d %d %d %d)\n", id, atomA+1, atomB+1, atomC+1, atomD+1);
 }
 
-void LinearY::Vect(int disp, int k1, int k2, int k3, int k4, double *s1, double *s2, double *s3, double *s4, double *theta)
+void LinearY::Vect(int disp, int k1, int k2, int k3, int k4, double *s1, double *s2, double *s3, double *s4, double *theta, int pflag)
 {
   double *e1, *e2, *e3, *e4;
   double tout, cosy;
@@ -404,7 +409,8 @@ void LinearY::Vect(int disp, int k1, int k2, int k3, int k4, double *s1, double 
     s1[i] = -cosy * e1[i];
   }
 
-  fprintf(outfile, "LinearY (%d %d %d %d)\t\tAngle (deg): %lf\n", k1, k2, k3, k4, *theta*180/_pi);
+  if(pflag)
+    fprintf(outfile, "LinearY (%d %d %d %d)\t\tAngle (deg): %lf\n", k1, k2, k3, k4, *theta*180/_pi);
 
   delete[] e1;
   delete[] e2;
@@ -673,9 +679,109 @@ void InternalCoordinates::loadInternalCoordinates()
       addInternalCoordinate(new Rcom(a, gParams.moved_dummy[b], gParams.moved_dummy[c]));
     }
   }
-
+  
   printInternalCoordinates();
 }
+
+int InternalCoordinates::intcoSwitch(double disp, int r, int *Aptr, int *Bptr, int *Cptr, int *Dptr, 
+				      double *s1, double *s2, double *s3, double *s4, double *vptr)
+{
+  double value;
+  int i, j;
+  int atomA, atomB, atomC, atomD;
+  int nIntcoAtoms;
+
+  InternalCoordinate *pPointer;
+  Stretch *pStre;
+  Bend *pBend;
+  Linear1 *pLin1;
+  OutOfPlane *pOut;
+  Torsion *pTors;
+  Spf *pSpf;
+  LinearX *pLinX;
+  LinearY *pLinY;
+  Rcom *pRcom;
+  
+  pPointer = gIntCo.vectorInternals[r];
+  
+  switch(pPointer->getType())
+    {
+    case STRE:
+      pStre = (Stretch *)pPointer;
+      atomA = (int)pStre->atomA;
+      atomB = (int)pStre->atomB;
+      Stretch::Vect((int)disp, atomA, atomB, (double*)s1, &value,1);
+      for(i = 0; i < 3; i++)
+	s2[i] = -(s1[i]);
+      nIntcoAtoms = 2;
+      break;
+    case BEND:
+      pBend = (Bend *)pPointer;
+      atomA = (int)pBend->atomA;
+      atomB = (int)pBend->atomB;
+      atomC = (int)pBend->atomC;
+      Bend::Vect((int)disp, atomA, atomB, atomC, (double*)s1, (double*)s2, (double*)s3, &value,1);
+      nIntcoAtoms = 3;
+      break;
+    case LIN1:
+      pLin1 = (Linear1 *)pPointer;
+      atomA = (int)pLin1->atomA;
+      atomB = (int)pLin1->atomB;
+      atomC = (int)pLin1->atomC;
+      atomD = (int)pLin1->atomD;
+      Linear1::Vect((int)disp, atomA, atomB, atomC, atomD, (double*)s1, (double*)s2, (double*)s3, &value,1);
+      nIntcoAtoms = 3;
+      break;
+    case OUT:
+      pOut = (OutOfPlane *)pPointer;
+      atomA = (int)pOut->atomA;
+      atomB = (int)pOut->atomB;
+      atomC = (int)pOut->atomC;
+      atomD = (int)pOut->atomD;
+      OutOfPlane::Vect((int)disp, atomA, atomB, atomC, atomD, (double*)s1, (double*)s2, (double*)s3, (double*)s4, &value,1);
+      nIntcoAtoms = 4;
+      break;
+    case TORS:
+      pTors = (Torsion *)pPointer;
+      atomA = (int)pTors->atomA;
+      atomB = (int)pTors->atomB;
+      atomC = (int)pTors->atomC;
+      atomD = (int)pTors->atomD;
+      Torsion::Vect((int)disp, atomA, atomB, atomC, atomD, (double*)s1, (double*)s2, (double*)s3, (double*)s4, &value,1);
+      nIntcoAtoms = 4;
+      break;
+    case SPF:
+      break;
+    case LINX:
+      pLinX = (LinearX *)pPointer;
+      atomA = (int)pLinX->atomA;
+      atomB = (int)pLinX->atomB;
+      atomC = (int)pLinX->atomC;
+      atomD = (int)pLinX->atomD;
+      LinearX::Vect((int)disp, atomA, atomB, atomC, atomD, (double*)s1, (double*)s2, (double*)s3, (double*)s4, &value,1);
+      nIntcoAtoms = 4;
+      break;
+    case LINY:
+      pLinY = (LinearY *)pPointer;
+      atomA = (int)pLinY->atomA;
+      atomB = (int)pLinY->atomB;
+      atomC = (int)pLinY->atomC;
+      atomD = (int)pLinY->atomD;
+      LinearY::Vect((int)disp, atomA, atomB, atomC, atomD, (double*)s1, (double*)s2, (double*)s3, (double*)s4, &value,1);
+      break;
+      nIntcoAtoms = 4;
+    }
+  
+  *Aptr = atomA;
+  *Bptr = atomB;
+  *Cptr = atomC;
+  *Dptr = atomD;
+
+  *vptr = value;
+
+  return nIntcoAtoms;
+}
+
 
 void InternalCoordinates::addInternalCoordinate(InternalCoordinate* ico)
 {
@@ -695,11 +801,11 @@ void InternalCoordinates::printInternalCoordinates()
 void InternalCoordinates::printSingleIntCo(int i)
 {
   vectorInternals[i]->printInfo();
-  /* if(vectorInternals[i]->getType() == STRE) 
+   if(vectorInternals[i]->getType() == STRE) 
     fprintf(outfile, "\tS = %lf\n", gBMat.SVectArray[i]); 
-  else
-    fprintf(outfile, "\tS = %lf\n", (gBMat.SVectArray[i] * 180 / _pi)); 
-  */
+   else
+     fprintf(outfile, "\tS = %lf\n", gBMat.SVectArray[i] * 180 / _pi); 
+   //Would be neat if I could figure out how to save the SVect value to intco class... need to think about this
 }
 
 int InternalCoordinates::InternalCoordinateSize()
