@@ -28,7 +28,7 @@ all: default
 
 %.html : %.tex
 	TEXINPUTS=$(srcdir):; export TEXINPUTS; \
-	$(LATEX2HTML) -dir $(currdir)/$(<F:%.tex=%) $<
+	$(LATEX2HTML) -tmp /tmp -dir $(currdir)/$(<F:%.tex=%) $<
 
 #
 # do installations
