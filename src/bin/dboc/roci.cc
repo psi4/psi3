@@ -5,7 +5,7 @@
 extern "C" {
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
-#include <libqt/slaterd.h>
+#include <libqt/slaterdset.h>
 #include <psifiles.h>
 }
 #include "moinfo.h"
@@ -48,10 +48,7 @@ double eval_roci_derwfn_overlap()
   // Compute overlap between strings for alpha spin case
   StringSet *ssetm;
   ssetm = vecm->sdset->alphastrings;
-  short int* act_qt2p_map;
-  short int* qt2p_map;
-  mo_maps(&qt2p_map, &act_qt2p_map);
-  stringset_reindex(ssetm,act_qt2p_map);
+  short int* fzc_occ = ssetm->fzc_occ;
   int nstr_a = ssetm->size;
   FLOAT **S_a = create_matrix(nstr_a,nstr_a);
   // Assume the order of strings is the same for - and + displacements
@@ -66,21 +63,21 @@ double eval_roci_derwfn_overlap()
 
       // frozen orbitals need to be mapped to pitzer order manually
       for(int i=0; i<nfzc; i++) {
-	int ii = qt2p_map[i];
+	int ii = fzc_occ[i];
 	for(int j=0; j<nact_a; j++)
 	  CSC_a[j+nfzc][i] = CSC_full[str_j->occ[j]][i];
       }
 
       for(int j=0; j<nfzc; j++) {
-	int jj = qt2p_map[j];
+	int jj = fzc_occ[j];
 	for(int i=0; i<nact_a; i++)
 	  CSC_a[j][i+nfzc] = CSC_full[jj][str_i->occ[i]];
       }
 
       for(int i=0;i<nfzc;i++) {
-	int ii = qt2p_map[i];
+	int ii = fzc_occ[i];
 	for(int j=0;j<nfzc;j++)
-	  CSC_a[i][j] = CSC_full[ii][qt2p_map[j]];
+	  CSC_a[i][j] = CSC_full[ii][fzc_occ[j]];
       }
 
       FLOAT sign;
@@ -95,7 +92,6 @@ double eval_roci_derwfn_overlap()
 
   // Compute overlap between strings for beta spin case
   ssetm = vecm->sdset->betastrings;
-  stringset_reindex(ssetm,act_qt2p_map);
   int nstr_b = ssetm->size;
   FLOAT **S_b = create_matrix(nstr_b,nstr_b);
   // Assume the order of strings is the same for - and + displacements
@@ -110,21 +106,21 @@ double eval_roci_derwfn_overlap()
 
       // frozen orbitals need to be mapped to pitzer order manually
       for(int i=0; i<nfzc; i++) {
-	int ii = qt2p_map[i];
+	int ii = fzc_occ[i];
 	for(int j=0; j<nact_b; j++)
 	  CSC_b[j+nfzc][i] = CSC_full[str_j->occ[j]][ii];
       }
 
       for(int j=0; j<nfzc; j++) {
-	int jj = qt2p_map[j];
+	int jj = fzc_occ[j];
 	for(int i=0; i<nact_b; i++)
 	  CSC_b[j][i+nfzc] = CSC_full[jj][str_i->occ[i]];
       }
 
       for(int i=0;i<nfzc;i++) {
-	int ii = qt2p_map[i];
+	int ii = fzc_occ[i];
 	for(int j=0;j<nfzc;j++)
-	  CSC_b[i][j] = CSC_full[ii][qt2p_map[j]];
+	  CSC_b[i][j] = CSC_full[ii][fzc_occ[j]];
       }
 
       FLOAT sign;
@@ -170,8 +166,6 @@ double eval_roci_derwfn_overlap()
   slaterdetvector_delete_full(vecm);
   slaterdetvector_delete_full(vecp);
   delete[] tmpintvec;
-  delete[] qt2p_map;
-  delete[] act_qt2p_map;
   delete_matrix(CSC_a);
   delete_matrix(CSC_full);
   delete_matrix(CSC_b);

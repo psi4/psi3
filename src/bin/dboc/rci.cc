@@ -5,7 +5,7 @@
 extern "C" {
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
-#include <libqt/slaterd.h>
+#include <libqt/slaterdset.h>
 #include <psifiles.h>
 }
 #include "moinfo.h"
@@ -42,10 +42,7 @@ double eval_rci_derwfn_overlap()
   // Compute overlap between strings for alpha spin case (beta is the same)
   StringSet *ssetm;
   ssetm = vecm->sdset->alphastrings;
-  short int* act_qt2p_map;
-  short int* qt2p_map;
-  mo_maps(&qt2p_map, &act_qt2p_map);
-  stringset_reindex(ssetm,act_qt2p_map);
+  short int* fzc_occ = ssetm->fzc_occ;
   int nstr_a = ssetm->size;
   int nfzc = ssetm->nfzc;
   int nact = ndocc - nfzc;
@@ -63,21 +60,21 @@ double eval_rci_derwfn_overlap()
 
       // frozen orbitals need to be mapped to pitzer order manually
       for(int i=0; i<nfzc; i++) {
-	int ii = qt2p_map[i];
+	int ii = fzc_occ[i];
 	for(int j=0; j<nact; j++)
 	  CSC[j+nfzc][i] = CSC_full[str_j->occ[j]][ii];
       }
 
       for(int j=0; j<nfzc; j++) {
-	int jj = qt2p_map[j];
+	int jj = fzc_occ[j];
 	for(int i=0; i<nact; i++)
 	  CSC[j][i+nfzc] = CSC_full[jj][str_i->occ[i]];
       }
 
       for(int i=0;i<nfzc;i++) {
-	int ii = qt2p_map[i];
+	int ii = fzc_occ[i];
 	for(int j=0;j<nfzc;j++)
-	  CSC[i][j] = CSC_full[ii][qt2p_map[j]];
+	  CSC[i][j] = CSC_full[ii][fzc_occ[j]];
       }
 
       // Compute the determinant
@@ -124,8 +121,6 @@ double eval_rci_derwfn_overlap()
   slaterdetvector_delete_full(vecm);
   slaterdetvector_delete_full(vecp);
   delete[] tmpintvec;
-  delete[] qt2p_map;
-  delete[] act_qt2p_map;
   delete_matrix(CSC);
   delete_matrix(CSC_full);
   delete_matrix(S_a);
