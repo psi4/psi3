@@ -180,10 +180,10 @@ int main(int argc, char *argv[])
   }
 
   if ((strcmp(dertyp,"NONE")!=0) && (strcmp(dertyp,"FIRST")!=0) &&
-      (strcmp(dertyp,"SECOND")!=0))
+      (strcmp(dertyp,"SECOND")!=0) && (strcmp(dertyp,"RESPONSE")!=0))
   {
     fprintf(outfile,"Error: bad 'dertype'.\n");
-    fprintf(outfile,"Must be one of: NONE, FIRST, SECOND\n");
+    fprintf(outfile,"Must be one of: NONE, FIRST, SECOND, or RESPONSE\n");
     psi3_abort();
   }
 
@@ -225,6 +225,7 @@ int main(int argc, char *argv[])
     if (strcmp(dertyp,"NONE")==0) fprintf(outfile, "energy");
     else if (strcmp(dertyp,"FIRST")==0) fprintf(outfile, "gradient");
     else if (strcmp(dertyp,"SECOND")==0) fprintf(outfile, "Hessian");
+    else if (strcmp(dertyp,"RESPONSE")==0) fprintf(outfile,"response property");
     else fprintf(outfile, "unrecognized-dertype");
     fprintf(outfile, " computation.\n");
   }
