@@ -202,9 +202,37 @@ int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
             dpd_error("dpd_contract424", stderr);
           }
 #endif	    	      
+	  if(numrows[Hz] && numcols[Hz] && numlinks[Hy^symlink]) {
+	  if(!Xtrans && !Ytrans) {
+	    C_DGEMM('n','n',numrows[Hz], numcols[Hz], numlinks[Hy^symlink],
+		alpha, &(Xmat[Hz][0][0]), numlinks[Hy^symlink],
+		&(Y->matrix[Hy][0][0]), numcols[Hz], 1.0,
+		&(Zmat[Hz][0][0]), numcols[Hz]);
+	  }
+	  else if(Xtrans && !Ytrans) {
+	    C_DGEMM('t','n',numrows[Hz], numcols[Hz], numlinks[Hy^symlink],
+		alpha, &(Xmat[Hz][0][0]), numrows[Hz],
+		&(Y->matrix[Hy][0][0]), numcols[Hz], 1.0,
+		&(Zmat[Hz][0][0]), numcols[Hz]);
+	  }
+	  else if(!Xtrans && Ytrans) {
+	    C_DGEMM('n','t',numrows[Hz], numcols[Hz], numlinks[Hy^symlink],
+		alpha, &(Xmat[Hz][0][0]), numlinks[Hy^symlink],
+		&(Y->matrix[Hy][0][0]), numlinks[Hy^symlink], 1.0,
+		&(Zmat[Hz][0][0]), numcols[Hz]);
+	  }
+	  else {
+	    C_DGEMM('t','t',numrows[Hz], numcols[Hz], numlinks[Hy^symlink],
+		alpha, &(Xmat[Hz][0][0]), numrows[Hz],
+		&(Y->matrix[Hy][0][0]), numlinks[Hy^symlink], 1.0,
+		&(Zmat[Hz][0][0]), numcols[Hz]);
+	  }
+	  }
+	  /*
           newmm(Xmat[Hx], Xtrans, Y->matrix[Hy], Ytrans,
               Zmat[Hz], numrows[Hz], numlinks[Hy^symlink],
               numcols[Hz], alpha, 1.0);
+	      */
         }
 
       if(sum_X == 0) dpd_buf4_mat_irrep_close(X, hxbuf);
@@ -263,11 +291,18 @@ int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
           rowz = Z->params->rpi[Gr];
           colz = Z->params->spi[Gs];
 
-          if(rowx && colx && colz)
+          if(rowx && colx && colz) {
+	    C_DGEMM('n',Ytrans?'y':'n',rowx,colz,colx,alpha,
+		&(X->matrix[hxbuf][0][xcount]),colx,
+		&(Y->matrix[Gs][0][0]),Ytrans?colx:colz,1.0,
+		&(Z->matrix[hzbuf][0][zcount]),colz);
+	  }
+	  /*
             newmm2(&(X->matrix[hxbuf][0][xcount]),0,
                 &(Y->matrix[Gs][0][0]),Ytrans,
                 &(Z->matrix[hzbuf][0][zcount]),
                 rowx,colx,colz,alpha,1.0);
+		*/
 
           xcount += rowx * colx;
           zcount += rowz * colz;

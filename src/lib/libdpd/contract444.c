@@ -129,9 +129,22 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
       dpd_buf4_mat_irrep_init(X, Hx);
       dpd_buf4_mat_irrep_rd(X, Hx);
 
+      if(Z->params->rowtot[Hz] &&
+	 Z->params->coltot[Hz^GZ] && 
+	 numlinks[Hx^symlink]) {
+	C_DGEMM(Xtrans?'t':'n', Ytrans?'t':'n', 
+	    Z->params->rowtot[Hz], Z->params->coltot[Hz^GZ],
+	    numlinks[Hx^symlink], alpha, 
+	    &(X->matrix[Hx][0][0]), X->params->coltot[Hx^GX], 
+	    &(Y->matrix[Hy][0][0]), Y->params->coltot[Hy^GY], beta, 
+	    &(Z->matrix[Hz][0][0]), Z->params->coltot[Hz^GZ]);
+      }
+
+      /*
       newmm(X->matrix[Hx], Xtrans, Y->matrix[Hy], Ytrans,
 	    Z->matrix[Hz], Z->params->rowtot[Hz], numlinks[Hx^symlink],
 	    Z->params->coltot[Hz^GZ], alpha, beta);
+	    */
 
       dpd_buf4_mat_irrep_close(X, Hx);
 

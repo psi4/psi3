@@ -186,9 +186,38 @@ int dpd_contract244(dpdfile2 *X, dpdbuf4 *Y, dpdbuf4 *Z, int sum_X, int sum_Y,
 	/* fprintf(outfile,"Hz %d, Hx %d, Hy %d, numrows %d, numlinks %d, numcols %d\n",
 	   Hz, Hx, Hy, numrows[Hz],numlinks[Hx],numcols[Hz]); */
 
+	if(numrows[Hz] && numcols[Hz] && numlinks[Hx^symlink]) {
+	if(!Xtrans && !Ytrans) {
+	  C_DGEMM('n','n',numrows[Hz],numcols[Hz],numlinks[Hx^symlink],
+	      alpha, &(X->matrix[Hx][0][0]),numlinks[Hz^symlink],
+	      &(Ymat[Hy][0][0]),numcols[Hz],1.0,
+	      &(Zmat[Hz][0][0]),numcols[Hz]);
+	}
+	else if(Xtrans && !Ytrans) {
+	  C_DGEMM('t','n',numrows[Hz],numcols[Hz],numlinks[Hx^symlink],
+	      alpha, &(X->matrix[Hx][0][0]),numrows[Hz],
+	      &(Ymat[Hy][0][0]),numcols[Hz],1.0,
+	      &(Zmat[Hz][0][0]),numcols[Hz]);
+	}
+	else if(!Xtrans && Ytrans) {
+	  C_DGEMM('n','t',numrows[Hz],numcols[Hz],numlinks[Hx^symlink],
+	      alpha, &(X->matrix[Hx][0][0]),numlinks[Hx^symlink],
+	      &(Ymat[Hy][0][0]),numlinks[Hx^symlink],1.0,
+	      &(Zmat[Hz][0][0]),numcols[Hz]);
+	}
+	else {
+	  C_DGEMM('t','t',numrows[Hz],numcols[Hz],numlinks[Hx^symlink],
+	      alpha, &(X->matrix[Hx][0][0]),numrows[Hz],
+	      &(Ymat[Hy][0][0]),numlinks[Hx^symlink],1.0,
+	      &(Zmat[Hz][0][0]),numcols[Hz]);
+	}
+	}
+
+	/*
         newmm(X->matrix[Hx], Xtrans, Ymat[Hy], Ytrans,
             Zmat[Hz], numrows[Hz], numlinks[Hx^symlink],
             numcols[Hz], alpha, 1.0);
+	    */
       }
 
     if(sum_Y == 0) dpd_buf4_mat_irrep_close(Y, hybuf);

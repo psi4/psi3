@@ -220,10 +220,40 @@ int dpd_contract442(dpdbuf4 *X, dpdbuf4 *Y, dpdfile2 *Z, int target_X,
 	/* fprintf(stdout,"rows %d links %d cols %d\n",
 	   Z->params->rowtot[Hz], numlinks[Hx], Z->params->coltot[Hz]); */
 
+	if(Z->params->rowtot[Hz] && 
+	   Z->params->coltot[Hz^GZ] && 
+	   numlinks[Hx]) {
+	if(!Xtrans && !Ytrans) {
+	  C_DGEMM('n','n',Z->params->rowtot[Hz],Z->params->coltot[Hz^GZ],
+	      numlinks[Hx],alpha,&(Xmat[Hx][0][0]),numlinks[Hx],
+	      &(Ymat[Hy][0][0]),Z->params->coltot[Hz^GZ],1.0,
+	      &(Z->matrix[Hz][0][0]),Z->params->coltot[Hz^GZ]);
+	}
+	else if(Xtrans && !Ytrans) {
+	  C_DGEMM('t','n',Z->params->rowtot[Hz],Z->params->coltot[Hz^GZ],
+	      numlinks[Hx],alpha,&(Xmat[Hx][0][0]),Z->params->rowtot[Hz],
+	      &(Ymat[Hy][0][0]),Z->params->coltot[Hz^GZ],1.0,
+	      &(Z->matrix[Hz][0][0]),Z->params->coltot[Hz^GZ]);
+	}
+	else if(!Xtrans && Ytrans) {
+	  C_DGEMM('n','t',Z->params->rowtot[Hz],Z->params->coltot[Hz^GZ],
+	      numlinks[Hx],alpha,&(Xmat[Hx][0][0]),numlinks[Hx],
+	      &(Ymat[Hy][0][0]),numlinks[Hx],1.0,
+	      &(Z->matrix[Hz][0][0]),Z->params->coltot[Hz^GZ]);
+	}
+	else {
+	  C_DGEMM('t','t',Z->params->rowtot[Hz],Z->params->coltot[Hz^GZ],
+	      numlinks[Hx],alpha,&(Xmat[Hx][0][0]),Z->params->rowtot[Hz],
+	      &(Ymat[Hy][0][0]),numlinks[Hx],1.0,
+	      &(Z->matrix[Hz][0][0]),Z->params->coltot[Hz^GZ]);
+	}
+	}
+	/*
         newmm(Xmat[Hx], Xtrans, Ymat[Hy], Ytrans,
             Z->matrix[Hz], Z->params->rowtot[Hz],
             numlinks[Hx], Z->params->coltot[Hz^GZ],
             alpha, 1.0);
+	    */
       }
 
     if(target_X == 0) dpd_buf4_mat_irrep_close(X, hxbuf);
