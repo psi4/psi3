@@ -1,0 +1,46 @@
+% H2O
+%
+psi: (
+ check = false
+exec = (
+ "input"
+ repeat 10
+ "cints"
+ "cscf"
+ "cints --deriv1"
+ "extrema"
+ end
+ "psiclean"
+ )
+)
+
+default: (
+  label = "STO-3G SCF C2H4 opt using extrema/delocalized coordinates"
+  wfn = scf
+  reference = rhf
+  dertype = first
+)
+
+
+input: (
+  basis = STO-3G
+  units = angstroms
+  zmat = (
+(C)
+(C 1 r1)
+(H 1 r2 2 an1)
+(H 1 r2 2 an1 3 an180)
+(H 2 r2 1 an1 3 an180)
+(H 2 r2 1 an1 4 an180)
+        )
+zvars = (
+(r1 1.31)
+(r2 1.08)
+(an1 122.0)
+(an180 180.0)
+        )
+
+)
+
+extrema:coordinates = delocalized
+

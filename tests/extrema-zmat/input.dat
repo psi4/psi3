@@ -1,0 +1,40 @@
+% H2O
+%
+psi: (
+ check = false
+exec = (
+ "input"
+ repeat 20
+ "cints"
+ "cscf"
+ "cints --deriv1"
+ "extrema"
+ end
+ "psiclean"
+ )
+)
+
+default: (
+  label = "STO-3G SCF NO2 opt using exterma/zmatrix"
+  wfn = scf
+  reference = rhf
+  dertype = first
+  charge = -1
+)
+
+
+input: (
+  basis = STO-3G
+  units = angstroms
+  zmat = (
+  (X)
+  (N 1 1.0)
+  (O 2 r1$ 1 a1$)
+  (O 2 r1$ 1 a1$ 3 180.0 )
+  )
+zvars = (
+  (r1  1.33)
+  (a1  75.0)
+  )
+)
+

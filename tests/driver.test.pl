@@ -52,7 +52,8 @@ elsif ($ARGV[0] eq "--scf") {
                  "scf-polar",
                  "rhf-stab",
                  "uhf-stab",
-                 "rohf-stab"
+                 "rohf-stab",
+                 "extrema-zmat"
                );
 }
 elsif ($ARGV[0] eq "--small") {
@@ -65,6 +66,7 @@ elsif ($ARGV[0] eq "--small") {
                  "rhf-stab",
                  "uhf-stab",
                  "rohf-stab",
+                 "extrema-zmat",
                  "cis-sp",
                  "cisd-sp",
                  "cisd-opt-numer",
@@ -111,6 +113,7 @@ elsif ($ARGV[0] eq "--all") {
                  "rhf-stab",
                  "uhf-stab",
                  "rohf-stab",
+                 "extrema-zmat",
                  "cis-sp",
                  "cisd-sp",
                  "cisd-opt-numer",
@@ -172,7 +175,8 @@ elsif ($ARGV[0] eq "--geom") {
                  "cc1",
                  "cc2",
                  "cc13",
-                 "cc14"
+                 "cc14",
+                 "extrema-zmat"
                );
 }
 elsif ($ARGV[0] eq "--freq") {
@@ -195,6 +199,7 @@ else {
                  "rhf-stab",
                  "uhf-stab",
                  "rohf-stab",
+                 "extrema-zmat",
                  "cis-sp",
                  "cisd-sp",
                  "cisd-opt-numer",
