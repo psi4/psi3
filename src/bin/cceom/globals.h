@@ -11,7 +11,7 @@
 #define EXTERN
 #endif
 
-#define EOM_DEBUG (1)
+// #define EOM_DEBUG (1)
 
 EXTERN char *progid;
 EXTERN FILE *infile, *outfile;

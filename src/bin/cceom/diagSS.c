@@ -36,8 +36,6 @@ void diagSS(int irrep) {
   range = eom_params.excitation_range;
   pf = eom_params.print_singles;
 
-  fprintf(outfile,"Obtaining initial guess from singles-singles ");
-  fprintf(outfile,"block of Hbar...");
   if (pf) fprintf(outfile,"\n\n");
 
   /* Setup initial C guess vector(s) */
@@ -206,7 +204,7 @@ void diagSS(int irrep) {
     free_block(G);
 
     if (pf) fprintf(outfile,
-         "  Root    EOM Energy     Delta E    Res. Norm    Conv?\n");
+         "  Root    EOM Energy     Delta E   Res. Norm    Conv?\n");
     fflush(outfile);
 
     dpd_file2_init(&RIA, EOM_R, irrep, 0, 1, "RIA");
@@ -235,7 +233,7 @@ void diagSS(int irrep) {
       }
 
       norm = norm_C1(&RIA, &Ria);
-      if (pf) fprintf(outfile,"%22d%15.10lf%12.2e %6.3e\n",k+1,lambda[k],
+      if (pf) fprintf(outfile,"%22d%15.10lf%11.2e%12.2e",k+1,lambda[k],
 		      lambda[k]-lambda_old[k], norm); 
 
       if ( (norm > eom_params.residual_tol_SS) ||
@@ -276,7 +274,6 @@ void diagSS(int irrep) {
     ++iter;
   }
 
-  if (!pf) fprintf(outfile,"Done.\n\n");
   if (pf) fprintf(outfile,"\nLowest eigenvalues of HBar Singles-Singles Block\n");
   if (pf) fprintf(outfile,"Root      Excitation Energy         Total Energy\n");
   if (pf) fprintf(outfile,"           (eV)     (cm^-1)            (au)\n");
@@ -363,12 +360,12 @@ void schmidt_add_SS(dpdfile2 *RIA, dpdfile2 *Ria, int *numCs)
    }
 
    norm = norm_C1(RIA, Ria);
-   scm_C1(RIA, Ria, 1.0/norm);
 
    if (norm < eom_params.schmidt_add_residual_tol) {
       return;
    }
    else {
+      scm_C1(RIA, Ria, 1.0/norm);
       sprintf(CME_lbl, "%s %d", "CME", *numCs);
       sprintf(Cme_lbl, "%s %d", "Cme", *numCs);
       dpd_file2_copy(RIA, EOM_CME, CME_lbl);

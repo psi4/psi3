@@ -12,13 +12,16 @@
 void init_S1(int index, int irrep);
 void init_S2(int index, int irrep);
 void init_C2(int index, int irrep);
-double norm_C(dpdfile2 *CME, dpdfile2 *Cme,
+extern double norm_C(dpdfile2 *CME, dpdfile2 *Cme,
   dpdbuf4 *CMNEF, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf);
+extern void scm_C1(dpdfile2 *CME, dpdfile2 *Cme, double a);
+extern void scm_C(dpdfile2 *CME, dpdfile2 *Cme, dpdbuf4 *CMNEF,
+  dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, double a);
 void restart(double **alpha, int L, int num, int irrep, int ortho);
-void precondition(dpdfile2 *RIA, dpdfile2 *Ria,
+extern void precondition(dpdfile2 *RIA, dpdfile2 *Ria,
   dpdbuf4 *RIJAB, dpdbuf4 *Rijab, dpdbuf4 *RIjAb, double eval);
 void form_diagonal(int irrep);
-void schmidt_add(dpdfile2 *RIA, dpdfile2 *Ria,
+extern void schmidt_add(dpdfile2 *RIA, dpdfile2 *Ria,
   dpdbuf4 *RIJAB, dpdbuf4 *Rijab, dpdbuf4 *RIjAb, int *numCs, int irrep);
 void c_clean(dpdfile2 *CME, dpdfile2 *Cme,
   dpdbuf4 *CMNEF, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf);
@@ -48,13 +51,17 @@ void diag(void) {
 
   hbar_extra();
 
+  fprintf(outfile,"Symmetry of ground state: %s\n", moinfo.labels[moinfo.sym]);
+
   for (irrep=0; irrep<moinfo.nirreps; ++irrep) {
     if (eom_params.rpi[irrep] == 0) continue; /* no roots of this irrep desired */
   
     for (C_irr=0;C_irr<moinfo.nirreps;++C_irr) /* determine symmetry of C */
       if ( (moinfo.sym ^ C_irr) == irrep ) break;
 
-    fprintf(outfile,"\nSymmetry of right eigenvector: %s\n",moinfo.labels[C_irr]);
+
+    fprintf(outfile,"Symmetry of excited state: %s\n", moinfo.labels[irrep]);
+    fprintf(outfile,"Symmetry of right eigenvector: %s\n",moinfo.labels[C_irr]);
 
     if (C_irr != 0) {
       fprintf(outfile,"\nUnable to handle asymmetric R amplitudes for now\n");
@@ -65,14 +72,19 @@ void diag(void) {
     form_diagonal(C_irr);
 
     /* Diagonalize Hbar-SS to obtain initial CME and Cme guess */
+    fprintf(outfile,"Obtaining initial guess from singles-singles block of Hbar...");
     diagSS(C_irr);
+    if (!eom_params.print_singles) fprintf(outfile,"Done.\n\n");
+
 
     /* Setup initial C2 and S2 vector to go with Hbar_SS */
     for (i=0;i<eom_params.rpi[C_irr];++i) {
       init_C2(i, C_irr);
       init_S2(i, C_irr);
     }
+#ifdef EOM_DEBUG
     check_sum("sending zero", 0, 0); /* reset checksum by sending zero vector */
+#endif
 
     converged = init_int_array(eom_params.rpi[irrep]);
     lambda_old = init_array(eom_params.rpi[irrep]);
@@ -134,11 +146,9 @@ void diag(void) {
 
 	/* Computing sigma vectors */
 	sigmaSS(i,C_irr);
-/*
 	sigmaSD(i,C_irr);
 	sigmaDS(i,C_irr);
 	sigmaDD(i,C_irr);
-*/
 
 	/* Cleaning out sigma vectors */
 	sprintf(lbl, "%s %d", "SIA", i);
@@ -226,12 +236,6 @@ void diag(void) {
 
       dgeev_eom(L, G, lambda, alpha);
 
-/*
-      dgeev_call(&get_left_ev, &get_right_ev, &L, &(G[0][0]), &L, &(lambda[0]),
-		 &(evals_complex[0]), &(evectors_left[0][0]), &L, &(alpha[0][0]),
-		 &L, &(work[0]), &lwork, &info);
-*/
-
       eigsort(lambda, alpha, L);
 
       free_block(G);
@@ -242,7 +246,7 @@ void diag(void) {
       dpd_buf4_init(&RIJAB, EOM_R, C_irr, 2, 7, 2, 7, 0, "RIJAB");
       dpd_buf4_init(&Rijab, EOM_R, C_irr, 2, 7, 2, 7, 0, "Rijab");
       dpd_buf4_init(&RIjAb, EOM_R, C_irr, 0, 5, 0, 5, 0, "RIjAb");
-      fprintf(outfile,"  Root   EOM Energy     Delta E    Res. Norm    Conv?\n");
+      fprintf(outfile,"  Root    EOM Energy     Delta E   Res. Norm    Conv?\n");
       for (k=0;k<eom_params.rpi[irrep];++k) {
         /* rezero residual vector for each root */
         scm_C(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb, 0.0);
@@ -308,7 +312,7 @@ void diag(void) {
 	fprintf(outfile,"Norm of residual vector af clean %18.13lf\n",norm);
 #endif
 
-	fprintf(outfile,"%21d%15.10lf%12.2e%12.2e",k+1,lambda[k],
+	fprintf(outfile,"%22d%15.10lf%11.2e%12.2e",k+1,lambda[k],
 		lambda[k]-lambda_old[k], norm);
 
 	/* Check for convergence and add new vector if not converged */
@@ -317,7 +321,10 @@ void diag(void) {
 	  fprintf(outfile,"%7s\n","N");
 	  precondition(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb, lambda[k]);
 	  norm = norm_C(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb);
-	  scm_C(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb, 1.0/norm);
+#ifdef EOM_DEBUG
+ fprintf(outfile,"Norm of residual vector af preconditioning %18.13lf\n",norm);
+#endif
+          scm_C(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb, 1.0/norm);
 	  schmidt_add(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb, &numCs, irrep);
 	}
 	else {
@@ -550,26 +557,6 @@ void init_S1(int i, int C_irr) {
   dpd_file2_close(&Sia);
 }
 
-/*
-void init_S1(int i, int C_irr) {
-  int h;
-  dpdfile2 SIA, Sia;
-  char lbl[32];
-  sprintf(lbl, "%s %d", "SIA", i);
-  dpd_file2_init(&SIA, EOM_SIA, C_irr, 0, 1, lbl);
-  dpd_file2_mat_init(&SIA);
-  dpd_file2_mat_wrt(&SIA);
-  dpd_file2_mat_close(&SIA);
-  sprintf(lbl, "%s %d", "Sia", i);
-  dpd_file2_init(&Sia, EOM_Sia, C_irr, 0, 1, lbl);
-  dpd_file2_mat_init(&Sia);
-  dpd_file2_mat_wrt(&Sia);
-  dpd_file2_mat_close(&Sia);
-  dpd_file2_close(&SIA);
-  dpd_file2_close(&Sia);
-}
-*/
-
 void init_S2(int i, int C_irr) {
   dpdbuf4 SIJAB, Sijab, SIjAb;
   char lbl[32];
@@ -579,48 +566,13 @@ void init_S2(int i, int C_irr) {
   dpd_buf4_init(&Sijab, EOM_Sijab, C_irr, 2, 7, 2, 7, 0, lbl);
   sprintf(lbl, "%s %d", "SIjAb", i);
   dpd_buf4_init(&SIjAb, EOM_SIjAb, C_irr, 0, 5, 0, 5, 0, lbl);
-
   dpd_buf4_scm(&SIJAB, 0.0);
   dpd_buf4_scm(&Sijab, 0.0);
   dpd_buf4_scm(&SIjAb, 0.0);
-
   dpd_buf4_close(&SIJAB);
   dpd_buf4_close(&Sijab);
   dpd_buf4_close(&SIjAb);
 }
-
-/*
-void init_S2(int i, int C_irr) {
-  int h;
-  dpdbuf4 SIJAB, Sijab, SIjAb;
-  char lbl[32];
-  sprintf(lbl, "%s %d", "SIJAB", i);
-  dpd_buf4_init(&SIJAB, EOM_SIJAB, C_irr, 2, 7, 2, 7, 0, lbl);
-  sprintf(lbl, "%s %d", "Sijab", i);
-  dpd_buf4_init(&Sijab, EOM_Sijab, C_irr, 2, 7, 2, 7, 0, lbl);
-  sprintf(lbl, "%s %d", "SIjAb", i);
-  dpd_buf4_init(&SIjAb, EOM_SIjAb, C_irr, 0, 5, 0, 5, 0, lbl);
-  for(h=0; h < SIJAB.params->nirreps; h++) {
-    dpd_buf4_mat_irrep_init(&SIJAB, h);
-    dpd_buf4_mat_irrep_wrt(&SIJAB, h);
-    dpd_buf4_mat_irrep_close(&SIJAB, h);
-  }
-  for(h=0; h < Sijab.params->nirreps; h++) {
-    dpd_buf4_mat_irrep_init(&Sijab, h);
-    dpd_buf4_mat_irrep_wrt(&Sijab, h);
-    dpd_buf4_mat_irrep_close(&Sijab, h);
-  }
-  for(h=0; h < SIjAb.params->nirreps; h++) {
-    dpd_buf4_mat_irrep_init(&SIjAb, h);
-    dpd_buf4_mat_irrep_wrt(&SIjAb, h);
-    dpd_buf4_mat_irrep_close(&SIjAb, h);
-  }
-  dpd_buf4_close(&SIJAB);
-  dpd_buf4_close(&Sijab);
-  dpd_buf4_close(&SIjAb);
-  return;
-}
-*/
 
 void init_C2(int i, int C_irr) {
   dpdbuf4 CMNEF, Cmnef, CMnEf;
@@ -639,35 +591,3 @@ void init_C2(int i, int C_irr) {
   dpd_buf4_close(&CMnEf);
 }
 
-
-/*
-void init_C2(int i, int C_irr) {
-  int h;
-  dpdbuf4 CMNEF, Cmnef, CMnEf;
-  char lbl[32];
-  sprintf(lbl, "%s %d", "CMNEF", i);
-  dpd_buf4_init(&CMNEF, EOM_CMNEF, C_irr, 2, 7, 2, 7, 0, lbl);
-  sprintf(lbl, "%s %d", "Cmnef", i);
-  dpd_buf4_init(&Cmnef, EOM_Cmnef, C_irr, 2, 7, 2, 7, 0, lbl);
-  sprintf(lbl, "%s %d", "CMnEf", i);
-  dpd_buf4_init(&CMnEf, EOM_CMnEf, C_irr, 0, 5, 0, 5, 0, lbl);
-  for(h=0; h < CMNEF.params->nirreps; h++) {
-    dpd_buf4_mat_irrep_init(&CMNEF, h);
-    dpd_buf4_mat_irrep_wrt(&CMNEF, h);
-    dpd_buf4_mat_irrep_close(&CMNEF, h);
-  }
-  for(h=0; h < Cmnef.params->nirreps; h++) {
-    dpd_buf4_mat_irrep_init(&Cmnef, h);
-    dpd_buf4_mat_irrep_wrt(&Cmnef, h);
-    dpd_buf4_mat_irrep_close(&Cmnef, h);
-  }
-  for(h=0; h < CMnEf.params->nirreps; h++) {
-    dpd_buf4_mat_irrep_init(&CMnEf, h);
-    dpd_buf4_mat_irrep_wrt(&CMnEf, h);
-    dpd_buf4_mat_irrep_close(&CMnEf, h);
-  }
-  dpd_buf4_close(&CMNEF);
-  dpd_buf4_close(&Cmnef);
-  dpd_buf4_close(&CMnEf);
-}
-*/

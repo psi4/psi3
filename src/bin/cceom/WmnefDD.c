@@ -29,9 +29,7 @@ void WmnefDD(int i, int irrep) {
   /* XAF = CMNAE * WMNFE + CMnAe * WMnFe */
   /* SIJAB -= P(ab) XAF * TIJFB */
   dpd_file2_init(&X, EOM_TMP, irrep, 1, 1, "XFA");
-  dpd_file2_mat_init(&X);
-  dpd_file2_mat_wrt(&X);
-  dpd_file2_mat_close(&X);
+  dpd_file2_scm(&X, 0.0);
   dpd_buf4_init(&D, CC_DINTS, irrep, 2, 5, 2, 5, 0, "D <ij||ab> (i>j,ab)");
   dpd_buf4_init(&CMNEF, EOM_CMNEF, irrep, 2, 5, 2, 7, 0, CMNEF_lbl);
   dpd_contract442(&D, &CMNEF, &X, 2, 2, 1.0, 1.0);
@@ -60,9 +58,7 @@ void WmnefDD(int i, int irrep) {
   /* Xaf = Cmnae * Wmnfe + CmNaE * WmNfE */
   /* Sijab -= P(ab) Xfa * Tijfb */
   dpd_file2_init(&X, EOM_TMP, irrep, 1, 1, "Xfa");
-  dpd_file2_mat_init(&X);
-  dpd_file2_mat_wrt(&X);
-  dpd_file2_mat_close(&X);
+  dpd_file2_scm(&X, 0.0);
   dpd_buf4_init(&D, CC_DINTS, irrep, 2, 5, 2, 5, 0, "D <ij||ab> (i>j,ab)");
   dpd_buf4_init(&Cmnef, EOM_Cmnef, irrep, 2, 5, 2, 7, 0, Cmnef_lbl);
   dpd_contract442(&D, &Cmnef, &X, 2, 2, 1.0, 1.0);
@@ -110,9 +106,7 @@ void WmnefDD(int i, int irrep) {
   /* XLI = WLMEF * CIMEF + WLmEf * CImEf */
   /* SIJAB += P(IJ) XLI * TLJAB */
   dpd_file2_init(&X, EOM_TMP, irrep, 0, 0, "XLI");
-  dpd_file2_mat_init(&X);
-  dpd_file2_mat_wrt(&X);
-  dpd_file2_mat_close(&X);
+  dpd_file2_scm(&X, 0.0);
   dpd_buf4_init(&CMNEF, EOM_CMNEF, irrep, 0, 7, 2, 7, 0, CMNEF_lbl);
   dpd_buf4_init(&D, CC_DINTS, irrep, 0, 7, 0, 7, 0, "D <ij||ab> (ij,a>b)");
   dpd_contract442(&D, &CMNEF, &X, 0, 0, 1.0, 1.0);
@@ -157,9 +151,7 @@ void WmnefDD(int i, int irrep) {
   /* Xli = Wlmef * Cimef + WlMeF * CiMeF */
   /* Sijab += P(ij) Xli * Tljab */
   dpd_file2_init(&X, EOM_TMP, irrep, 0, 0, "Xli");
-  dpd_file2_mat_init(&X);
-  dpd_file2_mat_wrt(&X);
-  dpd_file2_mat_close(&X);
+  dpd_file2_scm(&X, 0.0);
   dpd_buf4_init(&Cmnef, EOM_Cmnef, irrep, 0, 7, 2, 7, 0, Cmnef_lbl);
   dpd_buf4_init(&D, CC_DINTS, irrep, 0, 7, 0, 7, 0, "D <ij||ab> (ij,a>b)");
   dpd_contract442(&D, &Cmnef, &X, 0, 0, 1.0, 1.0);

@@ -94,8 +94,10 @@ void get_eom_params()
 
   moinfo.sym = sym;
 
+/*
   fprintf(outfile,"Symmetry of ground state: %d : %s\n",
                          moinfo.sym,moinfo.labels[moinfo.sym]);
+*/
 
 }
 

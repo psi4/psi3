@@ -22,8 +22,11 @@ void WnmjeDS(int i, int irrep) {
   /* Form XNJ intermediates */
   /* XNJ = CME * WNMJE + Cme * WNmJe */
   dpd_file2_init(&XNJ, EOM_TMP, irrep, 0, 0, "XNJ");
+/*
   dpd_file2_mat_init(&XNJ);
   dpd_file2_mat_wrt(&XNJ);
+*/
+  dpd_file2_scm(&XNJ, 0.0);
   dpd_file2_init(&CME, EOM_CME, irrep, 0, 1, CME_lbl);
   dpd_buf4_init(&WMNIE, CC_HBAR, irrep, 0, 11, 2, 11, 0, "WMNIE");
   dpd_dot23(&CME, &WMNIE, &XNJ, 0, 0, 1.0, 1.0);
@@ -39,8 +42,11 @@ void WnmjeDS(int i, int irrep) {
 
   /* Xnj = Cme * Wnmje + CME * WnMjE */
   dpd_file2_init(&Xnj, EOM_TMP, irrep, 0, 0, "Xnj");
+/*
   dpd_file2_mat_init(&Xnj);
   dpd_file2_mat_wrt(&Xnj);
+*/
+  dpd_file2_scm(&Xnj, 0.0);
   dpd_file2_init(&Cme, EOM_Cme, irrep, 0, 1, Cme_lbl);
   dpd_buf4_init(&Wmnie, CC_HBAR, irrep, 0, 11, 2, 11, 0, "Wmnie");
   dpd_dot23(&Cme, &Wmnie, &Xnj, 0, 0, 1.0, 1.0);

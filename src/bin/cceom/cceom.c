@@ -36,7 +36,10 @@ int main(int argc, char *argv[])
   form_dpd_dp();
  
   cachefiles = init_int_array(PSIO_MAXUNIT);
+
+/*
   cachelist = cacheprep_rhf(params.cachelev, cachefiles);
+*/
 
   dpd_init(0, moinfo.nirreps, params.memory, 0, cachefiles,
            cachelist, NULL, 2, moinfo.occpi, moinfo.occ_sym,

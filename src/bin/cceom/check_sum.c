@@ -4,7 +4,7 @@
 #define EXTERN
 #include "globals.h"
 
-double norm_C(dpdfile2 *CME, dpdfile2 *Cme,
+extern double norm_C(dpdfile2 *CME, dpdfile2 *Cme,
   dpdbuf4 *CMNEF, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf);
 
 void check_sum(char *term_lbl, int index, int irrep) {

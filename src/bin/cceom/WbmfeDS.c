@@ -22,8 +22,7 @@ void WbmfeDS(int i, int irrep) {
   /* Form Xbf intermediates */
   /* XBF = CME * WBMFE + Cme * WBmFe */
   dpd_file2_init(&XBF, EOM_TMP, irrep, 1, 1, "XBF");
-  dpd_file2_mat_init(&XBF);
-  dpd_file2_mat_wrt(&XBF);
+  dpd_file2_scm(&XBF, 0.0);
   dpd_file2_init(&CME, EOM_CME, irrep, 0, 1, CME_lbl);
   dpd_buf4_init(&WAMEF, CC_HBAR, irrep, 10, 5, 10, 7, 0, "WAMEF");
   dpd_dot14(&CME, &WAMEF, &XBF, 0, 0, 1.0, 1.0);
@@ -38,8 +37,7 @@ void WbmfeDS(int i, int irrep) {
 
   /* Xbf = Cme * Wbmfe + CME * WbMfE */
   dpd_file2_init(&Xbf, EOM_TMP, irrep, 1, 1, "Xbf");
-  dpd_file2_mat_init(&Xbf);
-  dpd_file2_mat_wrt(&Xbf);
+  dpd_file2_scm(&Xbf, 0.0);
   dpd_file2_init(&Cme, EOM_Cme, irrep, 0, 1, Cme_lbl);
   dpd_buf4_init(&Wamef, CC_HBAR, irrep, 10, 5, 10, 7, 0, "Wamef");
   dpd_dot14(&Cme, &Wamef, &Xbf, 0, 0, 1.0, 1.0);
@@ -97,7 +95,7 @@ void WbmfeDS(int i, int irrep) {
   dpd_buf4_close(&SIjAb);
 
 #ifdef EOM_DEBUG
-  check_sum("WbmfeDS",i,irrep);
+  check_sum("WbmfeDS with SIjAb",i,irrep);
 #endif
 
   return;

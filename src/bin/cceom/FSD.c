@@ -44,13 +44,13 @@ void FSD(int i, int irrep) {
   dpd_buf4_init(&CmNeF, EOM_TMP, irrep, 0, 5, 0, 5, 0, "CmNeF");
   dpd_dot24(&FME,&CmNeF,&Sia, 0, 0, 1.0, 1.0);
   dpd_buf4_close(&CmNeF);
-  dpd_file2_close(&Fme);
+  dpd_file2_close(&FME);
 
   dpd_file2_close(&SIA);
   dpd_file2_close(&Sia);
 
 #ifdef EOM_DEBUG
-  check_sum("FSD",i,irrep);
+  check_sum("FSD after Sia",i,irrep);
 #endif
 
   return;

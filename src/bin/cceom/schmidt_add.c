@@ -7,6 +7,12 @@
 numCs C vectors and adds the new vector to the C list if its norm is greater
 than params.residual_tol */
 
+extern double norm_C(dpdfile2 *CME, dpdfile2 *Cme,
+  dpdbuf4 *CMNEF, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf);
+
+extern void scm_C(dpdfile2 *CME, dpdfile2 *Cme, dpdbuf4 *CMNEF,
+  dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, double a);
+
 void schmidt_add(dpdfile2 *RIA, dpdfile2 *Ria,
   dpdbuf4 *RIJAB, dpdbuf4 *Rijab, dpdbuf4 *RIjAb, int *numCs, int irrep)
 {
@@ -37,6 +43,10 @@ void schmidt_add(dpdfile2 *RIA, dpdfile2 *Ria,
       dotval += dpd_buf4_dot(Rijab, &Cmnef);
       dotval += dpd_buf4_dot(RIjAb, &CMnEf);
 
+#ifdef EOM_DEBUG
+ fprintf(outfile,"dotval in schmidt_add: %15.10lf\n",dotval);
+#endif
+
       dpd_file2_axpy(&CME, RIA, -1.0*dotval, 0);
       dpd_file2_axpy(&Cme, Ria, -1.0*dotval, 0);
       dpd_buf4_axpy(&CMNEF, RIJAB, -1.0*dotval);
@@ -51,13 +61,12 @@ void schmidt_add(dpdfile2 *RIA, dpdfile2 *Ria,
    }
 
    norm = norm_C(RIA, Ria, RIJAB, Rijab, RIjAb);
-fprintf(outfile,"Schmidt orthnormalized residual norm: %18.13lf\n",norm);
-   scm_C(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb, 1.0/norm);
 
    if (norm < eom_params.schmidt_add_residual_tol) {
       return;
    }
    else {
+      scm_C(RIA, Ria, RIJAB, Rijab, RIjAb, 1.0/norm);
       sprintf(CME_lbl, "%s %d", "CME", *numCs);
       sprintf(Cme_lbl, "%s %d", "Cme", *numCs);
       sprintf(CMNEF_lbl, "%s %d", "CMNEF", *numCs);
@@ -72,7 +81,6 @@ fprintf(outfile,"Schmidt orthnormalized residual norm: %18.13lf\n",norm);
 
       ++(*numCs);
    }
-
    return;
 }
 
