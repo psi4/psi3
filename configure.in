@@ -633,10 +633,10 @@ AC_SUBST(FPAROPT)
 # archiver and linker flags
 if echo $os | grep aix >/dev/null 2>&1 && test "$bitwidth64" = yes; then
     ARFLAGS="-X32_64 rv"
-    LDFLAGS="-q64"
+    LDFLAGS="-q64 -bmaxdata:4000000000"
 else
     ARFLAGS="rv"
-    LDFLAGS=""
+    LDFLAGS="-bmaxdata:2000000000"
 fi
 AC_SUBST(ARFLAGS)
 AC_SUBST(LDFLAGS)
