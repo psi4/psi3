@@ -9,6 +9,7 @@ psi: (
 
   omega = 0.0
   mu_irreps = (0 0 1)
+  freeze_core = true
 
   basis = "cc-pVDZ"
   puream = true
