@@ -202,7 +202,7 @@ void rmp2r12_energy()
     take sizes of rsiq_buf, jsix_buf, and
     jyix_buf into account
    ---*/
-  num_i_per_ibatch = UserOptions.memory / (NUM_TE_TYPES*
+  num_i_per_ibatch = UserOptions.memory / ((NUM_TE_TYPES-1)*
 					   (BasisSet.num_ao*max_bf_per_shell*max_bf_per_shell +
 					    MOInfo.num_mo*
 					    (MOInfo.nactdocc*BasisSet.num_ao +
