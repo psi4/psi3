@@ -159,6 +159,13 @@ psi: (
   SCFROHFResponse = ERROR
   SCFTwoConResponse = ERROR
 
+  % Procedure for an SCF property computation
+  SCFEnergyOEPROP = ($SCFEnergy $oeprop $done)
+  SCFRHFEnergyOEPROP = ($SCFRHFEnergy $oeprop $done)
+  SCFUHFEnergyOEPROP = ERROR
+  SCFROHFEnergyOEPROP = ($SCFROHFEnergy $oeprop $done)
+  SCFTwoConEnergyOEPROP = ERROR
+
   % Procedure for an SCF DBOC computation
   SCFDBOC = ($SCFEnergy $dboc)
   SCFRHFDBOC = ($SCFRHFEnergy $dboc)
@@ -252,6 +259,12 @@ psi: (
   DirectSCFROHFResponse = ERROR
   DirectSCFTwoConResponse = ERROR
 
+  % Procedure for an SCF property computation
+  DirectSCFEnergyOEPROP = ($DirectSCFEnergy $oeprop $done)
+  DirectSCFRHFEnergyOEPROP = ($DirectSCFRHFEnergy $oeprop $done)
+  DirectSCFUHFEnergyOEPROP = ERROR
+  DirectSCFROHFEnergyOEPROP = ($DirectSCFROHFEnergy $oeprop $done)
+  DirectSCFTwoConEnergyOEPROP = ERROR
 
   % -------------------------------- CCSD Procedures
   % Procedures for the CCSD energy
@@ -319,12 +332,19 @@ psi: (
   CCSDUHFFirstFreq  = $CCSDFirstFreq
   CCSDTwoConFirstFreq  = $CCSDFirstFreq
 
-  % Procedure for an SCF linear response calculation
+  % Procedure for an CCSD linear response calculation
   CCSDResponse = ($CCSDEnergy $cchbar $cclambda $propint $ccresponse $done)
   CCSDRHFResponse = $CCSDResponse
   CCSDUHFResponse = ERROR
   CCSDROHFResponse = ERROR
   CCSDTwoConResponse = ERROR
+
+  $ Procedure for an CCSD one-electron property computation
+  CCSDFirstOEPROP = ($CCSDEnergy $cchbar $cclambda $ccdensity $backtransqt $oeprop $done)
+  CCSDRHFFirstOEPROP = $CCSDFirstOEPROP
+  CCSDUHFFirstOEPROP = ERROR
+  CCSDROHFFirstOEPROP = ERROR
+  CCSDTwoConFirstOEPROP = ERROR
 
   % -------------------------------- CCSD(T) Procedures
   % Procedures for the CCSD(T) energy

@@ -65,6 +65,7 @@ int main(int argc, char *argv[])
     DISP,             /* displacements */
     FREQ,             /* frequencies */
     SYMM_FREQ,        /* frequencies for symmetric modes */
+    OEPROP,           /* one-electron properties */
     DBOC              /* compute Diagonal Born-Oppenheimer Correction (DBOC) by finite difference */
   } JobType;
 
@@ -171,6 +172,8 @@ int main(int argc, char *argv[])
   else if ((strcmp(calctyp,"SP")==0) || (strcmp(calctyp,"SINGLE-POINT")==0) ||
            (strcmp(calctyp,"SINGLE_POINT")==0) ||
 	   (strcmp(calctyp,"FORCE")==0)) JobType = SP;
+  else if ((strcmp(calctyp,"OEPROP")==0))
+    JobType = OEPROP;
   else if ((strcmp(calctyp,"DBOC")==0)) {
     if (called_from_dboc)
       JobType = SP;
@@ -260,6 +263,9 @@ int main(int argc, char *argv[])
     else fprintf(outfile, "unrecognized-dertype");
     fprintf(outfile, " computation.\n");
   }
+  else if (JobType == OEPROP) {
+    fprintf(outfile, "one-electron properties computation.\n");
+  }
   else if (JobType == DBOC) {
     fprintf(outfile, "Diagonal Born-Oppenheimer Correction (DBOC) computation.\n");
   }
@@ -278,6 +284,10 @@ int main(int argc, char *argv[])
     strcpy(proced,"");
     strcat(proced,wfn);
     strcat(proced,reftyp);
+    /*
+      For some cases do not need to append DERTYPE since it's irrelevant
+      and determined by JobType
+    */
     if (JobType == DBOC)
       strcat(proced,"DBOC");
     else {
@@ -287,6 +297,7 @@ int main(int argc, char *argv[])
       else if (JobType==FREQ) strcat(proced,"FREQ");
       else if (JobType==SYMM_FREQ) strcat(proced,"SYMM_FREQ");
       else if (JobType==DISP) strcat(proced,"DISP");
+      else if (JobType==OEPROP) strcat(proced,"OEPROP");
     }
 
     /* fprintf(outfile, "Calculation type string = %s\n", proced); */
