@@ -11,9 +11,11 @@ LD = $(CC)
 
 PSILIBS = -lmalloc -lfile30 -lqt -lciomr -lipv1
 
-CSRC = oeprop.c parsing.c grid_unitvec.c read_density.c compute_density.c \
-read_basset.c onecgt.c recursion.c populate.c mprefxyz.c initialize.c \
-read_zvec.c overlap.c get_nmo.c
+CSRC = main.c oeprop.c parsing.c grid_unitvec.c read_density.c \
+compute_density.c \
+read_basset.c recursion.c populate.c mprefxyz.c initialize.c \
+read_zvec.c overlap.c get_nmo.c grid.c grid_oeprop.c grid_dens.c grid_mo.c \
+print.c print_grid.c connectivity.c
 
 BINOBJ = $(CSRC:%.c=%.o)
 ALLOC = 

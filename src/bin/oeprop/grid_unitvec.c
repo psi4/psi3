@@ -1,14 +1,14 @@
 #define EXTERN
 #include "includes.h"
-#include "oeprop.h"
-#include "oeprop.gbl"
+#include "prototypes.h"
+#include "globals.h"
 
 
 void grid_unitvec()
 {
   int i;
   double sum1, sum2, dot;
-  double step_x, step_y;
+  double step_x, step_y, step_z;
 
   /* Normalizing the grid_unit's */
 
@@ -19,10 +19,8 @@ void grid_unitvec()
     grid_unit_x[i] /= sum1;
     grid_unit_y[i] /= sum2;
   }
-  
 
   /* Checking if vectors are parallel */
-
   dot_arr(grid_unit_x,grid_unit_y,3,&dot);
   if (1.0 - fabs(dot) < ADOTB_ORTHOGONAL) { /* Vectors are parallel - aborting */
     fprintf(outfile,"Vectors GRID_UNIT_X and GRID_UNIT_Y are parallel. Aborting.\n\n");
@@ -37,21 +35,43 @@ void grid_unitvec()
 	   grid_unit_y[i] /= sum1;
        }
 
-  
-  /* Moving the origin into the lower left corner of the grid rectangle */
-
-  for(i=0;i<3;i++)
-    grid_origin[i] += grid_xy0[0]*grid_unit_x[i] + grid_xy0[1]*grid_unit_y[i];
-
-
-  /* Computing grid size and unit cell vectors along x and y */
-
-  step_x = (grid_xy1[0] - grid_xy0[0])/nix;
-  step_y = (grid_xy1[1] - grid_xy0[1])/niy;
-  for(i=0;i<3;i++) {
-    grid_step_x[i] = grid_unit_x[i]*step_x;
-    grid_step_y[i] = grid_unit_y[i]*step_y;
+  /* Get grid_unit_z as a vector product */
+  if (grid3d) {
+    grid_unit_z[0] = grid_unit_x[1]*grid_unit_y[2] - grid_unit_x[2]*grid_unit_y[1];
+    grid_unit_z[1] = grid_unit_x[2]*grid_unit_y[0] - grid_unit_x[0]*grid_unit_y[2];
+    grid_unit_z[2] = grid_unit_x[0]*grid_unit_y[1] - grid_unit_x[1]*grid_unit_y[0];
   }
+  
+  /* Moving the origin */
+  if (grid3d == 0)
+    for(i=0;i<3;i++)
+      grid_origin[i] += grid_xyz0[0]*grid_unit_x[i] + grid_xyz0[1]*grid_unit_y[i] + grid_xyz0[2]*grid_unit_z[i];
+  else
+    for(i=0;i<3;i++)
+      grid_origin[i] += grid_xy0[0]*grid_unit_x[i] + grid_xy0[1]*grid_unit_y[i];
+
+
+  /* Computing grid size and unit cell vectors */
+  if (grid3d) {
+    step_x = (grid_xyz1[0] - grid_xyz0[0])/nix;
+    step_y = (grid_xyz1[1] - grid_xyz0[1])/niy;
+    step_z = (grid_xyz1[2] - grid_xyz0[2])/niz;
+    for(i=0;i<3;i++) {
+      grid_step_x[i] = grid_unit_x[i]*step_x;
+      grid_step_y[i] = grid_unit_y[i]*step_y;
+      grid_step_z[i] = grid_unit_z[i]*step_z;
+    }
+  }
+  else {
+    step_x = (grid_xy1[0] - grid_xy0[0])/nix;
+    step_y = (grid_xy1[1] - grid_xy0[1])/niy;
+    for(i=0;i<3;i++) {
+      grid_step_x[i] = grid_unit_x[i]*step_x;
+      grid_step_y[i] = grid_unit_y[i]*step_y;
+    }
+  }
+
+  return;
 }
 
 

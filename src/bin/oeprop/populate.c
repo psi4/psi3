@@ -1,7 +1,7 @@
 #define EXTERN
 #include "includes.h"
-#include "oeprop.h"
-#include "oeprop.gbl"
+#include "prototypes.h"
+#include "globals.h"
 
 
 

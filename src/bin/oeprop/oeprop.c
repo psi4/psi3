@@ -1,745 +1,684 @@
+#define EXTERN
 #include "includes.h"
-#include "oeprop.h"
-#include "oeprop.gbl"
+#include "globals.h"
+#include "prototypes.h"
 
-
-void print_intro();
-void print_tasks();
-void print_params();
-void print_pop_header();
-void print_mp();
-void print_esp();
-void print_grid();
-void print_misc();
-FILE *grid_file;
-
-int main(int argc, char* argv) {
-
- int i,j,k,l,count;
- char buffer[80];	/* buffer string */
-
-	/* Setting defaults */
- read_opdm = 0;
- opdm_file = 76;
- asymm_opdm = 0;
- wrtnos = 0;
- spin_prop = 0;
- print_lvl = 1;
- wrt_dipmom = 1;
- corr = 0;
- mpmax = 1;
- mp_ref = 0;
- wrt_dipints = 0;
- dip_file = 59;
- nuc_esp = 1;
- grid = 0;
- nix = 10;
- niy = 10;
- grid_zmin = 0.0;
- grid_zmax = 3.0;
- edgrad_logscale = 5;
- zvec_file = 86;
- delete_zvec = 1;
- 
-
-	/* Initialization and printing intro */
- 
- ffile(&infile,"input.dat",2);
- ffile(&outfile,"output.dat",1);
- ip_set_uppercase(1);
- ip_initialize(infile,outfile);
- ip_cwk_add(":DEFAULT");
- ip_cwk_add(":OEPROP");
- tstart(outfile);
- file30_init();
- print_intro();
-
-
-/*************************** Main Code *******************************/
-
-	/* Reading in basic information from file30 */
- 
- title = file30_rd_label();
- natom = file30_rd_natom();
- natom3 = natom * 3;	/* wrong if the space is other than 3-dimensional */
- nmo = file30_rd_nmo();
- nbfso = file30_rd_nso();
- nbfao = file30_rd_nao();
- natri = nbfao * (nbfao+1)/2;
- nstri = nbfso * (nbfso+1)/2;
- nshell = file30_rd_nshell();
- nprim = file30_rd_nprim();
- iopen = file30_rd_iopen();
- nirreps = file30_rd_nirreps(); 
- nsym = file30_rd_nsymhf();
- orbspi = file30_rd_orbspi();
- clsdpi = file30_rd_clsdpi();    
- openpi = file30_rd_openpi();
- irr_labs = file30_rd_irr_labs();
- geom = file30_rd_geom();
- zvals = file30_rd_zvals();
- scf_evec_so = file30_rd_scf();
- usotao = file30_rd_usotao_new();
- scf_evec_ao = init_matrix(nbfao,nmo);
- mmult(usotao,1,scf_evec_so,0,scf_evec_ao,0,nbfao,nbfso,nmo,0);
-    
-	/* Parsing */
-
- parsing();
-
-
-        /* Computing unit vectors for the 2D grid if neccessary */
-
- if (grid)
-   grid_unitvec();
-
-
-	/* Computing total charge of the system */
-
- charge = 0;
- for(i=0;i<nirreps;i++)
-   charge -= 2*clsdpi[i] + openpi[i];
- for(i=0;i<natom;i++)
-   charge += zvals[i];
-
-
-
-	/* Setting up an offset array */
-
- ioff = init_int_array(nbfao);
- ioff[0] = 0;
- for(i=1;i<nbfao;i++) {
-   ioff[i] = ioff[i-1] + i;
- }
-
-	/* Computing double factorials df[i] = (i-1)!! */
- df[0] = 1.0;
- df[1] = 1.0;
- df[2] = 1.0;
- for(i=3; i<MAXFACT*2; i++) {
-   df[i] = (i-1)*df[i-2];
- }
-                 
-                      
-
-	/* Printing tasks and parameters */
-
- if (print_lvl >= PRINTTASKPARAMLEVEL) {
-   print_tasks();
-   print_params();
- }
-
-	/* Reading in basis set inforamtion */
-
- read_basset_info();
- init_xyz(); 
-
-
-	/* Obtain a density matrix */
-
- if (read_opdm)
-   read_density();
- else
-   compute_density();
-
-
-	/* Obtain natural orbitals */
-
- if (read_opdm) 
-   get_nmo(); 
-
- file30_close();
-
-	/* Reading in Z-vector if neccessary */
-
- if (corr)
-   read_zvec();
-
-
-	/* Computing overlap matrix */
-
- compute_overlap();
-
-
-	/* Mulliken population analysis */
-
- print_pop_header();
- populate();
- 
-	/* Compute coordinates of the MP reference point if needed */
-
- if (mp_ref != -1)
-   compute_mp_ref_xyz();
-
-
-	/* Moving molecule to the reference center!
-	   Attention, ever since coordinates of atoms and of the grid box 
-	   are stored in this new coordinate system. All coordinates are 
-	   transformed back at the moment of printing out. */
-
- for(i=0;i<natom;i++) {
-   geom[i][0] -= mp_ref_xyz[0];
-   geom[i][1] -= mp_ref_xyz[1];
-   geom[i][2] -= mp_ref_xyz[2];
- }
- if (grid) {
-   grid_origin[0] -= mp_ref_xyz[0];
-   grid_origin[1] -= mp_ref_xyz[1];
-   grid_origin[2] -= mp_ref_xyz[2];
- }
- 
-	/* Computing one-electron integrals in 
-	   terms of Cartesian Gaussians, 
-	   electric first (dipole), second and third 
-	   moments W.R.T. origin, electrostatic potential,
-	   electric field and field gradients,
-	   electron and spin density at atomic centers,
-	   and various properties over a grid, if neccessary. */
-
- compute_onecgt();
-
- print_mp();
- if (nuc_esp)
-   print_esp();
- if (grid) {
-   grid_origin[0] += mp_ref_xyz[0];
-   grid_origin[1] += mp_ref_xyz[1];
-   grid_origin[2] += mp_ref_xyz[2];
-   print_grid();
- }
- print_misc();
-
-	/* Cleaning up */
-
-/* TDC --- converted libfile30 to use block_matrix() */
- free_block(scf_evec_so);
- free_block(usotao);
-/* free_matrix(scf_evec_so,nbfso);
- free_matrix(usotao,nbfso); */
- free_matrix(scf_evec_ao,nbfao);
- free(ioff);
- free(Ptot);
- free(phi);
- free(ex); free(ey); free(ez);
- free(dexx); free(deyy); free(dezz);
- free(dexy); free(dexz); free(deyz);
- if (spin_prop) {
-   free(Pspin);
-   free(ahfsxx);
-   free(ahfsyy);
-   free(ahfszz);
-   free(ahfsxy);
-   free(ahfsxz);
-   free(ahfsyz);
- }
- free(S);
- tstop(outfile);
- ip_done();
- exit(0);
- 
-}
-
-void print_intro()
-{ 
-  fprintf(outfile,"    **********************************************\n");
-  fprintf(outfile,"    *                    OEPROP                  *\n");
-  fprintf(outfile,"    *          A simple property program         *\n");
-  fprintf(outfile,"    *              by a big TOOL fan             *\n");
-  fprintf(outfile,"    **********************************************\n\n");
-}
-
-
-
-void print_tasks()
-{ 
-   fprintf(outfile,"\n  TASKS to be performed :\n");
-   
-   if (read_opdm) {
-     fprintf(outfile,"    $One-particle density in %s basis in %s form will be read from file%d",
-             opdm_basis,opdm_format,opdm_file);
-     if (asymm_opdm)
-       fprintf(outfile," and symmetrized.\n");
-     else
-       fprintf(outfile,".\n");
-
-     if (wrtnos)
-       fprintf(outfile,"    $Natural orbitals will be written to file30.\n");
-   }
-   else
-     fprintf(outfile,"    $One-particle density will be computed from the eigenvector in file30.\n");
-
-   if (spin_prop)
-     fprintf(outfile,"    $Spin properties will be evaluated.\n");
-   
-   switch (mpmax) {
-     
-     case 1:
-       fprintf(outfile,"    $Only electric dipole moment will be computed.\n");
-       break;
-     
-     case 2:
-       fprintf(outfile,"    $Electric dipole and quadrupole moments will be computed.\n");
-       break;
-     
-     case 3:
-       fprintf(outfile,"    $Electric dipole, quadrupole, and octopole moments will be computed.\n");
-       break;
-   }
-   
-   fprintf(outfile,"    $Reference point for the electric multipole moments calculation is ");
-   switch (mp_ref) {
-     
-     case 1: fprintf(outfile,"\n      the center of mass.\n");
-             break;
-             
-     case 2: fprintf(outfile,"\n      the origin of the coordinate system.\n");
-             break;
-
-     case 3: fprintf(outfile,"\n      the center of electronic charge computed from a Mulliken analysis.\n");
-             break;
-     
-     case 4: fprintf(outfile,"\n      the center of nuclear charge.\n");
-             break;
-     
-     case 5: fprintf(outfile,"\n      the center of net charge computed from a Mulliken analysis.\n");
-             break;
-     
-     default: fprintf(outfile,"\n      at (%lf %lf %lf)\n",
-                      mp_ref_xyz[0],mp_ref_xyz[1],mp_ref_xyz[2]);
-   }
-  if (corr)
-    fprintf(outfile,"    $Correlation corrections to electric multipole moments will be computed.\n");
-  if (nuc_esp)
-    fprintf(outfile,"    $Electrostatic properties at the nuclei will be evaluated.\n");
-  if (grid) {
-    switch(grid) {
-      case 1: fprintf(outfile,"    $Electrostatic potential ");
-  	      break;
-      case 2: if (!spin_prop)
-	        fprintf(outfile,"    $Electron density ");
-              else
-	        fprintf(outfile,"    $Spin density ");
-	      break;
-      case 3: if (!spin_prop)
-	        fprintf(outfile,"    $Electron density gradient ");
-              else
-	        fprintf(outfile,"    $Spin density gradient ");
-	      break;
-      case 4: if (!spin_prop)
-	        fprintf(outfile,"    $Laplacian of electron density ");
-              else
-	        fprintf(outfile,"    $Laplacian of spin density ");
-	      break;
-    }
-    fprintf(outfile,"will be evaluated over a rectangular %dx%d grid.\n",nix+1,niy+1);
-  }
-  if (wrt_dipints)
-    fprintf(outfile,"    $Dipole moment integrals will be written to file%d\n",dip_file);
-
-}
-
-
-
-void print_params()
+void compute_oeprops()
 {
-   int i;
+  int i,j,k,l,ig,jg,ibf,jbf,ib,jb,jlim,kk,ll;
+  int iatom, jatom, iang, jang, i_1stbf, j_1stbf, nbfi, nbfj;
+  int igmin, igmax, jgmin, jgmax;
+  int ixm, iym, izm, jxm, jym, jzm, iind, jind;
+  int eq_shell, eq_atoms, indmax;
+  int ix, iy, iz;
+  double ax, ay, az, bx, by, bz, xab, yab, zab, rab2;
+  double ai, bj, gamma, over_pf, norm_pf, prod_pf, dens_pf, sdens_pf, zvec_pf;
+  double px, py, pz, pax, pay, paz, pbx, pby, pbz, pcx, pcy, pcz;
+  double cax, cax2, cay, cay2, caz, caz2, cbx, cbx2, cby, cby2, cbz, cbz2, rca2, rcb2;
+  double cax_l, cax_l_1, cax_l_2, cay_l, cay_l_1, cay_l_2, caz_l, caz_l_1, caz_l_2;
+  double cbx_l, cbx_l_1, cbx_l_2, cby_l, cby_l_1, cby_l_2, cbz_l, cbz_l_1, cbz_l_2;
+  int lx1, ly1, lz1, lx2, ly2, lz2;
+  double x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3;
+  double tx, ty, tz, t2x, t2y, t2z;
+  double x,y,z;
+  double r,r2;
+  double tmp, sum1, sum2, sum3;
+  PSI_FPTR junk;
+  double *Density;
+  double *DX_ao, *DY_ao, *DZ_ao;
+  double *DX_so, *DY_so, *DZ_so;
+  double **temp_mat;
+  double *XX, *YY, *ZZ;
+  double **evec;
+  double mxx,mxy,mxz,myy,myz,mzz;  /* Components of the second moment */
+  double mxxcc,myycc,mzzcc,
+         mxycc,mxzcc,myzcc;       /* Correlation corrections to
+                                            quadrupole moment */
+  double mxxx,myyy,mzzz,mxxy,mxxz, /* Components of the third moment */
+         mxyy,myyz,mxzz,myzz,mxyz;
+  double mxxxcc,myyycc,mzzzcc,mxxycc,mxxzcc,
+         mxyycc,myyzcc,mxzzcc,myzzcc,mxyzcc;
 
-   fprintf(outfile,"\n  Title : '%s'\n",title);
-   fprintf(outfile,"\n  List of PARAMETERS :\n");
-   fprintf(outfile,"    # of atoms                 =\t%d\n",natom);
-   fprintf(outfile,"    # of molecular orbitals    =\t%d\n",nmo);
-   fprintf(outfile,"    # of basis functions       =\t%d\n",nbfso);
-   fprintf(outfile,"    # of atomic orbitals       =\t%d\n",nbfao);
-   fprintf(outfile,"    # of irreps                =\t%d\n",nirreps);
-   fprintf(outfile,"    Total charge               =\t%d\n",charge);
-   fprintf(outfile,"    # of unique shells         =\t%d\n",nshell);
-   fprintf(outfile,"    # of primitives            =\t%d\n",nprim);
-   fprintf(outfile,"    Print level                =\t%d\n",print_lvl);
-   if (grid) {
-     fprintf(outfile,"\n  List of GRID PARAMETERS :\n");
-     fprintf(outfile,"    GRID_ORIGIN                =\t( %8.5lf %8.5lf %8.5lf )\n",grid_origin[0],grid_origin[1],grid_origin[2]);
-     fprintf(outfile,"    GRID_XY0                   =\t( %8.5lf %8.5lf )\n",grid_xy0[0],grid_xy0[1]);
-     fprintf(outfile,"    GRID_XY1                   =\t( %8.5lf %8.5lf )\n",grid_xy1[0],grid_xy1[1]);
-     fprintf(outfile,"    GRID_UNIT_X                =\t( %8.5lf %8.5lf %8.5lf )\n",grid_unit_x[0],grid_unit_x[1],grid_unit_x[2]);
-     fprintf(outfile,"    GRID_UNIT_Y                =\t( %8.5lf %8.5lf %8.5lf )\n",grid_unit_y[0],grid_unit_y[1],grid_unit_y[2]);
-     fprintf(outfile,"    GRID_ZMIN                  =\t  %8.5lf\n",grid_zmin);
-     fprintf(outfile,"    GRID_ZMAX                  =\t  %8.5lf\n",grid_zmax);
-   }
-   fprintf(outfile,"\n");
-}
-
-
-void print_pop_header()
-{
-  fprintf(outfile," --------------------------------------------------------------\n");
-  fprintf(outfile,"   ** Mulliken population analysis of one-particle density **\n");
-  fprintf(outfile," --------------------------------------------------------------\n\n");
-}
-
-
-void print_mp()
-{
-  FILE *file_dipmom;
-
-  fprintf(outfile," --------------------------------------------------------------\n");
-  fprintf(outfile,"                *** Electric multipole moments ***\n");
-  fprintf(outfile," --------------------------------------------------------------\n\n");
-  if (charge != 0) {
-    fprintf(outfile,"  CAUTION : The system has non-vanishing charge, therefore dipole\n");
-    fprintf(outfile,"    and higher moments depend on the reference point. \n\n");
-  }
-  else
-  if ((dtot > 1.0E-15) && (mpmax > 1)) {
-    fprintf(outfile,"  CAUTION : The system has non-vanishing dipole moment, therefore\n");
-    fprintf(outfile,"    quadrupole and higher moments depend on the reference point.\n\n");
-  }
-  else
-  if (((qvals[0]*qvals[0] + qvals[1]*qvals[1] + qvals[2]*qvals[2]) > 1.0E-15) 
-      && (mpmax > 2)) {
-    fprintf(outfile,"  CAUTION : The system has non-vanishing quadrupole moment, therefore\n");
-    fprintf(outfile,"    octopole and higher moments depend on the reference point.\n\n");
-  }
-
-  fprintf(outfile," -Coordinates of the reference point (a.u.) :\n");
-  fprintf(outfile,"           x                     y                     z\n");
-  fprintf(outfile,"  --------------------  --------------------  --------------------\n");
-  fprintf(outfile,"  %20.10lf  %20.10lf  %20.10lf\n\n",
-          mp_ref_xyz[0],mp_ref_xyz[1],mp_ref_xyz[2]);
-  if (print_lvl >= PRINTDIPCOMPLEVEL) {
-    fprintf(outfile," -Contributions to electric dipole moment (a.u.) :\n\n");
-    fprintf(outfile,"   -Electronic part :\n\n");
-    fprintf(outfile,"    mu(X) =  %11.8lf  mu(Y) =  %11.8lf  mu(Z) = %11.8lf\n\n",
-            dx_e,dy_e,dz_e);
-    fprintf(outfile,"   -Nuclear part :\n\n");
-    fprintf(outfile,"    mu(X) =  %11.8lf  mu(Y) =  %11.8lf  mu(Z) = %11.8lf\n\n",
-            dx_n,dy_n,dz_n);
-  }
-  fprintf(outfile," -Electric dipole moment (expectation values) :\n\n");
-  fprintf(outfile,"    mu(X)  =  %8.5lf D  =  %15.8e C*m  =  %11.8lf a.u.\n",
-          dx*_dipmom_au2debye,dx*_dipmom_au2si,dx);
-  fprintf(outfile,"    mu(Y)  =  %8.5lf D  =  %15.8e C*m  =  %11.8lf a.u.\n",
-          dy*_dipmom_au2debye,dy*_dipmom_au2si,dy);
-  fprintf(outfile,"    mu(Z)  =  %8.5lf D  =  %15.8e C*m  =  %11.8lf a.u.\n",
-          dz*_dipmom_au2debye,dz*_dipmom_au2si,dz);
-  fprintf(outfile,"    |mu|   =  %8.5lf D  =  %15.8e C*m  =  %11.8lf a.u.\n",
-          dtot*_dipmom_au2debye,dtot*_dipmom_au2si,dtot);
-  if (corr) {
-    fprintf(outfile,"\n -Correlation correction to electric dipole moment :\n\n");
-    fprintf(outfile,"    cc(X)  =  %8.5lf D  =  %15.8e C*m  =  %11.8lf a.u.\n",
-            dxcc*_dipmom_au2debye,dxcc*_dipmom_au2si,dxcc);
-    fprintf(outfile,"    cc(Y)  =  %8.5lf D  =  %15.8e C*m  =  %11.8lf a.u.\n",
-            dycc*_dipmom_au2debye,dycc*_dipmom_au2si,dycc);
-    fprintf(outfile,"    cc(Z)  =  %8.5lf D  =  %15.8e C*m  =  %11.8lf a.u.\n",
-            dzcc*_dipmom_au2debye,dzcc*_dipmom_au2si,dzcc);
-    fprintf(outfile,"\n -Corrected electric dipole moment :\n\n");
-    fprintf(outfile,"   mu(X)   =  %8.5lf D  =  %15.8e C*m  =  %11.8lf a.u.\n",
-            (dx+dxcc)*_dipmom_au2debye,(dx+dxcc)*_dipmom_au2si,(dx+dxcc));
-    fprintf(outfile,"   mu(Y)   =  %8.5lf D  =  %15.8e C*m  =  %11.8lf a.u.\n",
-            (dy+dycc)*_dipmom_au2debye,(dy+dycc)*_dipmom_au2si,(dy+dycc));
-    fprintf(outfile,"   mu(Z)   =  %8.5lf D  =  %15.8e C*m  =  %11.8lf a.u.\n",
-            (dz+dzcc)*_dipmom_au2debye,(dz+dzcc)*_dipmom_au2si,(dz+dzcc));
-    dtot = sqrt((dx+dxcc)*(dx+dxcc) + (dy+dycc)*(dy+dycc) + (dz+dzcc)*(dz+dzcc));
-    fprintf(outfile,"    |mu|   =  %8.5lf D  =  %15.8e C*m  =  %11.8lf a.u.\n",
-            dtot*_dipmom_au2debye,dtot*_dipmom_au2si,dtot);
-  }
-
-  /* write the total dipole moment to an ASCII file */
-  if (wrt_dipmom) { 
-    ffile(&file_dipmom,"dipmom.dat",1);
-    fprintf(file_dipmom,"%20.10lf%20.10lf%20.10lf\n",
-      (dx+dzcc)*_dipmom_au2debye,(dy+dycc)*_dipmom_au2debye,
-      (dz+dzcc)*_dipmom_au2debye);
-    fclose(file_dipmom);
-  }
-
-
-  if (mpmax > 1) {
-    fprintf(outfile,"\n -Components of electric quadrupole moment (expectation values) (a.u.) :\n\n");
-    fprintf(outfile,"     Q(XX) =  %12.8lf   Q(YY) =  %12.8lf   Q(ZZ) =  %12.8lf\n",
-            qxx,qyy,qzz);
-    fprintf(outfile,"     Q(XY) =  %12.8lf   Q(XZ) =  %12.8lf   Q(YZ) =  %12.8lf\n",
-            qxy,qxz,qyz);
-    if (corr) {
-      fprintf(outfile,"\n -Correlation correction to electric quadrupole moment (a.u.) :\n\n");
-      fprintf(outfile,"    cc(XX) =  %12.8lf  cc(YY) =  %12.8lf  cc(ZZ) =  %12.8lf\n",
-              qxxcc,qyycc,qzzcc);
-      fprintf(outfile,"    cc(XY) =  %12.8lf  cc(XZ) =  %12.8lf  cc(YZ) =  %12.8lf\n",
-              qxycc,qxzcc,qyzcc);
-      fprintf(outfile,"\n -Principal values (a.u.) and axis of corrected electric quadrupole moment :\n\n");
-    }
-    else
-      fprintf(outfile,"\n -Principal values (a.u.) and axis of electric quadrupole moment :\n\n");
-    fprintf(outfile,"    Q1     =  %12.8lf      V1 = (%11.8lf %11.8lf %11.8lf)\n",
-            qvals[0],qvecs[0][0],qvecs[1][0],qvecs[2][0]);
-    fprintf(outfile,"    Q2     =  %12.8lf      V2 = (%11.8lf %11.8lf %11.8lf)\n",
-            qvals[1],qvecs[0][1],qvecs[1][1],qvecs[2][1]);
-    fprintf(outfile,"    Q3     =  %12.8lf      V3 = (%11.8lf %11.8lf %11.8lf)\n",
-            qvals[2],qvecs[0][2],qvecs[1][2],qvecs[2][2]);
-  }
-  if (mpmax > 2) {
-    fprintf(outfile,"\n -Components of electric octopole moment (expectation values) (a.u.) :\n\n");
-    fprintf(outfile,"    O(XXX) =  %12.8lf  O(XXY) =  %12.8lf  O(XXZ) =  %12.8lf\n",
-            oxxx,oxxy,oxxz);
-    fprintf(outfile,"    O(YYY) =  %12.8lf  O(XYY) =  %12.8lf  O(YYZ) =  %12.8lf\n",
-            oyyy,oxyy,oyyz);
-    fprintf(outfile,"    O(ZZZ) =  %12.8lf  O(XZZ) =  %12.8lf  O(YZZ) =  %12.8lf\n",
-            ozzz,oxzz,oyzz);
-    fprintf(outfile,"                            O(XYZ) =  %12.8lf \n",oxyz);
-    if (corr) {
-      fprintf(outfile,"\n -Correlation correction to electric octopole moment (a.u.) :\n\n");
-      fprintf(outfile,"   cc(XXX) =  %12.8lf cc(XXY) =  %12.8lf cc(XXZ) =  %12.8lf\n",
-              oxxxcc,oxxycc,oxxzcc);
-      fprintf(outfile,"   cc(YYY) =  %12.8lf cc(XYY) =  %12.8lf cc(YYZ) =  %12.8lf\n",
-              oyyycc,oxyycc,oyyzcc);
-      fprintf(outfile,"   cc(ZZZ) =  %12.8lf cc(XZZ) =  %12.8lf cc(YZZ) =  %12.8lf\n",
-              ozzzcc,oxzzcc,oyzzcc);
-      fprintf(outfile,"                           cc(XYZ) =  %12.8lf \n",oxyzcc);
-      fprintf(outfile,"\n -Corrected electric octopole moment (a.u.) :\n\n");
-      fprintf(outfile,"    O(XXX) =  %12.8lf  O(XXY) =  %12.8lf  O(XXZ) =  %12.8lf\n",
-              oxxx+oxxxcc,oxxy+oxxycc,oxxz+oxxzcc);
-      fprintf(outfile,"    O(YYY) =  %12.8lf  O(XYY) =  %12.8lf  O(YYZ) =  %12.8lf\n",
-              oyyy+oyyycc,oxyy+oxyycc,oyyz+oyyzcc);
-      fprintf(outfile,"    O(ZZZ) =  %12.8lf  O(XZZ) =  %12.8lf  O(YZZ) =  %12.8lf\n",
-              ozzz+ozzzcc,oxzz+oxzzcc,oyzz+oyzzcc);
-      fprintf(outfile,"                            O(XYZ) =  %12.8lf \n",oxyz+oxyzcc);
-    }
-  }
-  fprintf(outfile,"\n\n");
-}
-
-
-void print_esp()
-{
-  int i;
   
-  fprintf(outfile," --------------------------------------------------------------\n");
-  fprintf(outfile,"      *** Electrostatic  properties at atomic centers ***\n");
-  fprintf(outfile," --------------------------------------------------------------\n\n");
-  fprintf(outfile," -Coordinates of atomic centers (a.u.):\n");
-  fprintf(outfile,"    #   Charge           x");
-  fprintf(outfile,"                     y                     z\n");
-  fprintf(outfile,"   ---  ------  --------------------");
-  fprintf(outfile,"  --------------------  --------------------\n");
-  for(i=0;i<natom;i++)
-    fprintf(outfile,"%5d%7d    %20.10lf  %20.10lf  %20.10lf\n",
-                    i+1,(int)zvals[i],geom[i][0]+mp_ref_xyz[0],
-                        geom[i][1]+mp_ref_xyz[1],
-                        geom[i][2]+mp_ref_xyz[2]);
-  fprintf(outfile,"\n\n");
-  fprintf(outfile," -Electrostatic potential and electric field (a.u.) :\n\n");
-  fprintf(outfile,"    Center         phi            Ex             Ey           Ez\n");
-  fprintf(outfile,"    ------    ------------   ------------  ------------  ------------\n");
-  for(i=0;i<natom;i++)
-    fprintf(outfile,"%8d      %12.8lf   %12.8lf  %12.8lf  %12.8lf\n",
-            i+1,phi[i],ex[i],ey[i],ez[i]);
-  fprintf(outfile,"\n\n");
-  fprintf(outfile," -Electric field gradient (regular form) (a.u.):\n\n");
-  fprintf(outfile,"    Center           XX                    YY                    ZZ\n");
-  fprintf(outfile,"    ------  --------------------  --------------------  --------------------\n");
-  for(i=0;i<natom;i++)
-    fprintf(outfile,"%8d    %20.8lf  %20.8lf  %20.8lf\n",
-            i+1,dexx[i],deyy[i],dezz[i]);
-  fprintf(outfile,"\n    Center           XY                    XZ                    YZ\n");
-  fprintf(outfile,"    ------  --------------------  --------------------  --------------------\n");
-  for(i=0;i<natom;i++)
-    fprintf(outfile,"%8d    %20.8lf  %20.8lf  %20.8lf\n",
-            i+1,dexy[i],dexz[i],deyz[i]);
-  fprintf(outfile,"\n\n");
-  fprintf(outfile," -Electric field gradient (traceless tensor form) (a.u.):\n\n");
-  fprintf(outfile,"    Center        XX - RR/3             YY - RR/3             ZZ - RR/3\n");
-  fprintf(outfile,"    ------  --------------------  --------------------  --------------------\n");
-  for(i=0;i<natom;i++)
-    fprintf(outfile,"%8d    %20.8lf  %20.8lf  %20.8lf\n",i+1,
-            (2*dexx[i]-deyy[i]-dezz[i])/3,
-            (2*deyy[i]-dexx[i]-dezz[i])/3,
-            (2*dezz[i]-dexx[i]-deyy[i])/3);
-  fprintf(outfile,"\n    Center           XY                    XZ                    YZ\n");
-  fprintf(outfile,"    ------  --------------------  --------------------  --------------------\n");
-  for(i=0;i<natom;i++)
-    fprintf(outfile,"%8d    %20.8lf  %20.8lf  %20.8lf\n",
-            i+1,dexy[i],dexz[i],deyz[i]);
-  fprintf(outfile,"\n\n");
+		/* Initialize some intermediates */
 
-  if (spin_prop) {
-    fprintf(outfile," -Dipole-dipole term in hyperfine coupling constant (tensor form) (a.u.):\n\n");
-    fprintf(outfile,"    Center        XX - RR/3             YY - RR/3             ZZ - RR/3\n");
-    fprintf(outfile,"    ------  --------------------  --------------------  --------------------\n");
-    for(i=0;i<natom;i++)
-      fprintf(outfile,"%8d    %20.8lf  %20.8lf  %20.8lf\n",
-              i+1,(2*ahfsxx[i]-ahfsyy[i]-ahfszz[i])/3,(2*ahfsyy[i]-ahfsxx[i]-ahfszz[i])/3,(2*ahfszz[i]-ahfsxx[i]-ahfsyy[i])/3);
-    fprintf(outfile,"\n    Center           XY                    XZ                    YZ\n");
-    fprintf(outfile,"    ------  --------------------  --------------------  --------------------\n");
-    for(i=0;i<natom;i++)
-      fprintf(outfile,"%8d    %20.8lf  %20.8lf  %20.8lf\n",
-	      i+1,ahfsxy[i],ahfsxz[i],ahfsyz[i]);
-    fprintf(outfile,"\n\n");
+  qvals = init_array(3);
+  qvecs = init_matrix(3,3);
+  MIX = init_box(lmax+3,lmax+3,MAXMP+1);
+  MIY = init_box(lmax+3,lmax+3,MAXMP+1);
+  MIZ = init_box(lmax+3,lmax+3,MAXMP+1);
+  MIX[0][0][0] = MIY[0][0][0] = MIZ[0][0][0] = 1.0;
+  DX_ao = init_array(natri);
+  DY_ao = init_array(natri);
+  DZ_ao = init_array(natri);
+  if (mpmax >= 2) {
+    XX = init_array(natri);
+    YY = init_array(natri);
+    ZZ = init_array(natri);
+    MOXX = init_array(nmo);
+    MOYY = init_array(nmo);
+    MOZZ = init_array(nmo);
   }
 
-  if (spin_prop) {
-    fprintf(outfile," -Electron and spin densities (a.u.):\n\n");
-    fprintf(outfile,"    Center    Electron density         Spin density\n");
-    fprintf(outfile,"    ------  --------------------  --------------------\n");
-    for(i=0;i<natom;i++)
-      fprintf(outfile,"%8d    %20.8lf  %20.8lf\n",i+1,edens[i],sdens[i]);
-  }
-  else {
-    fprintf(outfile," -Electron density (a.u.):\n\n");
-    fprintf(outfile,"    Center           rho\n");
-    fprintf(outfile,"    ------  --------------------\n");
-    for(i=0;i<natom;i++)
-      fprintf(outfile,"%8d    %20.8lf\n",i+1,edens[i]);
-  }
-  fprintf(outfile,"\n\n");
-}
+  /* A comment on calculation of electrostatic potentials, 
+     electric field and gradient integrals - since these ints are 
+     not separable into products of 3 integrals we have to pack 3 indices n,l, and 
+     m (powers of x,y, and z in preexponential of the primitive) into one.
+     It's done by transforming the number written as nlm in the system with base 
+     lmax+1 into decimal number iind (or jind). Maximum value of these numbers is 
+     lmax*(lmax+1)^2, therefore AI$ matrices are boxes 
+     (lmax*(lmax+1) + 1) x (lmax*(lmax+1) + 1) x (2*lmax+1); */
 
+  indmax = lmax*(lmax+1)*(lmax+1)+1;
+  if ((grid == 1) || nuc_esp)
+    AI0 = init_box(indmax,indmax,2*lmax+3);
 
-void print_grid()
-{
-  int i,j,k;
-  double step_x, step_y, x, y;
-
-  fprintf(outfile," --------------------------------------------------------------\n");
-  fprintf(outfile,"    *** Evaluating properties over a rectangular 2D grid ***\n");
-  fprintf(outfile," --------------------------------------------------------------\n\n");
-  fprintf(outfile," -Coordinates of the lower left, lower right, and upper left corners of\n");
-  fprintf(outfile,"  the grid rectangle (a.u.):\n");
-  fprintf(outfile,"    **            x");
-  fprintf(outfile,"                     y                     z\n");
-  fprintf(outfile,"   ----  --------------------");
-  fprintf(outfile,"  --------------------  --------------------\n");
-  fprintf(outfile,"    LL   %20.10lf  %20.10lf  %20.10lf\n",
-	  grid_origin[0],grid_origin[1],grid_origin[2]);
-  fprintf(outfile,"    LR   %20.10lf  %20.10lf  %20.10lf\n",
-	  grid_origin[0]+grid_unit_x[0]*(grid_xy1[0]-grid_xy0[0]),
-	  grid_origin[1]+grid_unit_x[1]*(grid_xy1[0]-grid_xy0[0]),
-	  grid_origin[2]+grid_unit_x[2]*(grid_xy1[0]-grid_xy0[0]));
-  fprintf(outfile,"    UL   %20.10lf  %20.10lf  %20.10lf\n\n\n",
-	  grid_origin[0]+grid_unit_y[0]*(grid_xy1[1]-grid_xy0[1]),
-	  grid_origin[1]+grid_unit_y[1]*(grid_xy1[1]-grid_xy0[1]),
-	  grid_origin[2]+grid_unit_y[2]*(grid_xy1[1]-grid_xy0[1]));
-  
-  switch (grid) {
-    case 1:
-      grid_file = fopen("esp.dat","w");
-      break;
-
-    case 2:
-      if (!spin_prop)
-        grid_file = fopen("edens.dat","w");
-      else
-	grid_file = fopen("sdens.dat","w");
-      break;
+  if (nuc_esp) {
+    AIX = init_box(indmax,indmax,2*lmax+2);
+    AIY = init_box(indmax,indmax,2*lmax+2);
+    AIZ = init_box(indmax,indmax,2*lmax+2);
+    AIXX = init_box(indmax,indmax,2*lmax+1);
+    AIYY = init_box(indmax,indmax,2*lmax+1);
+    AIZZ = init_box(indmax,indmax,2*lmax+1);
+    AIXY = init_box(indmax,indmax,2*lmax+1);
+    AIXZ = init_box(indmax,indmax,2*lmax+1);
+    AIYZ = init_box(indmax,indmax,2*lmax+1);
     
-    case 3:
-      if (!spin_prop)
-        grid_file = fopen("edgrad.dat","w");
-      else
-	grid_file = fopen("sdgrad.dat","w");
-      break;
-
-    case 4:
-      if (!spin_prop)
-        grid_file = fopen("edlapl.dat","w");
-      else
-	grid_file = fopen("sdlapl.dat","w");
-      break;
+    phi  = init_array(natom);
+    ex   = init_array(natom);
+    ey   = init_array(natom);
+    ez   = init_array(natom);
+    dexx = init_array(natom);
+    deyy = init_array(natom);
+    dezz = init_array(natom);
+    dexy = init_array(natom);
+    dexz = init_array(natom);
+    deyz = init_array(natom);
+    edens = init_array(natom);
+    if (spin_prop) {
+      sdens = init_array(natom);
+      ahfsxx = init_array(natom);
+      ahfsyy = init_array(natom);
+      ahfszz = init_array(natom);
+      ahfsxy = init_array(natom);
+      ahfsxz = init_array(natom);
+      ahfsyz = init_array(natom);
+    }
   }
 
-/*    fprintf(grid_file,"%8.4lf %d %8.4lf  %8.4lf %d %8.4lf  %8.4lf %d %8.4lf\n",
-            grid_xyz0[0],nix,grid_xyz1[0],
-            grid_xyz0[1],niy,grid_xyz1[1],
-            grid_xyz0[2],niz,grid_xyz1[2]); */
-  switch (grid) {
-    case 1:
-    case 2:
-    case 4:
-      fprintf(grid_file,"$DATA = CONTOUR\n");
-      fprintf(grid_file,"%% xmin = %lf xmax = %lf nx = %d\n",grid_xy0[0],grid_xy1[0],nix+1);
-      fprintf(grid_file,"%% ymin = %lf ymax = %lf ny = %d\n",grid_xy0[1],grid_xy1[1],niy+1);
-      fprintf(grid_file,"%% zmin = %lf zmax = %lf\n",grid_zmin,grid_zmax);
-      fprintf(grid_file,"%% contfill = T meshplot = T\n");
-      for(i=0;i<=niy;i++) {
-        for(j=0;j<=nix;j++)
-	  if (grid_pts[j][i] < grid_zmin)
-            fprintf(grid_file," %lf ",grid_zmin);
-	  else
-	    if (grid_pts[j][i] > grid_zmax)
-	      fprintf(grid_file," %lf ",grid_zmax);
-	    else
-	      fprintf(grid_file," %lf ",grid_pts[j][i]);
-        fprintf(grid_file,"\n");
-      }
-      break; 
+  dx = dy = dz = 0.0;
+  dx_e = dy_e = dz_e = dx_n = dy_n = dz_n = 0.0;
+  dxcc = dycc = dzcc = 0.0;
+  mxx = myy = mzz = mxy = mxz = myz = 0.0;
+  mxxcc = myycc = mzzcc = mxycc = mxzcc = myzcc = 0.0;
+  qxx = qyy = qzz = qxy = qxz = qyz = 0.0;
+  qxxcc = qyycc = qzzcc = qxycc = qxzcc = qyzcc = 0.0;
+  exp_x2 = exp_y2 = exp_z2 = 0.0;
+  mxxx = myyy = mzzz = mxxy = mxxz = mxyy = myyz = mxzz = myzz = mxyz = 0.0;
+  mxxxcc = myyycc = mzzzcc = mxxycc = mxxzcc = 
+  mxyycc = myyzcc = mxzzcc = myzzcc = mxyzcc = 0.0;
+  oxxx = oyyy = ozzz = oxxy = oxxz = oxyy = oyyz = oxzz = oyzz = oxyz = 0.0;
+  oxxxcc = oyyycc = ozzzcc = oxxycc = oxxzcc = 
+  oxyycc = oyyzcc = oxzzcc = oyzzcc = oxyzcc = 0.0;
+  darw = 0.0;
+  massveloc = 0.0;
+
+	/* I-shell loop */
+
+  for(i=0;i<nshell;i++) {
+    iatom = snuc[i] - 1;
+    ax = geom[iatom][0];
+    ay = geom[iatom][1];
+    az = geom[iatom][2];
+    iang = stype[i]-1;
+    izm = 1;
+    iym = iang+1;
+    ixm = iym*iym;
+    i_1stbf = sloc[i];
+    nbfi = (iang+2)*(iang+1)/2;
+    igmin = sprim[i] - 1;
+    igmax = igmin + snumg[i] - 1;
+    
+    
+    	/* J-shell loop */
+    
+    for(j=0;j<=i;j++) {
+      jatom = snuc[j] - 1;
+      bx = geom[jatom][0];
+      by = geom[jatom][1];
+      bz = geom[jatom][2];
+      jang = stype[j]-1;
+      jzm = 1;
+      jym = jang+1;
+      jxm = jym*jym;
+      j_1stbf = sloc[j];
+      nbfj = (jang+2)*(jang+1)/2;
+      jgmin = sprim[j] - 1;
+      jgmax = jgmin + snumg[j] - 1;
       
-    case 3:
-      fprintf(grid_file,"$DATA = VECTOR\n");
-      fprintf(grid_file,"%% xmin = %lf xmax = %lf\n",grid_xy0[0],grid_xy1[0]);
-      fprintf(grid_file,"%% ymin = %lf ymax = %lf\n",grid_xy0[1],grid_xy1[1]);
-      fprintf(grid_file,"%% zmin = %lf zmax = %lf\n",0.0,0.0);
-      fprintf(grid_file,"%% linecolor = 3\n");
-      fprintf(grid_file,"%% xlog = off vscale = 0.2\n\n");
-      step_x = (grid_xy1[0]-grid_xy0[0])/nix;
-      step_y = (grid_xy1[1]-grid_xy0[1])/niy;
-      for(i=0;i<=nix;i++) {
-	x = grid_xy0[0] + step_x*i;
-	for(j=0;j<=niy;j++) {
-        y = grid_xy0[1] + step_y*j;
-        if (fabs(grid_pts[i][j]) <= MAXDENSGRAD)
-          fprintf(grid_file,"%9.5lf  %9.5lf  %9.5lf  %12.8lf  %12.8lf  %12.8lf\n",x,y,0.0,
-                  grid_vecX[i][j],grid_vecY[i][j],0.0);
+      eq_shell = (i == j);
+      eq_atoms = (iatom == jatom);
+      
+      xab = ax - bx;
+      yab = ay - by;
+      zab = az - bz;
+      rab2 = xab*xab + yab*yab + zab*zab;
+      
+      for(ig=igmin;ig<=igmax;ig++) {
+        ai = exps[ig];
+        if (eq_shell)
+          jgmax = ig;
+        for(jg=jgmin;jg<=jgmax;jg++) {
+          bj = exps[jg];
+          gamma = ai + bj;
+          tmp = ai*bj*rab2/gamma;
+          
+          over_pf = contr[ig]*contr[jg]*exp(-tmp)*pow(M_PI/gamma,1.5);
+          if (eq_shell && ig != jg)
+            over_pf *= 2.0;
+          
+          /* Compute P and intermediates */
+          
+          px = (ax*ai + bx*bj)/gamma;
+          py = (ay*ai + by*bj)/gamma;
+          pz = (az*ai + bz*bj)/gamma;
+          if (eq_atoms)
+            pax = pay = paz = pbx = pby = pbz = 0.0;
+          else {
+            pax = px - ax;  pay = py - ay;  paz = pz - az;
+            pbx = px - bx;  pby = py - by;  pbz = pz - bz;
+          }
+
+		/* Computing moment integrals */
+
+          MI_OSrecurs(pax,pay,paz,pbx,pby,pbz,gamma,iang+2,jang+2,MAXMP);
+
+
+	  /*****************************************************
+	  *        Computing simple multipole moments and      *
+	  *             the mass-velocity (p^4) term           *
+	  *****************************************************/
+
+	  for(ibf=0;ibf<nbfi;ibf++) {
+            if (eq_shell)
+              jlim = ibf + 1;
+            else
+              jlim = nbfj;
+            for(jbf=0;jbf<jlim;jbf++) {
+              ib = i_1stbf + ibf - 1; jb = j_1stbf + jbf - 1;
+              dens_pf = Ptot[ioff[ib]+jb] * ((ib == jb) ? 1.0 : 2.0);
+/*              if (fabs(dens_pf) < PFACCUTOFF) continue;*/
+
+              if (corr)
+                zvec_pf = (ib == jb) ? zvec[ib][ib] : 
+                                       zvec[ib][jb] + zvec[jb][ib];
+
+              lx1 = xpow_bf[iang][ibf];  lx2 = xpow_bf[jang][jbf];
+	      ly1 = ypow_bf[iang][ibf];  ly2 = ypow_bf[jang][jbf];
+	      lz1 = zpow_bf[iang][ibf];  lz2 = zpow_bf[jang][jbf];
+	      norm_pf = norm_bf[iang][ibf]*norm_bf[jang][jbf];
+	      
+              x0 = MIX[lx1][lx2][0];
+              y0 = MIY[ly1][ly2][0];
+              z0 = MIZ[lz1][lz2][0];
+              x1 = MIX[lx1][lx2][1];
+              y1 = MIY[ly1][ly2][1];
+              z1 = MIZ[lz1][lz2][1];
+
+	      
+	         /* One-dimensional integrals over kinetic energy operators T */
+	      
+	      tx = bj*(2*lx2+1)*x0 - 2*bj*bj*MIX[lx1][lx2+2][0];
+	      if (lx2 >= 2)
+                tx -= 0.5*lx2*(lx2-1)*MIX[lx1][lx2-2][0];
+	      ty = bj*(2*ly2+1)*y0 - 2*bj*bj*MIY[ly1][ly2+2][0];
+              if (ly2 >= 2)
+		ty -= 0.5*ly2*(ly2-1)*MIY[ly1][ly2-2][0];
+	      tz = bj*(2*lz2+1)*z0 - 2*bj*bj*MIZ[lz1][lz2+2][0];
+	      if (lz2 >= 2)
+		tz -= 0.5*lz2*(lz2-1)*MIZ[lz1][lz2-2][0];
+	      
+	         /* One-dimensional integrals over operators T^2 */
+
+	      t2x = 4*(2*lx1+1)*(2*lx2+1)*ai*bj*x0 -
+		    8*(2*lx1+1)*ai*bj*bj*MIX[lx1][lx2+2][0] -
+		    8*(2*lx2+1)*ai*ai*bj*MIX[lx1+2][lx2][0] +
+		    16*ai*ai*bj*bj*MIX[lx1+2][lx2+2][0];
+	      if (lx1 >= 2)
+		t2x += 4*lx1*(lx1-1)*bj*bj*MIX[lx1-2][lx2+2][0] -
+		       2*lx1*(lx1-1)*(2*lx2+1)*bj*MIX[lx1-2][lx2][0];
+	      if (lx2 >= 2)
+		t2x += 4*lx2*(lx2-1)*ai*ai*MIX[lx1+2][lx2-2][0] -
+		       2*(2*lx1+1)*lx2*(lx2-1)*ai*MIX[lx1][lx2-2][0];
+	      if ((lx1 >= 2) && (lx2 >= 2))
+		t2x += lx1*(lx1-1)*lx2*(lx2-1)*MIX[lx1-2][lx2-2][0];
+	      t2y = 4*(2*ly1+1)*(2*ly2+1)*ai*bj*y0 -
+		    8*(2*ly1+1)*ai*bj*bj*MIY[ly1][ly2+2][0] -
+		    8*(2*ly2+1)*ai*ai*bj*MIY[ly1+2][ly2][0] +
+		    16*ai*ai*bj*bj*MIY[ly1+2][ly2+2][0];
+	      if (ly1 >= 2)
+		t2y += 4*ly1*(ly1-1)*bj*bj*MIY[ly1-2][ly2+2][0] -
+		       2*ly1*(ly1-1)*(2*ly2+1)*bj*MIY[ly1-2][ly2][0];
+	      if (ly2 >= 2)
+		t2y += 4*ly2*(ly2-1)*ai*ai*MIY[ly1+2][ly2-2][0] -
+		       2*(2*ly1+1)*ly2*(ly2-1)*ai*MIY[ly1][ly2-2][0];
+	      if ((ly1 >= 2) && (ly2 >= 2))
+		t2y += ly1*(ly1-1)*ly2*(ly2-1)*MIY[ly1-2][ly2-2][0];
+	      t2z = 4*(2*lz1+1)*(2*lz2+1)*ai*bj*z0 -
+		    8*(2*lz1+1)*ai*bj*bj*MIZ[lz1][lz2+2][0] -
+		    8*(2*lz2+1)*ai*ai*bj*MIZ[lz1+2][lz2][0] +
+		    16*ai*ai*bj*bj*MIZ[lz1+2][lz2+2][0];
+	      if (lz1 >= 2)
+		t2z += 4*lz1*(lz1-1)*bj*bj*MIZ[lz1-2][lz2+2][0] -
+		       2*lz1*(lz1-1)*(2*lz2+1)*bj*MIZ[lz1-2][lz2][0];
+	      if (lz2 >= 2)
+		t2z += 4*lz2*(lz2-1)*ai*ai*MIZ[lz1+2][lz2-2][0] -
+		       2*(2*lz1+1)*lz2*(lz2-1)*ai*MIZ[lz1][lz2-2][0];
+	      if ((lz1 >= 2) && (lz2 >= 2))
+		t2z += lz1*(lz1-1)*lz2*(lz2-1)*MIZ[lz1-2][lz2-2][0];
+
+              massveloc += norm_pf*over_pf*dens_pf*(t2x*y0*z0 + x0*t2y*z0 + x0*y0*t2z +
+			   8*tx*ty*z0 + 8*tx*y0*tz + 8*x0*ty*tz);
+
+
+              tmp = (x1 + px*x0) * y0 * z0 * over_pf * norm_pf;
+              dx -= dens_pf * tmp;
+              DX_ao[ioff[ib]+jb] -= tmp;
+              if (corr)
+                dxcc += zvec_pf * tmp;
+              tmp = x0 * (y1 + py*y0) * z0 * over_pf * norm_pf;
+              dy -= dens_pf * tmp;
+              DY_ao[ioff[ib]+jb] -= tmp;
+              if (corr)
+                dycc += zvec_pf * tmp;
+              tmp = x0 * y0 * (z1 + pz*z0) * over_pf * norm_pf;
+              dz -= dens_pf * tmp;
+              DZ_ao[ioff[ib]+jb] -= tmp;
+              if (corr)
+                dzcc += zvec_pf * tmp;
+              
+              if (mpmax > 1) {
+                x2 = MIX[xpow_bf[iang][ibf]][xpow_bf[jang][jbf]][2];
+                y2 = MIY[ypow_bf[iang][ibf]][ypow_bf[jang][jbf]][2];
+                z2 = MIZ[zpow_bf[iang][ibf]][zpow_bf[jang][jbf]][2];
+                
+                tmp = (x2 + 2*px*x1 + px*px*x0) * y0 * z0 * over_pf * norm_pf;
+                mxx -= dens_pf * tmp;
+                XX[ioff[ib]+jb] += tmp;
+                exp_x2 += dens_pf * tmp;
+                if (corr)
+                  mxxcc += zvec_pf * tmp;
+                
+                tmp = x0 * (y2 + 2*py*y1 + py*py*y0) * z0 * over_pf * norm_pf;
+                myy -= dens_pf * tmp;
+                YY[ioff[ib]+jb] += tmp;
+                exp_y2 += dens_pf * tmp;
+                if (corr)
+                  myycc += zvec_pf * tmp;
+                
+                tmp = x0 * y0 * (z2 + 2*pz*z1 + pz*pz*z0) * over_pf * norm_pf;
+                mzz -= dens_pf * tmp;
+                ZZ[ioff[ib]+jb] += tmp;
+                exp_z2 += dens_pf * tmp;
+                if (corr)
+                  mzzcc += zvec_pf * tmp;
+                
+                tmp = over_pf * z0 * (x1*y1 + x1*py + y1*px + px*py) * norm_pf;
+                mxy -= dens_pf * tmp;
+                if (corr)
+                  mxycc += zvec_pf * tmp;
+                
+                tmp = over_pf * y0 * (x1*z1 + x1*pz + z1*px + px*pz) * norm_pf;
+                mxz -= dens_pf * tmp;
+                if (corr)
+                  mxzcc += zvec_pf * tmp;
+                
+                tmp = over_pf * x0 * (y1*z1 + y1*pz + z1*py + py*pz) * norm_pf;
+                myz -= dens_pf * tmp;
+                if (corr)
+                  myzcc += zvec_pf * tmp;
+              }
+              
+              if (mpmax > 2) {
+                x3 = MIX[xpow_bf[iang][ibf]][xpow_bf[jang][jbf]][3];
+                y3 = MIY[ypow_bf[iang][ibf]][ypow_bf[jang][jbf]][3];
+                z3 = MIZ[zpow_bf[iang][ibf]][zpow_bf[jang][jbf]][3];
+
+                tmp = norm_pf * over_pf * y0 * z0 * 
+                      (x3 + 3*px*x2 + 3*px*px*x1 + px*px*px*x0);
+                mxxx -= dens_pf * tmp;
+                if (corr) 
+                  mxxxcc += zvec_pf * tmp;
+
+                tmp = norm_pf * over_pf * x0 * z0 *
+                      (y3 + 3*py*y2 + 3*py*py*y1 + py*py*py*y0);
+                myyy -= dens_pf * tmp;
+                if (corr)
+                  myyycc += zvec_pf * tmp;
+
+                tmp = norm_pf * over_pf * x0 * y0 *
+                      (z3 + 3*pz*z2 + 3*pz*pz*z1 + pz*pz*pz*z0);
+                mzzz -= dens_pf * tmp;
+                if (corr)
+                  mzzzcc += zvec_pf * tmp;
+                
+                tmp = norm_pf * over_pf * z0 * (y1 + py*y0) * (x2 + 2*px*x1 + px*px*x0);
+                mxxy -= dens_pf * tmp;
+                if (corr)
+                  mxxycc += zvec_pf * tmp;
+                
+                tmp = norm_pf * over_pf * y0 * (z1 + pz*z0) * (x2 + 2*px*x1 + px*px*x0);
+                mxxz -= dens_pf * tmp;
+                if (corr)
+                  mxxzcc += zvec_pf * tmp;
+
+                tmp = norm_pf * over_pf * z0 * (x1 + px*x0) * (y2 + 2*py*y1 + py*py*y0);
+                mxyy -= dens_pf * tmp;
+                if (corr)
+                  mxyycc += zvec_pf * tmp;
+                
+                tmp = norm_pf * over_pf * x0 * (z1 + pz*z0) * (y2 + 2*py*y1 + py*py*y0);
+                myyz -= dens_pf * tmp;
+                if (corr)
+                  myyzcc += zvec_pf * tmp;
+
+                tmp = norm_pf * over_pf * (x1 + px*x0) * y0 * (z2 + 2*pz*z1 + pz*pz*z0);
+                mxzz -= dens_pf * tmp;
+                if (corr)
+                  mxzzcc += zvec_pf * tmp;
+                
+                tmp = norm_pf * over_pf * x0 * (y1 + py*y0) * (z2 + 2*pz*z1 + pz*pz*z0);
+                myzz -= dens_pf * tmp;
+                if (corr)
+                  myzzcc += zvec_pf * tmp;
+                
+                tmp = norm_pf * over_pf * (x1 + px*x0) * (y1 + py*y0) * (z1 + pz*z0);
+                mxyz -= dens_pf * tmp;
+                if (corr)
+                  mxyzcc += zvec_pf * tmp;
+              }
+            }
+          }
+	  
+	  
+	  
+	  /********************************************************
+	  *   Computing electrostatic properties (see Obara and   *
+	  *   Saika paper) and electron densities at the nuclei   *
+	  ********************************************************/
+	  
+          if (nuc_esp) {
+            for(k=0;k<natom;k++) {
+              pcx = px - geom[k][0];
+              pcy = py - geom[k][1];
+              pcz = pz - geom[k][2];
+              AI_OSrecurs(pax,pay,paz,pbx,pby,pbz,pcx,pcy,pcz,gamma,iang,jang);
+              for(ibf=0;ibf<nbfi;ibf++) {
+                if (eq_shell)
+                  jlim = ibf + 1;
+                else
+                  jlim = nbfj;
+                for(jbf=0;jbf<jlim;jbf++) {
+                  ib = i_1stbf + ibf - 1; jb = j_1stbf + jbf - 1;
+		  norm_pf = norm_bf[iang][ibf]*norm_bf[jang][jbf];
+		  /*---
+
+		    ATTENTION: Normalization prefactor is included in dens_pf
+
+		    ---*/
+                  dens_pf = Ptot[ioff[ib]+jb] * ((ib == jb) ? 1.0 : 2.0) * norm_pf;
+                  if (fabs(dens_pf) < PFACCUTOFF) continue;
+		  if (spin_prop)
+		    sdens_pf = Pspin[ioff[ib]+jb] * ((ib == jb) ? 1.0 : 2.0) * norm_pf;
+                  iind = zpow_bf[iang][ibf]*izm + ypow_bf[iang][ibf]*iym +
+                         xpow_bf[iang][ibf]*ixm;
+                  jind = zpow_bf[jang][jbf]*jzm + ypow_bf[jang][jbf]*jym +
+                         xpow_bf[jang][jbf]*jxm;
+
+                  phi[k]  += -over_pf*AI0[iind][jind][0] * dens_pf;
+                  ex[k]   += over_pf*AIX[iind][jind][0] * dens_pf;
+                  ey[k]   += over_pf*AIY[iind][jind][0] * dens_pf;
+                  ez[k]   += over_pf*AIZ[iind][jind][0] * dens_pf;
+                  dexx[k] += over_pf*AIXX[iind][jind][0] * dens_pf;
+                  deyy[k] += over_pf*AIYY[iind][jind][0] * dens_pf;
+                  dezz[k] += over_pf*AIZZ[iind][jind][0] * dens_pf;
+                  dexy[k] += over_pf*AIXY[iind][jind][0] * dens_pf;
+                  dexz[k] += over_pf*AIXZ[iind][jind][0] * dens_pf;
+                  deyz[k] += over_pf*AIYZ[iind][jind][0] * dens_pf;
+
+		  cax = geom[k][0]-ax;  cay = geom[k][1]-ay;  caz = geom[k][2]-az;
+		  rca2 = cax*cax + cay*cay + caz*caz;
+		  cbx = geom[k][0]-bx;  cby = geom[k][1]-by;  cbz = geom[k][2]-bz;
+		  rcb2 = cbx*cbx + cby*cby + cbz*cbz;
+		  tmp = contr[ig]*contr[jg]*
+			pow(cax,xpow_bf[iang][ibf])*
+			pow(cay,ypow_bf[iang][ibf])*
+			pow(caz,zpow_bf[iang][ibf])*
+			pow(cbx,xpow_bf[jang][jbf])*
+			pow(cby,ypow_bf[jang][jbf])*
+			pow(cbz,zpow_bf[jang][jbf])*
+			exp(-ai*rca2)*exp(-bj*rcb2);
+                  if (eq_shell && ig != jg)
+                    tmp *= 2.0;
+		  edens[k] += tmp*dens_pf;
+		  if (spin_prop) {
+		    sdens[k] += tmp*sdens_pf;
+		    ahfsxx[k] += over_pf*AIXX[iind][jind][0] * sdens_pf;
+                    ahfsyy[k] += over_pf*AIYY[iind][jind][0] * sdens_pf;
+                    ahfszz[k] += over_pf*AIZZ[iind][jind][0] * sdens_pf;
+                    ahfsxy[k] += over_pf*AIXY[iind][jind][0] * sdens_pf;
+                    ahfsxz[k] += over_pf*AIXZ[iind][jind][0] * sdens_pf;
+                    ahfsyz[k] += over_pf*AIYZ[iind][jind][0] * sdens_pf;
+                  }
+		}
+              }
+            }
+          }
+
+	  /* End of loops over primitives (ig,jg)*/
         }
       }
-      break;
+      /* End of loops over shells (i,j)*/
+    }
   }
-      
-  fprintf(grid_file,"$END\n");
-  fclose(grid_file);
-}
 
 
-void print_misc()
-{
-  int i,j,k;
+  
+  if (print_lvl >= PRINTDIPMLEVEL) {
+    fprintf(outfile,"\tmu(X) matrix in AO basis :\n");
+    print_array(DX_ao,nbfao,outfile);
+    fprintf(outfile,"\n\n");
+    fprintf(outfile,"\tmu(Y) matrix in AO basis :\n"); 
+    print_array(DY_ao,nbfao,outfile);
+    fprintf(outfile,"\n\n");
+    fprintf(outfile,"\tmu(Z) matrix in AO basis :\n"); 
+    print_array(DZ_ao,nbfao,outfile);
+    fprintf(outfile,"\n\n");
+  }
+  free(DX_ao);
+  free(DY_ao);
+  free(DZ_ao);
 
-  fprintf(outfile," --------------------------------------------------------------\n");
-  fprintf(outfile,"                *** Miscellaneous properties ***\n");
-  fprintf(outfile," --------------------------------------------------------------\n\n");
+  /* Computing nuclear contribution to the dipole moment */
+  dz_e = dx; dz_e = dx; dz_e = dz;
+  for(i=0;i<natom;i++) {
+    dx += zvals[i]*geom[i][0];
+    dx_n += zvals[i]*geom[i][0];
+    dy += zvals[i]*geom[i][1];
+    dy_n += zvals[i]*geom[i][1];
+    dz += zvals[i]*geom[i][2];
+    dz_n += zvals[i]*geom[i][2];
+  }
+  dtot = sqrt(dx*dx + dy*dy + dz*dz);
 
-  fprintf(outfile," -Relativistic MVD one-electron corrections to the energy (a.u.):\n\n");
-  fprintf(outfile,"    Mass-velocity (p^4) term     :   %12.8lf\n",massveloc);
-  fprintf(outfile,"    One-electron Darwin term     :   %12.8lf\n",darw);
-  fprintf(outfile,"    Total one-electron MVD terms :   %12.8lf\n",massveloc+darw);
-  fprintf(outfile,"\n\n");
+
+  	/* Computing the total quadrupole moment in traceless tensor form,
+  	   and orbital spatial extents */
 
   if (mpmax > 1) {
-    fprintf(outfile,"  NOTE : Spatial extents are computed with respect to the same reference point\n");
-    fprintf(outfile,"         as multipole moments.\n\n");
-    fprintf(outfile," -Electronic spatial extents (a.u.) :\n\n");
-    fprintf(outfile,"     <X^2> =  %11.4lf    <Y^2> =  %11.4lf    <Z^2> =  %11.4lf\n",
-            exp_x2,exp_y2,exp_z2);
-    fprintf(outfile,"                             <R^2> =  %11.4lf\n",
-            exp_x2+exp_y2+exp_z2);
-    fprintf(outfile,"\n -Orbital spatial extents ");
-    if (read_opdm) 
-      fprintf(outfile,"of NOs contructed from onepdm in file%d ",opdm_file);
+    for(i=0;i<natom;i++) {
+      x = geom[i][0];
+      y = geom[i][1];
+      z = geom[i][2];
+      mxx += zvals[i] * x * x;
+      myy += zvals[i] * y * y;
+      mzz += zvals[i] * z * z;
+      mxy += zvals[i] * x * y;
+      mxz += zvals[i] * x * z;
+      myz += zvals[i] * y * z;
+    }
+    qxx = mxx - (myy+mzz)/2;
+    qyy = myy - (mxx+mzz)/2;
+    qzz = mzz - (mxx+myy)/2;
+    qxy = 1.5 * mxy;
+    qxz = 1.5 * mxz;
+    qyz = 1.5 * myz;
+    
+    if (corr) {
+      qxxcc = mxxcc - (myycc+mzzcc)/2;
+      qyycc = myycc - (mxxcc+mzzcc)/2;
+      qzzcc = mzzcc - (mxxcc+myycc)/2;
+      qxycc = 1.5 * mxycc;
+      qxzcc = 1.5 * mxzcc;
+      qyzcc = 1.5 * myzcc;
+    }
+    
+    temp_mat = init_matrix(3,3);
+    temp_mat[0][0] = qxx + qxxcc;
+    temp_mat[1][1] = qyy + qyycc;
+    temp_mat[2][2] = qzz + qzzcc;
+    temp_mat[0][1] = temp_mat[1][0] = qxy + qxycc;
+    temp_mat[0][2] = temp_mat[2][0] = qxz + qxzcc;
+    temp_mat[1][2] = temp_mat[2][1] = qyz + qyzcc;
+    sq_rsp(3,3,temp_mat,qvals,1,qvecs,1.0E-14);
+    free_matrix(temp_mat,3);
+    
+	/* Computing orbital spatial extents */
+    
+    if (read_opdm)	/* If onepdm is read from file - use natural orbitals */
+      evec = nmo_ao;
     else
-      fprintf(outfile,"of MOs in file30 ");
-    fprintf(outfile,"(a.u.) :\n\n");
-    fprintf(outfile,"    MO #   Symm     <X^2>        <Y^2>        <Z^2>        <R^2>\n");
-    fprintf(outfile,"   ------  ----  -----------  -----------  -----------  -----------\n");
-    k = 0;
-    for(i=0;i<nirreps;i++)
-      for(j=0;j<orbspi[i];j++)
-        fprintf(outfile,"   %4d     %3s   %9.4lf    %9.4lf    %9.4lf    %9.4lf\n",
-                k+1,irr_labs[i],MOXX[k],MOYY[k],MOZZ[k],MOXX[k]+MOYY[k]+MOZZ[k++]);
-    fprintf(outfile,"\n");
+      evec = scf_evec_ao;
+    for(i=0;i<nmo;i++) {
+      sum1 = sum2 = sum3 = 0.0;
+      for(k=0;k<nbfao;k++)
+        for(l=0;l<nbfao;l++) {
+          tmp = evec[k][i] * evec[l][i];
+          kk = (k > l) ? k : l;
+          ll = (k < l) ? k : l;
+          sum1 += XX[ioff[kk]+ll]*tmp;
+          sum2 += YY[ioff[kk]+ll]*tmp;      
+          sum3 += ZZ[ioff[kk]+ll]*tmp;      
+        }
+      MOXX[i] = sum1;
+      MOYY[i] = sum2;
+      MOZZ[i] = sum3;
+    }
+    free(XX);
+    free(YY);
+    free(ZZ);
   }
+
+	/* Computing the total octopole moment in traceless tensor form */
+
+  if (mpmax > 2) {
+    for(i=0;i<natom;i++) {
+      x=geom[i][0];
+      y=geom[i][1];
+      z=geom[i][2];
+      mxxx += zvals[i]*x*x*x;
+      myyy += zvals[i]*y*y*y;
+      mzzz += zvals[i]*z*z*z;
+      mxxy += zvals[i]*x*x*y;
+      mxxz += zvals[i]*x*x*z;
+      mxyy += zvals[i]*x*y*y;
+      myyz += zvals[i]*y*y*z;
+      mxzz += zvals[i]*x*z*z;
+      myzz += zvals[i]*y*z*z;
+      mxyz += zvals[i]*x*y*z;
+    }
+    oxxx = mxxx - 1.5*(mxyy+mxzz);
+    oyyy = myyy - 1.5*(mxxy+myzz);
+    ozzz = mzzz - 1.5*(mxxz+myyz);
+    oxxy = 2*mxxy - 0.5*(myyy+myzz);
+    oxxz = 2*mxxz - 0.5*(myyz+mzzz);
+    oxyy = 2*mxyy - 0.5*(mxxx+mxzz);
+    oyyz = 2*myyz - 0.5*(mxxz+mzzz);
+    oxzz = 2*mxzz - 0.5*(mxxx+mxyy);
+    oyzz = 2*myzz - 0.5*(mxxy+myyy);
+    oxyz = 2.5*mxyz;
+
+    if (corr) {
+      oxxxcc = mxxxcc - 1.5*(mxyycc+mxzzcc);
+      oyyycc = myyycc - 1.5*(mxxycc+myzzcc);
+      ozzzcc = mzzzcc - 1.5*(mxxzcc+myyzcc);
+      oxxycc = 2*mxxycc - 0.5*(myyycc+myzzcc);
+      oxxzcc = 2*mxxzcc - 0.5*(myyzcc+mzzzcc);
+      oxyycc = 2*mxyycc - 0.5*(mxxxcc+mxzzcc);
+      oyyzcc = 2*myyzcc - 0.5*(mxxzcc+mzzzcc);
+      oxzzcc = 2*mxzzcc - 0.5*(mxxxcc+mxyycc);
+      oyzzcc = 2*myzzcc - 0.5*(mxxycc+myyycc);
+      oxyzcc = 2.5*mxyzcc;
+    }
+  }
+
+
+	/* Computing nuclear contribution to the electrostatic properties at the nuclei */
+
+  if (nuc_esp)
+    for(k=0;k<natom;k++)
+      for(i=0;i<natom;i++)
+        if (i != k) {
+          x = geom[k][0] - geom[i][0];
+          y = geom[k][1] - geom[i][1];
+          z = geom[k][2] - geom[i][2];
+          r2 = x*x+y*y+z*z;
+          r = sqrt(r2);
+          phi[k]  += zvals[i]/r;
+          ex[k]   += zvals[i]*x/(r*r2);
+          ey[k]   += zvals[i]*y/(r*r2);
+          ez[k]   += zvals[i]*z/(r*r2);
+          dexx[k] += -zvals[i]*(3*x*x-r2)/(r*r2*r2);
+          deyy[k] += -zvals[i]*(3*y*y-r2)/(r*r2*r2);
+          dezz[k] += -zvals[i]*(3*z*z-r2)/(r*r2*r2);
+          dexy[k] += -zvals[i]*3*x*y/(r*r2*r2);
+          dexz[k] += -zvals[i]*3*x*z/(r*r2*r2);
+          deyz[k] += -zvals[i]*3*x*z/(r*r2*r2);
+        }
+
+
+        /* Computing first-order one-electron relativistic corrections */
+
+    /* Mass-velocity p^4 term */
+  massveloc *= -1/(8*_c_au*_c_au);
+    /* Darwin term */
+  darw = 0.0;
+  for(i=0;i<natom;i++)
+    darw += zvals[i]*edens[i];
+  darw *= M_PI_2/(_c_au*_c_au); 
+
+
+
+	/* Cleaning up */
+  
+  free_box(MIX,lmax+1,lmax+1);
+  free_box(MIY,lmax+1,lmax+1);
+  free_box(MIZ,lmax+1,lmax+1);
+  if (nuc_esp) {
+    free_box(AIX,indmax,indmax);
+    free_box(AIY,indmax,indmax);
+    free_box(AIZ,indmax,indmax);
+    free_box(AIXX,indmax,indmax);
+    free_box(AIYY,indmax,indmax);
+    free_box(AIZZ,indmax,indmax);
+    free_box(AIXY,indmax,indmax);
+    free_box(AIXZ,indmax,indmax);
+    free_box(AIYZ,indmax,indmax);
+  }
+  
+  if (nuc_esp)
+    free_box(AI0,indmax,indmax);
+
 }
 
 
-char *gprgid()
-{
- char *prgid = "OEPROP";
-   
- return(prgid);
-}

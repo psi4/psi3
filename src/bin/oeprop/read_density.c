@@ -1,7 +1,7 @@
 #define EXTERN
 #include "includes.h"
-#include "oeprop.gbl"
-#include "oeprop.h"
+#include "globals.h"
+#include "prototypes.h"
 
 void read_density()
 { 

@@ -1,7 +1,7 @@
 #define EXTERN
 #include "includes.h"
-#include "oeprop.gbl"
-#include "oeprop.h"
+#include "globals.h"
+#include "prototypes.h"
 
 
 
@@ -115,15 +115,6 @@ void parsing()
       mp_ref = 1;
   }
 
-  errcod = ip_boolean("WRT_DIPINTS",&wrt_dipints,0);
-  if (wrt_dipints) {
-    errcod = ip_data("DIP_FILE","%d",&dip_file,0);
-    if ((dip_file >= MAX_UNIT) || (dip_file <= 0)) {
-      fprintf(outfile,"  File number out of range. Aborting.\n\n");
-      exit(2);
-    }
-  }
-
   errcod = ip_boolean("NUC_ESP",&nuc_esp,0);
   if (spin_prop)
     nuc_esp = 1;
@@ -132,6 +123,15 @@ void parsing()
   if (grid < 0) {
     fprintf(outfile,"GRID type must be positive. Aborting\n\n");
     exit(2);
+  }
+  if (grid == 5) {
+    grid3d = 1;
+    mo_to_plot = 1;
+    errcod = ip_data("MO_TO_PLOT","%d",&mo_to_plot,0);
+    if (mo_to_plot <= 0 || mo_to_plot > nmo) {
+      fprintf(outfile,"MO_TO_PLOT out of range. Aborting\n\n");
+      exit(2);
+    }
   }
   
   if (grid !=0) {
@@ -189,46 +189,92 @@ void parsing()
       fprintf(outfile,"GRID_UNIT_Y is not defined. Aborting.\n\n");
       exit(2);
     }
-    if (ip_exist("GRID_XY0",0)) {
-      ip_count("GRID_XY0",&i,0);
-      if (i != 2) {
-        fprintf(outfile,"GRID_XY0 must have 2 components. Aborting.\n\n");
-        exit(2);
-      }
-      for (i=0;i<2;i++) {
-        errcod = ip_data("GRID_XY0","%lf",&grid_xy0[i],1,i);
-        if (errcod != IPE_OK) {
-          fprintf(outfile,"  Error in the definition of GRID_XY0. Aborting.\n\n");
-          exit(2);
-        }
-      }
-    }
-    else {	/* Abort calculation */
-      fprintf(outfile,"GRID_XY0 is not defined. Aborting.\n\n");
-      exit(2);
-    }
     
-    if (ip_exist("GRID_XY1",0)) {
-      ip_count("GRID_XY1",&i,0);
-      if (i != 2) {
-        fprintf(outfile,"GRID_XY1 must have 2 components. Aborting.\n\n");
-        exit(2);
+    if (grid3d == 0) {
+      if (ip_exist("GRID_XY0",0)) {
+	ip_count("GRID_XY0",&i,0);
+	if (i != 2) {
+	  fprintf(outfile,"GRID_XY0 must have 2 components. Aborting.\n\n");
+	  exit(2);
+	}
+	for (i=0;i<2;i++) {
+	  errcod = ip_data("GRID_XY0","%lf",&grid_xy0[i],1,i);
+	  if (errcod != IPE_OK) {
+	    fprintf(outfile,"  Error in the definition of GRID_XY0. Aborting.\n\n");
+	    exit(2);
+	  }
+	}
       }
-      for (i=0;i<2;i++) {
-        errcod = ip_data("GRID_XY1","%lf",&grid_xy1[i],1,i);
-        if (errcod != IPE_OK) {
-          fprintf(outfile,"  Error in the definition of GRID_XY1. Aborting.\n\n");
-          exit(2);
-        }
-	else if (grid_xy1[i] <= grid_xy0[i]) {
-	       fprintf(outfile,"GRID_XY1 must point to the upper right corner of the grid. Aborting.\n\n");
-	       exit(2);
-	     }
+      else {	/* Abort calculation */
+	fprintf(outfile,"GRID_XY0 is not defined. Aborting.\n\n");
+	exit(2);
+      }
+    
+      if (ip_exist("GRID_XY1",0)) {
+	ip_count("GRID_XY1",&i,0);
+	if (i != 2) {
+	  fprintf(outfile,"GRID_XY1 must have 2 components. Aborting.\n\n");
+	  exit(2);
+	}
+	for (i=0;i<2;i++) {
+	  errcod = ip_data("GRID_XY1","%lf",&grid_xy1[i],1,i);
+	  if (errcod != IPE_OK) {
+	    fprintf(outfile,"  Error in the definition of GRID_XY1. Aborting.\n\n");
+	    exit(2);
+	  }
+	  else if (grid_xy1[i] <= grid_xy0[i]) {
+	    fprintf(outfile,"GRID_XY1 must point to the upper right corner of the grid. Aborting.\n\n");
+	    exit(2);
+	  }
+	}
+      }
+      else {	/* Aborting calculation */
+	fprintf(outfile,"GRID_XY1 is not defined. Aborting.\n\n");
+	exit(2);
       }
     }
-    else {	/* Aborting calculation */
-      fprintf(outfile,"GRID_XY1 is not defined. Aborting.\n\n");
-      exit(2);
+    else {
+      if (ip_exist("GRID_XYZ0",0)) {
+	ip_count("GRID_XYZ0",&i,0);
+	if (i != 3) {
+	  fprintf(outfile,"GRID_XYZ0 must have 3 components. Aborting.\n\n");
+	  exit(2);
+	}
+	for (i=0;i<3;i++) {
+	  errcod = ip_data("GRID_XYZ0","%lf",&grid_xyz0[i],1,i);
+	  if (errcod != IPE_OK) {
+	    fprintf(outfile,"  Error in the definition of GRID_XYZ0. Aborting.\n\n");
+	    exit(2);
+	  }
+	}
+      }
+      else {	/* Abort calculation */
+	fprintf(outfile,"GRID_XYZ0 is not defined. Aborting.\n\n");
+	exit(2);
+      }
+    
+      if (ip_exist("GRID_XYZ1",0)) {
+	ip_count("GRID_XYZ1",&i,0);
+	if (i != 3) {
+	  fprintf(outfile,"GRID_XYZ1 must have 3 components. Aborting.\n\n");
+	  exit(2);
+	}
+	for (i=0;i<3;i++) {
+	  errcod = ip_data("GRID_XYZ1","%lf",&grid_xyz1[i],1,i);
+	  if (errcod != IPE_OK) {
+	    fprintf(outfile,"  Error in the definition of GRID_XYZ1. Aborting.\n\n");
+	    exit(2);
+	  }
+	  else if (grid_xyz1[i] <= grid_xyz0[i]) {
+	    fprintf(outfile,"GRID_XYZ1 must point to the upper right corner of the grid parallelepiped. Aborting.\n\n");
+	    exit(2);
+	  }
+	}
+      }
+      else {	/* Aborting calculation */
+	fprintf(outfile,"GRID_XYZ1 is not defined. Aborting.\n\n");
+	exit(2);
+      }
     }
 
     errcod = ip_data("NIX","%d",&nix,0);
@@ -241,14 +287,23 @@ void parsing()
       fprintf(outfile,"NIY must be positive integer. Aborting.\n\n");
       exit(2);
     }
-
-    errcod = ip_data("GRID_ZMIN","%lf",&grid_zmin,0);
-    errcod = ip_data("GRID_ZMAX","%lf",&grid_zmax,0);
-    if (grid_zmin >= grid_zmax) {
-      fprintf(outfile,"GRID_ZMIN and GRID_ZMAX values are incompatible. Aborting.\n\n");
-      exit(2);
+    if (grid3d) {
+      errcod = ip_data("NIZ","%d",&niz,0);
+      if (niz <= 0) {
+	fprintf(outfile,"NIZ must be positive integer. Aborting.\n\n");
+	exit(2);
+      }
     }
-    errcod = ip_data("EDGRAD_LOGSCALE","%d",&edgrad_logscale,0);
-  }    
+
+    if (grid3d == 0) {
+	errcod = ip_data("GRID_ZMIN","%lf",&grid_zmin,0);
+	errcod = ip_data("GRID_ZMAX","%lf",&grid_zmax,0);
+	if (grid_zmin >= grid_zmax) {
+	    fprintf(outfile,"GRID_ZMIN and GRID_ZMAX values are incompatible. Aborting.\n\n");
+	    exit(2);
+	}
+	errcod = ip_data("EDGRAD_LOGSCALE","%d",&edgrad_logscale,0);
+    }
+  }
 
 }

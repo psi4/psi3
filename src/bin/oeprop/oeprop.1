@@ -1,7 +1,5 @@
 .ds OS UNIX
 
-.\"     @(#)tmac.an 1.37 90/02/04 SMI;
-.ds ]W Psi Release 1.1
 '	# month name
 .  \".if "\nd"0" .nr m \n(mo-1
 .  \".if "\nm"0" .ds ]m January
@@ -385,7 +383,7 @@
 .ds pT \*(OS USERS
 ..
 
-.ds ]W Psi Release 2.0
+.ds ]W Psi Release 3.0
 
 .\" This is used to ignore blanks on a line
 .\" Its purpose is to make the troff input look prettier.
@@ -543,7 +541,7 @@
 
 
 
-.TH oeprop 1 " 15 Jan, 1998" "\*(]W" "\*(]D"
+.TH oeprop 1 " March 30, 2001" "\*(]W" "\*(]D"
 .  \"
 .  \" Notice of Document Modification
 .  \"
@@ -565,8 +563,11 @@ computing electric multipole moments through octopole,
 electrostatic properties at atomic centers (electrostatic potential, 
 electric field, electric field gradient, electron and spin density, dipolar anisotropic
 contribution to the hyperfine coupling constants), 
-electron and spin density, electron and spin density gradient, Laplacian of electron and spin densities, and electrostatic potential 
-over an arbitrary two-dimensional (planar) rectangular grid. 
+electron and spin density, electron and spin density gradient,
+Laplacian of electron and spin densities, electrostatic potential 
+over an arbitrary two-dimensional (planar) rectangular grid,
+and molecular orbitals values over an arbitrary three-dimensional
+rectangular grid.
 Miscellaneous capabilities include computation 
 of the relativistic first-order one-electron corrections to the energy
 (mass-velocity and Darwin terms), 
@@ -625,13 +626,15 @@ CRC Handbook of chemistry and physics. Edited by D. R. Lide. 73rd edition
 .sL
 .pN OUTPUT
 .pN dipmom.dat "   Dipole moments"
-.pN esp.dat    "      Electrostatic potential on a grid"
-.pN edens.dat  "    Electron density on a grid"
-.pN edgrad.dat "   Electron density gradient on a grid"
-.pN edlapl.dat "   Laplacian of the electron density on a grid"
-.pN sdens.dat  "    Spin density on a grid"
-.pN sdgrad.dat "   Spin density gradient on a grid"
-.pN edlapl.dat "   Laplacian of the spin density on a grid"
+.pN esp.dat    "      Electrostatic potential on a 2D grid"
+.pN edens.dat  "    Electron density on a 2D grid"
+.pN edgrad.dat "   Electron density gradient on a 2D grid"
+.pN edlapl.dat "   Laplacian of the electron density on a 2D grid"
+.pN sdens.dat  "    Spin density on a 2D grid"
+.pN sdgrad.dat "   Spin density gradient on a 2D grid"
+.pN sdlapl.dat "   Laplacian of the spin density on a 2D grid"
+.pN mo.dat     "       Molecular orbital values on a 3D grid"
+.pN mo.pov     "       MegaPov input file for rendering an image of the MO in mo.dat"
 
 .eL "FILES UPDATED"
 
@@ -759,28 +762,38 @@ Specifies type of property to be evaluated over a grid.
 
 \fBGRID = \fP0 (default) - compute nothing;
 
-\fBGRID = \fP1 - electrostatic potential;
+\fBGRID = \fP1 - electrostatic potential on a two-dimensional grid;
 
-\fBGRID = \fP2 - electron density (spin density if \fBSPIN_PROP\fP is set to true);
+\fBGRID = \fP2 - electron density (spin density if \fBSPIN_PROP\fP is set to true) on
+a two-dimensional grid;
 
-\fBGRID = \fP3 - electron density gradient (spin density gradient if \fBSPIN_PROP\fP is set to true);
+\fBGRID = \fP3 - electron density gradient (spin density gradient if \fBSPIN_PROP\fP is set to true) on
+a two-dimensional grid;
 
 \fBGRID = \fP4 - Laplacian of the electron density (Laplacian of the spin density if 
-\fBSPIN_PROP\fP is set to true). According to the convention used in the field, what actually gets plotted are 
-the Laplacians taken with negative sign.
+\fBSPIN_PROP\fP is set to true) on a two-dimensional grid. According to the convention
+used in the field, what actually gets plotted are the Laplacians taken with negative sign.
+
+\fBGRID = \fP5 - values of molecular orbitals on a three-dimensional grid.
+
+.IP "\fBMO_TO_PLOT =\fP \fIinteger\fP"
+Specifies the index of the molecular orbital to be plotted. It in Pitzer ordering
+(ordered accoring to irreps, not eigenvalues). Ranges from 1 to the number of MOs.
+Default is 1.
 
 .IP "\fBGRID_ORIGIN =\fP \fIreal_vector\fP"
-Specifies origin of the two-dimentional coordinate system associated with the grid. 
+Specifies origin of the coordinate system associated with the grid. 
 There is no default.
 
 .IP "\fBGRID_UNIT_X =\fP \fIreal_vector\fP"
-This vector specifies the direction of the x-axis of a two-dimensional grid 
+This vector specifies the direction of the x-axis of the coordinate system associated with the grid 
 in terms of the unit vectors of the reference three-dimensional coordinate system.
-It does not have to be normalized. There is no default.
+If it is not normalized - it will be normalized by the program. There is no default.
 
 .IP "\fBGRID_UNIT_Y =\fP \fIreal_vector\fP"
 The same for the y-axis. It does not have to be neither normalized nor 
-orthogonal to GRID_UNITX. There is no default.
+orthogonal to GRID_UNITX - it will be orthonormalized automatically.
+There is no default.
 
 .IP "\fBGRID_XY0 =\fP \fIreal_2d_vector\fP"
 Specifies the coordinates of the lower left corner of the grid rectangle in 
@@ -792,11 +805,24 @@ Specifies the coordinates of the upper right corner of the grid rectangle in
 the 2D coordinate system defined by GRID_UNIT_X and GRID_UNIT_Y. 
 There is no default.
 
+.IP "\fBGRID_XYZ0 =\fP \fIreal_3d_vector\fP"
+Specifies the coordinates of the far lower left corner of the grid box in 
+the 3D coordinate system defined by orthonormalized GRID_UNIT_X, GRID_UNIT_Y, and their cross-product.
+There is no default.
+
+.IP "\fBGRID_XYZ1 =\fP \fIreal_3d_vector\fP"
+Specifies the coordinates of the near upper right corner of the grid box in 
+the 3D coordinate system defined by orthonormalized GRID_UNIT_X, GRID_UNIT_Y, and their cross-product.
+There is no default.
+
 .IP "\fBNIX =\fP \fIinteger\fP"
 Number of intervals the grid box to be divided along x-coordinate. This parameter 
 has to be greater than 0. Default is 10.
 
 .IP "\fBNIY =\fP \fIinteger\fP"
+See \fBNIX\fP. Default is 10.
+
+.IP "\fBNIZ =\fP \fIinteger\fP"
 See \fBNIX\fP. Default is 10.
 
 .IP "\fBGRID_ZMIN =\fP \fIdouble\fP"
@@ -854,60 +880,24 @@ an occupation vector, and a modified Z-vector in MO basis.
 .LP
 Currently, 
 .B oeprop
-produces outputs ready for using with a program 
+produces output of two-dimensional grids ready for plotting with a program 
 .B PLOTMTV 
 version 1.3.2. The program is written by Kenny Toh (ktoh@td2cad.intel.com), 
 software developer for the Technology CAD Department, Intel Corp, Santa Clara. 
-It is a freeware package, and can be downloaded off the Internet. An executable compiled
-for use in CCQC with AIX 4.3 resides in 
-.B /home/oroites/evaleev/Plotmtv1.3.2/Plots/plotmtv
+It is a freeware package, and can be downloaded off the Internet.
+
+Three-dimensional grids are output in format suitable for plotting with a program
+.B MegaPov
+version 0.5. This freeware program is a patched version of POV-Ray. It is developed by a number of people, and
+can be downloaded off the Internet (go to
+.B http://nathan.kopp.com/patched.htm
+to find out more info). To render an MO image, edit (if necessary) command file
+.B mo.pov
+created by
+.B oeprop
+, and execute
+.B megapovplus +Imo.pov
 .
-Contact me if you need help with using 
-.B PLOTMTV
-for plotting
-.B oeprop
-outputs.
-
-
-.SH DEVELOPMENT
-.LP
-My belief is that
-.B oeprop
-should eventually include all features of programs
-.B bondex
-,
-.B local
-,
-.B contour
-, and
-.B contour3d
-, and replace them. Population analyses and localization schemes for MOs
-should be added first. Then, a few kinds of bonding analyses present in
-the literature should be added.
-One of the last things to do would be computation of magnetic properties,
-since it is more complicated task.
-
-.SH CAVEATS
-.LP
-1. I have mentioned one serious problem - dependence of many properties (like
-multipole moments and spatial extents) on the reference point. 
-
-2. Another caveat is atomic units. Atomic units are natural for quantum chemistry,
-since most equations take very simple forms. 
-But, scinetist from other fields want
-to know properties measured in other units. E.g. everyone is accustomed to
-see dipole moments expressed in Debye. However, the AU-Debye conversion
-factor has only 6 significant figures, therefore reporting more significant
-figures in Debye would mean asking for troubles. CAUTION: \fBoeprop\fP uses
-an AU-Debye conversion factor slightly different from that used in
-the \fBproper\fP family of packages. 
-
-3. Another problem is the
-accuracy used in integral calculations. \fBoeprop\fP computes 
-all one-electron integrals to machine precision. Other programs might use
-different integral cutoffs and results might look \fIslightly\fP different.
-
-It is not possible to describe every aspect of \fBoeprop\fP. If you need any
-additional information - contact me at \fIevaleev@schroedinger.ccqc.uga.edu\fP 
-or in person.
-
+For more options run
+.B megapovplus -h
+.
