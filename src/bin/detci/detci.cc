@@ -151,6 +151,7 @@ main(int argc, char *argv[])
    if (Parameters.pthreads)
      tpool_init(&thread_pool, Parameters.nthreads, CalcInfo.num_alp_str, 0);
                                 /* initialize thread pool */
+   init_time_new(detci_time);             /* initialize timing routines */
    fflush(outfile); 
 
    if (Parameters.istop) {      /* Print size of space, other stuff, only   */
@@ -182,6 +183,7 @@ main(int argc, char *argv[])
      diag_h(alplist, betlist);
    }
 
+   print_time_new(detci_time);
    if (Parameters.opdm) form_opdm();
    if (Parameters.tpdm) form_tpdm();
    if (Parameters.pthreads) tpool_destroy(thread_pool, 1);

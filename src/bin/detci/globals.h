@@ -20,4 +20,4 @@ EXTERN struct H_zero_block H0block;
 EXTERN int ***OV;
 EXTERN int **s1_contrib, **s2_contrib, **s3_contrib;
 EXTERN double *tmp_ras_array;
-
+EXTERN struct detci_timings detci_time;

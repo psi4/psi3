@@ -696,6 +696,9 @@ void sigma_block(struct stringwr **alplist, struct stringwr **betlist,
 
    /* SIGMA2 CONTRIBUTION */
   if (s2_contrib[sblock][cblock]) {
+
+    detci_time.s2_before_time = wall_time_new();
+
 #ifndef OLD_CDS_ALG
       if (fci) {
           if (Parameters.pthreads)
@@ -735,6 +738,9 @@ void sigma_block(struct stringwr **alplist, struct stringwr **betlist,
             }
         }
 #endif
+    detci_time.s2_after_time = wall_time_new();
+    detci_time.s2_total_time += detci_time.s2_after_time - detci_time.s2_before_time;
+
     } /* end sigma2 */
 
    
@@ -746,6 +752,8 @@ void sigma_block(struct stringwr **alplist, struct stringwr **betlist,
 
    /* SIGMA1 CONTRIBUTION */
    if (!Ms0 || (sac != sbc)) {
+    detci_time.s1_before_time = wall_time_new();
+
       if (s1_contrib[sblock][cblock]) {
          #ifndef OLD_CDS_ALG
           if (fci) { 
@@ -789,6 +797,9 @@ void sigma_block(struct stringwr **alplist, struct stringwr **betlist,
             } 
          #endif
          }
+          detci_time.s1_after_time = wall_time_new();
+          detci_time.s1_total_time += detci_time.s1_after_time - detci_time.s1_before_time;
+
       } /* end sigma1 */
 
    #ifdef DEBUG
@@ -799,6 +810,7 @@ void sigma_block(struct stringwr **alplist, struct stringwr **betlist,
 
    /* SIGMA3 CONTRIBUTION */
    if (s3_contrib[sblock][cblock]) {
+      detci_time.s3_before_time = wall_time_new();
 
       /* zero_mat(smat, nas, nbs); */
 
@@ -864,6 +876,9 @@ void sigma_block(struct stringwr **alplist, struct stringwr **betlist,
          sblock, cblock);
       print_mat(smat, nas, nbs, outfile);
       #endif
+      
+      detci_time.s3_after_time = wall_time_new();
+      detci_time.s3_total_time += detci_time.s3_after_time - detci_time.s3_before_time;
 
       } /* end sigma3 */
 

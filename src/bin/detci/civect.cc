@@ -1815,6 +1815,8 @@ int CIvect::read(int ivect, int ibuf)
    int blk, zero_block_unit; /* added by MLL 2-2-99 */
    PSI_FPTR offset, nxtword, offset2;
 
+   detci_time.read_before_time = wall_time_new();
+
    if (nunits < 1) {
       cur_vect = ivect;
       cur_buf = ibuf;
@@ -1862,6 +1864,10 @@ int CIvect::read(int ivect, int ibuf)
 
    cur_vect = ivect;
    cur_buf = ibuf;
+
+   detci_time.read_after_time = wall_time_new();
+   detci_time.read_total_time += detci_time.read_after_time - detci_time.read_before_time;
+
    return(1);
 }  
 
@@ -1882,6 +1888,8 @@ int CIvect::write(int ivect, int ibuf)
    int unit, buf, size, i;
    PSI_FPTR offset, nxtword, offset2;
    int blk, zero_block_unit; /* MLL added 2-2-99 */
+
+   detci_time.write_before_time = wall_time_new();
 
    if (nunits < 1) return(1);
 
@@ -1942,6 +1950,9 @@ int CIvect::write(int ivect, int ibuf)
    cur_vect = ivect;
    cur_buf = ibuf;
    
+   detci_time.write_after_time = wall_time_new();
+   detci_time.write_total_time += detci_time.write_after_time - detci_time.write_before_time;
+
    return(1);
 }  
 

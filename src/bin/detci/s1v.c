@@ -178,6 +178,8 @@ void s1_block_vfci_thread(struct stringwr **alplist, struct stringwr **betlist,
   tpool_queue_open(thread_pool);
    
 
+  detci_time.s1_mt_before_time = wall_time_new();
+
   /* loop over I_b */
   for (Ib=betlist[Ib_list], Ib_idx=0; Ib_idx < nbs; Ib_idx++, Ib++) {
       thread_info[Ib_idx]->alplist=alplist;
@@ -197,6 +199,9 @@ void s1_block_vfci_thread(struct stringwr **alplist, struct stringwr **betlist,
       tpool_add_work(thread_pool, s1_block_vfci_pthread, (void *) thread_info[Ib_idx]);
     } /* end loop over Ib */
   tpool_queue_close(thread_pool, 1);
+
+  detci_time.s1_mt_after_time = wall_time_new();
+  detci_time.s1_mt_total_time += detci_time.s1_mt_after_time - detci_time.s1_mt_before_time;
 
   for (i=0; i<nbs; i++) free(thread_info[i]);
 
@@ -467,6 +472,7 @@ void s1_block_vras_thread(struct stringwr **alplist, struct stringwr **betlist,
 
   tpool_queue_open(thread_pool);
   
+  detci_time.s1_mt_before_time = wall_time_new();
   /* loop over I_b */
   for (Ib=betlist[Ib_list], Ib_idx=0; Ib_idx < nbs; Ib_idx++, Ib++) {
       thread_info[Ib_idx]->alplist=alplist;
@@ -486,6 +492,9 @@ void s1_block_vras_thread(struct stringwr **alplist, struct stringwr **betlist,
       tpool_add_work(thread_pool, s1_block_vras_pthread, (void *) thread_info[Ib_idx]);
     } /* end loop over Ib */
   tpool_queue_close(thread_pool, 1);
+
+  detci_time.s1_mt_after_time = wall_time_new();
+  detci_time.s1_mt_total_time += detci_time.s1_mt_after_time - detci_time.s1_mt_before_time;
 
   for (i=0; i<nbs; i++) free(thread_info[i]);
 

@@ -8,6 +8,11 @@
 */
 
 
+/*** INCLUDES ***/
+
+#include <unistd.h>
+#include <sys/time.h>
+
 /*** DEFINES ***/
 
 #define CI_BLK_MAX 650
@@ -502,3 +507,39 @@ struct pthreads_s1vfci {
     struct stringwr *Ib;
     unsigned int Ib_idx;
 };    
+
+struct detci_timings {
+   double s1_total_time;
+   double s1_before_time;
+   double s1_after_time;
+   double s2_total_time;
+   double s2_before_time;
+   double s2_after_time;
+   double s3_total_time;
+   double s3_before_time;
+   double s3_after_time;
+   double s1_mt_before_time;
+   double s1_mt_after_time;
+   double s1_mt_total_time;
+   double s2_mt_before_time;
+   double s2_mt_after_time;
+   double s2_mt_total_time;
+   double s3_mt_before_time;
+   double s3_mt_after_time;
+   double s3_mt_total_time;
+   double read_total_time;
+   double read_before_time;
+   double read_after_time;
+   double write_total_time;
+   double write_after_time;
+   double write_before_time;
+   double Hd_total_time;
+   double Hd_before_time;
+   double Hd_after_time;
+   double total_before_time;
+   double total_after_time;
+  };
+
+double wall_time_new(void);
+void init_time_new(struct detci_timings time);
+void print_time_new(struct detci_timings time);

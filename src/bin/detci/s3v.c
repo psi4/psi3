@@ -92,6 +92,7 @@ void s3_block_vdiag(struct stringwr *alplist, struct stringwr *betlist,
 
           /* loop over Ia */
           if (Parameters.pthreads) {
+              detci_time.s3_mt_before_time = wall_time_new();
               tpool_queue_open(thread_pool);
               for (Ia=alplist, Ia_idx=0; Ia_idx<nas; Ia_idx++, Ia++) {
                   thread_info[Ia_idx]->nas = nas;
@@ -107,6 +108,9 @@ void s3_block_vdiag(struct stringwr *alplist, struct stringwr *betlist,
                   tpool_add_work(thread_pool , s3_block_vdiag_pthread, (void *) thread_info[Ia_idx]); 
                 }
               tpool_queue_close(thread_pool, 1);
+              detci_time.s3_mt_after_time = wall_time_new();
+              detci_time.s3_mt_total_time += detci_time.s3_mt_after_time - detci_time.s3_mt_before_time;
+
             }
           else {
               for (Ia=alplist, Ia_idx=0; Ia_idx<nas; Ia_idx++, Ia++) {
@@ -306,6 +310,7 @@ void s3_block_v(struct stringwr *alplist, struct stringwr *betlist,
 
        /* loop over Ia */
        if (Parameters.pthreads) {
+           detci_time.s3_mt_before_time = wall_time_new();
            tpool_queue_open(thread_pool);
            for (Ia=alplist, Ia_idx=0; Ia_idx<nas; Ia_idx++, Ia++) {
                thread_info[Ia_idx]->nas = nas;
@@ -321,6 +326,9 @@ void s3_block_v(struct stringwr *alplist, struct stringwr *betlist,
                tpool_add_work(thread_pool, s3_block_v_pthread, (void *) thread_info[Ia_idx]);
              }
            tpool_queue_close(thread_pool, 1);
+           detci_time.s3_mt_after_time = wall_time_new();
+           detci_time.s3_mt_total_time += detci_time.s3_mt_after_time - detci_time.s3_mt_before_time;
+
          }
        else {
            for (Ia=alplist, Ia_idx=0; Ia_idx<nas; Ia_idx++, Ia++) {
