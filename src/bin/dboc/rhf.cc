@@ -40,13 +40,8 @@ double eval_rhf_derwfn_overlap()
   for(int i=0;i<ndocc;i++)
     deter1 *= CSC_occ[i][i];
   deter1 = FABS(deter1);
-#if LONG_DOUBLE
-  fprintf(outfile,"  -Determinant for disp %d is %25.15Lf\n\n",1, deter1);
-#else
-  //  fprintf(outfile,"  -Determinant for disp %d is %25.15lf\n\n",(disp-1)/2 + 1, deter1);
-#endif
 
   delete_matrix(CSC_occ);
-  return deter1*deter1;
+  return (double)deter1*deter1;
 }
 

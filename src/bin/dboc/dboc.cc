@@ -69,6 +69,12 @@ void parsing()
 {
   int errcod;
   
+  errcod = ip_string("LABEL",&Params.label,0);
+  if (errcod != IPE_OK) {
+    Params.label = new char[1];
+    Params.label[0] = '\0';
+  }
+
   errcod = ip_string("WFN",&Params.wfn,0);
   if (errcod != IPE_OK)
     done("Keyword WFN is not found");
@@ -117,6 +123,8 @@ void read_chkpt()
   int *openpi = file30_rd_openpi();
   MOInfo.nsocc = openpi[0];
   delete[] openpi;
+  MOInfo.nalpha = MOInfo.ndocc + MOInfo.nsocc;
+  MOInfo.nbeta = MOInfo.ndocc;
 #else
   Molecule.natom = chkpt_rd_natom();
   Molecule.geom = chkpt_rd_geom();
@@ -171,10 +179,6 @@ double eval_dboc()
       slaterdetvector_read(PSIF_CIVECT,"CI vector",&vec);
       slaterdetvector_write(PSIF_CIVECT,"Old CI vector",vec);
       slaterdetvector_delete_full(vec);
-      /*      stringset_delete(vec->sdset->alphastrings);
-      stringset_delete(vec->sdset->betastrings);
-      slaterdetset_delete(vec->sdset);
-      slaterdetvector_delete(vec);*/
     }
 
     sprintf(inputcmd,"input --savemos --geomdat %d --noreorient --nocomshift",disp);
@@ -192,7 +196,8 @@ double eval_dboc()
     double del2 = (1.0-S)/(2.0*Params.delta*Params.delta);
     double E_i = del2*_au2amu/(2.0*an2masses[(int)Molecule.zvals[atom]]);
     if (Params.print_lvl > PrintLevels::print_intro) {
-      fprintf(outfile,"  DBOC contribution from cartesian degree of freedom %d = %lf a.u.\n",
+      fprintf(outfile,"  +- wave function overlap = %25.15lf\n",S);
+      fprintf(outfile,"  DBOC contribution from cartesian degree of freedom %d = %20.10lf a.u.\n\n",
 	      (disp-1)/2+1,E_i);
       fflush(outfile);
     }

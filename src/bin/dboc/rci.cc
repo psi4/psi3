@@ -103,7 +103,6 @@ double eval_rci_derwfn_overlap()
   delete_matrix(CSC_full);
   delete_matrix(S_a);
   double S_tot_double = (double) S_tot;
-  fprintf(outfile,"  -Overlap for disp %d is %25.15Lf\n\n",1, S_tot_double);
   return fabs(S_tot_double);
 }
 

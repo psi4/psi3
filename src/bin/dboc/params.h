@@ -12,6 +12,7 @@ typedef struct {
 
   enum RefType { rhf=1, rohf=2, uhf=3};
 
+  char *label;
   char *wfn;
   RefType reftype;
   double delta;

@@ -18,6 +18,7 @@ extern double eval_rohf_derwfn_overlap();
 extern double eval_uhf_derwfn_overlap();
 extern double eval_rccsd_derwfn_overlap();
 extern double eval_rci_derwfn_overlap();
+extern double eval_roci_derwfn_overlap();
 
 double eval_derwfn_overlap()
 {
@@ -28,10 +29,10 @@ double eval_derwfn_overlap()
       S = eval_rhf_derwfn_overlap();
     }
     else if (Params.reftype == Params_t::rohf) {
-      //      S = eval_rohf_derwfn_overlap();
+      S = eval_rohf_derwfn_overlap();
     }
     else if (Params.reftype == Params_t::uhf) {
-      //      S = eval_uhf_derwfn_overlap();
+      S = eval_uhf_derwfn_overlap();
     }
     else
       done("This HF SCF method is not supported at the moment");
@@ -46,6 +47,9 @@ double eval_derwfn_overlap()
   else if (!strcmp(Params.wfn,"DETCI")) {
     if (Params.reftype == Params_t::rhf) {
       S = eval_rci_derwfn_overlap();
+    }
+    else if (Params.reftype == Params_t::rohf) {
+      S = eval_roci_derwfn_overlap();
     }
     else
       done("CI method with this reference is not supported at the moment");

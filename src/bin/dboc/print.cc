@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "params.h"
+#include "float.h"
 
 #define PRINT_INTRO 1
 #define PRINT_PARAMS 1
@@ -23,8 +24,10 @@ void print_params()
 {
   if (Params.print_lvl >= PrintLevels::print_params) {
     fprintf(outfile,"\n  -OPTIONS:\n");
+    fprintf(outfile,"    Label                       = %s\n",Params.label);
     fprintf(outfile,"    sizeof(double)              = %d\n",sizeof(double));
     fprintf(outfile,"    sizeof(long double)         = %d\n",sizeof(long double));
+    fprintf(outfile,"    sizeof(FLOAT)               = %d\n",sizeof(FLOAT));
     fprintf(outfile,"    Print level                 = %d\n",Params.print_lvl);
     fprintf(outfile,"    Displacement size           = %lf a.u.\n",Params.delta);
     if (strcmp(Params.wfn,"SCF"))
