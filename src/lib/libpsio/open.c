@@ -45,66 +45,66 @@ int psio_open(ULI unit, int status)
 
   /* Build the name for each volume and open the file */
   for(i=0; i < this_unit->numvols; i++) {
-      errcod = psio_get_volpath(unit, i, path);
-      if(!errcod) {
-	  sprintf(fullpath, "%s%s.%u", path, name, unit);
-	  this_unit->vol[i].path = (char *) malloc(strlen(fullpath)+1);
-	  strcpy(this_unit->vol[i].path,fullpath);
-	}
-      else if(this_unit->numvols > 1) {
-	  psio_error(unit,PSIO_ERROR_NOVOLPATH);
-	}
-      else {
-          sprintf(fullpath, "./%s.%u", name, unit);
-	  this_unit->vol[i].path = (char *) malloc(strlen(fullpath)+1);
-	  strcpy(this_unit->vol[i].path,fullpath);
-	}
-
-      /* Check if any previously opened volumes have the same path */
-      for(j=0; j < i; j++)
-          if (!strcmp(this_unit->vol[i].path,this_unit->vol[j].path))
-              psio_error(unit,PSIO_ERROR_IDENTVOLPATH);
-
-      /* Now open the volume */
-      if(status == PSIO_OPEN_OLD) {
-	  this_unit->vol[i].stream =
-		 open(this_unit->vol[i].path,O_CREAT|O_RDWR,0644);
-	  if(this_unit->vol[i].stream == -1)
-	      psio_error(unit,PSIO_ERROR_OPEN);
-	}
-      else if(status == PSIO_OPEN_NEW) {
-	  this_unit->vol[i].stream =
-		  open(this_unit->vol[i].path,O_CREAT|O_RDWR|O_TRUNC,0644);
-	  if(this_unit->vol[i].stream == -1)
-	      psio_error(unit,PSIO_ERROR_OPEN);
-	}
-      else psio_error(unit,PSIO_ERROR_OSTAT);
+    errcod = psio_get_volpath(unit, i, path);
+    if(!errcod) {
+      sprintf(fullpath, "%s%s.%u", path, name, unit);
+      this_unit->vol[i].path = (char *) malloc(strlen(fullpath)+1);
+      strcpy(this_unit->vol[i].path,fullpath);
     }
+    else if(this_unit->numvols > 1) {
+      psio_error(unit,PSIO_ERROR_NOVOLPATH);
+    }
+    else {
+      sprintf(fullpath, "./%s.%u", name, unit);
+      this_unit->vol[i].path = (char *) malloc(strlen(fullpath)+1);
+      strcpy(this_unit->vol[i].path,fullpath);
+    }
+
+    /* Check if any previously opened volumes have the same path */
+    for(j=0; j < i; j++)
+      if (!strcmp(this_unit->vol[i].path,this_unit->vol[j].path))
+	psio_error(unit,PSIO_ERROR_IDENTVOLPATH);
+
+    /* Now open the volume */
+    if(status == PSIO_OPEN_OLD) {
+      this_unit->vol[i].stream =
+	open(this_unit->vol[i].path,O_CREAT|O_RDWR,0644);
+      if(this_unit->vol[i].stream == -1)
+	psio_error(unit,PSIO_ERROR_OPEN);
+    }
+    else if(status == PSIO_OPEN_NEW) {
+      this_unit->vol[i].stream =
+	open(this_unit->vol[i].path,O_CREAT|O_RDWR|O_TRUNC,0644);
+      if(this_unit->vol[i].stream == -1)
+	psio_error(unit,PSIO_ERROR_OPEN);
+    }
+    else psio_error(unit,PSIO_ERROR_OSTAT);
+  }
 
   if (status == PSIO_OPEN_OLD) tocstat = psio_tocread(unit);
   else if (status == PSIO_OPEN_NEW || tocstat) {
       
-      /* Init the TOC stats and write them to disk */
-      this_unit->tocaddress.page = 0;
-      this_unit->tocaddress.offset = 3*sizeof(ULI);
-      this_unit->toclen = 0;
-      this_unit->toc = NULL;
+    /* Init the TOC stats and write them to disk */
+    this_unit->tocaddress.page = 0;
+    this_unit->tocaddress.offset = 3*sizeof(ULI);
+    this_unit->toclen = 0;
+    this_unit->toc = NULL;
 
-      /* Seek vol[0] to its beginning */
-      stream = this_unit->vol[0].stream;
-      errcod = lseek(stream, 0L, SEEK_SET);
-      if(errcod == -1) psio_error(unit,PSIO_ERROR_LSEEK);
+    /* Seek vol[0] to its beginning */
+    stream = this_unit->vol[0].stream;
+    errcod = lseek(stream, 0L, SEEK_SET);
+    if(errcod == -1) psio_error(unit,PSIO_ERROR_LSEEK);
   
-      errcod = write(stream, (char *) &(this_unit->tocaddress.page),
-		     sizeof(ULI));
-      if(errcod != sizeof(ULI)) psio_error(unit,PSIO_ERROR_WRITE);
-      errcod = write(stream, (char *) &(this_unit->tocaddress.offset),
-		     sizeof(ULI));
-      if(errcod != sizeof(ULI)) psio_error(unit,PSIO_ERROR_WRITE);
-      errcod = write(stream, (char *) &(this_unit->toclen), sizeof(ULI));
-      if(errcod != sizeof(ULI)) psio_error(unit,PSIO_ERROR_WRITE);
+    errcod = write(stream, (char *) &(this_unit->tocaddress.page),
+		   sizeof(ULI));
+    if(errcod != sizeof(ULI)) psio_error(unit,PSIO_ERROR_WRITE);
+    errcod = write(stream, (char *) &(this_unit->tocaddress.offset),
+		   sizeof(ULI));
+    if(errcod != sizeof(ULI)) psio_error(unit,PSIO_ERROR_WRITE);
+    errcod = write(stream, (char *) &(this_unit->toclen), sizeof(ULI));
+    if(errcod != sizeof(ULI)) psio_error(unit,PSIO_ERROR_WRITE);
 
-    }
+  }
   else psio_error(unit,PSIO_ERROR_OSTAT);
 
   return(0);

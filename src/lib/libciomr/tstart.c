@@ -5,10 +5,14 @@
 */
 
 /* $Log$
- * Revision 1.5  2002/12/17 16:25:36  crawdad
- * Modifying tstop output summary to include minutes.
- * -TDC
+ * Revision 1.6  2002/12/17 22:02:13  crawdad
+ * Moving a number of files from the top-level psi3 src to appropriate
+ * subdirectories to clean up.
  *
+/* Revision 1.5  2002/12/17 16:25:36  crawdad
+/* Modifying tstop output summary to include minutes.
+/* -TDC
+/*
 /* Revision 1.4  2002/06/01 18:23:54  sherrill
 /* Upgrade doxygen documentation
 /*
@@ -82,26 +86,25 @@ static char *rcsid = "$Id$";
 ** \ingroup (CIOMR)
 */
 void tstart(FILE *outfile)
-   {
-       int i,error;
-       char *name;
-       name = (char *) malloc(40 * sizeof(char));
-       error = gethostname(name, 40);
-       if(error != 0) strncpy(name,"nohostname", 11);
+{
+  int i,error;
+  char *name;
+  name = (char *) malloc(40 * sizeof(char));
+  error = gethostname(name, 40);
+  if(error != 0) strncpy(name,"nohostname", 11);
 
-       time_start = time(NULL);
+  time_start = time(NULL);
 
-       for (i=0; i < 78 ; i++) {
-           fprintf(outfile,"*");
-          }
-       fprintf(outfile,"\n");
+  for (i=0; i < 78 ; i++) {
+    fprintf(outfile,"*");
+  }
+  fprintf(outfile,"\n");
 
-       fprintf(outfile,"tstart called on %s\n", name);
-       fprintf(outfile,"%s\n",ctime(&time_start));
+  fprintf(outfile,"tstart called on %s\n", name);
+  fprintf(outfile,"%s\n",ctime(&time_start));
 
-       free(name);
-
-       }
+  free(name);
+}
 
 /*!
 ** tstop: Stop timer.

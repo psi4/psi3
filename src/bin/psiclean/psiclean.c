@@ -46,20 +46,20 @@ int main(int argc, char *argv[])
   errcod = psio_get_filename_default(basename);
 
   for (i=0; i<nvol; i++) {
-      errcod = psio_get_volpath_default(i, vpath);
+    errcod = psio_get_volpath_default(i, vpath);
 
-      if (errcod) {
-        fprintf(outfile, "psiclean: Trouble reading volume path %d\n", nvol);
-        exit_bad();
-      }
+    if (errcod) {
+      fprintf(outfile, "psiclean: Trouble reading volume path %d\n", nvol);
+      exit_bad();
+    }
 
-      sprintf(fileslist,"%s%s.*",vpath,basename);
-      sprintf(cmdstring,"echo Removing files %s%s",vpath,basename);
-      system(cmdstring);
-      sprintf(cmdstring,"ls -l %s",fileslist);
-      system(cmdstring);
-      sprintf(cmdstring,"/bin/rm %s",fileslist);
-      system(cmdstring);
+    sprintf(fileslist,"%s%s.*",vpath,basename);
+    sprintf(cmdstring,"echo Removing files %s%s",vpath,basename);
+    system(cmdstring);
+    sprintf(cmdstring,"ls -l %s",fileslist);
+    system(cmdstring);
+    sprintf(cmdstring,"/bin/rm %s",fileslist);
+    system(cmdstring);
   }
 
   /* we're done, clean up */

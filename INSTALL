@@ -16,7 +16,8 @@ I. Compilation Prerequisites:
       ** install (from fileutils package)
    * For documentation:
       ** latex
-      ** latex2html (v0.99_1 or 1.62, including the patch supplied with PSI3)
+      ** latex2html (v0.99_1 or 1.62, including the patch supplied in
+	  psi3/misc)
 
 II. Basic Code Configuration, Compilation, and Installation
 

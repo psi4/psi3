@@ -20,6 +20,8 @@ dvidir='$(docdir)/dvi'
 test -z "$datadir" && datadir='$(prefix)/lib'
 test -z "$incdir" && incdir='$(prefix)/include'
 
+AC_CONFIG_AUX_DIR("$srcdir/bin")
+
 # To make a "make all" at the top level work before the utilities
 # and include files are installed, the include files
 # will be put into an objincdir and the utilities will be accessed
@@ -42,11 +44,11 @@ AC_SUBST(top_objdir)
 # If target wasn't given, then examine the current host and try
 # to make it the target.
 if test -z "$target" || test "$target" = NONE; then
-  if test -x $srcdir/config.guess; then
-    target=`$srcdir/config.guess`
+  if test -x $srcdir/bin/config.guess; then
+    target=`$srcdir/bin/config.guess`
   fi
-  if test -x $srcdir/config.local; then
-    test -z "$target" && target=`$srcdir/config.local $target`
+  if test -x $srcdir/bin/config.local; then
+    test -z "$target" && target=`$srcdir/bin/config.local $target`
   fi
 fi
 
@@ -185,8 +187,8 @@ AC_PROG_CXXCPP()
 AC_PROG_YACC()
 AC_PROG_RANLIB()
 AC_PROG_INSTALL()
-INSTALL_INCLUDE='$(top_srcdir)/installinc.sh' AC_SUBST(INSTALL_INCLUDE)
-MKDIRS='$(top_srcdir)/mkdirs.sh' AC_SUBST(MKDIRS)
+INSTALL_INCLUDE='$(top_srcdir)/bin/installinc.sh' AC_SUBST(INSTALL_INCLUDE)
+MKDIRS='$(top_srcdir)/bin/mkdirs.sh' AC_SUBST(MKDIRS)
 
 # On 64-bit POWER platforms you need lex rather than flex
 if echo $os | grep aix >/dev/null 2>&1 && test "$bitwidth64" = yes; then
