@@ -155,10 +155,10 @@ void xc_fock(void){
 			      G[m][n] += vval*bas1*bas2;
 			  }
 		      }
+		  }
+	      }
 	  }
       }
-  }
-}
   }
   timer_off("DFT");
   timer_done();
@@ -184,6 +184,7 @@ void xc_fock(void){
   Gtri = init_array(nstri);
   sq_to_tri(G,Gtri,Symmetry.num_so);
   free_block(G);
+  /*fprintf(outfile,"\nDFT_energy = %10.10lf",eval);*/
   psio_open(IOUnits.itapDSCF, PSIO_OPEN_OLD);
   psio_write_entry(IOUnits.itapDSCF,"DFT XC-energy",(char *) &(eval), sizeof(double));
   switch (UserOptions.reftype) {

@@ -14,7 +14,7 @@
 #include"global.h"
 
 #include"read_scf_opdm.h"
-#include"read_scf_evec.h"
+#include"read_scf_occ_evec.h"
 #include"shell_block_matrix.h"
 #include"hf_fock.h"
 #include"xc_fock.h"
@@ -48,7 +48,7 @@ void fock()
    -----------------------------------*/
   if(UserOptions.make_dft){
     /*--- Read in the SCF eigenvector density ---*/
-      read_scf_evec();
+      read_scf_occ_evec();
     /*-- Compute exch+corr contribution to the Fock matrix ---*/
     xc_fock();
   }

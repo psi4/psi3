@@ -28,6 +28,7 @@ struct den_info_s calc_density(struct coordinates geom){
     int  shell_start;
     int  shell_end;
     int n_shells;
+    int num_ao,ndocc;
     int shell_center;
     double x,y,z;
     double xa,ya,za;
@@ -49,6 +50,8 @@ struct den_info_s calc_density(struct coordinates geom){
     y = geom.y;
     z = geom.z;
     
+    num_ao = BasisSet.num_ao;
+    ndocc = MOInfo.ndocc;
     dist_atom = init_array(Molecule.num_atoms);
     dist_coord = (struct coordinates *)malloc(sizeof(struct coordinates)*Molecule.num_atoms);
     timer_on("distance");
@@ -216,14 +219,10 @@ timer_off("exponent");
     
    if(UserOptions.reftype == rhf){
 	den_sum = 0.0;
-	temp_arr = init_array(BasisSet.num_ao);
-	C_DGEMV('n',BasisSet.num_ao,MOInfo.ndocc,1.0,Cmat[0],BasisSet.num_ao,DFT_options.basis,1,1.0,temp_arr,1);
-	dot_arr(temp_arr,temp_arr,BasisSet.num_ao,&den_sum);
+	temp_arr = init_array(ndocc);
+	C_DGEMV('t',num_ao,ndocc,1.0,Cocc[0],ndocc,DFT_options.basis,1,0.0,temp_arr,1);
+	dot_arr(temp_arr,temp_arr,MOInfo.ndocc,&den_sum);
 	den_info.den = den_sum;
-	/*temp_arr = init_array(BasisSet.num_ao);
-	  C_DGEMV('n',BasisSet.num_ao,BasisSet.num_ao,1.0,Dens[0],BasisSet.num_ao,DFT_options.basis,1,1.0,temp_arr,1);
-	  dot_arr(temp_arr,DFT_options.basis,BasisSet.num_ao,&den_sum);
-	  den_info.den = 0.5*den_sum;*/
     }
    timer_off("density"); 
    free(dist_coord);
