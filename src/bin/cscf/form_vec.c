@@ -1,8 +1,11 @@
 /* $Log$
- * Revision 1.3  2000/07/06 20:04:01  sbrown
- * Added capabilities to send the eigenvector to cints for DFT
- * calculations.
+ * Revision 1.4  2000/07/06 21:06:05  sbrown
+ * Fixed a seg fault inf form_vec.c
  *
+/* Revision 1.3  2000/07/06 20:04:01  sbrown
+/* Added capabilities to send the eigenvector to cints for DFT
+/* calculations.
+/*
 /* Revision 1.2  2000/07/05 21:47:30  sbrown
 /* Enabled the code to export the SCF eigenvector to CINTS when doing DFT.
 /*
@@ -92,13 +95,14 @@ void form_vec()
        psio_write_entry(itapDSCF, "SCF Eigenvector", (char *) &(cmat[0][0]),
 			sizeof(double)*ntri);
        psio_close(itapDSCF,1);
+       free_block(cmat);
    }
+ 
    inflg = 0;
    free_matrix(ctrans,nsfmax);
    free_matrix(temp,nsfmax);
    free_matrix(sqhmat,nsfmax);
    free_matrix(sqhmat2,nsfmax);
-   free_block(cmat);
 }
 
 
