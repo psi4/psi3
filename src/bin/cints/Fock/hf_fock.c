@@ -17,7 +17,11 @@
 #include"norm_quartet.h"
 #include"hash.h"
 #include"transmat.h"
-#include"int_fjt.h"
+#ifdef USE_TAYLOR_FM
+  #include"taylor_fm_eval.h"
+#else
+  #include"int_fjt.h"
+#endif
 #include"schwartz.h"
 #include"shell_block_matrix.h"
 
@@ -48,7 +52,11 @@ void hf_fock()
   /*---------------
     Initialization
    ---------------*/
+#ifdef USE_TAYLOR_FM
+  init_Taylor_Fm_Eval(BasisSet.max_am*4-4,UserOptions.cutoff);
+#else
   init_fjt(BasisSet.max_am*4);
+#endif
   init_libint_base();
 
   /*------------------------------------------
@@ -220,7 +228,11 @@ void hf_fock()
     if (Symmetry.nirreps > 1)
       free_shell_block_matrix(Gfull_o);
   }
+#ifdef USE_TAYLOR_FM
+  free_Taylor_Fm_Eval();
+#else
   free_fjt();
+#endif
 
   return;
 }

@@ -6,7 +6,11 @@
 #include "defines.h"
 #define EXTERN
 #include "global.h"
-#include "fjt.h"
+#ifdef USE_TAYLOR_FM
+  #include"taylor_fm_eval.h"
+#else
+  #include "fjt.h"
+#endif
 
 void AI_Deriv1_OSrecurs(double ***AI0, double ***AIX, double ***AIY, double ***AIZ, struct coordinates PA, struct coordinates PB,
 		 struct coordinates PC, double gamma, int iang, int jang)
@@ -24,9 +28,13 @@ void AI_Deriv1_OSrecurs(double ***AI0, double ***AIX, double ***AIY, double ***A
   int mmax = iang+jang;
   double tmp = sqrt(gamma)*M_2_SQRTPI;
   double u = gamma*(PC.x*PC.x + PC.y*PC.y + PC.z*PC.z);
-  static double F[2*(LIBDERIV_MAX_AM+DERIV_LVL)+1];
+  static double F[2*CINTS_MAX_AM+1];
 
+#ifdef USE_TAYLOR_FM
+  taylor_compute_fm(F,u,mmax);
+#else
   calc_f(F,mmax,u);
+#endif
 
 	/* Computing starting integrals for recursion */
   for(m=0;m<=mmax;m++)

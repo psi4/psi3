@@ -40,6 +40,9 @@ EXTERN SymmetryInfo_t Symmetry;
 /*--- GTO "constant" data (normalization factors, cart2puresphharm coefficients) ---*/
 EXTERN GTOs_t GTOs;
 
+/*--- "Taylor"-type evaluator of incomplete gamma function ---*/
+EXTERN Fm_Eval_t Taylor_Fm_Eval;
+
 /*--- Information about MOs ---*/
 EXTERN MOInfo_t MOInfo;
 

@@ -11,6 +11,9 @@
 #include "global.h"
 #include "oe_osrr.h"
 #include "oe_deriv1_osrr.h"
+#ifdef USE_TAYLOR_FM
+  #include"taylor_fm_eval.h"
+#endif
 #include "small_fns.h"
 
 /*--- These frequently used numbers are to avoid costs of passing parameters ---*/
@@ -71,6 +74,11 @@ void oe_deriv1()
    double ***AI0;
    double ***AIX, ***AIY, ***AIZ;
    double **grad_oe, **grad_ov;
+
+#ifdef USE_TAYLOR_FM
+  /*--- +2*DERIV_LVL because of the way we invoke AI_Deriv1_OSrecurs ---*/
+  init_Taylor_Fm_Eval(BasisSet.max_am*4-4+2*DERIV_LVL,UserOptions.cutoff);
+#endif  
 
   indmax = (BasisSet.max_am+DERIV_LVL-1)*(BasisSet.max_am+DERIV_LVL)*(BasisSet.max_am+DERIV_LVL)+1;
   AI0 = init_box(indmax,indmax,2*(BasisSet.max_am+DERIV_LVL)+1);

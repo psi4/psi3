@@ -12,6 +12,10 @@
 #include"global.h"
 #include"oe_osrr.h"
 
+#ifdef USE_TAYLOR_FM
+  #include"taylor_fm_eval.h"
+#endif
+
 /*-------------------------------
   Explicit function declarations
  -------------------------------*/
@@ -68,6 +72,9 @@ void oe_ints()
    double ***AI0;
    double **OIX, **OIY, **OIZ;
 
+#ifdef USE_TAYLOR_FM
+  init_Taylor_Fm_Eval(BasisSet.max_am*4-4,UserOptions.cutoff);
+#endif  
 
   /*--- allocate room for the one-e matrices ---*/
   dimension = ioff[Symmetry.num_so];
@@ -382,6 +389,12 @@ void oe_ints()
   free(S);
   free(T);
   free(V);
+
+#ifdef USE_TAYLOR_FM
+  free_Taylor_Fm_Eval();
+#endif
+
+  return;
 }   
 
 double ***init_box(int a, int b, int c)

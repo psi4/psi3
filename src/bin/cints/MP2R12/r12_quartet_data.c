@@ -30,6 +30,7 @@ void r12_quartet_data(prim_data* Data, double_array_t *fjt_table, double AB2, do
                   1.0/51.0, 1.0/53.0, 1.0/55.0, 1.0/57.0, 1.0/59.0,
                   1.0/61.0, 1.0/63.0, 1.0/65.0, 1.0/67.0, 1.0/69.0,
                   1.0/71.0, 1.0/73.0, 1.0/75.0, 1.0/77.0, 1.0/79.0};
+  static double small_T = UserOptions.cutoff;       /*--- Use only one term in Taylor expansion of Fj(T) if T < small_T ---*/
   int deriv_lvl = 1;
 
   /*----------------
@@ -37,6 +38,7 @@ void r12_quartet_data(prim_data* Data, double_array_t *fjt_table, double AB2, do
    ----------------*/
   struct coordinates PQ, W;
   int i;
+  double T;
   double coef1;
   double PQ2;
   double oozn;
@@ -59,9 +61,10 @@ void r12_quartet_data(prim_data* Data, double_array_t *fjt_table, double AB2, do
   PQ2 = PQ.x*PQ.x;
   PQ2 += PQ.y*PQ.y;
   PQ2 += PQ.z*PQ.z;
+  T = rho*PQ2;
   
   if (!am && deriv_lvl == 0) { /*--- Only need to compute (00|00) and (00||00) ---*/
-    int_fjt(fjt_table,1,rho*PQ2);
+    int_fjt(fjt_table,1,T);
     Data->F[0] = fjt_table->d[0]*coef1;
     Data->ss_r12_ss = coef1*(2.0*Data->oo2p*fjt_table->d[0] +
 			     PQ2*(fjt_table->d[0] - fjt_table->d[1]));
@@ -75,12 +78,12 @@ void r12_quartet_data(prim_data* Data, double_array_t *fjt_table, double AB2, do
   W.y = (sp1->P[pi][pj][1]*zeta+sp2->P[pk][pl][1]*eta)*oozn;
   W.z = (sp1->P[pi][pj][2]*zeta+sp2->P[pk][pl][2]*eta)*oozn;
 
-  if(fabs(PQ2)<ZERO){ 
+  if(T < small_T){ 
     for(i=0; i<=am+deriv_lvl; i++) 
       Data->F[i] = F0[i]*coef1;
     }
   else {
-    int_fjt(fjt_table,am+deriv_lvl,rho*PQ2);
+    int_fjt(fjt_table,am+deriv_lvl,T);
     for(i=0;i<=am+deriv_lvl;i++)
       Data->F[i] = fjt_table->d[i]*coef1;
     }

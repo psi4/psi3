@@ -18,7 +18,11 @@
 #include"hash.h"
 #include"transmat.h"
 #include"read_scf_opdm.h"
-#include"int_fjt.h"
+#ifdef USE_TAYLOR_FM
+  #include"taylor_fm_eval.h"
+#else
+  #include"int_fjt.h"
+#endif
 #include"schwartz.h"
 #include"shell_block_matrix.h"
 
@@ -34,8 +38,10 @@ void *hf_fock_thread(void *tnum_ptr)
   struct shell_pair *sp_ij, *sp_kl, *sp_ik, *sp_il, *sp_jk, *sp_jl;
   Libint_t Libint;                    /* Integrals library object */
   htable_t htable;                    /* hashing table */
+#ifndef USE_TAYLOR_FM
   double_array_t fjt_table;           /* table of auxiliary function F_m(u) for each primitive combination */
-
+#endif
+  
   int total_te_count = 0;
   int ij, kl, ik, jl, ijkl;
   int ioffset, joffset, koffset, loffset;
@@ -108,7 +114,10 @@ void *hf_fock_thread(void *tnum_ptr)
     ---*/
   if (Symmetry.nirreps > 1)
     init_htable( &htable, Symmetry.max_stab_index );
+
+#ifndef USE_TAYLOR_FM
   init_fjt_table(&fjt_table);
+#endif
 
   max_cart_class_size = (ioff[BasisSet.max_am])*
 			(ioff[BasisSet.max_am])*
@@ -441,9 +450,13 @@ void *hf_fock_thread(void *tnum_ptr)
 		    max_pl = (sk == sl) ? pk+1 : np_l;
 		    for (pl = 0; pl < max_pl; pl++){
 		      n = m * (1 + (sk == sl && pk != pl));
+#ifdef USE_TAYLOR_FM
+		      quartet_data(&(Libint.PrimQuartet[num_prim_comb++]), NULL, AB2, CD2,
+				   sp_ij, sp_kl, am, pi, pj, pk, pl, n*lambda_T);
+#else
 		      quartet_data(&(Libint.PrimQuartet[num_prim_comb++]), &fjt_table, AB2, CD2,
 				   sp_ij, sp_kl, am, pi, pj, pk, pl, n*lambda_T);
-		      
+#endif
 		    }
 		  }
 		}
@@ -755,7 +768,10 @@ void *hf_fock_thread(void *tnum_ptr)
     free(sl_arr);
   }
   free(key_arr);
+
+#ifndef USE_TAYLOR_FM
   free_fjt_table(&fjt_table);
+#endif
 
   return NULL;
 }

@@ -6,8 +6,12 @@
 #include"defines.h"
 #define EXTERN
 #include"global.h"
-#include"fjt.h"
 #include"small_fns.h"
+#ifdef USE_TAYLOR_FM
+  #include"taylor_fm_eval.h"
+#else
+  #include"fjt.h"
+#endif
 
 /* Recurrence relation are from the same paper - pp. 3971-3972 */
 
@@ -27,9 +31,13 @@ void AI_OSrecurs(double ***AI0, struct coordinates PA, struct coordinates PB,
   double mmax = iang+jang;
   double tmp = sqrt(gamma)*M_2_SQRTPI;
   double u = gamma*(PC.x*PC.x + PC.y*PC.y + PC.z*PC.z);
-  static double F[2*LIBINT_MAX_AM+1];
-  
+  static double F[2*CINTS_MAX_AM+1];
+
+#ifdef USE_TAYLOR_FM
+  taylor_compute_fm(F,u,mmax);
+#else
   calc_f(F,mmax,u);
+#endif
 
 
 	/* Computing starting integrals for recursion */

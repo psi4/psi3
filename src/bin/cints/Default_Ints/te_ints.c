@@ -15,7 +15,11 @@
 #include"quartet_data.h"
 #include"iwl_tebuf.h"
 #include"norm_quartet.h"
-#include"int_fjt.h"
+#ifdef USE_TAYLOR_FM
+  #include"taylor_fm_eval.h"
+#else
+  #include"int_fjt.h"
+#endif
 
 void te_ints()
 {
@@ -31,7 +35,9 @@ void te_ints()
   struct unique_shell_pair *usp_ij,*usp_kl;
 
   Libint_t Libint;
+#ifndef USE_TAYLOR_FM
   double_array_t fjt_table;
+#endif
 
   int total_te_count = 0;
   int ij, kl, ik, jl, ijkl;
@@ -96,8 +102,12 @@ void te_ints()
   eriout = fopen("eriout.dat","w");
 #endif
   iwl_buf_init(&ERIOUT, IOUnits.itap33, toler, 0, 0);
+#ifdef USE_TAYLOR_FM
+  init_Taylor_Fm_Eval(BasisSet.max_am*4-4,UserOptions.cutoff);
+#else
   init_fjt(BasisSet.max_am*4);
   init_fjt_table(&fjt_table);
+#endif
   init_libint_base();
   
   /*-------------------------
@@ -334,9 +344,13 @@ void te_ints()
 		    max_pl = (sk == sl) ? pk+1 : np_l;
 		    for (pl = 0; pl < max_pl; pl++){
 		      n = m * (1 + (sk == sl && pk != pl));
+#ifdef USE_TAYLOR_FM
+		      quartet_data(&(Libint.PrimQuartet[num_prim_comb++]), NULL, AB2, CD2,
+				   sp_ij, sp_kl, am, pi, pj, pk, pl, n*lambda_T);
+#else
 		      quartet_data(&(Libint.PrimQuartet[num_prim_comb++]), &fjt_table, AB2, CD2,
 				   sp_ij, sp_kl, am, pi, pj, pk, pl, n*lambda_T);
-		      
+#endif
 		    }
 		  }
 		}
@@ -1002,8 +1016,12 @@ void te_ints()
 #ifdef NONDOUBLE_INTS
   free(raw_data);
 #endif
+#ifdef USE_TAYLOR_FM
+  free_Taylor_Fm_Eval();
+#else
   free_fjt_table(&fjt_table);
   free_fjt();
+#endif
 
   return;
 }

@@ -11,7 +11,11 @@
 #include "defines.h"
 #define EXTERN
 #include "global.h"
-#include "int_fjt.h"
+#ifdef USE_TAYLOR_FM
+  #include"taylor_fm_eval.h"
+#else
+  #include"int_fjt.h"
+#endif
 #include "deriv1_quartet_data.h"
 #include "small_fns.h"
 
@@ -22,7 +26,9 @@ void te_deriv1_corr()
   struct iwlbuf TPDM;                 /* IWL buffer for two-pdm matrix elements */
   struct shell_pair *sp_ij, *sp_kl;
   Libderiv_t Libderiv;                    /* Integrals library object */
+#ifndef USE_TAYLOR_FM
   double_array_t fjt_table;               /* table of auxiliary function F_m(u) for each primitive combination */
+#endif
 
   int ij, kl, ik, jl, ijkl;
   int ioffset, joffset, koffset, loffset;
@@ -81,10 +87,14 @@ void te_deriv1_corr()
   buf_offset = 0;
   buf_4offset = 0;
   buf_size = TPDM.inbuf;
+#ifdef USE_TAYLOR_FM
+  init_Taylor_Fm_Eval(BasisSet.max_am*4-4+DERIV_LVL,UserOptions.cutoff);
+#else
   init_fjt(BasisSet.max_am*4+DERIV_LVL);
-  init_libderiv_base();
-  
   init_fjt_table(&fjt_table);
+#endif
+  init_libderiv_base();
+
   max_cart_class_size = ioff[BasisSet.max_am]*ioff[BasisSet.max_am]*ioff[BasisSet.max_am]*ioff[BasisSet.max_am];
   max_class_size = max_cart_class_size;
   max_num_prim_comb = (BasisSet.max_num_prims*BasisSet.max_num_prims)*
@@ -222,9 +232,15 @@ void te_deriv1_corr()
 		  max_pl = (sk == sl) ? pk+1 : np_l;
 		  for (pl = 0; pl < max_pl; pl++){
 		    n = m * (1 + (sk == sl && pk != pl));
+#ifdef USE_TAYLOR_FM
+		    deriv1_quartet_data(&(Libderiv.PrimQuartet[num_prim_comb++]),
+					NULL, AB2, CD2,
+					sp_ij, sp_kl, am, pi, pj, pk, pl, n*pfac);
+#else
 		    deriv1_quartet_data(&(Libderiv.PrimQuartet[num_prim_comb++]),
 					&fjt_table, AB2, CD2,
 					sp_ij, sp_kl, am, pi, pj, pk, pl, n*pfac);
+#endif    
 		    
 		  }
 		}
@@ -358,9 +374,13 @@ void te_deriv1_corr()
    ---------*/
   free(FourInd);
   free_block(grad_te_local);
-  free_fjt_table(&fjt_table);
   free_libderiv(&Libderiv);
+#ifdef USE_TAYLOR_FM
+  free_Taylor_Fm_Eval();
+#else
+  free_fjt_table(&fjt_table);
   free_fjt();
+#endif
   iwl_buf_close(&TPDM,1);
 
   return;

@@ -46,6 +46,8 @@ void parsing()
 
   UserOptions.scf_only = 0;
   errcod = ip_string("WFN",&UserOptions.wfn,0);
+  if (UserOptions.wfn == NULL)
+    punt("Keyword WFN is missing");
   if (!strcmp("SCF",UserOptions.wfn))
     UserOptions.scf_only = 1;
 
@@ -153,6 +155,8 @@ void parsing_cmdline(int argc, char *argv[])
 	   UserOptions.make_deriv1 = 1;
 	   UserOptions.symm_ints = 0;
 	   errcod = ip_string("DERTYPE",&UserOptions.dertype,0);
+	   if (UserOptions.dertype == NULL)
+	     punt("Keyword DERTYPE is missing");
 	   if (strcmp(UserOptions.dertype,"FIRST"))
 	     punt("Only DERTYPE=FIRST can be presently handled");
 	   if (!strcmp("SCF",UserOptions.wfn)) {
@@ -216,7 +220,7 @@ void parsing_cmdline(int argc, char *argv[])
 	       punt("MP2 energy evaluation with specified REFERENCE not implemented");
 	   }
 	   else
-	     punt("MP2 energy is requested, but REFERENCE != MP2 in your input file");
+	     punt("MP2 energy is requested, but WFN != MP2 in your input file");
 #else
 	   punt("--mp2 option is not supported by your CINTS executable.\nRecompile the code including files in MP2 subdirectory.");
 #endif
@@ -261,7 +265,7 @@ void parsing_cmdline(int argc, char *argv[])
 	       punt("Direct MP2-R12/A integrals transformation with specified REFERENCE not implemented");
 	   }
 	   else
-	     punt("Direct MP2-R12/A integrals transformation is requested, but REFERENCE != MP2 in your input file");
+	     punt("Direct MP2-R12/A integrals transformation is requested, but WFN != MP2 in your input file");
 #else
 	   punt("--mp2r12 option is not supported by your CINTS executable.\nRecompile the code including files in MP2R12 subdirectory.");
 #endif

@@ -12,7 +12,11 @@
 #include "defines.h"
 #define EXTERN
 #include "global.h"
-#include "int_fjt.h"
+#ifdef USE_TAYLOR_FM
+  #include"taylor_fm_eval.h"
+#else
+  #include"int_fjt.h"
+#endif
 #include "small_fns.h"
 
 extern void *te_deriv1_scf_thread(void *);
@@ -29,7 +33,11 @@ void te_deriv1_scf()
   /*---------------
     Initialization
    ---------------*/
+#ifdef USE_TAYLOR_FM
+  init_Taylor_Fm_Eval(BasisSet.max_am*4-4+DERIV_LVL,UserOptions.cutoff);
+#else
   init_fjt(BasisSet.max_am*4+DERIV_LVL);
+#endif
   init_libderiv_base();
   grad_te = block_matrix(Molecule.num_atoms,3);
 
@@ -59,7 +67,11 @@ void te_deriv1_scf()
     Clean-up
    ---------*/
   free_block(grad_te);
+#ifdef USE_TAYLOR_FM
+  free_Taylor_Fm_Eval();
+#else
   free_fjt();
+#endif
 
   return;
 }

@@ -206,6 +206,24 @@ typedef struct {
 } GTOs_t;
 
 typedef struct {
+    double **grid;            /* Table of "exact" Fm(T) values. Row index corresponds to
+				 values of T (max_T+1 rows), column index to values
+				 of m (max_m+1 columns) */
+    double delT;              /* The step size for T, depends on cutoff */
+    double cutoff;            /* Tolerance cutoff used in all computations of Fm(T) */
+    int order_interp;         /* Order of (Taylor) interpolation */
+    int max_m;                /* Maximum value of m in the table, depends on cutoff
+				 and the number of terms in Taylor interpolation */
+    int max_T;                /* Maximum index of T in the table, depends on cutoff
+			         and m */
+    double *T_crit;           /* Maximum T for each row, depends on cutoff;
+				 for a given m and T_idx <= max_T_idx[m] use Taylor interpolation,
+				 for a given m and T_idx > max_T_idx[m] use the asymptotic formula */
+    void (*compute_Fm)(double *, double, unsigned int);  /* The function which computes a set of Fm(T), 0<=m<=l
+						            for given T and l */
+} Fm_Eval_t;
+
+typedef struct {
     double Escf;              /* SCF energy */
     double Ecorr;             /* Correlation energy */
     double Eref;              /* Reference energy (if not SCF reference) */

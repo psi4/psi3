@@ -12,7 +12,11 @@
 #include "defines.h"
 #define EXTERN
 #include "global.h"
-#include "int_fjt.h"
+#ifdef USE_TAYLOR_FM
+  #include"taylor_fm_eval.h"
+#else
+  #include"int_fjt.h"
+#endif
 #include "deriv1_quartet_data.h"
 #include "small_fns.h"
 
@@ -27,7 +31,9 @@ void *te_deriv1_scf_thread(void *tnum_ptr)
   /*--- Various data structures ---*/
   struct shell_pair *sp_ij, *sp_kl;
   Libderiv_t Libderiv;                    /* Integrals library object */
+#ifndef USE_TAYLOR_FM
   double_array_t fjt_table;               /* table of auxiliary function F_m(u) for each primitive combination */
+#endif
   
   int ij, kl, ik, jl, ijkl;
   int ioffset, joffset, koffset, loffset;
@@ -82,7 +88,9 @@ void *te_deriv1_scf_thread(void *tnum_ptr)
   /*---------------
     Initialization
    ---------------*/
+#ifndef USE_TAYLOR_FM
   init_fjt_table(&fjt_table);
+#endif
 
   max_cart_class_size = ioff[BasisSet.max_am]*ioff[BasisSet.max_am]*ioff[BasisSet.max_am]*ioff[BasisSet.max_am];
   max_class_size = max_cart_class_size;
@@ -199,10 +207,15 @@ void *te_deriv1_scf_thread(void *tnum_ptr)
 		  max_pl = (sk == sl) ? pk+1 : np_l;
 		  for (pl = 0; pl < max_pl; pl++){
 		    n = m * (1 + (sk == sl && pk != pl));
+#ifdef USE_TAYLOR_FM
+		    deriv1_quartet_data(&(Libderiv.PrimQuartet[num_prim_comb++]),
+					NULL, AB2, CD2,
+					sp_ij, sp_kl, am, pi, pj, pk, pl, n*pfac);
+#else
 		    deriv1_quartet_data(&(Libderiv.PrimQuartet[num_prim_comb++]),
 					&fjt_table, AB2, CD2,
 					sp_ij, sp_kl, am, pi, pj, pk, pl, n*pfac);
-		    
+#endif		    
 		  }
 		}
 	      }
@@ -338,7 +351,9 @@ void *te_deriv1_scf_thread(void *tnum_ptr)
   free(FourInd);
   free_block(grad_te_local);
   free_libderiv(&Libderiv);
+#ifndef USE_TAYLOR_FM
   free_fjt_table(&fjt_table);
+#endif
 
   return;
 }

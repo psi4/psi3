@@ -22,12 +22,15 @@
 #define SCF_ONLY 1       /* If you want to be able to compute integrals needed in
 			    SCF only if WFN=SCF - set this to 1 */
 
-/*---------------------
-  Predefined constants
- ---------------------*/
-#define ZERO 1E-15                 /* Definition of a floating-point "zero" */
+/*------------------------------------------------------------
+  Predefined cutoffs used while computing Fm(T) and integrals
+ ------------------------------------------------------------*/
+#define SOFT_ZERO 1E-5             /* Definition of a soft floating-point "zero" */
+#define ZERO 1E-15                 /* Definition of a hard floating-point "zero" */
 #define EPS 1.0e-17                /* Another definition of floating-point "zero"
 				      used in computing auxiliary function */
+#define USE_TAYLOR_FM              /* Use Taylor interpolation formula to compute Fm(T) */
+#define TAYLOR_ORDER 6             /* Order of Taylor interpolation used to compute Fm(T) */
 
 /*----------------------------------
   Thresholds for printing out stuff
@@ -81,3 +84,5 @@
 				this, do not contract into the Fock
 				matrix 
 			     */
+
+

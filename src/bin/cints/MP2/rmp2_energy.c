@@ -13,7 +13,11 @@
 #include"schwartz.h"
 #include"quartet_data.h"
 #include"norm_quartet.h"
-#include"int_fjt.h"
+#ifdef USE_TAYLOR_FM
+  #include"taylor_fm_eval.h"
+#else
+  #include"fjt.h"
+#endif
 #include"quartet_permutations.h"
 
 #define SWAP1 1
@@ -76,7 +80,9 @@ void rmp2_energy()
   struct shell_pair *sp_ij, *sp_kl;
   struct unique_shell_pair *usp_ij,*usp_kl;
   Libint_t Libint;
+#ifndef USE_TAYLOR_FM
   double_array_t fjt_table;
+#endif
 
   int ij, kl, ik, jl, ijkl;
   int count ;
@@ -149,7 +155,12 @@ void rmp2_energy()
   /*---------------
     Initialization
    ---------------*/
+#ifdef USE_TAYLOR_FM
+  init_Taylor_Fm_Eval(BasisSet.max_am*4-4,UserOptions.cutoff);
+#else
   init_fjt(BasisSet.max_am*4);
+  init_fjt_table(&fjt_table);
+#endif
   init_libint_base();
   timer_init();
   timer_on("Schwartz");
@@ -178,7 +189,6 @@ void rmp2_energy()
                        BasisSet.max_num_prims)*
                       (BasisSet.max_num_prims*
                        BasisSet.max_num_prims);
-  init_fjt_table(&fjt_table);
   UserOptions.memory -= init_libint(&Libint,max_num_prim_comb);
 
 #ifdef NONDOUBLE_INTS
@@ -392,9 +402,13 @@ void rmp2_energy()
 			    for (pl = 0; pl < max_pl; pl++){
 				n = m * (1 + (sk == sl && pk != pl));
 /*				if (fabs(sp_ij->Sovlp[pi][pj]*sp_kl->Sovlp[pk][pl]) > 1.0E-10)*/
-				quartet_data(&(Libint.PrimQuartet[num_prim_comb++]), &fjt_table, AB2, CD2,
-					     sp_ij, sp_kl, am, pi, pj, pk, pl, n*lambda_T);
-				
+#ifdef USE_TAYLOR_FM
+		      quartet_data(&(Libint.PrimQuartet[num_prim_comb++]), NULL, AB2, CD2,
+				   sp_ij, sp_kl, am, pi, pj, pk, pl, n*lambda_T);
+#else
+		      quartet_data(&(Libint.PrimQuartet[num_prim_comb++]), &fjt_table, AB2, CD2,
+				   sp_ij, sp_kl, am, pi, pj, pk, pl, n*lambda_T);
+#endif
 			    }
 			}
 		    }
@@ -776,11 +790,15 @@ void rmp2_energy()
   free(raw_data);
 #endif
   free_libint(&Libint);
-  free_fjt_table(&fjt_table);
   free(sj_arr);
   free(sk_arr);
   free(sl_arr);
+#ifdef USE_TAYLOR_FM
+  free_Taylor_Fm_Eval();
+#else
+  free_fjt_table(&fjt_table);
   free_fjt();
+#endif
 
   timer_done();
 

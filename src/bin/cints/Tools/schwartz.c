@@ -15,7 +15,11 @@
 
 #include"quartet_data.h"
 #include"norm_quartet.h"
-#include"int_fjt.h"
+#ifdef USE_TAYLOR_FM
+  #include"taylor_fm_eval.h"
+#else
+  #include"int_fjt.h"
+#endif
 #include"schwartz.h"
 
 void schwartz_eri()
@@ -24,7 +28,9 @@ void schwartz_eri()
   struct shell_pair *sp_ij, *sp_kl;
 
   Libint_t Libint;
+#ifndef USE_TAYLOR_FM
   double_array_t fjt_table;
+#endif
   
   int ij, kl, ik, jl, ijkl;
   int count ;
@@ -89,7 +95,9 @@ void schwartz_eri()
     Initialization
    ---------------*/
 /*  init_fjt(BasisSet.max_am*4);*/
+#ifndef USE_TAYLOR_FM
   init_fjt_table(&fjt_table);
+#endif
   max_bf_per_shell = ioff[BasisSet.max_am];
   max_cart_class_size = (max_bf_per_shell)*
                         (max_bf_per_shell)*
@@ -164,9 +172,13 @@ void schwartz_eri()
 	    max_pl = (sk == sl) ? pk+1 : np_l;
 	    for (pl = 0; pl < max_pl; pl++){
 	      n = m * (1 + (sk == sl && pk != pl));
+#ifdef USE_TAYLOR_FM
+	      quartet_data(&(Libint.PrimQuartet[num_prim_comb++]), NULL, AB2, CD2,
+			   sp_ij, sp_kl, am, pi, pj, pk, pl, (double)n);
+#else
 	      quartet_data(&(Libint.PrimQuartet[num_prim_comb++]), &fjt_table, AB2, CD2,
 			   sp_ij, sp_kl, am, pi, pj, pk, pl, (double)n);
-	      
+#endif
 	    }
 	  }
 	}
@@ -222,7 +234,9 @@ void schwartz_eri()
     Clean-up
    ---------*/
   free_libint(&Libint);
+#ifndef USE_TAYLOR_FM
   free_fjt_table(&fjt_table);
+#endif
 #ifdef NONDOUBLE_INTS
   free(raw_data);
 #endif
