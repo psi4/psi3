@@ -61,10 +61,7 @@ install_target:: $(TARGET)
 # clean up
 #
 
-clean:: iclean oclean dclean uclean targetclean
-
-iclean:
-	-rm -f *.gbl *.lcl
+clean:: oclean dclean uclean targetclean
 
 oclean:
 	-rm -f *.o
