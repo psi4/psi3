@@ -15,7 +15,7 @@ exec = (
 )
 
 default: (
-  label = "STO-3G SCF NO2 opt using exterma/zmatrix"
+  label = "STO-3G SCF NO2 opt using extrema/zmatrix"
   wfn = scf
   reference = rhf
   dertype = first
