@@ -35,10 +35,8 @@ int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs,
     int points) 
 {
   int i,j,a,b, cnt,dim, dim_carts, ndisps, nsalcs, *irrep_salcs, irrep;
-  double **B, **G, **G_inv, *masses, **u, *fgeom, *forces, **force_constants;
-  double energy, *energies, **micro_geoms, **displacements, cm_convert;
-  double *f, **all_f_q, *f_q, *temp_arr, *temp_arr2, *dq, *q, tval, **fgeom2D;
-  double **evects, *evals, **FG;
+  double *fgeom, energy, **micro_geoms, **displacements;
+  double *f, *q, tval, **fgeom2D;
   char *disp_label, **disp_irrep_lbls, *salc_lbl;
 
   disp_label = new char[MAX_LINELENGTH];
@@ -163,10 +161,8 @@ int make_disp_nosymm(cartesians &carts, internals &simples,
     salc_set &all_salcs, int points) 
 {
   int i,j,a,b, dim, dim_carts, ndisps, nsalcs;
-  double **B, **G, **G_inv, *masses, **u, *fgeom, *forces, **force_constants;
-  double energy, *energies, **micro_geoms, **displacements, cm_convert;
-  double *f, **all_f_q, *f_q, *temp_arr, *temp_arr2, *dq, *q, tval, **fgeom2D;
-  double **evects, *evals, **FG;
+  double *fgeom, energy, **micro_geoms, **displacements;
+  double *f, *q, tval, **fgeom2D;
   char *disp_label, **disp_irrep_lbls;
 
   disp_label = new char[MAX_LINELENGTH];
@@ -255,3 +251,77 @@ int make_disp_nosymm(cartesians &carts, internals &simples,
   return(ndisps);
 }
 
+
+/*
+void disp_docc(char **salc_lbl, int disp_nirrep, int *disp_clsdpi,
+    int *disp_openpi, int *disp_frdocc, int *disp_fruocc) {
+  int irrep, disp_irrep;
+  char *ptgrp;
+
+  ptgrp = syminfo.symmetry;
+
+  for (irrep=0; irrep<syminfo.nirreps; ++irrep) {
+    if (strcmp(salc_lbl, syminfo.irrep_lbls[irrep]) == 0) break;
+  }
+  fprintf(outfile,"Irrep of displacement %s or %d ", salc_lbl, irrep);
+
+  static int nirrep_C1[1]  = {1};
+  static int nirrep_CS[2]  = {2, 1};
+  static int nirrep_C2V[4] = {4, 2, 2, 2};
+  static int nirrep_C2H[4] = {4, 2, 2, 2};
+  static int nirrep_D2H[8] = {8, 4, 4, 4, 4, 4, 4, 4};
+
+  static int corr_table_C2V[4][2][4] = {
+    { { 0, 0, 0, 0}, { 0, 0, 0, 0} }, // don't use for A1
+    { { 1, 1, 0, 0}, { 0, 0, 1, 1} },
+    { { 1, 0, 1, 0}, { 0, 1, 0, 1} },
+    { { 1, 0, 0, 1}, { 0, 1, 1, 0} }
+  }
+  static int corr_table_CS[2][2][2] = {
+    { { 0, 0} }, // don't use for A1
+    { { 1, 1} }
+  }
+  static int corr_table_C2H[4][2][4] = {
+    { { 0, 0, 0, 0}, { 0, 0, 0, 0} }, // don't use for A1
+    { { 1, 1, 0, 0}, { 0, 0, 1, 1} },
+    { { 1, 0, 1, 0}, { 0, 1, 0, 1} },
+    { { 1, 0, 0, 1}, { 0, 1, 1, 0} }
+  }
+  static int corr_table_D2H[4][2][4] = {
+    { { 0, 0, 0, 0, 0, 0, 0, 0}, { 0, 0, 0, 0, 0, 0, 0, 0},
+      { 0, 0, 0, 0, 0, 0, 0, 0}, { 0, 0, 0, 0, 0, 0, 0, 0} },
+    { { 1, 1, 0, 0, 0, 0, 0, 0}, { 0, 0, 1, 1, 0, 0, 0, 0},
+      { 0, 0, 0, 0, 0, 0, 0, 0}, { 0, 0, 0, 0, 0, 0, 0, 0} },
+    { { 1, 0, 1, 0, 0, 0, 0, 0}, { 0, 1, 0, 1, 0, 0, 0, 0},
+      { 0, 0, 0, 0, 0, 0, 0, 0}, { 0, 0, 0, 0, 0, 0, 0, 0} },
+    { { 1, 0, 0, 1, 0, 0, 0, 0}, { 0, 1, 1, 0, 0, 0, 0, 0},
+      { 0, 0, 0, 0, 0, 0, 0, 0}, { 0, 0, 0, 0, 0, 0, 0, 0} }
+  }
+
+  if (strcmp(ptgrp,"C1 ") == 0) {
+    disp_nirrep = 1;
+  }
+  else if ((strcmp(ptgrp,"CS ") == 0) || (strcmp(ptgrp,"CI ") == 0) ||
+      (strcmp(ptgrp,"C2 ") == 0)) {
+    disp_nirrep = disp_nirrep_CS[irrep];
+  }
+  else if ((strcmp(ptgrp,"D2 ") == 0) || (strcmp(ptgrp,"C2V") == 0)) {
+    disp_nirrep = disp_nirrep_C2V[irrep];
+  }
+  else if (strcmp(ptgrp,"C2H") == 0) {
+    disp_nirrep = disp_nirrep_C2H[irrep];
+  }
+  else if (strcmp(ptgrp,"D2H") == 0) {
+    disp_nirrep = disp_nirrep_D2H[irrep];
+  }
+
+  disp_clsdpi = new int[disp_nirrep];
+  disp_openpi = new int[disp_nirrep];
+  disp_frdocc = new int[disp_nirrep];
+  disp_fruocc = new int[disp_nirrep];
+
+  fprintf(outfile,"disp_nirrep: %d\n", disp_nirrep);
+  return;
+}
+
+*/

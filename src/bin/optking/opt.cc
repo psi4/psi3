@@ -298,8 +298,8 @@ int main(int argc, char **argv) {
       free_info(simples.get_num());
       exit_io();
 /* Must be allowed to return a positive number */
-      // return(num_disps);
-      return 0;
+       return(num_disps);
+     //  return 0;
     }
 
     if (optinfo.mode == MODE_LOAD_REF) {
