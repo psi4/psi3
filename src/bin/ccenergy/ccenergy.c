@@ -169,15 +169,17 @@ int main(int argc, char *argv[])
     if(params.print & 2) status("T1 amplitudes", outfile);
     timer_off("T1 Build");
 
-    timer_on("Wmbej build");
-    Wmbej_build();
-    if(params.print & 2) status("Wmbej", outfile);
-    timer_off("Wmbej build");
+    if(strcmp(params.wfn,"CC2")) {
+      timer_on("Wmbej build");
+      Wmbej_build();
+      if(params.print & 2) status("Wmbej", outfile);
+      timer_off("Wmbej build");
 
-    Z_build();
-    if(params.print & 2) status("Z", outfile);
-    Wmnij_build();
-    if(params.print & 2) status("Wmnij", outfile);
+      Z_build();
+      if(params.print & 2) status("Z", outfile);
+      Wmnij_build();
+      if(params.print & 2) status("Wmnij", outfile);
+    }
 
     timer_on("T2 Build");
     t2_build();
