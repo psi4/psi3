@@ -17,4 +17,4 @@ extern struct calcinfo CalcInfo;
 extern struct params Params;
 extern int *ioff;
 extern FILE *infile, *outfile;
-
+extern char *psi_file_prefix;

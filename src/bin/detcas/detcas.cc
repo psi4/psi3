@@ -93,6 +93,7 @@ extern "C" {
   struct params Params;
   int *ioff;
   FILE *infile, *outfile;
+  char *psi_file_prefix;
 }
 IndepPairs IndPairs;
 

@@ -22,24 +22,34 @@
 void init_io(int argc, char *argv[])
 {
   int i;
-  int parsed=1;
-  
-  for (i=1; i<argc; i++) {
+  int num_extra_args;
+  char **extra_args;
+
+  extra_args = (char **) malloc(argc*sizeof(char *)); 
+  for (i=1,num_extra_args=0; i<argc; i++) {
     if (strcmp(argv[i], "-quiet") == 0) {
       Params.print_lvl = 0;
-      parsed++;
+    }
+    else {
+      extra_args[num_extra_args++] = argv[i];
     }
   }
  
+  psi_start(num_extra_args, extra_args, 0); 
+
+  /*
   init_in_out(argc-parsed,argv+parsed);
-  
-  if (Params.print_lvl) tstart(outfile);
   ip_set_uppercase(1);
   ip_initialize(infile, outfile);
   ip_cwk_clear();
   ip_cwk_add(":DEFAULT");
+  */
+
+  if (Params.print_lvl) tstart(outfile);
   ip_cwk_add(":DETCAS");
   psio_init();
+
+  free(extra_args);
 }
 
 
@@ -50,10 +60,8 @@ void init_io(int argc, char *argv[])
 void close_io(void)
 {
    psio_done();
-   fclose(infile);
    if (Params.print_lvl) tstop(outfile);
-   ip_done();
-   fclose(outfile);
+   psi_stop();
 }
 
 
