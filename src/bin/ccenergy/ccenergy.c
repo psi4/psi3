@@ -40,7 +40,8 @@ void cleanup(void);
 void update(void);
 void diis(int iter);
 void ccdump(void);
-int **cacheprep(int level, int *cachefiles);
+int **cacheprep_uhf(int level, int *cachefiles);
+int **cacheprep_rhf(int level, int *cachefiles);
 void memchk(void);
 struct dpd_file4_cache_entry *priority_list(void);
 
@@ -65,97 +66,111 @@ int main(int argc, char *argv[])
   get_params();
  
   cachefiles = init_int_array(PSIO_MAXUNIT);
-  cachelist = cacheprep(params.cachelev, cachefiles);
-  priority = priority_list();
-  dpd_init(0, moinfo.nirreps, params.memory, params.cachetype, cachefiles, 
-           cachelist, priority, 2, moinfo.occpi, moinfo.occ_sym, 
-           moinfo.virtpi, moinfo.vir_sym);
+
+  if(params.ref == 2) {
+    cachelist = cacheprep_uhf(params.cachelev, cachefiles);
+
+    dpd_init(0, moinfo.nirreps, params.memory, 0, cachefiles, 
+	     cachelist, NULL, 4, moinfo.aoccpi, moinfo.aocc_sym, moinfo.avirtpi,
+	     moinfo.avir_sym, moinfo.boccpi, moinfo.bocc_sym, moinfo.bvirtpi, moinfo.bvir_sym);
+  }
+  else {
+    cachelist = cacheprep_rhf(params.cachelev, cachefiles);
+
+    priority = priority_list();
+
+    dpd_init(0, moinfo.nirreps, params.memory, params.cachetype, cachefiles, 
+	     cachelist, priority, 2, moinfo.occpi, moinfo.occ_sym, 
+	     moinfo.virtpi, moinfo.vir_sym);
+  }
+
   init_amps();
   tau_build();
   taut_build();
   if(!moinfo.iopen) {
-      fprintf(outfile, "\t                     Solving CCSD Equations\n");
-      fprintf(outfile, "\t                     ----------------------\n");
-      fprintf(outfile, "\tIter             Energy               RMS       T1Diag      D1Diag\n");
-      fprintf(outfile, "\t----     ---------------------     --------   ----------  ----------\n");
-    }
+    fprintf(outfile, "\t                     Solving CCSD Equations\n");
+    fprintf(outfile, "\t                     ----------------------\n");
+    fprintf(outfile, "\tIter             Energy               RMS       T1Diag      D1Diag\n");
+    fprintf(outfile, "\t----     ---------------------     --------   ----------  ----------\n");
+  }
   else {
-      fprintf(outfile, "\t                Solving CCSD Equations\n");
-      fprintf(outfile, "\t                ----------------------\n");
-      fprintf(outfile, "\tIter             Energy               RMS       T1Diag\n");
-      fprintf(outfile, "\t----     ---------------------     --------   ----------\n");
-    }
+    fprintf(outfile, "\t                Solving CCSD Equations\n");
+    fprintf(outfile, "\t                ----------------------\n");
+    fprintf(outfile, "\tIter             Energy               RMS       T1Diag\n");
+    fprintf(outfile, "\t----     ---------------------     --------   ----------\n");
+  }
   moinfo.ecc = energy();
   moinfo.t1diag = diagnostic();
   if(!moinfo.iopen) moinfo.d1diag = d1diag();
   update();
+  if(params.ref == 2) params.maxiter = 0;
   for(moinfo.iter=1; moinfo.iter <= params.maxiter; moinfo.iter++) {
-/*      memchk();  */
-      timer_on("sort_amps");
-      sort_amps();
-      timer_off("sort_amps");
-/*
+    /*      memchk();  */
+    timer_on("sort_amps");
+    sort_amps();
+    timer_off("sort_amps");
+    /*
       timer_on("Y");
       Y_build();
       timer_off("Y");
       timer_on("X");
       X_build();
       timer_off("X");
-*/
+    */
 
-      timer_on("Wmbej build");
-      Wmbej_build();
-      timer_off("Wmbej build");
+    timer_on("Wmbej build");
+    Wmbej_build();
+    timer_off("Wmbej build");
 
-      timer_on("F build");
-      Fme_build(); Fae_build(); Fmi_build();
-      timer_off("F build");
+    timer_on("F build");
+    Fme_build(); Fae_build(); Fmi_build();
+    timer_off("F build");
 
-      timer_on("T1 Build");
-      t1_build();
-      timer_off("T1 Build");
+    timer_on("T1 Build");
+    t1_build();
+    timer_off("T1 Build");
 
       
-      Wmnij_build();
-      Z_build();
+    Wmnij_build();
+    Z_build();
 
-      timer_on("T2 Build");
-      t2_build();
-      timer_off("T2 Build");
+    timer_on("T2 Build");
+    t2_build();
+    timer_off("T2 Build");
 
-      if(converged()) {
-	  done = 1;
-	  tsave();
-	  tau_build(); taut_build();
-	  moinfo.ecc = energy();
-	  moinfo.t1diag = diagnostic();
-	  if(!moinfo.iopen) moinfo.d1diag = d1diag();
-	  sort_amps();
-	  update();
-	  fprintf(outfile, "\n\tIterations converged.\n");
-	  fflush(outfile);
-	  break;
-	}
-      diis(moinfo.iter); 
+    if(converged()) {
+      done = 1;
       tsave();
       tau_build(); taut_build();
       moinfo.ecc = energy();
       moinfo.t1diag = diagnostic();
       if(!moinfo.iopen) moinfo.d1diag = d1diag();
+      sort_amps();
       update();
+      fprintf(outfile, "\n\tIterations converged.\n");
+      fflush(outfile);
+      break;
     }
+    diis(moinfo.iter); 
+    tsave();
+    tau_build(); taut_build();
+    moinfo.ecc = energy();
+    moinfo.t1diag = diagnostic();
+    if(!moinfo.iopen) moinfo.d1diag = d1diag();
+    update();
+  }
   fprintf(outfile, "\n");
   if(!done) {
-     fprintf(outfile, "\t ** Wave function not converged to %2.1e ** \n",
-	     params.convergence);
-     fflush(outfile);
-     dpd_close(0);
-     cleanup();
-     timer_off("CCEnergy");
-     timer_done();
-     exit_io();
-     exit(1);
-    }
+    fprintf(outfile, "\t ** Wave function not converged to %2.1e ** \n",
+	    params.convergence);
+    fflush(outfile);
+    dpd_close(0);
+    cleanup();
+    timer_off("CCEnergy");
+    timer_done();
+    exit_io();
+    exit(1);
+  }
 
   fprintf(outfile, "\tSCF energy       (file30)  = %20.15f\n", moinfo.escf);
   fprintf(outfile, "\tReference energy (file100) = %20.15f\n", moinfo.eref);
@@ -173,8 +188,8 @@ int main(int argc, char *argv[])
   ffile(&efile, "energy.dat",1);
   fprintf(efile, "*\n");
   for(i=0; i < natom; i++) 
-      fprintf(efile, " %4d   %5.2f     %13.10f    %13.10f    %13.10f\n",
-	      i+1, zvals[i], geom[i][0], geom[i][1], geom[i][2]);
+    fprintf(efile, " %4d   %5.2f     %13.10f    %13.10f    %13.10f\n",
+	    i+1, zvals[i], geom[i][0], geom[i][1], geom[i][2]);
   free_block(geom);  free(zvals);
   fprintf(efile, "SCF(30)   %22.12f\n", moinfo.escf);
   fprintf(efile, "REF(100)  %22.12f\n", moinfo.eref);
