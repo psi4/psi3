@@ -3,7 +3,7 @@
 #include<stdlib.h>
 #include<libipv1/ip_lib.h>
 #include<libciomr/libciomr.h>
-#include<libfile30/file30.h>
+#include<libchkpt/chkpt.h>
 #include<libpsio/psio.h>
 #include<psifiles.h>
 #include<libint/libint.h>
@@ -82,7 +82,8 @@ int main(int argc, char *argv[])
 #ifdef INCLUDE_Default_Ints
    if (UserOptions.make_oei) {
      /* Molecule.Enuc = */ compute_enuc();
-     file30_wt_enuc(Molecule.Enuc);
+     file30_wt_enuc(Molecule.Enuc); 
+     chkpt_wt_enuc(Molecule.Enuc);
      oe_ints();
    }
    if (UserOptions.make_eri)
