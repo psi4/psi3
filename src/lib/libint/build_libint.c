@@ -44,8 +44,6 @@ int main()
   int errcod;
   int old_am = 0;
   int new_am, opt_am;
-  int class_size;
-  int num_subfunctions;
   int max_class_size = DEFAULT_MAX_CLASS_SIZE;
   int stack_size;
   const int io[] = {0,1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153};
@@ -99,12 +97,12 @@ int main()
   fprintf(init_code,"void init_libint_base()\n{\n");
 
   /* Declare generic build routines */
-  fprintf(vrr_header,"double *vrr_build_xxxx(int am[2], prim_data *, double *,const double *, const double *, const double *,
-const double *, const double *);\n");
+  fprintf(vrr_header,"double *vrr_build_xxxx(int am[2], prim_data *, double *, const double *,");
+  fprintf(vrr_header,"const double *, const double *, const double *, const double *);\n");
 
   stack_size = emit_order(old_am,new_am,opt_am);
   emit_vrr_build(old_am, opt_am, max_class_size);
-  emit_hrr_build(old_am, new_am);
+  emit_hrr_build(new_am, max_class_size);
   
   fprintf(init_code,"}\n");
   fprintf(init_code,"/* These functions initialize library objects */\n");

@@ -5,7 +5,14 @@ VPATH = .:$(top_srcdir)/src/lib/libint
 TARGET = $(top_objdir)/lib/libint.a
 HEADERS = libint.h vrr_header.h hrr_header.h
 
-TRUESRC = $(shell echo `ls *.c`) $(LIB_SRC)
+#
+# List all generated routines. Do it a safe way in case the list is too long
+#
+TRUESRC = $(shell echo `ls vrr_order_*.c`)
+TRUESRC += $(shell echo `ls hrr_order_*.c`)
+TRUESRC += $(shell echo `ls build_*.c`)
+TRUESRC += $(shell echo `ls hrr[1,3]_build_*.c`)
+TRUESRC += init_libint.c $(LIB_SRC)
 LIBOBJ = $(TRUESRC:%.c=%.o)
 
 default:: install

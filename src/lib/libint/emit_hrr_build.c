@@ -9,7 +9,7 @@ extern FILE *infile, *outfile, *hrr_header;
 extern void punt(char *);
 static int hash(int a[2][3], int b[2]);
 
-int emit_hrr_build(int old_am, int new_am)
+int emit_hrr_build(int new_am, int max_class_size)
 {
   FILE *code;
   int p,q,r,s;
@@ -24,13 +24,17 @@ int emit_hrr_build(int old_am, int new_am)
   int am[2][3];
   int xyz;
   int class_size;
+  int split;
   int la, lb;
   int ld, lc, ld_max;
   int curr_count,curr_subfunction;
+  int num_subfunctions, subbatch_length;
+  int f;
   static int io[] = {1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153};
   static const char am_letter[] = "0pdfghiklmnoqrtuvwxyz";
   char code_name[20];
   char function_name[18];
+  char **subfunction_name;
   
 
   for(lc=0;lc<=new_am;lc++) {
@@ -43,28 +47,74 @@ int emit_hrr_build(int old_am, int new_am)
 
       am_in[0] = lc-ld;
       am_in[1] = ld;
+      
+      class_size = ((am_in[0]+1)*(am_in[0]+2)*(am_in[1]+1)*(am_in[1]+2))/4;
 
+      fprintf(hrr_header,"void hrr3_build_%c%c(const double *, double *, double *, double *, int);\n",
+	      am_letter[am_in[0]],am_letter[am_in[1]]);
+      /* Decide if the routine has to be split into several routines producing "subbatches" */
+      if (class_size > max_class_size) {
+	split = 1;
+	num_subfunctions = ceil((double)class_size/max_class_size);
+	subbatch_length = 1 + class_size/num_subfunctions;
+      }
+      else {
+	split = 0;
+      }
+      
       sprintf(function_name,"hrr3_build_%c%c",am_letter[am_in[0]],am_letter[am_in[1]]);
-      sprintf(code_name,"hrr3_build_%c%c.c",am_letter[am_in[0]],am_letter[am_in[1]]);
+      if (split) {
+	subfunction_name = (char **) malloc (num_subfunctions*sizeof(char *));
+	for(i=0;i<num_subfunctions;i++) {
+	  subfunction_name[i] = (char *) malloc(20*sizeof(char));
+	  sprintf(subfunction_name[i],"_%s_%d",
+		  function_name,i);
+	}
+      }
+      
+      sprintf(code_name,"%s.c",function_name);
       code = fopen(code_name,"w");
 
-      /* include the function into the hrr_header.h */
-      fprintf(hrr_header,"void %s(const double *, double *, const double *, const double *, int);\n",
-	      function_name);
-
-      fprintf(code,"  /* This machine-generated function computes a quartet of |%c%c) integrals */\n\n",
+      fprintf(code,"  /* These machine-generated functions compute a quartet of |%c%c) integrals */\n\n",
 	      am_letter[am_in[0]],am_letter[am_in[1]]);
-
-      fprintf(code,"void %s(const double *CD, double *vp, const double *I0, const double *I1, int ab_num)\n{\n",function_name);
-      fprintf(code,"  int ab;\n");
-      fprintf(code,"  const double CD0 = CD[0];\n");
-      fprintf(code,"  const double CD1 = CD[1];\n");
-      fprintf(code,"  const double CD2 = CD[2];\n");
+      if (split) {
+	for(i=0;i<num_subfunctions;i++) {
+	  fprintf(code,"double *%s(const double *, double *, double *, double *, int);\n",
+		  subfunction_name[i]);
+	}
+	fprintf(code,"\n");
+      }
+      fprintf(code,"void %s(const double *CD, double *vp, double *I0, double *I1, int ab_num)\n{\n",
+	      function_name);
+      if (split == 1) {
+	curr_subfunction = 0;
+	curr_count = 0;
+      }
+      else {
+	fprintf(code,"  const double CD0 = CD[0];\n");
+	fprintf(code,"  const double CD1 = CD[1];\n");
+	fprintf(code,"  const double CD2 = CD[2];\n");
+      }
+      fprintf(code,"  int ab;\n\n");
 
       nl = (am_in[1]*(am_in[1]+1))/2;
       i0_step = (am_in[0]+2)*(am_in[0]+3)*nl/2;
       i1_step = (am_in[0]+1)*(am_in[0]+2)*nl/2;
       fprintf(code,"  for(ab=0;ab<ab_num;ab++) {\n");
+      if (split == 1) {
+	for(f=0;f<num_subfunctions;f++)
+	  fprintf(code,"    vp = %s(CD, vp, I0, I1, ab_num);\n",
+		subfunction_name[f]);
+	fprintf(code,"    I0 += %d;\n    I1 += %d;\n",i0_step,i1_step);
+	fprintf(code,"  }\n}\n\n");
+
+	fprintf(code,"double *%s(const double *CD, double *vp, double *I0, double *I1, int ab_num)\n{\n",
+	      subfunction_name[0]);
+	fprintf(code,"  const double CD0 = CD[0];\n");
+	fprintf(code,"  const double CD1 = CD[1];\n");
+	fprintf(code,"  const double CD2 = CD[2];\n");
+	fprintf(code,"  int ab;\n\n");
+      }
 
       for(p = 0; p <= am_in[0]; p++){
 	am[0][0] = am_in[0] - p;
@@ -97,12 +147,30 @@ int emit_hrr_build(int old_am, int new_am)
 	      am_in[1] += 1;
 	      
 	      fprintf(code, "    *(vp++) = I0[%d] + CD%d*I1[%d];\n",t0,xyz,t1);
+
+	      curr_count++;
+	      if (curr_count == subbatch_length && split == 1) {
+		curr_count = 0;
+		curr_subfunction++;
+		fprintf(code,"  return vp;\n}\n\n");
+		fprintf(code,"double *%s(const double *CD, double *vp, double *I0, double *I1, int ab_num)\n{\n",
+			subfunction_name[curr_subfunction]);
+		fprintf(code,"  const double CD0 = CD[0];\n");
+		fprintf(code,"  const double CD1 = CD[1];\n");
+		fprintf(code,"  const double CD2 = CD[2];\n");
+		fprintf(code,"  int ab;\n\n");
+	      }
 	    }
 	  }
 	}
       }
-      fprintf(code,"    I0 += %d;\n    I1 += %d;\n",i0_step,i1_step);
-      fprintf(code,"  }\n}\n");
+      if (split == 0) {
+	fprintf(code,"    I0 += %d;\n    I1 += %d;\n",i0_step,i1_step);
+	fprintf(code,"  }\n}\n");
+      }
+      else {
+	fprintf(code,"  return vp;\n}\n");
+      }
       fclose(code);
       printf("Done with %s\n",code_name);
 
@@ -116,23 +184,71 @@ int emit_hrr_build(int old_am, int new_am)
       am_in[0] = la;
       am_in[1] = lb;
 
-      /* include the function into the hrr_header.h */
-      fprintf(hrr_header,"void %s(const double *, double *, const double *, const double *, int);\n",
-	      function_name);
+      class_size = ((am_in[0]+1)*(am_in[0]+2)*(am_in[1]+1)*(am_in[1]+2))/4;
+
+      fprintf(hrr_header,"void hrr1_build_%c%c(const double *, double *, double *, double *, int);\n",
+	      am_letter[am_in[0]],am_letter[am_in[1]]);
+      /* Decide if the routine has to be split into several routines producing "subbatches" */
+      if (class_size > max_class_size) {
+	split = 1;
+	num_subfunctions = ceil((double)class_size/max_class_size);
+	subbatch_length = 1 + class_size/num_subfunctions;
+      }
+      else {
+	split = 0;
+      }
       
       sprintf(function_name,"hrr1_build_%c%c",am_letter[am_in[0]],am_letter[am_in[1]]);
-      sprintf(code_name,"hrr1_build_%c%c.c",am_letter[am_in[0]],am_letter[am_in[1]]);
+      if (split) {
+	subfunction_name = (char **) malloc (num_subfunctions*sizeof(char *));
+	for(i=0;i<num_subfunctions;i++) {
+	  subfunction_name[i] = (char *) malloc(20*sizeof(char));
+	  sprintf(subfunction_name[i],"_%s_%d",
+		  function_name,i);
+	}
+      }
+      
+      sprintf(code_name,"%s.c",function_name);
       code = fopen(code_name,"w");
-
+      if (split) {
+	for(i=0;i<num_subfunctions;i++) {
+	  fprintf(code,"double *%s(const double *, double *, double *, double *, int);\n",
+		  subfunction_name[i]);
+	}
+	fprintf(code,"\n");
+      }
       fprintf(code,"  /* This machine-generated function computes a quartet of (%c%c| integrals */\n\n",
 	      am_letter[am_in[0]],am_letter[am_in[1]]);
-      fprintf(code,"void %s(const double *AB, double *vp, const double *I0, const double *I1, int cd_num)\n{\n",function_name);
-      fprintf(code,"  int cd;\n");
-      fprintf(code,"  const double *i0, *i1;\n");
-      fprintf(code,"  const double AB0 = AB[0];\n");
-      fprintf(code,"  const double AB1 = AB[1];\n");
-      fprintf(code,"  const double AB2 = AB[2];\n");
+      fprintf(code,"void %s(const double *AB, double *vp, double *I0, double *I1, int cd_num)\n{\n",
+	      function_name);
+      if (split == 1) {
+	curr_subfunction = 0;
+	curr_count = 0;
+      }
+      else {
+	fprintf(code,"  const double AB0 = AB[0];\n");
+	fprintf(code,"  const double AB1 = AB[1];\n");
+	fprintf(code,"  const double AB2 = AB[2];\n");
+	fprintf(code,"  double *i0, *i1;\n");
+	fprintf(code,"  int cd;\n\n");
+      }
+      fprintf(code,"\n");
 
+      if (split == 1) {
+	for(f=0;f<num_subfunctions;f++)
+	  fprintf(code,"  vp = %s(AB, vp, I0, I1, cd_num);\n",
+		subfunction_name[f]);
+	fprintf(code,"}\n\n");
+
+	fprintf(code,"double *%s(const double *AB, double *vp, double *I0, double *I1, int cd_num)\n{\n",
+	      subfunction_name[0]);
+	fprintf(code,"  const double AB0 = AB[0];\n");
+	fprintf(code,"  const double AB1 = AB[1];\n");
+	fprintf(code,"  const double AB2 = AB[2];\n");
+	fprintf(code,"  double *i0, *i1;\n");
+	fprintf(code,"  int cd;\n\n");
+      }
+      
       nj = (lb*(lb+1))/2;
 
       for(p = 0; p <= am_in[0]; p++){
@@ -177,9 +293,25 @@ int emit_hrr_build(int old_am, int new_am)
 	      fprintf(code,"  for(cd=0;cd<cd_num;cd++)\n");
 	      fprintf(code,"    *(vp++) = *(i0++) + AB%d*(*(i1++));\n",xyz);
 
+	      curr_count++;
+	      if (curr_count == subbatch_length && split == 1) {
+		curr_count = 0;
+		curr_subfunction++;
+		fprintf(code,"  return vp;\n}\n\n");
+		fprintf(code,"double *%s(const double *AB, double *vp, double *I0, double *I1, int cd_num)\n{\n",
+			subfunction_name[curr_subfunction]);
+		fprintf(code,"  const double AB0 = AB[0];\n");
+		fprintf(code,"  const double AB1 = AB[1];\n");
+		fprintf(code,"  const double AB2 = AB[2];\n");
+		fprintf(code,"  double *i0, *i1;\n");
+		fprintf(code,"  int cd;\n\n");
+	      }
 	    }
 	  }
 	}
+      }
+      if (split == 1) {
+	fprintf(code,"  return vp;\n");
       }
       fprintf(code,"}\n");
       fclose(code);
