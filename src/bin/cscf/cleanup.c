@@ -1,7 +1,13 @@
 /* $Log$
- * Revision 1.6  2001/06/29 20:39:27  evaleev
- * Modified cscf to use libpsio to store supermatrix files.
+ * Revision 1.7  2002/01/04 18:03:24  crawdad
+ * Minor change to set phase_check flag to true when starting from a core
+ * guess.  This is to allow correlated calculations that might have stopped
+ * due to slow convergence to restart.
+ * -TDC
  *
+/* Revision 1.6  2001/06/29 20:39:27  evaleev
+/* Modified cscf to use libpsio to store supermatrix files.
+/*
 /* Revision 1.5  2001/05/31 01:12:25  sherrill
 /* fix up printing orbital eigenvalues, now does TCSCF too!
 /*
@@ -150,6 +156,10 @@ void cleanup()
    if(irot) {
        if(phase_check) phase_check = phase();
      }
+
+/* TDC(1/4/02) If we've started from a core guess, allow a restart of 
+   correlated calcs */
+   if(inflg==2) phase_check = 1;
 
 /* update ncalcs in file30 */
    wreadw(itap30,(char *) i10,sizeof(int)*200,(PSI_FPTR) sizeof(int)*100,&junk);
