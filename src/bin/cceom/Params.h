@@ -8,6 +8,7 @@ struct Params {
   int eom_ref;
   int local;
   char *wfn;
+  int semicanonical;
 };
 
 struct Eom_params {

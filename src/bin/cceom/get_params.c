@@ -14,17 +14,22 @@ void get_params()
 
   errcod = ip_string("WFN", &(params.wfn), 0);
 
+  params.semicanonical = 0;
   errcod = ip_string("REFERENCE", &(read_ref),0);
   if(!strcmp(read_ref, "RHF")) params.ref = 0;
+  else if(!strcmp(read_ref,"ROHF") && (!strcmp(params.wfn,"EOM_CC3"))) {
+    params.ref = 2;
+    params.semicanonical = 1;
+  }
   else if(!strcmp(read_ref, "ROHF")) params.ref = 1;
   else if(!strcmp(read_ref, "UHF")) params.ref = 2;
   else { 
     fprintf(outfile,
-        "\nInvalid value of input keyword REFERENCE: %s\n", read_ref);
+	    "\nInvalid value of input keyword REFERENCE: %s\n", read_ref);
     exit(2); 
   }
 
-  if (params.ref == 0) { /* for RHF refs, allow CCEOM to do RHF, ROHF, UHF modes b*/
+  if (params.ref == 0) { /* for RHF refs, allow CCEOM to do RHF, ROHF, UHF modes */
     errcod = ip_string("EOM_REFERENCE", &(read_eom_ref),0);
     if (errcod == IPE_OK) {
       if(!strcmp(read_eom_ref, "RHF")) params.eom_ref = 0;
@@ -32,7 +37,7 @@ void get_params()
       else if(!strcmp(read_eom_ref, "UHF")) params.eom_ref = 2;
       else { 
         fprintf(outfile,
-            "\nInvalid value of input keyword EOM_REFERENCE: %s\n", read_eom_ref);
+		"\nInvalid value of input keyword EOM_REFERENCE: %s\n", read_eom_ref);
         exit(2); 
       }
     }
@@ -49,7 +54,7 @@ void get_params()
       else if(!strcmp(read_eom_ref, "UHF")) params.eom_ref = 2;
       else { 
         fprintf(outfile,
-            "\nInvalid value of input keyword EOM_REFERENCE: %s\n", read_eom_ref);
+		"\nInvalid value of input keyword EOM_REFERENCE: %s\n", read_eom_ref);
         exit(2); 
       }
     }
@@ -83,7 +88,7 @@ void get_params()
     else if(!strcmp(cachetype,"LRU")) params.cachetype = 0;
     else {
       fprintf(outfile, "Error in input: invalid CACHETYPE = %s\n",
-          cachetype);
+	      cachetype);
       exit(1);
     }
     free(cachetype);
@@ -147,15 +152,18 @@ void get_params()
 
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
-  fprintf(outfile, "\tReference wfn   =    %4s\n", read_ref);
+  if(params.semicanonical)
+    fprintf(outfile, "\tReference wfn   = ROHF changed to UHF for Semicanonical Orbitals\n");
+  else 
+    fprintf(outfile, "\tReference wfn   =    %4s\n", read_ref);
   fprintf(outfile, "\tReference EOM wfn=    %4s\n", read_eom_ref);
   fprintf(outfile, "\tMemory (Mbytes) =  %5.1f\n",params.memory/1e6);
   fprintf(outfile, "\tAO Basis        =     %s\n", 
-      params.aobasis ? "Yes" : "No");
+	  params.aobasis ? "Yes" : "No");
   fprintf(outfile, "\tCache Level     =    %1d\n", 
-      params.cachelev);
+	  params.cachelev);
   fprintf(outfile, "\tCache Type      =    %4s\n", 
-      params.cachetype ? "LOW" : "LRU");
+	  params.cachetype ? "LOW" : "LRU");
   fprintf(outfile, "\tLocal CC        =     %s\n", params.local ? "Yes" : "No");
   if(params.local) {
     fprintf(outfile, "\tLocal Cutoff    = %3.1e\n", local.cutoff);

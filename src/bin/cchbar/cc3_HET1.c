@@ -251,6 +251,7 @@ void HET1_Wmbej(void)
     dpd_buf4_close(&D);
     dpd_buf4_init(&W, CC3_HET1, 0, 10, 10, 10, 10, 0, "CC3 WMBEJ (ME,JB)");
     dpd_contract424(&Y, &tIA, &W, 3, 0, 0, -1, 1);
+    dpd_buf4_sort(&W, CC3_HET1, psqr, 10, 11, "CC3 WMBEJ (MB,EJ)");
     dpd_buf4_close(&W);
     dpd_buf4_close(&Y);
 
@@ -262,6 +263,7 @@ void HET1_Wmbej(void)
     dpd_buf4_close(&D);
     dpd_buf4_init(&W, CC3_HET1, 0, 10, 10, 10, 10, 0, "CC3 Wmbej (me,jb)");
     dpd_contract424(&Y, &tia, &W, 3, 0, 0, -1, 1);
+    dpd_buf4_sort(&W, CC3_HET1, psqr, 10, 11, "CC3 Wmbej (mb,ej)");
     dpd_buf4_close(&W);
     dpd_buf4_close(&Y);
 
@@ -273,6 +275,7 @@ void HET1_Wmbej(void)
     dpd_buf4_close(&D);
     dpd_buf4_init(&W, CC3_HET1, 0, 10, 10, 10, 10, 0, "CC3 WMbEj (ME,jb)");
     dpd_contract424(&Y, &tia, &W, 3, 0, 0, -1, 1);
+    dpd_buf4_sort(&W, CC3_HET1, psqr, 10, 11, "CC3 WMbEj (Mb,Ej)");
     dpd_buf4_close(&W);
     dpd_buf4_close(&Y);
 
@@ -284,6 +287,7 @@ void HET1_Wmbej(void)
     dpd_buf4_close(&D);
     dpd_buf4_init(&W, CC3_HET1, 0, 10, 10, 10, 10, 0, "CC3 WmBeJ (me,JB)");
     dpd_contract424(&Y, &tIA, &W, 3, 0, 0, -1, 1);
+    dpd_buf4_sort(&W, CC3_HET1, psqr, 10, 11, "CC3 WmBeJ (mB,eJ)");
     dpd_buf4_close(&W);
     dpd_buf4_close(&Y);
 
@@ -295,6 +299,7 @@ void HET1_Wmbej(void)
     dpd_buf4_close(&D);
     dpd_buf4_init(&W, CC3_HET1, 0, 10, 10, 10, 10, 0, "CC3 WMbeJ (Me,Jb)");
     dpd_contract424(&Y, &tia, &W, 3, 0, 0, 1, 1);
+    dpd_buf4_sort(&W, CC3_HET1, psqr, 10, 11, "CC3 WMbeJ (Mb,eJ)");
     dpd_buf4_close(&W);
     dpd_buf4_close(&Y);
 
@@ -306,6 +311,7 @@ void HET1_Wmbej(void)
     dpd_buf4_close(&D);
     dpd_buf4_init(&W, CC3_HET1, 0, 10, 10, 10, 10, 0, "CC3 WmBEj (mE,jB)");
     dpd_contract424(&Y, &tIA, &W, 3, 0, 0, 1, 1);
+    dpd_buf4_sort(&W, CC3_HET1, psqr, 10, 11, "CC3 WmBEj (mB,Ej)");
     dpd_buf4_close(&W);
     dpd_buf4_close(&Y);
 
