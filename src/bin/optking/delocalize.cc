@@ -195,7 +195,7 @@ void delocalize(internals &simples, cartesians &carts) {
   /* transpose evects matrix, also throw out redundant coordinates
      (eigenvectors corresponding to zero eigenvalues*/
 
-  char buffer[MAX_LINELENGTH], *err;
+  char aline[MAX_LINELENGTH], **buffer, *err;
   int h;
   irr = init_int_array(simples.get_num());
 
@@ -227,14 +227,26 @@ void delocalize(internals &simples, cartesians &carts) {
   ffile(&fp_intco, "intco.dat", 2);
   count = 0;
   for( ; ; ) {
-    err = fgets(buffer, MAX_LINELENGTH, fp_intco);
+    err = fgets(aline, MAX_LINELENGTH, fp_intco);
     if (err == NULL) break;
     ++count;
   }
   rewind(fp_intco);
-  for(i=0;i<(count-1);++i)
-    err = fgets(buffer, MAX_LINELENGTH, fp_intco);
-  fflush(fp_intco);
+
+  /* read all but the last line of the file into memory... */
+  buffer = (char **) malloc((count-1) * sizeof(char *));
+  for(i=0; i < count-1; i++) {
+    buffer[i] = (char *) malloc(MAX_LINELENGTH * sizeof(char));
+    err = fgets(buffer[i], MAX_LINELENGTH, fp_intco);
+  }
+  rewind(fp_intco);
+
+  /* ...and overwite */
+  for(i=0; i < count-1; i++) {
+    fprintf(fp_intco, "%s", buffer[i]);
+    free(buffer[i]);
+  }
+  free(buffer);
 
   // Print out coordinates to intco.dat
   fprintf(fp_intco,"  symm = ( \n");
