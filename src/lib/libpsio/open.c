@@ -8,7 +8,10 @@
 #include <fcntl.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "psio.h"
+
+
 
 /*!
 ** PSIO_OPEN(): Opens a multivolume PSI direct access file for
