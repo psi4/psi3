@@ -33,9 +33,11 @@ psi: (
   % CC specific programs
   ccsort     = "ccsort"
   ccenergy   = "ccenergy"
+  cctriples  = "cctriples"
   cchbar     = "cchbar"
   cclambda   = "cclambda"
   ccdensity  = "ccdensity"
+  cceom      = "cceom"
   ooccman    = "ooccman"
 
   % Determinant CI specific programs
@@ -130,6 +132,36 @@ psi: (
     (repeat $ndisp $ugeom $uinput $CCSDROHFFirst $rgeom end $done)
   CCSDUHFFirstDisp  = ERROR
   CCSDTwoConFirstDisp  = ERROR
+
+  % -------------------------------- CCSD(T) Procedures
+  % Procedures for the CCSD(T) energy
+  CCSD_TEnergy = ($ints $scf $transqt $ccsort $ccenergy $cctriples $done)
+  CCSD_TRHFEnergy = $CCSD_TEnergy
+  CCSD_TROHFEnergy = ERROR
+  CCSD_TUHFEnergy = $CCSD_TEnergy
+  CCSD_TTwoConEnergy = ERROR
+
+  % Procedures for the CCSD(T) gradient
+  CCSD_TFirst = ERROR
+  CCSD_TRHFFirst = ERROR
+  CCSD_TROHFFirst = ERROR
+  CCSD_TUHFFirst = ERROR
+  CCSD_TTwoConFirst = ERROR
+
+  % Testing procedure for optimizing geometries with CCSD finite displacements
+  CCSD_TROHFEnergyDisp = ERROR
+
+  % Procedures for the optimizing geomtries with CCSD gradients
+  CCSD_TRHFFirstOpt = ERROR
+  CCSD_TROHFFirstOpt = ERROR
+  CCSD_TUHFFirstOpt  = ERROR
+  CCSD_TTwoConFirstOpt  = ERROR
+
+  % Procedures for the finite displacements of CCSD gradients
+  CCSD_TRHFFirstDisp = ERROR
+  CCSD_TROHFFirstDisp = ERROR
+  CCSD_TUHFFirstDisp  = ERROR
+  CCSD_TTwoConFirstDisp  = ERROR
 
   % -------------------------------- OOCCD Procedures
   % Procedures for the OOCCD energy
