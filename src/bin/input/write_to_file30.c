@@ -267,12 +267,6 @@ void write_to_file30(double repulsion)
   pointers[44] = ptr/sizeof(int) + 1;
   wwritw(CHECKPOINTFILE,(char *) sym_oper, nirreps*sizeof(int),ptr,&ptr);
 
-  /* write full_geom, cartesian geometry with dummy atoms included */
-  pointers[45] = ptr/sizeof(int) +1;
-  for(i=0;i<num_entries;++i) {
-    wwritw(CHECKPOINTFILE,(char *) full_geom[i], 3*sizeof(double),ptr,&ptr);
-  }
-
   /* write z_mat if it exists, see global.h for info about z_entry structure */
   if(!cartOn) {
     pointers[46] = ptr/sizeof(int) + 1;
@@ -291,6 +285,13 @@ void write_to_file30(double repulsion)
   /* Matrix representation of rotation back to the reference frame */
   pointers[49] = ptr/sizeof(int) + 1;
   wwritw(CHECKPOINTFILE,(char *) Rref[0], 9*sizeof(double),ptr,&ptr);
+
+  /* write full_geom, cartesian geometry with dummy atoms included */
+  pointers[50] = ptr/sizeof(int) +1;
+  for(i=0;i<num_entries;++i) {
+    wwritw(CHECKPOINTFILE,(char *) full_geom[i], 3*sizeof(double),ptr,&ptr);
+  }
+
   
   /*---------------------------
     Write pointers to the file
