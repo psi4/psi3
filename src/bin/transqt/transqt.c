@@ -250,7 +250,7 @@ void init_io(int argc, char *argv[])
 
    errcod = psi_start(num_extra_args, extra_args, 0);
    if (errcod != PSI_RETURN_SUCCESS)
-    exit(PSI_RETURN_FAILURE);
+    abort();
    if (params.print_lvl) tstart(outfile);
    ip_cwk_add(":TRANSQT");
 
@@ -280,13 +280,13 @@ void init_ioff(void)
   int i;
   ioff = (int *) malloc(IOFF_MAX * sizeof(int));
   if(ioff == NULL) {
-      fprintf(stderr, "(transqt): error malloc'ing ioff array\n");
-      exit(PSI_RETURN_FAILURE);
-          }
+    fprintf(stderr, "(transqt): error malloc'ing ioff array\n");
+    abort();
+  }
   ioff[0] = 0;
   for(i=1; i < IOFF_MAX; i++) {
-      ioff[i] = ioff[i-1] + i;
-    }
+    ioff[i] = ioff[i-1] + i;
+  }
 }
 
 
@@ -351,7 +351,7 @@ void get_parameters(void)
   }
   else {
     fprintf(outfile, "transqt: Unrecognized runmode %d\n", params.runmode);
-    exit(PSI_RETURN_FAILURE);
+    abort();
   }
   
 
@@ -668,7 +668,7 @@ void get_moinfo(void)
 
     if(!strcmp(params.ref, "UHF")) {
       fprintf(stderr, "ERROR: MO reordering not allowed for UHF references.\n");
-      exit(PSI_RETURN_FAILURE);
+      abort();
     }
     params.moorder = init_int_array(moinfo.nmo);
     errcod = ip_int_array("MOORDER",params.moorder,moinfo.nmo);
@@ -1108,7 +1108,7 @@ void get_reorder_array(void)
 		 moinfo.rstrdocc, moinfo.rstruocc, ras_opi, moinfo.order,
                  params.ras_type)) {
       fprintf(outfile, "Error in ras_set().  Aborting.\n");
-      exit(PSI_RETURN_FAILURE);
+      abort();
     }
     
     free_int_matrix(ras_opi, 4);
@@ -1212,25 +1212,26 @@ void get_one_electron_integrals()
 
   if (moinfo.S == NULL || T == NULL || V == NULL || moinfo.oe_ints == NULL) {
     printf("(transqt): Error mallocing one-electron ints\n");
-    exit(PSI_RETURN_FAILURE);
+    abort();
   }
   
   if (params.print_lvl) 
     fprintf(outfile, "\n\tReading one-electron integrals...");
-  stat = iwl_rdone(params.src_S_file,PSIF_SO_S,moinfo.S,moinfo.noeints,0,0,outfile);
+    stat = iwl_rdone(params.src_S_file,PSIF_SO_S,moinfo.S,moinfo.noeints,0,0,
+                     outfile);
   if (!stat) {
     printf("(transqt): Error reading overlap ints\n");
-    exit(PSI_RETURN_FAILURE);
+    abort();
   }
   stat = iwl_rdone(params.src_T_file,PSIF_SO_T,T,moinfo.noeints,0,0,outfile);
   if (!stat) {
     printf("(transqt): Error reading kinetic energy ints\n");
-    exit(PSI_RETURN_FAILURE);
+    abort();
   }
   stat = iwl_rdone(params.src_V_file,PSIF_SO_V,V,moinfo.noeints,0,0,outfile);
   if (!stat) {
     printf("(transqt): Error reading potential energy ints\n");
-    exit(PSI_RETURN_FAILURE);
+    abort();
   }
 
   if (params.print_lvl) fprintf(outfile, "done.\n");
@@ -1314,7 +1315,7 @@ double *** construct_evects(char *spin, int nirreps, int *active, int *sopi,
   if(!strcmp(spin,"alpha")) scf = moinfo.scf_vector_alpha;
   else if(!strcmp(spin,"beta")) scf = moinfo.scf_vector_beta;
   else if(!strcmp(spin,"RHF")) scf = moinfo.scf_vector;
-  else { fprintf(stderr, "ERROR: Bad spin value!\n"); exit(PSI_RETURN_FAILURE); }
+  else { fprintf(stderr, "ERROR: Bad spin value!\n"); abort(); }
 
   evects = (double ***) malloc(nirreps * sizeof(double **));
 
