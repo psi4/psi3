@@ -15,6 +15,7 @@ PROGMANPS = $(shell test -n $(DVIPS) && echo "$(PROGMAN).ps")
 USERMANHTML = $(shell test -n $(LATEX2HTML) && echo "$(USERMAN).html")
 PROGMANHTML = $(shell test -n $(LATEX2HTML) && echo "$(PROGMAN).html")
 TARGET = $(USERMANDVI) $(PROGMANDVI) $(USERMANPS) $(PROGMANPS) $(USERMANHTML) $(PROGMANHTML)
+LOCALTEXINPUTS =
 
 COMMONSRC = \
 macros.tex \
@@ -57,11 +58,13 @@ include ../MakeRules
 # To be certain that we get all references right we need to run LaTeX 3 times
 #
 $(USERMANDVI) : $(USERMANSRC) $(USERMANSRCS) $(COMMONSRC)
-	TEXINPUTS=$(srcdir):; export TEXINPUTS; $(LATEX) $(USERMANSRC);\
+	TEXINPUTS=$(LOCALTEXINPUTS):$(srcdir):; export TEXINPUTS;\
+$(LATEX) $(USERMANSRC);\
 $(LATEX) $(USERMANSRC); $(LATEX) $(USERMANSRC);
 
 $(PROGMANDVI) : $(PROGMANSRC) $(PROGMANSRCS) $(COMMONSRC)
-	TEXINPUTS=$(srcdir):; export TEXINPUTS; $(LATEX) $(PROGMANSRC);\
+	TEXINPUTS=$(LOCALTEXINPUTS):$(srcdir):; export TEXINPUTS;\
+$(LATEX) $(PROGMANSRC);\
 $(LATEX) $(PROGMANSRC); $(LATEX) $(PROGMANSRC);
 
 
