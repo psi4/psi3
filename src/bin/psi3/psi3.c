@@ -21,6 +21,10 @@
 
 #define MXEXEC 100
 #define MAX_EXEC_STR 80
+/* Added 052503 by Chris Barden to get it working for IRIX */
+#ifdef __sgi
+#define AIX
+#endif
 
 FILE *infile, *outfile;
 char **psi_file_prefix;
@@ -497,4 +501,7 @@ int parse_cmdline(int argc, char *argv[])
   }
   return(1);
 }
-
+/* turn off guard */
+#ifdef __sgi
+#undef AIX
+#endif

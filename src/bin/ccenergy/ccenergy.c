@@ -9,6 +9,7 @@
 #include <libdpd/dpd.h>
 #include <libchkpt/chkpt.h>
 #include <libqt/qt.h>
+#include <sys/types.h>
 #include <psifiles.h>
 #include "globals.h"
 

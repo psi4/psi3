@@ -178,7 +178,8 @@ main()
 EOF
 $CC conftest.c -o conftest
 ./conftest > conftest.sh
-. conftest.sh
+chmod +x conftest.sh
+./conftest.sh
 cat > conftest.$F77SUF <<EOF
       program foo
       real*8 a(2)
@@ -204,7 +205,8 @@ cat > conftest.$F77SUF <<EOF
 EOF
 if eval $FC $FOTH conftest.${F77SUF} -o conftest > /dev/null 2>&1; then
   ./conftest > conftest.sh
-  . conftest.sh
+  chmod +x conftest.sh
+  ./conftest.sh
 else
   ac_sizeof_real=$ac_sizeof_double
   ac_sizeof_dprec=$ac_sizeof_double
@@ -236,7 +238,8 @@ int main()
 EOF
 $CC conftest.c -o conftest
 ./conftest > conftest.sh
-. conftest.sh
+chmod +x conftest.sh
+./conftest.sh
 rm -f conftest*
 AC_MSG_RESULT("$bitwidth64")]
 )dnl
