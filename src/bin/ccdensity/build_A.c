@@ -224,6 +224,5 @@ void build_A(void)
   dpd_buf4_axpy(&Amat2, &Amat, 1.0);
   dpd_buf4_close(&Amat2);
   dpd_buf4_scm(&Amat, 0.5);
-  dpd_buf4_print(&Amat, outfile);
   dpd_buf4_close(&Amat);
 }

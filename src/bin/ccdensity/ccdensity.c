@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
   cachefiles = init_int_array(PSIO_MAXUNIT);
   cachelist = cacheprep(params.cachelev, cachefiles);
 
-  dpd_init(0, moinfo.nirreps, params.memory, cachefiles, cachelist,
+  dpd_init(0, moinfo.nirreps, params.memory, 0, cachefiles, cachelist, NULL, 
            2, moinfo.occpi, moinfo.occ_sym, moinfo.virtpi, moinfo.vir_sym);
 
   onepdm();
@@ -77,19 +77,17 @@ int main(int argc, char *argv[])
       resort_tei();
     } */
 
-      /*
   lag();
   build_X();
-  
   build_A();
   build_Z();
-  
+
+  /*  
   dpd_close(0);
   dpd_close(1);
   */
 
 
-/*
   relax_I();
   relax_D();
   sortone();
@@ -105,8 +103,8 @@ int main(int argc, char *argv[])
   iwl_buf_flush(&OutBuf, 1);
   iwl_buf_close(&OutBuf, 1);
 
-  dpd_close();
-*/
+  dpd_close(0);
+
   cleanup(); 
   exit_io();
   exit(0);

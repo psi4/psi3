@@ -33,6 +33,8 @@ void build_Z(void)
   for(h=0; h < nirreps; h++)
       num_ai += virtpi[h] * occpi[h];
 
+  fprintf(outfile, "num_ai = %d\n", num_ai);
+
   /* Malloc space for the transformation matrix */
   T = block_matrix(num_ai,num_ai);
 
@@ -64,9 +66,7 @@ void build_Z(void)
 		}
 	    }
 
-  print_mat(T, num_ai, num_ai, outfile);
-
-  return 0;
+  /*  print_mat(T, num_ai, num_ai, outfile); */
 
   /*** Finished building the transformation matrix ***/
 
@@ -82,8 +82,9 @@ void build_Z(void)
   Z = block_matrix(1,num_ai);
   for(h=0,count=0; h < nirreps; h++)
       for(a=0; a < X1.params->rowtot[h]; a++)
-	  for(i=0; i < X1.params->coltot[h]; i++)
+	for(i=0; i < X1.params->coltot[h]; i++) 
 	      Z[0][count++] = -X1.matrix[h][a][i];
+
 
   dpd_file2_mat_close(&X1);
   dpd_file2_close(&X1);
@@ -106,7 +107,7 @@ void build_Z(void)
   free_block(Y);
 
   /* Trying out Matt's Pople code --- way to go, Matt! */
-  pople(A.matrix[0], X[0], rank, 1, 1e-12, outfile, 0);
+  pople(A.matrix[0], X[0], rank, 1, 1e-12, outfile, 7);
 
   dpd_buf4_mat_irrep_close(&A, 0);
   dpd_buf4_close(&A);

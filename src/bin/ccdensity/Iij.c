@@ -11,6 +11,7 @@
 ** contribute, of course).  */
 
 #define CC_FOCK CC_OEI
+/*
 #define CC_OEI CC_OEI_NEW
 #define CC_AINTS CC_AINTS_NEW
 #define CC_BINTS CC_BINTS_NEW
@@ -18,6 +19,7 @@
 #define CC_DINTS CC_DINTS_NEW
 #define CC_EINTS CC_EINTS_NEW
 #define CC_FINTS CC_FINTS_NEW
+*/
 
 void Iij(void)
 {

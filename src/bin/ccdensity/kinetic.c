@@ -58,9 +58,9 @@ void kinetic(void)
   /*** Transform the kinetic energy integrals to the MO basis ***/
 
   t = init_array(noei);
-  stat = iwl_rdone_all(PSIF_AO_T,noei,t,&junk,0);
+  stat = iwl_rdone_all(PSIF_SO_T,noei,t,&junk,0);
   s = init_array(noei);
-  stat = iwl_rdone_all(PSIF_AO_S,noei,s,&junk,0);
+  stat = iwl_rdone_all(PSIF_SO_S,noei,s,&junk,0);
 
   T = block_matrix(nmo,nmo);
   S = block_matrix(nmo,nmo);
@@ -70,10 +70,12 @@ void kinetic(void)
           S[i][j] = s[INDEX(i,j)];
         }
 
+  /*
   fprintf(outfile, "\tKinetic energy integrals (SO):\n");
   print_mat(T,nmo,nmo,outfile);
   fprintf(outfile, "\tOverlap integrals (SO):\n");
   print_mat(S,nmo,nmo,outfile);
+  */
 
   X = block_matrix(nmo,nmo);
 

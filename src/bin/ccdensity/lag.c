@@ -40,7 +40,9 @@ void Iab(void);
 void Iai(void);
 void Iia(void);
 
+/*
 #define CC_OEI CC_OEI_NEW
+*/
 
 void lag(void)
 {
@@ -57,35 +59,27 @@ void lag(void)
      final gradient expression */
   dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'IJ");
   dpd_file2_scm(&I, -0.5);
-  dpd_file2_print(&I, outfile);
   dpd_file2_close(&I);
   dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'ij");
   dpd_file2_scm(&I, -0.5);
-  dpd_file2_print(&I, outfile);
   dpd_file2_close(&I);
   dpd_file2_init(&I, CC_OEI, 0, 1, 1, "I'AB");
   dpd_file2_scm(&I, -0.5);
-  dpd_file2_print(&I, outfile);
   dpd_file2_close(&I);
   dpd_file2_init(&I, CC_OEI, 0, 1, 1, "I'ab");
   dpd_file2_scm(&I, -0.5);
-  dpd_file2_print(&I, outfile);
   dpd_file2_close(&I);
   dpd_file2_init(&I, CC_OEI, 0, 0, 1, "I'IA");
   dpd_file2_scm(&I, -0.5);
-  dpd_file2_print(&I, outfile);
   dpd_file2_close(&I);
   dpd_file2_init(&I, CC_OEI, 0, 0, 1, "I'ia");
   dpd_file2_scm(&I, -0.5);
-  dpd_file2_print(&I, outfile);
   dpd_file2_close(&I);
   dpd_file2_init(&I, CC_OEI, 0, 1, 0, "I'AI");
   dpd_file2_scm(&I, -0.5);
-  dpd_file2_print(&I, outfile);
   dpd_file2_close(&I);
   dpd_file2_init(&I, CC_OEI, 0, 1, 0, "I'ai");
   dpd_file2_scm(&I, -0.5);
-  dpd_file2_print(&I, outfile);
   dpd_file2_close(&I);
 
   /* Now go through all terms involving open-shell orbitals and force

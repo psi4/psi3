@@ -227,7 +227,7 @@ void Gijab(void)
   dpd_buf4_close(&Z1);
   dpd_buf4_close(&G);
   /* - ( Z(E,A) Tau(IJ,BE) - Z(E,B) Tau(IJ,AE) ) */
-  dpd_buf4_init(&Z1, CC_TMP8, 0, 2, 5, 2, 5, 0, "Z1(IJ,AB)");
+  dpd_buf4_init(&Z1, CC_TMP8, 0, 2, 5, 2, 5, 0, "ZZ1(IJ,AB)");
   dpd_buf4_init(&T, CC_TAMPS, 0, 2, 5, 2, 7, 0, "tauIJAB");
   dpd_file2_init(&ZZ, CC_TMP2, 0, 1, 1, "Z(E,A)");
   dpd_contract424(&T, &ZZ, &Z1, 3, 0, 0, 1.0, 0.0);
@@ -464,7 +464,7 @@ void Gijab(void)
   dpd_buf4_close(&Z1);
   dpd_buf4_close(&G);
   /* - ( Z(e,a) Tau(ij,be) - Z(e,b) Tau(ij,ae) ) */
-  dpd_buf4_init(&Z1, CC_TMP8, 0, 2, 5, 2, 5, 0, "Z1(ij,ab)");
+  dpd_buf4_init(&Z1, CC_TMP8, 0, 2, 5, 2, 5, 0, "ZZ1(ij,ab)");
   dpd_buf4_init(&T, CC_TAMPS, 0, 2, 5, 2, 7, 0, "tauijab");
   dpd_file2_init(&ZZ, CC_TMP3, 0, 1, 1, "Z(e,a)");
   dpd_contract424(&T, &ZZ, &Z1, 3, 0, 0, 1.0, 0.0);
@@ -711,7 +711,7 @@ void Gijab(void)
   dpd_buf4_close(&Z1);
   dpd_buf4_close(&G);
   /* - ( Z(E,A) Tau(Ij,bE) - Z(e,b) Tau(Ij,Ae) ) */
-  dpd_buf4_init(&Z1, CC_TMP8, 0, 0, 5, 0, 5, 0, "Z1(Ij,Ab)");
+  dpd_buf4_init(&Z1, CC_TMP8, 0, 0, 5, 0, 5, 0, "ZZ1(Ij,Ab)");
   dpd_buf4_init(&T, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
   dpd_file2_init(&ZZ, CC_TMP3, 0, 1, 1, "Z(e,a)");
   dpd_contract424(&T, &ZZ, &Z1, 3, 0, 0, 1.0, 0.0);
