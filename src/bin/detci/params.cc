@@ -196,7 +196,7 @@ void get_parameters(void)
                &(Parameters.energy_convergence),0);
    errcod = ip_data("S","%d",&(Parameters.S),0);
 
-   /* this stuff was appropriate to the OPENTYPE keyword in PSI2 */
+   /* this handles backwards compatibility for PSI2 */
    errcod = ip_data("OPENTYPE","%s",line1,0);
    if (errcod == IPE_OK) {
       if (strcmp(line1, "NONE")==0) { 
@@ -213,7 +213,7 @@ void get_parameters(void)
          }
       else Parameters.opentype = PARM_OPENTYPE_UNKNOWN;
       } 
-   else { /* no opentype keyword, as appropriate for PSI3 */
+   else { /* this handles new PSI3 keywords */
      errcod = ip_data("REFERENCE","%s",line1,0);
      /* fprintf(outfile, "line1 = "); 
      for (int ij = 0; ij<3; ij++) fprintf(outfile, "%1c", line1[ij]); 
