@@ -1,0 +1,978 @@
+
+	   RHF/ROHF-SCF BENCHMARKS FOR MOST BASIS SETS IN PSI 3.2
+	============================================================
+
+                        DZ
+
+  ATOM             MULTIPLICITY        ENERGY
+___________       _______________         _________________
+HYDROGEN            2                   -0.497637244627
+HELIUM              1                   0
+LITHIUM             2                   -7.431735191175
+BERYLLIUM           1                   0
+BORON               2                   -24.526414926065
+CARBON              3                   -37.684507826551
+NITROGEN            4                   -54.394391931586
+OXYGEN              3                   -74.800539168678
+FLUORINE            2                   -99.394270194636
+NEON                1                   -128.522354401805
+SODIUM              2                   0
+MAGNESIUM           1                   0
+ALUMINUM            2                   -241.855016689058
+SILICON             3                   -288.829528461100
+PHOSPHORUS          4                   -340.688824712480
+SULFUR              3                   -397.468333629574
+CHLORINE            2                   -459.435771410336
+ARGON               1                   0
+
+GOOD to 10E-6 for available benchmarks
+
+                        DZ-DIF
+
+  ATOM             MULTIPLICITY        ENERGY
+___________       _______________         _________________
+HYDROGEN            2                   -0.499291554055
+HELIUM              1                   0
+LITHIUM             2                   0
+BERYLLIUM           1                   0
+BORON               2                   -24.526445635753
+CARBON              3                   -37.684606530551
+NITROGEN            4                   -54.394615208093
+OXYGEN              3                   -74.801365018585
+FLUORINE            2                   -99.395556507191
+NEON                1                   0
+SODIUM              2                   0
+MAGNESIUM           1                   0
+ALUMINUM            2                   -241.856514666604
+SILICON             3                   -288.830736099578
+PHOSPHORUS          4                   -340.689998205405
+SULFUR              3                   -397.470383024252
+CHLORINE            2                   -459.438483240631
+ARGON               1                   0
+
+** NO benchmarks on EMSL website
+
+                        DZP
+
+  ATOM             MULTIPLICITY        ENERGY
+___________       _______________         _________________
+HYDROGEN            2                   -0.497637244627
+HELIUM              1                   0
+LITHIUM             2                   -7.432407980514
+BERYLLIUM           1                   -14.572020172884
+BORON               2                   -24.526672997349
+CARBON              3                   -37.684620546503
+NITROGEN            4                   -54.394408457391
+OXYGEN              3                   -74.800582519397
+FLUORINE            2                   -99.394326609628
+NEON                1                   -128.522394354110
+SODIUM              2                   -161.838259817680
+MAGNESIUM           1                   0
+ALUMINUM            2                   -241.855272868856
+SILICON             3                   -288.829610114940
+PHOSPHORUS          4                   -340.688871260727
+SULFUR              3                   -397.468488925161
+CHLORINE            2                   -459.436034314703
+ARGON               1                   0
+
+**  No Benchmarks on EMSL website
+
+
+                        DZP-DIF
+
+  ATOM             MULTIPLICITY        ENERGY
+___________       _______________         _________________
+HYDROGEN            2                   -0.499291554055
+HELIUM              1                   0
+LITHIUM             2                   0
+BERYLLIUM           1                   0
+BORON               2                   -24.526700579726
+CARBON              3                   -37.684755829774
+NITROGEN            4                   -54.394674134330
+OXYGEN              3                   -74.801449568747
+FLUORINE            2                   -99.395695181825
+NEON                1                   0
+SODIUM              2                   0
+MAGNESIUM           1                   0
+ALUMINUM            2                   -241.856715575507
+SILICON             3                   -288.830805006489
+PHOSPHORUS          4                   -340.690041322374
+SULFUR              3                   -397.470519096734
+CHLORINE            2                   -459.438674773311
+ARGON               1                   0
+
+** No Benchmarks on EMSL website
+
+
+			STO-3G
+
+  ATOM	  	   MULTIPLICITY	       ENERGY			CORRECTED
+___________	  _______________	  _________________   _____________
+HYDROGEN            2                   -0.466581849557
+HELIUM              1                   -3.863496900275 (A)	-2.807784
+LITHIUM             2                   -7.315525981281
+BERYLLIUM           1                   -14.351880476202
+BORON               2                   -24.148988598854
+CARBON              3                   -37.198392563732
+NITROGEN            4                   -53.719010162594
+OXYGEN              3                   -73.804150233256
+FLUORINE            2                   -97.986504958736
+NEON                1                   -126.604524996805 (B) -126.132546
+SODIUM              2                   -159.668211391173
+MAGNESIUM           1                   -197.007353899716
+ALUMINUM            2                   -238.858358218039
+SILICON             3                   -285.466211176107
+PHOSPHORUS          4                   -336.868769454998
+SULFUR              3                   -393.130219395614
+CHLORINE            2                   -454.542192513669
+ARGON               1                   -521.222880797749
+
+(A) - due to absence of virtual orbitals
+(B) - EMSL result might be wrong - matched Qchem
+
+			3-21G
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   -0.496198636018
+HELIUM              1                   -2.835679873641
+LITHIUM             2                   -7.381510895412
+BERYLLIUM           1                   -14.486820239557
+BORON               2                   -24.389634350332
+CARBON              3                   -37.480388809905
+NITROGEN            4                   -54.103658252305
+OXYGEN              3                   -74.392511791342
+FLUORINE            2                   -98.844645110066
+NEON                1                   -127.803824528207
+SODIUM              2                   -160.854041000679
+MAGNESIUM           1                   -198.468103018526
+ALUMINUM            2                   -240.551024456837
+SILICON             3                   -287.344418880653
+PHOSPHORUS          4                   -339.000027178663
+SULFUR              3                   -395.551083382909
+CHLORINE            2                   -457.276413674084
+ARGON               1                   -524.342962462838
+
+			6-31G
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   -0.498232909203
+HELIUM              1                   -2.855160426154
+LITHIUM             2                   -7.431234989980
+BERYLLIUM           1                   -14.566764052064
+BORON               2                   -24.519347995877
+CARBON              3                   -37.676865624803
+NITROGEN            4                   -54.382051112280
+OXYGEN              3                   -74.778234218947
+FLUORINE            2                   -99.360218165899
+NEON                1                   -128.473876870674 (A)
+SODIUM              2                   -161.841391981609
+MAGNESIUM           1                   -199.595219248051
+ALUMINUM            2                   -241.854168787954
+SILICON             3                   -288.828425416014
+PHOSPHORUS          4                   -340.688936639665
+SULFUR              3                   -397.471064779184
+CHLORINE            2                   -459.442771468144
+ARGON               1                   -526.772151092032
+
+(A) -  Matched Q.Chem -  Differs from EMSL 
+
+			6-31G*
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   -0.498232909203
+HELIUM              1                   -2.855160426154
+LITHIUM             2                   -7.431368776351 (A)
+BERYLLIUM           1                   -14.566944381255
+BORON               2                   -24.519418719865
+CARBON              3                   -37.677126588491
+NITROGEN            4                   -54.382311259804
+OXYGEN              3                   -74.778966140122
+FLUORINE            2                   -99.361792117181
+NEON                1                   -128.474406519890
+SODIUM              2                   -161.841402032256
+MAGNESIUM           1                   -199.595610917992
+ALUMINUM            2                   -241.854779656685
+SILICON             3                   -288.829149133670
+PHOSPHORUS          4                   -340.689985850363
+SULFUR              3                   -397.472327066074 (A)
+CHLORINE            2                   -459.444218963781 (A)
+ARGON               1                   -526.773744920946
+
+(A) - Differ by 10E-5
+			6-31G**
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   -0.498232909203
+HELIUM              1                   -2.855160426154
+LITHIUM             2                   -7.431368776351
+BERYLLIUM           1                   -14.566944381255
+BORON               2                   -24.519418719865
+CARBON              3                   -37.677126588491
+NITROGEN            4                   -54.382311259804
+OXYGEN              3                   -74.778966140122
+FLUORINE            2                   -99.361792117181
+NEON                1                   -128.474406519890
+SODIUM              2                   -161.841402032256
+MAGNESIUM           1                   -199.595610917992
+ALUMINUM            2                   -241.854779656685
+SILICON             3                   -288.829149133670
+PHOSPHORUS          4                   -340.689985850363
+SULFUR              3                   -397.472327066074
+CHLORINE            2                   -459.444218963781
+ARGON               1                   -526.773744920946
+
+** GOOd for available benchmarks
+			6-31+G*
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   -0.498232909203
+HELIUM              1                   -2.855160426154
+LITHIUM             2                   -7.431559349892
+BERYLLIUM           1                   -14.569732006369
+BORON               2                   -24.523625933945
+CARBON              3                   -37.679835087858
+NITROGEN            4                   -54.383092153408
+OXYGEN              3                   -74.781450450038
+FLUORINE            2                   -99.368358980209
+NEON                1                   -128.483910592426
+SODIUM              2                   -161.841410081503
+MAGNESIUM           1                   -199.595725844499
+ALUMINUM            2                   -241.855070655808
+SILICON             3                   -288.829542293873
+PHOSPHORUS          4                   -340.690323377340
+SULFUR              3                   -397.472985992144
+CHLORINE            2                   -459.444940985609
+ARGON               1                   -526.774658571236
+
+** NO benchmarks available
+			6-311G
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   -0.499809815273
+HELIUM              1                   -2.859895424569
+LITHIUM             2                   -7.432005167368
+BERYLLIUM           1                   -14.571873937225
+BORON               2                   -24.526801180235
+CARBON              3                   -37.684800524745
+NITROGEN            4                   -54.394736692059
+OXYGEN              3                   -74.800191538610
+FLUORINE            2                   -99.393399775349
+NEON                1                   -128.522553053990
+SODIUM              2                   -161.845883802733
+MAGNESIUM           1                   -199.606555987365
+ALUMINUM            2                   -241.869963926608
+SILICON             3                   -288.847677050840
+PHOSPHORUS          4                   -340.707048460158
+SULFUR              3                   -397.494544773017
+CHLORINE            2                   -459.469273087335
+ARGON               1                   -526.806626230290
+
+** Good for available benchmarks
+			6-311G*
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   -0.499809815273
+HELIUM              1                   -2.859895424569
+LITHIUM             2                   -7.432005167368
+BERYLLIUM           1                   -14.571873937225
+BORON               2                   -24.526824198571
+CARBON              3                   -37.684824482238
+NITROGEN            4                   -54.394736692059
+OXYGEN              3                   -74.800210071651
+FLUORINE            2                   -99.393418665542
+NEON                1                   -128.522553053990
+SODIUM              2                   -161.845883802733
+MAGNESIUM           1                   -199.606555987365
+ALUMINUM            2                   -241.869965592657
+SILICON             3                   -288.847681401397
+PHOSPHORUS          4                   -340.707048460158
+SULFUR              3                   -397.494551362729
+CHLORINE            2                   -459.469283205299
+ARGON               1                   -526.806626230290
+
+** GOOD for available Benchmarks
+			6-311+G*
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   -0.499809815273 (A)
+HELIUM              1                   -2.859895424569
+LITHIUM             2                   -7.432005478111
+BERYLLIUM           1                   -14.571941339850
+BORON               2                   -24.527085632781
+CARBON              3                   -37.685238912393
+NITROGEN            4                   -54.395312831022
+OXYGEN              3                   -74.802097266899
+FLUORINE            2                   -99.396335917946
+NEON                1                   -128.526632169957
+SODIUM              2                   0
+MAGNESIUM           1                   0
+ALUMINUM            2                   0
+SILICON             3                   0
+PHOSPHORUS          4                   0
+SULFUR              3                   0
+CHLORINE            2                   0
+ARGON               1                   0
+
+(A) - differs by ~10E-5
+			6-311G**
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   -0.499809815273
+HELIUM              1                   -2.859895424569
+LITHIUM             2                   -7.432005167368
+BERYLLIUM           1                   -14.571873937225
+BORON               2                   -24.526824198571
+CARBON              3                   -37.684824482238
+NITROGEN            4                   -54.394736692059
+OXYGEN              3                   -74.800210071651
+FLUORINE            2                   -99.393418665542
+NEON                1                   -128.522553053990
+SODIUM              2                   -161.845883802733
+MAGNESIUM           1                   -199.606555987365
+ALUMINUM            2                   -241.869965592657
+SILICON             3                   -288.847681401397
+PHOSPHORUS          4                   -340.707048460158
+SULFUR              3                   -397.494551362729
+CHLORINE            2                   -459.469283205299
+ARGON               1                   -526.806626230290
+
+
+** NO benchmarks available
+
+                        6-311G(2d,2p)
+
+  ATOM             MULTIPLICITY        ENERGY
+___________       _______________         _________________
+HYDROGEN            2                   -0.499809815273
+HELIUM              1                   -2.859895424569
+LITHIUM             2                   -7.432005167368
+BERYLLIUM           1                   -14.571873937225
+BORON               2                   -24.526851221207
+CARBON              3                   -37.684848235685
+NITROGEN            4                   -54.394736692059
+OXYGEN              3                   -74.800236034606
+FLUORINE            2                   -99.393440081293
+NEON                1                   -128.526632169957
+SODIUM              2                   -161.845883802733
+MAGNESIUM           1                   -199.606555987365
+ALUMINUM            2                   -241.869996158705
+SILICON             3                   -288.847719137349
+PHOSPHORUS          4                   -340.707048460158
+SULFUR              3                   -397.494595252629
+CHLORINE            2                   -459.469330324600
+ARGON               1                   -526.806626230290
+
+
+** NO BENCHMARKS
+
+                        6-311G(2df,2pd)
+
+  ATOM             MULTIPLICITY        ENERGY
+___________       _______________         _________________
+HYDROGEN            2                   -0.499809815273
+HELIUM              1                   -2.859895424569
+LITHIUM             2                   -7.432005167368
+BERYLLIUM           1                   -14.571873937225
+BORON               2                   -24.526851237764
+CARBON              3                   -37.684848249168
+NITROGEN            4                   -54.394736692059
+OXYGEN              3                   -74.801011680132
+FLUORINE            2                   -99.394142427235
+NEON                1                   -128.522553053990
+SODIUM              2                   0
+MAGNESIUM           1                   0
+ALUMINUM            2                   0
+SILICON             3                   0
+PHOSPHORUS          4                   0
+SULFUR              3                   0
+CHLORINE            2                   0
+ARGON               1                   0
+
+
+** NO BENCHMARKS
+
+
+
+			6-311++G**
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   -0.499817915630
+HELIUM              1                   0  (A)
+LITHIUM             2                   -7.432005478111
+BERYLLIUM           1                   -14.571941339850
+BORON               2                   -24.527085632781
+CARBON              3                   -37.685238912393
+NITROGEN            4                   -54.395312831022
+OXYGEN              3                   -74.802097266899
+FLUORINE            2                   -99.396335917946
+NEON                1                   -128.526632169957
+SODIUM              2                   -161.845940327332
+MAGNESIUM           1                   -199.606621929968
+ALUMINUM            2                   -241.870079108851
+SILICON             3                   -288.847818841807
+PHOSPHORUS          4                   -340.708823575560
+SULFUR              3                   -397.495899197192
+CHLORINE            2                   -459.470436179239
+ARGON               1                   -526.806925417944
+
+(A) Removed for He because of inconsistency in EMSL website
+** NO Benchmarks available
+
+                        6-311++G(2d,2p)
+
+  ATOM             MULTIPLICITY        ENERGY
+___________       _______________         _________________
+HYDROGEN            2                   -0.499817915630
+HELIUM              1                   0
+LITHIUM             2                   -7.432005478111
+BERYLLIUM           1                   -14.571941339850
+BORON               2                   -24.527112365156
+CARBON              3                   -37.685262426165
+NITROGEN            4                   -54.395312831022
+OXYGEN              3                   -74.802121977523
+FLUORINE            2                   -99.396356279797
+NEON                1                   -128.526632169957
+SODIUM              2                   -161.845940327332
+MAGNESIUM           1                   -199.606621929968
+ALUMINUM            2                   -241.870109939590
+SILICON             3                   -288.847856831635
+PHOSPHORUS          4                   -340.708823575560
+SULFUR              3                   -397.495943251681
+CHLORINE            2                   -459.470483608716
+ARGON               1                   -526.806925417944
+
+
+** NO BENCHMARKS
+                        6-311++G(3df,3pd)
+
+  ATOM             MULTIPLICITY         ENERGY (UHF)
+___________       _______________      _________________
+HYDROGEN            2                   -0.499817915630
+HELIUM              1                   0
+LITHIUM             2                   -7.432026884832
+BERYLLIUM           1                   -14.571941339850
+BORON               2                   -24.531080634179
+CARBON              3                   -37.690252507421
+NITROGEN            4                   -54.398892478974
+OXYGEN              3                   -74.809340134292
+FLUORINE            2                   -99.401809016019
+SODIUM              2                   -161.845982723223
+MAGNESIUM           1                   -199.606621929968
+ALUMINUM            2                   -241.873997053909
+SILICON             3                   -288.852093671946
+PHOSPHORUS          4                   -340.709174322154
+SULFUR              3                   -397.502849331640
+CHLORINE            2                   -459.477193424049
+ARGON               1                   -526.806925417944
+
+
+(A) -  EMSL enegy is too high - must be wrong
+** All UHF energies good for available benchmarks
+
+			TZ2P		
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   -0.499809329308
+HELIUM              1                   0
+LITHIUM             2                   0
+BERYLLIUM           1                   0
+BORON               2                   -24.528251107552
+CARBON              3                   -37.687259132372
+NITROGEN            4                   -54.398772068272
+OXYGEN              3                   -74.807993891833
+FLUORINE            2                   -99.405755339975
+NEON                1                   0
+SODIUM              2                   0
+MAGNESIUM           1                   0
+ALUMINUM            2                   -241.870316408694
+SILICON             3                   -288.848000664357
+PHOSPHORUS          4                   -340.711487060545
+SULFUR              3                   -397.497949049640
+CHLORINE            2                   -459.473523610662
+ARGON               1                   0
+
+
+** NO benchmarks available
+			TZ2PF
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   -0.499809678101
+HELIUM              1                   0
+LITHIUM             2                   0
+BERYLLIUM           1                   0
+BORON               2                   -24.528251224729
+CARBON              3                   -37.687259481400
+NITROGEN            4                   -54.398772071571
+OXYGEN              3                   -74.808770733570
+FLUORINE            2                   -99.406460526114
+NEON                1                   0
+SODIUM              2                   0
+MAGNESIUM           1                   0
+ALUMINUM            2                   -241.870349543469
+SILICON             3                   -288.848029254908
+PHOSPHORUS          4                   -340.711512548316
+SULFUR              3                   -397.499114626898
+CHLORINE            2                   -459.474626160998
+ARGON               1                   0
+
+** No Benchmarks available
+			TZ-DIF
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   -0.499816855441
+HELIUM              1                   0
+LITHIUM             2                   0
+BERYLLIUM           1                   0
+BORON               2                   -24.528202896951
+CARBON              3                   -37.687200166226
+NITROGEN            4                   -54.398769305226
+OXYGEN              3                   -74.808052706023
+FLUORINE            2                   -99.405801208581
+NEON                1                   0
+SODIUM              2                   0
+MAGNESIUM           1                   0
+ALUMINUM            2                   -241.870051565449
+SILICON             3                   -288.847822753256
+PHOSPHORUS          4                   -340.711353054958
+SULFUR              3                   -397.497878721752
+CHLORINE            2                   -459.473532951943
+ARGON               1                   0
+
+** No Benchmarks available
+			TZ2P-DIF
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   -0.499816855441
+HELIUM              1                   0
+LITHIUM             2                   0
+BERYLLIUM           1                   0
+BORON               2                   -24.528259271359
+CARBON              3                   -37.687310077325
+NITROGEN            4                   -54.398978384590
+OXYGEN              3                   -74.808292512284
+FLUORINE            2                   -99.405899168437
+NEON                1                   0
+SODIUM              2                   0
+MAGNESIUM           1                   0
+ALUMINUM            2                   -241.870379890119
+SILICON             3                   -288.848159003147
+PHOSPHORUS          4                   -340.711710504573
+SULFUR              3                   -397.498347228346
+CHLORINE            2                   -459.473999196523
+ARGON               1                   0
+			TZ2PF-DIF
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   -0.499816868824
+HELIUM              1                   0
+LITHIUM             2                   0
+BERYLLIUM           1                   0
+BORON               2                   -24.528259288831
+CARBON              3                   -37.687310091693
+NITROGEN            4                   -54.398980471701
+OXYGEN              3                   -74.809072802690
+FLUORINE            2                   -99.406605126160
+NEON                1                   0
+SODIUM              2                   0
+MAGNESIUM           1                   0
+ALUMINUM            2                   -241.870408141027
+SILICON             3                   -288.848192497481
+PHOSPHORUS          4                   -340.711729513972
+SULFUR              3                   -397.499494399605
+CHLORINE            2                   -459.475080323318
+ARGON               1                   0
+
+
+**  NO Benchmarks available
+			cc-pVDZ
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   -0.499278403420
+HELIUM              1                   -2.855160477243
+LITHIUM             2                   -7.432419879671
+BERYLLIUM           1                   -14.572337630953
+BORON               2                   -24.526590905984
+CARBON              3                   -37.682417881459
+NITROGEN            4                   -54.388414237010
+OXYGEN              3                   -74.787513074624
+FLUORINE            2                   -99.371861940121
+NEON                1                   -128.488775551741
+SODIUM              2                   -161.853026643466
+MAGNESIUM           1                   -199.608297028624
+ALUMINUM            2                   -241.870133423645
+SILICON             3                   -288.846436923072
+PHOSPHORUS          4                   -340.709014116419
+SULFUR              3                   -397.492839749214
+CHLORINE            2                   -459.467180586900
+ARGON               1                   -526.799865309746
+
+
+** GOOD
+
+			cc-pVTZ
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   -0.499809811302
+HELIUM              1                   -2.861153344784
+LITHIUM             2                   -7.432678855853  (A)
+BERYLLIUM           1                   -14.572873468246
+BORON               2                   -24.528146568456
+CARBON              3                   -37.686708051384
+NITROGEN            4                   -54.397357845084
+OXYGEN              3                   -74.805644422530
+FLUORINE            2                   -99.400935272237
+NEON                1                   -128.531861636321
+SODIUM              2                   -161.857995943929
+MAGNESIUM           1                   -199.613347413732
+ALUMINUM            2                   -241.875130651755
+SILICON             3                   -288.852151495553
+PHOSPHORUS          4                   -340.715983819753
+SULFUR              3                   -397.503612355256
+CHLORINE            2                   -459.479836583307
+ARGON               1                   -526.813133800132
+
+(A) -  Differs by ~10E-4 - EMSL data is wrong
+** Good
+
+
+			cc-pVQZ
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   -0.499945568583
+HELIUM              1                   -2.861514227228
+LITHIUM             2                   -7.432695138246
+BERYLLIUM           1                   -14.572968127199
+BORON               2                   -24.528964489422
+CARBON              3                   -37.688298401297
+NITROGEN            4                   -54.400175898647
+OXYGEN              3                   -74.810843555206
+FLUORINE            2                   -99.408951851939
+NEON                1                   -128.543469659121
+SODIUM              2                   -161.858676445039
+MAGNESIUM           1                   -199.614232906402
+ALUMINUM            2                   -241.876477288820
+SILICON             3                   -288.854107076347
+PHOSPHORUS          4                   -340.718334713809
+SULFUR              3                   -397.506630728752
+CHLORINE            2                   -459.483237253744
+ARGON               1                   -526.816780174368
+
+
+** GOOD
+
+			cc-pV(D+d)Z
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+ALUMINUM            2                   -241.870145963880
+SILICON             3                   -288.846458249681
+PHOSPHORUS          4                   -340.709014116419
+SULFUR              3                   -397.492870324665
+CHLORINE            2                   -459.467218370376
+ARGON               1                   -526.799865309746
+
+** NO Benchmarks
+			cc-pV(T+d)Z
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+ALUMINUM            2                   -241.875140901873
+SILICON             3                   -288.852168818182
+PHOSPHORUS          4                   -340.715983819753
+SULFUR              3                   -397.503633199290
+CHLORINE            2                   -459.479863491710
+ARGON               1                   -526.813133800132
+
+
+** No Benchmarks
+			cc-pV(Q+D)Z
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+ALUMINUM            2                   -241.876484186259
+SILICON             3                   -288.854116854921
+PHOSPHORUS          4                   -340.718334713809
+SULFUR              3                   -397.506642615501
+CHLORINE            2                   -459.483250872960
+ARGON               1                   -526.816780174368
+
+
+** NO benchmarks
+			cc-pCVDZ
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+BORON               2                   -24.526608788100
+CARBON              3                   -37.682450436518
+NITROGEN            4                   -54.388460565131
+OXYGEN              3                   -74.787613835368
+FLUORINE            2                   -99.371994702304
+NEON                1                   -128.488925929371
+
+
+** NO benchmarks
+			cc-pCVTZ
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+BORON               2                   -24.528156903144
+CARBON              3                   -37.686730083574
+NITROGEN            4                   -54.397384373610
+OXYGEN              3                   -74.805706558135
+FLUORINE            2                   -99.401019912078
+NEON                1                   -128.531955132054
+
+
+** NO Benchmarks
+			cc-pCVQZ
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+BORON               2                   -24.528974806270
+CARBON              3                   -37.688317597796
+NITROGEN            4                   -54.400197018411
+OXYGEN              3                   -74.810893682481
+FLUORINE            2                   -99.409028791394
+NEON                1                   -128.543569794322
+
+
+** NO Benchmarks
+			aug-cc-pVDZ
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   -0.499334315440
+HELIUM              1                   -2.855704667710
+LITHIUM             2                   0
+BERYLLIUM           1                   0
+BORON               2                   -24.526872533718
+CARBON              3                   -37.683129527037
+NITROGEN            4                   -54.389870729086
+OXYGEN              3                   -74.790958626999
+FLUORINE            2                   -99.377068840441
+NEON                1                   -128.496349730541
+SODIUM              2                   0
+MAGNESIUM           1                   0
+ALUMINUM            2                   -241.870520158135
+SILICON             3                   -288.847041529735
+PHOSPHORUS          4                   -340.709814214018
+SULFUR              3                   -397.494303215725
+CHLORINE            2                   -459.468477526714
+ARGON               1                   -526.800972402538
+
+
+** GOOD
+			aug-cc-pVTZ
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   -0.499821176024
+HELIUM              1                   -2.861183426116
+LITHIUM             2                   0
+BERYLLIUM           1                   0
+BORON               2                   -24.528202159580
+CARBON              3                   -37.686836739942
+NITROGEN            4                   -54.397609522657
+OXYGEN              3                   -74.806508391747
+FLUORINE            2                   -99.402083121383
+NEON                1                   -128.533272825200
+SODIUM              2                   0
+MAGNESIUM           1                   0
+ALUMINUM            2                   -241.875286585365  (A)
+SILICON             3                   -288.852357462037
+PHOSPHORUS          4                   -340.716123552916
+SULFUR              3                   -397.504005073456
+CHLORINE            2                   -459.480198545782
+ARGON               1                   -526.813352167186
+
+
+(A) -  EMSL data is wrong
+** GOOD
+			aug-cc-pVQZ
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   -0.499948321469
+HELIUM              1                   -2.861521995632
+LITHIUM             2                   0
+BERYLLIUM           1                   0
+BORON               2                   -24.528975116825
+CARBON              3                   -37.688322855010
+NITROGEN            4                   -54.400224914196
+OXYGEN              3                   -74.811064141934
+FLUORINE            2                   -99.409209020633
+NEON                1                   -128.543755937285
+SODIUM              2                   0
+MAGNESIUM           1                   0
+ALUMINUM            2                   -241.876489365554
+SILICON             3                   -288.854121108769
+PHOSPHORUS          4                   -340.718349317360
+SULFUR              3                   -397.506701109020
+CHLORINE            2                   -459.483292315747
+ARGON               1                   -526.816804869225
+
+** GOOD
+
+			aug-cc-pV(D+d)Z
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   0
+HELIUM              1                   0
+LITHIUM             2                   0
+BERYLLIUM           1                   0
+BORON               2                   0
+CARBON              3                   0
+NITROGEN            4                   0
+OXYGEN              3                   0
+FLUORINE            2                   0
+NEON                1                   0
+SODIUM              2                   0
+MAGNESIUM           1                   0
+ALUMINUM            2                   -241.870532863518
+SILICON             3                   -288.847062536596
+PHOSPHORUS          4                   -340.709814214018
+SULFUR              3                   -397.494332494142
+CHLORINE            2                   -459.468514551606
+ARGON               1                   -526.800972402538
+
+** NO Benchmarks
+			aug-cc-pV(T+d)Z
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   0
+HELIUM              1                   0
+LITHIUM             2                   0
+BERYLLIUM           1                   0
+BORON               2                   0
+CARBON              3                   0
+NITROGEN            4                   0
+OXYGEN              3                   0
+FLUORINE            2                   0
+NEON                1                   0
+SODIUM              2                   0
+MAGNESIUM           1                   0
+ALUMINUM            2                   -241.875297361172
+SILICON             3                   -288.852374484754
+PHOSPHORUS          4                   -340.716123552916
+SULFUR              3                   -397.504025954018
+CHLORINE            2                   -459.480223630791
+ARGON               1                   -526.813352167186
+
+** No Benchmarks
+			aug-cc-pV(Q+d)Z
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   0
+HELIUM              1                   0
+LITHIUM             2                   0
+BERYLLIUM           1                   0
+BORON               2                   0
+CARBON              3                   0
+NITROGEN            4                   0
+OXYGEN              3                   0
+FLUORINE            2                   0
+NEON                1                   0
+SODIUM              2                   0
+MAGNESIUM           1                   0
+ALUMINUM            2                   -241.876496034889
+SILICON             3                   -288.854129818244
+PHOSPHORUS          4                   -340.718349317360
+SULFUR              3                   -397.506711522978
+CHLORINE            2                   -459.483304686902
+ARGON               1                   -526.816804869225
+
+
+** NO Benchmarks
+			aug-cc-pCVDZ
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   0
+HELIUM              1                   0
+LITHIUM             2                   0
+BERYLLIUM           1                   0
+BORON               2                   -24.526887128155
+CARBON              3                   -37.683154009940
+NITROGEN            4                   -54.389902981976
+OXYGEN              3                   -74.791028973012
+FLUORINE            2                   -99.377158927733
+NEON                1                   0
+SODIUM              2                   0
+MAGNESIUM           1                   0
+ALUMINUM            2                   0
+SILICON             3                   0
+PHOSPHORUS          4                   0
+SULFUR              3                   0
+CHLORINE            2                   0
+ARGON               1                   0
+
+
+** NO benchmarks
+			aug-cc-pCVTZ
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   0
+HELIUM              1                   0
+LITHIUM             2                   0
+BERYLLIUM           1                   0
+BORON               2                   -24.528214394541
+CARBON              3                   -37.686862278640
+NITROGEN            4                   -54.397642273226
+OXYGEN              3                   -74.806582852266
+FLUORINE            2                   -99.402184743845
+NEON                1                   -128.533390440504
+SODIUM              2                   0
+MAGNESIUM           1                   0
+ALUMINUM            2                   0
+SILICON             3                   0
+PHOSPHORUS          4                   0
+SULFUR              3                   0
+CHLORINE            2                   0
+ARGON               1                   0
+			aug-cc-pCVQZ
+
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   0
+HELIUM              1                   0
+LITHIUM             2                   0
+BERYLLIUM           1                   0
+BORON               2                   -24.528985404444
+CARBON              3                   -37.688341858717
+NITROGEN            4                   -54.400245405580
+OXYGEN              3                   -74.811112819000
+FLUORINE            2                   -99.409283697211
+NEON                1                   -128.543852929439
+SODIUM              2                   0
+MAGNESIUM           1                   0
+ALUMINUM            2                   0
+SILICON             3                   0
+PHOSPHORUS          4                   0
+SULFUR              3                   0
+CHLORINE            2                   0
+ARGON               1                   0
+
+
+** NO benchmarks
