@@ -23,8 +23,8 @@ void init_Taylor_Fm_Eval(unsigned int mmax, double epsilon)
   double egamma, func, dfuncdT;
   double term, sum, denom, rel_error;
 
-  if (mmax == 0)
-    punt("Called init_Taylor_Fm_Eval with argument of zero");
+/*  if (mmax == 0)
+    punt("Called init_Taylor_Fm_Eval with argument of zero");*/
 
   Taylor_Fm_Eval.cutoff = epsilon;
   /*---------------------------------------
