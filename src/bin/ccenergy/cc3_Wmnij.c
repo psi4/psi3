@@ -10,6 +10,8 @@
 ** TDC, Feb 2004
 */
 
+void purge_Wmnij(void);
+
 void cc3_Wmnij(void)
 {
   dpdbuf4 A, E, D, Z, W, Z1, X;
@@ -146,6 +148,8 @@ void cc3_Wmnij(void)
 
     dpd_file2_close(&tIA);
     dpd_file2_close(&tia);
+
+    purge_Wmnij();
   }
 
   else if (params.ref == 2) {
@@ -254,4 +258,77 @@ void cc3_Wmnij(void)
     dpd_file2_close(&tIA);
     dpd_file2_close(&tia);
   }
+}
+
+
+void purge_Wmnij(void) {
+  dpdfile2 FAE, Fmi, FME, Fme;
+  dpdfile4 W;
+  int *occpi, *virtpi;
+  int h, a, b, e, f, i, j, m, n, omit;
+  int    A, B, E, F, I, J, M, N;
+  int mn, ei, ma, ef, me, jb, mb, ij, ab;
+  int asym, bsym, esym, fsym, isym, jsym, msym, nsym;
+  int *occ_off, *vir_off;
+  int *occ_sym, *vir_sym;
+  int *openpi, nirreps;
+
+  nirreps = moinfo.nirreps;
+  occpi = moinfo.occpi; virtpi = moinfo.virtpi;
+  occ_off = moinfo.occ_off; vir_off = moinfo.vir_off;
+  occ_sym = moinfo.occ_sym; vir_sym = moinfo.vir_sym;
+  openpi = moinfo.openpi;
+
+  /* Purge Wmnij matrix elements */
+  dpd_file4_init(&W, CC3_HET1, 0, 2, 2,"CC3 Wmnij (m>n,i>j)");
+  for(h=0; h < nirreps; h++) {
+    dpd_file4_mat_irrep_init(&W, h);
+    dpd_file4_mat_irrep_rd(&W, h);
+    for(mn=0; mn < W.params->rowtot[h]; mn++) {
+      m = W.params->roworb[h][mn][0];
+      n = W.params->roworb[h][mn][1];
+      msym = W.params->psym[m];
+      nsym = W.params->qsym[n];
+      M = m - occ_off[msym];
+      N = n - occ_off[nsym];
+      for(ij=0; ij < W.params->coltot[h]; ij++) {
+        i = W.params->colorb[h][ij][0];
+        j = W.params->colorb[h][ij][1];
+        isym = W.params->rsym[i];
+        jsym = W.params->ssym[j];
+        I = i - occ_off[isym];
+        J = j - occ_off[jsym];
+        if ((I >= (occpi[isym] - openpi[isym])) ||
+            (J >= (occpi[jsym] - openpi[jsym])) ||
+            (M >= (occpi[msym] - openpi[msym])) ||
+            (N >= (occpi[nsym] - openpi[nsym])) )
+          W.matrix[h][mn][ij] = 0.0;
+      }
+    }
+    dpd_file4_mat_irrep_wrt(&W, h);
+    dpd_file4_mat_irrep_close(&W, h);
+  }
+  dpd_file4_close(&W);
+
+  dpd_file4_init(&W, CC3_HET1, 0, 0, 0,"CC3 WMnIj (Mn,Ij)");
+  for(h=0; h < nirreps; h++) {
+    dpd_file4_mat_irrep_init(&W, h);
+    dpd_file4_mat_irrep_rd(&W, h);
+    for(mn=0; mn < W.params->rowtot[h]; mn++) {
+      n = W.params->roworb[h][mn][1];
+      nsym = W.params->qsym[n];
+      N = n - occ_off[nsym];
+      for(ij=0; ij < W.params->coltot[h]; ij++) {
+        j = W.params->colorb[h][ij][1];
+        jsym = W.params->ssym[j];
+        J = j - occ_off[jsym];
+        if ((J >= (occpi[jsym] - openpi[jsym])) ||
+            (N >= (occpi[nsym] - openpi[nsym])) )
+          W.matrix[h][mn][ij] = 0.0;
+      }
+    }
+    dpd_file4_mat_irrep_wrt(&W, h);
+    dpd_file4_mat_irrep_close(&W, h);
+  }
+  dpd_file4_close(&W);
 }

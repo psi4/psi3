@@ -10,6 +10,8 @@
 ** TDC, Feb 2004
 */
 
+void purge_Wamef(void);
+
 void cc3_Wamef(void)
 {
   dpdbuf4 F, D, W;
@@ -79,6 +81,8 @@ void cc3_Wamef(void)
 
     dpd_file2_close(&tia);
     dpd_file2_close(&tIA);
+
+    purge_Wamef();
   }
   
   else if (params.ref == 2) {
@@ -137,4 +141,114 @@ void cc3_Wamef(void)
     dpd_file2_close(&tia);
     dpd_file2_close(&tIA);
   }
+}
+
+void purge_Wamef(void) {
+  dpdfile2 FAE, Fmi, FME, Fme;
+  dpdfile4 W; 
+  int *occpi, *virtpi;
+  int h, a, b, e, f, i, j, m, n, omit;
+  int    A, B, E, F, I, J, M, N;
+  int mn, ei, ma, ef, me, jb, mb, ij, ab;
+  int asym, bsym, esym, fsym, isym, jsym, msym, nsym;
+  int *occ_off, *vir_off;
+  int *occ_sym, *vir_sym;
+  int *openpi, nirreps;
+  
+  nirreps = moinfo.nirreps;
+  occpi = moinfo.occpi; virtpi = moinfo.virtpi;
+  occ_off = moinfo.occ_off; vir_off = moinfo.vir_off;
+  occ_sym = moinfo.occ_sym; vir_sym = moinfo.vir_sym;
+  openpi = moinfo.openpi;
+
+  /* Purge Wamef matrix elements */
+  dpd_file4_init(&W, CC3_HET1, 0, 11, 7,"CC3 WAMEF (AM,E>F)");
+  for(h=0; h < nirreps; h++) {
+    dpd_file4_mat_irrep_init(&W, h);
+    dpd_file4_mat_irrep_rd(&W, h);
+    for(ma=0; ma < W.params->rowtot[h]; ma++) {
+      a = W.params->roworb[h][ma][0];
+      asym = W.params->psym[a];
+      A = a - vir_off[asym];
+      for(ef=0; ef< W.params->coltot[h]; ef++) {
+        e = W.params->colorb[h][ef][0];
+        f = W.params->colorb[h][ef][1];
+        esym = W.params->rsym[e];
+        fsym = W.params->ssym[f];
+        E = e - vir_off[esym];
+        F = f - vir_off[fsym];
+        if ((A >= (virtpi[asym] - openpi[asym])) ||
+            (E >= (virtpi[esym] - openpi[esym])) ||
+            (F >= (virtpi[fsym] - openpi[fsym])) )
+          W.matrix[h][ma][ef] = 0.0;
+      }
+    }
+    dpd_file4_mat_irrep_wrt(&W, h);
+    dpd_file4_mat_irrep_close(&W, h);
+  }
+  dpd_file4_close(&W);
+
+  dpd_file4_init(&W, CC3_HET1, 0, 11, 7,"CC3 Wamef (am,e>f)");
+  for(h=0; h < nirreps; h++) {
+    dpd_file4_mat_irrep_init(&W, h);
+    dpd_file4_mat_irrep_rd(&W, h);
+    for(ma=0; ma < W.params->rowtot[h]; ma++) {
+      m = W.params->roworb[h][ma][1];
+      msym = W.params->qsym[m];
+      M = m - occ_off[msym];
+      for(ef=0; ef< W.params->coltot[h]; ef++) {
+        if (M >=  (occpi[msym] - openpi[msym]))
+          W.matrix[h][ma][ef] = 0.0;
+      }
+    }
+    dpd_file4_mat_irrep_wrt(&W, h);
+    dpd_file4_mat_irrep_close(&W, h);
+  }
+  dpd_file4_close(&W);
+
+  dpd_file4_init(&W, CC3_HET1, 0, 11, 5,"CC3 WAmEf (Am,Ef)");
+  for(h=0; h < nirreps; h++) {
+    dpd_file4_mat_irrep_init(&W, h);
+    dpd_file4_mat_irrep_rd(&W, h);
+    for(ma=0; ma < W.params->rowtot[h]; ma++) {
+      a = W.params->roworb[h][ma][0];
+      m = W.params->roworb[h][ma][1];
+      asym = W.params->psym[a];
+      msym = W.params->qsym[m];
+      M = m - occ_off[msym];
+      A = a - vir_off[asym];
+      for(ef=0; ef< W.params->coltot[h]; ef++) {
+        e = W.params->colorb[h][ef][0];
+        esym = W.params->rsym[e];
+        E = e - vir_off[esym];
+        if ((A >= (virtpi[asym] - openpi[asym])) ||
+            (M >=  (occpi[msym] - openpi[msym])) ||
+            (E >= (virtpi[esym] - openpi[esym])) )
+          W.matrix[h][ma][ef] = 0.0;
+      }
+    }
+    dpd_file4_mat_irrep_wrt(&W, h);
+    dpd_file4_mat_irrep_close(&W, h);
+  }
+  dpd_file4_close(&W);
+
+  dpd_file4_init(&W, CC3_HET1, 0, 11, 5,"CC3 WaMeF (aM,eF)");
+  for(h=0; h < nirreps; h++) {
+    dpd_file4_mat_irrep_init(&W, h);
+    dpd_file4_mat_irrep_rd(&W, h);
+    for(ma=0; ma < W.params->rowtot[h]; ma++) {
+      for(ef=0; ef< W.params->coltot[h]; ef++) {
+        f = W.params->colorb[h][ef][1];
+        fsym = W.params->ssym[f];
+        F = f - vir_off[fsym];
+        if (F >= (virtpi[fsym] - openpi[fsym]))
+          W.matrix[h][ma][ef] = 0.0;
+      }
+    }
+    dpd_file4_mat_irrep_wrt(&W, h);
+    dpd_file4_mat_irrep_close(&W, h);
+  }
+  dpd_file4_close(&W);
+
+  return;
 }
