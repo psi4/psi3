@@ -291,7 +291,6 @@ struct calcinfo {
 ** parameters structure: holds run-time parameters
 */
 struct params {
-   char ofname[PARM_OUTFILE_MAX+1]; /* output file name */
    char *dertype;    /* derivative level: none, first, etc */
    char *wfn;        /* wavefunction type: CI, DETCAS, etc. */
    int write_energy; /* flag to write energies to detci_energies.dat */

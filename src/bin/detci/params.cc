@@ -724,7 +724,7 @@ void print_parameters(void)
            Parameters.perturbation_parameter, Parameters.root);
    fprintf(outfile, "   PTHREADS      =   %6s      NTHREADS     =   %6d\n",
            Parameters.pthreads ? "yes":"no", Parameters.nthreads);
-   fprintf(outfile, "   EXPORT_CI_VECTOR =   %6s\n",
+   fprintf(outfile, "   EXPORT_CI_VECTOR =   %3s\n",
            Parameters.export_ci_vector ? "yes":"no");
    fprintf(outfile, "\n   FILES         =     %3d %3d %3d %3d\n",
       Parameters.first_hd_tmp_unit, Parameters.first_c_tmp_unit,

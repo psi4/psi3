@@ -101,8 +101,7 @@ extern "C" {
 
 /* C++ FUNCTION PROTOTYPES */
 
-void parse_cmdline(int argc, char *argv[]);
-void init_io(void);
+void init_io(int argc, char *argv[]);
 void close_io(void);
 void title(void);
 void quote(void);
@@ -142,8 +141,7 @@ main(int argc, char *argv[])
    Parameters.print_lvl = 1;
    Parameters.have_special_conv = 0;
 
-   parse_cmdline(argc, argv);   /* check for any command-line arguments     */
-   init_io() ;                  /* open input and output files              */
+   init_io(argc, argv);         /* parse cmd line and open input and output */
    get_parameters();            /* get running params (convergence, etc)    */
    init_ioff();                 /* set up the ioff array                    */
    title();                     /* print program identification             */
@@ -203,44 +201,55 @@ main(int argc, char *argv[])
 
 
 /*
-** parse_cmdline(): Figure out what the command-line arguments are.
+** init_io(): Figure out command-line arguments and start up I/O for
+** input and output files.
 **
 */
-void parse_cmdline(int argc, char *argv[])
+void init_io(int argc, char *argv[])
 {
    int i;
-
+   int parsed=1; /* account for program name */
    Parameters.write_energy = 0;
 
-   strcpy(Parameters.ofname, "output.dat");
    for (i=1; i<argc; i++) {
       if (strcmp(argv[i], "-quiet") == 0) {
          Parameters.print_lvl = 0;
-         }
-      else if (strcmp(argv[i], "-o") == 0) {
-         if (strlen(argv[i+1]) < PARM_OUTFILE_MAX) {
-            strcpy(Parameters.ofname, argv[i+1]);
-            }
-         else {
-            fprintf(stderr, "detci: output file name too long!\n");
-            exit(1);
-            }
-         }
+         parsed++;
+      }
       else if (strcmp(argv[i], "-we") == 0) {
          Parameters.write_energy = 1;
-         }
+         parsed++;
+      }
       else if (strcmp(argv[i], "-c") == 0) {
          Parameters.have_special_conv = 1;
          if (i+1 >= argc) {
             fprintf(stderr, "detci: -c flag requires an argument\n");
             exit(1);
-            }
+         }
          if (sscanf(argv[i+1], "%lf", &(Parameters.special_conv)) != 1) {
             fprintf(stderr, "detci: trouble reading argument to -c flag\n");
             exit(1);
-            }
          }
+         parsed += 2;
       }
+   }
+
+   /* initialize input and output files.  We want to pass the list
+    * of arguments starting after the last one we have parsed, so
+    * we do pointer arithmetic on argv
+    */
+   init_in_out(argc-parsed,argv+parsed);
+
+   if (Parameters.print_lvl) tstart(outfile);
+
+   ip_set_uppercase(1);
+   ip_initialize(infile, outfile);
+   ip_cwk_clear();
+   ip_cwk_add(":DEFAULT");
+   ip_cwk_add(":DETCI");
+
+   psio_init();
+   
 }
  
 
@@ -261,25 +270,6 @@ void init_ioff(void)
       }
 }
 
-
-
-/*
-** init_io(): Function opens input and output files
-*/
-void init_io(void)
-{
-   ffile(&infile,"input.dat",2) ;
-   ffile(&outfile,Parameters.ofname,1);
-   if (Parameters.print_lvl) tstart(outfile);
-
-   ip_set_uppercase(1);
-   ip_initialize(infile, outfile);
-   ip_cwk_clear();
-   ip_cwk_add(":DEFAULT");
-   ip_cwk_add(":DETCI");
-
-   psio_init();
-}
 
 
 /*
