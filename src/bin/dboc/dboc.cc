@@ -305,7 +305,7 @@ void init_io(int argc, char *argv[])
 
   int errcod = psi_start(argc-1,argv+1,0);
   if (errcod != PSI_RETURN_SUCCESS)
-    exit(PSI_RETURN_FAILURE);
+    throw std::runtime_error("init_io -- psi_start failed");
   ip_cwk_add(":DEFAULT");
   ip_cwk_add(progid);
   tstart(outfile);
