@@ -7,15 +7,15 @@
 #define EXTERN
 #include"global.h"
 
-int generate_points(int type, int start, double a, double b, double v, double *x, double *y, double *z, double *weight);
+int generate_points(int type, int start, double a, double b, double v);
 
+static double *x,*y,*z,*weight;
 
 struct leb_point_s *lebedev_init(int degree){
 
     int i;
-    int start=0.0;
+    int start=0;
     double a,b,c,v;
-    double *x,*y,*z,*weight;
     struct leb_point_s *leb_tmp;
     
     x = init_array(degree);
@@ -28,179 +28,183 @@ struct leb_point_s *lebedev_init(int degree){
     case 6:
 	
 	v = 0.1666666666666667;
-	start = generate_points(1,start,a,b,v,x,y,z,weight);
+	start = generate_points(1,start,a,b,v);
 	break;
-	
+    
     case 14:
 	
 	v = 0.06666666666666667;
-	start = generate_points(1,start,a,b,v,x,y,z,weight);
+	start = generate_points(1,start,a,b,v);
+	
 	v = 0.07500000000000000;
-	start = generate_points(3,start,a,b,v,x,y,z,weight);
+	start = generate_points(3,start,a,b,v);
+	
 	break;
 	
-    case 26:
+     case 26:
 	
 	v = 0.04761904761904762;
-	start = generate_points(1,start,a,b,v,x,y,z,weight);
+	start = generate_points(1,start,a,b,v);
+	
 	v = 0.03809523809523810;
-	start = generate_points(2,start,a,b,v,x,y,z,weight);
+	start = generate_points(2,start,a,b,v);
+	
 	v = 0.03214285714285714;
-	start = generate_points(3,start,a,b,v,x,y,z,weight);
+	start = generate_points(3,start,a,b,v);
 	break;
 	
     case 38:
 	v = 0.009523809523809524;
-	start = generate_points(1,start,a,b,v,x,y,z,weight);
+	start = generate_points(1,start,a,b,v);
 	v =0.03214285714285714;
-	start = generate_points(3,start,a,b,v,x,y,z,weight);
+	start = generate_points(3,start,a,b,v);
 	a = 0.4597008433809831;
 	v = 0.02857142857142857;
-	start = generate_points(5,start,a,b,v,x,y,z,weight);
+	start = generate_points(5,start,a,b,v);
 	break;
 
     case 50:
 	
 	v = 0.01269841269841270;
-	start = generate_points(1,start,a,b,v,x,y,z,weight);
+	start = generate_points(1,start,a,b,v);
 	v = 0.02257495590828924;
-	start = generate_points(2,start,a,b,v,x,y,z,weight);
+	start = generate_points(2,start,a,b,v);
 	v = 0.02109375000000000;
-	start = generate_points(3,start,a,b,v,x,y,z,weight);
+	start = generate_points(3,start,a,b,v);
 	a = 0.3015113445777636;
 	v = 0.02017333553791887;
-	start = generate_points(4,start,a,b,v,x,y,z,weight);
+	start = generate_points(4,start,a,b,v);
 	break;
 	
     case 74:
 	
 	v = 0.0005130671797338464;
-	start = generate_points(1,start,a,b,v,x,y,z,weight);
+	start = generate_points(1,start,a,b,v);
 	v = 0.01660406956574204;
-	start = generate_points(2,start,a,b,v,x,y,z,weight);
+	start = generate_points(2,start,a,b,v);
 	v = -0.02958603896103896;
-	start = generate_points(3,start,a,b,v,x,y,z,weight);
+	start = generate_points(3,start,a,b,v);
 	a = 0.4803844614152614;
 	v = 0.02657620708215946;
-	start = generate_points(4,start,a,b,v,x,y,z,weight);
+	start = generate_points(4,start,a,b,v);
 	a = 0.3207726489807764;
 	v = 0.01652217099371571;
-	start = generate_points(5,start,a,b,v,x,y,z,weight);
+	start = generate_points(5,start,a,b,v);
 	break;
 	
     case 86:
 	
 	v = 0.01154401154401154;
-	start = generate_points(1,start,a,b,v,x,y,z,weight);
+	start = generate_points(1,start,a,b,v);
 	v = 0.01194390908585628;
-	start = generate_points(3,start,a,b,v,x,y,z,weight);
+	start = generate_points(3,start,a,b,v);
 	a = 0.3696028464541502;
 	v = 0.01111055571060340;
-	start = generate_points(4,start,a,b,v,x,y,z,weight);
+	start = generate_points(4,start,a,b,v);
 	a = 0.6943540066026664;
 	v = 0.01187650129453714;
-	start = generate_points(4,start,a,b,v,x,y,z,weight);
+	start = generate_points(4,start,a,b,v);
 	a = 0.3742430390903412;
 	v = 0.01181230374690448;
-	start = generate_points(5,start,a,b,v,x,y,z,weight);
+	start = generate_points(5,start,a,b,v);
 	break;
 	
     case 110:
 	
 	v = 0.003828270494937162;
-	start = generate_points(1,start,a,b,v,x,y,z,weight);
+	start = generate_points(1,start,a,b,v);
 	v = 0.009793737512487512;
-	start = generate_points(3,start,a,b,v,x,y,z,weight);
+	start = generate_points(3,start,a,b,v);
 	a = 0.1851156353447362;
 	v = 0.008211737283191111;
-	start = generate_points(4,start,a,b,v,x,y,z,weight);
+	start = generate_points(4,start,a,b,v);
 	a = 0.6904210483822922;
 	v = 0.009942814891178103;
-	start = generate_points(4,start,a,b,v,x,y,z,weight);
+	start = generate_points(4,start,a,b,v);
 	a = 0.3956894730559419;
 	v =0.009595471336070963;
-	start = generate_points(4,start,a,b,v,x,y,z,weight);
+	start = generate_points(4,start,a,b,v);
 	a = 0.4783690288121502;
 	v = 0.009694996361663028;
-	start = generate_points(5,start,a,b,v,x,y,z,weight);
+	start = generate_points(5,start,a,b,v);
 	break;
 	
     case 146:
 	
 	v = 0.0005996313688621381;
-	start = generate_points(1,start,a,b,v,x,y,z,weight);
+	start = generate_points(1,start,a,b,v);
 	v = 0.007372999718620756;
-	start = generate_points(2,start,a,b,v,x,y,z,weight);
+	start = generate_points(2,start,a,b,v);
 	v = 0.007210515360144488;
-	start = generate_points(3,start,a,b,v,x,y,z,weight);
+	start = generate_points(3,start,a,b,v);
 	a = 0.6764410400114264;
 	v = 0.007116355493117555;
-	start = generate_points(4,start,a,b,v,x,y,z,weight);
+	start = generate_points(4,start,a,b,v);
 	a = 0.4174961227965453;
 	v = 0.006753829486314477;
-	start = generate_points(4,start,a,b,v,x,y,z,weight);
+	start = generate_points(4,start,a,b,v);
 	a = 0.1574676672039082;
 	v = 0.007574394159054034;
-	start = generate_points(4,start,a,b,v,x,y,z,weight);
+	start = generate_points(4,start,a,b,v);
 	a = 0.1403553811713183;
 	b = 0.4493328323269557;
 	v = 0.006991087353303262;
-	start = generate_points(6,start,a,b,v,x,y,z,weight);
+	start = generate_points(6,start,a,b,v);
 	break;
 	
     case 170:
 	
 	v = 0.005544842902037365; 
-	start = generate_points(1,start,a,b,v,x,y,z,weight);
+	start = generate_points(1,start,a,b,v);
 	v = 0.006071332770670752;
-	start = generate_points(2,start,a,b,v,x,y,z,weight);
+	start = generate_points(2,start,a,b,v);
 	v = 0.006383674773515093;
-	start = generate_points(3,start,a,b,v,x,y,z,weight);
+	start = generate_points(3,start,a,b,v);
 	a = 0.2551252621114134;
 	v = 0.005183387587747790;
-	start = generate_points(4,start,a,b,v,x,y,z,weight);
+	start = generate_points(4,start,a,b,v);
 	a = 0.6743601460362766;
 	v = 0.006317929009813725;
-	start = generate_points(4,start,a,b,v,x,y,z,weight);
+	start = generate_points(4,start,a,b,v);
 	a = 0.4318910696719410;
 	v = 0.006201670006589077;
-	start = generate_points(4,start,a,b,v,x,y,z,weight);
+	start = generate_points(4,start,a,b,v);
 	a = 0.2613931360335988;
 	v = 0.005477143385137348;
-	start = generate_points(5,start,a,b,v,x,y,z,weight);
+	start = generate_points(5,start,a,b,v);
 	a = 0.4990453161796037;
 	b = 0.1446630744325115;
 	v = 0.005968383987681156;
-	start = generate_points(6,start,a,b,v,x,y,z,weight);
+	start = generate_points(6,start,a,b,v);
 	break;
 	
     case 194:
 	
 	v = 0.001782340447244611;
-	start = generate_points(1,start,a,b,v,x,y,z,weight);
+	start = generate_points(1,start,a,b,v);
 	v = 0.005716905949977102;
-	start = generate_points(2,start,a,b,v,x,y,z,weight);
+	start = generate_points(2,start,a,b,v);
 	v = 0.005573383178848738;
-	start = generate_points(3,start,a,b,v,x,y,z,weight);
+	start = generate_points(3,start,a,b,v);
 	a = 0.6712973442695226;
 	v = 0.005608704082587997;
-	start = generate_points(4,start,a,b,v,x,y,z,weight);
+	start = generate_points(4,start,a,b,v);
 	a = 0.2892465627575439;
 	v = 0.005158237711805383;
-	start = generate_points(4,start,a,b,v,x,y,z,weight);
+	start = generate_points(4,start,a,b,v);
 	a = 0.4446933178717437;
 	v = 0.005518771467273614;
-	start = generate_points(4,start,a,b,v,x,y,z,weight);
+	start = generate_points(4,start,a,b,v);
 	a = 0.1299335447650067;
 	v = 0.004106777028169394;
-	start = generate_points(4,start,a,b,v,x,y,z,weight);
+	start = generate_points(4,start,a,b,v);
 	a = 0.3457702197611283;
 	v = 0.005051846064614808;
-	start = generate_points(5,start,a,b,v,x,y,z,weight);
+	start = generate_points(5,start,a,b,v);
 	a = 0.1590417105383530;
 	b = 0.8360360154824589;
 	v = 0.005530248916233094;
-	start = generate_points(6,start,a,b,v,x,y,z,weight);
+	start = generate_points(6,start,a,b,v);
 	break;
 	 
 	/* need to add 230, 266 */
@@ -208,46 +212,46 @@ struct leb_point_s *lebedev_init(int degree){
     case 302:
 	
 	v = 0.8545911725128148E-3;
-	start = generate_points(1,start,a,b,v,x,y,z,weight);
+	start = generate_points(1,start,a,b,v);
 	v = 0.3599119285025571E-2;
-	start = generate_points(3,start,a,b,v,x,y,z,weight);
+	start = generate_points(3,start,a,b,v);
 	a=0.3515640345570105E+0;
 	v=0.3449788424305883E-2;
-	start = generate_points(4,start,a,b,v,x,y,z,weight);
+	start = generate_points(4,start,a,b,v);
 	a=0.6566329410219612E+0;
 	v=0.3604822601419882E-2;
-	start = generate_points(4,start,a,b,v,x,y,z,weight);
+	start = generate_points(4,start,a,b,v);
 	a=0.4729054132581005E+0;
 	v=0.3576729661743367E-2;
-	start = generate_points(4,start,a,b,v,x,y,z,weight);
+	start = generate_points(4,start,a,b,v);
 	a=0.9618308522614784E-1;
 	v=0.2352101413689164E-2;
-	start = generate_points(4,start,a,b,v,x,y,z,weight);
+	start = generate_points(4,start,a,b,v);
 	a=0.2219645236294178E+0;
 	v=0.3108953122413675E-2;
-	start = generate_points(4,start,a,b,v,x,y,z,weight);
+	start = generate_points(4,start,a,b,v);
 	a=0.7011766416089545E+0;
 	v=0.3650045807677255E-2;
-	start = generate_points(4,start,a,b,v,x,y,z,weight);
+	start = generate_points(4,start,a,b,v);
 	a=0.2644152887060663E+0;
 	v=0.2982344963171804E-2;
-	start = generate_points(5,start,a,b,v,x,y,z,weight);
+	start = generate_points(5,start,a,b,v);
 	a=0.5718955891878961E+0;
 	v=0.3600820932216460E-2;
-	start = generate_points(5,start,a,b,v,x,y,z,weight);
+	start = generate_points(5,start,a,b,v);
 	a=0.2510034751770465E+0;
 	b=0.8000727494073952E+0;
 	v=0.3571540554273387E-2;
-	start = generate_points(6,start,a,b,v,x,y,z,weight);
+	start = generate_points(6,start,a,b,v);
 	a=0.1233548532583327E+0;
 	b=0.4127724083168531E+0;
 	v=0.3392312205006170E-2;
-	start = generate_points(6,start,a,b,v,x,y,z,weight);
+	start = generate_points(6,start,a,b,v);
 	break;
 	
 	/* need to add 350, 434, 590, 770, 974, 1202, 1454, 1730,
 	   2030, 2354, 2702, 3074, 3470, 3890, 4334, 4802, 5294,
-	   5810 */
+	   5810*/ 
     default:
 	punt("\nAngular grid unrecognized");
 
@@ -271,10 +275,11 @@ struct leb_point_s *lebedev_init(int degree){
 
 
 
-int generate_points(int type, int start, double a, double b, double v, double *x, double *y, double *z, double *weight){
+int generate_points(int type, int start, double a, double b, double v){
     
     int end;
     double c;
+
     switch (type){
 	
     case 1:
@@ -422,7 +427,7 @@ int generate_points(int type, int start, double a, double b, double v, double *x
 	break;
 	
     case 4:
-	/* In this case A is inputed */
+    /* In this case A is inputed */
 	b = sqrt(1.0 - 2.0*a*a);
 	x[start] = a;
 	y[start] = a;
@@ -547,7 +552,7 @@ int generate_points(int type, int start, double a, double b, double v, double *x
 	break;
 	
     case 5:
-	/* A is inputed in this case as well*/
+  	/* A is inputed in this case as well*/ 
 	b=sqrt(1-a*a);
 	x[start] = a;
 	y[start] = b;
@@ -672,7 +677,7 @@ int generate_points(int type, int start, double a, double b, double v, double *x
 	break;
 	
     case 6:
-	/* both A and B are inputed in this case */
+       /* both A and B are inputed in this case */ 
 	c=sqrt(1.0 - a*a - b*b);
 	x[start] = a;
 	y[start] = b;
@@ -919,4 +924,5 @@ int generate_points(int type, int start, double a, double b, double v, double *x
     default:
 	punt("\n Why in the hell did you specify that case, didn't you read the code dipshit?");
     }
+    return end;
 }
