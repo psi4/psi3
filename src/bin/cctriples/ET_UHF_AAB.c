@@ -33,7 +33,9 @@ double ET_UHF_AAB(void)
   int *boccpi, *bvirtpi, *bocc_off, *bvir_off;
   double value_c, value_d, dijk, denom, ET_AAB;
   double t_ia, t_ib, t_ja, t_jb, t_kc;
+  double f_ia, f_ib, f_ja, f_jb, f_kc;
   double D_jkbc, D_jkac, D_ikbc, D_ikac, D_jiab;
+  double t_jkbc, t_jkac, t_ikbc, t_ikac, t_jiab;
   int numpA, numpB, p, Gp,offset;
   int nrows, ncols, nlinks;
   dpdbuf4 T2AB, T2AA, T2BA;
@@ -44,7 +46,7 @@ double ET_UHF_AAB(void)
   int **T2AB_col_start, **T2AA_col_start;
   int **FAB_row_start, **FBA_row_start, **FAA_row_start;
   int **EAB_col_start, **EBA_col_start, **EAA_col_start;
-  dpdfile2 T1A, T1B, fIJ, fij, fAB, fab;
+  dpdfile2 T1A, T1B, fIJ, fij, fAB, fab, fIA, fia;
   double ***WABc, ***WBcA, ***WAcB, ***WcAB, ***WcBA, ***VABc;
   int nijk, mijk;
   FILE *ijkfile;
@@ -210,14 +212,20 @@ double ET_UHF_AAB(void)
   dpd_file2_init(&fij, CC_OEI, 0, 2, 2, "fij");
   dpd_file2_init(&fAB, CC_OEI, 0, 1, 1, "fAB");
   dpd_file2_init(&fab, CC_OEI, 0, 3, 3, "fab");
+  dpd_file2_init(&fIA, CC_OEI, 0, 0, 1, "fIA");
+  dpd_file2_init(&fia, CC_OEI, 0, 2, 3, "fia");
   dpd_file2_mat_init(&fIJ);
   dpd_file2_mat_init(&fij);
   dpd_file2_mat_init(&fAB);
   dpd_file2_mat_init(&fab);
+  dpd_file2_mat_init(&fIA);
+  dpd_file2_mat_init(&fia);
   dpd_file2_mat_rd(&fIJ);
   dpd_file2_mat_rd(&fij);
   dpd_file2_mat_rd(&fAB);
   dpd_file2_mat_rd(&fab);
+  dpd_file2_mat_rd(&fIA);
+  dpd_file2_mat_rd(&fia);
 
   dpd_file2_init(&T1A, CC_OEI, 0, 0, 1, "tIA");
   dpd_file2_mat_init(&T1A);
@@ -767,69 +775,89 @@ double ET_UHF_AAB(void)
 		      bc = DABints.params->colidx[B][C];
 		      ac = DABints.params->colidx[A][C];
 
-		      /* +t_IA * D_JkBc */
+		      /* +t_IA * D_JkBc + f_IA * t_JkBc */
 		      if(Gi == Ga && Gjk == Gbc) {
 			t_ia = D_jkbc = 0.0;
 
-			if(T1A.params->rowtot[Gi] && T1A.params->coltot[Gi])
+			if(T1A.params->rowtot[Gi] && T1A.params->coltot[Gi]) {
 			  t_ia = T1A.matrix[Gi][i][a];
+			  f_ia = fIA.matrix[Gi][i][a];
+			}
 
-			if(DABints.params->rowtot[Gjk] && DABints.params->coltot[Gjk])
+			if(DABints.params->rowtot[Gjk] && DABints.params->coltot[Gjk]) {
 			  D_jkbc = DABints.matrix[Gjk][jk][bc];
+			  t_jkbc = T2AB.matrix[Gjk][jk][bc];
+			}
 
-			VABc[Gab][ab][c] += t_ia * D_jkbc;
+			VABc[Gab][ab][c] += t_ia * D_jkbc + f_ia * t_jkbc;
 		      }
 
-		      /* -t_IB * D_JkAc */
+		      /* -t_IB * D_JkAc - f_IB * t_JkAc */
 		      if(Gi == Gb && Gjk == Gac) {
 			t_ib = D_jkac = 0.0;
 
-			if(T1A.params->rowtot[Gi] && T1A.params->coltot[Gi])
+			if(T1A.params->rowtot[Gi] && T1A.params->coltot[Gi]) {
 			  t_ib = T1A.matrix[Gi][i][b];
+			  f_ib = fIA.matrix[Gi][i][b];
+			}
 
-			if(DABints.params->rowtot[Gjk] && DABints.params->coltot[Gjk])
+			if(DABints.params->rowtot[Gjk] && DABints.params->coltot[Gjk]) {
 			  D_jkac = DABints.matrix[Gjk][jk][ac];
+			  t_jkac = T2AB.matrix[Gjk][jk][ac];
+			}
 
-			VABc[Gab][ab][c] -= t_ib * D_jkac;
+			VABc[Gab][ab][c] -= t_ib * D_jkac + f_ib * t_jkac;
 		      }
 
-		      /* -t_JA * D_IkBc */
+		      /* -t_JA * D_IkBc - f_JA * t_IkBc */
 		      if(Gj == Ga && Gik == Gbc) {
 			t_ja = D_ikbc = 0.0;
 
-			if(T1A.params->rowtot[Gj] && T1A.params->coltot[Gj])
+			if(T1A.params->rowtot[Gj] && T1A.params->coltot[Gj]) {
 			  t_ja = T1A.matrix[Gj][j][a];
+			  f_ja = fIA.matrix[Gj][j][a];
+			}
 
-			if(DABints.params->rowtot[Gik] && DABints.params->coltot[Gik])
+			if(DABints.params->rowtot[Gik] && DABints.params->coltot[Gik]) {
 			  D_ikbc = DABints.matrix[Gik][ik][bc];
+			  t_ikbc = T2AB.matrix[Gik][ik][bc];
+			}
 
-			VABc[Gab][ab][c] -= t_ja * D_ikbc;
+			VABc[Gab][ab][c] -= t_ja * D_ikbc + f_ja * t_ikbc;
 		      }
 
-		      /* +t_JB * D_IkAc */
+		      /* +t_JB * D_IkAc + f_JB * t_IkAc */
 		      if(Gj == Gb && Gik == Gac) {
 			t_jb = D_ikac = 0.0;
 
-			if(T1A.params->rowtot[Gj] && T1A.params->coltot[Gj])
+			if(T1A.params->rowtot[Gj] && T1A.params->coltot[Gj]) {
 			  t_jb = T1A.matrix[Gj][j][b];
+			  f_jb = fIA.matrix[Gj][j][b];
+			}
 
-			if(DABints.params->rowtot[Gik] && DABints.params->coltot[Gik])
+			if(DABints.params->rowtot[Gik] && DABints.params->coltot[Gik]) {
 			  D_ikac = DABints.matrix[Gik][ik][ac];
+			  t_ikac = T2AB.matrix[Gik][ik][ac];
+			}
 
-			VABc[Gab][ab][c] += t_jb * D_ikac;
+			VABc[Gab][ab][c] += t_jb * D_ikac + f_jb * t_ikac;
 		      }
 
-		      /* -t_kc * D_JIAB */
+		      /* -t_kc * D_JIAB - f_kc * t_JIAB */
 		      if(Gk == Gc && Gji == Gab) {
 			t_kc = D_jiab = 0.0;
 
-			if(T1B.params->rowtot[Gk] && T1B.params->coltot[Gk])
+			if(T1B.params->rowtot[Gk] && T1B.params->coltot[Gk]) {
 			  t_kc = T1B.matrix[Gk][k][c];
+			  f_kc = fia.matrix[Gk][k][c];
+			}
 
-			if(DAAints.params->rowtot[Gji] && DAAints.params->coltot[Gji])
+			if(DAAints.params->rowtot[Gji] && DAAints.params->coltot[Gji]) {
 			  D_jiab = DAAints.matrix[Gji][ji][ab];
+			  t_jiab = T2AA.matrix[Gji][ji][ab];
+			}
 
-			VABc[Gab][ab][c] -= t_kc * D_jiab;
+			VABc[Gab][ab][c] -= t_kc * D_jiab + f_kc * t_jiab;
 		      }
 
 		      /* Sum V and W into V */
@@ -916,10 +944,14 @@ double ET_UHF_AAB(void)
   dpd_file2_mat_close(&fij);
   dpd_file2_mat_close(&fAB);
   dpd_file2_mat_close(&fab);
+  dpd_file2_mat_close(&fIA);
+  dpd_file2_mat_close(&fia);
   dpd_file2_close(&fIJ);
   dpd_file2_close(&fij);
   dpd_file2_close(&fAB);
   dpd_file2_close(&fab);
+  dpd_file2_close(&fIA);
+  dpd_file2_close(&fia);
 
   free_int_matrix(FAA_row_start, nirreps);
   free_int_matrix(FAB_row_start, nirreps);

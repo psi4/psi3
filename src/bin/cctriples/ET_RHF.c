@@ -30,10 +30,11 @@ double ET_RHF(void)
   int *occpi, *virtpi, *occ_off, *vir_off;
   int **F_row_start, **T2_col_start, **E_col_start, **T2_row_start, offset;
   double t_ia, t_jb, t_kc, D_jkbc, D_ikac, D_ijab;
+  double f_ia, f_jb, f_kc, t_jkbc, t_ikac, t_ijab;
   double dijk, value1, value2, value3, value4, value5, value6, denom, ET;
   double ***W0, ***W1, ***V, ***X, ***Y, ***Z;
   dpdbuf4 T2, Fints, Eints, Dints;
-  dpdfile2 fIJ, fAB, T1;
+  dpdfile2 fIJ, fAB, fIA, T1;
   int nijk, mijk;
   FILE *ijkfile;
 
@@ -104,10 +105,13 @@ double ET_RHF(void)
 
   dpd_file2_init(&fIJ, CC_OEI, 0, 0, 0, "fIJ");
   dpd_file2_init(&fAB, CC_OEI, 0, 1, 1, "fAB");
+  dpd_file2_init(&fIA, CC_OEI, 0, 0, 1, "fIA");
   dpd_file2_mat_init(&fIJ);
   dpd_file2_mat_init(&fAB);
+  dpd_file2_mat_init(&fIA);
   dpd_file2_mat_rd(&fIJ);
   dpd_file2_mat_rd(&fAB);
+  dpd_file2_mat_rd(&fIA);
 
   dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
   dpd_file2_mat_init(&T1);
@@ -565,17 +569,21 @@ double ET_RHF(void)
 		      bc = Dints.params->colidx[B][C];
 		      ac = Dints.params->colidx[A][C];
 
-		      /* +t_ia * D_jkbc */
+		      /* +t_ia * D_jkbc + f_ia * t_jkbc */
 		      if(Gi == Ga && Gjk == Gbc) {
 			t_ia = D_jkbc = 0.0;
 
-			if(T1.params->rowtot[Gi] && T1.params->coltot[Gi])
+			if(T1.params->rowtot[Gi] && T1.params->coltot[Gi]) {
 			  t_ia = T1.matrix[Gi][i][a];
+			  f_ia = fIA.matrix[Gi][i][a];
+			}
 
-			if(Dints.params->rowtot[Gjk] && Dints.params->coltot[Gjk])
+			if(Dints.params->rowtot[Gjk] && Dints.params->coltot[Gjk]) {
 			  D_jkbc = Dints.matrix[Gjk][jk][bc];
+			  t_jkbc = T2.matrix[Gjk][jk][bc];
+			}
 
-			V[Gab][ab][c] += t_ia * D_jkbc;
+			V[Gab][ab][c] += t_ia * D_jkbc + f_ia * t_jkbc;
 
 		      }
 
@@ -583,26 +591,34 @@ double ET_RHF(void)
 		      if(Gj == Gb && Gik == Gac) {
 			t_jb = D_ikac = 0.0;
 
-			if(T1.params->rowtot[Gj] && T1.params->coltot[Gj])
+			if(T1.params->rowtot[Gj] && T1.params->coltot[Gj]) {
 			  t_jb = T1.matrix[Gj][j][b];
+			  f_jb = fIA.matrix[Gj][j][b];
+			}
 
-			if(Dints.params->rowtot[Gik] && Dints.params->coltot[Gik])
+			if(Dints.params->rowtot[Gik] && Dints.params->coltot[Gik]) {
 			  D_ikac = Dints.matrix[Gik][ik][ac];
+			  t_ikac = T2.matrix[Gik][ik][ac];
+			}
 
-			V[Gab][ab][c] += t_jb * D_ikac;
+			V[Gab][ab][c] += t_jb * D_ikac + f_jb * t_ikac;
 		      }
 
 		      /* +t_kc * D_ijab */
 		      if(Gk == Gc && Gij == Gab) {
 			t_kc = D_ijab = 0.0;
 
-			if(T1.params->rowtot[Gk] && T1.params->coltot[Gk])
+			if(T1.params->rowtot[Gk] && T1.params->coltot[Gk]) {
 			  t_kc = T1.matrix[Gk][k][c];
+			  f_kc = fIA.matrix[Gk][k][c];
+			}
 
-			if(Dints.params->rowtot[Gij] && Dints.params->coltot[Gij])
+			if(Dints.params->rowtot[Gij] && Dints.params->coltot[Gij]) {
 			  D_ijab = Dints.matrix[Gij][ij][ab];
+			  t_ijab = T2.matrix[Gij][ij][ab];
+			}
 
-			V[Gab][ab][c] += t_kc * D_ijab;
+			V[Gab][ab][c] += t_kc * D_ijab + f_kc * t_ijab;
 		      }
 
 		      V[Gab][ab][c] /= (1 + (A==B) + (B==C) + (A==C));
@@ -773,8 +789,10 @@ double ET_RHF(void)
 
   dpd_file2_mat_close(&fIJ);
   dpd_file2_mat_close(&fAB);
+  dpd_file2_mat_close(&fIA);
   dpd_file2_close(&fIJ);
   dpd_file2_close(&fAB);
+  dpd_file2_close(&fIA);
 
   timer_off("ET_RHF");
 
