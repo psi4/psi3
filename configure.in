@@ -69,7 +69,7 @@ AC_SUBST(target)
 
 # potential names of compilers
 FC_LIST="g77 f77 fc f2c"
-CC_LIST="gcc cc"
+CC_LIST="gcc cc ccc"
 CXX_LIST="g++ c++"
 
 # set up os specific options
@@ -127,6 +127,8 @@ esac
 if test -z "$FC"; then
   AC_PROGRAMS_CHECK(FC,$FC_LIST,f77)
 fi
+
+F77=$FC
 
 if test -z "$CC"; then
   AC_PROGRAMS_CHECK(CC,$CC_LIST,cc)
@@ -760,6 +762,7 @@ AC_OUTPUT(include/psiconfig.h include/cfuncs.h include/ffuncs.h
           src/bin/oeprop/Makefile
           src/bin/optking/Makefile
           src/bin/psiclean/Makefile
+          src/bin/stable/Makefile
           src/bin/transqt/Makefile
 
           src/doc/MakeVars src/doc/MakeRules src/doc/Makefile
