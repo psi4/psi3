@@ -59,6 +59,7 @@ psi: (
   cclambda_zeta = "cclambda --zeta"
   ccdensity_calc_xi = "ccdensity --calc_xi"
   ccdensity_use_zeta = "ccdensity --use_zeta"
+  ccdensity_excited = "ccdensity --excited"
 
   % Determinant CI specific programs
   detci    = "detci"
@@ -276,7 +277,8 @@ psi: (
   CCSDTwoConEnergy = ERROR
 
   % Procedures for the CCSD gradient
-  CCSDFirst = ($CCSDEnergy $cchbar $cclambda $ccdensity $backtransqt $deriv)
+  CCSDFirst = ($CCSDEnergy $cchbar $cclambda $ccdensity
+    $oeprop $backtransqt $deriv)
   CCSDRHFFirst = $CCSDFirst
   CCSDROHFFirst = $CCSDFirst
   CCSDUHFFirst = $CCSDFirst
@@ -284,7 +286,7 @@ psi: (
 
   %Procedures for the CCSD gradient with no restart
   CCSDFirstReset = ($ints $scf $transqt $ccreset $ccenergy $cchbar
-      $cclambda $ccdensity $backtransqt $deriv)
+      $cclambda $ccdensity $oeprop $backtransqt $deriv)
   CCSDRHFFirstReset = $CCSDFirstReset
   CCSDROHFFirstReset = $CCSDFirstReset
   CCSDUHFFirstReset = $CCSDFirstReset
@@ -418,7 +420,7 @@ psi: (
 
   % Procedure for the EOM CCSD gradient
   EOM_CCSDFirst = ($EOM_CCSDEnergy $cclambda_excited $ccdensity_calc_xi
-    $cclambda_zeta $ccdensity_use_zeta $backtransqt $deriv)
+    $cclambda_zeta $ccdensity_use_zeta $oeprop $backtransqt $deriv)
   EOM_CCSDRHFFirst = ($EOM_CCSDFirst $done)
   EOM_CCSDROHFFirst = ($EOM_CCSDFirst $done)
   EOM_CCSDUHFFirst = ($EOM_CCSDFirst $done)
@@ -449,7 +451,22 @@ psi: (
   EOM_CCSDUHFFirstFreq  = ($EOM_CCSDFirstFreq $done)
   EOM_CCSDTwoConFirstFreq  = ERROR
 
-  % -------------------------------- EOM CCSD Procedures
+  % Procedure for an CCSD one-electron property computation
+  EOM_CCSDFirstOEPROP = ($EOM_CCSDEnergy $cclambda_excited $ccdensity_calc_xi
+    $cclambda_zeta $ccdensity_use_zeta $oeprop $done)
+  EOM_CCSDRHFFirstOEPROP = $EOM_CCSDFirstOEPROP
+  EOM_CCSDUHFFirstOEPROP = $EOM_CCSDFirstOEPROP
+  EOM_CCSDROHFFirstOEPROP = $EOM_CCSDFirstOEPROP
+  EOM_CCSDTwoConFirstOEPROP = ERROR
+
+  % Procedure for an CCSD one-electron property computation - no T amplitude relaxation
+  EOM_CCSDEnergyOEPROP = ($EOM_CCSDEnergy $cclambda_excited $ccdensity_excited $oeprop $done)
+  EOM_CCSDRHFEnergyOEPROP = $EOM_CCSDEnergyOEPROP
+  EOM_CCSDUHFEnergyOEPROP = $EOM_CCSDEnergyOEPROP
+  EOM_CCSDROHFEnergyOEPROP = $EOM_CCSDEnergyOEPROP
+  EOM_CCSDTwoConEnergyOEPROP = ERROR
+
+  % -------------------------------- EOM CC3 Procedures
   % Procedure for the EOM_CCSD energy
   EOM_CC3Energy = ($ints $scf $transqt $ccsort $ccenergy $cchbar $cceom)
   EOM_CC3RHFEnergy = ERROR
