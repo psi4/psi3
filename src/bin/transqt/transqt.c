@@ -261,21 +261,21 @@ void parse_cmdline(int argc, char *argv[])
 	   switch (atoi(argv[i])) {
 	   case 0: /*--- transform ERIs ---*/
 	       params.tei_type = ERI;
-	       params.src_tei_file = PSIF_AO_TEI;
+	       params.src_tei_file = PSIF_SO_TEI;
 	       params.mfile = PSIF_MO_TEI;
 	       params.do_oei = 1;
 	       break;
 
 	   case 1: /*--- transform ints of r12 ---*/
 	       params.tei_type = R12;
-	       params.src_tei_file = PSIF_AO_R12;
+	       params.src_tei_file = PSIF_SO_R12;
 	       params.mfile = PSIF_MO_R12;
 	       params.do_oei = 0;
 	       break;
 
 	   case 2: /*--- transform ints of [r12,T1] ---*/
 	       params.tei_type = R12T1;
-	       params.src_tei_file = PSIF_AO_R12T1;
+	       params.src_tei_file = PSIF_SO_R12T1;
 	       params.mfile = PSIF_MO_R12T1;
 	       params.do_oei = 0;
 	       break;
@@ -375,14 +375,14 @@ void get_parameters(void)
     errcod = ip_data("TPDM_FILE","%d",&(params.src_tei_file),0);
   }
   else {
-    params.src_S_file = PSIF_AO_S;
-    errcod = ip_data("AO_S_FILE","%d",&(params.src_S_file),0);
-    params.src_T_file = PSIF_AO_T;
-    errcod = ip_data("AO_T_FILE","%d",&(params.src_T_file),0);
-    params.src_V_file = PSIF_AO_V;
-    errcod = ip_data("AO_V_FILE","%d",&(params.src_V_file),0);
-    params.src_tei_file = PSIF_AO_TEI;
-    errcod = ip_data("AO_TEI_FILE","%d",&(params.src_tei_file),0);
+    params.src_S_file = PSIF_SO_S;
+    errcod = ip_data("SO_S_FILE","%d",&(params.src_S_file),0);
+    params.src_T_file = PSIF_SO_T;
+    errcod = ip_data("SO_T_FILE","%d",&(params.src_T_file),0);
+    params.src_V_file = PSIF_SO_V;
+    errcod = ip_data("SO_V_FILE","%d",&(params.src_V_file),0);
+    params.src_tei_file = PSIF_SO_TEI;
+    errcod = ip_data("SO_TEI_FILE","%d",&(params.src_tei_file),0);
   }
 
   /*--- By default - tranform one-electron integrals ---*/
