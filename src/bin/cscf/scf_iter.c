@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.4  2000/06/27 21:08:11  evaleev
- * Fixed a minor string manipulation problem in scf_input.c
+ * Revision 1.5  2000/06/27 21:12:33  evaleev
+ * .
  *
+/* Revision 1.4  2000/06/27 21:08:11  evaleev
+/* Fixed a minor string manipulation problem in scf_input.c
+/*
 /* Revision 1.3  2000/06/26 19:04:12  sbrown
 /* Added DFT capapbilities to interface with cints using direct scf
 /*
@@ -166,6 +169,7 @@ void scf_iter()
 	      fprintf(outfile,"\n J+X+C gmat for irrep %d",s->irrep_label);
 	      print_array(s->fock_pac,nn,outfile);
 	    }
+	  }
 	}
       }
    /* create new fock matrix in fock_pac or fock_eff */
