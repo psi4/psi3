@@ -16,11 +16,11 @@ void start_io()
   ip_set_uppercase(1);
   ip_initialize(infile, outfile);
   ip_cwk_clear();
-  ip_cwk_add(":INPUT");
   ip_cwk_add(":DEFAULT");
+  ip_cwk_add(":INPUT");
   tstart(outfile);
   /*--- Initialize new IO system ---*/
-  /* psio_init(); */
+  psio_init();
 
   return;
 }
@@ -29,7 +29,7 @@ void stop_io()
 {
   tstop(outfile);
   ip_done();
-  /* psio_done();*/
+  psio_done();
   fclose(outfile);
   fclose(infile);
 }

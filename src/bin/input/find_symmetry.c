@@ -370,9 +370,6 @@ void find_symmetry()
 	      row = irr_char[1];
 	      irr_char[1] = irr_char[2];
 	      irr_char[2] = row;
-	      i = irr_char_str[1];
-	      irr_char_str[1] = irr_char_str[2];
-	      irr_char_str[2] = i;
 	      irr_labels[0] = strdup("Ag  ");
 	      irr_labels[1] = strdup("Bg  ");
 	      irr_labels[2] = strdup("Au  ");
@@ -504,18 +501,6 @@ void alloc_irr_char()
 
   /* Allocate global arrays */
   irr_char = init_int_matrix(nirreps,nirreps);
-  irr_char_str = init_int_array(nirreps);
-
-  /*---
-    irr_char_str is an array of int's, each int is a packed row
-    of the character table, "-1" corresponds to the bit set (1),
-    "+1" - to the bit unset (0). This way to compute the direct
-    product of two irreps one may use the (fast) XOR operation :
-    "-1"x"-1" = "+1"  ->  1^1 = 0
-    "+1"x"-1" = "-1"  ->  0^1 = 1
-    "-1"x"+1" = "-1"  ->  1^0 = 1
-    "+1"x"+1" = "+1"  ->  0^0 = 0
-   ---*/
 
   for(i=0;i<nirreps;i++)
     irr_char[0][i] = 1;
@@ -524,38 +509,27 @@ void alloc_irr_char()
       break;
     case 2:
       irr_char[1][0] =  1; irr_char[1][1] = -1;
-      irr_char_str[1] = 1;
       break;
     case 4:
       irr_char[1][0] =  1; irr_char[1][1] =  1; irr_char[1][2] = -1; irr_char[1][3] = -1;
-      irr_char_str[1] = 3;
       irr_char[2][0] =  1; irr_char[2][1] = -1; irr_char[2][2] =  1; irr_char[2][3] = -1;
-      irr_char_str[2] = 5;
       irr_char[3][0] =  1; irr_char[3][1] = -1; irr_char[3][2] = -1; irr_char[3][3] =  1;
-      irr_char_str[3] = 6;
       break;
     case 8:
       irr_char[1][0] =  1; irr_char[1][1] =  1; irr_char[1][2] = -1; irr_char[1][3] = -1;
       irr_char[1][4] =  1; irr_char[1][5] =  1; irr_char[1][6] = -1; irr_char[1][7] = -1;
-      irr_char_str[1] = 51;
       irr_char[2][0] =  1; irr_char[2][1] = -1; irr_char[2][2] =  1; irr_char[2][3] = -1;
       irr_char[2][4] =  1; irr_char[2][5] = -1; irr_char[2][6] =  1; irr_char[2][7] = -1;
-      irr_char_str[2] = 85;
       irr_char[3][0] =  1; irr_char[3][1] = -1; irr_char[3][2] = -1; irr_char[3][3] =  1;
       irr_char[3][4] =  1; irr_char[3][5] = -1; irr_char[3][6] = -1; irr_char[3][7] =  1;
-      irr_char_str[3] = 102;
       irr_char[4][0] =  1; irr_char[4][1] =  1; irr_char[4][2] =  1; irr_char[4][3] =  1;
       irr_char[4][4] = -1; irr_char[4][5] = -1; irr_char[4][6] = -1; irr_char[4][7] = -1;
-      irr_char_str[4] = 15;
       irr_char[5][0] =  1; irr_char[5][1] =  1; irr_char[5][2] = -1; irr_char[5][3] = -1;
       irr_char[5][4] = -1; irr_char[5][5] = -1; irr_char[5][6] =  1; irr_char[5][7] =  1;
-      irr_char_str[5] = 60;
       irr_char[6][0] =  1; irr_char[6][1] = -1; irr_char[6][2] =  1; irr_char[6][3] = -1;
       irr_char[6][4] = -1; irr_char[6][5] =  1; irr_char[6][6] = -1; irr_char[6][7] =  1;
-      irr_char_str[6] = 90;
       irr_char[7][0] =  1; irr_char[7][1] = -1; irr_char[7][2] = -1; irr_char[7][3] =  1;
       irr_char[7][4] = -1; irr_char[7][5] =  1; irr_char[7][6] =  1; irr_char[7][7] = -1;
-      irr_char_str[7] = 105;
       break;
     default:
       punt("Number of irreps in find_symmetry is invalid.");

@@ -142,3 +142,17 @@ char **init_char_matrix(int A, int B);
 
 void start_io();
 void stop_io();
+
+void init_oldcalc();
+void cleanup_oldcalc();
+void oldcalc_projection();
+
+void init_gto(int);
+void cleanup_gto(int);
+
+double **overlap_new_old();
+double **overlap();
+void write_scf_to_file30();
+
+void parsing();
+void parsing_cmdline(int argc, char *argv[]);

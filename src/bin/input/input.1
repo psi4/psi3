@@ -131,6 +131,17 @@ and references therein.
 
 .SH INPUT FORMAT
 .LP
+The following command-line arguments are available:
+.IP "\fI--getmos\fP"
+This will cause \fBINPUT\fP to try to recover molecular
+orbitals from a previous calculation archived in the
+checkpoint file. If found, occupied MOs will be projected onto
+the new basis. The virtual space is filled up by the virtual MOs
+obtained by diagonalizing the core Hamiltonian (even if the new
+and old basis sets are identical). This will not affect the subsequent
+SCF procedure in any way, but should be kept in mind.
+
+.LP
 The
 .B input
 program

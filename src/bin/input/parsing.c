@@ -12,6 +12,7 @@
 void parsing()
 {
    int errcod;
+   char *guess;
 
      /*Setting some defaults*/
      puream = 0;
@@ -73,6 +74,23 @@ void parsing()
 
      /*No reorientation?*/
      errcod = ip_boolean("NO_REORIENT",&no_reorient,0);
+
+     return;
 }
 
      
+void parsing_cmdline(int argc, char *argv[])
+{
+   int i;
+
+   for (i=1; i<argc; i++) {
+       
+       /*--- read MOs and project onto new basis? ---*/
+       if (strcmp(argv[i], "--getmos") == 0) {
+	   readguess = 1;
+       }
+
+   }
+
+   return;
+}

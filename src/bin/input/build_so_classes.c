@@ -8,10 +8,6 @@
 #include "defines.h"
 
 
-/*-----------------------------------------------------------------------------------------------------------------
-  This function builds arrays of coefficients and labels for unique SO classes
- -----------------------------------------------------------------------------------------------------------------*/
-
 void build_so_classes()
 {
   int i,j,l,tmp;
@@ -45,23 +41,11 @@ void build_so_classes()
 	class_num_angmom[class][shell_ang_mom[j]]++;
       }
     }
-/*    for(ua=0;ua<num_uniques;ua++) {
-      atom = u2a[ua];
-      kfirst = first_shell_on_atom[atom];
-      klast = kfirst + nshells_per_atom[atom];
-      class = atom_class[atom];
-      for(j=kfirst;j<klast;j++) {
-        max_angmom_class[class] = (max_angmom_class[class] > shell_ang_mom[j]) ? max_angmom_class[class] : shell_ang_mom[j];
-        class_num_angmom[class][shell_ang_mom[j]]++;
-      }
-    }*/
-
     
     /*-----------------------
       Allocate global arrays
      -----------------------*/
 
-    num_angso_coeff = 0;
     num_cart_so_in_class = (int ***) malloc(num_classes*sizeof(int **));
     for(class=0;class<num_classes;class++)
       num_cart_so_in_class[class] = init_int_matrix(max_angmom_class[class]+1,nirreps);
@@ -72,12 +56,6 @@ void build_so_classes()
       num_pureang_so_in_class = (int ***) malloc(num_classes*sizeof(int **));
       for(class=0;class<num_classes;class++)
 	num_pureang_so_in_class[class] = init_int_matrix(max_angmom_class[class]+1,nirreps);
-    }
-    first_angso_coeff_class = (int **) malloc(num_classes*sizeof(int *));
-    last_angso_coeff_class = (int **) malloc(num_classes*sizeof(int *));
-    for(class=0;class<num_classes;class++) {
-      first_angso_coeff_class[class] = init_int_array(max_angmom_class[class]+1);
-      last_angso_coeff_class[class] = init_int_array(max_angmom_class[class]+1);
     }
     
 
@@ -101,8 +79,6 @@ void build_so_classes()
       lmax = max_angmom_class[class];
       for(l=0;l<=lmax;l++) {
 	ao_max = ioff[l+1];
-/*	for(i=class_first;i<class_last;i++)
-	  class_so_coeff[i][l] = init_matrix(nirreps,ao_max);*/
         for(symop=0;symop<nirreps;symop++)
 	  if (class_orbit[class][symop] == class)
 	    for(irr=0;irr<nirreps;irr++)
@@ -146,7 +122,7 @@ void build_so_classes()
 	  }
 	}
 
-	/*Compute SO coefficients and labels for ALL classes - childs of a unique class "class"*/
+	/*Compute SO coefficients and labels for ALL classes - children of a unique class "class"*/
 	for(i=class_first;i<class_last;i++) {
 	  class_so_coeff[i][l] = init_matrix(ao_max*unique_class_degen[uc],ao_max);
 	  for(irr=0;irr<nirreps;irr++)
@@ -192,91 +168,6 @@ void build_so_classes()
 	  }
 	}
       }
-
-
-    /*------------------------
-      Compute num_angso_coeff
-     ------------------------*/
-
-    for(uc=0;uc<num_unique_classes;uc++){
-      class = uc2c[uc];
-      class_first = class;
-      class_last = class + unique_class_degen[uc];
-      lmax = max_angmom_class[class];
-      for(i=class_first;i<class_last;i++)
-	for(l=0;l<=lmax;l++) {
-	  ao_max = ioff[l+1];
-	  num_angso_coeff += ao_max*unique_class_degen[uc]*ao_max;
-	}
-    }
-
-    
-    /*------------------------------------------------------
-      Compute angso_coeff and angso_labels needed in file30
-     ------------------------------------------------------*/
-    
-    angso_coeff = init_array(num_angso_coeff);
-    angso_labels = init_int_matrix(num_angso_coeff,4);
-    first_basisfn_in_symblk = init_int_array(nirreps);
-    first_basisfn_in_symblk_offset = init_int_array(nirreps);
-    cnt = 0;
-    for(uc=0;uc<num_unique_classes;uc++) {
-      class = uc2c[uc];
-      class_first = class;
-      class_last = class + unique_class_degen[uc];
-      lmax = max_angmom_class[class];
-      for(i=class_first;i<class_last;i++) {
-	ao_offset = 0;
-	for(irr=0;irr<nirreps;irr++)
-	  first_basisfn_in_symblk[irr] = first_basisfn_in_symblk_offset[irr];
-	for(l=0;l<=lmax;l++) {
-	  ao_max = ioff[l+1];
-	  first_angso_coeff_class[i][l] = cnt;
-	  so_blk_lim = ao_max*unique_class_degen[uc];
-	  for(j=0;j<so_blk_lim;j++) {
-	    so_blk_off = j*ao_max;
-	    for(ao=0;ao<ao_max;ao++)
-	      angso_coeff[cnt+so_blk_off+ao] = class_so_coeff[i][l][j][ao];
-	  }
-	  for(irr=0;irr<nirreps;irr++)
-	    if (num_cart_so_in_class[class][l][irr] != 0) {
-	      for(so_cnt=0;so_cnt<num_cart_so_in_class[class][l][irr];so_cnt++) {
-		basisfn_num_in_symblk = first_basisfn_in_symblk[irr] + so_cnt;
-		for(ao=0;ao<ao_max;ao++) {
-		  angso_labels[cnt][0] = ao_offset + ao + 1;
-		  angso_labels[cnt][1] = basisfn_num_in_symblk + 1; 
-		  angso_labels[cnt][2] = irr + 1;
-		  angso_labels[cnt++][3] = 1;
-		}
-	      }
-	      first_basisfn_in_symblk[irr] += class_num_angmom[i][l] * so_cnt;
-	    }
-	  ao_offset += ao_max;
-	  last_angso_coeff_class[i][l] = cnt;
-	}
-      }
-      for(irr=0;irr<nirreps;irr++)
-	first_basisfn_in_symblk_offset[irr] = first_basisfn_in_symblk[irr];
-    }
-
-    
-    /*---------------------------------
-      Remove after testing is complete
-     ---------------------------------*/
-    if (print_lvl >= DEBUGPRINT) {
-      fprintf(outfile,"\n\n    ANGSO_COEFF :\n");
-      for(i=0;i<num_angso_coeff;i++)
-	fprintf(outfile,"    i=%4d\t%8.3lf\n",i+1,angso_coeff[i]);
-      fprintf(outfile,"\n");
-      fprintf(outfile,"\n    ANGSO_LABELS :\n\n");
-      for(i=0;i<num_angso_coeff;i++) {
-	fprintf(outfile,"    i=%4d\t",i+1);
-	for(j=0;j<4;j++)
-	  fprintf(outfile,"%4d ",angso_labels[i][j]);
-	fprintf(outfile,"\n");
-      }
-      fprintf(outfile,"\n\n");
-    }
 
     return;
 }

@@ -19,7 +19,7 @@ void print_symm_trans();
 void print_basis_info();
 void cleanup();
 
-int main()
+int main(int argc, char *argv[])
 {
    /*variables and arrays*/
    int i,j,k,l;
@@ -74,7 +74,7 @@ int main()
      print_intro();
 
      /*Make ioff and stuff*/
-     setup(MAXATOM);
+     setup(MAXIOFF);
      
      /*Create the elem_name array to hold all element names*/
      elem_name = (char **) malloc(sizeof(char *)*NUM_ELEMENTS);
@@ -82,6 +82,7 @@ int main()
 
      /*Parse input options*/
      parsing();
+     parsing_cmdline(argc,argv);
      print_options();
      
      /*-----------------
@@ -137,11 +138,26 @@ int main()
      build_so_classes();
      build_usotao();
 
+     /*-------------
+       Read old MOs
+      -------------*/
+     if (readguess) {
+	 init_oldcalc();
+     }
 
      /*-------------------------------------------------
        Write the information out to the checkpoint file
       -------------------------------------------------*/
      write_to_file30(repulsion);
+
+     /*-------------------------------------------------
+       Project old MOs onto new basis and write 'em out
+      -------------------------------------------------*/
+     if (readguess) {
+       oldcalc_projection();
+       write_scf_to_file30();
+       cleanup_oldcalc();
+     }
      
      /*----------------------
        Print geometries etc.
@@ -201,6 +217,10 @@ void print_options()
       fprintf(outfile,"  UNIQUE_AXIS =\t%s\n",unique_axis);
   }
   fprintf(outfile,"  PRINT_LVL   =\t%d\n",print_lvl);
+  if (readguess) {
+    fprintf(outfile,"  Will read old MO vector from the checkpoint file\n");
+    fprintf(outfile,"  and project onto the new basis.\n");
+  }
   fflush(outfile);
 }
 
@@ -306,12 +326,11 @@ void print_basis_info()
     for(i=0;i<num_prims;i++)
       fprintf(outfile,"    %3d    %14.7lf    %15.10lf\n",i+1,exponents[i],contr_coeff[i]);
     fprintf(outfile,"\n");
-    fprintf(outfile,"    Shell#  Nuc#  L  SPRIM  SLOC  SMIN  SMAX  SNUMG\n");
-    fprintf(outfile,"    ------  ----  -  -----  ----  ----  ----  -----\n");
+    fprintf(outfile,"    Shell#  Nuc#  L  SPRIM  SLOC  SNUMG\n");
+    fprintf(outfile,"    ------  ----  -  -----  ----  -----\n");
     for(i=0;i<num_shells;i++)
-      fprintf(outfile,"    %4d    %3d  %2d  %3d    %3d   %3d   %3d   %3d\n",i+1,
-	      shell_nucleus[i]+1,shell_ang_mom[i],first_prim_shell[i]+1,first_basisfn_shell[i]+1,first_ao_type_shell[i]+1,
-	      last_ao_type_shell[i]+1,nprim_in_shell[i]);
+      fprintf(outfile,"    %4d    %3d  %2d  %3d    %3d   %3d\n",i+1,
+	      shell_nucleus[i]+1,shell_ang_mom[i],first_prim_shell[i]+1,first_basisfn_shell[i]+1,nprim_in_shell[i]);
     fprintf(outfile,"\n");
     fprintf(outfile,"    AMOrd. Shell#  Canon. Shell#\n");
     fprintf(outfile,"    -------------  -------------\n");
@@ -387,12 +406,6 @@ void cleanup()
   free(first_ao_shell);
   free(shells_per_am);
   free(am2canon_shell_order);
-  free(first_ao_type_shell);
-  free(last_ao_type_shell);
-  free(angso_coeff);
-  free_int_matrix(angso_labels,num_angso_coeff);
-  free_int_matrix(first_angso_coeff_class,num_classes);
-  free_int_matrix(last_angso_coeff_class,num_classes);
   for(i=0;i<MAX(max_angmom+1,MAXANGMOM);i++)
     free_matrix(ao_type_transmat[i],nirreps);
   free(ao_type_transmat);

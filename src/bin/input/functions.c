@@ -307,7 +307,7 @@ void setup(maxdf)
 {
   int i;
 
-  if(maxdf<8) maxdf = 8;
+  if(maxdf<100) maxdf = 100;
   df = (int *) malloc(sizeof(int)*maxdf);
   ioff = (int *) malloc(sizeof(int)*maxdf);
 
@@ -323,7 +323,6 @@ void setup(maxdf)
     ioff[i] = ioff[i-1]+i;
 }
 
-
 double int_pow(a, p)
   double a;
   int p;
@@ -334,3 +333,4 @@ double int_pow(a, p)
   for(i=0; i<p; i++) b = b*a;
   return b;
 }
+

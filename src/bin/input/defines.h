@@ -6,6 +6,7 @@
 
 #define NUM_ELEMENTS 108                /*Number of known elements*/
 #define MAXATOM 100
+#define MAXIOFF 1024
 #define MAXSTRING 132
 #define MAXCONTRACTION 1500              /*Maximum number of primitives*/
 #define MAXBASISCOLUMNS 2               /*Number of columns in basis_set[][]. Used to be equal to MAXCONTRACTION*/

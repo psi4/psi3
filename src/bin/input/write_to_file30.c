@@ -1,13 +1,15 @@
 #define EXTERN
 #include <stdio.h>
 #include <stdlib.h>
-#include <libciomr.h>
 #include <math.h>
+#include <string.h>
+#include <libciomr.h>
 #include <file30_params.h>
 #include "input.h"
 #include "global.h"
 #include "defines.h"
 
+void write_scf_calc(PSI_FPTR *ptr, int *pointers);
 
 /*-----------------------------------------------------------------------------------------------------------------
   This function writes information out to file30
@@ -25,6 +27,7 @@ void write_to_file30(double repulsion)
   int *arr_int;
   double *arr_double;
   int *ict;
+  int *scf_pointers;
   double *cspd;     /*Array of contraction coefficients in file30 format*/
   char *atom_label;
   int **shell_transm;
@@ -286,17 +289,23 @@ void write_to_file30(double repulsion)
   wwritw(CHECKPOINTFILE,(char *) label, 20*(sizeof(int)),ptr, &ptr);
   arr_int = init_int_array(40);
   wwritw(CHECKPOINTFILE,(char *) arr_int, 40*sizeof(int),ptr,&ptr);
-  /* Zero pointers to vectors */
-  wwritw(CHECKPOINTFILE,(char *) arr_int, 20*sizeof(int),ptr,&ptr);
   free(arr_int);
+
+  /* Zero pointers to vectors */
+  scf_pointers = init_int_array(20);
+  wwritw(CHECKPOINTFILE,(char *) scf_pointers, 20*sizeof(int),ptr,&ptr);
+  free(scf_pointers);
+
   /* Write out geometry */
   for(atom=0;atom<num_atoms;atom++)
     wwritw(CHECKPOINTFILE,(char *) geometry[atom], 3*sizeof(double),ptr,&ptr);
-  /* Zero energies */
-  arr_double = init_array(10);
+
+  /* Write out energies */
+  arr_double = init_array(5);
   arr_double[0] = repulsion;
-  wwritw(CHECKPOINTFILE,(char *) arr_double, 10*sizeof(double),ptr,&ptr);
+  wwritw(CHECKPOINTFILE,(char *) arr_double, 5*sizeof(double),ptr,&ptr);
   free(arr_double);
+  
   fprintf(outfile,"    Wrote %u bytes to FILE%d\n\n",ptr,CHECKPOINTFILE);
   
   /*-----------------------------------
@@ -318,7 +327,7 @@ void write_to_file30(double repulsion)
   constants[26] = num_shells;
   constants[27] = nirreps;
   constants[31] = num_prims;
-  /*--- These are SCF constants to be filled by CSCF ---*/
+  /*--- These are SCF constants ---*/
   constants[40] = 0;
   constants[41] = 0;
   constants[42] = 0;
@@ -334,3 +343,4 @@ void write_to_file30(double repulsion)
   free(calcs);
   return;
 }
+

@@ -17,6 +17,12 @@
   AO means cartesian Gaussian
   ---*/
 
+struct coordinates{
+   double x;  /*  what do you think these are? */
+   double y;
+   double z;
+   double Z_nuc; /* nuclear charge */
+};
 
 /*Super-global stuff - the same no matter what calculation is running */
 EXTERN FILE *infile, *outfile;
@@ -31,6 +37,7 @@ EXTERN int shownorm;		    /*Show normalized basis set*/
 EXTERN char *units;
 EXTERN int print_lvl;               /*Printing level*/
 EXTERN int no_reorient;             /*No reorientation?*/
+EXTERN int readguess;               /*Read old SCF evector?*/
 
 
 /*Labels*/
@@ -42,7 +49,6 @@ EXTERN char *symmetry;              /*Symmetry group label*/
 EXTERN char *subgroup;              /*Subgroup label*/
 EXTERN char *unique_axis;           /*Unique axis label*/
 EXTERN int **irr_char;              /*Character table for irreducible representations of D2h and subgroups*/
-EXTERN int *irr_char_str;           /*Character table for irreps packed in bytes: "-1" = 1, "1" = 0*/
 EXTERN char **irr_labels;           /*Labels for irreducible representations*/
 EXTERN int *sym_oper;               /*Array that maps symmetry operation number of the point group to the canonical
 				      operation numbering (see symmetry.h)*/
@@ -73,7 +79,6 @@ EXTERN int num_prims;               /*Number of unique primitives*/
 EXTERN int max_angmom;              /*Maximum angular momentum type in the basis (not +1) */
 EXTERN int num_classes;             /*Number of atom classes*/
 EXTERN int num_unique_classes;      /*Number of symmetry unique atom classes*/
-EXTERN int num_angso_coeff;
 EXTERN int ap_flag;         /*Bitfield of flags indicating presence of atoms in certain positions
 			      bit 1 = on C2x axis (position = 2)
 			      bit 2 = on C2y axis (position = 4)
@@ -118,10 +123,6 @@ EXTERN int *first_ao_shell;           /*Number of the first AO from a shell*/
 EXTERN int *first_basisfn_shell;      /*Number of the first basis function from a shell*/
 EXTERN int *first_ao_type_shell;      /*Type(xx,yy,etc.) of the first AO from a shell*/
 EXTERN int *last_ao_type_shell;       /*Type(xx,yy,etc.) of the last AO from a shell */
-EXTERN double *angso_coeff;           /*Coefficients of SO's*/
-EXTERN int **angso_labels;            /*Labels of SO matrices*/
-EXTERN int **first_angso_coeff_class; /*Pointer to the first coefficient in angso_coeff for nth class and angmom l*/
-EXTERN int **last_angso_coeff_class;  /*Pointer to the last coefficient in angso_coeff for nth class and angmom l*/
 EXTERN double ***ao_type_transmat;    /*Transformation matrices for AO types*/
 EXTERN int *pureang_so_l;             /*Angular momentum number of a pure angular momentum type SO*/
 EXTERN int *pureang_so_m;             /*Modulus of m of a pure angular momentum type SO*/
@@ -156,3 +157,62 @@ EXTERN int **xexp_ao, **yexp_ao, **zexp_ao;
 
 /*array of structures for z-mat entry*/
 struct z_entry* z_geom;          
+
+/*-----------------------------------------------
+  Hack to allow MO projection onto the new basis
+ -----------------------------------------------*/
+EXTERN reftype ref;
+EXTERN int spinrestr_ref;               /* whether reference determinant is spin-restricted */
+EXTERN int iopen;
+EXTERN int *orbspi;                     /* number of MOs per irrep = number of linearly-independent MOs per irrep */
+EXTERN int *clsdpi;
+EXTERN int *openpi;
+EXTERN int num_mo;
+EXTERN double escf;
+EXTERN double **scf_evect_so;           /* the old eigenvector projected onto new SO basis */
+EXTERN double **scf_evect_so_alpha;     /* the old eigenvector projected onto new SO basis */
+EXTERN double **scf_evect_so_beta;      /* the old eigenvector projected onto new SO basis */
+EXTERN int num_so_typs;                 /* number of non-empty symmetry blocks */
+EXTERN int mxcoef;
+
+typedef struct {
+    char *symmetry;
+
+    double **geometry;
+    
+    int num_ao;
+    int num_so;
+    int num_shells;
+    int num_prims;
+    int max_angmom;                /*Max angmom (not +1)*/
+    int *shell_nucleus;            /*Number of the nucleus a shell belongs to*/
+    int *first_prim_shell;         /*Number of the first primitive for a shell*/
+    int *shell_ang_mom;            /*Angular momentum of a shell*/
+    int *nprim_in_shell;           /*Number of primitives in a shell*/
+    int *first_ao_shell;           /*Number of the first AO from a shell*/
+    double *exponents;             /*Exponents*/
+    double **contr_coeff;          /*Contraction coefficients*/
+    double **usotao;               /*AO to SO matrix*/
+
+    reftype ref;
+    int spinrestr_ref;
+    int iopen;
+    int *orbspi;
+    int *clsdpi;
+    int *openpi;
+    int num_mo;
+    double escf;
+    double **scf_evect_so;
+    double **scf_evect_so_alpha;
+    double **scf_evect_so_beta;
+} Oldcalc_t;
+
+EXTERN Oldcalc_t Oldcalc;
+
+typedef struct {
+    int max_angmom;
+    double **bf_norm;                  /* "angular" part of the normalization constants for cartesian GTOs of each
+					 angular momentum level */
+} GTOs_t;
+
+EXTERN GTOs_t GTOs;

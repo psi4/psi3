@@ -219,8 +219,6 @@ void read_basis()
    first_prim_shell = init_int_array(num_shells);
    first_ao_shell = init_int_array(num_shells);
    first_basisfn_shell = init_int_array(num_shells);
-   first_ao_type_shell = init_int_array(num_shells);
-   last_ao_type_shell = init_int_array(num_shells);
    global_shell_index = 0;
    unique_shell_index = 0;
    ao_index = 0;
@@ -243,8 +241,6 @@ void read_basis()
 	 first_prim_shell[global_shell_index] = first_prim_unique_shell[k];
 	 first_ao_shell[global_shell_index] = ao_index;
 	 first_basisfn_shell[global_shell_index] = basisfn_index;
-	 first_ao_type_shell[global_shell_index] = ao_off[ang_mom[k]];
-	 last_ao_type_shell[global_shell_index] = ao_off[ang_mom[k]] + ioff[ang_mom[k]+1] - 1;
 	 ao_index += ioff[ang_mom[k]+1];
 	 basisfn_index += (puream) ? 2*ang_mom[k] + 1 : ioff[ang_mom[k]+1];
 	 global_shell_index++;
