@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.24  2003/05/02 15:39:23  evaleev
- * Added ability to figure out the number of frozen doubly occupied orbitals in each irrep.
+ * Revision 1.25  2003/05/06 20:47:22  evaleev
+ * CSCF can now find frzvpi from the eigenvalues.
  *
+/* Revision 1.24  2003/05/02 15:39:23  evaleev
+/* Added ability to figure out the number of frozen doubly occupied orbitals in each irrep.
+/*
 /* Revision 1.23  2003/04/14 17:25:47  sherrill
 /* Change "total energy" to "SCF total energy" to make more explicit for
 /* new users.  Yeah, this will probably break some test case perl scripts
@@ -175,6 +178,7 @@ static char *rcsid = "$Id$";
 int phase(void);
 double ssquare(void);
 static int* compute_frzcpi(int);
+static int* compute_frzvpi(int);
 
 void cleanup()
 
@@ -204,7 +208,7 @@ void cleanup()
   psio_address chkptr;
   int tmp_iopen;
   int row, col;
-  int nfzc, *frzcpi;
+  int nfzc, nfzv, *frzcpi, *frzvpi;
 
   ip_cwk_clear();
   ip_cwk_add(":DEFAULT");
@@ -412,8 +416,11 @@ void cleanup()
 
   /* Figure out frozen core orbitals in each irrep and write them out*/
   nfzc = chkpt_rd_nfzc();
+  nfzv = chkpt_rd_nfzv();
   frzcpi = compute_frzcpi(nfzc);
+  frzvpi = compute_frzvpi(nfzv);
   chkpt_wt_frzcpi(frzcpi);
+  chkpt_wt_frzvpi(frzvpi);
 
   /* Write eigenvectors and eigenvalues to new PSIF_CHKPT */
   scr_arr = init_array(nmo);
@@ -1351,4 +1358,41 @@ static int* compute_frzcpi(int nfzc)
   }
 
   return frzcpi;
+}
+
+/*----------------------------------------------------------------------
+  Figure out number of frozen UOCC's in each irrep from the eigenvalues
+ ----------------------------------------------------------------------*/
+static int* compute_frzvpi(int nfzv)
+{
+  int mo, nmo, uocc, irrep;
+  double last_highest = 1.0E100;
+  double highest_eval;
+  int highest_eval_irrep;
+  double *evals, eval;
+  struct symm *s;
+  int *frzvpi;
+
+  frzvpi = init_int_array(num_ir);
+  if (!uhf) {
+    for(uocc=0; uocc<nfzv; uocc++) {
+      highest_eval = -1.0E100;
+      for(irrep=0; irrep<num_ir; irrep++) {
+	s = &scf_info[irrep];
+	evals = s->fock_evals;
+	nmo = s->num_mo;
+	for(mo=0; mo<nmo; mo++) {
+	  eval = evals[mo];
+	  if (eval > highest_eval && eval < last_highest) {
+	    highest_eval = eval;
+	    highest_eval_irrep = irrep;
+	  }
+	}
+      }
+      last_highest = highest_eval;
+      frzvpi[highest_eval_irrep]++;
+    }
+  }
+
+  return frzvpi;
 }
