@@ -8,7 +8,7 @@
 # directory.
 #
 
-echo ... Beginning PSI3.0 installation ...
+echo ... Beginning PSI3.2 installation ...
 
 autoconf
 
@@ -30,4 +30,4 @@ $distdir/configure --prefix=$prefix --verbose
 make
 make install
 
-echo ... PSI3.0 installation complete ...
+echo ... PSI3.2 installation complete ...
