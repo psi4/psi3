@@ -585,15 +585,15 @@ T)
     ;;
   i686)
     if [ "$FC" = g77 ]; then
-      FOPT="-O2 -march=pentiumpro"                            
+      FOPT="-O2 -march=pentiumpro -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"   
       AC_MSG_RESULT(fortran flags: $FOPT)
     fi
     if [ "$CC" = gcc ] || [ "$CC" = cc ]; then
-      COPT="-O2 -march=pentiumpro"           
+      COPT="-O2 -march=pentiumpro -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"   
       AC_MSG_RESULT(c flags: $COPT)
     fi
     if [ "$CXX" = g++ ] || [ "$CXX" = c++ ] || [ "$CXX" = gcc ]; then
-      CXXOPT="-O2 -march=pentiumpro"           
+      CXXOPT="-O2 -march=pentiumpro -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"           
       AC_MSG_RESULT(c++ flags: $CXXOPT)
     fi
     ;;
