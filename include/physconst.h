@@ -13,6 +13,9 @@
  *
  * revised 10/28/02 by TDC to include vacuum permittivity (_e0)
  * Avagadro's number (_na).
+ * 
+ * Added electron rest mass from NIST database 6/27/03.
+ * -TDC
  */
 
 #define _pi    3.14159265358979323846264338327950288
@@ -37,3 +40,4 @@
 #define _hartree2wavenumbers 219474.6313710
 #define _e0 8.854187816E-12  /* vacuum permittivity */
 #define _na 6.022136736E23 /* Avagadro's number */
+#define _me 9.10938188E-31 /* electron rest mass */
