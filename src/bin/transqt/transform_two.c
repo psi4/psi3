@@ -175,18 +175,19 @@ void transform_two(void)
     moinfo.efzc = fzc_energy(moinfo.nso, moinfo.sosym, moinfo.fzc_density, 
 			     moinfo.fzc_operator, moinfo.oe_ints,
 			     moinfo.first_so, ioff);
-    /* Write efzc to file30 */
-    file30_init();
-    chkpt_init();
-    file30_wt_efzc(moinfo.efzc);
-    chkpt_wt_efzc(moinfo.efzc);
-    chkpt_close();
-    file30_close();
-
-    if (params.print_lvl) 
-      fprintf(outfile, "\n\tFrozen core energy = %20.15lf\n", moinfo.efzc);
     free(moinfo.fzc_density);
   }
+
+  /* Write efzc to file30 */
+  file30_init();
+  chkpt_init();
+  file30_wt_efzc(moinfo.efzc);
+  chkpt_wt_efzc(moinfo.efzc);
+  chkpt_close();
+  file30_close();
+
+  if (params.print_lvl) 
+    fprintf(outfile, "\n\tFrozen core energy = %20.15lf\n", moinfo.efzc);
 
   if (params.print_lvl) {
     fprintf(outfile, "\tTransforming two-electron ints...\n\n");

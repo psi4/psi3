@@ -108,24 +108,25 @@ void transform_two_uhf(void)
   /** Compute the frozen core energy **/
   moinfo.efzc = 0.0;
   if (params.fzc && moinfo.nfzc) {
-    moinfo.efzc = fzc_energy_uhf(moinfo.nso, moinfo.sosym, moinfo.fzc_density_alpha, 
-				 moinfo.fzc_density_beta, moinfo.fzc_operator_alpha,
-				 moinfo.fzc_operator_beta, moinfo.oe_ints,
-				 moinfo.first_so, ioff);
-
-    /* Write efzc to file30 */
-    file30_init();
-    file30_wt_efzc(moinfo.efzc);
-    file30_close();
-    chkpt_init();
-    chkpt_wt_efzc(moinfo.efzc);
-    chkpt_close();
-
-    if (params.print_lvl) 
-      fprintf(outfile, "\n\tFrozen core energy = %20.15lf\n", moinfo.efzc);
+    moinfo.efzc = 
+      fzc_energy_uhf(moinfo.nso, moinfo.sosym, moinfo.fzc_density_alpha, 
+                     moinfo.fzc_density_beta, moinfo.fzc_operator_alpha,
+                     moinfo.fzc_operator_beta, moinfo.oe_ints,
+                     moinfo.first_so, ioff);
     free(moinfo.fzc_density_alpha);
     free(moinfo.fzc_density_beta);
   }
+
+  /* Write efzc to file30 */
+  file30_init();
+  file30_wt_efzc(moinfo.efzc);
+  file30_close();
+  chkpt_init();
+  chkpt_wt_efzc(moinfo.efzc);
+  chkpt_close();
+
+  if (params.print_lvl) 
+    fprintf(outfile, "\n\tFrozen core energy = %20.15lf\n", moinfo.efzc);
 
   P_block = init_array(src_ntri);
   J_block = init_array(MAX0(src_ntri,dst_ntri));
