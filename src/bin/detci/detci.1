@@ -295,6 +295,12 @@ This option determines the verbosity of the output.  A value of 1 or
 Values of 4 or 5 are used for debugging.  Do not use level 5 unless
 the test case is very small (e.g. STO H2O CISD).
 
+.IP "\fBROOT =\fP \fIinteger\fP"
+The root to write out the two-particle density matrix for
+(the one-particle density matrices are written for all roots).
+Useful for a state-specific CASSCF or CI optimization on an
+excited state.
+
 .IP "\fBS =\fP \fIinteger\fP"
 The value of the spin quantum number S is given by this option.
 The default is 0 (singlet).  The only thing this is actually used for 
