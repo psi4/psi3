@@ -57,8 +57,10 @@
 #define CC_RAMPS       147 /* final right eigenvector */
 #define EOM_R          148
 
-#define CC_DIIS_ERR    149
-#define CC_DIIS_AMP    150
+#define CC_LR          149
+
+#define CC_DIIS_ERR    150
+#define CC_DIIS_AMP    151
 
 /* Markers for the first and last file numbers */
 #define CC_MIN  CC_INFO
