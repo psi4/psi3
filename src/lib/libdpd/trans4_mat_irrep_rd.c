@@ -26,10 +26,12 @@ int dpd_trans4_mat_irrep_rd(dpdtrans4 *Trans, int irrep)
   /* Transpose using BLAS DCOPY */
   rows = Buf->params->rowtot[irrep];
   cols = Buf->params->coltot[irrep];
-  for(rs=0; rs < cols; rs++) {
-      A = &(Buf->matrix[irrep][0][rs]);
-      B = &(Trans->matrix[irrep][rs][0]);
-      C_DCOPY(rows, A, cols, B, 1);
+  if(rows && cols) {
+      for(rs=0; rs < cols; rs++) {
+          A = &(Buf->matrix[irrep][0][rs]);
+          B = &(Trans->matrix[irrep][rs][0]);
+          C_DCOPY(rows, A, cols, B, 1);
+        }
     }
 
 #ifdef DPD_TIMER
