@@ -4,8 +4,12 @@
 
 #include <psitypes.h>
 
+class BasisSet;
+
 class GaussianShell {
 
+  friend class BasisSet;
+  
   PSI_FLOAT O_[3];
   PSI_FLOAT *exps_;
   PSI_FLOAT **ccoeffs_;   // contractions in columns
@@ -25,6 +29,9 @@ class GaussianShell {
   GaussianShell();
   // no assignment operator
   GaussianShell& operator=(const GaussianShell&);
+
+  /// Set the origin
+  void set_origin(PSI_FLOAT[3]);
 
  public:
   GaussianShell(int nprims, int ncontr, int *am, bool puream, PSI_FLOAT *exps, PSI_FLOAT **ccoeffs, PSI_FLOAT origin[3]);
@@ -57,9 +64,6 @@ class GaussianShell {
   PSI_FLOAT exp(int pi) const;
   /// Return coefficient of pi'th primitive in ci'th contraction
   PSI_FLOAT cc(int ci, int pi) const;
-
-  /// Set the origin
-  void set_origin(PSI_FLOAT[3]);
 
 };
 

@@ -19,6 +19,10 @@ class BasisSet {
   int *shell_fbf_;
   int *shell_fao_;
   int *shell_center_;
+  
+  // Cartesian coordinates of basis function centers  
+  PSI_FLOAT** coords_;
+  int ncenters_;
 
   void init_shells();
   /// Throw std::runtime_error if index out of bounds
@@ -53,7 +57,9 @@ class BasisSet {
   int center(int si) const;
 
   /// Set the coordinate of center ci to O
-  void set_center(int, double[3]);
+  void set_center(int ci, PSI_FLOAT[3]);
+  /// Get i-th coordinate of center ci
+  PSI_FLOAT get_center(int ci, int i);
 };
 
 #endif

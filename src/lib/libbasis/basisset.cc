@@ -33,6 +33,12 @@ BasisSet::BasisSet(const BasisSet& S) :
   shells_ = new GaussianShell*[num_shells_];
   for(int s=0; s<num_shells_; s++)
     shells_[s] = new GaussianShell(*(S.shells_[s]));
+    
+  ncenters_ = S.ncenters_;
+  coords_ = block_matrix(ncenters_,3);
+  for(int c=0; c<ncenters_; c++)
+    for(int xyz=0; xyz<3; xyz++)
+      coords_[c][xyz] = S.coords_[c][xyz];
   
   shell_fbf_ = new int[num_shells_];
   shell_fao_ = new int[num_shells_];
@@ -53,6 +59,7 @@ BasisSet::~BasisSet()
   delete[] shell_center_;
   delete[] shell_fao_;
   delete[] shell_fbf_;
+  free_block(coords_);
 }
 
 void BasisSet::init_shells()
@@ -81,8 +88,11 @@ void BasisSet::init_shells()
    /*--- retrieve location of shells (which atom it's centered on) ---*/
    shell_center_ = chkpt_rd_snuc();
 
+   /*--- retrieve number of centers ---*/
+   ncenters_ = chkpt_rd_natom();
+
    /*--- retrieve geometry ---*/
-   PSI_FLOAT **geometry = chkpt_rd_geom();
+   coords_ = chkpt_rd_geom();
    
    // Only segmented contractions can be handled in Psi 3 at present
    int ncontr = 1;
@@ -97,14 +107,13 @@ void BasisSet::init_shells()
        cc[p] = new PSI_FLOAT[ncontr];
        cc[p][0] = ccoeffs[fprim+p][am[0]];
      }
-     shells_[i] = new GaussianShell(nprims, ncontr, am, puream_, &(exponents[fprim]), cc, geometry[center]);
+     shells_[i] = new GaussianShell(nprims, ncontr, am, puream_, &(exponents[fprim]), cc, coords_[center]);
      for(int p=0; p<nprims; p++) {
        delete[] cc[p];
      }
      delete[] cc;
    }
 
-   free_block(geometry);
    free_block(ccoeffs);
    free(exponents);
    delete[] shell_am;
@@ -147,12 +156,19 @@ int BasisSet::center(int si) const
   return shell_center_[si] - 1;
 }
 
-void BasisSet::set_center(int ci, double O[3])
+void BasisSet::set_center(int ci, PSI_FLOAT O[3])
 {
+  for(int xyz=0; xyz<3; xyz++)
+    coords_[ci][xyz] = O[xyz];
   for(int si=0; si<num_shells_; si++) {
     if (shell_center_[si] == ci + 1)
       shells_[si]->set_origin(O);
   }
+}
+
+PSI_FLOAT BasisSet::get_center(int ci, int i)
+{
+  return coords_[ci][i];
 }
 
 void BasisSet::print(char *id, FILE* outfile) const {
