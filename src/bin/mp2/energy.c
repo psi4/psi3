@@ -25,6 +25,6 @@ void energy(void)
   dpd_buf4_close(&I);
 
   fprintf(outfile,"\n");
-  fprintf(outfile,"\tMP2 correlation energy \t=\t %.12f\n",energy);
-  fprintf(outfile,"\tMP2 total energy       \t=\t%.12f\n",mo.Escf+energy);
+  fprintf(outfile,"\tMP2 correlation energy  = %20.15f\n",energy);
+  fprintf(outfile,"\tMP2 total energy        = %20.15f\n",mo.Escf+energy);
 }
