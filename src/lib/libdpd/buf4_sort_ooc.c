@@ -447,8 +447,55 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
       break;
 
     case qrps:
-      fprintf(stderr,"\nDPD sort error: index ordering not yet coded.\n");
-      dpd_error("buf_sort", stderr);
+#ifdef DPD_TIMER
+      timer_on("qrps");
+#endif
+
+      /* q->p; r->q; p->r; s->s = rpqs */
+      dpd_buf4_mat_irrep_init(&OutBuf, h);
+
+      for(Gp=0; Gp < nirreps; Gp++) {
+	Gq = Gp^h;
+	for(Gr=0; Gr < nirreps; Gr++) {
+	  Gs = Gr^r_irrep;
+
+	  Grp = Gr^Gp; Gqs = Gq^Gs;
+
+	  dpd_buf4_mat_irrep_init(InBuf, Grp);
+	  dpd_buf4_mat_irrep_rd(InBuf, Grp);
+
+	  for(p=0; p < OutBuf.params->ppi[Gp]; p++) {
+	    P = OutBuf.params->poff[Gp] + p;
+	    for(q=0; q < OutBuf.params->qpi[Gq]; q++) {
+	      Q = OutBuf.params->qoff[Gq] + q;
+	      pq = OutBuf.params->rowidx[P][Q];
+
+	      for(r=0; r < OutBuf.params->rpi[Gr]; r++) {
+		R = OutBuf.params->roff[Gr] + r;
+		rp = InBuf->params->rowidx[R][P];
+
+		for(s=0; s < OutBuf.params->spi[Gs]; s++) {
+		  S = OutBuf.params->soff[Gs] + s;
+		  rs = OutBuf.params->colidx[R][S];
+		  qs = InBuf->params->colidx[Q][S];
+
+		  OutBuf.matrix[h][pq][rs] = InBuf->matrix[Grp][rp][qs];
+			      
+		}
+	      }
+	    }
+	  }
+
+	  dpd_buf4_mat_irrep_close(InBuf, Grp);
+	}
+      }
+
+      dpd_buf4_mat_irrep_wrt(&OutBuf, h);
+      dpd_buf4_mat_irrep_close(&OutBuf, h);
+
+#ifdef DPD_TIMER
+      timer_off("qrps");
+#endif
       break;
 
     case qrsp:
@@ -466,6 +513,9 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 	  Gs = Gr^r_irrep;
 
 	  Gsp = Gs^Gp; Gqr = Gq^Gr;
+
+	  dpd_buf4_mat_irrep_init(InBuf, Gsp);
+	  dpd_buf4_mat_irrep_rd(InBuf, Gsp);
 
 	  for(p=0; p < OutBuf.params->ppi[Gp]; p++) {
 	    P = OutBuf.params->poff[Gp] + p;
@@ -488,6 +538,8 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 	      }
 	    }
 	  }
+
+	  dpd_buf4_mat_irrep_close(InBuf, Gsp);
 	}
       }
 

@@ -4,7 +4,8 @@
 #include "dpd.h"
 
 /*
-** dpd_buf4_sort(): A general DPD buffer sorting function that will
+** dpd_buf4_sort_axpy(): A general DPD buffer sorting function that also adds 
+** the result to a target dpdbuf4 that already exists.  Like buf4_sort(), this will
 ** (eventually) handle all 24 possible permutations of four-index
 ** buffers.  This code assumes that all symmetry-blocks of both source and
 ** target buffers can be stored in core.
@@ -21,6 +22,8 @@
 **     dpd file4.  N.B. this is NOT error checked for consistency
 **     with the input buffer.
 **   char *label: A string labelling for this buffer.
+**   double alpha: A value by which the InBuf data will be multiplied before 
+**     it is added to the OutBuf.
 **
 ** Note that the notation for some of these multi-index sorts may be
 ** confusing.  When the caller requests ordering "psqr" for example,
@@ -33,29 +36,15 @@
 ** notation Out[pq][rs] for the target for every rearrangement.  For
 ** all pair permutations, the notation is straightforward. )
 **
-** Note that for pqsr, qprs, and rspq (others?), we assume that
-** the InBuf and OutBuf have identical row/column orderings for all
-** unswapped indices.  For example, for pqsr, we assume that the
-** pq-ordering of both buffers is identical.
+** -Daniel, June 2002
 **
-** -Daniel, December 1998
+** NB: Because the output dpdbuf4 is initialized within this code, one SHOULD NOT
+** use this function to sort a buffer into itself.
 **
-** Modified for new naming conventions and non-totally-symmetric data.
-** TDC
-** September 1999
-**
-** NB: Timing tests have indicated that sorts which mix bra and ket
-** indices are *substantially* more expensive that those which either
-** transpose bra and ket or simply mix bra or mix ket indices separately.
-** The source of the problem is the multiple buf4_mat_irrep_rd() calls
-** required for the b-k mixing sorts (cf. pqsr vs. prqs).  If possible, one
-** should arrange contractions to use fewer b-k mixing sorts.
-** TDC
-** May 2000
 */
 
-int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
-		  int pqnum, int rsnum, char *label)
+int dpd_buf4_sort_axpy(dpdbuf4 *InBuf, int outfilenum, enum indices index,
+		       int pqnum, int rsnum, char *label, double alpha)
 {
   int h,nirreps, row, col, my_irrep, r_irrep;
   int p, q, r, s, P, Q, R, S, pq, rs, sr, pr, qs, qp, rq, qr, ps, sp, rp, sq;
@@ -72,10 +61,11 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
   dpd_buf4_init(&OutBuf, outfilenum, my_irrep, pqnum, rsnum,
 		pqnum, rsnum, 0, label);
 
-  /* Init input and output buffers and read in all blocks of the input */
+  /* Init input and output buffers and read in all blocks of both */
   for(h=0; h < nirreps; h++) {
 
     dpd_buf4_mat_irrep_init(&OutBuf, h);
+    dpd_buf4_mat_irrep_rd(&OutBuf, h);
 
     dpd_buf4_mat_irrep_init(InBuf, h);
     dpd_buf4_mat_irrep_rd(InBuf, h);
@@ -111,7 +101,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 
 	  sr = InBuf->params->colidx[s][r];
 	      
-	  OutBuf.matrix[h][pq][rs] = InBuf->matrix[h][row][sr];
+	  OutBuf.matrix[h][pq][rs] += alpha * InBuf->matrix[h][row][sr];
 	}
       }
     }
@@ -155,7 +145,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 		  rs = OutBuf.params->colidx[R][S];
 		  qs = InBuf->params->colidx[Q][S];
 
- 		  OutBuf.matrix[h][pq][rs] = InBuf->matrix[Gpr][pr][qs];
+ 		  OutBuf.matrix[h][pq][rs] += alpha * InBuf->matrix[Gpr][pr][qs];
 			      
 		}
 	      }
@@ -204,7 +194,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 		  rs = OutBuf.params->colidx[R][S];
 		  ps = InBuf->params->rowidx[P][S];
 
-		  OutBuf.matrix[h][pq][rs] = InBuf->matrix[Gps][ps][qr];
+		  OutBuf.matrix[h][pq][rs] += alpha * InBuf->matrix[Gps][ps][qr];
 
 		}
 	      }
@@ -252,7 +242,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 		  rs = OutBuf.params->colidx[R][S];
 		  sq = InBuf->params->colidx[S][Q];
 
-		  OutBuf.matrix[h][pq][rs] = InBuf->matrix[Gpr][pr][sq];
+		  OutBuf.matrix[h][pq][rs] += alpha * InBuf->matrix[Gpr][pr][sq];
 			      
 		}
 	      }
@@ -300,7 +290,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 		  rs = OutBuf.params->colidx[R][S];
 		  ps = InBuf->params->rowidx[P][S];
 
-		  OutBuf.matrix[h][pq][rs] = InBuf->matrix[Gps][ps][rq];
+		  OutBuf.matrix[h][pq][rs] += alpha * InBuf->matrix[Gps][ps][rq];
 			      
 		}
 	      }
@@ -337,7 +327,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 
 	  col = InBuf->params->colidx[r][s];
 		  
-	  OutBuf.matrix[h][pq][rs] = InBuf->matrix[h][qp][col];
+	  OutBuf.matrix[h][pq][rs] += alpha * InBuf->matrix[h][qp][col];
 	}
       }
 
@@ -369,7 +359,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 	  s = OutBuf.params->colorb[r_irrep][rs][1];
 	  sr = InBuf->params->colidx[s][r];
 		  
-	  OutBuf.matrix[h][pq][rs] = InBuf->matrix[h][qp][sr];
+	  OutBuf.matrix[h][pq][rs] += alpha * InBuf->matrix[h][qp][sr];
 	}
       }
 
@@ -412,7 +402,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 		  rs = OutBuf.params->colidx[R][S];
 		  qs = InBuf->params->colidx[Q][S];
 
-		  OutBuf.matrix[h][pq][rs] = InBuf->matrix[Grp][rp][qs];
+		  OutBuf.matrix[h][pq][rs] += alpha * InBuf->matrix[Grp][rp][qs];
 			      
 		}
 	      }
@@ -459,7 +449,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 		  rs = OutBuf.params->colidx[R][S];
 		  sp = InBuf->params->rowidx[S][P];
 
-		  OutBuf.matrix[h][pq][rs] = InBuf->matrix[Gsp][sp][qr];
+		  OutBuf.matrix[h][pq][rs] += alpha * InBuf->matrix[Gsp][sp][qr];
 			      
 		}
 	      }
@@ -516,7 +506,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 		  rs = OutBuf.params->colidx[R][S];
 		  ps = InBuf->params->colidx[P][S];
 
-		  OutBuf.matrix[h][pq][rs] = InBuf->matrix[Grq][rq][ps];
+		  OutBuf.matrix[h][pq][rs] += alpha * InBuf->matrix[Grq][rq][ps];
 			      
 		}
 	      }
@@ -563,7 +553,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 		  rs = OutBuf.params->colidx[R][S];
 		  sq = InBuf->params->rowidx[S][Q];
 
-		  OutBuf.matrix[h][pq][rs] = InBuf->matrix[Gsq][sq][pr];
+		  OutBuf.matrix[h][pq][rs] += alpha * InBuf->matrix[Gsq][sq][pr];
 			      
 		}
 	      }
@@ -611,7 +601,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 		  rs = OutBuf.params->colidx[R][S];
 		  ps = InBuf->params->colidx[P][S];
 
-		  OutBuf.matrix[h][pq][rs] = InBuf->matrix[Gqr][qr][ps];
+		  OutBuf.matrix[h][pq][rs] += alpha * InBuf->matrix[Gqr][qr][ps];
 			      
 		}
 	      }
@@ -659,7 +649,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 		  rs = OutBuf.params->colidx[R][S];
 		  qs = InBuf->params->rowidx[Q][S];
 
-		  OutBuf.matrix[h][pq][rs] = InBuf->matrix[Gqs][qs][pr];
+		  OutBuf.matrix[h][pq][rs] += alpha * InBuf->matrix[Gqs][qs][pr];
 			      
 		}
 	      }
@@ -697,7 +687,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 
 	  row = InBuf->params->rowidx[s][r];
 		  
-	  OutBuf.matrix[h][pq][rs] = InBuf->matrix[h][row][col];
+	  OutBuf.matrix[h][pq][rs] += alpha * InBuf->matrix[h][row][col];
 
 	}
       }
@@ -731,7 +721,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 
 	  row = InBuf->params->rowidx[r][s];
 		  
-	  OutBuf.matrix[h][pq][rs] = InBuf->matrix[h][row][col];
+	  OutBuf.matrix[h][pq][rs] += alpha * InBuf->matrix[h][row][col];
 
 	}
       }
@@ -775,7 +765,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 		  rs = OutBuf.params->colidx[R][S];
 		  sq = InBuf->params->rowidx[S][Q];
 				  
-		  OutBuf.matrix[h][pq][rs] = InBuf->matrix[Gsq][sq][rp];
+		  OutBuf.matrix[h][pq][rs] += alpha * InBuf->matrix[Gsq][sq][rp];
 		      
 		}
 	      }
@@ -817,7 +807,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 
 	  row = InBuf->params->rowidx[s][r];
 		  
-	  OutBuf.matrix[h][pq][rs] = InBuf->matrix[h][row][col];
+	  OutBuf.matrix[h][pq][rs] += alpha * InBuf->matrix[h][row][col];
 
 	}
       }
@@ -850,7 +840,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 
 	  row = InBuf->params->rowidx[r][s];
 
-	  OutBuf.matrix[h][pq][rs] = InBuf->matrix[h][row][col];
+	  OutBuf.matrix[h][pq][rs] += alpha * InBuf->matrix[h][row][col];
 
 	}
       }
@@ -894,7 +884,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 		  rs = OutBuf.params->colidx[R][S];
 		  sp = InBuf->params->colidx[S][P];
   
-		  OutBuf.matrix[h][pq][rs] = InBuf->matrix[Gqr][qr][sp];
+		  OutBuf.matrix[h][pq][rs] += alpha * InBuf->matrix[Gqr][qr][sp];
 		      
 		}
 	      }
@@ -941,7 +931,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 		  rs = OutBuf.params->colidx[R][S];
 		  qs = InBuf->params->rowidx[Q][S];
 				  
-		  OutBuf.matrix[h][pq][rs] = InBuf->matrix[Gqs][qs][rp];
+		  OutBuf.matrix[h][pq][rs] += alpha * InBuf->matrix[Gqs][qs][rp];
 		      
 		}
 	      }

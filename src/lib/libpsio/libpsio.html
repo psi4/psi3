@@ -192,7 +192,7 @@ should be called in relation to initialization of <tt>libipv1</tt>.
 <font color=purple>
 #include &#60;stdio.h&#62;
 #include &#60;libipv1/ip_lib.h&#62;
-#include &#60;psio.h&#62;
+#include &#60;libpsio/psio.h&#62;
 #include &#60;libciomr/libciomr.h&#62;
 </font>
 
@@ -279,23 +279,12 @@ of the library should be aware of:
        this becomes a problem, particularly for debugging purposes.</li>
 </ul>
 
-<h3><a name="fortran">VI. The Fortran interface</a></h3>
-
-This portion of the library is still under construction, but eventual
-conversion of all existing Fortran codes
-(<tt>inputth</tt>,<tt>intsth</tt>, <tt>gugaci</tt>, etc.) is the
-desired goal.  Two difficulties which must be overcome for this to
-work are: (1) passing character strings from Fortran to C code is
-highly non-standard at present; (2) the page/offset address structures
-used in the C code will have to be mimicked in the Fortran, perhaps
-using a two-element array.
-
 <hr> <address>
-<a href="http://zopyros.ccqc.uga.edu/~crawdad/">T. Daniel Crawford</a>&#160; /
-<a href="mailto:crawdad@ccqc.uga.edu">crawdad@ccqc.uga.edu</a>
+<a href="http://www.chem.vt.edu/chem-dept/~crawford/">T. Daniel Crawford</a>&#160; /
+<a href="mailto:crawdad@vt.edu">crawdad@vt.edu</a>
 </address>
-<!-- hhmts start -->
-Last modified: Thu Oct 22 22:43:48 1998
-<!-- hhmts end -->
+
+Last modified: Fri June 7 2002
+
 </body> </html>
 

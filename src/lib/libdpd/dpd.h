@@ -265,6 +265,8 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 		  int pqnum, int rsnum, char *label);
 int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 		      int pqnum, int rsnum, char *label);
+int dpd_buf4_sort_axpy(dpdbuf4 *InBuf, int outfilenum, enum indices index,
+		       int pqnum, int rsnum, char *label, double alpha);
 int dpd_buf4_axpy(dpdbuf4 *BufX, dpdbuf4 *BufY, double alpha);
 int dpd_buf4_axpbycz(dpdbuf4 *FileA, dpdbuf4 *FileB, dpdbuf4 *FileC,
   double a, double b, double c);

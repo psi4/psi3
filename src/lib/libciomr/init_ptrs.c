@@ -1,9 +1,16 @@
 
 /* $Log$
- * Revision 1.2  2001/08/28 18:42:44  crawdad
- * Minor changes associated with memory-leak tracking.
+ * Revision 1.3  2002/06/24 01:02:26  crawdad
+ * Various changes.  (1) Added new function to libdpd: buf4_sort_axpy(), which
+ * will perform a sort and axpy at the same time.  Convenient for many
+ * things.  (2) Added a new sort to all buf4_sort* functions.  (3) Some
+ * documentation changes.
  * -TDC
  *
+/* Revision 1.2  2001/08/28 18:42:44  crawdad
+/* Minor changes associated with memory-leak tracking.
+/* -TDC
+/*
 /* Revision 1.1.1.1  2000/02/04 22:53:19  evaleev
 /* Started PSI 3 repository
 /*
@@ -48,18 +55,18 @@ static char *rcsid = "$Id$";
 /* allocates memory for array of file pointers */
 
 void init_ptrs(void)
-     {
-     int num_ptrs = MAX_UNIT;
+{
+  int num_ptrs = MAX_UNIT;
 
-     ptr.wptr = (PSI_FPTR *) malloc(sizeof(PSI_FPTR)*num_ptrs);
+  ptr.wptr = (PSI_FPTR *) malloc(sizeof(PSI_FPTR)*num_ptrs);
 
-     if (ptr.wptr == NULL) {
-        fprintf(stderr,"trouble allocating memory for pointers!\n");
-        exit(1);
-        }
-     }
+  if (ptr.wptr == NULL) {
+    fprintf(stderr,"trouble allocating memory for pointers!\n");
+    exit(1);
+  }
+}
 
 void free_ptrs(void)
-     {
-     free(ptr.wptr);
-     }
+{
+  free(ptr.wptr);
+}

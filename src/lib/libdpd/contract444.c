@@ -14,9 +14,9 @@
 **               buffer in the product.
 **   dpdbuf4 *Y: A pointer to the rightmost dpd four-index
 **               buffer in the product.
-**   int target_X: Indicates the which pair of indices (0 = bra, 1 =
+**   int target_X: Indicates which pair of indices (0 = bra, 1 =
 **                 ket) of X is the target pair.
-**   int target_Y: Indicates the which pair of indices (0 = bra, 1 =
+**   int target_Y: Indicates which pair of indices (0 = bra, 1 =
 **                 ket) of Y is the target pair.
 **   double alpha: A prefactor for the product alpha * X * Y.
 **   double beta: A prefactor for the target beta * Z.
