@@ -7,15 +7,15 @@
 extern void punt(char *);
 static int hash(int a[2][3], int b[2]);
 
-double *t2_vrr_build_xxxx(int am_in[2], prim_data *Data, contr_data *ShellData, double *vp, double *i0,
-			 const double *i1, const double *i2, const double *i3, const double *i4)
+REALTYPE *t2_vrr_build_xxxx(int am_in[2], prim_data *Data, contr_data *ShellData, REALTYPE *vp, REALTYPE *i0,
+			 const REALTYPE *i1, const REALTYPE *i2, const REALTYPE *i3, const REALTYPE *i4)
 {
   int i, j, k, l;
   int am[2][3];
   int t1, t2, t3, t4;
   int xyz;
   int la, lc;
-  double AC[3], U1[3], U0, lzdon, r12t2int;
+  REALTYPE AC[3], U1[3], U0, lzdon, r12t2int;
   static int io[] = {0,1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153};
 
   la = am_in[0];

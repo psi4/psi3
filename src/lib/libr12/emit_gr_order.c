@@ -6,24 +6,28 @@
 #include <string.h>
 #include <libint.h>
 #include "mem_man.h"
-#include "build_libderiv.h"
+#include "build_libr12.h"
 #define MAXNODE 3000
 #define NONODE -1000000
+#define SSR12SSNODE -1111 /* This is a special node - (ss||ss) */
 #define NUMPARENTS 21
+#define NUMCHILDREN 6
+#define NUMGRTTYPES 4     /* There are 4 types classes to be evaluated - ERIs (g), r12 (r), [r12,t1] (t1), [r12,t2] (t2) */
+#define MOFFSET     11    /* This is to take care of a paossibility that class 0 will be someone's child. Otherwise
+			     it would be confused with (ss|ss)^0 */
 
 static int last_hrr_node = 0;      /* Global pointer to the last node on the HRR stack */
 static int last_vrr_node = 0;      /* Global pointer to the last node on the VRR stack */
 
-extern FILE *outfile, *dhrr_header, *init_code;
+extern FILE *outfile, *hrr_header, *init_code;
 
 typedef struct node{
   int A, B, C, D;         /* Angular momenta on centers A and C */
   int m;
-  int deriv_lvl;          /* Derivative level */
-  int deriv_ind[12];      /* Derivative indices along each of nuclear coordinates */
+  int grt_type;           /* Type of the class - 0 = ERI (g), 1 = r12 (r), 2 = [r12,t1] (t1), 3 = [r12,t2] (t2) */
   int size;               /* Class size in double words */
   int pointer;
-  int children[8];        /* Up to 8 children of the class */
+  int children[NUMCHILDREN];        /* Up to 8 children of the class */
   int parents_counter;
   int num_parents;        /* Number of parents */
   int parents[NUMPARENTS];         /* Pointers to parents */
@@ -38,16 +42,18 @@ static int first_hrr_to_compute = 0; /* Number of the first class to be computed
 static int first_vrr_to_compute = 0; /* Number of the first class to be computed
 				    (pointer to the beginning of the linked list) */
 
-static int hrr_hash_table[2*MAX_AM][2*MAX_AM][2*MAX_AM][2*MAX_AM];
-static int vrr_hash_table[2*MAX_AM][2*MAX_AM][4*MAX_AM];
+/*--- This is the maximum ang. momentum allowed for any (intermediate) classes ---*/
+#define LMAX_AM LIBINT_MAX_AM
+static int hrr_hash_table[NUMGRTTYPES][2*LMAX_AM][2*LMAX_AM][2*LMAX_AM][2*LMAX_AM];
+static int vrr_hash_table[NUMGRTTYPES][2*LMAX_AM][2*LMAX_AM][4*LMAX_AM];
 
-int emit_order(int old_am, int new_am)
+int emit_grt_order(int old_am, int new_am, int opt_am)
 {
 
   int i, j, k, l;
   int la, lc, lc_min, ld, ld_max, ld_min;
   int lb, lb_min, lb_max;
-  int last_mem;
+  int base_mem, hrr_mem, vrr_mem;
   int child0, child1, child;
   int num_children;
   int offset;
@@ -57,17 +63,15 @@ int emit_order(int old_am, int new_am)
   int target_data;
   int done;
   int max_stack_size = 0;
-  int target_hrr_nodes[12];         /* Array of unique targets on the HRR graph
-				      (multiple targets are needed in derivative calculations) */ 
+  int target_hrr_nodes[NUMGRTTYPES];         /* Array of unique targets on the HRR graph */ 
   int num_hrr_targets;
   int target_vrr_nodes[1000];
   int num_vrr_targets;
   const char am_letter[] = "0pdfghiklmnoqrtuvwxyz";
-  const char cart_comp[] = "XYZ";
-  char hrr_code_name[] = "dhrr_order_0000.c";
-  char hrr_function_name[] = "dhrr_order_0000";
-  char vrr_code_name[] = "dvrr_order_0000.c";
-  char vrr_function_name[] = "dvrr_order_0000";
+  char hrr_code_name[] = "hrr_grt_order_0000.c";
+  char hrr_function_name[] = "hrr_grt_order_0000";
+  char vrr_code_name[] = "vrr_grt_order_0000.c";
+  char vrr_function_name[] = "vrr_grt_order_0000";
   FILE *hrr_code, *vrr_code;
   static int io[] = {1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153,171,190,210};
 
@@ -85,54 +89,56 @@ int emit_order(int old_am, int new_am)
       /*---------------------------------------------------------------
 	Form code and function names for HRR and VRR ordering routines
        ---------------------------------------------------------------*/
-      hrr_function_name[11] = am_letter[la-lb];
-      hrr_function_name[12] = am_letter[lb];
-      hrr_function_name[13] = am_letter[lc-ld];
-      hrr_function_name[14] = am_letter[ld];
-      vrr_function_name[11] = am_letter[la-lb];
-      vrr_function_name[12] = am_letter[lb];
-      vrr_function_name[13] = am_letter[lc-ld];
-      vrr_function_name[14] = am_letter[ld];
-      hrr_code_name[11] = am_letter[la-lb];
-      hrr_code_name[12] = am_letter[lb];
-      hrr_code_name[13] = am_letter[lc-ld];
-      hrr_code_name[14] = am_letter[ld];
+      hrr_function_name[14] = am_letter[la-lb];
+      hrr_function_name[15] = am_letter[lb];
+      hrr_function_name[16] = am_letter[lc-ld];
+      hrr_function_name[17] = am_letter[ld];
+      vrr_function_name[14] = am_letter[la-lb];
+      vrr_function_name[15] = am_letter[lb];
+      vrr_function_name[16] = am_letter[lc-ld];
+      vrr_function_name[17] = am_letter[ld];
+      hrr_code_name[14] = am_letter[la-lb];
+      hrr_code_name[15] = am_letter[lb];
+      hrr_code_name[16] = am_letter[lc-ld];
+      hrr_code_name[17] = am_letter[ld];
       hrr_code = fopen(hrr_code_name,"w");
-      vrr_code_name[11] = am_letter[la-lb];
-      vrr_code_name[12] = am_letter[lb];
-      vrr_code_name[13] = am_letter[lc-ld];
-      vrr_code_name[14] = am_letter[ld];
+      vrr_code_name[14] = am_letter[la-lb];
+      vrr_code_name[15] = am_letter[lb];
+      vrr_code_name[16] = am_letter[lc-ld];
+      vrr_code_name[17] = am_letter[ld];
       vrr_code = fopen(vrr_code_name,"w");
 
       /*-----------------------------------
 	Write the overhead to the HRR code
        -----------------------------------*/
       fprintf(hrr_code,"#include <stdio.h>\n");
-      fprintf(hrr_code,"#include \"libderiv.h\"\n");
+      fprintf(hrr_code,"#include <libint.h>\n");
+      fprintf(hrr_code,"#include \"libr12.h\"\n");
       fprintf(hrr_code,"#include <hrr_header.h>\n\n");
-      fprintf(hrr_code,"#include \"dhrr_header.h\"\n\n");
-      fprintf(hrr_code,"extern void dvrr_order_%c%c%c%c();\n\n",am_letter[la-lb],am_letter[lb],am_letter[lc-ld],am_letter[ld]);
-      fprintf(hrr_code,"  /* Computes derivatives of (%c%c|%c%c) integrals */\n\n",
+      fprintf(hrr_code,"#include \"r12_hrr_header.h\"\n\n");
+      fprintf(hrr_code,"extern void %s(Libr12_t *, prim_data *);\n\n",vrr_function_name);
+      fprintf(hrr_code,"  /* Computes (%c%c|%c%c) integrals for linear R12-methods */\n\n",
 	      am_letter[la-lb],am_letter[lb],am_letter[lc-ld],am_letter[ld]);
-      fprintf(hrr_code,"void %s(int num_prim_comb)\n{\n",hrr_function_name);
+      fprintf(hrr_code,"void %s(Libr12_t *Libr12, int num_prim_comb)\n{\n",hrr_function_name);
+      fprintf(hrr_code," prim_data *Data = Libr12->PrimQuartet;\n");
+      fprintf(hrr_code," REALTYPE *int_stack = Libr12->int_stack;\n");
+      fprintf(hrr_code," int i,j;\n REALTYPE tmp, *target;\n\n");
 
       /*-------------------------------------------------------------
 	Include the function into the hrr_header.h and init_libint.c
        -------------------------------------------------------------*/
-      fprintf(dhrr_header,"void %s(int);\n",hrr_function_name);
-      fprintf(init_code,"  dbuild_abcd[%d][%d][%d][%d] = %s;\n",la-lb,lb,lc-ld,ld,hrr_function_name);
+      fprintf(hrr_header,"void %s(Libr12_t *, int);\n",hrr_function_name);
+      fprintf(init_code,"  build_r12_grt[%d][%d][%d][%d] = %s;\n",la-lb,lb,lc-ld,ld,hrr_function_name);
 
       /*-----------------------------------
 	Write the overhead to the VRR code
        -----------------------------------*/
       fprintf(vrr_code,"#include <stdio.h>\n");
-      fprintf(vrr_code,"#include \"libderiv.h\"\n");
+      fprintf(vrr_code,"#include <libint.h>\n");
+      fprintf(vrr_code,"#include \"libr12.h\"\n");
       fprintf(vrr_code,"#include <vrr_header.h>\n");
-      fprintf(vrr_code,"#include <hrr_header.h>\n");
-      fprintf(vrr_code,"#include \"deriv_header.h\"\n\n");
-      fprintf(vrr_code,"  /* Computes quartets necessary to compute derivatives of (%c%c|%c%c) integrals */\n\n",
-	      am_letter[la-lb],am_letter[lb],am_letter[lc-ld],am_letter[ld]);
-      fprintf(vrr_code,"void %s()\n{\n",vrr_function_name);
+      fprintf(vrr_code,"#include \"r12_vrr_header.h\"\n\n");
+      fprintf(vrr_code,"void %s(Libr12_t *Libr12, prim_data *Data)\n{\n",vrr_function_name);
 
       
       /*--------------------------------------------------
@@ -141,19 +147,16 @@ int emit_order(int old_am, int new_am)
 
       last_hrr_node = 0;
       num_hrr_targets=0;
-      for(i=0;i<12;i++) 
-        if (i<6 || i>8) {
+      for(i=0;i<NUMGRTTYPES;i++) {
 	target_hrr_nodes[num_hrr_targets] = last_hrr_node;
 	hrr_nodes[last_hrr_node].A = la-lb;
 	hrr_nodes[last_hrr_node].B = lb;
 	hrr_nodes[last_hrr_node].C = lc-ld;
 	hrr_nodes[last_hrr_node].D = ld;
 	hrr_nodes[last_hrr_node].m = 0;
-	hrr_nodes[last_hrr_node].deriv_lvl = DERIV_LVL;
-	memset(hrr_nodes[last_hrr_node].deriv_ind,0,12*sizeof(int));
-	hrr_nodes[last_hrr_node].deriv_ind[i] += 1;
+	hrr_nodes[last_hrr_node].grt_type = i;
 	first_hrr_to_compute = last_hrr_node;
-	k = mk_dhrr_node(hrr_nodes[last_hrr_node], hrr_nodes, 1);
+	k = mk_hrr_node(hrr_nodes[last_hrr_node], hrr_nodes, 1);
 	if (k == first_hrr_to_compute) { /* If the node hasn't been added to the tree before */
 	  if (num_hrr_targets) {
 	    hrr_nodes[target_hrr_nodes[num_hrr_targets-1]].llink = first_hrr_to_compute;
@@ -166,166 +169,174 @@ int emit_order(int old_am, int new_am)
 	  }
 	  num_hrr_targets++;
 	}
-	hrr_nodes[k].target = 1;
+	/* Mark the class as a target unless it's an (ss|ss) type class */
+	if (k >= 0)
+	  hrr_nodes[k].target = 1;
       }
-
 
 	/*-------------------------------------------
 	  Traverse the graph starting at each target
 	 -------------------------------------------*/
       for(i=0;i<num_hrr_targets;i++) {
 	j = target_hrr_nodes[i];
-	for(k=0; k<8; k++)
-	  if(hrr_nodes[j].children[k]>0){
-	    mark_dhrr_parents(hrr_nodes[j].children[k], hrr_nodes, j);
+	for(k=0; k<NUMCHILDREN; k++)
+	  if(hrr_nodes[j].children[k] >= 0){
+	    mark_hrr_parents(hrr_nodes[j].children[k], hrr_nodes, j);
 	  }
       }
 
-      /*------------------------
-	Declare local variables
-       ------------------------*/
-      fprintf(hrr_code," extern double *int_stack;\n extern double *zero_stack;\n");
-      fprintf(hrr_code," extern prim_data *Shell_Data;\n extern double *ABCD[12];\n\n");
-      fprintf(hrr_code," extern double *dvrr_stack;\n extern prim_data *Data;\n");
-      fprintf(hrr_code," extern double *deriv_classes[%d][%d][%d];\n extern double *dvrr_classes[%d][%d];\n\n",
-	      new_am+1,new_am+1,12,new_am+1,new_am+1);
-      fprintf(hrr_code," int i,j;\n double tmp, *target;\n\n");
       
       init_mem(100000);
-
-      
       /*---------------------------------------------------------------
 	Allocate and zero out space for classes to be generated by VRR
+	Those do not include (ss|ss) and (ss||ss)
        ---------------------------------------------------------------*/
-      for(i=last_hrr_node-1;i>=0;i--) {
+      for(i=last_hrr_node-1;i>=0;i--)
 	if (hrr_nodes[i].B == 0 && hrr_nodes[i].D == 0) {
 	  hrr_nodes[i].marked = 1;
+	  /*--- do not allocate space for (ss|ss) and (ss||ss) ---*/
+	  if (hrr_nodes[i].A == 0 && hrr_nodes[i].C == 0 &&
+	       (hrr_nodes[i].grt_type == 0 || hrr_nodes[i].grt_type == 1))
+	    continue;
 	  hrr_nodes[i].pointer = get_mem(hrr_nodes[i].size);
-	  if (hrr_nodes[i].deriv_lvl == 0)
-	    fprintf(hrr_code," dvrr_classes[%d][%d] = int_stack + %d;\n",
-		    hrr_nodes[i].A,hrr_nodes[i].C,hrr_nodes[i].pointer);
-	  else {
-	    for(j=0;j<12;j++)
-	      if (hrr_nodes[i].deriv_ind[j] != 0) {
-		break;
-	      }
-	    fprintf(hrr_code," deriv_classes[%d][%d][%d] = int_stack + %d;\n",
-		    hrr_nodes[i].A,hrr_nodes[i].C,j,hrr_nodes[i].pointer);
+	  fprintf(hrr_code," Libr12->");
+	  switch(hrr_nodes[i].grt_type) {
+	  case 0:
+	      fprintf(hrr_code,"gvrr_classes");
+	      break;
+	  case 1:
+	      fprintf(hrr_code,"rvrr_classes");
+	      break;
+	  case 2:
+	      fprintf(hrr_code,"t1vrr_classes");
+	      break;
+	  case 3:
+	      fprintf(hrr_code,"t2vrr_classes");
+	      break;
 	  }
+	  fprintf(hrr_code,"[%d][%d] = int_stack + %d;\n",
+		  hrr_nodes[i].A,hrr_nodes[i].C,hrr_nodes[i].pointer);
 	}
-      }
-      fprintf(hrr_code," memset(int_stack,0,%d);\n\n",get_total_memory()*sizeof(double));
-
+      base_mem = get_total_memory();
+      fprintf(hrr_code," memset(int_stack,0,%d*sizeof(REALTYPE));\n\n",base_mem);
+      fprintf(hrr_code," Libr12->r12vrr_stack = int_stack + %d;\n",base_mem);
+      
+      
       
       /*----------------------------
 	Build the HRR call sequence
        ----------------------------*/
       if (lb != 0 || ld != 0) {
-	target_data = alloc_mem_dhrr(hrr_nodes);
+	target_data = alloc_mem_hrr(hrr_nodes);
       }
 
 
-      last_mem = get_total_memory();
-      fprintf(hrr_code," dvrr_stack = int_stack + %d;\n",last_mem);
-      fprintf(hrr_code," Data = Shell_Data;\n");
+      hrr_mem = get_total_memory();
+      if (max_stack_size < hrr_mem)
+	max_stack_size = hrr_mem;
       fprintf(hrr_code," for(i=0;i<num_prim_comb;i++) {\n");
-	fprintf(hrr_code,"   dvrr_order_%c%c%c%c();\n",am_letter[la-lb],am_letter[lb],am_letter[lc-ld],am_letter[ld]);
+      fprintf(hrr_code,"   %s(Libr12, Data);\n",vrr_function_name);
       fprintf(hrr_code,"   Data++;\n }\n\n");
 
       
       /*------------------------------------------------
-	Evaluate the HRR tree for each derivative class
+	Evaluate the HRR tree for each class
        ------------------------------------------------*/
       /*--- If we have non-(ss|ss) class - perform the standard procedure ---*/
       j = first_hrr_to_compute;
+      if (last_hrr_node > 0)
       do {
-	fprintf(hrr_code, " /*--- compute (%c%c|%c%c) ---*/\n",
-		am_letter[hrr_nodes[j].A],am_letter[hrr_nodes[j].B],
+	fprintf(hrr_code, " /*--- compute (%c%c|",
+		am_letter[hrr_nodes[j].A],am_letter[hrr_nodes[j].B]);
+	switch (hrr_nodes[j].grt_type) {
+	case 0:
+	    break;
+	case 1:
+	    fprintf(hrr_code,"|");
+	    break;
+	case 2:
+	    fprintf(hrr_code,"[r12,T1]|");
+	    break;
+	case 3:
+	    fprintf(hrr_code,"[r12,T2]|");
+	    break;
+	}
+	fprintf(hrr_code,"%c%c) ---*/\n",
 		am_letter[hrr_nodes[j].C],am_letter[hrr_nodes[j].D]);
+
 
 	if (hrr_nodes[j].B > 0 || hrr_nodes[j].D > 0) {
 	  /*--- compute the number of children ---*/
 	  num_children = 0;
-	  for(i=0;i<8;i++)
-	    if (hrr_nodes[j].children[i] > 0)
+	  for(i=0;i<NUMCHILDREN;i++)
+	    if (hrr_nodes[j].children[i] >= 0)
 	      num_children++;
 	    
 	  if (hrr_nodes[j].B == 0 && hrr_nodes[j].D != 0) {
-	    offset = 6;
-	    if (num_children > 2)
-	      fprintf(hrr_code, "   dhrr3_build_%c%c(int_stack+%d,",
+	    if (hrr_nodes[j].grt_type == 3)
+	      fprintf(hrr_code, "   t2hrr3_build_%c%c(Libr12->ShellQuartet.CD,Libr12->ShellQuartet.AC,int_stack+%d,",
 		      am_letter[hrr_nodes[j].C], am_letter[hrr_nodes[j].D], hrr_nodes[j].pointer);
 	    else
-	      fprintf(hrr_code, "   hrr3_build_%c%c(int_stack+%d,",
+	      fprintf(hrr_code, "   hrr3_build_%c%c(Libr12->ShellQuartet.CD,int_stack+%d,",
 		      am_letter[hrr_nodes[j].C], am_letter[hrr_nodes[j].D], hrr_nodes[j].pointer);
 	  }
 	  else if (hrr_nodes[j].B != 0) {
-	    offset = 0;
-	    if (num_children > 2)
-	      fprintf(hrr_code, "   dhrr1_build_%c%c(int_stack+%d,",
+	    if (hrr_nodes[j].grt_type == 2)
+	      fprintf(hrr_code, "   t1hrr1_build_%c%c(Libr12->ShellQuartet.AB,Libr12->ShellQuartet.AC,int_stack+%d,",
 		      am_letter[hrr_nodes[j].A], am_letter[hrr_nodes[j].B], hrr_nodes[j].pointer);
 	    else
-	      fprintf(hrr_code, "   hrr1_build_%c%c(int_stack+%d,",
+	      fprintf(hrr_code, "   hrr1_build_%c%c(Libr12->ShellQuartet.AB,int_stack+%d,",
 		      am_letter[hrr_nodes[j].A], am_letter[hrr_nodes[j].B], hrr_nodes[j].pointer);
 	  }
 	
-	  /*--- If the first child is one of VRR derivative classes - need to compute its location ---*/
-	  child0 = hrr_nodes[j].children[0];
-	  fprintf(hrr_code, "int_stack+%d,",hrr_nodes[child0].pointer);
-
-	  /*--- If the second child is one of VRR derivative classes - need to compute its location ---*/
-	  child1 = hrr_nodes[j].children[1];
-	  fprintf(hrr_code, "int_stack+%d,",hrr_nodes[child1].pointer);
-
-	  /*--- Now go through the rest of the children ---*/
-	  if (num_children > 2)
-	    for(i=0;i<6;i++) {
-	      if (hrr_nodes[j].children[i+2] > 0) {
-		child = hrr_nodes[j].children[i+2];
-		fprintf(hrr_code, " %.1lf, int_stack+%d,", (double) hrr_nodes[j].deriv_ind[offset+i], hrr_nodes[child].pointer, hrr_nodes[child].size);
-	      }
-	      else
-		fprintf(hrr_code, " 0.0, zero_stack,");
+	  for(i=0;i<NUMCHILDREN;i++)
+	    if (hrr_nodes[j].children[i] >= 0) {
+	      child = hrr_nodes[j].children[i];
+	      fprintf(hrr_code, " int_stack+%d,", hrr_nodes[child].pointer);
 	    }
-	  
 	    
-	  if (hrr_nodes[j].B == 0 && hrr_nodes[j].D != 0)
-	    fprintf(hrr_code, "%d);\n", io[hrr_nodes[j].A]*io[hrr_nodes[j].B]);
-	  else if (hrr_nodes[j].B != 0)
-	    fprintf(hrr_code, "%d);\n", io[hrr_nodes[j].C]*io[hrr_nodes[j].D]);
-
+	  if (hrr_nodes[j].B == 0 && hrr_nodes[j].D != 0) {
+	    if (hrr_nodes[j].grt_type == 3)
+	      fprintf(hrr_code, " %d, %d);\n", hrr_nodes[j].A,hrr_nodes[j].B);
+	    else
+	      fprintf(hrr_code, " %d);\n", io[hrr_nodes[j].A]*io[hrr_nodes[j].B]);
+	  }
+	  else if (hrr_nodes[j].B != 0) {
+	    if (hrr_nodes[j].grt_type == 2)
+	      fprintf(hrr_code, " %d, %d);\n", hrr_nodes[j].C,hrr_nodes[j].D);
+	    else
+	      fprintf(hrr_code, " %d);\n", io[hrr_nodes[j].C]*io[hrr_nodes[j].D]);
+	  }
 	}
 	
 	/* Pass the "target" quartets to CINTS */
         if (hrr_nodes[j].target) {
-	  for(i=0;i<12;i++)
-	    if (hrr_nodes[j].deriv_ind[i] != 0) {
-	      break;
-	    }
-	  fprintf(hrr_code,"     ABCD[%d] = int_stack + %d;\n",i,hrr_nodes[j].pointer);
+	  fprintf(hrr_code,"     Libr12->te_ptr[%d] = int_stack + %d;\n",hrr_nodes[j].grt_type,hrr_nodes[j].pointer);
 	}
 	j = hrr_nodes[j].rlink;
       } while (j != -1);
       
-      fprintf(hrr_code,"\n}\n",target_data);
+      fprintf(hrr_code,"\n}\n");
       fclose(hrr_code);
       printf("Done with %s\n",hrr_code_name);
       for(i=0;i<last_hrr_node;i++) {
-	hrr_nodes[i].llink = 0;
-        hrr_nodes[i].rlink = 0;
+	hrr_nodes[i].llink = -1;
+        hrr_nodes[i].rlink = -1;
       }
 
 
       /*----------------------------
 	Zero out the hashing tables
        ----------------------------*/
-      for(i=0;i<2*MAX_AM;i++)
-	for(j=0;j<2*MAX_AM;j++)
-	  memset(vrr_hash_table[i][j],0,(4*MAX_AM)*sizeof(int));
-      for(i=0;i<2*MAX_AM;i++)
-	for(j=0;j<2*MAX_AM;j++)
-	  for(k=0;k<2*MAX_AM;k++)
-	    memset(hrr_hash_table[i][j][k],0,(2*MAX_AM)*sizeof(int));
+      for(i=0;i<NUMGRTTYPES;i++)
+	for(j=0;j<2*LMAX_AM;j++)
+	  for(k=0;k<2*LMAX_AM;k++)
+	    memset(vrr_hash_table[i][j][k],0,(4*LMAX_AM)*sizeof(int));
+      for(i=0;i<NUMGRTTYPES;i++)
+	for(j=0;j<2*LMAX_AM;j++)
+	  for(k=0;k<2*LMAX_AM;k++)
+	    for(l=0;l<2*LMAX_AM;l++)
+	      memset(hrr_hash_table[i][j][k][l],0,(2*LMAX_AM)*sizeof(int));
 
       
       /*------------------------------------------------------------------
@@ -335,40 +346,42 @@ int emit_order(int old_am, int new_am)
 
       vrr_nodes = &(hrr_nodes[last_hrr_node]);
       last_vrr_node = 0;
-      num_vrr_targets = 0;
       for(i=0;i<last_hrr_node;i++)
 	if (hrr_nodes[i].B == 0 && hrr_nodes[i].D == 0) {
-	  target_vrr_nodes[num_vrr_targets] = last_vrr_node;
 	  vrr_nodes[last_vrr_node].A = hrr_nodes[i].A;
 	  vrr_nodes[last_vrr_node].B = hrr_nodes[i].B;
 	  vrr_nodes[last_vrr_node].C = hrr_nodes[i].C;
 	  vrr_nodes[last_vrr_node].D = hrr_nodes[i].D;
 	  vrr_nodes[last_vrr_node].m = hrr_nodes[i].m;
-	  vrr_nodes[last_vrr_node].deriv_lvl = hrr_nodes[i].deriv_lvl;
-	  memcpy(vrr_nodes[last_vrr_node].deriv_ind,hrr_nodes[i].deriv_ind,12*sizeof(int));
-	  first_vrr_to_compute = last_vrr_node;
-	  k = mk_deriv_node(vrr_nodes[last_vrr_node], vrr_nodes, 1);
-	  if (k == first_vrr_to_compute) { /* If the node hasn't been added to the tree before */
-	    if (num_vrr_targets) {
-	      vrr_nodes[target_vrr_nodes[num_vrr_targets-1]].llink = first_vrr_to_compute;
-	      vrr_nodes[first_vrr_to_compute].rlink = target_vrr_nodes[num_vrr_targets-1];
-	      vrr_nodes[first_vrr_to_compute].llink = -1;
-	    }
-	    else {
-	      vrr_nodes[first_vrr_to_compute].rlink = -1;
-	      vrr_nodes[first_vrr_to_compute].llink = -1;
-	    }
-	    num_vrr_targets++;
-	  }
-	  vrr_nodes[k].target = 1;
+	  vrr_nodes[last_vrr_node].grt_type = hrr_nodes[i].grt_type;
+	  k = mk_vrr_node(vrr_nodes[last_vrr_node], vrr_nodes, 1);
+	  if (k >= 0)
+	    vrr_nodes[k].target = 1;
 	}
+      /*--- Now find the true targets (nodes with 0 parents) ---*/
+      num_vrr_targets = 0;
+      for(i=0;i<last_vrr_node;i++)
+	if (vrr_nodes[i].num_parents == 0) {
+	  target_vrr_nodes[num_vrr_targets] = i;
+	  if (num_vrr_targets > 0) {
+	    vrr_nodes[target_vrr_nodes[num_vrr_targets-1]].llink = i;
+	    vrr_nodes[i].rlink = target_vrr_nodes[num_vrr_targets-1];
+	    vrr_nodes[i].llink = -1;
+	  }
+	  else {
+	    vrr_nodes[i].rlink = -1;
+	    vrr_nodes[i].llink = -1;
+	  }
+	  num_vrr_targets++;
+	}
+      first_vrr_to_compute = target_vrr_nodes[num_vrr_targets-1];
 
       /* Traverse the graph starting at each target */
       for(i=0;i<num_vrr_targets;i++) {
 	j = target_vrr_nodes[i];
-	for(k=0; k<5; k++){
-	  if(vrr_nodes[j].children[k]>0){
-	    mark_parents(vrr_nodes[j].children[k], vrr_nodes, j);
+	for(k=0; k<NUMCHILDREN; k++){
+	  if(vrr_nodes[j].children[k] >= 0){
+	    mark_vrr_parents(vrr_nodes[j].children[k], vrr_nodes, j);
 	  }
 	}
       }
@@ -377,104 +390,90 @@ int emit_order(int old_am, int new_am)
 
       /* Build the call sequence */
       target_data = alloc_mem_vrr(vrr_nodes);
-      last_mem += get_total_memory();
-      if (max_stack_size < last_mem)
-	max_stack_size = last_mem;
-      fprintf(vrr_code," extern double *dvrr_stack;\n extern prim_data *Data;\n double *tmp, *target_ptr;\n int i;\n");
-      fprintf(vrr_code," extern double *deriv_classes[%d][%d][%d];\n extern double *dvrr_classes[%d][%d];\n\n",
-	      new_am+1,new_am+1,12,new_am+1,new_am+1);
+      vrr_mem = base_mem + get_total_memory();
+      if (max_stack_size < vrr_mem)
+	max_stack_size = vrr_mem;
+      fprintf(vrr_code," REALTYPE *r12vrr_stack = Libr12->r12vrr_stack;\n");
+      fprintf(vrr_code," REALTYPE *tmp, *target_ptr;\n int i, am[2];\n\n");
       
       j = first_vrr_to_compute;
       do {
-	fprintf(vrr_code, " /* compute (%d %d | %d %d) m=%d deriv level %d */\n",
-		vrr_nodes[j].A,vrr_nodes[j].B,
-		vrr_nodes[j].C,vrr_nodes[j].D,
-		vrr_nodes[j].m, vrr_nodes[j].deriv_lvl);
-	fprintf(vrr_code, " /* deriv_ind: %d %d %d  %d %d %d  %d %d %d  %d %d %d */\n",
-		vrr_nodes[j].deriv_ind[0], vrr_nodes[j].deriv_ind[1], vrr_nodes[j].deriv_ind[2],
-		vrr_nodes[j].deriv_ind[3], vrr_nodes[j].deriv_ind[4], vrr_nodes[j].deriv_ind[5],
-		vrr_nodes[j].deriv_ind[6], vrr_nodes[j].deriv_ind[7], vrr_nodes[j].deriv_ind[8],
-		vrr_nodes[j].deriv_ind[9], vrr_nodes[j].deriv_ind[10], vrr_nodes[j].deriv_ind[11]);
+	fprintf(vrr_code, " /*--- compute (%c%c|",
+		am_letter[vrr_nodes[j].A],am_letter[vrr_nodes[j].B]);
+	switch (vrr_nodes[j].grt_type) {
+	case 0:
+	    break;
+	case 1:
+	    fprintf(vrr_code,"|");
+	    break;
+	case 2:
+	    fprintf(vrr_code,"[r12,T1]|");
+	    break;
+	case 3:
+	    fprintf(vrr_code,"[r12,T2]|");
+	    break;
+	}
+	fprintf(vrr_code,"%c%c)^%d ---*/\n",
+		am_letter[vrr_nodes[j].C],am_letter[vrr_nodes[j].D],vrr_nodes[j].m);
 
 	/*---------------------------------------------------------
 	  Decide which routine to use to compute the current class
 	 ---------------------------------------------------------*/
-	if (vrr_nodes[j].deriv_lvl) { /*--- use build_deriv ---*/
-	  fprintf(vrr_code, " deriv_build_",
-		  am_letter[vrr_nodes[j].A],am_letter[vrr_nodes[j].B],
-		  am_letter[vrr_nodes[j].C],am_letter[vrr_nodes[j].D]);
-	  for(i=0;i<12;i++)
-	    if (vrr_nodes[j].deriv_ind[i] != 0) {
-	      break;
+	switch (vrr_nodes[j].grt_type) {
+	case 0:
+	    if (vrr_nodes[j].A <= LIBINT_OPT_AM && vrr_nodes[j].C <= LIBINT_OPT_AM)
+	      fprintf(vrr_code, " _BUILD_%c0%c0(Data,", am_letter[vrr_nodes[j].A], am_letter[vrr_nodes[j].C]);
+	    else {
+	      fprintf(vrr_code, " am[0] = %d;  am[1] = %d;\n", vrr_nodes[j].A, vrr_nodes[j].C);
+	      fprintf(vrr_code, " vrr_build_xxxx(am,Data,");
 	    }
-	  switch (i) {
-	  case 0: case 1: case 2:
-	      fprintf(vrr_code, "A%c_%c(%d,",cart_comp[i],am_letter[vrr_nodes[j].A],
-		      io[vrr_nodes[j].B]*io[vrr_nodes[j].C]*io[vrr_nodes[j].D]);
-	      break;
-
-	  case 3: case 4: case 5:
-	      fprintf(vrr_code, "B%c_%c(%d,%d,",cart_comp[i-3],am_letter[vrr_nodes[j].B],
-		      io[vrr_nodes[j].A],io[vrr_nodes[j].C]*io[vrr_nodes[j].D]);
-	      break;
-
-	  case 6: case 7: case 8:
-	      fprintf(vrr_code, "C%c_%c(%d,%d,",cart_comp[i-6],am_letter[vrr_nodes[j].C],
-		      io[vrr_nodes[j].A]*io[vrr_nodes[j].B],io[vrr_nodes[j].D]);
-	      break;
-
-	  case 9: case 10: case 11:
-	      fprintf(vrr_code, "D%c_%c(%d,",cart_comp[i-9],am_letter[vrr_nodes[j].D],
-		      io[vrr_nodes[j].A]*io[vrr_nodes[j].B]*io[vrr_nodes[j].C]);
-	      break;
-	  }
-	  
-	  fprintf(vrr_code, "dvrr_stack+%d", vrr_nodes[j].pointer);
-	  for(k=0; k<2; k++){
-	    if(vrr_nodes[j].children[k] > 0)
-	      fprintf(vrr_code, ", dvrr_stack+%d", vrr_nodes[vrr_nodes[j].children[k]].pointer);
-	    else if (vrr_nodes[j].children[k] == NONODE)
+	    break;
+	case 1:
+	    if (vrr_nodes[j].A <= opt_am && vrr_nodes[j].C <= opt_am)
+	      fprintf(vrr_code, " _R_BUILD_%c0%c0(Data,", am_letter[vrr_nodes[j].A], am_letter[vrr_nodes[j].C]);
+	    else {
+	      fprintf(vrr_code, " am[0] = %d;  am[1] = %d;\n", vrr_nodes[j].A, vrr_nodes[j].C);
+	      fprintf(vrr_code, " r_vrr_build_xxxx(am,Data,");
+	    }
+	    break;
+	case 2:
+	    if (vrr_nodes[j].A <= opt_am && vrr_nodes[j].C <= opt_am)
+	      fprintf(vrr_code, " _T1_BUILD_%c0%c0(Data,", am_letter[vrr_nodes[j].A], am_letter[vrr_nodes[j].C]);
+	    else {
+	      fprintf(vrr_code, " am[0] = %d;  am[1] = %d;\n", vrr_nodes[j].A, vrr_nodes[j].C);
+	      fprintf(vrr_code, " t1_vrr_build_xxxx(am,Data,");
+	    }
+	    break;
+	case 3:
+	    if (vrr_nodes[j].A <= opt_am && vrr_nodes[j].C <= opt_am)
+	      fprintf(vrr_code, " _T2_BUILD_%c0%c0(Data,", am_letter[vrr_nodes[j].A], am_letter[vrr_nodes[j].C]);
+	    else {
+	      fprintf(vrr_code, " am[0] = %d;  am[1] = %d;\n", vrr_nodes[j].A, vrr_nodes[j].C);
+	      fprintf(vrr_code, " t2_vrr_build_xxxx(am,Data,");
+	    }
+	    break;
+	}
+	switch (vrr_nodes[j].grt_type) {
+	case 2:
+	    fprintf(vrr_code,"&(Libr12->ShellQuartet),");
+	    break;
+	case 3:
+	    fprintf(vrr_code,"&(Libr12->ShellQuartet),");
+	    break;
+	}
+	fprintf(vrr_code, "r12vrr_stack+%d", vrr_nodes[j].pointer);
+	num_children = (vrr_nodes[j].grt_type == 1) ? 6 : 5;
+	for(k=0; k<num_children; k++){
+	    if(vrr_nodes[j].children[k] >= 0) /*--- this child is a "real" class ---*/
+	      fprintf(vrr_code, ", r12vrr_stack+%d", vrr_nodes[vrr_nodes[j].children[k]].pointer);
+	    else if (vrr_nodes[j].children[k] == NONODE) /*--- this child is a no-class ---*/
 	      fprintf(vrr_code, ", NULL");
-	    else
-	      fprintf(vrr_code, ", Data->F+%d", (-1)*vrr_nodes[j].children[k]);
-	  }
-	  fprintf(vrr_code, ");\n");
+	    else if (vrr_nodes[j].children[k] == SSR12SSNODE) /*--- this is a (ss||ss) ---*/
+	      fprintf(vrr_code, ", &(Data->ss_r12_ss)");
+	    else /*--- this is a (ss|ss)^m ---*/
+	      fprintf(vrr_code, ", Data->F+%d", (-1)*(vrr_nodes[j].children[k] + MOFFSET));
 	}
-	else if (vrr_nodes[j].B + vrr_nodes[j].D > 0) { /*--- build_hrr ---*/
-	  if (vrr_nodes[j].B == 0 && vrr_nodes[j].D != 0) {
-	    fprintf(vrr_code, " hrr3_build_%c%c(dvrr_stack+%d,dvrr_stack+%d,",
-		    am_letter[vrr_nodes[j].C], am_letter[vrr_nodes[j].D], vrr_nodes[j].pointer,
-		    vrr_nodes[vrr_nodes[j].children[0]].pointer);
-	    if (vrr_nodes[j].children[1] > 0)
-	      fprintf(vrr_code, "dvrr_stack+%d,%d);\n\n", vrr_nodes[vrr_nodes[j].children[1]].pointer,
-		      io[vrr_nodes[j].A]*io[vrr_nodes[j].B]);
-	    else
-	      fprintf(vrr_code, "Data->F,%d);\n\n", io[vrr_nodes[j].A]*io[vrr_nodes[j].B]);
-	  }
-	  else if (vrr_nodes[j].B != 0) {
-	    fprintf(vrr_code, " hrr1_build_%c%c(dvrr_stack+%d,dvrr_stack+%d,",
-		    am_letter[vrr_nodes[j].A], am_letter[vrr_nodes[j].B], vrr_nodes[j].pointer,
-		    vrr_nodes[vrr_nodes[j].children[0]].pointer);
-	    if (vrr_nodes[j].children[1] > 0)
-	      fprintf(vrr_code, "dvrr_stack+%d,%d);\n\n", vrr_nodes[vrr_nodes[j].children[1]].pointer,
-		      io[vrr_nodes[j].C]*io[vrr_nodes[j].D]);
-	    else
-	      fprintf(vrr_code, "Data->F,%d);\n", io[vrr_nodes[j].C]*io[vrr_nodes[j].D]);
-	  }
-	}
-	else { /*--- build_vrr ---*/
-	  fprintf(vrr_code, " _BUILD_%c0%c0(", am_letter[vrr_nodes[j].A], am_letter[vrr_nodes[j].C]);
-	  fprintf(vrr_code, "dvrr_stack+%d", vrr_nodes[j].pointer);
-	  for(k=0; k<5; k++){
-	    if(vrr_nodes[j].children[k] > 0)
-	      fprintf(vrr_code, ", dvrr_stack+%d", vrr_nodes[vrr_nodes[j].children[k]].pointer);
-	    else if (vrr_nodes[j].children[k] == NONODE)
-	      fprintf(vrr_code, ", NULL");
-	    else
-	      fprintf(vrr_code, ", Data->F+%d", (-1)*vrr_nodes[j].children[k]);
-	  }
-	  fprintf(vrr_code, ");\n");
-	}
+	fprintf(vrr_code, ");\n");
 
 	/*-----------------------------------------------
 	  If this derivative class is one of the targets
@@ -482,13 +481,24 @@ int emit_order(int old_am, int new_am)
 	  to be used by the calling hrr_order routine
 	 -----------------------------------------------*/
 	if (vrr_nodes[j].target == 1) {
-	  fprintf(vrr_code, " tmp = dvrr_stack + %d;\n", vrr_nodes[j].pointer);
-	  if (vrr_nodes[j].deriv_lvl == 0)
-	    fprintf(vrr_code, " target_ptr = dvrr_classes[%d][%d];\n",
-		    vrr_nodes[j].A,vrr_nodes[j].C);
-	  else
-	    fprintf(vrr_code, " target_ptr = deriv_classes[%d][%d][%d];\n",
-		    vrr_nodes[j].A,vrr_nodes[j].C,i);
+	  fprintf(vrr_code, " tmp = r12vrr_stack + %d;\n", vrr_nodes[j].pointer);
+	  fprintf(vrr_code, " target_ptr = Libr12->");
+	  switch (vrr_nodes[j].grt_type) {
+	  case 0:
+	      fprintf(vrr_code,"g");
+	      break;
+	  case 1:
+	      fprintf(vrr_code,"r");
+	      break;
+	  case 2:
+	      fprintf(vrr_code,"t1");
+	      break;
+	  case 3:
+	      fprintf(vrr_code,"t2");
+	      break;
+	  }
+	  fprintf(vrr_code,"vrr_classes[%d][%d];\n",
+		  vrr_nodes[j].A,vrr_nodes[j].C);
 	  fprintf(vrr_code, " for(i=0;i<%d;i++)\n",vrr_nodes[j].size);
 	  fprintf(vrr_code, "   target_ptr[i] += tmp[i];\n\n");
 	}
@@ -501,8 +511,8 @@ int emit_order(int old_am, int new_am)
       fclose(vrr_code);
       printf("Done with %s\n",vrr_code_name);
       for(i=0;i<last_vrr_node;i++) {
-	vrr_nodes[i].llink = 0;
-        vrr_nodes[i].rlink = 0;
+	vrr_nodes[i].llink = -1;
+        vrr_nodes[i].rlink = -1;
       }
       
       }
@@ -513,49 +523,31 @@ int emit_order(int old_am, int new_am)
 }
 
 
-/* Recursive function that build the derivative HRR subgraph given the parent */
+/* Recursive function that build a hybrid HRR subgraph given the parent */
 
-int mk_dhrr_node(class node, class *allnodes, int new)
+int mk_hrr_node(class node, class *allnodes, int new)
 {
 
   int i, j, k, l;
-  class O[8];
+  class O[NUMCHILDREN];
   int subnodes = 0;
   int thisnode;
   int rlink, llink;
   int made = 0;
   static int io[] = {1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153,171,190,210};
 
-  if (node.A == 0 && node.B == 0 && node.C == 0 && node.D == 0 && node.deriv_lvl == 0)
-    return -1;
+/*  if (node.A == 0 && node.B == 0 && node.C == 0 && node.D == 0)
+    return -1;*/
 
   /* Search for the parent node on stack
      If it's not there - we'll add it to the end of the stack */
   thisnode = last_hrr_node;
   /* it's already placed on the stack allnodes - make sure children don't get created again (made = 1) */
-/*  if (node.deriv_lvl != 0) {*/
-    for(i=0;i<last_hrr_node;i++)
-      if (allnodes[i].deriv_lvl == node.deriv_lvl &&
-	  allnodes[i].A == node.A &&
-	  allnodes[i].B == node.B &&
-	  allnodes[i].C == node.C &&
-	  allnodes[i].D == node.D &&
-	  allnodes[i].deriv_ind[0] == node.deriv_ind[0] &&
-	  allnodes[i].deriv_ind[1] == node.deriv_ind[1] &&
-	  allnodes[i].deriv_ind[2] == node.deriv_ind[2] &&
-	  allnodes[i].deriv_ind[3] == node.deriv_ind[3] &&
-	  allnodes[i].deriv_ind[4] == node.deriv_ind[4] &&
-	  allnodes[i].deriv_ind[5] == node.deriv_ind[5] &&
-	  allnodes[i].deriv_ind[6] == node.deriv_ind[6] &&
-	  allnodes[i].deriv_ind[7] == node.deriv_ind[7] &&
-	  allnodes[i].deriv_ind[8] == node.deriv_ind[8] &&
-	  allnodes[i].deriv_ind[9] == node.deriv_ind[9] &&
-	  allnodes[i].deriv_ind[10] == node.deriv_ind[10] &&
-	  allnodes[i].deriv_ind[11] == node.deriv_ind[11]) {
-	thisnode = i;
-	made = 1;
-      }
-/*  }*/
+  if (hrr_hash_table[node.grt_type][node.A][node.B][node.C][node.D]) {
+    i = hrr_hash_table[node.grt_type][node.A][node.B][node.C][node.D] - 1;
+    thisnode = i;
+    made = 1;
+  }
 
   /* it's not computed, add it, and make it the first to compute! */
   if(!made){
@@ -564,32 +556,15 @@ int mk_dhrr_node(class node, class *allnodes, int new)
     allnodes[thisnode].C = node.C;
     allnodes[thisnode].D = node.D;
     allnodes[thisnode].m = node.m;
-    allnodes[thisnode].deriv_lvl = node.deriv_lvl;
-    allnodes[thisnode].deriv_ind[0] = node.deriv_ind[0];
-    allnodes[thisnode].deriv_ind[1] = node.deriv_ind[1];
-    allnodes[thisnode].deriv_ind[2] = node.deriv_ind[2];
-    allnodes[thisnode].deriv_ind[3] = node.deriv_ind[3];
-    allnodes[thisnode].deriv_ind[4] = node.deriv_ind[4];
-    allnodes[thisnode].deriv_ind[5] = node.deriv_ind[5];
-    allnodes[thisnode].deriv_ind[6] = node.deriv_ind[6];
-    allnodes[thisnode].deriv_ind[7] = node.deriv_ind[7];
-    allnodes[thisnode].deriv_ind[8] = node.deriv_ind[8];
-    allnodes[thisnode].deriv_ind[9] = node.deriv_ind[9];
-    allnodes[thisnode].deriv_ind[10] = node.deriv_ind[10];
-    allnodes[thisnode].deriv_ind[11] = node.deriv_ind[11];
+    allnodes[thisnode].grt_type = node.grt_type;
+    hrr_hash_table[node.grt_type][node.A][node.B][node.C][node.D] = thisnode + 1;
     allnodes[thisnode].num_parents = 0;
     allnodes[thisnode].parents_counter = 0;
     allnodes[thisnode].marked = 0;
     allnodes[thisnode].pointer = 0;
     memset(allnodes[thisnode].parents,0,NUMPARENTS*sizeof(int));
-    allnodes[thisnode].children[0] = NONODE;
-    allnodes[thisnode].children[1] = NONODE;
-    allnodes[thisnode].children[2] = NONODE;
-    allnodes[thisnode].children[3] = NONODE;
-    allnodes[thisnode].children[4] = NONODE;
-    allnodes[thisnode].children[5] = NONODE;
-    allnodes[thisnode].children[6] = NONODE;
-    allnodes[thisnode].children[7] = NONODE;
+    for(i=0;i<NUMCHILDREN;i++)
+      allnodes[thisnode].children[i] = NONODE;
     allnodes[thisnode].size = io[node.A]*io[node.B]*io[node.C]*io[node.D];
     allnodes[thisnode].target = 0;
     /* We just added a node ..*/
@@ -614,72 +589,86 @@ int mk_dhrr_node(class node, class *allnodes, int new)
 
   /* now make all child nodes */
   if (!made) {
-  if(node.B){
-    O[0].A = node.A+1;
-    O[0].B = node.B-1;
-    O[0].C = node.C;
-    O[0].D = node.D;
-    O[0].m = node.m;
-    O[0].deriv_lvl = node.deriv_lvl;
-    memcpy(O[0].deriv_ind,node.deriv_ind,12*sizeof(int));
-    allnodes[thisnode].children[0] = 
-            mk_dhrr_node(O[0], allnodes, made);
-    O[1].A = node.A;
-    O[1].B = node.B-1;
-    O[1].C = node.C;
-    O[1].D = node.D;
-    O[1].m = node.m;
-    O[1].deriv_lvl = node.deriv_lvl;
-    memcpy(O[1].deriv_ind,node.deriv_ind,12*sizeof(int));
-    allnodes[thisnode].children[1] =
-	    mk_dhrr_node(O[1], allnodes, made);
-    for(i=0;i<6;i++)
-      if (node.deriv_ind[i]) {
-	O[2+i].A = node.A;
-	O[2+i].B = node.B-1;
-	O[2+i].C = node.C;
-	O[2+i].D = node.D;
-	O[2+i].m = node.m;
-	O[2+i].deriv_lvl = node.deriv_lvl-1;
-	memcpy(O[2+i].deriv_ind,node.deriv_ind,12*sizeof(int));
-	O[2+i].deriv_ind[i]--;
-	allnodes[thisnode].children[2+i] =
-	        mk_dhrr_node(O[2+i], allnodes, made);
+    if(node.B){
+      O[0].A = node.A+1;
+      O[0].B = node.B-1;
+      O[0].C = node.C;
+      O[0].D = node.D;
+      O[0].m = node.m;
+      O[0].grt_type = node.grt_type;
+      allnodes[thisnode].children[0] = mk_hrr_node(O[0], allnodes, made);
+      O[1].A = node.A;
+      O[1].B = node.B-1;
+      O[1].C = node.C;
+      O[1].D = node.D;
+      O[1].m = node.m;
+      O[1].grt_type = node.grt_type;
+      allnodes[thisnode].children[1] = mk_hrr_node(O[1], allnodes, made);
+      /* Special case - [r12.T1] */
+      if (node.grt_type == 2) {
+	O[2].A = node.A+1;
+	O[2].B = node.B-1;
+	O[2].C = node.C;
+	O[2].D = node.D;
+	O[2].m = node.m;
+	O[2].grt_type = 0;
+	allnodes[thisnode].children[2] = mk_hrr_node(O[2], allnodes, made);
+        O[3].A = node.A;
+	O[3].B = node.B-1;
+	O[3].C = node.C+1;
+	O[3].D = node.D;
+	O[3].m = node.m;
+	O[3].grt_type = 0;
+	allnodes[thisnode].children[3] = mk_hrr_node(O[3], allnodes, made);
+	O[4].A = node.A;
+	O[4].B = node.B-1;
+	O[4].C = node.C;
+	O[4].D = node.D;
+	O[4].m = node.m;
+	O[4].grt_type = 0;
+	allnodes[thisnode].children[4] = mk_hrr_node(O[4], allnodes, made);
       }
-  }
-  else if(node.D){
-    O[0].A = node.A;
-    O[0].B = node.B;
-    O[0].C = node.C+1;
-    O[0].D = node.D-1;
-    O[0].m = node.m;
-    O[0].deriv_lvl = node.deriv_lvl;
-    memcpy(O[0].deriv_ind,node.deriv_ind,12*sizeof(int));
-    allnodes[thisnode].children[0] = 
-            mk_dhrr_node(O[0], allnodes, made);
-    O[1].A = node.A;
-    O[1].B = node.B;
-    O[1].C = node.C;
-    O[1].D = node.D-1;
-    O[1].m = node.m;
-    O[1].deriv_lvl = node.deriv_lvl;
-    memcpy(O[1].deriv_ind,node.deriv_ind,12*sizeof(int));
-    allnodes[thisnode].children[1] = 
-            mk_dhrr_node(O[1], allnodes, made);
-    for(i=0;i<6;i++)
-      if (node.deriv_ind[i+6]) {
-	O[2+i].A = node.A;
-	O[2+i].B = node.B;
-	O[2+i].C = node.C;
-	O[2+i].D = node.D-1;
-	O[2+i].m = node.m;
-	O[2+i].deriv_lvl = node.deriv_lvl-1;
-	memcpy(O[2+i].deriv_ind,node.deriv_ind,12*sizeof(int));
-	O[2+i].deriv_ind[i+6]--;
-	allnodes[thisnode].children[2+i] =
-	        mk_dhrr_node(O[2+i], allnodes, made);
+    }
+    else if(node.D){
+      O[0].A = node.A;
+      O[0].B = node.B;
+      O[0].C = node.C+1;
+      O[0].D = node.D-1;
+      O[0].m = node.m;
+      O[0].grt_type = node.grt_type;
+      allnodes[thisnode].children[0] = mk_hrr_node(O[0], allnodes, made);
+      O[1].A = node.A;
+      O[1].B = node.B;
+      O[1].C = node.C;
+      O[1].D = node.D-1;
+      O[1].m = node.m;
+      O[1].grt_type = node.grt_type;
+      allnodes[thisnode].children[1] = mk_hrr_node(O[1], allnodes, made);
+      /* Special case - [r12.T2] */
+      if (node.grt_type == 3) {
+	O[2].A = node.A;
+	O[2].B = node.B;
+	O[2].C = node.C+1;
+	O[2].D = node.D-1;
+	O[2].m = node.m;
+	O[2].grt_type = 0;
+	allnodes[thisnode].children[2] = mk_hrr_node(O[2], allnodes, made);
+        O[3].A = node.A+1;
+	O[3].B = node.B;
+	O[3].C = node.C;
+	O[3].D = node.D-1;
+	O[3].m = node.m;
+	O[3].grt_type = 0;
+	allnodes[thisnode].children[3] = mk_hrr_node(O[3], allnodes, made);
+	O[4].A = node.A;
+	O[4].B = node.B;
+	O[4].C = node.C;
+	O[4].D = node.D-1;
+	O[4].m = node.m;
+	O[4].grt_type = 0;
+	allnodes[thisnode].children[4] = mk_hrr_node(O[4], allnodes, made);
       }
-  }
+    }
   }
 
   return thisnode;
@@ -687,59 +676,31 @@ int mk_dhrr_node(class node, class *allnodes, int new)
 }
 
 
-/* Recursive function that builds a hybrid HRR/VRR/deriv subgraph given the parent */
 
-int mk_deriv_node(class node, class *allnodes, int new)
+/* Recursive function that builds a hybrid VRR subgraph given the parent */
+
+int mk_vrr_node(class node, class *allnodes, int new)
 {
 
   int i, j, k, l;
-  class O[5];
+  class O[NUMCHILDREN];
   int subnodes = 0;
   int thisnode;
-  int rlink, llink;
   int made = 0;
   static int io[] = {1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153,171,190,210};
 
   /* If it's not a derivative class - do some checks to see if need to proceed */
-  if (node.deriv_lvl == 0 && node.A + node.B + node.C + node.D == 0)
-    return (-1)*node.m;
+  if (node.grt_type == 0 && node.A + node.B + node.C + node.D == 0)
+    return (-1)*node.m - MOFFSET;
+  else if (node.grt_type == 1 && node.A + node.B + node.C + node.D == 0)
+    return SSR12SSNODE;
 
   /* Search for the parent node on stack
      If it's not there - we'll add it to the end of the stack */
   thisnode = last_vrr_node;
   /* it's already placed on the stack allnodes - make sure children don't get created again (made = 1) */
-  if (node.deriv_lvl != 0) {
-    for(i=0;i<last_vrr_node;i++)
-      if (allnodes[i].deriv_lvl == node.deriv_lvl &&
-	  allnodes[i].A == node.A &&
-	  allnodes[i].B == node.B &&
-	  allnodes[i].C == node.C &&
-	  allnodes[i].D == node.D &&
-	  allnodes[i].deriv_ind[0] == node.deriv_ind[0] &&
-	  allnodes[i].deriv_ind[1] == node.deriv_ind[1] &&
-	  allnodes[i].deriv_ind[2] == node.deriv_ind[2] &&
-	  allnodes[i].deriv_ind[3] == node.deriv_ind[3] &&
-	  allnodes[i].deriv_ind[4] == node.deriv_ind[4] &&
-	  allnodes[i].deriv_ind[5] == node.deriv_ind[5] &&
-	  allnodes[i].deriv_ind[6] == node.deriv_ind[6] &&
-	  allnodes[i].deriv_ind[7] == node.deriv_ind[7] &&
-	  allnodes[i].deriv_ind[8] == node.deriv_ind[8] &&
-	  allnodes[i].deriv_ind[9] == node.deriv_ind[9] &&
-	  allnodes[i].deriv_ind[10] == node.deriv_ind[10] &&
-	  allnodes[i].deriv_ind[11] == node.deriv_ind[11]) {
-	thisnode = i;
-	made = 1;
-      }
-  }
-  else if (node.B + node.D != 0) {
-    if (hrr_hash_table[node.A][node.B][node.C][node.D]) {
-      i = hrr_hash_table[node.A][node.B][node.C][node.D] - 1;
-      thisnode = i;
-      made = 1;
-    }
-  }
-  else if (vrr_hash_table[node.A][node.C][node.m]) {
-    i = vrr_hash_table[node.A][node.C][node.m] - 1;
+  if (vrr_hash_table[node.grt_type][node.A][node.C][node.m]) {
+    i = vrr_hash_table[node.grt_type][node.A][node.C][node.m] - 1;
     thisnode = i;
     made = 1;
   }
@@ -751,37 +712,19 @@ int mk_deriv_node(class node, class *allnodes, int new)
     allnodes[thisnode].C = node.C;
     allnodes[thisnode].D = node.D;
     allnodes[thisnode].m = node.m;
-    allnodes[thisnode].deriv_lvl = node.deriv_lvl;
-    allnodes[thisnode].deriv_ind[0] = node.deriv_ind[0];
-    allnodes[thisnode].deriv_ind[1] = node.deriv_ind[1];
-    allnodes[thisnode].deriv_ind[2] = node.deriv_ind[2];
-    allnodes[thisnode].deriv_ind[3] = node.deriv_ind[3];
-    allnodes[thisnode].deriv_ind[4] = node.deriv_ind[4];
-    allnodes[thisnode].deriv_ind[5] = node.deriv_ind[5];
-    allnodes[thisnode].deriv_ind[6] = node.deriv_ind[6];
-    allnodes[thisnode].deriv_ind[7] = node.deriv_ind[7];
-    allnodes[thisnode].deriv_ind[8] = node.deriv_ind[8];
-    allnodes[thisnode].deriv_ind[9] = node.deriv_ind[9];
-    allnodes[thisnode].deriv_ind[10] = node.deriv_ind[10];
-    allnodes[thisnode].deriv_ind[11] = node.deriv_ind[11];
-    if (node.deriv_lvl == 0) {
-      if (node.B + node.D == 0)
-	vrr_hash_table[node.A][node.C][node.m] = thisnode + 1;
-      else
-	hrr_hash_table[node.A][node.B][node.C][node.D] = thisnode + 1;
-    }
+    allnodes[thisnode].grt_type = node.grt_type;
+    vrr_hash_table[node.grt_type][node.A][node.C][node.m] = thisnode + 1;
     allnodes[thisnode].num_parents = 0;
     allnodes[thisnode].parents_counter = 0;
     allnodes[thisnode].marked = 0;
     allnodes[thisnode].target = 0;
     allnodes[thisnode].pointer = 0;
     memset(allnodes[thisnode].parents,0,NUMPARENTS*sizeof(int));
-    allnodes[thisnode].children[0] = NONODE;
-    allnodes[thisnode].children[1] = NONODE;
-    allnodes[thisnode].children[2] = NONODE;
-    allnodes[thisnode].children[3] = NONODE;
-    allnodes[thisnode].children[4] = NONODE;
+    for(i=0;i<NUMCHILDREN;i++)
+      allnodes[thisnode].children[i] = NONODE;
     allnodes[thisnode].size = io[node.A]*io[node.B]*io[node.C]*io[node.D];
+    allnodes[thisnode].llink = -1;
+    allnodes[thisnode].rlink = -1;
     /* We just added a node ..*/
     last_vrr_node++;
     /* If stack is overfull - exit */
@@ -804,182 +747,38 @@ int mk_deriv_node(class node, class *allnodes, int new)
 
   /* now make all child nodes */
   if (!made) {
-    /* derivative ERI */
-    if (node.deriv_lvl) {
-      for(i=0;i<12;i++) {
-	if (node.deriv_ind[i] != 0) {
-	  switch (i) {
-	  case 0: case 1: case 2:
-	      O[0].A = node.A+1;
-	      O[0].B = node.B;
-	      O[0].C = node.C;
-	      O[0].D = node.D;
-	      O[0].m = 0;
-	      O[0].deriv_lvl = node.deriv_lvl-1;
-	      memset(O[0].deriv_ind,0,12*sizeof(int));
-	      O[0].deriv_ind[i] = node.deriv_ind[i]-1;
-	      allnodes[thisnode].children[0] = mk_deriv_node(O[0], allnodes, made);
-	      if (node.A > 0) {
-		O[1].A = node.A-1;
-		O[1].B = node.B;
-		O[1].C = node.C;
-		O[1].D = node.D;
-		O[1].m = 0;
-		O[1].deriv_lvl = node.deriv_lvl-1;
-		memset(O[1].deriv_ind,0,12*sizeof(int));
-		O[1].deriv_ind[i] = node.deriv_ind[i]-1;
-		allnodes[thisnode].children[1] = mk_deriv_node(O[1], allnodes, made);
-	      }
-	      break;
-
-	  case 3: case 4: case 5:
-	      O[0].A = node.A;
-	      O[0].B = node.B+1;
-	      O[0].C = node.C;
-	      O[0].D = node.D;
-	      O[0].m = 0;
-	      O[0].deriv_lvl = node.deriv_lvl-1;
-	      memset(O[0].deriv_ind,0,12*sizeof(int));
-	      O[0].deriv_ind[i] = node.deriv_ind[i]-1;
-	      allnodes[thisnode].children[0] = mk_deriv_node(O[0], allnodes, made);
-	      if (node.B > 0) {
-		O[1].A = node.A;
-		O[1].B = node.B-1;
-		O[1].C = node.C;
-		O[1].D = node.D;
-		O[1].m = 0;
-		O[1].deriv_lvl = node.deriv_lvl-1;
-		memset(O[1].deriv_ind,0,12*sizeof(int));
-		O[1].deriv_ind[i] = node.deriv_ind[i]-1;
-		allnodes[thisnode].children[1] = mk_deriv_node(O[1], allnodes, made);
-	      }
-	      break;
-
-	  case 6: case 7: case 8:
-	      O[0].A = node.A;
-	      O[0].B = node.B;
-	      O[0].C = node.C+1;
-	      O[0].D = node.D;
-	      O[0].m = 0;
-	      O[0].deriv_lvl = node.deriv_lvl-1;
-	      memset(O[0].deriv_ind,0,12*sizeof(int));
-	      O[0].deriv_ind[i] = node.deriv_ind[i]-1;
-	      allnodes[thisnode].children[0] = mk_deriv_node(O[0], allnodes, made);
-	      if (node.C > 0) {
-		O[1].A = node.A;
-		O[1].B = node.B;
-		O[1].C = node.C-1;
-		O[1].D = node.D;
-		O[1].m = 0;
-		O[1].deriv_lvl = node.deriv_lvl-1;
-		memset(O[1].deriv_ind,0,12*sizeof(int));
-		O[1].deriv_ind[i] = node.deriv_ind[i]-1;
-		allnodes[thisnode].children[1] = mk_deriv_node(O[1], allnodes, made);
-	      }
-	      break;
-
-	  case 9: case 10: case 11:
-	      O[0].A = node.A;
-	      O[0].B = node.B;
-	      O[0].C = node.C;
-	      O[0].D = node.D+1;
-	      O[0].m = 0;
-	      O[0].deriv_lvl = node.deriv_lvl-1;
-	      memset(O[0].deriv_ind,0,12*sizeof(int));
-	      O[0].deriv_ind[i] = node.deriv_ind[i]-1;
-	      allnodes[thisnode].children[0] = mk_deriv_node(O[0], allnodes, made);
-	      if (node.D > 0) {
-		O[1].A = node.A;
-		O[1].B = node.B;
-		O[1].C = node.C;
-		O[1].D = node.D-1;
-		O[1].m = 0;
-		O[1].deriv_lvl = node.deriv_lvl-1;
-		memset(O[1].deriv_ind,0,12*sizeof(int));
-		O[1].deriv_ind[i] = node.deriv_ind[i]-1;
-		allnodes[thisnode].children[1] = mk_deriv_node(O[1], allnodes, made);
-	      }
-	      break;
-	  }
-	  break;
-	}
-      }
-    }
-    /* HRR case */
-    else if (node.B + node.D != 0) {
-      if(node.B){
-	O[0].A = node.A+1;
-	O[0].B = node.B-1;
-	O[0].C = node.C;
-	O[0].D = node.D;
-	O[0].m = node.m;
-	O[0].deriv_lvl = 0;
-	memset(O[0].deriv_ind,0,12*sizeof(int));
-	allnodes[thisnode].children[0] = mk_deriv_node(O[0], allnodes, made);
-	O[1].A = node.A;
-	O[1].B = node.B-1;
-	O[1].C = node.C;
-	O[1].D = node.D;
-	O[1].m = node.m;
-	O[1].deriv_lvl = 0;
-	memset(O[1].deriv_ind,0,12*sizeof(int));
-	allnodes[thisnode].children[1] = mk_deriv_node(O[1], allnodes, made);
-      }
-      else if(node.D){
-	O[0].A = node.A;
-	O[0].B = node.B;
-	O[0].C = node.C+1;
-	O[0].D = node.D-1;
-	O[0].m = node.m;
-	O[0].deriv_lvl = 0;
-	memset(O[0].deriv_ind,0,12*sizeof(int));
-	allnodes[thisnode].children[0] = mk_deriv_node(O[0], allnodes, made);
-	O[1].A = node.A;
-	O[1].B = node.B;
-	O[1].C = node.C;
-	O[1].D = node.D-1;
-	O[1].m = node.m;
-	O[1].deriv_lvl = 0;
-	memset(O[1].deriv_ind,0,12*sizeof(int));
-	allnodes[thisnode].children[1] = mk_deriv_node(O[1], allnodes, made);
-      }
-    }
-    /* VRR case */
-    else {
-      if(node.A){
-	O[0].A = node.A-1;
+    /* regular ERI */
+    if (node.grt_type == 0) {
+      if(node.A){              /*--- (a0|c0 ---*/
+    	O[0].A = node.A-1;
 	O[0].B = 0;
 	O[0].C = node.C;
 	O[0].D = 0;
 	O[0].m = node.m;
-	O[0].deriv_lvl = 0;
-	memset(O[0].deriv_ind,0,12*sizeof(int));
-	allnodes[thisnode].children[0] = mk_deriv_node(O[0], allnodes, made);
+	O[0].grt_type = 0;
+	allnodes[thisnode].children[0] = mk_vrr_node(O[0], allnodes, made);
 	O[1].A = node.A-1;
 	O[1].B = 0;
 	O[1].C = node.C;
 	O[1].D = 0;
 	O[1].m = node.m+1;
-	O[1].deriv_lvl = 0;
-	memset(O[1].deriv_ind,0,12*sizeof(int));
-	allnodes[thisnode].children[1] = mk_deriv_node(O[1], allnodes, made);
+	O[1].grt_type = 0;
+	allnodes[thisnode].children[1] = mk_vrr_node(O[1], allnodes, made);
 	if(node.A>1){
 	  O[2].A = node.A-2;
 	  O[2].B = 0;
 	  O[2].C = node.C;
 	  O[2].D = 0;
 	  O[2].m = node.m;
-	  O[2].deriv_lvl = 0;
-	  memset(O[2].deriv_ind,0,12*sizeof(int));
-	  allnodes[thisnode].children[2] = mk_deriv_node(O[2], allnodes, made);
+	  O[2].grt_type = 0;
+	  allnodes[thisnode].children[2] = mk_vrr_node(O[2], allnodes, made);
 	  O[3].A = node.A-2;
 	  O[3].B = 0;
 	  O[3].C = node.C;
 	  O[3].D = 0;
 	  O[3].m = node.m+1;
-	  O[3].deriv_lvl = 0;
-	  memset(O[3].deriv_ind,0,12*sizeof(int));
-	  allnodes[thisnode].children[3] = mk_deriv_node(O[3], allnodes, made);
+	  O[3].grt_type = 0;
+	  allnodes[thisnode].children[3] = mk_vrr_node(O[3], allnodes, made);
 	}
 	if(node.C){
 	  O[4].A = node.A-1;
@@ -987,46 +786,215 @@ int mk_deriv_node(class node, class *allnodes, int new)
 	  O[4].C = node.C-1;
 	  O[4].D = 0;
 	  O[4].m = node.m+1;
-	  O[4].deriv_lvl = 0;
-	  memset(O[4].deriv_ind,0,12*sizeof(int));
-	  allnodes[thisnode].children[4] = mk_deriv_node(O[4], allnodes, made);
+	  O[4].grt_type = 0;
+	  allnodes[thisnode].children[4] = mk_vrr_node(O[4], allnodes, made);
 	}
       }
-      else if(node.C){
+      else if(node.C){     /*--- (00|c0) ---*/
 	O[0].A = node.A;
 	O[0].B = 0;
 	O[0].C = node.C-1;
 	O[0].D = 0;
 	O[0].m = node.m;
-	O[0].deriv_lvl = 0;
-	memset(O[0].deriv_ind,0,12*sizeof(int));
-	allnodes[thisnode].children[0] = mk_deriv_node(O[0], allnodes, made);
+	O[0].grt_type = 0;
+	allnodes[thisnode].children[0] = mk_vrr_node(O[0], allnodes, made);
 	O[1].A = node.A;
 	O[1].B = 0;
 	O[1].C = node.C-1;
 	O[1].D = 0;
 	O[1].m = node.m+1;
-	O[1].deriv_lvl = 0;
-	memset(O[1].deriv_ind,0,12*sizeof(int));
-	allnodes[thisnode].children[1] = mk_deriv_node(O[1], allnodes, made);
+	O[1].grt_type = 0;
+	allnodes[thisnode].children[1] = mk_vrr_node(O[1], allnodes, made);
 	if(node.C>1){
 	  O[2].A = node.A;
 	  O[2].B = 0;
 	  O[2].C = node.C-2;
 	  O[2].D = 0;
 	  O[2].m = node.m;
-	  O[2].deriv_lvl = 0;
-	  memset(O[2].deriv_ind,0,12*sizeof(int));
-	  allnodes[thisnode].children[2] = mk_deriv_node(O[2], allnodes, made);
+	  O[2].grt_type = 0;
+	  allnodes[thisnode].children[2] = mk_vrr_node(O[2], allnodes, made);
 	  O[3].A = node.A;
 	  O[3].B = 0;
 	  O[3].C = node.C-2;
 	  O[3].D = 0;
 	  O[3].m = node.m+1;
-	  O[3].deriv_lvl = 0;
-	  memset(O[3].deriv_ind,0,12*sizeof(int));
-	  allnodes[thisnode].children[3] = mk_deriv_node(O[3], allnodes, made);
+	  O[3].grt_type = 0;
+	  allnodes[thisnode].children[3] = mk_vrr_node(O[3], allnodes, made);
 	}
+      }
+    }
+    /* Integral of r12 */
+    else if (node.grt_type == 1) {
+      if(node.A){        /*--- (a0||c0) ---*/
+	O[0].A = node.A-1;
+	O[0].B = 0;
+	O[0].C = node.C;
+	O[0].D = 0;
+	O[0].m = 0;
+	O[0].grt_type = 1;
+	allnodes[thisnode].children[0] = mk_vrr_node(O[0], allnodes, made);
+	if (node.A > 1) {
+	  O[1].A = node.A-2;
+	  O[1].B = 0;
+	  O[1].C = node.C;
+	  O[1].D = 0;
+	  O[1].m = 0;
+	  O[1].grt_type = 1;
+	  allnodes[thisnode].children[1] = mk_vrr_node(O[1], allnodes, made);
+	}
+	O[2].A = node.A;
+	O[2].B = 0;
+	O[2].C = node.C;
+	O[2].D = 0;
+	O[2].m = 0;
+	O[2].grt_type = 0;
+	allnodes[thisnode].children[2] = mk_vrr_node(O[2], allnodes, made);
+	O[3].A = node.A-1;
+	O[3].B = 0;
+	O[3].C = node.C;
+	O[3].D = 0;
+	O[3].m = 0;
+	O[3].grt_type = 0;
+	allnodes[thisnode].children[3] = mk_vrr_node(O[3], allnodes, made);
+	if (node.A > 1) {
+	  O[4].A = node.A-2;
+	  O[4].B = 0;
+	  O[4].C = node.C;
+	  O[4].D = 0;
+	  O[4].m = 0;
+	  O[4].grt_type = 0;
+	  allnodes[thisnode].children[4] = mk_vrr_node(O[4], allnodes, made);
+	}
+	if(node.C){
+	  O[5].A = node.A-1;
+	  O[5].B = 0;
+	  O[5].C = node.C-1;
+	  O[5].D = 0;
+	  O[5].m = 0;
+	  O[5].grt_type = 0;
+	  allnodes[thisnode].children[5] = mk_vrr_node(O[5], allnodes, made);
+	}
+      }
+      else if (node.C){         /*--- (00||c0) ---*/
+	O[0].A = node.A;
+	O[0].B = 0;
+	O[0].C = node.C-1;
+	O[0].D = 0;
+	O[0].m = 0;
+	O[0].grt_type = 1;
+	allnodes[thisnode].children[0] = mk_vrr_node(O[0], allnodes, made);
+	if (node.C > 1) {
+	  O[1].A = node.A;
+	  O[1].B = 0;
+	  O[1].C = node.C-2;
+	  O[1].D = 0;
+	  O[1].m = 0;
+	  O[1].grt_type = 1;
+	  allnodes[thisnode].children[1] = mk_vrr_node(O[1], allnodes, made);
+	}
+	O[2].A = node.A;
+	O[2].B = 0;
+	O[2].C = node.C;
+	O[2].D = 0;
+	O[2].m = 0;
+	O[2].grt_type = 0;
+	allnodes[thisnode].children[2] = mk_vrr_node(O[2], allnodes, made);
+	O[3].A = node.A;
+	O[3].B = 0;
+	O[3].C = node.C-1;
+	O[3].D = 0;
+	O[3].m = 0;
+	O[3].grt_type = 0;
+	allnodes[thisnode].children[3] = mk_vrr_node(O[3], allnodes, made);
+	if(node.C > 1){
+	  O[4].A = node.A;
+	  O[4].B = 0;
+	  O[4].C = node.C-2;
+	  O[4].D = 0;
+	  O[4].m = 0;
+	  O[4].grt_type = 0;
+	  allnodes[thisnode].children[4] = mk_vrr_node(O[4], allnodes, made);
+	}
+      }
+    }
+    /*--- Integral of [r12,T1] ---*/
+    else if (node.grt_type == 2) {
+      O[0].A = node.A;
+      O[0].B = 0;
+      O[0].C = node.C;
+      O[0].D = 0;
+      O[0].m = 0;
+      O[0].grt_type = 0;
+      allnodes[thisnode].children[0] = mk_vrr_node(O[0], allnodes, made);
+      O[1].A = node.A+1;
+      O[1].B = 0;
+      O[1].C = node.C;
+      O[1].D = 0;
+      O[1].m = 0;
+      O[1].grt_type = 0;
+      allnodes[thisnode].children[1] = mk_vrr_node(O[1], allnodes, made);
+      O[2].A = node.A;
+      O[2].B = 0;
+      O[2].C = node.C+1;
+      O[2].D = 0;
+      O[2].m = 0;
+      O[2].grt_type = 0;
+      allnodes[thisnode].children[2] = mk_vrr_node(O[2], allnodes, made);
+      if (node.A) {
+	O[3].A = node.A-1;
+	O[3].B = 0;
+	O[3].C = node.C+1;
+	O[3].D = 0;
+	O[3].m = 0;
+	O[3].grt_type = 0;
+	allnodes[thisnode].children[3] = mk_vrr_node(O[3], allnodes, made);
+	O[4].A = node.A-1;
+	O[4].B = 0;
+	O[4].C = node.C;
+	O[4].D = 0;
+	O[4].m = 0;
+	O[4].grt_type = 0;
+	allnodes[thisnode].children[4] = mk_vrr_node(O[4], allnodes, made);
+      }
+    }
+    /*--- Integrals of [r12,T2] ---*/
+    else if (node.grt_type == 3) {
+      O[0].A = node.A;
+      O[0].B = 0;
+      O[0].C = node.C;
+      O[0].D = 0;
+      O[0].m = 0;
+      O[0].grt_type = 0;
+      allnodes[thisnode].children[0] = mk_vrr_node(O[0], allnodes, made);
+      O[1].A = node.A;
+      O[1].B = 0;
+      O[1].C = node.C+1;
+      O[1].D = 0;
+      O[1].m = 0;
+      O[1].grt_type = 0;
+      allnodes[thisnode].children[1] = mk_vrr_node(O[1], allnodes, made);
+      O[2].A = node.A+1;
+      O[2].B = 0;
+      O[2].C = node.C;
+      O[2].D = 0;
+      O[2].m = 0;
+      O[2].grt_type = 0;
+      allnodes[thisnode].children[2] = mk_vrr_node(O[2], allnodes, made);
+      if (node.C > 0) {
+	O[3].A = node.A+1;
+	O[3].B = 0;
+	O[3].C = node.C-1;
+	O[3].D = 0;
+	O[3].m = 0;
+	O[3].grt_type = 0;
+	allnodes[thisnode].children[3] = mk_vrr_node(O[3], allnodes, made);
+	O[4].A = node.A;
+	O[4].B = 0;
+	O[4].C = node.C-1;
+	O[4].D = 0;
+	O[4].m = 0;
+	O[4].grt_type = 0;
+	allnodes[thisnode].children[4] = mk_vrr_node(O[4], allnodes, made);
       }
     }
   }
@@ -1037,9 +1005,10 @@ int mk_deriv_node(class node, class *allnodes, int new)
 
 
 
+
 /* Make hrr_nodes[rent] a parent of hrr_nodes[n] and proceed recursively */
 
-int mark_dhrr_parents(int n, class *allnodes, int rent)
+int mark_hrr_parents(int n, class *allnodes, int rent)
 {
   int i;
   int *tmp;
@@ -1053,14 +1022,22 @@ int mark_dhrr_parents(int n, class *allnodes, int rent)
   allnodes[n].parents[i] = rent;
   /* hits from all of the parents has been received - schedule it for computation and mark all of its children */
   if (i == 0 && (allnodes[n].B != 0 || allnodes[n].D != 0)) {
+    /*--- take it out of the list if it's in there already ---*/
+    if (allnodes[n].llink != -1) {
+      allnodes[allnodes[n].llink].rlink = allnodes[n].rlink;
+    }
+    if (allnodes[n].rlink != -1) {
+      allnodes[allnodes[n].rlink].llink = allnodes[n].llink;
+    }
+    /*--- put it in the beginning ---*/
     allnodes[n].llink = -1;
     allnodes[n].rlink = first_hrr_to_compute;
     allnodes[first_hrr_to_compute].llink = n;
     first_hrr_to_compute = n;
 
-    for(i=0; i<8; i++)
-      if(allnodes[n].children[i]>0)
-	mark_dhrr_parents(allnodes[n].children[i], allnodes, n);
+    for(i=0; i<NUMCHILDREN; i++)
+      if(allnodes[n].children[i] >= 0)
+	mark_hrr_parents(allnodes[n].children[i], allnodes, n);
   }
   return;
 }
@@ -1083,42 +1060,22 @@ int mark_vrr_parents(int n, class *allnodes, int rent)
   allnodes[n].parents[i] = rent;
   /* hits from all of the parents has been received - schedule it for computation and mark all of its children */
   if (i == 0) {
+    /*--- take it out of the list if it's in there already ---*/
+    if (allnodes[n].llink != -1) {
+      allnodes[allnodes[n].llink].rlink = allnodes[n].rlink;
+    }
+    if (allnodes[n].rlink != -1) {
+      allnodes[allnodes[n].rlink].llink = allnodes[n].llink;
+    }
+    /*--- put it in the beginning ---*/
     allnodes[n].llink = -1;
     allnodes[n].rlink = first_vrr_to_compute;
-    allnodes[first_vrr_to_compute].llink = n;
+    if (first_vrr_to_compute >= 0)
+      allnodes[first_vrr_to_compute].llink = n;
     first_vrr_to_compute = n;
 
-    for(i=0; i<5; i++)
-      if(allnodes[n].children[i]>0)
-	mark_vrr_parents(allnodes[n].children[i], allnodes, n);
-
-  }
-  return;
-}
-
-
-int mark_parents(int n, class *allnodes, int rent)
-{
-  int i;
-  int *tmp;
-
-  /* handle case where it's in there already */
-  for(i=allnodes[n].num_parents-1; i>=allnodes[n].parents_counter; i--)
-    if(rent==allnodes[n].parents[i]) return;
-
-
-  /* if the parent rent is not in the list - add it to the list! */
-  i = --allnodes[n].parents_counter;
-  allnodes[n].parents[i] = rent;
-  /* hits from all of the parents has been received - schedule it for computation and mark all of its children */
-  if (i == 0) {
-    allnodes[n].llink = -1;
-    allnodes[n].rlink = first_vrr_to_compute;
-    allnodes[first_vrr_to_compute].llink = n;
-    first_vrr_to_compute = n;
-
-    for(i=0; i<5; i++)
-      if(allnodes[n].children[i]>0)
+    for(i=0; i<NUMCHILDREN; i++)
+      if(allnodes[n].children[i] >= 0)
 	mark_vrr_parents(allnodes[n].children[i], allnodes, n);
 
   }
@@ -1129,7 +1086,7 @@ int mark_parents(int n, class *allnodes, int rent)
 
 /* This functions controls memory placement of computed classes on the CINTS stack */
 
-int alloc_mem_dhrr(class *nodes)
+int alloc_mem_hrr(class *nodes)
 {
   int i, j, k, l;
   int size;
@@ -1147,9 +1104,9 @@ int alloc_mem_dhrr(class *nodes)
       
     /* Figure out which children can be freed,
        i.e. which children are not targets and have all parents marked */
-    for(k=0; k<8; k++){
+    for(k=0; k<NUMCHILDREN; k++){
       child = nodes[j].children[k];
-      if(child>0)
+      if(child >= 0)
 	if (nodes[child].target == 0) {
 	  free_it = 1;
 	  for(l=0; l<nodes[child].num_parents; l++)
@@ -1164,7 +1121,6 @@ int alloc_mem_dhrr(class *nodes)
   
   return nodes[0].pointer;
 }
-
 
 
 /* This functions controls memory placement of computed classes on the CINTS stack */
@@ -1189,9 +1145,9 @@ int alloc_mem_vrr(class *nodes)
 
     /* Figure out which children can be freed,
        i.e. which children have all parents marked */
-    for(k=0; k<5; k++){
+    for(k=0; k<NUMCHILDREN; k++){
       child = nodes[j].children[k];
-      if(child>0){
+      if(child >= 0){
         free_it = 1;
         for(l=0; l<nodes[child].num_parents; l++){
           if(!nodes[nodes[child].parents[l]].marked) {
@@ -1208,3 +1164,4 @@ int alloc_mem_vrr(class *nodes)
   
   return nodes[0].pointer;
 }
+

@@ -95,14 +95,14 @@ int emit_vrr_r_build(int old_am, int new_am, int max_class_size)
 	fprintf(vrr_header,"}\n");
 	for(f=0;f<num_subfunctions;f++)
 	  fprintf(vrr_header, 
-	  "double *_r_build_%c0%c0_%d(prim_data *, double *, const double *, const double *, const double *, const double *, const double *, const double *);\n",
+	  "REALTYPE *_r_build_%c0%c0_%d(prim_data *, REALTYPE *, const REALTYPE *, const REALTYPE *, const REALTYPE *, const REALTYPE *, const REALTYPE *, const REALTYPE *);\n",
 		  am_letter[la],am_letter[lc],f);
       }
       else {
 	split = 0;
 	fprintf(vrr_header," _r_build_%c0%c0(Data,vp,i0,i1,i2,i3,i4,i5);}\n",am_letter[la],am_letter[lc]);
 	fprintf(vrr_header,
-	"void _r_build_%c0%c0(prim_data *, double *, const double *, const double *, const double *, const double *, const double *, const double *);\n",
+	"void _r_build_%c0%c0(prim_data *, REALTYPE *, const REALTYPE *, const REALTYPE *, const REALTYPE *, const REALTYPE *, const REALTYPE *, const REALTYPE *);\n",
 		am_letter[la],am_letter[lc]);
       }
 
@@ -135,12 +135,12 @@ int emit_vrr_r_build(int old_am, int new_am, int max_class_size)
 	curr_subfunction = 0;
 	curr_count = 0;
 	fprintf(code,
-	"double *%s(prim_data *Data, double *vp, const double *I0, const double *I1, const double *I2, const double *I3, const double *I4, const double *I5)\n{\n",
+	"REALTYPE *%s(prim_data *Data, REALTYPE *vp, const REALTYPE *I0, const REALTYPE *I1, const REALTYPE *I2, const REALTYPE *I3, const REALTYPE *I4, const REALTYPE *I5)\n{\n",
 		subfunction_name[0]);
       }
       else
 	fprintf(code,
-	"void _%s(prim_data *Data, double *vp, const double *I0, const double *I1, const double *I2, const double *I3, const double *I4, const double *I5)\n{\n",function_name);
+	"void _%s(prim_data *Data, REALTYPE *vp, const REALTYPE *I0, const REALTYPE *I1, const REALTYPE *I2, const REALTYPE *I3, const REALTYPE *I4, const REALTYPE *I5)\n{\n",function_name);
       declare_localv(dec_C,k1max,k2max,k3max,code);
       define_localv(dec_C,k1max,k2max,k3max,code);
       fprintf(code,"\n");
@@ -211,7 +211,7 @@ int emit_vrr_r_build(int old_am, int new_am, int max_class_size)
 		curr_subfunction++;
 		fprintf(code,"return vp;\n}\n\n");
 		fprintf(code,
-		"double *%s(prim_data *Data, double *vp, const double *I0, const double *I1, const double *I2, const double *I3, const double *I4, const double *I5)\n{\n",
+		"REALTYPE *%s(prim_data *Data, REALTYPE *vp, const REALTYPE *I0, const REALTYPE *I1, const REALTYPE *I2, const REALTYPE *I3, const REALTYPE *I4, const REALTYPE *I5)\n{\n",
 			subfunction_name[curr_subfunction]);
 		declare_localv(dec_C,k1max,k2max,k3max,code);
 		define_localv(dec_C,k1max,k2max,k3max,code);
@@ -270,17 +270,17 @@ void declare_localv(int dec_C, int k1max, int k2max, int k3max, FILE *code)
 {
   int i;
 
-  fprintf(code,"  double U00, U01, U02, U10, U11, U12, U20, U21, U22;\n");
-  fprintf(code,"  double U30, U31, U32, U40, U41, U42, U50, U51, U52;\n");
-  fprintf(code,"  double loo2p = Data->oo2p;\n");
+  fprintf(code,"  REALTYPE U00, U01, U02, U10, U11, U12, U20, U21, U22;\n");
+  fprintf(code,"  REALTYPE U30, U31, U32, U40, U41, U42, U50, U51, U52;\n");
+  fprintf(code,"  REALTYPE loo2p = Data->oo2p;\n");
   for(i=0;i<k2max;i++)
-    fprintf(code,"  double %s;\n",k2[i]);
+    fprintf(code,"  REALTYPE %s;\n",k2[i]);
   if (dec_C == 0)
     for(i=0;i<k1max;i++)
-      fprintf(code,"  double %s;\n",k1[i]);
+      fprintf(code,"  REALTYPE %s;\n",k1[i]);
   else
     for(i=0;i<k3max;i++)
-      fprintf(code,"  double %s;\n",k3[i]);
+      fprintf(code,"  REALTYPE %s;\n",k3[i]);
 }
 
 void define_localv(int dec_C, int k1max, int k2max, int k3max, FILE *code)

@@ -121,8 +121,8 @@ int emit_grt_order(int old_am, int new_am, int opt_am)
 	      am_letter[la-lb],am_letter[lb],am_letter[lc-ld],am_letter[ld]);
       fprintf(hrr_code,"void %s(Libr12_t *Libr12, int num_prim_comb)\n{\n",hrr_function_name);
       fprintf(hrr_code," prim_data *Data = Libr12->PrimQuartet;\n");
-      fprintf(hrr_code," double *int_stack = Libr12->int_stack;\n");
-      fprintf(hrr_code," int i,j;\n double tmp, *target;\n\n");
+      fprintf(hrr_code," REALTYPE *int_stack = Libr12->int_stack;\n");
+      fprintf(hrr_code," int i,j;\n REALTYPE tmp, *target;\n\n");
 
       /*-------------------------------------------------------------
 	Include the function into the hrr_header.h and init_libint.c
@@ -218,7 +218,7 @@ int emit_grt_order(int old_am, int new_am, int opt_am)
 		  hrr_nodes[i].A,hrr_nodes[i].C,hrr_nodes[i].pointer);
 	}
       base_mem = get_total_memory();
-      fprintf(hrr_code," memset(int_stack,0,%d);\n\n",base_mem*sizeof(double));
+      fprintf(hrr_code," memset(int_stack,0,%d*sizeof(REALTYPE));\n\n",base_mem);
       fprintf(hrr_code," Libr12->r12vrr_stack = int_stack + %d;\n",base_mem);
       
       
@@ -393,8 +393,8 @@ int emit_grt_order(int old_am, int new_am, int opt_am)
       vrr_mem = base_mem + get_total_memory();
       if (max_stack_size < vrr_mem)
 	max_stack_size = vrr_mem;
-      fprintf(vrr_code," double *r12vrr_stack = Libr12->r12vrr_stack;\n");
-      fprintf(vrr_code," double *tmp, *target_ptr;\n int i, am[2];\n\n");
+      fprintf(vrr_code," REALTYPE *r12vrr_stack = Libr12->r12vrr_stack;\n");
+      fprintf(vrr_code," REALTYPE *tmp, *target_ptr;\n int i, am[2];\n\n");
       
       j = first_vrr_to_compute;
       do {

@@ -75,32 +75,33 @@ int emit_hrr_t_build(int new_am, int max_class_size)
       code = fopen(code_name,"w");
 
       /* include the function into the hrr_header.h */
-      fprintf(hrr_header,"void %s(double *, double *, double *, const double *, const double *, ",function_name);
-      fprintf(hrr_header,"const double *, const double *, const double *, int, int);\n");
+      fprintf(hrr_header,"void %s(REALTYPE *, REALTYPE *, REALTYPE *, const REALTYPE *, const REALTYPE *, ",function_name);
+      fprintf(hrr_header,"const REALTYPE *, const REALTYPE *, const REALTYPE *, int, int);\n");
 
       fprintf(code,"  /* This machine-generated function computes a quartet of [r12,T2]|%c%c) integrals */\n\n",
 	      am_letter[am_in[0]],am_letter[am_in[1]]);
+      fprintf(code,"#include<libint.h>\n\n");
       if (split) {
 	for(i=0;i<num_subfunctions;i++) {
-	  fprintf(code,"double *%s(double *, double *, double *, const double *, const double *, ",
+	  fprintf(code,"REALTYPE *%s(REALTYPE *, REALTYPE *, REALTYPE *, const REALTYPE *, const REALTYPE *, ",
 		  subfunction_name[i]);
-	  fprintf(code,"const double *, const double *, const double *, int, int);\n");
+	  fprintf(code,"const REALTYPE *, const REALTYPE *, const REALTYPE *, int, int);\n");
 	}
 	fprintf(code,"\n");
       }
-      fprintf(code,"void %s(double *CD, double *AC, double *vp, const double *I0, const double *I1, ",function_name);
-      fprintf(code,"const double *I2, const double *I3, const double *I4, int la, int lb)\n{\n");
+      fprintf(code,"void %s(REALTYPE *CD, REALTYPE *AC, REALTYPE *vp, const REALTYPE *I0, const REALTYPE *I1, ",function_name);
+      fprintf(code,"const REALTYPE *I2, const REALTYPE *I3, const REALTYPE *I4, int la, int lb)\n{\n");
       if (split == 1) {
 	curr_subfunction = 0;
 	curr_count = 0;
       }
       else {
-	fprintf(code,"  const double CD0 = CD[0];\n");
-	fprintf(code,"  const double CD1 = CD[1];\n");
-	fprintf(code,"  const double CD2 = CD[2];\n");
-	fprintf(code,"  const double AC0 = AC[0];\n");
-	fprintf(code,"  const double AC1 = AC[1];\n");
-	fprintf(code,"  const double AC2 = AC[2];\n");
+	fprintf(code,"  const REALTYPE CD0 = CD[0];\n");
+	fprintf(code,"  const REALTYPE CD1 = CD[1];\n");
+	fprintf(code,"  const REALTYPE CD2 = CD[2];\n");
+	fprintf(code,"  const REALTYPE AC0 = AC[0];\n");
+	fprintf(code,"  const REALTYPE AC1 = AC[1];\n");
+	fprintf(code,"  const REALTYPE AC2 = AC[2];\n");
 	fprintf(code,"  static int io[] = { 1");
 	for(i=1;i<=new_am+1;i++)
 	  fprintf(code,", %d",(i+1)*(i+2)/2);
@@ -124,15 +125,15 @@ int emit_hrr_t_build(int new_am, int max_class_size)
 	fprintf(code,"        I4 += %d;\n",cdm1_num);
 	fprintf(code,"  }\n}\n\n");
 
-	fprintf(code,"double *%s(double *CD, double *AC, double *vp, const double *I0, const double *I1, ",
+	fprintf(code,"REALTYPE *%s(REALTYPE *CD, REALTYPE *AC, REALTYPE *vp, const REALTYPE *I0, const REALTYPE *I1, ",
 	      subfunction_name[0]);
-	fprintf(code,"const double *I2, const double *I3, const double *I4, int pa, int lb)\n{\n");
-	fprintf(code,"  const double CD0 = CD[0];\n");
-	fprintf(code,"  const double CD1 = CD[1];\n");
-	fprintf(code,"  const double CD2 = CD[2];\n");
-	fprintf(code,"  const double AC0 = AC[0];\n");
-	fprintf(code,"  const double AC1 = AC[1];\n");
-	fprintf(code,"  const double AC2 = AC[2];\n");
+	fprintf(code,"const REALTYPE *I2, const REALTYPE *I3, const REALTYPE *I4, int pa, int lb)\n{\n");
+	fprintf(code,"  const REALTYPE CD0 = CD[0];\n");
+	fprintf(code,"  const REALTYPE CD1 = CD[1];\n");
+	fprintf(code,"  const REALTYPE CD2 = CD[2];\n");
+	fprintf(code,"  const REALTYPE AC0 = AC[0];\n");
+	fprintf(code,"  const REALTYPE AC1 = AC[1];\n");
+	fprintf(code,"  const REALTYPE AC2 = AC[2];\n");
 	fprintf(code,"  static int io[] = { 1");
 	for(i=1;i<=new_am+1;i++)
 	  fprintf(code,", %d",(i+1)*(i+2)/2);
@@ -184,15 +185,15 @@ int emit_hrr_t_build(int new_am, int max_class_size)
 		curr_count = 0;
 		curr_subfunction++;
 		fprintf(code,"  return vp;\n}\n\n");
-		fprintf(code,"double *%s(double *CD, double *AC, double *vp, const double *I0, const double *I1, ",
+		fprintf(code,"REALTYPE *%s(REALTYPE *CD, REALTYPE *AC, REALTYPE *vp, const REALTYPE *I0, const REALTYPE *I1, ",
 			subfunction_name[curr_subfunction]);
-		fprintf(code,"const double *I2, const double *I3, const double *I4, int pa, int lb)\n{\n");
-		fprintf(code,"  const double CD0 = CD[0];\n");
-		fprintf(code,"  const double CD1 = CD[1];\n");
-		fprintf(code,"  const double CD2 = CD[2];\n");
-		fprintf(code,"  const double AC0 = AC[0];\n");
-		fprintf(code,"  const double AC1 = AC[1];\n");
-		fprintf(code,"  const double AC2 = AC[2];\n");
+		fprintf(code,"const REALTYPE *I2, const REALTYPE *I3, const REALTYPE *I4, int pa, int lb)\n{\n");
+		fprintf(code,"  const REALTYPE CD0 = CD[0];\n");
+		fprintf(code,"  const REALTYPE CD1 = CD[1];\n");
+		fprintf(code,"  const REALTYPE CD2 = CD[2];\n");
+		fprintf(code,"  const REALTYPE AC0 = AC[0];\n");
+		fprintf(code,"  const REALTYPE AC1 = AC[1];\n");
+		fprintf(code,"  const REALTYPE AC2 = AC[2];\n");
 		fprintf(code,"  static int io[] = { 1");
 		for(i=1;i<=new_am+1;i++)
 		  fprintf(code,", %d",(i+1)*(i+2)/2);
@@ -244,23 +245,24 @@ int emit_hrr_t_build(int new_am, int max_class_size)
       code = fopen(code_name,"w");
 
       /* include the function into the hrr_header.h */
-      fprintf(hrr_header,"void %s(double *, double *, double *, const double *, const double *, ",function_name);
-      fprintf(hrr_header,"const double *, const double *, const double *, int, int);\n");
+      fprintf(hrr_header,"void %s(REALTYPE *, REALTYPE *, REALTYPE *, const REALTYPE *, const REALTYPE *, ",function_name);
+      fprintf(hrr_header,"const REALTYPE *, const REALTYPE *, const REALTYPE *, int, int);\n");
       
       fprintf(code,"  /* This machine-generated function computes a quartet of (%c%c|[r12,T1] integrals */\n\n",
 	      am_letter[am_in[0]],am_letter[am_in[1]]);
-
+      fprintf(code,"#include<libint.h>\n\n");
+      
       if (split) {
 	for(i=0;i<num_subfunctions;i++) {
-	  fprintf(code,"double *%s(double *, double *, double *, const double *, const double *, ",
+	  fprintf(code,"REALTYPE *%s(REALTYPE *, REALTYPE *, REALTYPE *, const REALTYPE *, const REALTYPE *, ",
 		  subfunction_name[i]);
-	  fprintf(code,"const double *, const double *, const double *, int, int);\n");
+	  fprintf(code,"const REALTYPE *, const REALTYPE *, const REALTYPE *, int, int);\n");
 	}
 	fprintf(code,"\n");
       }
-      fprintf(code,"void %s(double *AB, double *AC, double *vp, const double *I0, const double *I1, ",
+      fprintf(code,"void %s(REALTYPE *AB, REALTYPE *AC, REALTYPE *vp, const REALTYPE *I0, const REALTYPE *I1, ",
 	      function_name);
-      fprintf(code,"const double *I2, const double *I3, const double *I4, int lc, int ld)\n{\n");
+      fprintf(code,"const REALTYPE *I2, const REALTYPE *I3, const REALTYPE *I4, int lc, int ld)\n{\n");
       if (split == 1) {
 	curr_subfunction = 0;
 	curr_count = 0;
@@ -268,13 +270,13 @@ int emit_hrr_t_build(int new_am, int max_class_size)
       else {
 	fprintf(code,"  int cd, cd_num, c_num, cp1_num, d_num;\n");
 	fprintf(code,"  int pc, qc, d, ind_c, ind_cp1d;\n");
-	fprintf(code,"  const double *i0, *i1, *i2, *i3, *i4;\n");
-	fprintf(code,"  const double AB0 = AB[0];\n");
-	fprintf(code,"  const double AB1 = AB[1];\n");
-	fprintf(code,"  const double AB2 = AB[2];\n");
-	fprintf(code,"  const double AC0 = AC[0];\n");
-	fprintf(code,"  const double AC1 = AC[1];\n");
-	fprintf(code,"  const double AC2 = AC[2];\n");
+	fprintf(code,"  const REALTYPE *i0, *i1, *i2, *i3, *i4;\n");
+	fprintf(code,"  const REALTYPE AB0 = AB[0];\n");
+	fprintf(code,"  const REALTYPE AB1 = AB[1];\n");
+	fprintf(code,"  const REALTYPE AB2 = AB[2];\n");
+	fprintf(code,"  const REALTYPE AC0 = AC[0];\n");
+	fprintf(code,"  const REALTYPE AC1 = AC[1];\n");
+	fprintf(code,"  const REALTYPE AC2 = AC[2];\n");
 	fprintf(code,"  static int io[] = { 1");
 	for(i=1;i<=new_am+1;i++)
 	  fprintf(code,", %d",(i+1)*(i+2)/2);
@@ -290,18 +292,18 @@ int emit_hrr_t_build(int new_am, int max_class_size)
 		subfunction_name[f]);
 	fprintf(code,"}\n\n");
 
-	fprintf(code,"double *%s(double *AB, double *AC, double *vp, const double *I0, const double *I1, ",
+	fprintf(code,"REALTYPE *%s(REALTYPE *AB, REALTYPE *AC, REALTYPE *vp, const REALTYPE *I0, const REALTYPE *I1, ",
 		subfunction_name[0]);
-	fprintf(code,"const double *I2, const double *I3, const double *I4, int lc, int ld)\n{\n");
+	fprintf(code,"const REALTYPE *I2, const REALTYPE *I3, const REALTYPE *I4, int lc, int ld)\n{\n");
 	fprintf(code,"  int cd, cd_num, c_num, cp1_num, d_num;\n");
 	fprintf(code,"  int pc, qc, d, ind_c, ind_cp1d;\n");
-	fprintf(code,"  const double *i0, *i1, *i2, *i3, *i4;\n");
-	fprintf(code,"  const double AB0 = AB[0];\n");
-	fprintf(code,"  const double AB1 = AB[1];\n");
-	fprintf(code,"  const double AB2 = AB[2];\n");
-	fprintf(code,"  const double AC0 = AC[0];\n");
-	fprintf(code,"  const double AC1 = AC[1];\n");
-	fprintf(code,"  const double AC2 = AC[2];\n");
+	fprintf(code,"  const REALTYPE *i0, *i1, *i2, *i3, *i4;\n");
+	fprintf(code,"  const REALTYPE AB0 = AB[0];\n");
+	fprintf(code,"  const REALTYPE AB1 = AB[1];\n");
+	fprintf(code,"  const REALTYPE AB2 = AB[2];\n");
+	fprintf(code,"  const REALTYPE AC0 = AC[0];\n");
+	fprintf(code,"  const REALTYPE AC1 = AC[1];\n");
+	fprintf(code,"  const REALTYPE AC2 = AC[2];\n");
 	fprintf(code,"  static int io[] = { 1");
 	for(i=1;i<=new_am+1;i++)
 	  fprintf(code,", %d",(i+1)*(i+2)/2);
@@ -389,18 +391,18 @@ int emit_hrr_t_build(int new_am, int max_class_size)
 		curr_count = 0;
 		curr_subfunction++;
 		fprintf(code,"  return vp;\n}\n\n");
-		fprintf(code,"double *%s(double *AB, double *AC, double *vp, const double *I0, const double *I1, ",
+		fprintf(code,"REALTYPE *%s(REALTYPE *AB, REALTYPE *AC, REALTYPE *vp, const REALTYPE *I0, const REALTYPE *I1, ",
 			subfunction_name[curr_subfunction]);
-		fprintf(code,"const double *I2, const double *I3, const double *I4, int lc, int ld)\n{\n");
+		fprintf(code,"const REALTYPE *I2, const REALTYPE *I3, const REALTYPE *I4, int lc, int ld)\n{\n");
 		fprintf(code,"  int cd, cd_num, c_num, cp1_num, d_num;\n");
 		fprintf(code,"  int pc, qc, d, ind_c, ind_cp1d;\n");
-		fprintf(code,"  const double *i0, *i1, *i2, *i3, *i4;\n");
-		fprintf(code,"  const double AB0 = AB[0];\n");
-		fprintf(code,"  const double AB1 = AB[1];\n");
-		fprintf(code,"  const double AB2 = AB[2];\n");
-		fprintf(code,"  const double AC0 = AC[0];\n");
-		fprintf(code,"  const double AC1 = AC[1];\n");
-		fprintf(code,"  const double AC2 = AC[2];\n");
+		fprintf(code,"  const REALTYPE *i0, *i1, *i2, *i3, *i4;\n");
+		fprintf(code,"  const REALTYPE AB0 = AB[0];\n");
+		fprintf(code,"  const REALTYPE AB1 = AB[1];\n");
+		fprintf(code,"  const REALTYPE AB2 = AB[2];\n");
+		fprintf(code,"  const REALTYPE AC0 = AC[0];\n");
+		fprintf(code,"  const REALTYPE AC1 = AC[1];\n");
+		fprintf(code,"  const REALTYPE AC2 = AC[2];\n");
 		fprintf(code,"  static int io[] = { 1");
 		for(i=1;i<=new_am+1;i++)
 		  fprintf(code,", %d",(i+1)*(i+2)/2);

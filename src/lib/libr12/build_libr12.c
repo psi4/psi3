@@ -96,12 +96,12 @@ int main()
   fprintf(init_code,"void init_libr12_base()\n{\n");
 
   /* Declare generic build routines */
-  fprintf(vrr_header,"double *r_vrr_build_xxxx(int am[2], prim_data *, double *, const double *,");
-  fprintf(vrr_header," const double *, double *, const double *, const double *, const double *);\n");
-  fprintf(vrr_header,"double *t1_vrr_build_xxxx(int am[2], prim_data *, contr_data *, double *,");
-  fprintf(vrr_header," double *, const double *, const double *, const double *, const double *);\n");
-  fprintf(vrr_header,"double *t2_vrr_build_xxxx(int am[2], prim_data *, contr_data *, double *,");
-  fprintf(vrr_header," double *, const double *, const double *, const double *, const double *);\n");
+  fprintf(vrr_header,"REALTYPE *r_vrr_build_xxxx(int am[2], prim_data *, REALTYPE *, const REALTYPE *,");
+  fprintf(vrr_header," const REALTYPE *, REALTYPE *, const REALTYPE *, const REALTYPE *, const REALTYPE *);\n");
+  fprintf(vrr_header,"REALTYPE *t1_vrr_build_xxxx(int am[2], prim_data *, contr_data *, REALTYPE *,");
+  fprintf(vrr_header," REALTYPE *, const REALTYPE *, const REALTYPE *, const REALTYPE *, const REALTYPE *);\n");
+  fprintf(vrr_header,"REALTYPE *t2_vrr_build_xxxx(int am[2], prim_data *, contr_data *, REALTYPE *,");
+  fprintf(vrr_header," REALTYPE *, const REALTYPE *, const REALTYPE *, const REALTYPE *, const REALTYPE *);\n");
   
 /*  emit_gr_order(0,new_am); */
   stack_size = emit_grt_order(0,new_am,opt_am);
@@ -116,10 +116,10 @@ int main()
   fprintf(init_code,"/* Library objects operate independently of each other */\n");
   fprintf(init_code,"int init_libr12(Libr12_t *libr12, int num_prim_quartets)\n{\n");
   fprintf(init_code,"  int memory = 0;\n\n");
-  fprintf(init_code,"  libr12->int_stack = (double *) malloc(STACK_SIZE*sizeof(double));\n");
+  fprintf(init_code,"  libr12->int_stack = (REALTYPE *) malloc(STACK_SIZE*sizeof(REALTYPE));\n");
   fprintf(init_code,"  memory += STACK_SIZE;\n");
   fprintf(init_code,"  libr12->PrimQuartet = (prim_data *) malloc(num_prim_quartets*sizeof(prim_data));\n");
-  fprintf(init_code,"  memory += num_prim_quartets*sizeof(prim_data)/sizeof(double);\n");
+  fprintf(init_code,"  memory += num_prim_quartets*sizeof(prim_data)/sizeof(REALTYPE);\n");
   fprintf(init_code,"  return memory;\n}\n\n");
   fprintf(init_code,"void free_libr12(Libr12_t *libr12)\n{\n");
   fprintf(init_code,"  if (libr12->int_stack != NULL) {\n");
@@ -145,21 +145,21 @@ int main()
   fprintf(libr12_header,"#define STACK_SIZE %d\n",stack_size);
   fprintf(libr12_header,"#define NUM_TE_TYPES 4\n\n");
   fprintf(libr12_header,"typedef struct {\n");
-  fprintf(libr12_header,"  double AB[3];\n");
-  fprintf(libr12_header,"  double CD[3];\n");
-  fprintf(libr12_header,"  double AC[3];\n");
-  fprintf(libr12_header,"  double ABdotAC, CDdotCA;\n");
+  fprintf(libr12_header,"  REALTYPE AB[3];\n");
+  fprintf(libr12_header,"  REALTYPE CD[3];\n");
+  fprintf(libr12_header,"  REALTYPE AC[3];\n");
+  fprintf(libr12_header,"  REALTYPE ABdotAC, CDdotCA;\n");
   fprintf(libr12_header,"  } contr_data;\n\n");
   fprintf(libr12_header,"typedef struct {\n");
-  fprintf(libr12_header,"  double *int_stack;\n"); 
+  fprintf(libr12_header,"  REALTYPE *int_stack;\n"); 
   fprintf(libr12_header,"  prim_data *PrimQuartet;\n");
   fprintf(libr12_header,"  contr_data ShellQuartet;\n");
-  fprintf(libr12_header,"  double *te_ptr[NUM_TE_TYPES];\n");
-  fprintf(libr12_header,"  double *t1vrr_classes[%d][%d];\n",1+new_am,1+new_am);
-  fprintf(libr12_header,"  double *t2vrr_classes[%d][%d];\n",1+new_am,1+new_am);
-  fprintf(libr12_header,"  double *rvrr_classes[%d][%d];\n",1+new_am,1+new_am);
-  fprintf(libr12_header,"  double *gvrr_classes[%d][%d];\n",2+new_am,2+new_am);
-  fprintf(libr12_header,"  double *r12vrr_stack;\n\n");
+  fprintf(libr12_header,"  REALTYPE *te_ptr[NUM_TE_TYPES];\n");
+  fprintf(libr12_header,"  REALTYPE *t1vrr_classes[%d][%d];\n",1+new_am,1+new_am);
+  fprintf(libr12_header,"  REALTYPE *t2vrr_classes[%d][%d];\n",1+new_am,1+new_am);
+  fprintf(libr12_header,"  REALTYPE *rvrr_classes[%d][%d];\n",1+new_am,1+new_am);
+  fprintf(libr12_header,"  REALTYPE *gvrr_classes[%d][%d];\n",2+new_am,2+new_am);
+  fprintf(libr12_header,"  REALTYPE *r12vrr_stack;\n\n");
   fprintf(libr12_header,"  } Libr12_t;\n\n");
   fprintf(libr12_header,"extern void (*build_r12_gr[%d][%d][%d][%d])(Libr12_t *, int);\n",new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
   fprintf(libr12_header,"extern void (*build_r12_grt[%d][%d][%d][%d])(Libr12_t *, int);\n",new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
