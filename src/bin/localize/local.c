@@ -213,7 +213,7 @@ int main(int argc, char *argv[])
 
     conv = fabs(alphamax) - fabs(alphalast);
     fprintf(outfile, "\t%4d  %20.10f  %20.10f  %4.3e\n", iter, P, alphamax, conv);
-    if(iter && ((fabs(conv) < 1e-12) || alphamax == 0.0)) break;
+    if((iter > 2) && ((fabs(conv) < 1e-12) || alphamax == 0.0)) break;
     alphalast = alphamax;
 
     fflush(outfile);
