@@ -454,6 +454,10 @@ int parse_cmdline(int argc, char *argv[])
   else {
     infile = fopen("input.dat","r");
   }
+  if (infile == NULL) {
+    fprintf(stderr, "Error: could not open input file %s\n",ifname);
+    return(PSI_RETURN_FAILURE);
+  }
   if (ofname != NULL) {
     setenv("PSI_OUTPUT",ofname,1);
   }
