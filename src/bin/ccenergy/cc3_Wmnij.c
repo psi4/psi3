@@ -12,7 +12,8 @@
 
 void cc3_Wmnij(void)
 {
-  dpdbuf4 A;
+  dpdbuf4 A, E, D, Z, W;
+  dpdfile2 t1;
 
   if(params.ref == 0) { /** RHF **/
 

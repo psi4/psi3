@@ -243,7 +243,7 @@ IV. Miscellaneous architecture-specific notes
    (3) If you are using compilers from the developer's kit then for
    BLAS and LAPACK, use the configure options:
 
-      --with-blas='-altivec -framework vecLib'
+      --with-blas='-altivec -framework vecLib' --with-lapack=' '
 
    If you compiled compilers yourself from GNU source code then
    Apple-specific extensions will not work and you will have to specify
