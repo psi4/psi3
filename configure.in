@@ -828,6 +828,8 @@ AC_OUTPUT(include/psiconfig.h
           src/bin/stable/Makefile
           src/bin/response/Makefile
 
+          src/util/psi2molden/Makefile
+
           src/doc/MakeVars src/doc/MakeRules src/doc/Makefile
           src/doc/install/Makefile
           src/doc/progman/Makefile src/doc/userman/Makefile
