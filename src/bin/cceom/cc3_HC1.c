@@ -14,6 +14,8 @@ void HC1_Wmbej(int i, int C_irr);
 void HC1_Wabei(int i, int C_irr); 
 void purge_HC1(void);
 void purge_Wmnie(void);
+void purge_Wmbij(void);
+void purge_Wabei(void);
 
 void cc3_HC1 (int i, int C_irr) {
   HC1_F(i, C_irr);
@@ -25,7 +27,6 @@ void cc3_HC1 (int i, int C_irr) {
   HC1_Wabei(i, C_irr);   
 
   if (params.ref == 1) purge_HC1();
-  if (params.ref == 1) purge_Wmnie();
 
   return;
 }
@@ -124,7 +125,7 @@ void HC1_Wamef(int i, int C_irr) {
 
     dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, CME_lbl);
 
-    dpd_buf4_init(&W, CC3_HC1, 0, 11, 5, 11, 5, 0, "HC1 WAmEf");
+    dpd_buf4_init(&W, CC3_HC1, 0, 11, 5, 11, 5, 0, "HC1 WAmEf (Am,Ef)");
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
     dpd_contract244(&CME, &D, &W, 0, 0, 0, -1, 0.0);
     dpd_buf4_close(&D);
@@ -138,28 +139,28 @@ void HC1_Wamef(int i, int C_irr) {
     dpd_file2_init(&Cme, EOM_Cme, C_irr, 0, 1, Cme_lbl);
 
     /* C(N,A) <NM||EF> --> W(AM,E>F) */
-    dpd_buf4_init(&WAMEF, CC3_HC1, 0, 11, 7, 11, 7, 0, "HC1 WAMEF");
+    dpd_buf4_init(&WAMEF, CC3_HC1, 0, 11, 7, 11, 7, 0, "HC1 WAMEF (AM,E>F)");
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 7, 0, 7, 0, "D <ij||ab> (ij,a>b)");
     dpd_contract244(&CME, &D, &WAMEF, 0, 0, 0, -1, 0.0);
     dpd_buf4_close(&D);
     dpd_buf4_close(&WAMEF);  
 
     /* C(n,a) <nm||ef> --> W(am,e>f) */
-    dpd_buf4_init(&Wamef, CC3_HC1, 0, 11, 7, 11, 7, 0, "HC1 Wamef");
+    dpd_buf4_init(&Wamef, CC3_HC1, 0, 11, 7, 11, 7, 0, "HC1 Wamef (am,e>f)");
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 7, 0, 7, 0, "D <ij||ab> (ij,a>b)");
     dpd_contract244(&Cme, &D, &Wamef, 0, 0, 0, -1, 0.0);
     dpd_buf4_close(&D);
     dpd_buf4_close(&Wamef); 
 
     /* C(N,A) <Nm|Ef> --> W(Am,Ef) */
-    dpd_buf4_init(&WAmEf, CC3_HC1, 0, 11, 5, 11, 5, 0, "HC1 WAmEf");
+    dpd_buf4_init(&WAmEf, CC3_HC1, 0, 11, 5, 11, 5, 0, "HC1 WAmEf (Am,Ef)");
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
     dpd_contract244(&CME, &D, &WAmEf, 0, 0, 0, -1, 0.0);
     dpd_buf4_close(&D);
     dpd_buf4_close(&WAmEf);
 
     /* C(n,a) <nM|eF> --> W(aM,eF) */
-    dpd_buf4_init(&WaMeF, CC3_HC1, 0, 11, 5, 11, 5, 0, "HC1 WaMeF");
+    dpd_buf4_init(&WaMeF, CC3_HC1, 0, 11, 5, 11, 5, 0, "HC1 WaMeF (aM,eF)");
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
     dpd_contract244(&Cme, &D, &WaMeF, 0, 0, 0, -1, 0.0);
     dpd_buf4_close(&D);
@@ -175,28 +176,28 @@ void HC1_Wamef(int i, int C_irr) {
     dpd_file2_init(&Cme, EOM_Cme, C_irr, 2, 3, Cme_lbl);
 
     /* T(N,A) <NM||EF> --> W(AM,E>F) */
-    dpd_buf4_init(&WAMEF, CC3_HC1, 0, 21, 7, 21, 7, 0, "HC1 WAMEF");
+    dpd_buf4_init(&WAMEF, CC3_HC1, 0, 21, 7, 21, 7, 0, "HC1 WAMEF (AM,E>F)");
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 7, 0, 7, 0, "D <IJ||AB> (IJ,A>B)");
     dpd_contract244(&CME, &D, &WAMEF, 0, 0, 0, -1, 0.0);
     dpd_buf4_close(&D);
     dpd_buf4_close(&WAMEF);  
 
     /* T(n,a) <nm||ef> --> W(am,e>f) */
-    dpd_buf4_init(&Wamef, CC3_HC1, 0, 31, 17, 31, 17, 0, "HC1 Wamef");
+    dpd_buf4_init(&Wamef, CC3_HC1, 0, 31, 17, 31, 17, 0, "HC1 Wamef (am,e>f)");
     dpd_buf4_init(&D, CC_DINTS, 0, 10, 17, 10, 17, 0, "D <ij||ab> (ij,a>b)");
     dpd_contract244(&Cme, &D, &Wamef, 0, 0, 0, -1, 0.0);
     dpd_buf4_close(&D);
     dpd_buf4_close(&Wamef); 
 
     /* T(N,A) <Nm|Ef> --> W(Am,Ef) */
-    dpd_buf4_init(&WAmEf, CC3_HC1, 0, 26, 28, 26, 28, 0, "HC1 WAmEf");
+    dpd_buf4_init(&WAmEf, CC3_HC1, 0, 26, 28, 26, 28, 0, "HC1 WAmEf (Am,Ef)");
     dpd_buf4_init(&D, CC_DINTS, 0, 22, 28, 22, 28, 0, "D <Ij|Ab>");
     dpd_contract244(&CME, &D, &WAmEf, 0, 0, 0, -1, 0.0);
     dpd_buf4_close(&D);
     dpd_buf4_close(&WAmEf);
 
     /* T(n,a) <nM|eF> --> W(aM,eF) */
-    dpd_buf4_init(&WaMeF, CC3_HC1, 0, 25, 29, 25, 29, 0, "HC1 WaMeF");
+    dpd_buf4_init(&WaMeF, CC3_HC1, 0, 25, 29, 25, 29, 0, "HC1 WaMeF (aM,eF)");
     dpd_buf4_init(&D, CC_DINTS, 0, 23, 29, 23, 29, 0, "D <iJ|aB>");
     dpd_contract244(&Cme, &D, &WaMeF, 0, 0, 0, -1, 0.0);
     dpd_buf4_close(&D);
@@ -224,7 +225,7 @@ void HC1_Wmnie(int i, int C_irr) {
     dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, CME_lbl);
 
     /* C(I,F) * D(Mn,Fe) --> W(Mn,Ie) */
-    dpd_buf4_init(&WMnIe, CC3_HC1, 0, 0, 10, 0, 10, 0, "HC1 WMnIe");
+    dpd_buf4_init(&WMnIe, CC3_HC1, 0, 0, 10, 0, 10, 0, "HC1 WMnIe (Mn,Ie)");
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
     dpd_contract244(&CME, &D, &WMnIe, 1, 2, 1, 1, 0.0);
     dpd_file2_close(&CME);
@@ -234,26 +235,26 @@ void HC1_Wmnie(int i, int C_irr) {
     dpd_buf4_close(&WMnIe);
 
     /* make spin-combinations */
-    dpd_buf4_init(&WMnIe, CC3_HC1, 0, 0, 10, 0, 10, 0, "HC1 WMnIe");
-    dpd_buf4_copy(&WMnIe, CC3_HC1, "HC1 WMnIe - 2WnMIe");
-    dpd_buf4_copy(&WMnIe, CC3_HC1, "HC1 2WMnIe - WnMIe");
+    dpd_buf4_init(&WMnIe, CC3_HC1, 0, 0, 10, 0, 10, 0, "HC1 WMnIe (Mn,Ie)");
+    dpd_buf4_copy(&WMnIe, CC3_HC1, "HC1 WMnIe - 2WnMIe (Mn,Ie)");
+    dpd_buf4_copy(&WMnIe, CC3_HC1, "HC1 2WMnIe - WnMIe (Mn,Ie)");
     dpd_buf4_close(&WMnIe);
 
-    dpd_buf4_init(&WMnIe, CC3_HC1, 0, 0, 10, 0, 10, 0, "HC1 WMnIe");
-    dpd_buf4_sort_axpy(&WMnIe, CC3_HC1, qprs, 0, 10, "HC1 WMnIe - 2WnMIe", -2.0);
+    dpd_buf4_init(&WMnIe, CC3_HC1, 0, 0, 10, 0, 10, 0, "HC1 WMnIe (Mn,Ie)");
+    dpd_buf4_sort_axpy(&WMnIe, CC3_HC1, qprs, 0, 10, "HC1 WMnIe - 2WnMIe (Mn,Ie)", -2.0);
     dpd_buf4_close(&WMnIe);
 
-    dpd_buf4_init(&W, CC3_HC1, 0, 0, 10, 0, 10, 0, "HC1 2WMnIe - WnMIe");
+    dpd_buf4_init(&W, CC3_HC1, 0, 0, 10, 0, 10, 0, "HC1 2WMnIe - WnMIe (Mn,Ie)");
     dpd_buf4_scm(&W, 2.0);
     dpd_buf4_close(&W);
     dpd_buf4_init(&WMnIe, CC3_HC1, 0, 0, 10, 0, 10, 0, "HC1 WMnIe");
-    dpd_buf4_sort_axpy(&WMnIe, CC3_HC1, qprs, 0, 10, "HC1 2WMnIe - WnMIe", -1.0);
+    dpd_buf4_sort_axpy(&WMnIe, CC3_HC1, qprs, 0, 10, "HC1 2WMnIe - WnMIe (Mn,Ie)", -1.0);
     dpd_buf4_close(&WMnIe);
 
-    dpd_buf4_init(&W, CC3_HC1, 0, 0, 10, 0, 10, 0, "HC1 2WMnIe - WnMIe");
+    dpd_buf4_init(&W, CC3_HC1, 0, 0, 10, 0, 10, 0, "HC1 2WMnIe - WnMIe (Mn,Ie)");
     dpd_buf4_sort(&W, CC3_HC1, pqsr, 0, 11, "HC1 2WMnIe - WnMIe (Mn,eI)");
     dpd_buf4_close(&W);
-    dpd_buf4_init(&W, CC3_HC1, 0, 0, 10, 0, 10, 0, "HC1 WMnIe - 2WnMIe");
+    dpd_buf4_init(&W, CC3_HC1, 0, 0, 10, 0, 10, 0, "HC1 WMnIe - 2WnMIe (Mn,Ie)");
     dpd_buf4_sort(&W, CC3_HC1, pqsr, 0, 11, "HC1 WMnIe - 2WnMIe (Mn,eI)");
     dpd_buf4_close(&W);
 
@@ -304,16 +305,16 @@ void HC1_Wmnie(int i, int C_irr) {
 
     /* also put "normal" sorted versions in CC_HBAR */
     dpd_buf4_init(&WMNIE, CC3_HC1, 0, 2, 11, 2, 11, 0, "HC1 WMNIE (M>N,EI)");
-    dpd_buf4_sort(&WMNIE, CC3_HC1, pqsr, 2, 10, "HC1 WMNIE");
+    dpd_buf4_sort(&WMNIE, CC3_HC1, pqsr, 2, 10, "HC1 WMNIE (M>N,IE)");
     dpd_buf4_close(&WMNIE);
     dpd_buf4_init(&Wmnie, CC3_HC1, 0, 2, 11, 2, 11, 0, "HC1 Wmnie (m>n,ei)");
-    dpd_buf4_sort(&Wmnie, CC3_HC1, pqsr, 2, 10, "HC1 Wmnie");
+    dpd_buf4_sort(&Wmnie, CC3_HC1, pqsr, 2, 10, "HC1 Wmnie (m>n,ie)");
     dpd_buf4_close(&Wmnie);
     dpd_buf4_init(&WMnIe, CC3_HC1, 0, 0, 11, 0, 11, 0, "HC1 WMnIe (Mn,eI)");
-    dpd_buf4_sort(&WMnIe, CC3_HC1, pqsr, 0, 10, "HC1 WMnIe");
+    dpd_buf4_sort(&WMnIe, CC3_HC1, pqsr, 0, 10, "HC1 WMnIe (Mn,Ie)");
     dpd_buf4_close(&WMnIe);
     dpd_buf4_init(&WmNiE, CC3_HC1, 0, 0, 11, 0, 11, 0, "HC1 WmNiE (mN,Ei)");
-    dpd_buf4_sort(&WmNiE, CC3_HC1, pqsr, 0, 10, "HC1 WmNiE");
+    dpd_buf4_sort(&WmNiE, CC3_HC1, pqsr, 0, 10, "HC1 WmNiE (mN,iE)");
     dpd_buf4_close(&WmNiE);
   }
   else if(params.ref == 2) { /** UHF **/
@@ -358,16 +359,16 @@ void HC1_Wmnie(int i, int C_irr) {
 
     /* also put "normal" sorted versions in CC3_HC1 */
     dpd_buf4_init(&WMNIE, CC3_HC1, 0, 2, 21, 2, 21, 0, "HC1 WMNIE (M>N,EI)");
-    dpd_buf4_sort(&WMNIE, CC3_HC1, pqsr, 2, 20, "HC1 WMNIE");
+    dpd_buf4_sort(&WMNIE, CC3_HC1, pqsr, 2, 20, "HC1 WMNIE (M>N,IE)");
     dpd_buf4_close(&WMNIE);
     dpd_buf4_init(&Wmnie, CC3_HC1, 0, 12, 31, 12, 31, 0, "HC1 Wmnie (m>n,ei)");
-    dpd_buf4_sort(&Wmnie, CC3_HC1, pqsr, 12, 30, "HC1 Wmnie");
+    dpd_buf4_sort(&Wmnie, CC3_HC1, pqsr, 12, 30, "HC1 Wmnie (m>n,ie)");
     dpd_buf4_close(&Wmnie);
     dpd_buf4_init(&WMnIe, CC3_HC1, 0, 22, 25, 22, 25, 0, "HC1 WMnIe (Mn,eI)");
-    dpd_buf4_sort(&WMnIe, CC3_HC1, pqsr, 22, 24, "HC1 WMnIe");
+    dpd_buf4_sort(&WMnIe, CC3_HC1, pqsr, 22, 24, "HC1 WMnIe (Mn,Ie)");
     dpd_buf4_close(&WMnIe);
     dpd_buf4_init(&WmNiE, CC3_HC1, 0, 23, 26, 23, 26, 0, "HC1 WmNiE (mN,Ei)");
-    dpd_buf4_sort(&WmNiE, CC3_HC1, pqsr, 23, 27, "HC1 WmNiE");
+    dpd_buf4_sort(&WmNiE, CC3_HC1, pqsr, 23, 27, "HC1 WmNiE (mN,iE)");
     dpd_buf4_close(&WmNiE);
   }
 
@@ -388,7 +389,7 @@ void HC1_Wmnij(int i, int C_irr)
 
     dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, CME_lbl);
 
-    dpd_buf4_init(&WMnIj, CC3_HC1, 0, 0, 0, 0, 0, 0, "HC1 WMnIj");
+    dpd_buf4_init(&WMnIj, CC3_HC1, 0, 0, 0, 0, 0, 0, "HC1 WMnIj (Mn,Ij)");
     dpd_buf4_init(&Eaijk, CC_EINTS, 0, 11, 0, 11, 0, 0, "E <ai|jk>");
     dpd_contract244(&CME, &Eaijk, &WMnIj, 1, 0, 1, 1, 0.0);
     dpd_buf4_close(&Eaijk);
@@ -412,17 +413,17 @@ void HC1_Wmnij(int i, int C_irr)
     dpd_buf4_init(&Eaijk_anti, CC_EINTS, 0, 11, 2, 11, 0, 1, "E <ai|jk>");
     dpd_buf4_init(&Eaijk, CC_EINTS, 0, 11, 0, 11, 0, 0, "E <ai|jk>");
 
-    dpd_buf4_init(&WMNIJ, CC3_HC1, 0, 2, 0, 2, 2, 0, "HC1 WMNIJ");
+    dpd_buf4_init(&WMNIJ, CC3_HC1, 0, 2, 0, 2, 2, 0, "HC1 WMNIJ (M>N,I>J)");
     dpd_contract424(&Eijka_anti, &CME, &WMNIJ, 3, 1, 0, 1, 0.0);
     dpd_contract244(&CME, &Eaijk_anti, &WMNIJ, 1, 0, 1, 1, 1);
     dpd_buf4_close(&WMNIJ);
 
-    dpd_buf4_init(&Wmnij, CC3_HC1, 0, 2, 0, 2, 2, 0, "HC1 Wmnij");
+    dpd_buf4_init(&Wmnij, CC3_HC1, 0, 2, 0, 2, 2, 0, "HC1 Wmnij (m>n,i>j)");
     dpd_contract424(&Eijka_anti, &Cme, &Wmnij, 3, 1, 0, 1, 0.0);
     dpd_contract244(&Cme, &Eaijk_anti, &Wmnij, 1, 0, 1, 1, 1);
     dpd_buf4_close(&Wmnij);
 
-    dpd_buf4_init(&WMnIj, CC3_HC1, 0, 0, 0, 0, 0, 0, "HC1 WMnIj");
+    dpd_buf4_init(&WMnIj, CC3_HC1, 0, 0, 0, 0, 0, 0, "HC1 WMnIj (Mn,Ij)");
     dpd_contract424(&Eijka, &Cme, &WMnIj, 3, 1, 0, 1, 0.0);
     dpd_contract244(&CME, &Eaijk, &WMnIj, 1, 0, 1, 1, 1);
     dpd_buf4_close(&WMnIj);
@@ -442,7 +443,7 @@ void HC1_Wmnij(int i, int C_irr)
     dpd_file2_init(&CME, EOM_CME, 0, 0, 1, CME_lbl);
     dpd_file2_init(&Cme, EOM_Cme, 0, 2, 3, Cme_lbl);
 
-    dpd_buf4_init(&WMNIJ, CC3_HC1, 0, 2, 0, 2, 2, 0, "HC1 WMNIJ");
+    dpd_buf4_init(&WMNIJ, CC3_HC1, 0, 2, 0, 2, 2, 0, "HC1 WMNIJ (M>N,I>J)");
     dpd_buf4_init(&Eijka, CC_EINTS, 0, 2, 20, 2, 20, 0, "E <IJ||KA> (I>J,KA)");
     dpd_buf4_init(&Eaijk, CC_EINTS, 0, 21, 2, 21, 0, 1, "E <AI|JK>");
     dpd_contract424(&Eijka, &CME, &WMNIJ, 3, 1, 0, 1, 0.0);
@@ -451,7 +452,7 @@ void HC1_Wmnij(int i, int C_irr)
     dpd_buf4_close(&Eaijk);
     dpd_buf4_close(&WMNIJ);
 
-    dpd_buf4_init(&Wmnij, CC3_HC1, 0, 12, 10, 12, 12, 0, "HC1 Wmnij");
+    dpd_buf4_init(&Wmnij, CC3_HC1, 0, 12, 10, 12, 12, 0, "HC1 Wmnij (m>n,i>j)");
     dpd_buf4_init(&Eijka, CC_EINTS, 0, 12, 30, 12, 30, 0, "E <ij||ka> (i>j,ka)");
     dpd_buf4_init(&Eaijk, CC_EINTS, 0, 31, 12, 31, 10, 1, "E <ai|jk>");
     dpd_contract424(&Eijka, &Cme, &Wmnij, 3, 1, 0, 1, 0.0);
@@ -460,7 +461,7 @@ void HC1_Wmnij(int i, int C_irr)
     dpd_buf4_close(&Eaijk);
     dpd_buf4_close(&Wmnij);
 
-    dpd_buf4_init(&WMnIj, CC3_HC1, 0, 22, 22, 22, 22, 0, "HC1 WMnIj");
+    dpd_buf4_init(&WMnIj, CC3_HC1, 0, 22, 22, 22, 22, 0, "HC1 WMnIj (Mn,Ij)");
     dpd_buf4_init(&Eijka, CC_EINTS, 0, 22, 24, 22, 24, 0, "E <Ij|Ka>");
     dpd_buf4_init(&Eaijk, CC_EINTS, 0, 26, 22, 26, 22, 0, "E <Ai|Jk>");
     dpd_contract424(&Eijka, &Cme, &WMnIj, 3, 1, 0, 1, 0.0);
@@ -487,7 +488,7 @@ void HC1_Wmbij(int i, int C_irr)
     /* HC1_Wmbij = +P(ij) Cie <mb||ej> - Cnb <mn||ij> */
 
     dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, CME_lbl);
-    dpd_buf4_init(&W, CC3_HC1, 0, 10, 0, 10, 0, 0, "HC1 WMbIj");
+    dpd_buf4_init(&W, CC3_HC1, 0, 10, 0, 10, 0, 0, "HC1 WMbIj (Mb,Ij)");
 
     /** - C_n^b <Mn|Ij> -> W(Mb,Ij) **/
     dpd_buf4_init(&I, CC_AINTS, 0, 0, 0, 0, 0, 0, "A <ij|kl>");
@@ -504,6 +505,8 @@ void HC1_Wmbij(int i, int C_irr)
     dpd_contract244(&CME, &D, &W, 1, 2, 1, 1.0, 1.0);
     dpd_buf4_close(&D);
 
+    dpd_buf4_sort(&W, CC3_HC1, rspq, 0, 10, "HC1 WMbIj (Ij,Mb)");
+
     dpd_buf4_close(&W);
     dpd_file2_close(&CME);
   }
@@ -514,28 +517,28 @@ void HC1_Wmbij(int i, int C_irr)
 
     /** - C_N^B <MN||IJ> --> W(MB,IJ) **/
     dpd_buf4_init(&Wmnij, CC_AINTS, 0, 0, 2, 0, 0, 1, "A <ij|kl>");
-    dpd_buf4_init(&W, CC3_HC1, 0, 10, 2, 10, 2, 0, "HC1 WMBIJ");
+    dpd_buf4_init(&W, CC3_HC1, 0, 10, 2, 10, 2, 0, "HC1 WMBIJ (MB,I>J)");
     dpd_contract424(&Wmnij, &CME, &W, 1, 0, 1, -1.0, 0.0);
     dpd_buf4_close(&W);
     dpd_buf4_close(&Wmnij);
 
     /** - C_n^b <mn||ij> **/
     dpd_buf4_init(&Wmnij, CC_AINTS, 0, 0, 2, 0, 0, 1, "A <ij|kl>");
-    dpd_buf4_init(&W, CC3_HC1, 0, 10, 2, 10, 2, 0, "HC1 Wmbij");
+    dpd_buf4_init(&W, CC3_HC1, 0, 10, 2, 10, 2, 0, "HC1 Wmbij (mb,i>j)");
     dpd_contract424(&Wmnij, &Cme, &W, 1, 0, 1, -1.0, 0.0);
     dpd_buf4_close(&W);
     dpd_buf4_close(&Wmnij);
 
     /** - C_n^b <Mn|Ij> **/
     dpd_buf4_init(&Wmnij, CC_AINTS, 0, 0, 0, 0, 0, 0, "A <ij|kl>");
-    dpd_buf4_init(&W, CC3_HC1, 0, 10, 0, 10, 0, 0, "HC1 WMbIj");
+    dpd_buf4_init(&W, CC3_HC1, 0, 10, 0, 10, 0, 0, "HC1 WMbIj (Mb,Ij)");
     dpd_contract424(&Wmnij, &Cme, &W, 1, 0, 1, -1.0, 0.0);
     dpd_buf4_close(&W);
     dpd_buf4_close(&Wmnij);
 
     /** - C_N^B <mN|iJ> **/
     dpd_buf4_init(&Wmnij, CC_AINTS, 0, 0, 0, 0, 0, 0, "A <ij|kl>");
-    dpd_buf4_init(&W, CC3_HC1, 0, 10, 0, 10, 0, 0, "HC1 WmBiJ");
+    dpd_buf4_init(&W, CC3_HC1, 0, 10, 0, 10, 0, 0, "HC1 WmBiJ (mB,iJ)");
     dpd_contract424(&Wmnij, &CME, &W, 1, 0, 1, -1.0, 0.0);
     dpd_buf4_close(&W);
     dpd_buf4_close(&Wmnij);
@@ -553,7 +556,7 @@ void HC1_Wmbij(int i, int C_irr)
     dpd_buf4_init(&Z1, CC_TMP1, 0, 10, 0, 10, 0, 0, "Z2(MB,JI)");
     dpd_buf4_axpy(&Z1, &Z2, -1.0);
     dpd_buf4_close(&Z1);
-    dpd_buf4_init(&W, CC3_HC1, 0, 10, 0, 10, 2, 0, "HC1 WMBIJ");
+    dpd_buf4_init(&W, CC3_HC1, 0, 10, 0, 10, 2, 0, "HC1 WMBIJ (MB,I>J)");
     dpd_buf4_axpy(&Z2, &W, 1.0);
     dpd_buf4_close(&Z2);
     dpd_buf4_close(&W);
@@ -570,13 +573,13 @@ void HC1_Wmbij(int i, int C_irr)
     dpd_buf4_init(&Z1, CC_TMP1, 0, 10, 0, 10, 0, 0, "Z2(mb,ji)");
     dpd_buf4_axpy(&Z1, &Z2, -1.0);
     dpd_buf4_close(&Z1);
-    dpd_buf4_init(&W, CC3_HC1, 0, 10, 0, 10, 2, 0, "HC1 Wmbij");
+    dpd_buf4_init(&W, CC3_HC1, 0, 10, 0, 10, 2, 0, "HC1 Wmbij (mb,i>j)");
     dpd_buf4_axpy(&Z2, &W, 1.0);
     dpd_buf4_close(&Z2);
     dpd_buf4_close(&W);
 
     /* <Mb||Ie> Cje -> W(Mb,Ij) */
-    dpd_buf4_init(&W, CC3_HC1, 0, 10, 0, 10, 0, 0, "HC1 WMbIj");
+    dpd_buf4_init(&W, CC3_HC1, 0, 10, 0, 10, 0, 0, "HC1 WMbIj (Mb,Ij)");
     dpd_buf4_init(&C, CC_CINTS, 0, 10, 10, 10, 10, 0, "C <ia|jb>");
     dpd_contract424(&C, &Cme, &W, 3, 1, 0, 1.0, 1.0);
     dpd_buf4_close(&C); 
@@ -588,7 +591,7 @@ void HC1_Wmbij(int i, int C_irr)
     dpd_buf4_close(&W);
 
     /** C_J^E <mB||iE> = Cje <mB|iE> **/
-    dpd_buf4_init(&W, CC3_HC1, 0, 10, 0, 10, 0, 0, "HC1 WmBiJ");
+    dpd_buf4_init(&W, CC3_HC1, 0, 10, 0, 10, 0, 0, "HC1 WmBiJ (mB,iJ)");
     dpd_buf4_init(&C, CC_CINTS, 0, 10, 10, 10, 10, 0, "C <ia|jb>");
     dpd_contract424(&C, &CME, &W, 3, 1, 0, 1.0, 1.0);
     dpd_buf4_close(&C);
@@ -599,9 +602,26 @@ void HC1_Wmbij(int i, int C_irr)
     dpd_buf4_close(&D);
     dpd_buf4_close(&W);
 
+    /* do purge before sort */
+    purge_Wmbij();
+
+    /* do final sort to get (Ij,Mb) */
+
+    dpd_buf4_init(&W, CC3_HC1, 0, 10, 2, 10, 2, 0, "HC1 WMBIJ (MB,I>J)");
+    dpd_buf4_sort(&W, CC3_HC1, rspq, 2, 10, "HC1 WMBIJ (I>J,MB)");
+    dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC3_HC1, 0, 10, 2, 10, 2, 0, "HC1 Wmbij (mb,i>j)");
+    dpd_buf4_sort(&W, CC3_HC1, rspq, 2, 10, "HC1 Wmbij (i>j,mb)");
+    dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC3_HC1, 0, 10, 0, 10, 0, 0, "HC1 WMbIj (Mb,Ij)");
+    dpd_buf4_sort(&W, CC3_HC1, rspq, 0, 10, "HC1 WMbIj (Ij,Mb)");
+    dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC3_HC1, 0, 10, 0, 10, 0, 0, "HC1 WmBiJ (mB,iJ)");
+    dpd_buf4_sort(&W, CC3_HC1, rspq, 0, 10, "HC1 WmBiJ (iJ,mB)");
+    dpd_buf4_close(&W);
+
     dpd_file2_close(&CME);
     dpd_file2_close(&Cme);
-   
   }
   else if(params.ref == 2) { /** UHF **/
     dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, CME_lbl);
@@ -609,21 +629,21 @@ void HC1_Wmbij(int i, int C_irr)
 
     /** - C_N^B W_MNIJ --> W(MB,IJ) **/
     dpd_buf4_init(&Wmnij, CC_AINTS, 0, 0, 2, 0, 0, 1, "A <IJ|KL>");
-    dpd_buf4_init(&W, CC3_HC1, 0, 20, 2, 20, 2, 0, "HC1 WMBIJ");
+    dpd_buf4_init(&W, CC3_HC1, 0, 20, 2, 20, 2, 0, "HC1 WMBIJ (MB,I>J)");
     dpd_contract424(&Wmnij, &CME, &W, 1, 0, 1, -1.0, 0.0);
     dpd_buf4_close(&W);
     dpd_buf4_close(&Wmnij);
 
     /** - C_n^b W_mnij **/
     dpd_buf4_init(&Wmnij, CC_AINTS, 0, 10, 12, 10, 10, 1, "A <ij|kl>");
-    dpd_buf4_init(&W, CC3_HC1, 0, 30, 12, 30, 12, 0, "HC1 Wmbij");
+    dpd_buf4_init(&W, CC3_HC1, 0, 30, 12, 30, 12, 0, "HC1 Wmbij (mb,i>j)");
     dpd_contract424(&Wmnij, &Cme, &W, 1, 0, 1, -1.0, 0.0);
     dpd_buf4_close(&W);
     dpd_buf4_close(&Wmnij);
 
     /** - C_n^b W_MnIj **/
     dpd_buf4_init(&Wmnij, CC_AINTS, 0, 22, 22, 22, 22, 0, "A <Ij|Kl>");
-    dpd_buf4_init(&W, CC3_HC1, 0, 24, 22, 24, 22, 0, "HC1 WMbIj");
+    dpd_buf4_init(&W, CC3_HC1, 0, 24, 22, 24, 22, 0, "HC1 WMbIj (Mb,Ij)");
     dpd_contract424(&Wmnij, &Cme, &W, 1, 0, 1, -1.0, 0.0);
     dpd_buf4_close(&W);
     dpd_buf4_close(&Wmnij);
@@ -633,7 +653,7 @@ void HC1_Wmbij(int i, int C_irr)
     dpd_buf4_sort(&Wmnij, CC_TMP0, qpsr, 23, 23, "A <iJ|kL>");
     dpd_buf4_close(&Wmnij);
     dpd_buf4_init(&Wmnij, CC_TMP0, 0, 23, 23, 23, 23, 0, "A <iJ|kL>");
-    dpd_buf4_init(&W, CC3_HC1, 0, 27, 23, 27, 23, 0, "HC1 WmBiJ");
+    dpd_buf4_init(&W, CC3_HC1, 0, 27, 23, 27, 23, 0, "HC1 WmBiJ (mB,iJ)");
     dpd_contract424(&Wmnij, &CME, &W, 1, 0, 1, -1.0, 0.0);
     dpd_buf4_close(&W);
     dpd_buf4_close(&Wmnij);
@@ -651,7 +671,7 @@ void HC1_Wmbij(int i, int C_irr)
     dpd_buf4_init(&Z1, CC_TMP1, 0, 20, 0, 20, 0, 0, "Z2(MB,JI)");
     dpd_buf4_axpy(&Z1, &Z2, -1.0);
     dpd_buf4_close(&Z1);
-    dpd_buf4_init(&W, CC3_HC1, 0, 20, 0, 20, 2, 0, "HC1 WMBIJ");
+    dpd_buf4_init(&W, CC3_HC1, 0, 20, 0, 20, 2, 0, "HC1 WMBIJ (MB,I>J)");
     dpd_buf4_axpy(&Z2, &W, 1.0);
     dpd_buf4_close(&Z2);
     dpd_buf4_close(&W);
@@ -668,13 +688,13 @@ void HC1_Wmbij(int i, int C_irr)
     dpd_buf4_init(&Z1, CC_TMP1, 0, 30, 10, 30, 10, 0, "Z2(mb,ji)");
     dpd_buf4_axpy(&Z1, &Z2, -1.0);
     dpd_buf4_close(&Z1);
-    dpd_buf4_init(&W, CC3_HC1, 0, 30, 10, 30, 12, 0, "HC1 Wmbij");
+    dpd_buf4_init(&W, CC3_HC1, 0, 30, 10, 30, 12, 0, "HC1 Wmbij (mb,i>j)");
     dpd_buf4_axpy(&Z2, &W, 1.0);
     dpd_buf4_close(&Z2);
     dpd_buf4_close(&W);
 
     /* <Mb||Ie> Cje -> W(Mb,Ij) */
-    dpd_buf4_init(&W, CC3_HC1, 0, 24, 22, 24, 22, 0, "HC1 WMbIj");
+    dpd_buf4_init(&W, CC3_HC1, 0, 24, 22, 24, 22, 0, "HC1 WMbIj (Mb,Ij)");
     dpd_buf4_init(&C, CC_CINTS, 0, 24, 24, 24, 24, 0, "C <Ia|Jb>");
     dpd_contract424(&C, &Cme, &W, 3, 1, 0, 1.0, 1.0);
     dpd_buf4_close(&C); 
@@ -686,7 +706,7 @@ void HC1_Wmbij(int i, int C_irr)
     dpd_buf4_close(&W);
 
     /** C_J^E <mB||iE> = C^J_E <mB|iE> **/
-    dpd_buf4_init(&W, CC3_HC1, 0, 27, 23, 27, 23, 0, "HC1 WmBiJ");
+    dpd_buf4_init(&W, CC3_HC1, 0, 27, 23, 27, 23, 0, "HC1 WmBiJ (mB,iJ)");
     dpd_buf4_init(&C, CC_CINTS, 0, 27, 27, 27, 27, 0, "C <iA|jB>");
     dpd_contract424(&C, &CME, &W, 3, 1, 0, 1.0, 1.0);
     dpd_buf4_close(&C);
@@ -695,6 +715,23 @@ void HC1_Wmbij(int i, int C_irr)
     dpd_buf4_init(&D, CC_DINTS, 0, 27, 25, 27, 25, 0, "D <iJ|aB> (iB,aJ)");
     dpd_contract244(&Cme, &D, &W, 1, 2, 1, 1.0, 1.0);
     dpd_buf4_close(&D);
+    dpd_buf4_close(&W);
+
+    /** do final sort to (Ij,Mb) **/
+    dpd_buf4_init(&W, CC3_HC1, 0, 20, 2, 20, 2, 0, "HC1 WMBIJ (MB,I>J)");
+    dpd_buf4_sort(&W, CC3_HC1, rspq, 2, 20, "HC1 WMBIJ (I>J,MB)");
+    dpd_buf4_close(&W);
+
+    dpd_buf4_init(&W, CC3_HC1, 0, 30, 12, 30, 12, 0, "HC1 Wmbij (mb,i>j)");
+    dpd_buf4_sort(&W, CC3_HC1, rspq, 12, 30, "HC1 Wmbij (i>j,mb)");
+    dpd_buf4_close(&W);
+
+    dpd_buf4_init(&W, CC3_HC1, 0, 24, 22, 24, 22, 0, "HC1 WMbIj (Mb,Ij)");
+    dpd_buf4_sort(&W, CC3_HC1, rspq, 22, 24, "HC1 WMbIj (Ij,Mb)");
+    dpd_buf4_close(&W);
+
+    dpd_buf4_init(&W, CC3_HC1, 0, 27, 23, 27, 23, 0, "HC1 WmBiJ (mB,iJ)");
+    dpd_buf4_sort(&W, CC3_HC1, rspq, 23, 27, "HC1 WmBiJ (iJ,mB)");
     dpd_buf4_close(&W);
 
     dpd_file2_close(&CME);
@@ -751,11 +788,11 @@ void HC1_Wmbej(int i, int C_irr) {
     /* Sort to (ME,JB) */
 
     dpd_buf4_init(&WMbEj, CC_TMP0, 0, 10, 11, 10, 11, 0, "WMbEj");
-    dpd_buf4_sort(&WMbEj, CC3_HC1, prsq, 10, 10, "HC1 WMbEj");
+    dpd_buf4_sort(&WMbEj, CC3_HC1, prsq, 10, 10, "HC1 WMbEj (ME,jb)");
     dpd_buf4_close(&WMbEj);
 
     dpd_buf4_init(&WMbeJ, CC_TMP0, 0, 10, 10, 10, 10, 0, "WMbeJ");
-    dpd_buf4_sort(&WMbeJ, CC3_HC1, psrq, 10, 10, "HC1 WMbeJ");
+    dpd_buf4_sort(&WMbeJ, CC3_HC1, psrq, 10, 10, "HC1 WMbeJ (Me,Jb)");
     dpd_buf4_close(&WMbeJ);
 
   }
@@ -823,27 +860,27 @@ void HC1_Wmbej(int i, int C_irr) {
     /* Convert to (ME,JB) for remaining terms */
 
     dpd_buf4_init(&WMBEJ, CC_TMP0, 0, 10, 11, 10, 11, 0, "WMBEJ");
-    dpd_buf4_sort(&WMBEJ, CC3_HC1, prsq, 10, 10, "HC1 WMBEJ");
+    dpd_buf4_sort(&WMBEJ, CC3_HC1, prsq, 10, 10, "HC1 WMBEJ (ME,JB)");
     dpd_buf4_close(&WMBEJ);
 
     dpd_buf4_init(&Wmbej, CC_TMP0, 0, 10, 11, 10, 11, 0, "Wmbej");
-    dpd_buf4_sort(&Wmbej, CC3_HC1, prsq, 10, 10, "HC1 Wmbej");
+    dpd_buf4_sort(&Wmbej, CC3_HC1, prsq, 10, 10, "HC1 Wmbej (me,jb)");
     dpd_buf4_close(&Wmbej);
 
     dpd_buf4_init(&WMbEj, CC_TMP0, 0, 10, 11, 10, 11, 0, "WMbEj");
-    dpd_buf4_sort(&WMbEj, CC3_HC1, prsq, 10, 10, "HC1 WMbEj");
+    dpd_buf4_sort(&WMbEj, CC3_HC1, prsq, 10, 10, "HC1 WMbEj (ME,jb)");
     dpd_buf4_close(&WMbEj);
 
     dpd_buf4_init(&WmBeJ, CC_TMP0, 0, 10, 11, 10, 11, 0, "WmBeJ");
-    dpd_buf4_sort(&WmBeJ, CC3_HC1, prsq, 10, 10, "HC1 WmBeJ");
+    dpd_buf4_sort(&WmBeJ, CC3_HC1, prsq, 10, 10, "HC1 WmBeJ (me,JB)");
     dpd_buf4_close(&WmBeJ);
 
     dpd_buf4_init(&WMbeJ, CC_TMP0, 0, 10, 10, 10, 10, 0, "WMbeJ");
-    dpd_buf4_sort(&WMbeJ, CC3_HC1, psrq, 10, 10, "HC1 WMbeJ");
+    dpd_buf4_sort(&WMbeJ, CC3_HC1, psrq, 10, 10, "HC1 WMbeJ (Me,Jb)");
     dpd_buf4_close(&WMbeJ);
 
     dpd_buf4_init(&WmBEj, CC_TMP0, 0, 10, 10, 10, 10, 0, "WmBEj");
-    dpd_buf4_sort(&WmBEj, CC3_HC1, psrq, 10, 10, "HC1 WmBEj");
+    dpd_buf4_sort(&WmBEj, CC3_HC1, psrq, 10, 10, "HC1 WmBEj (mE,jB)");
     dpd_buf4_close(&WmBEj);
 
   } /** ROHF **/
@@ -931,27 +968,27 @@ void HC1_Wmbej(int i, int C_irr) {
     /* Convert to (ME,JB) for remaining terms */
 
     dpd_buf4_init(&W, CC_TMP0, 0, 20, 21, 20, 21, 0, "WMBEJ");
-    dpd_buf4_sort(&W, CC3_HC1, prsq, 20, 20, "HC1 WMBEJ");
+    dpd_buf4_sort(&W, CC3_HC1, prsq, 20, 20, "HC1 WMBEJ (ME,JB)");
     dpd_buf4_close(&W);
 
     dpd_buf4_init(&W, CC_TMP0, 0, 30, 31, 30, 31, 0, "Wmbej");
-    dpd_buf4_sort(&W, CC3_HC1, prsq, 30, 30, "HC1 Wmbej");
+    dpd_buf4_sort(&W, CC3_HC1, prsq, 30, 30, "HC1 Wmbej (me,jb)");
     dpd_buf4_close(&W);
 
     dpd_buf4_init(&W, CC_TMP0, 0, 24, 26, 24, 26, 0, "WMbEj");
-    dpd_buf4_sort(&W, CC3_HC1, prsq, 20, 30, "HC1 WMbEj");
+    dpd_buf4_sort(&W, CC3_HC1, prsq, 20, 30, "HC1 WMbEj (ME,jb)");
     dpd_buf4_close(&W);
 
     dpd_buf4_init(&W, CC_TMP0, 0, 27, 25, 27, 25, 0, "WmBeJ");
-    dpd_buf4_sort(&W, CC3_HC1, prsq, 30, 20, "HC1 WmBeJ");
+    dpd_buf4_sort(&W, CC3_HC1, prsq, 30, 20, "HC1 WmBeJ (me,JB)");
     dpd_buf4_close(&W);
 
     dpd_buf4_init(&W, CC_TMP0, 0, 24, 24, 24, 24, 0, "WMbeJ");
-    dpd_buf4_sort(&W, CC3_HC1, psrq, 24, 24, "HC1 WMbeJ");
+    dpd_buf4_sort(&W, CC3_HC1, psrq, 24, 24, "HC1 WMbeJ (Me,Jb)");
     dpd_buf4_close(&W);
 
     dpd_buf4_init(&W, CC_TMP0, 0, 27, 27, 27, 27, 0, "WmBEj");
-    dpd_buf4_sort(&W, CC3_HC1, psrq, 27, 27, "HC1 WmBEj");
+    dpd_buf4_sort(&W, CC3_HC1, psrq, 27, 27, "HC1 WmBEj (mE,jB)");
     dpd_buf4_close(&W);
   }
 
@@ -982,7 +1019,7 @@ void HC1_Wabei(int i, int C_irr) {
     dpd_buf4_close(&B);
 
     /* Z1(Ab,Ei) <--  - C(M,A) * <Mb|Ei> */
-    dpd_buf4_init(&D, CC_DINTS, 0, 10, 11, 10, 11, 0, "D <ib|aj> (ib,aj)");
+    dpd_buf4_init(&D, CC_DINTS, 0, 10, 11, 10, 11, 0, "D <ij|ab> (ib,aj)");
     dpd_contract244(&CME, &D, &Z1, 0, 0, 0, -1, 1);
     dpd_buf4_close(&D);
 
@@ -1010,25 +1047,25 @@ void HC1_Wabei(int i, int C_irr) {
     dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, CME_lbl);
     dpd_file2_init(&Cme, EOM_Cme, C_irr, 0, 1, Cme_lbl);
 
-    dpd_buf4_init(&Z1, CC_TMP0, 0, 7, 11, 7, 11, 0, "WEIAB (A>B,EI)");
+    dpd_buf4_init(&Z1, CC_TMP0, 0, 7, 11, 7, 11, 0, "WABEI (A>B,EI)");
     dpd_buf4_init(&B, CC_BINTS, 0, 7, 5, 5, 5, 1, "B <ab|cd>");
     dpd_contract424(&B, &CME, &Z1, 3, 1, 0, 1.0, 0.0);
     dpd_buf4_close(&B);
     dpd_buf4_close(&Z1);
 
-    dpd_buf4_init(&Z1, CC_TMP0, 0, 7, 11, 7, 11, 0, "Weiab (a>b,ei)");
+    dpd_buf4_init(&Z1, CC_TMP0, 0, 7, 11, 7, 11, 0, "Wabei (a>b,ei)");
     dpd_buf4_init(&B, CC_BINTS, 0, 7, 5, 5, 5, 1, "B <ab|cd>");
     dpd_contract424(&B, &Cme, &Z1, 3, 1, 0, 1.0, 0.0);
     dpd_buf4_close(&B);
     dpd_buf4_close(&Z1);
 
-    dpd_buf4_init(&Z1, CC_TMP0, 0, 5, 11, 5, 11, 0, "WEiAb (Ab,Ei)");
+    dpd_buf4_init(&Z1, CC_TMP0, 0, 5, 11, 5, 11, 0, "WAbEi (Ab,Ei)");
     dpd_buf4_init(&B, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>");
     dpd_contract424(&B, &Cme, &Z1, 3, 1, 0, 1.0, 0.0);
     dpd_buf4_close(&B);
     dpd_buf4_close(&Z1);
 
-    dpd_buf4_init(&Z1, CC_TMP0, 0, 5, 11, 5, 11, 0, "WeIaB (aB,eI)");
+    dpd_buf4_init(&Z1, CC_TMP0, 0, 5, 11, 5, 11, 0, "WaBeI (aB,eI)");
     dpd_buf4_init(&B, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>");
     dpd_contract424(&B, &CME, &Z1, 3, 1, 0, 1.0, 0.0);
     dpd_buf4_close(&B);
@@ -1044,15 +1081,12 @@ void HC1_Wabei(int i, int C_irr) {
 
     dpd_buf4_sort(&Z1, CC_TMP1, qprs, 5, 11, "Z (BA,EI)");
 
-    dpd_buf4_init(&W, CC_TMP0, 0, 5, 11, 7, 11, 0, "WEIAB (A>B,EI)");
+    dpd_buf4_init(&W, CC_TMP0, 0, 5, 11, 7, 11, 0, "WABEI (A>B,EI)");
     dpd_buf4_axpy(&Z1, &W, 1.0);
     dpd_buf4_close(&Z1);
     dpd_buf4_init(&Z1, CC_TMP1, 0, 5, 11, 5, 11, 0, "Z (BA,EI)");
     dpd_buf4_axpy(&Z1, &W, -1.0);
     dpd_buf4_close(&Z1);
-
-    /* final sort and storage */
-    dpd_buf4_sort(&W, CC3_HC1, rspq, 11, 7, "HC1 WEIAB");
     dpd_buf4_close(&W);
 
     /** -Cma <mi||eb> + Cmb <mi||ea> **/
@@ -1065,58 +1099,78 @@ void HC1_Wabei(int i, int C_irr) {
 
     dpd_buf4_sort(&Z1, CC_TMP1, qprs, 5, 11, "Z (ba,ei)");
 
-    dpd_buf4_init(&W, CC_TMP0, 0, 5, 11, 7, 11, 0, "Weiab (a>b,ei)");
+    dpd_buf4_init(&W, CC_TMP0, 0, 5, 11, 7, 11, 0, "Wabei (a>b,ei)");
     dpd_buf4_axpy(&Z1, &W, 1.0);
     dpd_buf4_close(&Z1);
     dpd_buf4_init(&Z1, CC_TMP1, 0, 5, 11, 5, 11, 0, "Z (ba,ei)");
     dpd_buf4_axpy(&Z1, &W, -1.0);
     dpd_buf4_close(&Z1);
-
-    /* final sort and storage */
-    dpd_buf4_sort(&W, CC3_HC1, rspq, 11, 7, "HC1 Weiab");
     dpd_buf4_close(&W);
 
     /** -CMA <Mi||Eb> - Cmb <mA||iE> **/
 
-    dpd_buf4_init(&Z1, CC_TMP0, 0, 5, 11, 5, 11, 0, "WEiAb (Ab,Ei)");
+    dpd_buf4_init(&Z1, CC_TMP0, 0, 5, 11, 5, 11, 0, "WAbEi (Ab,Ei)");
     dpd_buf4_init(&D, CC_DINTS, 0, 10, 11, 10, 11, 0, "D <ij|ab> (ib,aj)");
     dpd_contract244(&CME, &D, &Z1, 0, 0, 0, -1.0, 1.0);
     dpd_buf4_close(&D);
     dpd_buf4_close(&Z1);
 
-    dpd_buf4_init(&Z1, CC_TMP1, 0, 5, 11, 5, 11, 0, "WEiAb (bA,Ei)");
+    dpd_buf4_init(&Z1, CC_TMP1, 0, 5, 11, 5, 11, 0, "WAbEi (bA,Ei)");
     dpd_buf4_init(&C, CC_CINTS, 0, 10, 11, 10, 11, 0, "C <ia|jb> (ia,bj)");
     dpd_contract244(&Cme, &C, &Z1, 0, 0, 0, -1.0, 0.0);
     dpd_buf4_close(&C);
 
-    dpd_buf4_sort_axpy(&Z1, CC_TMP0, qprs, 5, 11, "WEiAb (Ab,Ei)", 1.0);
+    dpd_buf4_sort_axpy(&Z1, CC_TMP0, qprs, 5, 11, "WAbEi (Ab,Ei)", 1.0);
     dpd_buf4_close(&Z1);
 
-    /* final sort and storage */
-    dpd_buf4_init(&Z1, CC_TMP0, 0, 5, 11, 5, 11, 0, "WEiAb (Ab,Ei)");
-    dpd_buf4_sort(&Z1, CC3_HC1, rspq, 11, 5, "HC1 WEiAb");
-
     /** **/
-    dpd_buf4_init(&Z1, CC_TMP0, 0, 5, 11, 5, 11, 0, "WeIaB (aB,eI)");
+    dpd_buf4_init(&Z1, CC_TMP0, 0, 5, 11, 5, 11, 0, "WaBeI (aB,eI)");
     dpd_buf4_init(&D, CC_DINTS, 0, 10, 11, 10, 11, 0, "D <ij|ab> (ib,aj)");
     dpd_contract244(&Cme, &D, &Z1, 0, 0, 0, -1.0, 1.0);
     dpd_buf4_close(&D);
     dpd_buf4_close(&Z1);
 
-    dpd_buf4_init(&Z1, CC_TMP1, 0, 5, 11, 5, 11, 0, "WeIaB (Ba,eI)");
+    dpd_buf4_init(&Z1, CC_TMP1, 0, 5, 11, 5, 11, 0, "WaBeI (Ba,eI)");
     dpd_buf4_init(&C, CC_CINTS, 0, 10, 11, 10, 11, 0, "C <ia|jb> (ia,bj)");
     dpd_contract244(&CME, &C, &Z1, 0, 0, 0, -1.0, 0.0);
     dpd_buf4_close(&C);
 
-    dpd_buf4_sort_axpy(&Z1, CC_TMP0, qprs, 5, 11, "WeIaB (aB,eI)", 1.0);
+    dpd_buf4_sort_axpy(&Z1, CC_TMP0, qprs, 5, 11, "WaBeI (aB,eI)", 1.0);
     dpd_buf4_close(&Z1);
-
-    /* final sort and storage */
-    dpd_buf4_init(&Z1, CC_TMP0, 0, 5, 11, 5, 11, 0, "WeIaB (aB,eI)");
-    dpd_buf4_sort(&Z1, CC3_HC1, rspq, 11, 5, "HC1 WeIaB");
 
     dpd_file2_close(&CME);
     dpd_file2_close(&Cme);
+
+    /* final sort to (EI,AB) */
+
+    dpd_buf4_init(&W, CC_TMP0, 0, 5, 11, 7, 11, 0, "WABEI (A>B,EI)");
+    dpd_buf4_sort(&W, CC_TMP0, rspq, 11, 7, "WABEI (EI,A>B)");
+    dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC_TMP0, 0, 5, 11, 7, 11, 0, "Wabei (a>b,ei)");
+    dpd_buf4_sort(&W, CC_TMP0, rspq, 11, 7, "Wabei (ei,a>b)");
+    dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC_TMP0, 0, 5, 11, 5, 11, 0, "WAbEi (Ab,Ei)");
+    dpd_buf4_sort(&W, CC_TMP0, rspq, 11, 5, "WAbEi (Ei,Ab)");
+    dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC_TMP0, 0, 5, 11, 5, 11, 0, "WaBeI (aB,eI)");
+    dpd_buf4_sort(&W, CC_TMP0, rspq, 11, 5, "WaBeI (eI,aB)");
+    dpd_buf4_close(&W);
+
+    purge_Wabei();
+
+    /* final sort to Wabei (IE,AB) */
+    dpd_buf4_init(&W, CC_TMP0, 0, 11, 7, 11, 7, 0, "WABEI (EI,A>B)");
+    dpd_buf4_sort(&W, CC3_HC1, qprs, 10, 7, "HC1 WABEI (IE,A>B)");
+    dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC_TMP0, 0, 11, 7, 11, 7, 0, "Wabei (ei,a>b)");
+    dpd_buf4_sort(&W, CC3_HC1, qprs, 10, 7, "HC1 Wabei (ie,a>b)");
+    dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC_TMP0, 0, 11, 5, 11, 5, 0, "WAbEi (Ei,Ab)");
+    dpd_buf4_sort(&W, CC3_HC1, qprs, 10, 5, "HC1 WAbEi (iE,Ab)");
+    dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC_TMP0, 0, 11, 5, 11, 5, 0, "WaBeI (eI,aB)");
+    dpd_buf4_sort(&W, CC3_HC1, qprs, 10, 5, "HC1 WaBeI (Ie,aB)");
+    dpd_buf4_close(&W);
   }
   else if (params.ref == 2) { /* UHF */
     dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, CME_lbl);
@@ -1124,19 +1178,19 @@ void HC1_Wabei(int i, int C_irr) {
 
     /* term 1, Cif <ab||ef> */
 
-    dpd_buf4_init(&Z1, CC_TMP0, 0, 7, 21, 7, 21, 0, "WEIAB (A>B,EI)");
+    dpd_buf4_init(&Z1, CC_TMP0, 0, 7, 21, 7, 21, 0, "WABEI (A>B,EI)");
     dpd_buf4_init(&B, CC_BINTS, 0, 7, 5, 5, 5, 1, "B <AB|CD>");
     dpd_contract424(&B, &CME, &Z1, 3, 1, 0, 1.0, 0.0);
     dpd_buf4_close(&B);
     dpd_buf4_close(&Z1);
 
-    dpd_buf4_init(&Z1, CC_TMP0, 0, 17, 31, 17, 31, 0, "Weiab (a>b,ei)");
+    dpd_buf4_init(&Z1, CC_TMP0, 0, 17, 31, 17, 31, 0, "Wabei (a>b,ei)");
     dpd_buf4_init(&B, CC_BINTS, 0, 17, 15, 15, 15, 1, "B <ab|cd>");
     dpd_contract424(&B, &Cme, &Z1, 3, 1, 0, 1.0, 0.0);
     dpd_buf4_close(&B);
     dpd_buf4_close(&Z1);
 
-    dpd_buf4_init(&Z1, CC_TMP0, 0, 28, 26, 28, 26, 0, "WEiAb (Ab,Ei)");
+    dpd_buf4_init(&Z1, CC_TMP0, 0, 28, 26, 28, 26, 0, "WAbEi (Ab,Ei)");
     dpd_buf4_init(&B, CC_BINTS, 0, 28, 28, 28, 28, 0, "B <Ab|Cd>");
     dpd_contract424(&B, &Cme, &Z1, 3, 1, 0, 1.0, 0.0);
     dpd_buf4_close(&B);
@@ -1147,7 +1201,7 @@ void HC1_Wabei(int i, int C_irr) {
     dpd_contract244(&CME, &B, &Z, 1, 0, 0, 1.0, 0.0);
     dpd_buf4_close(&B);
     /** Z(Ie,Ba) --> W'(aB,eI) **/
-    dpd_buf4_sort(&Z, CC_TMP0, srqp, 29, 25, "WeIaB (aB,eI)");
+    dpd_buf4_sort(&Z, CC_TMP0, srqp, 29, 25, "WaBeI (aB,eI)");
     dpd_buf4_close(&Z);
 
     /** UHF term 2 **/
@@ -1161,7 +1215,7 @@ void HC1_Wabei(int i, int C_irr) {
 
     dpd_buf4_sort(&Z1, CC_TMP1, qprs, 5, 21, "Z (BA,EI)");
 
-    dpd_buf4_init(&W, CC_TMP0, 0, 5, 21, 7, 21, 0, "WEIAB (A>B,EI)");
+    dpd_buf4_init(&W, CC_TMP0, 0, 5, 21, 7, 21, 0, "WABEI (A>B,EI)");
     dpd_buf4_axpy(&Z1, &W, 1.0);
     dpd_buf4_close(&Z1);
     dpd_buf4_init(&Z1, CC_TMP1, 0, 5, 21, 5, 21, 0, "Z (BA,EI)");
@@ -1178,7 +1232,7 @@ void HC1_Wabei(int i, int C_irr) {
 
     dpd_buf4_sort(&Z1, CC_TMP1, qprs, 15, 31, "Z (ba,ei)");
 
-    dpd_buf4_init(&W, CC_TMP0, 0, 15, 31, 17, 31, 0, "Weiab (a>b,ei)");
+    dpd_buf4_init(&W, CC_TMP0, 0, 15, 31, 17, 31, 0, "Wabei (a>b,ei)");
     dpd_buf4_axpy(&Z1, &W, 1.0);
     dpd_buf4_close(&Z1);
     dpd_buf4_init(&Z1, CC_TMP1, 0, 15, 31, 15, 31, 0, "Z (ba,ei)");
@@ -1187,55 +1241,66 @@ void HC1_Wabei(int i, int C_irr) {
 
     /** -CMA <Mi||Eb> - Cmb <mA|iE> **/
 
-    dpd_buf4_init(&Z1, CC_TMP0, 0, 28, 26, 28, 26, 0, "WEiAb (Ab,Ei)");
+    dpd_buf4_init(&Z1, CC_TMP0, 0, 28, 26, 28, 26, 0, "WAbEi (Ab,Ei)");
     dpd_buf4_init(&D, CC_DINTS, 0, 24, 26, 24, 26, 0, "D <Ij|Ab> (Ib,Aj)");
     dpd_contract244(&CME, &D, &Z1, 0, 0, 0, -1.0, 1.0);
     dpd_buf4_close(&D);
     dpd_buf4_close(&Z1);
 
-    dpd_buf4_init(&Z1, CC_TMP1, 0, 29, 26, 29, 26, 0, "WEiAb (bA,Ei)");
+    dpd_buf4_init(&Z1, CC_TMP1, 0, 29, 26, 29, 26, 0, "WAbEi (bA,Ei)");
     dpd_buf4_init(&C, CC_CINTS, 0, 27, 26, 27, 26, 0, "C <Ai|Bj> (iA,Bj)");
     dpd_contract244(&Cme, &C, &Z1, 0, 0, 0, -1.0, 0.0);
     dpd_buf4_close(&C);
 
-    dpd_buf4_sort_axpy(&Z1, CC_TMP0, qprs, 28, 26, "WEiAb (Ab,Ei)", 1.0);
+    dpd_buf4_sort_axpy(&Z1, CC_TMP0, qprs, 28, 26, "WAbEi (Ab,Ei)", 1.0);
     dpd_buf4_close(&Z1);
 
     /**  **/
-    dpd_buf4_init(&Z1, CC_TMP0, 0, 29, 25, 29, 25, 0, "WeIaB (aB,eI)");
+    dpd_buf4_init(&Z1, CC_TMP0, 0, 29, 25, 29, 25, 0, "WaBeI (aB,eI)");
     dpd_buf4_init(&D, CC_DINTS, 0, 27, 25, 27, 25, 0, "D <iJ|aB> (iB,aJ)");
     dpd_contract244(&Cme, &D, &Z1, 0, 0, 0, -1.0, 1.0);
     dpd_buf4_close(&D);
     dpd_buf4_close(&Z1);
 
-    dpd_buf4_init(&Z1, CC_TMP1, 0, 28, 25, 28, 25, 0, "WeIaB (Ba,eI)");
+    dpd_buf4_init(&Z1, CC_TMP1, 0, 28, 25, 28, 25, 0, "WaBeI (Ba,eI)");
     dpd_buf4_init(&C, CC_CINTS, 0, 24, 25, 24, 25, 0, "C <Ia|Jb> (Ia,bJ)");
     dpd_contract244(&CME, &C, &Z1, 0, 0, 0, -1.0, 0.0);
     dpd_buf4_close(&C);
 
-    dpd_buf4_sort_axpy(&Z1, CC_TMP0, qprs, 29, 25, "WeIaB (aB,eI)", 1.0);
+    dpd_buf4_sort_axpy(&Z1, CC_TMP0, qprs, 29, 25, "WaBeI (aB,eI)", 1.0);
     dpd_buf4_close(&Z1);
 
     /* final sort and storage */
-    dpd_buf4_init(&W, CC_TMP0, 0, 7, 21, 7, 21, 0, "WEIAB (A>B,EI)");
-    dpd_buf4_sort(&W, CC3_HC1, rspq, 21, 7, "HC1 WEIAB");
+    dpd_buf4_init(&W, CC_TMP0, 0, 7, 21, 7, 21, 0, "WABEI (A>B,EI)");
+    dpd_buf4_sort(&W, CC_TMP0, rspq, 21, 7, "WABEI (EI,A>B)");
+    dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC_TMP0, 0, 21, 7, 21, 7, 0, "WABEI (EI,A>B)");
+    dpd_buf4_sort(&W, CC3_HC1, qprs, 20, 7, "HC1 WABEI (IE,A>B)");
     dpd_buf4_close(&W);
 
     /* final sort and storage */
-    dpd_buf4_init(&W, CC_TMP0, 0, 17, 31, 17, 31, 0, "Weiab (a>b,ei)");
-    dpd_buf4_sort(&W, CC3_HC1, rspq, 31, 17, "HC1 Weiab");
+    dpd_buf4_init(&W, CC_TMP0, 0, 17, 31, 17, 31, 0, "Wabei (a>b,ei)");
+    dpd_buf4_sort(&W, CC_TMP0, rspq, 31, 17, "Wabei (ei,a>b)");
+    dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC_TMP0, 0, 31, 17, 31, 17, 0, "Wabei (ei,a>b)");
+    dpd_buf4_sort(&W, CC3_HC1, qprs, 30, 17, "HC1 Wabei (ie,a>b)");
     dpd_buf4_close(&W);
 
     /* final sort and storage */
-    dpd_buf4_init(&W, CC_TMP0, 0, 28, 26, 28, 26, 0, "WEiAb (Ab,Ei)");
-    dpd_buf4_sort(&W, CC3_HC1, rspq, 26, 28, "HC1 WEiAb");
+    dpd_buf4_init(&W, CC_TMP0, 0, 28, 26, 28, 26, 0, "WAbEi (Ab,Ei)");
+    dpd_buf4_sort(&W, CC_TMP0, rspq, 26, 28, "WAbEi (Ei,Ab)");
+    dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC_TMP0, 0, 26, 28, 26, 28, 0, "WAbEi (Ei,Ab)");
+    dpd_buf4_sort(&W, CC3_HC1, qprs, 27, 28, "HC1 WAbEi (iE,Ab)");
     dpd_buf4_close(&W);
 
     /* final sort and storage */
-    dpd_buf4_init(&W, CC_TMP0, 0, 29, 25, 29, 25, 0, "WeIaB (aB,eI)");
-    dpd_buf4_sort(&W, CC3_HC1, rspq, 25, 29, "HC1 WeIaB");
+    dpd_buf4_init(&W, CC_TMP0, 0, 29, 25, 29, 25, 0, "WaBeI (aB,eI)");
+    dpd_buf4_sort(&W, CC_TMP0, rspq, 25, 29, "WaBeI (eI,aB)");
     dpd_buf4_close(&W);
-
+    dpd_buf4_init(&W, CC_TMP0, 0, 25, 29, 25, 29, 0, "WaBeI (eI,aB)");
+    dpd_buf4_sort(&W, CC3_HC1, qprs, 24, 29, "HC1 WaBeI (Ie,aB)");
+    dpd_buf4_close(&W);
 
     dpd_file2_close(&CME);
     dpd_file2_close(&Cme);
@@ -1287,7 +1352,7 @@ void purge_HC1(void) {
   dpd_file2_close(&Fme);
 
   /* Purge Wmnij matrix elements */
-  dpd_file4_init(&W, CC3_HC1, 0, 2, 2,"HC1 Wmnij");
+  dpd_file4_init(&W, CC3_HC1, 0, 2, 2,"HC1 Wmnij (m>n,i>j)");
   for(h=0; h < nirreps; h++) {
     dpd_file4_mat_irrep_init(&W, h);
     dpd_file4_mat_irrep_rd(&W, h);
@@ -1317,7 +1382,7 @@ void purge_HC1(void) {
   }
   dpd_file4_close(&W);
 
-  dpd_file4_init(&W, CC3_HC1, 0, 0, 0,"HC1 WMnIj");
+  dpd_file4_init(&W, CC3_HC1, 0, 0, 0,"HC1 WMnIj (Mn,Ij)");
   for(h=0; h < nirreps; h++) {
     dpd_file4_mat_irrep_init(&W, h);
     dpd_file4_mat_irrep_rd(&W, h);
@@ -1341,7 +1406,7 @@ void purge_HC1(void) {
 
 
   /* Purge Wmbej matrix elements */
-  dpd_file4_init(&W, CC3_HC1, 0, 10, 10,"HC1 WMBEJ");
+  dpd_file4_init(&W, CC3_HC1, 0, 10, 10,"HC1 WMBEJ (ME,JB)");
   for(h=0; h < nirreps; h++) {
     dpd_file4_mat_irrep_init(&W, h);
     dpd_file4_mat_irrep_rd(&W, h);
@@ -1364,7 +1429,7 @@ void purge_HC1(void) {
   dpd_file4_close(&W);
 
 
-  dpd_file4_init(&W, CC3_HC1, 0, 10, 10,"HC1 Wmbej");
+  dpd_file4_init(&W, CC3_HC1, 0, 10, 10,"HC1 Wmbej (me,jb)");
   for(h=0; h < nirreps; h++) {
     dpd_file4_mat_irrep_init(&W, h);
     dpd_file4_mat_irrep_rd(&W, h);
@@ -1387,7 +1452,7 @@ void purge_HC1(void) {
   dpd_file4_close(&W);
 
 
-  dpd_file4_init(&W, CC3_HC1, 0, 10, 10,"HC1 WMbEj");
+  dpd_file4_init(&W, CC3_HC1, 0, 10, 10,"HC1 WMbEj (ME,jb)");
   for(h=0; h < nirreps; h++) {
     dpd_file4_mat_irrep_init(&W, h);
     dpd_file4_mat_irrep_rd(&W, h);
@@ -1410,7 +1475,7 @@ void purge_HC1(void) {
   dpd_file4_close(&W);
 
 
-  dpd_file4_init(&W, CC3_HC1, 0, 10, 10,"HC1 WmBeJ");
+  dpd_file4_init(&W, CC3_HC1, 0, 10, 10,"HC1 WmBeJ (me,JB)");
   for(h=0; h < nirreps; h++) {
     dpd_file4_mat_irrep_init(&W, h);
     dpd_file4_mat_irrep_rd(&W, h);
@@ -1433,7 +1498,7 @@ void purge_HC1(void) {
   dpd_file4_close(&W);
 
 
-  dpd_file4_init(&W, CC3_HC1, 0, 10, 10,"HC1 WmBEj");
+  dpd_file4_init(&W, CC3_HC1, 0, 10, 10,"HC1 WmBEj (mE,jB)");
   for(h=0; h < nirreps; h++) {
     dpd_file4_mat_irrep_init(&W, h);
     dpd_file4_mat_irrep_rd(&W, h);
@@ -1465,7 +1530,7 @@ void purge_HC1(void) {
 
 
   /* Purge Wamef matrix elements */
-  dpd_file4_init(&W, CC3_HC1, 0, 11, 7,"HC1 WAMEF");
+  dpd_file4_init(&W, CC3_HC1, 0, 11, 7,"HC1 WAMEF (AM,E>F)");
   for(h=0; h < nirreps; h++) {
     dpd_file4_mat_irrep_init(&W, h);
     dpd_file4_mat_irrep_rd(&W, h);
@@ -1491,7 +1556,7 @@ void purge_HC1(void) {
   }
   dpd_file4_close(&W);
 
-  dpd_file4_init(&W, CC3_HC1, 0, 11, 7,"HC1 Wamef");
+  dpd_file4_init(&W, CC3_HC1, 0, 11, 7,"HC1 Wamef (am,e>f)");
   for(h=0; h < nirreps; h++) {
     dpd_file4_mat_irrep_init(&W, h);
     dpd_file4_mat_irrep_rd(&W, h);
@@ -1509,7 +1574,7 @@ void purge_HC1(void) {
   }
   dpd_file4_close(&W);
 
-  dpd_file4_init(&W, CC3_HC1, 0, 11, 5,"HC1 WAmEf");
+  dpd_file4_init(&W, CC3_HC1, 0, 11, 5,"HC1 WAmEf (Am,Ef)");
   for(h=0; h < nirreps; h++) {
     dpd_file4_mat_irrep_init(&W, h);
     dpd_file4_mat_irrep_rd(&W, h);
@@ -1535,7 +1600,7 @@ void purge_HC1(void) {
   }
   dpd_file4_close(&W);
 
-  dpd_file4_init(&W, CC3_HC1, 0, 11, 5,"HC1 WaMeF");
+  dpd_file4_init(&W, CC3_HC1, 0, 11, 5,"HC1 WaMeF (aM,eF)");
   for(h=0; h < nirreps; h++) {
     dpd_file4_mat_irrep_init(&W, h);
     dpd_file4_mat_irrep_rd(&W, h);
@@ -1554,276 +1619,6 @@ void purge_HC1(void) {
   dpd_file4_close(&W);
 
 
-  /* Purge Wmnie matrix elements */
-  /* moving to separate function to run before sorts
-  dpd_file4_init(&W, CC3_HC1, 0, 2, 11,"HC1 WMNIE");
-  for(h=0; h < W.params->nirreps; h++) {
-    dpd_file4_mat_irrep_init(&W, h);
-    dpd_file4_mat_irrep_rd(&W, h);
-    for(mn=0; mn<W.params->rowtot[h]; mn++) {
-      for(ei=0; ei<W.params->coltot[h]; ei++) {
-	e = W.params->colorb[h][ei][0];
-	esym = W.params->rsym[e];
-	E = e - vir_off[esym];
-	if (E >= (virtpi[esym] - openpi[esym]))
-	  W.matrix[h][mn][ei] = 0.0;
-      }
-    }
-    dpd_file4_mat_irrep_wrt(&W, h);
-    dpd_file4_mat_irrep_close(&W, h);
-  }
-  dpd_file4_close(&W);
-
-  dpd_file4_init(&W, CC3_HC1, 0, 2, 11,"HC1 Wmnie");
-  for(h=0; h < nirreps; h++) {
-    dpd_file4_mat_irrep_init(&W, h);
-    dpd_file4_mat_irrep_rd(&W, h);
-    for(mn=0; mn<W.params->rowtot[h]; mn++) {
-      m = W.params->roworb[h][mn][0];
-      n = W.params->roworb[h][mn][1];
-      msym = W.params->psym[m];
-      nsym = W.params->qsym[n];
-      M = m - occ_off[msym];
-      N = n - occ_off[nsym];
-      for(ei=0; ei<W.params->coltot[h]; ei++) {
-	i = W.params->colorb[h][ei][1];
-	isym = W.params->ssym[i];
-	I = i - occ_off[isym];
-	if ((M >= (occpi[msym] - openpi[msym])) ||
-	    (N >= (occpi[nsym] - openpi[nsym])) ||
-	    (I >= (occpi[isym] - openpi[isym])) )
-	  W.matrix[h][mn][ei] = 0.0;
-      }
-    }
-    dpd_file4_mat_irrep_wrt(&W, h);
-    dpd_file4_mat_irrep_close(&W, h);
-  }
-  dpd_file4_close(&W);
-
-  dpd_file4_init(&W, CC3_HC1, 0, 0, 11,"HC1 WMnIe");
-  for(h=0; h < nirreps; h++) {
-    dpd_file4_mat_irrep_init(&W, h);
-    dpd_file4_mat_irrep_rd(&W, h);
-    for(mn=0; mn<W.params->rowtot[h]; mn++) {
-      n = W.params->roworb[h][mn][1];
-      nsym = W.params->qsym[n];
-      N = n - occ_off[nsym];
-      for(ei=0; ei<W.params->coltot[h]; ei++) {
-	if (N >= (occpi[nsym] - openpi[nsym]))
-	  W.matrix[h][mn][ei] = 0.0;
-      }
-    }
-    dpd_file4_mat_irrep_wrt(&W, h);
-    dpd_file4_mat_irrep_close(&W, h);
-  }
-
-  dpd_file4_init(&W, CC3_HC1, 0, 0, 11,"WmNiE");
-  for(h=0; h < nirreps; h++) {
-    dpd_file4_mat_irrep_init(&W, h);
-    dpd_file4_mat_irrep_rd(&W, h);
-    for(mn=0; mn<W.params->rowtot[h]; mn++) {
-      m = W.params->roworb[h][mn][0];
-      msym = W.params->psym[m];
-      M = m - occ_off[msym];
-      for(ei=0; ei<W.params->coltot[h]; ei++) {
-	e = W.params->colorb[h][ei][0];
-	i = W.params->colorb[h][ei][1];
-	esym = W.params->rsym[e];
-	isym = W.params->ssym[i];
-	E = e - vir_off[esym];
-	I = i - occ_off[isym];
-	if ((M >= (occpi[msym] - openpi[msym])) ||
-	    (E >= (virtpi[esym] - openpi[esym])) ||
-	    (I >= (occpi[isym] - openpi[isym])) )
-	  W.matrix[h][mn][ei] = 0.0;
-      }
-    }
-    dpd_file4_mat_irrep_wrt(&W, h);
-    dpd_file4_mat_irrep_close(&W, h);
-  }
-  dpd_file4_close(&W);
-  */
-
-
-  /* Purge WMBIJ matrix elements */
-  dpd_file4_init(&W, CC3_HC1, 0, 10, 2,"HC1 WMBIJ");
-  for(h=0; h < nirreps; h++) {
-    dpd_file4_mat_irrep_init(&W, h);
-    dpd_file4_mat_irrep_rd(&W, h);
-    for(mb=0; mb<W.params->rowtot[h]; mb++) {
-      b = W.params->roworb[h][mb][1];
-      bsym = W.params->qsym[b];
-      B = b - vir_off[bsym];
-      for(ij=0; ij<W.params->coltot[h]; ij++) {
-	if (B >= (virtpi[bsym] - openpi[bsym]))
-	  W.matrix[h][mb][ij] = 0.0;
-      }
-    }
-    dpd_file4_mat_irrep_wrt(&W, h);
-    dpd_file4_mat_irrep_close(&W, h);
-  }
-  dpd_file4_close(&W);
-
-  dpd_file4_init(&W, CC3_HC1, 0, 10, 2,"HC1 Wmbij");
-  for(h=0; h < nirreps; h++) {
-    dpd_file4_mat_irrep_init(&W, h);
-    dpd_file4_mat_irrep_rd(&W, h);
-    for(mb=0; mb<W.params->rowtot[h]; mb++) {
-      m = W.params->roworb[h][mb][0];
-      msym = W.params->psym[m];
-      M = m - occ_off[msym];
-      for(ij=0; ij<W.params->coltot[h]; ij++) {
-	i = W.params->colorb[h][ij][0];
-	j = W.params->colorb[h][ij][1];
-	isym = W.params->rsym[i];
-	jsym = W.params->ssym[j];
-	I = i - occ_off[isym];
-	J = j - occ_off[jsym];
-	if ((M >= (occpi[msym] - openpi[msym])) ||
-	    (I >= (occpi[isym] - openpi[isym])) ||
-	    (J >= (occpi[jsym] - openpi[jsym])) )
-	  W.matrix[h][mb][ij] = 0.0;
-      }
-    }
-    dpd_file4_mat_irrep_wrt(&W, h);
-    dpd_file4_mat_irrep_close(&W, h);
-  }
-  dpd_file4_close(&W);
-
-  dpd_file4_init(&W, CC3_HC1, 0, 10, 0,"HC1 WMbIj");
-  for(h=0; h < nirreps; h++) {
-    dpd_file4_mat_irrep_init(&W, h);
-    dpd_file4_mat_irrep_rd(&W, h);
-    for(mb=0; mb<W.params->rowtot[h]; mb++) {
-      for(ij=0; ij<W.params->coltot[h]; ij++) {
-	j = W.params->colorb[h][ij][1];
-	jsym = W.params->ssym[j];
-	J = j - occ_off[jsym];
-	if (J >= (occpi[jsym] - openpi[jsym]))
-	  W.matrix[h][mb][ij] = 0.0;
-      }
-    }
-    dpd_file4_mat_irrep_wrt(&W, h);
-    dpd_file4_mat_irrep_close(&W, h);
-  }
-  dpd_file4_close(&W);
-
-  dpd_file4_init(&W, CC3_HC1, 0, 10, 0,"HC1 WmBiJ");
-  for(h=0; h < nirreps; h++) {
-    dpd_file4_mat_irrep_init(&W, h);
-    dpd_file4_mat_irrep_rd(&W, h);
-    for(mb=0; mb<W.params->rowtot[h]; mb++) {
-      m = W.params->roworb[h][mb][0];
-      b = W.params->roworb[h][mb][1];
-      msym = W.params->psym[m];
-      bsym = W.params->qsym[b];
-      M = m - occ_off[msym];
-      B = b - vir_off[bsym];
-      for(ij=0; ij<W.params->coltot[h]; ij++) {
-	i = W.params->colorb[h][ij][0];
-	isym = W.params->rsym[i];
-	I = i - occ_off[isym];
-	if ((M >= (occpi[msym] - openpi[msym])) ||
-	    (B >= (virtpi[bsym] - openpi[bsym])) ||
-	    (I >= (occpi[isym] - openpi[isym])) )
-	  W.matrix[h][mb][ij] = 0.0;
-      }
-    }
-    dpd_file4_mat_irrep_wrt(&W, h);
-    dpd_file4_mat_irrep_close(&W, h);
-  }
-  dpd_file4_close(&W);
-
-
-  /* Purge Wabei matrix elements */
-  dpd_file4_init(&W, CC3_HC1, 0, 11, 7,"HC1 WEIAB");
-  for(h=0; h < nirreps; h++) {
-    dpd_file4_mat_irrep_init(&W, h);
-    dpd_file4_mat_irrep_rd(&W, h);
-    for(ei=0; ei<W.params->rowtot[h]; ei++) {
-      e = W.params->roworb[h][ei][0];
-      esym = W.params->psym[e];
-      E = e - vir_off[esym];
-      for(ab=0; ab<W.params->coltot[h]; ab++) {
-	a = W.params->colorb[h][ab][0];
-	b = W.params->colorb[h][ab][1];
-	asym = W.params->rsym[a];
-	bsym = W.params->ssym[b];
-	A = a - vir_off[asym];
-	B = b - vir_off[bsym];
-	if ((E >= (virtpi[esym] - openpi[esym])) ||
-	    (A >= (virtpi[asym] - openpi[asym])) ||
-	    (B >= (virtpi[bsym] - openpi[bsym])) )
-	  W.matrix[h][ei][ab] = 0.0;
-      }
-    }
-    dpd_file4_mat_irrep_wrt(&W, h);
-    dpd_file4_mat_irrep_close(&W, h);
-  }
-  dpd_file4_close(&W);
-
-  dpd_file4_init(&W, CC3_HC1, 0, 11, 7,"HC1 Weiab");
-  for(h=0; h < nirreps; h++) {
-    dpd_file4_mat_irrep_init(&W, h);
-    dpd_file4_mat_irrep_rd(&W, h);
-    for(ei=0; ei<W.params->rowtot[h]; ei++) {
-      i = W.params->roworb[h][ei][1];
-      isym = W.params->qsym[i];
-      I = i - occ_off[isym];
-      for(ab=0; ab<W.params->coltot[h]; ab++) {
-	if (I >= (occpi[isym] - openpi[isym]))
-	  W.matrix[h][ei][ab] = 0.0;
-      }
-    }
-    dpd_file4_mat_irrep_wrt(&W, h);
-    dpd_file4_mat_irrep_close(&W, h);
-  }
-  dpd_file4_close(&W);
-
-  dpd_file4_init(&W, CC3_HC1, 0, 11, 5,"HC1 WEiAb");
-  for(h=0; h < nirreps; h++) {
-    dpd_file4_mat_irrep_init(&W, h);
-    dpd_file4_mat_irrep_rd(&W, h);
-    for(ei=0; ei<W.params->rowtot[h]; ei++) {
-      e = W.params->roworb[h][ei][0];
-      i = W.params->roworb[h][ei][1];
-      esym = W.params->psym[e];
-      isym = W.params->qsym[i];
-      E = e - vir_off[esym];
-      I = i - occ_off[isym];
-      for(ab=0; ab<W.params->coltot[h]; ab++) {
-	a = W.params->colorb[h][ab][0];
-	asym = W.params->rsym[a];
-	bsym = W.params->ssym[b];
-	A = a - vir_off[asym];
-	if ((E >= (virtpi[esym] - openpi[esym])) ||
-	    (I >= (occpi[isym] - openpi[isym])) ||
-	    (A >= (virtpi[asym] - openpi[asym])) )
-	  W.matrix[h][ei][ab] = 0.0;
-      }
-    }
-    dpd_file4_mat_irrep_wrt(&W, h);
-    dpd_file4_mat_irrep_close(&W, h);
-  }
-  dpd_file4_close(&W);
-
-  dpd_file4_init(&W, CC3_HC1, 0, 11, 5,"HC1 WeIaB");
-  for(h=0; h < nirreps; h++) {
-    dpd_file4_mat_irrep_init(&W, h);
-    dpd_file4_mat_irrep_rd(&W, h);
-    for(ei=0; ei<W.params->rowtot[h]; ei++) {
-      for(ab=0; ab<W.params->coltot[h]; ab++) {
-	b = W.params->colorb[h][ab][1];
-	bsym = W.params->ssym[b];
-	B = b - vir_off[bsym];
-	if (B >= (virtpi[bsym] - openpi[bsym]))
-	  W.matrix[h][ei][ab] = 0.0;
-      }
-    }
-    dpd_file4_mat_irrep_wrt(&W, h);
-    dpd_file4_mat_irrep_close(&W, h);
-  }
-  dpd_file4_close(&W);
 
   return;
 }
@@ -1933,4 +1728,221 @@ void purge_Wmnie(void) {
   }
   dpd_file4_close(&W);
   return;
+}
+
+/* Purge WMBIJ matrix elements */
+void purge_Wmbij(void) {
+  dpdfile4 W;
+  int *occpi, *virtpi;
+  int h, a, b, e, f, i, j, m, n;
+  int    A, B, E, F, I, J, M, N;
+  int mn, ei, ma, ef, me, jb, mb, ij, ab;
+  int asym, bsym, esym, fsym, isym, jsym, msym, nsym;
+  int *occ_off, *vir_off;
+  int *occ_sym, *vir_sym;
+  int *openpi, nirreps;
+
+  nirreps = moinfo.nirreps;
+  occpi = moinfo.occpi; virtpi = moinfo.virtpi;
+  occ_off = moinfo.occ_off; vir_off = moinfo.vir_off;
+  occ_sym = moinfo.occ_sym; vir_sym = moinfo.vir_sym;
+  openpi = moinfo.openpi;
+
+  dpd_file4_init(&W, CC3_HC1, 0, 10, 2,"HC1 WMBIJ (MB,I>J)");
+  for(h=0; h < nirreps; h++) {
+    dpd_file4_mat_irrep_init(&W, h);
+    dpd_file4_mat_irrep_rd(&W, h);
+    for(mb=0; mb<W.params->rowtot[h]; mb++) {
+      b = W.params->roworb[h][mb][1];
+      bsym = W.params->qsym[b];
+      B = b - vir_off[bsym];
+      for(ij=0; ij<W.params->coltot[h]; ij++) {
+	if (B >= (virtpi[bsym] - openpi[bsym]))
+	  W.matrix[h][mb][ij] = 0.0;
+      }
+    }
+    dpd_file4_mat_irrep_wrt(&W, h);
+    dpd_file4_mat_irrep_close(&W, h);
+  }
+  dpd_file4_close(&W);
+
+  dpd_file4_init(&W, CC3_HC1, 0, 10, 2,"HC1 Wmbij (mb,i>j)");
+  for(h=0; h < nirreps; h++) {
+    dpd_file4_mat_irrep_init(&W, h);
+    dpd_file4_mat_irrep_rd(&W, h);
+    for(mb=0; mb<W.params->rowtot[h]; mb++) {
+      m = W.params->roworb[h][mb][0];
+      msym = W.params->psym[m];
+      M = m - occ_off[msym];
+      for(ij=0; ij<W.params->coltot[h]; ij++) {
+	i = W.params->colorb[h][ij][0];
+	j = W.params->colorb[h][ij][1];
+	isym = W.params->rsym[i];
+	jsym = W.params->ssym[j];
+	I = i - occ_off[isym];
+	J = j - occ_off[jsym];
+	if ((M >= (occpi[msym] - openpi[msym])) ||
+	    (I >= (occpi[isym] - openpi[isym])) ||
+	    (J >= (occpi[jsym] - openpi[jsym])) )
+	  W.matrix[h][mb][ij] = 0.0;
+      }
+    }
+    dpd_file4_mat_irrep_wrt(&W, h);
+    dpd_file4_mat_irrep_close(&W, h);
+  }
+  dpd_file4_close(&W);
+
+  dpd_file4_init(&W, CC3_HC1, 0, 10, 0,"HC1 WMbIj (Mb,Ij)");
+  for(h=0; h < nirreps; h++) {
+    dpd_file4_mat_irrep_init(&W, h);
+    dpd_file4_mat_irrep_rd(&W, h);
+    for(mb=0; mb<W.params->rowtot[h]; mb++) {
+      for(ij=0; ij<W.params->coltot[h]; ij++) {
+	j = W.params->colorb[h][ij][1];
+	jsym = W.params->ssym[j];
+	J = j - occ_off[jsym];
+	if (J >= (occpi[jsym] - openpi[jsym]))
+	  W.matrix[h][mb][ij] = 0.0;
+      }
+    }
+    dpd_file4_mat_irrep_wrt(&W, h);
+    dpd_file4_mat_irrep_close(&W, h);
+  }
+  dpd_file4_close(&W);
+
+  dpd_file4_init(&W, CC3_HC1, 0, 10, 0,"HC1 WmBiJ (mB,iJ)");
+  for(h=0; h < nirreps; h++) {
+    dpd_file4_mat_irrep_init(&W, h);
+    dpd_file4_mat_irrep_rd(&W, h);
+    for(mb=0; mb<W.params->rowtot[h]; mb++) {
+      m = W.params->roworb[h][mb][0];
+      b = W.params->roworb[h][mb][1];
+      msym = W.params->psym[m];
+      bsym = W.params->qsym[b];
+      M = m - occ_off[msym];
+      B = b - vir_off[bsym];
+      for(ij=0; ij<W.params->coltot[h]; ij++) {
+	i = W.params->colorb[h][ij][0];
+	isym = W.params->rsym[i];
+	I = i - occ_off[isym];
+	if ((M >= (occpi[msym] - openpi[msym])) ||
+	    (B >= (virtpi[bsym] - openpi[bsym])) ||
+	    (I >= (occpi[isym] - openpi[isym])) )
+	  W.matrix[h][mb][ij] = 0.0;
+      }
+    }
+    dpd_file4_mat_irrep_wrt(&W, h);
+    dpd_file4_mat_irrep_close(&W, h);
+  }
+  dpd_file4_close(&W);
+}
+
+
+/* Purge Wabei matrix elements */
+void purge_Wabei(void) {
+
+  dpdfile4 W;
+  int *occpi, *virtpi;
+  int h, a, b, e, f, i, j, m, n;
+  int    A, B, E, F, I, J, M, N;
+  int mn, ei, ma, ef, me, jb, mb, ij, ab;
+  int asym, bsym, esym, fsym, isym, jsym, msym, nsym;
+  int *occ_off, *vir_off;
+  int *occ_sym, *vir_sym;
+  int *openpi, nirreps;
+
+  nirreps = moinfo.nirreps;
+  occpi = moinfo.occpi; virtpi = moinfo.virtpi;
+  occ_off = moinfo.occ_off; vir_off = moinfo.vir_off;
+  occ_sym = moinfo.occ_sym; vir_sym = moinfo.vir_sym;
+  openpi = moinfo.openpi;
+
+  dpd_file4_init(&W, CC_TMP0, 0, 11, 7,"WABEI (EI,A>B)");
+  for(h=0; h < nirreps; h++) {
+    dpd_file4_mat_irrep_init(&W, h);
+    dpd_file4_mat_irrep_rd(&W, h);
+    for(ei=0; ei<W.params->rowtot[h]; ei++) {
+      e = W.params->roworb[h][ei][0];
+      esym = W.params->psym[e];
+      E = e - vir_off[esym];
+      for(ab=0; ab<W.params->coltot[h]; ab++) {
+	a = W.params->colorb[h][ab][0];
+	b = W.params->colorb[h][ab][1];
+	asym = W.params->rsym[a];
+	bsym = W.params->ssym[b];
+	A = a - vir_off[asym];
+	B = b - vir_off[bsym];
+	if ((E >= (virtpi[esym] - openpi[esym])) ||
+	    (A >= (virtpi[asym] - openpi[asym])) ||
+	    (B >= (virtpi[bsym] - openpi[bsym])) )
+	  W.matrix[h][ei][ab] = 0.0;
+      }
+    }
+    dpd_file4_mat_irrep_wrt(&W, h);
+    dpd_file4_mat_irrep_close(&W, h);
+  }
+  dpd_file4_close(&W);
+
+  dpd_file4_init(&W, CC_TMP0, 0, 11, 7,"Wabei (ei,a>b)");
+  for(h=0; h < nirreps; h++) {
+    dpd_file4_mat_irrep_init(&W, h);
+    dpd_file4_mat_irrep_rd(&W, h);
+    for(ei=0; ei<W.params->rowtot[h]; ei++) {
+      i = W.params->roworb[h][ei][1];
+      isym = W.params->qsym[i];
+      I = i - occ_off[isym];
+      for(ab=0; ab<W.params->coltot[h]; ab++) {
+	if (I >= (occpi[isym] - openpi[isym]))
+	  W.matrix[h][ei][ab] = 0.0;
+      }
+    }
+    dpd_file4_mat_irrep_wrt(&W, h);
+    dpd_file4_mat_irrep_close(&W, h);
+  }
+  dpd_file4_close(&W);
+
+  dpd_file4_init(&W, CC_TMP0, 0, 11, 5,"WAbEi (Ei,Ab)");
+  for(h=0; h < nirreps; h++) {
+    dpd_file4_mat_irrep_init(&W, h);
+    dpd_file4_mat_irrep_rd(&W, h);
+    for(ei=0; ei<W.params->rowtot[h]; ei++) {
+      e = W.params->roworb[h][ei][0];
+      i = W.params->roworb[h][ei][1];
+      esym = W.params->psym[e];
+      isym = W.params->qsym[i];
+      E = e - vir_off[esym];
+      I = i - occ_off[isym];
+      for(ab=0; ab<W.params->coltot[h]; ab++) {
+	a = W.params->colorb[h][ab][0];
+	asym = W.params->rsym[a];
+	bsym = W.params->ssym[b];
+	A = a - vir_off[asym];
+	if ((E >= (virtpi[esym] - openpi[esym])) ||
+	    (I >= (occpi[isym] - openpi[isym])) ||
+	    (A >= (virtpi[asym] - openpi[asym])) )
+	  W.matrix[h][ei][ab] = 0.0;
+      }
+    }
+    dpd_file4_mat_irrep_wrt(&W, h);
+    dpd_file4_mat_irrep_close(&W, h);
+  }
+  dpd_file4_close(&W);
+
+  dpd_file4_init(&W, CC_TMP0, 0, 11, 5,"WaBeI (eI,aB)");
+  for(h=0; h < nirreps; h++) {
+    dpd_file4_mat_irrep_init(&W, h);
+    dpd_file4_mat_irrep_rd(&W, h);
+    for(ei=0; ei<W.params->rowtot[h]; ei++) {
+      for(ab=0; ab<W.params->coltot[h]; ab++) {
+	b = W.params->colorb[h][ab][1];
+	bsym = W.params->ssym[b];
+	B = b - vir_off[bsym];
+	if (B >= (virtpi[bsym] - openpi[bsym]))
+	  W.matrix[h][ei][ab] = 0.0;
+      }
+    }
+    dpd_file4_mat_irrep_wrt(&W, h);
+    dpd_file4_mat_irrep_close(&W, h);
+  }
+  dpd_file4_close(&W);
 }
