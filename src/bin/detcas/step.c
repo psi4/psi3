@@ -89,7 +89,6 @@ int print_step(int npairs, int steptype)
   file30_init();
   energy = file30_rd_ecorr();
   file30_close();
-  energy += CalcInfo.enuc;
 
   scaled_rmsgrad[entries] = CalcInfo.scaled_mo_grad_rms;
   rmsgrad[entries] = CalcInfo.mo_grad_rms;

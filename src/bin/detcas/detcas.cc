@@ -47,10 +47,10 @@ extern "C" {
                              int dst_offset, int *dst2src);
    extern void calc_dE_dT(int n, double **dEU, int npairs, int *ppair, 
                           int *qpair, double *theta, double *dET);
-   extern void form_diag_mo_hess(int npairs, int *ppair, int *qpair, double *F_core,
-                            double *tei, double **opdm, double *tpdm,
-                            double *F_act, int firstact, int lastact, 
-                            double *hess);
+   extern void form_diag_mo_hess(int npairs, int *ppair, int *qpair, 
+                                 double *F_core, double *tei, double **opdm, 
+                                 double *tpdm, double *F_act, int firstact, 
+                                 int lastact, double *hess);
    extern void calc_orb_step(int npairs, double *grad, double *hess_diag, 
                              double *theta);
    extern int print_step(int npairs, int steptype);
@@ -549,7 +549,6 @@ int check_conv(void)
   file30_init();
   energy = file30_rd_ecorr();
   file30_close();
-  energy += CalcInfo.enuc;
 
   /* check for convergence */
   conv_rms_grad = pow(10.0, -(Params.rms_grad_convergence));
