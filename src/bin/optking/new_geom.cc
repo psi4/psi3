@@ -24,7 +24,7 @@ double **compute_G(double **B, int num_intcos, cartesians &carts);
 
 void new_geom(cartesians &carts, internals &simples, salc_set &symm,
        double *dq, int print_to_geom_file, int restart_geom_file,
-       char *disp_label) {
+       char *disp_label, int disp_num, int last_disp) {
   
   int bmat_iter_done,count,i,j,dim_carts,num_atoms;
   double **A, **G, **G_inv, **B, **u, **temp_mat;
@@ -143,22 +143,25 @@ void new_geom(cartesians &carts, internals &simples, salc_set &symm,
   cart_temp.set_coord(x);
   cart_temp.mult(1.0/_bohr2angstroms);
   fprintf(outfile,"\n%s\n",disp_label);
-  cart_temp.print(1,outfile,0,disp_label);
+  cart_temp.print(1,outfile,0,disp_label,0);
 
 
 // write geometry to file30 or geom.dat
   if (print_to_geom_file == 1) {
      FILE *fp_geom;
-     if (restart_geom_file)
+     if (restart_geom_file) {
         ffile(&fp_geom, "geom.dat",0);
+        fprintf(fp_geom, "optking: (\n");
+       }
      else
         ffile(&fp_geom, "geom.dat",1);
-     cart_temp.print(4,fp_geom,restart_geom_file,disp_label);
+     cart_temp.print(4,fp_geom,restart_geom_file,disp_label,disp_num);
+     if(last_disp) fprintf(fp_geom,")\n");
      fclose(fp_geom);
      fflush(outfile);
   }
   else {
-     cart_temp.print(30,outfile,0,disp_label);
+     cart_temp.print(30,outfile,0,disp_label,disp_num);
   }
 
   free(masses);

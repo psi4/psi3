@@ -35,7 +35,8 @@ double **compute_B(int num_atoms, internals &simples, salc_set &symm);
 void delocalize(int num_atoms, internals &simples);
 double **compute_G(double **B, int num_intcos, cartesians &carts);
 void new_geom(cartesians &carts, internals &simples, salc_set &symm, double *dq,
-	      int print_to_geom_file, int restart_geom_file, char *disp_label);
+	      int print_to_geom_file, int restart_geom_file, 
+              char *disp_label, int disp_num, int last_disp);
 void get_optinfo();
 void get_syminfo(internals &simples);
 void empirical_H(internals &simples, salc_set &symm, cartesians &carts);
@@ -68,7 +69,7 @@ int main(void)
   dim_carts = carts.get_num_atoms()*3;
   fprintf(outfile,
     "\nGeometry and gradient from file11.dat in a.u. with masses\n");
-  carts.print(2,outfile,0,disp_label);
+  carts.print(2,outfile,0,disp_label,0);
 
 
 
@@ -298,7 +299,7 @@ int main(void)
     free(f_q);
 
     strcpy(disp_label,"New Cartesian Geometry in a.u.");
-    new_geom(carts,simples,symm,dq,0,0,disp_label);
+    new_geom(carts,simples,symm,dq,0,0,disp_label,0,0);
     free(q); free(dq);
     free_matrix(B,symm.get_num());
     free_matrix(G_inv,symm.get_num());
@@ -359,7 +360,7 @@ int main(void)
         restart_geom_file = 0;
         if (i == 0) restart_geom_file = 1;
         new_geom(carts,simples,all_salcs,displacements[i],1,
-                 restart_geom_file,disp_label);
+                 restart_geom_file,disp_label,i, (i==(num_disps-1)?1:0));
       }
       free_matrix(displacements,num_disps);
     }

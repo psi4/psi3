@@ -15,7 +15,8 @@ class cartesians {
 
   public:
     ~cartesians() {free(atomic_num); free(coord); free(grad); free(mass); }
-    void print(int flag, FILE *fp_out, int new_geom_file, char *disp_label);
+    void print(int flag, FILE *fp_out, int new_geom_file, char *disp_label,
+               int disp_num);
     void set_coord(double *geom) {
       int i;
       for (i=0;i<num_atoms*3;++i)

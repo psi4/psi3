@@ -61,11 +61,30 @@ cartesians::cartesians() {
   char label[MAX_LINELENGTH], line1[MAX_LINELENGTH];
   FILE *fp_11;
   double an,x,y,z,tval;
+  double **geom, *zvals;
 
   if ((fp_11 = fopen("file11.dat","r")) == NULL) {
-      fprintf(outfile, "Error: could not open file11.dat\n");
-      exit(0) ;
+     /* Read geometry data only from file30 */
+     file30_init();
+     geom = file30_rd_geom();
+     num_atoms = file30_rd_natom();
+     zvals = file30_rd_zvals();
+     file30_close();
+
+     coord = new double[3*num_atoms];
+     grad = new double[3*num_atoms];
+     atomic_num = new double[num_atoms];
+     mass = new double[3*num_atoms];
+     for(i=0, count=-1; i < num_atoms; i++) {
+         atomic_num[i] = zvals[i];
+         for(j=0; j < 3; j++) {
+             coord[++count] = geom[i][j];
+           }
+       }
+     free(zvals);
+     free_block(geom);
   }
+  else {  /* Get what you need from file11 */
 
   if (fgets(label, MAX_LINELENGTH, fp_11) == NULL) {
      fprintf(outfile, "Trouble reading first line of file11.dat\n");
@@ -117,6 +136,8 @@ cartesians::cartesians() {
       fgets(line1, MAX_LINELENGTH, fp_11);
    } 
    fclose(fp_11) ;
+
+   } /* else */
 
   /* read masses from input.dat or use default masses */
    count = -1;
@@ -196,7 +217,7 @@ cartesians::cartesians() {
 -----------------------------------------------------------------------------*/
 
 void cartesians :: print(int flag, FILE *fp_out, int new_geom_file,
-char *disp_label) {
+char *disp_label, int disp_num) {
   int i;
   double x,y,z;
   int count = -1;
@@ -232,7 +253,7 @@ char *disp_label) {
      if (new_geom_file) fprintf(fp_out,"%%%%\n");
      fprintf(fp_out,"%% %s\n",disp_label);
      geom_out = get_coord();
-     fprintf(fp_out,"geometry = (\n");
+     fprintf(fp_out,"geometry%1d = (\n", disp_num);
      for (i=0;i<num_atoms;++i)
        fprintf(fp_out,"(%20.10f%20.10f%20.10f)\n",geom_out[3*i],
                geom_out[3*i+1],geom_out[3*i+2] );
