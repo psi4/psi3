@@ -260,7 +260,9 @@ void C_DGEMV(char transa, int m, int n, double alpha, double *A,
 **
 ** \param char uplo:       Indicates whether the matrix A is packed in
 **                         upper ('U' or 'u') or lower ('L' or 'l')
-**                         triangular form
+**                         triangular form.  We reverse what is passed
+**                         before sending it on to Fortran because of 
+**                         the different Fortran/C conventions
 ** \param int n:           The order of the matrix A (number of rows/columns)
 ** \param double alpha:    The scalar alpha.
 ** \param double* A:       A pointer to the beginning of the data in A.
@@ -282,6 +284,12 @@ void C_DSPMV(char uplo, int n, double alpha, double *A,
              int inc_y)
 {
   if (n == 0) return;
+
+  if (uplo != 'U' && uplo != 'u' && uplo != 'L' && uplo != 'l')
+    fprintf(stderr, "C_DSPMV: called with unrecognized option for uplo!\n");
+
+  if (uplo == 'U' || uplo == 'u') uplo = 'L';
+  else uplo = 'U';
 
   F_DSPMV(&uplo,&n,&alpha,A,X,&inc_x,&beta,Y,&inc_y);
 
