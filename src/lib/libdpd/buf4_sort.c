@@ -898,7 +898,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 
 	  row = InBuf->params->rowidx[s][r];
 		  
-	  OutBuf.matrix[h][pq][rs] = InBuf->matrix[h][row][col];
+	  OutBuf.matrix[h][pq][rs] = InBuf->matrix[r_irrep][row][col];
 
 	}
       }

@@ -85,13 +85,20 @@ void T3_AAB(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
   int nrows, ncols, nlinks;
   double dijk, denom;
   double ***W2;
+  int GE, GF, GC, GX3;
+
+  GC = T2AA->file.my_irrep;
+  /* F and E are assumed to have same irrep */
+  GF = GE =  FAA->file.my_irrep;
+  GX3 = GC^GF;
 
   dpd_file2_mat_init(fIJ);
   dpd_file2_mat_init(fAB);
-  dpd_file2_mat_rd(fIJ);
-  dpd_file2_mat_rd(fAB);
   dpd_file2_mat_init(fij);
   dpd_file2_mat_init(fab);
+
+  dpd_file2_mat_rd(fIJ);
+  dpd_file2_mat_rd(fAB);
   dpd_file2_mat_rd(fij);
   dpd_file2_mat_rd(fab);
 
@@ -140,7 +147,7 @@ void T3_AAB(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
 
   /* clear out the old W1 */ 
   for(Gab=0; Gab < nirreps; Gab++) {
-    Gc = Gab ^ Gijk; /* assumes totally symmetric! */
+    Gc = Gab ^ Gijk ^ GX3; /* assumes totally symmetric! */
 
     if(FAA->params->coltot[Gab] && bvirtpi[Gc]) {
       memset(W1[Gab][0], 0, FAA->params->coltot[Gab]*bvirtpi[Gc]*sizeof(double));
@@ -148,17 +155,18 @@ void T3_AAB(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
   }
 
   for(Gd=0; Gd < nirreps; Gd++) {
-    /* +t_JkDc * F_IDAB */
-    Gab = Gid = Gi ^ Gd; /* assumes totally symmetric! */
-    Gc = Gjk ^ Gd;       /* assumes totally symmetric! */
+    /* +C_JkDc * F_IDAB */
+    Gid = Gi ^ Gd; 
+    Gab = Gid ^ GF; 
+    Gc = Gjk ^ Gd ^ GC;
 
     dc = T2AB->col_offset[Gjk][Gd];
     id = FAA->row_offset[Gid][I];
 
-    FAA->matrix[Gid] = dpd_block_matrix(avirtpi[Gd], FAA->params->coltot[Gid]);
+    FAA->matrix[Gid] = dpd_block_matrix(avirtpi[Gd], FAA->params->coltot[Gid^GF]);
     dpd_buf4_mat_irrep_rd_block(FAA, Gid, id, avirtpi[Gd]);
 
-    nrows = FAA->params->coltot[Gid];
+    nrows = FAA->params->coltot[Gid^GF];
     ncols = bvirtpi[Gc];
     nlinks = avirtpi[Gd];
 
@@ -166,19 +174,20 @@ void T3_AAB(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
       C_DGEMM('t','n',nrows, ncols, nlinks, 1.0, FAA->matrix[Gid][0], nrows,
 	      &(T2AB->matrix[Gjk][jk][dc]), ncols, 1.0, W1[Gab][0], ncols);
 
-    dpd_free_block(FAA->matrix[Gid], avirtpi[Gd], FAA->params->coltot[Gid]);
+    dpd_free_block(FAA->matrix[Gid], avirtpi[Gd], FAA->params->coltot[Gid^GF]);
 
-    /* -t_IkDc * F_JDAB */
-    Gab = Gjd = Gj ^ Gd; /* assumes totally symmetric! */
-    Gc = Gik ^ Gd;       /* assumes totally symmetric! */
+    /* -C_IkDc * F_JDAB */
+    Gjd = Gj ^ Gd;
+    Gab = Gjd ^ GF;
+    Gc = Gik ^ Gd ^ GC;     
 
     dc = T2AB->col_offset[Gik][Gd];
     jd = FAA->row_offset[Gjd][J];
 
-    FAA->matrix[Gjd] = dpd_block_matrix(avirtpi[Gd], FAA->params->coltot[Gjd]);
+    FAA->matrix[Gjd] = dpd_block_matrix(avirtpi[Gd], FAA->params->coltot[Gjd^GF]);
     dpd_buf4_mat_irrep_rd_block(FAA, Gjd, jd, avirtpi[Gd]);
 
-    nrows = FAA->params->coltot[Gjd];
+    nrows = FAA->params->coltot[Gjd^GF];
     ncols = bvirtpi[Gc];
     nlinks = avirtpi[Gd];
 
@@ -186,18 +195,19 @@ void T3_AAB(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
       C_DGEMM('t','n',nrows, ncols, nlinks, -1.0, FAA->matrix[Gjd][0], nrows,
 	      &(T2AB->matrix[Gik][ik][dc]), ncols, 1.0, W1[Gab][0], ncols);
 
-    dpd_free_block(FAA->matrix[Gjd], avirtpi[Gd], FAA->params->coltot[Gjd]);
+    dpd_free_block(FAA->matrix[Gjd], avirtpi[Gd], FAA->params->coltot[Gjd^GF]);
   }
   for(Gl=0; Gl < nirreps; Gl++) {
 
-    /* -t_ILAB * E_JkLc */
-    Gab = Gil = Gi ^ Gl; /* assumes totally symmetric! */
-    Gc = Gjk ^ Gl;       /* assumes totally symmetric! */
+    /* -C_ILAB * E_JkLc */
+    Gil = Gi ^ Gl;
+    Gab = Gil ^ GC;
+    Gc = Gjk ^ Gl ^ GE;     
 
     lc = EAB->col_offset[Gjk][Gl];
     il = T2AA->row_offset[Gil][I];
 
-    nrows = T2AA->params->coltot[Gil];
+    nrows = T2AA->params->coltot[Gil^GC];
     ncols = bvirtpi[Gc];
     nlinks = aoccpi[Gl];
 
@@ -206,13 +216,14 @@ void T3_AAB(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
 	      &(EAB->matrix[Gjk][jk][lc]), ncols, 1.0, W1[Gab][0], ncols);
 
     /* +t_JLAB * E_IkLc */
-    Gab = Gjl = Gj ^ Gl; /* assumes totally symmetric! */
-    Gc = Gik ^ Gl;       /* assumes totally symmetric! */
+    Gjl = Gj ^ Gl; 
+    Gab = Gjl ^ GC; 
+    Gc = Gik ^ Gl ^ GE;      
 
     lc = EAB->col_offset[Gik][Gl];
     jl = T2AA->row_offset[Gjl][J];
 
-    nrows = T2AA->params->coltot[Gjl];
+    nrows = T2AA->params->coltot[Gjl^GC];
     ncols = bvirtpi[Gc];
     nlinks = aoccpi[Gl];
 
@@ -223,23 +234,24 @@ void T3_AAB(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
 
   /* Open memory for an alpha-beta-alpha array */
   for(Gab=0; Gab < nirreps; Gab++) {
-    Gc = Gab ^ Gijk; /* assumes totally symmetric! */
+    Gc = Gab ^ Gijk ^ GX3;
 
     W2[Gab] = dpd_block_matrix(FAB->params->coltot[Gab], avirtpi[Gc]);
   }
 
   for(Gd=0; Gd < nirreps; Gd++) {
     /* +t_JkBd * F_IdAc */
-    Gac = Gid = Gi ^ Gd; /* assumes totally symmetric! */
-    Gb = Gjk ^ Gd;       /* assumes totally symmetric! */
+    Gid = Gi ^ Gd; 
+    Gac = Gid ^ GF; 
+    Gb = Gjk ^ Gd ^ GC;      
 
     bd = T2AB->col_offset[Gjk][Gb];
     id = FAB->row_offset[Gid][I];
 
-    FAB->matrix[Gid] = dpd_block_matrix(bvirtpi[Gd], FAB->params->coltot[Gid]);
+    FAB->matrix[Gid] = dpd_block_matrix(bvirtpi[Gd], FAB->params->coltot[Gid^GF]);
     dpd_buf4_mat_irrep_rd_block(FAB, Gid, id, bvirtpi[Gd]);
 
-    nrows = FAB->params->coltot[Gid];
+    nrows = FAB->params->coltot[Gid^GF];
     ncols = avirtpi[Gb];
     nlinks = bvirtpi[Gd];
 
@@ -247,19 +259,20 @@ void T3_AAB(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
       C_DGEMM('t','t',nrows, ncols, nlinks, 1.0, FAB->matrix[Gid][0], nrows,
 	      &(T2AB->matrix[Gjk][jk][bd]), nlinks, 1.0, W2[Gac][0], ncols);
 
-    dpd_free_block(FAB->matrix[Gid], bvirtpi[Gd], FAB->params->coltot[Gid]);
+    dpd_free_block(FAB->matrix[Gid], bvirtpi[Gd], FAB->params->coltot[Gid^GF]);
 
     /* -t_IkBd * F_JdAc */
-    Gac = Gjd = Gj ^ Gd; /* assumes totally symmetric! */
-    Gb = Gik ^ Gd;       /* assumes totally symmetric! */
+    Gjd = Gj ^ Gd; 
+    Gac = Gjd ^ GF; 
+    Gb = Gik ^ Gd ^ GC;      
 
     bd = T2AB->col_offset[Gik][Gb];
     jd = FAB->row_offset[Gjd][J];
 
-    FAB->matrix[Gjd] = dpd_block_matrix(bvirtpi[Gd], FAB->params->coltot[Gjd]);
+    FAB->matrix[Gjd] = dpd_block_matrix(bvirtpi[Gd], FAB->params->coltot[Gjd^GF]);
     dpd_buf4_mat_irrep_rd_block(FAB, Gjd, jd, bvirtpi[Gd]);
 
-    nrows = FAB->params->coltot[Gjd];
+    nrows = FAB->params->coltot[Gjd^GF];
     ncols = avirtpi[Gb];
     nlinks = bvirtpi[Gd];
 
@@ -267,19 +280,20 @@ void T3_AAB(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
       C_DGEMM('t','t',nrows, ncols, nlinks, -1.0, FAB->matrix[Gjd][0], nrows,
 	      &(T2AB->matrix[Gik][ik][bd]), nlinks, 1.0, W2[Gac][0], ncols);
 
-    dpd_free_block(FAB->matrix[Gjd], bvirtpi[Gd], FAB->params->coltot[Gjd]);
+    dpd_free_block(FAB->matrix[Gjd], bvirtpi[Gd], FAB->params->coltot[Gjd^GF]);
 
   }
 
   for(Gl=0; Gl < nirreps; Gl++) {
     /* -t_IlAc * E_kJlB */
-    Gac = Gil = Gi ^ Gl; /* assumes totally symmetric! */
-    Gb = Gkj ^ Gl;       /* assumes totally symmetric! */
+    Gil = Gi ^ Gl; 
+    Gac = Gil ^ GC; 
+    Gb = Gkj ^ Gl ^ GE;      
 
     lb = EBA->col_offset[Gkj][Gl];
     il = T2AB->row_offset[Gil][I];
 
-    nrows = T2AB->params->coltot[Gil];
+    nrows = T2AB->params->coltot[Gil^GC];
     ncols = avirtpi[Gb];
     nlinks = boccpi[Gl];
 
@@ -288,13 +302,14 @@ void T3_AAB(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
 	      &(EBA->matrix[Gkj][kj][lb]), ncols, 1.0, W2[Gac][0], ncols);
 
     /* +t_JlAc * E_kIlB */
-    Gac = Gjl = Gj ^ Gl; /* assumes totally symmetric! */
-    Gb = Gki ^ Gl;       /* assumes totally symmetric! */
+    Gjl = Gj ^ Gl;
+    Gac = Gjl ^ GC;
+    Gb = Gki ^ Gl ^ GE;     
 
     lb = EBA->col_offset[Gki][Gl];
     jl = T2AB->row_offset[Gjl][J];
 
-    nrows = T2AB->params->coltot[Gjl];
+    nrows = T2AB->params->coltot[Gjl^GC];
     ncols = avirtpi[Gb];
     nlinks = boccpi[Gl];
 
@@ -304,30 +319,31 @@ void T3_AAB(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
   }
 
   /* W(Ac,B) --> W(AB,c) */
-  dpd_3d_sort(W2, W1, nirreps, Gijk, FAB->params->coltot, FAB->params->colidx,
+  dpd_3d_sort(W2, W1, nirreps, Gijk^GX3, FAB->params->coltot, FAB->params->colidx,
 	      FAB->params->colorb, FAB->params->rsym, FAB->params->ssym, avir_off, 
 	      bvir_off, avirtpi, avir_off, FAA->params->colidx, acb, 1);
 
   /* clean out the alpha-beta-alpha intermediate for next set of terms */
   for(Gab=0; Gab < nirreps; Gab++) {
-    Gc = Gab ^ Gijk; /* assumes totally symmetric! */
+    Gc = Gab ^ Gijk ^ GX3; 
     if(FAB->params->coltot[Gab] && avirtpi[Gc]) {
       memset(W2[Gab][0], 0, FAB->params->coltot[Gab]*avirtpi[Gc]*sizeof(double));
     }
   }
 
   for(Gd=0; Gd < nirreps; Gd++) {
-    /* -t_JkAd * F_IdBc */
-    Gbc = Gid = Gi ^ Gd; /* assumes totally symmetric! */
-    Ga = Gjk ^ Gd;       /* assumes totally symmetric! */
+    /* -C_JkAd * F_IdBc */
+    Gid = Gi ^ Gd;
+    Gbc = Gid ^ GF;
+    Ga = Gjk ^ Gd ^ GC;     
 
     ad = T2AB->col_offset[Gjk][Ga];
     id = FAB->row_offset[Gid][I];
 
-    FAB->matrix[Gid] = dpd_block_matrix(bvirtpi[Gd], FAB->params->coltot[Gid]);
+    FAB->matrix[Gid] = dpd_block_matrix(bvirtpi[Gd], FAB->params->coltot[Gid^GF]);
     dpd_buf4_mat_irrep_rd_block(FAB, Gid, id, bvirtpi[Gd]);
 
-    nrows = FAB->params->coltot[Gid];
+    nrows = FAB->params->coltot[Gid^GF];
     ncols = avirtpi[Ga];
     nlinks = bvirtpi[Gd];
 
@@ -335,19 +351,20 @@ void T3_AAB(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
       C_DGEMM('t','t',nrows, ncols, nlinks, -1.0, FAB->matrix[Gid][0], nrows,
 	      &(T2AB->matrix[Gjk][jk][ad]), nlinks, 1.0, W2[Gbc][0], ncols);
 
-    dpd_free_block(FAB->matrix[Gid], bvirtpi[Gd], FAB->params->coltot[Gid]);
+    dpd_free_block(FAB->matrix[Gid], bvirtpi[Gd], FAB->params->coltot[Gid^GF]);
 
     /* +t_IkAd * F_JdBc */
-    Gbc = Gjd = Gj ^ Gd; /* assumes totally symmetric! */
-    Ga = Gik ^ Gd;       /* assumes totally symmetric! */
+    Gjd = Gj ^ Gd;
+    Gbc = Gjd ^ GF;
+    Ga = Gik ^ Gd ^ GC;     
 
     ad = T2AB->col_offset[Gik][Ga];
     jd = FAB->row_offset[Gjd][J];
 
-    FAB->matrix[Gjd] = dpd_block_matrix(bvirtpi[Gd], FAB->params->coltot[Gjd]);
+    FAB->matrix[Gjd] = dpd_block_matrix(bvirtpi[Gd], FAB->params->coltot[Gjd^GF]);
     dpd_buf4_mat_irrep_rd_block(FAB, Gjd, jd, bvirtpi[Gd]);
 
-    nrows = FAB->params->coltot[Gjd];
+    nrows = FAB->params->coltot[Gjd^GF];
     ncols = avirtpi[Ga];
     nlinks = bvirtpi[Gd];
 
@@ -355,19 +372,20 @@ void T3_AAB(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
       C_DGEMM('t','t',nrows, ncols, nlinks, 1.0, FAB->matrix[Gjd][0], nrows,
 	      &(T2AB->matrix[Gik][ik][ad]), nlinks, 1.0, W2[Gbc][0], ncols);
 
-    dpd_free_block(FAB->matrix[Gjd], bvirtpi[Gd], FAB->params->coltot[Gjd]);
+    dpd_free_block(FAB->matrix[Gjd], bvirtpi[Gd], FAB->params->coltot[Gjd^GF]);
 
   }
 
   for(Gl=0; Gl < nirreps; Gl++) {
-    /* +t_IlBc * E_kJlA */
-    Gbc  = Gil = Gi ^ Gl; /* assumes totally symmetric! */
-    Ga = Gkj ^ Gl;       /* assumes totally symmetric! */
+    /* +C_IlBc * E_kJlA */
+    Gil = Gi ^ Gl;
+    Gbc  = Gil ^ GC;
+    Ga = Gkj ^ Gl ^ GE;     
 
     la = EBA->col_offset[Gkj][Gl];
     il = T2AB->row_offset[Gil][I];
 
-    nrows = T2AB->params->coltot[Gil];
+    nrows = T2AB->params->coltot[Gil^GC];
     ncols = avirtpi[Ga];
     nlinks = boccpi[Gl];
 
@@ -375,14 +393,15 @@ void T3_AAB(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
       C_DGEMM('t', 'n', nrows, ncols, nlinks, 1.0, T2AB->matrix[Gil][il], nrows, 
 	      &(EBA->matrix[Gkj][kj][la]), ncols, 1.0, W2[Gbc][0], ncols);
 
-    /* -t_JlBc * E_kIlA */
-    Gbc  = Gjl = Gj ^ Gl; /* assumes totally symmetric! */
-    Ga = Gki ^ Gl;       /* assumes totally symmetric! */
+    /* -C_JlBc * E_kIlA */
+    Gjl = Gj ^ Gl;
+    Gbc = Gjl ^ GC;
+    Ga = Gki ^ Gl ^ GE;     
  
     la = EBA->col_offset[Gki][Gl];
     jl = T2AB->row_offset[Gjl][J];
 
-    nrows = T2AB->params->coltot[Gjl];
+    nrows = T2AB->params->coltot[Gjl^GC];
     ncols = avirtpi[Ga];
     nlinks = boccpi[Gl];
 
@@ -391,12 +410,12 @@ void T3_AAB(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
 	      &(EBA->matrix[Gki][ki][la]), ncols, 1.0, W2[Gbc][0], ncols);
   }
 
-  dpd_3d_sort(W2, W1, nirreps, Gijk, FAB->params->coltot, FAB->params->colidx,
+  dpd_3d_sort(W2, W1, nirreps, Gijk^GX3, FAB->params->coltot, FAB->params->colidx,
 	      FAB->params->colorb, FAB->params->rsym, FAB->params->ssym, avir_off, 
 	      bvir_off, avirtpi, avir_off, FAA->params->colidx, cab, 1);
   /* Close the alpha-beta-alpha array and open a beta-alpha-alpha array */
   for(Gab=0; Gab < nirreps; Gab++) {
-    Gc = Gab ^ Gijk; /* assumes totally symmetric! */
+    Gc = Gab ^ Gijk^GX3; /* assumes totally symmetric! */
 
     dpd_free_block(W2[Gab], FAB->params->coltot[Gab], avirtpi[Gc]);
     W2[Gab] = dpd_block_matrix(FBA->params->coltot[Gab], avirtpi[Gc]);
@@ -404,17 +423,18 @@ void T3_AAB(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
 
   /* Insert cBA terms */
   for(Gd=0; Gd < nirreps; Gd++) {
-    /* -t_JIAD * F_kDcB */
-    Gcb = Gkd = Gk ^ Gd; /* assumes totally symmetric! */
-    Ga = Gji ^ Gd;       /* assumes totally symmetric! */
+    /* -C_JIAD * F_kDcB */
+    Gkd = Gk ^ Gd; 
+    Gcb = Gkd ^ GF; 
+    Ga = Gji ^ Gd ^ GC;      
 
     ad = T2AA->col_offset[Gji][Ga];
     kd = FBA->row_offset[Gkd][K];
 
-    FBA->matrix[Gkd] = dpd_block_matrix(avirtpi[Gd], FBA->params->coltot[Gkd]);
+    FBA->matrix[Gkd] = dpd_block_matrix(avirtpi[Gd], FBA->params->coltot[Gkd^GF]);
     dpd_buf4_mat_irrep_rd_block(FBA, Gkd, kd, avirtpi[Gd]);
 
-    nrows = FBA->params->coltot[Gkd];
+    nrows = FBA->params->coltot[Gkd^GF];
     ncols = avirtpi[Ga];
     nlinks = avirtpi[Gd];
 
@@ -422,19 +442,20 @@ void T3_AAB(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
       C_DGEMM('t', 't', nrows, ncols, nlinks, -1.0, FBA->matrix[Gkd][0], nrows,
 	      &(T2AA->matrix[Gji][ji][ad]), nlinks, 1.0, W2[Gcb][0], ncols);
 
-    dpd_free_block(FBA->matrix[Gkd], avirtpi[Gd], FBA->params->coltot[Gkd]);
+    dpd_free_block(FBA->matrix[Gkd], avirtpi[Gd], FBA->params->coltot[Gkd^GF]);
   }
 
   for(Gl=0; Gl < nirreps; Gl++) {
 
-    /* -t_kLcB * E_JILA */
-    Gcb = Gkl = Gk ^ Gl; /* assumes totally symmetric! */
-    Ga = Gji ^ Gl;       /* assumes totally symmetric! */
+    /* -C_kLcB * E_JILA */
+    Gkl = Gk ^ Gl;
+    Gcb = Gkl ^ GC;
+    Ga = Gji ^ Gl ^ GE;     
 
     la = EAA->col_offset[Gji][Gl];
     kl = T2BA->row_offset[Gkl][K];
 
-    nrows = T2BA->params->coltot[Gkl];
+    nrows = T2BA->params->coltot[Gkl^GC];
     ncols = avirtpi[Ga];
     nlinks = aoccpi[Gl];
 
@@ -443,13 +464,13 @@ void T3_AAB(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
 	      &(EAA->matrix[Gji][ji][la]), ncols, 1.0, W2[Gcb][0], ncols);
   }
 
-  dpd_3d_sort(W2, W1, nirreps, Gijk, FBA->params->coltot, FBA->params->colidx,
+  dpd_3d_sort(W2, W1, nirreps, Gijk^GX3, FBA->params->coltot, FBA->params->colidx,
 	      FBA->params->colorb, FBA->params->rsym, FBA->params->ssym, bvir_off, 
 	      avir_off, avirtpi, avir_off, FAA->params->colidx, cba, 1);
 
   /* clean out the beta-alpha-alpha intermediate for next set of terms */
   for(Gab=0; Gab < nirreps; Gab++) {
-    Gc = Gab ^ Gijk; /* assumes totally symmetric! */
+    Gc = Gab ^ Gijk ^ GX3;
     if(FBA->params->coltot[Gab] && avirtpi[Gc]) {
       memset(W2[Gab][0], 0, FBA->params->coltot[Gab]*avirtpi[Gc]*sizeof(double));
     }
@@ -458,16 +479,17 @@ void T3_AAB(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
   for(Gd=0; Gd < nirreps; Gd++) {
 
     /* +t_JIBD * F_kDcA */
-    Gca = Gkd = Gk ^ Gd; /* assumes totally symmetric! */
-    Gb = Gji ^ Gd;       /* assumes totally symmetric! */
+    Gkd = Gk ^ Gd;
+    Gca = Gkd ^ GF;
+    Gb = Gji ^ Gd ^ GC;     
 
     bd = T2AA->col_offset[Gji][Gb];
     kd = FBA->row_offset[Gkd][K];
 
-    FBA->matrix[Gkd] = dpd_block_matrix(avirtpi[Gd], FBA->params->coltot[Gkd]);
+    FBA->matrix[Gkd] = dpd_block_matrix(avirtpi[Gd], FBA->params->coltot[Gkd^GF]);
     dpd_buf4_mat_irrep_rd_block(FBA, Gkd, kd, avirtpi[Gd]);
 
-    nrows = FBA->params->coltot[Gkd];
+    nrows = FBA->params->coltot[Gkd^GF];
     ncols = avirtpi[Gb];
     nlinks = avirtpi[Gd];
 
@@ -475,19 +497,20 @@ void T3_AAB(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
       C_DGEMM('t', 't', nrows, ncols, nlinks, 1.0, FBA->matrix[Gkd][0], nrows,
 	      &(T2AA->matrix[Gji][ji][bd]), nlinks, 1.0, W2[Gca][0], ncols);
 
-    dpd_free_block(FBA->matrix[Gkd], avirtpi[Gd], FBA->params->coltot[Gkd]);
+    dpd_free_block(FBA->matrix[Gkd], avirtpi[Gd], FBA->params->coltot[Gkd^GF]);
   }
 
   for(Gl=0; Gl < nirreps; Gl++) {
 
-    /* +t_kLcA * E_JILB */
-    Gca = Gkl = Gk ^ Gl; /* assumes totally symmetric! */
-    Gb = Gji ^ Gl;       /* assumes totally symmetric! */
+    /* +C_kLcA * E_JILB */
+    Gkl = Gk ^ Gl;
+    Gca = Gkl ^ GC;
+    Gb = Gji ^ Gl ^ GE;     
 
     lb = EAA->col_offset[Gji][Gl];
     kl = T2BA->row_offset[Gkl][K];
 
-    nrows = T2BA->params->coltot[Gkl];
+    nrows = T2BA->params->coltot[Gkl^GC];
     ncols = avirtpi[Gb];
     nlinks = aoccpi[Gl];
 
@@ -496,12 +519,12 @@ void T3_AAB(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
 	      &(EAA->matrix[Gji][ji][lb]), ncols, 1.0, W2[Gca][0], ncols);
   }
 
-  dpd_3d_sort(W2, W1, nirreps, Gijk, FBA->params->coltot, FBA->params->colidx,
+  dpd_3d_sort(W2, W1, nirreps, Gijk^GX3, FBA->params->coltot, FBA->params->colidx,
 	      FBA->params->colorb, FBA->params->rsym, FBA->params->ssym,
 	      bvir_off, avir_off, avirtpi, avir_off, FAA->params->colidx, bca, 1);
 
   for(Gab=0; Gab < nirreps; Gab++) {
-    Gc = Gab ^ Gijk; /* assumes totally symmetric! */
+    Gc = Gab ^ Gijk ^ GX3; /* assumes totally symmetric! */
 
     for(ab=0; ab < FAA->params->coltot[Gab]; ab++) {
       A = FAA->params->colorb[Gab][ab][0];
@@ -527,15 +550,15 @@ void T3_AAB(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
 
 
   for(Gab=0; Gab < nirreps; Gab++) {
-    Gc = Gab ^ Gijk; /* assumes totally symmetric! */
+    Gc = Gab ^ Gijk ^ GX3; 
     dpd_free_block(W2[Gab], FBA->params->coltot[Gab], avirtpi[Gc]);
   }
 
   free(W2);
 
   dpd_file2_mat_close(fIJ);
-  dpd_file2_mat_close(fAB);
   dpd_file2_mat_close(fij);
+  dpd_file2_mat_close(fAB);
   dpd_file2_mat_close(fab);
 
   for(h=0; h < nirreps; h++) {
