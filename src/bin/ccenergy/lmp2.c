@@ -5,10 +5,13 @@
 
 void lmp2(void)
 {
-  int i, j, a, b, iter, conv, row, col, nocc;
-  double energy, rms;
+  int i, j, a, b, ij, ab, iter, conv, row, col, nocc, nvir;
+  double energy, rms, weak_pair_energy;
   dpdbuf4 T2, newT2, D, D2;
   dpdfile2 fij, fab;
+
+  nocc = moinfo.occpi[0];
+  nvir = moinfo.virtpi[0];
 
   /* Clean out diagonal element of occ-occ Fock matrix */
   dpd_file2_init(&fij, CC_OEI, 0, 0, 0, "fIJ");
@@ -18,7 +21,7 @@ void lmp2(void)
   dpd_file2_init(&fij, CC_OEI, 0, 0, 0, "fIJ (non-diagonal)");
   dpd_file2_mat_init(&fij);
   dpd_file2_mat_rd(&fij);
-  for(i=0; i < moinfo.occpi[0]; i++) fij.matrix[0][i][i] = 0.0;
+  for(i=0; i < nocc; i++) fij.matrix[0][i][i] = 0.0;
   dpd_file2_mat_wrt(&fij);
   dpd_file2_close(&fij);
 
@@ -110,4 +113,28 @@ void lmp2(void)
     fprintf(outfile, "\n\tLMP2 Iterative procedure failed.\n");
     exit(2);
   }
+
+  /* Compute the MP2 weak-pair energy */
+  dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D 2<ij|ab> - <ij|ba>");
+  dpd_buf4_mat_irrep_init(&D, 0);
+  dpd_buf4_mat_irrep_rd(&D, 0);
+  dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New LMP2 tIjAb");
+  dpd_buf4_mat_irrep_init(&T2, 0);
+  dpd_buf4_mat_irrep_rd(&T2, 0);
+
+  weak_pair_energy = 0.0;
+  for(ij=0; ij < nocc*nocc; ij++) {
+    if(local.weak_pairs[ij]) {
+      for(ab=0; ab < nvir*nvir; ab++) 
+	weak_pair_energy += D.matrix[0][ij][ab] * T2.matrix[0][ij][ab];
+    }
+  }
+
+  dpd_buf4_mat_irrep_close(&T2, 0);
+  dpd_buf4_close(&T2);
+  dpd_buf4_mat_irrep_close(&D, 0);
+  dpd_buf4_close(&D);
+
+  fprintf(outfile, "\n\tMP2 Weak Pair Energy = %20.14f\n\n", weak_pair_energy);
+
 }

@@ -414,7 +414,6 @@ void local_init(void)
     print_mat(Rt_full, nso, nso, outfile);
   */
 
-  fprintf(outfile, "\n");
   /* Compute the norm of each PAO */
   for(i=0; i < nso; i++) {
     norm = 0.0;
@@ -423,7 +422,7 @@ void local_init(void)
     }
     norm = sqrt(norm);
     if(norm < 0.1) {
-      fprintf(outfile, "\tNorm of orbital %d = %20.12f...deleteing", i, norm);
+      fprintf(outfile, "\tNorm of orbital %d = %20.12f...deleteing\n", i, norm);
       for(j=0; j < nso; j++) Rt_full[j][i] = 0.0;
     }
   }
