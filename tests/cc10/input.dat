@@ -1,18 +1,18 @@
 psi: (
-  label = "ROHF-CCSD(T)/cc-pVDZ 2Sigma+ CN"
+  label = "ROHF-CCSD/cc-pVDZ 2Sigma+ CN"
   jobtype = sp
-  wfn = mp2 
-  reference = uhf
+  wfn = ccsd 
+  reference = rohf
   multi = 2
   dertype = none
 
   docc = (4 0 1 1)
   socc = (1 0 0 0)
-  %freeze_core = true
+  freeze_core = true
 
-  maxiter = 500
+  maxiter = 100
 
-  basis = "STO-3G"
+  basis = "cc-pVDZ"
   zmat = (
    C
    N 1 R
@@ -20,8 +20,4 @@ psi: (
   zvars = (
    R 1.175
   )
-)
-
-mp2: (
-  opdm = true
 )
