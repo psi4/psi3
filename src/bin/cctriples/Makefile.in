@@ -12,7 +12,7 @@ LDLIBS += $(BLAS)
 PSILIBS = -ldpd -lqt -lfile30 -liwl -lciomr -lpsio -lipv1
 
 CSRC = \
-triples.c get_moinfo.c cache.c setup.c \
+triples.c get_moinfo.c cache.c \
 init_3d_array.c \
 ET_RHF.c ET_AAA.c ET_AAB.c ET_ABB.c ET_BBB.c \
 ET_RHF_noddy.c W_sort.c ET_RHF_allijk.c
