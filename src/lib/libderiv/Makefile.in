@@ -39,7 +39,8 @@ rm -f Makefile; \
 cp Makefile.libderiv Makefile; \
 ${MAKE} install; \
 cd ..; \
-rm -fR $(TEMP_DIR)
+rm -fR $(TEMP_DIR) \
+rm -fR $(SCRATCH)
 
 all: install
 

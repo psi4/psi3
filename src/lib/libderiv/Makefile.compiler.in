@@ -8,7 +8,7 @@ vpath %.a $(top_objdir)/lib:$(libdir)
 BINOBJ = $(BUILD_SRC:%.c=%.o)
 
 $(BUILD_BINARY): $(BINOBJ) $(PSILIBS) $(LDLIBS)
-	$(LD) $(LDFLAGS) -o $@ $^
+	$(LD) $^ $(LDFLAGS) -o $@
 
 %.$(OBJSUF): %.c
 	$(CC) $(CFLAGS) -c $< $(OUTPUT_OPTION)
