@@ -422,7 +422,9 @@ struct params {
    int have_special_conv;  /* have a special convergence value from the
                               command line or the DETCASMAN driver? */
    double special_conv;    /* special convergence value */
-   };
+   int nthreads;           /* number of threads to use in sigma routines */
+   int pthreads;           /* 1(0) if use/not multithreading */
+};
 
 
 
@@ -449,3 +451,54 @@ struct ci_blks {
    int *last_iablk;           /* last blocknum for a given Ia irrep */
    };
 
+/*
+** Structure for pthreads information in s3v.c (s3_block_vdiag)
+**
+*/
+struct pthreads_s3diag {
+    int nas;                  /* number of alpha strings */
+    int jlen;                 /* number of single-excitations */
+    int ij;                   /* compound orbital index */
+    double **Cprime;          /* ptr to Cprime scratch matrix */
+    int Ja_list;              /* strings block offset */
+    double *Tptr;             /* Temp ptr */
+    double **S;               /* Sigma vector */
+    int *R;                   /* ket determinants for ij */
+    int thread_id;            /* thread id number */
+    struct stringwr *Ia_local; /* ptr to string replacement struct */
+    int Ia_idx_local;         /* index of c block string */
+};
+
+struct pthreads_s2vfci {
+    struct stringwr **alplist;
+    struct stringwr **betlist;
+    double **C;
+    double **S;
+    double *oei;
+    double *tei;
+    int nlists;
+    int nas;
+    int nbs;
+    int Ia_list;
+    int Ja_list;
+    int Ja_list_nas;
+    struct stringwr *Ia;
+    unsigned int Ia_idx;
+};
+
+struct pthreads_s1vfci {
+    struct stringwr **alplist;
+    struct stringwr **betlist;
+    double **C;
+    double **S;
+    double *oei;
+    double *tei;
+    int nlists;
+    int nas;
+    int nbs;
+    int Ib_list;
+    int Jb_list;
+    int Jb_list_nbs;
+    struct stringwr *Ib;
+    unsigned int Ib_idx;
+};    

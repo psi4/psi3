@@ -78,6 +78,11 @@ extern "C" {
       int **Ridx[2], signed char **Sgn[2], double **C, double **S,
       double *tei, int nas, int nbs);
    #else
+   extern void s1_block_vfci_thread(struct stringwr **alplist, 
+      struct stringwr **betlist,
+      double **C, double **S, double *oei, double *tei, double *F,
+      int nlists, int nas, int nbs, int Ib_list, int Jb_list, 
+      int Jb_list_nbs);
    extern void s1_block_vfci(struct stringwr **alplist, 
       struct stringwr **betlist,
       double **C, double **S, double *oei, double *tei, double *F,
@@ -87,17 +92,30 @@ extern "C" {
       struct stringwr **betlist, 
       double **C, double **S, double *oei, double *tei, double *F, 
       int nlists, int nas, int nbs, int sbc, int cbc, int cnbs);
+   extern void s1_block_vras_thread(struct stringwr **alplist, 
+      struct stringwr **betlist, 
+      double **C, double **S, double *oei, double *tei, double *F, 
+      int nlists, int nas, int nbs, int sbc, int cbc, int cnbs);
    extern void s1_block_vras_rotf(int *Cnt[2], int **Ij[2], int **Oij[2],
       int **Ridx[2], signed char **Sgn[2], unsigned char **Toccs,
       double **C, double **S,
       double *oei, double *tei, double *F, int nlists, int nas, int nbs,
       int Ib_list, int Jb_list, int Jb_list_nbs);
+   extern void s2_block_vfci_thread(struct stringwr **alplist, 
+      struct stringwr **betlist, 
+      double **C, double **S, double *oei, double *tei, double *F,
+      int nlists, int nas, int nbs, int Ia_list, int Ja_list, 
+      int Ja_list_nas);
    extern void s2_block_vfci(struct stringwr **alplist, 
       struct stringwr **betlist, 
       double **C, double **S, double *oei, double *tei, double *F,
       int nlists, int nas, int nbs, int Ia_list, int Ja_list, 
       int Ja_list_nas);
    extern void s2_block_vras(struct stringwr **alplist, 
+      struct stringwr **betlist, 
+      double **C, double **S, double *oei, double *tei, double *F,
+      int nlists, int nas, int nbs, int sac, int cac, int cnas);
+   extern void s2_block_vras_thread(struct stringwr **alplist, 
       struct stringwr **betlist, 
       double **C, double **S, double *oei, double *tei, double *F,
       int nlists, int nas, int nbs, int sac, int cac, int cnas);
@@ -677,39 +695,47 @@ void sigma_block(struct stringwr **alplist, struct stringwr **betlist,
 {
 
    /* SIGMA2 CONTRIBUTION */
-   if (s2_contrib[sblock][cblock]) {
-      #ifndef OLD_CDS_ALG
+  if (s2_contrib[sblock][cblock]) {
+#ifndef OLD_CDS_ALG
       if (fci) {
-         s2_block_vfci(alplist, betlist, cmat, smat, oei, tei, F, cnac,
-            nas, nbs, sac, cac, cnas);
-         }
+          if (Parameters.pthreads)
+              s2_block_vfci_thread(alplist, betlist, cmat, smat, oei, tei, F, cnac,
+                                   nas, nbs, sac, cac, cnas);
+          else
+              s2_block_vfci(alplist, betlist, cmat, smat, oei, tei, F, cnac,
+                            nas, nbs, sac, cac, cnas);
+        }
       else {
-         if (Parameters.repl_otf) {
-            s2_block_vras_rotf(Jcnt, Jij, Joij, Jridx, Jsgn,
-               Toccs, cmat, smat, oei, tei, F, cnac, nas, nbs, sac, cac, cnas);
+          if (Parameters.repl_otf) {
+              s2_block_vras_rotf(Jcnt, Jij, Joij, Jridx, Jsgn,
+                                 Toccs, cmat, smat, oei, tei, F, cnac, nas, nbs, sac, cac, cnas);
             }
-         else {
-            s2_block_vras(alplist, betlist, cmat, smat, 
-               oei, tei, F, cnac, nas, nbs, sac, cac, cnas);
+          else if (Parameters.pthreads) {
+            s2_block_vras_thread(alplist, betlist, cmat, smat, 
+                            oei, tei, F, cnac, nas, nbs, sac, cac, cnas);  
             }
-         }
-      #else
+          else {
+              s2_block_vras(alplist, betlist, cmat, smat, 
+                            oei, tei, F, cnac, nas, nbs, sac, cac, cnas);
+            }
+        }
+#else
       if (fci) {
-         s2_block_fci(alplist, betlist, cmat, smat, oei, tei, F, cnac,
-            nas, nbs, sac, cac, cnas);
-         }
+          s2_block_fci(alplist, betlist, cmat, smat, oei, tei, F, cnac,
+                       nas, nbs, sac, cac, cnas);
+        }
       else {
-         if (Parameters.repl_otf) {
-            s2_block_ras_rotf(Jcnt, Jij, Joij, Jridx, Jsgn,
-               Toccs, cmat, smat, oei, tei, F, cnac, nas, nbs, sac, cac, cnas);
+          if (Parameters.repl_otf) {
+              s2_block_ras_rotf(Jcnt, Jij, Joij, Jridx, Jsgn,
+                                Toccs, cmat, smat, oei, tei, F, cnac, nas, nbs, sac, cac, cnas);
             }
-         else {
-            s2_block_ras(alplist, betlist, cmat, smat, 
-               oei, tei, F, cnac, nas, nbs, sac, cac, cnas);
+          else {
+              s2_block_ras(alplist, betlist, cmat, smat, 
+                           oei, tei, F, cnac, nas, nbs, sac, cac, cnas);
             }
-         }
-      #endif
-      } /* end sigma2 */
+        }
+#endif
+    } /* end sigma2 */
 
    
    #ifdef DEBUG
@@ -722,9 +748,13 @@ void sigma_block(struct stringwr **alplist, struct stringwr **betlist,
    if (!Ms0 || (sac != sbc)) {
       if (s1_contrib[sblock][cblock]) {
          #ifndef OLD_CDS_ALG
-         if (fci) { 
-            s1_block_vfci(alplist, betlist, cmat, smat, 
-               oei, tei, F, cnbc, nas, nbs, sbc, cbc, cnbs);
+          if (fci) { 
+              if (Parameters.pthreads)
+                  s1_block_vfci_thread(alplist, betlist, cmat, smat, oei, tei, F, cnbc,
+                                       nas, nbs, sbc, cbc, cnbs);
+              else
+                  s1_block_vfci(alplist, betlist, cmat, smat, 
+                                oei, tei, F, cnbc, nas, nbs, sbc, cbc, cnbs);
             } 
          else {
             if (Parameters.repl_otf) {
@@ -732,6 +762,10 @@ void sigma_block(struct stringwr **alplist, struct stringwr **betlist,
                   Toccs, cmat, smat, oei, tei, F, cnbc, nas, nbs,
                   sbc, cbc, cnbs);
                }
+            else if (Parameters.pthreads) {
+               s1_block_vras_thread(alplist, betlist, cmat, smat, oei, tei, F, cnbc, 
+                  nas, nbs, sbc, cbc, cnbs);
+              }
             else {
                s1_block_vras(alplist, betlist, cmat, smat, oei, tei, F, cnbc, 
                   nas, nbs, sbc, cbc, cnbs);

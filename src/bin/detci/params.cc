@@ -181,6 +181,9 @@ void get_parameters(void)
    Parameters.tpdm_file = PSIF_MO_TPDM;
    Parameters.tpdm_print = 0;
 
+   Parameters.nthreads = 1;
+   Parameters.pthreads = 0;
+   
    errcod = ip_data("EX_LVL","%d",&(Parameters.ex_lvl),0);
    errcod = ip_data("VAL_EX_LVL","%d",&(Parameters.val_ex_lvl),0);
    errcod = ip_data("MAX_DET","%d",&(Parameters.max_dets),0);
@@ -484,6 +487,11 @@ void get_parameters(void)
      }
    if (Parameters.guess_vector == PARM_GUESS_VEC_UNIT)
      Parameters.h0blocksize = Parameters.h0guess_size = 1;
+
+   errcod = ip_data("NTHREADS", "%d", &(Parameters.nthreads),0);
+   if (Parameters.nthreads < 1) Parameters.nthreads = 1;
+   errcod = ip_boolean("PTHREADS",&(Parameters.pthreads),0);
+   if (!Parameters.pthreads) Parameters.nthreads = 1;
 }
 
 
@@ -662,8 +670,10 @@ void print_parameters(void)
            Parameters.mpn ? "yes":"no", Parameters.mpn_schmidt ? "yes":"no");
    fprintf(outfile, "   WIGNER        =   %6s      ZERO BLOCKS  =   %6s\n", 
            Parameters.wigner ? "yes":"no", Parameters.zero_blocks ? "yes":"no");
-   fprintf(outfile, "   PERT Z        =   %1.4f\n",
-           Parameters.perturbation_parameter);
+   fprintf(outfile, "   PERT Z        =   %1.4f      NTHREADS     =        %d\n",
+           Parameters.perturbation_parameter, Parameters.nthreads);
+   fprintf(outfile, "   PTHREADS      =   %6s\n",
+           Parameters.pthreads ? "yes":"no");
    fprintf(outfile, "\n   FILES         =     %3d %3d %3d %3d\n",
       Parameters.first_hd_tmp_unit, Parameters.first_c_tmp_unit,
       Parameters.first_s_tmp_unit, Parameters.first_d_tmp_unit);

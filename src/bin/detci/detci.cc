@@ -33,6 +33,9 @@ extern "C" {
    #include "structs.h"
    #include "globals.h"
    #include "ci_tol.h"
+   #include <pthread.h>
+   #include "tpool.h"
+
 
 
    /* C "GLOBAL" VARIABLES FOR THIS MODULE */
@@ -145,6 +148,9 @@ main(int argc, char *argv[])
    set_ras_parms();             /* set fermi levels and the like            */ 
    fflush(outfile); 
    form_strings();              /* form the alpha/beta strings              */
+   if (Parameters.pthreads)
+     tpool_init(&thread_pool, Parameters.nthreads, CalcInfo.num_alp_str, 0);
+                                /* initialize thread pool */
    fflush(outfile); 
 
    if (Parameters.istop) {      /* Print size of space, other stuff, only   */
@@ -178,6 +184,7 @@ main(int argc, char *argv[])
 
    if (Parameters.opdm) form_opdm();
    if (Parameters.tpdm) form_tpdm();
+   if (Parameters.pthreads) tpool_destroy(thread_pool, 1);
    if (Parameters.print_lvl > 0) quote();
    close_io();
    return(0);
