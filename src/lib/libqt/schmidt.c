@@ -1,5 +1,6 @@
 /*!
   \file schmidt.c
+  \ingroup (QT)
 */
  
 #include <stdio.h>
@@ -22,6 +23,7 @@
 **   \param cols = columns of A
 **
 ** Returns: none
+** \ingroup (QT)
 */
 void schmidt(double **A, int rows, int cols, FILE *outfile)
 {

@@ -1,5 +1,6 @@
 /*!
- \file invert.c
+  \file invert.c
+  \ingroup (QT)
 */
 
 #include <stdio.h>
@@ -29,7 +30,7 @@
 ** 
 ** Returns: double (determinant)
 ** Note: The original matrix is modified by invert_matrix()
-**
+** \ingroup (QT)
 */
 double invert_matrix(double **a, double **y, int N, FILE *outfile)
 {

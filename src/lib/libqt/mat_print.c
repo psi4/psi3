@@ -3,12 +3,13 @@
 
 /*!
   \file mat_print.c
+  \ingroup (QT)
 */
 
 /*!
 ** mat_print()
-** This function prints a matrix to a file
-**
+** This function prints a matrix to a file in a formatted style
+** \ingroup (QT)
 */
 int mat_print(double **matrix, int rows, int cols, FILE *outfile)
 {

@@ -1,4 +1,7 @@
+/*! \defgroup QT libqt: The Quantum-Trio Miscellaneous Library */
+
 /*! \file blas_intfc.c
+    \ingroup (QT)
     \brief The PSI3 BLAS interface routines
 
  Interface to the BLAS routines
@@ -55,9 +58,10 @@ extern void F_DGEMV(char *transa, int *m, int *n, double *alpha, double *A,
 extern double F_DDOT(int *n, double *x, int *incx, double *y, int *incy);
 
 /*! 
-**  C_DAXPY()
-**  This function performs y = a * x + y. 
-**  Steps every inc_x in x and every inc_y in y (normally both 1).
+** C_DAXPY()
+** This function performs y = a * x + y. 
+** Steps every inc_x in x and every inc_y in y (normally both 1).
+** \ingroup (QT)
 */
 void C_DAXPY(int length, double a, double *x, int inc_x, 
              double *y, int inc_y)
@@ -66,9 +70,10 @@ void C_DAXPY(int length, double a, double *x, int inc_x,
 }
 
 /*!
-**  C_DCOPY()
-**  This function copies x into y.
-**  Steps every inc_x in x and every inc_y in y (normally both 1).
+** C_DCOPY()
+** This function copies x into y.
+** Steps every inc_x in x and every inc_y in y (normally both 1).
+** \ingroup (QT)
 */
 void C_DCOPY(int length, double *x, int inc_x, 
              double *y, int inc_y)
@@ -78,8 +83,9 @@ void C_DCOPY(int length, double *x, int inc_x,
 
 
 /*!
-**  C_DSCAL()
-**  This function scales a vector by a real scalar.
+** C_DSCAL()
+** This function scales a vector by a real scalar.
+** \ingroup (QT)
 */
 void C_DSCAL(int n, double alpha, double *vec, int inc)
 {
@@ -88,15 +94,16 @@ void C_DSCAL(int n, double alpha, double *vec, int inc)
 
 
 /*!
-**  C_DROT()
-**  This function calculates plane Givens rotation for vectors
-**  x,y and angle theta.  x = x*cos + y*sin, y = -x*sin + y*cos.
+** C_DROT()
+** This function calculates plane Givens rotation for vectors
+** x,y and angle theta.  x = x*cos + y*sin, y = -x*sin + y*cos.
 **
 **  \param x: vector x
 **  \param y: vector Y
 **  \param tot: length of x,y
 **  \param incx: increment for x
 **  \param incy: increment for y
+** \ingroup (QT)
 */
 void C_DROT(int ntot, double *x, int incx, double *y, int incy,
             double costheta, double sintheta)
@@ -175,6 +182,7 @@ void C_DROT(int ntot, double *x, int incx, double *y, int incy,
 **
 ** \param int ncc:    On entry, the second dimension  of array C; 
 **                    ncc >=MAX(1,n).  On exit, ncc is unchanged.
+** \ingroup (QT)
 */
 void C_DGEMM(char transa, char transb, int m, int n, int k, double alpha,
            double *A, int nca, double *B, int ncb, double beta, double *C,
@@ -221,6 +229,7 @@ void C_DGEMM(char transa, char transb, int m, int n, int k, double alpha,
 ** 
 ** Interface written by TD Crawford and EF Valeev.
 ** June 1999.
+** \ingroup (QT)
 */
 
 void C_DGEMV(char transa, int m, int n, double alpha, double *A, 
@@ -251,6 +260,7 @@ void C_DGEMV(char transa, int m, int n, double alpha, double *A,
 **
 ** Interface written by ST Brown.
 ** July 2000
+** \ingroup (QT)
 */
 
 double C_DDOT(int n, double *X, int inc_x, double *Y, int inc_y)

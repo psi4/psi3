@@ -1,5 +1,6 @@
 /*!
   \file fill_sym_matrix.c
+  \ingroup (QT)
 */
 
 /*!
@@ -12,6 +13,7 @@
 **
 ** Returns: 
 **    none
+** \ingroup (QT)
 */
 void fill_sym_matrix(double **A, int size)
 {

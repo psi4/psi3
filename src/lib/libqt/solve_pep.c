@@ -1,5 +1,6 @@
 /*!
   \file solve_pep.c
+  \ingroup (QT)
 */
 
 #include <stdio.h>
@@ -16,6 +17,8 @@
 **  \param S     =  overlap between states 1 & 2
 **  \param evals =  pointer to array to hold 2 eigenvalues
 **  \param evecs =  matrix to hold 2 eigenvectors
+**
+** \ingroup (QT)
 */
 void solve_2x2_pep(double **H, double S, double *evals, double **evecs)
 {

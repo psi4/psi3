@@ -1,6 +1,7 @@
 /*!
   \file eri.c
   By Edward Valeev
+  \ingroup (QT)
 */
 
 #include <stdio.h>
@@ -27,8 +28,9 @@ static void calc_f(double *, int, double);
   over primitive Gaussian functions. The argument 
   list is self-explanatory, except for norm_flag:
 
-  \param int norm_flag:  tells what kind of normalization to use,
+  \param norm_flag:  tells what kind of normalization to use,
          0 - no normalization, >0 - normalized ERI
+  \ingroup (QT)
 */
 
 double eri(unsigned int l1, unsigned int m1, unsigned int n1, 
@@ -252,10 +254,12 @@ double eri(unsigned int l1, unsigned int m1, unsigned int n1,
 /*!
   calc_f()
 
- This function computes infamous integral Fn(t). For its definition
- see Obara and Saika paper, or Shavitt's chapter in the
- Methods in Computational Physics book (see reference below).
- This piece of code is from Dr. Justin Fermann's program CINTS 
+  This function computes infamous integral Fn(t). For its definition
+  see Obara and Saika paper, or Shavitt's chapter in the
+  Methods in Computational Physics book (see reference below).
+  This piece of code is from Dr. Justin Fermann's program CINTS 
+
+ \ingroup (QT)
 */
 void calc_f(double *F, int n, double t)
 {
@@ -304,8 +308,11 @@ void calc_f(double *F, int n, double t)
 
 /*!
   norm_const()
+
+  \ingroup (QT)
 */  
-double norm_const(unsigned int l1, unsigned int m1, unsigned int n1, double alpha1, double A[3])
+double norm_const(unsigned int l1, unsigned int m1, unsigned int n1, 
+                  double alpha1, double A[3])
 {
   int i;
   

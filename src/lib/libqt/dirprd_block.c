@@ -1,5 +1,6 @@
 /*!
   \file dirprd_block.c
+  \ingroup (QT)
 */
 
 /*!
@@ -9,10 +10,12 @@
   This function takes two block matrices A and B and multiplies
   each element of B by the corresponding element of A
 
-  \param double **A: block matrix A
-  \param double **B: block matrix B 
-  \param int nrows: number of rows of A and B
-  \param int ncols: number of columns of A and B
+  \param **A: block matrix A
+  \param **B: block matrix B 
+  \param nrows: number of rows of A and B
+  \param ncols: number of columns of A and B
+
+  \ingroup (QT)
 */
 void dirprd_block(double **A, double **B, int rows, int cols)
 {

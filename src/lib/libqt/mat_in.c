@@ -2,6 +2,7 @@
 
 /*!
   \file mat_in.c
+  \ingroup (QT)
 */
 
 /*!
@@ -18,6 +19,7 @@
 ** Returns: 
 **    number of rows read
 **    Also modifies stat to = error code (0 = ok, 1 = error)
+** \ingroup (QT)
 */
 
 int mat_in(FILE *fp, double **array, int width, int max_length, int *stat) 

@@ -1,5 +1,6 @@
 /*!
   \file filter.c
+  \ingroup (QT)
 */
 
 /*!
@@ -13,6 +14,7 @@
 **
 ** Note: Based on the code written by CDS in the original
 ** iwl_rd_one_all_act() function in LIBIWL.
+** \ingroup (QT)
 */
 
 void filter(double *input, double *output, int *ioff, int norbs, 

@@ -1,5 +1,6 @@
 /*!
   \file ras_set.c
+  \ingroup (QT)
 */
 
 #include <stdio.h>
@@ -38,11 +39,11 @@
 **                        in its own RAS space (RAS II), as appropriate for CC.
 **
 ** Returns: 1 for success, 0 otherwise
-**
+** \ingroup (QT)
 */
 int ras_set(int nirreps, int nbfso, int freeze_core, int *orbspi,
-      int *docc, int *socc, int *frdocc, int *fruocc, 
-      int **ras_opi, int *order, int ras_type)
+            int *docc, int *socc, int *frdocc, int *fruocc, 
+            int **ras_opi, int *order, int ras_type)
 {
   int i, irrep, point, tmpi, cnt=0;
   int errcod, errbad, parsed_ras1=0, parsed_ras2=0, do_ras4;

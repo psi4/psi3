@@ -1,5 +1,6 @@
 /*!
   \file pople.c
+  \ingroup (QT)
 */
 
 #include <stdio.h>
@@ -23,6 +24,7 @@
 **  \param tolerance = cutoff threshold for norm of expansion vector.
 **
 ** Returns: none
+** \ingroup (QT)
 */
 int pople(double **A, double *x, int dimen, int num_vecs, double tolerance,
           FILE *outfile, int print_lvl)

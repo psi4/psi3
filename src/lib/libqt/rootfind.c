@@ -1,6 +1,7 @@
 /*!
 ** \file rootfind.c
 ** \brief Simple root finding methods
+** \ingroup (QT)
 **
 **      (1) Bisection method
 **      (2) Newton's method
@@ -49,6 +50,7 @@
 **
 ** Returns:
 **   the value of the root
+** \ingroup (QT)
 */
 double bisect(function, low, high, tolerance, maxiter, printflag)
       double (*function) () ;
@@ -123,6 +125,7 @@ double bisect(function, low, high, tolerance, maxiter, printflag)
 **
 ** Returns: 
 **   the value of the root
+** \ingroup (QT)
 */
 double newton(F, dF, x, tolerance, maxiter, printflag)
       double (*F) () ;
@@ -171,6 +174,7 @@ double newton(F, dF, x, tolerance, maxiter, printflag)
 **
 ** Returns:
 **   the value of the root
+** \ingroup (QT)
 */
 double secant(F, x0, x1, tolerance, maxiter, printflag)
       double (*F) () ;

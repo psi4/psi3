@@ -1,6 +1,7 @@
 /*!
 **  \file timer.c
 **  \brief Obtain user and system timings for blocks of code
+**  \ingroup (QT)
 **
 ** TIMER.C: These functions allow one to obtain user and system
 ** timings for arbitrary blocks of code.  If a code block is called
@@ -63,6 +64,11 @@ struct timer {
 struct timer *global_timer;
 time_t timer_start, timer_end;  /* Global wall-clock on and off times */
 
+/*
+** timer_init(): Initialize the linked list of timers
+**
+** \ingroup (QT)
+*/
 void timer_init(void)
 {
   extern struct timer *global_timer;
@@ -73,6 +79,11 @@ void timer_init(void)
   global_timer = NULL;
 }
 
+/*!
+** timer_done(): Close down all timers and write results to timer.dat
+**
+** \ingroup (QT)
+*/ 
 void timer_done(void)
 {
   FILE *timer_out;
@@ -147,6 +158,14 @@ struct timer *timer_last(void)
   return(NULL);
 }
 
+/*!
+** timer_on(): Turn on the timer with the name given as an argument.  Can
+** be turned on and off, time will accumulate while on.
+**
+** \param key = Name of timer
+**
+** \ingroup (QT)
+*/
 void timer_on(char *key)
 {
   struct timer *this_timer;
@@ -178,6 +197,14 @@ void timer_on(char *key)
   this_timer->wall_start = time(NULL);
 }
 
+/*!
+** timer_off(): Turn off the timer with the name given as an argument.  Can
+** be turned on and off, time will accumulate while on.
+**
+** \param key = Name of timer
+**
+** \ingroup (QT)
+*/
 void timer_off(char *key)
 {
   struct tms ontime, offtime;

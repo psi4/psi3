@@ -1,6 +1,7 @@
 /*!
 ** \file lapack_intfc.c
 ** \brief Interface to LAPACK routines
+** \ingroup (QT)
 **
 ** Rollin A. King and T. Daniel Crawford
 ** August 2001 - January 2002
@@ -28,6 +29,7 @@
 #endif
 
 
+/* this should be a diagonalizer */
 int C_DGEEV(int n, double **a, int lda,
   double *wr, double *wi, double **vl, int ldvl, double **vr,
   int ldvr, double *work, int lwork, int info)

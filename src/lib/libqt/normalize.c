@@ -1,5 +1,6 @@
 /*!
-** \file normalize.c
+  \file normalize.c
+  \ingroup (QT)
 */
 
 #include <stdio.h>
@@ -14,6 +15,7 @@
 ** Assume we're normalizing the ROWS
 **
 ** David Sherrill, Feb 1994
+** \ingroup (QT)
 */
 
 void normalize(double **A, int rows, int cols)

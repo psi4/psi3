@@ -1,5 +1,6 @@
 /*!
   \file schmidt_add.c
+  \ingroup (QT)
 */
  
 #include <stdio.h>
@@ -25,6 +26,7 @@
 **                  to rest of A
 **
 ** Returns: 1 if a vector is added to A, 0 otherwise
+** \ingroup (QT)
 */
 int schmidt_add(double **A, int rows, int cols, double *v)
 {
