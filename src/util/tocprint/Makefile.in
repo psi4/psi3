@@ -12,6 +12,7 @@ exec_prefix = @exec_prefix@
 bindir = @bindir@
 docdir = @docdir@
 mandir = @mandir@
+libdir = @libdir@
 
 INSTALL = @INSTALL@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
