@@ -120,6 +120,18 @@ void rzero(int C_irr, int *converged) {
     dpd_buf4_init(&fRijab, CC_RAMPS, C_irr, BB_OCC, BB_VIR, BB_OCC, BB_VIR, 0, R2BB_lbl);
     dpd_buf4_init(&fRIjAb, CC_RAMPS, C_irr, AB_OCC, AB_VIR, AB_OCC, AB_VIR, 0, R2AB_lbl);
 
+    /* make R0 a positive number */
+    /*
+    if (rzero < 0.0) {
+      rzero *= -1.0;
+      dpd_file2_scm(&RIA,-1.0);
+      dpd_file2_scm(&Ria,-1.0);
+      dpd_buf4_scm(&fRIJAB,-1.0);
+      dpd_buf4_scm(&fRijab,-1.0);
+      dpd_buf4_scm(&fRIjAb,-1.0);
+    }
+    */
+
     norm = norm_C(&RIA, &Ria, &fRIJAB, &fRijab, &fRIjAb);
     norm *= norm;
     norm += rzero * rzero;
@@ -265,6 +277,15 @@ void rzero_rhf(int C_irr, int *converged) {
     dpd_file2_init(&RIA, CC_RAMPS, C_irr, 0, 1, R1A_lbl);
     dpd_buf4_init(&RIjAb, CC_RAMPS, C_irr, 0, 5, 0, 5, 0, R2AB_lbl);
     dpd_buf4_init(&RIjbA, CC_TMP, C_irr, 0, 5, 0, 5, 0, "RIjbA");
+
+    /*
+    if (rzero < 0.0) {
+      rzero *= -1.0;
+      dpd_file2_scm(&RIA,-1.0);
+      dpd_buf4_scm(&RIjAb,-1.0);
+      dpd_buf4_scm(&RIjbA,-1.0);
+    }
+    */
 
     norm = norm_C_rhf(&RIA, &RIjAb, &RIjbA);
     norm *= norm;

@@ -30,20 +30,19 @@ void get_eom_params()
     eom_params.cs_per_irrep[state_irrep^moinfo.sym] = eom_params.states_per_irrep[state_irrep];
   }
 
-  /* We now write out all of the final R's so prop_sym and prop_root should not be
-   * needed by cceom */
-  /*
+  /* Use prop_sym and prop_root only to determine what energy to write the file32 */
   if (ip_exist("PROP_SYM",0)) {
     ip_data("PROP_SYM","%d",&(eom_params.prop_sym),0);
-    eom_params.prop_sym = eom_params.prop_sym - 1;
+    eom_params.prop_sym = (eom_params.prop_sym - 1)^moinfo.sym;
   }
   else {
     for (i=0;i<moinfo.nirreps;++i)
-      if (eom_params.states_per_irrep[i]) eom_params.prop_sym = i;
+      if (eom_params.states_per_irrep[i])
+        eom_params.prop_sym = i^moinfo.sym;
   }
   if (ip_exist("PROP_ROOT",0)) {
     ip_data("PROP_ROOT","%d",&(eom_params.prop_root),0);
-    if (eom_params.prop_root > eom_params.states_per_irrep[eom_params.prop_sym]) {
+    if (eom_params.prop_root > eom_params.states_per_irrep[eom_params.prop_sym^moinfo.sym]) {
       fprintf(outfile,"prop_root is too big\n");
       exit(1);
     }
@@ -51,7 +50,7 @@ void get_eom_params()
   else {
     eom_params.prop_root = eom_params.states_per_irrep[eom_params.prop_sym];
   }
-  */
+  --eom_params.prop_root;
 
   eom_params.save_all = 0;
   errcod = ip_data("SAVE_ALL","%d",&(eom_params.save_all),0);

@@ -18,6 +18,14 @@ void write_Rs(int C_irr, double *evals, int *converged) {
     if (!converged[i]) continue; /* this root did not converge */
     ++R_index;
 
+    if (C_irr == eom_params.prop_sym) {
+      chkpt_init(PSIO_OPEN_OLD);
+      chkpt_wt_etot(evals[eom_params.prop_root]+moinfo.ecc+moinfo.eref);
+      fprintf(outfile,"Energy written to chkpt %15.10lf\n",
+          evals[eom_params.prop_root]+moinfo.ecc+moinfo.eref);
+      chkpt_close();
+    }
+
     sprintf(E_lbl, "EOM CCSD Energy for root %d %d", C_irr, R_index);
     psio_write_entry(CC_INFO, E_lbl, (char *) &(evals[i]), sizeof(double));
 
