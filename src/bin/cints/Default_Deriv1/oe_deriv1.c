@@ -84,6 +84,7 @@ void oe_deriv1()
   char lbl[20];
   FILE *out;
   double ***s, ***t, ***v;
+  double print_pf;
 
   s = (double ***) malloc(Molecule.num_atoms*3*sizeof(double **));
   t = (double ***) malloc(Molecule.num_atoms*3*sizeof(double **));
@@ -355,6 +356,10 @@ void oe_deriv1()
 		    dens_pf *= (GTOs.bf_norm[am_i][ai] * GTOs.bf_norm[am_j][aj]);
 		    if (si_fao+ai != sj_fao+aj)
 		      dens_pf *= 2.0;
+
+#if PRINT_DERIV1
+		    print_pf = Molecule.centers[atom].Z_nuc * over_pf * GTOs.bf_norm[am_i][ai] * GTOs.bf_norm[am_j][aj];
+#endif
 		      
 		    jind = n2*jzm1 + m2*jym1 + l2*jxm1;
 
@@ -364,8 +369,7 @@ void oe_deriv1()
 		    grad_oe[atom1][0] -= tmp * Molecule.centers[atom].Z_nuc * (over_pf * dens_pf);
 
 #if PRINT_DERIV1
-		    v[atom1*3][si_fao+ai][sj_fao+aj] -= tmp;
-
+		    v[atom1*3][si_fao+ai][sj_fao+aj] -= tmp * print_pf;
 #endif
 
 		    tmp = 2.0*a2*AI0[iind][jind+jxm1][0];
@@ -374,14 +378,14 @@ void oe_deriv1()
 		    grad_oe[atom2][0] -= tmp * Molecule.centers[atom].Z_nuc * (over_pf * dens_pf);
 
 #if PRINT_DERIV1
-		    v[atom2*3][si_fao+ai][sj_fao+aj] -= tmp;
+		    v[atom2*3][si_fao+ai][sj_fao+aj] -= tmp * print_pf;
 #endif
 
 		    tmp = AIX[iind][jind][0] * Molecule.centers[atom].Z_nuc * (over_pf * dens_pf);
 		    grad_oe[atom][0] -= tmp;
 
 #if PRINT_DERIV1
-		    v[atom*3][si_fao+ai][sj_fao+aj] -= tmp;
+		    v[atom*3][si_fao+ai][sj_fao+aj] -=  AIX[iind][jind][0] * print_pf;
 #endif
 
 		    tmp = 2.0*a1*AI0[iind+iym1][jind][0];
@@ -390,7 +394,7 @@ void oe_deriv1()
 		    grad_oe[atom1][1] -= tmp * Molecule.centers[atom].Z_nuc * (over_pf * dens_pf);
 
 #if PRINT_DERIV1
-		    v[atom1*3+1][si_fao+ai][sj_fao+aj] -= tmp;
+		    v[atom1*3+1][si_fao+ai][sj_fao+aj] -= tmp * print_pf;
 #endif
 
 		    tmp = 2.0*a2*AI0[iind][jind+jym1][0];
@@ -399,14 +403,14 @@ void oe_deriv1()
 		    grad_oe[atom2][1] -= tmp * Molecule.centers[atom].Z_nuc * (over_pf * dens_pf);
 
 #if PRINT_DERIV1
-		    v[atom2*3+1][si_fao+ai][sj_fao+aj] -= tmp;
+		    v[atom2*3+1][si_fao+ai][sj_fao+aj] -= tmp * print_pf;
 #endif
 
 		    tmp = AIY[iind][jind][0] * Molecule.centers[atom].Z_nuc * (over_pf * dens_pf);
 		    grad_oe[atom][1] -= tmp;
 
 #if PRINT_DERIV1
-		    v[atom*3+1][si_fao+ai][sj_fao+aj] -= tmp;
+		    v[atom*3+1][si_fao+ai][sj_fao+aj] -= AIY[iind][jind][0] * print_pf;
 #endif
 
 		    tmp = 2.0*a1*AI0[iind+izm1][jind][0];
@@ -415,7 +419,7 @@ void oe_deriv1()
 		    grad_oe[atom1][2] -= tmp * Molecule.centers[atom].Z_nuc * (over_pf * dens_pf);
 
 #if PRINT_DERIV1
-		    v[atom1*3+2][si_fao+ai][sj_fao+aj] -= tmp;
+		    v[atom1*3+2][si_fao+ai][sj_fao+aj] -= tmp * print_pf;
 #endif
 
 		    tmp = 2.0*a2*AI0[iind][jind+jzm1][0];
@@ -424,14 +428,14 @@ void oe_deriv1()
 		    grad_oe[atom2][2] -= tmp * Molecule.centers[atom].Z_nuc * (over_pf * dens_pf);
 
 #if PRINT_DERIV1
-		    v[atom2*3+2][si_fao+ai][sj_fao+aj] -= tmp;
+		    v[atom2*3+2][si_fao+ai][sj_fao+aj] -= tmp * print_pf;
 #endif
 
 		    tmp = AIZ[iind][jind][0] * Molecule.centers[atom].Z_nuc * (over_pf * dens_pf);
 		    grad_oe[atom][2] -= tmp;
 		      
 #if PRINT_DERIV1
-		    v[atom*3+2][si_fao+ai][sj_fao+aj] -= tmp;
+		    v[atom*3+2][si_fao+ai][sj_fao+aj] -= AIZ[iind][jind][0] * print_pf;
 #endif
 
 		    aj++;
