@@ -109,8 +109,8 @@ $(top_objdir)/config.status: $(top_srcdir)/configure
 Makefile: $(srcdir)/Makefile.in $(top_objdir)/config.status
 	cd $(top_objdir) && CONFIG_FILES=src/bin/`basename $(srcdir)`/Makefile ./config.status
 
-../MakeVars: $(top_srcdir)/src/lib/MakeVars.in $(top_objdir)/config.status
+../MakeVars: $(top_srcdir)/src/bin/MakeVars.in $(top_objdir)/config.status
 	cd $(top_objdir) && CONFIG_FILES=src/bin/MakeVars ./config.status
 
-../MakeRules: $(top_srcdir)/src/lib/MakeRules.in $(top_objdir)/config.status
+../MakeRules: $(top_srcdir)/src/bin/MakeRules.in $(top_objdir)/config.status
 	cd $(top_objdir) && CONFIG_FILES=src/bin/MakeRules ./config.status
