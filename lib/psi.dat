@@ -113,7 +113,7 @@ psi: (
 
   % Procedures for the finite displacements of SCF gradients
   SCFFirstDisp  = 
-    ($input $findif_disp repeat $ndisp 
+    ($findif_disp repeat $ndisp 
      $findif_next $uinput $SCFFirst $findif_grad end $findif_calc $done)
   SCFRHFFirstDisp  = $SCFFirstDisp
   SCFROHFFirstDisp  = $SCFFirstDisp
@@ -129,7 +129,7 @@ psi: (
 
   % Procedures for symm freqs via differences of analytic gradients
   SCFFirstSymm_Freq  = 
-    ($input $SCFEnergy $findif_disp_symm repeat NUM_DISP 
+    ($SCFEnergy $findif_disp_symm repeat NUM_DISP 
      $findif_next $SCFFirst $findif_grad end 
      $findif_freq_grad_symm $done)
   SCFRHFFirstSymm_Freq  = $SCFFirstSymm_Freq
@@ -139,7 +139,7 @@ psi: (
 
   % Procedures for freqs via differences of analytic gradients
   SCFFirstFreq  = 
-    ($input $SCFEnergy $findif_disp repeat NUM_DISP 
+    ($SCFEnergy $findif_disp repeat NUM_DISP 
      $findif_next $uinput $SCFFirst $findif_grad end 
      $findif_freq_grad $done)
   SCFRHFFirstFreq  = $SCFFirstFreq
@@ -149,10 +149,10 @@ psi: (
 
   % Testing procedure for optimizing geometries with SCF finite displacements
   SCFROHFEnergyDisp =
-    (repeat $ndisp $ugeom $uinput $SCFROHFEnergy $rgeom end $done)
+    (repeat $ndisp $ugeom $uinput $SCFEnergy $rgeom end $done)
 
   % Procedure for an SCF linear response calculation
-  SCFResponse = ($input $SCFEnergy $transqt $ccsort $propint $response $done)
+  SCFResponse = ($SCFEnergy $transqt $ccsort $propint $response $done)
   SCFRHFResponse = $SCFResponse
   SCFUHFResponse = ERROR
   SCFROHFResponse = ERROR
@@ -198,7 +198,7 @@ psi: (
 
   % Procedures for the finite displacements of SCF gradients
   DirectSCFFirstDisp  = 
-    ($input $findif_disp repeat $ndisp 
+    ($findif_disp repeat $ndisp 
      $findif_next $uinput $DirectSCFFirst $findif_grad end $findif_calc $done)
   DirectSCFRHFFirstDisp  = $DirectSCFFirstDisp
   DirectSCFROHFFirstDisp  = $DirectSCFFirstDisp
@@ -214,7 +214,7 @@ psi: (
 
   % Procedures for symm freqs via differences of analytic gradients
   DirectSCFFirstSymm_Freq  = 
-    ($input $DirectSCFEnergy $findif_disp_symm repeat NUM_DISP 
+    ($scf $findif_disp_symm repeat NUM_DISP 
      $findif_next $DirectSCFFirst $findif_grad end 
      $findif_freq_grad_symm $done)
   DirectSCFRHFFirstSymm_Freq  = $DirectSCFFirstSymm_Freq
@@ -224,7 +224,7 @@ psi: (
 
   % Procedures for freqs via differences of analytic gradients
   DirectSCFFirstFreq  = 
-    ($input $DirectSCFEnergy $findif_disp repeat NUM_DISP 
+    ($DirectSCFEnergy $findif_disp repeat NUM_DISP 
      $findif_next $uinput $DirectSCFFirst $findif_grad end 
      $findif_freq_grad $done)
   DirectSCFRHFFirstFreq  = $DirectSCFFirstFreq
@@ -234,11 +234,11 @@ psi: (
 
   % Testing procedure for optimizing geometries with SCF finite displacements
   DirectSCFROHFEnergyDisp =
-    (repeat $ndisp $ugeom $uinput $DirectSCFROHFEnergy $rgeom end $done)
+    (repeat $ndisp $ugeom $uinput $DirectSCFEnergy $rgeom end $done)
 
   % Procedure for an SCF linear response calculation
   DirectSCFResponse = 
-    ($input $DirectSCFEnergy $transqt $ccsort $propint $response $done)
+    ($DirectSCFEnergy $transqt $ccsort $propint $response $done)
   DirectSCFRHFResponse = $DirectSCFResponse
   DirectSCFUHFResponse = ERROR
   DirectSCFROHFResponse = ERROR
@@ -254,23 +254,18 @@ psi: (
   CCSDTwoConEnergy = ERROR
 
   % Procedures for the CCSD gradient
-  CCSDeq = ($ccsort $ccenergy $cchbar $cclambda $ccdensity)
-  CCSDFirst = ($SCFEnergy $transqt $CCSDeq $backtransqt $deriv)
+  CCSDFirst = ($CCSDEnergy $cchbar $cclambda $ccdensity $backtransqt $deriv)
   CCSDRHFFirst = $CCSDFirst
   CCSDROHFFirst = $CCSDFirst
   CCSDUHFFirst = $CCSDFirst
   CCSDTwoConFirst = ERROR
 
   %Procedures for the CCSD gradient with no restart
-  CCSDFirstReset = ($SCFEnergy $transqt $ccreset $ccenergy $cchbar
+  CCSDFirstReset = ($ints $scf $transqt $ccreset $ccenergy $cchbar
       $cclambda $ccdensity $backtransqt $deriv)
   CCSDRHFFirstReset = $CCSDFirstReset
   CCSDROHFFirstReset = $CCSDFirstReset
   CCSDUHFFirstReset = $CCSDFirstReset
-
-  % Testing procedure for optimizing geometries with CCSD finite displacements
-  CCSDROHFEnergyDisp = 
-    (repeat $ndisp $ugeom $uinput $CCSDROHFEnergy $rgeom end $done)
 
   % Procedures for optimization via energy points
   CCSDEnergyOpt = (repeat $nopt $CCSDEnergy $findif_disp_symm 
@@ -282,8 +277,7 @@ psi: (
   CCSDTwoConEnergyOpt = ERROR
 
   % Procedures for the optimizing geomtries with CCSD gradients
-  CCSDRHFFirstOpt =
-    (repeat $nopt $CCSDRHFFirst $geomupdate end $done)
+  CCSDRHFFirstOpt = (repeat $nopt $CCSDRHFFirst $geomupdate end $done)
   CCSDROHFFirstOpt = (repeat $nopt $CCSDROHFFirst $geomupdate end $done)
   CCSDUHFFirstOpt  = (repeat $nopt $CCSDUHFFirst $geomupdate end $done)
   CCSDTwoConFirstOpt  = ERROR
@@ -299,7 +293,7 @@ psi: (
 
   % Procedures for symmetric frequencies via finite differences of gradients
   CCSDFirstSymm_Freq  = 
-    ($input $CCSDEnergy $findif_disp_symm repeat NUM_DISP 
+    ($CCSDEnergy $findif_disp_symm repeat NUM_DISP 
      $findif_next $CCSDFirst $findif_grad end 
      $findif_freq_grad_symm $done)
   CCSDRHFFirstSymm_Freq  = $CCSDFirstSymm_Freq
@@ -309,7 +303,7 @@ psi: (
 
   % Procedures for freqs via differences of analytic gradients
   CCSDFirstFreq  = 
-    ($input $CCSDEnergy $findif_disp repeat NUM_DISP 
+    ($CCSDEnergy $findif_disp repeat NUM_DISP 
      $findif_next $uinput $CCSDFirstReset $findif_grad end 
      $findif_freq_grad $done)
   CCSDRHFFirstFreq  = $CCSDFirstFreq
@@ -318,7 +312,7 @@ psi: (
   CCSDTwoConFirstFreq  = $CCSDFirstFreq
 
   % Procedure for an SCF linear response calculation
-  CCSDResponse = ($input $CCSDEnergy $cchbar $cclambda $propint $ccresponse $done)
+  CCSDResponse = ($CCSDEnergy $cchbar $cclambda $propint $ccresponse $done)
   CCSDRHFResponse = $CCSDResponse
   CCSDUHFResponse = ERROR
   CCSDROHFResponse = ERROR
@@ -561,7 +555,7 @@ psi: (
   DirectMP2TwoConEnergyOpt = ERROR
 
   % Procedure for the CIS energy
-  CISEnergy = ($input $ints $scf $transqt $ccsort $cis)
+  CISEnergy = ($ints $scf $transqt $ccsort $cis)
   CISRHFEnergy = ($CISEnergy $done)
   CISROHFEnergy = ERROR
   CISUHFEnergy = ($CISEnergy $done)
