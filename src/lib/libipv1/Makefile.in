@@ -55,6 +55,7 @@ install_inc:: ip_error.h ip_types.h $(GENINC)
 
 clean::
 	-/bin/rm -f y.tab.* y.output scan.c
+	-/bin/rm -f *.gbl *.lcl
 
 depend:: $(ALLINCLUDE) y.tab.h
 
