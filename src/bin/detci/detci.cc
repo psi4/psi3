@@ -818,7 +818,7 @@ void diag_h(struct stringwr **alplist, struct stringwr **betlist)
    /* write the CI energy to file30: later fix this to loop over roots */
    file30_init();
    file30_wt_eref(0.0);
-   file30_wt_ecorr(evals[0]+efzc+nucrep);
+   file30_wt_ecorr(evals[Parameters.root]+efzc+nucrep);
    file30_close();
 
 }

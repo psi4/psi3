@@ -242,6 +242,7 @@ void close_io(void)
 double **rdopdm(int nbf, int print_lvl, int opdm_file)
 {
  
+ int i, root, errcod;
  double **opdm; 
  PSI_FPTR index = 0; 
 
@@ -254,7 +255,14 @@ double **rdopdm(int nbf, int print_lvl, int opdm_file)
   }
 
  opdm = block_matrix(nbf, nbf); 
- wreadw(opdm_file, (char *) opdm[0], (sizeof(double)*nbf*nbf), index, &index);
+ root = 1;
+ errcod = ip_data("ROOT","%d",&root,0);
+/* fprintf(outfile,"GOH Root = %d\n",root); */
+/* index = 0; */
+ for (i =0; i<root; i++) {
+   wreadw(opdm_file, (char *) opdm[0], 
+             (sizeof(double)*nbf*nbf), index, &index);
+ }
 
  if (print_lvl > 2) {
    fprintf(outfile,"One-Particle Density Matrix\n");

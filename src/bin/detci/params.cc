@@ -183,7 +183,7 @@ void get_parameters(void)
    Parameters.opdm_ke = 0;
    Parameters.tpdm_file = PSIF_MO_TPDM;
    Parameters.tpdm_print = 0;
-   Parameters.root = 0;
+   Parameters.root = 1;
 
    Parameters.nthreads = 1;
    Parameters.pthreads = 0;
@@ -475,6 +475,7 @@ void get_parameters(void)
    errcod = ip_data("ORBS_ROOT","%d",&(Parameters.opdm_orbs_root),0);
    errcod = ip_boolean("OPDM_KE",&(Parameters.opdm_ke),0);
    errcod = ip_data("ROOT","%d",&(Parameters.root),0);
+   Parameters.root -= 1;
    
    if (Parameters.opdm_orbs_root != -1) Parameters.opdm_orbs_root -= 1;
    if (Parameters.opdm_orbs_root < 0) Parameters.opdm_orbs_root = 0;

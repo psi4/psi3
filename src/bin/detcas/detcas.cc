@@ -51,6 +51,10 @@ extern "C" {
                                  double *F_core, double *tei, double **opdm, 
                                  double *tpdm, double *F_act, int firstact, 
                                  int lastact, double *hess);
+   extern void form_diag_mo_hess2(int npairs, int *ppair, int *qpair, 
+                                 double *F_core, double *tei, double **opdm, 
+                                 double *tpdm, double *F_act, int firstact, 
+                                 int lastact, double *hess);
    extern void calc_orb_step(int npairs, double *grad, double *hess_diag, 
                              double *theta);
    extern int print_step(int npairs, int steptype);
@@ -355,10 +359,23 @@ void calc_hessian(void)
 
   /* Now calculate the approximate diagonal MO Hessian */
   ncore = CalcInfo.num_fzc_orbs + CalcInfo.num_cor_orbs;
-  form_diag_mo_hess(npairs, ppair, qpair, CalcInfo.onel_ints, 
-                    CalcInfo.twoel_ints, CalcInfo.opdm, CalcInfo.tpdm, 
-                    CalcInfo.F_act, ncore, CalcInfo.npop, 
-                    CalcInfo.mo_hess_diag);
+
+  if (strcmp(Params.hessian, "DIAG") == 0) {
+    form_diag_mo_hess2(npairs, ppair, qpair, CalcInfo.onel_ints, 
+                      CalcInfo.twoel_ints, CalcInfo.opdm, CalcInfo.tpdm, 
+                      CalcInfo.F_act, ncore, CalcInfo.npop, 
+                      CalcInfo.mo_hess_diag);
+    }
+  else if (strcmp(Params.hessian, "APPROX_DIAG") == 0) {
+    form_diag_mo_hess(npairs, ppair, qpair, CalcInfo.onel_ints, 
+                      CalcInfo.twoel_ints, CalcInfo.opdm, CalcInfo.tpdm, 
+                      CalcInfo.F_act, ncore, CalcInfo.npop, 
+                      CalcInfo.mo_hess_diag);
+    }
+  else {
+    fprintf(outfile, "(detcas): Unrecognized Hessian option %s\n", Params.hessian);
+    }
+ 
 
   if (Params.print_lvl > 3)
     IndPairs.print_vec(CalcInfo.mo_hess_diag, 

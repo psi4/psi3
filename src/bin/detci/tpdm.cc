@@ -324,8 +324,10 @@ void tpdm(struct stringwr **alplist, struct stringwr **betlist,
 
      /* do the core-core and core-active part here */
      if (nfzc) {
-       wreadw(Parameters.opdm_file, (char *) onepdm[0], sizeof(double) *
-              populated_orbs * populated_orbs, onepdm_idx, &onepdm_idx);
+       for (i=0; i<=Iroot; i++) {
+         wreadw(Parameters.opdm_file, (char *) onepdm[0], sizeof(double) *
+                populated_orbs * populated_orbs, onepdm_idx, &onepdm_idx);
+       }
 
        /* core-core part */
        for (i=0; i<nfzc; i++) {

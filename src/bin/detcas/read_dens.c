@@ -48,6 +48,7 @@ void read_density_matrices(void)
 double **rdopdm(int nbf, int print_lvl, int opdm_file, int erase)
 {
 
+  int i, root, errcod;
   double **opdm;
   PSI_FPTR index = 0;
 
@@ -60,7 +61,11 @@ double **rdopdm(int nbf, int print_lvl, int opdm_file, int erase)
   }
 
   opdm = block_matrix(nbf, nbf);
-  wreadw(opdm_file, (char *) opdm[0], (sizeof(double)*nbf*nbf), index, &index);
+  root = 1;
+  errcod = ip_data("ROOT","%d",&root,0);
+  for (i =0; i<root; i++) {
+    wreadw(opdm_file, (char *) opdm[0], (sizeof(double)*nbf*nbf), index, &index);
+  }
 
   if (print_lvl > 3) {
     fprintf(outfile,"\nOne-Particle Density Matrix\n");

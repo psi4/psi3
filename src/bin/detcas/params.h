@@ -39,5 +39,7 @@ struct params {
    int diis_min_vecs;       /* how many vectors required before do diis?    */
    int diis_max_vecs;       /* how many vectors maximum to hold?            */
    double scale_step;       /* stepsize scaling factor                      */
+   char *hessian;           /* string describing type of MO Hessian         */
+                            /* DIAG, APPROX_DIAG, or FULL (FULL not yet in) */
   };
 

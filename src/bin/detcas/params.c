@@ -91,6 +91,20 @@ void get_parameters(void)
   errcod = ip_data("DIIS_MIN_VECS","%d",&(Params.diis_min_vecs),0);
   errcod = ip_data("DIIS_MAX_VECS","%d",&(Params.diis_max_vecs),0);
   errcod = ip_data("SCALE_STEP","%lf",&(Params.scale_step),0);
+  errcod = ip_string("HESSIAN",&(Params.hessian),0);
+  if (errcod == IPE_KEY_NOT_FOUND) {
+    Params.hessian = (char *) malloc(sizeof(char)*12);
+    strcpy(Params.hessian, "APPROX_DIAG");
+  }
+  if (strcmp(Params.hessian, "FULL")==0) {
+    strcpy(Params.hessian, "APPROX_DIAG");
+    fprintf(outfile, "(detcas): FULL Hessian not yet available\n");
+  } 
+  if ((strcmp(Params.hessian, "FULL")!=0) && (strcmp(Params.hessian, "DIAG")!=0) &&
+      (strcmp(Params.hessian, "APPROX_DIAG")!=0)) {
+    fprintf(outfile, "(detcas): Unrecognized Hessian option %s\n", Params.hessian);
+    exit(0);
+  }
 }
 
 
@@ -122,8 +136,8 @@ void print_parameters(void)
       Params.diis_start, Params.diis_freq);
   fprintf(outfile, "   DIIS MIN VECS =   %6d      DIIS MAX VECS =   %6d\n", 
       Params.diis_min_vecs, Params.diis_max_vecs);
-  fprintf(outfile, "   SCALE STEP    =   %6.3E\n",
-      Params.scale_step);
+  fprintf(outfile, "   SCALE STEP    =   %6.2E    HESSIAN       =   %-12s\n",
+      Params.scale_step, Params.hessian);
   fprintf(outfile, "\n") ;
   fflush(outfile) ;
 }
