@@ -1,6 +1,6 @@
-// This function performs the back-transformation. It computes a
-// new cartesian geometry from an old cartesian geometry and a set
-// of internal coordinate displacements
+// NEW_GEOM performs the back-transformation to cartesian coordinates.
+// It computes a new cartesian geometry from an old cartesian geometry
+// and a set of internal coordinate displacements
 
 extern "C" {
 #include <stdio.h>
@@ -49,12 +49,11 @@ void new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
   G_inv = block_matrix(nsalcs, nsalcs);
   temp_mat = block_matrix(dim_carts, nsalcs);
 
-  x = carts.get_fcoord();
-  scalar_mult(_bohr2angstroms,x,dim_carts); // x now holds geom in Ang
-
   // Compute B matrix -- Isn't this slick?
   fcoord = carts.get_fcoord();
   simples.compute_internals(nallatom,fcoord);
+  // fix configuration for torsions!
+  simples.fix_near_lin();
   simples.compute_s(nallatom,fcoord);
   free(fcoord);
 
@@ -62,6 +61,14 @@ void new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
   q = compute_q(simples, all_salcs);
   for (i=0;i<nsalcs;++i)
     q[i] += dq[i];
+
+  x = carts.get_fcoord();
+  scalar_mult(_bohr2angstroms,x,dim_carts); // x now holds geom in Ang
+
+  /*
+  fprintf(outfile,"Target internal coordinates\n");
+  for (i=0;i<nsalcs;++i) fprintf(outfile,"%15.10lf\n",q[i]);
+  */
 
   fprintf(outfile,"\nBack-transformation to cartesian coordinates...\n");
   fprintf(outfile," Iter   RMS Delta(dx)   RMS Delta(dq)\n");
@@ -88,24 +95,39 @@ void new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
     // A dq = dx
     mmult(A,0,&dq,1,&dx,1,dim_carts, nsalcs,1,0);
 
+    /*
+    fprintf(outfile,"dx increments\n");
+    for (i=0;i<dim_carts;++i)
+      fprintf(outfile,"%15.10lf\n",dx[i]);
+    */
+
+    /*
     if (count == 1) {
       // dx_sum = RMS change in cartesian coordinates 
       dx_sum = dq_sum = 0.0;
       for (i=0;i<dim_carts;++i)
         dx_sum += dx[i]*dx[i];
       dx_sum = sqrt(dx_sum / dim_carts);
-
       // dq_sum = RMS change in internal coordinates
       for (i=0;i< nsalcs;++i)
         dq_sum += dq[i]*dq[i];
       dq_sum = sqrt(dq_sum / ((double) nsalcs));
       fprintf (outfile,"%5d %15.12lf %15.12lf\n", count, dx_sum, dq_sum);
     }
+    */
 
     // Compute new cart coordinates in au, then B matrix
     for (i=0;i<dim_carts;++i)
       new_x[i] = (x[i] + dx[i]) / _bohr2angstroms;
+
+    /*
+    fprintf(outfile,"new x \n");
+    for (i=0;i<dim_carts;++i)
+      fprintf(outfile,"%15.10lf\n", new_x[i]);
+    */
+
     simples.compute_internals(nallatom,new_x);
+    // simples.print(outfile,1);
     simples.compute_s(nallatom,new_x);
     free_block(B);
     B = compute_B(simples, all_salcs);

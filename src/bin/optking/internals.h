@@ -38,5 +38,8 @@ class internals {
     void locate_id(int id, int *intco_type, int *sub_index);
     int index_to_id(int index);
     int id_to_index(int id);
+    void fix_near_lin(void) {
+      tors.fix_near_lin();
+    }
 };
 

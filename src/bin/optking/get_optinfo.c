@@ -85,7 +85,7 @@ void get_optinfo() {
   ip_data("EDISP","%lf",&(optinfo.disp_size),0);
 
   /* back-transformation parameters */
-  optinfo.bt_max_iter = 500;
+  optinfo.bt_max_iter = 100;
   ip_data("BT_MAX_ITER","%d",&(optinfo.bt_max_iter),0);
   a = 11;
   ip_data("BT_DQ_CONV","%d",&a,0);
@@ -96,11 +96,11 @@ void get_optinfo() {
 
 
   /* Obscure limits in intco evaluation */
-  optinfo.cos_tors_near_1_tol = 0.99999;
+  optinfo.cos_tors_near_1_tol = 0.999999999;
   ip_data("COS_TORS_NEAR_1_TOL","%lf",&(optinfo.cos_tors_near_1_tol),0);
-  optinfo.cos_tors_near_neg1_tol = -0.99999;
+  optinfo.cos_tors_near_neg1_tol = -0.999999999;
   ip_data("COS_TORS_NEAR_NEG1_TOL","%lf",&(optinfo.cos_tors_near_neg1_tol),0);
-  optinfo.sin_phi_denominator_tol = 0.0001;
+  optinfo.sin_phi_denominator_tol = 0.000000001;
   ip_data("SIN_PHI_DENOMINATOR_TOL","%lf",&(optinfo.sin_phi_denominator_tol),0);
 
 

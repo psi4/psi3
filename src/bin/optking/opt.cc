@@ -206,6 +206,7 @@ int main(int argc, char **argv) {
     simples.compute_internals(carts.get_nallatom(), fcoord);
     //simples.compute_s(carts.get_natom(),carts.get_coord() );
     simples.compute_s(carts.get_nallatom(), fcoord);
+    //simples.print_s();
     free(fcoord);
     if ( (optinfo.mode != MODE_DISP_LOAD) && (optinfo.mode != MODE_LOAD_REF)) {
       fprintf(outfile,"\nSimple Internal Coordinates and Values\n");

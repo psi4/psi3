@@ -9,12 +9,17 @@ class torsion_class {
     double *s_B;
     double *s_C;
     double *s_D;
+    int near_lin;
+    // +1 if approaching 180
+    //  0 if OK
+    // -1 if approaching -180
   public:
     torsion_class(){
       s_A = new double [3];
       s_B = new double [3];
       s_C = new double [3];
       s_D = new double [3];
+      near_lin = 0;
     }
     ~torsion_class(){
       // fprintf(stdout,"destructing torsion class\n");
@@ -40,7 +45,9 @@ class torsion_class {
     void set_D(int i) { D = i;}
     int  get_D(void)  { return D;}
     void set_value(double new_val) { value = new_val;}
+    void set_near_lin(int new_near_lin) { near_lin = new_near_lin;}
     double get_value(void)  { return value;}
+    int get_near_lin(void)  { return near_lin;}
     void set_s_A(double s_A0, double s_A1, double s_A2) {
          s_A[0] = s_A0;
          s_A[1] = s_A1;
@@ -117,7 +124,7 @@ class torsion_set {
       return;
     }
 
-   void set_num(int i) { num = i;}
+    void set_num(int i) { num = i;}
     int  get_num(void) { return num;}
     void set_id(int index, int new_id) { tors_array[index].set_id(new_id);}
     int  get_id(int index) { return tors_array[index].get_id();}
@@ -131,7 +138,10 @@ class torsion_set {
     int  get_D(int index) { return tors_array[index].get_D();}
     void set_val(int index, double new_val) { tors_array[index].set_value(new_val);}
     double  get_val(int index) { return tors_array[index].get_value();}
-
+    void set_near_lin(int index, int new_near_lin)
+        { tors_array[index].set_near_lin(new_near_lin);}
+    int get_near_lin(int index)
+        { return tors_array[index].get_near_lin();}
     void set_s_A(int index, double s_A0, double s_A1, double s_A2) {
                  tors_array[index].set_s_A(s_A0,s_A1,s_A2); }
     double get_s_A(int index, int i) { return tors_array[index].get_s_A(i); }
@@ -147,10 +157,11 @@ class torsion_set {
     void set_s_D(int index, double s_D0, double s_D1, double s_D2) {
                  tors_array[index].set_s_D(s_D0,s_D1,s_D2); }
     double get_s_D(int index, int i) { return tors_array[index].get_s_D(i); }
+
     void compute(int natom, double *geom) {
-      int i,j,k,A,B,C,D;
+      int i,j,k,A,B,C,D,sign;
       double rAB,rBC,rCD,phi_123,phi_234,val = 0.0;
-      double eAB[3], eBC[3], eCD[3], tmp[3], tmp2[3];
+      double eAB[3], eBC[3], eCD[3], tmp[3], tmp2[3], tmp3[3];
       double *geom_ang, dotprod, angle;
     
       geom_ang = new double [3*natom];
@@ -220,10 +231,36 @@ class torsion_set {
         if (dotprod > optinfo.cos_tors_near_1_tol) angle = 0.0000 ;
         else if (dotprod < optinfo.cos_tors_near_neg1_tol) angle = _pi ;
         else angle = acos(dotprod) ;
-    
-        set_val(i,angle*180.0/_pi);
+        // set_val(i,angle*180.0/_pi);
+
+        // determine sign of torsions
+        cross_product(tmp,tmp2,tmp3);
+        dot_arr(tmp3,eBC,3,&dotprod);
+        if (dotprod < 0) sign = -1; else sign = 1;
+
+        // extend domain of torsions so delta(values) can be calculated
+        angle = sign * angle * 180.0 / _pi;
+        if ((get_near_lin(i) == -1) && (angle > 160.0))
+          angle = -180.0 - (180.0 - angle);
+        else if ((get_near_lin(i) == +1) && (angle < -160.0))
+          angle = +180.0 + (180.0 + angle);
+
+        set_val(i,angle);
       }
       delete [] geom_ang;
+      return;
+    }
+    void fix_near_lin(void) {
+      int i, lin;
+      for (i=0;i<num;++i) {
+        if ( get_val(i) > 160.0)
+          lin = +1;
+        else if ( get_val(i) < -160.0)
+          lin = -1;
+        else
+          lin = 0;
+        set_near_lin(i,lin);
+      }
       return;
     }
     void compute_s(int natom, double *geom) {

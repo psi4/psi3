@@ -200,8 +200,9 @@ fprintf(outfile,"Found %d salcs of this irrep\n",nirr_salcs);
     evals[i] = cm_convert * sqrt( evals[i] );
   }
 
-  fprintf(outfile,"\nHarmonic Vibrational Frequencies\n");
-  for (i=0; i<nsalcs; ++i) {
+  fprintf(outfile,"\nHarmonic Vibrational Frequencies in cm^(-1) for Irrep %s\n",
+      syminfo.irrep_lbls[irrep]) ;
+  for (i=0; i<nirr_salcs; ++i) {
     tmp = -9999;
     for (j=0; j<nsalcs; ++j) {
       if (evals[j] > tmp) {
@@ -209,7 +210,7 @@ fprintf(outfile,"Found %d salcs of this irrep\n",nirr_salcs);
         ii = j;
       }
     }
-    fprintf(outfile,"%5d       %15.1lf\n",nsalcs-i,evals[ii]);
+    fprintf(outfile,"%5d       %15.1lf\n",nirr_salcs-i,evals[ii]);
     evals[ii] = -9999;
   }
   free(evals);
@@ -274,8 +275,8 @@ void freq_grad_nosymm(cartesians &carts, internals &simples,
     all_q[i] = compute_q(simples, all_salcs);
     B = compute_B(simples,all_salcs);
     G = compute_G(B,nsalcs,carts);
-    fprintf(outfile,"BuB^t ");
-    G_inv = symm_matrix_invert(G,nsalcs,1,optinfo.redundant);
+    // fprintf(outfile,"BuB^t ");
+    G_inv = symm_matrix_invert(G,nsalcs,0,optinfo.redundant);
     masses = carts.get_fmass();
     u = mass_mat(masses);
 
@@ -302,6 +303,7 @@ void freq_grad_nosymm(cartesians &carts, internals &simples,
 
   free(f);
 
+  /*
   fprintf(outfile,"Values of intcos for each displacement\n");
   for (i=0;i<ndisps;++i) {
     for (j=0; j<nsalcs;++j)
@@ -314,6 +316,7 @@ void freq_grad_nosymm(cartesians &carts, internals &simples,
       fprintf(outfile,"%15.10lf",all_f_q[i][j]);
     fprintf(outfile,"\n");
   }
+  */
 
   // apply three point formula
   fprintf(outfile,"Applying %d-point formula\n",points);
@@ -338,8 +341,7 @@ void freq_grad_nosymm(cartesians &carts, internals &simples,
 
   // compute FG and diagonalize 
   FG = block_matrix(nsalcs, nsalcs);
-  mmult(force_constants,0,G,0,FG,0,
-      nsalcs,nsalcs,nsalcs,0);
+  mmult(force_constants,0,G,0,FG,0,nsalcs,nsalcs,nsalcs,0);
   free_block(force_constants);
   free_block(G);
 

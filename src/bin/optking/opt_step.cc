@@ -176,7 +176,7 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
             optinfo.conv);
     fprintf(outfile,"Final %s energy is %15.10lf\n", wfn, carts.get_energy());
     fprintf(stderr,"\n  OPTKING:  optimization is complete\n");
-    fprintf(outfile,"The Optimized geometry\n");
+    fprintf(outfile,"The Optimized geometry in a.u.\n");
     if (optinfo.zmat) {
       int *unique_zvars;
       unique_zvars = (int *) malloc(MAX_ZVARS*sizeof(int));

@@ -199,8 +199,10 @@ int make_disp_nosymm(cartesians &carts, internals &simples,
     displacements[2*i+1][i] = 1.0 * optinfo.disp_size;
   }
 
+  /*
   fprintf(outfile,"\nDisplacement Matrix\n");
   print_mat2(displacements, ndisps, nsalcs, outfile);
+  */
 
   /*** generate and store Micro_iteration cartesian geometries ***/
   micro_geoms = block_matrix(ndisps, dim_carts);
