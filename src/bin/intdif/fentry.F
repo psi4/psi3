@@ -21,8 +21,10 @@ C**********************************************************************
       integer errcod
       integer ijnk1(1),ijnk2(2),ijnk3
       logical oldinp
-      REAL*8 Z(10000000)
-      INTEGER IZ(50000)
+      parameter (NMAX=100000)
+      parameter (NIMAX=5000)
+      REAL*8 Z(NMAX)
+      INTEGER IZ(NIMAX)
       CHARACTER LABEL*10
       COMMON/IO/IIN,IOUT,I12,I16,I21,IDER,ISCR1,ISCR2
     1 FORMAT(A10)
@@ -57,8 +59,6 @@ c
       call ffile(iscr1,'file91a',0)
       call ffile(iscr2,'file92a',0)
 cets041389
-      NMAX=300000
-      NIMAX=5000
       DO 50  I=1,NIMAX
   50  IZ(I)=0
       DO 52  I=1,NMAX
