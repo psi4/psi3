@@ -14,7 +14,58 @@ void tau_build(void)
 
   nirreps = moinfo.nirreps;
 
-  if(params.ref == 0 || params.ref == 1) { /** RHF or ROHF **/
+  if(params.ref == 0) { /** RHF **/
+    dpd_buf4_init(&tIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
+    dpd_buf4_copy(&tIjAb, CC_TAMPS, "tauIjAb");
+    dpd_buf4_close(&tIjAb);
+
+    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+    dpd_file2_mat_init(&tIA);
+    dpd_file2_mat_rd(&tIA);
+    dpd_buf4_init(&tauIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
+
+    for(h=0; h < nirreps; h++) {
+
+      dpd_buf4_mat_irrep_init(&tauIjAb, h);
+      dpd_buf4_mat_irrep_rd(&tauIjAb, h);
+
+      for(ij=0; ij < tauIjAb.params->rowtot[h]; ij++) {
+	i = tauIjAb.params->roworb[h][ij][0];
+	j = tauIjAb.params->roworb[h][ij][1];
+	I = tIA.params->rowidx[i];
+	J = tIA.params->rowidx[j];
+	Isym = tIA.params->psym[i];
+	Jsym = tIA.params->psym[j];
+	for(ab=0; ab < tauIjAb.params->coltot[h]; ab++) {
+	  a = tauIjAb.params->colorb[h][ab][0];
+	  b = tauIjAb.params->colorb[h][ab][1];
+	  A = tIA.params->colidx[a];
+	  B = tIA.params->colidx[b];
+	  Asym = tIA.params->qsym[a];
+	  Bsym = tIA.params->qsym[b];
+
+	  if((Isym==Asym) && (Jsym==Bsym))
+	    tauIjAb.matrix[h][ij][ab] +=
+	      (tIA.matrix[Isym][I][A] * tIA.matrix[Jsym][J][B]);
+
+	}
+      }
+
+      dpd_buf4_mat_irrep_wrt(&tauIjAb, h);
+      dpd_buf4_mat_irrep_close(&tauIjAb, h);
+    }
+
+    /* This will generate the tauBA and tauIjbA files from tauIjAb */
+    dpd_buf4_sort(&tauIjAb, CC_TAMPS, pqsr, 0, 5, "tauIjbA");
+    dpd_buf4_close(&tauIjAb);
+    dpd_buf4_init(&tauIjbA, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjbA");
+    dpd_buf4_sort(&tauIjbA, CC_TAMPS, qprs,  0, 5, "tauiJaB");
+    dpd_buf4_close(&tauIjbA);
+
+    dpd_file2_mat_close(&tIA);
+    dpd_file2_close(&tIA);
+  }
+  else if(params.ref == 1) { /** ROHF **/
 
     dpd_buf4_init(&tIJAB, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tIJAB");
     dpd_buf4_copy(&tIJAB, CC_TAMPS, "tauIJAB");

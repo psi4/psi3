@@ -33,6 +33,7 @@ void cachedone_rhf(int **cachelist);
 void sort_amps(void);
 void tau_build(void);
 void taut_build(void);
+void status(char *, FILE *);
 
 int main(int argc, char *argv[])
 {
@@ -66,12 +67,18 @@ int main(int argc, char *argv[])
   taut_build();
 
   F_build();
+  if(params.print & 2) status("F elements", outfile);
 
-  Wmbej_build();
-  Wmnie_build();
-  Wamef_build();
-  Wmbij_build();
   Wabei_build();
+  if(params.print & 2) status("Wabei elements", outfile);
+  Wmbej_build();
+  if(params.print & 2) status("Wmbej elements", outfile);
+  Wmnie_build();
+  if(params.print & 2) status("Wmnie elements", outfile);
+  Wamef_build();
+  if(params.print & 2) status("Wamef elements", outfile);
+  Wmbij_build();
+  if(params.print & 2) status("Wmbij elements", outfile);
 
   if(params.ref == 1) purge(); /** ROHF only **/
   dpd_close(0);
@@ -101,7 +108,7 @@ void init_io(int argc, char *argv[])
 
   psio_init();
 
-  /* Open all dpd data files here */
+  /* Open all dpd data files */
   for(i=CC_MIN; i <= CC_MAX; i++) psio_open(i,1);
 }
 
@@ -121,7 +128,9 @@ void exit_io(void)
   int i;
  
   /* Close all dpd data files here */
-  for(i=CC_MIN; i <= CC_MAX; i++) psio_close(i,1);
+  for(i=CC_MIN; i < CC_TMP; i++) psio_close(i,1);
+  for(i=CC_TMP; i <= CC_TMP11; i++) psio_close(i,0);  /* get rid of TMP files */
+  for(i=CC_TMP11+1; i < CC_MAX; i++) psio_close(i,1);
 
   psio_done();
   tstop(outfile);
