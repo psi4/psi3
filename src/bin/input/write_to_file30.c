@@ -245,9 +245,9 @@ void write_to_file30(double repulsion)
   wwritw(CHECKPOINTFILE,(char *) arr_int, num_shells*(sizeof(int)),ptr,&ptr);
   free(arr_int);
 
-  /* Irrep character rows packed in int's */
+  /* Unique atom number to full atom number mapping array */
   pointers[43] = ptr/sizeof(int) + 1;
-  wwritw(CHECKPOINTFILE,(char *) irr_char_str, nirreps*sizeof(int),ptr,&ptr);
+  wwritw(CHECKPOINTFILE,(char *) u2a, num_uniques*sizeof(int),ptr,&ptr);
 
   /* Mapping between canonical Cotton ordering of symmetry operations
      in the point group to the symmetry.h-defined ordering */
