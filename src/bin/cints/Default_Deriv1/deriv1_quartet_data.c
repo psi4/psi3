@@ -15,7 +15,7 @@
 /*--------------------------------------------------------------------------------
   This function computes constants used in OSRR for a given quartet of primitives
  --------------------------------------------------------------------------------*/
-void deriv1_quartet_data(prim_data *Data, double AB2, double CD2,
+void deriv1_quartet_data(prim_data *Data, double_array_t *fjt_table, double AB2, double CD2,
 			 struct shell_pair *sp1, struct shell_pair *sp2, 
 			 int am, int pi, int pj, int pk, int pl, double scale)
 {
@@ -35,7 +35,7 @@ void deriv1_quartet_data(prim_data *Data, double AB2, double CD2,
   /*----------------
     Local variables
    ----------------*/
-  static struct coordinates PQ, W;
+  struct coordinates PQ, W;
   int i;
   double coef1;
   double PQ2;
@@ -72,9 +72,9 @@ void deriv1_quartet_data(prim_data *Data, double AB2, double CD2,
       Data->F[i] = F0[i]*coef1;
     }
   else {
-    int_fjt(am+DERIV_LVL,rho*PQ2);
+    int_fjt(fjt_table,am+DERIV_LVL,rho*PQ2);
     for(i=0;i<=am+DERIV_LVL;i++)
-      Data->F[i] = int_fjttable.d[i]*coef1;
+      Data->F[i] = fjt_table->d[i]*coef1;
     }
 
   /* PA */

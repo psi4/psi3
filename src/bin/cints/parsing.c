@@ -46,6 +46,11 @@ void parsing()
   if (!strcmp("SCF",UserOptions.wfn))
     UserOptions.scf_only = 1;
 
+  UserOptions.num_threads = 1;
+  errcod = ip_data("NUM_THREADS","%d",&(UserOptions.num_threads),0);
+  if (UserOptions.num_threads < 1)
+    UserOptions.num_threads = 1;
+
   return;
 
 }

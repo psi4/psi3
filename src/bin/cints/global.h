@@ -28,19 +28,6 @@ EXTERN IOUnits_t IOUnits;
 EXTERN FILE *infile;
 EXTERN FILE *outfile;
 
-/*--- used to pass data to functions in LIBINT ---*/
-EXTERN double *int_stack;
-EXTERN double *zero_stack;             /* LIBDERIV only */
-EXTERN double AB[3], CD[3];
-EXTERN prim_data *Shell_Data;
-EXTERN double *ABCD[12];               /* LIBDERIV only */
-EXTERN double *te_ptr[NUM_TE_TYPES];   /* LIBR12 only */
-EXTERN double AB[3], CD[3], AC[3];     /* LIBR12 only */
-EXTERN double ABdotAC, CDdotCA;        /* LIBR12 only */
-
-/*--- Table of Fj(T) values ---*/
-EXTERN double_array_t int_fjttable;
-
 /*--- Molecule Info ---*/
 EXTERN Molecule_t Molecule;
 

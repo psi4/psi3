@@ -14,7 +14,7 @@
 /*--------------------------------------------------------------------------------
   This function computes constants used in OSRR for a given quartet of primitives
  --------------------------------------------------------------------------------*/
-void r12_quartet_data(prim_data* Data, double AB2, double CD2,
+void r12_quartet_data(prim_data* Data, double_array_t *fjt_table, double AB2, double CD2,
 		      struct shell_pair* sp1, struct shell_pair* sp2, 
 		      int am, int pi, int pj, int pk, int pl, double scale)
 {
@@ -35,7 +35,7 @@ void r12_quartet_data(prim_data* Data, double AB2, double CD2,
   /*----------------
     Local variables
    ----------------*/
-  static struct coordinates PQ, W;
+  struct coordinates PQ, W;
   int i;
   double coef1;
   double PQ2;
@@ -61,9 +61,10 @@ void r12_quartet_data(prim_data* Data, double AB2, double CD2,
   PQ2 += PQ.z*PQ.z;
   
   if (!am && deriv_lvl == 0) { /*--- Only need to compute (00|00) and (00||00) ---*/
-    int_fjt(1,rho*PQ2);
-    Data->F[0] = int_fjttable.d[0]*coef1;
-    Data->ss_r12_ss = coef1*(2.0*Data->oo2p*int_fjttable.d[0] + PQ2*(int_fjttable.d[0] - int_fjttable.d[1]));
+    int_fjt(fjt_table,1,rho*PQ2);
+    Data->F[0] = fjt_table->d[0]*coef1;
+    Data->ss_r12_ss = coef1*(2.0*Data->oo2p*fjt_table->d[0] +
+			     PQ2*(fjt_table->d[0] - fjt_table->d[1]));
   }
   else {
   Data->oo2zn = 0.5*oozn;
@@ -79,9 +80,9 @@ void r12_quartet_data(prim_data* Data, double AB2, double CD2,
       Data->F[i] = F0[i]*coef1;
     }
   else {
-    int_fjt(am+deriv_lvl,rho*PQ2);
+    int_fjt(fjt_table,am+deriv_lvl,rho*PQ2);
     for(i=0;i<=am+deriv_lvl;i++)
-      Data->F[i] = int_fjttable.d[i]*coef1;
+      Data->F[i] = fjt_table->d[i]*coef1;
     }
 
   Data->ss_r12_ss = 2.0*Data->oo2p*Data->F[0] + PQ2*(Data->F[0] - Data->F[1]);

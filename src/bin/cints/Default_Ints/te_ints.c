@@ -30,6 +30,9 @@ void te_ints()
   struct shell_pair *sp_ij, *sp_kl;
   struct unique_shell_pair *usp_ij,*usp_kl;
 
+  Libint_t Libint;
+  double_array_t fjt_table;
+
   int total_te_count = 0;
   int ij, kl, ik, jl, ijkl;
   int ioffset, joffset, koffset, loffset;
@@ -88,9 +91,9 @@ void te_ints()
   eriout = fopen("eriout.dat","w");
 #endif
   iwl_buf_init(&ERIOUT, IOUnits.itap33, toler, 0, 0);
-  int_initialize_fjt(BasisSet.max_am*4);
-  init_libint();
-  schwartz_eri();
+  init_fjt(BasisSet.max_am*4);
+  init_fjt_table(&fjt_table);
+  init_libint_base();
   
   /*-------------------------
     Allocate data structures
@@ -124,18 +127,11 @@ void te_ints()
     sl_fbf_arr = (int *)malloc(sizeof(int)*max_num_unique_quartets);
   }
   
-  if (int_stack == NULL) {
-    int_stack = (double *) malloc(STACK_SIZE*sizeof(double));
-    UserOptions.memory -= STACK_SIZE;
-  }
   max_num_prim_comb = (BasisSet.max_num_prims*
                        BasisSet.max_num_prims)*
                       (BasisSet.max_num_prims*
                        BasisSet.max_num_prims);
-  if (Shell_Data == NULL) {
-    Shell_Data = (prim_data *) malloc( max_num_prim_comb*sizeof(prim_data) );
-    UserOptions.memory -= max_num_prim_comb*sizeof(prim_data)/sizeof(double);
-  }
+  init_libint(&Libint, max_num_prim_comb);
 
 /*-------------------------------------------------
   generate all unique shell quartets with ordering
@@ -304,15 +300,15 @@ void te_ints()
 	      sp_ij = &(BasisSet.shell_pairs[si][sj]);
 	      sp_kl = &(BasisSet.shell_pairs[sk][sl]);
 
-	      AB[0] = sp_ij->AB[0];
-	      AB[1] = sp_ij->AB[1];
-	      AB[2] = sp_ij->AB[2];
-	      CD[0] = sp_kl->AB[0];
-	      CD[1] = sp_kl->AB[1];
-	      CD[2] = sp_kl->AB[2];
+	      Libint.AB[0] = sp_ij->AB[0];
+	      Libint.AB[1] = sp_ij->AB[1];
+	      Libint.AB[2] = sp_ij->AB[2];
+	      Libint.CD[0] = sp_kl->AB[0];
+	      Libint.CD[1] = sp_kl->AB[1];
+	      Libint.CD[2] = sp_kl->AB[2];
 		  
-	      AB2 = AB[0]*AB[0]+AB[1]*AB[1]+AB[2]*AB[2];
-	      CD2 = CD[0]*CD[0]+CD[1]*CD[1]+CD[2]*CD[2];
+	      AB2 = Libint.AB[0]*Libint.AB[0]+Libint.AB[1]*Libint.AB[1]+Libint.AB[2]*Libint.AB[2];
+	      CD2 = Libint.CD[0]*Libint.CD[0]+Libint.CD[1]*Libint.CD[1]+Libint.CD[2]*Libint.CD[2];
 
 	      /*--- Compute data for primitive quartets here ---*/
 	      num_prim_comb = 0;
@@ -324,7 +320,7 @@ void te_ints()
 		    max_pl = (sk == sl) ? pk+1 : np_l;
 		    for (pl = 0; pl < max_pl; pl++){
 		      n = m * (1 + (sk == sl && pk != pl));
-		      quartet_data(&(Shell_Data[num_prim_comb++]), AB2, CD2,
+		      quartet_data(&(Libint.PrimQuartet[num_prim_comb++]), &fjt_table, AB2, CD2,
 				   sp_ij, sp_kl, am, pi, pj, pk, pl, n*lambda_T);
 		      
 		    }
@@ -334,7 +330,7 @@ void te_ints()
 
 	      /*--- Compute the integrals ---*/
 	      if (am) {
-		data = top_build_abcd[orig_am[0]][orig_am[1]][orig_am[2]][orig_am[3]](num_prim_comb);
+		data = build_eri[orig_am[0]][orig_am[1]][orig_am[2]][orig_am[3]](&Libint,num_prim_comb);
 		data = norm_quartet(data, puream_data, orig_am, BasisSet.puream);
 		/*--- copy data to plist_data to be used in the symmetrization step ---*/
 		if (Symmetry.nirreps > 1)
@@ -343,12 +339,12 @@ void te_ints()
 	      else {
 		temp = 0.0;
 		for(p=0;p<num_prim_comb;p++)
-		  temp += Shell_Data[p].F[0];
+		  temp += Libint.PrimQuartet[p].F[0];
 		if (Symmetry.nirreps > 1)
 		  plist_data[plquartet][0] = temp;
 		else {
-		  int_stack[0] = temp;
-		  data = int_stack;
+		  Libint.int_stack[0] = temp;
+		  data = Libint.int_stack;
 		}
 	      }
 
@@ -963,8 +959,7 @@ void te_ints()
   /*---------
     Clean-up
    ---------*/
-  free(int_stack);
-  free(Shell_Data);
+  free_libint(&Libint);
   free(tot_data);
   free(sj_arr);
   free(sk_arr);
@@ -977,5 +972,9 @@ void te_ints()
   }
   if (BasisSet.puream)
     free(puream_data);
+  free_fjt_table(&fjt_table);
+  free_fjt();
+
+  return;
 }
 

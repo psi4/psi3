@@ -67,7 +67,7 @@ void stop_io()
 {
   file30_close();
   if(UserOptions.print_lvl)
-     tstop(outfile);
+    tstop(outfile);
   psio_done();
   fclose(outfile);
   fclose(infile);

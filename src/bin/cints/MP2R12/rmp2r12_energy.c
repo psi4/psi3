@@ -79,6 +79,8 @@ void rmp2r12_energy()
 
   struct iwlbuf MOBuf[3];
   struct shell_pair *sp_ij, *sp_kl;
+  Libr12_t Libr12;
+  double_array_t fjt_table;
 
   static char *te_operator[] = { "1/r12", "r12", "[r12,T1]" };
   int total_te_count[NUM_TE_TYPES] = {0, 0, 0, 0};
@@ -121,9 +123,9 @@ void rmp2r12_energy()
   int imin, imax, jmin;
   int max_bf_per_shell;
   int mo_i, mo_j, mo_x, mo_y;
+  int rs, qrs;
   int rs_offset, rsi_offset, rsp_offset;
   int num_prim_comb;
-  int rs, qrs;
 
   double Emp2 = 0.0;
   double Emp2r12 = 0.0;
@@ -157,8 +159,8 @@ void rmp2r12_energy()
   /*---------------
     Initialization
    ---------------*/
-  int_initialize_fjt(BasisSet.max_am*4+1);
-  init_libr12();
+  init_fjt(BasisSet.max_am*4+1);
+  init_libr12_base();
   iwl_buf_init(&MOBuf[0], IOUnits.itapERI_MO, toler, 0, 0);
   iwl_buf_init(&MOBuf[1], IOUnits.itapR12_MO, toler, 0, 0);
   iwl_buf_init(&MOBuf[2], IOUnits.itapR12T2_MO, toler, 0, 0);
@@ -182,19 +184,12 @@ void rmp2r12_energy()
   sl_arr = (int *)malloc(sizeof(int)*max_num_unique_quartets);
   if (Symmetry.nirreps > 1)
     max_class_size = max_cart_class_size;
-  
-  if (int_stack == NULL) {
-    int_stack = (double *) malloc(STACK_SIZE*sizeof(double));
-    UserOptions.memory -= STACK_SIZE;
-  }
   max_num_prim_comb = (BasisSet.max_num_prims*
                        BasisSet.max_num_prims)*
                       (BasisSet.max_num_prims*
                        BasisSet.max_num_prims);
-  if (Shell_Data == NULL) {
-    Shell_Data = (prim_data *) malloc( max_num_prim_comb*sizeof(prim_data) );
-    UserOptions.memory -= max_num_prim_comb*sizeof(prim_data)/sizeof(double);
-  }
+  UserOptions.memory -= init_libr12(&Libr12,max_num_prim_comb);
+  init_fjt_table(&fjt_table);
 
 
   /*---
@@ -400,22 +395,30 @@ void rmp2r12_energy()
 		sp_ij = &(BasisSet.shell_pairs[si][sj]);
 		sp_kl = &(BasisSet.shell_pairs[sk][sl]);
 
-		AB[0] = sp_ij->AB[0];
-		AB[1] = sp_ij->AB[1];
-		AB[2] = sp_ij->AB[2];
-		CD[0] = sp_kl->AB[0];
-		CD[1] = sp_kl->AB[1];
-		CD[2] = sp_kl->AB[2];
-		AC[0] = Molecule.centers[BasisSet.shells[si].center-1].x-
+		Libr12.ShellQuartet.AB[0] = sp_ij->AB[0];
+		Libr12.ShellQuartet.AB[1] = sp_ij->AB[1];
+		Libr12.ShellQuartet.AB[2] = sp_ij->AB[2];
+		Libr12.ShellQuartet.CD[0] = sp_kl->AB[0];
+		Libr12.ShellQuartet.CD[1] = sp_kl->AB[1];
+		Libr12.ShellQuartet.CD[2] = sp_kl->AB[2];
+		Libr12.ShellQuartet.AC[0] = Molecule.centers[BasisSet.shells[si].center-1].x-
 			Molecule.centers[BasisSet.shells[sk].center-1].x;
-		AC[1] = Molecule.centers[BasisSet.shells[si].center-1].y-
+		Libr12.ShellQuartet.AC[1] = Molecule.centers[BasisSet.shells[si].center-1].y-
 			Molecule.centers[BasisSet.shells[sk].center-1].y;
-		AC[2] = Molecule.centers[BasisSet.shells[si].center-1].z-
+		Libr12.ShellQuartet.AC[2] = Molecule.centers[BasisSet.shells[si].center-1].z-
 			Molecule.centers[BasisSet.shells[sk].center-1].z;
-		ABdotAC = AB[0]*AC[0]+AB[1]*AC[1]+AB[2]*AC[2];
-		CDdotCA = -1.0*(CD[0]*AC[0]+CD[1]*AC[1]+CD[2]*AC[2]);
-		AB2 = AB[0]*AB[0]+AB[1]*AB[1]+AB[2]*AB[2];
-		CD2 = CD[0]*CD[0]+CD[1]*CD[1]+CD[2]*CD[2];
+		Libr12.ShellQuartet.ABdotAC = Libr12.ShellQuartet.AB[0]*Libr12.ShellQuartet.AC[0]+
+					      Libr12.ShellQuartet.AB[1]*Libr12.ShellQuartet.AC[1]+
+					      Libr12.ShellQuartet.AB[2]*Libr12.ShellQuartet.AC[2];
+		Libr12.ShellQuartet.CDdotCA = -1.0*(Libr12.ShellQuartet.CD[0]*Libr12.ShellQuartet.AC[0]+
+						    Libr12.ShellQuartet.CD[1]*Libr12.ShellQuartet.AC[1]+
+						    Libr12.ShellQuartet.CD[2]*Libr12.ShellQuartet.AC[2]);
+		AB2 = Libr12.ShellQuartet.AB[0]*Libr12.ShellQuartet.AB[0]+
+		      Libr12.ShellQuartet.AB[1]*Libr12.ShellQuartet.AB[1]+
+		      Libr12.ShellQuartet.AB[2]*Libr12.ShellQuartet.AB[2];
+		CD2 = Libr12.ShellQuartet.CD[0]*Libr12.ShellQuartet.CD[0]+
+		      Libr12.ShellQuartet.CD[1]*Libr12.ShellQuartet.CD[1]+
+		      Libr12.ShellQuartet.CD[2]*Libr12.ShellQuartet.CD[2];
 
 		/*--------------------------------
 		  contract by primitives out here
@@ -425,35 +428,35 @@ void rmp2r12_energy()
 		  for (pj = 0; pj < np_j; pj++)
 		    for (pk = 0; pk < np_k; pk++)
 		      for (pl = 0; pl < np_l; pl++){
-			r12_quartet_data(&(Shell_Data[num_prim_comb++]), AB2, CD2,
+			r12_quartet_data(&(Libr12.PrimQuartet[num_prim_comb++]), &fjt_table, AB2, CD2,
 					 sp_ij, sp_kl, am, pi, pj, pk, pl, lambda_T);
 		      }
 
 		if (am) {
-		  build_grt_abcd[orig_am[0]][orig_am[1]][orig_am[2]][orig_am[3]](num_prim_comb);
+		  build_r12_grt[orig_am[0]][orig_am[1]][orig_am[2]][orig_am[3]](&Libr12,num_prim_comb);
 		  if (swap_ij_kl)
 		    /*--- (usi usj|[r12,T1]|usk usl) = (usk usl|[r12,T2]|usi usj) ---*/
-		    te_ptr[2] = te_ptr[3];
+		    Libr12.te_ptr[2] = Libr12.te_ptr[3];
 		  /*--- Just normalize the integrals ---*/
 		  for(te_type=0;te_type<NUM_TE_TYPES-1;te_type++)
-		    data[te_type] = norm_quartet(te_ptr[te_type], NULL, orig_am, 0);
+		    data[te_type] = norm_quartet(Libr12.te_ptr[te_type], NULL, orig_am, 0);
 		}
 		else {
 		  ssss = 0.0;
 		  ss_r12_ss = 0.0;
 		  for(p=0;p<num_prim_comb;p++) {
-		    ssss += Shell_Data[p].F[0];
-		    ss_r12_ss += Shell_Data[p].ss_r12_ss;
+		    ssss += Libr12.PrimQuartet[p].F[0];
+		    ss_r12_ss += Libr12.PrimQuartet[p].ss_r12_ss;
 		  }
-		  build_grt_abcd[0][0][0][0](num_prim_comb);
-		  int_stack[2] = te_ptr[2][0];
-		  int_stack[3] = te_ptr[3][0];
-		  int_stack[0] = ssss;
-		  int_stack[1] = ss_r12_ss;
-		  data[0] = int_stack;
-		  data[1] = int_stack+1;
-		  data[2] = int_stack+2;
-		  data[3] = int_stack+3;
+		  build_r12_grt[0][0][0][0](&Libr12,num_prim_comb);
+		  Libr12.int_stack[2] = Libr12.te_ptr[2][0];
+		  Libr12.int_stack[3] = Libr12.te_ptr[3][0];
+		  Libr12.int_stack[0] = ssss;
+		  Libr12.int_stack[1] = ss_r12_ss;
+		  data[0] = Libr12.int_stack;
+		  data[1] = Libr12.int_stack+1;
+		  data[2] = Libr12.int_stack+2;
+		  data[3] = Libr12.int_stack+3;
 		}
 
 		/*---
@@ -796,12 +799,12 @@ void rmp2r12_energy()
   }
   free_block(ix_buf);
   free_block(jy_buf);
-  free(int_stack);
-  free(Shell_Data);
+  free_libr12(&Libr12);
+  free_fjt_table(&fjt_table);
   free(sj_arr);
   free(sk_arr);
   free(sl_arr);
-
+  free_fjt();
   timer_done();
 
   return;

@@ -9,11 +9,6 @@
 
 void init_globals()
 {
-  int_stack = NULL;
-  Shell_Data = NULL;
-  int_fjttable.n1 = 0;
-  int_fjttable.d = NULL;
-
   IOUnits.itap30 = 30;
   IOUnits.itap33 = PSIF_AO_TEI;
   IOUnits.itapS = PSIF_AO_S;

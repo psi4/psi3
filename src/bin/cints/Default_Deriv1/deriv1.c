@@ -3,6 +3,7 @@
 #include<math.h>
 #include<libciomr.h>
 #include<libint.h>
+#include<pthread.h>
 
 #include"defines.h"
 #define EXTERN
@@ -12,9 +13,13 @@
 #include"read_gen_opdm.h"
 #include"enuc_deriv1.h"
 #include"oe_deriv1.h"
-#include"te_deriv1.h"
+#include"te_deriv1_scf.h"
+#include"te_deriv1_corr.h"
 #include"rot_inv.h"
 #include"file11.h"
+
+pthread_mutex_t deriv1_mutex;
+double **grad_te;
 
 void deriv1()
 {
@@ -29,7 +34,10 @@ void deriv1()
       read_gen_opdm();
     enuc_deriv1();
     oe_deriv1();
-    te_deriv1();
+    if (!strcmp(UserOptions.wfn,"SCF"))
+      te_deriv1_scf();
+    else
+      te_deriv1_corr();
     check_rot_inv();
     if (!strcmp(UserOptions.wfn,"SCF"))
       cleanup_moinfo();

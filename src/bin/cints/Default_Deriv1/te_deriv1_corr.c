@@ -16,22 +16,21 @@
 #include "small_fns.h"
 
 
-void te_deriv1()
+void te_deriv1_corr()
 {
-
   /*--- Various data structures ---*/
   struct iwlbuf TPDM;                 /* IWL buffer for two-pdm matrix elements */
   struct shell_pair *sp_ij, *sp_kl;
+  Libderiv_t Libderiv;                    /* Integrals library object */
+  double_array_t fjt_table;               /* table of auxiliary function F_m(u) for each primitive combination */
 
   int ij, kl, ik, jl, ijkl;
   int ioffset, joffset, koffset, loffset;
   int count ;
-  int read_dens = strcmp(UserOptions.wfn,"SCF");
   int dum;
   int n, num;
   int total_am, am;
   int orig_am[4];
-  int pkblock_end_index = -1;
   register int i, j, k, l, m, ii, jj, kk, ll;
   register int si, sj, sk, sl ;
   register int sii, sjj, skk, sll, slll;
@@ -66,7 +65,7 @@ void te_deriv1()
 
   double AB2, CD2;
   double *FourInd;
-  double **grad_te;
+  double **grad_te_local;
   double pfac;
   double temp;
   double alpha, beta;
@@ -78,30 +77,22 @@ void te_deriv1()
   /*---------------
     Initialization
    ---------------*/
-  if (strcmp(UserOptions.wfn,"SCF")) {
-    iwl_buf_init(&TPDM, IOUnits.itapG, 0.0, 1, 1);
-    buf_offset = 0;
-    buf_4offset = 0;
-    buf_size = TPDM.inbuf;
-  }
-  int_initialize_fjt(BasisSet.max_am*4+DERIV_LVL);
-  init_libderiv();
-
+  iwl_buf_init(&TPDM, IOUnits.itapG, 0.0, 1, 1);
+  buf_offset = 0;
+  buf_4offset = 0;
+  buf_size = TPDM.inbuf;
+  init_fjt(BasisSet.max_am*4+DERIV_LVL);
+  init_libderiv_base();
   
-  /*-------------------------
-    Allocate data structures
-   -------------------------*/
+  init_fjt_table(&fjt_table);
   max_cart_class_size = ioff[BasisSet.max_am]*ioff[BasisSet.max_am]*ioff[BasisSet.max_am]*ioff[BasisSet.max_am];
   max_class_size = max_cart_class_size;
-
-  int_stack = (double *) malloc(STACK_SIZE*sizeof(double));
-  zero_stack = init_array(max_cart_class_size);
   max_num_prim_comb = (BasisSet.max_num_prims*BasisSet.max_num_prims)*
 		      (BasisSet.max_num_prims*BasisSet.max_num_prims);
-  Shell_Data = (prim_data *) malloc(max_num_prim_comb*sizeof(prim_data));
+  init_libderiv(&Libderiv,max_num_prim_comb,max_cart_class_size);
   FourInd = init_array(max_cart_class_size);
 
-  grad_te = block_matrix(Molecule.num_atoms,3);
+  grad_te_local = block_matrix(Molecule.num_atoms,3);
 
 /*-------------------------------------------------
   generate all unique shell quartets with ordering
@@ -194,16 +185,20 @@ void te_deriv1()
 
 	    sp_ij = &(BasisSet.shell_pairs[si][sj]);
 	    sp_kl = &(BasisSet.shell_pairs[sk][sl]);
+
+	    Libderiv.AB[0] = sp_ij->AB[0];
+	    Libderiv.AB[1] = sp_ij->AB[1];
+	    Libderiv.AB[2] = sp_ij->AB[2];
+	    Libderiv.CD[0] = sp_kl->AB[0];
+	    Libderiv.CD[1] = sp_kl->AB[1];
+	    Libderiv.CD[2] = sp_kl->AB[2];
 	    
-	    AB[0] = sp_ij->AB[0];
-	    AB[1] = sp_ij->AB[1];
-	    AB[2] = sp_ij->AB[2];
-	    CD[0] = sp_kl->AB[0];
-	    CD[1] = sp_kl->AB[1];
-	    CD[2] = sp_kl->AB[2];
-	    
-	    AB2 = AB[0]*AB[0]+AB[1]*AB[1]+AB[2]*AB[2];
-	    CD2 = CD[0]*CD[0]+CD[1]*CD[1]+CD[2]*CD[2];
+	    AB2 = Libderiv.AB[0]*Libderiv.AB[0]+
+		  Libderiv.AB[1]*Libderiv.AB[1]+
+		  Libderiv.AB[2]*Libderiv.AB[2];
+	    CD2 = Libderiv.CD[0]*Libderiv.CD[0]+
+		  Libderiv.CD[1]*Libderiv.CD[1]+
+		  Libderiv.CD[2]*Libderiv.CD[2];
 
 	    /*-------------------------
 	      Figure out the prefactor
@@ -215,9 +210,7 @@ void te_deriv1()
 	      pfac *= 0.5;
 	    if (si == sk && sj == sl || si == sl && sj == sk)
 	      pfac *= 0.5;
-	    if (read_dens) { /*--- The factor of 8 needed for correlated densities ---*/
-	      pfac *= 8.0;
-	    }
+	    pfac *= 8.0;   /*--- The factor of 8 needed for correlated densities ---*/
 
 	    /*--- Compute data for primitive quartets here ---*/
 	    num_prim_comb = 0;
@@ -229,7 +222,8 @@ void te_deriv1()
 		  max_pl = (sk == sl) ? pk+1 : np_l;
 		  for (pl = 0; pl < max_pl; pl++){
 		    n = m * (1 + (sk == sl && pk != pl));
-		    deriv1_quartet_data(&(Shell_Data[num_prim_comb++]), AB2, CD2,
+		    deriv1_quartet_data(&(Libderiv.PrimQuartet[num_prim_comb++]),
+					&fjt_table, AB2, CD2,
 					sp_ij, sp_kl, am, pi, pj, pk, pl, n*pfac);
 		    
 		  }
@@ -237,10 +231,7 @@ void te_deriv1()
 	      }
 	    }
 
-	    /*-------------
-	      Form FourInd
-	     -------------*/
-	    if (read_dens) { /*--- Read in a shell quartet from disk ---*/
+	    /*--- Read in a shell quartet from disk ---*/
 	      memset(FourInd,0,sizeof(double)*quartet_size);
 	      last_buf = TPDM.lastbuf;
 	      quartet_done = 0;
@@ -295,66 +286,8 @@ void te_deriv1()
 		  punt("The last TPDM quartet not marked");
 		}
 	      } while (!quartet_done);
-	    }
-	    else { /*--- Compute a shell quartet of TPDM ---*/
-	      si_fao = BasisSet.shells[si].fao-1;
-	      sj_fao = BasisSet.shells[sj].fao-1;
-	      sk_fao = BasisSet.shells[sk].fao-1;
-	      sl_fao = BasisSet.shells[sl].fao-1;
-	      if (UserOptions.reftype == rhf || UserOptions.reftype == uhf) {           /*--- RHF or UHF ---*/
-		count = 0;
-		for (ao_i = si_fao; ao_i < si_fao+ni; ao_i++)
-		  for (ao_j = sj_fao; ao_j < sj_fao+nj; ao_j++)
-		    for (ao_k = sk_fao; ao_k < sk_fao+nk; ao_k++)
-		      for (ao_l = sl_fao; ao_l < sl_fao+nl; ao_l++) {
-			FourInd[count] = (4.0*Dens[ao_i][ao_j]*Dens[ao_k][ao_l] -
-					  Dens[ao_i][ao_k]*Dens[ao_j][ao_l] -
-					  Dens[ao_i][ao_l]*Dens[ao_k][ao_j])*
-					 GTOs.bf_norm[orig_am[0]][ao_i-si_fao]*
-					 GTOs.bf_norm[orig_am[1]][ao_j-sj_fao]*
-					 GTOs.bf_norm[orig_am[2]][ao_k-sk_fao]*
-					 GTOs.bf_norm[orig_am[3]][ao_l-sl_fao];
-			count++;
-		      }
-	      }
-	      else {                     /*--- ROHF or TCSCF ---*/
-		if (am)
-		  memset((char *) FourInd, 0, sizeof(double)*quartet_size);
-		else
-		  FourInd[0] = 0.0;
-		for(mosh_i=0;mosh_i<MOInfo.num_moshells;mosh_i++)
-		  for(mosh_j=0;mosh_j<MOInfo.num_moshells;mosh_j++) {
-		    count = 0;
-		    dens_i = ShDens[mosh_i];
-		    dens_j = ShDens[mosh_j];
-		    alpha = 8.0*MOInfo.Alpha[mosh_i][mosh_j];
-		    beta = 4.0*MOInfo.Beta[mosh_i][mosh_j];
-		    for (ao_i = si_fao; ao_i < si_fao+ni; ao_i++)
-		      for (ao_j = sj_fao; ao_j < sj_fao+nj; ao_j++)
-			for (ao_k = sk_fao; ao_k < sk_fao+nk; ao_k++)
-			  for (ao_l = sl_fao; ao_l < sl_fao+nl; ao_l++) {
-			      FourInd[count] += (alpha*dens_i[ao_i][ao_j]*dens_j[ao_k][ao_l] +
-						beta*(dens_i[ao_i][ao_k]*dens_j[ao_j][ao_l] +
-						dens_i[ao_i][ao_l]*dens_j[ao_k][ao_j]));
-			      count++;
-			  }
-		  }
-		/*--- Normalize it ---*/
-		count = 0;
-		for (ao_i = 0; ao_i < ni; ao_i++)
-		  for (ao_j = 0; ao_j < nj; ao_j++)
-		    for (ao_k = 0; ao_k < nk; ao_k++)
-		      for (ao_l = 0; ao_l < nl; ao_l++) {
-			FourInd[count] *= GTOs.bf_norm[orig_am[0]][ao_i]*
-					 GTOs.bf_norm[orig_am[1]][ao_j]*
-					 GTOs.bf_norm[orig_am[2]][ao_k]*
-					 GTOs.bf_norm[orig_am[3]][ao_l];
-			count++;
-		      }
-	      }
-	    }
 	      
-	    dbuild_abcd[orig_am[0]][orig_am[1]][orig_am[2]][orig_am[3]](num_prim_comb);
+	    build_deriv1_eri[orig_am[0]][orig_am[1]][orig_am[2]][orig_am[3]](&Libderiv,num_prim_comb);
 
 	    center_i = BasisSet.shells[si].center-1;
 	    center_j = BasisSet.shells[sj].center-1;
@@ -363,74 +296,72 @@ void te_deriv1()
 	    
 	    ddax = 0.0;
 	    for(k=0;k<quartet_size;k++)
-	      ddax += ABCD[0][k]*FourInd[k];
-	    grad_te[center_i][0] += ddax;
+	      ddax += Libderiv.ABCD[0][k]*FourInd[k];
+	    grad_te_local[center_i][0] += ddax;
 
 	    dday = 0.0;
 	    for(k=0;k<quartet_size;k++)
-	      dday += ABCD[1][k]*FourInd[k];
-	    grad_te[center_i][1] += dday;
+	      dday += Libderiv.ABCD[1][k]*FourInd[k];
+	    grad_te_local[center_i][1] += dday;
 
 	    ddaz = 0.0;
 	    for(k=0;k<quartet_size;k++)
-	      ddaz += ABCD[2][k]*FourInd[k];
-	    grad_te[center_i][2] += ddaz;
+	      ddaz += Libderiv.ABCD[2][k]*FourInd[k];
+	    grad_te_local[center_i][2] += ddaz;
 
 	    ddbx = 0.0;
 	    for(k=0;k<quartet_size;k++)
-	      ddbx += ABCD[3][k]*FourInd[k];
-	    grad_te[center_j][0] += ddbx;
+	      ddbx += Libderiv.ABCD[3][k]*FourInd[k];
+	    grad_te_local[center_j][0] += ddbx;
 
 	    ddby = 0.0;
 	    for(k=0;k<quartet_size;k++)
-	      ddby += ABCD[4][k]*FourInd[k];
-	    grad_te[center_j][1] += ddby;
+	      ddby += Libderiv.ABCD[4][k]*FourInd[k];
+	    grad_te_local[center_j][1] += ddby;
 
 	    ddbz = 0.0;
 	    for(k=0;k<quartet_size;k++)
-	      ddbz += ABCD[5][k]*FourInd[k];
-	    grad_te[center_j][2] += ddbz;
+	      ddbz += Libderiv.ABCD[5][k]*FourInd[k];
+	    grad_te_local[center_j][2] += ddbz;
 
 	    dddx = 0.0;
 	    for(k=0;k<quartet_size;k++)
-	      dddx += ABCD[9][k]*FourInd[k];
-	    grad_te[center_l][0] += dddx;
+	      dddx += Libderiv.ABCD[9][k]*FourInd[k];
+	    grad_te_local[center_l][0] += dddx;
 
 	    dddy = 0.0;
 	    for(k=0;k<quartet_size;k++)
-	      dddy += ABCD[10][k]*FourInd[k];
-	    grad_te[center_l][1] += dddy;
+	      dddy += Libderiv.ABCD[10][k]*FourInd[k];
+	    grad_te_local[center_l][1] += dddy;
 
 	    dddz = 0.0;
 	    for(k=0;k<quartet_size;k++)
-	      dddz += ABCD[11][k]*FourInd[k];
-	    grad_te[center_l][2] += dddz;
+	      dddz += Libderiv.ABCD[11][k]*FourInd[k];
+	    grad_te_local[center_l][2] += dddz;
 
-	    grad_te[center_k][0] -= ddax + ddbx + dddx;
-	    grad_te[center_k][1] -= dday + ddby + dddy;
-	    grad_te[center_k][2] -= ddaz + ddbz + dddz;
+	    grad_te_local[center_k][0] -= ddax + ddbx + dddx;
+	    grad_te_local[center_k][1] -= dday + ddby + dddy;
+	    grad_te_local[center_k][2] -= ddaz + ddbz + dddz;
 	}
 
   if (UserOptions.print_lvl >= PRINT_TEDERIV)
-    print_atomvec("Two-electron contribution to the forces (a.u.)",grad_te);
+    print_atomvec("Two-electron contribution to the forces (a.u.)",grad_te_local);
 
   for(i=0;i<Molecule.num_atoms;i++) {
-    Grad[i][0] += grad_te[i][0];
-    Grad[i][1] += grad_te[i][1];
-    Grad[i][2] += grad_te[i][2];
+    Grad[i][0] += grad_te_local[i][0];
+    Grad[i][1] += grad_te_local[i][1];
+    Grad[i][2] += grad_te_local[i][2];
   }
   
   /*---------
     Clean-up
    ---------*/
   free(FourInd);
-  free(int_stack);
-  free(zero_stack);
-  free(Shell_Data);
-  free_block(grad_te);
-
-  if (strcmp(UserOptions.wfn,"SCF"))
-    iwl_buf_close(&TPDM,1);
+  free_block(grad_te_local);
+  free_fjt_table(&fjt_table);
+  free_libderiv(&Libderiv);
+  free_fjt();
+  iwl_buf_close(&TPDM,1);
 
   return;
 }

@@ -75,6 +75,8 @@ void rmp2_energy()
   /*--- Various data structures ---*/
   struct shell_pair *sp_ij, *sp_kl;
   struct unique_shell_pair *usp_ij,*usp_kl;
+  Libint_t Libint;
+  double_array_t fjt_table;
 
   int ij, kl, ik, jl, ijkl;
   int count ;
@@ -141,8 +143,8 @@ void rmp2_energy()
   /*---------------
     Initialization
    ---------------*/
-  int_initialize_fjt(BasisSet.max_am*4);
-  init_libint();
+  init_fjt(BasisSet.max_am*4);
+  init_libint_base();
   timer_init();
   timer_on("Schwartz");
   schwartz_eri();
@@ -166,19 +168,12 @@ void rmp2_energy()
   sl_arr = (int *)malloc(sizeof(int)*max_num_unique_quartets);
   if (Symmetry.nirreps > 1)
     max_class_size = max_cart_class_size;
-
-  if (int_stack == NULL) {
-    int_stack = (double *) malloc(STACK_SIZE*sizeof(double));
-    UserOptions.memory -= STACK_SIZE;
-  }
   max_num_prim_comb = (BasisSet.max_num_prims*
                        BasisSet.max_num_prims)*
                       (BasisSet.max_num_prims*
                        BasisSet.max_num_prims);
-  if (Shell_Data == NULL) {
-    Shell_Data = (prim_data *) malloc( max_num_prim_comb*sizeof(prim_data) );
-    UserOptions.memory -= max_num_prim_comb*sizeof(prim_data)/sizeof(double);
-  }
+  init_fjt_table(&fjt_table);
+  UserOptions.memory -= init_libint(&Libint,max_num_prim_comb);
 
   /*---
     Minimum number of I-batches - 
@@ -365,16 +360,16 @@ void rmp2_energy()
 
 		sp_ij = &(BasisSet.shell_pairs[si][sj]);
 		sp_kl = &(BasisSet.shell_pairs[sk][sl]);
+
+	        Libint.AB[0] = sp_ij->AB[0];
+		Libint.AB[1] = sp_ij->AB[1];
+		Libint.AB[2] = sp_ij->AB[2];
+		Libint.CD[0] = sp_kl->AB[0];
+		Libint.CD[1] = sp_kl->AB[1];
+		Libint.CD[2] = sp_kl->AB[2];
 		
-		AB[0] = sp_ij->AB[0];
-		AB[1] = sp_ij->AB[1];
-		AB[2] = sp_ij->AB[2];
-		CD[0] = sp_kl->AB[0];
-		CD[1] = sp_kl->AB[1];
-		CD[2] = sp_kl->AB[2];
-		
-		AB2 = AB[0]*AB[0]+AB[1]*AB[1]+AB[2]*AB[2];
-		CD2 = CD[0]*CD[0]+CD[1]*CD[1]+CD[2]*CD[2];
+		AB2 = Libint.AB[0]*Libint.AB[0]+Libint.AB[1]*Libint.AB[1]+Libint.AB[2]*Libint.AB[2];
+		CD2 = Libint.CD[0]*Libint.CD[0]+Libint.CD[1]*Libint.CD[1]+Libint.CD[2]*Libint.CD[2];
 		
 		/*--- Compute data for primitive quartets here ---*/
 		num_prim_comb = 0;
@@ -387,7 +382,7 @@ void rmp2_energy()
 			    for (pl = 0; pl < max_pl; pl++){
 				n = m * (1 + (sk == sl && pk != pl));
 /*				if (fabs(sp_ij->Sovlp[pi][pj]*sp_kl->Sovlp[pk][pl]) > 1.0E-10)*/
-				quartet_data(&(Shell_Data[num_prim_comb++]), AB2, CD2,
+				quartet_data(&(Libint.PrimQuartet[num_prim_comb++]), &fjt_table, AB2, CD2,
 					     sp_ij, sp_kl, am, pi, pj, pk, pl, n*lambda_T);
 				
 			    }
@@ -397,16 +392,16 @@ void rmp2_energy()
 
 		/*--- Compute the integrals ---*/
 		if (am) {
-		    data = top_build_abcd[orig_am[0]][orig_am[1]][orig_am[2]][orig_am[3]](num_prim_comb);
+		    data = build_eri[orig_am[0]][orig_am[1]][orig_am[2]][orig_am[3]](&Libint, num_prim_comb);
 		    /* No need to transforms integrals to sph. harm. basis */
 		    data = norm_quartet(data, NULL, orig_am, 0);
 		}
 		else {
 		    temp = 0.0;
 		    for(p=0;p<num_prim_comb;p++)
-			temp += Shell_Data[p].F[0];
-		    int_stack[0] = temp;
-		    data = int_stack;
+			temp += Libint.PrimQuartet[p].F[0];
+		    Libint.int_stack[0] = temp;
+		    data = Libint.int_stack;
 		}
 
 		/*--- swap bra and ket back to the original order if needed ---*/
@@ -754,11 +749,12 @@ void rmp2_energy()
   free(jsia_buf);
   free_block(ia_buf);
   free(rsiq_buf);
-  free(int_stack);
-  free(Shell_Data);
+  free_libint(&Libint);
+  free_fjt_table(&fjt_table);
   free(sj_arr);
   free(sk_arr);
   free(sl_arr);
+  free_fjt();
 
   timer_done();
 

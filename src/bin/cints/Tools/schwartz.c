@@ -22,6 +22,9 @@ void schwartz_eri()
 {
   /*--- Various data structures ---*/
   struct shell_pair *sp_ij, *sp_kl;
+
+  Libint_t Libint;
+  double_array_t fjt_table;
   
   int ij, kl, ik, jl, ijkl;
   int count ;
@@ -79,24 +82,12 @@ void schwartz_eri()
   /*---------------
     Initialization
    ---------------*/
-  int_initialize_fjt(BasisSet.max_am*4);
-  init_libint();
-
-  /*-----------------------------------------------
-    Allocate "global" scratch to be used by LIBINT
-   -----------------------------------------------*/
-  if (int_stack == NULL) {
-    int_stack = init_array(STACK_SIZE);
-    UserOptions.memory -= STACK_SIZE;
-  }
+/*  init_fjt(BasisSet.max_am*4);*/
+  init_fjt_table(&fjt_table);
   max_num_prim_comb = (BasisSet.max_num_prims*BasisSet.max_num_prims)*
 		      (BasisSet.max_num_prims*BasisSet.max_num_prims);
-  if (Shell_Data == NULL) {
-    Shell_Data = (prim_data *) malloc( max_num_prim_comb*sizeof(prim_data) );
-    UserOptions.memory -= max_num_prim_comb*sizeof(prim_data)/sizeof(double);
-  }
+  UserOptions.memory -= init_libint(&Libint,max_num_prim_comb);
 
-  
 /*-------------------------------------------------
   generate all shell quartets 
   suitable for building the PK-matrix
@@ -135,15 +126,19 @@ void schwartz_eri()
       sp_ij = &(BasisSet.shell_pairs[si][sj]);
       sp_kl = &(BasisSet.shell_pairs[sk][sl]);
       
-      AB[0] = sp_ij->AB[0];
-      AB[1] = sp_ij->AB[1];
-      AB[2] = sp_ij->AB[2];
-      CD[0] = sp_kl->AB[0];
-      CD[1] = sp_kl->AB[1];
-      CD[2] = sp_kl->AB[2];
+      Libint.AB[0] = sp_ij->AB[0];
+      Libint.AB[1] = sp_ij->AB[1];
+      Libint.AB[2] = sp_ij->AB[2];
+      Libint.CD[0] = sp_kl->AB[0];
+      Libint.CD[1] = sp_kl->AB[1];
+      Libint.CD[2] = sp_kl->AB[2];
 		  
-      AB2 = AB[0]*AB[0]+AB[1]*AB[1]+AB[2]*AB[2];
-      CD2 = CD[0]*CD[0]+CD[1]*CD[1]+CD[2]*CD[2];
+      AB2 = Libint.AB[0]*Libint.AB[0]+
+	    Libint.AB[1]*Libint.AB[1]+
+	    Libint.AB[2]*Libint.AB[2];
+      CD2 = Libint.CD[0]*Libint.CD[0]+
+	    Libint.CD[1]*Libint.CD[1]+
+	    Libint.CD[2]*Libint.CD[2];
 
       /*--- Compute data for primitive quartets here ---*/
       num_prim_comb = 0;
@@ -155,7 +150,7 @@ void schwartz_eri()
 	    max_pl = (sk == sl) ? pk+1 : np_l;
 	    for (pl = 0; pl < max_pl; pl++){
 	      n = m * (1 + (sk == sl && pk != pl));
-	      quartet_data(&(Shell_Data[num_prim_comb++]), AB2, CD2,
+	      quartet_data(&(Libint.PrimQuartet[num_prim_comb++]), &fjt_table, AB2, CD2,
 			   sp_ij, sp_kl, am, pi, pj, pk, pl, (double)n);
 	      
 	    }
@@ -167,7 +162,7 @@ void schwartz_eri()
 		Compute the quartet and find the largest element
 	       -------------------------------------------------*/
       if (am) {
-	  data = top_build_abcd[orig_am[0]][orig_am[1]][orig_am[2]][orig_am[3]](num_prim_comb);
+	  data = build_eri[orig_am[0]][orig_am[1]][orig_am[2]][orig_am[3]](&Libint,num_prim_comb);
 	  /*                    zero here means no transformation to puream basis */
 	  /*                                    |                                 */
 	  data = norm_quartet(data, NULL, orig_am, 0);
@@ -187,7 +182,7 @@ void schwartz_eri()
       else {
 	  temp = 0.0;
 	  for(p=0;p<num_prim_comb;p++)
-	      temp += Shell_Data[p].F[0];
+	      temp += Libint.PrimQuartet[p].F[0];
 	  
 	  max_elem = fabs(temp);
       }
@@ -204,8 +199,8 @@ void schwartz_eri()
   /*---------
     Clean-up
    ---------*/
-/*  free(int_stack);
-  free(Shell_Data);*/
+  free_libint(&Libint);
+  free_fjt_table(&fjt_table);
 
   if (effective == 0)
     fprintf(outfile,"  Schwartz prescreening of ERIs will be ineffective\n");

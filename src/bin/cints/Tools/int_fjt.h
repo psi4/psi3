@@ -1,5 +1,7 @@
 
-void int_initialize_fjt(int max);
-void int_done_fjt();
-void int_fjt(int J,double wval);
+void init_fjt(int max);
+void free_fjt();
+void init_fjt_table(double_array_t *table);
+void free_fjt_table(double_array_t *table);
+void int_fjt(double_array_t *table, int J, double wval);
 

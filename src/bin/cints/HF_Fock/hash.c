@@ -7,43 +7,34 @@
 #include"global.h"
 #include"hash.h"
 
-#define hashing_function(a) (a)%htable_size   /* division method */
-
-static int htable_size;
-htable_entry *htable;
+#define hashing_function(a) (a)%htable->size   /* division method */
 
 /*-------------------------
   Initialize hashing table
  -------------------------*/
-void init_htable(int nirreps)
+void init_htable(htable_t *htable, int nirreps)
 {
   int i;
-
-  /*------------------------------------------------------------------------
-    maximum number of symmetry-unique quartets in a PK-block is 3*nirreps^4
-    multiply by 2 and find next prime number.
-   ------------------------------------------------------------------------*/
+  
   switch(nirreps) {
   case 1:
-      htable_size = 7;
+      htable->size = 7;
       break;
   case 2:
-      htable_size = 97;
+      htable->size = 97;
       break;
   case 4:
-      htable_size = 1543;
+      htable->size = 1543;
       break;
   case 8:
   default:
-      htable_size = 24593;
+      htable->size = 24593;
       break;
   }
 
-  if (htable == NULL) {
-    htable = (htable_entry *) malloc(htable_size*sizeof(htable_entry));
-    for(i=0;i<htable_size;i++)
-      htable[i].key = EMPTY_KEY;
-  }
+  htable->table = (htable_entry *) malloc(htable->size*sizeof(htable_entry));
+  for(i=0;i<htable->size;i++)
+    htable->table[i].key = EMPTY_KEY;
 
   return;
 }
@@ -52,10 +43,10 @@ void init_htable(int nirreps)
 /*-------------------------
   Deallocate hashing table
  -------------------------*/
-void free_htable()
+void free_htable(htable_t *htable)
 {
-  free(htable);
-  htable = NULL;
+  free(htable->table);
+  htable->table = NULL;
   return;
 }
 
@@ -115,7 +106,7 @@ int compute_key(int si, int sj, int sk, int sl)
   This means that P is either P12 or P34 we need to swap q4ikjl and q4ilkj.
 
  ----------------------------------------------------*/
-int put_entry(int key, int si, int sj, int sk, int sl, double q4ijkl, double q4ikjl, double q4ilkj)
+int put_entry(htable_t *htable, int key, int si, int sj, int sk, int sl, double q4ijkl, double q4ikjl, double q4ilkj)
 {
   int curr_ptr;
   int hvalue = hashing_function(key);
@@ -123,45 +114,45 @@ int put_entry(int key, int si, int sj, int sk, int sl, double q4ijkl, double q4i
   int P_includes_P12, P_includes_P34;
   
   curr_ptr = hvalue;
-  while(htable[curr_ptr].key != key && htable[curr_ptr].key != EMPTY_KEY) {
+  while(htable->table[curr_ptr].key != key && htable->table[curr_ptr].key != EMPTY_KEY) {
     curr_ptr++;
-    if (htable_size == curr_ptr)
+    if (htable->size == curr_ptr)
       curr_ptr = 0;
   }
-  if (htable[curr_ptr].key == EMPTY_KEY) {
+  if (htable->table[curr_ptr].key == EMPTY_KEY) {
     return_code = curr_ptr;
-    htable[curr_ptr].key = key;
-    htable[curr_ptr].si = si;
-    htable[curr_ptr].sj = sj;
-    htable[curr_ptr].sk = sk;
-    htable[curr_ptr].sl = sl;
-    htable[curr_ptr].q4ijkl = q4ijkl;
+    htable->table[curr_ptr].key = key;
+    htable->table[curr_ptr].si = si;
+    htable->table[curr_ptr].sj = sj;
+    htable->table[curr_ptr].sk = sk;
+    htable->table[curr_ptr].sl = sl;
+    htable->table[curr_ptr].q4ijkl = q4ijkl;
     if (si == sj || sk == sl) {
-      htable[curr_ptr].q4ikjl = q4ikjl + q4ilkj;
-      htable[curr_ptr].q4ilkj = 0;
+      htable->table[curr_ptr].q4ikjl = q4ikjl + q4ilkj;
+      htable->table[curr_ptr].q4ilkj = 0;
     }
     else {
-      htable[curr_ptr].q4ikjl = q4ikjl;
-      htable[curr_ptr].q4ilkj = q4ilkj;
+      htable->table[curr_ptr].q4ikjl = q4ikjl;
+      htable->table[curr_ptr].q4ilkj = q4ilkj;
     }
   }
   else {
-    htable[curr_ptr].q4ijkl += q4ijkl;
+    htable->table[curr_ptr].q4ijkl += q4ijkl;
     if (si == sj || sk == sl) {
-      htable[curr_ptr].q4ikjl += q4ikjl + q4ilkj;
+      htable->table[curr_ptr].q4ikjl += q4ikjl + q4ilkj;
     }
     else {
-      P_includes_P34 = ( (htable[curr_ptr].sk == sl && htable[curr_ptr].sl == sk) ||
-			 (htable[curr_ptr].sk == sj && htable[curr_ptr].sl == si) );
-      P_includes_P12 = ( (htable[curr_ptr].si == sj && htable[curr_ptr].sj == si) ||
-			 (htable[curr_ptr].si == sl && htable[curr_ptr].sj == sk) );
+      P_includes_P34 = ( (htable->table[curr_ptr].sk == sl && htable->table[curr_ptr].sl == sk) ||
+			 (htable->table[curr_ptr].sk == sj && htable->table[curr_ptr].sl == si) );
+      P_includes_P12 = ( (htable->table[curr_ptr].si == sj && htable->table[curr_ptr].sj == si) ||
+			 (htable->table[curr_ptr].si == sl && htable->table[curr_ptr].sj == sk) );
       if (P_includes_P12 ^ P_includes_P34) {
-	htable[curr_ptr].q4ikjl += q4ilkj;
-	htable[curr_ptr].q4ilkj += q4ikjl;
+	htable->table[curr_ptr].q4ikjl += q4ilkj;
+	htable->table[curr_ptr].q4ilkj += q4ikjl;
       }
       else {
-	htable[curr_ptr].q4ikjl += q4ikjl;
-	htable[curr_ptr].q4ilkj += q4ilkj;
+	htable->table[curr_ptr].q4ikjl += q4ikjl;
+	htable->table[curr_ptr].q4ilkj += q4ilkj;
       }
     }
   }
@@ -173,19 +164,19 @@ int put_entry(int key, int si, int sj, int sk, int sl, double q4ijkl, double q4i
   Put an entry into the table. Return the location if
   it's a new entry, or -1 if it has been in the table
  ----------------------------------------------------*/
-int find_entry(int key)
+int find_entry(htable_t *htable, int key)
 {
   int curr_ptr;
   int hvalue = hashing_function(key);
   int return_code = -1;
   
   curr_ptr = hvalue;
-  while(htable[curr_ptr].key != key && htable[curr_ptr].key != EMPTY_KEY) {
+  while(htable->table[curr_ptr].key != key && htable->table[curr_ptr].key != EMPTY_KEY) {
     curr_ptr++;
-    if (htable_size == curr_ptr)
+    if (htable->size == curr_ptr)
       curr_ptr = 0;
   }
-  if (htable[curr_ptr].key == EMPTY_KEY)
+  if (htable->table[curr_ptr].key == EMPTY_KEY)
     return -1;
   else
     return curr_ptr;

@@ -108,6 +108,7 @@ typedef struct {
     int symm_ints;                     /* This flag should be set whe individual integrals over SO need to be computed */
     int scf_only;                      /* Means that ERIs will be used only in SCF calculations
 					  (may save some space) */
+    int num_threads;                   /* Number of threads */
     enum scftype reftype;              /* Reference type, e.g. RHF, ROHF, UHF */
 } UserOptions_t;
 

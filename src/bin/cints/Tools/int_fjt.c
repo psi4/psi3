@@ -35,7 +35,7 @@ static int itable_infinity;
  *     Reidel 1975.  For J < JMAX the values are calculated
  *     using downward recursion in J.
  */
-void int_initialize_fjt(int max)
+void init_fjt(int max)
 {
   int i,j;
   double denom,d2jmax1,r2jmax1,wval,d2wval,sum,term,rexpw;
@@ -44,18 +44,15 @@ void int_initialize_fjt(int max)
 
   /* Check if int_fjttable has been allocated with
      the same maxj before */
-  if (int_fjttable.d != NULL) {
-    if (maxj <= int_fjttable.n1)
+  if (gtable.d != NULL) {
+    if (maxj+7 <= gtable.n1)
       return;
     else {
-      int_done_fjt();
+      free_fjt();
     }
   }
   
-  /* Allocate storage for gtable and int_fjttable. */
-  int_fjttable.n1 = maxj;
-  int_fjttable.d = init_array(maxj);
-
+  /* Allocate storage for gtable */
   if (gtable.d == NULL) {
     gtable.n1 = maxj+7;
     gtable.n2 = TABLESIZE;
@@ -115,13 +112,10 @@ void int_initialize_fjt(int max)
 
 /* This is called when the fjt routines are no longer needed, or
  * before they are reinitialized with a new maxj. */
-void int_done_fjt()
+void free_fjt()
 {
-  free(int_fjttable.d);
   free(denomarray);
   free_block(gtable.d);
-  int_fjttable.d = NULL;
-  int_fjttable.n1 = 0;
   denomarray = NULL;
   gtable.n1 = 0;
   gtable.n2 = 0;
@@ -130,11 +124,35 @@ void int_done_fjt()
   return;
 }
 
+/*---
+  This is clean and ugly at the same time - have to call this AFTER
+  init_fjt() to have proper maxj
+ ---*/
+void init_fjt_table(double_array_t *table)
+{
+  if (gtable.d != NULL) {
+    table->n1 = maxj;
+    table->d = init_array(maxj);
+  }
+  else
+    punt("Called init_fjt_table before init_fjt");
+
+  return;
+}
+
+void free_fjt_table(double_array_t *table)
+{
+  if (table->d != NULL)
+    free(table->d);
+
+  return;
+}
+
 /* Using the tabulated incomplete gamma function in gtable, compute
  * the incomplete gamma function for a particular wval for all 0<=j<=J.
  * The result is placed in the global intermediate int_fjttable.
  */
-void int_fjt(int J,double wval)
+void int_fjt(double_array_t *table, int J, double wval)
 {
   const double sqrpih =  0.886226925452758;
   const double coef2 =  0.5000000000000000;
@@ -178,7 +196,7 @@ void int_fjt(int J,double wval)
     wdif = wval - 0.1 * itable;
 
     /* Compute fjt for J. */
-    int_fjttable.d[J] = (((((coef6 * gtable.d[J+6][itable]*wdif
+    table->d[J] = (((((coef6 * gtable.d[J+6][itable]*wdif
                             + coef5 * gtable.d[J+5][itable])*wdif
                              + coef4 * gtable.d[J+4][itable])*wdif
                               + coef3 * gtable.d[J+3][itable])*wdif
@@ -192,7 +210,7 @@ void int_fjt(int J,double wval)
     /* denom = 2*J + 1; */
     for (i=J; i>0; i--) {
       /* denom = denom - 2.0; */
-      int_fjttable.d[i-1] = (d2wal*int_fjttable.d[i] + rexpw)*denomarray[i];
+      table->d[i-1] = (d2wal*table->d[i] + rexpw)*denomarray[i];
       }
     }
   /* If wval <= 2*J + 36.0, use the following formula. */
@@ -204,43 +222,43 @@ void int_fjt(int J,double wval)
     irange = itable/30 - 3;
     if (irange == 1) {
       gval = gfac30 + rwval*(gfac31 + rwval*(gfac32 + rwval*gfac33));
-      int_fjttable.d[0] = sqrpih*sqrt(rwval) - rexpw*gval*rwval;
+      table->d[0] = sqrpih*sqrt(rwval) - rexpw*gval*rwval;
       }
     else if (irange == 2) {
       gval = gfac20 + rwval*(gfac21 + rwval*gfac22);
-      int_fjttable.d[0] = sqrpih*sqrt(rwval) - rexpw*gval*rwval;
+      table->d[0] = sqrpih*sqrt(rwval) - rexpw*gval*rwval;
       }
     else if (irange == 3 || irange == 4) {
       gval = gfac10 + rwval*gfac11;
-      int_fjttable.d[0] = sqrpih*sqrt(rwval) - rexpw*gval*rwval;
+      table->d[0] = sqrpih*sqrt(rwval) - rexpw*gval*rwval;
       }
     else if (irange == 5 || irange == 6) {
       gval = gfac00;
-      int_fjttable.d[0] = sqrpih*sqrt(rwval) - rexpw*gval*rwval;
+      table->d[0] = sqrpih*sqrt(rwval) - rexpw*gval*rwval;
       }
     else {
-      int_fjttable.d[0] = sqrpih*sqrt(rwval);
+      table->d[0] = sqrpih*sqrt(rwval);
     }
 
-    /* Compute the rest of the int_fjttable from int_fjttable.d[0]. */
+    /* Compute the rest of the int_fjttable from table->d[0]. */
     factor = 0.5 * rwval;
     term = factor * rexpw;
     for (i=1; i<=J; i++) {
-      int_fjttable.d[i] = factor * int_fjttable.d[i-1] - term;
+      table->d[i] = factor * table->d[i-1] - term;
       factor = rwval + factor;
       }
     }
   /* For large values of wval use this algorithm: */
   else {
     rwval = 1.0/wval;
-    int_fjttable.d[0] = sqrpih*sqrt(rwval);
+    table->d[0] = sqrpih*sqrt(rwval);
     factor = 0.5 * rwval;
     for (i=1; i<=J; i++) {
-      int_fjttable.d[i] = factor * int_fjttable.d[i-1];
+      table->d[i] = factor * table->d[i-1];
       factor = rwval + factor;
       }
     }
-  /* printf(" %2d %12.8f %4d %12.8f\n",J,wval,itable,int_fjttable.d[0]); */
+  /* printf(" %2d %12.8f %4d %12.8f\n",J,wval,itable,table->d[0]); */
 
   return;
 }
