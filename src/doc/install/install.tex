@@ -243,4 +243,21 @@ calculations. Report bugs to {\tt psimaster@sirius.chem.vt.edu}.
 All object files and libraries can be removed to save disk space by running
 {\tt make clean} in {\tt \$objdir}.
 
+\subsection{Step 6: User Configuration}
+
+After the PSI3 package has been successfullly installed, the user will
+need to add the installation directory into their path.  If the package
+has been installed in the default location {\tt /usr/local/psi3}, then
+in C shell, the user should add something like the following to 
+their {\tt .cshrc} file:
+\begin{verbatim}
+setenv PSI /usr/local/psi3
+set path = ($path $PSI/bin)
+setenv MANPATH $PSI/doc/man:$MANPATH
+\end{verbatim}
+The final line will enable the use of the PSI3 man pages.
+\begin{verbatim}
+\end{verbatim}
+
+
 \end{document}
