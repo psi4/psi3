@@ -6,32 +6,42 @@ TARGET = $(top_objdir)/lib/libint.a
 HEADERS = libint.h vrr_header.h hrr_header.h
 
 #
-# List all generated routines. Do it a safe way in case the list is too long
+# List all generated routines. Do it in a safe way in case the list is too long
 #
-TRUESRC1 = $(shell echo `ls vrr_order_*.c`)
-TRUESRC2 = $(shell echo `ls hrr_order_*.c`)
-TRUESRC3 = $(shell echo `ls build_*.c`)
-TRUESRC4 = $(shell echo `ls hrr[1,3]_build_*.c`)
-TRUESRC5 = init_libint.c $(LIB_SRC)
-LIBOBJ1 = $(TRUESRC1:%.c=%.o)
-LIBOBJ2 = $(TRUESRC2:%.c=%.o)
-LIBOBJ3 = $(TRUESRC3:%.c=%.o)
-LIBOBJ4 = $(TRUESRC4:%.c=%.o)
+TRUESRC1 = $(shell echo `ls vrr_order_*.cc`)
+TRUESRC2 = $(shell echo `ls hrr_order_*.cc`)
+TRUESRC3 = $(shell echo `ls build_*.cc`)
+TRUESRC4 = $(shell echo `ls hrr[1,3]_build_*.cc`)
+TRUESRC5 = $(LIB_SRC)
+TRUESRC6 = init_libint.cc
+LIBOBJ1 = $(TRUESRC1:%.cc=%.o)
+LIBOBJ2 = $(TRUESRC2:%.cc=%.o)
+LIBOBJ3 = $(TRUESRC3:%.cc=%.o)
+LIBOBJ4 = $(TRUESRC4:%.cc=%.o)
 LIBOBJ5 = $(TRUESRC5:%.c=%.o)
-LIBOBJ = $(LIBOBJ1) $(LIBOBJ2) $(LIBOBJ3) $(LIBOBJ4) $(LIBOBJ5)
+LIBOBJ6 = $(TRUESRC6:%.cc=%.o)
+LIBOBJ = $(LIBOBJ1) $(LIBOBJ2) $(LIBOBJ3) $(LIBOBJ4) $(LIBOBJ5) $(LIBOBJ6)
+
+#
+# List all routines generated as header files too
+#
+INCSRC1 = $(shell echo `ls build_*.h`)
+INCSRC2 = $(shell echo `ls hrr[1,3]_*.h`)
+INCSRC = $(INCSRC1) $(INCSRC2)
 
 default:: install
 
 %.$(OBJSUF): %.c
 	$(CC) $(CFLAGS) -c $< $(OUTPUT_OPTION)
 
+%.$(OBJSUF): %.cc
+	$(CXX) $(CXXFLAGS) -c $< $(OUTPUT_OPTION)
+
 #
 # do installations
 #
 
 install:: install_inc install_target install_man
-
-install_inc::
 
 $(TARGET): $(LIBOBJ)
 	$(MKDIRS) `dirname $(TARGET)`
@@ -41,6 +51,7 @@ $(TARGET): $(LIBOBJ)
 	$(AR) $(ARFLAGS) `basename $(TARGET)` $(LIBOBJ3)
 	$(AR) $(ARFLAGS) `basename $(TARGET)` $(LIBOBJ4)
 	$(AR) $(ARFLAGS) `basename $(TARGET)` $(LIBOBJ5)
+	$(AR) $(ARFLAGS) `basename $(TARGET)` $(LIBOBJ6)
 	$(RANLIB) `basename $(TARGET)`
 
 install_target:: $(TARGET)
@@ -50,9 +61,16 @@ install_target:: $(TARGET)
 
 install_man::
 
-install_inc:: $(HEADERS)
+
+install_inc:: install_inc1 install_inc2
+
+install_inc1:: $(HEADERS)
 	$(MKDIRS) $(objincdir)
 	$(INSTALL_INCLUDE) $^ $(objincdir)
+
+install_inc2:: $(INCSRC)
+	$(MKDIRS) $(objincdir)/libint
+	$(INSTALL_INCLUDE) $^ $(objincdir)/libint
 
 #
 # clean up

@@ -47,7 +47,7 @@ int get_mem(int size)
   int i, j;
 
 /* try to find one that fits exactly */
-  for(i=0; i<last_free; i++){
+  for(i=last_free-1; i>=0; i--){
     if(block_length[i] == size){
       j = free_block[i];
       if(free_block[i]+block_length[i]==mem_top) add_mem(500);
@@ -57,7 +57,7 @@ int get_mem(int size)
     }
 
 /* ok, try to find a bigger one that will work */
-  for(i=0; i<last_free; i++){
+  for(i=last_free-1; i>=0; i--){
     if(block_length[i] > size){
       j = free_block[i];
       use(i, size);
@@ -113,15 +113,15 @@ void free_mem(int n, int size)
 void consolidate()
 {
   int i, j;
-  int bound;
+  int right_bound_i;
   int done = 1;
 
   do {
     done = 1;
     for(i=0; i<last_free; i++){
+      right_bound_i = free_block[i]+block_length[i];
       for(j=0; j<last_free; j++){
-        bound = free_block[i]+block_length[i];
-        if(free_block[j]==bound){
+        if(free_block[j]==right_bound_i){
           block_length[i]+=block_length[j];
           use(j, block_length[j]);
           done = 0;

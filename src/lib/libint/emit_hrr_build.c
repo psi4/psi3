@@ -5,12 +5,17 @@
 #include "build_libint.h"
 
 extern FILE *infile, *outfile, *hrr_header;
+extern LibintParams_t Params;
 
 extern void punt(char *);
 static int hash(int a[2][3], int b[2]);
 
-int emit_hrr_build(int new_am, int max_class_size)
+int emit_hrr_build()
 {
+  int new_am = Params.new_am;
+  int max_class_size = Params.max_class_size;
+  int am_to_inline = Params.max_am_to_inline_hrr_worker;
+
   FILE *code;
   int p,q,r,s;
   int ax,ay,az,bx,by,bz,cx,cy,cz,dx,dy,dz;
@@ -22,6 +27,7 @@ int emit_hrr_build(int new_am, int max_class_size)
   int flag;
   int am_in[2];
   int am[2][3];
+  int current_highest_am, to_inline;
   int xyz;
   int class_size;
   int split;
@@ -38,7 +44,9 @@ int emit_hrr_build(int new_am, int max_class_size)
   
 
   for(lc=0;lc<=new_am;lc++) {
-    ld_max = (lc+1)/2;
+    ld_max = lc/2 + 1;
+    if (ld_max > lc)
+      ld_max = lc;
     for(ld=1;ld<=ld_max;ld++) {
 
       /*-----------------------
@@ -47,11 +55,19 @@ int emit_hrr_build(int new_am, int max_class_size)
 
       am_in[0] = lc-ld;
       am_in[1] = ld;
+
+      /* Is this function to be made inline */
+      current_highest_am = (am_in[0] > am_in[1]) ? am_in[0] : am_in[1];
+      to_inline = (current_highest_am <= am_to_inline) ? 1 : 0;
       
       class_size = ((am_in[0]+1)*(am_in[0]+2)*(am_in[1]+1)*(am_in[1]+2))/4;
 
+      if (to_inline)
+	fprintf(hrr_header, "#ifndef INLINE_HRR_WORKER\n");
       fprintf(hrr_header,"void hrr3_build_%c%c(const REALTYPE *, REALTYPE *, REALTYPE *, REALTYPE *, int);\n",
 	      am_letter[am_in[0]],am_letter[am_in[1]]);
+      if (to_inline)
+	fprintf(hrr_header, "#endif\n");
       /* Decide if the routine has to be split into several routines producing "subbatches" */
       if (class_size > max_class_size) {
 	split = 1;
@@ -72,7 +88,7 @@ int emit_hrr_build(int new_am, int max_class_size)
 	}
       }
       
-      sprintf(code_name,"%s.c",function_name);
+      sprintf(code_name,"%s.cc",function_name);
       code = fopen(code_name,"w");
 
       fprintf(code,"  /* These machine-generated functions compute a quartet of |%c%c) integrals */\n\n",
@@ -172,7 +188,6 @@ int emit_hrr_build(int new_am, int max_class_size)
       }
       fclose(code);
       printf("Done with %s\n",code_name);
-
       
       
       /*-----------------------
@@ -185,8 +200,12 @@ int emit_hrr_build(int new_am, int max_class_size)
 
       class_size = ((am_in[0]+1)*(am_in[0]+2)*(am_in[1]+1)*(am_in[1]+2))/4;
 
+      if (to_inline)
+	fprintf(hrr_header,"#ifndef INLINE_HRR_WORKER\n");
       fprintf(hrr_header,"void hrr1_build_%c%c(const REALTYPE *, REALTYPE *, REALTYPE *, REALTYPE *, int);\n",
 	      am_letter[am_in[0]],am_letter[am_in[1]]);
+      if (to_inline)
+	fprintf(hrr_header,"#endif\n");
       /* Decide if the routine has to be split into several routines producing "subbatches" */
       if (class_size > max_class_size) {
 	split = 1;
@@ -207,7 +226,7 @@ int emit_hrr_build(int new_am, int max_class_size)
 	}
       }
       
-      sprintf(code_name,"%s.c",function_name);
+      sprintf(code_name,"%s.cc",function_name);
       code = fopen(code_name,"w");
       fprintf(code,"  /* This machine-generated function computes a quartet of (%c%c| integrals */\n\n",
 	      am_letter[am_in[0]],am_letter[am_in[1]]);

@@ -5,11 +5,16 @@
 #include "build_libderiv.h"
 
 extern FILE *outfile, *deriv_header;
+extern LibderivParams_t Params;
 
 extern void punt(char *);
 
-int emit_deriv_build(int old_am, int new_am)
+int emit_deriv_build()
 {
+  int new_am = Params.new_am;
+  int old_am = Params.old_am;
+  int am_to_inline = Params.max_am_to_inline_deriv_worker;
+
   FILE *code;
   int p,q,r,s;
   int ax,ay,az,bx,by,bz,cx,cy,cz,dx,dy,dz;
@@ -23,14 +28,19 @@ int emit_deriv_build(int old_am, int new_am)
   int la, lb;
   int ld, lc, ld_max;
   int xyz;
+  int current_highest_am, to_inline;
+  int errcod;
   static int io[] = {1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153};
   static const char am_letter[] = "0pdfghiklmnoqrtuvwxyz";
   static const char cart_comp[] = "XYZ";
-  char code_name[] = "deriv_build_X0_s.c";
+  char code_name[] = "deriv_build_X0_s.cc";
   char function_name[] = "deriv_build_A0_s";
-  
 
   for(la=0;la<=new_am+DERIV_LVL-1;la++) {
+
+      /* Is this function to be made inline */
+      current_highest_am = la;
+      to_inline = (current_highest_am <= am_to_inline) ? 1 : 0;
 
       function_name[15] = am_letter[la];
       code_name[15] = am_letter[la];
@@ -49,9 +59,13 @@ int emit_deriv_build(int old_am, int new_am)
 	code = fopen(code_name,"w");
 
 	/* include the function into the deriv_header.h */
+	if (to_inline)
+	  fprintf(deriv_header,"#ifndef INLINE_DERIV_WORKER\n");
 	fprintf(deriv_header,"void %s(prim_data *, const int, double *, const double *, const double *);\n",
 		function_name);
-
+	if (to_inline)
+	  fprintf(deriv_header,"#endif\n");
+	
         fprintf(code,"#include <libint.h>\n");
 	fprintf(code,"#include \"libderiv.h\"\n\n");
 	fprintf(code,"void %s(prim_data *Data, const int bcd_num, double *vp, const double *I0, const double *I1)\n{\n",function_name);
@@ -150,8 +164,12 @@ int emit_deriv_build(int old_am, int new_am)
 	code = fopen(code_name,"w");
 
 	/* include the function into the deriv_header.h */
+	if (to_inline)
+	  fprintf(deriv_header,"#ifndef INLINE_DERIV_WORKER\n");
 	fprintf(deriv_header,"void %s(prim_data *, const int, const int, double *, const double *, const double *);\n",
 		function_name);
+	if (to_inline)
+	  fprintf(deriv_header,"#endif\n");
 
 	fprintf(code,"#include <libint.h>\n");
 	fprintf(code,"#include \"libderiv.h\"\n\n");
@@ -253,8 +271,12 @@ int emit_deriv_build(int old_am, int new_am)
 	code = fopen(code_name,"w");
 
 	/* include the function into the deriv_header.h */
+	if (to_inline)
+	  fprintf(deriv_header,"#ifndef INLINE_DERIV_WORKER\n");
 	fprintf(deriv_header,"void %s(prim_data *, const int, const int, double *, const double *, const double *);\n",
 		function_name);
+	if (to_inline)
+	  fprintf(deriv_header,"#endif\n");
 
 	fprintf(code,"#include <libint.h>\n");
 	fprintf(code,"#include \"libderiv.h\"\n\n");
@@ -355,8 +377,12 @@ int emit_deriv_build(int old_am, int new_am)
 	code = fopen(code_name,"w");
 
 	/* include the function into the deriv_header.h */
+	if (to_inline)
+	  fprintf(deriv_header,"#ifndef INLINE_DERIV_WORKER\n");
 	fprintf(deriv_header,"void %s(prim_data *, const int, double *, const double *, const double *);\n",
 		function_name);
+	if (to_inline)
+	  fprintf(deriv_header,"#endif\n");
 
 	fprintf(code,"#include <libint.h>\n");
 	fprintf(code,"#include \"libderiv.h\"\n\n");
@@ -392,7 +418,7 @@ int emit_deriv_build(int old_am, int new_am)
 		  i_i1 = io[p-1]-p+q;
 		}
 		fprintf(code,"    *(vp++) = twotzeta*I0[%d] ", i_i0);
-		if (cy)
+		if (dy)
 		  fprintf(code,"- %lf*I1[%d];\n", (double)dy, i_i1);
 		else
 		  fprintf(code,";\n");
@@ -403,7 +429,7 @@ int emit_deriv_build(int old_am, int new_am)
 		  i_i1 = io[p-1]-p+q-1;
 		}
 		fprintf(code,"    *(vp++) = twotzeta*I0[%d] ", i_i0);
-		if (cz)
+		if (dz)
 		  fprintf(code,"- %lf*I1[%d];\n", (double)dz, i_i1);
 		else
 		  fprintf(code,";\n");

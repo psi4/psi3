@@ -14,6 +14,8 @@ static int last_hrr_node = 0;      /* Global pointer to the last node on the HRR
 static int last_vrr_node = 0;      /* Global pointer to the last node on the VRR stack */
 
 extern FILE *outfile, *infile, *hrr_header, *init_code;
+extern int libint_stack_size[MAX_AM/2+1];
+extern LibintParams_t Params;
 
 typedef struct hrr_node{
   int A, B, C, D;               /* Angular momenta on centers A and C */
@@ -53,12 +55,20 @@ static int first_vrr_to_compute = 0; /* Number of the first class to be computed
 static int hrr_hash_table[MAX_AM+1][MAX_AM+1][MAX_AM+1][MAX_AM+1];
 static int vrr_hash_table[MAX_AM+1][MAX_AM+1][2*MAX_AM+1];
 
-int emit_order(int old_am, int new_am, int opt_am)
+void emit_order()
 {
+  int old_am = Params.old_am;
+  int new_am = Params.new_am;
+  int opt_am = Params.opt_am;
+  int am_to_inline_into_hrr = Params.max_am_to_inline_vrr_manager;
+  int am_to_inline_vrr = Params.max_am_manager_to_inline_vrr_worker;
+  int am_to_inline_hrr = Params.max_am_manager_to_inline_hrr_worker;
+  int to_inline_into_hrr, to_inline_vrr, to_inline_hrr;
 
   int i, j, k, l;
   int la, lc, lc_min, ld, ld_max, ld_min;
   int lb, lb_min, lb_max;
+  int current_highest_am, max_node_am;
   int base_mem, hrr_mem, vrr_mem;
   hrr_class hrr_nodes[MAXNODE];    /* Stack of HRR nodes */
   vrr_class vrr_nodes[MAXNODE];    /* Stack of VRR nodes */
@@ -68,13 +78,14 @@ int emit_order(int old_am, int new_am, int opt_am)
   int num_vrr_targets;
   int target_vrr_nodes[MAX_AM*MAX_AM];
   const char am_letter[] = "0pdfghiklmnoqrtuvwxyz";
-  char hrr_code_name[] = "hrr_order_0000.c";
+  char hrr_code_name[] = "hrr_order_0000.cc";
   char hrr_function_name[] = "hrr_order_0000";
-  char vrr_code_name[] = "vrr_order_0000.c";
+  char vrr_code_name[] = "vrr_order_0000.cc";
   char vrr_function_name[] = "vrr_order_0000";
-  FILE *hrr_code, *vrr_code;
+  char inline_vrr_list_name[] = "inline_vrr_order_0000.h";
+  char inline_hrr_list_name[] = "inline_hrr_order_0000.h";
+  FILE *hrr_code, *vrr_code, *inline_vrr_list, *inline_hrr_list;
   static int io[] = {1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153,171,190,210};
-
 
   for(la=0;la<=new_am;la++) {
     lb_max = la/2;
@@ -86,35 +97,54 @@ int emit_order(int old_am, int new_am, int opt_am)
       ld_min = (lc <= new_am/2) ? 0 : lc - new_am/2;
       for(ld=ld_min;ld<=ld_max;ld++) {
 
+      current_highest_am = (la-lb > lb) ? la-lb : lb;
+      current_highest_am = (current_highest_am > lc-ld) ? current_highest_am : lc-ld;
+      current_highest_am = (current_highest_am > ld) ? current_highest_am : ld;
+      to_inline_into_hrr = (current_highest_am <= am_to_inline_into_hrr) ? 1 : 0;
+      to_inline_vrr = (current_highest_am <= am_to_inline_vrr) ? 1 : 0;
+      to_inline_hrr = (current_highest_am <= am_to_inline_hrr) ? 1 : 0;
+
       /*---------------------------------------------------------------
 	Form code and function names for HRR and VRR ordering routines
        ---------------------------------------------------------------*/
-      hrr_function_name[10] = am_letter[la-lb];
-      hrr_function_name[11] = am_letter[lb];
-      hrr_function_name[12] = am_letter[lc-ld];
-      hrr_function_name[13] = am_letter[ld];
-      vrr_function_name[10] = am_letter[la-lb];
-      vrr_function_name[11] = am_letter[lb];
-      vrr_function_name[12] = am_letter[lc-ld];
-      vrr_function_name[13] = am_letter[ld];
-      hrr_code_name[10] = am_letter[la-lb];
-      hrr_code_name[11] = am_letter[lb];
-      hrr_code_name[12] = am_letter[lc-ld];
-      hrr_code_name[13] = am_letter[ld];
+      sprintf(hrr_function_name,"hrr_order_%c%c%c%c",
+	      am_letter[la-lb],am_letter[lb],
+	      am_letter[lc-ld],am_letter[ld]);
+      sprintf(vrr_function_name,"vrr_order_%c%c%c%c",
+	      am_letter[la-lb],am_letter[lb],
+	      am_letter[lc-ld],am_letter[ld]);
+      sprintf(hrr_code_name,"%s.cc",hrr_function_name);
+      if (to_inline_into_hrr)
+	sprintf(vrr_code_name,"%s.h",vrr_function_name);
+      else
+	sprintf(vrr_code_name,"%s.cc",vrr_function_name);
+      sprintf(inline_vrr_list_name,"inline_vrr_order_%c%c%c%c.h",
+	      am_letter[la-lb],am_letter[lb],
+	      am_letter[lc-ld],am_letter[ld]);
+      sprintf(inline_hrr_list_name,"inline_hrr_order_%c%c%c%c.h",
+	      am_letter[la-lb],am_letter[lb],
+	      am_letter[lc-ld],am_letter[ld]);
       hrr_code = fopen(hrr_code_name,"w");
-      vrr_code_name[10] = am_letter[la-lb];
-      vrr_code_name[11] = am_letter[lb];
-      vrr_code_name[12] = am_letter[lc-ld];
-      vrr_code_name[13] = am_letter[ld];
       vrr_code = fopen(vrr_code_name,"w");
+      inline_vrr_list = fopen(inline_vrr_list_name,"w");
+      inline_hrr_list = fopen(inline_hrr_list_name,"w");
 
       /*-----------------------------------
 	Write the overhead to the HRR code
        -----------------------------------*/
       fprintf(hrr_code,"#include <stdio.h>\n");
+      fprintf(hrr_code,"#include <string.h>\n");
       fprintf(hrr_code,"#include \"libint.h\"\n");
+      if (to_inline_hrr) {
+	fprintf(hrr_code,"#define INLINE_HRR_WORKER\n");
+	fprintf(hrr_code,"#include \"%s\"\n",inline_hrr_list_name);
+      }
       fprintf(hrr_code,"#include \"hrr_header.h\"\n\n");
-      fprintf(hrr_code,"extern void vrr_order_%c%c%c%c();\n\n",am_letter[la-lb],am_letter[lb],am_letter[lc-ld],am_letter[ld]);
+      if (to_inline_into_hrr)
+	fprintf(hrr_code,"#include \"%s\"\n",vrr_code_name);
+      else
+	fprintf(hrr_code,"extern void vrr_order_%c%c%c%c(Libint_t*, prim_data*);\n\n",
+		am_letter[la-lb],am_letter[lb],am_letter[lc-ld],am_letter[ld]);
       fprintf(hrr_code,"  /* Computes quartets of (%c%c|%c%c) integrals */\n\n",
 	      am_letter[la-lb],am_letter[lb],am_letter[lc-ld],am_letter[ld]);
       fprintf(hrr_code,"REALTYPE *%s(Libint_t *Libint, int num_prim_comb)\n{\n",hrr_function_name);
@@ -133,9 +163,15 @@ int emit_order(int old_am, int new_am, int opt_am)
        -----------------------------------*/
       fprintf(vrr_code,"#include <stdio.h>\n");
       fprintf(vrr_code,"#include \"libint.h\"\n");
+      if (to_inline_vrr) {
+	fprintf(vrr_code,"#define INLINE_VRR_WORKER\n");
+	fprintf(vrr_code,"#include \"%s\"\n",inline_vrr_list_name);
+      }
       fprintf(vrr_code,"#include \"vrr_header.h\"\n\n");
       fprintf(vrr_code,"  /* Computes quartets necessary to compute (%c%c|%c%c) integrals */\n\n",
 	      am_letter[la-lb],am_letter[lb],am_letter[lc-ld],am_letter[ld]);
+      if (to_inline_into_hrr)
+	fprintf(vrr_code,"inline ");
       fprintf(vrr_code,"void %s(Libint_t * Libint, prim_data *Data)\n{\n",vrr_function_name);
 
       /*----------------------------
@@ -169,8 +205,10 @@ int emit_order(int old_am, int new_am, int opt_am)
 	if(hrr_nodes[0].children[k]>0)
 	  mark_hrr_parents(hrr_nodes[0].children[k], hrr_nodes, 0);
 
-      init_mem(100000);
-
+      /*-----------------------------------------------------------------
+	Empirical rule as with what heap size to start memory allocation
+       -----------------------------------------------------------------*/
+      init_mem(1);
       
       /*---------------------------------------------------------------
 	Allocate and zero out space for classes to be generated by VRR
@@ -210,6 +248,10 @@ int emit_order(int old_am, int new_am, int opt_am)
 		  hrr_nodes[hrr_nodes[j].children[0]].pointer);
 	  fprintf(hrr_code, "int_stack+%d,%d);\n", hrr_nodes[hrr_nodes[j].children[1]].pointer,
 		  io[hrr_nodes[j].A]*io[hrr_nodes[j].B]);
+	  /* Add this function to the list of inlined functions if necessary */
+	  max_node_am = (hrr_nodes[j].C > hrr_nodes[j].D) ? hrr_nodes[j].C : hrr_nodes[j].D;
+	  if (to_inline_hrr && max_node_am <= Params.max_am_to_inline_hrr_worker)
+	    fprintf(inline_hrr_list,"#include \"hrr3_build_%c%c.h\"\n", am_letter[hrr_nodes[j].C], am_letter[hrr_nodes[j].D]);
 	}
 	else if (hrr_nodes[j].B != 0) {
 	  fprintf(hrr_code, " hrr1_build_%c%c(Libint->AB,int_stack+%d,int_stack+%d,",
@@ -217,11 +259,16 @@ int emit_order(int old_am, int new_am, int opt_am)
 		  hrr_nodes[hrr_nodes[j].children[0]].pointer);
 	  fprintf(hrr_code, "int_stack+%d,%d);\n", hrr_nodes[hrr_nodes[j].children[1]].pointer,
 		  io[hrr_nodes[j].C]*io[hrr_nodes[j].D]);
+	  /* Add this function to the list of inlined functions if necessary */
+	  max_node_am = (hrr_nodes[j].A > hrr_nodes[j].B) ? hrr_nodes[j].A : hrr_nodes[j].B;
+	  if (to_inline_hrr && max_node_am <= Params.max_am_to_inline_hrr_worker)
+	    fprintf(inline_hrr_list,"#include \"hrr1_build_%c%c.h\"\n", am_letter[hrr_nodes[j].A], am_letter[hrr_nodes[j].B]);
 	}
 	j = hrr_nodes[j].rlink;
       } while (j != -1);
       fprintf(hrr_code," return int_stack+%d;}\n",target_data);
       fclose(hrr_code);
+      fclose(inline_hrr_list);
       printf("Done with %s\n",hrr_code_name);
       for(i=0;i<last_hrr_node;i++) {
 	hrr_nodes[i].llink = 0;
@@ -261,6 +308,8 @@ int emit_order(int old_am, int new_am, int opt_am)
 	  }
 	  else
 	    vrr_nodes[j-1].target = 1;
+	  if (first_vrr_to_compute == last_vrr_node && i == last_hrr_node-1)
+	    punt("Edward, you fucked up\n");
 	}
 
       /* Traverse the graph starting at each target */
@@ -273,7 +322,11 @@ int emit_order(int old_am, int new_am, int opt_am)
 	}
       }
 
-      init_mem(100000);
+      /*-----------------------------------------------------------------
+	Empirical rule as with what size heap to start memory allocation
+       -----------------------------------------------------------------*/
+      init_mem(1);
+
 
       /* Build the call sequence */
       target_data = alloc_mem_vrr(vrr_nodes);
@@ -285,8 +338,13 @@ int emit_order(int old_am, int new_am, int opt_am)
       
       j = first_vrr_to_compute;
       do {
-	if (vrr_nodes[j].A <= opt_am && vrr_nodes[j].C <= opt_am)
+	if (vrr_nodes[j].A <= opt_am && vrr_nodes[j].C <= opt_am) {
 	  fprintf(vrr_code, " _BUILD_%c0%c0(Data,", am_letter[vrr_nodes[j].A], am_letter[vrr_nodes[j].C]);
+	  /* Add this function to the list of inlined functions if necessary */
+	  max_node_am = (vrr_nodes[j].A > vrr_nodes[j].C) ? vrr_nodes[j].A : vrr_nodes[j].C;
+	  if (to_inline_vrr && max_node_am <= Params.max_am_to_inline_vrr_worker)
+	    fprintf(inline_vrr_list,"#include \"build_%c0%c0.h\"\n", am_letter[vrr_nodes[j].A], am_letter[vrr_nodes[j].C]);
+	}
 	else {
 	  fprintf(vrr_code, " am[0] = %d;  am[1] = %d;\n", vrr_nodes[j].A, vrr_nodes[j].C);
 	  fprintf(vrr_code, " vrr_build_xxxx(am,Data,");
@@ -311,17 +369,26 @@ int emit_order(int old_am, int new_am, int opt_am)
       } while (j != -1);
       fprintf(vrr_code, "\n}\n\n");
       fclose(vrr_code);
+      fclose(inline_vrr_list);
       printf("Done with %s\n",vrr_code_name);
       for(i=0;i<last_vrr_node;i++) {
 	vrr_nodes[i].llink = 0;
         vrr_nodes[i].rlink = 0;
       }
       
+      
+      /* compare this max_stack_size to the libint_stack_size for
+	 this angular momentum  and reset it */
+      if (libint_stack_size[current_highest_am] < max_stack_size)
+	libint_stack_size[current_highest_am] = max_stack_size;
+
+      max_stack_size = 0;
+
       }
     }
     }
   }
-  return max_stack_size;
+  return;
 }
 
 

@@ -32,14 +32,19 @@
 #include <libciomr.h>
 #include "build_libint.h"
 
-FILE *infile, *outfile, *vrr_header, *hrr_header, *libint_header, *init_code;
 
+/* Global data */
+FILE *infile, *outfile, *vrr_header, *hrr_header, *libint_header, *init_code;
 char *real_type;   /*--- C type for real numbers ---*/
+int libint_stack_size[MAX_AM/2+1];
+LibintParams_t Params;
 
 void punt();
-int emit_vrr_build(int,int,int);
-int emit_vrr_order(int,int,int);
-int emit_hrr_build(int,int);
+int emit_vrr_build();
+int emit_vrr_build_macro();
+int emit_order();
+int emit_hrr_build();
+int emit_hrr_build_macro();
 
 int main()
 {
@@ -54,7 +59,6 @@ int main()
   const int io[] = {0,1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153};
   const char am_letter[] = "0pdfghiklmnoqrtuvwxyz";
 
-
   /*-------------------------------
     Initialize files and libraries
    -------------------------------*/
@@ -63,7 +67,7 @@ int main()
   vrr_header = fopen("./vrr_header.h","w");
   hrr_header = fopen("./hrr_header.h","w");
   libint_header = fopen("./libint.h","w");
-  init_code = fopen("./init_libint.c","w");
+  init_code = fopen("./init_libint.cc","w");
 
   ip_set_uppercase(1);
   ip_initialize(infile,outfile);
@@ -96,34 +100,58 @@ int main()
   else
     real_type = strdup("double");
 
+  /*-------------
+    Init globals
+   -------------*/
+  for(l=0;l<=new_am/2;l++)
+    libint_stack_size[l] = 0;
+  Params.new_am = new_am;
+  Params.old_am = 0;
+  Params.opt_am = opt_am;
+  Params.max_class_size = max_class_size;
+  Params.max_am_to_inline_vrr_worker = -1;
+  Params.max_am_manager_to_inline_vrr_worker = -1;
+  Params.max_am_to_inline_hrr_worker = -1;
+  Params.max_am_manager_to_inline_hrr_worker = -1;
+  Params.max_am_to_inline_vrr_manager = -1;
+
   /* Setting up init_libint.c, header.h */
   fprintf(init_code,"#include <stdio.h>\n");
   fprintf(init_code,"#include <stdlib.h>\n");
   fprintf(init_code,"#include \"libint.h\"\n");
   fprintf(init_code,"#include \"hrr_header.h\"\n\n");
+  fprintf(init_code,"extern \"C\" {\n");
+  fprintf(init_code,"REALTYPE *(*build_eri[%d][%d][%d][%d])(Libint_t *, int);\n",new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
+  fprintf(init_code,"int libint_stack_size[%d];\n\n",new_am/2+1);
   fprintf(init_code,"/* This function initializes a matrix of pointers to routines */\n");
   fprintf(init_code,"/* for computing ERI classes up to (%cs|%cs) - the base of the library */\n\n",
 	  am_letter[new_am],am_letter[new_am]);
-  fprintf(init_code,"REALTYPE *(*build_eri[%d][%d][%d][%d])(Libint_t *, int);\n",new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
   fprintf(init_code,"void init_libint_base()\n{\n");
 
   /* Declare generic build routines */
-  fprintf(vrr_header,"REALTYPE *vrr_build_xxxx(int am[2], prim_data *, REALTYPE *, const REALTYPE *,");
-  fprintf(vrr_header,"const REALTYPE *, const REALTYPE *, const REALTYPE *, const REALTYPE *);\n");
+  fprintf(vrr_header,"extern \"C\" REALTYPE *vrr_build_xxxx(int am[2], prim_data *, REALTYPE *, const REALTYPE *,");
+  fprintf(vrr_header,"const REALTYPE *, const REALTYPE *, const REALTYPE *, const REALTYPE *);\n\n");
 
-  stack_size = emit_order(old_am,new_am,opt_am);
-  emit_vrr_build(old_am, opt_am, max_class_size);
-  emit_hrr_build(new_am, max_class_size);
+  emit_order();
+  emit_vrr_build();
+  emit_vrr_build_macro();
+  emit_hrr_build();
+  emit_hrr_build_macro();
+
+  /* put computed stack sizes for each angular momentum level into init_libint_base() */
+  for(l=0;l<=new_am/2;l++)
+    fprintf(init_code,"\n  libint_stack_size[%d] = %d;",l,libint_stack_size[l]);
   
-  fprintf(init_code,"}\n");
+  fprintf(init_code,"\n}\n");
   fprintf(init_code,"/* These functions initialize library objects */\n");
   fprintf(init_code,"/* Library objects operate independently of each other */\n");
-  fprintf(init_code,"int init_libint(Libint_t *libint, int num_prim_quartets)\n{\n");
+  fprintf(init_code,"int init_libint(Libint_t *libint, int max_am, int max_num_prim_quartets)\n{\n");
   fprintf(init_code,"  int memory = 0;\n\n");
-  fprintf(init_code,"  libint->int_stack = (REALTYPE *) malloc(STACK_SIZE*sizeof(REALTYPE));\n");
-  fprintf(init_code,"  memory += STACK_SIZE;\n");
-  fprintf(init_code,"  libint->PrimQuartet = (prim_data *) malloc(num_prim_quartets*sizeof(prim_data));\n");
-  fprintf(init_code,"  memory += num_prim_quartets*sizeof(prim_data)/sizeof(REALTYPE);\n");
+  fprintf(init_code,"  if (max_am >= LIBINT_MAX_AM) return -1;\n");
+  fprintf(init_code,"  libint->int_stack = (REALTYPE *) malloc(libint_stack_size[max_am]*sizeof(REALTYPE));\n");
+  fprintf(init_code,"  memory += libint_stack_size[max_am];\n");
+  fprintf(init_code,"  libint->PrimQuartet = (prim_data *) malloc(max_num_prim_quartets*sizeof(prim_data));\n");
+  fprintf(init_code,"  memory += max_num_prim_quartets*sizeof(prim_data)/sizeof(REALTYPE);\n");
   fprintf(init_code,"  return memory;\n}\n\n");
   fprintf(init_code,"void free_libint(Libint_t *libint)\n{\n");
   fprintf(init_code,"  if (libint->int_stack != NULL) {\n");
@@ -134,19 +162,27 @@ int main()
   fprintf(init_code,"    free(libint->PrimQuartet);\n");
   fprintf(init_code,"    libint->PrimQuartet = NULL;\n");
   fprintf(init_code,"  }\n\n");
-  fprintf(init_code,"  return;\n}\n");
+  fprintf(init_code,"  return;\n}\n\n");
+  fprintf(init_code,"int libint_storage_required(int max_am, int max_num_prim_quartets)\n{\n");
+  fprintf(init_code,"  int memory = 0;\n\n");
+  fprintf(init_code,"  if (max_am >= LIBINT_MAX_AM) return -1;\n");
+  fprintf(init_code,"  memory += libint_stack_size[max_am];\n");
+  fprintf(init_code,"  memory += max_num_prim_quartets*sizeof(prim_data)/sizeof(REALTYPE);\n");
+  fprintf(init_code,"  return memory;\n}\n\n");
+  fprintf(init_code,"}\n"); /* end of extern "C" */
   fclose(init_code);
   fclose(vrr_header);
   fclose(hrr_header);
   
     /* Setting up libint.h */
+  fprintf(libint_header,"#ifndef _psi3_libint_h\n");
+  fprintf(libint_header,"#define _psi3_libint_h\n\n");
   fprintf(libint_header,"/* Maximum angular momentum of functions in a basis set plus 1 */\n");
   fprintf(libint_header,"#define REALTYPE %s\n",real_type);
   if (long_double)
     fprintf(libint_header,"#define NONDOUBLE_INTS\n");
   fprintf(libint_header,"#define LIBINT_MAX_AM %d\n",1+new_am/2);
   fprintf(libint_header,"#define LIBINT_OPT_AM %d\n",1+opt_am/2);
-  fprintf(libint_header,"#define STACK_SIZE %d\n\n",stack_size);
   fprintf(libint_header,"typedef struct pdata{\n");
   fprintf(libint_header,"  REALTYPE F[%d];\n",2*new_am+1);
   fprintf(libint_header,"  REALTYPE U[6][3];\n");
@@ -170,11 +206,19 @@ int main()
   fprintf(libint_header,"  REALTYPE *vrr_classes[%d][%d];\n",1+new_am,1+new_am);
   fprintf(libint_header,"  REALTYPE *vrr_stack;\n");
   fprintf(libint_header,"  } Libint_t;\n\n");
+  fprintf(libint_header,"#ifdef __cplusplus\n");
+  fprintf(libint_header,"extern \"C\" {\n");
+  fprintf(libint_header,"#endif\n");
   fprintf(libint_header,"extern REALTYPE *(*build_eri[%d][%d][%d][%d])(Libint_t *, int);\n",
 	  new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
   fprintf(libint_header,"void init_libint_base();\n");
-  fprintf(libint_header,"int  init_libint(Libint_t *, int);\n");
-  fprintf(libint_header,"void free_libint(Libint_t *);\n\n");
+  fprintf(libint_header,"int  init_libint(Libint_t *, int max_am, int max_num_prim_comb);\n");
+  fprintf(libint_header,"void free_libint(Libint_t *);\n");
+  fprintf(libint_header,"int  libint_storage_required(int max_am, int max_num_prim_comb);\n");
+  fprintf(libint_header,"#ifdef __cplusplus\n");
+  fprintf(libint_header,"}\n");
+  fprintf(libint_header,"#endif\n\n");
+  fprintf(libint_header,"#endif\n");
   fclose(libint_header);
   ip_done();
   fclose(outfile);

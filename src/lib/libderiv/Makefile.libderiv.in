@@ -4,13 +4,19 @@ include @top_objdir@/src/lib/libderiv/MakeVars
 TARGET = $(top_objdir)/lib/libderiv.a
 HEADERS = libderiv.h
 
-TRUESRC = $(shell echo `ls *.c`)
-LIBOBJ = $(TRUESRC:%.c=%.o)
+TRUESRC_C = $(shell echo `ls *.c`)
+TRUESRC_CXX = $(shell echo `ls *.cc`)
+LIBOBJ_C = $(TRUESRC_C:%.c=%.o)
+LIBOBJ_CXX = $(TRUESRC_CXX:%.cc=%.o)
+LIBOBJ = $(LIBOBJ_C) $(LIBOBJ_CXX)
 
 default:: install
 
 %.$(OBJSUF): %.c
 	$(CC) $(CFLAGS) -c $< $(OUTPUT_OPTION)
+
+%.$(OBJSUF): %.cc
+	$(CXX) $(CXXFLAGS) -c $< $(OUTPUT_OPTION)
 
 #
 # do installations

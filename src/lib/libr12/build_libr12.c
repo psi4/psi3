@@ -25,12 +25,13 @@
 #include "build_libr12.h"
 
 FILE *infile, *outfile, *vrr_header, *hrr_header, *libr12_header, *init_code;
+int libr12_stack_size[MAX_AM/2+1];
 
 void punt();
 void emit_vrr_r_build(int,int,int);
 void emit_vrr_t_build(int,int,int);
-int emit_grt_order(int,int,int);
-int emit_gr_order(int,int,int);
+void emit_grt_order(int,int,int);
+void emit_gr_order(int,int,int);
 void emit_hrr_t_build(int,int);
 
 int main()
@@ -42,7 +43,6 @@ int main()
   int class_size;
   int num_subfunctions;
   int max_class_size = DEFAULT_MAX_CLASS_SIZE;
-  int stack_size;
   const int io[] = {0,1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153};
   const char am_letter[] = "0pdfghiklmnoqrtuvwxyz";
 
@@ -82,6 +82,12 @@ int main()
   errcod = ip_data("MAX_CLASS_SIZE","%d",&max_class_size,0);
   if (max_class_size < 10)
     punt("  MAX_CLASS_SIZE cannot be smaller than 10.");
+
+  /*-------------
+    Init globals
+   -------------*/
+  for(l=0;l<=new_am/2;l++)
+    libr12_stack_size[l] = 0;
   
   /* Setting up init_libr12.c, header.h */
   fprintf(init_code,"#include <stdlib.h>\n");
@@ -93,6 +99,7 @@ int main()
 	  am_letter[new_am],am_letter[new_am],am_letter[new_am],am_letter[new_am]);
   fprintf(init_code,"void (*build_r12_gr[%d][%d][%d][%d])(Libr12_t *, int);\n",new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
   fprintf(init_code,"void (*build_r12_grt[%d][%d][%d][%d])(Libr12_t *, int);\n",new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
+  fprintf(init_code,"int libr12_stack_size[%d];\n",new_am/2+1);
   fprintf(init_code,"void init_libr12_base()\n{\n");
 
   /* Declare generic build routines */
@@ -104,22 +111,27 @@ int main()
   fprintf(vrr_header," REALTYPE *, const REALTYPE *, const REALTYPE *, const REALTYPE *, const REALTYPE *);\n");
   
 /*  emit_gr_order(0,new_am); */
-  stack_size = emit_grt_order(0,new_am,opt_am);
+  emit_grt_order(0,new_am,opt_am);
   emit_hrr_t_build(new_am, max_class_size);
   /*--- VRR build routines are optimized for classes up to opt_am/2 ---*/
   emit_vrr_r_build(0,opt_am,max_class_size);
   emit_vrr_t1_build(0,opt_am,max_class_size);
   emit_vrr_t2_build(0,opt_am,max_class_size);
 
-  fprintf(init_code,"}\n\n");
+  /* put computed stack sizes for each angular momentum level into init_libderiv_base() */
+  for(l=0;l<=new_am/2;l++)
+    fprintf(init_code,"\n  libr12_stack_size[%d] = %d;",l,libr12_stack_size[l]);
+  
+  fprintf(init_code,"\n}\n\n");
   fprintf(init_code,"/* These functions initialize library objects */\n");
   fprintf(init_code,"/* Library objects operate independently of each other */\n");
-  fprintf(init_code,"int init_libr12(Libr12_t *libr12, int num_prim_quartets)\n{\n");
+  fprintf(init_code,"int init_libr12(Libr12_t *libr12, int max_am, int max_num_prim_quartets)\n{\n");
   fprintf(init_code,"  int memory = 0;\n\n");
-  fprintf(init_code,"  libr12->int_stack = (REALTYPE *) malloc(STACK_SIZE*sizeof(REALTYPE));\n");
-  fprintf(init_code,"  memory += STACK_SIZE;\n");
-  fprintf(init_code,"  libr12->PrimQuartet = (prim_data *) malloc(num_prim_quartets*sizeof(prim_data));\n");
-  fprintf(init_code,"  memory += num_prim_quartets*sizeof(prim_data)/sizeof(REALTYPE);\n");
+  fprintf(init_code,"  if (max_am >= LIBR12_MAX_AM) return -1;\n");
+  fprintf(init_code,"  libr12->int_stack = (REALTYPE *) malloc(libr12_stack_size[max_am]*sizeof(REALTYPE));\n");
+  fprintf(init_code,"  memory += libr12_stack_size[max_am];\n");
+  fprintf(init_code,"  libr12->PrimQuartet = (prim_data *) malloc(max_num_prim_quartets*sizeof(prim_data));\n");
+  fprintf(init_code,"  memory += max_num_prim_quartets*sizeof(prim_data)/sizeof(REALTYPE);\n");
   fprintf(init_code,"  return memory;\n}\n\n");
   fprintf(init_code,"void free_libr12(Libr12_t *libr12)\n{\n");
   fprintf(init_code,"  if (libr12->int_stack != NULL) {\n");
@@ -130,7 +142,13 @@ int main()
   fprintf(init_code,"    free(libr12->PrimQuartet);\n");
   fprintf(init_code,"    libr12->PrimQuartet = NULL;\n");
   fprintf(init_code,"  }\n\n");
-  fprintf(init_code,"  return;\n}\n");
+  fprintf(init_code,"  return;\n}\n\n");
+  fprintf(init_code,"int libr12_storage_required(int max_am, int max_num_prim_quartets)\n{\n");
+  fprintf(init_code,"  int memory = 0;\n\n");
+  fprintf(init_code,"  if (max_am >= LIBR12_MAX_AM) return -1;\n");
+  fprintf(init_code,"  memory += libr12_stack_size[max_am];\n");
+  fprintf(init_code,"  memory += max_num_prim_quartets*sizeof(prim_data)/sizeof(REALTYPE);\n");
+  fprintf(init_code,"  return memory;\n}\n");
   fclose(init_code);
   fclose(hrr_header);
   fclose(vrr_header);
@@ -139,10 +157,6 @@ int main()
   fprintf(libr12_header,"/* Maximum angular momentum of functions in a basis set plus 1 */\n");
   fprintf(libr12_header,"#define LIBR12_MAX_AM %d\n",1+new_am/2);
   fprintf(libr12_header,"#define LIBR12_OPT_AM %d\n",1+opt_am/2);
-  fprintf(libr12_header,"#ifdef STACK_SIZE\n");
-  fprintf(libr12_header," #undef STACK_SIZE\n");
-  fprintf(libr12_header,"#endif\n");
-  fprintf(libr12_header,"#define STACK_SIZE %d\n",stack_size);
   fprintf(libr12_header,"#define NUM_TE_TYPES 4\n\n");
   fprintf(libr12_header,"typedef struct {\n");
   fprintf(libr12_header,"  REALTYPE AB[3];\n");
@@ -164,8 +178,9 @@ int main()
   fprintf(libr12_header,"extern void (*build_r12_gr[%d][%d][%d][%d])(Libr12_t *, int);\n",new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
   fprintf(libr12_header,"extern void (*build_r12_grt[%d][%d][%d][%d])(Libr12_t *, int);\n",new_am/2+1,new_am/2+1,new_am/2+1,new_am/2+1);
   fprintf(libr12_header,"void init_libr12_base();\n\n");
-  fprintf(libr12_header,"int  init_libr12(Libr12_t *, int);\n");
-  fprintf(libr12_header,"void free_libr12(Libr12_t *);\n\n");
+  fprintf(libr12_header,"int  init_libr12(Libr12_t *, int max_am, int max_num_prim_quartets);\n");
+  fprintf(libr12_header,"void free_libr12(Libr12_t *);\n");
+  fprintf(libr12_header,"int  libr12_storage_required(int max_am, int max_num_prim_quartets);\n\n");
   fclose(libr12_header);
   fclose(outfile);
   exit(0);

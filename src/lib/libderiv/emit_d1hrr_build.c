@@ -4,12 +4,17 @@
 
 #include "build_libderiv.h"
 
-extern FILE *outfile, *libint_src, *dhrr_header;
+extern FILE *outfile, *libint_src, *d1hrr_header;
+extern LibderivParams_t Params;
 
 extern void punt(char *);
 
-int emit_dhrr_build(int old_am, int new_am)
+int emit_d1hrr_build()
 {
+  int new_am = Params.new_am;
+  int old_am = Params.old_am;
+  int am_to_inline = Params.max_am_to_inline_d1hrr_worker;
+
   FILE *code;
   int p,q,r,s;
   int ax,ay,az,bx,by,bz,cx,cy,cz,dx,dy,dz;
@@ -23,6 +28,8 @@ int emit_dhrr_build(int old_am, int new_am)
   int la, lb;
   int ld, lc, ld_max;
   int curr_count,curr_subfunction;
+  int current_highest_am, to_inline;
+  int errcod;
   static int io[] = {1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153};
   static const char am_letter[] = "0pdfghiklmnoqrtuvwxyz";
   char code_name[19];
@@ -40,18 +47,25 @@ int emit_dhrr_build(int old_am, int new_am)
       am_in[0] = lc-ld;
       am_in[1] = ld;
 
-      sprintf(function_name,"dhrr3_build_%c%c",am_letter[am_in[0]],am_letter[am_in[1]]);
-      sprintf(code_name,"dhrr3_build_%c%c.c",am_letter[am_in[0]],am_letter[am_in[1]]);
+      /* Is this function to be made inline */
+      current_highest_am = (am_in[0] > am_in[1]) ? am_in[0] : am_in[1];
+      to_inline = (current_highest_am <= am_to_inline) ? 1 : 0;
+
+      sprintf(function_name,"d1hrr3_build_%c%c",am_letter[am_in[0]],am_letter[am_in[1]]);
+      sprintf(code_name,"d1hrr3_build_%c%c.cc",am_letter[am_in[0]],am_letter[am_in[1]]);
       code = fopen(code_name,"w");
 
-      /* include the function into the dhrr_header.h */
-      fprintf(dhrr_header,"void %s(const double *, double *, const double *, const double *, \n",function_name);
-      fprintf(dhrr_header,"        double, const double *, double, const double *, double, const double *,\n");
-      fprintf(dhrr_header,"        double, const double *, double, const double *, double, const double *, int);\n");
+      /* include the function into the d1hrr_header.h */
+      if (to_inline)
+	fprintf(d1hrr_header, "#ifndef INLINE_D1HRR_WORKER\n");
+      fprintf(d1hrr_header,"void %s(const double *, double *, const double *, const double *, \n",function_name);
+      fprintf(d1hrr_header,"        double, const double *, double, const double *, double, const double *,\n");
+      fprintf(d1hrr_header,"        double, const double *, double, const double *, double, const double *, int);\n");
+      if (to_inline)
+	fprintf(d1hrr_header, "#endif\n");
 
-      fprintf(code,"  /* This machine-generated function computes a quartet of |%c%c) derivative ERIs */\n\n",
+      fprintf(code,"  /* This machine-generated function computes a quartet of |%c%c) first derivative ERIs */\n\n",
 	      am_letter[am_in[0]],am_letter[am_in[1]]);
-
       fprintf(code,"void %s(const double *CD, double *vp, const double *I0, const double *I1,\n",function_name);
       fprintf(code,"        double c2, const double *I2, double c3, const double *I3, double c4, const double *I4,\n");
       fprintf(code,"        double c5, const double *I5, double c6, const double *I6, double c7, const double *I7, int ab_num)\n{\n");
@@ -106,7 +120,6 @@ int emit_dhrr_build(int old_am, int new_am)
       fprintf(code,"  }\n}\n");
       fclose(code);
       printf("Done with %s\n",code_name);
-
       
       
       /*-----------------------
@@ -117,18 +130,21 @@ int emit_dhrr_build(int old_am, int new_am)
       am_in[0] = la;
       am_in[1] = lb;
 
-      /* include the function into the dhrr_header.h */
-      fprintf(dhrr_header,"void %s(const double *, double *, const double *, const double *,",function_name);
-      fprintf(dhrr_header,"        double, const double *, double, const double *, double, const double *,\n");
-      fprintf(dhrr_header,"        double, const double *, double, const double *, double, const double *, int);\n");
-      
-      sprintf(function_name,"dhrr1_build_%c%c",am_letter[am_in[0]],am_letter[am_in[1]]);
-      sprintf(code_name,"dhrr1_build_%c%c.c",am_letter[am_in[0]],am_letter[am_in[1]]);
+      sprintf(function_name,"d1hrr1_build_%c%c",am_letter[am_in[0]],am_letter[am_in[1]]);
+      sprintf(code_name,"d1hrr1_build_%c%c.cc",am_letter[am_in[0]],am_letter[am_in[1]]);
       code = fopen(code_name,"w");
 
-      fprintf(code,"  /* This machine-generated function computes a quartet of (%c%c| integrals */\n\n",
+      /* include the function into the d1hrr_header.h */
+      if (to_inline)
+	fprintf(d1hrr_header, "#ifndef INLINE_D1HRR_WORKER\n");
+      fprintf(d1hrr_header,"void %s(const double *, double *, const double *, const double *,",function_name);
+      fprintf(d1hrr_header,"        double, const double *, double, const double *, double, const double *,\n");
+      fprintf(d1hrr_header,"        double, const double *, double, const double *, double, const double *, int);\n");
+      if (to_inline)
+	fprintf(d1hrr_header, "#endif\n");
+      
+      fprintf(code,"  /* This machine-generated function computes a quartet of (%c%c| first derivative integrals */\n\n",
 	      am_letter[am_in[0]],am_letter[am_in[1]]);
-
       fprintf(code,"void %s(const double *AB, double *vp, const double *I0, const double *I1,\n",function_name);
       fprintf(code,"        double c2, const double *I2, double c3, const double *I3, double c4, const double *I4,\n");
       fprintf(code,"        double c5, const double *I5, double c6, const double *I6, double c7, const double *I7, int cd_num)\n{\n");
