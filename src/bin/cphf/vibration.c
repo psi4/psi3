@@ -93,8 +93,7 @@ void vibration(double **hessian, double **dipder)
   C_DGEMM('n','n', 3, natom*3, natom*3, 1, &(dipder[0][0]),natom*3,
 	  &(lx[0][0]), natom*3, 0, &(dipder_q[0][0]), natom*3);
 
-  fprintf(outfile, "\n\tDipole Derivatives W.R.T Normal Coordinates
-                    (debye/A-amu+1/2):\n");
+  fprintf(outfile, "\n\tDipole Derivatives W.R.T Normal Coordinates (debye/A-amu+1/2):\n");
   print_mat(dipder_q, 3, natom*3, outfile);
 
   /* Compute the IR intensities in D^2/(A^2 amu) */
