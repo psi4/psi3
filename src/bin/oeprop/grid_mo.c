@@ -3,8 +3,6 @@
 #include "globals.h"
 #include "prototypes.h"
 
-inline double fast_pow(double x, int l);
-
 void compute_grid_mos()
 {
   int i,j,k,l,ig,jg,ibf,jbf,ib,jb,jlim,kk,ll;
@@ -12,6 +10,7 @@ void compute_grid_mos()
   int igmin, igmax;
   int ixm, iym, izm, iind;
   int ix, iy, iz;
+  int lx, ly, lz;
   double ax, ay, az, xa, ya, za, ra2;
   double ai, norm_pf, ang_pf, exponent;
   double x,y,z;
@@ -66,9 +65,69 @@ void compute_grid_mos()
 	      values = &(bf_values[i_1stbf]);
 	      for(ibf=0;ibf<nbfi;ibf++,values++) {
 		  norm_pf = norm_bf[iang][ibf];
-		  ang_pf = fast_pow(xa,xpow_bf[iang][ibf])*
-			   fast_pow(ya,ypow_bf[iang][ibf])*
-			   fast_pow(za,zpow_bf[iang][ibf]);
+		  lx = xpow_bf[iang][ibf];
+		  ly = ypow_bf[iang][ibf];
+		  lz = zpow_bf[iang][ibf];
+		  tmp = 1.0;
+		  switch (lx) {
+		  case 0:
+		      break;
+		  case 1:
+		      tmp *= xa;
+		      break;
+		  case 2:
+		      tmp *= xa*xa;
+		      break;
+		  case 3:
+		      tmp *= xa*xa*xa;
+		      break;
+		  case 4:
+		      tmp *= (xa*xa)*(xa*xa);
+		      break;
+		  default:
+		      tmp *= pow(xa,lx);
+		  }
+		  ang_pf = tmp;
+		  tmp = 1.0;
+		  switch (ly) {
+		  case 0:
+		      break;
+		  case 1:
+		      tmp *= ya;
+		      break;
+		  case 2:
+		      tmp *= ya*ya;
+		      break;
+		  case 3:
+		      tmp *= ya*ya*ya;
+		      break;
+		  case 4:
+		      tmp *= (ya*ya)*(ya*ya);
+		      break;
+		  default:
+		      tmp *= pow(ya,ly);
+		  }
+		  ang_pf *= tmp;
+		  tmp = 1.0;
+		  switch (lz) {
+		  case 0:
+		      break;
+		  case 1:
+		      tmp *= za;
+		      break;
+		  case 2:
+		      tmp *= za*za;
+		      break;
+		  case 3:
+		      tmp *= za*za*za;
+		      break;
+		  case 4:
+		      tmp *= (za*za)*(za*za);
+		      break;
+		  default:
+		      tmp *= pow(za,lz);
+		  }
+		  ang_pf *= tmp;
 		  
 		  *values = norm_pf * ang_pf * exponent;
 	      }
@@ -83,24 +142,6 @@ void compute_grid_mos()
 	  z += grid_step_z[2];
 	}
       }
-  }
-}
-
-inline double fast_pow(double x, int l)
-{
-  switch (l) {
-  case 0:
-      return 1.0;
-  case 1:
-      return x;
-  case 2:
-      return x*x;
-  case 3:
-      return x*x*x;
-  case 4:
-      return (x*x)*(x*x);
-  default:
-      return pow(x,l);
   }
 }
 
