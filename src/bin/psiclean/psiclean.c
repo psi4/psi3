@@ -43,10 +43,6 @@ int main()
   nvol = psio_get_numvols_default();
 
   errcod = psio_get_filename_default(basename);
-  if (errcod) {
-    fprintf(outfile, "psiclean: Trouble reading default filename\n");
-    exit_bad();
-  }
 
   for (i=0; i<nvol; i++) {
       errcod = psio_get_volpath_default(i, vpath);
