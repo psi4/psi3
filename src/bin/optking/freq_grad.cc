@@ -1,6 +1,11 @@
 /** FREQ_GRAD computes frequencies from gradients */
 
-#include <cmath>
+#if HAVE_CMATH
+# include <cmath>
+#else
+# include <math.h>
+#endif
+
 extern "C" {
   #include <stdio.h>
   #include <libchkpt/chkpt.h>

@@ -8,11 +8,12 @@ I. Compilation Prerequisites:
    * F77 Compiler
    * Optimized BLAS library (try http://math-atlas.sourceforge.net)
    * Optimized LAPACK library (try http://www.netlib.org/netlib)
+   * A POSIX threads (Pthreads) library
    * GNU utilities: (see http://www.gnu.org)
       ** make
       ** flex
       ** bison
-      ** autoconf
+      ** autoconf (version 2.52 or higher)
       ** fileutils (esp. install)
    * For documentation:
       ** latex
@@ -191,7 +192,7 @@ III.F. Step 6: Cleaning
 All object files and libraries can be removed to save disk space by running
 "make clean" in $objdir.
 
-III.G. Step 7: User Configuration}
+III.G. Step 7: User Configuration
 
 After the PSI3 package has been successfullly installed, the user will need
 to add the installation directory into their path.  If the package has
@@ -224,3 +225,32 @@ IV. Miscellaneous architecture-specific notes
    \PSIthree\ makefiles to fail. Set environmental variable {\tt BIN\_SH}
    to {\tt xpg4}.
 
+ * Mac OS 10.2.X:
+
+   For Apple systems, several issues arise that we hope to address with the 
+   configure script in the near future:
+
+   (1) The compilation requires a developer's toolkit from apple.com.
+
+   (2) You need the libcompat library. It can be obtained from Apple's 
+   website at http://www.opensource.apple.com/. Then add -lcompat to the
+   configure flag --with-libs.
+
+   (3) For BLAS and LAPACK, use the configure options:
+
+      --with-blas='-altivec -framework vecLib' --with-lapack=' '
+
+   (4) The Fortran compiler in gcc version 3.3 and higher requires the latest
+   assembler, as. It can be obtained as a part of cctools from 
+   http://www.opensource.apple.com/.  Mac OS X 10.3 (Panther) should come 
+   with cctools recent enough to compile Psi 3.
+
+   (5) Certain PSI3 codes require significant stackspace for compilation.
+   Increase your shell's stacksize limit before running "make".  For csh,
+   for example, this is done using "unlimit stacksize".
+
+   (6) After running configure, hand-edit $objdir/src/bin/MakeVars and
+   $objdir/src/util/MakeVars and remove $(FLIBS) from the definition of BLAS.
+   The vecLib framework on OS X doesn't require Fortran I/O routines to be
+   linked, so $(FLIBS) will interfere with the PSI3 build.  This will be
+   automated in some future release.

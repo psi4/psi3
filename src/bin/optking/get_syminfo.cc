@@ -1,6 +1,11 @@
 /*** GET_SYMINFO   gets symmetry info from chkpt and char_table.c ***/ 
 
-#include <cmath>
+#if HAVE_CMATH
+# include <cmath>
+#else
+# include <math.h>
+#endif
+
 extern "C" {
   #include <stdio.h>
   #include <stdlib.h>

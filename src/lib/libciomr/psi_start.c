@@ -167,10 +167,10 @@ int psi_start(int argc, char *argv[], int overwrite_output)
     errcod = ip_string(":DEFAULT:NAME",&fprefix,0);
 
   /* copy over file prefix, etc. into their appropriate variables */
-  if (fprefix == NULL)
-    psi_file_prefix = strdup(PSI_DEFAULT_FILE_PREFIX);
-  else
-    psi_file_prefix = strdup(fprefix);
+  if (fprefix == NULL) {
+    fprefix = strdup(PSI_DEFAULT_FILE_PREFIX);
+  }
+  psi_file_prefix = strdup(fprefix);
 
   return(PSI_RETURN_SUCCESS);
 }

@@ -1,6 +1,11 @@
 /*** GRAD_ENERGY computes a file11 entry from energies in chkpt Rollin King, 2002 ***/ 
 
-#include <cmath>
+#if HAVE_CMATH
+# include <cmath>
+#else
+# include <math.h>
+#endif
+
 extern "C" {
 #include <stdio.h>
 #include <libchkpt/chkpt.h>
@@ -26,13 +31,14 @@ double **compute_B(internals &simples, salc_set &symm);
 
 void grad_energy(cartesians &carts, internals &simples, salc_set &symm) {
 
-  int i,j,a,b, dim, dim_carts, num_disps, cnt;
+  int i,j,a,b, dim, dim_carts, num_disps, cnt, natom;
   double **B, *geom, *forces;
   double energy, *energies, **micro_geoms, **displacements;
   double *f, *f_q, *dq, *q, tval, **geom2D;
   char *disp_label;
 
   disp_label = new char[MAX_LINELENGTH];
+  natom = carts.get_natom();
   dim_carts = 3*carts.get_natom();
 
   if (symm.get_num() == 0) {
@@ -74,8 +80,8 @@ void grad_energy(cartesians &carts, internals &simples, salc_set &symm) {
   close_PSIF();
 
   // Transform forces to cartesian coordinates
-  simples.compute_internals(dim_carts, geom);
-  simples.compute_s(dim_carts, geom);
+  simples.compute_internals(natom, geom);
+  simples.compute_s(natom, geom);
   B = compute_B(simples, symm);
   f = new double[dim_carts];
   mmult(B,1,&f_q,1,&f,1,dim_carts,symm.get_num(),1,0);

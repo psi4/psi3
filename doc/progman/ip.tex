@@ -151,12 +151,19 @@ Calls \celem{yyparse();} followed by \celem{ip\_cwk\_clear();} followed by
 and stores it into the keyword tree for access later.
 
 \celem{void ip\_append(FILE *in, FILE *out);} \\
-Same thing as \celem{ip\_initialize();}, except this dosn't clear the 
+Same thing as \celem{ip\_initialize();}, except this doesn't clear the 
 \celem{cwk} first.  Used for parsing another input file, such 
 as \celem{intco.dat}.
 
 \celem{void ip\_done();} \\
 Frees up the keyword tree.
+
+\begin{center} \celem{ip\_read.c} \\ \end{center}
+
+\celem{void ip\_print\_tree(FILE *out, ip_keyword_tree_t *tree);} \\
+Prints out \celem{tree} to \celem{out}. If \celem{tree} is set to \celem{NULL},
+then the current working keyword tree will be printed out.
+This function is useful for debugging problems with parsing.
 
 \subsubsection{Sample Use from \PSIcscf}
 These are two slightly simplified pieces of actual code.

@@ -1,6 +1,12 @@
 // returns the values of salcs given the simple internals and salc_set
 // the value of the simple internals must already be computed
-#include <cmath>
+
+#if HAVE_CMATH
+# include <cmath>
+#else
+# include <math.h>
+#endif
+
 extern "C" {
 #include <stdio.h>
 #include <libchkpt/chkpt.h>

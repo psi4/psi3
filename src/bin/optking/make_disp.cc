@@ -1,7 +1,12 @@
 /** displaces along all coordinates + and - by disp_size **/ 
 // need to save geometry to last step for gradients by energy
 
-#include <cmath>
+#if HAVE_CMATH
+# include <cmath>
+#else
+# include <math.h>
+#endif
+
 extern "C" {
 #include <stdio.h>
 #include <libchkpt/chkpt.h>

@@ -23,7 +23,7 @@
 #define _h 6.6260755E-34  /* J s    */
 #define _c 2.99792458E8  /* m s^-1 */
 #define _kb 1.380658E-23  /* J K^-1 */
-#define _R 8.314510       /* J K^-1 mol^-1 */
+#define _psi3_R 8.314510        /* J K^-1 mol^-1 */
 #define _bohr2angstroms 0.529177249
 #define _bohr2m 0.529177249E-10
 #define _bohr2cm 0.529177249E-8

@@ -72,6 +72,39 @@ rm -f conftest*
 AC_MSG_RESULT(OK)]
 )dnl
 dnl
+dnl
+dnl See if the given C++ program is processed by the C++ compiler OK.  Does
+dnl not necessarily compile.  If you want to compile give a -c to the compiler
+dnl arguments.  To compile and link give a -o conftest.
+dnl arg1: echo text
+dnl arg2: optional code (main is already provided)
+dnl arg3: additional compiler arguments
+dnl arg4: success action
+dnl arg5: fail action
+dnl
+define(AC_CXX_PROCESS_CHECK,
+[AC_PROVIDE([$0])dnl
+ifelse([$1], , , [AC_MSG_CHECKING([for $1])]
+)dnl
+cat > conftest.cc <<EOF
+[$2]
+int main(int argc, char** argv) {}
+EOF
+dnl Don't try to run the program, which would prevent cross-configuring.
+if eval $CXX $CPPFLAGS [$3] conftest.cc >/dev/null 2>&1; then
+  ifelse([$4], , :, [rm -rf conftest*
+  $4
+  AC_MSG_RESULT(yes)
+])
+ifelse([$5], , , [else
+  rm -rf conftest*
+  $5
+  AC_MSG_RESULT(no)
+])dnl
+fi
+rm -f conftest*]
+)dnl
+dnl
 dnl  This checks for the existence of fortran libraries.  It is much
 dnl like AC_HAVE_LIBRARY, except it uses AC_FC_COMPILE_CHECK
 dnl 
@@ -98,62 +131,6 @@ else
    :; $3
 fi
 ])])dnl
-dnl
-dnl try to determine what main is called, and how to link
-dnl c and fortran codes
-dnl shell variable F77SUF to be defined.
-dnl arg1: echo text
-dnl arg2: additional compiler arguments
-dnl
-define(AC_FC_LINKAGE_CHECK,
-[AC_PROVIDE([$0])dnl
-ifelse([$1], , , [AC_MSG_CHECKING([for $1])]
-)dnl
-cat > conftest.$F77SUF <<EOF
-      PROGRAM FOO
-      STOP
-      END
-      SUBROUTINE FOO2
-      RETURN
-      END
-EOF
-dnl check to see if this is gnu egrep which uses -q for silent mode,
-dnl or a more generic one which uses -s
-if eval egrep -q FOO2 conftest.$F77SUF > /dev/null 2>&1; then
-  ac_egrep_silent=-q
-else
-  ac_egrep_silent=-s
-fi
-dnl compile conftest.f and look for main and foo2 symbols
-$FC [$2] -c conftest.${F77SUF} ${FLIBS} > /dev/null  2>&1
-if eval nm -p conftest.o | egrep $ac_egrep_silent MAIN__; then
-  MAIN_FUNC=MAIN__
-elif eval nm -p conftest.o | egrep $ac_egrep_silent MAIN_; then
-  MAIN_FUNC=MAIN_
-elif eval nm -p conftest.o | egrep $ac_egrep_silent MAIN; then
-  MAIN_FUNC=MAIN
-elif eval nm -p conftest.o | egrep $ac_egrep_silent main__; then
-  MAIN_FUNC=main__
-elif eval nm -p conftest.o | egrep $ac_egrep_silent main_; then
-  MAIN_FUNC=main_
-elif eval nm -p conftest.o | egrep $ac_egrep_silent main; then
-  MAIN_FUNC=main
-fi
-AC_MSG_RESULT($1 is $MAIN_FUNC)
-CDEF="$CDEF -DMAIN_FUNC=$MAIN_FUNC"
-dnl
-if eval nm -p conftest.o | egrep $ac_egrep_silent foo2_; then
-  CDEF="$CDEF -DFCLINK=1"
-  CXXDEF="$CXXDEF -DFCLINK=1"
-elif eval nm -p conftest.o | egrep $ac_egrep_silent foo2; then
-  CDEF="$CDEF -DFCLINK=2"
-  CXXDEF="$CXXDEF -DFCLINK=2"
-elif eval nm -p conftest.o | egrep $ac_egrep_silent FOO2; then
-  CDEF="$CDEF -DFCLINK=3"
-  CXXDEF="$CXXDEF -DFCLINK=3"
-fi
-rm -f conftest*]
-)dnl
 dnl
 dnl try to determine the sizes of some c basic types
 dnl arg1: echo text

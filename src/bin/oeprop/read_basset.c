@@ -26,7 +26,7 @@ void read_basset_info()
       fprintf(outfile,"  %5d  \t%12.5lf\t%13.11lf\n",i+1,exps[i],contr[i]);
     fprintf(outfile,"\n\n  Shell# Nuc#\t  L\tSPRIM\t SLOC\tSNUMG\n");
     for(i=0;i<nshell;i++)
-      fprintf(outfile,"  %3d  \t%3d\t%3d\t%3d\t%3d\t%3d\t%3d\t%3d\n",i+1,
+      fprintf(outfile,"  %3d  \t%3d\t%3d\t%3d\t%3d\t%3d\n",i+1,
               snuc[i],stype[i]-1,sprim[i],sloc[i],snumg[i]);
     fprintf(outfile,"\n\n");
   }

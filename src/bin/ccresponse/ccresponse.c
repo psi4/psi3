@@ -61,6 +61,7 @@ int main(int argc, char *argv[])
   char **cartcomp;
   int alpha, beta, i;
   double **tensor;
+  double omega_nm, omega_ev, omega_cm;
   double prefactor, TrG, M, nu, rotation, bohr2a4, m2a, hbar;
 
   init_io(argc, argv);
@@ -172,9 +173,16 @@ int main(int argc, char *argv[])
 
     fprintf(outfile, "\n                 CCSD Dipole Polarizability [(e^2 a0^2)/E_h]:\n");
     fprintf(outfile, "  -------------------------------------------------------------------------\n");
-    fprintf(outfile,   "   Evaluated at omega = %8.6f E_h (%6.2f nm, %5.3f eV, %8.2f cm-1)\n", params.omega,
-	    (_c*_h*1e9)/(_hartree2J*params.omega), _hartree2ev*params.omega,
-	    _hartree2wavenumbers*params.omega);
+    if(params.omega != 0.0) 
+      omega_nm = (_c*_h*1e9)/(_hartree2J*params.omega);
+    omega_ev = _hartree2ev*params.omega;
+    omega_cm = _hartree2wavenumbers*params.omega;
+    if(params.omega != 0.0)
+      fprintf(outfile,   "   Evaluated at omega = %8.6f E_h (%6.2f nm, %5.3f eV, %8.2f cm-1)\n", 
+  	  params.omega, omega_nm, omega_ev, omega_cm);
+    else
+      fprintf(outfile,   "   Evaluated at omega = %8.6f E_h (Inf nm, %5.3f eV, %8.2f cm-1)\n", 
+	  params.omega, omega_ev, omega_cm);
     fprintf(outfile, "  -------------------------------------------------------------------------\n");
     mat_print(tensor, 3, 3, outfile);
 

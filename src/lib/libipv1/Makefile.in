@@ -27,7 +27,7 @@ ALLSRC = $(CSRC) $(GENSRC)
 
 GBLINC = $(ALLSRC:%.c=%.gbl)
 
-ALLINCLUDE = ip_lib.h ip_error.h ip_types.h ip_global.h $(GBLINC)
+ALLINCLUDE = ip_lib.h ip_error.h ip_types.h ip_global.h tmpl.h $(GBLINC)
 
 LIBOBJ = $(ALLSRC:%.c=%.o)
 

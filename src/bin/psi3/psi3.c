@@ -23,6 +23,10 @@
 #define MXEXEC 100
 #define MAX_EXEC_STR 80
 
+#if defined HAVE_DECL_SETENV && !HAVE_DECL_SETENV
+  extern int setenv(const char *, const char *, int);
+#endif
+
 FILE *infile, *outfile;
 char **psi_file_prefix;
 /* 
@@ -551,11 +555,13 @@ int parse_cmdline(int argc, char *argv[])
  
   /* set the environmental variables the modules will look for */ 
   if (ifname != NULL) {
-#ifndef HAVE_SETENV
+#if HAVE_PUTENV
     sprintf(tmpstr_input,"PSI_INPUT=%s",ifname);
     putenv(tmpstr_input);
-#else
+#elif HAVE_SETENV
     setenv("PSI_INPUT",ifname,1);
+#else
+#error "Have neither putenv nor setenv. Something must be very broken on this system."
 #endif
     infile = fopen(ifname,"r");
   }
@@ -567,20 +573,24 @@ int parse_cmdline(int argc, char *argv[])
     return(PSI_RETURN_FAILURE);
   }
   if (ofname != NULL) {
-#ifndef HAVE_SETENV
+#if HAVE_PUTENV
     sprintf(tmpstr_output,"PSI_OUTPUT=%s",ofname);
     putenv(tmpstr_output);
-#else
+#elif HAVE_SETENV
     setenv("PSI_OUTPUT",ofname,1);
+#else
+#error "Have neither putenv nor setenv. Something must be very broken on this system."
 #endif
   }
   outfile = stdout;
   if (fprefix != NULL) {
-#ifndef HAVE_SETENV
+#if HAVE_PUTENV
     sprintf(tmpstr_prefix,"PSI_PREFIX=%s",fprefix);
     putenv(tmpstr_prefix);
-#else
+#elif HAVE_SETENV
     setenv("PSI_PREFIX",fprefix,1);
+#else
+#error "Have neither putenv nor setenv. Something must be very broken on this system."
 #endif
   }
   return(1);

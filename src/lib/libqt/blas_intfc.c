@@ -16,7 +16,7 @@
 
 #include <stdio.h>
 
-#if FCLINK==1
+#if FC_SYMBOL==2
 #define F_DAXPY daxpy_
 #define F_DCOPY dcopy_
 #define F_DGEMM dgemm_
@@ -25,7 +25,7 @@
 #define F_DGEMV dgemv_
 #define F_DSPMV dspmv_
 #define F_DDOT  ddot_
-#elif FCLINK==2
+#elif FC_SYMBOL==1
 #define F_DAXPY daxpy
 #define F_DCOPY dcopy
 #define F_DGEMM dgemm
@@ -34,7 +34,7 @@
 #define F_DGEMV dgemv
 #define F_DSPMV dspmv
 #define F_DDOT  ddot
-#else
+#elif FC_SYMBOL==3
 #define F_DAXPY DAXPY
 #define F_DCOPY DCOPY
 #define F_DGEMM DGEMM
@@ -43,6 +43,15 @@
 #define F_DGEMV DGEMV
 #define F_DSPMV DSPMV
 #define F_DDOT  DDOT
+#elif FC_SYMBOL==4
+#define F_DAXPY DAXPY_
+#define F_DCOPY DCOPY_
+#define F_DGEMM DGEMM_
+#define F_DROT DROT_
+#define F_DSCAL DSCAL_
+#define F_DGEMV DGEMV_
+#define F_DSPMV DSPMV_
+#define F_DDOT  DDOT_
 #endif
 
 extern void F_DAXPY(int *length, double *a, double *x, int *inc_x, 
@@ -54,7 +63,7 @@ extern void F_DGEMM(char *transa, char *transb, int *m, int *n, int *k,
                     double *beta, double *C, int *ldc);
 extern void F_DROT(int *ntot,double *x, int *incx,double *y, int *incy,
                   double *cotheta,double *sintheta);
-extern void F_DSCAL(long int *n, double *alpha, double *vec, int *inc);
+extern void F_DSCAL(int *n, double *alpha, double *vec, int *inc);
 extern void F_DGEMV(char *transa, int *m, int *n, double *alpha, double *A, 
                     int *lda, double *X, int *inc_x, double *beta, 
                     double *Y, int *inc_y);
@@ -90,7 +99,7 @@ void C_DCOPY(int length, double *x, int inc_x,
 ** This function scales a vector by a real scalar.
 ** \ingroup (QT)
 */
-void C_DSCAL(long int n, double alpha, double *vec, int inc)
+void C_DSCAL(int n, double alpha, double *vec, int inc)
 {
   F_DSCAL(&n, &alpha, vec, &inc);
 }

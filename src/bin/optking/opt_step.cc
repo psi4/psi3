@@ -1,6 +1,11 @@
 /*** OPT_STEP.CC takes geometry steps using gradients -- optking's default operation ***/ 
 
-#include <cmath>
+#if HAVE_CMATH
+# include <cmath>
+#else
+# include <math.h>
+#endif
+
 extern "C" {
 #include <stdio.h>
 #include <libchkpt/chkpt.h>

@@ -19,7 +19,12 @@ command-line      internal specifier   what it does
 --irrep            optinfo.irrep       the irrep (1,2,...) being displaced or computed
 */
 
-#include <cmath>
+#if HAVE_CMATH
+# include <cmath>
+#else
+# include <math.h>
+#endif
+
 extern "C" {
   #include <stdio.h>
   #include <libchkpt/chkpt.h>
@@ -69,7 +74,7 @@ int main(int argc, char **argv) {
     int i,j,a,b,dim,count,dim_carts,user_intcos;
     int parsed=1, num_disps, disp_length;
     double *f, *coord; 
-    char *disp_label, *buffer, *err;
+    char aline[MAX_LINELENGTH], *disp_label, **buffer, *err;
 
     // Set defaults & read command-line arguments
     optinfo.mode = MODE_OPT_STEP;
@@ -215,7 +220,6 @@ int main(int argc, char **argv) {
 
     /*** If SYMM is not user given, produce SYMM containing delocalized \
      *** internal coordinates or else use redundant simples          ***/
-    buffer = new char[MAX_LINELENGTH];
     if (!(optinfo.salcs_present)) {
       if (optinfo.delocalize) {
         fprintf(outfile,"\nForming delocalized internal coordinates.\n");
@@ -227,18 +231,31 @@ int main(int argc, char **argv) {
         ffile(&fp_intco, "intco.dat", 2);
         count = 0;
         for( ; ; ) {
-          err = fgets(buffer, MAX_LINELENGTH, fp_intco);
+          err = fgets(aline, MAX_LINELENGTH, fp_intco);
           if (err == NULL) break;
           ++count;
         }
         rewind(fp_intco);
-        for(j=0;j<(count-1);++j)
-          err = fgets(buffer, MAX_LINELENGTH, fp_intco);
-        fflush(fp_intco);
+
+        /* read all but the last line of the file into memory... */
+        buffer = (char **) malloc((count-1) * sizeof(char *));
+        for(i=0; i < count-1; i++) {
+          buffer[i] = (char *) malloc(MAX_LINELENGTH * sizeof(char));
+          err = fgets(buffer[i], MAX_LINELENGTH, fp_intco);
+        }
+        rewind(fp_intco);
+
+        /* ...and overwite */
+        for(i=0; i < count-1; i++) {
+          fprintf(fp_intco, "%s", buffer[i]);
+          free(buffer[i]);
+        }
+        free(buffer);
+
         fprintf(fp_intco,"  symm = (\n");
-            for (j=0;j<simples.get_num();++j)
-            fprintf(fp_intco,"    (\" \" (%d))\n",simples.index_to_id(j));
-            fprintf(fp_intco,"  )\n");
+        for (j=0;j<simples.get_num();++j)
+          fprintf(fp_intco,"    (\" \" (%d))\n",simples.index_to_id(j));
+        fprintf(fp_intco,"  )\n");
         fprintf(fp_intco,")\n");
         fclose(fp_intco);
       }
@@ -253,7 +270,6 @@ int main(int argc, char **argv) {
         fclose(fp_intco);
       }
     }
-    delete [] buffer;
     fflush(outfile);
 
     // do optimization step by gradients

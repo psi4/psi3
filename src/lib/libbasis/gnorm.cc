@@ -1,6 +1,10 @@
 
 #include <stdexcept>
-#include <cmath>
+#if HAVE_CMATH
+# include <cmath>
+#else
+# include <math.h>
+#endif
 #include "gnorm.h"
 
 GaussianNormalization::GaussianNormalization(int am) :

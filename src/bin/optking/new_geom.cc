@@ -3,7 +3,12 @@
 // and a set of internal coordinate displacements
 // it returns 1 if a new cartesian geometry was successfully determined
 
-#include <cmath>
+#if HAVE_CMATH
+# include <cmath>
+#else
+# include <math.h>
+#endif
+
 extern "C" {
 #include <stdio.h>
 #include <libchkpt/chkpt.h>

@@ -1,6 +1,11 @@
 /*** INTERNALS.CC member functions for internals class ***/ 
 
-#include <cmath>
+#if HAVE_CMATH
+# include <cmath>
+#else
+# include <math.h>
+#endif
+
 extern "C" {
 #include <stdio.h>
 #include <stdlib.h>

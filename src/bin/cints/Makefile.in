@@ -93,12 +93,12 @@ include ../MakeVars
 #Need do remove -DAIX because I have a variable named AIX
 CDEF_NOAIX = $(CDEF:-DAIX=)
 CFLAGS = $(CDBG) $(COPT) $(CDEF_NOAIX) $(COTH) $(CINC)
-CINC = -I$(srcdir) $(DIRS:%=-I$(srcdir)/%)  -I$(objincdir) -I$(incdir) $(CPPFLAGS)
+CINC += -I$(srcdir) $(DIRS:%=-I$(srcdir)/%)
 CDEF += $(OPTIONS)
 
 CXXDEF_NOAIX = $(CXXDEF:-DAIX=)
 CXXFLAGS = $(CXXDBG) $(CXXOPT) $(CXXDEF_NOAIX) $(CXXOTH) $(CXXINC)
-CXXINC = -I$(srcdir) $(DIRS:%=-I$(srcdir)/%)  -I$(objincdir) -I$(incdir) $(CPPFLAGS)
+CXXINC += -I$(srcdir) $(DIRS:%=-I$(srcdir)/%)
 CXXDEF += $(OPTIONS)
 
 LD = $(CXX)

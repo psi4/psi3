@@ -2,9 +2,11 @@
 srcdir = @srcdir@
 VPATH = @srcdir@
 
+FC_SYMBOL = @FC_SYMBOL@
+
 include ../MakeVars
 
-CDEF += -DBUFF=0 -DSITEDIR=\"$(datadir)\"
+CDEF += -DBUFF=0 -DSITEDIR=\"$(datadir)\" -DFC_SYMBOL=$(FC_SYMBOL)
 
 TARGET = $(top_objdir)/lib/libPSI_qt.a
 

@@ -28,3 +28,5 @@ detci: (
   maxiter = 40
 )
 
+dboc:displacement = 0.002
+dboc:print = 2

@@ -50,16 +50,21 @@ The \PSIthree\ repository is comprised of a main trunk and several
 release branches.  The branch you should use depends on the sort of 
 work you plan for the codes:
 \begin{enumerate}
-\item Bug fixes, defined as anything that doesn't add functionality
-(including documentation updates) should be made {\em only} on the most
-recent stable release branch.
+\item For any piece of code already in the most recent release, bug
+fixes (defined as anything that doesn't add functionality --- including
+documentation updates) should be made {\em only} on the most recent stable
+release branch.
 \item The main trunk is reserved for development of new functionality.
 This allows us to keep new, possibly unstable code away from public
-access until the developer is ready.
+access until the code is ready.
+\item Code that you do not want to put into next major release of \PSIthree\
+should be put onto a separate branch off the main trunk. You will be
+solely responsible for maintenance of the new branch, so you should read
+the CVS manual before attempting this.
 \end{enumerate}
 
 \noindent Fig.~\ref{Fig:cvs} provides a schematic of the CVS revision-control
-structure and branch labelling.  Two release branches are shown, the current
+structure and branch labeling.  Two release branches are shown, the current
 stable branch, named {\tt psi-3-2}, and a planned future release, to be
 named {\tt psi-3-3}.  The tags on the branches indicate release points,
 where bugs have been fixed and the code has been or will be exported for
@@ -70,10 +75,10 @@ will be given the suffix, {\tt -rc-1}, for ``release candidate 1'' (i.e.,
 a numbered beta release).  Subsequent tags for new released on the same
 branch will be updated with {\tt -rc-2}, {\tt -rc-3}, etc.  Once the
 code is appropriately stable to be beyond beta status, release tags will
-be given the suffic, {\tt -0}, {\tt -1}, etc., indicating patch levels.
+be given the suffix, {\tt -0}, {\tt -1}, etc., indicating patch levels.
 The dotted lines in the figure indicate merge points: before each public
 release, changes made to the code on the stable release branch will be
-merged into the main trunk (and {\em vice versa}).
+merged into the main trunk.
 
 \begin{figure}[h]
 \begin{center}
@@ -83,6 +88,28 @@ merged into the main trunk (and {\em vice versa}).
 release-tag labelling.}
 \label{Fig:cvs}
 \end{figure}
+
+\noindent A frequently encountered problem is what to do about bug fixes
+that are necessary for uninterrupted code development of the code on the
+main trunk. As Rule 1 of the above policy states, all bug fixes of the code
+already in the recent stable release must go on the corresponding branch,
+not on the main trunk. The next step depends on the severity of the bug:
+\begin{enumerate}
+\item If the bug fix is critical and potentially affects every developer of
+the code on the main trunk, then \PSIthree\ administrators should be notified
+of the fix. If deemed necessary, appropriate steps to create a new patch
+release will be made. Once the next patch release is created then the bug
+fixes will be merged onto the main trunk.  If the bug fix doesn't warrant
+an immediate new patch release, then you can incorporate the bug fix into
+your local copy of the main trunk code manually or using CVS merge features
+(see the CVS documentation for the {\tt -j} option). This will allow you to
+continue development until next patch release is created and the bug fix
+is incorporated into the main trunk code in the repository. However you
+should {\em never} merge such changes into the main trunk yourself.
+\item If the bug fix is not critical (e.g. a documentation update/fix),
+then you should wait until next patch release when it will be merged into
+the main trunk automatically.
+\end{enumerate}
 
 \noindent
 The following are some of the most commonly used CVS commands for checking

@@ -15,7 +15,7 @@ extern FILE *outfile;
 **	\param Buf               Buffer to be initialised
 **	\param itape		Filenumber
 **	\param cutoff           Cutoff for keeping integral
-**	\param oldfile		If ==1 create file
+**	\param oldfile		If ==0 create file
 **	\param readflag		If ==1 fetch buffer
 **
 ** Prepare a PSI Buffer according to the Integrals

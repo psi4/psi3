@@ -1,5 +1,6 @@
 
 AC_INIT(aclocal.m4)
+AC_PREREQ(2.52)
 
 # Make srcdir an absolute path
 srcdir=`(cd $srcdir; pwd)`
@@ -158,6 +159,62 @@ case $withval in
 esac
 ])
 
+AC_ARG_WITH(ranlib,
+[  --with-ranlib           Gives the name of the ranlib program.],
+RANLIB=$withval
+)
+
+AC_CHECK_PROGS(AR,ar,ar)
+AC_ARG_WITH(ar,
+[  --with-ar               Names the archive creator.],
+AR=$withval
+)
+AC_SUBST(AR)
+
+ARFLAGS=r
+AC_ARG_WITH(ar-flags,
+[  --with-ar-flags         Flags for the the archive creator.],
+ARFLAGS=$withval
+)
+# set up os specific archiver options
+case $os in
+  aix*)
+    ARFLAGS="-X32_64 $ARFLAGS"
+    ;;
+esac
+AC_SUBST(ARFLAGS)
+
+AC_ARG_WITH(ld,
+[  --with-ld               Names the object linker.],
+LD=$withval
+)
+AC_SUBST(LD)
+
+EXTRAINCDIRS=
+CPPFLAGS=
+AC_ARG_WITH(incdirs,
+[  --with-incdirs          Specifies include directories (-Idir1 -Idir2).],
+EXTRAINCDIRS=$withval
+CPPFLAGS=$withval
+echo Using extra include directories: $withval
+)
+
+AC_ARG_WITH(libs,
+[  --with-libs             Specifies libraries (-llib1 -llib2).],
+LDLIBS=$withval
+echo Using extra libraries: $withval
+)
+AC_SUBST(LDLIBS)
+
+LDFLAGS=
+LIBDIRS=
+AC_ARG_WITH(libdirs,
+[  --with-libdirs          Specifies library directories (-Ldir1 -Ldir2).],
+LIBDIRS=$withval
+LDFLAGS=$withval
+echo Using extra library directories: $withval
+)
+
 # Find out which compilers are available.
 if test -z "$FC"; then
   AC_PROGRAMS_CHECK(FC,$FC_LIST,f77)
@@ -173,20 +230,17 @@ if test -z "$CXX"; then
   AC_PROGRAMS_CHECK(CXX,$CXX_LIST,c++)
 fi
 
-# Initialize some variables depending on the machine
-case $os in
-     aix4*)
-        AC_RS64_CHECK(64-bit RS/6000)
-     ;;
-esac
-
 AC_F77_LIBRARY_LDFLAGS
 # Get info on the utility programs.
 AC_PROG_CPP()
 AC_PROG_CXXCPP()
 AC_PROG_YACC()
 AC_PROG_RANLIB()
+if test "X$RANLIB" = "Xfalse"; then
+  RANLIB=":"
+fi
 AC_PROG_INSTALL()
+AC_PROG_LN_S()
 INSTALL_INCLUDE='$(top_srcdir)/bin/installinc.sh' AC_SUBST(INSTALL_INCLUDE)
 MKDIRS='$(top_srcdir)/bin/mkdirs.sh' AC_SUBST(MKDIRS)
 
@@ -328,29 +382,38 @@ AC_SUBST(LAPACK)
 # CXXOTH Other C++ flags.
 # CXXINC C++ include directories (with -I in front).
 
-CPPFLAGS='-I. -I$(objincdir) -I$(top_srcdir)/include -I$(top_srcdir)/src/lib -I$(top_objdir)/src/lib'
+PSICPPFLAGS='-I. -I$(objincdir) -I$(top_srcdir)/include -I$(top_srcdir)/src/lib -I$(top_objdir)/src/lib' AC_SUBST(PSICPPFLAGS)
 FDBG='-g' AC_SUBST(FDBG)
 FOPT='-O' AC_SUBST(FOPT)
 FDEF='' AC_SUBST(FDEF)
 FOTH='' AC_SUBST(FOTH)
 FSTATIC='' AC_SUBST(FSTATIC)
-FINC='$(CPPFLAGS)' AC_SUBST(FINC)
+FINC='$(CPPFLAGS) $(PSICPPFLAGS)' AC_SUBST(FINC)
 CDBG='-g' AC_SUBST(CDBG)
 COPT='-O2' AC_SUBST(COPT)
 CDEF='' AC_SUBST(CDEF)
 COTH='' AC_SUBST(COTH)
-CINC='$(CPPFLAGS)' AC_SUBST(CINC)
+CINC='$(CPPFLAGS) $(PSICPPFLAGS)' AC_SUBST(CINC)
 CXXDBG='-g' AC_SUBST(CXXDBG)
 CXXOPT='-O2' AC_SUBST(CXXOPT)
 CXXDEF='' AC_SUBST(CXXDEF)
 CXXOTH='' AC_SUBST(CXXOTH)
-CXXINC='$(CPPFLAGS)' AC_SUBST(CXXINC)
+CXXINC='$(CPPFLAGS) $(PSICPPFLAGS)' AC_SUBST(CXXINC)
 
 #check for const
 AC_C_CONST()
 
 # check for header files
 AC_HAVE_HEADERS(errno.h fcntl.h unistd.h sys/types.h sys/times.h sys/param.h)
+
+# check for C++ headers
+AC_CXX_PROCESS_CHECK([cmath],[#include <cmath>],,[HAVE_CMATH=1],[HAVE_CMATH=0]) CXXDEF="$CXXDEF -DHAVE_CMATH=$HAVE_CMATH"
+AC_CXX_PROCESS_CHECK([cstdio],[#include <cstdio>],,[HAVE_CSTDIO=1],[HAVE_CSTDIO=0]) CXXDEF="$CXXDEF -DHAVE_CSTDIO=$HAVE_CSTDIO"
+AC_CXX_PROCESS_CHECK([cstdlib],[#include <cstdlib>],,[HAVE_CSTDLIB=1],[HAVE_CSTDLIB=0]) CXXDEF="$CXXDEF -DHAVE_CSTDLIB=$HAVE_CSTDLIB"
+AC_CXX_PROCESS_CHECK([cstring],[#include <cstring>],,[HAVE_CSTRING=1],[HAVE_CSTRING=0]) CXXDEF="$CXXDEF -DHAVE_CSTRING=$HAVE_CSTRING"
+AC_CXX_PROCESS_CHECK([cstddef],[#include <cstddef>],,[HAVE_CSTDDEF=1],[HAVE_CSTDDEF=0]) CXXDEF="$CXXDEF -DHAVE_CSTDDEF=$HAVE_CSTDDEF"
+
+/bin/rm -f a.out
 
 #check to see if void* is allowed
 AC_MSG_CHECKING(for void pointers)
@@ -391,99 +454,19 @@ if test $psi_ac_strstr = "no"; then
   CDEF="$CDEF -DNO_STRSTR"
 fi
 
-AC_CHECK_FUNC(setenv,[extradef="-DHAVE_SETENV"])
+AC_CHECK_DECLS([putenv],[extradef="-DHAVE_DECL_PUTENV=1"])
+CDEF="$CDEF $extradef"
+CXXDEF="$CXXDEF $extradef"
+AC_CHECK_FUNC(putenv,[extradef="-DHAVE_PUTENV=1"])
 CDEF="$CDEF $extradef"
 CXXDEF="$CXXDEF $extradef"
 
-AC_CHECK_FUNC(unsetenv,[extradef="-DHAVE_UNSETENV"])
+AC_CHECK_DECLS([setenv],[extradef="-DHAVE_DECL_SETENV=1"])
 CDEF="$CDEF $extradef"
 CXXDEF="$CXXDEF $extradef"
-
-# check for integer bitwise intrinsics.  at one time it was
-# hip to use ior, ishft, etc.  these days it seems that or and rshift, etc
-# are in vogue
-AC_FC_COMPILE_CHECK(fortran iand,[
-      I = IAND(1,1)
-],,FDEF="$FDEF -DHAS_IAND",)
-
-AC_FC_COMPILE_CHECK(fortran ior,[
-      I = IOR(1,1)
-],,FDEF="$FDEF -DHAS_IOR")
-
-AC_FC_COMPILE_CHECK(fortran ieor,[
-      I = IEOR(1,1)
-],,FDEF="$FDEF -DHAS_IEOR")
-
-AC_FC_COMPILE_CHECK(fortran ishft,[
-      I = ISHFT(1,1)
-],,FDEF="$FDEF -DHAS_ISHFT",)
-
-AC_FC_COMPILE_CHECK(fortran rshft,[
-      I = RSHFT(1,1)
-],,FDEF="$FDEF -DHAS_RSHFT",)
-
-AC_FC_COMPILE_CHECK(fortran lshft,[
-      I = LSHFT(1,1)
-],,FDEF="$FDEF -DHAS_LSHFT",)
-
-# See if the fortran 'flush' routine exists.
-# If not, define NO_FLUSH_ROUTINE in FDEFS.
-AC_FC_COMPILE_CHECK(fortran flush,[
-      CALL FLUSH(6)
-],,,FDEF="$FDEF -DNO_FLUSH_ROUTINE")
-
-# See if the fortran 'exit' routine exists.
-# If not, define NO_EXIT_ROUTINE in FDEFS.
-AC_FC_COMPILE_CHECK(fortran exit,[
-      CALL EXIT(0)
-],,,FDEF="$FDEF -DNO_EXIT_ROUTINE")
-
-# See if the fortran compiler takes 'implicit undefined'.
-# If so define UNDEFINED in FDEFS.
-AC_FC_COMPILE_CHECK(implicit undefined,[
-      IMPLICIT UNDEFINED(A-Z)
-],,FDEF="$FDEF -DUNDEFINED")
-
-# See if the fortran compiler takes accepts 'APPEND' as a file status in open
-# If so define APPEND_OK in FDEFS.
-AC_FC_COMPILE_CHECK(append,[
-      OPEN(1,FILE='foo',STATUS='APPEND')
-],,FDEF="$FDEF -DAPPEND_OK")
-
-# See if ieee_init() exists.
-# If so define HAS_IEEE in FDEFS.
-AC_FC_COMPILE_CHECK(ieee,[
-      CALL IEEE_INIT()
-      CALL IEEE_DONE()
-],,FDEF="$FDEF -DHAS_IEEE")
-
-# Find out how to turn off automatic variables
-
-# HP specific option to turn off automatic variables
-if test "$vendor" = hp && test "$FC" = f77 ; then
-  FSTATIC=-K
-fi
-
-# try -fno-automatic option to turn off automatic variables (GNU F77)
-if test -z "$FSTATIC"; then
-  AC_FC_COMPILE_CHECK(-fno-automatic,,-fno-automatic,
-                      FSTATIC="-fno-automatic")
-fi
-
-# as a last resort try -static (hopefully this doesn't just link
-# libraries statically)
-if test -z "$FSTATIC"; then
-  AC_FC_COMPILE_CHECK(-static,,-static,
-                      FSTATIC="$FSTATIC -static")
-fi
-
-# check for an option that zeros local variables (GNU F77)
-AC_FC_COMPILE_CHECK(-finit-local-zero,,-finit-local-zero,
-                    FSTATIC="$FSTATIC -finit-local-zero")
-
-# check to see what main is called, as well as how to call fortran from
-# C and vice versa
-AC_FC_LINKAGE_CHECK(main routine,)
+AC_CHECK_FUNC(setenv,[extradef="-DHAVE_SETENV=1"])
+CDEF="$CDEF $extradef"
+CXXDEF="$CXXDEF $extradef"
 
 # now determine sizes of some basic types
 AC_C_SIZES_CHECK(sizeof basic types)
@@ -512,12 +495,6 @@ AC_SUBST(REAL_SIZE)
 INT_SIZE=$ac_sizeof_integer
 AC_SUBST(INT_SIZE)
 
-
-if test "$ac_sizeof_real" != "$ac_sizeof_dprec" ; then
-  echo "WARNING! PSI probably won't work if double precision is not the"
-  echo "         same size as real*8"
-  echo "         try setting FOTH environment variable"
-fi
 
 AC_CHECKING(machine specfic optimization flags)
 # set up cpu specific flags
@@ -688,19 +665,6 @@ esac
 AC_SUBST(FPARDEF)
 AC_SUBST(FPAROPT)
 
-AR="ar"
-AC_ARG_WITH(ar,--with-ar		which library archiver to use,[AR=$withval])
-AC_SUBST(AR)
-ARFLAGS="rv"
-# set up os specific archiver options
-case $os in
-  aix*)
-    ARFLAGS="-X32_64 $ARFLAGS"
-    ;;
-esac
-AC_SUBST(ARFLAGS)
-AC_SUBST(LDFLAGS)
-
 # These nasty machine dependent tests should go away soon.
 AC_CHECKING(os specific flags)
 case $os in
@@ -725,6 +689,38 @@ FDEF="$FDEF $fextra"
 CDEF="$CDEF $cextra"
 CXXDEF="$CXXDEF $cxxextra"
 
+# check Fortran symbol convention
+AC_MSG_CHECKING(fortran symbols)
+if test -n "$FC" ; then
+  /bin/rm -f ffunc.f flink.c
+  echo "      subroutine ffunc()" > ffunc.f
+  echo "      return" >> ffunc.f
+  echo "      end" >> ffunc.f
+  $FC -c ffunc.f 1>/dev/null 2>/dev/null
+  echo "main(){ FF(); return 0; }" > flink.c
+  if $CC -o flink -DFF=ffunc flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
+    AC_MSG_RESULT(same as C)
+    FC_SYMBOL=1
+  elif $CC -o flink -DFF=ffunc_ flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
+    AC_MSG_RESULT(lowercase with underscore)
+    FC_SYMBOL=2
+  elif $CC -o flink -DFF=FFUNC flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
+    AC_MSG_RESULT(uppercase)
+    FC_SYMBOL=3
+  elif $CC -o flink -DFF=FFUNC_ flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
+    AC_MSG_RESULT(uppercase with underscore)
+    FC_SYMBOL=4
+  else
+    AC_MSG_RESULT(giving up)
+    AC_MSG_ERROR(could not determine fortran symbol names)
+  fi
+  /bin/rm -f ffunc.f ffunc.o flink flink.c flink.o ffunc
+else
+  FC_SYMBOL=2
+  AC_MSG_RESULT(guessing lowercase with underscore)
+fi
+AC_SUBST(FC_SYMBOL)
+
 #
 # Check for LaTeX, DVIPS, and LaTeX2HTML
 #
@@ -742,7 +738,7 @@ CXXDEPENDSUF=none
 CCDEPENDFLAGS=-M
 CXXDEPENDFLAGS=-M
 
-/bin/rm -f depcheck.u depcheck.c depcheck.o
+/bin/rm -f depcheck.u depcheck.c depcheck.o depcheck.cc
 
 # Check for an IBM visual age C compiler
 echo "#include <stdio.h>" > depcheck.c
@@ -750,7 +746,7 @@ $CC $CPPFLAGS $CFLAGS -M depcheck.c > /dev/null 2>&1
 if test -f depcheck.u; then
   CCDEPENDSUF=u
 fi
-/bin/rm -f depcheck.u depcheck.c depcheck.o
+/bin/rm -f depcheck.u depcheck.c depcheck.o depcheck.cc
 
 # Check for an IBM visual age C++ compiler
 echo "#include <iostream>" > depcheck.cc
@@ -759,7 +755,7 @@ if test -f depcheck.u; then
   CXXDEPENDSUF=u
   CXXDEPENDFLAGS="-M -E"
 fi
-/bin/rm -f depcheck.u depcheck.c depcheck.o
+/bin/rm -f depcheck.u depcheck.c depcheck.o depcheck.cc
 
 AC_SUBST(CCDEPENDSUF)
 AC_SUBST(CXXDEPENDSUF)

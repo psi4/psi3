@@ -291,7 +291,7 @@ void print_full_geometry(double conv_factor)
   fprintf(outfile,"    ------------   -----------------  -----------------  -----------------\n");
 
   for(i=0;i<num_allatoms;i++){
-    fprintf(outfile,"  %12s ",full_element[i], (int) nuclear_charges[i]); fflush(outfile);
+    fprintf(outfile,"  %12s ",full_element[i]); fflush(outfile);
     for(j=0;j<3;j++)
       fprintf(outfile,"  %17.12lf",full_geom[i][j]*conv_factor);
     fprintf(outfile,"\n");

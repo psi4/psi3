@@ -20,8 +20,8 @@
 int dpd_buf4_scmcopy(dpdbuf4 *InBuf, int outfilenum, char *label, double alpha)
 {
   int h, row, col, rowtot, coltot, all_buf_irrep;
-  int nbuckets, incore, n;
-  long int memoryd, rows_per_bucket, rows_left, size;
+  int nbuckets, incore, n, size;
+  long int memoryd, rows_per_bucket, rows_left;
   dpdbuf4 OutBuf;
   double *X;
 
@@ -73,7 +73,7 @@ int dpd_buf4_scmcopy(dpdbuf4 *InBuf, int outfilenum, char *label, double alpha)
 
       rowtot = InBuf->params->rowtot[h];
       coltot = InBuf->params->coltot[h^all_buf_irrep];
-      size = ((long) rowtot) * ((long) coltot);
+      size = rowtot*coltot;
 
       if(rowtot && coltot) {
 	memcpy((void *) &(OutBuf.matrix[h][0][0]),

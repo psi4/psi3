@@ -1,6 +1,11 @@
 // SALC.CC : constructor functions for salc_set
 
-#include <cmath>
+#if HAVE_CMATH
+# include <cmath>
+#else
+# include <math.h>
+#endif
+
 extern "C" {
 #include <stdio.h>
 #include <stdlib.h>

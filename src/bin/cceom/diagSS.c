@@ -520,7 +520,7 @@ void precondition_SS_RHF(dpdfile2 *RIA, double eval)
       ii = i * nocc +i;
 
       if(!pairdom_len[ii]) {
-	fprintf(outfile, "\n\tlocal_filter_T1: Pair ii = [%d] is zero-length, which makes no sense.\n");
+	fprintf(outfile, "\n\tlocal_filter_T1: Pair ii = [%d] is zero-length, which makes no sense.\n",ii);
 	exit(2);
       }
 

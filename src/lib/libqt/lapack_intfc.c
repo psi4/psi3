@@ -11,26 +11,33 @@
 ** Written to work similarly to the BLAS C interface in blas_intfc.c
 */
 
-#if FCLINK==1
+#if FC_SYMBOL==2
 #define F_DGEEV dgeev_
 #define F_DGESV dgesv_
 #define F_DGETRF dgetrf_
 #define F_DGETRI dgetri_
 #define F_DGESVD dgesvd_
 #define F_DSYEV dsyev_
-#elif FCLINK==2
+#elif FC_SYMBOL==1
 #define F_DGEEV dgeev
 #define F_DGESV dgesv
 #define F_DGETRF dgetrf
 #define F_DGETRI dgetri
 #define F_DGESVD dgesvd
 #define F_DSYEV dsyev
-#else
+#elif FC_SYMBOL==3
 #define F_DGEEV DGEEV
 #define F_DGESV DGESV
 #define F_DGETRF DGETRF
 #define F_DGETRI DGETRI
 #define F_DGESVD DGESVD
+#define F_DSYEV DSYEV
+#elif FC_SYMBOL==4
+#define F_DGEEV DGEEV_
+#define F_DGESV DGESV_
+#define F_DGETRF DGETRF_
+#define F_DGETRI DGETRI_
+#define F_DGESVD DGESVD_
 #define F_DSYEV DSYEV_
 #endif
 

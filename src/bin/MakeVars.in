@@ -37,6 +37,7 @@ INSTALL_INCLUDE = @INSTALL_INCLUDE@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 
+PSICPPFLAGS = @PSICPPFLAGS@
 CPPFLAGS = @CPPFLAGS@
 
 CDEF = @CDEF@
@@ -82,7 +83,7 @@ vpath allocate.o $(top_objdir)/lib:$(libdir)
 
 # we are mostly compiling C programs here
 LDFLAGS = @LDFLAGS@
-LDLIBS = $(CLIBS)
+LDLIBS = $(CLIBS) @LDLIBS@
 
 # these are the most commonly used libraries
 PSILIBS = libipv1.a libciomr.a

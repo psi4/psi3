@@ -1,7 +1,12 @@
 // This function generates an empirical guess Hessian from a given set of
 //   salcs according to Schlegel, Theor. Chim. Acta, 66, 333 (1984).
 
-#include <cmath>
+#if HAVE_CMATH
+# include <cmath>
+#else
+# include <math.h>
+#endif
+
 extern "C" {
   #include <stdio.h>
   #include <libchkpt/chkpt.h>

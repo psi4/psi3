@@ -3,7 +3,12 @@
 // s-vectors.  The new coordinates will not mix coordinates of
 // different types if mix_types == 1
 
-#include <cmath>
+#if HAVE_CMATH
+# include <cmath>
+#else
+# include <math.h>
+#endif
+
 extern "C" {
 #include <stdio.h>
 #include <libchkpt/chkpt.h>

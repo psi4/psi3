@@ -425,9 +425,9 @@ void print_misc()
     fprintf(outfile,"   ------  ----  -----------  -----------  -----------  -----------\n");
     k = 0;
     for(i=0;i<nirreps;i++)
-      for(j=0;j<orbspi[i];j++)
+      for(j=0;j<orbspi[i];j++,k++)
         fprintf(outfile,"   %4d     %3s   %9.4lf    %9.4lf    %9.4lf    %9.4lf\n",
-                k+1,irr_labs[i],MOXX[k],MOYY[k],MOZZ[k],MOXX[k]+MOYY[k]+MOZZ[k++]);
+                k+1,irr_labs[i],MOXX[k],MOYY[k],MOZZ[k],MOXX[k]+MOYY[k]+MOZZ[k]);
     fprintf(outfile,"\n");
   }
 }

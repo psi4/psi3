@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <math.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
@@ -29,11 +30,11 @@ void amp_write_T1(dpdfile2 *T1, int length, FILE *outfile);
 int main(int argc, char *argv[])
 {
   char lbl[32];
-  int **cachelist, *cachefiles, *ao2atom;
+  int **cachelist, *cachefiles;
   int h, i, j, jj, k, nroot, a, max_j, max_a;
-  double *evals, *dcorr, *weakp, value, d_value, **B_PAO;
+  double *weakp, value, d_value, **B_PAO;
   double *Bt, max_val, test_val, sum_val;
-  int *spin, *symm, count, ivalue;
+  int *spin, count, ivalue;
   dpdfile2 B;
 
   init_io(argc, argv);
@@ -116,8 +117,6 @@ int main(int argc, char *argv[])
     fprintf(outfile, "\n");
 
   }
-
-  if (params.local) free(ao2atom);
 
   fflush(outfile);
 
@@ -224,9 +223,6 @@ int main(int argc, char *argv[])
     }
     fprintf(outfile, "\n");
 
-    free(evals);
-    free(dcorr);
-    free(symm);
   }
 
   dpd_close(0);

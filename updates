@@ -11,7 +11,7 @@ to set the environment too! (needs to be fixed).   -EFV
 int".   -TDC
 09/16/03: Switched to malloc/free in src/bin/dboc/linalg.cc. For some reason,
 IBM VisualAge C++ 5.0.2.0 doesn't release memory properly and in large CI DBOC
-computations fatal memory leaks result.   -TDC
+computations fatal memory leaks result.   -EFV
 09/26/03: Added <stdlib.h> includes to a number of functions in the
 libraries and corrected various warnings unearthed by "gcc -Wall".   -TDC
 09/28/03: Modified installation instructions to clarify setting of maximum
@@ -34,4 +34,18 @@ accomodate new format like "RIJAB 0 0" and "EOM CCSD R0 0 0".   -RAK
 branch policy and examples of cvs commands for accessing different branches.
 Corrected libr12 compiler link ordering to place all object codes before
 libraries to resolve symbols on IRIX systems.   -TDC
-
+11/12/03: Documentation update in src/lib/libiwl/buf_init.c.  Corrected
+install rule for tmpl.h in src/lib/libipv1.  Corrected default file prefix
+values in src/lib/libciomr/psi_start.c.   -EFV
+11/12/03: Corrected initialization of perturbed wave functions in local
+calculations in src/bin/ccresponse/init_X.c.   -TDC
+11/13/03: Numerous changes to configure.in: added --with-libs, --with-libdirs,
+and --with-incdirs command-line options + updated documentation; removed many checks
+for features of Fortran compiler; added checks for some standard C++ headers
+not supported by some compilers (cmath, etc.) and modified relevant code to
+use such headers conditionally; rewrote the check of Fortran linking convention
+to remove its dependence on 'nm'. tocprint's Makefile.in is completely rewritten.
+Minor cleanup of MakeVars.in in lib, bin, and util directories. Fixed typo in
+libqt/lapack_intfc.c regarding DSYEV. Added support for platforms where Fortran
+symbols are uppercase with underscore. Remove definition of _R in physconst.h,
+it conflicts with a definition in C++ header <ctype> on OS X 10.2.8.  -EFV
