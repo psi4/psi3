@@ -18,12 +18,9 @@ default: (
   frozen_docc = (1 0 0 0)
   frozen_uocc = (8 2 3 5)
 
-files: (
-    default: ( name = "h2o" nvolume = 1
-      volume1 = "/scratch/sherrill/"
-      )
-    file30: (nvolume = 1 volume1 = "./" )
-    )
+  files: (
+    default: ( name = "h2o" )
+  )
 )
 
 input: (
