@@ -132,4 +132,5 @@ void scf_check(void)
   fprintf(outfile, "\tTwo-electron energy          = %20.15f\n", 0.5*(E2AA+E2BB)+E2AB);
   fprintf(outfile, "\tFrozen-core energy (transqt) = %20.15f\n", moinfo.efzc);
   fprintf(outfile, "\tReference energy             = %20.15f\n", moinfo.eref);
+
 }

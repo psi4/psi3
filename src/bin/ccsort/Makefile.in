@@ -3,7 +3,12 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
+ifneq (,$(findstring alphaev6,$(target)))
+LD = $(CC)
+else
 LD = $(FC)
+endif
+
 LDLIBS += $(BLAS)
 
 PSILIBS = -ldpd -lqt -lfile30 -liwl -lciomr -lpsio -lipv1 -lmalloc

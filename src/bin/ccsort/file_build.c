@@ -175,7 +175,7 @@ int file_build(dpdfile4 *File, int inputfile, double tolerance,
 
               if(row >= File->params->rowtot[h] ||
                  col >= File->params->coltot[h]) {
-                    write("Whoa!\n");
+                    printf("Whoa!\n");
                     exit(1);
                 }
                     
