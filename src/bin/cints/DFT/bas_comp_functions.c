@@ -41,7 +41,6 @@ double calc_radial_bas(int shell_num, double rr, double r){
    
     shell_type = BasisSet.shells[BasisSet.am2shell[shell_num]].am;
     end = ioff[shell_type-1];
-    fprintf(outfile,"\nend = %d",end);
     bastmp = calc_exp_basis(shell_num,rr);
     
     for(i=0;i<end;i++)

@@ -190,7 +190,7 @@ void xc_fock(void){
 			  timer_on("FOCK");
 			  for(m=0;m<num_ao;m++){
 			      bas1 = vval*DFT_options.basis[m];
-			      for(n=m;n<num_ao;n++){
+			      for(n=0;n<num_ao;n++){
 				  bas2 = DFT_options.basis[n];
 				  G[m][n] += bas1*bas2;
 			      }
@@ -202,6 +202,7 @@ void xc_fock(void){
 	  }
       }
   }
+  print_mat(G,num_ao,num_ao,outfile); 
   timer_off("DFT");
   timer_done();
   
@@ -234,8 +235,8 @@ void xc_fock(void){
   Gtri = init_array(nstri);
   sq_to_tri(G,Gtri,Symmetry.num_so);
   free_block(G);
-  fprintf(outfile,"\nDFT_energy = %10.10lf",eval);
-  fprintf(outfile,"\ntrace of density = %10.10lf",den_val);
+/*  fprintf(outfile,"\nDFT_energy = %10.10lf",eval);
+  fprintf(outfile,"\ntrace of density = %10.10lf",den_val);*/
   psio_open(IOUnits.itapDSCF, PSIO_OPEN_OLD);
   psio_write_entry(IOUnits.itapDSCF,"DFT X-energy",
 		   (char *) &(exch_eval), sizeof(double));

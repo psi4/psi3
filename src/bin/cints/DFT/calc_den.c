@@ -239,7 +239,7 @@ timer_off("exponent");
        den_info.den = den_sum;
         
     }
-   /*fprintf(outfile,"\ndensity = %10.10lf",den_info.den);*/
+   fprintf(outfile,"\ndensity = %10.10lf",den_info.den);
    free(temp_arr);
    timer_off("density");
    free(dist_coord);

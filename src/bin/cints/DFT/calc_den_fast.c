@@ -46,7 +46,8 @@ struct den_info_s calc_density_fast(struct coordinates geom){
     double norm_ptr0,norm_ptr1,norm_ptr2;
     double norm_ptr3,norm_ptr4,norm_ptr5;
     double norm_ptr6,norm_ptr7,norm_ptr8;
-    double norm_ptr9;
+    double norm_ptr9,norm_ptr10,norm_ptr11;
+    double norm_ptr12,norm_ptr13,norm_ptr14;
     
     struct coordinates *dist_coord;
     struct den_info_s den_info;
@@ -295,6 +296,90 @@ struct den_info_s calc_density_fast(struct coordinates geom){
 		l++;
 		m++;
 	    }
+	    break;
+	case 4:
+	    norm_ptr0 = norm_ptr[0];
+	    norm_ptr1 = norm_ptr[1];
+	    norm_ptr2 = norm_ptr[2];
+	    norm_ptr3 = norm_ptr[3];
+	    norm_ptr4 = norm_ptr[4];
+	    norm_ptr5 = norm_ptr[5];
+	    norm_ptr6 = norm_ptr[6];
+	    norm_ptr7 = norm_ptr[7];
+	    norm_ptr8 = norm_ptr[8];
+	    norm_ptr9 = norm_ptr[9];
+	    norm_ptr10 = norm_ptr[10];
+	    norm_ptr11 = norm_ptr[11];
+	    norm_ptr12 = norm_ptr[12];
+	    norm_ptr13 = norm_ptr[13];
+	    norm_ptr14 = norm_ptr[14];
+	    for(j=0;j<BasisSet.shells_per_am[i];j++){
+		am2shell = BasisSet.am2shell[m];
+		shell_center = BasisSet.shells[am2shell].center-1;
+		xa = dist_coord[shell_center].x;
+		ya = dist_coord[shell_center].y;
+		za = dist_coord[shell_center].z;
+		rr = dist_atom[shell_center];
+		
+		shell_start = BasisSet.shells[am2shell].fprim-1;
+		shell_end = shell_start
+		    +BasisSet.shells[am2shell].n_prims;
+		
+		
+		timer_on("exponent");
+		bastmp = 0.0;
+		for(k=shell_start;k<shell_end;k++){
+		    expon = -BasisSet.cgtos[k].exp;
+		    coeff = BasisSet.cgtos[k].ccoeff[shell_type];
+		    bastmp += coeff*exp(expon*rr);
+		}
+		timer_off("exponent");
+		DFT_options.basis[l] = norm_ptr0*bastmp*xa*xa*xa*xa;
+		l++;
+		
+		DFT_options.basis[l] = norm_ptr1*bastmp*xa*xa*xa*ya;
+		l++;
+		
+		DFT_options.basis[l] = norm_ptr2*bastmp*xa*xa*xa*za;
+		l++;
+		
+		DFT_options.basis[l] = norm_ptr3*bastmp*xa*xa*ya*ya;
+		l++;
+		
+		DFT_options.basis[l] = norm_ptr4*bastmp*xa*xa*ya*za;
+		l++;
+		
+		DFT_options.basis[l] = norm_ptr5*bastmp*xa*xa*za*za;
+		l++;
+		
+		DFT_options.basis[l] = norm_ptr6*bastmp*xa*ya*ya*ya;
+		l++;
+		
+		DFT_options.basis[l] = norm_ptr7*bastmp*xa*ya*ya*za;
+		l++;
+		
+		DFT_options.basis[l] = norm_ptr8*bastmp*xa*ya*za*za;
+		l++;
+		
+		DFT_options.basis[l] = norm_ptr9*bastmp*xa*za*za*za;
+		l++;
+		
+		DFT_options.basis[l] = norm_ptr10*bastmp*ya*ya*ya*ya;
+		l++;
+		
+		DFT_options.basis[l] = norm_ptr11*bastmp*ya*ya*ya*za;
+		l++;
+		
+		DFT_options.basis[l] = norm_ptr12*bastmp*ya*ya*za*za;
+		l++;
+		
+		DFT_options.basis[l] = norm_ptr13*bastmp*ya*za*za*za;
+		l++;
+		
+		DFT_options.basis[l] = norm_ptr14*bastmp*za*za*za*za;
+		l++;
+		m++;
+	    }
 	    
 	    break;
 	    
@@ -312,8 +397,8 @@ struct den_info_s calc_density_fast(struct coordinates geom){
     timer_on("density"); 
     /*for(i=0;i<num_ao;i++)
 	fprintf(outfile,"\nBasis[%d] = %10.10lf",i,DFT_options.basis[i]);
-    fprintf(outfile,"\n");*/
-    
+    fprintf(outfile,"\n");
+    */
     if(UserOptions.reftype == rhf){
 	den_sum = 0.0;    
 	for(i=0;i<ndocc;i++){
@@ -324,6 +409,7 @@ struct den_info_s calc_density_fast(struct coordinates geom){
 	dot_arr(temp_arr,temp_arr,MOInfo.ndocc,&den_sum);
 	den_info.den = den_sum;
     }
+    /*fprintf(outfile,"\ndensity = %10.10lf",den_info.den);*/
     free(temp_arr);
     timer_off("density");
     free(dist_coord);
