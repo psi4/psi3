@@ -103,9 +103,8 @@ int main()
   /*-------------
     Init globals
    -------------*/
-  // Set it at first to a safe value
   for(l=0;l<=new_am/2;l++)
-    libint_stack_size[l] = 1;
+    libint_stack_size[l] = 1;  /* 1 is a safe value and ensures that int_stack is allocated */
   Params.new_am = new_am;
   Params.old_am = 0;
   Params.opt_am = opt_am;
