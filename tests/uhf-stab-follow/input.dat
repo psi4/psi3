@@ -8,7 +8,6 @@ psi: (
   charge = 0 
   docc = (3 0 1 1)
   basis = "6-31G**"
-  puream = false
   units = angstrom
   zmat = (
     H 

@@ -7,7 +7,6 @@ psi: (
   docc = (3 0 0 0)
   freeze_core = true
   basis = "cc-pVDZ"
-  puream = true
   geometry = (
     b      0.0000        0.0000        0.0000
     h      0.0000        0.0000        1.0000

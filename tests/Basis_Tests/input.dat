@@ -21,7 +21,6 @@ files: (
 input: (
   basis = "STO-3G" 
   units = angstrom
-  puream = false 
    zmat = (
     (h)
    )

@@ -7,7 +7,6 @@ psi: (
   charge = -1
   multp = 2
   basis = "cc-pVDZ"
-  puream = true
   zmat = (
     h
     h 1 0.800

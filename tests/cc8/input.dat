@@ -9,7 +9,6 @@ psi: (
   socc = (1 0 0 0)
   freeze_core = true
   basis = "cc-pVDZ"
-  puream = true
   zmat = (
    C
    N 1 R

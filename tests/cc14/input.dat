@@ -6,7 +6,6 @@ psi: (
   dertype = first
   multp = 3
   basis = "cc-pVDZ"
-  puream = true
   zmat = (
     c
     h 1 r

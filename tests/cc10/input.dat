@@ -13,7 +13,6 @@ psi: (
   maxiter = 100
 
   basis = "cc-pVDZ"
-  puream = true
   zmat = (
    C
    N 1 R

@@ -7,7 +7,6 @@ psi: (
   multp = 3
   freeze_core = true
   basis = "cc-pVDZ"
-  puream = true
   zmat = (
     c
     h 1 r

@@ -17,7 +17,6 @@ default: (
 input: (
   basis = "aug-cc-pVTZ"
   units = bohr
-  puream = true
   geometry = (
     C        -0.25035575     1.91945311     0.00000000
     N         0.40783457     4.08236425     0.00000000

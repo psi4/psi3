@@ -7,7 +7,6 @@ psi: (
   jobtype = sp
   states_per_irrep = (2 2 2 2)
   basis = "cc-pVDZ"
-  puream = true
   zmat = (
     h
     o 1 0.9

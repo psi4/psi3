@@ -11,7 +11,6 @@ psi: (
   mu_irreps = (0 0 1)
 
   basis = "cc-pVDZ"
-  puream = true
   zmat = (
     o
     h 1 0.97

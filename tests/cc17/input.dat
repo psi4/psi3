@@ -7,7 +7,6 @@ psi: (
   multp = 3
   states_per_irrep = (2 2 2 2)
   basis = "cc-pVDZ"
-  puream = true
   zmat = (
     c
     h 1 r
