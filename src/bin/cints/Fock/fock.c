@@ -31,20 +31,26 @@ void fock()
   double *Gtri, *Gtri_o;               /* Total and open-shell G matrices and lower triagonal form
 					  in SO basis */
 
-  /*-----------------------------
-    Read in the HF/DFT densities
-   -----------------------------*/
-  read_scf_opdm();
+  /*----------------------------------------
+    Read in the difference HF/DFT densities
+   ----------------------------------------*/
+  read_scf_opdm(1);
 
   /*-------------------------------------------
     Compute HF contribution to the Fock matrix
    -------------------------------------------*/
+  UserOptions.hf_exch = 1.0;
   hf_fock();
+
+  /*-----------------------------------
+    Read in the total HF/DFT densities
+   -----------------------------------*/
+/*   read_scf_opdm(0);
 
   /*--------------------------------------------------
     Compute exch+corr contribution to the Fock matrix
    --------------------------------------------------*/
-/*  xc_fock();*/
+/*   xc_fock();*/
   
   /*--------------------
     Print out G for now
@@ -89,10 +95,10 @@ void fock()
       Gtri_o = init_array(nstri);
       sq_to_tri(Go,Gtri_o,Symmetry.num_so);
       free_block(Go);
-      psio_write_entry(IOUnits.itapDSCF, "Open-shell G-matrix", (char *) Gtri_o, sizeof(double)*nstri);
+      psio_write_entry(IOUnits.itapDSCF, "Open-shell JX G-matrix", (char *) Gtri_o, sizeof(double)*nstri);
       free(Gtri_o);
   case rhf:
-      psio_write_entry(IOUnits.itapDSCF, "Total G-matrix", (char *) Gtri, sizeof(double)*nstri);
+      psio_write_entry(IOUnits.itapDSCF, "Total JX G-matrix", (char *) Gtri, sizeof(double)*nstri);
       free(Gtri);
       break;
 
@@ -106,8 +112,8 @@ void fock()
 	Gtri[i] = Gtri[i] - Gtri_o[i];
 	Gtri_o[i] = temp;
       }
-      psio_write_entry(IOUnits.itapDSCF, "Alpha G-matrix", (char *) Gtri, sizeof(double)*nstri);
-      psio_write_entry(IOUnits.itapDSCF, "Beta G-matrix", (char *) Gtri_o, sizeof(double)*nstri);
+      psio_write_entry(IOUnits.itapDSCF, "Alpha JX G-matrix", (char *) Gtri, sizeof(double)*nstri);
+      psio_write_entry(IOUnits.itapDSCF, "Beta JX G-matrix", (char *) Gtri_o, sizeof(double)*nstri);
       free(Gtri);
       free(Gtri_o);
       break;

@@ -49,14 +49,18 @@ struct shell_pair{
   double *a1, *a2, **gamma;
   double *inorm, *jnorm;
   double **Sovlp;
-  /*--- Having closed-shell and open-shell and alpha and beta densities
-        is redundant. Thus only one pair is used at a given time, and the
-	other pair is empty (ptr=NULL)! If the other pair is needed do the
-	transformation ---*/
+  /*--- Having open-shell and closed-shell and alpha and beta densities
+        in UHF case is redundant. Thus only one pair is used at a given time, and the
+	other pair is empty (ptr=NULL)!
+
+	In fact, the difference open- and closed-shell densities in UHF case are
+	used in hf_fock to form the Fock matrix incrementally.
+	the total alpha and beta densities in UHF case are used in DFT to form the total
+	XC matrix. ---*/
   double **dmat;
   double **dmato;
-  double **dmata;
   double **dmatb;
+  double **dmata;
   /*--- SCF Lagrangian ---*/
   double **lagr;
   double Smax;

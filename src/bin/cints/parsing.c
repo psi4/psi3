@@ -87,11 +87,11 @@ void parsing_cmdline(int argc, char *argv[])
 	   errcod = ip_string("REFERENCE",&refstring,0);
 	   if (errcod != IPE_OK)
 	     punt("REFERENCE keyword is missing");
-	   else if (!strcmp(refstring,"RHF") || !strcmp(refstring,""))
+	   else if (!strcmp(refstring,"RHF") || !strcmp(refstring,"RKS") || !strcmp(refstring,""))
 	     UserOptions.reftype = rhf;
 	   else if (!strcmp(refstring,"ROHF"))
 	     UserOptions.reftype = rohf;
-	   else if (!strcmp(refstring,"UHF"))
+	   else if (!strcmp(refstring,"UHF") || !strcmp(refstring,"UKS"))
 	     UserOptions.reftype = uhf;
 	   else
 	     punt("The specified REFERENCE not implemented");

@@ -37,7 +37,6 @@ void hf_fock()
   int g, i, j, k, l, m, ii, jj, kk, ll;
   int si, sj, ni, nj, li, lj, si_g, sj_g;
 
-  double hf_exch = 1.0;                               /* Amount of HF-exchange to be included in G matrix */
   double temp;
   double ****Gfull, ****Gfull_o;       /* Shell-blocked G matrices in AO basis*/
   double ****Gsym, ****Gsym_o;         /* Shell-blocked symmetrized (Gskel + Gskel(transp.)) G matrices */

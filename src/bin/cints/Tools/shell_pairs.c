@@ -97,6 +97,11 @@ void init_shell_pairs()
 	  sp->PB[i][j][1] = PB.y;
 	  sp->PB[i][j][2] = PB.z;
           sp->Sovlp[i][j] = s_ovlp(a1,a2,inorm,jnorm,ab2);
+
+	  sp->dmat = NULL;
+	  sp->dmato = NULL;
+	  sp->dmata = NULL;
+	  sp->dmatb = NULL;
 	}
       }
     }
@@ -244,19 +249,16 @@ void dealloc_pairs(void)
       free(sp->P);
       free(sp->PA);
       free(sp->PB);
-      if (UserOptions.make_fock) {
-	switch (UserOptions.reftype) {
-	case rohf:
-	case uhf:
-	    free_block(sp->dmato);
-	    free_block(sp->dmat);
-	    break;
-	case rhf:
-	    free_block(sp->dmat);
-	    break;
-	}
-      }
+      if (sp->dmato != NULL)
+	free_block(sp->dmat);
+      if (sp->dmat != NULL)
+	free_block(sp->dmato);
+      if (sp->dmato != NULL)
+	free_block(sp->dmata);
+      if (sp->dmat != NULL)
+	free_block(sp->dmatb);
     }
+
   for(si=0;si<BasisSet.num_shells;si++)
     free(BasisSet.shell_pairs[si]);
   free(BasisSet.shell_pairs);
