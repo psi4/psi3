@@ -11,20 +11,14 @@
 % TDC, April 2003
 %
 
-psi: (
-  check = false
-  exec = ($ints $scf $transqt $ccsort "cints --oeprop" "response" $done)
-  jobtype = sp
-)
-
 default: (
   label = "DZ/SCF H2O"
   memory = (20.0 MB)
 
-  wfn = ccsd
+  jobtype = sp
+  wfn = scf
   reference = rhf
-  multp = 1
-  dertype = first
+  dertype = response
 
   omega = 0.1
 )

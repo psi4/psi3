@@ -37,7 +37,9 @@ elsif ($ARGV[0] eq "--cc") {
                  "cc14",
                  "cc15",
                  "cc16",
-                 "cc17"
+                 "cc17",
+                 "cc18",
+                 "cc19"
                );
 }
 elsif ($ARGV[0] eq "--scf") {
@@ -77,7 +79,9 @@ elsif ($ARGV[0] eq "--small") {
                  "cc14",
                  "cc15",
                  "cc16",
-                 "cc17"
+                 "cc17",
+                 "cc18",
+                 "cc19"
                );
 }
 elsif ($ARGV[0] eq "--medium") {
@@ -116,7 +120,9 @@ elsif ($ARGV[0] eq "--standard") {
                  "cc14",
                  "cc15",
                  "cc16",
-                 "cc17"
+                 "cc17",
+                 "cc18",
+                 "cc19"
                );
 }
 elsif ($ARGV[0] eq "--sp") {
@@ -132,7 +138,9 @@ elsif ($ARGV[0] eq "--sp") {
                  "cc11",
                  "cc15",
                  "cc16",
-                 "cc17"
+                 "cc17",
+                 "cc18",
+                 "cc19"
                );
 }
 elsif ($ARGV[0] eq "--geom") {
@@ -184,7 +192,9 @@ else {
                  "cc14",
                  "cc15",
                  "cc16",
-                 "cc17"
+                 "cc17",
+                 "cc18",
+                 "cc19"
 #                 "Basis_Tests"
                 );
 }
