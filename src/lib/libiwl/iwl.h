@@ -61,6 +61,9 @@ extern int iwl_buf_rd(struct iwlbuf *Buf, int target_pq, double *ints,
 extern int iwl_buf_rd_all(struct iwlbuf *Buf, double *ints,
       int *ioff_lt, int *ioff_rt, int mp2, int *ioff,
       int printflg, FILE *outfile);
+extern int iwl_buf_rd_all2(struct iwlbuf *Buf, double **ints,
+		   int *ioff_lt, int *ioff_rt, int no_pq_perm, int *ioff,
+		    int printflg, FILE *outfile);
 extern int iwl_buf_rd_all_act(struct iwlbuf *Buf, double *ints,
       int *ioff_lt, int *ioff_rt, int mp2, int *ioff,
       int fstact, int lstact, int printflg, FILE *outfile);
@@ -98,6 +101,10 @@ extern int iwl_buf_rd_arr2(struct iwlbuf *Buf, double *ints, int *plist,
 extern void iwl_buf_wrt_arr2(struct iwlbuf *Buf, double *arr, int p, int q, 
       int *rlist, int *slist, int size, int printflag, FILE *outfile);
 extern void iwl_buf_wrt_mat(struct iwlbuf *Buf, int ptr, int qtr,
+      double **mat, int rfirst, int rlast, int sfirst, int slast,
+      int *reorder, int reorder_offset, int printflag, int *ioff,
+      FILE *outfile);
+extern void iwl_buf_wrt_mat2(struct iwlbuf *Buf, int ptr, int qtr,
       double **mat, int rfirst, int rlast, int sfirst, int slast,
       int *reorder, int reorder_offset, int printflag, int *ioff,
       FILE *outfile);
