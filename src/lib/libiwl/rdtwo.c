@@ -13,7 +13,7 @@
 ** orbital labels.
 **
 ** Arguments:
-**    itap     = unit to write to
+**    itap     = unit to read from
 **    ints     = two electron integrals (already allocated)
 **    ioff     = the old ioff array for lexical ordering
 **    norbs    = number of orbitals
