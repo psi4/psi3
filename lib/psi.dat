@@ -66,6 +66,7 @@ psi: (
 
   % MP2-specific programs
   mp2 = "mp2"
+  mp2prop    = "mp2 --opdm"
   mp2_direct = "cints --mp2"
   mp2r12 = "mp2r12"
   mp2r12_moints = "cints --mp2r12a"
@@ -563,6 +564,14 @@ psi: (
   MP2ROHFEnergy = ERROR
   MP2UHFEnergy = ERROR
   MP2TwoConEnergy = ERROR
+
+  % Procedures for a conventional MP2 one-electron
+  % properties calculation
+  MP2EnergyOEPROP = ($ints $scf $transqt $ccsort $mp2prop $oeprop)
+  MP2RHFEnergyOEPROP = ($MP2EnergyOEPROP $done)
+  MP2ROHFEnergyOEPROP = ERROR
+  MP2UHFEnergyOEPROP = ERROR
+  MP2TwoConEnergyOEPROP = ERROR
 
   % Procedures for the direct MP2 energy
   DirectMP2Energy = ($ints $scf $mp2_direct)
