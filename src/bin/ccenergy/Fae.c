@@ -29,6 +29,15 @@ void Fae_build(void)
     dpd_file2_copy(&fab, CC_OEI, "Fae");
     dpd_file2_close(&fab);
   }
+  else if(params.ref == 2) { /** UHF **/
+    dpd_file2_init(&fAB, CC_OEI, 0, 1, 1, "fAB");
+    dpd_file2_copy(&fAB, CC_OEI, "FAE");
+    dpd_file2_close(&fAB);
+
+    dpd_file2_init(&fab, CC_OEI, 0, 3, 3, "fab");
+    dpd_file2_copy(&fab, CC_OEI, "Fae");
+    dpd_file2_close(&fab);
+  }
 
   if(params.ref == 0) { /** RHF **/
     dpd_file2_init(&FAE, CC_OEI, 0, 1, 1, "FAE");
@@ -47,10 +56,38 @@ void Fae_build(void)
     dpd_file2_mat_close(&FAE);
     dpd_file2_close(&FAE);
   }
-
   else if(params.ref == 1) { /** ROHF **/
     dpd_file2_init(&FAE, CC_OEI, 0, 1, 1, "FAE");
     dpd_file2_init(&Fae, CC_OEI, 0, 1, 1, "Fae");
+  
+    dpd_file2_mat_init(&FAE);
+    dpd_file2_mat_rd(&FAE);
+    dpd_file2_mat_init(&Fae);
+    dpd_file2_mat_rd(&Fae);
+  
+    for(h=0; h < moinfo.nirreps; h++) {
+      
+      for(a=0; a < FAE.params->rowtot[h]; a++) 
+	for(e=0; e < FAE.params->coltot[h]; e++) 
+	  FAE.matrix[h][a][e] *= (1 - (a==e));
+
+      for(a=0; a < Fae.params->rowtot[h]; a++) 
+	for(e=0; e < Fae.params->coltot[h]; e++)
+	  Fae.matrix[h][a][e] *= (1 - (a==e));
+      
+    }
+
+    dpd_file2_mat_wrt(&FAE);
+    dpd_file2_mat_close(&FAE);
+    dpd_file2_mat_wrt(&Fae);
+    dpd_file2_mat_close(&Fae);
+
+    dpd_file2_close(&FAE);
+    dpd_file2_close(&Fae);
+  }
+  else if(params.ref == 2) { /** UHF **/
+    dpd_file2_init(&FAE, CC_OEI, 0, 1, 1, "FAE");
+    dpd_file2_init(&Fae, CC_OEI, 0, 3, 3, "Fae");
   
     dpd_file2_mat_init(&FAE);
     dpd_file2_mat_rd(&FAE);
@@ -200,11 +237,23 @@ void Fae_build(void)
     dpd_file2_init(&FAE, CC_OEI, 0, 1, 1, "FAE");
     dpd_file2_init(&Fae, CC_OEI, 0, 3, 3, "Fae");
 
+    dpd_file2_init(&fIA, CC_OEI, 0, 0, 1, "fIA");
+    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+    dpd_contract222(&tIA, &fIA, &FAE, 1, 1, -0.5, 1);
+    dpd_file2_close(&tIA);
+    dpd_file2_close(&fIA);
+
+    dpd_file2_init(&fia, CC_OEI, 0, 2, 3, "fia");
+    dpd_file2_init(&tia, CC_OEI, 0, 2, 3, "tia");
+    dpd_contract222(&tia, &fia, &Fae, 1, 1, -0.5, 1);
+    dpd_file2_close(&tia);
+    dpd_file2_close(&fia);
+
     dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
     dpd_file2_init(&tia, CC_OEI, 0, 2, 3, "tia");
 
     dpd_buf4_init(&F, CC_FINTS, 0, 20, 5, 20, 5, 1, "F <IA|BC>");
-    dpd_dot13(&tIA, &F, &FAE, 0, 0, 1, 0);
+    dpd_dot13(&tIA, &F, &FAE, 0, 0, 1, 1);
     dpd_buf4_close(&F);
 
     dpd_buf4_init(&F, CC_FINTS, 0, 27, 29, 27, 29, 0, "F <iA|bC>");
@@ -212,7 +261,7 @@ void Fae_build(void)
     dpd_buf4_close(&F);
 
     dpd_buf4_init(&F, CC_FINTS, 0, 30, 15, 30, 15, 1, "F <ia|bc>");
-    dpd_dot13(&tia, &F, &Fae, 0, 0, 1, 0);
+    dpd_dot13(&tia, &F, &Fae, 0, 0, 1, 1);
     dpd_buf4_close(&F);
 
     dpd_buf4_init(&F, CC_FINTS, 0, 24, 28, 24, 28, 0, "F <Ia|Bc>");

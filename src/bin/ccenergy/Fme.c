@@ -63,6 +63,14 @@ void Fme_build(void)
   }
   else if(params.ref == 2) { /** UHF **/
 
+    dpd_file2_init(&fIA, CC_OEI, 0, 0, 1, "fIA");
+    dpd_file2_copy(&fIA, CC_OEI, "FME");
+    dpd_file2_close(&fIA);
+
+    dpd_file2_init(&fia, CC_OEI, 0, 2, 3, "fia");
+    dpd_file2_copy(&fia, CC_OEI, "Fme");
+    dpd_file2_close(&fia);
+
     dpd_file2_init(&FME, CC_OEI, 0, 0, 1, "FME");
     dpd_file2_init(&Fme, CC_OEI, 0, 2, 3, "Fme");
   
@@ -70,7 +78,7 @@ void Fme_build(void)
     dpd_file2_init(&tia, CC_OEI, 0, 2, 3, "tia");
 
     dpd_buf4_init(&D, CC_DINTS, 0, 20, 20, 20, 20, 0, "D <IJ||AB> (IA,JB)");
-    dpd_contract422(&D, &tIA, &FME, 0, 0, 1, 0);
+    dpd_contract422(&D, &tIA, &FME, 0, 0, 1, 1);
     dpd_buf4_close(&D);
 
     dpd_buf4_init(&D, CC_DINTS, 0, 20, 30, 20, 30, 0, "D <Ij|Ab> (IA,jb)");
@@ -78,7 +86,7 @@ void Fme_build(void)
     dpd_buf4_close(&D);
 
     dpd_buf4_init(&D, CC_DINTS, 0, 30, 30, 30, 30, 0, "D <ij||ab> (ia,jb)");
-    dpd_contract422(&D, &tia, &Fme, 0, 0, 1, 0);
+    dpd_contract422(&D, &tia, &Fme, 0, 0, 1, 1);
     dpd_buf4_close(&D);
 
     dpd_buf4_init(&D, CC_DINTS, 0, 30, 20, 30, 20, 0, "D <Ij|Ab> (ia,JB)");

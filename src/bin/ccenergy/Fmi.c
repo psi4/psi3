@@ -26,6 +26,15 @@ void Fmi_build(void)
     dpd_file2_copy(&fij, CC_OEI, "Fmi");
     dpd_file2_close(&fij);
   }
+  else if(params.ref == 2) { /** UHF **/
+    dpd_file2_init(&fIJ, CC_OEI, 0, 0, 0, "fIJ");
+    dpd_file2_copy(&fIJ, CC_OEI, "FMI");
+    dpd_file2_close(&fIJ);
+  
+    dpd_file2_init(&fij, CC_OEI, 0, 2, 2, "fij");
+    dpd_file2_copy(&fij, CC_OEI, "Fmi");
+    dpd_file2_close(&fij);
+  }
 
   if(params.ref == 0) { /** RHF **/
     dpd_file2_init(&FMI, CC_OEI, 0, 0, 0, "FMI");
@@ -46,6 +55,31 @@ void Fmi_build(void)
   else if(params.ref == 1) { /** ROHF **/
     dpd_file2_init(&FMI, CC_OEI, 0, 0, 0, "FMI");
     dpd_file2_init(&Fmi, CC_OEI, 0, 0, 0, "Fmi");
+
+    dpd_file2_mat_init(&FMI);
+    dpd_file2_mat_rd(&FMI);
+    dpd_file2_mat_init(&Fmi);
+    dpd_file2_mat_rd(&Fmi);
+
+    for(h=0; h < moinfo.nirreps; h++) {
+      for(m=0; m < FMI.params->rowtot[h]; m++) 
+	FMI.matrix[h][m][m] = 0;
+
+      for(m=0; m < Fmi.params->rowtot[h]; m++) 
+	Fmi.matrix[h][m][m] = 0;
+    }
+
+    dpd_file2_mat_wrt(&FMI);
+    dpd_file2_mat_close(&FMI);
+    dpd_file2_mat_wrt(&Fmi);
+    dpd_file2_mat_close(&Fmi);
+
+    dpd_file2_close(&FMI);
+    dpd_file2_close(&Fmi);
+  }
+  else if(params.ref == 2) { /** UHF **/
+    dpd_file2_init(&FMI, CC_OEI, 0, 0, 0, "FMI");
+    dpd_file2_init(&Fmi, CC_OEI, 0, 2, 2, "Fmi");
 
     dpd_file2_mat_init(&FMI);
     dpd_file2_mat_rd(&FMI);
@@ -194,13 +228,25 @@ void Fmi_build(void)
     dpd_file2_init(&FMI, CC_OEI, 0, 0, 0, "FMI");
     dpd_file2_init(&Fmi, CC_OEI, 0, 2, 2, "Fmi");
 
+    dpd_file2_init(&fIA, CC_OEI, 0, 0, 1, "fIA");
+    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+    dpd_contract222(&fIA, &tIA, &FMI, 0, 0, 0.5, 1);
+    dpd_file2_close(&tIA);
+    dpd_file2_close(&fIA);
+  
+    dpd_file2_init(&fia, CC_OEI, 0, 2, 3, "fia");
+    dpd_file2_init(&tia, CC_OEI, 0, 2, 3, "tia");
+    dpd_contract222(&fia, &tia, &Fmi, 0, 0, 0.5, 1);
+    dpd_file2_close(&tia);
+    dpd_file2_close(&fia);
+  
     dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
     dpd_file2_init(&tia, CC_OEI, 0, 2, 3, "tia");
 
     dpd_buf4_init(&E_anti, CC_EINTS, 0, 21, 0, 21, 0, 1, "E <AI|JK>");
     dpd_buf4_init(&E, CC_EINTS, 0, 22, 24, 22, 24, 0, "E <Ij|Ka>");
 
-    dpd_dot13(&tIA, &E_anti, &FMI, 1, 1, 1, 0);
+    dpd_dot13(&tIA, &E_anti, &FMI, 1, 1, 1, 1);
     dpd_dot24(&tia, &E, &FMI, 0, 0, 1, 1);
 
     dpd_buf4_close(&E);
@@ -209,7 +255,7 @@ void Fmi_build(void)
     dpd_buf4_init(&E_anti, CC_EINTS, 0, 31, 10, 31, 10, 1, "E <ai|jk>");
     dpd_buf4_init(&E, CC_EINTS, 0, 26, 22, 26, 22, 0, "E <Ai|Jk>");
 
-    dpd_dot13(&tia, &E_anti, &Fmi, 1, 1, 1, 0);
+    dpd_dot13(&tia, &E_anti, &Fmi, 1, 1, 1, 1);
     dpd_dot13(&tIA, &E, &Fmi, 1, 1, 1, 1);
 
     dpd_buf4_close(&E);

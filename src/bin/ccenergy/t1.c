@@ -243,7 +243,6 @@ void t1_build(void)
     dpd_file2_init(&newtIA, CC_OEI, 0, 0, 1, "New tIA");
     dpd_file2_init(&newtia, CC_OEI, 0, 2, 3, "New tia");
 
-
     dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
     dpd_file2_init(&tia, CC_OEI, 0, 2, 3, "tia");
 

@@ -97,13 +97,31 @@ void init_amps(void)
   }
   else if(params.ref == 2) { /*** UHF ***/
 
+    dpd_file2_init(&fIA, CC_OEI, 0, 0, 1, "fIA");
+    dpd_file2_copy(&fIA, CC_OEI, "tIA");
+    dpd_file2_close(&fIA);
     dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
-    dpd_file2_scm(&tIA, 0);
+    /*    dpd_file2_scm(&tIA, 0); */
     dpd_file2_close(&tIA);
 
-    dpd_file2_init(&tIA, CC_OEI, 0, 2, 3, "tia");
-    dpd_file2_scm(&tIA, 0);
+    dpd_file2_init(&fia, CC_OEI, 0, 2, 3, "fia");
+    dpd_file2_copy(&fia, CC_OEI, "tia");
+    dpd_file2_close(&fia);
+    dpd_file2_init(&tia, CC_OEI, 0, 2, 3, "tia");
+    /*    dpd_file2_scm(&tia, 0); */
+    dpd_file2_close(&tia);
+
+    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+    dpd_file2_init(&dIA, CC_OEI, 0, 0, 1, "dIA");
+    dpd_file2_dirprd(&dIA, &tIA);
     dpd_file2_close(&tIA);
+    dpd_file2_close(&dIA);
+
+    dpd_file2_init(&tia, CC_OEI, 0, 2, 3, "tia");
+    dpd_file2_init(&dia, CC_OEI, 0, 2, 3, "dia");
+    dpd_file2_dirprd(&dia, &tia);
+    dpd_file2_close(&tia);
+    dpd_file2_close(&dia);
 
     dpd_buf4_init(&D, CC_DINTS, 0, 2, 7, 2, 7, 0, "D <IJ||AB> (I>J,A>B)");
     dpd_buf4_copy(&D, CC_TAMPS, "tIJAB");
