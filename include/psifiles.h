@@ -53,11 +53,13 @@
 #define PSIF_MO_AB_TEI      83
 #define PSIF_MO_A_OEI       84
 #define PSIF_MO_B_OEI       85
+#define PSIF_MO_A_FZC       86
+#define PSIF_MO_B_FZC       87
 
 /*
 ** MO Hessian File (also contains specialized integral and Fock lists.
 ** See program STABLE for more info.
 ** -TDC, 7/00
 */
-#define PSIF_MO_HESS        86
+#define PSIF_MO_HESS        88
 
