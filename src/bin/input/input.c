@@ -14,6 +14,7 @@
 void print_intro();
 void print_options();
 void print_geometry(double);
+void print_full_geometry(double);
 void print_unique_geometry(double);
 void print_symm_trans();
 void print_basis_info();
@@ -172,6 +173,10 @@ int main(int argc, char *argv[])
      rotate_geometry(geometry,Rref);
      fprintf(outfile,"\n  -Geometry in the reference coordinate system (a.u.):\n");
      print_geometry(1.0);
+     if(!cartOn) {
+	fprintf(outfile,"\n  -Full geometry in the canonical coordinate system (a.u.):\n");
+	print_full_geometry(1.0);
+     }
 
      if (num_atoms > 1) {
        /* Print the Nuclear Repulsion Energy */
@@ -244,6 +249,26 @@ void print_geometry(double conv_factor)
     fprintf(outfile,"    %12s ",element[i]); fflush(outfile);
     for(j=0;j<3;j++)
       fprintf(outfile,"  %17.12lf",geometry[i][j]*conv_factor);
+    fprintf(outfile,"\n");
+  }
+  fprintf(outfile,"\n");
+  fflush(outfile);
+
+  return;
+}
+
+
+void print_full_geometry(double conv_factor)
+{
+  int i,j;
+
+  fprintf(outfile,"       Center              X                  Y                   Z\n");
+  fprintf(outfile,"    ------------   -----------------  -----------------  -----------------\n");
+
+  for(i=0;i<num_entries;i++){
+    fprintf(outfile,"    %12s ",full_element[i]); fflush(outfile);
+    for(j=0;j<3;j++)
+      fprintf(outfile,"  %17.12lf",full_geom[i][j]*conv_factor);
     fprintf(outfile,"\n");
   }
   fprintf(outfile,"\n");
@@ -363,6 +388,7 @@ void cleanup()
 /*  free_char_matrix(elem_name,NUM_ELEMENTS);*/
   free(sym_oper);
   free_block(geometry);
+  free_matrix(full_geom,num_entries);
   free_block(Rref);
   free(nuclear_charges);
 /*  free_char_matrix(element,num_atoms);

@@ -110,6 +110,12 @@ void Rotate(double **Rotate_axis, double *old_coord);
 void rotate_geometry(double **geom, double **new_coord);
 
 /*
+  Function rotates full_geom[][] by new_coord[][]
+*/
+
+void rotate_full_geom(double **geom, double **new_coord);
+
+/*
   Function updates Rref to remember the effect of the rotation
   described by R
 */

@@ -21,15 +21,14 @@ void parse_zmat(int i, int position, double *value,struct definition *array, int
 void read_zmat()
 {
   int i, j, k, m, a, b, c, errcod, value_set, zvar_exist;
-  char *buffer, *temp_string, *temp_string2, *dollar;
-  int num_entries, num_vals, entry_length, atomcount;
+  char *buffer;
+  int num_vals, entry_length, atomcount, fatomcount;
   int A, B, C, D;
   int linearOn = 1;	/* Flag indicating the code is working on the linear fragment in the begginning of the Z-matrix */
   double rAB, rBC, rCD, thetaABC, thetaBCD, phiABCD, val, norm1, norm2;
   double cosABC, sinABC, cosBCD, sinBCD, cosABCD, sinABCD;
   double eAB[3], eBC[3], ex[3], ey[3], ez[3];
   double Z = 0.0;
-  double **full_geom;   /* Full matrix of coordinates (including those of dummy atoms) */
 
   char *name;
 
@@ -68,10 +67,12 @@ void read_zmat()
   /* see file30.h for info about z_entry structure */
   z_geom = (struct z_entry *) malloc(sizeof(struct z_entry)*num_entries); 
   element = (char **) malloc(sizeof(char *)*num_atoms);
+  full_element = (char **) malloc(sizeof(char *)*num_entries);
   nuclear_charges = init_array(num_atoms);
-
   full_geom = init_matrix(num_entries,3);
+
   atomcount = 0;
+  fatomcount = 0;
 
   /* read in zvars */
   errcod = 0;
@@ -273,15 +274,19 @@ void read_zmat()
        free(buffer);
        nuclear_charges[atomcount] = Z;
        element[atomcount] = elem_name[(int)Z];
+       full_element[fatomcount] = elem_name[(int)Z];
        geometry[atomcount][0] = full_geom[i][0]*conv_factor;
        geometry[atomcount][1] = full_geom[i][1]*conv_factor;
        geometry[atomcount][2] = full_geom[i][2]*conv_factor;
        atomcount++;
      }
+     else if (!strcmp(buffer,"X")) { 
+       full_element[fatomcount] = "X";
+       free(buffer); 
+     }
+     ++fatomcount;
   }
 
-
-  free_matrix(full_geom,num_entries);
   return;
 }
 
@@ -367,6 +372,7 @@ void parse_zmat(int i, int position, double *value, struct definition
      }
     
     free(temp_string);	
+
 	
 return;
  }

@@ -55,7 +55,7 @@ void find_symmetry()
     atom_orbit[0][5] = atom_orbit[0][6] = atom_orbit[0][7] = 0;
     return; */
   }
-  
+
   v1 = init_array(3);
   redun_atom_orbit = init_int_matrix(num_atoms,8);
 
@@ -138,6 +138,8 @@ void find_symmetry()
 	}
     }
   }
+
+  free(v1);
 
   if (print_lvl >= DEBUGPRINT) {
     fprintf(outfile,"\n  -Symmetry flags:\n");

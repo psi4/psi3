@@ -201,8 +201,17 @@ void write_to_file30(double repulsion)
     strncpy(atom_label,element[atom],strlen(element[atom]));
     wwritw(CHECKPOINTFILE,(char *) atom_label, 8*(sizeof(char)),ptr,&ptr);
   }
+
+  /* Labels of atoms including dummy atoms */
+  pointers[28] = ptr/sizeof(int) + 1;
+  label = init_char_array(8);
+  for(i=0;i<num_entries;i++) {
+    strncpy(label,full_element[i],strlen(full_element[i]));
+    wwritw(CHECKPOINTFILE,(char *) label, 8*(sizeof(char)),ptr,&ptr);
+  }
   
   free(atom_label);
+  free(label);
 
   /* Orbitals per irrep */
   pointers[36] = ptr/sizeof(int) + 1;
@@ -258,10 +267,16 @@ void write_to_file30(double repulsion)
   pointers[44] = ptr/sizeof(int) + 1;
   wwritw(CHECKPOINTFILE,(char *) sym_oper, nirreps*sizeof(int),ptr,&ptr);
 
+  /* write full_geom, cartesian geometry with dummy atoms included */
+  pointers[45] = ptr/sizeof(int) +1;
+  for(i=0;i<num_entries;++i) {
+    wwritw(CHECKPOINTFILE,(char *) full_geom[i], 3*sizeof(double),ptr,&ptr);
+  }
+
   /* write z_mat if it exists, see global.h for info about z_entry structure */
   if(!cartOn) {
     pointers[46] = ptr/sizeof(int) + 1;
-    wwritw(CHECKPOINTFILE,(char *) z_geom, num_atoms*(sizeof(struct z_entry)),ptr,&ptr);
+    wwritw(CHECKPOINTFILE,(char *) z_geom, num_entries*(sizeof(struct z_entry)),ptr,&ptr);
   }
 
   /* Number of shells in each angmom block */
@@ -327,6 +342,10 @@ void write_to_file30(double repulsion)
   constants[8] = max_angmom;
   constants[17] = num_so;
   constants[18] = num_atoms;
+  if(cartOn)
+    constants[19] = -1;
+  else
+    constants[19] = num_entries;
   constants[21] = num_ao;
   constants[26] = num_shells;
   constants[27] = nirreps;

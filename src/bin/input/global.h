@@ -102,8 +102,10 @@ EXTERN int disp_num;                /*Number of the displacement corresponding t
 
 /*Calculation-dependent arrays*/
 EXTERN double **geometry;	    /*Cartesian coordinates (in a.u.) of atoms*/
+EXTERN double **full_geom;          /*carts including dummy atoms*/
 EXTERN double *nuclear_charges;	    /*Nuclear charges*/
 EXTERN char **element;       	    /*Atom names*/
+EXTERN char **full_element;         /*Atom names including dummy atoms*/
 EXTERN char **atom_basis;           /*Array of basis set names*/
 EXTERN int **atom_orbit;            /*Atom orbits*/
 EXTERN int **class_orbit;           /*Class orbits*/
@@ -166,8 +168,14 @@ EXTERN int **ao_type_irr;        /*Irreducible representation an AO of a given t
 /* Arrays of x, y, and z exponents in cartesian Gaussians (AOs)*/
 EXTERN int **xexp_ao, **yexp_ao, **zexp_ao;
 
+/*-----------------------
+  Z-matrix related data
+ ----------------------*/
+
 /*array of structures for z-mat entry*/
 struct z_entry* z_geom;          
+
+EXTERN int num_entries;
 
 /*-----------------------------------------------
   Hack to allow MO projection onto the new basis
