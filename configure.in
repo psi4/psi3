@@ -815,6 +815,7 @@ AC_OUTPUT(include/psiconfig.h
           src/lib/libr12/Makefile
           src/lib/libr12/MakeVars
           src/lib/libr12/libr12_config.h
+	  src/lib/libbasis/Makefile
           src/bin/Makefile src/bin/MakeRules src/bin/MakeVars
 
           src/bin/cphf/Makefile
