@@ -66,8 +66,8 @@ main(int argc, char *argv[])
   title();
   get_parameters();
   parse_cmdline(argc,argv);  /*--- Command-line args override input.dat ---*/
-  print_parameters();
   get_moinfo();
+  print_parameters();
   get_reorder_array();
   init_ioff();
   get_fzc_operator();
@@ -207,6 +207,9 @@ void get_parameters(void)
   params.fock_coeff = 0.0;
   errcod = ip_data("FOCK_COEFF", "%lf", &(params.fock_coeff),0);
 
+  params.ivo = 0;
+  errcod = ip_boolean("IVO", &(params.ivo), 0);
+
   return;
 
 }
@@ -225,6 +228,8 @@ void print_parameters(void)
                                   (params.oei_erase ? "Yes": "No"));
       fprintf(outfile,"\tFrozen core            =  %s\n", 
                                   (params.fzc ? "Yes": "No"));
+      fprintf(outfile,"\tIVO                    =  %s\n", 
+                                  (params.ivo ? "Yes": "No"));
       fprintf(outfile,"\tFrozen Core OEI file   =  %d\n", 
                                   params.h_fzc_file);
       fprintf(outfile,"\tfzc_fock_coeff         =  %lf\n", 
@@ -254,6 +259,7 @@ void get_moinfo(void)
   int i,j,k,h,errcod,size,row,col,p,q,offset,first_offset,last_offset,warned;
   int *tmpi, nopen;
   double **tmpmat, **so2ao;
+  double N; /* number of valence electrons */
 
   file30_init();
   moinfo.nmo = file30_rd_nmo();
@@ -441,6 +447,27 @@ void get_moinfo(void)
     }
 
   file30_close();
+
+  /* in case IVO's have been asked for */
+  if (params.ivo) {
+
+    /* count the number of valence electrons */
+    for (h=0; h < moinfo.nirreps; h++) {
+      N += 2.0 * (double) (moinfo.clsdpi[h] - moinfo.frdocc[h]);
+      N += (double) moinfo.openpi[h];
+    }  
+
+    /* use the number of valence electrons to compute the mixing ratio */
+    params.fock_coeff = (N-1)/N;
+
+    /*
+    fprintf(outfile, "inside IVO routine now, N=%f, fock=%f\n", N,
+      params.fock_coeff);
+    */
+
+    if (params.fock_coeff < 0.0) params.fock_coeff = 0.0;
+    params.fzc_fock_coeff = 1.0 - params.fock_coeff;
+  }
 
 }
 

@@ -30,5 +30,6 @@ struct Params {
    */
    double fzc_fock_coeff;   /* coefficient for the frozen core fock matrix  */
    double fock_coeff;       /* coefficient of the regular fock matrix       */
+   int ivo;                 /* get improved virtual orbitals not MVO's?     */
   };
 
