@@ -219,9 +219,20 @@ AC_SUBST(CXXLIBS)
 # first find the libraries needed to link C++ programs with Fortran libraries
 AC_MSG_RESULT(fortran libs: $FLIBS)
 
-# find the BLAS library  
-AC_HAVE_FC_LIBRARY(-lblas,BLAS="-lblas")
-
+# find the BLAS library
+# eventually need to find ways to test for SMP, thread-safe, etc. ESSL
+# at the moment I don't have access to ESSL  -Ed V.
+case "$cpu:$vendor:$os" in
+  rs6000:ibm:aix*)
+    AC_HAVE_FC_LIBRARY(-lessl,BLAS="-lessl")
+    ;;
+  powerpc:ibm:aix*)
+    AC_HAVE_FC_LIBRARY(-lessl,BLAS="-lessl")
+    ;;
+esac
+if test "X$BLAS" = X; then
+ AC_HAVE_FC_LIBRARY(-lblas,BLAS="-lblas")
+fi
 AC_SUBST(BLAS)
 
 ############################################################################
