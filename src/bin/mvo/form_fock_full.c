@@ -32,9 +32,11 @@ void form_fock_full(double **F)
   double *tei;   /* Array of two-electron integrals */
   double *qts;   /* Orbital indexing in QTS ordering */
   double tval;   /* temporary variable */
+  int irrep;     /* index for irrep */
   int p;         /* general index */
   int q;         /* general index */
   int pq;        /* compound general, general index */
+  int d;         /* occupied orbital index (relative Pitzer) */
   int i;         /* occupied orbital index */
   int ii;
   int pi;
@@ -58,14 +60,17 @@ void form_fock_full(double **F)
     for(q=0; q<=p; q++,pq++) {
       F[p][q] = oei[pq];
       tval = 0.0;
-      for(i=0; i<moinfo.ndocc; i++) {
-	ii = INDEX(i,i);
-	pi = INDEX(p,i);
-	iq = INDEX(i,q);
-	pqii = INDEX(pq,ii);
-	piiq = INDEX(pi,iq);
+      for (irrep=0; irrep<moinfo.nirreps; irrep++) {
+        for (d=0; d<moinfo.clsdpi[irrep]; d++) {
+          i = moinfo.order[moinfo.first[irrep]+d]; 
+	  ii = INDEX(i,i);
+          pi = INDEX(p,i);
+          iq = INDEX(i,q);
+          pqii = INDEX(pq,ii);
+          piiq = INDEX(pi,iq);
 	
-        tval +=  2.0 * tei[pqii] - tei[piiq];
+          tval +=  2.0 * tei[pqii] - tei[piiq];
+	}
       }
       F[p][q] += tval;
       if (p!=q) F[q][p] = F[p][q];
