@@ -29,6 +29,7 @@ extern void done(const char *);
 double eval_rci_derwfn_overlap()
 {
   int ndocc = MOInfo.ndocc;
+  int nfzc = 0;
   FLOAT **CSC_full = eval_S_alpha();
   FLOAT **CSC = create_matrix(ndocc,ndocc);
   int *tmpintvec = new int[ndocc];
@@ -42,17 +43,32 @@ double eval_rci_derwfn_overlap()
   StringSet *ssetm;
   ssetm = vecm->sdset->alphastrings;
   int nstr_a = ssetm->size;
-  int nalpha = ndocc;
+  int nact = ndocc - nfzc;
   FLOAT **S_a = create_matrix(nstr_a,nstr_a);
+  
   // Assume the order of strings is the same for - and + displacements
   for(int jp=0; jp<nstr_a; jp++) {
     String *str_j = &ssetm->strings[jp];
     for(int im=0; im<nstr_a; im++) {
       String *str_i = &ssetm->strings[im];
 
-      for(int j=0;j<ndocc;j++)
-	for(int i=0;i<ndocc;i++)
-	  CSC[j][i] = CSC_full[str_j->occ[j]][str_i->occ[i]];
+      for(int j=0;j<nact;j++)
+	for(int i=0;i<nact;i++)
+	  CSC[j+nfzc][i+nfzc] = CSC_full[str_j->occ[j]+nfzc][str_i->occ[i]+nfzc];
+
+      // all frozen orbitals come together first since it's a C1 case
+      for(int j=0; j<nact; j++)
+	for(int i=0; i<nfzc; i++)
+	  CSC[j+nfzc][i] = CSC_full[str_j->occ[j]+nfzc][i];
+
+      for(int j=0; j<nfzc; j++)
+	for(int i=0; i<nact; i++)
+	  CSC[j][i+nfzc] = CSC_full[j][str_i->occ[i]+nfzc];
+
+      for(int i=0;i<nfzc;i++)
+	for(int j=0;j<nfzc;j++)
+	  CSC[i][j] = CSC_full[i][j];
+
 
       // Compute the determinant
       //      C_DGETRF(ndocc,ndocc,&(CSC[0][0]),ndocc,tmpintvec);
