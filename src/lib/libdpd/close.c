@@ -74,8 +74,10 @@ int dpd_close(int dpd_num)
       free(this_dpd->params2[i]);
   free(this_dpd->params2);
 
+  /*
   printf("memory = %d; memfree = %d\n",
 	 dpd_default->memory, dpd_default->memfree);
+  */
 
   return 0;
 }

@@ -37,7 +37,7 @@ double **dpd_block_matrix(int n, int m)
 
 #ifdef DPD_TIMER
 timer_on("block_mat");
-#endif DPD_TIMER
+#endif
 
   A = NULL;  B = NULL;
 
@@ -59,7 +59,10 @@ timer_on("block_mat");
       else dpd_error("LIBDPD Error: invalid cachetype.", stderr);
     }
 
-  if(!m || !n) return(NULL);
+  if(!m || !n) {
+     timer_off("block_mat");
+     return(NULL);
+    }
   
   if((A = (double **) malloc(n * sizeof(double *)))==NULL) {
     fprintf(stderr,"dpd_block_matrix: trouble allocating memory \n");
@@ -82,7 +85,7 @@ timer_on("block_mat");
 
 #ifdef DPD_TIMER
 timer_off("block_mat");
-#endif DPD_TIMER
+#endif
 
   return(A);
 }

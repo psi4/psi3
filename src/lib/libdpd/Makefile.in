@@ -5,7 +5,7 @@ VPATH = @srcdir@
 include ../MakeVars
 
 CFLAGS += -DDPD_TIMER
-CFLAGS += -DDPD_DEBUG
+#CFLAGS += -DDPD_DEBUG
 
 TARGET = $(top_objdir)/lib/libdpd.a
 
