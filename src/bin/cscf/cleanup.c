@@ -1,12 +1,18 @@
 /* $Log$
- * Revision 1.27  2003/08/09 17:39:56  crawdad
- * I added the ability to determine frozen core orbitals for UHF references to
- * cleanup.c.  I also commented out ip_cwk_clear and ip_cwk_add calls in
- * cleanup.c, guess.c, scf_input.c and scf_iter_2.c.  These calls were (1) poor
- * design and (2) interfering with default ip_tree behavior needed to simplify
- * the format of input.dat.
+ * Revision 1.28  2003/08/17 22:57:37  crawdad
+ * Removing libfile30 from the repository.  I believe that all code reference
+ * to the library have also been properly removed.  The current version
+ * passes all test cases on my systems.
  * -TDC
  *
+/* Revision 1.27  2003/08/09 17:39:56  crawdad
+/* I added the ability to determine frozen core orbitals for UHF references to
+/* cleanup.c.  I also commented out ip_cwk_clear and ip_cwk_add calls in
+/* cleanup.c, guess.c, scf_input.c and scf_iter_2.c.  These calls were (1) poor
+/* design and (2) interfering with default ip_tree behavior needed to simplify
+/* the format of input.dat.
+/* -TDC
+/*
 /* Revision 1.26  2003/05/19 22:26:26  crawdad
 /* Added phase corrections for UHF orbitals.
 /* -TDC
@@ -179,12 +185,7 @@ static char *rcsid = "$Id$";
 #include "includes.h"
 #include "common.h"
 #include <libipv1/ip_lib.h>
-#if USE_LIBCHKPT
-#  include <libchkpt/chkpt.h>
-#else
-#  include <libfile30/file30.h>
-#endif
-
+#include <libchkpt/chkpt.h>
 
 /* TDC(6/20/96) - Prototype for phase() */
 int phase(void);
@@ -272,146 +273,20 @@ void cleanup()
      correlated calcs */
   if(inflg==2) phase_check = 1;
 
-#if !USE_LIBCHKPT
-  wreadw(itap30,(char *) i10,sizeof(int)*200,(PSI_FPTR) sizeof(int)*100,&junk);
-
-  if(!i10[44]) i10[44]++;
-
-  iend = i10[0];
-  mpoint = i10[1];
-  mconst = i10[2];
-  mcalcs = i10[3];
-  nat = i10[18];
-  i10[40] = n_so_typs;
-  i10[41] = mxcoef;
-  i10[42] = ioff[n_open];
-  if(twocon) i10[42] = -i10[42];
-  i10[45] = nmo;
-#else
-  /* psio_write calls for above */
   chkpt_wt_nsymhf(n_so_typs);
   chkpt_wt_nmo(nmo);
 
   tmp_iopen = ioff[n_open];
   if(twocon) tmp_iopen = -tmp_iopen;
   chkpt_wt_iopen(tmp_iopen);
-#endif
   nx = nmo*(nmo+1)/2;
    
   /* STB(10/28/99) - Flag to tell what reference is being used*/
-#if !USE_LIBCHKPT
-  i10[46] = refnum;
-#else
   chkpt_wt_ref(refnum);
-#endif
    
   /* TDC(6/19/96) - Set the phase_check flag here */
-#if !USE_LIBCHKPT
-  i10[50] = phase_check;
-#else
   chkpt_wt_phase_check(phase_check);
-#endif
 
-#if !USE_LIBCHKPT
-  wwritw(itap30,(char *) i10,sizeof(int)*200,(PSI_FPTR) sizeof(int)*100,&junk);
-#endif
-
-  /* STB(10/28/99) - Changing the file30 structure to utilize the pointer
-     space */
-   
-  /*  The structure of the SCF section is as follows:
-      (listed first is the length in integer words, 
-      variable names correspond to those given in CSCF3.0)
-
-
-      | 20 (header) | 40 (don't know)  |  20 (pointers written    |
-      |             |                  |      this function)      |           
-      _____________________________________________________________
-
-
-      |  6*natoms      | 10 ( 5 double      |  mxcoef*2           |
-      |  (geometry)    |      contants [a]) | (Alpha SCF eigenvec)|  
-      -------------------------------------------------------------
-
-      | mxcoef*2           | nmo*2               | nmo*2              |
-      | (Beta SCF eigenvec)| (Alpha SCF eigenval)| (Beta SCF eigenval)|
-      -----------------------------------------------------------------
-
-      | n_so_typs*4            | n_so_typs                  |
-      | (Non-zero irrep labels)| (number of orbitals/irrep) |
-      -------------------------------------------------------
-   
-      | n_so_typs                   | n_so_typs                 |
-      | (number closed shells/irrep)| (number open shells/irrep)|
-      -----------------------------------------------------------
-
-      | ioff[n_open]*2 | ioff[n_open]*2 | nmo*(nmo+1)/2*2   |
-      | (Alpha coefs)  | (Beta coefs)   | (Alpha Lagrangian)|
-      -------------------------------------------------------
-
-      | nmo*(nmo+1)/2*2  |
-      | (Beta Lagrangian)|
-      --------------------*/
-
-  /*--------------------------------------------------------------*/
-  /* Pointers will be an array that will contain the positions in */
-  /*   file30 for the following informaiton                       */
-  /* [0] = Alpha SCF eigenvector (the only one stored if not UHF) */
-  /* [1] = Beta  SCF eigenvector                                  */
-  /* [2] = Alpha SCF eigenvalues (the only one stored if not UHF) */
-  /* [3] = Beta  SCF eigenvalues                                  */
-  /* [4] = Irrep Labels for irreps with non-zero occupancies      */
-  /* [5] = Number of orbitals per irrep for non-zero occupancies  */
-  /* [6] = Number of closed shells per irrep with non-zero occ    */
-  /* [7] = Number of open shells per irrep with non-zero occ      */
-  /* [8] = Alpha Coupling Constants                               */
-  /* [9] = Beta  Coupling Constants                               */
-  /* [10] = Alpha Lagrangian (the only one stored if not UHF)     */
-  /* [11] = Beta  Lagrangian                                      */
-  /*--------------------------------------------------------------*/
-
-#if !USE_LIBCHKPT
-  pointers = init_int_array(20);
-   
-  /* get pointers to calculations */
-
-  junk = (PSI_FPTR) sizeof(int)*(100+mconst+mpoint);
-  wreadw(itap30,(char *) i10,sizeof(int)*mcalcs,junk,&junk);
-   
-  /* loccal holds the value that points to the beginning of the 
-     SCF section of file30 */
-  loccal = (PSI_FPTR) sizeof(int)*(i10[0]-1);
-
-  /* pointer to scf vector is first in calculation pointers */
-
-  junk = loccal+sizeof(int)*60; /* skip the header */
-   
-  /* Let's skip the pointer section for now */
-   
-  wreadw(itap30,(char *) i10,sizeof(int)*20,junk,&junk1);
-   
-  newvec = 0;
-  locvec = (PSI_FPTR) sizeof(int)*(i10[0]-1);
-  if (i10[0] <= 0) {
-    locvec = (PSI_FPTR) sizeof(int)*(iend-1);
-    i10[0] = iend;
-    wwritw(itap30,(char *) i10,sizeof(int)*20,junk,&junk1);
-    newvec = 1;
-  }
-   
-  junk = loccal + ((PSI_FPTR) sizeof(int)*(60+20+6*nat+2));
-   
-  /* Set up the pointer array now that we know where everything is */
-   
-  pointers[0] = locvec;
-   
-  /* write new energy to file30 */
-
-  wwritw(itap30,(char *) &etot,sizeof(double)*1,junk,&junk);
-#endif
-
-#if USE_LIBCHKPT
-  /* write to new checkpoint file */
   chkpt_wt_etot(etot);
   chkpt_wt_escf(etot);
   chkpt_wt_eref(etot);
@@ -497,126 +372,9 @@ void cleanup()
     chkpt_wt_scf(scr1);
   }
   free_block(scr1);
-#else
-  /* write new vector and eigenvalues to file30 and file49 */
-  scr_arr = (double *) init_array(mxcoef);
-
-  if(uhf){
-    for(m=0;m<2;m++){
-      for(k=ijk=0; k < num_ir ; k++) {
-	s= &scf_info[k];
-	if(nn=s->num_so) {
-	  num_mo = s->num_mo;
-	  for(j=0; j < num_mo ; j++)
-	    for(i=0; i < nn ; i++,ijk++){
-	      scr_arr[ijk]=spin_info[m].scf_spin[k].cmat[i][j]; 
-	    }
-	}
-      }
-      wwritw(itap30,(char *) scr_arr,sizeof(double)*mxcoef,locvec,&locvec);
-      pointers[m+1] = locvec;
-    }
-  }
-  else{
-    for(k=ijk=0; k < num_ir ; k++) {
-      s= &scf_info[k];
-      if(nn=s->num_so) {
-	num_mo = s->num_mo;
-	for(j=0; j < num_mo ; j++)
-	  for(i=0; i < nn ; i++,ijk++)
-	    scr_arr[ijk]=s->cmat[i][j];
-      }
-    }
-       
-    wwritw(itap30,(char *) scr_arr,sizeof(double)*mxcoef,locvec,&locvec);
-
-    pointers[1] = 0;
-    pointers[2] = locvec;
-  }
-   
-  if(uhf){
-    for(m=0;m<2;m++){
-      for (i=k=ijk=0; i < num_ir ; i++) {
-	s= &scf_info[i];
-	if (nn=s->num_so) {
-	  num_mo = s->num_mo;
-	  for (j=0; j < num_mo ; j++,k++){
-	    scr_arr[k] = spin_info[m].scf_spin[i].fock_evals[j];
-	  }
-	  ijk++;
-	}
-      }
-      wwritw(itap30,(char *) scr_arr,sizeof(double)*nmo,locvec,&locvec);
-      pointers[m+3] = locvec;
-
-    }
-  }
-  else{
-    for (i=k=ijk=0; i < num_ir ; i++) {
-      s= &scf_info[i];
-      if (nn=s->num_so) {
-	num_mo = s->num_mo;
-	for (j=0; j < num_mo ; j++,k++){
-	  scr_arr[k] = s->fock_evals[j];
-	}
-	ijk++;
-      }
-    }
-    wwritw(itap30,(char *) scr_arr,sizeof(double)*nmo,locvec,&locvec);
-
-    pointers[3] = 0;
-    pointers[4] = locvec;
-  }
-
-  for (i=k=ijk=0; i < num_ir ; i++) {
-    s= &scf_info[i];
-    if (nn=s->num_so) {
-      num_mo = s->num_mo;
-      nc[ijk]=s->nclosed;
-      no[ijk]=s->nopen;
-      n_there[ijk]=num_mo;
-      ijk++;
-    }
-  }
-   
-  for (i=0 ; i < num_ir ; i++) 
-    if (scf_info[i].num_so) {
-      wwritw(itap30,(char *) scf_info[i].irrep_label,sizeof(char)*4,locvec,&locvec);
-    }
-   
-  pointers[5] = locvec;
-   
-  wwritw(itap30,(char *) n_there,sizeof(int)*n_so_typs,locvec,&locvec);
-  pointers[6] = locvec;
-   
-  wwritw(itap30,(char *) nc,sizeof(int)*n_so_typs,locvec,&locvec);
-  pointers[7] = locvec;
-   
-  if(iopen || uhf) {
-    wwritw(itap30,(char *) no,sizeof(int)*n_so_typs,locvec,&locvec);
-    pointers[8] = locvec;
-  }
-#endif
 
   /* write open-shell coupling coefficients */
   if(iopen){
-#if !USE_LIBCHKPT
-    if(twocon) {
-      double c1i = scf_info[opblk1].occ_num[opshl1];
-      double c1ii = scf_info[opblk2].occ_num[opshl2];
-      alpha[0] = beta[0] = 1.0 - 2.0/c1i;
-      alpha[1] = 1.0;
-      beta[1] = 1.0 + 1.0/(save_ci1*save_ci2);
-      alpha[2] = beta[2] = 1.0 - 2.0/c1ii;
-    }
-    if(!twocon) for (i=0; i < ioff[n_open] ; i++) beta[i] = -beta[i];
-    if(ci_calc && !twocon)
-      for (i=0; i < ioff[n_open] ; i++) beta[i] = -beta[i];
-    wwritw(itap30,(char *) alpha,sizeof(double)*ioff[n_open],locvec,&locvec);
-    pointers[9] = locvec;
-    wwritw(itap30,(char *) beta,sizeof(double)*ioff[n_open],locvec,&locvec);
-    pointers[10] = locvec;
-#else
     ccvecs = block_matrix(2,ioff[n_open]);
     for(i=0; i < ioff[n_open]; i++) {
       ccvecs[0][i] = alpha[i];
@@ -624,7 +382,6 @@ void cleanup()
     }
     chkpt_wt_ccvecs(ccvecs);
     free_block(ccvecs);
-#endif
   }
 
   /* calculate mo lagrangian and write to file30 */
@@ -658,13 +415,8 @@ void cleanup()
 	  ijk += num_mo;
 	}
       }
-#if !USE_LIBCHKPT
-      wwritw(itap30,(char *) lagrangian,sizeof(double)*nx,locvec,&locvec); 
-      pointers[m+11] = locvec; 
-#else
       if(m==0) chkpt_wt_alpha_lagr(lagr);
       else chkpt_wt_beta_lagr(lagr);
-#endif
     }
   }
   else{
@@ -745,32 +497,11 @@ void cleanup()
 	ijk += num_mo;
       }
     }
-#if !USE_LIBCHKPT
-    wwritw(itap30,(char *) lagrangian,sizeof(double)*nx,locvec,&locvec);
-    pointers[11]=0;
-    pointers[12]=locvec;
-#else
     chkpt_wt_lagr(lagr);
-#endif
   }
   free(lagrangian);
   free_block(lagr);
 
-#if !USE_LIBCHKPT
-  if(newvec) {
-    iend = (int) locvec/sizeof(int)+1;
-    wwritw(itap30,(char *) &iend,sizeof(int)*1,(PSI_FPTR) sizeof(int)*100,&locvec);
-  }
-   
-  /* STB(10/28/99) - Convert and write the pointers to file30*/
-  for(i=0;i<20;i++){
-    pointers[i] = pointers[i]/sizeof(int) + 1;
-  }
-      
-  junk = loccal + 60*sizeof(int);
-  wwritw(itap30,(char *) pointers,sizeof(int)*20,junk,&junk);
-#endif
-      
   if(ci_calc && iopen && irot) {
     fprintf(outfile,
 	    "\n ci_typ is %s so mo vector will be rotated\n",ci_type);
@@ -836,11 +567,7 @@ void cleanup()
     fprintf(outfile,  "  Proceed at your own risk!\n");
   }
       
-#if USE_LIBCHKPT
   chkpt_close();
-#else
-  file30_close();
-#endif
 
   if(!direct_scf){
     psio_close(Pmat.unit, 0);
@@ -1307,13 +1034,8 @@ void write_scf_matrices(void)
 	row += s->num_so;
 	col += s->num_mo;
       }
-      #if USE_LIBCHKPT
       if(m==0) chkpt_wt_alpha_scf(scr1);
       else chkpt_wt_beta_scf(scr1);
-      #else
-      if(m==0) file30_wt_alpha_scf(scr1);
-      else file30_wt_beta_scf(scr1);
-      #endif
     }
   }
   else {
@@ -1327,11 +1049,7 @@ void write_scf_matrices(void)
       row += s->num_so;
       col += s->num_mo;
     }
-    #if USE_LIBCHKPT
     chkpt_wt_scf(scr1);
-    #else
-    file30_wt_scf(scr1);
-    #endif
   }
   free_block(scr1);
 }

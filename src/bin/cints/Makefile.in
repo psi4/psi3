@@ -101,7 +101,7 @@ CXXDEF += $(OPTIONS)
 
 LD = $(CXX)
 LDLIBS += $(BLAS) -lpthread
-PSILIBS = -lPSI_qt -lPSI_chkpt -lPSI_file30 $(INTLIBS) -lPSI_iwl \
+PSILIBS = -lPSI_qt -lPSI_chkpt $(INTLIBS) -lPSI_iwl \
           -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 ifeq ($(findstring CC,$(SUBDIRS)),CC)
   ifneq ($(findstring -lPSI_dpd,$(PSILIBS)),-lPSI_dpd)

@@ -1,12 +1,18 @@
 /* $Log$
- * Revision 1.18  2003/08/09 17:39:56  crawdad
- * I added the ability to determine frozen core orbitals for UHF references to
- * cleanup.c.  I also commented out ip_cwk_clear and ip_cwk_add calls in
- * cleanup.c, guess.c, scf_input.c and scf_iter_2.c.  These calls were (1) poor
- * design and (2) interfering with default ip_tree behavior needed to simplify
- * the format of input.dat.
+ * Revision 1.19  2003/08/17 22:57:37  crawdad
+ * Removing libfile30 from the repository.  I believe that all code reference
+ * to the library have also been properly removed.  The current version
+ * passes all test cases on my systems.
  * -TDC
  *
+/* Revision 1.18  2003/08/09 17:39:56  crawdad
+/* I added the ability to determine frozen core orbitals for UHF references to
+/* cleanup.c.  I also commented out ip_cwk_clear and ip_cwk_add calls in
+/* cleanup.c, guess.c, scf_input.c and scf_iter_2.c.  These calls were (1) poor
+/* design and (2) interfering with default ip_tree behavior needed to simplify
+/* the format of input.dat.
+/* -TDC
+/*
 /* Revision 1.17  2003/06/27 22:10:06  sherrill
 /* Change keyword from direct_scf to direct.  This can be used also
 /* for MP2 and can be picked up by the psi3 driver to know which programs
@@ -145,11 +151,7 @@ static char *rcsid = "$Id$";
 #include "includes.h"
 #include "common.h"
 #include <libipv1/ip_lib.h>
-#if USE_LIBCHKPT
-#  include <libchkpt/chkpt.h>
-#else
-#  include <libfile30/file30.h>
-#endif
+#include <libchkpt/chkpt.h>
 
 void scf_input(ipvalue)
    ip_value_t *ipvalue;
@@ -314,13 +316,8 @@ void scf_input(ipvalue)
    fprintf (outfile,"\n  nuclear repulsion energy %22.13f\n",repnuc);
    fflush(outfile);
 
-#if USE_LIBCHKPT
    nat    = chkpt_rd_natom();
    ncalcs = chkpt_rd_ncalcs();
-#else
-   nat    = file30_rd_natom();
-   ncalcs = file30_rd_ncalcs();
-#endif
 
 /* if inflg is 0 and this isn't the first calc, then get the old vector */
 /* from file30.  if inflg is 2, just use core hamiltonian guess */
@@ -329,35 +326,21 @@ void scf_input(ipvalue)
    if ((inflg==0 && ncalcs) || inflg == 1) {
        
        inflg = 1;
-#if USE_LIBCHKPT
        optri = abs(chkpt_rd_iopen());
        reftmp = chkpt_rd_ref();
-#else
-       mxcoef = file30_rd_mxcoef();
-       optri = abs(file30_rd_iopen());
-       reftmp = file30_rd_ref();
-#endif
        
        fprintf(outfile,"\n  using old vector from file30 as initial guess\n");
        
 /* get old energy from file30 */
        
-#if USE_LIBCHKPT
        elast = chkpt_rd_escf();
-#else
-       elast = file30_rd_escf();
-#endif
        fprintf(outfile,"  energy from old vector: %14.8f\n",elast);
        
        so_offset = 0;
        mo_offset = 0;
 
        /* Add MO's per/irrep for scf_info */
-#if USE_LIBCHKPT
        mopi = chkpt_rd_orbspi();
-#else
-       mopi = file30_rd_orbspi();
-#endif
        for(k=0; k < num_ir; k++) scf_info[k].num_mo = mopi[k];
        free(mopi);
 
@@ -371,7 +354,6 @@ void scf_input(ipvalue)
 	   
 	   /* if the reference is not UHF, then just read in the vector for the 
 	      restricted calculation into both */
-#if USE_LIBCHKPT
 	   if(reftmp != ref_uhf && reftmp != ref_uks){
 	       for(k=0; k < num_ir ; k++) {
 		   s = &scf_info[k];
@@ -390,26 +372,6 @@ void scf_input(ipvalue)
 		   }
 	       }
 	   }
-#else
-	   if(reftmp != ref_uhf && reftmp != ref_uks){
-	       for(k=0; k < num_ir ; k++) {
-		   s = &scf_info[k];
-		   if(nn=s->num_so) {
-		       spin_info[0].scf_spin[k].cmat = file30_rd_blk_scf(k);
-		       spin_info[1].scf_spin[k].cmat = file30_rd_blk_scf(k);
-		   }
-	       }
-	   }
-	   else{
-	       for(k=0; k < num_ir ; k++) {
-		   s = &scf_info[k];
-		   if(nn=s->num_so) {
-		       spin_info[0].scf_spin[k].cmat = file30_rd_alpha_blk_scf(k);
-		       spin_info[1].scf_spin[k].cmat = file30_rd_beta_blk_scf(k);
-		   }
-	       }
-	   }
-#endif
 	   
 	   for(m=0;m<2;m++){
 	       for(k=0; k < num_ir; k++) {
@@ -468,11 +430,7 @@ void scf_input(ipvalue)
 	   for(k=0; k < num_ir ; k++) {
 	       s = &scf_info[k];
 	       if(nn=s->num_so) {
-#if USE_LIBCHKPT
 		   s->cmat = chkpt_rd_scf_irrep(k);
-#else
-		   s->cmat = file30_rd_blk_scf(k);
-#endif
 	       }
 	   }
 

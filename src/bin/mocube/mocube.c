@@ -4,11 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <libipv1/ip_lib.h>
-#if USE_LIBCHKPT
 #include <libchkpt/chkpt.h>
-#else
-#include <libfile30/file30.h>
-#endif
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include "mocube.h"

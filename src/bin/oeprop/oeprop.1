@@ -14,7 +14,7 @@ The program
 .B oeprop
 computes expectation values of one-electron property operators using
 a one-particle density
-matrix computed from an eigenvector in file30 or read in from an external file.
+matrix computed from an eigenvector in PSIF_CHKPT or read in from an external file.
 It is currently capable of performing Mulliken population analysis, 
 computing electric multipole moments through octopole, 
 electrostatic properties at atomic centers (electrostatic potential, 
@@ -29,7 +29,7 @@ Miscellaneous capabilities include computation
 of the relativistic first-order one-electron corrections to the energy
 (mass-velocity and Darwin terms), 
 construction of natural molecular orbitals from one-particle density 
-read from an external file (NOs can be written to file30) and 
+read from an external file (NOs can be written to PSIF_CHKPT) and 
 computation of spatial
 extents - expectation values of X^2, Y^2, Z^2, and R^2 operators - of
 total electron density and of individual MOs (if \fBREAD_OPDM = \fPfalse)
@@ -74,7 +74,7 @@ CRC Handbook of chemistry and physics. Edited by D. R. Lide. 73rd edition
 .SH FILES REQUIRED
 .nf
     input.dat        \- Input file
-    file30.dat       \- Checkpoint file
+    PSIF_CHKPT       \- Checkpoint file
     file86.dat       \- Z-vector file (only if \fBCORREL_CORR = \fPtrue)
 .fi
 

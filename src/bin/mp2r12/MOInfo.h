@@ -1,4 +1,4 @@
-/* Struct for file30 molecular orbital information */
+/* Struct for PSIF_CHKPT molecular orbital information */
 struct MOInfo {
     int nmo;
     int nirreps;

@@ -303,7 +303,7 @@ void get_moinfo(void)
   if (errcod == IPE_OK) {
       for (i=0,warned=0; i<moinfo.nirreps; i++) {
           if (tmpi[i] != moinfo.clsdpi[i] && !warned) {
-              fprintf(outfile, "\tWarning: DOCC doesn't match file30\n");
+              fprintf(outfile, "\tWarning: DOCC doesn't match PSIF_CHKPT\n");
               warned = 1;
             }
           moinfo.clsdpi[i] = tmpi[i];
@@ -321,7 +321,7 @@ void get_moinfo(void)
   if (errcod == IPE_OK) {
       for (i=0,warned=0; i<moinfo.nirreps; i++) {
           if (tmpi[i] != moinfo.openpi[i] && !warned) {
-              fprintf(outfile, "\tWarning: SOCC doesn't match file30\n");
+              fprintf(outfile, "\tWarning: SOCC doesn't match PSIF_CHKPT\n");
               warned = 1;
             }
           moinfo.openpi[i] = tmpi[i];
@@ -440,7 +440,6 @@ void get_moinfo(void)
       moinfo.active[h] = moinfo.orbspi[h]-moinfo.frdocc[h]-moinfo.fruocc[h];
     }
 
-  /* file30_close(); */
   chkpt_close();
 
   /* in case IVO's have been asked for */
@@ -528,12 +527,6 @@ void get_mvos(void)
 
   FC = moinfo.fzc_operator;
   nirreps = moinfo.nirreps;
-
-  /*
-  file30_init();
-  eig_unsrt = file30_rd_evals();
-  file30_close();
-  */
 
   chkpt_init(PSIO_OPEN_OLD);
   scf_vector = chkpt_rd_scf();
@@ -696,12 +689,6 @@ void get_mvos(void)
       fprintf(outfile, "New C matrix for irrep %d\n", h);
       print_mat(Cnew, moinfo.sopi[h], moinfo.orbspi[h], outfile);
     }
-
-    /*
-    file30_init();
-    file30_wt_blk_scf(Cnew, h);
-    file30_close();
-    */
 
     chkpt_init(PSIO_OPEN_OLD);
     chkpt_wt_scf_irrep(Cnew, h);

@@ -169,11 +169,7 @@ static char *rcsid = "$Id$";
 #include "common.h"
 #include <libipv1/ip_lib.h>
 #include <libpsio/psio.h>
-#if USE_LIBCHKPT
-#  include <libchkpt/chkpt.h>
-#else
-#  include <libfile30/file30.h>
-#endif
+#include <libchkpt/chkpt.h>
 #include <libqt/qt.h>
 
 void print_initial_vec();
@@ -246,11 +242,7 @@ int main(argc,argv)
   /* STB (6/30/99) - Function added because in order to initialize things
      one must know whether you are doing UHF or restricted */   
    
-#if USE_LIBCHKPT
   chkpt_init(PSIO_OPEN_OLD);
-#else
-  file30_init();
-#endif
 
   occ_init();
    
@@ -376,11 +368,7 @@ int main(argc,argv)
       fprintf(outfile,"  remove 'direct_scf = true' from input\n");
       fprintf(stderr,"rohf open shell singlet doesn't work direct\n");
       fprintf(stderr,"remove 'direct_scf = true' from input\n");
-#if USE_LIBCHKPT
       chkpt_close();
-#else
-      file30_close();
-#endif
       psio_done();
       exit(PSI_RETURN_FAILURE);
     }

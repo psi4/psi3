@@ -488,11 +488,6 @@ void rotate_orbs(void)
 
 
       /* write the new block of MO coefficients to file30 */
-      /*** old way
-      file30_init();
-      file30_wt_blk_scf(CalcInfo.mo_coeffs[h], h);
-      file30_close();
-      ***/
       chkpt_init(PSIO_OPEN_OLD);
       chkpt_wt_scf_irrep(CalcInfo.mo_coeffs[h], h);
       chkpt_close();
@@ -542,12 +537,6 @@ int check_conv(void)
            &rmsgrad, &energy_last, comment);
   }
   fclose(sumfile);
-
-  /*
-  file30_init();
-  energy = file30_rd_ecorr();
-  file30_close();
-  */
 
   chkpt_init(PSIO_OPEN_OLD);
   energy = chkpt_rd_etot();

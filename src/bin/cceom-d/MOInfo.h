@@ -46,7 +46,7 @@ struct MOInfo {
     int *qt_avir;       /* CC->QT alpha active virtiual reordering array */
     int *qt_bvir;       /* CC->QT beta active virtiual reordering array */
     double enuc;        /* Nuclear repulsion energy */
-    double escf;        /* SCF energy from file30 */
+    double escf;        /* SCF energy from chkpt */
     double eref;        /* Reference energy */
     double ecc;         /* CC energy from ccenergy */
     double **opdm;      /* Onepdm in the full (fzc+clsd+socc+uocc) space */

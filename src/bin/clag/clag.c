@@ -96,17 +96,6 @@ main(int argc, char **argv)
   ** calculate some needed numbers 
   */
 
-  /*** old way
-  file30_init();
-  nmo = file30_rd_nmo();
-  enuc = file30_rd_enuc();
-  eci_30 = file30_rd_ecorr(); 
-  nirreps = file30_rd_nirreps();
-  orbspi = file30_rd_orbspi();
-  file30_close();
-  ***/
-
-
   chkpt_init(PSIO_OPEN_OLD);
   nmo = chkpt_rd_nmo();
   enuc = chkpt_rd_enuc();

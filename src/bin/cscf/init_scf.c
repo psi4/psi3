@@ -1,10 +1,16 @@
 /* $Log$
- * Revision 1.10  2003/04/10 20:36:01  crawdad
- * Modifications to cscf to account for *very* large cases.  Mainly converted
- * terms to unsigned ints and more carefully computed pk-block sizes to avoid
- * overflows.
+ * Revision 1.11  2003/08/17 22:57:37  crawdad
+ * Removing libfile30 from the repository.  I believe that all code reference
+ * to the library have also been properly removed.  The current version
+ * passes all test cases on my systems.
  * -TDC
  *
+/* Revision 1.10  2003/04/10 20:36:01  crawdad
+/* Modifications to cscf to account for *very* large cases.  Mainly converted
+/* terms to unsigned ints and more carefully computed pk-block sizes to avoid
+/* overflows.
+/* -TDC
+/*
 /* Revision 1.9  2002/11/24 22:52:17  crawdad
 /* Merging the gbye-file30 branch into the main trunk.
 /* -TDC
@@ -73,11 +79,7 @@ static char *rcsid = "$Id$";
 #define EXTERN
 #include "includes.h"
 #include "common.h"
-#if USE_LIBCHKPT
-#  include <libchkpt/chkpt.h>
-#else
-#  include <libfile30/file30.h>
-#endif
+#include <libchkpt/chkpt.h>
 
 init_scf()
 {
@@ -96,17 +98,10 @@ init_scf()
 
 /* EFV 10/24/98 All requests for file30 should be handled with libfile30
    but for now I'll use wreadw */
-#if USE_LIBCHKPT
    num_ir = chkpt_rd_nirreps();
    num_so = chkpt_rd_sopi();
    repnuc = chkpt_rd_enuc();
    irr_labs = chkpt_rd_irr_labs();
-#else
-   num_ir = file30_rd_nirreps();
-   num_so = file30_rd_sopi();
-   repnuc = file30_rd_enuc();
-   irr_labs = file30_rd_irr_labs();
-#endif
 
 /* now initialize scf_info */
    
@@ -165,15 +160,9 @@ init_scf()
          }
      }
    /* read in number of atoms and nuclear charges and total number of MO*/
-#if USE_LIBCHKPT
    natom = chkpt_rd_natom();
    zvals = chkpt_rd_zvals();
    nbfso = chkpt_rd_nso();
-#else
-   natom = file30_rd_natom();
-   zvals = file30_rd_zvals();
-   nbfso = file30_rd_nso();
-#endif
    
 /* Initialize arrays to hold energy and symmetry arrays */
    ener_tot = (double *) init_array(nbfso);

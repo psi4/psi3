@@ -10,7 +10,7 @@
 /*
 ** GET_MO_INFO
 ** 
-** Reads file30 & input.dat and gets all sorts of useful information about 
+** Reads PSIF_CHKPT & input.dat and gets all sorts of useful information about 
 ** the molecular orbitals (such as their reordering array, the docc
 ** array, frozen orbitals, etc.)
 **

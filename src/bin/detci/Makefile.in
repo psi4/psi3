@@ -6,7 +6,7 @@ include ../MakeVars
 LD = $(CXX)
 LDLIBS += $(BLAS) -lpthread
 
-PSILIBS = libPSI_qt.a libPSI_file30.a libPSI_chkpt.a libPSI_iwl.a libPSI_psio.a libPSI_ciomr.a \
+PSILIBS = libPSI_qt.a libPSI_chkpt.a libPSI_iwl.a libPSI_psio.a libPSI_ciomr.a \
 libPSI_psio.a libPSI_ipv1.a
 
 CSRC = \

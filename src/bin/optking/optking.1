@@ -177,7 +177,7 @@ by the user, this keyword has no effect.
 In order to delocalize coordinates, character table information is
 required.  For compatibility to old-input, the keyword \fBSYMMETRY\fP
 is searched for in the \fBDEFAULT\fP section.  If absent, it is read
-from file30 (presumably successfully if input3.0 or later was used).
+from PSIF_CHKPT (presumably successfully if input3.0 or later was used).
 
 .IP "\fBBFGS =\fP \fIboolean\fP"
 If true, then a BFGS Hessian update is performed when possible.
@@ -189,7 +189,7 @@ internal types.  The default is true.
 
 .IP "\fBJUNK_30 =\fP \fIboolean\fP"
 If true, then the last iterated geometry from the back-tranformation to
-cartesian coordinates will be written to file30, even if the back-transformation
+cartesian coordinates will be written to PSIF_CHKPT, even if the back-transformation
 did not converge.
 
 .IP "\fBBONDS =\fP \fIvector of atom pairs\fP"

@@ -29,7 +29,7 @@ struct MOInfo {
   int *avir_off;         /* virtual alpha orbital offsets within each irrep */
   int *bvir_off;         /* virtual beta orbital offsets within each irrep */
   double enuc;           /* Nuclear repulsion energy */
-  double escf;           /* SCF energy (from file30) */
+  double escf;           /* SCF energy (from chkpt) */
   double eref;           /* Reference energy (file100) */
   double **singlet_evals;/* RHF-CIS singlet excitation energies */
   double **singlet_d;    /* RHF-CIS(D) singlet excitation corrections */

@@ -10,11 +10,7 @@ static char *rcsid = "$Id$";
 #define EXTERN
 #include "includes.h"
 #include "common.h"
-#if USE_LIBCHKPT
-#  include <libchkpt/chkpt.h>
-#else
-#  include <libfile30/file30.h>
-#endif
+#include <libchkpt/chkpt.h>
 
 void init_uhf()
 {
@@ -34,17 +30,10 @@ void init_uhf()
 
 /* EFV 10/24/98 All requests for file30 should be handled with libfile30
    but for now I'll use wreadw */
-#if USE_LIBCHKPT
    num_ir = chkpt_rd_nirreps();
    num_so = chkpt_rd_sopi();
    repnuc = chkpt_rd_enuc();
    irr_labs = chkpt_rd_irr_labs();
-#else
-   num_ir = file30_rd_nirreps();
-   num_so = file30_rd_sopi();
-   repnuc = file30_rd_enuc();
-   irr_labs = file30_rd_irr_labs();
-#endif
 
 /* now initialize scf_info */
    
@@ -122,15 +111,9 @@ void init_uhf()
        }
    }
    /* read in number of atoms and nuclear charges and total number of MO*/
-#if USE_LIBCHKPT
    natom = chkpt_rd_natom();
    zvals = chkpt_rd_zvals();
    nbfso = chkpt_rd_nso();
-#else
-   natom = file30_rd_natom();
-   zvals = file30_rd_zvals();
-   nbfso = file30_rd_nso();
-#endif
    
    /* Character label for Spin */
    spin_info[0].spinlabel = "Alpha";

@@ -78,11 +78,6 @@ void get_mp2nos(void)
   E_scf = chkpt_rd_escf();
   evals_unsrt = chkpt_rd_alpha_evals();
 
-  /*
-  file30_init();
-  evals_unsrt = file30_rd_alpha_evals();
-  */
-
   /* we'll need "restricted" eigenvalues in the checkpoint file later on.
    * let's just put in the alpha ones, we don't use them in DETCI for
    * anything but preconditioners and/or guessers, but we need something
@@ -96,7 +91,6 @@ void get_mp2nos(void)
     }
   free(evals_unsrt);
 
-  /* evals_unsrt = file30_rd_beta_evals(); */
   evals_unsrt = chkpt_rd_beta_evals();
   for (i=0; i<nmo; i++) {
     j = moinfo.order[i];
@@ -176,7 +170,6 @@ void get_mp2nos(void)
   /* the alpha MO's make a convenient set of orthonormal orbitals ... */
   P_mo_tot = block_matrix(nmo, nmo);
   tmat = block_matrix(nmo, nmo);
-  /* scfvec = file30_rd_alpha_scf(); */
   scfvec = chkpt_rd_alpha_scf();
   
   Stri = init_array(ntri);
@@ -260,7 +253,7 @@ void get_mp2nos(void)
       eivout(P_so_block, P_eigvals, irrep_dim, irrep_dim, outfile);
     }
 
-    /* Write Natural Orbitals to file30 */
+    /* Write Natural Orbitals to PSIF_CHKPT */
     chkpt_wt_scf_irrep(P_so_block,irrep);
     free_block(scfvec_irrep);
     mo_offset += moinfo.orbspi[irrep];

@@ -13,11 +13,7 @@
 #include "includes.h"
 #include "common.h"
 #include <libipv1/ip_lib.h>
-#if USE_LIBCHKPT
-#  include <libchkpt/chkpt.h>
-#else
-#  include <libfile30/file30.h>
-#endif
+#include <libchkpt/chkpt.h>
 
 /* Read the Opentype */
 
@@ -31,11 +27,7 @@ void occ_init(void){
     mflag=0;
     uhf=special=twocon=hsos=singlet=0;
     
-#if USE_LIBCHKPT
     num_ir = chkpt_rd_nirreps();
-#else
-    num_ir = file30_rd_nirreps();
-#endif
     
     multp=1;
     if(ip_exist("MULTIPLICITY", 0)) errcod = ip_data("MULTIPLICITY","%d",&multp,0);
@@ -120,15 +112,9 @@ void occ_init(void){
     errcod = ip_data("CHARGE","%d",&charge,0);
 
 /* read in number of atoms and nuclear charges and total number of MO*/
-#if USE_LIBCHKPT
     natom = chkpt_rd_natom();
     zvals = chkpt_rd_zvals();
     nbfso = chkpt_rd_nso();
-#else
-    natom = file30_rd_natom();
-    zvals = file30_rd_zvals();
-    nbfso = file30_rd_nso();
-#endif
     
 /* Let's make sure that the molecule
    can have the specified multiplicity */
@@ -258,13 +244,8 @@ void occ_read(int *cldpi, int *openpi){
     int i;	
     
     fprintf(outfile,"\n  Reading Occupations from file30\n");
-#if USE_LIBCHKPT
     cldpi = chkpt_rd_clsdpi();
     openpi = chkpt_rd_openpi();
-#else
-    cldpi = file30_rd_clsdpi();
-    openpi = file30_rd_openpi();
-#endif
     
     for(i = 0;i < num_ir;i++){
 	scf_info[i].nclosed=cldpi[i];

@@ -19,11 +19,7 @@ extern "C" {
 #include <libipv1/ip_data.gbl>
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
-#if USE_LIBCHKPT
-  #include <libchkpt/chkpt.h>
-#else
-  #include <libfile30/file30.h>
-#endif
+#include <libchkpt/chkpt.h>
 #include <psifiles.h>
 #include "structs.h"
 #include "globals.h"
@@ -44,15 +40,9 @@ void get_parameters(void)
     * depending on value of opentype
     */
 
-#if USE_LIBCHKPT
    chkpt_init(PSIO_OPEN_OLD);
    Parameters.Ms0 = !(chkpt_rd_iopen());
    chkpt_close();
-#else
-   file30_init();
-   Parameters.Ms0 = !(file30_rd_iopen());
-   file30_close();
-#endif
 
    /* need to figure out wheter to filter tei's */
    errcod = ip_string("DERTYPE", &(Parameters.dertype),0); 
@@ -508,15 +498,9 @@ void get_parameters(void)
    if (Parameters.guess_vector == PARM_GUESS_VEC_DFILE &&
        strcmp(Parameters.wfn, "DETCAS")!=0) {
 
-#if USE_LIBCHKPT
       chkpt_init(PSIO_OPEN_OLD);
       i = chkpt_rd_phase_check();
       chkpt_close();
-#else
-      file30_init();
-      i = file30_rd_phase_check();
-      file30_close();
-#endif
 
       if (!i) {
          fprintf(outfile, "Can't use d file guess: SCF phase not checked\n");

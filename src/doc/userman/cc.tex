@@ -1,25 +1,38 @@
 \PSIthree\ is capable of computing energies, analytic gradients, and
 linear response properties using a number of coupled cluster models.
-The following table summarizes these capabilities:
+Table \ref{table:ccsummary} summarizes these capabilities.  This
+section describes how to carry out coupled cluster calculations within
+\PSIthree.
 \begin{table}
 \begin{center}
-\begin{tabular}{ccccc}
+\begin{tabular}{cccccc}
 \hline
 \hline
-Reference & Method & Energy    & Gradient  &   Linear Response \\
+Reference & Method & Energy    & Gradient  &  Exc. Energies & LR Props \\
 \hline
-RHF       & CCSD    & Y & Y & Y   \\
-RHF       & CCSD(T) & Y & N & --  \\
-ROHF      & CCSD    & Y & Y & N   \\
-ROHF      & CCSD(T) & N & N & --  \\
-UHF       & CCSD    & Y & Y & N   \\
-UHF       & CCSD(T) & Y & N & --  \\
-Brueckner & CCD     & Y & N & N   \\
-Brueckner & CCD(T)  & Y & N & --  \\
+RHF       & CCSD    & Y & Y & Y & Y  \\
+RHF       & CCSD(T) & Y & N & --& -- \\
+ROHF      & CCSD    & Y & Y & Y & N  \\
+ROHF      & CCSD(T) & N & N & --& -- \\
+UHF       & CCSD    & Y & Y & Y & N  \\
+UHF       & CCSD(T) & Y & N & --& -- \\
+Brueckner & CCD     & Y & N & N & N  \\
+Brueckner & CCD(T)  & Y & N & --& -- \\
 \hline
 \hline
 \end{tabular}
 \end{center}
-\caption{Current ground-state coupled cluster capabilities of \PSIthree.}
+\caption{Current coupled cluster capabilities of \PSIthree.}
+\label{table:ccsummary}
 \end{table}
+
+\subsection{Ground-State Energies}
+
+To compute a ground-state CCSD or CCSD(T) energy at a fixed geometry,
+the following keywords are required:
+\begin{itemize}
+\item {\tt wfn = ccsd}, {\tt ccsd_t}, {\tt bccd}, or {\tt bccd_t}.
+\item {\tt reference = rhf}, {\tt rohf}, or {\tt uhf}.
+\item {\tt jobtype = sp}
+\end{itemize}
 

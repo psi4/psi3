@@ -49,7 +49,7 @@ EXTERN int *clsdpi;		/* Array of numbers of closed shells per irrep */
 EXTERN int *openpi;		/* Same for open shells */
 EXTERN int *orbspi;		/* (molecular) orbitals per irrep */
 EXTERN int *sopi;               /* symmetry orbitals per irrep */
-EXTERN int *sprim, *snuc, *stype, *snumg, *sloc;	/* See documentation for libfile30 library */
+EXTERN int *sprim, *snuc, *stype, *snumg, *sloc;	/* See documentation for libchkpt library */
 EXTERN int lmax;	/* Highest angular momentum of Gaussians in the basis set */
 EXTERN char **irr_labs;		/* Irrep labels */
 EXTERN char *title;		/* Calculation title */

@@ -1,4 +1,4 @@
-/* Struct for file30 molecular orbital information */
+/* Struct for PSIF_CHKPT molecular orbital information */
 struct MOInfo {
     int nmo;               /* number of molecular orbitals                   */
     int nso;               /* number of basis functions (symmetry orbitals)  */

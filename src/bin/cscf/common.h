@@ -1,8 +1,14 @@
 /* $Id$ */
 /* $Log$
- * Revision 1.14  2002/12/22 17:01:14  evaleev
- * Updated cints, cscf, psi3 (probably not complete) and transqt to use psi_start/psi_stop.
+ * Revision 1.15  2003/08/17 22:57:37  crawdad
+ * Removing libfile30 from the repository.  I believe that all code reference
+ * to the library have also been properly removed.  The current version
+ * passes all test cases on my systems.
+ * -TDC
  *
+/* Revision 1.14  2002/12/22 17:01:14  evaleev
+/* Updated cints, cscf, psi3 (probably not complete) and transqt to use psi_start/psi_stop.
+/*
 /* Revision 1.13  2002/11/24 22:52:17  crawdad
 /* Merging the gbye-file30 branch into the main trunk.
 /* -TDC
@@ -125,11 +131,7 @@
  * */
 
 #include <libciomr/libciomr.h>
-#if !USE_LIBCHKPT
-#include <libfile30/file30.h>
-#else
 #include <libchkpt/chkpt.h>
-#endif
 #include <libpsio/psio.h>
 
 #define MAX_BASIS 4096
@@ -201,9 +203,6 @@ EXTERN int n_open;              /* # open shells */
 EXTERN int a_elec;              /* # of alpha electrons */
 EXTERN int b_elec;              /* # of beta electrons */
 EXTERN int num_ir;              /* # of symmetry types */
-#if !USE_LIBCHKPT
-EXTERN int mxcoef;              /* sum of (# so's per irrep)**2 */
-#endif
 EXTERN int mxcoef2;             /* sum of ioff[# so's per irrep] */
 EXTERN int readflg;             /* 1 if using buffered io */
 EXTERN int maxbuf;              /* number of integrals per buffer */

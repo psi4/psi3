@@ -10,11 +10,7 @@ extern "C" {
    /* may no longer need #include <libc.h> */
    #include <libciomr/libciomr.h>
    #include <libqt/qt.h>
-#if USE_LIBCHKPT
    #include <libchkpt/chkpt.h>
-#else
-   #include <libfile30/file30.h>
-#endif
    #include <libiwl/iwl.h>
    #include <psifiles.h>
    #include "structs.h"
@@ -753,11 +749,7 @@ void opdm_ke(double **onepdm)
               CalcInfo.so_per_irr[irrep],outfile);
 
     /* transform back to SO basis */
-#if USE_LIBCHKPT
     scfmat = chkpt_rd_scf_irrep(irrep);
-#else
-    scfmat = file30_rd_blk_scf(irrep);    
-#endif
     mmult(opdm_blk,0,scfmat,1,tmp_mat,0,CalcInfo.orbs_per_irr[irrep],
           CalcInfo.orbs_per_irr[irrep],CalcInfo.so_per_irr[irrep],0);
     mmult(scfmat,0,tmp_mat,0,opdm_blk,0,CalcInfo.so_per_irr[irrep],

@@ -75,12 +75,6 @@ void transform_density(double **onepdm, double **psq_so, int spin)
                 orbspi[irrep]-frozen_uocc[irrep],outfile);
     }
 
-    /*
-    if (spin==0) 
-      scfvec = file30_rd_alpha_blk_scf(irrep);
-    else
-      scfvec = file30_rd_beta_blk_scf(irrep);
-    */
     if (spin==0)
       scfvec = chkpt_rd_alpha_scf_irrep(irrep);
     else

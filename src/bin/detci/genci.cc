@@ -27,11 +27,7 @@ extern "C" {
    #include <libipv1/ip_lib.h>
    #include <libqt/qt.h>
    #include <libciomr/libciomr.h>
-#if USE_LIBCHKPT
    #include <libchkpt/chkpt.h>
-#else
-   #include <libfile30/file30.h>
-#endif
    #include "structs.h"
    #include "globals.h"
    #include "genci.h"
@@ -119,16 +115,9 @@ void diag_h_genci(struct stringwr **alplist, struct stringwr **betlist)
   }
    
   /* write the CI energy to file30: later fix this to loop over roots */
-#if USE_LIBCHKPT
   chkpt_init(PSIO_OPEN_OLD);
   chkpt_wt_etot(evals[Parameters.root]); /* need nucrep or efzc also? */
   chkpt_close();
-#else
-  file30_init();
-  file30_wt_eref(0.0);
-  file30_wt_ecorr(evals[Parameters.root]); /* might need nucrep or efzc also */
-  file30_close();
-#endif
 
 }
 

@@ -118,7 +118,7 @@ void compute_zmat(cartesians &carts, int *unique_zvars) {
     }
   }
 
-  // write recomputed z-matrix to file30
+  // write recomputed z-matrix to PSIF_CHKPT
   chkpt_init(PSIO_OPEN_OLD);
   chkpt_wt_zmat(zmat);
   chkpt_close();

@@ -192,7 +192,6 @@ int main(int argc, char* argv[]) {
 
 	/* Cleaning up */
 
-/* TDC --- converted libfile30 to use block_matrix() */
  free_block(scf_evec_so);
  free_block(usotao);
 /* free_matrix(scf_evec_so,nbfso);

@@ -39,11 +39,7 @@ void guess()
     }
 
 /* ---- Get reference type for comparison for restarting ----*/
-#if USE_LIBCHKPT
   if(inflg == 1) reftmp = chkpt_rd_ref();
-#else
-  if(inflg == 1) reftmp = file30_rd_ref();
-#endif
 
 /*---If first calculation either read occupations from DOCC or form an initial guess---*/
       

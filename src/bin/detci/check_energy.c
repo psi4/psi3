@@ -45,7 +45,7 @@ void check_energy(double *H, double *twoel_ints, int *docc, int *frozen_docc,
  
    if (fabs(enuc + efzc + energy_e - escf) > 0.00000001) {
       fprintf(outfile, 
-         "\n*** Calculated Energy Differs from SCF Energy in file30 ! ***\n") ;
+         "\n*** Calculated Energy Differs from SCF Energy in CHKPT ! ***\n") ;
       }
 
 }   

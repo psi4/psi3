@@ -87,11 +87,6 @@ int print_step(int npairs, int steptype)
            &(scaled_rmsgrad[i]), &(rmsgrad[i]), &(energies[i]), comments[i]);
   }
 
-  /*
-  file30_init();
-  energy = file30_rd_ecorr();
-  file30_close();
-  */
   chkpt_init(PSIO_OPEN_OLD);
   energy = chkpt_rd_etot();
   chkpt_close();

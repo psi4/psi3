@@ -34,7 +34,7 @@ struct MOInfo {
   int sym; /* symmetry of converged CCSD state */
   double conv;        /* Current convergence level */
   double enuc;        /* Nuclear repulsion energy */
-  double escf;        /* SCF energy from file30 */
+  double escf;        /* SCF energy from chkpt */
   double eref;        /* Reference energy (file100) */
   double ecc;         /* CC energy from ccenergy */
   double lcc;         /* Current lambda pseudoenergy */

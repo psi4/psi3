@@ -18,7 +18,7 @@ double *** construct_evects(int nirreps, int *active, int *orbspi,
 /*
 ** GET_MO_INFO
 ** 
-** Reads file30 & input.dat and gets all sorts of useful information about 
+** Reads PSIF_CHKPT & input.dat and gets all sorts of useful information about 
 ** the molecular orbitals (such as their reordering array, the docc
 ** array, frozen orbitals, etc.)
 **
@@ -31,17 +31,6 @@ void get_mo_info(void)
    int h, i, j, k, tmp, cnt, irrep, errcod, errbad;
    int size;
    double *eig_unsrt;
-
-   /*** old style
-   file30_init();
-   CalcInfo.nirreps = file30_rd_nirreps();
-   CalcInfo.nbfso = file30_rd_nmo();
-   CalcInfo.labels = file30_rd_irr_labs();
-   CalcInfo.orbs_per_irr = file30_rd_orbspi();
-   CalcInfo.enuc = file30_rd_enuc();
-   CalcInfo.efzc = file30_rd_efzc();
-   file30_close();
-   ***/
 
    chkpt_init(PSIO_OPEN_OLD);
    CalcInfo.nirreps = chkpt_rd_nirreps();
@@ -318,7 +307,7 @@ void pitzer_arrays(int nirreps, int *frdocc, int *fruocc, int *orbspi,
 /*
 ** read_cur_orbs
 **
-** Read in the molecular orbital matrix from file30 and put them in CalcInfo
+** Read in the molecular orbital matrix from PSIF_CHKPT and put them in CalcInfo
 */
 void read_cur_orbs(void)
 {
@@ -327,12 +316,10 @@ void read_cur_orbs(void)
 
   nirreps = CalcInfo.nirreps;
 
-  /* file30_init(); */
   chkpt_init(PSIO_OPEN_OLD);
   for (h=0; h<nirreps; h++) {
     dim = CalcInfo.orbs_per_irr[h];
     if (dim==0) continue;
-    /* tmat = file30_rd_blk_scf(h); */
     tmat = chkpt_rd_scf_irrep(h); 
     for (i=0; i<dim; i++) 
       for (j=0; j<dim; j++) 
@@ -340,7 +327,6 @@ void read_cur_orbs(void)
     free_block(tmat);
   }
   chkpt_close();
-  /* file30_close(); */
 
 }
 
