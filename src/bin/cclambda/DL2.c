@@ -3,9 +3,9 @@
 #define EXTERN
 #include "globals.h"
 
-void DL2(int L_irr)
+void DL2(int L_irr, int root_L_irr)
 {
-  dpdbuf4 D;
+  dpdbuf4 D, Dold;
 
   if (params.ground) {
     /* RHS = <ij||ab> */
@@ -33,28 +33,39 @@ void DL2(int L_irr)
       dpd_buf4_close(&D);
     }
   }
-  else { /* excited state */
-    /* don't include Wijab and make sure these are zeroed from last iter */
+  else { /* excited state - no homogeneous term, first term is E*L */
     if (params.ref == 0 || params.ref == 1 ) { /** RHF/ROHF **/
       dpd_buf4_init(&D, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "New LIJAB");
-      dpd_buf4_scm(&D, 0.0);
+      dpd_buf4_init(&Dold, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "LIJAB");
+      dpd_buf4_axpy(&Dold, &D, -1.0 * params.cceom_energy[L_irr][root_L_irr]);
+      dpd_buf4_close(&Dold);
       dpd_buf4_close(&D);
       dpd_buf4_init(&D, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "New Lijab");
-      dpd_buf4_scm(&D, 0.0);
+      dpd_buf4_init(&Dold, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "Lijab");
+      dpd_buf4_axpy(&Dold, &D, -1.0 * params.cceom_energy[L_irr][root_L_irr]);
+      dpd_buf4_close(&Dold);
       dpd_buf4_close(&D);
       dpd_buf4_init(&D, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
-      dpd_buf4_scm(&D, 0.0);
+      dpd_buf4_init(&Dold, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "LIjAb");
+      dpd_buf4_axpy(&Dold, &D, -1.0 * params.cceom_energy[L_irr][root_L_irr]);
+      dpd_buf4_close(&Dold);
       dpd_buf4_close(&D);
     }
     else { /** UHF **/
       dpd_buf4_init(&D, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "New LIJAB");
-      dpd_buf4_scm(&D, 0.0);
+      dpd_buf4_init(&Dold, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "LIJAB");
+      dpd_buf4_axpy(&Dold, &D, -1.0 * params.cceom_energy[L_irr][root_L_irr]);
+      dpd_buf4_close(&Dold);
       dpd_buf4_close(&D);
       dpd_buf4_init(&D, CC_LAMBDA, L_irr, 12, 17, 12, 17, 0, "New Lijab");
-      dpd_buf4_scm(&D, 0.0);
+      dpd_buf4_init(&Dold, CC_LAMBDA, L_irr, 12, 17, 12, 17, 0, "Lijab");
+      dpd_buf4_axpy(&Dold, &D, -1.0 * params.cceom_energy[L_irr][root_L_irr]);
+      dpd_buf4_close(&Dold);
       dpd_buf4_close(&D);
       dpd_buf4_init(&D, CC_LAMBDA, L_irr, 22, 28, 22, 28, 0, "New LIjAb");
-      dpd_buf4_scm(&D, 0.0);
+      dpd_buf4_init(&Dold, CC_LAMBDA, L_irr, 22, 28, 22, 28, 0, "LIjAb");
+      dpd_buf4_axpy(&Dold, &D, -1.0 * params.cceom_energy[L_irr][root_L_irr]);
+      dpd_buf4_close(&Dold);
       dpd_buf4_close(&D);
     }
   }

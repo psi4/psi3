@@ -3,7 +3,7 @@
 #define EXTERN
 #include "globals.h"
 
-void L1_build(int L_irr) {
+void L1_build(int L_irr, int root_L_irr) {
   dpdfile2 newLIA, newLia, LIA, Lia;
   dpdfile2 dIA, dia, Fme, FME;
   dpdfile2 LFaet2, LFAEt2, LFmit2, LFMIt2;
@@ -15,6 +15,7 @@ void L1_build(int L_irr) {
   dpdbuf4 WMNIE, Wmnie, WMnIe, WmNiE;
   dpdbuf4 WAMEF, Wamef, WAmEf, WaMeF, W;
 
+  /* ground state homogeneous term is Fme */
   if (params.ground) {
     if(params.ref == 0 || params.ref == 1) {
       dpd_file2_init(&Fme,CC_OEI, 0, 0, 1, "Fme");
@@ -33,24 +34,44 @@ void L1_build(int L_irr) {
       dpd_file2_close(&FME);
     }
   }
+  /* excited state - no homogenous term, first term is E*L */
+  else {
+    dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "LIA");
+    dpd_file2_init(&newLIA, CC_OEI, L_irr, 0, 1, "New LIA");
+    if (params.ref == 0 || params.ref == 1) {
+      dpd_file2_init(&Lia, CC_OEI, L_irr, 0, 1, "Lia");
+      dpd_file2_init(&newLia, CC_OEI, L_irr, 0, 1, "New Lia");
+    }
+    else if (params.ref == 2) {
+      dpd_file2_init(&Lia, CC_OEI, L_irr, 2, 3, "Lia");
+      dpd_file2_init(&newLia, CC_OEI, L_irr, 2, 3, "New Lia");
+    }
+    dpd_file2_axpy(&LIA, &newLIA, -1.0 * params.cceom_energy[L_irr][root_L_irr],0.0);
+    dpd_file2_axpy(&Lia, &newLia, -1.0 * params.cceom_energy[L_irr][root_L_irr],0.0);
+    dpd_file2_close(&LIA);
+    dpd_file2_close(&newLIA);
+    dpd_file2_close(&Lia);
+    dpd_file2_close(&newLia);
+  }
 
-  if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
+  if(params.ref == 0 || params.ref == 1) {
     dpd_file2_init(&newLIA, CC_OEI, L_irr, 0, 1, "New LIA");
     dpd_file2_init(&newLia, CC_OEI, L_irr, 0, 1, "New Lia");
   }
-  else if(params.ref == 2) { /** UHF **/
+  else if(params.ref == 2) {
     dpd_file2_init(&newLIA, CC_OEI, L_irr, 0, 1, "New LIA");
     dpd_file2_init(&newLia, CC_OEI, L_irr, 2, 3, "New Lia");
   }
 
   /* L0=0 for excited states, so no inhomogeneous Fia and Wijab terms */
   /* make sure these are not nonzero from last iteration */
+  /*
   if (!params.ground) {
     dpd_file2_scm(&newLIA, 0.0);
     dpd_file2_scm(&newLia, 0.0);
   }
-
-
+  */
+ 
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
     /* L1 RHS += Lie*Fea */
@@ -64,7 +85,6 @@ void L1_build(int L_irr) {
     dpd_file2_close(&LFaet2);
     dpd_file2_close(&LFAEt2);
 
-
     /* L1 RHS += -Lma*Fim */
     dpd_file2_init(&LFMIt2,CC_OEI, 0, 0, 0, "FMI");
     dpd_file2_init(&LFmit2,CC_OEI, 0, 0, 0, "Fmi");
@@ -72,7 +92,6 @@ void L1_build(int L_irr) {
     dpd_contract222(&LFMIt2,&LIA,&newLIA, 0, 1, -1.0, 1.0);
     dpd_file2_close(&LFmit2);
     dpd_file2_close(&LFMIt2);
-
 
     /* L1 RHS += Lme*Wieam */
     dpd_buf4_init(&WMBEJ, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMBEJ");
@@ -346,7 +365,6 @@ void L1_build(int L_irr) {
 
   dpd_file2_close(&newLIA);
   dpd_file2_close(&newLia);
-
 
   /* newLia * Dia */
   if(params.ref == 0) { /** RHF **/

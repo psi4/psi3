@@ -3,7 +3,7 @@
 #define EXTERN
 #include "globals.h"
 
-void DL2(int L_irr);
+void DL2(int L_irr, int root_L_irr);
 void FaeL2(int L_irr);
 void FmiL2(int L_irr);
 void WijmnL2(int L_irr);
@@ -18,9 +18,9 @@ void dijabL2(int L_irr);
 
 void BL2_AO(int L_irr);
 
-void L2_build(int L_irr) {
+void L2_build(int L_irr, int root_L_irr) {
 
-  DL2(L_irr);
+  DL2(L_irr, root_L_irr);
 #ifdef EOM_DEBUG
 check_sum("DL2", L_irr);
 #endif

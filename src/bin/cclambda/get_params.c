@@ -8,7 +8,7 @@
 
 void get_params(void)
 {
-  int errcod, iconv,i;
+  int errcod, iconv,i,j;
   char lbl[32];
 
   params.maxiter = 50;
@@ -113,41 +113,41 @@ void get_params(void)
   for (i=0;i<moinfo.nirreps;++i)
     fprintf(outfile, " %s %d,", moinfo.labels[i],
         params.Ls_per_irrep[i]);
+  fprintf(outfile,"\n");
   fprintf(outfile, "\tLocal CC        =     %s\n", params.local ? "Yes" : "No");
-  fprintf(outfile, "\n");
 
+  /* get EOM energies and R0s from CC_INFO */
   /* compute total number of states */
-  params.nstates = 0;
+  params.cceom_energy = (double **) malloc(moinfo.nirreps*sizeof(double *));
+  params.R0 = (double **) malloc(moinfo.nirreps*sizeof(double *));
+  for (i=0;i<moinfo.nirreps;++i) {
+    params.cceom_energy[i] = malloc(params.Ls_per_irrep[i]*sizeof(double)); 
+    params.R0[i] = malloc(params.Ls_per_irrep[i]*sizeof(double)); 
+  }
+  if (params.ground) { /* just a ground state calculation */
+    for (i=0;i<moinfo.nirreps;++i) {
+      if (params.Ls_per_irrep[i]) {
+        params.cceom_energy[i][0] = 0.0;
+        params.R0[i][0] = 1.0;
+      }
+    }
+  }
+  else { /* excited state */
+    for (i=0;i<moinfo.nirreps;++i) {
+      for (j=0; j<params.Ls_per_irrep[i]; ++j) {
+        sprintf(lbl,"EOM CCSD Energy for root %d %d", i, j);
+        psio_read_entry(CC_INFO, lbl, (char *) &(params.cceom_energy[i][j]),sizeof(double));
+        sprintf(lbl,"EOM CCSD R0 for root %d %d", i, j);
+        psio_read_entry(CC_INFO, lbl, (char *) &(params.R0[i][j]),sizeof(double));
+      }
+    }
+  }
+
   for (i=0;i<moinfo.nirreps;++i)
-    params.nstates += params.states_per_irrep[i]; 
-
-  /* get cceom energies for all states from CC_INFO */
-  params.cceom_energy = init_array(params.nstates+1);
-  params.R0 = init_array(params.nstates+1);
-  if (!params.ground) {
-    params.cceom_energy[0] = 0.0; /* ground state */
-    params.R0[0] = 1.0;
-    for (i=1; i<=params.nstates; ++i) {
-      sprintf(lbl,"EOM CCSD Energy for root %d", i);
-      psio_read_entry(CC_INFO, lbl, (char *) &(params.cceom_energy[i]),sizeof(double));
-      sprintf(lbl,"EOM CCSD R0 for root %d", i);
-      psio_read_entry(CC_INFO, lbl, (char *) &(params.R0[i]),sizeof(double));
+    for (j=0; j<params.Ls_per_irrep[i]; ++j) {
+      fprintf(outfile,"\tparams.cceom_energy[%d][%d] = %15.10lf\n",i,j,params.cceom_energy[i][j]);
+      fprintf(outfile,"\tparams.R0[%d][%d] = %15.10lf\n",i,j,params.R0[i][j]);
     }
-  }
-  else { /* just a ground state calculation */
-    params.cceom_energy[0] = 0.0;
-    params.R0[0] = 1;
-  }
-
-#ifdef EOM_DEBUG
-  if (!params.ground) {
-    fprintf(outfile,"\tNstates = %d\n", params.nstates);
-    for (i=1; i<=params.nstates; ++i) {
-      fprintf(outfile,"\tEnergy and R0 for root %d: %15.10lf %15.10lf\n",
-        i, params.cceom_energy[i], params.R0[i]);
-    }
-  }
-#endif
 
   /* determine L0 value */
   params.L0 = (params.ground ? 1.0 : 0.0);

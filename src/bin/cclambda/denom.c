@@ -54,7 +54,7 @@ void denom_uhf(int L_irr, int e_index)
       Fii = LFMIt.matrix[h][i][i];
       for(a=0; a < avirtpi[h^L_irr]; a++) {
         Faa = LFAEt.matrix[h^L_irr][a][a];
-        dIA.matrix[h][i][a] = 1.0/(Fii - Faa + params.cceom_energy[e_index]);
+        dIA.matrix[h][i][a] = 1.0/(Fii - Faa + params.cceom_energy[L_irr][e_index]);
       }
     }
   }
@@ -69,7 +69,7 @@ void denom_uhf(int L_irr, int e_index)
       Fii = LFmit.matrix[h][i][i];
       for(a=0; a < bvirtpi[h^L_irr]; a++) {
         Faa = LFaet.matrix[h^L_irr][a][a];
-        dia.matrix[h][i][a] = 1.0/(Fii - Faa + params.cceom_energy[e_index]);
+        dia.matrix[h][i][a] = 1.0/(Fii - Faa + params.cceom_energy[L_irr][e_index]);
       }
     }
   }
@@ -101,7 +101,7 @@ void denom_uhf(int L_irr, int e_index)
 	Fbb = LFAEt.matrix[bsym][B][B];
 
 	dIJAB.matrix[h][ij][ab] = 1.0/(Fii + Fjj - Faa - Fbb
-            + params.cceom_energy[e_index]);
+            + params.cceom_energy[L_irr][e_index]);
       }
     }
     dpd_file4_mat_irrep_wrt(&dIJAB, h);
@@ -134,7 +134,7 @@ void denom_uhf(int L_irr, int e_index)
 	Fbb = LFaet.matrix[bsym][B][B];
 
 	dijab.matrix[h][ij][ab] = 1.0/(Fii + Fjj - Faa - Fbb
-            + params.cceom_energy[e_index]);
+            + params.cceom_energy[L_irr][e_index]);
       }
     }
     dpd_file4_mat_irrep_wrt(&dijab, h);
@@ -167,7 +167,7 @@ void denom_uhf(int L_irr, int e_index)
 	Fbb = LFaet.matrix[bsym][B][B];
 
 	dIjAb.matrix[h][ij][ab] = 1.0/(Fii + Fjj - Faa - Fbb
-            + params.cceom_energy[e_index]);
+            + params.cceom_energy[L_irr][e_index]);
       }
     }
     dpd_file4_mat_irrep_wrt(&dIjAb, h);
@@ -192,7 +192,8 @@ void denom_rohf(int L_irr, int e_index)
   dpdfile2 LFAEt, LFaet, LFMIt, LFmit;
   dpdfile2 dIA, dia;
   dpdfile4 dIJAB, dijab, dIjAb;
-  dpdbuf4 d;
+  dpdbuf4 d, bdIJAB, bdijab, bdIjAb;
+  double tval;
 
   int nirreps;
   int h, i, j, a, b, ij, ab;
@@ -232,7 +233,7 @@ void denom_rohf(int L_irr, int e_index)
       Fii = LFMIt.matrix[h][i][i];
       for(a=0; a < (virtpi[h^L_irr] - openpi[h^L_irr]); a++) {
         Faa = LFAEt.matrix[h^L_irr][a][a];
-        dIA.matrix[h][i][a] = 1.0/(Fii - Faa + params.cceom_energy[e_index]);
+        dIA.matrix[h][i][a] = 1.0/(Fii - Faa + params.cceom_energy[L_irr][e_index]);
       }
     }
   }
@@ -248,7 +249,7 @@ void denom_rohf(int L_irr, int e_index)
       Fii = LFmit.matrix[h][i][i];
       for(a=0; a < virtpi[h^L_irr]; a++) {
         Faa = LFaet.matrix[h^L_irr][a][a];
-        dia.matrix[h][i][a] = 1.0/(Fii - Faa + params.cceom_energy[e_index]);
+        dia.matrix[h][i][a] = 1.0/(Fii - Faa + params.cceom_energy[L_irr][e_index]);
       }
     }
   }
@@ -293,7 +294,7 @@ void denom_rohf(int L_irr, int e_index)
                 ((A >= (virtpi[asym] - openpi[asym])) ||
                  (B >= (virtpi[bsym] - openpi[bsym])) ?
                  0.0 : 1.0/(Fii + Fjj - Faa - Fbb
-                   + params.cceom_energy[e_index]));
+                   + params.cceom_energy[L_irr][e_index]));
           }
       }
     dpd_file4_mat_irrep_wrt(&dIJAB, h);
@@ -338,7 +339,7 @@ void denom_rohf(int L_irr, int e_index)
                 ((I >= (occpi[isym] - openpi[isym])) ||
                  (J >= (occpi[jsym] - openpi[jsym])) ?
                  0.0 : 1.0/(Fii + Fjj - Faa - Fbb
-                   + params.cceom_energy[e_index]));
+                   + params.cceom_energy[L_irr][e_index]));
       }
     }
     dpd_file4_mat_irrep_wrt(&dijab, h);
@@ -383,7 +384,7 @@ void denom_rohf(int L_irr, int e_index)
                 ((A >= (virtpi[asym] - openpi[asym])) ||
                  (J >= (occpi[jsym] - openpi[jsym])) ?
                  0.0 : 1.0/(Fii + Fjj - Faa - Fbb
-                   + params.cceom_energy[e_index]));
+                   + params.cceom_energy[L_irr][e_index]));
             }
         }
     dpd_file4_mat_irrep_wrt(&dIjAb, h);

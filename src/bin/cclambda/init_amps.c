@@ -65,11 +65,11 @@ void init_amps(int L_irr, int R_index)
   }
 
   if (!params.ground) {
-    sprintf(R1A_lbl, "RIA %d", R_index);
-    sprintf(R1B_lbl, "Ria %d", R_index);
-    sprintf(R2AA_lbl, "RIJAB %d", R_index);
-    sprintf(R2BB_lbl, "Rijab %d", R_index);
-    sprintf(R2AB_lbl, "RIjAb %d", R_index);
+    sprintf(R1A_lbl, "RIA %d %d", L_irr, R_index);
+    sprintf(R1B_lbl, "Ria %d %d", L_irr, R_index);
+    sprintf(R2AA_lbl, "RIJAB %d %d", L_irr, R_index);
+    sprintf(R2BB_lbl, "Rijab %d %d", L_irr, R_index);
+    sprintf(R2AB_lbl, "RIjAb %d %d", L_irr, R_index);
 
     /* multiply by R0 and create nonsymmetric L files */
     dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "LIA");
@@ -85,11 +85,11 @@ void init_amps(int L_irr, int R_index)
       dpd_buf4_init(&LIjAb, CC_LAMBDA, L_irr, 22, 28, 22, 28, 0, "LIjAb");
     }
 
-    dpd_file2_scm(&LIA, params.R0[R_index]);
-    dpd_file2_scm(&Lia, params.R0[R_index]);
-    dpd_buf4_scm(&LIJAB, params.R0[R_index]);
-    dpd_buf4_scm(&Lijab, params.R0[R_index]);
-    dpd_buf4_scm(&LIjAb, params.R0[R_index]);
+    dpd_file2_scm(&LIA, params.R0[L_irr][R_index]);
+    dpd_file2_scm(&Lia, params.R0[L_irr][R_index]);
+    dpd_buf4_scm(&LIJAB, params.R0[L_irr][R_index]);
+    dpd_buf4_scm(&Lijab, params.R0[L_irr][R_index]);
+    dpd_buf4_scm(&LIjAb, params.R0[L_irr][R_index]);
   
       /* add R1 and R2 */
     dpd_file2_init(&R1, CC_RAMPS, L_irr, 0, 1, R1A_lbl);
@@ -204,5 +204,4 @@ void init_amps(int L_irr, int R_index)
   dpd_file2_print(&LIA,outfile);
   dpd_file2_close(&LIA);
 #endif
-
 }

@@ -12,15 +12,15 @@ void Lnorm(int L_irr, int R_index)
   double tval, overlap, overlap0, overlap1, overlap2;
   char R1A_lbl[32], R1B_lbl[32], R2AA_lbl[32], R2BB_lbl[32], R2AB_lbl[32];
 
-  sprintf(R1A_lbl, "RIA %d", R_index);
-  sprintf(R1B_lbl, "Ria %d", R_index);
-  sprintf(R2AA_lbl, "RIJAB %d", R_index);
-  sprintf(R2BB_lbl, "Rijab %d", R_index);
-  sprintf(R2AB_lbl, "RIjAb %d", R_index);
+  sprintf(R1A_lbl, "RIA %d %d", L_irr, R_index);
+  sprintf(R1B_lbl, "Ria %d %d", L_irr, R_index);
+  sprintf(R2AA_lbl, "RIJAB %d %d", L_irr, R_index);
+  sprintf(R2BB_lbl, "Rijab %d %d", L_irr, R_index);
+  sprintf(R2AB_lbl, "RIjAb %d %d", L_irr, R_index);
 
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
-    overlap0 = params.L0 * params.R0[R_index];
+    overlap0 = params.L0 * params.R0[L_irr][R_index];
     dpd_file2_init(&LIA, CC_OEI, L_irr, 0, 1, "LIA");
     dpd_file2_init(&Lia, CC_OEI, L_irr, 0, 1, "Lia");
     dpd_buf4_init(&LIJAB, CC_LAMBDA, L_irr, 2, 7, 2, 7, 0, "LIJAB");
