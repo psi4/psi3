@@ -80,11 +80,6 @@ ifneq ($(DODEPEND),no)
 include $(LIBOBJ:%.o=%.d)
 endif
 
-# this is needed for compilation of other libs without installation of libciomr
-default:: libciomr.h iomrparam.h
-	$(MKDIRS) $(objincdir)
-	$(INSTALL_INCLUDE) $^ $(objincdir)
-
 install_inc:: libciomr.h iomrparam.h
-	$(MKDIRS) $(objincdir)
-	$(INSTALL_INCLUDE) $^ $(objincdir)
+	$(MKDIRS) $(incdir)
+	$(INSTALL_INCLUDE) $^ $(incdir)

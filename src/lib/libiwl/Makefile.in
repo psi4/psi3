@@ -29,8 +29,8 @@ include $(LIBOBJ:%.o=%.d)
 endif
 
 install_inc:: iwl.h
-	$(MKDIRS) $(objincdir)
-	$(INSTALL_INCLUDE) $^ $(objincdir)
+	$(MKDIRS) $(incdir)
+	$(INSTALL_INCLUDE) $^ $(incdir)
 
 install_man:: libiwl.txt
 	$(MKDIRS) $(txtdir)

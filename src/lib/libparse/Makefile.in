@@ -21,10 +21,6 @@ include ../MakeRules
 
 depend:: $(ALLINCLUDE)
 
-default:: error.h misc.h
-	$(MKDIRS) $(objincdir)
-	$(INSTALL_INCLUDE) $^ $(objincdir)
-
 clean::
 	-/bin/rm -f *.i fio.f
 

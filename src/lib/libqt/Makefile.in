@@ -30,8 +30,8 @@ include $(LIBOBJ:%.o=%.d)
 endif
 
 install_inc:: qt.h
-	$(MKDIRS) $(objincdir)
-	$(INSTALL_INCLUDE) $^ $(objincdir)
+	$(MKDIRS) $(incdir)
+	$(INSTALL_INCLUDE) $^ $(incdir)
 
 install_man:: libqt.txt
 	$(MKDIRS) $(txtdir)
