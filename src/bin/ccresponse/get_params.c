@@ -14,6 +14,12 @@ void get_params()
   int i, errcod, ref, count, iconv, *tmpi;
   char *junk, units[20];
 
+  errcod = ip_string("WFN", &(params.wfn), 0);
+  if(strcmp(params.wfn, "CCSD") && strcmp(params.wfn, "CC2")) {
+    fprintf(outfile, "Invalid value of input keyword WFN: %s\n", params.wfn);
+    exit(PSI_RETURN_FAILURE);
+  }
+
   params.print = 1;
   errcod = ip_data("PRINT","%d",&(params.print),0);
 
