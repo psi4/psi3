@@ -296,7 +296,7 @@ int main(int argc, char *argv[])
   exit(0);
 }
 
-void init_io(void)
+void init_io(int argc, char *argv[])
 {
   extern char *gprgid();
   char *progid;

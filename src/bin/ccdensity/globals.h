@@ -13,6 +13,7 @@
 #endif
 
 EXTERN FILE *infile, *outfile;
+EXTERN char *psi_file_prefix;
 EXTERN struct MOInfo moinfo;
 EXTERN struct Frozen frozen;
 EXTERN struct Params params;

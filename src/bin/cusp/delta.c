@@ -69,7 +69,7 @@ void setup_delta(void)
   openpi = chkpt_rd_openpi();
   orbspi = chkpt_rd_orbspi();
   scf_pitzer = chkpt_rd_scf();
-  u = chkpt_rd_usotao_new();
+  u = chkpt_rd_usotao();
   chkpt_close();
 
   frdocc = init_int_array(nirreps);

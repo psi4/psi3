@@ -37,7 +37,7 @@ void local(void)
   nshell = chkpt_rd_nshell();
   stype = chkpt_rd_stype();
   snuc = chkpt_rd_snuc();
-  u = chkpt_rd_usotao_new();
+  u = chkpt_rd_usotao();
   nirreps = chkpt_rd_nirreps();
   clsdpi = chkpt_rd_clsdpi();
   openpi = chkpt_rd_openpi();
