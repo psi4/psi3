@@ -862,6 +862,7 @@ AC_OUTPUT(include/psiconfig.h
           src/bin/psiclean/Makefile
           src/bin/transqt/Makefile
           src/bin/mvo/Makefile
+          src/bin/dboc/Makefile
 
           src/doc/MakeVars src/doc/MakeRules src/doc/Makefile
           src/doc/manual/Makefile
