@@ -131,6 +131,7 @@ typedef struct {
     enum scftype reftype;              /* Reference type, e.g. RHF, ROHF, UHF */
     int restart;                       /* Is this a restart? */
     int restart_task;                  /* Where to restart? */
+  struct coordinates origin;           /* user-selected origin for magnetic dipole integrals */
 } UserOptions_t;
 
 typedef struct {

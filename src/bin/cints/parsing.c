@@ -2,6 +2,7 @@
 #include<math.h>
 #include<libipv1/ip_lib.h>
 #include<libint/libint.h>
+#include<libciomr/libciomr.h>
 #include <psifiles.h>
 
 #include"defines.h"
@@ -16,6 +17,7 @@ void parsing()
   int errcod;
   int cutoff_exp;
   long int max_bytes;
+  int *temp;
   
   UserOptions.print_lvl = 1;
   errcod = ip_data("PRINT","%d",&(UserOptions.print_lvl),0);
@@ -64,6 +66,21 @@ void parsing()
     if (UserOptions.restart_task < 0)
       punt("RESTART_TASK < 0");
   }
+
+  temp = init_int_array(3);
+  errcod = ip_int_array("ORIGIN", temp, 3);
+  if(errcod == IPE_OK) {
+    UserOptions.origin.x = temp[0];
+    UserOptions.origin.y = temp[1];
+    UserOptions.origin.z = temp[2];
+  }
+  else {
+    UserOptions.origin.x = 0;
+    UserOptions.origin.y = 0;
+    UserOptions.origin.z = 0;
+  }
+  UserOptions.origin.Z_nuc = 0;
+  free(temp);
 
   return;
 
