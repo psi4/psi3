@@ -13,7 +13,6 @@ default: (
   reference = rhf
   multp = 1
   dertype = first
-  docc = (3 0 1 1)
 
   % using the new files section; the default path is given
   % in the user's ~/.psirc file
