@@ -10,8 +10,8 @@
 #include <physconst.h>
 #include <symmetry.h>
 
-void alloc_irr_char();
-void permute_axes(double ***, int, int);
+static void alloc_irr_char();
+static void permute_axes(double **, int, int);
 
 void find_symmetry()
 {
@@ -325,13 +325,13 @@ void find_symmetry()
 		  atom_orbit[i][1] = redun_atom_orbit[i][C2ZFLAG]; /* C2 = C2z */
 	      else
 		if (c2x_flag) { /* Unique axis is along X */
-		  permute_axes(&geometry,XAXIS,ZAXIS);
+		  permute_axes(geometry,XAXIS,ZAXIS);
 		  for(i=0;i<num_atoms;i++) {
 		    atom_orbit[i][1] = redun_atom_orbit[i][C2XFLAG]; /* C2 = C2x */
 		  }
 		}
 		else { /* Unique axis is along Y */
-		  permute_axes(&geometry,YAXIS,ZAXIS);
+		  permute_axes(geometry,YAXIS,ZAXIS);
 		  for(i=0;i<num_atoms;i++) {
 		    atom_orbit[i][1] = redun_atom_orbit[i][C2YFLAG]; /* C2 = C2y */
 		  }
@@ -347,13 +347,13 @@ void find_symmetry()
 		  atom_orbit[i][1] = redun_atom_orbit[i][SIGXYFLAG]; /* sig_xy */
 	      else
 		if (sig_yz_flag) { /* Unique axis is along X */
-		  permute_axes(&geometry,XAXIS,ZAXIS);
+		  permute_axes(geometry,XAXIS,ZAXIS);
 		  for(i=0;i<num_atoms;i++) {
 		    atom_orbit[i][1] = redun_atom_orbit[i][SIGYZFLAG]; /* sig_xy = sig_yz */
 		  }
 		}
 		else { /* Unique axis is along Y */
-		  permute_axes(&geometry,YAXIS,ZAXIS);
+		  permute_axes(geometry,YAXIS,ZAXIS);
 		  for(i=0;i<num_atoms;i++) {
 		    atom_orbit[i][1] = redun_atom_orbit[i][SIGXZFLAG]; /* sig_xy = sig_xz */
 		  }
@@ -385,7 +385,7 @@ void find_symmetry()
 		}
 	      else
 		if (c2x_flag) { /* Unique axis is along X */
-		  permute_axes(&geometry,XAXIS,ZAXIS);
+		  permute_axes(geometry,XAXIS,ZAXIS);
 		  for(i=0;i<num_atoms;i++) {
 		    atom_orbit[i][1] = redun_atom_orbit[i][C2XFLAG]; /* C2 = C2x */
 		    atom_orbit[i][2] = redun_atom_orbit[i][IFLAG]; /* i */
@@ -393,7 +393,7 @@ void find_symmetry()
 		  }
 		}
 		else { /* Unique axis is along Y */
-		  permute_axes(&geometry,YAXIS,ZAXIS);
+		  permute_axes(geometry,YAXIS,ZAXIS);
 		  for(i=0;i<num_atoms;i++) {
 		    atom_orbit[i][1] = redun_atom_orbit[i][C2YFLAG]; /* C2 = C2y */
 		    atom_orbit[i][2] = redun_atom_orbit[i][IFLAG]; /* i */
@@ -418,7 +418,7 @@ void find_symmetry()
 		}
 	      else
 		if (c2x_flag) { /* Unique axis is along X */
-		  permute_axes(&geometry,XAXIS,ZAXIS);
+		  permute_axes(geometry,XAXIS,ZAXIS);
 		  for(i=0;i<num_atoms;i++) {
 		    atom_orbit[i][1] = redun_atom_orbit[i][C2XFLAG]; /* C2 = C2x */
 		    atom_orbit[i][2] = redun_atom_orbit[i][SIGXYFLAG]; /* sig_xz = sig_yx */
@@ -426,7 +426,7 @@ void find_symmetry()
 		  }
 		}
 		else { /* Unique axis is along Y */
-		  permute_axes(&geometry,YAXIS,ZAXIS);
+		  permute_axes(geometry,YAXIS,ZAXIS);
 		  for(i=0;i<num_atoms;i++) {
 		    atom_orbit[i][1] = redun_atom_orbit[i][C2YFLAG]; /* C2 = C2y */
 		    atom_orbit[i][2] = redun_atom_orbit[i][SIGYZFLAG]; /* sig_xz = sig_zy */
@@ -538,24 +538,31 @@ void alloc_irr_char()
   return;
 }
 
-/* This function permutes axes so that axis1 becomes axis2 */
-void permute_axes(double ***geom, int axis1, int axis2)
+/* This function permutes axes so that axis1 becomes axis2
+   This is done by a rotation about C3 axis relating x, y, and z
+   unit vectors */
+void permute_axes(double **geom, int axis1, int axis2)
 {
-  int atom,i;
+  int atom,i,j;
   int axis3;
   double tmp;
+  double **R;    /* The matrix representation of the forward rotation */
+
+  if (axis1 == axis2)
+      punt("Called permute_axes with axis1=axis2");
 
   for(i=0;i<3;i++)
     if ( (i != axis1) && (i != axis2)) {
       axis3 = i;
       break;
     }
+
+  R = block_matrix(3,3);
+  R[axis1][axis2] = 1.0;
+  R[axis2][axis3] = 1.0;
+  R[axis3][axis1] = 1.0;
+  rotate_geometry(geometry,R);
+  free_block(R);
   
-  for(atom=0;atom<num_atoms;atom++) {
-    tmp = (*geom)[atom][axis2];
-    (*geom)[atom][axis2] = (*geom)[atom][axis1];
-    (*geom)[atom][axis1] = (*geom)[atom][axis3];
-    (*geom)[atom][axis3] = tmp;
-  }
   return;
 }

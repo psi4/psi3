@@ -272,6 +272,10 @@ void write_to_file30(double repulsion)
      appearance) ordering of shells */
   pointers[48] = ptr/sizeof(int) + 1;
   wwritw(CHECKPOINTFILE,(char *) am2canon_shell_order, num_shells*sizeof(int),ptr,&ptr);
+
+  /* Matrix representation of rotation back to the reference frame */
+  pointers[49] = ptr/sizeof(int) + 1;
+  wwritw(CHECKPOINTFILE,(char *) Rref[0], 9*sizeof(double),ptr,&ptr);
   
   /*---------------------------
     Write pointers to the file
@@ -335,6 +339,8 @@ void write_to_file30(double repulsion)
   constants[45] = 0;
   constants[46] = 0;
   constants[50] = 0;
+
+  constants[51] = disp_num;
   wwritw(CHECKPOINTFILE,(char *) constants, MCONST*sizeof(int),100*sizeof(int),&junk);
 
   rclose(CHECKPOINTFILE,3);

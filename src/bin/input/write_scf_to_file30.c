@@ -44,8 +44,7 @@ void write_scf_to_file30()
   ptr = (constants[0] - 1)*sizeof(int);
   scf_pointers = init_int_array(20);
   /* write the data out */
-  if (readguess)
-      write_scf_calc(&ptr,scf_pointers);
+  write_scf_calc(&ptr,scf_pointers);
   /* That's where pointers to calculation-specific data are */
   wreadw(CHECKPOINTFILE,(char *) calcs, MCALCS*(sizeof(int)),500*sizeof(int),&ptr);
   ptr = (calcs[0] + 60 - 1)*sizeof(int);

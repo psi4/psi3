@@ -64,7 +64,7 @@ void read_zmat()
   /*-----------------------
     Allocate global arrays
    -----------------------*/
-  geometry = init_matrix(num_atoms,3);
+  geometry = block_matrix(num_atoms,3);
   /* see file30.h for info about z_entry structure */
   z_geom = (struct z_entry *) malloc(sizeof(struct z_entry)*num_entries); 
   element = (char **) malloc(sizeof(char *)*num_atoms);

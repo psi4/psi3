@@ -24,7 +24,7 @@ void reorient()
   double tmp, abs, rel;
   double Zmax, r, min_ij;
   double **IT, *IM, **ITAxes;
-  double *v1, *v2, *v3;
+  double *v1, *v2, *v3, **R;
   double **sset_geom, *sset_dist;
   double origin[] = {0.0, 0.0, 0.0};
 
@@ -125,11 +125,12 @@ void reorient()
 	switch (deg_IM1 + deg_IM2) {
 	  case 3: /*B and C are degenerate - linear or prolate symm. top.
 		    A is the unique axis. Rotate around y-axis.*/
-	          for(i=0;i<num_atoms;i++) {
-		    tmp = geometry[i][0];
-		    geometry[i][0] = -geometry[i][2];
-		    geometry[i][2] = tmp;
-		  }
+	          R = block_matrix(3,3);
+		  R[1][1] = 1.0;
+		  R[2][0] = -1.0;
+		  R[0][2] = 1.0;
+		  rotate_geometry(geometry,R);
+		  free_block(R);
 		  if (IM[0] < ZERO_MOMENT_INERTIA) {
 		    fprintf(outfile,"    It is a linear molecule.\n");
 		    rotor = linear;

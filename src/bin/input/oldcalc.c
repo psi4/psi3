@@ -23,7 +23,7 @@ void init_oldcalc()
       fprintf(outfile,"  Will continue without the MO projection\n");
       fprintf(stderr,"  Did not find MOs in the checkpoint file\n");
       fprintf(stderr,"  Will continue without the MO projection\n");
-      readguess = 0;
+      chkpt_mos = 0;
       file30_close();
       return;
   }
@@ -35,7 +35,7 @@ void init_oldcalc()
       fprintf(outfile,"  Will continue without the MO projection\n");
       fprintf(stderr,"  Old file30 uses different point group from the current one\n");
       fprintf(stderr,"  Will continue without the MO projection\n");
-      readguess = 0;
+      chkpt_mos = 0;
       file30_close();
       return;
   }
@@ -81,7 +81,7 @@ void init_oldcalc()
   else {
       fprintf(outfile,"  Input is not aware of reference type %d\n",Oldcalc.ref);
       fprintf(outfile,"  Will continue without the MO projection\n");
-      readguess = 0;
+      chkpt_mos = 0;
       file30_close();
       return;
   }

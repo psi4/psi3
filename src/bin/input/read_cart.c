@@ -24,7 +24,7 @@ void read_cart()
   /*-----------------------
     Allocate global arrays
    -----------------------*/
-  geometry = init_matrix(num_atoms,3);
+  geometry = block_matrix(num_atoms,3);
   element = (char **) malloc(sizeof(char *)*num_atoms);
   nuclear_charges = init_array(num_atoms);
 

@@ -37,8 +37,9 @@ EXTERN int shownorm;		    /*Show normalized basis set*/
 EXTERN char *units;
 EXTERN int print_lvl;               /*Printing level*/
 EXTERN int no_reorient;             /*No reorientation?*/
-EXTERN int readguess;               /*Read old SCF evector?*/
-
+EXTERN int chkpt_geom;              /*Read geometry from chekpoint file?*/
+EXTERN int chkpt_mos;               /*Read old SCF evector?*/
+EXTERN int overwrite_output;        /*Overwrite output.dat?*/
 
 /*Labels*/
 EXTERN char *label;                 /*Label*/
@@ -52,6 +53,13 @@ EXTERN int **irr_char;              /*Character table for irreducible representa
 EXTERN char **irr_labels;           /*Labels for irreducible representations*/
 EXTERN int *sym_oper;               /*Array that maps symmetry operation number of the point group to the canonical
 				      operation numbering (see symmetry.h)*/
+EXTERN double **Rref;               /*Matrix describing the rotation back to the reference frame,
+				      Reference frame is a coordinate system defined by the "raw"
+				      geometry specification (either Z-matrix or geometry array
+				      in input.dat or file30). Can be used to transform quantities
+				      corresponding to different but similar calculations
+				      (gradients at displaced geometries) to a common
+				      frame */
 
 
 /*Calculation-dependent scalars*/
@@ -88,6 +96,9 @@ EXTERN int ap_flag;         /*Bitfield of flags indicating presence of atoms in 
 			      bit 6 = in sig_xz plane (position = 64)
 			      bit 7 = in sig_yz plane (position = 128)
 			      bit 0 = in general position (position = 1) */
+
+EXTERN int disp_num;                /*Number of the displacement corresponding to
+				      the geometry in checkpoint file */
 
 /*Calculation-dependent arrays*/
 EXTERN double **geometry;	    /*Cartesian coordinates (in a.u.) of atoms*/

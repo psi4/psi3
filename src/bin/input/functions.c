@@ -12,8 +12,6 @@ calculations */
 #include "defines.h"
 #include <qt.h>
 
-/* Functions */
-
 /*
    strange, but necessary, gprgid function
 */
@@ -236,7 +234,7 @@ void rotate_geometry(double **geom, double **new_coord)
   double **new_geom;
   int i;
 
-  new_geom = init_matrix(num_atoms, 3);
+  new_geom = block_matrix(num_atoms, 3);
 
   mmult(geom,0,new_coord,0,new_geom,0,num_atoms,3,3,0);
   for(i=0;i<num_atoms;i++) {
@@ -245,9 +243,33 @@ void rotate_geometry(double **geom, double **new_coord)
     geom[i][2] = new_geom[i][2];
   }
 
-  free_matrix(new_geom, num_atoms);
+  free_block(new_geom);
+
+  memorize_rotation(new_coord);
+
   return;
 }
+
+/*
+  Function updates Rref to remember the effect of the rotation
+  described by R
+*/
+
+void memorize_rotation(double **R)
+{
+  double **Rref_new;
+  int i,j;
+  
+  Rref_new = block_matrix(3,3);
+  mmult(R,1,Rref,0,Rref_new,0,3,3,3,0);
+  for(i=0;i<3;i++)
+      for(j=0;j<3;j++)
+	  Rref[i][j] = Rref_new[i][j];
+  free_block(Rref_new);
+
+  return;
+}
+
 
 
 /*
@@ -334,3 +356,17 @@ double int_pow(a, p)
   return b;
 }
 
+
+/*
+  Make canonical and reference frames equivalent
+  */
+void canon_eq_ref_frame()
+{
+  int i,j;
+  
+  for(i=0;i<3;i++)
+      for(j=0;j<3;j++)
+	  Rref[i][j] = (i == j) ? 1.0 : 0.0;
+
+  return;
+}

@@ -12,11 +12,15 @@
 void start_io()
 {
   infile = fopen("./input.dat", "r");
-  outfile = fopen("./output.dat", "w");
+  if (overwrite_output)
+      outfile = fopen("./output.dat", "w+");
+  else
+      outfile = fopen("./output.dat", "a+");
   ip_set_uppercase(1);
   ip_initialize(infile, outfile);
   ip_cwk_clear();
   ip_cwk_add(":DEFAULT");
+  ip_cwk_add(":PSI");
   ip_cwk_add(":INPUT");
   tstart(outfile);
   /*--- Initialize new IO system ---*/

@@ -104,6 +104,19 @@ void Nuc_repulsion(double *Distance, double *repulsion);
 void Rotate(double **Rotate_axis, double *old_coord);
 
 /*
+  Function rotates geometry[][] by new_coord[][]
+*/
+
+void rotate_geometry(double **geom, double **new_coord);
+
+/*
+  Function updates Rref to remember the effect of the rotation
+  described by R
+*/
+
+void memorize_rotation(double **R);
+
+/*
    Convert from angstroms to bohr
 */
 void conv_2_bohr(double *old_coord);
@@ -156,3 +169,9 @@ void write_scf_to_file30();
 
 void parsing();
 void parsing_cmdline(int argc, char *argv[]);
+
+/*
+  Make canonical and reference frames equivalent
+  */
+void canon_eq_ref_frame();
+

@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
      /*-------------------------------------
        Initialize files and parsing library
       -------------------------------------*/
-
+     parsing_cmdline(argc,argv);
      start_io();
      pbasis = fopen(SHARE, "r");
      errcod = ip_string("BASIS_FILE",&user_basis_file,0);
@@ -71,29 +71,23 @@ int main(int argc, char *argv[])
      }
      ip_cwk_add(":BASIS");
 
-     print_intro();
-
-     /*Make ioff and stuff*/
-     setup(MAXIOFF);
-     
-     /*Create the elem_name array to hold all element names*/
-     elem_name = (char **) malloc(sizeof(char *)*NUM_ELEMENTS);
-     init_elem_names();
-
-     /*Parse input options*/
+     init_globals();
      parsing();
-     parsing_cmdline(argc,argv);
+     print_intro();
      print_options();
      
      /*-----------------
        Read in geometry
       -----------------*/
-
-     if (cartOn)
-       read_cart();
-     else
-       read_zmat();
-
+     if (chkpt_geom == 0) { /* read geometry from input.dat */
+	 if (cartOn)
+	     read_cart();
+	 else
+	     read_zmat();
+     }
+     else { /* else read the next molecular geometry from checkpoint file */
+	 read_chkpt_geom();
+     }
 
      repulsion = 0.0;
      if (num_atoms > 1) {
@@ -113,11 +107,16 @@ int main(int argc, char *argv[])
      /*--------------
        Get symmetric
       --------------*/
-     
      find_symmetry();
      count_uniques();
      print_symm_trans();
-     
+
+     /*---------------------------------------
+       Canonical frame is the reference frame
+       unless read geometry from chkpt file
+      ---------------------------------------*/
+     if (chkpt_geom == 0)
+	 canon_eq_ref_frame();
      
      /*---------------------
        Parse basis set data
@@ -141,7 +140,7 @@ int main(int argc, char *argv[])
      /*-------------
        Read old MOs
       -------------*/
-     if (readguess) {
+     if (chkpt_mos) {
 	 init_oldcalc();
      }
 
@@ -153,7 +152,7 @@ int main(int argc, char *argv[])
      /*-------------------------------------------------
        Project old MOs onto new basis and write 'em out
       -------------------------------------------------*/
-     if (readguess) {
+     if (chkpt_mos) {
        oldcalc_projection();
        write_scf_to_file30();
        cleanup_oldcalc();
@@ -164,13 +163,15 @@ int main(int argc, char *argv[])
       ----------------------*/
 
      print_basis_info();
-     fprintf(outfile,"\n  -Unique atoms in the reference coordinate system (a.u.):\n");
+     fprintf(outfile,"\n  -Unique atoms in the canonical coordinate system (a.u.):\n");
      print_unique_geometry(1.0);
+     fprintf(outfile,"\n  -Geometry in the canonical coordinate system (a.u.):\n");
+     print_geometry(1.0);
+     fprintf(outfile,"\n  -Geometry in the canonical coordinate system (Angstrom):\n");
+     print_geometry(_bohr2angstroms);
+     rotate_geometry(geometry,Rref);
      fprintf(outfile,"\n  -Geometry in the reference coordinate system (a.u.):\n");
      print_geometry(1.0);
-     
-     fprintf(outfile,"\n  -Geometry in the reference coordinate system (Angstrom):\n");
-     print_geometry(_bohr2angstroms);
 
      if (num_atoms > 1) {
        /* Print the Nuclear Repulsion Energy */
@@ -196,32 +197,39 @@ int main(int argc, char *argv[])
 
 void print_intro()
 {
-  fprintf(outfile,"                                --------------\n");
-  fprintf(outfile,"                                  WELCOME TO\n");
-  fprintf(outfile,"                                    PSI  3\n");
-  fprintf(outfile,"                                --------------\n\n");
-  fflush(outfile);
+  if (print_lvl) {
+      fprintf(outfile,"                                --------------\n");
+      fprintf(outfile,"                                  WELCOME TO\n");
+      fprintf(outfile,"                                    PSI  3\n");
+      fprintf(outfile,"                                --------------\n\n");
+      fflush(outfile);
+  }
+
+  return;
 }
 
 
 void print_options()
 {
-  if (strlen(label))
-    fprintf(outfile,"  LABEL       =\t%s\n", label);
-  fprintf(outfile,"  SHOWNORM    =\t%d\n",shownorm);
-  fprintf(outfile,"  PUREAM      =\t%d\n",puream);
-  fprintf(outfile,"  UNITS       =\t%s\n",units);
-  if (subgroup != NULL) {
-    fprintf(outfile,"  SUBGROUP    =\t%s\n",subgroup);
-    if (unique_axis != NULL)
-      fprintf(outfile,"  UNIQUE_AXIS =\t%s\n",unique_axis);
+  if (print_lvl) {
+      if (strlen(label))
+	  fprintf(outfile,"  LABEL       =\t%s\n", label);
+      fprintf(outfile,"  SHOWNORM    =\t%d\n",shownorm);
+      fprintf(outfile,"  PUREAM      =\t%d\n",puream);
+      if (subgroup != NULL) {
+	  fprintf(outfile,"  SUBGROUP    =\t%s\n",subgroup);
+	  if (unique_axis != NULL)
+	      fprintf(outfile,"  UNIQUE_AXIS =\t%s\n",unique_axis);
+      }
+      fprintf(outfile,"  PRINT_LVL   =\t%d\n",print_lvl);
+      if (chkpt_mos) {
+	  fprintf(outfile,"  Will read old MO vector from the checkpoint file\n");
+	  fprintf(outfile,"  and project onto the new basis.\n");
+      }
+      fflush(outfile);
   }
-  fprintf(outfile,"  PRINT_LVL   =\t%d\n",print_lvl);
-  if (readguess) {
-    fprintf(outfile,"  Will read old MO vector from the checkpoint file\n");
-    fprintf(outfile,"  and project onto the new basis.\n");
-  }
-  fflush(outfile);
+
+  return;
 }
 
 
@@ -354,7 +362,8 @@ void cleanup()
 
 /*  free_char_matrix(elem_name,NUM_ELEMENTS);*/
   free(sym_oper);
-  free_matrix(geometry,num_atoms);
+  free_block(geometry);
+  free_block(Rref);
   free(nuclear_charges);
 /*  free_char_matrix(element,num_atoms);
   free_char_matrix(atom_basis,num_atoms);*/
