@@ -8,21 +8,21 @@ HEADERS = libr12.h
 #
 # List all generated routines. Do it a safe way in case the list is too long
 #
-TRUESRC1 = $(shell echo `ls vrr_grt_order_*.c`)
-TRUESRC2 = $(shell echo `ls hrr_grt_order_*.c`)
-TRUESRC3 = $(shell echo `ls r_build_*.c`)
-TRUESRC4 = $(shell echo `ls t1_build_*.c`)
-TRUESRC5 = $(shell echo `ls t2_build_*.c`)
-TRUESRC6 = $(shell echo `ls t1hrr1_build_*.c`)
-TRUESRC7 = $(shell echo `ls t2hrr3_build_*.c`)
+TRUESRC1 = $(shell echo `ls vrr_grt_order_*.cc`)
+TRUESRC2 = $(shell echo `ls hrr_grt_order_*.cc`)
+TRUESRC3 = $(shell echo `ls r_build_*.cc`)
+TRUESRC4 = $(shell echo `ls t1_build_*.cc`)
+TRUESRC5 = $(shell echo `ls t2_build_*.cc`)
+TRUESRC6 = $(shell echo `ls t1hrr1_build_*.cc`)
+TRUESRC7 = $(shell echo `ls t2hrr3_build_*.cc`)
 TRUESRC8 = init_libr12.c $(LIB_SRC)
-LIBOBJ1 = $(TRUESRC1:%.c=%.o)
-LIBOBJ2 = $(TRUESRC2:%.c=%.o)
-LIBOBJ3 = $(TRUESRC3:%.c=%.o)
-LIBOBJ4 = $(TRUESRC4:%.c=%.o)
-LIBOBJ5 = $(TRUESRC5:%.c=%.o)
-LIBOBJ6 = $(TRUESRC6:%.c=%.o)
-LIBOBJ7 = $(TRUESRC7:%.c=%.o)
+LIBOBJ1 = $(TRUESRC1:%.cc=%.o)
+LIBOBJ2 = $(TRUESRC2:%.cc=%.o)
+LIBOBJ3 = $(TRUESRC3:%.cc=%.o)
+LIBOBJ4 = $(TRUESRC4:%.cc=%.o)
+LIBOBJ5 = $(TRUESRC5:%.cc=%.o)
+LIBOBJ6 = $(TRUESRC6:%.cc=%.o)
+LIBOBJ7 = $(TRUESRC7:%.cc=%.o)
 LIBOBJ8 = $(TRUESRC8:%.c=%.o)
 LIBOBJ = $(LIBOBJ1) $(LIBOBJ2) $(LIBOBJ3) $(LIBOBJ4) $(LIBOBJ5) $(LIBOBJ6) $(LIBOBJ7) $(LIBOBJ8)
 
@@ -30,6 +30,9 @@ default:: install
 
 %.$(OBJSUF): %.c
 	$(CC) $(CFLAGS) -c $< $(OUTPUT_OPTION)
+
+%.$(OBJSUF): %.cc
+	$(CXX) $(CXXFLAGS) -c $< $(OUTPUT_OPTION)
 
 #
 # do installations

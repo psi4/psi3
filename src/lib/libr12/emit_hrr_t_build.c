@@ -5,12 +5,16 @@
 #include "build_libr12.h"
 
 extern FILE *infile, *outfile, *hrr_header;
+extern Libr12Params_t Params;
 
 extern void punt(char *);
 static int hash(int a[2][3], int b[2]);
 
-int emit_hrr_t_build(int new_am, int max_class_size)
+int emit_hrr_t_build()
 {
+  int new_am = Params.new_am;
+  int max_class_size = Params.max_class_size;
+
   FILE *code;
   int p,q,r,s;
   int ax,ay,az,bx,by,bz,cx,cy,cz,dx,dy,dz;
@@ -32,7 +36,7 @@ int emit_hrr_t_build(int new_am, int max_class_size)
   int f;
   static int io[] = {1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153};
   static const char am_letter[] = "0pdfghiklmnoqrtuvwxyz";
-  char code_name[20];
+  char code_name[21];
   char function_name[18];
   char **subfunction_name;
   
@@ -71,7 +75,7 @@ int emit_hrr_t_build(int new_am, int max_class_size)
 		  function_name,i);
 	}
       }
-      sprintf(code_name,"%s.c",function_name);
+      sprintf(code_name,"%s.cc",function_name);
       code = fopen(code_name,"w");
 
       /* include the function into the hrr_header.h */
@@ -241,7 +245,7 @@ int emit_hrr_t_build(int new_am, int max_class_size)
 		  function_name,i);
 	}
       }
-      sprintf(code_name,"t1hrr1_build_%c%c.c",am_letter[am_in[0]],am_letter[am_in[1]]);
+      sprintf(code_name,"t1hrr1_build_%c%c.cc",am_letter[am_in[0]],am_letter[am_in[1]]);
       code = fopen(code_name,"w");
 
       /* include the function into the hrr_header.h */

@@ -2,8 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <libciomr.h>
+#include "build_libr12.h"
 
 extern FILE *infile, *outfile, *vrr_header;
+extern Libr12Params_t Params;
 
 extern void punt(char *);
 static int hash(int a[2][3], int b[2]);
@@ -12,8 +14,12 @@ static void define_localv(int lc, FILE *code);
 
 static char **k1;
 
-int emit_vrr_t2_build(int old_am, int new_am, int max_class_size)
+int emit_vrr_t2_build()
 {
+  int old_am = Params.old_am;
+  int new_am = Params.opt_am;
+  int max_class_size = Params.max_class_size;
+
   FILE *code;
   int i, j, k, l, f;
   int dec_C;             /* Decrease AM on C */
@@ -48,7 +54,7 @@ int emit_vrr_t2_build(int old_am, int new_am, int max_class_size)
     strcpy(k1[i-1],number[i]);
     strcat(k1[i-1],k1_suff);
   }
-  code_name = (char *) malloc(sizeof(char)*20);
+  code_name = (char *) malloc(sizeof(char)*21);
   function_name = (char *) malloc(sizeof(char)*18);
 
   for(la=0;la<=new_am;la++) {
@@ -86,7 +92,7 @@ int emit_vrr_t2_build(int old_am, int new_am, int max_class_size)
       }
 
       sprintf(function_name,"t2_build_%c0%c0",am_letter[la],am_letter[lc]);
-      sprintf(code_name,"t2_build_%c0%c0.c",am_letter[la],am_letter[lc]);
+      sprintf(code_name,"t2_build_%c0%c0.cc",am_letter[la],am_letter[lc]);
       code = fopen(code_name,"w");
 
   /* target,I0[]

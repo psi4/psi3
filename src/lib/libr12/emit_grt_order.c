@@ -21,6 +21,7 @@ static int last_vrr_node = 0;      /* Global pointer to the last node on the VRR
 
 extern FILE *outfile, *hrr_header, *init_code;
 extern int libr12_stack_size[MAX_AM/2+1];
+extern Libr12Params_t Params;
 
 typedef struct node{
   int A, B, C, D;         /* Angular momenta on centers A and C */
@@ -48,8 +49,11 @@ static int first_vrr_to_compute = 0; /* Number of the first class to be computed
 static int hrr_hash_table[NUMGRTTYPES][2*LMAX_AM][2*LMAX_AM][2*LMAX_AM][2*LMAX_AM];
 static int vrr_hash_table[NUMGRTTYPES][2*LMAX_AM][2*LMAX_AM][4*LMAX_AM];
 
-int emit_grt_order(int old_am, int new_am, int opt_am)
+int emit_grt_order()
 {
+  int old_am = Params.old_am;
+  int new_am = Params.new_am;
+  int opt_am = Params.opt_am;
 
   int i, j, k, l;
   int la, lc, lc_min, ld, ld_max, ld_min;
@@ -70,9 +74,9 @@ int emit_grt_order(int old_am, int new_am, int opt_am)
   int target_vrr_nodes[1000];
   int num_vrr_targets;
   const char am_letter[] = "0pdfghiklmnoqrtuvwxyz";
-  char hrr_code_name[] = "hrr_grt_order_0000.c";
+  char hrr_code_name[] = "hrr_grt_order_0000.cc";
   char hrr_function_name[] = "hrr_grt_order_0000";
-  char vrr_code_name[] = "vrr_grt_order_0000.c";
+  char vrr_code_name[] = "vrr_grt_order_0000.cc";
   char vrr_function_name[] = "vrr_grt_order_0000";
   FILE *hrr_code, *vrr_code;
   static int io[] = {1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153,171,190,210};
@@ -118,6 +122,7 @@ int emit_grt_order(int old_am, int new_am, int opt_am)
 	Write the overhead to the HRR code
        -----------------------------------*/
       fprintf(hrr_code,"#include <stdio.h>\n");
+      fprintf(hrr_code,"#include <string.h>\n");
       fprintf(hrr_code,"#include <libint.h>\n");
       fprintf(hrr_code,"#include \"libr12.h\"\n");
       fprintf(hrr_code,"#include <hrr_header.h>\n\n");
@@ -130,9 +135,9 @@ int emit_grt_order(int old_am, int new_am, int opt_am)
       fprintf(hrr_code," REALTYPE *int_stack = Libr12->int_stack;\n");
       fprintf(hrr_code," int i,j;\n REALTYPE tmp, *target;\n\n");
 
-      /*-------------------------------------------------------------
-	Include the function into the hrr_header.h and init_libint.c
-       -------------------------------------------------------------*/
+      /*--------------------------------------------------------------
+	Include the function into the hrr_header.h and init_libint.cc
+       --------------------------------------------------------------*/
       fprintf(hrr_header,"void %s(Libr12_t *, int);\n",hrr_function_name);
       fprintf(init_code,"  build_r12_grt[%d][%d][%d][%d] = %s;\n",la-lb,lb,lc-ld,ld,hrr_function_name);
 
