@@ -20,9 +20,9 @@ void sortmu(void)
     Gq = irrep ^ Gp;
 
     for(p=0; p < moinfo.occpi[Gp]; p++) {
-      P = moinfo.qt2pitzer[moinfo.qt_occ[p]+moinfo.occ_off[Gp]]-moinfo.nfzc;
+      P = moinfo.qt2pitzer[moinfo.qt_occ[p]+moinfo.occ_off[Gp]-moinfo.nfzc];
       for(q=0; q < moinfo.occpi[Gq]; q++) {
-	Q = moinfo.qt2pitzer[moinfo.qt_occ[q]+moinfo.occ_off[Gq]]-moinfo.nfzc;
+	Q = moinfo.qt2pitzer[moinfo.qt_occ[q]+moinfo.occ_off[Gq]-moinfo.nfzc];
 	mu.matrix[Gp][p][q] = MU[P][Q];
       }
     }
@@ -37,9 +37,9 @@ void sortmu(void)
     Gq = irrep ^ Gp;
 
     for(p=0; p < moinfo.virtpi[Gp]; p++) {
-      P = moinfo.qt2pitzer[moinfo.qt_vir[p]+moinfo.vir_off[Gp]]-moinfo.nfzc;
+      P = moinfo.qt2pitzer[moinfo.qt_vir[p]+moinfo.vir_off[Gp]-moinfo.nfzc];
       for(q=0; q < moinfo.virtpi[Gq]; q++) {
-	Q = moinfo.qt2pitzer[moinfo.qt_vir[q]+moinfo.vir_off[Gq]]-moinfo.nfzc;
+	Q = moinfo.qt2pitzer[moinfo.qt_vir[q]+moinfo.vir_off[Gq]-moinfo.nfzc];
 	mu.matrix[Gp][p][q] = MU[P][Q];
       }
     }
@@ -54,9 +54,9 @@ void sortmu(void)
     Gq = irrep ^ Gp;
 
     for(p=0; p < moinfo.occpi[Gp]; p++) {
-      P = moinfo.qt2pitzer[moinfo.qt_occ[p]+moinfo.occ_off[Gp]]-moinfo.nfzc;
+      P = moinfo.qt2pitzer[moinfo.qt_occ[p]+moinfo.occ_off[Gp]-moinfo.nfzc];
       for(q=0; q < moinfo.virtpi[Gq]; q++) {
-	Q = moinfo.qt2pitzer[moinfo.qt_vir[q]+moinfo.vir_off[Gq]]-moinfo.nfzc;
+	Q = moinfo.qt2pitzer[moinfo.qt_vir[q]+moinfo.vir_off[Gq]-moinfo.nfzc];
 	mu.matrix[Gp][p][q] = MU[P][Q];
       }
     }
@@ -75,9 +75,9 @@ void sortmu(void)
     Gq = irrep ^ Gp;
 
     for(p=0; p < moinfo.occpi[Gp]; p++) {
-      P = moinfo.qt2pitzer[moinfo.qt_occ[p]+moinfo.occ_off[Gp]]-moinfo.nfzc;
+      P = moinfo.qt2pitzer[moinfo.qt_occ[p]+moinfo.occ_off[Gp]-moinfo.nfzc];
       for(q=0; q < moinfo.occpi[Gq]; q++) {
-	Q = moinfo.qt2pitzer[moinfo.qt_occ[q]+moinfo.occ_off[Gq]]-moinfo.nfzc;
+	Q = moinfo.qt2pitzer[moinfo.qt_occ[q]+moinfo.occ_off[Gq]-moinfo.nfzc];
 	mu.matrix[Gp][p][q] = MU[P][Q];
       }
     }
@@ -92,9 +92,9 @@ void sortmu(void)
     Gq = irrep ^ Gp;
 
     for(p=0; p < moinfo.virtpi[Gp]; p++) {
-      P = moinfo.qt2pitzer[moinfo.qt_vir[p]+moinfo.vir_off[Gp]]-moinfo.nfzc;
+      P = moinfo.qt2pitzer[moinfo.qt_vir[p]+moinfo.vir_off[Gp]-moinfo.nfzc];
       for(q=0; q < moinfo.virtpi[Gq]; q++) {
-	Q = moinfo.qt2pitzer[moinfo.qt_vir[q]+moinfo.vir_off[Gq]]-moinfo.nfzc;
+	Q = moinfo.qt2pitzer[moinfo.qt_vir[q]+moinfo.vir_off[Gq]-moinfo.nfzc];
 	mu.matrix[Gp][p][q] = MU[P][Q];
       }
     }
@@ -109,9 +109,9 @@ void sortmu(void)
     Gq = irrep ^ Gp;
 
     for(p=0; p < moinfo.occpi[Gp]; p++) {
-      P = moinfo.qt2pitzer[moinfo.qt_occ[p]+moinfo.occ_off[Gp]]-moinfo.nfzc;
+      P = moinfo.qt2pitzer[moinfo.qt_occ[p]+moinfo.occ_off[Gp]-moinfo.nfzc];
       for(q=0; q < moinfo.virtpi[Gq]; q++) {
-	Q = moinfo.qt2pitzer[moinfo.qt_vir[q]+moinfo.vir_off[Gq]]-moinfo.nfzc;
+	Q = moinfo.qt2pitzer[moinfo.qt_vir[q]+moinfo.vir_off[Gq]-moinfo.nfzc];
 	mu.matrix[Gp][p][q] = MU[P][Q];
       }
     }
@@ -130,9 +130,9 @@ void sortmu(void)
     Gq = irrep ^ Gp;
 
     for(p=0; p < moinfo.occpi[Gp]; p++) {
-      P = moinfo.qt2pitzer[moinfo.qt_occ[p]+moinfo.occ_off[Gp]]-moinfo.nfzc;
+      P = moinfo.qt2pitzer[moinfo.qt_occ[p]+moinfo.occ_off[Gp]-moinfo.nfzc];
       for(q=0; q < moinfo.occpi[Gq]; q++) {
-	Q = moinfo.qt2pitzer[moinfo.qt_occ[q]+moinfo.occ_off[Gq]]-moinfo.nfzc;
+	Q = moinfo.qt2pitzer[moinfo.qt_occ[q]+moinfo.occ_off[Gq]-moinfo.nfzc];
 	mu.matrix[Gp][p][q] = MU[P][Q];
       }
     }
@@ -147,9 +147,9 @@ void sortmu(void)
     Gq = irrep ^ Gp;
 
     for(p=0; p < moinfo.virtpi[Gp]; p++) {
-      P = moinfo.qt2pitzer[moinfo.qt_vir[p]+moinfo.vir_off[Gp]]-moinfo.nfzc;
+      P = moinfo.qt2pitzer[moinfo.qt_vir[p]+moinfo.vir_off[Gp]-moinfo.nfzc];
       for(q=0; q < moinfo.virtpi[Gq]; q++) {
-	Q = moinfo.qt2pitzer[moinfo.qt_vir[q]+moinfo.vir_off[Gq]]-moinfo.nfzc;
+	Q = moinfo.qt2pitzer[moinfo.qt_vir[q]+moinfo.vir_off[Gq]-moinfo.nfzc];
 	mu.matrix[Gp][p][q] = MU[P][Q];
       }
     }
@@ -164,9 +164,9 @@ void sortmu(void)
     Gq = irrep ^ Gp;
 
     for(p=0; p < moinfo.occpi[Gp]; p++) {
-      P = moinfo.qt2pitzer[moinfo.qt_occ[p]+moinfo.occ_off[Gp]]-moinfo.nfzc;
+      P = moinfo.qt2pitzer[moinfo.qt_occ[p]+moinfo.occ_off[Gp]-moinfo.nfzc];
       for(q=0; q < moinfo.virtpi[Gq]; q++) {
-	Q = moinfo.qt2pitzer[moinfo.qt_vir[q]+moinfo.vir_off[Gq]]-moinfo.nfzc;
+	Q = moinfo.qt2pitzer[moinfo.qt_vir[q]+moinfo.vir_off[Gq]-moinfo.nfzc];
 	mu.matrix[Gp][p][q] = MU[P][Q];
       }
     }
