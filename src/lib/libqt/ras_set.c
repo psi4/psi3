@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
+#include "qt.h"
 
 /*!
 ** ras_set()
@@ -51,6 +52,7 @@ int ras_set(int nirreps, int nbfso, int freeze_core, int *orbspi,
   int i, irrep, point, tmpi, cnt=0;
   int errcod, errbad, parsed_ras1=0, parsed_ras2=0, do_ras4;
   int *used, *offset, **tras;
+  int *tmp_frdocc, *tmp_fruocc;
 
   used = init_int_array(nirreps);
   offset = init_int_array(nirreps);
@@ -58,9 +60,6 @@ int ras_set(int nirreps, int nbfso, int freeze_core, int *orbspi,
   /* if we have trouble reading DOCC and SOCC, we'll take them as
    * provided to this routine.  Zero out everything else
    */
-  zero_int_array(frdocc, nirreps);
-  zero_int_array(fruocc, nirreps);
-
   for (i=0; i<4; i++) {
     zero_int_array(ras_opi[i], nirreps);
   }
@@ -68,8 +67,14 @@ int ras_set(int nirreps, int nbfso, int freeze_core, int *orbspi,
   
   
   /* now use the parser to get the arrays we require */
-  errcod = ip_int_array("FROZEN_DOCC",frdocc,nirreps);
-  errcod = ip_int_array("FROZEN_UOCC",fruocc,nirreps);
+  tmp_frdocc = get_frzcpi();
+  tmp_fruocc = get_frzvpi();
+  for (i=0; i<nirreps; i++) {
+    frdocc[i] = tmp_frdocc[i];
+    fruocc[i] = tmp_fruocc[i];
+  }
+  free(tmp_frdocc);
+  free(tmp_fruocc);
 
   /* replace DOCC and SOCC only if they are in input */
   if (ip_exist("DOCC",0)) 
@@ -289,6 +294,7 @@ int ras_set2(int nirreps, int nbfso, int delete_fzdocc,
   int errcod, errbad, parsed_ras1=0, parsed_ras2=0, do_ras4;
   int parsed_restr_uocc=0;
   int *used, *offset, **tras;
+  int *tmp_frdocc, *tmp_fruocc;
 
   used = init_int_array(nirreps);
   offset = init_int_array(nirreps);
@@ -296,8 +302,6 @@ int ras_set2(int nirreps, int nbfso, int delete_fzdocc,
   /* if we have trouble reading DOCC and SOCC, we'll take them as
    * provided to this routine.  Zero out everything else
    */
-  zero_int_array(frdocc, nirreps);
-  zero_int_array(fruocc, nirreps);
   zero_int_array(restrdocc, nirreps);
   zero_int_array(restruocc, nirreps);
 
@@ -307,8 +311,15 @@ int ras_set2(int nirreps, int nbfso, int delete_fzdocc,
   zero_int_array(order, nbfso);
   
   /* now use the parser to get the arrays we require */
-  errcod = ip_int_array("FROZEN_DOCC",frdocc,nirreps);
-  errcod = ip_int_array("FROZEN_UOCC",fruocc,nirreps);
+  tmp_frdocc = get_frzcpi();
+  tmp_fruocc = get_frzvpi();
+  for (i=0; i<nirreps; i++) {
+    frdocc[i] = tmp_frdocc[i];
+    fruocc[i] = tmp_fruocc[i];
+  }
+  free(tmp_frdocc);
+  free(tmp_fruocc);
+
 
   /* replace DOCC and SOCC only if they are in input */
   if (ip_exist("DOCC",0))

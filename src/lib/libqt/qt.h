@@ -8,6 +8,9 @@
 ** Modifications by Daniel Crawford 1996, 1997
 */
 
+#ifndef _psi_src_lib_libqt_qt_h_
+#define _psi_src_lib_libqt_qt_h_
+
 int mat_in(FILE *fp, double **array, int width, int max_length, int *stat);
 void fill_sym_matrix(double **A, int size);
 double combinations(int n, int k);
@@ -91,3 +94,7 @@ void sort(double *A, double **B, int n);
 int david(double **A, int N, int M, double *eps, double **v, double cutoff, 
 	  int print);
 
+int* get_frzcpi();
+int* get_frzvpi();
+
+#endif
