@@ -63,6 +63,9 @@
 #define PSIF_AO_MX          "AO-basis Mu-X Ints"
 #define PSIF_AO_MY          "AO-basis Mu-Y Ints"
 #define PSIF_AO_MZ          "AO-basis Mu-Z Ints"
+#define PSIF_AO_NablaX      "AO-basis Nabla-X Ints"
+#define PSIF_AO_NablaY      "AO-basis Nabla-Y Ints"
+#define PSIF_AO_NablaZ      "AO-basis Nabla-Z Ints"
 #define PSIF_MO_OEI         "MO-basis One-electron Ints"
 #define PSIF_MO_A_OEI       "MO-basis Alpha One-electron Ints"
 #define PSIF_MO_B_OEI       "MO-basis Beta One-electron Ints"
@@ -73,6 +76,9 @@
 /* More macros */
 #define PSIF_AO_OPDM_TRIANG "AO-basis OPDM triang"
 #define PSIF_AO_LAG_TRIANG  "AO-basis Lagrangian triang"
+#define PSIF_AO_OPDM_SQUARE "AO-basis OPDM square"
+#define PSIF_SO_OPDM        "SO-basis OPDM"
+#define PSIF_SO_OPDM_TRIANG "SO-basis triang"
 
 /*
 #define PSIF_SO_S           35
