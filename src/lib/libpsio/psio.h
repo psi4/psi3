@@ -52,5 +52,7 @@ int psio_read_block(ULI unit, char *key, char *buffer, ULI blksiz,
 		    ULI start_blk, ULI end_blk);
 int psio_rw(ULI unit, char *buffer, psio_address address, ULI size, int wrt);
 
+int psio_open_check(ULI unit);
+
 
 #endif    /* #ifndef PSIO_H */
