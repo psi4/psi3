@@ -32,7 +32,7 @@ $FAIL = 0;
 
 open(RE, ">$RESULT") || die "cannot open $RESULT $!";
 select (RE);
-printf "DBOC-RHF1:\n";
+printf "DBOC-ROHF1:\n";
 
 if (abs(seek_nuc($REF_FILE) - seek_nuc($TEST_FILE)) > $TOL) {
   fail_test("Nuclear Repulsion Energy"); $FAIL = 1;

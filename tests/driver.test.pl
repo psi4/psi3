@@ -57,6 +57,14 @@ elsif ($ARGV[0] eq "--scf") {
                  "extrema-deloc"
                );
 }
+elsif ($ARGV[0] eq "--dboc") {
+  @DIR_NAMES = ( "dboc-rhf1",
+                 "dboc-rohf1",
+                 "dboc-uhf1",
+                 "dboc-rcisd1",
+                 "dboc-rocisd1"
+               );
+}
 elsif ($ARGV[0] eq "--small") {
   @DIR_NAMES = ( "scf-opt",
                  "scf-opt-numer",

@@ -24,7 +24,7 @@ scf: (
 detci: (
   ex_lvl = 2
   diag_method = rsp
-  export_ci_vector = true
+  export_vector = true
   convergence = 8
   maxiter = 40
 )
