@@ -191,6 +191,7 @@ int main(int argc, char *argv[])
     dertyp = (char *) malloc(sizeof(char)*10);
     if (strcmp(calctyp,"FORCE")==0) 
       strcpy(dertyp,"FIRST");
+    else if (JobType == OPT) strcpy(dertyp, "FIRST");
     else if (JobType == FREQ || JobType == SYMM_FREQ) {
       if (strcmp(wfn,"SCF")==0) strcpy(dertyp,"SECOND");
       else strcpy(dertyp,"FIRST"); /* guess analyt grads unless overridden */
