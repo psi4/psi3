@@ -178,6 +178,9 @@ enum indices {pqrs, pqsr, prqs, prsq, psqr, psrq,
 	      rqps, rqsp, rpqs, rpsq, rsqp, rspq,
 	      sqrp, sqpr, srqp, srpq, spqr, sprq};
 
+/* Useful for the 3-index sorting function dpd_3d_sort() */
+enum pattern {abc, acb, cab, cba, bca, bac};
+
 int dpd_init(int dpd_num, int nirreps, long int memory, int cachetype,
              int *cachefiles, int **cachelist, 
              struct dpd_file4_cache_entry *priority, int num_subspaces, ...);
@@ -334,6 +337,9 @@ void dpd_file4_cache_dirty(dpdfile4 *File);
 void dpd_file4_cache_lock(dpdfile4 *File);
 void dpd_file4_cache_unlock(dpdfile4 *File);
 
+void dpd_3d_sort(double ***Win, double ***Wout, int nirreps, int h, int *rowtot, int **rowidx, 
+		 int ***roworb, int *asym, int *bsym, int *aoff, int *boff,
+		 int *cpi, int *coff, int **rowidx_out, enum pattern index, int sum);
 
 #endif /* DPD_H */
 
