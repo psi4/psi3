@@ -411,6 +411,7 @@ void x_xi1_connected(void)
   }
 }
 
+/*
 double aug_xi_check(dpdfile2 *HIA, dpdfile2 *Hia) 
 {
 
@@ -426,3 +427,4 @@ double aug_xi_check(dpdfile2 *HIA, dpdfile2 *Hia)
   return;
 }
 
+*/
