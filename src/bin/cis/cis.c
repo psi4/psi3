@@ -73,8 +73,8 @@ int main(int argc, char *argv[])
 
     fprintf(outfile, "\tRHF-CIS Singlet Excitation Energies:\n");
     fprintf(outfile, "\t------------------------------------\n\n");
-    fprintf(outfile, "\tRoot Irrep       Hartree          eV          cm-1  \n");
-    fprintf(outfile, "\t---- ----- ------------------  ---------  ----------\n");
+    fprintf(outfile, "\t  Root Irrep       Hartree          eV          cm-1  \n");
+    fprintf(outfile, "\t  ---- ----- ------------------  ---------  ----------\n");
     for(h=0; h < moinfo.nirreps; h++) {
       for(i=0; i < params.rpi[h]; i++) {
         value = moinfo.singlet_evals[h][i];
@@ -95,8 +95,8 @@ int main(int argc, char *argv[])
 
     fprintf(outfile, "\tRHF-CIS Triplet Excitation Energies:\n");
     fprintf(outfile, "\t------------------------------------\n\n");
-    fprintf(outfile, "\tRoot Irrep       Hartree          eV          cm-1  \n");
-    fprintf(outfile, "\t---- ----- ------------------  ---------  ----------\n");
+    fprintf(outfile, "\t  Root Irrep       Hartree          eV          cm-1  \n");
+    fprintf(outfile, "\t  ---- ----- ------------------  ---------  ----------\n");
     for(h=0; h < moinfo.nirreps; h++) {
       for(i=0; i < params.rpi[h]; i++) {
         value = moinfo.triplet_evals[h][i];
@@ -133,8 +133,8 @@ int main(int argc, char *argv[])
 
     fprintf(outfile, "\tRHF-CIS(D) Singlet Corrections:\n");
     fprintf(outfile, "\t-------------------------------\n");
-    fprintf(outfile, "\tRoot Irrep       Hartree          eV          cm-1  \n");
-    fprintf(outfile, "\t---- ----- ------------------  ---------  ----------\n");
+    fprintf(outfile, "\t  Root Irrep       Hartree          eV          cm-1  \n");
+    fprintf(outfile, "\t  ---- ----- ------------------  ---------  ----------\n");
     for(h=0; h < moinfo.nirreps; h++) {
       for(i=0; i < params.rpi[h]; i++) {
         value = moinfo.singlet_d[h][i];
@@ -147,8 +147,8 @@ int main(int argc, char *argv[])
 
     fprintf(outfile, "\tRHF-CIS(D) Singlet Excitation Energies:\n");
     fprintf(outfile, "\t---------------------------------------\n\n");
-    fprintf(outfile, "\tRoot Irrep       Hartree          eV          cm-1  \n");
-    fprintf(outfile, "\t---- ----- ------------------  ---------  ----------\n");
+    fprintf(outfile, "\t  Root Irrep       Hartree          eV          cm-1  \n");
+    fprintf(outfile, "\t  ---- ----- ------------------  ---------  ----------\n");
     for(h=0; h < moinfo.nirreps; h++) {
       for(i=0; i < params.rpi[h]; i++) {
         value = moinfo.singlet_evals[h][i];
@@ -163,8 +163,8 @@ int main(int argc, char *argv[])
     if(params.local) {
       fprintf(outfile, "\tRHF-CIS(D) Weak Pair Corrections:\n");
       fprintf(outfile, "\t---------------------------------\n");
-      fprintf(outfile, "\tRoot Irrep       Hartree          eV          cm-1  \n");
-      fprintf(outfile, "\t---- ----- ------------------  ---------  ----------\n");
+      fprintf(outfile, "\t  Root Irrep       Hartree          eV          cm-1  \n");
+      fprintf(outfile, "\t  ---- ----- ------------------  ---------  ----------\n");
       for(h=0; h < moinfo.nirreps; h++) {
         for(i=0; i < params.rpi[h]; i++) {
           value = moinfo.singlet_weakp[h][i];
@@ -181,8 +181,8 @@ int main(int argc, char *argv[])
 
     fprintf(outfile, "\tUHF-CIS Excitation Energies:\n");
     fprintf(outfile, "\t----------------------------\n\n");
-    fprintf(outfile, "\tRoot Irrep       Hartree          eV          cm-1\n");
-    fprintf(outfile, "\t---- ----- ------------------  ---------  -----------\n");
+    fprintf(outfile, "\t  Root Irrep       Hartree          eV          cm-1\n");
+    fprintf(outfile, "\t  ---- ----- ------------------  ---------  -----------\n");
     for(h=0; h < moinfo.nirreps; h++) {
       for(i=0; i < params.rpi[h]; i++) {
         value = moinfo.uhf_evals[h][i];
@@ -196,8 +196,8 @@ int main(int argc, char *argv[])
     fprintf(outfile, "\tUHF-CIS(D) Corrections:\n");
     fprintf(outfile, "\t-----------------------\n\n");
 
-    fprintf(outfile, "\tRoot Irrep       Hartree          eV         cm-1\n");
-    fprintf(outfile, "\t---- ----- ------------------  ---------  ----------\n");
+    fprintf(outfile, "\t  Root Irrep       Hartree          eV         cm-1\n");
+    fprintf(outfile, "\t  ---- ----- ------------------  ---------  ----------\n");
     for(h=0; h < moinfo.nirreps; h++) {
       for(i=0; i < params.rpi[h]; i++) {
         value = moinfo.uhf_d[h][i];
@@ -211,8 +211,8 @@ int main(int argc, char *argv[])
     fprintf(outfile, "\tUHF-CIS(D) Excitation Energies:\n");
     fprintf(outfile, "\t-------------------------------\n\n");
 
-    fprintf(outfile, "\tRoot Irrep       Hartree          eV         cm-1\n");
-    fprintf(outfile, "\t---- ----- ------------------  ---------  ----------\n");
+    fprintf(outfile, "\t  Root Irrep       Hartree          eV         cm-1\n");
+    fprintf(outfile, "\t  ---- ----- ------------------  ---------  ----------\n");
     for(h=0; h < moinfo.nirreps; h++) {
       for(i=0; i < params.rpi[h]; i++) {
         value = moinfo.uhf_evals[h][i];
