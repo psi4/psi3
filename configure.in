@@ -829,6 +829,42 @@ AC_OUTPUT(include/psiconfig.h
           src/bin/stable/Makefile
           src/bin/response/Makefile
 
+          tests/Makefile
+          tests/MakeVars
+          tests/MakeRules
+          tests/scf-opt/Makefile
+          tests/scf-opt-numer/Makefile
+          tests/scf-freq/Makefile
+          tests/scf-freq-numer/Makefile
+          tests/scf-freq-symm-numer/Makefile
+          tests/scf-polar/Makefile
+          tests/rhf-stab/Makefile
+          tests/uhf-stab/Makefile
+          tests/rohf-stab/Makefile
+          tests/cis-sp/Makefile
+          tests/cisd-sp/Makefile
+          tests/cisd-opt-numer/Makefile
+          tests/casscf-sp/Makefile
+          tests/cc1/Makefile
+          tests/cc2/Makefile
+          tests/cc3/Makefile
+          tests/cc4/Makefile
+          tests/cc5/Makefile
+          tests/cc6/Makefile
+          tests/cc7/Makefile
+          tests/cc8/Makefile
+          tests/cc9/Makefile
+          tests/cc10/Makefile
+          tests/cc11/Makefile
+          tests/cc12/Makefile
+          tests/cc13/Makefile
+          tests/cc14/Makefile
+          tests/cc15/Makefile
+          tests/cc16/Makefile
+          tests/cc17/Makefile
+          tests/cc18/Makefile
+          tests/cc19/Makefile
+
           src/doc/MakeVars src/doc/MakeRules src/doc/Makefile
           src/doc/install/Makefile
           src/doc/progman/Makefile src/doc/userman/Makefile

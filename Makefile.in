@@ -1,5 +1,5 @@
 
-.PHONY:	default all install install_man install_inc install_host depend clean targetclean
+.PHONY:	default all install install_man install_inc install_host depend clean targetclean tests
 
 default: all
 
@@ -57,6 +57,9 @@ targetclean:
           do \
             (cd $${dir}; echo Making clean in $${dir}; $(MAKE) targetclean) || exit 1; \
           done
+
+tests:
+	(cd tests; echo Running test suite...; $(MAKE)) || exit 1;
 
 $(top_srcdir)/configure: $(top_srcdir)/configure.in $(top_srcdir)/aclocal.m4
 	cd $(top_srcdir) && autoconf
