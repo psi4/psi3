@@ -22,7 +22,7 @@ void uhf_fock_build(double **fock_a, double **fock_b, double **D_a, double **D_b
 int rotate(void)
 {
   int i, a, ii, aa, j, ij, b, p, q, I, J, A, B;
-  int h, nirreps, nso, nmo, ntri, stat, nocc, nvir;
+  int h, nirreps, nso, nmo, ntri, stat;
   dpdfile2 T1;
   double **U, **S, **X, *scratch;
   double *evals, *work, **SO_S, **MO_S;
@@ -179,7 +179,7 @@ int rotate(void)
     for(h=0; h < nirreps; h++)
       for(p=offset[h]; p < offset[h]+moinfo.orbspi[h]; p++)
 	for(q=offset[h]; q < offset[h]+moinfo.orbspi[h]; q++)
-	  for(i=offset[h]; i < offset[h]+moinfo.occpi[h]; i++)
+	  for(i=offset[h]; i < offset[h]+moinfo.frdocc[h]+moinfo.occpi[h]; i++)
 	    D[p][q] += scf[p][i] * scf[q][i];
 
     /* build the SO-basis Fock matrix */
@@ -206,21 +206,23 @@ int rotate(void)
     */
 
     /* extract the occ-occ and vir-vir block of the Fock matrix */
-    nocc = nvir = 0;
-    for(h=0; h < nirreps; h++) { nocc += moinfo.occpi[h]; nvir += moinfo.virtpi[h]; }
     Foo = (double ***) malloc(nirreps * sizeof(double **));
     Fvv = (double ***) malloc(nirreps * sizeof(double **));
     X = block_matrix(nmo, nmo);
     for(h=0; h < nirreps; h++) {
+
+      /* leave the frozen core orbitals alone */
+      for(i=offset[h]; i < offset[h]+moinfo.frdocc[h]; i++) X[i][i] = 1.0;
+
       Foo[h] = block_matrix(moinfo.occpi[h], moinfo.occpi[h]);
       Fvv[h] = block_matrix(moinfo.virtpi[h], moinfo.virtpi[h]);
 
-      for(i=offset[h],I=0; i < offset[h]+moinfo.occpi[h]; i++,I++)
-	for(j=offset[h],J=0; j < offset[h]+moinfo.occpi[h]; j++,J++)
+      for(i=offset[h]+moinfo.frdocc[h],I=0; i < offset[h]+moinfo.frdocc[h]+moinfo.occpi[h]; i++,I++)
+	for(j=offset[h]+moinfo.frdocc[h],J=0; j < offset[h]+moinfo.frdocc[h]+moinfo.occpi[h]; j++,J++)
 	  Foo[h][I][J] = fock[i][j];
 
-      for(a=offset[h]+moinfo.occpi[h],A=0; a < offset[h]+moinfo.orbspi[h]; a++,A++)
-	for(b=offset[h]+moinfo.occpi[h],B=0; b < offset[h]+moinfo.orbspi[h]; b++,B++)
+      for(a=offset[h]+moinfo.frdocc[h]+moinfo.occpi[h],A=0; a < offset[h]+moinfo.orbspi[h]; a++,A++)
+	for(b=offset[h]+moinfo.frdocc[h]+moinfo.occpi[h],B=0; b < offset[h]+moinfo.orbspi[h]; b++,B++)
 	  Fvv[h][A][B] = fock[a][b];
 
       /*
@@ -248,8 +250,8 @@ int rotate(void)
 	mat_print(Foo[h], moinfo.occpi[h], moinfo.occpi[h], outfile);
 	*/
 
-	for(i=offset[h],I=0; i < offset[h]+moinfo.occpi[h]; i++,I++)
-	  for(j=offset[h],J=0; j < offset[h]+moinfo.occpi[h]; j++,J++)
+	for(i=offset[h]+moinfo.frdocc[h],I=0; i < offset[h]+moinfo.frdocc[h]+moinfo.occpi[h]; i++,I++)
+	  for(j=offset[h]+moinfo.frdocc[h],J=0; j < offset[h]+moinfo.frdocc[h]+moinfo.occpi[h]; j++,J++)
 	    X[i][j] = Foo[h][J][I];
       }
 
@@ -270,8 +272,8 @@ int rotate(void)
 	mat_print(Fvv[h], moinfo.virtpi[h], moinfo.virtpi[h], outfile);
 	*/
 
-	for(a=offset[h]+moinfo.occpi[h],A=0; a < offset[h]+moinfo.orbspi[h]; a++,A++)
-	  for(b=offset[h]+moinfo.occpi[h],B=0; b < offset[h]+moinfo.orbspi[h]; b++,B++)
+	for(a=offset[h]+moinfo.frdocc[h]+moinfo.occpi[h],A=0; a < offset[h]+moinfo.orbspi[h]; a++,A++)
+	  for(b=offset[h]+moinfo.frdocc[h]+moinfo.occpi[h],B=0; b < offset[h]+moinfo.orbspi[h]; b++,B++)
 	    X[a][b] = Fvv[h][B][A];
       }
 
@@ -329,6 +331,13 @@ int rotate(void)
     }
 
     free_block(MO_S);
+
+    /*
+    fprintf(outfile, "\n\tOriginal SCF MOs:\n");
+    mat_print(scf_orig, nso, nmo, outfile);
+    fprintf(outfile, "\n\tNew SCF MOs:\n");
+    mat_print(scf_new, nso, nmo, outfile);
+    */
 
     chkpt_wt_scf(scf_new);
     free_block(scf_new);
@@ -483,9 +492,9 @@ int rotate(void)
     for(h=0; h < nirreps; h++)
       for(p=offset[h]; p < offset[h]+moinfo.orbspi[h]; p++)
 	for(q=offset[h]; q < offset[h]+moinfo.orbspi[h]; q++) {
-	  for(i=offset[h]; i < offset[h]+moinfo.aoccpi[h]; i++)
+	  for(i=offset[h]; i < offset[h]+moinfo.frdocc[h]+moinfo.aoccpi[h]; i++)
 	    D_a[p][q] += scf_a[p][i] * scf_a[q][i];
-	  for(i=offset[h]; i < offset[h]+moinfo.boccpi[h]; i++)
+	  for(i=offset[h]; i < offset[h]+moinfo.frdocc[h]+moinfo.boccpi[h]; i++)
 	    D_b[p][q] += scf_b[p][i] * scf_b[q][i];
 	}
 
@@ -511,21 +520,22 @@ int rotate(void)
 
     /** alpha Fock semicanonicalization **/
 
-    nocc = nvir = 0;
-    for(h=0; h < nirreps; h++) { nocc += moinfo.aoccpi[h]; nvir += moinfo.avirtpi[h]; }
     Foo = (double ***) malloc(nirreps * sizeof(double **));
     Fvv = (double ***) malloc(nirreps * sizeof(double **));
     X = block_matrix(nmo, nmo);
     for(h=0; h < nirreps; h++) {
+      /* leave the frozen core orbitals alone */
+      for(i=offset[h]; i < offset[h]+moinfo.frdocc[h]; i++) X[i][i] = 1.0;
+
       Foo[h] = block_matrix(moinfo.aoccpi[h], moinfo.aoccpi[h]);
       Fvv[h] = block_matrix(moinfo.avirtpi[h], moinfo.avirtpi[h]);
 
-      for(i=offset[h],I=0; i < offset[h]+moinfo.aoccpi[h]; i++,I++)
-	for(j=offset[h],J=0; j < offset[h]+moinfo.aoccpi[h]; j++,J++)
+      for(i=offset[h]+moinfo.frdocc[h],I=0; i < offset[h]+moinfo.frdocc[h]+moinfo.aoccpi[h]; i++,I++)
+	for(j=offset[h]+moinfo.frdocc[h],J=0; j < offset[h]+moinfo.frdocc[h]+moinfo.aoccpi[h]; j++,J++)
 	  Foo[h][I][J] = fock_a[i][j];
 
-      for(a=offset[h]+moinfo.aoccpi[h],A=0; a < offset[h]+moinfo.orbspi[h]; a++,A++)
-	for(b=offset[h]+moinfo.aoccpi[h],B=0; b < offset[h]+moinfo.orbspi[h]; b++,B++)
+      for(a=offset[h]+moinfo.frdocc[h]+moinfo.aoccpi[h],A=0; a < offset[h]+moinfo.orbspi[h]; a++,A++)
+	for(b=offset[h]+moinfo.frdocc[h]+moinfo.aoccpi[h],B=0; b < offset[h]+moinfo.orbspi[h]; b++,B++)
 	  Fvv[h][A][B] = fock_a[a][b];
 
       if(moinfo.aoccpi[h]) {
@@ -540,8 +550,8 @@ int rotate(void)
 	free(evals);
 	free(work);
 
-	for(i=offset[h],I=0; i < offset[h]+moinfo.aoccpi[h]; i++,I++)
-	  for(j=offset[h],J=0; j < offset[h]+moinfo.aoccpi[h]; j++,J++)
+	for(i=offset[h]+moinfo.frdocc[h],I=0; i < offset[h]+moinfo.frdocc[h]+moinfo.aoccpi[h]; i++,I++)
+	  for(j=offset[h]+moinfo.frdocc[h],J=0; j < offset[h]+moinfo.frdocc[h]+moinfo.aoccpi[h]; j++,J++)
 	    X[i][j] = Foo[h][J][I];
       }
 
@@ -557,8 +567,8 @@ int rotate(void)
 	free(evals);
 	free(work);
 
-	for(a=offset[h]+moinfo.aoccpi[h],A=0; a < offset[h]+moinfo.orbspi[h]; a++,A++)
-	  for(b=offset[h]+moinfo.aoccpi[h],B=0; b < offset[h]+moinfo.orbspi[h]; b++,B++)
+	for(a=offset[h]+moinfo.frdocc[h]+moinfo.aoccpi[h],A=0; a < offset[h]+moinfo.orbspi[h]; a++,A++)
+	  for(b=offset[h]+moinfo.frdocc[h]+moinfo.aoccpi[h],B=0; b < offset[h]+moinfo.orbspi[h]; b++,B++)
 	    X[a][b] = Fvv[h][B][A];
       }
 
@@ -611,21 +621,22 @@ int rotate(void)
 
     /** beta Fock semicanonicalization **/
 
-    nocc = nvir = 0;
-    for(h=0; h < nirreps; h++) { nocc += moinfo.boccpi[h]; nvir += moinfo.bvirtpi[h]; }
     Foo = (double ***) malloc(nirreps * sizeof(double **));
     Fvv = (double ***) malloc(nirreps * sizeof(double **));
     X = block_matrix(nmo, nmo);
     for(h=0; h < nirreps; h++) {
+      /* leave the frozen core orbitals alone */
+      for(i=offset[h]; i < offset[h]+moinfo.frdocc[h]; i++) X[i][i] = 1.0;
+
       Foo[h] = block_matrix(moinfo.boccpi[h], moinfo.boccpi[h]);
       Fvv[h] = block_matrix(moinfo.bvirtpi[h], moinfo.bvirtpi[h]);
 
-      for(i=offset[h],I=0; i < offset[h]+moinfo.boccpi[h]; i++,I++)
-	for(j=offset[h],J=0; j < offset[h]+moinfo.boccpi[h]; j++,J++)
+      for(i=offset[h]+moinfo.frdocc[h],I=0; i < offset[h]+moinfo.frdocc[h]+moinfo.boccpi[h]; i++,I++)
+	for(j=offset[h]+moinfo.frdocc[h],J=0; j < offset[h]+moinfo.frdocc[h]+moinfo.boccpi[h]; j++,J++)
 	  Foo[h][I][J] = fock_b[i][j];
 
-      for(a=offset[h]+moinfo.boccpi[h],A=0; a < offset[h]+moinfo.orbspi[h]; a++,A++)
-	for(b=offset[h]+moinfo.boccpi[h],B=0; b < offset[h]+moinfo.orbspi[h]; b++,B++)
+      for(a=offset[h]+moinfo.frdocc[h]+moinfo.boccpi[h],A=0; a < offset[h]+moinfo.orbspi[h]; a++,A++)
+	for(b=offset[h]+moinfo.frdocc[h]+moinfo.boccpi[h],B=0; b < offset[h]+moinfo.orbspi[h]; b++,B++)
 	  Fvv[h][A][B] = fock_b[a][b];
 
       if(moinfo.boccpi[h]) {
@@ -640,8 +651,8 @@ int rotate(void)
 	free(evals);
 	free(work);
 
-	for(i=offset[h],I=0; i < offset[h]+moinfo.boccpi[h]; i++,I++)
-	  for(j=offset[h],J=0; j < offset[h]+moinfo.boccpi[h]; j++,J++)
+	for(i=offset[h]+moinfo.frdocc[h],I=0; i < offset[h]+moinfo.frdocc[h]+moinfo.boccpi[h]; i++,I++)
+	  for(j=offset[h]+moinfo.frdocc[h],J=0; j < offset[h]+moinfo.frdocc[h]+moinfo.boccpi[h]; j++,J++)
 	    X[i][j] = Foo[h][J][I];
       }
 
@@ -657,8 +668,8 @@ int rotate(void)
 	free(evals);
 	free(work);
 
-	for(a=offset[h]+moinfo.boccpi[h],A=0; a < offset[h]+moinfo.orbspi[h]; a++,A++)
-	  for(b=offset[h]+moinfo.boccpi[h],B=0; b < offset[h]+moinfo.orbspi[h]; b++,B++)
+	for(a=offset[h]+moinfo.frdocc[h]+moinfo.boccpi[h],A=0; a < offset[h]+moinfo.orbspi[h]; a++,A++)
+	  for(b=offset[h]+moinfo.frdocc[h]+moinfo.boccpi[h],B=0; b < offset[h]+moinfo.orbspi[h]; b++,B++)
 	    X[a][b] = Fvv[h][B][A];
       }
 

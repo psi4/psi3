@@ -16,10 +16,15 @@ void get_params()
 
   errcod = ip_string("WFN", &(params.wfn), 0);
   if(strcmp(params.wfn, "CCSD") && strcmp(params.wfn, "CCSD_T") &&
-      strcmp(params.wfn, "EOM_CCSD") && strcmp(params.wfn, "LEOM_CCSD")) {
+     strcmp(params.wfn, "EOM_CCSD") && strcmp(params.wfn, "LEOM_CCSD") &&
+     strcmp(params.wfn, "BCCD") && strcmp(params.wfn,"BCCD_T")) {
     fprintf(outfile, "Invalid value of input keyword WFN: %s\n", params.wfn);
     exit(2);
   }
+
+  if(!strcmp(params.wfn,"BCCD") || !strcmp(params.wfn,"BCCD_T")) 
+    params.brueckner = 1;
+  else params.brueckner = 0;
 
   errcod = ip_string("REFERENCE", &(junk),0);
   /* if no reference is given, assume rhf */
@@ -129,9 +134,6 @@ void get_params()
     errcod = ip_data("NUM_AMPS", "%d", &(params.num_amps), 0);
   }
 
-  params.brueckner = 0;
-  errcod = ip_boolean("BRUECKNER", &(params.brueckner), 0);
-
   params.bconv = 1e-5;
   errcod = ip_data("BRUECKNER_CONV", "%d", &(iconv), 0);
   if(errcod == IPE_OK) params.bconv = 1.0*pow(10.0,(double) -iconv);
@@ -144,7 +146,6 @@ void get_params()
   fprintf(outfile, "\tWave function   =    %6s\n", params.wfn);
   fprintf(outfile, "\tReference wfn   =    %5s\n",
            (params.ref == 0) ? "RHF" : ((params.ref == 1) ? "ROHF" : "UHF"));
-  fprintf(outfile, "\tBrueckner       =    %s\n", params.brueckner ? "Yes" : "No");
   if(params.brueckner) 
     fprintf(outfile, "\tBrueckner conv. =    %3.1e\n", params.bconv);
   fprintf(outfile, "\tMemory (Mbytes) =  %5.1f\n",params.memory/1e6);

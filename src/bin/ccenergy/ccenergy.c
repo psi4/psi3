@@ -236,7 +236,7 @@ int main(int argc, char *argv[])
   chkpt_close();
 
   /* Write pertinent data to energy.dat for Dr. Yamaguchi */
-  if(!strcmp(params.wfn,"CCSD")) {
+  if(!strcmp(params.wfn,"CCSD") || !strcmp(params.wfn, "BCCD")) {
 
     chkpt_init(PSIO_OPEN_OLD);
     natom = chkpt_rd_natom();
@@ -252,7 +252,10 @@ int main(int argc, char *argv[])
     free_block(geom);  free(zvals);
     fprintf(efile, "SCF(30)   %22.12f\n", moinfo.escf);
     fprintf(efile, "REF(100)  %22.12f\n", moinfo.eref);
-    fprintf(efile, "CCSD      %22.12f\n", (moinfo.ecc+moinfo.eref));
+    if(!strcmp(params.wfn,"CCSD"))
+      fprintf(efile, "CCSD      %22.12f\n", (moinfo.ecc+moinfo.eref));
+    else if(!strcmp(params.wfn,"BCCD"))
+      fprintf(efile, "BCCD      %22.12f\n", (moinfo.ecc+moinfo.eref));
     fclose(efile);
   }
 
@@ -283,7 +286,8 @@ int main(int argc, char *argv[])
   timer_done();
   
   exit_io();
-  if(params.brueckner && brueckner_done) exit(PSI_RETURN_ENDLOOP);
+  if(params.brueckner && brueckner_done) 
+    exit(PSI_RETURN_ENDLOOP);
   else exit(PSI_RETURN_SUCCESS);
 }
 
