@@ -43,6 +43,7 @@ void grid_parse()
       }
       /* ... else indices are already Pitzer indices */
       else {
+	mos_to_plot = init_int_array(num_mos_to_plot);
 	for(mo=0;mo<num_mos_to_plot;mo++) {
 	  errcod = ip_data("MO_TO_PLOT","%d",&mos_to_plot[mo],1,mo);
 	  if (mos_to_plot[mo] <= 0 || mos_to_plot[mo] > nmo)
