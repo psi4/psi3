@@ -81,6 +81,41 @@ sub seek_mp2_direct
   exit 1;
 }
 
+sub seek_mp2r12
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  seek(OUT,0,0);
+  while(<OUT>) {
+    if (/MBPT\(2\)-R12/) {
+      @data = split(/ +/, $_);
+      $mp2r12 = $data[3];
+      return $mp2r12;
+    }
+  }
+  close(OUT);
+
+  printf "Error: Could not find MBPT(2)-R12 energy in $_[0].\n";
+  exit 1;
+}
+
+# find the MP2 energy in the MP2-R12 output
+sub seek_mp2r12_mp2
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  seek(OUT,0,0);
+  while(<OUT>) {
+    if (/MBPT\(2\) Energy/) {
+      @data = split(/ +/, $_);
+      $mp2 = $data[3];
+      return $mp2;
+    }
+  }
+  close(OUT);
+
+  printf "Error: Could not find MBPT(2) energy in $_[0].\n";
+  exit 1;
+}
+
 sub seek_ccsd
 {
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";

@@ -100,7 +100,8 @@ elsif ($ARGV[0] eq "--small") {
                  "cc19",
                  "dboc-rhf1",
                  "dboc-rohf1",
-                 "dboc-uhf1"
+                 "dboc-uhf1",
+                 "mp2r12-sp1"
                );
 }
 elsif ($ARGV[0] eq "--medium") {
@@ -156,7 +157,8 @@ elsif ($ARGV[0] eq "--all") {
                  "dboc-rohf1",
                  "dboc-uhf1",
                  "dboc-rcisd1",
-                 "dboc-rocisd1"
+                 "dboc-rocisd1",
+                 "mp2r12-sp1"
                );
 }
 elsif ($ARGV[0] eq "--sp") {
@@ -182,7 +184,8 @@ elsif ($ARGV[0] eq "--sp") {
                  "dboc-rohf1",
                  "dboc-uhf1",
                  "dboc-rcisd1",
-                 "dboc-rocisd1"
+                 "dboc-rocisd1",
+                 "mp2r12-sp1"
                );
 }
 elsif ($ARGV[0] eq "--geom") {
@@ -246,7 +249,8 @@ else {
                  "dboc-rohf1",
                  "dboc-uhf1",
                  "dboc-rcisd1",
-                 "dboc-rocisd1"
+                 "dboc-rocisd1",
+                 "mp2r12-sp1"
 #                 "Basis_Tests"
                 );
 }
@@ -260,6 +264,7 @@ foreach $name (@DIR_NAMES) {
   chdir ("$name");
 
   if ($ARGV[0] eq "--clean" || $ARGV[1] eq "--clean") {
+    unlink <core>;
     unlink <output.dat>;
     unlink <file*.dat>;
     unlink <psi.*>;

@@ -1,0 +1,15 @@
+psi: (
+  label = "BH aug-cc-pVTZ MP2-R12/A"
+  jobtype = sp
+  wfn = mp2r12
+  reference = rhf
+  docc = (3 0 0 0)
+  freeze_core = true
+  basis = "aug-cc-pVTZ"
+  puream = true
+  geometry = (
+    b      0.0000        0.0000        0.0000
+    h      0.0000        0.0000        1.0000
+  )
+)
+

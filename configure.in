@@ -876,6 +876,7 @@ AC_OUTPUT(include/psiconfig.h
           tests/dboc-rocisd1/Makefile
           tests/extrema-zmat/Makefile
           tests/extrema-deloc/Makefile
+	  tests/mp2r12-sp1/Makefile
 
           src/doc/MakeVars src/doc/MakeRules src/doc/Makefile
           src/doc/install/Makefile
