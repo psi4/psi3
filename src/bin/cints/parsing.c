@@ -1,4 +1,6 @@
 #include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
 #include<math.h>
 #include<libipv1/ip_lib.h>
 #include<libint/libint.h>
