@@ -425,7 +425,8 @@ void get_parameters(void)
   params.max_buckets = 199;
   errcod = ip_data("MAX_BUCKETS","%d", &(params.max_buckets),0);
 
-  if ((strcmp(params.wfn,"OOCCD")==0 || strcmp(params.wfn,"DETCAS")==0) && 
+  if ((strcmp(params.wfn,"OOCCD")==0 || strcmp(params.wfn,"DETCAS")==0) ||
+      !strcmp(params.wfn,"BCCD") || !strcmp(params.wfn,"BCCD_T")) &&
       !params.backtr)
     params.delete_src_tei = 0;
   else 
