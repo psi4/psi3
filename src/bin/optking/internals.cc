@@ -386,6 +386,11 @@ internals :: internals(cartesians& carts, int user_intcos)
         bonds[b][a] = 0;
       }
 
+      /* make sure diatomics are always bonded */
+      if ( (natom == 2) && (!bonds[0][1]) ) {
+        bonds[0][1] = bonds[1][0] = 1;
+      }
+
       /* determine stretch internal coordinates */
       id_count = 0; // index the id numbers of internals
       type_count = 0;
