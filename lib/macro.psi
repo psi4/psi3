@@ -2,7 +2,7 @@
 .ds OS OS_NAME_HERE
 
 .\"     @(#)tmac.an 1.37 90/02/04 SMI;
-.ds ]W Psi Release 1.1
+.ds ]W Psi Release 3.2
 '	# month name
 .  \".if "\nd"0" .nr m \n(mo-1
 .  \".if "\nm"0" .ds ]m January
@@ -386,7 +386,7 @@
 .ds pT \*(OS USERS
 ..
 
-.ds ]W Psi Release 2.0
+.ds ]W Psi Release 3.2
 
 .\" This is used to ignore blanks on a line
 .\" Its purpose is to make the troff input look prettier.
