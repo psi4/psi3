@@ -124,6 +124,11 @@ void get_params()
     sprintf(local.weakp, "%s", "MP2");
   }
 
+  params.num_amps = 10;
+  if(ip_exist("NUM_AMPS",0)) {
+    errcod = ip_data("NUM_AMPS", "%d", &(params.num_amps), 0);
+  }
+
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
   fprintf(outfile, "\tWave function   =    %6s\n", params.wfn);
@@ -146,6 +151,7 @@ void get_params()
   fprintf(outfile, "\tCache Type      =    %4s\n", 
       params.cachetype ? "LOW" : "LRU");
   fprintf(outfile, "\tPrint Level     =    %1d\n",  params.print);
+  fprintf(outfile, "\t# Amps to Print =    %1d\n",  params.num_amps);
   fprintf(outfile, "\n");
 
 }

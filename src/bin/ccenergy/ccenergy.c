@@ -52,6 +52,7 @@ void status(char *, FILE *);
 void lmp2(void);
 void local_filter_T1_nodenom(dpdfile2 *);
 void local_filter_T2_nodenom(dpdbuf4 *);
+void amp_write(void);
 
 /* local correlation functions */
 void local_init(void);
@@ -176,6 +177,8 @@ int main(int argc, char *argv[])
       update();
       fprintf(outfile, "\n\tIterations converged.\n");
       fflush(outfile);
+      fprintf(outfile, "\n");
+      amp_write();
 
       break;
     }

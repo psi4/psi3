@@ -12,5 +12,6 @@ struct Params {
   char *wfn;
   int print;
   int local;
+  int num_amps;
 };
 
