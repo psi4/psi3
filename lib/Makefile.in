@@ -20,11 +20,10 @@ MKDIRS = @MKDIRS@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 
-install: pbasis.dat psi.dat tmpdisks.dat
+install: pbasis.dat psi.dat
 	$(MKDIRS) $(datadir)
 	$(INSTALL_DATA) $(srcdir)/pbasis.dat $(datadir)
 	$(INSTALL_DATA) $(srcdir)/psi.dat $(datadir)
-	$(INSTALL_DATA) $(srcdir)/tmpdisks.dat $(datadir)
 
 install_man: macro.psi
 	$(MKDIRS) $(datadir)
