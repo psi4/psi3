@@ -8,7 +8,7 @@ CDEF += -DTIME=0
 PSILIBS = libciomr.a libipv1.a
 
 LD = $(CC)
-LDFLAGS = $(CFLAGS)
+LDFLAGS += $(CFLAGS)
 LDLIBS = $(CLIBS)
 
 ifneq (,$(findstring ibm-aix,$(target)))

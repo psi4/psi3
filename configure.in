@@ -147,7 +147,18 @@ AC_PROG_INSTALL()
 INSTALL_INCLUDE='$(top_srcdir)/installinc.sh' AC_SUBST(INSTALL_INCLUDE)
 MKDIRS='$(top_srcdir)/mkdirs.sh' AC_SUBST(MKDIRS)
 
-AC_PROG_LEX()
+# On 64-bit PowerPC platforms you need lex rather than flex
+case $cpu in
+  powerpc*)
+    test -z "$LEX" && AC_PATH_PROG(LEX,lex) AC_SUBST(LEX)
+    test -z "$LEXLIB" && LEXLIB=`echo $LEX|sed "s bin/lex.* lib/libl.a "`
+    if test -n "$LEXLIB" && test -f "$LEXLIB"; then
+      test -n "$verbose" && echo "setting LEXLIB to $LEXLIB"
+    fi
+  ;;
+  *)
+    AC_PROG_LEX()
+esac
 # If we got flex but didn't get LEXLIB try to find LEXLIB
 case "$LEX" in
   flex*)
@@ -163,6 +174,26 @@ case "$LEX" in
   *)
   ;;
 esac
+
+# Set archiver and linker flags to some special values on 64-bit platforms
+case $cpu in
+  powerpc*)
+    ARFLAGS="-X32_64 rv"
+    ;;
+  default)
+    ARFLAGS="rv"
+    ;;
+esac
+AC_SUBST(ARFLAGS)
+case $cpu in
+  powerpc*)
+    LDFLAGS="-q64"
+    ;;
+  default)
+    LDFLAGS=""
+    ;;
+esac     
+AC_SUBST(LDFLAGS)
 
 AC_SET_MAKE
 

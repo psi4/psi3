@@ -13,7 +13,7 @@ ifneq (,$(findstring ibm-aix,$(target)))
 endif
 
 LD = $(CC)
-LDFLAGS = $(CFLAGS)
+LDFLAGS += $(CFLAGS)
 LDLIBS = $(CLIBS)
 
 TRUESRC = abmat.c clscf.c cmake37.c density.c findit.c gprgid.c init_master.c \

@@ -79,7 +79,7 @@ ALLOC = allocate.o
 vpath allocate.o $(top_objdir)/lib:$(libdir)
 
 # we are mostly compiling C programs here
-LDFLAGS = 
+LDFLAGS = @LDFLAGS@
 LDLIBS = $(CLIBS)
 
 # these are the most commonly used libraries
