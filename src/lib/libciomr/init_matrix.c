@@ -3,9 +3,13 @@
 */ 
 
 /* $Log$
- * Revision 1.2  2002/03/25 02:43:45  sherrill
- * Update documentation
+ * Revision 1.3  2002/04/04 22:24:38  evaleev
+ * Converted allocation functions (init_array, etc.) to take unsigned long ints
+ * to be able to allocate properly 2GB+ chunks). Some declarations cleaned up.
  *
+/* Revision 1.2  2002/03/25 02:43:45  sherrill
+/* Update documentation
+/*
 /* Revision 1.1.1.1  2000/02/04 22:53:19  evaleev
 /* Started PSI 3 repository
 /*
@@ -29,31 +33,31 @@ extern void resource_command(void);
 ** init_matrix(): Initialize a matrix of doubles and return a pointer to
 ** the first row.  Note that this does not form a matrix which is 
 ** necessarily contiguous in memory.  Use block_matrix() for that.
-**
+** 
 ** \param n = number of rows
 ** \param m = number of columns
 */
 
-double ** init_matrix(int n, int m)
+double ** init_matrix(unsigned long int n, unsigned long int m)
    {
     double **array=NULL;
-    int i;
+    unsigned long int i;
 
-    if ((array = (double **) malloc(sizeof(double *)*n))==NULL) {
+    if ((array = (double **) malloc(n*(unsigned long int)sizeof(double *)))==NULL) {
          fprintf(stderr,"init_matrix: trouble allocating memory \n");
-         fprintf(stderr,"n = %d\n",n);
+         fprintf(stderr,"n = %ld\n",n);
          resource_command();
          exit(2);
          }
 
     for (i = 0; i < n; i++) {
-        if ((array[i] = (double *) malloc(sizeof(double)*m))==NULL) {
+        if ((array[i] = (double *) malloc(m*(unsigned long int)sizeof(double)))==NULL) {
            fprintf(stderr,"init_matrix: trouble allocating memory \n");
-           fprintf(stderr,"i = %d m = %d\n",i,m);
+           fprintf(stderr,"i = %ld m = %ld\n",i,m);
            resource_command();
            exit(3);
            }
-        bzero(array[i],sizeof(double)*m);
+        bzero(array[i],m*(unsigned long int)sizeof(double));
         }
     return(array);
     }
@@ -64,9 +68,9 @@ double ** init_matrix(int n, int m)
 ** \param array = matrix to free
 ** \param size = number of rows
 */
-void free_matrix(double **array, int size)
+void free_matrix(double **array, unsigned long int size)
    {
-      int i;
+      unsigned long int i;
 
       for (i=0; i < size ; i++) {
          free(array[i]);

@@ -1,8 +1,12 @@
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:23  evaleev
- * Initial revision
+ * Revision 1.2  2002/04/04 22:24:38  evaleev
+ * Converted allocation functions (init_array, etc.) to take unsigned long ints
+ * to be able to allocate properly 2GB+ chunks). Some declarations cleaned up.
  *
+/* Revision 1.1.1.1  2000/02/04 22:53:23  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 2.3  1999/11/01 20:11:00  evaleev
 /* Added explicit extern declarations of functions within the library.
 /*
@@ -18,9 +22,6 @@ static char *rcsid = "$Id$";
 
 #include "includes.h"
 
-extern double *init_array(int);
-extern double **init_matrix(int,int);
-extern void free_matrix(double **, int);
 extern void tred2(int, double **, double *, double *, int);
 extern int tqli(int, double *, double **, double *, int, double);
 extern void eigsort(double *, double **, int);

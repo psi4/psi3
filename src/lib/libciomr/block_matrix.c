@@ -24,27 +24,37 @@ void bzero();
 ** Based on init_matrix() from libciomr
 **
 */
-double ** block_matrix(int n,int m)
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+void bzero();
+
+/* allocates memory for an n x m matrix */
+/* returns pointer to pointer to 1st element */
+
+double ** block_matrix(unsigned long int n, unsigned long int m)
    {
     double **A=NULL;
     double *B=NULL;
-    int i;
+    unsigned long int i;
 
     if(!m || !n) return((double **) NULL);
 
-    if ((A = (double **) malloc(n * sizeof(double *)))==NULL) {
+    if ((A = (double **) malloc(n * (unsigned long int)sizeof(double *)))==NULL) {
          fprintf(stderr,"block_matrix: trouble allocating memory \n");
-         fprintf(stderr,"n = %d\n",n);
+         fprintf(stderr,"n = %ld\n",n);
          exit(1);
          }
 
-    if ((B = (double *) malloc(m*n * sizeof(double)))==NULL) {
+    if ((B = (double *) malloc(m*n * (unsigned long int)sizeof(double)))==NULL) {
          fprintf(stderr,"block_matrix: trouble allocating memory \n");
-         fprintf(stderr,"m = %d\n",m);
+         fprintf(stderr,"m = %ld\n",m);
          exit(1);
          }
 
-    bzero(B, m*n*sizeof(double));
+    bzero(B, m*n*(unsigned long int)sizeof(double));
 
     for (i = 0; i < n; i++) {
          A[i] = &(B[i*m]);

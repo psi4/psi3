@@ -3,9 +3,13 @@
 */
 
 /* $Log$
- * Revision 1.2  2002/03/25 02:43:45  sherrill
- * Update documentation
+ * Revision 1.3  2002/04/04 22:24:38  evaleev
+ * Converted allocation functions (init_array, etc.) to take unsigned long ints
+ * to be able to allocate properly 2GB+ chunks). Some declarations cleaned up.
  *
+/* Revision 1.2  2002/03/25 02:43:45  sherrill
+/* Update documentation
+/*
 /* Revision 1.1.1.1  2000/02/04 22:53:19  evaleev
 /* Started PSI 3 repository
 /*
@@ -23,20 +27,20 @@ static char *rcsid = "$Id$";
 extern void resource_command(void);
 
 /*
-** init_array(): This function initializes an array of doubles of 
+** init_array(): This function initializes an array of doubles of
 ** length 'size' and returns a pointer to the first element
 */
-double * init_array(int size)
+double * init_array(unsigned long int size)
    {
     double *array;
 
-    if ((array = (double *) malloc(sizeof(double)*size))==NULL) {
+    if ((array = (double *) malloc(size*(unsigned long int)sizeof(double)))==NULL) {
        fprintf(stderr,"init_array:  trouble allocating memory \n");
-       fprintf(stderr,"size = %d\n",size);
+       fprintf(stderr,"size = %ld\n",size);
        resource_command();
        exit(2);
        }
-    bzero(array,sizeof(double)*size);
+    bzero(array,size*(unsigned long int)sizeof(double));
     return(array);
    }
 

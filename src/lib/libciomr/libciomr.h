@@ -38,7 +38,7 @@ void fwrite_error(char *caller);
 
 void ffile (FILE **unit, char *name, int code) ;
 void flin(double **a,double *b,int in,int im,double *det);
-void free_matrix(double **array, int size) ;
+void free_matrix(double **array, unsigned long int size) ;
 #ifdef DEC
 int get_file_info(char *token,char *format,char *val);
 int get_param(char *token,char *format,char *val);
@@ -47,8 +47,8 @@ int get_file_info(char *token,char *format,void *val);
 int get_param(char *token,char *format,void *val);
 #endif
 int i2sec(PSI_FPTR n);
-double * init_array(int size) ;
-double ** init_matrix(int rows, int cols) ;
+double * init_array(unsigned long int size) ;
+double ** init_matrix(unsigned long int rows, unsigned long int cols) ;
 void init_ptrs();
 
 /* Functions under int_pac.c */
@@ -128,7 +128,7 @@ void zero_int_matrix(int **array, int rows, int cols);
 void print_int_mat(int **a, int m, int n, FILE *out);
 
 /* Functions in block_matrix.c */
-double ** block_matrix(int n,int m);
+double ** block_matrix(unsigned long int n, unsigned long int m);
 void free_block(double **array);
 
 /* Functions in fndcor */

@@ -4,7 +4,6 @@ static char *rcsid = "$Id$";
 
 extern void ludcmp(double **, int, int *, double *);
 extern void lubksb(double **, int, int *, double *);
-extern double *init_array(int);
 
 /* solves linear equations A * x = b */
 /* on input a contains coefficients, and b contains */
