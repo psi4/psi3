@@ -25,6 +25,7 @@
 #define PSIF_DERINFO        40
 #define PSIF_SO_PRESORT     41
 #define PSIF_OLD_CHKPT      42             /* Until we have flexible PSIF_CHKPT this will store previous calculation info */
+#define PSIF_CIVECT         43             /* CI vector from DETCI along with string and determinant info */
 #define PSIF_MO_R12         79
 #define PSIF_MO_R12T1       80
 #define PSIF_SO_PKSUPER1    92
