@@ -6,7 +6,9 @@
 
 void Fae_build(void)
 {
-  int h,a,e;
+  int h,a,e,nirreps;
+  int ma,fe,ef,m,f,M,A,Gm,Ga,Ge,Gf,Gma,nrows,ncols;
+  double *X;
   dpdfile2 tIA, tia;
   dpdfile2 FME, Fme;
   dpdfile2 fAB, fab, fIA, fia;
@@ -14,6 +16,8 @@ void Fae_build(void)
   dpdfile2 FAEt, Faet;
   dpdbuf4 F_anti, F, D_anti, D;
   dpdbuf4 tautIJAB, tautijab, tautIjAb, taut;
+
+  nirreps = moinfo.nirreps;
 
   if(params.ref == 0) { /** RHF **/
     dpd_file2_init(&fAB, CC_OEI, 0, 1, 1, "fAB");
@@ -117,13 +121,15 @@ void Fae_build(void)
 
   if(params.ref == 0) { /** RHF **/
     dpd_file2_init(&FAE, CC_OEI, 0, 1, 1, "FAE");
-
     dpd_file2_init(&fIA, CC_OEI, 0, 0, 1, "fIA");
     dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
     dpd_contract222(&tIA, &fIA, &FAE, 1, 1, -0.5, 1);
     dpd_file2_close(&tIA);
     dpd_file2_close(&fIA);
+    dpd_file2_close(&FAE);
 
+    /*
+    dpd_file2_init(&FAE, CC_OEI, 0, 1, 1, "FAE");
     dpd_buf4_init(&F_anti, CC_FINTS, 0, 10, 5, 10, 5, 1, "F <ia|bc>");
     dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0,"F <ia|bc>");
     dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
@@ -132,6 +138,59 @@ void Fae_build(void)
     dpd_file2_close(&tIA);
     dpd_buf4_close(&F_anti);
     dpd_buf4_close(&F);
+    dpd_file2_close(&FAE);
+    */
+
+    /* Out-of-core algorithm for F->FAE added 3/20/05 - TDC */
+    /* Fae <-- t(m,f) [2 <ma|fe> - <ma|ef>] */
+    dpd_file2_init(&FAE, CC_OEI, 0, 1, 1, "FAE");
+    dpd_file2_mat_init(&FAE);
+    dpd_file2_mat_rd(&FAE);
+    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+    dpd_file2_mat_init(&tIA);
+    dpd_file2_mat_rd(&tIA);
+    dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0,"F <ia|bc>");
+    for(Gma=0; Gma < nirreps; Gma++) {
+      dpd_buf4_mat_irrep_row_init(&F, Gma);
+      X = init_array(F.params->coltot[Gma]);
+
+      for(ma=0; ma < F.params->rowtot[Gma]; ma++) {
+	dpd_buf4_mat_irrep_row_rd(&F, Gma, ma);
+	m = F.params->roworb[Gma][ma][0];
+	a = F.params->roworb[Gma][ma][1];
+	Gm = F.params->psym[m];
+	Ga = Ge = Gm ^ Gma;  /* Fae is totally symmetric */
+	Gf = Gm; /* T1 is totally symmetric */
+	M = m - F.params->poff[Gm];
+	A = a - F.params->qoff[Ga];
+
+	zero_arr(X, F.params->coltot[Gma]);
+
+	/* build spin-adapted F-integrals for current ma */
+	for(fe=0; fe < F.params->coltot[Gma]; fe++) {
+	  f = F.params->colorb[Gma][fe][0];
+	  e = F.params->colorb[Gma][fe][1];
+	  ef = F.params->colidx[e][f];
+	  X[fe] = 2.0 * F.matrix[Gma][0][fe] - F.matrix[Gma][0][ef];
+	}
+	
+	nrows = moinfo.virtpi[Gf];
+	ncols = moinfo.virtpi[Ge];
+	C_DGEMV('t',nrows,ncols,1.0,&X[F.col_offset[Gma][Gf]],ncols,
+	    tIA.matrix[Gm][M],1,1.0,FAE.matrix[Ga][A],1);
+      }
+
+      free(X);
+      dpd_buf4_mat_irrep_row_close(&F, Gma);
+    }
+    dpd_buf4_close(&F);
+    dpd_file2_mat_close(&tIA);
+    dpd_file2_close(&tIA);
+    dpd_file2_mat_wrt(&FAE);
+    dpd_file2_mat_close(&FAE);
+    dpd_file2_close(&FAE);
+
+    dpd_file2_init(&FAE, CC_OEI, 0, 1, 1, "FAE");
 
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D 2<ij|ab> - <ij|ba>");
     dpd_buf4_init(&tautIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tautIjAb");
