@@ -12,6 +12,8 @@ extern "C" {
 #include <libciomr/libciomr.h>
 #include <libfile30/file30.h>
 #include <libpsio/psio.h>
+#include <libqt/slaterd.h>
+#include <psifiles.h>
 }
 #include <masses.h>
 #include <physconst.h>
@@ -82,7 +84,7 @@ void parsing()
   else if (!strcmp(reftype,"UHF"))
     Params.reftype = Params_t::uhf;
   else
-    done("This SCF method is not supported at the moment");
+    done("This HF reference is not supported at the moment");
   delete[] reftype;
 
   Params.delta = 0.0001;
@@ -144,6 +146,19 @@ double eval_dboc()
       done("psi failed");
     }
     disp++;
+
+    // For CI method rename the saved wave function
+    if (!strcmp(Params.wfn,"DETCI")) {
+      SlaterDetVector *vec;
+      slaterdetvector_read(PSIF_CIVECT,"CI vector",&vec);
+      slaterdetvector_write(PSIF_CIVECT,"Old CI vector",vec);
+      slaterdetvector_delete_full(vec);
+      /*      stringset_delete(vec->sdset->alphastrings);
+      stringset_delete(vec->sdset->betastrings);
+      slaterdetset_delete(vec->sdset);
+      slaterdetvector_delete(vec);*/
+    }
+
     sprintf(inputcmd,"input --savemos --geomdat %d --noreorient --nocomshift",disp);
     errcod = system(inputcmd);
     if (errcod) {
@@ -153,17 +168,17 @@ double eval_dboc()
     if (errcod) {
       done("psi failed");
     }
+    delete[] inputcmd;
 
     double S = eval_derwfn_overlap();
-    double del2 = (S-1.0)/(2.0*Params.delta*Params.delta);
-    //    E_dboc -= del2*_au2amu/(2.0*an2masses[(int)Molecule.zvals[atom]]);
+    double del2 = (1.0-S)/(2.0*Params.delta*Params.delta);
     double E_i = del2*_au2amu/(2.0*an2masses[(int)Molecule.zvals[atom]]);
     if (Params.print_lvl > PrintLevels::print_intro) {
       fprintf(outfile,"  DBOC contribution from cartesian degree of freedom %d = %lf a.u.\n",
 	      (disp-1)/2+1,E_i);
       fflush(outfile);
     }
-    E_dboc -= E_i;
+    E_dboc += E_i;
   }
 
   return E_dboc;
