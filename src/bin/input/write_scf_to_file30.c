@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include <file30_params.h>
 #include "input.h"
 #include "global.h"

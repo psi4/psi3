@@ -8,7 +8,7 @@
 #include <stdlib.h>
 
 extern "C" {
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 }
 
 #include"math_tools.h"

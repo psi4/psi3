@@ -3,7 +3,7 @@ calculations */
 
 #define EXTERN
 #include <stdio.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include <stdlib.h>
 #include <math.h>
 #include "input.h"

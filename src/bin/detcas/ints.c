@@ -13,7 +13,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <iwl.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include <qt.h>
 #include <psifiles.h>
 #include "globaldefs.h"

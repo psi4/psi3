@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 
 /*!
 ** file30_wt_schwartz(): Write out the table of maxima of Schwartz integrals (ij|ij) for

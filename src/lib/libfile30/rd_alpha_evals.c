@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 
 /*!
 ** file30_rd_alpha_evals():  Reads in the alpha SCF eigenvalues: the  alpha SCF orbital energies.

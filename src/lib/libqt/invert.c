@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include "qt.h"
 
 #define SMALL_DET 1.0E-10

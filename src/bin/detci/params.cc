@@ -17,7 +17,7 @@ extern "C" {
 #endif
 #include <libipv1/ip_lib.h>
 #include <libipv1/ip_data.gbl>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include <qt.h>
 #include <file30.h>
 #include <psifiles.h>

@@ -1,7 +1,7 @@
 #define EXTERN
 #include <stdio.h>
 #include <stdlib.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include <math.h>
 #include "input.h"
 #include "global.h"

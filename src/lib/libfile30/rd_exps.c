@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 
 /*!
 ** file30_rd_exps():	Reads in the exponents of the primitive Gaussian functions.

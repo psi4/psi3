@@ -1,7 +1,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include "build_libint.h"
 
 extern FILE *infile, *outfile, *vrr_header;

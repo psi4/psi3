@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <math.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include <libint.h>
 #include <libderiv.h>
 #include "defines.h"

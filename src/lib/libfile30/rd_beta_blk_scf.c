@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 
 /*!
 ** file30_rd_beta_blk_scf():  Reads in a symmetry block of the beta SCF eigenvector 

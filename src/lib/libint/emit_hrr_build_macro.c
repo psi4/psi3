@@ -1,6 +1,6 @@
 #include <math.h>
 #include <stdio.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 
 #include "build_libint.h"
 

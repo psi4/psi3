@@ -4,7 +4,7 @@
 #include<memory.h>
 #include<stdlib.h>
 #include<iwl.h>
-#include<libciomr.h>
+#include<libciomr/libciomr.h>
 #include<libint.h>
 #include<libr12.h>
 

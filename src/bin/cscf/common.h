@@ -1,8 +1,11 @@
 /* $Id$ */
 /* $Log$
- * Revision 1.10  2001/06/29 20:39:27  evaleev
- * Modified cscf to use libpsio to store supermatrix files.
+ * Revision 1.11  2002/03/25 02:51:57  janssen
+ * libciomr.h -> libciomr/libciomr.h
  *
+/* Revision 1.10  2001/06/29 20:39:27  evaleev
+/* Modified cscf to use libpsio to store supermatrix files.
+/*
 /* Revision 1.9  2001/01/04 14:13:34  sbrown
 /* Fixed the problem with iconv:  The new versions of linux had iconv already
 /* assigned to something else so I changed all references of it to scf_conv.
@@ -103,7 +106,7 @@
  * -Ed
  * */
 
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include <file30.h>
 #include <psio.h>
 

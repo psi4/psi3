@@ -3,7 +3,7 @@
 #include<string.h>
 #include<memory.h>
 #include<stdlib.h>
-#include<libciomr.h>
+#include<libciomr/libciomr.h>
 #include<qt.h>
 #include<libint.h>
 #include<pthread.h>

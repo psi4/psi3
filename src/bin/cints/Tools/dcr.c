@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
-#include<libciomr.h>
+#include<libciomr/libciomr.h>
 #include<symmetry.h>
 #include<libint.h>
 

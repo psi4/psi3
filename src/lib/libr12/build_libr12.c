@@ -20,7 +20,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <libipv1/ip_lib.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include <libint.h>
 #include "build_libr12.h"
 

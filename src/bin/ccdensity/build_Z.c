@@ -1,6 +1,6 @@
 #include <dpd.h>
 #include <qt.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include <math.h>
 #define EXTERN
 #include "globals.h"

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <psifiles.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include <iwl.h>
 #include "MOInfo.h"
 #include "Params.h"

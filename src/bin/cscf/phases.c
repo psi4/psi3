@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #define EXTERN
 #include "includes.h"
 #include "common.h"

@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include "file30.h"
 #include "file30.gbl"
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 
 /*!
 ** file30_rd_alpha_scf():  Reads in the alpha SCF eigenvector (or whatever is stored in its

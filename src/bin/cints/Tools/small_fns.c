@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<libipv1/ip_lib.h>
 #include<math.h>
-#include<libciomr.h>
+#include<libciomr/libciomr.h>
 
 #include"defines.h"
 #define EXTERN

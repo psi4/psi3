@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<string.h>
-#include<libciomr.h>
+#include<libciomr/libciomr.h>
 #include<file30.h>
 #include<math.h>
 #include<libint.h>

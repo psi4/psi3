@@ -11,7 +11,7 @@
 
 /* #define DEBUG */
 #include <stdio.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include "structs.h"
 #define EXTERN
 #include "globals.h"

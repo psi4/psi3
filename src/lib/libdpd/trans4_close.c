@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include "dpd.h"
 
 int dpd_trans4_close(dpdtrans4 *Trans)

@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<math.h>
 #include<stdlib.h>
-#include<libciomr.h>
+#include<libciomr/libciomr.h>
 #include<file30.h>
 
 #include<libint.h>

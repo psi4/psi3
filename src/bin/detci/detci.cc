@@ -30,7 +30,7 @@ extern "C" {
    /* seem to need string.h in RedHat 7.1 */
    #include <string.h>
    #include <qt.h>
-   #include <libciomr.h>
+   #include <libciomr/libciomr.h>
    #include <file30.h>
    #include <psio.h>
    #include "structs.h"

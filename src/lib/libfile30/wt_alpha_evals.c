@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include "file30.h"
 #include "file30.gbl"
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 
 /*!
 ** file30_wt_alpha_evals():  Writes the alpha SCF eigenvalues: the SCF orbital energies.

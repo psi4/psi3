@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.6  2000/10/13 19:51:20  evaleev
- * Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
+ * Revision 1.7  2002/03/25 02:51:57  janssen
+ * libciomr.h -> libciomr/libciomr.h
  *
+/* Revision 1.6  2000/10/13 19:51:20  evaleev
+/* Cleaned up a lot of stuff in order to get CSCF working with the new "Mo-projection-capable" INPUT.
+/*
 /* Revision 1.5  2000/07/10 18:03:31  sbrown
 /* Enabling cscf to send over just the occupied SCF eigenvector for DFT
 /* calculations.  Only done for the RHF case.
@@ -38,7 +41,7 @@ static char *rcsid = "$Id$";
 #define EXTERN
 #include "includes.h"
 #include "common.h"
-#include "libciomr.h"
+#include "libciomr/libciomr.h"
 #include "psio.h"
 
 void form_vec()

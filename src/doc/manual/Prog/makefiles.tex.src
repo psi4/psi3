@@ -80,13 +80,13 @@ clean:
 	/bin/rm -f $(CODE) *.o core
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
-mycode.o: /usr/local/psi/include/libciomr.h 
+mycode.o: /usr/local/psi/include/libciomr/libciomr.h 
 mycode.o: /usr/local/psi/include/libipv1/ip_lib.h
 mycode.o: $(ROOT)/include/qt.h 
 mycode.o: $(ROOT)/include/read34.h 
 mycode.o: $(ROOT)/include/file30.h
 a_function.o: a_function.c globals.h $(ROOT)/include/qt.h
-a_function.o: /usr/local/psi/include/libciomr.h 
+a_function.o: /usr/local/psi/include/libciomr/libciomr.h 
 a_function.o: /usr/local/psi/include/libipv1/ip_lib.h
 \end{verbatim}
 This Makefile contains a number of variable definitions (e.g.~{\tt CFLAGS},

@@ -4,7 +4,7 @@
 #include <string.h>
 #include <errno.h>
 #include <math.h>
-#include "libciomr.h"
+#include "libciomr/libciomr.h"
 
 #if defined(SGI)
 #  include <sys/stat.h>

@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <psio.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include "iwl.h"
 
 /*!

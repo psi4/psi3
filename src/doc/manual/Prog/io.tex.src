@@ -43,7 +43,7 @@ as arguments the unit number, a data buffer, the number of bytes to be
 read or written, and the starting byte address in the file.  In
 addition, both provide (as an argument, not a return value) the ending
 bytewise file pointer after the read/write has completed.  (See
-\file{libciomr.h} for the exact syntax for calling these two
+\file{libciomr/libciomr.h} for the exact syntax for calling these two
 routines.)  For example, if the programmer wishes to read 512 double
 precision floating point words from \FILE{92}, starting at byte number
 13, into the array \celem{arr}, the appropriate call to

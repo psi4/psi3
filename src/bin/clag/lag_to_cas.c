@@ -11,7 +11,7 @@
 
 #include <stdio.h>            /* the standard io library       */
 #include <math.h>             /* the C math routines library   */
-#include <libciomr.h>         /* standard psi routines library */
+#include <libciomr/libciomr.h>         /* standard psi routines library */
 #include <qt.h>               /* the quantum trio library      */
 #define INDEX(x,y) ((x>y) ? ioff[x] + y : ioff[y] + x)
 

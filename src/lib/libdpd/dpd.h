@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <psio.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include <iwl.h>
 
 #ifdef USE_DMALLOC

@@ -12,7 +12,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include "globaldefs.h"
 #include "globals.h"
 

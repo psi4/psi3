@@ -8,7 +8,7 @@
 
 #include <stdio.h>
 #include "file30.h"
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
 
 FILE *infile, *outfile;

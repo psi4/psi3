@@ -8,7 +8,7 @@ extern "C" {
    #include <stdio.h>
    #include <stdlib.h>
    /* may no longer need #include <libc.h> */
-   #include <libciomr.h>
+   #include <libciomr/libciomr.h>
    #include <qt.h>
    #include <file30.h>
    #include <iwl.h>

@@ -10,7 +10,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include "globals.h"
 
 /*

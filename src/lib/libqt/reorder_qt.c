@@ -4,7 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 
 /*!
 ** reorder_qt()

@@ -30,7 +30,7 @@ extern "C" {
   #include <stdlib.h>
   #include <string.h>
   #include <physconst.h>
-  #include <libciomr.h>
+  #include <libciomr/libciomr.h>
   #include <libipv1/ip_lib.h>
 }
 

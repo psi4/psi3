@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include "file30.h"
 #include "file30.gbl"
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 
 /*!
 ** file30_rd_ua2a(): Read in a mapping array from the symmetry-unique atom

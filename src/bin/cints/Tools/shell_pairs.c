@@ -2,7 +2,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-#include<libciomr.h>
+#include<libciomr/libciomr.h>
 #include<libint.h>
 
 #include"defines.h"

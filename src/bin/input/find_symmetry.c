@@ -1,6 +1,6 @@
 #define EXTERN
 #include <stdio.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include "MOInfo.h"
 #include "Params.h"
 #include "globals.h"

@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include "file30.h"
 #include "file30.gbl"
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 
 /*!
 **  file30_init()  Initializes the file30 struct to allow other file30_

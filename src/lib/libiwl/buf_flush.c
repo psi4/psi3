@@ -2,7 +2,7 @@
   \file buf_flush.c
 */
 #include <stdio.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include "iwl.h"
 
 /*!

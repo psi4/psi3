@@ -17,7 +17,7 @@
 #include <string.h>
 #include <libipv1/ip_lib.h>
 #include <psio.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include <file30.h>
 #include <qt.h>
 #include <psifiles.h>

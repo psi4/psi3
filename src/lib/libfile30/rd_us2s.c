@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include "file30.h"
 #include "file30.gbl"
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 
 /*!
 ** file30_rd_us2s(): Read in a mapping array betwen unique shell and 

@@ -21,7 +21,7 @@
 
 #include <stdio.h>
 #include <math.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include "structs.h"
 #include "globals.h"
 #include "genci.h"

@@ -20,7 +20,7 @@ double **symm_matrix_invert(double **_A, int dim, int print_det,
   \brief The obligatory gprgid function. */
 /*---------------------------------------------------------------------------*/
 extern "C" {
-    #include<libciomr.h>
+    #include<libciomr/libciomr.h>
     char *gprgid() {
 	char *prgid = "EXTREMA";
 	return(prgid);

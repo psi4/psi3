@@ -3,7 +3,7 @@
 */
 #include <stdio.h>
 #include <math.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include "iwl.h"
 
 #define MIN0(a,b) (((a)<(b)) ? (a) : (b))

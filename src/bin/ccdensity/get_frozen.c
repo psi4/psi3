@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include <psio.h>
 #define EXTERN
 #include "globals.h"

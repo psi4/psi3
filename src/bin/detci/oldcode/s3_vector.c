@@ -13,7 +13,7 @@
 */
 
 #include <stdio.h>
-#include <libciomr.h>
+#include <libciomr/libciomr.h>
 #include "structs.h"
 #include "CalcInfo.h"
 #include "Parameters.h"

@@ -14,7 +14,7 @@ extern "C" {
   #include <stdio.h>
   #include <stdlib.h>
   #include <string.h>
-  #include <libciomr.h>
+  #include <libciomr/libciomr.h>
   #include <libipv1/ip_lib.h>
   #include <file30.h>
   #include <physconst.h>

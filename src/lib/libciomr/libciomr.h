@@ -9,7 +9,7 @@
 #ifndef LIBCIOMR_H
 #define LIBCIOMR_H
 
-#include "iomrparam.h"
+#include <libciomr/iomrparam.h>
 
 void add_arr(double *a, double *b, double *c, int n);
 void add_mat(double **a,double **b,double **c,int n,int m);
