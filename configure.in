@@ -755,14 +755,19 @@ AC_OUTPUT(include/sizeof.h include/Makefile
           tests/scf-opt5/Makefile
           tests/scf-opt6/Makefile
           tests/scf-opt7/Makefile
-          tests/scf-opt8/Makefile
           tests/scf-opt9/Makefile
           tests/scf-opt10/Makefile
           tests/scf-opt11/Makefile
+          tests/scf-opt12/Makefile
           tests/scf-opt-numer/Makefile
+          tests/scf-opt2-numer/Makefile
           tests/scf-freq/Makefile
-          tests/scf-freq-numer/Makefile
-          tests/scf-freq-symm-numer/Makefile
+          tests/scf-freq-first-3/Makefile
+          tests/scf-freq-first-5/Makefile
+          tests/scf-freq-none-3/Makefile
+          tests/scf-freq-none-5/Makefile
+          tests/scf-symm-fc-numer/Makefile
+          tests/scf-fc-numer/Makefile
           tests/scf-polar/Makefile
           tests/rhf-oeprop/Makefile
           tests/rhf-stab/Makefile
