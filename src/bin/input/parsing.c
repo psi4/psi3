@@ -15,7 +15,7 @@ void parsing()
    char *guess;
 
      /* Same as --noreorient */
-     errcod = ip_boolean("NOREORIENT",&no_reorient,0);
+     errcod = ip_boolean("NO_REORIENT",&no_reorient,0);
 
      errcod = ip_string("LABEL", &label,0);
      if(errcod != IPE_OK)
