@@ -24,6 +24,7 @@ int main(int argc, char *argv[])
    /*variables and arrays*/
    int i,j,k,l;
    int errcod;
+   int is_dummy;
    double temp = 0.0;			/*temporary anything*/
    int natomtri = 0;                    /*number of elements in the lower triangle of a (num_atoms)x(num_atoms) matrix */
    double Z = 0.0;			/*Atomic Number*/
@@ -186,9 +187,16 @@ int main(int argc, char *argv[])
      fprintf(outfile,"\n  -Geometry in the reference coordinate system (a.u.):\n");
      print_geometry(1.0);
      if(!cartOn) {
-	fprintf(outfile,"\n  -Full geometry in the canonical coordinate system (a.u.):\n");
-	print_full_geometry(1.0);
+        is_dummy = 0;
+        for(i=0;i<num_entries;++i) 
+	   if(!strncmp(full_element[i],"X\0",2) )
+	      is_dummy = 1;  
+        if(is_dummy) {
+	   fprintf(outfile,"\n  -Full geometry in the canonical coordinate system (a.u.):\n");
+	   print_full_geometry(1.0);
+        }
      }
+     fprintf(outfile,"\n  --------------------------------------------------------------------------\n");
 
      if (num_atoms > 1) {
        /* Print the Nuclear Repulsion Energy */
@@ -274,16 +282,15 @@ void print_full_geometry(double conv_factor)
 {
   int i,j;
 
-  fprintf(outfile,"     Center      Z           X                  Y                   Z\n");
-  fprintf(outfile,"  ------------  ---  -----------------  -----------------  -----------------\n");
+  fprintf(outfile,"       Center              X                  Y                   Z\n");
+  fprintf(outfile,"    ------------   -----------------  -----------------  -----------------\n");
 
   for(i=0;i<num_entries;i++){
-    fprintf(outfile,"  %12s %3d",full_element[i], (int) nuclear_charges[i]); fflush(outfile);
+    fprintf(outfile,"  %12s ",full_element[i], (int) nuclear_charges[i]); fflush(outfile);
     for(j=0;j<3;j++)
       fprintf(outfile,"  %17.12lf",full_geom[i][j]*conv_factor);
     fprintf(outfile,"\n");
   }
-  fprintf(outfile,"  --------------------------------------------------------------------------\n");
   fflush(outfile);
 
   return;
