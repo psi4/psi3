@@ -497,4 +497,37 @@ void chkpt_wt_beta_scf_irrep(double **scf, int irrep)
   free(mopi);
 }
 
+/*!
+** chkpt_set_mo_phases(): Set the phase of the MO's according to the standard
+** that the first element in every column is always positive.  This may
+** help keep the phase consistent for more complicated problems like
+** natural orbitals.
+**
+** \param coeff = MO coefficient matrix
+** \param nrows = number of rows in MO coefficient matrix
+** \param ncols = number of columns in MO coefficient matrix
+**
+** Note: since it only looks at the first element in each column, it will
+** not work for matrices where that element can be zero by symmetry.  So,
+** this function is only helpful when called for an irrep block at a time.
+**
+** David Sherrill, July 2002
+**
+** returns: none
+*/
+
+double **chkpt_set_mo_phases(double **coeff, int nrows, int ncols)
+{
+  int col, row;
+
+  for (col=0; col<ncols; col++) {
+    if (coeff[0][col] >= 0.0) continue;
+    for (row=0; row<nrows; row++) {
+      coeff[row][col] = -coeff[row][col];
+    }
+  }
+
+  chkpt_wt_phase_check(1);
+
+}
 
