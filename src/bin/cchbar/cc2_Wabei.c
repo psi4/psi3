@@ -28,9 +28,11 @@ void cc2_Wabei_build(void)
 
   timer_on("F->Wabei");
   if(params.ref == 0) { /** RHF **/
+
     dpd_buf4_init(&F, CC_FINTS, 0, 11, 5, 11, 5, 0, "F <ai|bc>");
-    dpd_buf4_sort(&F, CC_TMP0, rspq, 5, 11, "CC2 WAbEi");
+    dpd_buf4_copy(&F, CC_TMP0, "CC2 WAbEi (Ei,Ab)");
     dpd_buf4_close(&F);
+
   }
 
   else if (params.ref == 1) { /* ROHF */
@@ -81,13 +83,14 @@ void cc2_Wabei_build(void)
     dpd_file2_init(&t1, CC_OEI, 0, 0, 1, "tIA");
 
     /* WEbEi <-- <Ab|Ef> * t(i,f) */
-    dpd_buf4_init(&W, CC_TMP0, 0, 5, 11, 5, 11, 0, "CC2 WAbEi");
+    dpd_buf4_init(&W, CC_HBAR, 0, 5, 11, 5, 11, 0, "CC2 WAbEi");
     dpd_buf4_init(&B, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>");
-    dpd_contract424(&B, &t1, &W, 3, 1, 0, 1, 1);
+    dpd_contract424(&B, &t1, &W, 3, 1, 0, 1, 0);
     dpd_buf4_close(&B);
     dpd_buf4_close(&W);
 
     dpd_file2_close(&t1);
+
   }
   else if (params.ref == 1) { /* ROHF */
 
@@ -162,17 +165,16 @@ void cc2_Wabei_build(void)
   if(params.ref == 0) { /** RHF **/
     dpd_file2_init(&t1, CC_OEI, 0, 0, 1, "tIA");
 
-    dpd_buf4_init(&W, CC_TMP0, 0, 5, 11, 5, 11, 0, "CC2 WAbEi");
-    dpd_buf4_init(&Z, CC_HBAR, 0, 10, 11, 10, 11, 0, "CC2 ZMbEj");
-    dpd_contract244(&t1, &Z, &W, 0, 0, 0, -1, 1);
+    dpd_buf4_init(&W, CC_TMP0, 0, 11, 5, 11, 5, 0, "CC2 WAbEi (Ei,Ab)");
+    dpd_buf4_init(&Z, CC_TMP0, 0, 11, 10, 11, 10, 0, "CC2 ZMbEj (Ej,Mb)");
+    dpd_contract244(&t1, &Z, &W, 0, 2, 1, -1, 1);
     dpd_buf4_close(&Z);
     dpd_buf4_close(&W);
 
-    dpd_buf4_init(&W, CC_TMP0, 0, 5, 11, 5, 11, 0, "CC2 WAbEi (bA,Ei)");
-    dpd_buf4_init(&Z, CC_HBAR, 0, 10, 11, 10, 11, 0, "CC2 ZMbeJ");
-    dpd_contract244(&t1, &Z, &W, 0, 0, 0, -1, 1);
+    dpd_buf4_init(&W, CC_TMP0, 0, 11, 5, 11, 5, 0, "CC2 WAbEi (Ei,Ab)");
+    dpd_buf4_init(&Z, CC_TMP0, 0, 11, 11, 11, 11, 0, "CC2 ZMbeJ (eJ,bM)");
+    dpd_contract424(&Z, &t1, &W, 3, 0, 0, -1, 1);
     dpd_buf4_close(&Z);
-    dpd_buf4_sort_axpy(&W, CC_TMP, qprs, 5, 11, "CC2 WAbEi", 1);
     dpd_buf4_close(&W);
 
     dpd_file2_close(&t1);
@@ -255,10 +257,10 @@ void cc2_Wabei_build(void)
   }
 
   timer_on("Wabei_sort");
-  if (params.ref == 1) { /* RHF */
+  if (params.ref == 0) { /* RHF */
 
-    dpd_buf4_init(&W, CC_TMP0, 0, 5, 11, 5, 11, 0, "CC2 WAbEi");
-    dpd_buf4_sort_axpy(&W, CC_HBAR, rspq, 11, 5, "CC2 WAbEi (Ei,Ab)", 1);
+    dpd_buf4_init(&W, CC_TMP0, 0, 11, 5, 11, 5, 0, "CC2 WAbEi (Ei,Ab)");
+    dpd_buf4_sort_axpy(&W, CC_HBAR, rspq, 5, 11, "CC2 WAbEi", 1);
     dpd_buf4_close(&W);
 
   }
