@@ -9,59 +9,129 @@ void Wmnie_build(void) {
   dpdbuf4 D, D_a;
   dpdfile2 t1;
 
-  /* E(M>N,EI) --> W(M>N,EI) */
-  dpd_buf4_init(&E, CC_EINTS, 0, 2, 10, 2, 10, 0, "E <ij||ka> (i>j,ka)");
-  dpd_buf4_sort(&E, CC_HBAR, pqsr, 2, 11, "WMNIE");
-  dpd_buf4_sort(&E, CC_HBAR, pqsr, 2, 11, "Wmnie");
-  dpd_buf4_close(&E);
+  if(params.ref == 0 || params.ref == 1) { /** RHF or ROHF **/
+
+    /* E(M>N,EI) --> W(M>N,EI) */
+    dpd_buf4_init(&E, CC_EINTS, 0, 2, 10, 2, 10, 0, "E <ij||ka> (i>j,ka)");
+    dpd_buf4_sort(&E, CC_HBAR, pqsr, 2, 11, "WMNIE");
+    dpd_buf4_sort(&E, CC_HBAR, pqsr, 2, 11, "Wmnie");
+    dpd_buf4_close(&E);
 
 
-  /* D(M>N,EF) * T(I,F) --> W(M>N,EI) */
-  dpd_buf4_init(&WMNIE, CC_HBAR, 0, 2, 11, 2, 11, 0, "WMNIE");
-  dpd_buf4_init(&D_a, CC_DINTS, 0, 2, 5, 2, 5,0, "D <ij||ab> (i>j,ab)");
-  dpd_file2_init(&t1, CC_OEI, 0, 0, 1, "tIA");
-  dpd_contract424(&D_a,&t1,&WMNIE, 3, 1, 0, -1, 1);
-  dpd_file2_close(&t1);
-  dpd_buf4_close(&D_a);
-  dpd_buf4_close(&WMNIE);
+    /* D(M>N,EF) * T(I,F) --> W(M>N,EI) */
+    dpd_buf4_init(&WMNIE, CC_HBAR, 0, 2, 11, 2, 11, 0, "WMNIE");
+    dpd_buf4_init(&D_a, CC_DINTS, 0, 2, 5, 2, 5,0, "D <ij||ab> (i>j,ab)");
+    dpd_file2_init(&t1, CC_OEI, 0, 0, 1, "tIA");
+    dpd_contract424(&D_a,&t1,&WMNIE, 3, 1, 0, -1, 1);
+    dpd_file2_close(&t1);
+    dpd_buf4_close(&D_a);
+    dpd_buf4_close(&WMNIE);
 
 
-  /* D(m>n,ef) * T(i,f) --> W(m>n,ei) */
-  dpd_buf4_init(&Wmnie, CC_HBAR, 0, 2, 11, 2, 11, 0, "Wmnie");
-  dpd_buf4_init(&D_a, CC_DINTS, 0, 2, 5, 2, 5, 0, "D <ij||ab> (i>j,ab)");
-  dpd_file2_init(&t1, CC_OEI, 0, 0, 1, "tia");
-  dpd_contract424(&D_a, &t1, &Wmnie, 3, 1, 0, -1, 1);
-  dpd_file2_close(&t1);
-  dpd_buf4_close(&D_a);
-  dpd_buf4_close(&Wmnie);
+    /* D(m>n,ef) * T(i,f) --> W(m>n,ei) */
+    dpd_buf4_init(&Wmnie, CC_HBAR, 0, 2, 11, 2, 11, 0, "Wmnie");
+    dpd_buf4_init(&D_a, CC_DINTS, 0, 2, 5, 2, 5, 0, "D <ij||ab> (i>j,ab)");
+    dpd_file2_init(&t1, CC_OEI, 0, 0, 1, "tia");
+    dpd_contract424(&D_a, &t1, &Wmnie, 3, 1, 0, -1, 1);
+    dpd_file2_close(&t1);
+    dpd_buf4_close(&D_a);
+    dpd_buf4_close(&Wmnie);
 
 
-  dpd_buf4_init(&E, CC_EINTS, 0, 0, 10, 0, 10, 0, "E <ij|ka>");
-  dpd_buf4_copy(&E, CC_TMP0, "WMnIe (Mn,Ie)");
-  dpd_buf4_copy(&E, CC_TMP1, "WmNiE (mN,iE)");
-  dpd_buf4_close(&E);
+    dpd_buf4_init(&E, CC_EINTS, 0, 0, 10, 0, 10, 0, "E <ij|ka>");
+    dpd_buf4_copy(&E, CC_TMP0, "WMnIe (Mn,Ie)");
+    dpd_buf4_copy(&E, CC_TMP1, "WmNiE (mN,iE)");
+    dpd_buf4_close(&E);
 
-  /* D(Mn,Fe) * T(I,F) --> W(Mn,Ie) */
-  dpd_buf4_init(&WMnIe, CC_TMP0, 0, 0, 10, 0, 10, 0, "WMnIe (Mn,Ie)");
-  dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
-  dpd_file2_init(&t1, CC_OEI, 0, 0, 1, "tIA");
-  dpd_contract244(&t1, &D, &WMnIe, 1, 2, 1, 1, 1);
-  dpd_file2_close(&t1);
-  dpd_buf4_close(&D);
-  /* W(Mn,Ie) --> W(Mn,eI) */
-  dpd_buf4_sort(&WMnIe, CC_HBAR, pqsr, 0, 11, "WMnIe");
-  dpd_buf4_close(&WMnIe);
+    /* D(Mn,Fe) * T(I,F) --> W(Mn,Ie) */
+    dpd_buf4_init(&WMnIe, CC_TMP0, 0, 0, 10, 0, 10, 0, "WMnIe (Mn,Ie)");
+    dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
+    dpd_file2_init(&t1, CC_OEI, 0, 0, 1, "tIA");
+    dpd_contract244(&t1, &D, &WMnIe, 1, 2, 1, 1, 1);
+    dpd_file2_close(&t1);
+    dpd_buf4_close(&D);
+    /* W(Mn,Ie) --> W(Mn,eI) */
+    dpd_buf4_sort(&WMnIe, CC_HBAR, pqsr, 0, 11, "WMnIe");
+    dpd_buf4_close(&WMnIe);
 
-  /* D(mN,fE) * T(i,f) --> W(mN.iE) */
-  dpd_buf4_init(&WmNiE, CC_TMP1, 0, 0, 10, 0, 10, 0, "WmNiE (mN,iE)");
-  dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
-  dpd_file2_init(&t1, CC_OEI, 0, 0, 1, "tia");
-  dpd_contract244(&t1,&D,&WmNiE, 1, 2, 1, 1, 1);
-  dpd_file2_close(&t1);
-  dpd_buf4_close(&D);
-  /* W(mN,iE) --> W(mN,Ei) */
-  dpd_buf4_sort(&WmNiE, CC_HBAR, pqsr, 0, 11, "WmNiE");
-  dpd_buf4_close(&WmNiE);
+    /* D(mN,fE) * T(i,f) --> W(mN.iE) */
+    dpd_buf4_init(&WmNiE, CC_TMP1, 0, 0, 10, 0, 10, 0, "WmNiE (mN,iE)");
+    dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
+    dpd_file2_init(&t1, CC_OEI, 0, 0, 1, "tia");
+    dpd_contract244(&t1,&D,&WmNiE, 1, 2, 1, 1, 1);
+    dpd_file2_close(&t1);
+    dpd_buf4_close(&D);
+    /* W(mN,iE) --> W(mN,Ei) */
+    dpd_buf4_sort(&WmNiE, CC_HBAR, pqsr, 0, 11, "WmNiE");
+    dpd_buf4_close(&WmNiE);
+  }
+  else if(params.ref == 2) { /** UHF **/
+
+    /* E(M>N,EI) --> W(M>N,EI) */
+    dpd_buf4_init(&E, CC_EINTS, 0, 2, 20, 2, 20, 0, "E <IJ||KA> (I>J,KA)");
+    dpd_buf4_sort(&E, CC_HBAR, pqsr, 2, 21, "WMNIE");
+    dpd_buf4_close(&E);
+
+    /* E(m>n,ei) --> W(m>n,ei) */
+    dpd_buf4_init(&E, CC_EINTS, 0, 12, 30, 12, 30, 0, "E <ij||ka> (i>j,ka)");
+    dpd_buf4_sort(&E, CC_HBAR, pqsr, 12, 31, "Wmnie");
+    dpd_buf4_close(&E);
+
+
+    /* E(Mn,Ie) --> W(Mn,Ie) */
+    dpd_buf4_init(&E, CC_EINTS, 0, 22, 24, 22, 24, 0, "E <Ij|Ka>");
+    dpd_buf4_copy(&E, CC_TMP0, "WMnIe (Mn,Ie)");
+    dpd_buf4_close(&E);
+
+    /* E(mN,iE) --> W(mN,iE) */
+    dpd_buf4_init(&E, CC_EINTS, 0, 23, 27, 23, 27, 0, "E <iJ|kA>");
+    dpd_buf4_copy(&E, CC_TMP1, "WmNiE (mN,iE)");
+    dpd_buf4_close(&E);
+
+
+
+    /* D(M>N,EF) * T(I,F) --> W(M>N,EI) */
+    dpd_buf4_init(&WMNIE, CC_HBAR, 0, 2, 21, 2, 21, 0, "WMNIE");
+    dpd_buf4_init(&D_a, CC_DINTS, 0, 2, 5, 2, 5, 0, "D <IJ||AB> (I>J,AB)");
+    dpd_file2_init(&t1, CC_OEI, 0, 0, 1, "tIA");
+    dpd_contract424(&D_a,&t1,&WMNIE, 3, 1, 0, -1, 1);
+    dpd_file2_close(&t1);
+    dpd_buf4_close(&D_a);
+    dpd_buf4_close(&WMNIE);
+
+
+    /* D(m>n,ef) * T(i,f) --> W(m>n,ei) */
+    dpd_buf4_init(&Wmnie, CC_HBAR, 0, 12, 31, 12, 31, 0, "Wmnie");
+    dpd_buf4_init(&D_a, CC_DINTS, 0, 12, 15, 12, 15, 0, "D <ij||ab> (i>j,ab)");
+    dpd_file2_init(&t1, CC_OEI, 0, 2, 3, "tia");
+    dpd_contract424(&D_a, &t1, &Wmnie, 3, 1, 0, -1, 1);
+    dpd_file2_close(&t1);
+    dpd_buf4_close(&D_a);
+    dpd_buf4_close(&Wmnie);
+
+
+    /* D(Mn,Fe) * T(I,F) --> W(Mn,Ie) */
+    dpd_buf4_init(&WMnIe, CC_TMP0, 0, 22, 24, 22, 24, 0, "WMnIe (Mn,Ie)");
+    dpd_buf4_init(&D, CC_DINTS, 0, 22, 28, 22, 28, 0, "D <Ij|Ab>");
+    dpd_file2_init(&t1, CC_OEI, 0, 0, 1, "tIA");
+    dpd_contract244(&t1, &D, &WMnIe, 1, 2, 1, 1, 1);
+    dpd_file2_close(&t1);
+    dpd_buf4_close(&D);
+    /* W(Mn,Ie) --> W(Mn,eI) */
+    dpd_buf4_sort(&WMnIe, CC_HBAR, pqsr, 22, 25, "WMnIe");
+    dpd_buf4_close(&WMnIe);
+
+    /* D(mN,fE) * T(i,f) --> W(mN.iE) */
+    dpd_buf4_init(&WmNiE, CC_TMP1, 0, 23, 27, 23, 27, 0, "WmNiE (mN,iE)");
+    dpd_buf4_init(&D, CC_DINTS, 0, 23, 29, 23, 29, 0, "D <iJ|aB>");
+    dpd_file2_init(&t1, CC_OEI, 0, 2, 3, "tia");
+    dpd_contract244(&t1,&D,&WmNiE, 1, 2, 1, 1, 1);
+    dpd_file2_close(&t1);
+    dpd_buf4_close(&D);
+    /* W(mN,iE) --> W(mN,Ei) */
+    dpd_buf4_sort(&WmNiE, CC_HBAR, pqsr, 23, 26, "WmNiE");
+    dpd_buf4_close(&WmNiE);
+  }
 
   return;
 }

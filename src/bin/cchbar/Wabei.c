@@ -7,32 +7,65 @@ void Wabei_build(void)
 {
   dpdfile2 Fme, T1;
   dpdbuf4 F, W, T2, B, Z, Z1, Z2, D, T, E, C;
-  
-  dpd_buf4_init(&F, CC_FINTS, 0, 10, 7, 10, 5, 1, "F <ia|bc>");
-  /** <EI||AB> **/
-  dpd_buf4_sort(&F, CC_HBAR, qprs, 11, 7, "WEIAB");
-  /** <ei||ab> **/
-  dpd_buf4_sort(&F, CC_HBAR, qprs, 11, 7, "Weiab");
-  dpd_buf4_close(&F);
 
-  dpd_buf4_init(&W, CC_HBAR, 0, 11, 7, 11, 7, 0, "WEIAB");
-  dpd_buf4_scm(&W, -1.0);
-  dpd_buf4_close(&W);
-  dpd_buf4_init(&W, CC_HBAR, 0, 11, 7, 11, 7, 0, "Weiab");
-  dpd_buf4_scm(&W, -1.0);
-  dpd_buf4_close(&W);
+  if(params.ref == 0 || params.ref == 1) { /** RHF or ROHF **/
   
-  dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
-  /** <iE|bA> **/
-  dpd_buf4_sort(&F, CC_TMP0, qprs, 11, 5, "W(Ei,bA)");
-  dpd_buf4_close(&F);
-  dpd_buf4_init(&W, CC_TMP0, 0, 11, 5, 11, 5, 0, "W(Ei,bA)");
-  dpd_buf4_sort(&W, CC_HBAR, pqsr, 11, 5, "WEiAb");
-  dpd_buf4_close(&W);
-  /** <Ie|Ba> **/
-  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WEiAb");
-  dpd_buf4_copy(&W, CC_HBAR, "WeIaB");
-  dpd_buf4_close(&W);
+    dpd_buf4_init(&F, CC_FINTS, 0, 10, 7, 10, 5, 1, "F <ia|bc>");
+    /** <EI||AB> **/
+    dpd_buf4_sort(&F, CC_HBAR, qprs, 11, 7, "WEIAB");
+    /** <ei||ab> **/
+    dpd_buf4_sort(&F, CC_HBAR, qprs, 11, 7, "Weiab");
+    dpd_buf4_close(&F);
+
+    dpd_buf4_init(&W, CC_HBAR, 0, 11, 7, 11, 7, 0, "WEIAB");
+    dpd_buf4_scm(&W, -1.0);
+    dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC_HBAR, 0, 11, 7, 11, 7, 0, "Weiab");
+    dpd_buf4_scm(&W, -1.0);
+    dpd_buf4_close(&W);
+  
+    dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
+    /** <iE|bA> **/
+    dpd_buf4_sort(&F, CC_TMP0, qprs, 11, 5, "W(Ei,bA)");
+    dpd_buf4_close(&F);
+    dpd_buf4_init(&W, CC_TMP0, 0, 11, 5, 11, 5, 0, "W(Ei,bA)");
+    dpd_buf4_sort(&W, CC_HBAR, pqsr, 11, 5, "WEiAb");
+    dpd_buf4_close(&W);
+    /** <Ie|Ba> **/
+    dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WEiAb");
+    dpd_buf4_copy(&W, CC_HBAR, "WeIaB");
+    dpd_buf4_close(&W);
+
+  }
+  else if(params.ref == 2) { /** UHF **/
+
+    dpd_buf4_init(&F, CC_FINTS, 0, 10, 7, 10, 5, 1, "F <ia|bc>");
+    /** <EI||AB> **/
+    dpd_buf4_sort(&F, CC_HBAR, qprs, 11, 7, "WEIAB");
+    /** <ei||ab> **/
+    dpd_buf4_sort(&F, CC_HBAR, qprs, 11, 7, "Weiab");
+    dpd_buf4_close(&F);
+
+    dpd_buf4_init(&W, CC_HBAR, 0, 11, 7, 11, 7, 0, "WEIAB");
+    dpd_buf4_scm(&W, -1.0);
+    dpd_buf4_close(&W);
+    dpd_buf4_init(&W, CC_HBAR, 0, 11, 7, 11, 7, 0, "Weiab");
+    dpd_buf4_scm(&W, -1.0);
+    dpd_buf4_close(&W);
+  
+    dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
+    /** <iE|bA> **/
+    dpd_buf4_sort(&F, CC_TMP0, qprs, 11, 5, "W(Ei,bA)");
+    dpd_buf4_close(&F);
+    dpd_buf4_init(&W, CC_TMP0, 0, 11, 5, 11, 5, 0, "W(Ei,bA)");
+    dpd_buf4_sort(&W, CC_HBAR, pqsr, 11, 5, "WEiAb");
+    dpd_buf4_close(&W);
+    /** <Ie|Ba> **/
+    dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WEiAb");
+    dpd_buf4_copy(&W, CC_HBAR, "WeIaB");
+    dpd_buf4_close(&W);
+
+  }
 
   /** - F_ME t_MI^AB **/
   dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 7, 2, 7, 0, "tIJAB");

@@ -31,7 +31,10 @@ void Wamef_build(void);
 void Wabei_build(void);
 void purge(void);
 void cleanup(void);
-int **cacheprep(int level, int *cachefiles);
+int **cacheprep_rhf(int level, int *cachefiles);
+int **cacheprep_uhf(int level, int *cachefiles);
+void cachedone_uhf(int **cachelist);
+void cachedone_rhf(int **cachelist);
 void sort_amps(void);
 
 int main(int argc, char *argv[])
@@ -44,10 +47,22 @@ int main(int argc, char *argv[])
   get_params();
 
   cachefiles = init_int_array(PSIO_MAXUNIT);
-  cachelist = cacheprep(params.cachelev, cachefiles);
+
+  if(params.ref == 0 || params.ref == 1) { /** RHF or ROHF **/
+
+  cachelist = cacheprep_rhf(params.cachelev, cachefiles);
 
   dpd_init(0, moinfo.nirreps, params.memory, 0, cachefiles, cachelist, NULL,
            2, moinfo.occpi, moinfo.occ_sym, moinfo.virtpi, moinfo.vir_sym);
+  }
+  else if(params.ref == 2) { /** UHF **/
+
+    cachelist = cacheprep_uhf(params.cachelev, cachefiles);
+
+    dpd_init(0, moinfo.nirreps, params.memory, 0, cachefiles, 
+	     cachelist, NULL, 4, moinfo.aoccpi, moinfo.aocc_sym, moinfo.avirtpi,
+	     moinfo.avir_sym, moinfo.boccpi, moinfo.bocc_sym, moinfo.bvirtpi, moinfo.bvir_sym);
+  }
 
   sort_amps();
   tau_build();
@@ -61,6 +76,11 @@ int main(int argc, char *argv[])
 
   purge();
   dpd_close(0);
+
+  if(params.ref == 2) cachedone_uhf(cachelist);
+  else cachedone_rhf(cachelist);
+  free(cachefiles);
+
   cleanup(); 
   exit_io();
   exit(0);
