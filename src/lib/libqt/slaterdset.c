@@ -481,7 +481,6 @@ void slaterdetvector_read(ULI unit, char *prefix, SlaterDetVector **sdvector)
 {
   int need_to_init_psio = 0;
   int unit_opened = 1;
-  char *vector_key;
   SlaterDetSet *sdset;
   SlaterDetVector *vector = (SlaterDetVector *) malloc(sizeof(SlaterDetVector));
 
@@ -495,8 +494,6 @@ PSIO_OPEN(unit,PSIO_OPEN_OLD)
 PSIO_CLOSE(unit)
 PSIO_DONE
   
-  free(vector_key);
-
   *sdvector = vector;
 }
 
