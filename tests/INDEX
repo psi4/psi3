@@ -31,3 +31,6 @@ cc10: ROHF-CCSD/cc-pVDZ 2Sigma+ CN single-point energy (fzc, MO-basis
 
 cc11: ROHF-CCSD/cc-pVDZ 2Sigma+ CN single-point energy (fzc, AO-basis
     <ab|cd>)
+
+cc12: RHF-EOM-CCSD/cc-pVDZ on the lowest two states of each irrep in H2O.
+

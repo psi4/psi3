@@ -1,0 +1,21 @@
+default: (
+  label = "EOM-CCSD/cc-pVDZ H2O"
+  wfn = eom_ccsd
+  memory = (32.0 MB)
+  reference = rhf
+  dertype = none
+  jobtype = sp
+
+  states_per_irrep = (2 2 2 2)
+
+  convergence = 12
+  maxiter = 100
+)
+
+input: (
+  units = angstrom
+  basis = ccpvdz
+  puream = true
+  zmat = ((h) (o 1 0.9) (h 2 0.9 1 104.))
+)
+
