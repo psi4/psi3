@@ -166,11 +166,7 @@ void parsing_cmdline(int argc, char *argv[])
 	   UserOptions.make_fock = 0;
 	   UserOptions.make_deriv1 = 1;
 	   UserOptions.symm_ints = 0;
-	   errcod = ip_string("DERTYPE",&UserOptions.dertype,0);
-	   if (UserOptions.dertype == NULL)
-	     punt("Keyword DERTYPE is missing");
-	   if (strcmp(UserOptions.dertype,"FIRST"))
-	     punt("Only DERTYPE=FIRST can be presently handled");
+	   UserOptions.dertype = strdup("FIRST");
 	   if (!strcmp("SCF",UserOptions.wfn)) {
 	     errcod = ip_string("REFERENCE",&refstring,0);
 	     if (errcod != IPE_OK)
@@ -230,21 +226,18 @@ void parsing_cmdline(int argc, char *argv[])
 	   UserOptions.make_mp2r12 = 0;
 	   UserOptions.make_cc_bt2 = 0;
 	   UserOptions.symm_ints = 0;
-	   if (!strcmp("MP2",UserOptions.wfn)) {
-	     errcod = ip_string("REFERENCE",&refstring,0);
-	     if (errcod != IPE_OK)
-	       punt("REFERENCE keyword is missing");
-	     else if (!strcmp(refstring,"RHF") || !strcmp(refstring,""))
-	       UserOptions.reftype = rhf;
-	     else if (!strcmp(refstring,"UHF")) {
-	       UserOptions.reftype = uhf;
-	       punt("UMP2 energy evaluation is not yet implemented");
-	     }
-	     else
-	       punt("MP2 energy evaluation with specified REFERENCE not implemented");
+
+	   errcod = ip_string("REFERENCE",&refstring,0);
+	   if (errcod != IPE_OK)
+	     punt("REFERENCE keyword is missing");
+	   else if (!strcmp(refstring,"RHF") || !strcmp(refstring,""))
+	     UserOptions.reftype = rhf;
+	   else if (!strcmp(refstring,"UHF")) {
+	     UserOptions.reftype = uhf;
+	     punt("UMP2 energy evaluation is not yet implemented");
 	   }
 	   else
-	     punt("MP2 energy is requested, but WFN != MP2 in your input file");
+	     punt("MP2 energy evaluation with specified REFERENCE not implemented");
 #else
 	   punt("--mp2 option is not supported by your CINTS executable.\nRecompile the code including files in MP2 subdirectory.");
 #endif
@@ -282,17 +275,14 @@ void parsing_cmdline(int argc, char *argv[])
 	   UserOptions.make_mp2r12 = 1;
 	   UserOptions.make_cc_bt2 = 0;
 	   UserOptions.symm_ints = 0;
-	   if (!strcmp("MP2",UserOptions.wfn)) {
-	     errcod = ip_string("REFERENCE",&refstring,0);
-	     if (errcod != IPE_OK)
-	       punt("REFERENCE keyword is missing");
-	     else if (!strcmp(refstring,"RHF") || !strcmp(refstring,""))
-	       UserOptions.reftype = rhf;
-	     else
-	       punt("Direct MP2-R12/A integrals transformation with specified REFERENCE not implemented");
-	   }
+
+	   errcod = ip_string("REFERENCE",&refstring,0);
+	   if (errcod != IPE_OK)
+	     punt("REFERENCE keyword is missing");
+	   else if (!strcmp(refstring,"RHF") || !strcmp(refstring,""))
+	     UserOptions.reftype = rhf;
 	   else
-	     punt("Direct MP2-R12/A integrals transformation is requested, but WFN != MP2 in your input file");
+	     punt("Direct MP2-R12/A integrals transformation with specified REFERENCE not implemented");
 #else
 	   punt("--mp2r12 option is not supported by your CINTS executable.\nRecompile the code including files in MP2R12 subdirectory.");
 #endif
