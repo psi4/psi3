@@ -46,8 +46,9 @@ void schwartz_eri()
   int upk, num_unique_pk;
   int max_num_unique_quartets;
   int max_num_prim_comb;
+  int max_bf_per_shell;
 
-  int class_size;
+  int size, class_size;
   int max_cart_class_size;
 
   int bf_i, bf_j, bf_k, bf_l, so_i, so_j, so_k, so_l, s;
@@ -62,7 +63,12 @@ void schwartz_eri()
   int effective = 0;         /* Flag to check the effectiveness of prescreening */
 
   double AB2, CD2;
-  double *data;
+  double *raw_data;             /* pointer to the unnormalized taregt quartet of integrals */
+  double *data;                 /* pointer to the transformed normalized target quartet of integrals */
+#ifdef NONDOUBLE_INTS
+  REALTYPE *target_ints;        /* Pointer to the location of the target quartet on the stack of
+			 	   integrals quartets if libint.a is using other than regular doubles */
+#endif
   double temp;
   double max_elem;
   
@@ -84,6 +90,14 @@ void schwartz_eri()
    ---------------*/
 /*  init_fjt(BasisSet.max_am*4);*/
   init_fjt_table(&fjt_table);
+  max_bf_per_shell = ioff[BasisSet.max_am];
+  max_cart_class_size = (max_bf_per_shell)*
+                        (max_bf_per_shell)*
+                        (max_bf_per_shell)*
+                        (max_bf_per_shell);
+#ifdef NONDOUBLE_INTS
+  raw_data = init_array(max_cart_class_size);
+#endif
   max_num_prim_comb = (BasisSet.max_num_prims*BasisSet.max_num_prims)*
 		      (BasisSet.max_num_prims*BasisSet.max_num_prims);
   UserOptions.memory -= init_libint(&Libint,max_num_prim_comb);
@@ -162,10 +176,18 @@ void schwartz_eri()
 		Compute the quartet and find the largest element
 	       -------------------------------------------------*/
       if (am) {
-	  data = build_eri[orig_am[0]][orig_am[1]][orig_am[2]][orig_am[3]](&Libint,num_prim_comb);
+#ifdef NONDOUBLE_INTS
+	  size = ioff[BasisSet.shells[si].am]*ioff[BasisSet.shells[sj].am]*
+		 ioff[BasisSet.shells[sk].am]*ioff[BasisSet.shells[sl].am];
+	  target_ints = build_eri[orig_am[0]][orig_am[1]][orig_am[2]][orig_am[3]](&Libint, num_prim_comb);
+	  for(i=0;i<size;i++)
+	      raw_data[i] = (double) target_ints[i];
+#else
+	  raw_data = build_eri[orig_am[0]][orig_am[1]][orig_am[2]][orig_am[3]](&Libint, num_prim_comb);
+#endif
 	  /*                    zero here means no transformation to puream basis */
 	  /*                                    |                                 */
-	  data = norm_quartet(data, NULL, orig_am, 0);
+	  data = norm_quartet(raw_data, NULL, orig_am, 0);
 
 	  max_elem = -1.0;
 	  iimax = ni - 1;
@@ -182,7 +204,7 @@ void schwartz_eri()
       else {
 	  temp = 0.0;
 	  for(p=0;p<num_prim_comb;p++)
-	      temp += Libint.PrimQuartet[p].F[0];
+	      temp += (double) Libint.PrimQuartet[p].F[0];
 	  
 	  max_elem = fabs(temp);
       }
@@ -201,6 +223,9 @@ void schwartz_eri()
    ---------*/
   free_libint(&Libint);
   free_fjt_table(&fjt_table);
+#ifdef NONDOUBLE_INTS
+  free(raw_data);
+#endif
 
   if (effective == 0)
     fprintf(outfile,"  Schwartz prescreening of ERIs will be ineffective\n");

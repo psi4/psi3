@@ -33,6 +33,7 @@ void print_scalars()
      fprintf(outfile,"    Print level                 = %d\n",UserOptions.print_lvl);
      fprintf(outfile,"    Integral tolerance          = %1.0e\n",UserOptions.cutoff);
      fprintf(outfile,"    Number of threads           = %d\n",UserOptions.num_threads);
+     fprintf(outfile,"    LIBINT's real type length   = %d bit\n",sizeof(REALTYPE)*8);
      fprintf(outfile,"\n  -CALCULATION CONSTANTS:\n");
      fprintf(outfile,"    Label                       = %s\n", Molecule.label);
      fprintf(outfile,"    Number of atoms             = %d\n", Molecule.num_atoms);

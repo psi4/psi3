@@ -3,7 +3,6 @@
 #include<ip_libv1.h>
 #include<math.h>
 #include<libciomr.h>
-#include<malloc.h>
 
 #include"defines.h"
 #define EXTERN

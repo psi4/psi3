@@ -112,7 +112,7 @@ void rmp2r12_energy()
   int max_num_unique_quartets;
   int max_num_prim_comb;
 
-  int class_size;
+  int size, class_size;
   int max_class_size;
   int max_cart_class_size;
 
@@ -130,7 +130,8 @@ void rmp2r12_energy()
   double Emp2 = 0.0;
   double Emp2r12 = 0.0;
   double AB2, CD2;
-  double *data[NUM_TE_TYPES];
+  double *raw_data[NUM_TE_TYPES];             /* pointers to the unnormalized taregt quartet of integrals */
+  double *data[NUM_TE_TYPES];                 /* pointers to the transformed normalized target quartet of integrals */
 
   double temp;
   double ssss, ss_r12_ss;
@@ -184,6 +185,10 @@ void rmp2r12_energy()
   sl_arr = (int *)malloc(sizeof(int)*max_num_unique_quartets);
   if (Symmetry.nirreps > 1)
     max_class_size = max_cart_class_size;
+#ifdef NONDOUBLE_INTS
+  for(i=0;i<NUM_TE_TYPES;i++)
+    raw_data[i] = init_array(max_cart_class_size);
+#endif
   max_num_prim_comb = (BasisSet.max_num_prims*
                        BasisSet.max_num_prims)*
                       (BasisSet.max_num_prims*
@@ -437,18 +442,38 @@ void rmp2r12_energy()
 		  if (swap_ij_kl)
 		    /*--- (usi usj|[r12,T1]|usk usl) = (usk usl|[r12,T2]|usi usj) ---*/
 		    Libr12.te_ptr[2] = Libr12.te_ptr[3];
+#ifdef NONDOUBLE_INTS
+		  size = ioff[BasisSet.shells[si].am]*ioff[BasisSet.shells[sj].am]*
+			 ioff[BasisSet.shells[sk].am]*ioff[BasisSet.shells[sl].am];
+		  for(i=0;i<NUM_TE_TYPES-1;i++)
+		    for(j=0;j<size;j++)
+		      raw_data[i][j] = (double) Libr12.te_ptr[i][j];
+#else
+		  for(i=0;i<NUM_TE_TYPES-1;i++)
+		    raw_data[i] = Libr12.te_ptr[i];
+#endif
 		  /*--- Just normalize the integrals ---*/
 		  for(te_type=0;te_type<NUM_TE_TYPES-1;te_type++)
-		    data[te_type] = norm_quartet(Libr12.te_ptr[te_type], NULL, orig_am, 0);
+		    data[te_type] = norm_quartet(raw_data[te_type], NULL, orig_am, 0);
 		}
 		else {
 		  ssss = 0.0;
 		  ss_r12_ss = 0.0;
 		  for(p=0;p<num_prim_comb;p++) {
-		    ssss += Libr12.PrimQuartet[p].F[0];
-		    ss_r12_ss += Libr12.PrimQuartet[p].ss_r12_ss;
+		    ssss += (double) Libr12.PrimQuartet[p].F[0];
+		    ss_r12_ss += (double) Libr12.PrimQuartet[p].ss_r12_ss;
 		  }
 		  build_r12_grt[0][0][0][0](&Libr12,num_prim_comb);
+#ifdef NONDOUBLE_INTS
+		  raw_data[0][0] = ssss;
+		  raw_data[1][0] = ss_r12_ss;
+		  raw_data[2][0] = (double) Libr12.te_ptr[2][0];
+		  raw_data[3][0] = (double) Libr12.te_ptr[3][0];
+		  data[0] = raw_data[0];
+		  data[1] = raw_data[1];
+		  data[2] = raw_data[2];
+		  data[3] = raw_data[3];
+#else
 		  Libr12.int_stack[2] = Libr12.te_ptr[2][0];
 		  Libr12.int_stack[3] = Libr12.te_ptr[3][0];
 		  Libr12.int_stack[0] = ssss;
@@ -457,6 +482,7 @@ void rmp2r12_energy()
 		  data[1] = Libr12.int_stack+1;
 		  data[2] = Libr12.int_stack+2;
 		  data[3] = Libr12.int_stack+3;
+#endif
 		}
 
 		/*---
@@ -801,6 +827,10 @@ void rmp2r12_energy()
   free_block(jy_buf);
   free_libr12(&Libr12);
   free_fjt_table(&fjt_table);
+#ifdef NONDOUBLE_INTS
+  for(i=0;i<NUM_TE_TYPES;i++)
+    free(raw_data[i]);
+#endif
   free(sj_arr);
   free(sk_arr);
   free(sl_arr);

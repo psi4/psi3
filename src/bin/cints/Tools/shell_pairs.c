@@ -3,7 +3,6 @@
 #include<stdlib.h>
 #include<string.h>
 #include<libciomr.h>
-#include<malloc.h>
 #include<libint.h>
 
 #include"defines.h"

@@ -62,7 +62,7 @@ void te_ints()
   int max_num_unique_quartets;
   int max_num_prim_comb;
 
-  int class_size;
+  int size, class_size;
   int max_class_size;
   int max_cart_class_size;
 
@@ -78,7 +78,12 @@ void te_ints()
 
   double so_int;
   double AB2, CD2;
-  double *data;
+  double *raw_data;             /* pointer to the unnormalized taregt quartet of integrals */
+  double *data;                 /* pointer to the transformed normalized target quartet of integrals */
+#ifdef NONDOUBLE_INTS
+  REALTYPE *target_ints;        /* Pointer to the location of the target quartet on the stack of
+			 	   integrals quartets if libint.a is using other than regular doubles */
+#endif
   double *puream_data;
   double **plist_data;
   double pkblock_end_value = 0.0;
@@ -107,6 +112,9 @@ void te_ints()
                             Symmetry.max_stab_index;
   tot_data = (struct tebuf*) malloc(max_num_unique_quartets*max_cart_class_size*sizeof(struct tebuf));
   memset(tot_data, 0, (max_num_unique_quartets*max_cart_class_size)*sizeof(struct tebuf));
+#ifdef NONDOUBLE_INTS
+  raw_data = init_array(max_cart_class_size);
+#endif
   if (BasisSet.puream)
     puream_data = (double *) malloc(sizeof(double)*
 				    (BasisSet.max_am*2-1)*
@@ -131,6 +139,12 @@ void te_ints()
                        BasisSet.max_num_prims)*
                       (BasisSet.max_num_prims*
                        BasisSet.max_num_prims);
+  init_libint(&Libint, max_num_prim_comb);
+  free_libint(&Libint);
+  init_libint(&Libint, max_num_prim_comb);
+  free_libint(&Libint);
+  init_libint(&Libint, max_num_prim_comb);
+  free_libint(&Libint);
   init_libint(&Libint, max_num_prim_comb);
 
 /*-------------------------------------------------
@@ -330,8 +344,16 @@ void te_ints()
 
 	      /*--- Compute the integrals ---*/
 	      if (am) {
-		data = build_eri[orig_am[0]][orig_am[1]][orig_am[2]][orig_am[3]](&Libint,num_prim_comb);
-		data = norm_quartet(data, puream_data, orig_am, BasisSet.puream);
+#ifdef NONDOUBLE_INTS
+		size = ioff[BasisSet.shells[si].am]*ioff[BasisSet.shells[sj].am]*
+		       ioff[BasisSet.shells[sk].am]*ioff[BasisSet.shells[sl].am];
+		target_ints = build_eri[orig_am[0]][orig_am[1]][orig_am[2]][orig_am[3]](&Libint, num_prim_comb);
+		for(i=0;i<size;i++)
+		  raw_data[i] = (double) target_ints[i];
+#else
+		raw_data = build_eri[orig_am[0]][orig_am[1]][orig_am[2]][orig_am[3]](&Libint, num_prim_comb);
+#endif
+		data = norm_quartet(raw_data, puream_data, orig_am, BasisSet.puream);
 		/*--- copy data to plist_data to be used in the symmetrization step ---*/
 		if (Symmetry.nirreps > 1)
 		  memcpy(plist_data[plquartet],data,sizeof(double)*class_size);
@@ -339,12 +361,17 @@ void te_ints()
 	      else {
 		temp = 0.0;
 		for(p=0;p<num_prim_comb;p++)
-		  temp += Libint.PrimQuartet[p].F[0];
+		  temp += (double) Libint.PrimQuartet[p].F[0];
 		if (Symmetry.nirreps > 1)
 		  plist_data[plquartet][0] = temp;
 		else {
+#ifdef NONDOUBLE_INTS
+		  raw_data[0] = temp;
+		  data = raw_data;
+#else
 		  Libint.int_stack[0] = temp;
 		  data = Libint.int_stack;
+#endif
 		}
 	      }
 
@@ -972,6 +999,9 @@ void te_ints()
   }
   if (BasisSet.puream)
     free(puream_data);
+#ifdef NONDOUBLE_INTS
+  free(raw_data);
+#endif
   free_fjt_table(&fjt_table);
   free_fjt();
 

@@ -2,7 +2,6 @@
 #include<stdlib.h>
 #include<math.h>
 #include<libciomr.h>
-#include<malloc.h>
 #include<libint.h>
 
 #include"defines.h"

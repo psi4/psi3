@@ -17,7 +17,6 @@
 #include <stdlib.h>
 #include <ip_libv1.h>
 #include <libciomr.h>
-#include <malloc.h>
 #include <libint.h>
 
 #include"defines.h"

@@ -104,7 +104,7 @@ void ump2_energy()
   int max_num_unique_quartets;
   int max_num_prim_comb;
 
-  int class_size;
+  int size;
   int max_class_size;
   int max_cart_class_size;
 
@@ -120,8 +120,14 @@ void ump2_energy()
 
   double Emp2 = 0.0;
   double AB2, CD2;
-  double *data;                 /* Pointer to the location of the target quartet on the stack of
-				   integrals quartets handled by libint.a */
+
+  double *raw_data;             /* pointer to the unnormalized taregt quartet of integrals */
+  double *data;                 /* pointer to the transformed normalized target quartet of integrals */
+#ifdef NONDOUBLE_INTS
+  REALTYPE *target_ints;            /* Pointer to the location of the target quartet on the stack of
+			 	    integrals quartets if libint.a is using other than regular doubles */
+#endif
+
   double *rspq_ptr;
   double temp;
   double *mo_vec;
@@ -173,7 +179,11 @@ void ump2_energy()
                       (BasisSet.max_num_prims*
                        BasisSet.max_num_prims);
   init_fjt_table(&fjt_table);
-  UserOptions.memory -= init_libint(&Libint,max_num_unique_quartets);
+  UserOptions.memory -= init_libint(&Libint,max_num_prim_comb);
+
+#ifdef NONDOUBLE_INTS
+  raw_data = init_array(max_cart_class_size);
+#endif
 
   /*---
     Minimum number of I-batches - 
@@ -392,16 +402,29 @@ void ump2_energy()
 
 		/*--- Compute the integrals ---*/
 		if (am) {
-		    data = build_eri[orig_am[0]][orig_am[1]][orig_am[2]][orig_am[3]](&Libint, num_prim_comb);
+#ifdef NONDOUBLE_INTS
+		    size = ioff[BasisSet.shells[si].am]*ioff[BasisSet.shells[sj].am]*
+			   ioff[BasisSet.shells[sk].am]*ioff[BasisSet.shells[sl].am];
+		    target_ints = build_eri[orig_am[0]][orig_am[1]][orig_am[2]][orig_am[3]](&Libint, num_prim_comb);
+		    for(i=0;i<size;i++)
+		      raw_data[i] = (double) target_ints[i];
+#else
+		    raw_data = build_eri[orig_am[0]][orig_am[1]][orig_am[2]][orig_am[3]](&Libint, num_prim_comb);
+#endif
 		    /* No need to transforms integrals to sph. harm. basis */
-		    data = norm_quartet(data, NULL, orig_am, 0);
+		    data = norm_quartet(raw_data, NULL, orig_am, 0);
 		}
 		else {
 		    temp = 0.0;
 		    for(p=0;p<num_prim_comb;p++)
-			temp += Libint.PrimQuartet[p].F[0];
+			temp += (double) Libint.PrimQuartet[p].F[0];
+#ifdef NONDOUBLE_INTS
+		    raw_data[0] = temp;
+		    data = raw_data;
+#else
 		    Libint.int_stack[0] = temp;
 		    data = Libint.int_stack;
+#endif
 		}
 
 		/*--- swap bra and ket back to the original order if needed ---*/
@@ -749,6 +772,9 @@ void ump2_energy()
   free(jsia_buf);
   free_block(ia_buf);
   free(rsiq_buf);
+#ifdef NONDOUBLE_INTS
+  free(raw_data);
+#endif
   free_libint(&Libint);
   free_fjt_table(&fjt_table);
   free(sj_arr);
