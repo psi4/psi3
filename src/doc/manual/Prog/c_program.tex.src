@@ -55,7 +55,7 @@ presents the minimal \PSIthree\ program written in C.
 \label{fig:Essential_C_Program}
 \end{figure}
 
-The required include files are \file{ip\_libv1.h}, \file{libciomr.h}, \file{psio.h},
+The required include files are \file{libipv1/ip\_lib.h}, \file{libciomr.h}, \file{psio.h},
 and of course \file{stdio.h}.  The first of these is for the Input Parser Library,
 Version 1 (\file{libipv1.a}), which is described in section \ref{C_IP}.  The
 second file contains function prototypes for the C Math Routines and old-style I/O
