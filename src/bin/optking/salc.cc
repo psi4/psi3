@@ -29,12 +29,6 @@ salc_set :: salc_set() {
   name = new char[MAX_LINELENGTH];
   strcpy(name,"\nSymmetry Adapted Internal Coordinates");
 
-//  rewind(fp_intco);
-  fp_intco = fopen("intco.dat","r");
-  ip_set_uppercase(1);
-  ip_initialize(fp_intco, outfile);
-  ip_cwk_add(":INTCO");
-
   count = -1;
   int count_type;
   num=0;
@@ -110,8 +104,7 @@ salc_set :: salc_set() {
 
   delete(keyword);
   delete(buffer);
-  ip_done();
-  fclose(fp_intco);
+
   return;
 }
 
@@ -130,11 +123,6 @@ salc_set :: salc_set(char *keyword)
   name = new char[MAX_LINELENGTH];
 
   strcpy(name,keyword);
-
-  fp_intco = fopen("intco.dat","r");
-  ip_set_uppercase(1);
-  ip_initialize(fp_intco, outfile);
-  ip_cwk_add(":INTCO");
 
   num=0;
      ip_count(keyword,&num,0);
@@ -191,8 +179,7 @@ salc_set :: salc_set(char *keyword)
   }
 
   delete(buffer);
-  ip_done();
-  fclose(fp_intco);
+
   return;
 }
 
