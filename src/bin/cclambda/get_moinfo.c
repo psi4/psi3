@@ -12,6 +12,7 @@
 **
 ** T. Daniel Crawford, October 1996.
 ** Modified by TDC, March 1999.
+** Modified for UHF references by TDC, June 2002.
 */
 
 void get_moinfo(void)
@@ -34,6 +35,9 @@ void get_moinfo(void)
   moinfo.phase = chkpt_rd_phase_check();
   chkpt_close();
 
+  psio_read_entry(CC_INFO, "Reference Wavefunction", (char *) &(params.ref),
+                  sizeof(int));
+
   /* Get frozen and active orbital lookups from CC_INFO */
   moinfo.frdocc = init_int_array(moinfo.nirreps);
   moinfo.fruocc = init_int_array(moinfo.nirreps);
@@ -42,29 +46,75 @@ void get_moinfo(void)
   psio_read_entry(CC_INFO, "Frozen Virt Orbs Per Irrep",
 		  (char *) moinfo.fruocc, sizeof(int)*moinfo.nirreps);
   
-  moinfo.occpi = init_int_array(moinfo.nirreps);
-  moinfo.virtpi = init_int_array(moinfo.nirreps);
-  psio_read_entry(CC_INFO, "Active Occ Orbs Per Irrep",
-		  (char *) moinfo.occpi, sizeof(int)*moinfo.nirreps);
-  psio_read_entry(CC_INFO, "Active Virt Orbs Per Irrep",
-		  (char *) moinfo.virtpi, sizeof(int)*moinfo.nirreps);
-
   psio_read_entry(CC_INFO, "No. of Active Orbitals", (char *) &(nactive),
 		  sizeof(int)); 
 
-  moinfo.occ_sym = init_int_array(nactive);
-  moinfo.vir_sym = init_int_array(nactive);
-  psio_read_entry(CC_INFO, "Active Occ Orb Symmetry",
-		  (char *) moinfo.occ_sym, sizeof(int)*nactive);
-  psio_read_entry(CC_INFO, "Active Virt Orb Symmetry",
-		  (char *) moinfo.vir_sym, sizeof(int)*nactive);
+  if(params.ref == 0 || params.ref == 1) { /** RHF or ROHF **/
 
-  moinfo.occ_off = init_int_array(moinfo.nirreps);
-  moinfo.vir_off = init_int_array(moinfo.nirreps);
-  psio_read_entry(CC_INFO, "Active Occ Orb Offsets",
-		  (char *) moinfo.occ_off, sizeof(int)*moinfo.nirreps);
-  psio_read_entry(CC_INFO, "Active Virt Orb Offsets",
-		  (char *) moinfo.vir_off, sizeof(int)*moinfo.nirreps);
+    moinfo.occpi = init_int_array(moinfo.nirreps);
+    moinfo.virtpi = init_int_array(moinfo.nirreps);
+    psio_read_entry(CC_INFO, "Active Occ Orbs Per Irrep",
+		    (char *) moinfo.occpi, sizeof(int)*moinfo.nirreps);
+    psio_read_entry(CC_INFO, "Active Virt Orbs Per Irrep",
+		    (char *) moinfo.virtpi, sizeof(int)*moinfo.nirreps);
+
+    moinfo.occ_sym = init_int_array(nactive);
+    moinfo.vir_sym = init_int_array(nactive);
+    psio_read_entry(CC_INFO, "Active Occ Orb Symmetry",
+		    (char *) moinfo.occ_sym, sizeof(int)*nactive);
+    psio_read_entry(CC_INFO, "Active Virt Orb Symmetry",
+		    (char *) moinfo.vir_sym, sizeof(int)*nactive);
+
+    moinfo.occ_off = init_int_array(moinfo.nirreps);
+    moinfo.vir_off = init_int_array(moinfo.nirreps);
+    psio_read_entry(CC_INFO, "Active Occ Orb Offsets",
+		    (char *) moinfo.occ_off, sizeof(int)*moinfo.nirreps);
+    psio_read_entry(CC_INFO, "Active Virt Orb Offsets",
+		    (char *) moinfo.vir_off, sizeof(int)*moinfo.nirreps);
+  }
+  else if(params.ref == 2) { /** UHF **/
+
+    moinfo.aoccpi = init_int_array(nirreps);
+    moinfo.boccpi = init_int_array(nirreps);
+    moinfo.avirtpi = init_int_array(nirreps);
+    moinfo.bvirtpi = init_int_array(nirreps);
+
+    psio_read_entry(CC_INFO, "Active Alpha Occ Orbs Per Irrep",
+		    (char *) moinfo.aoccpi, sizeof(int)*moinfo.nirreps);
+    psio_read_entry(CC_INFO, "Active Beta Occ Orbs Per Irrep",
+		    (char *) moinfo.boccpi, sizeof(int)*moinfo.nirreps);
+    psio_read_entry(CC_INFO, "Active Alpha Virt Orbs Per Irrep",
+		    (char *) moinfo.avirtpi, sizeof(int)*moinfo.nirreps);
+    psio_read_entry(CC_INFO, "Active Beta Virt Orbs Per Irrep",
+		    (char *) moinfo.bvirtpi, sizeof(int)*moinfo.nirreps);
+
+    moinfo.aocc_sym = init_int_array(nactive);
+    moinfo.bocc_sym = init_int_array(nactive);
+    moinfo.avir_sym = init_int_array(nactive);
+    moinfo.bvir_sym = init_int_array(nactive);
+
+    psio_read_entry(CC_INFO, "Active Alpha Occ Orb Symmetry",
+		    (char *) moinfo.aocc_sym, sizeof(int)*nactive);
+    psio_read_entry(CC_INFO, "Active Beta Occ Orb Symmetry",
+		    (char *) moinfo.bocc_sym, sizeof(int)*nactive);
+    psio_read_entry(CC_INFO, "Active Alpha Virt Orb Symmetry",
+		    (char *) moinfo.avir_sym, sizeof(int)*nactive);
+    psio_read_entry(CC_INFO, "Active Beta Virt Orb Symmetry",
+		    (char *) moinfo.bvir_sym, sizeof(int)*nactive);
+
+    moinfo.aocc_off = init_int_array(moinfo.nirreps);
+    moinfo.bocc_off = init_int_array(moinfo.nirreps);
+    moinfo.avir_off = init_int_array(moinfo.nirreps);
+    moinfo.bvir_off = init_int_array(moinfo.nirreps);
+    psio_read_entry(CC_INFO, "Active Alpha Occ Orb Offsets",
+		    (char *) moinfo.aocc_off, sizeof(int)*moinfo.nirreps);
+    psio_read_entry(CC_INFO, "Active Beta Occ Orb Offsets",
+		    (char *) moinfo.bocc_off, sizeof(int)*moinfo.nirreps);
+    psio_read_entry(CC_INFO, "Active Alpha Virt Orb Offsets",
+		    (char *) moinfo.avir_off, sizeof(int)*moinfo.nirreps);
+    psio_read_entry(CC_INFO, "Active Beta Virt Orb Offsets",
+		    (char *) moinfo.bvir_off, sizeof(int)*moinfo.nirreps);
+  }
 
   /* Build orbsym array (for AO-basis BT2) */
   moinfo.orbsym = init_int_array(moinfo.nso);
@@ -72,26 +122,54 @@ void get_moinfo(void)
     for(p=0; p < moinfo.orbspi[h]; p++)
       moinfo.orbsym[q++] = h;
 
-  C = (double ***) malloc(moinfo.nirreps * sizeof(double **));
-  next = PSIO_ZERO;
-  for(h=0; h < moinfo.nirreps; h++) {
-    if(moinfo.orbspi[h] && moinfo.virtpi[h]) {
-      C[h] = block_matrix(moinfo.orbspi[h],moinfo.virtpi[h]);
-      psio_read(CC_INFO, "RHF/ROHF Active Virtual Orbitals", (char *) C[h][0],
-		moinfo.orbspi[h]*moinfo.virtpi[h]*sizeof(double), next, &next);
+  if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
+
+    C = (double ***) malloc(moinfo.nirreps * sizeof(double **));
+    next = PSIO_ZERO;
+    for(h=0; h < moinfo.nirreps; h++) {
+      if(moinfo.orbspi[h] && moinfo.virtpi[h]) {
+	C[h] = block_matrix(moinfo.orbspi[h],moinfo.virtpi[h]);
+	psio_read(CC_INFO, "RHF/ROHF Active Virtual Orbitals", (char *) C[h][0],
+		  moinfo.orbspi[h]*moinfo.virtpi[h]*sizeof(double), next, &next);
+      }
     }
+    moinfo.C = C;
   }
-  moinfo.C = C;
+  else if(params.ref == 2) { /** UHF **/
+
+    Ca = (double ***) malloc(nirreps * sizeof(double **));
+    next = PSIO_ZERO;
+    for(h=0; h < nirreps; h++) {
+      if(moinfo.orbspi[h] && moinfo.avirtpi[h]) {
+        Ca[h] = block_matrix(moinfo.orbspi[h],moinfo.avirtpi[h]);
+        psio_read(CC_INFO, "UHF Active Alpha Virtual Orbs", (char *) Ca[h][0],
+                  moinfo.orbspi[h]*moinfo.avirtpi[h]*sizeof(double), next, &next);
+      }
+    }
+    moinfo.Ca = Ca;
+
+
+    Cb = (double ***) malloc(nirreps * sizeof(double **));
+    next = PSIO_ZERO;
+    for(h=0; h < nirreps; h++) {
+      if(moinfo.orbspi[h] && moinfo.bvirtpi[h]) {
+        Cb[h] = block_matrix(moinfo.orbspi[h],moinfo.bvirtpi[h]);
+        psio_read(CC_INFO, "UHF Active Beta Virtual Orbs", (char *) Cb[h][0],
+                  moinfo.orbspi[h]*moinfo.bvirtpi[h]*sizeof(double), next, &next);
+      }
+    }
+    moinfo.Cb = Cb;
+  }
 
   /* Adjust clsdpi array for frozen orbitals */
   for(i=0; i < moinfo.nirreps; i++)
-      moinfo.clsdpi[i] -= moinfo.frdocc[i];
+    moinfo.clsdpi[i] -= moinfo.frdocc[i];
 
   moinfo.uoccpi = init_int_array(moinfo.nirreps);
   for(i=0; i < moinfo.nirreps; i++)
-      moinfo.uoccpi[i] = moinfo.orbspi[i] - moinfo.clsdpi[i] -
-			 moinfo.openpi[i] - moinfo.fruocc[i] -
-			 moinfo.frdocc[i];
+    moinfo.uoccpi[i] = moinfo.orbspi[i] - moinfo.clsdpi[i] -
+      moinfo.openpi[i] - moinfo.fruocc[i] -
+      moinfo.frdocc[i];
 
   psio_read_entry(CC_INFO, "Reference Energy", (char *) &(moinfo.eref),
 		  sizeof(double));
@@ -114,9 +192,19 @@ void cleanup(void)
   psio_write_entry(CC_INFO, "Lambda Pseudoenergy", (char *) &(moinfo.lcc),
 		   sizeof(double));
 
-  for(h=0; h < moinfo.nirreps; h++)
-    if(moinfo.orbspi[h] && moinfo.virtpi[h]) free_block(moinfo.C[h]);
-  free(moinfo.C);
+  if(params.ref == 0 || params.ref == 1) {
+    for(h=0; h < moinfo.nirreps; h++)
+      if(moinfo.orbspi[h] && moinfo.virtpi[h]) free_block(moinfo.C[h]);
+    free(moinfo.C);
+  }
+  else if(params.ref == 2) {
+    for(h=0; h < moinfo.nirreps; h++)
+      if(moinfo.orbspi[h] && moinfo.avirtpi[h]) free_block(moinfo.Ca[h]);
+    free(moinfo.Ca);
+    for(h=0; h < moinfo.nirreps; h++)
+      if(moinfo.orbspi[h] && moinfo.bvirtpi[h]) free_block(moinfo.Cb[h]);
+    free(moinfo.Cb);
+  }
 
   free(moinfo.orbspi);
   free(moinfo.orbsym);
@@ -126,13 +214,29 @@ void cleanup(void)
   free(moinfo.fruocc);
   free(moinfo.frdocc);
   for(i=0; i < moinfo.nirreps; i++)
-      free(moinfo.labels[i]);
+    free(moinfo.labels[i]);
   free(moinfo.labels);
-  free(moinfo.occ_sym);
-  free(moinfo.vir_sym);
-  free(moinfo.occ_off);
-  free(moinfo.vir_off);
-  free(moinfo.occpi);
-  free(moinfo.virtpi);
+  if(params.ref == 2) {
+    free(moinfo.aocc_sym);
+    free(moinfo.bocc_sym);
+    free(moinfo.avir_sym);
+    free(moinfo.bvir_sym);
+    free(moinfo.aocc_off);
+    free(moinfo.bocc_off);
+    free(moinfo.avir_off);
+    free(moinfo.bvir_off);
+    free(moinfo.aoccpi);
+    free(moinfo.boccpi);
+    free(moinfo.avirtpi);
+    free(moinfo.bvirtpi);
+  }
+  else {
+    free(moinfo.occ_sym);
+    free(moinfo.vir_sym);
+    free(moinfo.occ_off);
+    free(moinfo.vir_off);
+    free(moinfo.occpi);
+    free(moinfo.virtpi);
+  }
 }
 

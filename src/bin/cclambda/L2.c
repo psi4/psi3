@@ -24,7 +24,6 @@ void L2_build(void) {
   FaeL2();
   FmiL2();
   WijmnL2();
-  if(params.aobasis) BL2_AO();
   WefabL2();
   WejabL2();
   WijmbL2();

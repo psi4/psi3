@@ -26,7 +26,10 @@ void sort_amps(void);
 void Lsave(void);
 void update(void);
 int converged(void);
-int **cacheprep(int level, int *cachefiles);
+int **cacheprep_rhf(int level, int *cachefiles);
+int **cacheprep_uhf(int level, int *cachefiles);
+void cachedone_rhf(int **cachelist);
+void cachedone_uhf(int **cachelist);
 
 int main(int argc, char *argv[])
 {
@@ -41,15 +44,34 @@ int main(int argc, char *argv[])
   get_params();
 
   cachefiles = init_int_array(PSIO_MAXUNIT);
-  cachelist = cacheprep(params.cachelev, cachefiles);
 
-  dpd_init(0, moinfo.nirreps, params.memory, 0, cachefiles, cachelist, NULL, 
-           2, moinfo.occpi, moinfo.occ_sym, moinfo.virtpi, moinfo.vir_sym);
+  if(params.ref == 0 || params.ref == 1) { /** RHF or ROHF **/
 
-  if(params.aobasis) { /* Set up new DPD for AO-basis algorithm */
-    dpd_init(1, moinfo.nirreps, params.memory, 0, cachefiles, cachelist, NULL, 
-	     2, moinfo.occpi, moinfo.orbsym, moinfo.orbspi, moinfo.orbsym);
-    dpd_set_default(0);
+    cachelist = cacheprep_rhf(params.cachelev, cachefiles);
+
+    dpd_init(0, moinfo.nirreps, params.memory, 0, cachefiles, cachelist, NULL,
+	     2, moinfo.occpi, moinfo.occ_sym, moinfo.virtpi, moinfo.vir_sym);
+
+    if(params.aobasis) { /* Set up new DPD for AO-basis algorithm */
+      dpd_init(1, moinfo.nirreps, params.memory, 0, cachefiles, cachelist, NULL, 
+	       2, moinfo.occpi, moinfo.orbsym, moinfo.orbspi, moinfo.orbsym);
+      dpd_set_default(0);
+    }
+
+  }
+  else if(params.ref == 2) { /** UHF **/
+
+    cachelist = cacheprep_uhf(params.cachelev, cachefiles);
+
+    dpd_init(0, moinfo.nirreps, params.memory, 0, cachefiles, 
+	     cachelist, NULL, 4, moinfo.aoccpi, moinfo.aocc_sym, moinfo.avirtpi,
+	     moinfo.avir_sym, moinfo.boccpi, moinfo.bocc_sym, moinfo.bvirtpi, moinfo.bvir_sym);
+
+    if(params.aobasis) { /* Set up new DPD's for AO-basis algorithm */
+      dpd_init(1, moinfo.nirreps, params.memory, 0, cachefiles, cachelist, NULL, 
+               4, moinfo.aoccpi, moinfo.aocc_sym, moinfo.orbspi, moinfo.orbsym, 
+	       moinfo.boccpi, moinfo.bocc_sym, moinfo.orbspi, moinfo.orbsym);
+      dpd_set_default(0);
   }
 
   init_amps();
