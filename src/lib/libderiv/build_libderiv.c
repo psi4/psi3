@@ -79,7 +79,7 @@ int main()
 
   /* Setting up init_libderiv.c, header.h */
   fprintf(init_code,"#include <stdlib.h>\n");
-  fprintf(init_code,"#include <string.h>\n");
+  fprintf(init_code,"#include <strings.h>\n");
   fprintf(init_code,"#include <libint.h>\n");
   fprintf(init_code,"#include \"libderiv.h\"\n");
   fprintf(init_code,"#include \"d1hrr_header.h\"\n\n");
