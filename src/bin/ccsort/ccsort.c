@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 {
   int i;
   int **cachelist, *cachefiles;
-  int ia_size, ab_size, ij_size, f_size, t2_size;
+  int ia_size, ab_size, ij_size, f_size, t2_size, b_size;
 
   init_io(argc,argv);
   init_ioff();
@@ -88,17 +88,22 @@ int main(int argc, char *argv[])
       ij_size += moinfo.aoccpi[i] * moinfo.boccpi[i];
     }
   }
+  b_size = ab_size * ab_size;
   f_size = ia_size * ab_size;
   t2_size = ij_size * ab_size;
 
   if(params.ref == 0 || params.ref == 1) {
-    fprintf(outfile, "\n\tSize of <ia|bc> integrals: %9.3f (MW) / %9.3f (MB)\n",
+    fprintf(outfile, "\n\tSize of <ab|cd> integrals: %9.3f (MW) / %9.3f (MB)\n",
+      b_size/1e6, b_size*sizeof(double)/1e6);
+    fprintf(outfile, "\tSize of <ia|bc> integrals: %9.3f (MW) / %9.3f (MB)\n",
       f_size/1e6, f_size*sizeof(double)/1e6);
     fprintf(outfile, "\tSize of Tijab amplitudes:  %9.3f (MW) / %9.3f (MB)\n",
       t2_size/1e6, t2_size*sizeof(double)/1e6);
   }
   else if(params.ref == 2) {
-    fprintf(outfile, "\n\tSize of <Ia|Bc> integrals: %9.3f (MW) / %9.3f (MB)\n",
+    fprintf(outfile, "\n\tSize of <Ab|Cd> integrals: %9.3f (MW) / %9.3f (MB)\n",
+      b_size/1e6, b_size*sizeof(double)/1e6);
+    fprintf(outfile, "\tSize of <Ia|Bc> integrals: %9.3f (MW) / %9.3f (MB)\n",
       f_size/1e6, f_size*sizeof(double)/1e6);
     fprintf(outfile, "\tSize of TIjAb amplitudes:  %9.3f (MW) / %9.3f (MB)\n",
       t2_size/1e6, t2_size*sizeof(double)/1e6);
