@@ -111,13 +111,13 @@ void scf_check_uhf(void)
 
   moinfo.eref = E1A+ E1B+ E2AA+ E2BB+ E2AB + moinfo.enuc + moinfo.efzc;
 
-  fprintf(outfile, "\tOne-electron energy          = %20.15f\n", E1A + E1B);
-  fprintf(outfile, "\tTwo-electron (AA) energy     = %20.15f\n", E2AA);
-  fprintf(outfile, "\tTwo-electron (BB) energy     = %20.15f\n", E2BB);
-  fprintf(outfile, "\tTwo-electron (AB) energy     = %20.15f\n", E2AB);
-  fprintf(outfile, "\tTwo-electron energy          = %20.15f\n", E2AA + E2BB + E2AB);
-  fprintf(outfile, "\tFrozen-core energy (transqt) = %20.15f\n", moinfo.efzc);
-  fprintf(outfile, "\tReference energy             = %20.15f\n", moinfo.eref);
+  fprintf(outfile, "\tOne-electron energy          =  %20.14f\n", E1A + E1B);
+  fprintf(outfile, "\tTwo-electron (AA) energy     =  %20.14f\n", E2AA);
+  fprintf(outfile, "\tTwo-electron (BB) energy     =  %20.14f\n", E2BB);
+  fprintf(outfile, "\tTwo-electron (AB) energy     =  %20.14f\n", E2AB);
+  fprintf(outfile, "\tTwo-electron energy          =  %20.14f\n", E2AA + E2BB + E2AB);
+  fprintf(outfile, "\tFrozen-core energy (transqt) =  %20.14f\n", moinfo.efzc);
+  fprintf(outfile, "\tReference energy             =  %20.14f\n", moinfo.eref);
 }
 
 void scf_check_rhf(void)

@@ -53,6 +53,7 @@ void c_sort(void)
 
     /* <Ai|Bj> (iA,Bj) (Wmbej.c) */
     dpd_buf4_init(&C, CC_CINTS, 0, 26, 26, 26, 26, 0, "C <Ai|Bj>");
+    dpd_buf4_sort(&C, CC_CINTS, qpsr, 27, 27, "C <iA|jB>");
     dpd_buf4_sort(&C, CC_CINTS, qprs, 27, 26, "C <Ai|Bj> (iA,Bj)");
     dpd_buf4_close(&C);
 

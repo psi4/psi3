@@ -25,7 +25,7 @@ void sort_tei(void)
   keep = params.keep_TEIFile;
   tolerance = params.tolerance;
 
-  if(params.ref == 2) {
+  if(params.ref == 2) { /*** UHF ***/
     distribute_uhf("AA", PSIF_MO_AA_TEI, FIRST_TMP, tolerance, keep);
 
     fflush(outfile);
@@ -125,7 +125,7 @@ void sort_tei(void)
     dpd_file4_close(&F);
 
   }
-  else {
+  else { /*** RHF or ROHF ***/
     distribute_rhf(PSIF_MO_TEI, FIRST_TMP, tolerance, keep);
 
     dpd_file4_init_nocache(&A, CC_AINTS, 0, 0, 0, "A <ij|kl>");

@@ -70,7 +70,7 @@ void d_sort(void)
 
     dpd_buf4_init(&D, CC_DINTS, 0, 20, 30, 20, 30, 0, "D <Ij|Ab> (IA,jb)");
     dpd_buf4_sort(&D, CC_DINTS, rspq, 30, 20, "D <Ij|Ab> (ia,JB)");
-    dpd_buf4_sort(&D, CC_DINTS, pqsr, 30, 31, "D <Ij|Ab> (IA,bj)");
+    dpd_buf4_sort(&D, CC_DINTS, pqsr, 20, 31, "D <Ij|Ab> (IA,bj)");
     dpd_buf4_close(&D);
 
     dpd_buf4_init(&D, CC_DINTS, 0, 30, 20, 30, 20, 0, "D <Ij|Ab> (ia,JB)");

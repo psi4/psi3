@@ -49,14 +49,19 @@ void e_sort(void)
     dpd_buf4_sort(&E, CC_EINTS, qrsp, 23, 27, "E <iJ|kA>");
     dpd_buf4_close(&E);
 
-    /* <iJ|kA> (iJ,Ak) */
+    /* <Ij|Ak> */
     dpd_buf4_init(&E, CC_EINTS, 0, 23, 27, 23, 27, 0, "E <iJ|kA>");
-    dpd_buf4_sort(&E, CC_EINTS, qpsr, 23, 26, "E <Ij|Ak>");
+    dpd_buf4_sort(&E, CC_EINTS, qpsr, 22, 26, "E <Ij|Ak>");
     dpd_buf4_close(&E);
 
-    /* <Ij|Ka> (Ij,aK) */
+    /* <iJ|aK> */
     dpd_buf4_init(&E, CC_EINTS, 0, 22, 24, 22, 24, 0, "E <Ij|Ka>");
-    dpd_buf4_sort(&E, CC_EINTS, qpsr, 22, 25, "E <iJ|aK>");
+    dpd_buf4_sort(&E, CC_EINTS, qpsr, 23, 25, "E <iJ|aK>");
+    dpd_buf4_close(&E);
+
+    /* <Ia|Jk> */
+    dpd_buf4_init(&E, CC_EINTS, 0, 22, 24, 22, 24, 0, "E <Ij|Ka>");
+    dpd_buf4_sort(&E, CC_EINTS, rspq, 24, 22, "E <Ia|Jk>");
     dpd_buf4_close(&E);
 
   }
