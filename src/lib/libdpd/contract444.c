@@ -27,6 +27,7 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
 		    double beta)
 {
   int n, Hx, Hy, Hz, GX, GY, GZ, nirreps, Xtrans, Ytrans, *numlinks, symlink;
+  int size_Y, size_Z;
   int incore, memoryd, core, rows_per_bucket, nbuckets, rows_left, memtotal;
 #ifdef DPD_DEBUG
   int *xrow, *xcol, *yrow, *ycol, *zrow, *zcol;
@@ -68,13 +69,10 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
     else if (( Xtrans)&&(!Ytrans))  {Hy = Hx;       Hz = Hx^GX; }
     else /* (( Xtrans)&&( Ytrans))*/{Hy = Hx^GY;    Hz = Hx^GX; }
 
-    dpd_buf4_mat_irrep_init(Y, Hy);
-    dpd_buf4_mat_irrep_rd(Y, Hy);
-    dpd_buf4_mat_irrep_init(Z, Hz);
-    if(fabs(beta) > 0.0) 
-      dpd_buf4_mat_irrep_rd(Z, Hz);
+    size_Y = Y->params->rowtot[Hy] * Y->params->coltot[Hy^GY];
+    size_Z = Z->params->rowtot[Hz] * Z->params->coltot[Hz^GZ];
 	
-    memoryd = dpd_memfree();
+    memoryd = dpd_memfree() - (size_Y + size_Z);
 
     if(X->params->rowtot[Hx] && X->params->coltot[Hx^GX]) {
 
@@ -124,32 +122,36 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
     }
 
     if(incore) {
-      if(fabs(beta) > 0.0) dpd_buf4_mat_irrep_rd(Z, Hz);
-	  
       dpd_buf4_mat_irrep_init(X, Hx);
       dpd_buf4_mat_irrep_rd(X, Hx);
+
+      dpd_buf4_mat_irrep_init(Y, Hy);
+      dpd_buf4_mat_irrep_rd(Y, Hy);
+      dpd_buf4_mat_irrep_init(Z, Hz);
+      if(fabs(beta) > 0.0) dpd_buf4_mat_irrep_rd(Z, Hz);
 
       if(Z->params->rowtot[Hz] &&
 	 Z->params->coltot[Hz^GZ] && 
 	 numlinks[Hx^symlink]) {
 	C_DGEMM(Xtrans?'t':'n', Ytrans?'t':'n', 
-	    Z->params->rowtot[Hz], Z->params->coltot[Hz^GZ],
-	    numlinks[Hx^symlink], alpha, 
-	    &(X->matrix[Hx][0][0]), X->params->coltot[Hx^GX], 
-	    &(Y->matrix[Hy][0][0]), Y->params->coltot[Hy^GY], beta, 
-	    &(Z->matrix[Hz][0][0]), Z->params->coltot[Hz^GZ]);
+		Z->params->rowtot[Hz], Z->params->coltot[Hz^GZ],
+		numlinks[Hx^symlink], alpha, 
+		&(X->matrix[Hx][0][0]), X->params->coltot[Hx^GX], 
+		&(Y->matrix[Hy][0][0]), Y->params->coltot[Hy^GY], beta, 
+		&(Z->matrix[Hz][0][0]), Z->params->coltot[Hz^GZ]);
       }
 
       /*
-      newmm(X->matrix[Hx], Xtrans, Y->matrix[Hy], Ytrans,
-	    Z->matrix[Hz], Z->params->rowtot[Hz], numlinks[Hx^symlink],
-	    Z->params->coltot[Hz^GZ], alpha, beta);
-	    */
+	newmm(X->matrix[Hx], Xtrans, Y->matrix[Hy], Ytrans,
+	Z->matrix[Hz], Z->params->rowtot[Hz], numlinks[Hx^symlink],
+	Z->params->coltot[Hz^GZ], alpha, beta);
+      */
 
       dpd_buf4_mat_irrep_close(X, Hx);
 
       dpd_buf4_mat_irrep_wrt(Z, Hz);
-
+      dpd_buf4_mat_irrep_close(Y, Hy);
+      dpd_buf4_mat_irrep_close(Z, Hz);
     }
     else {
 
@@ -159,6 +161,11 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
       }
 
       dpd_buf4_mat_irrep_init_block(X, Hx, rows_per_bucket);
+
+      dpd_buf4_mat_irrep_init(Y, Hy);
+      dpd_buf4_mat_irrep_rd(Y, Hy);
+      dpd_buf4_mat_irrep_init(Z, Hz);
+      if(fabs(beta) > 0.0) dpd_buf4_mat_irrep_rd(Z, Hz);
 
       for(n=0; n < (rows_left ? nbuckets-1 : nbuckets); n++) {
 
@@ -184,11 +191,10 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
 	      
       dpd_buf4_mat_irrep_close_block(X, Hx, rows_per_bucket);
 
+      dpd_buf4_mat_irrep_close(Y, Hy);
+      dpd_buf4_mat_irrep_wrt(Z, Hz);
+      dpd_buf4_mat_irrep_close(Z, Hz);
     }
-
-    dpd_buf4_mat_irrep_close(Y, Hy);
-    dpd_buf4_mat_irrep_wrt(Z, Hz);
-    dpd_buf4_mat_irrep_close(Z, Hz);
   }
 
   return 0;
