@@ -15,10 +15,10 @@
 **
 ** Spin Case     Storage      Name
 ** ----------    ---------    --------
-** WAMEF         (AM,E>F)      "WAMEF"
-** Wamef         (am,e>f)      "Wamef"
-** WAmEf         (Am,Ef)       "WAmEf"
-** WaMeF         (aM,eF)       "WaMeF"
+** WAMEF         (MA,E>F)      "WAMEF"
+** Wamef         (ma,e>f)      "Wamef"
+** WAmEf         (mA,Ef)       "WAmEf"
+** WaMeF         (Ma,eF)       "WaMeF"
 ** -----------------------------------
 **
 ** TDC, June 2002
