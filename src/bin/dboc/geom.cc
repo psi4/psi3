@@ -61,7 +61,7 @@ void setup_geoms()
 
 void append_geom(FILE *geomdat, double **geom, int disp)
 {
-  fprintf(geomdat,"\%\%\% DBOC cartesian displacement %d\n",disp);
+  fprintf(geomdat,"%% DBOC cartesian displacement %d\n",disp);
   fprintf(geomdat,"geometry%d = (\n",disp);
   for(int atom=0; atom<Molecule.natom; atom++)
     fprintf(geomdat,"  (%4.2lf %20.15lf %20.15lf %20.15lf)\n",

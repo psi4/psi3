@@ -24,6 +24,7 @@ using namespace std;
 
 extern MOInfo_t MOInfo;
 extern FILE *outfile;
+extern char *CI_Vector_Labels[];
 extern void done(const char *);
 extern void mo_maps(short int**, short int**);
 
@@ -31,8 +32,8 @@ double eval_roci_derwfn_overlap()
 {
   // Read in CI vectors
   SlaterDetVector *vecm, *vecp;
-  slaterdetvector_read(PSIF_CIVECT,"Old CI vector",&vecm);
-  slaterdetvector_read(PSIF_CIVECT,"CI vector",&vecp);
+  slaterdetvector_read(PSIF_CIVECT,CI_Vector_Labels[0],&vecm);
+  slaterdetvector_read(PSIF_CIVECT,CI_Vector_Labels[1],&vecp);
 
   int nfzc = vecm->sdset->alphastrings->nfzc;
   int nalpha = MOInfo.nalpha;
