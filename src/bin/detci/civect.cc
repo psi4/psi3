@@ -386,7 +386,8 @@ void CIvect::set(unsigned long vl, int nb, int incor, int ms0, int *iac,
          for (i=0,j=0; i<num_blocks; i++) { 
             if (Ia_code[i] >= Ib_code[i] && Ia_size[i]>0 && Ib_size[i]>0) {
                buf2blk[j] = i;
-               buf_size[j] = Ia_size[i] * Ib_size[i];
+               buf_size[j] = (unsigned long) Ia_size[i] * 
+                             (unsigned long) Ib_size[i];
                if (Ia_code[i] != Ib_code[i]) buf_offdiag[j] = 1;
                j++;
                }
@@ -396,7 +397,8 @@ void CIvect::set(unsigned long vl, int nb, int incor, int ms0, int *iac,
          for (i=0,j=0; i<num_blocks; i++) { 
             if (Ia_size[i]>0 && Ib_size[i]>0) {
                buf2blk[j] = i;
-               buf_size[j] = Ia_size[i] * Ib_size[i];
+               buf_size[j] = (unsigned long) Ia_size[i] * 
+                             (unsigned long) Ib_size[i];
                j++;
                }
             }
@@ -405,7 +407,7 @@ void CIvect::set(unsigned long vl, int nb, int incor, int ms0, int *iac,
       } /* end icore==0 */
 
    file_offset = (unsigned long *) malloc (buf_total * sizeof(unsigned long));
-   zero_block_offset = (unsigned long *) malloc (maxvect * sizeof(unsigned long));
+   zero_block_offset=(unsigned long *)malloc(maxvect * sizeof(unsigned long));
    offsets_done = init_int_matrix(maxvect, buf_per_vect); 
    for (i=0; i<buf_total; i++) file_offset[i] = 0;
    for (i=0; i<maxvect; i++) zero_block_offset[i] = 0;
@@ -505,7 +507,7 @@ void CIvect::set(unsigned long vl, int nb, int incor, int ms0, int *iac,
      /* figure out which symmetry block is largest */ 
       for (i=0, maxbufsize=0; i<nirreps; i++) {
          for (j=first_ablk[i],bufsize=0; j<=last_ablk[i]; j++) {
-            bufsize += Ia_size[j] * Ib_size[j];
+            bufsize += (unsigned long) Ia_size[j] * (unsigned long) Ib_size[j];
             }
          if (bufsize > maxbufsize) maxbufsize = bufsize;
          } 
@@ -525,7 +527,7 @@ void CIvect::set(unsigned long vl, int nb, int incor, int ms0, int *iac,
             blocks[i] = (double **) malloc (Ia_size[i] * sizeof(double *));
          else
             blocks[i] = (double **) malloc (sizeof(double *));
-         bufsize = Ia_size[i] * Ib_size[i];
+         bufsize = (unsigned long) Ia_size[i] * (unsigned long) Ib_size[i];
          if (bufsize > maxbufsize) maxbufsize = bufsize;
          }
       // CDS 11/5/97: Revise buffer_size, the size of the biggest buffer 
