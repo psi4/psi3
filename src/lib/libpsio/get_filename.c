@@ -31,6 +31,10 @@ int psio_get_filename(ULI unit, char *name)
   errcod = ip_data(ip_token,"%s",name,0);
   if(errcod == IPE_OK) return(0);
 
+  sprintf(ip_token,":DEFAULT:NAME");
+  errcod = ip_data(ip_token,"%s",name,0);
+  if(errcod == IPE_OK) return(0);
+
   return(1);
 }
 
