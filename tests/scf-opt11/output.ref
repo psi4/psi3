@@ -1,6 +1,6 @@
 ******************************************************************************
-tstart called on algol.local.net
-Sun Aug 31 19:56:25 2003
+tstart called on boromir.chem
+Tue Mar 16 15:48:33 2004
 
                                 --------------
                                   WELCOME TO
@@ -11,6 +11,8 @@ Sun Aug 31 19:56:25 2003
   SHOWNORM    =	0
   PUREAM      =	0
   PRINT_LVL   =	1
+
+  Parsed basis sets from /home/rking/psi3/lib/pbasis.dat
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
@@ -146,17 +148,20 @@ Sun Aug 31 19:56:25 2003
     3   1.0046830   1.6030318   0.0000000
     4   1.0034598   1.6374460   1.6221497   0.0000000
 
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
 
 ******************************************************************************
-tstop called on algol.local.net
-Sun Aug 31 19:56:25 2003
+tstop called on boromir.chem
+Tue Mar 16 15:48:33 2004
 
-user time   =       0.04 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.06 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on algol.local.net
-Sun Aug 31 19:56:25 2003
+tstart called on boromir.chem
+Tue Mar 16 15:48:33 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -172,27 +177,28 @@ Sun Aug 31 19:56:25 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = nh3                                                                             
+    Label                       = nh3
     Number of atoms             = 4
     Number of atomic orbitals   = 31
     Number of symmetry orbitals = 31
     Maximum AM in the basis     = 2
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C1 
+    Computational point group        = C1 
     Number of irreps                 = 1
+
     Wrote 115267 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on algol.local.net
-Sun Aug 31 19:56:25 2003
+tstop called on boromir.chem
+Tue Mar 16 15:48:34 2004
 
-user time   =       0.06 seconds =       0.00 minutes
+user time   =       0.54 seconds =       0.01 minutes
 system time =       0.03 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on algol.local.net
-Sun Aug 31 19:56:25 2003
+tstart called on boromir.chem
+Tue Mar 16 15:48:34 2004
 
 
              ------------------------------------------
@@ -206,7 +212,7 @@ Sun Aug 31 19:56:25 2003
   I think the multiplicity is 1.
   If this is wrong, please specify the MULTP keyword
 
-  label       = nh3
+  label        = nh3
   wfn          = SCF
   reference    = RHF
   multiplicity = 1
@@ -242,16 +248,16 @@ Sun Aug 31 19:56:25 2003
   iter       total energy        delta E         delta P          diiser
     1       -48.0741160003    6.011634e+01    0.000000e+00    0.000000e+00
     2       -51.9476991948    3.873583e+00    9.069201e-02    1.338235e+00
-    3       -56.0173163475    4.069617e+00    8.880200e-02    5.233748e-01
+    3       -56.0173163477    4.069617e+00    8.880200e-02    5.233748e-01
     4       -56.1760731748    1.587568e-01    2.278133e-03    2.130483e-01
     5       -56.2084914427    3.241827e-02    5.699672e-04    7.786505e-02
     6       -56.2088480435    3.566007e-04    1.284141e-04    9.691203e-03
     7       -56.2088567918    8.748326e-06    2.749530e-05    9.828436e-04
-    8       -56.2088569519    1.600776e-07    2.859173e-06    1.437138e-04
-    9       -56.2088569666    1.470994e-08    1.133966e-06    4.278280e-05
-   10       -56.2088569684    1.865374e-09    4.992261e-07    1.568561e-05
-   11       -56.2088569686    1.296883e-10    1.652375e-07    4.041702e-06
-   12       -56.2088569686    1.691092e-12    9.207177e-09    4.052733e-07
+    8       -56.2088569519    1.600777e-07    2.859173e-06    1.437138e-04
+    9       -56.2088569666    1.470985e-08    1.133966e-06    4.278280e-05
+   10       -56.2088569684    1.865445e-09    4.992261e-07    1.568561e-05
+   11       -56.2088569686    1.297167e-10    1.652375e-07    4.041702e-06
+   12       -56.2088569686    1.605827e-12    9.207176e-09    4.052733e-07
 
 Orbital energies (a.u.):
 
@@ -272,23 +278,23 @@ Orbital energies (a.u.):
   30A       4.340096    31A      35.808030  
 
 
-        SCF total energy   =     -56.208856968567
+        SCF total energy   =     -56.208856968568
         kinetic energy     =      56.165784868012
         nuc. attr. energy  =    -155.958578463574
-        elec. rep. energy  =      43.583936626995
-        potential energy   =    -112.374641836579
+        elec. rep. energy  =      43.583936626994
+        potential energy   =    -112.374641836580
         virial theorem     =       1.999233713282
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on algol.local.net
-Sun Aug 31 19:56:25 2003
+tstop called on boromir.chem
+Tue Mar 16 15:48:34 2004
 
-user time   =       0.09 seconds =       0.00 minutes
-system time =       0.03 seconds =       0.00 minutes
+user time   =       0.12 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on algol.local.net
-Sun Aug 31 19:56:25 2003
+tstart called on boromir.chem
+Tue Mar 16 15:48:34 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -304,14 +310,14 @@ Sun Aug 31 19:56:25 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = nh3                                                                             
+    Label                       = nh3
     Number of atoms             = 4
     Number of atomic orbitals   = 31
     Number of symmetry orbitals = 31
     Maximum AM in the basis     = 2
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C1 
+    Computational point group        = C1 
     Number of irreps                 = 1
   Rotational invariance condition satisfied.
   |X cross Grad| =  0.000000006385   (it is the accuracy of the computed forces)
@@ -321,17 +327,17 @@ Sun Aug 31 19:56:25 2003
   -SCF forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.005357306938    -0.002815797116     0.001738950448
-       2       -0.004537392325     0.001857400779    -0.000944317704
-       3       -0.002591445874    -0.000589505018    -0.001676229168
-       4        0.001771531261     0.001547901355     0.000881596424
+       1        0.005357306938    -0.002815797116     0.001738950449
+       2       -0.004537392325     0.001857400778    -0.000944317704
+       3       -0.002591445874    -0.000589505018    -0.001676229169
+       4        0.001771531261     0.001547901355     0.000881596423
 
 ******************************************************************************
-tstop called on algol.local.net
-Sun Aug 31 19:56:26 2003
+tstop called on boromir.chem
+Tue Mar 16 15:48:35 2004
 
-user time   =       0.33 seconds =       0.01 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       1.12 seconds =       0.02 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
@@ -349,9 +355,7 @@ Cartesian geometry and possibly gradient in a.u. with masses
                        0.0017715313   0.0015479014   0.0008815964
 
 Generating simple internals
-
-Generating simple internals
-
+Searching for geometrical constraints...
 Simple Internal Coordinates and Values
 Stretches
     (1 1 2) (1.00541901)
@@ -374,7 +378,7 @@ Current SCF energy before step       -56.2088569686
 
 Taking geometry step number 1
 
-BuB^t Determinant: 2.779267e-46
+BuB^t Determinant: -6.062871e-47
 
 Generating empirical Hessian.
 
@@ -385,16 +389,16 @@ No BFGS update performed.
 Scaling displacements by 1.000000
 
 Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
-         Value          Force        Displacement   New Value
- 1   1.0054190086  -0.0163328121  -0.0023639585   1.0030550502
- 2   1.0046830447  -0.0040722429  -0.0009127722   1.0037702725
- 3   1.0034597750  -0.0115287440  -0.0010998119   1.0023599630
- 4   1.8462393974   0.0188907101   0.0353753449   1.8816147423
- 5   1.9058181274  -0.0168877928  -0.0277801178   1.8780380096
- 6   1.8807727572  -0.0006782288  -0.0010026052   1.8797701520
- 7   0.6455597893   0.0084995540   0.0142387410   0.6597985302
- 8   0.6641524868  -0.0031594638  -0.0045321481   0.6596203387
- 9   0.6776636592  -0.0075356980  -0.0192557714   0.6584078878
+       Value         Force        Displacement  New Value
+ 1    1.00541901   -0.01633281   -0.00236396    1.00305505
+ 2    1.00468304   -0.00407224   -0.00091277    1.00377027
+ 3    1.00345977   -0.01152874   -0.00109981    1.00235996
+ 4    1.84623940    0.01889071    0.03537534    1.88161474
+ 5    1.90581813   -0.01688779   -0.02778012    1.87803801
+ 6    1.88077276   -0.00067823   -0.00100261    1.87977015
+ 7    0.64555979    0.00849955    0.01423874    0.65979853
+ 8    0.66415249   -0.00315946   -0.00453215    0.65962034
+ 9    0.67766366   -0.00753570   -0.01925577    0.65840789
    MAX force:    0.0188907101   RMS force:    0.0115363372
 
 Back-transformation to cartesian coordinates...
@@ -415,8 +419,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on algol.local.net
-Sun Aug 31 19:56:26 2003
+tstart called on boromir.chem
+Tue Mar 16 15:48:35 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -432,27 +436,28 @@ Sun Aug 31 19:56:26 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = nh3                                                                             
+    Label                       = nh3
     Number of atoms             = 4
     Number of atomic orbitals   = 31
     Number of symmetry orbitals = 31
     Maximum AM in the basis     = 2
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C1 
+    Computational point group        = C1 
     Number of irreps                 = 1
+
     Wrote 115267 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on algol.local.net
-Sun Aug 31 19:56:26 2003
+tstop called on boromir.chem
+Tue Mar 16 15:48:36 2004
 
-user time   =       0.08 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.54 seconds =       0.01 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on algol.local.net
-Sun Aug 31 19:56:26 2003
+tstart called on boromir.chem
+Tue Mar 16 15:48:36 2004
 
 
              ------------------------------------------
@@ -466,7 +471,7 @@ Sun Aug 31 19:56:26 2003
   I think the multiplicity is 1.
   If this is wrong, please specify the MULTP keyword
 
-  label       = nh3
+  label        = nh3
   wfn          = SCF
   reference    = RHF
   multiplicity = 1
@@ -477,7 +482,7 @@ Sun Aug 31 19:56:26 2003
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy       12.0587765455864
+  nuclear repulsion energy       12.0587765455900
 
   using old vector from file30 as initial guess
   energy from old vector:   -56.20885697
@@ -506,10 +511,10 @@ Sun Aug 31 19:56:26 2003
     2       -56.2090127640    4.206841e-05    3.224878e-05    2.379245e-03
     3       -56.2090154365    2.672524e-06    8.621602e-06    6.759327e-04
     4       -56.2090156540    2.175599e-07    2.078303e-06    1.996889e-04
-    5       -56.2090156905    3.649301e-08    1.414008e-06    6.381173e-05
-    6       -56.2090156913    7.291874e-10    2.320197e-07    7.496758e-06
-    7       -56.2090156913    7.156586e-11    1.004793e-07    2.664969e-06
-    8       -56.2090156913    3.069545e-12    2.210648e-08    6.284856e-07
+    5       -56.2090156905    3.649311e-08    1.414008e-06    6.381173e-05
+    6       -56.2090156913    7.291590e-10    2.320197e-07    7.496758e-06
+    7       -56.2090156913    7.158008e-11    1.004793e-07    2.664969e-06
+    8       -56.2090156913    3.041123e-12    2.210648e-08    6.284856e-07
 
  No phase correction possible.
 
@@ -532,23 +537,23 @@ Orbital energies (a.u.):
   30A       4.341402    31A      35.808944  
 
 
-        SCF total energy   =     -56.209015691331
-        kinetic energy     =      56.172422593191
-        nuc. attr. energy  =    -155.996154360833
-        elec. rep. energy  =      43.614716076312
-        potential energy   =    -112.381438284522
+        SCF total energy   =     -56.209015691332
+        kinetic energy     =      56.172422593192
+        nuc. attr. energy  =    -155.996154360841
+        elec. rep. energy  =      43.614716076317
+        potential energy   =    -112.381438284524
         virial theorem     =       1.999348981695
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on algol.local.net
-Sun Aug 31 19:56:26 2003
+tstop called on boromir.chem
+Tue Mar 16 15:48:36 2004
 
-user time   =       0.06 seconds =       0.00 minutes
-system time =       0.04 seconds =       0.00 minutes
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on algol.local.net
-Sun Aug 31 19:56:26 2003
+tstart called on boromir.chem
+Tue Mar 16 15:48:36 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -564,14 +569,14 @@ Sun Aug 31 19:56:26 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = nh3                                                                             
+    Label                       = nh3
     Number of atoms             = 4
     Number of atomic orbitals   = 31
     Number of symmetry orbitals = 31
     Maximum AM in the basis     = 2
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C1 
+    Computational point group        = C1 
     Number of irreps                 = 1
   Rotational invariance condition satisfied.
   |X cross Grad| =  0.000000040770   (it is the accuracy of the computed forces)
@@ -584,15 +589,15 @@ Sun Aug 31 19:56:26 2003
        1        0.000669186954    -0.000436142868     0.000249593410
        2        0.000161179872    -0.000265310165    -0.000128888124
        3       -0.000063925957     0.000687881352    -0.000236774643
-       4       -0.000766440869     0.000013571681     0.000116069357
+       4       -0.000766440870     0.000013571681     0.000116069357
 
 ******************************************************************************
-tstop called on algol.local.net
-Sun Aug 31 19:56:26 2003
+tstop called on boromir.chem
+Tue Mar 16 15:48:37 2004
 
-user time   =       0.33 seconds =       0.01 minutes
+user time   =       1.13 seconds =       0.02 minutes
 system time =       0.00 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
@@ -607,7 +612,7 @@ Cartesian geometry and possibly gradient in a.u. with masses
                        0.0001611799  -0.0002653102  -0.0001288881
                       -0.0000639260   0.0006878814  -0.0002367746
                       -0.0007664409   0.0000135717   0.0001160694
-
+Searching for geometrical constraints...
 Simple Internal Coordinates and Values
 Stretches
     (1 1 2) (1.00315438)
@@ -628,7 +633,7 @@ Current SCF energy before step       -56.2090156913
 
 Taking geometry step number 2
 
-BuB^t Determinant: 2.212866e-46
+BuB^t Determinant: 2.368393e-46
 
 Force Constants read from PSIF_OPTKING
 
@@ -637,16 +642,16 @@ Performing BFGS Hessian update with previous 1 gradient(s).
 Scaling displacements by 1.000000
 
 Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
-         Value          Force        Displacement   New Value
- 1   1.0031543834  -0.0009277547  -0.0001521671   1.0030022163
- 2   1.0037155461  -0.0055294085  -0.0007683164   1.0029472298
- 3   1.0023153494   0.0056256892   0.0007978808   1.0031132302
- 4   1.8816066550  -0.0018447406  -0.0008704064   1.8807362486
- 5   1.8780160819   0.0022292086   0.0022687219   1.8802848038
- 6   1.8799598036   0.0002850742   0.0002813633   1.8802411669
- 7   0.6599529055   0.0008804972  -0.0011946561   0.6587582493
- 8   0.6594024672  -0.0005262369  -0.0009491647   0.6584533025
- 9   0.6585893140  -0.0012685389  -0.0001342610   0.6584550530
+       Value         Force        Displacement  New Value
+ 1    1.00315438   -0.00092775   -0.00015217    1.00300222
+ 2    1.00371555   -0.00552941   -0.00076832    1.00294723
+ 3    1.00231535    0.00562569    0.00079788    1.00311323
+ 4    1.88160665   -0.00184474   -0.00087041    1.88073625
+ 5    1.87801608    0.00222921    0.00226872    1.88028480
+ 6    1.87995980    0.00028507    0.00028136    1.88024117
+ 7    0.65995291    0.00088050   -0.00119466    0.65875825
+ 8    0.65940247   -0.00052624   -0.00094916    0.65845330
+ 9    0.65858931   -0.00126854   -0.00013426    0.65845505
    MAX force:    0.0056256892   RMS force:    0.0028712863
 
 Back-transformation to cartesian coordinates...
@@ -667,8 +672,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on algol.local.net
-Sun Aug 31 19:56:26 2003
+tstart called on boromir.chem
+Tue Mar 16 15:48:37 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -684,27 +689,28 @@ Sun Aug 31 19:56:26 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = nh3                                                                             
+    Label                       = nh3
     Number of atoms             = 4
     Number of atomic orbitals   = 31
     Number of symmetry orbitals = 31
     Maximum AM in the basis     = 2
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C1 
+    Computational point group        = C1 
     Number of irreps                 = 1
+
     Wrote 115267 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on algol.local.net
-Sun Aug 31 19:56:26 2003
+tstop called on boromir.chem
+Tue Mar 16 15:48:38 2004
 
-user time   =       0.08 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.55 seconds =       0.01 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on algol.local.net
-Sun Aug 31 19:56:26 2003
+tstart called on boromir.chem
+Tue Mar 16 15:48:38 2004
 
 
              ------------------------------------------
@@ -718,7 +724,7 @@ Sun Aug 31 19:56:26 2003
   I think the multiplicity is 1.
   If this is wrong, please specify the MULTP keyword
 
-  label       = nh3
+  label        = nh3
   wfn          = SCF
   reference    = RHF
   multiplicity = 1
@@ -729,7 +735,7 @@ Sun Aug 31 19:56:26 2003
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy       12.0590632981006
+  nuclear repulsion energy       12.0590632981043
 
   using old vector from file30 as initial guess
   energy from old vector:   -56.20901569
@@ -756,10 +762,10 @@ Sun Aug 31 19:56:26 2003
   iter       total energy        delta E         delta P          diiser
     1       -56.2090169913    6.826808e+01    0.000000e+00    0.000000e+00
     2       -56.2090174085    4.171814e-07    3.335976e-06    1.914478e-04
-    3       -56.2090174343    2.584035e-08    8.865159e-07    3.640717e-05
-    4       -56.2090174367    2.326487e-09    2.672543e-07    1.188326e-05
-    5       -56.2090174371    4.046967e-10    1.325913e-07    4.294531e-06
-    6       -56.2090174371    5.121592e-11    6.764232e-08    1.456710e-06
+    3       -56.2090174343    2.584029e-08    8.865159e-07    3.640717e-05
+    4       -56.2090174367    2.326587e-09    2.672543e-07    1.188326e-05
+    5       -56.2090174371    4.045546e-10    1.325913e-07    4.294531e-06
+    6       -56.2090174371    5.134382e-11    6.764232e-08    1.456710e-06
 
  No phase correction possible.
 
@@ -782,23 +788,23 @@ Orbital energies (a.u.):
   30A       4.341478    31A      35.808936  
 
 
-        SCF total energy   =     -56.209017437122
-        kinetic energy     =      56.172427836052
-        nuc. attr. energy  =    -155.996852819328
-        elec. rep. energy  =      43.615407546154
-        potential energy   =    -112.381445273174
+        SCF total energy   =     -56.209017437123
+        kinetic energy     =      56.172427836053
+        nuc. attr. energy  =    -155.996852819336
+        elec. rep. energy  =      43.615407546160
+        potential energy   =    -112.381445273176
         virial theorem     =       1.999349043930
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on algol.local.net
-Sun Aug 31 19:56:27 2003
+tstop called on boromir.chem
+Tue Mar 16 15:48:38 2004
 
-user time   =       0.08 seconds =       0.00 minutes
+user time   =       0.09 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on algol.local.net
-Sun Aug 31 19:56:27 2003
+tstart called on boromir.chem
+Tue Mar 16 15:48:38 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -814,14 +820,14 @@ Sun Aug 31 19:56:27 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = nh3                                                                             
+    Label                       = nh3
     Number of atoms             = 4
     Number of atomic orbitals   = 31
     Number of symmetry orbitals = 31
     Maximum AM in the basis     = 2
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C1 
+    Computational point group        = C1 
     Number of irreps                 = 1
   Rotational invariance condition satisfied.
   |X cross Grad| =  0.000000558451   (it is the accuracy of the computed forces)
@@ -837,12 +843,12 @@ Sun Aug 31 19:56:27 2003
        4        0.000081273729    -0.000013638663    -0.000092785047
 
 ******************************************************************************
-tstop called on algol.local.net
-Sun Aug 31 19:56:27 2003
+tstop called on boromir.chem
+Tue Mar 16 15:48:39 2004
 
-user time   =       0.33 seconds =       0.01 minutes
-system time =       0.00 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       1.10 seconds =       0.02 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
@@ -857,7 +863,7 @@ Cartesian geometry and possibly gradient in a.u. with masses
                        0.0000217592  -0.0000216040  -0.0000358544
                        0.0000488038  -0.0000384794  -0.0000190190
                        0.0000812737  -0.0000136387  -0.0000927850
-
+Searching for geometrical constraints...
 Simple Internal Coordinates and Values
 Stretches
     (1 1 2) (1.00300226)
@@ -878,7 +884,7 @@ Current SCF energy before step       -56.2090174371
 
 Taking geometry step number 3
 
-BuB^t Determinant: -4.150763e-47
+BuB^t Determinant: 1.004386e-46
 
 Force Constants read from PSIF_OPTKING
 
@@ -887,16 +893,16 @@ Performing BFGS Hessian update with previous 2 gradient(s).
 Scaling displacements by 1.000000
 
 Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
-         Value          Force        Displacement   New Value
- 1   1.0030022581  -0.0001424989  -0.0000239778   1.0029782803
- 2   1.0029472287   0.0002690446   0.0000309665   1.0029781953
- 3   1.0031131894  -0.0008127965  -0.0000966288   1.0030165606
- 4   1.8807360953   0.0000357619   0.0000572629   1.8807933582
- 5   1.8802847051   0.0001013267   0.0004930255   1.8807777306
- 6   1.8802411272   0.0002001567   0.0002702524   1.8805113796
- 7   0.6587582834  -0.0004185076  -0.0005116376   0.6582466458
- 8   0.6584531224  -0.0000727376  -0.0003704857   0.6580826367
- 9   0.6584549841   0.0000336587  -0.0002312611   0.6582237230
+       Value         Force        Displacement  New Value
+ 1    1.00300226   -0.00014250   -0.00002398    1.00297828
+ 2    1.00294723    0.00026904    0.00003097    1.00297820
+ 3    1.00311319   -0.00081280   -0.00009663    1.00301656
+ 4    1.88073610    0.00003576    0.00005726    1.88079336
+ 5    1.88028471    0.00010133    0.00049303    1.88077773
+ 6    1.88024113    0.00020016    0.00027025    1.88051138
+ 7    0.65875828   -0.00041851   -0.00051164    0.65824665
+ 8    0.65845312   -0.00007274   -0.00037049    0.65808264
+ 9    0.65845498    0.00003366   -0.00023126    0.65822372
    MAX force:    0.0008127965   RMS force:    0.0003310774
 
 Back-transformation to cartesian coordinates...
@@ -916,8 +922,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on algol.local.net
-Sun Aug 31 19:56:27 2003
+tstart called on boromir.chem
+Tue Mar 16 15:48:39 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -933,27 +939,28 @@ Sun Aug 31 19:56:27 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = nh3                                                                             
+    Label                       = nh3
     Number of atoms             = 4
     Number of atomic orbitals   = 31
     Number of symmetry orbitals = 31
     Maximum AM in the basis     = 2
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C1 
+    Computational point group        = C1 
     Number of irreps                 = 1
+
     Wrote 115267 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on algol.local.net
-Sun Aug 31 19:56:27 2003
+tstop called on boromir.chem
+Tue Mar 16 15:48:39 2004
 
-user time   =       0.06 seconds =       0.00 minutes
-system time =       0.03 seconds =       0.00 minutes
+user time   =       0.56 seconds =       0.01 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on algol.local.net
-Sun Aug 31 19:56:27 2003
+tstart called on boromir.chem
+Tue Mar 16 15:48:39 2004
 
 
              ------------------------------------------
@@ -967,7 +974,7 @@ Sun Aug 31 19:56:27 2003
   I think the multiplicity is 1.
   If this is wrong, please specify the MULTP keyword
 
-  label       = nh3
+  label        = nh3
   wfn          = SCF
   reference    = RHF
   multiplicity = 1
@@ -978,7 +985,7 @@ Sun Aug 31 19:56:27 2003
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy       12.0593247170611
+  nuclear repulsion energy       12.0593247170653
 
   using old vector from file30 as initial guess
   energy from old vector:   -56.20901744
@@ -1004,9 +1011,9 @@ Sun Aug 31 19:56:27 2003
 
   iter       total energy        delta E         delta P          diiser
     1       -56.2090174848    6.826834e+01    0.000000e+00    0.000000e+00
-    2       -56.2090175043    1.950660e-08    7.616940e-07    6.977100e-05
-    3       -56.2090175059    1.615319e-09    2.699049e-07    1.573999e-05
-    4       -56.2090175061    2.018083e-10    8.474469e-08    4.251338e-06
+    2       -56.2090175043    1.950670e-08    7.616940e-07    6.977100e-05
+    3       -56.2090175059    1.615263e-09    2.699049e-07    1.573999e-05
+    4       -56.2090175061    2.018226e-10    8.474469e-08    4.251338e-06
 
  Correcting phases of orbitals.
 
@@ -1029,23 +1036,23 @@ Orbital energies (a.u.):
   30A       4.341523    31A      35.808936  
 
 
-        SCF total energy   =     -56.209017506085
-        kinetic energy     =      56.172495383985
-        nuc. attr. energy  =    -155.997485546297
-        elec. rep. energy  =      43.615972656227
-        potential energy   =    -112.381512890071
+        SCF total energy   =     -56.209017506086
+        kinetic energy     =      56.172495383987
+        nuc. attr. energy  =    -155.997485546306
+        elec. rep. energy  =      43.615972656233
+        potential energy   =    -112.381512890073
         virial theorem     =       1.999350244432
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on algol.local.net
-Sun Aug 31 19:56:27 2003
+tstop called on boromir.chem
+Tue Mar 16 15:48:39 2004
 
-user time   =       0.05 seconds =       0.00 minutes
+user time   =       0.06 seconds =       0.00 minutes
 system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on algol.local.net
-Sun Aug 31 19:56:27 2003
+tstart called on boromir.chem
+Tue Mar 16 15:48:39 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1061,14 +1068,14 @@ Sun Aug 31 19:56:27 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = nh3                                                                             
+    Label                       = nh3
     Number of atoms             = 4
     Number of atomic orbitals   = 31
     Number of symmetry orbitals = 31
     Maximum AM in the basis     = 2
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C1 
+    Computational point group        = C1 
     Number of irreps                 = 1
   Rotational invariance condition satisfied.
   |X cross Grad| =  0.000000268956   (it is the accuracy of the computed forces)
@@ -1084,12 +1091,12 @@ Sun Aug 31 19:56:27 2003
        4        0.000027991078     0.000014706021    -0.000037369622
 
 ******************************************************************************
-tstop called on algol.local.net
-Sun Aug 31 19:56:27 2003
+tstop called on boromir.chem
+Tue Mar 16 15:48:41 2004
 
-user time   =       0.33 seconds =       0.01 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       1.11 seconds =       0.02 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          2 seconds =       0.03 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
@@ -1104,7 +1111,7 @@ Cartesian geometry and possibly gradient in a.u. with masses
                       -0.0000003063  -0.0000005274  -0.0000140565
                        0.0000222327  -0.0000026182  -0.0000242880
                        0.0000279911   0.0000147060  -0.0000373696
-
+Searching for geometrical constraints...
 Simple Internal Coordinates and Values
 Stretches
     (1 1 2) (1.00297829)
@@ -1125,7 +1132,7 @@ Current SCF energy before step       -56.2090175061
 
 Taking geometry step number 4
 
-BuB^t Determinant: 1.369853e-46
+BuB^t Determinant: 1.594187e-45
 
 Force Constants read from PSIF_OPTKING
 
@@ -1134,16 +1141,16 @@ Performing BFGS Hessian update with previous 3 gradient(s).
 Scaling displacements by 1.000000
 
 Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
-         Value          Force        Displacement   New Value
- 1   1.0029782861  -0.0000723349  -0.0000236367   1.0029546495
- 2   1.0029782121  -0.0000020744  -0.0000084895   1.0029697226
- 3   1.0030165380  -0.0002701096  -0.0000568409   1.0029596971
- 4   1.8807932536   0.0000300979   0.0001471979   1.8809404515
- 5   1.8807776803  -0.0000099153   0.0002665404   1.8810442207
- 6   1.8805113140   0.0001563377   0.0003497676   1.8808610817
- 7   0.6582466504  -0.0001549847  -0.0004129750   0.6578336755
- 8   0.6580825676  -0.0000118809  -0.0002927990   0.6577897686
- 9   0.6582236252  -0.0000728605  -0.0003310890   0.6578925363
+       Value         Force        Displacement  New Value
+ 1    1.00297829   -0.00007233   -0.00002364    1.00295465
+ 2    1.00297821   -0.00000207   -0.00000849    1.00296972
+ 3    1.00301654   -0.00027011   -0.00005684    1.00295970
+ 4    1.88079325    0.00003010    0.00014720    1.88094045
+ 5    1.88077768   -0.00000992    0.00026654    1.88104422
+ 6    1.88051131    0.00015634    0.00034977    1.88086108
+ 7    0.65824665   -0.00015498   -0.00041297    0.65783368
+ 8    0.65808257   -0.00001188   -0.00029280    0.65778977
+ 9    0.65822363   -0.00007286   -0.00033109    0.65789254
    MAX force:    0.0002701096   RMS force:    0.0001216149
 
 Back-transformation to cartesian coordinates...
@@ -1163,8 +1170,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on algol.local.net
-Sun Aug 31 19:56:27 2003
+tstart called on boromir.chem
+Tue Mar 16 15:48:41 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1180,27 +1187,28 @@ Sun Aug 31 19:56:27 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = nh3                                                                             
+    Label                       = nh3
     Number of atoms             = 4
     Number of atomic orbitals   = 31
     Number of symmetry orbitals = 31
     Maximum AM in the basis     = 2
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C1 
+    Computational point group        = C1 
     Number of irreps                 = 1
+
     Wrote 115267 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on algol.local.net
-Sun Aug 31 19:56:28 2003
+tstop called on boromir.chem
+Tue Mar 16 15:48:41 2004
 
-user time   =       0.06 seconds =       0.00 minutes
-system time =       0.03 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.55 seconds =       0.01 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on algol.local.net
-Sun Aug 31 19:56:28 2003
+tstart called on boromir.chem
+Tue Mar 16 15:48:41 2004
 
 
              ------------------------------------------
@@ -1214,7 +1222,7 @@ Sun Aug 31 19:56:28 2003
   I think the multiplicity is 1.
   If this is wrong, please specify the MULTP keyword
 
-  label       = nh3
+  label        = nh3
   wfn          = SCF
   reference    = RHF
   multiplicity = 1
@@ -1225,7 +1233,7 @@ Sun Aug 31 19:56:28 2003
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy       12.0595903332229
+  nuclear repulsion energy       12.0595903332270
 
   using old vector from file30 as initial guess
   energy from old vector:   -56.20901751
@@ -1251,9 +1259,9 @@ Sun Aug 31 19:56:28 2003
 
   iter       total energy        delta E         delta P          diiser
     1       -56.2090175125    6.826861e+01    0.000000e+00    0.000000e+00
-    2       -56.2090175274    1.487857e-08    7.006173e-07    6.504962e-05
-    3       -56.2090175287    1.255771e-09    2.589386e-07    1.496603e-05
-    4       -56.2090175288    1.673612e-10    8.275088e-08    4.050451e-06
+    2       -56.2090175274    1.487868e-08    7.006173e-07    6.504962e-05
+    3       -56.2090175287    1.255657e-09    2.589386e-07    1.496603e-05
+    4       -56.2090175288    1.672618e-10    8.275088e-08    4.050451e-06
 
  Correcting phases of orbitals.
 
@@ -1277,22 +1285,22 @@ Orbital energies (a.u.):
 
 
         SCF total energy   =     -56.209017528836
-        kinetic energy     =      56.172553770347
-        nuc. attr. energy  =    -155.998102169064
-        elec. rep. energy  =      43.616530869881
-        potential energy   =    -112.381571299183
+        kinetic energy     =      56.172553770348
+        nuc. attr. energy  =    -155.998102169072
+        elec. rep. energy  =      43.616530869887
+        potential energy   =    -112.381571299185
         virial theorem     =       1.999351282764
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on algol.local.net
-Sun Aug 31 19:56:28 2003
+tstop called on boromir.chem
+Tue Mar 16 15:48:41 2004
 
-user time   =       0.06 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on algol.local.net
-Sun Aug 31 19:56:28 2003
+tstart called on boromir.chem
+Tue Mar 16 15:48:41 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1308,14 +1316,14 @@ Sun Aug 31 19:56:28 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = nh3                                                                             
+    Label                       = nh3
     Number of atoms             = 4
     Number of atomic orbitals   = 31
     Number of symmetry orbitals = 31
     Maximum AM in the basis     = 2
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C1 
+    Computational point group        = C1 
     Number of irreps                 = 1
   Rotational invariance condition satisfied.
   |X cross Grad| =  0.000000159860   (it is the accuracy of the computed forces)
@@ -1328,15 +1336,15 @@ Sun Aug 31 19:56:28 2003
        1       -0.000002231653    -0.000026740200     0.000010528917
        2       -0.000002883784     0.000008222914     0.000001944217
        3        0.000004717351     0.000004535304    -0.000010032470
-       4        0.000000398085     0.000013981981    -0.000002440664
+       4        0.000000398085     0.000013981982    -0.000002440664
 
 ******************************************************************************
-tstop called on algol.local.net
-Sun Aug 31 19:56:28 2003
+tstop called on boromir.chem
+Tue Mar 16 15:48:42 2004
 
-user time   =       0.33 seconds =       0.01 minutes
-system time =       0.00 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       1.10 seconds =       0.02 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
@@ -1351,7 +1359,7 @@ Cartesian geometry and possibly gradient in a.u. with masses
                       -0.0000028838   0.0000082229   0.0000019442
                        0.0000047174   0.0000045353  -0.0000100325
                        0.0000003981   0.0000139820  -0.0000024407
-
+Searching for geometrical constraints...
 Simple Internal Coordinates and Values
 Stretches
     (1 1 2) (1.00295466)
@@ -1372,7 +1380,7 @@ Current SCF energy before step       -56.2090175288
 
 Taking geometry step number 5
 
-BuB^t Determinant: -3.163614e-46
+BuB^t Determinant: -2.003417e-47
 
 Force Constants read from PSIF_OPTKING
 
@@ -1381,16 +1389,16 @@ Performing BFGS Hessian update with previous 4 gradient(s).
 Scaling displacements by 1.000000
 
 Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
-         Value          Force        Displacement   New Value
- 1   1.0029546557   0.0000234904  -0.0000007639   1.0029538918
- 2   1.0029697260  -0.0000361416  -0.0000096339   1.0029600921
- 3   1.0029596874   0.0000109575  -0.0000042277   1.0029554597
- 4   1.8809403731   0.0000133174   0.0000649251   1.8810052982
- 5   1.8810441603  -0.0000382701  -0.0000159153   1.8810282450
- 6   1.8808610250   0.0000564181   0.0001132651   1.8809742901
- 7   0.6578336525  -0.0000083156  -0.0000675264   0.6577661262
- 8   0.6577897045   0.0000193289  -0.0000405982   0.6577491063
- 9   0.6578924794  -0.0000537803  -0.0001124270   0.6577800525
+       Value         Force        Displacement  New Value
+ 1    1.00295466    0.00002349   -0.00000076    1.00295389
+ 2    1.00296973   -0.00003614   -0.00000963    1.00296009
+ 3    1.00295969    0.00001096   -0.00000423    1.00295546
+ 4    1.88094037    0.00001332    0.00006493    1.88100530
+ 5    1.88104416   -0.00003827   -0.00001592    1.88102825
+ 6    1.88086103    0.00005642    0.00011327    1.88097429
+ 7    0.65783365   -0.00000832   -0.00006753    0.65776613
+ 8    0.65778970    0.00001933   -0.00004060    0.65774911
+ 9    0.65789248   -0.00005378   -0.00011243    0.65778005
    MAX force:    0.0000564181   RMS force:    0.0000335627
 
 Back-transformation to cartesian coordinates...
@@ -1410,8 +1418,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on algol.local.net
-Sun Aug 31 19:56:28 2003
+tstart called on boromir.chem
+Tue Mar 16 15:48:42 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1427,27 +1435,28 @@ Sun Aug 31 19:56:28 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = nh3                                                                             
+    Label                       = nh3
     Number of atoms             = 4
     Number of atomic orbitals   = 31
     Number of symmetry orbitals = 31
     Maximum AM in the basis     = 2
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C1 
+    Computational point group        = C1 
     Number of irreps                 = 1
+
     Wrote 115267 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on algol.local.net
-Sun Aug 31 19:56:28 2003
+tstop called on boromir.chem
+Tue Mar 16 15:48:43 2004
 
-user time   =       0.07 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.53 seconds =       0.01 minutes
+system time =       0.04 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on algol.local.net
-Sun Aug 31 19:56:28 2003
+tstart called on boromir.chem
+Tue Mar 16 15:48:43 2004
 
 
              ------------------------------------------
@@ -1461,7 +1470,7 @@ Sun Aug 31 19:56:28 2003
   I think the multiplicity is 1.
   If this is wrong, please specify the MULTP keyword
 
-  label       = nh3
+  label        = nh3
   wfn          = SCF
   reference    = RHF
   multiplicity = 1
@@ -1472,7 +1481,7 @@ Sun Aug 31 19:56:28 2003
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy       12.0596296206879
+  nuclear repulsion energy       12.0596296206920
 
   using old vector from file30 as initial guess
   energy from old vector:   -56.20901753
@@ -1498,8 +1507,8 @@ Sun Aug 31 19:56:28 2003
 
   iter       total energy        delta E         delta P          diiser
     1       -56.2090175299    6.826865e+01    0.000000e+00    0.000000e+00
-    2       -56.2090175308    8.983392e-10    1.798604e-07    1.396034e-05
-    3       -56.2090175309    8.567724e-11    7.521283e-08    3.426574e-06
+    2       -56.2090175308    8.982397e-10    1.798604e-07    1.396034e-05
+    3       -56.2090175309    8.574830e-11    7.521283e-08    3.426574e-06
 
  No phase correction possible.
 
@@ -1522,23 +1531,23 @@ Orbital energies (a.u.):
   30A       4.341580    31A      35.808948  
 
 
-        SCF total energy   =     -56.209017530895
-        kinetic energy     =      56.172541022352
-        nuc. attr. energy  =    -155.998161321700
-        elec. rep. energy  =      43.616602768453
-        potential energy   =    -112.381558553247
+        SCF total energy   =     -56.209017530896
+        kinetic energy     =      56.172541022353
+        nuc. attr. energy  =    -155.998161321708
+        elec. rep. energy  =      43.616602768459
+        potential energy   =    -112.381558553249
         virial theorem     =       1.999351055931
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on algol.local.net
-Sun Aug 31 19:56:28 2003
+tstop called on boromir.chem
+Tue Mar 16 15:48:43 2004
 
-user time   =       0.05 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.06 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on algol.local.net
-Sun Aug 31 19:56:28 2003
+tstart called on boromir.chem
+Tue Mar 16 15:48:43 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1554,14 +1563,14 @@ Sun Aug 31 19:56:28 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = nh3                                                                             
+    Label                       = nh3
     Number of atoms             = 4
     Number of atomic orbitals   = 31
     Number of symmetry orbitals = 31
     Maximum AM in the basis     = 2
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C1 
+    Computational point group        = C1 
     Number of irreps                 = 1
   Rotational invariance condition satisfied.
   |X cross Grad| =  0.000000084517   (it is the accuracy of the computed forces)
@@ -1577,12 +1586,12 @@ Sun Aug 31 19:56:28 2003
        4       -0.000000871063     0.000004270568     0.000000389111
 
 ******************************************************************************
-tstop called on algol.local.net
-Sun Aug 31 19:56:28 2003
+tstop called on boromir.chem
+Tue Mar 16 15:48:44 2004
 
-user time   =       0.32 seconds =       0.01 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       1.13 seconds =       0.02 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
@@ -1597,7 +1606,7 @@ Cartesian geometry and possibly gradient in a.u. with masses
                        0.0000001382   0.0000025066   0.0000019125
                        0.0000017861   0.0000020357  -0.0000019991
                       -0.0000008711   0.0000042706   0.0000003891
-
+Searching for geometrical constraints...
 Simple Internal Coordinates and Values
 Stretches
     (1 1 2) (1.00295389)
@@ -1618,7 +1627,7 @@ Current SCF energy before step       -56.2090175309
 
 Taking geometry step number 6
 
-BuB^t Determinant: 5.260577e-47
+BuB^t Determinant: -6.477257e-46
 
 Force Constants read from PSIF_OPTKING
 
@@ -1627,16 +1636,16 @@ Performing BFGS Hessian update with previous 5 gradient(s).
 Scaling displacements by 1.000000
 
 Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
-         Value          Force        Displacement   New Value
- 1   1.0029538925   0.0000160134   0.0000016464   1.0029555389
- 2   1.0029600908  -0.0000117012  -0.0000029968   1.0029570940
- 3   1.0029554603   0.0000143580   0.0000006370   1.0029560973
- 4   1.8810052963  -0.0000024284   0.0000047638   1.8810100601
- 5   1.8810282404  -0.0000107639  -0.0000181631   1.8810100773
- 6   1.8809742884   0.0000149380   0.0000290745   1.8810033629
- 7   0.6577661226   0.0000007484  -0.0000070095   0.6577591131
- 8   0.6577491024   0.0000105799   0.0000062497   0.6577553521
- 9   0.6577800540  -0.0000137014  -0.0000205484   0.6577595056
+       Value         Force        Displacement  New Value
+ 1    1.00295389    0.00001601    0.00000165    1.00295554
+ 2    1.00296009   -0.00001170   -0.00000300    1.00295709
+ 3    1.00295546    0.00001436    0.00000064    1.00295610
+ 4    1.88100530   -0.00000243    0.00000476    1.88101006
+ 5    1.88102824   -0.00001076   -0.00001816    1.88101008
+ 6    1.88097429    0.00001494    0.00002907    1.88100336
+ 7    0.65776612    0.00000075   -0.00000701    0.65775911
+ 8    0.65774910    0.00001058    0.00000625    0.65775535
+ 9    0.65778005   -0.00001370   -0.00002055    0.65775951
    MAX force:    0.0000160134   RMS force:    0.0000117598
 
 Back-transformation to cartesian coordinates...
@@ -1656,8 +1665,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on algol.local.net
-Sun Aug 31 19:56:29 2003
+tstart called on boromir.chem
+Tue Mar 16 15:48:44 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1673,27 +1682,28 @@ Sun Aug 31 19:56:29 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = nh3                                                                             
+    Label                       = nh3
     Number of atoms             = 4
     Number of atomic orbitals   = 31
     Number of symmetry orbitals = 31
     Maximum AM in the basis     = 2
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C1 
+    Computational point group        = C1 
     Number of irreps                 = 1
+
     Wrote 115267 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on algol.local.net
-Sun Aug 31 19:56:29 2003
+tstop called on boromir.chem
+Tue Mar 16 15:48:45 2004
 
-user time   =       0.08 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.55 seconds =       0.01 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on algol.local.net
-Sun Aug 31 19:56:29 2003
+tstart called on boromir.chem
+Tue Mar 16 15:48:45 2004
 
 
              ------------------------------------------
@@ -1707,7 +1717,7 @@ Sun Aug 31 19:56:29 2003
   I think the multiplicity is 1.
   If this is wrong, please specify the MULTP keyword
 
-  label       = nh3
+  label        = nh3
   wfn          = SCF
   reference    = RHF
   multiplicity = 1
@@ -1718,7 +1728,7 @@ Sun Aug 31 19:56:29 2003
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy       12.0596306127319
+  nuclear repulsion energy       12.0596306127359
 
   using old vector from file30 as initial guess
   energy from old vector:   -56.20901753
@@ -1744,7 +1754,7 @@ Sun Aug 31 19:56:29 2003
 
   iter       total energy        delta E         delta P          diiser
     1       -56.2090175310    6.826865e+01    0.000000e+00    0.000000e+00
-    2       -56.2090175310    5.040590e-11    4.223335e-08    2.606401e-06
+    2       -56.2090175310    5.029221e-11    4.223335e-08    2.606401e-06
 
  Correcting phases of orbitals.
 
@@ -1767,23 +1777,23 @@ Orbital energies (a.u.):
   30A       4.341578    31A      35.808942  
 
 
-        SCF total energy   =     -56.209017531038
-        kinetic energy     =      56.172552109159
-        nuc. attr. energy  =    -155.998190169505
-        elec. rep. energy  =      43.616620529308
-        potential energy   =    -112.381569640197
+        SCF total energy   =     -56.209017531039
+        kinetic energy     =      56.172552109160
+        nuc. attr. energy  =    -155.998190169514
+        elec. rep. energy  =      43.616620529314
+        potential energy   =    -112.381569640199
         virial theorem     =       1.999351253171
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on algol.local.net
-Sun Aug 31 19:56:29 2003
+tstop called on boromir.chem
+Tue Mar 16 15:48:45 2004
 
-user time   =       0.04 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.06 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on algol.local.net
-Sun Aug 31 19:56:29 2003
+tstart called on boromir.chem
+Tue Mar 16 15:48:45 2004
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1799,14 +1809,14 @@ Sun Aug 31 19:56:29 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = nh3                                                                             
+    Label                       = nh3
     Number of atoms             = 4
     Number of atomic orbitals   = 31
     Number of symmetry orbitals = 31
     Maximum AM in the basis     = 2
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C1 
+    Computational point group        = C1 
     Number of irreps                 = 1
   Rotational invariance condition satisfied.
   |X cross Grad| =  0.000000110832   (it is the accuracy of the computed forces)
@@ -1822,12 +1832,12 @@ Sun Aug 31 19:56:29 2003
        4       -0.000000873616     0.000000555309     0.000000452853
 
 ******************************************************************************
-tstop called on algol.local.net
-Sun Aug 31 19:56:29 2003
+tstop called on boromir.chem
+Tue Mar 16 15:48:46 2004
 
-user time   =       0.32 seconds =       0.01 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       1.11 seconds =       0.02 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
@@ -1842,7 +1852,7 @@ Cartesian geometry and possibly gradient in a.u. with masses
                        0.0000008227   0.0000007294   0.0000007257
                        0.0000005402  -0.0000002605   0.0000002922
                       -0.0000008736   0.0000005553   0.0000004529
-
+Searching for geometrical constraints...
 Simple Internal Coordinates and Values
 Stretches
     (1 1 2) (1.00295554)
@@ -1863,7 +1873,7 @@ Current SCF energy before step       -56.2090175310
 
 Taking geometry step number 7
 
-BuB^t Determinant: -5.879007e-46
+BuB^t Determinant: -1.365143e-46
 
 Force Constants read from PSIF_OPTKING
 
@@ -1872,16 +1882,16 @@ Performing BFGS Hessian update with previous 6 gradient(s).
 Scaling displacements by 1.000000
 
 Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
-         Value          Force        Displacement   New Value
- 1   1.0029555389   0.0000099391   0.0000014826   1.0029570215
- 2   1.0029570939   0.0000044856   0.0000006588   1.0029577527
- 3   1.0029560973   0.0000089834   0.0000012080   1.0029573054
- 4   1.8810100602  -0.0000019577  -0.0000038538   1.8810062064
- 5   1.8810100772  -0.0000005168  -0.0000039552   1.8810061221
- 6   1.8810033629   0.0000011742   0.0000006724   1.8810040353
- 7   0.6577591129   0.0000002369   0.0000024881   0.6577616010
- 8   0.6577553521   0.0000022631   0.0000049901   0.6577603422
- 9   0.6577595058  -0.0000007324   0.0000022229   0.6577617287
+       Value         Force        Displacement  New Value
+ 1    1.00295554    0.00000994    0.00000148    1.00295702
+ 2    1.00295709    0.00000449    0.00000066    1.00295775
+ 3    1.00295610    0.00000898    0.00000121    1.00295731
+ 4    1.88101006   -0.00000196   -0.00000385    1.88100621
+ 5    1.88101008   -0.00000052   -0.00000396    1.88100612
+ 6    1.88100336    0.00000117    0.00000067    1.88100404
+ 7    0.65775911    0.00000024    0.00000249    0.65776160
+ 8    0.65775535    0.00000226    0.00000499    0.65776034
+ 9    0.65775951   -0.00000073    0.00000222    0.65776173
    MAX force:    0.0000099391   RMS force:    0.0000048397
 
 MAX force is < 1.0e-05.  Optimization is complete.
