@@ -18,7 +18,7 @@
 
 int psio_open(ULI unit, int status)
 {
-  int i, j, errcod, stream;
+  int i, j, errcod, stream, tocstat;
   char name[PSIO_MAXSTR],path[PSIO_MAXSTR],fullpath[PSIO_MAXSTR];
   psio_ud *this_unit;
   psio_tocentry *this_entry, *last_entry;
@@ -63,7 +63,7 @@ int psio_open(ULI unit, int status)
       /* Now open the volume */
       if(status == PSIO_OPEN_OLD) {
 	  this_unit->vol[i].stream =
-		 open(this_unit->vol[i].path,O_RDWR,0644);
+		 open(this_unit->vol[i].path,O_CREAT|O_RDWR,0644);
 	  if(this_unit->vol[i].stream == -1)
 	      psio_error(unit,PSIO_ERROR_OPEN);
 	}
@@ -76,8 +76,8 @@ int psio_open(ULI unit, int status)
       else psio_error(unit,PSIO_ERROR_OSTAT);
     }
 
-  if (status == PSIO_OPEN_OLD) psio_tocread(unit);
-  else if (status == PSIO_OPEN_NEW) {
+  if (status == PSIO_OPEN_OLD) tocstat = psio_tocread(unit);
+  else if (status == PSIO_OPEN_NEW || tocstat) {
       
       /* Init the TOC stats and write them to disk */
       this_unit->tocaddress.page = 0;

@@ -22,12 +22,12 @@ int psio_tocread(ULI unit)
   /* Read the TOC from disk */
   errcod = read(stream, (char *) &(this_unit->tocaddress.page),
                 sizeof(ULI));
-  if(errcod != sizeof(ULI)) psio_error(unit,PSIO_ERROR_READ);
+  if(errcod != sizeof(ULI)) return(1);
   errcod = read(stream, (char *) &(this_unit->tocaddress.offset),
                 sizeof(ULI));
-  if(errcod != sizeof(ULI)) psio_error(unit,PSIO_ERROR_READ);
+  if(errcod != sizeof(ULI)) return(1);
   errcod = read(stream, (char *) &(this_unit->toclen), sizeof(ULI));
-  if(errcod != sizeof(ULI)) psio_error(unit,PSIO_ERROR_READ);
+  if(errcod != sizeof(ULI)) return(1);
 
   /* Malloc room for the TOC */
   this_unit->toc = (psio_tocentry *) malloc(sizeof(psio_tocentry));
