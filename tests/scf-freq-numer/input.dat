@@ -1,0 +1,56 @@
+% 6-31G** H2O Test SCF hessian
+
+psi: (
+  check = true
+  disp = true
+  ndisp = 5
+)
+
+default: (
+  label = "6-31G** SCF H2O"
+  memory = (20.0 MB)
+
+  wfn = scf
+  reference = rhf
+  multp = 1
+  dertype = first
+  docc = (3 0 1 1)
+
+  % using the new files section; the default path is given
+  % in the user's ~/.psirc file
+
+  files: (
+    default: ( name = "h2o" )
+  )
+)
+
+input: (
+  basis = 631Gss
+  units = angstrom
+  zmat = (
+    (o)
+    (h 1 roh)
+    (h 1 roh 2 ahoh)
+  )
+  zvars = (
+    (roh    0.94305663)
+    (ahoh 105.96876874)
+  )
+  origin = (0.0 0.0 0.0)
+)
+
+basis: (
+  oxygen:631Gss = (
+    (get "631GST")
+)
+  hydrogen:631Gss = (
+    (get "631GST")
+    (get "STAR1")
+  )
+)
+
+scf: (
+  maxiter = 100
+  convergence = 12
+)
+
