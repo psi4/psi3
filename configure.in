@@ -790,6 +790,7 @@ AC_OUTPUT(include/psiconfig.h
           tests/cc18/Makefile
           tests/cc19/Makefile
           tests/cc21/Makefile
+          tests/cc22/Makefile
           tests/dboc-rhf1/Makefile
           tests/dboc-rohf1/Makefile
           tests/dboc-uhf1/Makefile
