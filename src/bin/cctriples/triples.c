@@ -98,6 +98,8 @@ int main(int argc, char *argv[])
     fprintf(outfile, "\tAAB (T) energy                = %20.15f\n", ETAAB);
     ETABB = ET_UHF_ABB();
     fprintf(outfile, "\tABB (T) energy                = %20.15f\n", ETABB);
+    ETABB = ET_UHF_ABB_noddy();
+    fprintf(outfile, "\tABB (T) energy                = %20.15f\n", ETABB);
     ET = ETAAA + ETAAB + ETABB + ETBBB;
     fprintf(outfile, "\t(T) energy                    = %20.15f\n", ET);
     fprintf(outfile, "\tTotal CCSD(T) energy          = %20.15f\n", 

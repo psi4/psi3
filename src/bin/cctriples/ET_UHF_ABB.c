@@ -30,7 +30,7 @@ double ET_UHF_ABB(void)
   int **FAB_row_start, **FBA_row_start, **FBB_row_start;
   int **EAB_col_start, **EBA_col_start, **EBB_col_start;
   dpdfile2 T1A, T1B, fIJ, fij, fAB, fab;
-  double ***WAbc, ***VAbc;
+  double ***WAbc, ***VAbc, ***WAcb, ***WbAc, ***WcAb, ***bcA;
 
   nirreps = moinfo.nirreps;
   aoccpi = moinfo.aoccpi; 
@@ -292,6 +292,51 @@ double ET_UHF_ABB(void)
 		  Gc = Gab ^ Gijk;
 
 		  WAbc[Gab] = dpd_block_matrix(FABints.params->coltot[Gab], bvirtpi[Gc]);
+		}
+
+		for(Gd=0; Gd < nirreps; Gd++) {
+		  /* -t_jkcd * F_IdAb */
+		  Gab = Gid = Gi ^ Gd;
+		  Gc = Gjk ^ Gd;
+
+		  cd = T2BB_col_start[Gjk][Gc];
+		  id = FAB_row_start[Gid][I];
+
+		  FABints.matrix[Gid] = dpd_block_matrix(bvirtpi[Gd], FABints.params->coltot[Gid]);
+		  dpd_buf4_mat_irrep_rd_block(&FABints, Gid, id, bvirtpi[Gd]);
+
+		  nrows = FABints.params->coltot[Gid];
+		  ncols = bvirtpi[Gc];
+		  nlinks = bvirtpi[Gd];
+
+		  if(nrows && ncols && nlinks) 
+		    C_DGEMM('t', 't', nrows, ncols, nlinks, -1.0,
+			    &(FABints.matrix[Gid][0][0]), nrows,
+			    &(T2BB.matrix[Gjk][jk][cd]), nlinks, 1.0,
+			    &(WAbc[Gab][0][0]), ncols);
+		}
+
+		for(Gl=0; Gl < nirreps; Gl++) {
+		  /* -t_IlAb E_jklc */
+		  Gab = Gil = Gi ^ Gl;
+		  Gc = Gjk ^ Gl;
+
+		  lc = EBB_col_start[Gjk][Gl];
+		  il = T2AB_rows_start[Gil][I];
+
+		  nrows = T2AB.params->coltot[Gil];
+		  ncols = bvirtpi[Gc];
+		  nlinks = boccpi[Gl];
+
+		  if(nrows && ncols && nlinks)
+		    C_DGEMM('t', 'n', nrows, ncols, nlinks, -1.0,
+			    &(T2AB.matrix[Gil][il][0]), nrows,
+			    &(EBBints.matrix[Gjk][jk][lc]), ncols, 1.0,
+			    &(WAbc[Gab][0][0]), ncols);
+		}
+
+		for(Gd=0; Gd < nirreps; Gd++) {
+
 		}
 
 		/* Add disconnected triples and finish W and V */
