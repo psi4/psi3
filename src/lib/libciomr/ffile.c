@@ -15,9 +15,8 @@ extern char *psi_file_prefix;
 ** \param code = 0 (write), 1 (write/append), 2 (read)
 ** \ingroup (CIOMR)
 */
-FILE *ffile(char *suffix, int code)
+void ffile(FILE **fptr, char *suffix, int code)
 {
-  FILE *fptr;
   char name[100];
 
   /* build the standard file name */
@@ -25,22 +24,20 @@ FILE *ffile(char *suffix, int code)
 
   switch (code) {
   case 0:
-    fptr = fopen(name,"w+");
+    *fptr = fopen(name,"w+");
     break;
   case 1:
-    fptr = fopen(name,"a+");
+    *fptr = fopen(name,"a+");
     break;
   case 2:
-    fptr = fopen(name,"r+");
+    *fptr = fopen(name,"r+");
     break;
   default:
     fprintf(stderr,"error in ffile: invalid code %d\n",code);
   }
-  if (fptr == NULL) { 
+  if (*fptr == NULL) { 
     fprintf(stderr,"error in ffile: cannot open file %s\n", suffix);
     exit(PSI_RETURN_FAILURE);
   }
-
-  return(fptr);
 }
 
