@@ -70,7 +70,7 @@ EXTERN int num_unique_shells;       /*Number of unique shells*/
 EXTERN int num_ao;                  /*Total number of AOs*/
 EXTERN int num_so;                  /*Total number of SOs*/
 EXTERN int num_prims;               /*Number of unique primitives*/
-EXTERN int max_angmom;              /*Maximum angular momentum type in the basis*/
+EXTERN int max_angmom;              /*Maximum angular momentum type in the basis (not +1) */
 EXTERN int num_classes;             /*Number of atom classes*/
 EXTERN int num_unique_classes;      /*Number of symmetry unique atom classes*/
 EXTERN int num_angso_coeff;
@@ -126,6 +126,9 @@ EXTERN double ***ao_type_transmat;    /*Transformation matrices for AO types*/
 EXTERN int *pureang_so_l;             /*Angular momentum number of a pure angular momentum type SO*/
 EXTERN int *pureang_so_m;             /*Modulus of m of a pure angular momentum type SO*/
 
+EXTERN int *shells_per_am;            /*Number of shells in each angmom block */
+EXTERN int *am2canon_shell_order;     /*Mapping array from the am-blocked to the canonical
+					(in the order of appearance) ordering of shells */
 
 /*SO to AO transformation-related stuff*/
 EXTERN double ***cart2pureang;             /*Basic cartesian to pure angular momentum matrices*/

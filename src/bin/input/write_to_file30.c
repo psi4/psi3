@@ -99,7 +99,7 @@ void write_to_file30(double repulsion)
   /* Contraction coefficients */
   pointers[5] = ptr/sizeof(int) + 1;
      /*------This piece of code is for segmented contractions ONLY------*/
-  cspd = init_array(MRCRU*num_prims*MAXANGMOM);
+  cspd = init_array(num_prims*MAXANGMOM);
   for(j=0;j<num_shells;j++)
     for(k=0;k<nprim_in_shell[j];k++)
 	/*---
@@ -107,7 +107,7 @@ void write_to_file30(double repulsion)
 	  multiplied by sqrt(3), f - by sqrt(15), g - sqrt(105), etc
 	  ---*/
       cspd[shell_ang_mom[j]*num_prims+first_prim_shell[j]+k] = contr_coeff[first_prim_shell[j]+k];
-  wwritw(CHECKPOINTFILE,(char *) cspd, MRCRU*num_prims*MAXANGMOM*(sizeof(double)),ptr,&ptr);
+  wwritw(CHECKPOINTFILE,(char *) cspd, num_prims*MAXANGMOM*(sizeof(double)),ptr,&ptr);
   free(cspd);
 
   /* Pointer to primitives for a shell */
@@ -256,11 +256,19 @@ void write_to_file30(double repulsion)
   wwritw(CHECKPOINTFILE,(char *) sym_oper, nirreps*sizeof(int),ptr,&ptr);
 
   /* write z_mat if it exists, see global.h for info about z_entry structure */
-   if(!cartOn) {
-      pointers[46] = ptr/sizeof(int) + 1;
-      wwritw(CHECKPOINTFILE,(char *) z_geom, num_atoms*(sizeof(struct z_entry)),ptr,&ptr);
-   }   
- 
+  if(!cartOn) {
+    pointers[46] = ptr/sizeof(int) + 1;
+    wwritw(CHECKPOINTFILE,(char *) z_geom, num_atoms*(sizeof(struct z_entry)),ptr,&ptr);
+  }
+
+  /* Number of shells in each angmom block */
+  pointers[47] = ptr/sizeof(int) + 1;
+  wwritw(CHECKPOINTFILE,(char *) shells_per_am, (max_angmom+1)*sizeof(int),ptr,&ptr);
+
+  /* Mapping array from the am-blocked to the canonical (in the order of
+     appearance) ordering of shells */
+  pointers[48] = ptr/sizeof(int) + 1;
+  wwritw(CHECKPOINTFILE,(char *) am2canon_shell_order, num_shells*sizeof(int),ptr,&ptr);
   
   /*---------------------------
     Write pointers to the file
@@ -303,6 +311,7 @@ void write_to_file30(double repulsion)
   constants[5] = num_uniques;
   constants[6] = (int) rotor;
   constants[7] = num_unique_shells;
+  constants[8] = max_angmom;
   constants[17] = num_so;
   constants[18] = num_atoms;
   constants[21] = num_ao;

@@ -126,7 +126,6 @@ int main()
      for(i=0;i<num_atoms;i++)
        atom_basis[i] = NULL;
      read_basis();
-
      
      /*----------------------------------------------
        Form symmetry information arrays of all kinds
@@ -313,6 +312,11 @@ void print_basis_info()
       fprintf(outfile,"    %4d    %3d  %2d  %3d    %3d   %3d   %3d   %3d\n",i+1,
 	      shell_nucleus[i]+1,shell_ang_mom[i],first_prim_shell[i]+1,first_basisfn_shell[i]+1,first_ao_type_shell[i]+1,
 	      last_ao_type_shell[i]+1,nprim_in_shell[i]);
+    fprintf(outfile,"\n");
+    fprintf(outfile,"    AMOrd. Shell#  Canon. Shell#\n");
+    fprintf(outfile,"    -------------  -------------\n");
+    for(i=0;i<num_shells;i++)
+      fprintf(outfile,"    %7d        %7d\n",i+1,am2canon_shell_order[i]+1);
     fprintf(outfile,"\n\n");
   }
   fflush(outfile);
@@ -381,6 +385,8 @@ void cleanup()
   free(shell_ang_mom);
   free(nprim_in_shell);
   free(first_ao_shell);
+  free(shells_per_am);
+  free(am2canon_shell_order);
   free(first_ao_type_shell);
   free(last_ao_type_shell);
   free(angso_coeff);

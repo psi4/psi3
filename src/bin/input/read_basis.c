@@ -29,6 +29,7 @@ void read_basis()
    int kstart, kfinish;
    int global_shell_index;
    int unique_shell_index;
+   int canon_ord_shell, am_ord_shell;   /*shell indices in 2 canonical and angmom orders */
    int ao_index;
    int basisfn_index;
    int *first_prim_unique_shell;	/*"points" to the first primitive in each unique shell*/
@@ -224,6 +225,7 @@ void read_basis()
    unique_shell_index = 0;
    ao_index = 0;
    basisfn_index = 0;
+   shells_per_am = init_int_array(max_angmom+1);
    ao_off = init_int_array(max_angmom+1);
    ao_off[0] = 0;
    for(i=1;i<=max_angmom;i++)
@@ -234,7 +236,9 @@ void read_basis()
        kfinish = kstart + nshells_per_atom[u2a[i]];
        for(k=kstart;k<kfinish; k++){
          shell_nucleus[global_shell_index] = red_unique_orbit[i][j];
-	 shell_ang_mom[global_shell_index] = ang_mom[k];
+	 l = ang_mom[k];
+	 shell_ang_mom[global_shell_index] = l;
+	 shells_per_am[l] += 1;
 	 nprim_in_shell[global_shell_index] = last_prim_unique_shell[k] - first_prim_unique_shell[k] + 1;
 	 first_prim_shell[global_shell_index] = first_prim_unique_shell[k];
 	 first_ao_shell[global_shell_index] = ao_index;
@@ -255,7 +259,23 @@ void read_basis()
      exponents[i] = basis_set[i][0];
      contr_coeff[i] = basis_set[i][1];
    }
-     
+
+   /*---------------------------------------------------------
+     Sort shells according to their angular momentum and form
+      the corresponding mapping array
+    ---------------------------------------------------------*/
+   am2canon_shell_order = init_int_array(num_shells);
+   am_ord_shell = 0;
+   for(l=0;l<=max_angmom;l++)
+     for(canon_ord_shell=0;canon_ord_shell<num_shells;canon_ord_shell++)
+       if (shell_ang_mom[canon_ord_shell] == l) {
+	 am2canon_shell_order[am_ord_shell] = canon_ord_shell;
+	 am_ord_shell++;
+       }
+   /* this shouldn't happen, but */
+   if (canon_ord_shell != num_shells)
+     punt("Miscounted shells when reordering according to angmom");
+   
    free(ang_mom);
    free(num_shells_per_unique);
    free(ip_token1);
