@@ -21,13 +21,15 @@
 ** 08/16/02 EFV - Updated atomic_masses[] and an2masses for H-Ar using NIST database
 **                of Atomic Weights and Isotopic Compositions (www.nist.gov)
 **
+** 08/23/02 EFV - Use lithium isotope 7 as the default (most abundant) 
+**
 */
 #define LAST_MASS_INDEX (139)
  
 double atomic_masses[] = 
 { 1.0078250321, 1.0078250321, 2.0141017780, 3.0160492675, 2.0141017780, 3.0160492675, 
   4.0026032497, 3.0160293097, 4.0026032497,
-  6.0151223, 6.0151223, 7.0160040, 
+  7.0160040, 6.0151223, 7.0160040, 
   9.0121821, 9.0121821,
  11.0093055, 10.0129370, 11.0093055,
  12.000000, 12.000000, 13.0033548378, 14.003241988,
