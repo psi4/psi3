@@ -95,6 +95,7 @@ void parsing_cmdline(int argc, char *argv[])
 	   UserOptions.make_fock = 0;
 	   UserOptions.print_lvl = 0;
 	   UserOptions.symm_ints = 1;
+	   UserOptions.num_threads = 1;
 #else
 	   punt("--oeints option is not supported by your CINTS executable.\nRecompile the code including files in Default_Ints subdirectory.");
 #endif
@@ -109,6 +110,7 @@ void parsing_cmdline(int argc, char *argv[])
 	   UserOptions.make_fock = 0;
 	   UserOptions.print_lvl = 0;
 	   UserOptions.symm_ints = 1;
+	   UserOptions.num_threads = 1;
 #else
 	   punt("--teints option is not supported by your CINTS executable.\nRecompile the code including files in Default_Ints subdirectory.");
 #endif
@@ -141,6 +143,8 @@ void parsing_cmdline(int argc, char *argv[])
 	     else
 	       punt("SCF gradients with specified REFERENCE not implemented");
 	   }
+	   else
+	     UserOptions.num_threads = 1;
 #else
 	   punt("--deriv1 option is not supported by your CINTS executable.\nRecompile the code including files in Default_Deriv1 subdirectory.");
 #endif
@@ -156,6 +160,7 @@ void parsing_cmdline(int argc, char *argv[])
 	   UserOptions.make_deriv1 = 0;
 	   UserOptions.make_mp2 = 1;
 	   UserOptions.symm_ints = 0;
+	   UserOptions.num_threads = 1;
 	   if (!strcmp("MP2",UserOptions.wfn)) {
 	     errcod = ip_string("REFERENCE",&refstring,0);
 	     if (errcod != IPE_OK)
@@ -187,6 +192,7 @@ void parsing_cmdline(int argc, char *argv[])
 	   UserOptions.make_mp2 = 0;
 	   UserOptions.make_r12ints = 1;
 	   UserOptions.symm_ints = 1;
+	   UserOptions.num_therads = 1;
 #else
 	   punt("--r12ints option is not supported by your CINTS executable.\nRecompile the code including files in R12_Ints subdirectory.");
 #endif
@@ -203,6 +209,7 @@ void parsing_cmdline(int argc, char *argv[])
 	   UserOptions.make_mp2 = 0;
 	   UserOptions.make_mp2r12 = 1;
 	   UserOptions.symm_ints = 0;
+	   UserOptions.num_therads = 1;
 	   if (!strcmp("MP2",UserOptions.wfn)) {
 	     errcod = ip_string("REFERENCE",&refstring,0);
 	     if (errcod != IPE_OK)
