@@ -12,6 +12,7 @@ struct Params {
   int restart;
   int ground;
   int user_transition; /* was L specified on command-line? */
+  int dertype;
   double cceom_energy;
   double R0;
   double L0;

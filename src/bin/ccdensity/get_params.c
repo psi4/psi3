@@ -9,6 +9,7 @@
 void get_params()
 {
   int errcod, tol;
+  char *junk;
 
   errcod = ip_string("WFN", &(params.wfn), 0);
 
@@ -27,7 +28,24 @@ void get_params()
   params.relax_opdm = 1;
   errcod = ip_boolean("RELAX_OPDM", &(params.relax_opdm),0);
 
-  params.connect_xi = 1;
+  params.dertype = 0;
+  if(ip_exist("DERTYPE",0)) {
+    errcod = ip_string("DERTYPE", &(junk),0);
+    if(errcod != IPE_OK) params.dertype = 0;
+    else if(!strcmp(junk,"NONE")) params.dertype = 0;
+    else if(!strcmp(junk,"FIRST")) params.dertype = 1;
+    else if(!strcmp(junk,"RESPONSE")) params.dertype = 3; /* linear response */
+    else {
+      printf("Invalid value of input keyword DERTYPE: %s\n", junk);
+      exit(PSI_RETURN_FAILURE);
+    }
+    free(junk);
+  }
+
+  if ( (!strcmp(params.wfn,"EOM_CCSD")) && (params.dertype == 0) )
+    params.connect_xi = 0;
+  else
+    params.connect_xi = 1;
   errcod = ip_boolean("CONNECT_XI",&(params.connect_xi),0);
   
   fprintf(outfile, "\n\tInput parameters:\n");
@@ -44,7 +62,8 @@ void get_params()
           (params.calc_xi) ? "Yes" : "No");
   fprintf(outfile, "\tUse Zeta    =     %s\n", 
           (params.use_zeta) ? "Yes" : "No");
-  fprintf(outfile, "\tXi connected=     %d\n", params.connect_xi);
+  fprintf(outfile, "\tXi connected=     %s\n", 
+          (params.connect_xi) ? "Yes" : "No");
   fprintf(outfile, "\n");
 }
 
