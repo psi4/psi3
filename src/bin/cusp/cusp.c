@@ -1,14 +1,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-#include <ip_libv1.h>
-#include <libciomr.h>
-#include <file30.h>
+#include <libipv1/ip_lib.h>
+#include <libciomr/libciomr.h>
+#include <libfile30/file30.h>
 #include <psifiles.h>
-#include <iwl.h>
-#include <psio.h>
-#include <qt.h>
-#include <dpd.h>
+#include <libiwl/iwl.h>
+#include <libpsio/psio.h>
+#include <libqt/qt.h> 
+#include <libdpd/dpd.h>
 #include <ccfiles.h>
 #include <physconst.h>
 
@@ -57,8 +57,8 @@ int main(int argc, char *argv[])
   orbspi = file30_rd_orbspi();
   file30_close();
 
-  local();
-  exit(1);
+  /*  local();
+      exit(1); */
 
   /*** Build the QT-ordered SCF density ***/
   /*
@@ -222,36 +222,34 @@ int main(int argc, char *argv[])
 	  dens += G.matrix[h][row][col] * delta1[P][R] * delta2[Q][S];
 
 	  /* Reference contributions to two-electron density */
-	  /*
 	  if(P==R && Q==S) {
 	    if(!socc[P] && !socc[Q]) {
-	      dens += 2.0 * delta1[P][R] * delta2[Q][S];
+	      /*	      dens += 2.0 * delta1[P][R] * delta2[Q][S]; */
 	      two_energy += 2.0 * A.matrix[h][row][col];
 	    }
 	    else if(socc[P] && !socc[Q]) {
-	      dens += 2.0 * delta1[P][R] * delta2[Q][S];
+	      /*	      dens += 2.0 * delta1[P][R] * delta2[Q][S]; */
 	      two_energy += 2.0 * A.matrix[h][row][col];
 	    }
 	    else if(socc[P] && socc[Q]) {
-	      dens += 0.5 * delta1[P][R] * delta2[Q][S];
+	      /*	      dens += 0.5 * delta1[P][R] * delta2[Q][S]; */
 	      two_energy += 0.5 * A.matrix[h][row][col];
 	    }
 	  }
 	  if (P==S && Q==R) {
 	    if(!socc[P] && !socc[Q]) {
-	      dens -= delta1[P][R] * delta2[Q][S];
+	      /*	      dens -= delta1[P][R] * delta2[Q][S]; */
 	      two_energy -= A.matrix[h][row][col];
 	    }
 	    else if(socc[P] && !socc[Q]) {
-	      dens -= delta1[P][R] * delta2[Q][S];
+	      /*	      dens -= delta1[P][R] * delta2[Q][S]; */
 	      two_energy -= A.matrix[h][row][col];
 	    }
 	    else if(socc[P] && socc[Q]) {
-	      dens -= 0.5 * delta1[P][R] * delta2[Q][S];
+	      /*	      dens -= 0.5 * delta1[P][R] * delta2[Q][S]; */
 	      two_energy -= 0.5 * A.matrix[h][row][col];
 	    }
 	  }
-	  */
 
 	}
       }

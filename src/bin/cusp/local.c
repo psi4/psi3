@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <math.h>
-#include <libciomr.h>
-#include <libint.h>
-#include <file30.h>
-#include <iwl.h>
+#include <libciomr/libciomr.h>
+#include <libint/libint.h>
+#include <libfile30/file30.h>
+#include <libiwl/iwl.h>
 #include <psifiles.h>
-#include <qt.h>
+#include <libqt/qt.h>
 
 extern FILE *outfile;
 

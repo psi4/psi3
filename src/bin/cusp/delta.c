@@ -5,10 +5,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <ip_libv1.h>
-#include <libciomr.h>
-#include <file30.h>
-#include <qt.h>
+#include <libipv1/ip_lib.h>
+#include <libciomr/libciomr.h>
+#include <libfile30/file30.h>
+#include <libqt/qt.h>
 
 void compute_phi(double *phi, double x, double y, double z);
 void setup_delta(void);

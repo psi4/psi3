@@ -6,10 +6,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-#include <ip_libv1.h>
-#include <libciomr.h>
-#include <file30.h>
-#include <libint.h>  /* for the maximum angluar momentum, LIBINT_MAX_AM */
+#include <libipv1/ip_lib.h>
+#include <libciomr/libciomr.h>
+#include <libfile30/file30.h>
+#include <libint/libint.h>  /* for the maximum angluar momentum, LIBINT_MAX_AM */
 
 #define MAXFACT 100
 
