@@ -12,6 +12,7 @@
 #endif
 
 // #define EOM_DEBUG (1)
+#define H_IRR (0)
 
 EXTERN char *progid;
 EXTERN FILE *infile, *outfile;

@@ -9,6 +9,7 @@
 #include "globals.h"
 #include <physconst.h>
 
+void rzero(int C_irr);
 void init_S1(int index, int irrep);
 void init_S2(int index, int irrep);
 void init_C2(int index, int irrep);
@@ -59,12 +60,11 @@ void diag(void) {
     for (C_irr=0;C_irr<moinfo.nirreps;++C_irr) /* determine symmetry of C */
       if ( (moinfo.sym ^ C_irr) == irrep ) break;
 
-
     fprintf(outfile,"Symmetry of excited state: %s\n", moinfo.labels[irrep]);
     fprintf(outfile,"Symmetry of right eigenvector: %s\n",moinfo.labels[C_irr]);
 
     if (C_irr != 0) {
-      fprintf(outfile,"\nUnable to handle asymmetric R amplitudes for now\n");
+      fprintf(outfile,"Unable to handle asymmetric R amplitudes for now.\n\n");
       continue;
     }
 
@@ -133,16 +133,9 @@ void diag(void) {
 	dpd_buf4_sort(&CMnEf, EOM_TMP, pqsr, 0, 5, "CmNeF");
 	dpd_buf4_close(&CMnEf);
 	/* Copy used in WmbejDD */
-
-       dpd_buf4_init(&CMnEf, EOM_TMP, C_irr, 0, 5, 0, 5, 0, "CmNeF");
-       dpd_buf4_sort(&CMnEf, EOM_TMP, prqs, 10, 10, "CmeNF");
-       dpd_buf4_close(&CMnEf);
-
-/*
-	dpd_buf4_init(&CMnEf, EOM_TMP, C_irr, 0, 5, 0, 5, 0, "CMEnf");
-	dpd_buf4_sort(&CMnEf, EOM_TMP, rspq, 10, 10, "CmeNF");
-	dpd_buf4_close(&CMnEf);
-*/
+        dpd_buf4_init(&CMnEf, EOM_TMP, C_irr, 0, 5, 0, 5, 0, "CmNeF");
+        dpd_buf4_sort(&CMnEf, EOM_TMP, prqs, 10, 10, "CmeNF");
+        dpd_buf4_close(&CMnEf);
 
 	/* Computing sigma vectors */
 	sigmaSS(i,C_irr);
@@ -358,16 +351,16 @@ void diag(void) {
       }
 
       ++iter;
-      /* If we're all done then collapse vectors (before alpha is freed) */
+      /* If we're all done then collapse to one vector per root */
       if ( (keep_going == 0) && (iter < eom_params.max_iter) ) {
-        fprintf(outfile,"We're gonna quit so calling restart.\n");
+        fprintf(outfile,"Collapsing to only %d vectors.\n", eom_params.rpi[irrep]);
         restart(alpha, L, eom_params.rpi[irrep], C_irr, 0);
       }
       free_block(alpha);
     }
 
     /* Copy desired root to CC_RAMPS file */
-    fprintf(outfile,"Copying C %d to CC_RAMPS\n",eom_params.prop_root-1);
+    fprintf(outfile,"Copying C for root %d to CC_RAMPS\n",eom_params.prop_root);
     sprintf(lbl, "%s %d", "CME", eom_params.prop_root-1);
     dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
     dpd_file2_copy(&CME, CC_OEI, "RIA");
@@ -419,16 +412,15 @@ void diag(void) {
       }
       psio_write_entry(CC_INFO, "CCEOM Energy", (char *) &(lambda_old[eom_params.prop_root-1]),
 		       sizeof(double));
-      fprintf(outfile,"\nThe CCEOM energy %.10lf is written to CC_INFO.\n",
-	      lambda_old[eom_params.prop_root-1]);
 
-      psio_write_entry(CC_INFO, "CCEOM Irrep", (char *) &irrep, sizeof(int));
+      psio_write_entry(CC_INFO, "CCEOM State Irrep", (char *) &irrep, sizeof(int));
 
-      fprintf(outfile,"\nThe CCEOM irrep %d is written to CC_INFO.\n");
-
+      fprintf(outfile,"\nCCEOM energy %.10lf and state irrep %s written to CC_INFO.\n",
+	      lambda_old[eom_params.prop_root-1], moinfo.labels[irrep]);
     }
     fprintf(outfile,"\n");
     free(lambda_old);
+    rzero(C_irr);
   }
   return;
 }

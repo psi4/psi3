@@ -6,7 +6,7 @@
 /* This function computes the H-bar doubles-doubles block contribution
 from P(ij)P(ab) Wmbej*Cimae to a Sigma vector stored at Sigma plus 'i' */
 
-void WmbejDD(int i, int irrep) {
+void WmbejDD(int i, int C_irr) {
   dpdbuf4 S2, S2temp, D;
   dpdbuf4 C2, C2temp;
   dpdbuf4 CMNEF, Cmnef, CMnEf, CmNeF, TIJAB, Tijab, TIjAb;
@@ -22,15 +22,15 @@ void WmbejDD(int i, int irrep) {
   sprintf(SIjAb_lbl, "%s %d", "SIjAb", i);
 
   /* C2(IA,ME) * W(ME,JB) --> S2(IA,JB) */
-  dpd_buf4_init(&S2, EOM_TMP, irrep, 10, 10, 10, 10, 0, "SIAJB");
-  dpd_buf4_init(&CMNEF, EOM_TMP, irrep, 10, 10, 10, 10, 0, "CMENF");
-  dpd_buf4_init(&W, CC_HBAR, irrep, 10, 10, 10, 10, 0, "WMBEJ");
+  dpd_buf4_init(&S2, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "SIAJB");
+  dpd_buf4_init(&CMNEF, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "CMENF");
+  dpd_buf4_init(&W, CC_HBAR, H_IRR, 10, 10, 10, 10, 0, "WMBEJ");
   dpd_contract444(&CMNEF, &W, &S2, 0, 1, 1, 0);
   dpd_buf4_close(&W);
   dpd_buf4_close(&CMNEF);
   /* C2(IA,me) * W(me,JB) --> S2(IA,JB) */
-  dpd_buf4_init(&CMnEf, EOM_TMP, irrep, 10, 10, 10, 10, 0, "CMEnf");
-  dpd_buf4_init(&W, CC_HBAR, irrep, 10, 10, 10, 10, 0, "WmBeJ");
+  dpd_buf4_init(&CMnEf, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "CMEnf");
+  dpd_buf4_init(&W, CC_HBAR, H_IRR, 10, 10, 10, 10, 0, "WmBeJ");
   dpd_contract444(&CMnEf, &W, &S2, 0, 1, 1, 1);
   dpd_buf4_close(&W);
   dpd_buf4_close(&CMnEf);
@@ -40,40 +40,40 @@ void WmbejDD(int i, int irrep) {
   dpd_buf4_sort(&S2, EOM_TMP, psrq, 10, 10, "SIBJA");
   dpd_buf4_close(&S2);
   /* P(IJ) P(AB) S2(IA,JB) */
-  dpd_buf4_init(&S2, EOM_TMP, irrep, 10, 10, 10, 10, 0, "SJAIB");
+  dpd_buf4_init(&S2, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "SJAIB");
   dpd_buf4_sort(&S2, EOM_TMP, psrq, 10, 10, "SJBIA");
   dpd_buf4_close(&S2);
   /* S2(IA,JB) - S2(JA,IB) - S2(IB,JA) + S2(JB,IA) --> S2(IA,JB) */
-  dpd_buf4_init(&S2, EOM_TMP, irrep, 10, 10, 10, 10, 0, "SIAJB");
-  dpd_buf4_init(&S2temp, EOM_TMP, irrep, 10, 10, 10, 10, 0, "SJAIB");
+  dpd_buf4_init(&S2, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "SIAJB");
+  dpd_buf4_init(&S2temp, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "SJAIB");
   dpd_buf4_axpy(&S2temp, &S2, -1);
   dpd_buf4_close(&S2temp);
-  dpd_buf4_init(&S2temp, EOM_TMP, irrep, 10, 10, 10, 10, 0, "SIBJA");
+  dpd_buf4_init(&S2temp, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "SIBJA");
   dpd_buf4_axpy(&S2temp, &S2, -1);
   dpd_buf4_close(&S2temp);
-  dpd_buf4_init(&S2temp, EOM_TMP, irrep, 10, 10, 10, 10, 0, "SJBIA");
+  dpd_buf4_init(&S2temp, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "SJBIA");
   dpd_buf4_axpy(&S2temp, &S2, 1);
   dpd_buf4_close(&S2temp);
   /* S2(IA,JB) --> S2(IJ,AB) */
   dpd_buf4_sort(&S2, EOM_TMP, prqs, 0, 5, "SIJAB");
   dpd_buf4_close(&S2);
-  dpd_buf4_init(&S2, EOM_TMP, irrep, 0, 5, 0, 5, 0, "SIJAB");
-  dpd_buf4_init(&SIJAB, EOM_SIJAB, irrep, 0, 5, 2, 7, 0, SIJAB_lbl);
+  dpd_buf4_init(&S2, EOM_TMP, C_irr, 0, 5, 0, 5, 0, "SIJAB");
+  dpd_buf4_init(&SIJAB, EOM_SIJAB, C_irr, 0, 5, 2, 7, 0, SIJAB_lbl);
   dpd_buf4_axpy(&S2, &SIJAB, 1.0);
   dpd_buf4_close(&SIJAB);
   dpd_buf4_close(&S2);
 
 
   /* C2(ia,me) * W(me,jb) --> S2(ia,jb) */
-  dpd_buf4_init(&S2, EOM_TMP, irrep, 10, 10, 10, 10, 0, "Siajb");
-  dpd_buf4_init(&Cmnef, EOM_TMP, irrep, 10, 10, 10, 10, 0, "Cmenf");
-  dpd_buf4_init(&W, CC_HBAR, irrep, 10, 10, 10, 10, 0, "Wmbej");
+  dpd_buf4_init(&S2, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "Siajb");
+  dpd_buf4_init(&Cmnef, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "Cmenf");
+  dpd_buf4_init(&W, CC_HBAR, H_IRR, 10, 10, 10, 10, 0, "Wmbej");
   dpd_contract444(&Cmnef, &W, &S2, 0, 1, 1, 0);
   dpd_buf4_close(&W);
   dpd_buf4_close(&Cmnef);
   /* C2(ia,ME) * W(ME,jb) --> S2(ia,jb) */
-  dpd_buf4_init(&CMnEf, EOM_TMP, irrep, 10, 10, 10, 10, 0, "CmeNF");
-  dpd_buf4_init(&W, CC_HBAR, irrep, 10, 10, 10, 10, 0, "WMbEj");
+  dpd_buf4_init(&CMnEf, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "CmeNF");
+  dpd_buf4_init(&W, CC_HBAR, H_IRR, 10, 10, 10, 10, 0, "WMbEj");
   dpd_contract444(&CMnEf, &W, &S2, 0, 1, 1, 1);
   dpd_buf4_close(&W);
   dpd_buf4_close(&CMnEf);
@@ -83,89 +83,89 @@ void WmbejDD(int i, int irrep) {
   dpd_buf4_sort(&S2, EOM_TMP, psrq, 10, 10, "Sibja");
   dpd_buf4_close(&S2);
   /* P(ij) P(ab) S2(ia,jb) */
-  dpd_buf4_init(&S2, EOM_TMP, irrep, 10, 10, 10, 10, 0, "Sjaib");
+  dpd_buf4_init(&S2, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "Sjaib");
   dpd_buf4_sort(&S2, EOM_TMP, psrq, 10, 10, "Sjbia");
   dpd_buf4_close(&S2);
   /* S2(ia,jb) - S2(ja,ib) - S2(ib,ja) + S2(jb,ia) --> S2(ia,jb) */
-  dpd_buf4_init(&S2, EOM_TMP, irrep, 10, 10, 10, 10, 0, "Siajb");
-  dpd_buf4_init(&S2temp, EOM_TMP, irrep, 10, 10, 10, 10, 0, "Sjaib");
+  dpd_buf4_init(&S2, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "Siajb");
+  dpd_buf4_init(&S2temp, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "Sjaib");
   dpd_buf4_axpy(&S2temp, &S2, -1);
   dpd_buf4_close(&S2temp);
-  dpd_buf4_init(&S2temp, EOM_TMP, irrep, 10, 10, 10, 10, 0, "Sibja");
+  dpd_buf4_init(&S2temp, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "Sibja");
   dpd_buf4_axpy(&S2temp, &S2, -1);
   dpd_buf4_close(&S2temp);
-  dpd_buf4_init(&S2temp, EOM_TMP, irrep, 10, 10, 10, 10, 0, "Sjbia");
+  dpd_buf4_init(&S2temp, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "Sjbia");
   dpd_buf4_axpy(&S2temp, &S2, 1);
   dpd_buf4_close(&S2temp);
   /* S2(ia,jb) --> S2(ij,ab) */
   dpd_buf4_sort(&S2, EOM_TMP, prqs, 0, 5, "Sijab");
   dpd_buf4_close(&S2);
-  dpd_buf4_init(&S2, EOM_TMP, irrep, 0, 5, 0, 5, 0, "Sijab");
-  dpd_buf4_init(&Sijab, EOM_Sijab, irrep, 0, 5, 2, 7, 0, Sijab_lbl);
+  dpd_buf4_init(&S2, EOM_TMP, C_irr, 0, 5, 0, 5, 0, "Sijab");
+  dpd_buf4_init(&Sijab, EOM_Sijab, C_irr, 0, 5, 2, 7, 0, Sijab_lbl);
   dpd_buf4_axpy(&S2, &Sijab, 1.0);
   dpd_buf4_close(&Sijab);
   dpd_buf4_close(&S2);
 
   /* C2(IA,ME) * W(ME,jb) --> S2(IA,jb) */
-  dpd_buf4_init(&S2, EOM_TMP, irrep, 10, 10, 10, 10, 0, "SIAjb");
-  dpd_buf4_init(&CMnEf, EOM_TMP, irrep, 10, 10, 10, 10, 0, "CMENF");
-  dpd_buf4_init(&W, CC_HBAR, irrep, 10, 10, 10, 10, 0, "WMbEj");
+  dpd_buf4_init(&S2, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "SIAjb");
+  dpd_buf4_init(&CMnEf, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "CMENF");
+  dpd_buf4_init(&W, CC_HBAR, H_IRR, 10, 10, 10, 10, 0, "WMbEj");
   dpd_contract444(&CMnEf, &W, &S2, 0, 1, 1, 0);
   dpd_buf4_close(&W);
   dpd_buf4_close(&CMnEf);
   /* C2(IA,me) * W(me,jb) --> S2(IA,jb) */
-  dpd_buf4_init(&CMnEf, EOM_TMP, irrep, 10, 10, 10, 10, 0, "CMEnf");
-  dpd_buf4_init(&W, CC_HBAR, irrep, 10, 10, 10, 10, 0, "Wmbej");
+  dpd_buf4_init(&CMnEf, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "CMEnf");
+  dpd_buf4_init(&W, CC_HBAR, H_IRR, 10, 10, 10, 10, 0, "Wmbej");
   dpd_contract444(&CMnEf, &W, &S2, 0, 1, 1, 1);
   dpd_buf4_close(&W);
   dpd_buf4_close(&CMnEf);
   /* W(ME,IA) * C2(jb,ME) --> S2(IA,jb) */
-  dpd_buf4_init(&CMnEf, EOM_TMP, irrep, 10, 10, 10, 10, 0, "CmeNF");
-  dpd_buf4_init(&W, CC_HBAR, irrep, 10, 10, 10, 10, 0, "WMBEJ");
+  dpd_buf4_init(&CMnEf, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "CmeNF");
+  dpd_buf4_init(&W, CC_HBAR, H_IRR, 10, 10, 10, 10, 0, "WMBEJ");
   dpd_contract444(&W, &CMnEf, &S2, 1, 0, 1, 1);
   dpd_buf4_close(&W);
   dpd_buf4_close(&CMnEf);
   /* W(me,IA) * C2(jb,me) --> S2(IA,jb) */
-  dpd_buf4_init(&Cmnef, EOM_TMP, irrep, 10, 10, 10, 10, 0, "Cmenf");
-  dpd_buf4_init(&W, CC_HBAR, irrep, 10, 10, 10, 10, 0, "WmBeJ");
+  dpd_buf4_init(&Cmnef, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "Cmenf");
+  dpd_buf4_init(&W, CC_HBAR, H_IRR, 10, 10, 10, 10, 0, "WmBeJ");
   dpd_contract444(&W, &Cmnef, &S2, 1, 0, 1, 1);
   dpd_buf4_close(&W);
   dpd_buf4_close(&Cmnef);
   /* C2(IA,jb) --> S2(Ij,Ab) */
   dpd_buf4_sort(&S2, EOM_TMP, prqs, 0, 5, "SIjAb");
   dpd_buf4_close(&S2);
-  dpd_buf4_init(&S2, EOM_TMP, irrep, 0, 5, 0, 5, 0, "SIjAb");
-  dpd_buf4_init(&SIjAb, EOM_SIjAb, irrep, 0, 5, 0, 5, 0, SIjAb_lbl);
+  dpd_buf4_init(&S2, EOM_TMP, C_irr, 0, 5, 0, 5, 0, "SIjAb");
+  dpd_buf4_init(&SIjAb, EOM_SIjAb, C_irr, 0, 5, 0, 5, 0, SIjAb_lbl);
   dpd_buf4_axpy(&S2, &SIjAb, 1);
   dpd_buf4_close(&SIjAb);
   dpd_buf4_close(&S2);
   /* C2(Ib,mE) * W(mE,jA) --> S2(Ib,jA) */
-  dpd_buf4_init(&S2, EOM_TMP, irrep, 10, 10, 10, 10, 0, "SIbjA");
-  dpd_buf4_init(&CMnEf, EOM_TMP, irrep, 10, 10, 10, 10, 0, "CMenF");
-  dpd_buf4_init(&W, CC_HBAR, irrep, 10, 10, 10, 10, 0, "WmBEj");
+  dpd_buf4_init(&S2, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "SIbjA");
+  dpd_buf4_init(&CMnEf, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "CMenF");
+  dpd_buf4_init(&W, CC_HBAR, H_IRR, 10, 10, 10, 10, 0, "WmBEj");
   dpd_contract444(&CMnEf, &W, &S2, 0, 1, 1, 0);
   dpd_buf4_close(&W);
   dpd_buf4_close(&CMnEf);
   /* W(Me,Ib) * C2(jA,Me) --> S2(Ib,jA) */
-  dpd_buf4_init(&CMnEf, EOM_TMP, irrep, 10, 10, 10, 10, 0, "CmENf");
-  dpd_buf4_init(&W, CC_HBAR, irrep, 10, 10, 10, 10, 0, "WMbeJ");
+  dpd_buf4_init(&CMnEf, EOM_TMP, C_irr, 10, 10, 10, 10, 0, "CmENf");
+  dpd_buf4_init(&W, CC_HBAR, H_IRR, 10, 10, 10, 10, 0, "WMbeJ");
   dpd_contract444(&W, &CMnEf, &S2, 1, 0, 1, 1);
   dpd_buf4_close(&W);
   dpd_buf4_close(&CMnEf);
   /* C2(Ib,jA) --> S2(Ij,bA) --> S2(Ij,Ab) */
   dpd_buf4_sort(&S2, EOM_TMP, prqs, 0, 5, "SIjbA");
   dpd_buf4_close(&S2);
-  dpd_buf4_init(&S2, EOM_TMP, irrep, 0, 5, 0, 5, 0, "SIjbA");
+  dpd_buf4_init(&S2, EOM_TMP, C_irr, 0, 5, 0, 5, 0, "SIjbA");
   dpd_buf4_sort(&S2, EOM_TMP, pqsr, 0, 5, "SIjAb");
   dpd_buf4_close(&S2);
-  dpd_buf4_init(&S2, EOM_TMP, irrep, 0, 5, 0, 5, 0, "SIjAb");
-  dpd_buf4_init(&SIjAb, EOM_SIjAb, irrep, 0, 5, 0, 5, 0, SIjAb_lbl);
+  dpd_buf4_init(&S2, EOM_TMP, C_irr, 0, 5, 0, 5, 0, "SIjAb");
+  dpd_buf4_init(&SIjAb, EOM_SIjAb, C_irr, 0, 5, 0, 5, 0, SIjAb_lbl);
   dpd_buf4_axpy(&S2, &SIjAb, 1);
   dpd_buf4_close(&SIjAb);
   dpd_buf4_close(&S2);
 
 #ifdef EOM_DEBUG
-  check_sum("WmbejDD",i,irrep);
+  check_sum("WmbejDD",i,C_irr);
 #endif
 
   return;

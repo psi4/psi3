@@ -14,7 +14,6 @@ void cleanup(void);
 void exit_io(void);
 void diag(void);
 void hbar_clean();
-void rzero(void);
 void get_params(void);
 void get_eom_params(void);
 void form_dpd_dp(void);
@@ -46,7 +45,6 @@ int main(int argc, char *argv[])
            moinfo.virtpi, moinfo.vir_sym);
 
   diag();
-  rzero();
   dpd_close(0);
   cleanup(); 
   exit_io();
