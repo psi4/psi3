@@ -277,15 +277,15 @@ int main(int argc, char *argv[])
   errcod = ip_boolean("PRINT_MOS", &(print), 0);
   if(print) {
     fprintf(outfile, "\n\tPipek-Mezey Localized MO's (after sort):\n");
-    print_mat(C, nao, nmo, outfile);
+    print_mat(C, nso, nmo, outfile);
   }
 
   /* Check MO normalization */
   /*
     for(i=0; i < nmo; i++) {
     norm = 0.0;
-    for(j=0; j < nao; j++) 
-    for(k=0; k < nao; k++) {
+    for(j=0; j < nso; j++) 
+    for(k=0; k < nso; k++) {
     norm += C[j][i] * C[k][i] * S[j][k];
     }
 
