@@ -349,38 +349,6 @@ double **symm_matrix_invert(double **A, int dim, int print_det, int redundant)
   return A_inv;
 }
 
-//Performs a linear transformation
-void linear_transform()
-{
-  double cf1, cf2, cf3, cf4; //conversion factors, which will be appropriate cf's or equal to 1
-
-  if(abs(gParams.transformType != 3)) {
-    cf1 = _hartree2J / (_bohr2angstroms * 1.0E-18);
-    cf2 = cf1 / _bohr2angstroms;
-    cf3 = cf2 / _bohr2angstroms;
-    cf4 = cf3 / _bohr2angstroms;
-  }
-  else {
-    cf1 = 1.0;
-    cf2 = 1.0;
-    cf3 = 1.0;
-    cf4 = 1.0;
-  }
-  
-  if(gParams.transformType >= 1) {
-    cf1 = 1.0;
-    cf2 = 1.0;
-    cf3 = 1.0;
-    cf4 = 1.0;
-  }  //this seems dumb
-  
-  if(gParams.atEquilibrium) {
-    if(gParams.transformType >= 1)
-      ;
-    //read from file 11...hmm!
-      }
-}
-
 //What on Earth is the point of this function? 
 double dot_x(double val1, int idim1, double val2, int idim2, int n)
 {

@@ -21,14 +21,18 @@ EXTERN void fill3b(int , int , C3DMatrix *);
 EXTERN void fill4a(int , int , C4DMatrix *);
 EXTERN void fill4a(int , int , C5DMatrix *);
 EXTERN double** symm_matrix_invert(double **, int, int, int);
-EXTERN void linear_transform();
 EXTERN double dot_x(double, int, double, int, int);
+
 EXTERN FILE *infile, *outfile;
-EXTERN char *psi_file_prefix;
 EXTERN FILE *fp_intco;
+EXTERN FILE *fp_ider;
+
+EXTERN char *psi_file_prefix;
+
 
 #define EVAL_TOL (1.0E-14)                /* tolerance for eigenvalues (used in sq_rsp() and irrep() )*/
 #define REDUNDANT_EVAL_TOL (1.0E-10)
+#define MAX_LINE (80)
 
 #endif
 
