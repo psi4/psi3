@@ -1,7 +1,10 @@
 
 srcdir = @srcdir@
 VPATH = @srcdir@
-TEMP_DIR = /tmp1/${USER}/libderiv
+ifndef SCRATCH
+   SCRATCH = /tmp/${USER}
+endif
+TEMP_DIR = ${SCRATCH}/libint
 BUILD_BINARY = build_libderiv
 @SET_MAKE@
 
@@ -20,6 +23,11 @@ BINOBJ = $(CSRC:%.c=%.o)
 
 install: $(BUILD_BINARY) Makefile.libderiv
 	if \
+ ! [ -e $(SCRATCH) ]; \
+ then \
+ mkdir $(SCRATCH); \
+fi; \
+if \
  [ -e $(TEMP_DIR) ]; \
 then \
  echo "Scratch directory already exists!";\

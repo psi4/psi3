@@ -1,11 +1,12 @@
-This is hot to compile LIBDERIV:
-1) The compilation process runs in /tmp1/$(USER)/libderiv, you need to figure
-out if this location is suitable for you (if you have enough disk space, in
-other words).
+This is how to compile LIBDERIV:
+1) This compilation requires some significant scratch space.  If the user
+has defined the environmental variable SCRATCH, then the compilation
+proceeds in $(SCRATCH)/libderiv.  Otherwise, the default location is
+/tmp/$(USER)/libderiv.  You need to make sure this location has enough
+disk space.
 
-2) If you want to use the default location for the scratch directory - just
-type 'make', otherwise invoke 'make TEMP_DIR=/put/your/choice/here'. 
-This might take awhile. Get a cup of tea, or go get some sun.
+2) Type 'make' to begin compilation.  This might take awhile. Get a 
+cup of tea, or go get some sun.
 
 3) If you get any error messages - contact the author.
 
@@ -13,3 +14,7 @@ Edward Valeev
 evaleev@ccqc.uga.edu
 
 July 1, 1999.
+
+Compilation directory determination modified by David Sherrill,
+Feb 10, 2000.
+
