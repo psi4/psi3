@@ -5,27 +5,27 @@
 
 void Lsave(void)
 {
-  struct oe_dpdfile L1;
-  struct dpdbuf L2;
+  dpdfile2 L1;
+  dpdbuf4 L2;
 
-  dpd_oe_file_init(&L1, CC_OEI, 0, 1, "New LIA", 0, outfile);
-  dpd_oe_copy(&L1, CC_OEI, "LIA", 0, outfile);
-  dpd_oe_file_close(&L1);
+  dpd_file2_init(&L1, CC_OEI, 0, 0, 1, "New LIA");
+  dpd_file2_copy(&L1, CC_OEI, "LIA");
+  dpd_file2_close(&L1);
 
-  dpd_oe_file_init(&L1, CC_OEI, 0, 1, "New Lia", 0, outfile);
-  dpd_oe_copy(&L1, CC_OEI, "Lia", 0, outfile);
-  dpd_oe_file_close(&L1);
+  dpd_file2_init(&L1, CC_OEI, 0, 0, 1, "New Lia");
+  dpd_file2_copy(&L1, CC_OEI, "Lia");
+  dpd_file2_close(&L1);
 
-  dpd_buf_init(&L2, CC_LAMPS, 2, 7, 2, 7, 0, "New LIJAB", 0, outfile);
-  dpd_copy(&L2, CC_LAMPS, "LIJAB", 0, outfile);
-  dpd_buf_close(&L2);
+  dpd_buf4_init(&L2, CC_LAMPS, 0, 2, 7, 2, 7, 0, "New LIJAB");
+  dpd_buf4_copy(&L2, CC_LAMPS, "LIJAB");
+  dpd_buf4_close(&L2);
 
-  dpd_buf_init(&L2, CC_LAMPS, 2, 7, 2, 7, 0, "New Lijab", 0, outfile);
-  dpd_copy(&L2, CC_LAMPS, "Lijab", 0, outfile);
-  dpd_buf_close(&L2);
+  dpd_buf4_init(&L2, CC_LAMPS, 0, 2, 7, 2, 7, 0, "New Lijab");
+  dpd_buf4_copy(&L2, CC_LAMPS, "Lijab");
+  dpd_buf4_close(&L2);
 
-  dpd_buf_init(&L2, CC_LAMPS, 0, 5, 0, 5, 0, "New LIjAb", 0, outfile);
-  dpd_copy(&L2, CC_LAMPS, "LIjAb", 0, outfile);
-  dpd_buf_close(&L2);
+  dpd_buf4_init(&L2, CC_LAMPS, 0, 0, 5, 0, 5, 0, "New LIjAb");
+  dpd_buf4_copy(&L2, CC_LAMPS, "LIjAb");
+  dpd_buf4_close(&L2);
 }
 

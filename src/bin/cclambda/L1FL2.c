@@ -10,29 +10,29 @@ void L1FL2(void)
   int h, nirreps;
   int row,col;
   int i,j,a,b,I,J,A,B,Isym,Jsym,Asym,Bsym;
-  struct oe_dpdfile LIA, Lia, FJB, Fjb;
-  struct dpdbuf newL2;
+  dpdfile2 LIA, Lia, FJB, Fjb;
+  dpdbuf4 newL2;
 
   nirreps = moinfo.nirreps;
 
-  dpd_oe_file_init(&LIA, CC_OEI, 0, 1, "LIA", 0, outfile);
-  dpd_oe_file_mat_init(&LIA);
-  dpd_oe_file_mat_rd(&LIA, 0, outfile);
-  dpd_oe_file_init(&Lia, CC_OEI, 0, 1, "Lia", 0, outfile);
-  dpd_oe_file_mat_init(&Lia);
-  dpd_oe_file_mat_rd(&Lia, 0, outfile);
-  dpd_oe_file_init(&FJB, CC_OEI, 0, 1, "FME", 0, outfile);
-  dpd_oe_file_mat_init(&FJB);
-  dpd_oe_file_mat_rd(&FJB, 0, outfile);
-  dpd_oe_file_init(&Fjb, CC_OEI, 0, 1, "Fme", 0, outfile);
-  dpd_oe_file_mat_init(&Fjb);
-  dpd_oe_file_mat_rd(&Fjb, 0, outfile);
+  dpd_file2_init(&LIA, CC_OEI, 0, 0, 1, "LIA");
+  dpd_file2_mat_init(&LIA);
+  dpd_file2_mat_rd(&LIA);
+  dpd_file2_init(&Lia, CC_OEI, 0, 0, 1, "Lia");
+  dpd_file2_mat_init(&Lia);
+  dpd_file2_mat_rd(&Lia);
+  dpd_file2_init(&FJB, CC_OEI, 0, 0, 1, "FME");
+  dpd_file2_mat_init(&FJB);
+  dpd_file2_mat_rd(&FJB);
+  dpd_file2_init(&Fjb, CC_OEI, 0, 0, 1, "Fme");
+  dpd_file2_mat_init(&Fjb);
+  dpd_file2_mat_rd(&Fjb);
   
-  dpd_buf_init(&newL2, CC_LAMPS, 2, 7, 2, 7, 0, "New LIJAB", 0, outfile);
+  dpd_buf4_init(&newL2, CC_LAMPS, 0, 2, 7, 2, 7, 0, "New LIJAB");
   for(h=0; h < nirreps; h++) {
 
-      dpd_buf_mat_irrep_init(&newL2, h);
-      dpd_buf_mat_irrep_rd(&newL2, h, 0, outfile);
+  dpd_buf4_mat_irrep_init(&newL2, h); 0,
+      dpd_buf4_mat_irrep_rd(&newL2, h);
 
       for(row=0; row < newL2.params->rowtot[h]; row++) {
 	  i = newL2.params->roworb[h][row][0];
@@ -76,17 +76,17 @@ void L1FL2(void)
 	    }
 	}
 
-      dpd_buf_mat_irrep_wrt(&newL2, h, 0, outfile);
-      dpd_buf_mat_irrep_close(&newL2, h);
+      dpd_buf4_mat_irrep_wrt(&newL2, h);
+      dpd_buf4_mat_irrep_close(&newL2, h);
       
     }
-  dpd_buf_close(&newL2);
+  dpd_buf4_close(&newL2);
 
-  dpd_buf_init(&newL2, CC_LAMPS, 2, 7, 2, 7, 0, "New Lijab", 0, outfile);
+  dpd_buf4_init(&newL2, CC_LAMPS, 0, 2, 7, 2, 7, 0, "New Lijab");
   for(h=0; h < nirreps; h++) {
 
-      dpd_buf_mat_irrep_init(&newL2, h);
-      dpd_buf_mat_irrep_rd(&newL2, h, 0, outfile);
+  dpd_buf4_mat_irrep_init(&newL2, h); 0,
+      dpd_buf4_mat_irrep_rd(&newL2, h);
 
       for(row=0; row < newL2.params->rowtot[h]; row++) {
 	  i = newL2.params->roworb[h][row][0];
@@ -130,17 +130,17 @@ void L1FL2(void)
 	    }
 	}
 
-      dpd_buf_mat_irrep_wrt(&newL2, h, 0, outfile);
-      dpd_buf_mat_irrep_close(&newL2, h);
+      dpd_buf4_mat_irrep_wrt(&newL2, h);
+      dpd_buf4_mat_irrep_close(&newL2, h);
       
     }
-  dpd_buf_close(&newL2);
+  dpd_buf4_close(&newL2);
 
-  dpd_buf_init(&newL2, CC_LAMPS, 0, 5, 0, 5, 0, "New LIjAb", 0, outfile);
+  dpd_buf4_init(&newL2, CC_LAMPS, 0, 0, 5, 0, 5, 0, "New LIjAb");
   for(h=0; h < nirreps; h++) {
 
-      dpd_buf_mat_irrep_init(&newL2, h);
-      dpd_buf_mat_irrep_rd(&newL2, h, 0, outfile);
+  dpd_buf4_mat_irrep_init(&newL2, h); 0,
+      dpd_buf4_mat_irrep_rd(&newL2, h);
 
       for(row=0; row < newL2.params->rowtot[h]; row++) {
 	  i = newL2.params->roworb[h][row][0];
@@ -170,19 +170,19 @@ void L1FL2(void)
 	    }
 	}
 
-      dpd_buf_mat_irrep_wrt(&newL2, h, 0, outfile);
-      dpd_buf_mat_irrep_close(&newL2, h);
+      dpd_buf4_mat_irrep_wrt(&newL2, h);
+      dpd_buf4_mat_irrep_close(&newL2, h);
       
     }
-  dpd_buf_close(&newL2);
+  dpd_buf4_close(&newL2);
 
-  dpd_oe_file_mat_close(&FJB);
-  dpd_oe_file_close(&FJB);
-  dpd_oe_file_mat_close(&Fjb);
-  dpd_oe_file_close(&Fjb);
-  dpd_oe_file_mat_close(&LIA);
-  dpd_oe_file_close(&LIA);
-  dpd_oe_file_mat_close(&Lia);
-  dpd_oe_file_close(&Lia);
+  dpd_file2_mat_close(&FJB);
+  dpd_file2_close(&FJB);
+  dpd_file2_mat_close(&Fjb);
+  dpd_file2_close(&Fjb);
+  dpd_file2_mat_close(&LIA);
+  dpd_file2_close(&LIA);
+  dpd_file2_mat_close(&Lia);
+  dpd_file2_close(&Lia);
 
 }

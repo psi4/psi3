@@ -5,25 +5,25 @@
 
 void dijabL2(void)
 {
-  struct dpdbuf newLIJAB, newLijab, newLIjAb;
-  struct dpdbuf dIJAB, dijab, dIjAb;
+  dpdbuf4 newLIJAB, newLijab, newLIjAb;
+  dpdbuf4 dIJAB, dijab, dIjAb;
 
-  dpd_buf_init(&newLIJAB, CC_LAMPS, 2, 7, 2, 7, 0, "New LIJAB", 0, outfile);
-  dpd_buf_init(&dIJAB, CC_DENOM, 1, 6, 1, 6, 0, "dIJAB", 0, outfile);
-  dpd_dirprd(&dIJAB, &newLIJAB, 0, outfile);
-  dpd_buf_close(&newLIJAB);
-  dpd_buf_close(&dIJAB);
+  dpd_buf4_init(&newLIJAB, CC_LAMPS, 0, 2, 7, 2, 7, 0, "New LIJAB");
+  dpd_buf4_init(&dIJAB, CC_DENOM, 0, 1, 6, 1, 6, 0, "dIJAB");
+  dpd_buf4_dirprd(&dIJAB, &newLIJAB);
+  dpd_buf4_close(&newLIJAB);
+  dpd_buf4_close(&dIJAB);
 
-  dpd_buf_init(&newLijab, CC_LAMPS, 2, 7, 2, 7, 0, "New Lijab", 0, outfile);
-  dpd_buf_init(&dijab, CC_DENOM, 1, 6, 1, 6, 0, "dijab", 0, outfile);
-  dpd_dirprd(&dijab, &newLijab, 0, outfile);
-  dpd_buf_close(&newLijab);
-  dpd_buf_close(&dijab);
+  dpd_buf4_init(&newLijab, CC_LAMPS, 0, 2, 7, 2, 7, 0, "New Lijab");
+  dpd_buf4_init(&dijab, CC_DENOM, 0, 1, 6, 1, 6, 0, "dijab");
+  dpd_buf4_dirprd(&dijab, &newLijab);
+  dpd_buf4_close(&newLijab);
+  dpd_buf4_close(&dijab);
 
-  dpd_buf_init(&newLIjAb, CC_LAMPS, 0, 5, 0, 5, 0, "New LIjAb", 0, outfile);
-  dpd_buf_init(&dIjAb, CC_DENOM, 0, 5, 0, 5, 0, "dIjAb", 0, outfile);
-  dpd_dirprd(&dIjAb, &newLIjAb, 0, outfile);
-  dpd_buf_close(&newLIjAb);
-  dpd_buf_close(&dIjAb);
+  dpd_buf4_init(&newLIjAb, CC_LAMPS, 0, 0, 5, 0, 5, 0, "New LIjAb");
+  dpd_buf4_init(&dIjAb, CC_DENOM, 0, 0, 5, 0, 5, 0, "dIjAb");
+  dpd_buf4_dirprd(&dIjAb, &newLIjAb);
+  dpd_buf4_close(&newLIjAb);
+  dpd_buf4_close(&dIjAb);
 }
 

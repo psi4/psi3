@@ -20,12 +20,16 @@ void get_params()
   if(!moinfo.phase) params.restart = 0;
 
   fndcor(&(params.memory),infile,outfile);
+
+  params.cachelev = 2;
+  errcod = ip_data("CACHELEV", "%d", &(params.cachelev),0);
   
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
   fprintf(outfile, "\tMaxiter     =    %4d\n", params.maxiter);
   fprintf(outfile, "\tConvergence = %3.1e\n", params.convergence);
   fprintf(outfile, "\tRestart     =     %s\n", params.restart ? "Yes" : "No");
+  fprintf(outfile, "\tCache Level =     %1d\n", params.cachelev);
   fprintf(outfile, "\n");
 }
 

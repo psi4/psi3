@@ -6,8 +6,8 @@
 
 void init_amps(void)
 {
-  struct oe_dpdfile T1;
-  struct dpdbuf T2;
+  dpdfile2 T1;
+  dpdbuf4 T2;
 
   /* Restart from previous amplitudes if we can/should */
   /* Need to adjust this for new I/O
@@ -15,23 +15,23 @@ void init_amps(void)
      && flen(CC_Lijab) && flen(CC_LIjAb)) return;
      */
 
-  dpd_oe_file_init(&T1, CC_OEI, 0, 1, "tIA", 0, outfile);
-  dpd_oe_copy(&T1, CC_OEI, "LIA", 0, outfile);
-  dpd_oe_file_close(&T1);
+  dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
+  dpd_file2_copy(&T1, CC_OEI, "LIA");
+  dpd_file2_close(&T1);
 
-  dpd_oe_file_init(&T1, CC_OEI, 0, 1, "tia", 0, outfile);
-  dpd_oe_copy(&T1, CC_OEI, "Lia", 0, outfile);
-  dpd_oe_file_close(&T1);
+  dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tia");
+  dpd_file2_copy(&T1, CC_OEI, "Lia");
+  dpd_file2_close(&T1);
 
-  dpd_buf_init(&T2, CC_TAMPS, 2, 7, 2, 7, 0, "tIJAB", 0, outfile);
-  dpd_copy(&T2, CC_LAMPS, "LIJAB", 0, outfile);
-  dpd_buf_close(&T2);
+  dpd_buf4_init(&T2, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tIJAB");
+  dpd_buf4_copy(&T2, CC_LAMPS, "LIJAB");
+  dpd_buf4_close(&T2);
 
-  dpd_buf_init(&T2, CC_TAMPS, 2, 7, 2, 7, 0, "tijab", 0, outfile);
-  dpd_copy(&T2, CC_LAMPS, "Lijab", 0, outfile);
-  dpd_buf_close(&T2);
+  dpd_buf4_init(&T2, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tijab");
+  dpd_buf4_copy(&T2, CC_LAMPS, "Lijab");
+  dpd_buf4_close(&T2);
 
-  dpd_buf_init(&T2, CC_TAMPS, 0, 5, 0, 5, 0, "tIjAb", 0, outfile);
-  dpd_copy(&T2, CC_LAMPS, "LIjAb", 0, outfile);
-  dpd_buf_close(&T2);
+  dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
+  dpd_buf4_copy(&T2, CC_LAMPS, "LIjAb");
+  dpd_buf4_close(&T2);
 }

@@ -5,17 +5,15 @@
 
 void DL2(void)
 {
-  struct dpdbuf D;
+  dpdbuf4 D;
 
   /* RHS = <ij||ab> */
-  dpd_buf_init(&D, CC_DINTS, 2, 7, 2, 7, 0, "D <ij||ab> (i>j,a>b)",
-               0, outfile);
-  dpd_copy(&D, CC_LAMPS, "New LIJAB",0,outfile);
-  dpd_copy(&D, CC_LAMPS, "New Lijab",0,outfile);
-  dpd_buf_close(&D);
+  dpd_buf4_init(&D, CC_DINTS, 0, 2, 7, 2, 7, 0, "D <ij||ab> (i>j,a>b)");
+  dpd_buf4_copy(&D, CC_LAMPS, "New LIJAB");
+  dpd_buf4_copy(&D, CC_LAMPS, "New Lijab");
+  dpd_buf4_close(&D);
 
-  dpd_buf_init(&D, CC_DINTS,0,5,0,5,0,"D <ij|ab>", 0, outfile);
-  dpd_copy(&D, CC_LAMPS, "New LIjAb",0,outfile);
-  dpd_buf_close(&D);
-
+  dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
+  dpd_buf4_copy(&D, CC_LAMPS, "New LIjAb");
+  dpd_buf4_close(&D);
 }

@@ -4,5 +4,6 @@ struct Params {
     double convergence;
     int restart;
     int memory;
+    int cachelev;
 };
 

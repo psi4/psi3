@@ -26,11 +26,12 @@ void sort_amps(void);
 void Lsave(void);
 void update(void);
 int converged(void);
-
+int **cacheprep(int level, int *cachefiles);
 
 int main(int argc, char *argv[])
 {
   int done=0;
+  int **cachelist, *cachefiles);
 
   moinfo.iter=0;
   
@@ -38,8 +39,12 @@ int main(int argc, char *argv[])
   title();
   get_moinfo();
   get_params();
-  dpd_init(moinfo.nirreps, params.memory, 2, moinfo.occpi, moinfo.occ_sym,
-	   moinfo.virtpi, moinfo.vir_sym);
+
+  cachefiles = init_int_array(PSIO_MAXUNIT);
+  cachelist = cacheprep(params.cachelev, cachefiles);
+
+  dpd_init(0, moinfo.nirreps, params.memory, cachefiles, cachelist,
+           2, moinfo.occpi, moinfo.occ_sym, moinfo.virtpi, moinfo.vir_sym);
 
   init_amps();
   fprintf(outfile, "\t          Solving Lambda Equations\n");
@@ -76,13 +81,13 @@ int main(int argc, char *argv[])
      fprintf(outfile, "\t ** Lambda not converged to %2.1e ** \n",
              params.convergence);
      fflush(outfile);
-     dpd_close();
+     dpd_close(0);
      cleanup();
      exit_io();
      exit(1);
    }
   overlap();
-  dpd_close();
+  dpd_close(0);
   cleanup(); 
   exit_io();
   exit(0);
