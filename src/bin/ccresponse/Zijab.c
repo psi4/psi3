@@ -5,7 +5,7 @@
 #define EXTERN
 #include "globals.h"
 
-void build_ZIjAb(char *cart, int irrep, double omega)
+void build_ZIjAb(char *cart_x, int irrep_x, double omega_x, char *cart_y, int irrep_y, double omega_y)
 {
   int h, ij, ef, i, j, e, f, I, J, E, F;
   int Isym, Jsym, Esym, Fsym;
@@ -16,13 +16,13 @@ void build_ZIjAb(char *cart, int irrep, double omega)
 
   nirreps = moinfo.nirreps;
 
-  sprintf(lbl, "X_%1s_IA (-%5.3f)", cart, omega);
-  dpd_file2_init(&Y1, CC_OEI, irrep, 0, 1, lbl);
+  sprintf(lbl, "X_%1s_IA (%5.3f)", cart_y, omega_y);
+  dpd_file2_init(&Y1, CC_OEI, irrep_y, 0, 1, lbl);
   dpd_file2_mat_init(&Y1);
   dpd_file2_mat_rd(&Y1);
 
-  sprintf(lbl, "X_%1s_IA (%5.3f)", cart, omega);
-  dpd_file2_init(&X1, CC_OEI, irrep, 0, 1, lbl);
+  sprintf(lbl, "X_%1s_IA (%5.3f)", cart_x, omega_x);
+  dpd_file2_init(&X1, CC_OEI, irrep_x, 0, 1, lbl);
   dpd_file2_mat_init(&X1);
   dpd_file2_mat_rd(&X1);
 
@@ -47,7 +47,7 @@ void build_ZIjAb(char *cart, int irrep, double omega)
 	Esym = X1.params->qsym[e];
 	Fsym = Y1.params->qsym[f];
 
-	if(((Isym^Esym)==irrep) && ((Jsym^Fsym)==irrep))
+	if(((Isym^Esym)==irrep_x) && ((Jsym^Fsym)==irrep_y))
 	  Z1.matrix[h][ij][ef] +=
 	    (X1.matrix[Isym][I][E] * Y1.matrix[Jsym][J][F]) + 
 	    (Y1.matrix[Isym][I][E] * X1.matrix[Jsym][J][F]);

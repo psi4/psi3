@@ -4,9 +4,9 @@
 #define EXTERN
 #include "globals.h"
 
-void build_ZIjAb(char *, int, double);
+void build_ZIjAb(char *, int, double, char *, int, double);
 
-double LHX1Y1(char *cart, int irrep, double omega) {
+double LHX1Y1(char *cart_x, int irrep_x, double omega_x, char *cart_y, int irrep_y, double omega_y) {
 
   dpdfile2 F, X1, Y1, Zmi, Zae, Zfb, Znj, ZIA, L1, t1;
   dpdbuf4 Z1, Z2, I, tau, W1, W2, ZIjAb, L2, T2, W, Z;
@@ -15,30 +15,30 @@ double LHX1Y1(char *cart, int irrep, double omega) {
 
   /* The Lambda 1 contractions */
   dpd_file2_init(&ZIA, CC_TMP0, 0, 0, 1, "ZIA");
-  sprintf(lbl, "X_%1s_IA (%5.3f)", cart, omega);
-  dpd_file2_init(&X1, CC_OEI, irrep, 0, 1, lbl);
-  sprintf(lbl, "X_%1s_IA (-%5.3f)", cart, omega);
-  dpd_file2_init(&Y1, CC_OEI, irrep, 0, 1, lbl);
+  sprintf(lbl, "X_%1s_IA (%5.3f)", cart_x, omega_x);
+  dpd_file2_init(&X1, CC_OEI, irrep_x, 0, 1, lbl);
+  sprintf(lbl, "X_%1s_IA (%5.3f)", cart_y, omega_y);
+  dpd_file2_init(&Y1, CC_OEI, irrep_y, 0, 1, lbl);
 
   /* Contraction of FME, XIE, YMA */
   dpd_file2_init(&F, CC_OEI, 0, 0, 1, "FME");
-  sprintf(lbl, "Z_%1s_MI" , cart);
-  dpd_file2_init(&Zmi, CC_TMP0, irrep, 0, 0, lbl);
+  sprintf(lbl, "Z_%1s_MI" , cart_x);
+  dpd_file2_init(&Zmi, CC_TMP0, irrep_x, 0, 0, lbl);
   dpd_contract222(&F, &X1, &Zmi, 0, 0, 1, 0);
   dpd_file2_close(&F);
   dpd_contract222(&Zmi, &Y1, &ZIA, 1, 1, -1, 0);
 
   /* Contraction of FME, XMA, YIE */
   dpd_file2_init(&F, CC_OEI, 0, 0, 1, "FME");
-  dpd_file2_init(&Zmi, CC_TMP0, irrep, 0, 0, lbl);
+  dpd_file2_init(&Zmi, CC_TMP0, irrep_x, 0, 0, lbl);
   dpd_contract222(&F, &Y1, &Zmi, 0, 0, 1, 0);
   dpd_file2_close(&F);
   dpd_contract222(&Zmi, &X1, &ZIA, 1, 1, -1, 1);
   dpd_file2_close(&Zmi);
 
   /* Contraction of WAMEF, XIE, YMF */
-  sprintf(lbl, "Z_%1s_AE" , cart);
-  dpd_file2_init(&Zae, CC_TMP0, irrep, 1, 1, lbl);
+  sprintf(lbl, "Z_%1s_AE" , cart_y);
+  dpd_file2_init(&Zae, CC_TMP0, irrep_y, 1, 1, lbl);
   dpd_buf4_init(&W1, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf 2(Am,Ef) - (Am,fE)");
   dpd_dot24(&Y1, &W1, &Zae, 0, 0, 1, 0);
   dpd_buf4_close(&W1);
@@ -52,8 +52,8 @@ double LHX1Y1(char *cart, int irrep, double omega) {
   dpd_file2_close(&Zae);
 
   /* Contraction of WAMEF, XMA, YNE */
-  sprintf(lbl, "Z_%1s_MI" , cart);
-  dpd_file2_init(&Zmi, CC_TMP0, irrep, 0, 0, lbl);
+  sprintf(lbl, "Z_%1s_MI" , cart_y);
+  dpd_file2_init(&Zmi, CC_TMP0, irrep_y, 0, 0, lbl);
   dpd_buf4_init(&W1, CC_HBAR, 0, 0, 11, 0, 11, 0, "WMnIe - 2WnMIe");
   dpd_dot13(&Y1, &W1, &Zmi, 0, 0, 1, 0);
   dpd_buf4_close(&W1);
@@ -78,16 +78,16 @@ double LHX1Y1(char *cart, int irrep, double omega) {
   /*  fprintf(outfile, "L(1)HX1Y1 = %20.12f\n", polar); */
 
   /* The Lambda 2 contractions */
-  sprintf(lbl, "X_%1s_IA (%5.3f)", cart, omega);
-  dpd_file2_init(&X1, CC_OEI, irrep, 0, 1, lbl);
-  sprintf(lbl, "X_%1s_IA (-%5.3f)", cart, omega);
-  dpd_file2_init(&Y1, CC_OEI, irrep, 0, 1, lbl);
+  sprintf(lbl, "X_%1s_IA (%5.3f)", cart_x, omega_x);
+  dpd_file2_init(&X1, CC_OEI, irrep_x, 0, 1, lbl);
+  sprintf(lbl, "X_%1s_IA (%5.3f)", cart_y, omega_y);
+  dpd_file2_init(&Y1, CC_OEI, irrep_y, 0, 1, lbl);
 
 
   /* Contraction of Wmnij with Zmnab */
   dpd_buf4_init(&ZIjAb, CC_TMP0, 0, 0, 5, 0, 5, 0, "Z(Ij,Ab) Final");
   dpd_buf4_scm(&ZIjAb, 0);
-  build_ZIjAb(cart, irrep, omega);
+  build_ZIjAb(cart_x, irrep_x, omega_x, cart_y, irrep_y, omega_y);
   dpd_buf4_init(&Z1, CC_TMP0, 0, 0, 5, 0, 5, 0, "Z(Ij,Ab) anti");
   dpd_buf4_init(&W1, CC_HBAR, 0, 0, 0, 0, 0, 0, "WMnIj");
   dpd_contract444(&W1, &Z1, &ZIjAb, 1, 1, 1, 0);

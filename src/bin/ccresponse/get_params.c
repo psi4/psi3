@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <math.h>
 #include <stdlib.h>
 #include <libipv1/ip_lib.h>
@@ -63,23 +64,22 @@ void get_params()
 	if(*junk>='a' && *junk <= 'z') *junk += 'A' - 'a';
 
       if(!strcmp(units, "HZ")) params.omega *= _h / _hartree2J;
-      else if(!strcmp(units, "NM")) params.omega = (_c*_h/_hartree2J) / (params.omega * 1e-9);
+      else if(!strcmp(units, "NM")) params.omega = (_c*_h*1e9)/(params.omega*_hartree2J);
       else if(!strcmp(units, "EV")) params.omega /= _hartree2ev;
     }
   }
 
-  tmpi = init_int_array(3);
-  errcod = ip_int_array("MU_IRREPS", tmpi, 3);
+  moinfo.mu_irreps = init_int_array(3);
+  errcod = ip_int_array("MU_IRREPS", moinfo.mu_irreps, 3);
   if(errcod == IPE_OK) {
-    moinfo.irrep_x = tmpi[0];
-    moinfo.irrep_y = tmpi[1];
-    moinfo.irrep_z = tmpi[2];
+    moinfo.irrep_x = moinfo.mu_irreps[0];
+    moinfo.irrep_y = moinfo.mu_irreps[1];
+    moinfo.irrep_z = moinfo.mu_irreps[2];
   }
   else {
-    fprintf(outfile, "\nYou must supply the irrep of x, y, and z with the MU_IRREPS keyword.\n");
+    fprintf(outfile, "\nYou must supply the irreps of x, y, and z with the MU_IRREPS keyword.\n");
     exit(PSI_RETURN_FAILURE);
   }
-  free(tmpi);
 
   params.maxiter = 50;
   errcod = ip_data("MAXITER","%d",&(params.maxiter),0);
@@ -105,8 +105,8 @@ void get_params()
   if(params.omega == 0.0) 
     fprintf(outfile, "\tApplied field   = none\n");
   else 
-    fprintf(outfile, "\tApplied field   =    %5.3f (%6.2f nm, %5.3f eV, %8.2f cm-1) E_h\n", params.omega,
-	    (_hartree2J/_c*_h)*1e9/params.omega, _hartree2ev*params.omega,
+    fprintf(outfile, "\tApplied field   =    %5.3f E_h (%6.2f nm, %5.3f eV, %8.2f cm-1)\n", params.omega,
+	    (_c*_h*1e9)/(_hartree2J*params.omega), _hartree2ev*params.omega,
 	    _hartree2wavenumbers*params.omega);
 }
 

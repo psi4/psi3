@@ -57,4 +57,5 @@ struct MOInfo {
   int irrep_x;        /* irrep of x-dipole */
   int irrep_y;        /* irrep of y-dipole */
   int irrep_z;        /* irrep of z-dipole */
+  int *mu_irreps;     /* irreps of x,y,z dipole components */
 };

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
@@ -283,4 +284,6 @@ void cleanup(void)
   free_block(moinfo.MUZ);
   free(moinfo.pitzer2qt);
   free(moinfo.qt2pitzer);
+
+  free(moinfo.mu_irreps);
 }
