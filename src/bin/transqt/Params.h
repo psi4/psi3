@@ -51,6 +51,7 @@ struct Params {
     int ras_type;                 /* define ras I to include 0 or excluded 1
                                      socc                                   */
     int check_C_orthonorm;        /* check orthonormality of C matrix?      */
+    int qrhf;                     /* boolean for QRHF reference             */
 };
 
 /* Note that the current version does a reordering of orbital indices.

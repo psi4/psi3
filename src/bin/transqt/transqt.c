@@ -80,35 +80,38 @@
 ** virt indices, whereas the Lagrangian has all indices.
 ** CDS 3/18/98
 **
-** Yet more work to streamline the one-electron integral transformations.
-** The code in transform_one() had gotten messy with so many possible
-** cases.  Now we always run over all orbitals (including frozen core
-** and virtuals) when writing out the MO one-electron ints.  Frozen orbitals
-** can be filtered out when reading with the new iwl rdone() function.
-** We reserve one file for bare one-electron ints, and another for the
-** frozen core operator (one-electron ints are dressed with two-elec ints
-** involving frozen core orbitals).  Made file numbering for exported files
-** use the new psifiles.h macros...no more hardwiring the numbers.
+** Yet more work to streamline the one-electron integral
+** transformations.  The code in transform_one() had gotten messy with
+** so many possible cases.  Now we always run over all orbitals
+** (including frozen core and virtuals) when writing out the MO
+** one-electron ints.  Frozen orbitals can be filtered out when
+** reading with the new iwl rdone() function.  We reserve one file for
+** bare one-electron ints, and another for the frozen core operator
+** (one-electron ints are dressed with two-elec ints involving frozen
+** core orbitals).  Made file numbering for exported files use the new
+** psifiles.h macros...no more hardwiring the numbers.
 ** CDS 4/29/98
 **
 ** Added transformation routines necessary for MP2-R12 in standard
-** approximation A. I decided to use command line options to pass necessary
-** information to TRANSQT. See transqt.1 for an explanation. Had to add two new
-** transform_two_ functions, to transform regular integrals, like ERIs and
-** integrals over r12, which have bra-ket symmetry, and pesky [r12,T1] integrals
-** which do not only have bra-ket symmetry but are also anti-symmetric with respect
-** to a permutation of the first two indices. The required transformation is a partial
-** 4-index transformation of OGOG type (2 indices refer to occupied orbitals and two are
-** general indices). Had to add a function to properly write
-** half-(yosh_write_arr_mp2r12a) and fully-transformed integrals (iwl_buf_wrt_arr_mp2r12a
-** in LIBIWL) to IWL buffers. Remember that the occupied indices
-** are in QTS order and the general indices are in Pitzer order. Sad but true.
+** approximation A. I decided to use command line options to pass
+** necessary information to TRANSQT. See transqt.1 for an
+** explanation. Had to add two new transform_two_ functions, to
+** transform regular integrals, like ERIs and integrals over r12,
+** which have bra-ket symmetry, and pesky [r12,T1] integrals which do
+** not only have bra-ket symmetry but are also anti-symmetric with
+** respect to a permutation of the first two indices. The required
+** transformation is a partial 4-index transformation of OGOG type (2
+** indices refer to occupied orbitals and two are general
+** indices). Had to add a function to properly write
+** half-(yosh_write_arr_mp2r12a) and fully-transformed integrals
+** (iwl_buf_wrt_arr_mp2r12a in LIBIWL) to IWL buffers. Remember that
+** the occupied indices are in QTS order and the general indices are
+** in Pitzer order. Sad but true.
 ** EFV 08/05/99
 **
 ** Daniel Crawford, David Sherrill, and Justin Fermann
 ** Center for Computational Quantum Chemistry
-** University of Georgia
-*/
+** University of Georgia */
 
 
 #include <stdio.h>
@@ -472,6 +475,9 @@ void get_parameters(void)
   params.check_C_orthonorm = 0;
   errcod = ip_boolean("CHECK_C_ORTHONORM",&(params.check_C_orthonorm),0);
 
+  params.qrhf = 0;
+  errcod = ip_boolean("QRHF", &(params.qrhf), 0);
+
   return;
 
 }
@@ -535,6 +541,8 @@ void print_parameters(void)
                                   (params.reorder ? "Yes" : "No"));
       fprintf(outfile,"\tCheck C Orthonormality =  %s\n", 
                                   (params.check_C_orthonorm ? "Yes" : "No"));
+      fprintf(outfile,"\tQRHF orbitals          =  %s\n", 
+                                  (params.qrhf ? "Yes" : "No"));
     }
   
   return;
@@ -543,7 +551,7 @@ void print_parameters(void)
 void get_moinfo(void)
 {
   int i,j,k,h,errcod,size,row,col,p,q,offset,first_offset,last_offset,warned;
-  int *tmpi;
+  int *tmpi, nopen;
   double **tmpmat, **so2ao;
 
   file30_init();
@@ -648,8 +656,8 @@ void get_moinfo(void)
   errcod = ip_int_array("DOCC", tmpi, moinfo.nirreps);
   if (errcod == IPE_OK) {
       for (i=0,warned=0; i<moinfo.nirreps; i++) {
-          if (tmpi[i] != moinfo.clsdpi[i] && !warned) {
-              fprintf(outfile, "Warning: DOCC doesn't match file30\n");
+          if (tmpi[i] != moinfo.clsdpi[i] && !warned && !params.qrhf) {
+              fprintf(outfile, "\tWarning: DOCC doesn't match file30\n");
               warned = 1;
             }
           moinfo.clsdpi[i] = tmpi[i];
@@ -657,18 +665,26 @@ void get_moinfo(void)
         }
     }
 
-
   moinfo.nsocc = 0;
   errcod = ip_int_array("SOCC", tmpi, moinfo.nirreps);
   if (errcod == IPE_OK) {
       for (i=0,warned=0; i<moinfo.nirreps; i++) {
-          if (tmpi[i] != moinfo.openpi[i] && !warned) {
-              fprintf(outfile, "Warning: SOCC doesn't match file30\n");
+          if (tmpi[i] != moinfo.openpi[i] && !warned && !params.qrhf) {
+              fprintf(outfile, "\tWarning: SOCC doesn't match file30\n");
               warned = 1;
             }
           moinfo.openpi[i] = tmpi[i];
           moinfo.nsocc += tmpi[i];
         }
+    }
+
+  /* Dump the new occupations to file30 if QRHF reference requested 
+     TDC,3/20/00 */
+  if(params.qrhf) {
+    file30_wt_clsdpi(moinfo.clsdpi);
+    file30_wt_openpi(moinfo.openpi);
+    for(i=0,nopen=0; i < moinfo.nirreps; i++) nopen += moinfo.openpi[i];
+    file30_wt_iopen(nopen);
     }
 
   moinfo.virtpi = init_int_array(moinfo.nirreps);
