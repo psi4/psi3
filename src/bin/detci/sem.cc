@@ -33,8 +33,8 @@ extern "C" {
       struct olsen_graph *AlphaG, struct olsen_graph *BetaG,
       struct stringwr **alplist, struct stringwr **betlist,
       FILE *outfile);
-   extern void parse_import_vector(SlaterDetVector *vec, int *i_alplist, int
-      *i_alpidx, int *i_betlist, int *i_betidx, int *i_blknums);
+   extern void parse_import_vector(SlaterDetSet *sdset, int *i_alplist, 
+      int *i_alpidx, int *i_betlist, int *i_betidx, int *i_blknums);
    
 }
 
@@ -399,39 +399,44 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
 
    /* import a previously exported CI vector */
    else if (Parameters.guess_vector == PARM_GUESS_VEC_IMPORT) {
-     if (nroots > 1) {
-       fprintf(outfile, "Sorry, can import only one vector for now!\n"); 
-       abort();
-     }
 
-     SlaterDetVector *vec;
+     SlaterDetSet *dets;
      int *import_alplist, *import_alpidx, *import_betlist, *import_betidx;
      int *import_blknums;
 
-     slaterdetvector_read(PSIF_CIVECT, "CI vector", &vec);
-     
+     slaterdetset_read(PSIF_CIVECT, "CI vector", &dets);
+
      // store the alpha graph, relative alpha index, beta graph, relative
      // beta index, and CI block number for each imported determinant
-     import_alplist = init_int_array(vec->size);
-     import_alpidx  = init_int_array(vec->size);
-     import_betlist = init_int_array(vec->size);
-     import_betidx  = init_int_array(vec->size); 
-     import_blknums = init_int_array(vec->size); 
+     import_alplist = init_int_array(dets->size);
+     import_alpidx  = init_int_array(dets->size);
+     import_betlist = init_int_array(dets->size);
+     import_betidx  = init_int_array(dets->size); 
+     import_blknums = init_int_array(dets->size); 
 
-     parse_import_vector(vec, import_alplist, import_alpidx, import_betlist,
+     parse_import_vector(dets, import_alplist, import_alpidx, import_betlist,
        import_betidx, import_blknums);
+     
+     k=0;
+     for (i=0; i<nroots; i++) {
 
-     // initialize the values in Cvec
-     Cvec.buf_lock(buffer1);
-     Cvec.init_vals(0, vec->size, import_alplist, import_alpidx,
-       import_betlist, import_betidx, import_blknums, vec->coeffs);
-     Cvec.buf_unlock();
-     Cvec.write_num_vecs(1);
+       zero_arr(buffer2, dets->size);
+       slaterdetset_read_vect(PSIF_CIVECT, "CI vector", buffer2, 
+         dets->size, i);
+
+       // initialize the values in Cvec
+       Cvec.buf_lock(buffer1);
+       Cvec.init_vals(i, dets->size, import_alplist, import_alpidx,
+         import_betlist, import_betidx, import_blknums, buffer2);
+       Cvec.buf_unlock();
+       k++; // increment number of vectors
+     }
+
+     Cvec.write_num_vecs(k);
      Sigma.set_zero_blocks_all();
-     k = 1;
 
      // when we're done, free the memory
-     slaterdetvector_delete_full(vec); 
+     slaterdetset_delete_full(dets); 
      free(import_alplist);  free(import_alpidx);
      free(import_betlist);  free(import_betidx);
      free(import_blknums); 
@@ -1143,10 +1148,10 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
 
    /* Dump the vector to a PSIO file
       Added by Edward valeev (August 2002) */
-   if (Parameters.export_ci_vector) {
+   if (Parameters.export_ci_vector && Parameters.icore==1) {
      StringSet alphastrings, betastrings;
      SlaterDetSet dets;
-     SlaterDetVector vec;
+     //SlaterDetVector vec;
      short int *fzc_occ;
      unsigned char *newocc;
      int irrep, gr, l, n;
@@ -1219,20 +1224,27 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
        slaterdetset_add(&dets, ii, Ia, Ib);
      }
 
+     // Don't init, don't need the memory allocated
+     // slaterdetvector_init(&vec, &dets);
+
      Dvec.buf_lock(buffer1);
-     for(ii=0; ii<size; ii++)
-       buffer1[ii] = 0.0;
-     Dvec.read(0,0);
-     slaterdetvector_init(&vec, &dets);
-     slaterdetvector_set(&vec, buffer1);
-     slaterdetvector_write(PSIF_CIVECT,"CI vector",&vec);
+     for (ii=0; ii<Parameters.num_export; ii++) {
+       zero_arr(buffer1, size);
+       Dvec.read(ii,0);
+       // slaterdetvector_set(&vec, buffer1);
+       // slaterdetvector_write(PSIF_CIVECT,"CI vector",&vec);
+       slaterdetset_write(PSIF_CIVECT,"CI vector",&dets);
+       slaterdetset_write_vect(PSIF_CIVECT,"CI vector",buffer1,size,ii);
+     }
+
      Dvec.buf_unlock();
-   
-     slaterdetvector_delete(&vec);
-     slaterdetset_delete(&dets);
-     stringset_delete(&alphastrings);
-     stringset_delete(&betastrings);
+     slaterdetset_delete_full(&dets);
    }
+   else if (Parameters.export_ci_vector && Parameters.icore != 1) {
+     fprintf(outfile, "\nWarning: requested CI vector export, unavailable " \
+       "for icore = %d\n", Parameters.icore);
+   }
+
 
    /* Compute S^2 */
    if (Parameters.calc_ssq && Parameters.icore==1) {

@@ -529,8 +529,19 @@ void get_parameters(void)
    if (!Parameters.pthreads) Parameters.nthreads = 1;
 
    Parameters.export_ci_vector = 0;
-   errcod = ip_boolean("EXPORT_CI_VECTOR", &(Parameters.export_ci_vector), 0);
+   errcod = ip_boolean("EXPORT_VECTOR", &(Parameters.export_ci_vector), 0);
 
+   Parameters.num_export = 0;
+   if (Parameters.export_ci_vector) {
+     Parameters.num_export = 1;
+     errcod = ip_data("NUM_EXPORT", "%d", &(Parameters.num_export), 0);
+     if (Parameters.num_export > Parameters.num_roots) {
+       fprintf(outfile, "Warning: can't export %d roots if %d requested\n",
+         Parameters.num_export, Parameters.num_roots);
+       Parameters.num_export = Parameters.num_roots;
+     }
+   } 
+   
    errcod = ip_boolean("SF_RESTRICT",&(Parameters.sf_restrict),0);
 
    /* The filter_guess options are used to filter out some trial
@@ -764,11 +775,11 @@ void print_parameters(void)
            Parameters.perturbation_parameter, Parameters.root);
    fprintf(outfile, "   PTHREADS      =   %6s      NTHREADS     =   %6d\n",
            Parameters.pthreads ? "yes":"no", Parameters.nthreads);
-   fprintf(outfile, "   EXPORT_CI_VECTOR =   %3s      SF_RESTRICT =   %3s\n",
-           Parameters.export_ci_vector ? "yes":"no",
+   fprintf(outfile, "   EXPORT VECTOR =   %6s      NUM EXPORT   =   %6d\n",
+           Parameters.export_ci_vector ? "yes":"no", Parameters.num_export);
+   fprintf(outfile, "   FILTER_GUESS  =   %6s      SF_RESTRICT  =   %6s\n",
+           Parameters.filter_guess ?  "yes":"no",
 	   Parameters.sf_restrict ? "yes":"no");
-   fprintf(outfile, "   FILTER_GUESS  =   %6s \n",Parameters.filter_guess ? 
-           "yes" : "no");
    fprintf(outfile, "\n   FILES         =     %3d %3d %3d %3d\n",
       Parameters.first_hd_tmp_unit, Parameters.first_c_tmp_unit,
       Parameters.first_s_tmp_unit, Parameters.first_d_tmp_unit);

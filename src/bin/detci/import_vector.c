@@ -37,7 +37,7 @@ void stringset_translate_addr(StringSet *sset, int new_nel, int new_nfzc,
 ** C. David Sherrill
 ** August 2003
 */
-void parse_import_vector(SlaterDetVector *vec, int *ialplist, int *ialpidx,
+void parse_import_vector(SlaterDetSet *sdset, int *ialplist, int *ialpidx,
   int *ibetlist, int *ibetidx, int *blknums)
 {
   int i,j;
@@ -47,9 +47,9 @@ void parse_import_vector(SlaterDetVector *vec, int *ialplist, int *ialpidx,
   int *new_alphastr_list, *new_alphastr_idx;
   int *new_betastr_list, *new_betastr_idx;
 
-  dets = vec->sdset->dets;
-  alphastrings = vec->sdset->alphastrings;
-  betastrings = vec->sdset->betastrings;
+  dets = sdset->dets;
+  alphastrings = sdset->alphastrings;
+  betastrings = sdset->betastrings;
 
   /* now figure out how the frozen stuff is going to map */
   if (CalcInfo.num_fzc_orbs > alphastrings->nfzc ||
@@ -79,7 +79,7 @@ void parse_import_vector(SlaterDetVector *vec, int *ialplist, int *ialpidx,
   /* loop over all the dets in the imported vector and translate
      each of them to the new determinant number.  
   */
-  for (i=0; i<vec->size; i++) {
+  for (i=0; i<sdset->size; i++) {
     alphastr = dets[i].alphastring;
     ialplist[i] = new_alphastr_list[alphastr];
     ialpidx[i]  = new_alphastr_idx[alphastr];
@@ -91,8 +91,7 @@ void parse_import_vector(SlaterDetVector *vec, int *ialplist, int *ialpidx,
     j = CIblks.decode[ialplist[i]][ibetlist[i]];
     if (j == -1) {
       fprintf(outfile, "Import vector: can't find CI block!\n");
-      fprintf(outfile, "Determinant number %d, coefficient %12.6lf\n",
-        i, vec->coeffs[i]);
+      fprintf(outfile, "Determinant number %d\n", i);
       fprintf(outfile, "\nialplist=%d, ialpidx=%d, ibetlist=%d, ibetidx=%d\n", 
         ialplist[i], ialpidx[i], ibetlist[i], ibetidx[i]);
       abort();
