@@ -132,8 +132,8 @@ void get_params()
   params.brueckner = 0;
   errcod = ip_boolean("BRUECKNER", &(params.brueckner), 0);
 
-  params.bconv = 1e-4;
-  errcod = ip_data("BCONV", "%d", &(iconv), 0);
+  params.bconv = 1e-5;
+  errcod = ip_data("BRUECKNER_CONV", "%d", &(iconv), 0);
   if(errcod == IPE_OK) params.bconv = 1.0*pow(10.0,(double) -iconv);
 
   params.print_mp2_amps = 0;
