@@ -25,20 +25,6 @@ int **cacheprep(int level, int *cachefiles)
   cachefiles[CC_TAMPS] = 1;
   cachefiles[CC_LAMPS] = 1;
   cachefiles[CC_HBAR] = 1;
-  cachefiles[CC_MISC] = 1;
-  cachefiles[CC_TMP] = 1;
-  cachefiles[CC_TMP0] = 1;
-  cachefiles[CC_TMP1] = 1;
-  cachefiles[CC_TMP2] = 1;
-  cachefiles[CC_TMP3] = 1;
-  cachefiles[CC_TMP4] = 1;
-  cachefiles[CC_TMP5] = 1;
-  cachefiles[CC_TMP6] = 1;
-  cachefiles[CC_TMP7] = 1;
-  cachefiles[CC_TMP8] = 1;
-  cachefiles[CC_TMP9] = 1;
-  cachefiles[CC_TMP10] = 1;
-  cachefiles[CC_TMP11] = 1;
 
   /* The listing of DPD patterns which may be cached */
   cachelist = init_int_matrix(12,12);

@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
   if(!moinfo.iopen) moinfo.d1diag = d1diag();
   update();
   for(moinfo.iter=1; moinfo.iter <= params.maxiter; moinfo.iter++) {
-/*      memchk(); */
+/*      memchk();  */
       timer_on("sort_amps");
       sort_amps();
       timer_off("sort_amps");
