@@ -26,7 +26,7 @@ else {
 $TEST_FILE = "psi.file11.dat";
 $TOL = 10**-8;
 $GTOL = 10**-8;
-$RESULT = "extrema-zmat.test";
+$RESULT = "extrema-deloc.test";
 
 system ("$PSICMD");
 
@@ -36,7 +36,7 @@ $natom = seek_natom_file11($REF_FILE,"SCF");
 
 open(RE, ">$RESULT") || die "cannot open $RESULT $!"; 
 select (RE);
-printf "SCF-OPT:\n";
+printf "EXTREMA-DELOC:\n";
 
 if(abs(seek_energy_file11($REF_FILE,"SCF") - seek_energy_file11($TEST_FILE,"SCF")) > $TOL) {
   fail_test("SCF energy");  $FAIL = 1;
