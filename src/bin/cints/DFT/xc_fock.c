@@ -18,7 +18,7 @@
 #include"calc_den.h"
 #include"functional.h"
 #include"physconst.h"
-#include"bragg.h"
+#include"grid_init.h"
 #include"dcr.h"
 
 void xc_fock(void){
@@ -27,7 +27,7 @@ void xc_fock(void){
   int rpoints;
   int ang_points;
   int num_ao;
-
+  int point_count=0;
   int dum;
   int num;
   
@@ -49,33 +49,38 @@ void xc_fock(void){
   double Becke_weight;
   double ang_quad;
   double four_pi_div_by_rps;
-  double vfunc_val;
-  double efunc_val;
-  double vval;
+  double exch_vfunc_val;
+  double exch_efunc_val;
+  double corr_vfunc_val;
+  double corr_efunc_val;
+  double den_val;
+  double exch_vval;
+  double corr_vval;
+  double exch_eval;
+  double corr_eval;
+  double vval = 0.0;
   double eval = 0.0;
   double bas1,bas2;
-  
+   
   struct coordinates geom;
   struct den_info_s den_info;
+  
+  struct atomic_grid_s *atm_grd;
+  struct leb_chunk_s *chnk;
+  leb_sphere_t *sphr;
+  leb_point_t *pnt;
 
   num_ao = BasisSet.num_ao;
-  rpoints = DFT_options.rpoints;
-  ang_points = DFT_options.grid_info[0].angpoints;
-  rpoints_double = (double) rpoints;
-  four_pi_div_by_rps = 4.0*_pi/rpoints_double;
   DFT_options.basis = (double *)malloc(sizeof(double)*num_ao);
+  
   G = block_matrix(num_ao,num_ao);
   if(UserOptions.reftype == uhf)
       Go = block_matrix(num_ao,num_ao);
   timer_init();
   timer_on("DFT");
-  /* Must set the Bragg-Slater radii */
-  DFT_options.bragg = init_array(Molecule.num_atoms);
-  
-  for(i=0;i<Molecule.num_atoms;i++)
-      DFT_options.bragg[i] =
-	  Bragg_radii[(int) Molecule.centers[i].Z_nuc]*1.8897269;
 
+  grid_init();
+  
   /*-------------------------------------------------------
     Loop over symmetry-unique atoms only since integration
     domains around symm.-unique atoms are equivalent
@@ -84,88 +89,103 @@ void xc_fock(void){
     like Handy & co. do
    -------------------------------------------------------*/
   for(ua=0;ua<Symmetry.num_unique_atoms;ua++){
-      atom = Symmetry.ua2a[ua];
-      /*--- Cheap trick to get degeneracies of each unique atom ---*/
-      if (Symmetry.nirreps > 1)
-	ua_deg = Symmetry.nirreps/Symmetry.dcr_deg[Symmetry.atom_positions[atom]][Symmetry.atom_positions[atom]];
-      else
-	ua_deg = 1;
+      atm_grd = &(DFT_options.grid.atomic_grid[ua]);
+      
+      atom = atm_grd->atom_num;
+      
+/*--- Cheap trick to get degeneracies of each unique atom ---*/
+      
+      ua_deg = atm_grd->atom_degen;
+     
 
-      xa = Molecule.centers[atom].x;
-      ya = Molecule.centers[atom].y;
-      za = Molecule.centers[atom].z;
+      xa = atm_grd->atom_center.x;
+      ya = atm_grd->atom_center.y;
+      za = atm_grd->atom_center.z;
       
-      bragg = DFT_options.bragg[atom];
+      bragg = atm_grd->Bragg_radii/*1.8897269*/;
+      fprintf(outfile,"Bragg = %10.10lf",bragg);
+      for(j=0;j<atm_grd->chunk_num;j++){
+	  chnk = &(atm_grd->leb_chunk[j]);
+	  
+	  for(k=0;k<chnk->size;k++){
+	      sphr = &(chnk->spheres[k]);
+	  
+	      r = sphr->r*bragg;
+	      drdq = sphr->drdq*bragg*bragg*bragg;
+
+	      for(l=0;l<sphr->n_ang_points;l++){
+		  pnt = &(sphr->points[l]);
+		  /* ----------------------------------
+		     Calculate the cartesian points of the point
+		     relative to the center of mass
+		     -------------------------------------*/
       
-      for(j=1;j<rpoints;j++){
-	  rind = (double) j;
-	  
-	  qr = j/ rpoints_double;
-	  
-	  /* -------------------------------
-	     Straight from the Murray, Handy, Laming paper
-	     for mr = 2 
-	     ----------------------------------*/
-	  
-	  r = bragg*rind*rind/((rpoints_double - rind)
-			       *(rpoints_double - rind));
-	  
-	  drdq = four_pi_div_by_rps*r*r*bragg*2.0*qr/((1-qr)*(1-qr)*(1-qr));
-	  
-	  
-	  for(k=0;k<ang_points;k++){
+		  geom.x = bragg*pnt->p_cart.x+xa;
+		  geom.y = bragg*pnt->p_cart.y+ya;
+		  geom.z = bragg*pnt->p_cart.z+za;
 	      
-	      /* ----------------------------------
-		 Calculate the cartesian points of the point
-		 relative to the center of mass
-		 -------------------------------------*/
-      
-	      geom.x = r*DFT_options.grid_info[0].leb_point[k].p_cart.x+xa;
-	      geom.y = r*DFT_options.grid_info[0].leb_point[k].p_cart.y+ya;
-	      geom.z = r*DFT_options.grid_info[0].leb_point[k].p_cart.z+za;
-	      
-	      
-	      /*-----------------------------------
-		Calculate the weighting funtion 
-		----------------------------------*/
-	      Becke_weight = weight_calc(atom,geom,3);
-	      if(Becke_weight > WEIGHT_CUTOFF){
-	      /*-----------------------------------
-		Get the density information for this 
-		point
-		----------------------------------*/
-		  
-		  den_info = calc_density(geom);
-		  if(den_info.den > DEN_CUTOFF){
-		      /*-------------------------------------
-			Weight from Lebedev
-			-----------------------------------*/
-		      
-		      ang_quad = DFT_options.grid_info[0].leb_point[k].ang_quad_weight;
-		      
-		      /*------------------------------------
-			Calculate the potential functional
-			and energy functional at this
+		  /*-----------------------------------
+		    Calculate the weighting funtion 
+		    ----------------------------------*/
+		  Becke_weight = weight_calc(atom,geom,3);
+		  if(Becke_weight> WEIGHT_CUTOFF){
+		      /*-----------------------------------
+			Get the density information for this 
 			point
-			-----------------------------------*/
+			----------------------------------*/
+		      den_info = calc_density(geom);
+		      if(den_info.den > DEN_CUTOFF){
+			  /*-------------------------------------
+			    Weight from Lebedev
+			    -----------------------------------*/
 		      
-		      vfunc_val = DFT_options.exchange_V_function(den_info)
-			  +DFT_options.correlation_V_function(den_info);
+			  ang_quad = pnt->ang_weight;
 		      
-		      efunc_val = DFT_options.exchange_function(den_info)
-			  + DFT_options.correlation_function(den_info);
+			  /*------------------------------------
+			    Calculate the potential functional
+			    and energy functional at this
+			    point
+			    -----------------------------------*/
 		      
-		      vval = ua_deg*drdq*ang_quad*Becke_weight*vfunc_val;
-		      eval += ua_deg*drdq*ang_quad*Becke_weight*efunc_val;
+			  den_val += 2.0*ua_deg*drdq*ang_quad
+			      *Becke_weight*den_info.den;
+			  
+			  exch_vfunc_val = DFT_options.
+			      exchange_V_function(den_info);
+			      
+			  corr_vfunc_val = DFT_options.
+			      correlation_V_function(den_info);
 		      
-		      /*------------------------------------
-			Update the G matrix
-		       -----------------------------------*/
-		      for(m=0;m<num_ao;m++){
-			  bas1 = DFT_options.basis[m];
-			  for(n=0;n<num_ao;n++){
-			      bas2 = DFT_options.basis[n];
-			      G[m][n] += vval*bas1*bas2;
+			  exch_efunc_val = DFT_options.
+			      exchange_function(den_info);
+			  corr_efunc_val = DFT_options.
+			      correlation_function(den_info);
+		      
+			  exch_vval = ua_deg*drdq*ang_quad
+			      *Becke_weight*exch_vfunc_val;
+			  corr_vval = ua_deg*drdq*ang_quad
+			      *Becke_weight*corr_vfunc_val;
+			  vval = exch_vval+corr_vval;
+			  
+			  exch_eval += ua_deg*drdq*ang_quad
+			      *Becke_weight*exch_efunc_val;
+			  corr_eval += ua_deg*drdq*ang_quad
+			      *Becke_weight*corr_efunc_val;
+			  eval += ua_deg*drdq*ang_quad
+			      *Becke_weight*(exch_efunc_val
+					     +corr_efunc_val);
+			  
+			 
+			  
+			  /*------------------------------------
+			    Update the G matrix
+			    -----------------------------------*/
+			  for(m=0;m<num_ao;m++){
+			      bas1 = DFT_options.basis[m];
+			      for(n=0;n<num_ao;n++){
+				  bas2 = DFT_options.basis[n];
+				  G[m][n] += vval*bas1*bas2;
+			      }
 			  }
 		      }
 		  }
@@ -198,8 +218,16 @@ void xc_fock(void){
   sq_to_tri(G,Gtri,Symmetry.num_so);
   free_block(G);
   fprintf(outfile,"\nDFT_energy = %10.10lf",eval);
+  fprintf(outfile,"\ntrace of density = %10.10lf",den_val);
   psio_open(IOUnits.itapDSCF, PSIO_OPEN_OLD);
-  psio_write_entry(IOUnits.itapDSCF,"DFT XC-energy",(char *) &(eval), sizeof(double));
+  psio_write_entry(IOUnits.itapDSCF,"DFT X-energy",
+		   (char *) &(exch_eval), sizeof(double));
+  psio_write_entry(IOUnits.itapDSCF,"DFT C-energy",
+		   (char *) &(corr_eval), sizeof(double));
+  psio_write_entry(IOUnits.itapDSCF,"DFT XC-energy",
+		   (char *) &(eval), sizeof(double));
+  psio_write_entry(IOUnits.itapDSCF,"DFT Den",
+		   (char *) &(den_val), sizeof(double));
   switch (UserOptions.reftype) {
   case rohf:
       Gtri_o = init_array(nstri);
@@ -234,8 +262,12 @@ void xc_fock(void){
       free(Gtri_o);
       break;
   }
-  free(DFT_options.basis);
+  /*-- Cleanup the DFT stuff and close files --*/
+  /*cleanup_dft_options(DFT_options);*/
   psio_close(IOUnits.itapDSCF, 1);
   return;
 }
+
+
+
 

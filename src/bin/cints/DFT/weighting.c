@@ -42,6 +42,7 @@ double weight_calc(int atomn,struct coordinates  geom,int k_order){
     double weight;
     
     natoms = Molecule.num_atoms;
+    /*natoms = Symmetry.num_unique_atoms;*/
     
     ptemp = init_array(natoms);
     s_mat = block_matrix(natoms,natoms);
@@ -51,13 +52,10 @@ double weight_calc(int atomn,struct coordinates  geom,int k_order){
 	for(j=0;j<natoms;j++){
 	    if(i!=j){
 		utemp = u_calc(i,j,geom);
-		vtemp = v_calc(i,j,utemp);
-		/*fprintf(outfile,"\nV = %15.15lf",vtemp);*/
-		ftemp = f_u(vtemp);
+		ftemp = f_u(utemp);
 		for(k=1;k<k_order;k++){
 		    ftemp = f_u(ftemp);
 		}
-		
 		s_mat[i][j] = s_u(ftemp);
 	    }
 	}
@@ -96,24 +94,6 @@ double u_calc(int i, int j, struct coordinates geom){
     return (ri-rj)/rij;
 }
 
- double v_calc(int i, int j,double uij){
-    
-    double aij;
-    double utmp;
-    double rattmp;
-    double tmp1,tmp2,tmp3;
-    
-    rattmp = DFT_options.bragg[i]/DFT_options.bragg[j];
-    utmp = (rattmp-1)/(rattmp+1);
-    aij=utmp/((utmp*utmp)-1);
-    if(aij>0.5) aij = 0.5;
-    if(aij<-0.5) aij = -0.5;
-    tmp1 = uij*uij;
-    tmp2 = aij*(1-tmp1); 
-    tmp3 = uij+tmp2;
-    
-    return uij+tmp2;
-}
 
 double f_u(double vij){
     

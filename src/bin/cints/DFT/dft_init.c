@@ -12,6 +12,7 @@
 #include"functional.h"
 #include"calc_den.h"
 #include"lebedev_init.h"
+#include"grid_init.h"
 
 void dft_init(void){
     
@@ -54,7 +55,7 @@ void dft_init(void){
     
     else if(elem_in_func == 2){
 	errcod = ip_string("FUNCTIONAL",&exchstring,1,0);
-
+	
         if(!strcmp(exchstring,"SLATER")){
 	    UserOptions.hf_exch = 0.0;
 	    DFT_options.exchange_function = slater;
@@ -89,56 +90,15 @@ void dft_init(void){
 	free(exchstring); free(corrstring);
     }
     else
-	punt("Something wrong in the specification of the FUNCTIONAL keyword");
-    
-    errcod = ip_string("GRID_SPEC",&gridstring,0);
-    if(errcod != IPE_OK){
-	
-	/* Only need one grid */
-	DFT_options.grid_dim = 1;
-	DFT_options.grid_info = (struct grid_info_s *) 
-	    malloc(DFT_options.grid_dim*sizeof(struct grid_info_s));
-	DFT_options.grid_info[0].grid_label = 
-	    "Euler-McClaren / Lebedev Spheres";
-	rpointstmp = 50;
-	errcod = ip_data("GRID_RPOINTS","%d",&rpointstmp,0);
-	DFT_options.rpoints = rpointstmp;
-
-	angpointstmp=302;
-	errcod = ip_data("GRID_ANGPOINTS","%d",&angpointstmp,0);
-	DFT_options.grid_info[0].angpoints = angpointstmp;
-
-	DFT_options.grid_info[0].leb_point = 
-	    lebedev_init(DFT_options.grid_info[0].angpoints);
-    }
-    else
-	punt("No Special Grids have been implemented in this code yet");
-
-    /*------------------------------------
-      This is for debugging purposes only
-      There's no need to use separate
-      print level for DFT in the future
-     ------------------------------------*/
-    /* Print out DFT information? */
-    DFT_options.prtflag = 0;
-    errcod = ip_data("DFT_PRINT","%d",&(DFT_options.prtflag),0);
-    
-    if(DFT_options.prtflag > 0){
-	fprintf(outfile," -DFT info:\n");
-	fprintf(outfile,"    Functional = %s",funcstring);
-	for(i=0;i<DFT_options.grid_dim;i++){
-	    fprintf(outfile,"   %s",DFT_options.grid_info[0].grid_label);
-	    fprintf(outfile," Radial Cutoff = %e",
-		    DFT_options.grid_info[i].rcut);
-	    fprintf(outfile," Radial Points = %5d Angular Points =%5d\n",
-		    DFT_options.rpoints,
-		    DFT_options.grid_info[i].angpoints);
-	}
-	fflush(outfile);
-    }
+	punt("Something wrong in the specification of the FUNCTIONAL keyword");    
 }
 
-
+void cleanup_dft_options(DFT_options_t DFT_options){
+    
+    free(DFT_options.basis);
+    free(DFT_options.Bragg);
+    cleanup_grid_type(DFT_options.grid);
+}
 
 
 

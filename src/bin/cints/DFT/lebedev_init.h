@@ -1,4 +1,4 @@
 #include "data_structs.h"
 
-struct leb_point_s *lebedev_init(int degree);
+leb_sphere_t lebedev_init(int degree);
 

@@ -9,14 +9,14 @@
 
 int generate_points(int type, int start, double a, double b, double v);
 
-static double *x,*y,*z,*weight;
+double *x,*y,*z,*weight;
 
-struct leb_point_s *lebedev_init(int degree){
+leb_sphere_t lebedev_init(int degree){
 
     int i;
     int start=0;
     double a,b,c,v;
-    struct leb_point_s *leb_tmp;
+    leb_sphere_t leb_tmp;
     
     x = init_array(degree);
     y = init_array(degree);
@@ -35,20 +35,16 @@ struct leb_point_s *lebedev_init(int degree){
 	
 	v = 0.06666666666666667;
 	start = generate_points(1,start,a,b,v);
-	
 	v = 0.07500000000000000;
 	start = generate_points(3,start,a,b,v);
-	
 	break;
 	
      case 26:
 	
 	v = 0.04761904761904762;
 	start = generate_points(1,start,a,b,v);
-	
 	v = 0.03809523809523810;
 	start = generate_points(2,start,a,b,v);
-	
 	v = 0.03214285714285714;
 	start = generate_points(3,start,a,b,v);
 	break;
@@ -211,42 +207,42 @@ struct leb_point_s *lebedev_init(int degree){
 	
     case 302:
 	
-	v = 0.8545911725128148E-3;
-	start = generate_points(1,start,a,b,v);
-	v = 0.3599119285025571E-2;
-	start = generate_points(3,start,a,b,v);
-	a=0.3515640345570105E+0;
-	v=0.3449788424305883E-2;
-	start = generate_points(4,start,a,b,v);
-	a=0.6566329410219612E+0;
-	v=0.3604822601419882E-2;
-	start = generate_points(4,start,a,b,v);
-	a=0.4729054132581005E+0;
-	v=0.3576729661743367E-2;
-	start = generate_points(4,start,a,b,v);
-	a=0.9618308522614784E-1;
-	v=0.2352101413689164E-2;
-	start = generate_points(4,start,a,b,v);
-	a=0.2219645236294178E+0;
-	v=0.3108953122413675E-2;
-	start = generate_points(4,start,a,b,v);
-	a=0.7011766416089545E+0;
-	v=0.3650045807677255E-2;
-	start = generate_points(4,start,a,b,v);
-	a=0.2644152887060663E+0;
-	v=0.2982344963171804E-2;
-	start = generate_points(5,start,a,b,v);
-	a=0.5718955891878961E+0;
-	v=0.3600820932216460E-2;
-	start = generate_points(5,start,a,b,v);
-	a=0.2510034751770465E+0;
-	b=0.8000727494073952E+0;
-	v=0.3571540554273387E-2;
-	start = generate_points(6,start,a,b,v);
-	a=0.1233548532583327E+0;
-	b=0.4127724083168531E+0;
-	v=0.3392312205006170E-2;
-	start = generate_points(6,start,a,b,v);
+	v = 0.8545911725128148E-3; 
+   	start = generate_points(1,start,a,b,v); 
+   	v = 0.3599119285025571E-2; 
+   	start = generate_points(3,start,a,b,v); 
+   	a=0.3515640345570105E+0; 
+   	v=0.3449788424305883E-2; 
+   	start = generate_points(4,start,a,b,v); 
+   	a=0.6566329410219612E+0; 
+   	v=0.3604822601419882E-2; 
+   	start = generate_points(4,start,a,b,v); 
+   	a=0.4729054132581005E+0; 
+   	v=0.3576729661743367E-2; 
+   	start = generate_points(4,start,a,b,v); 
+   	a=0.9618308522614784E-1; 
+   	v=0.2352101413689164E-2; 
+   	start = generate_points(4,start,a,b,v); 
+   	a=0.2219645236294178E+0; 
+   	v=0.3108953122413675E-2; 
+   	start = generate_points(4,start,a,b,v); 
+   	a=0.7011766416089545E+0; 
+   	v=0.3650045807677255E-2; 
+   	start = generate_points(4,start,a,b,v); 
+   	a=0.2644152887060663E+0; 
+   	v=0.2982344963171804E-2; 
+   	start = generate_points(5,start,a,b,v); 
+   	a=0.5718955891878961E+0; 
+   	v=0.3600820932216460E-2; 
+   	start = generate_points(5,start,a,b,v); 
+   	a=0.2510034751770465E+0; 
+   	b=0.8000727494073952E+0; 
+   	v=0.3571540554273387E-2; 
+   	start = generate_points(6,start,a,b,v); 
+   	a=0.1233548532583327E+0; 
+   	b=0.4127724083168531E+0; 
+   	v=0.3392312205006170E-2; 
+   	start = generate_points(6,start,a,b,v); 
 	break;
 	
 	/* need to add 350, 434, 590, 770, 974, 1202, 1454, 1730,
@@ -256,13 +252,14 @@ struct leb_point_s *lebedev_init(int degree){
 	punt("\nAngular grid unrecognized");
 
     }
-    leb_tmp = (struct leb_point_s *)
-	malloc(degree*sizeof(struct leb_point_s));
+    leb_tmp.n_ang_points = degree;
+    leb_tmp.points = (leb_point_t *)
+	malloc(degree*sizeof(leb_point_t));
     for(i=0;i<degree;i++){
-	leb_tmp[i].p_cart.x = x[i];
-	leb_tmp[i].p_cart.y = y[i];
-	leb_tmp[i].p_cart.z = z[i];
-	leb_tmp[i].ang_quad_weight = weight[i];
+	leb_tmp.points[i].p_cart.x = x[i];
+	leb_tmp.points[i].p_cart.y = y[i];
+	leb_tmp.points[i].p_cart.z = z[i];
+	leb_tmp.points[i].ang_weight = weight[i];
     }
     free(x);
     free(y);
@@ -339,7 +336,6 @@ int generate_points(int type, int start, double a, double b, double v){
 	z[start+3] = -a;
 	weight[start+3] = v;
 	
-	
 	x[start+4] = a;
 	y[start+4] = 0.0;
 	z[start+4] = a;
@@ -389,19 +385,19 @@ int generate_points(int type, int start, double a, double b, double v){
 	z[start] = a;
 	weight[start] = v;
 	
-	x[start+1] = a;
-	y[start+1] = -a;
+	x[start+1] = -a;
+	y[start+1] = a;
 	z[start+1] = a;
 	weight[start+1] = v;
 	
 	x[start+2] = a;
-	y[start+2] = a;
-	z[start+2] = -a;
+	y[start+2] = -a;
+	z[start+2] = a;
 	weight[start+2] = v;
 
-	x[start+3] = -a;
+	x[start+3] = a;
 	y[start+3] = a;
-	z[start+3] = a;
+	z[start+3] = -a;
 	weight[start+3] = v;
 	
 	x[start+4] = -a;
@@ -409,13 +405,13 @@ int generate_points(int type, int start, double a, double b, double v){
 	z[start+4] = a;
 	weight[start+4] = v;
 
-	x[start+5] = -a;
-	y[start+5] = a;
+	x[start+5] = a;
+	y[start+5] = -a;
 	z[start+5] = -a;
 	weight[start+5] = v;
 	
-	x[start+6] = a;
-	y[start+6] = -a;
+	x[start+6] = -a;
+	y[start+6] = a;
 	z[start+6] = -a;
 	weight[start+6] = v;
 	
