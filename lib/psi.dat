@@ -600,6 +600,12 @@ psi: (
   DETCASUHFFirstFreq  = $DETCASFirstFreq
   DETCASTwoConFirstFreq  = $DETCASFirstFreq
 
+  % Procedures for DETCAS DBOC computation
+  DETCASDBOC = ($DETCASEnergy $dboc)
+  DETCASRHFDBOC = ($DETCASRHFEnergy $dboc)
+  DETCASROHFDBOC = ($DETCASROHFEnergy $dboc)
+  DETCASUHFDBOC = ($DETCASUHFEnergy $dboc)
+  DETCASTwoConDBOC = ($DETCASTwoConEnergy $dboc)
 
   % Procedures for the conventional MP2 energy
   MP2Energy = ($ints $scf $transqt $ccsort $mp2)
