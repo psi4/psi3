@@ -8,23 +8,85 @@
 
 void cc2_WabeiT2(void) {
 
+  int rowx, colx, rowz, colz, ab;
+  int GX, GZ, Ge, Gi, Gj, hxbuf, hzbuf;
   dpdfile2 t1, tia, tIA;
-  dpdbuf4 Z, W;
+  dpdbuf4 Z, W, X;
   dpdbuf4 t2, t2a, t2b, tIJAB, tijab, tIjAb;
 
   if(params.ref == 0) { /** RHF **/
 
     dpd_file2_init(&t1, CC_OEI, 0, 0, 1, "tIA");
 
-    dpd_buf4_init(&Z, CC_TMP0, 0, 0, 5, 0, 5, 0, "CC2 ZAbIj (Ij,Ab)");
-    dpd_buf4_init(&W, CC2_HET1, 0, 11, 5, 11, 5, 0, "CC2 WAbEi (Ei,Ab)");
-    dpd_contract244(&t1, &W, &Z, 1, 0, 0, 1, 0);
-    dpd_buf4_close(&W);
+    /*     dpd_buf4_init(&X, CC2_HET1, 0, 5, 11, 5, 11, 0, "CC2 WAbEi"); */
+    /*     dpd_buf4_scm(&X, 0); */
+    /*     dpd_buf4_close(&X); */
 
-    dpd_buf4_init(&t2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb");
-    dpd_buf4_axpy(&Z, &t2, 1);
-    dpd_buf4_close(&t2);
-    dpd_buf4_sort_axpy(&Z, CC_TAMPS, qpsr, 0, 5, "New tIjAb", 1);
+    /** Begin out-of-core contract244 **/
+    dpd_buf4_init(&Z, CC_TMP0, 0, 5, 0, 5, 0, 0, "ZAbIj");
+    /*     dpd_buf4_init(&X, CC2_HET1, 0, 11, 5, 11, 5, 0, "CC2 WAbEi (Ei,Ab)"); */
+    /*     dpd_buf4_sort_axpy(&X, CC2_HET1, rspq, 5, 11, "CC2 WAbEi", 1); */
+    /*     dpd_buf4_close(&X); */
+    dpd_buf4_init(&X, CC2_HET1, 0, 5, 11, 5, 11, 0, "CC2 WAbEi");
+    dpd_contract244(&t1, &X, &Z, 1, 2, 1, 1, 0);
+
+    /* Symmetry Info */
+    GX = X.file.my_irrep; 
+    GZ = Z.file.my_irrep;
+
+    dpd_file2_mat_init(&t1);
+    dpd_file2_mat_rd(&t1);
+
+    for(hxbuf=0; hxbuf < moinfo.nirreps; hxbuf++) {
+      hzbuf = hxbuf;
+
+      dpd_buf4_mat_irrep_row_init(&X, hxbuf);
+      dpd_buf4_mat_irrep_row_init(&Z, hzbuf);
+
+      /* Loop over rows of the X factor and the target */
+      for(ab=0; ab < Z.params->rowtot[hzbuf]; ab++) {
+
+	dpd_buf4_mat_irrep_row_zero(&X, hxbuf, ab);
+	dpd_buf4_mat_irrep_row_rd(&X, hxbuf, ab);
+
+/* 	dpd_buf4_mat_irrep_row_zero(&Z, hzbuf, ab); */
+
+	for(Gi=0; Gi < moinfo.nirreps; Gi++) {
+	  Ge = Gi^hxbuf^GX;
+	  Gj = Gi^hzbuf^GZ;
+
+	  rowx = X.params->rpi[Ge];
+	  colx = X.params->spi[Gi];
+	  rowz = Z.params->rpi[Gi];
+	  colz = Z.params->spi[Gj];
+
+	  if(rowz && colz && rowx && colx) {
+/* 	    	  C_DGEMM('n','n',rowz,colz,rowx,1.0, */
+/* 	    		  &(t1.matrix[Gj][0][0]),rowx, */
+/* 	    		  &(X.matrix[hxbuf][0][X.col_offset[hxbuf][Ge]]),colx,0.0, */
+/* 	    		  &(Z.matrix[hzbuf][0][Z.col_offset[hzbuf][Gi]]),colz); */
+	  }
+	}
+
+/* 	dpd_buf4_mat_irrep_row_wrt(&Z, hzbuf, ab); */
+      }
+
+      dpd_buf4_mat_irrep_row_close(&X, hxbuf);
+      dpd_buf4_mat_irrep_row_close(&Z, hzbuf);
+    }
+    dpd_file2_mat_close(&t1);
+    dpd_buf4_close(&X);
+    /*   dpd_buf4_close(&Z); */
+
+    dpd_buf4_sort_axpy(&Z, CC_TAMPS, rspq, 0, 5, "New tIjAb", 1);
+    dpd_buf4_sort_axpy(&Z, CC_TAMPS, srqp, 0, 5, "New tIjAb", 1);
+    /** End out-of-core contract244 **/
+    /*     dpd_buf4_close(&W); */
+
+    /*     dpd_buf4_init(&t2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb"); */
+    /*     dpd_buf4_axpy(&Z, &t2, 1); */
+    /*     dpd_buf4_close(&t2); */
+    /*     dpd_buf4_sort_axpy(&Z, CC_TAMPS, qpsr, 0, 5, "New tIjAb", 1); */
     dpd_buf4_close(&Z);
 
     dpd_file2_close(&t1);
