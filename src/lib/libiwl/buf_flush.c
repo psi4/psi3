@@ -1,9 +1,15 @@
+/*!
+  \file buf_flush.c
+*/
 #include <stdio.h>
 #include <libciomr.h>
 #include "iwl.h"
 
-/*
+/*!
 ** iwl_buf_flush()
+**
+**	\param Buf     To be flushed buffer
+**	\param lastbuf Flag for the last buffer
 **
 ** Flush an Integrals With Labels Buffer
 ** All flushing should be done through this routine!

@@ -1,3 +1,6 @@
+/*!
+  \file buf_init.c
+*/
 #include <stdio.h>
 #include <psio.h>
 #include <stdlib.h>
@@ -5,8 +8,14 @@
 
 extern FILE *outfile;
 
-/*
+/*!
 ** iwl_buf_init()
+**
+**	\param Buf               Buffer to be initialised
+**	\param itape		Filenumber
+**	\param cutoff           Cutoff for keeping integral
+**	\param oldfile		If ==1 create file
+**	\param readflag		If ==1 fetch buffer
 **
 ** Prepare a PSI Buffer according to the Integrals
 ** With Labels format for reading or writing.  Important to set
@@ -21,7 +30,7 @@ void iwl_buf_init(struct iwlbuf *Buf, int itape, double cutoff,
       int oldfile, int readflag)
 {
 
-  /* set up buffer info */
+  /*! set up buffer info */
   Buf->itap = itape;
   Buf->bufpos = PSIO_ZERO;
   Buf->ints_per_buf = IWL_INTS_PER_BUF;
@@ -33,12 +42,12 @@ void iwl_buf_init(struct iwlbuf *Buf, int itape, double cutoff,
   Buf->idx = 0;
 
 
-  /* make room in the buffer */
+  /*! make room in the buffer */
   Buf->labels = (Label *) malloc (4 * Buf->ints_per_buf * sizeof(Label));
   Buf->values = (Value *) malloc (Buf->ints_per_buf * sizeof(Value));
 
-  /* open the output file */
-  /* Note that we assume that if oldfile isn't set, we O_CREAT the file */
+  /*! open the output file */
+  /*! Note that we assume that if oldfile isn't set, we O_CREAT the file */
   psio_open(Buf->itap, oldfile ? PSIO_OPEN_OLD : PSIO_OPEN_NEW);
   if (oldfile && (psio_tocscan(Buf->itap, IWL_KEY_BUF) == NULL)) {
     fprintf(outfile,"iwl_buf_init: Can't open file %d\n", Buf->itap);
@@ -46,7 +55,7 @@ void iwl_buf_init(struct iwlbuf *Buf, int itape, double cutoff,
     return;
   } 
 
-  /* go ahead and read a buffer */
+  /*! go ahead and read a buffer */
   if (readflag) iwl_buf_fetch(Buf);
   
 }

@@ -1,9 +1,12 @@
+/*!
+  \file buf_put.c
+*/
 #include <stdio.h>
 #include <psio.h>
 #include "iwl.h"
 
-/*
-** iwl_buf_put()
+/*!
+** iwl_buf_put(struct iwlbuf *Buf)
 **
 ** Put an IWL buffer to disk
 ** David Sherrill, 26 June 1996

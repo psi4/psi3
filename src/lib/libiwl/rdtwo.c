@@ -1,3 +1,6 @@
+/*!
+  \filew rdtwo.c
+*/
 #include <stdio.h>
 #include <math.h>
 #include <libciomr.h>
@@ -6,21 +9,20 @@
 #define MIN0(a,b) (((a)<(b)) ? (a) : (b))
 #define MAX0(a,b) (((a)>(b)) ? (a) : (b))
 
-/*
+/*!
 ** iwl_rdtwo(): read two electron ints from the given file.
 ** The "iwl" stands for "integrals with labels," and this is the proposed
 ** new standard for storing two-electron integrals and their (absolute)
 ** orbital labels.
 **
-** Arguments:
-**    itap     = unit to read from
-**    ints     = two electron integrals (already allocated)
-**    ioff     = the old ioff array for lexical ordering
-**    norbs    = number of orbitals
-**    nfzc     = number of frozen core orbitals
-**    nfzv     = number of frozen virtual orbitals
-**    printflg = print integrals as they're read 
-**    outfile  = output file pointer
+**    \param itap     = unit to read from
+**    \param ints     = two electron integrals (already allocated)
+**    \param ioff     = the old ioff array for lexical ordering
+**    \param norbs    = number of orbitals
+**    \param nfzc     = number of frozen core orbitals
+**    \param nfzv     = number of frozen virtual orbitals
+**    \param printflg = print integrals as they're read 
+**    \param outfile  = output file pointer
 **
 ** David Sherrill, 1995
 */

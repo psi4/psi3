@@ -1,9 +1,12 @@
+/*!
+  \file bufg_wrt_val_SI.c
+*/
 #include <stdio.h>
 #include <math.h>
 #include <libciomr.h>
 #include "iwl.h"
 
-/*
+/*!
 ** iwl_buf_wrt_val_SI()
 **
 ** Write to an Integrals With Labels formatted buffer.

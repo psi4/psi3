@@ -1,3 +1,6 @@
+/*!
+  \file buf_toend.c
+*/
 #include <stdio.h>
 #include <psio.h>
 #include <stdlib.h>
@@ -5,7 +8,7 @@
 
 extern FILE *outfile;
 
-/*
+/*!
 ** iwl_buf_toend()
 **
 ** Set IWL Buffer's pointer to the end. Useful when want to append to

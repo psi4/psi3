@@ -1,9 +1,12 @@
+/*!
+  \file buf_wrt.c
+*/
 #include <stdio.h>
 #include <math.h>
 #include <libciomr.h>
 #include "iwl.h"
 
-/*
+/*!
 ** iwl_buf_wrt()
 **
 ** Write to an Integrals With Labels formatted buffer.

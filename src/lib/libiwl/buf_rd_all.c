@@ -1,3 +1,6 @@
+/*!
+  \file buf_rd_all.c
+*/
 #include <stdio.h>
 #include <math.h>
 #include <libciomr.h>
@@ -8,22 +11,22 @@
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
 
 
-/*
+/*!
 ** iwl_buf_rd_all()
 **
 ** Read from an Integrals With Labels formatted buffer.
 ** The buffer must have been initialized with iwl_buf_init().
 **
 ** Arguments:
-**    Buf           =  IWL Buffer to read from (already initialized)
-**    ints          =  memory buffer to put integrals into
-**    ioff_lt       =  ioff array for the left pair of indices (p and q)
-**    ioff_rt       =  ioff array for the right pair of indices (r and s)
-**    no_pq_perm    =  if 1, do not use p/q or r/s permutational symmetry
-**    ioff          =  the ioff array to figure the total index pqrs from
+**    \param Buf           =  IWL Buffer to read from (already initialized)
+**    \param ints          =  memory buffer to put integrals into
+**    \param ioff_lt       =  ioff array for the left pair of indices (p and q)
+**    \param ioff_rt       =  ioff array for the right pair of indices (r and s)
+**    \param no_pq_perm    =  if 1, do not use p/q or r/s permutational symmetry
+**    \param ioff          =  the ioff array to figure the total index pqrs from
 **                     the pair indices pq and rs
-**    printflg      =  if 1, print integrals as they are read
-**    outfile       =  pointer to output file for printing
+**    \param printflg      =  if 1, print integrals as they are read
+**    \param outfile       =  pointer to output file for printing
 **
 ** Returns: 0 if end of file, otherwise 1
 **
@@ -48,7 +51,7 @@ int iwl_buf_rd_all(struct iwlbuf *Buf, double *ints,
     r = (int) lblptr[idx++];
     s = (int) lblptr[idx++];
 
-    if(no_pq_perm) { /* I _think_ this will work */
+    if(no_pq_perm) { /*! I _think_ this will work */
       pq = ioff_lt[p] + q;
       rs = ioff_rt[r] + s;
     }
@@ -65,9 +68,9 @@ int iwl_buf_rd_all(struct iwlbuf *Buf, double *ints,
       fprintf(outfile, "<%2d %2d %2d %2d [%2d][%2d] [[%3d]] = %20.10lf\n",
 	      p, q, r, s, pq, rs, pqrs, ints[pqrs]) ;
     
-  } /* end loop through current buffer */
+  } /*! end loop through current buffer */
   
-  /* read new PSI buffers */
+  /*! read new PSI buffers */
   while (!lastbuf) {
     iwl_buf_fetch(Buf);
     lastbuf = Buf->lastbuf;
@@ -78,7 +81,7 @@ int iwl_buf_rd_all(struct iwlbuf *Buf, double *ints,
       r = (int) lblptr[idx++];
       s = (int) lblptr[idx++];
 
-      if(no_pq_perm) { /* I _think_ this will work */
+      if(no_pq_perm) { /*! I _think_ this will work */
 	pq = ioff_lt[p] + q;
 	rs = ioff_rt[r] + s;
       }
@@ -95,14 +98,14 @@ int iwl_buf_rd_all(struct iwlbuf *Buf, double *ints,
 	fprintf(outfile, "<%d %d %d %d [%d][%d] [[%d]] = %20.10lf\n",
 		p, q, r, s, pq, rs, pqrs, ints[pqrs]) ;
       
-    } /* end loop through current buffer */
+    } /*! end loop through current buffer */
     
-  } /* end loop over reading buffers */
+  } /*! end loop over reading buffers */
   
-  return(0); /* we must have reached the last buffer at this point */
+  return(0); /*! we must have reached the last buffer at this point */
 }
 
-/*
+/*!
 ** IWL_BUF_RD_ALL2(): This routine works exactly like
 ** iwl_buf_rd_all(), except that the integral list is not assumed to
 ** have bra-ket permutational symmetry.  The list is still required to
@@ -135,7 +138,7 @@ int iwl_buf_rd_all2(struct iwlbuf *Buf, double **ints,
     r = (int) lblptr[idx++];
     s = (int) lblptr[idx++];
 
-    if(no_pq_perm) { /* I _think_ this will work */
+    if(no_pq_perm) { /*! I _think_ this will work */
       pq = ioff_lt[p] + q;
       rs = ioff_rt[r] + s;
     }
@@ -150,9 +153,9 @@ int iwl_buf_rd_all2(struct iwlbuf *Buf, double **ints,
       fprintf(outfile, "<%2d %2d %2d %2d [%2d][%2d] = %20.10lf\n",
 	      p, q, r, s, pq, rs, ints[pq][rs]) ;
     
-  } /* end loop through current buffer */
+  } /*! end loop through current buffer */
   
-   /* read new PSI buffers */
+   /*! read new PSI buffers */
   while (!lastbuf) {
     iwl_buf_fetch(Buf);
     lastbuf = Buf->lastbuf;
@@ -163,7 +166,7 @@ int iwl_buf_rd_all2(struct iwlbuf *Buf, double **ints,
       r = (int) lblptr[idx++];
       s = (int) lblptr[idx++];
 
-      if(no_pq_perm) { /* I _think_ this will work */
+      if(no_pq_perm) { /*! I _think_ this will work */
 	pq = ioff_lt[p] + q;
 	rs = ioff_rt[r] + s;
       }
@@ -178,10 +181,10 @@ int iwl_buf_rd_all2(struct iwlbuf *Buf, double **ints,
 	fprintf(outfile, "<%d %d %d %d [%d][%d] = %20.10lf\n",
 		p, q, r, s, pq, rs, ints[pq][rs]) ;
       
-    } /* end loop through current buffer */
+    } /*! end loop through current buffer */
     
-  } /* end loop over reading buffers */
+  } /*! end loop over reading buffers */
   
-  return(0); /* we must have reached the last buffer at this point */
+  return(0); /*! we must have reached the last buffer at this point */
 }
 

@@ -1,3 +1,6 @@
+/*!
+  \file buf_rd_all_mp2r12a.c
+*/
 #include <stdio.h>
 #include <math.h>
 #include <libciomr.h>
@@ -8,27 +11,26 @@
 #define INDEX(i,j) ((i>j) ? (((i)*((i)+1))/2+(j)) : (((j)*((j)+1))/2+(i)))
 
 
-/*
+/*!
 ** iwl_buf_rd_all_mp2r12a()
 **
 ** Read from an Integrals With Labels formatted buffer.
 ** The buffer must have been initialized with iwl_buf_init().
 **
-** Arguments:
-**    Buf           =  IWL Buffer to read from (already initialized)
-**    ints          =  memory buffer to put integrals into
-**    ioff_lt       =  ioff array for the left pair of indices (p and q)
-**    ioff_rt       =  ioff array for the right pair of indices (r and s)
-**    bra_ket_symm  =  if 1, then these are ERI or R12 integrals, read
+**    \param Buf           =  IWL Buffer to read from (already initialized)
+**    \param ints          =  memory buffer to put integrals into
+**    \param ioff_lt       =  ioff array for the left pair of indices (p and q)
+**    \param ioff_rt       =  ioff array for the right pair of indices (r and s)
+**    \param bra_ket_symm  =  if 1, then these are ERI or R12 integrals, read
 **                     them in as usual, else these are [r12,T2] integrals -
 **                     form [T1+T2,r12] out of these.
 **
 **    WARNING - if bra_ket_symm = 0 - ints must be zeroed out!
 **
-**    ioff          =  the ioff array to figure the total index pqrs from
+**    \param ioff          =  the ioff array to figure the total index pqrs from
 **                     the pair indices pq and rs
-**    printflg      =  if 1, print integrals as they are read
-**    outfile       =  pointer to output file for printing
+**    \param printflg      =  if 1, print integrals as they are read
+**    \param outfile       =  pointer to output file for printing
 **
 ** Returns: 0 if end of file, otherwise 1
 **
@@ -59,9 +61,9 @@ int iwl_buf_rd_all_mp2r12a(struct iwlbuf *Buf, double *ints,
 
     pqrs = INDEX(pq,rs);
 
-    if (bra_ket_symm) /* ERIs or R12-integrals */
+    if (bra_ket_symm) /*! ERIs or R12-integrals */
       ints[pqrs] = (double) valptr[Buf->idx];
-    else {            /* (ip|[T1+T2,r12]|jq) = - [ (ip|[r12,T1]|jq) + (jq|[r12,T2]|ip) ] */
+    else {            /*! (ip|[T1+T2,r12]|jq) = - [ (ip|[r12,T1]|jq) + (jq|[r12,T2]|ip) ] */
       if (pq != rs)
 	ints[pqrs] -= (double) valptr[Buf->idx];
       else
@@ -72,9 +74,9 @@ int iwl_buf_rd_all_mp2r12a(struct iwlbuf *Buf, double *ints,
       fprintf(outfile, "<%2d %2d %2d %2d [%2d][%2d] [[%3d]] = %20.10lf\n",
 	      p, q, r, s, pq, rs, pqrs, ints[pqrs]) ;
     
-  } /* end loop through current buffer */
+  } /*! end loop through current buffer */
   
-   /* read new PSI buffers */
+   /*! read new PSI buffers */
   while (!lastbuf) {
     iwl_buf_fetch(Buf);
     lastbuf = Buf->lastbuf;
@@ -90,9 +92,9 @@ int iwl_buf_rd_all_mp2r12a(struct iwlbuf *Buf, double *ints,
 
       pqrs = INDEX(pq,rs);
 
-      if (bra_ket_symm) /* ERIs or R12-integrals */
+      if (bra_ket_symm) /*! ERIs or R12-integrals */
 	ints[pqrs] = (double) valptr[Buf->idx];
-      else {            /* (ip|[T1+T2,r12]|jq) = - [ (ip|[r12,T2]|jq) + (jq|[r12,T2]|ip) ] */
+      else {            /*! (ip|[T1+T2,r12]|jq) = - [ (ip|[r12,T2]|jq) + (jq|[r12,T2]|ip) ] */
 	if (pq != rs)
 	  ints[pqrs] -= (double) valptr[Buf->idx];
 	else
@@ -103,10 +105,10 @@ int iwl_buf_rd_all_mp2r12a(struct iwlbuf *Buf, double *ints,
 	fprintf(outfile, "<%d %d %d %d [%d][%d] [[%d]] = %20.10lf\n",
 		p, q, r, s, pq, rs, pqrs, ints[pqrs]) ;
       
-    } /* end loop through current buffer */
+    } /*! end loop through current buffer */
     
-  } /* end loop over reading buffers */
+  } /*! end loop over reading buffers */
   
-  return(0); /* we must have reached the last buffer at this point */
+  return(0); /*! we must have reached the last buffer at this point */
 }
 

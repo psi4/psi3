@@ -1,13 +1,15 @@
+/*!
+  \file wrtone.c
+*/
 #include <stdio.h>
 #include <psio.h>
 #include "iwl.h"
 
-/*
+/*!
 ** IWL_WRTONE()
 **
 ** This function writes one-electron integrals.
 **
-** Arguments:
 **   itap       = tape to read ints from
 **   label      = the PSIO label
 **   ntri       = the size of the array (lower triangle)

@@ -1,9 +1,12 @@
+/*!
+  \file wrttwo.c
+*/
 #include <stdio.h>
 #include <math.h>
 #include <libciomr.h>
 #include "iwl.h"
 
-/*
+/*!
 ** iwl_wrttwo()
 **
 ** Write two electron ints to output in lexical order
@@ -11,13 +14,12 @@
 ** new standard for storing two-electron integrals and their (absolute)
 ** orbital labels.  This function closes the output file when finished.
 **
-** Arguments:
-**    itap     = unit to write to
-**    nbfso    = number of basis functions in symmetry orbitals
-**    ints     = two electron integrals 
-**    ioff     = the old ioff array for lexical ordering
-**    printflg = print flag (1 or 0)
-**    outfile  =  output file
+**    \param itap     = unit to write to
+**    \param nbfso    = number of basis functions in symmetry orbitals
+**    \param ints     = two electron integrals 
+**    \param ioff     = the old ioff array for lexical ordering
+**    \param printflg = print flag (1 or 0)
+**    \param outfile  =  output file
 **
 ** Revised 6/27/96 by CDS
 */

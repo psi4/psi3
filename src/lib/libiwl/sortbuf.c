@@ -1,3 +1,6 @@
+/*!
+  \file sortbuf.c
+*/
 #include <stdio.h>
 #include <math.h>
 #include <libciomr.h>
@@ -8,7 +11,7 @@
 
 #define BIGNUM 40000
 
-/*
+/*!
 ** sortbuf()
 **
 ** Function reads a file of two-electron integrals into
@@ -38,27 +41,26 @@
 ** sorts.  The definitions of the ioff arrays can be confusing, so
 ** care should be taken when using this routine.
 **
-** Arguments:
-**    Inbuf       = IWL buffer for input
-**    Outbuf      = IWL buffer for output
-**    ints        = array to hold integrals in
-**    fpq         = first pq for this tape
-**    lpq         = last pq for this tape 
-**    ioff        = offset array for the left indices
-**    ioff2       = offset array for Elbert sorts or for the right 
+**    \param Inbuf       = IWL buffer for input
+**    \param Outbuf      = IWL buffer for output
+**    \param ints        = array to hold integrals in
+**    \param fpq         = first pq for this tape
+**    \param lpq         = last pq for this tape 
+**    \param ioff        = offset array for the left indices
+**    \param ioff2       = offset array for Elbert sorts or for the right 
 **                  indices when no_pq_perm=1 
-**    nbfso       = number of basis functions in SO's
-**    lastsort    = 1 if this is the last intape, 0 otherwise
-**    elbert      = integrals obey rs >= pq.  Use ioff2 to get offset.
-**    intermediate= 1 if sorting a intermediate in the transformation
+**    \param nbfso       = number of basis functions in SO's
+**    \param lastsort    = 1 if this is the last intape, 0 otherwise
+**    \param elbert      = integrals obey rs >= pq.  Use ioff2 to get offset.
+**    \param intermediate= 1 if sorting a intermediate in the transformation
 **                  which is indexed as X[ij][kl] where ij runs from
 **                  fpq to lpq and kl runs from 0 to nbstri
-**    no_pq_perm  = don't use permutational symmetry to swap p and q
+**    \param no_pq_perm  = don't use permutational symmetry to swap p and q
 **                  (appropriate for MP2 where one is occ and one is virt)
-**    qdim        = dimensions for the q index...nvirt for MP2
-**    add         = add contributions to the same integral during sort
-**    printflg    = 1 for printing, 0 otherwise
-**    outfile     = output file pointer
+**    \param qdim        = dimensions for the q index...nvirt for MP2
+**    \param add         = add contributions to the same integral during sort
+**    \param printflg    = 1 for printing, 0 otherwise
+**    \param outfile     = output file pointer
 **
 ** Returns: none
 **

@@ -1,3 +1,6 @@
+/*!
+  \file buf_rd_arr2.c
+*/
 #include <stdio.h>
 #include <math.h>
 #include <libciomr.h>
@@ -8,7 +11,7 @@
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
 
 
-/*
+/*!
 ** iwl_buf_rd_arr2()
 **
 ** Read from an Integrals With Labels formatted PSI buffer.
@@ -59,9 +62,9 @@ int iwl_buf_rd_arr2(struct iwlbuf *Buf, double *ints, int *plist,
       fprintf(outfile, "<%d %d %d %d [%d] = %20.10lf\n", p, q, r, s,
 	      pq, value);
     
-  } /* end loop through current buffer */
+  } /*! end loop through current buffer */
 
-  /* read new buffers */
+  /*! read new buffers */
   while (!lastbuf) {
     iwl_buf_fetch(Buf);
     lastbuf = Buf->lastbuf;
@@ -86,10 +89,10 @@ int iwl_buf_rd_arr2(struct iwlbuf *Buf, double *ints, int *plist,
 	fprintf(outfile, "<%d %d %d %d [%d] = %20.10lf\n", p, q, r, s,
 		pq, value);
       
-    } /* end loop through current buffer */
+    } /*! end loop through current buffer */
     
-  } /* end loop over reading buffers */
+  } /*! end loop over reading buffers */
 
-  return(0); /* we must have reached the last buffer at this point */
+  return(0); /*! we must have reached the last buffer at this point */
 }
 

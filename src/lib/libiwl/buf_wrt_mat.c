@@ -1,3 +1,6 @@
+/*!
+  \file buf_wrt_mat.c
+*/
 #include <stdio.h>
 #include <math.h>
 #include <libciomr.h>
@@ -8,7 +11,7 @@
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
 
 
-/*
+/*!
 ** iwl_buf_wrt_mat()
 **
 ** Write to an Integrals With Labels formatted buffer. The buffer 
@@ -90,7 +93,7 @@ void iwl_buf_wrt_mat(struct iwlbuf *Buf, int ptr, int qtr,
    
 }
 
-/*
+/*!
 ** IWL_BUF_WRT_MAT2(): This routine is exactly like iwl_buf_wrt_mat()
 ** except that the requirement that ij >= kl has been lifted.  This is
 ** necessary for the UHF alpha-beta transformation of the two-electron

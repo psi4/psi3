@@ -1,10 +1,13 @@
+/*!
+  \file rdone.c
+*/
 #include <stdio.h>
 #include <math.h>
 #include <psio.h>
 #include <libciomr.h>
 #include "iwl.h"
 
-/*
+/*!
 ** IWL_RDONE()
 **
 ** This function reads the one-electron integrals in the MO basis
@@ -17,14 +20,13 @@
 ** Revised by David Sherrill, April 1998
 ** Revised by TDC, June 2001
 **
-** Arguments:
-**   itap       = tape to read ints from
-**   label      = the PSIO label
-**   ints       = buffer (already allocated) to store the integrals
-**   ntri       = number of packed integrals
-**   erase      = erase itap (1=yes, 0=no)
-**   printflg   = printing flag.  Set to 1 to print ints; otherwise, set to 0
-**   outfile    = file pointer for output of ints or error messages
+**   \param itap       = tape to read ints from
+**   \param label      = the PSIO label
+**   \param ints       = buffer (already allocated) to store the integrals
+**   \param ntri       = number of packed integrals
+**   \param erase      = erase itap (1=yes, 0=no)
+**   \param printflg   = printing flag.  Set to 1 to print ints; otherwise, set to 0
+**   \param outfile    = file pointer for output of ints or error messages
 **
 */
 int iwl_rdone(int itap, char *label, double *ints, int ntri, int erase, 

@@ -1,9 +1,12 @@
+/*!
+  \file buf_wrt_arr.c
+*/
 #include <stdio.h>
 #include <math.h>
 #include <libciomr.h>
 #include "iwl.h"
 
-/*
+/*!
 ** IWL_BUF_WRT_ARR()
 **
 ** This function writes out an array of two-electron

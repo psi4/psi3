@@ -1,21 +1,23 @@
+/*!
+  \file buf_wrt_all.c
+*/
 #include <stdio.h>
 #include <math.h>
 #include <libciomr.h>
 #include "iwl.h"
 
-/*
+/*!
 ** iwl_buf_wrt_all()
 **
 ** Write out two electron ints to IWL file.  Assume that the integrals
 ** are in ijkl canonical order (no spatial symmetry).
 **
-** Arguments:
-**    itap     = unit to write to
-**    nbfso    = number of basis functions in symmetry orbitals
-**    ints     = two electron integrals 
-**    ioff     = the old ioff array for lexical ordering
-**    printflg = print flag (1 or 0)
-**    outfile  =  output file
+**    \param itap     = unit to write to
+**    \param nbfso    = number of basis functions in symmetry orbitals
+**    \param ints     = two electron integrals 
+**    \param ioff     = the old ioff array for lexical ordering
+**    \param printflg = print flag (1 or 0)
+**    \param outfile  =  output file
 **
 ** David Sherrill, 6/27/96
 **
