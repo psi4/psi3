@@ -60,7 +60,7 @@ void deriv2(void)
 
 #if DO_TE
   te_deriv2_scf();
-  //te_deriv2_scf_symm();
+  /* te_deriv2_scf_symm(); */
 #endif
 
   /* divide the whole thing by 2 */

@@ -6,7 +6,6 @@ include ../MakeVars
 LD = $(FC)
 
 ALLOC =
-LDFLAGS =
 
 PSILIBS = libPSI_io.a libPSI_alloc.a libPSI_parse.a libPSI_coallc.a libPSI_iomr.a libPSI_ciomr.a
 

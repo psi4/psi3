@@ -3,7 +3,7 @@
 #if !defined(AIX)
       call flush(unit)
 #else
-#include <error.h>
+#include <libparse/error.h>
       integer errcod, frdc, fioopn
       character*8 term
 
