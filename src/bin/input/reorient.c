@@ -121,7 +121,7 @@ void reorient()
 
       /*Reorient if degen < 2 (non-spherical top case).
 	Otherwise hope user knows what he/she's doing and leave it as it is.*/
-      if (degen < 2) {
+      if (degen < 2 && !no_reorient) {
 	rotate_geometry(geometry,ITAxes);
 	if(!cartOn)
           rotate_full_geom(full_geom,ITAxes);
@@ -138,14 +138,16 @@ void reorient()
 	switch (deg_IM1 + deg_IM2) {
 	  case 3: /*B and C are degenerate - linear or prolate symm. top.
 		    A is the unique axis. Rotate around y-axis.*/
-	          R = block_matrix(3,3);
-		  R[1][1] = 1.0;
-		  R[2][0] = -1.0;
-		  R[0][2] = 1.0;
-		  rotate_geometry(geometry,R);
-		  if(!cartOn)
-		    rotate_full_geom(full_geom,R);
-		  free_block(R);
+                  if (!no_reorient) {
+	            R = block_matrix(3,3);
+		    R[1][1] = 1.0;
+		    R[2][0] = -1.0;
+		    R[0][2] = 1.0;
+		    rotate_geometry(geometry,R);
+		    if(!cartOn)
+		      rotate_full_geom(full_geom,R);
+		    free_block(R);
+                  }
 		  if (IM[0] < ZERO_MOMENT_INERTIA) {
 		    fprintf(outfile,"    It is a linear molecule.\n");
 		    rotor = linear;
@@ -203,6 +205,7 @@ void reorient()
 	           1, 2, 4 are related and perpendicular to C3
 	  5. Do that again trying to find either 2 C3 axes or C3 and C2 or two C2's
 	  6. Let's go ... */
+        if (!no_reorient)
 	switch(nspher_set) {
 	  case 4: /*Tetrahedron*/
 	          median_vec(sset_geom[0], sset_geom[1], v1);

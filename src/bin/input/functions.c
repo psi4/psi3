@@ -237,7 +237,6 @@ void rotate_geometry(double **geom, double **new_coord)
   double **new_geom;
   int i;
 
-  if (no_reorient) return;
   new_geom = block_matrix(num_atoms, 3);
   mmult(geom,0,new_coord,0,new_geom,0,num_atoms,3,3,0);
   for(i=0;i<num_atoms;i++) {
@@ -263,7 +262,6 @@ void rotate_full_geom(double **geom, double **new_coord)
   double **new_geom;
   int i;
 
-  if (no_reorient) return;
   new_geom = block_matrix(num_entries, 3);
   mmult(geom,0,new_coord,0,new_geom,0,num_entries,3,3,0);
   for(i=0;i<num_entries;i++) {
