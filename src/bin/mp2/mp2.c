@@ -83,10 +83,8 @@ void init_io(int argc, char *argv[])
   tstart(outfile);
   
   psio_init();
-  for(i=CC_MIN; i <= CC_LAMPS; i++) 
+  for(i=CC_MIN; i <= CC_MAX; i++) 
     psio_open(i,1);
-  for(i=CC_HBAR; i <= CC_MAX; i++) 
-    psio_open(i,0);
 }
 
 void title(void)
