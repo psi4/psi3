@@ -80,3 +80,5 @@ int C_DGEEV(int n, double **a, int lda,
 
 int C_DGESV(int n, int nrhs, double *a, int lda, int *ipiv, double *b, int ldb);
 int C_DGETRI(int n, double *a, int lda, int *ipiv, double *work, int lwork);
+
+void print_block(double *, int, int, FILE *);
