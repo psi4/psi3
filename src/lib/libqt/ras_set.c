@@ -19,6 +19,9 @@
 ** in the RAS numbering scheme.  Orbitals are numbered according to 
 ** irrep within each of the subspaces.
 **
+** Formerly, docc, socc, frdocc, and fruocc were read in this function. 
+** Now docc and socc will be left as-is if they are not present in input.
+**
 ** C. David Sherrill
 ** Center for Computational Quantum Chemistry
 ** University of Georgia, 25 June 1995
@@ -57,6 +60,7 @@ int ras_set(int nirreps, int nbfso, int freeze_core, int *orbspi,
    */
   zero_int_array(frdocc, nirreps);
   zero_int_array(fruocc, nirreps);
+
   for (i=0; i<4; i++) {
     zero_int_array(ras_opi[i], nirreps);
   }
@@ -64,11 +68,15 @@ int ras_set(int nirreps, int nbfso, int freeze_core, int *orbspi,
   
   
   /* now use the parser to get the arrays we require */
-  errcod = ip_int_array("DOCC",docc,nirreps); 
-  errcod = ip_int_array("SOCC",socc,nirreps);
   errcod = ip_int_array("FROZEN_DOCC",frdocc,nirreps);
   errcod = ip_int_array("FROZEN_UOCC",fruocc,nirreps);
-  
+
+  /* replace DOCC and SOCC only if they are in input */
+  if (ip_exist("DOCC",0)) 
+    errcod = ip_int_array("DOCC",docc,nirreps); 
+  if (ip_exist("DOCC",0))
+    errcod = ip_int_array("SOCC",socc,nirreps);
+
   errbad=0; do_ras4=1;
   errcod = ip_int_array("RAS1", ras_opi[0], nirreps);
   if (errcod == IPE_OK) parsed_ras1 = 1;
@@ -225,6 +233,9 @@ int ras_set(int nirreps, int nbfso, int freeze_core, int *orbspi,
 ** in the RAS numbering scheme.  Orbitals are numbered according to 
 ** irrep within each of the subspaces.
 **
+** Formerly, docc, socc, frdocc, and fruocc were read in this function. 
+** Now docc and socc will be left as-is if they are not present in input.
+**
 ** Assume we always want integrals (at least some of them...) involving
 ** restricted orbitals, but we may not need them for frozen orbitals unless
 ** perhaps it's a gradient.  The frozen orbitals will never enter explicitly
@@ -295,12 +306,17 @@ int ras_set2(int nirreps, int nbfso, int delete_fzdocc,
   }
   zero_int_array(order, nbfso);
   
-  
   /* now use the parser to get the arrays we require */
-  errcod = ip_int_array("DOCC",docc,nirreps); 
-  errcod = ip_int_array("SOCC",socc,nirreps);
   errcod = ip_int_array("FROZEN_DOCC",frdocc,nirreps);
   errcod = ip_int_array("FROZEN_UOCC",fruocc,nirreps);
+
+  /* replace DOCC and SOCC only if they are in input */
+  if (ip_exist("DOCC",0))
+    errcod = ip_int_array("DOCC",docc,nirreps); 
+  if (ip_exist("DOCC",0))
+    errcod = ip_int_array("SOCC",socc,nirreps);
+  
+  /* now use the parser to get the arrays we require */
   errcod = ip_int_array("RESTR_DOCC",restrdocc,nirreps);
   
   errbad=0; do_ras4=1;
