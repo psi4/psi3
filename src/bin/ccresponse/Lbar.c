@@ -103,10 +103,10 @@ void Lbar(void)
   dpd_buf4_close(&lbar2);
 
   /** LBAR_AbEi -- stored (Ei,Ab) **/
-  dpd_buf4_init(&lbar2, CC_LR, irrep, 11, 5, 11, 5, 0, "LBAR_X_EiAb");
+  dpd_buf4_init(&lbar2, CC_LR, irrep, 5, 11, 5, 11, 0, "LBAR_X_AbEi");
   dpd_file2_init(&l, CC_OEI, irrep, 0, 1, "L_X_IA");
-  dpd_buf4_init(&t2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
-  dpd_contract244(&l, &t2, &lbar2, 0, 0, 0, -1, 0);
+  dpd_buf4_init(&t2, CC_TAMPS, 0, 5, 0, 5, 0, 0, "tAbIj");
+  dpd_contract244(&l, &t2, &lbar2, 0, 2, 1, -1, 0);
   dpd_buf4_close(&t2);
   dpd_file2_close(&l);
   dpd_buf4_close(&lbar2);
@@ -231,10 +231,10 @@ void Lbar(void)
   dpd_buf4_close(&lbar2);
 
   /** LBAR_AbEi -- stored (Ei,Ab) **/
-  dpd_buf4_init(&lbar2, CC_LR, irrep, 11, 5, 11, 5, 0, "LBAR_Y_EiAb");
+  dpd_buf4_init(&lbar2, CC_LR, irrep, 5, 11, 5, 11, 0, "LBAR_Y_AbEi");
   dpd_file2_init(&l, CC_OEI, irrep, 0, 1, "L_Y_IA");
-  dpd_buf4_init(&t2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
-  dpd_contract244(&l, &t2, &lbar2, 0, 0, 0, -1, 0);
+  dpd_buf4_init(&t2, CC_TAMPS, 0, 5, 0, 5, 0, 0, "tAbIj");
+  dpd_contract244(&l, &t2, &lbar2, 0, 2, 1, -1, 0);
   dpd_buf4_close(&t2);
   dpd_file2_close(&l);
   dpd_buf4_close(&lbar2);
@@ -359,10 +359,10 @@ void Lbar(void)
   dpd_buf4_close(&lbar2);
 
   /** LBAR_AbEi -- stored (Ei,Ab) **/
-  dpd_buf4_init(&lbar2, CC_LR, irrep, 11, 5, 11, 5, 0, "LBAR_Z_EiAb");
+  dpd_buf4_init(&lbar2, CC_LR, irrep, 5, 11, 5, 11, 0, "LBAR_Z_AbEi");
   dpd_file2_init(&l, CC_OEI, irrep, 0, 1, "L_Z_IA");
-  dpd_buf4_init(&t2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
-  dpd_contract244(&l, &t2, &lbar2, 0, 0, 0, -1, 0);
+  dpd_buf4_init(&t2, CC_TAMPS, 0, 5, 0, 5, 0, 0, "tAbIj");
+  dpd_contract244(&l, &t2, &lbar2, 0, 2, 1, -1, 0);
   dpd_buf4_close(&t2);
   dpd_file2_close(&l);
   dpd_buf4_close(&lbar2);

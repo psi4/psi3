@@ -31,6 +31,7 @@ int **cacheprep_uhf(int level, int *cachefiles);
 void cachedone_uhf(int **cachelist);
 void cachedone_rhf(int **cachelist);
 void hbar_extra(void);
+void cc2_hbar_extra(void);
 void sort_lamps(void);
 
 void local_init(void);
@@ -67,7 +68,13 @@ int main(int argc, char *argv[])
 
   if(params.local) local_init();
 
-  hbar_extra();
+  if (!strcmp(params.wfn,"CC2")) {
+    cc2_hbar_extra();
+  }
+  else {
+    hbar_extra();
+  }
+
   sort_lamps(); /* should be removed sometime - provided by cclambda */
 
   if(!strcmp(params.prop,"POLARIZABILITY")) polar();

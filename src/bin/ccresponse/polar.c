@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <libciomr/libciomr.h>
+#include <libqt/qt.h>
 #include <physconst.h>
 #define EXTERN
 #include "globals.h"
@@ -21,6 +22,10 @@ double LHX2Y2(char *pert_x, char *cart_x, int irrep_x, double omega_x,
 	      char *pert_y, char *cart_y, int irrep_y, double omega_y);
 double LHX1Y2(char *pert_x, char *cart_x, int irrep_x, double omega_x, 
 	      char *pert_y, char *cart_y, int irrep_y, double omega_y);
+double cc2_LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x, 
+		  char *pert_y, char *cart_y, int irrep_y, double omega_y);
+double cc2_LHX1Y2(char *pert_x, char *cart_x, int irrep_x, double omega_x, 
+		  char *pert_y, char *cart_y, int irrep_y, double omega_y);
 
 void polar(void)
 {
@@ -72,14 +77,24 @@ void polar(void)
 			     moinfo.mu_irreps[alpha], -params.omega[i]);
 	    polar_HXY = HXY("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i],
 			    "Mu", cartcomp[beta], moinfo.mu_irreps[beta], params.omega[i]);
-	    polar_LHX1Y1 = LHX1Y1("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i],
-				  "Mu", cartcomp[beta], moinfo.mu_irreps[beta], params.omega[i]);
-	    polar_LHX2Y2 = LHX2Y2("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i],
-				  "Mu", cartcomp[beta], moinfo.mu_irreps[beta], params.omega[i]);
-	    polar_LHX1Y2 = LHX1Y2("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i],
-				  "Mu", cartcomp[beta], moinfo.mu_irreps[beta], params.omega[i]);
-	    polar_LHX1Y2 += LHX1Y2("Mu", cartcomp[beta], moinfo.mu_irreps[beta], params.omega[i],
-				   "Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i]);
+	    if (!strcmp(params.wfn,"CC2")) {
+	      polar_LHX1Y1 = cc2_LHX1Y1("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i],
+					"Mu", cartcomp[beta], moinfo.mu_irreps[beta], params.omega[i]);
+	      polar_LHX1Y2 = cc2_LHX1Y2("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i],
+					"Mu", cartcomp[beta], moinfo.mu_irreps[beta], params.omega[i]);
+	      polar_LHX1Y2 += cc2_LHX1Y2("Mu", cartcomp[beta], moinfo.mu_irreps[beta], params.omega[i],
+					 "Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i]);
+	    }
+	    else {
+	      polar_LHX1Y1 = LHX1Y1("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i],
+				    "Mu", cartcomp[beta], moinfo.mu_irreps[beta], params.omega[i]);
+	      polar_LHX2Y2 = LHX2Y2("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i],
+				    "Mu", cartcomp[beta], moinfo.mu_irreps[beta], params.omega[i]);
+	      polar_LHX1Y2 = LHX1Y2("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i],
+				    "Mu", cartcomp[beta], moinfo.mu_irreps[beta], params.omega[i]);
+	      polar_LHX1Y2 += LHX1Y2("Mu", cartcomp[beta], moinfo.mu_irreps[beta], params.omega[i],
+				     "Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i]);
+	    }
 	  }
 	  else {
 	    polar_LCX = LCX("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], "Mu", cartcomp[beta],
@@ -88,31 +103,47 @@ void polar(void)
 			     moinfo.mu_irreps[alpha], 0.0);
 	    polar_HXY = HXY("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
 			    "Mu", cartcomp[beta], moinfo.mu_irreps[beta], 0.0);
-	    polar_LHX1Y1 = LHX1Y1("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
-				  "Mu", cartcomp[beta], moinfo.mu_irreps[beta], 0.0);
-	    polar_LHX2Y2 = LHX2Y2("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
-				  "Mu", cartcomp[beta], moinfo.mu_irreps[beta], 0.0);
-	    polar_LHX1Y2 = LHX1Y2("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
-				  "Mu", cartcomp[beta], moinfo.mu_irreps[beta], 0.0);
-	    polar_LHX1Y2 += LHX1Y2("Mu", cartcomp[beta], moinfo.mu_irreps[beta], 0.0,
-				   "Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0);
+	    if (!strcmp(params.wfn,"CC2")) {
+	      polar_LHX1Y1 = cc2_LHX1Y1("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
+					"Mu", cartcomp[beta], moinfo.mu_irreps[beta], 0.0);
+	      polar_LHX1Y2 = cc2_LHX1Y2("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
+					"Mu", cartcomp[beta], moinfo.mu_irreps[beta], 0.0);
+	      polar_LHX1Y2 += cc2_LHX1Y2("Mu", cartcomp[beta], moinfo.mu_irreps[beta], 0.0,
+					 "Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0);
+	    }
+	    else {
+	      polar_LHX1Y1 = LHX1Y1("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
+				    "Mu", cartcomp[beta], moinfo.mu_irreps[beta], 0.0);
+	      polar_LHX2Y2 = LHX2Y2("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
+				    "Mu", cartcomp[beta], moinfo.mu_irreps[beta], 0.0);
+	      polar_LHX1Y2 = LHX1Y2("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
+				    "Mu", cartcomp[beta], moinfo.mu_irreps[beta], 0.0);
+	      polar_LHX1Y2 += LHX1Y2("Mu", cartcomp[beta], moinfo.mu_irreps[beta], 0.0,
+				     "Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0);
+	    }
 	  }
 
 	  polar = polar_LCX + polar_HXY + polar_LHX1Y1 + polar_LHX2Y2 + polar_LHX1Y2;
-	  /*
-	    fprintf(outfile, "polar_LCX    = %20.12f\n", polar_LCX);
-	    fprintf(outfile, "polar_HXY    = %20.12f\n", polar_HXY);
-	    fprintf(outfile, "polar_LHX1Y1 = %20.12f\n", polar_LHX1Y1);
-	    fprintf(outfile, "polar_LHX2Y2 = %20.12f\n", polar_LHX2Y2);
-	    fprintf(outfile, "polar_LHX1Y2 = %20.12f\n", polar_LHX1Y2);
-	  */
+
+/* 	  if(alpha == beta) { */
+/* 	    fprintf(outfile, "polar_LCX    = %20.15f\n", polar_LCX); */
+/* 	    fprintf(outfile, "polar_HXY    = %20.15f\n", polar_HXY); */
+/* 	    fprintf(outfile, "polar_LHX1Y1 = %20.15f\n", polar_LHX1Y1); */
+/* 	    fprintf(outfile, "polar_LHX2Y2 = %20.15f\n", polar_LHX2Y2); */
+/* 	    fprintf(outfile, "polar_LHX1Y2 = %20.15f\n\n", polar_LHX1Y2); */
+/* 	  } */
 
 	  tensor[i][alpha][beta] = -polar;
 	}
       }
     }
 
-    fprintf(outfile, "\n                 CCSD Dipole Polarizability [(e^2 a0^2)/E_h]:\n");
+    if (!strcmp(params.wfn,"CC2")) {
+      fprintf(outfile, "\n                 CC2 Dipole Polarizability [(e^2 a0^2)/E_h]:\n");
+    }
+    else {
+      fprintf(outfile, "\n                 CCSD Dipole Polarizability [(e^2 a0^2)/E_h]:\n");
+    }
     fprintf(outfile, "  -------------------------------------------------------------------------\n");
     if(params.omega[i] != 0.0) 
       omega_nm = (_c*_h*1e9)/(_hartree2J*params.omega[i]);
