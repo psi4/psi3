@@ -73,7 +73,8 @@ void get_parameters(void)
   Params.force_step = 0;       /* ignore usual step and force user-given */
   Params.force_pair = 0;       /* which pair to force a step along */
   Params.force_value = 0.0;    /* how far to step along forced direction */
-
+  Params.check_hess = 0;      /* Don't check hessian by default */
+  Params.eigen_vectors = 0;   /*Don't compute eigenvectors by default */
   errcod = ip_data("PRINT","%d",&(Params.print_lvl),0);
   errcod = ip_boolean("PRINT_MOS",&(Params.print_mos),0);
   errcod = ip_data("CONVERGENCE","%d",
@@ -118,7 +119,8 @@ void get_parameters(void)
   errcod = ip_boolean("FORCE_STEP",&(Params.force_step),0);
   errcod = ip_data("FORCE_PAIR","%d",&(Params.force_pair),0);
   errcod = ip_data("FORCE_VALUE","%lf",&(Params.force_value),0);
-
+  errcod = ip_boolean("CHECK_HESSIAN",&(Params.check_hess),0);
+  errcod = ip_boolean("EIGEN_VECTORS",&(Params.eigen_vectors),0);
 }
 
 
@@ -156,6 +158,8 @@ void print_parameters(void)
       Params.level_shift ? "yes" : "no", Params.shift);
   fprintf(outfile, "   USE FZC H     =   %6s      HESSIAN       = %-12s\n",
       Params.use_fzc_h ? "yes" : "no", Params.hessian);
+  fprintf(outfile, "   CHECK HESSIAN =   %6s      EIGEN VECTORS = %6s  \n",
+      Params.check_hess ? "yes" : "no",Params.eigen_vectors ? "yes" : "no");
   fprintf(outfile, "\n") ;
   fflush(outfile) ;
 }

@@ -51,5 +51,7 @@ struct params {
                                specified step?  (For debugging)             */
    int force_pair;          /* If force_step=1, which indep pair to step?   */
    double force_value;      /* If force_step=1, how far to step?            */
+  int check_hess;          /* Check the eigenvalues of the orbital hessian? */
+  int eigen_vectors;        /*Calculate the eigenvectors of the orbital hessian */
   };
 

@@ -213,5 +213,12 @@ This is the orbital rotation value for rotating the orbitals specified
 by FORCE_PAIR.  This is only used if FORCE_STEP is set to TRUE.  The 
 default value is 0.0.
 
+.IP "\fBCHECK_HESSIAN =\fP \fIboolean\fP"
+Calculate the eigenvalues of the orbital hessian.  This is good for checking
+for saddle-point solutions.  Should be used without level shifting.  The
+default is FALSE.
 
+.IP "\fBEIGEN_VECTORS =\fP \fIboolean\fP"
+Do you want to calculate the eigenvectors of the orbital hessian as well.
+This is ignored if CHECK_HESSIAN=FALSE.  Default is FALSE.
 
