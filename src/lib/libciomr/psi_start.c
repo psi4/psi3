@@ -155,8 +155,9 @@ int psi_start(int argc, char *argv[], int overwrite_output)
     fclose(psirc);
   }  
 
-  /* lastly, everybody needs DEFAULT section */
+  /* lastly, everybody needs DEFAULT and PSI sections */
   ip_cwk_add(":DEFAULT");
+  ip_cwk_add(":PSI");
 
   /* if prefix still NULL - check input file */
   if (fprefix == NULL)
