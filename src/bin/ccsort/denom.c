@@ -174,6 +174,10 @@ void denom_uhf(void)
     }
   dpd_file4_close(&dIJAB);
 
+  dpd_file2_mat_close(&fIJ);
+  dpd_file2_mat_close(&fij);
+  dpd_file2_mat_close(&fAB);
+  dpd_file2_mat_close(&fab);
   dpd_file2_close(&fIJ);
   dpd_file2_close(&fij);
   dpd_file2_close(&fAB);
