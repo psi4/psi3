@@ -1,0 +1,14 @@
+ATOM	  MULTIPLICITY	   ENERGY
+____	  ____________	   ______
+HYDROGEN       2          -0.499809815273(A)
+HELIUM         1          -2.859895424569
+LITHIUM        2          -7.364318359897
+BERYLLIUM      1          -14.57194586834
+BORON          2          -24.52713511629
+CARBON         3          -37.68529226655
+NITROGEN       4          -54.39534894954
+OXYGEN         3          -74.80209861632
+FLUORINE       2          -99.39637342555
+NEON           1	  -128.5268348008
+
+(A) - Matches Qchem

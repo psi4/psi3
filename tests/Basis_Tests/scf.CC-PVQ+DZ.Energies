@@ -1,0 +1,10 @@
+ATOM	  MULTIPLICITY	   ENERGY
+____	  ____________	   ______
+ALUMINUM       2          -241.8764841862
+SILICON        3          -288.8541168549
+PHOSPHORUS     4          -340.7183347138
+SULFUR         3          -397.5066426155
+CHLORINE       2          -459.4832508729
+ARGON          1          -526.8167801743
+
+** Works fine as long as proper occupation is specified

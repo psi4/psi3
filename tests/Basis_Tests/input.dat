@@ -1,0 +1,35 @@
+psi: (
+%  check = false
+  opt = false
+)
+
+default: (
+  label = "test"
+  memory = (50.0 MB)
+  wfn = scf 
+  reference = rohf
+  multp = 2 
+  docc = (0 0 0 0 0 0 0 0)
+  socc = (1 0 0 0 0 0 0 0)
+
+files: (
+    default: ( name = "test"
+      )
+    )
+)
+
+input: (
+  basis = "STO-3G" 
+  units = angstrom
+  puream = false 
+   zmat = (
+    (h)
+   )
+ )
+
+
+scf:  (
+  maxiter = 1000
+  convergence = 10 
+)
+

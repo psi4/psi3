@@ -1,0 +1,25 @@
+ATOM	  MULTIPLICITY	   ENERGY		Q.Chem
+____	  ____________	   ______		________
+HYDROGEN       2          -0.499817915630	-0.4998179156	
+HELIUM         1        (A)
+*LITHIUM        2          -7.364318144789	-7.4320054780
+BERYLLIUM      1           -14.5719413399	-14.5719413375
+*BORON          2          -24.5270856328	-24.5270856321
+CARBON         3          -36.94320589673
+NITROGEN       4          -53.98920454790	-54.3953128301
+OXYGEN         3          -74.17918115189
+FLUORINE       2          -98.51692773341	-99.3963359167
+NEON           1          -128.5266321699	
+ SODIUM         2         -161.8459403273	-161.8459403259
+MAGNESIUM      1          -199.3372464912
+ALUMINUM       2          -241.8700791088	-241.8700791056
+SILICON        3          -288.8478188418
+PHOSPHORUS     4          -340.7088235755	-340.7088235731
+SULFUR         3          -397.4958991971	-397.4958991939
+CHLORINE       2          -459.4704361792
+ARGON          1          -526.8069254179	-526.8069253757
+
+* landed on wrong SCF solution -> 
+	fixed by specifying the right occupations 
+
+(A) - not defined for He

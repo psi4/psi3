@@ -1,0 +1,18 @@
+ATOM	  MULTIPLICITY	   ENERGY
+____	  ____________	   ______
+HYDROGEN       2          -0.499948321469
+HELIUM         1          -2.861521995632
+BORON          2          -24.52897511682
+CARBON         3          -37.68832285501
+NITROGEN       4          -54.40022491419
+OXYGEN         3          -74.81106414193
+FLUORINE       2          -99.40920902063
+NEON           1          -128.5437559372
+ALUMINUM       2          -241.8764893655
+SILICON        3          -288.8541211087
+PHOSPHORUS     4          -340.7183493173
+SULFUR         3          -397.5067011090
+CHLORINE       2          -459.4832923157
+ARGON          1          -526.8168048692
+
+** Works fine as long as occupation is specified

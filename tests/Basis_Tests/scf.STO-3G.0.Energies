@@ -1,0 +1,20 @@
+  ATOM	  	   MULTIPLICITY	       ENERGY
+___________	  _______________	  _________________
+HYDROGEN            2                   -0.466581849557
+HELIUM              1                   -3.863496900275
+LITHIUM             2                   -7.315525981281
+BERYLLIUM           1                   -14.351880476202
+BORON               2                   delta
+CARBON              3                   delta
+NITROGEN            4                   delta
+OXYGEN              3                   delta
+FLUORINE            2                   delta
+NEON                1                   -126.604524996805
+SODIUM              2                   -159.668211391173
+MAGNESIUM           1                   -197.007353899716
+ALUMINUM            2                   -238.858358218039
+SILICON             3                   -285.466211176107
+PHOSPHORUS          4                   -336.868769454998
+SULFUR              3                   -393.130219395614
+CHLORINE            2                   -454.542192513669
+ARGON               1                   -521.222880797749

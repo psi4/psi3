@@ -1,0 +1,10 @@
+ATOM	  MULTIPLICITY	   ENERGY
+____	  ____________	   ______
+ALUMINUM       2          -241.8764960348
+SILICON        3          -288.8541298182
+PHOSPHORUS     4          -340.7183493173
+SULFUR         3          -397.5067115229
+CHLORINE       2          -459.4833046869
+ARGON          1          -526.8168048692
+
+** No benchmarks - basis look identical to EMSL 
