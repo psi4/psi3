@@ -56,7 +56,7 @@ timer_on("block_mat");
 	      dpd_error("dpd_block_matrix: No memory left.", stderr);
 	}
 
-      else dpd_error("LIBDPD Error: invalid cachetype.");
+      else dpd_error("LIBDPD Error: invalid cachetype.", stderr);
     }
 
   if(!m || !n) return(NULL);
