@@ -12,9 +12,13 @@ typedef struct {
 
   enum RefType { rhf=1, rohf=2, uhf=3};
 
+  // Cartesian coordinate structure
   typedef struct {
-    int index;
-    double coeff;
+    int index;    // index of the coordinate
+    int atom;     // which atom
+    int xyz;      // x (=0), y (=1), or z (=2)
+    double coeff; // Degeneracy (number of equivalent coords)
+    bool symm;    // Whether plus displacement is equivalent to minus displacement
   } Coord_t;
 
   char *label;

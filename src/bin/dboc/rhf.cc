@@ -13,10 +13,12 @@ extern "C" {
 #include "mo_overlap.h"
 #include "float.h"
 #include "linalg.h"
+#include "hfwfn.h"
 
 extern MOInfo_t MOInfo;
 extern FILE *outfile;
 extern Params_t Params;
+extern HFWavefunction* HFVectors[MAX_NUM_DISP];
 
 extern void done(const char *);
 
@@ -25,11 +27,9 @@ double eval_rhf_derwfn_overlap(DisplacementIndex LDisp, DisplacementIndex RDisp)
   int ndocc = MOInfo.ndocc;
   FLOAT **CSC = eval_S_alpha(LDisp,RDisp);
 
-  chkpt_init(PSIO_OPEN_OLD);
-  int* clsdpi = chkpt_rd_clsdpi();
-  int* orbspi = chkpt_rd_orbspi();
-  int nirreps = chkpt_rd_nirreps();
-  chkpt_close();
+  int* clsdpi = HFVectors[LDisp]->clsdpi();
+  int* orbspi = HFVectors[LDisp]->orbspi();
+  int nirreps = HFVectors[LDisp]->nirreps();
 
   // Extract the occupied block
   FLOAT **CSC_occ = create_matrix(ndocc,ndocc);

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "params.h"
+#include "molecule.h"
 #include "float.h"
 
 #define PRINT_INTRO 1
@@ -9,6 +10,7 @@
 
 extern FILE *outfile;
 extern Params_t Params;
+extern Molecule_t Molecule;
 
 void print_intro()
 {
@@ -31,6 +33,7 @@ void print_params()
     fprintf(outfile,"    sizeof(FLOAT)               = %d\n",sizeof(FLOAT));
     fprintf(outfile,"    Print level                 = %d\n",Params.print_lvl);
     fprintf(outfile,"    Displacement size           = %lf a.u.\n",Params.delta);
+    fprintf(outfile,"    # of disp. per coord        = %d\n",Params.disp_per_coord);
     if (strcmp(Params.wfn,"SCF"))
       fprintf(outfile,"    Wave function               = %s\n",Params.wfn);
     else if (Params.reftype == Params_t::rhf)
@@ -40,24 +43,23 @@ void print_params()
     else if (Params.reftype == Params_t::uhf)
       fprintf(outfile,"    Wave function               = UHF SCF\n");
     fprintf(outfile,"\n");
-    if (Params.coords) {
-      fprintf(outfile,"    User-specified displacements:\n");
-      for(int coord=0; coord<Params.ncoord; coord++) {
-	int atom = Params.coords[coord].index/3;
-	int xyz = Params.coords[coord].index%3;
-	char dir;
-	switch (xyz) {
-	  case 0:  dir = 'x'; break;
-	  case 1:  dir = 'y'; break;
-	  case 2:  dir = 'z'; break;
-	}
-	fprintf(outfile,"      atom %d  %c  degen %5.1lf\n",
-		atom, dir, Params.coords[coord].coeff);
-	fprintf(outfile,"\n");
+
+    fprintf(outfile,"    Cartesian displacements:\n");
+    for(int coord=0; coord<Params.ncoord; coord++) {
+      int atom = Params.coords[coord].index/3;
+      int xyz = Params.coords[coord].index%3;
+      char dir;
+      switch (xyz) {
+      case 0:  dir = 'x'; break;
+      case 1:  dir = 'y'; break;
+      case 2:  dir = 'z'; break;
       }
+      fprintf(outfile,"      atom %d  %c  %7s   degen %5.1lf\n",
+	      atom+1, dir, (Params.coords[coord].symm ? "symm" : "nonsymm"),
+	      Params.coords[coord].coeff);
+      fprintf(outfile,"\n");
     }
-    else
-      fprintf(outfile,"    Makeing displacements along all cartesian degrees of freedom\n\n");
+
     if (Params.isotopes) {
       fprintf(outfile,"    User-specified isotope labels:\n");
       for(int atom=0; atom<Params.nisotope; atom++)
@@ -71,3 +73,15 @@ void print_params()
   fflush(outfile);
 }
   
+void print_geom()
+{
+  if (Params.print_lvl >= PrintLevels::print_intro) {
+    fprintf(outfile, "  -Reference Geometry:\n");
+    for(int i=0; i < Molecule.natom; i++) {
+      fprintf(outfile, "\n   %1.0f ", Molecule.zvals[i]);
+      for(int j=0; j < 3; j++)
+	fprintf(outfile, "%20.10f  ", Molecule.geom[i][j]);
+    }
+    fprintf(outfile, "\n\n");
+  }
+}

@@ -23,6 +23,11 @@ HFWavefunction::HFWavefunction()
   num_ao_ = chkpt_rd_nao();
   
   refnum_ = (reftype) chkpt_rd_ref();
+
+  nirreps_ = chkpt_rd_nirreps();
+  clsdpi_ = chkpt_rd_clsdpi();
+  openpi_ = chkpt_rd_openpi();
+  orbspi_ = chkpt_rd_orbspi();
   
   aotoso_ = chkpt_rd_usotao();
   rref_ = chkpt_rd_rref();
@@ -41,6 +46,9 @@ HFWavefunction::HFWavefunction()
 
 HFWavefunction::~HFWavefunction()
 {
+  free(clsdpi_);
+  free(openpi_);
+  free(orbspi_);
   free_block(aotoso_);
   free_block(rref_);
   free_block(alpha_evec_);
@@ -49,6 +57,18 @@ HFWavefunction::~HFWavefunction()
 
 int
 HFWavefunction::num_ao() { return num_ao_; }
+
+int
+HFWavefunction::nirreps() { return nirreps_; }
+
+int*
+HFWavefunction::clsdpi() { return clsdpi_; }
+
+int*
+HFWavefunction::openpi() { return openpi_; }
+
+int*
+HFWavefunction::orbspi() { return orbspi_; }
 
 double**
 HFWavefunction::alpha_evec() { return alpha_evec_; }
@@ -66,3 +86,11 @@ HFWavefunction::aotoso() { return aotoso_; }
 
 double**
 HFWavefunction::rref() { return rref_; }
+
+void
+HFWavefunction::set_rref(double** rref)
+{
+  for(int i=0; i<3; i++)
+    for(int j=0; j<3; j++)
+      rref_[i][j] = rref[i][j];
+}

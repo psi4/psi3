@@ -39,6 +39,7 @@ static void read_molecule();
 static double eval_dboc();
 extern void print_intro();
 extern void print_params();
+extern void print_geom();
 extern "C" char *gprgid();
 extern void setup_geoms();
 extern double eval_derwfn_overlap();
@@ -71,9 +72,10 @@ int main(int argc, char *argv[])
   FILE *geometry;
 
   init_io(argc,argv);
+  read_molecule();
   parsing();
   print_intro();
-  read_molecule();
+  print_geom();
   print_params();
   read_moinfo();
   setup_geoms();
@@ -125,22 +127,61 @@ void parsing()
     Params.ncoord = 0;
     ip_count(":DBOC:COORDS",&Params.ncoord,0);
     if (Params.ncoord == 0)
-      done("Keyword COORDS should be a vector of 2-element vectors");
+      done("Keyword COORDS should be a vector of 3-element vectors");
     Params.coords = new Params_t::Coord_t[Params.ncoord];
     for(int coord=0; coord<Params.ncoord; coord++) {
       int nelem = 0;
       ip_count(":DBOC:COORDS",&nelem,1,coord);
-      if (nelem != 2)
-	done("Keyword COORDS should be a vector of 2-element vectors");
+      if (nelem != 3)
+	done("Keyword COORDS should be a vector of 3-element vectors");
       errcod = ip_data(":DBOC:COORDS","%d",&Params.coords[coord].index,2,coord,0);
       if (Params.coords[coord].index < 0 || Params.coords[coord].index >= Molecule.natom*3)
 	done("Keyword COORDS contains an out-of-bounds index");
       errcod = ip_data(":DBOC:COORDS","%lf",&Params.coords[coord].coeff,2,coord,1);
+      char *tmpstr;
+      errcod = ip_string(":DBOC:COORDS",&tmpstr,2,coord,2);
+      if (!strcmp(tmpstr,"SYMM"))
+        Params.coords[coord].symm = true;
+      else if (!strcmp(tmpstr,"NONSYMM"))
+        Params.coords[coord].symm = false;
+      else
+	done("Keyword COORDS contains an illegal symmetry specifier");
+      free(tmpstr);
+      Params.coords[coord].atom = Params.coords[coord].index/3;
+      Params.coords[coord].xyz = Params.coords[coord].index%3;
     }
   }
   else {
-    Params.ncoord = 0;
-    Params.coords = NULL;
+    Params.ncoord = 3*Molecule.nuniques;
+    Params.coords = new Params_t::Coord_t[Params.ncoord];
+    int coord = 0;
+    for(int ua=0; ua<Molecule.nuniques; ua++) {
+      int atom = Molecule.ua2a[ua];
+      for(int xyz=0; xyz<3; xyz++) {
+        Params.coords[coord].index = 3*atom + xyz;
+        Params.coords[coord].atom = atom;
+        Params.coords[coord].xyz = xyz;
+        Params.coords[coord].coeff = (double)Molecule.ua_degen[ua];
+	//
+        // Figure out whether the cartesian displacement is symmetric under the symmetry operations of the stabilizer of the molecule
+	// (i.e. intersection of the stabilizers of the nuclei, i.e. the subgroup which leaves the molecule invariant)
+	// If it isn't -- then plus and minus displacements along this coordinate are equivalent
+	//
+	Params.coords[coord].symm = false;
+        for(int G=0; G<Molecule.nirreps; G++) {
+	  int G_in_stab = true;
+	  for(int a=0; a<Molecule.natom; a++)
+	    if ((Molecule.ict[G][a]-1) != a)  // this operation isn't in the stabilizer
+	      G_in_stab = false;
+	  if (G_in_stab) {
+	    int Gxyz = (int) Molecule.cartrep[G][3*xyz+xyz];   // character of G in the basis of the displacement
+	    if (Gxyz == -1)
+	      Params.coords[coord].symm = true;
+	  }
+	}
+        coord++;
+      }
+    }
   }
 
   int isotopes_given = ip_exist(":DBOC:ISOTOPES",0);
@@ -170,17 +211,25 @@ void read_molecule()
 {
   chkpt_init(PSIO_OPEN_OLD);
   Molecule.natom = chkpt_rd_natom();
+  Molecule.nuniques = chkpt_rd_num_unique_atom();
   Molecule.geom = chkpt_rd_geom();
   Molecule.zvals = chkpt_rd_zvals();
+  Molecule.nirreps = chkpt_rd_nirreps();
+  Molecule.ua2a = chkpt_rd_ua2a();
+  Molecule.ict = chkpt_rd_ict();
+  Molecule.cartrep = chkpt_rd_cartrep();
   chkpt_close();
 
-  fprintf(outfile, "  -Reference Geometry:\n");
-  for(int i=0; i < Molecule.natom; i++) {
-    fprintf(outfile, "\n   %1.0f ", Molecule.zvals[i]);
-    for(int j=0; j < 3; j++)
-      fprintf(outfile, "%20.10f  ", Molecule.geom[i][j]);
+  // Compute degeneracy of each unique atom
+  Molecule.ua_degen = init_int_array(Molecule.nuniques);
+  for(int ua=0; ua<Molecule.nuniques; ua++) {
+    int a = Molecule.ua2a[ua];
+    int num_identity_maps = 0;
+    for(int g=0; g<Molecule.nirreps; g++)
+      if (a == (Molecule.ict[g][a]-1))
+        num_identity_maps++;
+    Molecule.ua_degen[ua] = Molecule.nirreps/num_identity_maps;
   }
-  fprintf(outfile, "\n\n");
 }
 
 
@@ -276,22 +325,50 @@ void run_psi_firstdisp(int disp)
 
 void run_psi_otherdisp(int disp)
 {
-  char *inputcmd = new char[80];
-  sprintf(inputcmd,"input --savemos --geomdat %d",disp);
-  int errcod = system(inputcmd);
-  if (errcod) {
-    done("input failed");
-  }
-  errcod = system("psi3 --dboc --noinput --messy");
-  if (errcod) {
-    done("psi3 failed");
-  }
-  delete[] inputcmd;
-
   int disp_coord = (disp-1)%Params.disp_per_coord;
+  int coord = (disp-1)/Params.disp_per_coord;
+  int symm = Params.coords[coord].symm;
 
-  // Read in the displaced HF wavefunction
-  HFVectors[disp_coord] = new HFWavefunction();
+  // If this is an odd displacement means it's a plus displacement. If plus and minus
+  // displacements are equivalent for this coord (symm == true) then an equivalent
+  // displacement has JUST been computed. No need to compute the wave function
+  // again -- just run input, get the rref, and save the wave function.
+  if (!symm || (symm && disp_coord%2 == 0)) {
+    char *inputcmd = new char[80];
+    sprintf(inputcmd,"input --geomdat %d",disp);
+    int errcod = system(inputcmd);
+    if (errcod) {
+      done("input failed");
+    }
+    errcod = system("psi3 --dboc --noinput --messy");
+    if (errcod) {
+      done("psi3 failed");
+    }
+    delete[] inputcmd;
+
+    // Read in the new displaced HF wavefunction
+    HFVectors[disp_coord] = new HFWavefunction();
+  }
+  else {
+
+    // Read in the previous displaced HF wavefunction
+    HFVectors[disp_coord] = new HFWavefunction();
+
+    // only need to update rref
+    char *inputcmd = new char[80];
+    sprintf(inputcmd,"input --savemos --geomdat %d",disp);
+    int errcod = system(inputcmd);
+    if (errcod) {
+      done("input failed");
+    }
+    delete[] inputcmd;
+
+    chkpt_init(PSIO_OPEN_OLD);
+    double** rref_p = chkpt_rd_rref();
+    chkpt_close();
+    HFVectors[disp_coord]->set_rref(rref_p);
+    free_block(rref_p);
+  }
 
   // For CI method rename the saved wave function
   if (!strcmp(Params.wfn,"DETCI") || !strcmp(Params.wfn,"DETCAS")) {
@@ -393,9 +470,9 @@ double eval_dboc()
     // multiply by the degeneracy factor
     E_i *= coord->coeff;
     if (Params.print_lvl >= PrintLevels::print_params) {
-      fprintf(outfile,"  <d2/dx2>                 = %25.15lf\n",del2);
-      fprintf(outfile,"  DBOC contribution from cartesian degree of freedom %d = %20.10lf a.u.\n\n",
-	      coord->index+1,E_i);
+      char xyz = 'x';  xyz = (coord->xyz == 1) ? 'y' : xyz; xyz = (coord->xyz == 2) ? 'z' : xyz;
+      fprintf(outfile,"  <d2/dx2>                    = %25.15lf\n", del2);
+      fprintf(outfile,"  DBOC contribution           = %20.10lf a.u.\n\n", E_i);
       fflush(outfile);
     }
     E_dboc += E_i;

@@ -60,18 +60,18 @@ most abundant isotopes are used for each element.
 This keyword should only be used by advanced users who are familiar with
 how DBOC is evaluated by finite differences.
 The keyword may be used to specify the cartesian nuclear coordinates
-to use in the sum expression for DBOC and their respective coefficients.
+to use in the sum expression for DBOC, their respective coefficients,
+and whether they are symmetric or nonsymmetric with respect displacements.
 .B dboc
-doesn't currently use symmetry to reduce the number of displacements,
-however, all computations are performed in the highest Abelian point group.
-Hence this keyword can be used to reduce the number of displacements and/or
-to specify the exact orbital occupations for specific displcements
-in case the occupation guess produced by
-.B cscf
-is not correct.
-The value for this keyword is an array of 2 element vectors. The first
+can use symmetry to minimize the number of wave function computations.
+Hence this keyword need only be used for diagnostic purposes or when
+displacements along different coordinates need to be run separately (e.g.
+require different occupation vectors).
+The value for this keyword is an array of 3 element vectors. The first
 element of each vector is the index of the cartesian coordinate which to include
-into the sum and the second element is a real coefficient for
-the respective term in the DBOC expression. Indices are C-style, i.e.
-from 0 to 3*natom-1. By default derivative along each Cartesian coordinate
-comes into DBOC expression with coefficient 1.0.
+into the sum. The second element is a real coefficient for
+the respective term in the DBOC expression. The third element is
+a string that can take two values, \fIsymm\fP and \fInonsymm\fP,
+which indicate that the coordinate is symmetric or nonsymmetric
+with respect to displacements, respectively.
+Indices are C-style, i.e. from 0 to 3*natom-1.
