@@ -63,6 +63,9 @@ double ** block_matrix(unsigned long int n, unsigned long int m)
     return(A);
    }
 
+/*!
+** free_block(): Free a block matrix
+*/
 void free_block(double **array)
    {
      if(array == NULL) return;

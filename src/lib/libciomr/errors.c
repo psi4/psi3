@@ -1,8 +1,16 @@
+/*!
+  \file errors.c
+  \brief Print error messages and abort for various errors
+*/
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:18  evaleev
- * Initial revision
+ * Revision 1.2  2002/04/18 21:47:35  sherrill
+ * Here's some changes to document via doxygen and upgrade to ANSI C
+ * instead of K&R declarations.
  *
+/* Revision 1.1.1.1  2000/02/04 22:53:18  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 2.4  1999/11/01 20:10:55  evaleev
 /* Added explicit extern declarations of functions within the library.
 /*
@@ -29,53 +37,66 @@ static char *rcsid = "$Id$";
 #include "includes.h"
 #include "types.h"
 
-void
-no_path_given(name)
-char *name;
+/*!
+** no_path_given(): Print error message for no path given and abort
+**
+** \param name = name of calling routine
+*/ 
+void no_path_given(char *name)
 {
   fprintf(stderr,"%s: no path given\n",name);
   ioabort();
-  }
+}
 
-void
-malloc_check(caller,data)
-char *caller;
-char *data;
+/*!
+** malloc_check(): Check to see if malloc succeeded or failed.  If failure,
+** print error and abort.
+**
+** \param caller = name of calling routine
+** \param data = pointer to new data (supposed to be char *, not very
+**               useful anymore...) 
+*/
+void malloc_check(char *caller, char *data)
 {
   if (!data) {
     fprintf(stderr,"%s: malloc failed\n",caller);
     perror("malloc");
     ioabort();
     }
-  }
+}
 
-void
-fopen_check(caller,path,data)
-char *caller;
-char *path;
-char *data;
+/*!
+** fopen_check(): See if fopen worked; if not, print error and abort
+** \param caller = name of calling routine
+** \param path = path for fopen
+** \param data = pointer for output stream (probably shouldn't really 
+**               be char *)
+*/
+void fopen_check(char *caller, char *path, char *data)
 {
   if (!data) {
     fprintf(stderr,"%s: fopen failed for %s\n",caller,path);
     perror("fopen");
     ioabort();
     }
-  }
+}
 
-void
-fread_error(caller)
-char *caller;
+/*!
+** fread_error(): If error in fread, print error and abort
+*/
+void fread_error(char *caller)
 {
   fprintf(stderr,"%s: fread failed\n",caller);
   perror("fread");
   ioabort();
-  }
+}
 
-void
-fwrite_error(caller)
-char *caller;
+/*!
+** fwrite_error(): If error in fwrite, print error and abort
+*/
+void fwrite_error(char *caller)
 {
   fprintf(stderr,"%s: fwrite failed\n",caller);
   perror("fwrite");
   ioabort();
-  }
+}

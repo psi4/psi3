@@ -88,8 +88,7 @@ void fndcor(long int *maxcrb, FILE *infile, FILE *outfile)
 }
 
 
-static void fndcor_abort(infile, outfile)
-      FILE *infile, *outfile ;
+static void fndcor_abort(FILE *infile, FILE *outfile)
 {
    fprintf(stderr, "Error: can't read MEMORY keyword!\n") ;
    fprintf(outfile, "Error: can't read MEMORY keyword!\n") ;

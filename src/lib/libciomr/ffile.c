@@ -1,8 +1,11 @@
-
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:18  evaleev
- * Initial revision
+ * Revision 1.2  2002/04/18 21:47:35  sherrill
+ * Here's some changes to document via doxygen and upgrade to ANSI C
+ * instead of K&R declarations.
  *
+/* Revision 1.1.1.1  2000/02/04 22:53:18  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 2.3  1997/08/25 21:49:46  crawdad
 /* Making changes for extension of PSI file size limit.
 /*
@@ -21,14 +24,22 @@
 
 static char *rcsid = "$Id$";
 
+/*!
+** \file ffile.c
+*/ 
+
 #include "iomrparam.h"
 #include "includes.h"
 
-void ffile(unit,name,code)
-  FILE **unit;
-  char *name;
-  int code;
-
+/*!
+** ffile(): Open an ASCII file for reading/writing.  Returns a pointer
+** to the new file in argument unit.
+**
+** \param unit = pointer to hold a FILE pointer
+** \param name = filename to open
+** \param code = 0 (write), 1 (write/append), 2 (read)
+*/
+void ffile(FILE **unit,char *name,int code)
   {
       if (name[0] == ' ') {
          fprintf(stderr,"ffile no longer has a default filename\n");

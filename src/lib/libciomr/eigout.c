@@ -1,8 +1,15 @@
+/*!
+  \file eigout.c
+*/
 
 /* $Log$
- * Revision 1.1  2000/02/04 22:53:18  evaleev
- * Initial revision
+ * Revision 1.2  2002/04/18 21:47:35  sherrill
+ * Here's some changes to document via doxygen and upgrade to ANSI C
+ * instead of K&R declarations.
  *
+/* Revision 1.1.1.1  2000/02/04 22:53:18  evaleev
+/* Started PSI 3 repository
+/*
 /* Revision 2.3  1995/01/17 19:56:52  local
 /* Fixed undeclared variable bug.  Minor modification.
 /*
@@ -17,11 +24,14 @@ static char *rcsid = "$Id$";
 
 #include "includes.h"
 
-void eigout(a,b,c,m,n,out)
-   double **a, *b, *c;
-   int m,n;
-   FILE *out;
-
+/*!
+** eigout(): Print out eigenvectors and eigenvalues.  Prints an n x m
+** matrix of eigenvectors.  Under each eigenvector, the corresponding
+** elements of two arrays, b and c, will also be printed.  This is
+** useful for printing, for example, the SCF eigenvectors with their
+** associated eigenvalues (orbital energies) and also the population.
+*/
+void eigout(double **a, double *b, double *c, int m, int n, FILE *out)
    {
       int ii,jj,kk,nn;
       int i,j;

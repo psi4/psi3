@@ -5,18 +5,23 @@ static char *rcsid = "$Id$";
 extern void ludcmp(double **, int, int *, double *);
 extern void lubksb(double **, int, int *, double *);
 
-/* solves linear equations A * x = b */
-/* on input a contains coefficients, and b contains */
-/* known vectors.  in is the dimension of a(in*in) */
-/* im is the number of b vectors */
-/* det returns determinant of matrix a */
+/*!
+** \file flin.c
+*/ 
 
-void flin(a,b,in,im,det)
-   double **a, *b, *det;
-   int in, im;
+/*
+** flin(): solves linear equations A * x = b.
+**
+** \param a   = coefficient matrix
+** \param b   = known vectors
+** \param in  = dimension of a(in*in)
+** \param im  = number of b vectors
+** \param det = pointer to hold determinant of matrix a
+*/
 
+void flin(double **a, double *b, int in, int im, double *det)
 {
-int i,j,k,*indx;
+    int i,j,k,*indx;
 
     indx = (int *) init_array(in);
 
