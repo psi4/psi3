@@ -4,7 +4,7 @@
 #include "globals.h"
 
 /* compute remaining matrix elements for [ H, e^T1 ] which are not needed by
- * ccenergy for CC3 but are needed for CC3 EOM
+ * ccenergy for CC3 but are needed for CC3 EOM and CC3 Lambda and CC3 response.
  *
  * Wmbej = <mb||ej> + t_j^f <mb||ef> - t_n^b <mn||ej> - t_j^f t_n^b <mn||ef> 
  *
@@ -702,3 +702,4 @@ void purge_HET1_Wmbej(void) {
   dpd_file4_close(&W);
   return;
 }
+

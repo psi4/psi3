@@ -25,6 +25,15 @@ void cc3(void)
     cc3_UHF_AAB();
     cc3_UHF_BBA();
 
+    /*
+    dpd_file2_init(&t1, CC_OEI, 0, 0, 1, "New tIA");
+    dpd_file2_print(&t1, outfile);
+    dpd_file2_close(&t1);
+
+    dpd_file2_init(&t1, CC_OEI, 0, 2, 3, "New tia");
+    dpd_file2_print(&t1, outfile);
+    dpd_file2_close(&t1);
+
     dpd_buf4_init(&T2, CC_TAMPS, 0, 2, 7, 2, 7, 0, "New tIJAB");
     dpd_buf4_print(&T2, outfile, 1);
     dpd_buf4_close(&T2);
@@ -35,7 +44,7 @@ void cc3(void)
 
     dpd_buf4_init(&T2, CC_TAMPS, 0, 22, 28, 22, 28, 0, "New tIjAb");
     dpd_buf4_print(&T2, outfile, 1);
-    dpd_buf4_close(&T2);
-
+    dpd_buf4_close(&T2); 
+    */
   }
 }

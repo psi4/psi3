@@ -1,7 +1,8 @@
 
 /* T3_RHF_AAB(): Computes all T3(IJK,ABC) amplitudes for a given I, J,
 ** K combination for input T2, F, and E intermediates.  This function
-** is specifically for AAB or BBA spin cases with RHF/ROHF orbitals.
+** will work for AAB or BBA spin cases with either RHF/ROHF or UHF
+** orbitals.
 **
 ** Arguments: 
 **
@@ -56,11 +57,11 @@
 #include <libdpd/dpd.h>
 #include <ccfiles.h>
 
-void T3_RHF_AAB(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int Gk, 
-		dpdbuf4 *T2AA, dpdbuf4 *T2AB, dpdbuf4 *T2BA, dpdbuf4 *FAA, dpdbuf4 *FAB, dpdbuf4 *FBA,
-		dpdbuf4 *EAA, dpdbuf4 *EAB, dpdbuf4 *EBA, dpdfile2 *fIJ, dpdfile2 *fij, 
-		dpdfile2 *fAB, dpdfile2 *fab, int *aoccpi, int *aocc_off, int *boccpi, int *bocc_off,
-		int *avirtpi, int *avir_off, int *bvirtpi, int *bvir_off)
+void T3_AAB(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int Gk, 
+	    dpdbuf4 *T2AA, dpdbuf4 *T2AB, dpdbuf4 *T2BA, dpdbuf4 *FAA, dpdbuf4 *FAB, dpdbuf4 *FBA,
+	    dpdbuf4 *EAA, dpdbuf4 *EAB, dpdbuf4 *EBA, dpdfile2 *fIJ, dpdfile2 *fij, 
+	    dpdfile2 *fAB, dpdfile2 *fab, int *aoccpi, int *aocc_off, int *boccpi, int *bocc_off,
+	    int *avirtpi, int *avir_off, int *bvirtpi, int *bvir_off)
 {
   int h;
   int i, j, k;

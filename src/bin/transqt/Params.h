@@ -49,8 +49,8 @@ struct Params {
   char *ref;                    /* string for reference type              */
   char *dertype;                /* derivative lvl: none, first, second..  */
   double tolerance;             /* tolerance on keeping integrals         */
-  long int maxcor;              /* maximum available core memory in bytes */
-  long int maxcord;             /* max ava core memory in doubles         */
+  unsigned long int maxcor;     /* maximum available core memory in bytes */
+  unsigned long int maxcord;    /* max ava core memory in doubles         */
   int fzc;                      /* really freeze core? (1 or 0)           */
   int del_restr_docc;           /* delete the restricted docc orbs? 1/0  */
   int print_reorder;            /* print the reordering array?            */

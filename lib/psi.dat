@@ -388,7 +388,7 @@ psi: (
   CC3Energy = ($ints $scf $transqt $ccsort $ccenergy)
   CC3RHFEnergy = ($CC3Energy $done)
   CC3ROHFEnergy = ERROR
-  CC3UHFEnergy = ERROR
+  CC3UHFEnergy = ($CC3Energy $done)
   CCTwoConEnergy = ERROR
 
   % -------------------------------- EOM CCSD Procedures

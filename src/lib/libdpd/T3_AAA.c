@@ -1,7 +1,8 @@
 
 /* T3_RHF_AAA(): Computes all T3(IJK,ABC) amplitudes for a given I, J,
 ** K combination for input T2, F, and E intermediates.  This function
-** is specifically for AAA or BBB spin cases, with RHF/ROHF orbitals.
+** will work for AAA or BBB spin cases, with either RHF/ROHF or UHF
+** orbitals.
 **
 ** Arguments: 
 **
@@ -56,9 +57,9 @@
 #include <libdpd/dpd.h>
 #include <ccfiles.h>
 
-void T3_RHF_AAA(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int Gk, 
-		dpdbuf4 *T2, dpdbuf4 *F, dpdbuf4 *E, dpdfile2 *fIJ, dpdfile2 *fAB, 
-		int *occpi, int *occ_off, int *virtpi, int *vir_off)
+void T3_AAA(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int Gk, 
+	    dpdbuf4 *T2, dpdbuf4 *F, dpdbuf4 *E, dpdfile2 *fIJ, dpdfile2 *fAB, 
+	    int *occpi, int *occ_off, int *virtpi, int *vir_off)
 {
   int h;
   int i, j, k;

@@ -1,0 +1,601 @@
+******************************************************************************
+tstart called on ganymede.local
+Fri Jul  9 19:38:44 2004
+
+                                --------------
+                                  WELCOME TO
+                                    PSI  3
+                                --------------
+
+  LABEL       =	CC3 H2O+ Test
+  SHOWNORM    =	0
+  PUREAM      =	0
+  PRINT_LVL   =	1
+
+  Parsed basis sets from /Users/crawdad/share/pbasis.dat
+
+  -Geometry before Center-of-Mass shift (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.009000000000
+        HYDROGEN      0.000000000000    -1.515263000000    -1.058898000000
+        HYDROGEN      0.000000000000     1.515263000000    -1.058898000000
+
+
+  -Rotational constants (cm-1) :
+    A =   30.50916  B =   13.00778  C =    9.11958
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.117499201605     0.000000000000
+        HYDROGEN     -1.515263000000    -0.932398798395     0.000000000000
+        HYDROGEN      1.515263000000    -0.932398798395     0.000000000000
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S ( 11720.00000000     0.00071000)
+           (  1759.00000000     0.00547000)
+           (   400.80000000     0.02783700)
+           (   113.70000000     0.10480000)
+           (    37.03000000     0.28306200)
+           (    13.27000000     0.44871900)
+           (     5.02500000     0.27095200)
+           (     1.01300000     0.01545800)
+           (     0.30230000    -0.00258500) )
+        (S ( 11720.00000000    -0.00016000)
+           (  1759.00000000    -0.00126300)
+           (   400.80000000    -0.00626700)
+           (   113.70000000    -0.02571600)
+           (    37.03000000    -0.07092400)
+           (    13.27000000    -0.16541100)
+           (     5.02500000    -0.11695500)
+           (     1.01300000     0.55736800)
+           (     0.30230000     0.57275900) )
+        (S (     0.30230000     1.00000000) )
+        (P (    17.70000000     0.04301800)
+           (     3.85400000     0.22891300)
+           (     1.04600000     0.50872800)
+           (     0.27530000     0.46053100) )
+        (P (     0.27530000     1.00000000) )
+        (D (     1.18500000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    13.01000000     0.01968500)
+           (     1.96200000     0.13797700)
+           (     0.44460000     0.47814800)
+           (     0.12200000     0.50124000) )
+        (S (     0.12200000     1.00000000) )
+        (P (     0.72700000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 12
+    Number of primitives   = 31
+    Number of AO           = 25
+    Number of SO           = 24
+
+    Irrep    Number of SO
+    -----    ------------
+      1           11
+      2            2
+      3            4
+      4            7
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.117499201605
+        HYDROGEN      0.000000000000     1.515263000000    -0.932398798395
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.117499201605
+        HYDROGEN      0.000000000000    -1.515263000000    -0.932398798395
+        HYDROGEN      0.000000000000     1.515263000000    -0.932398798395
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.062177904265
+        HYDROGEN      0.000000000000    -0.801842705851    -0.493404231105
+        HYDROGEN      0.000000000000     0.801842705851    -0.493404231105
+
+
+  -Geometry in the reference coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.117499201605
+        HYDROGEN      0.000000000000    -1.515263000000    -0.932398798395
+        HYDROGEN      0.000000000000     1.515263000000    -0.932398798395
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       9.009354229663
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   0.9755118   0.0000000
+    3   0.9755118   1.6036854   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+tstop called on ganymede.local
+Fri Jul  9 19:38:44 2004
+
+user time   =       0.15 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on ganymede.local
+Fri Jul  9 19:38:44 2004
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = CC3 H2O+ Test
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 24
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 11412 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on ganymede.local
+Fri Jul  9 19:38:44 2004
+
+user time   =       0.45 seconds =       0.01 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on ganymede.local
+Fri Jul  9 19:38:44 2004
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+Cannot check consistency of the multiplicity
+
+and number of electrons, double check
+your occupations
+
+  label        = CC3 H2O+ Test
+  wfn          = CC3
+  reference    = UHF
+  multiplicity = 2
+  charge       = 1
+  direct       = false
+  dertype      = NONE
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        9.0093542296627
+  first run, so defaulting to core-hamiltonian guess
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 92528 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.076066e-02
+
+
+  Using DOCC and SOCC to 
+  determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     0     1   
+  SOCC:              0     0     1     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+
+      5210 integrals written to file92 in   1 buffers
+         0 integrals written to file93 in   1 buffers
+  wrote 0 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -70.6855432533    7.969490e+01    0.000000e+00    0.000000e+00
+    2       -73.5391931502    2.853650e+00    1.352219e-01    8.172962e-01
+    3       -75.5998924677    2.060699e+00    2.881181e-02    7.245944e-01
+    4       -75.6320036789    3.211121e-02    4.673192e-03    9.830106e-02
+    5       -75.6339063092    1.902630e-03    1.001759e-03    1.868169e-02
+    6       -75.6340507346    1.444254e-04    2.761482e-04    4.102917e-03
+    7       -75.6340607058    9.971154e-06    8.382803e-05    1.188551e-03
+    8       -75.6340621026    1.396837e-06    2.768964e-05    5.438843e-04
+    9       -75.6340624115    3.089279e-07    1.753040e-05    1.935265e-04
+   10       -75.6340624206    9.081248e-09    3.297448e-06    5.298352e-05
+   11       -75.6340624208    1.854659e-10    4.613137e-07    5.952168e-06
+   12       -75.6340624208    1.099920e-11    8.627494e-08    1.267520e-06
+   13       -75.6340624208    1.080025e-12    3.246977e-08    3.877439e-07
+   14       -75.6340624208    5.684342e-14    5.408793e-09    9.139777e-08
+   15       -75.6340624208    0.000000e+00    1.486974e-09    2.882504e-08
+   16       -75.6340624208    0.000000e+00    5.557952e-10    1.195639e-08
+   17       -75.6340624208    2.842171e-14    3.339850e-10    4.555354e-09
+   18       -75.6340624208   -2.842171e-14    1.723127e-10    2.234104e-09
+   19       -75.6340624208    2.842171e-14    3.289177e-11    3.934112e-10
+
+Orbital energies (a.u.):
+
+  Alpha Occupied orbitals
+   1A1    -21.134242     2A1     -1.897912     1B2     -1.215114  
+   1B1     -1.123201     3A1     -1.080004  
+
+  Alpha Unoccupied orbitals
+   4A1     -0.144520     2B2     -0.061415     3B2      0.404336  
+   5A1      0.410920     2B1      0.675866     6A1      0.712554  
+   4B2      0.824019     1A2      1.021859     7A1      1.078877  
+   3B1      1.272432     8A1      1.409410     5B2      1.483004  
+   9A1      1.958117     6B2      1.978042     4B1      2.676405  
+   2A2      2.781501    10A1      2.928831    11A1      3.375924  
+   7B2      3.597505  
+
+  Beta Occupied orbitals
+   1A1    -21.089002     2A1     -1.739799     1B2     -1.177609  
+   3A1     -1.028404  
+
+  Beta Unoccupied orbitals
+   1B1     -0.307757     4A1     -0.129916     2B2     -0.052917  
+   3B2      0.403481     5A1      0.425377     6A1      0.733770  
+   4B2      0.840802     2B1      0.874092     1A2      1.051558  
+   7A1      1.091152     3B1      1.299284     8A1      1.458681  
+   5B2      1.480208     6B2      1.989451     9A1      2.013603  
+   4B1      2.782780     2A2      2.886343    10A1      2.973700  
+  11A1      3.443997     7B2      3.615709  
+
+
+        SCF total energy   =     -75.634062420798
+        kinetic energy     =      75.610303136447
+        nuc. attr. energy  =    -193.411849517748
+        elec. rep. energy  =      42.167483960503
+        potential energy   =    -151.244365557245
+        virial theorem     =       1.999685865289
+        wavefunction norm  =       1.000000000000
+        <S^2>              =       0.006409684071
+******************************************************************************
+tstop called on ganymede.local
+Fri Jul  9 19:38:44 2004
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on ganymede.local
+Fri Jul  9 19:38:44 2004
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CC3
+	Reference orbitals     =  UHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            =  Yes
+	Delete Restricted Docc =  No
+	Do All TEI             =  No
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  199
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Semicanonical orbitals =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 24
+	Number of MOs    = 24
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   11	   11	    0	    3	    0	    8	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    0	    1	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         9.0093542297
+	Total SCF Energy            =       -75.6340624208
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron integrals...
+
+
+	Frozen core energy =    0.000000000000000
+
+	Beginning AA/AB two-electron transform...
+	Sorting AA/AB half-transformed integrals...
+	Finished AA/AB half-transformation...
+
+	AA Transformation finished.
+	Two-electron AA integrals written to file81.
+
+	AB Transformation finished.
+	Two-electron AB integrals written to file83.
+
+	Beginning BB two-electron transform...
+	Sorting BB half-transformed integrals...
+	Finished BB half-transformation...
+
+	BB Transformation finished.
+	Two-electron BB integrals written to file82.
+
+	Transforming one-electron integrals...
+	One-electron A integrals written to file 35.
+	One-electron B integrals written to file 35.
+	Alpha frozen-core operator written to file 35.
+	Beta frozen-core operator written to file 35.
+******************************************************************************
+tstop called on ganymede.local
+Fri Jul  9 19:38:46 2004
+
+user time   =       0.37 seconds =       0.01 minutes
+system time =       3.38 seconds =       0.06 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on ganymede.local
+Fri Jul  9 19:38:46 2004
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	CC3
+	Reference wfn   =	UHF
+	Derivative      =	None
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Local CC        =     No
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 24
+	Number of active MOs = 24
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   11	    0	    3	    0	    8	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    0	    1	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.00935422966266
+	SCF energy          (chkpt) =    -75.63406242079783
+
+	Size of <Ab|Cd> integrals:     0.013 (MW) /     0.108 (MB)
+	Size of <Ia|Bc> integrals:     0.004 (MW) /     0.032 (MB)
+	Size of TIjAb amplitudes:      0.001 (MW) /     0.009 (MB)
+
+	One-electron energy          =   -117.80154638130065
+	Two-electron (AA) energy     =      7.85329580951575
+	Two-electron (BB) energy     =      4.64043020362846
+	Two-electron (AB) energy     =     20.66440371769596
+	Two-electron energy          =     33.15812973084017
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -75.63406242079783
+******************************************************************************
+tstop called on ganymede.local
+Fri Jul  9 19:38:47 2004
+
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.33 seconds =       0.01 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on ganymede.local
+Fri Jul  9 19:38:47 2004
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    9.009354229662664
+	SCF energy          (chkpt)   =  -75.634062420797832
+	Reference energy    (file100) =  -75.634062420797832
+
+	Input parameters:
+	-----------------
+	Wave function   =       CC3
+	Reference wfn   =      UHF
+	Memory (Mbytes) =  256.0
+	Maxiter         =     50
+	Convergence     = 1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	Local CC        =     No
+	AO Basis        =     NONE
+	Cache Level     =    2
+	Cache Type      =     LRU
+	Print Level     =    0
+	# Amps to Print =    10
+	Print MP2 Amps? =    No
+	Analyze T2 Amps =    No
+
+	            Solving CC Amplitude Equations
+	            ------------------------------
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.153680329892026    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.167535244579795    3.127e-02    0.005064    0.000000    0.000000
+     2        -0.172011224019640    1.193e-02    0.007430    0.000000    0.000000
+     3        -0.172371054098161    3.976e-03    0.008241    0.000000    0.000000
+     4        -0.172389181023989    1.593e-03    0.008351    0.000000    0.000000
+     5        -0.172416866884759    6.345e-04    0.008363    0.000000    0.000000
+     6        -0.172420716123788    1.917e-04    0.008345    0.000000    0.000000
+     7        -0.172420584590765    6.228e-05    0.008342    0.000000    0.000000
+     8        -0.172420664890420    2.111e-05    0.008342    0.000000    0.000000
+     9        -0.172420633173553    7.058e-06    0.008343    0.000000    0.000000
+    10        -0.172420628835826    1.668e-06    0.008343    0.000000    0.000000
+    11        -0.172420620237333    3.627e-07    0.008344    0.000000    0.000000
+    12        -0.172420616094417    9.903e-08    0.008343    0.000000    0.000000
+
+	Iterations converged.
+
+
+	Largest TIA Amplitudes:
+	          4  13        -0.0096012460
+	          2   0        -0.0091620546
+	          4  14        -0.0063894646
+	          1   0        -0.0062434743
+	          3  10         0.0061650717
+	          2   1         0.0057653274
+	          4  17         0.0042317637
+	          1   1         0.0038390328
+	          2   2        -0.0031692571
+	          1   2         0.0029610687
+
+	Largest Tia Amplitudes:
+	          2   0        -0.0072053052
+	          3  18         0.0059201100
+	          1   5        -0.0057841977
+	          2   1         0.0047388886
+	          1   1        -0.0043719506
+	          3  16         0.0038055372
+	          2   3        -0.0030472425
+	          3  14        -0.0027312990
+	          2   4        -0.0025621606
+	          1   6         0.0019769349
+
+	Largest TIJAB Amplitudes:
+	  3   2  10   2         0.0221410234
+	  4   3  13  10         0.0180934452
+	  4   2  13   2        -0.0174572608
+	  4   3  15  10        -0.0170932986
+	  4   2  14   2        -0.0137342328
+	  4   2  15   2         0.0119288535
+	  4   3   8   1        -0.0114661716
+	  3   2  12   6         0.0106029619
+	  3   2  10   1        -0.0105462875
+	  3   1  10   0         0.0103598894
+
+	Largest Tijab Amplitudes:
+	  3   2  14   2        -0.0174892640
+	  3   2  15   2        -0.0140746096
+	  3   2  16   2        -0.0115037731
+	  3   1  10   8        -0.0099757867
+	  3   2  15   3        -0.0098981847
+	  2   1  12  10         0.0090314176
+	  2   1  13  10        -0.0089390073
+	  3   2  16   1         0.0088124356
+	  3   2  18   2        -0.0081869383
+	  2   1   2   0        -0.0077220791
+
+	Largest TIjAb Amplitudes:
+	  2   2   2   2        -0.0364686779
+	  4   3  13  14        -0.0303637949
+	  4   3  14  15        -0.0301136638
+	  3   2  10   2         0.0293039506
+	  4   3   1   1         0.0249857778
+	  3   1   1  10         0.0247059470
+	  4   3  13  15        -0.0232314684
+	  3   3  10  14         0.0226985037
+	  4   3  14  14        -0.0225613277
+	  3   1   0  10        -0.0225549313
+
+	SCF energy       (chkpt)   =  -75.634062420797832
+	Reference energy (file100) =  -75.634062420797832
+	MP2 correlation energy     =   -0.153680329892026
+	Total MP2 energy           =  -75.787742750689858
+	CC3 correlation energy     =   -0.172420616094417
+	Total CC3 energy           =  -75.806483036892246
+
+******************************************************************************
+tstop called on ganymede.local
+Fri Jul  9 19:39:33 2004
+
+user time   =      29.05 seconds =       0.48 minutes
+system time =      47.87 seconds =       0.80 minutes
+total time  =         46 seconds =       0.77 minutes
