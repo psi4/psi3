@@ -441,6 +441,13 @@ psi: (
   CC2UHFEnergy = ($CC2Energy $done)
   CC2ROHFEnergy = ($CC2Energy $done)
   
+  % Procedure for an CC2 linear response calculation
+  CC2Response = ($CC2Energy $cchbar $cclambda $propint $ccresponse $done)
+  CC2RHFResponse = $CC2Response
+  CC2UHFResponse = ERROR
+  CC2ROHFResponse = ERROR
+  CC2TwoConResponse = ERROR
+
   % -------------------------------- CC3 Procedures
   % Procedures for the CC3 energy
   CC3Energy = ($ints $scf $transqt $ccsort $ccenergy)
