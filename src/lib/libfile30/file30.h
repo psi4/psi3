@@ -44,6 +44,7 @@ int *file30_rd_sopi(void);
 int *file30_rd_clsdpi(void);
 int **file30_rd_ict(void);
 int **file30_rd_shell_transm(void);
+int file30_rd_rottype(void);
 int file30_rd_num_unique_atom(void);
 int file30_rd_num_unique_shell(void);
 int file30_rd_iopen(void);

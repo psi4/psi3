@@ -11,6 +11,7 @@ TARGET = $(top_objdir)/lib/libfile30.a
 TRUESRC = \
 init.c \
 close.c \
+rd_rottype.c \
 rd_eref.c \
 rd_schwartz.c \
 rd_symoper.c \
@@ -37,8 +38,6 @@ rd_snumg.c \
 rd_stype.c \
 rd_sloc.c \
 rd_sprim.c \
-rd_smax.c \
-rd_smin.c \
 rd_snuc.c \
 rd_exps.c \
 rd_nshell.c \
@@ -77,9 +76,6 @@ rd_zvals.c \
 rd_ict.c \
 wt_eref.c \
 wt_enuc.c \
-wt_shell_transm.c \
-wt_isc.c \
-wt_ipc.c \
 wt_escf.c \
 wt_ecorr.c \
 wt_clsdpi.c \
@@ -96,9 +92,7 @@ wt_evals.c \
 wt_alpha_blk_scf.c \
 wt_beta_blk_scf.c \
 wt_blk_scf.c \
-wt_zvals.c \
-pack_4int.c \
-unpack_4int.c \
+wt_zvals.c
 
 DEPENDINCLUDE = file30.h file30.gbl
 
