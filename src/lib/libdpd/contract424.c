@@ -28,7 +28,7 @@ extern FILE *outfile;
 int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
     int sum_Y, int Ztrans, double alpha, double beta)
 {
-  int h, nirreps, GX, GY, GZ, hxbuf, hzbuf, h0, hx, hy, hz;
+  int h, nirreps, GX, GY, GZ, hxbuf, hzbuf, h0, Hx, Hy, Hz;
   int rking=0, symlink;
   int Xtrans,Ytrans;
   int *numlinks, *numrows, *numcols;
@@ -169,42 +169,42 @@ int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
       }
 
       if(rking)
-        for(hz=0; hz < nirreps; hz++) {
-          if      (!Xtrans && !Ytrans) {hx=hz;       hy = hz^GX; }
-          else if (!Xtrans &&  Ytrans) {hx=hz;       hy = hz^GX^GY; }
-          else if ( Xtrans && !Ytrans) {hx=hz^GX;    hy = hz^GX; }
-          else if ( Xtrans &&  Ytrans) {hx=hz^GX;    hy = hz^GX^GY; }
+        for(Hz=0; Hz < nirreps; Hz++) {
+          if      (!Xtrans && !Ytrans) {Hx=Hz;       Hy = Hz^GX; }
+          else if (!Xtrans &&  Ytrans) {Hx=Hz;       Hy = Hz^GX^GY; }
+          else if ( Xtrans && !Ytrans) {Hx=Hz^GX;    Hy = Hz^GX; }
+          else if ( Xtrans &&  Ytrans) {Hx=Hz^GX;    Hy = Hz^GX^GY; }
 #ifdef DPD_DEBUG
-          if((xrow[hz] != zrow[hz]) || (ycol[hz] != zcol[hz]) ||
-              (xcol[hz] != yrow[hz])) {
+          if((xrow[Hz] != zrow[Hz]) || (ycol[Hz] != zcol[Hz]) ||
+              (xcol[Hz] != yrow[Hz])) {
             fprintf(stderr, "** Alignment error in contract424 **\n");
-            fprintf(stderr, "** Irrep: %d; Subirrep: %d **\n",hxbuf,hz);
+            fprintf(stderr, "** Irrep: %d; Subirrep: %d **\n",hxbuf,Hz);
             dpd_error("dpd_contract424", stderr);
           }
 #endif      
-	  /* fprintf(outfile,"hx %d hy %d hz %d\n",hx,hy,hz);
-	     fprintf(outfile,"numrows %d numlinks %d numcols %d\n",numrows[hz],numlinks[hy],numcols[hz]); */
-          newmm_rking(Xmat[hx], Xtrans, Y->matrix[hy], Ytrans,
-              Zmat[hz], numrows[hz], numlinks[hy^symlink],
-              numcols[hz], alpha, 1.0);
+	  /* fprintf(outfile,"Hx %d Hy %d Hz %d\n",Hx,Hy,Hz);
+	     fprintf(outfile,"numrows %d numlinks %d numcols %d\n",numrows[Hz],numlinks[Hy],numcols[Hz]); */
+          newmm_rking(Xmat[Hx], Xtrans, Y->matrix[Hy], Ytrans,
+              Zmat[Hz], numrows[Hz], numlinks[Hy^symlink],
+              numcols[Hz], alpha, 1.0);
         }
       else 
-        for(hz=0; hz < nirreps; hz++) {
-          if      (!Xtrans && !Ytrans) {hx=hz;       hy = hz^GX; }
-          else if (!Xtrans &&  Ytrans) {hx=hz;       hy = hz^GX^GY; }
-          else if ( Xtrans && !Ytrans) {hx=hz^GX;    hy = hz^GX; }
-          else if ( Xtrans &&  Ytrans) {hx=hz^GX;    hy = hz^GX^GY; }
+        for(Hz=0; Hz < nirreps; Hz++) {
+          if      (!Xtrans && !Ytrans) {Hx=Hz;       Hy = Hz^GX; }
+          else if (!Xtrans &&  Ytrans) {Hx=Hz;       Hy = Hz^GX^GY; }
+          else if ( Xtrans && !Ytrans) {Hx=Hz^GX;    Hy = Hz^GX; }
+          else if ( Xtrans &&  Ytrans) {Hx=Hz^GX;    Hy = Hz^GX^GY; }
 #ifdef DPD_DEBUG
-          if((xrow[hz] != zrow[hz]) || (ycol[hz] != zcol[hz]) ||
-              (xcol[hz] != yrow[hz])) {
+          if((xrow[Hz] != zrow[Hz]) || (ycol[Hz] != zcol[Hz]) ||
+              (xcol[Hz] != yrow[Hz])) {
             fprintf(stderr, "** Alignment error in contract424 **\n");
-            fprintf(stderr, "** Irrep: %d; Subirrep: %d **\n",hxbuf,hz);
+            fprintf(stderr, "** Irrep: %d; Subirrep: %d **\n",hxbuf,Hz);
             dpd_error("dpd_contract424", stderr);
           }
 #endif	    	      
-          newmm(Xmat[hx], Xtrans, Y->matrix[hy], Ytrans,
-              Zmat[hz], numrows[hz], numlinks[hy^symlink],
-              numcols[hz], alpha, 1.0);
+          newmm(Xmat[Hx], Xtrans, Y->matrix[Hy], Ytrans,
+              Zmat[Hz], numrows[Hz], numlinks[Hy^symlink],
+              numcols[Hz], alpha, 1.0);
         }
 
       if(sum_X == 0) dpd_buf4_mat_irrep_close(X, hxbuf);

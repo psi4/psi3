@@ -39,7 +39,9 @@ int dpd_dot24(dpdfile2 *T, dpdbuf4 *I, dpdfile2 *Z,
 
     /* Loop over row irreps of the target Z, GZ = Gpr */
     for(Gp=0; Gp < nirreps; Gp++) {
-      //Gr = Gp; //Gq = Gs = h^Gp;
+    /* Gr = Gp; 
+       Gq = Gs = h^Gp;
+     */
       Gq = h^Gp; Gr = Gp^GZ; Gs = h^Gp^GT;
       if (!transt) Tblock = Gq; else Tblock = Gs;
       if (!transz) Zblock = Gp; else Zblock = Gr;

@@ -26,7 +26,7 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
 		    int target_X, int target_Y, double alpha,
 		    double beta)
 {
-  int n, hx, hy, hz, GX, GY, GZ, nirreps, Xtrans, Ytrans, *numlinks, symlink;
+  int n, Hx, Hy, Hz, GX, GY, GZ, nirreps, Xtrans, Ytrans, *numlinks, symlink;
   int incore, memoryd, core, rows_per_bucket, nbuckets, rows_left, memtotal;
 #ifdef DPD_DEBUG
   int *xrow, *xcol, *yrow, *ycol, *zrow, *zcol;
@@ -61,37 +61,37 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
 #endif
   
 
-  for(hx=0; hx < nirreps; hx++) {
+  for(Hx=0; Hx < nirreps; Hx++) {
 
-    if      ((!Xtrans)&&(!Ytrans))  {hy = hx^GX;    hz = hx;    }
-    else if ((!Xtrans)&&( Ytrans))  {hy = hx^GX^GY; hz = hx;    }
-    else if (( Xtrans)&&(!Ytrans))  {hy = hx;       hz = hx^GX; }
-    else /* (( Xtrans)&&( Ytrans))*/{hy = hx^GY;    hz = hx^GX; }
+    if      ((!Xtrans)&&(!Ytrans))  {Hy = Hx^GX;    Hz = Hx;    }
+    else if ((!Xtrans)&&( Ytrans))  {Hy = Hx^GX^GY; Hz = Hx;    }
+    else if (( Xtrans)&&(!Ytrans))  {Hy = Hx;       Hz = Hx^GX; }
+    else /* (( Xtrans)&&( Ytrans))*/{Hy = Hx^GY;    Hz = Hx^GX; }
 
-    dpd_buf4_mat_irrep_init(Y, hy);
-    dpd_buf4_mat_irrep_rd(Y, hy);
-    dpd_buf4_mat_irrep_init(Z, hz);
+    dpd_buf4_mat_irrep_init(Y, Hy);
+    dpd_buf4_mat_irrep_rd(Y, Hy);
+    dpd_buf4_mat_irrep_init(Z, Hz);
     if(fabs(beta) > 0.0) 
-      dpd_buf4_mat_irrep_rd(Z, hz);
+      dpd_buf4_mat_irrep_rd(Z, Hz);
 	
     memoryd = dpd_memfree();
 
-    if(X->params->rowtot[hx] && X->params->coltot[hx^GX]) {
+    if(X->params->rowtot[Hx] && X->params->coltot[Hx^GX]) {
 
-      if(X->params->coltot[hx^GX])
-	rows_per_bucket = memoryd/X->params->coltot[hx^GX];
+      if(X->params->coltot[Hx^GX])
+	rows_per_bucket = memoryd/X->params->coltot[Hx^GX];
       else rows_per_bucket = -1;
 
-      if(rows_per_bucket > X->params->rowtot[hx])
-	rows_per_bucket = X->params->rowtot[hx];
+      if(rows_per_bucket > X->params->rowtot[Hx])
+	rows_per_bucket = X->params->rowtot[Hx];
 
       if(!rows_per_bucket)
 	dpd_error("contract444: Not enough memory for one row", stderr);
 
-      nbuckets = ceil((double) X->params->rowtot[hx]/
+      nbuckets = ceil((double) X->params->rowtot[Hx]/
 		      (double) rows_per_bucket);
 
-      rows_left = X->params->rowtot[hx] % rows_per_bucket;
+      rows_left = X->params->rowtot[Hx] % rows_per_bucket;
       
       incore = 1;
       if(nbuckets > 1) incore = 0;
@@ -101,13 +101,13 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
 #ifdef DPD_DEBUG
     fprintf(stderr, "Contract444: memory information.\n");
     fprintf(stderr, "Contract444: h = %d, row = %d, col = %d, tot = %d\n", 
-            h, X->params->rowtot[hx], X->params->coltot[hx^GX],
-            X->params->rowtot[hx] * X->params->coltot[hx^GX]);
+            h, X->params->rowtot[Hx], X->params->coltot[Hx^GX],
+            X->params->rowtot[Hx] * X->params->coltot[Hx^GX]);
     if(!incore) {
       fprintf(stderr, "Contract444: nbuckets = %d\n", nbuckets);
       fprintf(stderr, "Contract444: rows_per_bucket = %d\n",rows_per_bucket);
       fprintf(stderr, "Contract444: rows_left = %d\n",rows_left);
-      memtotal = X->params->rowtot[hx] * X->params->coltot[hx^GX];
+      memtotal = X->params->rowtot[Hx] * X->params->coltot[Hx^GX];
       byte_conv = ((double) sizeof(double))/1e6;
       fprintf(stderr, "Contract444: out of core algorithm used.\n");
       fprintf(stderr, "Contract444: memtotal = %d.\n", memtotal);
@@ -124,18 +124,18 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
     }
 
     if(incore) {
-      if(fabs(beta) > 0.0) dpd_buf4_mat_irrep_rd(Z, hz);
+      if(fabs(beta) > 0.0) dpd_buf4_mat_irrep_rd(Z, Hz);
 	  
-      dpd_buf4_mat_irrep_init(X, hx);
-      dpd_buf4_mat_irrep_rd(X, hx);
+      dpd_buf4_mat_irrep_init(X, Hx);
+      dpd_buf4_mat_irrep_rd(X, Hx);
 
-      newmm(X->matrix[hx], Xtrans, Y->matrix[hy], Ytrans,
-	    Z->matrix[hz], Z->params->rowtot[hz], numlinks[hx^symlink],
-	    Z->params->coltot[hz^GZ], alpha, beta);
+      newmm(X->matrix[Hx], Xtrans, Y->matrix[Hy], Ytrans,
+	    Z->matrix[Hz], Z->params->rowtot[Hz], numlinks[Hx^symlink],
+	    Z->params->coltot[Hz^GZ], alpha, beta);
 
-      dpd_buf4_mat_irrep_close(X, hx);
+      dpd_buf4_mat_irrep_close(X, Hx);
 
-      dpd_buf4_mat_irrep_wrt(Z, hz);
+      dpd_buf4_mat_irrep_wrt(Z, Hz);
 
     }
     else {
@@ -145,37 +145,37 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
 	exit(2);
       }
 
-      dpd_buf4_mat_irrep_init_block(X, hx, rows_per_bucket);
+      dpd_buf4_mat_irrep_init_block(X, Hx, rows_per_bucket);
 
       for(n=0; n < (rows_left ? nbuckets-1 : nbuckets); n++) {
 
-	dpd_buf4_mat_irrep_rd_block(X, hx, n*rows_per_bucket, rows_per_bucket);
+	dpd_buf4_mat_irrep_rd_block(X, Hx, n*rows_per_bucket, rows_per_bucket);
 
-	C_DGEMM('n', 't', rows_per_bucket, Z->params->coltot[hz^GZ],
-		numlinks[hx^symlink], alpha, &(X->matrix[hx][0][0]), numlinks[hx^symlink],
-		&(Y->matrix[hy][0][0]), numlinks[hx^symlink], beta,
-		&(Z->matrix[hz][n*rows_per_bucket][0]), Z->params->coltot[hz^GZ]);
+	C_DGEMM('n', 't', rows_per_bucket, Z->params->coltot[Hz^GZ],
+		numlinks[Hx^symlink], alpha, &(X->matrix[Hx][0][0]), numlinks[Hx^symlink],
+		&(Y->matrix[Hy][0][0]), numlinks[Hx^symlink], beta,
+		&(Z->matrix[Hz][n*rows_per_bucket][0]), Z->params->coltot[Hz^GZ]);
 
       }
 
       if(rows_left) {
 
-	dpd_buf4_mat_irrep_rd_block(X, hx, n*rows_per_bucket, rows_left);
+	dpd_buf4_mat_irrep_rd_block(X, Hx, n*rows_per_bucket, rows_left);
 
-	C_DGEMM('n', 't', rows_left, Z->params->coltot[hz^GZ],
-		numlinks[hx^symlink], alpha, &(X->matrix[hx][0][0]), numlinks[hx^symlink],
-		&(Y->matrix[hy][0][0]), numlinks[hx^symlink], beta,
-		&(Z->matrix[hz][n*rows_per_bucket][0]), Z->params->coltot[hz^GZ]);
+	C_DGEMM('n', 't', rows_left, Z->params->coltot[Hz^GZ],
+		numlinks[Hx^symlink], alpha, &(X->matrix[Hx][0][0]), numlinks[Hx^symlink],
+		&(Y->matrix[Hy][0][0]), numlinks[Hx^symlink], beta,
+		&(Z->matrix[Hz][n*rows_per_bucket][0]), Z->params->coltot[Hz^GZ]);
 
       }
 	      
-      dpd_buf4_mat_irrep_close_block(X, hx, rows_per_bucket);
+      dpd_buf4_mat_irrep_close_block(X, Hx, rows_per_bucket);
 
     }
 
-    dpd_buf4_mat_irrep_close(Y, hy);
-    dpd_buf4_mat_irrep_wrt(Z, hz);
-    dpd_buf4_mat_irrep_close(Z, hz);
+    dpd_buf4_mat_irrep_close(Y, Hy);
+    dpd_buf4_mat_irrep_wrt(Z, Hz);
+    dpd_buf4_mat_irrep_close(Z, Hz);
   }
 
   return 0;
