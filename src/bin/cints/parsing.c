@@ -19,7 +19,7 @@ void parsing()
   int errcod;
   int cutoff_exp;
   long int max_bytes;
-  int *temp;
+  double *temp;
   
   UserOptions.print_lvl = 1;
   errcod = ip_data("PRINT","%d",&(UserOptions.print_lvl),0);
@@ -69,8 +69,8 @@ void parsing()
       punt("RESTART_TASK < 0");
   }
 
-  temp = init_int_array(3);
-  errcod = ip_int_array("ORIGIN", temp, 3);
+  temp = init_array(3);
+  errcod = ip_double_array("ORIGIN", temp, 3);
   if(errcod == IPE_OK) {
     UserOptions.origin.x = temp[0];
     UserOptions.origin.y = temp[1];

@@ -46,6 +46,7 @@ void moment_ints()
    double inorm, jnorm, over_pf;
    double *ptr1, *ptr2, norm1, norm12;
    double **OIX, **OIY, **OIZ;
+   struct coordinates C;
 
 
   /*--- allocate room for the one-e matrices ---*/
@@ -72,6 +73,9 @@ void moment_ints()
   OIY = block_matrix(BasisSet.max_am+1,BasisSet.max_am+1);
   OIZ = block_matrix(BasisSet.max_am+1,BasisSet.max_am+1);
   
+  C = UserOptions.origin;
+  fprintf(outfile, "    Reference point for dip. mom. ints. = (%5.3f, %5.3f, %5.3f)\n", C.x, C.y, C.z);
+
   for (si=0; si<BasisSet.num_shells; si++){
     am_i = BasisSet.shells[si].am-1;
     ni = ioff[BasisSet.shells[si].am];
@@ -138,9 +142,9 @@ void moment_ints()
 		  x1 = OIX[l1][l2+1]; y1 = OIY[m1][m2+1];  z1 = OIZ[n1][n2+1];
 		  stemp[ai][aj] += over_pf*x0*y0*z0;
 		  /*--- electrons have negative charge ---*/
-		  mxtemp[ai][aj] -= over_pf*(x1+x0*B.x)*y0*z0;
-		  mytemp[ai][aj] -= over_pf*x0*(y1+y0*B.y)*z0;
-		  mztemp[ai][aj] -= over_pf*x0*y0*(z1+z0*B.z);
+		  mxtemp[ai][aj] -= over_pf*(x1+x0*(B.x-C.x))*y0*z0;
+		  mytemp[ai][aj] -= over_pf*x0*(y1+y0*(B.y-C.y))*z0;
+		  mztemp[ai][aj] -= over_pf*x0*y0*(z1+z0*(B.z-C.z));
 
 		  nx = -2.0*a2*OIX[l1][l2+1];
 		  if (l2 >= 1)
