@@ -17,12 +17,12 @@ default: (
   nopt = 20 
   docc = (3 0 1 1)
 
-files: (
-    default: ( name = "h2o" nvolume = 1
-      volume1 = "/scratch/sherrill/"
-      )
-    file30: (nvolume = 1 volume1 = "./" )
-    )
+  % using the new files section; the default path is given
+  % in the user's ~/.psirc file
+
+  files: (
+    default: ( name = "h2o" )
+  )
 )
 
 input: (
