@@ -8,7 +8,6 @@
 #include <libciomr/libciomr.h>
 #include <libint/libint.h>
 #include <libderiv/libderiv.h>
-#include <libfile30/file30.h>
 #include <libqt/qt.h>
 #include "defines.h"
 #define EXTERN

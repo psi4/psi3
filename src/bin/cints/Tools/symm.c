@@ -2,11 +2,7 @@
 #include<stdlib.h>
 #include<libipv1/ip_lib.h>
 #include<libciomr/libciomr.h>
-#if USE_LIBCHKPT
 #include<libchkpt/chkpt.h>
-#else
-#include<libfile30/file30.h>
-#endif
 
 #include<libint/libint.h>
 #include"defines.h"
@@ -22,7 +18,6 @@ void init_symmetry()
 {
   int i, j, count;
 
-#if USE_LIBCHKPT
   Symmetry.symlabel = chkpt_rd_sym_label();
   Symmetry.nirreps = chkpt_rd_nirreps();
   Symmetry.num_so = chkpt_rd_nso();
@@ -36,21 +31,6 @@ void init_symmetry()
   Symmetry.sym_oper = chkpt_rd_symoper();
   Symmetry.irr_labels = chkpt_rd_irr_labs();
   Symmetry.ict = chkpt_rd_ict();
-#else
-  Symmetry.symlabel = file30_rd_sym_label();
-  Symmetry.nirreps = file30_rd_nirreps();
-  Symmetry.num_so = file30_rd_nso();
-  Symmetry.num_unique_atoms = file30_rd_num_unique_atom();
-  Symmetry.num_unique_shells = file30_rd_num_unique_shell();
-
-  Symmetry.atom_positions = file30_rd_atom_position();
-  Symmetry.ua2a = file30_rd_ua2a();
-  Symmetry.us2s = file30_rd_us2s();
-  Symmetry.sopi = file30_rd_sopi();
-  Symmetry.sym_oper = file30_rd_symoper();
-  Symmetry.irr_labels = file30_rd_irr_labs();
-  Symmetry.ict = file30_rd_ict();
-#endif
   Symmetry.cartrep = chkpt_rd_cartrep();
 
   if (Symmetry.nirreps) {

@@ -6,7 +6,6 @@
 #include<libint/libint.h>
 #include<libiwl/iwl.h>
 #include<psifiles.h>
-#include <libfile30/file30.h>
 
 #include"defines.h"
 #define EXTERN

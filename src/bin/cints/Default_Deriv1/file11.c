@@ -2,11 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <libciomr/libciomr.h>
-#if USE_LIBCHKPT
 #include <libchkpt/chkpt.h>
-#else
-#include <libfile30/file30.h>
-#endif
 #include <libint/libint.h>
 
 #include "defines.h"

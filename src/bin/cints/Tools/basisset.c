@@ -2,11 +2,7 @@
 #include<stdlib.h>
 #include<math.h>
 #include<libciomr/libciomr.h>
-#if USE_LIBCHKPT
 #include<libchkpt/chkpt.h>
-#else
-#include<libfile30/file30.h>
-#endif
 
 #include<libint/libint.h>
 #include"defines.h"
@@ -23,21 +19,12 @@ static void get_shell_info(void);
 
 void init_basisset()
 {
-#if USE_LIBCHKPT
   BasisSet.num_shells = chkpt_rd_nshell();
   BasisSet.num_prims = chkpt_rd_nprim();
   BasisSet.num_ao = chkpt_rd_nao();
   BasisSet.am2shell = chkpt_rd_am2canon_shell_order();
   BasisSet.shells_per_am = chkpt_rd_shells_per_am();
   BasisSet.max_am = chkpt_rd_max_am()+1;
-#else
-  BasisSet.num_shells = file30_rd_nshell();
-  BasisSet.num_prims = file30_rd_nprim();
-  BasisSet.num_ao = file30_rd_nao();
-  BasisSet.am2shell = file30_rd_am2canon_shell_order();
-  BasisSet.shells_per_am = file30_rd_shells_per_am();
-  BasisSet.max_am = file30_rd_max_am()+1;
-#endif
   BasisSet.puream = (Symmetry.num_so != BasisSet.num_ao) ? 1 : 0;  /* need to transform to pure. ang. mom. basis? */
 /* BasisSet.cgtos = */ get_primitives();
 /* BasisSet.shells = */ get_shell_info();
@@ -47,17 +34,10 @@ void init_basisset()
     Namespaces are not well defined in CINTS,
     because of this here're some overlapping inits
    -----------------------------------------------*/
-#if USE_LIBCHKPT
   if (BasisSet.puream && UserOptions.symm_ints)
     Symmetry.usotao = chkpt_rd_usotbf();
   else
     Symmetry.usotao = chkpt_rd_usotao();
-#else
-  if (BasisSet.puream && UserOptions.symm_ints)
-    Symmetry.usotao = file30_rd_usotbf();
-  else
-    Symmetry.usotao = file30_rd_usotao_new();
-#endif
   if (Symmetry.nirreps > 1 && UserOptions.symm_ints)
 /* Symmetry.us_pairs = */ init_unique_shell_pairs();
 
@@ -89,7 +69,6 @@ void get_shell_info()
    int *shell_fao;              /* first AO in shell */
    int **shell_trans_table;     /* shell transformation table */
 
-#if USE_LIBCHKPT
    /*--- retrieve location of shells (which atom it's centered on) ---*/
    shell_center = chkpt_rd_snuc();
 
@@ -110,28 +89,6 @@ void get_shell_info()
    
    /*--- retrieve shell tranformation table ---*/
    shell_trans_table = chkpt_rd_shell_transm();
-#else
-   /*--- retrieve location of shells (which atom it's centered on) ---*/
-   shell_center = file30_rd_snuc();
-
-   /*--- retrieve angular momentum of each shell (1=s, 2=p, 3=d, etc  ) ---*/
-   shell_type = file30_rd_stype();
-
-   /*--- retrieve number of primitives per shell ---*/
-   shell_num_prims = file30_rd_snumg();
-
-   /*--- retrieve pointer to first primitive in shell ---*/
-   prim_pointers = file30_rd_sprim();
-
-   /*--- retrieve pointer to first basisfn in shell ---*/
-   shell_fbf = file30_rd_sloc_new();
-
-   /*--- retrieve pointer to first AO in shell ---*/
-   shell_fao = file30_rd_sloc();
-   
-   /*--- retrieve shell tranformation table ---*/
-   shell_trans_table = file30_rd_shell_transm();
-#endif
 
    /*--- retrieve maximum am ---*/
    if (BasisSet.max_am > CINTS_MAX_AM)
@@ -177,19 +134,11 @@ void get_primitives(void)
    double *exponents;      /* primitive gaussian exponents */
    double **ccoeffs;       /* primitive gaussian cont. coeff. for each ang. momentum*/
 
-#if USE_LIBCHKPT
    /*--- read in exponents of primitive gaussians ---*/
    exponents = chkpt_rd_exps();
 
    /*--- read in coefficients of primitive gaussians ---*/
    ccoeffs = chkpt_rd_contr_full();
-#else
-   /*--- read in exponents of primitive gaussians ---*/
-   exponents = file30_rd_exps();
-
-   /*--- read in coefficients of primitive gaussians ---*/
-   ccoeffs = file30_rd_contr_full();
-#endif
 
    /*--- allocate prims structure ---*/
    BasisSet.cgtos = (struct gaussian_function *)malloc(sizeof(struct gaussian_function)*BasisSet.num_prims);
