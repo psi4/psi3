@@ -68,7 +68,7 @@ void diis(int iter, int L_irr)
       for(row=0; row < L1a.params->rowtot[h]; row++)
 	for(col=0; col < L1a.params->coltot[h^L_irr]; col++) {
 	  error[0][word++] = L1a.matrix[h][row][col] - L1b.matrix[h][row][col];
-// fprintf(outfile,"%15.10lf\n", error[0][word-1]);
+/* fprintf(outfile,"%15.10lf\n", error[0][word-1]); */
     }
 
     dpd_file2_mat_close(&L1a);
@@ -86,7 +86,7 @@ void diis(int iter, int L_irr)
       for(row=0; row < L2a.params->rowtot[h]; row++)
 	for(col=0; col < L2a.params->coltot[h^L_irr]; col++) {
 	  error[0][word++] = L2a.matrix[h][row][col] - L2b.matrix[h][row][col];
-// fprintf(outfile,"%15.10lf\n", error[0][word-1]);
+/* fprintf(outfile,"%15.10lf\n", error[0][word-1]); */
     }
       dpd_buf4_mat_irrep_close(&L2a, h);
       dpd_buf4_mat_irrep_close(&L2b, h);
