@@ -6,6 +6,7 @@ struct Params {
   long int memory;
   int cachelev;
   int aobasis;
+  char *wfn;
   int ref;
   int local;  /* boolean for using simulated local-CC framework */
   int nstates; /* total number of L vectors to compute */

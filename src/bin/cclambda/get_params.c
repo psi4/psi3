@@ -4,6 +4,7 @@
 #include <math.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
+#include <psifiles.h>
 #define EXTERN
 #include "globals.h"
 
@@ -12,6 +13,15 @@ void get_params(void)
   int errcod, iconv,i,j,k,l,prop_sym,prop_root;
   char lbl[32];
   char *junk;
+
+  errcod = ip_string("WFN", &(params.wfn), 0);
+  if(strcmp(params.wfn, "CCSD") && strcmp(params.wfn, "CCSD_T") &&
+     strcmp(params.wfn, "EOM_CCSD") && strcmp(params.wfn, "LEOM_CCSD") &&
+     strcmp(params.wfn, "BCCD") && strcmp(params.wfn,"BCCD_T") &&
+     strcmp(params.wfn, "CC2") && strcmp(params.wfn,"CC3")) {
+    fprintf(outfile, "Invalid value of input keyword WFN: %s\n", params.wfn);
+    exit(PSI_RETURN_FAILURE);
+  }
 
   params.maxiter = 50;
   errcod = ip_data("MAXITER","%d",&(params.maxiter),0);

@@ -46,6 +46,8 @@ void zeta_norm(struct L_Params pL_params);
 void spinad_amps(void);
 void status(char *, FILE *);
 
+void cc3_t3z(void);
+
 int main(int argc, char *argv[])
 {
   int done=0, i, root_L_irr;
@@ -95,6 +97,8 @@ int main(int argc, char *argv[])
   if(params.ref == 0) hbar_extra();
 
   /* CC3: Z-build */
+  if(!strcmp(params.wfn,"CC3"))
+    cc3_t3z();
 
   for (i=0; i<params.nstates; ++i) {
     /* delete and reopen intermediate files */
