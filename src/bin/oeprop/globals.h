@@ -46,7 +46,8 @@ EXTERN int nbfao, natri, nbfso, nstri, nshell, nprim;
 EXTERN int nmo;
 EXTERN int *clsdpi;		/* Array of numbers of closed shells per irrep */
 EXTERN int *openpi;		/* Same for open shells */
-EXTERN int *orbspi;		/* Orbitals per irrep */
+EXTERN int *orbspi;		/* (molecular) orbitals per irrep */
+EXTERN int *sopi;               /* symmetry orbitals per irrep */
 EXTERN int *sprim, *snuc, *stype, *snumg, *sloc;	/* See documentation for libfile30 library */
 EXTERN int lmax;	/* Highest angular momentum of Gaussians in the basis set */
 EXTERN char **irr_labs;		/* Irrep labels */
@@ -186,3 +187,4 @@ EXTERN double **nmo_so;		/* Natural orbitals in the SO basis */
 EXTERN double **nmo_ao;		/* Natural orbitals in the AO basis */
 
 EXTERN int **connectivity;    /* A matrix of flags whether a bong exists between two atoms */
+EXTERN char *wfn;             /* wavefunction type */

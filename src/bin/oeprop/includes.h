@@ -5,4 +5,5 @@
 #include <file30.h>
 #include <string.h>
 #include <physconst.h>
+#include <psifiles.h>
 /*#include "/home/oroites/crawdad/C/include/dmalloc.h"*/

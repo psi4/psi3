@@ -63,6 +63,7 @@ int main(int argc, char* argv) {
  nirreps = file30_rd_nirreps(); 
  nsym = file30_rd_nsymhf();
  orbspi = file30_rd_orbspi();
+ sopi = file30_rd_sopi();
  clsdpi = file30_rd_clsdpi();    
  openpi = file30_rd_openpi();
  irr_labs = file30_rd_irr_labs();
@@ -134,9 +135,10 @@ int main(int argc, char* argv) {
 
 
 	/* Obtain natural orbitals */
-
+/*
  if (read_opdm) 
    get_nmo(); 
+*/
 
  file30_close();
 

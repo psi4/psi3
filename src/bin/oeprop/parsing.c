@@ -9,8 +9,6 @@ void parsing()
 {
   int i,errcod;
   double xmin,xmax,ymin,ymax,zmin,zmax;
-  char *wfn;
-
 
         /* Set some defaults for certain wavefunctions */
 
@@ -28,6 +26,7 @@ void parsing()
       strcpy(opdm_format,"TRIANG");
     }
           /* wfn = ooccd, detci, detcas */
+    /*
     if (strcmp(wfn, "CI")==0 || strcmp(wfn, "OOCCD")==0 ||
 	strcmp(wfn, "DETCI")==0 || strcmp(wfn, "DETCAS")==0) {
       read_opdm = 1;
@@ -38,6 +37,17 @@ void parsing()
       opdm_format = (char *) malloc(7*sizeof(char));
       strcpy(opdm_format,"TRIANG");
     }
+    */
+    if (strcmp(wfn, "CI")==0 || strcmp(wfn, "DETCI")==0) {
+      read_opdm = 1;
+      opdm_file = PSIF_MO_OPDM;
+      corr = 0;
+      opdm_basis = (char *) malloc(3*sizeof(char));
+      strcpy(opdm_basis,"MO");
+      opdm_format = (char *) malloc(7*sizeof(char));
+      strcpy(opdm_format,"SQUARE");
+    }
+
   }
 
   
@@ -50,7 +60,8 @@ void parsing()
       fprintf(outfile,"  File number out of range. Aborting.\n\n");
       exit(2);
     }
-    if ((opdm_file != 40) && (opdm_file != 79)) {
+    if ((opdm_file != 40) && (opdm_file != 79) && 
+        (opdm_file != PSIF_MO_OPDM)) {
       errcod = ip_string("OPDM_BASIS",&opdm_basis,0);
       if ((errcod == IPE_KEY_NOT_FOUND) || (errcod != IPE_OK)) {
         opdm_basis = (char *) malloc(3*sizeof(char));
