@@ -4,7 +4,7 @@
 #include "file30.gbl"
 #include <libciomr.h>
 
-/* file30_wt_scf():  Reads in the SCF eigenvector (or whatever is stored in
+/* file30_wt_scf():  Writes out the SCF eigenvector (or whatever is stored in
 **     its place).
 **
 **  This is now a wrapper function for wt_alpha_scf.
