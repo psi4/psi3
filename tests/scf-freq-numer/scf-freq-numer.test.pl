@@ -10,6 +10,7 @@ $TEST_FILE = "psi.file11.dat";
 $REF_OUT = "output.ref";
 $TEST_OUT = "output.dat";
 $RESULT = "scf-freq-numer.test";
+$NDOF = 3;
 
 system ("input");
 system ("psi3");
@@ -46,8 +47,8 @@ else {
   pass_test("SCF Gradient");
 }
 
-@freq_ref = seek_freq($REF_OUT,"Harmonic Frequency",$NDOF);
-@freq_test = seek_freq($TEST_OUT,"Harmonic Frequency",$NDOF);
+@freq_ref = seek_findif_freq($REF_OUT,"Harmonic Vibrational Frequencies",$NDOF);
+@freq_test = seek_findif_freq($TEST_OUT,"Harmonic Vibrational Frequencies",$NDOF);
 
 if(!compare_arrays(\@freq_ref, \@freq_test, $NDOF, 1, $HTOL)) {
   fail_test("SCF Frequencies");
