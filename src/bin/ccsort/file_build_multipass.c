@@ -90,9 +90,7 @@ int file_build_multipass(dpdfile4 *File, int inputfile, double tolerance,
     }
   }
 
-  /*
-    fprintf(outfile, "\tSorting File: %s nbuckets = %d\n", File->label, nbuckets);
-  */
+  fprintf(outfile, "\tSorting File: %s nbuckets = %d\n", File->label, nbuckets);
 
   next = PSIO_ZERO;
   for(n=0; n < nbuckets; n++) { /* nbuckets = number of passes */
