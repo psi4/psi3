@@ -15,6 +15,7 @@ classify.c  distribute.c  fock.c        idx_error.c   sort_oei.c    \
 sort_tei.c  f_sort.c      cache.c       b_sort.c                    \
 d_spinad.c  e_spinad.c    f_spinad.c \
 transmu.c sortmu.c build_A_RHF.c cphf_F.c \
+file_build_multipass.c  idx_permute_multipass.c \
 
 BINOBJ = $(CSRC:%.c=%.o)
 
