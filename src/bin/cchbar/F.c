@@ -31,6 +31,8 @@ void F_build(void) {
   dpdfile2 tIA, tia;
   dpdbuf4 F_anti, F, E_anti, E, D_anti, D;
   dpdbuf4 tautIJAB, tautijab, tautIjAb, taut;
+  int Gma, Gm, Ga, Gf, Ge, ma, MA, M, A, fe, ef, f, nrows, ncols;
+  double *X;
 
   if(params.ref == 0) {
 
@@ -51,11 +53,60 @@ void F_build(void) {
 
     dpd_file2_init(&FAE, CC_OEI, 0, 1, 1, "FAE");
 
+    /*
     dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0,"F 2<ia|bc> - <ia|cb>");
     dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
     dpd_dot13(&tIA, &F, &FAE, 0, 0, 1.0, 1.0);
     dpd_file2_close(&tIA);
     dpd_buf4_close(&F);
+    */
+
+    dpd_file2_mat_init(&FAE);
+    dpd_file2_mat_rd(&FAE);
+    dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+    dpd_file2_mat_init(&tIA);
+    dpd_file2_mat_rd(&tIA);
+    dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0,"F <ia|bc>");
+    for(Gma=0; Gma < moinfo.nirreps; Gma++) {
+      dpd_buf4_mat_irrep_row_init(&F, Gma);
+      X = init_array(F.params->coltot[Gma]);
+
+      for(ma=0; ma < F.params->rowtot[Gma]; ma++) {
+	dpd_buf4_mat_irrep_row_rd(&F, Gma, ma);
+	m = F.params->roworb[Gma][ma][0];
+	a = F.params->roworb[Gma][ma][1];
+	Gm = F.params->psym[m];
+	Ga = Ge = Gm ^ Gma;  /* Fae is totally symmetric */
+	Gf = Gm; /* T1 is totally symmetric */
+	M = m - F.params->poff[Gm];
+	A = a - F.params->qoff[Ga];
+
+	zero_arr(X, F.params->coltot[Gma]);
+
+	/* build spin-adapted F-integrals for current ma */
+	for(fe=0; fe < F.params->coltot[Gma]; fe++) {
+	  f = F.params->colorb[Gma][fe][0];
+	  e = F.params->colorb[Gma][fe][1];
+	  ef = F.params->colidx[e][f];
+	  X[fe] = 2.0 * F.matrix[Gma][0][fe] - F.matrix[Gma][0][ef];
+	}
+	
+	nrows = moinfo.virtpi[Gf];
+	ncols = moinfo.virtpi[Ge];
+	if(nrows && ncols)
+	  C_DGEMV('t',nrows,ncols,1.0,&X[F.col_offset[Gma][Gf]],ncols,
+		  tIA.matrix[Gm][M],1,1.0,
+		  FAE.matrix[Ga][A],1);
+      }
+
+      free(X);
+      dpd_buf4_mat_irrep_row_close(&F, Gma);
+    }
+    dpd_buf4_close(&F);
+    dpd_file2_mat_close(&tIA);
+    dpd_file2_close(&tIA);
+    dpd_file2_mat_wrt(&FAE);
+    dpd_file2_mat_close(&FAE);
 
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D 2<ij|ab> - <ij|ba>");
     dpd_buf4_init(&tautIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tautIjAb");

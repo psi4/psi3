@@ -41,8 +41,8 @@ void Wamef_build(void) {
 
   if(params.ref == 0) { 
 
-    dpd_buf4_init(&F, CC_FINTS, 0, 11, 5, 11, 5, 0, "F <ai|bc>");
-    dpd_buf4_copy(&F, CC_HBAR, "WAmEf");
+    dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
+    dpd_buf4_sort(&F, CC_HBAR, qpsr, 11, 5, "WAmEf");
     dpd_buf4_close(&F);
 
     dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");

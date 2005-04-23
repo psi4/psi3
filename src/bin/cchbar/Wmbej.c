@@ -32,6 +32,7 @@ void Wmbej_build(void) {
   dpdbuf4 tIAJB, tjAIb, tiajb, tIAjb, tiaJB, tIbjA;
   dpdbuf4 D, C, F, E, X, Y, t2, W, Z;
   dpdfile2 tIA, tia;
+  int Gmb, mb, Gj, Ge, Gf, nrows, ncols, nlinks;
 
   if(params.ref == 0) { /** RHF **/
 
@@ -52,11 +53,12 @@ void Wmbej_build(void) {
     dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
 
     dpd_buf4_init(&WMbEj, CC_TMP0, 0, 10, 11, 10, 11, 0, "WMbEj");
-    dpd_contract424(&F, &tIA, &WMbEj, 3, 1, 0, 1, 1);
+    dpd_contract424(&F, &tIA, &WMbEj, 3, 1, 0, 1, 1); /* should run OOC, if needed */
     dpd_buf4_close(&WMbEj);
 
     dpd_buf4_close(&F);
 
+    /*
     dpd_buf4_init(&F, CC_FINTS, 0, 11, 5, 11, 5, 0, "F <ai|bc>");
 
     dpd_buf4_init(&Z, CC_TMP0, 0, 11, 11, 11, 11, 0, "Z(bM,eJ)");
@@ -70,6 +72,46 @@ void Wmbej_build(void) {
     dpd_buf4_close(&Z);
 
     dpd_buf4_close(&F);
+    */
+    /* W(Mb,Je) <-- t(J,F) <Mb|Fe> */
+    /* OOC code added to replace above on 3/26/05, TDC */
+    dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
+    dpd_buf4_init(&W, CC_TMP0, 0, 10, 10, 10, 10, 0, "WMbeJ");
+    dpd_file2_mat_init(&tIA);
+    dpd_file2_mat_rd(&tIA);
+
+    for(Gmb=0; Gmb < moinfo.nirreps; Gmb++) {
+      dpd_buf4_mat_irrep_row_init(&W, Gmb);
+      dpd_buf4_mat_irrep_row_init(&F, Gmb);
+
+      for(mb=0; mb < F.params->rowtot[Gmb]; mb++) {
+	dpd_buf4_mat_irrep_row_rd(&W, Gmb, mb);
+	dpd_buf4_mat_irrep_row_rd(&F, Gmb, mb);
+
+	for(Gj=0; Gj < moinfo.nirreps; Gj++) {
+	  Gf = Gj;  /* T1 is totally symmetric */
+	  Ge = Gmb ^ Gf; /* <mb|fe> is totally symmetric */
+
+	  nrows = moinfo.occpi[Gj];
+	  ncols = moinfo.virtpi[Ge];
+	  nlinks = moinfo.virtpi[Gf];
+	  if(nrows && ncols && nlinks)
+	    C_DGEMM('n','n',nrows,ncols,nlinks,-1.0,tIA.matrix[Gj][0],nlinks,
+		    &F.matrix[Gmb][0][F.col_offset[Gmb][Gf]],ncols,1.0,
+		    &W.matrix[Gmb][0][W.col_offset[Gmb][Gj]],ncols);
+	}
+
+	dpd_buf4_mat_irrep_row_wrt(&W, Gmb, mb);
+      }
+
+      dpd_buf4_mat_irrep_row_close(&F, Gmb);
+      dpd_buf4_mat_irrep_row_close(&W, Gmb);
+    }
+
+    dpd_file2_mat_close(&tIA);
+    dpd_buf4_close(&W);
+    dpd_buf4_close(&F);
+
 
     dpd_file2_close(&tIA);
 

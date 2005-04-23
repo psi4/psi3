@@ -265,7 +265,7 @@ void Wmbij_build(void)
     dpd_buf4_init(&I, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
     dpd_buf4_init(&Tau, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
     dpd_buf4_init(&W, CC_HBAR, 0, 10, 0, 10, 0, 0, "WMbIj");
-    dpd_contract444(&I, &Tau, &W, 0, 0, 1.0, 1.0);
+    dpd_contract444(&I, &Tau, &W, 0, 0, 1.0, 1.0); /* should run OCC, if needed */
     dpd_buf4_close(&W);
     dpd_buf4_close(&Tau);
     dpd_buf4_close(&I);
