@@ -40,7 +40,7 @@ void X2_build(char *pert, char *cart, int irrep, double omega)
 
   sprintf(lbl, "Z(Ij,Ab) %s %1s", pert, cart);
   dpd_buf4_init(&Z, CC_TMP0, irrep, 0, 5, 0, 5, 0, lbl);
-  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WEiAb");
+  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAbEi (Ei,Ab)");
   dpd_contract244(&X1, &W, &Z, 1, 0, 0, 1, 0);
   dpd_buf4_close(&W);
   dpd_buf4_axpy(&Z, &X2new, 1);

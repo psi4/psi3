@@ -38,6 +38,7 @@ void Wamef_build(void) {
   dpdbuf4 Wamef, WAMEF, WAmEf, WaMeF, W;
   dpdbuf4 F, D_a, D;
   dpdfile2 tia, tIA;
+  int h, Ga, Gn, Gm, A, a, row, nrows, ncols;
 
   if(params.ref == 0) { 
 
@@ -47,9 +48,50 @@ void Wamef_build(void) {
 
     dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");
     dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
+    dpd_file2_mat_init(&tIA);
+    dpd_file2_mat_rd(&tIA);
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
-    dpd_contract244(&tIA, &D, &W, 0, 0, 0, -1, 1);
+
+    /* dpd_contract244(&tIA, &D, &W, 0, 0, 0, -1, 1); */
+    /** OOC code below added 05/04/05, -TDC **/
+    for(h=0; h < moinfo.nirreps; h++) { /* h = Gam = Gnm = Gef */
+
+      dpd_buf4_mat_irrep_init(&D, h);
+      dpd_buf4_mat_irrep_rd(&D, h);
+
+      row = 0;
+      for(Ga=0; Ga < moinfo.nirreps; Ga++) {
+	Gm = Ga ^ h;
+	Gn = Ga; /* T1 is totally symmetric */
+
+	W.matrix[h] = dpd_block_matrix(moinfo.occpi[Gm], W.params->coltot[h]);
+
+	for(A=0; A < moinfo.virtpi[Ga]; A++) {
+	  a = moinfo.vir_off[Ga] + A;
+
+	  dpd_buf4_mat_irrep_rd_block(&W, h, W.row_offset[h][a], moinfo.occpi[Gm]);
+
+	  nrows = moinfo.occpi[Gn];
+	  ncols = moinfo.occpi[Gm] * W.params->coltot[h];
+
+	  if(nrows && ncols) 
+	    C_DGEMV('t',nrows,ncols,-1.0,&(D.matrix[h][row][0]),ncols,&(tIA.matrix[Gn][0][A]),
+		    moinfo.virtpi[Ga],1.0, W.matrix[h][0],1);
+
+
+	  dpd_buf4_mat_irrep_wrt_block(&W, h, W.row_offset[h][a], moinfo.occpi[Gm]);
+	}
+
+	row += moinfo.occpi[Gn] * moinfo.occpi[Gm];
+
+	dpd_free_block(W.matrix[h], moinfo.occpi[Gm], W.params->coltot[h]);
+      }
+
+      dpd_buf4_mat_irrep_close(&D, h);
+    }
+
     dpd_buf4_close(&D);
+    dpd_file2_mat_close(&tIA);
     dpd_file2_close(&tIA);
     dpd_buf4_close(&W);
 

@@ -3,7 +3,9 @@
 #define EXTERN
 #include "globals.h"
 
-/** Wabei intermediates are stored here as (ei,ab) **/
+
+
+
 
 void Wabei_RHF(void)
 {
@@ -11,15 +13,18 @@ void Wabei_RHF(void)
   dpdbuf4 F, W, T2, B, Z, Z1, Z2, D, T, E, C;
   double value;
 
+  /** Term I **/
+  /** <Ei|Ab> **/
   if(params.print & 2) {
     fprintf(outfile, "\tF -> Wabei...");
     fflush(outfile);
   }
-  dpd_buf4_init(&F, CC_FINTS, 0, 11, 5, 11, 5, 0, "F <ai|bc>");
-  dpd_buf4_copy(&F, CC_HBAR, "WEiAb");
+  dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
+  dpd_buf4_sort(&F, CC_HBAR, qpsr, 11, 5, "WAbEi (Ei,Ab)");
   dpd_buf4_close(&F);
   if(params.print & 2) fprintf(outfile, "done.\n");
 
+  /** Term II **/
   /** - F_ME t_Mi^Ab **/
   if(params.print & 2) {
     fprintf(outfile, "\tFME*T2 -> Wabei...");
@@ -27,19 +32,20 @@ void Wabei_RHF(void)
   }
   dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
   dpd_file2_init(&Fme, CC_OEI, 0, 0, 1, "FME");
-  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WEiAb");
+  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAbEi (Ei,Ab)");
   dpd_contract244(&Fme, &T2, &W, 0, 0, 0, -1.0, 1.0);
   dpd_buf4_close(&W);
   dpd_file2_close(&Fme);
   dpd_buf4_close(&T2);
   if(params.print & 2) fprintf(outfile, "done.\n");
 
+  /** Term IIIa **/
   /** <Ab|Ef> t_i^f **/
   if(params.print & 2) {
     fprintf(outfile, "\tB*T1 -> Wabei...");
     fflush(outfile);
   }
-  /* NB: this term is sorted into WEiAb after the F*T1*T1 contributions below */
+  /* NB: this term is sorted into WAbEi (Ei,Ab) after the F*T1*T1 contributions below */
   dpd_buf4_init(&Z, CC_TMP0, 0, 5, 11, 5, 11, 0, "Z(Ab,Ei)"); 
   dpd_buf4_init(&B, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>");
   dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
@@ -50,6 +56,8 @@ void Wabei_RHF(void)
   if(params.print & 2) fprintf(outfile, "done.\n");
 
   /** Prepare intermediates for second Wabef contribution to Wabei **/
+
+  /** Term IIIb ***/
 
   /** t_i^f <Am|Ef> --> Z(Am,Ei) **/
   if(params.print & 2) {
@@ -65,7 +73,7 @@ void Wabei_RHF(void)
   dpd_buf4_close(&Z);
 
   /** - t_m^b Z(mA,Ei) --> Z1(Ab,Ei) **/
-  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WEiAb");
+  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAbEi (Ei,Ab)");
   dpd_buf4_init(&Z, CC_TMP0, 0, 11, 11, 11, 11, 0, "Z(Am,Ei)");
   dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
   /* NB: high memory req. in this contraction b/c of Z transpose */
@@ -84,7 +92,7 @@ void Wabei_RHF(void)
   dpd_buf4_close(&Z);
 
   /** - T_M^A Z(Mb,Ei) --> Z(Ab,Ei) **/
-  /* NB: This term is sorted into WEiAb at the very last term of the Wabei intermediate */
+  /* NB: This term is sorted into WAbEi (Ei,Ab) at the very last term of the Wabei intermediate */
   dpd_buf4_init(&Z1, CC_TMP0, 0, 5, 11, 5, 11, 0, "Z(Ab,Ei)");
   dpd_buf4_init(&Z, CC_TMP0, 0, 10, 11, 10, 11, 0, "Z(Mb,Ei)");
   dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
@@ -96,6 +104,7 @@ void Wabei_RHF(void)
 
   /** Final term of Wabef contribution to Wabei **/
 
+  /** Terms IIIc and IIId **/
   /** t_i^f <Mn|Ef> --> Z(Mn,Ei) **/
   if(params.print & 2) {
     fprintf(outfile, "\tD*T1*T2 -> Wabei...");
@@ -109,7 +118,7 @@ void Wabei_RHF(void)
   dpd_buf4_close(&D);
   /** Z(Mn,Ei) Tau(Mn,Ab) --> W(Ei,Ab) **/
   dpd_buf4_init(&T, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
-  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WEiAb");
+  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAbEi (Ei,Ab)");
   dpd_contract444(&Z, &T, &W, 1, 1, 1.0, 1.0);
   dpd_buf4_close(&W);
   dpd_buf4_close(&T);
@@ -117,6 +126,7 @@ void Wabei_RHF(void)
   if(params.print & 2) fprintf(outfile, "done.\n");
 
 
+  /** Term IV **/
   /** <Mn|Ei> Tau(Mn,Ab) --> W(Ei,Ab) **/
   if(params.print & 2) {
     fprintf(outfile, "\tE*T2 -> Wabei...");
@@ -124,13 +134,14 @@ void Wabei_RHF(void)
   }
   dpd_buf4_init(&E, CC_EINTS, 0, 0, 11, 0, 11, 0, "E <ij|ak>");
   dpd_buf4_init(&T, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
-  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WEiAb");
+  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAbEi (Ei,Ab)");
   dpd_contract444(&E, &T, &W, 1, 1, 1, 1);
   dpd_buf4_close(&W);
   dpd_buf4_close(&T);
   dpd_buf4_close(&E);
   if(params.print & 2) fprintf(outfile, "done.\n");
 
+  /** Term V **/
   /** -<Mb|Ef> t_Mi^Af - <MA||EF> t_iM^bF + <mA|fE> t_im^bf --> W(Ei,Ab) **/
   if(params.print & 2) {
     fprintf(outfile, "\tF*T2 -> Wabei...");
@@ -142,14 +153,17 @@ void Wabei_RHF(void)
   dpd_contract444(&F, &T2, &Z, 1, 1, -1.0, 0.0);
   dpd_buf4_close(&T2);
   dpd_buf4_close(&F);
-  dpd_buf4_sort_axpy(&Z, CC_HBAR, prsq, 11, 5, "WEiAb", 1);
+  dpd_buf4_sort_axpy(&Z, CC_HBAR, prsq, 11, 5, "WAbEi (Ei,Ab)", 1);
   dpd_buf4_close(&Z);
 
+  /** More of Term V **/
   Wabei_RHF_FT2_a();
 
   if(params.print & 2) fprintf(outfile, "done.\n");
 
   /** Final terms of Wabei **/
+
+  /** Term VII **/
 
   /** t_in^bf  <Mn|Ef> + t_iN^bF <MN||EF> --> Z1_MEib **/
   if(params.print & 2) {
@@ -191,7 +205,7 @@ void Wabei_RHF(void)
   dpd_file2_close(&T1);
   dpd_buf4_close(&Z);
   /* NB: This sort_axpy implicitly includes terms from B*T1 and F*T1*T1 from above */
-  dpd_buf4_sort_axpy(&Z1, CC_HBAR, rspq, 11, 5, "WEiAb", 1);
+  dpd_buf4_sort_axpy(&Z1, CC_HBAR, rspq, 11, 5, "WAbEi (Ei,Ab)", 1);
   dpd_buf4_close(&Z1);
 
   /** t_m^b ( - <mA|iE> + Z(mA,iE) ) --> Z2(Ab,Ei) **/
@@ -204,7 +218,7 @@ void Wabei_RHF(void)
   dpd_contract244(&T1, &Z, &Z2, 0, 0, 0, 1, 0);
   dpd_file2_close(&T1);
   dpd_buf4_close(&Z);
-  dpd_buf4_sort_axpy(&Z2, CC_HBAR, srqp, 11, 5, "WEiAb", 1);
+  dpd_buf4_sort_axpy(&Z2, CC_HBAR, srqp, 11, 5, "WAbEi (Ei,Ab)", 1);
   dpd_buf4_close(&Z2);
   if(params.print & 2) fprintf(outfile, "done.\n");
 

@@ -140,7 +140,7 @@ void Wabei_RHF_FT2_a(void)
 
   for(h=0; h < nirreps; h++) dpd_buf4_mat_irrep_close(&T2, h);
   dpd_buf4_close(&T2);
-  dpd_buf4_sort_axpy(&Z, CC_HBAR, prqs, 11, 5, "WEiAb", 1);
+  dpd_buf4_sort_axpy(&Z, CC_HBAR, prqs, 11, 5, "WAbEi (Ei,Ab)", 1);
   dpd_buf4_close(&Z);
   dpd_buf4_close(&F);
 
