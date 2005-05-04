@@ -2,8 +2,6 @@
 #include <libpsio/psio.h>
 #include "dpd.h"
 
-#define DPD_BIGNUM 2147000000 /* A number just below the four-byte signed int limit */
-
 int dpd_file4_mat_irrep_rd_block(dpdfile4 *File, int irrep, int start_pq,
 				int num_pq)
 {

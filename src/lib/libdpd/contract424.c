@@ -25,8 +25,6 @@ extern FILE *outfile;
  **   double beta: A prefactor for the target beta * Z.
  */
 
-#define DPD_BIGNUM 2147483647 /* the four-byte signed int limit */
-
 int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
     int sum_Y, int Ztrans, double alpha, double beta)
 {

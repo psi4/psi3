@@ -11,6 +11,8 @@
 #include <dmalloc.h>
 #endif
 
+#define DPD_BIGNUM 2147483647 /* the four-byte signed int limit */
+
 typedef struct {
   int nirreps;      /* No. of irreps */
   int pqnum;        /* Pair number for the row indices */

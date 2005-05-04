@@ -3,8 +3,6 @@
 #include <libqt/qt.h>
 #include "dpd.h"
 
-#define DPD_BIGNUM 2147000000 /* A number just below the four-byte signed int limit */
-
 int dpd_file4_mat_irrep_row_rd(dpdfile4 *File, int irrep, int row)
 {
   int coltot, my_irrep, seek_block;

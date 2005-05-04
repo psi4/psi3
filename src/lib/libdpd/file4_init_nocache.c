@@ -21,8 +21,6 @@
 **   char *label: A string labelling for this buffer.
 */
 
-#define DPD_BIGNUM 2147483647 /* the four-byte signed int limit */
-
 int dpd_file4_init_nocache(dpdfile4 *File, int filenum, int irrep, int pqnum,
 		   int rsnum,  char *label)
 {

@@ -4,8 +4,6 @@
 #include <libqt/qt.h>
 #include "dpd.h"
 
-#define DPD_BIGNUM 2147483647 /* the four-byte signed int limit */
-
 /*
 ** dpd_buf4_sort_axpy(): A general DPD buffer sorting function that also adds 
 ** the result to a target dpdbuf4 that already exists.  Like buf4_sort(), this will
