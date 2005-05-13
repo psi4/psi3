@@ -92,15 +92,6 @@ void mubar(void)
   dpd_file2_close(&mu);
   dpd_buf4_close(&mubar2);
 
-  /** MuBAR_AbEi -- stored (Ab,Ei) **/
-  dpd_buf4_init(&mubar2, CC_LR, irrep, 5, 11, 5, 11, 0, "MuBAR_X_AbEi");
-  dpd_file2_init(&mu, CC_OEI, irrep, 0, 1, "Mu_X_IA");
-  dpd_buf4_init(&t2, CC_TAMPS, 0, 5, 0, 5, 0, 0, "tAbIj");
-  dpd_contract244(&mu, &t2, &mubar2, 0, 2, 1, -1, 0);
-  dpd_buf4_close(&t2);
-  dpd_file2_close(&mu);
-  dpd_buf4_close(&mubar2);
-
   /** MuBAR_IjAb **/
   dpd_buf4_init(&mubar2, CC_LR, irrep, 0, 5, 0, 5, 0, "MuBAR_X_IjAb");
 
@@ -221,15 +212,6 @@ void mubar(void)
   dpd_file2_close(&mu);
   dpd_buf4_close(&mubar2);
 
-  /** MuBAR_AbEi -- stored (Ab,Ei) **/
-  dpd_buf4_init(&mubar2, CC_LR, irrep, 5, 11, 5, 11, 0, "MuBAR_Y_AbEi");
-  dpd_file2_init(&mu, CC_OEI, irrep, 0, 1, "Mu_Y_IA");
-  dpd_buf4_init(&t2, CC_TAMPS, 0, 5, 0, 5, 0, 0, "tAbIj");
-  dpd_contract244(&mu, &t2, &mubar2, 0, 2, 1, -1, 0);
-  dpd_buf4_close(&t2);
-  dpd_file2_close(&mu);
-  dpd_buf4_close(&mubar2);
-
   /** MuBAR_IjAb **/
   dpd_buf4_init(&mubar2, CC_LR, irrep, 0, 5, 0, 5, 0, "MuBAR_Y_IjAb");
 
@@ -346,15 +328,6 @@ void mubar(void)
   dpd_file2_init(&mu, CC_OEI, irrep, 0, 1, "Mu_Z_IA");
   dpd_buf4_init(&t2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
   dpd_contract244(&mu, &t2, &mubar2, 1, 2, 0, 1, 0);
-  dpd_buf4_close(&t2);
-  dpd_file2_close(&mu);
-  dpd_buf4_close(&mubar2);
-
-  /** MuBAR_AbEi -- stored (Ab,Ei) **/
-  dpd_buf4_init(&mubar2, CC_LR, irrep, 5, 11, 5, 11, 0, "MuBAR_Z_AbEi");
-  dpd_file2_init(&mu, CC_OEI, irrep, 0, 1, "Mu_Z_IA");
-  dpd_buf4_init(&t2, CC_TAMPS, 0, 5, 0, 5, 0, 0, "tAbIj");
-  dpd_contract244(&mu, &t2, &mubar2, 0, 2, 1, -1, 0);
   dpd_buf4_close(&t2);
   dpd_file2_close(&mu);
   dpd_buf4_close(&mubar2);

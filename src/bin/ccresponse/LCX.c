@@ -7,7 +7,7 @@ double LCX(char *pert_c, char *cart_c, int irrep_c,
 	   char *pert_x, char *cart_x, int irrep_x, double omega)
 {
   double polar=0.0;
-  dpdfile2 X1, mu1, z1, l1;
+  dpdfile2 X1, mu1, z1, l1, mu, lt, xc;
   dpdbuf4 X2, mu2, z2, l2, Z;
   char lbl[32];
 
@@ -57,21 +57,28 @@ double LCX(char *pert_c, char *cart_c, int irrep_c,
 
   /*** L2 * MuBAR * X1 + L2 * MuBAR * X2 ***/
 
+  dpd_file2_init(&xc, CC_TMP0, 0, 0, 0, "XC_IJ");
+  sprintf(lbl, "%s_%1s_IA", pert_c, cart_c);
+  dpd_file2_init(&mu, CC_OEI, irrep_c, 0, 1, lbl);
+  sprintf(lbl, "X_%s_%1s_IA (%5.3f)", pert_x, cart_x, omega);
+  dpd_file2_init(&X1, CC_OEI, irrep_x, 0, 1, lbl);
+  dpd_contract222(&X1, &mu, &xc, 0, 0, 2.0, 0.0);
+  dpd_file2_close(&X1);
+  dpd_file2_close(&mu);
+  dpd_file2_close(&xc);
+
+  dpd_file2_init(&lt, CC_TMP0, 0, 0, 0, "Lt_IJ");
+  dpd_file2_init(&xc, CC_TMP0, 0, 0, 0, "XC_IJ");
+  polar += dpd_file2_dot(&lt, &xc);
+  dpd_file2_close(&xc);
+  dpd_file2_close(&lt);
+
   dpd_buf4_init(&z2, CC_TMP0, 0, 0, 5, 0, 5, 0, "Z(Ij,Ab) Final");
   dpd_buf4_scm(&z2, 0);
   dpd_buf4_close(&z2);
 
   sprintf(lbl, "X_%s_%1s_IA (%5.3f)", pert_x, cart_x, omega);
   dpd_file2_init(&X1, CC_OEI, irrep_x, 0, 1, lbl);
-
-  dpd_buf4_init(&Z, CC_TMP1, 0, 5, 0, 5, 0, 0, "Z(Ab,Ij)");
-  sprintf(lbl, "%sBAR_%1s_AbEi", pert_c, cart_c);
-  dpd_buf4_init(&mu2, CC_LR, irrep_c, 5, 11, 5, 11, 0, lbl);
-  dpd_contract244(&X1, &mu2, &Z, 1, 2, 1, 1, 0);
-  dpd_buf4_close(&mu2);
-  dpd_buf4_sort_axpy(&Z, CC_TMP0, rspq, 0, 5, "Z(Ij,Ab) Final", 1);
-  dpd_buf4_sort_axpy(&Z, CC_TMP0, srqp, 0, 5, "Z(Ij,Ab) Final", 1);
-  dpd_buf4_close(&Z);
 
   dpd_buf4_init(&z2, CC_TMP0, 0, 0, 5, 0, 5, 0, "Z(Ij,Ab) Final");
 

@@ -4,13 +4,31 @@
 #include "globals.h"
 
 void hbar_extra(void) {
+  dpdfile2 lt;
   dpdbuf4 W1, W2, W;
-  dpdbuf4 t2;
+  dpdbuf4 t2, l2;
 
   /* TIjAb (Ab,Ij) */
   dpd_buf4_init(&t2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
   dpd_buf4_sort(&t2, CC_TAMPS, rspq, 5, 0, "tAbIj");
   dpd_buf4_close(&t2);
+
+  /* LIjAb * TIjAb */
+  dpd_file2_init(&lt, CC_TMP0, 0, 0, 0, "Lt_IJ");
+
+  dpd_buf4_init(&l2, CC_LAMPS, 0, 0, 7, 2, 7, 0, "LIJAB 0 -1");
+  dpd_buf4_init(&t2, CC_TAMPS, 0, 0, 7, 2, 7, 0, "tIJAB");
+  dpd_contract442(&l2, &t2, &lt, 0, 0, -1.0, 0.0);
+  dpd_buf4_close(&t2);
+  dpd_buf4_close(&l2);
+
+  dpd_buf4_init(&l2, CC_LAMPS, 0, 0, 5, 0, 5, 0, "LIjAb 0 -1");
+  dpd_buf4_init(&t2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
+  dpd_contract442(&l2, &t2, &lt, 0, 0, -1.0, 1.0);
+  dpd_buf4_close(&t2);
+  dpd_buf4_close(&l2);
+
+  dpd_file2_close(&lt);
 
   /* 2 W(ME,jb) + W(Me,Jb) */
   dpd_buf4_init(&W1, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMbeJ");
