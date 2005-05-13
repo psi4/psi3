@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
@@ -12,12 +13,13 @@ double cc2_LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
 		  char *pert_y, char *cart_y, int irrep_y, double omega_y)
 {
 	
-  int a, A, m, num_m, nrows, ncols;
-  int GW1, GZae, Ga, Gm, Gf, Gam, Gef, GX, GY;
+  int am, a, A, m, M, fe, ef, f, e, nrows, ncols;
+  int GW, GZae, Ga, Gm, Gf, Gam, Gef, GX;
   int hxbuf, hzbuf, Gi, Gj, Ge, GZ;
   int ab, mb, colx, colz, rowz, rowx;
+  double *Xt;
   dpdfile2 F, X1, Y1, Zmi, Zae, ZIA, L1, t1;
-  dpdbuf4 Z1, I, W1, ZIjAb, L2, Z, X;
+  dpdbuf4 Z1, I, W1, ZIjAb, L2, Z, X, W;
   double polar;
   char lbl[32];
 	
@@ -49,56 +51,54 @@ double cc2_LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
   sprintf(lbl, "Z_%s_%1s_AE" , pert_x, cart_x);
   dpd_file2_init(&Zae, CC_TMP0, irrep_y, 1, 1, lbl);
   dpd_file2_scm(&Zae, 0);
-  dpd_buf4_init(&W1, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");
-  /*   dpd_dot24(&X1, &W1, &Zae, 0, 0, 1, 0); */
+  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");
 
-  GW1 = W1.file.my_irrep; 
+  GW = W.file.my_irrep; 
   GZae = Zae.my_irrep;
-  GX = X1.my_irrep;
 
   dpd_file2_mat_init(&Zae);
   dpd_file2_mat_init(&X1);
   dpd_file2_mat_rd(&X1);
 
   for(Gam=0; Gam < moinfo.nirreps; Gam++) {
-    Gef = Gam^GW1;
+    dpd_buf4_mat_irrep_row_init(&W, Gam);
+    Xt = init_array(W.params->coltot[Gam]);
 
-    for(Ga=0; Ga < moinfo.nirreps; Ga++) {
-      Gm = Ga^Gef;
-      Ge = Ga^GZae;
-      Gf = Gm^GX;
+    for(am=0; am < W.params->rowtot[Gam]; am++) {
+      dpd_buf4_mat_irrep_row_rd(&W, Gam, am);
+      a = W.params->roworb[Gam][am][0];
+      m = W.params->roworb[Gam][am][1];
+      Ga = W.params->psym[a];
+      Gm = W.params->qsym[m];
+      Ge = Ga^GZae;  /* Zae is not totally symmetric */
+      Gf = Gam^GW^Ge; /* X1 is not totally symmetric */
+      Gef = Gam^GW;
+      A = a - W.params->poff[Ga];
+      M = m - W.params->qoff[Gm];
 
-      num_m = X1.params->rowtot[Gm];
-      dpd_buf4_mat_irrep_init_block(&W1, Gam, num_m);
+      zero_arr(Xt, W.params->coltot[Gam]);
 
-      /* Loop over rows of the X factor and the target */
-      for(a=0; a < Zae.params->rowtot[Ga]; a++) {
-
-	A = W1.params->poff[Ga] + a;
-	dpd_buf4_mat_irrep_rd_block(&W1, Gam, W1.row_offset[Gam][A], num_m);
-
-	for(m=0; m < num_m; m++) {
-
-	  nrows = W1.params->rpi[Ge];
-	  ncols = W1.params->spi[Gf];
-
-	  if(nrows && ncols) {
-	    C_DGEMV('n',nrows,ncols,2.0,
-		    &(W1.matrix[Gam][m][W1.col_offset[Gam][Ge]]),ncols,
-		    &(X1.matrix[Gm][m][0]),1,1.0,
-		    &(Zae.matrix[Ga][a][0]),1);
-	    C_DGEMV('t',ncols,nrows,-1.0,
-		    &(W1.matrix[Gam][m][W1.col_offset[Gam][Gf]]),nrows,
-		    &(X1.matrix[Gm][m][0]),1,1.0,
-		    &(Zae.matrix[Ga][a][0]),1);
-	  }
-	}
+      /* build spin-adapted W-integrals for current am */
+      for(ef=0; ef < W.params->coltot[Gef]; ef++) {
+	e = W.params->colorb[Gef][ef][0];
+	f = W.params->colorb[Gef][ef][1];
+	fe = W.params->colidx[f][e];
+	Xt[ef] = 2.0 * W.matrix[Gam][0][ef] - W.matrix[Gam][0][fe];
       }
-
-      dpd_buf4_mat_irrep_close_block(&W1, Gam, num_m);
+	
+      nrows = moinfo.virtpi[Ge];
+      ncols = moinfo.virtpi[Gf];
+      if(nrows && ncols)
+	C_DGEMV('n',nrows,ncols,1.0,&Xt[W.col_offset[Gam][Ge]],ncols,
+		X1.matrix[Gm][M],1,1.0,
+		Zae.matrix[Ga][A],1);
     }
+
+    free(Xt);
+    dpd_buf4_mat_irrep_row_close(&W, Gam);
   }
-  dpd_buf4_close(&W1);
+  dpd_buf4_close(&W);
+
   dpd_file2_mat_close(&X1);
   dpd_file2_mat_wrt(&Zae);
   dpd_file2_mat_close(&Zae);
@@ -112,57 +112,55 @@ double cc2_LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
   sprintf(lbl, "Z_%s_%1s_AE" , pert_y, cart_y);
   dpd_file2_init(&Zae, CC_TMP0, irrep_y, 1, 1, lbl);
   dpd_file2_scm(&Zae, 0);
-  dpd_buf4_init(&W1, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");
-  /*   dpd_dot24(&Y1, &W1, &Zae, 0, 0, 1, 0); */
+  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");
 
-  GW1 = W1.file.my_irrep; 
+  GW = W.file.my_irrep; 
   GZae = Zae.my_irrep;
-  GY = Y1.my_irrep;
 
   dpd_file2_mat_init(&Zae);
   dpd_file2_mat_init(&Y1);
   dpd_file2_mat_rd(&Y1);
 
   for(Gam=0; Gam < moinfo.nirreps; Gam++) {
-    Gef = Gam^GW1;
+    dpd_buf4_mat_irrep_row_init(&W, Gam);
+    Xt = init_array(W.params->coltot[Gam]);
 
-    for(Ga=0; Ga < moinfo.nirreps; Ga++) {
-      Gm = Ga^Gef;
-      Ge = Ga^GZae;
-      Gf = Gm^GY;
+    for(am=0; am < W.params->rowtot[Gam]; am++) {
+      dpd_buf4_mat_irrep_row_rd(&W, Gam, am);
+      a = W.params->roworb[Gam][am][0];
+      m = W.params->roworb[Gam][am][1];
+      Ga = W.params->psym[a];
+      Gm = W.params->qsym[m];
+      Ge = Ga^GZae;  /* Zae is not totally symmetric */
+      Gf = Gam^GW^Ge; /* Y1 is not totally symmetric */
+      Gef = Gam^GW;
+      A = a - W.params->poff[Ga];
+      M = m - W.params->qoff[Gm];
 
-      num_m = Y1.params->rowtot[Gm];
-      dpd_buf4_mat_irrep_init_block(&W1, Gam, num_m);
+      zero_arr(Xt, W.params->coltot[Gam]);
 
-      /* Loop over rows of the X factor and the target */
-      for(a=0; a < Zae.params->rowtot[Ga]; a++) {
-
-	A = W1.params->poff[Ga] + a;
-	dpd_buf4_mat_irrep_rd_block(&W1, Gam, W1.row_offset[Gam][A], num_m);
-
-	for(m=0; m < num_m; m++) {
-
-	  nrows = W1.params->rpi[Ge];
-	  ncols = W1.params->spi[Gf];
-
-	  if(nrows && ncols) {
-	    C_DGEMV('n',nrows,ncols,2.0,
-		    &(W1.matrix[Gam][m][W1.col_offset[Gam][Ge]]),ncols,
-		    &(Y1.matrix[Gm][m][0]),1,1.0,
-		    &(Zae.matrix[Ga][a][0]),1);
-	    C_DGEMV('t',ncols,nrows,-1.0,
-		    &(W1.matrix[Gam][m][W1.col_offset[Gam][Gf]]),nrows,
-		    &(Y1.matrix[Gm][m][0]),1,1.0,
-		    &(Zae.matrix[Ga][a][0]),1);
-	  }
-	}
+      /* build spin-adapted W-integrals for current am */
+      for(ef=0; ef < W.params->coltot[Gef]; ef++) {
+	e = W.params->colorb[Gef][ef][0];
+	f = W.params->colorb[Gef][ef][1];
+	fe = W.params->colidx[f][e];
+	Xt[ef] = 2.0 * W.matrix[Gam][0][ef] - W.matrix[Gam][0][fe];
       }
-
-      dpd_buf4_mat_irrep_close_block(&W1, Gam, num_m);
+	
+      nrows = moinfo.virtpi[Ge];
+      ncols = moinfo.virtpi[Gf];
+      if(nrows && ncols)
+	C_DGEMV('n',nrows,ncols,1.0,&Xt[W.col_offset[Gam][Ge]],ncols,
+		Y1.matrix[Gm][M],1,1.0,
+		Zae.matrix[Ga][A],1);
     }
+
+    free(Xt);
+    dpd_buf4_mat_irrep_row_close(&W, Gam);
   }
-  dpd_buf4_close(&W1);
+  dpd_buf4_close(&W);
   dpd_file2_mat_close(&Y1);
+
   dpd_file2_mat_wrt(&Zae);
   dpd_file2_mat_close(&Zae);
   /** End out-of-core dot24 contraction **/
@@ -225,7 +223,7 @@ double cc2_LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
 	
   /* B -> Wabef */
   sprintf(lbl, "Z_%s_%1s_AbEj", pert_y, cart_y);
-  dpd_buf4_init(&Z, CC_TMP0, irrep_y, 5, 11, 5, 11, 0, lbl);
+  dpd_buf4_init(&Z, CC_TMP9, irrep_y, 5, 11, 5, 11, 0, lbl);
   dpd_buf4_init(&I, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>");
   dpd_contract424(&I, &Y1, &Z, 3, 1, 0, 1, 0);
   dpd_buf4_close(&I);
@@ -234,7 +232,7 @@ double cc2_LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
   /** Begin out-of-core contract244 **/
   dpd_buf4_init(&Z, CC_TMP0, 0, 5, 0, 5, 0, 0, "ZIjAb (Ab,Ij)");
   sprintf(lbl, "Z_%s_%1s_AbEj", pert_y, cart_y);
-  dpd_buf4_init(&X, CC_TMP0, irrep_y, 5, 11, 5, 11, 0, lbl);
+  dpd_buf4_init(&X, CC_TMP9, irrep_y, 5, 11, 5, 11, 0, lbl);
 
   /* Symmetry Info */
   GX = X.file.my_irrep; 
@@ -286,6 +284,8 @@ double cc2_LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
   dpd_buf4_sort_axpy(&Z, CC_TMP0, srqp, 0, 5, "Z(Ij,Ab) Final", 1);
   dpd_buf4_close(&Z);
   /** End out-of-core contract244 **/
+  psio_close(CC_TMP9, 0);
+  psio_open(CC_TMP9, 0);
 	
   /* D -> Wabef */
   sprintf(lbl, "Z_%s_%1s_MnIf", pert_x, cart_x);
