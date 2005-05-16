@@ -24,7 +24,7 @@ void exit_io(void);
 
 void compute_X(char *pert, char *cart, int irrep, double omega)
 {
-  int iter=0, done=0;
+  int i, iter=0, done=0;
   double rms, polar, X2_norm;
   char lbl[32];
   dpdbuf4 X2;
@@ -65,7 +65,7 @@ void compute_X(char *pert, char *cart, int irrep, double omega)
 	X2_norm = dpd_buf4_dot_self(&X2);
 	dpd_buf4_close(&X2);
 	X2_norm = sqrt(X2_norm);
-	fprintf(outfile, "\tNorm of the converged X2 amplitudes %20.15f\n", X2_norm);
+	fprintf(outfile, "\tNorm of the converged X2 amplitudes %20.15f\n\n", X2_norm);
       }
       fflush(outfile);
       break;
@@ -87,6 +87,12 @@ void compute_X(char *pert, char *cart, int irrep, double omega)
     exit_io();
     exit(PSI_RETURN_FAILURE);
   }
+
+  psio_close(CC_DIIS_AMP, 0);
+  psio_open(CC_DIIS_AMP, 0);
+
+  psio_close(CC_DIIS_ERR, 0);
+  psio_open(CC_DIIS_ERR, 0);
 
   /*  print_X(pert, cart, irrep, omega); */
 }

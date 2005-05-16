@@ -9,11 +9,6 @@ void cc2_hbar_extra(void) {
   dpdbuf4 W1, W;
   dpdbuf4 t2, l2;
 
-  /* TIjAb (Ab,Ij) */
-  dpd_buf4_init(&t2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
-  dpd_buf4_sort(&t2, CC_TAMPS, rspq, 5, 0, "tAbIj");
-  dpd_buf4_close(&t2);
-
   /* LIjAb * TIjAb */
   dpd_file2_init(&lt, CC_TMP0, 0, 0, 0, "Lt_IJ");
 
