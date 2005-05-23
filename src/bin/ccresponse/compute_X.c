@@ -9,6 +9,7 @@
 
 void init_X(char *pert, char *cart, int irrep, double omega);
 void sort_X(char *pert, char *cart, int irrep, double omega);
+void cc2_sort_X(char *pert, char *cart, int irrep, double omega);
 void X1_build(char *pert, char *cart, int irrep, double omega);
 void X2_build(char *pert, char *cart, int irrep, double omega);
 void cc2_X1_build(char *pert, char *cart, int irrep, double omega);
@@ -35,19 +36,23 @@ void compute_X(char *pert, char *cart, int irrep, double omega)
   fflush(outfile);
   init_X(pert, cart, irrep, omega);
 
-  sort_X(pert, cart, irrep, omega);
+  if (!strcmp(params.wfn,"CC2"))
+    cc2_sort_X(pert, cart, irrep, omega);
+  else
+    sort_X(pert, cart, irrep, omega);
   polar = -2.0*pseudopolar(pert, cart, irrep, omega);
   fprintf(outfile, "\t%4d   %20.12f\n", iter, polar);
   fflush(outfile);
 
   for(iter=1; iter <= params.maxiter; iter++) {
 
-    sort_X(pert, cart, irrep, omega);
     if (!strcmp(params.wfn,"CC2")) {
+      cc2_sort_X(pert, cart, irrep, omega);
       cc2_X1_build(pert, cart, irrep, omega);
       cc2_X2_build(pert, cart, irrep, omega);
     }
     else {
+      sort_X(pert, cart, irrep, omega);
       X1_build(pert, cart, irrep, omega);
       X2_build(pert, cart, irrep, omega);
     }
@@ -56,7 +61,10 @@ void compute_X(char *pert, char *cart, int irrep, double omega)
     if(rms <= params.convergence) {
       done = 1;
       save_X(pert, cart, irrep, omega);
-      sort_X(pert, cart, irrep, omega);
+      if (!strcmp(params.wfn,"CC2"))
+	cc2_sort_X(pert, cart, irrep, omega);
+      else
+	sort_X(pert, cart, irrep, omega);
       fprintf(outfile, "\t-----------------------------------------\n");
       fprintf(outfile, "\tConverged %s-%1s-Perturbed Wfn to %4.3e\n", pert, cart, rms);
       if(params.print == 2) {
@@ -72,7 +80,10 @@ void compute_X(char *pert, char *cart, int irrep, double omega)
     }
     if(params.diis) diis(iter, pert, cart, irrep, omega);
     save_X(pert, cart, irrep, omega);
-    sort_X(pert, cart, irrep, omega);
+    if (!strcmp(params.wfn,"CC2"))
+      cc2_sort_X(pert, cart, irrep, omega);
+    else
+      sort_X(pert, cart, irrep, omega);
 
     polar = -2.0*pseudopolar(pert, cart, irrep, omega);
     fprintf(outfile, "\t%4d   %20.12f    %4.3e\n", iter, polar, rms);
