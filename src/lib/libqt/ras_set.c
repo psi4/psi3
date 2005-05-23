@@ -10,6 +10,8 @@
 #include "qt.h"
 #include <psifiles.h>
 
+extern FILE *outfile;
+
 /*!
 ** ras_set()
 **
@@ -257,9 +259,9 @@ int ras_set(int nirreps, int nbfso, int freeze_core, int *orbspi,
 ** Updated June 2002 to distinguish between frozen and restricted spaces
 **
 **  \param nirreps     =  num of irreps in computational point group
-**  \param nbfso       =  num of basis functions in symmetry orbitals (num MOs) 
-**  \param delete_fzdocc    = 1 to remove frozen core orbitals from ras_opi
-**  \param delete_restrdocc = 1 to remove restricted core orbs from ras_opi
+**  \param nmo         =  number of MO's
+**  \param delete_fzdocc    = 1 to remove frozen core orbitals from ras_opi[0]
+**  \param delete_restrdocc = 1 to remove restricted core orbs from ras_opi[0]
 **  \param orbspi      =  array giving num symmetry orbitals (or MOs) per irrep
 **  \param docc        =  array of doubly occupied orbitals per irrep
 **                        (guess should be provided)
@@ -276,7 +278,7 @@ int ras_set(int nirreps, int nbfso, int freeze_core, int *orbspi,
 **  \param ras_opi     =  matrix giving num of orbitals per irrep per ras space,
 **                        addressed as ras_opi[ras_space][irrep]
 **                        (returned by function, but allocate before call)
-**  \param order       =  array nbfso big which maps Pitzer to Correlated order
+**  \param order       =  array nmo big which maps Pitzer to Correlated order
 **                        (returned by function, but allocate before call)
 **  \param ras_type    =  if 1, put docc and socc together in same RAS space 
 **                        (RAS I), as appropriate for DETCI.  If 0, put socc
@@ -291,7 +293,7 @@ int ras_set(int nirreps, int nbfso, int freeze_core, int *orbspi,
 ** Returns: 1 for success, 0 otherwise
 ** \ingroup (QT)
 */
-int ras_set2(int nirreps, int nbfso, int delete_fzdocc, 
+int ras_set2(int nirreps, int nmo, int delete_fzdocc, 
              int delete_restrdocc, int *orbspi,
              int *docc, int *socc, int *frdocc, int *fruocc, 
              int *restrdocc, int *restruocc, int **ras_opi, int *order, 
@@ -322,7 +324,7 @@ int ras_set2(int nirreps, int nbfso, int delete_fzdocc,
   for (i=0; i<MAX_RAS_SPACES; i++) {
     zero_int_array(ras_opi[i], nirreps);
   }
-  zero_int_array(order, nbfso);
+  zero_int_array(order, nmo);
   
   /* now use the parser to get the arrays we require */
   tmp_frdocc = get_frzcpi();
@@ -338,11 +340,11 @@ int ras_set2(int nirreps, int nbfso, int delete_fzdocc,
   /* replace DOCC and SOCC only if they are in input */
   if (ip_exist("DOCC",0))
     errcod = ip_int_array("DOCC",docc,nirreps); 
-  if (ip_exist("DOCC",0))
+  if (ip_exist("SOCC",0))
     errcod = ip_int_array("SOCC",socc,nirreps);
   
   /* now use the parser to get the arrays we require */
-  errcod = ip_int_array("RESTR_DOCC",restrdocc,nirreps);
+  errcod = ip_int_array("RESTRICTED_DOCC",restrdocc,nirreps);
   
   errbad=0; do_ras4=1;
   errcod = ip_int_array("RAS1", ras_opi[0], nirreps);
@@ -360,11 +362,12 @@ int ras_set2(int nirreps, int nbfso, int delete_fzdocc,
     return(0);
   }
   
-  /* If the user has not specified RAS I, we must deduce it.
-   * RAS I does not include any FZC ("frozen core") orbs but does 
-   * include COR ("restricted core") orbs.  We need to take out
-   * the COR orbitals temporarily for getting everything counted
-   * and ordered correctly; we'll add them back in at the end.
+  /*
+   * If the user has not specified RAS I, we must deduce it.
+   * As of 2004, RAS I will not include any FZC ("frozen core")
+   * orbitals *OR* any COR ("restricted core") orbitals.  However,
+   * we'll add these back into RAS I later if the user requests it
+   * by setting delete_fzdocc or delete_rstrdocc = 0.
    */
   
   if (!parsed_ras1) {
@@ -376,36 +379,47 @@ int ras_set2(int nirreps, int nbfso, int delete_fzdocc,
   }
   
   
-  /* if the user hasn't specified RAS II, look for val_orb             */
-  /* val_orb should typically be RAS I + RAS II, so subtract out RAS I */ 
+  /* 
+   * if the user hasn't specified RAS II, look for ACTIVE (replaces
+   * VAL_ORB).  Assume this always goes after FZC + COR. 
+   */ 
   if (!parsed_ras2) {
-    errcod = ip_int_array("VAL_ORB",ras_opi[1],nirreps);
-    if (errcod != IPE_OK) { /* we didn't find VAL_ORB keyword */
+    errcod = ip_int_array("ACTIVE",ras_opi[1],nirreps);
+    if (errcod != IPE_OK) { /* we didn't find ACTIVE keyword */
       for (irrep=0; irrep<nirreps; irrep++) {
 	if (ras_type==1) ras_opi[1][irrep] = 0;
 	if (ras_type==0) ras_opi[1][irrep] = socc[irrep];
       }
     }
-    else { /* we found a VAL_ORB keyword */
-      for (irrep = 0; irrep<nirreps; irrep++) { 
-         ras_opi[1][irrep] -= ras_opi[0][irrep];
-         if (ras_opi[1][irrep] < 0) {
-           fprintf(stderr, "(ras_set): val_orb must be larger than RAS I\n");
-           return(0);
-         }
-         if (!ip_exist("RESTR_UOCC",0)) { /* default restrict other virs */
-           for (irrep=0; irrep<nirreps; irrep++)
-             restruocc[irrep] = orbspi[irrep] - frdocc[irrep] - 
-                                restrdocc[irrep] - ras_opi[0][irrep] - 
-                                ras_opi[1][irrep] - fruocc[irrep];
-           parsed_restr_uocc = 1;
-         }
+    else { /* we found a ACTIVE keyword */
+      if (parsed_ras1) 
+        fprintf(outfile, "ras_set(): Warning: ACTIVE overrides RAS 1\n");
+
+      for (irrep=0; irrep<nirreps; irrep++) 
+        ras_opi[0][irrep] = 0; /* ACTIVE overrides RAS 1 */
+
+      if (!ip_exist("RESTRICTED_UOCC",0)) { /* default restrict other virs */
+        for (irrep=0; irrep<nirreps; irrep++) {
+          ras_opi[0][irrep] = 0; /* ACTIVE overrides RAS 1 */
+          restruocc[irrep] = orbspi[irrep] - frdocc[irrep] - 
+                             restrdocc[irrep] - ras_opi[0][irrep] - 
+                             ras_opi[1][irrep] - fruocc[irrep];
+        }
+        parsed_restr_uocc = 1;
+      } 
+
+      /* do a quick check */
+      for (irrep=0; irrep<nirreps; irrep++) {
+        if (frdocc[irrep]+restrdocc[irrep]+ras_opi[0][irrep]+ras_opi[1][irrep] 
+            < docc[irrep] + socc[irrep])
+          fprintf(outfile, 
+                  "ras_set():Warning:Occupied electrons beyond ACTIVE orbs!\n");
       }
     }
-  }
+  } /* end looking for "ACTIVE" */
 
   if (!parsed_restr_uocc) 
-    errcod = ip_int_array("RESTR_UOCC",restruocc,nirreps);
+    errcod = ip_int_array("RESTRICTED_UOCC",restruocc,nirreps);
   
   /* set up the RAS III or IV array: if RAS IV is used, RAS III must
    * be specified and then RAS IV is deduced.
@@ -450,8 +464,8 @@ int ras_set2(int nirreps, int nbfso, int delete_fzdocc,
       }
     }
     for (irrep=0; irrep<nirreps; irrep++) {
-      tras[0+MAX_RAS_SPACES][irrep] = restrdocc[irrep];
-      tras[1+MAX_RAS_SPACES][irrep] = frdocc[irrep];
+      tras[MAX_RAS_SPACES+0][irrep] = restrdocc[irrep];
+      tras[MAX_RAS_SPACES+1][irrep] = frdocc[irrep];
       tras[MAX_RAS_SPACES+2][irrep] = restruocc[irrep];
       tras[MAX_RAS_SPACES+3][irrep] = fruocc[irrep];
     }
@@ -477,11 +491,11 @@ int ras_set2(int nirreps, int nbfso, int delete_fzdocc,
     offset[irrep] = offset[irrep-1] + orbspi[irrep-1];
   }
   
-  for (i=0; i<8; i++) {
+  for (i=0; i<MAX_RAS_SPACES+4; i++) {
     for (irrep=0; irrep<nirreps; irrep++) { 
       while (tras[i][irrep]) {
 	point = used[irrep] + offset[irrep];
-	if (point < 0 || point >= nbfso) {
+	if (point < 0 || point >= nmo) {
 	  fprintf(stderr, "(ras_set): Invalid point value\n");
 	  abort();
 	}
