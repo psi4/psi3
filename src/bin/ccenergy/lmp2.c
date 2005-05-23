@@ -6,7 +6,6 @@
 #include "globals.h"
 
 void local_filter_T2(dpdbuf4 *T2, int);
-void local_filter_T2_nodenom(dpdbuf4 *T2);
 
 /* lmp2(): Computes the local-MP2 energy and the local-MP2 weak-pair energy.
 ** 
@@ -39,9 +38,27 @@ void lmp2(void)
   double energy, rms, weak_pair_energy;
   dpdbuf4 T2, newT2, D, D2;
   dpdfile2 fij, fab;
+  psio_address next;
 
   nocc = local.nocc;
   nvir = local.nvir;
+  natom = local.natom;
+
+  local.domain = (int **) malloc(local.nocc*sizeof(int *));
+  next = PSIO_ZERO;
+  for(i=0; i<local.nocc; i++) {
+    local.domain[i] = (int *) malloc(local.natom*sizeof(int));
+    psio_read(CC_INFO, "Local Domains", (char *) local.domain[i],
+	      local.natom*sizeof(int), next, &next);
+  }
+  printf("\n");
+  for(i=0; i<local.nocc; i++) {
+    for(k=0; k<local.natom; k++) {
+      printf("\t%d", local.domain[i][k]);
+    }
+    printf("\n");
+  }
+  printf("\n");
 
   /* First, turn on all weak pairs for the LMP2 */
   for(ij=0; ij < nocc*nocc; ij++) local.weak_pairs[ij] = 0;
@@ -174,7 +191,7 @@ void lmp2(void)
   for(i=0,ij=0; i < nocc; i++)
     for(j=0; j < nocc; j++,ij++) {
       weak = 1;
-      for(k=0; k < local.natom; k++)
+      for(k=0; k < natom; k++)
         if(local.domain[i][k] && local.domain[j][k]) weak = 0;
 
       if(weak) local.weak_pairs[ij] = 1;
@@ -208,5 +225,7 @@ void lmp2(void)
 
   local.weak_pair_energy = weak_pair_energy;
 
+  for(i=0; i<nocc; i++)
+    free(local.domain[i]);
+  free(local.domain);
 }
-

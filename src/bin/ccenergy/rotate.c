@@ -149,7 +149,7 @@ int rotate(void)
     /* build S^-1/2 for this basis */
     evals = init_array(nmo);
     work = init_array(nmo*3);
-    if(stat = C_DSYEV('v','u', nmo,&(MO_S[0][0]),nmo,evals,work,nmo*3)) {
+    if((stat = C_DSYEV('v','u', nmo,&(MO_S[0][0]),nmo,evals,work,nmo*3))) {
       fprintf(outfile, "rotate(): Error in overlap diagonalization. stat = %d\n", stat);
       exit(PSI_RETURN_FAILURE);
     }
@@ -237,8 +237,8 @@ int rotate(void)
       if(moinfo.occpi[h]) {
 	evals = init_array(moinfo.occpi[h]);
 	work = init_array(3*moinfo.occpi[h]);
-	if(stat = C_DSYEV('v','u', moinfo.occpi[h], &(Foo[h][0][0]), 
-			  moinfo.occpi[h], evals, work, moinfo.occpi[h]*3)) {
+	if((stat = C_DSYEV('v','u', moinfo.occpi[h], &(Foo[h][0][0]), 
+			  moinfo.occpi[h], evals, work, moinfo.occpi[h]*3))) {
 	  fprintf(outfile, "rotate(): Error in Foo[%1d] diagonalization. stat = %d\n", 
 		  h, stat);
 	  exit(PSI_RETURN_FAILURE);
@@ -259,8 +259,8 @@ int rotate(void)
       if(moinfo.virtpi[h]) {
 	evals = init_array(moinfo.virtpi[h]);
 	work = init_array(3*moinfo.virtpi[h]);
-	if(stat = C_DSYEV('v','u', moinfo.virtpi[h], &(Fvv[h][0][0]), moinfo.virtpi[h], 
-			  evals, work, moinfo.virtpi[h]*3)) {
+	if((stat = C_DSYEV('v','u', moinfo.virtpi[h], &(Fvv[h][0][0]), moinfo.virtpi[h], 
+			  evals, work, moinfo.virtpi[h]*3))) {
 	  fprintf(outfile, "rotate(): Error in Fvv[%1d] diagonalization. stat = %d\n", 
 		  h, stat);
 	  exit(PSI_RETURN_FAILURE);
@@ -389,7 +389,7 @@ int rotate(void)
 
     evals = init_array(nmo);
     work = init_array(nmo*3);
-    if(stat = C_DSYEV('v','u', nmo,&(MO_S[0][0]),nmo,evals,work,nmo*3)) {
+    if((stat = C_DSYEV('v','u', nmo,&(MO_S[0][0]),nmo,evals,work,nmo*3))) {
       fprintf(outfile, "rotate(): Error in overlap diagonalization. stat = %d\n", stat);
       exit(PSI_RETURN_FAILURE);
     }
@@ -459,7 +459,7 @@ int rotate(void)
 
     evals = init_array(nmo);
     work = init_array(nmo*3);
-    if(stat = C_DSYEV('v','u', nmo,&(MO_S[0][0]),nmo,evals,work,nmo*3)) {
+    if((stat = C_DSYEV('v','u', nmo,&(MO_S[0][0]),nmo,evals,work,nmo*3))) {
       fprintf(outfile, "rotate(): Error in overlap diagonalization. stat = %d\n", stat);
       exit(PSI_RETURN_FAILURE);
     }
@@ -542,8 +542,8 @@ int rotate(void)
       if(moinfo.aoccpi[h]) {
 	evals = init_array(moinfo.aoccpi[h]);
 	work = init_array(3*moinfo.aoccpi[h]);
-	if(stat = C_DSYEV('v','u', moinfo.aoccpi[h], &(Foo[h][0][0]), 
-			  moinfo.aoccpi[h], evals, work, moinfo.aoccpi[h]*3)) {
+	if((stat = C_DSYEV('v','u', moinfo.aoccpi[h], &(Foo[h][0][0]), 
+			  moinfo.aoccpi[h], evals, work, moinfo.aoccpi[h]*3))) {
 	  fprintf(outfile, "rotate(): Error in alpha Foo[%1d] diagonalization. stat = %d\n", 
 		  h, stat);
 	  exit(PSI_RETURN_FAILURE);
@@ -559,8 +559,8 @@ int rotate(void)
       if(moinfo.avirtpi[h]) {
 	evals = init_array(moinfo.avirtpi[h]);
 	work = init_array(3*moinfo.avirtpi[h]);
-	if(stat = C_DSYEV('v','u', moinfo.avirtpi[h], &(Fvv[h][0][0]), moinfo.avirtpi[h], 
-			  evals, work, moinfo.avirtpi[h]*3)) {
+	if((stat = C_DSYEV('v','u', moinfo.avirtpi[h], &(Fvv[h][0][0]), moinfo.avirtpi[h], 
+			  evals, work, moinfo.avirtpi[h]*3))) {
 	  fprintf(outfile, "rotate(): Error in alpha Fvv[%1d] diagonalization. stat = %d\n", 
 		  h, stat);
 	  exit(PSI_RETURN_FAILURE);
@@ -643,8 +643,8 @@ int rotate(void)
       if(moinfo.boccpi[h]) {
 	evals = init_array(moinfo.boccpi[h]);
 	work = init_array(3*moinfo.boccpi[h]);
-	if(stat = C_DSYEV('v','u', moinfo.boccpi[h], &(Foo[h][0][0]), 
-			  moinfo.boccpi[h], evals, work, moinfo.boccpi[h]*3)) {
+	if((stat = C_DSYEV('v','u', moinfo.boccpi[h], &(Foo[h][0][0]), 
+			  moinfo.boccpi[h], evals, work, moinfo.boccpi[h]*3))) {
 	  fprintf(outfile, "rotate(): Error in alpha Foo[%1d] diagonalization. stat = %d\n", 
 		  h, stat);
 	  exit(PSI_RETURN_FAILURE);
@@ -660,8 +660,8 @@ int rotate(void)
       if(moinfo.bvirtpi[h]) {
 	evals = init_array(moinfo.bvirtpi[h]);
 	work = init_array(3*moinfo.bvirtpi[h]);
-	if(stat = C_DSYEV('v','u', moinfo.bvirtpi[h], &(Fvv[h][0][0]), moinfo.bvirtpi[h], 
-			  evals, work, moinfo.bvirtpi[h]*3)) {
+	if((stat = C_DSYEV('v','u', moinfo.bvirtpi[h], &(Fvv[h][0][0]), moinfo.bvirtpi[h], 
+			  evals, work, moinfo.bvirtpi[h]*3))) {
 	  fprintf(outfile, "rotate(): Error in alpha Fvv[%1d] diagonalization. stat = %d\n", 
 		  h, stat);
 	  exit(PSI_RETURN_FAILURE);

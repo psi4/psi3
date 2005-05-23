@@ -27,7 +27,7 @@ void diis_RHF(int iter)
 {
   int nvector=8;  /* Number of error vectors to keep */
   int h, nirreps;
-  int row, col, word, p, q;
+  int row, col, word, t1_word, p, q;
   int diis_cycle;
   int vector_length=0;
   int errcod, *ipiv;
@@ -72,20 +72,28 @@ void diis_RHF(int iter)
   dpd_file2_mat_close(&T1b);
   dpd_file2_close(&T1b);
 
+  t1_word = word;
   dpd_buf4_init(&T2a, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb");
-  dpd_buf4_init(&T2b, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_init(&T2a, h);
     dpd_buf4_mat_irrep_rd(&T2a, h);
-    dpd_buf4_mat_irrep_init(&T2b, h);
-    dpd_buf4_mat_irrep_rd(&T2b, h);
     for(row=0; row < T2a.params->rowtot[h]; row++)
       for(col=0; col < T2a.params->coltot[h]; col++)
-	error[0][word++] = T2a.matrix[h][row][col] - T2b.matrix[h][row][col];
+	error[0][word++] = T2a.matrix[h][row][col];
     dpd_buf4_mat_irrep_close(&T2a, h);
-    dpd_buf4_mat_irrep_close(&T2b, h);
   }
   dpd_buf4_close(&T2a);
+
+  word = t1_word;
+  dpd_buf4_init(&T2b, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
+  for(h=0; h < nirreps; h++) {
+    dpd_buf4_mat_irrep_init(&T2b, h);
+    dpd_buf4_mat_irrep_rd(&T2b, h);
+    for(row=0; row < T2b.params->rowtot[h]; row++)
+      for(col=0; col < T2b.params->coltot[h]; col++)
+	error[0][word++] -= T2b.matrix[h][row][col];
+    dpd_buf4_mat_irrep_close(&T2b, h);
+  }
   dpd_buf4_close(&T2b);
 
   start = psio_get_address(PSIO_ZERO, diis_cycle*vector_length*sizeof(double));

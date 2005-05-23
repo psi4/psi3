@@ -72,7 +72,10 @@ void cc3_Wmnij(void);
 void cc3_Wmbij(void);
 void cc3_Wabei(void);
 void cc3(void);
-void cc2(void);
+void cc2_Wmnij_build(void);
+void cc2_Wmbij_build(void);
+void cc2_Wabei_build(void);
+void cc2_t2_build(void);
 
 /* local correlation functions */
 void local_init(void);
@@ -140,10 +143,6 @@ int main(int argc, char *argv[])
     local_init();
     if(!strcmp(local.weakp,"MP2")) lmp2();
   }
-  if(params.local_mos) {
-    local_init();
-    if(!strcmp(local.weakp,"MP2")) lmp2();
-  }
 
   init_amps();
   /*
@@ -165,11 +164,11 @@ int main(int argc, char *argv[])
     if(!params.restart || !psio_tocscan(CC_INFO, "MP2 Energy")) {
       moinfo.emp2 = moinfo.ecc;
       psio_write_entry(CC_INFO, "MP2 Energy", (char *) &(moinfo.ecc),
-                  sizeof(double));
-      }
+		       sizeof(double));
+    }
     else
       psio_read_entry(CC_INFO, "MP2 Energy", (char *) &(moinfo.emp2),
-                  sizeof(double));  
+		      sizeof(double));  
   }
 
   moinfo.t1diag = diagnostic();

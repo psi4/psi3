@@ -135,6 +135,16 @@ void get_params()
   params.t2_coupled = 0;
   errcod = ip_boolean("T2_COUPLED", &(params.t2_coupled),0);
 
+  if(ip_exist("PROPERTY",0)) {
+    errcod = ip_string("PROPERTY", &(params.prop), 0);
+    if(strcmp(params.prop,"POLARIZABILITY") && strcmp(params.prop,"ROTATION") && 
+       strcmp(params.prop,"ALL") && strcmp(params.prop,"MAGNETIZABILITY")) {
+      fprintf(outfile, "Invalid choice of response property: %s\n", params.prop);
+      exit(PSI_RETURN_FAILURE);
+    }
+  }
+  else params.prop = strdup("POLARIZABILITY");
+
   params.local = 0;
   errcod = ip_boolean("LOCAL", &(params.local),0);
   local.cutoff = 0.02;
@@ -163,13 +173,16 @@ void get_params()
   }
   else if(params.local) {
     local.weakp = (char *) malloc(4 * sizeof(char));
-    sprintf(local.weakp, "%s", "MP2");
+    sprintf(local.weakp, "%s", "NONE");
   }
 
-  local.filter_singles = 1;
+  if(params.dertype == 3)
+    local.filter_singles = 0;
+  else
+    local.filter_singles = 1;
   ip_boolean("LOCAL_FILTER_SINGLES", &(local.filter_singles), 0);
 
-  local.cphf_cutoff = 0.01;
+  local.cphf_cutoff = 0.10;
   ip_data("LOCAL_CPHF_CUTOFF", "%lf", &(local.cphf_cutoff), 0);
 
   local.freeze_core = NULL;
@@ -183,8 +196,10 @@ void get_params()
       exit(PSI_RETURN_FAILURE);
     }
   }
-  else if(params.local)
+  else if(params.local && params.dertype == 3)
     local.pairdef = strdup("RESPONSE");
+  else if(params.local)
+    local.pairdef = strdup("BP");
 
   params.num_amps = 10;
   if(ip_exist("NUM_AMPS",0)) {
@@ -222,15 +237,6 @@ void get_params()
   fprintf(outfile, "\tRestart         =     %s\n", 
 	  params.restart ? "Yes" : "No");
   fprintf(outfile, "\tDIIS            =     %s\n", params.diis ? "Yes" : "No");
-  fprintf(outfile, "\tLocal CC        =     %s\n", params.local ? "Yes" : "No");
-  if(params.local) {
-    fprintf(outfile, "\tLocal Cutoff       = %3.1e\n", local.cutoff);
-    fprintf(outfile, "\tLocal Method      =    %s\n", local.method);
-    fprintf(outfile, "\tWeak pairs        =    %s\n", local.weakp);
-    fprintf(outfile, "\tFilter singles    =    %s\n", local.filter_singles ? "Yes" : "No");
-    fprintf(outfile, "\tLocal pairs       =    %s\n", local.pairdef);
-    fprintf(outfile, "\tLocal CPHF cutoff =  %3.1e\n", local.cphf_cutoff);
-  }
   fprintf(outfile, "\tAO Basis        =     %s\n", params.aobasis);
   fprintf(outfile, "\tCache Level     =    %1d\n", params.cachelev);
   fprintf(outfile, "\tCache Type      =    %4s\n", 
@@ -243,7 +249,15 @@ void get_params()
   fprintf(outfile, "\tPrint Pair Ener =    %s\n",  params.print_pair_energies ? "Yes" : "No" );
   if (params.print_pair_energies)
     fprintf(outfile, "\tSpinadapt Ener. =    %s\n",  params.spinadapt_energies ? "Yes" : "No" );
+  fprintf(outfile, "\tLocal CC        =     %s\n", params.local ? "Yes" : "No");
+  if(params.local) {
+    fprintf(outfile, "\tLocal Cutoff       = %3.1e\n", local.cutoff);
+    fprintf(outfile, "\tLocal Method      =    %s\n", local.method);
+    fprintf(outfile, "\tWeak pairs        =    %s\n", local.weakp);
+    fprintf(outfile, "\tFilter singles    =    %s\n", local.filter_singles ? "Yes" : "No");
+    fprintf(outfile, "\tLocal pairs       =    %s\n", local.pairdef);
+    fprintf(outfile, "\tLocal CPHF cutoff =  %3.1e\n", local.cphf_cutoff);
+  }
   fprintf(outfile, "\n");
 
 }
-

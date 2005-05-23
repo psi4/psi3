@@ -23,4 +23,5 @@ struct Params {
   int local_mos;
   int dertype;
   int t2_coupled;
+  char *prop;            /* user-selected property */
 };
