@@ -114,7 +114,14 @@ struct MOInfo {
   double **MUX;
   double **MUY;
   double **MUZ;
+  double **LX;
+  double **LY;
+  double **LZ;
   int irrep_x;
   int irrep_y;
   int irrep_z;
+  int irrep_Rx;
+  int irrep_Ry;
+  int irrep_Rz;
+  double ***C;           /* Virtual orbital transformation matrix (for AO-basis B terms) */
 };

@@ -14,4 +14,5 @@ struct Params {
                         /* are deleted at the beginning of the run */
   int semicanonical;    /* semicanonical orbitals for perturbation theory */
   int local;
+  char *prop;
 };

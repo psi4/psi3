@@ -35,6 +35,7 @@ void get_moinfo(void)
   double ***evects, ***scf_vector;
   double ***evects_A, ***scf_vector_A;
   double ***evects_B, ***scf_vector_B;
+  double ***C;
   int *pitz2qt, *qt2pitz, J, qt_j, pitz_j, pitz_J, *pitz_offset;
   int *pitz2qt_A, *qt2pitz_A, *pitz2qt_B, *qt2pitz_B;
   psio_address next;
@@ -1105,6 +1106,17 @@ void get_moinfo(void)
       print_mat(scf_vector[h], moinfo.orbspi[h], moinfo.virtpi[h], outfile);
     */
     }
+
+    C = (double ***) malloc(moinfo.nirreps * sizeof(double **));
+    next = PSIO_ZERO;
+    for(h=0; h < moinfo.nirreps; h++) {
+      if(moinfo.orbspi[h] && moinfo.virtpi[h]) {
+	C[h] = block_matrix(moinfo.orbspi[h],moinfo.virtpi[h]);
+	psio_read(CC_INFO, "RHF/ROHF Active Virtual Orbitals", (char *) C[h][0],
+		  moinfo.orbspi[h]*moinfo.virtpi[h]*sizeof(double), next, &next);
+      }
+    }
+    moinfo.C = C;
 
     free(evects);  free(scf_vector);
     free(pitz_offset);

@@ -53,7 +53,7 @@ void cphf_F(void)
   dpd_buf4_mat_irrep_close(&A, irrep);
 
   /* sort CPHF solution to DPD format */
-  dpd_file2_init(&mu, CC_OEI, irrep, 1, 0, "CPHF U_X_AI");
+  dpd_file2_init(&mu, CC_OEI, irrep, 1, 0, "CPHF Uf_X_AI");
   dpd_file2_mat_init(&mu);
   for(row=0; row < num_ai; row++) {
     a = A.params->roworb[irrep][row][0];
@@ -100,7 +100,7 @@ void cphf_F(void)
   dpd_buf4_mat_irrep_close(&A, irrep);
 
   /* sort CPHF solution to DPD format */
-  dpd_file2_init(&mu, CC_OEI, irrep, 1, 0, "CPHF U_Y_AI");
+  dpd_file2_init(&mu, CC_OEI, irrep, 1, 0, "CPHF Uf_Y_AI");
   dpd_file2_mat_init(&mu);
   for(row=0; row < num_ai; row++) {
     a = A.params->roworb[irrep][row][0];
@@ -159,7 +159,7 @@ void cphf_F(void)
   */
 
   /* sort CPHF solution to DPD format */
-  dpd_file2_init(&mu, CC_OEI, irrep, 1, 0, "CPHF U_Z_AI");
+  dpd_file2_init(&mu, CC_OEI, irrep, 1, 0, "CPHF Uf_Z_AI");
   dpd_file2_mat_init(&mu);
   for(row=0; row < num_ai; row++) {
     a = A.params->roworb[irrep][row][0];

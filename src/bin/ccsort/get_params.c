@@ -7,6 +7,7 @@
 #include <psifiles.h>
 #include "Params.h"
 #include "MOInfo.h"
+#include "Local.h"
 #define EXTERN
 #include "globals.h"
 
@@ -68,6 +69,93 @@ void get_params()
     free(junk);
   }
 
+  if(ip_exist("PROPERTY",0)) {
+    errcod = ip_string("PROPERTY", &(params.prop), 0);
+    if(strcmp(params.prop,"POLARIZABILITY") && strcmp(params.prop,"ROTATION") &&
+       strcmp(params.prop,"ALL") && strcmp(params.prop,"MAGNETIZABILITY")) {
+      fprintf(outfile, "Invalid choice of response property: %s\n", params.prop);
+      exit(PSI_RETURN_FAILURE);
+    }
+  }
+  else params.prop = strdup("POLARIZABILITY");
+                                                                                                              
+  params.local = 0;
+  errcod = ip_boolean("LOCAL", &(params.local),0);
+  local.cutoff = 0.02;
+  errcod = ip_data("LOCAL_CUTOFF", "%lf", &(local.cutoff), 0);
+                                                                                                              
+  if(ip_exist("LOCAL_METHOD",0)) {
+    errcod = ip_string("LOCAL_METHOD", &(local.method), 0);
+    if(strcmp(local.method,"AOBASIS") && strcmp(local.method,"WERNER")) {
+      fprintf(outfile, "Invalid local correlation method: %s\n", local.method);
+      exit(PSI_RETURN_FAILURE);
+    }
+  }
+  else if(params.local) {
+    local.method = (char *) malloc(7 * sizeof(char));
+    sprintf(local.method, "%s", "WERNER");
+  }
+                                                                                                                                                                                                                          
+  if(ip_exist("LOCAL_WEAKP",0)) {
+    errcod = ip_string("LOCAL_WEAKP", &(local.weakp), 0);
+    if(strcmp(local.weakp,"MP2") && strcmp(local.weakp,"NEGLECT") && strcmp(local.weakp,"NONE")) {
+      fprintf(outfile, "Invalid method for treating local pairs: %s\n", local.weakp);
+      exit(PSI_RETURN_FAILURE);
+    }
+  }
+  else if(params.local) {
+    local.weakp = (char *) malloc(4 * sizeof(char));
+    sprintf(local.weakp, "%s", "NONE");
+  }
+
+  local.cphf_cutoff = 0.10;
+  ip_data("LOCAL_CPHF_CUTOFF", "%lf", &(local.cphf_cutoff), 0);
+                                                                                                              
+  local.freeze_core = NULL;
+  ip_string("FREEZE_CORE", &local.freeze_core, 0);
+  if(local.freeze_core == NULL) local.freeze_core = strdup("FALSE");
+                                                                                                              
+  if(ip_exist("LOCAL_PAIRDEF",0)){
+    errcod = ip_string("LOCAL_PAIRDEF", &(local.pairdef), 0);
+    if(strcmp(local.pairdef,"BP") && strcmp(local.pairdef,"RESPONSE")) {
+      fprintf(outfile, "Invalid keyword for strong/weak pair definition: %s\n", local.pairdef);
+      exit(PSI_RETURN_FAILURE);
+    }
+  }
+  else if(params.local && params.dertype == 3)
+    local.pairdef = strdup("RESPONSE");
+  else if(params.local)
+    local.pairdef = strdup("BP");
+
+  if(params.local && (strcmp(local.pairdef,"BP"))) {
+    if(params.dertype == 3) {
+      if(!(strcmp(params.prop,"POLARIZABILITY"))) {
+	local.domain_polar = 1;
+	local.domain_mag = 0;
+      }
+      else if(!(strcmp(params.prop,"MAGNETIZABILITY"))) {
+	local.domain_polar = 0;
+	local.domain_mag = 1;
+      }
+      else if(!(strcmp(params.prop,"ROTATION"))) {
+	local.domain_polar = 1;
+	local.domain_mag = 1;
+      }
+    }
+    else {
+      local.domain_polar = 0;
+      local.domain_mag = 0;
+    }
+  }
+  ip_boolean("LOCAL_DOMAIN_POLAR", &(local.domain_polar), 0);
+  ip_boolean("LOCAL_DOMAIN_MAG", &(local.domain_mag), 0);
+
+  if(params.dertype == 3)
+    local.filter_singles = 0;
+  else
+    local.filter_singles = 1;
+  ip_boolean("LOCAL_FILTER_SINGLES", &(local.filter_singles), 0);
+
   if(ip_exist("AO_BASIS",0)) {
     errcod = ip_string("AO_BASIS", &(params.aobasis),0);
   }
@@ -121,11 +209,11 @@ void get_params()
   fprintf(outfile, "\t-----------------\n");
   fprintf(outfile, "\tWave function   =\t%s\n", params.wfn);
   if(params.semicanonical) {
-  fprintf(outfile, "\tReference wfn   =\tROHF changed to UHF for Semicanonical Orbitals\n"); 
+    fprintf(outfile, "\tReference wfn   =\tROHF changed to UHF for Semicanonical Orbitals\n"); 
   }
   else {
-  fprintf(outfile, "\tReference wfn   =\t%s\n", 
-	  (params.ref == 0) ? "RHF" : ((params.ref == 1) ? "ROHF" : "UHF"));
+    fprintf(outfile, "\tReference wfn   =\t%s\n", 
+	    (params.ref == 0) ? "RHF" : ((params.ref == 1) ? "ROHF" : "UHF"));
   }	  
   if(params.dertype == 0) fprintf(outfile, "\tDerivative      =\tNone\n");
   else if(params.dertype == 1) fprintf(outfile, "\tDerivative      =\tFirst\n");
@@ -137,6 +225,14 @@ void get_params()
   fprintf(outfile, "\tCache Level     =\t%d\n", params.cachelev);
   fprintf(outfile, "\tCache Type      =\t%s\n", "LRU");
   fprintf(outfile, "\tLocal CC        =     %s\n", params.local ? "Yes" : "No");
+  if(params.local) {
+    fprintf(outfile, "\tLocal Cutoff       = %3.1e\n", local.cutoff);
+    fprintf(outfile, "\tLocal Method      =    %s\n", local.method);
+    fprintf(outfile, "\tWeak pairs        =    %s\n", local.weakp);
+    fprintf(outfile, "\tFilter singles    =    %s\n", local.filter_singles ? "Yes" : "No");
+    fprintf(outfile, "\tLocal pairs       =    %s\n", local.pairdef);
+    fprintf(outfile, "\tLocal CPHF cutoff =  %3.1e\n", local.cphf_cutoff);
+  }
   fprintf(outfile, "\n");
   fflush(outfile);
 }
