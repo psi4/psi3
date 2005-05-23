@@ -527,6 +527,10 @@ void get_parameters(void)
   params.tpdm_add_ref = 0;
   errcod = ip_boolean("TPDM_ADD_REF", &(params.tpdm_add_ref), 0);
 
+  if (strcmp(params.wfn, "DETCAS")==0) 
+    params.treat_cor_as_fzc = 1;
+  else
+    params.treat_cor_as_fzc = 0;
 
   params.fzc = 1;
   errcod = ip_boolean("FREEZE_CORE", &(params.fzc),0);
@@ -540,7 +544,8 @@ void get_parameters(void)
   if (strcmp(params.wfn,"GVVPT2")==0 || (strcmp(params.wfn,"MCSCF")==0))
     params.fzc=0;
 
-  params.del_restr_docc = 0;
+  /* remove restricted docc from RAS 1 ? */
+  params.del_restr_docc = 1;
   errcod = ip_boolean("DELETE_RESTR_DOCC",&(params.del_restr_docc),0);
   if (params.backtr) params.del_restr_docc = 0;
 
@@ -750,6 +755,16 @@ void get_moinfo(void)
 
   moinfo.frdocc = get_frzcpi();
   moinfo.fruocc = get_frzvpi();
+
+  errcod = ip_int_array("RESTRICTED_DOCC",moinfo.rstrdocc,moinfo.nirreps);
+  errcod = ip_int_array("RESTRICTED_UOCC",moinfo.rstruocc,moinfo.nirreps);
+
+  if (params.treat_cor_as_fzc) {
+    for (i=0; i<moinfo.nirreps; i++) {
+      moinfo.frdocc[i] += moinfo.rstrdocc[i];
+      moinfo.rstrdocc[i] = 0;
+    }
+  }
 
   if (!params.fzc) {
     for (i=0; i<moinfo.nirreps; i++) {
@@ -1144,8 +1159,16 @@ void get_reorder_array(void)
       abort();
     }
     
+    /* we just did this, but re-do it because ras_set() overwrites */
+    if (params.treat_cor_as_fzc) {
+      for (i=0; i<moinfo.nirreps; i++) {
+        moinfo.frdocc[i] += moinfo.rstrdocc[i];
+        moinfo.rstrdocc[i] = 0;
+      }
+    }
+
     free_int_matrix(ras_opi, MAX_RAS_SPACES);
-    
+
   } 
   
   else { /* default (CC, MP2, other) */
