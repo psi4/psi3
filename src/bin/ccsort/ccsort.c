@@ -13,6 +13,7 @@
 #include <psifiles.h>
 #include "MOInfo.h"
 #include "Params.h"
+#include "Local.h"
 #include "globals.h"
 
 /* Max length of ioff array */
@@ -44,10 +45,8 @@ int **cacheprep_rhf(int level, int *cachefiles);
 void cachedone_uhf(int **cachelist);
 void cachedone_rhf(int **cachelist);
 
-void transmu(void);
-void sortmu(void);
-void build_A_RHF(void);
-void cphf_F(void);
+void local_init(void);
+void local_done(void);
 
 void cc_memcheck(void);
 
@@ -110,42 +109,42 @@ int main(int argc, char *argv[])
 
 /*   if(params.ref == 0 || params.ref == 1) { */
 /*     fprintf(outfile, "\n\tSize of <ab|cd> integrals: %9.3lf (MW) / %9.3lf (MB)\n", */
-/*       b_size/1e6, (b_size/1e6)*sizeof(double)); */
+/* 	    b_size/1e6, (b_size/1e6)*sizeof(double)); */
 /*     fprintf(outfile, "\tNo. of <vv|vv> allowed in memory:      %i \n",  */
-/*       bamount); */
+/* 	    bamount); */
 /*     fprintf(outfile, "\tSize of <ia|bc> integrals: %9.3lf (MW) / %9.3lf (MB)\n", */
-/*       f_size/1e6, (f_size/1e6)*sizeof(double)); */
+/* 	    f_size/1e6, (f_size/1e6)*sizeof(double)); */
 /*     fprintf(outfile, "\tNo. of <ov|vv> allowed in memory:      %i \n", */
-/*       famount); */
+/* 	    famount); */
 /*     fprintf(outfile, "\tSize of Tijab amplitudes:  %9.3lf (MW) / %9.3lf (MB)\n", */
-/*       t2_size/1e6, (t2_size/1e6)*sizeof(double)); */
+/* 	    t2_size/1e6, (t2_size/1e6)*sizeof(double)); */
 /*   } */
 /*   else if(params.ref == 2) { */
 /*     fprintf(outfile, "\n\tSize of <Ab|Cd> integrals: %9.3lf (MW) / %9.3lf (MB)\n", */
-/*       b_size/1e6, (b_size/1e6)*sizeof(double)); */
+/* 	    b_size/1e6, (b_size/1e6)*sizeof(double)); */
 /*     fprintf(outfile, "\tNo. of <Vv|Vv> allowed in memory:      %i \n", */
-/*       bamount); */
+/* 	    bamount); */
 /*     fprintf(outfile, "\tSize of <Ia|Bc> integrals: %9.3lf (MW) / %9.3lf (MB)\n", */
-/*       f_size/1e6, (f_size/1e6)*sizeof(double)); */
+/* 	    f_size/1e6, (f_size/1e6)*sizeof(double)); */
 /*     fprintf(outfile, "\tNo. of <Ov|Vv> allowed in memory:      %i \n", */
-/*       famount); */
+/* 	    famount); */
 /*     fprintf(outfile, "\tSize of TIjAb amplitudes:  %9.3lf (MW) / %9.3lf (MB)\n", */
-/*       t2_size/1e6, (t2_size/1e6)*sizeof(double)); */
+/* 	    t2_size/1e6, (t2_size/1e6)*sizeof(double)); */
 /*   } */
  
-  /* When formal timings are made for the code, 5 being the min number of 
+  /* When formal timings are made for the code, 5 being the min number of
      <vv|vv>-type or <ov|vv>-type quantities can be changed               */
 
 /*   if(bamount > 5) fprintf(outfile, "\tA cachelevel of 4 is suggested.\n"); */
 /*   else if(famount > 5) fprintf(outfile, "\n\tA cachelevel of 3 is suggested.\n"); */
 /*   else if(t2_size * sizeof(double) > params.memory) */
-/*     fprintf(outfile, "\n\tA cachelevel of 0 or 1 is suggested.\n");  */
+/*     fprintf(outfile, "\n\tA cachelevel of 0 or 1 is suggested.\n"); */
   
   fprintf(outfile, "\n");
 
   sort_oei();
   sort_tei();
-/*  b_sort(); */
+  /*  b_sort(); */
   c_sort();
   d_sort();
   e_sort();
@@ -160,12 +159,9 @@ int main(int argc, char *argv[])
   denom();
 
   /* CPHF stuff for local correlation tests */
-  if(params.local && params.dertype == 3) {
-    fprintf(outfile, "\n\tGenerating electric-field CPHF solutions for local-CC.\n");
-    transmu();
-    sortmu();
-    build_A_RHF();
-    cphf_F();
+  if(params.local) {
+    local_init();
+    local_done();
   }
 
   dpd_close(0);
@@ -225,7 +221,7 @@ void exit_io(void)
   int i;
   for(i=CC_MIN; i < CC_TMP; i++) psio_close(i,1);
   for(i=CC_TMP; i <= CC_TMP11; i++) psio_close(i,0);  /* get rid of TMP files */
-  for(i=CC_TMP11+1; i < CC_MAX; i++) psio_close(i,1);
+  for(i=CC_TMP11+1; i <= CC_MAX; i++) psio_close(i,1);
 
   psio_done();
   tstop(outfile);
@@ -253,16 +249,6 @@ void cleanup(void)
 
   psio_write_entry(CC_INFO, "Reference Energy", (char *) &(moinfo.eref),
 		   sizeof(double));
-  
-  free(moinfo.orbspi);
-  free(moinfo.clsdpi);
-  free(moinfo.openpi);
-  free(moinfo.uoccpi);
-  free(moinfo.fruocc);
-  free(moinfo.frdocc);
-  for(i=0; i < moinfo.nirreps; i++)
-    free(moinfo.labels[i]);
-  free(moinfo.labels);
 
   if(params.ref == 2) {
 
@@ -324,6 +310,7 @@ void cleanup(void)
     free(moinfo.all_bvir_off);
   }
   else {
+
     free(moinfo.pitz2qt);
     free(moinfo.qt2pitz);
 
@@ -360,8 +347,16 @@ void cleanup(void)
 
   }
 
+  free(moinfo.orbspi);
+  free(moinfo.clsdpi);
+  free(moinfo.openpi);
+  free(moinfo.uoccpi);
+  free(moinfo.fruocc);
+  free(moinfo.frdocc);
+  for(i=0; i < moinfo.nirreps; i++)
+    free(moinfo.labels[i]);
+  free(moinfo.labels);
   free(moinfo.frozen);
-
   free(ioff);
 
 }
