@@ -67,7 +67,7 @@ void compute_X(char *pert, char *cart, int irrep, double omega)
 	sort_X(pert, cart, irrep, omega);
       fprintf(outfile, "\t-----------------------------------------\n");
       fprintf(outfile, "\tConverged %s-%1s-Perturbed Wfn to %4.3e\n", pert, cart, rms);
-      if(params.print == 2) {
+      if(params.print & 2) {
 	sprintf(lbl, "X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
 	dpd_buf4_init(&X2, CC_LR, irrep, 0, 5, 0, 5, 0, lbl);
 	X2_norm = dpd_buf4_dot_self(&X2);
