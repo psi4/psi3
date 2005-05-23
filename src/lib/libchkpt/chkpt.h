@@ -258,6 +258,9 @@ void chkpt_wt_eref(double);
 double chkpt_rd_efzc(void);
 void chkpt_wt_efzc(double);
 
+double chkpt_rd_e_labeled(char *);
+void chkpt_wt_e_labeled(char *, double);
+
 int chkpt_rd_disp(void);
 void chkpt_wt_disp(int);
 

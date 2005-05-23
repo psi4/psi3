@@ -69,6 +69,7 @@ ccvecs.c \
 ecorr.c \
 eref.c \
 efzc.c \
+e_labeled.c \
 disp.c \
 cartrep.c \
 grad.c \
