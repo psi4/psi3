@@ -24,6 +24,7 @@ sort_lamps.c \
 init_X.c \
 denom.c \
 sort_X.c \
+cc2_sort_X.c \
 X1.c \
 X2.c \
 cc2_X1.c \
@@ -44,7 +45,6 @@ LHX2Y2.c \
 cc2_LHX1Y1.c \
 cc2_LHX1Y2.c \
 local.c \
-local_response.c \
 transp.c \
 polar.c \
 optrot.c \
