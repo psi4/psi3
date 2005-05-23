@@ -48,6 +48,8 @@ main(int argc, char **argv)
   int *docc;                           /* doubly occupied orbs per irrep  */
   int *socc;                           /* singly occupied orbs per irrep  */
   int *frdocc;                         /* frozen doubly occupied array    */
+  int *cor;                            /* restricted core                 */
+  int *vir;                            /* restricted virtuals             */
   int *fruocc;                         /* frozen unoccupied orb array     */
   int **ras_opi;                       /* orbs per [ras_space][irrep]     */
   int *pitz_to_corr;                   /* map orbs Pitzer->correlated ord */
@@ -108,12 +110,14 @@ main(int argc, char **argv)
 
   frdocc = init_int_array(nirreps);
   fruocc = init_int_array(nirreps);
-  ras_opi = init_int_matrix(4,nirreps);
+  cor = init_int_array(nirreps);
+  vir = init_int_array(nirreps);
+  ras_opi = init_int_matrix(MAX_RAS_SPACES,nirreps);
   pitz_to_corr = init_int_array(nmo);
 
   /* get orbital information */
-  ras_set(nirreps, nmo, 0, orbspi, docc, socc, frdocc, fruocc, ras_opi,
-          pitz_to_corr, 1);
+  ras_set2(nirreps, nmo, 1, 1, orbspi, docc, socc, frdocc, fruocc, 
+           cor, vir, ras_opi, pitz_to_corr, 1, 0);
 
   /* get the array which maps correlated orbitals back to pitzer order */
   corr_to_pitz = init_int_array(nmo);
@@ -122,8 +126,8 @@ main(int argc, char **argv)
     corr_to_pitz[j] = i;
   }
 
-  for (i=0,nfzv=0; i<nirreps; i++) nfzv += fruocc[i];
-  npop = nmo - nfzv; 
+  for (i=0,j=0; i<nirreps; i++) j += fruocc[i] + vir[i];
+  npop = nmo - j; 
   ntri = (nmo*(nmo+1))/2;   
   ntri2 = (ntri*(ntri+1))/2; 
 
