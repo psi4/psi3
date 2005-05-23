@@ -165,7 +165,7 @@ void form_appx_diag_mo_hess(int npairs, int *ppair, int *qpair,
         }
       }
       hess[pair] += 2.0 * value;
- 
+      if (Params.scale_act_act != 1.0) hess[pair] *= Params.scale_act_act;
     } /* end case H_{t1t2,t1t2} */
 
 
@@ -401,7 +401,7 @@ void form_diag_mo_hess(int npairs, int *ppair, int *qpair,
         }
       }
       hess[pair] += 2.0 * value;
- 
+      if (Params.scale_act_act != 1.0) hess[pair] *= Params.scale_act_act;
     } /* end case H_{t1t2,t1t2} */
 
     else {

@@ -53,8 +53,8 @@ void get_parameters(void)
   Params.lag_file = PSIF_MO_LAG;
   Params.lag_erase = 0;
 
-  Params.fzc = 0;              /* no sense freezing orbs in their SCF form */
-  Params.fci = 1;              /* probably usually want CASSCF */
+  Params.ignore_fz = 1;        /* ignore frozen orbitals for ind pairs? */
+  Params.ignore_ras_ras = 0;   /* ignore RAS/RAS independent pairs? */
 
   Params.scale_grad = 1;       /* scale the orbital gradient? */
   Params.diis_start = 3;       /* iteration to turn on DIIS */
@@ -67,14 +67,17 @@ void get_parameters(void)
   Params.shift = 0.01;         /* default shift value if level_shift=1 */
   Params.determ_min = 0.00001; /* lowest allowed MO Hess before levelshift */
   Params.step_max = 0.30;      /* max allowed theta step */
+  Params.use_thetas = 1;       /* Use thetas by default */
   Params.invert_hessian = 1;   /* directly invert MO Hessian instead
                                   of solving system of linear equations for
                                   orbital step if full Hessian available */
   Params.force_step = 0;       /* ignore usual step and force user-given */
   Params.force_pair = 0;       /* which pair to force a step along */
   Params.force_value = 0.0;    /* how far to step along forced direction */
-  Params.check_hess = 0;      /* Don't check hessian by default */
-  Params.eigen_vectors = 0;   /*Don't compute eigenvectors by default */
+  Params.scale_act_act = 1.0;  /* scale act/act Hessian elements by this */
+  Params.bfgs = 0;             /* BFGS update of Hessian? */
+  Params.ds_hessian = 0;       /* Do a DS update of the Hessian? */
+
   errcod = ip_data("PRINT","%d",&(Params.print_lvl),0);
   errcod = ip_boolean("PRINT_MOS",&(Params.print_mos),0);
   errcod = ip_data("CONVERGENCE","%d",
@@ -86,8 +89,8 @@ void get_parameters(void)
   errcod = ip_data("TEI_FILE","%d",&(Params.tei_file),0);
   errcod = ip_data("LAG_FILE","%d",&(Params.lag_file),0);
   errcod = ip_boolean("TEI_ERASE",&(Params.tei_erase),0);
-  errcod = ip_boolean("FREEZE_CORE",&(Params.fzc),0);
-  errcod = ip_boolean("FCI",&(Params.fci),0);
+  errcod = ip_boolean("IGNORE_FZ",&(Params.ignore_fz),0);
+  errcod = ip_boolean("IGNORE_RAS_RAS",&(Params.ignore_ras_ras),0);
   errcod = ip_data("OPDM_FILE","%d",&(Params.opdm_file),0);
   errcod = ip_data("TPDM_FILE","%d",&(Params.tpdm_file),0);
   errcod = ip_boolean("SCALE_GRAD",&(Params.scale_grad),0);
@@ -119,8 +122,11 @@ void get_parameters(void)
   errcod = ip_boolean("FORCE_STEP",&(Params.force_step),0);
   errcod = ip_data("FORCE_PAIR","%d",&(Params.force_pair),0);
   errcod = ip_data("FORCE_VALUE","%lf",&(Params.force_value),0);
-  errcod = ip_boolean("CHECK_HESSIAN",&(Params.check_hess),0);
-  errcod = ip_boolean("EIGEN_VECTORS",&(Params.eigen_vectors),0);
+  /* at the moment, the following only work for diagonal (non-YY) Hessians */
+  errcod = ip_data("SCALE_ACT_ACT","%lf",&(Params.scale_act_act),0);
+  errcod = ip_boolean("BFGS",&(Params.bfgs),0);
+  errcod = ip_boolean("DS_HESSIAN",&(Params.ds_hessian),0);
+
 }
 
 
@@ -136,8 +142,8 @@ void print_parameters(void)
       Params.print_lvl, Params.print_mos ? "yes" : "no");
   fprintf(outfile, "   CONVERGENCE   =   %6d      E CONVERG     =   %6d\n",
       Params.rms_grad_convergence, Params.energy_convergence);
-  fprintf(outfile, "   FCI           =   %6s      FREEZE CORE   =   %6s\n", 
-      Params.fci ? "yes" : "no", Params.fzc ? "yes" : "no") ;
+  fprintf(outfile, "   IGNORE_RAS_RAS=   %6s      IGNORE_FZ     =   %6s\n", 
+      Params.ignore_ras_ras ? "yes" : "no", Params.ignore_fz ? "yes" : "no") ;
   fprintf(outfile, "   OEI FILE      =   %6d      OEI ERASE     =   %6s\n", 
       Params.oei_file, Params.oei_erase ? "yes" : "no");
   fprintf(outfile, "   TEI FILE      =   %6d      TEI ERASE     =   %6s\n", 
@@ -158,8 +164,6 @@ void print_parameters(void)
       Params.level_shift ? "yes" : "no", Params.shift);
   fprintf(outfile, "   USE FZC H     =   %6s      HESSIAN       = %-12s\n",
       Params.use_fzc_h ? "yes" : "no", Params.hessian);
-  fprintf(outfile, "   CHECK HESSIAN =   %6s      EIGEN VECTORS = %6s  \n",
-      Params.check_hess ? "yes" : "no",Params.eigen_vectors ? "yes" : "no");
   fprintf(outfile, "\n") ;
   fflush(outfile) ;
 }

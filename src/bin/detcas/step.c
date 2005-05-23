@@ -56,7 +56,7 @@ void calc_orb_step_full(int npairs, double *grad, double **hess, double *theta)
 {
   double **hess_inv;
   double **hess_copy; /* for testing! */
-  int i,j,info;
+  int i,j;
   double tval;
   int solved;
   double *BVector;
@@ -64,8 +64,7 @@ void calc_orb_step_full(int npairs, double *grad, double **hess, double *theta)
   double hess_det = 1.0;
   int *indx;
   double biggest_step;
-  double *work;
-  double *hess_eigs;
+
   hess_copy = block_matrix(npairs, npairs);
   indx = init_int_array(npairs);
  
@@ -150,9 +149,9 @@ void calc_orb_step_full(int npairs, double *grad, double **hess, double *theta)
 
     /* debug check */
     mmult(hess_inv,0,hess,0,hess_copy,0,npairs,npairs,npairs,0);
-    /*  fprintf(outfile, "Hessian * Hessian inverse = \n");
-	print_mat(hess_copy,npairs,npairs,outfile); 
-	fprintf(outfile, "\n"); */
+    fprintf(outfile, "Hessian * Hessian inverse = \n");
+    print_mat(hess_copy,npairs,npairs,outfile); 
+    fprintf(outfile, "\n");
   
     /* step = - B^{-1} * g */
     zero_arr(theta,npairs);
@@ -172,53 +171,6 @@ void calc_orb_step_full(int npairs, double *grad, double **hess, double *theta)
     free_block(hess_inv);
   } /* end direct inversion of Hessian */
 
-  /* Do we want to check the eigenvalues of the hessian matrix */
-  if(Params.check_hess)
-    {
-
-      hess_eigs = init_array(npairs);
-      work = init_array(npairs * 3);
-      /* reCopy the hessian into hessian_copy */
-      for (i=0;i<npairs;i++) {
-	for (j=0;j<npairs;j++) {
-	  hess_copy[i][j]=hess[i][j];
-	}
-      }
-      if(Params.eigen_vectors){
-	info = C_DSYEV('V','U',npairs,&(hess_copy[0][0]),npairs,hess_eigs,work,npairs*3);
-      }
-      else{
-      info = C_DSYEV('N','U',npairs,&(hess_copy[0][0]),npairs,hess_eigs,work,npairs*3);
-      }
-
-      if(info<0){
-	fprintf(outfile,"Illegal argument to C_DSYEV\n");
-      }
-      else if(info>0){
-	fprintf(outfile,"Error in diagonalization\n");
-	fprintf(outfile,"%6d off-diagonal elements failed to converge to zero\n",info);
-      }
-      else if (info == 0){
-	fprintf(outfile,"C_DSYEV Finsihed successfully\n");
-	fprintf(outfile,"Eigenvalues of Orbital Hessian\n");
-	fprintf(outfile,"------------------------------\n");
-	for(i=0;i<npairs;i++){
-	  fprintf(outfile,"%6.2lf \n",hess_eigs[i]);
-	}
-	if(Params.eigen_vectors){
-	  fprintf(outfile,"\nEigenvectors of Orbital Hessian\n");
-	  fprintf(outfile,"  --------------------------------\n");
-	  print_mat(hess_copy,npairs,npairs,outfile);
-	}
-	
-      }
-	free(hess_eigs);
-	free(work);
-    }
-
-
-
-
   /* make sure the step is not too big */
   biggest_step = 0.0;
   for (i=0; i<npairs; i++) {
@@ -237,6 +189,47 @@ void calc_orb_step_full(int npairs, double *grad, double **hess, double *theta)
   free(indx);
 }
 
+
+/*
+** calc_orb_step_bfgs()
+**
+** This function calculates the step in theta space for the orbitals
+** given the orbital gradient and a square matrix orbital Hessian INVERSE.
+** With the inverse already available, this is very straightforward.
+**
+** C. David Sherrill
+** March 2004
+*/
+void calc_orb_step_bfgs(int npairs, double *grad, double **hess, double *theta)
+{
+
+  int i, j;
+  double tval, biggest_step;
+
+  for (i=0; i<npairs; i++) {
+    tval = 0.0;
+    for (j=0; j<npairs; j++) {
+      tval += hess[i][j] * grad[j];
+    }
+    theta[i] = - tval;
+  }
+
+  /* make sure the step is not too big */
+  biggest_step = 0.0;
+  for (i=0; i<npairs; i++) {
+    tval = theta[i];
+    if (fabs(tval) > biggest_step) biggest_step = fabs(tval);
+  }
+  fprintf(outfile,"\nLargest step in theta space is %12.6lf \n", biggest_step);
+  if (biggest_step > Params.step_max) {
+    fprintf(outfile, "Largest allowed step %12.6lf --- scaling the step\n",
+      Params.step_max);
+    for (i=0;i<npairs;i++) {
+      theta[i] = theta[i] * Params.step_max / biggest_step;
+    }
+  }
+
+}
 
 
 /*
@@ -284,7 +277,11 @@ int print_step(int npairs, int steptype)
   }
 
   chkpt_init(PSIO_OPEN_OLD);
-  energy = chkpt_rd_etot();
+  if (chkpt_exist("State averaged energy")) {
+    energy = chkpt_rd_e_labeled("State averged energy");
+  }
+  else
+    energy = chkpt_rd_etot();
   chkpt_close();
 
   scaled_rmsgrad[entries] = CalcInfo.scaled_mo_grad_rms;

@@ -53,10 +53,10 @@ void get_mo_info(void)
    CalcInfo.frozen_uocc = init_int_array(CalcInfo.nirreps);
    CalcInfo.rstr_docc = init_int_array(CalcInfo.nirreps);
    CalcInfo.rstr_uocc = init_int_array(CalcInfo.nirreps);
-   CalcInfo.pitz2ci = init_int_array(CalcInfo.nbfso);
+   CalcInfo.pitz2ci = init_int_array(CalcInfo.nmo);
    CalcInfo.ras_opi = init_int_matrix(MAX_RAS_SPACES,CalcInfo.nirreps);
       
-   if (!ras_set2(CalcInfo.nirreps, CalcInfo.nbfso, 1, 0,
+   if (!ras_set2(CalcInfo.nirreps, CalcInfo.nmo, 1, 1,
                 CalcInfo.orbs_per_irr, CalcInfo.docc, CalcInfo.socc, 
                 CalcInfo.frozen_docc, CalcInfo.frozen_uocc, 
                 CalcInfo.rstr_docc, CalcInfo.rstr_uocc,
@@ -84,15 +84,15 @@ void get_mo_info(void)
 
   /* construct the "ordering" array, which maps the other direction */
   /* i.e. from a CI orbital to a Pitzer orbital                     */
-  CalcInfo.ci2pitz = init_int_array(CalcInfo.nbfso);
-  for (i=0; i<CalcInfo.nbfso; i++) {
+  CalcInfo.ci2pitz = init_int_array(CalcInfo.nmo);
+  for (i=0; i<CalcInfo.nmo; i++) {
     j = CalcInfo.pitz2ci[i];
     CalcInfo.ci2pitz[j] = i;
   }
 
 
   /* Set up an array to map absolute ci order to relative Pitzer order */
-  CalcInfo.ci2relpitz = init_int_array(CalcInfo.nbfso);
+  CalcInfo.ci2relpitz = init_int_array(CalcInfo.nmo);
   for (h=0,cnt=0; h<CalcInfo.nirreps; h++) {
     for (i=0; i<CalcInfo.orbs_per_irr[h]; i++,cnt++) {
       j = CalcInfo.pitz2ci[cnt];
@@ -102,19 +102,19 @@ void get_mo_info(void)
 
   if (Params.print_lvl > 4) {
     fprintf(outfile, "\nPitzer to CI order array = \n");
-    for (i=0; i<CalcInfo.nbfso; i++) {
+    for (i=0; i<CalcInfo.nmo; i++) {
       fprintf(outfile, "%3d ", CalcInfo.pitz2ci[i]);
     }
     fprintf(outfile, "\n");
   }
 
 
-  CalcInfo.nbstri = (CalcInfo.nbfso * (CalcInfo.nbfso + 1)) / 2 ;
+  CalcInfo.nbstri = (CalcInfo.nmo * (CalcInfo.nmo + 1)) / 2 ;
   check((CalcInfo.nbstri <= IOFF_MAX), 
         "(get_mo_info): IOFF_MAX may not large enough!");
 
   /* transform orbsym vector to new MO order */
-  CalcInfo.orbsym = init_int_array(CalcInfo.nbfso);
+  CalcInfo.orbsym = init_int_array(CalcInfo.nmo);
 
   for (i=0,cnt=0; i<CalcInfo.nirreps; i++) {
     for (j=0; j<CalcInfo.orbs_per_irr[i]; j++,cnt++) {
@@ -123,38 +123,46 @@ void get_mo_info(void)
     }
   }
 
-  CalcInfo.num_fzv_orbs = 0;
-  for (i=0; i<CalcInfo.nirreps; i++) 
+  CalcInfo.num_fzv_orbs = 0;  CalcInfo.num_vir_orbs = 0;
+  for (i=0; i<CalcInfo.nirreps; i++) {
     CalcInfo.num_fzv_orbs += CalcInfo.frozen_uocc[i];  
+    CalcInfo.num_vir_orbs += CalcInfo.rstr_uocc[i];
+  }
 
-  CalcInfo.npop = CalcInfo.nbfso - CalcInfo.num_fzv_orbs;
+  CalcInfo.npop = CalcInfo.nmo - CalcInfo.num_fzv_orbs -
+    CalcInfo.num_vir_orbs;
 
   CalcInfo.num_fzc_orbs = 0;
   CalcInfo.num_cor_orbs = 0;
-  if (Params.fzc) {
-    for (i=0; i<CalcInfo.nirreps; i++) {
-      j = CalcInfo.frozen_docc[i];
-      CalcInfo.num_fzc_orbs += j;
-    }
+  for (i=0; i<CalcInfo.nirreps; i++) {
+    CalcInfo.num_fzc_orbs += CalcInfo.frozen_docc[i];
   } 
-  else {
-    for (i=0; i<CalcInfo.nirreps; i++) {
-      CalcInfo.num_cor_orbs += CalcInfo.frozen_docc[i];
-    } 
+  for (i=0; i<CalcInfo.nirreps; i++) {
+    CalcInfo.num_cor_orbs += CalcInfo.rstr_docc[i];
   }
 
   /* construct the CalcInfo.ras_orbs array (may not be of any use now) */
   cnt = 0;
-  CalcInfo.fzc_orbs = init_int_matrix(CalcInfo.nirreps,CalcInfo.nbfso);
-  CalcInfo.fzv_orbs = init_int_matrix(CalcInfo.nirreps,CalcInfo.nbfso);
+  CalcInfo.fzc_orbs = init_int_matrix(CalcInfo.nirreps,CalcInfo.nmo);
+  CalcInfo.cor_orbs = init_int_matrix(CalcInfo.nirreps,CalcInfo.nmo);
+  CalcInfo.vir_orbs = init_int_matrix(CalcInfo.nirreps,CalcInfo.nmo);
+  CalcInfo.fzv_orbs = init_int_matrix(CalcInfo.nirreps,CalcInfo.nmo);
+
+  /* FZC */
   for (irrep=0; irrep<CalcInfo.nirreps; irrep++)
     for (j=0; j<CalcInfo.frozen_docc[irrep]; j++)
       CalcInfo.fzc_orbs[irrep][j] = cnt++;
 
+  /* COR */
+  for (irrep=0; irrep<CalcInfo.nirreps; irrep++)
+    for (j=0; j<CalcInfo.rstr_docc[irrep]; j++)
+      CalcInfo.cor_orbs[irrep][j] = cnt++;
+
+  /* RAS */
   CalcInfo.ras_orbs = (int ***) malloc (MAX_RAS_SPACES * sizeof(int **));
   for (i=0; i<MAX_RAS_SPACES; i++) {
     CalcInfo.ras_orbs[i] = init_int_matrix(CalcInfo.nirreps,
-      CalcInfo.nbfso);
+      CalcInfo.nmo);
     for (irrep=0; irrep<CalcInfo.nirreps; irrep++) {
       for (j=0; j<CalcInfo.ras_opi[i][irrep]; j++) {
         CalcInfo.ras_orbs[i][irrep][j] = cnt++;
@@ -162,6 +170,12 @@ void get_mo_info(void)
     }
   }
 
+  /* VIR */
+  for (irrep=0; irrep<CalcInfo.nirreps; irrep++)
+    for (j=0; j<CalcInfo.rstr_uocc[irrep]; j++)
+      CalcInfo.vir_orbs[irrep][j] = cnt++;
+
+  /* FZV */
   for (irrep=0; irrep<CalcInfo.nirreps; irrep++)
     for (j=0; j<CalcInfo.frozen_uocc[irrep]; j++)
       CalcInfo.fzv_orbs[irrep][j] = cnt++;
@@ -174,9 +188,12 @@ void get_mo_info(void)
   CalcInfo.fstact = init_int_array(CalcInfo.nirreps);
   CalcInfo.lstact = init_int_array(CalcInfo.nirreps);
   CalcInfo.active = init_int_array(CalcInfo.nirreps);
+
+  /* I think I never use this... --CDS 6/12/04
   pitzer_arrays(CalcInfo.nirreps, CalcInfo.frozen_docc, CalcInfo.frozen_uocc,
                 CalcInfo.orbs_per_irr, CalcInfo.first, CalcInfo.last,
                 CalcInfo.fstact, CalcInfo.lstact, CalcInfo.active);
+  */
 
   /* allocate memory to store the MO coefficient matrix symm blocked */
 
@@ -223,7 +240,7 @@ void get_mo_info(void)
     }
     fprintf(outfile, "\n");
 
-    fprintf(outfile, "   MOL ORBS      =   %6d\n", CalcInfo.nbfso);
+    fprintf(outfile, "   MOL ORBS      =   %6d\n", CalcInfo.nmo);
     fprintf(outfile, "   FROZEN CORE   =   %6d      RESTR CORE   =   %6d\n",
         CalcInfo.num_fzc_orbs, CalcInfo.num_cor_orbs);
     fprintf(outfile, "\n");

@@ -36,12 +36,16 @@ class IndepPairs {
   public:
     IndepPairs();
     IndepPairs(int nirr, int num_ras, int **ras_opi, int ***ras_orbs,
-             int **fzc_orbs, int **fzv_orbs, int *frozen_docc, 
-             int *frozen_uocc, int *ci2relpitz, int fciflag);
+      int *fzc, int **fzc_orbs, int *cor, int **cor_orbs,
+      int *vir, int **vir_orbs, int *fzv, int **fzv_orbs,
+      int *ci2relpitz, int ignore_ras_ras, int ignore_fz);
    ~IndepPairs();
     void set(int nirr, int num_ras, int **ras_opi, int ***ras_orbs,
-             int **fzc_orbs, int **fzv_orbs, int *frozen_docc, 
-             int *frozen_uocc, int *ci2relpitz, int fciflag);
+      int *fzc, int **fzc_orbs, int *cor, int **cor_orbs,
+      int *vir, int **vir_orbs, int *fzv, int **fzv_orbs,
+      int *ci2relpitz, int ignore_ras_ras, int ignore_fz);
+    void set_part(int &count, int *ir_cnt, int *num_orbs_i, 
+      int *num_orbs_j, int **orbs_i, int **orbs_j, int *ci2relpitz);
     void print(FILE *outfile);
     int get_num_pairs(void) { return npairs; }
     int * get_p_ptr(void) { return p; }

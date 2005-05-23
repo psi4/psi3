@@ -26,6 +26,7 @@ extern "C" {
    #include <libqt/qt.h>
    #include <libciomr/libciomr.h>
    #include <libchkpt/chkpt.h>
+   #include <psifiles.h>
    #include "globals.h"
    #include "setup_io.h"
 
@@ -65,6 +66,8 @@ extern "C" {
                              double *theta);
    extern void calc_orb_step_full(int npairs, double *grad, double **hess, 
                              double *theta);
+   extern void calc_orb_step_bfgs(int npairs, double *grad, double **hess, 
+                             double *theta);
    extern int print_step(int npairs, int steptype);
    extern void postmult_by_U(int irrep, int dim, double **mo_coeffs,
                              int npairs, int *p_arr, int *q_arr, 
@@ -91,6 +94,8 @@ void title(void);
 void quote(void);
 void init_ioff(void);
 void calc_gradient(void);
+void bfgs_hessian(void);
+void ds_hessian(void);
 void calc_hessian(void);
 void scale_gradient(void);
 int check_conv(void);
@@ -108,6 +113,7 @@ extern "C" {
 }
 IndepPairs IndPairs;
 
+#define MO_HESS_MIN 1.0E-1
 
 
 /* MAIN ROUTINE */
@@ -119,6 +125,8 @@ int main(int argc, char *argv[])
   int steptype = 0;
 
   Params.print_lvl = 1;
+  CalcInfo.mo_hess = NULL;
+  CalcInfo.mo_hess_diag = NULL;
 
   init_io(argc,argv);          /* open input and output files              */
   get_parameters();            /* get running params (convergence, etc)    */
@@ -149,7 +157,14 @@ int main(int argc, char *argv[])
   form_F_act();
   calc_gradient();
   converged = check_conv();
-  calc_hessian();
+
+  if (Params.bfgs)
+    bfgs_hessian();
+  else if (Params.ds_hessian)
+    ds_hessian();
+  else
+    calc_hessian();
+
   scale_gradient();
 
   if (!converged) {
@@ -219,9 +234,11 @@ void form_independent_pairs(void)
 {
 
   IndPairs.set(CalcInfo.nirreps, MAX_RAS_SPACES, CalcInfo.ras_opi,
-               CalcInfo.ras_orbs, CalcInfo.fzc_orbs, CalcInfo.fzv_orbs, 
-               CalcInfo.frozen_docc, CalcInfo.frozen_uocc, CalcInfo.ci2relpitz, 
-               Params.fci);
+               CalcInfo.ras_orbs, CalcInfo.frozen_docc, CalcInfo.fzc_orbs, 
+               CalcInfo.rstr_docc, CalcInfo.cor_orbs,
+               CalcInfo.rstr_uocc, CalcInfo.vir_orbs,
+               CalcInfo.frozen_uocc, CalcInfo.fzv_orbs,
+               CalcInfo.ci2relpitz, Params.ignore_ras_ras, Params.ignore_fz);
 
   if (Params.print_lvl > 3) IndPairs.print(outfile);
 
@@ -334,6 +351,379 @@ void calc_gradient(void)
 
 
 /*
+** bfgs_hessian()
+**
+** This function calculates a BFGS-updated MO/MO Hessian
+**
+** C. David Sherrill
+** March 2004
+*/
+void bfgs_hessian(void)
+{
+  int i, j, npairs;
+  double fac, fad, fae, tval;
+  double *dx, *dg, *hdg, **hess_copy, **hess_copy2, hess_det;
+  int *idx;
+
+  npairs = IndPairs.get_num_pairs();
+
+  psio_open(PSIF_DETCAS, PSIO_OPEN_OLD);
+
+  /* If no Hessian in the file */
+  if (psio_tocscan(PSIF_DETCAS, "Hessian Inverse") == NULL) {
+    calc_hessian();
+    if (strcmp(Params.hessian, "FULL") != 0) {
+      CalcInfo.mo_hess = block_matrix(npairs,npairs);
+      for (i=0; i<npairs; i++) {
+        CalcInfo.mo_hess[i][i] = 1.0 / CalcInfo.mo_hess_diag[i];
+      }
+    }
+    else {
+      hess_copy = block_matrix(npairs, npairs);
+      idx = init_int_array(npairs);
+      for (i=0; i<npairs; i++) {
+        for (j=0; j<npairs; j++) {
+          hess_copy[i][j] = CalcInfo.mo_hess[i][j];     
+        }
+      }
+      ludcmp(hess_copy,npairs,idx,&hess_det);
+
+      for (i=0;i<npairs;i++) hess_det *= hess_copy[i][i];
+      fprintf(outfile,"The determinant of the hessian is %8.3E\n",hess_det);
+
+      if (Params.level_shift) {
+        while (hess_det < Params.determ_min) {
+          fprintf(outfile, "Level shifting hessian by %8.3E\n", Params.shift);
+          for (i=0; i<npairs; i++) {
+            CalcInfo.mo_hess[i][i] += Params.shift;
+            for (j=0; j<npairs; j++) {
+              hess_copy[i][j] = CalcInfo.mo_hess[i][j];
+            }
+          }
+          ludcmp(hess_copy,npairs,idx,&hess_det);
+          for (i=0;i<npairs;i++) hess_det *= hess_copy[i][i];
+          fprintf(outfile,"The determinant of the hessian is %8.3E\n",hess_det);
+
+          for (i=0; i<npairs; i++) {
+            for (j=0; j<npairs; j++) {
+              hess_copy[i][j] = CalcInfo.mo_hess[i][j];
+            }
+          }
+        }
+      }
+
+      /* n.b. this destroys hess_copy, and mo_hess now is INVERSE Hess */
+      invert_matrix(hess_copy,CalcInfo.mo_hess,npairs,outfile);
+
+      if (Params.print_lvl > 3) {
+        fprintf(outfile, "\nInitial MO Hessian Inverse:\n");
+        print_mat(CalcInfo.mo_hess,npairs,npairs,outfile);
+        fprintf(outfile, "\n");
+      }
+
+      free(idx);
+      free_block(hess_copy);
+    } 
+
+    /* write Hessian */
+    psio_write_entry(PSIF_DETCAS, "Hessian Inverse", 
+      (char *) CalcInfo.mo_hess[0], npairs*npairs*sizeof(double));
+    /* write thetas */
+    psio_write_entry(PSIF_DETCAS, "Thetas", (char *) CalcInfo.theta_cur,
+      npairs*sizeof(double));
+    /* write gradient */  
+    psio_write_entry(PSIF_DETCAS, "MO Gradient", (char *) CalcInfo.mo_grad,
+      npairs*sizeof(double));
+    psio_close(PSIF_DETCAS, 1);
+
+
+    return;
+  } /* end initialization of BFGS data */
+
+  dx = init_array(npairs);
+  dg = init_array(npairs);
+  hdg = init_array(npairs);
+
+  /* read previous Hessian */
+  CalcInfo.mo_hess = block_matrix(npairs,npairs);
+  psio_read_entry(PSIF_DETCAS, "Hessian Inverse", (char *) CalcInfo.mo_hess[0], 
+    npairs*npairs*sizeof(double));
+
+  /* read previous thetas */
+  psio_read_entry(PSIF_DETCAS, "Thetas", (char *) dx, npairs*sizeof(double));
+
+  /* read previous gradient */
+  psio_read_entry(PSIF_DETCAS, "MO Gradient", (char *) dg,
+    npairs*sizeof(double));
+
+  /* compute updated Hessian by BFGS procedure, see Numerical Recipies in C */
+  
+  /* get difference in thetas and gradient */
+  for (i=0; i<npairs; i++) {
+    dx[i] = CalcInfo.theta_cur[i] - dx[i];
+    dg[i] = CalcInfo.mo_grad[i] - dg[i];
+  }
+
+  if (Params.print_lvl > 3) {
+    fprintf(outfile, "Delta Theta and Delta Grad arrays:\n");
+    for (i=0; i<npairs; i++) {
+      fprintf(outfile, "%12.7lf   %12.7lf\n", dx[i], dg[i]);
+    }
+  }
+
+  /* hdg = H^-1 * (grad(i+1) - grad(i)) */
+  for (i=0; i<npairs; i++) {
+    hdg[i] = 0.0;
+    for (j=0; j<npairs; j++) {
+      hdg[i] += CalcInfo.mo_hess[i][j] * dg[j];
+    }
+  }
+
+  fac = fae = 0.0;
+
+  for (i=0; i<npairs; i++) {
+    fac += dg[i] * dx[i];
+    fae += dg[i] * hdg[i];
+  }
+  fac = 1.0/fac;
+  fad = 1.0/fae;
+
+  /* the dg bit is the diff between BFGS and DFP */
+  for (i=0; i<npairs; i++) dg[i] = fac*dx[i] - fad*hdg[i];
+
+  for (i=0; i<npairs; i++) {
+    for (j=0; j<npairs; j++) {
+      CalcInfo.mo_hess[i][j] += fac*dx[i]*dx[j] - fad*hdg[i]*hdg[j]
+         + fae*dg[i]*dg[j]; 
+    }
+  }
+
+  if (Params.print_lvl > 3) {
+    fprintf(outfile, "\nBFGS MO Hessian Inverse:\n");
+    print_mat(CalcInfo.mo_hess,npairs,npairs,outfile);
+    fprintf(outfile, "\n");
+  }
+
+  /* 
+     this doesn't work unless you fix that dg is not overwritten above 
+     when that's ensured, it seems to match 
+   */
+  /*
+  if (Params.print_lvl > 3) {
+    fprintf(outfile, "Check of dx = H dg\n");
+    for (i=0; i<npairs; i++) {
+      tval = 0.0;
+      for (j=0; j<npairs; j++) {
+        tval += CalcInfo.mo_hess[i][j] * dg[j];
+      }
+      fprintf(outfile, "%12.7lf vs %12.7lf\n", dx[i], tval);
+    }
+  }
+  */
+
+
+  idx = init_int_array(npairs);
+  hess_copy = block_matrix(npairs, npairs);
+  for (i=0; i<npairs; i++) {
+    for (j=0; j<npairs; j++) {
+      hess_copy[i][j] = CalcInfo.mo_hess[i][j];     
+    }
+  }
+  ludcmp(hess_copy,npairs,idx,&hess_det);
+  for (i=0; i<npairs; i++) hess_det *= CalcInfo.mo_hess[i][i];
+  fprintf(outfile, "The determinant of the inverse Hessian is %8.3E\n",
+    hess_det);
+
+  /* just debug check */
+  if (hess_det < 0.0) {
+    hess_copy = block_matrix(npairs, npairs);
+    hess_copy2 = block_matrix(npairs, npairs);
+    for (i=0; i<npairs; i++) {
+      for (j=0; j<npairs; j++) {
+        hess_copy[i][j] = CalcInfo.mo_hess[i][j];     
+      }
+    }
+
+    /* n.b. this destroys hess_copy */
+    invert_matrix(hess_copy,hess_copy2,npairs,outfile);
+
+    if (Params.print_lvl > 3) {
+      fprintf(outfile, "\nMO Hessian:\n");
+      print_mat(hess_copy2,npairs,npairs,outfile);
+      fprintf(outfile, "\n");
+    }
+
+    ludcmp(hess_copy2,npairs,idx,&hess_det);
+    for (i=0;i<npairs;i++) hess_det *= hess_copy2[i][i];
+    fprintf(outfile,"The determinant of the hessian is %8.3E\n",hess_det);
+
+      if (Params.level_shift) {
+        while (hess_det < Params.determ_min) {
+          fprintf(outfile, "Level shifting hessian by %8.3E\n", Params.shift);
+          for (i=0; i<npairs; i++) {
+            hess_copy2[i][i] += Params.shift;
+            for (j=0; j<npairs; j++) {
+              hess_copy[i][j] = hess_copy2[i][j];
+            }
+          }
+          ludcmp(hess_copy,npairs,idx,&hess_det);
+          for (i=0;i<npairs;i++) hess_det *= hess_copy[i][i];
+          fprintf(outfile,"The determinant of the hessian is %8.3E\n",hess_det);                                                                                
+          for (i=0; i<npairs; i++) {
+            for (j=0; j<npairs; j++) {
+              hess_copy2[i][j] = hess_copy[i][j];
+            }
+          }
+        }
+      }
+                                                                                
+    /* n.b. this destroys hess_copy2, and mo_hess now is INVERSE Hess */
+    invert_matrix(hess_copy2,CalcInfo.mo_hess,npairs,outfile);
+
+    free_block(hess_copy2);
+  }
+
+  free_block(hess_copy);
+
+  /* write thetas */
+  psio_write_entry(PSIF_DETCAS, "Thetas", (char *) CalcInfo.theta_cur,
+    npairs*sizeof(double));
+  /* write gradient */  
+  psio_write_entry(PSIF_DETCAS, "MO Gradient", (char *) CalcInfo.mo_grad,
+    npairs*sizeof(double));
+  /* write updated Hessian */
+  psio_write_entry(PSIF_DETCAS, "Hessian Inverse", (char *) CalcInfo.mo_hess[0],
+    npairs*npairs*sizeof(double));
+  psio_close(PSIF_DETCAS, 1);
+
+
+  free(idx);
+  free(dx);
+  free(dg);
+  free(hdg);
+}
+
+
+/*
+** ds_hessian()
+**
+** This function calculates a Hessian update by a difference of gradients
+**
+** C. David Sherrill
+** March 2004
+*/
+void ds_hessian(void)
+{
+  int i, npairs;
+  double tval;
+  double *dx, *dg;
+
+  npairs = IndPairs.get_num_pairs();
+
+  psio_open(PSIF_DETCAS, PSIO_OPEN_OLD);
+
+  /* If no Hessian in the file */
+  if (psio_tocscan(PSIF_DETCAS, "Hessian") == NULL) {
+    calc_hessian();
+    if (strcmp(Params.hessian, "FULL") == 0) {
+      CalcInfo.mo_hess_diag = init_array(npairs);
+      for (i=0; i<npairs; i++) {
+        CalcInfo.mo_hess_diag[i] = CalcInfo.mo_hess[i][i];
+      }
+    }
+    for (i=0; i<npairs; i++) {
+      if (CalcInfo.mo_hess_diag[i] < MO_HESS_MIN) {
+        fprintf(outfile, "Warning: MO Hessian denominator too small\n");
+        CalcInfo.mo_hess_diag[i] = MO_HESS_MIN;
+      }
+    }
+
+    if (Params.print_lvl > 3) {
+      fprintf(outfile, "\nInitial MO Hessian:\n");
+      for (i=0; i<npairs; i++) 
+        fprintf(outfile, "%12.6lf\n", CalcInfo.mo_hess_diag[i]);
+      fprintf(outfile, "\n");
+    }
+
+    /* write Hessian */
+    psio_write_entry(PSIF_DETCAS, "Hessian", 
+      (char *) CalcInfo.mo_hess_diag, npairs*sizeof(double));
+    /* write thetas */
+    psio_write_entry(PSIF_DETCAS, "Thetas", (char *) CalcInfo.theta_cur,
+      npairs*sizeof(double));
+    /* write gradient */  
+    psio_write_entry(PSIF_DETCAS, "MO Gradient", (char *) CalcInfo.mo_grad,
+      npairs*sizeof(double));
+    psio_close(PSIF_DETCAS, 1);
+    return;
+  } /* end initialization of data */
+
+  dx = init_array(npairs);
+  dg = init_array(npairs);
+
+  /* read previous Hessian */
+  CalcInfo.mo_hess_diag = init_array(npairs);
+  psio_read_entry(PSIF_DETCAS, "Hessian", (char *) CalcInfo.mo_hess_diag, 
+    npairs*sizeof(double));
+
+  /* read previous thetas */
+  psio_read_entry(PSIF_DETCAS, "Thetas", (char *) dx, npairs*sizeof(double));
+
+  /* read previous gradient */
+  psio_read_entry(PSIF_DETCAS, "MO Gradient", (char *) dg,
+    npairs*sizeof(double));
+
+  /* compute updated Hessian by David's recipie */
+  
+  /* get difference in thetas and gradient */
+  for (i=0; i<npairs; i++) {
+    dx[i] = CalcInfo.theta_cur[i] - dx[i];
+    dg[i] = CalcInfo.mo_grad[i] - dg[i];
+  }
+
+  if (Params.print_lvl > 3) {
+    fprintf(outfile, "Delta Theta and Delta Grad arrays:\n");
+    for (i=0; i<npairs; i++) {
+      fprintf(outfile, "%12.7lf   %12.7lf\n", dx[i], dg[i]);
+    }
+  }
+
+  /* H = 1/2 [ H + (grad(i+1) - grad(i))/(x(i+1)-x(i)) ] */
+  for (i=0; i<npairs; i++) {
+    tval = dg[i] / dx[i];
+    if (tval < - MO_HESS_MIN) tval = - MO_HESS_MIN;
+    if (tval > 500.0) tval = 500.0;
+    CalcInfo.mo_hess_diag[i] = 0.5 * (CalcInfo.mo_hess_diag[i] + tval);
+    if (CalcInfo.mo_hess_diag[i] < MO_HESS_MIN) 
+      CalcInfo.mo_hess_diag[i] = MO_HESS_MIN;
+  }
+
+  if (Params.print_lvl > 3) {
+    fprintf(outfile, "\nDS MO Hessian:\n");
+    for (i=0; i<npairs; i++) 
+      fprintf(outfile, "%12.6lf\n", CalcInfo.mo_hess_diag[i]);
+    fprintf(outfile, "\n");
+  }
+
+  /* write thetas */
+  psio_write_entry(PSIF_DETCAS, "Thetas", (char *) CalcInfo.theta_cur,
+    npairs*sizeof(double));
+  /* write gradient */  
+  psio_write_entry(PSIF_DETCAS, "MO Gradient", (char *) CalcInfo.mo_grad,
+    npairs*sizeof(double));
+  /* write updated Hessian */
+  psio_write_entry(PSIF_DETCAS, "Hessian", (char *) CalcInfo.mo_hess_diag,
+    npairs*sizeof(double));
+  psio_close(PSIF_DETCAS, 1);
+
+
+  free(dx);
+  free(dg);
+}
+
+
+
+/*
 ** calc_hessian()
 **
 ** This function calculates an approximate MO Hessian from the 
@@ -417,14 +807,21 @@ void scale_gradient(void)
 
   // All this actually does is scale the gradient by the Hessian
   // If we have a diagonal (exact or approximate) Hessian
-  if (Params.scale_grad && 
-      (strcmp(Params.hessian,"DIAG")==0 || 
+
+  // BFGS
+  if (Params.scale_grad && Params.bfgs) {
+    calc_orb_step_bfgs(npairs, CalcInfo.mo_grad, CalcInfo.mo_hess,
+      CalcInfo.theta_step);
+  }
+  // non-BFGS diagonal Hessian
+  else if (Params.scale_grad && (strcmp(Params.hessian,"DIAG")==0 || 
        strcmp(Params.hessian,"APPROX_DIAG")==0)) {
     calc_orb_step(npairs, CalcInfo.mo_grad, CalcInfo.mo_hess_diag,
       CalcInfo.theta_step);
   }
-  // If we have the full Hessian
-  else if (Params.scale_grad && strcmp(Params.hessian,"FULL")==0) {
+  // non-BFGS full Hessian
+  else if ((Params.scale_grad && strcmp(Params.hessian,"FULL")==0) ||
+    Params.bfgs) {
     calc_orb_step_full(npairs, CalcInfo.mo_grad, CalcInfo.mo_hess,
       CalcInfo.theta_step);
   }
@@ -481,6 +878,7 @@ int take_step(void)
 
   for (pair=0; pair<npairs; pair++) 
     CalcInfo.theta_cur[pair] += CalcInfo.theta_step[pair];
+    //CalcInfo.theta_cur[pair] = CalcInfo.theta_step[pair];
 
   if (CalcInfo.iter >= Params.diis_start) 
     took_diis = diis(npairs, CalcInfo.theta_cur, CalcInfo.theta_step);

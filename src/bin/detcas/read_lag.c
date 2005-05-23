@@ -24,7 +24,7 @@ void read_lagrangian(void)
   int nmo;
   PSI_FPTR lag_fptr=0;
 
-  nmo = CalcInfo.nbfso;
+  nmo = CalcInfo.nmo;
   
   CalcInfo.lag = block_matrix(nmo, nmo);
 

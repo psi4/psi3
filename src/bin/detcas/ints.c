@@ -49,7 +49,7 @@ void read_integrals()
     fprintf(outfile, "\n\tTwo-electron integrals:\n");
 
   iwl_rdtwo(Params.tei_file, CalcInfo.twoel_ints, ioff, 
-     CalcInfo.nbfso, Params.filter_ints ? CalcInfo.num_fzc_orbs : 0, 
+     CalcInfo.nmo, Params.filter_ints ? CalcInfo.num_fzc_orbs : 0, 
      Params.filter_ints ? CalcInfo.num_fzv_orbs : 0, 
      (Params.print_lvl>4), outfile);
 

@@ -23,22 +23,22 @@ void form_F_act(void)
   /* Form the intermediates we need */
   CalcInfo.F_act = init_array(CalcInfo.nbstri);
   ncore = CalcInfo.num_fzc_orbs + CalcInfo.num_cor_orbs;
-  calc_F_act(CalcInfo.F_act, CalcInfo.nbfso, ncore,  CalcInfo.npop, 
+  calc_F_act(CalcInfo.F_act, CalcInfo.nmo, ncore,  CalcInfo.npop, 
              CalcInfo.opdm, CalcInfo.twoel_ints);
   /*
-  check_F_act(CalcInfo.F_act, CalcInfo.nbfso, ncore,  CalcInfo.npop, 
+  check_F_act(CalcInfo.F_act, CalcInfo.nmo, ncore,  CalcInfo.npop, 
              CalcInfo.opdm, CalcInfo.twoel_ints);
-  test_lag(CalcInfo.nbfso, ncore, CalcInfo.npop, CalcInfo.onel_ints,
+  test_lag(CalcInfo.nmo, ncore, CalcInfo.npop, CalcInfo.onel_ints,
            CalcInfo.twoel_ints, CalcInfo.opdm, CalcInfo.tpdm);
-  test_fzc(CalcInfo.nbfso, ncore, CalcInfo.onel_ints, CalcInfo.twoel_ints);
+  test_fzc(CalcInfo.nmo, ncore, CalcInfo.onel_ints, CalcInfo.twoel_ints);
 
-  test_lag2(CalcInfo.nbfso, ncore, CalcInfo.npop, CalcInfo.onel_ints,
+  test_lag2(CalcInfo.nmo, ncore, CalcInfo.npop, CalcInfo.onel_ints,
            CalcInfo.twoel_ints, CalcInfo.opdm, CalcInfo.tpdm);
   */
 
   if (Params.print_lvl > 3) {
     fprintf(outfile, "\nActive Fock matrix:\n");
-    print_array(CalcInfo.F_act, CalcInfo.nbfso, outfile);
+    print_array(CalcInfo.F_act, CalcInfo.nmo, outfile);
   }
 
 }

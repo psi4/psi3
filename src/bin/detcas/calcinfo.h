@@ -23,6 +23,7 @@ struct calcinfo {
   int nirreps;           /* number of irreducible representations in pt grp */
   int num_fzc_orbs;      /* number of FZC orbitals (i.e. frozen core) */
   int num_cor_orbs;      /* number of COR orbitals (i.e. restricted core) */
+  int num_vir_orbs;      /* number of VIR orbitals (i.e. restricted virtual) */
   int num_fzv_orbs;      /* number of frozen/deleted virtual orbitals */
   int npop;              /* number of populated orbitals, nbfso - nfzv */
   int max_orbs_per_irrep;/* max orbitals per irrep fzv not included */
@@ -42,6 +43,8 @@ struct calcinfo {
   char **labels;         /* labels for irreps */
   int **ras_opi;         /* num orbs per irr per ras space ras_opi[ras][irr] */
   int **fzc_orbs;        /* frozen core orbitals numbers [irrep][orbnum] */
+  int **cor_orbs;        /* restricted core orbitals numbers [irrep][orbnum] */
+  int **vir_orbs;        /* restr virtual orbitals numbers [irrep][orbnum] */
   int **fzv_orbs;        /* frozen virtual orbitals numbers [irrep][orbnum] */
 
   int ***ras_orbs;       /* ras_orbs[ras][irr][cnt] gives an orbital number */

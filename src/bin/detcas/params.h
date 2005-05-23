@@ -25,9 +25,8 @@ struct params {
    int tpdm_erase;          /* erase twopdm after reading?                  */
    int lag_file;            /* file number for lagrangian                   */
    int lag_erase;           /* erase lagrangian after reading?              */
-   int fci;                 /* do a FULL ci calc? (affects independent prs) */
-   int fzc;                 /* do implicit frozen core (remove those orbs)? */
-                            /* the alternative is a "restricted core" calc  */
+   int ignore_ras_ras;      /* ignore RAS/RAS rotations in independ pairs?  */
+   int ignore_fz;           /* ignore FZC/FZV in independent pair list?     */
    int filter_ints;         /* filter out the frozen orbital integrals?     */
    int scale_grad;          /* scale the orbital gradient by the appx Hess? */
    int diis_start;          /* how many diis vectors built up before start  */
@@ -51,7 +50,8 @@ struct params {
                                specified step?  (For debugging)             */
    int force_pair;          /* If force_step=1, which indep pair to step?   */
    double force_value;      /* If force_step=1, how far to step?            */
-  int check_hess;          /* Check the eigenvalues of the orbital hessian? */
-  int eigen_vectors;        /*Calculate the eigenvectors of the orbital hessian */
+   double scale_act_act;    /* Scale the active-active Hessian by this      */
+   int bfgs;                /* Do BFGS update of Hessian?                   */
+   int ds_hessian;          /* Do a DS Hessian update?                      */
   };
 
