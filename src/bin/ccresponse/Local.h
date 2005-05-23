@@ -3,6 +3,7 @@ struct Local {
   int nso;
   int nocc;
   int nvir;
+  int cart;
   int *aostart;
   int *aostop;
   int **domain;

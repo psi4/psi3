@@ -27,9 +27,10 @@ double pseudopolar(char *pert, char *cart, int irrep, double omega)
   dpd_buf4_close(&mubar2);
   dpd_buf4_close(&X2);
 
-  /*
-  fprintf(outfile, "polar1 = %20.12f \tpolar2 = %20.12f \tpolar = %20.12f\n", polar1, polar2, polar1+polar2);
-  */
+  if(params.print & 2) {
+    fprintf(outfile, "\tpolar1 = %20.12f\n", -2.0*polar1);
+    fprintf(outfile, "\tpolar2 = %20.12f\n", -2.0*polar2);
+  }
 
   return polar1+polar2;
 }

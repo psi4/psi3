@@ -7,10 +7,10 @@
 #define EXTERN
 #include "globals.h"
 
+void status(char *, FILE *);
 void transmu(void);
 void sortmu(void);
 void mubar(void);
-
 void compute_X(char *pert, char *cart, int irrep, double omega);
 double LCX(char *pert_c, char *cart_c, int irrep_c, 
 	   char *pert_x, char *cart_x, int irrep_x, double omega);
@@ -125,25 +125,26 @@ void polar(void)
 
 	  polar = polar_LCX + polar_HXY + polar_LHX1Y1 + polar_LHX2Y2 + polar_LHX1Y2;
 
-/* 	  if(alpha == beta) { */
-/* 	    fprintf(outfile, "polar_LCX    = %20.15f\n", polar_LCX); */
-/* 	    fprintf(outfile, "polar_HXY    = %20.15f\n", polar_HXY); */
-/* 	    fprintf(outfile, "polar_LHX1Y1 = %20.15f\n", polar_LHX1Y1); */
-/* 	    fprintf(outfile, "polar_LHX2Y2 = %20.15f\n", polar_LHX2Y2); */
-/* 	    fprintf(outfile, "polar_LHX1Y2 = %20.15f\n\n", polar_LHX1Y2); */
-/* 	  } */
+	  if((alpha == beta)  && (params.print & 2)) {
+	    fprintf(outfile, "\tpolar_LCX    = %20.15f\n", polar_LCX);
+	    fprintf(outfile, "\tpolar_HXY    = %20.15f\n", polar_HXY);
+	    fprintf(outfile, "\tpolar_LHX1Y1 = %20.15f\n", polar_LHX1Y1);
+	    fprintf(outfile, "\tpolar_LHX2Y2 = %20.15f\n", polar_LHX2Y2);
+	    fprintf(outfile, "\tpolar_LHX1Y2 = %20.15f\n\n", polar_LHX1Y2);
+	  }
 
 	  tensor[i][alpha][beta] = -polar;
 	}
       }
     }
 
-    if (!strcmp(params.wfn,"CC2")) {
+    psio_close(CC_LR, 0);
+    psio_open(CC_LR, 0);
+
+    if (!strcmp(params.wfn,"CC2"))
       fprintf(outfile, "\n                 CC2 Dipole Polarizability [(e^2 a0^2)/E_h]:\n");
-    }
-    else {
+    else
       fprintf(outfile, "\n                 CCSD Dipole Polarizability [(e^2 a0^2)/E_h]:\n");
-    }
     fprintf(outfile, "  -------------------------------------------------------------------------\n");
     if(params.omega[i] != 0.0) 
       omega_nm = (_c*_h*1e9)/(_hartree2J*params.omega[i]);
@@ -164,7 +165,10 @@ void polar(void)
   if(params.nomega > 1) {  /* print a summary table for multi-wavelength calcs */
 
     fprintf(outfile, "\n\t-------------------------------\n");
-    fprintf(outfile,   "\t      CCSD Polarizability\n");
+    if (!strcmp(params.wfn,"CC2"))
+      fprintf(outfile,   "\t      CC2 Polarizability\n");
+    else
+      fprintf(outfile,   "\t      CCSD Polarizability\n");
     fprintf(outfile,   "\t-------------------------------\n");
     fprintf(outfile,   "\t    Omega          alpha\n");
     fprintf(outfile,   "\t E_h      nm        a.u.        \n");

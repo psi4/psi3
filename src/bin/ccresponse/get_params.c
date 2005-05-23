@@ -183,10 +183,13 @@ void get_params()
     sprintf(local.weakp, "%s", "NONE");
   }
 
-  local.filter_singles = 1;
+  if(params.dertype == 3)
+    local.filter_singles = 0;
+  else
+    local.filter_singles = 1;
   ip_boolean("LOCAL_FILTER_SINGLES", &(local.filter_singles), 0);
 
-  local.cphf_cutoff = 0.01;
+  local.cphf_cutoff = 0.10;
   ip_data("LOCAL_CPHF_CUTOFF", "%lf", &(local.cphf_cutoff), 0);
 
   local.freeze_core = NULL;
@@ -200,8 +203,10 @@ void get_params()
       exit(PSI_RETURN_FAILURE);
     }
   }
-  else if(params.local)
+  else if(params.local && params.dertype == 3)
     local.pairdef = strdup("RESPONSE");
+  else if(params.local)
+    local.pairdef = strdup("BP");
 
   params.analyze = 0;
   ip_boolean("ANALYZE", &(params.analyze), 0);
@@ -235,6 +240,7 @@ void get_params()
 	      (_c*_h*1e9)/(_hartree2J*params.omega[i]), _hartree2ev*params.omega[i],
 	      _hartree2wavenumbers*params.omega[i]);
   }
+  fprintf(outfile, "\tAnalyze X2 Amps  =    %s\n", params.analyze ? "Yes" : "No");
   fprintf(outfile, "\tLocal CC         =    %s\n", params.local ? "Yes" : "No");
   if(params.local) {
     fprintf(outfile, "\tLocal Cutoff     = %3.1e\n", local.cutoff);
@@ -244,7 +250,6 @@ void get_params()
     fprintf(outfile, "\tLocal pairs        =    %s\n", local.pairdef);
     fprintf(outfile, "\tLocal CPHF cutoff  =  %3.1e\n", local.cphf_cutoff);
   }
-  fprintf(outfile, "\tAnalyze X2 Amps  =    %s\n", params.analyze ? "Yes" : "No");
   fprintf(outfile, "\n");
 }
 
