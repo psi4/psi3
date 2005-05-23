@@ -66,12 +66,12 @@ void get_params(void)
      if --all, do all states included ground state
      else if (params.ground), do just ground state
      else if --zeta {
-       L_irr from CC_INFO (A1 for gradients)
-       labels for zeta
+     L_irr from CC_INFO (A1 for gradients)
+     labels for zeta
      }
      else {
-       if prop_sym is in input use prop_sym and prop_root
-       else compute L for last state requested in input
+     if prop_sym is in input use prop_sym and prop_root
+     else compute L for last state requested in input
      }
   */
 
@@ -133,21 +133,21 @@ void get_params(void)
     }
   }
   else if (params.zeta) {
-      psio_read_entry(CC_INFO, "XI Irrep", (char *) &i,sizeof(int));
-      fprintf(outfile,"\tIrrep of Zeta       (CC_INFO) = %d\n", i);
-      prop_root = 0;
-      prop_sym = i;
-      pL_params[0].irrep = prop_sym;
-      pL_params[0].root = prop_root;
-      pL_params[0].ground = 0;
-      pL_params[0].cceom_energy = 0.0; /* don't want energy in denominator */
-      pL_params[0].R0 = 0.0; /* <Zeta0|R0> = 0, since zeta_0 = 0 */
-      sprintf(pL_params[0].L1A_lbl,"ZIA");
-      sprintf(pL_params[0].L1B_lbl,"Zia");
-      sprintf(pL_params[0].L2AA_lbl,"ZIJAB");
-      sprintf(pL_params[0].L2BB_lbl,"Zijab");
-      sprintf(pL_params[0].L2AB_lbl,"ZIjAb");
-      sprintf(pL_params[0].L2RHF_lbl,"2ZIjAb - ZIjbA");
+    psio_read_entry(CC_INFO, "XI Irrep", (char *) &i,sizeof(int));
+    fprintf(outfile,"\tIrrep of Zeta       (CC_INFO) = %d\n", i);
+    prop_root = 0;
+    prop_sym = i;
+    pL_params[0].irrep = prop_sym;
+    pL_params[0].root = prop_root;
+    pL_params[0].ground = 0;
+    pL_params[0].cceom_energy = 0.0; /* don't want energy in denominator */
+    pL_params[0].R0 = 0.0; /* <Zeta0|R0> = 0, since zeta_0 = 0 */
+    sprintf(pL_params[0].L1A_lbl,"ZIA");
+    sprintf(pL_params[0].L1B_lbl,"Zia");
+    sprintf(pL_params[0].L2AA_lbl,"ZIJAB");
+    sprintf(pL_params[0].L2BB_lbl,"Zijab");
+    sprintf(pL_params[0].L2AB_lbl,"ZIjAb");
+    sprintf(pL_params[0].L2RHF_lbl,"2ZIjAb - ZIjbA");
   }
   else if (params.ground) {
     pL_params[0].irrep = 0;
@@ -234,13 +234,16 @@ void get_params(void)
   }
   else if(params.local) {
     local.weakp = (char *) malloc(4 * sizeof(char));
-    sprintf(local.weakp, "%s", "MP2");
+    sprintf(local.weakp, "%s", "NONE");
   }
   
-  local.filter_singles = 1;
+  if(params.dertype == 3)
+    local.filter_singles = 0;
+  else
+    local.filter_singles = 1;
   ip_boolean("LOCAL_FILTER_SINGLES", &(local.filter_singles), 0);
 
-  local.cphf_cutoff = 0.01;
+  local.cphf_cutoff = 0.10;
   ip_data("LOCAL_CPHF_CUTOFF", "%lf", &(local.cphf_cutoff), 0);
 
   local.freeze_core = NULL;
@@ -254,8 +257,10 @@ void get_params(void)
       exit(PSI_RETURN_FAILURE);
     }
   }
-  else if(params.local)
+  else if(params.local && params.dertype == 3)
     local.pairdef = strdup("RESPONSE");
+  else if(params.local)
+    local.pairdef = strdup("BP");
 
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
@@ -282,15 +287,14 @@ void get_params(void)
   fprintf(outfile,"\tIrr   Root  Ground-State?    EOM energy        R0\n");
   for (i=0; i<params.nstates; ++i) {
     fprintf(outfile,"\t%3d %5d %13s %14.10lf %14.10lf\n", pL_params[i].irrep, pL_params[i].root,
-        (pL_params[i].ground ? "Yes":"No"), pL_params[i].cceom_energy, pL_params[i].R0);
+	    (pL_params[i].ground ? "Yes":"No"), pL_params[i].cceom_energy, pL_params[i].R0);
   }
 
   for (i=0; i<params.nstates; ++i) {
     fprintf(outfile,"\tLabels for state %d:\n\t%s, %s, %s, %s, %s, %s\n",
-        i,pL_params[i].L1A_lbl,pL_params[i].L1B_lbl,pL_params[i].L2AA_lbl,pL_params[i].L2BB_lbl,
-        pL_params[i].L2AB_lbl, pL_params[i].L2RHF_lbl);
+	    i,pL_params[i].L1A_lbl,pL_params[i].L1B_lbl,pL_params[i].L2AA_lbl,pL_params[i].L2BB_lbl,
+	    pL_params[i].L2AB_lbl, pL_params[i].L2RHF_lbl);
   }
 
   return;
 }
-
