@@ -228,7 +228,6 @@ struct H_zero_block {
 */
 struct calcinfo {
    int natom;            /* number of atoms */
-   int natom3;           /* number of atoms * 3 (to save calculations) */
    int nso;              /* number of symmetry orbitals */
    int nmo;              /* number of molecular orbitals */
    int nmotri;           /* num elements in lwr diag matrix nmo big */
@@ -236,6 +235,8 @@ struct calcinfo {
    int *docc;            /* doubly occupied orbitals per irrep */
    int *socc;            /* singly occupied orbitals per irrep */
    int *frozen_docc;     /* frozen doubly occupied orbs per irrep */
+   int *rstr_docc;       /* restricted core orbitals per irrep */
+   int *rstr_uocc;       /* restricted virtual orbitals per irrep */
    int *frozen_uocc;     /* frozen virtual orbs per irrep */
    int iopen;            /* flag for whether open shell or not */
    double enuc;          /* nuclear repulsion energy */
@@ -267,6 +268,7 @@ struct calcinfo {
    int num_bet_str;      /* number of beta strings */
    int num_ci_orbs;      /* nmo - num orbs frozen */
    int num_fzv_orbs;     /* number of frozen/deleted virtual orbitals */
+   int num_vir_orbs;     /* number of restricted virtual orbitals */
    int ref_alp;          /* address of reference alpha string */
    int ref_bet;          /* address of reference beta string */
    int ref_alp_list;     /* string list containing reference alpha string */
@@ -437,6 +439,7 @@ struct params {
                               do only determinants (or their
                               spin-complements) in RASCI versions of
                               Krylov's SF CI */
+   int print_sigma_overlap;/* Print sigma overlap matrix?  Test for Arteum */
    int filter_guess;       /* 1 if we want to filter out some of our guess
                               vectors by checking the phase of a pair of
 			      determinants */
@@ -455,8 +458,26 @@ struct params {
    int filter_guess_Jbc;   /* string list number for beta of det 2 */
    int filter_guess_H0_det1; /* H0block determinant number for det 1 */
    int filter_guess_H0_det2; /* H0block determinant number for det 2 */
-   int *ex_type;             /* Determine nonstandard excitation types, such
+   int zero_det;           /* zero out any particular determinant? */
+   int zero_det_Ia;        /* absolute alpha string addr for zero det */
+   int zero_det_Ib;        /* absolute beta  string addr for zero det */
+   int zero_det_Iac;       /* string list number for alpha of zero det */
+   int zero_det_Ibc;       /* string list number for beta of zero det */
+   int zero_det_Iaridx;    /* relative alpha string for zero det */
+   int zero_det_Ibridx;    /* relative beta string for zero det */
+   int follow_vec_num;     /* num components in user-specified vec to follow */
+   double *follow_vec_coef;/* array of coefficients for vec to follow */
+   int *follow_vec_Ia;     /* array of absolute alpha strings for vector */
+   int *follow_vec_Ib;     /* array of absolute beta  strings for vector */
+   int *follow_vec_Iac;    /* array of alpha string lists for vector */
+   int *follow_vec_Ibc;    /* array of beta  string lists for vector */
+   int *follow_vec_Iaridx; /* array of alpha relative idx for vector */
+   int *follow_vec_Ibridx; /* array of beta  relative idx for vector */
+   int *ex_type;           /* Determine nonstandard excitation types, such
                                 as CID, CIST, CIDTQ, etc. */
+   int *average_states;    /* which states to average in a SA calc */
+   double *average_weights;/* the weights for each state in a SA calc */
+   int average_num;        /* length of the above two arrays */
 };
 
 

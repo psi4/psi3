@@ -160,6 +160,19 @@ void form_strings(void)
      str_abs2rel(Parameters.filter_guess_Jb, &Parameters.filter_guess_Jbridx, 
                  &Parameters.filter_guess_Jbc, BetaG);
    }
+   if (Parameters.zero_det) {
+     str_abs2rel(Parameters.zero_det_Ia, &Parameters.zero_det_Iaridx, 
+                 &Parameters.zero_det_Iac, AlphaG);
+     str_abs2rel(Parameters.zero_det_Ib, &Parameters.zero_det_Ibridx, 
+                 &Parameters.zero_det_Ibc, BetaG);
+   }
+   for (i=0; i<Parameters.follow_vec_num; i++) {
+     str_abs2rel(Parameters.follow_vec_Ia[i], Parameters.follow_vec_Iaridx+i,
+       Parameters.follow_vec_Iac+i, AlphaG);
+     str_abs2rel(Parameters.follow_vec_Ib[i], Parameters.follow_vec_Ibridx+i,
+       Parameters.follow_vec_Ibc+i, BetaG);
+   }
+
 }
 
 

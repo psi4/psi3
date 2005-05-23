@@ -55,8 +55,9 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
   int do_Jblock, do_Jblock2;
   int populated_orbs;
   double **tmp_mat, **opdmso;
+  double overlap, max_overlap;
   char opdm_key[80]; /* libpsio TOC entry name for OPDM for each root */
-
+  
   Ivec.set(CIblks.vectlen, CIblks.num_blocks, Parameters.icore, Parameters.Ms0,
            CIblks.Ia_code, CIblks.Ib_code, CIblks.Ia_size, CIblks.Ib_size,
            CIblks.offset, CIblks.num_alp_codes, CIblks.num_bet_codes,
@@ -137,8 +138,47 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
   }
  
   if (writeflag) 
-    /* rfile(targetfile); */
     psio_open(targetfile, PSIO_OPEN_OLD);
+
+  /* if we're trying to follow a root, figure out which one here */
+  
+  if (Parameters.follow_vec_num > 0) {
+    max_overlap = 0.0;
+    for (i=0,j=0; i<Parameters.num_roots; i++) {
+
+      overlap = Ivec.compute_follow_overlap(i, 
+        Parameters.follow_vec_num, Parameters.follow_vec_coef,
+        Parameters.follow_vec_Iac, Parameters.follow_vec_Iaridx, 
+        Parameters.follow_vec_Ibc, Parameters.follow_vec_Ibridx);
+
+      if (overlap > max_overlap) {
+        max_overlap = overlap;
+        j = i;
+      } 
+    }
+
+
+    Parameters.root = j;
+    fprintf(outfile, "DETCI following root %d (overlap %6.4lf)\n", 
+      Parameters.root+1,max_overlap);
+
+    for (i=0; i<Parameters.average_num; i++) {
+      Parameters.average_states[i] = 0;
+      Parameters.average_weights[i] = 0.0;
+    }
+    Parameters.average_num = 1;
+    Parameters.average_states[0] = Parameters.root;
+    Parameters.average_weights[0] = 1.0;
+    
+    /* correct "the" energy in the checkpoint file */
+    chkpt_init(PSIO_OPEN_OLD);
+    sprintf(opdm_key,"Root %2d energy",Parameters.root);
+    overlap = chkpt_rd_e_labeled(opdm_key);
+    chkpt_wt_etot(overlap);
+    chkpt_close();
+  
+  }
+    
 
   for (k=0; k<Parameters.num_roots; k++) {
    
@@ -618,10 +658,12 @@ void opdm_block(struct stringwr **alplist, struct stringwr **betlist,
 ** Parameters:
 **  targetfile = file number to obtain matrices from 
 **
+** Modified 7/13/04 to use new state average parameters --- CDS
+**
 */
 void ave(int targetfile)
 {
-  int root, i, j, populated_orbs;
+  int root, root_count, i, j, populated_orbs;
   double **tmp_mat1, **tmp_mat2;
   char opdm_key[80];
 
@@ -630,11 +672,13 @@ void ave(int targetfile)
   tmp_mat2 = block_matrix(populated_orbs, populated_orbs);  
   zero_mat(tmp_mat1, populated_orbs, populated_orbs);
 
-  for(root=0; root<Parameters.num_roots; root++) {
+  for(root_count=0; root_count<Parameters.average_num; root_count++) {
+
+    root = Parameters.average_states[root_count];
 
     sprintf(opdm_key, "MO-basis OPDM Root %d", root);
 
-    if (root==0) {
+    if (root_count==0) {
       psio_read_entry(targetfile, opdm_key, (char *) tmp_mat1[0],
         populated_orbs * populated_orbs * sizeof(double));
 
@@ -642,6 +686,11 @@ void ave(int targetfile)
         fprintf(outfile,"\n\n\t\tOPDM for Root 1");
         print_mat(tmp_mat1, populated_orbs, populated_orbs, outfile);
       }
+
+      for (i=0; i<populated_orbs; i++)
+        for (j=0; j<populated_orbs; j++) 
+           tmp_mat1[i][j] *= Parameters.average_weights[root];
+
     }
 
     else {
@@ -650,7 +699,8 @@ void ave(int targetfile)
 
       for(i=0; i<populated_orbs; i++)
          for(j=0; j<populated_orbs; j++) 
-            tmp_mat1[i][j] += tmp_mat2[i][j];    
+            tmp_mat1[i][j] += Parameters.average_weights[root]*tmp_mat2[i][j];
+
       if (Parameters.opdm_print) {
         fprintf(outfile,"\n\n\t\tOPDM for Root %d",root+1);
         print_mat(tmp_mat2, populated_orbs, populated_orbs, outfile);
@@ -658,20 +708,17 @@ void ave(int targetfile)
     }
 
     zero_mat(tmp_mat2, populated_orbs, populated_orbs);
+
   }
 
 
-  for (i=0; i<populated_orbs; i++)
-    for (j=0; j<populated_orbs; j++) 
-       tmp_mat1[i][j] *= (1.0/((double)Parameters.num_roots));
-
-  psio_write_entry(targetfile, "MO-basis OPDM Ave", (char *) tmp_mat1[0],
+  psio_write_entry(targetfile, "MO-basis OPDM", (char *) tmp_mat1[0],
     populated_orbs*populated_orbs*sizeof(double));
 
   if (Parameters.print_lvl > 0 || Parameters.opdm_print) {
     fprintf(outfile,
       "\n\t\t\t Averaged OPDM's for %d Roots written to opdm_file \n\n",
-      Parameters.num_roots);
+      Parameters.average_num);
   }
   if (Parameters.opdm_print) {
     print_mat(tmp_mat1, populated_orbs, populated_orbs, outfile);

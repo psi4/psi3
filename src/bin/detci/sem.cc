@@ -502,7 +502,17 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
          Cvec.init_vals(k, L, H0block.alplist, H0block.alpidx, 
             H0block.betlist, H0block.betidx, H0block.blknum, sm_evals);
 
-         k++;
+         if (Parameters.calc_ssq && Parameters.icore==1) {
+            Cvec.buf_unlock();
+            tval = Cvec.calc_ssq(buffer1, buffer2, alplist, betlist, k);
+            Cvec.buf_lock(buffer1);  
+            if (fabs(tval - (Parameters.S*(Parameters.S+1.0))) > 1.0E-3) {
+              fprintf(outfile, 
+                 "Computed <S^2> not as desired, discarding guess\n");
+              }
+            else k++;
+            }
+         else k++;
          }
       Cvec.buf_unlock();
       Cvec.write_num_vecs(k);
@@ -665,6 +675,65 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
             }
           } 
  
+       }
+
+     if (Parameters.print_sigma_overlap) {
+       /* Form sigma_overlap matrix */
+       Sigma.buf_lock(buffer1);
+       Sigma2.buf_lock(buffer2);
+       zero_mat(sigma_overlap,maxnvect, maxnvect);
+       for (i=0; i<L; i++) {
+          Sigma.read(i, 0);
+          if (print_lvl > 2) {
+            fprintf(outfile,"Sigma[%d] = ", i);
+            Sigma.print(outfile);
+            fflush(outfile);
+            }
+          for (j=i; j<L; j++) {
+             Sigma2.read(j, 0);
+             if (print_lvl > 2) {
+               fprintf(outfile,"Sigma2[%d] = ", j);
+               Sigma2.print(outfile);
+               fflush(outfile);
+               }
+             sigma_overlap[i][j] = sigma_overlap[j][i] = Sigma * Sigma2;
+             }
+          }
+       Sigma.buf_unlock();
+       Sigma2.buf_unlock();
+
+       fprintf(outfile, "\nsigma_overlap matrix (%2d) = \n", iter);
+       print_mat(sigma_overlap, L, L, outfile);
+
+       for (i=0; i<L; i++) {
+         fprintf(outfile, "\nGuess energy #%d = %15.9lf\n", i,
+           -1.0 * sqrt(sigma_overlap[i][i]) + CalcInfo.enuc + CalcInfo.efzc);
+         }
+
+       /* diagonalize sigma_overlap to see what that does
+          should be the same as diagnolizing H^2 in the basis of the
+          Davidson subspace vectors
+        */
+
+       /* Form Mij matrix */
+       /* This formula assumes the b vectors are orthogonal */
+       zero_mat(M[0],maxnvect,maxnvect);
+       for (i=0; i<L; i++) {
+          for (j=i; j<L; j++) {
+             M[0][i][j] = M[0][j][i] =  sigma_overlap[i][j];
+          }
+       }
+
+       /* solve the L x L eigenvalue problem M a = lambda a for M roots */
+       sq_rsp(L, L, M[0], m_lambda[0][0], 1, m_alpha[0][0], 1.0E-14);
+       for (i=0; i<L; i++) {
+         m_lambda[0][0][i] = -1.0 * sqrt(m_lambda[0][0][i]) +
+           CalcInfo.enuc + CalcInfo.efzc;
+       }
+       fprintf(outfile, "\n Guess energy from H^2 = %15.9lf\n", 
+         m_lambda[0][0][L]);
+       fprintf(outfile, "\n M eigenvectors and eigenvalues root %d:\n",0);
+       eivout(m_alpha[0][0], m_lambda[0][0], L, L, outfile);
        }
 
       /* before we form correction vectors see if enough room to 
@@ -1078,8 +1147,13 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
            fprintf(outfile,"Warning: Norm of "  
                   "correction (root %d) is < 1.0E-13\n", k);  
            }
-         tval = sqrt(1.0 / tval);
          Dvec.read(k,0); 
+         if (Parameters.zero_det) {
+           tval -= Dvec.zero_det(Parameters.zero_det_Iac,
+                     Parameters.zero_det_Iaridx, Parameters.zero_det_Ibc,
+                     Parameters.zero_det_Ibridx);
+         }
+         tval = sqrt(1.0 / tval);
          Dvec.symnorm(tval,0,0);
 
          if (print_lvl > 4) {
@@ -1136,10 +1210,12 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
          Cvec2.buf_unlock();
      */
 
+        /* not sure that you really want to do this every iter...  CDS
         if (Parameters.calc_ssq && Parameters.icore==1) {
           for (k=0; k<L; k++) 
-            Cvec.calc_ssq(buffer1, buffer2, alplist, betlist, k); 
+            tval = Cvec.calc_ssq(buffer1, buffer2, alplist, betlist, k); 
           }
+        */
 
         iter++;
         iter2++;
@@ -1245,6 +1321,15 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
        "for icore = %d\n", Parameters.icore);
    }
 
+   /* PT correction */
+   /*
+   if (Parameters.calc_pt_corr) {
+     Dvec.buf_lock(buffer1);
+     Dvec.read(0,0);
+     Dvec.pt_correction();
+     Dvec.buf_unlock();
+   }
+   */
 
    /* Compute S^2 */
    if (Parameters.calc_ssq && Parameters.icore==1) {

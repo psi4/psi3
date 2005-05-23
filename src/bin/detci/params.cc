@@ -35,6 +35,7 @@ void get_parameters(void)
    int i, errcod;
    int iopen=0, tval;
    char line1[133];
+   double junk;
    
    /* default value of Ms0 depends on iopen but is modified below 
     * depending on value of opentype
@@ -183,6 +184,7 @@ void get_parameters(void)
    Parameters.nthreads = 1;
    Parameters.pthreads = 0;
    Parameters.sf_restrict = 0;
+   Parameters.print_sigma_overlap = 0;
 
    errcod = ip_data("EX_LVL","%d",&(Parameters.ex_lvl),0);
    errcod = ip_data("VAL_EX_LVL","%d",&(Parameters.val_ex_lvl),0);
@@ -545,6 +547,7 @@ void get_parameters(void)
    } 
    
    errcod = ip_boolean("SF_RESTRICT",&(Parameters.sf_restrict),0);
+   errcod = ip_boolean("SIGMA_OVERLAP",&(Parameters.print_sigma_overlap),0);
    
    Parameters.ex_type = (int *)malloc(Parameters.ex_lvl*sizeof(int));
    if (ip_exist("EX_TYPE",0)) {
@@ -610,6 +613,126 @@ void get_parameters(void)
                         &(Parameters.filter_guess_Jb),1,1);
      }
    } /* end the filter_guess stuff */
+
+   /* sometimes the filter guess stuff is not sufficient in that
+      some states come in that we don't want.  We can help exclude
+      them by explicitly zeroing out certain determinants, if that
+      is correct for the desired state.  This stuff will allow the
+      user to select a determinant which should always have a zero
+      coefficient in the desired target state
+    */
+   Parameters.zero_det = 0;
+   if (ip_exist("ZERO_DET",0)) {
+     errcod = ip_count("ZERO_DET",&i,0); 
+     if (errcod != IPE_OK || i != 2) {
+       fprintf(outfile, "Need to specify ZERO_DET = "
+                        "(alphastr betastr)\n");
+       abort();
+     }
+     Parameters.zero_det = 1;
+     errcod = ip_data("ZERO_DET","%d",
+                      &(Parameters.zero_det_Ia),1,0);
+     errcod = ip_data("ZERO_DET","%d",
+                      &(Parameters.zero_det_Ib),1,1);
+   }
+
+   /* Does the user request a state-averaged calculation? */
+   if (ip_exist("AVERAGE_STATES",0)) {
+     ip_count("AVERAGE_STATES", &i, 0);
+     if (i < 1 || i > Parameters.num_roots) {
+       fprintf(outfile,"Invalid number of states to average (%d)\n", i);
+       exit(0);
+     }
+     Parameters.average_states = init_int_array(i);
+     Parameters.average_weights = init_array(i);
+     Parameters.average_num = i;
+     for (i=0;i<Parameters.average_num;i++) {
+       errcod = ip_data("AVERAGE_STATES","%d",
+         &(Parameters.average_states[i]),1,i);
+       Parameters.average_states[i] -= 1; /* number from 1 externally */
+       Parameters.average_weights[i] = 1.0/((double)Parameters.average_num);
+     }
+     if (ip_exist("AVERAGE_WEIGHTS",0)) {
+       ip_count("AVERAGE_WEIGHTS", &i, 0);
+       if (i != Parameters.average_num) {
+         fprintf(outfile,"Mismatched number of average weights (%d)\n", i);
+         exit(0);
+       }
+       for (i=0; i<Parameters.average_num; i++) {
+         errcod = ip_data("AVERAGE_WEIGHTS","%lf", 
+           &(Parameters.average_weights[i]),1,i);
+       }
+     }
+      
+   if (Parameters.average_num > 1) Parameters.opdm_ave = 1;
+
+     if ((!ip_exist("ROOT",0)) && (Parameters.average_num==1)) {
+       Parameters.root = Parameters.average_states[0];
+     }
+   }
+
+   else {
+     Parameters.average_num = 1;
+     Parameters.average_states = init_int_array(1);
+     Parameters.average_weights = init_array(1);
+     Parameters.average_states[0] = Parameters.root;
+     Parameters.average_weights[0] = 1.0;
+   } /* end state-average parsing */
+
+   /* Follow a vector to determine the root number? */
+   Parameters.follow_vec_num = 0;
+   if (ip_exist("FOLLOW_VECTOR",0)) {
+     errcod = ip_count("FOLLOW_VECTOR",&i,0); 
+     if (errcod != IPE_OK || (i % 2)!=0) {
+       fprintf(outfile, "Need to specify FOLLOW_VECTOR = "
+                        "((alphastr_i betastr_i) coeff_i ... )\n");
+       abort();
+     }
+     i = i/2;
+     Parameters.follow_vec_num = i;     
+     Parameters.follow_vec_coef   = init_array(i);
+     Parameters.follow_vec_Ia     = init_int_array(i);
+     Parameters.follow_vec_Ib     = init_int_array(i);
+     Parameters.follow_vec_Iac    = init_int_array(i);
+     Parameters.follow_vec_Ibc    = init_int_array(i);
+     Parameters.follow_vec_Iaridx = init_int_array(i);
+     Parameters.follow_vec_Ibridx = init_int_array(i);
+
+     /* now parse each piece */
+     for (i=0; i<Parameters.follow_vec_num; i++) {
+       errcod = ip_data("FOLLOW_VECTOR","%d",
+                        Parameters.follow_vec_Ia+i,2,i*2,0);
+       if (errcod != IPE_OK) {
+         fprintf(outfile, "Trouble parsing FOLLOW_VECTOR\n");
+         abort();
+       }
+       errcod = ip_data("FOLLOW_VECTOR","%d",
+                        Parameters.follow_vec_Ib+i,2,i*2,1);
+       if (errcod != IPE_OK) {
+         fprintf(outfile, "Trouble parsing FOLLOW_VECTOR\n");
+         abort();
+       }
+       errcod = ip_data("FOLLOW_VECTOR","%lf",
+                        Parameters.follow_vec_coef+i,1,i*2+1);
+       if (errcod != IPE_OK) {
+         fprintf(outfile, "Trouble parsing FOLLOW_VECTOR\n");
+         abort();
+       }
+     } /* end loop over parsing */
+   } /* end follow vector stuff */
+
+   /* make sure SA weights add up to 1.0 */
+   for (i=0,junk=0.0; i<Parameters.average_num; i++) {
+     junk += Parameters.average_weights[i]; 
+   }
+   if (junk <= 0.0) {
+     fprintf(outfile, "Error: AVERAGE WEIGHTS add up to %12.6lf\n", junk);
+     exit(0);
+   }
+   for (i=0; i<Parameters.average_num; i++) {
+     Parameters.average_weights[i] /= junk; 
+   }
+   
 }
 
 
@@ -619,6 +742,8 @@ void get_parameters(void)
 */
 void print_parameters(void)
 {
+   int i;
+
    fprintf(outfile, "\n");
    fprintf(outfile, "PARAMETERS: \n");
    fprintf(outfile, "   EX LVL        =   %6d      H0 BLOCKSIZE =   %6d\n", 
@@ -805,9 +930,24 @@ void print_parameters(void)
       Parameters.first_s_tmp_unit, Parameters.first_d_tmp_unit);
    
    fprintf(outfile, "\n   EX_TYPE       = ");
-   for (int i=0;i<Parameters.ex_lvl;i++) {
-     fprintf(outfile, "%2d ", Parameters.ex_type[i]) ;
+   for (i=0;i<Parameters.ex_lvl;i++) {
+     fprintf(outfile, "%2d ", Parameters.ex_type[i]);
    }
+
+   fprintf(outfile, "\n   STATE AVERAGE = ");
+   for (i=0; i<Parameters.average_num; i++) {
+     if (i%5==0 && i!=0) fprintf(outfile, "\n");
+     fprintf(outfile, "%2d(%4.2lf) ",Parameters.average_states[i]+1,
+       Parameters.average_weights[i]);
+   }
+
+   if (Parameters.follow_vec_num > 0) {
+     fprintf(outfile,"\nDensity matrices will follow vector like:\n");
+     for (i=0; i<Parameters.follow_vec_num; i++) 
+       fprintf(outfile, "(%d %d) %12.6lf\n", Parameters.follow_vec_Ia[i],
+         Parameters.follow_vec_Ib[i], Parameters.follow_vec_coef[i]);
+   }
+
    fprintf(outfile, "\n\n") ;
    fflush(outfile) ;
 }
@@ -825,6 +965,27 @@ void set_ras_parms(void)
    int tot_expl_el,nras2alp,nras2bet,betsocc;
    int *ras1, *ras2, *ras3;
    int *orbsym;
+
+   /* If the user asked for FCI=true, then override the other keywords
+      if necessary to ensure that it's really a FCI
+    */
+   if (Parameters.fci == 1 && 
+       (CalcInfo.num_alp_expl + CalcInfo.num_bet_expl) > Parameters.ex_lvl) 
+   {
+     Parameters.val_ex_lvl = 0;
+     Parameters.ex_lvl = CalcInfo.num_alp_expl + CalcInfo.num_bet_expl;
+     free(Parameters.ex_type);
+     Parameters.ex_type = init_int_array(Parameters.ex_lvl);
+     for (i=0; i<Parameters.ex_lvl; i++) Parameters.ex_type[i] = 1;
+
+     if (Parameters.print_lvl) {
+       fprintf(outfile, "Note: Calculation requested is a full CI.\n");
+       fprintf(outfile, 
+               "Resetting EX_LVL to %d and turning on all excitations\n\n",
+               Parameters.ex_lvl);
+     }
+
+   } /* end FCI override */
 
    for (i=0,j=0; i<CalcInfo.nirreps; i++) j += CalcInfo.ras_opi[0][i];
    Parameters.a_ras1_lvl = Parameters.b_ras1_lvl = Parameters.ras1_lvl = j-1;
@@ -990,7 +1151,18 @@ void set_ras_parms(void)
    i = 2 * (CalcInfo.num_ci_orbs - Parameters.ras4_lvl);
    if (i < Parameters.ras4_max) Parameters.ras4_max = i;
 
-   if (Parameters.print_lvl) {
+   if (Parameters.print_lvl > 0) {
+      fprintf(outfile, "ORBITALS:\n") ;
+      fprintf(outfile, "   NMO          =   %6d      NUM ALP      =   %6d\n",
+         CalcInfo.nmo, CalcInfo.num_alp);
+      fprintf(outfile, "   ORBS IN CI   =   %6d      NUM ALP EXPL =   %6d\n",
+         CalcInfo.num_ci_orbs, CalcInfo.num_alp_expl);
+      fprintf(outfile, "   FROZEN CORE  =   %6d      NUM BET      =   %6d\n",
+         CalcInfo.num_fzc_orbs, CalcInfo.num_bet);
+      fprintf(outfile, "   RESTR CORE   =   %6d      NUM BET EXPL =   %6d\n",
+         CalcInfo.num_cor_orbs, CalcInfo.num_bet_expl);
+      fprintf(outfile, "   IOPEN        =   %6s\n", CalcInfo.iopen ? "yes" :
+         "no");
       fprintf(outfile, "   RAS1 LVL     =   %6d      A RAS3 MAX   =   %6d\n",
          Parameters.ras1_lvl, Parameters.a_ras3_max);
       fprintf(outfile, "   RAS1 MIN     =   %6d      B RAS3 MAX   =   %6d\n",
@@ -1010,7 +1182,6 @@ void set_ras_parms(void)
       fprintf(outfile, "   RAS3 LVL     =   %6d      RAS34 MAX    =   %6d\n", 
          Parameters.ras3_lvl, Parameters.ras34_max);
       fprintf(outfile, "   RAS3 MAX     =   %6d\n", Parameters.ras3_max);
-
    
       fprintf(outfile, "\n");
       fprintf(outfile, "   DOCC         = ") ;

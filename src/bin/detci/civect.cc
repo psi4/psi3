@@ -1435,7 +1435,7 @@ void CIvect::symnorm(double a, int vecode, int gather_vec)
 {
    int i,j;
    int blk,buf,irrep,ac,bc,len,upper;
-   double **mat,*arr, phase;
+   double **mat,*arr, phase, tval;
 
    if (!Ms0) {
       scale(a,vecode,gather_vec);
@@ -1473,9 +1473,10 @@ void CIvect::symnorm(double a, int vecode, int gather_vec)
                }
             }
          } /* end loop over blocks */
-        if (gather_vec) h0block_gather_vec(vecode); 
+        
+      if (gather_vec) h0block_gather_vec(vecode); 
       write(cur_vect, 0); 
-
+    
       } /* end icore == 1 */
 
 
@@ -1553,6 +1554,39 @@ void CIvect::symnorm(double a, int vecode, int gather_vec)
       return;
       }
 
+}
+
+/* 
+   the following subroutine isn't really effective in keeping out some
+   lower-energy states that might creep in due to numerical contamination,
+   at least not if it is only used after computing the correction vector...
+   I added it trying to keep lower-lying sigmas out of delta state
+   computations for C2, but it wasn't effective.  ---CDS October 2004
+*/
+
+/*
+** CIvect::zero_det()
+**
+** Zero out a specified determinant
+** Implement for icore==1 for now... easy to extend.
+*/
+double CIvect::zero_det(int iac, int ia, int ibc, int ib)
+{
+  int blk;
+  double tval;
+
+  if (icore != 1) {
+    fprintf(outfile, "CIvect::zero_det: Implemented for icore==1 only\n");
+    return (0.0);
+  }
+
+  blk = decode[iac][ibc];
+  tval = blocks[blk][ia][ib];
+  printf("zero_det reports coefficient %12.6lf\n", tval);
+  tval = tval*tval;
+  blocks[blk][ia][ib] = 0.0;
+
+  return(tval); 
 }
 
 
@@ -3734,7 +3768,7 @@ void sigma_get_contrib_rotf(CIvect &C, CIvect &S,
 **
 */
 
-void CIvect::calc_ssq(double *buffer1, double *buffer2, 
+double CIvect::calc_ssq(double *buffer1, double *buffer2, 
              struct stringwr **alplist, struct stringwr **betlist, int vec_num)
 {
    int bra_block, ket_block;  
@@ -3803,6 +3837,7 @@ void CIvect::calc_ssq(double *buffer1, double *buffer2,
     fprintf(outfile,"Computed <S^2> vector %d = %20.15f\n\n", vec_num, S2);
 
   buf_unlock();
+  return(S2);
 } 
 
 int CIvect::check_zero_block(int blocknum)
@@ -4158,5 +4193,64 @@ void CIvect::civect_psio_debug(void)
   fprintf(outfile, "Number of vectors = %d\n", read_num_vecs());
   fprintf(outfile, "New first buffer = %d\n", read_new_first_buf());
   fprintf(outfile, "Internal new first buffer = %d\n", new_first_buf);
+}
+
+
+/*
+** perturbation theory correction
+** CDS 2/04
+*/
+void CIvect::pt_correction(struct stringwr **alplist, struct stringwr
+      **betlist)
+{
+  int block, iac, ibc;
+  int nas, nbs;
+
+  if (icore==1) { /* whole vector at once */
+    for (block=0; block<num_blocks; block++) {
+      iac = Ia_code[block];  nas = Ia_size[block];
+      ibc = Ib_code[block];  nbs = Ib_size[block];
+      // calc_pt_block(alplist[iac], betlist[ibc], blocks[block], nas, nbs);
+    }
+  }
+  else {
+    fprintf(outfile, "only icore=1 works for now\n");
+  }
+
+}
+
+/*
+** CIvect::compute_follow_overlap
+**
+** Computes the overlap with some user-supplied vector
+** Only works for icore==1 (whole vector) for now
+**
+** Returns: the overlap
+*/
+double CIvect::compute_follow_overlap(int troot, int ncoef, double *coef, 
+  int *Iac, int *Iaridx, int *Ibc, int *Ibridx)
+{
+  int i, a, b, blk;
+  double tval;
+
+  if (icore != 1) {
+    fprintf(outfile, "CIvect::compute_follow_overlap: can't use icore != 1\n");
+    return(0.0);
+  }
+
+  read(troot,0);
+
+  tval = 0.0;
+
+  for (i=0; i<ncoef; i++) {
+    blk = decode[Iac[i]][Ibc[i]];
+    a = Iaridx[i];
+    b = Ibridx[i];
+    tval += blocks[blk][a][b] * coef[i];
+  }
+
+  tval = fabs(tval); 
+  return(tval);
+
 }
 

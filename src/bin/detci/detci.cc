@@ -4,7 +4,7 @@
 ** DETERMINANT CI Program, incorporating Abelian point-group symmetry
 **
 ** C. David Sherrill
-** Center for Computational Quantum Chemistry, 
+** Center for Computational Quantum Chemistry 
 ** University of Georgia
 ** August 1994
 **
@@ -128,8 +128,8 @@ extern void opdm(struct stringwr **alplist, struct stringwr **betlist,
           int Jnroots, int Jroot, int Jnunits, int Jfirstunit,
           int targetfile, int writeflag, int printflag);
 extern void tpdm(struct stringwr **alplist, struct stringwr **betlist, 
-          int Inroots, int Iroot, int Inunits, int Ifirstunit,
-          int Jnroots, int Jroot, int Jnunits, int Jfirstunit,
+          int nroots, int Inunits, int Ifirstunit,
+          int nroots, int Jnunits, int Jfirstunit,
           int targetfile, int writeflag, int printflag);
 
 
@@ -144,25 +144,10 @@ main(int argc, char *argv[])
    get_parameters();            /* get running params (convergence, etc)    */
    init_ioff();                 /* set up the ioff array                    */
    title();                     /* print program identification             */
-   
-   if (Parameters.print_lvl) {
-      print_parameters();       /* print running parameters                 */
-      }
-
    get_mo_info();               /* read DOCC, SOCC, frozen, nmo, etc        */
-
-   if (Parameters.fci) {
-      int num_electrons = 0;
-      for (i=0; i<CalcInfo.nirreps; i++) {
-         num_electrons += 2 * CalcInfo.docc[i];
-         num_electrons += CalcInfo.socc[i];
-         num_electrons -= 2 * CalcInfo.frozen_docc[i];
-         }
-      if (num_electrons != Parameters.ex_lvl) {
-         Parameters.ex_lvl = num_electrons;
-         fprintf(outfile, "\nEX_LVL was incorrect for full CI changed to %d\n\n", num_electrons);
-         }
-      }
+   
+   if (Parameters.print_lvl)
+     print_parameters();       /* print running parameters                 */
 
    set_ras_parms();             /* set fermi levels and the like            */ 
    fflush(outfile); 
@@ -174,9 +159,9 @@ main(int argc, char *argv[])
    fflush(outfile); 
 
    if (Parameters.istop) {      /* Print size of space, other stuff, only   */
-      close_io();
-      return(0);
-      }
+     close_io();
+     return(0);
+   }
 
    
    read_integrals();            /* get the 1 and 2 elec MO integrals        */
@@ -184,9 +169,7 @@ main(int argc, char *argv[])
    if (Parameters.genci) 
      diag_h_genci(alplist, betlist);
 
-
    else {
-
      if (Parameters.bendazzoli) /* form the Bendazzoli OV arrays            */
         form_ov(alplist);
                                 /* lump together one-electron contributions */
@@ -343,6 +326,7 @@ void diag_h(struct stringwr **alplist, struct stringwr **betlist)
    double conv_rms, conv_e, *evals, **evecs, nucrep, efzc, tval;
    int *tptr;
    double *cbuf;
+   char e_label[PSIO_KEYLEN]; /* 80... */
 
    nroots = Parameters.num_roots;
 
@@ -502,14 +486,16 @@ void diag_h(struct stringwr **alplist, struct stringwr **betlist)
 	unsigned char *newocc;
 
 	if (CalcInfo.num_fzc_orbs > 0) {
-	  fzc_occ = (short int *) malloc(CalcInfo.num_fzc_orbs*sizeof(short int));
+	  fzc_occ = (short int *) 
+            malloc(CalcInfo.num_fzc_orbs*sizeof(short int));
 	  for (int l=0; l<CalcInfo.num_fzc_orbs; l++) {
 	    fzc_occ[l] = CalcInfo.order[l]; /* put it in Pitzer order */
 	  }
 	}
 
-	newocc = (unsigned char *) malloc(((AlphaG->num_el > BetaG->num_el) ? 
-					   AlphaG->num_el : BetaG->num_el)*sizeof(unsigned char));
+	newocc = (unsigned char *) 
+          malloc(((AlphaG->num_el > BetaG->num_el) ?  
+            AlphaG->num_el : BetaG->num_el)*sizeof(unsigned char));
 
         stringset_init(&alphastrings,AlphaG->num_str,AlphaG->num_el,
                        CalcInfo.num_fzc_orbs, fzc_occ);
@@ -959,6 +945,20 @@ void diag_h(struct stringwr **alplist, struct stringwr **betlist)
    /* write the CI energy to PSIF_CHKPT: later fix this to loop over roots */
    chkpt_init(PSIO_OPEN_OLD);
    chkpt_wt_etot(evals[Parameters.root]+efzc+nucrep);
+
+   for (i=0; i<nroots; i++) {
+     sprintf(e_label,"Root %2d energy",i);
+     chkpt_wt_e_labeled(e_label, evals[i]+efzc+nucrep);
+   }
+
+   if (Parameters.average_num > 1) {
+     tval = 0.0;
+     for (i=0; i<Parameters.average_num; i++)
+       tval += Parameters.average_weights[i] * 
+               (efzc+nucrep+evals[Parameters.average_states[i]]);
+     chkpt_wt_e_labeled("State averaged energy",tval);
+   }
+ 
    chkpt_close();
 
 }
@@ -1062,9 +1062,10 @@ void form_opdm(void)
 
 void form_tpdm(void)
 {
-  tpdm(alplist, betlist, Parameters.num_roots, Parameters.root, 
+  tpdm(alplist, betlist, 
+       Parameters.num_roots,
        Parameters.num_d_tmp_units, Parameters.first_d_tmp_unit, 
-       Parameters.num_roots, Parameters.root,
+       Parameters.num_roots,
        Parameters.num_d_tmp_units, Parameters.first_d_tmp_unit, 
        Parameters.tpdm_file, Parameters.tpdm_write, Parameters.tpdm_print);
 }

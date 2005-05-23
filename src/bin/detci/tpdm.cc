@@ -25,12 +25,12 @@ void tpdm_block(struct stringwr **alplist, struct stringwr **betlist,
 		int nbf, int nalpcodes, int nbetcodes,
 		double *twopdm, double **CJ, double **CI, int Ja_list, 
 		int Jb_list, int Jnas, int Jnbs, int Ia_list, int Ib_list, 
-		int Inas, int Inbs);
+		int Inas, int Inbs, double weight);
 
 
 void tpdm(struct stringwr **alplist, struct stringwr **betlist, 
-          int Inroots, int Iroot, int Inunits, int Ifirstunit, 
-	  int Jnroots, int Jroot, int Jnunits, int Jfirstunit, 
+          int Inroots, int Inunits, int Ifirstunit, 
+	  int Jnroots, int Jnunits, int Jfirstunit, 
 	  int targetfile, int writeflag, int printflag)
 {
 
@@ -44,10 +44,13 @@ void tpdm(struct stringwr **alplist, struct stringwr **betlist,
    double **transp_tmp = NULL;
    double **transp_tmp2 = NULL;
    double *buffer1, *buffer2, *twopdm, **onepdm, value;
+   int Iroot, Jroot;
    int Iblock, Iblock2, Ibuf, Iac, Ibc, Inas, Inbs, Iairr;
    int Jblock, Jblock2, Jbuf, Jac, Jbc, Jnas, Jnbs, Jairr;
    int do_Jblock, do_Jblock2;
    char opdm_key[80];
+   int root_idx;   /* what root we're on */
+   double weight;  /* the weight of that root */
 
    nfzc = CalcInfo.num_fzc_orbs;
    populated_orbs = CalcInfo.nmo - CalcInfo.num_fzv_orbs;
@@ -101,212 +104,231 @@ void tpdm(struct stringwr **alplist, struct stringwr **betlist,
 
    if (Parameters.icore == 0) {
 
-     for (Ibuf=0; Ibuf<Ivec.buf_per_vect; Ibuf++) {
-       Ivec.read(Iroot, Ibuf);
-       Iblock = Ivec.buf2blk[Ibuf];
-       Iac = Ivec.Ia_code[Iblock];
-       Ibc = Ivec.Ib_code[Iblock];
-       Inas = Ivec.Ia_size[Iblock];
-       Inbs = Ivec.Ib_size[Iblock];
-       
-       for (Jbuf=0; Jbuf<Jvec.buf_per_vect; Jbuf++) {
-	 do_Jblock=0; do_Jblock2=0;
-	 Jblock = Jvec.buf2blk[Jbuf];
-	 Jblock2 = -1;
-	 Jac = Jvec.Ia_code[Jblock];
-	 Jbc = Jvec.Ib_code[Jblock];
-	 if (Jvec.Ms0) Jblock2 = Jvec.decode[Jbc][Jac];
-	 Jnas = Jvec.Ia_size[Jblock];
-	 Jnbs = Jvec.Ib_size[Jblock];
-	 if (s1_contrib[Iblock][Jblock] || s2_contrib[Iblock][Jblock]
-	     || s3_contrib[Iblock][Jblock]) 
-	   do_Jblock = 1;
-	 if (Jvec.buf_offdiag[Jbuf] && (s1_contrib[Iblock][Jblock2] ||
-					s2_contrib[Iblock][Jblock2] ||
-					s3_contrib[Iblock][Jblock2]))
-	   do_Jblock2 = 1;
-	 if (!do_Jblock && !do_Jblock2) continue;
-	 
-	 Jvec.read(Jroot, Jbuf);
-	 
-	 if (do_Jblock) {
-	   tpdm_block(alplist, betlist, CalcInfo.num_ci_orbs, 
-		      Ivec.num_alpcodes, Ivec.num_betcodes, twopdm, 
-		      Jvec.blocks[Jblock], Ivec.blocks[Iblock], 
-		      Jac, Jbc, Jnas, Jnbs, Iac, Ibc, Inas, Inbs);
-	 }
-	 
-	 if (do_Jblock2) {
-	   Jvec.transp_block(Jblock, transp_tmp);
-	   tpdm_block(alplist, betlist, CalcInfo.num_ci_orbs,
-		      Ivec.num_alpcodes, Ivec.num_betcodes, 
-		      twopdm, transp_tmp, Ivec.blocks[Iblock], 
-		      Jbc, Jac, Jnbs, Jnas, Iac, Ibc, Inas, Inbs);
-	 }
-	 
-       } /* end loop over Jbuf */
-       
-       if (Ivec.buf_offdiag[Ibuf]) { /* need to get contrib of transpose */
-	 Iblock2 = Ivec.decode[Ibc][Iac];
-	 Iac = Ivec.Ia_code[Iblock2];
-	 Ibc = Ivec.Ib_code[Iblock2];
-	 Inas = Ivec.Ia_size[Iblock2];
-	 Inbs = Ivec.Ib_size[Iblock2];
-       
-         Ivec.transp_block(Iblock, transp_tmp2);
+     /* loop over all the roots requested */
+     for (root_idx=0; root_idx<Parameters.average_num; root_idx++)  {
+       Iroot = Parameters.average_states[root_idx];
+       weight = Parameters.average_weights[root_idx];
+       Jroot = Iroot;  /* change later if need transition matrix elements */
 
-	 for (Jbuf=0; Jbuf<Jvec.buf_per_vect; Jbuf++) {
-	   do_Jblock=0; do_Jblock2=0;
-	   Jblock = Jvec.buf2blk[Jbuf];
-	   Jblock2 = -1;
-	   Jac = Jvec.Ia_code[Jblock];
-	   Jbc = Jvec.Ib_code[Jblock];
-	   if (Jvec.Ms0) Jblock2 = Jvec.decode[Jbc][Jac];
-	   Jnas = Jvec.Ia_size[Jblock];
-	   Jnbs = Jvec.Ib_size[Jblock];
-	   if (s1_contrib[Iblock2][Jblock] || s2_contrib[Iblock2][Jblock] ||
-	       s3_contrib[Iblock2][Jblock]) 
-	     do_Jblock = 1;
-	   if (Jvec.buf_offdiag[Jbuf] && (s1_contrib[Iblock2][Jblock2] ||
-					  s2_contrib[Iblock2][Jblock2] ||
-					  s3_contrib[Iblock2][Jblock2]))
-	     do_Jblock2 = 1;
-	   if (!do_Jblock && !do_Jblock2) continue;
-	   
-	   Jvec.read(Jroot, Jbuf);
-	 
-	   if (do_Jblock) {
-	     tpdm_block(alplist, betlist, CalcInfo.num_ci_orbs, 
-			Ivec.num_alpcodes, Ivec.num_betcodes, 
-			twopdm, Jvec.blocks[Jblock], 
-			transp_tmp2, Jac, Jbc, Jnas,
-			Jnbs, Iac, Ibc, Inas, Inbs);
-	   }
-	   
-	   if (do_Jblock2) {
-	     Jvec.transp_block(Jblock, transp_tmp);
-	     tpdm_block(alplist, betlist, CalcInfo.num_ci_orbs,
-			Ivec.num_alpcodes, Ivec.num_betcodes,
-			twopdm, transp_tmp, transp_tmp2, 
-			Jbc, Jac, Jnbs, Jnas, Iac, Ibc, Inas, Inbs);
-	   }
-	 } /* end loop over Jbuf */
+       for (Ibuf=0; Ibuf<Ivec.buf_per_vect; Ibuf++) {
+         Ivec.read(Iroot, Ibuf);
+         Iblock = Ivec.buf2blk[Ibuf];
+         Iac = Ivec.Ia_code[Iblock];
+         Ibc = Ivec.Ib_code[Iblock];
+         Inas = Ivec.Ia_size[Iblock];
+         Inbs = Ivec.Ib_size[Iblock];
+       
+         for (Jbuf=0; Jbuf<Jvec.buf_per_vect; Jbuf++) {
+           do_Jblock=0; do_Jblock2=0;
+           Jblock = Jvec.buf2blk[Jbuf];
+           Jblock2 = -1;
+           Jac = Jvec.Ia_code[Jblock];
+           Jbc = Jvec.Ib_code[Jblock];
+           if (Jvec.Ms0) Jblock2 = Jvec.decode[Jbc][Jac];
+             Jnas = Jvec.Ia_size[Jblock];
+             Jnbs = Jvec.Ib_size[Jblock];
+             if (s1_contrib[Iblock][Jblock] || s2_contrib[Iblock][Jblock]
+               || s3_contrib[Iblock][Jblock]) 
+             do_Jblock = 1;
+           if (Jvec.buf_offdiag[Jbuf] && (s1_contrib[Iblock][Jblock2] ||
+             s2_contrib[Iblock][Jblock2] ||
+             s3_contrib[Iblock][Jblock2]))
+             do_Jblock2 = 1;
+           if (!do_Jblock && !do_Jblock2) continue;
 
-       } /* end loop over Ibuf transpose */
-     } /* end loop over Ibuf */
+           Jvec.read(Jroot, Jbuf);
+	 
+           if (do_Jblock) {
+             tpdm_block(alplist, betlist, CalcInfo.num_ci_orbs, 
+               Ivec.num_alpcodes, Ivec.num_betcodes, twopdm, 
+               Jvec.blocks[Jblock], Ivec.blocks[Iblock], 
+               Jac, Jbc, Jnas, Jnbs, Iac, Ibc, Inas, Inbs, weight);
+           }
+	 
+           if (do_Jblock2) {
+             Jvec.transp_block(Jblock, transp_tmp);
+             tpdm_block(alplist, betlist, CalcInfo.num_ci_orbs,
+               Ivec.num_alpcodes, Ivec.num_betcodes, 
+               twopdm, transp_tmp, Ivec.blocks[Iblock], 
+               Jbc, Jac, Jnbs, Jnas, Iac, Ibc, Inas, Inbs, weight);
+           }
+	 
+         } /* end loop over Jbuf */
+       
+         if (Ivec.buf_offdiag[Ibuf]) { /* need to get contrib of transpose */
+           Iblock2 = Ivec.decode[Ibc][Iac];
+           Iac = Ivec.Ia_code[Iblock2];
+           Ibc = Ivec.Ib_code[Iblock2];
+           Inas = Ivec.Ia_size[Iblock2];
+           Inbs = Ivec.Ib_size[Iblock2];
+       
+           Ivec.transp_block(Iblock, transp_tmp2);
+
+           for (Jbuf=0; Jbuf<Jvec.buf_per_vect; Jbuf++) {
+	     do_Jblock=0; do_Jblock2=0;
+	     Jblock = Jvec.buf2blk[Jbuf];
+	     Jblock2 = -1;
+	     Jac = Jvec.Ia_code[Jblock];
+	     Jbc = Jvec.Ib_code[Jblock];
+	     if (Jvec.Ms0) Jblock2 = Jvec.decode[Jbc][Jac];
+	     Jnas = Jvec.Ia_size[Jblock];
+	     Jnbs = Jvec.Ib_size[Jblock];
+	     if (s1_contrib[Iblock2][Jblock] || s2_contrib[Iblock2][Jblock] ||
+	         s3_contrib[Iblock2][Jblock]) 
+	       do_Jblock = 1;
+	     if (Jvec.buf_offdiag[Jbuf] && (s1_contrib[Iblock2][Jblock2] ||
+               s2_contrib[Iblock2][Jblock2] ||
+               s3_contrib[Iblock2][Jblock2]))
+               do_Jblock2 = 1;
+             if (!do_Jblock && !do_Jblock2) continue;
+	   
+             Jvec.read(Jroot, Jbuf);
+	 
+             if (do_Jblock) {
+               tpdm_block(alplist, betlist, CalcInfo.num_ci_orbs, 
+                 Ivec.num_alpcodes, Ivec.num_betcodes, 
+                 twopdm, Jvec.blocks[Jblock], 
+                 transp_tmp2, Jac, Jbc, Jnas,
+                 Jnbs, Iac, Ibc, Inas, Inbs, weight);
+             }
+	   
+             if (do_Jblock2) {
+               Jvec.transp_block(Jblock, transp_tmp);
+               tpdm_block(alplist, betlist, CalcInfo.num_ci_orbs,
+                 Ivec.num_alpcodes, Ivec.num_betcodes,
+                 twopdm, transp_tmp, transp_tmp2, 
+                 Jbc, Jac, Jnbs, Jnas, Iac, Ibc, Inas, Inbs, weight);
+             }
+           } /* end loop over Jbuf */
+
+         } /* end loop over Ibuf transpose */
+       } /* end loop over Ibuf */
+     } /* end loop over roots */
    } /* end icore==0 */
 
    else if (Parameters.icore==1) { /* whole vectors in-core */
-     Ivec.read(Iroot, 0);
-     Jvec.read(Jroot, 0);
-     for (Iblock=0; Iblock<Ivec.num_blocks; Iblock++) {
-       Iac = Ivec.Ia_code[Iblock];
-       Ibc = Ivec.Ib_code[Iblock];
-       Inas = Ivec.Ia_size[Iblock];
-       Inbs = Ivec.Ib_size[Iblock];
-       if (Inas==0 || Inbs==0) continue;
-       for (Jblock=0; Jblock<Jvec.num_blocks; Jblock++) {
-	 Jac = Jvec.Ia_code[Jblock];
-	 Jbc = Jvec.Ib_code[Jblock];
-	 Jnas = Jvec.Ia_size[Jblock];
-	 Jnbs = Jvec.Ib_size[Jblock];
-	 if (s1_contrib[Iblock][Jblock] || s2_contrib[Iblock][Jblock] ||
-	     s3_contrib[Iblock][Jblock])
-	   tpdm_block(alplist, betlist, CalcInfo.num_ci_orbs,
-		      Ivec.num_alpcodes, Ivec.num_betcodes, 
-		      twopdm, Jvec.blocks[Jblock], Ivec.blocks[Iblock], 
-		      Jac, Jbc, Jnas, Jnbs, Iac, Ibc, Inas, Inbs);
-	 
-       }
-     } /* end loop over Iblock */
+
+     for (root_idx=0; root_idx<Parameters.average_num; root_idx++)  {
+       Iroot = Parameters.average_states[root_idx];
+       weight = Parameters.average_weights[root_idx];
+       Jroot = Iroot;  /* change later if need transition matrix elements */
+
+       Ivec.read(Iroot, 0);
+       Jvec.read(Jroot, 0);
+       for (Iblock=0; Iblock<Ivec.num_blocks; Iblock++) {
+         Iac = Ivec.Ia_code[Iblock];
+         Ibc = Ivec.Ib_code[Iblock];
+         Inas = Ivec.Ia_size[Iblock];
+         Inbs = Ivec.Ib_size[Iblock];
+         if (Inas==0 || Inbs==0) continue;
+         for (Jblock=0; Jblock<Jvec.num_blocks; Jblock++) {
+           Jac = Jvec.Ia_code[Jblock];
+           Jbc = Jvec.Ib_code[Jblock];
+           Jnas = Jvec.Ia_size[Jblock];
+           Jnbs = Jvec.Ib_size[Jblock];
+           if (s1_contrib[Iblock][Jblock] || s2_contrib[Iblock][Jblock] ||
+             s3_contrib[Iblock][Jblock])
+             tpdm_block(alplist, betlist, CalcInfo.num_ci_orbs,
+               Ivec.num_alpcodes, Ivec.num_betcodes, 
+               twopdm, Jvec.blocks[Jblock], Ivec.blocks[Iblock], 
+               Jac, Jbc, Jnas, Jnbs, Iac, Ibc, Inas, Inbs, weight);
+         }
+       } /* end loop over Iblock */
+     } /* end loop over roots */
    } /* end icore==1 */
 
    else if (Parameters.icore==2) { /* icore==2 */
-     for (Ibuf=0; Ibuf<Ivec.buf_per_vect; Ibuf++) {
-       Ivec.read(Iroot, Ibuf);
-       Iairr = Ivec.buf2blk[Ibuf];
+     for (root_idx=0; root_idx<Parameters.average_num; root_idx++)  {
+       Iroot = Parameters.average_states[root_idx];
+       weight = Parameters.average_weights[root_idx];
+       Jroot = Iroot;  /* change later if need transition matrix elements */
 
-       for (Jbuf=0; Jbuf<Jvec.buf_per_vect; Jbuf++) {
-	 Jvec.read(Jroot, Jbuf);
-	 Jairr = Jvec.buf2blk[Jbuf];
-	
-	 for (Iblock=Ivec.first_ablk[Iairr]; Iblock<=Ivec.last_ablk[Iairr];
-	      Iblock++) {
-	   Iac = Ivec.Ia_code[Iblock];
-	   Ibc = Ivec.Ib_code[Iblock];
-	   Inas = Ivec.Ia_size[Iblock];
-	   Inbs = Ivec.Ib_size[Iblock];
+       for (Ibuf=0; Ibuf<Ivec.buf_per_vect; Ibuf++) {
+         Ivec.read(Iroot, Ibuf);
+         Iairr = Ivec.buf2blk[Ibuf];
+
+         for (Jbuf=0; Jbuf<Jvec.buf_per_vect; Jbuf++) {
+           Jvec.read(Jroot, Jbuf);
+           Jairr = Jvec.buf2blk[Jbuf];
+
+           for (Iblock=Ivec.first_ablk[Iairr]; Iblock<=Ivec.last_ablk[Iairr];
+             Iblock++) {
+             Iac = Ivec.Ia_code[Iblock];
+             Ibc = Ivec.Ib_code[Iblock];
+             Inas = Ivec.Ia_size[Iblock];
+             Inbs = Ivec.Ib_size[Iblock];
+   
+             for (Jblock=Jvec.first_ablk[Jairr]; Jblock<=Jvec.last_ablk[Jairr];
+               Jblock++) {
+               Jac = Jvec.Ia_code[Jblock];
+               Jbc = Jvec.Ib_code[Jblock];
+               Jnas = Jvec.Ia_size[Jblock];
+               Jnbs = Jvec.Ib_size[Jblock];
+   
+               if (s1_contrib[Iblock][Jblock] || s2_contrib[Iblock][Jblock] ||
+                 s3_contrib[Iblock][Jblock])
+               tpdm_block(alplist, betlist, CalcInfo.num_ci_orbs, 
+                 Ivec.num_alpcodes, Ivec.num_betcodes,
+                 twopdm, Jvec.blocks[Jblock], Ivec.blocks[Iblock], 
+                 Jac, Jbc, Jnas, Jnbs, Iac, Ibc, Inas, Inbs, weight);
+
+               if (Jvec.buf_offdiag[Jbuf]) {
+                 Jblock2 = Jvec.decode[Jbc][Jac];
+                 if (s1_contrib[Iblock][Jblock2] ||
+                   s2_contrib[Iblock][Jblock2] ||
+                   s3_contrib[Iblock][Jblock2]) {
+                   Jvec.transp_block(Jblock, transp_tmp);
+                   tpdm_block(alplist, betlist, CalcInfo.num_ci_orbs,
+                     Ivec.num_alpcodes, Ivec.num_betcodes,
+                     twopdm, transp_tmp, Ivec.blocks[Iblock], 
+                     Jbc, Jac, Jnbs, Jnas, Iac, Ibc, Inas, Inbs, weight);
+                 }
+               }
+
+             } /* end loop over Jblock */
+
+             if (Ivec.buf_offdiag[Ibuf]) {
+               Iblock2 = Ivec.decode[Ibc][Iac];
+               Ivec.transp_block(Iblock, transp_tmp2);
+               Iac = Ivec.Ia_code[Iblock2];
+               Ibc = Ivec.Ib_code[Iblock2];
+               Inas = Ivec.Ia_size[Iblock2];
+               Inbs = Ivec.Ib_size[Iblock2];
 	   
-	   for (Jblock=Jvec.first_ablk[Jairr]; Jblock<=Jvec.last_ablk[Jairr];
-		Jblock++) {
-	     Jac = Jvec.Ia_code[Jblock];
-	     Jbc = Jvec.Ib_code[Jblock];
-	     Jnas = Jvec.Ia_size[Jblock];
-	     Jnbs = Jvec.Ib_size[Jblock];
+               for (Jblock=Jvec.first_ablk[Jairr]; 
+                 Jblock<=Jvec.last_ablk[Jairr]; Jblock++) {
+                 Jac = Jvec.Ia_code[Jblock];
+                 Jbc = Jvec.Ib_code[Jblock];
+                 Jnas = Jvec.Ia_size[Jblock];
+                 Jnbs = Jvec.Ib_size[Jblock];
 	   
-	     if (s1_contrib[Iblock][Jblock] || s2_contrib[Iblock][Jblock] ||
-		 s3_contrib[Iblock][Jblock])
-	       tpdm_block(alplist, betlist, CalcInfo.num_ci_orbs, 
-			  Ivec.num_alpcodes, Ivec.num_betcodes,
-			  twopdm, Jvec.blocks[Jblock], Ivec.blocks[Iblock], 
-			  Jac, Jbc, Jnas, Jnbs, Iac, Ibc, Inas, Inbs);
+                 if (s1_contrib[Iblock2][Jblock] || s2_contrib[Iblock2][Jblock]
+                   || s3_contrib[Iblock2][Jblock])
+                   tpdm_block(alplist, betlist, CalcInfo.num_ci_orbs,
+                     Ivec.num_alpcodes, Ivec.num_betcodes, 
+                     twopdm, Jvec.blocks[Jblock], transp_tmp2, 
+                     Jac, Jbc, Jnas, Jnbs, Iac, Ibc, Inas, Inbs, weight);
 
-	     if (Jvec.buf_offdiag[Jbuf]) {
-	       Jblock2 = Jvec.decode[Jbc][Jac];
-	       if (s1_contrib[Iblock][Jblock2] ||
-		   s2_contrib[Iblock][Jblock2] ||
-		   s3_contrib[Iblock][Jblock2]) {
-		 Jvec.transp_block(Jblock, transp_tmp);
-		 tpdm_block(alplist, betlist, CalcInfo.num_ci_orbs,
-			    Ivec.num_alpcodes, Ivec.num_betcodes,
-			    twopdm, transp_tmp, Ivec.blocks[Iblock], 
-			    Jbc, Jac, Jnbs, Jnas, Iac, Ibc, Inas, Inbs);
-	       }
-	     }
+                 if (Jvec.buf_offdiag[Jbuf]) {
+                   Jblock2 = Jvec.decode[Jbc][Jac];
+                   if (s1_contrib[Iblock][Jblock2] ||
+                     s2_contrib[Iblock][Jblock2] ||
+                     s3_contrib[Iblock][Jblock2]) {
+                     Jvec.transp_block(Jblock, transp_tmp);
+                     tpdm_block(alplist, betlist, CalcInfo.num_ci_orbs,
+                     Ivec.num_alpcodes, Ivec.num_betcodes,
+                     twopdm, transp_tmp, transp_tmp2, Jbc, Jac,
+                     Jnbs, Jnas, Iac, Ibc, Inas, Inbs, weight);
+                   }
+                 }
 
-	   } /* end loop over Jblock */
+               } /* end loop over Jblock */
+             } /* end Ivec offdiag */
 
-	   if (Ivec.buf_offdiag[Ibuf]) {
-	     Iblock2 = Ivec.decode[Ibc][Iac];
-	     Ivec.transp_block(Iblock, transp_tmp2);
-	     Iac = Ivec.Ia_code[Iblock2];
-	     Ibc = Ivec.Ib_code[Iblock2];
-	     Inas = Ivec.Ia_size[Iblock2];
-	     Inbs = Ivec.Ib_size[Iblock2];
-	   
-	     for (Jblock=Jvec.first_ablk[Jairr]; Jblock<=Jvec.last_ablk[Jairr];
-		  Jblock++) {
-	       Jac = Jvec.Ia_code[Jblock];
-	       Jbc = Jvec.Ib_code[Jblock];
-	       Jnas = Jvec.Ia_size[Jblock];
-	       Jnbs = Jvec.Ib_size[Jblock];
-	   
-	       if (s1_contrib[Iblock2][Jblock] || s2_contrib[Iblock2][Jblock]
-		   || s3_contrib[Iblock2][Jblock])
-	       tpdm_block(alplist, betlist, CalcInfo.num_ci_orbs,
-			  Ivec.num_alpcodes, Ivec.num_betcodes, 
-			  twopdm, Jvec.blocks[Jblock], transp_tmp2, 
-			  Jac, Jbc, Jnas, Jnbs, Iac, Ibc, Inas, Inbs);
-
-	       if (Jvec.buf_offdiag[Jbuf]) {
-		 Jblock2 = Jvec.decode[Jbc][Jac];
-		 if (s1_contrib[Iblock][Jblock2] ||
-		     s2_contrib[Iblock][Jblock2] ||
-		     s3_contrib[Iblock][Jblock2]) {
-		   Jvec.transp_block(Jblock, transp_tmp);
-		   tpdm_block(alplist, betlist, CalcInfo.num_ci_orbs,
-			      Ivec.num_alpcodes, Ivec.num_betcodes,
-			      twopdm, transp_tmp, transp_tmp2, Jbc, Jac,
-			      Jnbs, Jnas, Iac, Ibc, Inas, Inbs);
-		 }
-	       }
-
-	     } /* end loop over Jblock */
-	   } /* end Ivec offdiag */
-
-	 } /* end loop over Iblock */
-       } /* end loop over Jbuf */
-     } /* end loop over Ibuf */
+           } /* end loop over Iblock */
+         } /* end loop over Jbuf */
+       } /* end loop over Ibuf */
+     } /* end loop over roots */
    } /* end icore==2 */
 
    else {
@@ -324,7 +346,12 @@ void tpdm(struct stringwr **alplist, struct stringwr **betlist,
 
      /* do the core-core and core-active part here */
      if (nfzc) {
-         sprintf(opdm_key, "MO-basis OPDM Root %d", Iroot);
+         if (Parameters.average_num == 1) 
+           sprintf(opdm_key, "MO-basis OPDM Root %d",
+             Parameters.average_states[0]);
+         else
+           sprintf(opdm_key, "MO-basis OPDM");
+
          psio_read_entry(Parameters.opdm_file, opdm_key, (char *) onepdm[0],
            populated_orbs * populated_orbs * sizeof(double));
 
@@ -399,7 +426,7 @@ void tpdm_block(struct stringwr **alplist, struct stringwr **betlist,
 	        int nbf, int nalplists, int nbetlists,
 		double *twopdm, double **CJ, double **CI, int Ja_list, 
 		int Jb_list, int Jnas, int Jnbs, int Ia_list, int Ib_list, 
-		int Inas, int Inbs)
+		int Inas, int Inbs, double weight)
 {
    int Ia_idx, Ib_idx, Ja_idx, Jb_idx, Ja_ex, Jb_ex, Jbcnt, Jacnt; 
    int Kbcnt, Kacnt, Kb_ex, Ka_ex, Kb_list, Ka_list, Kb_idx, Ka_idx;
@@ -413,7 +440,7 @@ void tpdm_block(struct stringwr **alplist, struct stringwr **betlist,
   if (Ia_list == Ja_list) {
     for (Ia_idx=0; Ia_idx<Inas; Ia_idx++) {
       for (Jb=betlist[Jb_list], Jb_idx=0; Jb_idx<Jnbs; Jb_idx++, Jb++) {
-	C1 = CJ[Ia_idx][Jb_idx];
+	C1 = CJ[Ia_idx][Jb_idx] * weight;
 
 	/* loop over excitations E^b_{kl} from |B(J_b)> */
 	for (Kb_list=0; Kb_list < nbetlists; Kb_list++) {
@@ -468,7 +495,7 @@ void tpdm_block(struct stringwr **alplist, struct stringwr **betlist,
   if (Ib_list == Jb_list) {
     for (Ib_idx=0; Ib_idx<Inbs; Ib_idx++) {
       for (Ja=alplist[Ja_list], Ja_idx=0; Ja_idx<Jnas; Ja_idx++, Ja++) {
-	C1 = CJ[Ja_idx][Ib_idx];
+	C1 = CJ[Ja_idx][Ib_idx] * weight;
 
 	/* loop over excitations E^a_{kl} from |A(J_a)> */
 	for (Ka_list=0; Ka_list < nalplists; Ka_list++) {
@@ -537,7 +564,7 @@ void tpdm_block(struct stringwr **alplist, struct stringwr **betlist,
       /* loop over Jb */
       for (Jb=betlist[Jb_list], Jb_idx=0; Jb_idx<Jnbs; Jb_idx++, Jb++) {
 
-	C1 = CJ[Ja_idx][Jb_idx];
+	C1 = CJ[Ja_idx][Jb_idx] * weight;
 
 	/* loop over excitations E^b_{ij} from |B(J_b)> */
 	Jbcnt = Jb->cnt[Ib_list];

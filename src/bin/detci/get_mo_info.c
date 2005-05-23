@@ -63,9 +63,12 @@ void get_mo_info(void)
 
    CalcInfo.frozen_docc = init_int_array(CalcInfo.nirreps);
    CalcInfo.frozen_uocc = init_int_array(CalcInfo.nirreps);
+   CalcInfo.rstr_docc = init_int_array(CalcInfo.nirreps);
+   CalcInfo.rstr_uocc = init_int_array(CalcInfo.nirreps);
    CalcInfo.reorder = init_int_array(CalcInfo.nmo);
    CalcInfo.ras_opi = init_int_matrix(4,CalcInfo.nirreps);
 
+   /* old ras_set
    if (!ras_set(CalcInfo.nirreps, CalcInfo.nmo, Parameters.fzc, 
                 CalcInfo.orbs_per_irr, CalcInfo.docc, CalcInfo.socc, 
                 CalcInfo.frozen_docc, CalcInfo.frozen_uocc, 
@@ -74,16 +77,28 @@ void get_mo_info(void)
      fprintf(outfile, "Error in ras_set().  Aborting.\n");
      exit(1);
    }
-   
-   /* calculate number of orbitals active in CI */
-   CalcInfo.num_ci_orbs = CalcInfo.nmo ;
-   for (i=0; i<CalcInfo.nirreps; i++) {
-      CalcInfo.num_ci_orbs -= CalcInfo.frozen_uocc[i] ;
-      }
-
-   if ((CalcInfo.num_ci_orbs * (CalcInfo.num_ci_orbs + 1)) / 2 > IOFF_MAX) {
-      fprintf(outfile, "Error: IOFF_MAX not large enough!\n");
-      exit(1);
+   */
+  
+   /* new ras_set2 */
+   if (!ras_set2(CalcInfo.nirreps, CalcInfo.nmo, 1, (Parameters.fzc) ?  1:0,
+                CalcInfo.orbs_per_irr, CalcInfo.docc, CalcInfo.socc,
+                CalcInfo.frozen_docc, CalcInfo.frozen_uocc,
+                CalcInfo.rstr_docc, CalcInfo.rstr_uocc,
+                CalcInfo.ras_opi, CalcInfo.reorder, 1, 0))
+   {
+     fprintf(outfile, "Error in ras_set().  Aborting.\n");
+     exit(1);
+   }
+ 
+   /* I'm rewiring such that Params.fzc now means assume restricted
+      should be treated like frozen */
+   if (Parameters.fzc) {
+     for (i=0; i<CalcInfo.nirreps; i++) {
+       CalcInfo.frozen_docc[i] += CalcInfo.rstr_docc[i];
+       CalcInfo.rstr_docc[i] = 0;
+       CalcInfo.frozen_uocc[i] += CalcInfo.rstr_uocc[i];
+       CalcInfo.rstr_uocc[i] = 0;
+     } 
    }
 
    /* Compute maximum number of orbitals per irrep including
@@ -183,23 +198,24 @@ void get_mo_info(void)
       }
 
    CalcInfo.num_fzv_orbs = 0;
-   for (i=0; i<CalcInfo.nirreps; i++) 
-      CalcInfo.num_fzv_orbs += CalcInfo.frozen_uocc[i];  
-
+   CalcInfo.num_vir_orbs = 0;
    CalcInfo.num_fzc_orbs = 0;
    CalcInfo.num_cor_orbs = 0;
-   if (Parameters.fzc) {
-      for (i=0; i<CalcInfo.nirreps; i++) {
-         j = CalcInfo.frozen_docc[i];
-         CalcInfo.num_ci_orbs -= j;
-         CalcInfo.num_fzc_orbs += j;
-         }
-      }
-   else {
-      for (i=0; i<CalcInfo.nirreps; i++) {
-         CalcInfo.num_cor_orbs += CalcInfo.frozen_docc[i];
-         } 
-      }
+   for (i=0; i<CalcInfo.nirreps; i++) {
+      CalcInfo.num_fzv_orbs += CalcInfo.frozen_uocc[i];  
+      CalcInfo.num_vir_orbs += CalcInfo.rstr_uocc[i];
+      CalcInfo.num_fzc_orbs += CalcInfo.frozen_docc[i];  
+      CalcInfo.num_cor_orbs += CalcInfo.rstr_docc[i];
+   }
+
+   /* calculate number of orbitals active in CI */
+   CalcInfo.num_ci_orbs = CalcInfo.nmo - CalcInfo.num_fzc_orbs - 
+     CalcInfo.num_fzv_orbs;
+
+   if ((CalcInfo.num_ci_orbs * (CalcInfo.num_ci_orbs + 1)) / 2 > IOFF_MAX) {
+      fprintf(outfile, "Error: IOFF_MAX not large enough!\n");
+      exit(1);
+   }
 
    CalcInfo.num_alp_expl = CalcInfo.num_alp - CalcInfo.num_fzc_orbs;
    CalcInfo.num_bet_expl = CalcInfo.num_bet - CalcInfo.num_fzc_orbs;
@@ -216,38 +232,5 @@ void get_mo_info(void)
        }
      }
    }
-
-   if (Parameters.print_lvl > 0) {
-      fprintf(outfile, "ORBITALS:\n") ;
-      /*
-      fprintf(outfile, "   DOCC         = ") ;
-      for (i=0; i<CalcInfo.nirreps; i++) {
-         fprintf(outfile, "%d ", CalcInfo.docc[i]) ;
-         }
-      fprintf(outfile, "\n   SOCC         = ") ;
-      for (i=0; i<CalcInfo.nirreps; i++) {
-         fprintf(outfile, "%d ", CalcInfo.socc[i]) ;
-         }
-      fprintf(outfile, "\n   FROZEN_DOCC  = ") ;
-      for (i=0; i<CalcInfo.nirreps; i++) {
-         fprintf(outfile, "%d ", CalcInfo.frozen_docc[i]) ;
-         }
-      fprintf(outfile, "\n   FROZEN_UOCC  = ") ;
-      for (i=0; i<CalcInfo.nirreps; i++) {
-         fprintf(outfile, "%d ", CalcInfo.frozen_uocc[i]) ;
-         }
-      fprintf(outfile, "\n");
-      */
-      fprintf(outfile, "   NMO          =   %6d      NUM ALP      =   %6d\n",
-         CalcInfo.nmo, CalcInfo.num_alp);
-      fprintf(outfile, "   ORBS IN CI   =   %6d      NUM ALP EXPL =   %6d\n",
-         CalcInfo.num_ci_orbs, CalcInfo.num_alp_expl);
-      fprintf(outfile, "   FROZEN CORE  =   %6d      NUM BET      =   %6d\n",
-         CalcInfo.num_fzc_orbs, CalcInfo.num_bet);
-      fprintf(outfile, "   RESTR CORE   =   %6d      NUM BET EXPL =   %6d\n",
-         CalcInfo.num_cor_orbs, CalcInfo.num_bet_expl);
-      fprintf(outfile, "   IOPEN        =   %6s\n", CalcInfo.iopen ? "yes" :
-         "no");
-      }
 }
 

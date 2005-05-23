@@ -87,7 +87,7 @@ void read_integrals()
       fprintf(outfile, "\nOne-electron integrals\n") ;
       for (i=0, ij=0; i<CalcInfo.num_ci_orbs; i++) {
          for (j=0; j<=i; j++, ij++) {
-            fprintf(outfile, "h(%d)(%d) = %11.7lf\n", i+1, j+1, 
+            fprintf(outfile, "h(%d)(%d) = %11.7lf\n", i, j, 
                CalcInfo.onel_ints[ij]) ;
             }
          }

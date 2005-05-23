@@ -112,6 +112,7 @@ class CIvect {
       void extract_vals(int ivect, int nvals, int *alplist, int *alpidx, 
          int *betlist, int *betidx, int *blknums, double *value);
       void symnorm(double a, int vecode, int gather_vec);
+      double zero_det(int iac, int ia, int ibc, int ib);
       void scale(double a, int vecode, int gather_vec);
       void symmetrize(double phase, int iblock);
       void buf_lock(double *a);
@@ -156,8 +157,8 @@ class CIvect {
       void gather(int ivec, int nvec, int nroot, double **alpha, CIvect &C);
       void restart_reord_fp(int L);
       void print_fptrs(void);
-      void calc_ssq(double *buffer1, double *buffer2, struct stringwr **alplist,
-           struct stringwr **betlist, int vec_num);
+      double calc_ssq(double *buffer1, double *buffer2, 
+           struct stringwr **alplist, struct stringwr **betlist, int vec_num);
       void h0block_buf_init(void);
       void h0block_buf_ols(double *norm,double *ovrlap,double *c1norm,
                            double E_est);
@@ -181,6 +182,10 @@ class CIvect {
       void write_num_vecs(int nv);
       void write_toc(void);
       void civect_psio_debug(void);
+      void pt_correction(struct stringwr **alplist, struct stringwr
+        **betlist);
+      double compute_follow_overlap(int troot, int ncoef, double *coef,
+        int *Iac, int *Iaridx, int *Ibc, int *Ibridx);
 
       friend void sigma_init(CIvect& C, CIvect &S, struct stringwr **alplist, 
          struct stringwr **betlist);
@@ -215,8 +220,8 @@ class CIvect {
           int Jnroots, int Jroot, int Jnunits, int Jfirstunit,
           int targetfile, int writeflag, int printflag);
       friend void tpdm(struct stringwr **alplist, struct stringwr **betlist,
-          int Inroots, int Iroot, int Inunits, int Ifirstunit,
-          int Jnroots, int Jroot, int Jnunits, int Jfirstunit,
+          int nroots, int Inunits, int Ifirstunit,
+          int nroots, int Jnunits, int Jfirstunit,
           int targetfile, int writeflag, int printflag);
 };
 
