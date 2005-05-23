@@ -57,6 +57,7 @@ void get_fzc_operator(void);
 void get_mvos(void);
 void get_canonical(void);
 void get_mp2nos(void);
+void get_unos(void);
 
 main(int argc, char *argv[])
 {
@@ -70,6 +71,9 @@ main(int argc, char *argv[])
   init_ioff();
   if (params.mp2nos) {
     get_mp2nos();
+  }
+  else if (params.unos) {
+    get_unos();
   }
   else if (params.canonical) {
     get_canonical();
@@ -172,6 +176,9 @@ void get_parameters(void)
 
   params.mp2nos = 0;
   errcod = ip_boolean("MP2NOS",&(params.mp2nos),0);
+
+  params.unos = 0;
+  errcod = ip_boolean("UNOS",&(params.unos),0);
 
   if (strcmp(params.wfn, "CI")==0 || strcmp(params.wfn, "DETCAS")==0 ||
       strcmp(params.wfn, "DETCI")==0) {
