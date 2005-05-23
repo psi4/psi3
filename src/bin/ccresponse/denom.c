@@ -16,12 +16,24 @@ void denom1(dpdfile2 *X1, double omega)
 
   irrep = X1->my_irrep;
 
-  dpd_file2_init(&FAE, CC_OEI, 0, 1, 1, "FAE");
-  dpd_file2_init(&FMI, CC_OEI, 0, 0, 0, "FMI");
-  dpd_file2_mat_init(&FAE);
-  dpd_file2_mat_init(&FMI);
-  dpd_file2_mat_rd(&FAE);
-  dpd_file2_mat_rd(&FMI);
+  if((!strcmp(params.wfn,"CC2")) || (!strcmp(params.wfn,"EOM_CC2"))) {
+    dpd_file2_init(&FMI, CC_OEI, 0, 0, 0, "fIJ");
+    dpd_file2_mat_init(&FMI);
+    dpd_file2_mat_rd(&FMI);
+
+    dpd_file2_init(&FAE, CC_OEI, 0, 1, 1, "fAB");
+    dpd_file2_mat_init(&FAE);
+    dpd_file2_mat_rd(&FAE);
+  }
+  else {
+    dpd_file2_init(&FAE, CC_OEI, 0, 1, 1, "FAE");
+    dpd_file2_mat_init(&FAE);
+    dpd_file2_mat_rd(&FAE);
+
+    dpd_file2_init(&FMI, CC_OEI, 0, 0, 0, "FMI");
+    dpd_file2_mat_init(&FMI);
+    dpd_file2_mat_rd(&FMI);
+  }
 
   dpd_file2_mat_init(X1);
   dpd_file2_mat_rd(X1);
@@ -48,12 +60,24 @@ void denom2(dpdbuf4 *X2, double omega)
   nirreps = moinfo.nirreps;
   irrep = X2->file.my_irrep;
 
-  dpd_file2_init(&FAE, CC_OEI, 0, 1, 1, "FAE");
-  dpd_file2_init(&FMI, CC_OEI, 0, 0, 0, "FMI");
-  dpd_file2_mat_init(&FAE);
-  dpd_file2_mat_init(&FMI);
-  dpd_file2_mat_rd(&FAE);
-  dpd_file2_mat_rd(&FMI);
+  if((!strcmp(params.wfn,"CC2")) || (!strcmp(params.wfn,"EOM_CC2"))) {
+    dpd_file2_init(&FMI, CC_OEI, 0, 0, 0, "fIJ");
+    dpd_file2_mat_init(&FMI);
+    dpd_file2_mat_rd(&FMI);
+
+    dpd_file2_init(&FAE, CC_OEI, 0, 1, 1, "fAB");
+    dpd_file2_mat_init(&FAE);
+    dpd_file2_mat_rd(&FAE);
+  }
+  else {
+    dpd_file2_init(&FAE, CC_OEI, 0, 1, 1, "FAE");
+    dpd_file2_mat_init(&FAE);
+    dpd_file2_mat_rd(&FAE);
+
+    dpd_file2_init(&FMI, CC_OEI, 0, 0, 0, "FMI");
+    dpd_file2_mat_init(&FMI);
+    dpd_file2_mat_rd(&FMI);
+  }
 
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_init(X2, h);
@@ -78,7 +102,7 @@ void denom2(dpdbuf4 *X2, double omega)
 	B = b - moinfo.vir_off[bsym];
 
 	X2->matrix[h][row][col] /= (FMI.matrix[isym][I][I] + FMI.matrix[jsym][J][J] - 
-				   FAE.matrix[asym][A][A] - FAE.matrix[bsym][B][B] + omega);
+				    FAE.matrix[asym][A][A] - FAE.matrix[bsym][B][B] + omega);
 
       }
     }
