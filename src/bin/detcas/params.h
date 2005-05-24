@@ -11,6 +11,7 @@
 */
 struct params {
    char *dertype;           /* derivative level: none, first, etc.          */
+   char *wfn;               /* wavefunction, CASSCF, RASSCF, ..             */
    int print_lvl;           /* print verbosity level                        */ 
    int print_mos;           /* print the molecular orbitals ?               */
    int rms_grad_convergence;/* convergence, 10^-n, on RMS of orbital grad   */

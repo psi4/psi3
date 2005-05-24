@@ -447,7 +447,8 @@ void get_parameters(void)
   errcod = ip_data("MAX_BUCKETS","%d", &(params.max_buckets),0);
 
   if ((strcmp(params.wfn,"OOCCD")==0 || strcmp(params.wfn,"DETCAS")==0 ||
-      !strcmp(params.wfn,"BCCD") || !strcmp(params.wfn,"BCCD_T")) &&
+       strcmp(params.wfn,"BCCD")==0  || strcmp(params.wfn,"BCCD_T")==0 ||
+       strcmp(params.wfn,"CASSCF")==0|| strcmp(params.wfn,"RASSCF")==0) &&
       !params.backtr)
     params.delete_src_tei = 0;
   else 
@@ -482,6 +483,7 @@ void get_parameters(void)
   errcod = ip_data("PRINT", "%d", &(params.print_lvl),0);
      
   if (strcmp(params.wfn, "CI")==0 || strcmp(params.wfn, "DETCAS")==0 ||
+      strcmp(params.wfn, "CASSCF")==0 || strcmp(params.wfn, "RASSCF")==0 ||
       strcmp(params.wfn, "DETCI")==0) {
     params.lagran_double = 1;
     params.lagran_halve = 0;
@@ -497,8 +499,9 @@ void get_parameters(void)
  
 
 
-  if ((strcmp(params.wfn, "OOCCD")==0 || strcmp(params.dertype, "FIRST")==0
-       || strcmp(params.wfn, "DETCAS")==0) && !params.backtr) 
+  if ((strcmp(params.wfn, "OOCCD")==0 || strcmp(params.dertype, "FIRST")==0 ||
+       strcmp(params.wfn, "DETCAS")==0 || strcmp(params.wfn, "CASSCF")==0 ||
+       strcmp(params.wfn, "RASSCF")==0) && !params.backtr) 
     params.do_all_tei = 1;
   else params.do_all_tei = 0;
   if (params.runmode == MODE_MP2R12AERI || params.runmode == MODE_MP2R12AR12 ||
@@ -527,7 +530,8 @@ void get_parameters(void)
   params.tpdm_add_ref = 0;
   errcod = ip_boolean("TPDM_ADD_REF", &(params.tpdm_add_ref), 0);
 
-  if (strcmp(params.wfn, "DETCAS")==0) 
+  if (strcmp(params.wfn,"DETCAS")==0 || strcmp(params.wfn,"CASSCF")==0 ||
+      strcmp(params.wfn,"RASSCF")==0)  
     params.treat_cor_as_fzc = 1;
   else
     params.treat_cor_as_fzc = 0;
@@ -1142,6 +1146,8 @@ void get_reorder_array(void)
       || strcmp(params.wfn, "GVVPT2") == 0 
       || strcmp(params.wfn, "MCSCF") == 0 
       || strcmp(params.wfn, "OOCCD") == 0 
+      || strcmp(params.wfn, "CASSCF") == 0 
+      || strcmp(params.wfn, "RASSCF") == 0 
       || strcmp(params.wfn, "DETCAS") == 0) {
     
     ras_opi = init_int_matrix(MAX_RAS_SPACES,moinfo.nirreps); 

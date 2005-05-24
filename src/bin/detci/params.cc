@@ -59,7 +59,9 @@ void get_parameters(void)
    }
 
   if (strcmp(Parameters.dertype, "FIRST")==0 ||
-      strcmp(Parameters.wfn, "DETCAS")==0) Parameters.filter_ints = 1;
+      strcmp(Parameters.wfn, "DETCAS")==0    ||
+      strcmp(Parameters.wfn, "CASSCF")==0    ||
+      strcmp(Parameters.wfn, "RASSCF")==0) Parameters.filter_ints = 1;
   else Parameters.filter_ints = 0;
 
  
@@ -88,7 +90,10 @@ void get_parameters(void)
    Parameters.hd_otf = TRUE;
    Parameters.nodfile = 0;
    Parameters.fzc = 1;
-   Parameters.fci = 0;
+   if (strcmp(Parameters.wfn, "CASSCF")==0)
+     Parameters.fci = 1;
+   else
+     Parameters.fci = 0;
    Parameters.fci_strings = 0;
    Parameters.mixed = 1;
    Parameters.mixed4 = 1;
@@ -116,7 +121,9 @@ void get_parameters(void)
    Parameters.ras4_max = -1;
    Parameters.ras34_max = -1;
 
-   if (strcmp(Parameters.wfn, "DETCAS")==0)
+   if (strcmp(Parameters.wfn, "DETCAS")==0 ||
+       strcmp(Parameters.wfn, "CASSCF")==0 ||
+       strcmp(Parameters.wfn, "RASSCF")==0)
      Parameters.guess_vector = PARM_GUESS_VEC_DFILE;
    else
      Parameters.guess_vector = PARM_GUESS_VEC_H0_BLOCK;
@@ -151,7 +158,10 @@ void get_parameters(void)
    Parameters.bendazzoli = 0;
 
    if (strcmp(Parameters.dertype, "FIRST")==0 ||
-      strcmp(Parameters.wfn, "DETCAS")==0) {
+      strcmp(Parameters.wfn, "DETCAS")==0 ||
+      strcmp(Parameters.wfn, "CASSCF")==0 ||
+      strcmp(Parameters.wfn, "RASSCF")==0)
+   {
      Parameters.convergence = 7;
      Parameters.energy_convergence = 8;
      Parameters.opdm = 1;
@@ -500,7 +510,10 @@ void get_parameters(void)
    errcod = ip_data("TPDM_FILE","%d",&(Parameters.tpdm_file),0);
 
    if (Parameters.guess_vector == PARM_GUESS_VEC_DFILE &&
-       strcmp(Parameters.wfn, "DETCAS")!=0) {
+       strcmp(Parameters.wfn, "DETCAS")!=0 &&
+       strcmp(Parameters.wfn, "CASSCF")!=0 &&
+       strcmp(Parameters.wfn, "RASSCF")!=0)
+     {
 
       chkpt_init(PSIO_OPEN_OLD);
       i = chkpt_rd_phase_check();

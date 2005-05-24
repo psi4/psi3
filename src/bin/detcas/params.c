@@ -39,6 +39,12 @@ void get_parameters(void)
     Params.energy_convergence = 11;
   }
 
+  errcod = ip_string("WFN", &(Params.wfn),0);
+  if (errcod == IPE_KEY_NOT_FOUND) {
+    Params.wfn = (char *) malloc(sizeof(char)*5);
+    strcpy(Params.wfn, "NONE");
+  }
+
   /* Params.print_lvl is set in detcas.cc */
   Params.print_mos = 0;
   Params.filter_ints = 0;  /* assume we need all for MCSCF */
@@ -54,7 +60,11 @@ void get_parameters(void)
   Params.lag_erase = 0;
 
   Params.ignore_fz = 1;        /* ignore frozen orbitals for ind pairs? */
-  Params.ignore_ras_ras = 0;   /* ignore RAS/RAS independent pairs? */
+  
+  if (strcmp(Params.wfn, "CASSCF")==0 || strcmp(Params.wfn, "DETCAS")==0)
+    Params.ignore_ras_ras = 1;   /* ignore RAS/RAS independent pairs? */
+  else
+    Params.ignore_ras_ras = 0;
 
   Params.scale_grad = 1;       /* scale the orbital gradient? */
   Params.diis_start = 3;       /* iteration to turn on DIIS */
