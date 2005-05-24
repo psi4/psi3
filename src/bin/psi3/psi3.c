@@ -303,7 +303,10 @@ int main(int argc, char *argv[])
     strcpy(proced,"");
     if (direct == 1)
       strcat(proced,"DIRECT");
-    strcat(proced,wfn);
+    if (strcmp(wfn,"CASSCF")==0 || strcmp(wfn,"RASSCF")==0)
+      strcat(proced,"DETCAS");
+    else
+      strcat(proced,wfn);
     strcat(proced,reftyp);
     /*
       For some cases do not need to append DERTYPE since it's irrelevant
