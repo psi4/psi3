@@ -47,6 +47,7 @@ main(int argc, char *argv[])
 {
   int converged = 0;
   int i, errcod = 0;
+  char *wfn;                   /* wavefunction type                        */
   int ncasiter = 0;            /* max cas iterations */
   char detci_string[80];       /* string containing system call for DETCI  */
   double ci_conv;              /* desired CI convergence 
@@ -62,7 +63,12 @@ main(int argc, char *argv[])
   errcod = ip_data("NCASITER","%d",&ncasiter,0);
   scale_conv = 0.01;
   errcod = ip_data("SCALE_CONV","%lf",&scale_conv,0);
-  
+  errcod = ip_string("WFN", &wfn,0);
+  if (errcod == IPE_KEY_NOT_FOUND) {
+    wfn = (char *) malloc(sizeof(char)*7);
+    strcpy(wfn, "DETCAS");
+  }
+
   /* First iteration prints DETCI information */
   ci_conv = calc_ci_conv(scale_conv, &energy_last);
 
@@ -97,7 +103,7 @@ main(int argc, char *argv[])
 
   if (converged) {
     fprintf(outfile,"                  ORBITALS CONVERGED\n");
-    fprintf(outfile,"\n  Final CASSCF Energy = %17.12lf\n", energy_last);
+    fprintf(outfile,"\n  Final %s Energy = %17.12lf\n", wfn, energy_last);
   }
   else
     fprintf(outfile,"               ORBITALS DID NOT CONVERGE\n");
