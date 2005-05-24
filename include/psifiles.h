@@ -33,6 +33,7 @@
                                     permutational symmetry holds */
 #define PSIF_AO_DGDBY       45
 #define PSIF_AO_DGDBZ       46
+#define PSIF_DETCAS         60
 
 #define PSIF_MO_R12         79
 #define PSIF_MO_R12T1       80
