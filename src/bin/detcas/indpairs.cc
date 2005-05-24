@@ -231,9 +231,11 @@ void IndepPairs::set(int nirr, int num_ras, int **ras_opi, int ***ras_orbs,
   }
 
   // RAS / FZV
-  for (rasj=0; rasj<num_ras; rasj++) {
-    set_part(count, ir_cnt, fzv, ras_opi[rasj], fzv_orbs, ras_orbs[rasj], 
-             ci2relpitz); 
+  if (!ignore_fz) {
+    for (rasj=0; rasj<num_ras; rasj++) {
+      set_part(count, ir_cnt, fzv, ras_opi[rasj], fzv_orbs, ras_orbs[rasj], 
+               ci2relpitz); 
+    }
   }
 
   // VIR / FZV
