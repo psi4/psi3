@@ -683,7 +683,7 @@ void ave(int targetfile)
         populated_orbs * populated_orbs * sizeof(double));
 
       if (Parameters.opdm_print) {
-        fprintf(outfile,"\n\n\t\tOPDM for Root 1");
+        fprintf(outfile,"\n\n\t\tOPDM for Root %d",root+1);
         print_mat(tmp_mat1, populated_orbs, populated_orbs, outfile);
       }
 

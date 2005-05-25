@@ -1,3 +1,9 @@
+05/25/05: Added RASSCF and SA-CASSCF capabilities.  Replaced wfn=DETCAS
+with wfn=CASSCF or wfn=RASSCF.  Added preliminary implementation of
+frozen vs restricted orbitals in MCSCF (works but can only do either/or
+for now).  Automatically set proper ex_lvl if fci=true, automatically
+set fci=true if wfn=CASSCF.  -CDS
+
 01/03/05: Added capability to compute and print pair correlation
 energies at MP2 and CC levels (RHF cases only).  -EFV
 

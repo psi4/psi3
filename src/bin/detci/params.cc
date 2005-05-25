@@ -654,7 +654,7 @@ void get_parameters(void)
      ip_count("AVERAGE_STATES", &i, 0);
      if (i < 1 || i > Parameters.num_roots) {
        fprintf(outfile,"Invalid number of states to average (%d)\n", i);
-       exit(0);
+       exit(1);
      }
      Parameters.average_states = init_int_array(i);
      Parameters.average_weights = init_array(i);
@@ -662,6 +662,12 @@ void get_parameters(void)
      for (i=0;i<Parameters.average_num;i++) {
        errcod = ip_data("AVERAGE_STATES","%d",
          &(Parameters.average_states[i]),1,i);
+       if (Parameters.average_states[i] < 1) {
+         fprintf(outfile,"AVERAGE_STATES start numbering from 1.\n");
+         fprintf(outfile,"Invalid state number %d\n", 
+           Parameters.average_states[i]);
+         exit(1);
+       }
        Parameters.average_states[i] -= 1; /* number from 1 externally */
        Parameters.average_weights[i] = 1.0/((double)Parameters.average_num);
      }
