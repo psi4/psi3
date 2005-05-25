@@ -129,8 +129,8 @@ void polar(void)
 	    fprintf(outfile, "\tpolar_LCX    = %20.15f\n", polar_LCX);
 	    fprintf(outfile, "\tpolar_HXY    = %20.15f\n", polar_HXY);
 	    fprintf(outfile, "\tpolar_LHX1Y1 = %20.15f\n", polar_LHX1Y1);
-	    fprintf(outfile, "\tpolar_LHX2Y2 = %20.15f\n", polar_LHX2Y2);
-	    fprintf(outfile, "\tpolar_LHX1Y2 = %20.15f\n\n", polar_LHX1Y2);
+	    fprintf(outfile, "\tpolar_LHX1Y2 = %20.15f\n", polar_LHX1Y2);
+	    fprintf(outfile, "\tpolar_LHX2Y2 = %20.15f\n\n", polar_LHX2Y2);
 	  }
 
 	  tensor[i][alpha][beta] = -polar;

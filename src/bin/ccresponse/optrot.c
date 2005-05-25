@@ -116,8 +116,8 @@ void optrot(void)
 	    fprintf(outfile, "\tpolar_LCX    = %20.15f\n", polar_LCX);
 	    fprintf(outfile, "\tpolar_HXY    = %20.15f\n", polar_HXY);
 	    fprintf(outfile, "\tpolar_LHX1Y1 = %20.15f\n", polar_LHX1Y1);
-	    fprintf(outfile, "\tpolar_LHX2Y2 = %20.15f\n", polar_LHX2Y2);
-	    fprintf(outfile, "\tpolar_LHX1Y2 = %20.15f\n\n", polar_LHX1Y2);
+	    fprintf(outfile, "\tpolar_LHX1Y2 = %20.15f\n", polar_LHX1Y2);
+	    fprintf(outfile, "\tpolar_LHX2Y2 = %20.15f\n\n", polar_LHX2Y2);
 	  }
 
 	  tensor0[alpha][beta] = polar;
@@ -126,8 +126,14 @@ void optrot(void)
     }
   }
 
+  /* Clean up disk space */
   psio_close(CC_LR, 0);
   psio_open(CC_LR, 0);
+
+  for(j=CC_TMP; j <= CC_TMP11; j++) {
+    psio_close(j,0);
+    psio_open(j,0);
+  }
 
   for(i=0; i < params.nomega; i++) {
 
@@ -218,8 +224,8 @@ void optrot(void)
 	    fprintf(outfile, "\tpolar_LCX    = %20.12f\n", polar_LCX);
 	    fprintf(outfile, "\tpolar_HXY    = %20.12f\n", polar_HXY);
 	    fprintf(outfile, "\tpolar_LHX1Y1 = %20.12f\n", polar_LHX1Y1);
-	    fprintf(outfile, "\tpolar_LHX2Y2 = %20.12f\n", polar_LHX2Y2);
-	    fprintf(outfile, "\tpolar_LHX1Y2 = %20.12f\n\n", polar_LHX1Y2);
+	    fprintf(outfile, "\tpolar_LHX1Y2 = %20.12f\n", polar_LHX1Y2);
+	    fprintf(outfile, "\tpolar_LHX2Y2 = %20.12f\n\n", polar_LHX2Y2);
 	  }
 
 	  tensor[i][alpha][beta] = 0.5 * polar;
@@ -228,8 +234,14 @@ void optrot(void)
       }
     }
 
+    /* Clean up disk space */
     psio_close(CC_LR, 0);
     psio_open(CC_LR, 0);
+
+    for(j=CC_TMP; j <= CC_TMP11; j++) {
+      psio_close(j,0);
+      psio_open(j,0);
+    }
 
     /* prepare the dipole-length or dipole-velocity integrals */
     if(!strcmp(params.gauge,"LENGTH")) transmu();
@@ -318,8 +330,8 @@ void optrot(void)
 	    fprintf(outfile, "\tpolar_LCX    = %20.15f\n", polar_LCX);
 	    fprintf(outfile, "\tpolar_HXY    = %20.15f\n", polar_HXY);
 	    fprintf(outfile, "\tpolar_LHX1Y1 = %20.15f\n", polar_LHX1Y1);
-	    fprintf(outfile, "\tpolar_LHX2Y2 = %20.15f\n", polar_LHX2Y2);
-	    fprintf(outfile, "\tpolar_LHX1Y2 = %20.15f\n\n", polar_LHX1Y2);
+	    fprintf(outfile, "\tpolar_LHX1Y2 = %20.15f\n", polar_LHX1Y2);
+	    fprintf(outfile, "\tpolar_LHX2Y2 = %20.15f\n\n", polar_LHX2Y2);
 	  }
 
 	  tensor[i][alpha][beta] += 0.5 * polar;
@@ -328,8 +340,14 @@ void optrot(void)
       }
     }
 
-/*     psio_close(CC_LR, 0); */
-/*     psio_open(CC_LR, 0); */
+    /* Clean up disk space */
+    psio_close(CC_LR, 0);
+    psio_open(CC_LR, 0);
+
+    for(j=CC_TMP; j <= CC_TMP11; j++) {
+      psio_close(j,0);
+      psio_open(j,0);
+    }
 
     if (!strcmp(params.wfn,"CC2"))
       fprintf(outfile, "\n                      CC2 Optical Rotation Tensor:\n");

@@ -7,8 +7,6 @@
 #define EXTERN
 #include "globals.h"
 
-void build_ZIjAb(char *, char *, int, double, char *, char *, int, double);
-
 double cc2_LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
 		  char *pert_y, char *cart_y, int irrep_y, double omega_y)
 {

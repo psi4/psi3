@@ -67,7 +67,7 @@ double LCX(char *pert_c, char *cart_c, int irrep_c,
   dpd_file2_close(&mu);
   dpd_file2_close(&xc);
 
-  dpd_file2_init(&lt, CC_TMP0, 0, 0, 0, "Lt_IJ");
+  dpd_file2_init(&lt, CC_OEI, 0, 0, 0, "Lt_IJ");
   dpd_file2_init(&xc, CC_TMP0, 0, 0, 0, "XC_IJ");
   polar += dpd_file2_dot(&lt, &xc);
   dpd_file2_close(&xc);

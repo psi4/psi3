@@ -48,7 +48,6 @@ local.c \
 transp.c \
 polar.c \
 optrot.c \
-local_response.c \
 
 BINOBJ = $(CSRC:%.c=%.o)
 

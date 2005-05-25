@@ -9,7 +9,7 @@ void hbar_extra(void) {
   dpdbuf4 t2, l2;
 
   /* LIjAb * TIjAb */
-  dpd_file2_init(&lt, CC_TMP0, 0, 0, 0, "Lt_IJ");
+  dpd_file2_init(&lt, CC_OEI, 0, 0, 0, "Lt_IJ");
 
   dpd_buf4_init(&l2, CC_LAMPS, 0, 0, 7, 2, 7, 0, "LIJAB 0 -1");
   dpd_buf4_init(&t2, CC_TAMPS, 0, 0, 7, 2, 7, 0, "tIJAB");

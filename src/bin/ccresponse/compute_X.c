@@ -99,11 +99,17 @@ void compute_X(char *pert, char *cart, int irrep, double omega)
     exit(PSI_RETURN_FAILURE);
   }
 
+  /* Clean up disk space */
   psio_close(CC_DIIS_AMP, 0);
   psio_open(CC_DIIS_AMP, 0);
 
   psio_close(CC_DIIS_ERR, 0);
   psio_open(CC_DIIS_ERR, 0);
+
+  for(i=CC_TMP; i <= CC_TMP11; i++) {
+    psio_close(i,0);
+    psio_open(i,0);
+  }
 
   /*  print_X(pert, cart, irrep, omega); */
 }
