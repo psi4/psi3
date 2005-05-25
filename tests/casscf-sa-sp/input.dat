@@ -1,0 +1,36 @@
+psi:(
+  label = "c2"
+  memory = (30.0 MB)
+                                                                                
+  charge = 0
+  multp = 1
+
+  ncasiter = 50
+  wfn = casscf
+  reference = rhf
+
+  docc =            (2 0 0 0 0 2 1 1)
+  restricted_docc = (1 0 0 0 0 1 0 0)
+  active =          (2 0 1 1 0 2 1 1)
+)
+
+input: (
+  basis = "6-31G*"
+  units = angstrom
+  zmat = (
+    (c)
+    (c 1 1.20)
+  )
+  origin = (0.0 0.0 0.0)
+)
+
+detci: (
+  filter_guess = true
+  filter_guess_sign = 1
+  filter_guess_det1 = (56 56)
+  filter_guess_det2 = (66 66)
+  calc_ssq = true
+  num_roots = 2
+  average_states = (1 2)
+)
+
