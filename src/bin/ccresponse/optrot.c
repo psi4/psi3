@@ -112,12 +112,14 @@ void optrot(void)
 
 	  polar = polar_LCX + polar_HXY + polar_LHX1Y1 + polar_LHX2Y2 + polar_LHX1Y2;
 
-	  if((alpha == beta)  && (params.print == 2)) {
+	  if(params.print & 2) {
+	    fprintf(outfile, "\tTensor[%s][%s]\n", cartcomp[alpha], cartcomp[beta]);
 	    fprintf(outfile, "\tpolar_LCX    = %20.15f\n", polar_LCX);
 	    fprintf(outfile, "\tpolar_HXY    = %20.15f\n", polar_HXY);
 	    fprintf(outfile, "\tpolar_LHX1Y1 = %20.15f\n", polar_LHX1Y1);
 	    fprintf(outfile, "\tpolar_LHX1Y2 = %20.15f\n", polar_LHX1Y2);
 	    fprintf(outfile, "\tpolar_LHX2Y2 = %20.15f\n\n", polar_LHX2Y2);
+	    fflush(outfile);
 	  }
 
 	  tensor0[alpha][beta] = polar;
@@ -220,12 +222,14 @@ void optrot(void)
 
 	  polar = polar_LCX + polar_HXY + polar_LHX1Y1 + polar_LHX2Y2 + polar_LHX1Y2;
 
-	  if((alpha == beta)  && (params.print & 2)) {
+	  if(params.print & 2) {
+	    fprintf(outfile, "\tTensor[%s][%s]\n", cartcomp[alpha], cartcomp[beta]);
 	    fprintf(outfile, "\tpolar_LCX    = %20.12f\n", polar_LCX);
 	    fprintf(outfile, "\tpolar_HXY    = %20.12f\n", polar_HXY);
 	    fprintf(outfile, "\tpolar_LHX1Y1 = %20.12f\n", polar_LHX1Y1);
 	    fprintf(outfile, "\tpolar_LHX1Y2 = %20.12f\n", polar_LHX1Y2);
 	    fprintf(outfile, "\tpolar_LHX2Y2 = %20.12f\n\n", polar_LHX2Y2);
+	    fflush(outfile);
 	  }
 
 	  tensor[i][alpha][beta] = 0.5 * polar;
@@ -326,12 +330,14 @@ void optrot(void)
 
 	  polar = polar_LCX + polar_HXY + polar_LHX1Y1 + polar_LHX2Y2 + polar_LHX1Y2;
 
-	  if((alpha == beta)  && (params.print == 2)) {
+	  if(params.print & 2) {
+	    fprintf(outfile, "\tTensor[%s][%s]\n", cartcomp[alpha], cartcomp[beta]);
 	    fprintf(outfile, "\tpolar_LCX    = %20.15f\n", polar_LCX);
 	    fprintf(outfile, "\tpolar_HXY    = %20.15f\n", polar_HXY);
 	    fprintf(outfile, "\tpolar_LHX1Y1 = %20.15f\n", polar_LHX1Y1);
 	    fprintf(outfile, "\tpolar_LHX1Y2 = %20.15f\n", polar_LHX1Y2);
 	    fprintf(outfile, "\tpolar_LHX2Y2 = %20.15f\n\n", polar_LHX2Y2);
+	    fflush(outfile);
 	  }
 
 	  tensor[i][alpha][beta] += 0.5 * polar;
