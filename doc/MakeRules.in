@@ -18,7 +18,8 @@ default:: install
 $(TARGET_DVI): $(TEX) $(SUBTEX)
 	echo $(srcdir)
 	TEXINPUTS=$(TEXINPUTS);  export TEXINPUTS; \
-        $(LATEX) $<; $(LATEX) $<; $(LATEX) $<
+	BIBINPUTS=$(TEXINPUTS);  export BIBINPUTS; \
+	$(LATEX) $<; $(BIBTEX) $(MAN); $(LATEX) $<; $(LATEX) $<
 
 $(TARGET_PS): $(DVI)
 	$(DVIPS) -o $@ $<

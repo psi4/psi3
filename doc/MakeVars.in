@@ -16,6 +16,7 @@ top_objdir = ../..
 currdir = $(shell echo `pwd`)
 
 LATEX = @LATEX@
+BIBTEX = @BIBTEX@
 DVIPS = @DVIPS@
 LATEX2HTML = @LATEX2HTML@
 MKDIRS = @MKDIRS@
