@@ -76,16 +76,16 @@ of electrons allowed in RAS III.
 In a RAS CI, this is the additional excitation level for allowing
 electrons out of RAS I into RAS II.  The maximum number of holes in RAS I
 is therefore {\tt EX\_LVL + VAL\_EX\_LVL}.  Defaults to zero.
-\item[FROZEN\_DOCC = integer array]\mbox{}\\
+\item[FROZEN\_DOCC = (integer array)]\mbox{}\\
 The number of lowest energy doubly occupied orbitals in each irreducible
 representation from which there will be no excitations.
 The Cotton ordering of the irredicible representations is used.
 The default is the zero vector.
-\item[FROZEN\_UOCC = integer array]\mbox{}\\
+\item[FROZEN\_UOCC = (integer array)]\mbox{}\\
 The number of highest energy unoccupied orbitals in each irreducible
 representation into which there will be no excitations.
 The default is the zero vector.
-\item[RAS1 = integer array]\mbox{}\\
+\item[RAS1 = (integer array)]\mbox{}\\
 The number of orbitals for each irrep making up the RAS I space,
 from which a maximum of {\tt EX\_LVL + VAL\_EX\_LVL} excitations
 are allowed.
@@ -95,12 +95,12 @@ not necessary to specify this or {\tt RAS2} or {\tt RAS3}.
 Note: this keyword must be visible to the \PSItransqt\ program
 also so that orbitals are ordered correctly (placing it in 
 {\tt default} or {\tt psi} should be adequate).
-\item[RAS2 = integer array]\mbox{}\\
+\item[RAS2 = (integer array)]\mbox{}\\
 As above for {\tt RAS1}, but for the RAS II subspace.  
 No restrictions are placed on the occupancy of RAS II orbitals.
 Typically this will correspond to the conventional idea of
 an ``active space'' in multi-reference CI.
-\item[RAS 3 = integer array]\mbox{}\\
+\item[RAS 3 = (integer array)]\mbox{}\\
 As above for {\tt RAS3}, but for the RAS III subspace.
 A maximum of {\tt EX\_LVL} electrons are allowed in RAS III.
 \item[MAXITER = integer]\mbox{}\\
