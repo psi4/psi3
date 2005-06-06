@@ -4,6 +4,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <libipv1/ip_lib.h>
 #include <psifiles.h>
 
@@ -107,4 +108,3 @@ static void fndcor_abort(FILE *infile, FILE *outfile)
    exit(PSI_RETURN_FAILURE);
 }
  
-
