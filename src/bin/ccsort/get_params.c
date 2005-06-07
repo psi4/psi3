@@ -172,10 +172,10 @@ void get_params()
   params.print_lvl = 1;
   errcod = ip_data("PRINT_LVL","%d",&(params.print_lvl),0);
 
-  params.keep_TEIFile = 1;
+  params.keep_TEIFile = 0;
   errcod = ip_boolean("KEEP_TEIFILE",&(params.keep_TEIFile),0);
 
-  params.keep_OEIFile = 1;
+  params.keep_OEIFile = 0;
   errcod = ip_boolean("KEEP_OEIFILE",&(params.keep_OEIFile),0);
 
   params.tolerance = 1e-14;
