@@ -1,5 +1,8 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
+#include <libqt/qt.h>
 #define EXTERN
 #include "globals.h"
 
@@ -123,67 +126,97 @@ void precondition_RHF(dpdfile2 *RIA, dpdbuf4 *RIjAb, double eval)
 
   /* Local correlation decs */
   int nso, nocc, nvir;
-  int *pairdom_len, *pairdom_nrlen, *weak_pairs;
-  double ***V, ***W, *eps_occ, **eps_vir;
   double *T1tilde, *T1bar, **T2tilde, **T2bar, **X1, **X2;
+  psio_address next;
 
   C_irr = RIA->my_irrep;
   nirreps = RIA->params->nirreps;
 
-  if(params.local && local.filter_singles) {
+  if(params.local) {
 
     nso = local.nso;
     nocc = local.nocc;
     nvir = local.nvir;
-    V = local.V;
-    W = local.W;
-    eps_occ = local.eps_occ;
-    eps_vir = local.eps_vir;
-    pairdom_len = local.pairdom_len;
-    pairdom_nrlen = local.pairdom_nrlen;
-    weak_pairs = local.weak_pairs;
 
-    dpd_file2_mat_init(RIA);
-    dpd_file2_mat_rd(RIA);
+    local.pairdom_len = init_int_array(nocc*nocc);
+    local.pairdom_nrlen = init_int_array(nocc*nocc);
+    local.eps_occ = init_array(nocc);
+    local.weak_pairs = init_int_array(nocc*nocc);
+    psio_read_entry(CC_INFO, "Local Pair Domain Length", (char *) local.pairdom_len,
+		    nocc*nocc*sizeof(int));
+    psio_read_entry(CC_INFO, "Local Pair Domain Length (Non-redundant basis)", (char *) local.pairdom_nrlen,
+		    nocc*nocc*sizeof(int));
+    psio_read_entry(CC_INFO, "Local Occupied Orbital Energies", (char *) local.eps_occ,
+		    nocc*sizeof(double));
+    psio_read_entry(CC_INFO, "Local Weak Pairs", (char *) local.weak_pairs,
+		    nocc*nocc*sizeof(int));
 
-    for(i=0; i < nocc; i++) {
-      ii = i * nocc +i;
-
-      if(!pairdom_len[ii]) {
-	fprintf(outfile, "\n\tlocal_filter_T1: Pair ii = [%d] is zero-length, which makes no sense.\n",ii);
-	exit(2);
-      }
-
-      T1tilde = init_array(pairdom_len[ii]);
-      T1bar = init_array(pairdom_nrlen[ii]);
-
-      /* Transform the virtuals to the redundant projected virtual basis */
-      C_DGEMV('t', nvir, pairdom_len[ii], 1.0, &(V[ii][0][0]), pairdom_len[ii], 
-	      &(RIA->matrix[0][i][0]), 1, 0.0, &(T1tilde[0]), 1);
-
-      /* Transform the virtuals to the non-redundant virtual basis */
-      C_DGEMV('t', pairdom_len[ii], pairdom_nrlen[ii], 1.0, &(W[ii][0][0]), pairdom_nrlen[ii], 
-	      &(T1tilde[0]), 1, 0.0, &(T1bar[0]), 1);
-
-      for(a=0; a < pairdom_nrlen[ii]; a++) {
-	tval = eval + eps_occ[i] - eps_vir[ii][a];
-	if(fabs(tval) > 0.0001) T1bar[a] /= tval;
-      }
-
-      /* Transform the new T1's to the redundant projected virtual basis */
-      C_DGEMV('n', pairdom_len[ii], pairdom_nrlen[ii], 1.0, &(W[ii][0][0]), pairdom_nrlen[ii],
-	      &(T1bar[0]), 1, 0.0, &(T1tilde[0]), 1);
-
-      /* Transform the new T1's to the MO basis */
-      C_DGEMV('n', nvir, pairdom_len[ii], 1.0, &(V[ii][0][0]), pairdom_len[ii], 
-	      &(T1tilde[0]), 1, 0.0, &(RIA->matrix[0][i][0]), 1);
-
-      free(T1bar);
-      free(T1tilde);
+    local.W = (double ***) malloc(nocc * nocc * sizeof(double **));
+    local.V = (double ***) malloc(nocc * nocc * sizeof(double **));
+    local.eps_vir = (double **) malloc(nocc * nocc * sizeof(double *));
+    next = PSIO_ZERO;
+    for(ij=0; ij < nocc*nocc; ij++) {
+      local.eps_vir[ij] = init_array(local.pairdom_nrlen[ij]);
+      psio_read(CC_INFO, "Local Virtual Orbital Energies", (char *) local.eps_vir[ij],
+		local.pairdom_nrlen[ij]*sizeof(double), next, &next);
+    }
+    next = PSIO_ZERO;
+    for(ij=0; ij < nocc*nocc; ij++) {
+      local.V[ij] = block_matrix(nvir,local.pairdom_len[ij]);
+      psio_read(CC_INFO, "Local Residual Vector (V)", (char *) local.V[ij][0],
+		nvir*local.pairdom_len[ij]*sizeof(double), next, &next);
+    }
+    next = PSIO_ZERO;
+    for(ij=0; ij < nocc*nocc; ij++) {
+      local.W[ij] = block_matrix(local.pairdom_len[ij],local.pairdom_nrlen[ij]);
+      psio_read(CC_INFO, "Local Transformation Matrix (W)", (char *) local.W[ij][0],
+		local.pairdom_len[ij]*local.pairdom_nrlen[ij]*sizeof(double), next, &next);
     }
 
-    dpd_file2_mat_wrt(RIA);
-    dpd_file2_mat_close(RIA);
+    if(local.filter_singles) {
+
+      dpd_file2_mat_init(RIA);
+      dpd_file2_mat_rd(RIA);
+
+      for(i=0; i < nocc; i++) {
+	ii = i * nocc +i;
+
+	if(!local.pairdom_len[ii]) {
+	  fprintf(outfile, "\n\tlocal_filter_T1: Pair ii = [%d] is zero-length, which makes no sense.\n",ii);
+	  exit(2);
+	}
+
+	T1tilde = init_array(local.pairdom_len[ii]);
+	T1bar = init_array(local.pairdom_nrlen[ii]);
+
+	/* Transform the virtuals to the redundant projected virtual basis */
+	C_DGEMV('t', nvir, local.pairdom_len[ii], 1.0, &(local.V[ii][0][0]), local.pairdom_len[ii], 
+		&(RIA->matrix[0][i][0]), 1, 0.0, &(T1tilde[0]), 1);
+
+	/* Transform the virtuals to the non-redundant virtual basis */
+	C_DGEMV('t', local.pairdom_len[ii], local.pairdom_nrlen[ii], 1.0, &(local.W[ii][0][0]), local.pairdom_nrlen[ii], 
+		&(T1tilde[0]), 1, 0.0, &(T1bar[0]), 1);
+
+	for(a=0; a < local.pairdom_nrlen[ii]; a++) {
+	  tval = eval + local.eps_occ[i] - local.eps_vir[ii][a];
+	  if(fabs(tval) > 0.0001) T1bar[a] /= tval;
+	}
+
+	/* Transform the new T1's to the redundant projected virtual basis */
+	C_DGEMV('n', local.pairdom_len[ii], local.pairdom_nrlen[ii], 1.0, &(local.W[ii][0][0]), local.pairdom_nrlen[ii],
+		&(T1bar[0]), 1, 0.0, &(T1tilde[0]), 1);
+
+	/* Transform the new T1's to the MO basis */
+	C_DGEMV('n', nvir, local.pairdom_len[ii], 1.0, &(local.V[ii][0][0]), local.pairdom_len[ii], 
+		&(T1tilde[0]), 1, 0.0, &(RIA->matrix[0][i][0]), 1);
+
+	free(T1bar);
+	free(T1tilde);
+      }
+
+      dpd_file2_mat_wrt(RIA);
+      dpd_file2_mat_close(RIA);
+    }
   }
   else {
     dpd_file2_mat_init(RIA);
@@ -206,17 +239,6 @@ void precondition_RHF(dpdfile2 *RIA, dpdbuf4 *RIjAb, double eval)
 
   if(params.local) {
 
-    nso = local.nso;
-    nocc = local.nocc;
-    nvir = local.nvir;
-    V = local.V;
-    W = local.W;
-    eps_occ = local.eps_occ;
-    eps_vir = local.eps_vir;
-    pairdom_len = local.pairdom_len;
-    pairdom_nrlen = local.pairdom_nrlen;
-    weak_pairs = local.weak_pairs;
-
     dpd_buf4_mat_irrep_init(RIjAb, 0);
     dpd_buf4_mat_irrep_rd(RIjAb, 0);
 
@@ -228,39 +250,39 @@ void precondition_RHF(dpdfile2 *RIA, dpdbuf4 *RIjAb, double eval)
     for(i=0,ij=0; i < nocc; i++) {
       for(j=0; j < nocc; j++,ij++) {
 
-	if(!weak_pairs[ij]) {
+	if(!local.weak_pairs[ij]) {
 
 	  /* Transform the virtuals to the redundant projected virtual basis */
-	  C_DGEMM('t', 'n', pairdom_len[ij], nvir, nvir, 1.0, &(V[ij][0][0]), pairdom_len[ij],
+	  C_DGEMM('t', 'n', local.pairdom_len[ij], nvir, nvir, 1.0, &(local.V[ij][0][0]), local.pairdom_len[ij],
 		  &(RIjAb->matrix[0][ij][0]), nvir, 0.0, &(X1[0][0]), nvir);
-	  C_DGEMM('n', 'n', pairdom_len[ij], pairdom_len[ij], nvir, 1.0, &(X1[0][0]), nvir,
-		  &(V[ij][0][0]), pairdom_len[ij], 0.0, &(T2tilde[0][0]), nso);
+	  C_DGEMM('n', 'n', local.pairdom_len[ij], local.pairdom_len[ij], nvir, 1.0, &(X1[0][0]), nvir,
+		  &(local.V[ij][0][0]), local.pairdom_len[ij], 0.0, &(T2tilde[0][0]), nso);
 
 	  /* Transform the virtuals to the non-redundant virtual basis */
-	  C_DGEMM('t', 'n', pairdom_nrlen[ij], pairdom_len[ij], pairdom_len[ij], 1.0, 
-		  &(W[ij][0][0]), pairdom_nrlen[ij], &(T2tilde[0][0]), nso, 0.0, &(X2[0][0]), nso);
-	  C_DGEMM('n', 'n', pairdom_nrlen[ij], pairdom_nrlen[ij], pairdom_len[ij], 1.0, 
-		  &(X2[0][0]), nso, &(W[ij][0][0]), pairdom_nrlen[ij], 0.0, &(T2bar[0][0]), nvir);
+	  C_DGEMM('t', 'n', local.pairdom_nrlen[ij], local.pairdom_len[ij], local.pairdom_len[ij], 1.0, 
+		  &(local.W[ij][0][0]), local.pairdom_nrlen[ij], &(T2tilde[0][0]), nso, 0.0, &(X2[0][0]), nso);
+	  C_DGEMM('n', 'n', local.pairdom_nrlen[ij], local.pairdom_nrlen[ij], local.pairdom_len[ij], 1.0, 
+		  &(X2[0][0]), nso, &(local.W[ij][0][0]), local.pairdom_nrlen[ij], 0.0, &(T2bar[0][0]), nvir);
 
 	  /* Divide the new amplitudes by the denominators */
-	  for(a=0; a < pairdom_nrlen[ij]; a++) {
-	    for(b=0; b < pairdom_nrlen[ij]; b++) {
-	      tval = eval + eps_occ[i]+eps_occ[j]-eps_vir[ij][a]-eps_vir[ij][b];
+	  for(a=0; a < local.pairdom_nrlen[ij]; a++) {
+	    for(b=0; b < local.pairdom_nrlen[ij]; b++) {
+	      tval = eval + local.eps_occ[i]+local.eps_occ[j]-local.eps_vir[ij][a]-local.eps_vir[ij][b];
 	      if(fabs(tval) > 0.0001) T2bar[a][b] /= tval;
 	    }
 	  }
 
 	  /* Transform the new T2's to the redundant virtual basis */
-	  C_DGEMM('n', 'n', pairdom_len[ij], pairdom_nrlen[ij], pairdom_nrlen[ij], 1.0, 
-		  &(W[ij][0][0]), pairdom_nrlen[ij], &(T2bar[0][0]), nvir, 0.0, &(X1[0][0]), nvir);
-	  C_DGEMM('n','t', pairdom_len[ij], pairdom_len[ij], pairdom_nrlen[ij], 1.0, 
-		  &(X1[0][0]), nvir, &(W[ij][0][0]), pairdom_nrlen[ij], 0.0, &(T2tilde[0][0]), nso);
+	  C_DGEMM('n', 'n', local.pairdom_len[ij], local.pairdom_nrlen[ij], local.pairdom_nrlen[ij], 1.0, 
+		  &(local.W[ij][0][0]), local.pairdom_nrlen[ij], &(T2bar[0][0]), nvir, 0.0, &(X1[0][0]), nvir);
+	  C_DGEMM('n','t', local.pairdom_len[ij], local.pairdom_len[ij], local.pairdom_nrlen[ij], 1.0, 
+		  &(X1[0][0]), nvir, &(local.W[ij][0][0]), local.pairdom_nrlen[ij], 0.0, &(T2tilde[0][0]), nso);
 
 	  /* Transform the new T2's to the MO basis */
-	  C_DGEMM('n', 'n', nvir, pairdom_len[ij], pairdom_len[ij], 1.0, 
-		  &(V[ij][0][0]), pairdom_len[ij], &(T2tilde[0][0]), nso, 0.0, &(X2[0][0]), nso);
-	  C_DGEMM('n', 't', nvir, nvir, pairdom_len[ij], 1.0, &(X2[0][0]), nso,
-		  &(V[ij][0][0]), pairdom_len[ij], 0.0, &(RIjAb->matrix[0][ij][0]), nvir);
+	  C_DGEMM('n', 'n', nvir, local.pairdom_len[ij], local.pairdom_len[ij], 1.0, 
+		  &(local.V[ij][0][0]), local.pairdom_len[ij], &(T2tilde[0][0]), nso, 0.0, &(X2[0][0]), nso);
+	  C_DGEMM('n', 't', nvir, nvir, local.pairdom_len[ij], 1.0, &(X2[0][0]), nso,
+		  &(local.V[ij][0][0]), local.pairdom_len[ij], 0.0, &(RIjAb->matrix[0][ij][0]), nvir);
 	}
 	else  /* This must be a neglected weak pair; force it to zero */
 	  memset((void *) RIjAb->matrix[0][ij], 0, nvir*nvir*sizeof(double));
@@ -274,6 +296,22 @@ void precondition_RHF(dpdfile2 *RIA, dpdbuf4 *RIjAb, double eval)
 
     dpd_buf4_mat_irrep_wrt(RIjAb, 0);
     dpd_buf4_mat_irrep_close(RIjAb, 0);
+
+    /* Free Local Memory */
+    for(i=0; i < nocc*nocc; i++) {
+      free_block(local.W[i]);
+      free_block(local.V[i]);
+      free(local.eps_vir[i]);
+    }
+    free(local.W);
+    free(local.V);
+    free(local.eps_vir);
+
+    free(local.eps_occ);
+    free(local.pairdom_len);
+    free(local.pairdom_nrlen);
+    free(local.weak_pairs);
+
   }
   else {
 

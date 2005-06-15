@@ -7,7 +7,7 @@
 #define EXTERN
 #include "globals.h"
 
-void get_params()
+void get_params(void)
 {
   int errcod, iconv;
   char *cachetype = NULL;
