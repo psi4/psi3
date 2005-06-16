@@ -1314,16 +1314,14 @@ sub seek_lambda
 sub seek_casscf
 {
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";
-  @datafile = <OUT>;
-  close(OUT);
 
-  @line1 = split(/ +/, $datafile[0]);
-  $niter = $line1[1];
-  @line2 = split(/ +/, $datafile[$niter]);
-  $casscf = $line2[5];
-
-  if($casscf != 0.0) {
-    return $casscf;
+#Added to handle David's new CASSCF output format
+  while (<OUT>) {
+      if (/Final CASSCF Energy/) {
+	  @data = split(/=/, $_);
+	  $casscf = $data[2];
+	  return $casscf;
+      }
   }
 
   printf "Error: Could not find CASSCF energy in $_[0].\n";
