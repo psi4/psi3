@@ -278,14 +278,14 @@ int make_disp_nosymm(cartesians &carts, internals &simples, salc_set &all_salcs)
 
   cnt = -1;
   for (i=0; i<ndisps; ++i) {
-    lbl = all_salcs.get_label(i);
+    lbl = all_salcs.get_label(i); /* returns pointer */
     for (j=0; j<syminfo.nirreps; ++j) {
       if ( strcmp( lbl, syminfo.irrep_lbls[j]) == 0) {
         irrep_per_disp[++cnt] = j;
         irrep_per_disp[++cnt] = j;
       }
     }
-    free(lbl);
+    // lbl pointer is freed when all_salcs gets deleted
   } 
 
   fprintf(outfile,"Irrep per displacement:\n");
