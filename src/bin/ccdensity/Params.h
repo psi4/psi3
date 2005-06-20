@@ -20,8 +20,8 @@ struct Params {
   int L_irr;
   int R_irr;
   int G_irr;
-  double L_root;
-  double R_root;
+  int L_root;
+  int R_root;
   char *wfn;
   double overlap1; /* <L1|R1> */
   double overlap2; /* <L2|R2> */
