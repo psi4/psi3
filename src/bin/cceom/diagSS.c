@@ -373,7 +373,7 @@ void diagSS(int C_irr) {
 		      lambda[k]-lambda_old[k], norm); 
 
       if ( (norm > eom_params.residual_tol_SS) ||
-	   (fabs(lambda[k]-lambda_old[k]) > eom_params.eval_tol) ) {
+	   (fabs(lambda[k]-lambda_old[k]) > eom_params.eval_tol_SS) ) {
         if (pf) fprintf(outfile,"%7s\n","N");
 	/*
 	  if (params.eom_ref == 0) precondition_SS_RHF(&RIA, lambda[k]);

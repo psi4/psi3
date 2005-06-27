@@ -97,6 +97,10 @@ void get_eom_params()
   errcod = ip_data("EVAL_TOL","%d",&(iconv),0);
   if(errcod == IPE_OK) eom_params.eval_tol = 1.0*pow(10.0,(double) -iconv);
 
+  eom_params.eval_tol_SS = 1E-6;
+  errcod = ip_data("EVAL_TOL_SS","%d",&(iconv),0);
+  if(errcod == IPE_OK) eom_params.eval_tol_SS = 1.0*pow(10.0,(double) -iconv);
+
   eom_params.schmidt_add_residual_tol = 1E-3;
   errcod = ip_data("SCHMIDT_ADD_RESIDUAL_TOL","%d",&(iconv),0);
   if(errcod == IPE_OK) eom_params.schmidt_add_residual_tol = 1.0*pow(10.0,(double) -iconv);
@@ -125,7 +129,9 @@ void get_eom_params()
   fprintf(outfile, "\tPrint HbarSS iterations?    = %5d\n", eom_params.print_singles);
   fprintf(outfile, "\tExcitation range for HBarSS = %5d\n", eom_params.excitation_range);
   fprintf(outfile, "\tEigenvalue tolerance        = %5.1e\n", eom_params.eval_tol);
+  fprintf(outfile, "\tEigenvalue toleranceSS      = %5.1e\n", eom_params.eval_tol_SS);
   fprintf(outfile, "\tResidual vector tolerance   = %5.1e\n", eom_params.residual_tol);
+  fprintf(outfile, "\tResidual vector toleranceSS = %5.1e\n", eom_params.residual_tol_SS);
   fprintf(outfile, "\tComplex tolerance           = %5.1e\n", eom_params.complex_tol);
   fprintf(outfile, "\tRoot for properties         = %5d\n", eom_params.prop_root);
   fprintf(outfile, "\tSave all R vectors          = %5d\n", eom_params.save_all);

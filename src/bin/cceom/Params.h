@@ -17,6 +17,7 @@ struct Eom_params {
   int *states_per_irrep;
   int *cs_per_irrep;
   double eval_tol;
+  double eval_tol_SS;
   double residual_tol;
   int prop_root;
   int prop_sym;
