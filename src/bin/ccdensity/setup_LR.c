@@ -32,15 +32,14 @@ void setup_LR(void)
     psio_read_entry(CC_INFO, lbl, (char *) &(params.cceom_energy), sizeof(double));
   }
   else if (!strcmp(params.wfn,"EOM_CCSD")) { /* use last state calculated */
+    if (!ip_exist("STATES_PER_IRREP",0)) {
+      fprintf(outfile,"Must have states_per_irrep where ccdensity can read it.\n");
+      exit(1);
+    }
     for (i=0;i<moinfo.nirreps;++i) {
       j=0;
-      if (ip_exist("STATES_PER_IRREP",0)) {
-        ip_data("STATES_PER_IRREP","%d",&j,1,i);
-      }
-      else {
-        fprintf(outfile,"Must have states_per_irrep where ccdensity can read it.\n");
-        exit(1);
-      }
+      ip_data("STATES_PER_IRREP","%d",&j,1,i);
+
       if (j>0) {
         params.L_irr = L_irr = i^moinfo.sym;
         params.L_root = L_root = j-1;
