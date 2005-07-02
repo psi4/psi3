@@ -17,6 +17,7 @@ psi: (
   wfn = scf
   reference = rhf
   dertype = response
+  mu_irreps = (2 3 0)
   omega = 0.1
   basis = "DZ"
   units = bohr
