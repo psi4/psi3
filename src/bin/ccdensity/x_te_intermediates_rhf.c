@@ -668,7 +668,7 @@ void x_te_intermediates_rhf(void)
     dpd_buf4_close(&V);
 
     dpd_buf4_init(&T2, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tauIjAb");
-    dpd_buf4_sort(&T2, CC_TAMPS, qprs, 22, 28, "taujIAb");
+    dpd_buf4_sort(&T2, CC_TAMPS, qprs, 23, 28, "taujIAb");
     dpd_buf4_close(&T2);
   }
 }
