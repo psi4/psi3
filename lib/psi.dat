@@ -561,8 +561,8 @@ psi: (
   % -------------------------------- EOM CC3 Procedures
   % Procedure for the EOM_CC3 energy
   EOM_CC3Energy = ($ints $scf $transqt $ccsort $ccenergy $cchbar $cceom)
-  EOM_CC3RHFEnergy = ERROR
-  EOM_CC3ROHFEnergy = ERROR 
+  EOM_CC3RHFEnergy = ($EOM_CC3Energy $done)
+  EOM_CC3ROHFEnergy = ($EOM_CC3Energy $done)
   EOM_CC3UHFEnergy = ($EOM_CC3Energy $done) 
   EOM_CC3TwoConEnergy = ERROR
 
@@ -570,7 +570,7 @@ psi: (
     repeat NUM_DISP $findif_next $findif_input $EOM_CC3Energy $findif_energy_save end
     $findif_grad_energy $geomupdate end $done)
   EOM_CC3RHFEnergyOpt = ERROR
-  EOM_CC3ROHFEnergyOpt = ERROR 
+  EOM_CC3ROHFEnergyOpt = ($EOM_CC3EnergyOpt $done)
   EOM_CC3UHFEnergyOpt = ($EOM_CC3EnergyOpt $done)
   EOM_CC3TwoConEnergyOpt = ERROR
 
@@ -580,7 +580,7 @@ psi: (
      $findif_next $findif_input $EOM_CC3Energy $findif_energy_save end
      $findif_freq_energy_cart $done)
   EOM_CC3RHFEnergyFreq  = ERROR
-  EOM_CC3ROHFEnergyFreq  = ERROR 
+  EOM_CC3ROHFEnergyFreq  = $EOM_CC3EnergyFreq
   EOM_CC3UHFEnergyFreq  = $EOM_CC3EnergyFreq
   EOM_CC3TwoConEnergyFreq  = $EOM_CC3EnergyFreq
 
