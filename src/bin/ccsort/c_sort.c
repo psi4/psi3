@@ -97,6 +97,12 @@ void c_sort(void)
     dpd_buf4_init(&C, CC_CINTS, 0, 10, 10, 10, 10, 0, "C <ia||jb>");
     dpd_buf4_sort(&C, CC_CINTS, pqsr, 10, 11, "C <ia||jb> (ia,bj)");
     dpd_buf4_close(&C);
+
+    /* <ai|bj> (cchbar/Wabei_RHF.c) */
+    dpd_buf4_init(&C, CC_CINTS, 0, 10, 10, 10, 10, 0, "C <ia|jb>");
+    dpd_buf4_sort(&C, CC_CINTS, qpsr, 11, 11, "C <ai|bj>");
+    dpd_buf4_close(&C);
+
   }
 
 }
