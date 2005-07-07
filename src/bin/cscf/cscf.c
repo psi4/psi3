@@ -223,7 +223,8 @@ int main(argc,argv)
                                                       
   /* CDS 3/6/02 add flag to do only orthogonalization */
   errcod = ip_string("WFN",&wfn,0);
-  if (strcmp(wfn,"DETCAS")==0) orthog_only = 1;
+  if (strcmp(wfn,"DETCAS")==0 || strcmp(wfn,"CASSCF")==0 ||
+      strcmp(wfn,"RASSCF")==0) orthog_only = 1;
   else orthog_only = 0;
   ip_boolean("ORTHOG_ONLY",&orthog_only,0);
   free(wfn);
