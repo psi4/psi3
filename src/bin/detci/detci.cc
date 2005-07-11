@@ -131,7 +131,7 @@ extern void tpdm(struct stringwr **alplist, struct stringwr **betlist,
           int nroots, int Inunits, int Ifirstunit,
           int nroots, int Jnunits, int Jfirstunit,
           int targetfile, int writeflag, int printflag);
-
+extern void calc_mrpt(void);
 
 main(int argc, char *argv[])
 {
@@ -168,6 +168,11 @@ main(int argc, char *argv[])
 
    if (Parameters.genci) 
      diag_h_genci(alplist, betlist);
+
+   /*
+   else if (Parameters.mrpt)
+     calc_mrpt();
+   */
 
    else {
      if (Parameters.bendazzoli) /* form the Bendazzoli OV arrays            */

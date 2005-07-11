@@ -192,8 +192,8 @@ CIvect::CIvect() // Default constructor
 }
 
 
-CIvect::CIvect(unsigned long vl, int nb, int incor, int ms0, int *iac,
-         int *ibc, int *ias, int *ibs, unsigned long *offs, int nac, int nbc, 
+CIvect::CIvect(BIGINT vl, int nb, int incor, int ms0, int *iac,
+         int *ibc, int *ias, int *ibs, BIGINT *offs, int nac, int nbc, 
          int nirr, int cdpirr, int mxv, int nu, 
          int funit, int *fablk, int *lablk, int **dc)
 {
@@ -254,8 +254,8 @@ CIvect::CIvect(unsigned long vl, int nb, int incor, int ms0, int *iac,
 
 
 
-void CIvect::set(unsigned long vl, int nb, int incor, int ms0, int *iac,
-         int *ibc, int *ias, int *ibs, unsigned long *offs, int nac, int nbc, 
+void CIvect::set(BIGINT vl, int nb, int incor, int ms0, int *iac,
+         int *ibc, int *ias, int *ibs, BIGINT *offs, int nac, int nbc, 
          int nirr, int cdpirr, int mxv, int nu, int fu, int *fablk, 
          int *lablk, int **dc)
 {
@@ -283,7 +283,7 @@ void CIvect::set(unsigned long vl, int nb, int incor, int ms0, int *iac,
    Ib_code = init_int_array(nb);
    Ia_size = init_int_array(nb);
    Ib_size = init_int_array(nb);
-   offset = (unsigned long *) malloc (nb * sizeof(unsigned long));
+   offset = (BIGINT *) malloc (nb * sizeof(BIGINT));
  
    for (i=0; i<nb; i++) {
       Ia_code[i] = iac[i];
@@ -858,7 +858,7 @@ double CIvect::blk_max_abs_vals(int i, int offdiag, int nval, int *iac,
 }
 
 
-void CIvect::det2strings(unsigned long det, int *alp_code, int *alp_idx,
+void CIvect::det2strings(BIGINT det, int *alp_code, int *alp_idx,
          int *bet_code, int *bet_idx)
 {
    int i;
@@ -870,16 +870,16 @@ void CIvect::det2strings(unsigned long det, int *alp_code, int *alp_idx,
    *alp_code = Ia_code[i];
    *bet_code = Ib_code[i];
 
-   *alp_idx = (det - offset[i]) / Ib_size[i];
-   *bet_idx = (det - offset[i]) % Ib_size[i];
+   *alp_idx = (int) ((det - offset[i]) / (BIGINT) Ib_size[i]);
+   *bet_idx = ((det - offset[i]) % (BIGINT) Ib_size[i]);
 
 }
 
-unsigned long CIvect::strings2det(int alp_code, int alp_idx,
+BIGINT CIvect::strings2det(int alp_code, int alp_idx,
       int bet_code, int bet_idx)
 {
    int blknum;
-   unsigned long addr;
+   BIGINT addr;
 
    blknum = decode[alp_code][bet_code];
    addr = offset[blknum];

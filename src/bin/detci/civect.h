@@ -1,6 +1,8 @@
 #ifndef CIVECT_H
 #define CIVECT_H
 
+typedef unsigned long long int BIGINT;
+
 /*
 ** CIVECT.H
 **
@@ -13,7 +15,7 @@
 
 class CIvect {
    protected:
-      unsigned long vectlen;     /* total vector length */ 
+      BIGINT vectlen;            /* total vector length */ 
       unsigned long buffer_size; /* size of largest in-core chunk */
       int num_blocks;            /* number of blocks in vector */
       int icore;                 /* in-core option. 1 = whole vector in-core,
@@ -24,7 +26,7 @@ class CIvect {
       int *Ib_code;              /* each block's beta string id code */
       int *Ia_size;              /* num alp strings in each block */
       int *Ib_size;              /* num bet strings in each block */
-      unsigned long *offset;     /* offsets for absolute numbering.  This
+      BIGINT *offset;            /* offsets for absolute numbering.  This
                                     is a word offset, not a byte offset,
                                     so unsigned long should be ok, and
                                     shouldn't have to make this PSI_FPTR */
@@ -74,15 +76,15 @@ class CIvect {
 
    public:
       CIvect();
-      CIvect(unsigned long vl, int nb, int incor, int ms0, int *iac,
-         int *ibc, int *ias, int *ibs, unsigned long *offs, int nac, int nbc, 
+      CIvect(BIGINT vl, int nb, int incor, int ms0, int *iac,
+         int *ibc, int *ias, int *ibs, BIGINT *offs, int nac, int nbc, 
          int nirr, int cdperirr, int maxvect, int nunits, 
          int funit, int *fablk, int *lablk, int **dc);
       ~CIvect();
 
       double * buf_malloc(void);
-      void set(unsigned long vl, int nb, int incor, int ms0, int *iac,
-         int *ibc, int *ias, int *ibs, unsigned long *offs, int nac, int nbc, 
+      void set(BIGINT vl, int nb, int incor, int ms0, int *iac,
+         int *ibc, int *ias, int *ibs, BIGINT *offs, int nac, int nbc, 
          int nirr, int cdperirr, int maxvect, int nunits, int funit, 
          int *fablk, int *lablk, int **dc);
       void print(FILE *outfile);
@@ -95,9 +97,9 @@ class CIvect {
          double *coeff, int neg_only);
       double blk_max_abs_vals(int i, int offdiag, int nval, int *iac, int *ibc,
          int *iaidx, int *ibidx, double *coeff, double minval, int neg_only);
-      void det2strings(unsigned long det, int *alp_code, int *bet_code,
+      void det2strings(BIGINT det, int *alp_code, int *bet_code,
          int *alp_idx, int *bet_idx);
-      unsigned long strings2det(int alp_code, int alp_idx,
+      BIGINT strings2det(int alp_code, int alp_idx,
          int bet_code, int bet_idx);
       void diag_mat_els(struct stringwr **alplist, struct stringwr
          **betlist, double *oei, double *tei, double efzc, int na, int nb, 

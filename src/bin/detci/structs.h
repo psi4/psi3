@@ -15,6 +15,8 @@
 
 /*** DEFINES ***/
 
+typedef unsigned long long int BIGINT; /* should be 64bits even on 32bit arch */
+
 #define CI_BLK_MAX 650
 #define IOFF_MAX 50604
 
@@ -490,13 +492,13 @@ struct params {
 ** beta) and determines the CI vector block number.
 */
 struct ci_blks {
-   unsigned long vectlen;     /* total number of elements in the CI vector */
+   BIGINT vectlen;            /* total number of elements in the CI vector */
    int num_blocks;            /* number of blocks in the CI vector */
    int Ia_code[CI_BLK_MAX];   /* gives the block's alpha string code */ 
    int Ib_code[CI_BLK_MAX];   /* gives the block's beta string code */ 
    int Ia_size[CI_BLK_MAX];   /* num of alp strings in the block */
    int Ib_size[CI_BLK_MAX];   /* num of bet strings in the block */
-   unsigned long offset[CI_BLK_MAX];  /* offset for absolute numbering */
+   BIGINT offset[CI_BLK_MAX];  /* offset for absolute numbering */
    int **decode;              /* gives the block number for a given pair
                                   of alpha and beta codes */
    int num_alp_codes;         /* number of alpha codes in decode matrix */
