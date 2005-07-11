@@ -36,7 +36,7 @@
 #define PSIF_DETCAS         60
 
 #define PSIF_MO_R12         79
-#define PSIF_MO_R12T1       80
+#define PSIF_MO_R12T2       80
 
 #define PSIF_SO_PKSUPER1    92
 #define PSIF_SO_PKSUPER2    93
