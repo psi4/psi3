@@ -14,10 +14,9 @@ void v_normalize(double *A, PSI_FPTR index, int buf_size,
                  int extra_buf, int num_buf, int d_file);
 double *v_schmidt(double *buffer4, double *buffer5, int buf_size, 
                   int extra_buf, int num_buf, int N, int L, int b_file);
-void det2strings(unsigned long det, int *alp_code, int *alp_idx,
+void det2strings(BIGINT det, int *alp_code, int *alp_idx,
                  int *bet_code, int *bet_idx);
-unsigned long strings2det(int alp_code, int alp_idx, int bet_code, 
-                          int bet_idx);
+BIGINT strings2det(int alp_code, int alp_idx, int bet_code, int bet_idx);
 void unit_guess(int alp_code, int alp_idx, int bet_code, int bet_idx,
                 int switch_buf3, double *buffer, int buf_size,
                 int num_buf, int extra_buf, PSI_FPTR b_file,

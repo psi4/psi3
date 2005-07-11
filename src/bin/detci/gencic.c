@@ -309,7 +309,7 @@ double *v_schmidt(double *buffer4, double *buffer5, int buf_size, int extra_buf,
  return(dotval);
 }
 
-void det2strings(unsigned long det, int *alp_code, int *alp_idx,
+void det2strings(BIGINT det, int *alp_code, int *alp_idx,
                  int *bet_code, int *bet_idx)
 {
    int i;
@@ -326,11 +326,10 @@ void det2strings(unsigned long det, int *alp_code, int *alp_idx,
 
 }
 
-unsigned long strings2det(int alp_code, int alp_idx,
-                          int bet_code, int bet_idx)
+BIGINT strings2det(int alp_code, int alp_idx, int bet_code, int bet_idx)
 {
    int blknum;
-   unsigned long addr;
+   BIGINT addr;
 
    blknum = CIblks.decode[alp_code][bet_code];
    addr = CIblks.offset[blknum];
