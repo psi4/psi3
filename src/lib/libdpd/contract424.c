@@ -124,11 +124,10 @@ int dpd_contract424(dpdbuf4 *X, dpdfile2 *Y, dpdbuf4 *Z, int sum_X,
 
     if(core_total > memoryd) incore = 0;
 
-    /* Force incore for all but a "normal" 221 contraction for now */
+    /* Force incore for all but a "normal" 424 contraction for now */
     if(Ztrans || sum_X == 0 || sum_X == 1 || sum_X == 2) incore = 1;
 
     if(incore) { 
-
 /*       dpd_buf4_scm(Z, beta); */
       dpd_buf4_mat_irrep_init(Z, hzbuf);
       if(fabs(beta) > 0.0) dpd_buf4_mat_irrep_rd(Z, hzbuf);
