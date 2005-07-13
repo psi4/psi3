@@ -314,7 +314,6 @@ int dpd_contract244(dpdfile2 *X, dpdbuf4 *Y, dpdbuf4 *Z, int sum_X, int sum_Y,
 #endif
       dpd_buf4_mat_irrep_row_init(Y, hybuf);
       dpd_buf4_mat_irrep_row_init(Z, hzbuf);
-      fprintf(outfile, "out-of-core contract 244\n");
 			
       /* Loop over rows of the Y factor and the target */
       for(pq=0; pq < Z->params->rowtot[hzbuf]; pq++) {
