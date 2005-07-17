@@ -122,7 +122,7 @@ void mp2r12_energy(void)
        */
     psio_open(PSIF_MO_TEI, PSIO_OPEN_OLD);
     psio_open(PSIF_MO_R12, PSIO_OPEN_OLD);
-    psio_open(PSIF_MO_R12T1, PSIO_OPEN_OLD);
+    psio_open(PSIF_MO_R12T2, PSIO_OPEN_OLD);
     for(isym=0; isym < nirreps; isym++) {
       ifirst = focact[isym];
       ilast = locact[isym];
@@ -289,7 +289,7 @@ void mp2r12_energy(void)
 		    kl = INDEX(k,l);
 		    
 		    sprintf(kl_key_string,"Block_%d_x_%d_y",k,l);
-		    psio_read_entry(PSIF_MO_R12T1, kl_key_string, (char *)xy_buf,
+		    psio_read_entry(PSIF_MO_R12T2, kl_key_string, (char *)xy_buf,
 				    nmo*nmo*sizeof(double));
 		    spin_pfac = 1.0 - 2.0*spin;
 		    for(p=0,pqtri=0; p < nmo; p++)
@@ -302,7 +302,7 @@ void mp2r12_energy(void)
 		      }
 
 		    sprintf(kl_key_string,"Block_%d_x_%d_y",l,k);
-		    psio_read_entry(PSIF_MO_R12T1, kl_key_string, (char *)xy_buf,
+		    psio_read_entry(PSIF_MO_R12T2, kl_key_string, (char *)xy_buf,
 				    nmo*nmo*sizeof(double));
 		    spin_pfac = 1.0 - 2.0*spin;
 		    for(p=0,pqtri=0; p < nmo; p++)
@@ -433,7 +433,7 @@ void mp2r12_energy(void)
 
     psio_close(PSIF_MO_TEI, 1);
     psio_close(PSIF_MO_R12, 1);
-    psio_close(PSIF_MO_R12T1, 1);
+    psio_close(PSIF_MO_R12T2, 1);
   }
 
   fprintf(outfile, "\n\tMBPT(2) Energy        = %20.10lf\n", mp2_energy);

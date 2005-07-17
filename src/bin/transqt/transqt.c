@@ -347,7 +347,7 @@ void get_parameters(void)
     params.tei_trans_type = MAKE_OGOG;
     params.tei_type = R12T1;
     params.src_tei_file = PSIF_SO_R12T1;
-    params.mfile = PSIF_MO_R12T1;
+    params.mfile = PSIF_MO_R12T2;
     params.do_oei = 0;
   }
   else {
