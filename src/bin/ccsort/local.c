@@ -40,7 +40,7 @@ void transL(void);
 void sortL(void);
 void transmu(void);
 void sortmu(void);
-void build_A_RHF(void);
+void build_F_RHF(void);
 void build_B_RHF(void);
 void cphf_F(void);
 void cphf_B(void);
@@ -347,14 +347,16 @@ void local_init(void)
   fprintf(outfile, "\n");
   if(local.domain_polar) {
     fprintf(outfile, "\tGenerating electric-field CPHF solutions for local-CC.\n");
+    fflush(outfile);
     transmu();
     sortmu();
-    build_A_RHF();
+    build_F_RHF();
     cphf_F();
     local_polar(domain, domain_len, natom, aostart, aostop);
   }
   if(local.domain_mag) {
     fprintf(outfile, "\tGenerating magnetic-field CPHF solutions for local-CC.\n");
+    fflush(outfile);
     transL();
     sortL();
     build_B_RHF();
@@ -794,13 +796,12 @@ void local_done(void)
     free(moinfo.C);
   }
 
-  free(local.eps_occ);
+  free_int_matrix(local.pairdomain, nocc*nocc);
+  free_int_matrix(local.domain, nocc);
   for(i=0; i < nocc*nocc; i++) {
-    if(local.pairdom_len[i]) {
-      free_block(local.W[i]);
-      free_block(local.V[i]);
-      free(local.eps_vir[i]);
-    }
+    free_block(local.W[i]);
+    free_block(local.V[i]);
+    free(local.eps_vir[i]);
   }
   free(local.W);
   free(local.V);
@@ -809,8 +810,8 @@ void local_done(void)
   free(local.aostart);
   free(local.aostop);
 
-  free_int_matrix(local.pairdomain, nocc*nocc);
-  free_int_matrix(local.domain, nocc);
+  free(local.eps_occ);
+  free(local.domain_len);
   free(local.pairdom_len);
   free(local.pairdom_nrlen);
   free(local.weak_pairs);

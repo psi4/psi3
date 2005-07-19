@@ -172,5 +172,5 @@ void cphf_F(void)
   dpd_file2_close(&mu);
 
   dpd_buf4_close(&A);
-  psio_close(PSIF_MO_HESS, 1);
+  psio_close(PSIF_MO_HESS, 0);
 }
