@@ -46,8 +46,8 @@ void Wabei_RHF_FT2_a(void)
 
   /* Zaeib <-- <am|ef> [ 2 t_mi^fb - t_mi^bf ] */
 
+   dpd_buf4_init(&Z, CC_TMP2, 0, 5, 10, 5, 10, 0, "Z(AE,ib)");
   dpd_buf4_init(&F, CC_FINTS, 0, 11, 5, 11, 5, 0, "F <ai|bc>");
-  dpd_buf4_init(&Z, CC_TMP2, 0, 5, 10, 5, 10, 0, "Z(AE,ib)");
   dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "2 tIAjb - tIBja");
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_init(&T2, h);
@@ -113,7 +113,7 @@ void Wabei_RHF_FT2_a(void)
 	dpd_buf4_mat_irrep_rd_block(&Z, Gae, Z.params->start13[Gae][A], virtpi[Ge]);
 
 	/* contract W[e][mf] * T[mf][ib] -> Z[e][ib] */
-	if(virtpi[Ge] && Z.params->coltot[Gmf]) 
+	if(virtpi[Ge] && Z.params->coltot[Gmf])
 	  C_DGEMM('n','n', virtpi[Ge], Z.params->coltot[Gmf], Z.params->coltot[Gmf], 1.0,
 		  W[Ge][0], Z.params->coltot[Gmf], T2.matrix[Gmf][0], Z.params->coltot[Gmf],
 		  1.0, Z.matrix[Gae][0], Z.params->coltot[Gmf]);

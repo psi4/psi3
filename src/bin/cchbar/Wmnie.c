@@ -59,6 +59,7 @@ void Wmnie_build(void) {
     dpd_buf4_close(&D);
     /* W(Mn,Ie) --> W(Mn,eI) */
     dpd_buf4_sort(&WMnIe, CC_HBAR, pqsr, 0, 11, "WMnIe (Mn,eI)");
+    dpd_buf4_sort(&WMnIe, CC_HBAR, qpsr, 0, 11, "WMnIe (nM,eI)");
     dpd_buf4_close(&WMnIe);
 
     /* make spin-combinations */

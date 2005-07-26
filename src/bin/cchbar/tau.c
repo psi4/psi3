@@ -146,6 +146,7 @@ void tau_build(void)
 
     /* This will generate the tauBA and tauIjbA files from tauIjAb */
     dpd_buf4_sort(&tauIjAb, CC_TAMPS, pqsr, 0, 5, "tauIjbA");
+    dpd_buf4_sort(&tauIjAb, CC_TAMPS, psqr, 10, 10, "tauIjAb (Ib,jA)");
     dpd_buf4_close(&tauIjAb);
     dpd_buf4_init(&tauIjbA, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjbA");
     dpd_buf4_sort(&tauIjbA, CC_TAMPS, qprs,  0, 5, "tauiJaB");
