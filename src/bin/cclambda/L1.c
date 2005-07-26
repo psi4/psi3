@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <libdpd/dpd.h>
+#include <libqt/qt.h>
 #define EXTERN
 #include "globals.h"
 
@@ -16,6 +17,7 @@ void L1_build(struct L_Params L_params) {
   dpdbuf4 WAMEF, Wamef, WAmEf, WaMeF, W;
   dpdbuf4 Z, D;
   dpdfile2 XLD;
+  int Gim, Gi, Gm, Ga, Gam, nrows, ncols, A, a, am;
   int L_irr;
   L_irr = L_params.irrep;
 
@@ -199,11 +201,47 @@ void L1_build(struct L_Params L_params) {
   }
 
   /* L1 RHS += 1/2 Limef*Wefam */
+  /* L(i,a) += [ 2 L(im,ef) - L(im,fe) * W(am,ef) ] */
+  /* Note: W(am,ef) is really Wabei (ei,ab) */
   if(params.ref == 0) { /** RHF **/
 
     dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAbEi (Ei,Ab)");
     dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "2 LIjAb - LIjBa");
-    dpd_contract442(&L2, &W, &newLIA, 0, 0, 1.0, 1.0);
+    /*    dpd_contract442(&L2, &W, &newLIA, 0, 0, 1.0, 1.0); */
+    dpd_file2_mat_init(&newLIA);
+    dpd_file2_mat_rd(&newLIA);
+    for(Gam=0; Gam < moinfo.nirreps; Gam++) {
+      Gim = Gam; /* L2, L1, and W are totally symmetric */
+      dpd_buf4_mat_irrep_init(&L2, Gim);
+      dpd_buf4_mat_irrep_rd(&L2, Gim);
+      dpd_buf4_mat_irrep_shift13(&L2, Gim);
+
+      for(Gi=0; Gi < moinfo.nirreps; Gi++) {
+	Ga = Gi; /* L1 is totally symmetric */
+	Gm = Ga ^ Gam;
+	W.matrix[Gam] = dpd_block_matrix(moinfo.occpi[Gm],W.params->coltot[Gam]);
+
+	nrows = moinfo.occpi[Gi];
+	ncols = moinfo.occpi[Gm] * W.params->coltot[Gam];
+
+	for(A=0; A < moinfo.virtpi[Ga]; A++) {
+	  a = moinfo.vir_off[Ga] + A;
+	  am = W.row_offset[Gam][a];
+
+	  dpd_buf4_mat_irrep_rd_block(&W, Gam, am, moinfo.occpi[Gm]);
+
+	  if(nrows && ncols && moinfo.virtpi[Ga]) 
+	    C_DGEMV('n',nrows,ncols,1,L2.shift.matrix[Gim][Gi][0],ncols,W.matrix[Gam][0],1,
+		    1, &(newLIA.matrix[Gi][0][A]), moinfo.virtpi[Ga]);
+
+	}
+
+	dpd_free_block(W.matrix[Gam], moinfo.occpi[Gm], W.params->coltot[Gam]);
+      }
+      dpd_buf4_mat_irrep_close(&L2, Gim);
+    }
+    dpd_file2_mat_wrt(&newLIA);
+    dpd_file2_mat_close(&newLIA);
     dpd_buf4_close(&L2);
     dpd_buf4_close(&W);
 
