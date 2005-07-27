@@ -42,82 +42,65 @@ void WejabL2(int L_irr)
 
     dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
 
-    if (!strcmp(params.wfn,"CC2")) {
-      dpd_buf4_init(&Z, CC_TMP0, L_irr, 0, 5, 0, 5, 0, "ZIjAb");
-      dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5,  0, "WAmEf");
-      /*       dpd_contract244(&LIA, &W, &Z, 1, 2, 1, 1, 0); */
-      /* Out-of-core contract244 */
-      GW = W.file.my_irrep;
-      GZ = Z.file.my_irrep;
-      GL1 = LIA.my_irrep;
+    dpd_buf4_init(&Z, CC_TMP0, L_irr, 0, 5, 0, 5, 0, "ZIjAb");
+    dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5,  0, "WAmEf");
+    /*       dpd_contract244(&LIA, &W, &Z, 1, 2, 1, 1, 0); */
+    /* Out-of-core contract244 */
+    GW = W.file.my_irrep;
+    GZ = Z.file.my_irrep;
+    GL1 = LIA.my_irrep;
 
-      dpd_file2_mat_init(&LIA);
-      dpd_file2_mat_rd(&LIA);
+    dpd_file2_mat_init(&LIA);
+    dpd_file2_mat_rd(&LIA);
 
-      for(Gej=0; Gej < moinfo.nirreps; Gej++) {
-	Gab = Gej^GW;
-	Gij = Gab^GZ;
+    for(Gej=0; Gej < moinfo.nirreps; Gej++) {
+      Gab = Gej^GW;
+      Gij = Gab^GZ;
 
-	dpd_buf4_mat_irrep_init(&Z, Gij);
+      dpd_buf4_mat_irrep_init(&Z, Gij);
 
-	for(Ge=0; Ge < moinfo.nirreps; Ge++) {
-	  Gi = Ge^GL1;
-	  Gj = GZ^Gab^Gi;
+      for(Ge=0; Ge < moinfo.nirreps; Ge++) {
+	Gi = Ge^GL1;
+	Gj = GZ^Gab^Gi;
 
-	  num_j = Z.params->qpi[Gj];
-	  num_i = LIA.params->rowtot[Gi];
-	  num_e = LIA.params->coltot[Ge];
+	num_j = Z.params->qpi[Gj];
+	num_i = LIA.params->rowtot[Gi];
+	num_e = LIA.params->coltot[Ge];
 
-	  dpd_buf4_mat_irrep_init_block(&W, Gej, num_j);
+	dpd_buf4_mat_irrep_init_block(&W, Gej, num_j);
 
-	  for(e=0; e < num_e; e++) {
+	for(e=0; e < num_e; e++) {
 
-	    E = W.params->poff[Ge] + e;
-	    dpd_buf4_mat_irrep_rd_block(&W, Gej, W.row_offset[Gej][E], num_j);
+	  E = W.params->poff[Ge] + e;
+	  dpd_buf4_mat_irrep_rd_block(&W, Gej, W.row_offset[Gej][E], num_j);
 
-	    for(i=0; i < num_i; i++) {
-	      I = Z.params->poff[Gi] + i;
+	  for(i=0; i < num_i; i++) {
+	    I = Z.params->poff[Gi] + i;
 
-	      nlinks = Z.params->coltot[Gab] * num_j;
-	      if(nlinks) {
-		C_DAXPY(nlinks, LIA.matrix[Gi][i][e],
-			&(W.matrix[Gej][0][0]),1,
-			&(Z.matrix[Gij][Z.row_offset[Gij][I]][0]),1);
-	      }
+	    nlinks = Z.params->coltot[Gab] * num_j;
+	    if(nlinks) {
+	      C_DAXPY(nlinks, LIA.matrix[Gi][i][e],
+		      &(W.matrix[Gej][0][0]),1,
+		      &(Z.matrix[Gij][Z.row_offset[Gij][I]][0]),1);
 	    }
 	  }
-	  dpd_buf4_mat_irrep_close_block(&W, Gej, num_j);
 	}
-	dpd_buf4_mat_irrep_wrt(&Z, Gij);
-	dpd_buf4_mat_irrep_close(&Z, Gij);
+	dpd_buf4_mat_irrep_close_block(&W, Gej, num_j);
       }
-      dpd_file2_mat_close(&LIA);
-
-      /* End out-of-core contract244 */
-      dpd_buf4_close(&W);
-
-      dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
-      dpd_buf4_axpy(&Z, &L2, 1);
-      dpd_buf4_close(&L2);
-      dpd_buf4_sort_axpy(&Z, CC_LAMBDA, qpsr, 0, 5, "New LIjAb", 1);
-      dpd_buf4_close(&Z);
+      dpd_buf4_mat_irrep_wrt(&Z, Gij);
+      dpd_buf4_mat_irrep_close(&Z, Gij);
     }
-    else {
-      dpd_buf4_init(&Z, CC_TMP0, L_irr, 0, 5, 0, 5, 0, "Z(Ij,Ab)");
-      dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");
-      dpd_contract244(&LIA, &W, &Z, 1, 0, 0, 1, 0);
-      dpd_buf4_close(&W);
-      dpd_buf4_close(&Z);
-    }
+    dpd_file2_mat_close(&LIA);
 
-    dpd_file2_close(&LIA);
+    /* End out-of-core contract244 */
+    dpd_buf4_close(&W);
 
-    dpd_buf4_init(&Z, CC_TMP0, L_irr, 0, 5, 0, 5, 0, "Z(Ij,Ab)");
-    dpd_buf4_sort_axpy(&Z, CC_LAMBDA, qpsr, 0, 5, "New LIjAb", 1);
     dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
     dpd_buf4_axpy(&Z, &L2, 1);
     dpd_buf4_close(&L2);
+    dpd_buf4_sort_axpy(&Z, CC_LAMBDA, qpsr, 0, 5, "New LIjAb", 1);
     dpd_buf4_close(&Z);
+    dpd_file2_close(&LIA);
   }
   else if(params.ref == 1) { /** ROHF **/
     

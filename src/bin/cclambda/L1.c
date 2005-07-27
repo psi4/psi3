@@ -18,6 +18,8 @@ void L1_build(struct L_Params L_params) {
   dpdbuf4 Z, D;
   dpdfile2 XLD;
   int Gim, Gi, Gm, Ga, Gam, nrows, ncols, A, a, am;
+  int Gei, ei, e, i, Ge, Gf, E, I, ga, g, af, fa, f;
+  double *X;
   int L_irr;
   L_irr = L_params.irrep;
 
@@ -361,12 +363,54 @@ void L1_build(struct L_Params L_params) {
   /* L1 RHS += -Gef*Weifa */
   if(params.ref == 0) {
 
+/*     dpd_file2_init(&GAE, CC_LAMBDA, L_irr, 1, 1, "GAE"); */
+/*     dpd_buf4_init(&WaMeF, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf 2(Am,Ef) - (Am,fE)"); */
+/*     dpd_dot13(&GAE,&WaMeF,&newLIA, 0, 0, -1.0, 1.0); */
+/*     dpd_buf4_close(&WaMeF); */
+/*     dpd_file2_close(&GAE); */
+
+    /* Above code replaced to remove disk-space and memory bottlenecks 7/26/05, -TDC */
     dpd_file2_init(&GAE, CC_LAMBDA, L_irr, 1, 1, "GAE");
+    dpd_file2_mat_init(&GAE);
+    dpd_file2_mat_rd(&GAE);
+    dpd_file2_mat_init(&newLIA);
+    dpd_file2_mat_rd(&newLIA);
+    dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");
+    for(Gei=0; Gei < moinfo.nirreps; Gei++) {
+      dpd_buf4_mat_irrep_row_init(&W, Gei);
+      X = init_array(W.params->coltot[Gei]);
+      for(ei=0; ei < W.params->rowtot[Gei]; ei++) {
+	dpd_buf4_mat_irrep_row_rd(&W, Gei, ei);
+	e = W.params->roworb[Gei][ei][0];
+	i = W.params->roworb[Gei][ei][1];
+	Ge = Gf = W.params->psym[e]; /* G is totally symmetric */
+	Gi = Ga = Ge ^ Gei; /* L1 is totally symmetric */
+	E = e - moinfo.vir_off[Ge];
+	I = i - moinfo.occ_off[Gi];
 
-    dpd_buf4_init(&WaMeF, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf 2(Am,Ef) - (Am,fE)");
-    dpd_dot13(&GAE,&WaMeF,&newLIA, 0, 0, -1.0, 1.0);
-    dpd_buf4_close(&WaMeF);
+	zero_arr(X,W.params->coltot[Gei]);
 
+	for(fa=0; fa < W.params->coltot[Gei]; fa++) {
+	  f = W.params->colorb[Gei][fa][0];
+	  a = W.params->colorb[Gei][fa][1];
+	  af = W.params->colidx[a][f];
+	  X[fa] = 2.0 * W.matrix[Gei][0][fa] - W.matrix[Gei][0][af];
+	}
+
+	nrows = moinfo.virtpi[Gf];
+	ncols = moinfo.virtpi[Ga];
+	if(nrows && ncols)
+	  C_DGEMV('t',nrows,ncols,-1,&X[W.col_offset[Gei][Gf]],ncols,
+		  GAE.matrix[Ge][E],1,1,newLIA.matrix[Gi][I],1);
+
+      }
+      dpd_buf4_mat_irrep_row_close(&W, Gei);
+      free(X);
+    }
+    dpd_buf4_close(&W);
+    dpd_file2_mat_wrt(&newLIA);
+    dpd_file2_mat_close(&newLIA);
+    dpd_file2_mat_close(&GAE);
     dpd_file2_close(&GAE);
   }
   else if(params.ref == 1) {
