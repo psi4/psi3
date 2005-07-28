@@ -67,7 +67,6 @@ int main(int argc, char *argv[])
   if(params.local) local_init();
 
   diag();
-  /* sort_amps(); */
 
   dpd_close(0);
   if(params.local) local_done();
