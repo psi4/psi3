@@ -2,7 +2,6 @@
 #include <libdpd/dpd.h>
 #include "MOInfo.h"
 #include "Params.h"
-#include <libciomr/libciomr.h>
 #include "Local.h"
 
 /* Global variables */

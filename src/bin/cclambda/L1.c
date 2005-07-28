@@ -1,8 +1,12 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <libdpd/dpd.h>
 #include <libqt/qt.h>
 #define EXTERN
 #include "globals.h"
+
+void local_filter_T1(dpdfile2 *);
 
 void L1_build(struct L_Params L_params) {
   dpdfile2 newLIA, newLia, LIA, Lia;
@@ -18,7 +22,7 @@ void L1_build(struct L_Params L_params) {
   dpdbuf4 Z, D;
   dpdfile2 XLD;
   int Gim, Gi, Gm, Ga, Gam, nrows, ncols, A, a, am;
-  int Gei, ei, e, i, Ge, Gf, E, I, ga, g, af, fa, f;
+  int Gei, ei, e, i, Gef, Ge, Gf, E, I, af, fa, f;
   double *X;
   int L_irr;
   L_irr = L_params.irrep;
@@ -203,7 +207,7 @@ void L1_build(struct L_Params L_params) {
   }
 
   /* L1 RHS += 1/2 Limef*Wefam */
-  /* L(i,a) += [ 2 L(im,ef) - L(im,fe) * W(am,ef) ] */
+  /* L(i,a) += [ 2 L(im,ef) - L(im,fe) ] * W(am,ef) */
   /* Note: W(am,ef) is really Wabei (ei,ab) */
   if(params.ref == 0) { /** RHF **/
 
@@ -213,13 +217,14 @@ void L1_build(struct L_Params L_params) {
     dpd_file2_mat_init(&newLIA);
     dpd_file2_mat_rd(&newLIA);
     for(Gam=0; Gam < moinfo.nirreps; Gam++) {
-      Gim = Gam; /* L2, L1, and W are totally symmetric */
+      Gef = Gam; /* W is totally symmetric */
+      Gim = Gef ^ L_irr; 
       dpd_buf4_mat_irrep_init(&L2, Gim);
       dpd_buf4_mat_irrep_rd(&L2, Gim);
       dpd_buf4_mat_irrep_shift13(&L2, Gim);
 
       for(Gi=0; Gi < moinfo.nirreps; Gi++) {
-	Ga = Gi; /* L1 is totally symmetric */
+	Ga = Gi ^ L_irr;
 	Gm = Ga ^ Gam;
 	W.matrix[Gam] = dpd_block_matrix(moinfo.occpi[Gm],W.params->coltot[Gam]);
 
@@ -383,8 +388,10 @@ void L1_build(struct L_Params L_params) {
 	dpd_buf4_mat_irrep_row_rd(&W, Gei, ei);
 	e = W.params->roworb[Gei][ei][0];
 	i = W.params->roworb[Gei][ei][1];
-	Ge = Gf = W.params->psym[e]; /* G is totally symmetric */
-	Gi = Ga = Ge ^ Gei; /* L1 is totally symmetric */
+	Ge = W.params->psym[e];
+	Gf = Ge ^ L_irr;
+	Gi = Ge ^ Gei;
+	Ga = Gi ^ L_irr;
 	E = e - moinfo.vir_off[Ge];
 	I = i - moinfo.occ_off[Gi];
 

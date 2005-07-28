@@ -7,10 +7,8 @@
 #include <string.h>
 #include <math.h>
 #include <libipv1/ip_lib.h>
-#include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
-#include <libdpd/dpd.h>
-#include <psifiles.h>
+#include <libpsio/psio.h>
 #include "globals.h"
 
 /* Function prototypes */
@@ -31,6 +29,7 @@ void Lnorm(struct L_Params L_params);
 void Lmag(void);
 void update(void);
 int converged(int L_irr);
+void diis(int iter, int L_irr);
 int **cacheprep_rhf(int level, int *cachefiles);
 int **cacheprep_uhf(int level, int *cachefiles);
 void cachedone_rhf(int **cachelist);
@@ -39,22 +38,27 @@ void denom(struct L_Params);
 void overlap(int L_irr);
 void overlap_LAMPS(struct L_Params L_params);
 void Lsave_index(struct L_Params L_params);
-extern void check_ortho(struct L_Params *pL_params);
+void check_ortho(struct L_Params *pL_params);
 void L_zero(int irrep);
-extern void c_clean(dpdfile2 *LIA, dpdfile2 *Lia, dpdbuf4 *LIJAB, dpdbuf4 *Lijab, dpdbuf4 *LIjAb);
+void c_clean(dpdfile2 *LIA, dpdfile2 *Lia, dpdbuf4 *LIJAB, dpdbuf4 *Lijab, dpdbuf4 *LIjAb);
 void L_clean(struct L_Params pL_params);
 void zeta_norm(struct L_Params pL_params);
 void spinad_amps(void);
 void status(char *, FILE *);
+void hbar_extra(void);
 
 void cc2_L1_build(struct L_Params L_params);
 void cc2_L2_build(struct L_Params L_params);
 void cc2_Gai_build(int L_irr);
+void cc2_hbar_extra(void);
 
 void cc3_t3z(void);
 void cc3_t3x(void);
 void cc3_l3l2(void);
 void cc3_l3l1(void);
+
+void local_init(void);
+void local_done(void);
 
 int main(int argc, char *argv[])
 {

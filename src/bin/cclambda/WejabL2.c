@@ -43,6 +43,7 @@ void WejabL2(int L_irr)
     dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
 
     dpd_buf4_init(&Z, CC_TMP0, L_irr, 0, 5, 0, 5, 0, "ZIjAb");
+    dpd_buf4_scm(&Z, 0);
     dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5,  0, "WAmEf");
     /*       dpd_contract244(&LIA, &W, &Z, 1, 2, 1, 1, 0); */
     /* Out-of-core contract244 */

@@ -52,10 +52,10 @@ void L1FL2(int L_irr)
 	  J = F.params->rowidx[j]; Jsym = F.params->psym[j];
 	  A = L.params->colidx[a]; Asym = L.params->qsym[a];
 	  B = F.params->colidx[b]; Bsym = F.params->qsym[b];
-	  if((Isym^Asym == L_irr) && (Jsym == Bsym))
+	  if(((Isym^Asym) == L_irr) && (Jsym == Bsym))
 	    newL2.matrix[h][row][col] += (L.matrix[Isym][I][A] * F.matrix[Jsym][J][B]);
 
-	  if((Isym == Asym) && (Jsym^Bsym == L_irr))
+	  if((Isym == Asym) && ((Jsym^Bsym) == L_irr))
 	    newL2.matrix[h][row][col] += (L.matrix[Jsym][J][B] * F.matrix[Isym][I][A]);
 	}
       }
@@ -132,14 +132,14 @@ void L1FL2(int L_irr)
 	  A = LIA.params->colidx[a]; Asym = LIA.params->qsym[a];
 	  B = FJB.params->colidx[b]; Bsym = FJB.params->qsym[b];
 
-	  if( (Isym^Asym == L_irr) && (Jsym == Bsym) )
+	  if( ((Isym^Asym) == L_irr) && (Jsym == Bsym) )
 	    newL2.matrix[h][row][col] += (LIA.matrix[Isym][I][A] *
 					  FJB.matrix[Jsym][J][B]);
 
 	  J = LIA.params->rowidx[j]; Jsym = LIA.params->psym[j];
 	  I = FJB.params->rowidx[i]; Isym = FJB.params->psym[i];
 
-	  if( (Isym == Asym) && (Jsym^Bsym == L_irr) )
+	  if( (Isym == Asym) && ((Jsym^Bsym) == L_irr) )
 	    newL2.matrix[h][row][col] += (LIA.matrix[Jsym][J][B] *
 					  FJB.matrix[Isym][I][A]);
 
@@ -148,14 +148,14 @@ void L1FL2(int L_irr)
 	  B = LIA.params->colidx[b]; Bsym = LIA.params->qsym[b];
 	  A = FJB.params->colidx[a]; Asym = FJB.params->qsym[a];
 
-	  if( (Jsym^Asym == L_irr) && (Isym == Bsym))
+	  if( ((Jsym^Asym) == L_irr) && (Isym == Bsym))
 	    newL2.matrix[h][row][col] -= (LIA.matrix[Jsym][J][A] *
 					  FJB.matrix[Isym][I][B]);
 
 	  J = LIA.params->rowidx[j]; Jsym = LIA.params->psym[j];
 	  I = FJB.params->rowidx[i]; Isym = FJB.params->psym[i];
 
-	  if( (Jsym == Asym) && (Isym^Bsym == L_irr) )
+	  if( (Jsym == Asym) && ((Isym^Bsym) == L_irr) )
 	    newL2.matrix[h][row][col] -= (LIA.matrix[Isym][I][B] *
 					  FJB.matrix[Jsym][J][A]);
 	}
@@ -192,14 +192,14 @@ void L1FL2(int L_irr)
 	  A = Lia.params->colidx[a]; Asym = Lia.params->qsym[a];
 	  B = Fjb.params->colidx[b]; Bsym = Fjb.params->qsym[b];
 
-	  if((Isym^Asym == L_irr) && (Jsym == Bsym))
+	  if(((Isym^Asym) == L_irr) && (Jsym == Bsym))
 	    newL2.matrix[h][row][col] += (Lia.matrix[Isym][I][A] *
 					  Fjb.matrix[Jsym][J][B]);
 
 	  J = Lia.params->rowidx[j]; Jsym = Lia.params->psym[j];
 	  I = Fjb.params->rowidx[i]; Isym = Fjb.params->psym[i];
 
-	  if((Isym == Asym) && (Jsym^Bsym == L_irr))
+	  if((Isym == Asym) && ((Jsym^Bsym) == L_irr))
 	    newL2.matrix[h][row][col] += (Lia.matrix[Jsym][J][B] *
 					  Fjb.matrix[Isym][I][A]);
 
@@ -208,14 +208,14 @@ void L1FL2(int L_irr)
 	  B = Lia.params->colidx[b]; Bsym = Lia.params->qsym[b];
 	  A = Fjb.params->colidx[a]; Asym = Fjb.params->qsym[a];
 
-	  if((Jsym^Asym == L_irr) && (Isym == Bsym))
+	  if(((Jsym^Asym) == L_irr) && (Isym == Bsym))
 	    newL2.matrix[h][row][col] -= (Lia.matrix[Jsym][J][A] *
 					  Fjb.matrix[Isym][I][B]);
 
 	  J = Lia.params->rowidx[j]; Jsym = Lia.params->psym[j];
 	  I = Fjb.params->rowidx[i]; Isym = Fjb.params->psym[i];
 
-	  if((Jsym == Asym) && (Isym^Bsym == L_irr))
+	  if((Jsym == Asym) && ((Isym^Bsym) == L_irr))
 	    newL2.matrix[h][row][col] -= (Lia.matrix[Isym][I][B] *
 					  Fjb.matrix[Jsym][J][A]);
 	}
@@ -252,7 +252,7 @@ void L1FL2(int L_irr)
 	  A = LIA.params->colidx[a]; Asym = LIA.params->qsym[a];
 	  B = Fjb.params->colidx[b]; Bsym = Fjb.params->qsym[b];
 
-	  if((Isym^Asym == L_irr) && (Jsym == Bsym))
+	  if(((Isym^Asym) == L_irr) && (Jsym == Bsym))
 	    newL2.matrix[h][row][col] += (LIA.matrix[Isym][I][A] *
 					  Fjb.matrix[Jsym][J][B]);
 
@@ -261,7 +261,7 @@ void L1FL2(int L_irr)
 	  B = Lia.params->colidx[b]; Bsym = Lia.params->qsym[b];
 	  A = FJB.params->colidx[a]; Asym = FJB.params->qsym[a];
 
-	  if((Isym == Asym) && (Jsym^Bsym == L_irr))
+	  if((Isym == Asym) && ((Jsym^Bsym) == L_irr))
 	    newL2.matrix[h][row][col] += (Lia.matrix[Jsym][J][B] *
 					  FJB.matrix[Isym][I][A]);
 	}
