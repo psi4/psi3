@@ -1,3 +1,4 @@
+#define EXTERN
 #include "globals.h"
 
 void FSD(int i, int C_irr);

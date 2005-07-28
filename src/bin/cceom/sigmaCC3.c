@@ -1,3 +1,4 @@
+#define EXTERN
 #include "globals.h"
 
 /* This function computes the extra contributions to sigma_1 and sigma_2

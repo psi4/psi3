@@ -1,3 +1,4 @@
+#define EXTERN
 #include "globals.h"
 
 void WmaijDS(int i, int C_irr);
