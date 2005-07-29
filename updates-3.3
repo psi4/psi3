@@ -1,3 +1,7 @@
+06-07/05: Removed all iabc-based bottlenecks from CCSD codes including
+EOM-CCSD and CCSD-LR.  The only remaining bottlenecks occur in CCSD
+gradients (ccdensity).  Also much reduction in disk-space requirements. -TDC
+
 05/25/05: Added RASSCF and SA-CASSCF capabilities.  Replaced wfn=DETCAS
 with wfn=CASSCF or wfn=RASSCF.  Added preliminary implementation of
 frozen vs restricted orbitals in MCSCF (works but can only do either/or
