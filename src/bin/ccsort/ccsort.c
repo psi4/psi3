@@ -88,58 +88,6 @@ int main(int argc, char *argv[])
   /* run a small computation of memory and disk requirements */
   cc_memcheck();
 
-/*   ia_size = ab_size = ij_size = 0; */
-/*   for(i=0; i < moinfo.nirreps; i++) { */
-/*     if(params.ref == 0 || params.ref == 1) { */
-/*       ia_size += moinfo.occpi[i] * moinfo.virtpi[i]; */
-/*       ab_size += moinfo.virtpi[i] * moinfo.virtpi[i]; */
-/*       ij_size += moinfo.occpi[i] * moinfo.occpi[i]; */
-/*     } */
-/*     else if(params.ref == 2) { */
-/*       ia_size += moinfo.aoccpi[i] * moinfo.bvirtpi[i]; */
-/*       ab_size += moinfo.avirtpi[i] * moinfo.bvirtpi[i]; */
-/*       ij_size += moinfo.aoccpi[i] * moinfo.boccpi[i]; */
-/*     } */
-/*   } */
-/*   b_size = ab_size * ab_size; */
-/*   f_size = ia_size * ab_size; */
-/*   t2_size = ij_size * ab_size; */
-/*   bamount = (int) (params.memory/(b_size * sizeof(double))); */
-/*   famount = (int) (params.memory/(f_size * sizeof(double))); */
-
-/*   if(params.ref == 0 || params.ref == 1) { */
-/*     fprintf(outfile, "\n\tSize of <ab|cd> integrals: %9.3lf (MW) / %9.3lf (MB)\n", */
-/* 	    b_size/1e6, (b_size/1e6)*sizeof(double)); */
-/*     fprintf(outfile, "\tNo. of <vv|vv> allowed in memory:      %i \n",  */
-/* 	    bamount); */
-/*     fprintf(outfile, "\tSize of <ia|bc> integrals: %9.3lf (MW) / %9.3lf (MB)\n", */
-/* 	    f_size/1e6, (f_size/1e6)*sizeof(double)); */
-/*     fprintf(outfile, "\tNo. of <ov|vv> allowed in memory:      %i \n", */
-/* 	    famount); */
-/*     fprintf(outfile, "\tSize of Tijab amplitudes:  %9.3lf (MW) / %9.3lf (MB)\n", */
-/* 	    t2_size/1e6, (t2_size/1e6)*sizeof(double)); */
-/*   } */
-/*   else if(params.ref == 2) { */
-/*     fprintf(outfile, "\n\tSize of <Ab|Cd> integrals: %9.3lf (MW) / %9.3lf (MB)\n", */
-/* 	    b_size/1e6, (b_size/1e6)*sizeof(double)); */
-/*     fprintf(outfile, "\tNo. of <Vv|Vv> allowed in memory:      %i \n", */
-/* 	    bamount); */
-/*     fprintf(outfile, "\tSize of <Ia|Bc> integrals: %9.3lf (MW) / %9.3lf (MB)\n", */
-/* 	    f_size/1e6, (f_size/1e6)*sizeof(double)); */
-/*     fprintf(outfile, "\tNo. of <Ov|Vv> allowed in memory:      %i \n", */
-/* 	    famount); */
-/*     fprintf(outfile, "\tSize of TIjAb amplitudes:  %9.3lf (MW) / %9.3lf (MB)\n", */
-/* 	    t2_size/1e6, (t2_size/1e6)*sizeof(double)); */
-/*   } */
- 
-  /* When formal timings are made for the code, 5 being the min number of
-     <vv|vv>-type or <ov|vv>-type quantities can be changed               */
-
-/*   if(bamount > 5) fprintf(outfile, "\tA cachelevel of 4 is suggested.\n"); */
-/*   else if(famount > 5) fprintf(outfile, "\n\tA cachelevel of 3 is suggested.\n"); */
-/*   else if(t2_size * sizeof(double) > params.memory) */
-/*     fprintf(outfile, "\n\tA cachelevel of 0 or 1 is suggested.\n"); */
-  
   fprintf(outfile, "\n");
 
   sort_oei();

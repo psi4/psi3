@@ -168,6 +168,14 @@ void get_params()
   else {
     params.make_abcd = 1;
   }
+
+  /* for now, generate <ai|bc> ordering if CC gradient, ROHF-CC, CC2, or CC3 */
+  if(params.dertype == 1 || params.ref == 1 || !strcmp(params.wfn,"CC2") ||
+     !strcmp(params.wfn,"CC3") || !strcmp(params.wfn,"EOM_CC2") ||
+     !strcmp(params.wfn,"EOM_CC2"))
+    params.make_aibc = 1;
+  else params.make_aibc = 0;
+
   
   params.print_lvl = 1;
   errcod = ip_data("PRINT_LVL","%d",&(params.print_lvl),0);

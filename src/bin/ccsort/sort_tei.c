@@ -171,9 +171,11 @@ void sort_tei(void)
     file_build(&F, FIRST_TMP+5, tolerance, 0, 1, 0, 0);
     dpd_file4_close(&F);
 
-    dpd_file4_init_nocache(&F, CC_FINTS, 0, 11, 5, "F <ai|bc>");
-    file_build(&F, FIRST_TMP+6, tolerance, 1, 0, 0, 0);
-    dpd_file4_close(&F);
+    if(params.make_aibc) {
+      dpd_file4_init_nocache(&F, CC_FINTS, 0, 11, 5, "F <ai|bc>");
+      file_build(&F, FIRST_TMP+6, tolerance, 1, 0, 0, 0);
+      dpd_file4_close(&F);
+    }
   }
 
   fflush(outfile);
