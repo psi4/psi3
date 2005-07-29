@@ -1,7 +1,9 @@
 #define EXTERN
 #include "globals.h"
 
-/* build one-electron intermediates for construction of 1-pdm */
+/* build one-electron intermediates for construction of excited state
+density matrices - all contractions but L1*T2 are needed just to make
+the excited state onepdm */
 
 /* LR1_OO  =  LIE * RJE */
 /* LR1_oo  = Lie * Rje */

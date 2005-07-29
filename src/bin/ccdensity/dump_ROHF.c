@@ -46,6 +46,7 @@ void dump_ROHF(struct iwlbuf *OutBuf)
 		   sizeof(double)*nmo*nmo);
   psio_close(PSIF_MO_OPDM, 1);
 
+if (!params.onepdm) {
   psio_open(PSIF_MO_LAG, PSIO_OPEN_OLD);
   psio_write_entry(PSIF_MO_LAG, "MO-basis Lagrangian", (char *) moinfo.I[0],
 		   sizeof(double)*nmo*nmo);
@@ -157,4 +158,6 @@ void dump_ROHF(struct iwlbuf *OutBuf)
   dpd_buf4_init(&G, CC_TMP0, 0, 5, 5, 5, 5, 0, "G(AC,BD)");
   dpd_buf4_dump(&G, OutBuf, qt_vir, qt_vir, qt_vir, qt_vir, 1, 0);
   dpd_buf4_close(&G);
+
+  }
 }

@@ -44,7 +44,8 @@ void sortone_ROHF(void)
   openpi = moinfo.openpi;
   qt_occ = moinfo.qt_occ; qt_vir = moinfo.qt_vir;
 
-  O = block_matrix(nmo-nfzc,nmo-nfzc);
+  /* O = block_matrix(nmo-nfzc,nmo-nfzc); */
+  O = block_matrix(nmo, nmo);
 
   /* Sort A components first */
   dpd_file2_init(&D, CC_OEI, 0, 0, 0, "DIJ");
@@ -186,6 +187,12 @@ void sortone_ROHF(void)
     }
 
   /*
+  for (i=0;i<nmo;++i) {
+    for (j=0;j<nmo;++j) {
+      fprintf(outfile,"%15.10lf\n", O[i][j]);
+    }
+    fprintf(outfile,"\n");
+  }
   fprintf(outfile,"End of sortone\n");
   for (i=0;i<2;++i) {
     for (j=0;j<5;++j)

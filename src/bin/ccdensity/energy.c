@@ -189,6 +189,7 @@ void energy(void)
 
   fprintf(outfile, "\tOne-electron energy        = %20.15f\n", one_energy);
   fflush(outfile);
+  if (params.onepdm) return;
 
   total_two_energy = 0.0;
 

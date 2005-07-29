@@ -25,10 +25,6 @@ void get_params()
   params.aobasis = 0;
   errcod = ip_boolean("AO_BASIS", &(params.aobasis),0);
   
-  /* perhaps we should make this 0 by default if dertype = 0? */
-  params.relax_opdm = 1;
-  errcod = ip_boolean("RELAX_OPDM", &(params.relax_opdm),0);
-
   params.dertype = 0;
   if(ip_exist("DERTYPE",0)) {
     errcod = ip_string("DERTYPE", &(junk),0);
@@ -42,6 +38,23 @@ void get_params()
     }
     free(junk);
   }
+	else { /* if dertype keyword is absent and jobtype=opt */
+    errcod = ip_string("JOBTYPE", &(junk),0);
+	  if (!strcmp(junk,"OPT"))
+		  params.dertype = 1;
+	}
+
+  errcod = ip_string("JOBTYPE", &(junk),0);
+	if ((!strcmp(junk,"OEPROP")) && (params.dertype == 0) )
+    params.relax_opdm = 0; /* allow for unrelaxed densities if EnergyOEProp */
+  else 
+    params.relax_opdm = 1;
+  errcod = ip_boolean("RELAX_OPDM", &(params.relax_opdm),0);
+  if ( (params.onepdm) && (params.relax_opdm) ) {
+    fprintf(outfile,"\tTurning orbital relaxation off since only onepdm is requested.\n");
+    params.relax_opdm = 0;
+  }
+
   if ( (!strcmp(params.wfn,"EOM_CCSD")) && (params.dertype == 0) )
     params.connect_xi = 0;
   else
