@@ -67,8 +67,6 @@ void read_density()
 
     docc = init_int_array(nirreps);
     socc = init_int_array(nirreps);
-    frozen_docc = init_int_array(nirreps);
-    frozen_uocc = init_int_array(nirreps);
     ras_opi = init_int_matrix(4,nirreps);
     reorder = init_int_array(nmo);
 
@@ -77,6 +75,8 @@ void read_density()
  
     if (strcmp(wfn, "CI") == 0 || strcmp(wfn, "DETCI") == 0
       || strcmp(wfn, "DETCAS") == 0) {
+        frozen_docc = init_int_array(nirreps);
+        frozen_uocc = init_int_array(nirreps);
       if (!ras_set(nirreps, nmo, fzc, orbspi, docc, socc,
 		   frozen_docc, frozen_uocc, ras_opi, reorder, 1) )
         punt("Error in ras_set()");
@@ -92,6 +92,8 @@ void read_density()
         free(socc);
 	socc = chkpt_rd_openpi();
       }
+      frozen_docc = get_frzcpi();
+      frozen_uocc = get_frzvpi();
 
       reorder_qt(docc, socc, frozen_docc, frozen_uocc,
                reorder, orbspi, nirreps);
