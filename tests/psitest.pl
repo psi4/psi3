@@ -51,7 +51,7 @@ $PSITEST_EEOMTOL = 10**-5;        # Less stringent test for EOM-CC energies
 $PSITEST_GEOMTOL = 10**-6;        # Default test criterion for Cartesian geometries
 $PSITEST_GTOL = 10**-6;           # Default test criterion for gradients
 $PSITEST_HTOL = 10**-2;           # Default test criterion for Hessians
-$PSITEST_POLARTOL = 10**-4;       # Default test criterion for polarizabilities
+$PSITEST_POLARTOL = 10**-5;       # Default test criterion for polarizabilities
 $PSITEST_STABTOL = 10**-4;        # Default test criterion for Hessian eigenvalues
 $PSITEST_MPOPTOL = 10**-5;        # Default test criterion for Mulliken populations
 

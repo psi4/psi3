@@ -1,6 +1,10 @@
 
 .PHONY: tests clean
 
+cc_subdirs = cc1 cc2 cc3 cc4 cc8 cc9 cc10 cc11 cc12 cc13 cc14 cc15 cc16 \
+cc17 cc18 cc19 cc21 cc22 cc23 cc24 cc25 cc26 cc27 cc28 cc29 cc30 cc31 cc32 \
+cc33 cc34 cc35 cc36 cc37 cc38 cc39 cc40 cc41 cc42 cc43 \
+
 subdirs = \
 scf-opt scf-opt2 scf-opt3 scf-opt4 scf-opt5 scf-opt6 scf-opt7 \
 scf-opt9 scf-opt10 scf-opt11 scf-opt12 \
@@ -8,9 +12,7 @@ scf-opt-numer scf-opt2-numer mp2-opt-numer cisd-opt-numer \
 scf-freq-first-3 scf-freq-first-5 scf-freq-none-3 scf-freq-none-5 \
 scf-symm-fc-numer scf-fc-numer \
 scf-freq scf-polar rhf-stab uhf-stab rohf-stab mp2-sp mp2-direct-sp cis-sp cisd-sp \
-cc1 cc2 cc3 cc4 cc8 cc9 cc10 cc11 cc12 cc13 cc14 cc15 cc16 \
-cc17 cc18 cc19 cc21 cc22 cc23 cc24 cc25 cc26 cc27 cc28 cc29 cc30 cc31 cc32 cc33 \
-cc34 cc35 cc36 cc37 cc38 cc39 cc40 cc41 cc42 cc43 \
+$(cc_subdirs) \
 dboc-rhf1 dboc-rohf1 dboc-uhf1 dboc-rcisd1 dboc-rocisd1 \
 rhf-oeprop mp2-oeprop \
 extrema-deloc extrema-zmat mp2r12-sp1 \
@@ -18,6 +20,12 @@ rhf-lindep1 rohf-lindep1 uhf-lindep1  psi_start \
 
 tests:
 	for dir in $(subdirs); \
+	do \
+	 (cd $${dir}; echo ...Testing $${dir}...; $(MAKE)) || exit 1; \
+	done
+
+cc_tests:
+	for dir in $(cc_subdirs); \
 	do \
 	 (cd $${dir}; echo ...Testing $${dir}...; $(MAKE)) || exit 1; \
 	done
