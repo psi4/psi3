@@ -60,15 +60,18 @@ psi: (
   cctriples  = "cctriples"
   cchbar     = "cchbar"
   cclambda   = "cclambda"
-  ccdensity  = "ccdensity"
   cceom      = "cceom"
   ccresponse = "ccresponse"
   ooccman    = "ccman"
   cclambda_excited = "cclambda --excited"
   cclambda_zeta = "cclambda --zeta"
+
+  ccdensity  = "ccdensity"
   ccdensity_calc_xi = "ccdensity --calc_xi"
-  ccdensity_use_zeta = "ccdensity --use_zeta"
+  ccdensity_use_zeta = "ccdensity --use_zeta" %implies --excited
   ccdensity_excited = "ccdensity --excited"
+  ccdensity_onepdm  = "ccdensity --onepdm"
+  ccdensity_excited_onepdm = "ccdensity --excited --onepdm"
 
   % Determinant CI specific programs
   detci    = "detci"
@@ -391,12 +394,19 @@ psi: (
   CCSDROHFResponse = ERROR
   CCSDTwoConResponse = ERROR
 
-  % Procedure for an CCSD one-electron property computation
+  % Procedure for an orbital relaxed CCSD one-electron property computation
   CCSDFirstOEPROP = ($CCSDEnergy $cchbar $cclambda $ccdensity $oeprop $done)
   CCSDRHFFirstOEPROP = $CCSDFirstOEPROP
-  CCSDUHFFirstOEPROP = ERROR
-  CCSDROHFFirstOEPROP = ERROR
+  CCSDUHFFirstOEPROP = $CCSDFirstOEPROP
+  CCSDROHFFirstOEPROP = $CCSDFirstOEPROP
   CCSDTwoConFirstOEPROP = ERROR
+
+  % Procedure for a non-(orbital-relaxed) CCSD one-electron property computation
+  CCSDEnergyOEPROP = ($CCSDEnergy $cchbar $cclambda $ccdensity_onepdm $oeprop $done)
+  CCSDRHFEnergyOEPROP = $CCSDEnergyOEPROP
+  CCSDUHFEnergyOEPROP = $CCSDEnergyOEPROP
+  CCSDROHFEnergyOEPROP = $CCSDEnergyOEPROP
+  CCSDTwoConEnergyOEPROP = ERROR
 
   % -------------------------------- CCSD(T) Procedures
   % Procedures for the CCSD(T) energy
@@ -551,8 +561,10 @@ psi: (
   EOM_CCSDROHFFirstOEPROP = $EOM_CCSDFirstOEPROP
   EOM_CCSDTwoConFirstOEPROP = ERROR
 
-  % Procedure for an CCSD one-electron property computation - no T amplitude relaxation
-  EOM_CCSDEnergyOEPROP = ($EOM_CCSDEnergy $cclambda_excited $ccdensity_excited $oeprop $done)
+  % Procedure for an CCSD one-electron property computation -
+  % no T amplitude or orbital relaxation
+  EOM_CCSDEnergyOEPROP = ($EOM_CCSDEnergy $cclambda_excited $ccdensity_excited_onepdm
+    $oeprop $done)
   EOM_CCSDRHFEnergyOEPROP = $EOM_CCSDEnergyOEPROP
   EOM_CCSDUHFEnergyOEPROP = $EOM_CCSDEnergyOEPROP
   EOM_CCSDROHFEnergyOEPROP = $EOM_CCSDEnergyOEPROP
