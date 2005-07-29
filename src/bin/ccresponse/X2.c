@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <libdpd/dpd.h>
+#include <libqt/qt.h>
 #define EXTERN
 #include "globals.h"
 
@@ -12,6 +13,9 @@ void X2_build(char *pert, char *cart, int irrep, double omega)
   dpdfile2 X1, z, F, t1;
   dpdbuf4 X2, X2new, Z, Z1, Z2, W, T2, I;
   char lbl[32];
+  int Gej, Gab, Gij, Ge, Gj, Gi, nrows, length, E, e, II;
+  int Gbm, Gfe, bm, b, m, Gb, Gm, Gf, B, M, fe, f, ef, ncols;
+  double *X;
 
   sprintf(lbl, "%sBAR_%1s_IjAb", pert, cart);
   dpd_buf4_init(&X2new, CC_LR, irrep, 0, 5, 0, 5, 0, lbl);
@@ -41,14 +45,41 @@ void X2_build(char *pert, char *cart, int irrep, double omega)
   sprintf(lbl, "Z(Ij,Ab) %s %1s", pert, cart);
   dpd_buf4_init(&Z, CC_TMP0, irrep, 0, 5, 0, 5, 0, lbl);
   dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAbEi (Ei,Ab)");
-  dpd_contract244(&X1, &W, &Z, 1, 0, 0, 1, 0);
+  /*  dpd_contract244(&X1, &W, &Z, 1, 0, 0, 1, 0); */
+  /* ooc code below added 7/28/05, -TDC */
+  dpd_file2_mat_init(&X1);
+  dpd_file2_mat_rd(&X1);
+  for(Gej=0; Gej < moinfo.nirreps; Gej++) {
+    Gab = Gej; /* W is totally symmetric */
+    Gij = Gab ^ irrep;
+    dpd_buf4_mat_irrep_init(&Z, Gij);
+    dpd_buf4_mat_irrep_shift13(&Z, Gij);
+    for(Ge=0; Ge < moinfo.nirreps; Ge++) {
+      Gj = Ge ^ Gej;
+      Gi = Gj ^ Gij;
+      nrows = moinfo.occpi[Gj];
+      length = nrows * W.params->coltot[Gab];
+      dpd_buf4_mat_irrep_init_block(&W, Gej, nrows);
+      for(E=0; E < moinfo.virtpi[Ge]; E++) {
+	e = moinfo.vir_off[Ge] + E;
+	dpd_buf4_mat_irrep_rd_block(&W, Gej, W.row_offset[Gej][e], nrows);
+	for(II=0; II < moinfo.occpi[Gi]; II++) {
+	  if(length)
+	    C_DAXPY(length, X1.matrix[Gi][II][E], W.matrix[Gej][0], 1, Z.shift.matrix[Gij][Gi][II], 1);
+	}
+      }
+      dpd_buf4_mat_irrep_close_block(&W, Gej, nrows);
+    }
+    dpd_buf4_mat_irrep_wrt(&Z, Gij);
+    dpd_buf4_mat_irrep_close(&Z, Gij);
+  }
+  dpd_file2_mat_close(&X1);
   dpd_buf4_close(&W);
   dpd_buf4_axpy(&Z, &X2new, 1);
-  sprintf(lbl, "Z(jI,bA) %s %1s", pert, cart);
-  dpd_buf4_sort(&Z, CC_TMP0, qpsr, 0, 5, lbl);
-  dpd_buf4_close(&Z);
-  dpd_buf4_init(&Z, CC_TMP0, irrep, 0, 5, 0, 5, 0, lbl);
-  dpd_buf4_axpy(&Z, &X2new, 1);
+  dpd_buf4_close(&X2new);  /* Need to close X2new to avoid collisions */
+  sprintf(lbl, "New X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
+  dpd_buf4_sort_axpy(&Z, CC_LR, qpsr, 0, 5, lbl, 1);
+  dpd_buf4_init(&X2new, CC_LR, irrep, 0, 5, 0, 5, 0, lbl); /* re-open X2new here */
   dpd_buf4_close(&Z);
 
   sprintf(lbl, "z(N,I) %s %1s", pert, cart);
@@ -63,17 +94,56 @@ void X2_build(char *pert, char *cart, int irrep, double omega)
   dpd_buf4_close(&T2);
   dpd_file2_close(&z);
   dpd_buf4_axpy(&Z, &X2new, -1);
-  sprintf(lbl, "Z(jI,bA) %s %1s", pert, cart);
-  dpd_buf4_sort(&Z, CC_TMP0, qpsr, 0, 5, lbl);
-  dpd_buf4_close(&Z);
-  dpd_buf4_init(&Z, CC_TMP0, irrep, 0, 5, 0, 5, 0, lbl);
-  dpd_buf4_axpy(&Z, &X2new, -1);
+  dpd_buf4_close(&X2new);  /* Need to close X2new to avoid collisions */
+  sprintf(lbl, "New X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
+  dpd_buf4_sort_axpy(&Z, CC_LR, qpsr, 0, 5, lbl, -1);
+  dpd_buf4_init(&X2new, CC_LR, irrep, 0, 5, 0, 5, 0, lbl); /* re-open X2new here */
   dpd_buf4_close(&Z);
 
   sprintf(lbl, "z(A,E) %s %1s", pert, cart);
   dpd_file2_init(&z, CC_TMP0, irrep, 1, 1, lbl);
-  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf 2(Am,Ef) - (Am,fE)");
-  dpd_dot24(&X1, &W, &z, 0, 0, 1, 0);
+/*   dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf 2(Am,Ef) - (Am,fE)"); */
+  /*  dpd_dot24(&X1, &W, &z, 0, 0, 1, 0); */
+  /* ooc code below added 7/28/05, -TDC */
+  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");
+  dpd_file2_scm(&z, 0);
+  dpd_file2_mat_init(&z);
+  dpd_file2_mat_init(&X1);
+  dpd_file2_mat_rd(&X1);
+  for(Gbm=0; Gbm < moinfo.nirreps; Gbm++) {
+    Gfe = Gbm; /* W is totally symmetric */
+    dpd_buf4_mat_irrep_row_init(&W, Gbm);
+    X = init_array(W.params->coltot[Gfe]);
+    for(bm=0; bm < W.params->rowtot[Gbm]; bm++) {
+      dpd_buf4_mat_irrep_row_rd(&W, Gbm, bm);
+      b = W.params->roworb[Gbm][bm][0];
+      m = W.params->roworb[Gbm][bm][1];
+      Gb = W.params->psym[b];
+      Gm = Gbm ^ Gb;
+      Ge = Gm ^ irrep;
+      Gf = Gfe ^ Ge;
+      B = b - moinfo.vir_off[Gb];
+      M = m - moinfo.occ_off[Gm];
+      zero_arr(X, W.params->coltot[Gfe]);
+      for(fe=0; fe < W.params->coltot[Gfe]; fe++) {
+	f = W.params->colorb[Gfe][fe][0];
+	e = W.params->colorb[Gfe][fe][1];
+	ef = W.params->colidx[e][f];
+	X[fe] = 2.0 * W.matrix[Gbm][0][fe] - W.matrix[Gbm][0][ef];
+      }
+      nrows = moinfo.virtpi[Gf];
+      ncols = moinfo.virtpi[Ge];
+      if(nrows & ncols)
+	C_DGEMV('n',nrows,ncols,1,&X[W.col_offset[Gfe][Gf]],ncols,
+		X1.matrix[Gm][M],1,1,z.matrix[Gb][B],1);
+    }
+    free(X);
+    dpd_buf4_mat_irrep_row_close(&W, Gbm);
+  }
+  dpd_file2_mat_close(&X1);
+  dpd_file2_mat_wrt(&z);
+  dpd_file2_mat_close(&z);
+  /* end ooc additions, 7/28/05, -TDC */
   dpd_buf4_close(&W);
   sprintf(lbl, "Z(Ij,Ab) %s %1s", pert, cart);
   dpd_buf4_init(&Z, CC_TMP0, irrep, 0, 5, 0, 5, 0, lbl);
@@ -82,11 +152,10 @@ void X2_build(char *pert, char *cart, int irrep, double omega)
   dpd_buf4_close(&T2);
   dpd_file2_close(&z);
   dpd_buf4_axpy(&Z, &X2new, 1);
-  sprintf(lbl, "Z(jI,bA) %s %1s", pert, cart);
-  dpd_buf4_sort(&Z, CC_TMP0, qpsr, 0, 5, lbl);
-  dpd_buf4_close(&Z);
-  dpd_buf4_init(&Z, CC_TMP0, irrep, 0, 5, 0, 5, 0, lbl);
-  dpd_buf4_axpy(&Z, &X2new, 1);
+  dpd_buf4_close(&X2new);  /* Need to close X2new to avoid collisions */
+  sprintf(lbl, "New X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
+  dpd_buf4_sort_axpy(&Z, CC_LR, qpsr, 0, 5, lbl, 1);
+  dpd_buf4_init(&X2new, CC_LR, irrep, 0, 5, 0, 5, 0, lbl); /* re-open X2new here */
   dpd_buf4_close(&Z);
 
   dpd_file2_close(&X1);
@@ -104,11 +173,10 @@ void X2_build(char *pert, char *cart, int irrep, double omega)
   dpd_contract424(&X2, &F, &Z, 3, 1, 0, 1, 0);
   dpd_file2_close(&F);
   dpd_buf4_axpy(&Z, &X2new, 1);
-  sprintf(lbl, "Z(jI,bA) %s %1s", pert, cart);
-  dpd_buf4_sort(&Z, CC_TMP0, qpsr, 0, 5, lbl);
-  dpd_buf4_close(&Z);
-  dpd_buf4_init(&Z, CC_TMP0, irrep, 0, 5, 0, 5, 0, lbl);
-  dpd_buf4_axpy(&Z, &X2new, 1);
+  dpd_buf4_close(&X2new);  /* Need to close X2new to avoid collisions */
+  sprintf(lbl, "New X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
+  dpd_buf4_sort_axpy(&Z, CC_LR, qpsr, 0, 5, lbl, 1);
+  dpd_buf4_init(&X2new, CC_LR, irrep, 0, 5, 0, 5, 0, lbl); /* re-open X2new here */
   dpd_buf4_close(&Z);
 
   sprintf(lbl, "Z(Ij,Ab) %s %1s", pert, cart);
@@ -117,11 +185,10 @@ void X2_build(char *pert, char *cart, int irrep, double omega)
   dpd_contract244(&F, &X2, &Z, 0, 0, 0, 1, 0);
   dpd_file2_close(&F);
   dpd_buf4_axpy(&Z, &X2new, -1);
-  sprintf(lbl, "Z(jI,bA) %s %1s", pert, cart);
-  dpd_buf4_sort(&Z, CC_TMP0, qpsr, 0, 5, lbl);
-  dpd_buf4_close(&Z);
-  dpd_buf4_init(&Z, CC_TMP0, irrep, 0, 5, 0, 5, 0, lbl);
-  dpd_buf4_axpy(&Z, &X2new, -1);
+  dpd_buf4_close(&X2new);  /* Need to close X2new to avoid collisions */
+  sprintf(lbl, "New X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
+  dpd_buf4_sort_axpy(&Z, CC_LR, qpsr, 0, 5, lbl, -1);
+  dpd_buf4_init(&X2new, CC_LR, irrep, 0, 5, 0, 5, 0, lbl); /* re-open X2new here */
   dpd_buf4_close(&Z);
 
   dpd_buf4_init(&W, CC_HBAR, 0, 0, 0, 0, 0, 0, "WMnIj");
@@ -133,30 +200,28 @@ void X2_build(char *pert, char *cart, int irrep, double omega)
   dpd_buf4_init(&I, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>");
   dpd_contract444(&I, &X2, &Z, 0, 0, 1, 0);
   dpd_buf4_close(&I);
-  sprintf(lbl, "Z(Ij,Ab) %s %1s", pert, cart);
-  dpd_buf4_sort(&Z, CC_TMP0, rspq, 0, 5, lbl);
-  dpd_buf4_close(&Z);
-  dpd_buf4_init(&Z, CC_TMP0, irrep, 0, 5, 0, 5, 0, lbl);
-  dpd_buf4_axpy(&Z, &X2new, 1);
+  dpd_buf4_close(&X2new);  /* Need to close X2new to avoid collisions */
+  sprintf(lbl, "New X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
+  dpd_buf4_sort_axpy(&Z, CC_LR, rspq, 0, 5, lbl, 1);
+  dpd_buf4_init(&X2new, CC_LR, irrep, 0, 5, 0, 5, 0, lbl); /* re-open X2new here */
   dpd_buf4_close(&Z);
 
-  sprintf(lbl, "Z(Ij,Mb) %s %1s", pert, cart);
-  dpd_buf4_init(&Z, CC_TMP0, irrep, 0, 10, 0, 10, 0, lbl);
+  sprintf(lbl, "Z(Mb,Ij) %s %1s", pert, cart);
+  dpd_buf4_init(&Z, CC_TMP0, irrep, 10, 0, 10, 0, 0, lbl);
   dpd_buf4_init(&I, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
-  dpd_contract444(&X2, &I, &Z, 0, 0, 1, 0);
+  dpd_contract444(&I, &X2, &Z, 0, 0, 1, 0);
   dpd_buf4_close(&I);
   sprintf(lbl, "Z(Ij,Ab) %s %1s", pert, cart);
   dpd_buf4_init(&Z1, CC_TMP0, irrep, 0, 5, 0, 5, 0, lbl);
   dpd_file2_init(&t1, CC_OEI, 0, 0, 1, "tIA");
-  dpd_contract244(&t1, &Z, &Z1, 0, 2, 1, 1, 0);
+  dpd_contract244(&t1, &Z, &Z1, 0, 0, 1, 1, 0);
   dpd_file2_close(&t1);
   dpd_buf4_close(&Z);
   dpd_buf4_axpy(&Z1, &X2new, -1);
-  sprintf(lbl, "Z(jI,bA) %s %1s", pert, cart);
-  dpd_buf4_sort(&Z1, CC_TMP0, qpsr, 0, 5, lbl);
-  dpd_buf4_close(&Z1);
-  dpd_buf4_init(&Z1, CC_TMP0, irrep, 0, 5, 0, 5, 0, lbl);
-  dpd_buf4_axpy(&Z1, &X2new, -1);
+  dpd_buf4_close(&X2new);  /* Need to close X2new to avoid collisions */
+  sprintf(lbl, "New X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
+  dpd_buf4_sort_axpy(&Z1, CC_LR, qpsr, 0, 5, lbl, -1);
+  dpd_buf4_init(&X2new, CC_LR, irrep, 0, 5, 0, 5, 0, lbl); /* re-open X2new here */
   dpd_buf4_close(&Z1);
 
   sprintf(lbl, "Z(Ij,Mn) %s %1s", pert, cart);
@@ -225,11 +290,10 @@ void X2_build(char *pert, char *cart, int irrep, double omega)
   dpd_buf4_close(&T2);
   dpd_file2_close(&z);
   dpd_buf4_axpy(&Z, &X2new, -1);
-  sprintf(lbl, "Z(jI,bA) %s %1s", pert, cart);
-  dpd_buf4_sort(&Z, CC_TMP0, qpsr, 0, 5, lbl);
-  dpd_buf4_close(&Z);
-  dpd_buf4_init(&Z, CC_TMP0, irrep, 0, 5, 0, 5, 0, lbl);
-  dpd_buf4_axpy(&Z, &X2new, -1);
+  dpd_buf4_close(&X2new);  /* Need to close X2new to avoid collisions */
+  sprintf(lbl, "New X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
+  dpd_buf4_sort_axpy(&Z, CC_LR, qpsr, 0, 5, lbl, -1);
+  dpd_buf4_init(&X2new, CC_LR, irrep, 0, 5, 0, 5, 0, lbl); /* re-open X2new here */
   dpd_buf4_close(&Z);
 
   sprintf(lbl, "z(N,I) %s %1s", pert, cart);
@@ -247,11 +311,10 @@ void X2_build(char *pert, char *cart, int irrep, double omega)
   dpd_buf4_close(&T2);
   dpd_file2_close(&z);
   dpd_buf4_axpy(&Z, &X2new, -1);
-  sprintf(lbl, "Z(jI,bA) %s %1s", pert, cart);
-  dpd_buf4_sort(&Z, CC_TMP0, qpsr, 0, 5, lbl);
-  dpd_buf4_close(&Z);
-  dpd_buf4_init(&Z, CC_TMP0, irrep, 0, 5, 0, 5, 0, lbl);
-  dpd_buf4_axpy(&Z, &X2new, -1);
+  dpd_buf4_close(&X2new);  /* Need to close X2new to avoid collisions */
+  sprintf(lbl, "New X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
+  dpd_buf4_sort_axpy(&Z, CC_LR, qpsr, 0, 5, lbl, -1);
+  dpd_buf4_init(&X2new, CC_LR, irrep, 0, 5, 0, 5, 0, lbl); /* re-open X2new here */
   dpd_buf4_close(&Z);
 
   if(params.local) local_filter_T2(&X2new, omega);

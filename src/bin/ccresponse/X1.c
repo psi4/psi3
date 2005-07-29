@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <libdpd/dpd.h>
+#include <libqt/qt.h>
 #define EXTERN
 #include "globals.h"
 
@@ -12,6 +13,7 @@ void X1_build(char *pert, char *cart, int irrep, double omega)
   dpdfile2 F, X1, X1new;
   dpdbuf4 W, X2;
   char lbl[32];
+  int Gam, Gef, Gim, Gi, Ga, Gm, nrows, ncols, A, a, am;
 
   sprintf(lbl, "%sBAR_%1s_IA", pert, cart);
   dpd_file2_init(&X1new, CC_OEI, irrep, 0, 1, lbl);
@@ -51,17 +53,55 @@ void X1_build(char *pert, char *cart, int irrep, double omega)
   dpd_buf4_close(&X2);
   dpd_file2_close(&F);
 
+  sprintf(lbl, "X_%s_%1s_(2IjAb-IjbA) (%5.3f)", pert, cart, omega);
+  dpd_buf4_init(&X2, CC_LR, irrep, 0, 5, 0, 5, 0, lbl);
+  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");
+  /*  dpd_contract442(&X2, &W, &X1new, 0, 0, 1, 1); */
+  /* ooc code below added 7/28/05, -TDC */
+  dpd_file2_mat_init(&X1new);
+  dpd_file2_mat_rd(&X1new);
+  for(Gam=0; Gam < moinfo.nirreps; Gam++) {
+    Gef = Gam; /* W is totally symmetric */
+    Gim = Gef ^ irrep;
+
+    dpd_buf4_mat_irrep_init(&X2, Gim);
+    dpd_buf4_mat_irrep_rd(&X2, Gim);
+    dpd_buf4_mat_irrep_shift13(&X2, Gim);
+
+    for(Gi=0; Gi < moinfo.nirreps; Gi++) {
+      Ga = Gi ^ irrep;
+      Gm = Ga ^ Gam;
+
+      W.matrix[Gam] = dpd_block_matrix(moinfo.occpi[Gm], W.params->coltot[Gef]);
+
+      nrows = moinfo.occpi[Gi];
+      ncols = moinfo.occpi[Gm] * W.params->coltot[Gef];
+
+      for(A=0; A < moinfo.virtpi[Ga]; A++) {
+	a = moinfo.vir_off[Ga] + A;
+	am = W.row_offset[Gam][a];
+
+	dpd_buf4_mat_irrep_rd_block(&W, Gam, am, moinfo.occpi[Gm]);
+
+	if(nrows && ncols && moinfo.virtpi[Ga])
+	  C_DGEMV('n',nrows,ncols,1,X2.shift.matrix[Gim][Gi][0],ncols,W.matrix[Gam][0],1,1,
+		  &(X1new.matrix[Gi][0][A]), moinfo.virtpi[Ga]);
+      }
+      dpd_free_block(W.matrix[Gam], moinfo.occpi[Gm], W.params->coltot[Gef]);
+    }
+
+    dpd_buf4_mat_irrep_close(&X2, Gim);
+  }
+  dpd_file2_mat_wrt(&X1new);
+  dpd_file2_mat_close(&X1new);
+  dpd_buf4_close(&W);
+  dpd_buf4_close(&X2);
+
   sprintf(lbl, "X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
   dpd_buf4_init(&X2, CC_LR, irrep, 0, 5, 0, 5, 0, lbl);
-
-  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf 2(Am,Ef) - (Am,fE)");
-  dpd_contract442(&X2, &W, &X1new, 0, 0, 1, 1);
-  dpd_buf4_close(&W);
-
   dpd_buf4_init(&W, CC_HBAR, 0, 0, 11, 0, 11, 0, "WMnIe - 2WnMIe (Mn,eI)");
   dpd_contract442(&W, &X2, &X1new, 3, 3, 1, 1);
   dpd_buf4_close(&W);
-
   dpd_buf4_close(&X2);
 
   if(params.local && local.filter_singles) local_filter_T1(&X1new, omega);

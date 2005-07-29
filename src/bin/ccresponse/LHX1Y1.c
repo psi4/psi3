@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <libdpd/dpd.h>
+#include <libciomr/libciomr.h>
+#include <libqt/qt.h>
 #define EXTERN
 #include "globals.h"
 
@@ -10,10 +12,12 @@ double LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
 	      char *pert_y, char *cart_y, int irrep_y, double omega_y)
 {
 
-  dpdfile2 F, X1, Y1, Zmi, Zae, Zfb, Znj, ZIA, L1, t1;
+  dpdfile2 F, X1, Y1, Zmi, Zae_1, Zae_2, Zfb, Znj, ZIA, L1, t1;
   dpdbuf4 Z1, Z2, I, tau, W1, W2, ZIjAb, L2, T2, W, Z;
   double polar;
   char lbl[32];
+  int Gbm, Gfe, bm, b, m, Gb, Gm, Ge, Gf, B, M, fe, f, e, ef, nrows, ncols;
+  double *X;
 
   /* The Lambda 1 contractions */
   dpd_file2_init(&ZIA, CC_TMP0, 0, 0, 1, "ZIA");
@@ -38,22 +42,66 @@ double LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
   dpd_contract222(&Zmi, &X1, &ZIA, 1, 1, -1, 1);
   dpd_file2_close(&Zmi);
 
-  /* Contraction of WAMEF, XIE, YMF */
-  sprintf(lbl, "Z_%s_%1s_AE" , pert_y, cart_y);
-  dpd_file2_init(&Zae, CC_TMP0, irrep_y, 1, 1, lbl);
-  dpd_buf4_init(&W1, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf 2(Am,Ef) - (Am,fE)");
-  dpd_dot24(&Y1, &W1, &Zae, 0, 0, 1, 0);
-  dpd_buf4_close(&W1);
-  dpd_contract222(&X1, &Zae, &ZIA, 0, 0, 1, 1);
+  /* Contraction of WAMEF with XIE, YMF and XMF, YIE */
+  sprintf(lbl, "Z_%s_%1s_AE 1" , pert_y, cart_y);
+  dpd_file2_init(&Zae_1, CC_TMP0, irrep_y, 1, 1, lbl);
+  dpd_file2_scm(&Zae_1, 0);
+  dpd_file2_mat_init(&Zae_1);
+  sprintf(lbl, "Z_%s_%1s_AE 2" , pert_y, cart_y);
+  dpd_file2_init(&Zae_2, CC_TMP0, irrep_y, 1, 1, lbl);
+  dpd_file2_scm(&Zae_2, 0);
+  dpd_file2_mat_init(&Zae_2);
+  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");
+  dpd_file2_mat_init(&Y1);
+  dpd_file2_mat_rd(&Y1);
+  dpd_file2_mat_init(&X1);
+  dpd_file2_mat_rd(&X1);
+  for(Gbm=0; Gbm < moinfo.nirreps; Gbm++) {
+    Gfe = Gbm; /* W is totally symmetric */
+    dpd_buf4_mat_irrep_row_init(&W, Gbm);
+    X = init_array(W.params->coltot[Gfe]);
+    for(bm=0; bm < W.params->rowtot[Gbm]; bm++) {
+      dpd_buf4_mat_irrep_row_rd(&W, Gbm, bm);
+      b = W.params->roworb[Gbm][bm][0];
+      m = W.params->roworb[Gbm][bm][1];
+      Gb = W.params->psym[b];
+      Gm = Gbm ^ Gb;
+      Ge = Gm ^ irrep_y;
+      Gf = Gfe ^ Ge;
+      B = b - moinfo.vir_off[Gb];
+      M = m - moinfo.occ_off[Gm];
+      zero_arr(X, W.params->coltot[Gfe]);
+      for(fe=0; fe < W.params->coltot[Gfe]; fe++) {
+	f = W.params->colorb[Gfe][fe][0];
+	e = W.params->colorb[Gfe][fe][1];
+	ef = W.params->colidx[e][f];
+	X[fe] = 2.0 * W.matrix[Gbm][0][fe] - W.matrix[Gbm][0][ef];
+      }
+      nrows = moinfo.virtpi[Gf];
+      ncols = moinfo.virtpi[Ge];
+      if(nrows & ncols) {
+	C_DGEMV('n',nrows,ncols,1,&X[W.col_offset[Gfe][Gf]],ncols,
+		Y1.matrix[Gm][M],1,1,Zae_1.matrix[Gb][B],1);
+	C_DGEMV('n',nrows,ncols,1,&X[W.col_offset[Gfe][Gf]],ncols,
+		X1.matrix[Gm][M],1,1,Zae_2.matrix[Gb][B],1);
+      }
+    }
+    free(X);
+    dpd_buf4_mat_irrep_row_close(&W, Gbm);
+  }
+  dpd_file2_mat_close(&X1);
+  dpd_file2_mat_close(&Y1);
+  dpd_file2_mat_wrt(&Zae_1);
+  dpd_file2_mat_close(&Zae_1);
+  dpd_file2_mat_wrt(&Zae_2);
+  dpd_file2_mat_close(&Zae_2);
+  dpd_buf4_close(&W);
+  dpd_contract222(&X1, &Zae_1, &ZIA, 0, 0, 1, 1);
+  dpd_contract222(&Y1, &Zae_2, &ZIA, 0, 0, 1, 1);
+  dpd_file2_close(&Zae_1);
+  dpd_file2_close(&Zae_2);
 
-  /* Contraction of WAMEF, XMF, YIE */
-  dpd_buf4_init(&W1, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf 2(Am,Ef) - (Am,fE)");
-  dpd_dot24(&X1, &W1, &Zae, 0, 0, 1, 0);
-  dpd_buf4_close(&W1);
-  dpd_contract222(&Y1, &Zae, &ZIA, 0, 0, 1, 1);
-  dpd_file2_close(&Zae);
-
-  /* Contraction of WAMEF, XMA, YNE */
+  /* Contraction of WMNIE, XMA, YNE */
   sprintf(lbl, "Z_%s_%1s_MI" , pert_y, cart_y);
   dpd_file2_init(&Zmi, CC_TMP0, irrep_y, 0, 0, lbl);
   dpd_buf4_init(&W1, CC_HBAR, 0, 0, 11, 0, 11, 0, "WMnIe - 2WnMIe (Mn,eI)");
@@ -61,7 +109,7 @@ double LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
   dpd_buf4_close(&W1);
   dpd_contract222(&Zmi, &X1, &ZIA, 1, 1, 1, 1);
 
-  /* Contraction of WAMEF, XMA, YNE */
+  /* Contraction of WMNIE, XMA, YNE */
   dpd_buf4_init(&W1, CC_HBAR, 0, 0, 11, 0, 11, 0, "WMnIe - 2WnMIe (Mn,eI)");
   dpd_dot13(&X1, &W1, &Zmi, 0, 0, 1, 0);
   dpd_buf4_close(&W1);
@@ -108,12 +156,12 @@ double LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
   dpd_buf4_close(&Z2);
 
   dpd_buf4_init(&ZIjAb, CC_TMP0, 0, 0, 5, 0, 5, 0, "Z(Ij,Ab) Final");
-  dpd_buf4_init(&Z2, CC_TMP0, 0, 0, 11, 0, 11, 0, "Z(ij,am)");
-  dpd_buf4_init(&I, CC_FINTS, 0, 11, 5, 11, 5, 0, "F <ai|bc>");
-  dpd_contract444(&Z1, &I, &Z2, 0, 0, -2, 0);
+  dpd_buf4_init(&Z2, CC_TMP0, 0, 10, 0, 10, 0, 0, "Z(Mb,Ij)");
+  dpd_buf4_init(&I, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
+  dpd_contract444(&I, &Z1, &Z2, 0, 0, -2, 0);
   dpd_buf4_close(&I);
   dpd_file2_init(&t1, CC_OEI, 0, 0, 1, "tIA");
-  dpd_contract424(&Z2, &t1, &ZIjAb, 3, 0, 0, 1, 1);
+  dpd_contract244(&t1, &Z2, &ZIjAb, 0, 0, 1, 1, 1);
   dpd_file2_close(&t1);
   dpd_buf4_close(&Z2);
   dpd_buf4_init(&Z2, CC_TMP0, 0, 0, 0, 0, 0, 0, "Z(Ij,Mn)");

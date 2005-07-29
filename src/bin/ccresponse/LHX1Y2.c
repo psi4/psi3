@@ -14,11 +14,8 @@ double LHX1Y2(char *pert_x, char *cart_x, int irrep_x, double omega_x,
   char lbl[32];
   double polar;
   int nirreps, Gbm, Gef, Gjf, Ge, Gf, Gj, bm, ef, jf;
-  int *occpi, *virtpi, **W_col_offset, **Z_col_offset, offset;
-
-  nirreps = moinfo.nirreps;
-  occpi = moinfo.occpi;
-  virtpi = moinfo.virtpi;
+  int Gfe, Gb, Gm, b, m, B, M, e, f, fe, nrows, ncols, nlinks;
+  double *X;
 
   sprintf(lbl, "Z_%s_%1s_MI", pert_y, cart_y);
   dpd_file2_init(&z1, CC_TMP0, irrep_y, 0, 0, lbl);
@@ -146,23 +143,7 @@ double LHX1Y2(char *pert_x, char *cart_x, int irrep_x, double omega_x,
   /* Z(bm,jf) <-- X1(j,e) * W(bm,ef) */
   dpd_file2_mat_init(&X1);
   dpd_file2_mat_rd(&X1);
-  W_col_offset = init_int_matrix(nirreps, nirreps);
-  Z_col_offset = init_int_matrix(nirreps, nirreps);
-  for(Gbm=0; Gbm < nirreps; Gbm++) {
-
-    /* compute a column-index lookup */
-    for(Ge=0, offset=0; Ge < nirreps; Ge++) {
-      Gf = Gbm^Ge;
-      W_col_offset[Gbm][Ge] = offset;
-      if(virtpi[Ge] && virtpi[Gf]) offset += virtpi[Ge] * virtpi[Gf];
-    }
-
-    for(Gj=0, offset=0; Gj < nirreps; Gj++) {
-      Gf = Gbm^Gj^irrep_x;
-      Z_col_offset[Gbm][Gj] = offset;
-      if(occpi[Gj] && virtpi[Gf]) offset += occpi[Gj] * virtpi[Gf];
-    }
-
+  for(Gbm=0; Gbm < moinfo.nirreps; Gbm++) {
     Gef = Gbm;  Gjf = Gbm^irrep_x;
 
     dpd_buf4_mat_irrep_init(&Z1, Gbm);
@@ -170,15 +151,19 @@ double LHX1Y2(char *pert_x, char *cart_x, int irrep_x, double omega_x,
     for(bm=0; bm < W.params->rowtot[Gbm]; bm++) {
       dpd_buf4_mat_irrep_row_rd(&W, Gbm, bm);
 
-      for(Gj=0; Gj < nirreps; Gj++) {
+      for(Gj=0; Gj < moinfo.nirreps; Gj++) {
 	Gf = Gjf^Gj;  Ge = Gef^Gf;
 
-	ef = W_col_offset[Gbm][Ge];
-	jf = Z_col_offset[Gbm][Gj];
+	ef = W.col_offset[Gbm][Ge];
+	jf = Z1.col_offset[Gbm][Gj];
 
-	if(occpi[Gj] && virtpi[Gf] && virtpi[Ge])
-	  C_DGEMM('n','n', occpi[Gj], virtpi[Gf], virtpi[Ge], 1.0, &(X1.matrix[Gj][0][0]), virtpi[Ge],
-		  &(W.matrix[Gbm][0][ef]), virtpi[Gf], 0.0, &(Z1.matrix[Gbm][bm][jf]), virtpi[Gf]);
+	nrows = moinfo.occpi[Gj];
+	ncols = moinfo.virtpi[Gf];
+	nlinks = moinfo.virtpi[Ge];
+
+	if(nrows && ncols && nlinks)
+	  C_DGEMM('n','n', nrows, ncols, nlinks, 1.0, &(X1.matrix[Gj][0][0]), nlinks,
+		  &(W.matrix[Gbm][0][ef]), ncols, 0.0, &(Z1.matrix[Gbm][bm][jf]), ncols);
       }
     }
     dpd_buf4_mat_irrep_row_close(&W, Gbm);
@@ -186,8 +171,6 @@ double LHX1Y2(char *pert_x, char *cart_x, int irrep_x, double omega_x,
     dpd_buf4_mat_irrep_close(&Z1, Gbm);
 
   }
-  free_int_matrix(W_col_offset, nirreps);
-  free_int_matrix(Z_col_offset, nirreps);
   dpd_file2_mat_close(&X1);
   /* out-of-core algorithm done */
   dpd_buf4_close(&W);
@@ -306,13 +289,52 @@ double LHX1Y2(char *pert_x, char *cart_x, int irrep_x, double omega_x,
   dpd_file2_close(&z);
 
 
-
-  sprintf(lbl, "Z_%s_%1s_ae", pert_x, cart_x);
+  sprintf(lbl, "Z_%s_%1s_AE", pert_x, cart_x);
   dpd_file2_init(&z, CC_TMP0, irrep_x, 1, 1, lbl);
 
-  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf 2(Am,Ef) - (Am,fE)");
-  dpd_dot24(&X1, &W, &z, 0, 0, 1, 0);
+/*   dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf 2(Am,Ef) - (Am,fE)"); */
+/*   dpd_dot24(&X1, &W, &z, 0, 0, 1, 0); */
+  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");
+  dpd_file2_scm(&z, 0);
+  dpd_file2_mat_init(&z);
+  dpd_file2_mat_init(&X1);
+  dpd_file2_mat_rd(&X1);
+  for(Gbm=0; Gbm < moinfo.nirreps; Gbm++) {
+    Gfe = Gbm; /* W is totally symmetric */
+    dpd_buf4_mat_irrep_row_init(&W, Gbm);
+    X = init_array(W.params->coltot[Gfe]);
+    for(bm=0; bm < W.params->rowtot[Gbm]; bm++) {
+      dpd_buf4_mat_irrep_row_rd(&W, Gbm, bm);
+      b = W.params->roworb[Gbm][bm][0];
+      m = W.params->roworb[Gbm][bm][1];
+      Gb = W.params->psym[b];
+      Gm = Gbm ^ Gb;
+      Ge = Gm ^ irrep_x;
+      Gf = Gfe ^ Ge;
+      B = b - moinfo.vir_off[Gb];
+      M = m - moinfo.occ_off[Gm];
+      zero_arr(X, W.params->coltot[Gfe]);
+      for(fe=0; fe < W.params->coltot[Gfe]; fe++) {
+	f = W.params->colorb[Gfe][fe][0];
+	e = W.params->colorb[Gfe][fe][1];
+	ef = W.params->colidx[e][f];
+	X[fe] = 2.0 * W.matrix[Gbm][0][fe] - W.matrix[Gbm][0][ef];
+      }
+      nrows = moinfo.virtpi[Gf];
+      ncols = moinfo.virtpi[Ge];
+      if(nrows & ncols) {
+	C_DGEMV('n',nrows,ncols,1,&X[W.col_offset[Gfe][Gf]],ncols,
+		X1.matrix[Gm][M],1,1,z.matrix[Gb][B],1);
+      }
+    }
+    free(X);
+    dpd_buf4_mat_irrep_row_close(&W, Gbm);
+  }
+  dpd_file2_mat_close(&X1);
+  dpd_file2_mat_wrt(&z);
+  dpd_file2_mat_close(&z);
   dpd_buf4_close(&W);
+
   dpd_buf4_init(&Z1, CC_TMP0, 0, 0, 5, 0, 5, 0, "Z(Ij,Ab) temp");
   dpd_contract424(&Y2, &z, &Z1, 3, 1, 0, 1, 0);
   dpd_buf4_init(&Z, CC_TMP0, 0, 0, 5, 0, 5, 0, "Z(Ij,Ab) Final");
