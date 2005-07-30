@@ -22,7 +22,7 @@ void Wabei_RHF(void)
   dpdfile2 Fme, T1;
   dpdbuf4 F, W, T2, B, Z, Z1, Z2, D, T, C, F1, F2, W1, W2, Tau;
   double value;
-  int Gef, Gei, Gab, Ge, Gi, Gf, Gmi, Gm, nrows, ncols, nlinks, EE, e, row;
+  int Gef, Gei, Gab, Ge, Gi, Gf, Gmi, Gm, nrows, ncols, nlinks, EE, e, row, Gnm;
   int Gma, ma, m, a, Ga, Gb, I, i, mi, E, ei, ab, ba, b, BB, fb, bf, fe, ef, mb, am;
   double ***WW1, ***WW2;
 
@@ -152,10 +152,34 @@ void Wabei_RHF(void)
     fprintf(outfile, "\tD*T1*T2 + E*T2 -> Wabei...");
     fflush(outfile);
   }
-  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAbEi (Ei,Ab)");
   dpd_buf4_init(&Z, CC_HBAR, 0, 0, 11, 0, 11, 0, "WMnIe (nM,eI)");
+  dpd_buf4_sort(&Z, CC_HBAR, rspq, 11, 0, "WMnIe (eI,nM)");
+  dpd_buf4_close(&Z);
+  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAbEi (Ei,Ab)");
+  dpd_buf4_init(&Z, CC_HBAR, 0, 11, 0, 11, 0, 0, "WMnIe (eI,nM)");
   dpd_buf4_init(&T, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
-  dpd_contract444(&Z, &T, &W, 1, 1, 1, 1);
+  /*   dpd_contract444(&Z, &T, &W, 1, 1, 1, 1); */
+  for(Gei=0; Gei < moinfo.nirreps; Gei++) {
+    Gab = Gnm = Gei; /* Everything is totally symmetric here */
+    nrows = T.params->rowtot[Gnm];
+    ncols = T.params->coltot[Gab];
+    if(nrows && ncols) {
+      dpd_buf4_mat_irrep_init(&Z, Gei);
+      dpd_buf4_mat_irrep_rd(&Z, Gei);
+      dpd_buf4_mat_irrep_init(&T, Gnm);
+      dpd_buf4_mat_irrep_rd(&T, Gnm);
+      dpd_buf4_mat_irrep_row_init(&W, Gei);
+      for(ei=0; ei < W.params->rowtot[Gei]; ei++) {
+	dpd_buf4_mat_irrep_row_rd(&W, Gei, ei);
+	C_DGEMV('t',nrows,ncols,1,T.matrix[Gei][0],ncols,Z.matrix[Gei][ei],1,
+		1,W.matrix[Gei][0],1);
+	dpd_buf4_mat_irrep_row_wrt(&W, Gei, ei);
+      }
+      dpd_buf4_mat_irrep_row_close(&W, Gei);
+      dpd_buf4_mat_irrep_close(&T, Gnm);
+      dpd_buf4_mat_irrep_close(&Z, Gei);
+    }
+  }
   dpd_buf4_close(&T);
   dpd_buf4_close(&Z);
   dpd_buf4_close(&W);
@@ -246,10 +270,10 @@ void Wabei_RHF(void)
       } /* Gi */
       /* free W1 target */
       for(Gf=0; Gf < moinfo.nirreps; Gf++) {
-	  Gb = Gf ^ Gmi; /* Z is totally symmetric */
-	  Ge = Gf ^ Gma; /* F is totally symmetric */
-	  dpd_free_block(WW1[Gb],moinfo.virtpi[Gb], moinfo.virtpi[Ge]);
-	  dpd_free_block(WW2[Gb],moinfo.virtpi[Gb], moinfo.virtpi[Ge]);
+	Gb = Gf ^ Gmi; /* Z is totally symmetric */
+	Ge = Gf ^ Gma; /* F is totally symmetric */
+	dpd_free_block(WW1[Gb],moinfo.virtpi[Gb], moinfo.virtpi[Ge]);
+	dpd_free_block(WW2[Gb],moinfo.virtpi[Gb], moinfo.virtpi[Ge]);
       }
     } /* ma */
     dpd_buf4_mat_irrep_row_close(&F, Gma);
