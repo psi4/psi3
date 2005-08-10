@@ -14,27 +14,14 @@ void BT2(void)
   dpdbuf4 Z1,Z2;
 
   if(params.ref == 0) { /** RHF **/
-    dpd_buf4_init(&newtIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb");
-
     dpd_buf4_init(&tauIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
-
     dpd_buf4_init(&B, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>");
-
     dpd_buf4_init(&Z1, CC_TMP0, 0, 5, 0, 5, 0, 0, "Z(Ab,Ij)");
     dpd_contract444(&B, &tauIjAb, &Z1, 0, 0, 1, 0);
-
-    dpd_buf4_sort(&Z1, CC_TMP0, rspq, 0, 5, "Z(Ij,Ab)");
-
-    dpd_buf4_init(&Z2, CC_TMP0, 0, 0, 5, 0, 5, 0, "Z(Ij,Ab)");
-    dpd_buf4_axpy(&Z2, &newtIjAb, 1);
-    dpd_buf4_close(&Z2);
+    dpd_buf4_sort_axpy(&Z1, CC_TAMPS, rspq, 0, 5, "New tIjAb", 1);
     dpd_buf4_close(&Z1);
-
     dpd_buf4_close(&B);
-
     dpd_buf4_close(&tauIjAb);
-
-    dpd_buf4_close(&newtIjAb);
   }
   else if(params.ref == 1) { /** ROHF **/
 
