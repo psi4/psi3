@@ -1,0 +1,23 @@
+% Test case for some of the PSI3 out-of-core codes.  Thcode is given only
+% 2.0 MB of memory, which is insufficient to hold either the A1 or B2
+% blocks of an ovvv quantity in-core, but is sufficient to hold at least
+% two copies of an oovv quantity in-core.
+%
+% TDC, 8/05
+
+psi: (
+  label = "EOM-CCSD/aug-cc-pVTZ H2O for testing OOC ovvv codes"
+  wfn = eom_ccsd
+  memory = (2.0 MB)
+  reference = rhf
+  dertype = none
+  jobtype = sp
+  states_per_irrep = (1 0 0 1)
+  basis = "aug-cc-pVTZ"
+  zmat = (
+    h
+    o 1 0.9
+    h 2 0.9 1 104.
+  )
+)
+
