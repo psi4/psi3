@@ -217,22 +217,22 @@ void angmom_ints(void)
 
 		  /********** Lx integrals ***********/
 
-		  /* (a|Lx|b) = - 2 a2 * (a|(y-Cy)|b+1z) + B.z * (a|(y-Cy)|b-1z)
-		     + 2 a2 * (a|(z-Cz)|b+1y) + B.y * (a|(z-Cz)|b-1y) */
+		  /* (a|Lx|b) = 2 a2 * (a|(y-Cy)|b+1z) - B.z * (a|(y-Cy)|b-1z)
+		     - 2 a2 * (a|(z-Cz)|b+1y) + B.y * (a|(z-Cz)|b-1y) */
 
 		  Lx[I][J] += 2.0*a2*muyz1 - n2*muyz2 - 2.0*a2*muzy1 + m2*muzy2;
                   
 		  /********** Ly integrals ***********/
 
-		  /* (a|Ly|b) = - 2 a2 * (a|(z-Cz)|b+1x) + B.x * (a|(z-Cz)|b-1x)
-		     + 2 a2 * (a|(x-Cx)|b+1z) + B.z * (a|(x-Cx)|b-1z) */
+		  /* (a|Ly|b) = 2 a2 * (a|(z-Cz)|b+1x) - B.x * (a|(z-Cz)|b-1x)
+		     - 2 a2 * (a|(x-Cx)|b+1z) + B.z * (a|(x-Cx)|b-1z) */
 
 		  Ly[I][J] += 2.0*a2*muzx1 - l2*muzx2 - 2.0*a2*muxz1 + n2*muxz2;
                   
 		  /********** Lz integrals ***********/
 
-		  /* (a|Lz|b) = - 2 a2 * (a|(x-Cx)|b+1y) + B.y * (a|(x-Cx)|b-1y)
-		     + 2 a2 * (a|(y-Cy)|b+1x) + B.x * (a|(y-Cy)|b-1x) */
+		  /* (a|Lz|b) = 2 a2 * (a|(x-Cx)|b+1y) - B.y * (a|(x-Cx)|b-1y)
+		     - 2 a2 * (a|(y-Cy)|b+1x) + B.x * (a|(y-Cy)|b-1x) */
 
 		  Lz[I][J] += 2.0*a2*muxy1 - m2*muxy2 - 2.0*a2*muyx1 + l2*muyx2;
 
