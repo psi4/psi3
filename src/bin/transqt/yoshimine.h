@@ -52,7 +52,7 @@ union psi_buffer {
 #endif
 
 YEXTERN void yosh_init(struct yoshimine *YBuff, unsigned bra_indices, 
-      unsigned ket_indices, unsigned long maxcor, unsigned long maxcord,
+      unsigned ket_indices, long maxcor, long maxcord,
 const int max_buckets,
       unsigned int first_tmp_file, double cutoff, FILE *outfile);
 YEXTERN void yosh_print(struct yoshimine *YBuff, FILE *outfile); 
