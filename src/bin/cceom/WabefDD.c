@@ -37,35 +37,33 @@ void WabefDD(int i, int C_irr) {
     dpd_buf4_init(&Z, EOM_TMP, C_irr, 0, 5, 0, 5, 0, "WabefDD Z(Ij,Ab)");
     dpd_buf4_axpy(&Z, &SIjAb, 1);
     dpd_buf4_close(&Z);
+    dpd_buf4_close(&SIjAb);
 
 #ifdef TIME_CCEOM
     timer_off("WabefDD Z");
 #endif
 
     /* construct XIjMb = CIjEf * <mb|ef> */
-    dpd_buf4_init(&X, EOM_TMP, C_irr, 0, 10, 0, 10, 0, "WabefDD X(Ij,Mb)");
+    dpd_buf4_init(&X, EOM_TMP, C_irr, 10, 0, 10, 0, 0, "WabefDD X(Mb,Ij)");
     dpd_buf4_init(&CMnEf, EOM_CMnEf, C_irr, 0, 5, 0, 5, 0, CMnEf_lbl);
     dpd_buf4_init(&F, CC_FINTS, H_IRR, 10, 5, 10, 5, 0, "F <ia|bc>");
-    dpd_contract444(&CMnEf, &F, &X, 0, 0, 1.0, 0.0);
+    dpd_contract444(&F, &CMnEf, &X, 0, 0, 1.0, 0.0);
     dpd_buf4_close(&F);
     dpd_buf4_close(&CMnEf);
 
-    dpd_buf4_init(&Z, EOM_TMP, C_irr, 0, 5, 0, 5, 0, "WabefDD Z(Ij,Ab)");
+    dpd_buf4_init(&Z, EOM_TMP, C_irr, 5, 0, 5, 0, 0, "WabefDD Z(Ab,Ij)");
     dpd_file2_init(&tIA, CC_OEI, H_IRR, 0, 1, "tIA");
     /* fprintf(outfile,"\n begin contract244 in WabefDD\n"); */
-    dpd_contract244(&tIA, &X, &Z, 0, 2, 1, 1.0, 0.0);
+    dpd_contract244(&tIA, &X, &Z, 0, 0, 0, 1.0, 0.0);
     dpd_file2_close(&tIA);
     /* dpd_buf4_print(&Z,outfile,1); */
     dpd_buf4_close(&X);
 
-    dpd_buf4_sort(&Z, EOM_TMP, qpsr, 0, 5, "WabefDD Z(jI,bA)");
-    dpd_buf4_axpy(&Z, &SIjAb, -1.0);
-    dpd_buf4_close(&Z);
-    dpd_buf4_init(&Z, EOM_TMP, C_irr, 0, 5, 0, 5, 0, "WabefDD Z(jI,bA)");
-    dpd_buf4_axpy(&Z, &SIjAb, -1.0);
-    dpd_buf4_close(&Z);
+    dpd_buf4_sort_axpy(&Z, EOM_SIjAb, rspq, 0, 5, SIjAb_lbl, -1);
+    dpd_buf4_sort_axpy(&Z, EOM_SIjAb, srqp, 0, 5, SIjAb_lbl, -1);
 
     /* SIjAb += tau_MnAb <Mn||ef> CIjEf */
+    dpd_buf4_init(&SIjAb, EOM_SIjAb, C_irr, 0, 5, 0, 5, 0, SIjAb_lbl);
     dpd_buf4_init(&X, EOM_TMP, C_irr, 0, 0, 0, 0, 0, "WabefDD XIjMn");
     dpd_buf4_init(&CMnEf, EOM_CMnEf, C_irr, 0, 5, 0, 5, 0, CMnEf_lbl);
     dpd_buf4_init(&D, CC_DINTS, H_IRR, 0, 5, 0, 5, 0, "D <ij|ab>");

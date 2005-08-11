@@ -52,7 +52,7 @@ void hbar_extra(void) {
 
   }
 
-  if ((params.eom_ref == 0) || (params.eom_ref == 1)) {
+  if (params.eom_ref == 1) {  /* ROHF */
 
     dpd_buf4_init(&W, CC_HBAR, H_IRR, 10, 0, 10, 0, 0, "WmBiJ");
     dpd_buf4_sort(&W, CC_HBAR, pqsr, 10, 0, "WmBiJ (mB,Ji)");
