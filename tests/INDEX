@@ -55,25 +55,32 @@ cc21: ROHF-EOM-CCSD/DZ geometry optimization of the lowest 2A1 excited
 
 cc22: ROHF-EOM-CCSD/DZ on the lowest two states of each irrep in 3B1 CH2.
 
-cc23: ROHF-EOM-CCSD/DZ analytic gradient lowest 2B1 state of H2O+ (A1 excitation)
+cc23: ROHF-EOM-CCSD/DZ analytic gradient lowest 2B1 state of H2O+ (A1
+excitation)
 
-cc24: UHF-EOM-CCSD/DZ analytic gradient lowest 2B1 state of H2O+ (A1 excitation)
+cc24: UHF-EOM-CCSD/DZ analytic gradient lowest 2B1 state of H2O+ (A1
+excitation)
 
-cc25: UHF-EOM-CCSD/DZ analytic gradient lowest 2B2 state of H2O+ (A2 excitation)
+cc25: UHF-EOM-CCSD/DZ analytic gradient lowest 2B2 state of H2O+ (A2
+excitation)
 
-cc26: RHF-EOM-CCSD/DZ analytic gradient lowest 1A1 state of H2O (A1 excitation)
+cc26: RHF-EOM-CCSD/DZ analytic gradient lowest 1A1 state of H2O (A1
+excitation)
 
-cc27: RHF-EOM-CCSD/DZ analytic gradient lowest 1B2 state of H2O (B2 excitation)
+cc27: RHF-EOM-CCSD/DZ analytic gradient lowest 1B2 state of H2O (B2
+excitation)
 
-cc28: RHF-CCSD-LR/cc-pVDZ optical rotation of H2O2.  gauge = length, omega = (589 nm)
+cc28: RHF-CCSD-LR/cc-pVDZ optical rotation of H2O2.  gauge = length, omega =
+(589 nm)
 
-cc29: RHF-CCSD-LR/cc-pVDZ optical rotation of H2O2.  gauge = velocity, omega = (589 nm)
+cc29: RHF-CCSD-LR/cc-pVDZ optical rotation of H2O2.  gauge = velocity, omega =
+(589 nm)
 
-cc30: RHF-CCSD-LR/cc-pVDZ optical rotation of (S)-methyloxirane.  gauge = length,
-  omega = (355 nm)
+cc30: RHF-CCSD-LR/cc-pVDZ optical rotation of (S)-methyloxirane.  gauge =
+length, omega = (355 nm)
 
-cc31: RHF-CCSD-LR/cc-pVDZ optical rotation of (S)-methyloxirane.  gauge = velocity,
-  omega = (355 nm)
+cc31: RHF-CCSD-LR/cc-pVDZ optical rotation of (S)-methyloxirane.  gauge =
+velocity, omega = (355 nm)
 
 cc32: RHF-CC3/cc-pVDZ energy of H2O to match value from Table III of Olsen
 et al., JCP 104, 8007 (1996).
@@ -89,15 +96,21 @@ cc36: RHF-CC2/cc-pVDZ energy of H2O.
 cc37: UHF-CC2/cc-pVDZ energy of H2O+.
 
 cc38: RHF-CC2-LR/cc-pVDZ static polarizabilities of HOF molecule.
-                                                                                                              
+
 cc39: RHF-CC2-LR/cc-pVDZ dynamic polarizabilities of HOF molecule.
 
-cc40: RHF-CC2-LR/cc-pVDZ optical rotation of H2O2.  gauge = length, omega = (589 nm)
-                                                                                                              
-cc41: RHF-CC2-LR/cc-pVDZ optical rotation of H2O2.  gauge = velocity, omega = (589 nm)
-                                                                                                              
-cc42: RHF-CC2-LR/cc-pVDZ optical rotation of (S)-methyloxirane.  gauge = length,
-  omega = (355 nm)
-                                                                                                              
-cc43: RHF-CC2-LR/cc-pVDZ optical rotation of (S)-methyloxirane.  gauge = velocity,
-  omega = (355 nm)
+cc40: RHF-CC2-LR/cc-pVDZ optical rotation of H2O2.  gauge = length, omega =
+(589 nm)
+
+cc41: RHF-CC2-LR/cc-pVDZ optical rotation of H2O2.  gauge = velocity, omega =
+(589 nm)
+
+cc42: RHF-CC2-LR/cc-pVDZ optical rotation of (S)-methyloxirane.  gauge =
+length, omega = (355 nm)
+
+cc43: RHF-CC2-LR/cc-pVDZ optical rotation of (S)-methyloxirane.  gauge =
+velocity, omega = (355 nm)
+
+cc44: RHF-EOM-CCSD/aug-cc-pVTZ lowest A1 and B2 excited states of H2O with
+only 2.0 MB of memory to test out-of-core algorithms for various ovvv
+quantities.
