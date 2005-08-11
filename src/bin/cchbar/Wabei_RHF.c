@@ -246,7 +246,7 @@ void Wabei_RHF(void)
     dpd_buf4_sort_axpy(&W, CC_HBAR, rpsq, 11, 5, "WAbEi (Ei,Ab)", 1);
     dpd_buf4_close(&W);
     psio_close(CC_TMP0, 0); /* delete the extra ovvv quantities on disk */
-    psio_open(CC_TMP0, 1);
+    psio_open(CC_TMP0, PSIO_OPEN_NEW);
     dpd_buf4_init(&W, CC_TMP0, 0, 10, 5, 10, 5, 0, "W(ia,eb)");
     dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
     dpd_buf4_init(&Z, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tauIjAb (Ib,jA)");
@@ -257,7 +257,7 @@ void Wabei_RHF(void)
     dpd_buf4_sort_axpy(&W, CC_HBAR, rpqs, 11, 5, "WAbEi (Ei,Ab)", 1);
     dpd_buf4_close(&W);
     psio_close(CC_TMP0, 0); /* delete the extra ovvv quantity on disk */
-    psio_open(CC_TMP0, 1);
+    psio_open(CC_TMP0, PSIO_OPEN_NEW);
   }
   /* This is an alternative algorithm for terms IIIb+V that stores no additional
   ** ovvv terms beyond <ia|bc> integrals and the WAbEi target, but it's very slow. */
