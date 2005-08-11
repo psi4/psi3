@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
@@ -34,5 +35,8 @@ void get_params()
     free(junk);
   }
 
+  /* Should we use the minimal-disk algorithm for Wabei?  It's VERY slow! */
+  params.wabei_lowdisk = 0;
+  errcod = ip_boolean("WABEI_LOWDISK", &params.wabei_lowdisk, 0);
 }
 
