@@ -52,6 +52,12 @@ void optrot(void)
   if(!strcmp(params.gauge,"VELOCITY")) rotation_mod = init_array(params.nomega);
 
   /* compute the zero-frequency Rosenfeld tensor for Koch's modified velocity optical rotation */
+  /* NOTE!!!  The complex conjugation required for the response function is handled *implicitly* 
+     in the code below because the velocity-gauge version of the optical rotation tensor contains *two*
+     pure-imaginary operators, p and m.  Thus, even though the corresponding perturbed wave functions 
+     change sign when we take complex conjugates of the p and m operators, the signs cancel, giving 
+     an identical contribution to the total *zero-frequency* Rosenfeld tensor as the original 
+     non-complex-conjugate term. */
   if(!strcmp(params.gauge,"VELOCITY")) {
 
     tensor0 = block_matrix(3,3);
