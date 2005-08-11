@@ -13,3 +13,8 @@ long int dpd_memfree(void)
 			    dpd_main.memcache + 
 			    dpd_main.memlocked);
 }
+
+void dpd_memset(long int memory)
+{
+  dpd_main.memory = memory;
+}

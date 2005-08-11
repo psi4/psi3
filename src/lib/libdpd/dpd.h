@@ -196,6 +196,7 @@ void dpd_error(char *caller, FILE *outfile);
 double **dpd_block_matrix(int n, int m);
 void dpd_free_block(double **array, int n, int m);
 long int dpd_memfree(void);
+void dpd_memset(long int);
 
 int dpd_contract222(dpdfile2 *X, dpdfile2 *Y, dpdfile2 *Z, int target_X,
 		    int target_Y, double alpha, double beta);
