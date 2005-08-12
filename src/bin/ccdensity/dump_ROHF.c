@@ -43,7 +43,7 @@ void dump_ROHF(struct iwlbuf *OutBuf)
 
   psio_open(PSIF_MO_OPDM, PSIO_OPEN_OLD);
   psio_write_entry(PSIF_MO_OPDM, "MO-basis OPDM", (char *) moinfo.opdm[0],
-		   sizeof(double)*nmo*nmo);
+		   sizeof(double)*(nmo-nfzv)*(nmo-nfzv));
   psio_close(PSIF_MO_OPDM, 1);
 
 if (!params.onepdm) {
