@@ -186,6 +186,7 @@ void sortone_ROHF(void)
         }
     }
 
+  /*
   for (i=0;i<(nmo-nfzv);++i) {
     for (j=0;j<(nmo-nfzv); ++j) {
       fprintf(outfile,"%15.10lf\n", O[i][j]);
@@ -193,6 +194,7 @@ void sortone_ROHF(void)
     fprintf(outfile,"\n");
   }
   fprintf(outfile,"End of sortone\n");
+	*/
   /*
   for (i=0;i<2;++i) {
     for (j=0;j<5;++j)
