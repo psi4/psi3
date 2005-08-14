@@ -13,6 +13,7 @@ void write_Rs(int C_irr, double *evals, int *converged) {
   dpdbuf4 CMNEF, Cmnef, CMnEf;
   int R_index = -1;
   char C_lbl[32], R_lbl[32], E_lbl[32];
+	double etot, expectation_val, C0;
 
   for (i=0; i<eom_params.cs_per_irrep[C_irr]; ++i) {
     if (!converged[i]) continue; /* this root did not converge */
@@ -20,14 +21,25 @@ void write_Rs(int C_irr, double *evals, int *converged) {
 
     if (C_irr == eom_params.prop_sym) {
       chkpt_init(PSIO_OPEN_OLD);
-      chkpt_wt_etot(evals[eom_params.prop_root]+moinfo.ecc+moinfo.eref);
-      fprintf(outfile,"Energy written to chkpt %15.10lf\n",
-          evals[eom_params.prop_root]+moinfo.ecc+moinfo.eref);
+      if (!params.full_matrix) {
+			  etot = evals[eom_params.prop_root]+moinfo.ecc+moinfo.eref;
+		  } else {
+			  etot = evals[eom_params.prop_root]+moinfo.eref;
+			}
+      chkpt_wt_etot(etot);
+      fprintf(outfile,"Energy written to chkpt %15.10lf\n", etot);
       chkpt_close();
     }
-
+    /* cclambda expects excitation energies */
+		if (!params.full_matrix) {
+		  etot = evals[i];
+		} else {
+		  psio_read_entry(CC_HBAR, "Reference expectation value",
+			  (char *) &(expectation_val), sizeof(double));
+		  etot = evals[i] - expectation_val;
+		}
     sprintf(E_lbl, "EOM CCSD Energy for root %d %d", C_irr, R_index);
-    psio_write_entry(CC_INFO, E_lbl, (char *) &(evals[i]), sizeof(double));
+    psio_write_entry(CC_INFO, E_lbl, (char *) &etot, sizeof(double));
 
     sprintf(C_lbl, "CME %d", i);
     sprintf(R_lbl, "RIA %d %d", C_irr, R_index);
@@ -35,6 +47,13 @@ void write_Rs(int C_irr, double *evals, int *converged) {
     dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, C_lbl);
     dpd_file2_copy(&CME, CC_RAMPS, R_lbl);
     dpd_file2_close(&CME);
+
+		if (params.full_matrix) {
+      sprintf(C_lbl, "C0 %d", i);
+			psio_read_entry(EOM_CME, C_lbl, (char *) &C0, sizeof(double));
+      sprintf(R_lbl, "R0 %d %d", C_irr, R_index);
+			psio_write_entry(CC_RAMPS, R_lbl, (char *) &C0, sizeof(double));
+		}
 
     sprintf(C_lbl, "CMnEf %d", i);
     sprintf(R_lbl, "RIjAb %d %d", C_irr, R_index);

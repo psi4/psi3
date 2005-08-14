@@ -267,24 +267,30 @@ void rzero_rhf(int C_irr, int *converged) {
     dpd_buf4_close(&RIjAb);
 
     /* calculate <0| hbar | 0> */
-    if (C_irr == H_IRR) {
-      dpd_file2_init(&FIA, CC_OEI, H_IRR, 0, 1, "FME");
-      dpd_file2_init(&RIA, CC_RAMPS, C_irr, 0, 1, R1A_lbl);
-      r1 = 2.0 * dpd_file2_dot(&FIA, &RIA);
-      dpd_file2_close(&RIA);
-      dpd_file2_close(&FIA);
-  
-      sprintf(lbl, "%s %d %d", "2RIjAb - RIjbA", C_irr, R_index);
-      dpd_buf4_init(&RIjAb, CC_RAMPS, C_irr, 0, 5, 0, 5, 0, lbl);
-      dpd_buf4_init(&D, CC_DINTS, H_IRR, 0, 5, 0, 5, 0, "D <ij|ab>");
-      r2 = dpd_buf4_dot(&D, &RIjAb);
-      dpd_buf4_close(&D);
-      dpd_buf4_close(&RIjAb);
-      rzero = (r1 + r2)/energy;
-    }
-    else {
-      rzero = 0.0;
-    }
+		if (!params.full_matrix) {
+      if (C_irr == H_IRR) {
+        dpd_file2_init(&FIA, CC_OEI, H_IRR, 0, 1, "FME");
+        dpd_file2_init(&RIA, CC_RAMPS, C_irr, 0, 1, R1A_lbl);
+        r1 = 2.0 * dpd_file2_dot(&FIA, &RIA);
+        dpd_file2_close(&RIA);
+        dpd_file2_close(&FIA);
+    
+        sprintf(lbl, "%s %d %d", "2RIjAb - RIjbA", C_irr, R_index);
+        dpd_buf4_init(&RIjAb, CC_RAMPS, C_irr, 0, 5, 0, 5, 0, lbl);
+        dpd_buf4_init(&D, CC_DINTS, H_IRR, 0, 5, 0, 5, 0, "D <ij|ab>");
+        r2 = dpd_buf4_dot(&D, &RIjAb);
+        dpd_buf4_close(&D);
+        dpd_buf4_close(&RIjAb);
+        rzero = (r1 + r2)/energy;
+      }
+      else {
+        rzero = 0.0;
+      }
+	  }
+		else { /* full matrix */
+      sprintf(lbl, "%s %d %d", "R0", C_irr, R_index);
+		  psio_read_entry(CC_RAMPS, lbl, (char *) &rzero, sizeof(double));
+		}
 
     /* Now normalize R so that <R|R> = 1 */
     dpd_file2_init(&RIA, CC_RAMPS, C_irr, 0, 1, R1A_lbl);

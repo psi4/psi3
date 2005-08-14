@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
   get_eom_params();
 #ifdef TIME_CCEOM
   timer_init();
-  timer_on("cceom");
+  timer_on("CCEOM");
 #endif
 
   form_dpd_dp();
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
   if(params.local) local_done();
   cleanup(); 
 #ifdef TIME_CCEOM
-  timer_off("cceom");
+  timer_off("CCEOM");
   timer_done();
 #endif
   exit_io();

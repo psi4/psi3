@@ -55,6 +55,13 @@ void hbar_norms() {
   tval = dpd_buf4_dot_self(&WmBiJ);
   dpd_buf4_close(&WmBiJ);
   fprintf(outfile,"WmBiJ dot WmBiJ total %15.10lf\n", tval);
+
+	  if (params.full_matrix) {
+      dpd_file2_init(&FME, CC_OEI, H_IRR, 0, 1, "FAI residual");
+      tval = dpd_file2_dot_self(&FME);
+			dpd_file2_close(&FME);
+      fprintf(outfile,"FAI residual dot FAI residual %15.10lf\n", tval);
+	  }
   }
   
   else if (params.eom_ref == 2) {

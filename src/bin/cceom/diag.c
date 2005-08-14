@@ -17,13 +17,21 @@ extern void rzero_rhf(int C_irr, int *converged);
 void init_S1(int index, int irrep);
 void init_S2(int index, int irrep);
 void init_C1(int i, int C_irr);
+void init_C0(int i);
+void init_S0(int i);
 void init_C2(int index, int irrep);
 extern void write_Rs(int C_irr, double *energies, int *converged);
 extern double norm_C(dpdfile2 *CME, dpdfile2 *Cme,
     dpdbuf4 *CMNEF, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf);
+extern double norm_C_full(double C0, dpdfile2 *CME, dpdfile2 *Cme,
+    dpdbuf4 *CMNEF, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf);
 extern double norm_C_rhf(dpdfile2 *CME, dpdbuf4 *CMnEf, dpdbuf4 *CMnfE);
+extern double norm_C_rhf_full(double C0, dpdfile2 *CME, dpdbuf4 *CMnEf, dpdbuf4 *CMnfE);
 extern void scm_C1(dpdfile2 *CME, dpdfile2 *Cme, double a);
+extern void scm_C1_full(double C0, dpdfile2 *CME, dpdfile2 *Cme, double a);
 extern void scm_C(dpdfile2 *CME, dpdfile2 *Cme, dpdbuf4 *CMNEF,
+    dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, double a);
+extern void scm_C_full(double C0, dpdfile2 *CME, dpdfile2 *Cme, dpdbuf4 *CMNEF,
     dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, double a);
 extern void scm_C2(dpdbuf4 *CMNEF, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, double a);
 extern void restart(double **alpha, int L, int num, int irrep, int ortho);
@@ -40,6 +48,14 @@ void sigmaSS(int index, int irrep);
 void sigmaSD(int index, int irrep);
 void sigmaDS(int index, int irrep);
 void sigmaDD(int index, int irrep);
+void sigma00(int index, int irrep);
+void sigma0S(int index, int irrep);
+void sigma0D(int index, int irrep);
+void sigmaS0(int index, int irrep);
+void sigmaSS_full(int index, int irrep);
+void sigmaD0(int index, int irrep);
+void sigmaDS_full(int index, int irrep);
+void sigmaDD_full(int index, int irrep);
 void sigmaCC3(int i, int C_irr, double omega);
 void diagSS(int irrep);
 void hbar_extra(void);
@@ -70,13 +86,19 @@ void diag(void) {
   int get_right_ev = 1, get_left_ev = 0;
   int L,h,i,j,k,a,nirreps,errcod,C_irr;
   double norm, tval, **G, *work, *evals_complex, **alpha, **evectors_left;
-  double *lambda, *lambda_old;
-  int num_vecs, cc3_index, num_cc3_restarts = 0;
-  double ra, rb, r2aa, r2bb, r2ab, cc3_eval, cc3_last_converged_eval=0.0;
+  double *lambda, *lambda_old, totalE, **G_old;
+  int num_vecs, cc3_index, num_cc3_restarts = 0, ignore_G_old=0;
+  double ra, rb, r2aa, r2bb, r2ab, cc3_eval, cc3_last_converged_eval=0.0, C0, S0, R0;
   int cc3_stage; /* 0=eom_ccsd; 1=eom_cc3 (reuse sigmas), 2=recompute sigma */
 
 
+#ifdef TIME_CCEOM
+timer_on("HBAR_EXTRA");
+#endif
   hbar_extra(); /* sort hbar matrix elements for sigma equations */
+#ifdef TIME_CCEOM
+timer_off("HBAR_EXTRA");
+#endif
 #ifdef EOM_DEBUG
   hbar_norms();
 #endif
@@ -90,12 +112,15 @@ void diag(void) {
   fprintf(outfile,"Symmetry of ground state: %s\n", moinfo.labels[moinfo.sym]);
   /* loop over symmetry of C's */
   for (C_irr=0; C_irr<moinfo.nirreps; ++C_irr) {
+	  ignore_G_old = 1;
     already_sigma = 0;
     iter = 0;
     keep_going = 1;
     num_converged = 0;
-
     if (eom_params.cs_per_irrep[C_irr] == 0) continue;
+#ifdef TIME_CCEOM
+timer_on("INIT GUESS");
+#endif
     fprintf(outfile,"Symmetry of excited state: %s\n", moinfo.labels[moinfo.sym ^ C_irr]);
     fprintf(outfile,"Symmetry of right eigenvector: %s\n",moinfo.labels[C_irr]);
     if (params.eom_ref == 0)
@@ -176,6 +201,10 @@ void diag(void) {
       }
     }
 
+#ifdef TIME_CCEOM
+timer_off("INIT GUESS");
+#endif
+
 #ifdef EOM_DEBUG
     /* printout initial guesses */
     for (i=0;i<eom_params.cs_per_irrep[C_irr]; ++i) {
@@ -204,6 +233,7 @@ void diag(void) {
       /* init_S1(i, C_irr); gets done at first iteration anyway */
       init_S1(i, C_irr);
       init_C2(i, C_irr);
+      if (params.full_matrix) { init_C0(i); init_S0(i); }
       /* init_S2(i, C_irr); */
     }
 
@@ -214,6 +244,8 @@ void diag(void) {
     converged = init_int_array(eom_params.cs_per_irrep[C_irr]);
     lambda_old = init_array(eom_params.cs_per_irrep[C_irr]);
     L = eom_params.cs_per_irrep[C_irr];
+		G_old = block_matrix( (1+eom_params.vectors_per_root)*eom_params.cs_per_irrep[C_irr],
+		                      (1+eom_params.vectors_per_root)*eom_params.cs_per_irrep[C_irr]);
 
     while ((keep_going == 1) && (iter < eom_params.max_iter)) {
       fprintf(outfile,"Iter=%-4d L=%-4d", iter+1, L); fflush(outfile);
@@ -225,6 +257,7 @@ void diag(void) {
         /* Form a zeroed S vector for each C vector
 	   SIA and Sia do get overwritten by sigmaSS
 	   so this may only be necessary for debugging */
+        if (params.full_matrix) init_S0(i);
         init_S1(i, C_irr);
         init_S2(i, C_irr);
 
@@ -232,12 +265,12 @@ void diag(void) {
 
         /* Computing sigma vectors */
 #ifdef TIME_CCEOM
-        timer_on("sigma all");
+        timer_on("SIGMA ALL");
         timer_on("sigmaSS"); sigmaSS(i,C_irr); timer_off("sigmaSS");
         timer_on("sigmaSD"); sigmaSD(i,C_irr); timer_off("sigmaSD");
         timer_on("sigmaDS"); sigmaDS(i,C_irr); timer_off("sigmaDS");
         timer_on("sigmaDD"); sigmaDD(i,C_irr); timer_off("sigmaDD");
-        timer_off("sigma all");
+        timer_off("SIGMA ALL");
 #else
 #ifdef EOM_DEBUG
         check_sum("reset",0,0);
@@ -246,6 +279,16 @@ void diag(void) {
         sigmaSD(i,C_irr);
         sigmaDS(i,C_irr);
         sigmaDD(i,C_irr);
+        if (params.full_matrix) {
+          sigma00(i,C_irr);
+          sigma0S(i,C_irr);
+          sigma0D(i,C_irr); 
+          sigmaS0(i,C_irr);
+          sigmaSS_full(i,C_irr);
+          sigmaD0(i,C_irr);
+          sigmaDS_full(i,C_irr);
+          sigmaDD_full(i,C_irr);
+        }
 
         /* assuming we want only one and lowest state - otherwise 
          * things get more complicated */
@@ -313,16 +356,30 @@ void diag(void) {
         }
       }
 
-      already_sigma = L;
-
+#ifdef TIME_CCEOM
+      timer_on("BUILD G");
+#endif /*timing*/
       /* Form G = C'*S matrix */
       G = block_matrix(L,L);
+
+      /* reuse values from old G matrix */
+			/* if last step was restart, sigma is OK but recompute full G matrix */
+			if (ignore_G_old)
+			  already_sigma = 0;
+		  for (i=0; i<already_sigma; ++i)
+		    for (j=0; j<already_sigma; ++j)
+			    G[i][j] = G_old[i][j];
+
       for (i=0;i<L;++i) {
 
         if(params.eom_ref == 0) {
           /* Spin-adapt C */
           sprintf(lbl, "%s %d", "CME", i);
           dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
+					if (params.full_matrix) {
+             sprintf(lbl, "%s %d", "C0", i);
+             psio_read_entry(EOM_CME, lbl, (char *) &C0, sizeof(double));
+					}
 
           sprintf(lbl, "%s %d", "CMnEf", i);
           dpd_buf4_init(&CMnEf, EOM_CMnEf, C_irr, 0, 5, 0, 5, 0, lbl);
@@ -367,6 +424,8 @@ void diag(void) {
 
         /* Dot C's and sigma vectors together to form G matrix */
         for (j=0;j<L;++j) {
+				  if (i<already_sigma && j<already_sigma)
+					  continue;
 
           if(params.eom_ref == 0) {
             sprintf(lbl, "%s %d", "SIA", j);
@@ -376,6 +435,11 @@ void diag(void) {
             dpd_buf4_init(&SIjAb, EOM_SIjAb, C_irr, 0, 5, 0, 5, 0, lbl);
             tval += dpd_buf4_dot(&CMnEf, &SIjAb);
             dpd_file2_close(&SIA);
+						if (params.full_matrix) {
+              sprintf(lbl, "%s %d", "S0", j);
+							psio_read_entry(EOM_SIA, lbl, (char *) &S0, sizeof(double));
+							tval += C0 * S0;
+						}
             dpd_buf4_close(&SIjAb);
           }
           else if (params.eom_ref == 1) {
@@ -434,10 +498,22 @@ void diag(void) {
           dpd_buf4_close(&Cmnef);
         }
       } /* end build of G */
+
+      ignore_G_old = 0;
+      already_sigma = L;
+
+#ifdef TIME_CCEOM
+      timer_off("BUILD G");
+#endif /* timing */
 #ifdef EOM_DEBUG
       fprintf(outfile,"The G Matrix\n");
       mat_print(G, L, L, outfile);
 #endif
+      for (i=0;i<L;++i) {
+        for (j=0;j<L;++j)
+          G_old[i][j] = G[i][j];
+      }
+
       /* Diagonalize G Matrix */ 
       lambda = init_array(L);        /* holds real part of eigenvalues of G */
       alpha = block_matrix(L,L);     /* will hold eigenvectors of G */
@@ -467,7 +543,15 @@ void diag(void) {
       }
       fprintf(outfile,"  Root    EOM Energy     Delta E   Res. Norm    Conv?\n");
       for (k=0;k<eom_params.cs_per_irrep[C_irr];++k) {
+#ifdef TIME_CCEOM
+      timer_on("CALC RES");
+#endif /* timing */
+
         /* rezero residual vector for each root */
+				if (params.full_matrix) {
+				  R0 = 0.0;
+					psio_write_entry(EOM_R, "R0", (char *) &R0, sizeof(double));
+			  }
         dpd_file2_scm(&RIA, 0.0);
         dpd_buf4_scm(&RIjAb, 0.0);
         if (params.eom_ref > 0) {
@@ -499,6 +583,16 @@ void diag(void) {
             dpd_buf4_axpbycz(&CMnEf, &SIjAb, &RIjAb, -1.0*lambda[k]*alpha[i][k], alpha[i][k], 1.0);
             dpd_buf4_close(&CMnEf);
             dpd_buf4_close(&SIjAb);
+
+						if (params.full_matrix) {
+              sprintf(lbl, "%s %d", "S0", i);
+							psio_read_entry(EOM_SIA, lbl, (char *) &(S0), sizeof(double));
+              sprintf(lbl, "%s %d", "C0", i);
+							psio_read_entry(EOM_CME, lbl, (char *) &(C0), sizeof(double));
+							psio_read_entry(EOM_R, "R0", (char *) &(R0), sizeof(double));
+							R0 += -1.0*lambda[k]*alpha[i][k]*C0 + alpha[i][k]*S0;
+							psio_write_entry(EOM_R, "R0", (char *) &(R0), sizeof(double));
+						}
           }
           else if (params.eom_ref == 1) { /* ROHF residual */
             sprintf(lbl, "%s %d", "SIA", i);
@@ -600,22 +694,27 @@ void diag(void) {
         else norm = norm_C(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb);
         fprintf(outfile,"Norm of residual vector %d  before precondition %18.13lf\n",k,norm);
 #endif
-
+#ifdef TIME_CCEOM
+      timer_off("CALC RES");
+#endif /* timing */
 	if(params.eom_ref == 0) precondition_RHF(&RIA, &RIjAb, lambda[k]);
 	else precondition(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb, lambda[k]);
 
         if (params.eom_ref == 0) {
           dpd_buf4_sort(&RIjAb, EOM_TMP, pqsr, 0, 5, "RIjbA");
           dpd_buf4_init(&RIjbA, EOM_TMP, C_irr, 0, 5, 0, 5, 0, "RIjbA");
-          norm = norm_C_rhf(&RIA, &RIjAb, &RIjbA);
+					if (!params.full_matrix) {
+					  norm = norm_C_rhf(&RIA, &RIjAb, &RIjbA);
+					} else {
+					  psio_read_entry(EOM_R, "R0", (char *) &R0, sizeof(double));
+					  norm = norm_C_rhf_full(R0, &RIA, &RIjAb, &RIjbA);
+					}
         }
         else norm = norm_C(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb);
 
 #ifdef EOM_DEBUG
         fprintf(outfile,"Norm of residual vector %d  after precondition %18.13lf\n",k,norm);
 #endif
-        /* necessary? c_clean(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb); 
-	   norm = norm_C(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb); */
 
         fprintf(outfile,"%22d%15.10lf%11.2e%12.2e",k+1,lambda[k],
 		lambda[k]-lambda_old[k], norm);
@@ -635,19 +734,29 @@ void diag(void) {
 	       local_filter_T2(&RIjAb, 0);
 	       } */
 
+            /* Normalize R */
             dpd_buf4_sort(&RIjAb, EOM_TMP, pqsr, 0, 5, "RIjbA");
             dpd_buf4_init(&RIjbA, EOM_TMP, C_irr, 0, 5, 0, 5, 0, "RIjbA");
 
-            norm = norm_C_rhf(&RIA, &RIjAb, &RIjbA);
+            if (!params.full_matrix) {
+              norm = norm_C_rhf(&RIA, &RIjAb, &RIjbA);
+					  } else {
+						  psio_read_entry(EOM_R, "R0", (char *) &R0, sizeof(double));
+						  norm = norm_C_rhf_full(R0, &RIA, &RIjAb, &RIjbA);
+						}
             dpd_buf4_close(&RIjbA);
 
+						if (params.full_matrix) {
+              R0 *= 1.0/norm;
+						  psio_write_entry(EOM_R, "R0", (char *) &R0, sizeof(double));
+					  }
             dpd_file2_scm(&RIA, 1.0/norm);
             dpd_buf4_scm(&RIjAb, 1.0/norm);
-          }
-          else {
+      }
+      else {
             norm = norm_C(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb);
             scm_C(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb, 1.0/norm);
-          }
+      }
 
 #ifdef EOM_DEBUG
           fprintf(outfile,"Norm of residual vector af preconditioning %18.13lf\n",norm);
@@ -699,6 +808,7 @@ void diag(void) {
           restart(alpha, L, eom_params.cs_per_irrep[C_irr], C_irr, 1);
           L = eom_params.cs_per_irrep[C_irr];
           already_sigma = L;
+					ignore_G_old = 1;
         }
         keep_going = 1;
         /* keep track of number of triples restarts */
@@ -773,6 +883,7 @@ void diag(void) {
       }
       free_block(alpha);
     }
+		free_block(G_old);
 
     fprintf(outfile,"\nProcedure converged for %d root(s).\n",num_converged);
     if (num_converged == eom_params.cs_per_irrep[C_irr]) { }
@@ -801,10 +912,12 @@ void diag(void) {
       fprintf(outfile,"                (eV)     (cm^-1)     (au)             (au)\n");
       for (i=0;i<eom_params.cs_per_irrep[C_irr];++i) {
         if (converged[i] == 1) {
+				  if (!params.full_matrix) totalE =lambda_old[i]+moinfo.eref+moinfo.ecc; 
+					else totalE =lambda_old[i]+moinfo.eref; 
           fprintf(outfile,"EOM State %d %10.3lf %10.1lf %14.10lf  %15.10lf\n",
               ++num_converged_index,
 		  lambda_old[i]* _hartree2ev, lambda_old[i]* _hartree2wavenumbers,
-		  lambda_old[i], lambda_old[i]+moinfo.eref+moinfo.ecc);
+		  lambda_old[i], totalE);
 
           /* print out largest components of wavefunction */
 	      if(params.eom_ref == 0) {
@@ -954,15 +1067,37 @@ void diag(void) {
   return;
 }
 
+void init_C0(int i) {
+  char lbl[32];
+	double zip = 0.0;
+  if (params.eom_ref == 0) {
+    sprintf(lbl, "%s %d", "C0", i);
+    psio_write_entry(EOM_CME, lbl, (char *) &(zip), sizeof(double));
+	}
+}
+void init_S0(int i) {
+  char lbl[32];
+	double zip = 0.0;
+  if (params.eom_ref == 0) {
+    sprintf(lbl, "%s %d", "S0", i);
+    psio_write_entry(EOM_SIA, lbl, (char *) &(zip), sizeof(double));
+	}
+}
+
 /* zeroes ith CME (and Cme) vectors on disk */
 void init_C1(int i, int C_irr ){
   dpdfile2 CME, Cme;
   char lbl[32];
+		double zip = 0.0;
   if (params.eom_ref == 0) {
     sprintf(lbl, "%s %d", "CME", i);
     dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, lbl);
     dpd_file2_scm(&CME, 0.0);
     dpd_file2_close(&CME);
+    if (params.full_matrix) {
+      sprintf(lbl, "%s %d", "C0", i);
+      psio_write_entry(EOM_CME, lbl, (char *) &(zip), sizeof(double));
+    }
   }
   else {
     sprintf(lbl, "%s %d", "CME", i);
@@ -980,11 +1115,16 @@ void init_C1(int i, int C_irr ){
 void init_S1(int i, int C_irr) {
   dpdfile2 SIA, Sia;
   char lbl[32];
+  double zip = 0.0;
   if (params.eom_ref == 0) {
     sprintf(lbl, "%s %d", "SIA", i);
     dpd_file2_init(&SIA, EOM_SIA, C_irr, 0, 1, lbl);
     dpd_file2_scm(&SIA, 0.0);
     dpd_file2_close(&SIA);
+    if (params.full_matrix) {
+      sprintf(lbl, "%s %d", "S0", i);
+      psio_write_entry(EOM_SIA, lbl, (char *) &(zip), sizeof(double));
+    }
   }
   else {
     sprintf(lbl, "%s %d", "SIA", i);

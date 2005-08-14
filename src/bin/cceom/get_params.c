@@ -78,6 +78,9 @@ void get_params(void)
   params.aobasis = 0;
   errcod = ip_boolean("AO_BASIS", &(params.aobasis),0);
 
+  params.full_matrix = 0;
+  errcod = ip_boolean("FULL_MATRIX", &(params.full_matrix),0);
+
   params.cachelev = 2;
   errcod = ip_data("CACHELEV", "%d", &(params.cachelev),0);
 

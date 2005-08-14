@@ -25,7 +25,7 @@ void diagSS(int C_irr) {
   char lbl[32], lbl2[32];
   int lwork, info, get_right_ev = 1, get_left_ev = 0;
   int L,h,i,j,k,a,C_index,errcod,keep_going=1,numCs,iter=0;
-  double norm, tval, *lambda, *lambda_old;
+  double norm, tval, *lambda, *lambda_old, zero=0.0;
   double **G, *work, *evals_complex, **alpha, **evectors_left;
   int nirreps, *openpi, *occpi, *virtpi, range;
   int *aoccpi, *avirtpi, *boccpi, *bvirtpi;
@@ -269,6 +269,10 @@ void diagSS(int C_irr) {
         dpd_file2_init(&SIA, EOM_SIA, C_irr, 0, 1, lbl);
         dpd_file2_scm(&SIA, 0.0);
         dpd_file2_close(&SIA);
+				if (params.full_matrix) {
+          sprintf(lbl, "%s %d", "S0", i);
+				  psio_write_entry(EOM_SIA, lbl, (char *) &zero, sizeof(double));
+			  }
       }
       if (params.eom_ref > 0) {
         sprintf(lbl, "%s %d", "SIA", i);

@@ -9,6 +9,7 @@ struct Params {
   int local;
   char *wfn;
   int semicanonical;
+  int full_matrix; /* include reference rows/cols in diagonalization */
 };
 
 struct Eom_params {

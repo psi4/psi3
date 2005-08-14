@@ -13,8 +13,8 @@
 #endif
 
 /* #define EOM_DEBUG (1) */
+#define TIME_CCEOM (1)
 
-/* #define TIME_CCEOM (1) */
 #define H_IRR (0)
 #define MAX(I,J) ((I>J) ? I : J)
 #define MIN(I,J) ((I<J) ? I : J)

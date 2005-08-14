@@ -10,8 +10,13 @@ void restart(double **alpha, int L, int num, int C_irr, int ortho) {
   int AA_OCC, AA_VIR, BB_OCC, BB_VIR, AB_OCC, AB_VIR;
   char lbl[20];
   dpdfile2 C1, CME, Cme, SIA, Sia;
+	double C10, CME0, S0;
   dpdbuf4 C2, CMNEF, Cmnef, CMnEf, SIJAB, Sijab, SIjAb;
   double dotval, norm;
+
+#ifdef TIME_CCEOM
+timer_on("RESTART");
+#endif
 
   A_OCC = 0; A_VIR = 1;
   AA_OCC = 2; AA_VIR = 7;
@@ -48,12 +53,22 @@ void restart(double **alpha, int L, int num, int C_irr, int ortho) {
     sprintf(lbl, "%s %d", "CME", L+i);
     dpd_file2_init(&C1, EOM_CME, C_irr, A_OCC, A_VIR, lbl);
     dpd_file2_scm(&C1, 0.0);
+		C10 = 0.0;
     for (j=0;j<L;++j) {
       sprintf(lbl, "%s %d", "CME", j);
       dpd_file2_init(&CME, EOM_CME, C_irr, A_OCC, A_VIR, lbl);
       dpd_file2_axpy(&CME, &C1, alpha[j][i], 0);
       dpd_file2_close(&CME);
+      if (params.full_matrix) {
+		    sprintf(lbl, "%s %d", "C0", j);
+			  psio_read_entry(EOM_CME, lbl, (char *) &CME0, sizeof(double));
+				C10 += alpha[j][i] * CME0;
+		  }
     }
+    if (params.full_matrix) {
+		  sprintf(lbl, "%s %d", "C0", L+i);
+	    psio_write_entry(EOM_CME, lbl, (char *) &C10, sizeof(double));
+		}
     dpd_file2_close(&C1);
 
     sprintf(lbl, "%s %d", "CMnEf", L+i);
@@ -105,12 +120,22 @@ void restart(double **alpha, int L, int num, int C_irr, int ortho) {
     sprintf(lbl, "%s %d", "SIA", L+i);
     dpd_file2_init(&C1, EOM_SIA, C_irr, A_OCC, A_VIR, lbl);
     dpd_file2_scm(&C1, 0.0);
+		C10 = 0.0;
     for (j=0;j<L;++j) {
       sprintf(lbl, "%s %d", "SIA", j);
       dpd_file2_init(&SIA, EOM_SIA, C_irr, A_OCC, A_VIR, lbl);
       dpd_file2_axpy(&SIA, &C1, alpha[j][i], 0);
       dpd_file2_close(&SIA);
+      if (params.full_matrix) {
+		    sprintf(lbl, "%s %d", "S0", j);
+			  psio_read_entry(EOM_SIA, lbl, (char *) &S0, sizeof(double));
+				C10 += alpha[j][i] * S0;
+		  }
     }
+    if (params.full_matrix) {
+		  sprintf(lbl, "%s %d", "S0", L+i);
+		  psio_write_entry(EOM_SIA, lbl, (char *) &C10, sizeof(double));
+		}
     dpd_file2_close(&C1);
 
     sprintf(lbl, "%s %d", "SIjAb", L+i);
@@ -173,6 +198,12 @@ void restart(double **alpha, int L, int num, int C_irr, int ortho) {
     sprintf(lbl, "%s %d", "CMnEf", i);
     dpd_buf4_copy(&CMnEf, EOM_CMnEf, lbl);
     dpd_buf4_close(&CMnEf);
+		if (params.full_matrix) {
+      sprintf(lbl, "%s %d", "C0", L+i);
+			psio_read_entry(EOM_CME, lbl, (char *) &CME0, sizeof(double));
+      sprintf(lbl, "%s %d", "C0", i);
+			psio_write_entry(EOM_CME, lbl, (char *) &CME0, sizeof(double));
+		}
 
     if (params.eom_ref > 0) {
       sprintf(lbl, "%s %d", "Cme", L+i);
@@ -202,6 +233,12 @@ void restart(double **alpha, int L, int num, int C_irr, int ortho) {
     sprintf(lbl, "%s %d", "SIjAb", i);
     dpd_buf4_copy(&SIjAb, EOM_SIjAb, lbl);
     dpd_buf4_close(&SIjAb);
+		if (params.full_matrix) {
+      sprintf(lbl, "%s %d", "S0", L+i);
+			psio_read_entry(EOM_SIA, lbl, (char *) &S0, sizeof(double));
+      sprintf(lbl, "%s %d", "S0", i);
+			psio_write_entry(EOM_SIA, lbl, (char *) &S0, sizeof(double));
+		}
     
     if (params.eom_ref > 0) {
       sprintf(lbl, "%s %d", "Sia", L+i);
@@ -221,6 +258,10 @@ void restart(double **alpha, int L, int num, int C_irr, int ortho) {
       dpd_buf4_close(&Sijab);
     }
   }
+	
+#ifdef TIME_CCEOM
+timer_off("RESTART");
+#endif
 
   return;
 }

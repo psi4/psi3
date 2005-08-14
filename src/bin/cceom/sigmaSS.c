@@ -151,7 +151,7 @@ void sigmaSS(int i, int C_irr) {
   }
 
 #ifdef EOM_DEBUG
-  check_sum("\nSigmaSS",i,C_irr);
+  check_sum("SigmaSS",i,C_irr);
 #endif
   return;
 }

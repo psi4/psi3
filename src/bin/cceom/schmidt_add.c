@@ -25,6 +25,10 @@ void schmidt_add(dpdfile2 *RIA, dpdfile2 *Ria,
   dpdbuf4 CMnEf_buf;
   char CME_lbl[32], Cme_lbl[32], CMNEF_lbl[32], Cmnef_lbl[32], CMnEf_lbl[32];
 
+#ifdef TIME_CCEOM
+timer_on("SCHMIDT_ADD");
+#endif
+
   for (i=0; i<*numCs; i++) {
     sprintf(CME_lbl, "%s %d", "CME", i);
     sprintf(Cme_lbl, "%s %d", "Cme", i);
@@ -89,19 +93,27 @@ void schmidt_add(dpdfile2 *RIA, dpdfile2 *Ria,
 
     ++(*numCs);
   }
+#ifdef TIME_CCEOM
+timer_off("SCHMIDT_ADD");
+#endif
   return;
 }
 
 void schmidt_add_RHF(dpdfile2 *RIA, dpdbuf4 *RIjAb, int *numCs, int irrep)
 {
-  double dotval;
-  double norm;
+  double dotval, norm, R0, C0;
   int i, I;
   dpdfile2 CME;
   dpdbuf4 CMnEf, CAB1, CAB2;
   dpdfile2 R1;
   dpdbuf4 R2a, R2b;
-  char CME_lbl[32], Cme_lbl[32], CMNEF_lbl[32], Cmnef_lbl[32], CMnEf_lbl[32];
+  char CME_lbl[32], Cme_lbl[32], CMNEF_lbl[32], Cmnef_lbl[32], CMnEf_lbl[32], C0_lbl[32];
+
+#ifdef TIME_CCEOM
+timer_on("SCHMIDT_ADD");
+#endif
+
+  if (params.full_matrix) psio_read_entry(EOM_R, "R0", (char *) &R0, sizeof(double));
 
   for (i=0; i<*numCs; i++) {
     /* Spin-adapt the residual */
@@ -122,15 +134,19 @@ void schmidt_add_RHF(dpdfile2 *RIA, dpdbuf4 *RIjAb, int *numCs, int irrep)
     /*     fprintf(outfile, "OE Dotval for vector %d = %20.14f\n", i, dotval); */
     dotval += dpd_buf4_dot(&R2a, &CMnEf);
     dpd_buf4_close(&R2a);
+		if (params.full_matrix) {
+      sprintf(C0_lbl, "%s %d", "C0", i);
+			psio_read_entry(EOM_CME, C0_lbl, (char *) &C0, sizeof(double));
+			dotval += C0 * R0;
+		}
 
     /*    fprintf(outfile, "Dotval for vector %d = %20.14f\n", i, dotval); */
-
+		R0 = R0 - 1.0 * dotval * C0;
     dpd_file2_axpy(&CME, RIA, -1.0*dotval, 0);
     dpd_buf4_axpy(&CMnEf, RIjAb, -1.0*dotval);
     dpd_file2_close(&CME);
     dpd_buf4_close(&CMnEf);
   }
-
 
   dpd_buf4_sort(RIjAb, EOM_TMP, pqsr, 0, 5, "RIjbA");
   dpd_buf4_init(&R2b, EOM_TMP, irrep, 0, 5, 0, 5, 0, "RIjbA");
@@ -139,6 +155,8 @@ void schmidt_add_RHF(dpdfile2 *RIA, dpdbuf4 *RIjAb, int *numCs, int irrep)
   norm  = 2.0 * dpd_file2_dot_self(RIA);
   norm += 2.0 * dpd_buf4_dot_self(RIjAb);
   norm -= dpd_buf4_dot(RIjAb, &R2b);
+	if (params.full_matrix)
+	  norm += R0 * R0;
   norm = sqrt(norm);
 
   dpd_buf4_close(&R2b);
@@ -150,16 +168,21 @@ void schmidt_add_RHF(dpdfile2 *RIA, dpdbuf4 *RIjAb, int *numCs, int irrep)
   }
   else {
 
+    if (params.full_matrix) R0 *= 1.0/norm;
     dpd_file2_scm(RIA, 1.0/norm);
     dpd_buf4_scm(RIjAb, 1.0/norm);
 
+#ifdef EOM_DEBUG
     dpd_buf4_sort(RIjAb, EOM_TMP, pqsr, 0, 5, "RIjbA");
     dpd_buf4_init(&R2b, EOM_TMP, irrep, 0, 5, 0, 5, 0, "RIjbA");
     norm  = 2.0 * dpd_file2_dot_self(RIA);
     norm += 2.0 * dpd_buf4_dot_self(RIjAb);
     norm -= dpd_buf4_dot(RIjAb, &R2b);
+		if (params.full_matrix) norm += R0 * R0;
     norm = sqrt(norm);
+		fprintf(outfile,"Norm of final new C in schmidt_add(): %20.15lf\n", norm);
     dpd_buf4_close(&R2b);
+#endif
 
     sprintf(CME_lbl, "%s %d", "CME", *numCs);
     sprintf(CMnEf_lbl, "%s %d", "CMnEf", *numCs);
@@ -178,8 +201,14 @@ void schmidt_add_RHF(dpdfile2 *RIA, dpdbuf4 *RIjAb, int *numCs, int irrep)
     dpd_buf4_close(&CAB2);
     dpd_buf4_close(&CAB1);
 
+		if (params.full_matrix) {
+      sprintf(C0_lbl, "%s %d", "C0", *numCs);
+		  psio_write_entry(EOM_CME, C0_lbl, (char *) &R0, sizeof(double));
+		}
     ++(*numCs);
   }
-
+#ifdef TIME_CCEOM
+timer_off("SCHMIDT_ADD");
+#endif
   return;
 }
