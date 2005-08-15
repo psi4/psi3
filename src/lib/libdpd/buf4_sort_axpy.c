@@ -103,6 +103,7 @@ int dpd_buf4_sort_axpy(dpdbuf4 *InBuf, int outfilenum, enum indices index,
   if(core_total > dpd_memfree()) incore = 0;
 
   /* Init input and output buffers and read in all blocks of both */
+  if(index == rspq) timer_on("axpy:alloc");
   if(incore) {
     for(h=0; h < nirreps; h++) {
 
@@ -113,7 +114,7 @@ int dpd_buf4_sort_axpy(dpdbuf4 *InBuf, int outfilenum, enum indices index,
       dpd_buf4_mat_irrep_rd(InBuf, h);
     }
   }
-
+  if(index == rspq) timer_off("axpy:alloc");
 
   switch(index) {
   case pqrs:
@@ -1619,6 +1620,7 @@ int dpd_buf4_sort_axpy(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 
     /* loop over row irreps of OutBuf */
     if(incore) {
+      timer_on("axpy:sort");
       for(h=0; h < nirreps; h++) {
 	r_irrep = h^my_irrep;
 	  
@@ -1638,6 +1640,7 @@ int dpd_buf4_sort_axpy(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 	  }
 	}
       }
+      timer_off("axpy:sort");
     }
     else {
 
@@ -2117,6 +2120,7 @@ int dpd_buf4_sort_axpy(dpdbuf4 *InBuf, int outfilenum, enum indices index,
    break;
 }
 
+  if(index == rspq) timer_on("axpy:alloc");
   if(incore) {
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_wrt(&OutBuf, h);
@@ -2124,6 +2128,7 @@ int dpd_buf4_sort_axpy(dpdbuf4 *InBuf, int outfilenum, enum indices index,
       dpd_buf4_mat_irrep_close(InBuf, h);
     }
   }
+  if(index == rspq) timer_off("axpy:alloc");
 
   dpd_buf4_close(&OutBuf);
 

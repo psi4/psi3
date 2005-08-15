@@ -26,7 +26,7 @@
 ** Note that timing data is written to timer.dat only at the end of
 ** the timer execution, i.e., when timer_done() is called. If a code
 ** block is called repeatedly during the course of program execution,
-** the timer functions will report the block's cumulative executation
+** the timer functions will report the block's cumulative execution
 ** time and the number of calls. In addition, one may time multiple
 ** code blocks simultaneously, and even ``overlap'' timers (i.e., one
 ** timer does not need to be off when a second is started).

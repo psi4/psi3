@@ -340,7 +340,7 @@ int dpd_buf4_mat_irrep_row_rd(dpdbuf4 *Buf, int irrep, int pq)
 	  filerow = Buf->file.incore ? filepq : 0;
 
 	  /* Set the value of the pq permutation operator */
-	  pq_permute = ((p < q) && (f_perm_pq) ? -1 : 1);
+	  pq_permute = ((p < q) && (f_perm_pq < 0) ? -1 : 1);
 
 	  /* Fill the buffer */
 	  if(filepq >= 0)
@@ -355,7 +355,7 @@ int dpd_buf4_mat_irrep_row_rd(dpdbuf4 *Buf, int irrep, int pq)
 	      filers = Buf->file.params->colidx[r][s];
 
 	      /* Set the value of the pqrs permutation operator */
-	      permute = ((r < s) && (f_perm_rs) ? -1 : 1)*pq_permute;
+	      permute = ((r < s) && (f_perm_rs < 0) ? -1 : 1)*pq_permute;
 
               value = 0;
 

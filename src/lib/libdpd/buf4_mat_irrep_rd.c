@@ -44,7 +44,7 @@ int dpd_buf4_mat_irrep_rd(dpdbuf4 *Buf, int irrep)
   double value;
   long int size;
 
-#ifdef DPD_TIMER
+#if 1
   timer_on("buf_rd");
 #endif
 
@@ -198,15 +198,6 @@ int dpd_buf4_mat_irrep_rd(dpdbuf4 *Buf, int irrep)
              pointer to the data should already have been copied in
              buf4_mat_irrep_init(). */
           1;
-/*
-          C_DCOPY(rowtot*coltot, &(Buf->file.matrix[irrep][0][0]), 1,
-                  &(Buf->matrix[irrep][0][0]), 1);
-*/
-/*
-	  memcpy((void *) &(Buf->matrix[irrep][0][0]),
-		 (const void *) &(Buf->file.matrix[irrep][0][0]),
-		 sizeof(double)*rowtot*coltot);
-*/
         }
       else {
 	  Buf->file.matrix[irrep] = Buf->matrix[irrep];
@@ -494,7 +485,7 @@ int dpd_buf4_mat_irrep_rd(dpdbuf4 *Buf, int irrep)
 	  filerow = Buf->file.incore ? filepq : 0;
 
 	  /* Set the value of the pq permutation operator */
-	  pq_permute = ((p < q) && (f_perm_pq) ? -1 : 1);
+	  pq_permute = ((p < q) && (f_perm_pq < 0) ? -1 : 1);
 
 	  /* Fill the buffer */
 	  if(filepq >= 0)
@@ -509,7 +500,7 @@ int dpd_buf4_mat_irrep_rd(dpdbuf4 *Buf, int irrep)
 	      filers = Buf->file.params->colidx[r][s];
 
 	      /* Set the value of the pqrs permutation operator */
-	      permute = ((r < s) && (f_perm_rs) ? -1 : 1)*pq_permute;
+	      permute = ((r < s) && (f_perm_rs < 0) ? -1 : 1)*pq_permute;
 
               value = 0;
 
@@ -634,7 +625,7 @@ int dpd_buf4_mat_irrep_rd(dpdbuf4 *Buf, int irrep)
       break;
     }
 
-#ifdef DPD_TIMER
+#if 1
   timer_off("buf_rd");
 #endif
   
