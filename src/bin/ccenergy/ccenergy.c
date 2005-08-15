@@ -81,6 +81,9 @@ void cc2_t2_build(void);
 void local_init(void);
 void local_done(void);
 
+/* temporary */
+/* void sort_B(void); */
+
 int main(int argc, char *argv[])
 {
   int done=0, brueckner_done=0;
@@ -144,6 +147,9 @@ int main(int argc, char *argv[])
     if(!strcmp(local.weakp,"MP2")) lmp2();
   }
 
+  /* temporary */
+/*   sort_B(); */
+
   init_amps();
   /*
     if (params.analyze != 0)
@@ -177,26 +183,20 @@ int main(int argc, char *argv[])
   update();
   for(moinfo.iter=1; moinfo.iter <= params.maxiter; moinfo.iter++) {
 
-    timer_on("sort_amps");
     sort_amps();
-    timer_off("sort_amps");
 
     timer_on("F build");
     Fme_build(); Fae_build(); Fmi_build();
     if(params.print & 2) status("F intermediates", outfile);
     timer_off("F build");
 
-    timer_on("T1 Build");
     t1_build();
     if(params.print & 2) status("T1 amplitudes", outfile);
-    timer_off("T1 Build");
 
     if((!strcmp(params.wfn,"CC2")) || (!strcmp(params.wfn,"EOM_CC2"))) {
 
-      timer_on("Wmnij build");
       cc2_Wmnij_build();
       if(params.print & 2) status("Wmnij", outfile);
-      timer_off("Wmnij build");
 
       timer_on("Wmbij build");
       cc2_Wmbij_build();
@@ -345,11 +345,7 @@ int main(int argc, char *argv[])
   }
 
   /* Generate the spin-adapted RHF amplitudes for later codes */
-  if(params.ref == 0) {
-    timer_on("spinad Amps");
-    spinad_amps();
-    timer_off("spinad Amps");
-  }
+  if(params.ref == 0) spinad_amps();
 
   /* Compute pair energies */
   if(params.print_pair_energies) {
@@ -464,3 +460,33 @@ void init_ioff(void)
   for(i=1; i < IOFF_MAX; i++) ioff[i] = ioff[i-1] + i;
 }
 
+void sort_B(void)
+{
+  dpdbuf4 B, B_s, B_a;
+  int h, nirreps;
+
+  nirreps = moinfo.nirreps;
+
+  dpd_buf4_init(&B, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>");
+  dpd_buf4_copy(&B, CC_TMP0, "B(+) <ab|cd> + <ab|dc>");
+  dpd_buf4_copy(&B, CC_TMP0, "B(-) <ab|cd> - <ab|dc>");
+  dpd_buf4_sort_axpy(&B, CC_TMP0, pqsr, 5, 5, "B(+) <ab|cd> + <ab|dc>", 1);
+  dpd_buf4_sort_axpy(&B, CC_TMP0, pqsr, 5, 5, "B(-) <ab|cd> - <ab|dc>", -1);
+  dpd_buf4_close(&B);
+
+  dpd_buf4_init(&B, CC_TMP0, 0, 8, 8, 5, 5, 0, "B(+) <ab|cd> + <ab|dc>");
+  dpd_buf4_copy(&B, CC_BINTS, "B(+) <ab|cd> + <ab|dc>");
+  dpd_buf4_close(&B);
+
+  dpd_buf4_init(&B, CC_TMP0, 0, 9, 9, 5, 5, 0, "B(-) <ab|cd> - <ab|dc>");
+  dpd_buf4_copy(&B, CC_BINTS, "B(-) <ab|cd> - <ab|dc>");
+  dpd_buf4_close(&B);
+
+  dpd_buf4_init(&B, CC_BINTS, 0, 8, 8, 8, 8, 0, "B(+) <ab|cd> + <ab|dc>");
+  dpd_buf4_print(&B, outfile, 1);
+  dpd_buf4_close(&B);
+
+  dpd_buf4_init(&B, CC_BINTS, 0, 9, 9, 9, 9, 0, "B(-) <ab|cd> - <ab|dc>");
+  dpd_buf4_print(&B, outfile, 1);
+  dpd_buf4_close(&B);
+}

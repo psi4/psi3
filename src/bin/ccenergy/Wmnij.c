@@ -14,8 +14,6 @@ void Wmnij_build(void)
   dpdbuf4 Eijka, Eijka_anti, Eaijk, Eaijk_anti;
   dpdbuf4 D_anti, D, tauIJAB, tauijab, tauIjAb;
 
-  timer_on("Wmnij");
-
   if(params.ref == 0) { /** RHF **/
     dpd_buf4_init(&A, CC_AINTS, 0, 0, 0, 0, 0, 0, "A <ij|kl>");
     dpd_buf4_copy(&A, CC_HBAR, "WMnIj");
@@ -209,5 +207,4 @@ void Wmnij_build(void)
     dpd_buf4_close(&WMnIj);
   }
 
-  timer_off("Wmnij");
 }

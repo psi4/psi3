@@ -337,8 +337,6 @@ void Wmbej_build(void)
 
   /* Convert to (ME,JB) for remaining terms */
 
-  timer_on("sort Wmbej");
-
   if(params.ref == 0) { /** RHF **/
 
     dpd_buf4_init(&WMbEj, CC_TMP0, 0, 10, 11, 10, 11, 0, "WMbEj");
@@ -402,8 +400,6 @@ void Wmbej_build(void)
     dpd_buf4_sort(&W, CC_HBAR, psrq, 27, 27, "WmBEj");
     dpd_buf4_close(&W);
   }
-
-  timer_off("sort Wmbej");
 
   timer_on("X->Wmbej");
 

@@ -247,6 +247,11 @@ void get_moinfo(void)
       moinfo.openpi[i] - moinfo.fruocc[i] -
       moinfo.frdocc[i];
 
+  if(params.ref == 0) {
+    moinfo.nvirt = 0;
+    for(h=0; h < nirreps; h++) moinfo.nvirt += moinfo.virtpi[h];
+  }
+
   psio_read_entry(CC_INFO, "Reference Energy", (char *) &(moinfo.eref), 
 		  sizeof(double));
 

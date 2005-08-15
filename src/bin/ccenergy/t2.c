@@ -22,10 +22,8 @@ void t2_build(void)
     FmitT2();
     if(params.print & 2) status("F -> T2", outfile);
 
-    timer_on("WmnijT2", outfile);
     WmnijT2();
     if(params.print & 2) status("Wmnij -> T2", outfile);
-    timer_off("WmnijT2", outfile);
 
     timer_on("BT2", outfile);
     if(!strcmp(params.aobasis,"DISK") || !strcmp(params.aobasis,"DIRECT"))
@@ -34,20 +32,16 @@ void t2_build(void)
     if(params.print & 2) status("<ab||cd> -> T2", outfile);
     timer_off("BT2", outfile);
 
-    timer_on("ZT2", outfile);
     ZT2();
     if(params.print & 2) status("Z -> T2", outfile);
-    timer_off("ZT2", outfile);
 
     timer_on("FT2", outfile);
     FT2();
     if(params.print & 2) status("<ia||bc> -> T2", outfile);
     timer_off("FT2", outfile);
 
-    timer_on("ET2", outfile);
     ET2();
     if(params.print & 2) status("<ij||ka> -> T2", outfile);
-    timer_off("ET2", outfile);
 
     timer_on("WmbejT2", outfile);
     WmbejT2();

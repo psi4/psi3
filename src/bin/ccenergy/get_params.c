@@ -145,6 +145,15 @@ void get_params()
   }
   else params.prop = strdup("POLARIZABILITY");
 
+  if(ip_exist("ABCD",0)) {
+    errcod = ip_string("ABCD", &(params.abcd), 0);
+    if(strcmp(params.abcd,"NEW") && strcmp(params.abcd,"OLD")) {
+      fprintf(outfile, "Invalid ABCD algorithm: %s\n", params.abcd);
+      exit(PSI_RETURN_FAILURE);
+    }
+  }
+  else params.abcd = strdup("OLD");
+
   params.local = 0;
   errcod = ip_boolean("LOCAL", &(params.local),0);
   local.cutoff = 0.02;
@@ -238,6 +247,7 @@ void get_params()
 	  params.restart ? "Yes" : "No");
   fprintf(outfile, "\tDIIS            =     %s\n", params.diis ? "Yes" : "No");
   fprintf(outfile, "\tAO Basis        =     %s\n", params.aobasis);
+  fprintf(outfile, "\tABCD            =     %s\n", params.abcd);
   fprintf(outfile, "\tCache Level     =    %1d\n", params.cachelev);
   fprintf(outfile, "\tCache Type      =    %4s\n", 
 	  params.cachetype ? "LOW" : "LRU");

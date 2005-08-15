@@ -104,9 +104,7 @@ void WmbejT2(void)
     dpd_buf4_init(&T2new, CC_TMP0, 0, 10, 10, 10, 10, 0, "Z (Ib,jA)");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIbjA");
     dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMbeJ");
-    timer_on("WmbejT2 444");
     dpd_contract444(&T2, &W, &T2new, 0, 1, 1, 0);
-    timer_off("WmbejT2 444");
     dpd_buf4_close(&W);
     dpd_buf4_close(&T2);
     /* T2(Ib,jA) --> T2(IA,jb) (part III) */
@@ -117,9 +115,7 @@ void WmbejT2(void)
     dpd_buf4_init(&T2new, CC_TMP0, 0, 10, 10, 10, 10, 0, "T2 (IA,jb) 1");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "2 tIAjb - tIBja");
     dpd_buf4_init(&W, CC_TMP0, 0, 10, 10, 10, 10, 0, "2 W(ME,jb) + W(Me,Jb)");
-    timer_on("WmbejT2 444");
     dpd_contract444(&T2, &W, &T2new, 0, 1, 0.5, 0);
-    timer_off("WmbejT2 444");
     dpd_buf4_close(&W);
     dpd_buf4_close(&T2);
     /* 1/2 Z(Ib,jA) + T2(IA,jb) --> T2(IA,jb) (Part I) */
@@ -162,18 +158,14 @@ void WmbejT2(void)
     dpd_buf4_init(&T2new, CC_TMP0, 0, 10, 10, 10, 10, 0, "T2 (IA,JB)");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIAJB");
     dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMBEJ");
-    timer_on("WmbejT2 444");
     dpd_contract444(&T2, &W, &T2new, 0, 1, 1, 0);
-    timer_off("WmbejT2 444");
     dpd_buf4_close(&W);
     dpd_buf4_close(&T2);
 
     /* T2(IA,me) * W(me,JB) --> T2(IA,JB) */
     dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIAjb");
     dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WmBeJ");
-    timer_on("WmbejT2 444");
     dpd_contract444(&T2, &W, &T2new, 0, 1, 1, 1);
-    timer_off("WmbejT2 444");
     dpd_buf4_close(&W);
     dpd_buf4_close(&T2);
 
@@ -211,18 +203,14 @@ void WmbejT2(void)
     dpd_buf4_init(&T2new, CC_TMP0, 0, 10, 10, 10, 10, 0, "T2 (ia,jb)");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tiajb");
     dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "Wmbej");
-    timer_on("WmbejT2 444");
     dpd_contract444(&T2, &W, &T2new, 0, 1, 1, 0);
-    timer_off("WmbejT2 444");
     dpd_buf4_close(&W);
     dpd_buf4_close(&T2);
 
     /* T2(ia,ME) * W(ME,jb) --> T2(ia,jb) */
     dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tiaJB");
     dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMbEj");
-    timer_on("WmbejT2 444");
     dpd_contract444(&T2, &W, &T2new, 0, 1, 1, 1);
-    timer_off("WmbejT2 444");
     dpd_buf4_close(&W);
     dpd_buf4_close(&T2);
 
@@ -260,36 +248,28 @@ void WmbejT2(void)
     dpd_buf4_init(&T2new, CC_TMP0, 0, 10, 10, 10, 10, 0, "T2 (IA,jb)");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIAJB");
     dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMbEj");
-    timer_on("WmbejT2 444");
     dpd_contract444(&T2, &W, &T2new, 0, 1, 1, 0);
-    timer_off("WmbejT2 444");
     dpd_buf4_close(&W);
     dpd_buf4_close(&T2);
 
     /* T2(IA,me) * W(me,jb) --> T2(IA,jb) */
     dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIAjb");
     dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "Wmbej");
-    timer_on("WmbejT2 444");
     dpd_contract444(&T2, &W, &T2new, 0, 1, 1, 1);
-    timer_off("WmbejT2 444");
     dpd_buf4_close(&W);
     dpd_buf4_close(&T2);
 
     /* W(ME,IA) * T2(jb,ME) --> T2(IA,jb) */
     dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tiaJB");
     dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMBEJ");
-    timer_on("WmbejT2 444");
     dpd_contract444(&W, &T2, &T2new, 1, 0, 1, 1);
-    timer_off("WmbejT2 444");
     dpd_buf4_close(&W);
     dpd_buf4_close(&T2);
 
     /* W(me,IA) * T2(jb,me) --> T2(IA,jb) */
     dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tiajb");
     dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WmBeJ");
-    timer_on("WmbejT2 444");
     dpd_contract444(&W, &T2, &T2new, 1, 0, 1, 1);
-    timer_off("WmbejT2 444");
     dpd_buf4_close(&W);
     dpd_buf4_close(&T2);
 
@@ -301,18 +281,14 @@ void WmbejT2(void)
     dpd_buf4_init(&T2new, CC_TMP0, 0, 10, 10, 10, 10, 0, "T2 (Ib,jA)");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIbjA");
     dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WmBEj");
-    timer_on("WmbejT2 444");
     dpd_contract444(&T2, &W, &T2new, 0, 1, 1, 0);
-    timer_off("WmbejT2 444");
     dpd_buf4_close(&W);
     dpd_buf4_close(&T2);
 
     /* W(Me,Ib) * T2(jA,Me) --> T2(Ib,jA) */
     dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tjAIb");
     dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMbeJ");
-    timer_on("WmbejT2 444");
     dpd_contract444(&W, &T2, &T2new, 1, 0, 1, 1);
-    timer_off("WmbejT2 444");
     dpd_buf4_close(&W);
     dpd_buf4_close(&T2);
 
@@ -342,18 +318,14 @@ void WmbejT2(void)
     dpd_buf4_init(&T2new, CC_TMP0, 0, 20, 20, 20, 20, 0, "T2 (IA,JB)");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 20, 20, 20, 20, 0, "tIAJB");
     dpd_buf4_init(&W, CC_HBAR, 0, 20, 20, 20, 20, 0, "WMBEJ");
-    timer_on("WmbejT2 444");
     dpd_contract444(&T2, &W, &T2new, 0, 1, 1, 0);
-    timer_off("WmbejT2 444");
     dpd_buf4_close(&W);
     dpd_buf4_close(&T2);
 
     /* T2(IA,me) * W(me,JB) --> T2(IA,JB) */
     dpd_buf4_init(&T2, CC_TAMPS, 0, 20, 30, 20, 30, 0, "tIAjb");
     dpd_buf4_init(&W, CC_HBAR, 0, 30, 20, 30, 20, 0, "WmBeJ");
-    timer_on("WmbejT2 444");
     dpd_contract444(&T2, &W, &T2new, 0, 1, 1, 1);
-    timer_off("WmbejT2 444");
     dpd_buf4_close(&W);
     dpd_buf4_close(&T2);
 
@@ -391,18 +363,14 @@ void WmbejT2(void)
     dpd_buf4_init(&T2new, CC_TMP0, 0, 30, 30, 30, 30, 0, "T2 (ia,jb)");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 30, 30, 30, 30, 0, "tiajb");
     dpd_buf4_init(&W, CC_HBAR, 0, 30, 30, 30, 30, 0, "Wmbej");
-    timer_on("WmbejT2 444");
     dpd_contract444(&T2, &W, &T2new, 0, 1, 1, 0);
-    timer_off("WmbejT2 444");
     dpd_buf4_close(&W);
     dpd_buf4_close(&T2);
 
     /* T2(ia,ME) * W(ME,jb) --> T2(ia,jb) */
     dpd_buf4_init(&T2, CC_TAMPS, 0, 30, 20, 30, 20, 0, "tiaJB");
     dpd_buf4_init(&W, CC_HBAR, 0, 20, 30, 20, 30, 0, "WMbEj");
-    timer_on("WmbejT2 444");
     dpd_contract444(&T2, &W, &T2new, 0, 1, 1, 1);
-    timer_off("WmbejT2 444");
     dpd_buf4_close(&W);
     dpd_buf4_close(&T2);
 
@@ -440,36 +408,28 @@ void WmbejT2(void)
     dpd_buf4_init(&T2new, CC_TMP0, 0, 20, 30, 20, 30, 0, "T2 (IA,jb)");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 20, 20, 20, 20, 0, "tIAJB");
     dpd_buf4_init(&W, CC_HBAR, 0, 20, 30, 20, 30, 0, "WMbEj");
-    timer_on("WmbejT2 444");
     dpd_contract444(&T2, &W, &T2new, 0, 1, 1, 0);
-    timer_off("WmbejT2 444");
     dpd_buf4_close(&W);
     dpd_buf4_close(&T2);
 
     /* T2(IA,me) * W(me,jb) --> T2(IA,jb) */
     dpd_buf4_init(&T2, CC_TAMPS, 0, 20, 30, 20, 30, 0, "tIAjb");
     dpd_buf4_init(&W, CC_HBAR, 0, 30, 30, 30, 30, 0, "Wmbej");
-    timer_on("WmbejT2 444");
     dpd_contract444(&T2, &W, &T2new, 0, 1, 1, 1);
-    timer_off("WmbejT2 444");
     dpd_buf4_close(&W);
     dpd_buf4_close(&T2);
 
     /* W(ME,IA) * T2(jb,ME) --> T2(IA,jb) */
     dpd_buf4_init(&T2, CC_TAMPS, 0, 30, 20, 30, 20, 0, "tiaJB");
     dpd_buf4_init(&W, CC_HBAR, 0, 20, 20, 20, 20, 0, "WMBEJ");
-    timer_on("WmbejT2 444");
     dpd_contract444(&W, &T2, &T2new, 1, 0, 1, 1);
-    timer_off("WmbejT2 444");
     dpd_buf4_close(&W);
     dpd_buf4_close(&T2);
 
     /* W(me,IA) * T2(jb,me) --> T2(IA,jb) */
     dpd_buf4_init(&T2, CC_TAMPS, 0, 30, 30, 30, 30, 0, "tiajb");
     dpd_buf4_init(&W, CC_HBAR, 0, 30, 20, 30, 20, 0, "WmBeJ");
-    timer_on("WmbejT2 444");
     dpd_contract444(&W, &T2, &T2new, 1, 0, 1, 1);
-    timer_off("WmbejT2 444");
     dpd_buf4_close(&W);
     dpd_buf4_close(&T2);
 
@@ -481,18 +441,14 @@ void WmbejT2(void)
     dpd_buf4_init(&T2new, CC_TMP0, 0, 24, 27, 24, 27, 0, "T2 (Ib,jA)");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 24, 27, 24, 27, 0, "tIbjA");
     dpd_buf4_init(&W, CC_HBAR, 0, 27, 27, 27, 27, 0, "WmBEj");
-    timer_on("WmbejT2 444");
     dpd_contract444(&T2, &W, &T2new, 0, 1, 1, 0);
-    timer_off("WmbejT2 444");
     dpd_buf4_close(&W);
     dpd_buf4_close(&T2);
 
     /* W(Me,Ib) * T2(jA,Me) --> T2(Ib,jA) */
     dpd_buf4_init(&T2, CC_TAMPS, 0, 27, 24, 27, 24, 0, "tiBJa");
     dpd_buf4_init(&W, CC_HBAR, 0, 24, 24, 24, 24, 0, "WMbeJ");
-    timer_on("WmbejT2 444");
     dpd_contract444(&W, &T2, &T2new, 1, 0, 1, 1);
-    timer_off("WmbejT2 444");
     dpd_buf4_close(&W);
     dpd_buf4_close(&T2);
 

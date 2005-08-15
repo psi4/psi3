@@ -24,4 +24,5 @@ struct Params {
   int dertype;
   int t2_coupled;
   char *prop;            /* user-selected property */
+  char *abcd;
 };
