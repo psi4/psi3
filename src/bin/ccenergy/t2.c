@@ -12,6 +12,8 @@ void FT2_CC2(void);
 
 void t2_build(void)
 {
+dpdbuf4 tIjAb;
+double dotval;
 
   DT2();
   if(params.print & 2) status("<ij||ab> -> T2", outfile);
@@ -52,11 +54,12 @@ void t2_build(void)
     CT2();
     if(params.print & 2) status("<ia||jb> -> T2", outfile);
     timer_off("CT2", outfile);
-
   }
   else { /* For CC2, just include (FT2)c->T2 */
     FT2_CC2();
   }
+
+	if (params.just_residuals) return;
 
   dijabT2();
 }

@@ -24,5 +24,7 @@ struct Params {
   int dertype;
   int t2_coupled;
   char *prop;            /* user-selected property */
+  int just_energy; /* just compute energy from T amplitudes on disk and quit */
+	int just_residuals; /* just compute residuals from T amplitudes on disk and quit */
   char *abcd;
 };

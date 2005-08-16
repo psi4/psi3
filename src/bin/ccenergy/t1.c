@@ -114,6 +114,11 @@ void t1_build(void)
     dpd_buf4_close(&E);  
     dpd_buf4_close(&tIjAb);
 
+		if (params.just_residuals) {
+      dpd_file2_close(&newtIA);
+			return;
+		}
+
     dpd_file2_copy(&newtIA, CC_OEI, "New tIA Increment");
     dpd_file2_close(&newtIA);
 
@@ -262,6 +267,12 @@ void t1_build(void)
     dpd_buf4_close(&tIjAb);  
     dpd_buf4_close(&tiJaB);
 
+		if (params.just_residuals) {
+      dpd_file2_close(&newtIA);
+      dpd_file2_close(&newtia);
+			return;
+		}
+
     dpd_file2_init(&dIA, CC_OEI, 0, 0, 1, "dIA");
     dpd_file2_dirprd(&dIA, &newtIA);
     dpd_file2_close(&dIA);
@@ -400,6 +411,11 @@ void t1_build(void)
     dpd_buf4_close(&E);  
     dpd_buf4_close(&tIjAb);  
 
+		if (params.just_residuals) {
+      dpd_file2_close(&newtIA);
+      dpd_file2_close(&newtia);
+			return;
+		}
 
     dpd_file2_init(&dIA, CC_OEI, 0, 0, 1, "dIA");
     dpd_file2_dirprd(&dIA, &newtIA);
