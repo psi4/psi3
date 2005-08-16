@@ -805,8 +805,9 @@ timer_off("INIT GUESS");
           already_sigma = 0;
         }
         else {
-          restart(alpha, L, eom_params.cs_per_irrep[C_irr], C_irr, 1);
-          L = eom_params.cs_per_irrep[C_irr];
+           restart(alpha, L, eom_params.restart_vectors_per_root*
+					   eom_params.cs_per_irrep[C_irr], C_irr, 1);
+           L = eom_params.restart_vectors_per_root * eom_params.cs_per_irrep[C_irr];
           already_sigma = L;
 					ignore_G_old = 1;
         }

@@ -81,6 +81,9 @@ void get_eom_params()
   eom_params.vectors_per_root = 12;
   errcod = ip_data("VECTORS_PER_ROOT","%d",&(eom_params.vectors_per_root),0);
 
+  eom_params.restart_vectors_per_root = 1;
+  errcod = ip_data("RESTART_VECTORS_PER_ROOT","%d",&(eom_params.restart_vectors_per_root),0);
+
   eom_params.complex_tol = 1E-12;
   errcod = ip_data("COMPLEX_TOL","%d",&(iconv),0);
   if(errcod == IPE_OK) eom_params.complex_tol = 1.0*pow(10.0,(double) -iconv);
