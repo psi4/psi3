@@ -13,6 +13,10 @@ void get_params()
 
   fndcor(&(params.memory),infile,outfile);
 
+  /* compute the Tamplitude equation matrix elements (usually 0) */
+  params.Tamplitude = 0;
+  errcod = ip_boolean("TAMPLITUDE", &(params.Tamplitude),0);
+
   params.cachelev = 2;
   errcod = ip_data("CACHELEV", "%d", &(params.cachelev),0);
 

@@ -13,7 +13,7 @@ Wabei.c  Wmbej.c  Wmnie.c  get_moinfo.c  purge.c      \
 cache.c  sort_amps.c tau.c taut.c Wabei_ROHF.c  Wabei_RHF.c \
 Wabei_AAAA_UHF.c Wabei_BBBB_UHF.c Wabei_ABAB_UHF.c Wabei_BABA_UHF.c \
 status.c Wabei_RHF_FT2_a.c cc3_HET1.c norm_HET1.c HET1_Wabef.c \
-cc2_Wabei.c cc2_Wmbej.c cc2_Wmbij.c cc2_Zmbej.c \
+cc2_Wabei.c cc2_Wmbej.c cc2_Wmbij.c cc2_Zmbej.c Fai.c Wabij.c reference.c \
 
 BINOBJ = $(CSRC:%.c=%.o)
 

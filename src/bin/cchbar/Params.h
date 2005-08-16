@@ -6,6 +6,7 @@ struct Params {
   int print;
   char *wfn;
   int dertype;
+  int Tamplitude;
   int wabei_lowdisk;
 };
 

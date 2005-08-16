@@ -39,6 +39,8 @@ void tau_build(void);
 void taut_build(void);
 void status(char *, FILE *);
 void cc3_HET1(void);
+void Fai_build(void);
+void reference(void);
 
 int main(int argc, char *argv[])
 {
@@ -70,6 +72,12 @@ int main(int argc, char *argv[])
   sort_amps();
   tau_build();
   taut_build();
+
+  if (params.Tamplitude) {
+    reference();
+    Fai_build();
+    Wabij_build();
+  }
 
   F_build();
   if(params.print & 2) status("F elements", outfile);
