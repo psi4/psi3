@@ -7,7 +7,7 @@
 
 void cc_memcheck(void)
 {
-  int irrep_size, size, h;
+  unsigned long int irrep_size, size, h;
   dpdbuf4 Z;
 
   fprintf(outfile, "\n");

@@ -83,6 +83,7 @@ void b_sort(void)
       }
 
       dpd_buf4_mat_irrep_close_block(&B_s, h, rows_per_bucket);
+      dpd_buf4_mat_irrep_close_block(&B_a, h, rows_per_bucket);
       dpd_buf4_mat_irrep_row_close(&B, h);
     }
     dpd_buf4_close(&B_a);
