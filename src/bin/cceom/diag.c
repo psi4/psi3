@@ -264,6 +264,9 @@ timer_off("INIT GUESS");
         sort_C(i, C_irr);
 
         /* Computing sigma vectors */
+#ifdef EOM_DEBUG
+        check_sum("reset",0,0);
+#endif
 #ifdef TIME_CCEOM
         timer_on("SIGMA ALL");
         timer_on("sigmaSS"); sigmaSS(i,C_irr); timer_off("sigmaSS");
@@ -272,13 +275,11 @@ timer_off("INIT GUESS");
         timer_on("sigmaDD"); sigmaDD(i,C_irr); timer_off("sigmaDD");
         timer_off("SIGMA ALL");
 #else
-#ifdef EOM_DEBUG
-        check_sum("reset",0,0);
-#endif
         sigmaSS(i,C_irr);
         sigmaSD(i,C_irr);
         sigmaDS(i,C_irr);
         sigmaDD(i,C_irr);
+#endif /*time*/
         if (params.full_matrix) {
           sigma00(i,C_irr);
           sigma0S(i,C_irr);
@@ -301,7 +302,6 @@ timer_off("INIT GUESS");
           check_sum("D(norm triples)", i, C_irr);
 #endif
         }
-#endif
 
 #ifdef EOM_DEBUG
         check_sum("reset",0,0);
@@ -426,6 +426,7 @@ timer_off("INIT GUESS");
         for (j=0;j<L;++j) {
 				  if (i<already_sigma && j<already_sigma)
 					  continue;
+           /* fprintf(outfile,"Computing G[%d][%d].\n",i,j); */
 
           if(params.eom_ref == 0) {
             sprintf(lbl, "%s %d", "SIA", j);
@@ -803,6 +804,7 @@ timer_off("INIT GUESS");
           if (cc3_index > 0) restart_with_root(cc3_index, C_irr);
           L = 1;
           already_sigma = 0;
+					ignore_G_old = 1; /* should be redundant given that already_sigma=0 */
         }
         else {
            restart(alpha, L, eom_params.restart_vectors_per_root*
@@ -845,6 +847,7 @@ timer_off("INIT GUESS");
           eom_params.cs_per_irrep[C_irr] = 1; /* only get 1 CC3 solution */
           keep_going = 1;
           already_sigma = 0;
+					ignore_G_old = 1; /* should be redundant given that already_sigma=0 */
           L = 1 ;
           iter = 0;
           cc3_stage = 1;
@@ -863,6 +866,7 @@ timer_off("INIT GUESS");
           fprintf(outfile,"Setting initial CC3 eigenvalue to %15.10lf\n",cc3_eval);
           keep_going = 1;
           already_sigma = 0;
+					ignore_G_old = 1; /* should be redundant given that already_sigma=0 */
           L = 1;
           cc3_stage = 2;
         }
@@ -880,7 +884,6 @@ timer_off("INIT GUESS");
           fprintf(outfile,"Collapsing to only %d vector(s).\n", eom_params.cs_per_irrep[C_irr]);
           restart(alpha, L, eom_params.cs_per_irrep[C_irr], C_irr, 0);
         }
-
       }
       free_block(alpha);
     }
