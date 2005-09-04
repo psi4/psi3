@@ -152,7 +152,7 @@ void get_params()
       exit(PSI_RETURN_FAILURE);
     }
   }
-  else params.abcd = strdup("OLD");
+  else params.abcd = strdup("NEW");
 
   params.local = 0;
   errcod = ip_boolean("LOCAL", &(params.local),0);
