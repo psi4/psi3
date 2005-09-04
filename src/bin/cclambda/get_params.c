@@ -208,6 +208,15 @@ void get_params(void)
     }
   }
 
+  if(ip_exist("ABCD",0)) {
+    errcod = ip_string("ABCD", &(params.abcd), 0);
+    if(strcmp(params.abcd,"NEW") && strcmp(params.abcd,"OLD")) {
+      fprintf(outfile, "Invalid ABCD algorithm: %s\n", params.abcd);
+      exit(PSI_RETURN_FAILURE);
+    }
+  }
+  else params.abcd = strdup("NEW");
+
   params.local = 0;
   errcod = ip_boolean("LOCAL", &(params.local),0);
   local.cutoff = 0.02;
@@ -271,6 +280,7 @@ void get_params(void)
   fprintf(outfile, "\tDIIS          =     %s\n", params.diis ? "Yes" : "No");
   fprintf(outfile, "\tAO Basis      =     %s\n", 
           params.aobasis ? "Yes" : "No");
+  fprintf(outfile, "\tABCD            =     %s\n", params.abcd);
   fprintf(outfile, "\tExcited State  =     %s\n", 
           params.ground ? "No" : "Yes");
   fprintf(outfile, "\tLocal CC        =     %s\n", params.local ? "Yes" : "No");

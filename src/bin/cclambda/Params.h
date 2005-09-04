@@ -16,6 +16,7 @@ struct Params {
   int print;
   int dertype;
   int diis;
+  char *abcd;
 };
 
 struct L_Params {
