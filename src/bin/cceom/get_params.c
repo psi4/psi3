@@ -102,6 +102,15 @@ void get_params(void)
 
   params.cachetype = 0;
 
+  if(ip_exist("ABCD",0)) {
+    errcod = ip_string("ABCD", &(params.abcd), 0);
+    if(strcmp(params.abcd,"NEW") && strcmp(params.abcd,"OLD")) {
+      fprintf(outfile, "Invalid ABCD algorithm: %s\n", params.abcd);
+      exit(PSI_RETURN_FAILURE);
+    }
+  }
+  else params.abcd = strdup("NEW");
+
   params.local = 0;
   errcod = ip_boolean("LOCAL", &(params.local),0);
 
@@ -164,6 +173,7 @@ void get_params(void)
   fprintf(outfile, "\tMemory (Mbytes) =  %5.1f\n",params.memory/1e6);
   fprintf(outfile, "\tAO Basis        =     %s\n", 
 	  params.aobasis ? "Yes" : "No");
+  fprintf(outfile, "\tABCD            =     %s\n", params.abcd);
   fprintf(outfile, "\tCache Level     =    %1d\n", 
 	  params.cachelev);
   fprintf(outfile, "\tCache Type      =    %4s\n", 
