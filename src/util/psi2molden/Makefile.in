@@ -3,9 +3,6 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-CDBG = -g
-COPT = 
-
 LDLIBS += $(LAPACK) $(BLAS)
 
 PSILIBS = -lPSI_qt -lPSI_chkpt -lPSI_psio -lPSI_ciomr -lPSI_ipv1
