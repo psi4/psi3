@@ -178,6 +178,9 @@ void get_moinfo(void)
       moinfo.openpi[i] - moinfo.fruocc[i] -
       moinfo.frdocc[i];
 
+  moinfo.nvirt = 0;
+  for(i=0; i < nirreps; i++) moinfo.nvirt += moinfo.virtpi[i];
+
   /*** arrange active SCF MO's ***/
   actpi = init_int_array(nirreps);
   for(h=0; h < nirreps; h++) 

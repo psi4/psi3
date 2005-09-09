@@ -14,4 +14,5 @@ struct Params {
   int dertype;
   char *gauge;           /* choice of gauge for optical rotation */
   char *wfn;
+  char *abcd;
 };

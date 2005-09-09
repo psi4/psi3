@@ -154,6 +154,15 @@ void get_params()
   }
   else params.prop = strdup("POLARIZABILITY");
 
+  if(ip_exist("ABCD",0)) {
+    errcod = ip_string("ABCD", &(params.abcd), 0);
+    if(strcmp(params.abcd,"NEW") && strcmp(params.abcd,"OLD")) {
+      fprintf(outfile, "Invalid ABCD algorithm: %s\n", params.abcd);
+      exit(PSI_RETURN_FAILURE);
+    }
+  }
+  else params.abcd = strdup("NEW");
+
   params.local = 0;
   errcod = ip_boolean("LOCAL", &(params.local),0);
   local.cutoff = 0.02;
@@ -225,6 +234,7 @@ void get_params()
   fprintf(outfile, "\tMaxiter          =    %3d\n",  params.maxiter);
   fprintf(outfile, "\tConvergence      = %3.1e\n", params.convergence);
   fprintf(outfile, "\tDIIS             =     %s\n", params.diis ? "Yes" : "No");
+  fprintf(outfile, "\tABCD            =     %s\n", params.abcd);
   fprintf(outfile, "\tIrrep X          =    %3s\n", moinfo.labels[moinfo.irrep_x]);
   fprintf(outfile, "\tIrrep Y          =    %3s\n", moinfo.labels[moinfo.irrep_y]);
   fprintf(outfile, "\tIrrep Z          =    %3s\n", moinfo.labels[moinfo.irrep_z]);

@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 #include <libdpd/dpd.h>
 #include <libqt/qt.h>
+#include <libpsio/psio.h>
 #define EXTERN
 #include "globals.h"
 
@@ -16,6 +18,11 @@ void X2_build(char *pert, char *cart, int irrep, double omega)
   int Gej, Gab, Gij, Ge, Gj, Gi, nrows, length, E, e, II;
   int Gbm, Gfe, bm, b, m, Gb, Gm, Gf, B, M, fe, f, ef, ncols;
   double *X;
+  dpdbuf4 S, A, B_s;
+  int ij, Gc, C, c, cc;
+  int rows_per_bucket, nbuckets, row_start, rows_left, nlinks;
+  psio_address next;
+  double **X_diag, **B_diag;
 
   sprintf(lbl, "%sBAR_%1s_IjAb", pert, cart);
   dpd_buf4_init(&X2new, CC_LR, irrep, 0, 5, 0, 5, 0, lbl);
@@ -102,7 +109,7 @@ void X2_build(char *pert, char *cart, int irrep, double omega)
 
   sprintf(lbl, "z(A,E) %s %1s", pert, cart);
   dpd_file2_init(&z, CC_TMP0, irrep, 1, 1, lbl);
-/*   dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf 2(Am,Ef) - (Am,fE)"); */
+  /*   dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf 2(Am,Ef) - (Am,fE)"); */
   /*  dpd_dot24(&X1, &W, &z, 0, 0, 1, 0); */
   /* ooc code below added 7/28/05, -TDC */
   dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");
@@ -195,16 +202,127 @@ void X2_build(char *pert, char *cart, int irrep, double omega)
   dpd_contract444(&W, &X2, &X2new, 1, 1, 1, 1);
   dpd_buf4_close(&W);
 
-  sprintf(lbl, "Z(Ab,Ij) %s %1s", pert, cart);
-  dpd_buf4_init(&Z, CC_TMP0, irrep, 5, 0, 5, 0, 0, lbl);
-  dpd_buf4_init(&I, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>");
-  dpd_contract444(&I, &X2, &Z, 0, 0, 1, 0);
-  dpd_buf4_close(&I);
-  dpd_buf4_close(&X2new);  /* Need to close X2new to avoid collisions */
-  sprintf(lbl, "New X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
-  dpd_buf4_sort_axpy(&Z, CC_LR, rspq, 0, 5, lbl, 1);
-  dpd_buf4_init(&X2new, CC_LR, irrep, 0, 5, 0, 5, 0, lbl); /* re-open X2new here */
-  dpd_buf4_close(&Z);
+  if(!strcmp(params.abcd,"OLD")) {
+    sprintf(lbl, "Z(Ab,Ij) %s %1s", pert, cart);
+    dpd_buf4_init(&Z, CC_TMP0, irrep, 5, 0, 5, 0, 0, lbl);
+    dpd_buf4_init(&I, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>");
+    dpd_contract444(&I, &X2, &Z, 0, 0, 1, 0);
+    dpd_buf4_close(&I);
+    dpd_buf4_close(&X2new);  /* Need to close X2new to avoid collisions */
+    sprintf(lbl, "New X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
+    dpd_buf4_sort_axpy(&Z, CC_LR, rspq, 0, 5, lbl, 1);
+    dpd_buf4_init(&X2new, CC_LR, irrep, 0, 5, 0, 5, 0, lbl); /* re-open X2new here */
+    dpd_buf4_close(&Z);
+  }
+  else if(!strcmp(params.abcd,"NEW")) {
+    timer_on("ABCD:new");
+
+    dpd_buf4_close(&X2);
+
+    timer_on("ABCD:S");
+    sprintf(lbl, "X_%s_%1s_(+)(ij,ab) (%5.3f)", pert, cart, omega);
+    dpd_buf4_init(&X2, CC_LR, irrep, 3, 8, 3, 8, 0, lbl);
+    dpd_buf4_init(&I, CC_BINTS, 0, 8, 8, 8, 8, 0, "B(+) <ab|cd> + <ab|dc>");
+    sprintf(lbl, "S_%s_%1s_(ab,ij)", pert, cart);
+    dpd_buf4_init(&S, CC_TMP0, irrep, 8, 3, 8, 3, 0, lbl);
+    dpd_contract444(&I, &X2, &S, 0, 0, 0.5, 0);
+    dpd_buf4_close(&S);
+    dpd_buf4_close(&I);
+    dpd_buf4_close(&X2);
+    timer_off("ABCD:S");
+
+    /* X_diag(ij,c)  = 2 * X(ij,cc)*/
+    /* NB: Gcc = 0 and B is totally symmetry, so Gab = 0 */
+    /* But Gij = irrep ^ Gab = irrep */
+    sprintf(lbl, "X_%s_%1s_(+)(ij,ab) (%5.3f)", pert, cart, omega);
+    dpd_buf4_init(&X2, CC_LR, irrep, 3, 8, 3, 8, 0, lbl);
+    dpd_buf4_mat_irrep_init(&X2, irrep);
+    dpd_buf4_mat_irrep_rd(&X2, irrep);
+    X_diag = dpd_block_matrix(X2.params->rowtot[irrep], moinfo.nvirt);
+    for(ij=0; ij < X2.params->rowtot[irrep]; ij++)
+      for(Gc=0; Gc < moinfo.nirreps; Gc++)
+	for(C=0; C < moinfo.virtpi[Gc]; C++) {
+	  c = C + moinfo.vir_off[Gc];
+	  cc = X2.params->colidx[c][c];
+	  X_diag[ij][c] = X2.matrix[irrep][ij][cc];
+	}
+    dpd_buf4_mat_irrep_close(&X2, irrep);
+
+    dpd_buf4_init(&B_s, CC_BINTS, 0, 8, 8, 8, 8, 0, "B(+) <ab|cd> + <ab|dc>");
+    sprintf(lbl, "S_%s_%1s_(ab,ij)", pert, cart);
+    dpd_buf4_init(&S, CC_TMP0, irrep, 8, 3, 8, 3, 0, lbl);
+    dpd_buf4_mat_irrep_init(&S, 0);
+    dpd_buf4_mat_irrep_rd(&S, 0);
+
+    rows_per_bucket = dpd_memfree()/(B_s.params->coltot[0] + moinfo.nvirt);
+    if(rows_per_bucket > B_s.params->rowtot[0]) rows_per_bucket = B_s.params->rowtot[0];
+    nbuckets = ceil((double) B_s.params->rowtot[0]/(double) rows_per_bucket);
+    rows_left = B_s.params->rowtot[0] % rows_per_bucket;
+
+    B_diag = dpd_block_matrix(rows_per_bucket, moinfo.nvirt);
+    next = PSIO_ZERO;
+    ncols = X2.params->rowtot[irrep];
+    nlinks = moinfo.nvirt;
+    for(m=0; m < (rows_left ? nbuckets-1:nbuckets); m++) {
+      row_start = m * rows_per_bucket;
+      nrows = rows_per_bucket;
+      if(nrows && ncols && nlinks) {
+	psio_read(CC_BINTS,"B(+) <ab|cc>",(char *) B_diag[0],nrows*nlinks*sizeof(double),next, &next);
+	C_DGEMM('n', 't', nrows, ncols, nlinks, -0.25, B_diag[0], nlinks,
+		X_diag[0], nlinks, 1, S.matrix[0][row_start], ncols);
+      }
+
+    }
+    if(rows_left) {
+      row_start = m * rows_per_bucket;
+      nrows = rows_left;
+      if(nrows && ncols && nlinks) {
+	psio_read(CC_BINTS,"B(+) <ab|cc>",(char *) B_diag[0],nrows*nlinks*sizeof(double),next, &next);
+	C_DGEMM('n', 't', nrows, ncols, nlinks, -0.25, B_diag[0], nlinks,
+		X_diag[0], nlinks, 1, S.matrix[0][row_start], ncols);
+      }
+    }
+    dpd_buf4_mat_irrep_wrt(&S, 0);
+    dpd_buf4_mat_irrep_close(&S, 0);
+    dpd_buf4_close(&S);
+    dpd_buf4_close(&B_s);
+    dpd_free_block(B_diag, rows_per_bucket, moinfo.nvirt);
+    dpd_free_block(X_diag, X2.params->rowtot[irrep], moinfo.nvirt);
+    dpd_buf4_close(&X2);
+
+    timer_on("ABCD:A");
+    sprintf(lbl, "X_%s_%1s_(-)(ij,ab) (%5.3f)", pert, cart, omega);
+    dpd_buf4_init(&X2, CC_LR, irrep, 4, 9, 4, 9, 0, lbl);
+    dpd_buf4_init(&I, CC_BINTS, 0, 9, 9, 9, 9, 0, "B(-) <ab|cd> - <ab|dc>");
+    sprintf(lbl, "A_%s_%1s_(ab,ij)", pert, cart);
+    dpd_buf4_init(&A, CC_TMP0, irrep, 9, 4, 9, 4, 0, lbl);
+    dpd_contract444(&I, &X2, &A, 0, 0, 0.5, 0);
+    dpd_buf4_close(&A);
+    dpd_buf4_close(&I);
+    dpd_buf4_close(&X2);
+    timer_off("ABCD:A");
+
+    timer_on("ABCD:axpy");
+    dpd_buf4_close(&X2new);  /* Need to close X2new to avoid collisions */
+    sprintf(lbl, "S_%s_%1s_(ab,ij)", pert, cart);
+    dpd_buf4_init(&S, CC_TMP0, irrep, 5, 0, 8, 3, 0, lbl);
+    sprintf(lbl, "New X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
+    dpd_buf4_sort_axpy(&S, CC_LR, rspq, 0, 5, lbl, 1);
+    dpd_buf4_close(&S);
+    sprintf(lbl, "A_%s_%1s_(ab,ij)", pert, cart);
+    dpd_buf4_init(&A, CC_TMP0, irrep, 5, 0, 9, 4, 0, lbl);
+    sprintf(lbl, "New X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
+    dpd_buf4_sort_axpy(&A, CC_LR, rspq, 0, 5, lbl, 1);
+    dpd_buf4_close(&A);
+    dpd_buf4_init(&X2new, CC_LR, irrep, 0, 5, 0, 5, 0, lbl); /* re-open X2new here */
+
+    timer_off("ABCD:axpy");
+
+    sprintf(lbl, "X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
+    dpd_buf4_init(&X2, CC_LR, irrep, 0, 5, 0, 5, 0, lbl);
+
+    timer_off("ABCD:new");
+  }
 
   sprintf(lbl, "Z(Mb,Ij) %s %1s", pert, cart);
   dpd_buf4_init(&Z, CC_TMP0, irrep, 10, 0, 10, 0, 0, lbl);

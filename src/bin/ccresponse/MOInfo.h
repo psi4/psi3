@@ -14,6 +14,7 @@ struct MOInfo {
   int *uoccpi;        /* no. of unoccupied orbitals per irrep  */
   int *frdocc;        /* no. of frozen core orbitals per irrep */
   int *fruocc;        /* no. of frozen unoccupied orbitals per irrep */
+  int nvirt;          /* total no. of (active) virtual orbitals */
   int *actpi;         /* no. of active orbitals per irrep */
   char **labels;      /* irrep labels */
   int *pitzer2qt;     /* Pitzer -> QT reordering array */
