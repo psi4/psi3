@@ -1,6 +1,14 @@
+08-09/05: Added streamlined <ab|cd> algorithm to all CC codes, including
+ccenergy, cclambda, cceom, and ccresponse.  The new algorithm appears to be
+significantly faster than the previous one, which is not surprising because
+its prefactor is 1/4 of the old one. -TDC
+
 06-07/05: Removed all iabc-based bottlenecks from CCSD codes including
 EOM-CCSD and CCSD-LR.  The only remaining bottlenecks occur in CCSD
-gradients (ccdensity).  Also much reduction in disk-space requirements. -TDC
+gradients (ccdensity).  Also much reduction in disk-space requirements. A
+new test case (cc44), tests most (all?) of the out-of-core algorithms with
+an aug-cc-pVTZ/RHF-EOM-CCSD calculation on the lowest A1 and B2 excited
+states of H2O using only 2.0 MB of memory.  -TDC
 
 05/25/05: Added RASSCF and SA-CASSCF capabilities.  Replaced wfn=DETCAS
 with wfn=CASSCF or wfn=RASSCF.  Added preliminary implementation of
