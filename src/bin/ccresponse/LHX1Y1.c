@@ -43,7 +43,7 @@ double LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
   dpd_buf4_close(&Z1);
   dpd_buf4_close(&L2);
 
-  /* Type-I L2 residual */
+  /* Type-II L2 residual */
   dpd_buf4_init(&L2, CC_LAMPS, 0, 10, 10, 10, 10, 0, "LHX1Y1 Residual II");
   dpd_buf4_init(&Z1, CC_TMP0, 0, 10, 10, 10, 10, 0, "(X*Y+Y*X)(ie,ma)");
   polar_II = -2.0 * dpd_buf4_dot(&L2, &Z1);
