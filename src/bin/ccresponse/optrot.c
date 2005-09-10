@@ -95,9 +95,9 @@ void optrot(void)
 			  moinfo.l_irreps[beta], 0.0);
 	  polar_LCX += LCX("L", cartcomp[beta], moinfo.l_irreps[beta], "Mu", cartcomp[alpha],
 			   moinfo.mu_irreps[alpha], 0.0);
-	  polar_HXY = HXY("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
-			  "L", cartcomp[beta], moinfo.l_irreps[beta], 0.0);
 	  if (!strcmp(params.wfn,"CC2")) {
+	    polar_HXY = HXY("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
+			    "L", cartcomp[beta], moinfo.l_irreps[beta], 0.0);
 	    polar_LHX1Y1 = cc2_LHX1Y1("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
 				      "L", cartcomp[beta], moinfo.l_irreps[beta], 0.0);
 	    polar_LHX1Y2 = cc2_LHX1Y2("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
@@ -178,9 +178,9 @@ void optrot(void)
 			    moinfo.l_irreps[beta], params.omega[i]);
 	    polar_LCX += LCX("L", cartcomp[beta], moinfo.l_irreps[beta], "Mu", cartcomp[alpha],
 			     moinfo.mu_irreps[alpha], -params.omega[i]);
-	    polar_HXY = HXY("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i],
-			    "L", cartcomp[beta], moinfo.l_irreps[beta], params.omega[i]);
 	    if (!strcmp(params.wfn,"CC2")) {
+	      polar_HXY = HXY("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i],
+			      "L", cartcomp[beta], moinfo.l_irreps[beta], params.omega[i]);
 	      polar_LHX1Y1 = cc2_LHX1Y1("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i],
 					"L", cartcomp[beta], moinfo.l_irreps[beta], params.omega[i]);
 	      polar_LHX1Y2 = cc2_LHX1Y2("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i],
@@ -204,9 +204,9 @@ void optrot(void)
 			    moinfo.l_irreps[beta], 0.0);
 	    polar_LCX += LCX("L", cartcomp[beta], moinfo.l_irreps[beta], "Mu", cartcomp[alpha],
 			     moinfo.mu_irreps[alpha], 0.0);
-	    polar_HXY = HXY("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
-			    "L", cartcomp[beta], moinfo.l_irreps[beta], 0.0);
 	    if (!strcmp(params.wfn,"CC2")) {
+	      polar_HXY = HXY("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
+			      "L", cartcomp[beta], moinfo.l_irreps[beta], 0.0);
 	      polar_LHX1Y1 = cc2_LHX1Y1("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
 					"L", cartcomp[beta], moinfo.l_irreps[beta], 0.0);
 	      polar_LHX1Y2 = cc2_LHX1Y2("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
@@ -286,9 +286,9 @@ void optrot(void)
 			    moinfo.l_irreps[beta], -params.omega[i]);
 	    polar_LCX += LCX("L", cartcomp[beta], moinfo.l_irreps[beta], "Mu", cartcomp[alpha],
 			     moinfo.mu_irreps[alpha], params.omega[i]);
-	    polar_HXY = HXY("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], params.omega[i],
-			    "L", cartcomp[beta], moinfo.l_irreps[beta], -params.omega[i]);
 	    if (!strcmp(params.wfn,"CC2")) {
+	      polar_HXY = HXY("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], params.omega[i],
+			      "L", cartcomp[beta], moinfo.l_irreps[beta], -params.omega[i]);
 	      polar_LHX1Y1 = cc2_LHX1Y1("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], params.omega[i],
 					"L", cartcomp[beta], moinfo.l_irreps[beta], -params.omega[i]);
 	      polar_LHX1Y2 = cc2_LHX1Y2("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], params.omega[i],
@@ -312,9 +312,9 @@ void optrot(void)
 			    moinfo.l_irreps[beta], 0.0);
 	    polar_LCX += LCX("L", cartcomp[beta], moinfo.l_irreps[beta], "Mu", cartcomp[alpha],
 			     moinfo.mu_irreps[alpha], 0.0);
-	    polar_HXY = HXY("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
-			    "L", cartcomp[beta], moinfo.l_irreps[beta], 0.0);
 	    if (!strcmp(params.wfn,"CC2")) {
+	      polar_HXY = HXY("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
+			      "L", cartcomp[beta], moinfo.l_irreps[beta], 0.0);
 	      polar_LHX1Y1 = cc2_LHX1Y1("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,
 					"L", cartcomp[beta], moinfo.l_irreps[beta], 0.0);
 	      polar_LHX1Y2 = cc2_LHX1Y2("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], 0.0,

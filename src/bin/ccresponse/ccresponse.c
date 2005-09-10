@@ -33,6 +33,7 @@ void cachedone_rhf(int **cachelist);
 void hbar_extra(void);
 void cc2_hbar_extra(void);
 void sort_lamps(void);
+void lambda_residuals(void);
 
 void local_init(void);
 void local_done(void);
@@ -76,6 +77,7 @@ int main(int argc, char *argv[])
   }
 
   sort_lamps(); /* should be removed sometime - provided by cclambda */
+  if(strcmp(params.wfn,"CC2")) lambda_residuals(); /* don't do this for CC2 */
 
   if(!strcmp(params.prop,"POLARIZABILITY")) polar();
   if(!strcmp(params.prop,"ROTATION")) optrot();
