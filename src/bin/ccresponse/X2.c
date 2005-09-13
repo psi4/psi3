@@ -42,11 +42,10 @@ void X2_build(char *pert, char *cart, int irrep, double omega)
   dpd_contract244(&X1, &W, &Z, 0, 0, 1, 1, 0);
   dpd_buf4_close(&W);
   dpd_buf4_axpy(&Z, &X2new, -1);
-  sprintf(lbl, "Z(jI,bA) %s %1s", pert, cart);
-  dpd_buf4_sort(&Z, CC_TMP0, qpsr, 0, 5, lbl);
-  dpd_buf4_close(&Z);
-  dpd_buf4_init(&Z, CC_TMP0, irrep, 0, 5, 0, 5, 0, lbl);
-  dpd_buf4_axpy(&Z, &X2new, -1);
+  dpd_buf4_close(&X2new);  /* Need to close X2new to avoid collisions */
+  sprintf(lbl, "New X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
+  dpd_buf4_sort_axpy(&Z, CC_LR, qpsr, 0, 5, lbl, -1);
+  dpd_buf4_init(&X2new, CC_LR, irrep, 0, 5, 0, 5, 0, lbl); /* re-open X2new here */
   dpd_buf4_close(&Z);
 
   sprintf(lbl, "Z(Ij,Ab) %s %1s", pert, cart);
@@ -386,11 +385,10 @@ void X2_build(char *pert, char *cart, int irrep, double omega)
   dpd_buf4_close(&Z1);
   dpd_buf4_init(&Z1, CC_TMP0, irrep, 0, 5, 0, 5, 0, lbl);
   dpd_buf4_axpy(&Z1, &X2new, 1);
-  sprintf(lbl, "X(Ij,Ab) II+IV %s %1s", pert, cart);
-  dpd_buf4_sort(&Z1, CC_TMP0, qpsr, 0, 5, lbl);
-  dpd_buf4_close(&Z1);
-  dpd_buf4_init(&Z1, CC_TMP0, irrep, 0, 5, 0, 5, 0, lbl);
-  dpd_buf4_axpy(&Z1, &X2new, 1);
+  dpd_buf4_close(&X2new);  /* Need to close X2new to avoid collisions */
+  sprintf(lbl, "New X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
+  dpd_buf4_sort_axpy(&Z1, CC_LR, qpsr, 0, 5, lbl, 1); /* II+IV */
+  dpd_buf4_init(&X2new, CC_LR, irrep, 0, 5, 0, 5, 0, lbl); /* re-open X2new here */
   dpd_buf4_close(&Z1);
 
   sprintf(lbl, "z(F,A) %s %1s", pert, cart);
