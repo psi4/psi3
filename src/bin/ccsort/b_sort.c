@@ -24,11 +24,14 @@ void b_sort(void)
     dpd_buf4_scm(&B_a, 0);
     for(h=0; h < moinfo.nirreps; h++) {
       dpd_buf4_mat_irrep_row_init(&B, h);
-
-      rows_per_bucket = dpd_memfree()/(2 * B_s.params->coltot[h]);
+      rows_per_bucket = 0;
+      if(B_s.params->coltot[h]) 
+	rows_per_bucket = dpd_memfree()/(2 * B_s.params->coltot[h]);
       if(rows_per_bucket > B_s.params->rowtot[h]) rows_per_bucket = B_s.params->rowtot[h];
       nbuckets = ceil((double) B_s.params->rowtot[h]/(double) rows_per_bucket);
-      rows_left = B_s.params->rowtot[h] % rows_per_bucket;
+      rows_left = 0;
+      if(rows_per_bucket)
+       	rows_left = B_s.params->rowtot[h] % rows_per_bucket;
 
       dpd_buf4_mat_irrep_init_block(&B_s, h, rows_per_bucket);
       dpd_buf4_mat_irrep_init_block(&B_a, h, rows_per_bucket);
