@@ -514,6 +514,13 @@ case $cpu in
       CXXOPT="-O2 -march=pentiumpro"
     fi
     ;;
+  x86_64)
+    if test "$CC" = gcc -o "$CC" = cc ; then
+      COPT="-O3 -m64"
+    fi
+    if test "$CXX" = g++ -o "$CXX" = c++ -o "$CXX" = gcc ; then
+      CXXOPT="-O3 -m64"
+    fi
 esac
 AC_MSG_RESULT([C optimization flags: $COPT])
 AC_MSG_RESULT([C++ optimization flags: $CXXOPT])
