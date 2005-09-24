@@ -2,11 +2,8 @@
 % DZ C2V
 
 psi: (
-  opt =  false
-  nopt = 4
-  geomupdate = ("bmat" "ugeom")
-  check = false
-  )
+  jobtype = sp
+)
 
 default: (
   label = "H2O DZ"
@@ -24,13 +21,13 @@ default: (
   frozen_docc = (0 0 0 0)
   frozen_uocc = (0 0 0 0)
 
-files: (
+  files: (
     default: ( name = "h2odz" nvolume = 1
       volume1 = "/scratch/sherrill/"
       )
     file30: (nvolume = 1 volume1 = "./" )
     file32: (nvolume = 1 volume1 = "./" )
-    )
+  )
 )
 
 input: (

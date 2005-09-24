@@ -303,11 +303,15 @@ aurelius (2GB RAM, RedHat Linux 7.3, Dual Athlon MP 2000+, 2 RAID0 OS
 (new) plato (4GB RAM, RedHat Linux 7.3, Dual P4-Xeon 2.4GHz, 2 RAID0 OS
           striped 36GB U160 10k SCSI HDD)
 
+(new) cicero (4GB RAM, Fedora Core 4, Dual-core Pentium-D EMT-64,
+          2 RAID0 OS striped 80GB SATA 10k HDD)
+
 10 (11) iters as usual (iters start from 0 so really 11).
 
 dido (375MHz PowerIII-2) :  89u, 29s, 132t 
 aurelius                 : 109u, 19s, 130t
 plato                    :  59u, 13s,  73t
+cicero                   :  52u,  5s,  57t
 
 Threaded code as of 6/24/02; 2 threads, was less efficient for 
 aurelius, didn't seem to take for dido (maybe wasn't compiled right?).
@@ -326,6 +330,7 @@ E = -128.7629007841444 C0=-0.984931 C1=0.037659
 dido      : 2899u, 540s, 3820t
 aurelius  : 2396u, 433s, 3147t
 plato     : 1164u, 226s, 1468t
+cicero:   :  966u,  76s, 1048t
 
 ======================================================================
 
