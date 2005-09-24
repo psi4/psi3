@@ -38,7 +38,7 @@ $PSITEST_TEST_SCRIPT = "runtest.pl";
 
 # These are definitions that default tester knows about -- should match Psi driver!
 @PSITEST_JOBTYPES = ("SP", "OPT", "DISP", "FREQ", "SYMM_FC", "FC", "OEPROP", "DBOC");
-@PSITEST_WFNS = ("SCF", "MP2", "MP2R12", "DETCI", "DETCAS", "BCCD", "BCCD_T", "CC2", "CCSD", "CCSD_T",
+@PSITEST_WFNS = ("SCF", "MP2", "MP2R12", "DETCI", "DETCAS", "CASSCF", "BCCD", "BCCD_T", "CC2", "CCSD", "CCSD_T",
 "CC3", "EOM_CCSD", "LEOM_CCSD", "OOCCD", "CIS");
 @PSITEST_REFTYPES = ("RHF", "ROHF", "UHF", "TWOCON");
 @PSITEST_DERTYPES = ("NONE", "FIRST", "SECOND", "RESPONSE");
