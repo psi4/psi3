@@ -104,51 +104,75 @@ void Wabei_RHF(void)
     fflush(outfile);
   }
   /* Term re-written to use only (Ei,Ab) ordering on the target, TDC, 5/11/05 */
-  dpd_buf4_init(&B, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>");
+  /* Code modified to use only symmetric and antisymmetry <ab|cd> ints, TDC, 9/25/05 */
+  dpd_buf4_init(&B, CC_BINTS, 0, 5, 8, 8, 8, 0, "B(+) <ab|cd> + <ab|dc>");
   dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
   dpd_file2_mat_init(&T1);
   dpd_file2_mat_rd(&T1);
-  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAbEi (Ei,Ab)");
-
+  dpd_buf4_init(&Z1, CC_TMP0, 0, 11, 8, 11, 8, 0, "Z1(ei,a>=b)");
   for(Gef=0; Gef < moinfo.nirreps; Gef++) {
     Gei = Gab = Gef; /* W and B are totally symmetric */
-
     for(Ge=0; Ge < moinfo.nirreps; Ge++) {
-      Gf = Ge ^ Gef;
-      Gi = Gf;  /* T1 is totally symmetric */
-
+      Gf = Ge ^ Gef; Gi = Gf;  /* T1 is totally symmetric */
       B.matrix[Gef] = dpd_block_matrix(moinfo.virtpi[Gf],B.params->coltot[Gef]);
-      W.matrix[Gef] = dpd_block_matrix(moinfo.occpi[Gi],W.params->coltot[Gei]);
-
-      nrows = moinfo.occpi[Gi];
-      ncols = W.params->coltot[Gef];
-      nlinks = moinfo.virtpi[Gf];
-
+      Z1.matrix[Gef] = dpd_block_matrix(moinfo.occpi[Gi],Z1.params->coltot[Gei]);
+      nrows = moinfo.occpi[Gi]; ncols = Z1.params->coltot[Gef]; nlinks = moinfo.virtpi[Gf];
       if(nrows && ncols && nlinks) {
 	for(E=0; E < moinfo.virtpi[Ge]; E++) {
 	  e = moinfo.vir_off[Ge] + E;
-
-	  dpd_buf4_mat_irrep_rd_block(&W, Gei, W.row_offset[Gei][e], moinfo.occpi[Gi]);
 	  dpd_buf4_mat_irrep_rd_block(&B, Gef, B.row_offset[Gef][e], moinfo.virtpi[Gf]);
-
-	  C_DGEMM('n','n',nrows,ncols,nlinks,1.0,T1.matrix[Gi][0],nlinks,B.matrix[Gef][0],ncols,
-		  1.0,W.matrix[Gei][0],ncols);
-
-	  dpd_buf4_mat_irrep_wrt_block(&W, Gei, W.row_offset[Gei][e], moinfo.occpi[Gi]);
+	  C_DGEMM('n','n',nrows,ncols,nlinks,0.5,T1.matrix[Gi][0],nlinks,B.matrix[Gef][0],ncols,
+		  0.0,Z1.matrix[Gei][0],ncols);
+	  dpd_buf4_mat_irrep_wrt_block(&Z1, Gei, Z1.row_offset[Gei][e], moinfo.occpi[Gi]);
 	}
       }
-
       dpd_free_block(B.matrix[Gef], moinfo.virtpi[Gf], B.params->coltot[Gef]);
-      dpd_free_block(W.matrix[Gef], moinfo.occpi[Gi], W.params->coltot[Gei]);
-
+      dpd_free_block(Z1.matrix[Gef], moinfo.occpi[Gi], Z1.params->coltot[Gei]);
     }
-
   }
-
-  dpd_buf4_close(&W);
+  dpd_buf4_close(&Z1);
   dpd_file2_mat_close(&T1);
   dpd_file2_close(&T1);
   dpd_buf4_close(&B);
+
+  dpd_buf4_init(&B, CC_BINTS, 0, 5, 9, 9, 9, 0, "B(-) <ab|cd> - <ab|dc>");
+  dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
+  dpd_file2_mat_init(&T1);
+  dpd_file2_mat_rd(&T1);
+  dpd_buf4_init(&Z2, CC_TMP0, 0, 11, 9, 11, 9, 0, "Z2(ei,a>=b)");
+  for(Gef=0; Gef < moinfo.nirreps; Gef++) {
+    Gei = Gab = Gef; /* W and B are totally symmetric */
+    for(Ge=0; Ge < moinfo.nirreps; Ge++) {
+      Gf = Ge ^ Gef; Gi = Gf;  /* T1 is totally symmetric */
+      B.matrix[Gef] = dpd_block_matrix(moinfo.virtpi[Gf],B.params->coltot[Gef]);
+      Z2.matrix[Gef] = dpd_block_matrix(moinfo.occpi[Gi],Z2.params->coltot[Gei]);
+      nrows = moinfo.occpi[Gi]; ncols = Z2.params->coltot[Gef]; nlinks = moinfo.virtpi[Gf];
+      if(nrows && ncols && nlinks) {
+	for(E=0; E < moinfo.virtpi[Ge]; E++) {
+	  e = moinfo.vir_off[Ge] + E;
+	  dpd_buf4_mat_irrep_rd_block(&B, Gef, B.row_offset[Gef][e], moinfo.virtpi[Gf]);
+	  C_DGEMM('n','n',nrows,ncols,nlinks,0.5,T1.matrix[Gi][0],nlinks,B.matrix[Gef][0],ncols,
+		  0.0,Z2.matrix[Gei][0],ncols);
+	  dpd_buf4_mat_irrep_wrt_block(&Z2, Gei, Z2.row_offset[Gei][e], moinfo.occpi[Gi]);
+	}
+      }
+      dpd_free_block(B.matrix[Gef], moinfo.virtpi[Gf], B.params->coltot[Gef]);
+      dpd_free_block(Z2.matrix[Gef], moinfo.occpi[Gi], Z2.params->coltot[Gei]);
+    }
+  }
+  dpd_buf4_close(&Z2);
+  dpd_file2_mat_close(&T1);
+  dpd_file2_close(&T1);
+  dpd_buf4_close(&B);
+
+  dpd_buf4_init(&Z1, CC_TMP0, 0, 11, 5, 11, 8, 0, "Z1(ei,a>=b)");
+  dpd_buf4_init(&Z2, CC_TMP0, 0, 11, 5, 11, 9, 0, "Z2(ei,a>=b)");
+  dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAbEi (Ei,Ab)");
+  dpd_buf4_axpy(&Z1, &W, 1);
+  dpd_buf4_axpy(&Z2, &W, 1);
+  dpd_buf4_close(&W);
+  dpd_buf4_close(&Z2);
+  dpd_buf4_close(&Z1);
 
   if(params.print & 2) fprintf(outfile, "done.\n");
 
