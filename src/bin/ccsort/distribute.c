@@ -25,12 +25,12 @@ void distribute_rhf(int filenum, int first_tmp, double tolerance, int keep_input
 
   iwl_buf_init(&InBuf, filenum, tolerance, 1, 1);
   iwl_buf_init(&ABuf, first_tmp, tolerance, 0, 0);
-  iwl_buf_init(&BBuf, first_tmp+1, tolerance, 0, 0);
+  if(params.make_abcd) iwl_buf_init(&BBuf, first_tmp+1, tolerance, 0, 0);
   iwl_buf_init(&CBuf, first_tmp+2, tolerance, 0, 0);
   iwl_buf_init(&DBuf, first_tmp+3, tolerance, 0, 0);
   iwl_buf_init(&EBuf, first_tmp+4, tolerance, 0, 0);
   iwl_buf_init(&F1Buf, first_tmp+5, tolerance, 0, 0);
-  iwl_buf_init(&F2Buf, first_tmp+6, tolerance, 0, 0);
+  if(params.make_aibc) iwl_buf_init(&F2Buf, first_tmp+6, tolerance, 0, 0);
 
   /* Run through the buffer that's already available */
   lblptr = InBuf.labels;
@@ -76,19 +76,19 @@ void distribute_rhf(int filenum, int first_tmp, double tolerance, int keep_input
 
   iwl_buf_close(&InBuf, keep_input);
   iwl_buf_flush(&ABuf, 1);
-  iwl_buf_flush(&BBuf, 1);
+  if(params.make_abcd) iwl_buf_flush(&BBuf, 1);
   iwl_buf_flush(&CBuf, 1);
   iwl_buf_flush(&DBuf, 1);
   iwl_buf_flush(&EBuf, 1);
   iwl_buf_flush(&F1Buf, 1);
-  iwl_buf_flush(&F2Buf, 1);
+  if(params.make_aibc) iwl_buf_flush(&F2Buf, 1);
   iwl_buf_close(&ABuf, 1);
-  iwl_buf_close(&BBuf, 1);
+  if(params.make_abcd) iwl_buf_close(&BBuf, 1);
   iwl_buf_close(&CBuf, 1);
   iwl_buf_close(&DBuf, 1);
   iwl_buf_close(&EBuf, 1);
   iwl_buf_close(&F1Buf, 1);
-  iwl_buf_close(&F2Buf, 1);
+  if(params.make_aibc) iwl_buf_close(&F2Buf, 1);
 
   fflush(outfile);
 }

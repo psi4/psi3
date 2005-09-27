@@ -49,6 +49,7 @@ void cc_memcheck(void)
     fprintf(outfile, "\tTotal:                                %9.3lf (MW) / %9.3lf (MB)\n\n",
 	    size/1e6, (size/1e6)*sizeof(double));
 
+    fflush(outfile);
   }
   else if(params.ref == 1) {
     dpd_buf4_init(&Z, 99, 0, 5, 5, 5, 5, 0, "Just a template");
