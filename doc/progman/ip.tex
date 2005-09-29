@@ -92,6 +92,7 @@ variables under that keyword out of the input file (files) which has
 (have) been read or will be read in the future using \celem{ip\_append}.
 The keyword \celem{kwd} can only be removed from the list of current working
 keywords by purging the entire list using \celem{ip\_cwk\_clear}. 
+{\em You must ensure that they keyword strings begin with a colon.}
 
 \begin{center} \file{ip\_data.c} \\ \end{center}
 
@@ -178,6 +179,8 @@ From \file{cscf.c}:
    ip_set_uppercase(1);              /* case sensitivity selection */
    ip_initialize(infile,outfile);    /* reads input.dat and stores it all */
 
+   /* DO NOT NEGLECT THE COLONS IN THE KEYWORDS BELOW; OTHERWISE
+      ALL IP CALLS WILL RETURN IPE_KEY_NOT_FOUND */
    ip_cwk_add(":DEFAULT");           /* adds default section */
    ip_cwk_add(":SCF");               /* adds scf section */
 
