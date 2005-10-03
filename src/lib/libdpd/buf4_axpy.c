@@ -30,7 +30,7 @@ int dpd_buf4_axpy(dpdbuf4 *BufX, dpdbuf4 *BufY, double alpha)
 
   for(h=0; h < nirreps; h++) {
 
-    memoryd = dpd_memfree()/2; /* use half the memory for each buf4 */
+    memoryd = (dpd_memfree()-BufX->file.params->coltot[h^my_irrep])/2; /* use half the memory for each buf4 */
     if(BufX->params->rowtot[h] && BufX->params->coltot[h^my_irrep]) {
 
       rows_per_bucket = memoryd/BufX->params->coltot[h^my_irrep];
