@@ -154,7 +154,7 @@ int file_build_multipass(dpdfile4 *File, int inputfile, double tolerance,
 
   /* Get rid of the input integral file */
   psio_open(inputfile, PSIO_OPEN_OLD);
-  psio_close(inputfile, 0);
+  psio_close(inputfile, keep);
 
   free_int_matrix(bucket_map,nump);
 

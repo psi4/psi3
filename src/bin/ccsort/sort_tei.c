@@ -150,9 +150,12 @@ void sort_tei(void)
     dpd_file4_close(&A);
 
     if(params.make_abcd) {
-      dpd_file4_init_nocache(&B, CC_BINTS, 0, 5, 5, "B <ab|cd>");
-      file_build_multipass(&B, FIRST_TMP+1, tolerance, 1, 1, 1, 0);
-      dpd_file4_close(&B);
+      if(params.make_unpacked_abcd) {
+	dpd_file4_init_nocache(&B, CC_BINTS, 0, 5, 5, "B <ab|cd>");
+	file_build_multipass(&B, FIRST_TMP+1, tolerance, 1, 1, 1, 1);
+	dpd_file4_close(&B);
+      }
+      if(params.ref == 0) build_abcd_packed(FIRST_TMP+1, tolerance, 0);
     }
 
     dpd_file4_init_nocache(&C, CC_CINTS, 0, 10, 10, "C <ia|jb>");

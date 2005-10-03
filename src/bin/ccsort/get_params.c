@@ -161,12 +161,22 @@ void get_params()
   }
   else params.aobasis = strdup("NONE");
 
+  /* Do we need MO-basis <ab|cd> integrals? */
   if(!strcmp(params.wfn,"MP2") || !strcmp(params.aobasis,"DISK") ||
      !strcmp(params.aobasis,"DIRECT")) {
     params.make_abcd = 0;
   }
   else {
     params.make_abcd = 1;
+  }
+
+  /* If we need the MO-basis <ab|cd> integrals, do we need the fully unpacked list? */
+  params.make_unpacked_abcd = 0;
+  if(params.make_abcd) {
+    if(params.ref != 0 || params.dertype == 1 || !strcmp(params.wfn,"CC2") || !strcmp(params.wfn,"EOM_CC2") ||
+       !strcmp(params.wfn,"CC3") || !strcmp(params.wfn,"EOM_CC3")) {
+      params.make_unpacked_abcd = 1;
+    }
   }
 
   /* for now, generate <ai|bc> ordering if CC gradient, ROHF-CC, CC2, or CC3 */

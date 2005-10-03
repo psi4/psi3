@@ -92,7 +92,6 @@ int main(int argc, char *argv[])
 
   sort_oei();
   sort_tei();
-  if(params.make_abcd) b_sort();
   c_sort();
   d_sort();
   e_sort();
@@ -100,7 +99,7 @@ int main(int argc, char *argv[])
   if(params.ref == 0) {
     d_spinad();
     e_spinad();
-    f_spinad();
+/*     f_spinad(); */
   }
   scf_check();
   fock();

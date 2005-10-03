@@ -8,6 +8,7 @@ struct Params {
   int ref;
   char *wfn;
   int make_abcd;
+  int make_unpacked_abcd;
   int make_aibc;
   int dertype;
   char *aobasis;
