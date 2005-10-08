@@ -30,6 +30,9 @@ void cleanup(void)
   free(moinfo.fruocc);
   free(moinfo.rstrdocc);
   free(moinfo.rstruocc);
+  free(moinfo.sloc);
+  free(moinfo.stype);
+  free(moinfo.snuc);
   if (params.backtr) {
     free(moinfo.corr2pitz_nofzv);
     free(moinfo.corr2pitz_nofzv_a);

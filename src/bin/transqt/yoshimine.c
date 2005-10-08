@@ -92,8 +92,8 @@ void yosh_init(struct yoshimine *YBuff, unsigned bra_indices,
     */
    YBuff->pq_per_bucket = bra_indices / nbuckets ;
    bytes_per_bucket = (unsigned long int) (maxcor / nbuckets);
-   free_bytes_per_bucket = bytes_per_bucket - (unsigned long int) (sizeof(struct iwlbuf) - 
-					       IWL_INTS_PER_BUF * (4*sizeof(Label) + sizeof(Value)));
+   free_bytes_per_bucket = bytes_per_bucket - 
+     (unsigned long int) (sizeof(struct iwlbuf) + IWL_INTS_PER_BUF * (4*sizeof(Label) + sizeof(Value)));
    YBuff->bucketsize = free_bytes_per_bucket / (4 * sizeof(int) +
       sizeof(double)); 
    YBuff->buckets = (struct bucket *) malloc(nbuckets * sizeof(struct bucket));

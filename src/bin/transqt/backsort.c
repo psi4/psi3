@@ -49,7 +49,8 @@ int *bucket_lastpq;  /* Last pq in bucket           */
 void backsort_prep(int uhf)
 {
   int i, j, k, l, lend, size_i, size_j, size_k, size_l, size_ij;
-  int this_pair_size, this_pair_sizeb, this_pair_quarts,core_left;
+  int this_pair_size, this_pair_sizeb, this_pair_quarts;
+  long int core_left;  /* this must be *signed* */
   int nshell, *snuc, num_pairs;
   int ii, ij, ijkl, imin, imax;
 
@@ -118,14 +119,14 @@ void backsort_prep(int uhf)
       /* Add 4 indices to size and convert to bytes */
       this_pair_sizeb = this_pair_size*(4*sizeof(int) + sizeof(double));
 	  
-      if((core_left - this_pair_sizeb) >= 0) {
-	core_left -= this_pair_sizeb;
+      if((core_left - (long int) this_pair_sizeb) >= 0) {
+	core_left -= (long int) this_pair_sizeb;
 	bucket_quarts[nbuckets-1] += this_pair_quarts;
 	bucket_lastpq[nbuckets-1] = ij;
       }
       else {
 	nbuckets++;
-	core_left = params.maxcor - this_pair_sizeb;
+	core_left = params.maxcor - (long int) this_pair_sizeb;
 	bucket_offset = (int *) realloc((void *) bucket_offset,
 					nbuckets * sizeof(int));
 	bucket_offset[nbuckets-1] = bucket_offset[nbuckets-2] +

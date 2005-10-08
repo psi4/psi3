@@ -443,7 +443,7 @@ void get_parameters(void)
   params.ab_mfile = PSIF_MO_AB_TEI;
   errcod = ip_data("AB_M_FILE","%d", &(params.ab_mfile),0);
 
-  params.max_buckets = 199;
+  params.max_buckets = 499;
   errcod = ip_data("MAX_BUCKETS","%d", &(params.max_buckets),0);
 
   if ((strcmp(params.wfn,"OOCCD")==0 || strcmp(params.wfn,"DETCAS")==0 ||
@@ -810,6 +810,7 @@ void get_moinfo(void)
         moinfo.nsocc += tmpi[i];
       }
     }
+    free(tmpi);
   }
 
   /* Dump the new occupations to chkpt file if QRHF reference requested 
