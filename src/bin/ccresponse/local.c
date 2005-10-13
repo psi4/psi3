@@ -138,11 +138,9 @@ void local_filter_T1(dpdfile2 *T1)
   dpd_file2_mat_close(T1);
 
   for(i=0; i < nocc*nocc; i++) {
-    if(local.pairdom_len[i]) {
-      free_block(local.W[i]);
-      free_block(local.V[i]);
-      free(local.eps_vir[i]);
-    }
+    free_block(local.W[i]);
+    free_block(local.V[i]);
+    free(local.eps_vir[i]);
   }
   free(local.W);
   free(local.V);
@@ -259,11 +257,9 @@ void local_filter_T2(dpdbuf4 *T2)
   dpd_buf4_mat_irrep_close(T2, 0);
 
   for(i=0; i < nocc*nocc; i++) {
-    if(local.pairdom_len[i]) {
-      free_block(local.W[i]);
-      free_block(local.V[i]);
-      free(local.eps_vir[i]);
-    }
+    free_block(local.W[i]);
+    free_block(local.V[i]);
+    free(local.eps_vir[i]);
   }
   free(local.W);
   free(local.V);

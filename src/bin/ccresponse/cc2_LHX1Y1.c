@@ -11,13 +11,14 @@ double cc2_LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
 		  char *pert_y, char *cart_y, int irrep_y, double omega_y)
 {
 	
-  int am, a, A, m, M, fe, ef, f, e, nrows, ncols;
-  int GW, GZae, Ga, Gm, Gf, Gam, Gef, GX;
+  int am, a, A, m, M, fe, ef, f, e, E;
+  int GW, GZae, Ga, Gm, Gf, Gam, Gef, Gab, Gei, GX;
   int hxbuf, hzbuf, Gi, Gj, Ge, GZ;
   int ab, mb, colx, colz, rowz, rowx;
+  int ncols, nrows, nlinks;
   double *Xt;
   dpdfile2 F, X1, Y1, Zmi, Zae, ZIA, L1, t1;
-  dpdbuf4 Z1, I, W1, ZIjAb, L2, Z, X, W;
+  dpdbuf4 Z1, Z2, I, W1, ZIjAb, L2, Z, X, W, B;
   double polar;
   char lbl[32];
 	
@@ -220,12 +221,110 @@ double cc2_LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
   dpd_buf4_close(&Z);
 	
   /* B -> Wabef */
-  sprintf(lbl, "Z_%s_%1s_AbEj", pert_y, cart_y);
-  dpd_buf4_init(&Z, CC_TMP9, irrep_y, 5, 11, 5, 11, 0, lbl);
-  dpd_buf4_init(&I, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>");
-  dpd_contract424(&I, &Y1, &Z, 3, 1, 0, 1, 0);
-  dpd_buf4_close(&I);
+
+  dpd_file2_mat_init(&Y1);
+  dpd_file2_mat_rd(&Y1);
+
+  /* Plus Combination */
+  dpd_buf4_init(&B, CC_BINTS, 0, 5, 8, 8, 8, 0, "B(+) <ab|cd> + <ab|dc>");
+  sprintf(lbl, "Z1_%s_%1s_(ei,a>=b)", pert_y, cart_y);
+  dpd_buf4_init(&Z1, CC_TMP8, irrep_y, 11, 8, 11, 8, 0, lbl);
+  dpd_buf4_scm(&Z1, 0);
+
+  for(Gef=0; Gef < moinfo.nirreps; Gef++) {
+    Gab = Gef; /* B is totally symmetric */
+    Gei = Gab ^ irrep_y; /* Z is not totally symmetrix */
+    for(Ge=0; Ge < moinfo.nirreps; Ge++) {
+      Gf = Ge ^ Gef;
+      Gi = Gf ^ irrep_y;  /* Y1 is not totally symmetric */
+      B.matrix[Gef] = dpd_block_matrix(moinfo.virtpi[Gf],B.params->coltot[Gef]);
+      Z1.matrix[Gei] = dpd_block_matrix(moinfo.occpi[Gi],Z1.params->coltot[Gab]);
+      nrows = moinfo.occpi[Gi];
+      ncols = Z1.params->coltot[Gab];
+      nlinks = moinfo.virtpi[Gf];
+      if(nrows && ncols && nlinks) {
+	for(E=0; E < moinfo.virtpi[Ge]; E++) {
+	  e = moinfo.vir_off[Ge] + E;
+	  dpd_buf4_mat_irrep_rd_block(&B, Gef, B.row_offset[Gef][e], moinfo.virtpi[Gf]);
+	  C_DGEMM('n','n',nrows,ncols,nlinks,0.5,Y1.matrix[Gi][0],nlinks,B.matrix[Gef][0],ncols,
+		  0.0,Z1.matrix[Gei][0],ncols);
+	  dpd_buf4_mat_irrep_wrt_block(&Z1, Gei, Z1.row_offset[Gei][e], moinfo.occpi[Gi]);
+	}
+      }
+      dpd_free_block(B.matrix[Gef], moinfo.virtpi[Gf], B.params->coltot[Gef]);
+      dpd_free_block(Z1.matrix[Gei], moinfo.occpi[Gi], Z1.params->coltot[Gab]);
+    }
+  }
+
+  dpd_buf4_close(&Z1);
+  dpd_buf4_close(&B);
+
+  /* Minus Combination */
+  dpd_buf4_init(&B, CC_BINTS, 0, 5, 9, 9, 9, 0, "B(-) <ab|cd> - <ab|dc>");
+  sprintf(lbl, "Z2_%s_%1s_(ei,a>=b)", pert_y, cart_y);
+  dpd_buf4_init(&Z2, CC_TMP8, irrep_y, 11, 9, 11, 9, 0, lbl);
+  dpd_buf4_scm(&Z2, 0);
+
+  for(Gef=0; Gef < moinfo.nirreps; Gef++) {
+    Gab = Gef; /* B is totally symmetric */
+    Gei = Gab ^ irrep_y; /* Z is not totally symmetrix */
+    for(Ge=0; Ge < moinfo.nirreps; Ge++) {
+      Gf = Ge ^ Gef;
+      Gi = Gf ^ irrep_y;  /* Y1 is not totally symmetric */
+      B.matrix[Gef] = dpd_block_matrix(moinfo.virtpi[Gf],B.params->coltot[Gef]);
+      Z2.matrix[Gei] = dpd_block_matrix(moinfo.occpi[Gi],Z2.params->coltot[Gab]);
+      nrows = moinfo.occpi[Gi];
+      ncols = Z2.params->coltot[Gab];
+      nlinks = moinfo.virtpi[Gf];
+      if(nrows && ncols && nlinks) {
+	for(E=0; E < moinfo.virtpi[Ge]; E++) {
+	  e = moinfo.vir_off[Ge] + E;
+	  dpd_buf4_mat_irrep_rd_block(&B, Gef, B.row_offset[Gef][e], moinfo.virtpi[Gf]);
+	  C_DGEMM('n','n',nrows,ncols,nlinks,0.5,Y1.matrix[Gi][0],nlinks,B.matrix[Gef][0],ncols,
+		  0.0,Z2.matrix[Gei][0],ncols);
+	  dpd_buf4_mat_irrep_wrt_block(&Z2, Gei, Z2.row_offset[Gei][e], moinfo.occpi[Gi]);
+	}
+      }
+      dpd_free_block(B.matrix[Gef], moinfo.virtpi[Gf], B.params->coltot[Gef]);
+      dpd_free_block(Z2.matrix[Gei], moinfo.occpi[Gi], Z2.params->coltot[Gab]);
+    }
+  }
+
+  dpd_buf4_close(&Z2);
+  dpd_buf4_close(&B);
+  dpd_file2_mat_close(&Y1);
+
+  sprintf(lbl, "Z_%s_%1s_AbEj (Ej,Ab)", pert_y, cart_y);
+  dpd_buf4_init(&Z, CC_TMP8, irrep_y, 11, 5, 11, 5, 0, lbl);
+  dpd_buf4_scm(&Z, 0);
+  sprintf(lbl, "Z1_%s_%1s_(ei,a>=b)", pert_y, cart_y);
+  dpd_buf4_init(&Z1, CC_TMP8, irrep_y, 11, 5, 11, 8, 0, lbl);
+  dpd_buf4_axpy(&Z1, &Z, 1);
+  /*   dpd_buf4_print(&Z1, stdout, 1); */
+  dpd_buf4_close(&Z1);
+  sprintf(lbl, "Z2_%s_%1s_(ei,a>=b)", pert_y, cart_y);
+  dpd_buf4_init(&Z2, CC_TMP8, irrep_y, 11, 5, 11, 9, 0, lbl);
+  dpd_buf4_axpy(&Z2, &Z, 1);
+  /*   dpd_buf4_print(&Z2, stdout, 1); */
+  dpd_buf4_close(&Z2);
   dpd_buf4_close(&Z);
+
+  sprintf(lbl, "Z_%s_%1s_AbEj (Ej,Ab)", pert_y, cart_y);
+  dpd_buf4_init(&Z, CC_TMP8, irrep_y, 11, 5, 11, 5, 0, lbl);
+  sprintf(lbl, "Z_%s_%1s_AbEj", pert_y, cart_y);
+  dpd_buf4_sort_axpy(&Z, CC_TMP9, rspq, 5, 11, lbl, 1);
+  dpd_buf4_close(&Z);
+
+  /* Free some disk space */
+  psio_close(CC_TMP8, 0);
+  psio_open(CC_TMP8, 0);
+
+  /*   sprintf(lbl, "Z_%s_%1s_AbEj", pert_y, cart_y); */
+  /*   dpd_buf4_init(&Z, CC_TMP9, irrep_y, 5, 11, 5, 11, 0, lbl); */
+  /*   dpd_buf4_init(&I, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>"); */
+  /*   dpd_contract424(&I, &Y1, &Z, 3, 1, 0, 1, 0); */
+  /*   dpd_buf4_close(&I); */
+  /*   dpd_buf4_close(&Z); */
 
   /** Begin out-of-core contract244 **/
   dpd_buf4_init(&Z, CC_TMP0, 0, 5, 0, 5, 0, 0, "ZIjAb (Ab,Ij)");
