@@ -22,9 +22,12 @@ void purge_cc2_Wabei(void);
 void cc2_Wabei_build(void)
 {
   int omit = 0;
+  int e, E;
+  int Gef, Gab, Gei, Ge, Gf, Gi;
+  int nrows, ncols, nlinks;
   dpdfile2 t1, tIA, tia;
   dpdbuf4 Z, Z1, Z2, Z3;
-  dpdbuf4 B, C, D, E, F, W;
+  dpdbuf4 B, C, D, F, W;
 
   timer_on("F->Wabei");
   if(params.ref == 0) { /** RHF **/
@@ -81,16 +84,82 @@ void cc2_Wabei_build(void)
   if(params.ref == 0) { /** RHF **/
 
     dpd_file2_init(&t1, CC_OEI, 0, 0, 1, "tIA");
+    dpd_file2_mat_init(&t1);
+    dpd_file2_mat_rd(&t1);
 
     /* WEbEi <-- <Ab|Ef> * t(i,f) */
-    dpd_buf4_init(&W, CC2_HET1, 0, 5, 11, 5, 11, 0, "CC2 WAbEi");
-    dpd_buf4_init(&B, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>");
-    dpd_contract424(&B, &t1, &W, 3, 1, 0, 1, 0);
-    dpd_buf4_close(&B);
-    dpd_buf4_close(&W);
 
+    /* Plus Combination */
+    dpd_buf4_init(&B, CC_BINTS, 0, 5, 8, 8, 8, 0, "B(+) <ab|cd> + <ab|dc>");
+    dpd_buf4_init(&Z1, CC_TMP0, 0, 11, 8, 11, 8, 0, "Z1(ei,a>=b)");
+
+    for(Gef=0; Gef < moinfo.nirreps; Gef++) {
+      Gei = Gab = Gef; /* W and B are totally symmetric */
+      for(Ge=0; Ge < moinfo.nirreps; Ge++) {
+	Gf = Ge ^ Gef; Gi = Gf;  /* t1 is totally symmetric */
+	B.matrix[Gef] = dpd_block_matrix(moinfo.virtpi[Gf],B.params->coltot[Gef]);
+	Z1.matrix[Gef] = dpd_block_matrix(moinfo.occpi[Gi],Z1.params->coltot[Gei]);
+	nrows = moinfo.occpi[Gi];
+	ncols = Z1.params->coltot[Gef];
+	nlinks = moinfo.virtpi[Gf];
+	if(nrows && ncols && nlinks) {
+	  for(E=0; E < moinfo.virtpi[Ge]; E++) {
+	    e = moinfo.vir_off[Ge] + E;
+	    dpd_buf4_mat_irrep_rd_block(&B, Gef, B.row_offset[Gef][e], moinfo.virtpi[Gf]);
+	    C_DGEMM('n','n',nrows,ncols,nlinks,0.5,t1.matrix[Gi][0],nlinks,B.matrix[Gef][0],ncols,
+		    0.0,Z1.matrix[Gei][0],ncols);
+	    dpd_buf4_mat_irrep_wrt_block(&Z1, Gei, Z1.row_offset[Gei][e], moinfo.occpi[Gi]);
+	  }
+	}
+	dpd_free_block(B.matrix[Gef], moinfo.virtpi[Gf], B.params->coltot[Gef]);
+	dpd_free_block(Z1.matrix[Gef], moinfo.occpi[Gi], Z1.params->coltot[Gei]);
+      }
+    }
+
+    dpd_buf4_close(&Z1);
+    dpd_buf4_close(&B);
+
+    /* Minus Combination */
+    dpd_buf4_init(&B, CC_BINTS, 0, 5, 9, 9, 9, 0, "B(-) <ab|cd> - <ab|dc>");
+    dpd_buf4_init(&Z2, CC_TMP0, 0, 11, 9, 11, 9, 0, "Z2(ei,a>=b)");
+
+    for(Gef=0; Gef < moinfo.nirreps; Gef++) {
+      Gei = Gab = Gef; /* W and B are totally symmetric */
+      for(Ge=0; Ge < moinfo.nirreps; Ge++) {
+	Gf = Ge ^ Gef; Gi = Gf;  /* t1 is totally symmetric */
+	B.matrix[Gef] = dpd_block_matrix(moinfo.virtpi[Gf],B.params->coltot[Gef]);
+	Z2.matrix[Gef] = dpd_block_matrix(moinfo.occpi[Gi],Z2.params->coltot[Gei]);
+	nrows = moinfo.occpi[Gi];
+	ncols = Z2.params->coltot[Gef];
+	nlinks = moinfo.virtpi[Gf];
+	if(nrows && ncols && nlinks) {
+	  for(E=0; E < moinfo.virtpi[Ge]; E++) {
+	    e = moinfo.vir_off[Ge] + E;
+	    dpd_buf4_mat_irrep_rd_block(&B, Gef, B.row_offset[Gef][e], moinfo.virtpi[Gf]);
+	    C_DGEMM('n','n',nrows,ncols,nlinks,0.5,t1.matrix[Gi][0],nlinks,B.matrix[Gef][0],ncols,
+		    0.0,Z2.matrix[Gei][0],ncols);
+	    dpd_buf4_mat_irrep_wrt_block(&Z2, Gei, Z2.row_offset[Gei][e], moinfo.occpi[Gi]);
+	  }
+	}
+	dpd_free_block(B.matrix[Gef], moinfo.virtpi[Gf], B.params->coltot[Gef]);
+	dpd_free_block(Z2.matrix[Gef], moinfo.occpi[Gi], Z2.params->coltot[Gei]);
+      }
+    }
+
+    dpd_buf4_close(&Z2);
+    dpd_buf4_close(&B);
+
+    dpd_file2_mat_close(&t1);
     dpd_file2_close(&t1);
 
+    dpd_buf4_init(&W, CC_TMP0, 0, 11, 5, 11, 5, 0, "CC2 WAbEi (Ei,Ab)");
+    dpd_buf4_init(&Z1, CC_TMP0, 0, 11, 5, 11, 8, 0, "Z1(ei,a>=b)");
+    dpd_buf4_axpy(&Z1, &W, 1);
+    dpd_buf4_close(&Z1);
+    dpd_buf4_init(&Z2, CC_TMP0, 0, 11, 5, 11, 9, 0, "Z2(ei,a>=b)");
+    dpd_buf4_axpy(&Z2, &W, 1);
+    dpd_buf4_close(&Z2);
+    dpd_buf4_close(&W);
   }
   else if (params.ref == 1) { /* ROHF */
 
@@ -260,7 +329,8 @@ void cc2_Wabei_build(void)
   if (params.ref == 0) { /* RHF */
 
     dpd_buf4_init(&W, CC_TMP0, 0, 11, 5, 11, 5, 0, "CC2 WAbEi (Ei,Ab)");
-    dpd_buf4_sort_axpy(&W, CC2_HET1, rspq, 5, 11, "CC2 WAbEi", 1);
+    dpd_buf4_copy(&W, CC2_HET1, "CC2 WAbEi (Ei,Ab)");
+    dpd_buf4_sort(&W, CC2_HET1, rspq, 5, 11, "CC2 WAbEi");
     dpd_buf4_close(&W);
 
   }
