@@ -173,7 +173,7 @@ void get_params()
   /* If we need the MO-basis <ab|cd> integrals, do we need the fully unpacked list? */
   params.make_unpacked_abcd = 0;
   if(params.make_abcd) {
-    if(params.ref != 0 || params.dertype == 1 || !strcmp(params.wfn,"CC2") || !strcmp(params.wfn,"EOM_CC2") ||
+    if(params.ref != 0 || params.dertype == 1 || !strcmp(params.wfn,"EOM_CC2") ||
        !strcmp(params.wfn,"CC3") || !strcmp(params.wfn,"EOM_CC3")) {
       params.make_unpacked_abcd = 1;
     }
