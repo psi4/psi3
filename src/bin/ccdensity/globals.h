@@ -19,3 +19,4 @@ EXTERN char *psi_file_prefix;
 EXTERN struct MOInfo moinfo;
 EXTERN struct Frozen frozen;
 EXTERN struct Params params;
+EXTERN struct TD_Params *td_params;

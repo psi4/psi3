@@ -69,14 +69,20 @@ void x_xi_oe_intermediates(void);
 void G_norm(void);
 void zero_onepdm(void);
 void zero_twopdm(void);
+void get_td_params(void);
+void td_setup(struct TD_Params *S);
+void tdensity(struct TD_Params *S);
+void oscillator_strength(struct TD_Params *S);
+void rotational_strength(struct TD_Params *S);
 
 int main(int argc, char *argv[])
 {
+  int i;
   int **cachelist, *cachefiles;
   struct iwlbuf OutBuf;
   struct iwlbuf OutBuf_AA, OutBuf_BB, OutBuf_AB;
   dpdfile2 D;
-	double tval;
+  double tval;
   
   init_io(argc,argv);
   title();
@@ -106,150 +112,163 @@ int main(int argc, char *argv[])
 	     moinfo.avir_sym, moinfo.boccpi, moinfo.bocc_sym, moinfo.bvirtpi, moinfo.bvir_sym);
   }
 
-  /* CC_GLG will contain L, or R0*L + Zeta, if relaxed and zeta is available */
-  /* CC_GL will contain L */
-  setup_LR();
-
-  /* if calculating Xi, do it and then quit */
-  if ( params.calc_xi ) {
-    /* these intermediates go into EOM_TMP and are used to compute Xi and saved
-       to be used later to build the excited-state density matrix */
-    if (params.ref == 0) {
-      x_oe_intermediates_rhf();
-      x_te_intermediates_rhf();
+  if(params.transition) {
+    get_td_params();
+    for(i=0; i<params.nstates; i++) {
+      td_setup(&(td_params[i]));
+      tdensity(&(td_params[i]));
+      oscillator_strength(&(td_params[i]));
+      if(params.ref == 0) rotational_strength(&(td_params[i]));
+      td_cleanup();
     }
-    else {
-      x_oe_intermediates();
-      x_te_intermediates();
-    }
-    x_xi_intermediates(); /*intermediates for computing Xi, put in EOM_TMP_XI */
-    x_xi_zero(); /* make blank Xi */
-    x_xi1();
-    x_xi2();
-    dpd_close(0);
-    if(params.ref == 2) cachedone_uhf(cachelist);
-    else cachedone_rhf(cachelist);
-    free(cachefiles);
-    cleanup();
-    psio_close(EOM_TMP_XI,0); /* delete EOM_TMP_XI */
-    psio_open(EOM_TMP_XI,PSIO_OPEN_NEW);
-    exit_io();
-    exit(PSI_RETURN_SUCCESS);
+    td_print();
   }
+  else {
+    /* CC_GLG will contain L, or R0*L + Zeta, 
+       if relaxed and zeta is available */
+    /* CC_GL will contain L */
+    setup_LR();
 
-  /* compute ground state parts of onepdm or put zeroes there */
-  if ( (params.L_irr == params.G_irr) || (params.use_zeta) ) {
-    zero_onepdm();
-    onepdm();
-	}
-  else
-    zero_onepdm();
-
-  /* if the one-electron excited-state intermediates are not already on disk (from a Xi
-     calculation, compute them.  They are nearly all necessary to compute the excited-state
-     onepdm. Then complete excited-state onepdm.*/
-  if (!params.ground) {
-    x_oe_intermediates(); /* change to x_oe_intermediates_rhf() when rho gets spin-adapted */
-    x_onepdm();
-  }
-
-  /* begin construction of twopdm */
-  if (!params.onepdm) {
-
-    /* Compute intermediates for construction of ground-state twopdm */
-    if ( (params.L_irr == params.G_irr) || (params.use_zeta) ) {
-      V_build(); /* uses CC_GLG, writes tau2*L2 to CC_MISC */
-      G_build(); /* uses CC_GLG, writes t2*L2 to CC_GLG */
+    /* if calculating Xi, do it and then quit */
+    if ( params.calc_xi ) {
+      /* these intermediates go into EOM_TMP and are used to compute Xi
+         and saved to be used later to build the excited-state density 
+         matrix */
+      if (params.ref == 0) {
+        x_oe_intermediates_rhf();
+        x_te_intermediates_rhf();
+      }
+      else {
+        x_oe_intermediates();
+        x_te_intermediates();
+      }
+      x_xi_intermediates(); /*Xi intermediates put in EOM_TMP_XI */
+      x_xi_zero(); /* make blank Xi */
+      x_xi1();
+      x_xi2();
+      dpd_close(0);
+      if(params.ref == 2) cachedone_uhf(cachelist);
+      else cachedone_rhf(cachelist);
+      free(cachefiles);
+      cleanup();
+      psio_close(EOM_TMP_XI,0); /* delete EOM_TMP_XI */
+      psio_open(EOM_TMP_XI,PSIO_OPEN_NEW);
+      exit_io();
+      exit(PSI_RETURN_SUCCESS);
     }
 
-    /* Compute ground-state twopdm or ground-state-like contributions to the excited twodpm */
-    if ( (params.L_irr == params.G_irr) || (params.use_zeta) )
-      twopdm();
+    /* compute ground state parts of onepdm or put zeroes there */
+    if ( ((params.L_irr == params.G_irr) || (params.use_zeta)) ) {
+      zero_onepdm();
+      onepdm();
+    }
     else
-      zero_twopdm();
+      zero_onepdm();
 
-    /* Compute intermediates for construction of excited-state twopdm */
+    /* if the one-electron excited-state intermediates are not already on disk (from a Xi
+       calculation, compute them.  They are nearly all necessary to compute the excited-state
+       onepdm. Then complete excited-state onepdm.*/
     if (!params.ground) {
-      x_te_intermediates(); /* change to x_te_intermediates_rhf() when rho gets spin-adapted */
-      V_build_x(); /* uses CC_GL, writes t2*L2 to EOM_TMP */
+      x_oe_intermediates(); /* change to x_oe_intermediates_rhf() when rho gets spin-adapted */
+      x_onepdm();
     }
 
-    /* add in non-R0 parts of onepdm and twopdm */
-    if (!params.ground) {
-      x_Gijkl();
-      x_Gabcd();
-      x_Gibja();
-      x_Gijka();
-      x_Gciab();
-      x_Gijab();
+    /* begin construction of twopdm */
+    if (!params.onepdm) {
+
+      /* Compute intermediates for construction of ground-state twopdm */
+      if ( (params.L_irr == params.G_irr) || (params.use_zeta) ) {
+        V_build(); /* uses CC_GLG, writes tau2*L2 to CC_MISC */
+        G_build(); /* uses CC_GLG, writes t2*L2 to CC_GLG */
+      }
+
+      /* Compute ground-state twopdm or ground-state-like contributions to the excited twodpm */
+      if ( (params.L_irr == params.G_irr) || (params.use_zeta) )
+        twopdm();
+      else
+        zero_twopdm();
+
+      /* Compute intermediates for construction of excited-state twopdm */
+      if (!params.ground) {
+        x_te_intermediates(); /* change to x_te_intermediates_rhf() when rho gets spin-adapted */
+        V_build_x(); /* uses CC_GL, writes t2*L2 to EOM_TMP */
+      }
+
+      /* add in non-R0 parts of onepdm and twopdm */
+      if (!params.ground) {
+        x_Gijkl();
+        x_Gabcd();
+        x_Gibja();
+        x_Gijka();
+        x_Gciab();
+        x_Gijab();
+      }
     }
-  }
 
-   sortone();
-  /* dipole(); */
+    sortone();
+    /* dipole(); */
 
-  if (!params.onepdm) {
+    if (!params.onepdm) {
 
-    kinetic(); /* puts kinetic energy integrals into MO basis */
+      kinetic(); /* puts kinetic energy integrals into MO basis */
 
-    lag(); /* builds the orbital lagrangian pieces, I */
+      lag(); /* builds the orbital lagrangian pieces, I */
 
-    /* dpd_init(1, moinfo.nirreps, params.memory, 2, frozen.occpi, frozen.occ_sym,
-      frozen.virtpi, frozen.vir_sym); */
+      /* dpd_init(1, moinfo.nirreps, params.memory, 2, frozen.occpi, frozen.occ_sym,
+        frozen.virtpi, frozen.vir_sym); */
 
-    /*  if(moinfo.nfzc || moinfo.nfzv) {
-        resort_gamma();
-        resort_tei();
-        } */
+      /*  if(moinfo.nfzc || moinfo.nfzv) {
+          resort_gamma();
+          resort_tei();
+          } */
 
-    build_X(); /* builds orbital rotation gradient X */
-    build_A(); /* construct MO Hessian A */
-    build_Z(); /* solves the orbital Z-vector equations */
+      build_X(); /* builds orbital rotation gradient X */
+      build_A(); /* construct MO Hessian A */
+      build_Z(); /* solves the orbital Z-vector equations */
 
-    relax_I(); /* adds orbital response contributions to Lagrangian */
+      relax_I(); /* adds orbital response contributions to Lagrangian */
 
-    if (params.relax_opdm) {
-      relax_D(); /* adds orbital response contributions to onepdm */
+      if (params.relax_opdm) {
+        relax_D(); /* adds orbital response contributions to onepdm */
+      }
+      sortone(); /* builds large moinfo.opdm matrix */
+      sortI(); /* builds large lagrangian matrix I */
+      fold();
+      deanti();
     }
-    sortone(); /* builds large moinfo.opdm matrix */
-    sortI(); /* builds large lagrangian matrix I */
-    fold();
-    deanti();
-  }
 
-  if(!params.aobasis) energy();
+    if(!params.aobasis) energy();
 
-  /*  dpd_close(0); dpd_close(1); */
+    /*  dpd_close(0); dpd_close(1); */
 
-  if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
+    if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
-    iwl_buf_init(&OutBuf, PSIF_MO_TPDM, params.tolerance, 0, 0);
+      iwl_buf_init(&OutBuf, PSIF_MO_TPDM, params.tolerance, 0, 0);
 
-    add_core_ROHF(&OutBuf);
-    add_ref_ROHF(&OutBuf);
-    dump_ROHF(&OutBuf);
+      add_core_ROHF(&OutBuf);
+      add_ref_ROHF(&OutBuf);
+      dump_ROHF(&OutBuf);
 
-    iwl_buf_flush(&OutBuf, 1);
-    iwl_buf_close(&OutBuf, 1);
+      iwl_buf_flush(&OutBuf, 1);
+      iwl_buf_close(&OutBuf, 1);
+    }
+    else if(params.ref == 2) { /** UHF **/
 
-  }
-  else if(params.ref == 2) { /** UHF **/
+      iwl_buf_init(&OutBuf_AA, PSIF_MO_AA_TPDM, params.tolerance, 0, 0);
+      iwl_buf_init(&OutBuf_BB, PSIF_MO_BB_TPDM, params.tolerance, 0, 0);
+      iwl_buf_init(&OutBuf_AB, PSIF_MO_AB_TPDM, params.tolerance, 0, 0);
 
-    iwl_buf_init(&OutBuf_AA, PSIF_MO_AA_TPDM, params.tolerance, 0, 0);
-    iwl_buf_init(&OutBuf_BB, PSIF_MO_BB_TPDM, params.tolerance, 0, 0);
-    iwl_buf_init(&OutBuf_AB, PSIF_MO_AB_TPDM, params.tolerance, 0, 0);
+      /*    add_core_UHF(&OutBuf_AA, &OutBuf_BB, &OutBuf_AB); */
+      add_ref_UHF(&OutBuf_AA, &OutBuf_BB, &OutBuf_AB);
+      dump_UHF(&OutBuf_AA, &OutBuf_BB, &OutBuf_AB);
 
-    /*    add_core_UHF(&OutBuf_AA, &OutBuf_BB, &OutBuf_AB); */
-    add_ref_UHF(&OutBuf_AA, &OutBuf_BB, &OutBuf_AB);
-    dump_UHF(&OutBuf_AA, &OutBuf_BB, &OutBuf_AB);
-
-    iwl_buf_flush(&OutBuf_AA, 1);
-    iwl_buf_flush(&OutBuf_BB, 1);
-    iwl_buf_flush(&OutBuf_AB, 1);
-    iwl_buf_close(&OutBuf_AA, 1);
-    iwl_buf_close(&OutBuf_BB, 1);
-    iwl_buf_close(&OutBuf_AB, 1);
-
+      iwl_buf_flush(&OutBuf_AA, 1);
+      iwl_buf_flush(&OutBuf_BB, 1);
+      iwl_buf_flush(&OutBuf_AB, 1);
+      iwl_buf_close(&OutBuf_AA, 1);
+      iwl_buf_close(&OutBuf_BB, 1);
+      iwl_buf_close(&OutBuf_AB, 1);
+    }
   }
 
   dpd_close(0);
@@ -277,7 +296,7 @@ void init_io(int argc, char *argv[])
   params.calc_xi = 0;
   params.restart = 0;
   params.use_zeta = 0;
-  params.user_transition = 0;
+  params.transition = 0;
 
   for (i=1, num_unparsed=0; i<argc; ++i) {
     if(!strcmp(argv[i], "--onepdm")) {
@@ -297,11 +316,8 @@ void init_io(int argc, char *argv[])
       params.restart = 0;
     }
     else if (!strcmp(argv[i],"--transition")) {
-      params.user_transition = 1;
-      sscanf(argv[++i], "%d",&(params.L_irr));
-      sscanf(argv[++i], "%d",&(params.L_root));
-      sscanf(argv[++i], "%d",&(params.R_root));
-      params.R_irr = params.L_irr; /* assume same for now */
+      params.transition = 1;
+      params.relax_opdm = 0;
       params.ground = 0;
     }
     else {
@@ -346,10 +362,10 @@ void exit_io(void)
   /* delete temporary EOM files */
   psio_close(EOM_TMP0,0);
   psio_close(EOM_TMP1,0);
-/*psio_close(CC_GLG,0); */
+  psio_close(CC_GLG,0);
   psio_open(EOM_TMP0,PSIO_OPEN_NEW);
   psio_open(EOM_TMP1,PSIO_OPEN_NEW);
-/*psio_open(CC_GLG,PSIO_OPEN_NEW);*/
+  psio_open(CC_GLG,PSIO_OPEN_NEW);
   if (!params.calc_xi) {
     psio_close(EOM_TMP,0);
     psio_open(EOM_TMP,PSIO_OPEN_NEW);
@@ -365,8 +381,8 @@ void exit_io(void)
 
 char *gprgid()
 {
-   char *prgid = "CCDENSITY";
+  char *prgid = "CCDENSITY";
 
-   return(prgid);
+  return(prgid);
 }
 

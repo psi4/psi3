@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <psifiles.h>
 
 void idx_error(char *message, int p, int q, int r, int s, int pq, int rs,

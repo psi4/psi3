@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 #include <libciomr/libciomr.h>
 #include <libiwl/iwl.h>
 #include <libchkpt/chkpt.h>

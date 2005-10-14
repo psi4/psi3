@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <math.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
@@ -45,9 +47,11 @@ void get_params()
 	}
 
   errcod = ip_string("JOBTYPE", &(junk),0);
-	if ((!strcmp(junk,"OEPROP")) && (params.dertype == 0) )
+  if((!strcmp(junk,"OEPROP")) && (params.dertype == 0) )
     params.relax_opdm = 0; /* allow for unrelaxed densities if EnergyOEProp */
-  else 
+  else if(params.transition) 
+    params.relax_opdm = 0;
+  else  
     params.relax_opdm = 1;
   errcod = ip_boolean("RELAX_OPDM", &(params.relax_opdm),0);
   if ( (params.onepdm) && (params.relax_opdm) ) {
@@ -60,25 +64,36 @@ void get_params()
   else
     params.connect_xi = 1;
   errcod = ip_boolean("CONNECT_XI",&(params.connect_xi),0);
+
+  if(ip_exist("GAUGE",0)) {
+    ip_string("GAUGE",&(params.gauge), 0);
+    if(strcmp(params.gauge,"LENGTH") && strcmp(params.gauge,"VELOCITY")) {
+      printf("Invalid choice of gauge: %s\n", params.gauge);
+      exit(PSI_RETURN_FAILURE);
+    }
+  }
+  else params.gauge = strdup("LENGTH");
   
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
-  fprintf(outfile, "\tTolerance    = %3.1e\n", params.tolerance);
-  fprintf(outfile, "\tCache Level  =    %1d\n", params.cachelev);
-  fprintf(outfile, "\tAO Basis     =     %s\n", 
+  fprintf(outfile, "\tTolerance     = %3.1e\n", params.tolerance);
+  fprintf(outfile, "\tCache Level   = %1d\n", params.cachelev);
+  fprintf(outfile, "\tAO Basis      = %s\n", 
           params.aobasis ? "Yes" : "No");
-  fprintf(outfile, "\tOPDM Only    =     %s\n", 
+  fprintf(outfile, "\tOPDM Only     = %s\n", 
 	  params.onepdm ? "Yes" : "No");
-  fprintf(outfile, "\tRelax OPDM   =     %s\n", 
+  fprintf(outfile, "\tRelax OPDM    = %s\n", 
           params.relax_opdm ? "Yes" : "No");
-  fprintf(outfile, "\tExcited State=     %s\n", 
+  fprintf(outfile, "\tExcited State = %s\n", 
           (!params.ground) ? "Yes" : "No");
-  fprintf(outfile, "\tCompute Xi   =     %s\n", 
+  fprintf(outfile, "\tCompute Xi    = %s\n", 
           (params.calc_xi) ? "Yes" : "No");
-  fprintf(outfile, "\tUse Zeta    =     %s\n", 
+  fprintf(outfile, "\tUse Zeta      = %s\n", 
           (params.use_zeta) ? "Yes" : "No");
-  fprintf(outfile, "\tXi connected=     %s\n", 
+  fprintf(outfile, "\tXi connected  = %s\n", 
           (params.connect_xi) ? "Yes" : "No");
-  fprintf(outfile, "\n");
+  if(params.transition) {
+    fprintf(outfile,"\tGauge         = %s\n",params.gauge);
+  }
 }
 

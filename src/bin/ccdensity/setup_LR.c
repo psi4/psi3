@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <libdpd/dpd.h>
 #define EXTERN
 #include "globals.h"
@@ -20,16 +21,7 @@ void setup_LR(void)
     params.R_irr = R_irr = 0;
     params.R_root = R_root = -1;
     params.R0 = 1.0;
-  }
-  else if (params.user_transition) {
-    L_irr = params.L_irr;
-    L_root = params.L_root;
-    R_irr = params.R_irr;
-    R_root = params.R_root;
-    sprintf(lbl, "EOM CCSD R0 for root %d %d", params.R_irr, params.R_root);
-    psio_read_entry(CC_INFO, lbl, (char *) &(params.R0), sizeof(double));
-    sprintf(lbl, "EOM CCSD Energy for root %d %d", params.R_irr, params.R_root);
-    psio_read_entry(CC_INFO, lbl, (char *) &(params.cceom_energy), sizeof(double));
+    G_irr = params.G_irr = params.L_irr ^ params.R_irr;
   }
   else if (!strcmp(params.wfn,"EOM_CCSD")) { /* use last state calculated */
     if (!ip_exist("STATES_PER_IRREP",0)) {
@@ -51,12 +43,13 @@ void setup_LR(void)
     psio_read_entry(CC_INFO, lbl, (char *) &(params.R0), sizeof(double));
     sprintf(lbl, "EOM CCSD Energy for root %d %d", params.R_irr, params.R_root);
     psio_read_entry(CC_INFO, lbl, (char *) &(params.cceom_energy), sizeof(double));
+    G_irr = params.G_irr = params.L_irr ^ params.R_irr;
   }
-  G_irr = params.G_irr = params.L_irr ^ params.R_irr;
   fprintf(outfile,"\tLeft-hand eigenvector: symmetry %s and excited root %d\n",
     moinfo.labels[L_irr], L_root+1); 
-  fprintf(outfile,"\tRight-hand eigenvector: symmetry %s and excited root %d, R0 = %15.10lf\n",
-    moinfo.labels[R_irr], R_root+1, params.R0); 
+  fprintf(outfile,"\tRight-hand eigenvector: symmetry %s and excited root %d\n",
+    moinfo.labels[R_irr], R_root+1); 
+  fprintf(outfile,"\tR0 = %15.10lf\n",params.R0); 
 
   /* form labels for the L to be copied */
   sprintf(L1A_lbl,"LIA %d %d", L_irr, L_root);
@@ -68,6 +61,7 @@ void setup_LR(void)
 
   /*** GLG is used by the ground state density code and contains R0*L + Zeta */
   /*** the first term disappears if L_irr != G_irr (excitation is asymmetric */
+
   if ( (L_irr == G_irr) && (!params.calc_xi) ) {
     if (params.ref == 0) {
       dpd_buf4_init(&L2, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, L2RHF_lbl);
@@ -158,7 +152,8 @@ void setup_LR(void)
 
   /* for ground-state density contributions L <- R0 L + Zeta */
   /* symmetry of L must be same as density */
-  if ( (!params.ground) && (!params.calc_xi) ) {
+
+  if ( (!params.ground) && (!params.calc_xi)) {
     if (params.connect_xi) params.R0 = 0.0;
     if ( (params.ref==0) || (params.ref==1) ) {
       if (L_irr == G_irr) {
@@ -290,60 +285,58 @@ void setup_LR(void)
 
   /* now sort entries in CC_GLG */
   if (!params.calc_xi) {
-  if( (params.ref==0) || (params.ref==1) ) { /** RHF/ROHF **/
-    /* Build L2iJaB list */
-    dpd_buf4_init(&L2, CC_GLG, G_irr, 0, 5, 0, 5, 0, "LIjAb");
-    dpd_buf4_sort(&L2, CC_GLG, qpsr, 0, 5, "LiJaB");
-    dpd_buf4_close(&L2);
-    /* Build L2IAJB List */
-    dpd_buf4_init(&L2, CC_GLG, G_irr, 0, 5, 2, 7, 0, "LIJAB");
-    dpd_buf4_sort(&L2, CC_GLG, prqs, 10, 10, "LIAJB");
-    dpd_buf4_close(&L2);
-    /* Build L2iajb List */
-    dpd_buf4_init(&L2, CC_GLG, G_irr, 0, 5, 2, 7, 0, "Lijab");
-    dpd_buf4_sort(&L2, CC_GLG, prqs, 10, 10, "Liajb");
-    dpd_buf4_close(&L2);
-    /* Build L2IAjb List */
-    dpd_buf4_init(&L2, CC_GLG, G_irr, 0, 5, 0, 5, 0, "LIjAb");
-    dpd_buf4_sort(&L2, CC_GLG, prqs, 10, 10, "LIAjb");
-    dpd_buf4_close(&L2);
-    /* Build L2iaJB List */
-    dpd_buf4_init(&L2, CC_GLG, G_irr, 0, 5, 0, 5, 0, "LiJaB");
-    dpd_buf4_sort(&L2, CC_GLG, prqs, 10, 10, "LiaJB");
-    dpd_buf4_close(&L2);
-    /* Build L2IbjA and L2 jAIb Lists */
-    dpd_buf4_init(&L2, CC_GLG, G_irr, 10, 10, 10, 10, 0, "LIAjb");
-    dpd_buf4_sort(&L2, CC_GLG, psrq, 10, 10, "LIbjA");
-    dpd_buf4_sort(&L2, CC_GLG, rqps, 10, 10, "LjAIb");
-    dpd_buf4_close(&L2);
-  }
-  else if(params.ref == 2) { /** UHF **/
+    if( (params.ref==0) || (params.ref==1) ) { /** RHF/ROHF **/
+      dpd_buf4_init(&L2, CC_GLG, G_irr, 0, 5, 0, 5, 0, "LIjAb");
+      dpd_buf4_sort(&L2, CC_GLG, qpsr, 0, 5, "LiJaB");
+      dpd_buf4_close(&L2);
+    
+      dpd_buf4_init(&L2, CC_GLG, G_irr, 0, 5, 2, 7, 0, "LIJAB");
+      dpd_buf4_sort(&L2, CC_GLG, prqs, 10, 10, "LIAJB");
+      dpd_buf4_close(&L2);
+      
+      dpd_buf4_init(&L2, CC_GLG, G_irr, 0, 5, 2, 7, 0, "Lijab");
+      dpd_buf4_sort(&L2, CC_GLG, prqs, 10, 10, "Liajb");
+      dpd_buf4_close(&L2);
+     
+      dpd_buf4_init(&L2, CC_GLG, G_irr, 0, 5, 0, 5, 0, "LIjAb");
+      dpd_buf4_sort(&L2, CC_GLG, prqs, 10, 10, "LIAjb");
+      dpd_buf4_close(&L2);
+        
+      dpd_buf4_init(&L2, CC_GLG, G_irr, 0, 5, 0, 5, 0, "LiJaB");
+      dpd_buf4_sort(&L2, CC_GLG, prqs, 10, 10, "LiaJB");
+      dpd_buf4_close(&L2);
 
-    dpd_buf4_init(&L2, CC_GLG, G_irr, 22, 28, 22, 28, 0, "LIjAb");
-    dpd_buf4_sort(&L2, CC_GLG, qpsr, 23, 29, "LiJaB");
-    dpd_buf4_close(&L2);
+      dpd_buf4_init(&L2, CC_GLG, G_irr, 10, 10, 10, 10, 0, "LIAjb");
+      dpd_buf4_sort(&L2, CC_GLG, psrq, 10, 10, "LIbjA");
+      dpd_buf4_sort(&L2, CC_GLG, rqps, 10, 10, "LjAIb");
+      dpd_buf4_close(&L2);
+    }
+    else if(params.ref == 2) { /** UHF **/
+      dpd_buf4_init(&L2, CC_GLG, G_irr, 22, 28, 22, 28, 0, "LIjAb");
+      dpd_buf4_sort(&L2, CC_GLG, qpsr, 23, 29, "LiJaB");
+      dpd_buf4_close(&L2);
 
-    dpd_buf4_init(&L2, CC_GLG, G_irr, 0, 5, 2, 7, 0, "LIJAB");
-    dpd_buf4_sort(&L2, CC_GLG, prqs, 20, 20, "LIAJB");
-    dpd_buf4_close(&L2);
+      dpd_buf4_init(&L2, CC_GLG, G_irr, 0, 5, 2, 7, 0, "LIJAB");
+      dpd_buf4_sort(&L2, CC_GLG, prqs, 20, 20, "LIAJB");
+      dpd_buf4_close(&L2);
 
-    dpd_buf4_init(&L2, CC_GLG, G_irr, 10, 15, 12, 17, 0, "Lijab");
-    dpd_buf4_sort(&L2, CC_GLG, prqs, 30, 30, "Liajb");
-    dpd_buf4_close(&L2);
+      dpd_buf4_init(&L2, CC_GLG, G_irr, 10, 15, 12, 17, 0, "Lijab");
+      dpd_buf4_sort(&L2, CC_GLG, prqs, 30, 30, "Liajb");
+      dpd_buf4_close(&L2);
 
-    dpd_buf4_init(&L2, CC_GLG, G_irr, 22, 28, 22, 28, 0, "LIjAb");
-    dpd_buf4_sort(&L2, CC_GLG, prqs, 20, 30, "LIAjb");
-    dpd_buf4_close(&L2);
+      dpd_buf4_init(&L2, CC_GLG, G_irr, 22, 28, 22, 28, 0, "LIjAb");
+      dpd_buf4_sort(&L2, CC_GLG, prqs, 20, 30, "LIAjb");
+      dpd_buf4_close(&L2);
 
-    dpd_buf4_init(&L2, CC_GLG, G_irr, 23, 29, 23, 29, 0, "LiJaB");
-    dpd_buf4_sort(&L2, CC_GLG, prqs, 30, 20, "LiaJB");
-    dpd_buf4_close(&L2);
+      dpd_buf4_init(&L2, CC_GLG, G_irr, 23, 29, 23, 29, 0, "LiJaB");
+      dpd_buf4_sort(&L2, CC_GLG, prqs, 30, 20, "LiaJB");
+      dpd_buf4_close(&L2);
 
-    dpd_buf4_init(&L2, CC_GLG, G_irr, 20, 30, 20, 30, 0, "LIAjb");
-    dpd_buf4_sort(&L2, CC_GLG, psrq, 24, 27, "LIbjA");
-    dpd_buf4_sort(&L2, CC_GLG, rqps, 27, 24, "LjAIb");
-    dpd_buf4_close(&L2);
-  }
+      dpd_buf4_init(&L2, CC_GLG, G_irr, 20, 30, 20, 30, 0, "LIAjb");
+      dpd_buf4_sort(&L2, CC_GLG, psrq, 24, 27, "LIbjA");
+      dpd_buf4_sort(&L2, CC_GLG, rqps, 27, 24, "LjAIb");
+      dpd_buf4_close(&L2);
+    }
   }
 
   if (!params.ground) { /* sort entries in CC_GL */

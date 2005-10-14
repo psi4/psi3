@@ -12,7 +12,7 @@ struct Params {
   int connect_xi;
   int restart;
   int ground;
-  int user_transition; /* was L specified on command-line? */
+  int transition; 
   int dertype;
   double cceom_energy;
   double R0;
@@ -27,5 +27,27 @@ struct Params {
   double overlap2; /* <L2|R2> */
   double RD_overlap; /* Rmnef <mn||ef> */
   double RZ_overlap; /* <R|zeta> */
+  char *gauge;
+  int nstates;
+  int prop_sym;
+  int prop_root;
 };
 
+struct TD_Params {
+  int irrep;
+  int root;
+  double R0;
+  double cceom_energy;
+  char L1A_lbl[32];
+  char L1B_lbl[32];
+  char L2AA_lbl[32];
+  char L2BB_lbl[32];
+  char L2AB_lbl[32];
+  char R1A_lbl[32];
+  char R1B_lbl[32];
+  char R2AA_lbl[32];
+  char R2BB_lbl[32];
+  char R2AB_lbl[32];
+  double OS;
+  double RS;
+};

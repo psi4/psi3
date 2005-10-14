@@ -3,29 +3,34 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
+CDBG = -g
+COPT =
+
 LDLIBS += $(LAPACK) $(BLAS)
 
 PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
-CSRC = \
-Gabcd.c  Iab.c       add_ref.c    deanti.c      get_moinfo.c   relax_D.c    \
-Gciab.c  Iai.c       build_A.c    get_params.c  relax_I.c \
-Gibja.c  Iia.c       build_X.c    get_frozen.c \
-Gijab.c  Gijab_ROHF.c Gijab_UHF.c Iij.c       build_Z.c    energy.c      sortI.c      \
-Gijka.c  V.c         ccdensity.c  lag.c         sortone.c    \
-Gijkl.c  fold.c       onepdm.c      twopdm.c     \
+CSRC = Gabcd.c Iab.c add_ref.c deanti.c get_moinfo.c relax_D.c \
+Gciab.c Iai.c build_A.c get_params.c relax_I.c Gibja.c Iia.c \
+build_X.c get_frozen.c Gijab.c Gijab_ROHF.c Gijab_UHF.c Iij.c \
+build_Z.c energy.c sortI.c Gijka.c V.c lag.c sortone.c \
+Gijkl.c fold.c onepdm.c twopdm.c \
 resort_gamma.c resort_tei.c distribute.c classify.c \
 file_build.c idx_permute.c idx_error.c kinetic.c \
 cache.c sortone_ROHF.c sortone_UHF.c build_A_ROHF.c build_A_UHF.c \
-build_Z_ROHF.c build_Z_UHF.c relax_I_ROHF.c relax_I_UHF.c sortI_ROHF.c sortI_UHF.c \
-fold_ROHF.c fold_UHF.c deanti_ROHF.c deanti_UHF.c add_core_ROHF.c add_core_UHF.c \
-add_ref_ROHF.c add_ref_UHF.c dump_ROHF.c dump_UHF.c dipole.c setup_LR.c \
-x_oe_intermediates.c x_oe_intermediates_rhf.c x_onepdm.c x_onepdm_uhf.c \
-  x_te_intermediates.c x_te_intermediates_rhf.c x_Gijkl.c x_Gabcd.c \
-x_Gibja.c x_Gibja_uhf.c x_Gijka.c x_Gijka_uhf.c G.c x_V.c x_Gciab.c x_Gciab_uhf.c \
-  x_Gijab.c x_Gijab_uhf.c \
-zero_pdm.c x_xi_intermediates.c x_xi1.c x_xi1_uhf.c x_xi1_rhf.c x_xi_check.c \
-  norm.c x_xi2.c x_xi2_uhf.c x_xi2_rhf.c G_norm.c x_xi1_connected.c
+build_Z_ROHF.c build_Z_UHF.c relax_I_ROHF.c relax_I_UHF.c sortI_ROHF.c \
+sortI_UHF.c fold_ROHF.c fold_UHF.c deanti_ROHF.c deanti_UHF.c \
+add_core_ROHF.c add_core_UHF.c add_ref_ROHF.c add_ref_UHF.c dump_ROHF.c \
+dump_UHF.c dipole.c setup_LR.c x_oe_intermediates.c x_oe_intermediates_rhf.c \
+x_onepdm.c x_onepdm_uhf.c x_te_intermediates.c x_te_intermediates_rhf.c \
+x_Gijkl.c x_Gabcd.c x_Gibja.c x_Gibja_uhf.c x_Gijka.c x_Gijka_uhf.c G.c \
+x_V.c x_Gciab.c x_Gciab_uhf.c x_Gijab.c x_Gijab_uhf.c zero_pdm.c \
+x_xi_intermediates.c x_xi1.c x_xi1_uhf.c x_xi1_rhf.c x_xi_check.c \
+norm.c x_xi2.c x_xi2_uhf.c x_xi2_rhf.c G_norm.c x_xi1_connected.c \
+get_td_params.c td_setup.c ltdensity_intermediates.c ltdensity.c rtdensity.c \
+td_cleanup.c td_print.c sort_ltd_rohf.c sort_ltd_uhf.c sort_rtd_rohf.c \
+sort_rtd_uhf.c tdensity.c oscillator_strength.c transdip.c transL.c transp.c \
+rotational_strength.c ccdensity.c \
 
 BINOBJ = $(CSRC:%.c=%.o)
 

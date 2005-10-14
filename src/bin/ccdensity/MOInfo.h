@@ -56,4 +56,13 @@ struct MOInfo {
     double **I;         /* Lagrangian matrix in the full space */
     double **I_a;       /* Alpha Lagrangian matrix in the full space */
     double **I_b;       /* Beta Lagrangian matrix in the full space */
+  double **ltd;         /* <0|O|n> Left transition density */
+  double **ltd_a;       /* <0|O|n> Left transition alpha density */
+  double **ltd_b;       /* <0|O|n> Left transition beta density */
+  double **rtd;         /* <n|O|0> Right transition density */ 
+  double **rtd_a;       /* <n|O|0> Right transition alpha density */
+  double **rtd_b;       /* <n|O|0> Right transition beta density */
+  double ***L;
+  double ***nabla;
+  double ***dip;
 };

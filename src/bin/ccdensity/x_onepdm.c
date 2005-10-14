@@ -40,6 +40,7 @@ void x_onepdm_rohf(void)
   dpdbuf4 T2, L2, R2, I2;
   int L_irr, R_irr, G_irr;
   double dot_IA, dot_ia, dot_AI, dot_ai;
+  double dot_IJ;
   L_irr = params.L_irr;
   R_irr = params.R_irr;
   G_irr = params.G_irr;
@@ -265,11 +266,17 @@ void x_onepdm_rohf(void)
   dpd_file2_init(&Dai, CC_OEI, G_irr, 0, 1, "Dai");
   dot_ai = dpd_file2_dot_self(&Dai);
   dpd_file2_close(&Dai);
+  dpd_file2_init(&DIJ, CC_OEI, G_irr, 0, 0, "DIJ");
+  dot_IJ = dpd_file2_dot_self(&DIJ);
+  dpd_file2_close(&DIJ);
+  dpd_file2_init(&DIJ, CC_OEI, G_irr, 0, 0, "Dij");
+  dot_IJ += dpd_file2_dot_self(&DIJ);
+  dpd_file2_close(&DIJ);
   fprintf(outfile,"<DIA|DIA> = %15.10lf\n", dot_IA);
   fprintf(outfile,"<Dia|Dia> = %15.10lf\n", dot_ia);
   fprintf(outfile,"<DAI|DAI> = %15.10lf\n", dot_AI);
   fprintf(outfile,"<Dai|Dai> = %15.10lf\n", dot_ai);
-  fprintf(outfile,"<Dpq|Dqp> = %15.10lf\n", dot_IA+dot_ia+dot_AI+dot_ai);
+  fprintf(outfile,"<DIJ|DIJ> = %15.10lf\n", dot_IJ);
   */
   return;
 }
