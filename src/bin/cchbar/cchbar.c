@@ -87,8 +87,7 @@ int main(int argc, char *argv[])
   Wamef_build();
   if(params.print & 2) status("Wamef elements", outfile);
 
-  if( (!strcmp(params.wfn,"CC2")) || (!strcmp(params.wfn,"EOM_CC2")) ) {
-
+  if(!strcmp(params.wfn,"CC2")) {
     cc2_Wmbej_build();
     if(params.print & 2) status("Wmbej elements", outfile);
     cc2_Zmbej_build();
@@ -97,11 +96,18 @@ int main(int argc, char *argv[])
     if(params.print & 2) status("Wmbij elements", outfile);
     cc2_Wabei_build();
     if(params.print & 2) status("Wabei elements", outfile);
-
   }
-
+  else if (!strcmp(params.wfn,"EOM_CC2")) {
+    Wmbej_build();
+    if(params.print & 2) status("Wmbej elements", outfile);
+    cc2_Zmbej_build();
+    if(params.print & 2) status("Zmbej elements", outfile);
+    cc2_Wmbij_build();
+    if(params.print & 2) status("Wmbij elements", outfile);
+    cc2_Wabei_build();
+    if(params.print & 2) status("Wabei elements", outfile);
+  }
   else {
-
     Wabei_build();
     if(params.print & 2) status("Wabei elements", outfile);
     Wmbej_build();

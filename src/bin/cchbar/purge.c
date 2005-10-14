@@ -177,9 +177,6 @@ void purge(void) {
   }
   dpd_file4_close(&W);
 
-
-
-
   /* Purge Wmbej matrix elements */
   dpd_file4_init(&W, CC_HBAR, 0, 10, 10,"WMBEJ");
   for(h=0; h < nirreps; h++) {
@@ -203,7 +200,6 @@ void purge(void) {
   }
   dpd_file4_close(&W);
 
-
   dpd_file4_init(&W, CC_HBAR, 0, 10, 10,"Wmbej");
   for(h=0; h < nirreps; h++) {
     dpd_file4_mat_irrep_init(&W, h);
@@ -225,7 +221,6 @@ void purge(void) {
     dpd_file4_mat_irrep_close(&W, h);
   }
   dpd_file4_close(&W);
-
 
   dpd_file4_init(&W, CC_HBAR, 0, 10, 10,"WMbEj");
   for(h=0; h < nirreps; h++) {
@@ -249,7 +244,6 @@ void purge(void) {
   }
   dpd_file4_close(&W);
 
-
   dpd_file4_init(&W, CC_HBAR, 0, 10, 10,"WmBeJ");
   for(h=0; h < nirreps; h++) {
     dpd_file4_mat_irrep_init(&W, h);
@@ -271,7 +265,6 @@ void purge(void) {
     dpd_file4_mat_irrep_close(&W, h);
   }
   dpd_file4_close(&W);
-
 
   dpd_file4_init(&W, CC_HBAR, 0, 10, 10,"WmBEj");
   for(h=0; h < nirreps; h++) {
@@ -304,8 +297,6 @@ void purge(void) {
   dpd_file4_close(&W);
 
   /* WMbeJ is already OK */
-
-
 
   /* Purge Wamef matrix elements */
   dpd_file4_init(&W, CC_HBAR, 0, 11, 7,"WAMEF");
