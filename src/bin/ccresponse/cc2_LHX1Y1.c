@@ -300,12 +300,10 @@ double cc2_LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
   sprintf(lbl, "Z1_%s_%1s_(ei,a>=b)", pert_y, cart_y);
   dpd_buf4_init(&Z1, CC_TMP8, irrep_y, 11, 5, 11, 8, 0, lbl);
   dpd_buf4_axpy(&Z1, &Z, 1);
-  /*   dpd_buf4_print(&Z1, stdout, 1); */
   dpd_buf4_close(&Z1);
   sprintf(lbl, "Z2_%s_%1s_(ei,a>=b)", pert_y, cart_y);
   dpd_buf4_init(&Z2, CC_TMP8, irrep_y, 11, 5, 11, 9, 0, lbl);
   dpd_buf4_axpy(&Z2, &Z, 1);
-  /*   dpd_buf4_print(&Z2, stdout, 1); */
   dpd_buf4_close(&Z2);
   dpd_buf4_close(&Z);
 
