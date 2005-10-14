@@ -105,9 +105,16 @@ void cc2_L1_build(struct L_Params L_params) {
     dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
 
     /* L1 RHS += Lme*Wieam */
-    dpd_buf4_init(&W, CC2_HET1, 0, 10, 10, 10, 10, 0, "CC2 2 W(ME,jb) + W(Me,Jb)");
-    dpd_contract422(&W, &LIA, &newLIA, 0, 0, 1.0, 1.0);
-    dpd_buf4_close(&W);
+    if(!strcmp(params.wfn,"CC2")) {
+      dpd_buf4_init(&W, CC2_HET1, 0, 10, 10, 10, 10, 0, "CC2 2 W(ME,jb) + W(Me,Jb)");
+      dpd_contract422(&W, &LIA, &newLIA, 0, 0, 1.0, 1.0);
+      dpd_buf4_close(&W);
+    }
+    else if(!strcmp(params.wfn,"EOM_CC2")) {
+      dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "2 W(ME,jb) + W(Me,Jb)");
+      dpd_contract422(&W, &LIA, &newLIA, 0, 0, 1.0, 1.0);
+      dpd_buf4_close(&W);
+    }
 
     dpd_file2_close(&LIA);
     dpd_file2_close(&newLIA);
@@ -425,5 +432,4 @@ void cc2_L1_build(struct L_Params L_params) {
 
   return;
 }
-
 

@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
   if(params.local) local_init();
 
   if(params.ref == 0) {
-    if (!strcmp(params.wfn,"CC2"))
+    if (!strcmp(params.wfn,"CC2") || !strcmp(params.wfn,"EOM_CC2"))
       cc2_hbar_extra();
     else
       hbar_extra();
@@ -118,8 +118,8 @@ int main(int argc, char *argv[])
 
   for (i=0; i<params.nstates; ++i) {
     /* delete and reopen intermediate files */
-    psio_close(CC_TMP,0); psio_close(CC_TMP1,0); psio_close(CC_TMP2,0); psio_close(CC_LAMBDA,0);
-    psio_open(CC_TMP,0); psio_open(CC_TMP1,0); psio_open(CC_TMP2,0); psio_open(CC_LAMBDA,0);
+    psio_close(CC_TMP,0); psio_close(CC_TMP0,0); psio_close(CC_TMP1,0); psio_close(CC_TMP2,0); psio_close(CC_LAMBDA,0);
+    psio_open(CC_TMP,0); psio_open(CC_TMP0,0); psio_open(CC_TMP1,0); psio_open(CC_TMP2,0); psio_open(CC_LAMBDA,0);
 
     fprintf(outfile,"\tSymmetry of left-hand state: %s\n",
 	    moinfo.labels[ moinfo.sym^(pL_params[i].irrep) ]);
@@ -144,7 +144,7 @@ int main(int argc, char *argv[])
 
       if(!strcmp(params.wfn,"CC3")) cc3_t3x();
 
-      if(!strcmp(params.wfn,"CC2")) {
+      if(!strcmp(params.wfn,"CC2") || !strcmp(params.wfn,"EOM_CC2")) {
 
 	cc2_Gai_build(pL_params[i].irrep);
 	cc2_L1_build(pL_params[i]);

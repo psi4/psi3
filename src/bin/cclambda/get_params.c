@@ -18,16 +18,24 @@ void get_params(void)
   if(strcmp(params.wfn, "CCSD") && strcmp(params.wfn, "CCSD_T") &&
      strcmp(params.wfn, "EOM_CCSD") && strcmp(params.wfn, "LEOM_CCSD") &&
      strcmp(params.wfn, "BCCD") && strcmp(params.wfn,"BCCD_T") &&
-     strcmp(params.wfn, "CC2") && strcmp(params.wfn,"CC3")) {
+     strcmp(params.wfn, "CC2") && strcmp(params.wfn,"CC3") &&
+     strcmp(params.wfn, "EOM_CC2")) {
     fprintf(outfile, "Invalid value of input keyword WFN: %s\n", params.wfn);
+    exit(PSI_RETURN_FAILURE);
+  }
+
+  if(!strcmp(params.wfn, "EOM_CC2")) {
+    fprintf(outfile,"Does not currently work.\n");
     exit(PSI_RETURN_FAILURE);
   }
 
   params.maxiter = 50;
   errcod = ip_data("MAXITER","%d",&(params.maxiter),0);
+
   params.convergence = 1e-7;
   errcod = ip_data("CONVERGENCE","%d",&(iconv),0);
   if(errcod == IPE_OK) params.convergence = 1.0*pow(10.0,(double) -iconv);
+
   params.restart = 1;
   errcod = ip_boolean("RESTART", &(params.restart),0);
   /* If the MO orbital phases are screwed up, don't restart */
@@ -116,9 +124,9 @@ void get_params(void)
         ip_data("STATES_PER_IRREP","%d",&j,1,i);
         for (k=0;k<j;++k) {
           pL_params[l].irrep = i^moinfo.sym;
-          sprintf(lbl,"EOM CCSD Energy for root %d %d", i, k);
+          sprintf(lbl,"EOM CCSD Energy for root %d %d", pL_params[l].irrep, k);
           psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[l].cceom_energy),sizeof(double));
-          sprintf(lbl,"EOM CCSD R0 for root %d %d", i, k);
+          sprintf(lbl,"EOM CCSD R0 for root %d %d",pL_params[l].irrep, k);
           psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[l].R0),sizeof(double));
           sprintf(pL_params[l].L1A_lbl,"LIA %d %d",pL_params[l].irrep, k);
           sprintf(pL_params[l].L1B_lbl,"Lia %d %d",pL_params[l].irrep, k);

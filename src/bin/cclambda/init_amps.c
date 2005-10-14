@@ -284,7 +284,7 @@ void init_amps(struct L_Params L_params)
       dpd_buf4_close(&R2);
     }
   
-    fprintf(outfile,"\tInitial overlap of initial guess <R|L> = %15.10lf\n", norm);
+    fprintf(outfile,"\tInitial overlap of initial guess <L|R> = %15.10lf\n", norm);
   
     dpd_file2_scm(&LIA, 1.0/norm);
     dpd_file2_scm(&Lia, 1.0/norm);
@@ -321,7 +321,7 @@ void init_amps(struct L_Params L_params)
       norm += dpd_buf4_dot(&LIjAb, &R2);
       dpd_buf4_close(&R2);
     }
-    fprintf(outfile,"\tChecking overlap of initial guess <R|L> = %15.10lf\n", norm);
+    fprintf(outfile,"\tChecking overlap of initial guess <L|R> = %15.10lf\n", norm);
   
     dpd_file2_close(&LIA);
     dpd_file2_close(&Lia);
