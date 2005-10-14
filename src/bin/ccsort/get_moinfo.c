@@ -106,6 +106,7 @@ void get_moinfo(void)
     moinfo.qt2pitz_B = init_int_array(moinfo.nmo);
     reorder_qt_uhf(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc,
 		   moinfo.pitz2qt_A, moinfo.pitz2qt_B, moinfo.orbspi, moinfo.nirreps);
+
     for(i=0; i < moinfo.nmo; i++) {
       moinfo.qt2pitz_A[moinfo.pitz2qt_A[i]] = i;
       moinfo.qt2pitz_B[moinfo.pitz2qt_B[i]] = i;
