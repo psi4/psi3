@@ -8,6 +8,7 @@
 #include <physconst.h>
 
 void sigmaSS(int index, int C_irr);
+void cc2_sigmaSS(int index, int C_irr);
 void precondition_SS(dpdfile2 *RIA, dpdfile2 *Ria, double eval);
 void schmidt_add_SS(dpdfile2 *RIA, dpdfile2 *Ria, int C_irr, int *numCs);
 void precondition_SS_RHF(dpdfile2 *RIA, double eval);
@@ -286,8 +287,14 @@ void diagSS(int C_irr) {
       }
     }
 
-    for (i=0;i<L;++i)
-      sigmaSS(i,C_irr);
+    if(!strcmp(params.wfn,"EOM_CC2")) {
+      for (i=0;i<L;++i)
+        cc2_sigmaSS(i,C_irr);
+    }
+    else {
+      for (i=0;i<L;++i)
+        sigmaSS(i,C_irr);
+    }
 
     G = block_matrix(L,L);
 

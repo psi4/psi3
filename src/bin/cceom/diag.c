@@ -76,6 +76,9 @@ extern void restart_with_root(int i, int C_irr);
 extern void save_C_ccsd(int i, int C_irr);
 extern int follow_root(int L, double **alpha, int C_irr);
 
+void cc2_hbar_extra(void);
+void cc2_sigma(int index, int irrep);
+
 void diag(void) {
   dpdfile2 CME, CME2, Cme, SIA, Sia, RIA, Ria, DIA, Dia, tIA, tia, LIA, Lia;
   dpdbuf4 CMNEF, Cmnef, CMnEf, SIJAB, Sijab, SIjAb, RIJAB, Rijab, RIjAb, RIjbA;
@@ -95,10 +98,12 @@ void diag(void) {
 #ifdef TIME_CCEOM
 timer_on("HBAR_EXTRA");
 #endif
-  hbar_extra(); /* sort hbar matrix elements for sigma equations */
+  if (!strcmp(params.wfn,"EOM_CC2")) cc2_hbar_extra();  
+  else hbar_extra(); /* sort hbar matrix elements for sigma equations */
 #ifdef TIME_CCEOM
 timer_off("HBAR_EXTRA");
 #endif
+
 #ifdef EOM_DEBUG
   hbar_norms();
 #endif
@@ -274,21 +279,26 @@ timer_off("INIT GUESS");
         timer_on("sigmaDS"); sigmaDS(i,C_irr); timer_off("sigmaDS");
         timer_on("sigmaDD"); sigmaDD(i,C_irr); timer_off("sigmaDD");
         timer_off("SIGMA ALL");
-#else
-        sigmaSS(i,C_irr);
-        sigmaSD(i,C_irr);
-        sigmaDS(i,C_irr);
-        sigmaDD(i,C_irr);
-#endif /*time*/
-        if (params.full_matrix) {
-          sigma00(i,C_irr);
-          sigma0S(i,C_irr);
-          sigma0D(i,C_irr); 
-          sigmaS0(i,C_irr);
-          sigmaSS_full(i,C_irr);
-          sigmaD0(i,C_irr);
-          sigmaDS_full(i,C_irr);
-          sigmaDD_full(i,C_irr);
+#endif
+#ifdef EOM_DEBUG
+        check_sum("reset",0,0);
+#endif
+        if (!strcmp(params.wfn,"EOM_CC2")) cc2_sigma(i,C_irr);  
+        else {
+          sigmaSS(i,C_irr);
+          sigmaSD(i,C_irr);
+          sigmaDS(i,C_irr);
+          sigmaDD(i,C_irr);
+          if (params.full_matrix) {
+            sigma00(i,C_irr);
+            sigma0S(i,C_irr);
+            sigma0D(i,C_irr); 
+            sigmaS0(i,C_irr);
+            sigmaSS_full(i,C_irr);
+            sigmaD0(i,C_irr);
+            sigmaDS_full(i,C_irr);
+            sigmaDD_full(i,C_irr);
+          }
         }
 
         /* assuming we want only one and lowest state - otherwise 
