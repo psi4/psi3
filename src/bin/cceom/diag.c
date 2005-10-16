@@ -274,10 +274,15 @@ timer_off("INIT GUESS");
 #endif
 #ifdef TIME_CCEOM
         timer_on("SIGMA ALL");
-        timer_on("sigmaSS"); sigmaSS(i,C_irr); timer_off("sigmaSS");
-        timer_on("sigmaSD"); sigmaSD(i,C_irr); timer_off("sigmaSD");
-        timer_on("sigmaDS"); sigmaDS(i,C_irr); timer_off("sigmaDS");
-        timer_on("sigmaDD"); sigmaDD(i,C_irr); timer_off("sigmaDD");
+        if (!strcmp(params.wfn,"EOM_CC2")) {
+				  timer_on("sigmacc2"); cc2_sigma(i,C_irr); timer_off("sigmacc2");
+				}
+        else {
+          timer_on("sigmaSS"); sigmaSS(i,C_irr); timer_off("sigmaSS");
+          timer_on("sigmaSD"); sigmaSD(i,C_irr); timer_off("sigmaSD");
+          timer_on("sigmaDS"); sigmaDS(i,C_irr); timer_off("sigmaDS");
+          timer_on("sigmaDD"); sigmaDD(i,C_irr); timer_off("sigmaDD");
+				}
         timer_off("SIGMA ALL");
 #else 
         if (!strcmp(params.wfn,"EOM_CC2")) cc2_sigma(i,C_irr);  
