@@ -18,7 +18,7 @@ double dotval;
   DT2();
   if(params.print & 2) status("<ij||ab> -> T2", outfile);
 
-  if(strcmp(params.wfn,"CC2")) { /* skip all this is wfn=CC2 */
+  if(strcmp(params.wfn,"CC2") || strcmp(params.wfn,"EOM_CC2")) { /* skip all this is wfn=CC2 */
 
     FaetT2();
     FmitT2();
