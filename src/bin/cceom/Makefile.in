@@ -5,8 +5,6 @@ include ../MakeVars
 
 LDLIBS += $(LAPACK) $(BLAS)
 
-COPT = -g
-
 PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
 CSRC = \

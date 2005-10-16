@@ -279,26 +279,24 @@ timer_off("INIT GUESS");
         timer_on("sigmaDS"); sigmaDS(i,C_irr); timer_off("sigmaDS");
         timer_on("sigmaDD"); sigmaDD(i,C_irr); timer_off("sigmaDD");
         timer_off("SIGMA ALL");
-#endif
-#ifdef EOM_DEBUG
-        check_sum("reset",0,0);
-#endif
+#else 
         if (!strcmp(params.wfn,"EOM_CC2")) cc2_sigma(i,C_irr);  
         else {
           sigmaSS(i,C_irr);
           sigmaSD(i,C_irr);
           sigmaDS(i,C_irr);
           sigmaDD(i,C_irr);
-          if (params.full_matrix) {
-            sigma00(i,C_irr);
-            sigma0S(i,C_irr);
-            sigma0D(i,C_irr); 
-            sigmaS0(i,C_irr);
-            sigmaSS_full(i,C_irr);
-            sigmaD0(i,C_irr);
-            sigmaDS_full(i,C_irr);
-            sigmaDD_full(i,C_irr);
-          }
+        }
+#endif /* time */
+        if (params.full_matrix) {
+          sigma00(i,C_irr);
+          sigma0S(i,C_irr);
+          sigma0D(i,C_irr); 
+          sigmaS0(i,C_irr);
+          sigmaSS_full(i,C_irr);
+          sigmaD0(i,C_irr);
+          sigmaDS_full(i,C_irr);
+          sigmaDD_full(i,C_irr);
         }
 
         /* assuming we want only one and lowest state - otherwise 
