@@ -47,9 +47,26 @@ void cc2_L1_build(struct L_Params L_params) {
       dpd_file2_close(&FME);
     }
   }
+  /* excited state - no inhomogenous term, first term is -energy*L*/
+  else if (!params.zeta) {
+    if (params.ref == 0 || params.ref == 1) {
+      dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
+      dpd_file2_init(&newLIA, CC_LAMBDA, L_irr, 0, 1, "New LIA");
+      dpd_file2_init(&Lia, CC_LAMBDA, L_irr, 0, 1, "Lia");
+      dpd_file2_init(&newLia, CC_LAMBDA, L_irr, 0, 1, "New Lia");
+      dpd_file2_axpy(&LIA, &newLIA, -1.0 * L_params.cceom_energy,0.0);
+      dpd_file2_axpy(&Lia, &newLia, -1.0 * L_params.cceom_energy,0.0);
+      dpd_file2_close(&LIA);
+      dpd_file2_close(&newLIA);
+      dpd_file2_close(&Lia);
+      dpd_file2_close(&newLia);
+    }
+    else if (params.ref == 2) {
+      /* do nothing - TDC did not change to increments for the UHF case */
+    }
+  }
 
   if(params.ref == 0) {
-
     dpd_file2_init(&newLIA, CC_LAMBDA, L_irr, 0, 1, "New LIA");
     dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
 
@@ -105,16 +122,9 @@ void cc2_L1_build(struct L_Params L_params) {
     dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "LIA");
 
     /* L1 RHS += Lme*Wieam */
-    if(!strcmp(params.wfn,"CC2")) {
-      dpd_buf4_init(&W, CC2_HET1, 0, 10, 10, 10, 10, 0, "CC2 2 W(ME,jb) + W(Me,Jb)");
-      dpd_contract422(&W, &LIA, &newLIA, 0, 0, 1.0, 1.0);
-      dpd_buf4_close(&W);
-    }
-    else if(!strcmp(params.wfn,"EOM_CC2")) {
-      dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "2 W(ME,jb) + W(Me,Jb)");
-      dpd_contract422(&W, &LIA, &newLIA, 0, 0, 1.0, 1.0);
-      dpd_buf4_close(&W);
-    }
+    dpd_buf4_init(&W, CC2_HET1, 0, 10, 10, 10, 10, 0, "CC2 2 W(ME,jb) + W(Me,Jb)");
+    dpd_contract422(&W, &LIA, &newLIA, 0, 0, 1.0, 1.0);
+    dpd_buf4_close(&W);
 
     dpd_file2_close(&LIA);
     dpd_file2_close(&newLIA);
@@ -163,9 +173,12 @@ void cc2_L1_build(struct L_Params L_params) {
 
     /* L1 RHS += 1/2 Limef*Wefam */
     /* Out-of-core contract442 */
+
     dpd_buf4_init(&W, CC2_HET1, 0, 5, 11, 5, 11, 0, "CC2 WAbEi");
     dpd_buf4_init(&L2, CC_TMP0, L_irr, 5, 0, 5, 0, 0, "Z (2 AbIj - AbjI)");
-    /*     dpd_contract442(&L2, &W, &newLIA, 0, 0, 1, 1); */
+
+    /* dpd_contract442(&L2, &W, &newLIA, 0, 0, 1, 1); */
+
     GW = W.file.my_irrep;
     GL2 = L2.file.my_irrep;
     GL1 = newLIA.my_irrep;
@@ -364,6 +377,7 @@ void cc2_L1_build(struct L_Params L_params) {
     dpd_file2_init(&newLIA, CC_LAMBDA, L_irr, 0, 1, "New LIA");
     dpd_file2_init(&LIA, CC_LAMBDA, L_irr, 0, 1, "New LIA Increment");
     dpd_file2_axpy(&LIA, &newLIA, 1, 0);
+    /*dpd_file2_print(&newLIA,outfile);*/
     dpd_file2_close(&LIA);
 
     dpd_file2_copy(&newLIA, CC_LAMBDA, "New Lia");  /* spin-adaptation for RHF */

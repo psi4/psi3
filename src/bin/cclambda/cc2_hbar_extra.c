@@ -6,6 +6,8 @@
 void cc2_hbar_extra(void) {
   dpdbuf4 W1, W2, W;
 
+  /* CC2 W(ME,jb) + W(Me,Jb) is constructed in CCEOM for EOM_CC2 */
+
   if(!strcmp(params.wfn,"CC2")) {
     if(params.ref == 0) { /** RHF **/
       /* 2 W(ME,jb) + W(Me,Jb) */

@@ -29,6 +29,7 @@ void dijabL2(int L_irr)
     dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "New LIjAb Increment");
     dpd_buf4_axpy(&L2, &newLIjAb, 1);
     dpd_buf4_close(&L2);
+    /*dpd_buf4_print(&newLIjAb,outfile,1);*/
     dpd_buf4_close(&newLIjAb);
 
     dpd_buf4_init(&L2, CC_LAMBDA, L_irr, 2, 7, 0, 5, 1, "New LIjAb");

@@ -117,15 +117,22 @@ int main(int argc, char *argv[])
   if(!strcmp(params.wfn,"CC3")) cc3_t3z();
 
   for (i=0; i<params.nstates; ++i) {
+
     /* delete and reopen intermediate files */
-    psio_close(CC_TMP,0); psio_close(CC_TMP0,0); psio_close(CC_TMP1,0); psio_close(CC_TMP2,0); psio_close(CC_LAMBDA,0);
-    psio_open(CC_TMP,0); psio_open(CC_TMP0,0); psio_open(CC_TMP1,0); psio_open(CC_TMP2,0); psio_open(CC_LAMBDA,0);
+    psio_close(CC_TMP,0); psio_close(CC_TMP0,0); 
+    psio_close(CC_TMP1,0); psio_close(CC_TMP2,0); 
+    psio_close(CC_LAMBDA,0);
+
+    psio_open(CC_TMP,0); psio_open(CC_TMP0,0); 
+    psio_open(CC_TMP1,0); psio_open(CC_TMP2,0); 
+    psio_open(CC_LAMBDA,0);
 
     fprintf(outfile,"\tSymmetry of left-hand state: %s\n",
-	    moinfo.labels[ moinfo.sym^(pL_params[i].irrep) ]);
-    fprintf(outfile,"\tSymmetry of left-hand eigenvector: %s\n",moinfo.labels[(pL_params[i].irrep)]);
+            moinfo.labels[ moinfo.sym^(pL_params[i].irrep) ]);
+    fprintf(outfile,"\tSymmetry of left-hand eigenvector: %s\n",
+            moinfo.labels[(pL_params[i].irrep)]);
 
-    denom(pL_params[i]);     /* uses L_params.cceom_energy for excited states */
+    denom(pL_params[i]); /* uses L_params.cceom_energy for excited states */
     init_amps(pL_params[i]); /* uses denominators for initial zeta guess */
 
     fprintf(outfile, "\n\t          Solving Lambda Equations\n");
@@ -196,7 +203,7 @@ int main(int argc, char *argv[])
       exit_io();
       exit(PSI_RETURN_FAILURE);
     }
-    if (params.ground)
+    if(params.ground)
       overlap(pL_params[i].irrep);
   }
 

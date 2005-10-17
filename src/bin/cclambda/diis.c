@@ -27,7 +27,7 @@ void diis(int iter, int L_irr)
 {
   int nvector=8;  /* Number of error vectors to keep */
   int h, nirreps;
-  int row, col, word, p, q;
+  int row, col, word, p, q, i;
   int diis_cycle;
   int vector_length=0;
   int errcod, *ipiv;
@@ -59,16 +59,17 @@ void diis(int iter, int L_irr)
 
     word=0;
     dpd_file2_init(&L1a, CC_LAMBDA, L_irr, 0, 1, "New LIA");
+    /*dpd_file2_print(&L1a,outfile);*/
     dpd_file2_mat_init(&L1a);
     dpd_file2_mat_rd(&L1a);
     dpd_file2_init(&L1b, CC_LAMBDA, L_irr, 0, 1, "LIA");
+    /*dpd_file2_print(&L1b,outfile);*/
     dpd_file2_mat_init(&L1b);
     dpd_file2_mat_rd(&L1b);
     for(h=0; h < nirreps; h++)
       for(row=0; row < L1a.params->rowtot[h]; row++)
 	for(col=0; col < L1a.params->coltot[h^L_irr]; col++) {
 	  error[0][word++] = L1a.matrix[h][row][col] - L1b.matrix[h][row][col];
-/* fprintf(outfile,"%15.10lf\n", error[0][word-1]); */
     }
 
     dpd_file2_mat_close(&L1a);
@@ -77,7 +78,9 @@ void diis(int iter, int L_irr)
     dpd_file2_close(&L1b);
 
     dpd_buf4_init(&L2a, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "New LIjAb");
+    /*dpd_buf4_print(&L2a,outfile,1);*/
     dpd_buf4_init(&L2b, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "LIjAb");
+    /*dpd_buf4_print(&L2b,outfile,1);*/
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_init(&L2a, h);
       dpd_buf4_mat_irrep_rd(&L2a, h);
@@ -147,6 +150,11 @@ void diis(int iter, int L_irr)
       psio_read(CC_DIIS_ERR, "DIIS Error Vectors", (char *) vector[0],
 		vector_length*sizeof(double), start, &end);
 
+      /*
+      for(i=0; i < vector_length; i++) 
+        fprintf(outfile,"E[%d][%d] = %20.15lf\n",p,i,vector[0][i]);
+      */
+
       dot_arr(vector[0], vector[0], vector_length, &product);
 
       B[p][p] = product;
@@ -172,11 +180,6 @@ void diis(int iter, int L_irr)
 
     B[nvector][nvector] = 0;
 
-/*
-fprintf(outfile,"DIIS B\n");
-print_mat(B,nvector,nvector,outfile);
-*/
-
     /* Find the maximum value in B and scale all its elements */
     maximum = fabs(B[0][0]);
     for(p=0; p < nvector; p++)
@@ -186,6 +189,11 @@ print_mat(B,nvector,nvector,outfile);
     for(p=0; p < nvector; p++)
       for(q=0; q < nvector; q++)
 	B[p][q] /= maximum; 
+
+    /*
+    fprintf(outfile,"\nDIIS B:\n");
+    print_mat(B,nvector,nvector,outfile);
+    */
 
     /* Build the constant vector */
     C = init_array(nvector+1);
@@ -204,6 +212,7 @@ print_mat(B,nvector,nvector,outfile);
     vector = dpd_block_matrix(1, vector_length);
     for(p=0; p < vector_length; p++) error[0][p] = 0.0;
     for(p=0; p < nvector; p++) {
+      /*fprintf(outfile,"C[%d] = %20.15lf\n",p,C[p]);*/
 
       start = psio_get_address(PSIO_ZERO, p*vector_length*sizeof(double));
 
@@ -227,6 +236,7 @@ print_mat(B,nvector,nvector,outfile);
     dpd_file2_mat_wrt(&L1a);
     dpd_file2_mat_close(&L1a);
     dpd_file2_copy(&L1a, CC_LAMBDA, "New Lia"); /* to be removed after spin-adaptation */
+    /*dpd_file2_print(&L1a,outfile);*/
     dpd_file2_close(&L1a);
 
     dpd_buf4_init(&L2a, CC_LAMBDA, L_irr, 0, 5, 0, 5, 0, "New LIjAb");

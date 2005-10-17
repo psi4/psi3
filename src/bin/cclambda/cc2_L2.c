@@ -27,35 +27,41 @@ void cc2_L2_build(struct L_Params L_params) {
 #endif
 
   cc2_faeL2(L_irr);
+
 #ifdef EOM_DEBUG
   check_sum("FaeL2", L_irr);
 #endif
 
   cc2_fmiL2(L_irr);
+
 #ifdef EOM_DEBUG
   check_sum("FmiL2", L_irr);
 #endif
   if(params.print & 2) status("F -> L2", outfile);
 
   WijmbL2(L_irr);
+
 #ifdef EOM_DEBUG
   check_sum("WmnieL2", L_irr);
 #endif
   if(params.print & 2) status("Wmnie -> L2", outfile);
 
   WejabL2(L_irr);
+
 #ifdef EOM_DEBUG
   check_sum("WejabL2", L_irr);
 #endif
   if(params.print & 2) status("Wamef -> L2", outfile);
 
   L1FL2(L_irr);
+
 #ifdef EOM_DEBUG
   check_sum("L1FL2", L_irr);
 #endif
   if(params.print & 2) status("L1*F -> L2", outfile);
 
   dijabL2(L_irr);
+
 #ifdef EOM_DEBUG
   check_sum("after D2s", L_irr);
 #endif

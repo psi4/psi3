@@ -24,10 +24,12 @@ void get_params(void)
     exit(PSI_RETURN_FAILURE);
   }
 
+  /*
   if(!strcmp(params.wfn, "EOM_CC2")) {
     fprintf(outfile,"Does not currently work.\n");
     exit(PSI_RETURN_FAILURE);
   }
+  */
 
   params.maxiter = 50;
   errcod = ip_data("MAXITER","%d",&(params.maxiter),0);
@@ -309,9 +311,12 @@ void get_params(void)
   }
 
   for (i=0; i<params.nstates; ++i) {
+    /*
     fprintf(outfile,"\tLabels for state %d:\n\t%s, %s, %s, %s, %s, %s\n",
-	    i,pL_params[i].L1A_lbl,pL_params[i].L1B_lbl,pL_params[i].L2AA_lbl,pL_params[i].L2BB_lbl,
+	    i,pL_params[i].L1A_lbl,pL_params[i].L1B_lbl,
+            pL_params[i].L2AA_lbl,pL_params[i].L2BB_lbl,
 	    pL_params[i].L2AB_lbl, pL_params[i].L2RHF_lbl);
+    */
   }
 
   return;

@@ -11,7 +11,6 @@ void DL2(struct L_Params L_params)
 
   if (L_params.ground) {
     /* RHS = <ij||ab> */
-
     if(params.ref == 0) { /** RHF **/
       dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
       dpd_buf4_copy(&D, CC_LAMBDA, "New LIjAb");
