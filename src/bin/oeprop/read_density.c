@@ -370,6 +370,8 @@ void read_density()
       iwl_rdone(PSIF_OEI, PSIF_SO_S, Stri, ntri, 0, 0, outfile);
       tri_to_sq(Stri, Smat, nmo);
       free(Stri);
+ 
+      /*  What is this? */
 
       mmult(P_so_tot, 0, Smat, 0, tmat, 0, nmo, nmo, nmo, 0);
       mmult(tmat, 0, scfvec, 0, P_so_tot, 0, nmo, nmo, nmo, 0);

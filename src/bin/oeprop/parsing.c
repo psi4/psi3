@@ -10,14 +10,15 @@ void parsing()
   int i,errcod;
   double xmin,xmax,ymin,ymax,zmin,zmax;
 
-        /* Set some defaults for certain wavefunctions */
+  /* Set some defaults for certain wavefunctions */
 
   errcod = ip_string("WFN", &wfn, 0);
 
   if (errcod == IPE_OK) {
     if (!strcmp(wfn, "CI") || !strcmp(wfn, "DETCI") ||
         !strcmp(wfn, "CCSD") || !strcmp(wfn, "DETCAS") ||
-	    !strcmp(wfn, "MP2") || !strcmp(wfn, "EOM_CCSD"))  {
+	!strcmp(wfn, "MP2") || !strcmp(wfn, "EOM_CCSD") ||
+        !strcmp(wfn, "CC2") || !strcmp(wfn, "EOM_CC2"))  {
       read_opdm = 1;
       opdm_file = PSIF_MO_OPDM;
       corr = 0;
