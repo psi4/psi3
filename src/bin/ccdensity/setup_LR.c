@@ -23,7 +23,7 @@ void setup_LR(void)
     params.R0 = 1.0;
     G_irr = params.G_irr = params.L_irr ^ params.R_irr;
   }
-  else if (!strcmp(params.wfn,"EOM_CCSD")) { /* use last state calculated */
+  else if (!strcmp(params.wfn,"EOM_CCSD") || !strcmp(params.wfn,"EOM_CC2")) { /* use last state calculated */
     if (!ip_exist("STATES_PER_IRREP",0)) {
       fprintf(outfile,"Must have states_per_irrep where ccdensity can read it.\n");
       exit(1);
