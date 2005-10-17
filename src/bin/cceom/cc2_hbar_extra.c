@@ -8,17 +8,6 @@ void cc2_hbar_extra(void) {
 
   if(params.ref == 0) { /** RHF **/
     
-    dpd_buf4_init(&W, CC_HBAR, H_IRR, 10, 10, 10, 10, 0, "WMbeJ");
-    dpd_buf4_copy(&W, CC_HBAR, "2 W(ME,jb) + W(Me,Jb)");
-    dpd_buf4_close(&W);
-    dpd_buf4_init(&W1, CC_HBAR, H_IRR, 10, 10, 10, 10, 0, "2 W(ME,jb) + W(Me,Jb)");
-    dpd_buf4_init(&W2, CC_HBAR, H_IRR, 10, 10, 10, 10, 0, "WMbEj");
-    dpd_buf4_axpy(&W2, &W1, 2);
-    dpd_buf4_close(&W2);
-    dpd_buf4_sort(&W1, CC_HBAR, rspq, 10, 10, "2 W(jb,ME) + W(Jb,Me)");
-    dpd_buf4_close(&W1);
-
-    /*
     dpd_buf4_init(&W1, CC2_HET1, 0, 10, 10, 10, 10, 0, "CC2 WMbeJ (Me,Jb)");
     dpd_buf4_copy(&W1, CC2_HET1, "CC2 2 W(ME,jb) + W(Me,Jb)");
     dpd_buf4_close(&W1);
@@ -30,7 +19,6 @@ void cc2_hbar_extra(void) {
     dpd_buf4_init(&W1, CC2_HET1, 0, 10, 10, 10, 10, 0, "CC2 2 W(ME,jb) + W(Me,Jb)");
     dpd_buf4_sort(&W1, CC2_HET1, rspq, 10, 10, "CC2 2 W(jb,ME) + W(Jb,Me)");
     dpd_buf4_close(&W1);
-    */
 
     dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");
     dpd_buf4_scmcopy(&W, CC_HBAR, "WAmEf 2(Am,Ef) - (Am,fE)", 2);

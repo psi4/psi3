@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 #define EXTERN
 #include "globals.h"
@@ -131,11 +132,11 @@ void cc2_sigma(int i, int C_irr)
     dpd_buf4_close(&SIjAb);
   }
   else if (params.eom_ref == 1) { /* ROHF */
-    printf("ROHF CC2-LR is not currently implemented\n");
+    printf("ROHF EOM_CC2 is not currently implemented\n");
     exit(PSI_RETURN_FAILURE);
   }
   else { /* UHF */
-    printf("UHF CC2-LR is not currently implemented\n");
+    printf("UHF EOM_CC2 is not currently implemented\n");
     exit(PSI_RETURN_FAILURE);
   }
 }
@@ -147,6 +148,9 @@ void cc2_sigmaSS(int i, int C_irr)
   dpdfile2 FAE;
   dpdfile2 FMI;
   dpdbuf4 WMbEj;
+  dpdfile2 Xme;
+  dpdbuf4 T2;
+  dpdbuf4 D;
   char lbl[32];
 
   if (params.eom_ref == 0) { /* RHF */
@@ -166,12 +170,19 @@ void cc2_sigmaSS(int i, int C_irr)
     dpd_contract222(&FMI, &CME, &SIA, 1, 1, -1.0, 1.0);
     dpd_file2_close(&FMI);
 
-    /*
     dpd_buf4_init(&WMbEj, CC2_HET1, H_IRR, 10, 10, 10, 10, 0, "CC2 2 W(jb,ME) + W(Jb,Me)");
-    */
-    dpd_buf4_init(&WMbEj, CC_HBAR, H_IRR, 10, 10, 10, 10, 0, "2 W(jb,ME) + W(Jb,Me)");
     dpd_contract422(&WMbEj, &CME, &SIA, 0, 0, 1.0, 1.0);
     dpd_buf4_close(&WMbEj);
+
+    dpd_file2_init(&Xme, CC_OEI, C_irr, 0, 1, "XME");
+    dpd_buf4_init(&D, CC_DINTS, 0, 10, 10, 10, 10, 0, "D 2<ij|ab> - <ij|ba> (ia,jb)");
+    dpd_contract422(&D, &CME, &Xme, 0, 0, 1, 0);
+    dpd_buf4_close(&D);
+
+    dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "2 tIAjb - tIBja");
+    dpd_contract422(&T2, &Xme, &SIA, 0, 0, 1, 1);
+    dpd_buf4_close(&T2);
+    dpd_file2_close(&Xme);
 
     dpd_file2_close(&CME);
     dpd_file2_close(&SIA);
