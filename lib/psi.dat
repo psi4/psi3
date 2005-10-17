@@ -451,6 +451,13 @@ psi: (
   CC2UHFEnergy = ($CC2Energy $done)
   CC2ROHFEnergy = ($CC2Energy $done)
   
+  % Procedure for a non-(orbital-relaxed) CC2 one-electron property computation
+  CC2EnergyOEPROP = ($CC2Energy $cchbar $cclambda $ccdensity_onepdm $oeprop $done)
+  CC2RHFEnergyOEPROP = $CC2EnergyOEPROP
+  CC2UHFEnergyOEPROP = $CC2EnergyOEPROP
+  CC2ROHFEnergyOEPROP = $CC2EnergyOEPROP
+  CC2TwoConEnergyOEPROP = ERROR
+
   % Procedure for an CC2 linear response calculation
   CC2Response = ($CC2Energy $cchbar $cclambda $propint $ccresponse $done)
   CC2RHFResponse = $CC2Response
@@ -484,6 +491,82 @@ psi: (
   CC3ROHFEnergyFreq  = $CC3EnergyFreq 
   CC3UHFEnergyFreq  = $CC3EnergyFreq
   CC3TwoConEnergyFreq  = ERROR
+
+  % -------------------------------- EOM CC2 Procedures
+  % Procedure for the EOM_CC2 energy
+  EOM_CC2Energy = ($ints $scf $transqt $ccsort $ccenergy $cchbar $cceom)
+  EOM_CC2RHFEnergy = ($EOM_CC2Energy $done)
+  EOM_CC2ROHFEnergy = ERROR 
+  EOM_CC2UHFEnergy = ERROR 
+  EOM_CC2TwoConEnergy = ERROR
+
+  % Procedure for the LEOM_CC2 energy
+  LEOM_CC2Energy =($ints $scf $localize $transqt $ccsort $ccenergy
+                    $cchbar $cceom )
+  LEOM_CC2RHFEnergy = ($LEOM_CC2Energy $done)
+  LEOM_CC2ROHFEnergy = ERROR 
+  LEOM_CC2UHFEnergy = ERROR
+  LEOM_CC2TwoConEnergy = ERROR
+
+  % Procedures for optimization via energy points
+  EOM_CC2EnergyOpt = (repeat $nopt $EOM_CC2Energy $findif_disp_symm
+    repeat NUM_DISP $findif_next $findif_input $EOM_CC2Energy $findif_energy_save end
+    $findif_grad_energy $geomupdate end $done)
+  EOM_CC2RHFEnergyOpt = ($EOM_CC2EnergyOpt $done)
+  EOM_CC2ROHFEnergyOpt = ERROR
+  EOM_CC2UHFEnergyOpt = ERROR 
+  EOM_CC2TwoConEnergyOpt = ERROR
+
+  % Procedure for the EOM CC2 gradient
+  EOM_CC2First = ($EOM_CC2Energy $cclambda_excited $ccdensity_calc_xi
+    $cclambda_zeta $ccdensity_use_zeta $oeprop $backtransqt $deriv)
+  EOM_CC2RHFFirst = ERROR
+  EOM_CC2ROHFFirst = ERROR
+  EOM_CC2UHFFirst = ERROR
+  EOM_CC2TwoConFirst = ERROR
+
+  % Procedure for optimizing geometries with gradients
+  EOM_CC2RHFFirstOpt = ERROR
+  EOM_CC2ROHFFirstOpt = ERROR 
+  EOM_CC2UHFFirstOpt  = ERROR
+  EOM_CC2TwoConFirstOpt  = ERROR
+
+  % EOM CC2 Freqs via differences of energies
+  EOM_CC2EnergyFreq  =
+    ($EOM_CC2Energy $findif_disp_freq_energy_cart repeat NUM_DISP
+     $findif_next $findif_input $EOM_CC2Energy $findif_energy_save end
+     $findif_freq_energy_cart $done)
+  EOM_CC2RHFEnergyFreq  = $EOM_CC2EnergyFreq
+  EOM_CC2ROHFEnergyFreq  = ERROR
+  EOM_CC2UHFEnergyFreq  = ERROR 
+  EOM_CC2TwoConEnergyFreq  = ERROR
+
+  % Procedures for freqs via differences of analytic gradients
+  EOM_CC2FirstFreq  = 
+    ($EOM_CC2Energy $findif_disp_freq_grad_cart repeat NUM_DISP 
+     $findif_next $findif_input $EOM_CC2First $findif_grad_save end 
+     $findif_freq_grad_cart)
+  EOM_CC2RHFFirstFreq  = ERROR 
+  EOM_CC2ROHFFirstFreq  = ERROR
+  EOM_CC2UHFFirstFreq  = ERROR
+  EOM_CC2TwoConFirstFreq  = ERROR
+
+  % Procedure for an EOM CC2 one-electron property computation
+  EOM_CC2FirstOEPROP = ($EOM_CC2Energy $cclambda_excited $ccdensity_calc_xi
+    $cclambda_zeta $ccdensity_use_zeta $oeprop $done)
+  EOM_CC2RHFFirstOEPROP = ERROR
+  EOM_CC2UHFFirstOEPROP = ERROR 
+  EOM_CC2ROHFFirstOEPROP = ERROR
+  EOM_CC2TwoConFirstOEPROP = ERROR
+
+  % Procedure for an CCSD one-electron property computation -
+  % no T amplitude or orbital relaxation
+  EOM_CC2EnergyOEPROP = ($EOM_CC2Energy $cclambda_excited $ccdensity_excited_onepdm
+    $oeprop $done)
+  EOM_CC2RHFEnergyOEPROP = $EOM_CC2EnergyOEPROP
+  EOM_CC2UHFEnergyOEPROP = ERROR
+  EOM_CC2ROHFEnergyOEPROP = ERROR 
+  EOM_CC2TwoConEnergyOEPROP = ERROR
 
   % -------------------------------- EOM CCSD Procedures
   % Procedure for the EOM_CCSD energy
