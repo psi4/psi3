@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <libqt/qt.h>
 #define EXTERN
 #include "globals.h"
 
@@ -15,6 +16,9 @@ void cc2_sigma(int i, int C_irr)
   dpdfile2 FAE;
   dpdfile2 FMI;
   dpdfile2 FME;
+  dpdbuf4 W;
+  dpdbuf4 C;
+  dpdfile2 S;
   dpdbuf4 WMbEj;
   dpdbuf4 WAmEf;
   dpdbuf4 WMnIe;
@@ -26,6 +30,8 @@ void cc2_sigma(int i, int C_irr)
   char CME_lbl[32];
   char CMnEf_lbl[32];
   char SIjAb_lbl[32];
+  int Gej, Gab, Gij, Gj, Gi, Ge, nrows, length, E, e, I;
+  int Gam, Gef, Gim, Ga, Gm, ncols, A, a, am;
 
   if (params.eom_ref == 0) { /* RHF */
 
@@ -40,6 +46,7 @@ void cc2_sigma(int i, int C_irr)
     dpd_file2_close(&FME);
     dpd_file2_close(&SIA);
 
+    /*
     sprintf(lbl, "%s %d", "SIA", i);
     dpd_file2_init(&SIA, EOM_SIA, C_irr, 0, 1, lbl);
     sprintf(lbl, "%s %d", "CMnEf", i);
@@ -49,6 +56,52 @@ void cc2_sigma(int i, int C_irr)
     dpd_buf4_close(&WAmEf);
     dpd_buf4_close(&CMnEf);
     dpd_file2_close(&SIA);
+    */
+
+    dpd_buf4_init(&C, EOM_TMP, C_irr, 0, 5, 0, 5, 0, "2CMnEf - CMnfE");
+    dpd_buf4_init(&W, CC_HBAR, H_IRR, 11, 5, 11, 5, 0, "WAmEf");
+    sprintf(lbl, "%s %d", "SIA", i);
+    dpd_file2_init(&S, EOM_SIA, C_irr, 0, 1, lbl);
+    dpd_file2_mat_init(&S);
+    dpd_file2_mat_rd(&S);
+    for(Gam=0; Gam < moinfo.nirreps; Gam++) {
+      Gef = Gam ^ H_IRR;
+      Gim = Gef ^ C_irr;
+
+      dpd_buf4_mat_irrep_init(&C, Gim);
+      dpd_buf4_mat_irrep_rd(&C, Gim);
+      dpd_buf4_mat_irrep_shift13(&C, Gim);
+
+      for(Gi=0; Gi < moinfo.nirreps; Gi++) {
+        Ga = Gi ^ C_irr;
+        Gm = Ga ^ Gam;
+
+        W.matrix[Gam] = dpd_block_matrix(moinfo.occpi[Gm], W.params->coltot[Gef]);
+
+        nrows = moinfo.occpi[Gi];
+        ncols = moinfo.occpi[Gm] * W.params->coltot[Gef];
+
+        for(A=0; A < moinfo.virtpi[Ga]; A++) {
+          a = moinfo.vir_off[Ga] + A;
+          am = W.row_offset[Gam][a];
+
+          dpd_buf4_mat_irrep_rd_block(&W, Gam, am, moinfo.occpi[Gm]);
+
+          if(nrows && ncols && moinfo.virtpi[Ga])
+            C_DGEMV('n',nrows,ncols,1,C.shift.matrix[Gim][Gi][0],ncols,W.matrix[Gam][0], 1,
+                    1, &(S.matrix[Gi][0][A]), moinfo.virtpi[Ga]);
+        }
+
+        dpd_free_block(W.matrix[Gam], moinfo.occpi[Gm], W.params->coltot[Gef]);
+      }
+
+      dpd_buf4_mat_irrep_close(&C, Gim);
+    }
+    dpd_file2_mat_wrt(&S);
+    dpd_file2_mat_close(&S);
+    dpd_file2_close(&S);
+    dpd_buf4_close(&C);
+    dpd_buf4_close(&W);
 
     sprintf(lbl, "%s %d", "SIA", i);
     dpd_file2_init(&SIA, EOM_SIA, C_irr, 0, 1, lbl);
@@ -82,11 +135,50 @@ void cc2_sigma(int i, int C_irr)
     sprintf(SIjAb_lbl, "%s %d", "SIjAb", i);
 
     dpd_buf4_init(&Z, EOM_TMP, C_irr, 0, 5, 0, 5, 0, "WabejDS Z(Ij,Ab)");
-    dpd_buf4_init(&WAbEi, CC2_HET1, H_IRR, 11, 5, 11, 5, 0, "CC2 WAbEi (Ei,Ab)");
+    dpd_buf4_scm(&Z,0);
+    dpd_buf4_init(&W, CC2_HET1, H_IRR, 11, 5, 11, 5, 0, "CC2 WAbEi (Ei,Ab)");
     dpd_file2_init(&CME, EOM_CME, C_irr, 0, 1, CME_lbl);
-    dpd_contract244(&CME, &WAbEi, &Z, 1, 0, 0, 1.0, 0.0);
+    /*dpd_contract244(&CME, &WAbEi, &Z, 1, 0, 0, 1.0, 0.0);*/
+    dpd_file2_mat_init(&CME);
+    dpd_file2_mat_rd(&CME);
+    for(Gej=0; Gej < moinfo.nirreps; Gej++) {
+      Gab = Gej ^ H_IRR;
+      Gij = Gab ^ C_irr;
+
+      dpd_buf4_mat_irrep_init(&Z, Gij);
+      dpd_buf4_mat_irrep_shift13(&Z, Gij);
+
+      for(Ge=0; Ge < moinfo.nirreps; Ge++) {
+        Gj = Ge ^ Gej;
+        Gi = Gj ^ Gij;
+
+        nrows = moinfo.occpi[Gj];
+        length = nrows * W.params->coltot[Gab];
+        dpd_buf4_mat_irrep_init_block(&W, Gej, nrows);
+
+        for(E=0; E < moinfo.virtpi[Ge]; E++) {
+          e = moinfo.vir_off[Ge] + E;
+          dpd_buf4_mat_irrep_rd_block(&W, Gej, W.row_offset[Gej][e], nrows);
+
+          for(I=0; I < moinfo.occpi[Gi]; I++) {
+            if(length)
+              C_DAXPY(length, CME.matrix[Gi][I][E], W.matrix[Gej][0], 1,
+                      Z.shift.matrix[Gij][Gi][I], 1);
+          }
+        }
+
+        dpd_buf4_mat_irrep_close_block(&W, Gej, nrows);
+      }
+
+      dpd_buf4_mat_irrep_wrt(&Z, Gij);
+      dpd_buf4_mat_irrep_close(&Z, Gij);
+
+    }
+    dpd_file2_mat_close(&CME);
     dpd_file2_close(&CME);
-    dpd_buf4_close(&WAbEi);
+    dpd_buf4_close(&W);
+
+    /*
     dpd_buf4_sort(&Z, EOM_TMP, qpsr, 0, 5, "WabejDS Z(jI,bA)");
     dpd_buf4_init(&SIjAb, EOM_SIjAb, C_irr, 0, 5, 0, 5, 0, SIjAb_lbl);
     dpd_buf4_axpy(&Z, &SIjAb, 1.0);
@@ -95,6 +187,13 @@ void cc2_sigma(int i, int C_irr)
     dpd_buf4_axpy(&Z, &SIjAb, 1.0);
     dpd_buf4_close(&Z);
     dpd_buf4_close(&SIjAb);
+    */
+
+    dpd_buf4_sort_axpy(&Z, EOM_SIjAb, qpsr, 0, 5, SIjAb_lbl, 1);
+    dpd_buf4_init(&SIjAb, EOM_SIjAb, C_irr, 0, 5, 0, 5, 0, SIjAb_lbl);
+    dpd_buf4_axpy(&Z, &SIjAb, 1.0);
+    dpd_buf4_close(&SIjAb);
+    dpd_buf4_close(&Z);
 
     sprintf(CMnEf_lbl, "%s %d", "CMnEf", i);
     sprintf(SIjAb_lbl, "%s %d", "SIjAb", i);
