@@ -11,16 +11,12 @@ void read_density()
   int i,j,k,l,dim_i,count,ibf;
   int *locs;
   double **psq_so, *tmp_arr, **tmp_mat, **psq_ao;
-
-  /* CDS 2/02 */
   int irrep, mo_offset, so_offset, i_ci, j_ci, max_opi, errcod;
   int fzc, populated_orbs, root;
   int *docc, *socc, *frozen_docc, *frozen_uocc, *reorder, **ras_opi; 
   int *reorder_a, *reorder_b;
   double **scfvec, **opdm_blk, **onepdm;
   char opdm_key[80];
-  
-  /* MLA 9/03 */
   int nso=0;
   int maxmopi=0;  /* Maximum number of MOs per irrep */
   int *mopi;      /* MOs per irrep */
@@ -49,14 +45,30 @@ void read_density()
   double *eval_tmp;
   int ntri;
   int irrep_dim;
+  char *id;
   
   Ptot = init_array(natri);
   nso = nbfso;
   ntri = (nmo*(nmo+1))/2;
 
+  if(!strcmp(opdm_basis,"MO") && !strcmp(ref,"RHF")) {
+    id = strdup("RHF");
+  }
+  else if(!strcmp(opdm_basis,"MO") && !strcmp(ref,"ROHF")) {
+    /* Methods using semi-canonical orbitals */
+    if(!strcmp(wfn,"MP2") || !strcmp(wfn,"CC2") || !strcmp(wfn,"EOM_CC2") ||
+       !strcmp(wfn,"CCSD(T)") || !strcmp(wfn,"CC3") || !strcmp(wfn,"EOM_CC3")) {
+      id = strdup("UHF");
+    }
+    else id = strdup("RHF");
+  }
+  else if(!strcmp(opdm_basis,"MO") && !strcmp(ref,"UHF")) {
+    id = strdup("UHF");
+  }
+
   /* Read OPDM in MO-basis */
-  /* Two cases: non-UHF and UHF */
-  if (strcmp(opdm_basis,"MO") == 0 && strcmp(ref,"UHF") != 0) {     
+
+  if (!strcmp(id,"RHF")) {     
     psq_so = block_matrix(nbfso,nbfso);
 
     max_opi = 0;
@@ -205,8 +217,8 @@ void read_density()
     }
 
     free_matrix(psq_ao,nbfao);
-  } /* end read RHF/ROHF OPDM MO-basis case */
-  else if (strcmp(opdm_basis,"MO") == 0 && strcmp(ref,"UHF") == 0) {
+  } /* end read RHF MO-basis case */
+  else if (!strcmp(id,"UHF")) {
     eval_tmp = chkpt_rd_alpha_evals();
     chkpt_wt_evals(eval_tmp);
     free(eval_tmp);
@@ -538,6 +550,8 @@ void read_density()
     print_array(Ptot,nbfao,outfile);
     fprintf(outfile,"\n\n");
   }
+
+  free(id);
 
   return;
 }
