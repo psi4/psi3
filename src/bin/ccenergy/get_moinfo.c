@@ -265,8 +265,18 @@ void cleanup(void)
 {
   int i, h;
 
-  psio_write_entry(CC_INFO, "CCSD Energy", (char *) &(moinfo.ecc),
-		   sizeof(double));
+  if( (!strcmp(params.wfn,"CC2")) || (!strcmp(params.wfn,"EOM_CC2"))) {
+    psio_write_entry(CC_INFO, "CC2 Energy", (char *) &(moinfo.ecc),
+  		     sizeof(double));
+  }
+  else if( (!strcmp(params.wfn,"CC3")) || (!strcmp(params.wfn,"EOM_CC3"))) {
+    psio_write_entry(CC_INFO, "CC3 Energy", (char *) &(moinfo.ecc),
+  		     sizeof(double));
+  }
+  else {
+    psio_write_entry(CC_INFO, "CCSD Energy", (char *) &(moinfo.ecc),
+  		     sizeof(double));
+  }
 
   if(params.ref == 0 || params.ref == 1) {
     for(h=0; h < moinfo.nirreps; h++)
