@@ -83,7 +83,6 @@ psi: (
 
   % MP2-specific programs
   mp2 = "mp2"
-  mp2prop    = "mp2 --opdm"
   mp2_direct = "cints --mp2"
   mp2r12 = "mp2r12"
   mp2r12_moints = "cints --mp2r12"
@@ -872,23 +871,6 @@ psi: (
   MP2UHFEnergy =  ($MP2Energy $done)
   MP2TwoConEnergy = ERROR
 
-  % Procedures for optimization via energy points
-  MP2EnergyOpt = (repeat $nopt $MP2Energy $findif_disp_symm 
-    repeat NUM_DISP $findif_next $findif_input $MP2Energy $findif_energy_save end
-    $findif_grad_energy $geomupdate end $done)
-  MP2RHFEnergyOpt = $MP2EnergyOpt
-  MP2ROHFEnergyOpt = ERROR
-  MP2UHFEnergyOpt = ERROR
-  MP2TwoConEnergyOpt = ERROR
-  
-  % Procedures for a conventional MP2 one-electron
-  % properties calculation
-  MP2EnergyOEPROP = ($ints $scf $transqt $ccsort $mp2prop $oeprop)
-  MP2RHFEnergyOEPROP = ($MP2EnergyOEPROP $done)
-  MP2ROHFEnergyOEPROP = ($MP2EnergyOEPROP $done) 
-  MP2UHFEnergyOEPROP =  ($MP2EnergyOEPROP $done)
-  MP2TwoConEnergyOEPROP = ERROR
-
   % Procedures for the direct MP2 energy
   DirectMP2Energy = ($DirectSCFEnergy $mp2_direct)
   DirectMP2RHFEnergy = ($DirectMP2Energy $done)
@@ -904,6 +886,33 @@ psi: (
   MP2ROHFEnergyOpt = $MP2EnergyOpt 
   MP2UHFEnergyOpt = $MP2EnergyOpt
   MP2TwoConEnergyOpt = ERROR
+
+  % Procedures for orbital-unrelaxed MP2 one-electron properties
+  MP2EnergyOEPROP = ($MP2Energy $oeprop)
+  MP2RHFEnergyOEPROP = ($MP2EnergyOEPROP $done)
+  MP2ROHFEnergyOEPROP = ($MP2EnergyOEPROP $done) 
+  MP2UHFEnergyOEPROP =  ($MP2EnergyOEPROP $done)
+  MP2TwoConEnergyOEPROP = ERROR
+
+  % Procedure for orbital-relaxed MP2 one-electron properties
+  MP2FirstOEPROP = ($MP2Energy $oeprop)
+  MP2RHFFirstOEPROP = ($MP2FirstOEPROP $done)
+  MP2UHFFirstOEPROP = ERROR
+  MP2ROHFFirstOEPROP = ERROR 
+  MP2TwoConFirstOEPROP = ERROR
+
+  % Procedures for the MP2 gradient
+  MP2First = ($MP2Energy $oeprop $backtransqt $deriv)
+  MP2RHFFirst = $MP2First
+  MP2ROHFFirst = ERROR
+  MP2UHFFirst = ERROR
+  MP2TwoConFirst = ERROR
+
+  % Procedures for geometry optimization with MP2 gradients
+  MP2RHFFirstOpt = (repeat $nopt $MP2RHFFirst $geomupdate end $done)
+  MP2ROHFFirstOpt = ERROR 
+  MP2UHFFirstOpt  = ERROR
+  MP2TwoConFirstOpt  = ERROR
 
   % Procedures for optimization via DirectMP2 energy points
   DirectMP2EnergyOpt = (repeat $nopt $DirectMP2Energy $findif_disp_symm 
