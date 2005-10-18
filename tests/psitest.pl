@@ -37,9 +37,11 @@ $PSITEST_TARGET_SUFFIX = "test";
 $PSITEST_TEST_SCRIPT = "runtest.pl";
 
 # These are definitions that default tester knows about -- should match Psi driver!
-@PSITEST_JOBTYPES = ("SP", "OPT", "DISP", "FREQ", "SYMM_FC", "FC", "OEPROP", "DBOC");
-@PSITEST_WFNS = ("SCF", "MP2", "MP2R12", "DETCI", "DETCAS", "CASSCF", "BCCD", "BCCD_T", "CC2", "CCSD", "CCSD_T",
-"CC3", "EOM_CCSD", "LEOM_CCSD", "OOCCD", "CIS");
+@PSITEST_JOBTYPES = ("SP", "OPT", "DISP", "FREQ", "SYMM_FC", "FC", 
+"OEPROP", "DBOC");
+@PSITEST_WFNS = ("SCF", "MP2", "MP2R12", "DETCI", "DETCAS", "CASSCF", 
+"BCCD", "BCCD_T", "CC2", "CCSD", "CCSD_T", "CC3", "EOM_CC2", "LEOM_CC2",
+"EOM_CCSD", "LEOM_CCSD", "OOCCD", "CIS");
 @PSITEST_REFTYPES = ("RHF", "ROHF", "UHF", "TWOCON");
 @PSITEST_DERTYPES = ("NONE", "FIRST", "SECOND", "RESPONSE");
 
@@ -143,6 +145,7 @@ sub do_tests
           if ($wfn eq "CC2")      { $fail |= compare_cc2_energy(); last SWITCH2; }
 	  if ($wfn eq "CCSD_T")   { $fail |= compare_ccsd_t_energy(); last SWITCH2; }
           if ($wfn eq "CC3")      { $fail |= compare_cc3_energy(); last SWITCH2; }
+          if ($wfn eq "EOM_CC2")  { $fail |= compare_eomcc2_energy(); last SWITCH2; }
           if ($wfn eq "EOM_CCSD") { $fail |= compare_eomccsd_energy(); last SWITCH2; }
           if ($wfn eq "BCCD")     { $fail |= compare_bccd_energy(); last SWITCH2; }
           if ($wfn eq "BCCD_T")   { $fail |= compare_bccd_t_energy(); last SWITCH2; }
@@ -394,6 +397,25 @@ sub compare_cc3_energy
     pass_test("CC3 energy");
   }
  
+  return $fail;
+}
+
+sub compare_eomcc2_energy
+{
+  my $fail = 0;
+  my $REF_FILE = "$SRC_PATH/output.ref";
+  my $TEST_FILE = "output.dat";
+
+  @eom_ref = seek_eomcc($REF_FILE);
+  @eom_test = seek_eomcc($TEST_FILE);
+
+  if(!compare_arrays(\@eom_ref,\@eom_test,($#eom_ref+1),$PSITEST_EEOMTOL)) {
+    fail_test("EOM-CC2 energy"); $fail = 1;
+  }
+  else {
+    pass_test("EOM-CC2 energy");
+  }
+  
   return $fail;
 }
 
@@ -1613,7 +1635,7 @@ sub seek_eomcc
     return @evals;
   }
 
-  printf "Error: Could not find EOM-CCSD energies in $_[0].\n";
+  printf "Error: Could not find EOM energies in $_[0].\n";
   exit 1;
 }
 
