@@ -19,17 +19,32 @@ void get_params(void)
      strcmp(params.wfn, "EOM_CCSD") && strcmp(params.wfn, "LEOM_CCSD") &&
      strcmp(params.wfn, "BCCD") && strcmp(params.wfn,"BCCD_T") &&
      strcmp(params.wfn, "CC2") && strcmp(params.wfn,"CC3") &&
-     strcmp(params.wfn, "EOM_CC2")) {
+     strcmp(params.wfn, "EOM_CC2") && strcmp(params.wfn, "EOM_CC3")) {
     fprintf(outfile, "Invalid value of input keyword WFN: %s\n", params.wfn);
     exit(PSI_RETURN_FAILURE);
   }
 
-  /*
-  if(!strcmp(params.wfn, "EOM_CC2")) {
-    fprintf(outfile,"Does not currently work.\n");
-    exit(PSI_RETURN_FAILURE);
+  if(!strcmp(params.wfn,"CC2") || !strcmp(params.wfn,"EOM_CC2")) {
+    psio_read_entry(CC_INFO, "CC2 Energy", (char *) &(moinfo.ecc),
+                    sizeof(double));
+    fprintf(outfile,  "\tCC2 energy          (CC_INFO) = %20.15f\n",moinfo.ecc);
+    fprintf(outfile,  "\tTotal CC2 energy    (CC_INFO) = %20.15f\n",
+            moinfo.eref+moinfo.ecc);
   }
-  */
+  else if(!strcmp(params.wfn,"CCSD") || !strcmp(params.wfn,"EOM_CCSD")) {
+    psio_read_entry(CC_INFO, "CCSD Energy", (char *) &(moinfo.ecc),
+                    sizeof(double));
+    fprintf(outfile,  "\tCCSD energy         (CC_INFO) = %20.15f\n",moinfo.ecc);
+    fprintf(outfile,  "\tTotal CCSD energy   (CC_INFO) = %20.15f\n",
+            moinfo.eref+moinfo.ecc);
+  }
+  else if(!strcmp(params.wfn,"CC3") || !strcmp(params.wfn,"EOM_CC3")) {
+    psio_read_entry(CC_INFO, "CC3 Energy", (char *) &(moinfo.ecc),
+                    sizeof(double));
+    fprintf(outfile,  "\tCC3 energy          (CC_INFO) = %20.15f\n",moinfo.ecc);
+    fprintf(outfile,  "\tTotal CC3 energy    (CC_INFO) = %20.15f\n",
+            moinfo.eref+moinfo.ecc);
+  }
 
   params.maxiter = 50;
   errcod = ip_data("MAXITER","%d",&(params.maxiter),0);
@@ -126,10 +141,26 @@ void get_params(void)
         ip_data("STATES_PER_IRREP","%d",&j,1,i);
         for (k=0;k<j;++k) {
           pL_params[l].irrep = i^moinfo.sym;
-          sprintf(lbl,"EOM CCSD Energy for root %d %d", pL_params[l].irrep, k);
-          psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[l].cceom_energy),sizeof(double));
-          sprintf(lbl,"EOM CCSD R0 for root %d %d",pL_params[l].irrep, k);
-          psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[l].R0),sizeof(double));
+
+          if(!strcmp(params.wfn,"CC2") || !strcmp(params.wfn,"EOM_CC2")) {
+            sprintf(lbl,"EOM CC2 Energy for root %d %d", pL_params[l].irrep, k);
+            psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[l].cceom_energy),sizeof(double));
+            sprintf(lbl,"EOM CC2 R0 for root %d %d",pL_params[l].irrep, k);
+            psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[l].R0),sizeof(double));
+          }
+          else if(!strcmp(params.wfn,"CCSD") || !strcmp(params.wfn,"EOM_CCSD")) {
+            sprintf(lbl,"EOM CCSD Energy for root %d %d", pL_params[l].irrep, k);
+            psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[l].cceom_energy),sizeof(double));
+            sprintf(lbl,"EOM CCSD R0 for root %d %d",pL_params[l].irrep, k);
+            psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[l].R0),sizeof(double));
+          }
+          else if(!strcmp(params.wfn,"CC3") || !strcmp(params.wfn,"EOM_CC3")) {
+            sprintf(lbl,"EOM CC3 Energy for root %d %d", pL_params[l].irrep, k);
+            psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[l].cceom_energy),sizeof(double));
+            sprintf(lbl,"EOM CC3 R0 for root %d %d",pL_params[l].irrep, k);
+            psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[l].R0),sizeof(double));
+          }
+
           sprintf(pL_params[l].L1A_lbl,"LIA %d %d",pL_params[l].irrep, k);
           sprintf(pL_params[l].L1B_lbl,"Lia %d %d",pL_params[l].irrep, k);
           sprintf(pL_params[l].L2AA_lbl,"LIJAB %d %d",pL_params[l].irrep, k);
@@ -181,10 +212,26 @@ void get_params(void)
       prop_root -= 1;
       pL_params[0].irrep = prop_sym;
       pL_params[0].ground = 0;
-      sprintf(lbl,"EOM CCSD Energy for root %d %d", prop_sym, prop_root);
-      psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[0].cceom_energy),sizeof(double));
-      sprintf(lbl,"EOM CCSD R0 for root %d %d", prop_sym, prop_root);
-      psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[0].R0),sizeof(double));
+
+      if(!strcmp(params.wfn,"CC2") || !strcmp(params.wfn,"EOM_CC2")) {
+        sprintf(lbl,"EOM CC2 Energy for root %d %d", prop_sym, prop_root);
+        psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[0].cceom_energy),sizeof(double));
+        sprintf(lbl,"EOM CC2 R0 for root %d %d", prop_sym, prop_root);
+        psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[0].R0),sizeof(double));
+      }
+      else if(!strcmp(params.wfn,"CCSD") || !strcmp(params.wfn,"EOM_CCSD")) {
+        sprintf(lbl,"EOM CCSD Energy for root %d %d", prop_sym, prop_root);
+        psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[0].cceom_energy),sizeof(double));
+        sprintf(lbl,"EOM CCSD R0 for root %d %d", prop_sym, prop_root);
+        psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[0].R0),sizeof(double));
+      }
+      else if(!strcmp(params.wfn,"CC3") || !strcmp(params.wfn,"EOM_CC3")) {
+        sprintf(lbl,"EOM CC3 Energy for root %d %d", prop_sym, prop_root);
+        psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[0].cceom_energy),sizeof(double));
+        sprintf(lbl,"EOM CC3 R0 for root %d %d", prop_sym, prop_root);
+        psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[0].R0),sizeof(double));
+      }
+
       sprintf(pL_params[0].L1A_lbl,"LIA %d %d",prop_sym, prop_root);
       sprintf(pL_params[0].L1B_lbl,"Lia %d %d",prop_sym, prop_root);
       sprintf(pL_params[0].L2AA_lbl,"LIJAB %d %d",prop_sym, prop_root);
@@ -310,14 +357,14 @@ void get_params(void)
 	    (pL_params[i].ground ? "Yes":"No"), pL_params[i].cceom_energy, pL_params[i].R0);
   }
 
+  /*
   for (i=0; i<params.nstates; ++i) {
-    /*
     fprintf(outfile,"\tLabels for state %d:\n\t%s, %s, %s, %s, %s, %s\n",
 	    i,pL_params[i].L1A_lbl,pL_params[i].L1B_lbl,
             pL_params[i].L2AA_lbl,pL_params[i].L2BB_lbl,
 	    pL_params[i].L2AB_lbl, pL_params[i].L2RHF_lbl);
-    */
   }
+  */
 
   return;
 }

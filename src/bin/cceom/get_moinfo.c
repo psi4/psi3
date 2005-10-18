@@ -187,18 +187,14 @@ void get_moinfo(void)
     for(h=0; h < moinfo.nirreps; h++) moinfo.nvirt += moinfo.virtpi[h];
   }
 
-  psio_read_entry(CC_INFO, "CCSD Energy", (char *) &(moinfo.ecc),
-                   sizeof(double));
-
   psio_read_entry(CC_INFO, "Reference Energy", (char *) &(moinfo.eref), 
-		  sizeof(double));
-  psio_read_entry(CC_INFO, "CCSD Energy", (char *) &(moinfo.ecc), 
 		  sizeof(double));
 
   fprintf(outfile,"\n\tNuclear Rep. energy (chkpt)   = %20.15f\n",moinfo.enuc);
   fprintf(outfile,  "\tSCF energy          (chkpt)   = %20.15f\n",moinfo.escf);
   fprintf(outfile,  "\tReference energy    (file100) = %20.15f\n",moinfo.eref);
-  fprintf(outfile,  "\tCCSD energy         (file100) = %20.15f\n",moinfo.ecc);
+
+  fflush(outfile);
 }
 
 /* Frees memory allocated in get_moinfo() and dumps out the energy. */
