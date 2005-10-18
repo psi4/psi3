@@ -15,6 +15,28 @@ void get_params()
 
   errcod = ip_string("WFN", &(params.wfn), 0);
 
+  if(!strcmp(params.wfn,"CC2") || !strcmp(params.wfn,"EOM_CC2")) {
+    psio_read_entry(CC_INFO, "CC2 Energy", (char *) &(moinfo.ecc),
+                    sizeof(double));
+    fprintf(outfile,  "\tCC2 energy          (CC_INFO) = %20.15f\n",moinfo.ecc);
+    fprintf(outfile,  "\tTotal CC2 energy    (CC_INFO) = %20.15f\n",
+            moinfo.eref+moinfo.ecc);
+  }
+  else if(!strcmp(params.wfn,"CCSD") || !strcmp(params.wfn,"EOM_CCSD")) {
+    psio_read_entry(CC_INFO, "CCSD Energy", (char *) &(moinfo.ecc),
+                    sizeof(double));
+    fprintf(outfile,  "\tCCSD energy         (CC_INFO) = %20.15f\n",moinfo.ecc);
+    fprintf(outfile,  "\tTotal CCSD energy   (CC_INFO) = %20.15f\n",
+            moinfo.eref+moinfo.ecc);
+  }
+  else if(!strcmp(params.wfn,"CC3") || !strcmp(params.wfn,"EOM_CC3")) {
+    psio_read_entry(CC_INFO, "CC3 Energy", (char *) &(moinfo.ecc),
+                    sizeof(double));
+    fprintf(outfile,  "\tCC3 energy          (CC_INFO) = %20.15f\n",moinfo.ecc);
+    fprintf(outfile,  "\tTotal CC3 energy    (CC_INFO) = %20.15f\n",
+            moinfo.eref+moinfo.ecc);
+  }
+
   params.tolerance = 1e-14;
   errcod = ip_data("TOLERANCE","%d",&(tol),0);
   if(errcod == IPE_OK) params.tolerance = 1.0*pow(10.0,(double) -tol);
