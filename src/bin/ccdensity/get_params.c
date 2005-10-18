@@ -37,6 +37,8 @@ void get_params()
             moinfo.eref+moinfo.ecc);
   }
 
+  fflush(outfile);
+
   params.tolerance = 1e-14;
   errcod = ip_data("TOLERANCE","%d",&(tol),0);
   if(errcod == IPE_OK) params.tolerance = 1.0*pow(10.0,(double) -tol);
@@ -62,13 +64,19 @@ void get_params()
     }
     free(junk);
   }
-	else { /* if dertype keyword is absent and jobtype=opt */
-    errcod = ip_string("JOBTYPE", &(junk),0);
-	  if (!strcmp(junk,"OPT"))
-		  params.dertype = 1;
-	}
+  else { /* if dertype keyword is absent and jobtype=opt */
+    if(ip_exist("JOBTYPE",0)) {
+      errcod = ip_string("JOBTYPE", &(junk),0);
+      if (!strcmp(junk,"OPT"))
+        params.dertype = 1;
+    }
+  }
 
-  errcod = ip_string("JOBTYPE", &(junk),0);
+  if(ip_exist("JOBTYPE",0)) 
+    errcod = ip_string("JOBTYPE", &(junk),0);
+  else
+    junk = strdup("SP");
+
   if((!strcmp(junk,"OEPROP")) && (params.dertype == 0) )
     params.relax_opdm = 0; /* allow for unrelaxed densities if EnergyOEProp */
   else if(params.transition) 
@@ -117,5 +125,6 @@ void get_params()
   if(params.transition) {
     fprintf(outfile,"\tGauge         = %s\n",params.gauge);
   }
+  fflush(outfile);
 }
 

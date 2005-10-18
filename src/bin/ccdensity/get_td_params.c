@@ -42,11 +42,29 @@ void get_td_params(void)
   if(ip_exist("PROP_SYM",0) && ip_exist("PROP_ROOT",0)) {
     td_params[0].irrep = params.prop_sym ^ moinfo.sym;
     k = td_params[0].root = params.prop_root;
-    sprintf(lbl,"EOM CCSD Energy for root %d %d", td_params[0].irrep, k);
-    psio_read_entry(CC_INFO,lbl,(char*)&(td_params[0].cceom_energy),
-                    sizeof(double));
-    sprintf(lbl,"EOM CCSD R0 for root %d %d",td_params[0].irrep, k);
-    psio_read_entry(CC_INFO,lbl,(char*)&(td_params[0].R0),sizeof(double));
+
+    if(!strcmp(params.wfn,"CC2") || !strcmp(params.wfn,"EOM_CC2")) {
+      sprintf(lbl,"EOM CC2 Energy for root %d %d", td_params[0].irrep, k);
+      psio_read_entry(CC_INFO,lbl,(char*)&(td_params[0].cceom_energy),
+                      sizeof(double));
+      sprintf(lbl,"EOM CC2 R0 for root %d %d",td_params[0].irrep, k);
+      psio_read_entry(CC_INFO,lbl,(char*)&(td_params[0].R0),sizeof(double));
+    }
+    else if(!strcmp(params.wfn,"CCSD") || !strcmp(params.wfn,"EOM_CCSD")) {
+      sprintf(lbl,"EOM CCSD Energy for root %d %d", td_params[0].irrep, k);
+      psio_read_entry(CC_INFO,lbl,(char*)&(td_params[0].cceom_energy),
+                      sizeof(double));
+      sprintf(lbl,"EOM CCSD R0 for root %d %d",td_params[0].irrep, k);
+      psio_read_entry(CC_INFO,lbl,(char*)&(td_params[0].R0),sizeof(double));
+    }
+    else if(!strcmp(params.wfn,"CC3") || !strcmp(params.wfn,"EOM_CC3")) {
+      sprintf(lbl,"EOM CC3 Energy for root %d %d", td_params[0].irrep, k);
+      psio_read_entry(CC_INFO,lbl,(char*)&(td_params[0].cceom_energy),
+                      sizeof(double));
+      sprintf(lbl,"EOM CC3 R0 for root %d %d",td_params[0].irrep, k);
+      psio_read_entry(CC_INFO,lbl,(char*)&(td_params[0].R0),sizeof(double));
+    }
+
     sprintf(td_params[l].L1A_lbl,"LIA %d %d",td_params[0].irrep, k);
     sprintf(td_params[l].L1B_lbl,"Lia %d %d",td_params[0].irrep, k);
     sprintf(td_params[l].L2AA_lbl,"LIJAB %d %d",td_params[0].irrep, k);
@@ -64,11 +82,29 @@ void get_td_params(void)
       for (k=0;k<j;++k) {
         td_params[l].irrep = i^moinfo.sym;
         td_params[l].root = k;
-        sprintf(lbl,"EOM CCSD Energy for root %d %d", td_params[l].irrep, k);
-        psio_read_entry(CC_INFO,lbl,(char*)&(td_params[l].cceom_energy),
+
+        if(!strcmp(params.wfn,"CC2") || !strcmp(params.wfn,"EOM_CC2")) {
+          sprintf(lbl,"EOM CC2 Energy for root %d %d", td_params[l].irrep, k);
+          psio_read_entry(CC_INFO,lbl,(char*)&(td_params[l].cceom_energy),
                         sizeof(double));
-        sprintf(lbl,"EOM CCSD R0 for root %d %d",td_params[l].irrep, k);
-        psio_read_entry(CC_INFO,lbl,(char*)&(td_params[l].R0),sizeof(double));
+          sprintf(lbl,"EOM CC2 R0 for root %d %d",td_params[l].irrep, k);
+          psio_read_entry(CC_INFO,lbl,(char*)&(td_params[l].R0),sizeof(double));
+        }
+        else if(!strcmp(params.wfn,"CCSD") || !strcmp(params.wfn,"EOM_CCSD")) {
+          sprintf(lbl,"EOM CCSD Energy for root %d %d", td_params[l].irrep, k);
+          psio_read_entry(CC_INFO,lbl,(char*)&(td_params[l].cceom_energy),
+                        sizeof(double));
+          sprintf(lbl,"EOM CCSD R0 for root %d %d",td_params[l].irrep, k);
+          psio_read_entry(CC_INFO,lbl,(char*)&(td_params[l].R0),sizeof(double));
+        }
+        else if(!strcmp(params.wfn,"CC3") || !strcmp(params.wfn,"EOM_CC3")) {
+          sprintf(lbl,"EOM CC3 Energy for root %d %d", td_params[l].irrep, k);
+          psio_read_entry(CC_INFO,lbl,(char*)&(td_params[l].cceom_energy),
+                        sizeof(double));
+          sprintf(lbl,"EOM CC3 R0 for root %d %d",td_params[l].irrep, k);
+          psio_read_entry(CC_INFO,lbl,(char*)&(td_params[l].R0),sizeof(double));
+        }
+
         sprintf(td_params[l].L1A_lbl,"LIA %d %d",td_params[l].irrep, k);
         sprintf(td_params[l].L1B_lbl,"Lia %d %d",td_params[l].irrep, k);
         sprintf(td_params[l].L2AA_lbl,"LIJAB %d %d",td_params[l].irrep, k);
