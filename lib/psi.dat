@@ -871,16 +871,9 @@ psi: (
   MP2UHFEnergy =  ($MP2Energy $done)
   MP2TwoConEnergy = ERROR
 
-  % Procedures for the direct MP2 energy
-  DirectMP2Energy = ($DirectSCFEnergy $mp2_direct)
-  DirectMP2RHFEnergy = ($DirectMP2Energy $done)
-  DirectMP2ROHFEnergy = ERROR
-  DirectMP2UHFEnergy = ERROR
-  DirectMP2TwoConEnergy = ERROR
-
   % Procedures for optimization via MP2 energy points
   MP2EnergyOpt = (repeat $nopt $MP2Energy $findif_disp_symm 
-    repeat $ndisp $findif_next $MP2Energy $findif_energy_save end
+    repeat NUM_DISP $findif_next $findif_input $MP2Energy $findif_energy_save end
     $findif_grad_energy $geomupdate end $done)
   MP2RHFEnergyOpt = $MP2EnergyOpt
   MP2ROHFEnergyOpt = $MP2EnergyOpt 
@@ -914,6 +907,13 @@ psi: (
   MP2UHFFirstOpt  = ERROR
   MP2TwoConFirstOpt  = ERROR
 
+  % Procedures for the direct MP2 energy
+  DirectMP2Energy = ($DirectSCFEnergy $mp2_direct)
+  DirectMP2RHFEnergy = ($DirectMP2Energy $done)
+  DirectMP2ROHFEnergy = ERROR
+  DirectMP2UHFEnergy = ERROR
+  DirectMP2TwoConEnergy = ERROR
+
   % Procedures for optimization via DirectMP2 energy points
   DirectMP2EnergyOpt = (repeat $nopt $DirectMP2Energy $findif_disp_symm 
     repeat $ndisp $findif_next $DirectMP2Energy $findif_energy_save end
@@ -922,7 +922,6 @@ psi: (
   DirectMP2ROHFEnergyOpt = ERROR
   DirectMP2UHFEnergyOpt = ERROR
   DirectMP2TwoConEnergyOpt = ERROR
-
 
   % Procedures for the MP2-R12 energy (MP2-R12 transformation is always direct)
   MP2R12Energy = ($SCFEnergy $mp2r12_moints $mp2r12)
