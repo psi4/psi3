@@ -24,6 +24,14 @@ struct dpd_file4_cache_entry *priority_list(void);
 double energy(void);
 void opdm(void);
 void lag(void);
+void mohess(void);
+void Z(void);
+void W(void);
+void sort_opdm(void);
+void sort_W(void);
+void twopdm(void);
+void check_energy(int);
+void sort_twopdm(void);
 void cleanup(void);
 void exit_io(void);
 
@@ -52,8 +60,8 @@ int main(int argc, char *argv[])
   else { /** RHF or ROHF **/
     cachelist = cacheprep_rhf(params.cachelev,cachefiles);
     priority = priority_list();
-    dpd_init(0,mo.nirreps,params.memory,params.cachetype,cachefiles,cachelist,priority,
-             2,mo.occpi,mo.occ_sym,mo.virpi,mo.vir_sym);
+    dpd_init(0,mo.nirreps,params.memory,params.cachetype,cachefiles,
+             cachelist,priority,2,mo.occpi,mo.occ_sym,mo.virpi,mo.vir_sym);
   }
   
   amps();
@@ -63,15 +71,36 @@ int main(int argc, char *argv[])
   fprintf(outfile,"\n");
   fprintf(outfile,"\tMP2 correlation energy  = %20.15f\n",mo.Emp2);
   fprintf(outfile,"\tMP2 total energy        = %20.15f\n",mo.Escf+mo.Emp2);
+  fflush(outfile);
 
-  /* Write Total Energy to the checkpoint file for geometry optimization by finite differences */
   chkpt_init(PSIO_OPEN_OLD);
   chkpt_wt_etot(mo.Escf+mo.Emp2);
   chkpt_close();
   
-  if(params.opdm) opdm();
-  
-  if(params.dertype) lag();
+  if(params.opdm) {
+    opdm();
+    if(params.relax_opdm) {
+      lag();
+      mohess();
+      Z();
+    }
+    sort_opdm();
+    //dipole();
+  }
+
+  if(params.gradient) {
+    opdm();
+    lag();
+    mohess();
+    Z();
+    //dipole();
+    W();
+    twopdm();
+    check_energy(1);
+    sort_opdm();
+    sort_W();
+    sort_twopdm();
+  }
 
   dpd_close(0);
   
@@ -94,13 +123,6 @@ void init_io(int argc, char *argv[])
   progid = (char *)malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s",gprgid());
  
-  /* 
-     Initialize OPDM flag the read the OPDM option 
-     from the commandline so one-electron properties
-     can be computed without changing the input
-     file 
-  */
-  
   params.opdm = 0;
 
   for(i=1; i<argc; i++) {
@@ -131,16 +153,17 @@ void title(void)
   fprintf(outfile, "\t\t\t*          MP2          *\n");
   fprintf(outfile, "\t\t\t*                       *\n");
   fprintf(outfile, "\t\t\t*************************\n");
+  fflush(outfile);
 }
 
 void init_ioff(void)
 {
   int i;
   
-  mo.ioff = init_int_array(MAXIOFF);
-  mo.ioff[0] = 0;
+  ioff = init_int_array(MAXIOFF);
+  ioff[0] = 0;
   for(i=1; i < MAXIOFF; i++) {
-    mo.ioff[i] = mo.ioff[i-1] + i;
+    ioff[i] = ioff[i-1] + i;
   }
   
 }
@@ -159,7 +182,7 @@ void cleanup(void)
   for(i=0; i < mo.nirreps; i++)
     free(mo.irreplabels[i]);
   free(mo.irreplabels);
-  free(mo.ioff);
+  free(ioff);
   
   if(params.ref == 2) {
     free(mo.aoccpi);

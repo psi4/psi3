@@ -16,6 +16,7 @@ void get_moinfo(void)
 
   mo.nmo = chkpt_rd_nmo();
   mo.nso = chkpt_rd_nso();
+  mo.nao = chkpt_rd_nao();
   mo.nirreps = chkpt_rd_nirreps();
   mo.irreplabels = chkpt_rd_irr_labs();
   mo.mopi = chkpt_rd_orbspi();
@@ -23,7 +24,7 @@ void get_moinfo(void)
   mo.soccpi = chkpt_rd_openpi();
   mo.Enuc = chkpt_rd_enuc();
   mo.Escf = chkpt_rd_escf();
-  
+
   chkpt_close();
   
   psio_read_entry(CC_INFO,"Reference Wavefunction",(char*)&(params.ref),sizeof(int));
@@ -101,6 +102,19 @@ void get_moinfo(void)
     psio_read_entry(CC_INFO,"CC->QT Active Virt Order",(char*)mo.qt_vir,sizeof(int)*mo.nactmo);
   }
 	      
+  mo.virtpi = init_int_array(mo.nirreps);
+  for(i=0; i<mo.nirreps; i++)
+    mo.virtpi[i] = mo.mopi[i] - mo.doccpi[i] - mo.soccpi[i];
+
+  mo.ndocc = mo.nsocc = mo.nvirt = 0;
+  for(i=0; i<mo.nirreps; i++) {
+    mo.nfzdocc += mo.fzdoccpi[i];
+    mo.nfzvirt += mo.fzvirtpi[i];
+    mo.ndocc += mo.doccpi[i];
+    mo.nsocc += mo.soccpi[i];
+    mo.nvirt += mo.virtpi[i];
+  }
+  
   /*fprintf(outfile,"\n");
   fprintf(outfile,"\tChkpt Parameters:\n");
   fprintf(outfile,"\t--------------------\n");
@@ -121,4 +135,5 @@ void get_moinfo(void)
   fprintf(outfile,"\n");
   fprintf(outfile,"\tNuclear rep. energy     = %20.15f\n",mo.Enuc);
   fprintf(outfile,"\tSCF energy              = %20.15f\n",mo.Escf);
+  fflush(outfile);
 }

@@ -1,11 +1,16 @@
 struct moinfo {
-  int nmo;               /* no. of MOs */
-  int nso;               /* no. of symmetry adapted MOs */
+  int nmo;               /* no. of molecular orbitals */
+  int nso;               /* no. of symmetry adapted atomic orbitals */
+  int nao;               /* no. of atomic orbitals */
   int nirreps;           /* no. of irreducible representations */
   char **irreplabels;    /* irrep labels */
   int *mopi;             /* all MOs per irrep */
+  int ndocc;             /* no. of doubly occupied MOs per irrep */
   int *doccpi;           /* all doubly occupied MOs per irrep */
+  int nsocc;             /* no. of singly occupied MOs per irrep */
   int *soccpi;           /* all singly occupied MOs per irrep */
+  int nvirt;             /* no. of uoccupied MOs per irrep */
+  int *virtpi;           /* all uoccupied MOs per irrep */
   int nfzdocc;           /* no. of frozen occupied MOs */
   int nfzvirt;           /* no. of frozen virtual MOs */
   int nactmo;            /* no. of active MOs */
@@ -38,8 +43,10 @@ struct moinfo {
   int *qt_avir;          /* CC->QT alpha virtual reordering array*/
   int *qt_bvir;          /* CC->QT beta virtual reordering array */
   
-  int *ioff;             /* ioff array */
   double Enuc;           /* Nuclear repulsion energy */
   double Escf;           /* SCF energy */
   double Emp2;           /* MP2 energy */
+
+  double **opdm;         /* One-particle density matrix */
+  double **W;            /* Energy-weighted One-particle density matrix */
 };

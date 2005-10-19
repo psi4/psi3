@@ -20,7 +20,7 @@ void get_params()
 
   errcod = ip_string("REFERENCE", &(junk),0);
 
-  /* Assume RHF if no reference is given */
+  /* Default reference is RHF */
   params.ref = 0;
   params.semicanonical = 0;
   if(!strcmp(junk,"RHF")) params.ref = 0;
@@ -36,40 +36,63 @@ void get_params()
   }
   free(junk);
   
-  params.dertype = 0;
+  /* Default Jobtype */
+  if(ip_exist("JOBTYPE",0)) {
+    ip_string("JOBTYPE", &(params.jobtype),0);
+  }
+  else {
+    params.jobtype = strdup("SP");
+  }
+    
+  /* Default Dertype */
   if(ip_exist("DERTYPE",0)) {
-    errcod = ip_string("DERTYPE", &(junk),0);
-    if(errcod != IPE_OK) params.dertype = 0;
-    else if(!strcmp(junk,"NONE")) params.dertype = 0;
-    else if(!strcmp(junk,"FIRST")) {
-      params.dertype = 1;
-      params.opdm = 1;
-    }
-    else {
-      printf("Invalid value of input keyword DERTYPE: %s\n", junk);
-      exit(PSI_RETURN_FAILURE);
-    }
-    free(junk);
+    ip_string("DERTYPE", &(params.dertype),0);
+  }
+  else {
+    params.dertype = strdup("NONE");
+  }
+
+  if(!strcmp(params.jobtype,"SP")) {
+    params.opdm = 0;
+    params.relax_opdm = 0;
+    params.gradient = 0;
+  }
+  else if(!strcmp(params.jobtype,"OEPROP") && !strcmp(params.dertype,"NONE")) {
+    params.opdm = 1;
+    params.relax_opdm = 0;
+    params.gradient = 0;
+  }
+  else if(!strcmp(params.jobtype,"OEPROP") && !strcmp(params.dertype,"FIRST")) {
+    params.opdm = 1;
+    params.relax_opdm = 1;
+    params.gradient = 0;
+  }
+  else if(!strcmp(params.jobtype,"OPT") && !strcmp(params.dertype,"NONE")) {
+    params.opdm = 0;
+    params.relax_opdm = 0;
+    params.gradient = 0;
+  }
+  else if(!strcmp(params.jobtype,"OPT") && !strcmp(params.dertype,"FIRST")) {
+    params.opdm = 0;
+    params.relax_opdm = 0;
+    params.gradient = 1;
+  }
+  else {
+    printf("Invalid combination of JOBTYPE and DERTYPE\n");
+    exit(PSI_RETURN_FAILURE);
+  }
+
+  if((params.relax_opdm || params.gradient) && 
+     (mo.nfzdocc != 0 || mo.nfzvirt != 0)) {
+    fprintf(outfile,"\n\tThe Z-vector equations DO NOT work with frozen orbitals ... yet\n");
+    exit(PSI_RETURN_FAILURE);
   }
 
   params.print = 0;
-  errcod = ip_data("PRINT", "%d", &(params.print),0);
+  ip_data("PRINT", "%d", &(params.print),0);
   
-  errcod = ip_boolean("OPDM", &(params.opdm),0);
-  
-  if (params.opdm) {
-    params.opdm_write = 1;
-  }  
-  else {
-    params.opdm_write = 0;
-  }
-  errcod = ip_boolean("OPDM_WRITE", &(params.opdm_write),0);
-  
-  params.opdm_print = 0;
-  errcod = ip_boolean("OPDM_PRINT", &(params.opdm_print),0);
-
   params.cachelev = 2;
-  errcod = ip_data("CACHELEV", "%d", &(params.cachelev),0);
+  ip_data("CACHELEV", "%d", &(params.cachelev),0);
   
   params.cachetype = 1;
   errcod = ip_string("CACHETYPE", &(cachetype),0);
@@ -97,13 +120,10 @@ void get_params()
   else {
   fprintf(outfile, "\tReference WFN \t=\t%s\n", (params.ref==0)?"RHF":((params.ref==1)?"ROHF":"UHF"));
   } 
-  if(params.dertype == 0) fprintf(outfile, "\tDerivative    \t=\tNone\n");
-  else if(params.dertype == 1) fprintf(outfile, "\tDerivative    \t=\tFIRST\n");
+  fprintf(outfile, "\tDerivative    \t=\t%s\n", params.dertype);
   fprintf(outfile, "\tCache Level   \t=\t%d\n", params.cachelev);
   fprintf(outfile, "\tCache Type    \t=\t%s\n", params.cachetype ? "LOW":"LRU");
   fprintf(outfile, "\tMemory (MB)   \t=\t%.1f\n",params.memory/1e6);
   fprintf(outfile, "\tPrint Level   \t=\t%d\n", params.print);
   fprintf(outfile, "\tOPDM          \t=\t%s\n", params.opdm ? "YES":"NO");
-  fprintf(outfile, "\tWrite OPDM    \t=\t%s\n", params.opdm_write ? "YES":"NO");
-  fprintf(outfile, "\tPrint OPDM    \t=\t%s\n", params.opdm_print ? "YES":"NO");
 }

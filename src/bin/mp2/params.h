@@ -1,13 +1,16 @@
 struct params {
+  int ref;
+  char *wfn;
+  char *jobtype;
+  char *dertype;
+  int cachelev;
+  int cachetype;
   int print;
   int opdm;
   int opdm_write;
   int opdm_print;
-  char *wfn;
-  int ref;
-  int cachelev;
-  int cachetype;
+  int relax_opdm;
+  int gradient;
   long int memory;
   int semicanonical;
-  int dertype;
 };

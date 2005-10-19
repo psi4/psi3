@@ -8,7 +8,6 @@ double amps(void)
   dpdbuf4 tIJAB, tijab, tIjAb, D, dIJAB, dijab, dIjAb;
 
   if(params.ref == 0) { /** RHF **/
-  
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
     dpd_buf4_copy(&D, CC_TAMPS, "tIjAb");
     dpd_buf4_close(&D);
