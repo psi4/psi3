@@ -79,6 +79,9 @@ int main(int argc, char *argv[])
     DBOC              /* compute Diagonal Born-Oppenheimer Correction (DBOC) by finite difference */
   } JobType;
 
+  // Set these to a known value
+  infile = NULL;
+  outfile = NULL;
 
   if (!parse_cmdline(argc,argv))
     psi3_abort();
@@ -407,7 +410,11 @@ int main(int argc, char *argv[])
 
 void psi3_abort(void)
 {
-  fprintf(outfile,"\nPSI3 exiting.\n");
+  if (outfile)
+    fprintf(outfile,"\nPSI3 exiting.\n");
+  else
+    fprintf(stderr, "\nPSI3 exiting.\n");
+
   abort();
 }
 
@@ -613,10 +620,11 @@ int parse_cmdline(int argc, char *argv[])
   }
   else {
     infile = fopen("input.dat","r");
+    ifname = "input.dat";
   }
   if (infile == NULL) {
     fprintf(stderr, "Error: could not open input file %s\n",ifname);
-    return(PSI_RETURN_FAILURE);
+    return(0);
   }
   if (ofname != NULL) {
 #if HAVE_PUTENV
