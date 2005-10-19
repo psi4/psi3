@@ -2100,6 +2100,126 @@ sub seek_pair_energies
   exit 1;
 }
 
+sub seek_nstates
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  seek(OUT,0,0);
+  while(<OUT>) {
+    if (/Number of States =/) {
+      @data = split(/[ \t]+/, $_);
+      my $nstates = $data[5];
+      return $nstates;
+    }
+  }
+  close(OUT);
+
+  printf "Error: Could not find the number of states in $_[0].\n";
+  exit 1;
+}
+
+sub seek_excitation_energy
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  @datafile = <OUT>;
+  close(OUT);
+
+  $match = "$_[1]";
+  $nstates = "$_[2]";
+  $j=0;
+  $linenum=0;
+  foreach $line (@datafile) {
+    $linenum++;
+    if ($line =~ m/$match/) {
+      while ($j<$nstates) {
+        @test = split (/ +/,$datafile[$linenum+1+$j]);
+        $ex[$j] = $test[5];
+        $j++;
+      }
+    }
+  }
+
+  $OK = 1;
+  for($i=0; $i < $nstates; $i++) {
+    #printf "%d %8.4f\n", $i, $ex[$i];
+    if($ex[$i] < 0.0) {
+      $OK = 0; 
+    }
+  }
+  
+  if($OK && $nstates > 0) {
+    return @ex;
+  }
+
+  printf "Error: Check $_[1] in $_[0].\n";
+  exit 1;
+}
+
+sub seek_osc_str
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  @datafile = <OUT>;
+  close(OUT);
+
+  $match = "$_[1]";
+  $nstates = "$_[2]";
+  $j=0;
+  $linenum=0;
+  foreach $line (@datafile) {
+    $linenum++;
+    if ($line =~ m/$match/) {
+      while ($j<$nstates) {
+        @test = split (/ +/,$datafile[$linenum+1+$j]);
+        $os[$j] = $test[6];
+        $j++;
+      }
+    }
+  }
+
+  $OK = 1;
+  for($i=0; $i < $nstates; $i++) {
+    #printf "%d %8.4f\n", $i, $os[$i];
+    if($os[$i] < 0.0) {
+      $OK = 0; 
+    }
+  }
+  
+  if($OK && $nstates > 0) {
+    return @os;
+  }
+
+  printf "Error: Check $_[1] in $_[0].\n";
+  exit 1;
+}
+
+sub seek_rot_str
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  @datafile = <OUT>;
+  close(OUT);
+
+  $match = "$_[1]";
+  $nstates = "$_[2]";
+  $j=0;
+  $linenum=0;
+  foreach $line (@datafile) {
+    $linenum++;
+    if ($line =~ m/$match/) {
+      while ($j<$nstates) {
+        @test = split (/ +/,$datafile[$linenum+1+$j]);
+        $rs[$j] = $test[7];
+        $j++;
+      }
+    }
+  }
+
+  if($nstates > 0) {
+    return @rs;
+  }
+
+  printf "Error: Check $_[1] in $_[0].\n";
+  exit 1;
+}
+
 sub compare_arrays
 {
   my $A = $_[0];
