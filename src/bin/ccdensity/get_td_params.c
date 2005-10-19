@@ -119,6 +119,7 @@ void get_td_params(void)
       }
     }
   }
+  fprintf(outfile,"\tNumber of States = %d\n",params.nstates);
 
   fprintf(outfile,"\n\tState\t  EOM Energy\t    R0\n");
   for(i=0; i<params.nstates; i++) {
