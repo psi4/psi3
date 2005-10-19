@@ -1,0 +1,20 @@
+default: (
+  label = "H2O2 EOM CCSD cc-pVDZ"
+  exec = ($input $ints $scf $transqt $ccsort $ccenergy $cchbar
+          $cceom "cclambda --all" "cints --oeprop"
+          "ccdensity --transition" $done)
+  jobtype = oeprop
+  wfn = eom_ccsd
+  reference = rhf
+  dertype = none
+  gauge = velocity
+  freeze_core = true
+  states_per_irrep = (2 2)
+  basis = "cc-pVDZ"
+  zmat = (
+   (o)
+   (o 1 1.39)
+   (h 1 0.94 2 102.3)
+   (h 2 0.94 1 102.3 3 -50.0)
+  )
+)
