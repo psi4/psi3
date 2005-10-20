@@ -12,6 +12,7 @@ psi: (
   reference = rhf
   dertype = none
   jobtype = sp
+  cachelev = 0
   states_per_irrep = (1 0 0 1)
   basis = "aug-cc-pVTZ"
   zmat = (
@@ -20,4 +21,4 @@ psi: (
     h 2 0.9 1 104.
   )
 )
-
+transqt:memory = (5.0 MB)
