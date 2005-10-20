@@ -24,20 +24,24 @@ void Z_build(int irrep, int root, enum Spin spin)
     dpd_buf4_scm(&Z, 0.0);
 
     /* X(Ij,Ab) <-- b(I,C) <Cj|Ab> */
-    sprintf(lbl, "XIjAb[%d]", irrep);
-    dpd_buf4_init(&X, CC_TMP0, irrep, 0, 5, 0, 5, 0, lbl);
-    dpd_buf4_init(&F, CC_FINTS, 0, 11, 5, 11, 5, 0, "F <ai|bc>");
-    dpd_contract244(&B, &F, &X, 1, 0, 0, 1, 0);
+    sprintf(lbl, "XbAjI[%d]", irrep);
+    dpd_buf4_init(&X, CC_TMP0, irrep, 5, 0, 5, 0, 0, lbl);
+    dpd_buf4_init(&F, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
+    dpd_contract424(&F, &B, &X, 1, 1, 0, 1, 0);
     dpd_buf4_close(&F);
     sprintf(lbl, "XjIbA[%d]", irrep);
-    dpd_buf4_sort(&X, CC_TMP0, qpsr, 0, 5, lbl);
-
-    dpd_buf4_axpy(&X, &Z, 1);
+    dpd_buf4_sort(&X, CC_TMP0, rspq, 0, 5, lbl);
     dpd_buf4_close(&X);
     sprintf(lbl, "XjIbA[%d]", irrep);
     dpd_buf4_init(&X, CC_TMP0, irrep, 0, 5, 0, 5, 0, lbl);
     if(spin == singlet) dpd_buf4_axpy(&X, &Z, 1);
     else dpd_buf4_axpy(&X, &Z, -1);
+    sprintf(lbl, "XIjAb[%d]", irrep);
+    dpd_buf4_sort(&X, CC_TMP0, qpsr, 0, 5, lbl);
+    dpd_buf4_close(&X);
+    sprintf(lbl, "XIjAb[%d]", irrep);
+    dpd_buf4_init(&X, CC_TMP0, irrep, 0, 5, 0, 5, 0, lbl);
+    dpd_buf4_axpy(&X, &Z, 1);
     dpd_buf4_close(&X);
 
     /* X(Ij,Ab) <-- -<Ij|Ak> B(k,b) */
