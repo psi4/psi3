@@ -91,7 +91,6 @@ void ltdensity_rohf(struct TD_Params *S)
   }
 
   /* R_I^A */
-
   dpd_file2_init(&R1, CC_GR, S->irrep, 0, 1, "RIA");
   dpd_file2_copy(&R1, CC_TMP, "LTDIA");
   dpd_file2_close(&R1);
@@ -156,7 +155,6 @@ void ltdensity_rohf(struct TD_Params *S)
   }
 
   /* R_i^a */
-
   dpd_file2_init(&R1, CC_GR, S->irrep, 0, 1, "Ria");
   dpd_file2_copy(&R1, CC_TMP, "LTDia");
   dpd_file2_close(&R1);
@@ -310,7 +308,6 @@ void ltdensity_rohf(struct TD_Params *S)
   dpd_file2_close(&Dai);
 
   dpd_file2_init(&DIA, CC_TMP, S->irrep, 0, 1, "LTDIA");
-
   dpd_file2_init(&Dia, CC_TMP, S->irrep, 0, 1, "LTDia");
 
   /* D[i][a] = L1R2_ov[i][a] */

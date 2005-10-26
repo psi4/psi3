@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 #include <libciomr/libciomr.h>
 #include <libiwl/iwl.h>
 #include <libchkpt/chkpt.h>
@@ -300,14 +301,18 @@ void oscillator_strength(struct TD_Params *S)
   f_y = (2*S->cceom_energy*ds_y)/3;
   f_z = (2*S->cceom_energy*ds_z)/3;
   
-  f = f_x + f_y + f_z;
+  f = sqrt(f_x*f_x + f_y*f_y + f_z*f_z);
   S->OS = f;
   
   fprintf(outfile,"\t<0|mu_e|n>              %11.8lf \t %11.8lf \t %11.8lf\n",
           lt_x,lt_y,lt_z);
   fprintf(outfile,"\t<n|mu_e|0>              %11.8lf \t %11.8lf \t %11.8lf\n",
           rt_x,rt_y,rt_z);
-  fprintf(outfile,"\n\tOscillator Strength     %11.8lf\n",f);
+  fprintf(outfile,"\tDipole Strength         %11.8lf \t %11.8lf \t %11.8lf\n",
+          ds_x,ds_y,ds_z);
+  fprintf(outfile,"\tOscillator Strength     %11.8lf \t %11.8lf \t %11.8lf\n",
+          f_x,f_y,f_z);
+  fprintf(outfile,"\tNorm(OS)                %11.8lf\n",f);
   fflush(outfile);
 
   if((params.ref == 0) || (params.ref == 1)) {

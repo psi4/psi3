@@ -160,27 +160,6 @@ void td_setup(struct TD_Params *S)
       dpd_buf4_scm(&L2, S->R0);
       dpd_buf4_close(&L2);
     }
-    else {
-      dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "LIA");
-      dpd_file2_scm(&L1, 0.0);
-      dpd_file2_close(&L1);
-
-      dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "Lia");
-      dpd_file2_scm(&L1, 0.0);
-      dpd_file2_close(&L1);
-
-      dpd_buf4_init(&L2, CC_GLG, 0, 2, 7, 2, 7, 0, "LIJAB");
-      dpd_buf4_scm(&L2, 0.0);
-      dpd_buf4_close(&L2);
-
-      dpd_buf4_init(&L2, CC_GLG, 0, 2, 7, 2, 7, 0, "Lijab");
-      dpd_buf4_scm(&L2, 0.0);
-      dpd_buf4_close(&L2);
-
-      dpd_buf4_init(&L2, CC_GLG, 0, 0, 5, 0, 5, 0, "LIjAb");
-      dpd_buf4_scm(&L2, 0.0);
-      dpd_buf4_close(&L2);
-    }
 
     dpd_buf4_init(&L2, CC_GLG, 0, 0, 5, 0, 5, 0, "LIjAb");
     dpd_buf4_sort(&L2, CC_GLG, qpsr, 0, 5, "LiJaB");
@@ -227,27 +206,6 @@ void td_setup(struct TD_Params *S)
 
       dpd_buf4_init(&L2, CC_GLG, 0, 22, 28, 22, 28, 0, "LIjAb");
       dpd_buf4_scm(&L2, S->R0);
-      dpd_buf4_close(&L2);
-    }
-    else {
-      dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "LIA");
-      dpd_file2_scm(&L1, 0.0);
-      dpd_file2_close(&L1);
-
-      dpd_file2_init(&L1, CC_GLG, 0, 2, 3, "Lia");
-      dpd_file2_scm(&L1, 0.0);
-      dpd_file2_close(&L1);
-
-      dpd_buf4_init(&L2, CC_GLG, 0, 0, 5, 2, 7, 0, "LIJAB");
-      dpd_buf4_scm(&L2, 0.0);
-      dpd_buf4_close(&L2);
-
-      dpd_buf4_init(&L2, CC_GLG, 0, 10, 15, 12, 17, 0, "Lijab");
-      dpd_buf4_scm(&L2, 0.0);
-      dpd_buf4_close(&L2);
-
-      dpd_buf4_init(&L2, CC_GLG, 0, 22, 28, 22, 28, 0, "LIjAb");
-      dpd_buf4_scm(&L2, 0.0);
       dpd_buf4_close(&L2);
     }
 
