@@ -1,6 +1,6 @@
 ******************************************************************************
 tstart called on chofreephra.local
-Tue Oct 18 23:29:11 2005
+Wed Oct 26 15:29:55 2005
 
                                 --------------
                                   WELCOME TO
@@ -148,14 +148,14 @@ Tue Oct 18 23:29:11 2005
 
 ******************************************************************************
 tstop called on chofreephra.local
-Tue Oct 18 23:29:11 2005
+Wed Oct 26 15:29:55 2005
 
-user time   =       0.15 seconds =       0.00 minutes
+user time   =       0.17 seconds =       0.00 minutes
 system time =       0.03 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 tstart called on chofreephra.local
-Tue Oct 18 23:29:11 2005
+Wed Oct 26 15:29:55 2005
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -185,14 +185,14 @@ Tue Oct 18 23:29:11 2005
 
 ******************************************************************************
 tstop called on chofreephra.local
-Tue Oct 18 23:29:13 2005
+Wed Oct 26 15:29:57 2005
 
-user time   =       1.98 seconds =       0.03 minutes
-system time =       0.08 seconds =       0.00 minutes
+user time   =       2.28 seconds =       0.04 minutes
+system time =       0.10 seconds =       0.00 minutes
 total time  =          2 seconds =       0.03 minutes
 ******************************************************************************
 tstart called on chofreephra.local
-Tue Oct 18 23:29:13 2005
+Wed Oct 26 15:29:58 2005
 
 
              ------------------------------------------
@@ -288,14 +288,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 tstop called on chofreephra.local
-Tue Oct 18 23:29:13 2005
+Wed Oct 26 15:29:58 2005
 
 user time   =       0.17 seconds =       0.00 minutes
 system time =       0.05 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 tstart called on chofreephra.local
-Tue Oct 18 23:29:13 2005
+Wed Oct 26 15:29:58 2005
 
 
 	**************************************************
@@ -381,14 +381,14 @@ Tue Oct 18 23:29:13 2005
 	Frozen-core operator written to file 35.
 ******************************************************************************
 tstop called on chofreephra.local
-Tue Oct 18 23:29:16 2005
+Wed Oct 26 15:30:03 2005
 
-user time   =       0.85 seconds =       0.01 minutes
-system time =       3.10 seconds =       0.05 minutes
-total time  =          3 seconds =       0.05 minutes
+user time   =       0.87 seconds =       0.01 minutes
+system time =       3.12 seconds =       0.05 minutes
+total time  =          5 seconds =       0.08 minutes
 ******************************************************************************
 tstart called on chofreephra.local
-Tue Oct 18 23:29:16 2005
+Wed Oct 26 15:30:03 2005
 
 
 			**************************
@@ -449,14 +449,14 @@ Tue Oct 18 23:29:16 2005
 	Reference energy             =   -150.77918386791828
 ******************************************************************************
 tstop called on chofreephra.local
-Tue Oct 18 23:29:17 2005
+Wed Oct 26 15:30:05 2005
 
-user time   =       0.28 seconds =       0.00 minutes
-system time =       0.40 seconds =       0.01 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.30 seconds =       0.01 minutes
+system time =       0.42 seconds =       0.01 minutes
+total time  =          2 seconds =       0.03 minutes
 ******************************************************************************
 tstart called on chofreephra.local
-Tue Oct 18 23:29:17 2005
+Wed Oct 26 15:30:05 2005
 
 			**************************
 			*                        *
@@ -543,14 +543,14 @@ Tue Oct 18 23:29:17 2005
 
 ******************************************************************************
 tstop called on chofreephra.local
-Tue Oct 18 23:29:22 2005
+Wed Oct 26 15:30:12 2005
 
-user time   =       2.87 seconds =       0.05 minutes
-system time =       3.63 seconds =       0.06 minutes
-total time  =          5 seconds =       0.08 minutes
+user time   =       2.97 seconds =       0.05 minutes
+system time =       3.72 seconds =       0.06 minutes
+total time  =          7 seconds =       0.12 minutes
 ******************************************************************************
 tstart called on chofreephra.local
-Tue Oct 18 23:29:22 2005
+Wed Oct 26 15:30:12 2005
 
 
 			**************************
@@ -561,14 +561,14 @@ Tue Oct 18 23:29:22 2005
 
 ******************************************************************************
 tstop called on chofreephra.local
-Tue Oct 18 23:29:23 2005
+Wed Oct 26 15:30:13 2005
 
 user time   =       0.28 seconds =       0.00 minutes
-system time =       0.55 seconds =       0.01 minutes
+system time =       0.57 seconds =       0.01 minutes
 total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
 tstart called on chofreephra.local
-Tue Oct 18 23:29:23 2005
+Wed Oct 26 15:30:13 2005
 
 
 	**********************************************************
@@ -836,14 +836,14 @@ Largest components of excited wave function #4:
 
 ******************************************************************************
 tstop called on chofreephra.local
-Tue Oct 18 23:30:15 2005
+Wed Oct 26 15:31:40 2005
 
-user time   =      20.55 seconds =       0.34 minutes
-system time =      56.32 seconds =       0.94 minutes
-total time  =         52 seconds =       0.87 minutes
+user time   =      21.67 seconds =       0.36 minutes
+system time =      58.70 seconds =       0.98 minutes
+total time  =         87 seconds =       1.45 minutes
 ******************************************************************************
 tstart called on chofreephra.local
-Tue Oct 18 23:30:15 2005
+Wed Oct 26 15:31:40 2005
 
 
 			**************************
@@ -1076,14 +1076,14 @@ Tue Oct 18 23:30:15 2005
     5 -99.0000000 -99.0000000 -99.0000000  -0.0000003   1.0000000
 ******************************************************************************
 tstop called on chofreephra.local
-Tue Oct 18 23:30:31 2005
+Wed Oct 26 15:32:05 2005
 
-user time   =       9.78 seconds =       0.16 minutes
-system time =      11.28 seconds =       0.19 minutes
-total time  =         16 seconds =       0.27 minutes
+user time   =      10.17 seconds =       0.17 minutes
+system time =      11.63 seconds =       0.19 minutes
+total time  =         25 seconds =       0.42 minutes
 ******************************************************************************
 tstart called on chofreephra.local
-Tue Oct 18 23:30:31 2005
+Wed Oct 26 15:32:05 2005
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1112,14 +1112,14 @@ Tue Oct 18 23:30:31 2005
     Reference point for ang. mom. ints. = (0.000, 0.000, 0.000)
 ******************************************************************************
 tstop called on chofreephra.local
-Tue Oct 18 23:30:31 2005
+Wed Oct 26 15:32:06 2005
 
 user time   =       0.73 seconds =       0.01 minutes
 system time =       0.07 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
 tstart called on chofreephra.local
-Tue Oct 18 23:30:31 2005
+Wed Oct 26 15:32:06 2005
 
 
 			**************************
@@ -1157,79 +1157,83 @@ Tue Oct 18 23:30:31 2005
 
 	Oscillator Strength for 1A  
 	                              X    	       Y    	       Z
-	<0|mu_e|n>              -0.00000000 	  0.00000000 	 -0.00604493
+	<0|mu_e|n>              -0.00000000 	  0.00000000 	 -0.00604250
 	<n|mu_e|0>              -0.00000000 	  0.00000000 	 -0.00474005
-
-	Oscillator Strength      0.00000476
+	Dipole Strength          0.00000000 	  0.00000000 	  0.00002864
+	Oscillator Strength      0.00000000 	  0.00000000 	  0.00000476
+	Norm(OS)                 0.00000476
 
 	Length-Gauge Rotational Strength for 1A  
 	                              X    	       Y    	       Z
-	<0|mu_e|n>              -0.00000000 	  0.00000000 	 -0.00604493
+	<0|mu_e|n>              -0.00000000 	  0.00000000 	 -0.00604250
 	<n|mu_m|0>              -0.00000000 	  0.00000000 	 -0.32017701
-	<0|mu_m|n>*             -0.00000000 	  0.00000000 	 -0.31183576
+	<0|mu_m|n>*             -0.00000000 	  0.00000000 	 -0.31183616
 	<n|mu_e|0>*             -0.00000000 	  0.00000000 	 -0.00474005
 
-	Rotational Strength      0.00085339
+	Rotational Strength      0.00085320
 
 	Oscillator Strength for 2A  
 	                              X    	       Y    	       Z
-	<0|mu_e|n>               0.00000000 	  0.00000000 	 -0.21032482
+	<0|mu_e|n>               0.00000000 	  0.00000000 	 -0.21034198
 	<n|mu_e|0>               0.00000000 	  0.00000000 	 -0.21841068
-
-	Oscillator Strength      0.01029211
+	Dipole Strength          0.00000000 	  0.00000000 	  0.04594093
+	Oscillator Strength      0.00000000 	  0.00000000 	  0.01029295
+	Norm(OS)                 0.01029295
 
 	Length-Gauge Rotational Strength for 2A  
 	                              X    	       Y    	       Z
-	<0|mu_e|n>               0.00000000 	  0.00000000 	 -0.21032482
+	<0|mu_e|n>               0.00000000 	  0.00000000 	 -0.21034198
 	<n|mu_m|0>              -0.00000000 	 -0.00000000 	  0.19592847
-	<0|mu_m|n>*             -0.00000000 	 -0.00000000 	  0.18981517
+	<0|mu_m|n>*             -0.00000000 	 -0.00000000 	  0.18981800
 	<n|mu_e|0>*              0.00000000 	  0.00000000 	 -0.21841068
 
-	Rotational Strength     -0.02066657
+	Rotational Strength     -0.02066757
 
 	Oscillator Strength for 1B  
 	                              X    	       Y    	       Z
-	<0|mu_e|n>              -0.06235345 	 -0.06852765 	  0.00000000
+	<0|mu_e|n>              -0.09974294 	 -0.06130363 	  0.00000000
 	<n|mu_e|0>              -0.10257503 	 -0.06172509 	  0.00000000
-
-	Oscillator Strength      0.00179547
+	Dipole Strength          0.01023114 	  0.00378397 	  0.00000000
+	Oscillator Strength      0.00172879 	  0.00063939 	  0.00000000
+	Norm(OS)                 0.00184324
 
 	Length-Gauge Rotational Strength for 1B  
 	                              X    	       Y    	       Z
-	<0|mu_e|n>              -0.06235345 	 -0.06852765 	  0.00000000
+	<0|mu_e|n>              -0.09974294 	 -0.06130363 	  0.00000000
 	<n|mu_m|0>              -0.08478332 	  0.04415776 	 -0.00000000
-	<0|mu_m|n>*             -0.07326831 	  0.03212757 	 -0.00000000
+	<0|mu_m|n>*             -0.08276182 	  0.04217440 	 -0.00000000
 	<n|mu_e|0>*             -0.10257503 	 -0.06172509 	  0.00000000
 
-	Rotational Strength      0.00194823
+	Rotational Strength      0.00290890
 
 	Oscillator Strength for 2B  
 	                              X    	       Y    	       Z
-	<0|mu_e|n>               0.15057353 	  0.13020749 	 -0.00000000
+	<0|mu_e|n>               0.15795851 	  0.14066976 	 -0.00000000
 	<n|mu_e|0>               0.16113822 	  0.14666707 	 -0.00000000
-
-	Oscillator Strength      0.00953933
+	Dipole Strength          0.02545315 	  0.02063162 	  0.00000000
+	Oscillator Strength      0.00559973 	  0.00453899 	  0.00000000
+	Norm(OS)                 0.00720829
 
 	Length-Gauge Rotational Strength for 2B  
 	                              X    	       Y    	       Z
-	<0|mu_e|n>               0.15057353 	  0.13020749 	 -0.00000000
+	<0|mu_e|n>               0.15795851 	  0.14066976 	 -0.00000000
 	<n|mu_m|0>              -0.37183241 	 -0.12150604 	 -0.00000000
-	<0|mu_m|n>*             -0.36136625 	 -0.11461222 	 -0.00000000
+	<0|mu_m|n>*             -0.36350503 	 -0.11819285 	 -0.00000000
 	<n|mu_e|0>*              0.16113822 	  0.14666707 	 -0.00000000
 
-	Rotational Strength     -0.03671222
+	Rotational Strength     -0.03793397
 
 	                   Excitation Energy                OS       RS
 	State    (eV)    (cm^-1)    (nm)       (au)                 (au)
 	 1A      6.783   54711.7   182.8   0.2492849526   0.0000   0.0009
 	 2A      9.145   73759.1   135.6   0.3360710489   0.0103  -0.0207
-	 1B      6.897   55628.0   179.8   0.2534596899   0.0018   0.0019
-	 2B      8.980   72427.1   138.1   0.3300021965   0.0095  -0.0367
+	 1B      6.897   55628.0   179.8   0.2534596899   0.0018   0.0029
+	 2B      8.980   72427.1   138.1   0.3300021965   0.0072  -0.0379
 
 ******************************************************************************
 tstop called on chofreephra.local
-Tue Oct 18 23:30:33 2005
+Wed Oct 26 15:32:09 2005
 
-user time   =       0.92 seconds =       0.02 minutes
-system time =       1.12 seconds =       0.02 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.95 seconds =       0.02 minutes
+system time =       1.15 seconds =       0.02 minutes
+total time  =          3 seconds =       0.05 minutes
