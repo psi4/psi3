@@ -70,7 +70,7 @@ void transL(double sign)
 
   for(i=0; i < nao; i++)
     for(j=0; j < nao; j++)
-      TMP[i][j] *= 0.5 * sign;
+      TMP[i][j] *= -0.5 * sign;
 
   LX_MO = block_matrix(nmo, nmo);
 
@@ -99,7 +99,7 @@ void transL(double sign)
 
   for(i=0; i < nao; i++)
     for(j=0; j < nao; j++)
-      TMP[i][j] *= 0.5 * sign;
+      TMP[i][j] *= -0.5 * sign;
 
   LY_MO = block_matrix(nmo, nmo);
 
@@ -128,7 +128,7 @@ void transL(double sign)
 
   for(i=0; i < nao; i++)
     for(j=0; j < nao; j++)
-      TMP[i][j] *= 0.5 * sign;
+      TMP[i][j] *= -0.5 * sign;
 
   LZ_MO = block_matrix(nmo, nmo);
 
