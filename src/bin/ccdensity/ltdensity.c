@@ -97,7 +97,7 @@ void ltdensity_rohf(struct TD_Params *S)
   dpd_file2_close(&R1);
 
   if(S->irrep == 0) {
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "LTDIA");
+    dpd_file2_init(&D, CC_TMP, 0, 0, 1, "LTDIA");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tIJAB");
     dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "LIA");
     dpd_dot24(&L1, &T2, &D, 0, 0, 1.0, 1.0);
@@ -109,7 +109,7 @@ void ltdensity_rohf(struct TD_Params *S)
     dpd_file2_close(&L1);
     dpd_buf4_close(&T2);
     dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "LIA");
-    dpd_file2_init(&T1, CC_TMP, 0, 0, 1, "tIA");
+    dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
     dpd_file2_init(&Z, CC_TMP0, 0, 0, 0, "Z(I,M)");
     dpd_contract222(&T1, &L1, &Z, 0, 0, 1.0, 0.0);
     dpd_file2_close(&L1);
@@ -223,22 +223,22 @@ void ltdensity_rohf(struct TD_Params *S)
     dpd_file2_close(&L1);
 
     dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "LIA");
-    dpd_file2_scm(&L1, (1/S->R0));
+    dpd_file2_scm(&L1, (1.0/S->R0));
     dpd_file2_close(&L1);
     dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "Lia");
-    dpd_file2_scm(&L1, (1/S->R0));
+    dpd_file2_scm(&L1, (1.0/S->R0));
     dpd_file2_close(&L1);
     dpd_buf4_init(&L2, CC_GLG, 0, 2, 7, 2, 7, 0, "LIJAB");
-    dpd_buf4_scm(&L2, (1/S->R0));
+    dpd_buf4_scm(&L2, (1.0/S->R0));
     dpd_buf4_close(&L2);
     dpd_buf4_init(&L2, CC_GLG, 0, 2, 7, 2, 7, 0, "Lijab");
-    dpd_buf4_scm(&L2, (1/S->R0));
+    dpd_buf4_scm(&L2, (1.0/S->R0));
     dpd_buf4_close(&L2);
     dpd_buf4_init(&L2, CC_GLG, 0, 0, 5, 0, 5, 0, "LIjAb");
-    dpd_buf4_scm(&L2, (1/S->R0));
+    dpd_buf4_scm(&L2, (1.0/S->R0));
     dpd_buf4_close(&L2);
     dpd_buf4_init(&L2, CC_GLG, 0, 0, 5, 0, 5, 0, "LiJaB");
-    dpd_buf4_scm(&L2, (1/S->R0));
+    dpd_buf4_scm(&L2, (1.0/S->R0));
     dpd_buf4_close(&L2);
   }
 
