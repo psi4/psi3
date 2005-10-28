@@ -63,7 +63,7 @@ void overlap_LAMPS(struct L_Params L_params)
     dpd_buf4_init(&L2, CC_LAMPS, L_irr, 0, 5, 0, 5, 0, L2AB_lbl);
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
   }
-  else if(params.ref = 2) { /** UHF **/
+  else if(params.ref == 2) { /** UHF **/
     dpd_buf4_init(&L2, CC_LAMPS, L_irr, 22, 28, 22, 28, 0, L2AB_lbl);
     dpd_buf4_init(&T2, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tIjAb");
   }
