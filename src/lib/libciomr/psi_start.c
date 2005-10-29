@@ -167,8 +167,10 @@ int psi_start(int argc, char *argv[], int overwrite_output)
     userhome = getenv("HOME");
     cfname = (char *) malloc((10+strlen(userhome))*sizeof(char));
     sprintf(cfname, "%s%s", userhome, "/.psirc");
+    psirc = fopen(cfname, "r");
+    free(cfname);
   }
-  psirc = fopen(cfname, "r");
+  else psirc = fopen(cfname, "r");
   if(psirc != NULL) {
     ip_append(psirc, stderr);
     fclose(psirc);
@@ -195,7 +197,7 @@ int psi_start(int argc, char *argv[], int overwrite_output)
 #if HAVE_PUTENV
   tmpstr1 = (char *) malloc(11+strlen(ifname));
   sprintf(tmpstr1, "PSI_INPUT=%s", ifname);
-  putenv(tmpstr1);
+  putenv(tmpstr1);  /* note potential memory leak */
 #elif HAVE_SETENV
   setenv("PSI_OUTPUT",ifname,1);
 #else
@@ -207,7 +209,7 @@ int psi_start(int argc, char *argv[], int overwrite_output)
 #if HAVE_PUTENV
   tmpstr1 = (char *) malloc(12+strlen(ofname));
   sprintf(tmpstr1, "PSI_OUTPUT=%s", ofname);
-  putenv(tmpstr1);
+  putenv(tmpstr1); /* note potential memory leak */
 #elif HAVE_SETENV
   setenv("PSI_OUTPUT",ofname,1);
 #else
@@ -219,7 +221,7 @@ int psi_start(int argc, char *argv[], int overwrite_output)
 #if HAVE_PUTENV
   tmpstr1 = (char *) malloc(12+strlen(fprefix));
   sprintf(tmpstr1, "PSI_PREFIX=%s", fprefix);
-  putenv(tmpstr1);
+  putenv(tmpstr1); /* note potential memory leak */
 #elif HAVE_SETENV
   setenv("PSI_PREFIX",fprefix,1);
 #else
