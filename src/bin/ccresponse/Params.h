@@ -15,4 +15,5 @@ struct Params {
   char *gauge;           /* choice of gauge for optical rotation */
   char *wfn;
   char *abcd;
+  int num_amps;
 };

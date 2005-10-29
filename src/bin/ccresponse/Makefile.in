@@ -48,6 +48,7 @@ transp.c \
 polar.c \
 optrot.c \
 lambda_residuals.c \
+amp_write.c \
 
 BINOBJ = $(CSRC:%.c=%.o)
 

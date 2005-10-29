@@ -220,6 +220,11 @@ void get_params()
   params.analyze = 0;
   ip_boolean("ANALYZE", &(params.analyze), 0);
 
+  params.num_amps = 5;
+  if(ip_exist("NUM_AMPS", 0)) {
+    errcod = ip_data("NUM_AMPS", "%d", &(params.num_amps),0);
+  }
+
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
   if(!strcmp(params.prop,"ALL"))
