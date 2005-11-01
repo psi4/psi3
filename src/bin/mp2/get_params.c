@@ -77,6 +77,16 @@ void get_params()
     params.relax_opdm = 0;
     params.gradient = 1;
   }
+  else if(!strcmp(params.jobtype,"FREQ") && !strcmp(params.dertype,"NONE")) {
+    params.opdm = 0;
+    params.relax_opdm = 0;
+    params.gradient = 0;
+  }
+  else if(!strcmp(params.jobtype,"FREQ") && !strcmp(params.dertype,"FIRST")) {
+    params.opdm = 0;
+    params.relax_opdm = 0;
+    params.gradient = 1;
+  }
   else {
     printf("Invalid combination of JOBTYPE and DERTYPE\n");
     exit(PSI_RETURN_FAILURE);

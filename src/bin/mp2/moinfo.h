@@ -49,4 +49,5 @@ struct moinfo {
 
   double **opdm;         /* One-particle density matrix */
   double **W;            /* Energy-weighted One-particle density matrix */
+  double **I;            /* Orbital Lagrangian */
 };

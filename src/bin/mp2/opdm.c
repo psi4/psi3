@@ -1,15 +1,25 @@
 #include <math.h>
+#include <stdlib.h>
 #include <libdpd/dpd.h>
+#include <psifiles.h>
 #define EXTERN
 #include "globals.h"
 
 void rhf_opdm(void);
 void uhf_opdm(void);
+void rhf_sf_opdm(void);
+void uhf_sf_opdm(void);
 
 void opdm(void)
 {
-  if(params.ref == 0) rhf_opdm();
-  else if(params.ref == 2) uhf_opdm();
+  if(params.gradient) {
+    if(params.ref == 0) rhf_sf_opdm();
+    else if(params.ref == 2) uhf_sf_opdm();
+  }
+  else {
+    if(params.ref == 0) rhf_opdm();
+    else if(params.ref == 2) uhf_opdm();
+  }
 }
 
 void rhf_opdm(void)
@@ -189,4 +199,78 @@ void uhf_opdm(void)
   */
     
   return;
+}
+
+void rhf_sf_opdm(void) 
+{
+  dpdfile2 D;
+  dpdbuf4 TA, TB;
+  double trace = 0.0;
+  dpd_file2_init(&D, CC_OEI, 0, 0, 0, "DIJ");
+  dpd_buf4_init(&TA, CC_TAMPS, 0, 0, 7, 2, 7, 0, "tIJAB");
+  dpd_buf4_init(&TB, CC_TAMPS, 0, 0, 7, 2, 7, 0, "tIJAB");
+  dpd_contract442(&TA, &TB, &D, 0, 0, -1.0, 0.0);
+  dpd_buf4_close(&TB);
+  dpd_buf4_close(&TA);
+
+  dpd_buf4_init(&TA, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
+  dpd_buf4_init(&TB, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
+  dpd_contract442(&TA, &TB, &D, 0, 0, -1.0, 1.0);
+  dpd_buf4_close(&TB);
+  dpd_buf4_close(&TA);
+  trace += dpd_file2_trace(&D);
+  dpd_file2_close(&D);
+
+  dpd_file2_init(&D, CC_OEI, 0, 0, 0, "Dij");
+  dpd_buf4_init(&TA, CC_TAMPS, 0, 0, 7, 2, 7, 0, "tijab");
+  dpd_buf4_init(&TB, CC_TAMPS, 0, 0, 7, 2, 7, 0, "tijab");
+  dpd_contract442(&TA, &TB, &D, 0, 0, -1.0, 0.0);
+  dpd_buf4_close(&TB);
+  dpd_buf4_close(&TA);
+
+  dpd_buf4_init(&TA, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tiJaB");
+  dpd_buf4_init(&TB, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tiJaB");
+  dpd_contract442(&TA, &TB, &D, 0, 0, -1.0, 1.0);
+  dpd_buf4_close(&TB);
+  dpd_buf4_close(&TA);
+  trace += dpd_file2_trace(&D);
+  dpd_file2_close(&D);
+
+  dpd_file2_init(&D, CC_OEI, 0, 1, 1, "DAB");
+  dpd_buf4_init(&TA, CC_TAMPS, 0, 2, 5, 2, 7, 0, "tIJAB");
+  dpd_buf4_init(&TB, CC_TAMPS, 0, 2, 5, 2, 7, 0, "tIJAB");
+  dpd_contract442(&TA, &TB, &D, 3, 3, 1.0, 0.0);
+  dpd_buf4_close(&TA);
+  dpd_buf4_close(&TB);
+
+  dpd_buf4_init(&TA, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tiJaB");
+  dpd_buf4_init(&TB, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tiJaB");
+  dpd_contract442(&TA, &TB, &D, 3, 3, 1.0, 1.0);
+  dpd_buf4_close(&TA);
+  dpd_buf4_close(&TB);
+  trace += dpd_file2_trace(&D);
+  dpd_file2_close(&D);
+
+  dpd_file2_init(&D, CC_OEI, 0, 1, 1, "Dab");
+  dpd_buf4_init(&TA, CC_TAMPS, 0, 2, 5, 2, 7, 0, "tijab");
+  dpd_buf4_init(&TB, CC_TAMPS, 0, 2, 5, 2, 7, 0, "tijab");
+  dpd_contract442(&TA, &TB, &D, 3, 3, 1.0, 0.0);
+  dpd_buf4_close(&TB);
+  dpd_buf4_close(&TA);
+
+  dpd_buf4_init(&TA, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
+  dpd_buf4_init(&TB, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
+  dpd_contract442(&TA, &TB, &D, 3, 3, 1.0, 1.0);
+  dpd_buf4_close(&TB);
+  dpd_buf4_close(&TA);
+  trace += dpd_file2_trace(&D);
+  dpd_file2_close(&D);
+
+  fprintf(outfile, "\n\tTrace of onepdm = %20.15f\n", trace);
+}
+
+void uhf_sf_opdm(void)
+{
+  fprintf(outfile,"\n\tNot yet yo! -MLA\n");
+  exit(PSI_RETURN_FAILURE);
 }

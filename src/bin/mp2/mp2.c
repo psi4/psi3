@@ -22,14 +22,20 @@ int **cacheprep_uhf(int level, int *cachefiles);
 void cachedone_rhf(int **cachelist);
 struct dpd_file4_cache_entry *priority_list(void);
 double energy(void);
+void sort_amps(void);
 void opdm(void);
-void lag(void);
-void mohess(void);
-void Z(void);
-void W(void);
-void sort_opdm(void);
-void sort_W(void);
 void twopdm(void);
+void lag(void);
+void build_X(void);
+void build_A(void);
+void Zvector(void);
+void relax_I(void);
+void relax_opdm(void);
+void sort_opdm(void);
+void sort_I(void);
+void fold(void);
+void deanti(void);
+void write_data(void);
 void check_energy(int);
 void sort_twopdm(void);
 void cleanup(void);
@@ -53,9 +59,9 @@ int main(int argc, char *argv[])
 
   if(params.ref == 2) { /** UHF **/
     cachelist = cacheprep_uhf(params.cachelev,cachefiles);
-    dpd_init(0,mo.nirreps,params.memory,params.cachetype,cachefiles,cachelist,NULL,
-	     4,mo.aoccpi,mo.aocc_sym,mo.avirpi,mo.avir_sym,mo.boccpi,mo.bocc_sym,
-	     mo.bvirpi,mo.bvir_sym);
+    dpd_init(0,mo.nirreps,params.memory,params.cachetype,cachefiles,cachelist,
+             NULL,4,mo.aoccpi,mo.aocc_sym,mo.avirpi,mo.avir_sym,mo.boccpi,
+             mo.bocc_sym,mo.bvirpi,mo.bvir_sym);
   }
   else { /** RHF or ROHF **/
     cachelist = cacheprep_rhf(params.cachelev,cachefiles);
@@ -81,25 +87,28 @@ int main(int argc, char *argv[])
     opdm();
     if(params.relax_opdm) {
       lag();
-      mohess();
-      Z();
+      build_A();
+      Zvector();
     }
     sort_opdm();
     //dipole();
   }
 
   if(params.gradient) {
+    sort_amps();
     opdm();
-    lag();
-    mohess();
-    Z();
-    //dipole();
-    W();
     twopdm();
-    check_energy(1);
+    lag();
+    build_X();
+    build_A();
+    Zvector();
+    relax_I();
+    relax_opdm();
+    sort_I(); 
     sort_opdm();
-    sort_W();
-    sort_twopdm();
+    fold();
+    deanti();
+    write_data();
   }
 
   dpd_close(0);
@@ -219,7 +228,7 @@ void exit_io(void)
   int i;
 
   for(i=CC_MIN; i <= CC_MAX; i++) 
-    psio_close(i,1);
+    psio_close(i,0);
   psio_done();
   tstop(outfile);
   psi_stop();

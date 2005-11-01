@@ -7,11 +7,13 @@
 
 void rhf_W(void);
 void uhf_W(void);
+void rhf_sf_relax_I(void);
+void uhf_sf_relax_I(void);
 
-void W(void)
+void relax_I(void)
 {
-  if(params.ref == 0) rhf_W();
-  else if(params.ref == 2) uhf_W();
+  if(params.ref == 0) rhf_sf_relax_I();
+  else if(params.ref == 2) uhf_sf_relax_I();
 }
 
 void rhf_W(void)
@@ -225,6 +227,87 @@ void rhf_W(void)
 }
 
 void uhf_W(void)
+{
+
+}
+
+void rhf_sf_relax_I(void)
+{
+  dpdfile2 I, D, f;
+  dpdbuf4 E;
+  int h, nirreps, i, j, e, *occpi, *virtpi;
+
+  nirreps = mo.nirreps;
+  occpi = mo.occpi;
+  virtpi = mo.virtpi;
+
+  /*** occupied-virtual relaxation terms */
+
+  /* I(I,A) = I'(I,A) - sum_M f(I,M) D(orb)(A,M) */
+  dpd_file2_init(&I, CC_OEI, 0, 0, 1, "I'IA");
+  dpd_file2_copy(&I, CC_OEI, "I(I,A)");
+  dpd_file2_close(&I);
+  dpd_file2_init(&I, CC_OEI, 0, 0, 1, "I(I,A)");
+  dpd_file2_init(&D, CC_OEI, 0, 1, 0, "D(orb)(A,I)");
+  dpd_file2_init(&f, CC_OEI, 0, 0, 0, "fIJ");
+  dpd_contract222(&f, &D, &I, 0, 0, -1.0, 1.0);
+  dpd_file2_close(&f);
+  dpd_file2_close(&D);
+  dpd_file2_close(&I);
+
+  /* I(i,a) = I'(i,a) - sum_m f(i,m) D(orb)(a,m) */
+  dpd_file2_init(&I, CC_OEI, 0, 0, 1, "I'ia");
+  dpd_file2_copy(&I, CC_OEI, "I(i,a)");
+  dpd_file2_close(&I);
+  dpd_file2_init(&I, CC_OEI, 0, 0, 1, "I(i,a)");
+  dpd_file2_init(&D, CC_OEI, 0, 1, 0, "D(orb)(a,i)");
+  dpd_file2_init(&f, CC_OEI, 0, 0, 0, "fij");
+  dpd_contract222(&f, &D, &I, 0, 0, -1.0, 1.0);
+  dpd_file2_close(&f);
+  dpd_file2_close(&D);
+  dpd_file2_close(&I);
+
+  /*** occupied-occupied relaxtion terms */
+
+  /* I(I,J) <-- I'(I,J) - sum_E,M D(orb)(E,M) [<EI||MJ> + <EJ||MI>]
+                      - 2 sum_e,m D(orb)(e,m) <eI|mJ> */
+  dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'IJ");
+  dpd_file2_copy(&I, CC_OEI, "I(I,J)");
+  dpd_file2_close(&I);
+  dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I(I,J)");
+  dpd_file2_init(&D, CC_OEI, 0, 1, 0, "D(orb)(A,I)");
+  dpd_buf4_init(&E, CC_EINTS, 0, 11, 0, 11, 0, 1, "E <ai|jk>");
+  dpd_dot13(&D, &E, &I, 0, 0, -1.0, 1.0);
+  dpd_dot13(&D, &E, &I, 0, 1, -1.0, 1.0);
+  dpd_buf4_close(&E);
+  dpd_file2_close(&D);
+  dpd_file2_init(&D, CC_OEI, 0, 1, 0, "D(orb)(a,i)");
+  dpd_buf4_init(&E, CC_EINTS, 0, 11, 0, 11, 0, 0, "E <ai|jk>");
+  dpd_dot13(&D, &E, &I, 0, 0, -2.0, 1.0);
+  dpd_buf4_close(&E);
+  dpd_file2_close(&D);
+
+  /* I(i,j) <-- I'(i,j) - sum_e,m D(orb)(e,m) [<ei||mj> + <ej||mi>]
+                      - 2 sum_E,M D(orb)(E,M) <Ei|Mj> */
+  dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'ij");
+  dpd_file2_copy(&I, CC_OEI, "I(i,j)");
+  dpd_file2_close(&I);
+  dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I(i,j)");
+  dpd_file2_init(&D, CC_OEI, 0, 1, 0, "D(orb)(a,i)");
+  dpd_buf4_init(&E, CC_EINTS, 0, 11, 0, 11, 0, 1, "E <ai|jk>");
+  dpd_dot13(&D, &E, &I, 0, 0, -1.0, 1.0);
+  dpd_dot13(&D, &E, &I, 0, 1, -1.0, 1.0);
+  dpd_buf4_close(&E);
+  dpd_file2_close(&D);
+  dpd_file2_init(&D, CC_OEI, 0, 1, 0, "D(orb)(A,I)");
+  dpd_buf4_init(&E, CC_EINTS, 0, 11, 0, 11, 0, 0, "E <ai|jk>");
+  dpd_dot13(&D, &E, &I, 0, 0, -2.0, 1.0);
+  dpd_buf4_close(&E);
+  dpd_file2_close(&D);
+  dpd_file2_close(&I);
+}
+
+void uhf_sf_relax_I(void)
 {
 
 }

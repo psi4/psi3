@@ -5,11 +5,19 @@
 
 void rhf_lag(void);
 void uhf_lag(void);
+void sf_lag(void);
+void Iij(void);
+void Iab(void);
+void Iai(void);
+void Iia(void);
 
 void lag(void)
 {
-  if(params.ref == 0) rhf_lag();
-  else if(params.ref == 2) uhf_lag();
+  if(params.gradient) sf_lag();
+  else {
+    if(params.ref == 0) rhf_lag();
+    else if(params.ref == 2) uhf_lag();
+  }
 }
 
 void rhf_lag(void)
@@ -45,5 +53,46 @@ void rhf_lag(void)
 
 void uhf_lag(void)
 {
+
+}
+
+void sf_lag(void)
+{
+  dpdfile2 I;
+
+  Iij();
+  Iab();
+  Iai();
+  Iia();
+
+   /* Multiply all I'pq components by -1/2 for compatibility with the
+     final gradient expression */
+    
+  if(params.ref == 0) {
+    dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'IJ");
+    dpd_file2_scm(&I, -0.5);
+    dpd_file2_close(&I);
+    dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'ij");
+    dpd_file2_scm(&I, -0.5);
+    dpd_file2_close(&I);
+    dpd_file2_init(&I, CC_OEI, 0, 1, 1, "I'AB");
+    dpd_file2_scm(&I, -0.5);
+    dpd_file2_close(&I);
+    dpd_file2_init(&I, CC_OEI, 0, 1, 1, "I'ab");
+    dpd_file2_scm(&I, -0.5);
+    dpd_file2_close(&I);
+    dpd_file2_init(&I, CC_OEI, 0, 0, 1, "I'IA");
+    dpd_file2_scm(&I, -0.5);
+    dpd_file2_close(&I);
+    dpd_file2_init(&I, CC_OEI, 0, 0, 1, "I'ia");
+    dpd_file2_scm(&I, -0.5);
+    dpd_file2_close(&I);
+    dpd_file2_init(&I, CC_OEI, 0, 1, 0, "I'AI");
+    dpd_file2_scm(&I, -0.5);
+    dpd_file2_close(&I);
+    dpd_file2_init(&I, CC_OEI, 0, 1, 0, "I'ai");
+    dpd_file2_scm(&I, -0.5);
+    dpd_file2_close(&I);
+  }
 
 }
