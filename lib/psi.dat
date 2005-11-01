@@ -907,6 +907,62 @@ psi: (
   MP2UHFFirstOpt  = ERROR
   MP2TwoConFirstOpt  = ERROR
 
+  % Procedures for the MP2 gradient with no restart
+  MP2FirstReset = ($ints $scf $transqt $ccreset $mp2 
+      $oeprop $backtransqt $deriv)
+  MP2RHFFirstReset = $MP2FirstReset
+  MP2ROHFFirstReset = $MP2FirstReset
+  MP2UHFFirstReset = $MP2FirstReset
+
+  % Procedures for the finite displacements of MP2 gradients
+  MP2RHFFirstDisp =
+    (repeat $ndisp $ugeom $uinput $MP2RHFFirst $rgeom end $done)
+  MP2ROHFFirstDisp = 
+    (repeat $ndisp $ugeom $uinput $MP2ROHFFirst $rgeom end $done)
+  MP2UHFFirstDisp  = 
+    (repeat $ndisp $ugeom $uinput $MP2UHFFirst $rgeom end $done)
+  MP2TwoConFirstDisp  = ERROR
+
+  % MP2 Freqs via differences of analytic gradients
+  MP2FirstFreq  = 
+    ($MP2Energy $findif_disp_freq_grad_cart repeat NUM_DISP 
+     $findif_next $findif_input $MP2FirstReset $findif_grad_save end 
+     $findif_freq_grad_cart $done)
+  MP2RHFFirstFreq  = $MP2FirstFreq
+  MP2ROHFFirstFreq  = ERROR
+  MP2UHFFirstFreq  = ERROR 
+  MP2TwoConFirstFreq  = ERROR
+
+  % MP2 Freqs via differences of energies
+  MP2EnergyFreq  =
+    ($MP2Energy $findif_disp_freq_energy_cart repeat NUM_DISP
+     $findif_next $findif_input $MP2Energy $findif_energy_save end
+     $findif_freq_energy_cart $done)
+  MP2RHFEnergyFreq  = $MP2EnergyFreq
+  MP2ROHFEnergyFreq  = $MP2EnergyFreq
+  MP2UHFEnergyFreq  = $MP2EnergyFreq
+  MP2TwoConEnergyFreq  = ERROR
+
+  % Procedures for force constants via differences of analytic gradients
+  MP2FirstFC =
+    ($MP2Energy $findif_disp_nosymm repeat NUM_DISP
+     $findif_next $findif_input $MP2First $findif_grad_save end
+     $findif_freq_grad_nosymm $done)
+  MP2RHFFirstFC  = $MP2FirstFC
+  MP2ROHFFirstFC  = ERROR 
+  MP2UHFFirstFC  = ERROR 
+  MP2TwoConFirstFC  = ERROR
+
+  % Procedures for symmetric force constants via differences of analytic gradients
+  MP2FirstSymm_FC =
+    ($MP2DEnergy $findif_disp_symm repeat NUM_DISP
+     $findif_next $findif_input $MP2First $findif_grad_save end
+     $findif_freq_grad_symm $done)
+  MP2RHFFirstSymm_FC  = $MP2FirstSymm_FC
+  MP2ROHFFirstSymm_FC  = ERROR
+  MP2UHFFirstSymm_FC  = ERROR 
+  MP2TwoConFirstSymm_FC  = ERROR
+
   % Procedures for the direct MP2 energy
   DirectMP2Energy = ($DirectSCFEnergy $mp2_direct)
   DirectMP2RHFEnergy = ($DirectMP2Energy $done)
