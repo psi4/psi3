@@ -270,6 +270,12 @@ void chkpt_wt_atom_dummy(int *);
 int chkpt_rd_disp_irrep(void);
 void chkpt_wt_disp_irrep(int);
 
+int* chkpt_rd_cdsalcpi();
+void chkpt_wt_cdsalcpi(const int*);
+
+double** chkpt_rd_cdsalc2cd();
+void chkpt_wt_cdsalc2cd(const double**);
+
 int chkpt_exist(char *);
 
 int chkpt_rd_override_occ(void);

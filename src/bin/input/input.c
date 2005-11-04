@@ -19,6 +19,7 @@ void print_unique_geometry(double);
 void print_symm_trans();
 void print_basis_info();
 void cleanup();
+extern void build_cartdisp_salcs();
 
 int main(int argc, char *argv[])
 {
@@ -164,6 +165,7 @@ int main(int argc, char *argv[])
        build_cart2pureang();
      build_so_classes();
      build_usotao();
+     build_cartdisp_salcs();
 
      /*---------------------
        Read old calculation

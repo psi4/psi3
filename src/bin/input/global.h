@@ -185,6 +185,12 @@ EXTERN double ****class_so_coeff;          /*Matrix of AO to cartesian SO for ea
 EXTERN int ***num_cart_so_in_class;        /*Number of cartesian SO for each class, ang. momentum type and irrep*/
 EXTERN int ***num_pureang_so_in_class;     /*Number of pure angular momentum SO for each class, ang. momentum type and irrep*/
 
+/* Symmetry-adapated cartesian displacements */
+/* number of cartesian displacements = number of SALCs = 3*num_atoms. Cartdisps are ordered by atom index and xyz */
+EXTERN int* cdsalc_pi;                /* Number of SALCs per irrep. Order within irrep is arbitrary */
+EXTERN double** cdsalc2cd;            /* coefficients of cartesian displacements in SALCs.
+                                         rows correspond to cartdisps
+                                         columns to SALCs */
 
 /*Auxiliary arrays*/
 EXTERN int **ao_type_irr;        /*Irreducible representation an AO of a given type positioned in the origin belongs to*/

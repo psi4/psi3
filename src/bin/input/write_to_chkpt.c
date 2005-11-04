@@ -239,6 +239,12 @@ void write_to_chkpt(double repulsion)
   /* nuclear repulsion energy */
   chkpt_wt_enuc(repulsion);
   
+  /* Cartesian displacement SALCs */
+  chkpt_wt_cdsalc2cd(cdsalc2cd);
+  
+  /* cartdisp SALCs per irrep */
+  chkpt_wt_cdsalcpi(cdsalc_pi);
+  
   chkpt_close();
   return;
 }
