@@ -13,6 +13,7 @@ void init_globals()
   IOUnits.itap33 = PSIF_SO_TEI;
   IOUnits.itapDSCF = PSIF_DSCF;
   IOUnits.itapG = PSIF_AO_TPDM;
+  IOUnits.itapD1ERI_SO = PSIF_SO_D1ERI;
   IOUnits.itapR12 = PSIF_SO_R12;
   IOUnits.itapT1  = PSIF_SO_R12T1;
   IOUnits.itapERI_MO = PSIF_MO_TEI;

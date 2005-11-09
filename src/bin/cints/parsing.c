@@ -192,6 +192,21 @@ void parsing_cmdline(int argc, char *argv[])
 	   return;
        }
 
+       /*--- compute 1st derivative integrals option ---*/
+       if (strcmp(argv[i], "--deriv1_ints") == 0) {
+#ifdef INCLUDE_Default_Deriv1
+           UserOptions.make_oei = 0;
+	   UserOptions.make_eri = 0;
+	   UserOptions.make_fock = 0;
+	   UserOptions.symm_ints = 1;
+	   UserOptions.make_deriv1 = 1;
+	   UserOptions.num_threads = 1;
+#else
+	   punt("--deriv1_ints option is not supported by your CINTS executable.\nRecompile the code including files in Default_Deriv1 subdirectory.");
+#endif
+	   return;
+       }
+
        /*--- compute 2nd derivatives ---*/
        if(!strcmp(argv[i], "--deriv2")) {
 #ifdef INCLUDE_Default_Deriv2

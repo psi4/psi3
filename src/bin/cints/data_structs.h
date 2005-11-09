@@ -109,7 +109,7 @@ typedef struct {
     char *wfn;                         /* Wavefunction */
     char *dertype;                     /* Derivative type */
     double cutoff;                     /* Cutoff on ERIs/Fock matrix elements */
-    double hf_exch;                    /* Portion of exact HF exchange in the Fock matrix */
+    double hf_exch;                    /* Fraction of exact HF exchange in the Fock matrix */
     int  make_dft;                     /* Use DFT? */
     int print_lvl;                     /* Print level */
     long int max_memory;               /* Maximum amount of memory to use, in double words */
@@ -161,7 +161,7 @@ typedef struct {
     int num_unique_shells;             /* number of symmetry unique shells */
     int num_so;                        /* number of SO's */
     int *atom_positions;               /* symmetry positions/stabilizers of atoms */
-    int **ict;                        /* transformation properties of nuclei under symmetry operations */
+    int **ict;                         /* transformation properties of nuclei under symmetry operations */
     int *ua2a;                         /* unique atom number to full atom number mapping array */
     int *us2s;                         /* unique shell number to full shell number mapping array */
     int *sopi;                         /* number of SO per irrep */
@@ -173,11 +173,14 @@ typedef struct {
     int **dcr_dim;                     /* dimensions of double coset representatives */
     int **dcr_deg;
     int **GnG;
+    int *cdsalcpi;                     /* Number of cartesian displacement SALCs per irrep */
+    int *cdsalc_ioffset;               /* offsets for the above */
     char *symlabel;                    /* symmetry label */
     char **irr_labels;                 /* labels of irreps */
     double **cartrep;                  /* cartesian representation matrices */
     double **usotao;                   /* SO to (basis functions if puream && !make_fock, AO otherwise)
 					  transformation matrix */
+    double **cdsalc2cd;                /* Cartesian displacement SALCs (in columns) */
     struct unique_shell_pair **us_pairs; /* unique shell symmetry info */
 } SymmetryInfo_t;
 
@@ -219,6 +222,7 @@ typedef struct {
     int itapR12_MO;           /* MO R12 integrals */
     int itapR12T2_MO;         /* MO [r12,T2] integrals */
     int itapdgdB[3];          /* AO dgd/Bi integrals over GIAO Gaussians */
+    int itapD1ERI_SO;         /* SO derivative ERI integrals are stored in files itapD1ERI_SO, itapD1ERI_SO+1, ... itapD1ERI_SO+3*natoms */
 } IOUnits_t;
  
 typedef struct {
@@ -303,6 +307,28 @@ typedef struct {
   int nvirt;  /* no. active virtuals */
   int nocc;   /* no. active occupieds */
 } CCInfo_t;
+
+/* Cartesian derivative SALCs */
+typedef struct {
+  int nsalcs;
+  char *atom_irreps;            /* Bit-packed irreps of all derivatives wrt coordinates of a given atom.
+                                  Assume Abelian groups, i.e. at most 8 irreps */
+#ifdef __cplusplus
+  typedef struct {
+    int nsalcs;
+    int* salcs;
+  } cd2salc_map_t;
+  cd2salc_map_t* cd2salc_map;   /* Maps cartesian derivative to the list of all SALCs to which it contributes */
+#else
+  struct cd2salc_map_t {
+    int nsalcs;
+    int* salcs;
+  } *cd2salc_map;   /* Maps cartesian derivative to the list of all SALCs to which it contributes */
+#endif
+
+  int* salc2irrep;              /* Maps SALC to its irrep */
+  
+} CDSALC_t;
 
 /* -------------------------------------------------------
    

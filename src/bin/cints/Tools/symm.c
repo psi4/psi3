@@ -32,6 +32,12 @@ void init_symmetry()
   Symmetry.irr_labels = chkpt_rd_irr_labs();
   Symmetry.ict = chkpt_rd_ict();
   Symmetry.cartrep = chkpt_rd_cartrep();
+  Symmetry.cdsalcpi = chkpt_rd_cdsalcpi();
+  Symmetry.cdsalc2cd = chkpt_rd_cdsalc2cd();
+  Symmetry.cdsalc_ioffset = init_int_array(Symmetry.nirreps);
+  Symmetry.cdsalc_ioffset[0] = 0;
+  for(i=1;i<Symmetry.nirreps;i++)
+    Symmetry.cdsalc_ioffset[i] = Symmetry.cdsalc_ioffset[i-1] + Symmetry.cdsalcpi[i-1];
 
   if (Symmetry.nirreps) {
   /* Symmetry.dp_table = */ init_dp_table();

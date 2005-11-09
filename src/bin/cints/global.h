@@ -50,6 +50,9 @@ EXTERN MOInfo_t MOInfo;
 /*--- Information about direct-CC calcs ---*/
 EXTERN CCInfo_t CCInfo;
 
+/*--- Information about cartesian derivative SALC ---*/
+EXTERN CDSALC_t CDSALCs;
+
 /*--- DFT information ---*/
 EXTERN DFT_options_t DFT_options;
 

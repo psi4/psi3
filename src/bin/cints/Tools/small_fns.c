@@ -59,6 +59,7 @@ void start_io(int argc, char *argv[])
 	 strcmp(argv[i], "--oeints") &&
 	 strcmp(argv[i], "--teints") &&
 	 strcmp(argv[i], "--deriv1") &&
+	 strcmp(argv[i], "--deriv1_ints") &&
 	 strcmp(argv[i], "--deriv2") &&
 	 strcmp(argv[i], "--oeprop") &&
 	 strcmp(argv[i], "--mp2") &&

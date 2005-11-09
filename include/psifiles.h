@@ -48,6 +48,9 @@
 #define PSIF_AO_OPDM        76   /* PSIF_AO_OPDM also contains AO Lagrangian */
 #define PSIF_AO_TPDM        77
 
+#define PSIF_SO_D1ERI       200  /* Derivative ERIs are stored in files 200, 201, 202, etc. File 200 contains
+                                    integrals with respect to SALC derivative 0, etc. */
+
 /*
 ** MO Hessian File (also contains specialized integral and Fock lists.
 ** See programs STABLE and CPHF for more info.

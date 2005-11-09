@@ -78,6 +78,10 @@ int main(int argc, char *argv[])
    check_max_am();
    init_dcr();
    init_gto();
+   
+   /* If need to compute derivatives over SO -- compute SALC data */
+   if (UserOptions.make_deriv1 && UserOptions.symm_ints)
+     init_cdsalc();
 
    /*--- Print out some stuff ---*/
    print_scalars();
@@ -135,6 +139,8 @@ int main(int argc, char *argv[])
 #endif
    
    /*--- Cleanup ---*/
+   if (UserOptions.make_deriv1 && UserOptions.symm_ints)
+     cleanup_cdsalc();
    cleanup_gto();
    cleanup_symmetry();
    cleanup_basisset();

@@ -24,31 +24,38 @@ double **grad_te;
 
 void deriv1()
 {
-  /*--- Gradient in the canonical frame ---*/
-  Grad = block_matrix(Molecule.num_atoms,3);
-
-  if (Molecule.num_atoms != 0) {
-    if (!strcmp(UserOptions.wfn,"SCF")) {
-      init_moinfo();
-      compute_scf_opdm();
+  /* Either contract integrals with the densities ... */
+  if (UserOptions.symm_ints == 0) {
+    /*--- Gradient in the canonical frame ---*/
+    Grad = block_matrix(Molecule.num_atoms,3);
+    
+    if (Molecule.num_atoms != 0) {
+      if (!strcmp(UserOptions.wfn,"SCF")) {
+        init_moinfo();
+        compute_scf_opdm();
+      }
+      else
+        read_gen_opdm();
+      enuc_deriv1();
+      oe_deriv1();
+      if (!strcmp(UserOptions.wfn,"SCF"))
+        te_deriv1_scf();
+      else
+        te_deriv1_corr();
+      symmetrize_deriv1();
+      check_rot_inv();
+      if (!strcmp(UserOptions.wfn,"SCF"))
+        cleanup_moinfo();
     }
-    else
-      read_gen_opdm();
-    enuc_deriv1();
-    oe_deriv1();
-    if (!strcmp(UserOptions.wfn,"SCF"))
-      te_deriv1_scf();
-    else
-      te_deriv1_corr();
-    symmetrize_deriv1();
-    check_rot_inv();
-    if (!strcmp(UserOptions.wfn,"SCF"))
-      cleanup_moinfo();
+    
+    file11();
+    chkpt_wt_grad(Grad[0]);
+    free_block(Grad);
   }
-
-  file11();
-  chkpt_wt_grad(Grad[0]);
-  free_block(Grad);
+  /* ... or compute integrals alone */
+  else {
+    te_deriv1_ints();
+  }
 
   return;
 }
