@@ -11,7 +11,7 @@
 #include <libpsio/psio.h>
 
 /*!
-** chkpt_rd_cdsalc2cd(): Read in SALCs of cartesian displacements
+** chkpt_rd_cdsalc2cd(): Read in (normalized) SALCs of cartesian displacements
 **
 ** takes no arguments.
 **
@@ -35,7 +35,7 @@ double **chkpt_rd_cdsalc2cd(void)
 
 
 /*!
-** chkpt_wt_cdsalc2cd(): Writes out SALCs of cartesian displacements
+** chkpt_wt_cdsalc2cd(): Writes out (normalized) SALCs of cartesian displacements
 **
 ** \param cdsalc2cd = A natom*3 by natom*3 blocked matrix of doubles. columnts correpond to symmetry-blocked SALCs
 **
