@@ -15,7 +15,7 @@
 void build_cartdisp_salcs()
 {
   int num_cd = 3*num_atoms;
-  int i, j, u, xyz, irrep, G;
+  int i, j, u, xyz, irrep, G, cd;
   /* salc_symblk[i][j] is the pointer to j-th SALC in irrep i. Each SALC is an array of num_cd coefficients */
   double*** salc_symblk = (double***) malloc(sizeof(double**)*nirreps);
   for(i=0; i<nirreps; i++)
@@ -37,17 +37,22 @@ void build_cartdisp_salcs()
       for(irrep=0; irrep<nirreps; irrep++) {
         memset((void*)salc,0,sizeof(double)*num_cd);
         
-        /* construct projector */
-        
-        /* apply symmetry operation */
+        /* this is the order of the atom stabilizer (subgroup which preserves atom's position unchanged) */
+        int stab_order = 0;
+        /* apply the projector: */
         for(G=0; G<nirreps; G++) {
           int Gatom = atom_orbit[atom][G];
+          if (Gatom == atom)
+            ++stab_order;
           int Gcd = 3*Gatom + xyz;
           double coeff = ao_type_transmat[1][G][xyz] * irr_char[irrep][G];
           salc[Gcd] += coeff;
         }
+        /* normalize this SALC -- this is why stab_order was needed */
+        for(cd=0; cd<num_cd; cd++)
+          salc[cd] /= sqrt((double)nirreps*stab_order);
         
-        /* if non-zero then add to salc_symblk and increment counter */
+        /* if result is non-zero then add this salc to salc_symblk and increment salc counter */
         for(i=0; i<num_cd; i++) {
           if (fabs(salc[i])>1e-10 ) {
             salc_symblk[irrep][cdsalc_pi[irrep]] = init_array(num_cd);
@@ -63,12 +68,11 @@ void build_cartdisp_salcs()
   /* copy salc_symblk to cdsalc2cd */
   {
     int c = 0;
-    double one_over_nG = 1.0/nirreps;
     for(irrep=0; irrep<nirreps; irrep++) {
       int num_per_irrep = cdsalc_pi[irrep];
       for(i=0; i<num_per_irrep; i++,c++) {
         for(j=0; j<num_cd; j++) {
-          cdsalc2cd[j][c] = salc_symblk[irrep][i][j] * one_over_nG;
+          cdsalc2cd[j][c] = salc_symblk[irrep][i][j];
         }
         free(salc_symblk[irrep][i]);
       }
