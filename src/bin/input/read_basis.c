@@ -180,7 +180,7 @@ void read_basis()
    basis_set = init_matrix(MAXCONTRACTION,MAXBASISCOLUMNS);
    last_shell_unique_atom = 0;
    last_prim_unique_atom = 0;
-   first_shell_unique_atom = 1; 
+   first_shell_unique_atom = 1;
    first_prim_unique_shell = init_int_array(MAXCONTRACTION);
    last_prim_unique_shell = init_int_array(MAXCONTRACTION);
 
@@ -494,7 +494,7 @@ void normalize(bs, fp, lp, am)
   int am;
 {
   int i, j;
-  double norm;
+  double norm, cnorm;
   double e_sum = 0.0;
   double tmp1, tmp2, tmp3, tmp4;
   double t, g, z;
@@ -518,18 +518,15 @@ void normalize(bs, fp, lp, am)
 
 /* pi^(3/2) */
   tmp1 = ((2.0*_pi/M_2_SQRTPI)*df[2*am])/(int_pow(2.0,am));
-  norm = sqrt(1.0/(tmp1*e_sum));
+  norm = tmp1*e_sum;
+  cnorm = 1.0/sqrt(norm);
   
   if(shownorm){
-    if(fabs(norm-1.0)>ZERO) printf("Needed normalization: norm=%lf\n", norm);
+    if(fabs(norm-1.0)>ZERO) fprintf(outfile,"      Needs normalization: 1 - norm = %g\n", 1.0-norm);
   }
   if (normalize_contractions) {
-    /* printf("Normalizing current contraction:\n"); */
     for(i=fp; i<=lp; i++){
-      bs[i][1] = bs[i][1]*norm;
-      if(shownorm){
-	printf("%15.9lf\t%15.9lf\n", bs[i][0], bs[i][1]);
-      }
+      bs[i][1] = bs[i][1]*cnorm;
     }
   }
 
@@ -538,22 +535,19 @@ void normalize(bs, fp, lp, am)
 /* check normalization */
   tmp1 = am+1.5;
   e_sum = 0.0;
-  for(i=fp; i<lp; i++){
-    for(j=fp; j<lp; j++){
-      tmp2 = bs[i][0]+bs[j][0];
-      tmp3 = pow(tmp2,tmp1);
-      tmp4 = bs[i][1]*bs[j][1];
-      e_sum += tmp4/tmp3;
-      }
+  for(i=fp; i<=lp; i++)
+    for(j=fp; j<=lp; j++){
+      g = bs[i][0]+bs[j][0];
+      z = pow(g,tmp1);
+      e_sum += bs[i][1]*bs[j][1]/z;
     }
 
 /* pi^(3/2) */
-  tmp1 = 2.0*_pi/M_2_SQRTPI;
-  tmp2 = df[2*am];
-  tmp3 = int_pow(2.0,am);
-  norm = e_sum*tmp1*tmp2/tmp3;
+  tmp1 = ((2.0*_pi/M_2_SQRTPI)*df[2*am])/(int_pow(2.0,am));
+  norm = tmp1*e_sum;
+
   if(shownorm){
-    printf("Normalized to: %lf\n", norm);
+    fprintf(outfile,"             After renormalization: 1 - norm = %g\n", 1.0 - norm);
    }
 
 }
