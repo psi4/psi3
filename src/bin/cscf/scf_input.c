@@ -115,6 +115,9 @@ void scf_input(ipvalue)
    
    icheck_rot = 1;
    errcod = ip_boolean("CHECK_ROT",&icheck_rot,0);
+   
+   check_mo_orthonormality = 0;
+   errcod = ip_boolean("CHECK_MO_ORTHONORMALITY",&check_mo_orthonormality,0);
 
    ndiis = (iopen) ? 4 : 6;
    if(twocon) ndiis = 3;

@@ -1,9 +1,12 @@
 /* $Log$
- * Revision 1.30  2004/08/12 19:13:32  crawdad
- * Corrected computation of <S^2> for UHF references.  The equations were
- * coded correctly, but variable types screwed up results for doublets,
- * quartets, etc.  -TDC
+ * Revision 1.31  2005/11/10 16:37:50  evaleev
+ * Added CHECK_MO_ORTHONORMALITY input keyword. Useful for debugging.
  *
+/* Revision 1.30  2004/08/12 19:13:32  crawdad
+/* Corrected computation of <S^2> for UHF references.  The equations were
+/* coded correctly, but variable types screwed up results for doublets,
+/* quartets, etc.  -TDC
+/*
 /* Revision 1.29  2004/05/03 04:32:40  crawdad
 /* Major mods based on merge with stable psi-3-2-1 release.  Note that this
 /* version has not been fully tested and some scf-optn test cases do not run
@@ -376,14 +379,38 @@ void cleanup()
   }
   else {
     for(k=0,row=0,col=0; k < num_ir; k++) {
+      double** s_sq;
+      double** tmp;
       s=&scf_info[k];
-      for(i=0; i < s->num_so; i++) {
-	for(j=0; j < s->num_mo; j++) {
-	  scr1[i+row][j+col] = s->cmat[i][j];
-	}
+      if (s->num_mo) {
+        
+        /* Test normalization of MOs */
+        if (check_mo_orthonormality) {
+          fprintf(outfile,"  -Testing orthonormality of MOs in symmetry block %d\n",k);
+          fprintf(outfile,"    -overlap matrix:\n");
+          print_array(s->smat,s->num_so,outfile);
+          fprintf(outfile,"    -MOs:\n");
+          print_mat(s->cmat,s->num_so,s->num_mo,outfile);
+          s_sq = block_matrix(s->num_so,s->num_so);
+          tri_to_sq(s->smat,s_sq,s->num_so);
+          tmp = block_matrix(s->num_so,s->num_so);
+          mmult(s_sq,0,s->cmat,0,tmp,0,s->num_so,s->num_so,s->num_so,0);
+          mmult(s->cmat,1,tmp,0,s_sq,0,s->num_mo,s->num_so,s->num_mo,0);
+          fprintf(outfile,"    -Ct.S.C:\n");
+          print_mat(s_sq,s->num_mo,s->num_mo,outfile);
+          free_block(s_sq);
+          free_block(tmp);
+        } 
+        
+        for(i=0; i < s->num_so; i++) {
+          for(j=0; j < s->num_mo; j++) {
+            scr1[i+row][j+col] = s->cmat[i][j];
+          }
+        }
+        row += s->num_so;
+        col += s->num_mo;
+        
       }
-      row += s->num_so;
-      col += s->num_mo;
     }
     chkpt_wt_scf(scr1);
   }

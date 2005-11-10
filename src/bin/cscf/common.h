@@ -1,11 +1,14 @@
 /* $Id$ */
 /* $Log$
- * Revision 1.16  2004/05/03 04:32:40  crawdad
- * Major mods based on merge with stable psi-3-2-1 release.  Note that this
- * version has not been fully tested and some scf-optn test cases do not run
- * correctly beccause of changes in mid-March 2004 to optking.
- * -TDC
+ * Revision 1.17  2005/11/10 16:37:50  evaleev
+ * Added CHECK_MO_ORTHONORMALITY input keyword. Useful for debugging.
  *
+/* Revision 1.16  2004/05/03 04:32:40  crawdad
+/* Major mods based on merge with stable psi-3-2-1 release.  Note that this
+/* version has not been fully tested and some scf-optn test cases do not run
+/* correctly beccause of changes in mid-March 2004 to optking.
+/* -TDC
+/*
 /* Revision 1.15.4.2  2004/04/21 15:45:07  evaleev
 /* Modified DIIS algorithm for RHF and ROHF to work in OSO basis rather than in
 /* AO basis, to avoid difficulties of transforming between MO and AO bases
@@ -240,6 +243,7 @@ EXTERN int opshl1,opshl2;
 EXTERN int opblk1,opblk2;
 EXTERN int second_root;         /* get the second root of the MCSCF */
 EXTERN int icheck_rot;          /* check orbital rotations? */
+EXTERN int check_mo_orthonormality;
 EXTERN int ediff;
 
 EXTERN int itap30,itap34,itapS,itapT,itapV,itap33,itap92,itap93,itapDSCF;
