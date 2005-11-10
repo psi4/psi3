@@ -69,6 +69,7 @@ void te_deriv1_ints()
 #endif
 
   PSI_INT_LEAST64 total_te_count = 0;
+  vector<PSI_INT_LEAST64> te_count_per_coord(num_coords,0);     // keeps track of how many integrals were written out
   int ij, kl, ik, jl, ijkl;
   int ioffset, joffset, koffset, loffset;
   int count ;
@@ -703,6 +704,7 @@ void te_deriv1_ints()
               const int abs_salc = salc_thisquartet2all[salc];
               const int nints = num_of_ints_in_totdata[abs_salc];
               if (nints > 0) {
+                te_count_per_coord[abs_salc] += nints;
                 total_te_count += nints;
                 iwl_buf_wrt_struct_nocut(&(D1ERIOUT[abs_salc]), tot_data[abs_salc], nints);
 
