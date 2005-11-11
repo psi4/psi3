@@ -1,0 +1,26 @@
+psi: (
+  exec = (
+    "input"
+    "cints"
+    "cscf"
+    "cints --deriv1"
+    "cints --deriv1_ints"
+  )
+
+  label = "STO-3G H2"
+  jobtype = sp
+  wfn = scf
+  reference = rhf
+  dertype = first
+  %basis = "STO-3G"
+  basis = "DZP"
+  %basis = "cc-pVQZ"
+  zmat = (
+    h
+    h 1 1.00
+  )
+  %subgroup = cs
+  %unique_axis = x
+  print = 5
+  print_mos = true
+)
