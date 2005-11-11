@@ -114,3 +114,6 @@ velocity, omega = (355 nm)
 cc44: RHF-EOM-CCSD/aug-cc-pVTZ lowest A1 and B2 excited states of H2O with
 only 2.0 MB of memory to test out-of-core algorithms for various ovvv
 quantities.
+
+cc48: RHF-EOM-CCSD expectation value dipole moments for multiple states
+
