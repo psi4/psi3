@@ -1,0 +1,1582 @@
+******************************************************************************
+tstart called on mac4704.local
+Thu Nov 10 20:11:11 2005
+
+                                --------------
+                                  WELCOME TO
+                                    PSI  3
+                                --------------
+
+  LABEL       =	RHF EOM CCSD expectation value dipole moments
+  SHOWNORM    =	0
+  PUREAM      =	1
+  PRINT_LVL   =	1
+
+  Parsed basis sets from /usr/local/psi/share/pbasis.dat
+
+  -Geometry before Center-of-Mass shift (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+        HYDROGEN      0.000000000000     0.000000000000     0.000000000000
+          OXYGEN      0.000000000000     0.000000000000     1.808467771070
+        HYDROGEN      1.750863805261     0.000000000000     2.261271938923
+
+
+  -Rotational constants (cm-1) :
+    A =   27.43417  B =   14.60648  C =    9.53165
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+        HYDROGEN     -1.429936611037     0.983265845431     0.000000000000
+          OXYGEN      0.000000000000    -0.123909374404     0.000000000000
+        HYDROGEN      1.429936611037     0.983265845431     0.000000000000
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S ( 10662.28500000     0.00079900)
+           (  1599.70970000     0.00615300)
+           (   364.72526000     0.03115700)
+           (   103.65179000     0.11559600)
+           (    33.90580500     0.30155200) )
+        (S (    12.28746900     0.44487000)
+           (     4.75680500     0.24317200) )
+        (S (     1.00427100     1.00000000) )
+        (S (     0.30068600     1.00000000) )
+        (S (     0.09003000     1.00000000) )
+        (P (    34.85646300     0.01564800)
+           (     7.84313100     0.09819700)
+           (     2.30624900     0.30776800)
+           (     0.72316400     0.49247000) )
+        (P (     0.21488200     1.00000000) )
+        (P (     0.06385000     1.00000000) )
+        (D (     2.30620000     0.20270000)
+           (     0.72320000     0.57910000) )
+        (D (     0.21490000     0.78545000)
+           (     0.06390000     0.53387000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    33.86501400     0.00606800)
+           (     5.09478800     0.04531600)
+           (     1.15878600     0.20284600)
+           (     0.32584000     0.50370900) )
+        (S (     0.10274100     1.00000000) )
+        (S (     0.03240000     1.00000000) )
+        (P (     1.15880000     0.18844000)
+           (     0.32580000     0.88242000) )
+        (P (     0.10270000     0.11780000)
+           (     0.03240000     0.00420000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 20
+    Number of primitives   = 30
+    Number of AO           = 44
+    Number of SO           = 42
+
+    Irrep    Number of SO
+    -----    ------------
+      1           19
+      2            4
+      3            7
+      4           12
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.123909374404
+        HYDROGEN      0.000000000000     1.429936611037     0.983265845431
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+        HYDROGEN      0.000000000000    -1.429936611037     0.983265845431
+          OXYGEN      0.000000000000     0.000000000000    -0.123909374404
+        HYDROGEN      0.000000000000     1.429936611037     0.983265845431
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+        HYDROGEN      0.000000000000    -0.756689922073     0.520321915121
+          OXYGEN      0.000000000000     0.000000000000    -0.065570021872
+        HYDROGEN      0.000000000000     0.756689922073     0.520321915121
+
+
+  -Geometry in the reference coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+        HYDROGEN      0.000000000000    -1.429936611037     0.983265845431
+          OXYGEN      0.000000000000     0.000000000000    -0.123909374404
+        HYDROGEN      0.000000000000     1.429936611037     0.983265845431
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       9.196934380445
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   0.9570000   0.0000000
+    3   1.5133798   0.9570000   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+tstop called on mac4704.local
+Thu Nov 10 20:11:12 2005
+
+user time   =       0.12 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on mac4704.local
+Thu Nov 10 20:11:12 2005
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 7500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = RHF EOM CCSD expectation value dipole moments
+    Number of atoms             = 3
+    Number of atomic orbitals   = 44
+    Number of symmetry orbitals = 42
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 100670 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on mac4704.local
+Thu Nov 10 20:11:12 2005
+
+user time   =       0.65 seconds =       0.01 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on mac4704.local
+Thu Nov 10 20:11:12 2005
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
+
+  label        = RHF EOM CCSD expectation value dipole moments
+  wfn          = EOM_CCSD
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = NONE
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        9.1969343804448
+  first run, so defaulting to core-hamiltonian guess
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 751616 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 7.567849e-04
+
+
+  Using DOCC and SOCC to 
+  determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 42487 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -69.3175779940    7.851451e+01    0.000000e+00    0.000000e+00
+    2       -66.8418839094   -2.475694e+00    5.727838e-02    1.869950e+00
+    3       -74.4307367012    7.588853e+00    4.211114e-02    6.101875e-01
+    4       -75.8149466809    1.384210e+00    8.177495e-03    5.790535e-01
+    5       -76.0517643476    2.368177e-01    2.874240e-03    1.998350e-01
+    6       -76.0526848813    9.205337e-04    1.090682e-03    9.307555e-03
+    7       -76.0529298171    2.449358e-04    1.776246e-04    8.244642e-03
+    8       -76.0529391137    9.296531e-06    2.832353e-05    1.383391e-03
+    9       -76.0529396110    4.973612e-07    5.364432e-06    1.966646e-04
+   10       -76.0529396488    3.781702e-08    1.600184e-06    6.206945e-05
+   11       -76.0529396496    7.935483e-10    2.748203e-07    7.318632e-06
+   12       -76.0529396496    7.887024e-12    2.086923e-08    8.599597e-07
+   13       -76.0529396496    7.389644e-13    6.855309e-09    1.728657e-07
+   14       -76.0529396496   -1.136868e-13    9.053638e-10    3.935045e-08
+   15       -76.0529396496   -2.842171e-14    2.282470e-10    7.657250e-09
+   16       -76.0529396496    0.000000e+00    8.002103e-11    2.192121e-09
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.567467     2A1     -1.353268     1B2     -0.719779  
+   3A1     -0.586252     1B1     -0.510149  
+
+
+  Unoccupied orbitals
+   4A1      0.040362     2B2      0.058622     5A1      0.138000  
+   2B1      0.172904     3B2      0.212893     6A1      0.217567  
+   4B2      0.245504     7A1      0.281004     1A2      0.295290  
+   3B1      0.325840     8A1      0.387484     5B2      0.403968  
+   9A1      0.476736     6B2      0.525800    10A1      0.599301  
+   4B1      0.658439     7B2      0.693233     2A2      0.753762  
+  11A1      0.836620    12A1      0.897964     8B2      0.958237  
+   3A2      1.130184     5B1      1.175210    13A1      1.219363  
+   6B1      1.260026     9B2      1.416680    14A1      1.488639  
+  10B2      1.711484    15A1      1.997968    11B2      2.015137  
+  16A1      2.124432     7B1      2.781480     4A2      2.867365  
+  17A1      2.935101    18A1      3.348617    12B2      3.738822  
+  19A1     43.777005  
+
+
+        SCF total energy   =     -76.052939649648
+        kinetic energy     =      75.984280229069
+        nuc. attr. energy  =    -199.010197952149
+        elec. rep. energy  =      46.972978073431
+        potential energy   =    -152.037219878717
+        virial theorem     =       1.999097215428
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on mac4704.local
+Thu Nov 10 20:11:12 2005
+
+user time   =       0.18 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on mac4704.local
+Thu Nov 10 20:11:12 2005
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  EOM_CCSD
+	Reference orbitals     =  RHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            =  Yes
+	Delete Restricted Docc =  Yes
+	Do All TEI             =  No
+	Memory (Mbytes)        =   60.0
+	Max Buckets            =  499
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Semicanonical orbitals =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 42
+	Number of MOs    = 42
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   19	   19	    0	    3	    0	    16	    0
+	 A2 	   4	   4	    0	    0	    0	    4	    0
+	 B1 	   7	   7	    0	    1	    0	    6	    0
+	 B2 	   12	   12	    0	    1	    0	    11	    0
+
+	Nuclear Repulsion Energy    =         9.1969343804
+	Total SCF Energy            =       -76.0529396496
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on mac4704.local
+Thu Nov 10 20:11:13 2005
+
+user time   =       0.52 seconds =       0.01 minutes
+system time =       0.77 seconds =       0.01 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on mac4704.local
+Thu Nov 10 20:11:14 2005
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	EOM_CCSD
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Memory (Mbytes) =	60.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Local CC        =     No
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 42
+	Number of active MOs = 42
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   19	    0	    3	    0	    16	    0
+	 A2 	   4	    0	    0	    0	    4	    0
+	 B1 	   7	    0	    1	    0	    6	    0
+	 B2 	   12	    0	    1	    0	    11	    0
+
+	Nuclear Rep. energy (chkpt) =      9.19693438044484
+	SCF energy          (chkpt) =    -76.05293964964838
+
+	Size of irrep 0 of <ab|cd> integrals:     0.184 (MW) /     1.472 (MB)
+	Size of irrep 1 of <ab|cd> integrals:     0.068 (MW) /     0.541 (MB)
+	Size of irrep 2 of <ab|cd> integrals:     0.078 (MW) /     0.627 (MB)
+	Size of irrep 3 of <ab|cd> integrals:     0.160 (MW) /     1.280 (MB)
+	Total:                                    0.490 (MW) /     3.920 (MB)
+
+	Size of irrep 0 of <ia|bc> integrals:     0.028 (MW) /     0.223 (MB)
+	Size of irrep 1 of <ia|bc> integrals:     0.008 (MW) /     0.060 (MB)
+	Size of irrep 2 of <ia|bc> integrals:     0.011 (MW) /     0.085 (MB)
+	Size of irrep 3 of <ia|bc> integrals:     0.021 (MW) /     0.170 (MB)
+	Total:                                    0.067 (MW) /     0.538 (MB)
+
+	Size of irrep 0 of tijab amplitudes:      0.005 (MW) /     0.038 (MB)
+	Size of irrep 1 of tijab amplitudes:      0.001 (MW) /     0.004 (MB)
+	Size of irrep 2 of tijab amplitudes:      0.002 (MW) /     0.013 (MB)
+	Size of irrep 3 of tijab amplitudes:      0.002 (MW) /     0.019 (MB)
+	Total:                                    0.009 (MW) /     0.075 (MB)
+
+
+	Sorting File: B(+) <ab|cd> nbuckets = 1
+	One-electron energy          =   -123.02591772307996
+	Two-electron (AA) energy     =     14.41765701563983
+	Two-electron (BB) energy     =     14.41765701563983
+	Two-electron (AB) energy     =     23.35838667734679
+	Two-electron energy          =     37.77604369298663
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.05293964964849
+******************************************************************************
+tstop called on mac4704.local
+Thu Nov 10 20:11:14 2005
+
+user time   =       0.25 seconds =       0.00 minutes
+system time =       0.23 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on mac4704.local
+Thu Nov 10 20:11:14 2005
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    9.196934380444841
+	SCF energy          (chkpt)   =  -76.052939649648380
+	Reference energy    (file100) =  -76.052939649648494
+
+	Input parameters:
+	-----------------
+	Wave function   =    EOM_CCSD
+	Reference wfn   =      RHF
+	Memory (Mbytes) =   60.0
+	Maxiter         =     50
+	Convergence     = 1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	AO Basis        =     NONE
+	ABCD            =     NEW
+	Cache Level     =    2
+	Cache Type      =     LOW
+	Print Level     =    0
+	# Amps to Print =    10
+	Print MP2 Amps? =    No
+	Analyze T2 Amps =    No
+	Print Pair Ener =    No
+	Local CC        =     No
+
+	            Solving CC Amplitude Equations
+	            ------------------------------
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.227976073603451    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.231079226606677    3.923e-02    0.009370    0.021950    0.021950
+     2        -0.235410765265958    1.310e-02    0.009413    0.022341    0.022341
+     3        -0.236778883497382    5.715e-03    0.011037    0.026712    0.026712
+     4        -0.236716347320466    1.115e-03    0.011271    0.027482    0.027482
+     5        -0.236718499613172    3.824e-04    0.011345    0.027767    0.027767
+     6        -0.236723908412087    1.099e-04    0.011372    0.027876    0.027876
+     7        -0.236721830687764    3.220e-05    0.011376    0.027896    0.027896
+     8        -0.236721281762796    9.432e-06    0.011377    0.027902    0.027902
+     9        -0.236721375242663    2.969e-06    0.011378    0.027903    0.027903
+    10        -0.236721263650835    1.020e-06    0.011378    0.027903    0.027903
+    11        -0.236721268066316    3.640e-07    0.011378    0.027903    0.027903
+    12        -0.236721261749268    1.438e-07    0.011378    0.027903    0.027903
+    13        -0.236721263832397    4.162e-08    0.011378    0.027903    0.027903
+
+	Iterations converged.
+
+
+	Largest TIA Amplitudes:
+	          3  20         0.0227406397
+	          3  21         0.0144371303
+	          2   1        -0.0119665509
+	          2   4         0.0074752569
+	          2   5         0.0067257986
+	          4  34         0.0064609898
+	          4  35        -0.0053787047
+	          3  23         0.0051580161
+	          2   0         0.0048725440
+	          2   3         0.0046370474
+
+	Largest TIjAb Amplitudes:
+	  3   3  23  23        -0.0372944536
+	  4   4  30  30        -0.0211895859
+	  3   3  20  23        -0.0188795075
+	  3   3  23  20        -0.0188795075
+	  2   2  10  10        -0.0176234502
+	  3   4  23  30        -0.0172093639
+	  4   3  30  23        -0.0172093639
+	  4   4  31  31        -0.0169287822
+	  2   3  10  23         0.0165109394
+	  3   2  23  10         0.0165109394
+
+	SCF energy       (chkpt)   =  -76.052939649648380
+	Reference energy (file100) =  -76.052939649648494
+	MP2 correlation energy     =   -0.227976073603451
+	Total MP2 energy           =  -76.280915723251951
+	CCSD correlation energy    =   -0.236721263832397
+	Total CCSD energy          =  -76.289660913480887
+
+******************************************************************************
+tstop called on mac4704.local
+Thu Nov 10 20:11:18 2005
+
+user time   =       2.15 seconds =       0.04 minutes
+system time =       2.68 seconds =       0.04 minutes
+total time  =          4 seconds =       0.07 minutes
+******************************************************************************
+tstart called on mac4704.local
+Thu Nov 10 20:11:18 2005
+
+
+			**************************
+			*                        *
+			*         CCHBAR         *
+			*                        *
+			**************************
+
+******************************************************************************
+tstop called on mac4704.local
+Thu Nov 10 20:11:18 2005
+
+user time   =       0.25 seconds =       0.00 minutes
+system time =       0.45 seconds =       0.01 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on mac4704.local
+Thu Nov 10 20:11:18 2005
+
+
+	**********************************************************
+	*  CCEOM: An Equation of Motion Coupled Cluster Program  *
+	**********************************************************
+
+	Nuclear Rep. energy (chkpt)   =    9.196934380444841
+	SCF energy          (chkpt)   =  -76.052939649648380
+	Reference energy    (file100) =  -76.052939649648494
+	CCSD energy         (file100) =   -0.236721263832397
+
+	Input parameters:
+	-----------------
+	Reference wfn   =     RHF
+	Reference EOM wfn=     RHF
+	Memory (Mbytes) =   60.0
+	AO Basis        =     No
+	ABCD            =     NEW
+	Cache Level     =    2
+	Cache Type      =     LRU
+	Local CC        =     No
+
+
+	CCEOM parameters:
+	-----------------
+	States sought per irrep     = A1  2, A2  0, B1  0, B2  0,
+	Max. number of iterations   =    80
+	Vectors stored per root     =    12
+	Print HbarSS iterations?    =     0
+	Excitation range for HBarSS =     2
+	Eigenvalue tolerance        = 1.0e-06
+	Eigenvalue toleranceSS      = 1.0e-06
+	Residual vector tolerance   = 1.0e-07
+	Residual vector toleranceSS = 1.0e-06
+	Complex tolerance           = 1.0e-12
+	Root for properties         =     2
+	Sym of state for properties =    A1 
+	Guess vectors taken from    = SINGLES
+
+
+Symmetry of ground state: A1 
+Symmetry of excited state: A1 
+Symmetry of right eigenvector: A1 
+Seeking states with multiplicity of 1
+Obtaining initial guess from singles-singles block of Hbar...Done.
+
+Iter=1    L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.4813831309   4.81e-01    2.35e-01      N
+                     2   0.5342599416   5.34e-01    2.46e-01      N
+Iter=2    L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3650127768  -1.16e-01    4.48e-02      N
+                     2   0.4184816762  -1.16e-01    4.19e-02      N
+Iter=3    L=6     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3614144289  -3.60e-03    1.45e-02      N
+                     2   0.4154023309  -3.08e-03    1.22e-02      N
+Iter=4    L=8     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3611237432  -2.91e-04    5.96e-03      N
+                     2   0.4152893775  -1.13e-04    8.41e-03      N
+Iter=5    L=10    Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3610628558  -6.09e-05    2.37e-03      N
+                     2   0.4152471127  -4.23e-05    3.84e-03      N
+Iter=6    L=12    Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3610382455  -2.46e-05    1.37e-03      N
+                     2   0.4151737383  -7.34e-05    3.01e-03      N
+Iter=7    L=14    Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3610319431  -6.30e-06    5.12e-04      N
+                     2   0.4151601133  -1.36e-05    1.46e-03      N
+Iter=8    L=16    Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3610357612   3.82e-06    2.15e-04      N
+                     2   0.4151638023   3.69e-06    8.27e-04      N
+Iter=9    L=18    Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3610351772  -5.84e-07    7.87e-05      N
+                     2   0.4151580920  -5.71e-06    4.50e-04      N
+Iter=10   L=20    Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3610348991  -2.78e-07    2.94e-05      N
+                     2   0.4151583072   2.15e-07    2.24e-04      N
+Iter=11   L=22    Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3610349548   5.56e-08    1.11e-05      N
+                     2   0.4151591504   8.43e-07    9.31e-05      N
+Iter=12   L=24    Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3610349900   3.52e-08    5.16e-06      N
+                     2   0.4151589314  -2.19e-07    4.45e-05      N
+Iter=13   L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3610349900   1.50e-15    5.16e-06      N
+                     2   0.4151589314  -2.22e-16    4.45e-05      N
+Iter=14   L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3610349866  -3.42e-09    3.22e-06      N
+                     2   0.4151589091  -2.23e-08    2.81e-05      N
+Iter=15   L=6     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3610349936   7.07e-09    1.32e-06      N
+                     2   0.4151587518  -1.57e-07    1.26e-05      N
+Iter=16   L=8     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3610350014   7.77e-09    4.74e-07      N
+                     2   0.4151588188   6.69e-08    5.44e-06      N
+Iter=17   L=10    Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3610350012  -2.37e-10    1.72e-07      N
+                     2   0.4151588289   1.02e-08    2.51e-06      N
+Iter=18   L=12    Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3610350005  -7.07e-10    6.52e-08      Y
+                     2   0.4151588282  -7.56e-10    1.28e-06      N
+Iter=19   L=13    Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3610350002  -2.37e-10    3.75e-08      Y
+                     2   0.4151588275  -7.03e-10    6.64e-07      N
+Iter=20   L=14    Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3610350002  -5.54e-11    3.28e-08      Y
+                     2   0.4151588278   3.35e-10    3.65e-07      N
+Iter=21   L=15    Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3610350002   8.96e-12    3.26e-08      Y
+                     2   0.4151588273  -4.85e-10    2.63e-07      N
+Iter=22   L=16    Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3610350002   5.20e-12    3.26e-08      Y
+                     2   0.4151588255  -1.86e-09    1.19e-07      N
+Iter=23   L=17    Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.3610350002   1.53e-12    3.26e-08      Y
+                     2   0.4151588265   1.03e-09    8.77e-08      Y
+Collapsing to only 2 vector(s).
+
+Procedure converged for 2 root(s).
+Energy written to chkpt:Etot  -75.8745020870
+EOM CCSD R0 for root 0 =  -0.00293743860
+EOM CCSD R0 for root 1 =  -0.02947498867
+
+Final Energetic Summary for Converged Roots of Irrep A1 
+                     Excitation Energy              Total Energy
+                (eV)     (cm^-1)     (au)             (au)
+EOM State 1      9.824    79238.0   0.3610350002   -75.9286259133
+
+Largest components of excited wave function #1:
+	          2   0         0.6099176011
+	          2   2        -0.2550522060
+	          3  20        -0.1196157792
+	          2   1        -0.0726455865
+	          2   5         0.0691344587
+	  2   2   0   5        -0.0409585714
+	  2   2   5   0        -0.0409585714
+	  2   2   0   1         0.0402743266
+	  2   2   1   0         0.0402743266
+	  2   3   0  23        -0.0360600455
+
+EOM State 2     11.297    91116.8   0.4151588265   -75.8745020870
+
+Largest components of excited wave function #2:
+	          3  20         0.6485426275
+	          2   0         0.1268068900
+	          3  21         0.1042544234
+	          2   1         0.1037399906
+	          2   4        -0.0390082374
+	  3   3  20  20        -0.1097094948
+	  3   3  20  23        -0.0494856000
+	  3   3  23  20        -0.0494856000
+	  3   3  20  21        -0.0360971153
+	  3   3  21  20        -0.0360971153
+
+
+******************************************************************************
+tstop called on mac4704.local
+Thu Nov 10 20:11:40 2005
+
+user time   =       9.92 seconds =       0.17 minutes
+system time =      18.82 seconds =       0.31 minutes
+total time  =         22 seconds =       0.37 minutes
+******************************************************************************
+tstart called on mac4704.local
+Thu Nov 10 20:11:40 2005
+
+
+			**************************
+			*        CCLAMBDA        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    9.196934380444841
+	Reference           (chkpt)   = 0
+	SCF energy          (chkpt)   =  -76.052939649648380
+	Reference energy    (CC_INFO) =  -76.052939649648494
+	CCSD energy         (CC_INFO) =   -0.236721263832397
+	Total CCSD energy   (CC_INFO) =  -76.289660913480887
+
+	Input parameters:
+	-----------------
+	Maxiter       =      50
+	Convergence   = 1.0e-07
+	Restart       =     Yes
+	Cache Level   =     2
+	DIIS          =     Yes
+	AO Basis      =     No
+	ABCD            =     NEW
+	Local CC        =     No
+	Paramaters for left-handed eigenvectors:
+	    Irr   Root  Ground-State?    EOM energy        R0
+	  1   0     0        Yes       0.0000000000   1.0000000000
+	  2   0     1         No       0.3610350002  -0.0029374386
+	  3   0     2         No       0.4151588265  -0.0294749887
+	Labels for eigenvector 1:
+	LIA 0 -1, Lia 0 -1, LIJAB 0 -1, Lijab 0 -1, LIjAb 0 -1, 2LIjAb - LIjbA 0 -1
+	Labels for eigenvector 2:
+	LIA 0 0, Lia 0 0, LIJAB 0 0, Lijab 0 0, LIjAb 0 0, 2LIjAb - LIjbA 0 0
+	Labels for eigenvector 3:
+	LIA 0 1, Lia 0 1, LIJAB 0 1, Lijab 0 1, LIjAb 0 1, 2LIjAb - LIjbA 0 1
+	Symmetry of left-hand state: A1 
+	Symmetry of left-hand eigenvector: A1 
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter     PseudoEnergy or Norm         RMS  
+	----     ---------------------     --------
+	   0        -0.236836389054962    0.000e+00
+	   1        -0.233448041253503    1.849e-02
+	   2        -0.232625776554172    3.217e-03
+	   3        -0.232465388966401    1.936e-03
+	   4        -0.232430827280570    4.975e-04
+	   5        -0.232439695773003    1.398e-04
+	   6        -0.232441303658937    3.864e-05
+	   7        -0.232440717224270    1.168e-05
+	   8        -0.232440663385248    3.822e-06
+	   9        -0.232440702962675    1.230e-06
+	  10        -0.232440703040424    4.131e-07
+	  11        -0.232440705132952    1.329e-07
+	  12        -0.232440703536074    4.036e-08
+
+	Iterations converged.
+
+	Overlap <L|e^T> =        0.93446919006
+	Symmetry of left-hand state: A1 
+	Symmetry of left-hand eigenvector: A1 
+	Initial overlap of initial guess <L|R> =    0.9999764730
+	Checking overlap of initial guess <L|R> =    1.0000000000
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter     PseudoEnergy or Norm         RMS  
+	----     ---------------------     --------
+	  12        -0.001083887968540    4.036e-08
+	   1        -0.001313930008413    5.214e-02
+	   2        -0.001199807840914    1.795e-02
+	   3        -0.001271344849819    2.502e-03
+	   4        -0.001267222566065    1.743e-03
+	   5        -0.001284830934434    9.327e-04
+	   6        -0.001289116773560    5.482e-04
+	   7        -0.001297999061708    2.686e-04
+	   8        -0.001302932690748    1.541e-04
+	   9        -0.001308993220082    1.107e-04
+	  10        -0.001313905854508    7.616e-05
+	  11        -0.001317457280386    4.504e-05
+	  12        -0.001318489106128    1.858e-05
+	  13        -0.001318559452587    9.046e-06
+	  14        -0.001318677300740    4.475e-06
+	  15        -0.001318649328263    2.150e-06
+	  16        -0.001318659139934    1.082e-06
+	  17        -0.001318645282581    5.608e-07
+	  18        -0.001318639381422    2.715e-07
+	  19        -0.001318633897314    1.498e-07
+	  20        -0.001318633812340    8.316e-08
+
+	Initial  <L|R>  =        0.9757421440
+	Normalizing L...
+	L0 * R0 =       -0.0000000000
+	L1 * R1 =        0.9331259572
+	L2 * R2 =        0.0668740428
+	 <L|R>  =        1.0000000000
+	Pseudoenergy/Norm w/normed L =   -0.001351416273697
+
+	Iterations converged.
+
+	Symmetry of left-hand state: A1 
+	Symmetry of left-hand eigenvector: A1 
+	Initial overlap of initial guess <L|R> =    0.9979563020
+	Checking overlap of initial guess <L|R> =    1.0000000000
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter     PseudoEnergy or Norm         RMS  
+	----     ---------------------     --------
+	  20        -0.006253788224306    8.316e-08
+	   1        -0.014443920714810    5.787e-02
+	   2        -0.013402824878841    1.959e-02
+	   3        -0.013564684252997    2.934e-03
+	   4        -0.013552217843467    1.488e-03
+	   5        -0.013547344057145    1.299e-03
+	   6        -0.013553281620815    1.326e-03
+	   7        -0.013562936783267    1.173e-03
+	   8        -0.013556373511716    6.294e-04
+	   9        -0.013554151431686    3.537e-04
+	  10        -0.013551687919857    2.064e-04
+	  11        -0.013550559897966    9.810e-05
+	  12        -0.013550743156529    3.426e-05
+	  13        -0.013550442496329    1.396e-05
+	  14        -0.013550545327793    7.862e-06
+	  15        -0.013550481465543    5.280e-06
+	  16        -0.013550490548243    3.028e-06
+	  17        -0.013550503214900    1.657e-06
+	  18        -0.013550517339112    8.564e-07
+	  19        -0.013550521484635    4.742e-07
+	  20        -0.013550517142481    3.280e-07
+	  21        -0.013550510317494    2.189e-07
+	  22        -0.013550505875191    1.220e-07
+	  23        -0.013550504490437    6.543e-08
+
+	Initial  <L|R>  =        0.9726696299
+	Normalizing L...
+	L0 * R0 =       -0.0000000000
+	L1 * R1 =        0.9319967686
+	L2 * R2 =        0.0680032314
+	 <L|R>  =        1.0000000000
+	Pseudoenergy/Norm w/normed L =   -0.013931250728515
+
+	Iterations converged.
+
+	<L|R> overlap matrix with ROHF quantities (-99 => 0 by symmetry)
+
+           1           2           3
+
+    1   1.0000000   0.0000000  -0.0000000
+    2   0.0000000   1.0000000  -0.0000003
+    3   0.0000000  -0.0000001   1.0000000
+	<L|R> overlap matrix with RHF quantities (-99 => 0 by symmetry)
+
+           1           2           3
+
+    1   1.0000000   0.0000000  -0.0000000
+    2   0.0000000   1.0000000  -0.0000003
+    3   0.0000000  -0.0000001   1.0000000
+******************************************************************************
+tstop called on mac4704.local
+Thu Nov 10 20:11:53 2005
+
+user time   =       6.82 seconds =       0.11 minutes
+system time =       8.60 seconds =       0.14 minutes
+total time  =         13 seconds =       0.22 minutes
+******************************************************************************
+tstart called on mac4704.local
+Thu Nov 10 20:11:53 2005
+
+
+			**************************
+			*                        *
+			*        CCDENSITY       *
+			*                        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    9.196934380444841
+	SCF energy          (chkpt)   =  -76.052939649648380
+	Reference energy    (file100) =  -76.052939649648494
+	CCSD energy         (CC_INFO) =   -0.236721263832397
+	Total CCSD energy   (CC_INFO) =  -76.289660913480887
+
+	Input parameters:
+	-----------------
+	Tolerance     = 1.0e-14
+	Cache Level   = 2
+	AO Basis      = No
+	OPDM Only     = Yes
+	Relax OPDM    = No
+	Excited State = Yes
+	Compute Xi    = No
+	Use Zeta      = No
+	Xi connected  = No
+
+	Ground? L_root L_irr R_root R_irr G_irr     EOM Energy        R0
+	  Yes      0     A1     0     A1   A1     0.0000000000   1.00000000
+	   No      1     A1     1     A1   A1     0.3610350002  -0.00293744
+	   No      2     A1     2     A1   A1     0.4151588265  -0.02947499
+
+	Setting up L and R to compute density
+	Left-hand eigenvector: symmetry A1  and excited root 0
+	Right-hand eigenvector: symmetry A1  and excited root 0
+	R0 =    1.0000000000
+
+	Trace of onepdm =    0.000000000000000
+	Overlaps of onepdm after ground-state parts added.
+	<DIA|DIA> =    0.0011847889     <Dia|Dia> =    0.0011847889
+	<DAI|DAI> =    0.0005363984     <Dai|Dai> =    0.0005363984
+	<Dpq|Dqp> =    0.0034423746
+
+	Energies re-computed from CC density:
+	-------------------------------------
+	One-electron energy        =    0.248869478630577
+
+	Setting up L and R to compute density
+	Left-hand eigenvector: symmetry A1  and excited root 1
+	Right-hand eigenvector: symmetry A1  and excited root 1
+	R0 =    1.0000000000
+
+	Trace of onepdm =    0.000000000000000
+	Overlaps of onepdm after ground-state parts added.
+	<DIA|DIA> =    0.0000000014     <Dia|Dia> =    0.0000000014
+	<DAI|DAI> =    0.0000039937     <Dai|Dai> =    0.0000039937
+	<Dpq|Dqp> =    0.0000079901
+	Overlaps of onepdm after excited-state parts added.
+	<DIA|DIA> =    0.0074434973     <Dia|Dia> =    0.0074434973
+	<DAI|DAI> =    0.0231277122     <Dai|Dai> =    0.0231277122
+	<Dpq|Dqp> =    0.0611424191
+
+	Energies re-computed from CC density:
+	-------------------------------------
+	One-electron energy        =    0.765261341458789
+
+	Setting up L and R to compute density
+	Left-hand eigenvector: symmetry A1  and excited root 2
+	Right-hand eigenvector: symmetry A1  and excited root 2
+	R0 =    1.0000000000
+
+	Trace of onepdm =    0.000000000000000
+	Overlaps of onepdm after ground-state parts added.
+	<DIA|DIA> =    0.0000006359     <Dia|Dia> =    0.0000006359
+	<DAI|DAI> =    0.0004019756     <Dai|Dai> =    0.0004019756
+	<Dpq|Dqp> =    0.0008052231
+	Overlaps of onepdm after excited-state parts added.
+	<DIA|DIA> =    0.0108258941     <Dia|Dia> =    0.0108258941
+	<DAI|DAI> =    0.0282900476     <Dai|Dai> =    0.0282900476
+	<Dpq|Dqp> =    0.0782318834
+
+	Energies re-computed from CC density:
+	-------------------------------------
+	One-electron energy        =    0.788758647338311
+******************************************************************************
+tstop called on mac4704.local
+Thu Nov 10 20:11:53 2005
+
+user time   =       0.25 seconds =       0.00 minutes
+system time =       0.33 seconds =       0.01 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on mac4704.local
+Thu Nov 10 20:11:54 2005
+
+    **********************************************
+    *                    OEPROP                  *
+    *          A simple property program         *
+    *              by a big TOOL fan             *
+    **********************************************
+
+
+  TASKS to be performed :
+    $One-particle density in MO basis in SQUARE form will be read from file73.
+    $Only electric dipole moment will be computed.
+    $Reference point for the electric multipole moments calculation is 
+      the center of mass.
+    $Reference point for the electric angular momentum calculation is 
+      at (0.000000 0.000000 0.000000)
+    $Electrostatic properties at the nuclei will be evaluated.
+
+  Title : 'RHF EOM CCSD expectation value dipole moments'
+
+  List of PARAMETERS :
+    # of atoms                 =      3
+    # of molecular orbitals    =     42
+    # of basis functions       =     42
+    # of atomic orbitals       =     44
+    # of irreps                =      4
+    Total charge               =      0
+    # of unique shells         =     20
+    # of primitives            =     30
+    Print level                =      1
+
+  List of GRID PARAMETERS :
+    GRID_ORIGIN                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_X                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_Y                =	(  0.00000  0.00000  0.00000 )
+    NIX                        =	  11
+    NIY                        =	  11
+    GRID_ZMIN                  =	   0.00000
+    GRID_ZMAX                  =	   3.00000
+
+	Number of CC densities to analyze is: 3
+	** Analyzing density number 1...
+ --------------------------------------------------------------
+   ** Mulliken population analysis of one-particle density **
+ --------------------------------------------------------------
+
+ -Gross orbital populations :
+
+  Center   AO          L          Q(AO)
+  ------  ----        ---      -----------
+     2      1          0        0.75402906
+     2      2          0        1.22505143
+     2      3          0        0.89033238
+     2      4          0        0.64631046
+     2      5          0       -0.22739096
+     2      6          1        1.29690856
+     2      7          1        0.98843556
+     2      8          1        1.11571079
+     2      9          1        0.53245171
+     2     10          1        0.05186081
+     2     11          1        0.27332390
+     2     12          1        0.06844598
+     2     13          1       -0.07185629
+     2     14          1       -0.00222075
+     2     15          2       -0.00190434
+     2     16          2        0.00535602
+     2     17          2        0.00710873
+     2     18          2        0.01341409
+     2     19          2        0.01917857
+     2     20          2        0.00299154
+     2     21          2        0.01889691
+     2     22          2        0.00079286
+     2     23          2        0.00228162
+     2     24          2       -0.01374378
+     2     25          2       -0.02467488
+     2     26          2       -0.00943296
+     3     27          0        0.82445890
+     3     28          0        0.26524356
+     3     29          0        0.00422293
+     3     30          1        0.04840822
+     3     31          1        0.05445556
+     3     32          1        0.04525544
+     3     33          1       -0.00450563
+     3     34          1       -0.02006745
+     3     35          1        0.00169998
+     1     36          0        0.82445890
+     1     37          0        0.26524356
+     1     38          0        0.00422293
+     1     39          1        0.04840822
+     1     40          1        0.05445556
+     1     41          1        0.04525544
+     1     42          1       -0.00450563
+     1     43          1       -0.02006745
+     1     44          1        0.00169998
+
+
+ -Atomic bond populations :
+
+           1           2           3
+
+    1   1.0860474   0.0943152  -0.2135838
+    2   0.0943152   6.4948911   0.0943152
+    3  -0.2135838   0.0943152   1.0860474
+
+
+ -Gross atomic populations and net charges :
+
+    Center    Atomic Population    Net Charge
+    ------    -----------------    ----------
+       1            1.219172        -0.219172
+       2            7.561657        +0.438343
+       3            1.219172        -0.219172
+
+
+ --------------------------------------------------------------
+                *** Electric multipole moments ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000          0.0000000000         -0.0000000000
+
+ -Electric dipole moment (expectation values) :
+
+    mu(X)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
+    mu(Y)  =  -0.00000 D  =  -5.64772090e-45 C*m  =  -0.00000000 a.u.
+    mu(Z)  =   1.84034 D  =   6.13870005e-30 C*m  =   0.72404351 a.u.
+    |mu|   =   1.84034 D  =   6.13870005e-30 C*m  =   0.72404351 a.u.
+
+
+ --------------------------------------------------------------
+              *** Electronic angular momentum ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000         -0.0000000000          0.0000000000
+
+ -Electronic angular momentum (expectation values) :
+
+    Lx  =   0.00000000 a.u.
+    Ly  =   0.00000000 a.u.
+    Lz  =   0.00000000 a.u.
+
+
+ --------------------------------------------------------------
+      *** Electrostatic  properties at atomic centers ***
+ --------------------------------------------------------------
+
+ -Coordinates of atomic centers (a.u.):
+    #   Charge           x                     y                     z
+   ---  ------  --------------------  --------------------  --------------------
+    1      1            0.0000000000         -1.4299366110          0.9832658454
+    2      8            0.0000000000          0.0000000000         -0.1239093744
+    3      1            0.0000000000          1.4299366110          0.9832658454
+
+
+ -Electrostatic potential and electric field (a.u.) :
+
+    Center         phi            Ex             Ey           Ez
+    ------    ------------   ------------  ------------  ------------
+       1       -0.98148929     0.00000000   -0.03424896    0.02728415
+       2      -22.30032671     0.00000000    0.00000000   -0.07187055
+       3       -0.98148929     0.00000000    0.03424896    0.02728415
+
+
+ -Electric field gradient (regular form) (a.u.):
+
+    Center           XX                    YY                    ZZ
+    ------  --------------------  --------------------  --------------------
+       1             -1.35870862           -1.92606115           -1.70319451
+       2          -1243.13213687        -1246.19340098        -1244.97280599
+       3             -1.35870862           -1.92606115           -1.70319451
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000           -1.58752098
+       2              0.00000000            0.00000000           -0.00000000
+       3              0.00000000            0.00000000            1.58752098
+
+
+ -Electric field gradient (traceless tensor form) (a.u.):
+
+    Center        XX - RR/3             YY - RR/3             ZZ - RR/3
+    ------  --------------------  --------------------  --------------------
+       1              0.30394614           -0.26340639           -0.04053975
+       2              1.63397774           -1.42728637           -0.20669138
+       3              0.30394614           -0.26340639           -0.04053975
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000           -1.58752098
+       2              0.00000000            0.00000000           -0.00000000
+       3              0.00000000            0.00000000            1.58752098
+
+
+ -Electron density (a.u.):
+
+    Center           rho
+    ------  --------------------
+       1              0.39692959
+       2            297.16602020
+       3              0.39692959
+
+
+ --------------------------------------------------------------
+                *** Miscellaneous properties ***
+ --------------------------------------------------------------
+
+ -Relativistic MVD one-electron corrections to the energy (a.u.):
+
+    Mass-velocity (p^4) term     :   -0.251043187901638
+    One-electron Darwin term     :   0.198922876780339
+    Total one-electron MVD terms :   -0.052120311121299
+
+
+	** Analyzing density number 2...
+ --------------------------------------------------------------
+   ** Mulliken population analysis of one-particle density **
+ --------------------------------------------------------------
+
+ -Gross orbital populations :
+
+  Center   AO          L          Q(AO)
+  ------  ----        ---      -----------
+     2      1          0        0.75487182
+     2      2          0        1.22389868
+     2      3          0        0.93656778
+     2      4          0        0.53312060
+     2      5          0       -0.23739252
+     2      6          1        1.43489693
+     2      7          1        1.13147539
+     2      8          1        0.75749296
+     2      9          1        0.42968115
+     2     10          1        0.02336716
+     2     11          1        0.08243307
+     2     12          1        0.07531351
+     2     13          1       -0.07462398
+     2     14          1       -0.01011486
+     2     15          2       -0.01089017
+     2     16          2        0.00046101
+     2     17          2        0.00236508
+     2     18          2        0.00971178
+     2     19          2        0.01083543
+     2     20          2        0.00510990
+     2     21          2        0.00491006
+     2     22          2        0.00029276
+     2     23          2        0.00163564
+     2     24          2        0.01202097
+     2     25          2       -0.02308568
+     2     26          2       -0.01549089
+     3     27          0        0.70350724
+     3     28          0        0.29582617
+     3     29          0        0.34415219
+     3     30          1        0.03812907
+     3     31          1        0.06642816
+     3     32          1        0.04680656
+     3     33          1       -0.01024481
+     3     34          1       -0.01745213
+     3     35          1        0.00341576
+     1     36          0        0.70350724
+     1     37          0        0.29582617
+     1     38          0        0.34415219
+     1     39          1        0.03812907
+     1     40          1        0.06642816
+     1     41          1        0.04680656
+     1     42          1       -0.01024481
+     1     43          1       -0.01745213
+     1     44          1        0.00341576
+
+
+ -Atomic bond populations :
+
+           1           2           3
+
+    1   1.0345698   0.2004542  -0.0086689
+    2   0.2004542   6.0010218   0.2004542
+    3  -0.0086689   0.2004542   1.0345698
+
+
+ -Gross atomic populations and net charges :
+
+    Center    Atomic Population    Net Charge
+    ------    -----------------    ----------
+       1            1.470568        -0.470568
+       2            7.058864        +0.941136
+       3            1.470568        -0.470568
+
+
+ --------------------------------------------------------------
+                *** Electric multipole moments ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000          0.0000000000         -0.0000000000
+
+ -Electric dipole moment (expectation values) :
+
+    mu(X)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
+    mu(Y)  =   0.00000 D  =   7.53029453e-45 C*m  =   0.00000000 a.u.
+    mu(Z)  =  -1.33116 D  =  -4.44026936e-30 C*m  =  -0.52371808 a.u.
+    |mu|   =   1.33116 D  =   4.44026936e-30 C*m  =   0.52371808 a.u.
+
+
+ --------------------------------------------------------------
+              *** Electronic angular momentum ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000         -0.0000000000          0.0000000000
+
+ -Electronic angular momentum (expectation values) :
+
+    Lx  =   0.00000000 a.u.
+    Ly  =   0.00000000 a.u.
+    Lz  =   0.00000000 a.u.
+
+
+ --------------------------------------------------------------
+      *** Electrostatic  properties at atomic centers ***
+ --------------------------------------------------------------
+
+ -Coordinates of atomic centers (a.u.):
+    #   Charge           x                     y                     z
+   ---  ------  --------------------  --------------------  --------------------
+    1      1            0.0000000000         -1.4299366110          0.9832658454
+    2      8            0.0000000000          0.0000000000         -0.1239093744
+    3      1            0.0000000000          1.4299366110          0.9832658454
+
+
+ -Electrostatic potential and electric field (a.u.) :
+
+    Center         phi            Ex             Ey           Ez
+    ------    ------------   ------------  ------------  ------------
+       1       -0.75922033     0.00000000   -0.11387892    0.02104015
+       2      -22.06988594     0.00000000   -0.00000000    0.02627370
+       3       -0.75922033     0.00000000    0.11387892    0.02104015
+
+
+ -Electric field gradient (regular form) (a.u.):
+
+    Center           XX                    YY                    ZZ
+    ------  --------------------  --------------------  --------------------
+       1             -1.06044501           -1.64438987           -1.35641695
+       2          -1243.32472359        -1246.53343041        -1248.82545801
+       3             -1.06044501           -1.64438987           -1.35641695
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000           -1.65153041
+       2              0.00000000            0.00000000            0.00000000
+       3              0.00000000            0.00000000            1.65153041
+
+
+ -Electric field gradient (traceless tensor form) (a.u.):
+
+    Center        XX - RR/3             YY - RR/3             ZZ - RR/3
+    ------  --------------------  --------------------  --------------------
+       1              0.29330560           -0.29063926           -0.00266634
+       2              2.90314708           -0.30555974           -2.59758734
+       3              0.29330560           -0.29063926           -0.00266634
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000           -1.65153041
+       2              0.00000000            0.00000000            0.00000000
+       3              0.00000000            0.00000000            1.65153041
+
+
+ -Electron density (a.u.):
+
+    Center           rho
+    ------  --------------------
+       1              0.32318415
+       2            297.51498875
+       3              0.32318415
+
+
+ --------------------------------------------------------------
+                *** Miscellaneous properties ***
+ --------------------------------------------------------------
+
+ -Relativistic MVD one-electron corrections to the energy (a.u.):
+
+    Mass-velocity (p^4) term     :   -0.251329252404849
+    One-electron Darwin term     :   0.199144061108668
+    Total one-electron MVD terms :   -0.052185191296181
+
+
+	** Analyzing density number 3...
+ --------------------------------------------------------------
+   ** Mulliken population analysis of one-particle density **
+ --------------------------------------------------------------
+
+ -Gross orbital populations :
+
+  Center   AO          L          Q(AO)
+  ------  ----        ---      -----------
+     2      1          0        0.75569322
+     2      2          0        1.22283607
+     2      3          0        0.96404279
+     2      4          0        0.61613494
+     2      5          0       -0.29512177
+     2      6          1        0.89891408
+     2      7          1        1.12026314
+     2      8          1        1.23373872
+     2      9          1        0.15181547
+     2     10          1        0.02441600
+     2     11          1        0.21683049
+     2     12          1        1.16769636
+     2     13          1       -0.06431115
+     2     14          1        0.03077540
+     2     15          2       -0.00538511
+     2     16          2        0.00141112
+     2     17          2        0.00259161
+     2     18          2        0.01116144
+     2     19          2        0.01563419
+     2     20          2        0.00124253
+     2     21          2        0.01641949
+     2     22          2        0.00036401
+     2     23          2        0.00723831
+     2     24          2       -0.01128388
+     2     25          2       -0.02210239
+     2     26          2       -0.00874593
+     3     27          0        0.74392969
+     3     28          0        0.22157436
+     3     29          0        0.03122889
+     3     30          1        0.01697762
+     3     31          1        0.06035413
+     3     32          1        0.04460946
+     3     33          1       -0.13036443
+     3     34          1       -0.01803353
+     3     35          1        0.00358924
+     1     36          0        0.74392969
+     1     37          0        0.22157436
+     1     38          0        0.03122889
+     1     39          1        0.01697762
+     1     40          1        0.06035413
+     1     41          1        0.04460946
+     1     42          1       -0.13036443
+     1     43          1       -0.01803353
+     1     44          1        0.00358924
+
+
+ -Atomic bond populations :
+
+           1           2           3
+
+    1   0.9619590  -0.1606349  -0.0308204
+    2  -0.1606349   7.9940244  -0.1606349
+    3  -0.0308204  -0.1606349   0.9619590
+
+
+ -Gross atomic populations and net charges :
+
+    Center    Atomic Population    Net Charge
+    ------    -----------------    ----------
+       1            0.973865        +0.026135
+       2            8.052269        -0.052269
+       3            0.973865        +0.026135
+
+
+ --------------------------------------------------------------
+                *** Electric multipole moments ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000          0.0000000000         -0.0000000000
+
+ -Electric dipole moment (expectation values) :
+
+    mu(X)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
+    mu(Y)  =   0.00000 D  =   1.12954418e-44 C*m  =   0.00000000 a.u.
+    mu(Z)  =   2.78612 D  =   9.29348962e-30 C*m  =   1.09614264 a.u.
+    |mu|   =   2.78612 D  =   9.29348962e-30 C*m  =   1.09614264 a.u.
+
+
+ --------------------------------------------------------------
+              *** Electronic angular momentum ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000         -0.0000000000          0.0000000000
+
+ -Electronic angular momentum (expectation values) :
+
+    Lx  =   0.00000000 a.u.
+    Ly  =   0.00000000 a.u.
+    Lz  =   0.00000000 a.u.
+
+
+ --------------------------------------------------------------
+      *** Electrostatic  properties at atomic centers ***
+ --------------------------------------------------------------
+
+ -Coordinates of atomic centers (a.u.):
+    #   Charge           x                     y                     z
+   ---  ------  --------------------  --------------------  --------------------
+    1      1            0.0000000000         -1.4299366110          0.9832658454
+    2      8            0.0000000000          0.0000000000         -0.1239093744
+    3      1            0.0000000000          1.4299366110          0.9832658454
+
+
+ -Electrostatic potential and electric field (a.u.) :
+
+    Center         phi            Ex             Ey           Ez
+    ------    ------------   ------------  ------------  ------------
+       1       -0.74239065     0.00000000   -0.06405026    0.03515678
+       2      -22.04012721     0.00000000    0.00000000   -0.07228762
+       3       -0.74239065     0.00000000    0.06405026    0.03515678
+
+
+ -Electric field gradient (regular form) (a.u.):
+
+    Center           XX                    YY                    ZZ
+    ------  --------------------  --------------------  --------------------
+       1             -1.24495430           -1.71820150           -1.50228634
+       2          -1248.77669988        -1248.09990733        -1246.89846248
+       3             -1.24495430           -1.71820150           -1.50228634
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000           -1.60836932
+       2              0.00000000            0.00000000            0.00000000
+       3              0.00000000            0.00000000            1.60836932
+
+
+ -Electric field gradient (traceless tensor form) (a.u.):
+
+    Center        XX - RR/3             YY - RR/3             ZZ - RR/3
+    ------  --------------------  --------------------  --------------------
+       1              0.24352641           -0.22972078           -0.01380562
+       2             -0.85167665           -0.17488410            1.02656075
+       3              0.24352641           -0.22972078           -0.01380562
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000           -1.60836932
+       2              0.00000000            0.00000000            0.00000000
+       3              0.00000000            0.00000000            1.60836932
+
+
+ -Electron density (a.u.):
+
+    Center           rho
+    ------  --------------------
+       1              0.35534859
+       2            297.92015408
+       3              0.35534859
+
+
+ --------------------------------------------------------------
+                *** Miscellaneous properties ***
+ --------------------------------------------------------------
+
+ -Relativistic MVD one-electron corrections to the energy (a.u.):
+
+    Mass-velocity (p^4) term     :   -0.251692070142403
+    One-electron Darwin term     :   0.199420569085687
+    Total one-electron MVD terms :   -0.052271501056715
+
+
+******************************************************************************
+tstop called on mac4704.local
+Thu Nov 10 20:11:54 2005
+
+user time   =       0.58 seconds =       0.01 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
