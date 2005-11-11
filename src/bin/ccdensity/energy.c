@@ -31,7 +31,7 @@
 ** Individual spin cases are handled below.
 */
 
-void energy(void)
+void energy(struct RHO_Params rho_params)
 {
   dpdfile2 D, F;
   dpdbuf4 G, A, B, C, DInts, E, FInts;
@@ -43,7 +43,7 @@ void energy(void)
 
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 0, "DIJ");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 0, rho_params.DIJ_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 0, 0, "fIJ");
     this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
@@ -52,7 +52,7 @@ void energy(void)
 /*  fprintf(outfile, "\tDIJ = %20.15f\n", this_energy); */
     one_energy += this_energy;
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 0, "Dij");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 0, rho_params.Dij_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 0, 0, "fij");
     this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
@@ -61,7 +61,7 @@ void energy(void)
  /* fprintf(outfile, "\tDij = %20.15f\n", this_energy); */
     one_energy += this_energy;
 
-    dpd_file2_init(&D, CC_OEI, 0, 1, 1, "DAB");
+    dpd_file2_init(&D, CC_OEI, 0, 1, 1, rho_params.DAB_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 1, 1, "fAB");
     this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
@@ -70,7 +70,7 @@ void energy(void)
   /*fprintf(outfile, "\tDAB = %20.15f\n", this_energy); */
     one_energy += this_energy;
 
-    dpd_file2_init(&D, CC_OEI, 0, 1, 1, "Dab");
+    dpd_file2_init(&D, CC_OEI, 0, 1, 1, rho_params.Dab_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 1, 1, "fab");
     this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
@@ -79,7 +79,7 @@ void energy(void)
   /*fprintf(outfile, "\tDab = %20.15f\n", this_energy); */
     one_energy += this_energy;
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DIA");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DIA_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 0, 1, "fIA");
     this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
@@ -88,7 +88,7 @@ void energy(void)
   /*fprintf(outfile, "\tDIA = %20.15f\n", this_energy); */
     one_energy += this_energy;
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dia");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.Dia_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 0, 1, "fia");
     this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
@@ -97,7 +97,7 @@ void energy(void)
   /*fprintf(outfile, "\tDia = %20.15f\n", this_energy); */
     one_energy += this_energy;
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DAI");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DAI_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 0, 1, "fIA");
     this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
@@ -106,7 +106,7 @@ void energy(void)
   /*fprintf(outfile, "\tDAI = %20.15f\n", this_energy); */
     one_energy += this_energy;
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dai");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.Dai_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 0, 1, "fia");
     this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
@@ -115,7 +115,7 @@ void energy(void)
     one_energy += this_energy;
   }
   else if(params.ref == 2) { /** UHF **/
-    dpd_file2_init(&D, CC_OEI, 0, 0, 0, "DIJ");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 0, rho_params.DIJ_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 0, 0, "fIJ");
     this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
@@ -124,7 +124,7 @@ void energy(void)
     /*    fprintf(outfile, "\tDIJ = %20.15f\n", this_energy); */
     one_energy += this_energy;
 
-    dpd_file2_init(&D, CC_OEI, 0, 2, 2, "Dij");
+    dpd_file2_init(&D, CC_OEI, 0, 2, 2, rho_params.Dij_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 2, 2, "fij");
     this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
@@ -133,7 +133,7 @@ void energy(void)
     /*    fprintf(outfile, "\tDij = %20.15f\n", this_energy); */
     one_energy += this_energy;
 
-    dpd_file2_init(&D, CC_OEI, 0, 1, 1, "DAB");
+    dpd_file2_init(&D, CC_OEI, 0, 1, 1, rho_params.DAB_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 1, 1, "fAB");
     this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
@@ -142,7 +142,7 @@ void energy(void)
     /*    fprintf(outfile, "\tDAB = %20.15f\n", this_energy); */
     one_energy += this_energy;
 
-    dpd_file2_init(&D, CC_OEI, 0, 3, 3, "Dab");
+    dpd_file2_init(&D, CC_OEI, 0, 3, 3, rho_params.Dab_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 3, 3, "fab");
     this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
@@ -151,7 +151,7 @@ void energy(void)
     /*    fprintf(outfile, "\tDab = %20.15f\n", this_energy); */
     one_energy += this_energy;
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DIA");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DIA_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 0, 1, "fIA");
     this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
@@ -160,7 +160,7 @@ void energy(void)
     /*    fprintf(outfile, "\tDIA = %20.15f\n", this_energy); */
     one_energy += this_energy;
 
-    dpd_file2_init(&D, CC_OEI, 0, 2, 3, "Dia");
+    dpd_file2_init(&D, CC_OEI, 0, 2, 3, rho_params.Dia_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 2, 3, "fia");
     this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
@@ -169,7 +169,7 @@ void energy(void)
     /*    fprintf(outfile, "\tDia = %20.15f\n", this_energy); */
     one_energy += this_energy;
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DAI");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DAI_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 0, 1, "fIA");
     this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
@@ -178,7 +178,7 @@ void energy(void)
     /*    fprintf(outfile, "\tDAI = %20.15f\n", this_energy); */
     one_energy += this_energy;
 
-    dpd_file2_init(&D, CC_OEI, 0, 2, 3, "Dai");
+    dpd_file2_init(&D, CC_OEI, 0, 2, 3, rho_params.Dai_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 2, 3, "fia");
     this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);

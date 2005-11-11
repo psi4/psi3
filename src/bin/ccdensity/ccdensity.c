@@ -22,27 +22,27 @@ void get_moinfo(void);
 void get_frozen(void);
 void get_params(void);
 void exit_io(void);
-void onepdm(void);
-void sortone(void);
+void onepdm(struct RHO_Params);
+void sortone(struct RHO_Params);
 void twopdm(void);
-void energy(void);
+void energy(struct RHO_Params);
 void resort_tei(void);
 void resort_gamma(void);
-void lag(void);
+void lag(struct RHO_Params rho_params);
 void build_X(void);
 void build_A(void);
 void build_Z(void);
 void relax_I(void);
-void relax_D(void);
+void relax_D(struct RHO_Params rho_params);
 void sortI(void);
-void fold(void);
-void deanti(void);
+void fold(struct RHO_Params rho_params);
+void deanti(struct RHO_Params rho_params);
 void add_ref_ROHF(struct iwlbuf *);
 void add_ref_UHF(struct iwlbuf *, struct iwlbuf *, struct iwlbuf *);
 void add_core_ROHF(struct iwlbuf *);
 void add_core_UHF(struct iwlbuf *, struct iwlbuf *, struct iwlbuf *);
-void dump_ROHF(struct iwlbuf *);
-void dump_UHF(struct iwlbuf *, struct iwlbuf *, struct iwlbuf *);
+void dump_ROHF(struct iwlbuf *, struct RHO_Params rho_params);
+void dump_UHF(struct iwlbuf *, struct iwlbuf *, struct iwlbuf *, struct RHO_Params rho_params);
 void kinetic(void);
 void dipole(void);
 void probable(void);
@@ -50,10 +50,10 @@ int **cacheprep_rhf(int level, int *cachefiles);
 int **cacheprep_uhf(int level, int *cachefiles);
 void cachedone_rhf(int **cachelist);
 void cachedone_uhf(int **cachelist);
-void setup_LR(void);
+void setup_LR(struct RHO_Params);
 void G_build(void);
-void x_oe_intermediates(void);
-void x_onepdm(void);
+void x_oe_intermediates(struct RHO_Params);
+void x_onepdm(struct RHO_Params);
 void x_te_intermediates(void);
 void x_Gijkl(void);
 void x_Gabcd(void);
@@ -67,13 +67,14 @@ void x_xi_zero(void);
 void x_xi2(void);
 void x_xi_oe_intermediates(void);
 void G_norm(void);
-void zero_onepdm(void);
+void zero_onepdm(struct RHO_Params rho_params);
 void zero_twopdm(void);
-void get_td_params(void);
-void td_setup(struct TD_Params *S);
-void tdensity(struct TD_Params *S);
-void oscillator_strength(struct TD_Params *S);
-void rotational_strength(struct TD_Params *S);
+void get_rho_params(void);
+void td_setup(struct RHO_Params S);
+void tdensity(struct RHO_Params S);
+void td_print(struct RHO_Params *S);
+double oscillator_strength(struct RHO_Params S);
+double rotational_strength(struct RHO_Params S);
 
 int main(int argc, char *argv[])
 {
@@ -89,6 +90,7 @@ int main(int argc, char *argv[])
   get_moinfo();
   /*  get_frozen(); */
   get_params();
+  get_rho_params();
 
   if ((moinfo.nfzc || moinfo.nfzv) && params.relax_opdm) {
     fprintf(outfile, "\n\tGradients/orbital relaxation involving frozen orbitals not yet available.\n");
@@ -112,34 +114,37 @@ int main(int argc, char *argv[])
 	     moinfo.avir_sym, moinfo.boccpi, moinfo.bocc_sym, moinfo.bvirtpi, moinfo.bvir_sym);
   }
 
-  if(params.transition) {
-    get_td_params();
-    for(i=0; i<params.nstates; i++) {
-      td_setup(&(td_params[i]));
-      tdensity(&(td_params[i]));
-      oscillator_strength(&(td_params[i]));
-      if(params.ref == 0) rotational_strength(&(td_params[i]));
+	if (params.transition) {
+	  params.OS = (double *) malloc(params.nstates * sizeof(double));
+	  params.RS = (double *) malloc(params.nstates * sizeof(double));
+	}
+
+  for (i=0; i<params.nstates; ++i) {
+
+    if(params.transition) {
+      td_setup(rho_params[i]);
+      tdensity(rho_params[i]);
+      params.OS[i] = oscillator_strength(rho_params[i]);
+      if(params.ref == 0) {
+  	    params.RS[i] = rotational_strength(rho_params[i]);
+		  }
       td_cleanup();
     }
-    td_print();
-  }
-  else {
-    /* CC_GLG will contain L, or R0*L + Zeta, 
-       if relaxed and zeta is available */
-    /* CC_GL will contain L */
-    setup_LR();
 
-    /* if calculating Xi, do it and then quit */
+    /* CC_GLG will contain L, or R0*L + Zeta, if relaxed and zeta is available */
+    /* CC_GL will contain L */
+    setup_LR(rho_params[i]);
+
+		/* Calculate Xi, put Xi in EOM_XI, and quit */
     if ( params.calc_xi ) {
-      /* these intermediates go into EOM_TMP and are used to compute Xi
-         and saved to be used later to build the excited-state density 
-         matrix */
+      /* these intermediates go into EOM_TMP and are used to compute Xi;
+        they may be reused to compute the excited-state density matrix */
       if (params.ref == 0) {
-        x_oe_intermediates_rhf();
+        x_oe_intermediates_rhf(rho_params[i]);
         x_te_intermediates_rhf();
       }
       else {
-        x_oe_intermediates();
+        x_oe_intermediates(rho_params[i]);
         x_te_intermediates();
       }
       x_xi_intermediates(); /*Xi intermediates put in EOM_TMP_XI */
@@ -158,19 +163,19 @@ int main(int argc, char *argv[])
     }
 
     /* compute ground state parts of onepdm or put zeroes there */
-    if ( ((params.L_irr == params.G_irr) || (params.use_zeta)) ) {
-      zero_onepdm();
-      onepdm();
+    if ( ((rho_params[i].L_irr == rho_params[i].G_irr) || (params.use_zeta)) ) {
+      zero_onepdm(rho_params[i]);
+      onepdm(rho_params[i]);
     }
     else
-      zero_onepdm();
+      zero_onepdm(rho_params[i]);
 
     /* if the one-electron excited-state intermediates are not already on disk (from a Xi
        calculation, compute them.  They are nearly all necessary to compute the excited-state
        onepdm. Then complete excited-state onepdm.*/
-    if (!params.ground) {
-      x_oe_intermediates(); /* change to x_oe_intermediates_rhf() when rho gets spin-adapted */
-      x_onepdm();
+    if (!rho_params[i].R_ground) {
+      x_oe_intermediates(rho_params[i]); /* change to x_oe_intermediates_rhf() when rho gets spin-adapted */
+      x_onepdm(rho_params[i]);
     }
 
     /* begin construction of twopdm */
@@ -192,10 +197,8 @@ int main(int argc, char *argv[])
       if (!params.ground) {
         x_te_intermediates(); /* change to x_te_intermediates_rhf() when rho gets spin-adapted */
         V_build_x(); /* uses CC_GL, writes t2*L2 to EOM_TMP */
-      }
 
-      /* add in non-R0 parts of onepdm and twopdm */
-      if (!params.ground) {
+        /* add in non-R0 parts of onepdm and twopdm */
         x_Gijkl();
         x_Gabcd();
         x_Gibja();
@@ -205,14 +208,14 @@ int main(int argc, char *argv[])
       }
     }
 
-    sortone();
+    sortone(rho_params[i]); /* puts full 1-pdm into moinfo.opdm */
     /* dipole(); */
 
     if (!params.onepdm) {
 
       kinetic(); /* puts kinetic energy integrals into MO basis */
 
-      lag(); /* builds the orbital lagrangian pieces, I */
+      lag(rho_params[i]); /* builds the orbital lagrangian pieces, I */
 
       /* dpd_init(1, moinfo.nirreps, params.memory, 2, frozen.occpi, frozen.occ_sym,
         frozen.virtpi, frozen.vir_sym); */
@@ -229,15 +232,15 @@ int main(int argc, char *argv[])
       relax_I(); /* adds orbital response contributions to Lagrangian */
 
       if (params.relax_opdm) {
-        relax_D(); /* adds orbital response contributions to onepdm */
+        relax_D(rho_params[i]); /* adds orbital response contributions to onepdm */
       }
-      sortone(); /* builds large moinfo.opdm matrix */
+      sortone(rho_params[i]); /* builds large moinfo.opdm matrix */
       sortI(); /* builds large lagrangian matrix I */
-      fold();
-      deanti();
+      fold(rho_params[i]);
+      deanti(rho_params[i]);
     }
 
-    if(!params.aobasis) energy();
+    if(!params.aobasis) energy(rho_params[i]);
 
     /*  dpd_close(0); dpd_close(1); */
 
@@ -247,7 +250,7 @@ int main(int argc, char *argv[])
 
       add_core_ROHF(&OutBuf);
       add_ref_ROHF(&OutBuf);
-      dump_ROHF(&OutBuf);
+      dump_ROHF(&OutBuf, rho_params[i]);
 
       iwl_buf_flush(&OutBuf, 1);
       iwl_buf_close(&OutBuf, 1);
@@ -260,7 +263,7 @@ int main(int argc, char *argv[])
 
       /*    add_core_UHF(&OutBuf_AA, &OutBuf_BB, &OutBuf_AB); */
       add_ref_UHF(&OutBuf_AA, &OutBuf_BB, &OutBuf_AB);
-      dump_UHF(&OutBuf_AA, &OutBuf_BB, &OutBuf_AB);
+      dump_UHF(&OutBuf_AA, &OutBuf_BB, &OutBuf_AB, rho_params[i]);
 
       iwl_buf_flush(&OutBuf_AA, 1);
       iwl_buf_flush(&OutBuf_BB, 1);
@@ -269,7 +272,11 @@ int main(int argc, char *argv[])
       iwl_buf_close(&OutBuf_BB, 1);
       iwl_buf_close(&OutBuf_AB, 1);
     }
-  }
+    free_block(moinfo.opdm);
+
+  if (params.transition)
+    td_print(rho_params);
+}
 
   dpd_close(0);
 
@@ -292,7 +299,7 @@ void init_io(int argc, char *argv[])
   sprintf(progid, ":%s",gprgid());
 
   params.onepdm = 0;
-  params.ground = 1;
+  params.prop_all = 0;
   params.calc_xi = 0;
   params.restart = 0;
   params.use_zeta = 0;
@@ -301,9 +308,6 @@ void init_io(int argc, char *argv[])
   for (i=1, num_unparsed=0; i<argc; ++i) {
     if(!strcmp(argv[i], "--onepdm")) {
       params.onepdm = 1; /* generate ONLY the onepdm (for one-electron properties) */
-    }
-    else if (!strcmp(argv[i],"--excited")) {
-      params.ground = 0;
     }
     else if (!strcmp(argv[i],"--use_zeta")) {
       params.use_zeta = 1;
@@ -314,6 +318,9 @@ void init_io(int argc, char *argv[])
       params.calc_xi = 1;
       params.ground = 0;
       params.restart = 0;
+    }
+    else if (!strcmp(argv[i],"--prop_all")) {
+      params.prop_all = 1;
     }
     else if (!strcmp(argv[i],"--transition")) {
       params.transition = 1;

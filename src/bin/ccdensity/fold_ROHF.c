@@ -28,7 +28,7 @@
 ** G'mpmr = Dpr + Gmpmr
 ** */
 
-void fold_ROHF(void)
+void fold_ROHF(struct RHO_Params rho_params)
 {
   int h, nirreps;
   int i, j, k, l, m, a, b;
@@ -55,7 +55,7 @@ void fold_ROHF(void)
     fprintf(outfile, "\n\tEnergies re-computed from Fock-adjusted CC density:\n");
     fprintf(outfile,   "\t---------------------------------------------------\n");
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 0, "DIJ");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 0, rho_params.DIJ_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 0, 0, "h(i,j)");
     this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
@@ -64,7 +64,7 @@ void fold_ROHF(void)
     /*    fprintf(outfile, "\tDIJ = %20.15f\n", this_energy); */
     one_energy += this_energy;
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 0, "Dij");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 0, rho_params.Dij_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 0, 0, "h(i,j)");
     this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
@@ -73,7 +73,7 @@ void fold_ROHF(void)
     /*    fprintf(outfile, "\tDij = %20.15f\n", this_energy); */
     one_energy += this_energy;
 
-    dpd_file2_init(&D, CC_OEI, 0, 1, 1, "DAB");
+    dpd_file2_init(&D, CC_OEI, 0, 1, 1, rho_params.DAB_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 1, 1, "h(a,b)");
     this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
@@ -82,7 +82,7 @@ void fold_ROHF(void)
     /*    fprintf(outfile, "\tDAB = %20.15f\n", this_energy); */
     one_energy += this_energy;
 
-    dpd_file2_init(&D, CC_OEI, 0, 1, 1, "Dab");
+    dpd_file2_init(&D, CC_OEI, 0, 1, 1, rho_params.Dab_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 1, 1, "h(a,b)");
     this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
@@ -91,7 +91,7 @@ void fold_ROHF(void)
     /*    fprintf(outfile, "\tDab = %20.15f\n", this_energy); */
     one_energy += this_energy;
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DIA");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DIA_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 0, 1, "h(i,a)");
     this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
@@ -100,7 +100,7 @@ void fold_ROHF(void)
     /*    fprintf(outfile, "\tDIA = %20.15f\n", this_energy); */
     one_energy += this_energy;
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dia");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.Dia_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 0, 1, "h(i,a)");
     this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
@@ -109,7 +109,7 @@ void fold_ROHF(void)
     /*    fprintf(outfile, "\tDia = %20.15f\n", this_energy); */
     one_energy += this_energy;
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DAI");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DAI_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 0, 1, "h(i,a)");
     this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
@@ -118,7 +118,7 @@ void fold_ROHF(void)
     /*    fprintf(outfile, "\tDAI = %20.15f\n", this_energy); */
     one_energy += this_energy;
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dai");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.Dai_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 0, 1, "h(i,a)");
     this_energy = dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
@@ -131,7 +131,7 @@ void fold_ROHF(void)
     fflush(outfile);
   }
 
-  dpd_file2_init(&D, CC_OEI, 0, 0, 0, "DIJ");
+  dpd_file2_init(&D, CC_OEI, 0, 0, 0, rho_params.DIJ_lbl);
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
 
@@ -180,7 +180,7 @@ void fold_ROHF(void)
   dpd_file2_mat_close(&D);
   dpd_file2_close(&D);
 
-  dpd_file2_init(&D, CC_OEI, 0, 0, 0, "Dij");
+  dpd_file2_init(&D, CC_OEI, 0, 0, 0, rho_params.Dij_lbl);
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
 
@@ -228,7 +228,7 @@ void fold_ROHF(void)
   dpd_file2_mat_close(&D);
   dpd_file2_close(&D);
 
-  dpd_file2_init(&D, CC_OEI, 0, 0, 0, "DIJ");
+  dpd_file2_init(&D, CC_OEI, 0, 0, 0, rho_params.DIJ_lbl);
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
 
@@ -265,7 +265,7 @@ void fold_ROHF(void)
   dpd_file2_close(&D);
 
 
-  dpd_file2_init(&D, CC_OEI, 0, 0, 0, "Dij");
+  dpd_file2_init(&D, CC_OEI, 0, 0, 0, rho_params.Dij_lbl);
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
 
@@ -314,10 +314,10 @@ void fold_ROHF(void)
   dpd_file2_mat_close(&D);
   dpd_file2_close(&D);
 
-  dpd_file2_init(&D1, CC_OEI, 0, 0, 1, "DIA");
+  dpd_file2_init(&D1, CC_OEI, 0, 0, 1, rho_params.DIA_lbl);
   dpd_file2_mat_init(&D1);
   dpd_file2_mat_rd(&D1);
-  dpd_file2_init(&D2, CC_OEI, 0, 0, 1, "DAI");
+  dpd_file2_init(&D2, CC_OEI, 0, 0, 1, rho_params.DAI_lbl);
   dpd_file2_mat_init(&D2);
   dpd_file2_mat_rd(&D2);
 
@@ -367,10 +367,10 @@ void fold_ROHF(void)
   dpd_file2_mat_close(&D2);
   dpd_file2_close(&D2);
 
-  dpd_file2_init(&D1, CC_OEI, 0, 0, 1, "Dia");
+  dpd_file2_init(&D1, CC_OEI, 0, 0, 1, rho_params.Dia_lbl);
   dpd_file2_mat_init(&D1);
   dpd_file2_mat_rd(&D1);
-  dpd_file2_init(&D2, CC_OEI, 0, 0, 1, "Dai");
+  dpd_file2_init(&D2, CC_OEI, 0, 0, 1, rho_params.Dai_lbl);
   dpd_file2_mat_init(&D2);
   dpd_file2_mat_rd(&D2);
 
@@ -418,10 +418,10 @@ void fold_ROHF(void)
   dpd_file2_mat_close(&D2);
   dpd_file2_close(&D2);
 
-  dpd_file2_init(&D1, CC_OEI, 0, 0, 1, "DIA");
+  dpd_file2_init(&D1, CC_OEI, 0, 0, 1, rho_params.DIA_lbl);
   dpd_file2_mat_init(&D1);
   dpd_file2_mat_rd(&D1);
-  dpd_file2_init(&D2, CC_OEI, 0, 0, 1, "DAI");
+  dpd_file2_init(&D2, CC_OEI, 0, 0, 1, rho_params.DAI_lbl);
   dpd_file2_mat_init(&D2);
   dpd_file2_mat_rd(&D2);
 
@@ -468,10 +468,10 @@ void fold_ROHF(void)
   dpd_file2_close(&D2);
 
 
-  dpd_file2_init(&D1, CC_OEI, 0, 0, 1, "Dia");
+  dpd_file2_init(&D1, CC_OEI, 0, 0, 1, rho_params.Dia_lbl);
   dpd_file2_mat_init(&D1);
   dpd_file2_mat_rd(&D1);
-  dpd_file2_init(&D2, CC_OEI, 0, 0, 1, "Dai");
+  dpd_file2_init(&D2, CC_OEI, 0, 0, 1, rho_params.Dai_lbl);
   dpd_file2_mat_init(&D2);
   dpd_file2_mat_rd(&D2);
 
@@ -545,7 +545,7 @@ void fold_ROHF(void)
     fflush(outfile);
   }
 
-  dpd_file2_init(&D, CC_OEI, 0, 1, 1, "DAB");
+  dpd_file2_init(&D, CC_OEI, 0, 1, 1, rho_params.DAB_lbl);
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
 
@@ -590,7 +590,7 @@ void fold_ROHF(void)
   dpd_file2_close(&D);
 
 
-  dpd_file2_init(&D, CC_OEI, 0, 1, 1, "Dab");
+  dpd_file2_init(&D, CC_OEI, 0, 1, 1, rho_params.Dab_lbl);
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
 
@@ -634,7 +634,7 @@ void fold_ROHF(void)
   dpd_file2_close(&D);
 
 
-  dpd_file2_init(&D, CC_OEI, 0, 1, 1, "Dab");
+  dpd_file2_init(&D, CC_OEI, 0, 1, 1, rho_params.Dab_lbl);
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
 
@@ -678,7 +678,7 @@ void fold_ROHF(void)
   dpd_file2_close(&D);
 
 
-  dpd_file2_init(&D, CC_OEI, 0, 1, 1, "DAB");
+  dpd_file2_init(&D, CC_OEI, 0, 1, 1, rho_params.DAB_lbl);
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
 

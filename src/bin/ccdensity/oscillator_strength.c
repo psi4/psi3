@@ -13,7 +13,7 @@
 #define IOFF_MAX 32641
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
 
-void oscillator_strength(struct TD_Params *S)
+double oscillator_strength(struct RHO_Params S)
 {
   int nmo, nso, nao, noei, stat, i, I, h, j, nirreps, *ioff;
   int *order, *order_A, *order_B, *doccpi, natom, *clsdpi, *openpi, *orbspi;
@@ -242,8 +242,8 @@ void oscillator_strength(struct TD_Params *S)
 /*   fprintf(outfile, "MUZ_MOs\n"); */
 /*   print_mat(MUZ_MO, nmo, nmo, outfile); */
 
-  fprintf(outfile,"\n\tOscillator Strength for %d%3s\n",S->root+1,
-          moinfo.labels[S->irrep]);
+  fprintf(outfile,"\n\tOscillator Strength for %d%3s\n",S.R_root+1,
+          moinfo.labels[S.R_irr]);
   fprintf(outfile,"\t                              X    \t       Y    \t       Z\n");
 
   if((params.ref == 0) || (params.ref == 1)) {
@@ -297,12 +297,12 @@ void oscillator_strength(struct TD_Params *S)
   ds_y = lt_y * rt_y;
   ds_z = lt_z * rt_z;
   
-  f_x = (2*S->cceom_energy*ds_x)/3;
-  f_y = (2*S->cceom_energy*ds_y)/3;
-  f_z = (2*S->cceom_energy*ds_z)/3;
+  f_x = (2*S.cceom_energy*ds_x)/3;
+  f_y = (2*S.cceom_energy*ds_y)/3;
+  f_z = (2*S.cceom_energy*ds_z)/3;
   
-  f = sqrt(f_x*f_x + f_y*f_y + f_z*f_z);
-  S->OS = f;
+  f = f_x + f_y + f_z;
+/*   S->OS = f; */
   
   fprintf(outfile,"\t<0|mu_e|n>              %11.8lf \t %11.8lf \t %11.8lf\n",
           lt_x,lt_y,lt_z);
@@ -329,5 +329,5 @@ void oscillator_strength(struct TD_Params *S)
     free_block(MUZ_MO_B);
   }
 
-  return;
+  return f;
 }

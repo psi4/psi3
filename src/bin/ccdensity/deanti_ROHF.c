@@ -34,7 +34,7 @@
 ** comments below.
 ** */
 
-void deanti_ROHF(void)
+void deanti_ROHF(struct RHO_Params rho_params)
 {
   dpdbuf4 G1, G2;
   dpdfile2 D, F;
@@ -45,49 +45,49 @@ void deanti_ROHF(void)
     fprintf(outfile, "\n\tEnergies re-computed from Mulliken density:\n");
     fprintf(outfile,   "\t-------------------------------------------\n");
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 0, "DIJ");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 0, rho_params.DIJ_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 0, 0, "h(i,j)");
     one_energy += dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
     dpd_file2_close(&D);
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 0, "Dij");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 0, rho_params.Dij_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 0, 0, "h(i,j)");
     one_energy += dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
     dpd_file2_close(&D);
 
-    dpd_file2_init(&D, CC_OEI, 0, 1, 1, "DAB");
+    dpd_file2_init(&D, CC_OEI, 0, 1, 1, rho_params.DAB_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 1, 1, "h(a,b)");
     one_energy += dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
     dpd_file2_close(&D);
 
-    dpd_file2_init(&D, CC_OEI, 0, 1, 1, "Dab");
+    dpd_file2_init(&D, CC_OEI, 0, 1, 1, rho_params.Dab_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 1, 1, "h(a,b)");
     one_energy += dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
     dpd_file2_close(&D);
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DIA");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DIA_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 0, 1, "h(i,a)");
     one_energy += dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
     dpd_file2_close(&D);
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dia");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.Dia_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 0, 1, "h(i,a)");
     one_energy += dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
     dpd_file2_close(&D);
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DAI");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DAI_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 0, 1, "h(i,a)");
     one_energy += dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);
     dpd_file2_close(&D);
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dai");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.Dai_lbl);
     dpd_file2_init(&F, CC_OEI, 0, 0, 1, "h(i,a)");
     one_energy += dpd_file2_dot(&D, &F);
     dpd_file2_close(&F);

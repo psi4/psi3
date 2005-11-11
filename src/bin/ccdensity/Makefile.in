@@ -24,7 +24,7 @@ x_Gijkl.c x_Gabcd.c x_Gibja.c x_Gibja_uhf.c x_Gijka.c x_Gijka_uhf.c G.c \
 x_V.c x_Gciab.c x_Gciab_uhf.c x_Gijab.c x_Gijab_uhf.c zero_pdm.c \
 x_xi_intermediates.c x_xi1.c x_xi1_uhf.c x_xi1_rhf.c x_xi_check.c \
 norm.c x_xi2.c x_xi2_uhf.c x_xi2_rhf.c G_norm.c x_xi1_connected.c \
-get_td_params.c td_setup.c ltdensity_intermediates.c ltdensity.c rtdensity.c \
+get_rho_params.c td_setup.c ltdensity_intermediates.c ltdensity.c rtdensity.c \
 td_cleanup.c td_print.c sort_ltd_rohf.c sort_ltd_uhf.c sort_rtd_rohf.c \
 sort_rtd_uhf.c tdensity.c oscillator_strength.c transdip.c transL.c transp.c \
 rotational_strength.c ccdensity.c \

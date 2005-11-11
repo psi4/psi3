@@ -6,7 +6,7 @@
 ** using the expression given in lag.c.
 ** */
 
-void Iia(void)
+void Iia(struct RHO_Params rho_params)
 {
   dpdfile2 F, D, I;
   dpdbuf4 G, Aints, Fints, Eints, Dints, Cints;
@@ -17,16 +17,16 @@ void Iia(void)
     dpd_file2_init(&I, CC_OEI, 0, 0, 1, "I'IA");
 
     dpd_file2_init(&F, CC_OEI, 0, 0, 0, "fIJ");
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DAI");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DAI_lbl);
     dpd_contract222(&F, &D, &I, 0, 1, 1.0, 0.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DIA");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DIA_lbl);
     dpd_contract222(&F, &D, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);
     dpd_file2_close(&F);
 
     dpd_file2_init(&F, CC_OEI, 0, 0, 1, "fIA");
-    dpd_file2_init(&D, CC_OEI, 0, 1, 1, "DAB");
+    dpd_file2_init(&D, CC_OEI, 0, 1, 1, rho_params.DAB_lbl);
     dpd_contract222(&F, &D, &I, 0, 0, 1.0, 1.0);
     dpd_contract222(&F, &D, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);
@@ -38,16 +38,16 @@ void Iia(void)
     dpd_file2_init(&I, CC_OEI, 0, 0, 1, "I'ia");
 
     dpd_file2_init(&F, CC_OEI, 0, 0, 0, "fij");
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dai");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.Dai_lbl);
     dpd_contract222(&F, &D, &I, 0, 1, 1.0, 0.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dia");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.Dia_lbl);
     dpd_contract222(&F, &D, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);
     dpd_file2_close(&F);
 
     dpd_file2_init(&F, CC_OEI, 0, 0, 1, "fia");
-    dpd_file2_init(&D, CC_OEI, 0, 1, 1, "Dab");
+    dpd_file2_init(&D, CC_OEI, 0, 1, 1, rho_params.Dab_lbl);
     dpd_contract222(&F, &D, &I, 0, 0, 1.0, 1.0);
     dpd_contract222(&F, &D, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);
@@ -61,16 +61,16 @@ void Iia(void)
     dpd_file2_init(&I, CC_OEI, 0, 0, 1, "I'IA");
 
     dpd_file2_init(&F, CC_OEI, 0, 0, 0, "fIJ");
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DAI");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DAI_lbl);
     dpd_contract222(&F, &D, &I, 0, 1, 1.0, 0.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DIA");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DIA_lbl);
     dpd_contract222(&F, &D, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);
     dpd_file2_close(&F);
 
     dpd_file2_init(&F, CC_OEI, 0, 0, 1, "fIA");
-    dpd_file2_init(&D, CC_OEI, 0, 1, 1, "DAB");
+    dpd_file2_init(&D, CC_OEI, 0, 1, 1, rho_params.DAB_lbl);
     dpd_contract222(&F, &D, &I, 0, 0, 1.0, 1.0);
     dpd_contract222(&F, &D, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);
@@ -82,16 +82,16 @@ void Iia(void)
     dpd_file2_init(&I, CC_OEI, 0, 2, 3, "I'ia");
 
     dpd_file2_init(&F, CC_OEI, 0, 2, 2, "fij");
-    dpd_file2_init(&D, CC_OEI, 0, 2, 3, "Dai");
+    dpd_file2_init(&D, CC_OEI, 0, 2, 3, rho_params.Dai_lbl);
     dpd_contract222(&F, &D, &I, 0, 1, 1.0, 0.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, 0, 2, 3, "Dia");
+    dpd_file2_init(&D, CC_OEI, 0, 2, 3, rho_params.Dia_lbl);
     dpd_contract222(&F, &D, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);
     dpd_file2_close(&F);
 
     dpd_file2_init(&F, CC_OEI, 0, 2, 3, "fia");
-    dpd_file2_init(&D, CC_OEI, 0, 3, 3, "Dab");
+    dpd_file2_init(&D, CC_OEI, 0, 3, 3, rho_params.Dab_lbl);
     dpd_contract222(&F, &D, &I, 0, 0, 1.0, 1.0);
     dpd_contract222(&F, &D, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);

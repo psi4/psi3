@@ -18,7 +18,7 @@ void transdip(void);
 void transp(double sign);
 void transL(double sign);
 
-void rotational_strength(struct TD_Params *S)
+double rotational_strength(struct RHO_Params S)
 {
   int i, j, k;
   int no, nv, nt;
@@ -35,8 +35,8 @@ void rotational_strength(struct TD_Params *S)
 
   if(!strcmp("LENGTH",params.gauge)) {
 
-    fprintf(outfile,"\n\tLength-Gauge Rotational Strength for %d%3s\n",S->root+1,
-          moinfo.labels[S->irrep]);
+    fprintf(outfile,"\n\tLength-Gauge Rotational Strength for %d%3s\n",S.R_root+1,
+          moinfo.labels[S.R_irr]);
     fprintf(outfile,"\t                              X    \t       Y    \t       Z\n");
 
     lt_x = lt_y = lt_z = 0.0;
@@ -110,15 +110,15 @@ void rotational_strength(struct TD_Params *S)
     rs_z = 0.5 * ( rs_lz + rs_rz);
 
     rs = 0.5 * (rs_x + rs_y + rs_z);
-    S->RS = rs;
+    /* S->RS = rs; */
 
     fprintf(outfile,"\n\tRotational Strength     %11.8lf\n",rs);
     fflush(outfile);
   }
   else if(!strcmp("VELOCITY",params.gauge)) {
 
-    fprintf(outfile,"\n\tVelocity-Gauge Rotational Strength for %d%3s\n",S->root+1,
-          moinfo.labels[S->irrep]);
+    fprintf(outfile,"\n\tVelocity-Gauge Rotational Strength for %d%3s\n",S.R_root+1,
+          moinfo.labels[S.R_irr]);
     fprintf(outfile,"\t                              X    \t       Y    \t       Z\n");
 
     lt_x = lt_y = lt_z = 0.0;
@@ -197,17 +197,17 @@ void rotational_strength(struct TD_Params *S)
     fprintf(outfile,"\t<n|mu_e|0>*             %11.8lf \t %11.8lf \t %11.8lf\n",
           rt_x,rt_y,rt_z);
 
-    rs_x = (0.5 * rs_x) / S->cceom_energy;
-    rs_y = (0.5 * rs_y) / S->cceom_energy;
-    rs_z = (0.5 * rs_z) / S->cceom_energy;
+    rs_x = (0.5 * rs_x) / S.cceom_energy;
+    rs_y = (0.5 * rs_y) / S.cceom_energy;
+    rs_z = (0.5 * rs_z) / S.cceom_energy;
 
     rs = rs_x + rs_y + rs_z;
-    S->RS = rs;
+  /*  S->RS = rs; */
 
     fprintf(outfile,"\n\tRotational Strength (au)          %11.8lf\n",rs);
     fprintf(outfile,"\n\tRotational Strength (esu^2*cm^2)  %11.8lf\n",rs*_au2cgs);
     fflush(outfile);
   }
 
-  return;
+  return rs;
 }

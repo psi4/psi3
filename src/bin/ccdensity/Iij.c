@@ -10,7 +10,7 @@
 ** canonical unperturbed orbitals, only the diagonal elements
 ** contribute, of course).  */
 
-void Iij(void)
+void Iij(struct RHO_Params rho_params)
 {
   dpdfile2 I, F, D;
   dpdbuf4 G, Aints, Fints, Dints, Cints, Eints;
@@ -21,7 +21,7 @@ void Iij(void)
     dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'IJ");
 
     dpd_file2_init(&F, CC_OEI, 0, 0, 0, "fIJ");
-    dpd_file2_init(&D, CC_OEI, 0, 0, 0, "DIJ");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 0, rho_params.DIJ_lbl);
     dpd_contract222(&F, &D, &I, 0, 0, 1.0, 0.0);
     dpd_contract222(&F, &D, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);
@@ -31,10 +31,10 @@ void Iij(void)
     dpd_file2_close(&F);
 
     dpd_file2_init(&F, CC_OEI, 0, 0, 1, "fIA");
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DIA");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DIA_lbl);
     dpd_contract222(&F, &D, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DAI");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DAI_lbl);
     dpd_contract222(&F, &D, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&D);
     dpd_file2_close(&F);
@@ -45,7 +45,7 @@ void Iij(void)
     dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'ij");
 
     dpd_file2_init(&F, CC_OEI, 0, 0, 0, "fij");
-    dpd_file2_init(&D, CC_OEI, 0, 0, 0, "Dij");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 0, rho_params.Dij_lbl);
     dpd_contract222(&F, &D, &I, 0, 0, 1.0, 0.0);
     dpd_contract222(&F, &D, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);
@@ -55,10 +55,10 @@ void Iij(void)
     dpd_file2_close(&F);
 
     dpd_file2_init(&F, CC_OEI, 0, 0, 1, "fia");
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dia");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.Dia_lbl);
     dpd_contract222(&F, &D, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dai");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.Dai_lbl);
     dpd_contract222(&F, &D, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&D);
     dpd_file2_close(&F);
@@ -71,7 +71,7 @@ void Iij(void)
     dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'IJ");
 
     dpd_file2_init(&F, CC_OEI, 0, 0, 0, "fIJ");
-    dpd_file2_init(&D, CC_OEI, 0, 0, 0, "DIJ");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 0, rho_params.DIJ_lbl);
     dpd_contract222(&F, &D, &I, 0, 0, 1.0, 0.0);
     dpd_contract222(&F, &D, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);
@@ -81,10 +81,10 @@ void Iij(void)
     dpd_file2_close(&F);
 
     dpd_file2_init(&F, CC_OEI, 0, 0, 1, "fIA");
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DIA");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DIA_lbl);
     dpd_contract222(&F, &D, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DAI");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DAI_lbl);
     dpd_contract222(&F, &D, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&D);
     dpd_file2_close(&F);
@@ -95,7 +95,7 @@ void Iij(void)
     dpd_file2_init(&I, CC_OEI, 0, 2, 2, "I'ij");
 
     dpd_file2_init(&F, CC_OEI, 0, 2, 2, "fij");
-    dpd_file2_init(&D, CC_OEI, 0, 2, 2, "Dij");
+    dpd_file2_init(&D, CC_OEI, 0, 2, 2, rho_params.Dij_lbl);
     dpd_contract222(&F, &D, &I, 0, 0, 1.0, 0.0);
     dpd_contract222(&F, &D, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);
@@ -105,10 +105,10 @@ void Iij(void)
     dpd_file2_close(&F);
 
     dpd_file2_init(&F, CC_OEI, 0, 2, 3, "fia");
-    dpd_file2_init(&D, CC_OEI, 0, 2, 3, "Dia");
+    dpd_file2_init(&D, CC_OEI, 0, 2, 3, rho_params.Dia_lbl);
     dpd_contract222(&F, &D, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, 0, 2, 3, "Dai");
+    dpd_file2_init(&D, CC_OEI, 0, 2, 3, rho_params.Dai_lbl);
     dpd_contract222(&F, &D, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&D);
     dpd_file2_close(&F);
@@ -121,14 +121,14 @@ void Iij(void)
     /* I'IJ <-- sum_KL <IK||JL> (D_KL + D_LK) + sum_kl <Ik|Jl> (D_kl + D_lk) */
     dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'IJ");
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 0, "DIJ");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 0, rho_params.DIJ_lbl);
     dpd_buf4_init(&Aints, CC_AINTS, 0, 0, 0, 0, 0, 1, "A <ij|kl>");
     dpd_dot24(&D, &Aints, &I, 0, 0, 1.0, 1.0);
     dpd_dot24(&D, &Aints, &I, 1, 0, 1.0, 1.0);
     dpd_buf4_close(&Aints);
     dpd_file2_close(&D);
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 0, "Dij");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 0, rho_params.Dij_lbl);
     dpd_buf4_init(&Aints, CC_AINTS, 0, 0, 0, 0, 0, 0, "A <ij|kl>");
     dpd_dot24(&D, &Aints, &I, 0, 0, 1.0, 1.0);
     dpd_dot24(&D, &Aints, &I, 1, 0, 1.0, 1.0);
@@ -140,14 +140,14 @@ void Iij(void)
     /* I'ij <-- sum_kl <ik||jl> (D_kl + D_lk) + sum_KL <iK|jL> (D_KL + D_LK) */
     dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'ij");
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 0, "Dij");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 0, rho_params.Dij_lbl);
     dpd_buf4_init(&Aints, CC_AINTS, 0, 0, 0, 0, 0, 1, "A <ij|kl>");
     dpd_dot24(&D, &Aints, &I, 0, 0, 1.0, 1.0);
     dpd_dot24(&D, &Aints, &I, 1, 0, 1.0, 1.0);
     dpd_buf4_close(&Aints);
     dpd_file2_close(&D);
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 0, "DIJ");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 0, rho_params.DIJ_lbl);
     dpd_buf4_init(&Aints, CC_AINTS, 0, 0, 0, 0, 0, 0, "A <ij|kl>");
     dpd_dot24(&D, &Aints, &I, 0, 0, 1.0, 1.0);
     dpd_dot24(&D, &Aints, &I, 1, 0, 1.0, 1.0);
@@ -161,14 +161,14 @@ void Iij(void)
     /* I'IJ <-- sum_KL <IK||JL> (D_KL + D_LK) + sum_kl <Ik|Jl> (D_kl + D_lk) */
     dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'IJ");
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 0, "DIJ");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 0, rho_params.DIJ_lbl);
     dpd_buf4_init(&Aints, CC_AINTS, 0, 0, 0, 0, 0, 1, "A <IJ|KL>");
     dpd_dot24(&D, &Aints, &I, 0, 0, 1.0, 1.0);
     dpd_dot24(&D, &Aints, &I, 1, 0, 1.0, 1.0);
     dpd_buf4_close(&Aints);
     dpd_file2_close(&D);
 
-    dpd_file2_init(&D, CC_OEI, 0, 2, 2, "Dij");
+    dpd_file2_init(&D, CC_OEI, 0, 2, 2, rho_params.Dij_lbl);
     dpd_buf4_init(&Aints, CC_AINTS, 0, 22, 22, 22, 22, 0, "A <Ij|Kl>");
     dpd_dot24(&D, &Aints, &I, 0, 0, 1.0, 1.0);
     dpd_dot24(&D, &Aints, &I, 1, 0, 1.0, 1.0);
@@ -180,14 +180,14 @@ void Iij(void)
     /* I'ij <-- sum_kl <ik||jl> (D_kl + D_lk) + sum_KL <iK|jL> (D_KL + D_LK) */
     dpd_file2_init(&I, CC_OEI, 0, 2, 2, "I'ij");
 
-    dpd_file2_init(&D, CC_OEI, 0, 2, 2, "Dij");
+    dpd_file2_init(&D, CC_OEI, 0, 2, 2, rho_params.Dij_lbl);
     dpd_buf4_init(&Aints, CC_AINTS, 0, 10, 10, 10, 10, 1, "A <ij|kl>");
     dpd_dot24(&D, &Aints, &I, 0, 0, 1.0, 1.0);
     dpd_dot24(&D, &Aints, &I, 1, 0, 1.0, 1.0);
     dpd_buf4_close(&Aints);
     dpd_file2_close(&D);
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 0, "DIJ");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 0, rho_params.DIJ_lbl);
     dpd_buf4_init(&Aints, CC_AINTS, 0, 22, 22, 22, 22, 0, "A <Ij|Kl>");
     dpd_dot13(&D, &Aints, &I, 0, 0, 1.0, 1.0);
     dpd_dot13(&D, &Aints, &I, 1, 0, 1.0, 1.0);
@@ -204,19 +204,19 @@ void Iij(void)
     dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'IJ");
 
     dpd_buf4_init(&Eints, CC_EINTS, 0, 0, 10, 2, 10, 0, "E <ij||ka> (i>j,ka)");
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DIA");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DIA_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DAI");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DAI_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&D);
     dpd_buf4_close(&Eints);
 
     dpd_buf4_init(&Eints, CC_EINTS, 0, 0, 10, 0, 10, 0, "E <ij|ka>");
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dia");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.Dia_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dai");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.Dai_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&D);
     dpd_buf4_close(&Eints);
@@ -227,19 +227,19 @@ void Iij(void)
     dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'ij");
 
     dpd_buf4_init(&Eints, CC_EINTS, 0, 0, 10, 2, 10, 0, "E <ij||ka> (i>j,ka)");
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dia");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.Dia_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dai");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.Dai_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&D);
     dpd_buf4_close(&Eints);
 
     dpd_buf4_init(&Eints, CC_EINTS, 0, 0, 10, 0, 10, 0, "E <ij|ka>");
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DIA");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DIA_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DAI");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DAI_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&D);
     dpd_buf4_close(&Eints);
@@ -252,19 +252,19 @@ void Iij(void)
     dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'IJ");
 
     dpd_buf4_init(&Eints, CC_EINTS, 0, 0, 20, 2, 20, 0, "E <IJ||KA> (I>J,KA)");
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DIA");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DIA_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DAI");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DAI_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&D);
     dpd_buf4_close(&Eints);
 
     dpd_buf4_init(&Eints, CC_EINTS, 0, 22, 24, 22, 24, 0, "E <Ij|Ka>");
-    dpd_file2_init(&D, CC_OEI, 0, 2, 3, "Dia");
+    dpd_file2_init(&D, CC_OEI, 0, 2, 3, rho_params.Dia_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, 0, 2, 3, "Dai");
+    dpd_file2_init(&D, CC_OEI, 0, 2, 3, rho_params.Dai_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&D);
     dpd_buf4_close(&Eints);
@@ -275,19 +275,19 @@ void Iij(void)
     dpd_file2_init(&I, CC_OEI, 0, 2, 2, "I'ij");
 
     dpd_buf4_init(&Eints, CC_EINTS, 0, 10, 30, 12, 30, 0, "E <ij||ka> (i>j,ka)");
-    dpd_file2_init(&D, CC_OEI, 0, 2, 3, "Dia");
+    dpd_file2_init(&D, CC_OEI, 0, 2, 3, rho_params.Dia_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, 0, 2, 3, "Dai");
+    dpd_file2_init(&D, CC_OEI, 0, 2, 3, rho_params.Dai_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&D);
     dpd_buf4_close(&Eints);
 
     dpd_buf4_init(&Eints, CC_EINTS, 0, 23, 27, 23, 27, 0, "E <iJ|kA>");
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DIA");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DIA_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DAI");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DAI_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 0, 1.0, 1.0);
     dpd_file2_close(&D);
     dpd_buf4_close(&Eints);
@@ -301,19 +301,19 @@ void Iij(void)
     dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'IJ");
 
     dpd_buf4_init(&Eints, CC_EINTS, 0, 0, 10, 2, 10, 0, "E <ij||ka> (i>j,ka)");
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DIA");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DIA_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DAI");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DAI_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);
     dpd_buf4_close(&Eints);
 
     dpd_buf4_init(&Eints, CC_EINTS, 0, 0, 10, 0, 10, 0, "E <ij|ka>");
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dia");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.Dia_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dai");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.Dai_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);
     dpd_buf4_close(&Eints);
@@ -324,19 +324,19 @@ void Iij(void)
     dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'ij");
 
     dpd_buf4_init(&Eints, CC_EINTS, 0, 0, 10, 2, 10, 0, "E <ij||ka> (i>j,ka)");
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dia");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.Dia_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dai");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.Dai_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);
     dpd_buf4_close(&Eints);
 
     dpd_buf4_init(&Eints, CC_EINTS, 0, 0, 10, 0, 10, 0, "E <ij|ka>");
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DIA");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DIA_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DAI");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DAI_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);
     dpd_buf4_close(&Eints);
@@ -349,19 +349,19 @@ void Iij(void)
     dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'IJ");
 
     dpd_buf4_init(&Eints, CC_EINTS, 0, 0, 20, 2, 20, 0, "E <IJ||KA> (I>J,KA)");
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DIA");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DIA_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DAI");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DAI_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);
     dpd_buf4_close(&Eints);
 
     dpd_buf4_init(&Eints, CC_EINTS, 0, 22, 24, 22, 24, 0, "E <Ij|Ka>");
-    dpd_file2_init(&D, CC_OEI, 0, 2, 3, "Dia");
+    dpd_file2_init(&D, CC_OEI, 0, 2, 3, rho_params.Dia_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, 0, 2, 3, "Dai");
+    dpd_file2_init(&D, CC_OEI, 0, 2, 3, rho_params.Dai_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);
     dpd_buf4_close(&Eints);
@@ -372,19 +372,19 @@ void Iij(void)
     dpd_file2_init(&I, CC_OEI, 0, 2, 2, "I'ij");
 
     dpd_buf4_init(&Eints, CC_EINTS, 0, 10, 30, 12, 30, 0, "E <ij||ka> (i>j,ka)");
-    dpd_file2_init(&D, CC_OEI, 0, 2, 3, "Dia");
+    dpd_file2_init(&D, CC_OEI, 0, 2, 3, rho_params.Dia_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, 0, 2, 3, "Dai");
+    dpd_file2_init(&D, CC_OEI, 0, 2, 3, rho_params.Dai_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);
     dpd_buf4_close(&Eints);
 
     dpd_buf4_init(&Eints, CC_EINTS, 0, 23, 27, 23, 27, 0, "E <iJ|kA>");
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DIA");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DIA_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DAI");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DAI_lbl);
     dpd_dot24(&D, &Eints, &I, 0, 1, 1.0, 1.0);
     dpd_file2_close(&D);
     dpd_buf4_close(&Eints);
@@ -398,14 +398,14 @@ void Iij(void)
     /* I'IJ <-- sum_AB <IA||JB> (D_AB + D_BA) + sum_ab <Ia|Jb> (D_ab + D_ba) */
     dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'IJ");
 
-    dpd_file2_init(&D, CC_OEI, 0, 1, 1, "DAB");
+    dpd_file2_init(&D, CC_OEI, 0, 1, 1, rho_params.DAB_lbl);
     dpd_buf4_init(&Cints, CC_CINTS, 0, 10, 10, 10, 10, 0, "C <ia||jb>");
     dpd_dot24(&D, &Cints, &I, 0, 0, 1.0, 1.0);
     dpd_dot24(&D, &Cints, &I, 1, 0, 1.0, 1.0);
     dpd_buf4_close(&Cints);
     dpd_file2_close(&D);
 
-    dpd_file2_init(&D, CC_OEI, 0, 1, 1, "Dab");
+    dpd_file2_init(&D, CC_OEI, 0, 1, 1, rho_params.Dab_lbl);
     dpd_buf4_init(&Cints, CC_CINTS, 0, 10, 10, 10, 10, 0, "C <ia|jb>");
     dpd_dot24(&D, &Cints, &I, 0, 0, 1.0, 1.0);
     dpd_dot24(&D, &Cints, &I, 1, 0, 1.0, 1.0);
@@ -417,14 +417,14 @@ void Iij(void)
     /* I'ij <-- sum_ab <ia||jb> (D_ab + D_ba) + sum_AB <iA|jB> (D_AB + D_BA) */
     dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'ij");
 
-    dpd_file2_init(&D, CC_OEI, 0, 1, 1, "Dab");
+    dpd_file2_init(&D, CC_OEI, 0, 1, 1, rho_params.Dab_lbl);
     dpd_buf4_init(&Cints, CC_CINTS, 0, 10, 10, 10, 10, 0, "C <ia||jb>");
     dpd_dot24(&D, &Cints, &I, 0, 0, 1.0, 1.0);
     dpd_dot24(&D, &Cints, &I, 1, 0, 1.0, 1.0);
     dpd_buf4_close(&Cints);
     dpd_file2_close(&D);
 
-    dpd_file2_init(&D, CC_OEI, 0, 1, 1, "DAB");
+    dpd_file2_init(&D, CC_OEI, 0, 1, 1, rho_params.DAB_lbl);
     dpd_buf4_init(&Cints, CC_CINTS, 0, 10, 10, 10, 10, 0, "C <ia|jb>");
     dpd_dot24(&D, &Cints, &I, 0, 0, 1.0, 1.0);
     dpd_dot24(&D, &Cints, &I, 1, 0, 1.0, 1.0);
@@ -438,14 +438,14 @@ void Iij(void)
     /* I'IJ <-- sum_AB <IA||JB> (D_AB + D_BA) + sum_ab <Ia|Jb> (D_ab + D_ba) */
     dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'IJ");
 
-    dpd_file2_init(&D, CC_OEI, 0, 1, 1, "DAB");
+    dpd_file2_init(&D, CC_OEI, 0, 1, 1, rho_params.DAB_lbl);
     dpd_buf4_init(&Cints, CC_CINTS, 0, 20, 20, 20, 20, 0, "C <IA||JB>");
     dpd_dot24(&D, &Cints, &I, 0, 0, 1.0, 1.0);
     dpd_dot24(&D, &Cints, &I, 1, 0, 1.0, 1.0);
     dpd_buf4_close(&Cints);
     dpd_file2_close(&D);
 
-    dpd_file2_init(&D, CC_OEI, 0, 3, 3, "Dab");
+    dpd_file2_init(&D, CC_OEI, 0, 3, 3, rho_params.Dab_lbl);
     dpd_buf4_init(&Cints, CC_CINTS, 0, 24, 24, 24, 24, 0, "C <Ia|Jb>");
     dpd_dot24(&D, &Cints, &I, 0, 0, 1.0, 1.0);
     dpd_dot24(&D, &Cints, &I, 1, 0, 1.0, 1.0);
@@ -457,14 +457,14 @@ void Iij(void)
     /* I'ij <-- sum_ab <ia||jb> (D_ab + D_ba) + sum_AB <iA|jB> (D_AB + D_BA) */
     dpd_file2_init(&I, CC_OEI, 0, 2, 2, "I'ij");
 
-    dpd_file2_init(&D, CC_OEI, 0, 3, 3, "Dab");
+    dpd_file2_init(&D, CC_OEI, 0, 3, 3, rho_params.Dab_lbl);
     dpd_buf4_init(&Cints, CC_CINTS, 0, 30, 30, 30, 30, 0, "C <ia||jb>");
     dpd_dot24(&D, &Cints, &I, 0, 0, 1.0, 1.0);
     dpd_dot24(&D, &Cints, &I, 1, 0, 1.0, 1.0);
     dpd_buf4_close(&Cints);
     dpd_file2_close(&D);
 
-    dpd_file2_init(&D, CC_OEI, 0, 1, 1, "DAB");
+    dpd_file2_init(&D, CC_OEI, 0, 1, 1, rho_params.DAB_lbl);
     dpd_buf4_init(&Cints, CC_CINTS, 0, 27, 27, 27, 27, 0, "C <iA|jB>");
     dpd_dot24(&D, &Cints, &I, 0, 0, 1.0, 1.0);
     dpd_dot24(&D, &Cints, &I, 1, 0, 1.0, 1.0);

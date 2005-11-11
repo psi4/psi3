@@ -3,67 +3,67 @@
 #define EXTERN
 #include "globals.h"
 
-void zero_onepdm(void)
+void zero_onepdm(struct RHO_Params rho_params)
 {
   dpdfile2 D;
   int G_irr;
   G_irr = params.G_irr;
 
   if ( (params.ref == 0) || (params.ref == 1) ) {
-    dpd_file2_init(&D, CC_OEI, G_irr, 0, 0, "DIJ");
+    dpd_file2_init(&D, CC_OEI, G_irr, 0, 0, rho_params.DIJ_lbl);
     dpd_file2_scm(&D, 0.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, G_irr, 0, 0, "Dij");
-    dpd_file2_scm(&D, 0.0);
-    dpd_file2_close(&D);
-  
-    dpd_file2_init(&D, CC_OEI, G_irr, 1, 1, "DAB");
-    dpd_file2_scm(&D, 0.0);
-    dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, G_irr, 1, 1, "Dab");
+    dpd_file2_init(&D, CC_OEI, G_irr, 0, 0, rho_params.Dij_lbl);
     dpd_file2_scm(&D, 0.0);
     dpd_file2_close(&D);
   
-    dpd_file2_init(&D, CC_OEI, G_irr, 0, 1, "DIA");
+    dpd_file2_init(&D, CC_OEI, G_irr, 1, 1, rho_params.DAB_lbl);
     dpd_file2_scm(&D, 0.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, G_irr, 0, 1, "Dia");
+    dpd_file2_init(&D, CC_OEI, G_irr, 1, 1, rho_params.Dab_lbl);
     dpd_file2_scm(&D, 0.0);
     dpd_file2_close(&D);
   
-    dpd_file2_init(&D, CC_OEI, G_irr, 0, 1, "DAI");
+    dpd_file2_init(&D, CC_OEI, G_irr, 0, 1, rho_params.DIA_lbl);
     dpd_file2_scm(&D, 0.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, G_irr, 0, 1, "Dai");
+    dpd_file2_init(&D, CC_OEI, G_irr, 0, 1, rho_params.Dia_lbl);
+    dpd_file2_scm(&D, 0.0);
+    dpd_file2_close(&D);
+  
+    dpd_file2_init(&D, CC_OEI, G_irr, 0, 1, rho_params.DAI_lbl);
+    dpd_file2_scm(&D, 0.0);
+    dpd_file2_close(&D);
+    dpd_file2_init(&D, CC_OEI, G_irr, 0, 1, rho_params.Dai_lbl);
     dpd_file2_scm(&D, 0.0);
     dpd_file2_close(&D);
   }
   else if (params.ref == 2) {
-    dpd_file2_init(&D, CC_OEI, G_irr, 0, 0, "DIJ");
+    dpd_file2_init(&D, CC_OEI, G_irr, 0, 0, rho_params.DIJ_lbl);
     dpd_file2_scm(&D, 0.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, G_irr, 2, 2, "Dij");
-    dpd_file2_scm(&D, 0.0);
-    dpd_file2_close(&D);
-  
-    dpd_file2_init(&D, CC_OEI, G_irr, 1, 1, "DAB");
-    dpd_file2_scm(&D, 0.0);
-    dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, G_irr, 3, 3, "Dab");
+    dpd_file2_init(&D, CC_OEI, G_irr, 2, 2, rho_params.Dij_lbl);
     dpd_file2_scm(&D, 0.0);
     dpd_file2_close(&D);
   
-    dpd_file2_init(&D, CC_OEI, G_irr, 0, 1, "DIA");
+    dpd_file2_init(&D, CC_OEI, G_irr, 1, 1, rho_params.DAB_lbl);
     dpd_file2_scm(&D, 0.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, G_irr, 2, 3, "Dia");
+    dpd_file2_init(&D, CC_OEI, G_irr, 3, 3, rho_params.Dab_lbl);
     dpd_file2_scm(&D, 0.0);
     dpd_file2_close(&D);
   
-    dpd_file2_init(&D, CC_OEI, G_irr, 0, 1, "DAI");
+    dpd_file2_init(&D, CC_OEI, G_irr, 0, 1, rho_params.DIA_lbl);
     dpd_file2_scm(&D, 0.0);
     dpd_file2_close(&D);
-    dpd_file2_init(&D, CC_OEI, G_irr, 2, 3, "Dai");
+    dpd_file2_init(&D, CC_OEI, G_irr, 2, 3, rho_params.Dia_lbl);
+    dpd_file2_scm(&D, 0.0);
+    dpd_file2_close(&D);
+  
+    dpd_file2_init(&D, CC_OEI, G_irr, 0, 1, rho_params.DAI_lbl);
+    dpd_file2_scm(&D, 0.0);
+    dpd_file2_close(&D);
+    dpd_file2_init(&D, CC_OEI, G_irr, 2, 3, rho_params.Dai_lbl);
     dpd_file2_scm(&D, 0.0);
     dpd_file2_close(&D);
   }

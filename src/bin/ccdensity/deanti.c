@@ -30,11 +30,11 @@
 ** comments below.
 ** */
 
-void deanti_ROHF(void);
-void deanti_UHF(void);
+void deanti_ROHF(struct RHO_Params rho_params);
+void deanti_UHF(struct RHO_Params rho_params);
 
-void deanti(void)
+void deanti(struct RHO_Params rho_params)
 {
-  if(params.ref == 0 || params.ref == 1) deanti_ROHF();
-  else if(params.ref == 2) deanti_UHF();
+  if(params.ref == 0 || params.ref == 1) deanti_ROHF(rho_params);
+  else if(params.ref == 2) deanti_UHF(rho_params);
 }

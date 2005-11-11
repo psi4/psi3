@@ -38,16 +38,16 @@ the excited state onepdm */
  tautIJAB = tIJAB + 0.5 * (TIA * TJB - TIB * TJA)
 */
 
-void x_oe_intermediates(void)
+void x_oe_intermediates(struct RHO_Params rho_params)
 {
   dpdfile2 L1, R1, T1, I, LR1, LR2, LT1, LT2;
   dpdbuf4 L2, T2, R2;
   int L_irr, R_irr, G_irr;
   int rohf = 0;
 
-  L_irr = params.L_irr;
-  R_irr = params.R_irr;
-  G_irr = params.G_irr;
+  L_irr = rho_params.L_irr;
+  R_irr = rho_params.R_irr;
+  G_irr = rho_params.G_irr;
   if ( (params.ref == 0) || (params.ref == 1) ) rohf = 1;
 
   /* LR1_OO(I,J)  =  LIE * RJE */

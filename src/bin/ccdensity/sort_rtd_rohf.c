@@ -3,7 +3,7 @@
 #define EXTERN
 #include "globals.h"
 
-void sort_rtd_rohf(struct TD_Params *S)
+void sort_rtd_rohf(struct RHO_Params S)
 {
   int h, nirreps, nmo, nfzv, nfzc, nclsd, nopen;
   int row, col, i, j, I, J, a, b, A, B, p, q;
@@ -27,14 +27,14 @@ void sort_rtd_rohf(struct TD_Params *S)
 
   moinfo.rtd = block_matrix(nmo, nmo);
 
-  dpd_file2_init(&D, CC_TMP, S->irrep, 0, 0, "RTDIJ");
+  dpd_file2_init(&D, CC_TMP, S.R_irr, 0, 0, "RTDIJ");
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
     for(i=0; i < occpi[h]; i++) {
       I = qt_occ[occ_off[h] + i];
-      for(j=0; j < occpi[h^S->irrep]; j++) {
-        J = qt_occ[occ_off[h^S->irrep] + j];
+      for(j=0; j < occpi[h^S.R_irr]; j++) {
+        J = qt_occ[occ_off[h^S.R_irr] + j];
         moinfo.rtd[I][J] += D.matrix[h][i][j];
       }
     }
@@ -42,14 +42,14 @@ void sort_rtd_rohf(struct TD_Params *S)
   dpd_file2_mat_close(&D);
   dpd_file2_close(&D);
 
-  dpd_file2_init(&D, CC_TMP, S->irrep, 1, 1, "RTDAB");
+  dpd_file2_init(&D, CC_TMP, S.R_irr, 1, 1, "RTDAB");
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
     for(a=0; a < (virtpi[h] - openpi[h]); a++) {
       A = qt_vir[vir_off[h] + a];
-      for(b=0; b < (virtpi[h^S->irrep] - openpi[h^S->irrep]); b++) {
-        B = qt_vir[vir_off[h^S->irrep] + b];
+      for(b=0; b < (virtpi[h^S.R_irr] - openpi[h^S.R_irr]); b++) {
+        B = qt_vir[vir_off[h^S.R_irr] + b];
         moinfo.rtd[A][B] += D.matrix[h][a][b];
       }
     }
@@ -58,14 +58,14 @@ void sort_rtd_rohf(struct TD_Params *S)
   dpd_file2_close(&D);
 
   /* Note that this component of the density is stored occ-vir */
-  dpd_file2_init(&D, CC_TMP, S->irrep, 0, 1, "RTDAI");
+  dpd_file2_init(&D, CC_TMP, S.R_irr, 0, 1, "RTDAI");
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
     for(i=0; i < occpi[h]; i++) {
       I = qt_occ[occ_off[h] + i];
-      for(a=0; a < (virtpi[h^S->irrep] - openpi[h^S->irrep]); a++) {
-        A = qt_vir[vir_off[h^S->irrep] + a];
+      for(a=0; a < (virtpi[h^S.R_irr] - openpi[h^S.R_irr]); a++) {
+        A = qt_vir[vir_off[h^S.R_irr] + a];
         moinfo.rtd[A][I] += D.matrix[h][i][a];
       }
     }
@@ -73,14 +73,14 @@ void sort_rtd_rohf(struct TD_Params *S)
   dpd_file2_mat_close(&D);
   dpd_file2_close(&D);
 
-  dpd_file2_init(&D, CC_TMP, S->irrep, 0, 1, "RTDIA");
+  dpd_file2_init(&D, CC_TMP, S.R_irr, 0, 1, "RTDIA");
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
     for(i=0; i < occpi[h]; i++) {
       I = qt_occ[occ_off[h] + i];
-      for(a=0; a < (virtpi[h^S->irrep] - openpi[h^S->irrep]); a++) {
-        A = qt_vir[vir_off[h^S->irrep] + a];
+      for(a=0; a < (virtpi[h^S.R_irr] - openpi[h^S.R_irr]); a++) {
+        A = qt_vir[vir_off[h^S.R_irr] + a];
         moinfo.rtd[I][A] += D.matrix[h][i][a];
       }
     }
@@ -88,14 +88,14 @@ void sort_rtd_rohf(struct TD_Params *S)
   dpd_file2_mat_close(&D);
   dpd_file2_close(&D);
 
-  dpd_file2_init(&D, CC_TMP, S->irrep, 0, 0, "RTDij");
+  dpd_file2_init(&D, CC_TMP, S.R_irr, 0, 0, "RTDij");
   dpd_file2_mat_init(&D); 
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
     for(i=0; i < (occpi[h] - openpi[h]); i++) { 
       I = qt_occ[occ_off[h] + i];
-      for(j=0; j < (occpi[h^S->irrep] - openpi[h^S->irrep]); j++) {
-        J = qt_occ[occ_off[h^S->irrep] + j];
+      for(j=0; j < (occpi[h^S.R_irr] - openpi[h^S.R_irr]); j++) {
+        J = qt_occ[occ_off[h^S.R_irr] + j];
         moinfo.rtd[I][J] += D.matrix[h][i][j];
       }
     }
@@ -103,14 +103,14 @@ void sort_rtd_rohf(struct TD_Params *S)
   dpd_file2_mat_close(&D);
   dpd_file2_close(&D);
 
-  dpd_file2_init(&D, CC_TMP, S->irrep, 1, 1, "RTDab");
+  dpd_file2_init(&D, CC_TMP, S.R_irr, 1, 1, "RTDab");
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
     for(a=0; a < virtpi[h]; a++) {
       A = qt_vir[vir_off[h] + a];
-      for(b=0; b < virtpi[h^S->irrep]; b++) {
-        B = qt_vir[vir_off[h^S->irrep] + b];
+      for(b=0; b < virtpi[h^S.R_irr]; b++) {
+        B = qt_vir[vir_off[h^S.R_irr] + b];
         moinfo.rtd[A][B] += D.matrix[h][a][b];
       }
     }
@@ -119,14 +119,14 @@ void sort_rtd_rohf(struct TD_Params *S)
   dpd_file2_close(&D);
 
   /* Note that this component of the density is stored occ-vir */
-  dpd_file2_init(&D, CC_TMP, S->irrep, 0, 1, "RTDai");
+  dpd_file2_init(&D, CC_TMP, S.R_irr, 0, 1, "RTDai");
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
     for(i=0; i < (occpi[h] - openpi[h]); i++) {
       I = qt_occ[occ_off[h] + i];
-      for(a=0; a < virtpi[h^S->irrep]; a++) {
-        A = qt_vir[vir_off[h^S->irrep] + a];
+      for(a=0; a < virtpi[h^S.R_irr]; a++) {
+        A = qt_vir[vir_off[h^S.R_irr] + a];
         moinfo.rtd[A][I] += D.matrix[h][i][a];
       }
     }
@@ -134,14 +134,14 @@ void sort_rtd_rohf(struct TD_Params *S)
   dpd_file2_mat_close(&D);
   dpd_file2_close(&D);
 
-  dpd_file2_init(&D, CC_TMP, S->irrep, 0, 1, "RTDia");
+  dpd_file2_init(&D, CC_TMP, S.R_irr, 0, 1, "RTDia");
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
     for(i=0; i < (occpi[h] - openpi[h]); i++) {
       I = qt_occ[occ_off[h] + i];
-      for(a=0; a < virtpi[h^S->irrep]; a++) {
-        A = qt_vir[vir_off[h^S->irrep] + a];
+      for(a=0; a < virtpi[h^S.R_irr]; a++) {
+        A = qt_vir[vir_off[h^S.R_irr] + a];
         moinfo.rtd[I][A] += D.matrix[h][i][a];
       }
     }

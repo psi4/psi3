@@ -22,16 +22,16 @@
 * RAK 2003
 */
 
-void x_onepdm_uhf(void)
+void x_onepdm_uhf(struct RHO_Params rho_params)
 {
   dpdfile2 DAI, Dai, DIA, Dia, DIJ, DAB, Dij, Dab, TIA, Tia;
   dpdfile2 LIA, Lia, RIA, Ria, I, XIJ, Xij;
   dpdbuf4 T2, L2, R2, I2;
   int L_irr, R_irr, G_irr;
   double dot_IA, dot_ia, dot_AI, dot_ai;
-  L_irr = params.L_irr;
-  R_irr = params.R_irr;
-  G_irr = params.G_irr;
+  L_irr = rho_params.L_irr;
+  R_irr = rho_params.R_irr;
+  G_irr = rho_params.G_irr;
 
   dpd_file2_init(&TIA, CC_OEI, 0, 0, 1, "tIA");
   dpd_file2_init(&Tia, CC_OEI, 0, 2, 3, "tia");
@@ -41,7 +41,7 @@ void x_onepdm_uhf(void)
   dpd_file2_init(&Lia, CC_GL, L_irr, 2, 3, "Lia");
 
   /* D[i][j] = -LR_oo[j][i] - t1[i][f] * L2R1_ov[j][f] */
-  dpd_file2_init(&DIJ, CC_OEI, G_irr, 0, 0, "DIJ");
+  dpd_file2_init(&DIJ, CC_OEI, G_irr, 0, 0, rho_params.DIJ_lbl);
   dpd_file2_init(&I, EOM_TMP, G_irr, 0, 0, "LR_OO");
   dpd_file2_axpy(&I, &DIJ, -1.0, 1);
   dpd_file2_close(&I);
@@ -53,7 +53,7 @@ void x_onepdm_uhf(void)
   }
   dpd_file2_close(&DIJ);
 
-  dpd_file2_init(&Dij, CC_OEI, G_irr, 2, 2, "Dij");
+  dpd_file2_init(&Dij, CC_OEI, G_irr, 2, 2, rho_params.Dij_lbl);
   dpd_file2_init(&I, EOM_TMP, G_irr, 2, 2, "LR_oo");
   dpd_file2_axpy(&I, &Dij, -1.0, 1);
   dpd_file2_close(&I);
@@ -66,7 +66,7 @@ void x_onepdm_uhf(void)
   dpd_file2_close(&Dij);
 
   /* D[a][b] = +LR_vv[a][b] + L2R1_ov[n][a] * t1[n][b] */
-  dpd_file2_init(&DAB, CC_OEI, G_irr, 1, 1, "DAB");
+  dpd_file2_init(&DAB, CC_OEI, G_irr, 1, 1, rho_params.DAB_lbl);
   dpd_file2_init(&I, EOM_TMP, G_irr, 1, 1, "LR_VV");
   dpd_file2_axpy(&I, &DAB, 1.0, 0);
   dpd_file2_close(&I);
@@ -78,7 +78,7 @@ void x_onepdm_uhf(void)
   }
   dpd_file2_close(&DAB);
 
-  dpd_file2_init(&Dab, CC_OEI, G_irr, 3, 3, "Dab");
+  dpd_file2_init(&Dab, CC_OEI, G_irr, 3, 3, rho_params.Dab_lbl);
   dpd_file2_init(&I, EOM_TMP, G_irr, 3, 3, "LR_vv");
   dpd_file2_axpy(&I, &Dab, 1.0, 0);
   dpd_file2_close(&I);
@@ -93,13 +93,13 @@ void x_onepdm_uhf(void)
   /* D[a][i] = +L2R1_ov[i][a] */
 
   if (!params.connect_xi) {
-    dpd_file2_init(&DAI, CC_OEI, G_irr, 0, 1, "DAI");
+    dpd_file2_init(&DAI, CC_OEI, G_irr, 0, 1, rho_params.DAI_lbl);
     dpd_file2_init(&I, EOM_TMP, G_irr, 0, 1, "L2R1_OV");
     dpd_file2_axpy(&I, &DAI, 1.0, 0);
     dpd_file2_close(&I);
     dpd_file2_close(&DAI);
 
-    dpd_file2_init(&Dai, CC_OEI, G_irr, 2, 3, "Dai");
+    dpd_file2_init(&Dai, CC_OEI, G_irr, 2, 3, rho_params.Dai_lbl);
     dpd_file2_init(&I, EOM_TMP, G_irr, 2, 3, "L2R1_ov");
     dpd_file2_axpy(&I, &Dai, 1.0, 0);
     dpd_file2_close(&I);
@@ -116,7 +116,7 @@ void x_onepdm_uhf(void)
   */
 
   /* (1-R0) * tIA */
-  dpd_file2_init(&DIA, CC_OEI, G_irr, 0, 1, "DIA");
+  dpd_file2_init(&DIA, CC_OEI, G_irr, 0, 1, rho_params.DIA_lbl);
 
   if ( (G_irr == 0) /* && (!params.connect_xi)*/ ) {
     dpd_file2_init(&I, CC_OEI, 0, 0, 1, "tIA");
@@ -124,7 +124,7 @@ void x_onepdm_uhf(void)
     dpd_file2_close(&I);
   }
 
-  dpd_file2_init(&Dia, CC_OEI, G_irr, 2, 3, "Dia");
+  dpd_file2_init(&Dia, CC_OEI, G_irr, 2, 3, rho_params.Dia_lbl);
   if ( (G_irr == 0) /* && (!params.connect_xi)*/ ) {
     dpd_file2_init(&I, CC_OEI, 0, 2, 3, "tia");
     dpd_file2_axpy(&I, &Dia, 1.0, 0);
@@ -241,22 +241,21 @@ void x_onepdm_uhf(void)
   dpd_file2_close(&Lia);
 
   /* compute overlaps */
-  dpd_file2_init(&DIA, CC_OEI, G_irr, 0, 1, "DIA");
+  dpd_file2_init(&DIA, CC_OEI, G_irr, 0, 1, rho_params.DIA_lbl);
   dot_IA = dpd_file2_dot_self(&DIA);
   dpd_file2_close(&DIA);
-  dpd_file2_init(&Dia, CC_OEI, G_irr, 2, 3, "Dia");
+  dpd_file2_init(&Dia, CC_OEI, G_irr, 2, 3, rho_params.Dia_lbl);
   dot_ia = dpd_file2_dot_self(&Dia);
   dpd_file2_close(&Dia);
-  dpd_file2_init(&DAI, CC_OEI, G_irr, 0, 1, "DAI");
+  dpd_file2_init(&DAI, CC_OEI, G_irr, 0, 1, rho_params.DAI_lbl);
   dot_AI = dpd_file2_dot_self(&DAI);
   dpd_file2_close(&DAI);
-  dpd_file2_init(&Dai, CC_OEI, G_irr, 2, 3, "Dai");
+  dpd_file2_init(&Dai, CC_OEI, G_irr, 2, 3, rho_params.Dai_lbl);
   dot_ai = dpd_file2_dot_self(&Dai);
   dpd_file2_close(&Dai);
-  fprintf(outfile,"<DIA|DIA> = %15.10lf\n", dot_IA);
-  fprintf(outfile,"<Dia|Dia> = %15.10lf\n", dot_ia);
-  fprintf(outfile,"<DAI|DAI> = %15.10lf\n", dot_AI);
-  fprintf(outfile,"<Dai|Dai> = %15.10lf\n", dot_ai);
-  fprintf(outfile,"<Dpq|Dqp> = %15.10lf\n", dot_IA+dot_ia+dot_AI+dot_ai);
+	fprintf(outfile,"\tOverlaps of onepdm after excited-state parts added.\n");
+	fprintf(outfile,"\t<DIA|DIA> = %15.10lf     <Dia|Dia> = %15.10lf\n", dot_IA, dot_ia);
+	fprintf(outfile,"\t<DAI|DAI> = %15.10lf     <Dai|Dai> = %15.10lf\n", dot_AI, dot_ai);
+	fprintf(outfile,"\t<Dpq|Dqp> = %15.10lf\n", dot_IA+dot_ia+dot_AI+dot_ai);
   return;
 }

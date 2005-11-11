@@ -50,50 +50,6 @@ void get_params()
 
   params.aobasis = 0;
   errcod = ip_boolean("AO_BASIS", &(params.aobasis),0);
-  
-  params.dertype = 0;
-  if(ip_exist("DERTYPE",0)) {
-    errcod = ip_string("DERTYPE", &(junk),0);
-    if(errcod != IPE_OK) params.dertype = 0;
-    else if(!strcmp(junk,"NONE")) params.dertype = 0;
-    else if(!strcmp(junk,"FIRST")) params.dertype = 1;
-    else if(!strcmp(junk,"RESPONSE")) params.dertype = 3; /* linear response */
-    else {
-      printf("Invalid value of input keyword DERTYPE: %s\n", junk);
-      exit(PSI_RETURN_FAILURE);
-    }
-    free(junk);
-  }
-  else { /* if dertype keyword is absent and jobtype=opt */
-    if(ip_exist("JOBTYPE",0)) {
-      errcod = ip_string("JOBTYPE", &(junk),0);
-      if (!strcmp(junk,"OPT"))
-        params.dertype = 1;
-    }
-  }
-
-  if(ip_exist("JOBTYPE",0)) 
-    errcod = ip_string("JOBTYPE", &(junk),0);
-  else
-    junk = strdup("SP");
-
-  if((!strcmp(junk,"OEPROP")) && (params.dertype == 0) )
-    params.relax_opdm = 0; /* allow for unrelaxed densities if EnergyOEProp */
-  else if(params.transition) 
-    params.relax_opdm = 0;
-  else  
-    params.relax_opdm = 1;
-  errcod = ip_boolean("RELAX_OPDM", &(params.relax_opdm),0);
-  if ( (params.onepdm) && (params.relax_opdm) ) {
-    fprintf(outfile,"\tTurning orbital relaxation off since only onepdm is requested.\n");
-    params.relax_opdm = 0;
-  }
-
-  if ( (!strcmp(params.wfn,"EOM_CCSD")) && (params.dertype == 0) )
-    params.connect_xi = 0;
-  else
-    params.connect_xi = 1;
-  errcod = ip_boolean("CONNECT_XI",&(params.connect_xi),0);
 
   if(ip_exist("GAUGE",0)) {
     ip_string("GAUGE",&(params.gauge), 0);
@@ -103,6 +59,53 @@ void get_params()
     }
   }
   else params.gauge = strdup("LENGTH");
+  
+	/*** determine DERTYPE from input */
+  params.dertype = 0;
+  if(ip_exist("DERTYPE",0)) {
+    errcod = ip_string("DERTYPE", &(junk),0);
+    if(!strcmp(junk,"NONE")) params.dertype = 0;
+    else if(!strcmp(junk,"FIRST")) params.dertype = 1;
+    else if(!strcmp(junk,"RESPONSE")) params.dertype = 3; 
+		else {
+      printf("Invalid value of input keyword DERTYPE: %s\n", junk);
+      exit(PSI_RETURN_FAILURE);
+    }
+    free(junk);
+	}
+	else { /* infer DERTYPE from JOBTYPE */
+    errcod = ip_string("JOBTYPE", &(junk),0);
+		if ( !strcmp(junk,"SP") ) params.dertype = 0;
+		else if ( !strcmp(junk, "OEPROP") ) params.dertype = 0;
+		else if ( !strcmp(junk, "OPT") ) params.dertype = 1;
+		else {
+      printf("Not sure what to do with missing DERTYPE and this JOBTYPE: %s\n", junk);
+      exit(PSI_RETURN_FAILURE);
+    }
+    free(junk);
+	}
+
+	if (params.dertype == 1)
+	  params.relax_opdm = 1;  /* default for gradients, relax_opdm on */
+	else
+    params.relax_opdm = 0;  /* otherwise, default is relax_opdm off */
+
+  if(params.transition) 
+    params.relax_opdm = 0;
+
+  errcod = ip_boolean("RELAX_OPDM", &(params.relax_opdm),0);
+  if ( (params.onepdm) && (params.relax_opdm) ) { /* can't do relaxation without twopdm */
+    fprintf(outfile,"\tTurning orbital relaxation off since only onepdm is requested.\n");
+    params.relax_opdm = 0;
+  }
+
+
+  if ( (!strcmp(params.wfn,"EOM_CCSD")) && (params.dertype == 0) )
+    params.connect_xi = 0;
+  else
+    params.connect_xi = 1;
+  errcod = ip_boolean("CONNECT_XI",&(params.connect_xi),0);
+
   
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");

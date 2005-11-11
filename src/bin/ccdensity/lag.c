@@ -34,21 +34,21 @@
 ** open-shells in the ROHF-CCSD code as discussed in CCSORT for an
 ** explanation of why this is necessary.) */
 
-void Iij(void);
-void Iab(void);
-void Iai(void);
-void Iia(void);
+void Iij(struct RHO_Params rho_params);
+void Iab(struct RHO_Params rho_params);
+void Iai(struct RHO_Params rho_params);
+void Iia(struct RHO_Params rho_params);
 
-void lag(void)
+void lag(struct RHO_Params rho_params)
 {
   int h, nirreps, i, j, a, b;
   int *occpi, *virtpi, *openpi;
   dpdfile2 I;
   
-  Iij();
-  Iab();
-  Iai();
-  Iia();
+  Iij(rho_params);
+  Iab(rho_params);
+  Iai(rho_params);
+  Iia(rho_params);
 
   /* Multiply all I'pq components by -1/2 for compatibility with the
      final gradient expression */

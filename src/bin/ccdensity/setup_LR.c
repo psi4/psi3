@@ -4,7 +4,7 @@
 #define EXTERN
 #include "globals.h"
 
-void setup_LR(void)
+void setup_LR(struct RHO_Params rho_params)
 {
   dpdfile2 L1,R1,Z1,F;
   dpdbuf4 L2,R2,Z2;
@@ -12,39 +12,16 @@ void setup_LR(void)
   char L1A_lbl[32], L1B_lbl[32], L2AA_lbl[32], L2BB_lbl[32], L2AB_lbl[32], L2RHF_lbl[32];
   char R1A_lbl[32], R1B_lbl[32], R2AA_lbl[32], R2BB_lbl[32], R2AB_lbl[32], R2RHF_lbl[32];
   char lbl[32];
-  double tval, one_energy, this_energy, total_two_energy, two_energy;
-  L_irr = params.L_irr;
+  double tval, one_energy, this_energy, total_two_energy, two_energy, R0;
 
-  if (params.ground) {
-    params.L_irr = L_irr = 0;
-    params.L_root = L_root = -1;
-    params.R_irr = R_irr = 0;
-    params.R_root = R_root = -1;
-    params.R0 = 1.0;
-    G_irr = params.G_irr = params.L_irr ^ params.R_irr;
-  }
-  else if (!strcmp(params.wfn,"EOM_CCSD") || !strcmp(params.wfn,"EOM_CC2")) { /* use last state calculated */
-    if (!ip_exist("STATES_PER_IRREP",0)) {
-      fprintf(outfile,"Must have states_per_irrep where ccdensity can read it.\n");
-      exit(1);
-    }
-    for (i=0;i<moinfo.nirreps;++i) {
-      j=0;
-      ip_data("STATES_PER_IRREP","%d",&j,1,i);
+  L_irr = rho_params.L_irr;
+  R_irr = rho_params.R_irr;
+  G_irr = rho_params.G_irr;
+	L_root = rho_params.L_root;
+	R_root = rho_params.R_root;
+	R0 = rho_params.R0;
 
-      if (j>0) {
-        params.L_irr = L_irr = i^moinfo.sym;
-        params.L_root = L_root = j-1;
-        params.R_irr = R_irr = i^moinfo.sym;
-        params.R_root = R_root = j-1;
-      }
-    }
-    sprintf(lbl, "EOM CCSD R0 for root %d %d", params.R_irr, params.R_root);
-    psio_read_entry(CC_INFO, lbl, (char *) &(params.R0), sizeof(double));
-    sprintf(lbl, "EOM CCSD Energy for root %d %d", params.R_irr, params.R_root);
-    psio_read_entry(CC_INFO, lbl, (char *) &(params.cceom_energy), sizeof(double));
-    G_irr = params.G_irr = params.L_irr ^ params.R_irr;
-  }
+  fprintf(outfile,"\n\tSetting up L and R to compute density\n");
   fprintf(outfile,"\tLeft-hand eigenvector: symmetry %s and excited root %d\n",
     moinfo.labels[L_irr], L_root+1); 
   fprintf(outfile,"\tRight-hand eigenvector: symmetry %s and excited root %d\n",
@@ -60,7 +37,7 @@ void setup_LR(void)
   sprintf(L2RHF_lbl,"2LIjAb - LIjbA %d %d", L_irr, L_root );
 
   /*** GLG is used by the ground state density code and contains R0*L + Zeta */
-  /*** the first term disappears if L_irr != G_irr (excitation is asymmetric */
+  /*** the first term disappears if L_irr != G_irr (excitation is asymmetric) */
 
   if ( (L_irr == G_irr) && (!params.calc_xi) ) {
     if (params.ref == 0) {
@@ -153,24 +130,24 @@ void setup_LR(void)
   /* for ground-state density contributions L <- R0 L + Zeta */
   /* symmetry of L must be same as density */
 
-  if ( (!params.ground) && (!params.calc_xi)) {
-    if (params.connect_xi) params.R0 = 0.0;
+  if ( (!rho_params.L_ground) && (!params.calc_xi)) {
+    if (params.connect_xi) rho_params.R0 = 0.0;
     if ( (params.ref==0) || (params.ref==1) ) {
       if (L_irr == G_irr) {
         dpd_file2_init(&L1, CC_GLG, L_irr, 0, 1, "LIA");
-        dpd_file2_scm(&L1, params.R0);
+        dpd_file2_scm(&L1, rho_params.R0);
         dpd_file2_close(&L1);
         dpd_file2_init(&L1, CC_GLG, L_irr, 0, 1, "Lia");
-        dpd_file2_scm(&L1, params.R0);
+        dpd_file2_scm(&L1, rho_params.R0);
         dpd_file2_close(&L1);
         dpd_buf4_init(&L2, CC_GLG, L_irr, 2, 7, 2, 7, 0, "LIJAB");
-        dpd_buf4_scm(&L2, params.R0);
+        dpd_buf4_scm(&L2, rho_params.R0);
         dpd_buf4_close(&L2);
         dpd_buf4_init(&L2, CC_GLG, L_irr, 2, 7, 2, 7, 0, "Lijab");
-        dpd_buf4_scm(&L2, params.R0);
+        dpd_buf4_scm(&L2, rho_params.R0);
         dpd_buf4_close(&L2);
         dpd_buf4_init(&L2, CC_GLG, L_irr, 0, 5, 0, 5, 0, "LIjAb");
-        dpd_buf4_scm(&L2, params.R0);
+        dpd_buf4_scm(&L2, rho_params.R0);
         dpd_buf4_close(&L2);
       }
       else {
@@ -221,19 +198,19 @@ void setup_LR(void)
     else if (params.ref==2) {
       if (L_irr == G_irr) {
         dpd_file2_init(&L1, CC_GLG, G_irr, 0, 1, "LIA");
-        dpd_file2_scm(&L1, params.R0);
+        dpd_file2_scm(&L1, rho_params.R0);
         dpd_file2_close(&L1);
         dpd_file2_init(&L1, CC_GLG, G_irr, 2, 3, "Lia");
-        dpd_file2_scm(&L1, params.R0);
+        dpd_file2_scm(&L1, rho_params.R0);
         dpd_file2_close(&L1);
         dpd_buf4_init(&L2, CC_GLG, G_irr, 2, 7, 2, 7, 0, "LIJAB");
-        dpd_buf4_scm(&L2, params.R0);
+        dpd_buf4_scm(&L2, rho_params.R0);
         dpd_buf4_close(&L2);
         dpd_buf4_init(&L2, CC_GLG, G_irr, 12, 17, 12, 17, 0, "Lijab");
-        dpd_buf4_scm(&L2, params.R0);
+        dpd_buf4_scm(&L2, rho_params.R0);
         dpd_buf4_close(&L2);
         dpd_buf4_init(&L2, CC_GLG, G_irr, 22, 28, 22, 28, 0, "LIjAb");
-        dpd_buf4_scm(&L2, params.R0);
+        dpd_buf4_scm(&L2, rho_params.R0);
         dpd_buf4_close(&L2);
       }
       else {
@@ -253,6 +230,12 @@ void setup_LR(void)
         dpd_buf4_scm(&L2, 0.0);
         dpd_buf4_close(&L2);
       }
+			/* check magnitude */
+			dpd_file2_init(&L1, CC_GLG, G_irr, 0, 1, "LIA");
+			tval = dpd_file2_dot_self(&L1);
+			dpd_file2_close(&L1);
+			fprintf(outfile,"Ro*L+Zeta in CC_GLG, LIA before zeta: %15.10lf\n",tval);
+
       if (params.use_zeta) {
         dpd_file2_init(&Z1, CC_LAMPS, G_irr, 0, 1, "ZIA");
         dpd_file2_init(&L1, CC_GLG, G_irr, 0, 1, "LIA");
@@ -279,6 +262,11 @@ void setup_LR(void)
         dpd_buf4_axpy(&Z2, &L2, 1.0);
         dpd_buf4_close(&L2);
         dpd_buf4_close(&Z2);
+				/* check magnitude */
+				dpd_file2_init(&L1, CC_GLG, G_irr, 0, 1, "LIA");
+				tval = dpd_file2_dot_self(&L1);
+				dpd_file2_close(&L1);
+				fprintf(outfile,"Ro*L+Zeta in CC_GLG, LIA: %15.10lf\n",tval);
       }
     }
   }
@@ -400,7 +388,7 @@ void setup_LR(void)
     }
   }
 
-  if (!params.ground) { /* put copy of R into CC_GR */
+  if (!rho_params.R_ground) { /* put copy of R into CC_GR */
     sprintf(R1A_lbl,"RIA %d %d", R_irr, R_root);
     sprintf(R1B_lbl,"Ria %d %d", R_irr, R_root);
     sprintf(R2AA_lbl,"RIJAB %d %d", R_irr, R_root );

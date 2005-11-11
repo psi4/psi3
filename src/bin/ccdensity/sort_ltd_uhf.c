@@ -3,7 +3,7 @@
 #define EXTERN
 #include "globals.h"
 
-void sort_ltd_uhf(struct TD_Params *S)
+void sort_ltd_uhf(struct RHO_Params S)
 {
   int h, nirreps, nmo, nfzv, nfzc, nclsd, nopen;
   int row, col, i, j, I, J, a, b, A, B, p, q;
@@ -33,14 +33,14 @@ void sort_ltd_uhf(struct TD_Params *S)
   moinfo.ltd_a = block_matrix(nmo,nmo);
   moinfo.ltd_b = block_matrix(nmo,nmo);
 
-  dpd_file2_init(&D, CC_TMP, S->irrep, 0, 0, "LTDIJ");
+  dpd_file2_init(&D, CC_TMP, S.L_irr, 0, 0, "LTDIJ");
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
     for(i=0; i < aoccpi[h]; i++) {
       I = qt_aocc[aocc_off[h] + i];
-      for(j=0; j < aoccpi[h^S->irrep]; j++) {
-        J = qt_aocc[aocc_off[h^S->irrep] + j];
+      for(j=0; j < aoccpi[h^S.L_irr]; j++) {
+        J = qt_aocc[aocc_off[h^S.L_irr] + j];
         moinfo.ltd_a[I][J] += D.matrix[h][i][j];
       }
     }
@@ -48,14 +48,14 @@ void sort_ltd_uhf(struct TD_Params *S)
   dpd_file2_mat_close(&D);
   dpd_file2_close(&D);
 
-  dpd_file2_init(&D, CC_TMP, S->irrep, 1, 1, "LTDAB");
+  dpd_file2_init(&D, CC_TMP, S.L_irr, 1, 1, "LTDAB");
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
     for(a=0; a < avirtpi[h]; a++) {
       A = qt_avir[avir_off[h] + a];
-      for(b=0; b < avirtpi[h^S->irrep]; b++) {
-        B = qt_avir[avir_off[h^S->irrep] + b];
+      for(b=0; b < avirtpi[h^S.L_irr]; b++) {
+        B = qt_avir[avir_off[h^S.L_irr] + b];
         moinfo.ltd_a[A][B] += D.matrix[h][a][b];
       }
     }
@@ -64,14 +64,14 @@ void sort_ltd_uhf(struct TD_Params *S)
   dpd_file2_close(&D);
 
   /* Note that this component of the density is stored occ-vir */
-  dpd_file2_init(&D, CC_TMP, S->irrep, 0, 1, "LTDAI");
+  dpd_file2_init(&D, CC_TMP, S.L_irr, 0, 1, "LTDAI");
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
     for(i=0; i < aoccpi[h]; i++) {
       I = qt_aocc[aocc_off[h] + i];
-      for(a=0; a < avirtpi[h^S->irrep]; a++) {
-        A = qt_avir[avir_off[h^S->irrep] + a];
+      for(a=0; a < avirtpi[h^S.L_irr]; a++) {
+        A = qt_avir[avir_off[h^S.L_irr] + a];
         moinfo.ltd_a[A][I] += D.matrix[h][i][a];
       }
     }
@@ -79,14 +79,14 @@ void sort_ltd_uhf(struct TD_Params *S)
   dpd_file2_mat_close(&D);
   dpd_file2_close(&D);
 
-  dpd_file2_init(&D, CC_TMP, S->irrep, 0, 1, "LTDIA");
+  dpd_file2_init(&D, CC_TMP, S.L_irr, 0, 1, "LTDIA");
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
     for(i=0; i < aoccpi[h]; i++) {
       I = qt_aocc[aocc_off[h] + i];
-      for(a=0; a < avirtpi[h^S->irrep]; a++) {
-        A = qt_avir[avir_off[h^S->irrep] + a];
+      for(a=0; a < avirtpi[h^S.L_irr]; a++) {
+        A = qt_avir[avir_off[h^S.L_irr] + a];
         moinfo.ltd_a[I][A] += D.matrix[h][i][a];
       }
     }
@@ -94,14 +94,14 @@ void sort_ltd_uhf(struct TD_Params *S)
   dpd_file2_mat_close(&D);
   dpd_file2_close(&D);
 
-  dpd_file2_init(&D, CC_TMP, S->irrep, 2, 2, "LTDij");
+  dpd_file2_init(&D, CC_TMP, S.L_irr, 2, 2, "LTDij");
   dpd_file2_mat_init(&D); 
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
     for(i=0; i < boccpi[h]; i++) { 
       I = qt_bocc[bocc_off[h] + i];
-      for(j=0; j < boccpi[h^S->irrep]; j++) {
-        J = qt_bocc[bocc_off[h^S->irrep] + j];
+      for(j=0; j < boccpi[h^S.L_irr]; j++) {
+        J = qt_bocc[bocc_off[h^S.L_irr] + j];
         moinfo.ltd_b[I][J] += D.matrix[h][i][j];
       }
     }
@@ -109,14 +109,14 @@ void sort_ltd_uhf(struct TD_Params *S)
   dpd_file2_mat_close(&D);
   dpd_file2_close(&D);
 
-  dpd_file2_init(&D, CC_TMP, S->irrep, 3, 3, "LTDab");
+  dpd_file2_init(&D, CC_TMP, S.L_irr, 3, 3, "LTDab");
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
     for(a=0; a < bvirtpi[h]; a++) {
       A = qt_bvir[bvir_off[h] + a];
-      for(b=0; b < bvirtpi[h^S->irrep]; b++) {
-        B = qt_bvir[bvir_off[h^S->irrep] + b];
+      for(b=0; b < bvirtpi[h^S.L_irr]; b++) {
+        B = qt_bvir[bvir_off[h^S.L_irr] + b];
         moinfo.ltd_b[A][B] += D.matrix[h][a][b];
       }
     }
@@ -125,14 +125,14 @@ void sort_ltd_uhf(struct TD_Params *S)
   dpd_file2_close(&D);
 
   /* Note that this component of the density is stored occ-vir */
-  dpd_file2_init(&D, CC_TMP, S->irrep, 2, 3, "LTDai");
+  dpd_file2_init(&D, CC_TMP, S.L_irr, 2, 3, "LTDai");
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
     for(i=0; i < boccpi[h]; i++) {
       I = qt_bocc[bocc_off[h] + i];
-      for(a=0; a < bvirtpi[h^S->irrep]; a++) {
-        A = qt_bvir[bvir_off[h^S->irrep] + a];
+      for(a=0; a < bvirtpi[h^S.L_irr]; a++) {
+        A = qt_bvir[bvir_off[h^S.L_irr] + a];
         moinfo.ltd_b[A][I] += D.matrix[h][i][a];
       }
     }
@@ -140,14 +140,14 @@ void sort_ltd_uhf(struct TD_Params *S)
   dpd_file2_mat_close(&D);
   dpd_file2_close(&D);
 
-  dpd_file2_init(&D, CC_TMP, S->irrep, 2, 3, "LTDia");
+  dpd_file2_init(&D, CC_TMP, S.L_irr, 2, 3, "LTDia");
   dpd_file2_mat_init(&D);
   dpd_file2_mat_rd(&D);
   for(h=0; h < nirreps; h++) {
     for(i=0; i < boccpi[h]; i++) {
       I = qt_bocc[bocc_off[h] + i];
-      for(a=0; a < bvirtpi[h^S->irrep]; a++) {
-        A = qt_bvir[bvir_off[h^S->irrep] + a];
+      for(a=0; a < bvirtpi[h^S.L_irr]; a++) {
+        A = qt_bvir[bvir_off[h^S.L_irr] + a];
         moinfo.ltd_b[I][A] += D.matrix[h][i][a];
       }
     }

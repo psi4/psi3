@@ -7,7 +7,7 @@
    spin-adapted for RHF functions as well. At that time, x_oe_intermediates()
    should be replaced by only this function. */
 
-void x_oe_intermediates_rhf(void)
+void x_oe_intermediates_rhf(struct RHO_Params rho_params)
 {
   dpdfile2 L1, R1, T1, I, LR1, LR2, LT1, LT2;
   dpdbuf4 L2, T2, R2;
@@ -15,9 +15,9 @@ void x_oe_intermediates_rhf(void)
   int rhf, rohf, uhf;
   rhf = rohf = uhf = 0;
 
-  L_irr = params.L_irr;
-  R_irr = params.R_irr;
-  G_irr = params.G_irr;
+  L_irr = rho_params.L_irr;
+  R_irr = rho_params.R_irr;
+  G_irr = rho_params.G_irr;
 
   if (params.ref == 0) rhf = 1;
   else if (params.ref == 1) rohf = 1;

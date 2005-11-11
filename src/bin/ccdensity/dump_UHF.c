@@ -21,7 +21,7 @@
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
 #define IOFF_MAX 32641
 
-void dump_UHF(struct iwlbuf *AA, struct iwlbuf *BB, struct iwlbuf *AB)
+void dump_UHF(struct iwlbuf *AA, struct iwlbuf *BB, struct iwlbuf *AB, struct RHO_Params rho_params)
 {
   int nirreps, nmo, h, row, col;
   int *qt_aocc, *qt_avir;
@@ -42,9 +42,13 @@ void dump_UHF(struct iwlbuf *AA, struct iwlbuf *BB, struct iwlbuf *AB)
   nmo = moinfo.nmo;
 
   psio_open(PSIF_MO_OPDM, PSIO_OPEN_OLD);
-  psio_write_entry(PSIF_MO_OPDM, "MO-basis Alpha OPDM", (char *) moinfo.opdm_a[0], 
+	/* psio_write_entry(PSIF_MO_OPDM, "MO-basis Alpha OPDM", (char *) moinfo.opdm_a[0], 
 		   sizeof(double)*nmo*nmo);
   psio_write_entry(PSIF_MO_OPDM, "MO-basis Beta OPDM", (char *) moinfo.opdm_b[0], 
+		   sizeof(double)*nmo*nmo); */
+  psio_write_entry(PSIF_MO_OPDM, rho_params.opdm_a_lbl, (char *) moinfo.opdm_a[0], 
+		   sizeof(double)*nmo*nmo);
+  psio_write_entry(PSIF_MO_OPDM, rho_params.opdm_b_lbl, (char *) moinfo.opdm_b[0], 
 		   sizeof(double)*nmo*nmo);
   psio_close(PSIF_MO_OPDM, 1);
 

@@ -1,8 +1,8 @@
 #define EXTERN
 #include "globals.h"
 
-void sortone(void)
+void sortone(struct RHO_Params rho_params)
 {
-  if(params.ref == 0 || params.ref == 1) sortone_ROHF();
-  else if(params.ref == 2) sortone_UHF();
+  if(params.ref == 0 || params.ref == 1) sortone_ROHF(rho_params);
+  else if(params.ref == 2) sortone_UHF(rho_params);
 }

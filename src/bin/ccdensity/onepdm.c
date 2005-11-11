@@ -21,15 +21,15 @@
 ** TDC, July 2002
 */
 
-void onepdm(void)
+void onepdm(struct RHO_Params rho_params)
 {
   dpdfile2 D, T1, L1, Z;
   dpdbuf4 T2, L2;
-  double trace=0.0;
+  double trace=0.0, dot_AI, dot_IA, dot_ai, dot_ia;
 
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 0, "DIJ");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 0, rho_params.DIJ_lbl);
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 7, 2, 7, 0, "tIJAB");
     dpd_buf4_init(&L2, CC_GLG, 0, 0, 7, 2, 7, 0, "LIJAB");
     dpd_contract442(&T2, &L2, &D, 0, 0, -1.0, 0.0);
@@ -48,7 +48,7 @@ void onepdm(void)
     trace += dpd_file2_trace(&D);
     dpd_file2_close(&D);
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 0, "Dij");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 0, rho_params.Dij_lbl);
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 7, 2, 7, 0, "tijab");
     dpd_buf4_init(&L2, CC_GLG, 0, 0, 7, 2, 7, 0, "Lijab");
     dpd_contract442(&T2, &L2, &D, 0, 0, -1.0, 0.0);
@@ -67,7 +67,7 @@ void onepdm(void)
     trace += dpd_file2_trace(&D); 
     dpd_file2_close(&D);
 
-    dpd_file2_init(&D, CC_OEI, 0, 1, 1, "DAB");
+    dpd_file2_init(&D, CC_OEI, 0, 1, 1, rho_params.DAB_lbl);
     dpd_buf4_init(&L2, CC_GLG, 0, 2, 5, 2, 7, 0, "LIJAB");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 2, 5, 2, 7, 0, "tIJAB");
     dpd_contract442(&L2, &T2, &D, 3, 3, 1.0, 0.0);
@@ -86,7 +86,7 @@ void onepdm(void)
     trace += dpd_file2_trace(&D); 
     dpd_file2_close(&D);
 
-    dpd_file2_init(&D, CC_OEI, 0, 1, 1, "Dab");
+    dpd_file2_init(&D, CC_OEI, 0, 1, 1, rho_params.Dab_lbl);
     dpd_buf4_init(&L2, CC_GLG, 0, 2, 5, 2, 7, 0, "Lijab");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 2, 5, 2, 7, 0, "tijab");
     dpd_contract442(&L2, &T2, &D, 3, 3, 1.0, 0.0);
@@ -108,12 +108,12 @@ void onepdm(void)
     fprintf(outfile, "\n\tTrace of onepdm = %20.15f\n", trace);
 
     /* This term is * L0 = 0 for excited states */
-    if (params.ground) {
+    if (rho_params.L_ground) {
       dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
-      dpd_file2_copy(&T1, CC_OEI, "DIA");
+      dpd_file2_copy(&T1, CC_OEI, rho_params.DIA_lbl);
       dpd_file2_close(&T1);
     }
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DIA");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DIA_lbl);
 
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tIJAB");
     dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "LIA");
@@ -168,12 +168,12 @@ void onepdm(void)
     dpd_file2_close(&D);
 
     /* This term is * L0 = 0 for excited states */
-    if (params.ground) {
+    if (rho_params.L_ground) {
       dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tia");
-      dpd_file2_copy(&T1, CC_OEI, "Dia");
+      dpd_file2_copy(&T1, CC_OEI, rho_params.Dia_lbl);
       dpd_file2_close(&T1);
     }
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dia");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.Dia_lbl);
 
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tijab");
     dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "Lia");
@@ -227,17 +227,34 @@ void onepdm(void)
 
     /* Note that these blocks are still stored occ/vir */
     dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "LIA");
-    dpd_file2_copy(&L1, CC_OEI, "DAI");
+    dpd_file2_copy(&L1, CC_OEI, rho_params.DAI_lbl);
     dpd_file2_close(&L1);
 
     dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "Lia");
-    dpd_file2_copy(&L1, CC_OEI, "Dai");
+    dpd_file2_copy(&L1, CC_OEI, rho_params.Dai_lbl);
     dpd_file2_close(&L1);
 
+    /* Check overlaps */
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DIA_lbl);
+    dot_IA = dpd_file2_dot_self(&D);
+    dpd_file2_close(&D);
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.Dia_lbl);
+    dot_ia = dpd_file2_dot_self(&D);
+    dpd_file2_close(&D);
+    dpd_file2_init(&D, CC_OEI, 0, 1, 0, rho_params.DAI_lbl);
+    dot_AI = dpd_file2_dot_self(&D);
+    dpd_file2_close(&D);
+    dpd_file2_init(&D, CC_OEI, 0, 1, 0, rho_params.Dai_lbl);
+    dot_ai = dpd_file2_dot_self(&D);
+    dpd_file2_close(&D);
+    fprintf(outfile,"\tOverlaps of onepdm after ground-state parts added.\n");
+    fprintf(outfile,"\t<DIA|DIA> = %15.10lf     <Dia|Dia> = %15.10lf\n", dot_IA, dot_ia);
+    fprintf(outfile,"\t<DAI|DAI> = %15.10lf     <Dai|Dai> = %15.10lf\n", dot_AI, dot_ai);
+    fprintf(outfile,"\t<Dpq|Dqp> = %15.10lf\n", dot_IA+dot_ia+dot_AI+dot_ai);
   }
   else if(params.ref == 2) { /** UHF **/
 
-    dpd_file2_init(&D, CC_OEI, 0, 0, 0, "DIJ");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 0, rho_params.DIJ_lbl);
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 7, 2, 7, 0, "tIJAB");
     dpd_buf4_init(&L2, CC_GLG, 0, 0, 7, 2, 7, 0, "LIJAB");
     dpd_contract442(&T2, &L2, &D, 0, 0, -1.0, 0.0);
@@ -256,7 +273,7 @@ void onepdm(void)
     trace += dpd_file2_trace(&D);
     dpd_file2_close(&D);
 
-    dpd_file2_init(&D, CC_OEI, 0, 2, 2, "Dij");
+    dpd_file2_init(&D, CC_OEI, 0, 2, 2, rho_params.Dij_lbl);
     dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 17, 12, 17, 0, "tijab");
     dpd_buf4_init(&L2, CC_GLG, 0, 10, 17, 12, 17, 0, "Lijab");
     dpd_contract442(&T2, &L2, &D, 0, 0, -1.0, 0.0);
@@ -275,7 +292,7 @@ void onepdm(void)
     trace += dpd_file2_trace(&D); 
     dpd_file2_close(&D);
 
-    dpd_file2_init(&D, CC_OEI, 0, 1, 1, "DAB");
+    dpd_file2_init(&D, CC_OEI, 0, 1, 1, rho_params.DAB_lbl);
     dpd_buf4_init(&L2, CC_GLG, 0, 2, 5, 2, 7, 0, "LIJAB");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 2, 5, 2, 7, 0, "tIJAB");
     dpd_contract442(&L2, &T2, &D, 3, 3, 1.0, 0.0);
@@ -294,7 +311,7 @@ void onepdm(void)
     trace += dpd_file2_trace(&D); 
     dpd_file2_close(&D);
 
-    dpd_file2_init(&D, CC_OEI, 0, 3, 3, "Dab");
+    dpd_file2_init(&D, CC_OEI, 0, 3, 3, rho_params.Dab_lbl);
     dpd_buf4_init(&L2, CC_GLG, 0, 12, 15, 12, 17, 0, "Lijab");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 12, 15, 12, 17, 0, "tijab");
     dpd_contract442(&L2, &T2, &D, 3, 3, 1.0, 0.0);
@@ -316,12 +333,12 @@ void onepdm(void)
     fprintf(outfile, "\n\tTrace of onepdm = %20.15f\n", trace);
 
     /* This term is * L0 = 0 for excited states */
-    if (params.ground) {
+    if (rho_params.L_ground) {
       dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
-      dpd_file2_copy(&T1, CC_OEI, "DIA");
+      dpd_file2_copy(&T1, CC_OEI, rho_params.DIA_lbl);
       dpd_file2_close(&T1);
     }
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DIA");
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DIA_lbl);
 
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tIJAB");
     dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "LIA");
@@ -376,12 +393,12 @@ void onepdm(void)
     dpd_file2_close(&D);
 
     /* This term is * L0 = 0 for excited states */
-    if (params.ground) {
+    if (rho_params.L_ground) {
       dpd_file2_init(&T1, CC_OEI, 0, 2, 3, "tia");
-      dpd_file2_copy(&T1, CC_OEI, "Dia");
+      dpd_file2_copy(&T1, CC_OEI, rho_params.Dia_lbl);
       dpd_file2_close(&T1);
     }
-    dpd_file2_init(&D, CC_OEI, 0, 2, 3, "Dia");
+    dpd_file2_init(&D, CC_OEI, 0, 2, 3, rho_params.Dia_lbl);
 
     dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 15, 12, 17, 0, "tijab");
     dpd_file2_init(&L1, CC_GLG, 0, 2, 3, "Lia");
@@ -435,12 +452,29 @@ void onepdm(void)
 
     /* Note that these blocks are still stored occ/vir */
     dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "LIA");
-    dpd_file2_copy(&L1, CC_OEI, "DAI");
+    dpd_file2_copy(&L1, CC_OEI, rho_params.DAI_lbl);
     dpd_file2_close(&L1);
 
     dpd_file2_init(&L1, CC_GLG, 0, 2, 3, "Lia");
-    dpd_file2_copy(&L1, CC_OEI, "Dai");
+    dpd_file2_copy(&L1, CC_OEI, rho_params.Dai_lbl);
     dpd_file2_close(&L1);
 
+    /* Check overlaps */
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DIA_lbl);
+    dot_IA = dpd_file2_dot_self(&D);
+    dpd_file2_close(&D);
+    dpd_file2_init(&D, CC_OEI, 0, 2, 3, rho_params.Dia_lbl);
+    dot_ia = dpd_file2_dot_self(&D);
+    dpd_file2_close(&D);
+    dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DAI_lbl);
+    dot_AI = dpd_file2_dot_self(&D);
+    dpd_file2_close(&D);
+    dpd_file2_init(&D, CC_OEI, 0, 2, 3, rho_params.Dai_lbl);
+    dot_ai = dpd_file2_dot_self(&D);
+    dpd_file2_close(&D);
+    fprintf(outfile,"\tOverlaps of onepdm after ground-state parts added.\n");
+    fprintf(outfile,"\t<DIA|DIA> = %15.10lf     <Dia|Dia> = %15.10lf\n", dot_IA, dot_ia);
+    fprintf(outfile,"\t<DAI|DAI> = %15.10lf     <Dai|Dai> = %15.10lf\n", dot_AI, dot_ai);
+    fprintf(outfile,"\t<Dpq|Dqp> = %15.10lf\n", dot_IA+dot_ia+dot_AI+dot_ai);
   }
 }
