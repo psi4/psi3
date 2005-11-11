@@ -4,6 +4,8 @@
 #include "includes.h"
 #include "globals.h"
 #include "prototypes.h"
+#include <psifiles.h>
+#include <ccfiles.h>
 #define TOL 1E-14
 
 void read_density()
@@ -136,8 +138,10 @@ void read_density()
       strcpy(opdm_key,"MO-basis OPDM");   
 
     psio_open(opdm_file, PSIO_OPEN_OLD);
-    psio_read_entry(opdm_file, "MO-basis OPDM", (char *) onepdm[0],
-	populated_orbs * populated_orbs * sizeof(double));
+    psio_read_entry(opdm_file, opdm_lbl[irho], (char *) onepdm[0],
+    populated_orbs * populated_orbs * sizeof(double));
+    /* psio_read_entry(opdm_file, "MO-basis OPDM", (char *) onepdm[0],
+    populated_orbs * populated_orbs * sizeof(double)); */
     psio_close(opdm_file, 1);
 
     if (print_lvl > 2) {
@@ -248,10 +252,14 @@ void read_density()
     bopdm = block_matrix(nmo,nmo);
     
     psio_open(PSIF_MO_OPDM, PSIO_OPEN_OLD);
-    psio_read_entry(PSIF_MO_OPDM, "MO-basis Alpha OPDM", (char *)aopdm[0],
+		psio_read_entry(PSIF_MO_OPDM, opdm_a_lbl[irho], (char *)aopdm[0],
+                    sizeof(double)*nmo*nmo);
+    psio_read_entry(PSIF_MO_OPDM, opdm_b_lbl[irho], (char *)bopdm[0],
+                    sizeof(double)*nmo*nmo);
+		/* psio_read_entry(PSIF_MO_OPDM, "MO-basis Alpha OPDM", (char *)aopdm[0],
                     sizeof(double)*nmo*nmo);
     psio_read_entry(PSIF_MO_OPDM, "MO-basis Beta OPDM", (char *)bopdm[0],
-                    sizeof(double)*nmo*nmo);
+                    sizeof(double)*nmo*nmo); */
     psio_close(PSIF_MO_OPDM, 1);
     
     if (print_lvl >= PRINTOPDMLEVEL) {

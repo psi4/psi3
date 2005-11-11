@@ -112,14 +112,20 @@ int main(int argc, char* argv[]) {
  read_basset_info();
  init_xyz(); 
 
+ /* RAK Determine number of densities to analyze */
+ chkpt_close();
+ get_opdm_lbl();
+
+for (irho=0;irho<nrho;++irho) {
+ fprintf(outfile,"\t** Analyzing density number %d...\n", irho+1);
+ chkpt_init(PSIO_OPEN_OLD);
+
  /* Obtain a density matrix */
- 
  if (read_opdm)
    read_density();
  else
    compute_density();
 
-/*if (strcmp(ref,"UHF") != 0) { */
   compute_overlap();
    
   /* Obtain natural orbitals */
@@ -178,6 +184,7 @@ int main(int argc, char* argv[]) {
    print_grid();
  }
  print_misc();
+}
 
 	/* Cleaning up */
 

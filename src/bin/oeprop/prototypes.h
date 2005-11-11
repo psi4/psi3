@@ -29,3 +29,4 @@ void print_esp();
 void print_grid();
 void print_misc();
 void compute_connectivity();
+void get_opdm_lbl(void);

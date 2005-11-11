@@ -42,6 +42,11 @@ EXTERN double df[MAXFACT*2];
 
 	/* Calculation constants */
 
+EXTERN int nrho; /* number of densities to analyze */
+EXTERN int irho; /* index of current density */
+EXTERN char **opdm_lbl;
+EXTERN char **opdm_a_lbl;
+EXTERN char **opdm_b_lbl;
 EXTERN int natom, natom3, openmos, openirrs, iopen, nsym, nirreps, charge;
 EXTERN int nbfao, natri, nbfso, nstri, nshell, nprim;
 EXTERN int nmo;
