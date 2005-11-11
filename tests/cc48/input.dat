@@ -7,7 +7,7 @@ default: (
   wfn = eom_ccsd
   jobtype = oeprop
   dertype = none
-  states_per_irrep = (2 0 0 0)
+  states_per_irrep = (2 0 0 2)
  	prop_all = true
 )
 
