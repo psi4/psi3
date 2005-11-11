@@ -20,16 +20,17 @@ void write_Rs(int C_irr, double *evals, int *converged) {
     ++R_index;
 
     if (C_irr == eom_params.prop_sym) {
-      chkpt_init(PSIO_OPEN_OLD);
-      if (!params.full_matrix) {
-        etot = evals[eom_params.prop_root]+moinfo.ecc+moinfo.eref;
-      } 
-      else {
-        etot = evals[eom_params.prop_root]+moinfo.eref;
-      }
-      chkpt_wt_etot(etot);
-      fprintf(outfile,"Energy written to chkpt %15.10lf\n", etot);
-      chkpt_close();
+		  if (i == eom_params.prop_root) {
+        chkpt_init(PSIO_OPEN_OLD);
+        if (!params.full_matrix) {
+			    etot = evals[eom_params.prop_root]+moinfo.ecc+moinfo.eref;
+		    } else {
+			    etot = evals[eom_params.prop_root]+moinfo.eref;
+			  }
+        chkpt_wt_etot(etot);
+        fprintf(outfile,"Energy written to chkpt:Etot %15.10lf\n", etot);
+        chkpt_close();
+			}
     }
     /* cclambda expects excitation energies */
     if (!params.full_matrix) {

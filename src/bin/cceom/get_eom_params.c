@@ -56,13 +56,9 @@ void get_eom_params()
   if ( (!strcmp(params.wfn,"EOM_CC3")) && (eom_params.prop_root != 0) ) {
     eom_params.follow_root = 1;
   }
-  /*
-    eom_params.follow_root = 0;
-    ip_boolean("FOLLOW_ROOT",&(eom_params.follow_root),0);
-  */
 
+  /* so far, all R's are always kept so this is not used */
   eom_params.save_all = 0;
-  errcod = ip_data("SAVE_ALL","%d",&(eom_params.save_all),0);
 
   eom_params.mult = 1;
   eom_params.rhf_triplets = 0;
@@ -136,8 +132,7 @@ void get_eom_params()
   fprintf(outfile, "\tResidual vector tolerance   = %5.1e\n", eom_params.residual_tol);
   fprintf(outfile, "\tResidual vector toleranceSS = %5.1e\n", eom_params.residual_tol_SS);
   fprintf(outfile, "\tComplex tolerance           = %5.1e\n", eom_params.complex_tol);
-  fprintf(outfile, "\tRoot for properties         = %5d\n", eom_params.prop_root);
-  fprintf(outfile, "\tSave all R vectors          = %5d\n", eom_params.save_all);
+  fprintf(outfile, "\tRoot for properties         = %5d\n", eom_params.prop_root + 1);
   fprintf(outfile, "\tSym of state for properties = %6s\n", moinfo.labels[eom_params.prop_sym]);
   fprintf(outfile, "\tGuess vectors taken from    = %s\n", eom_params.guess);
   if (eom_params.follow_root)
