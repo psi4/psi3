@@ -63,15 +63,16 @@ psi: (
   cceom      = "cceom"
   ccresponse = "ccresponse"
   ooccman    = "ccman"
-  cclambda_excited = "cclambda --excited"
+%  cclambda_excited = "cclambda --excited"
+  cclambda_excited = "cclambda"
   cclambda_zeta = "cclambda --zeta"
 
   ccdensity  = "ccdensity"
   ccdensity_calc_xi = "ccdensity --calc_xi"
-  ccdensity_use_zeta = "ccdensity --use_zeta" %implies --excited
+  ccdensity_use_zeta = "ccdensity --use_zeta" % --excited
   ccdensity_excited = "ccdensity --excited"
   ccdensity_onepdm  = "ccdensity --onepdm"
-  ccdensity_excited_onepdm = "ccdensity --excited --onepdm"
+  ccdensity_excited_onepdm = "ccdensity --onepdm" % --excited
 
   % Determinant CI specific programs
   detci    = "detci"
