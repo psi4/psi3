@@ -116,8 +116,8 @@ void denom_uhf(struct L_Params L_params)
   dpdfile2 dIA, dia;
   dpdfile4 dIJAB, dijab, dIjAb;
   double Fii, Fjj, Faa, Fbb;
-  L_irr = L_params.irrep;
 
+  L_irr = L_params.irrep;
   nirreps = moinfo.nirreps;
   aoccpi = moinfo.aoccpi; 
   boccpi = moinfo.boccpi; 

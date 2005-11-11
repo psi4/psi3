@@ -5,24 +5,20 @@
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <psifiles.h>
+#include <libqt/qt.h>
 #define EXTERN
 #include "globals.h"
 
 void get_params(void)
 {
-  int errcod, iconv,i,j,k,l,prop_sym,prop_root;
+  int errcod, iconv,i,j,k,l,prop_sym,prop_root, excited_method=0;
+	int *states_per_irrep, prop_all, lambda_and_Ls = 0;
   char lbl[32];
   char *junk;
 
+  /* check WFN keyword in input */
   errcod = ip_string("WFN", &(params.wfn), 0);
-  if(strcmp(params.wfn, "CCSD") && strcmp(params.wfn, "CCSD_T") &&
-     strcmp(params.wfn, "EOM_CCSD") && strcmp(params.wfn, "LEOM_CCSD") &&
-     strcmp(params.wfn, "BCCD") && strcmp(params.wfn,"BCCD_T") &&
-     strcmp(params.wfn, "CC2") && strcmp(params.wfn,"CC3") &&
-     strcmp(params.wfn, "EOM_CC2") && strcmp(params.wfn, "EOM_CC3")) {
-    fprintf(outfile, "Invalid value of input keyword WFN: %s\n", params.wfn);
-    exit(PSI_RETURN_FAILURE);
-  }
+	excited_method = cc_excited(params.wfn);
 
   if(!strcmp(params.wfn,"CC2") || !strcmp(params.wfn,"EOM_CC2")) {
     psio_read_entry(CC_INFO, "CC2 Energy", (char *) &(moinfo.ecc),
@@ -46,6 +42,7 @@ void get_params(void)
             moinfo.eref+moinfo.ecc);
   }
 
+  /* read in the easy-to-understand parameters */
   params.maxiter = 50;
   errcod = ip_data("MAXITER","%d",&(params.maxiter),0);
 
@@ -55,7 +52,6 @@ void get_params(void)
 
   params.restart = 1;
   errcod = ip_boolean("RESTART", &(params.restart),0);
-  /* If the MO orbital phases are screwed up, don't restart */
   if(!moinfo.phase) params.restart = 0;
 
   fndcor(&(params.memory),infile,outfile);
@@ -66,220 +62,12 @@ void get_params(void)
   params.cachelev = 2;
   errcod = ip_data("CACHELEV", "%d", &(params.cachelev),0);
 
-  params.dertype = 0;
-  if(ip_exist("DERTYPE",0)) {
-    errcod = ip_string("DERTYPE", &(junk),0);
-    if(errcod != IPE_OK) params.dertype = 0;
-    else if(!strcmp(junk,"NONE")) params.dertype = 0;
-    else if(!strcmp(junk,"FIRST")) params.dertype = 1;
-    else if(!strcmp(junk,"RESPONSE")) params.dertype = 3; /* linear response */
-    else {
-      printf("Invalid value of input keyword DERTYPE: %s\n", junk);
-      exit(PSI_RETURN_FAILURE); 
-    }
-    free(junk);
-  }
-
   params.diis = 1;
   errcod = ip_boolean("DIIS", &params.diis, 0);
 
   params.aobasis = 0;
   errcod = ip_boolean("AO_BASIS", &(params.aobasis),0);
   params.aobasis = 0;  /* AO basis code not yet working for lambda */
-
-  /* Here is the current overall logic:
-     if --all, do all states included ground state
-     else if (params.ground), do just ground state
-     else if --zeta {
-     L_irr from CC_INFO (A1 for gradients)
-     labels for zeta
-     }
-     else {
-     if prop_sym is in input use prop_sym and prop_root
-     else compute L for last state requested in input
-     }
-  */
-
-  /* count number of states to converge */
-  if (params.all) { /* compute LAMPS for all Rs plus ground state */
-    if (ip_exist("STATES_PER_IRREP",0)) {
-      ip_count("STATES_PER_IRREP", &i, 0);
-      if (i != moinfo.nirreps) {
-        fprintf(outfile,"Dim. of states_per_irrep vector must be %d\n", moinfo.nirreps) ;
-        exit(0);
-      }
-      for (i=0;i<moinfo.nirreps;++i) {
-        ip_data("STATES_PER_IRREP","%d",&j,1,i);
-        params.nstates += j;
-      }
-    }
-    params.nstates += 1; /* for ground state */
-  }
-  else {
-    params.nstates = 1;
-  }
-
-  pL_params = (struct L_Params *) malloc(params.nstates * sizeof(struct L_Params));
-
-  if (params.all) {
-    /* for ground state */
-    pL_params[0].irrep = 0;
-    pL_params[0].R0 = 1.0;
-    pL_params[0].cceom_energy = 0.0;
-    pL_params[0].ground = 1;
-    pL_params[0].root = -1;
-    sprintf(pL_params[0].L1A_lbl,"LIA %d %d",0, -1);
-    sprintf(pL_params[0].L1B_lbl,"Lia %d %d",0, -1);
-    sprintf(pL_params[0].L2AA_lbl,"LIJAB %d %d",0, -1);
-    sprintf(pL_params[0].L2BB_lbl,"Lijab %d %d",0, -1);
-    sprintf(pL_params[0].L2AB_lbl,"LIjAb %d %d",0, -1);
-    sprintf(pL_params[0].L2RHF_lbl,"2LIjAb - LIjbA %d %d",0, -1);
-
-    l=1; /* index of root */
-    if (ip_exist("STATES_PER_IRREP",0)) {
-      for (i=0;i<moinfo.nirreps;++i) {
-        ip_data("STATES_PER_IRREP","%d",&j,1,i);
-        for (k=0;k<j;++k) {
-          pL_params[l].irrep = i^moinfo.sym;
-
-          if(!strcmp(params.wfn,"CC2") || !strcmp(params.wfn,"EOM_CC2")) {
-            sprintf(lbl,"EOM CC2 Energy for root %d %d", pL_params[l].irrep, k);
-            psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[l].cceom_energy),sizeof(double));
-            sprintf(lbl,"EOM CC2 R0 for root %d %d",pL_params[l].irrep, k);
-            psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[l].R0),sizeof(double));
-          }
-          else if(!strcmp(params.wfn,"CCSD") || !strcmp(params.wfn,"EOM_CCSD")) {
-            sprintf(lbl,"EOM CCSD Energy for root %d %d", pL_params[l].irrep, k);
-            psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[l].cceom_energy),sizeof(double));
-            sprintf(lbl,"EOM CCSD R0 for root %d %d",pL_params[l].irrep, k);
-            psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[l].R0),sizeof(double));
-          }
-          else if(!strcmp(params.wfn,"CC3") || !strcmp(params.wfn,"EOM_CC3")) {
-            sprintf(lbl,"EOM CC3 Energy for root %d %d", pL_params[l].irrep, k);
-            psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[l].cceom_energy),sizeof(double));
-            sprintf(lbl,"EOM CC3 R0 for root %d %d",pL_params[l].irrep, k);
-            psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[l].R0),sizeof(double));
-          }
-
-          sprintf(pL_params[l].L1A_lbl,"LIA %d %d",pL_params[l].irrep, k);
-          sprintf(pL_params[l].L1B_lbl,"Lia %d %d",pL_params[l].irrep, k);
-          sprintf(pL_params[l].L2AA_lbl,"LIJAB %d %d",pL_params[l].irrep, k);
-          sprintf(pL_params[l].L2BB_lbl,"Lijab %d %d",pL_params[l].irrep, k);
-          sprintf(pL_params[l].L2AB_lbl,"LIjAb %d %d",pL_params[l].irrep, k);
-          sprintf(pL_params[l].L2RHF_lbl,"2LIjAb - LIjbA %d %d",pL_params[l].irrep, k);
-          pL_params[l].root = k;
-          pL_params[l++].ground = 0;
-        }
-      }
-    }
-  }
-  else if (params.zeta) {
-    psio_read_entry(CC_INFO, "XI Irrep", (char *) &i,sizeof(int));
-    fprintf(outfile,"\tIrrep of Zeta       (CC_INFO) = %d\n", i);
-    prop_root = 0;
-    prop_sym = i;
-    pL_params[0].irrep = prop_sym;
-    pL_params[0].root = prop_root;
-    pL_params[0].ground = 0;
-    pL_params[0].cceom_energy = 0.0; /* don't want energy in denominator */
-    pL_params[0].R0 = 0.0; /* <Zeta0|R0> = 0, since zeta_0 = 0 */
-    sprintf(pL_params[0].L1A_lbl,"ZIA");
-    sprintf(pL_params[0].L1B_lbl,"Zia");
-    sprintf(pL_params[0].L2AA_lbl,"ZIJAB");
-    sprintf(pL_params[0].L2BB_lbl,"Zijab");
-    sprintf(pL_params[0].L2AB_lbl,"ZIjAb");
-    sprintf(pL_params[0].L2RHF_lbl,"2ZIjAb - ZIjbA");
-  }
-  else if (params.ground) {
-    pL_params[0].irrep = 0;
-    pL_params[0].R0 = 1.0;
-    pL_params[0].cceom_energy = 0.0;
-    pL_params[0].ground = 1;
-    sprintf(pL_params[0].L1A_lbl,"LIA %d %d",0, -1);
-    sprintf(pL_params[0].L1B_lbl,"Lia %d %d",0, -1);
-    sprintf(pL_params[0].L2AA_lbl,"LIJAB %d %d",0, -1);
-    sprintf(pL_params[0].L2BB_lbl,"Lijab %d %d",0, -1);
-    sprintf(pL_params[0].L2AB_lbl,"LIjAb %d %d",0, -1);
-    sprintf(pL_params[0].L2RHF_lbl,"2LIjAb - LIjbA %d %d",0, -1);
-    pL_params[0].root = -1;
-  }
-  else { /* use input to determine which L to get */
-    if (ip_exist("PROP_SYM",0)) {
-      ip_data("PROP_SYM","%d",&(prop_sym),0);
-      prop_sym -= 1;
-      prop_sym = moinfo.sym^prop_sym;
-      ip_data("PROP_ROOT","%d",&(prop_root),0);
-      prop_root -= 1;
-      pL_params[0].irrep = prop_sym;
-      pL_params[0].ground = 0;
-
-      if(!strcmp(params.wfn,"CC2") || !strcmp(params.wfn,"EOM_CC2")) {
-        sprintf(lbl,"EOM CC2 Energy for root %d %d", prop_sym, prop_root);
-        psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[0].cceom_energy),sizeof(double));
-        sprintf(lbl,"EOM CC2 R0 for root %d %d", prop_sym, prop_root);
-        psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[0].R0),sizeof(double));
-      }
-      else if(!strcmp(params.wfn,"CCSD") || !strcmp(params.wfn,"EOM_CCSD")) {
-        sprintf(lbl,"EOM CCSD Energy for root %d %d", prop_sym, prop_root);
-        psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[0].cceom_energy),sizeof(double));
-        sprintf(lbl,"EOM CCSD R0 for root %d %d", prop_sym, prop_root);
-        psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[0].R0),sizeof(double));
-      }
-      else if(!strcmp(params.wfn,"CC3") || !strcmp(params.wfn,"EOM_CC3")) {
-        sprintf(lbl,"EOM CC3 Energy for root %d %d", prop_sym, prop_root);
-        psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[0].cceom_energy),sizeof(double));
-        sprintf(lbl,"EOM CC3 R0 for root %d %d", prop_sym, prop_root);
-        psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[0].R0),sizeof(double));
-      }
-
-      sprintf(pL_params[0].L1A_lbl,"LIA %d %d",prop_sym, prop_root);
-      sprintf(pL_params[0].L1B_lbl,"Lia %d %d",prop_sym, prop_root);
-      sprintf(pL_params[0].L2AA_lbl,"LIJAB %d %d",prop_sym, prop_root);
-      sprintf(pL_params[0].L2BB_lbl,"Lijab %d %d",prop_sym, prop_root);
-      sprintf(pL_params[0].L2AB_lbl,"LIjAb %d %d",prop_sym, prop_root);
-      sprintf(pL_params[0].L2RHF_lbl,"2LIjAb - LIjbA %d %d",prop_sym, prop_root);
-      pL_params[0].root = prop_root;
-    }
-    else { /* use last root requested */
-      for (i=0;i<moinfo.nirreps;++i) {
-        j=0;
-        ip_data("STATES_PER_IRREP","%d",&j,1,i);
-        if (j>0) {
-          prop_root = j-1;
-          prop_sym = i^moinfo.sym;
-        }
-      }
-      pL_params[0].irrep = prop_sym;
-      pL_params[0].ground = 0;
-
-      if(!strcmp(params.wfn,"CC2") || !strcmp(params.wfn,"EOM_CC2")) {
-        sprintf(lbl,"EOM CC2 Energy for root %d %d", prop_sym, prop_root);
-        psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[0].cceom_energy),sizeof(double));
-        sprintf(lbl,"EOM CC2 R0 for root %d %d", prop_sym, prop_root);
-        psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[0].R0),sizeof(double));
-      }
-      else if(!strcmp(params.wfn,"CCSD") || !strcmp(params.wfn,"EOM_CCSD")) {
-        sprintf(lbl,"EOM CCSD Energy for root %d %d", prop_sym, prop_root);
-        psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[0].cceom_energy),sizeof(double));
-        sprintf(lbl,"EOM CCSD R0 for root %d %d", prop_sym, prop_root);
-        psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[0].R0),sizeof(double));
-      }
-      else if(!strcmp(params.wfn,"CC3") || !strcmp(params.wfn,"EOM_CC3")) {
-        sprintf(lbl,"EOM CC3 Energy for root %d %d", prop_sym, prop_root);
-        psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[0].cceom_energy),sizeof(double));
-        sprintf(lbl,"EOM CC3 R0 for root %d %d", prop_sym, prop_root);
-        psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[0].R0),sizeof(double));
-      }
-
-      sprintf(pL_params[0].L1A_lbl,"LIA %d %d",prop_sym, prop_root);
-      sprintf(pL_params[0].L1B_lbl,"Lia %d %d",prop_sym, prop_root);
-      sprintf(pL_params[0].L2AA_lbl,"LIJAB %d %d",prop_sym, prop_root);
-      sprintf(pL_params[0].L2BB_lbl,"Lijab %d %d",prop_sym, prop_root);
-      sprintf(pL_params[0].L2AB_lbl,"LIjAb %d %d",prop_sym, prop_root);
-      sprintf(pL_params[0].L2RHF_lbl,"2LIjAb - LIjbA %d %d",prop_sym, prop_root);
-      pL_params[0].root = prop_root;
-    }
-  }
 
   if(ip_exist("ABCD",0)) {
     errcod = ip_string("ABCD", &(params.abcd), 0);
@@ -290,11 +78,39 @@ void get_params(void)
   }
   else params.abcd = strdup("NEW");
 
+  /* Determine DERTYPE */
+  params.dertype = 0;
+  if(ip_exist("DERTYPE",0)) {
+    errcod = ip_string("DERTYPE", &(junk),0);
+    if(errcod != IPE_OK) {
+      printf("Invalid value of input keyword DERTYPE: %s\n", junk);
+      exit(PSI_RETURN_FAILURE); 
+		}
+    else if(!strcmp(junk,"NONE")) params.dertype = 0;
+    else if(!strcmp(junk,"FIRST")) params.dertype = 1;
+    else if(!strcmp(junk,"RESPONSE")) params.dertype = 3; /* linear response */
+    else {
+      printf("Invalid value of input keyword DERTYPE: %s\n", junk);
+      exit(PSI_RETURN_FAILURE); 
+    }
+    free(junk);
+  }
+	else { /* DERTYPE is absent, assume 1 if jobtype=opt; 0 if jobtype=oeprop */
+    ip_string("JOBTYPE", &(junk),0);
+    if(!strcmp(junk,"OEPROP")) params.dertype = 0;
+    else if(!strcmp(junk,"OPT")) params.dertype = 1;
+    else {
+      printf("Don't know what to do with DERTYPE missing and jobtype: %s\n", junk);
+      exit(PSI_RETURN_FAILURE); 
+    }
+    free(junk);
+	}
+
+  /* begin local parameters */
   params.local = 0;
   errcod = ip_boolean("LOCAL", &(params.local),0);
   local.cutoff = 0.02;
   errcod = ip_data("LOCAL_CUTOFF", "%lf", &(local.cutoff), 0);
-
   if(ip_exist("LOCAL_METHOD",0)) {
     errcod = ip_string("LOCAL_METHOD", &(local.method), 0);
     if(strcmp(local.method,"AOBASIS") && strcmp(local.method,"WERNER")) {
@@ -354,8 +170,6 @@ void get_params(void)
   fprintf(outfile, "\tAO Basis      =     %s\n", 
           params.aobasis ? "Yes" : "No");
   fprintf(outfile, "\tABCD            =     %s\n", params.abcd);
-  fprintf(outfile, "\tExcited State  =     %s\n", 
-          params.ground ? "No" : "Yes");
   fprintf(outfile, "\tLocal CC        =     %s\n", params.local ? "Yes" : "No");
   if(params.local) {
     fprintf(outfile, "\tLocal Cutoff    = %3.1e\n", local.cutoff);
@@ -366,21 +180,234 @@ void get_params(void)
     fprintf(outfile, "\tLocal CPHF cutoff =  %3.1e\n", local.cphf_cutoff);
   }
 
+
+	/* Now setup the structure which determines what will be solved */ 
+	/* if --zeta, use Xi and solve for Zeta */
+	/* if (DERTYPE == FIRST) determine ground vs. excited from wfn.
+	    if ground, do only lambda.
+			if excited, compute only one L chosen as described below.
+			*/
+	/* if (DERTYPE == RESPONSE), determine ground vs. excited from wfn.
+	    Compute lambda.
+			if excited, also do L(s) chosen as described below */
+	/* if (DERTYPE == NONE) determine ground vs. excited from wfn.
+	    Compute lambda.
+			if excited, also do L(s) chosen as described below */
+/* To determine which L(s) to compute for multiple L(s):
+	  Check PROP_ALL in input
+		 - If (PROP_ALL == true), compute L for all excited states.
+		 - If false, check PROP_SYM for irrep desired, and PROP_ROOT
+			     for root desired, as in cceom. */
+/* To determine which L(s) to compute for single L(s) 
+		 - Check PROP_SYM for irrep desired, and PROP_ROOT
+			     for root desired, as in cceom. */
+
+  /* setup property variables for excited states */
+  if (cc_excited(params.wfn)) {
+    ip_count("STATES_PER_IRREP", &i, 0);
+	  states_per_irrep = (int *) malloc(moinfo.nirreps * sizeof(int));
+    for (i=0;i<moinfo.nirreps;++i)
+      errcod = ip_data("STATES_PER_IRREP","%d",&(states_per_irrep[i]),1,i);
+
+	  prop_all = 0;
+	  if (ip_exist("PROP_ALL",0)) ip_boolean("PROP_ALL",&prop_all,0);
+		/* command-line overrides this keyword (at least for now) */
+		if (params.all) prop_all = 1;
+
+	  if (ip_exist("PROP_SYM",0)) {  /* read symmetry of state for properties */
+      ip_data("PROP_SYM","%d",&(prop_sym),0);
+      prop_sym -= 1;
+      prop_sym = moinfo.sym^prop_sym;
+	  }
+    else { /* just use last irrep of states requested for symmetry of states */
+      for (i=0;i<moinfo.nirreps;++i) {
+		    if (states_per_irrep[i] > 0)
+          prop_sym = i^moinfo.sym;
+		  }
+    }
+
+    if (ip_exist("PROP_ROOT",0)) { /* read prop_root */
+      ip_data("PROP_ROOT","%d",&(prop_root),0);
+      prop_root -= 1;
+	  }
+	  else { /* just use highest root, if you need only one of them */
+	    prop_root = states_per_irrep[prop_sym^moinfo.sym];
+			prop_root -= 1;
+	  }
+	}
+	
+
+  if (params.zeta) { /* only use Xi to solve for Zeta */
+	  params.nstates = 1;
+    pL_params = (struct L_Params *) malloc(params.nstates * sizeof(struct L_Params));
+    psio_read_entry(CC_INFO, "XI Irrep", (char *) &i,sizeof(int));
+    fprintf(outfile,"\tIrrep of Zeta       (CC_INFO) = %d\n", i);
+    pL_params[0].irrep = prop_sym = i; /* is this always A1? I forget */
+    pL_params[0].root = prop_root = 0;
+    pL_params[0].ground = 0;
+    pL_params[0].cceom_energy = 0.0;
+    pL_params[0].R0 = 0.0; /* <Zeta0|R0> = 0, since zeta_0 = 0 */
+    sprintf(pL_params[0].L1A_lbl,"ZIA");
+    sprintf(pL_params[0].L1B_lbl,"Zia");
+    sprintf(pL_params[0].L2AA_lbl,"ZIJAB");
+    sprintf(pL_params[0].L2BB_lbl,"Zijab");
+    sprintf(pL_params[0].L2AB_lbl,"ZIjAb");
+    sprintf(pL_params[0].L2RHF_lbl,"2ZIjAb - ZIjbA");
+  }
+	else if (params.dertype == 1) { /* analytic gradient, ignore prop_all */
+	  if (!cc_excited(params.wfn)) { /* do only lambda for ground state */
+	    params.nstates = 1;
+      pL_params = (struct L_Params *) malloc(params.nstates * sizeof(struct L_Params));
+      pL_params[0].irrep = 0;
+      pL_params[0].root = -1;
+      pL_params[0].ground = 1;
+      pL_params[0].R0 = 1.0;
+      pL_params[0].cceom_energy = 0.0;
+      sprintf(pL_params[0].L1A_lbl,"LIA %d %d",0, -1);
+      sprintf(pL_params[0].L1B_lbl,"Lia %d %d",0, -1);
+      sprintf(pL_params[0].L2AA_lbl,"LIJAB %d %d",0, -1);
+      sprintf(pL_params[0].L2BB_lbl,"Lijab %d %d",0, -1);
+      sprintf(pL_params[0].L2AB_lbl,"LIjAb %d %d",0, -1);
+      sprintf(pL_params[0].L2RHF_lbl,"2LIjAb - LIjbA %d %d",0, -1);
+		}
+		else { /* do only one L for excited state */
+		  params.nstates = 1;
+      pL_params = (struct L_Params *) malloc(params.nstates * sizeof(struct L_Params));
+      pL_params[0].irrep = prop_sym;
+      pL_params[0].root = prop_root;
+      pL_params[0].ground = 0;
+      sprintf(lbl,"EOM CCSD Energy for root %d %d", prop_sym, prop_root);
+      psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[0].cceom_energy),sizeof(double));
+      sprintf(lbl,"EOM CCSD R0 for root %d %d", prop_sym, prop_root);
+      psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[0].R0),sizeof(double));
+      sprintf(pL_params[0].L1A_lbl,"LIA %d %d",prop_sym, prop_root);
+      sprintf(pL_params[0].L1B_lbl,"Lia %d %d",prop_sym, prop_root);
+      sprintf(pL_params[0].L2AA_lbl,"LIJAB %d %d",prop_sym, prop_root);
+      sprintf(pL_params[0].L2BB_lbl,"Lijab %d %d",prop_sym, prop_root);
+      sprintf(pL_params[0].L2AB_lbl,"LIjAb %d %d",prop_sym, prop_root);
+      sprintf(pL_params[0].L2RHF_lbl,"2LIjAb - LIjbA %d %d",prop_sym, prop_root);
+		}
+  }
+	else if (params.dertype == 3) { /* response calculation */
+	  if (!cc_excited(params.wfn)) { /* ground state */
+	    params.nstates = 1;
+      pL_params = (struct L_Params *) malloc(params.nstates * sizeof(struct L_Params));
+      pL_params[0].irrep = 0;
+      pL_params[0].root = -1;
+      pL_params[0].ground = 1;
+      pL_params[0].R0 = 1.0;
+      pL_params[0].cceom_energy = 0.0;
+      sprintf(pL_params[0].L1A_lbl,"LIA %d %d",0, -1);
+      sprintf(pL_params[0].L1B_lbl,"Lia %d %d",0, -1);
+      sprintf(pL_params[0].L2AA_lbl,"LIJAB %d %d",0, -1);
+      sprintf(pL_params[0].L2BB_lbl,"Lijab %d %d",0, -1);
+      sprintf(pL_params[0].L2AB_lbl,"LIjAb %d %d",0, -1);
+      sprintf(pL_params[0].L2RHF_lbl,"2LIjAb - LIjbA %d %d",0, -1);
+		}
+		else { /* excited state */
+		  lambda_and_Ls = 1; /* code is below */
+		}
+	}
+	else if (params.dertype == 0) {
+	  if (!cc_excited(params.wfn)) { /* ground state */
+	    params.nstates = 1;
+      pL_params = (struct L_Params *) malloc(params.nstates * sizeof(struct L_Params));
+      pL_params[0].irrep = 0;
+      pL_params[0].root = -1;
+      pL_params[0].ground = 1;
+      pL_params[0].R0 = 1.0;
+      pL_params[0].cceom_energy = 0.0;
+      sprintf(pL_params[0].L1A_lbl,"LIA %d %d",0, -1);
+      sprintf(pL_params[0].L1B_lbl,"Lia %d %d",0, -1);
+      sprintf(pL_params[0].L2AA_lbl,"LIJAB %d %d",0, -1);
+      sprintf(pL_params[0].L2BB_lbl,"Lijab %d %d",0, -1);
+      sprintf(pL_params[0].L2AB_lbl,"LIjAb %d %d",0, -1);
+      sprintf(pL_params[0].L2RHF_lbl,"2LIjAb - LIjbA %d %d",0, -1);
+		}
+		else { /* excited state */
+		  lambda_and_Ls = 1; /* code is below */
+		}
+	}
+
+
+  /* do lambda for ground state AND do L(s) for excited states */
+  if (lambda_and_Ls) {
+    /* determine number of states to converge */
+	  params.nstates = 1; /* for ground state */
+		if (prop_all) {
+		  for (i=0; i<moinfo.nirreps; ++i) 
+			  params.nstates += states_per_irrep[i]; /* do all L(s) */
+		}
+		else {
+		  params.nstates += 1; /* do only one L */
+		}
+
+    pL_params = (struct L_Params *) malloc(params.nstates * sizeof(struct L_Params));
+
+		/* ground state */
+    pL_params[0].irrep = 0;
+    pL_params[0].root = -1;
+    pL_params[0].ground = 1;
+    pL_params[0].R0 = 1.0;
+    pL_params[0].cceom_energy = 0.0;
+    sprintf(pL_params[0].L1A_lbl,"LIA %d %d",0, -1);
+    sprintf(pL_params[0].L1B_lbl,"Lia %d %d",0, -1);
+    sprintf(pL_params[0].L2AA_lbl,"LIJAB %d %d",0, -1);
+    sprintf(pL_params[0].L2BB_lbl,"Lijab %d %d",0, -1);
+    sprintf(pL_params[0].L2AB_lbl,"LIjAb %d %d",0, -1);
+    sprintf(pL_params[0].L2RHF_lbl,"2LIjAb - LIjbA %d %d",0, -1);
+
+		if (prop_all) { /* do all L(s) */
+		  k=1;
+		    for (i=0; i<moinfo.nirreps; ++i)  { /* look over irrep of L(s) */
+				  for (j=0; j < states_per_irrep[i^moinfo.sym]; ++j) {
+            pL_params[k].irrep = i;
+            pL_params[k].root = j;
+            pL_params[k].ground = 0;
+            sprintf(lbl,"EOM CCSD Energy for root %d %d", i, j);
+            psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[k].cceom_energy),sizeof(double));
+            sprintf(lbl,"EOM CCSD R0 for root %d %d", i, j);
+            psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[k].R0),sizeof(double));
+            sprintf(pL_params[k].L1A_lbl,"LIA %d %d",i, j);
+            sprintf(pL_params[k].L1B_lbl,"Lia %d %d",i, j);
+            sprintf(pL_params[k].L2AA_lbl,"LIJAB %d %d",i, j);
+            sprintf(pL_params[k].L2BB_lbl,"Lijab %d %d",i, j);
+            sprintf(pL_params[k].L2AB_lbl,"LIjAb %d %d",i, j);
+            sprintf(pL_params[k].L2RHF_lbl,"2LIjAb - LIjbA %d %d",i, j);
+						k++;
+					}
+			  }
+		}
+		else { /* use prop_sym and prop_root determined above from input or inferrence */
+      pL_params[1].irrep = prop_sym;
+      pL_params[1].root = prop_root;
+      pL_params[1].ground = 0;
+      sprintf(lbl,"EOM CCSD Energy for root %d %d", prop_sym, prop_root);
+      psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[1].cceom_energy),sizeof(double));
+      sprintf(lbl,"EOM CCSD R0 for root %d %d", prop_sym, prop_root);
+      psio_read_entry(CC_INFO, lbl, (char *) &(pL_params[1].R0),sizeof(double));
+      sprintf(pL_params[1].L1A_lbl,"LIA %d %d", prop_sym, prop_root);
+      sprintf(pL_params[1].L1B_lbl,"Lia %d %d", prop_sym, prop_root);
+      sprintf(pL_params[1].L2AA_lbl,"LIJAB %d %d", prop_sym, prop_root);
+      sprintf(pL_params[1].L2BB_lbl,"Lijab %d %d", prop_sym, prop_root);
+      sprintf(pL_params[1].L2AB_lbl,"LIjAb %d %d", prop_sym, prop_root);
+      sprintf(pL_params[1].L2RHF_lbl,"2LIjAb - LIjbA %d %d", prop_sym, prop_root);
+		}
+  }
+
   fprintf(outfile,"\tParamaters for left-handed eigenvectors:\n");
-  fprintf(outfile,"\tIrr   Root  Ground-State?    EOM energy        R0\n");
+  fprintf(outfile,"\t    Irr   Root  Ground-State?    EOM energy        R0\n");
   for (i=0; i<params.nstates; ++i) {
-    fprintf(outfile,"\t%3d %5d %13s %14.10lf %14.10lf\n", pL_params[i].irrep, pL_params[i].root,
+    fprintf(outfile,"\t%3d %3d %5d %10s %18.10lf %14.10lf\n", i+1, pL_params[i].irrep, pL_params[i].root+1,
 	    (pL_params[i].ground ? "Yes":"No"), pL_params[i].cceom_energy, pL_params[i].R0);
   }
 
-  /*
   for (i=0; i<params.nstates; ++i) {
-    fprintf(outfile,"\tLabels for state %d:\n\t%s, %s, %s, %s, %s, %s\n",
-	    i,pL_params[i].L1A_lbl,pL_params[i].L1B_lbl,
-            pL_params[i].L2AA_lbl,pL_params[i].L2BB_lbl,
+    fprintf(outfile,"\tLabels for eigenvector %d:\n\t%s, %s, %s, %s, %s, %s\n",
+	    i+1,pL_params[i].L1A_lbl,pL_params[i].L1B_lbl,pL_params[i].L2AA_lbl,pL_params[i].L2BB_lbl,
 	    pL_params[i].L2AB_lbl, pL_params[i].L2RHF_lbl);
   }
-  */
 
+  fflush(outfile);
   return;
 }

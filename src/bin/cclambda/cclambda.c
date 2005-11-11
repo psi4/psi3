@@ -203,14 +203,18 @@ int main(int argc, char *argv[])
       exit_io();
       exit(PSI_RETURN_FAILURE);
     }
-    if(params.ground)
+    if (pL_params[i].ground)
       overlap(pL_params[i].irrep);
   }
 
-  if(params.local) local_done();
+  if (params.zeta) {
+	  zeta_norm(pL_params[0]);
+  }
+	else if (params.nstates > 1) { /* some excited states are present */
+    check_ortho(pL_params);
+	}
 
-  if (!params.ground && !params.zeta) check_ortho(pL_params);
-  else if (params.zeta) zeta_norm(pL_params[0]);
+  if(params.local) local_done();
 
   dpd_close(0);
 
@@ -234,19 +238,12 @@ void init_io(int argc, char *argv[])
   sprintf(progid, ":%s",gprgid());
 
   params.all=0;    /* do all Ls including ground state */
-  params.ground=1; /* only do ground-state L */
   params.zeta=0; /* only do ground-state L */
   for (i=1, num_unparsed=0; i<argc; ++i) {
     if (!strcmp(argv[i],"--all")) {
       params.all = 1;
-      params.ground = 0;
-    }
-    else if (!strcmp(argv[i],"--excited")) {
-      params.all = 0;
-      params.ground = 0;
     }
     else if (!strcmp(argv[i],"--zeta")) {
-      params.ground = 0;
       params.zeta = 1;
     }
     else {
@@ -269,6 +266,8 @@ void init_io(int argc, char *argv[])
   /* throw any existing CC_LAMBDA, CC_DENOM away */
   psio_close(CC_LAMBDA,0);
   psio_open(CC_LAMBDA,PSIO_OPEN_NEW);
+  psio_close(CC_DENOM,0);
+  psio_open(CC_DENOM,PSIO_OPEN_NEW);
 }
 
 void title(void)

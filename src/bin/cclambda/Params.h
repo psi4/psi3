@@ -10,13 +10,14 @@ struct Params {
   int ref;
   int local;  /* boolean for using simulated local-CC framework */
   int nstates; /* total number of L vectors to compute */
-  int all; /* find Ls for all excited states plus ground state */
-  int ground; /* find L for only ground state */
   int zeta; /* boolean for solving zeta equations - implies excited state*/
   int print;
   int dertype;
   int diis;
   char *abcd;
+	/* the following should be obseleted now or soon */
+  int all; /* find Ls for all excited states plus ground state */
+  int ground; /* find L for only ground state */
 };
 
 struct L_Params {
