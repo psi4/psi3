@@ -68,6 +68,13 @@ void get_params()
     }
     free(junk);
   }
+	else {  /* if jobtype=opt and dertype is absent, infer dertype = 1 */
+    if(ip_exist("JOBTYPE",0)) {
+      errcod = ip_string("JOBTYPE", &(junk),0);
+      if(!strcmp(junk,"OPT")) params.dertype = 1;
+			free(junk);
+		}
+	}
 
   if(ip_exist("PROPERTY",0)) {
     errcod = ip_string("PROPERTY", &(params.prop), 0);
