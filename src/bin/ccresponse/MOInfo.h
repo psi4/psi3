@@ -67,6 +67,9 @@ struct MOInfo {
   int irrep_Ry;       /* irrep of y-angular momentum */
   int irrep_Rz;       /* irrep of z-angular momentum */
   int *l_irreps;      /* irreps of x,y,z angular momentum components */
+  double **PX;        /* MO-basis x-linear momentum ints (Pitzer order) */
+  double **PY;        /* MO-basis y-linear momentum ints (Pitzer order) */
+  double **PZ;        /* MO-basis z-linear momentum ints (Pitzer order) */
   int natom;          /* number of atoms */
   double *zvals;      /* atomic zvals */
   double ***C;        /* Virtual orbital transformation matrix */

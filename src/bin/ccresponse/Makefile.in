@@ -16,8 +16,11 @@ transmu.c \
 transL.c \
 sortmu.c \
 sortL.c \
+sort_pert.c \
 mubar.c \
 Lbar.c \
+pertbar.c \
+transpert.c \
 hbar_extra.c \
 cc2_hbar_extra.c \
 sort_lamps.c \
@@ -49,6 +52,7 @@ polar.c \
 optrot.c \
 lambda_residuals.c \
 amp_write.c \
+linresp.c \
 
 BINOBJ = $(CSRC:%.c=%.o)
 

@@ -29,7 +29,7 @@ void transmu(void)
   X = block_matrix(nao, nao);
   scratch = init_array(noei_ao);
 
-  stat = iwl_rdone(PSIF_OEI, PSIF_AO_MX, scratch, noei_ao, 0, 0, outfile);
+  iwl_rdone(PSIF_OEI, PSIF_AO_MX, scratch, noei_ao, 0, 0, outfile);
   for(i=0,ij=0; i < nao; i++)
     for(j=0; j <= i; j++, ij++) {
       TMP[i][j] = TMP[j][i] = scratch[ij];
@@ -47,7 +47,7 @@ void transmu(void)
 
   zero_arr(scratch,noei_ao);
 
-  stat = iwl_rdone(PSIF_OEI, PSIF_AO_MY, scratch, noei_ao, 0, 0, outfile);
+  iwl_rdone(PSIF_OEI, PSIF_AO_MY, scratch, noei_ao, 0, 0, outfile);
   for(i=0,ij=0; i < nao; i++)
     for(j=0; j <= i; j++, ij++) {
       TMP[i][j] = TMP[j][i] = scratch[ij];
@@ -65,7 +65,7 @@ void transmu(void)
 
   zero_arr(scratch,noei_ao);
 
-  stat = iwl_rdone(PSIF_OEI, PSIF_AO_MZ, scratch, noei_ao, 0, 0, outfile);
+  iwl_rdone(PSIF_OEI, PSIF_AO_MZ, scratch, noei_ao, 0, 0, outfile);
   for(i=0,ij=0; i < nao; i++)
     for(j=0; j <= i; j++, ij++) {
       TMP[i][j] = TMP[j][i] = scratch[ij];
