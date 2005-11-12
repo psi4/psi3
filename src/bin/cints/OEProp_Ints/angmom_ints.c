@@ -47,11 +47,14 @@ void angmom_ints(void)
   double muyx1, muyx2, muyz1, muyz2;
   double muzx1, muzx2, muzy1, muzy2;
   double norm1, norm12, *ptr1, *ptr2;
-  double *scratch;
+  double *scratch_x, *scratch_y, *scratch_z;
 
   Lx = block_matrix(BasisSet.num_ao, BasisSet.num_ao);
   Ly = block_matrix(BasisSet.num_ao, BasisSet.num_ao);
   Lz = block_matrix(BasisSet.num_ao, BasisSet.num_ao);
+  scratch_x = init_array(ioff[BasisSet.num_ao]);
+  scratch_y = init_array(ioff[BasisSet.num_ao]);
+  scratch_z = init_array(ioff[BasisSet.num_ao]);
 
   C = UserOptions.origin;
   fprintf(outfile, "    Reference point for ang. mom. ints. = (%5.3f, %5.3f, %5.3f)\n", C.x, C.y, C.z);
@@ -264,6 +267,13 @@ void angmom_ints(void)
     }
   } /* done with this shell pair */
 
+  for(i=0,ij=0; i < BasisSet.num_ao; i++)
+    for(j=0; j <= i; j++,ij++) {
+      scratch_x[ij] = Lx[i][j];
+      scratch_y[ij] = Ly[i][j];
+      scratch_z[ij] = Lz[i][j];
+    }
+
   if (UserOptions.print_lvl >= PRINT_OEI) {
     fprintf(outfile, "  -AO-Basis LX AngMom Integrals:\n");
     print_mat(Lx, BasisSet.num_ao, BasisSet.num_ao, outfile);
@@ -275,10 +285,13 @@ void angmom_ints(void)
   }
 
   /* dump the integrals to disk here */
-  iwl_wrtone(IOUnits.itapOEInt_Misc, PSIF_AO_LX, BasisSet.num_ao*BasisSet.num_ao, Lx[0]);
-  iwl_wrtone(IOUnits.itapOEInt_Misc, PSIF_AO_LY, BasisSet.num_ao*BasisSet.num_ao, Ly[0]);
-  iwl_wrtone(IOUnits.itapOEInt_Misc, PSIF_AO_LZ, BasisSet.num_ao*BasisSet.num_ao, Lz[0]);
+  iwl_wrtone(IOUnits.itapOEInt_Misc, PSIF_AO_LX, ioff[BasisSet.num_ao], scratch_x);
+  iwl_wrtone(IOUnits.itapOEInt_Misc, PSIF_AO_LY, ioff[BasisSet.num_ao], scratch_y);
+  iwl_wrtone(IOUnits.itapOEInt_Misc, PSIF_AO_LZ, ioff[BasisSet.num_ao], scratch_z);
 
+  free(scratch_x);
+  free(scratch_y);
+  free(scratch_z);
   free_block(Lx);
   free_block(Ly);
   free_block(Lz);
