@@ -1,5 +1,4 @@
 #include <vector>
-#include <map>
 #include <sstream>
 #include <algorithm>
 
@@ -32,7 +31,6 @@ extern "C" {
 }
 
 using std::vector;
-using std::map;
 using std::min;
 
 // For a set of SALCs, we need to be able to select coefficients of all nonzero derivatives
@@ -50,7 +48,9 @@ extern "C" {
 void te_deriv1_ints()
 {
   const double toler = UserOptions.cutoff;
-  const int num_coords = 3*Molecule.num_atoms;
+  const int num_coords = 3*Molecule.num_atoms;        // total number of coordinates, symmetry-adapted or otherwise
+  // max number of nonzero derivatives for a SO shell quartet = 4 (centers) * 3 (x,y,z) * maximum multiplicity of a nucleus
+  const int max_num_cdsalcs_per_quartet = 12*Symmetry.max_stab_index;
 
   /*--- ASCII file to print integrals ---*/
   FILE *d1eriout;
@@ -118,7 +118,7 @@ void te_deriv1_ints()
   
   vector<double> so_int;
   {
-    const int max_num_cdsalc_per_quartet = min(12*Symmetry.max_stab_index,CDSALCs.nsalcs);
+    const int max_num_cdsalc_per_quartet = min(max_num_cdsalcs_per_quartet,CDSALCs.nsalcs);
     so_int.reserve(max_num_cdsalc_per_quartet);
   }
   
@@ -196,9 +196,12 @@ void te_deriv1_ints()
     plist_salcs[i] = new cdsalc_elem_vec[Symmetry.nirreps];
     for(int j=0; j<Symmetry.nirreps; j++) {
       plist_salcs[i][j].nelems=0;
-      plist_salcs[i][j].elems = new cdsalc_elem[12*Symmetry.max_stab_index];
+      plist_salcs[i][j].elems = new cdsalc_elem[max_num_cdsalcs_per_quartet];
     }
   }
+  
+  int* salc_all2thisquartet = new int[num_coords];    // maps absolute SALC index to the SALC index for this quartet
+  int* salc_thisquartet2all = new int[max_num_cdsalcs_per_quartet];    // the reverse of the above
   
   sj_arr = (int *)malloc(sizeof(int)*max_num_unique_quartets);
   sk_arr = (int *)malloc(sizeof(int)*max_num_unique_quartets);
@@ -361,9 +364,8 @@ void te_deriv1_ints()
           nuc[2] = center_k;
           nuc[3] = center_l;
           int salc_count = 0;
-          map<int,int> salc_all2thisquartet;    // maps absolute SALC index to the SALC index for this quartet
-          map<int,int> salc_thisquartet2all;    // reverse of the above
-          map<int,int>::const_iterator map_end = salc_all2thisquartet.end();
+          for(int cd=0; cd<num_coords; cd++)
+            salc_all2thisquartet[cd] = -1;
           for(int c=0; c<4; c++) {
             int cart_der = 3*nuc[c];
             for(int xyz=0; xyz<3; xyz++,cart_der++) {
@@ -371,8 +373,7 @@ void te_deriv1_ints()
               const int nsalcs = cd2salc_map.nsalcs;
               for(int s=0; s<nsalcs; s++) {
                 const int salc = cd2salc_map.salcs[s];
-                map<int,int>::iterator this_salc = salc_all2thisquartet.find(salc);
-                if(this_salc == map_end) {
+                if(salc_all2thisquartet[salc] == -1) {
                   salc_all2thisquartet[salc] = salc_count;
                   salc_thisquartet2all[salc_count] = salc;
                   ++salc_count;
