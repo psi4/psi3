@@ -7,7 +7,7 @@
 #define EXTERN
 #include "globals.h"
 
-void transprt(char *pert, double sign);
+void transpert(char *pert);
 void sort_pert(char *pert, double **pertX, double **pertY, double **pertZ,
 	       int irrep_x, int irrep_y, int irrep_z);
 void pertbar(char *pert, int irrep_x, int irrep_y, int irrep_z, int anti);
@@ -35,7 +35,7 @@ void polar(void)
 
   trace = init_array(params.nomega);
 
-  transpert("Mu", 1.0);
+  transpert("Mu");
   sort_pert("Mu", moinfo.MUX, moinfo.MUY, moinfo.MUZ, moinfo.irrep_x,
 	    moinfo.irrep_y, moinfo.irrep_z);
   pertbar("Mu", moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z, 0);

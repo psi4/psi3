@@ -12,13 +12,7 @@ ccresponse.c \
 get_moinfo.c \
 get_params.c \
 cache.c \
-transmu.c \
-transL.c \
-sortmu.c \
-sortL.c \
 sort_pert.c \
-mubar.c \
-Lbar.c \
 pertbar.c \
 transpert.c \
 hbar_extra.c \
@@ -47,7 +41,6 @@ LHX2Y2.c \
 cc2_LHX1Y1.c \
 cc2_LHX1Y2.c \
 local.c \
-transp.c \
 polar.c \
 optrot.c \
 lambda_residuals.c \

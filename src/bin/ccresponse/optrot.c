@@ -7,7 +7,7 @@
 #define EXTERN
 #include "globals.h"
 
-void transpert(char *pert, double sign);
+void transpert(char *pert);
 void sort_pert(char *pert, double **pertX, double **pertY, double **pertZ,
 	       int irrep_x, int irrep_y, int irrep_z);
 void pertbar(char *pert, int irrep_x, int irrep_y, int irrep_z, int anti);
@@ -59,13 +59,13 @@ void optrot(void)
 
     fprintf(outfile, "\n\tComputing zero-frequency velocty-gauge linear response function...\n");
 
-    transpert("P",+1.0);
+    transpert("P");
     sort_pert("P", moinfo.PX, moinfo.PY, moinfo.PZ,
 	      moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z);
     pertbar("P", moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z, 1);
 
     /* prepare the magnetic-dipole integrals */
-    transpert("L",+1.0);
+    transpert("L");
     sort_pert("L", moinfo.LX, moinfo.LY, moinfo.LZ,
 	      moinfo.irrep_Rx, moinfo.irrep_Ry, moinfo.irrep_Rz);
     pertbar("L", moinfo.irrep_Rx, moinfo.irrep_Ry, moinfo.irrep_Rz, 1);
@@ -92,20 +92,20 @@ void optrot(void)
 
     /* prepare the dipole-length or dipole-velocity integrals */
     if(!strcmp(params.gauge,"LENGTH") || !strcmp(params.gauge,"BOTH")) {
-      transpert("Mu", 1.0);
+      transpert("Mu");
       sort_pert("Mu", moinfo.MUX, moinfo.MUY, moinfo.MUZ,
 		moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z);
       pertbar("Mu", moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z, 0);
     }
     if(!strcmp(params.gauge,"VELOCITY") || !strcmp(params.gauge,"BOTH")) {
-      transpert("P",+1.0);
+      transpert("P");
       sort_pert("P", moinfo.PX, moinfo.PY, moinfo.PZ,
 		moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z);
       pertbar("P", moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z, 1);
     }
 
     /* prepare the magnetic-dipole integrals */
-    transpert("L",+1.0);
+    transpert("L");
     sort_pert("L", moinfo.LX, moinfo.LY, moinfo.LZ,
 	      moinfo.irrep_Rx, moinfo.irrep_Ry, moinfo.irrep_Rz);
     pertbar("L", moinfo.irrep_Rx, moinfo.irrep_Ry, moinfo.irrep_Rz, 1);
@@ -140,45 +140,45 @@ void optrot(void)
 
     /* prepare the dipole-length or dipole-velocity integrals */
     if(!strcmp(params.gauge,"LENGTH") || !strcmp(params.gauge,"BOTH")) {
-      transpert("Mu", 1.0);
+      transpert("Mu");
       sort_pert("Mu", moinfo.MUX, moinfo.MUY, moinfo.MUZ,
 		moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z);
       pertbar("Mu", moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z, 0);
     }
     if(!strcmp(params.gauge,"VELOCITY") || !strcmp(params.gauge,"BOTH")) { 
-      transpert("P",-1.0);
-      sort_pert("P", moinfo.PX, moinfo.PY, moinfo.PZ,
+      transpert("P*");
+      sort_pert("P*", moinfo.PX, moinfo.PY, moinfo.PZ,
 		moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z);
-      pertbar("P", moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z, 1);
+      pertbar("P*", moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z, 1);
     }
 
     /* prepare the complex-conjugate of the magnetic-dipole integrals */
-    transpert("L",-1.0);
-    sort_pert("L", moinfo.LX, moinfo.LY, moinfo.LZ,
+    transpert("L*");
+    sort_pert("L*", moinfo.LX, moinfo.LY, moinfo.LZ,
 	      moinfo.irrep_Rx, moinfo.irrep_Ry, moinfo.irrep_Rz);
-    pertbar("L", moinfo.irrep_Rx, moinfo.irrep_Ry, moinfo.irrep_Rz, 1);
+    pertbar("L*", moinfo.irrep_Rx, moinfo.irrep_Ry, moinfo.irrep_Rz, 1);
 
     /* Compute the -omega magnetic-dipole and +omega electric-dipole CC wave functions */
     for(alpha=0; alpha < 3; alpha++) {
       if(!strcmp(params.gauge,"LENGTH") || !strcmp(params.gauge,"BOTH"))
 	compute_X("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], params.omega[i]);
       if(!strcmp(params.gauge,"VELOCITY") || !strcmp(params.gauge, "BOTH"))
-	compute_X("P", cartcomp[alpha], moinfo.mu_irreps[alpha], params.omega[i]);
+	compute_X("P*", cartcomp[alpha], moinfo.mu_irreps[alpha], params.omega[i]);
 
-      compute_X("L", cartcomp[alpha], moinfo.l_irreps[alpha], -params.omega[i]);
+      compute_X("L*", cartcomp[alpha], moinfo.l_irreps[alpha], -params.omega[i]);
     }
 
     if(!strcmp(params.gauge,"LENGTH") || !strcmp(params.gauge, "BOTH"))
       linresp(tensor_rl[i], -0.5, 1.0, "Mu", moinfo.mu_irreps, params.omega[i],
-	      "L", moinfo.l_irreps, -params.omega[i]);
+	      "L*", moinfo.l_irreps, -params.omega[i]);
     if(!strcmp(params.gauge,"VELOCITY") || !strcmp(params.gauge, "BOTH"))
-      linresp(tensor_pl[i], -0.5, 1.0, "P", moinfo.mu_irreps, params.omega[i],
-	      "L", moinfo.l_irreps, -params.omega[i]);
+      linresp(tensor_pl[i], -0.5, 1.0, "P*", moinfo.mu_irreps, params.omega[i],
+	      "L*", moinfo.l_irreps, -params.omega[i]);
 
     if(!strcmp(params.gauge,"BOTH")) {
-      linresp(tensor_rp[i], -0.5, 0.0, "P", moinfo.mu_irreps, -params.omega[i],
+      linresp(tensor_rp[i], 0.5, 0.0, "P", moinfo.mu_irreps, -params.omega[i],
 	      "Mu", moinfo.l_irreps, params.omega[i]);
-      linresp(tensor_rp[i], -0.5, 1.0, "P", moinfo.mu_irreps, params.omega[i],
+      linresp(tensor_rp[i], 0.5, 1.0, "P*", moinfo.mu_irreps, params.omega[i],
 	      "Mu", moinfo.l_irreps, -params.omega[i]);
     }
 
@@ -218,7 +218,7 @@ void optrot(void)
 
       rotation_rl[i] = prefactor * TrG_rl * nu * nu / M;
       fprintf(outfile, "\n   Specific rotation using length-gauge electric-dipole Rosenfeld tensor.\n");
-      fprintf(outfile, "\t[alpha]_(%5.3f) = %20.12f deg/[dm (gm/cm^3)]\n", params.omega[i], rotation_rl[i]);
+      fprintf(outfile, "\t[alpha]_(%5.3f) = %10.5f deg/[dm (g/cm^3)]\n", params.omega[i], rotation_rl[i]);
     }
 
     if(!strcmp(params.gauge,"VELOCITY") || !strcmp(params.gauge,"BOTH")) {
@@ -240,7 +240,7 @@ void optrot(void)
 
       rotation_pl[i] = prefactor * TrG_pl * nu * nu / M;
       fprintf(outfile, "\n   Specific rotation using velocity-gauge electric-dipole Rosenfeld tensor.\n");
-      fprintf(outfile, "\t[alpha]_(%5.3f) = %20.12f deg/[dm (gm/cm^3)]\n", params.omega[i], rotation_pl[i]);
+      fprintf(outfile, "\t[alpha]_(%5.3f) = %10.5f deg/[dm (g/cm^3)]\n", params.omega[i], rotation_pl[i]);
 
       /* subtract the zero-frequency beta tensor */
       for(j=0; j < 3; j++)
@@ -248,9 +248,9 @@ void optrot(void)
 	  tensor_pl[i][j][k] -= tensor0[j][k];
 
       if (!strcmp(params.wfn,"CC2"))
-	fprintf(outfile, "\n        CC2 Modified Velocity-Gauge Optical Rotation Tensor:\n");
+	fprintf(outfile, "\n        CC2 Optical Rotation Tensor (Modified Velocity Gauge):\n");
       else if(!strcmp(params.wfn,"CCSD"))
-	fprintf(outfile, "\n        CCSD Modified Velocity-Gauge Optical Rotation Tensor:\n");
+	fprintf(outfile, "\n        CCSD Optical Rotation Tensor (Modified Velocity Gauge):\n");
 
       fprintf(outfile, "  -------------------------------------------------------------------------\n");
       fprintf(outfile,   "   Evaluated at omega = %8.6f E_h (%6.2f nm, %5.3f eV, %8.2f cm-1)\n", params.omega[i],
@@ -265,55 +265,63 @@ void optrot(void)
 
       rotation_mod[i] = prefactor * TrG_pl * nu * nu / M;
       fprintf(outfile, "\n   Specific rotation using modified velocity-gauge Rosenfeld tensor.\n");
-      fprintf(outfile, "\t[alpha]_(%5.3f) = %20.12f deg/[dm (gm/cm^3)]\n", params.omega[i], rotation_mod[i]);
+      fprintf(outfile, "\t[alpha]_(%5.3f) = %10.5f deg/[dm (g/cm^3)]\n", params.omega[i], rotation_mod[i]);
     }
 
     if(!strcmp(params.gauge,"BOTH")) {
-      fprintf(outfile, "Prefactor = %20.12f\n", prefactor);
-      fprintf(outfile, "nu = %20.12f\n", nu);
-      fprintf(outfile, "M = %20.12f\n", M);
-      fprintf(outfile, "<<p;r>>w = \n");
-      mat_print(tensor_rp[i], 3, 3, outfile);
       delta[i][0] = prefactor * (tensor_rp[i][1][2] - tensor_rp[i][2][1]) * nu * nu / M;
       delta[i][1] = prefactor * (tensor_rp[i][2][0] - tensor_rp[i][0][2]) * nu * nu / M;
       delta[i][2] = prefactor * (tensor_rp[i][0][1] - tensor_rp[i][1][0]) * nu * nu / M;
-      delta[i][0] /= 3.0 * params.omega[i];
-      delta[i][1] /= 3.0 * params.omega[i];
-      delta[i][2] /= 3.0 * params.omega[i];
-      fprintf(outfile, "\n   Origin-dependence vector for length-gauge rotation deg/[dm (g/cm^3)].\n");
+      delta[i][0] /= 6.0 * params.omega[i];
+      delta[i][1] /= 6.0 * params.omega[i];
+      delta[i][2] /= 6.0 * params.omega[i];
+      fprintf(outfile, "\n   Origin-dependence vector for length-gauge rotation deg/[dm (g/cm^3)]/bohr.\n");
       fprintf(outfile, "     Delta_x = %6.2f   Delta_y = %6.2f   Delta_z = %6.2f\n",
 	      delta[i][0], delta[i][1], delta[i][2]);
     }
-  }
+  } /* loop i over nomega */
 
   if(params.nomega > 1) {  /* print a summary table for multi-wavelength calcs */
 
     if(!strcmp(params.gauge,"LENGTH") || !strcmp(params.gauge,"BOTH")) {
-      fprintf(outfile, "\n\t------------------------------------------\n");
+      fprintf(outfile, "\n   ------------------------------------------\n");
       if (!strcmp(params.wfn,"CC2"))
-	fprintf(outfile,   "\t    CC2 Length-Gauge Optical Rotation\n");
+	fprintf(outfile,   "       CC2 Length-Gauge Optical Rotation\n");
       else
-	fprintf(outfile,   "\t    CCSD Length-Gauge Optical Rotation\n");
-      fprintf(outfile,   "\t------------------------------------------\n");
-      fprintf(outfile,   "\t    Omega           alpha\n");
-      fprintf(outfile,   "\t E_h      nm   deg/[dm (gm/cm^3)]\n");
-      fprintf(outfile,   "\t-----   ------ ------------------\n");
-      for(i=0; i < params.nomega; i++)
-	fprintf(outfile, "\t%5.3f   %6.2f      %10.5f\n", params.omega[i], (_c*_h*1e9)/(_hartree2J*params.omega[i]), rotation_rl[i]);
+	fprintf(outfile,   "       CCSD Length-Gauge Optical Rotation\n");
+      fprintf(outfile,   "   ------------------------------------------\n");
+
+      if(!strcmp(params.gauge,"BOTH")) {
+	fprintf(outfile,   "       Omega           alpha                        Delta\n");
+	fprintf(outfile,   "    E_h      nm   deg/[dm (g/cm^3)]        deg/[dm (g/cm^3)]/bohr\n");
+	fprintf(outfile,   "   -----   ------ ------------------  ----------------------------------\n");
+	fprintf(outfile,   "                                          x           y           z      \n");
+	for(i=0; i < params.nomega; i++)
+	  fprintf(outfile, "   %5.3f   %6.2f      %10.5f    %10.5f  %10.5f  %10.5f\n", params.omega[i], (_c*_h*1e9)/(_hartree2J*params.omega[i]), 
+		  rotation_rl[i], delta[i][0], delta[i][1], delta[i][2]);  
+      }
+      else {
+	fprintf(outfile,   "       Omega           alpha\n");
+	fprintf(outfile,   "    E_h      nm   deg/[dm (g/cm^3)]\n");
+	fprintf(outfile,   "   -----   ------ ------------------\n");
+	for(i=0; i < params.nomega; i++)
+	  fprintf(outfile, "   %5.3f   %6.2f      %10.5f\n", params.omega[i], (_c*_h*1e9)/(_hartree2J*params.omega[i]), 
+		  rotation_rl[i]);  
+      }
     }
 
     if(!strcmp(params.gauge,"VELOCITY") || !strcmp(params.gauge,"BOTH")) {
-      fprintf(outfile, "\n\t------------------------------------------------------\n");
+      fprintf(outfile, "\n   ------------------------------------------------------\n");
       if (!strcmp(params.wfn,"CC2"))
-	fprintf(outfile,   "\t         CC2 Velocity-Gauge Optical Rotation\n");
+	fprintf(outfile,   "            CC2 Velocity-Gauge Optical Rotation\n");
       else
-	fprintf(outfile,   "\t         CCSD Velocity-Gauge Optical Rotation\n");
-      fprintf(outfile,   "\t------------------------------------------------------\n");
-      fprintf(outfile,   "\t    Omega           alpha (deg/[dm (gm/cm^3)]\n");
-      fprintf(outfile, "\n\t E_h      nm   Velocity-Gauge  Modified Velocity-Gauge\n");
-      fprintf(outfile,   "\t-----   ------ --------------  -----------------------\n");
+	fprintf(outfile,   "            CCSD Velocity-Gauge Optical Rotation\n");
+      fprintf(outfile,   "   ------------------------------------------------------\n");
+      fprintf(outfile,   "       Omega           alpha (deg/[dm (g/cm^3)]\n");
+      fprintf(outfile, "\n    E_h      nm   Velocity-Gauge  Modified Velocity-Gauge\n");
+      fprintf(outfile,   "   -----   ------ --------------  -----------------------\n");
       for(i=0; i < params.nomega; i++)
-	fprintf(outfile, "\t%5.3f   %6.2f   %10.5f          %10.5f\n", params.omega[i], (_c*_h*1e9)/(_hartree2J*params.omega[i]), rotation_pl[i], rotation_mod[i]);
+	fprintf(outfile, "   %5.3f   %6.2f   %10.5f          %10.5f\n", params.omega[i], (_c*_h*1e9)/(_hartree2J*params.omega[i]), rotation_pl[i], rotation_mod[i]);
     }
   }
 
