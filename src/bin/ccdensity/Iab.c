@@ -1,4 +1,5 @@
 #include <libdpd/dpd.h>
+#include <libqt/qt.h>
 #define EXTERN
 #include "globals.h"
 
@@ -8,8 +9,13 @@
 
 void Iab(struct RHO_Params rho_params)
 {
+  int a, b, c, A, B, C, Ga, Gb, Gc, Gac, Gbc;
+  int *vir_off, *virtpi, nirreps, length, col;
   dpdfile2 F, D, I;
   dpdbuf4 G, Bints, Cints, Dints, Eints, Fints;
+  vir_off = moinfo.vir_off;
+  virtpi = moinfo.virtpi;
+  nirreps = moinfo.nirreps;
 
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
 
@@ -192,7 +198,33 @@ void Iab(struct RHO_Params rho_params)
 
     dpd_buf4_init(&Bints, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>");
     dpd_buf4_init(&G, CC_GAMMA, 0, 5, 5, 5, 5, 0, "GAbCd");
-    dpd_contract442(&Bints, &G, &I, 0, 0, 2.0, 1.0);
+/*    dpd_contract442(&Bints, &G, &I, 0, 0, 2.0, 1.0);  replaced with 2(V**3) memory code*/
+    dpd_file2_mat_init(&I);
+    dpd_file2_mat_rd(&I);
+    for(Gac=0; Gac < nirreps; Gac++) {
+      Gbc = Gac;
+      for(Ga=0; Ga < nirreps; Ga++) {
+        Gb = Ga;
+        Gc = Ga ^ Gac;
+        Bints.matrix[Gac] = dpd_block_matrix(virtpi[Gc], Bints.params->coltot[Gac]);
+        G.matrix[Gbc] = dpd_block_matrix(virtpi[Gc], G.params->coltot[Gbc]);
+        for(a=0; a < virtpi[Ga]; a++) {
+          A = vir_off[Ga] + a;
+          for(b=0; b < virtpi[Gb]; b++) {
+            B = vir_off[Gb] + b;
+            dpd_buf4_mat_irrep_rd_block(&Bints, Gac, Bints.row_offset[Gac][A], virtpi[Gc]);
+            dpd_buf4_mat_irrep_rd_block(&G, Gbc, G.row_offset[Gbc][B], virtpi[Gc]);
+            length = virtpi[Gc] * Bints.params->coltot[Gac];
+            if(length)
+              I.matrix[Ga][a][b] += 2.0 * C_DDOT(length, Bints.matrix[Gac][0], 1, G.matrix[Gbc][0], 1);
+          }
+        }
+        dpd_free_block(Bints.matrix[Gac], virtpi[Gc], Bints.params->coltot[Gac]);
+        dpd_free_block(G.matrix[Gbc], virtpi[Gc], G.params->coltot[Gbc]);
+      }
+    }
+    dpd_file2_mat_wrt(&I);
+    dpd_file2_mat_close(&I);
     dpd_buf4_close(&G);
     dpd_buf4_close(&Bints);
 
@@ -209,7 +241,33 @@ void Iab(struct RHO_Params rho_params)
 
     dpd_buf4_init(&Bints, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>");
     dpd_buf4_init(&G, CC_GAMMA, 0, 5, 5, 5, 5, 0, "GAbCd");
-    dpd_contract442(&Bints, &G, &I, 3, 3, 2.0, 1.0);
+   /*  dpd_contract442(&Bints, &G, &I, 3, 3, 2.0, 1.0); replaced with 2(V**3) memory code*/
+    dpd_file2_mat_init(&I);
+    dpd_file2_mat_rd(&I);
+    for(Gac=0; Gac < nirreps; Gac++) {
+      Gbc = Gac;
+      for(Gc=0; Gc < nirreps; Gc++) {
+        Ga = Gc ^ Gac;
+        Gb = Ga;
+        Bints.matrix[Gac] = dpd_block_matrix(virtpi[Ga], Bints.params->coltot[Gac]);
+        G.matrix[Gbc] = dpd_block_matrix(virtpi[Gb], G.params->coltot[Gbc]);
+        for(c=0; c < virtpi[Gc]; c++) {
+          C = vir_off[Gc] + c;
+          dpd_buf4_mat_irrep_rd_block(&Bints, Gac, Bints.row_offset[Gac][C], virtpi[Ga]);
+          dpd_buf4_mat_irrep_rd_block(&G, Gbc, G.row_offset[Gbc][C], virtpi[Gb]);
+          for(a=0; a < virtpi[Ga]; a++) {
+            for(b=0; b < virtpi[Gb]; b++) {
+              for (col=0; col< Bints.params->coltot[Gac]; ++col)
+                I.matrix[Ga][a][b] += 2.0 * Bints.matrix[Gac][a][col]*G.matrix[Gbc][b][col] ;
+            }
+          }
+        }
+        dpd_free_block(Bints.matrix[Gac], virtpi[Ga], Bints.params->coltot[Gac]);
+        dpd_free_block(G.matrix[Gbc], virtpi[Gb], G.params->coltot[Gbc]);
+      }
+    }
+    dpd_file2_mat_wrt(&I);
+    dpd_file2_mat_close(&I);
     dpd_buf4_close(&G);
     dpd_buf4_close(&Bints);
 
