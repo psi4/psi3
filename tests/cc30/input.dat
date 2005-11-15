@@ -8,7 +8,7 @@ psi: (
   basis = "STO-3G"
   mu_irreps = (0 0 0)
   property = rotation
-  omega = (355 nm)
+  omega = (633 355 nm)
   gauge = length
 %  no_reorient = true
 
