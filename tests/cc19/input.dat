@@ -8,7 +8,7 @@ psi: (
   reference = rhf
   dertype = response
 
-  omega = 0.1
+  omega = (0.05 0.1 au)
   mu_irreps = (0 0 1)
 
   basis = "cc-pVDZ"
