@@ -6,9 +6,9 @@ default: (
   dertype = response
   property = rotation
   freeze_core = true
-  omega = (589 nm)
+  omega = (589 355 nm)
   mu_irreps = (1 1 0)
-  gauge = velocity
+  gauge = both
 
   basis = "cc-pVDZ"
   zmat = (
