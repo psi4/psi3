@@ -77,7 +77,7 @@ void linresp(double **tensor, double A, double B,
 	  polar_LCX += LCX(pert_y, cartcomp[beta], y_irreps[beta], pert_x, cartcomp[alpha],
 			   x_irreps[alpha], 0.0);
 	  if (!strcmp(params.wfn,"CC2")) {
-	    polar_HXY = HXY(pert_y, cartcomp[alpha], x_irreps[alpha], 0.0,
+	    polar_HXY = HXY(pert_x, cartcomp[alpha], x_irreps[alpha], 0.0,
 			    pert_y, cartcomp[beta], y_irreps[beta], 0.0);
 	    polar_LHX1Y1 = cc2_LHX1Y1(pert_x, cartcomp[alpha], x_irreps[alpha], 0.0,
 				      pert_y, cartcomp[beta], y_irreps[beta], 0.0);

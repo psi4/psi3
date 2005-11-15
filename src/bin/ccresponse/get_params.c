@@ -99,8 +99,14 @@ void get_params()
 	errcod = ip_data("OMEGA", "%lf", &(params.omega[i]), 1, i);
 
 	if(!strcmp(units, "HZ")) params.omega[i] *= _h / _hartree2J;
+	else if(!strcmp(units, "AU")) 1; /* do nothing */
 	else if(!strcmp(units, "NM")) params.omega[i] = (_c*_h*1e9)/(params.omega[i]*_hartree2J);
 	else if(!strcmp(units, "EV")) params.omega[i] /= _hartree2ev;
+	else {
+	  fprintf(outfile, "\n\tError in unit for input field frequencies.  Must use one of:\n");
+	  fprintf(outfile,   "\tau, hz, nm, or ev.\n");
+	  exit(PSI_RETURN_FAILURE);
+	}
       }
     }
     else {
@@ -240,7 +246,7 @@ void get_params()
   fprintf(outfile, "\tMaxiter          =    %3d\n",  params.maxiter);
   fprintf(outfile, "\tConvergence      = %3.1e\n", params.convergence);
   fprintf(outfile, "\tDIIS             =     %s\n", params.diis ? "Yes" : "No");
-  fprintf(outfile, "\tABCD            =     %s\n", params.abcd);
+  fprintf(outfile, "\tABCD             =     %s\n", params.abcd);
   fprintf(outfile, "\tIrrep X          =    %3s\n", moinfo.labels[moinfo.irrep_x]);
   fprintf(outfile, "\tIrrep Y          =    %3s\n", moinfo.labels[moinfo.irrep_y]);
   fprintf(outfile, "\tIrrep Z          =    %3s\n", moinfo.labels[moinfo.irrep_z]);
@@ -250,7 +256,7 @@ void get_params()
   fprintf(outfile, "\tGauge            =    %s\n", params.gauge);
   for(i=0; i < params.nomega; i++) {
     if(params.omega[i] == 0.0) 
-      fprintf(outfile, "\tApplied field %2d = none\n", i);
+      fprintf(outfile, "\tApplied field %2d =  0.000\n", i);
     else 
       fprintf(outfile, "\tApplied field %2d =    %5.3f E_h (%6.2f nm, %5.3f eV, %8.2f cm-1)\n", i, params.omega[i],
 	      (_c*_h*1e9)/(_hartree2J*params.omega[i]), _hartree2ev*params.omega[i],
@@ -259,12 +265,12 @@ void get_params()
   fprintf(outfile, "\tAnalyze X2 Amps  =    %s\n", params.analyze ? "Yes" : "No");
   fprintf(outfile, "\tLocal CC         =    %s\n", params.local ? "Yes" : "No");
   if(params.local) {
-    fprintf(outfile, "\tLocal Cutoff     = %3.1e\n", local.cutoff);
-    fprintf(outfile, "\tLocal Method     =    %s\n", local.method);
-    fprintf(outfile, "\tWeak pairs       =    %s\n", local.weakp);
-    fprintf(outfile, "\tFilter singles   =    %s\n", local.filter_singles ? "Yes" : "No");
-    fprintf(outfile, "\tLocal pairs        =    %s\n", local.pairdef);
-    fprintf(outfile, "\tLocal CPHF cutoff  =  %3.1e\n", local.cphf_cutoff);
+    fprintf(outfile, "\tLocal Cutoff      = %3.1e\n", local.cutoff);
+    fprintf(outfile, "\tLocal Method      =    %s\n", local.method);
+    fprintf(outfile, "\tWeak pairs        =    %s\n", local.weakp);
+    fprintf(outfile, "\tFilter singles    =    %s\n", local.filter_singles ? "Yes" : "No");
+    fprintf(outfile, "\tLocal pairs       =    %s\n", local.pairdef);
+    fprintf(outfile, "\tLocal CPHF cutoff =  %3.1e\n", local.cphf_cutoff);
   }
   fprintf(outfile, "\n");
 }

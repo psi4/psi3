@@ -35,12 +35,12 @@ void polar(void)
 
   trace = init_array(params.nomega);
 
-  transpert("Mu");
-  sort_pert("Mu", moinfo.MUX, moinfo.MUY, moinfo.MUZ, moinfo.irrep_x,
-	    moinfo.irrep_y, moinfo.irrep_z);
-  pertbar("Mu", moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z, 0);
-
   for(i=0; i < params.nomega; i++) {
+
+    transpert("Mu");
+    sort_pert("Mu", moinfo.MUX, moinfo.MUY, moinfo.MUZ, moinfo.irrep_x,
+	      moinfo.irrep_y, moinfo.irrep_z);
+    pertbar("Mu", moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z, 0);
 
     /* Compute the electric-dipole-perturbed CC wave functions */
     for(alpha=0; alpha < 3; alpha++) {
