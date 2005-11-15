@@ -62,6 +62,16 @@ void get_params(void)
   params.cachelev = 2;
   errcod = ip_data("CACHELEV", "%d", &(params.cachelev),0);
 
+  params.sekino = 0;
+  if(ip_exist("SEKINO",0)) {
+    errcod = ip_data("SEKINO", "%d", &params.sekino, 0);
+    if(errcod != IPE_OK) params.sekino = 0;
+    else if(params.sekino != 3) {
+      printf("Invalid value for option SEKINO: %d\n", params.sekino);
+      exit(PSI_RETURN_FAILURE);
+    }
+  }
+
   params.diis = 1;
   errcod = ip_boolean("DIIS", &params.diis, 0);
 

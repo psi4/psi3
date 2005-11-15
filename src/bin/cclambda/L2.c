@@ -96,7 +96,7 @@ void L2_build(struct L_Params L_params) {
 #endif
   if(params.print & 2) status("Wmbej -> L2", outfile);
 
-  L1FL2(L_irr);
+  if(params.sekino != 3) L1FL2(L_irr);
 #ifdef EOM_DEBUG
   check_sum("L1FL2", L_irr);
 #endif

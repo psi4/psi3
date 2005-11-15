@@ -15,6 +15,7 @@ struct Params {
   int dertype;
   int diis;
   char *abcd;
+  int sekino;  /* Sekino-Bartlett size-extensive models */
 	/* the following should be obseleted now or soon */
   int all; /* find Ls for all excited states plus ground state */
   int ground; /* find L for only ground state */
