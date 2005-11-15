@@ -54,6 +54,7 @@ $PSITEST_GEOMTOL = 10**-6;        # Default test criterion for Cartesian geometr
 $PSITEST_GTOL = 10**-6;           # Default test criterion for gradients
 $PSITEST_HTOL = 10**-2;           # Default test criterion for Hessians
 $PSITEST_POLARTOL = 10**-5;       # Default test criterion for polarizabilities
+$PSITEST_OPTROTTOL = 10**-3;      # Default test criterion for optical rotation
 $PSITEST_STABTOL = 10**-4;        # Default test criterion for Hessian eigenvalues
 $PSITEST_MPOPTOL = 10**-5;        # Default test criterion for Mulliken populations
 
@@ -203,11 +204,11 @@ sub do_tests
       if ($jobtype eq "SP" && $dertype eq "RESPONSE") {
         if ($wfn eq "CC2") {
           $fail |= compare_cclambda_overlap($wfn);
-          $fail |= compare_cc2_polar($wfn);
+          $fail |= compare_cc_response($wfn);
         }
         if ($wfn eq "CCSD") {
           $fail |= compare_cclambda_overlap($wfn);
-          $fail |= compare_ccsd_polar($wfn);
+          $fail |= compare_cc_response($wfn);
         }
         if ($wfn eq "SCF") {
           $fail |= compare_scf_polar();
@@ -506,43 +507,84 @@ sub compare_scf_polar
   return $fail;
 }
 
-sub compare_cc2_polar
-{
-  my $wfn = $_[0];
-  my $fail = 0;
-  my $REF_FILE = "$SRC_PATH/output.ref";
-  my $TEST_FILE = "output.dat";
-                                                                                                              
-  @polar_ref = seek_cc2_polar($REF_FILE);
-  @polar_test = seek_cc2_polar($TEST_FILE);
-                                                                                                              
-  if(!compare_arrays(\@polar_ref,\@polar_test,($#polar_ref+1),$PSITEST_POLARTOL)) {
-    fail_test("$wfn Polarizability/Optical Rotation"); $fail = 1;
-  }
-  else {
-    pass_test("$wfn Polarizability/Optical Rotation");
-  }
-                                                                                                              
-  return $fail;
-}
-                                                                                                              
-sub compare_ccsd_polar
+sub compare_cc_response
 {
   my $wfn = $_[0];
   my $fail = 0;
   my $REF_FILE = "$SRC_PATH/output.ref";
   my $TEST_FILE = "output.dat";
 
-  @polar_ref = seek_ccsd_polar($REF_FILE);
-  @polar_test = seek_ccsd_polar($TEST_FILE);
+  # Grab field frequencies
+  $nfreqs = seek_num_cc_response_freqs($TEST_FILE);
+#  printf "Number of frequencies = %d\n", $nfreqs;
+  @polar_freqs = seek_cc_response_freqs($TEST_FILE);
 
-  if(!compare_arrays(\@polar_ref,\@polar_test,($#polar_ref+1),$PSITEST_POLARTOL)) {
-    fail_test("$wfn Polarizability/Optical Rotation"); $fail = 1;
+  # What response property are we testing?
+  $property = seek_cc_response_property($TEST_FILE);
+#  printf "Response property = %s\n", $property;
+
+  if($property eq "ROTATION") {
+      # Length, velocity, or both?
+      $gauge = seek_cc_response_gauge($TEST_FILE);
+      if($gauge eq "BOTH") {
+	  for($i=0; $i < $nfreqs; $i++) {
+
+	      $alpha_ref = seek_cc_optrot($REF_FILE, $polar_freqs[$i], "LENGTH");
+	      $alpha_test = seek_cc_optrot($TEST_FILE, $polar_freqs[$i], "LENGTH");
+	      if(abs($alpha_ref - $alpha_test) >  $PSITEST_OPTROTTOL) {
+		  fail_test("$wfn Optical Rotation (LENGTH) @ $polar_freqs[$i]"); $fail = 1;
+	      }
+	      else {
+		  pass_test("$wfn Optical Rotation (LENGTH) @ $polar_freqs[$i]");
+	      }
+
+	      $alpha_ref = seek_cc_optrot($REF_FILE, $polar_freqs[$i], "VELOCITY");
+	      $alpha_test = seek_cc_optrot($TEST_FILE, $polar_freqs[$i], "VELOCITY");
+	      if(abs($alpha_ref - $alpha_test) >  $PSITEST_OPTROTTOL) {
+		  fail_test("$wfn Optical Rotation (VELOCITY) @ $polar_freqs[$i]"); $fail = 1;
+	      }
+	      else {
+		  pass_test("$wfn Optical Rotation (VELOCITY) @ $polar_freqs[$i]");
+	      }
+
+	      @vector_ref = seek_cc_delta($REF_FILE, $polar_freqs[$i]);
+	      @vector_test = seek_cc_delta($TEST_FILE, $polar_freqs[$i]);
+	      if(!compare_arrays(\@vector_ref, \@vector_test, ($#vector_test+1), $PSITEST_OPTROTTOL)) {
+		  fail_test("$wfn Optical Rotation Origin-Dependence Vector @ $polar_freqs[$i]"); $fail = 1;
+	      }
+	      else {
+		  pass_test("$wfn Optical Rotation Origin-Dependence Vector @ $polar_freqs[$i]");
+	      }
+	  }
+      }
+      else {
+	  for($i=0; $i < $nfreqs; $i++) {
+
+	      $alpha_ref = seek_cc_optrot($REF_FILE, $polar_freqs[$i], $gauge);
+	      $alpha_test = seek_cc_optrot($TEST_FILE, $polar_freqs[$i], $gauge);
+	      if(abs($alpha_ref - $alpha_test) >  $PSITEST_OPTROTTOL) {
+		  fail_test("$wfn Optical Rotation ($gauge) @ $polar_freqs[$i]"); $fail = 1;
+	      }
+	      else {
+		  pass_test("$wfn Optical Rotation ($gauge) @ $polar_freqs[$i]");
+	      }
+	  }
+      }
+
   }
-  else {
-    pass_test("$wfn Polarizability/Optical Rotation");
+  elsif($property eq "POLARIZABILITY") {
+      for($i=0; $i < $nfreqs; $i++) {
+	  $alpha_ref = seek_cc_polar($REF_FILE, $polar_freqs[$i], $gauge);
+	  $alpha_test = seek_cc_polar($TEST_FILE, $polar_freqs[$i], $gauge);
+	  if(abs($alpha_ref - $alpha_test) >  $PSITEST_POLARTOL) {
+	      fail_test("$wfn Polarizability @ $polar_freqs[$i]"); $fail = 1;
+	  }
+	  else {
+	      pass_test("$wfn Polarizability @ $polar_freqs[$i]");
+	  }
+      }
   }
-  
+
   return $fail;
 }
 
@@ -1728,63 +1770,163 @@ sub seek_scf_polar
   exit 1;
 }
 
-sub seek_cc2_polar
+sub seek_cc_response_property
 {
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";
   @datafile = <OUT>;
   close(OUT);
-                                                                                                              
-  $linenum=0;
-  $start = 0;
+
   foreach $line (@datafile) {
-    if (($line =~ m/CC2 Dipole Polarizability/) || ($line =~ m/CC2 Optical Rotation Tensor/)) {
-      $start = $linenum;
-    }
-    $linenum++;
+      if ($line =~ m/Property/) {
+	  @data = split(/ +/, $line);
+	  chomp($data[2]);
+	  return $data[2];
+      }
   }
-                                                                                                              
-  for($i=0; $i < 3; $i++) {
-    @line = split(/ +/, $datafile[$start+7+$i]);
-    for($j=0; $j < 3; $j++) {
-      $polar[3*$i+$j] = $line[$j+2];
-    }
-  }
-                                                                                                              
-  if($start != 0) {
-    return @polar;
-  }
-                                                                                                              
-  printf "Error: Could not find CC2 polarizability/optrot tensor in $_[0].\n";
+
+  printf "Error: Could not determine type of response property in $_[0],\n";
   exit 1;
 }
-                                                                                                              
-sub seek_ccsd_polar
-{   
+
+sub seek_cc_response_gauge
+{
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";
   @datafile = <OUT>;
   close(OUT);
-  
-  $linenum=0;
-  $start = 0;
+
   foreach $line (@datafile) {
-    if (($line =~ m/CCSD Dipole Polarizability/) || ($line =~ m/CCSD Optical Rotation Tensor/)) {
-      $start = $linenum;
-    }
-    $linenum++;
+      if ($line =~ m/Gauge/) {
+	  @data = split(/ +/, $line);
+	  chomp($data[2]);
+	  return $data[2];
+      }
   }
 
-  for($i=0; $i < 3; $i++) {
-    @line = split(/ +/, $datafile[$start+7+$i]);
-    for($j=0; $j < 3; $j++) {
-      $polar[3*$i+$j] = $line[$j+2];
+  printf "Error: Could not determine type of gauge in $_[0],\n";
+  exit 1;
+}
+
+sub seek_num_cc_response_freqs
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  @datafile = <OUT>;
+  close(OUT);
+
+  $value = 0;
+  foreach $line (@datafile) {
+      if ($line =~ m/Applied field/) {
+	  $value++;
+      }
+  }
+
+  if($value) {
+      return $value;
+  }
+
+  printf "Error: Could not find CC response frequencies in $_[0].\n";
+  exit 1;
+}
+
+sub seek_cc_response_freqs
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  @datafile = <OUT>;
+  close(OUT);
+
+  $value = 0;
+  foreach $line (@datafile) {
+    if ($line =~ m/Applied field/) {
+	@data = split(/ +/, $line);
+	chomp($data[4]);
+	$freqs[$value] = $data[4];
+	$value++;
     }
   }
-    
-  if($start != 0) {
-    return @polar;
+
+  if($value) {
+      return @freqs;
   }
-  
-  printf "Error: Could not find CCSD polarizability/optrot tensor in $_[0].\n";
+
+  printf "Error: Could not find CC response frequencies in $_[0].\n";
+  exit 1;
+}
+
+sub seek_cc_optrot
+{
+  $freq = $_[1];
+  $gauge = $_[2];
+
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  @datafile = <OUT>;
+  close(OUT);
+
+  $linenum = 0;
+  foreach $line (@datafile) {
+      if($gauge eq "LENGTH") {
+	  if(($line =~ m/using length-gauge/)) {
+	      @data = split(/ +/, $datafile[$linenum+1]);
+	      if($data[0] =~ m/$freq/) {
+		  return $data[2];
+	      }
+	  }
+      }
+      elsif($gauge eq "VELOCITY") {
+	  if(($line =~ m/using velocity-gauge/)) {
+	      @data = split(/ +/, $datafile[$linenum+1]);
+	      if($data[0] =~ m/$freq/) {
+		  return $data[2];
+	      }
+	  }
+      }
+      $linenum++;
+  }
+
+  printf "Error: Could not find CC optical rotation in $_[0].\n";
+  exit 1;
+}
+
+sub seek_cc_polar
+{
+  $freq = $_[1];
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  @datafile = <OUT>;
+  close(OUT);
+
+  $linenum = 0;
+  foreach $line (@datafile) {
+      if($line =~ m/alpha_\($freq\)/) {
+	  @data = split(/ +/, $line);
+	  return $data[2];
+      }
+  }
+
+  printf "Error: Could not find CC polarizability in $_[0].\n";
+  exit 1;
+}
+
+sub seek_cc_delta
+{
+  $freq = $_[1];
+
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  @datafile = <OUT>;
+  close(OUT);
+
+  $linenum = 0;
+  foreach $line (@datafile) {
+      if($line =~ m/vector for length-gauge/) {
+#	  printf "%s\n", $datafile[$linenum+1];
+	  @data = split(/ +/, $datafile[$linenum+1]);
+	  $vector[0] = $data[3];
+	  $vector[1] = $data[6];
+	  $vector[2] = $data[9];
+#	  printf "%5.2f %5.2f %5.2f\n", $vector[0], $vector[1], $vector[2];
+	  return @vector;
+      }
+      $linenum++;
+  }
+
+  printf "Error: Could not find CC origin-dependence vector in $_[0].\n";
   exit 1;
 }
 
@@ -2227,6 +2369,7 @@ sub compare_arrays
   my $dim = $_[2];
   my $tol = $_[3];
   my $OK = 1;
+  my $i=0;
   
   for($i=0; $i < $dim; $i++) {
     if(abs(@$A[$i] - @$B[$i]) > $tol) {
