@@ -257,7 +257,8 @@ void deanti_ROHF(struct RHO_Params rho_params)
 
   /* G(Ab,Cd) <-- 1/2 G(AB,CD) + 1/2 G(ab,cd) + G(Ab,Cd) */
   dpd_buf4_init(&G1, CC_GAMMA, 0, 5, 5, 5, 5, 0, "GAbCd");
-  dpd_buf4_sort_ooc(&G1, CC_TMP0, qprs, 5, 5, "G(bA,Cd)");
+/*  dpd_buf4_sort_ooc(&G1, CC_TMP0, qprs, 5, 5, "G(bA,Cd)"); */
+  dpd_buf4_sort(&G1, CC_TMP0, qprs, 5, 5, "G(bA,Cd)");
   dpd_buf4_init(&G2, CC_TMP0, 0, 5, 5, 5, 5, 0, "G(bA,Cd)");
   dpd_buf4_sort_ooc(&G2, CC_TMP1, pqsr, 5, 5, "G(aB,cD)");
   dpd_buf4_close(&G2);
