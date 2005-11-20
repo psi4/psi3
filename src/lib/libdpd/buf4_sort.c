@@ -58,7 +58,9 @@
 ** sorting case. More cases will follow as I need them.
 **
 ** -TDC, April 2005 
-*/
+**
+** Modified qpsr code to out-of-core sort qprs case.
+** -RAK, Nov. 2005*/
 
 int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 		  int pqnum, int rsnum, char *label)
@@ -588,10 +590,98 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
       }
     }
     else {
-      fprintf(stderr, "LIBDPD: Out-of-core algorithm not yet coded for qprs sort.\n");
-      dpd_error("buf4_sort", stderr);
-    }
+      for(Gpq=0; Gpq < nirreps; Gpq++) {
+	Grs = Gpq ^ my_irrep;
 
+	/* determine how many rows of OutBuf/InBuf we can store in half the core */
+	rows_per_bucket = dpd_memfree()/(2 * OutBuf.params->coltot[Grs]);
+	if(rows_per_bucket > OutBuf.params->rowtot[Gpq])
+	  rows_per_bucket = OutBuf.params->rowtot[Gpq];
+	nbuckets = ceil((double) OutBuf.params->rowtot[Gpq]/(double) rows_per_bucket);
+	rows_left = OutBuf.params->rowtot[Gpq] % rows_per_bucket;
+
+	/* allocate space for the bucket of rows */
+	dpd_buf4_mat_irrep_init_block(&OutBuf, Gpq, rows_per_bucket);
+	dpd_buf4_mat_irrep_init_block(InBuf, Gpq, rows_per_bucket);
+
+	for(n=0; n < (rows_left ? nbuckets-1 : nbuckets); n++) {
+
+	  out_row_start = n * rows_per_bucket;
+
+	  for(m=0; m < (rows_left ? nbuckets-1 : nbuckets); m++) {
+	    in_row_start = m * rows_per_bucket;
+	    dpd_buf4_mat_irrep_rd_block(InBuf, Gpq, in_row_start, rows_per_bucket);
+	    for(pq=0; pq < rows_per_bucket; pq++) {
+	      /* check to see if this row is contained in the current input-bucket */
+	      p = OutBuf.params->roworb[Gpq][pq+out_row_start][0];
+	      q = OutBuf.params->roworb[Gpq][pq+out_row_start][1];
+	      qp = InBuf->params->rowidx[q][p] - in_row_start;
+	      if(qp >= 0 && qp < rows_per_bucket) {
+                C_DCOPY(OutBuf.params->coltot[Grs], InBuf->matrix[Gpq][qp], 1,
+                        OutBuf.matrix[Gpq][pq], 1);
+	      }
+	    }
+	  }
+
+	  if(rows_left) {
+	    in_row_start = m * rows_per_bucket;
+	    dpd_buf4_mat_irrep_rd_block(InBuf, Gpq, in_row_start, rows_left);
+	    for(pq=0; pq < rows_per_bucket; pq++) {
+	      /* check to see if this row is contained in the current input-bucket */
+	      p = OutBuf.params->roworb[Gpq][pq+out_row_start][0];
+	      q = OutBuf.params->roworb[Gpq][pq+out_row_start][1];
+	      qp = InBuf->params->rowidx[q][p] - in_row_start;
+	      if(qp >= 0 && qp < rows_left) {
+                C_DCOPY(OutBuf.params->coltot[Grs], InBuf->matrix[Gpq][qp], 1,
+                        OutBuf.matrix[Gpq][pq], 1);
+	      }
+	    }
+	  }
+
+	  dpd_buf4_mat_irrep_wrt_block(&OutBuf, Gpq, out_row_start, rows_per_bucket);
+
+	} /* n */
+	if(rows_left) {
+
+	  out_row_start = n * rows_per_bucket;
+
+	  for(m=0; m < (rows_left ? nbuckets-1 : nbuckets); m++) {
+	    in_row_start = m * rows_per_bucket;
+	    dpd_buf4_mat_irrep_rd_block(InBuf, Gpq, in_row_start, rows_per_bucket);
+	    for(pq=0; pq < rows_left; pq++) {
+	      /* check to see if this row is contained in the current input-bucket */
+	      p = OutBuf.params->roworb[Gpq][pq+out_row_start][0];
+	      q = OutBuf.params->roworb[Gpq][pq+out_row_start][1];
+	      qp = InBuf->params->rowidx[q][p] - in_row_start;
+	      if(qp >= 0 && qp < rows_per_bucket) {
+                C_DCOPY(OutBuf.params->coltot[Grs], InBuf->matrix[Gpq][qp], 1,
+                        OutBuf.matrix[Gpq][pq], 1);
+	      }
+	    }
+	  }
+
+	  if(rows_left) {
+	    in_row_start = m * rows_per_bucket;
+	    dpd_buf4_mat_irrep_rd_block(InBuf, Gpq, in_row_start, rows_left);
+	    for(pq=0; pq < rows_left; pq++) {
+	      /* check to see if this row is contained in the current input-bucket */
+	      p = OutBuf.params->roworb[Gpq][pq+out_row_start][0];
+	      q = OutBuf.params->roworb[Gpq][pq+out_row_start][1];
+	      qp = InBuf->params->rowidx[q][p] - in_row_start;
+	      if(qp >= 0 && qp < rows_left) {
+                C_DCOPY(OutBuf.params->coltot[Grs], InBuf->matrix[Gpq][qp], 1,
+                        OutBuf.matrix[Gpq][pq], 1);
+	      }
+	    }
+	  }
+
+	}
+
+	dpd_buf4_mat_irrep_wrt_block(&OutBuf, Gpq, out_row_start, rows_left);
+	dpd_buf4_mat_irrep_close_block(InBuf, Gpq, rows_per_bucket);
+	dpd_buf4_mat_irrep_close_block(&OutBuf, Gpq, rows_per_bucket);
+      } /* Gpq */
+    }
 #ifdef DPD_TIMER
     timer_off("qprs");
 #endif
