@@ -82,7 +82,7 @@ void e_sort(void)
     dpd_buf4_close(&E);
 
     /* <ij||ka> (i>j,ak) */
-    dpd_buf4_init(&E, CC_EINTS, 0, 0, 10, 2, 10, 0, "E <ij||ka> (i>j,ka)");
+    dpd_buf4_init(&E, CC_EINTS, 0, 2, 10, 2, 10, 0, "E <ij||ka> (i>j,ka)");
     dpd_buf4_sort(&E, CC_EINTS, pqsr, 2, 11, "E <ij||ka> (i>j,ak)");
     dpd_buf4_close(&E);
 
