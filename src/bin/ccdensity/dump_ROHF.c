@@ -154,7 +154,7 @@ if (!params.onepdm) {
   dpd_buf4_close(&G);
 
   dpd_buf4_init(&G, CC_GAMMA, 0, 5, 5, 5, 5, 0, "GAbCd");
-  dpd_buf4_sort_ooc(&G, CC_TMP0, prqs, 5, 5, "G(AC,BD)");
+  dpd_buf4_sort(&G, CC_TMP0, prqs, 5, 5, "G(AC,BD)");
   dpd_buf4_close(&G);
   dpd_buf4_init(&G, CC_TMP0, 0, 5, 5, 5, 5, 0, "G(AC,BD)");
   dpd_buf4_dump(&G, OutBuf, qt_vir, qt_vir, qt_vir, qt_vir, 1, 0);

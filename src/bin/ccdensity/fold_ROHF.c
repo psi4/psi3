@@ -750,7 +750,7 @@ void fold_ROHF(struct RHO_Params rho_params)
     dpd_buf4_close(&G);
     dpd_buf4_close(&FInts);
     dpd_buf4_init(&FInts, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
-    dpd_buf4_sort(&FInts, CC_TMP0, qprs, 11, 5, "F(cI, Ba)");
+    dpd_buf4_sort(&FInts, CC_TMP0, qprs, 11, 5, "F(cI,Ba)");
     dpd_buf4_close(&FInts);
     dpd_buf4_init(&FInts, CC_TMP0, 0, 11, 5, 11, 5, 0, "F(cI,Ba)");
     dpd_buf4_sort(&FInts, CC_TMP1, pqsr, 11, 5, "F(cI,aB)");
