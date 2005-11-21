@@ -394,7 +394,8 @@ int dpd_buf4_mat_irrep_rd_block(dpdbuf4 *Buf, int irrep, int start_pq,
 
               value = 0;
 
-	      if(filers >= 0)
+	      /* if(filers >= 0) */
+              if ((filers >= 0) && (filerow >= 0)) /* Is this alright? (RAK, 11-2005) */
 		  value = Buf->file.matrix[irrep][filerow][filers];
 
 	      /* Assign the value */

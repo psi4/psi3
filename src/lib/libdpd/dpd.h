@@ -12,6 +12,7 @@
 #endif
 
 #define DPD_BIGNUM 2147483647 /* the four-byte signed int limit */
+/* #define ALL_BUF4_SORT_OOC */
 
 typedef struct {
   int nirreps;      /* No. of irreps */
