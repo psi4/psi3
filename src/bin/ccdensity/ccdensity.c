@@ -212,6 +212,7 @@ int main(int argc, char *argv[])
     /* dipole(); */
 
     if (!params.onepdm) {
+      if(!params.aobasis) energy(rho_params[i]);
 
       kinetic(); /* puts kinetic energy integrals into MO basis */
 
@@ -239,8 +240,6 @@ int main(int argc, char *argv[])
       fold(rho_params[i]);
       deanti(rho_params[i]);
     }
-
-    if(!params.aobasis) energy(rho_params[i]);
 
     /*  dpd_close(0); dpd_close(1); */
 
