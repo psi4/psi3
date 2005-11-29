@@ -16,4 +16,5 @@ struct Params {
   char *wfn;
   char *abcd;
   int num_amps;
+  int sekino;  /* Sekino-Bartlett size-extensive models */
 };

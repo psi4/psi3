@@ -232,6 +232,12 @@ void get_params()
     errcod = ip_data("NUM_AMPS", "%d", &(params.num_amps),0);
   }
 
+  params.sekino = 0;
+  if(ip_exist("SEKINO",0)) {
+    errcod = ip_boolean("SEKINO", &params.sekino, 0);
+    if(errcod != IPE_OK) params.sekino = 0;
+  }
+
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
   if(!strcmp(params.prop,"ALL"))
@@ -246,6 +252,7 @@ void get_params()
   fprintf(outfile, "\tMaxiter          =    %3d\n",  params.maxiter);
   fprintf(outfile, "\tConvergence      = %3.1e\n", params.convergence);
   fprintf(outfile, "\tDIIS             =     %s\n", params.diis ? "Yes" : "No");
+  fprintf(outfile, "\tModel III        =     %s\n", params.sekino ? "Yes" : "No");
   fprintf(outfile, "\tABCD             =     %s\n", params.abcd);
   fprintf(outfile, "\tIrrep X          =    %3s\n", moinfo.labels[moinfo.irrep_x]);
   fprintf(outfile, "\tIrrep Y          =    %3s\n", moinfo.labels[moinfo.irrep_y]);

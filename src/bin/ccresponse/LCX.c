@@ -133,5 +133,23 @@ double LCX(char *pert_c, char *cart_c, int irrep_c,
 
   dpd_buf4_close(&z2);
 
+  if(params.sekino) {  /* disconnected piece for Sekino-Bartlett modelIII */
+    /* L2 * MUBAR * X1 */
+    sprintf(lbl, "%sZ_IA_%1s", pert_c, cart_c);
+    dpd_file2_init(&z1, CC_TMP0, irrep_c, 0, 1, lbl);
+    sprintf(lbl, "%sBAR_%1s_IA", pert_c, cart_c);
+    dpd_file2_init(&mu1, CC_OEI, irrep_c, 0, 1, lbl);
+    dpd_buf4_init(&l2, CC_LAMPS, 0, 0, 5, 0, 5, 0, "2 LIjAb - LIjBa");
+    dpd_dot24(&mu1, &l2, &z1, 0, 0, 1, 0);
+    dpd_buf4_close(&l2);
+    dpd_file2_close(&mu1);
+
+    sprintf(lbl, "X_%s_%1s_IA (%5.3f)", pert_x, cart_x, omega);
+    dpd_file2_init(&X1, CC_OEI, irrep_x, 0, 1, lbl);
+    polar += 2.0 * dpd_file2_dot(&X1, &z1);
+    dpd_file2_close(&X1);
+    dpd_file2_close(&z1);
+  }
+
   return polar;
 }
