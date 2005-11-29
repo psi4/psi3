@@ -96,7 +96,7 @@ void L2_build(struct L_Params L_params) {
 #endif
   if(params.print & 2) status("Wmbej -> L2", outfile);
 
-  if(params.sekino != 3) L1FL2(L_irr);
+  if(!params.sekino) L1FL2(L_irr); /* should be dropped for Sekino-Bartlett modelIII approach */
 #ifdef EOM_DEBUG
   check_sum("L1FL2", L_irr);
 #endif

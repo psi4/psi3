@@ -64,12 +64,8 @@ void get_params(void)
 
   params.sekino = 0;
   if(ip_exist("SEKINO",0)) {
-    errcod = ip_data("SEKINO", "%d", &params.sekino, 0);
+    errcod = ip_boolean("SEKINO", &params.sekino, 0);
     if(errcod != IPE_OK) params.sekino = 0;
-    else if(params.sekino != 3) {
-      printf("Invalid value for option SEKINO: %d\n", params.sekino);
-      exit(PSI_RETURN_FAILURE);
-    }
   }
 
   params.diis = 1;
@@ -176,6 +172,7 @@ void get_params(void)
   fprintf(outfile, "\tConvergence   = %3.1e\n", params.convergence);
   fprintf(outfile, "\tRestart       =     %s\n", params.restart ? "Yes" : "No");
   fprintf(outfile, "\tCache Level   =     %1d\n", params.cachelev);
+  fprintf(outfile, "\tModel III     =     %s\n", params.sekino ? "Yes" : "No");
   fprintf(outfile, "\tDIIS          =     %s\n", params.diis ? "Yes" : "No");
   fprintf(outfile, "\tAO Basis      =     %s\n", 
           params.aobasis ? "Yes" : "No");
