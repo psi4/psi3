@@ -17,16 +17,27 @@ void setup_LR(struct RHO_Params rho_params)
   L_irr = rho_params.L_irr;
   R_irr = rho_params.R_irr;
   G_irr = rho_params.G_irr;
-	L_root = rho_params.L_root;
-	R_root = rho_params.R_root;
-	R0 = rho_params.R0;
+  L_root = rho_params.L_root;
+  R_root = rho_params.R_root;
+  R0 = rho_params.R0;
 
+  /*
+  fprintf(outfile,"\n");
+  if(L_root+1 == 0)
+    fprintf(outfile,"\tDensity for GS %3s\n",moinfo.labels[L_irr]);
+  else 
+    fprintf(outfile,"\tDensity for ES %d%3s\n",L_root+1,moinfo.labels[L_irr]);
+  fflush(outfile);
+  */
+  
+  /*
   fprintf(outfile,"\n\tSetting up L and R to compute density\n");
   fprintf(outfile,"\tLeft-hand eigenvector: symmetry %s and excited root %d\n",
-    moinfo.labels[L_irr], L_root+1); 
+	  moinfo.labels[L_irr], L_root+1); 
   fprintf(outfile,"\tRight-hand eigenvector: symmetry %s and excited root %d\n",
-    moinfo.labels[R_irr], R_root+1); 
+	  moinfo.labels[R_irr], R_root+1); 
   fprintf(outfile,"\tR0 = %15.10lf\n",params.R0); 
+  */
 
   /* form labels for the L to be copied */
   sprintf(L1A_lbl,"LIA %d %d", L_irr, L_root);
@@ -230,11 +241,11 @@ void setup_LR(struct RHO_Params rho_params)
         dpd_buf4_scm(&L2, 0.0);
         dpd_buf4_close(&L2);
       }
-			/* check magnitude */
-			dpd_file2_init(&L1, CC_GLG, G_irr, 0, 1, "LIA");
-			tval = dpd_file2_dot_self(&L1);
-			dpd_file2_close(&L1);
-			fprintf(outfile,"Ro*L+Zeta in CC_GLG, LIA before zeta: %15.10lf\n",tval);
+      /* check magnitude */
+      dpd_file2_init(&L1, CC_GLG, G_irr, 0, 1, "LIA");
+      tval = dpd_file2_dot_self(&L1);
+      dpd_file2_close(&L1);
+      fprintf(outfile,"Ro*L+Zeta in CC_GLG, LIA before zeta: %15.10lf\n",tval);
 
       if (params.use_zeta) {
         dpd_file2_init(&Z1, CC_LAMPS, G_irr, 0, 1, "ZIA");
@@ -262,11 +273,11 @@ void setup_LR(struct RHO_Params rho_params)
         dpd_buf4_axpy(&Z2, &L2, 1.0);
         dpd_buf4_close(&L2);
         dpd_buf4_close(&Z2);
-				/* check magnitude */
-				dpd_file2_init(&L1, CC_GLG, G_irr, 0, 1, "LIA");
-				tval = dpd_file2_dot_self(&L1);
-				dpd_file2_close(&L1);
-				fprintf(outfile,"Ro*L+Zeta in CC_GLG, LIA: %15.10lf\n",tval);
+	/* check magnitude */
+	dpd_file2_init(&L1, CC_GLG, G_irr, 0, 1, "LIA");
+	tval = dpd_file2_dot_self(&L1);
+	dpd_file2_close(&L1);
+	fprintf(outfile,"Ro*L+Zeta in CC_GLG, LIA: %15.10lf\n",tval);
       }
     }
   }

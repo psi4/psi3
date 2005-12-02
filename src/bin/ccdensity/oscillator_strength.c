@@ -13,7 +13,7 @@
 #define IOFF_MAX 32641
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
 
-double oscillator_strength(struct RHO_Params S)
+void oscillator_strength(struct TD_Params *S)
 {
   int nmo, nso, nao, noei, stat, i, I, h, j, nirreps, *ioff;
   int *order, *order_A, *order_B, *doccpi, natom, *clsdpi, *openpi, *orbspi;
@@ -242,8 +242,8 @@ double oscillator_strength(struct RHO_Params S)
 /*   fprintf(outfile, "MUZ_MOs\n"); */
 /*   print_mat(MUZ_MO, nmo, nmo, outfile); */
 
-  fprintf(outfile,"\n\tOscillator Strength for %d%3s\n",S.R_root+1,
-          moinfo.labels[S.R_irr]);
+  fprintf(outfile,"\n\tOscillator Strength for %d%3s\n",S->root+1,
+          moinfo.labels[S->irrep]);
   fprintf(outfile,"\t                              X    \t       Y    \t       Z\n");
 
   if((params.ref == 0) || (params.ref == 1)) {
@@ -297,22 +297,19 @@ double oscillator_strength(struct RHO_Params S)
   ds_y = lt_y * rt_y;
   ds_z = lt_z * rt_z;
   
-  f_x = (2*S.cceom_energy*ds_x)/3;
-  f_y = (2*S.cceom_energy*ds_y)/3;
-  f_z = (2*S.cceom_energy*ds_z)/3;
+  f_x = (2*S->cceom_energy*ds_x)/3;
+  f_y = (2*S->cceom_energy*ds_y)/3;
+  f_z = (2*S->cceom_energy*ds_z)/3;
   
   f = f_x + f_y + f_z;
-/*   S->OS = f; */
+  S->OS = f;
   
   fprintf(outfile,"\t<0|mu_e|n>              %11.8lf \t %11.8lf \t %11.8lf\n",
           lt_x,lt_y,lt_z);
   fprintf(outfile,"\t<n|mu_e|0>              %11.8lf \t %11.8lf \t %11.8lf\n",
           rt_x,rt_y,rt_z);
-  fprintf(outfile,"\tDipole Strength         %11.8lf \t %11.8lf \t %11.8lf\n",
-          ds_x,ds_y,ds_z);
-  fprintf(outfile,"\tOscillator Strength     %11.8lf \t %11.8lf \t %11.8lf\n",
-          f_x,f_y,f_z);
-  fprintf(outfile,"\tNorm(OS)                %11.8lf\n",f);
+  fprintf(outfile,"\tDipole Strength         %11.8lf \n",ds_x+ds_y+ds_z);
+  fprintf(outfile,"\tOscillator Strength     %11.8lf \n",f_x+f_y+f_z);
   fflush(outfile);
 
   if((params.ref == 0) || (params.ref == 1)) {
@@ -329,5 +326,5 @@ double oscillator_strength(struct RHO_Params S)
     free_block(MUZ_MO_B);
   }
 
-  return f;
+  return;
 }

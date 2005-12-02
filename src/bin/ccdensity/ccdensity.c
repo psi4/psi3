@@ -70,11 +70,12 @@ void G_norm(void);
 void zero_onepdm(struct RHO_Params rho_params);
 void zero_twopdm(void);
 void get_rho_params(void);
-void td_setup(struct RHO_Params S);
-void tdensity(struct RHO_Params S);
-void td_print(struct RHO_Params *S);
-double oscillator_strength(struct RHO_Params S);
-double rotational_strength(struct RHO_Params S);
+void get_td_params(void);
+void td_setup(struct TD_Params S);
+void tdensity(struct TD_Params S);
+void td_print(void);
+void oscillator_strength(struct TD_Params *S);
+void rotational_strength(struct TD_Params *S);
 
 int main(int argc, char *argv[])
 {
@@ -114,31 +115,16 @@ int main(int argc, char *argv[])
 	     moinfo.avir_sym, moinfo.boccpi, moinfo.bocc_sym, moinfo.bvirtpi, moinfo.bvir_sym);
   }
 
-	if (params.transition) {
-	  params.OS = (double *) malloc(params.nstates * sizeof(double));
-	  params.RS = (double *) malloc(params.nstates * sizeof(double));
-	}
-
   for (i=0; i<params.nstates; ++i) {
-
-    if(params.transition) {
-      td_setup(rho_params[i]);
-      tdensity(rho_params[i]);
-      params.OS[i] = oscillator_strength(rho_params[i]);
-      if(params.ref == 0) {
-  	    params.RS[i] = rotational_strength(rho_params[i]);
-		  }
-      td_cleanup();
-    }
 
     /* CC_GLG will contain L, or R0*L + Zeta, if relaxed and zeta is available */
     /* CC_GL will contain L */
     setup_LR(rho_params[i]);
 
-		/* Calculate Xi, put Xi in EOM_XI, and quit */
+    /* Calculate Xi, put Xi in EOM_XI, and quit */
     if ( params.calc_xi ) {
       /* these intermediates go into EOM_TMP and are used to compute Xi;
-        they may be reused to compute the excited-state density matrix */
+	 they may be reused to compute the excited-state density matrix */
       if (params.ref == 0) {
         x_oe_intermediates_rhf(rho_params[i]);
         x_te_intermediates_rhf();
@@ -219,7 +205,7 @@ int main(int argc, char *argv[])
       lag(rho_params[i]); /* builds the orbital lagrangian pieces, I */
 
       /* dpd_init(1, moinfo.nirreps, params.memory, 2, frozen.occpi, frozen.occ_sym,
-        frozen.virtpi, frozen.vir_sym); */
+	 frozen.virtpi, frozen.vir_sym); */
 
       /*  if(moinfo.nfzc || moinfo.nfzv) {
           resort_gamma();
@@ -272,10 +258,51 @@ int main(int argc, char *argv[])
       iwl_buf_close(&OutBuf_AB, 1);
     }
     free_block(moinfo.opdm);
+    psio_close(CC_GLG,0);
+    psio_close(CC_GL,0);
+    psio_close(CC_GR,0);
+    psio_open(CC_GLG,PSIO_OPEN_NEW);
+    psio_open(CC_GL,PSIO_OPEN_NEW);
+    psio_open(CC_GR,PSIO_OPEN_NEW);
+    psio_close(CC_TMP,0);
+    psio_close(EOM_TMP,0);
+    psio_close(EOM_TMP0,0);
+    psio_close(EOM_TMP1,0);
+    psio_open(CC_TMP,PSIO_OPEN_NEW);
+    psio_open(EOM_TMP,PSIO_OPEN_NEW);
+    psio_open(EOM_TMP0,PSIO_OPEN_NEW);
+    psio_open(EOM_TMP1,PSIO_OPEN_NEW);
+  }
 
-  if (params.transition)
-    td_print(rho_params);
-}
+  if(params.transition) {
+    psio_close(CC_TMP,0);
+    psio_close(EOM_TMP,0);
+    psio_close(EOM_TMP0,0);
+    psio_close(EOM_TMP1,0);
+    psio_close(CC_GLG,0);
+    psio_close(CC_GL,0);
+    psio_close(CC_GR,0);
+
+    psio_open(CC_TMP,PSIO_OPEN_NEW);
+    psio_open(EOM_TMP,PSIO_OPEN_NEW);
+    psio_open(EOM_TMP0,PSIO_OPEN_NEW);
+    psio_open(EOM_TMP1,PSIO_OPEN_NEW);
+    psio_open(CC_GLG,PSIO_OPEN_NEW);
+    psio_open(CC_GL,PSIO_OPEN_NEW);
+    psio_open(CC_GR,PSIO_OPEN_NEW);
+
+    get_td_params();
+    for(i=0; i < params.nstates; i++) {
+      td_setup(td_params[i]);
+      tdensity(td_params[i]);
+      oscillator_strength(&(td_params[i]));
+      if(params.ref == 0) {
+        rotational_strength(&(td_params[i]));
+      }
+      td_cleanup();
+    }
+    td_print();
+  }
 
   dpd_close(0);
 

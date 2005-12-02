@@ -253,6 +253,7 @@ void x_onepdm_rohf(struct RHO_Params rho_params)
   dpd_file2_close(&Lia);
 
   /* check overlaps */
+  /*
   dpd_file2_init(&DIA, CC_OEI, G_irr, 0, 1, rho_params.DIA_lbl);
   dot_IA = dpd_file2_dot_self(&DIA);
   dpd_file2_close(&DIA);
@@ -265,15 +266,17 @@ void x_onepdm_rohf(struct RHO_Params rho_params)
   dpd_file2_init(&Dai, CC_OEI, G_irr, 0, 1, rho_params.Dai_lbl);
   dot_ai = dpd_file2_dot_self(&Dai);
   dpd_file2_close(&Dai);
-	/* dpd_file2_init(&DIJ, CC_OEI, G_irr, 0, 0, rho_params.DIJ_lbl);
+  dpd_file2_init(&DIJ, CC_OEI, G_irr, 0, 0, rho_params.DIJ_lbl);
   dot_IJ = dpd_file2_dot_self(&DIJ);
   dpd_file2_close(&DIJ);
   dpd_file2_init(&DIJ, CC_OEI, G_irr, 0, 0, rho_params.Dij_lbl);
   dot_IJ += dpd_file2_dot_self(&DIJ);
-  dpd_file2_close(&DIJ); */
-	fprintf(outfile,"\tOverlaps of onepdm after excited-state parts added.\n");
-	fprintf(outfile,"\t<DIA|DIA> = %15.10lf     <Dia|Dia> = %15.10lf\n", dot_IA, dot_ia);
-	fprintf(outfile,"\t<DAI|DAI> = %15.10lf     <Dai|Dai> = %15.10lf\n", dot_AI, dot_ai);
-	fprintf(outfile,"\t<Dpq|Dqp> = %15.10lf\n", dot_IA+dot_ia+dot_AI+dot_ai);
+  dpd_file2_close(&DIJ); 
+  fprintf(outfile,"\tOverlaps of onepdm after excited-state parts added.\n");
+  fprintf(outfile,"\t<DIA|DIA> = %15.10lf     <Dia|Dia> = %15.10lf\n", dot_IA, dot_ia);
+  fprintf(outfile,"\t<DAI|DAI> = %15.10lf     <Dai|Dai> = %15.10lf\n", dot_AI, dot_ai);
+  fprintf(outfile,"\t<Dpq|Dqp> = %15.10lf\n", dot_IA+dot_ia+dot_AI+dot_ai);
+  */
+
   return;
 }

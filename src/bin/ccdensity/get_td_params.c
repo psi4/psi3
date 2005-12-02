@@ -14,7 +14,7 @@ void get_td_params(void)
   if(ip_exist("PROP_SYM",0) && ip_exist("PROP_ROOT",0)) {
     ip_data("PROP_SYM","%d",&(params.prop_sym),0);
     ip_data("PROP_ROOT","%d",&(params.prop_root),0);
-    /* User input counts from 1 */
+    /*User input counts from 1*/ 
     params.prop_sym -= 1;  
     params.prop_root -= 1; 
     params.nstates = 1;
@@ -35,6 +35,11 @@ void get_td_params(void)
     fprintf(outfile,"\nUse STATES_PER_IRREP or PROP_SYM and PROP_ROOT\n");
     exit(0);
   }
+
+  /*
+  fprintf(outfile,"\tNumber of States = %d\n",params.nstates);
+  fflush(outfile);
+  */
 
   td_params = (struct TD_params *)malloc(params.nstates*sizeof(struct TD_Params));
 
@@ -119,14 +124,14 @@ void get_td_params(void)
       }
     }
   }
-  fprintf(outfile,"\tNumber of States = %d\n",params.nstates);
-
+  /*
   fprintf(outfile,"\n\tState\t  EOM Energy\t    R0\n");
   for(i=0; i<params.nstates; i++) {
     fprintf(outfile,"\t %d%3s %15.10lf %12.8lf\n",
             td_params[i].root+1,moinfo.labels[td_params[i].irrep],
             td_params[i].cceom_energy,td_params[i].R0);
   }
+  */
 
   return;
 }

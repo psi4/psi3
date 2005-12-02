@@ -3,20 +3,20 @@
 #define EXTERN
 #include "globals.h"
 
-void ltdensity_rohf(struct RHO_Params S);
-void ltdensity_uhf(struct RHO_Params S);
-void ltdensity_intermediates(struct RHO_Params S);
-void sort_ltd_rohf(struct RHO_Params S);
-void sort_ltd_uhf(struct RHO_Params S);
+void ltdensity_rohf(struct TD_Params S);
+void ltdensity_uhf(struct TD_Params S);
+void ltdensity_intermediates(struct TD_Params S);
+void sort_ltd_rohf(struct TD_Params S);
+void sort_ltd_uhf(struct TD_Params S);
 
-void ltdensity_rohf(struct RHO_Params S)
+void ltdensity_rohf(struct TD_Params S)
 {
   dpdfile2 DAI, Dai, DIA, Dia, DIJ, DAB, Dij, Dab, TIA, Tia;
   dpdfile2 LIA, Lia, RIA, Ria, Int, XIJ, Xij, R1;
   dpdbuf4 T2, L2, R2, I2;
   dpdfile2 D, T1, L1, Z;
 
-  if(S.L_irr == 0) {
+  if(S.irrep == 0) {
     dpd_file2_init(&D, CC_TMP, 0, 0, 0, "LTDIJ");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 7, 2, 7, 0, "tIJAB");
     dpd_buf4_init(&L2, CC_GLG, 0, 0, 7, 2, 7, 0, "LIJAB");
@@ -91,11 +91,11 @@ void ltdensity_rohf(struct RHO_Params S)
   }
 
   /* R_I^A */
-  dpd_file2_init(&R1, CC_GR, S.R_irr, 0, 1, "RIA");
+  dpd_file2_init(&R1, CC_GR, S.irrep, 0, 1, "RIA");
   dpd_file2_copy(&R1, CC_TMP, "LTDIA");
   dpd_file2_close(&R1);
 
-  if(S.L_irr == 0) {
+  if(S.irrep == 0) {
     dpd_file2_init(&D, CC_OEI, 0, 0, 1, "LTDIA");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tIJAB");
     dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "LIA");
@@ -155,11 +155,11 @@ void ltdensity_rohf(struct RHO_Params S)
   }
 
   /* R_i^a */
-  dpd_file2_init(&R1, CC_GR, S.R_irr, 0, 1, "Ria");
+  dpd_file2_init(&R1, CC_GR, S.irrep, 0, 1, "Ria");
   dpd_file2_copy(&R1, CC_TMP, "LTDia");
   dpd_file2_close(&R1);
 
-  if(S.L_irr == 0) {
+  if(S.irrep == 0) {
     dpd_file2_init(&D, CC_TMP, 0, 0, 1, "LTDia");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tijab");
     dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "Lia");
@@ -244,165 +244,165 @@ void ltdensity_rohf(struct RHO_Params S)
 
   dpd_file2_init(&TIA, CC_OEI, 0, 0, 1, "tIA");
   dpd_file2_init(&Tia, CC_OEI, 0, 0, 1, "tia");
-  dpd_file2_init(&RIA, CC_GR, S.R_irr, 0, 1, "RIA");
-  dpd_file2_init(&Ria, CC_GR, S.R_irr, 0, 1, "Ria");
+  dpd_file2_init(&RIA, CC_GR, S.irrep, 0, 1, "RIA");
+  dpd_file2_init(&Ria, CC_GR, S.irrep, 0, 1, "Ria");
   dpd_file2_init(&LIA, CC_GLG, 0, 0, 1, "LIA");
   dpd_file2_init(&Lia, CC_GLG, 0, 0, 1, "Lia");
 
   /* D[i][j] = -LR_oo[j][i] - t1[i][f] * L2R1_ov[j][f] */
 
-  dpd_file2_init(&DIJ, CC_TMP, S.G_irr, 0, 0, "LTDIJ");
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 0, 0, "LR_OO");
+  dpd_file2_init(&DIJ, CC_TMP, S.irrep, 0, 0, "LTDIJ");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 0, 0, "LR_OO");
   dpd_file2_axpy(&Int, &DIJ, -1.0, 1);
   dpd_file2_close(&Int);
 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 0, 1, "L2R1_OV");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 0, 1, "L2R1_OV");
   dpd_contract222(&TIA, &Int, &DIJ, 0, 0, -1.0, 1.0);
   dpd_file2_close(&Int);
   dpd_file2_close(&DIJ);
 
-  dpd_file2_init(&Dij, CC_TMP, S.G_irr, 0, 0, "LTDij");
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 0, 0, "LR_oo");
+  dpd_file2_init(&Dij, CC_TMP, S.irrep, 0, 0, "LTDij");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 0, 0, "LR_oo");
   dpd_file2_axpy(&Int, &Dij, -1.0, 1);
   dpd_file2_close(&Int);
 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 0, 1, "L2R1_ov");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 0, 1, "L2R1_ov");
   dpd_contract222(&Tia, &Int, &Dij, 0, 0, -1.0, 1.0);
   dpd_file2_close(&Int);
   dpd_file2_close(&Dij);
 
   /* D[a][b] = +LR_vv[a][b] + L2R1_ov[n][a] * t1[n][b] */
 
-  dpd_file2_init(&DAB, CC_TMP, S.G_irr, 1, 1, "LTDAB");
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 1, 1, "LR_VV");
+  dpd_file2_init(&DAB, CC_TMP, S.irrep, 1, 1, "LTDAB");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 1, 1, "LR_VV");
   dpd_file2_axpy(&Int, &DAB, 1.0, 0);
   dpd_file2_close(&Int);
 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 0, 1, "L2R1_OV");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 0, 1, "L2R1_OV");
   dpd_contract222(&Int, &TIA, &DAB, 1, 1, 1.0, 1.0);
   dpd_file2_close(&Int);
   dpd_file2_close(&DAB);
 
-  dpd_file2_init(&Dab, CC_TMP, S.G_irr, 1, 1, "LTDab");
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 1, 1, "LR_vv");
+  dpd_file2_init(&Dab, CC_TMP, S.irrep, 1, 1, "LTDab");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 1, 1, "LR_vv");
   dpd_file2_axpy(&Int, &Dab, 1.0, 0);
   dpd_file2_close(&Int);
 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 0, 1, "L2R1_ov");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 0, 1, "L2R1_ov");
   dpd_contract222(&Int, &Tia, &Dab, 1, 1, 1.0, 1.0);
   dpd_file2_close(&Int);
   dpd_file2_close(&Dab);
 
   /* D[a][i] = +L2R1_ov[i][a] */
 
-  dpd_file2_init(&DAI, CC_TMP, S.G_irr, 0, 1, "LTDAI");
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 0, 1, "L2R1_OV");
+  dpd_file2_init(&DAI, CC_TMP, S.irrep, 0, 1, "LTDAI");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 0, 1, "L2R1_OV");
   dpd_file2_axpy(&Int, &DAI, 1.0, 0);
   dpd_file2_close(&Int);
   dpd_file2_close(&DAI);
 
-  dpd_file2_init(&Dai, CC_TMP, S.G_irr, 0, 1, "LTDai");
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 0, 1, "L2R1_ov");
+  dpd_file2_init(&Dai, CC_TMP, S.irrep, 0, 1, "LTDai");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 0, 1, "L2R1_ov");
   dpd_file2_axpy(&Int, &Dai, 1.0, 0);
   dpd_file2_close(&Int);
   dpd_file2_close(&Dai);
 
-  dpd_file2_init(&DIA, CC_TMP, S.G_irr, 0, 1, "LTDIA");
-  dpd_file2_init(&Dia, CC_TMP, S.G_irr, 0, 1, "LTDia");
+  dpd_file2_init(&DIA, CC_TMP, S.irrep, 0, 1, "LTDIA");
+  dpd_file2_init(&Dia, CC_TMP, S.irrep, 0, 1, "LTDia");
 
   /* D[i][a] = L1R2_ov[i][a] */
 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 0, 1, "L1R2_OV");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 0, 1, "L1R2_OV");
   dpd_file2_axpy(&Int, &DIA, 1.0, 0);
   dpd_file2_close(&Int);
 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 0, 1, "L1R2_ov");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 0, 1, "L1R2_ov");
   dpd_file2_axpy(&Int, &Dia, 1.0, 0);
   dpd_file2_close(&Int);
 
   /* - LR_OO[M][I] * t1[M][A] */
 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 0, 0, "LR_OO");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 0, 0, "LR_OO");
   dpd_contract222(&Int, &TIA, &DIA, 1, 1, -1.0, 1.0);
   dpd_file2_close(&Int);
 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 0, 0, "LR_oo");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 0, 0, "LR_oo");
   dpd_contract222(&Int, &Tia, &Dia, 1, 1, -1.0, 1.0);
   dpd_file2_close(&Int);
 
   /* - t1[I][E] * LR_vv[E][A] */
 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 1, 1, "LR_VV");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 1, 1, "LR_VV");
   dpd_contract222(&TIA, &Int, &DIA, 0, 1, -1.0, 1.0);
   dpd_file2_close(&Int);
 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 1, 1, "LR_vv");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 1, 1, "LR_vv");
   dpd_contract222(&Tia, &Int, &Dia, 0, 1, -1.0, 1.0);
   dpd_file2_close(&Int);
 
   /* - LT2_OO[M][I] * r1[M][A] */
 
-  dpd_file2_init(&Int, EOM_TMP, S.L_irr, 0, 0, "LT2_OO");
+  dpd_file2_init(&Int, EOM_TMP, 0, 0, 0, "LT2_OO");
   dpd_contract222(&Int, &RIA, &DIA, 1, 1, -1.0, 1.0);
   dpd_file2_close(&Int);
 
-  dpd_file2_init(&Int, EOM_TMP, S.L_irr, 0, 0, "LT2_oo");
+  dpd_file2_init(&Int, EOM_TMP, 0, 0, 0, "LT2_oo");
   dpd_contract222(&Int, &Ria, &Dia, 1, 1, -1.0, 1.0);
   dpd_file2_close(&Int);
 
   /* - r1[I][E] * LT2_VV[E][A] */
 
-  dpd_file2_init(&Int, EOM_TMP, S.L_irr, 1, 1, "LT2_VV");
+  dpd_file2_init(&Int, EOM_TMP, 0, 1, 1, "LT2_VV");
   dpd_contract222(&RIA, &Int, &DIA, 0, 1, -1.0, 1.0);
   dpd_file2_close(&Int);
 
-  dpd_file2_init(&Int, EOM_TMP, S.L_irr, 1, 1, "LT2_vv");
+  dpd_file2_init(&Int, EOM_TMP, 0, 1, 1, "LT2_vv");
   dpd_contract222(&Ria, &Int, &Dia, 0, 1, -1.0, 1.0);
   dpd_file2_close(&Int);
 
   /* + L2R1_ov[M][E] * t2[i][m][a][e] */
 
   dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tIJAB"); 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 0, 1, "L2R1_OV");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 0, 1, "L2R1_OV");
   dpd_dot24(&Int, &T2, &DIA, 0, 0, 1.0, 1.0);
   dpd_file2_close(&Int);
   dpd_buf4_close(&T2);
 
   dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb"); 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 0, 1, "L2R1_ov");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 0, 1, "L2R1_ov");
   dpd_dot24(&Int, &T2, &DIA, 0, 0, 1.0, 1.0);
   dpd_file2_close(&Int);
   dpd_buf4_close(&T2);
 
   dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tijab"); 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 0, 1, "L2R1_ov");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 0, 1, "L2R1_ov");
   dpd_dot24(&Int, &T2, &Dia, 0, 0, 1.0, 1.0);
   dpd_file2_close(&Int);
   dpd_buf4_close(&T2);
 
   dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tiJaB"); 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 0, 1, "L2R1_OV");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 0, 1, "L2R1_OV");
   dpd_dot24(&Int, &T2, &Dia, 0, 0, 1.0, 1.0);
   dpd_file2_close(&Int);
   dpd_buf4_close(&T2);
     
   /* - (t1[i][e] * L2R1_ov[M][E]) * t1[m][a] */
 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 0, 1, "L2R1_OV");
-  dpd_file2_init(&XIJ, EOM_TMP, S.G_irr, 0, 0, "XIJ");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 0, 1, "L2R1_OV");
+  dpd_file2_init(&XIJ, EOM_TMP, S.irrep, 0, 0, "XIJ");
   dpd_contract222(&TIA, &Int, &XIJ, 0, 0, 1.0, 0.0);
   dpd_file2_close(&Int);
 
-  dpd_file2_init(&XIJ, EOM_TMP, S.G_irr, 0, 0, "XIJ");
+  dpd_file2_init(&XIJ, EOM_TMP, S.irrep, 0, 0, "XIJ");
   dpd_contract222(&XIJ, &TIA, &DIA, 0, 1, -1.0, 1.0);
   dpd_file2_close(&XIJ);
 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 0, 1, "L2R1_ov");
-  dpd_file2_init(&Xij, EOM_TMP, S.G_irr, 0, 0, "Xij");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 0, 1, "L2R1_ov");
+  dpd_file2_init(&Xij, EOM_TMP, S.irrep, 0, 0, "Xij");
   dpd_contract222(&Tia, &Int, &Xij, 0, 0, 1.0, 0.0);
   dpd_file2_close(&Int);
 
-  dpd_file2_init(&Xij, EOM_TMP, S.G_irr, 0, 0, "Xij");
+  dpd_file2_init(&Xij, EOM_TMP, S.irrep, 0, 0, "Xij");
   dpd_contract222(&Xij, &Tia, &Dia, 0, 1, -1.0, 1.0);
   dpd_file2_close(&Xij);
 
@@ -419,14 +419,14 @@ void ltdensity_rohf(struct RHO_Params S)
   return;
 }
 
-void ltdensity_uhf(struct RHO_Params S)
+void ltdensity_uhf(struct TD_Params S)
 {
   dpdfile2 DAI, Dai, DIA, Dia, DIJ, DAB, Dij, Dab, TIA, Tia;
   dpdfile2 LIA, Lia, RIA, Ria, Int, XIJ, Xij, R1;
   dpdbuf4 T2, L2, R2, I2;
   dpdfile2 D, T1, L1, Z;
 
-  if(S.L_irr == 0 ) { /* Symmetric Transition */
+  if(S.irrep == 0 ) { /* Symmetric Transition */
 
     dpd_file2_init(&D, CC_TMP, 0, 0, 0, "LTDIJ");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 7, 2, 7, 0, "tIJAB");
@@ -503,11 +503,11 @@ void ltdensity_uhf(struct RHO_Params S)
 
   /* R_I^A */
     
-  dpd_file2_init(&R1, CC_GR, S.R_irr, 0, 1, "RIA");
+  dpd_file2_init(&R1, CC_GR, S.irrep, 0, 1, "RIA");
   dpd_file2_copy(&R1, CC_TMP, "LTDIA");
   dpd_file2_close(&R1); 
 
-  if(S.L_irr == 0) { // Symmetric Transitions
+  if(S.irrep == 0) { // Symmetric Transitions
 
     dpd_file2_init(&D, CC_TMP, 0, 0, 1, "LTDIA");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tIJAB");
@@ -567,11 +567,11 @@ void ltdensity_uhf(struct RHO_Params S)
 
   /* R_i^a */
     
-  dpd_file2_init(&R1, CC_GR, S.R_irr, 2, 3, "Ria");
+  dpd_file2_init(&R1, CC_GR, S.irrep, 2, 3, "Ria");
   dpd_file2_copy(&R1, CC_TMP, "LTDia"); 
   dpd_file2_close(&R1);
 
-  if(S.L_irr == 0) { /* Symmetric Transitions */
+  if(S.irrep == 0) { /* Symmetric Transitions */
 
     dpd_file2_init(&D, CC_TMP, 0, 2, 3, "LTDia");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 15, 12, 17, 0, "tijab");
@@ -657,100 +657,100 @@ void ltdensity_uhf(struct RHO_Params S)
 
   dpd_file2_init(&TIA, CC_OEI, 0, 0, 1, "tIA");
   dpd_file2_init(&Tia, CC_OEI, 0, 2, 3, "tia");
-  dpd_file2_init(&RIA, CC_GR, S.R_irr, 0, 1, "RIA");
-  dpd_file2_init(&Ria, CC_GR, S.R_irr, 2, 3, "Ria");
-  dpd_file2_init(&LIA, CC_GL, S.L_irr, 0, 1, "LIA");
-  dpd_file2_init(&Lia, CC_GL, S.L_irr, 2, 3, "Lia");
+  dpd_file2_init(&RIA, CC_GR, S.irrep, 0, 1, "RIA");
+  dpd_file2_init(&Ria, CC_GR, S.irrep, 2, 3, "Ria");
+  dpd_file2_init(&LIA, CC_GL, S.irrep, 0, 1, "LIA");
+  dpd_file2_init(&Lia, CC_GL, S.irrep, 2, 3, "Lia");
 
   /* D[i][j] = -LR_oo[j][i] - t1[i][f] * L2R1_ov[j][f] */
 
-  dpd_file2_init(&DIJ, CC_TMP, S.G_irr, 0, 0, "LTDIJ");
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 0, 0, "LR_OO");
+  dpd_file2_init(&DIJ, CC_TMP, S.irrep, 0, 0, "LTDIJ");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 0, 0, "LR_OO");
   dpd_file2_axpy(&Int, &DIJ, -1.0, 1);
   dpd_file2_close(&Int);
 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 0, 1, "L2R1_OV");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 0, 1, "L2R1_OV");
   dpd_contract222(&TIA, &Int, &DIJ, 0, 0, -1.0, 1.0);
   dpd_file2_close(&Int);
   dpd_file2_close(&DIJ);
 
-  dpd_file2_init(&Dij, CC_TMP, S.G_irr, 2, 2, "LTDij");
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 2, 2, "LR_oo");
+  dpd_file2_init(&Dij, CC_TMP, S.irrep, 2, 2, "LTDij");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 2, 2, "LR_oo");
   dpd_file2_axpy(&Int, &Dij, -1.0, 1);
   dpd_file2_close(&Int);
 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 2, 3, "L2R1_ov");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 2, 3, "L2R1_ov");
   dpd_contract222(&Tia, &Int, &Dij, 0, 0, -1.0, 1.0);
   dpd_file2_close(&Int);
   dpd_file2_close(&Dij);
 
   /* D[a][b] = +LR_vv[a][b] + L2R1_ov[n][a] * t1[n][b] */
 
-  dpd_file2_init(&DAB, CC_TMP, S.G_irr, 1, 1, "LTDAB");
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 1, 1, "LR_VV");
+  dpd_file2_init(&DAB, CC_TMP, S.irrep, 1, 1, "LTDAB");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 1, 1, "LR_VV");
   dpd_file2_axpy(&Int, &DAB, 1.0, 0);
   dpd_file2_close(&Int);
 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 0, 1, "L2R1_OV");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 0, 1, "L2R1_OV");
   dpd_contract222(&Int, &TIA, &DAB, 1, 1, 1.0, 1.0);
   dpd_file2_close(&Int);
   dpd_file2_close(&DAB);
 
-  dpd_file2_init(&Dab, CC_TMP, S.G_irr, 3, 3, "LTDab");
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 3, 3, "LR_vv");
+  dpd_file2_init(&Dab, CC_TMP, S.irrep, 3, 3, "LTDab");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 3, 3, "LR_vv");
   dpd_file2_axpy(&Int, &Dab, 1.0, 0);
   dpd_file2_close(&Int);
 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 2, 3, "L2R1_ov");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 2, 3, "L2R1_ov");
   dpd_contract222(&Int, &Tia, &Dab, 1, 1, 1.0, 1.0);
   dpd_file2_close(&Int);
   dpd_file2_close(&Dab);
 
   /* D[a][i] = +L2R1_ov[i][a] */
 
-  dpd_file2_init(&DAI, CC_TMP, S.G_irr, 0, 1, "LTDAI");
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 0, 1, "L2R1_OV");
+  dpd_file2_init(&DAI, CC_TMP, S.irrep, 0, 1, "LTDAI");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 0, 1, "L2R1_OV");
   dpd_file2_axpy(&Int, &DAI, 1.0, 0);
   dpd_file2_close(&Int);
   dpd_file2_close(&DAI);
 
-  dpd_file2_init(&Dai, CC_TMP, S.G_irr, 2, 3, "LTDai");
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 2, 3, "L2R1_ov");
+  dpd_file2_init(&Dai, CC_TMP, S.irrep, 2, 3, "LTDai");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 2, 3, "L2R1_ov");
   dpd_file2_axpy(&Int, &Dai, 1.0, 0);
   dpd_file2_close(&Int);
   dpd_file2_close(&Dai);
 
-  dpd_file2_init(&DIA, CC_TMP, S.G_irr, 0, 1, "LTDIA");
+  dpd_file2_init(&DIA, CC_TMP, S.irrep, 0, 1, "LTDIA");
 
-  dpd_file2_init(&Dia, CC_TMP, S.G_irr, 2, 3, "LTDia");
+  dpd_file2_init(&Dia, CC_TMP, S.irrep, 2, 3, "LTDia");
 
   /* D[i][a] = L1R2_ov[i][a] */
 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 0, 1, "L1R2_OV");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 0, 1, "L1R2_OV");
   dpd_file2_axpy(&Int, &DIA, 1.0, 0);
   dpd_file2_close(&Int);
 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 2, 3, "L1R2_ov");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 2, 3, "L1R2_ov");
   dpd_file2_axpy(&Int, &Dia, 1.0, 0);
   dpd_file2_close(&Int);
 
   /* - LR_OO[M][I] * t1[M][A] */
 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 0, 0, "LR_OO");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 0, 0, "LR_OO");
   dpd_contract222(&Int, &TIA, &DIA, 1, 1, -1.0, 1.0);
   dpd_file2_close(&Int);
 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 2, 2, "LR_oo");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 2, 2, "LR_oo");
   dpd_contract222(&Int, &Tia, &Dia, 1, 1, -1.0, 1.0);
   dpd_file2_close(&Int);
 
   /* - t1[I][E] * LR_vv[E][A] */
 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 1, 1, "LR_VV");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 1, 1, "LR_VV");
   dpd_contract222(&TIA, &Int, &DIA, 0, 1, -1.0, 1.0);
   dpd_file2_close(&Int);
 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 3, 3, "LR_vv");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 3, 3, "LR_vv");
   dpd_contract222(&Tia, &Int, &Dia, 0, 1, -1.0, 1.0);
   dpd_file2_close(&Int);
 
@@ -777,46 +777,46 @@ void ltdensity_uhf(struct RHO_Params S)
   /* + L2R1_ov[M][E] * t2[i][m][a][e] */
 
   dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tIJAB"); 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 0, 1, "L2R1_OV");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 0, 1, "L2R1_OV");
   dpd_dot24(&Int, &T2, &DIA, 0, 0, 1.0, 1.0);
   dpd_file2_close(&Int);
   dpd_buf4_close(&T2);
 
   dpd_buf4_init(&T2, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tIjAb"); 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 2, 3, "L2R1_ov");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 2, 3, "L2R1_ov");
   dpd_dot24(&Int, &T2, &DIA, 0, 0, 1.0, 1.0);
   dpd_file2_close(&Int);
   dpd_buf4_close(&T2);
 
   dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 15, 12, 17, 0, "tijab"); 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 2, 3, "L2R1_ov");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 2, 3, "L2R1_ov");
   dpd_dot24(&Int, &T2, &Dia, 0, 0, 1.0, 1.0);
   dpd_file2_close(&Int);
   dpd_buf4_close(&T2);
 
   dpd_buf4_init(&T2, CC_TAMPS, 0, 23, 29, 23, 29, 0, "tiJaB"); 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 0, 1, "L2R1_OV");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 0, 1, "L2R1_OV");
   dpd_dot24(&Int, &T2, &Dia, 0, 0, 1.0, 1.0);
   dpd_file2_close(&Int);
   dpd_buf4_close(&T2);
     
   /* - (t1[i][e] * L2R1_ov[M][E]) * t1[m][a] */
 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 0, 1, "L2R1_OV");
-  dpd_file2_init(&XIJ, EOM_TMP, S.G_irr, 0, 0, "XIJ");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 0, 1, "L2R1_OV");
+  dpd_file2_init(&XIJ, EOM_TMP, S.irrep, 0, 0, "XIJ");
   dpd_contract222(&TIA, &Int, &XIJ, 0, 0, 1.0, 0.0);
   dpd_file2_close(&Int);
 
-  dpd_file2_init(&XIJ, EOM_TMP, S.G_irr, 0, 0, "XIJ");
+  dpd_file2_init(&XIJ, EOM_TMP, S.irrep, 0, 0, "XIJ");
   dpd_contract222(&XIJ, &TIA, &DIA, 0, 1, -1.0, 1.0);
   dpd_file2_close(&XIJ);
 
-  dpd_file2_init(&Int, EOM_TMP, S.G_irr, 2, 3, "L2R1_ov");
-  dpd_file2_init(&Xij, EOM_TMP, S.G_irr, 2, 2, "Xij");
+  dpd_file2_init(&Int, EOM_TMP, S.irrep, 2, 3, "L2R1_ov");
+  dpd_file2_init(&Xij, EOM_TMP, S.irrep, 2, 2, "Xij");
   dpd_contract222(&Tia, &Int, &Xij, 0, 0, 1.0, 0.0);
   dpd_file2_close(&Int);
 
-  dpd_file2_init(&Xij, EOM_TMP, S.G_irr, 2, 2, "Xij");
+  dpd_file2_init(&Xij, EOM_TMP, S.irrep, 2, 2, "Xij");
   dpd_contract222(&Xij, &Tia, &Dia, 0, 1, -1.0, 1.0);
   dpd_file2_close(&Xij);
 

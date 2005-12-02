@@ -20,4 +20,5 @@ EXTERN struct MOInfo moinfo;
 EXTERN struct Frozen frozen;
 EXTERN struct Params params;
 EXTERN struct RHO_Params *rho_params;
+EXTERN struct TD_Params *td_params;
 

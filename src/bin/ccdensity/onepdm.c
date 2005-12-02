@@ -105,7 +105,7 @@ void onepdm(struct RHO_Params rho_params)
     trace += dpd_file2_trace(&D); 
     dpd_file2_close(&D);
 
-    fprintf(outfile, "\n\tTrace of onepdm = %20.15f\n", trace);
+    /*fprintf(outfile, "\n\tTrace of onepdm = %20.15f\n", trace);*/
 
     /* This term is * L0 = 0 for excited states */
     if (rho_params.L_ground) {
@@ -235,6 +235,7 @@ void onepdm(struct RHO_Params rho_params)
     dpd_file2_close(&L1);
 
     /* Check overlaps */
+    /*
     dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DIA_lbl);
     dot_IA = dpd_file2_dot_self(&D);
     dpd_file2_close(&D);
@@ -251,6 +252,7 @@ void onepdm(struct RHO_Params rho_params)
     fprintf(outfile,"\t<DIA|DIA> = %15.10lf     <Dia|Dia> = %15.10lf\n", dot_IA, dot_ia);
     fprintf(outfile,"\t<DAI|DAI> = %15.10lf     <Dai|Dai> = %15.10lf\n", dot_AI, dot_ai);
     fprintf(outfile,"\t<Dpq|Dqp> = %15.10lf\n", dot_IA+dot_ia+dot_AI+dot_ai);
+    */
   }
   else if(params.ref == 2) { /** UHF **/
 
@@ -330,7 +332,7 @@ void onepdm(struct RHO_Params rho_params)
     trace += dpd_file2_trace(&D); 
     dpd_file2_close(&D);
 
-    fprintf(outfile, "\n\tTrace of onepdm = %20.15f\n", trace);
+    /*fprintf(outfile, "\n\tTrace of onepdm = %20.15f\n", trace);*/
 
     /* This term is * L0 = 0 for excited states */
     if (rho_params.L_ground) {
@@ -460,6 +462,7 @@ void onepdm(struct RHO_Params rho_params)
     dpd_file2_close(&L1);
 
     /* Check overlaps */
+    /*
     dpd_file2_init(&D, CC_OEI, 0, 0, 1, rho_params.DIA_lbl);
     dot_IA = dpd_file2_dot_self(&D);
     dpd_file2_close(&D);
@@ -476,5 +479,6 @@ void onepdm(struct RHO_Params rho_params)
     fprintf(outfile,"\t<DIA|DIA> = %15.10lf     <Dia|Dia> = %15.10lf\n", dot_IA, dot_ia);
     fprintf(outfile,"\t<DAI|DAI> = %15.10lf     <Dai|Dai> = %15.10lf\n", dot_AI, dot_ai);
     fprintf(outfile,"\t<Dpq|Dqp> = %15.10lf\n", dot_IA+dot_ia+dot_AI+dot_ai);
+    */
   }
 }

@@ -51,43 +51,34 @@ void get_params()
   params.aobasis = 0;
   errcod = ip_boolean("AO_BASIS", &(params.aobasis),0);
 
-  if(ip_exist("GAUGE",0)) {
-    ip_string("GAUGE",&(params.gauge), 0);
-    if(strcmp(params.gauge,"LENGTH") && strcmp(params.gauge,"VELOCITY")) {
-      printf("Invalid choice of gauge: %s\n", params.gauge);
-      exit(PSI_RETURN_FAILURE);
-    }
-  }
-  else params.gauge = strdup("LENGTH");
-  
-	/*** determine DERTYPE from input */
+  /*** determine DERTYPE from input */
   params.dertype = 0;
   if(ip_exist("DERTYPE",0)) {
     errcod = ip_string("DERTYPE", &(junk),0);
     if(!strcmp(junk,"NONE")) params.dertype = 0;
     else if(!strcmp(junk,"FIRST")) params.dertype = 1;
     else if(!strcmp(junk,"RESPONSE")) params.dertype = 3; 
-		else {
+    else {
       printf("Invalid value of input keyword DERTYPE: %s\n", junk);
       exit(PSI_RETURN_FAILURE);
     }
     free(junk);
-	}
-	else { /* infer DERTYPE from JOBTYPE */
+  }
+  else { /* infer DERTYPE from JOBTYPE */
     errcod = ip_string("JOBTYPE", &(junk),0);
-		if ( !strcmp(junk,"SP") ) params.dertype = 0;
-		else if ( !strcmp(junk, "OEPROP") ) params.dertype = 0;
-		else if ( !strcmp(junk, "OPT") ) params.dertype = 1;
-		else {
+    if ( !strcmp(junk,"SP") ) params.dertype = 0;
+    else if ( !strcmp(junk, "OEPROP") ) params.dertype = 0;
+    else if ( !strcmp(junk, "OPT") ) params.dertype = 1;
+    else {
       printf("Not sure what to do with missing DERTYPE and this JOBTYPE: %s\n", junk);
       exit(PSI_RETURN_FAILURE);
     }
     free(junk);
-	}
+  }
 
-	if (params.dertype == 1)
-	  params.relax_opdm = 1;  /* default for gradients, relax_opdm on */
-	else
+  if (params.dertype == 1)
+    params.relax_opdm = 1;  /* default for gradients, relax_opdm on */
+  else
     params.relax_opdm = 0;  /* otherwise, default is relax_opdm off */
 
   if(params.transition) 
@@ -99,7 +90,6 @@ void get_params()
     params.relax_opdm = 0;
   }
 
-
   if ( (!strcmp(params.wfn,"EOM_CCSD")) && (params.dertype == 0) )
     params.connect_xi = 0;
   else
@@ -109,25 +99,22 @@ void get_params()
   
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
-  fprintf(outfile, "\tTolerance     = %3.1e\n", params.tolerance);
-  fprintf(outfile, "\tCache Level   = %1d\n", params.cachelev);
-  fprintf(outfile, "\tAO Basis      = %s\n", 
+  fprintf(outfile, "\tTolerance        = %3.1e\n", params.tolerance);
+  fprintf(outfile, "\tCache Level      = %1d\n", params.cachelev);
+  fprintf(outfile, "\tAO Basis         = %s\n", 
           params.aobasis ? "Yes" : "No");
-  fprintf(outfile, "\tOPDM Only     = %s\n", 
+  fprintf(outfile, "\tOPDM Only        = %s\n", 
 	  params.onepdm ? "Yes" : "No");
-  fprintf(outfile, "\tRelax OPDM    = %s\n", 
+  fprintf(outfile, "\tRelax OPDM       = %s\n", 
           params.relax_opdm ? "Yes" : "No");
-  fprintf(outfile, "\tExcited State = %s\n", 
+  fprintf(outfile, "\tExcited State    = %s\n", 
           (!params.ground) ? "Yes" : "No");
-  fprintf(outfile, "\tCompute Xi    = %s\n", 
+  fprintf(outfile, "\tCompute Xi       = %s\n", 
           (params.calc_xi) ? "Yes" : "No");
-  fprintf(outfile, "\tUse Zeta      = %s\n", 
+  fprintf(outfile, "\tUse Zeta         = %s\n", 
           (params.use_zeta) ? "Yes" : "No");
-  fprintf(outfile, "\tXi connected  = %s\n", 
+  fprintf(outfile, "\tXi connected     = %s\n", 
           (params.connect_xi) ? "Yes" : "No");
-  if(params.transition) {
-    fprintf(outfile,"\tGauge         = %s\n",params.gauge);
-  }
   fflush(outfile);
 }
 

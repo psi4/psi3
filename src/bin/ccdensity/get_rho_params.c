@@ -9,26 +9,26 @@ void get_rho_params(void)
 {
   int i,j,k,l,prop_sym,prop_root, lambda_and_Ls=0, errcod, prop_all,cnt;
   char lbl[32];
-	int *states_per_irrep;
+  int *states_per_irrep;
 
-	/* check WFN keyword in input */
-	errcod = ip_string("WFN", &(params.wfn), 0);
-	if ( !cc_excited(params.wfn) ) params.ground = 1;
-	else params.ground = 0;
+  /* check WFN keyword in input */
+  errcod = ip_string("WFN", &(params.wfn), 0);
+  if ( !cc_excited(params.wfn) ) params.ground = 1;
+  else params.ground = 0;
 
   /* setup propery variables for excited states */
   if (!params.ground) {
-	  ip_count("STATES_PER_IRREP", &i, 0);
-		states_per_irrep = (int *) malloc(moinfo.nirreps * sizeof(int));
-		for (i=0;i<moinfo.nirreps;++i)
-		  errcod = ip_data("STATES_PER_IRREP","%d",&(states_per_irrep[i]),1,i);
+    ip_count("STATES_PER_IRREP", &i, 0);
+    states_per_irrep = (int *) malloc(moinfo.nirreps * sizeof(int));
+    for (i=0;i<moinfo.nirreps;++i)
+      errcod = ip_data("STATES_PER_IRREP","%d",&(states_per_irrep[i]),1,i);
 
     prop_all = 0;
     if (ip_exist("PROP_ALL",0)) ip_boolean("PROP_ALL",&prop_all,0);
     /* can also be turned on by command-line (at least for now) */
     if (params.prop_all) prop_all = 1;
-		if (params.dertype == 1) prop_all = 0; /* don't do relaxed, multiple excited states */
-		params.prop_all = prop_all;
+    if (params.dertype == 1) prop_all = 0; /* don't do relaxed, multiple excited states */
+    params.prop_all = prop_all;
 
     if (ip_exist("PROP_SYM",0)) {  /* read symmetry of state for properties */
       ip_data("PROP_SYM","%d",&(prop_sym),0);
@@ -47,90 +47,91 @@ void get_rho_params(void)
     }
     else { /* just use highest root, if you need only one of them */
       prop_root = states_per_irrep[prop_sym^moinfo.sym];
-			prop_root -= 1;
+      prop_root -= 1;
     }
-	}
+  }
 
   /* setup density parameters */
-	if (params.ground) { /* just compute ground state density */
+  if (params.ground) { /* just compute ground state density */
     params.nstates = 1;
     rho_params = (struct RHO_Params *) malloc(params.nstates * sizeof(struct RHO_Params));
     rho_params[0].L_irr = 0;
     rho_params[0].R_irr = 0;
     rho_params[0].L_root = -1;
     rho_params[0].R_root = -1;
-		rho_params[0].L_ground = 1;
-		rho_params[0].R_ground = 1;
-		rho_params[0].R0 = 1;
-		rho_params[0].L0 = 0;
-		rho_params[0].cceom_energy = 0;
-	}
-	else if (params.calc_xi) { /* just compute Xi for excited-state density */
+    rho_params[0].L_ground = 1;
+    rho_params[0].R_ground = 1;
+    rho_params[0].R0 = 1;
+    rho_params[0].L0 = 0;
+    rho_params[0].cceom_energy = 0;
+  }
+  else if (params.calc_xi) { /* just compute Xi for excited-state density */
     params.nstates = 1;
     rho_params = (struct RHO_Params *) malloc(params.nstates * sizeof(struct RHO_Params));
     rho_params[0].L_irr = prop_sym;
     rho_params[0].R_irr = prop_sym;
     rho_params[0].L_root = prop_root;
     rho_params[0].R_root = prop_root;
-		rho_params[0].L_ground = 0;
-		rho_params[0].R_ground = 0;
-	}
-	else { /* excited state density(ies) are involved */
+    rho_params[0].L_ground = 0;
+    rho_params[0].R_ground = 0;
+  }
+  else { /* excited state density(ies) are involved */
     if (params.prop_all)  { /* do all roots */
-		  params.nstates = 1;
+      params.nstates = 1;
       for(i=0; i<moinfo.nirreps; i++) {
-			  cnt = 0;
+	cnt = 0;
         ip_data("STATES_PER_IRREP","%d",&cnt, 1, i);
-				params.nstates += cnt;
-			}
+	params.nstates += cnt;
+      }
       rho_params = (struct RHO_Params *) malloc(params.nstates * sizeof(struct RHO_Params));
       rho_params[0].L_irr = 0;
       rho_params[0].R_irr = 0;
       rho_params[0].L_root = -1;
       rho_params[0].R_root = -1;
-		  rho_params[0].L_ground = 1;
-		  rho_params[0].R_ground = 1;
+      rho_params[0].L_ground = 1;
+      rho_params[0].R_ground = 1;
 
       cnt = 0;
       for(i=0; i<moinfo.nirreps; i++) { /* loop over irrep of R */
         ip_data("STATES_PER_IRREP","%d",&j, 1, i);
-				for (k=0; k<j; ++k) {
-				  ++cnt;
+	for (k=0; k<j; ++k) {
+	  ++cnt;
           rho_params[cnt].L_irr = i^moinfo.sym;
           rho_params[cnt].R_irr = i^moinfo.sym;
           rho_params[cnt].L_root = k;
           rho_params[cnt].R_root = k;
-		      rho_params[cnt].L_ground = 0;
-		      rho_params[cnt].R_ground = 0;
+	  rho_params[cnt].L_ground = 0;
+	  rho_params[cnt].R_ground = 0;
         }
-			}
-		}
-		else { /* do only one root */
+      }
+    }
+    else { /* do only one root */
       params.nstates = 1;
       rho_params = (struct RHO_Params *) malloc(params.nstates * sizeof(struct RHO_Params));
       rho_params[0].L_irr = prop_sym;
       rho_params[0].R_irr = prop_sym;
       rho_params[0].L_root = prop_root;
       rho_params[0].R_root = prop_root;
-			rho_params[0].L_ground = 0;
-			rho_params[0].R_ground = 0;
+      rho_params[0].L_ground = 0;
+      rho_params[0].R_ground = 0;
     }
-	}
+    if(params.onepdm) params.transition = 1;
+  }
 
-	/* for each state, determine G_irr, cceom_energy, R0, and labels for files */
+  /* for each state, determine G_irr, cceom_energy, R0, and labels for files */
   for(i=0; i<params.nstates; i++) {
-	  rho_params[i].G_irr = (rho_params[i].L_irr) ^ (rho_params[i].R_irr);
+    rho_params[i].G_irr = (rho_params[i].L_irr) ^ (rho_params[i].R_irr);
 
-	  if (rho_params[i].R_ground) {
-		  rho_params[i].cceom_energy = 0.0;
-		  rho_params[i].R0 = 1.0;
-		}
-		else {
+    if (rho_params[i].R_ground) {
+      rho_params[i].cceom_energy = 0.0;
+      rho_params[i].R0 = 1.0;
+    }
+    else {
       sprintf(lbl,"EOM CCSD Energy for root %d %d", rho_params[i].R_irr, rho_params[i].R_root);
       psio_read_entry(CC_INFO,lbl,(char*)&(rho_params[i].cceom_energy), sizeof(double));
       sprintf(lbl,"EOM CCSD R0 for root %d %d",rho_params[i].R_irr, rho_params[i].R_root);
       psio_read_entry(CC_INFO,lbl,(char*)&(rho_params[i].R0),sizeof(double));
-		}
+    }
 
     sprintf(rho_params[i].R1A_lbl, "RIA %d %d",  rho_params[i].R_irr, rho_params[i].R_root);
     sprintf(rho_params[i].R1B_lbl, "Ria %d %d",  rho_params[i].R_irr, rho_params[i].R_root);
@@ -154,45 +155,57 @@ void get_rho_params(void)
 
     if (params.ref == 0) {
       if (i == 0) sprintf(rho_params[i].opdm_lbl, "MO-basis OPDM");
-		  else sprintf(rho_params[i].opdm_lbl, "MO-basis OPDM %d", i);
-		} 
-		else if (params.ref == 1) { /* ROHF */
+      else sprintf(rho_params[i].opdm_lbl, "MO-basis OPDM %d", i);
+    } 
+    else if (params.ref == 1) { /* ROHF */
       if (i == 0) sprintf(rho_params[i].opdm_lbl, "MO-basis OPDM");
-		  else sprintf(rho_params[i].opdm_lbl, "MO-basis OPDM %d", i);
-		}
-		else if (params.ref == 2) { /* UHF */
+      else sprintf(rho_params[i].opdm_lbl, "MO-basis OPDM %d", i);
+    }
+    else if (params.ref == 2) { /* UHF */
       if (i == 0) {
-			  sprintf(rho_params[i].opdm_a_lbl, "MO-basis Alpha OPDM");
-			  sprintf(rho_params[i].opdm_b_lbl, "MO-basis Beta OPDM");
-			}
-		  else {
-			  sprintf(rho_params[i].opdm_a_lbl, "MO-basis Alpha OPDM %d", i);
-			  sprintf(rho_params[i].opdm_b_lbl, "MO-basis Beta OPDM %d", i);
-			}
-		}
-	}
+	sprintf(rho_params[i].opdm_a_lbl, "MO-basis Alpha OPDM");
+	sprintf(rho_params[i].opdm_b_lbl, "MO-basis Beta OPDM");
+      }
+      else {
+	sprintf(rho_params[i].opdm_a_lbl, "MO-basis Alpha OPDM %d", i);
+	sprintf(rho_params[i].opdm_b_lbl, "MO-basis Beta OPDM %d", i);
+      }
+    }
+  }
 
   psio_write_entry(CC_INFO, "Num. of CC densities", (char *) &(params.nstates), sizeof(int));
 
-  /* print out information on densities to be computed */
+  fprintf(outfile,"\tNumber of States = %-d\n",params.nstates);
+
+  /*
   fprintf(outfile,"\n\tGround? L_root L_irr R_root R_irr G_irr     EOM Energy        R0\n");
   for(i=0; i<params.nstates; i++) {
     fprintf(outfile,"\t%5s %6d %7s %4d %7s %4s %15.10lf %12.8lf\n",
-		  (rho_params[i].R_ground ? "Yes":"No"),
-		 rho_params[i].L_root+1, moinfo.labels[rho_params[i].L_irr],
-		 rho_params[i].R_root+1, moinfo.labels[rho_params[i].R_irr],
-     moinfo.labels[rho_params[i].G_irr],
-     rho_params[i].cceom_energy,
-     rho_params[i].R0);
+	    (rho_params[i].R_ground ? "Yes":"No"),
+	    rho_params[i].L_root+1, moinfo.labels[rho_params[i].L_irr],
+	    rho_params[i].R_root+1, moinfo.labels[rho_params[i].R_irr],
+	    moinfo.labels[rho_params[i].G_irr],
+	    rho_params[i].cceom_energy,
+	    rho_params[i].R0);
+  }
+  */
+
+  fprintf(outfile,"\n\tGround?  State     EOM Energy       R0\n");
+  for(i=0; i<params.nstates; i++) {
+    fprintf(outfile,"\t%5s     %d%3s %15.10lf %12.8lf\n",
+	    (rho_params[i].R_ground ? "Yes":"No"),
+	    rho_params[i].L_root+1, moinfo.labels[rho_params[i].L_irr],
+	    rho_params[i].cceom_energy,
+	    rho_params[i].R0);
   }
 
-	/* set variables for xi and twopdm code in the old non-state specific structure */
-	params.G_irr = rho_params[0].G_irr;
-	params.R_irr = rho_params[0].R_irr;
-	params.L_irr = rho_params[0].L_irr;
-	params.R0 = rho_params[0].R0;
-	params.L0 = rho_params[0].L0;
-	params.cceom_energy = rho_params[0].cceom_energy;
+  /* set variables for xi and twopdm code in the old non-state specific structure */
+  params.G_irr = rho_params[0].G_irr;
+  params.R_irr = rho_params[0].R_irr;
+  params.L_irr = rho_params[0].L_irr;
+  params.R0 = rho_params[0].R0;
+  params.L0 = rho_params[0].L0;
+  params.cceom_energy = rho_params[0].cceom_energy;
 
   return;
 }
