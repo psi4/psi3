@@ -322,6 +322,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
             /* allocate space for the bucket of rows */
             dpd_buf4_mat_irrep_init_block(InBuf, Grow, in_rows_per_bucket);
 
+            /* pqrs <- prqs */
             for(m=0; m < (in_rows_left ? in_nbuckets-1 : in_nbuckets); m++) {
 
               in_row_start = m*in_rows_per_bucket;
@@ -355,6 +356,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
               in_row_start = m*in_rows_per_bucket;
               dpd_buf4_mat_irrep_rd_block(InBuf, Grow, in_row_start, in_rows_left);
 
+              /* pqrs <- prqs */
               for(pq=0; pq < out_rows_per_bucket; pq++) {
                 p = OutBuf.params->roworb[Gpq][pq+out_row_start][0];
                 q = OutBuf.params->roworb[Gpq][pq+out_row_start][1];
@@ -365,7 +367,6 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
                   s = OutBuf.params->colorb[Grs][rs][1];
                   Gr = OutBuf.params->rsym[r];
                   Gs = Grs^Gr;
-  
                   Gpr = Gp^Gr;
   
                   if(Gpr == Grow) {
@@ -400,6 +401,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
             /* allocate space for the bucket of rows */
             dpd_buf4_mat_irrep_init_block(InBuf, Grow, in_rows_per_bucket);
 
+            /* pqrs <- prqs */
             for(m=0; m < (in_rows_left ? in_nbuckets-1 : in_nbuckets); m++) {
 
               in_row_start = m*in_rows_per_bucket;
@@ -415,7 +417,6 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
                   s = OutBuf.params->colorb[Grs][rs][1];
                   Gr = OutBuf.params->rsym[r];
                   Gs = Grs^Gr;
-
                   Gpr = Gp^Gr;
 
                   if(Gpr == Grow) {
@@ -445,8 +446,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
                   s = OutBuf.params->colorb[Grs][rs][1];
                   Gr = OutBuf.params->rsym[r];
                   Gs = Grs^Gr;
-
-                  Gpr = Gp^Gs;
+                  Gpr = Gp^Gr;
 
                   if(Gpr == Grow) {
                     pr = InBuf->params->rowidx[p][r] - in_row_start;
