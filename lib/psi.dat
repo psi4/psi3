@@ -559,10 +559,10 @@ psi: (
   EOM_CC2ROHFFirstOEPROP = ERROR
   EOM_CC2TwoConFirstOEPROP = ERROR
 
-  % Procedure for an CCSD one-electron property computation -
+  % Procedure for an EOM CC2 one-electron property computation -
   % no T amplitude or orbital relaxation
-  EOM_CC2EnergyOEPROP = ($EOM_CC2Energy $cclambda_excited $ccdensity_excited_onepdm
-    $oeprop $done)
+  EOM_CC2EnergyOEPROP = ($EOM_CC2Energy $cclambda_excited $propint 
+                         $ccdensity_excited_onepdm $oeprop $done)
   EOM_CC2RHFEnergyOEPROP = $EOM_CC2EnergyOEPROP
   EOM_CC2UHFEnergyOEPROP = ERROR
   EOM_CC2ROHFEnergyOEPROP = ERROR 
@@ -646,8 +646,8 @@ psi: (
 
   % Procedure for an CCSD one-electron property computation -
   % no T amplitude or orbital relaxation
-  EOM_CCSDEnergyOEPROP = ($EOM_CCSDEnergy $cclambda_excited $ccdensity_excited_onepdm
-    $oeprop $done)
+  EOM_CCSDEnergyOEPROP = ($EOM_CCSDEnergy $cclambda_excited $propint 
+                          $ccdensity_excited_onepdm $oeprop $done)
   EOM_CCSDRHFEnergyOEPROP = $EOM_CCSDEnergyOEPROP
   EOM_CCSDUHFEnergyOEPROP = $EOM_CCSDEnergyOEPROP
   EOM_CCSDROHFEnergyOEPROP = $EOM_CCSDEnergyOEPROP
