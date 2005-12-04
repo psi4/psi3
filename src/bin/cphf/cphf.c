@@ -55,8 +55,9 @@ void cphf_X(double ***, double **, double **, double ***);
 void cphf_F(double **, double ***);
 void polarize(double ***);
 void build_hessian(double ***, double ***, double **, double ***, double **);
-void build_dipder(double ***, double **);
+void build_dipder(double ***);
 void vibration(double **, double **);
+void cphf_B(double ***, double **);
 
 int main(int argc, char *argv[])
 {
@@ -71,7 +72,7 @@ int main(int argc, char *argv[])
   double ***UX;
   double ***UF;
   double **hessian;
-  double **dipder;
+  double **L;
   
   init_io(argc,argv);
   title();
@@ -133,9 +134,13 @@ int main(int argc, char *argv[])
   build_hessian(F, S, A, UX, hessian);
   
   dipder = block_matrix(3, natom*3);
-  build_dipder(UX, dipder);
+  dipder_q = block_matrix(3, natom*3);
+  build_dipder(UX);
   
-  vibration(hessian, dipder);
+  L = block_matrix(natom*3, natom*3);
+  vibration(hessian,L);
+
+  cphf_B(UX,L);
   
   cleanup(); 
 
@@ -154,6 +159,7 @@ int main(int argc, char *argv[])
   free(UX); free(UF); free(F); free(S);
   free_block(hessian);
   free_block(dipder);
+  free_block(L);
   
   timer_off("CPHF Main");
   timer_done();

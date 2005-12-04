@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <libciomr/libciomr.h>
 #include <libchkpt/chkpt.h>
 #define EXTERN
@@ -6,7 +7,7 @@
 
 void setup(void)
 {
-  int h, foffset, loffset;
+  int i, coord, h, foffset, loffset;
 
   chkpt_init(PSIO_OPEN_OLD);
   natom = chkpt_rd_natom();
@@ -21,7 +22,22 @@ void setup(void)
   scf = chkpt_rd_scf();
   usotao = chkpt_rd_usotao();
   geom = chkpt_rd_geom();
+  rottype = chkpt_rd_rottype();
   chkpt_close();
+
+  // Number of normal coordinates
+  if(rottype==3) nnc = (3*natom-5);
+  else nnc = (3*natom-6);
+
+  asymbol = (char**)malloc(natom*3*sizeof(char*));
+  for(i=0; i<natom*3; i++)
+    asymbol[i] = (char*)malloc(3*sizeof(char));
+
+  for(coord=0; coord<natom; coord++) {
+    for(i=0; i<3; i++) {
+      zval_to_symbol(zvals[coord],asymbol[coord*3+i]);
+    }
+  }
 
   ntri = nmo * (nmo + 1)/2;
   ntei = ntri * (ntri + 1)/2;

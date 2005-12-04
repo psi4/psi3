@@ -40,7 +40,7 @@
 ** TDC, October 2002
 */
 
-void build_dipder(double ***UX, double **dipder)
+void build_dipder(double ***UX)
 {
   int coord, ij, stat;
   int i, isym, ifirst, ilast;
@@ -86,7 +86,6 @@ void build_dipder(double ***UX, double **dipder)
 
   /* Build the total dipole moment derivatives */
   for(coord=0; coord < natom*3; coord++) {
-
     /* Grab the MO-basis overlap derivatives from disk */
     sprintf(label, "MO-basis Overlap Derivs (%d)", coord);
     stat = iwl_rdone(PSIF_OEI, label, scratch, ntri, 0, 0, NULL);
@@ -219,14 +218,42 @@ void build_dipder(double ***UX, double **dipder)
 	dipder[2][coord] += 2.0 * MUZ[i][i];
       }
     }
-
   }
+
+  fprintf(outfile,"\n\tAtomic Polar Tensor:\n");
+  fprintf(outfile,"\n\tUnits: au\n");
+  fprintf(outfile,"\n\tTerms: Electronic\n");
+  fprintf(outfile,"\n\t     Ex\t\t     Ey\t\t     Ez\n");
+  for(i=0; i<natom*3; i++) {
+    if((i%3)==0)
+      fprintf(outfile,"%3sx\t%10.6lf\t%10.6lf\t%10.6lf\n",asymbol[i],dipder[0][i],dipder[1][i],dipder[2][i]);
+    if((i%3)==1)
+      fprintf(outfile,"%3sy\t%10.6lf\t%10.6lf\t%10.6lf\n",asymbol[i],dipder[0][i],dipder[1][i],dipder[2][i]);
+    if((i%3)==2)
+      fprintf(outfile,"%3sz\t%10.6lf\t%10.6lf\t%10.6lf\n",asymbol[i],dipder[0][i],dipder[1][i],dipder[2][i]);
+    if((i+1)%3==0) fprintf(outfile,"\n");
+  }
+
 
   /* Add nuclear contributions */
   for(coord=0; coord < natom; coord++) {
     dipder[0][coord*3] += zvals[coord];
     dipder[1][coord*3+1] += zvals[coord];
     dipder[2][coord*3+2] += zvals[coord];
+  }
+
+  fprintf(outfile,"\n\tAtomic Polar Tensor:\n");
+  fprintf(outfile,"\n\tUnits: au\n");
+  fprintf(outfile,"\n\tTerms: Electronic + Nuclear\n");
+  fprintf(outfile,"\n\t     Ex\t\t     Ey\t\t     Ez\n");
+  for(i=0; i<natom*3; i++) {
+    if((i%3)==0)
+      fprintf(outfile,"%3sx\t%10.6lf\t%10.6lf\t%10.6lf\n",asymbol[i],dipder[0][i],dipder[1][i],dipder[2][i]);
+    if((i%3)==1)
+      fprintf(outfile,"%3sy\t%10.6lf\t%10.6lf\t%10.6lf\n",asymbol[i],dipder[0][i],dipder[1][i],dipder[2][i]);
+    if((i%3)==2)
+      fprintf(outfile,"%3sz\t%10.6lf\t%10.6lf\t%10.6lf\n",asymbol[i],dipder[0][i],dipder[1][i],dipder[2][i]);
+    if((i+1)%3==0) fprintf(outfile,"\n");
   }
 
   /* Convert to debye/bohr */
@@ -244,8 +271,10 @@ void build_dipder(double ***UX, double **dipder)
     for(j=0; j < natom*3; j++)
       dipder[i][j] /= _bohr2angstroms;
 
+  /*
   fprintf(outfile, "\n\tDipole Derivatives W.R.T. Cartesian Coordinates (debye/A):\n");
   print_mat(dipder, 3, natom*3, outfile);
+  */
 
   /* write the dipole derivatives to file17 in the PSI2 standard format */
   ffile(&file17, "file17.dat", 0);

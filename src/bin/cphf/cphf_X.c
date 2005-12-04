@@ -167,14 +167,13 @@ void cphf_X(double ***S, double **Baijk, double **Aaibj, double ***U)
   }
 
 
-  /* Dump the U matrices out to disk */
+  /* Write the U matrices out to disk */
   label = (char *) malloc(PSIO_KEYLEN * sizeof(char));
   psio_open(PSIF_CPHF, 1);
   for(coord=0; coord < natom*3; coord++) {
     sprintf(label, "UX(%d)", coord);
     psio_write_entry(PSIF_CPHF, label, (char *) &(U[coord][0][0]), nmo*nmo*sizeof(double));
     for(i=0; i < PSIO_KEYLEN; i++) label[i] = '\0';
-
     if(print_lvl > 5) {
       fprintf(outfile, "\nU[%d] Matrix (MO):\n", coord);
       print_mat(U[coord], nmo, nmo, outfile);

@@ -20,5 +20,8 @@ EXTERN int *orbspi, *clsdpi, *openpi, *uoccpi;
 EXTERN int *frdoccpi, *fruoccpi, *qtsorder;
 EXTERN double *evals, *zvals, *ints, **scf, **usotao, **geom;
 EXTERN int *first, *last, *ofirst, *olast, *vfirst, *vlast;
+EXTERN int rottype, nnc;
+EXTERN char **asymbol;
+EXTERN double **dipder, **dipder_q;
 
 EXTERN int print_lvl;
