@@ -54,6 +54,7 @@ void deriv1()
   }
   /* ... or compute integrals alone */
   else {
+    oe_deriv1_ints();
     te_deriv1_ints();
   }
 

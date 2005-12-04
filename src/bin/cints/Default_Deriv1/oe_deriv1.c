@@ -450,6 +450,13 @@ void oe_deriv1()
     }
   }
 
+#if PRINT_DERIV1
+  for(i=0; i < Molecule.num_atoms*3; i++) {
+    fprintf(outfile,"\nOverlap (AO) %d:\n",i);
+    print_mat(s[i],BasisSet.num_ao,BasisSet.num_ao,outfile);
+  }
+#endif
+
   if (UserOptions.print_lvl >= PRINT_OEDERIV) {
     print_atomvec("One-electron contribution to the forces (a.u.)",grad_oe);
     print_atomvec("Overlap contribution to the forces (a.u.)",grad_ov);

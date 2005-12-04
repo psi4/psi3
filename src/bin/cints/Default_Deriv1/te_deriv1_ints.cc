@@ -191,6 +191,7 @@ void te_deriv1_ints()
     int nelems;
     cdsalc_elem* elems;
   };
+
   cdsalc_elem_vec** plist_salcs = new cdsalc_elem_vec*[max_num_unique_quartets];
   for(int i=0; i<max_num_unique_quartets; i++) {
     plist_salcs[i] = new cdsalc_elem_vec[Symmetry.nirreps];
@@ -216,6 +217,7 @@ void te_deriv1_ints()
                        BasisSet.max_num_prims)*
                       (BasisSet.max_num_prims*
                        BasisSet.max_num_prims);
+
   init_libderiv1(&Libderiv, BasisSet.max_am-1, max_num_prim_comb, max_cart_class_size);
 
   /*------------------------------------
@@ -393,7 +395,6 @@ void te_deriv1_ints()
           orig_am[2] = BasisSet.shells[skk].am-1;
           orig_am[3] = BasisSet.shells[sll].am-1;
           am = orig_am[0] + orig_am[1] + orig_am[2] + orig_am[3];
-          
 
           /*----------------------------------
             Compute the nonredundant quartets
@@ -748,7 +749,7 @@ void te_deriv1_ints()
         iwl_buf_close(&D1ERIOUT[c], 1);
       }
       
-      {
+      //{
         // Safest way to print 64-bit integers is to use std::ostringstream
         std::ostringstream oss;
         oss << total_te_count;
@@ -756,7 +757,7 @@ void te_deriv1_ints()
                 oss.str().c_str(),
                 IOUnits.itapD1ERI_SO,
                 IOUnits.itapD1ERI_SO + num_coords - 1);
-      }
+      //}
       
       /*---------
       Clean-up

@@ -5,8 +5,10 @@
 
 extern "C" {
 #include <libciomr/libciomr.h>
+#include <libpsio/psio.h>
 #include <libint/libint.h>
 #include <libderiv/libderiv.h>
+#include <psifiles.h>
 
 #include "defines.h"
 #define EXTERN
@@ -42,6 +44,9 @@ inline double int_pow(double a, int p);
 /*-------------------------------------------------------------
   This function computes derivatives of one-electron integrals
  -------------------------------------------------------------*/
+
+extern "C" {
+
 void oe_deriv1_ints()
 {
   /* Only computing first-order derivatives here */
@@ -356,42 +361,166 @@ void oe_deriv1_ints()
   free_box(AIZ,indmax,indmax);
 
   // Symmetrize the derivative integrals
-#if 1
-  fprintf(outfile,"First-order one-electron derivative SO integrals not implemented yet");
-#else
-  for(i=0; i < Molecule.num_atoms*3; i++) {
-    
-    sprintf(lbl, "s%d.dat", i);
-    ffile(&out, lbl, 0);
-    for(j=0; j < BasisSet.num_ao; j++)
-      for(k=0; k <=j; k++)
-	if(fabs(s[i][j][k]) > 1e-6)
-	  fprintf(out, "%3d %3d %20.14f\n", j, k, s[i][j][k]);
-    fclose(out); 
-    free_block(s[i]);
-    
-    sprintf(lbl, "t%d.dat", i);
-    ffile(&out, lbl, 0);
-    for(j=0; j < BasisSet.num_ao; j++)
-      for(k=0; k <=j; k++)
-	if(fabs(t[i][j][k]) > 1e-6)
-	  fprintf(out, "%3d %3d %20.14f\n", j, k, t[i][j][k]);
-    fclose(out); 
-    free_block(t[i]);
-    
-    sprintf(lbl, "v%d.dat", i);
-    ffile(&out, lbl, 0);
-    for(j=0; j < BasisSet.num_ao; j++)
-      for(k=0; k <=j; k++)
-	if(fabs(v[i][j][k]) > 1e-6)
-	  fprintf(out, "%3d %3d %20.14f\n", j, k, v[i][j][k]);
-    fclose(out); 
-    free_block(v[i]);
-  }
-  free(s); free(t); free(v);
-#endif
+  // First symmetrize the orbitals then the cartesian displacements
 
+  double ***s_so = (double ***) malloc(Molecule.num_atoms*3*sizeof(double **));
+  double ***t_so = (double ***) malloc(Molecule.num_atoms*3*sizeof(double **));
+  double ***v_so = (double ***) malloc(Molecule.num_atoms*3*sizeof(double **));
+  double ***T = (double ***) malloc(Molecule.num_atoms*3*sizeof(double **));
+  for(i=0; i < Molecule.num_atoms*3; i++) {
+    s_so[i] = block_matrix(Symmetry.num_so, Symmetry.num_so);
+    t_so[i] = block_matrix(Symmetry.num_so, Symmetry.num_so);
+    v_so[i] = block_matrix(Symmetry.num_so, Symmetry.num_so);
+    T[i] = block_matrix(Symmetry.num_so, BasisSet.num_ao);
+  }
+
+  for(i=0; i < Molecule.num_atoms*3; i++) 
+    for(k=0; k < BasisSet.num_ao; k++)
+      for(l=0; l < k; l++)
+        s[i][l][k] = s[i][k][l];
+
+  for(i=0; i < Molecule.num_atoms*3; i++) 
+    for(j=0; j < Symmetry.num_so; j++)
+      for(k=0; k < BasisSet.num_ao; k++)
+        for(l=0; l < BasisSet.num_ao; l++)
+          T[i][j][k] += Symmetry.usotao[j][l] * s[i][l][k];
+
+  for(i=0; i < Molecule.num_atoms*3; i++) 
+    for(j=0; j < Symmetry.num_so; j++)
+      for(k=0; k < BasisSet.num_ao; k++)
+        for(l=0; l < BasisSet.num_ao; l++)
+          s_so[i][j][k] += Symmetry.usotao[j][l] * T[i][k][l];
+
+  for(i=0; i < Molecule.num_atoms*3; i++) 
+    for(j=0; j < Symmetry.num_so; j++)
+      for(k=0; k < BasisSet.num_ao; k++)
+        T[i][j][k] = 0.0;
+
+  for(i=0; i < Molecule.num_atoms*3; i++) 
+    for(k=0; k < BasisSet.num_ao; k++)
+      for(l=0; l < k; l++)
+        t[i][l][k] = t[i][k][l];
+
+  for(i=0; i < Molecule.num_atoms*3; i++) 
+    for(j=0; j < Symmetry.num_so; j++)
+      for(k=0; k < BasisSet.num_ao; k++)
+        for(l=0; l < BasisSet.num_ao; l++)
+          T[i][j][k] += Symmetry.usotao[j][l] * t[i][l][k];
+
+  for(i=0; i < Molecule.num_atoms*3; i++) 
+    for(j=0; j < Symmetry.num_so; j++)
+      for(k=0; k < BasisSet.num_ao; k++)
+        for(l=0; l < BasisSet.num_ao; l++)
+          t_so[i][j][k] += Symmetry.usotao[j][l] * T[i][k][l];
+
+  for(i=0; i < Molecule.num_atoms*3; i++) 
+    for(j=0; j < Symmetry.num_so; j++)
+      for(k=0; k < BasisSet.num_ao; k++)
+        T[i][j][k] = 0.0;
+
+  for(i=0; i < Molecule.num_atoms*3; i++) 
+    for(k=0; k < BasisSet.num_ao; k++)
+      for(l=0; l < k; l++)
+        v[i][l][k] = v[i][k][l];
+
+  for(i=0; i < Molecule.num_atoms*3; i++) 
+    for(j=0; j < Symmetry.num_so; j++)
+      for(k=0; k < BasisSet.num_ao; k++)
+        for(l=0; l < BasisSet.num_ao; l++)
+          T[i][j][k] += Symmetry.usotao[j][l] * v[i][l][k];
+
+  for(i=0; i < Molecule.num_atoms*3; i++) 
+    for(j=0; j < Symmetry.num_so; j++)
+      for(k=0; k < BasisSet.num_ao; k++)
+        for(l=0; l < BasisSet.num_ao; l++)
+          v_so[i][j][k] += Symmetry.usotao[j][l] * T[i][k][l];
+
+  for(i=0; i < Molecule.num_atoms*3; i++) { 
+    free_block(s[i]);
+    free_block(t[i]);
+    free_block(v[i]);
+    free_block(T[i]);
+  }
+  free(s);
+  free(t);
+  free(v);
+  free(T);
+
+  double ***S_so = (double ***) malloc(Molecule.num_atoms*3*sizeof(double **));
+  double ***T_so = (double ***) malloc(Molecule.num_atoms*3*sizeof(double **));
+  double ***V_so = (double ***) malloc(Molecule.num_atoms*3*sizeof(double **));
+  for(i=0; i < Molecule.num_atoms*3; i++) {
+    S_so[i] = block_matrix(Symmetry.num_so, Symmetry.num_so);
+    T_so[i] = block_matrix(Symmetry.num_so, Symmetry.num_so);
+    V_so[i] = block_matrix(Symmetry.num_so, Symmetry.num_so);
+  }
+
+  for(i=0; i < Molecule.num_atoms*3; i++) 
+    for(j=0; j < Molecule.num_atoms*3; j++) 
+      for(k=0; k < Symmetry.num_so; k++)
+        for(l=0; l < Symmetry.num_so; l++)
+          S_so[i][k][l] += Symmetry.cdsalc2cd[j][i] * s_so[j][k][l]; 
+
+  for(i=0; i < Molecule.num_atoms*3; i++) 
+    for(j=0; j < Molecule.num_atoms*3; j++) 
+      for(k=0; k < Symmetry.num_so; k++)
+        for(l=0; l < Symmetry.num_so; l++)
+          T_so[i][k][l] += Symmetry.cdsalc2cd[j][i] * t_so[j][k][l]; 
+
+  for(i=0; i < Molecule.num_atoms*3; i++) 
+    for(j=0; j < Molecule.num_atoms*3; j++) 
+      for(k=0; k < Symmetry.num_so; k++)
+        for(l=0; l < Symmetry.num_so; l++)
+          V_so[i][k][l] += Symmetry.cdsalc2cd[j][i] * v_so[j][k][l]; 
+
+  for(i=0; i < Molecule.num_atoms*3; i++) { 
+    free_block(s_so[i]);
+    free_block(t_so[i]);
+    free_block(v_so[i]);
+  }
+  free(s_so);
+  free(t_so);
+  free(v_so);
+
+  int size = Symmetry.num_so * Symmetry.num_so;
+  char *label = (char *) malloc(PSIO_KEYLEN * sizeof(char));
+  for(i=0; i < PSIO_KEYLEN; i++) label[i] = '\0';
+
+  for(i=0; i < Molecule.num_atoms*3; i++) { 
+    sprintf(label, "SO-basis Derivative Overlap Ints (%d)", i); 
+    psio_open(PSIF_SO_D1OEI, PSIO_OPEN_OLD);
+    psio_write_entry(PSIF_SO_D1OEI, label, (char *) S_so[i][0], size*sizeof(double));
+    psio_close(PSIF_SO_D1OEI, 1);
+    for(j=0; j < PSIO_KEYLEN; j++) label[j] = '\0';
+  }
+
+  for(i=0; i < Molecule.num_atoms*3; i++) { 
+    sprintf(label, "SO-basis Derivative Kinetic Energy Ints (%d)", i); 
+    psio_open(PSIF_SO_D1OEI, PSIO_OPEN_OLD);
+    psio_write_entry(PSIF_SO_D1OEI, label, (char *) T_so[i][0], size*sizeof(double));
+    psio_close(PSIF_SO_D1OEI, 1);
+    for(j=0; j < PSIO_KEYLEN; j++) label[j] = '\0';
+  }
+
+  for(i=0; i < Molecule.num_atoms*3; i++) { 
+    sprintf(label, "SO-basis Derivative Potential Energy Ints (%d)", i);
+    psio_open(PSIF_SO_D1OEI, PSIO_OPEN_OLD);
+    psio_write_entry(PSIF_SO_D1OEI, label, (char *) V_so[i][0], size*sizeof(double));
+    psio_close(PSIF_SO_D1OEI, 1);
+    for(j=0; j < PSIO_KEYLEN; j++) label[j] = '\0';
+  }
+
+  free(label);
+  for(i=0; i < Molecule.num_atoms*3; i++) { 
+    free_block(S_so[i]);
+    free_block(T_so[i]);
+    free_block(V_so[i]);
+  }
+  free(S_so);
+  free(T_so);
+  free(V_so);
 }   
+}
 
 
 namespace {
