@@ -37,6 +37,7 @@ void zval_to_symbol(double,char*);
 void cphf_B(double ***UX, double **lx)
 {
   int stat, coord;
+  double *scratch;
   double ***B;
   double **B0;
   double **TMP;
@@ -68,6 +69,7 @@ void cphf_B(double ***UX, double **lx)
   double *eval;
   double **evec;
   double *rotstr;
+  double noei_ao;
 
   /*
   Compute MO Hessian for a complex perturbation (IC) 
@@ -372,17 +374,17 @@ void cphf_B(double ***UX, double **lx)
   for(coord=0; coord < 3; coord++) B[coord] = block_matrix(nmo,nmo);
 
   /* Transform magnetic dipole integrals to the MO basis */
+  noei_ao = nao*(nao+1)/2;
+  scratch = init_array(noei_ao);
   TMP = block_matrix(nao, nao);
   X = block_matrix(nao, nao);
 
-  psio_open(PSIF_OEI, PSIO_OPEN_OLD);
-  psio_read_entry(PSIF_OEI,PSIF_AO_LX,(char*)&(TMP[0][0]),
-                  nao*nao*sizeof(double));
-  psio_close(PSIF_OEI, 1);
-
-  for(i=0; i < nao; i++)
-    for(j=0; j < nao; j++)
-      TMP[i][j] *= -0.5;
+  iwl_rdone(PSIF_OEI, PSIF_AO_LX, scratch, noei_ao, 0, 0, outfile);
+  for(i=0,ij=0; i < nao; i++)
+    for(j=0; j <= i; j++,ij++) {
+      TMP[i][j] = -0.5 * scratch[ij];
+      TMP[j][i] = +0.5 * scratch[ij];
+    }
 
   /*
   fprintf(outfile, "\tAO-basis LX Integrals:\n");
@@ -391,7 +393,6 @@ void cphf_B(double ***UX, double **lx)
 
   C_DGEMM('n','t',nao,nso,nao,1,&(TMP[0][0]),nao,&(usotao[0][0]),nao,
 	  0,&(X[0][0]),nao);
-  zero_mat(TMP,nao,nao);
   C_DGEMM('n','n',nso,nso,nao,1,&(usotao[0][0]),nao,&(X[0][0]),nao,
 	  0,&(TMP[0][0]),nao);
 
@@ -402,23 +403,24 @@ void cphf_B(double ***UX, double **lx)
 
   C_DGEMM('n','n',nso,nmo,nso,1,&(TMP[0][0]),nao,&(scf[0][0]),nmo,
 	  0,&(X[0][0]),nao);
-  zero_mat(TMP,nao,nao);
   C_DGEMM('t','n',nmo,nmo,nso,1,&(scf[0][0]),nmo,&(X[0][0]),nao,
 	  0,&(B[0][0][0]),nmo);
+
+  zero_arr(scratch,noei_ao);
+  zero_mat(TMP,nao,nao);
+  zero_mat(X,nao,nao);
 
   /*
   fprintf(outfile, "\n\tMO-basis LX Integrals:\n");
   print_mat(B[0], nmo, nmo, outfile);
   */
 
-  psio_open(PSIF_OEI, PSIO_OPEN_OLD);
-  psio_read_entry(PSIF_OEI, PSIF_AO_LY, (char *) &(TMP[0][0]), 
-                  nao*nao*sizeof(double));
-  psio_close(PSIF_OEI, 1);
-
-  for(i=0; i < nao; i++)
-    for(j=0; j < nao; j++)
-      TMP[i][j] *= -0.5;
+  iwl_rdone(PSIF_OEI, PSIF_AO_LY, scratch, noei_ao, 0, 0, outfile);
+  for(i=0,ij=0; i < nao; i++)
+    for(j=0; j <= i; j++,ij++) {
+      TMP[i][j] = -0.5 * scratch[ij];
+      TMP[j][i] = +0.5 * scratch[ij];
+    }
 
   /*
   fprintf(outfile, "\n\tAO-basis LY Integrals:\n");
@@ -427,7 +429,6 @@ void cphf_B(double ***UX, double **lx)
 
   C_DGEMM('n','t',nao,nso,nao,1,&(TMP[0][0]),nao,&(usotao[0][0]),nao,
 	  0,&(X[0][0]),nao);
-  zero_mat(TMP,nao,nao);
   C_DGEMM('n','n',nso,nso,nao,1,&(usotao[0][0]),nao,&(X[0][0]),nao,
 	  0,&(TMP[0][0]),nao);
 
@@ -438,23 +439,24 @@ void cphf_B(double ***UX, double **lx)
 
   C_DGEMM('n','n',nso,nmo,nso,1,&(TMP[0][0]),nao,&(scf[0][0]),nmo,
 	  0,&(X[0][0]),nao);
-  zero_mat(TMP,nao,nao);
   C_DGEMM('t','n',nmo,nmo,nso,1,&(scf[0][0]),nmo,&(X[0][0]),nao,
 	  0,&(B[1][0][0]),nmo);
+
+  zero_arr(scratch,noei_ao);
+  zero_mat(TMP,nao,nao);
+  zero_mat(X,nao,nao);
 
   /*
   fprintf(outfile, "\n\tMO-basis LY Integrals:\n");
   print_mat(B[1], nmo, nmo, outfile);
   */
 
-  psio_open(PSIF_OEI, PSIO_OPEN_OLD);
-  psio_read_entry(PSIF_OEI, PSIF_AO_LZ, (char *) &(TMP[0][0]), 
-                  nao*nao*sizeof(double));
-  psio_close(PSIF_OEI, 1);
-
-  for(i=0; i < nao; i++)
-    for(j=0; j < nao; j++)
-      TMP[i][j] *= -0.5;
+  iwl_rdone(PSIF_OEI, PSIF_AO_LZ, scratch, noei_ao, 0, 0, outfile);
+  for(i=0,ij=0; i < nao; i++)
+    for(j=0; j <= i; j++,ij++) {
+      TMP[i][j] = -0.5 * scratch[ij];
+      TMP[j][i] = +0.5 * scratch[ij];
+    }
 
   /*
   fprintf(outfile, "\n\tAO-basis LZ Integrals:\n");
@@ -463,7 +465,6 @@ void cphf_B(double ***UX, double **lx)
 
   C_DGEMM('n','t',nao,nso,nao,1,&(TMP[0][0]),nao,&(usotao[0][0]),nao,
 	  0,&(X[0][0]),nao);
-  zero_mat(TMP,nao,nao);
   C_DGEMM('n','n',nso,nso,nao,1,&(usotao[0][0]),nao,&(X[0][0]),nao,
 	  0,&(TMP[0][0]),nao);
 
@@ -474,7 +475,6 @@ void cphf_B(double ***UX, double **lx)
 
   C_DGEMM('n','n',nso,nmo,nso,1,&(TMP[0][0]),nao,&(scf[0][0]),nmo,
 	  0,&(X[0][0]),nao);
-  zero_mat(TMP,nao,nao);
   C_DGEMM('t','n',nmo,nmo,nso,1,&(scf[0][0]),nmo,&(X[0][0]),nao,
 	  0,&(B[2][0][0]),nmo);
 
@@ -483,6 +483,7 @@ void cphf_B(double ***UX, double **lx)
   print_mat(B[2], nmo, nmo, outfile);
   */
 
+  free(scratch);
   free_block(TMP);
   free_block(X);
 
