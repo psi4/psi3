@@ -253,10 +253,10 @@ void init_io(int argc, char *argv[])
 
   psi_start(num_unparsed, argv_unparsed, 0);
   ip_cwk_add(":INPUT");
-  ip_cwk_add(progid);
-  free(progid);
-
   ip_cwk_add(":CCEOM");
+  ip_cwk_add(progid);
+/* convergence in CCLAMBDA: will only replace default if this is the last keyword read */
+  free(progid);
 
   tstart(outfile);
   psio_init();
