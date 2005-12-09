@@ -50,25 +50,27 @@ void linresp(double **tensor, double A, double B,
 	  polar_LCX += LCX(pert_y, cartcomp[beta], y_irreps[beta], 
 			   pert_x, cartcomp[alpha], x_irreps[alpha], omega_x);
 
-	  if (!strcmp(params.wfn,"CC2")) {
-	    polar_HXY = HXY(pert_x, cartcomp[alpha], x_irreps[alpha], omega_x,
-			    pert_y, cartcomp[beta], y_irreps[beta], omega_y);
-	    polar_LHX1Y1 = cc2_LHX1Y1(pert_x, cartcomp[alpha], x_irreps[alpha], omega_x,
-				      pert_y, cartcomp[beta], y_irreps[beta], omega_y);
-	    polar_LHX1Y2 = cc2_LHX1Y2(pert_x, cartcomp[alpha], x_irreps[alpha], omega_x,
-				      pert_y, cartcomp[beta], y_irreps[beta], omega_y);
-	    polar_LHX1Y2 += cc2_LHX1Y2(pert_y, cartcomp[beta], y_irreps[beta], omega_y,
-				       pert_x, cartcomp[alpha], x_irreps[alpha], omega_x);
-	  }
-	  else {
-	    polar_LHX1Y1 = LHX1Y1(pert_x, cartcomp[alpha], x_irreps[alpha], omega_x,
-				  pert_y, cartcomp[beta], y_irreps[beta], omega_y);
-	    polar_LHX2Y2 = LHX2Y2(pert_x, cartcomp[alpha], x_irreps[alpha], omega_x,
-				  pert_y, cartcomp[beta], y_irreps[beta], omega_y);
-	    polar_LHX1Y2 = LHX1Y2(pert_x, cartcomp[alpha], x_irreps[alpha], omega_x,
-				  pert_y, cartcomp[beta], y_irreps[beta], omega_y);
-	    polar_LHX1Y2 += LHX1Y2(pert_y, cartcomp[beta], y_irreps[beta], omega_y,
-				   pert_x, cartcomp[alpha], x_irreps[alpha], omega_x);
+	  if(!params.sekino) {
+	    if (!strcmp(params.wfn,"CC2")) {
+	      polar_HXY = HXY(pert_x, cartcomp[alpha], x_irreps[alpha], omega_x,
+			      pert_y, cartcomp[beta], y_irreps[beta], omega_y);
+	      polar_LHX1Y1 = cc2_LHX1Y1(pert_x, cartcomp[alpha], x_irreps[alpha], omega_x,
+					pert_y, cartcomp[beta], y_irreps[beta], omega_y);
+	      polar_LHX1Y2 = cc2_LHX1Y2(pert_x, cartcomp[alpha], x_irreps[alpha], omega_x,
+					pert_y, cartcomp[beta], y_irreps[beta], omega_y);
+	      polar_LHX1Y2 += cc2_LHX1Y2(pert_y, cartcomp[beta], y_irreps[beta], omega_y,
+					 pert_x, cartcomp[alpha], x_irreps[alpha], omega_x);
+	    }
+	    else {
+	      polar_LHX1Y1 = LHX1Y1(pert_x, cartcomp[alpha], x_irreps[alpha], omega_x,
+				    pert_y, cartcomp[beta], y_irreps[beta], omega_y);
+	      polar_LHX2Y2 = LHX2Y2(pert_x, cartcomp[alpha], x_irreps[alpha], omega_x,
+				    pert_y, cartcomp[beta], y_irreps[beta], omega_y);
+	      polar_LHX1Y2 = LHX1Y2(pert_x, cartcomp[alpha], x_irreps[alpha], omega_x,
+				    pert_y, cartcomp[beta], y_irreps[beta], omega_y);
+	      polar_LHX1Y2 += LHX1Y2(pert_y, cartcomp[beta], y_irreps[beta], omega_y,
+				     pert_x, cartcomp[alpha], x_irreps[alpha], omega_x);
+	    }
 	  }
 	}
 	else {
@@ -76,25 +78,27 @@ void linresp(double **tensor, double A, double B,
 			  y_irreps[beta], 0.0);
 	  polar_LCX += LCX(pert_y, cartcomp[beta], y_irreps[beta], pert_x, cartcomp[alpha],
 			   x_irreps[alpha], 0.0);
-	  if (!strcmp(params.wfn,"CC2")) {
-	    polar_HXY = HXY(pert_x, cartcomp[alpha], x_irreps[alpha], 0.0,
-			    pert_y, cartcomp[beta], y_irreps[beta], 0.0);
-	    polar_LHX1Y1 = cc2_LHX1Y1(pert_x, cartcomp[alpha], x_irreps[alpha], 0.0,
-				      pert_y, cartcomp[beta], y_irreps[beta], 0.0);
-	    polar_LHX1Y2 = cc2_LHX1Y2(pert_x, cartcomp[alpha], x_irreps[alpha], 0.0,
-				      pert_y, cartcomp[beta], y_irreps[beta], 0.0);
-	    polar_LHX1Y2 += cc2_LHX1Y2(pert_y, cartcomp[beta], y_irreps[beta], 0.0,
-				       pert_x, cartcomp[alpha], x_irreps[alpha], 0.0);
-	  }
-	  else {
-	    polar_LHX1Y1 = LHX1Y1(pert_x, cartcomp[alpha], x_irreps[alpha], 0.0,
-				  pert_y, cartcomp[beta], y_irreps[beta], 0.0);
-	    polar_LHX2Y2 = LHX2Y2(pert_x, cartcomp[alpha], x_irreps[alpha], 0.0,
-				  pert_y, cartcomp[beta], y_irreps[beta], 0.0);
-	    polar_LHX1Y2 = LHX1Y2(pert_x, cartcomp[alpha], x_irreps[alpha], 0.0,
-				  pert_y, cartcomp[beta], y_irreps[beta], 0.0);
-	    polar_LHX1Y2 += LHX1Y2(pert_y, cartcomp[beta], y_irreps[beta], 0.0,
-				   pert_x, cartcomp[alpha], x_irreps[alpha], 0.0);
+	  if(!params.sekino) {
+	    if (!strcmp(params.wfn,"CC2")) {
+	      polar_HXY = HXY(pert_x, cartcomp[alpha], x_irreps[alpha], 0.0,
+			      pert_y, cartcomp[beta], y_irreps[beta], 0.0);
+	      polar_LHX1Y1 = cc2_LHX1Y1(pert_x, cartcomp[alpha], x_irreps[alpha], 0.0,
+					pert_y, cartcomp[beta], y_irreps[beta], 0.0);
+	      polar_LHX1Y2 = cc2_LHX1Y2(pert_x, cartcomp[alpha], x_irreps[alpha], 0.0,
+					pert_y, cartcomp[beta], y_irreps[beta], 0.0);
+	      polar_LHX1Y2 += cc2_LHX1Y2(pert_y, cartcomp[beta], y_irreps[beta], 0.0,
+					 pert_x, cartcomp[alpha], x_irreps[alpha], 0.0);
+	    }
+	    else {
+	      polar_LHX1Y1 = LHX1Y1(pert_x, cartcomp[alpha], x_irreps[alpha], 0.0,
+				    pert_y, cartcomp[beta], y_irreps[beta], 0.0);
+	      polar_LHX2Y2 = LHX2Y2(pert_x, cartcomp[alpha], x_irreps[alpha], 0.0,
+				    pert_y, cartcomp[beta], y_irreps[beta], 0.0);
+	      polar_LHX1Y2 = LHX1Y2(pert_x, cartcomp[alpha], x_irreps[alpha], 0.0,
+				    pert_y, cartcomp[beta], y_irreps[beta], 0.0);
+	      polar_LHX1Y2 += LHX1Y2(pert_y, cartcomp[beta], y_irreps[beta], 0.0,
+				     pert_x, cartcomp[alpha], x_irreps[alpha], 0.0);
+	    }
 	  }
 	}
 
