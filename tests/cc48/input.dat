@@ -7,13 +7,13 @@ default: (
   wfn = eom_ccsd
   jobtype = oeprop
   dertype = none
-  states_per_irrep = (2 0 0 2)
- 	prop_all = true
+  states_per_irrep = (2 2 2 2)
+  prop_all = true
 )
 
 input: (
   basis = "SADLEJ"
-	puream=true
+  puream=true
   units = angstrom
   zmat = (
   (H)
