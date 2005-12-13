@@ -11,9 +11,6 @@ void get_eom_params()
 {
   int errcod, i, j, sym, iconv,exist, state_irrep, c_irrep;
 
-  eom_params.max_iter = 80;
-  errcod = ip_data("MAX_ITER","%d",&(eom_params.max_iter),0);
-
   eom_params.states_per_irrep = (int *) malloc(moinfo.nirreps * sizeof(int));
   if (ip_exist("STATES_PER_IRREP",0)) {
     ip_count("STATES_PER_IRREP", &i, 0);
@@ -30,6 +27,9 @@ void get_eom_params()
   for (state_irrep=0; state_irrep<moinfo.nirreps; ++state_irrep) {
     eom_params.cs_per_irrep[state_irrep^moinfo.sym] = eom_params.states_per_irrep[state_irrep];
   }
+
+  eom_params.max_iter = 80 * moinfo.nirreps;
+  errcod = ip_data("MAX_ITER","%d",&(eom_params.max_iter),0);
 
   /* Use prop_sym and prop_root only to determine what energy to write the file32 */
   if (ip_exist("PROP_SYM",0)) {
