@@ -43,8 +43,6 @@ void get_params(void)
   }
 
   /* read in the easy-to-understand parameters */
-  params.maxiter = 50;
-  errcod = ip_data("MAXITER","%d",&(params.maxiter),0);
 
   params.convergence = 1e-7;
   errcod = ip_data("CONVERGENCE","%d",&(iconv),0);
@@ -165,28 +163,6 @@ void get_params(void)
     local.pairdef = strdup("RESPONSE");
   else if(params.local)
     local.pairdef = strdup("BP");
-
-  fprintf(outfile, "\n\tInput parameters:\n");
-  fprintf(outfile, "\t-----------------\n");
-  fprintf(outfile, "\tMaxiter       =    %4d\n", params.maxiter);
-  fprintf(outfile, "\tConvergence   = %3.1e\n", params.convergence);
-  fprintf(outfile, "\tRestart       =     %s\n", params.restart ? "Yes" : "No");
-  fprintf(outfile, "\tCache Level   =     %1d\n", params.cachelev);
-  fprintf(outfile, "\tModel III     =     %s\n", params.sekino ? "Yes" : "No");
-  fprintf(outfile, "\tDIIS          =     %s\n", params.diis ? "Yes" : "No");
-  fprintf(outfile, "\tAO Basis      =     %s\n", 
-          params.aobasis ? "Yes" : "No");
-  fprintf(outfile, "\tABCD            =     %s\n", params.abcd);
-  fprintf(outfile, "\tLocal CC        =     %s\n", params.local ? "Yes" : "No");
-  if(params.local) {
-    fprintf(outfile, "\tLocal Cutoff    = %3.1e\n", local.cutoff);
-    fprintf(outfile, "\tLocal Method    =    %s\n", local.method);
-    fprintf(outfile, "\tWeak pairs      =    %s\n", local.weakp);
-    fprintf(outfile, "\tFilter singles  =    %s\n", local.filter_singles ? "Yes" : "No");
-    fprintf(outfile, "\tLocal pairs       =    %s\n", local.pairdef);
-    fprintf(outfile, "\tLocal CPHF cutoff =  %3.1e\n", local.cphf_cutoff);
-  }
-
 
 	/* Now setup the structure which determines what will be solved */ 
 	/* if --zeta, use Xi and solve for Zeta */
@@ -400,6 +376,31 @@ void get_params(void)
       sprintf(pL_params[1].L2AB_lbl,"LIjAb %d %d", prop_sym, prop_root);
       sprintf(pL_params[1].L2RHF_lbl,"2LIjAb - LIjbA %d %d", prop_sym, prop_root);
 		}
+  }
+
+
+  params.maxiter = 50 * params.nstates;
+  errcod = ip_data("MAXITER","%d",&(params.maxiter),0);
+
+  fprintf(outfile, "\n\tInput parameters:\n");
+  fprintf(outfile, "\t-----------------\n");
+  fprintf(outfile, "\tMaxiter       =    %4d\n", params.maxiter);
+  fprintf(outfile, "\tConvergence   = %3.1e\n", params.convergence);
+  fprintf(outfile, "\tRestart       =     %s\n", params.restart ? "Yes" : "No");
+  fprintf(outfile, "\tCache Level   =     %1d\n", params.cachelev);
+  fprintf(outfile, "\tModel III     =     %s\n", params.sekino ? "Yes" : "No");
+  fprintf(outfile, "\tDIIS          =     %s\n", params.diis ? "Yes" : "No");
+  fprintf(outfile, "\tAO Basis      =     %s\n", 
+          params.aobasis ? "Yes" : "No");
+  fprintf(outfile, "\tABCD            =     %s\n", params.abcd);
+  fprintf(outfile, "\tLocal CC        =     %s\n", params.local ? "Yes" : "No");
+  if(params.local) {
+    fprintf(outfile, "\tLocal Cutoff    = %3.1e\n", local.cutoff);
+    fprintf(outfile, "\tLocal Method    =    %s\n", local.method);
+    fprintf(outfile, "\tWeak pairs      =    %s\n", local.weakp);
+    fprintf(outfile, "\tFilter singles  =    %s\n", local.filter_singles ? "Yes" : "No");
+    fprintf(outfile, "\tLocal pairs       =    %s\n", local.pairdef);
+    fprintf(outfile, "\tLocal CPHF cutoff =  %3.1e\n", local.cphf_cutoff);
   }
 
   fprintf(outfile,"\tParamaters for left-handed eigenvectors:\n");

@@ -46,6 +46,7 @@ void zeta_norm(struct L_Params pL_params);
 void spinad_amps(void);
 void status(char *, FILE *);
 void hbar_extra(void);
+void ortho_Rs(struct L_Params *pL_params, int current_L);
 
 void cc2_L1_build(struct L_Params L_params);
 void cc2_L2_build(struct L_Params L_params);
@@ -172,6 +173,7 @@ int main(int argc, char *argv[])
       }
 
       if (params.ref == 1) L_clean(pL_params[i]);
+      if (params.nstates > 2) ortho_Rs(pL_params, i);
 
       if(converged(pL_params[i].irrep)) {
         done = 1;  /* Boolean for convergence */
@@ -185,6 +187,7 @@ int main(int argc, char *argv[])
 	/* sort_amps(); to be done by later functions */
         fprintf(outfile, "\n\tIterations converged.\n");
         fflush(outfile);
+        moinfo.iter = 0;
         break;
       }
   
