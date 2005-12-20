@@ -127,10 +127,27 @@ void get_rho_params(void)
       rho_params[i].R0 = 1.0;
     }
     else {
-      sprintf(lbl,"EOM CCSD Energy for root %d %d", rho_params[i].R_irr, rho_params[i].R_root);
-      psio_read_entry(CC_INFO,lbl,(char*)&(rho_params[i].cceom_energy), sizeof(double));
-      sprintf(lbl,"EOM CCSD R0 for root %d %d",rho_params[i].R_irr, rho_params[i].R_root);
-      psio_read_entry(CC_INFO,lbl,(char*)&(rho_params[i].R0),sizeof(double));
+
+
+      if(!strcmp(params.wfn,"EOM_CC2")) {
+        sprintf(lbl,"EOM CC2 Energy for root %d %d", rho_params[i].R_irr, rho_params[i].R_root);
+        psio_read_entry(CC_INFO,lbl,(char*)&(rho_params[i].cceom_energy), sizeof(double));
+        sprintf(lbl,"EOM CC2 R0 for root %d %d",rho_params[i].R_irr, rho_params[i].R_root);
+        psio_read_entry(CC_INFO,lbl,(char*)&(rho_params[i].R0),sizeof(double));
+      }
+      else if(!strcmp(params.wfn,"EOM_CCSD")) {
+        sprintf(lbl,"EOM CCSD Energy for root %d %d", rho_params[i].R_irr, rho_params[i].R_root);
+        psio_read_entry(CC_INFO,lbl,(char*)&(rho_params[i].cceom_energy), sizeof(double));
+        sprintf(lbl,"EOM CCSD R0 for root %d %d",rho_params[i].R_irr, rho_params[i].R_root);
+        psio_read_entry(CC_INFO,lbl,(char*)&(rho_params[i].R0),sizeof(double));
+      }
+      else if(!strcmp(params.wfn,"EOM_CC3")) {
+        sprintf(lbl,"EOM CC3 Energy for root %d %d", rho_params[i].R_irr, rho_params[i].R_root);
+        psio_read_entry(CC_INFO,lbl,(char*)&(rho_params[i].cceom_energy), sizeof(double));
+        sprintf(lbl,"EOM CC3 R0 for root %d %d",rho_params[i].R_irr, rho_params[i].R_root);
+        psio_read_entry(CC_INFO,lbl,(char*)&(rho_params[i].R0),sizeof(double));
+      }
+
     }
 
     sprintf(rho_params[i].R1A_lbl, "RIA %d %d",  rho_params[i].R_irr, rho_params[i].R_root);
