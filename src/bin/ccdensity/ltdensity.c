@@ -96,7 +96,7 @@ void ltdensity_rohf(struct TD_Params S)
   dpd_file2_close(&R1);
 
   if(S.irrep == 0) {
-    dpd_file2_init(&D, CC_OEI, 0, 0, 1, "LTDIA");
+    dpd_file2_init(&D, CC_TMP, 0, 0, 1, "LTDIA");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tIJAB");
     dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "LIA");
     dpd_dot24(&L1, &T2, &D, 0, 0, 1.0, 1.0);
