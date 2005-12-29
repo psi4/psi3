@@ -51,6 +51,18 @@ void get_params()
   params.aobasis = 0;
   errcod = ip_boolean("AO_BASIS", &(params.aobasis),0);
 
+  params.ael = 0;
+  errcod = ip_boolean("AEL", &(params.ael),0);
+
+  if(ip_exist("GAUGE",0)) {
+    ip_string("GAUGE",&(params.gauge), 0);
+    if(strcmp(params.gauge,"LENGTH") && strcmp(params.gauge,"VELOCITY")) {
+      printf("Invalid choice of gauge: %s\n", params.gauge);
+      exit(PSI_RETURN_FAILURE);
+    }
+  }
+  else params.gauge = strdup("LENGTH");
+  
   /*** determine DERTYPE from input */
   params.dertype = 0;
   if(ip_exist("DERTYPE",0)) {

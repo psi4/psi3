@@ -19,12 +19,15 @@ struct Params {
   int prop_sym;
   int prop_root;
   int prop_all;
+  char *gauge;
+
   /* these are used by Xi and twopdm code */
   int G_irr; 
   int R_irr; 
   int L_irr;
   double R0;   
   double L0;
+  int ael;
   double cceom_energy;
   double overlap1; /* <L1|R1> */
   double overlap2; /* <L2|R2> */
