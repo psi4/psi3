@@ -482,6 +482,11 @@ void T3_RHF(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
   }
   free(W2);
 
+  for(h=0; h < nirreps; h++) {
+    dpd_buf4_mat_irrep_close(T2, h);
+    dpd_buf4_mat_irrep_close(E, h);
+  }
+
   dpd_file2_mat_close(fIJ);
   dpd_file2_mat_close(fAB);
 }
