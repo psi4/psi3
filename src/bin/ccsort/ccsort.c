@@ -294,6 +294,9 @@ void cleanup(void)
 
   }
 
+  free(moinfo.pitzer2qt);
+  free(moinfo.qt2pitzer);
+
   free(moinfo.orbspi);
   free(moinfo.clsdpi);
   free(moinfo.openpi);

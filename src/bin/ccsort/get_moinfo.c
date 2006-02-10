@@ -120,6 +120,16 @@ void get_moinfo(void)
     for(i=0; i < moinfo.nmo; i++) moinfo.qt2pitz[moinfo.pitz2qt[i]] = i;  
   }
 
+  /* Compute spatial-orbital reordering arrays */
+  moinfo.pitzer2qt = init_int_array(moinfo.nmo);
+  moinfo.qt2pitzer = init_int_array(moinfo.nmo);
+  reorder_qt(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc, 
+	     moinfo.pitzer2qt, moinfo.orbspi, moinfo.nirreps);
+  for(i=0; i < moinfo.nmo; i++) {
+    j = moinfo.pitzer2qt[i];
+    moinfo.qt2pitzer[j] = i;
+  }
+
   /* Adjust clsdpi array for frozen orbitals */
   for(i=0; i < moinfo.nirreps; i++)
     moinfo.clsdpi[i] -= moinfo.frdocc[i];

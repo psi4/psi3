@@ -36,10 +36,8 @@
 ** TDC, Jan-June 2002
 */
 
-void transL(void);
-void sortL(void);
-void transmu(void);
-void sortmu(void);
+void transpert(char *pert);
+void sort_pert(char *, double **, double **, double **, int, int, int);
 void build_F_RHF(void);
 void build_B_RHF(void);
 void cphf_F(void);
@@ -180,7 +178,7 @@ void local_init(void)
   /* Set up the atom->AO and AO->atom lookups */
   aostart = init_int_array(natom);
   aostop = init_int_array(natom);
-  for(i=0,atom=-1,offset=0; i < nshell; i++) {
+  for(i=0,atom=-1,offset=0; i<nshell; i++) {
     am = stype[i] - 1;
     shell_length = l_length[am];
 
@@ -281,8 +279,9 @@ void local_init(void)
       fR[i-nfzc] = 1.0;
       for(j=0,row=0; j < natom; j++) {
 	if(domain[i-nfzc][j]) {
-	  for(k=aostart[j]; k <= aostop[j]; k++,row++) 
+	  for(k=aostart[j]; k <= aostop[j]; k++,row++) {
 	    for(l=0; l < nso; l++) fR[i-nfzc] -= Z[row] * S[k][l] * C[l][i];
+	  }
 	}
       }
 
@@ -292,7 +291,6 @@ void local_init(void)
 	domain_len[i-nfzc]++;
       }
     } /* cutoff check */
-
   } /* i */
 
   /* Print the orbital domains */
@@ -321,8 +319,8 @@ void local_init(void)
   fflush(outfile);
 
   /* Identify and/or remove weak pairs -- using Bougton-Pulay domains */
+  weak_pairs = init_int_array(nocc*nocc);
   if(!strcmp(local.pairdef,"BP")) {
-    weak_pairs = init_int_array(nocc*nocc);
     fprintf(outfile, "\n");
     for(i=0,ij=0; i < nocc; i++)
       for(j=0; j < nocc; j++,ij++) {
@@ -348,8 +346,9 @@ void local_init(void)
   if(local.domain_polar) {
     fprintf(outfile, "\tGenerating electric-field CPHF solutions for local-CC.\n");
     fflush(outfile);
-    transmu();
-    sortmu();
+    transpert("Mu");
+    sort_pert("Mu", moinfo.MUX, moinfo.MUY, moinfo.MUZ,
+	      moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z);
     build_F_RHF();
     cphf_F();
     local_polar(domain, domain_len, natom, aostart, aostop);
@@ -357,8 +356,9 @@ void local_init(void)
   if(local.domain_mag) {
     fprintf(outfile, "\tGenerating magnetic-field CPHF solutions for local-CC.\n");
     fflush(outfile);
-    transL();
-    sortL();
+    transpert("L");
+    sort_pert("L", moinfo.LX, moinfo.LY, moinfo.LZ,
+	      moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z);
     build_B_RHF();
     cphf_B();
     local_magnetic(domain, domain_len, natom, aostart, aostop);
@@ -383,9 +383,56 @@ void local_init(void)
     }
   }
 
+  /* Recheck Completeness */
+  for(i=nfzc; i < nocc_all; i++) {
+
+    /* Build the orbital's domain starting in order of decreasing charge contribution */
+    for(j=0; j < nso; j++) {
+      SR[j] = 0.0;
+      for(k=0; k < nso; k++)
+	SR[j] += S[j][k] * C[k][i]; 
+    }
+
+    for(j=0,row=0; j < natom; j++) {
+      if(domain[i-nfzc][j]) { 
+	for(k=aostart[j]; k <= aostop[j]; k++,row++) {
+
+	  Z[row] = SR[k];
+
+	  for(l=0,col=0; l < natom; l++) {
+	    if(domain[i-nfzc][l]) {
+
+	      for(m=aostart[l]; m <= aostop[l]; m++,col++)
+		X[row][col] = S[k][m];
+
+	    }
+	  } /* l */
+
+	} /* k */
+      }
+    } /* j */
+
+    errcod = C_DGESV(row, 1, &(X[0][0]), nso, &(ipiv[0]), &(Z[0]), nso);
+    if(errcod) {
+      fprintf(outfile, "\nError in DGESV return in orbital domain construction.\n");
+      exit(PSI_RETURN_FAILURE);
+    }
+
+    fR[i-nfzc] = 1.0;
+    for(j=0,row=0; j < natom; j++) {
+      if(domain[i-nfzc][j]) {
+	for(k=aostart[j]; k <= aostop[j]; k++,row++) {
+	  for(l=0; l < nso; l++) fR[i-nfzc] -= Z[row] * S[k][l] * C[l][i];
+	}
+      }
+    }
+
+  } /* i */
+
+
   /* Print the orbital domains */
   max = 0;
-  if(local.domain_polar || local.domain_mag) {
+  if(local.domain_polar || local.domain_mag || ip_exist("DOMAINS",0)) {
     for(i=0; i < nocc; i++) 
       if(domain_len[i] > max) max = domain_len[i];
 
@@ -423,8 +470,7 @@ void local_init(void)
       }
 
   /* Identify and/or remove weak pairs -- for CPHF "response" domains */
-  if(!strcmp(local.pairdef,"RESPONSE")) {
-    weak_pairs = init_int_array(nocc*nocc);
+  if(local.domain_polar || local.domain_mag || ip_exist("DOMAINS",0)) {
     fprintf(outfile, "\n");
     for(i=0,ij=0; i < nocc; i++)
       for(j=0; j < nocc; j++,ij++) {
@@ -441,7 +487,7 @@ void local_init(void)
 	    fprintf(outfile, "\tPair %d %d = [%d] is weak and will be deleted.\n", i, j, ij);
 	  }
 	}
-	else weak_pairs[ij] = 0; 
+	else weak_pairs[ij] = 0;
       }
   }
 
@@ -509,7 +555,7 @@ void local_init(void)
 
   /*
     fprintf(outfile, "\n\tVirtual-Space Projector (R-tilde):\n");
-    print_mat(Rt_full, nso, nso, outfile);
+    print_mat(Rt_full, nso, nso, stdout);
   */
 
   /* Compute the norm of each PAO */
@@ -542,7 +588,7 @@ void local_init(void)
   dpd_file2_init(&fock, CC_OEI, 0, 1, 1, "fAB");
   dpd_file2_mat_init(&fock);
   dpd_file2_mat_rd(&fock);
-  for(i=0; i < nvir; i++) 
+  for(i=0; i < nvir; i++)
     for(j=0; j < nvir; j++)
       Fmo[i+nfzc+nocc][j+nfzc+nocc] = fock.matrix[0][i][j];
   dpd_file2_mat_close(&fock);
@@ -566,7 +612,7 @@ void local_init(void)
 
   /*
     fprintf(outfile, "\n\tAO-Basis Fock Matrix:\n");
-    print_mat(F, nso, nso, outfile);
+    print_mat(Fmo, nso, nso, outfile);
   */
 
   /* Compute R^+ S for virtual orbitals */
@@ -586,142 +632,138 @@ void local_init(void)
 
   for(ij=0; ij < nocc * nocc; ij++) {
 
-    if(pairdom_len[ij]) {
+    zero_mat(Rt, nso, nso);
 
-      zero_mat(Rt, nso, nso);
-
-      /* Build the virtual space projector for this pair */
-      for(k=0,L=0; k < natom; k++) {
-	if(pairdomain[ij][k]) {
-	  for(l=aostart[k]; l <= aostop[k]; l++,L++) {
-	    for(m=0; m < nso; m++) {
-	      Rt[m][L] = Rt_full[m][l];
-	    }
+    /* Build the virtual space projector for this pair */
+    for(k=0,L=0; k < natom; k++) {
+      if(pairdomain[ij][k]) {
+	for(l=aostart[k]; l <= aostop[k]; l++,L++) {
+	  for(m=0; m < nso; m++) {
+	    Rt[m][L] = Rt_full[m][l];
 	  }
 	}
       }
+    }
 
-      /* Compute the MO -> projected virtual transformation matrix */
-      V[ij] = block_matrix(nvir,pairdom_len[ij]);
-      C_DGEMM('n','n',nvir,pairdom_len[ij],nso,1.0,&(RS[0][0]),nso,&(Rt[0][0]),nso,0.0,
-	      &(V[ij][0][0]),pairdom_len[ij]);
+    /* Compute the MO -> projected virtual transformation matrix */
+    V[ij] = block_matrix(nvir,pairdom_len[ij]);
+    C_DGEMM('n','n',nvir,pairdom_len[ij],nso,1.0,&(RS[0][0]),nso,&(Rt[0][0]),nso,0.0,
+	    &(V[ij][0][0]),pairdom_len[ij]);
 
-      /*
-	fprintf(outfile, "\nV[%d]:\n", ij);
-	fprintf(outfile,   "======\n");
-	print_mat(V[ij], nvir, pairdom_len[ij], outfile);
-      */
+    /*
+      fprintf(outfile, "\nV[%d]:\n", ij);
+      fprintf(outfile,   "======\n");
+      print_mat(V[ij], nvir, pairdom_len[ij], outfile);
+    */
 
-      /* Virtual space metric */
-      St = block_matrix(pairdom_len[ij],pairdom_len[ij]);
-      C_DGEMM('n','n',nso,pairdom_len[ij],nso,1.0,&(S[0][0]),nso,&(Rt[0][0]),nso,
-	      0.0,&(X[0][0]),nso);
-      C_DGEMM('t','n',pairdom_len[ij],pairdom_len[ij],nso,1.0,&(Rt[0][0]),nso,&(X[0][0]),nso,
-	      0.0,&(St[0][0]),pairdom_len[ij]);
+    /* Virtual space metric */
+    St = block_matrix(pairdom_len[ij],pairdom_len[ij]);
+    C_DGEMM('n','n',nso,pairdom_len[ij],nso,1.0,&(S[0][0]),nso,&(Rt[0][0]),nso,
+	    0.0,&(X[0][0]),nso);
+    C_DGEMM('t','n',pairdom_len[ij],pairdom_len[ij],nso,1.0,&(Rt[0][0]),nso,&(X[0][0]),nso,
+	    0.0,&(St[0][0]),pairdom_len[ij]);
 
-      /*
-	fprintf(outfile, "\n\tVirtual-Space Metric (S-tilde) for ij = %d:\n", ij);
-	print_mat(St, pairdom_len[ij], pairdom_len[ij], outfile);
-      */
+    /*
+      fprintf(outfile, "\n\tVirtual-Space Metric (S-tilde) for ij = %d:\n", ij);
+      print_mat(St, pairdom_len[ij], pairdom_len[ij], outfile);
+    */
 
-      /* Diagonalize metric */
-      evals = init_array(pairdom_len[ij]);
-      evecs = block_matrix(pairdom_len[ij],pairdom_len[ij]);
-      sq_rsp(pairdom_len[ij],pairdom_len[ij],St,evals,1,evecs,1e-12);
+    /* Diagonalize metric */
+    evals = init_array(pairdom_len[ij]);
+    evecs = block_matrix(pairdom_len[ij],pairdom_len[ij]);
+    sq_rsp(pairdom_len[ij],pairdom_len[ij],St,evals,1,evecs,1e-12);
 
-      /* Count the number of zero eigenvalues */
-      for(i=0,cnt=0; i < pairdom_len[ij]; i++) if(evals[i] <= 1e-6) cnt++;
+    /* Count the number of zero eigenvalues */
+    for(i=0,cnt=0; i < pairdom_len[ij]; i++) if(evals[i] <= 1e-6) cnt++;
 
-      pairdom_nrlen[ij] = pairdom_len[ij]-cnt;
+    pairdom_nrlen[ij] = pairdom_len[ij]-cnt;
 
-      /*
-	fprintf(outfile, "\n\tS-tilde eigenvalues for ij = %d:\n", ij);
-	for(i=0; i < pairdom_len[ij]; i++) fprintf(outfile, "\t%d %20.12f\n", i, evals[i]);
+    /*
+      fprintf(outfile, "\n\tS-tilde eigenvalues for ij = %d:\n", ij);
+      for(i=0; i < pairdom_len[ij]; i++) fprintf(outfile, "\t%d %20.12f\n", i, evals[i]);
 
-	fprintf(outfile, "\n\tS-tilde eigenvectors for ij = %d:\n", ij);
-	print_mat(evecs,pairdom_len[ij],pairdom_len[ij],outfile);
-      */
+      fprintf(outfile, "\n\tS-tilde eigenvectors for ij = %d:\n", ij);
+      print_mat(evecs,pairdom_len[ij],pairdom_len[ij],outfile);
+    */
 
-      /* Build the projected, non-redundant transform (X-tilde) */
-      Xt = block_matrix(pairdom_len[ij],pairdom_nrlen[ij]);
-      for(i=0,I=0; i < pairdom_len[ij]; i++) {
-	if(evals[i] > 1e-6) {
-	  for(j=0; j < pairdom_len[ij]; j++)
-	    Xt[j][I] = evecs[j][i]/sqrt(evals[i]);
-	  I++;
-	}
-	else num_zero++;
+    /* Build the projected, non-redundant transform (X-tilde) */
+    Xt = block_matrix(pairdom_len[ij],pairdom_nrlen[ij]);
+    for(i=0,I=0; i < pairdom_len[ij]; i++) {
+      if(evals[i] > 1e-6) {
+	for(j=0; j < pairdom_len[ij]; j++)
+	  Xt[j][I] = evecs[j][i]/sqrt(evals[i]);
+	I++;
       }
+      else num_zero++;
+    }
 
 
-      /*
-	fprintf(outfile, "\n\tTransform to non-redundant, projected virtuals (X-tilde) for ij = %d:\n", ij);
-	print_mat(Xt, pairdom_len[ij], pairdom_nrlen[ij], outfile);
-      */
+    /*
+      fprintf(outfile, "\n\tTransform to non-redundant, projected virtuals (X-tilde) for ij = %d:\n", ij);
+      print_mat(Xt, pairdom_len[ij], pairdom_nrlen[ij], outfile);
+    */
 
-      free_block(evecs);
-      free(evals);
+    free_block(evecs);
+    free(evals);
 
-      /* Build the projected (redundant) virtual Fock matrix */
-      Ft = block_matrix(pairdom_len[ij], pairdom_len[ij]);
-      C_DGEMM('t','n',pairdom_len[ij],nso,nso,1.0,&(Rt[0][0]),nso,&(F[0][0]),nso,
-	      0.0,&(X[0][0]),nso);
-      C_DGEMM('n','n',pairdom_len[ij],pairdom_len[ij],nso,1.0,&(X[0][0]),nso,&(Rt[0][0]),nso,
-	      0.0,&(Ft[0][0]),pairdom_len[ij]);
+    /* Build the projected (redundant) virtual Fock matrix */
+    Ft = block_matrix(pairdom_len[ij], pairdom_len[ij]);
+    C_DGEMM('t','n',pairdom_len[ij],nso,nso,1.0,&(Rt[0][0]),nso,&(F[0][0]),nso,
+	    0.0,&(X[0][0]),nso);
+    C_DGEMM('n','n',pairdom_len[ij],pairdom_len[ij],nso,1.0,&(X[0][0]),nso,&(Rt[0][0]),nso,
+	    0.0,&(Ft[0][0]),pairdom_len[ij]);
 
-      /* Project the Fock matrix into the non-redundant virtual space */
-      Fbar = block_matrix(pairdom_nrlen[ij],pairdom_nrlen[ij]);
-      C_DGEMM('t','n',pairdom_nrlen[ij],pairdom_len[ij],pairdom_len[ij],1.0,
-	      &(Xt[0][0]),pairdom_nrlen[ij],&(Ft[0][0]),pairdom_len[ij],0.0,&(X[0][0]),nso);
-      C_DGEMM('n','n',pairdom_nrlen[ij],pairdom_nrlen[ij],pairdom_len[ij],1.0,
-	      &(X[0][0]),nso,&(Xt[0][0]),pairdom_nrlen[ij],0.0,&(Fbar[0][0]),pairdom_nrlen[ij]);
+    /* Project the Fock matrix into the non-redundant virtual space */
+    Fbar = block_matrix(pairdom_nrlen[ij],pairdom_nrlen[ij]);
+    C_DGEMM('t','n',pairdom_nrlen[ij],pairdom_len[ij],pairdom_len[ij],1.0,
+	    &(Xt[0][0]),pairdom_nrlen[ij],&(Ft[0][0]),pairdom_len[ij],0.0,&(X[0][0]),nso);
+    C_DGEMM('n','n',pairdom_nrlen[ij],pairdom_nrlen[ij],pairdom_len[ij],1.0,
+	    &(X[0][0]),nso,&(Xt[0][0]),pairdom_nrlen[ij],0.0,&(Fbar[0][0]),pairdom_nrlen[ij]);
 
-      /*
-	fprintf(outfile, "\n\tFbar matrix for ij = %d:\n", ij);
-	print_mat(Fbar,pairdom_nrlen[ij],pairdom_nrlen[ij],outfile);
-      */
+    /*
+      fprintf(outfile, "\n\tFbar matrix for ij = %d:\n", ij);
+      print_mat(Fbar,pairdom_nrlen[ij],pairdom_nrlen[ij],outfile);
+    */
 
-      /* Diagonalize Fbar */
-      evals = init_array(pairdom_nrlen[ij]);
-      evecs = block_matrix(pairdom_nrlen[ij],pairdom_nrlen[ij]);
-      sq_rsp(pairdom_nrlen[ij],pairdom_nrlen[ij],Fbar,evals,1,evecs,1e-12);
+    /* Diagonalize Fbar */
+    evals = init_array(pairdom_nrlen[ij]);
+    evecs = block_matrix(pairdom_nrlen[ij],pairdom_nrlen[ij]);
+    sq_rsp(pairdom_nrlen[ij],pairdom_nrlen[ij],Fbar,evals,1,evecs,1e-12);
 
-      /*
-	fprintf(outfile, "\n\tFbar eigenvectors for ij = %d:\n", ij);
-	print_mat(evecs,pairdom_nrlen[ij],pairdom_nrlen[ij],outfile);
-      */
+    /*
+      fprintf(stdout, "\n\tFbar eigenvectors for ij = %d:\n", ij);
+      print_mat(evecs,pairdom_nrlen[ij],pairdom_nrlen[ij],outfile);
+    */
 
-      /* Finally, build the W matrix */
-      W[ij] = block_matrix(pairdom_len[ij],pairdom_nrlen[ij]);
-      C_DGEMM('n','n',pairdom_len[ij],pairdom_nrlen[ij],pairdom_nrlen[ij],1.0,
-	      &(Xt[0][0]),pairdom_nrlen[ij],&(evecs[0][0]),pairdom_nrlen[ij],
-	      0.0,&(W[ij][0][0]),pairdom_nrlen[ij]);
+    /* Finally, build the W matrix */
+    W[ij] = block_matrix(pairdom_len[ij],pairdom_nrlen[ij]);
+    C_DGEMM('n','n',pairdom_len[ij],pairdom_nrlen[ij],pairdom_nrlen[ij],1.0,
+	    &(Xt[0][0]),pairdom_nrlen[ij],&(evecs[0][0]),pairdom_nrlen[ij],
+	    0.0,&(W[ij][0][0]),pairdom_nrlen[ij]);
 
-      /*
-	fprintf(outfile, "\n\tW Transformation Matrix for ij = %d:\n", ij);
-	print_mat(W[ij],pairdom_len[ij],pairdom_nrlen[ij],stdout);
-      */
+    /*
+      fprintf(outfile, "\n\tW Transformation Matrix for ij = %d:\n", ij);
+      print_mat(W[ij],pairdom_len[ij],pairdom_nrlen[ij],outfile);
+    */
 
-      /* build the orbital energy list */
-      eps_vir[ij] = init_array(pairdom_nrlen[ij]);
+    /* build the orbital energy list */
+    eps_vir[ij] = init_array(pairdom_nrlen[ij]);
+    for(i=0; i < pairdom_nrlen[ij]; i++)
+      eps_vir[ij][i] = evals[i]; /* virtual orbital energies */
+
+    /*
+      fprintf(outfile, "\n\tVirtual orbital Energies for ij = %d:\n", ij);
       for(i=0; i < pairdom_nrlen[ij]; i++)
-	eps_vir[ij][i] = evals[i]; /* virtual orbital energies */
+      fprintf(outfile, "%d %20.12f\n", i, eps_vir[ij][i]);
+    */
 
-      /*
-	fprintf(outfile, "\n\tVirtual orbital Energies for ij = %d:\n", ij);
-	for(i=0; i < pairdom_nrlen[ij]; i++)
-	fprintf(outfile, "%d %20.12f\n", i, eps_vir[ij][i]);
-      */
+    free(evals);
+    free_block(evecs);
 
-      free(evals);
-      free_block(evecs);
-
-      free_block(St);
-      free_block(Xt);
-      free_block(Fbar);
-      free(Ft);
-
-    } /* if(pairdom_len[ij]) */
+    free_block(St);
+    free_block(Xt);
+    free_block(Fbar);
+    free(Ft);
 
   } /* ij loop */
 
@@ -758,15 +800,13 @@ void local_done(void)
   nvir = local.nvir;
   natom = local.natom;
 
-  psio_write_entry(CC_INFO, "Local Cutoff", (char *) local.domain_len,
-		   nocc*sizeof(int));
+  psio_write_entry(CC_INFO, "Local Cutoff", (char *) &local.cutoff,
+		   sizeof(double));
   psio_write_entry(CC_INFO, "Local Domain Length", (char *) local.domain_len,
 		   nocc*sizeof(int));
-  psio_write_entry(CC_INFO, "Local Pair Domains", (char *) local.pairdomain,
-		   nocc*nocc*natom*sizeof(int));
   psio_write_entry(CC_INFO, "Local Pair Domain Length", (char *) local.pairdom_len,
 		   nocc*nocc*sizeof(int));
-  psio_write_entry(CC_INFO, "Local Pair Domain Length (Non-redundant basis)", (char *) local.pairdom_nrlen,
+  psio_write_entry(CC_INFO, "Local Pair Domain NR Length", (char *) local.pairdom_nrlen,
 		   nocc*nocc*sizeof(int));
   psio_write_entry(CC_INFO, "Local Weak Pairs", (char *) local.weak_pairs,
 		   nocc*nocc*sizeof(int));
@@ -778,17 +818,21 @@ void local_done(void)
     psio_write(CC_INFO, "Local Domains", (char *) local.domain[i],
 	       natom*sizeof(int), next, &next);
   next = PSIO_ZERO;
-  for(ij=0; ij < nocc*nocc; ij++)
-    psio_write(CC_INFO, "Local Virtual Orbital Energies", (char *) local.eps_vir[ij],
-	       local.pairdom_nrlen[ij]*sizeof(double), next, &next);
+  for(ij=0; ij<nocc*nocc; ij++)
+    psio_write(CC_INFO, "Local Pair Domains", (char *) local.pairdomain[ij],
+	       natom*sizeof(int), next, &next);
   next = PSIO_ZERO;
   for(ij=0; ij < nocc*nocc; ij++)
-    psio_write(CC_INFO, "Local Transformation Matrix (W)", (char *) local.W[ij][0],
-	       local.pairdom_len[ij]*local.pairdom_nrlen[ij]*sizeof(double), next, &next);
+      psio_write(CC_INFO, "Local Virtual Orbital Energies", (char *) local.eps_vir[ij],
+		 local.pairdom_nrlen[ij]*sizeof(double), next, &next);
   next = PSIO_ZERO;
   for(ij=0; ij < nocc*nocc; ij++)
-    psio_write(CC_INFO, "Local Residual Vector (V)", (char *) local.V[ij][0],
-	       nvir*local.pairdom_len[ij]*sizeof(double), next, &next);
+      psio_write(CC_INFO, "Local Transformation Matrix (W)", (char *) local.W[ij][0],
+		 local.pairdom_len[ij]*local.pairdom_nrlen[ij]*sizeof(double), next, &next);
+  next = PSIO_ZERO;
+  for(ij=0; ij < nocc*nocc; ij++)
+      psio_write(CC_INFO, "Local Residual Vector (V)", (char *) local.V[ij][0],
+		 nvir*local.pairdom_len[ij]*sizeof(double), next, &next);
 
   if(params.ref == 0 || params.ref == 1) {
     for(h=0; h < moinfo.nirreps; h++)

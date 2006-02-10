@@ -16,7 +16,7 @@
 
 void local_magnetic(int **domain, int *domain_len, int natom, int *aostart, int *aostop)
 {
-  int i, j, a, k, max, complete, *boolean, *rank;
+  int i, j, ij, a, k, max, complete, *boolean, *rank;
   int nao, nso, nmo,noei_ao;
   double **TMP, *scratch, **X;
   double **L, **Z;
@@ -52,12 +52,12 @@ void local_magnetic(int **domain, int *domain_len, int natom, int *aostart, int 
   boolean = init_int_array(natom);
   rank = (int *) malloc(natom * sizeof(int *));
 
-  psio_open(PSIF_OEI, PSIO_OPEN_OLD);
-  psio_read_entry(PSIF_OEI, PSIF_AO_LX, (char *) &(TMP[0][0]), nao*nao*sizeof(double));
-  psio_close(PSIF_OEI, 1);
-  for(i=0; i < nao; i++)
-    for(j=0; j <nao; j++)
-      TMP[i][j] *= -0.5;
+  iwl_rdone(PSIF_OEI, PSIF_AO_LX, scratch, noei_ao, 0, 0, outfile);
+  for(i=0,ij=0; i<nao; i++)
+    for(j=0; j<=i; j++,ij++) {
+      TMP[i][j] = -0.5 * scratch[ij];
+      TMP[j][i] = 0.5 * scratch[ij];
+    }
 
   C_DGEMM('n','t',nao,nso,nao,1,&(TMP[0][0]),nao,&(usotao[0][0]),nao,
 	  0,&(X[0][0]),nao);
@@ -109,10 +109,8 @@ void local_magnetic(int **domain, int *domain_len, int natom, int *aostart, int 
       boolean[max] = 1;
     }
 
-    for(k=0; k < natom; k++)
-
-      /* Response domains for Alpha_xx */
-      mag_i = 0.0;
+    /* Response domains for Alpha_xx */
+    mag_i = 0.0;
     complete = 0;
     for(k=0; k < natom; k++) {
       mag_k = 0.0;
@@ -146,12 +144,12 @@ void local_magnetic(int **domain, int *domain_len, int natom, int *aostart, int 
   dpd_file2_mat_close(&U);
   dpd_file2_close(&U);
 
-  psio_open(PSIF_OEI, PSIO_OPEN_OLD);
-  psio_read_entry(PSIF_OEI, PSIF_AO_LY, (char *) &(TMP[0][0]), nao*nao*sizeof(double));
-  psio_close(PSIF_OEI, 1);
-  for(i=0; i < nao; i++)
-    for(j=0; j < nao; j++)
-      TMP[i][j] *= -0.5;
+  iwl_rdone(PSIF_OEI, PSIF_AO_LY, scratch, noei_ao, 0, 0, outfile);
+  for(i=0,ij=0; i<nao; i++)
+    for(j=0; j<=i; j++,ij++) {
+      TMP[i][j] = -0.5 * scratch[ij];
+      TMP[j][i] = 0.5 * scratch[ij];
+    }
 
   C_DGEMM('n','t',nao,nso,nao,1,&(TMP[0][0]),nao,&(usotao[0][0]),nao,
 	  0,&(X[0][0]),nao);
@@ -237,12 +235,12 @@ void local_magnetic(int **domain, int *domain_len, int natom, int *aostart, int 
   dpd_file2_mat_close(&U);
   dpd_file2_close(&U);
 
-  psio_open(PSIF_OEI, PSIO_OPEN_OLD);
-  psio_read_entry(PSIF_OEI, PSIF_AO_LZ, (char *) &(TMP[0][0]), nao*nao*sizeof(double));
-  psio_close(PSIF_OEI, 1);
-  for(i=0; i < nao; i++)
-    for(j=0; j < nao; j++)
-      TMP[i][j] *= -0.5;
+  iwl_rdone(PSIF_OEI, PSIF_AO_LZ, scratch, noei_ao, 0, 0, outfile);
+  for(i=0,ij=0; i<nao; i++)
+    for(j=0; j<=i; j++,ij++) {
+      TMP[i][j] = -0.5 * scratch[ij];
+      TMP[j][i] = 0.5 * scratch[ij];
+    }
 
   C_DGEMM('n','t',nao,nso,nao,1,&(TMP[0][0]),nao,&(usotao[0][0]),nao,
 	  0,&(X[0][0]),nao);

@@ -21,17 +21,17 @@ void cphf_F(void)
   irrep = moinfo.irrep_x;
 
   /* sort Mu elements into a single vector for lineq solver */
-  dpd_file2_init(&mu, CC_OEI, irrep, 1, 0, "Mu_X_AI");
+  dpd_file2_init(&mu, CC_OEI, irrep, 0, 1, "Mu_X_IA");
   dpd_file2_mat_init(&mu);
   dpd_file2_mat_rd(&mu);
   num_ai = A.params->rowtot[irrep];
   vector = init_array(num_ai);
   for(row=0; row < num_ai; row++) {
-    a = A.params->roworb[irrep][row][0];
-    i = A.params->roworb[irrep][row][1];
-    asym = A.params->psym[a];
-    isym = A.params->qsym[i];
-    vector[row] = mu.matrix[asym][a-A.params->poff[asym]][i-A.params->qoff[isym]];
+    i = A.params->roworb[irrep][row][0];
+    a = A.params->roworb[irrep][row][1];
+    isym = A.params->psym[i];
+    asym = A.params->qsym[a];
+    vector[row] = -mu.matrix[asym][a-A.params->qoff[asym]][i-A.params->poff[isym]];
   }
   dpd_file2_mat_close(&mu);
   dpd_file2_close(&mu);
@@ -68,17 +68,17 @@ void cphf_F(void)
   irrep = moinfo.irrep_y;
 
   /* sort Mu elements into a single vector for lineq solver */
-  dpd_file2_init(&mu, CC_OEI, irrep, 1, 0, "Mu_Y_AI");
+  dpd_file2_init(&mu, CC_OEI, irrep, 0, 1, "Mu_Y_IA");
   dpd_file2_mat_init(&mu);
   dpd_file2_mat_rd(&mu);
   num_ai = A.params->rowtot[irrep];
   vector = init_array(num_ai);
   for(row=0; row < num_ai; row++) {
-    a = A.params->roworb[irrep][row][0];
-    i = A.params->roworb[irrep][row][1];
-    asym = A.params->psym[a];
-    isym = A.params->qsym[i];
-    vector[row] = mu.matrix[asym][a-A.params->poff[asym]][i-A.params->qoff[isym]];
+    i = A.params->roworb[irrep][row][0];
+    a = A.params->roworb[irrep][row][1];
+    isym = A.params->psym[i];
+    asym = A.params->qsym[a];
+    vector[row] = -mu.matrix[asym][a-A.params->qoff[asym]][i-A.params->poff[isym]];
   }
   dpd_file2_mat_close(&mu);
   dpd_file2_close(&mu);
@@ -115,17 +115,17 @@ void cphf_F(void)
   irrep = moinfo.irrep_z;
 
   /* sort Mu elements into a single vector for lineq solver */
-  dpd_file2_init(&mu, CC_OEI, irrep, 1, 0, "Mu_Z_AI");
+  dpd_file2_init(&mu, CC_OEI, irrep, 0, 1, "Mu_Z_IA");
   dpd_file2_mat_init(&mu);
   dpd_file2_mat_rd(&mu);
   num_ai = A.params->rowtot[irrep];
   vector = init_array(num_ai);
   for(row=0; row < num_ai; row++) {
-    a = A.params->roworb[irrep][row][0];
-    i = A.params->roworb[irrep][row][1];
-    asym = A.params->psym[a];
-    isym = A.params->qsym[i];
-    vector[row] = mu.matrix[asym][a-A.params->poff[asym]][i-A.params->qoff[isym]];
+    i = A.params->roworb[irrep][row][0];
+    a = A.params->roworb[irrep][row][1];
+    isym = A.params->psym[i];
+    asym = A.params->qsym[a];
+    vector[row] = -mu.matrix[asym][a-A.params->qoff[asym]][i-A.params->poff[isym]];
   }
   dpd_file2_mat_close(&mu);
   dpd_file2_close(&mu);

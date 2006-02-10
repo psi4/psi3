@@ -17,6 +17,12 @@ struct MOInfo {
   int nactive;           /* total no. of active orbitals */
   int *orbsym;           /* QT-ordered orbital symmetry array */
 
+  double **PX;        /* MO-basis x-linear momentum ints (Pitzer order) */
+  double **PY;        /* MO-basis y-linear momentum ints (Pitzer order) */
+  double **PZ;        /* MO-basis z-linear momentum ints (Pitzer order) */
+  int *pitzer2qt;     /* Pitzer -> QT reordering array */
+  int *qt2pitzer;     /* QT -> Pitzer reordering array */
+
   int *pitz2qt;          /* RHF/ROHF Pitzer->QT translation lookup */
   int *pitz2qt_A;        /* UHF Alpha Pitzer->QT translation lookup */
   int *pitz2qt_B;        /* UHF Beta Pitzer->QT translation lookup */

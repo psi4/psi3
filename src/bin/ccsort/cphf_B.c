@@ -21,7 +21,7 @@ void cphf_B(void)
   irrep = moinfo.irrep_x;
 
   /* sort L elements into a single vector for lineq solver */
-  dpd_file2_init(&L, CC_OEI, irrep, 1, 0, "L_X_AI");
+  dpd_file2_init(&L, CC_OEI, irrep, 0, 1, "L_X_IA");
   dpd_file2_mat_init(&L);
   dpd_file2_mat_rd(&L);
   num_ai = A.params->rowtot[irrep];
@@ -31,7 +31,7 @@ void cphf_B(void)
     i = A.params->roworb[irrep][row][1];
     asym = A.params->psym[a];
     isym = A.params->qsym[i];
-    vector[row] = L.matrix[asym][a-A.params->poff[asym]][i-A.params->qoff[isym]];
+    vector[row] = L.matrix[isym][i-A.params->qoff[isym]][a-A.params->poff[asym]];
   }
   dpd_file2_mat_close(&L);
   dpd_file2_close(&L);
@@ -68,7 +68,7 @@ void cphf_B(void)
   irrep = moinfo.irrep_y;
 
   /* sort L elements into a single vector for lineq solver */
-  dpd_file2_init(&L, CC_OEI, irrep, 1, 0, "L_Y_AI");
+  dpd_file2_init(&L, CC_OEI, irrep, 0, 1, "L_Y_IA");
   dpd_file2_mat_init(&L);
   dpd_file2_mat_rd(&L);
   num_ai = A.params->rowtot[irrep];
@@ -78,7 +78,7 @@ void cphf_B(void)
     i = A.params->roworb[irrep][row][1];
     asym = A.params->psym[a];
     isym = A.params->qsym[i];
-    vector[row] = L.matrix[asym][a-A.params->poff[asym]][i-A.params->qoff[isym]];
+    vector[row] = L.matrix[isym][i-A.params->qoff[isym]][a-A.params->poff[asym]];
   }
   dpd_file2_mat_close(&L);
   dpd_file2_close(&L);
@@ -115,7 +115,7 @@ void cphf_B(void)
   irrep = moinfo.irrep_z;
 
   /* sort L elements into a single vector for lineq solver */
-  dpd_file2_init(&L, CC_OEI, irrep, 1, 0, "L_Z_AI");
+  dpd_file2_init(&L, CC_OEI, irrep, 0, 1, "L_Z_IA");
   dpd_file2_mat_init(&L);
   dpd_file2_mat_rd(&L);
   num_ai = A.params->rowtot[irrep];
@@ -125,7 +125,7 @@ void cphf_B(void)
     i = A.params->roworb[irrep][row][1];
     asym = A.params->psym[a];
     isym = A.params->qsym[i];
-    vector[row] = L.matrix[asym][a-A.params->poff[asym]][i-A.params->qoff[isym]];
+    vector[row] = L.matrix[isym][i-A.params->qoff[isym]][a-A.params->poff[asym]];
   }
   dpd_file2_mat_close(&L);
   dpd_file2_close(&L);

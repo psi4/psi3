@@ -194,7 +194,7 @@ void get_params()
 
   
   params.print_lvl = 1;
-  errcod = ip_data("PRINT_LVL","%d",&(params.print_lvl),0);
+  errcod = ip_data("PRINT","%d",&(params.print_lvl),0);
 
   params.keep_TEIFile = 0;
   errcod = ip_boolean("KEEP_TEIFILE",&(params.keep_TEIFile),0);

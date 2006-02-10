@@ -204,10 +204,10 @@ void sort_oei_rhf(void)
   free(tmp_oei);
 
   if(params.print_lvl > 5) {
-      fprintf(outfile, "\n\tFrozen-Core Operator:\n");
-      fprintf(outfile,   "\t---------------------");
-      print_array(oei, nactive, outfile);
-    }
+    fprintf(outfile, "\n\tFrozen-Core Operator:\n");
+    fprintf(outfile,   "\t---------------------");
+    print_array(oei, nactive, outfile);
+  }
 
   dpd_file2_init(&Hoo, CC_OEI, 0, 0, 0, "h(i,j)");
   dpd_file2_init(&Hvv, CC_OEI, 0, 1, 1, "h(a,b)");
@@ -219,52 +219,52 @@ void sort_oei_rhf(void)
 
   /* Loop over QT indices and convert to CC ordering */
   for(p=0; p < nactive; p++) {
-      for(q=0; q < nactive; q++) {
-	  pq = INDEX(p, q);
+    for(q=0; q < nactive; q++) {
+      pq = INDEX(p, q);
 
-	  /* Check occ-occ class */
-	  if(occ[p] && occ[q]) {
-	      /* Get relative indices */
-	      pnew = cc_occ[p];  qnew = cc_occ[q];
-	      /* Get orbital symmetries */
-	      psym = occ_sym[pnew]; qsym = occ_sym[qnew];
-	      /* Shift symmetry-relative indices */
-	      pnew -= occ_off[psym]; qnew -= occ_off[qsym];
-	      /* Check orbital symmetry and put integral in place */
-	      if(psym == qsym) {
-		  Hoo.matrix[psym][pnew][qnew] = oei[pq];
-		}
-	    }
-
-	  /* Check vir-vir class */
-	  if(vir[p] && vir[q]) {
-	      /* Get relative indices */
-	      pnew = cc_vir[p]; qnew = cc_vir[q];
-	      /* Get orbital symmetries */
-	      psym = vir_sym[pnew]; qsym = vir_sym[qnew];
-	      /* Shift symmetry-relative indices */
-	      pnew -= vir_off[psym]; qnew -= vir_off[qsym];
-	      /* Check orbital symmetry and put integral in place */
-	      if(psym == qsym) {
-		  Hvv.matrix[psym][pnew][qnew] = oei[pq];
-		}
-	    }
-
-	  /* Check occ-vir class */
-	  if(occ[p] && vir[q]) {
-	      /* Get relative indices */
-	      pnew = cc_occ[p]; qnew = cc_vir[q];
-	      /* Get orbital symmetries */
-	      psym = occ_sym[pnew]; qsym = vir_sym[qnew];
-	      /* Shift symmetry-relative indices */
-	      pnew -= occ_off[psym]; qnew -= vir_off[qsym];
-	      /* Check orbital symmetry and put integral in place */
-	      if(psym == qsym) {
-		  Hov.matrix[psym][pnew][qnew] = oei[pq];
-		}
-	    }
+      /* Check occ-occ class */
+      if(occ[p] && occ[q]) {
+	/* Get relative indices */
+	pnew = cc_occ[p];  qnew = cc_occ[q];
+	/* Get orbital symmetries */
+	psym = occ_sym[pnew]; qsym = occ_sym[qnew];
+	/* Shift symmetry-relative indices */
+	pnew -= occ_off[psym]; qnew -= occ_off[qsym];
+	/* Check orbital symmetry and put integral in place */
+	if(psym == qsym) {
+	  Hoo.matrix[psym][pnew][qnew] = oei[pq];
 	}
+      }
+
+      /* Check vir-vir class */
+      if(vir[p] && vir[q]) {
+	/* Get relative indices */
+	pnew = cc_vir[p]; qnew = cc_vir[q];
+	/* Get orbital symmetries */
+	psym = vir_sym[pnew]; qsym = vir_sym[qnew];
+	/* Shift symmetry-relative indices */
+	pnew -= vir_off[psym]; qnew -= vir_off[qsym];
+	/* Check orbital symmetry and put integral in place */
+	if(psym == qsym) {
+	  Hvv.matrix[psym][pnew][qnew] = oei[pq];
+	}
+      }
+
+      /* Check occ-vir class */
+      if(occ[p] && vir[q]) {
+	/* Get relative indices */
+	pnew = cc_occ[p]; qnew = cc_vir[q];
+	/* Get orbital symmetries */
+	psym = occ_sym[pnew]; qsym = vir_sym[qnew];
+	/* Shift symmetry-relative indices */
+	pnew -= occ_off[psym]; qnew -= vir_off[qsym];
+	/* Check orbital symmetry and put integral in place */
+	if(psym == qsym) {
+	  Hov.matrix[psym][pnew][qnew] = oei[pq];
+	}
+      }
     }
+  }
 
   dpd_file2_mat_wrt(&Hoo);
   dpd_file2_mat_wrt(&Hvv);
