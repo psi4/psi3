@@ -67,7 +67,7 @@ void local_filter_T1(dpdfile2 *T1)
   local.eps_occ = init_array(nocc);
   psio_read_entry(CC_INFO, "Local Pair Domain Length", (char *) local.pairdom_len,
 		  nocc*nocc*sizeof(int));
-  psio_read_entry(CC_INFO, "Local Pair Domain Length (Non-redundant basis)", (char *) local.pairdom_nrlen,
+  psio_read_entry(CC_INFO, "Local Pair Domain NR Length", (char *) local.pairdom_nrlen,
 		  nocc*nocc*sizeof(int));
   psio_read_entry(CC_INFO, "Local Occupied Orbital Energies", (char *) local.eps_occ,
 		  nocc*sizeof(double));
@@ -168,7 +168,7 @@ void local_filter_T2(dpdbuf4 *T2)
   local.eps_occ = init_array(nocc);
   psio_read_entry(CC_INFO, "Local Pair Domain Length", (char *) local.pairdom_len,
 		  nocc*nocc*sizeof(int));
-  psio_read_entry(CC_INFO, "Local Pair Domain Length (Non-redundant basis)", (char *) local.pairdom_nrlen,
+  psio_read_entry(CC_INFO, "Local Pair Domain NR Length", (char *) local.pairdom_nrlen,
 		  nocc*nocc*sizeof(int));
   psio_read_entry(CC_INFO, "Local Occupied Orbital Energies", (char *) local.eps_occ,
 		  nocc*sizeof(double));
