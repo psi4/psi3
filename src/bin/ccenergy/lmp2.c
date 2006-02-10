@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 #include <libdpd/dpd.h>
 #include <psifiles.h>
@@ -34,9 +35,9 @@ void local_filter_T2(dpdbuf4 *T2, int);
 
 void lmp2(void)
 {
-  int i, j, k, a, b, ij, ab, iter, conv, row, col, nocc, nvir, natom, **domain, weak;
+  int i, j, k, ij, ab, iter, conv, row, col, nocc, nvir, natom, weak;
   double energy, rms, weak_pair_energy;
-  dpdbuf4 T2, newT2, D, D2;
+  dpdbuf4 T2, newT2, D;
   dpdfile2 fij, fab;
   psio_address next;
 
@@ -46,19 +47,11 @@ void lmp2(void)
 
   local.domain = (int **) malloc(local.nocc*sizeof(int *));
   next = PSIO_ZERO;
-  for(i=0; i<local.nocc; i++) {
+  for(i=0; i<nocc; i++) {
     local.domain[i] = (int *) malloc(local.natom*sizeof(int));
     psio_read(CC_INFO, "Local Domains", (char *) local.domain[i],
-	      local.natom*sizeof(int), next, &next);
+	      natom*sizeof(int), next, &next);
   }
-  printf("\n");
-  for(i=0; i<local.nocc; i++) {
-    for(k=0; k<local.natom; k++) {
-      printf("\t%d", local.domain[i][k]);
-    }
-    printf("\n");
-  }
-  printf("\n");
 
   /* First, turn on all weak pairs for the LMP2 */
   for(ij=0; ij < nocc*nocc; ij++) local.weak_pairs[ij] = 0;
@@ -103,7 +96,7 @@ void lmp2(void)
   fprintf(outfile, "\titer = %d    LMP2 Energy = %20.14f\n", 0, energy);
 
   conv = 0;
-  for(iter=1; iter < 10000; iter++) {
+  for(iter=1; iter < 1000; iter++) {
 
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
     dpd_buf4_copy(&D, CC_TAMPS, "New LMP2 tIjAb Increment");
@@ -188,6 +181,7 @@ void lmp2(void)
   }
 
   /* Turn off weak pairs again for the LCCSD */
+
   for(i=0,ij=0; i < nocc; i++)
     for(j=0; j < nocc; j++,ij++) {
       weak = 1;
@@ -195,7 +189,7 @@ void lmp2(void)
         if(local.domain[i][k] && local.domain[j][k]) weak = 0;
 
       if(weak) local.weak_pairs[ij] = 1;
-      else local.weak_pairs[ij] = 0; 
+      else local.weak_pairs[ij] = 0;
     }
 
   /* Compute the MP2 weak-pair energy */
@@ -207,12 +201,10 @@ void lmp2(void)
   dpd_buf4_mat_irrep_rd(&T2, 0);
 
   weak_pair_energy = 0.0;
-  for(ij=0; ij < nocc*nocc; ij++) {
-    if(local.weak_pairs[ij]) {
-      for(ab=0; ab < nvir*nvir; ab++) 
-	weak_pair_energy += D.matrix[0][ij][ab] * T2.matrix[0][ij][ab];
-    }
-  }
+  for(ij=0; ij < nocc*nocc; ij++)
+    if(local.weak_pairs[ij])
+      for(ab=0; ab < nvir*nvir; ab++)
+  	weak_pair_energy += D.matrix[0][ij][ab] * T2.matrix[0][ij][ab];
 
   dpd_buf4_mat_irrep_close(&T2, 0);
   dpd_buf4_close(&T2);
@@ -222,6 +214,7 @@ void lmp2(void)
   fprintf(outfile, "\n\tLMP2 Weak Pair Energy   = %20.14f\n", weak_pair_energy);
   fprintf(outfile, "\tLMP2 Correlation Energy = %20.14f\n", energy);
   fprintf(outfile, "\tLMP2 Total Energy       = %20.14f\n\n", energy+moinfo.eref);
+  fflush(outfile);
 
   local.weak_pair_energy = weak_pair_energy;
 
