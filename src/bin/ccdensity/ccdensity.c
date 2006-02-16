@@ -263,8 +263,8 @@ int main(int argc, char *argv[])
     free_block(moinfo.opdm);
   }
 
-  if ( params.ael && (params.nstates > 1) ) 
-    ael(rho_params);
+  /* if ( params.ael && (params.nstates > 1) ) 
+    ael(rho_params); */
 
   if(params.transition) {
     psio_close(CC_TMP,0);

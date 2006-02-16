@@ -27,7 +27,7 @@ norm.c x_xi2.c x_xi2_uhf.c x_xi2_rhf.c G_norm.c x_xi1_connected.c \
 get_rho_params.c td_setup.c ltdensity_intermediates.c ltdensity.c rtdensity.c \
 td_cleanup.c td_print.c sort_ltd_rohf.c sort_ltd_uhf.c sort_rtd_rohf.c \
 sort_rtd_uhf.c tdensity.c oscillator_strength.c transdip.c transL.c transp.c \
-rotational_strength.c get_td_params.c ccdensity.c ael.c \
+rotational_strength.c get_td_params.c ccdensity.c \
 
 BINOBJ = $(CSRC:%.c=%.o)
 
