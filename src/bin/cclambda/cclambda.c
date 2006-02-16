@@ -39,6 +39,7 @@ void overlap(int L_irr);
 void overlap_LAMPS(struct L_Params L_params);
 void Lsave_index(struct L_Params L_params);
 void check_ortho(struct L_Params *pL_params);
+void projections(struct L_Params *pL_params);
 void L_zero(int irrep);
 void c_clean(dpdfile2 *LIA, dpdfile2 *Lia, dpdbuf4 *LIJAB, dpdbuf4 *Lijab, dpdbuf4 *LIjAb);
 void L_clean(struct L_Params pL_params);
@@ -211,11 +212,12 @@ int main(int argc, char *argv[])
   }
 
   if (params.zeta) {
-	  zeta_norm(pL_params[0]);
+    zeta_norm(pL_params[0]);
   }
-	else if (params.nstates > 1) { /* some excited states are present */
+  else if (params.nstates > 1) { /* some excited states are present */
     check_ortho(pL_params);
-	}
+    projections(pL_params);
+  }
 
   if(params.local) local_done();
 

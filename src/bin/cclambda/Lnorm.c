@@ -97,7 +97,7 @@ void Lnorm(struct L_Params L_params)
   dpd_buf4_close(&LIjAb);
 
   tval = pseudoenergy(L_params);
-  fprintf(outfile,"\tPseudoenergy/Norm w/normed L = %20.15lf\n",tval);
+  fprintf(outfile,"\tPseudoenergy or Norm of normalized L = %20.15lf\n",tval);
 
   return;
 }
