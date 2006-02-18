@@ -307,6 +307,11 @@ double cc2_LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
   dpd_buf4_close(&Z2);
   dpd_buf4_close(&Z);
 
+  sprintf(lbl, "Z_%s_%1s_AbEj", pert_y, cart_y);
+  dpd_buf4_init(&Z, CC_TMP9, irrep_y, 5, 11, 5, 11, 0, lbl);
+  dpd_buf4_scm(&Z, 0);
+  dpd_buf4_close(&Z);
+
   sprintf(lbl, "Z_%s_%1s_AbEj (Ej,Ab)", pert_y, cart_y);
   dpd_buf4_init(&Z, CC_TMP8, irrep_y, 11, 5, 11, 5, 0, lbl);
   sprintf(lbl, "Z_%s_%1s_AbEj", pert_y, cart_y);
