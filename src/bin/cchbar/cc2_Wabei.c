@@ -1,3 +1,4 @@
+#include <string.h>
 #include <libdpd/dpd.h>
 #define EXTERN
 #include "globals.h"
@@ -335,6 +336,12 @@ void cc2_Wabei_build(void)
     dpd_buf4_init(&W, CC_TMP0, 0, 11, 5, 11, 5, 0, "CC2 WAbEi (Ei,Ab)");
     dpd_buf4_sort_axpy(&W, CC2_HET1, rspq, 5, 11, "CC2 WAbEi", 1);
     dpd_buf4_close(&W);
+
+    if(!strcmp(params.wfn, "EOM_CC2")) {
+      dpd_buf4_init(&W, CC_TMP0, 0, 11, 5, 11, 5, 0, "CC2 WAbEi (Ei,Ab)");
+      dpd_buf4_copy(&W, CC2_HET1, "CC2 WAbEi (Ei,Ab)");
+      dpd_buf4_close(&W);
+    }
 
   }
   if (params.ref == 1) { /* ROHF */
