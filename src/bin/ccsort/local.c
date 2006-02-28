@@ -565,7 +565,7 @@ void local_init(void)
       norm += Rt_full[j][i] * Rt_full[j][i];
     }
     norm = sqrt(norm);
-    if(norm < 0.1 && strcmp(local.freeze_core,"FALSE")) {
+    if(norm < 0.2 && strcmp(local.freeze_core,"FALSE")) {
       fprintf(outfile, "\tNorm of orbital %4d = %20.12f...deleteing\n", i, norm);
       for(j=0; j < nso; j++) Rt_full[j][i] = 0.0; 
     }
