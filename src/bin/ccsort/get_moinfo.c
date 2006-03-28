@@ -961,7 +961,7 @@ void get_moinfo(void)
   fprintf(outfile,"\n\tNuclear Rep. energy (chkpt) =  %20.14f\n", moinfo.enuc);
   fprintf(outfile,  "\tSCF energy          (chkpt) =  %20.14f\n", escf);
 
-  /* Lastly, build the active virtual orbital SCF eigenvector array for
+  /* Build the active virtual orbital SCF eigenvector array for
      the AO-basis code (see CCENERGY) */
 
   if(params.ref == 2) { /*** UHF references ***/
@@ -1132,5 +1132,25 @@ void get_moinfo(void)
     free(evects);  free(scf_vector);
     free(pitz_offset);
     chkpt_close();
+  }
+
+  /* Build SO and MO lookups for integral transformation */
+  if(params.ref == 0 || params.ref == 1) {
+    moinfo.sopi = init_int_array(moinfo.nirreps);
+    moinfo.mopi = init_int_array(moinfo.nirreps);
+    for(h=0; h < moinfo.nirreps; h++) {
+      moinfo.sopi[h] = moinfo.orbspi[h];
+      moinfo.mopi[h] = moinfo.clsdpi[h] + moinfo.openpi[h] + moinfo.uoccpi[h];
+    }
+
+    moinfo.so_sym = init_int_array(moinfo.nmo);
+    for(h=0,count=0; h < moinfo.nirreps; h++)
+      for(i=0; i < moinfo.sopi[h]; i++,count++)
+	moinfo.so_sym[count] = h;
+
+    moinfo.mo_sym = init_int_array(moinfo.nactive);
+    for(h=0,count=0; h < moinfo.nirreps; h++)
+      for(i=0; i < moinfo.mopi[h]; i++,count++)
+	moinfo.mo_sym[count] = h;
   }
 }

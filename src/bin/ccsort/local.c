@@ -834,12 +834,6 @@ void local_done(void)
       psio_write(CC_INFO, "Local Residual Vector (V)", (char *) local.V[ij][0],
 		 nvir*local.pairdom_len[ij]*sizeof(double), next, &next);
 
-  if(params.ref == 0 || params.ref == 1) {
-    for(h=0; h < moinfo.nirreps; h++)
-      if(moinfo.orbspi[h] && moinfo.virtpi[h]) free_block(moinfo.C[h]);
-    free(moinfo.C);
-  }
-
   free_int_matrix(local.pairdomain, nocc*nocc);
   free_int_matrix(local.domain, nocc);
   for(i=0; i < nocc*nocc; i++) {

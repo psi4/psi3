@@ -8,6 +8,8 @@
 #define EXTERN
 #endif
 
+#define CC_TEI_HALFT 91
+
 EXTERN FILE *infile, *outfile;
 EXTERN char *psi_file_prefix;
 EXTERN int *ioff;

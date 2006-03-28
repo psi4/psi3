@@ -130,4 +130,10 @@ struct MOInfo {
   int irrep_Ry;
   int irrep_Rz;
   double ***C;           /* Virtual orbital transformation matrix (for AO-basis B terms) */
+
+  /* elements for integral transformation codes */
+  int *sopi;   /* SOs per irrep */
+  int *so_sym; /* SO symmetry array */
+  int *mopi;   /* MOs per irrep */
+  int *mo_sym; /* MO symmetry array */
 };
