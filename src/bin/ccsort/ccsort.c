@@ -49,12 +49,15 @@ void local_init(void);
 void local_done(void);
 
 void cc_memcheck(void);
-void transform_two_rhf(void);
 
 int main(int argc, char *argv[])
 {
   int i;
   int **cachelist, *cachefiles;
+  int bamount,famount; /* Truncated theoretical number of B/F-type ints that
+                          could be stored in cache at once                  */
+
+  unsigned long int ia_size, ab_size, ij_size, f_size, t2_size, b_size;
 
   init_io(argc,argv);
   init_ioff();
@@ -66,26 +69,21 @@ int main(int argc, char *argv[])
   get_moinfo();
 
   cachefiles = init_int_array(PSIO_MAXUNIT);
-  if(params.ref == 2) cachelist = cacheprep_uhf(params.cachelev, cachefiles);
-  else cachelist = cacheprep_rhf(params.cachelev, cachefiles);
 
-  if(params.ref == 0 || params.ref == 1) {
-    dpd_init(0, moinfo.nirreps, params.memory, 0, cachefiles, cachelist,
-	     NULL, 2, moinfo.sopi, moinfo.so_sym, moinfo.mopi, moinfo.mo_sym);
+  if(params.ref == 2) { /*** UHF references ***/
+    cachelist = cacheprep_uhf(params.cachelev, cachefiles);
 
-    transform_two_rhf();
-
-    dpd_close(0);
-  }
-
-  if(params.ref == 2) /*** UHF references ***/
     dpd_init(0, moinfo.nirreps, params.memory, 0, cachefiles, cachelist, 
 	     NULL, 4, moinfo.aoccpi, moinfo.aocc_sym, moinfo.avirtpi, moinfo.avir_sym,
 	     moinfo.boccpi, moinfo.bocc_sym, moinfo.bvirtpi, moinfo.bvir_sym);
-  else /*** RHF/ROHF references ***/
+  } 
+  else { /*** RHF/ROHF references ***/
+    cachelist = cacheprep_rhf(params.cachelev, cachefiles);
+
     dpd_init(0, moinfo.nirreps, params.memory, 0, cachefiles, cachelist, 
 	     NULL, 2, moinfo.occpi, moinfo.occ_sym, moinfo.virtpi, 
 	     moinfo.vir_sym);
+  }
 
   /* run a small computation of memory and disk requirements */
   cc_memcheck();
@@ -152,12 +150,6 @@ void init_io(int argc, char *argv[])
 
   if(params.reset) for(i=CC_MIN; i <= CC_MAX; i++) psio_open(i,0);
   else for(i=CC_MIN; i <= CC_MAX; i++) psio_open(i,1);
-
-  /* If we're doing the transformation, open the appropriate files */
-  if(params.ref == 0 || params.ref == 1) {
-    psio_open(PSIF_SO_PRESORT,0);
-    psio_open(CC_TEI_HALFT, 0);
-  }
 }
 
 void title(void)
@@ -177,11 +169,6 @@ void exit_io(void)
   for(i=CC_MIN; i < CC_TMP; i++) psio_close(i,1);
   for(i=CC_TMP; i <= CC_TMP11; i++) psio_close(i,0);  /* get rid of TMP files */
   for(i=CC_TMP11+1; i <= CC_MAX; i++) psio_close(i,1);
-
-  if(params.ref == 0 || params.ref == 1) {
-    psio_close(PSIF_SO_PRESORT, 0);
-    psio_close(CC_TEI_HALFT, 0);
-  }
 
   psio_done();
   tstop(outfile);
@@ -271,10 +258,6 @@ void cleanup(void)
   }
   else {
 
-    for(i=0; i < moinfo.nirreps; i++)
-      if(moinfo.orbspi[i] && moinfo.virtpi[i]) free_block(moinfo.C[i]);
-    free(moinfo.C);
-
     free(moinfo.pitz2qt);
     free(moinfo.qt2pitz);
 
@@ -308,6 +291,7 @@ void cleanup(void)
     free(moinfo.vir_off);
     free(moinfo.all_occ_off);
     free(moinfo.all_vir_off);
+
   }
 
   free(moinfo.pitzer2qt);

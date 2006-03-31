@@ -17,8 +17,7 @@ transpert.c sort_pert.c build_F_RHF.c cphf_F.c build_B_RHF.c cphf_B.c \
 local.c local_polar.c local_magnetic.c \
 d_spinad.c  e_spinad.c    f_spinad.c    cc_memcheck.c  \
 file_build_multipass.c  idx_permute_multipass.c \
-build_abcd_packed.c transform_two_rhf.c \
-file_build_presort.c idx_permute_presort.c \
+build_abcd_packed.c \
 
 BINOBJ = $(CSRC:%.c=%.o)
 
