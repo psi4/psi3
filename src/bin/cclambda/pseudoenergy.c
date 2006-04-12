@@ -13,7 +13,7 @@ double pseudoenergy(struct L_Params L_params)
   int L_irr;
   L_irr = L_params.irrep;
 
-  if ( L_params.ground || (L_params.irrep ==0) ) {
+  if ( L_params.ground || ((L_params.irrep ==0)&&(fabs(L_params.R0)>1e-10)) ) {
     if(params.ref == 0) { /** RHF **/
 
       Lia_energy = 0.0;

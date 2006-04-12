@@ -38,6 +38,7 @@ void denom(struct L_Params);
 void overlap(int L_irr);
 void overlap_LAMPS(struct L_Params L_params);
 void Lsave_index(struct L_Params L_params);
+void Lamp_write(struct L_Params L_params);
 void check_ortho(struct L_Params *pL_params);
 void projections(struct L_Params *pL_params);
 void L_zero(int irrep);
@@ -185,6 +186,7 @@ int main(int argc, char *argv[])
           Lnorm(pL_params[i]); /* normalize against R */
         }
         Lsave_index(pL_params[i]); /* save Ls with indices in LAMPS */
+        Lamp_write(pL_params[i]); /* write out largest  Ls */
 	/* sort_amps(); to be done by later functions */
         fprintf(outfile, "\n\tIterations converged.\n");
         fflush(outfile);

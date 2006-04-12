@@ -18,7 +18,7 @@ cache.c  BL2_AO.c   halftrans.c Lnorm.c Lmag.c check_sum.c \
 check_ortho.c overlap_LAMPS.c local.c c_clean.c spinad_amps.c hbar_extra.c \
 status.c cc3_t3z.c cc3_t3x.c cc3_l3l2.c cc3_l3l1.c L3_AAA.c L3_AAB.c \
 cc2_L1.c cc2_L2.c cc2_faeL2.c cc2_fmiL2.c cc2_hbar_extra.c cc2_Gai.c \
-ortho_Rs.c projections.c \
+ortho_Rs.c projections.c Lamp_write.c \
 
 BINOBJ = $(CSRC:%.c=%.o)
 

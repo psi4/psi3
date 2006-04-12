@@ -19,6 +19,7 @@ struct Params {
 	/* the following should be obseleted now or soon */
   int all; /* find Ls for all excited states plus ground state */
   int ground; /* find L for only ground state */
+  int num_amps;
 };
 
 struct L_Params {

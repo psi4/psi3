@@ -82,6 +82,11 @@ void get_params(void)
   }
   else params.abcd = strdup("NEW");
 
+  params.num_amps = 10;
+  if(ip_exist("NUM_AMPS",0)) {
+    errcod = ip_data("NUM_AMPS", "%d", &(params.num_amps), 0);
+  }
+
   /* Determine DERTYPE */
   params.dertype = 0;
   if(ip_exist("DERTYPE",0)) {
