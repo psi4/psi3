@@ -232,6 +232,10 @@ void diagSS(int C_irr) {
     }
   }
   */
+  if (eom_params.skip_diagSS) {
+    fprintf(outfile,"\nSkipping diagonalization of Hbar SS block.\n");
+    return;
+  }
 
   fflush(outfile);
 

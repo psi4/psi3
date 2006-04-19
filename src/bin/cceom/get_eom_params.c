@@ -104,6 +104,11 @@ void get_eom_params()
   errcod = ip_data("SCHMIDT_ADD_RESIDUAL_TOL","%d",&(iconv),0);
   if(errcod == IPE_OK) eom_params.schmidt_add_residual_tol = 1.0*pow(10.0,(double) -iconv);
 
+  eom_params.skip_diagSS = 0;
+  i = 0;
+  errcod = ip_boolean("SKIP_DIAGSS",&(i),0);
+  if (i) eom_params.skip_diagSS = 1;
+
   eom_params.max_iter_SS = 500;
 
   if(eom_params.guess == NULL) { /* we didn't use the cmdline arg --reuse */

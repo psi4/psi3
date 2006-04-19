@@ -35,7 +35,8 @@ struct Eom_params {
   int rhf_triplets;
   int mult;
   int follow_root;
-	int restart_vectors_per_root;
+  int restart_vectors_per_root;
+  int skip_diagSS;
 
   /* compute overlap of normalized R with L (must run cclambda first) */
   int dot_with_L;
