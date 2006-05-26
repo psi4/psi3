@@ -98,7 +98,7 @@ void diis(int iter, char *pert, char *cart, int irrep, double omega)
 
     start = psio_get_address(PSIO_ZERO, diis_cycle*vector_length*sizeof(double));
     sprintf(lbl, "DIIS %s %1s Error Vectors", pert, cart);
-    psio_write(CC_DIIS_ERR, lbl , (char *) error[0], 
+    psio_write(CC_DIIS_ERR, lbl , (char *) error[0],
 	       vector_length*sizeof(double), start, &end);
 
     /* Store the current amplitude vector on disk */
@@ -129,7 +129,7 @@ void diis(int iter, char *pert, char *cart, int irrep, double omega)
 
     start = psio_get_address(PSIO_ZERO, diis_cycle*vector_length*sizeof(double));
     sprintf(lbl, "DIIS %s %1s Amplitude Vectors", pert, cart);
-    psio_write(CC_DIIS_AMP, lbl , (char *) error[0], 
+    psio_write(CC_DIIS_AMP, lbl , (char *) error[0],
 	       vector_length*sizeof(double), start, &end);
 
     /* If we haven't run through enough iterations, set the correct dimensions
@@ -210,7 +210,7 @@ void diis(int iter, char *pert, char *cart, int irrep, double omega)
       start = psio_get_address(PSIO_ZERO, p*vector_length*sizeof(double));
 
       sprintf(lbl, "DIIS %s %1s Amplitude Vectors", pert, cart);
-      psio_read(CC_DIIS_AMP, lbl, (char *) vector[0], 
+      psio_read(CC_DIIS_AMP, lbl, (char *) vector[0],
 		vector_length*sizeof(double), start, &end);
 
       for(q=0; q < vector_length; q++) 

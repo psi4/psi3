@@ -3,8 +3,8 @@
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <libiwl/iwl.h>
-#define EXTERN
 #include <psifiles.h>
+#define EXTERN
 #include "globals.h"
 
 /* transpert(): Transform various one-electron property integrals from

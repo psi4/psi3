@@ -113,6 +113,13 @@ void init_io(int argc, char *argv[])
   psio_init();
 
   for(i=CC_MIN; i <= CC_MAX; i++) psio_open(i, 1);
+
+  /* Clear out DIIS TOC Entries */
+  psio_close(CC_DIIS_AMP, 0);
+  psio_close(CC_DIIS_ERR, 0);
+
+  psio_open(CC_DIIS_AMP, 0);
+  psio_open(CC_DIIS_ERR, 0);
 }
 
 void title(void)
