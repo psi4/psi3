@@ -267,6 +267,9 @@ void chkpt_wt_disp(int);
 int* chkpt_rd_atom_dummy(void);
 void chkpt_wt_atom_dummy(int *);
 
+double **chkpt_rd_local_scf(void);
+void chkpt_wt_local_scf(double **);
+
 int chkpt_rd_disp_irrep(void);
 void chkpt_wt_disp_irrep(int);
 
