@@ -8,7 +8,7 @@
 ** spatial- and spin-symmetry instabilities.  In spin orbitals the Hessian
 ** matrix is:
 **
-** A(ai,bj) = delta_ij f_ab - delta_ab f_ij + <ij||ab> - <ja||ib>
+** A(ai,bj) = delta_ij f_ab - delta_ab f_ij + <ij||ab> + <ja||ib>
 **
 ** RHF references and singlet eigenstates:
 **  A(AI,BJ) = delta_IJ f_AB - delta_AB f_IJ + 4 <IJ|AB> - <IJ|BA> - <IA|JB>
@@ -23,7 +23,7 @@
 ** non-canonical Hartree-Fock orbitals.
 */
 
-void build_F_RHF(void)
+void build_F_RHF(double omega)
 {
   int h, nirreps;
   int a, b, i, j, ai, bj, A, B, I, J, Asym, Bsym, Isym, Jsym;
@@ -82,6 +82,7 @@ void build_F_RHF(void)
 	Jsym = fIJ.params->qsym[j];
 	if((A==B) && (Isym==Jsym)) Amat.matrix[h][ai][bj] -= fIJ.matrix[Isym][I][J];
 	if((I==J) && (Asym==Bsym)) Amat.matrix[h][ai][bj] += fAB.matrix[Asym][A][B];
+	if(ai==bj) Amat.matrix[h][ai][bj] -= omega;
       }
     }
     dpd_buf4_mat_irrep_wrt(&Amat, h);

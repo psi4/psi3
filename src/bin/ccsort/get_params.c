@@ -5,6 +5,7 @@
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <psifiles.h>
+#include <physconst.h>
 #include "Params.h"
 #include "MOInfo.h"
 #include "Local.h"
@@ -13,8 +14,8 @@
 
 void get_params()
 {
-  int errcod, tol;
-  char *junk;
+  int errcod, tol, count, i;
+  char *junk, units[20];
   int *mu_irreps;
   
   errcod = ip_string("WFN", &(params.wfn), 0);
@@ -157,6 +158,9 @@ void get_params()
   ip_boolean("LOCAL_DOMAIN_POLAR", &(local.domain_polar), 0);
   ip_boolean("LOCAL_DOMAIN_MAG", &(local.domain_mag), 0);
 
+  local.domain_sep = 0;
+  errcod = ip_boolean("LOCAL_DOMAIN_SEP", &(local.domain_sep),0);
+
   if(params.dertype == 3)
     local.filter_singles = 0;
   else
@@ -214,6 +218,50 @@ void get_params()
   params.local = 0;
   errcod = ip_boolean("LOCAL", &(params.local),0);
 
+  /* grab the field frequencies from input -- a few different units are converted to E_h */
+  if(ip_exist("OMEGA",0)) {
+    errcod = ip_count("OMEGA", &count, 0);
+
+    if(errcod == IPE_NOT_AN_ARRAY || count == 1) { /* assume Hartrees and only one frequency */
+      params.nomega = 1;
+      params.omega = init_array(1);
+      errcod = ip_data("OMEGA", "%lf", &(params.omega[0]), 0);
+    }
+    else if(count >= 2) {
+      params.nomega = count-1;
+      params.omega = init_array(params.nomega);
+
+      errcod = ip_data("OMEGA", "%s", units, 1, count-1);
+      for(junk = units; *junk != '\0'; junk++)
+	if(*junk>='a' && *junk <= 'z') *junk += 'A' - 'a';
+
+      for(i=0; i < count-1; i++) {
+	errcod = ip_data("OMEGA", "%lf", &(params.omega[i]), 1, i);
+
+	if(!strcmp(units, "HZ")) params.omega[i] *= _h / _hartree2J;
+	else if(!strcmp(units, "AU")) 1; /* do nothing */
+	else if(!strcmp(units, "NM")) params.omega[i] = (_c*_h*1e9)/(params.omega[i]*_hartree2J);
+	else if(!strcmp(units, "EV")) params.omega[i] /= _hartree2ev;
+	else {
+	  fprintf(outfile, "\n\tError in unit for input field frequencies.  Must use one of:\n");
+	  fprintf(outfile,   "\tau, hz, nm, or ev.\n");
+	  exit(PSI_RETURN_FAILURE);
+	}
+      }
+    }
+    else {
+      fprintf(outfile, "\n\tError reading input field frequencies.  Please use the format:\n");
+      fprintf(outfile,   "\t  omega = (value1 value2 ... units)\n");
+      fprintf(outfile,   "\twhere units = hartrees, hz, nm, or ev.\n");
+      exit(PSI_RETURN_FAILURE);
+    }
+  }
+  else { /* assume static field by default */
+    params.omega = init_array(1);
+    params.omega[0] = 0.0;
+    params.nomega = 1;
+  }
+
   mu_irreps = init_int_array(3);
   errcod = ip_int_array("MU_IRREPS", mu_irreps, 3);
   if(errcod == IPE_OK) {
@@ -248,6 +296,14 @@ void get_params()
 	  (params.make_abcd == 1) ? "True" : "False");
   fprintf(outfile, "\tCache Level     =\t%d\n", params.cachelev);
   fprintf(outfile, "\tCache Type      =\t%s\n", "LRU");
+  for(i=0; i < params.nomega; i++) {
+    if(params.omega[i] == 0.0) 
+      fprintf(outfile, "\tApplied field %2d =  0.000\n", i);
+    else 
+      fprintf(outfile, "\tApplied field %2d =    %5.3f E_h (%6.2f nm, %5.3f eV, %8.2f cm-1)\n", i, params.omega[i],
+	      (_c*_h*1e9)/(_hartree2J*params.omega[i]), _hartree2ev*params.omega[i],
+	      _hartree2wavenumbers*params.omega[i]);
+  }
   fprintf(outfile, "\tLocal CC        =     %s\n", params.local ? "Yes" : "No");
   if(params.local) {
     fprintf(outfile, "\tLocal Cutoff       = %3.1e\n", local.cutoff);

@@ -14,7 +14,7 @@ ccsort.c    denom.c       file_build.c  get_params.c  scf_check.c   \
 classify.c  distribute.c  fock.c        idx_error.c   sort_oei.c    \
 sort_tei.c  f_sort.c      cache.c       b_sort.c                    \
 transpert.c sort_pert.c build_F_RHF.c cphf_F.c build_B_RHF.c cphf_B.c \
-local.c local_polar.c local_magnetic.c \
+local.c local_polar.c local_magnetic.c domain_print.c \
 d_spinad.c  e_spinad.c    f_spinad.c    cc_memcheck.c  \
 file_build_multipass.c  idx_permute_multipass.c \
 build_abcd_packed.c \

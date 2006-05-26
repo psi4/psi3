@@ -36,14 +36,15 @@
 ** TDC, Jan-June 2002
 */
 
-void transpert(char *pert);
+void domain_print(int, int, int *, int **, double *);
+void transpert(char *);
 void sort_pert(char *, double **, double **, double **, int, int, int);
-void build_F_RHF(void);
-void build_B_RHF(void);
-void cphf_F(void);
-void cphf_B(void);
-void local_polar(int ** domain, int *domain_len, int natom, int *aostart, int *aostop);
-void local_magnetic(int ** domain, int *domain_len, int natom, int *aostart, int *aostop);
+void build_F_RHF(double);
+void build_B_RHF(double);
+void cphf_F(char *);
+void cphf_B(char *);
+void local_polar(char*, int **, int *, int, int *, int *);
+void local_magnetic(char*, int **, int *, int, int *, int *);
 
 void local_init(void)
 {
@@ -76,6 +77,7 @@ void local_init(void)
   int *l_length, *aostart, *aostop, *ao2atom;
   int *stype, *snuc;
   int **domain, *domain_len, **pairdomain, *pairdom_len, *pairdom_nrlen;
+  int **domain_bp, *domain_len_bp;
   int *weak_pairs;
   double *fR, *charge, *SR, *Z, tmp, *ss;
 
@@ -202,6 +204,8 @@ void local_init(void)
 
   domain = init_int_matrix(nocc, natom);
   domain_len = init_int_array(nocc);
+  domain_bp = init_int_matrix(nocc, natom);
+  domain_len_bp = init_int_array(nocc);
   charge = init_array(natom);
   rank = init_int_array(natom);
   boolean = init_int_array(natom);
@@ -293,30 +297,14 @@ void local_init(void)
     } /* cutoff check */
   } /* i */
 
-  /* Print the orbital domains */
-  max = 0;
-  for(i=0; i < nocc; i++) 
-    if(domain_len[i] > max) max = domain_len[i];
-
-  fprintf(outfile, "\n   ****** Boughton-Pulay Occupied Orbital Domains ******\n");
-  fprintf(outfile, "   Orbital  Domain");
-  for(i=0; i < max-2; i++) fprintf(outfile, "   "); /* formatting junk */
-  fprintf(outfile, "  Completeness\n");
-  fprintf(outfile, "   -------  ------");
-  for(i=0; i < max-2; i++) fprintf(outfile, "---"); /* more formatting junk */
-  fprintf(outfile, "  ------------\n");
-  for(i=0; i < nocc; i++) {
-    fprintf(outfile, "      %2d    ",i);
-    for(j=0,cnt=0; j < natom; j++) if(domain[i][j]) { fprintf(outfile, " %2d", j); cnt++; }
-    if(cnt < max) for(; cnt < max; cnt++) fprintf(outfile, "   ");
-    fprintf(outfile, "     %7.5f\n", fR[i]);
+  for(i=0; i<nocc; i++) {
+    domain_len_bp[i] = domain_len[i];
+    for(k=0; k<natom; k++)
+      domain_bp[i][k] = domain[i][k];
   }
-  domain_tot = 0;
-  for(i=0; i < nocc; i++)
-    domain_tot += domain_len[i];
-  domain_ave = domain_tot/nocc;
-  fprintf(outfile, "\n   The average domain length is %4.2lf\n", domain_ave);
-  fflush(outfile);
+  /* Print the orbital domains */
+  fprintf(outfile, "\n   ****** Boughton-Pulay Occupied Orbital Domains ******\n");
+  domain_print(nocc, natom, domain_len_bp, domain_bp, fR);
 
   /* Identify and/or remove weak pairs -- using Bougton-Pulay domains */
   weak_pairs = init_int_array(nocc*nocc);
@@ -349,9 +337,116 @@ void local_init(void)
     transpert("Mu");
     sort_pert("Mu", moinfo.MUX, moinfo.MUY, moinfo.MUZ,
 	      moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z);
-    build_F_RHF();
-    cphf_F();
-    local_polar(domain, domain_len, natom, aostart, aostop);
+
+    if(local.domain_sep) {
+      /* Zero omega */
+      build_F_RHF(0);
+      cphf_F("X");
+      local_polar("X", domain, domain_len, natom, aostart, aostop);
+      fprintf(outfile, "\nMu_X (%lf)\n", 0);
+      domain_print(nocc, natom, domain_len, domain, fR);
+      for(i=0; i<nocc; i++) {
+	domain_len[i] = domain_len_bp[i];
+	for(k=0; k<natom; k++)
+	  domain[i][k] = domain_bp[i][k];
+      }
+
+      cphf_F("Y");
+      local_polar("Y", domain, domain_len, natom, aostart, aostop);
+      fprintf(outfile, "\nMu_Y (%lf)\n", 0);
+      domain_print(nocc, natom, domain_len, domain, fR);
+      for(i=0; i<nocc; i++) {
+	domain_len[i] = domain_len_bp[i];
+	for(k=0; k<natom; k++)
+	  domain[i][k] = domain_bp[i][k];
+      }
+
+      cphf_F("Z");
+      local_polar("Z", domain, domain_len, natom, aostart, aostop);
+      fprintf(outfile, "\nMu_Z (%lf)\n", 0);
+      domain_print(nocc, natom, domain_len, domain, fR);
+      for(i=0; i<nocc; i++) {
+	domain_len[i] = domain_len_bp[i];
+	for(k=0; k<natom; k++)
+	  domain[i][k] = domain_bp[i][k];
+      }
+
+      /* Positive omega */
+      build_F_RHF(params.omega[0]);
+      cphf_F("X");
+      local_polar("X", domain, domain_len, natom,	aostart, aostop);
+      fprintf(outfile, "\nMu_X (%lf)\n", params.omega[0]);
+      domain_print(nocc, natom, domain_len, domain, fR);
+      for(i=0; i<nocc; i++) {
+	domain_len[i] = domain_len_bp[i];
+	for(k=0; k<natom; k++)
+	  domain[i][k] = domain_bp[i][k];
+      }
+
+      cphf_F("Y");
+      local_polar("Y", domain, domain_len, natom,
+		  aostart, aostop);
+      fprintf(outfile, "\nMu_Y (%lf)\n", params.omega[0]);
+      domain_print(nocc, natom, domain_len, domain, fR);
+      for(i=0; i<nocc; i++) {
+	domain_len[i] = domain_len_bp[i];
+	for(k=0; k<natom; k++)
+	  domain[i][k] = domain_bp[i][k];
+      }
+
+      cphf_F("Z");
+      local_polar("Z", domain, domain_len, natom,	aostart, aostop);
+      fprintf(outfile, "\nMu_Z (%lf)\n", params.omega[0]);
+      domain_print(nocc, natom, domain_len, domain, fR);
+      for(i=0; i<nocc; i++) {
+	domain_len[i] = domain_len_bp[i];
+	for(k=0; k<natom; k++)
+	  domain[i][k] = domain_bp[i][k];
+      }
+
+      /* Negative omega */
+      build_F_RHF(-params.omega[0]);
+      cphf_F("X");
+      local_polar("X", domain, domain_len, natom,	aostart, aostop);
+      fprintf(outfile, "\nMu_X (%lf)\n", -params.omega[0]);
+      domain_print(nocc, natom, domain_len, domain, fR);
+      for(i=0; i<nocc; i++) {
+	domain_len[i] = domain_len_bp[i];
+	for(k=0; k<natom; k++)
+	  domain[i][k] = domain_bp[i][k];
+      }
+
+      cphf_F("Y");
+      local_polar("Y", domain, domain_len, natom,
+		  aostart, aostop);
+      fprintf(outfile, "\nMu_Y (%lf)\n", -params.omega[0]);
+      domain_print(nocc, natom, domain_len, domain, fR);
+      for(i=0; i<nocc; i++) {
+	domain_len[i] = domain_len_bp[i];
+	for(k=0; k<natom; k++)
+	  domain[i][k] = domain_bp[i][k];
+      }
+
+      cphf_F("Z");
+      local_polar("Z", domain, domain_len, natom,	aostart, aostop);
+      fprintf(outfile, "\nMu_Z (%lf)\n", -params.omega[0]);
+      domain_print(nocc, natom, domain_len, domain, fR);
+      for(i=0; i<nocc; i++) {
+	domain_len[i] = domain_len_bp[i];
+	for(k=0; k<natom; k++)
+	  domain[i][k] = domain_bp[i][k];
+      }
+    }
+    else {
+      build_F_RHF(0);
+      cphf_F("X");
+      local_polar("X", domain, domain_len, natom,	aostart, aostop);
+      cphf_F("Y");
+      local_polar("Y", domain, domain_len, natom,	aostart, aostop);
+      cphf_F("Z");
+      local_polar("Z", domain, domain_len, natom,	aostart, aostop);
+
+    }
   }
   if(local.domain_mag) {
     fprintf(outfile, "\tGenerating magnetic-field CPHF solutions for local-CC.\n");
@@ -359,9 +454,114 @@ void local_init(void)
     transpert("L");
     sort_pert("L", moinfo.LX, moinfo.LY, moinfo.LZ,
 	      moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z);
-    build_B_RHF();
-    cphf_B();
-    local_magnetic(domain, domain_len, natom, aostart, aostop);
+
+    if(local.domain_sep) {
+      /* Zero omega */
+      build_B_RHF(0);
+      cphf_B("X");
+      local_magnetic("X", domain, domain_len, natom, aostart, aostop);
+      fprintf(outfile, "\nL_X (%lf)\n", 0);
+      domain_print(nocc, natom, domain_len, domain, fR);
+      for(i=0; i<nocc; i++) {
+	domain_len[i] = domain_len_bp[i];
+	for(k=0; k<natom; k++)
+	  domain[i][k] = domain_bp[i][k];
+      }
+
+      cphf_B("Y");
+      local_magnetic("Y", domain, domain_len, natom,
+		     aostart, aostop);
+      fprintf(outfile, "\nL_Y (%lf)\n", 0);
+      domain_print(nocc, natom, domain_len, domain, fR);
+      for(i=0; i<nocc; i++) {
+	domain_len[i] = domain_len_bp[i];
+	for(k=0; k<natom; k++)
+	  domain[i][k] = domain_bp[i][k];
+      }
+
+      cphf_B("Z");
+      local_magnetic("Z", domain, domain_len, natom, aostart, aostop);
+      fprintf(outfile, "\nL_Z (%lf)\n", 0);
+      domain_print(nocc, natom, domain_len, domain, fR);
+      for(i=0; i<nocc; i++) {
+	domain_len[i] = domain_len_bp[i];
+	for(k=0; k<natom; k++)
+	  domain[i][k] = domain_bp[i][k];
+      }
+
+      /* Positive omega */
+      build_B_RHF(params.omega[0]);
+      cphf_B("X");
+      local_magnetic("X", domain, domain_len, natom, aostart, aostop);
+      fprintf(outfile, "\nL_X (%lf)\n", params.omega[0]);
+      domain_print(nocc, natom, domain_len, domain, fR);
+      for(i=0; i<nocc; i++) {
+	domain_len[i] = domain_len_bp[i];
+	for(k=0; k<natom; k++)
+	  domain[i][k] = domain_bp[i][k];
+      }
+
+      cphf_B("Y");
+      local_magnetic("Y", domain, domain_len, natom, aostart, aostop);
+      fprintf(outfile, "\nL_Y (%lf)\n", params.omega[0]);
+      domain_print(nocc, natom, domain_len, domain, fR);
+      for(i=0; i<nocc; i++) {
+	domain_len[i] = domain_len_bp[i];
+	for(k=0; k<natom; k++)
+	  domain[i][k] = domain_bp[i][k];
+      }
+
+      cphf_B("Z");
+      local_magnetic("Z", domain, domain_len, natom, aostart, aostop);
+      fprintf(outfile, "\nL_Z (%lf)\n", params.omega[0]);
+      domain_print(nocc, natom, domain_len, domain, fR);
+      for(i=0; i<nocc; i++) {
+	domain_len[i] = domain_len_bp[i];
+	for(k=0; k<natom; k++)
+	  domain[i][k] = domain_bp[i][k];
+      }
+
+      /* Negative omega */
+      build_B_RHF(-params.omega[0]);
+      cphf_B("X");
+      local_magnetic("X", domain, domain_len, natom, aostart, aostop);
+      fprintf(outfile, "\nL_X (%lf)\n", -params.omega[0]);
+      domain_print(nocc, natom, domain_len, domain, fR);
+      for(i=0; i<nocc; i++) {
+	domain_len[i] = domain_len_bp[i];
+	for(k=0; k<natom; k++)
+	  domain[i][k] = domain_bp[i][k];
+      }
+
+      cphf_B("Y");
+      local_magnetic("Y", domain, domain_len, natom, aostart, aostop);
+      fprintf(outfile, "\nL_Y (%lf)\n", -params.omega[0]);
+      domain_print(nocc, natom, domain_len, domain, fR);
+      for(i=0; i<nocc; i++) {
+	domain_len[i] = domain_len_bp[i];
+	for(k=0; k<natom; k++)
+	  domain[i][k] = domain_bp[i][k];
+      }
+
+      cphf_B("Z");
+      local_magnetic("Z", domain, domain_len, natom, aostart, aostop);
+      fprintf(outfile, "\nL_Z (%lf)\n", -params.omega[0]);
+      domain_print(nocc, natom, domain_len, domain, fR);
+      for(i=0; i<nocc; i++) {
+	domain_len[i] = domain_len_bp[i];
+	for(k=0; k<natom; k++)
+	  domain[i][k] = domain_bp[i][k];
+      }
+    }
+    else {
+      build_B_RHF(0);
+      cphf_B("X");
+      local_magnetic("X", domain, domain_len, natom, aostart, aostop);
+      cphf_B("Y");
+      local_magnetic("Y", domain, domain_len, natom, aostart, aostop);
+      cphf_B("Z");
+      local_magnetic("Z", domain, domain_len, natom, aostart, aostop);
+    }
   }
 
   /* Allow user input of selected domains */
@@ -431,31 +631,9 @@ void local_init(void)
 
 
   /* Print the orbital domains */
-  max = 0;
-  if(local.domain_polar || local.domain_mag || ip_exist("DOMAINS",0)) {
-    for(i=0; i < nocc; i++) 
-      if(domain_len[i] > max) max = domain_len[i];
-
-    fprintf(outfile, "\n   ****** Final Occupied Orbital Domains ******\n");
-    fprintf(outfile, "   Orbital  Domain");
-    for(i=0; i < max-2; i++) fprintf(outfile, "   "); /* formatting junk */
-    fprintf(outfile, "  Completeness\n");
-    fprintf(outfile, "   -------  ------");
-    for(i=0; i < max-2; i++) fprintf(outfile, "---"); /* more formatting junk */
-    fprintf(outfile, "  ------------\n");
-    for(i=0; i < nocc; i++) {
-      fprintf(outfile, "      %2d    ",i);
-      for(j=0,cnt=0; j < natom; j++) if(domain[i][j]) { fprintf(outfile, " %2d", j); cnt++; }
-      if(cnt < max) for(; cnt < max; cnt++) fprintf(outfile, "   ");
-      fprintf(outfile, "     %7.5f\n", fR[i]);
-    }
-    domain_tot = 0;
-    for(i=0; i < nocc; i++)
-      domain_tot += domain_len[i];
-    domain_ave = domain_tot/nocc;
-    fprintf(outfile, "\n   The average domain length is %4.2lf\n", domain_ave);
-  }
-  fflush(outfile);
+  fprintf(outfile, "\n   ****** Final Occupied Orbital Domains ******\n");
+  if(!local.domain_sep)
+    domain_print(nocc, natom, domain_len, domain, fR);
 
   /* Build the pair domains */
   pairdomain = init_int_matrix(nocc*nocc,natom);
@@ -526,6 +704,9 @@ void local_init(void)
   local.weak_pairs = weak_pairs;
   local.aostart = aostart;
   local.aostop = aostop;
+
+  free_int_matrix(domain_bp, nocc);
+  free(domain_len_bp);
 
   free(ao2atom);
   free(l_length);

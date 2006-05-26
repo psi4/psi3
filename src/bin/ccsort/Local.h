@@ -5,6 +5,7 @@ struct Local {
   int nvir;
   int domain_polar;
   int domain_mag;
+  int domain_sep;
   int *aostart;
   int *aostop;
   int **domain;

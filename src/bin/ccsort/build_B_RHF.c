@@ -23,7 +23,7 @@
 ** non-canonical Hartree-Fock orbitals.
 */
 
-void build_B_RHF(void)
+void build_B_RHF(double omega)
 {
   int h, nirreps;
   int a, b, i, j, ai, bj, A, B, I, J, Asym, Bsym, Isym, Jsym;
@@ -75,6 +75,7 @@ void build_B_RHF(void)
 	Jsym = fIJ.params->qsym[j];
 	if((A==B) && (Isym==Jsym)) Bmat.matrix[h][ai][bj] -= fIJ.matrix[Isym][I][J];
 	if((I==J) && (Asym==Bsym)) Bmat.matrix[h][ai][bj] += fAB.matrix[Asym][A][B];
+	if(ai==bj) Bmat.matrix[h][ai][bj] -= omega;
       }
     }
     dpd_buf4_mat_irrep_wrt(&Bmat, h);

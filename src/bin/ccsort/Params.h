@@ -6,6 +6,8 @@ struct Params {
   long int memory;       /* Memory available (in bytes) */
   int cachelev;
   int ref;
+  double *omega;         /* energy of applied field (a.u) for dynamic properties */
+  int nomega;            /* number of field energies desired */
   char *wfn;
   int make_abcd;
   int make_unpacked_abcd;
