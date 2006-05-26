@@ -25,7 +25,7 @@ double rhf_energy(void)
 
   dpd_file2_init(&fIA, CC_OEI, 0, 0, 1, "fIA");
   dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
-/*  dpd_file2_print(&tIA, outfile);  */
+  /*   dpd_file2_print(&tIA, outfile); */
   tIA_energy = 2.0 * dpd_file2_dot(&fIA, &tIA);
   dpd_file2_close(&fIA);
   dpd_file2_close(&tIA);

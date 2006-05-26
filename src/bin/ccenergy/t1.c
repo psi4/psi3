@@ -41,7 +41,7 @@ void t1_build(void)
     dpd_contract422(&tIjAb, &FME, &newtIA, 0, 0, 1, 1);
     dpd_buf4_close(&tIjAb);
 
-    dpd_file2_close(&FME);  
+    dpd_file2_close(&FME);
 
     dpd_buf4_init(&C_anti, CC_CINTS, 0, 10, 10, 10, 10, 0, "C <ia||jb>");
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
@@ -51,9 +51,9 @@ void t1_build(void)
     dpd_dot14(&tIA, &C_anti, &newtIA, 0, 1, -1, 1);
     dpd_dot13(&tIA, &D, &newtIA, 0, 0, 1, 1);
 
-    dpd_file2_close(&tIA);  
+    dpd_file2_close(&tIA);
 
-    dpd_buf4_close(&C_anti);  
+    dpd_buf4_close(&C_anti);
     dpd_buf4_close(&D);
 
     /*
@@ -111,13 +111,13 @@ void t1_build(void)
     dpd_buf4_init(&E, CC_EINTS, 0, 11, 0, 11, 0, 0, "E 2<ai|jk> - <ai|kj>");
     dpd_buf4_init(&tIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
     dpd_contract442(&E, &tIjAb, &newtIA, 1, 3, -1, 1);
-    dpd_buf4_close(&E);  
+    dpd_buf4_close(&E);
     dpd_buf4_close(&tIjAb);
 
-		if (params.just_residuals) {
+    if (params.just_residuals) {
       dpd_file2_close(&newtIA);
-			return;
-		}
+      return;
+    }
 
     dpd_file2_copy(&newtIA, CC_OEI, "New tIA Increment");
     dpd_file2_close(&newtIA);
@@ -267,11 +267,11 @@ void t1_build(void)
     dpd_buf4_close(&tIjAb);  
     dpd_buf4_close(&tiJaB);
 
-		if (params.just_residuals) {
+    if (params.just_residuals) {
       dpd_file2_close(&newtIA);
       dpd_file2_close(&newtia);
-			return;
-		}
+      return;
+    }
 
     dpd_file2_init(&dIA, CC_OEI, 0, 0, 1, "dIA");
     dpd_file2_dirprd(&dIA, &newtIA);
@@ -411,11 +411,11 @@ void t1_build(void)
     dpd_buf4_close(&E);  
     dpd_buf4_close(&tIjAb);  
 
-		if (params.just_residuals) {
+    if (params.just_residuals) {
       dpd_file2_close(&newtIA);
       dpd_file2_close(&newtia);
-			return;
-		}
+      return;
+    }
 
     dpd_file2_init(&dIA, CC_OEI, 0, 0, 1, "dIA");
     dpd_file2_dirprd(&dIA, &newtIA);

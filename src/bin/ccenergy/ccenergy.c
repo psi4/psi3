@@ -144,13 +144,13 @@ int main(int argc, char *argv[])
   }
 
   if ( (params.just_energy) || (params.just_residuals) ) {
-	  one_step();
-	  if(params.ref == 2) cachedone_uhf(cachelist); else cachedone_rhf(cachelist);
-		free(cachefiles);
-		cleanup();
-		exit_io();
-		exit(PSI_RETURN_SUCCESS);
-	}
+    one_step();
+    if(params.ref == 2) cachedone_uhf(cachelist); else cachedone_rhf(cachelist);
+    free(cachefiles);
+    cleanup();
+    exit_io();
+    exit(PSI_RETURN_SUCCESS);
+  }
 
   if(params.local) {
     local_init();
@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
   }
 
   /* temporary */
-/*   sort_B(); */
+  /*   sort_B(); */
 
   init_amps();
   /*
@@ -314,6 +314,9 @@ int main(int argc, char *argv[])
     fprintf(outfile, "\tCC2 correlation energy     = %20.15f\n", moinfo.ecc);
     fprintf(outfile, "\tTotal CC2 energy           = %20.15f\n", 
             moinfo.eref + moinfo.ecc);
+    if(params.local && !strcmp(local.weakp,"MP2")) 
+      fprintf(outfile, "\tTotal LCC2 energy (+LMP2)  = %20.15f\n", 
+	      moinfo.eref + moinfo.ecc + local.weak_pair_energy);
   }
   else {
     fprintf(outfile, "\tCCSD correlation energy    = %20.15f\n", moinfo.ecc);

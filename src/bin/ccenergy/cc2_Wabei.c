@@ -90,6 +90,7 @@ void cc2_Wabei_build(void)
     /* Plus Combination */
     dpd_buf4_init(&B, CC_BINTS, 0, 5, 8, 8, 8, 0, "B(+) <ab|cd> + <ab|dc>");
     dpd_buf4_init(&Z1, CC_TMP0, 0, 11, 8, 11, 8, 0, "Z1(ei,a>=b)");
+    dpd_buf4_scm(&Z1, 0);
 
     for(Gef=0; Gef < moinfo.nirreps; Gef++) {
       Gei = Gab = Gef; /* W and B are totally symmetric */
@@ -120,6 +121,7 @@ void cc2_Wabei_build(void)
     /* Minus Combination */
     dpd_buf4_init(&B, CC_BINTS, 0, 5, 9, 9, 9, 0, "B(-) <ab|cd> - <ab|dc>");
     dpd_buf4_init(&Z2, CC_TMP0, 0, 11, 9, 11, 9, 0, "Z2(ei,a>=b)");
+    dpd_buf4_scm(&Z2, 0);
 
     for(Gef=0; Gef < moinfo.nirreps; Gef++) {
       Gei = Gab = Gef; /* W and B are totally symmetric */
