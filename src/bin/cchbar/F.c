@@ -1,5 +1,8 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <libdpd/dpd.h>
+#include <libqt/qt.h>
 #define EXTERN
 #include "globals.h"
 
@@ -22,7 +25,7 @@
 */
 
 void F_build(void) {
-  int h,i,e,a,m;
+  int h,e,a,m;
   dpdfile2 Faet, FAEt, Fmit, FMIt;
   dpdfile2 Fae, FAE, FMI, Fmi;
   dpdfile2 fab, fAB, fij, fIJ;
@@ -31,7 +34,7 @@ void F_build(void) {
   dpdfile2 tIA, tia;
   dpdbuf4 F_anti, F, E_anti, E, D_anti, D;
   dpdbuf4 tautIJAB, tautijab, tautIjAb, taut;
-  int Gma, Gm, Ga, Gf, Ge, ma, MA, M, A, fe, ef, f, nrows, ncols;
+  int Gma, Gm, Ga, Gf, Ge, ma, M, A, fe, ef, f, nrows, ncols;
   double *X;
 
   if(params.ref == 0) {

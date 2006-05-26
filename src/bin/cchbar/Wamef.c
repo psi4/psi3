@@ -37,7 +37,7 @@
 
 void Wamef_build(void) {
   dpdbuf4 Wamef, WAMEF, WAmEf, WaMeF, W;
-  dpdbuf4 F, D_a, D;
+  dpdbuf4 F, D;
   dpdfile2 tia, tIA;
   int h, Ga, Gn, Gm, A, a, row, nrows, ncols;
 
@@ -75,7 +75,7 @@ void Wamef_build(void) {
 	  nrows = moinfo.occpi[Gn];
 	  ncols = moinfo.occpi[Gm] * W.params->coltot[h];
 
-	  if(nrows && ncols) 
+	  if(nrows && ncols)
 	    C_DGEMV('t',nrows,ncols,-1.0,&(D.matrix[h][row][0]),ncols,&(tIA.matrix[Gn][0][A]),
 		    moinfo.virtpi[Ga],1.0, W.matrix[h][0],1);
 

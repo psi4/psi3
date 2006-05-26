@@ -82,10 +82,10 @@ int main(int argc, char *argv[])
   F_build();
   if(params.print & 2) status("F elements", outfile);
 
-  Wmnie_build();
-  if(params.print & 2) status("Wmnie elements", outfile);
   Wamef_build();
   if(params.print & 2) status("Wamef elements", outfile);
+  Wmnie_build();
+  if(params.print & 2) status("Wmnie elements", outfile);
 
   if(!strcmp(params.wfn,"CC2") || !strcmp(params.wfn,"EOM_CC2")) {
     cc2_Wmbej_build();
