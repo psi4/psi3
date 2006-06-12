@@ -201,10 +201,10 @@ psi: (
   SCFTwoConEnergyOEPROP = ERROR
 
   % Procedure for an SCF DBOC computation
-  SCFDBOC = ($SCFEnergy $dboc)
-  SCFRHFDBOC = ($SCFRHFEnergy $dboc)
-  SCFROHFDBOC = ($SCFROHFEnergy $dboc)
-  SCFUHFDBOC = ($SCFUHFEnergy $dboc)
+  SCFDBOC = ($input $dboc)
+  SCFRHFDBOC = ($input $dboc)
+  SCFROHFDBOC = ($input $dboc)
+  SCFUHFDBOC = ($input $dboc)
   SCFTwoConDBOC = ERROR
 
   % -------------------------------- Direct SCF Procedures
@@ -792,7 +792,7 @@ psi: (
   DETCITwoConEnergyFreq  = $DETCIEnergyFreq
 
   % Procedures for CI DBOC computation
-  DETCIDBOC = ($DETCIEnergy $dboc)
+  DETCIDBOC = ($input $dboc)
   DETCIRHFDBOC = ($DETCIDBOC $done)
   DETCIROHFDBOC = ($DETCIDBOC $done)
   DETCIUHFDBOC = ($DETCIDBOC $done)
@@ -859,11 +859,11 @@ psi: (
   DETCASTwoConFirstFreq  = $DETCASFirstFreq
 
   % Procedures for DETCAS DBOC computation
-  DETCASDBOC = ($DETCASEnergy $dboc)
-  DETCASRHFDBOC = ($DETCASRHFEnergy $dboc)
-  DETCASROHFDBOC = ($DETCASROHFEnergy $dboc)
-  DETCASUHFDBOC = ($DETCASUHFEnergy $dboc)
-  DETCASTwoConDBOC = ($DETCASTwoConEnergy $dboc)
+  DETCASDBOC = ($input $dboc)
+  DETCASRHFDBOC = ($DETCASDBOC $done)
+  DETCASROHFDBOC = ($DETCASDBOC $done)
+  DETCASUHFDBOC = ($DETCASDBOC $done)
+  DETCASTwoConDBOC = ($DETCASDBOC $done)
 
   % Procedures for the conventional MP2 energy
   MP2Energy = ($ints $scf $transqt $ccsort $mp2)

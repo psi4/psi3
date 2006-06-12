@@ -137,9 +137,16 @@ sub do_tests
          $jobtype eq "DBOC" || $jobtype eq "RESPONSE" || $jobtype eq "FC" ) {
       
       $fail |= compare_nuc();
+
+      # DBOC is special, because it does not compute the wave function -- only check DBOC and break
+      if ($jobtype eq "DBOC") {
+        $fail |= compare_dboc();
+	last SWITCH1;
+      }
+      
       # All computations in Psi3 start with an SCF run
       $fail |= compare_scf_energy();
-        
+
       SWITCH2: {
         
           if ($wfn eq "CCSD")     { $fail |= compare_ccsd_energy(); last SWITCH2; }
@@ -185,9 +192,6 @@ sub do_tests
       }
       if ($jobtype eq "FC" && $dertype eq "FIRST") {
         $fail |= compare_findif_freq($wfn);
-      }
-      if ($jobtype eq "DBOC") {
-        $fail |= compare_dboc()
       }
 
       if ($jobtype eq "OEPROP") {

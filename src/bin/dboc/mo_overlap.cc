@@ -132,9 +132,6 @@ FLOAT **eval_S_alpha(DisplacementIndex LDisp, DisplacementIndex RDisp)
 
 FLOAT **eval_S_beta(DisplacementIndex LDisp, DisplacementIndex RDisp)
 {
-  int num_mo = MOInfo.num_mo;
-  int num_so = MOInfo.num_so;
-
   HFWavefunction* HFWfn_R = HFVectors[RDisp];
   HFWavefunction* HFWfn_L = HFVectors[LDisp];
   int num_ao = HFWfn_R->num_ao();
@@ -145,7 +142,15 @@ FLOAT **eval_S_beta(DisplacementIndex LDisp, DisplacementIndex RDisp)
   double** aotoso_r = HFWfn_R->aotoso();
   double** rref_r = HFWfn_R->rref();
 
-  //
+#if USE_MOINFO
+  int num_mo = MOInfo.num_mo;
+  int num_so = MOInfo.num_so;
+#else
+  int num_mo = HFWfn_R->num_mo();
+  int num_so = HFWfn_R->num_so();
+#endif
+
+//
   // Convert matrices of doubles into matrices of FLOAT's
   //
   FLOAT** hf_evec_r_FLOAT = convert_matrix(hf_evec_r, num_so, num_mo, 0);
