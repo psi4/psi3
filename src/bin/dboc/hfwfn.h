@@ -13,6 +13,9 @@ class HFWavefunction {
   int num_ao_;
   reftype refnum_;
 
+  int ndocc_;
+  int nsocc_;
+
   int nirreps_;
   int *clsdpi_;
   int *openpi_;
@@ -27,6 +30,12 @@ class HFWavefunction {
   HFWavefunction();
   ~HFWavefunction();
 
+  int num_mo();
+  int num_so();
+  int ndocc();
+  int nsocc();
+  int nalpha();
+  int nbeta();
   int num_ao();
   int nirreps();
   int* clsdpi();

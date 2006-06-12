@@ -12,6 +12,7 @@ extern "C" {
 #include "float.h"
 #include "linalg.h"
 #include "mo_overlap.h"
+#include "hfwfn.h"
 
 using namespace std;
 
@@ -25,6 +26,7 @@ using namespace std;
 extern MOInfo_t MOInfo;
 extern FILE *outfile;
 extern char *CI_Vector_Labels[MAX_NUM_DISP];
+extern HFWavefunction* HFVectors[MAX_NUM_DISP];
 extern void done(const char *);
 extern void mo_maps(short int**, short int**);
 
@@ -36,9 +38,14 @@ double eval_roci_derwfn_overlap(DisplacementIndex LDisp, DisplacementIndex RDisp
   slaterdetvector_read(PSIF_CIVECT,CI_Vector_Labels[LDisp],&vecp);
 
   int nfzc = vecm->sdset->alphastrings->nfzc;
+#if USE_MOINFO
   int nalpha = MOInfo.nalpha;
-  int nact_a = nalpha - nfzc;
   int nbeta = MOInfo.nbeta;
+#else
+  int nalpha = HFVectors[LDisp]->nalpha();
+  int nbeta = HFVectors[LDisp]->nbeta();
+#endif
+  int nact_a = nalpha - nfzc;
   int nact_b = nbeta - nfzc;
 
   FLOAT **CSC_full = eval_S_alpha(LDisp,RDisp);

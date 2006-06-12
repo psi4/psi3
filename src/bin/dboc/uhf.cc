@@ -21,9 +21,6 @@ extern void done(const char *);
 
 double eval_uhf_derwfn_overlap(DisplacementIndex LDisp, DisplacementIndex RDisp)
 {
-  int nalpha = MOInfo.nalpha;
-  int nbeta = MOInfo.nbeta;
-  int ndocc = nbeta;
   FLOAT **CSC_a = eval_S_alpha(LDisp,RDisp);
   FLOAT **CSC_b = eval_S_beta(LDisp,RDisp);
 
@@ -31,6 +28,16 @@ double eval_uhf_derwfn_overlap(DisplacementIndex LDisp, DisplacementIndex RDisp)
   int* openpi = HFVectors[LDisp]->openpi();
   int* orbspi = HFVectors[LDisp]->orbspi();
   int nirreps = HFVectors[LDisp]->nirreps();
+
+#if USE_MOINFO
+  int nalpha = MOInfo.nalpha;
+  int nbeta = MOInfo.nbeta;
+  int ndocc = nbeta;
+#else
+  int nalpha = HFVectors[LDisp]->nalpha();
+  int nbeta = HFVectors[LDisp]->nbeta();
+  int ndocc = nbeta;
+#endif
 
   // Extract the alpha and beta blocks
   FLOAT **CSC_alpha = create_matrix(nalpha,nalpha);

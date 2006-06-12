@@ -26,8 +26,6 @@ extern Params_t Params;
 
 FLOAT **eval_S_alpha(DisplacementIndex LDisp, DisplacementIndex RDisp)
 {
-  int num_mo = MOInfo.num_mo;
-  int num_so = MOInfo.num_so;
 
   HFWavefunction* HFWfn_R = HFVectors[RDisp];
   HFWavefunction* HFWfn_L = HFVectors[LDisp];
@@ -38,6 +36,14 @@ FLOAT **eval_S_alpha(DisplacementIndex LDisp, DisplacementIndex RDisp)
   double** hf_evec_r = HFWfn_R->alpha_evec();
   double** aotoso_r = HFWfn_R->aotoso();
   double** rref_r = HFWfn_R->rref();
+
+#if USE_MOINFO
+  int num_mo = MOInfo.num_mo;
+  int num_so = MOInfo.num_so;
+#else
+  int num_mo = HFWfn_R->num_mo();
+  int num_so = HFWfn_R->num_so();
+#endif
 
   //
   // Convert matrices of doubles into matrices of FLOAT's

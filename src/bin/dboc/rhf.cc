@@ -24,12 +24,16 @@ extern void done(const char *);
 
 double eval_rhf_derwfn_overlap(DisplacementIndex LDisp, DisplacementIndex RDisp)
 {
-  int ndocc = MOInfo.ndocc;
   FLOAT **CSC = eval_S_alpha(LDisp,RDisp);
 
   int* clsdpi = HFVectors[LDisp]->clsdpi();
   int* orbspi = HFVectors[LDisp]->orbspi();
   int nirreps = HFVectors[LDisp]->nirreps();
+#if USE_MOINFO
+  int ndocc = MOInfo.ndocc;
+#else
+  int ndocc = HFVectors[LDisp]->ndocc();
+#endif
 
   // Extract the occupied block
   FLOAT **CSC_occ = create_matrix(ndocc,ndocc);

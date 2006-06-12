@@ -77,7 +77,9 @@ int main(int argc, char *argv[])
   print_intro();
   print_geom();
   print_params();
+#if USE_MOINFO
   read_moinfo();
+#endif
   setup_geoms();
   double E_dboc = eval_dboc();
   fprintf(outfile,"  E(DBOC) = %25.15lf a.u.\n",E_dboc);

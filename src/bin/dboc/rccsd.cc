@@ -27,8 +27,13 @@ extern void done(const char *);
 
 double eval_rccsd_derwfn_overlap()
 {
+#if USE_MOINFO
   int ndocc = MOInfo.ndocc;
-  int nvirt = MOInfo.num_mo - MOInfo.ndocc;
+  int num_mo = MOInfo.num_mo;
+#else
+  abort();
+#endif
+  int nvirt = num_mo - ndocc;
   FLOAT **CSC_full = eval_S_alpha();
   FLOAT **CSC = create_matrix(ndocc,ndocc);
   int *tmpintvec = new int[ndocc];

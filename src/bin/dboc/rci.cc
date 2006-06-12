@@ -12,6 +12,7 @@ extern "C" {
 #include "float.h"
 #include "linalg.h"
 #include "mo_overlap.h"
+#include "hfwfn.h"
 
 using namespace std;
 
@@ -25,12 +26,17 @@ using namespace std;
 extern MOInfo_t MOInfo;
 extern FILE *outfile;
 extern char *CI_Vector_Labels[MAX_NUM_DISP];
+extern HFWavefunction* HFVectors[MAX_NUM_DISP];
 extern void done(const char *);
 extern void mo_maps(short int**, short int**);
 
 double eval_rci_derwfn_overlap(DisplacementIndex LDisp, DisplacementIndex RDisp)
 {
+#if USE_MOINFO
   int ndocc = MOInfo.ndocc;
+#else
+  int ndocc = HFVectors[LDisp]->ndocc();
+#endif
   FLOAT **CSC_full = eval_S_alpha(LDisp,RDisp);
   FLOAT **CSC = create_matrix(ndocc,ndocc);
   int *tmpintvec = new int[ndocc];

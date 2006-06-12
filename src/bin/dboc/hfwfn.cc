@@ -28,6 +28,12 @@ HFWavefunction::HFWavefunction()
   clsdpi_ = chkpt_rd_clsdpi();
   openpi_ = chkpt_rd_openpi();
   orbspi_ = chkpt_rd_orbspi();
+
+  ndocc_ = nsocc_ = 0;
+  for(int i=0; i<nirreps_; i++) {
+    ndocc_ += clsdpi_[i];
+    nsocc_ += openpi_[i];
+  }
   
   aotoso_ = chkpt_rd_usotao();
   rref_ = chkpt_rd_rref();
@@ -54,6 +60,24 @@ HFWavefunction::~HFWavefunction()
   free_block(alpha_evec_);
   if (beta_evec_ != NULL) free_block(beta_evec_);
 }
+
+int
+HFWavefunction::num_mo() { return num_mo_; }
+
+int
+HFWavefunction::num_so() { return num_so_; }
+
+int
+HFWavefunction::ndocc() { return ndocc_; }
+
+int
+HFWavefunction::nsocc() { return nsocc_; }
+
+int
+HFWavefunction::nalpha() { return ndocc_ + nsocc_; }
+
+int
+HFWavefunction::nbeta() { return ndocc_; }
 
 int
 HFWavefunction::num_ao() { return num_ao_; }
