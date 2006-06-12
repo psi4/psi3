@@ -283,6 +283,8 @@ double* get_atomic_masses()
 //
 void run_psi_firstdisp(int disp)
 {
+  // run psiclean in case point group changed
+  system("psiclean");
   if (!strcmp(Params.wfn,"DETCI") || !strcmp(Params.wfn,"DETCAS")) {
     system("/bin/rm -f file14.dat");
   }
@@ -536,11 +538,14 @@ void init_io(int argc, char *argv[])
   // Psi modules called by dboc should write to a different output file
   // reset the value of PSI_OUTPUT for the duration of this run
   orig_psi_output_env = getenv("PSI_OUTPUT");
+  char* ofname = (char*) malloc(strlen(ifname)+1+strlen("dboc.findif.out"));
+  sprintf(ofname, "%s.dboc.findif.out", ifname);
 #if HAVE_PUTENV
-  char* tmpstr2 = strdup("PSI_OUTPUT=dboc.findif.out");
+  char* tmpstr2 = (char *) malloc(12+strlen(ofname));
+  sprintf(tmpstr2, "PSI_OUTPUT=%s", ofname);
   putenv(tmpstr2);
 #elif HAVE_SETENV
-  setenv("PSI_OUTPUT","dboc.findif.out",1);
+  setenv("PSI_OUTPUT",ofname,1);
 #else
 #error "Have neither putenv nor setenv. Something must be very broken on this system."
 #endif
