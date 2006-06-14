@@ -20,6 +20,8 @@ char* psi_fprefix();
 
 void ffile(FILE **fptr, char *suffix, int code);
 void ffile_noexit(FILE **fptr, char *suffix, int code);
+void ffileb(FILE **fptr, char *suffix, int code);
+void ffileb_noexit(FILE **fptr, char *suffix, int code);
 
 void add_arr(double *a, double *b, double *c, int n);
 void add_mat(double **a,double **b,double **c,int n,int m);
