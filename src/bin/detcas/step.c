@@ -247,7 +247,7 @@ int print_step(int npairs, int steptype)
 
   /* open ascii file, get number of entries already in it */
 
-  sumfile = fopen(sumfile_name, "r");
+  ffile_noexit(&sumfile,sumfile_name,2);
   if (sumfile == NULL) { /* the file doesn't exist yet */
     entries = 0;
     if (Params.print_lvl)
@@ -303,7 +303,8 @@ int print_step(int npairs, int steptype)
   if (entries) fclose(sumfile);
 
   /* now open file for writing, write out old info plus new */
-  if ((sumfile = fopen("file14.dat", "w")) == NULL) {
+  ffile_noexit(&sumfile,"file14.dat",0);
+  if (sumfile == NULL) {
     fprintf(outfile, "(print_step): Unable to open file %s\n", sumfile_name);
   }
   else {

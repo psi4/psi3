@@ -158,7 +158,7 @@ double calc_ci_conv(double scale_conv, double *energy_last)
   double scaled_rmsgrad, rmsgrad;
   double tval;
 
-  sumfile = fopen(sumfile_name, "r");
+  ffile_noexit(&sumfile,sumfile_name,2);
 
   if (sumfile == NULL) {
     return(scale_conv * 0.1);

@@ -644,9 +644,9 @@ void CIvect::write_detfile(int vector)
   int i;
   FILE *detfile=NULL;
 
-  if (vector) detfile = fopen("detci_sfile.dat","w");
-  else detfile = fopen("detci_cfile.dat","w");
-  if (detfile == NULL) 
+  if (vector) ffile_noexit(&detfile,"detci_sfile.dat",0);
+  else ffile_noexit(&detfile,"detci_cfile.dat",0);
+  if (detfile == NULL)
     fprintf(outfile,"\n write_detfile file not opened correctly.\n"); 
 
   for (i=0; i<buf_total; i++)
@@ -673,8 +673,8 @@ void CIvect::reset_detfile(int vector)
  unsigned long tmp_long;
  FILE *detfile=NULL;
 
- if (vector) detfile = fopen("detci_sfile.dat","r");
- else detfile = fopen("detci_cfile.dat","r");
+ if (vector) ffile_noexit(&detfile,"detci_sfile.dat",2);
+ else ffile_noexit(&detfile,"detci_cfile.dat",2);
  if (detfile == NULL) 
    fprintf(outfile,"\n reset_detfile file not opened correctly.\n"); 
 

@@ -40,7 +40,8 @@ int diis(int veclen, double *vec, double *errvec)
 
   
   /* add the vector and error vector to subspace */
-  if ((fp = fopen("diis.dat","rb")) != NULL) {
+  ffileb_noexit(&fp,"diis.dat",2);
+  if (fp != NULL) {
 
     if (fread(&num_vecs, sizeof(int), 1, fp) != 1) {
       fprintf(outfile, "(diis): Error reading number of diis vectors.\n");
@@ -101,7 +102,8 @@ int diis(int veclen, double *vec, double *errvec)
   new_num_vecs = num_vecs - offset;
 
   /* write out the diis info */
-  if ((fp = fopen("diis.dat","wb")) == NULL) {
+  ffileb_noexit(&fp,"diis.dat",0);
+  if (fp == NULL) {
     fprintf(outfile, "(diis): Error opening diis.dat\n");
     return(0);
   } 

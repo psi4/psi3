@@ -977,7 +977,7 @@ int check_conv(void)
   int converged_energy=0, converged_grad=0, last_converged=0;
   double conv_rms_grad, conv_e;
 
-  sumfile = fopen(sumfile_name, "r");
+  ffile_noexit(&sumfile,sumfile_name,2);
 
   if (sumfile == NULL) {
     CalcInfo.iter = 0;

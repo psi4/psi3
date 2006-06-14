@@ -276,6 +276,28 @@ double* get_atomic_masses()
   return atomic_mass;
 }
 
+// Remove PSI3 prefixed file
+void
+remove_psi3_file(char* name)
+{
+  char* execstr = (char*) malloc( sizeof(char) * (strlen("/bin/rm -f ") +
+                                                  strlen(psi_file_prefix) +
+                                                  strlen(name) + 2)
+                                );
+  sprintf(execstr,"/bin/rm -f %s.%s",psi_file_prefix,name);
+  system(execstr);
+  free(execstr);
+}
+
+// Removes files left by DETCI/DETCAS
+void
+clean_detci_mess()
+{
+  remove_psi3_file("file14.dat");
+  remove_psi3_file("thetas.dat");
+  remove_psi3_file("diis.dat");
+  remove_psi3_file("orbs.dat");
+}
 
 //
 // This function will run psi for the first displaced point along the coordinate,
@@ -285,10 +307,9 @@ double* get_atomic_masses()
 //
 void run_psi_firstdisp(int disp)
 {
-  // run psiclean in case point group changed
   system("psiclean");
   if (!strcmp(Params.wfn,"DETCI") || !strcmp(Params.wfn,"DETCAS")) {
-    system("/bin/rm -f file14.dat");
+    clean_detci_mess();
   }
   char *inputcmd = new char[80];
   sprintf(inputcmd,"input --geomdat %d",disp);
@@ -328,7 +349,7 @@ void run_psi_firstdisp(int disp)
     slaterdetvector_write(PSIF_CIVECT,CI_Vector_Labels[0],vec);
     slaterdetvector_delete_full(vec);
 
-    system("/bin/rm -f file14.dat");
+    clean_detci_mess();
   }
 }
 
@@ -386,7 +407,7 @@ void run_psi_otherdisp(int disp)
     slaterdetvector_write(PSIF_CIVECT,CI_Vector_Labels[disp_coord],vec);
     slaterdetvector_delete_full(vec);
 
-    system("/bin/rm -f file14.dat");
+    clean_detci_mess();
   }
 }
 

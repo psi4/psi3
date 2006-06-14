@@ -33,7 +33,8 @@ int read_ref_orbs(void)
   FILE *fp;
   int h, ir_orbs;
 
-  if ((fp = fopen("orbs.dat","rb")) == NULL) {
+  ffileb_noexit(&fp,"orbs.dat",2);
+  if (fp == NULL) {
     if (Params.print_lvl) 
       fprintf(outfile, "No orbs.dat file ... using new reference orbitals\n");
     return(0);
@@ -69,7 +70,8 @@ int write_ref_orbs(void)
   FILE *fp;
   int h, ir_orbs;
 
-  if ((fp = fopen("orbs.dat","wb")) == NULL) {
+  ffileb_noexit(&fp,"orbs.dat",0);
+  if (fp == NULL) {
     if (Params.print_lvl) 
       fprintf(outfile, "Can't open orbs.dat file!\n");
     return(0);

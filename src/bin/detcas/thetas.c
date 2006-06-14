@@ -196,7 +196,8 @@ void read_thetas(int npairs)
   CalcInfo.theta_cur = init_array(npairs);
 
   /* look for the thetas on disk...if they're around, read them in */
-  if ((fp = fopen("thetas.dat","rb")) != NULL) {
+  ffileb_noexit(&fp,"thetas.dat",2);
+  if (fp != NULL) {
     if (Params.print_lvl > 2)
       fprintf(outfile, "\nReading orbital rotation angles\n");
     if (fread(CalcInfo.theta_cur, sizeof(double), npairs, fp) != npairs) {
@@ -221,7 +222,8 @@ void write_thetas(int npairs)
 
   FILE *fp;
 
-  if ((fp = fopen("thetas.dat","wb")) != NULL) {
+  ffileb_noexit(&fp,"thetas.dat",0);
+  if (fp != NULL) {
     if (Params.print_lvl > 2)
       fprintf(outfile, "\nWriting orbital rotation angles\n");
     if (fwrite(CalcInfo.theta_cur, sizeof(double), npairs, fp) != npairs) {
