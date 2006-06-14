@@ -222,8 +222,8 @@ class CIvect {
           int Jnroots, int Jroot, int Jnunits, int Jfirstunit,
           int targetfile, int writeflag, int printflag);
       friend void tpdm(struct stringwr **alplist, struct stringwr **betlist,
-          int nroots, int Inunits, int Ifirstunit,
-          int nroots, int Jnunits, int Jfirstunit,
+          int Inroots, int Inunits, int Ifirstunit,
+          int Jnroots, int Jnunits, int Jfirstunit,
           int targetfile, int writeflag, int printflag);
 };
 
