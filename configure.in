@@ -7,11 +7,11 @@ define([psi_email],[psi3@psicode.org])
 # Process this file with autoconf to produce a configure script.
 define([AC_CACHE_LOAD], )dnl for debugging configure.in
 define([AC_CACHE_SAVE], )dnl for debugging configure.in
-AC_PREREQ(2.52)
-AC_INIT(psi,psi_mmm_version,psi_email)
+AC_PREREQ(2.57)
+AC_INIT([psi],[psi_mmm_version],[psi_email])
 AC_CONFIG_SRCDIR(aclocal.m4)
 AC_CONFIG_HEADER(include/psiconfig.h)
-AC_SET_MAKE
+AC_PROG_MAKE_SET([])
 
 # Make srcdir an absolute path
 srcdir=`(cd $srcdir; pwd)`
@@ -228,17 +228,17 @@ AC_SUBST(PERL)
 
 # Find out which compilers are available.
 if test -z "$FC"; then
-  AC_PROGRAMS_CHECK(FC,$FC_LIST,f77)
+  AC_CHECK_PROGS([FC],[$FC_LIST],[f77])
 fi
 
 F77=$FC
 
 if test -z "$CC"; then
-  AC_PROGRAMS_CHECK(CC,$CC_LIST,cc)
+  AC_CHECK_PROGS([CC],[$CC_LIST],[cc])
 fi
 
 if test -z "$CXX"; then
-  AC_PROGRAMS_CHECK(CXX,$CXX_LIST,c++)
+  AC_CHECK_PROGS([CXX],[$CXX_LIST],[c++])
 fi
 
 # Figure out libraries needed to link Fortran programs in C ..
@@ -283,7 +283,7 @@ fi
 case "$LEX" in
   flex*)
     if test -z "$LEXLIB"; then
-      AC_PROGRAM_PATH(FLEXPATH,flex)
+      AC_PATH_PROG([FLEXPATH],[flex])
       FLEXLIBPATH=`echo $FLEXPATH|sed "s bin/flex.* lib/libfl.a "`
       if test -n "$FLEXLIBPATH" && test -f "$FLEXLIBPATH"; then
         LEXLIB=$FLEXLIBPATH
@@ -430,7 +430,7 @@ CXXINC='$(CPPFLAGS) $(PSICPPFLAGS)' AC_SUBST(CXXINC)
 AC_C_CONST()
 
 # check for header files
-AC_HAVE_HEADERS(errno.h fcntl.h unistd.h stdint.h sys/types.h sys/times.h sys/param.h)
+AC_CHECK_HEADERS([errno.h fcntl.h unistd.h stdint.h sys/types.h sys/times.h sys/param.h])
 
 # check for C++ headers
 AC_CXX_PROCESS_CHECK([cmath],[#include <cmath>],,[HAVE_CMATH=1],[HAVE_CMATH=0]) CXXDEF="$CXXDEF -DHAVE_CMATH=$HAVE_CMATH"
@@ -444,10 +444,10 @@ AC_CXX_PROCESS_CHECK([cstddef],[#include <cstddef>],,[HAVE_CSTDDEF=1],[HAVE_CSTD
 #check to see if void* is allowed
 AC_MSG_CHECKING(for void pointers)
 psi_ac_voidptr=yes
-AC_TRY_COMPILE(,[
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
 ;}
 void *func(void*ptr) { return ptr;
-],,psi_ac_voidptr=no)
+]])],[],[psi_ac_voidptr=no])
 AC_MSG_RESULT($psi_ac_voidptr)
 if test $psi_ac_voidptr = "no"; then
   CDEF="$CDEF -DNO_VOID_PTR"
@@ -472,7 +472,7 @@ if test X$extradef = X; then
   AC_CHECK_LIB(m,finite,[extradef="-DHAVE_FUNC_FINITE=1"],[extradef=""])
 fi
 if test X$extradef = X; then
-  AC_ERROR([Did not find isinf() or finite() functions.])
+  AC_MSG_ERROR([Did not find isinf() or finite() functions.])
 else
   CDEF="$CDEF $extradef"
   CXXDEF="$CXXDEF $extradef"
@@ -687,7 +687,7 @@ AC_SUBST(CXXDEPENDSUF)
 AC_SUBST(CCDEPENDFLAGS)
 AC_SUBST(CXXDEPENDFLAGS)
 
-AC_OUTPUT(include/sizeof.h include/Makefile
+AC_CONFIG_FILES([include/sizeof.h include/Makefile
           include/chkpt_params.h
           Makefile lib/Makefile src/Makefile
           src/lib/Makefile src/lib/MakeRules src/lib/MakeVars
@@ -857,7 +857,8 @@ AC_OUTPUT(include/sizeof.h include/Makefile
           doc/progman/Makefile doc/userman/Makefile
           
           src/bin/giao/Makefile
-          )
+          ])
+AC_OUTPUT
 # The following should be added to config_files/ac_output for 
 # libmathtools/ccman.  You have to move those lines up above this
 # comment.
