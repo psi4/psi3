@@ -157,12 +157,13 @@ double eval_rci_derwfn_overlap(DisplacementIndex LDisp, DisplacementIndex RDisp)
   // sort
   std::sort(dets.begin(),dets.end(),detcomp);
   // print
-  for(int I=0; I<ndets; ++I) {
-    std::cout << "Det #" << I << ": "
-	      << dets[I].first << " ("
-	      << dets[I].second.Ia << ","
-	      << dets[I].second.Ib << ")" << std::endl;
-  }
+  if (Params.print_lvl >= PrintLevels::print_everything)
+    for(int I=0; I<ndets; ++I) {
+      std::cout << "Det #" << I << ": "
+                << dets[I].first << " ("
+                << dets[I].second.Ia << ","
+                << dets[I].second.Ib << ")" << std::endl;
+    }
 
   //
   // Evaluate total overlap in the highest available precision

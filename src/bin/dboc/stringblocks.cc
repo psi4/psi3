@@ -141,9 +141,11 @@ StringBlockedMatrix::read(int brablk, int ketblk)
   if (current_brablk_ != brablk ||
       current_ketblk_ != ketblk) {
 
+#if 0
     std::cout << "StringBlockedMatrix::read -- ("
 	      << brablk << "," << ketblk << ")  ("
 	      << current_brablk_ << "," << current_ketblk_ << ")" << std::endl;
+#endif
 
     current_brablk_ = brablk;
     current_ketblk_ = ketblk;
