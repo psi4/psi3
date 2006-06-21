@@ -35,22 +35,12 @@
 #define PSIF_AO_DGDBZ       46
 #define PSIF_DETCAS         60
 
-#define PSIF_MO_R12         79
-#define PSIF_MO_R12T2       80
-
-#define PSIF_SO_PKSUPER1    92
-#define PSIF_SO_PKSUPER2    93
-
 #define PSIF_MO_TEI         72
 #define PSIF_MO_OPDM        73
 #define PSIF_MO_TPDM        74
 #define PSIF_MO_LAG         75
 #define PSIF_AO_OPDM        76   /* PSIF_AO_OPDM also contains AO Lagrangian */
 #define PSIF_AO_TPDM        77
-
-#define PSIF_SO_D1OEI       200  /* Derivative OEIs are stored in file 199 */
-#define PSIF_SO_D1ERI       200  /* Derivative ERIs are stored in files 200, 201, 202, etc. File 200 contains
-                                    integrals with respect to SALC derivative 0, etc. */
 
 /*
 ** MO Hessian File (also contains specialized integral and Fock lists.
@@ -59,6 +49,9 @@
 */
 #define PSIF_MO_HESS        78
 #define PSIF_CPHF           78
+
+#define PSIF_MO_R12         79
+#define PSIF_MO_R12T2       80
 
 /*
 ** Additions for UHF-based transformations.
@@ -73,6 +66,18 @@
 #define PSIF_AA_PRESORT     87   /* AA UHF twopdm presort file */
 #define PSIF_BB_PRESORT     88   /* BB UHF twopdm presort file */
 #define PSIF_AB_PRESORT     89   /* AB UHF twopdm presort file */
+
+/* Use for DBOC calculations */
+#define PSIF_DBOC           90
+
+#define PSIF_SO_PKSUPER1    92
+#define PSIF_SO_PKSUPER2    93
+
+#define PSIF_SO_D1OEI       200  /* Derivative OEIs are stored in file 199 */
+#define PSIF_SO_D1ERI       200  /* Derivative ERIs are stored in files 200, 201, 202, etc. File 200 contains
+                                    integrals with respect to SALC derivative 0, etc. */
+
+
 
 /* All of these one-electron quantities have been moved into PSIF_OEI
    Most integrals are real Hermitian hence only lower triangle of the matrix is written out */
