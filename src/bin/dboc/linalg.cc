@@ -8,15 +8,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include "params.h"
 #include "linalg.h"
 
 extern void done(const char * message);
+extern Params_t Params;
 
 FLOAT** create_matrix(int a, int b)
 {
   FLOAT** M;
 
   if (a>=0 && b>=0) {
+
+    // Enough memory given by user?
+    size_t memory_needed = sizeof(FLOAT*)*a + sizeof(FLOAT)*a*b;
+    if (memory_needed > Params.memory)
+      done("create_matrix failed -- would exceed user-specified memory");
+    Params.memory -= memory_needed;
+
     M = (FLOAT**) malloc(sizeof(FLOAT*)*a);
     if (M == NULL) {
       done("create_matrix failed -- probably not enough memory.");
@@ -40,6 +49,17 @@ void delete_matrix(FLOAT** M)
     free(M[0]);
     free(M);
     M = NULL;
+  }
+}
+
+void delete_matrix(FLOAT** M, int nrow, int ncol)
+{
+  if (M) {
+    free(M[0]);
+    free(M);
+    M = NULL;
+    size_t memory_freed = sizeof(FLOAT*)*nrow + sizeof(FLOAT)*nrow*ncol;
+    Params.memory += memory_freed;
   }
 }
 

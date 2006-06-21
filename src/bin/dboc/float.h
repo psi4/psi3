@@ -1,8 +1,8 @@
 
+#include "defines.h"
+
 #ifndef _psi3_dboc_float_h_
 #define _psi3_dboc_float_h_
-
-#include "defines.h"
 
 #if LONG_DOUBLE
 typedef long double FLOAT;

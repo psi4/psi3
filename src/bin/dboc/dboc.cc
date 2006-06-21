@@ -121,6 +121,12 @@ void parsing()
   Params.delta = 0.0005;
   errcod = ip_data(":DBOC:DISPLACEMENT","%lf",&Params.delta,0);
 
+  // how much memory to use?
+  long max_memory;
+  fndcor(&max_memory,infile,outfile);
+  Params.max_memory = static_cast<size_t>(max_memory);
+  Params.memory = Params.max_memory;
+
   Params.print_lvl = 1;
   errcod = ip_data("PRINT","%d",&Params.print_lvl,0);
 

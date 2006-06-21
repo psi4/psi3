@@ -31,6 +31,8 @@ typedef struct {
   int nisotope;
   char** isotopes;
 
+  size_t max_memory;         // maximum available memory, in bytes
+  size_t memory;             // currently available memory, in bytes
   int print_lvl;
 
 } Params_t;
