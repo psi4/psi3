@@ -127,6 +127,11 @@ void parsing()
   Params.max_memory = static_cast<size_t>(max_memory);
   Params.memory = Params.max_memory;
 
+  // number of compute threads
+  int num_threads = 1;
+  errcod = ip_data("NUM_THREADS","%d",&num_threads,0);
+  Params.num_threads = num_threads;
+
   Params.print_lvl = 1;
   errcod = ip_data("PRINT","%d",&Params.print_lvl,0);
 

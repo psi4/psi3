@@ -41,6 +41,9 @@ class StringBlockedMatrix {
   StringBlockedMatrix(const StringBlocks* strblk_bra, const StringBlocks* strblk_ket, const std::string& prefix);
   ~StringBlockedMatrix();
 
+  StringBlocks* strblk_bra() const { return strblk_bra_; }
+  StringBlocks* strblk_ket() const { return strblk_ket_; }
+
   FLOAT** buffer();
   void read(int brablk, int ketblk);
   void write(int brablk, int ketblk);

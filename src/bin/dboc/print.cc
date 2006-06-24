@@ -28,12 +28,8 @@ void print_params()
   if (Params.print_lvl >= PrintLevels::print_params) {
     fprintf(outfile,"\n  -OPTIONS:\n");
     fprintf(outfile,"    Label                       = %s\n",Params.label);
-    fprintf(outfile,"    sizeof(double)              = %d\n",sizeof(double));
-    fprintf(outfile,"    sizeof(long double)         = %d\n",sizeof(long double));
-    fprintf(outfile,"    sizeof(FLOAT)               = %d\n",sizeof(FLOAT));
-    fprintf(outfile,"    Print level                 = %d\n",Params.print_lvl);
-    fprintf(outfile,"    Displacement size           = %lf a.u.\n",Params.delta);
     fprintf(outfile,"    # of disp. per coord        = %d\n",Params.disp_per_coord);
+    fprintf(outfile,"    Displacement size           = %lf a.u.\n",Params.delta);
     if (strcmp(Params.wfn,"SCF"))
       fprintf(outfile,"    Wave function               = %s\n",Params.wfn);
     else if (Params.reftype == Params_t::rhf)
@@ -42,6 +38,12 @@ void print_params()
       fprintf(outfile,"    Wave function               = ROHF SCF\n");
     else if (Params.reftype == Params_t::uhf)
       fprintf(outfile,"    Wave function               = UHF SCF\n");
+    fprintf(outfile,"    Print level                 = %d\n",Params.print_lvl);
+    fprintf(outfile,"    Memory                      = %ld MB\n",Params.max_memory/(1L << 20));
+    fprintf(outfile,"    Number of threads           = %d\n",Params.num_threads);
+    fprintf(outfile,"    sizeof(double)              = %d\n",sizeof(double));
+    fprintf(outfile,"    sizeof(long double)         = %d\n",sizeof(long double));
+    fprintf(outfile,"    sizeof(FLOAT)               = %d\n",sizeof(FLOAT));
     fprintf(outfile,"\n");
 
     fprintf(outfile,"    Cartesian displacements:\n");
