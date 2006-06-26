@@ -23,7 +23,7 @@ class CIOverlap {
 
   void compute();
   /// Returns the value of the overlap
-  double value();
+  double value() const;
   // thread body -- computes overlaps for all determinants whose strings belong to blocks specified in threadgrp_
   void thread_compute(int tid);
 

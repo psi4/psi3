@@ -58,15 +58,20 @@ CIOverlap::compute()
 	    pthread_join(threads[t], NULL);
 	  delete[] threads;
 
-	  // Accumulate the result
-	  for(int t=0; t<nthreads_; ++t)
-	    S_ += threadgrp_.Sthr[t];
 	}
       }
     }
   }
 
-  // start threads
+  // Accumulate the result
+  for(int t=0; t<nthreads_; ++t)
+    S_ += threadgrp_.Sthr[t];
+}
+
+FLOAT
+CIOverlap::value() const
+{
+  return S_;
 }
 
 void

@@ -19,6 +19,7 @@ extern "C" {
 #include "hfwfn.h"
 #include "stringblocks.h"
 #include "dets.h"
+#include "ci_overlap.h"
 
 using namespace std;
 
@@ -37,6 +38,8 @@ extern HFWavefunction* HFVectors[MAX_NUM_DISP];
 extern void done(const char *);
 extern void mo_maps(short int**, short int**);
 
+// Set to 1 to use the new threaded code
+#define USE_CI_OVERLAP 1
 // Set to 1 to reduce I/O at the expense of more computation
 #define LOOP_OVER_BLOCKS 1
 
@@ -182,6 +185,13 @@ double eval_rci_derwfn_overlap(DisplacementIndex LDisp, DisplacementIndex RDisp)
   else
     S_b = ovlp_b.buffer();
 
+#if USE_CI_OVERLAP
+
+  CIOverlap ciovlp(vecp,vecm,ovlp_a,ovlp_b,Params.num_threads);
+  ciovlp.compute();
+  S_tot = ciovlp.value();
+
+#else
 #if LOOP_OVER_BLOCKS
   // loop over string overlap blocks and then loop over all determinant pairs whose overlap
   // can be computed using these string overlap blocks
@@ -284,7 +294,8 @@ double eval_rci_derwfn_overlap(DisplacementIndex LDisp, DisplacementIndex RDisp)
     }
   }
 
-#endif  
+#endif // if LOOP_OVER_BLOCKS
+#endif // if USE_CI_OVERLAP
 
   // Cleanup
   slaterdetvector_delete_full(vecm);
