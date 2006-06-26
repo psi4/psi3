@@ -4,7 +4,7 @@ VPATH = @srcdir@
 include ../MakeVars
 
 LD = $(CXX)
-LDLIBS += $(LAPACK) $(BLAS)
+LDLIBS += $(LAPACK) $(BLAS) -lpthread
 
 PSILIBS = -lPSI_basis -lPSI_qt -lPSI_chkpt -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 

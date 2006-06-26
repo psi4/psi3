@@ -108,9 +108,14 @@ StringBlockedMatrix::buffer()
 std::string
 StringBlockedMatrix::key(int brablk, int ketblk)
 {
+#if 0
   std::ostringstream oss;
   oss << prefix_ << "_blk_" << brablk << "_" << ketblk;
   return oss.str();
+#endif
+  char result[128];
+  sprintf(result,"%s_blk_%d_%d",prefix_.c_str(),brablk,ketblk);
+  return std::string(result);
 }
 
 void

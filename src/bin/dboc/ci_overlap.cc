@@ -1,5 +1,7 @@
 
+extern "C" {
 #include <pthread.h>
+}
 #include "ci_overlap.h"
 
 CIOverlap::CIOverlap(SlaterDetVector* vecbra, SlaterDetVector* vecket,
@@ -141,4 +143,5 @@ thread_compute(void* objptr_id_voidptr)
   CIOverlap* obj = objptr_id->first;
   // call
   obj->thread_compute(tid);
+  return 0;
 }
