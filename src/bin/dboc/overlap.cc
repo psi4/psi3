@@ -20,7 +20,7 @@ extern double eval_uhf_derwfn_overlap(DisplacementIndex LDisp, DisplacementIndex
 extern double eval_rci_derwfn_overlap(DisplacementIndex LDisp, DisplacementIndex RDisp);
 extern double eval_roci_derwfn_overlap(DisplacementIndex LDisp, DisplacementIndex RDisp);
 
-double eval_derwfn_overlap()
+double eval_derwfn_overlap(bool symm)
 {
   // Pointer to the function that we need to use
   double (*eval_overlap)(DisplacementIndex, DisplacementIndex);
@@ -71,9 +71,16 @@ double eval_derwfn_overlap()
     double S_P1_M1 = eval_overlap(PlusDelta,MinusDelta);
     double S_P2_M2 = eval_overlap(Plus2Delta,Minus2Delta);
     double S_P2_M1 = eval_overlap(Plus2Delta,MinusDelta);
-    double S_M2_P1 = eval_overlap(Minus2Delta,PlusDelta);
     double S_P2_P1 = eval_overlap(Plus2Delta,PlusDelta);
-    double S_M2_M1 = eval_overlap(Minus2Delta,MinusDelta);
+    double S_M2_P1, S_M2_M1;
+    if (!symm) {
+      S_M2_P1 = eval_overlap(Minus2Delta,PlusDelta);
+      S_M2_M1 = eval_overlap(Minus2Delta,MinusDelta);
+    }
+    else {
+      S_M2_P1 = S_P2_M1;
+      S_M2_M1 = S_P2_P1;
+    }
 
     if (Params.print_lvl >= PrintLevels::print_contrib) {
       fprintf(outfile,"  +1 -1 wave function overlap = %25.15lf\n",S_P1_M1);

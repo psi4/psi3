@@ -42,7 +42,7 @@ extern void print_params();
 extern void print_geom();
 extern "C" char *gprgid();
 extern void setup_geoms();
-extern double eval_derwfn_overlap();
+extern double eval_derwfn_overlap(bool symm_coord);
 extern void read_moinfo();
 
 /*--- Global structures ---*/
@@ -494,6 +494,7 @@ double eval_dboc()
     Params_t::Coord_t* coord = &(Params.coords[current_coord]);
     int atom = coord->index/3;
     int xyz = coord->index%3;
+    const bool symm = coord->symm;
 
     run_psi_firstdisp(disp);
     disp++;
@@ -505,7 +506,7 @@ double eval_dboc()
     init_basissets(coord);
 
     // The - sign comes from the integration by parts
-    double del2 = (-1.0)*eval_derwfn_overlap();
+    double del2 = (-1.0)*eval_derwfn_overlap(symm);
     int Z = (int)Molecule.zvals[atom];
     // mass of nucleus = atomic mass - mass of electrons
     double nuclear_mass = atomic_mass[atom]  - Z;
