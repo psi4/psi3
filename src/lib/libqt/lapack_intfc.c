@@ -235,7 +235,7 @@ int C_DGESVD(char jobu, char jobvt, int m, int n, double *A, int lda, double *s,
 ** \param int n:        The order of the matrix A.
 **
 ** \param double *A:    On entry, the two-dimensional array with dimensions n by lda.
-**                      On exit, if jobz = 'V', the matrix contains the eigenvectors of A, 
+**                      On exit, if jobz = 'V', the rows of the matrix contain the eigenvectors of A, 
 **                      but if jobz = 'N', the contents of the matrix are destroyed.
 **
 ** \param int lda:      The second dimension of A (i.e., the number of columns allocated for A).
