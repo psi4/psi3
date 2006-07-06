@@ -2,6 +2,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <sstream>
+#include <cstring>
 extern "C" {
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
@@ -86,6 +87,24 @@ StringBlockedMatrix::StringBlockedMatrix(const StringBlocks* strblk_bra, const S
 {
   buffer_ = create_matrix(strblk_bra->nstr_per_block(), strblk_ket->nstr_per_block());
   blksize_ = (size_t)strblk_bra->nstr_per_block() * strblk_ket->nstr_per_block() * sizeof(FLOAT);
+
+PSIO_INIT
+PSIO_OPEN(psio_unit_,PSIO_OPEN_NEW)
+
+}
+
+StringBlockedMatrix::StringBlockedMatrix(const StringBlockedMatrix& A) :
+  prefix_(A.prefix_),
+  strblk_bra_(A.strblk_bra_),
+  strblk_ket_(A.strblk_ket_),
+  buffer_(0),
+  current_brablk_(-1), current_ketblk_(-1),
+  need_to_init_psio_(0), unit_opened_(1)
+{
+  buffer_ = create_matrix(strblk_bra_->nstr_per_block(), strblk_ket_->nstr_per_block());
+  blksize_ = (size_t)strblk_bra_->nstr_per_block() * strblk_ket_->nstr_per_block() * sizeof(FLOAT);
+
+  void* tmp = memcpy(static_cast<void*>(buffer_[0]),static_cast<void*>(A.buffer_[0]),blksize_);
 
 PSIO_INIT
 PSIO_OPEN(psio_unit_,PSIO_OPEN_NEW)

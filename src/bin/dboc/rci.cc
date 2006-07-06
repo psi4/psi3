@@ -173,6 +173,15 @@ double eval_rci_derwfn_overlap(DisplacementIndex LDisp, DisplacementIndex RDisp)
   //
   FLOAT S_tot = 0.0;
 
+#if USE_CI_OVERLAP
+
+  StringBlockedMatrix ovlp_b(ovlp_a);
+  CIOverlap ciovlp(vecp,vecm,ovlp_a,ovlp_b,Params.num_threads);
+  ciovlp.compute();
+  S_tot = ciovlp.value();
+
+#else
+
   // string overlaps will be held in these buffers
   // ovlp_a has been defined before
   StringBlocks& strblks_b = strblks_a;
@@ -185,13 +194,6 @@ double eval_rci_derwfn_overlap(DisplacementIndex LDisp, DisplacementIndex RDisp)
   else
     S_b = ovlp_b.buffer();
 
-#if USE_CI_OVERLAP
-
-  CIOverlap ciovlp(vecp,vecm,ovlp_a,ovlp_b,Params.num_threads);
-  ciovlp.compute();
-  S_tot = ciovlp.value();
-
-#else
 #if LOOP_OVER_BLOCKS
   // loop over string overlap blocks and then loop over all determinant pairs whose overlap
   // can be computed using these string overlap blocks

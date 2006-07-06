@@ -39,6 +39,8 @@ class StringBlocks {
 class StringBlockedMatrix {
  public:
   StringBlockedMatrix(const StringBlocks* strblk_bra, const StringBlocks* strblk_ket, const std::string& prefix);
+  /// Makes a copy of A, including deep copy of the buffer
+  StringBlockedMatrix(const StringBlockedMatrix& A);
   ~StringBlockedMatrix();
 
   StringBlocks* strblk_bra() const { return strblk_bra_; }
