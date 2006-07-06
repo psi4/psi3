@@ -1,4 +1,4 @@
-default: (
+psi: (
   label = "Planar C4NH4 cc-pVTZ+/CCSD(T)//cc-pVDZ/CCSD(T)"
 
   wfn = ccsd_t
@@ -9,9 +9,7 @@ default: (
   docc = (10 1 4 3)
   freeze_core = true
   print = 2
-)
-
-input: (
+  cachelev = 0
   basis = "aug-cc-pVTZ"
   units = bohr
   geometry = (
