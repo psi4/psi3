@@ -192,7 +192,8 @@ void get_params()
 
   /* for now, generate <ai|bc> ordering if CC gradient, ROHF-CC, CC2, or CC3 */
   if(params.dertype == 1 || params.ref == 1 || !strcmp(params.wfn,"CC2") ||
-     !strcmp(params.wfn,"CC3") || !strcmp(params.wfn,"EOM_CC2"))
+     !strcmp(params.wfn,"CC3") || !strcmp(params.wfn,"EOM_CC3") ||
+     !strcmp(params.wfn,"EOM_CC2"))
     params.make_aibc = 1;
   else params.make_aibc = 0;
 
