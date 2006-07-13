@@ -125,6 +125,16 @@ void HET1_Wmbej(void)
     dpd_buf4_close(&Y);
 
     dpd_file2_close(&tIA);
+
+    /* also store WMbEj (Mb,Ej)  WMbeJ (bM,eJ)*/
+    dpd_buf4_init(&WMbEj, CC3_HET1, 0, 10, 10, 10, 10, 0, "CC3 WMbEj (ME,jb)");
+    dpd_buf4_sort(&WMbEj, CC3_HET1, psqr, 10, 11, "CC3 WMbEj (Mb,Ej)");
+    dpd_buf4_close(&WMbEj);
+
+    dpd_buf4_init(&WMbEj, CC3_HET1, 0, 10, 10, 10, 10, 0, "CC3 WMbeJ (Me,Jb)");
+    dpd_buf4_sort(&WMbEj, CC3_HET1, spqr, 11, 11, "CC3 WMbeJ (bM,eJ)");
+    dpd_buf4_close(&WMbEj);
+
   }
   else if(params.ref == 1) { /** ROHF **/
 
