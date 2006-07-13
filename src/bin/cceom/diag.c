@@ -310,10 +310,6 @@ timer_off("INIT GUESS");
           cc3_HC1(i,C_irr);
           cc3_HC1ET1(i,C_irr);
           sigmaCC3(i,C_irr,cc3_eval);
-
-#ifdef EOM_DEBUG
-          check_sum("D(norm triples)", i, C_irr);
-#endif
         }
 
 #ifdef EOM_DEBUG
@@ -810,14 +806,13 @@ timer_off("INIT GUESS");
       /* restart with new B vectors if there are too many */
       if (L >= eom_params.vectors_per_root * eom_params.cs_per_irrep[C_irr]) {
         /* For CC3, collapse to only 1 root - the prop_root */
-        if ( (!strcmp(params.wfn,"EOM_CC3")) && (cc3_stage>0) && (eom_params.follow_root) ) {
+        if ( (!strcmp(params.wfn,"EOM_CC3")) && (cc3_stage>0) ) {
           fprintf(outfile,"Collapsing to %d vector(s).\n",cc3_index+1);
-          /* changed 11-04 restart(alpha, L, eom_params.prop_root+1, C_irr, 0); */
           restart(alpha, L, cc3_index+1, C_irr, 0);
           if (cc3_index > 0) restart_with_root(cc3_index, C_irr);
           L = 1;
           already_sigma = 0;
-					ignore_G_old = 1; /* should be redundant given that already_sigma=0 */
+					ignore_G_old = 1;
         }
         else {
            restart(alpha, L, eom_params.restart_vectors_per_root*
@@ -833,6 +828,7 @@ timer_off("INIT GUESS");
               cc3_eval - cc3_last_converged_eval);
           cc3_last_converged_eval = cc3_eval;
           ++num_cc3_restarts;
+          cc3_stage = 2;
         }
       }
       else {
@@ -860,23 +856,28 @@ timer_off("INIT GUESS");
           eom_params.cs_per_irrep[C_irr] = 1; /* only get 1 CC3 solution */
           keep_going = 1;
           already_sigma = 0;
+          /* for 1 CC3 iteration testing: eom_params.max_iter = 1;*/
 					ignore_G_old = 1; /* should be redundant given that already_sigma=0 */
           L = 1 ;
           iter = 0;
           cc3_stage = 1;
         }
-        else if ( (!strcmp(params.wfn,"EOM_CC3")) && (cc3_stage == 1) && (num_cc3_restarts==0) ) {
+        else if( (!strcmp(params.wfn,"EOM_CC3")) && /* can't trust sigmas yet */
+               ( (cc3_stage == 1) || fabs(cc3_eval-cc3_last_converged_eval)>eom_params.eval_tol)) {
           /* for CC3: restart one time if no cc3_restarts have yet been done */
-          fprintf(outfile, "Forcing one restart and sigma recomputation.\n");
+          if (cc3_stage == 1) fprintf(outfile, "Forcing one restart with sigma recomputation.\n");
+          else fprintf(outfile,"Forcing restart due to CC3 eval not yet converged.\n");
           fprintf(outfile,"Collapsing to only %d vector(s).\n", cc3_index+1);
           restart(alpha, L, cc3_index+1, C_irr, 0);
           if (cc3_index > 0) restart_with_root(cc3_index, C_irr);
-
           cc3_eval = lambda_old[cc3_index];
-          fprintf(outfile,"Change in CC3 energy from last iterated value %15.10lf\n", cc3_eval - 0.0);
+          if (cc3_stage == 1)
+            fprintf(outfile,"Change in CC3 energy from last iterated value %15.10lf\n", cc3_eval - 0.0);
+          else
+            fprintf(outfile,"Change in CC3 energy from last iterated value %15.10lf\n",
+              cc3_eval-cc3_last_converged_eval);
           cc3_last_converged_eval = cc3_eval;
-
-          fprintf(outfile,"Setting initial CC3 eigenvalue to %15.10lf\n",cc3_eval);
+          fprintf(outfile,"Setting old CC3 eigenvalue to %15.10lf\n",cc3_eval);
           keep_going = 1;
           already_sigma = 0;
 					ignore_G_old = 1; /* should be redundant given that already_sigma=0 */
