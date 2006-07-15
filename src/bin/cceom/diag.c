@@ -282,7 +282,12 @@ timer_off("INIT GUESS");
           timer_on("sigmaSD"); sigmaSD(i,C_irr); timer_off("sigmaSD");
           timer_on("sigmaDS"); sigmaDS(i,C_irr); timer_off("sigmaDS");
           timer_on("sigmaDD"); sigmaDD(i,C_irr); timer_off("sigmaDD");
-	}
+          if ( (!strcmp(params.wfn,"EOM_CC3")) && (cc3_stage>0) ) {
+            timer_on("cc3_HC1"); cc3_HC1(i,C_irr); timer_off("cc3_HC1");
+            timer_on("cc3_HC1ET1"); cc3_HC1ET1(i,C_irr); timer_off("cc3_HC1ET1");
+            timer_on("sigmaCC3"); sigmaCC3(i,C_irr,cc3_eval); timer_off("sigmaCC3");
+          }
+        }
         timer_off("SIGMA ALL");
 #else 
         if (!strcmp(params.wfn,"EOM_CC2")) cc2_sigma(i,C_irr);  
@@ -292,7 +297,12 @@ timer_off("INIT GUESS");
           sigmaDS(i,C_irr);
           sigmaDD(i,C_irr);
         }
-#endif /* time */
+        if ( (!strcmp(params.wfn,"EOM_CC3")) && (cc3_stage>0) ) {
+          cc3_HC1(i,C_irr);
+          cc3_HC1ET1(i,C_irr);
+          sigmaCC3(i,C_irr,cc3_eval);
+        }
+#endif
         if (params.full_matrix) {
           sigma00(i,C_irr);
           sigma0S(i,C_irr);
@@ -304,35 +314,8 @@ timer_off("INIT GUESS");
           sigmaDD_full(i,C_irr);
         }
 
-        /* assuming we want only one and lowest state - otherwise 
-         * things get more complicated */
-        if ( (!strcmp(params.wfn,"EOM_CC3")) && (cc3_stage>0) ) {
-          cc3_HC1(i,C_irr);
-          cc3_HC1ET1(i,C_irr);
-          sigmaCC3(i,C_irr,cc3_eval);
-        }
-
 #ifdef EOM_DEBUG
         check_sum("reset",0,0);
-        /*
-          sprintf(lbl, "%s %d", "SIA", i);
-          dpd_file2_init(&SIA, EOM_SIA, C_irr, 0, 1, lbl);
-          sprintf(lbl, "%s %d", "Sia", i);
-          dpd_file2_init(&Sia, EOM_Sia, C_irr, 0, 1, lbl);
-          sprintf(lbl, "%s %d", "SIJAB", i);
-          dpd_buf4_init(&SIJAB, EOM_SIJAB, C_irr, 2, 7, 2, 7, 0, lbl);
-          sprintf(lbl, "%s %d", "Sijab", i);
-          dpd_buf4_init(&Sijab, EOM_Sijab, C_irr, 2, 7, 2, 7, 0, lbl);
-          sprintf(lbl, "%s %d", "SIjAb", i);
-          dpd_buf4_init(&SIjAb, EOM_SIjAb, C_irr, 0, 5, 0, 5, 0, lbl);
-          tval = norm_C(&SIA, &Sia, &SIJAB, &Sijab, &SIjAb);
-          fprintf(outfile,"Total norm of S %15.10lf\n", tval);
-          dpd_file2_close(&SIA);
-          dpd_file2_close(&Sia);
-          dpd_buf4_close(&SIJAB);
-          dpd_buf4_close(&Sijab);
-          dpd_buf4_close(&SIjAb);
-          */
 #endif
 
         /* Cleaning out sigma vectors for open-shell cases  */

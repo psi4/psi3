@@ -12,7 +12,7 @@
 #define EXTERN
 #endif
 
-#define EOM_DEBUG (1)
+/* #define EOM_DEBUG (1) */
 #define TIME_CCEOM (1)
 
 #define H_IRR (0)
